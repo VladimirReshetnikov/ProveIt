@@ -1,0 +1,2 @@
+import GowersSzemeredi.WalshScopeFidelityAudit
+import GowersSzemeredi.PhaseDegreeCoreAudit

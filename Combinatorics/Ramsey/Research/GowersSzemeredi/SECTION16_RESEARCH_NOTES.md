@@ -6498,8 +6498,8 @@ x0*x1 has mixed second difference one, whereas every proposed signed sum
 of one-variable phases has mixed second difference zero. The obstruction
 even allows arbitrary phase functions. In the corrected prime ranges,
 Lemma 17.1 and Proposition 17.2 now derive factorial invertibility rather
-than requiring it as an extra premise. Proposition 17.2's original degree
-bound remains open.
+than requiring it as an extra premise. The original Proposition 17.2 degree gap at this checkpoint is resolved
+by the counterexample in L.44.
 
 Two further native examples clarify the source proof: negative alpha
 refutes the unrestricted sign reading of Proposition 14.1, and the
@@ -6518,6 +6518,97 @@ After merging origin/main, the expanded `WalshScopeFidelityAudit` also
 passes all 1,663 modules. The exported facade remains a separate running
 check; neither narrower checkpoint certifies its additional imports. The annotated PDF was rebuilt twice; pages 86,93,101,109 were
 visually inspected, and the original published PDF is untouched.
+
+### L.44 Refuting the original phase degree and the zero endpoint (2026-10-12)
+
+`PhaseDegreeCoreAudit` passes 16 native modules, checking two separate
+refutations and the corrected prime-range Proposition 17.2 with only the
+three approved axioms. `PhaseDegreeFidelityAudit` passes the combined
+1,667-module graph. The reports and exact input manifests are under
+`verification/2026-10-12-phase-degree*.json`.
+
+The printed degree-k conclusion in Proposition 17.2 is false even with
+positive dimension, 0<alpha<=1/2 and k+1<N. At N=3,k=1, take
+f(s)=exponential(s^2), sigma(x)=2*x, and alpha=1/2. Direct character
+orthogonality gives Fourier energy27 in the hypothesis. Every polynomial
+of degree at most one is affine, and twisting by any such polynomial
+leaves a quadratic phase with correlation energy9. This is less than27/2.
+`proposition_17_2_printed_degree_counterexample` formalizes this argument;
+the already checked corrected degree k+1 remains valid in the documented
+prime range. The source ledger now classifies the printed degree as
+refuted, rather than leaving it merely unsupported.
+
+`proposition_17_7_zero_parameter_counterexample` separately verifies the
+strict alpha>0 requirement. At N=3,k=m=1, the zero function and zero
+frequency on a one-point box satisfy all the other hypotheses with
+alpha=0. Every phase twist remains zero-uniform on every partition,
+contradicting the asserted failure of uniformity. The positive-alpha
+corrected statement remains checked by the numbered fidelity audit.
+
+After integrating the incoming Fejer-JM improvements and resolving the
+facade import conflict by retaining both export sets, the expanded
+`PhaseDegreeFidelityAudit` also passes all1,672 modules. Its separate
+post-merge report records the exact source snapshot.
+
+The paper has visible notes for both examples. Its annotated119-page PDF
+was rebuilt twice; pages109,111,112 were visually inspected. The original
+published PDF is unchanged. Public exports were placed in the facade's
+import header. The much larger5,917-module facade build was deliberately
+yielded only after its active module finished, to check these obligations,
+and then resumed from the preserved cache. Its final gate is still open.
+
+### L.45. Exact displayed Lemma 15.5 threshold (2026-10-12)
+
+The formerly open annotated threshold is now proved for positive dimension
+and odd prime modulus, including eta = 1. Write a = alpha*eta, E for the
+selection exponent, and t = (a/4)^E. The dyadic choice a/4 <= q < a/2 and
+amplification b with q*b >= 1 give q^E*(a*b-1) >= 3*t. The key quadratic
+identity is q*(a-q)-3*(a/4)^2 = (q-a/4)*(3*a/4-q) >= 0; multiplying by
+q^(E-2) proves the general inequality. This retains the dependence between
+the two factors that was lost in the previous stage-margin estimate.
+
+`selection_dyadic_margin` proves this elementary inequality.
+`selection_scale_estimate_sharp_explicit` then needs only
+max(3, Cdeg/(t*scale)), instead of max(3, 2*Cdeg/((1-eta)*t*scale)).
+`lemma_15_5_printed_threshold` specializes to scale=beta^15 and proves the
+exact displayed condition t*beta^15*N >= 3^(2^(k+4))*k. A height-zero theorem
+uses its separate exceptional constant; the old public threshold API remains
+proved. SelectionThresholdCoreAudit passed 12 native modules with only the
+standard axioms. The expanded downstream audit was started separately after
+yielding the facade driver at a completed-module boundary with cache retained.
+
+This closes the sharper annotated-threshold obligation, not the original
+reading with no largeness assumption. The source ledger keeps that distinction.
+The paper's replacement bookkeeping accounts for lost good degenerate
+arrangements as well as the additional bad ones.
+
+### L.46. Every-prime selection and the positive-real union obstruction (2026-10-12)
+
+`lemma_15_5_printed_threshold_all_primes` removes the separate oddness
+hypothesis. The density identity implies beta<=1, and the respected-count
+lower bound together with the arrangement upper bound implies alpha<=1.
+Consequently the threshold left side is at least3 while t*beta^15<=1,
+forcing N>=3. This argument requires no primality; primality is used only
+to infer oddness and apply the already proved selection theorem.
+
+`IsMultilinear.multiplyLinearFunction_diagonal` proves a global multilinear
+graph is (s,s)-multiply linear for every real s>0. The scaled base in its
+control functions is exactly theta, so the one-graph cover and original box
+satisfy both bounds. This permits an explicit native counterexample to
+`lemma_16_8_with_positive_iteration`: over ZMod2, take the constant zero and
+one graphs, dimension1, D=2^512, and gamma=s=1/(8D). At loss1/2, the union's
+graph budget is (4^D)^(2s)=4^(1/4)<2, but both values must be covered on the
+nonempty surviving subset of a singleton box. The unrestricted positive-real
+interpretation is false; the positive natural iteration-count interpretation
+and corrected real s>=1 theorem are unaffected.
+
+SelectionIterationCoreAudit passed123 native modules with only the standard
+axioms. The new audit also checks the corrected union theorem. The downstream
+selection-threshold audit was yielded at a completed-module boundary to check
+these scope obligations, then resumed with the new combined target and its
+compiled cache retained. Completion of that broader audit is recorded
+separately. The displayed15.5 threshold and positive-real16.8 refutation are
+now settled; original15.5 without a largeness hypothesis remains open.
 
 ## F. Routes
 

@@ -1239,11 +1239,30 @@ import GowersSzemeredi.Proofs18CoverFejerHeadlineJ
 import GowersSzemeredi.Proofs18CoverFejerLowDegrees4
 import GowersSzemeredi.Proofs18CoverFejerHeadlineK
 import GowersSzemeredi.Proofs16PolynomialFejerJ
+import GowersSzemeredi.Proofs14MomentEndpoints
+import GowersSzemeredi.Proofs14_15SourceScope
+import GowersSzemeredi.Proofs15BooleanAllPrimes
+import GowersSzemeredi.Proofs15DegenerateAllPrimes
+import GowersSzemeredi.Proofs16PrintedSelectedMass
+import GowersSzemeredi.Proofs17PrimeRange
+import GowersSzemeredi.Proofs17CharacteristicTwo
+import GowersSzemeredi.Proofs17PrintedDegreeCounterexample
+import GowersSzemeredi.Proofs17ZeroDensity
+import GowersSzemeredi.Proofs15PrintedThreshold
+import GowersSzemeredi.Proofs15ThresholdAllPrimes
+import GowersSzemeredi.Proofs16PositiveIteration
+
 import GowersSzemeredi.Proofs18TightClassesFejerM
 import GowersSzemeredi.Proofs18CoverModulusFejerJM
 import GowersSzemeredi.Proofs18CoverDensityFejerJM
 import GowersSzemeredi.Proofs18CoverExponentsFejerJM
 import GowersSzemeredi.Proofs18CoverFejerHeadlineJM
+import GowersSzemeredi.Proofs16SplitTwoTrack
+import GowersSzemeredi.Proofs16SplitTwoTrackClasses
+import GowersSzemeredi.Proofs18CoverModulusFejerJT
+import GowersSzemeredi.Proofs18CoverDensityFejerJT
+import GowersSzemeredi.Proofs18CoverExponentsFejerJT
+import GowersSzemeredi.Proofs18CoverFejerHeadlineJT
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
@@ -1255,17 +1274,3 @@ is a definition with value in `Prop`; completed formal proofs are exported as
 companion theorems with the suffix `_holds`.  The definitions themselves add
 no axioms or assertions to Lean's trusted environment.
 -/
-
-import GowersSzemeredi.Proofs14MomentEndpoints
-import GowersSzemeredi.Proofs14_15SourceScope
-import GowersSzemeredi.Proofs15BooleanAllPrimes
-import GowersSzemeredi.Proofs15DegenerateAllPrimes
-import GowersSzemeredi.Proofs16PrintedSelectedMass
-import GowersSzemeredi.Proofs17PrimeRange
-import GowersSzemeredi.Proofs17CharacteristicTwo
-import GowersSzemeredi.Proofs16SplitTwoTrack
-import GowersSzemeredi.Proofs16SplitTwoTrackClasses
-import GowersSzemeredi.Proofs18CoverModulusFejerJT
-import GowersSzemeredi.Proofs18CoverDensityFejerJT
-import GowersSzemeredi.Proofs18CoverExponentsFejerJT
-import GowersSzemeredi.Proofs18CoverFejerHeadlineJT

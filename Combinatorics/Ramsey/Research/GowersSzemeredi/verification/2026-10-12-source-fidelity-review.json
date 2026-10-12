@@ -2,7 +2,7 @@
   "date": "2026-10-12",
   "scope": "Incremental statement-level comparison of actual hypotheses, numerical bounds and geometric meaning. This is separate from the120-companion kernel audit and does not claim completion of unreviewed entries. Current annotated source and original stronger claims are distinguished.",
   "paper": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-  "paper_sha256": "7edba4e1ceb879d6ca4d9474fe4804529a5aaab092f8b772664aa2ebe4677083",
+  "paper_sha256": "f7c469e1d0bf6ec8064b4450f5962e2f55834b727af7d877bffd50a67930e8a7",
   "reviewed_sections01_03_sha256": "d7926af871dbe1323494485a38310b78721b436601eef937dbe41b3dd3782589",
   "statement_count": 120,
   "reviewed_statement_count": 120,
@@ -2003,19 +2003,30 @@
         {
           "name": "lemma_15_5_holds",
           "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15Restriction.lean",
-          "line": 3631
+          "line": 3708
+        },
+        {
+          "name": "lemma_15_5_printed_threshold",
+          "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15PrintedThreshold.lean",
+          "line": 11
+        },
+        {
+          "name": "lemma_15_5_printed_threshold_all_primes",
+          "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ThresholdAllPrimes.lean",
+          "line": 66
         }
       ],
-      "status": "eventual_statement_verified_displayed_threshold_open",
-      "native_audited_companion": "lemma_15_5_holds",
-      "evidence": "The verified companion quantifies positive alpha,beta,0<eta<=1 and someN0 depending on all parameters and k. Its count (alpha*eta/4)^E*beta^15*N^(17*k+15), E=2^(2^(k+4)+k+3), and respected proportion1-eta match. The current annotated explicit condition t*beta^15*N>=3^(2^(k+4))*k is not the threshold provided by selection_scale_estimate_explicit: that theorem uses max3 (2*Cdeg/((1-eta)*t*beta^15)) for eta<1. The sharper displayed condition and the literal no-largeness original reading remain open, without a counterexample claim.",
+      "status": "displayed_explicit_threshold_verified_original_no_largeness_scope_open",
+      "native_audited_companion": "lemma_15_5_printed_threshold_all_primes",
+      "evidence": "The exact annotated threshold t*beta^15*N>=3^(2^(k+4))*k is natively proved for k>=1 and every prime N, including eta=1. selection_printed_threshold_three_le derives N>=3 from the other hypotheses, removing the separate oddness premise. The dyadic three-target margin absorbs both good and bad degenerate-arrangement losses. The generic scale threshold is max3(Cdeg/(t*scale)); a height-zero version holds over arbitrary cyclic groups with its separate exceptional constant. The original reading without any modulus-largeness condition remains open, without a counterexample claim.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-selection-iteration.json"
     },
     {
       "statement": "lemma_15_6",
       "source_heading_lines": [
-        3528
+        3525
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 435,
@@ -2035,7 +2046,7 @@
     {
       "statement": "lemma_16_1",
       "source_heading_lines": [
-        3539
+        3536
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 96,
@@ -2055,7 +2066,7 @@
     {
       "statement": "theorem_16_2",
       "source_heading_lines": [
-        3569
+        3566
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 142,
@@ -2080,7 +2091,7 @@
     {
       "statement": "lemma_16_3",
       "source_heading_lines": [
-        3573
+        3570
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 146,
@@ -2100,7 +2111,7 @@
     {
       "statement": "lemma_16_4",
       "source_heading_lines": [
-        3581
+        3578
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 304,
@@ -2120,7 +2131,7 @@
     {
       "statement": "lemma_16_5",
       "source_heading_lines": [
-        3609
+        3606
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 324,
@@ -2141,7 +2152,7 @@
     {
       "statement": "lemma_16_6",
       "source_heading_lines": [
-        3641
+        3638
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 443,
@@ -2161,7 +2172,7 @@
     {
       "statement": "lemma_16_7",
       "source_heading_lines": [
-        3649
+        3646
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 510,
@@ -2190,13 +2201,19 @@
           "name": "lemma_16_8_holds",
           "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16Union.lean",
           "line": 157
+        },
+        {
+          "name": "lemma_16_8_positive_iteration_counterexample",
+          "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PositiveIteration.lean",
+          "line": 144
         }
       ],
-      "status": "iteration_correction_verified_zero_refutation_verified",
+      "status": "corrected_iteration_count_verified_zero_and_positive_real_variants_refuted",
       "native_audited_companion": "lemma_16_8_holds",
-      "evidence": "The corrected companion requires real s>=1 and covers finite unions and sums, including empty families. Proofs16Union.lemma_16_8_zero_iteration_counterexample refutes the variant with no lower bound. The source prose also asserts failure at sufficiently small positive s, but the defined lemma_16_8_with_positive_iteration has no located theorem companion; that additional refutation remains to be kernel-checked. The iteration-count interpretation of s is distinct from unrestricted real s.",
+      "evidence": "The corrected companion requires real s>=1 and covers finite unions and sums, including empty families. Proofs16Union refutes the zero-parameter variant. Proofs16PositiveIteration now natively refutes lemma_16_8_with_positive_iteration using two constant graphs over ZMod2 in dimension1, gamma=s=1/(8*2^512), and loss1/2. Each graph satisfies the positive diagonal parameter; the union needs two graphs but its budget is4^(1/4)<2. This settles the previously unverified positive-real counterexample. It does not refute the natural positive iteration-count interpretation.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-selection-iteration.json"
     },
     {
       "statement": "lemma_16_9",
@@ -2282,7 +2299,7 @@
     {
       "statement": "proposition_17_2",
       "source_heading_lines": [
-        3850
+        3859
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 48,
@@ -2293,17 +2310,17 @@
           "line": 373
         }
       ],
-      "status": "corrected_prime_range_verified_original_degree_open",
+      "status": "printed_degree_refuted_corrected_prime_range_verified",
       "native_audited_companion": "proposition_17_2_holds",
-      "evidence": "proposition_17_2_prime_range proves the corrected degree<=k+1 conclusion for primeN with k+1<N, deriving the factorial-unit premise. The original published degree<=k and unrestricted characteristic range remain unproved/refuted by this result; no complete-original claim is made.",
+      "evidence": "proposition_17_2_printed_degree_counterexample refutes degree<=k even for positive k,0<alpha<=1/2 and k+1<N. The witness is N=3,k=1,alpha=1/2,f(s)=exponential(s^2),sigma(x)=2*x: hypothesis energy27, every degree-one twist energy9<27/2. The documented degree<=k+1 correction is proved by proposition_17_2_prime_range. The paper now includes the counterexample rather than merely citing the larger degree used by its proof.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
       "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
-      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-walsh-scope.json"
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-phase-degree.json"
     },
     {
       "statement": "lemma_17_4",
       "source_heading_lines": [
-        3891
+        3900
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 91,
@@ -2323,7 +2340,7 @@
     {
       "statement": "corollary_17_5",
       "source_heading_lines": [
-        3895
+        3904
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 103,
@@ -2343,7 +2360,7 @@
     {
       "statement": "corollary_17_6",
       "source_heading_lines": [
-        3899
+        3908
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 117,
@@ -2363,7 +2380,7 @@
     {
       "statement": "proposition_17_7",
       "source_heading_lines": [
-        3929
+        3943
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 140,
@@ -2374,16 +2391,17 @@
           "line": 2941
         }
       ],
-      "status": "corrected_positive_density_localization_matched",
+      "status": "corrected_positive_density_localization_verified_zero_endpoint_refuted",
       "native_audited_companion": "proposition_17_7_holds",
-      "evidence": "The companion uses alpha>0, positive dimension, odd side length m, common nonzero difference, all axes length m and m<=sqrt N. Its polynomial degree k+1, partition into proper modular progressions of lengths l or l+1 with l>=m/(3k), and failure of relative uniformity at2^(-2*(k+1)^3)*alpha match the corrected source. Source explicitly asks for mod-N output progressions here, so integer output geometry is not required. The alpha=0 zero-function obstruction is explained in the paper but has no separately located native counterexample in this review. The input multilinear function is encoded by a global multiaffine extension; a source function specified only on P is understood through its polynomial representation.",
+      "evidence": "The corrected companion retains positive alpha, positive dimension, odd equal side length m, common nonzero difference, m<=sqrtN, polynomial degree k+1, and modular cells of lengths l/l+1 with l>=m/(3k). proposition_17_7_zero_parameter_counterexample now separately refutes the nonnegative-alpha variant atN=3,k=m=1,f=sigma=0. The zero twist is zero-uniform on every partition. Source explicitly permits modular output progressions here.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-phase-degree.json"
     },
     {
       "statement": "theorem_18_1",
       "source_heading_lines": [
-        4054
+        4068
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 171,
@@ -2396,7 +2414,7 @@
         {
           "name": "theorem_18_1_d6_implies_printed",
           "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverFejerAllDegrees.lean",
-          "line": 96
+          "line": 99
         },
         {
           "name": "theorem_18_1_d7_implies_printed",
@@ -2413,7 +2431,7 @@
     {
       "statement": "theorem_18_2",
       "source_heading_lines": [
-        4106
+        4120
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 190,
@@ -2426,7 +2444,7 @@
         {
           "name": "theorem_18_2_L4_implies_printed",
           "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverFejerAllDegrees.lean",
-          "line": 117
+          "line": 120
         },
         {
           "name": "theorem_18_2_L6_implies_printed",
@@ -2443,7 +2461,7 @@
     {
       "statement": "corollary_18_7",
       "source_heading_lines": [
-        4121
+        4135
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 203,
@@ -2456,7 +2474,7 @@
         {
           "name": "corollary_18_7_L4_implies_printed",
           "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverFejerAllDegrees.lean",
-          "line": 122
+          "line": 125
         },
         {
           "name": "corollary_18_7_L6_implies_printed",
@@ -2498,5 +2516,8 @@
   "new_scope_proofs_kernel_status": "WalshScopeCoreAudit passed56 native modules with only the approved axioms; the combined post-merge WalshScopeFidelityAudit also passed1663 modules. The exported facade is a separate running check.",
   "reviewed_section16_sha256": "a39792df29795e9903fded3cd460efbcd0e80d7e695d8958d741538deb73aba3",
   "reviewed_sections17_18_sha256": "74027961cd05b94022c2e298ae96bc5ddd5b17425143725c2ba2fbc24c68922f",
-  "review_complete_is_not_goal_complete": "All120 numbered entries have now been compared at statement level. Many original bounds, characteristic ranges, geometry-and-bound combinations and native counterexamples remain open as recorded per entry. goal_complete stays false."
+  "review_complete_is_not_goal_complete": "All120 numbered entries have now been compared at statement level. Many original bounds, characteristic ranges, geometry-and-bound combinations and native counterexamples remain open as recorded per entry. goal_complete stays false.",
+  "new_phase_scope_kernel_status": "PhaseDegreeCoreAudit passed16 native modules; the post-merge PhaseDegreeFidelityAudit passed1672, including incoming Fejer-JM bounds. Both Section17 refutations are certified. The exported facade is running separately.",
+  "new_selection_threshold_kernel_status": "SelectionThresholdCoreAudit passed12 native modules. The displayed15.5 threshold is certified; the expanded downstream fidelity audit is running separately.",
+  "new_selection_iteration_kernel_status": "SelectionIterationCoreAudit passed123 native modules, including all-prime15.5 and the positive-real16.8 counterexample. SelectionIterationFidelityAudit resumes the downstream graph from its retained cache; the facade remains a separate pending check."
 }

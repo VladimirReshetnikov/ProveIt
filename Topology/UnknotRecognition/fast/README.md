@@ -4295,3 +4295,15 @@ and seven exceed the literal expansion cap. New evidence is in
 `../synthesis/data/primitive-annuli-audit.json`. This topological gluing rule
 uses existence of a simultaneous disk system, without expanding that system
 or transporting an arbitrary boundary pattern to a later hierarchy stage.
+
+The core-side extension uses schema v4 to authenticate annular midpoint
+curves and transport their unsigned intersection counts through the real core
+cancellations. A private surviving cocore must meet its designated annulus
+once and every other pending annulus zero times. The independent checker
+reconstructs the source paths and replays a dense passive matrix before the
+census deducts the core genera. All v1-v3 certificates remain replayable.
+The audit now certifies 83/106 cuts: all 83 replay, 76 agree with literal
+Regina cuts, and seven exceed the expansion cap. All previous 78 canonical
+certificates are byte-for-byte unchanged. Evidence is in
+`../synthesis/data/core-annuli-audit.json`. The greedy core schedule remains
+label-dependent, and a failed schedule is only inconclusive.

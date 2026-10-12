@@ -3494,34 +3494,31 @@ $$
 
 A term contributes to the sum over all the $s_{A}$ if and only if all the sums $\sum_{\epsilon, h} \eta(\epsilon, h) \prod_{i \in A} \lambda(\epsilon, h)_{i}$ are zero, and if $\lambda$ is non-degenerate, then this can happen only when $\eta$ is a multiple of $\eta_{0}$. If $\lambda$ is non-degenerate, $\eta \neq 0$ and the term contributes to the sum over $t$, then we must have in addition that $\sum_{\epsilon, h} \eta_{0}(\epsilon, h) \phi(\lambda(\epsilon, h))=0$. It is not hard to see that this is precisely the definition of $\phi$ respecting the 8-arrangement $\lambda$. The contribution of a non-zero term to the sum over $t$ and the $s_{A}$ is $2^{-2^{k+5}} N^{2^{k+1}+1}$ and the number of multiples of $\eta_{0}$, counted with multiplicity, is $2^{2^{k+4}}+2$, since 0 can be produced in $2^{2^{k+4}}$ ways, and $\pm \eta_{0}$ in one way each.
 
-Therefore, if $\lambda$ is non-degenerate, the single-stage sum over $t$ and the $s_{A}$ is $2^{-2^{k+4}} N^{2^{k+1}+1}$ if $\phi$ does not respect $\lambda$ and $2^{-2^{k+4}} N^{2^{k+1}+1}\left(1+2\cdot2^{-2^{k+4}}\right)$ if it does. It follows that the probability that $\lambda$ belongs to $B^{\prime}$ is $2^{-2^{k+4} r}$ if $\phi$ does not respect $\lambda$ and $2^{-2^{k+4} r}\left(1+2\cdot2^{-2^{k+4}}\right)^{r}$ if it does. Therefore, our hypotheses imply that the expected number $X$ of 8-arrangements respected by $\phi$ is at least $2^{-2^{k+4} r}\left(1+2\cdot2^{-2^{k+4}}\right)^{r} \alpha \beta^{15} N^{17 k+15}$, and the expected number $Y$ of non-degenerate 8-arrangements not respected by $\phi$ is at most $2^{-2^{k+4} r} \beta^{15} N^{17 k+15}$. Using the fact that
+Therefore, if $\lambda$ is non-degenerate, the single-stage sum over $t$ and the $s_{A}$ is $2^{-2^{k+4}} N^{2^{k+1}+1}$ if $\phi$ does not respect $\lambda$ and $2^{-2^{k+4}} N^{2^{k+1}+1}\left(1+2\cdot2^{-2^{k+4}}\right)$ if it does. It follows that the probability that $\lambda$ belongs to $B^{\prime}$ is $2^{-2^{k+4} r}$ if $\phi$ does not respect $\lambda$ and $2^{-2^{k+4} r}\left(1+2\cdot2^{-2^{k+4}}\right)^{r}$ if it does.
 
-$$
-1+2\cdot2^{-2^{k+4}} \geqslant 2^{2^{-2^{k+4}+1}}
-$$
+\textit{Editorial proof refinement (Lean-verified explicit threshold).}
+The degenerate arrangements must be accounted for in both the good and bad counts. The following choice keeps enough margin to prove exactly the displayed largeness condition, including $\eta=1$.
+Put $a=\alpha\eta$, $V=2^{k+4}$, $K=2^{V-1}$, $E=VK=2^{2^{k+4}+k+3}$ and $t=(a/4)^E$. The hypotheses imply $\alpha\leqslant1$, since the total number of arrangements is at most $M=\beta^{15}N^{17k+15}$; thus $0<a\leqslant1$. Choose $m$ with $a/4\leqslant q=2^{-m}<a/2$ and set $r=Km$. Write $A=1+2\cdot2^{-V}$. Bernoulli's inequality gives $A^K\geqslant2$, hence $qA^r\geqslant1$.
 
-we can deduce that if $2^{2^{-2^{k+4}+1} r} \geqslant 2 / \alpha \eta$, then
-
-$$
-\begin{aligned}
-\eta \mathbb{E} X-\mathbb{E} Y & \geqslant \alpha \eta(2 / \alpha \eta) 2^{-2^{k+4} r} \beta^{15} N^{17 k+15}-2^{-2^{k+4} r} \beta^{15} N^{17 k+15} \\
-& \geqslant 2^{-2^{k+4} r} \beta^{15} N^{17 k+15}
-\end{aligned}
-$$
-
-But $2^{2^{-2^{k+4}+1} r} \geqslant 2 / \alpha \eta$ if and only if $2^{r} \geqslant(2 / \alpha \eta)^{2^{2^{k+4}-1}}$ if and only if $2^{-r} \leqslant(\alpha \eta / 2)^{2^{2^{k+4}-1}}$ if and only if
-
-$$
-2^{-2^{k+4} r} \leqslant(\alpha \eta / 2)^{2^{2^{k+4}-1} 2^{k+4}}=(\alpha \eta / 2)^{2^{2^{k+4}+k+3}} .
-$$
-
-Let $r$ be an integer such that
-
-$$
-2(\alpha \eta / 4)^{2^{2^{k+4}+k+3}} \leqslant 2^{-2^{k+4} r} \leqslant(\alpha \eta / 2)^{2^{2^{k+4}+k+3}} .
-$$
-
-Write $L=(\alpha \eta / 4)^{2^{2^{k+4}+k+3}} \beta^{15} N^{17 k+15}$. The preceding expectation is at least $2L$. Hence there is a realization for which $\eta X-Y\geqslant 2L$. By Lemma 15.4 and the assumed lower bound on $N$, the total number $Z$ of degenerate 8-arrangements is at most $L$. It follows that $X\geqslant L$ and $Y+Z\leqslant\eta X$, which proves the lemma. \(\square\)
+For $x=a/4$, we have $x\leqslant q\leqslant2x$ and
+\[
+q(a-q)-3x^2=(q-x)(3x-q)\geqslant0.
+\]
+Since $E\geqslant2$, it follows that
+\[
+q^E(aA^r-1)\geqslant q^{E-2}q(a-q)
+  \geqslant3x^E=3t.
+\]
+Let $Z$ be the total number of degenerate arrangements. Lemma 15.4 and the displayed hypothesis give $Z\leqslant tM$. For the non-degenerate good and bad arrangements, the expected score $\eta X-Y$ is at least
+\[
+q^E(aA^r-1)M-\eta(2^{-V}A)^r Z
+  \geqslant3tM-\eta Z,
+\]
+because $2^{-V}A\leqslant1$. Passing to all arrangements can decrease this score by at most a further $Z$. (Equivalently, first average the phase weights and then perform independent Bernoulli selection of the vertices.) Some subset therefore has total good and bad counts $X',Y'$ satisfying
+\[
+\eta X'-Y'\geqslant3tM-(1+\eta)Z\geqslant tM.
+\]
+Consequently $X'\geqslant tM$ and $Y'\leqslant\eta X'$. The respected proportion is at least $1/(1+\eta)\geqslant1-\eta$, as required. This proves the displayed threshold for $k\geqslant1$ over every prime. Indeed, the density and respected-count hypotheses imply $\beta,\alpha\leqslant1$, so $t\beta^{15}\leqslant1$. Since $3^{2^{k+4}}k\geqslant3$, the displayed threshold itself forces $N\geqslant3$ and excludes the even prime. The height-zero case has a separate verified exceptional-set constant. \(\square\)
 
 The final lemma of this section is a combination of the previous one with Lemma 14.8 in the case $\eta=2^{-44}$, which is the value that will be used in applications.
 
@@ -3654,10 +3651,13 @@ $$
 
 Proof. The expression given for $\phi^{\prime}(h, x)$ is valid whenever $Y_{h}(x)$ contains the cube $\left[x_{1}, \ldots, x_{k} ; h_{1}, \ldots, h_{k}\right]$. Since $\left|H_{1}\right| \geqslant\left(\theta_{1} / 8\right) N^{k}$ and $\left|X_{h}\right| \geqslant$ $\left(\theta_{1} / 4\right) N^{k+1}$ for every $h \in H_{1}$, we find that $\sum_{h \in H_{1}}\left|Y_{h}\right| \geqslant 2^{-32} \theta_{1}^{8} N^{2 k+1}=$ $\theta_{2} N^{2 k+1}$ (by the estimate for the sizes of the sets $Y_{h}$ in Lemma 16.5). Therefore, if we choose the $x_{j}$ randomly, the expected number of choices of $\left(h_{1}, \ldots, h_{k}, x\right)$ with $h \in H_{1}$ for which the equality holds is at least $\theta_{2} N^{k+1}$. The lemma follows. \(\square\)
 
-% ed.: Here $s$ is an iteration count, so the faithful real-valued condition
-% is $s\geqslant1$.  At $s=0$ two constant graphs give an immediate
-% counterexample; sufficiently small positive real $s$ also fails because the
-% displayed graph-count bound for their union is strictly less than two.
+\textit{Editorial note (verified scope of the iteration parameter).}
+The corrected statement below uses $s\geqslant1$, as appropriate for a positive integer iteration count. Replacing this by merely $s>0$ in the unrestricted real-valued formulation is insufficient. A Lean-verified counterexample already occurs for one-coordinate relations over $\mathbb Z_2$: put $D=2^{2^9}$ and $\gamma=s=(8D)^{-1}$, and take the two full constant graphs with values zero and one. Each graph is $(s,s)$-multiply linear. At loss $\theta=1/2$, their union would have graph budget
+\[
+q((2s)^{-1}/2,s,1)^{2s}=(4^D)^{2s}=4^{1/4}<2.
+\]
+On a singleton box, the surviving set must be nonempty, and both values must be covered at its point. This requires two graphs and contradicts the budget. Thus the positive-real variant fails as well as the previously noted zero-parameter variant; the corrected $s\geqslant1$ union and sum statements are proved.
+
 Lemma 16.8. Suppose that $s\geqslant1$ and that $\Gamma_{1}, \ldots, \Gamma_{r}$ are $(\gamma, s)$-multiply $(k+1)$-linear subsets of $\mathbb{Z}_{N}^{k+1} \times \mathbb{Z}_{N}$. Then $\Gamma_{1} \cup \cdots \cup \Gamma_{r}$ is $(\gamma, r s)$-multiply $(k+1)$-linear. If $\phi_{1}, \ldots, \phi_{r}$ are $(\gamma, s)$-multiply $(k+1)$-linear functions defined on a subset $B \subset \mathbb{Z}_{N}^{k+1}$, then $\phi_{1}+\cdots+\phi_{r}$ is $(\gamma, r s)$-multiply $(k+1)$-linear.\\
 Proof. Let $P$ be a box. We can find a subset $H_{1} \subset P$ of size at least $(1-\theta / r)|P|$ and a partition of $P$ into boxes $Q$ of width at least $m^{c\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}}$ such that $\Gamma_{1}$ restricted to any $Q \cap H_{1}$ is contained in the union of the graphs of $q\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$ multilinear functions. Now repeat this argument inside each $Q$ for the set $\Gamma_{2}$ and so on. At each of the $r$ stages of this process, the width of the boxes is raised to the power\\
 $c\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$, the number of new multilinear functions introduced inside each box is at most $q\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$ and $\theta|P| / r$ points are thrown away. Therefore, at the end of the process we have a width of at least $m^{c\left((r s)^{-1} \theta, \gamma, k+1\right)^{r s}}$ and $r q\left((r s)^{-1} \theta, \gamma, k+1\right)^{s}$ multilinear functions for each set $\Gamma_{i}$. The result about unions follows (and in fact we have overestimated the number of multilinear functions needed). The result for sums of functions also follows, once we notice that there are $q\left((r s)^{-1} \theta, \gamma, k+1\right)^{r s}$ functions of the form $\mu_{1}+\cdots+\mu_{r}$, with each $\mu_{i}$ one of the multilinear functions chosen at the $i^{\text {th }}$ stage. \(\square\)
@@ -3847,6 +3847,15 @@ as we wanted. \(\square\)
 
 We now prove a proposition which is not exactly what we need later. Rather, it is a special case, which we give in the hope that the more general result, which is a bit complicated, will be easier to understand.
 
+\emph{Editorial note on the polynomial degree (2026-10-12).}
+The printed degree bound $k$ is false, even when $k+1<N$. Lean verifies
+a counterexample with $N=3$, $k=1$, $\alpha=1/2$,
+$f(s)=\omega^{s^2}$ and $\sigma(x)=2x$. The Fourier energy in the
+hypothesis is $27$. For every polynomial $\phi$ of degree at most one,
+the energy after twisting by $\omega^{-\phi}$ is $9$, which is less than
+$\alpha N^{k+2}=27/2$. The corrected degree $k+1$ is therefore necessary
+in general, and its stated prime-range version is proved in Lean.
+
 Proposition 17.2. Let $f: \mathbb{Z}_{N} \rightarrow D$. Suppose that $k+1<N$ and that there is a $k$-linear function $\sigma: \mathbb{Z}_{N}^{k} \rightarrow \mathbb{Z}_{N}$ such that
 
 $$
@@ -3924,8 +3933,13 @@ $$
 $$
 
 we find that $g$ is not $\beta(m / p)^{k+2}$-uniform (in $\mathbb{Z}_{p}$ ) of degree $k$.\\
-% ed.: Positivity of alpha is necessary: for alpha=0 the zero function
-% satisfies the displayed hypothesis but cannot fail zero-uniformity.
+\emph{Editorial note on strict positivity (2026-10-12).}
+Lean verifies the necessity of $\alpha>0$: at $N=3$, $k=1$, $m=1$,
+take a one-point box, $f=0$ and $\sigma=0$. All the other hypotheses
+hold with $\alpha=0$, but every phase twist is still zero and is
+zero-uniform on every partition. Thus the nonnegative-parameter
+variant of the following proposition is false.
+
 Proposition 17.7. Let $\alpha>0$ and let $f: \mathbb{Z}_{N} \rightarrow D$. Suppose that there is a product $P=P_{1} \times \cdots \times P_{k}$ of arithmetic progressions $P_{i}$ of common difference $d$ and odd length $m \leqslant N^{1 / 2}$, and a $k$-linear function $\sigma: P \rightarrow \mathbb{Z}_{N}$ such that
 
 $$

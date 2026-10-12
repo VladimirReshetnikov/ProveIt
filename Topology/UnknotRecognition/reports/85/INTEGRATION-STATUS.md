@@ -117,3 +117,43 @@ path and six favor explicit cuts; the 1,024-copy paired ratios are 4.184 and
 smaller gain is interpreted cautiously. At multiplier 2^16384, production
 plus replay takes 1.932 and 17.867 seconds, with 27.2 MB and 72.9 MB serialized
 proofs. Full results are in `../../synthesis/data/primitive-annuli-benchmark.json`.
+
+## Passive core-side annulus certificates
+
+The subsequent v4 extension authenticates all pending nondisk annular curves
+from their source face flags, transports their unsigned counts through the
+real core-cancellation schedule, and proves simultaneous primitivity from
+private surviving cocores. The producer uses sparse matrices; the independent
+checker reconstructs source curves and performs dense replay. Genus deductions
+now occur at core vertices. This certifies exactly the five candidates from
+the earlier passive probe, while leaving arbitrary boundary-pattern transport
+and the general hierarchy bound unresolved.
+
+The source audit certifies 83/106 cuts, replays all 83, and agrees with all
+76 literal Regina comparisons. Seven large successes exceed the expansion
+cap; no oracle times out. The previous 78 canonical certificate hashes are
+unchanged. Remaining refusals are two annular cases, eleven failed core
+cancellations, and ten cores with three-handles. Thirty focused tests pass,
+including passive fill, opposite-sign crossings, competing annuli and
+conditional matrix tests. Three of five fixed relabels succeed; the other
+two stall in the pre-existing greedy core stage.
+
+The complete Regina-enabled suite passes all 1,671 tests with no skips in
+523.669 seconds. The expanded-sheet and marked-cover audits also pass, and
+the runtime source pins match the independent source-cut audit. The detailed
+article includes the passive transport proof, simultaneous private-cocore
+criterion, polynomial saturated replay bound and the observed relabelling
+limitation of the greedy core producer.
+
+The eight finite v4 benchmarks use five shuffled paired rounds. At 1,024
+copies the two families have paired explicit/native ratios 4.138 and 4.312;
+all six smaller cases regress. A/A medians range from 0.972 to 1.166. At
+multiplier 2^16384, production plus replay takes 3.413 and 2.643 seconds, with
+28.6 MB and 32.2 MB serialized certificates. Exact data are retained in
+`../../synthesis/data/core-annuli-benchmark.json`.
+
+A broader algebraic boundary-template probe finds finite elimination
+schedules for the two remaining annular cases. It has no source-to-template
+geometric adapter or independent verifier and adds no accepted certificates.
+The eleven other unresolved cases without three-handles still stall in that
+probe. The synthesis records the outstanding geometric obligations explicitly.

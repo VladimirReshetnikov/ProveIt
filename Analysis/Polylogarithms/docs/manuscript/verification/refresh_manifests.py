@@ -88,5 +88,11 @@ for directory in ['intake-verification','intake-verification-local']:
             name='../../../Transseries/docs/series-and-transseries/Resonant_Polylogarithm_Transseries/continuations/order-jet-filters/'+directory+'/'+p.relative_to(ojf_home/directory).as_posix()
             dependencies[name]={'sha256':digest(p,'lf-normalized'),'mode':'lf-normalized'}
 
+jct_home=B.parents[2]/'Transseries/docs/series-and-transseries/Quadratic_Polylogarithm_Feedback_Boundary_Completion/continuations/joint-coefficient-transseries'
+for p in [jct_home/'INTAKE-PROOF-AUDIT.md',*sorted((jct_home/'intake-verification').rglob('*'))]:
+    if p.is_file() and '__pycache__' not in p.parts:
+        name='../../../Transseries/docs/series-and-transseries/Quadratic_Polylogarithm_Feedback_Boundary_Completion/continuations/joint-coefficient-transseries/'+p.relative_to(jct_home).as_posix()
+        dependencies[name]={'sha256':digest(p,'lf-normalized'),'mode':'lf-normalized'}
+
 save(V/'dependency-sha256.json',dict(sorted(dependencies.items())))
 print('Pinned',len(sources),'canonical sources and',len(dependencies),'dependencies.')

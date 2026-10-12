@@ -2,17 +2,26 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **169, 131, 254 and
+authored by **ProveIt Contributors**. The volumes have **190, 131, 254 and
 87 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **595 pages**.
-They share twelve chapters, thirteen figures and 157 references. The
+[combined edition](docs/manuscript/polylogarithms.pdf) has **616 pages**.
+They share twelve chapters, thirteen figures and 162 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
 finite certificates, numerical diagnostics, PDF builds and visual review.
 
-The inventory covers **1810 textual provenance documents**. **135 incoming
-archives / 4806 original tracked members** are preserved; imported ZIPs are
+Volume I, Sections 1.11--1.12 now develop joint coefficient laws through
+the order-three resonance and convergent reciprocal-order inverse charts.
+The new Theorem 1.63 isolates the first difference between models whose
+lower endpoint derivatives match: it is governed by spatial derivatives
+of the universal coefficient kernels. Corollary 1.64 gives the first
+nonzero cubic discrepancy at the critical center, including its sign.
+The original report, exact checks and independent finite coefficient
+experiments retain separate evidence scopes.
+
+The inventory covers **1810 textual provenance documents**. **137 incoming
+archives / 4861 original tracked members** are preserved; imported ZIPs are
 retired in their placement commits and recoverable from arrival history.
 Delivered PDFs, sources, code and receipts retain their original evidence
 scopes. Intake notes use a separate filename, preserving delivered
@@ -27,8 +36,8 @@ evidence. Its new continuation theorem now proves Borel continuation along
 paths avoiding the lattice, summability away from real directions, and the
 exact sectorial inverse equation. The odd remainder gains an extra coupling
 factor, giving relative uniformity down to zero positive coupling at every
-fixed order. Full singular germs and the two remaining incoming reports
-remain separate work.
+fixed order. Full singular germs remain open; the order-filter and joint-coefficient
+continuations are now audited and integrated below.
 
 The crossed-twist extension now gives the exact finite Fourier correction
 at every positive integer total order, all balanced order jets and their

@@ -5,8 +5,51 @@ boundary checkers. No group-word reduction or homological test is used.
 """
 
 
+def source_core_circle(geometry, word, *, check=lambda: None):
+    """Trace a source-authenticated annular midpoint through actual core handles."""
+    check()
+    core = geometry['core']
+    paths, crossings = [], []
+    for letter in word:
+        check()
+        port = geometry['ports'][abs(letter) - 1]
+        h = port['core_handle']
+        if port['core_dimension'] == 0:
+            paths.append((h, h))
+            continue
+        polygon = geometry['polygons'][port['polygon']]
+        edge = port['edge']
+        if (port['core_dimension'] != 1 or polygon['kind'] != 'edge_cap' or
+                polygon['edges'][edge]['kind'] != 'face_sector'):
+            raise ArithmeticError('non-face-sector one-handle port')
+        handle = core['handles1'][h]
+        ends = [(handle['tetrahedron'], handle['face']),
+                (handle['target_tetrahedron'], handle['target_face'])]
+        flags = [(polygon['vertices'][(edge + j) % len(polygon['vertices'])]['tetrahedron'],
+                  polygon['vertices'][(edge + j) % len(polygon['vertices'])]['face'])
+                 for j in (0, 1)]
+        if flags == ends:
+            sign = 1
+        elif flags == ends[::-1]:
+            sign = -1
+        else:
+            raise ArithmeticError('face-sector endpoint flags do not match')
+        sign *= 1 if letter > 0 else -1
+        start, stop = handle['ends'][::sign]
+        paths.append((start, stop))
+        crossings.append(dict(port=abs(letter) - 1, handle=h, sign=sign,
+                              start=start, stop=stop))
+    if any(paths[j][1] != paths[(j + 1) % len(paths)][0] for j in range(len(paths))):
+        raise ArithmeticError('absorbed midpoint circle is not a closed core path')
+    cycle = []
+    for crossing in crossings:
+        cycle.extend([dict(dimension=0, handle=crossing['start']),
+                      dict(dimension=1, handle=crossing['handle'])])
+    return crossings, cycle
+
+
 def absorb_disk_bundles(geometry, summary, skeleton, *, primitive_bases=frozenset(), check=lambda: None):
-    """Absorb disks; primitive_bases must be separately source-certified."""
+    """Absorb disks; primitive_bases defers named bases to a separate annulus proof."""
     check()
     profiles = summary['base_profiles']
     by_port = {port: i for i, p in enumerate(profiles) for port in p['core_ports']}
@@ -30,42 +73,7 @@ def absorb_disk_bundles(geometry, summary, skeleton, *, primitive_bases=frozense
         if base in absorbed or set(p['core_ports']) != {abs(x) - 1 for x in word}:
             raise ArithmeticError('disk circle does not exhaust its component')
         absorbed.add(base)
-        paths, crossings = [], []
-        for letter in word:
-            check()
-            port = geometry['ports'][abs(letter) - 1]
-            h = port['core_handle']
-            if port['core_dimension'] == 0:
-                paths.append((h, h))
-                continue
-            polygon = geometry['polygons'][port['polygon']]
-            edge = port['edge']
-            if (port['core_dimension'] != 1 or polygon['kind'] != 'edge_cap' or
-                    polygon['edges'][edge]['kind'] != 'face_sector'):
-                raise ArithmeticError('non-face-sector one-handle port')
-            handle = core['handles1'][h]
-            ends = [(handle['tetrahedron'], handle['face']),
-                    (handle['target_tetrahedron'], handle['target_face'])]
-            flags = [(polygon['vertices'][(edge + j) % len(polygon['vertices'])]['tetrahedron'],
-                      polygon['vertices'][(edge + j) % len(polygon['vertices'])]['face'])
-                     for j in (0, 1)]
-            if flags == ends:
-                sign = 1
-            elif flags == ends[::-1]:
-                sign = -1
-            else:
-                raise ArithmeticError('face-sector endpoint flags do not match')
-            sign *= 1 if letter > 0 else -1
-            start, stop = handle['ends'][::sign]
-            paths.append((start, stop))
-            crossings.append(dict(port=abs(letter) - 1, handle=h, sign=sign,
-                                  start=start, stop=stop))
-        if any(paths[j][1] != paths[(j + 1) % len(paths)][0] for j in range(len(paths))):
-            raise ArithmeticError('absorbed midpoint circle is not a closed core path')
-        cycle = []
-        for crossing in crossings:
-            cycle.extend([dict(dimension=0, handle=crossing['start']),
-                          dict(dimension=1, handle=crossing['handle'])])
+        crossings, cycle = source_core_circle(geometry, word, check=check)
         number = len(core['handles2']) + len(added)
         added.append(dict(id=number, cycle=cycle))
         records.append(dict(attachment=index, base_profile=base, two_handle=number,

@@ -58,8 +58,8 @@ class BundlePrimitiveAnnuliTests(unittest.TestCase):
             self.assertEqual(a['census']['histogram'], self.result['census']['histogram'])
             self.assertTrue(verify_normal_cut_handlebodies(raw, rows, a['certificate']))
 
-    def test_no_spare_boundary_and_mobius_boundary_remain_unresolved(self):
-        for name in ('pilot/fibonacci_lst_05/0', 'fibonacci_lst_09/mixed'):
+    def test_no_spare_boundary_rejects_bundle_rule_and_unproved_core_fallback(self):
+        for name in ('fibonacci_lst_09/mixed',):
             c = next(c for c in self.bank if c['id'] == name)
             a = normal_cut_handlebodies(c['triangulation'], c['coordinates'], record_certificate=True)
             self.assertEqual(a['status'], 'INCONCLUSIVE')

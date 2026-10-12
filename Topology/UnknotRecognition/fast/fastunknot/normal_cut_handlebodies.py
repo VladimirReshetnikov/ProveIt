@@ -9,14 +9,17 @@ attachments, closed bundle bases, or stalled core cancellations are unresolved.
 from collections import Counter
 
 from .bundle_primitive_annuli import primitive_bundle_annuli
+from .core_primitive_annuli import core_primitive_annuli
 from .core_handlebody import core_handlebody_certificate
 from .disk_bundle_absorption import absorb_disk_bundles
 from .normal_parallelity import normal_cut_parallelity
 from .parallelity_boundary_words import normal_parallelity_boundary_words
 
 
-def _census(geometry, summary, skeleton, components, check, absorbed=frozenset(), primitive=None):
+def _census(geometry, summary, skeleton, components, check, absorbed=frozenset(), primitive=None, core_annuli=None):
     primitive = {} if primitive is None else primitive
+    core_annuli = {} if core_annuli is None else core_annuli
+    core_deductions = Counter(core_annuli.values())
     profiles = summary['base_profiles']
     if any(p['boundary_components'] == 0 for p in profiles):
         return None, 'closed_bundle_base'
@@ -37,7 +40,7 @@ def _census(geometry, summary, skeleton, components, check, absorbed=frozenset()
     nodes = [('core', c['id']) for c in components]
     nodes += [('base', i) for i, p in enumerate(profiles) if p['core_ports'] and i not in absorbed]
     parent = {v: v for v in nodes}
-    genera = {('core', c['id']): c['genus'] for c in components}
+    genera = {('core', c['id']): c['genus'] - core_deductions[c['id']] for c in components}
     genera.update({('base', i): 1 - p['euler_characteristic'] - primitive.get(i, 0)
                    for i, p in enumerate(profiles) if p['core_ports'] and i not in absorbed})
 
@@ -56,10 +59,13 @@ def _census(geometry, summary, skeleton, components, check, absorbed=frozenset()
         bases = {port_base[p] for p in ports}
         cores = {port_core[p] for p in ports}
         permitted = (attachment['kind'] == 'interval' or
-                     (attachment['kind'] == 'circle' and bases <= primitive.keys()))
+                     (attachment['kind'] == 'circle' and
+                      (bases <= primitive.keys() or i in core_annuli)))
         if not permitted or len(bases) != 1 or len(cores) != 1:
             raise ArithmeticError('one connected disk attachment has inconsistent owners')
         b, c = next(iter(bases)), next(iter(cores))
+        if i in core_annuli and core_annuli[i] != c:
+            raise ArithmeticError('core annulus has inconsistent component owner')
         left, right = ('base', b), ('core', c)
         a, z = root(left), root(right)
         if a != z:
@@ -140,12 +146,16 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
         result['reason'] = 'boundary_budget_exhausted'
         return result
     family = primitive_bundle_annuli(parallelity['summary'], boundary['skeleton'], check=check)
-    if family is None:
-        result['reason'] = 'annular_core_attachment'
-        return result
-    primitive_proof, primitive = family
+    core_side = family is None
+    if core_side:
+        primitive_proof, primitive = None, {}
+        deferred = {i for i, p in enumerate(parallelity['summary']['base_profiles'])
+                    if (p['euler_characteristic'], p['boundary_components']) != (1, 1)}
+    else:
+        primitive_proof, primitive = family
+        deferred = primitive
     absorption = absorb_disk_bundles(parallelity['geometry'], parallelity['summary'],
-                                     boundary['skeleton'], primitive_bases=primitive, check=check)
+                                     boundary['skeleton'], primitive_bases=deferred, check=check)
     if absorption is None:
         result['reason'] = 'annular_core_attachment'
         return result
@@ -155,8 +165,16 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     if core['status'] != 'COMPLETE':
         result['reason'] = core['reason']
         return result
+    core_annuli = {}
+    if core_side:
+        transported = core_primitive_annuli(parallelity['geometry'], parallelity['summary'],
+            boundary['skeleton'], augmented, core['certificate'], check=check)
+        if transported is None:
+            result['reason'] = 'annular_core_attachment'
+            return result
+        core_annuli_proof, core_annuli, result['stats']['core_annuli'] = transported
     census, reason = _census(parallelity['geometry'], parallelity['summary'],
-                            boundary['skeleton'], core['components'], check, absorbed, primitive)
+                            boundary['skeleton'], core['components'], check, absorbed, primitive, core_annuli)
     if census is None:
         result['reason'] = reason
         return result
@@ -171,5 +189,8 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
         if primitive:
             result['certificate'].update(schema='normal-cut-handlebodies-v3',
                                          absorption=absorption_proof, primitive_annuli=primitive_proof)
+        if core_side:
+            result['certificate'].update(schema='normal-cut-handlebodies-v4',
+                                         absorption=absorption_proof, core_annuli=core_annuli_proof)
     check()
     return result
