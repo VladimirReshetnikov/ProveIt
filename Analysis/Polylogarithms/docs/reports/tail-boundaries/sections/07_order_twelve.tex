@@ -1,0 +1,311 @@
+% Research fragment. Requires the source-coordinate definitions in
+% order_ten_completion.tex, or equivalent definitions from the parent article.
+% No external computational package is required by the complete replay.
+\section{Complete optimal reconstruction at smaller tail order twelve}
+\label{t12:section}
+
+Research question R1 of the source \emph{Quartic Spectral Reconstruction}
+explicitly asks for complete smaller-order-ten and smaller-order-twelve
+families. The preceding section and the theorem below resolve those two
+specified tasks. At smaller order twelve, the preceding one-case synthesis
+is unavailable:
+no source theorem handles almost every parameter. We instead prove an
+explicit eventual threshold by an elementary coefficient estimate, then
+certify the entire remaining finite set over one finite field. The proof
+uses only six-square retained matrices, even when the original matrix has
+more than eleven thousand rows.
+
+\begin{theorem}[Complete smaller-order-twelve reconstruction]
+\label{t12:complete}
+For every integer $b\ge7$, the matrix $M_{6,b}$ defined in
+\eqref{t10:M} is nonsingular. Consequently, for every even $q>12$,
+the first $q$ centered moments of $A_{12}(n)A_q(n)$ have formal
+coordinate rank $q$, and every later centered moment is a finite
+rational linear combination of them.
+\end{theorem}
+
+The proof has two exact components:
+\[
+ \det M_{6,b}\ne0\quad(b\ge11520),\qquad
+ \det M_{6,b}\ne0\quad(7\le b\le11519).
+\]
+The first component has an ordinary analytic proof below. The second is
+a finite arithmetic certificate with $11513$ cases, reproduced in full
+by two independently implemented verifiers. No sampling of the parameter
+range is used.
+
+\subsection{A six-square polynomial and its leading determinant}
+
+In \eqref{t10:Newton}--\eqref{t10:A}, set $a=6$ and replace
+$2B_{2b-2j}$ by independent indeterminates $U_j$, $1\le j\le11$.
+Write the resulting six-square matrix as $\mathcal A(b;U)$. Set
+\begin{align*}
+ n_i&=b-6+i,&R_\ell&=2b-10+2\ell,\\
+ J(b)&=\prod_{i=0}^5(2n_i+1)(2n_i+2),&
+ E(b)&=\prod_{i,\ell=0}^5
+       \prod_{r=1}^{\max(0,2i-4\ell-1)}(R_\ell+r),\\
+ D(b)&=12!J(b)E(b),&
+ \mathscr P(b;U)&=\det(D(b)\mathcal A(b;U)).
+\end{align*}
+The polynomial $E$ has $35$ linear factors. The source factorial
+cancellation proves
+\[
+ D\mathcal A\in\mathbb Z[b,U_1,\ldots,U_{11}]^{6\times6},
+ \qquad\deg_b(D\mathcal A_{i\ell})\le67,
+ \qquad\deg_b\mathscr P\le402.
+\]
+Indeed $N_{i\ell}-R_\ell=2i-4\ell-1$, so $E$ clears exactly the
+possible denominator products in $R_\ell!/N_{i\ell}!$;
+$J$ clears the row factors and $12!$ clears the fixed factorials.
+All these factors are positive when $b\ge12$.
+
+Let $\mathscr P_{[6]}$ denote the part homogeneous of degree six in
+the $U$ variables. The inherited highest-degree determinant identity,
+specialized to six, gives at $U_j=2B_{2b-2j}$
+\begin{equation}\label{t12:leading}
+ \left|\mathscr P_{[6]}\right|
+ =\frac{\mathcal G(b)(4F_0)^6}{(2\pi)^{12(b-6)}}
+   \det\bigl(\zeta(s_0+2i+2j)\bigr)_{0\le i,j<6},
+ \qquad s_0=2b-22,\quad F_0=s_0!,
+\end{equation}
+where
+\begin{align*}
+ \mathcal G(b)={}&\kappa J(b)^5E(b)^6
+ \prod_{i=0}^5(4n_i+2)^{\underline{2i}}
+ \prod_{\ell=0}^5\prod_{r=1}^{12+2\ell}(2b-22+r),\\
+ \kappa={}&\frac{6!(12!)^6}{\prod_{\ell=0}^5(2\ell+2)!}
+ =3590542128270039916216320000000.
+\end{align*}
+The degree of $\mathcal G$ is $402$, and every linear factor displayed
+in it is at least $b$ when $b\ge24$. Hence
+\begin{equation}\label{t12:Gbound}
+ \mathcal G(b)\ge\kappa b^{402}\qquad(b\ge24).
+\end{equation}
+
+Here the leading determinant is a structural identity, not an estimate
+of an expanded polynomial. Its short derivation uses
+$N_{i\ell}-(2k+1)=2b-2(6-i+\ell+k)$ in \eqref{t10:A} to cancel
+factorials. The resulting linear-in-$U$ part factors through the
+matrix $(V_{6-i+\ell})$, where
+$V_j=U_jF_0/(2b-2j)!$. The remaining row transformation is triangular,
+with diagonal
+$d_{i1}=-(i+1)(4n_i+2)^{\underline{2i}}$.
+Taking determinants, reversing rows, and applying Euler's formula
+$2B_{2m}=(-1)^{m-1}4(2m)!\zeta(2m)/(2\pi)^{2m}$ gives
+\eqref{t12:leading} with the displayed $\mathcal G$. This retains the
+attribution of the general highest-degree factorization in the source
+\emph{Quartic Spectral Reconstruction}.
+
+The zeta determinant in \eqref{t12:leading} is a positive moment
+Gram determinant: use the points $r^{-2}$ with weights $r^{-s_0}$,
+$r\ge1$. Cauchy--Binet and the first six distinct support points give
+\begin{equation}\label{t12:zeta-lower}
+ \begin{aligned}
+ \det\bigl(\zeta(s_0+2i+2j)\bigr)_{0\le i,j<6}
+ &\ge V\,720^{-s_0},\\
+ V&=\prod_{1\le r<s\le6}(r^{-2}-s^{-2})^2\\
+ &=\frac{14235529}{3743906242624487424000000000000}>0.
+ \end{aligned}
+\end{equation}
+In particular, the highest-degree component cannot vanish.
+
+\subsection{A simple coefficient estimate requiring no expanded determinant}
+
+For an integer polynomial let $\|\cdot\|_1$ be the sum of absolute
+values of its coefficients. It is submultiplicative. We shall use
+the deliberately generous bound
+\begin{equation}\label{t12:norm}
+ \max_{0\le i,\ell<6}\|D\mathcal A_{i\ell}\|_1<2^{512}.
+\end{equation}
+The following elementary factor count proves it.
+Every factor in $J$ has norm less than $16$, and every factor in $E$
+has norm less than $16$. Thus
+\[
+ \|J\|_1<2^{48},\qquad\|E\|_1<2^{140},\qquad12!<2^{29}.
+\]
+After removing the two factors for one fixed row, the remaining
+$J$ product has norm less than $2^{40}$. After cancellation in
+$ER_\ell!/N_{i\ell}!$, at most $21$ additional linear factors are
+present, each of norm less than $32$. Its norm is therefore less
+than $2^{245}$. Also
+\[
+ \|N_{i\ell}^{\underline h}\|_1<2^{55}
+ \quad(1\le h\le11),\qquad
+ \|d_{ih}\|_1<2^{65}.
+\]
+For the last assertion, apply the Newton formula to
+\[
+ W_i(j)=(2b-10+2i-j)
+             \prod_{r=0}^{2i-1}(4b-22+4i-j-r),
+ \qquad0\le j\le h\le2i+1\le11.
+\]
+Its first factor has norm below $16$ and each remaining factor
+has norm below $32$, so $\|W_i(j)\|_1<2^{54}$. The sum of the
+binomial coefficients in the Newton formula is $2^h\le2^{11}$;
+division by $h!$ only decreases the bound.
+
+The numerator defining $F_{i\ell}$ has at most $20$ linear factors,
+each of norm below $32$. Thus the constant term $2DF_{i\ell}$ has
+norm below $2^{318}$. Each coefficient of an indeterminate $U_j$
+in $D\mathcal A_{i\ell}$ has norm below
+\[
+ 2^{29+40+245+65+55}=2^{434}.
+\]
+There are at most six such coefficients. Consequently the entry norm
+is below $2^{318}+6\cdot2^{434}<2^{437}<2^{512}$, proving
+\eqref{t12:norm}. This argument also proves integrality by the same
+explicit cancellations; no fitted coefficient bound is involved.
+A supplementary exact script also computes a sharper factor-product
+bound; the proof uses only the elementary bound just established.
+
+The determinant coefficient norm is at most
+\[
+ K=6!(2^{512})^6=720\,2^{3072}.
+\]
+For $b\ge11520$ put
+\[
+ T=\frac{8(2b)^{20}F_0}{(2\pi)^{s_0}}>1.
+\]
+The inequality $T>1$ follows from $s_0!/(2\pi)^{s_0}>(s_0/24)^{s_0}>1$,
+using $s_0!>(s_0/3)^{s_0}$ and $2\pi<8$.
+Euler's Bernoulli formula and $\zeta(2m)<2$ show
+$|2B_{2b-2j}|\le T$ for $1\le j\le11$.
+Since all remaining terms of $\mathscr P$ have total $U$ degree
+at most five,
+\[
+ |\mathscr P_{[\le5]}|\le Kb^{402}T^5.
+\]
+Combining this estimate with \eqref{t12:leading}--\eqref{t12:zeta-lower},
+then using $2\pi<8$, gives the explicit domination ratio
+\begin{equation}\label{t12:ratio}
+ \frac{|\mathscr P_{[\le5]}|}{|\mathscr P_{[6]}|}
+ \le C\,\frac{b^{100}5760^{2b}}{(2b-22)!},\qquad
+ C=\frac{2^{3289}}{\kappa V\,720^{21}}<2^{3289}.
+\end{equation}
+The final inequality follows, for example, from the exact rational value
+\[
+ \kappa V=\frac{786377640075797}{57600000}>1.
+\]
+
+\subsection{A threshold of 11520 proved by elementary inequalities}
+
+Define
+\[
+ R(b)=2^{3289}\frac{b^{100}5760^{2b}}{(2b-22)!}.
+\]
+We prove $R(b)<1$ for every integer $b\ge11520$. At $b=11520$,
+write $n=23018$. The elementary factorial estimate
+$n!\ge(n/e)^n>(n/3)^n$, obtained by integrating $\log x$, gives
+\[
+ n!>7200^n=5760^n(5/4)^n,
+\]
+since $n>3\cdot7200$. Moreover $11520<2^{14}$,
+$5760<2^{13}$, and $(5/4)^4=625/256>2$. Therefore
+\begin{equation}\label{t12:initial-bound}
+ R(11520)
+ <2^{3289+1400+286}(4/5)^{23018}
+ <2^{4975-5754}=2^{-779}<1.
+\end{equation}
+For every subsequent integer $b$,
+\[
+ \frac{R(b+1)}{R(b)}
+ =\left(1+\frac1b\right)^{100}
+       \frac{5760^2}{(2b-20)(2b-21)}<\frac34,
+\]
+because $b\ge100$ gives the first factor less than $3$,
+both denominator factors exceed $b$, and $b\ge11520=2\cdot5760$.
+Thus the ratio in \eqref{t12:ratio} is strictly below one for all
+$b\ge11520$. Its highest-degree component cannot be cancelled.
+As $D(b)>0$ and the source multiplier \eqref{t10:multiplier} is
+nonzero, this proves $\det M_{6,b}\ne0$ throughout that infinite
+range. The explicit threshold follows from a mathematical argument,
+not from the observed behavior of a finite list of determinants.
+
+\subsection{The complete finite-field certificate below the threshold}
+
+For the remaining $11513$ integers $7\le b\le11519$, use the
+single prime $P=65537$. The original source matrix is used for
+$7\le b\le11$, where the contraction is not asserted. For
+$12\le b\le11519$, use $\mathcal A$ from \eqref{t10:A} with $a=6$.
+The source relation \eqref{t10:multiplier} implies that nonvanishing
+of this six-square determinant suffices.
+
+Every division is defined modulo $P$. The largest Bernoulli index
+needed for the retained matrices is $2\cdot11519-2=23036<P-1$;
+\eqref{t10:Brec} therefore puts all these Bernoulli numbers in
+$\mathbb Z_{(P)}$. Every factorial argument and every positive
+linear denominator appearing in the matrices and the exact source
+multipliers is less than $4\cdot11520+5=46085<P$. In particular,
+the entire source multiplier is a unit modulo $P$. The computation
+never replaces a singular reduction modulo $P$ by an unsupported
+claim of rational nonvanishing: every recorded residue is nonzero.
+
+The file \texttt{complete\_p12.json} records the full ordered residue
+list, with its first entry corresponding to $b=7$. It has $11513$
+entries, and every entry belongs to $\{1,\ldots,65536\}$. For orientation,
+a few entries are
+\begin{equation}\label{t12:sample}
+\begin{array}{c|rrrrrrrr}
+ b&7&8&11&12&100&962&4096&11519\\\hline
+\text{residue}&39450&1561&25713&60062&43034&42605&25983&23212.
+\end{array}
+\end{equation}
+For $b\le11$ the entry is $\det M_{6,b}\bmod P$;
+for $b\ge12$ it is $\det\mathcal A\bmod P$.
+The displayed sample is explanatory; the proof checks the complete
+ordered list.
+
+Two full implementations replay the certificate by different exact
+algorithms. The C++ verifier uses the triangular Bernoulli recurrence,
+finite differences for the Newton coefficients at each integer $b$,
+and modular Gaussian elimination. The Python verifier instead
+inverts $(e^t-1)/t$ as a truncated power series, using exact integer
+Kronecker multiplication. This produces $B_n/n!$ directly. It then
+uses the factorial-cancelled entry formula
+\begin{equation}\label{t12:cancelled-entry}
+ \mathcal A_{i\ell}=2F_{i\ell}
+ +\frac{R_\ell!}{(2n_i+1)(2n_i+2)(2\ell+2)!}
+ \sum_{k=0}^i d_{i,2k+1}
+ \frac{2B_{2b-2(6-i+\ell+k)}}{(2b-2(6-i+\ell+k))!},
+\end{equation}
+with Newton coefficients computed as global integer polynomials
+in $b$, and evaluates determinants by a division-free subset
+Laplace expansion. It verifies every one of the $11513$ residues,
+checks that they are all nonzero, and compares the complete result
+with the independently produced C++ list. The C++ calculation also
+compares the original and contracted determinant formulas throughout
+$12\le b\le32$, including the full exact multiplier.
+
+The exact polynomial multiplication in the Python verifier represents
+coefficients as successive base-$2^{64}$ digits of an integer. At the
+largest product length here, every unreduced convolution coefficient
+is smaller than $2^{64}$; hence there is no carry between coefficient
+blocks. Integer multiplication is therefore precisely polynomial
+convolution, with no floating-point transform or rounding. Newton
+inversion is checked by multiplying the final series by
+$(e^t-1)/t$ through degree $23039$ and obtaining the constant polynomial
+one. Both complete replays use finite integer arithmetic. Together
+with \eqref{t12:initial-bound}, they prove
+Theorem~\ref{t12:complete}.
+
+\subsection{Identity consequences and the remaining problem}
+
+The new rank theorem yields the ordinary convergent identity family
+\eqref{t10:ordinary} with the following replacements:
+$M_{5,b}$ by $M_{6,b}$, $10$ by $12$, $9!$ by $11!$, and
+$\psi^{(9)}$ by $\psi^{(11)}$. In the subtraction polynomial,
+replace the lower outer index $b+4$ by $b+5$ and each occurrence of
+$r-b-4$ by $r-b-5$. The allowed range is $b\ge7$. Thus products
+of the eleventh polygamma with every higher odd-order polygamma
+now reconstruct all $b$ even-zeta coordinates by explicit rational
+polynomial weights and finite midpoint subtractions.
+
+Theorems~\ref{t10:complete} and \ref{t12:complete} extend the proved
+smaller orders from $2,4,6,8$ to $10,12$. The full fixed-gap-six
+family and the unrestricted unequal-order conjecture remain open.
+The eventual theorem reduces each further fixed smaller order to a
+finite certificate, but no assertion about uncomputed orders is made
+here. The leading Hankel factorization and the source contraction
+are inherited; the completed order-twelve family, its simple explicit
+threshold proof, and its full pair of arithmetic certificates are the
+new contributions of this section.

@@ -1,0 +1,200 @@
+\section{Scope, principal results, and provenance}
+\label{scope:sec}
+
+This article continues the polylogarithm and special-function programme
+in ProveIt at repository revision
+\texttt{da2792fc9cc8ef19c6a314be6c65e1437fbdc66b}, with particular attention
+to the unified manuscript and the five research packages then present
+in \path{docs/incoming}. The principal outcomes are exact identities
+and structural nonvanishing theorems. Bounds enter only as tools for
+one reconstruction proof.
+
+The work has two related starting points. An alternating tail satisfies
+a first-order inhomogeneous recurrence; a Gamma quotient converts it
+to a homogeneous second-order recurrence with useful bilinear endpoint
+identities. A finite sum of rational moments has an affine harmonic
+matrix pencil; compressing onto a maximal-rank kernel determines its
+highest formal harmonic degree. In each case the finite object is
+established first. Infinite sums, derivatives, primitives, and Laurent
+coefficients follow with the relevant limiting operation stated.
+
+\subsection{Principal results}
+
+\begin{enumerate}[leftmargin=*]
+\item \textbf{Independent alternating tails.}
+For independently varying complex orders and shifts, a classical Gamma
+quotient produces both symmetric and alternating bilinear endpoint
+laws (Theorem~\ref{bil:master}). Every independent mixed spectral
+derivative at order one has an explicit formula in generalized
+Stieltjes constants (Theorem~\ref{bil:stieltjes-all}). Anchored
+integration produces a pure Gamma identity, including
+\[
+ \sum_{n=1}^{\infty}
+ \frac{[h(n+2)-h(n+1)]^2}{h(n+1)h(n+2)}
+       =3-\frac\pi2-\frac4\pi,
+ \qquad h(z)=\sqrt2\,\frac{\Gamma((z+1)/2)}{\Gamma(z/2)}.
+\]
+\item \textbf{A complete rational certificate classification.}
+Within the two-adjacent-product ansatz, the exact condition is
+$P(x)/Q(x)=cS(x)S(x-1)$ with rational $S$ and outer color $\pm1$
+(Theorem~\ref{rat:classification}). Its divisor criterion gives
+obstructions as well as constructive certificates. A pair of adjacent
+quadratics yields explicit two-variable polygamma kernels.
+\item \textbf{Every negative-order cutoff jet.}
+The square-law endpoint has an even inverse-power expansion. Its
+coefficient $c_m(s)$ determines every contact at $s=-m$, including
+all spectral derivatives, and gives an exact translation rule for a
+different cutoff coordinate (Theorem~\ref{cut:contacts} and
+Corollary~\ref{cut:translation}). For the natural cutoff, odd contacts
+vanish; at even $m$, the derivative threshold $r>m$ is sharp.
+\item \textbf{Harmonic degree equals pencil rank for real rational weights.}
+The total formal degree is the generic rank over the rational cutoff
+field. Only finitely many numerical cutoffs can be deficient, and a
+precise kernel-compression test finds them
+(Theorem~\ref{deg:main} and Corollary~\ref{deg:rational}). A signed
+example shows why fixed-cutoff and generic claims differ.
+\item \textbf{Every rank at the same critical decay.}
+A shorter finite-difference stencil realizes every harmonic rank
+$\rho=1,\ldots,r$ with decay $n^{-(2r-1)}$. Its spectral continuation
+has exact poles of orders $\rho,\rho-1,\ldots,1$ at $1,2,\ldots,\rho$,
+with explicit leading Laurent coefficients. The highest-order pole
+has a Gamma-product coefficient
+(Theorems~\ref{hier:rank} and \ref{hier:poles}). Its two-particle
+cutoff has a short depth-two polylogarithm generator, an explicit
+Euler primitive, and an ordinary-zeta integral endpoint
+(Section~\ref{hier:gf-section}).
+\item \textbf{Completion of all smaller-order-ten reconstructions.}
+For every even $q>10$, the first $q$ centered even moments of the
+$(10,q)$ harmonic-tail product have full formal rank $q$
+(Theorem~\ref{ten:main}). A new coefficientwise Bernoulli congruence
+closes the exact gap between two preceding reports. The resulting
+ordinary convergent polygamma identities are given in
+Corollary~\ref{ten:identity}.
+\end{enumerate}
+
+A separate audit establishes that the first complementary cyclotomic
+test coefficient already follows from two proved manuscript formulas
+(Proposition~\ref{audit:coefficient}). This is a correction to its
+research status and cross-references, with credit retained by the
+original reductions.
+
+\subsection{What changes in the existing question list}
+
+\begingroup\small
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.26\textwidth}>{\raggedright\arraybackslash}p{.43\textwidth}>{\raggedright\arraybackslash}p{.25\textwidth}@{}}
+\toprule
+Source question & Exact outcome here & Scope that remains \\
+\midrule
+\endfirsthead
+\toprule Source question & Exact outcome here & Scope that remains \\
+\midrule\endhead
+Alternating-tail report, Question 1 & The order-ten exceptional
+progression is eliminated; the order-eight completion is inherited
+from the quartic report. & All smaller orders at most ten are now
+covered; larger smaller orders remain. \\
+\addlinespace
+Same report, Question 4 & Necessary and sufficient rational
+factorization for both adjacent products; independent quadratic
+kernels. & Certificates in larger classes and with more products. \\
+\addlinespace
+Same report, Question 5 & Entire endpoint continuation, normally
+convergent subtractions, all nonpositive-order contacts and their jets. &
+Multivariable contacts beyond the diagonal square law. \\
+\addlinespace
+Same report, Question 6 & Independently ordered and shifted
+\emph{alternating} tails, with weights supplied by the Gamma
+normalization. & The question's ordinary Hurwitz product, arbitrary
+outer order, and its full moving-pole catalogue remain open. \\
+\addlinespace
+Same report, Question 7 & Its first displayed coefficient is already
+determined by manuscript identities; the implication is written out. &
+The complete complementary two-resolvent generator. \\
+\addlinespace
+Finite-difference report, second research topic & Equality of degree
+and rank for every real rational weight over $\R(N)$, with a precise
+fixed-cutoff test. & Arbitrary complex weights and minimal depth
+under functional relations. \\
+\addlinespace
+Finite-difference spectral family & All critical ranks, exact pole
+orders, and highest Laurent coefficients for shorter stencils. &
+General Gauss-ensemble overlapping resonances and unrestricted
+higher-rank pencil classification. \\
+\bottomrule
+\end{longtable}
+\endgroup
+
+The source-question wording matters. In particular, a Gamma-weighted
+alternating identity is substantial progress on independent parameters,
+but it does not evaluate every independently weighted ordinary Hurwitz
+product. Likewise the rank theorem concerns formal harmonic coordinates,
+not arithmetic independence of the resulting numbers.
+
+\subsection{Classical input and the limits of the novelty claim}
+
+Alternating Hurwitz recurrences, their Stieltjes expansions, and the
+associated Gamma quotient are classical ingredients
+\cite{bil:HuKim,bil:WangHuKim}. The alternating-Hurwitz asymptotic
+expansions and their spectral derivatives are already treated by
+Hu--Kim \cite{HuKimAsymptotic}; the present contact theorem applies them
+to a specific quadratic endpoint and computes the resulting finite-part
+discrepancy. Products of zeta tails also have substantial prior
+literature, including Hoffman \cite{bil:Hoffman}. Rational difference
+equations and their rational solution algorithms long predate the
+specialized divisor calculation used here \cite{rat:Abramov}.
+
+The determinant work starts from the finite-difference report's rational
+harmonic decomposition and its rank upper bound \cite{FiniteDifferenceIncoming}.
+The order-ten proof reuses the fixed-size Bernoulli determinant and
+the real-variable domination method with explicit credit
+\cite{GeneralHankel,AlternatingIncoming,QuarticIncoming}. Its new
+congruence, the complete coverage argument, and the resulting uniform
+reconstruction statement are separated from those reused ingredients.
+
+Thus ``new'' in this article means a proved development absent from
+the inspected project corpus and not located in the targeted primary
+literature search. It is not a claim that an exhaustive priority search
+has excluded every previously published specialization. The proofs are
+the basis for the mathematical claims. Numerical agreement is used only
+to detect mistakes. No integer-relation fit is promoted to a theorem.
+
+\subsection{Conventions and the rational harmonic decomposition}
+
+The Hurwitz zeta function and generalized Stieltjes constants use
+\[
+ \zeta(1+u,a)=\frac1u+
+       \sum_{j\ge0}\frac{(-1)^j\gamma_j(a)}{j!}u^j,
+ \qquad \gamma_0(a)=-\psi(a).
+\]
+All Gamma logarithms and complex powers in right half-planes use the
+holomorphic branches real on the positive axis. Shift derivatives and
+spectral derivatives are distinguished. An empty determinant or product
+is one. Ordinary harmonic numbers are
+$H_n^{(s)}=\sum_{k=1}^{n}k^{-s}$, with $H_0^{(s)}=0$; shifted
+cutoff sums are $H_N^{(q)}(a)=\sum_{n=0}^{N}(n+a)^{-q}$.
+
+For clarity, here is the elementary decomposition behind the later
+degree theorem. Given a rational weight $R$ without poles on the
+nonnegative integers, expand each $x^kR(x)$, $0\le k\le2r-2$, into
+its polynomial part and principal parts. Polynomial sums are rational
+in $N$ by Faulhaber's formula. Group the pole shifts modulo integer
+translation and choose one representative $a_\nu$ per orbit. A shifted
+principal-part sum differs from $H_N^{(q)}(a_\nu)$ by finitely many
+lower and upper endpoint terms, all rational in $N$. It follows exactly
+that
+\begin{equation}\label{scope:harmonic-decomposition}
+ \left(\sum_{n=0}^{N}n^{i+j}R(n)\right)_{0\le i,j<r}
+ =D_N+\sum_{\nu,q}H_N^{(q)}(a_\nu)C_{\nu,q},
+\end{equation}
+where $D_N$ is rational in $N$ and the symmetric matrices
+$C_{\nu,q}$ do not depend on $N$. For a real rational weight,
+conjugate coordinates may be replaced by real and imaginary parts.
+Replacing these harmonic coordinates by independent indeterminates
+defines the formal pencil and its degree. This replacement is a
+bookkeeping construction; no algebraic-independence assertion is
+needed or made.
+
+For infinite expressions, ``finite part'' always has a displayed
+meaning: either a Laurent coefficient in a spectral variable or the
+constant term in powers and logarithms of a specified cutoff.
+Different prescriptions are compared through their explicit endpoint
+contacts, rather than silently identified.

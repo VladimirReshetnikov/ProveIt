@@ -1,0 +1,156 @@
+% Additive insertion; requires amsmath, amssymb, amsthm and theorem/proof.
+% All labels have the dterm: prefix. No commands or theorem styles are reset.
+\section{Finite Dougall tails and a harmonic composition generator}
+\label{dterm:section}
+The centered all-resonance continuation gives an exact digamma value for
+an ordinary subtracted sum. Finite termination is a stronger property.
+The following classification and generating identity are proved in the
+accompanying report; compact proofs are included here.
+
+\subsection{Rationality and exact termination}
+Let $N\ge0$, $\kappa,b,c>0$, $d_0=1+2\kappa-b-c>0$, and
+$d=d_0+N$. Put
+\[
+ \alpha=(\kappa,b-\kappa,c-\kappa,d-\kappa),\qquad
+ F_N(x)=x\prod_{i=1}^4\frac{\Gamma(x+\alpha_i)}{\Gamma(x+1-\alpha_i)}.
+\]
+Denominator Gamma factors are entire reciprocal-Gamma factors.
+The centered expansion has leading power $x^{2N-1}$ and even
+inverse-power corrections.
+
+\begin{theorem}[Complete integral-resonance termination locus]
+\label{dterm:thm:classification}
+The function $F_N$ is rational if and only if some member of
+$\{b,c,d\}$ is integral. Its centered expansion terminates if and
+only if either some member lies in $\{1,\ldots,N\}$, or
+$(b,c,d)$ is a permutation of $(N+1,\kappa,\kappa)$.
+In the second case,
+\[
+ F_N(x)=x^{-1}\prod_{j=1}^N(x^2-(\kappa-j)^2).
+\]
+\end{theorem}
+\begin{proof}
+A Gamma quotient is rational precisely when its numerator and denominator
+shift multisets agree modulo $\mathbb Z$: otherwise there are infinitely
+many uncanceled zeros or poles in an arithmetic progression; in the
+matched case Gamma recurrence gives a rational product. Here this is
+negation invariance of the four classes $\alpha_i$. Their total sum is
+$N+1$. Negation invariance with integral total forces $\alpha_1$ to
+have a distinct partner whose sum with it is integral. For a fixed class
+$0$ or $1/2$, failure of such a partner would leave an odd number of
+the opposite fixed class and make the total half-integral. The three
+possible pair sums are $b,c,d$. Conversely any such integral sum
+also makes the complementary pair integral. This proves rationality.
+
+Choose an integral member $m$ and rename the others $c_*,d_*$. If
+$1\le m\le N$, recurrence gives the polynomial
+\[
+ x\prod_{j=1}^{m-1}(x^2-(\kappa-j)^2)
+   \prod_{r=1}^{N-m}(x^2-(\kappa-c_*+r)^2).
+\]
+Otherwise choose the smallest integral member and set $L=m-N\ge1$.
+The quotient becomes
+\[
+ x\frac{\prod_{j=1}^{m-1}(x^2-(\kappa-j)^2)}
+         {\prod_{r=0}^{L-1}(x^2-(\kappa-c_*-r)^2)}.
+\]
+Cancellation requires $c_*+r=j$ or $d_*+L-1-r=j$ with
+$1\le j<m$. This is impossible: each of $c_*,d_*$ is either
+nonintegral or at least $m$. Thus all denominator roots must be zero
+for a Laurent polynomial. This forces $L=1$, $c_*=d_*=\kappa$.
+
+Finally, formal finite termination is exact. The quotient satisfies
+\[
+ F_N(x+1)/F_N(x)=\frac{x+1}{x}
+                     \prod_i\frac{x+\alpha_i}{x+1-\alpha_i}.
+\]
+If its all-orders expansion is a finite Laurent polynomial $A$, the
+rational function $A(x+1)-R(x)A(x)$ is flat at infinity and hence zero.
+Thus $F_N/A$ is one-periodic and tends to one on positive real
+translates. It equals one identically. This excludes an unexamined
+flat remainder and proves the theorem.
+\end{proof}
+
+\paragraph{Zero sum is not termination.}
+For $0<\kappa<1$, the analytic implicit function theorem gives an even
+$s(v)$ with $s(0)=0$ satisfying
+\[
+ \psi(N+1)-\psi(N+1-2s)-\psi(\kappa+s+v)
+        -\psi(\kappa+s-v)+2\psi(\kappa)=0.
+\]
+Indeed the $s$-derivative at zero is
+$2[\psi'(N+1)-\psi'(\kappa)]\ne0$ and
+\[
+ s''(0)=\frac{\psi''(\kappa)}{\psi'(N+1)-\psi'(\kappa)}>0.
+\]
+Set $b=\kappa+s(v)+v$, $c=\kappa+s(v)-v$, $d_0=1-2s(v)$.
+The established collapsed-remainder formula makes the summed remainder
+zero, but for small real $v\ne0$ none of $b,c,d$ is integral.
+The summand is then not even rational. This is not a converse to the
+termination theorem.
+
+\subsection{An ordinary harmonic resolvent}
+Define
+\[
+ P_n(u)=\frac{(1-u)_n}{(1+u)_n},\qquad
+ \mathcal G(u,t)=\frac{\Gamma(1+u)^2\Gamma((1+t)/2)\Gamma((1-t)/2)}
+ {\Gamma((1+t)/2+u)\Gamma((1-t)/2+u)}.
+\]
+\begin{theorem}[Harmonic composition generator]
+\label{dterm:thm:generator}
+For $|t|<1$ and $\operatorname{Re}u>-1$,
+\[
+ \sum_{n\ge0}\frac{t^2P_n(u)}{(2n+1)((2n+1)^2-t^2)}
+       =\frac{\mathcal G(u,t)-\mathcal G(u,0)}{4u},
+\]
+with a removable value at $u=0$. If
+$C_m(n)=\sum_{\mathbf r\vDash m}2^{\ell(\mathbf r)}H_n(\mathbf r)$
+uses strictly decreasing finite harmonic indices and $C_0(n)=1$, then
+\[
+ \sum_{n\ge0}\frac{C_m(n)}{(2n+1)^{2k+1}}
+ =\frac{(-1)^m}{4}[u^{m+1}t^{2k}]\mathcal G(u,t),\qquad m\ge0,\ k\ge1.
+\]
+All these values lie in $\mathbb Q[\log2,\zeta(2),\zeta(3),\ldots]$.
+\end{theorem}
+\begin{proof}
+In the normalized Rogers--Dougall summand take center $1/2$, parameters
+$b=(1+t)/2$, $c=(1-t)/2$, and $d_0=1$, subtract the instance $t=0$,
+and multiply by $\Gamma(1+u)/\Gamma(1-u)$. This gives the first
+identity initially in $0<\operatorname{Re}u<1$. Its summands are
+$O(n^{-3-2\operatorname{Re}u})$ locally uniformly; the finite product
+$P_n$ is holomorphic in $\operatorname{Re}u>-1$. Thus analytic
+continuation and Cauchy's formula give the stated domain and every
+fixed coefficient interchange. The factor $4u$ includes the change
+of center $n+1/2=(2n+1)/2$.
+
+Expand each finite factor as
+$(1-u/j)/(1+u/j)=1+2\sum_{r\ge1}(-u/j)^r$ to obtain
+$P_n(u)=\sum_m(-1)^mC_m(n)u^m$. Coefficient extraction proves the
+second identity. Finally
+\begin{align*}
+ \log\mathcal G(u,t)={}&4u\log2+
+  \sum_{r\ge2}\frac{2(-1)^r(2-2^r)}r\zeta(r)u^r\\
+ &+\sum_{r,j\ge1}\frac{2(-1)^{r+1}}r\binom{r+2j-1}{2j}
+             (2^r-2^{-2j})\zeta(r+2j)u^rt^{2j},
+\end{align*}
+by the half-argument polygamma values. Only finitely many terms are
+needed for each requested coefficient. This proves the algebra claim,
+not independence of its generators.
+\end{proof}
+
+For example, with $L=\log2$,
+\begin{align*}
+ \sum_{n\ge0}\frac{H_n^2}{(2n+1)^3}
+ &=\frac{31}{8}\zeta(5)-\frac{45}{8}L\zeta(4)
+       +\frac72L^2\zeta(3)-\frac78\zeta(2)\zeta(3),\\
+ \sum_{n\ge0}\frac{2H_n^3+H_n^{(3)}}{(2n+1)^3}
+ &=-14L^3\zeta(3)+\frac{21}{2}L\zeta(2)\zeta(3)-\frac{21}{4}\zeta(3)^2\\
+ &\quad+\frac{135}{4}L^2\zeta(4)-\frac{93}{2}L\zeta(5)
+       +\frac{945}{64}\zeta(6).
+\end{align*}
+The full report supplies the general-center polygamma moments,
+all Stieltjes boundary jets, colored-polylogarithmic and integral forms,
+Euler primitives, a quartic example, and reproducible diagnostics.
+Classical summation and the earlier all-resonance continuation remain
+separately attributed. Global priority and numerical period independence
+are not claimed.

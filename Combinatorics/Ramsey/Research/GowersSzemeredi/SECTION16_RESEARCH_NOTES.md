@@ -4444,6 +4444,51 @@ restricted to the relevant inequalities: normalization of the unrelated
 printed tower expression otherwise tried to evaluate an infeasibly large
 natural power. No bound or mathematical hypothesis was changed to fix this.
 
+## L.20 Removal of Theorem 13.12's extra modulus restriction (2026-10-11)
+
+`Proofs13AllPrimeModuli` proves the printed size and density bounds over
+every prime modulus, without an eventual threshold. The strengthened
+statement `theorem_13_12_without_modulus_threshold` has an exact companion
+checked by `ModulusFidelityAudit`; the catalogue companion now chooses N0=0.
+
+For `alpha<=1023/1024`, Bernoulli's inequality gives
+`4*(2/alpha)^(2^54) <= (1/alpha)^(2^70)`. A generic logarithm/rpow estimate
+then shows that below `exp(exp((2/alpha)^(2^54)))` the printed target side
+length is at most two, so L.19's genuine two-by-two square applies. Above
+that threshold the existing explicit Fejer extraction applies with stronger
+size and density bounds. This exhausts the away-from-one modulus range.
+
+The endpoint argument is broadened to `alpha>333/334`: the printed density
+coefficient is at most `1/256`, below `1-332*(1-alpha)`, and the global
+bilinear frequency map works over every prime. Both parent progressions
+are the entire cyclic group with genuine integer interval representatives.
+
+The native audit checks all six new range results and the exact strengthened
+statement over 1,461 modules with only the approved axioms. This resolves
+the modulus-range gap identified in L.19. It does not by itself establish
+genuine integer progressions in the large-width Fejer branch, or finish
+the remaining intermediate integer-box statements. No counterexample to
+the printed Theorem 13.12 is claimed.
+
+## L.21 Genuine prescribed-step integer-box partitions (2026-10-11)
+
+`Proofs16IntegerResiduePartition` proves a canonical ascending-axis
+representation for every genuine integer box, preserving its full carrier
+and exact width. A prescribed positive natural multiplier is applied to
+the ordinary index progressions, then transported through the bounded
+integer parent axes. This gives genuine integer boxes with the original
+uniform lower width `v-1`, positive axis lengths `v-1` or `v`, and a shared
+common difference equal to the prescribed multiple up to one common sign.
+No points, width powers, or rounding guarantees are discarded, and the
+modulus need not be prime.
+
+The native `BoxPartitionFidelityAudit` checks all six new public results
+over a 1,463-module closure, with only the approved axioms. This supplies
+the genuine version of the prescribed-step residue primitive used in the
+multilinear height and Section 16 constructions. Their remaining geometric
+certificates still need to be propagated through those constructions; the
+primitive alone is not a claim that all intermediate paper boxes are done.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

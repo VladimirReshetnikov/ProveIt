@@ -1,0 +1,281 @@
+\section{Independent shifts, polygamma kernels, and Gamma primitives}
+\label{sec:shifted}
+
+The adjacent-quadratic factorization \eqref{bi:adjacent-ratio} makes
+both permitted outer colors explicit. The ordinary-outer branch has
+a kernel of rank at most two. The alternating-outer branch has a
+divided-difference kernel. Both admit all mixed argument derivatives.
+
+\subsection{Two complete Nielsen-beta kernels}
+
+For $\Re z>0$, define Nielsen's beta function and its adjacent difference
+by
+\begin{align}
+ \Bcal(z)&=\sum_{j\ge0}\frac{(-1)^j}{j+z}
+    =\frac12\left\{\psi\left(\frac{z+1}{2}\right)
+                           -\psi\left(\frac z2\right)\right\},
+       \label{sh:beta}\\
+ U(z)&=2\Bcal(z)-\frac1z
+     =\sum_{j\ge0}\frac{(-1)^j}{(j+z)(j+z+1)}
+     =\int_0^1 x^{z-1}\frac{1-x}{1+x}\,dx.
+       \label{sh:U}
+\end{align}
+The beta series converges by summation by parts; the series defining
+$U$ converges absolutely. Its last representation follows from
+$\Bcal(z)+\Bcal(z+1)=1/z$. These are standard descriptions of
+Nielsen's function \cite{NielsenBeta}; the identities below concern
+products of its independently shifted adjacent differences.
+
+\begin{theorem}[Ordinary and alternating outer kernels]
+\label{sh:two-kernels}
+For $\Re z,\Re w>0$, the following series are locally normally
+convergent:
+\begin{align}
+ K(z,w)&=\sum_{n\ge0}(2n+z+w)U(n+z)U(n+w),\label{sh:Kdef}\\
+ S(z,w)&=\sum_{n\ge0}(-1)^nU(n+z)U(n+w).\label{sh:Sdef}
+\end{align}
+They have the exact evaluations
+\begin{equation}\label{sh:K}
+ \boxed{\displaystyle
+ K(z,w)=\frac{z}{2w}U(z)+\frac{w}{2z}U(w)
+                -\left(zw-\frac{z+w}{2}\right)U(z)U(w),}
+\end{equation}
+and, for $z\ne w$,
+\begin{equation}\label{sh:S}
+ \boxed{\displaystyle
+ S(z,w)=\frac12U(z)U(w)
+      +\frac{z^2U(z)-w^2U(w)}{2zw(z-w)}.}
+\end{equation}
+The apparent singularity of \eqref{sh:S} on $z=w$ is removable:
+\begin{equation}\label{sh:Sdiagonal}
+ S(z,z)=\frac12U(z)^2+\frac{U(z)}z+\frac12U'(z).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Take
+\[
+ P(k)=(k+z-1)(k+z),\qquad Q(k)=(k+w-1)(k+w),
+ \qquad h(k)=\frac{k+z-1}{k+w-1},\quad\rho=1,
+\]
+and $\alpha=\beta=-1$ in Theorem~\ref{bi:sum}. Then
+$E_n=(-1)^{n+1}U(n+z)$ and $F_n=(-1)^{n+1}U(n+w)$.
+For $t=1$, the certificate coefficients are
+\[
+ A(k)=(k+z-1)(k+w),\qquad B(k)=(k+z)(k+w-1).
+\]
+Hence
+\[
+ C(k)=2k^2+2(z+w-1)k+2zw-z-w,\qquad
+ C(k+1)-C(k)=2(2k+z+w).
+\]
+The lower endpoint \eqref{bi:endpoint}, divided by two, gives
+\eqref{sh:K}. For $t=-1$, change the sign of $B$; now
+$C(k)=z-w$ and $C(k+1)+C(k)=2(z-w)$.
+The endpoint gives \eqref{sh:S}. Its diagonal limit is
+\eqref{sh:Sdiagonal}.
+
+One can also read the exact truncation error from the proof. For the
+ordinary kernel it is
+\begin{align}\label{sh:finite-endpoint}
+ \sum_{n=0}^N(2n+z+w)U(n+z)U(n+w)
+ ={}&K(z,w)\notag\\
+ &-\frac12\bigl\{(N+z)(N+w+1)U(N+z)U(N+w+1)\notag\\
+ &\qquad +(N+z+1)(N+w)U(N+z+1)U(N+w)\bigr\}.
+\end{align}
+Finally, \eqref{sh:U} gives $U(n+z)=O(n^{-2})$ locally uniformly
+in the right half-plane. The ordinary and alternating summands are
+therefore $O(n^{-3})$ and $O(n^{-4})$, respectively. This also
+justifies the holomorphic diagonal limit.
+\end{proof}
+
+For $z=w$, formula \eqref{sh:K} becomes
+\[
+ K(z,z)=U(z)-z(z-1)U(z)^2,
+\]
+the adjacent-quadratic square law in \cite{tail-alternating}.
+The off-diagonal formula contains two independent shifts; it is not
+obtained by setting two parameters inside a single tail and then
+squaring that tail.
+
+\subsection{Explicit harmonic and half-shift evaluations}
+
+Let $L=\log2$. The elementary values
+\[
+ U(1)=2L-1,\qquad U(2)=\frac32-2L,\qquad
+ U(1/2)=\pi-2
+\]
+give
+\begin{align}
+ \boxed{\sum_{n\ge0}(2n+3)U(n+1)U(n+2)=2(1-L)^2,}
+       \label{sh:integer-example}\\
+ \boxed{\sum_{n\ge0}(4n+3)U(n+1/2)U(n+1)=(\pi+2)L-2,}
+       \label{sh:half-example}\\
+ \boxed{\sum_{n\ge0}(-1)^nU(n+1)^2=2L^2-\frac{\pi^2}{12}.}
+       \label{sh:alternating-example}
+\end{align}
+For the last identity use $U'(1)=1-\pi^2/6$ in
+\eqref{sh:Sdiagonal}. These are ordinary convergent series.
+They can be written entirely with harmonic numbers: if
+\[
+ H_n^{\mathrm{alt}}=\sum_{k=1}^n\frac{(-1)^{k-1}}k,
+ \qquad u_n=2(-1)^n\{L-H_n^{\mathrm{alt}}\}-\frac1{n+1},
+\]
+then $u_n=U(n+1)$, so \eqref{sh:integer-example} is
+$\sum_{n\ge0}(2n+3)u_nu_{n+1}=2(1-L)^2$, while
+\eqref{sh:alternating-example} evaluates $\sum_{n\ge0}(-1)^nu_n^2$.
+The cancellation in the displayed expression for $u_n$ is part of
+the formula; individual unsummed constant pieces are not to be separated.
+
+\subsection{Rank two and all mixed polygamma derivatives}
+
+Put $f(z)=zU(z)$. Formula \eqref{sh:K} has the simpler equivalent form
+\begin{equation}\label{sh:ranktwo}
+ K(z,w)=f(z)\Bcal(w)+\Bcal(z)f(w)-f(z)f(w).
+\end{equation}
+Consequently, for any three right-half-plane points $z_1,z_2,z_3$,
+\begin{equation}\label{sh:det3}
+ \det\left[
+ \sum_{n\ge0}(2n+z_i+z_j)U(n+z_i)U(n+z_j)
+                  \right]_{1\le i,j\le3}=0.
+\end{equation}
+More precisely the two-point determinant is
+\begin{equation}\label{sh:det2}
+ K(z,z)K(w,w)-K(z,w)^2
+       =-\{f(z)\Bcal(w)-\Bcal(z)f(w)\}^2.
+\end{equation}
+These are identities in the complex variables. They follow by writing
+the matrix as the product of its two coordinate columns, the fixed
+matrix $\left(\begin{smallmatrix}-1&1\\1&0\end{smallmatrix}\right)$,
+and the transpose of the coordinate columns. They concern this
+parameter-dependent weighted kernel, not the unweighted Gram matrix.
+
+\begin{corollary}[Every pair of argument derivatives]
+\label{sh:mixed}
+For all integers $r,s\ge0$ and $\Re z,\Re w>0$,
+\begin{align}\label{sh:mixed-formula}
+ &\sum_{n\ge0}\bigl\{
+ (2n+z+w)U^{(r)}(n+z)U^{(s)}(n+w)
+ +rU^{(r-1)}(n+z)U^{(s)}(n+w)\notag\\[-2pt]
+ &\hspace{43mm}
+ +sU^{(r)}(n+z)U^{(s-1)}(n+w)\bigr\}\notag\\
+ &\qquad=f^{(r)}(z)\Bcal^{(s)}(w)
+       +\Bcal^{(r)}(z)f^{(s)}(w)-f^{(r)}(z)f^{(s)}(w).
+\end{align}
+A term with zero prefactor is omitted. The corresponding alternating
+identity is obtained by applying $\partial_z^r\partial_w^s$ to
+\eqref{sh:S}, with its holomorphic diagonal interpretation.
+\end{corollary}
+
+\begin{proof}
+Differentiating the integral \eqref{sh:U} gives
+\[
+ U^{(r)}(n+z)=\int_0^1x^{n+z-1}\log^r x\frac{1-x}{1+x}\,dx
+                  =O(n^{-r-2})
+\]
+locally uniformly. This proves the required normal convergence
+after every fixed number of derivatives. Apply the product rule to
+\eqref{sh:ranktwo}.
+\end{proof}
+
+Every term is explicitly a polygamma expression, because
+\begin{equation}\label{sh:polygamma}
+ U^{(r)}(z)=2^{-r}\left\{
+   \psi^{(r)}\left(\frac{z+1}{2}\right)
+  -\psi^{(r)}\left(\frac z2\right)\right\}
+       +\frac{(-1)^{r+1}r!}{z^{r+1}}.
+\end{equation}
+For example, $r=s=1$, $z=w=1$ yields
+\begin{equation}\label{sh:derivative-example}
+ \sum_{n\ge0}\{(2n+2)U'(n+1)^2+2U(n+1)U'(n+1)\}
+        =\frac{\pi^2\log2}{3}-4\log^22.
+\end{equation}
+The two lower-derivative terms in \eqref{sh:mixed-formula} are
+required by the derivative of the weight. Omitting them would give
+a different, generally false identity.
+
+\subsection{An explicitly anchored Gamma--Hurwitz primitive}
+
+The rank-two form makes a two-variable antiderivative finite as well.
+Define the following holomorphic functions on $\Re z>0$:
+\begin{align}
+ \mathcal L(z)&=\log\Gamma\left(\frac{z+1}{2}\right)
+                         -\log\Gamma\left(\frac z2\right),\label{sh:L}\\
+ \mathcal Q(z)&=2z\mathcal L(z)-4\left\{
+ \zeta'\left(-1,\frac{z+1}{2}\right)
+                   -\zeta'\left(-1,\frac z2\right)\right\},\label{sh:Q}\\
+ \mathcal U(z)&=2\mathcal L(z)-\log z.\label{sh:primitiveU}
+\end{align}
+They satisfy
+\begin{equation}\label{sh:primitive-derivatives}
+ \mathcal L'(z)=\Bcal(z),\qquad
+ \mathcal Q'(z)=zU(z),\qquad
+ \mathcal U'(z)=U(z).
+\end{equation}
+For the middle identity, differentiate the Hurwitz shift law:
+\[
+ \partial_a\zeta'(-1,a)=-\zeta(0,a)+\zeta'(0,a)
+        =a-\frac12+\log\Gamma(a)-\frac12\log(2\pi).
+\]
+It follows that the derivative of the brace in \eqref{sh:Q} is
+$1/4+\mathcal L(z)/2$, giving \eqref{sh:primitive-derivatives}.
+Only standard Hurwitz special values are used here \cite{DLMFZeta}.
+
+Fix anchors $z_0,w_0$ in the right half-plane. For any holomorphic
+$V$, use the notation
+\[
+ \Delta_zV(n)=V(n+z)-V(n+z_0),\qquad
+ \Delta_wV(n)=V(n+w)-V(n+w_0).
+\]
+
+\begin{theorem}[Rectangular Gamma--Hurwitz summation identity]
+\label{sh:primitive-theorem}
+For $z,z_0,w,w_0$ in the right half-plane,
+\begin{align}\label{sh:primitive-identity}
+ &\sum_{n\ge0}\{\Delta_z\mathcal Q(n)\Delta_w\mathcal U(n)
+                 +\Delta_z\mathcal U(n)\Delta_w\mathcal Q(n)\}\notag\\
+ &\quad=\Delta_z\mathcal Q(0)\Delta_w\mathcal L(0)
+       +\Delta_z\mathcal L(0)\Delta_w\mathcal Q(0)
+       -\Delta_z\mathcal Q(0)\Delta_w\mathcal Q(0).
+\end{align}
+The series is ordinarily and locally normally convergent, and its
+value vanishes on either anchor face. Thus \eqref{sh:primitive-identity}
+has no unspecified constants of integration.
+If $\mathcal R$ denotes its displayed right side, its exact finite
+version is
+\begin{align}\label{sh:primitive-finite}
+ &\sum_{n=0}^{N}\{\Delta_z\mathcal Q(n)\Delta_w\mathcal U(n)
+                 +\Delta_z\mathcal U(n)\Delta_w\mathcal Q(n)\}\notag\\
+ &\quad=\mathcal R-\frac12\{\Delta_z\mathcal Q(N)\Delta_w\mathcal Q(N+1)
+                       +\Delta_z\mathcal Q(N+1)\Delta_w\mathcal Q(N)\}.
+\end{align}
+\end{theorem}
+
+\begin{proof}
+Integrate \eqref{sh:ranktwo} in $z$ from $z_0$ to $z$ and in $w$
+from $w_0$ to $w$. In the defining summand,
+\[
+ (2n+z+w)U(n+z)U(n+w)
+   =f(n+z)U(n+w)+U(n+z)f(n+w).
+\]
+Equations \eqref{sh:primitive-derivatives} give the left side of
+\eqref{sh:primitive-identity}; the rank-two expression gives its
+right side. The domain is simply connected, so the chosen paths
+do not affect the result. Uniformly on compact parameter and anchor
+sets, $\Delta_z\mathcal Q(n)=O(n^{-1})$ and
+$\Delta_z\mathcal U(n)=O(n^{-2})$. The products are $O(n^{-3})$,
+which justifies the integrations and proves the convergence assertion.
+Integrating the two separated products in the exact upper endpoint
+\eqref{sh:finite-endpoint} gives \eqref{sh:primitive-finite}.
+\end{proof}
+
+At equal anchors and equal endpoints, the formula reduces to the
+one-parameter identity
+\[
+ \sum_{n\ge0}\Delta_z\mathcal Q(n)\Delta_z\mathcal U(n)
+       =\Delta_z\mathcal Q(0)\Delta_z\mathcal L(0)
+                            -\frac12\{\Delta_z\mathcal Q(0)\}^2.
+\]
+This connects an ordinary series of Gamma-ratio and Hurwitz-zeta
+antiderivatives directly to its lower endpoint. The explicit anchor
+also makes every further argument derivative unambiguous.

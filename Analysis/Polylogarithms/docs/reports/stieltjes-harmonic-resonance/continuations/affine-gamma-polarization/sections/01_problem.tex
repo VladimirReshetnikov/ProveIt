@@ -1,0 +1,110 @@
+\section{The continuation problem and the main result}
+\label{ag:sec:problem}
+
+The manuscript's Gamma hierarchy has two distinct kinds of questions.
+The first is algebraic: which differential monomials survive a specified
+integration-by-parts reduction, and with which rational coefficients?
+The second is analytic: how do their integrals, spectral derivatives,
+and normalized primitives reduce to special functions? Neither question
+should be replaced by an assertion of independence of numerical constants.
+
+The immediate source for this continuation is \emph{Exact Harmonic-Tail
+Reconstruction and Variational Gamma Identities} \cite{HTG}. Its
+Section~4 determines the complete normal projection onto $u_0,u_1,u_2$.
+Its final research question~5 asks for the next projection, including
+$u_3^2$ with arbitrary powers of $u_1,u_2$. We solve the subfamily with
+no additional $u_2$ factor, and simultaneously solve its analogue for
+every derivative order $r\ge2$. In particular, the result is not only
+a table at the next weight.
+
+Let $\D u_j=u_{j+1}$ in $\Q[u_0,u_1,\ldots]$. Write $\NF$ for the
+canonical projection onto monomials which are either powers of $u_0$
+or have their largest positive index repeated at least twice. Define
+\begin{equation}\label{ag:eq:hierarchy-intro}
+ A_0=1,\qquad A_{m+1}=u_0A_m-\D A_m,\qquad N_m=\NF(A_m).
+\end{equation}
+The decomposition and all conventions are proved or specified in the
+next section. Under $u_j=\psi^{(j)}(x)$,
+\[
+ A_m(x)=(-1)^m\Gamma(x)\frac{\mathrm d^m}{\mathrm dx^m}\frac1{\Gamma(x)}.
+\]
+
+\begin{theorem}[All derivative-square coefficients]\label{ag:thm:main}
+Let $r\ge2$ and $a,k\ge0$, and put $m=a+2k+2r+2$. Then
+\begin{equation}\label{ag:eq:coefficient}
+ \boxed{
+ [u_0^a u_1^k u_r^2]N_m=
+ \begin{cases}
+ \displaystyle
+ \frac{(-1)^r m!}
+ {a!\,2^{k+r+1}k!(r+1)!\prod_{j=0}^{r}(k+2j+1)},&k\text{ even},\\[7pt]
+ 0,&k\text{ odd}.
+ \end{cases}}
+\end{equation}
+Equivalently, with $y=u_1t^2/2$,
+\begin{equation}\label{ag:eq:normal-sector}
+ \sum_{m\ge0}N_m\frac{t^m}{m!}
+ =e^{tu_0}\left\{f_0(y)+\sum_{r\ge2}u_r^2t^{2r+2}g_r(y)
+                          +R(t;u_1,u_2,\ldots)\right\},
+\end{equation}
+where every monomial of $R$ contains at least three factors from
+$\{u_2,u_3,\ldots\}$, and
+\begin{align}
+ f_0(y)&=\frac12\left(\cosh y+\frac{\sinh y}{y}-y\Shi(y)\right),
+       \label{ag:eq:f0-intro}\\
+ g_r(y)&=\frac{(-1)^r}{(r+1)!}\piy^{\,r+1}\cosh y
+ =\frac{(-1)^r}{(2r+2)!}\,{}_0F_1\left(;r+\frac32;\frac{y^2}{4}\right).
+       \label{ag:eq:gr-intro}
+\end{align}
+Here $\Shi(y)=\int_0^y\sinh v\dd v/v$, and
+$\piy=(2y)^{-1}\partial_y$ acts on even power series. All apparent
+singularities at $y=0$ are removable.
+\end{theorem}
+
+The phrase ``quadratic sector'' refers to the number of factors having
+index at least two. It does not mean the total factor degree, and it does
+not discard arbitrary powers of $u_0$ or $u_1$. Formula
+\eqref{ag:eq:normal-sector} is an identity of formal series, not an
+approximation to a Gamma ratio on an interval. Its proof is in
+Section~\ref{ag:sec:polarization}.
+
+\subsection{The overlap and the advance}
+
+At $k=0$, \eqref{ag:eq:coefficient} is
+$(-1)^r\binom{m}{2r+2}$; the inspected predecessors already contain
+these pure-square coefficients. At $r=2$ it agrees with the complete
+$u_2^2$ family in \cite[Section~4]{HTG}. Those cases are checks and
+inherited specializations, not additional discoveries claimed here.
+The advance is the single all-$r$, all-$k$ formula and its affine-symbol
+proof, together with the symmetric-profile and analytic consequences.
+
+For example, the coefficients of $u_1^{2\ell}u_r^2$ at their corresponding
+weights $4\ell+2r+2$ begin as follows. These are not coefficients at
+one fixed weight.
+\begin{center}
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+$r$ & $\ell=0$ & $\ell=1$ & $\ell=2$ & $\ell=3$\\
+\midrule
+2&1&90&15015&4176900\\
+3&$-1$&$-165$&$-40950$&$-15261750$\\
+4&1&273&96390&47006190\\
+5&$-1$&$-420$&$-203490$&$-127193220$\\
+6&1&612&395010&310810500\\
+\bottomrule
+\end{tabular}
+\end{center}
+Multiplication by $u_0^a$ multiplies the exponential-series coefficient
+by $1/a!$, as displayed in the theorem.
+
+The analytic part is connected by the beta representation of $g_r$,
+not by an unproved interchange of the entire Gamma normal-form series
+with a singular integral. It yields finite Hurwitz and Lerch endpoint
+formulas, every generalized Stieltjes order, and ordinary integral
+identities such as
+\begin{equation}\label{ag:eq:trigamma-preview}
+ \int_1^3(x-1)^2(3-x)^2\psi'(x)\dd x=\frac{6\zeta(3)}{\pi^2}.
+\end{equation}
+Individual polynomially weighted special-function integrals can have
+classical antecedents; our claim is the proved structural derivation
+and its explicitly scoped extension, not universal historical priority.

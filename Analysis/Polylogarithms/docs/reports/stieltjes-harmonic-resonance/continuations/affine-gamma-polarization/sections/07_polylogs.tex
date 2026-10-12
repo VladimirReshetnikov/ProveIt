@@ -1,0 +1,102 @@
+\section{Lerch deformation and finite polylogarithmic closure}
+\label{ag:sec:polylogs}
+
+For $|z|<1$, replace the denominator in \eqref{ag:eq:Hmellin} by
+$1-ze^{-t}$ and define
+\begin{equation}\label{ag:eq:Lerch-transform}
+ \HH_r(s;a,b;z)=\frac1{\Gamma(s)}\int_0^\infty
+             \frac{t^{s-1}e^{-at}g_r(bt)}{1-ze^{-t}}\dd t,
+                     \qquad\Re s>0.
+\end{equation}
+Let $\Phi(z,s,x)=\sum_{n\ge0}z^n(n+x)^{-s}$ in the right half-plane.
+The Lerch series, its Mellin formula, and its relation to polylogarithms
+are classical \cite{DLMFlerch}. Termwise spatial differentiation gives
+$\partial_x\Phi(z,s,x)=-s\Phi(z,s+1,x)$.
+
+\begin{theorem}[Lerch and polylogarithmic endpoints]\label{ag:thm:Lerch}
+For $|z|<1$,
+\begin{align}
+ \HH_r(s;a,b;z)&=\frac{c_r}{2}\int_{-1}^1
+                       (1-v^2)^r\Phi(z,s,a+bv)\dd v,
+                       \label{ag:eq:Lerch-compact}\\
+ &=\sum_{j=r}^{2r}w_{rj}(b)
+ \frac{\Phi(z,s-j-1,a+b)-(-1)^j\Phi(z,s-j-1,a-b)}{(1-s)_{j+1}}.
+                       \label{ag:eq:Lerch-endpoint}
+\end{align}
+The function is entire in $s$. Hence every apparent integer pole on
+the right is removable, including $s=1$.
+If $a\pm b$ are positive integers, every endpoint is a finite
+polylogarithmic expression, using
+\begin{equation}\label{ag:eq:integer-Lerch}
+ \Phi(z,s,N)=z^{-N}\left(\Li_s(z)-\sum_{n=1}^{N-1}\frac{z^n}{n^s}\right)
+ \quad(N\ge1,
+ z\ne0).
+\end{equation}
+All values at $z=0$ are supplied by analytic limits.
+\end{theorem}
+\begin{proof}
+The beta representation and absolute convergence prove
+\eqref{ag:eq:Lerch-compact}. The endpoint argument in
+Theorem~\ref{ag:thm:hurwitz} applies unchanged. Exponential decay in
+$n$ makes the Lerch series locally uniformly convergent for every
+$s$, including all spectral derivatives. This proves entire continuation
+and removability of the displayed poles. Shifting the summation index
+proves \eqref{ag:eq:integer-Lerch}.
+\end{proof}
+
+The limit $z\to1$ is initially justified for $\Re s>1$, where it
+recovers the Hurwitz transform. Continuing in $s$ before taking that
+limit need not be interchangeable at $s=1$: the Hurwitz pole must be
+kept. At a removable integer in \eqref{ag:eq:Lerch-endpoint}, the value
+may involve \emph{order derivatives} of polylogarithms; a formula
+containing a vanishing denominator should not be read as an ordinary
+substitution rule.
+
+\subsection{Rational spatial endpoints}
+For $0<z<1$, let $w=z^{1/q}$, $\omega=e^{2\pi\ii/q}$, and take
+positive integers $A,q$. The roots-of-unity filter in the absolutely
+convergent polylogarithm series gives
+\begin{align}
+ \Phi(z,s,A/q)
+ ={}&q^{s-1}w^{-A}\sum_{\ell=0}^{q-1}\omega^{-\ell A}
+                                      \Li_s(w\omega^\ell)\notag\\
+ &-q^sw^{-A}
+       \sum_{\substack{1\le n<A\\n\equiv A\;({\rm mod}\ q)}}
+                                    \frac{w^n}{n^s}.
+ \label{ag:eq:rational-Lerch}
+\end{align}
+Indeed the finite Fourier sum retains exactly the positive integers
+congruent to $A$ modulo $q$, and the finite prefix removes those below
+$A$. The formula holds for every complex $s$ by normal convergence.
+Its order derivatives give finite log-weighted polylogarithm reductions
+for all spectral derivatives of the rational-endpoint transform.
+
+\subsection{An explicit expression with only three polylogarithms}
+Put
+\[
+ M(t)=(t^2+3)\sinh t-3t\cosh t,
+\]
+and, for $z\ne0$,
+\[
+ J_\sigma^\pm(z)=(z^{-3}\pm z^{-1})\Li_\sigma(z)
+                                  -z^{-2}-2^{-\sigma}z^{-1}.
+\]
+For $r=2,a=2,b=1$, \eqref{ag:eq:Lerch-endpoint} reads
+\begin{equation}\label{ag:eq:r2-Lerch}
+ \HH_2(s;2,1;z)=\frac{J_{s-3}^-(z)}{96(1-s)_3}
+       -\frac{J_{s-4}^+(z)}{32(1-s)_4}
+       +\frac{J_{s-5}^-(z)}{32(1-s)_5}.
+\end{equation}
+At $s=6$ there is no exceptional denominator. Since
+$g_2(t)=M(t)/(48t^5)$, this gives the ordinary convergent identity
+\begin{align}
+ \int_0^\infty\frac{e^{-2t}M(t)}{1-ze^{-t}}\dd t
+ ={}&\frac4{z^2}+\frac5{4z}
+ -\frac{1-z^2}{z^3}\left(\Li_3(z)+\frac32\Li_1(z)\right)\notag\\
+ &-\frac{3(1+z^2)}{2z^3}\Li_2(z),\qquad 0<z<1.
+ \label{ag:eq:three-polylogs}
+\end{align}
+The finite limit at $z=1$ is $21/4-\pi^2/2$. The individual negative
+powers of $z$ cancel at $z=0$. These endpoint cancellations are most
+transparent in the integral or the Lerch series, rather than in the
+expanded polylogarithmic expression.

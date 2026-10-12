@@ -1,0 +1,511 @@
+% Research contribution fragment for the parent article.
+% Source baseline: ProveIt da2792fc9cc8ef19c6a314be6c65e1437fbdc66b.
+% All labels use mt10:. This is not a standalone final article.
+
+\section{Completion of the smaller-order-ten reconstruction theorem}
+\label{mt10:section}
+
+Two incoming reports leave complementary parts of the same problem open.
+The \emph{Alternating Tails and Spectral Defects} report \cite{RepoAlternating} proves the
+smaller-order-ten statement outside one residue class modulo $2048$;
+the \emph{Quartic Spectral Reconstruction} report \cite{RepoQuartic} proves it for all
+sufficiently large larger orders. Their thresholds leave exactly one
+matrix unaccounted for. We prove that this matrix is nonsingular by a
+short exact certificate and hence complete the entire smaller-order-ten
+family. The finite polynomial identities and the sufficient threshold
+used from those reports are replayed independently below. Their
+underlying reductions remain attributed to those reports.
+
+This completion concerns formal rational coordinate rank. It implies
+identities among actual polygamma sums, but does not assert arithmetic
+independence of evaluated zeta values. The unrestricted unequal-order
+conjecture remains open.
+
+\subsection{Moment coordinates and the precise theorem}
+
+For integers $s\ge2$ put
+\[
+ A_s(n)=\zeta(s,n+1)=\zeta(s)-H_n^{(s)},\qquad x_n=n+\tfrac12.
+\]
+For an integer $b\ge6$, initially define
+\[
+ D_{10,2b}(w)=\sum_{n\ge0}A_{10}(n)A_{2b}(n)x_n^{-w},
+ \qquad \operatorname{Re}w>-2b-7.
+\]
+The centered Hurwitz expansion contains only powers
+$x_n^{-2b-8-2j}$, so continuation by subtraction is regular at every
+nonpositive even integer. Write $D_r=D_{10,2b}(-2r)$. Define the
+mutually inverse finite transforms
+\begin{align}
+ C_j&=\sum_{r=0}^j\binom{2j+1}{2r}2^{-2(j-r)}D_r,
+ \label{mt10:C}\\
+ D_r&=\sum_{j=0}^r\frac{\binom{2r}{2j}}{2j+1}
+                 B_{2r-2j}(1/2)C_j.\label{mt10:D}
+\end{align}
+Finite summation by parts gives, for every $j\ge b$,
+\[
+ C_j=\sum_{k=0}^{b-1}(M^{\infty}_{5,b})_{j-b,k}Z_k,
+ \qquad Z_k=\zeta(2k),\quad Z_0=-\tfrac12,
+\]
+where, for $t\ge0$ and $0\le k<b$,
+\begin{equation}\label{mt10:M}
+ (M^{\infty}_{5,b})_{tk}
+ =\mu_{t+k-4}\left\{
+ \frac{(2b+2t-9)!}{(2b-2k)!}
+ +\mathbf1_{k<5}\frac{(2t+1)!}{(10-2k)!}\right\},
+ \qquad
+ \mu_j=\begin{cases}B_{2j}/(2j)!,&j\ge0,\\0,&j<0.\end{cases}
+\end{equation}
+Let $M_{5,b}$ be its first $b$ rows. Equivalently, each entry is
+\[
+ B_{2(t+k-4)}\left\{
+ \frac{\binom{2t+2}{10-2k}}{2t+2}
+ +\frac{\binom{2b+2t-8}{2b-2k}}{2b+2t-8}\right\},
+\]
+where a negative Bernoulli index gives zero, and a binomial summand
+is omitted unless its lower index lies between two and its upper
+index. This last convention is essential.
+
+The formal coordinate space here has independent labels
+$C_0,\ldots,C_{b-1},Z_0,\ldots,Z_{b-1}$. Its evaluation map assigns
+the indicated complex numbers to those labels. In these coordinates
+the first $2b$ transformed moments have matrix
+$\operatorname{diag}(I_b,M_{5,b})$. Since the diagonal of
+\eqref{mt10:D} is $1/(2r+1)$, the first $2b$ original moments have
+determinant $\det M_{5,b}/(4b-1)!!$.
+
+\begin{theorem}[Every larger even order at smaller order ten]
+\label{mt10:main}
+For every integer $b\ge6$, $M_{5,b}$ is nonsingular. Consequently
+\[
+ D_{10,2b}(0),D_{10,2b}(-2),\ldots,D_{10,2b}(-2(2b-1))
+\]
+have full formal coordinate rank $2b$, and every subsequent centered
+even moment is an explicit rational linear combination of this prefix.
+\end{theorem}
+
+\subsection{The five-dimensional contraction and its normalization}
+
+For $0\le i,\ell\le4$ set
+\[
+ n_i=b-5+i,\qquad N_{i\ell}=2(n_i-\ell)+1,
+ \qquad R_\ell=2b-8+2\ell,
+\]
+\[
+ F_{i\ell}=\frac1{(2\ell+1)!}
+       \prod_{r=0}^{2\ell-1}(2n_i-r)(2n_i+3+r).
+\]
+An empty product is one. Define finite integer-polynomial coefficients
+$d_{ih}$ by the Newton expansion
+\begin{equation}\label{mt10:newton}
+ (2n_i+2-y)(4n_i+2-y)^{\underline{2i}}
+   =\sum_{h=0}^{2i+1}d_{ih}y^{\underline h}.
+\end{equation}
+Thus explicitly
+\[
+ d_{ih}=\frac1{h!}\sum_{j=0}^h(-1)^{h-j}\binom hj
+           (2n_i+2-j)(4n_i+2-j)^{\underline{2i}}.
+\]
+For independent variables $U_1,\ldots,U_9$, let
+\begin{equation}\label{mt10:A}
+ \mathcal A_{i\ell}=2F_{i\ell}+
+ \frac{R_\ell!}{(2n_i+1)(2n_i+2)(2\ell+2)!N_{i\ell}!}
+ \sum_{k=0}^i d_{i,2k+1}N_{i\ell}^{\underline{2k+1}}
+                      U_{5-i+\ell+k}.
+\end{equation}
+Ratios of factorials have fixed index difference and mean the
+corresponding finite rational products in $b$.
+
+For $b\ge10$, the exact reduction is
+\begin{equation}\label{mt10:ratio}
+ \rho_{5,b}:=\frac{\det M_{5,b}}{\det R\det E\det H_{5,b}}
+  =\frac{\det\mathcal A(b;2B_{2b-2},\ldots,2B_{2b-18})}
+         {\det F(b)},
+\end{equation}
+where
+\[
+ R_{tt}=(2b+2t-9)!,\qquad E_{kk}=\frac1{(2b-2k)!},
+ \qquad (H_{5,b})_{tk}=\mu_{t+k-4}.
+\]
+All three determinants in the denominator are nonzero.
+
+Here are details sufficient to check the contraction without an
+assumed inverse-Hankel formula. The monic polynomial rows
+\[
+ \pi_n(x)=\sum_{t=0}^n
+ \frac{2(2n+2t+1)!(2n+1)!}
+ {(4n+2)!(2n-2t+1)!(2t)!}x^t
+\]
+are orthogonal for the functional $\mathcal N(x^r)=\mu_{r+1}$:
+\[
+ \mathcal N(x^j\pi_n)=0\quad(0\le j<n),\qquad
+ \mathcal N(x^n\pi_n)=h_n,
+ \quad h_n=\frac{((2n+1)!)^2}{(4n+2)!(4n+3)!}>0.
+\]
+These follow by coefficient comparison in the elementary Pad\'e identity
+\[
+ e^tP_N(-t)-P_N(t)
+ =\frac{(-1)^N(N!)^2}{(2N)!(2N+1)!}t^{2N+1}
+        +O(t^{2N+2}),
+\]
+\[
+ P_N(t)=\sum_{k=0}^N
+       \frac{(2N-k)!N!}{(2N)!k!(N-k)!}t^k,
+ \qquad N=2n+1.
+\]
+The coefficient cancellation through degree $2N$ is the finite binomial
+identity $\sum_k(-1)^k\binom Nk(1+x)^{2N-k}=x^N(1+x)^N$;
+the next coefficient is an elementary beta integral.
+
+Replacing every row of $H_{5,b}+U^{\mathrm{pert}}$ by these monic
+rows is a unit lower triangular operation. Its final five rows vanish
+in columns $k\ge5$. The unperturbed retained entries, after column
+reversal and division by
+$c_n=(2n+1)(2n+2)!/(4n+2)!$, are precisely $F_{i\ell}$.
+For the perturbation apply
+\[
+ \sum_{j=0}^N\binom Nj B_j(N-j)^{\underline h}
+                  =N^{\underline h}B_{N-h}(1)
+\]
+to \eqref{mt10:newton}. Because $b\ge10$, every surviving index
+$N-h$ is at least two. The even $h$ give vanishing odd Bernoulli
+numbers; restoring the omitted term $j=1$, with $B_1=-1/2$, contributes
+a second $F_{i\ell}$. This proves \eqref{mt10:A}, including both
+factors of two. Carrying the same row operation out on $H_{5,b}$
+alone gives \eqref{mt10:ratio}.
+
+For completeness, $H_{5,b}$ is nonsingular: after conjugating by
+$\operatorname{diag}(1,-1,1,\ldots)$ and splitting off its first
+three indices, it has the form
+\[
+ \begin{pmatrix}ee^{\mathsf T}&B\\B^{\mathsf T}&-P\end{pmatrix},
+ \qquad e=(0,0,1)^{\mathsf T},
+\]
+where $P$ is positive definite. Its entries are moments on the infinite
+positive support $\{(2\pi m)^{-2}:m\ge1\}$. The first two rows
+of $B$ have a nonsingular antitriangular two-by-two minor. Therefore
+$ee^{\mathsf T}+BP^{-1}B^{\mathsf T}$ is positive definite, which
+proves nonsingularity by the Schur complement. This argument also
+shows that the unperturbed contraction $F$ is nonsingular.
+
+\subsection{The inherited congruence, with its finite certificate replayed}
+
+Define
+\begin{align*}
+ D_{10}(b)={}&4096b^{12}-110592b^{11}+1236992b^{10}-7303680b^9\\
+ &+23705088b^8-38140416b^7+14925056b^6+24490080b^5\\
+ &-4469984b^4-15838992b^3-2571948b^2+4244400b+1488375.
+\end{align*}
+The exact five-by-five polynomial identities are
+\begin{align}
+ \det F={}&\frac{16384}{4465125}
+ (b-3)(b-2)^2(b-1)(2b-7)(2b-5)^2(2b-3)\notag\\
+ &\qquad\cdot(4b-15)(4b-13)(4b-11)^2(4b-9)^2(4b-7)^2
+ (4b-5)(4b-3)D_{10}(b),\label{mt10:Fdet}\\
+ \frac{\det\mathcal A}{\det F}
+   &=\frac{P_{10}(b;U_1,\ldots,U_9)}{
+        138240(2b-7)(2b-5)D_{10}(b)},\label{mt10:P}
+\end{align}
+where $P_{10}$ is an integer polynomial. Equations \eqref{mt10:A}
+and \eqref{mt10:P} define it exactly; its supplied sparse certificate
+contains $10{,}403$ monomials, grouped into $439$ monomials in the
+$U$ variables. Their coefficients have degree at most $24$ in $b$.
+
+The replay forms the row denominators of \eqref{mt10:A}, constructs
+the $120$ signed permutation products of the cleared matrix, and
+cross-multiplies \eqref{mt10:P} in
+$\mathbb Q[b,U_1,\ldots,U_9]$. Equality is checked coefficient by
+coefficient. Thus polynomial integrality and the displayed determinant
+identity are finite rational certificates, without interpolation.
+
+Put
+\[
+ \mathcal B(x)=1+20068x-26384x^2+2816x^3-19712x^4
+                         +4096x^5-24576x^6.
+\]
+The uniform Bernoulli congruence is
+\begin{equation}\label{mt10:B16}
+           2B_{2m}\equiv\mathcal B(m)\pmod {65536}
+                  \quad(m\ge12).
+\end{equation}
+All congruences are in $\mathbb Z_{(2)}$, the rationals with odd
+denominator. One direct proof starts with Faulhaber's formula at
+$256$. The terms other than $256B_{2m}$ have valuation at least
+$23$; after division by $128$, the even summands vanish at the
+required precision because $2m\ge24$. For odd $u$, $8\mid u^2-1$,
+so expansion of $u^{2m}=(1+(u^2-1))^m$ gives
+\[
+ 2B_{2m}\equiv\frac1{128}
+       \sum_{u=1,3,\ldots,255}\sum_{j=0}^7
+                    \binom mj(u^2-1)^j\pmod {65536}.
+\]
+The omitted terms have valuation at least $3\cdot8-7=17$.
+Expanding this finite average in $\mathbb Q[m]$ and reducing every
+coefficient modulo $65536$ gives \eqref{mt10:B16}. The replay
+checks this coefficientwise, including the denominators of
+$\binom mj$. The bound $v_2(B_{2j})\ge-1$ used in the Faulhaber
+step follows inductively from the odd-denominator recurrence
+\eqref{mt10:Bernoulli-recurrence} below.
+
+The finite polynomial substitution then gives
+\begin{equation}\label{mt10:congruence}
+ P_{10}\bigl(b;\mathcal B(b-1),\ldots,\mathcal B(b-9)\bigr)
+                  \equiv32\mathcal R(b)\pmod {65536},
+\end{equation}
+where
+\[
+ \mathcal R(b)=-512b^8+128b^7-928b^6-816b^5+464b^4
+                         +352b^3+118b^2+217b+694.
+\]
+The replay verifies every coefficient of \eqref{mt10:congruence}
+using modular polynomial multiplication. The linear coefficient of
+$\mathcal R$ is odd and every coefficient of degree at least two
+is even. Consequently
+\[
+ v_2(\mathcal R(x)-\mathcal R(y))=v_2(x-y)\quad(x\ne y).
+\]
+Indeed the quotient by $x-y$ is odd. Direct substitution gives
+$\mathcal R(962)\equiv0\pmod {2048}$, so $962$ is its unique
+root modulo $2048$.
+
+Since $D_{10}(b)$ is odd at every integer $b$, the denominator in
+\eqref{mt10:P} has valuation $10$. For $b\ge21$ all nine Bernoulli
+indices are in the range of \eqref{mt10:B16}. If
+$b\not\equiv962\pmod {2048}$, equations \eqref{mt10:B16}--
+\eqref{mt10:congruence} therefore prove
+\begin{equation}\label{mt10:valuation}
+                 v_2(\rho_{5,b})=v_2(b-962)-5.
+\end{equation}
+For $6\le b\le20$, direct rational determinants of the original
+matrix \eqref{mt10:M} give the respective valuations
+\[
+ -4,-4,-6,-5,-2,-5,-4,-5,-3,-5,-4,-5,-1,-5,-4.
+\]
+The direct matrices, their determinants, and their normalizations are
+included in the replay record. In particular, the contraction is never
+used below its valid threshold $b\ge10$.
+
+\subsection{A transparent sufficient large-order threshold}
+
+We specialize the incoming eventual-rank proof to $a=5$ and replace
+its large rational constant by an elementary upper bound. This makes
+the threshold independently reviewable.
+
+Define
+\[
+ J(b)=\prod_{i=0}^4(2n_i+1)(2n_i+2),\qquad
+ E(b)=\prod_{i,\ell=0}^4
+             \prod_{r=1}^{\max(0,2i-4\ell-1)}(R_\ell+r),
+ \quad D(b)=10!J(b)E(b).
+\]
+Here $\deg J=10$, $\deg E=20$, and $D\mathcal A$ has integer
+polynomial entries. Put $\mathscr P=\det(D\mathcal A)$ and let
+$\mathscr P_{[5]}$ be its homogeneous part of degree five in the
+$U$ variables. Every entry has degree at most $46$ in $b$; hence
+$\deg_b\mathscr P\le230$. The largest coefficient norm among the
+$25$ entries, with all coefficients counted in
+$\mathbb Z[b,U_1,\ldots,U_9]$, is
+\[
+ E^*=602847821074996042728613866361551228764160<10^{42}.
+\]
+The separate verifier expands the $25$ entries, records all $25$
+norms and degrees, and reproduces this integer. The full determinant
+coefficient norm is at most $K=5!(E^*)^5<10^{213}$.
+
+Let $F_0=(2b-18)!$ and $V_j=U_jF_0/(2b-2j)!$. From
+\eqref{mt10:newton},
+$d_{i1}=-(i+1)(4n_i+2)^{\underline{2i}}$. Cancelling factorials
+in \eqref{mt10:A} gives
+\[
+ \mathcal A-2F=
+ \operatorname{diag}\left(\frac1{(2n_i+1)(2n_i+2)}\right)
+ L(V_{5-i+\ell})_{0\le i,\ell\le4}
+ \operatorname{diag}\left(\frac{R_\ell!}{F_0(2\ell+2)!}\right),
+\]
+where $L_{i,i-k}=d_{i,2k+1}$ is lower triangular. Therefore
+\[
+ \mathscr P_{[5]}=-\Gamma(b)\det(V_{i+j+1})_{0\le i,j\le4},
+\]
+with the explicit positive factor
+\begin{align*}
+ \Gamma(b)={}&\kappa J(b)^4E(b)^5
+ \prod_{i=0}^4(4n_i+2)^{\underline{2i}}
+ \prod_{\ell=0}^4\prod_{r=1}^{10+2\ell}(2b-18+r),\\
+ \kappa={}&\frac{5!(10!)^5}{2!4!6!8!10!}
+          =14932726824960000000>10^{19}.
+\end{align*}
+Every linear factor is at least $b$ for $b\ge20$, so
+$\Gamma(b)\ge\kappa b^{230}$.
+
+At the actual doubled Bernoulli values, Euler's even-zeta formula
+and row/column reversal yield
+\[
+ |\mathscr P_{[5]}|
+ =\frac{\Gamma(b)(4F_0)^5}{(2\pi)^{10(b-5)}}
+       \det\bigl(\zeta(2b-18+2i+2j)\bigr)_{0\le i,j\le4}.
+\]
+The determinant on the right is a positive moment determinant on
+the points $m^{-2}$. Keeping the support points $1,1/4,1/9,1/16,1/25$
+in Cauchy--Binet proves
+\begin{gather*}
+ \det\bigl(\zeta(2b-18+2i+2j)\bigr)\ge V\,120^{-2b+18},\\
+ V=\prod_{1\le r<s\le5}(r^{-2}-s^{-2})^2
+        =\frac{2401}{36864000000000000}>10^{-14}.
+\end{gather*}
+
+For $b\ge30$, all nine actual variables have absolute value at most
+\[
+       T_b=\frac{8(2b)^{16}F_0}{(2\pi)^{2b-18}}\ge1.
+\]
+Thus $|\mathscr P_{[\le4]}|\le Kb^{230}T_b^4$.
+After cancellation of the common powers of $2\pi$, using
+$1<2\pi<8$ gives
+\begin{equation}\label{mt10:dominance}
+ \frac{|\mathscr P_{[\le4]}|}{|\mathscr P_{[5]}|}
+ \le C\frac{b^{64}960^{2b}}{(2b-18)!},\qquad
+ C=\frac{K2^{142}}{\kappa4^5V120^{18}}<10^{251}<10^{256}.
+\end{equation}
+The powers here can be checked directly: the uncancelled power of
+$2\pi$ is $2b+22$, and $(2b)^{64}$ comes from $T_b^4$.
+The bounds $K<10^{213}$, $2^{142}<10^{43}$, $\kappa>10^{19}$,
+and $V>10^{-14}$ already give the stated coarse bound on $C$.
+
+The remaining comparison is an exact integer inequality:
+\begin{equation}\label{mt10:base}
+       2^{384}\,10^{256}\,1920^{64}\,960^{3840}<3822!.
+\end{equation}
+It is verified by integer multiplication, with both sides explicitly
+specified. Moreover, for $b\ge1920$,
+\[
+ \frac{(b+1)^{64}960^{2b+2}/(2b-16)!}
+      {b^{64}960^{2b}/(2b-18)!}
+ =\left(1+\frac1b\right)^{64}
+            \frac{960^2}{(2b-16)(2b-17)}<\frac34.
+\]
+Indeed $(1+1/b)^{64}<3$ and both denominator factors are at least
+$b\ge1920=2\cdot960$. It follows from
+\eqref{mt10:dominance}--\eqref{mt10:base} that the leading homogeneous
+term cannot be cancelled when $b\ge1920$. Since $D(b)>0$ there,
+\eqref{mt10:ratio} proves nonsingularity throughout that range.
+
+\subsection{The single missing matrix has a small exact certificate}
+
+The congruence covers every $6\le b<1920$ except $b=962$.
+At this value define
+\[
+ S=\operatorname{diag}(2,1,64,1/8,2)\,
+ \mathcal A\,\operatorname{diag}(1,1,1/32,1/16,1/512).
+\]
+Thus $\det S=2^{-13}\det\mathcal A$.
+Every coefficient of this affine matrix in $U_1,\ldots,U_9$ has
+$2$-adic valuation at least $-3$. Therefore its reduction modulo
+$2^{20}$ is determined by the inputs modulo $2^{23}$.
+
+The nine input residues, in increasing order of the index $j$, are
+\[
+ (660565,5568257,602509,3180025,6422085,3501169,
+                         2681469,1596009,6743605)\pmod {2^{23}}.
+\]
+They are obtained by the elementary Bernoulli recurrence
+\begin{equation}\label{mt10:Bernoulli-recurrence}
+ (2m+1)(2B_{2m})
+   =2m-1-\sum_{j=1}^{m-1}\binom{2m+1}{2j}(2B_{2j}),\qquad m\ge1.
+\end{equation}
+Every divisor $2m+1$ is odd. The recurrence is valid modulo every
+power of two and produces the residues through $m=961$ without
+floating arithmetic. A separate exact rational Bernoulli evaluation
+agrees with all nine inputs.
+
+Substitution in \eqref{mt10:A} gives the following matrix modulo
+$2^{20}=1048576$:
+\[
+ S\equiv
+ \begin{pmatrix}
+ 917951&442211&476112&551248&968980\\
+ 679904&45903&922072&654544&644616\\
+ 797935&540216&1028224&572168&196164\\
+ 491016&385277&695495&798931&823817\\
+ 917289&206367&412992&727792&439172
+ \end{pmatrix}\pmod {1048576}.
+\]
+The determinant of this displayed integer matrix is
+$524288=2^{19}$ modulo $2^{20}$. Hence
+\[
+ v_2(\det S)=19,\qquad
+ v_2(\det\mathcal A)=32,\qquad
+ v_2(\det F)=26,\qquad v_2(\rho_{5,962})=6.
+\]
+The value $v_2(\det F)=26$ follows immediately from
+\eqref{mt10:Fdet}: its only even factors beyond $2^{14}$ are
+$(b-2)^2=960^2$, of valuation $12$.
+An independent check evaluates $\det\mathcal A/\det F$ directly
+as a rational number; it gives the same valuation. The original
+integer numerator also satisfies
+$P_{10}(962;2B_{1922},\ldots,2B_{1906})\equiv65536\pmod {131072}$.
+
+This is a finite nonvanishing certificate, not a numerical
+approximation. It closes the only missing index below the sufficient
+threshold. Together with the preceding congruence and dominance
+arguments, it proves Theorem~\ref{mt10:main}.
+
+\subsection{Ordinary convergent identities supplied by the completed family}
+
+For $b\ge6$ and $0\le k<b$, let
+$\lambda^{(b,k)}_t=(M_{5,b}^{-1})_{kt}$, $0\le t<b$, and define
+the finite odd polynomial and its centered difference
+\[
+ K_{b,k}(u)=\sum_{t=0}^{b-1}\lambda^{(b,k)}_tu^{2b+2t+1},
+ \qquad Q_{b,k}(x)=K_{b,k}(x+\tfrac12)-K_{b,k}(x-\tfrac12).
+\]
+The centered difference is precisely the coefficient transform
+\eqref{mt10:C}, so its continued moment sum equals $Z_k$.
+For the ordinary formulation put
+\[
+ \eta_{s,0}=\frac1{s-1},\qquad
+ \eta_{s,j}=\frac{(s)_{2j-1}B_{2j}(1/2)}{(2j)!}\quad(j\ge1),
+ \qquad c_{b,\ell}=\sum_{j=0}^{\ell}\eta_{10,j}\eta_{2b,\ell-j}.
+\]
+Let $T_{b,k}(x)$ be the polynomial consisting of the nonnegative
+powers in
+\[
+             Q_{b,k}(x)x^{-2b-8}\sum_{\ell\ge0}c_{b,\ell}x^{-2\ell}.
+\]
+Only finitely many coefficients enter it, and its degree is at most
+$2b-10$. Then the completed family gives the exact identities
+\begin{equation}\label{mt10:ordinary}
+ \boxed{\displaystyle
+ \sum_{n=0}^{\infty}\left\{
+ Q_{b,k}(x_n)
+  \frac{\psi^{(9)}(n+1)\psi^{(2b-1)}(n+1)}{9!\,(2b-1)!}
+       -T_{b,k}(x_n)\right\}=\zeta(2k).}
+\end{equation}
+The summands are $O(x_n^{-2})$. Every removed nonnegative even
+power has centered continued sum $\zeta(-2j,1/2)=0$, so the
+ordinary absolutely convergent sum has exactly the same value as
+the moment combination. Formula \eqref{mt10:ordinary} is a finite
+rational algorithm at each $b,k$, with nonsingularity now proved
+for the entire parameter range. At $k=0$ its value is the rational
+number $-1/2$.
+
+\paragraph{Status and further research.}
+The new logical step is the exact $b=962$ certificate and the
+combination of the two independently audited ranges. The source
+congruence, the finite contraction, and the eventual dominance
+mechanism are retained with attribution. The same strategy is
+available for smaller order twelve, but its finite cases and modular
+determinant have not been proved here. A uniform argument for all
+unequal even orders, or even the full gap-six family, is still a
+substantive open problem. Higher-minor positivity cannot simply be
+inferred from the known pairwise ratio inequalities; the determinant
+sign already changes in some families.
+
+\paragraph{Reproducible artifacts.}
+\texttt{completion\_certificate.py} proves the missing case from
+the displayed five-square matrix using no external project files.
+\texttt{verify\_eventual\_ten.py} rederives all $25$ entry norms and
+the exact comparison \eqref{mt10:base}.
+\texttt{verify\_p10\_dependencies.py}, its attributed algebra helper,
+and \texttt{p10\_dependency\_certificate.json} replay the full inherited
+polynomial identity, modular substitution, and all small base matrices.
+The three output records distinguish full replay from the deliberately
+optional quick mode. None uses floating-point evidence for a theorem.
