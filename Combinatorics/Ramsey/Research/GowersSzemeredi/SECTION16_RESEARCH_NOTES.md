@@ -5472,6 +5472,22 @@ from `Proofs16PolynomialFejerX`) contains:
   `expDegJ_tight_le`.
 Both are in the bridge, pinned and stub-checked.
 
+**L.16v: the dimension-two family exponent and the base envelope, quantified
+(2026-10-12).** Two more inputs, measured on the J and K envelopes
+(`model_aseed.py`, `model_kbase.py`):
+* The family exponent `a₂ = 32` of `splitUniformClass_two_small`.
+  `a₂ ≤ 25` would give Theorem 18.1 `d + 2` from 11, and `a₂ ≤ 13` would
+  also give `d + 3` from 8; Theorem 18.2 does not move. `a₂` must dominate
+  the `(n+1)`-power `29` of `uniTwoFejerExp_inv_le_split`, which decomposes
+  as `1 + 16 + 12`. The 16 is `L⁻¹`: two cubic base exponents (`ν⁴` each)
+  and the 8th power of the family-width divisor. The 12 is `S⁻¹`, a cubed
+  count. These are exponents of corpus definitions (Lemma 16.6 widths, the
+  cubic base exponent), not bookkeeping slack. Reaching 25 needs either new
+  corpus constructions, or a split invariant with separate count and
+  exponent family exponents (the count's power is only 11).
+* The base envelope `EnvBound 3 62` of Theorem 18.2. The thresholds do not
+  move even at base 0.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`
