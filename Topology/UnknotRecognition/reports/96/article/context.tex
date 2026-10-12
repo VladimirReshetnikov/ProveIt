@@ -1,0 +1,130 @@
+\section{Research position and scope}
+\label{sec:context}
+
+\subsection{The gap addressed here}
+
+Lackenby's 2021 announcement motivates the quasi-polynomial target. His July
+2026 preprint develops the hierarchy framework, while Section 9 explicitly
+leaves some algorithmic steps insufficiently specified for a running-time
+estimate~\cite{lacktalk,lack2026}. An implementation must therefore distinguish
+structural mathematics, a complete decision procedure, and a proved end-to-end
+cost bound. This article contributes to that distinction rather than treating
+the announcement as a ready-made cost specification.
+
+The inspected ProveIt synthesis already describes a complete raw normal cut
+with binary affine cell families, signed attachments, and reconstruction charts.
+Its encoded-size theorem concerns the number of source tetrahedra and coordinate
+bits, not the number of represented normal discs~\cite{repocut}. We do not
+repeat that construction. The present question is instead: can matching-cone
+search be decomposed before its compatibility choices multiply?
+
+Report 87 has already proved a global intrinsic-dimension bound for
+\[
+ Ax=0,\qquad x\geq0,\qquad c^Tx>0,\qquad x_ix_j=0
+ \quad(\{i,j\}\in\mathcal P).
+\]
+Its branch tree has at most $2^{d+1}-1$ nodes, where
+$d=\dim\operatorname{span}\{x\geq0:Ax=0\}$, assuming polynomial-time rational
+linear programming~\cite{repo87}. Neither this bound nor complete support
+reduction is a new claim of this article. Our refinement replaces one large
+$d$ by many local dimensions separated by exactly checked scalar interfaces.
+
+The main mechanism is elementary but useful. Positive homogeneity means that
+one nonzero interface coordinate can be normalized to $1$ or $-1$. Once a
+positive zero-interface direction is excluded, the best objective extension
+has one finite slope for each attainable sign. The compatibility choices
+inside a region can then be forgotten without convexifying the entire
+admissible domain.
+
+\subsection{What is established, and what is not}
+
+The mathematical results below are unconditional for their specified rational
+cone and tree inputs. The normal-surface consequences additionally require
+source-authenticated standard coordinates. The recognition complexity result
+additionally requires a bounded-cost decomposition producer and the established
+geometric recognition operations. These are different layers of hypotheses.
+
+The delivered code computes all needed local rays exactly, constructs and
+checks rank-one source compilations, answers positive-objective queries, and
+produces independently replayable packets. It does not construct a knot exterior
+from a diagram, validate all manifold links, perform crushing, or modify the
+maintained recognizer. The source fixtures exercise actual matching and Euler
+arithmetic but do not constitute a full knot-corpus experiment.
+
+A supplied decomposition is not a discovered decomposition. Likewise, a small
+normal-coordinate bit length is not a small scalar-interface width. Both costs
+remain visible in the statements below.
+
+\subsection{Provenance and novelty boundaries}
+
+The reference repository checkpoint is
+\begin{center}\small\code{4840e384b5a2961aabbb9cc78023b9ac5990acb0}.\end{center}
+The report-87 dimension-branching source was re-read at that exact revision.
+Other reviewed public text included the project README, the report catalogue,
+the raw-cut manuscript, and the two-fixture test file. The tree was changing
+during inspection; the source audit records paths and the relevant returned
+blob identities instead of implying a complete local checkout.
+
+The four ZIPs listed in \code{docs/incoming} were inventoried, but their binary
+contents could not be obtained in this environment. They were not reviewed or
+executed. This qualification matters when judging overlap with very recent
+submissions. The standalone delivery does not assign itself a report number
+or overwrite incoming material.
+
+Rank-one column-space connections belong to the classical setting of matrix
+and matroid parallel/series connections and 2-sums; this relationship is also
+explicit in contemporary polyhedral work~\cite{connections}. We claim neither
+the invention of such connections nor the invention of dynamic programming,
+linear programming, or extreme-ray enumeration. The contribution proposed for
+ProveIt is the precise combination of signed objective messages, source-bound
+ray preservation, exact compatibility locality, executable source replay, and
+the resulting local-width cost criterion. Priority of the complete combination
+has not been established by an exhaustive literature search.
+
+\section{The exact algebraic problem}
+\label{sec:problem}
+
+Let $A\in\Q^{m\times n}$, $c\in\Q^n$, and let $\mathcal P$ be a list of
+unordered pairs of distinct coordinate indices. Define
+\[
+ C(A)=\{x\in\R^n:Ax=0,\ x\geq0\},\qquad
+ C_{\mathcal P}(A)=\{x\in C(A):x_ix_j=0\ (\{i,j\}\in\mathcal P)\}.
+\]
+We decide whether $c^Tx>0$ on $C_{\mathcal P}(A)$.
+All coefficients and integer counts are binary encoded. Zero coordinates
+specified by the caller are additional coordinate-face restrictions.
+
+The admissible set is a finite union of rational coordinate faces of $C(A)$.
+It is generally not convex. Each face is a pointed polyhedral cone, so it is
+generated by finitely many rational extreme rays. Because a coordinate face
+has no new extreme rays, the admissible set is the union of the cones generated
+by compatible subsets of the extreme rays of $C(A)$. In particular, a positive
+objective is witnessed by an admissible rational ray and hence, after scaling,
+by an integer vector.
+
+This last observation is an existence statement, not an efficient global
+enumeration algorithm. There may be exponentially many such rays. Our method
+will enumerate only local rays or, in the stronger theoretical variant, use
+local compatibility branching instead.
+
+\begin{definition}[Homogeneous scalar tree model]
+A rooted finite tree has, at vertex $v$, a private block $x_v\geq0$ of original
+coordinates. Original coordinate blocks are disjoint. Every tree edge $e$
+carries one shared signed scalar $\tau_e\in\R$. At vertex $v$ there are rational
+homogeneous equations
+\[
+ B_vx_v+\sum_{e\ni v}h_{v,e}\tau_e=0
+\]
+and forbidden pairs involving only coordinates of $x_v$. The objective is
+$\sum_v c_v^Tx_v$. No forbidden pair crosses an edge, and no hidden condition
+couples two subtrees except through their displayed scalar.
+\end{definition}
+
+A zero scalar is a valid interface value, and the all-zero assignment is always
+feasible. These facts are essential. Fixed nonzero boundary data, prescribed
+integral charges, nonhomogeneous inequalities, or compatibility between private
+coordinates in different bags are not silently admitted into this definition.
+
+The model is an exact algebraic assembly, not an assertion about cutting a
+3-manifold into the corresponding tree pieces. Section~\ref{sec:compiler}
+gives a source compiler whose algebraic validity is independently checkable.

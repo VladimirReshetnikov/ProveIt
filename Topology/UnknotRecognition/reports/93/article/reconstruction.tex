@@ -1,0 +1,306 @@
+% Standalone article section; uses amsmath, amssymb and amsthm environments.
+% Citation keys are supplied in literature-references.bib.
+\section{Reconstructing an unmarked cut manifold}
+\label{sec:unmarked-reconstruction}
+
+Large normal coordinates do not by themselves force a large triangulation of
+the manifold obtained by cutting.  A long stack of parallel normal discs is
+represented by an interval bundle, whose topological complexity may be much
+smaller than the number of discs in the stack.  There are nevertheless two
+distinct costs: the topology of the interval-bundle bases, and the information
+in the attaching maps.  The purpose of this section is to state an explicit
+reconstruction bound that accounts for both.
+
+The result below is a constructive consequence of surface classification and
+the published parallelity-bundle machinery.  We do not claim it as a new major
+topological theorem.  Its contribution here is to make the output convention,
+the cellular input requirement, and the limits of its use in a hierarchy
+algorithm explicit.
+
+For any compact surface $F$, orientable or otherwise, set
+\[
+  \chi_-(F)=\sum_{F_0\in\pi_0(F)}\max\{0,-\chi(F_0)\}.
+\]
+The word \emph{unmarked} means that the output is required to have the correct
+homeomorphism type, without a prescribed parametrisation of its boundary or
+a prescribed identification with a subspace of the original manifold.
+
+\subsection{A reconstruction bound with a supplied cellular core}
+
+\begin{theorem}[Reconstruction from explicit core and bundle data]
+\label{thm:cellular-core-reconstruction}
+Suppose that a compact orientable $3$-manifold, with corners allowed, is
+specified as
+\[
+  X=C\mathbin{\cup}\bigcup_{j=1}^{m}B_j,
+  \qquad B_j\longrightarrow F_j,
+\]
+where the $F_j$ are compact connected surfaces and the $B_j$ are pairwise
+disjoint interval bundles with orientable total spaces.  Assume the following
+input data.
+\begin{enumerate}
+  \item The core $C$ has an explicit cellular decomposition with total size
+  at most $q$, using a fixed finite collection of $3$-ball templates.  The
+  incidence data and the cellular attaching maps are included in this size.
+  Equivalently, one may supply an explicit triangulation of $C$ with $O(q)$
+  tetrahedra, together with its boundary subdivisions.
+  \item Each base $F_j$ is specified by its orientability, genus or crosscap
+  number, and number of boundary components.  The interval-bundle type is
+  specified.  There are no identifications between horizontal boundaries of
+  the $B_j$ in this presentation.
+  \item Each $B_j\cap C$ is a subset of the vertical boundary
+  $\partial_vB_j$.  Its attaching data consist of explicitly ordered fibre
+  rectangles and their cellular identifications with rectangles on
+  $\partial C$.  Boundary gaps, horizontal-sheet incidence, and the relevant
+  orientations are recorded.  The total size of this data and of the
+  required subdivisions of $\partial C$ is included in $q$.
+\end{enumerate}
+The presentation is assumed to be valid; recognising validity of arbitrary
+cellular presentations is not part of the assertion.  Then $X$ admits an
+ordinary, unmarked triangulation with
+\[
+  O\!\left(q+\sum_{j=1}^{m}(1+\chi_-(F_j))\right)
+  \tag{\ref{thm:cellular-core-reconstruction}.1}
+\]
+tetrahedra.  Such a triangulation can be constructed in time polynomial in
+the input bit length and the displayed bound.
+
+Every component and every repeated copy is counted in the sum.  If a family
+of detached, identical bundles is instead specified by a binary
+multiplicity, expanding that family incurs the corresponding output cost.
+\end{theorem}
+
+\begin{proof}
+First refine the fixed core templates and their attaching rectangles into
+triangles and tetrahedra.  A fixed template requires a fixed number of
+tetrahedra; the stipulated cellular size includes all necessary boundary
+subdivisions.  Consequently this stage has cost $O(q)$.
+
+We use the following elementary surface-construction fact.  A connected
+compact surface $F$, together with $v$ prescribed subdivision vertices on
+its boundary, has a triangulation respecting those vertices with
+\[
+  O(1+\chi_-(F)+v)
+\]
+triangles.  To see this, choose the usual polygon model from the classification
+of compact surfaces, triangulate it, and subdivide the boundary as prescribed.
+For an orientable surface with $b$ boundary components,
+$\chi(F)=2-2g-b$; in the nonorientable case,
+$\chi(F)=2-k-b$, where $k$ is the crosscap number.  These formulas bound the
+size of a polygon model by $O(1+\chi_-(F))$, apart from the prescribed boundary
+subdivisions.  The sphere, disc, annulus, projective plane, and Klein bottle
+are covered by fixed templates.  A bounded subdivision converts any polygon
+identifications into a genuine surface triangulation.  Prescribed cyclic
+orders on boundary components are respected throughout.
+
+Apply this construction to each $F_j$, introducing the subdivision points
+dictated by the ordered attaching rectangles.  Their total number is $O(q)$.
+Boundary components with no attaching rectangles require only a bounded
+number of additional vertices each; their number is already bounded by
+$O(1+\chi_-(F_j))$.  Thus the total number of base triangles is
+\[
+  O\!\left(q+\sum_j(1+\chi_-(F_j))\right).
+\]
+
+An interval bundle over a triangle is a triangular prism.  Glue these prisms
+using the specified interval-bundle type.  For an orientable total space,
+the twisting character of the bundle is the orientation character of its
+base: the bundle is a product over an orientable base, and is the orientable
+twisted interval bundle over a nonorientable base.  The polygon construction
+therefore supplies the needed transition maps directly.  Subdivide prism
+faces compatibly and triangulate every prism with a bounded number of
+tetrahedra.  For example, first barycentrically subdivide the polygonal faces
+and then cone each subdivided prism boundary to an interior vertex; this
+avoids choices of incompatible diagonals.  The attaching rectangles match
+the refined core cells after a bounded further subdivision.  Gluing gives
+the required triangulation of $X$, with the asserted bound.
+
+All constructions are finite operations on explicit cells, together with
+integer arithmetic on the supplied topological parameters.  Writing down
+the polygon models and the tetrahedra takes time polynomial in the input
+bit length plus the output size.  Binary multiplicities can be retained in
+a compressed representation; if the requested output is an ordinary
+triangulation, the corresponding copies must be written out.
+\end{proof}
+
+\paragraph{Why counting handles alone is insufficient.}
+The hypothesis is a bound on \emph{cellular size}, including attaching
+maps.  It is not a bound on the number of abstract handles whose attaching
+words might have unbounded length.  An arbitrary gluing map given by a short
+word in large powers of mapping classes does not satisfy the hypothesis
+merely because its word has few syllables.  The theorem applies to the
+explicit ordered fibre rectangles in its statement.
+
+There is no additional unrecorded torus-slope parameter in this particular
+presentation: the bundles attach through their vertical annuli and
+rectangles, while their horizontal boundaries remain unglued.  For example,
+a Dehn twist on a vertical annulus that fixes its boundary extends over a
+collar of that annulus in the bundle.  In collar coordinates
+$S^1\times[0,\varepsilon]\times[0,1]$, with the vertical annulus at $r=0$,
+an extension of $k$ twists is
+\[
+  (\theta,r,s)\longmapsto
+  (\theta+2\pi k s f(r),r,s),
+  \qquad f(0)=1,\quad f(\varepsilon)=0.
+\]
+It changes the parametrisation on a horizontal boundary collar.  This is
+permitted for an unmarked output, and explains exactly why the same argument
+does not provide a reconstruction relative to fixed horizontal seam charts.
+
+\subsection{Controlling the bases by the cutting surface}
+
+The following elementary estimate converts the topological size of the
+bundle bases into a parameter of the cutting surface.
+
+\begin{lemma}[Subsurface complexity]
+\label{lem:subsurface-complexity}
+Let $\Sigma$ be a compact surface and let $A\subset\Sigma$ be a compact
+subsurface of dimension two.  After rounding corners, suppose the relative frontier of $A$
+in $\Sigma$ is a disjoint union of $c$ circles and properly embedded arcs.
+Write
+\[
+  \kappa(Y)=b_0(Y)+b_1(Y;\mathbb Q)
+\]
+for any compact surface $Y$.  Then
+\[
+  b_0(A)\leq b_0(\Sigma)+c,
+  \qquad
+  b_1(A;\mathbb Q)\leq b_1(\Sigma;\mathbb Q)+c,
+\]
+and consequently
+\[
+  \kappa(A)\leq\kappa(\Sigma)+2c.
+\]
+If $\Sigma$ is orientable, then also
+\[
+  \kappa(\Sigma)\leq\chi_-(\Sigma)+3b_0(\Sigma).
+\]
+\end{lemma}
+
+\begin{proof}
+Cutting a surface along one properly embedded arc or circle increases the
+number of components by at most one.  The closures of the components on the
+$A$ side form a subcollection of the components obtained by cutting along
+the frontier.  This proves the bound for $b_0(A)$.
+
+Let $D$ be the closure of the complement of $A$.  Use small collar
+neighbourhoods to obtain a Mayer--Vietoris decomposition of $\Sigma$ whose
+intersection retracts onto the frontier.  Its first rational Betti number
+is at most $c$.  Exactness of
+\[
+ H_1(A\cap D;\mathbb Q)\longrightarrow
+ H_1(A;\mathbb Q)\oplus H_1(D;\mathbb Q)
+ \longrightarrow H_1(\Sigma;\mathbb Q)
+\]
+shows that
+$b_1(A;\mathbb Q)+b_1(D;\mathbb Q)
+\leq b_1(\Sigma;\mathbb Q)+c$.
+Discard the nonnegative term $b_1(D;\mathbb Q)$ and add the component bound.
+Finally, the classification formulas for a connected orientable surface,
+including the closed and nonclosed cases, give
+$1+b_1\leq\chi_-+3$.  Summation over components completes the proof.
+\end{proof}
+
+\begin{corollary}[Size of an unmarked normal cut]
+\label{cor:normal-cut-reconstruction}
+Let $M$ be a compact orientable $3$-manifold given by a triangulation with
+$t$ tetrahedra.  Let $S$ be a compact orientable normal surface of weight
+$W$, specified by its binary normal coordinates.  Retain all components of
+\[
+  M_S=M\setminus\operatorname{int}N(S).
+\]
+Then an ordinary unmarked triangulation of $M_S$ with
+\[
+  O\bigl(t+b_0(S)+\chi_-(S)\bigr)
+\]
+tetrahedra can be constructed in time polynomial in
+\[
+  t,\quad \log(2+W),\quad b_0(S)+\chi_-(S).
+\]
+No irreducibility or essentialness assumption is needed for this cutting
+statement.  The running-time assertion includes the cost of expanding all
+output components.
+\end{corollary}
+
+\begin{proof}
+Use the parallelity bundle $\mathcal B$ for the pair consisting of $M_S$
+and the two copies $S^+\sqcup S^-$ of $S$ in its boundary.  The compressed-cut
+algorithm of Lackenby gives the remaining core, the base-surface types, and
+ordered vertical attachment data in time polynomial in
+$t\log(2+W)$; see Theorem~9.3 and the explanatory paragraphs and proof in
+Section~9.4 of \cite{Lackenby2021Certification}.  In a tetrahedral source,
+the nonparallel pieces and attachment squares have bounded complexity in
+each local tetrahedral cell.  Summing over these cells gives $O(t)$ total
+cellular incidences, including the subdivisions of vertical attachments.
+An individual dual two-handle may have many incidences when its original
+edge has high valence; only the total incidence bound is asserted here.
+Accordingly, the construction supplies the explicit core and attachment
+complexity $q=O(t)$ needed in
+Theorem~\ref{thm:cellular-core-reconstruction}; no bound on handle count alone
+is being substituted.  Repeated detached components are retained with
+multiplicities until expansion is requested.
+
+Set $A=\partial_h\mathcal B\subset S^+\sqcup S^-$ and let $F_j$ be the
+connected base surfaces.  The relative frontier of $A$ in
+$S^+\sqcup S^-$ is incident to the explicit nonparallel core.  Each of its
+arcs or circles contains an edge of the vertical attachment data, and there
+are only $O(t)$ such edges.  Portions lying in the original boundary of
+$S^+\sqcup S^-$ are not part of this relative frontier.  Thus its number
+$c$ of components is $O(t)$.  Components of $\mathcal B$ with no core
+attachment are allowed in this argument: they contribute whole components
+to $A$, rather than additional frontier.
+
+Apply Lemma~\ref{lem:subsurface-complexity} to obtain
+\[
+  \kappa(A)
+  \leq 2\kappa(S)+O(t)
+  =O\bigl(t+b_0(S)+\chi_-(S)\bigr).
+\]
+The horizontal boundary $A_j$ of the bundle over $F_j$ is its two-sheeted
+boundary cover.  Hence
+\[
+  \chi_-(A_j)=2\chi_-(F_j),
+  \qquad b_0(A_j)\geq 1.
+\]
+For every compact surface, $\chi_-$ is at most its first rational Betti
+number.  Consequently
+\[
+  \sum_j(1+\chi_-(F_j))
+  \leq b_0(A)+\tfrac12\chi_-(A)
+  \leq\kappa(A).
+\]
+Theorem~\ref{thm:cellular-core-reconstruction} now gives the tetrahedron
+bound and the construction time.  The weighted orbit machinery can keep
+identical component data grouped with binary multiplicities throughout the
+compressed part of the computation; writing out their copies costs only
+the explicit output parameter in the statement.
+\end{proof}
+
+\paragraph{A necessary component term.}
+The term $b_0(S)$ cannot simply be dropped from a theorem retaining the whole
+cut manifold.  Fix a triangulation of a $3$-ball having an interior vertex,
+and let $v$ be the normal vector of its vertex-linking sphere.  The vector
+$Nv$ represents $N$ nested parallel normal spheres and has bit length
+$O(\log(2+N))$.  Cutting along them produces $N+1$ nonempty $3$-manifold
+components.  An ordinary triangulation of their disjoint union contains at
+least $N+1$ tetrahedra, although every cutting component has
+$\chi_-=0$.  One may retain these product regions by a compressed
+multiplicity, or expand them and pay their output size; these are different
+output specifications.
+
+\paragraph{What this does and does not supply to a hierarchy.}
+For a connected disc, annulus, sphere, or torus, the displayed unmarked size
+bound is $O(t)$.  More generally, it replaces dependence on raw normal
+weight by dependence on the topological size of the cutting surface.  This
+is useful when a prospective hierarchy supplies a bound on
+$b_0(S)+\chi_-(S)$ even though the normal coordinates are very large.
+Repeatedly applying the corollary, however, does not by itself give a
+hierarchy algorithm of quasipolynomial complexity.  It supplies neither a
+bound on the number of cuts nor a controlled identification of their
+horizontal boundaries with previously stored surfaces.  In particular,
+transferring an existing boundary pattern, preserving normal-coordinate
+charts for later cuts, and retaining the pairing that reglues
+$S^+$ to $S^-$ require additional information.  A future implementation
+should therefore expose two separate interfaces: unmarked reconstruction
+with the bound proved here, and reconstruction relative to explicitly
+costed boundary markings.  The latter remains a research obligation.

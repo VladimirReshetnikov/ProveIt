@@ -1,0 +1,120 @@
+\section{Implementation and independently replayed certificates}
+\label{sec:implementation}
+
+The delivered extension is opt-in and uses the Python standard library.
+The pinned native runtime is included for reproduction.  Regina is used
+only by the explicit-cut oracle, and is not imported by the new producer
+or verifier.  The default recognizer and its schedules are unchanged.
+
+\subsection{The producer}
+
+\texttt{normal\_cut\_saturation} accepts the same source triangulation and
+normal-coordinate contract as the existing normal-cut parallelity operator.
+Its logical sequence is:
+\begin{enumerate}
+\item Construct the source parallelity decomposition, with four orbit
+queries and optional upstream certificates.  Reject unsupported core
+three-handles or closed bundle bases as inconclusive.
+\item If the caller enables the original-core precheck, form its fixed
+forest and capped source incidence rows.  A nonempty stopping core permits
+an early inconclusive result; no ordered boundary information is needed.
+\item Obtain the ordered attachment skeleton, requiring at most two more
+orbit queries.  Source-zero-port cases may require none.
+\item Compile all original core rows and all saturated residual rows
+jointly against the original source cocores.  Record the exact private
+one-handle count in each connected attachment component.
+\item Run unit-column peeling.  Complete elimination authorizes the
+handlebody histogram and Euler check.  A nonempty residual authorizes only
+an inconclusive result for topology.
+\end{enumerate}
+
+The discovery cycle allowance is shared across the upstream queries.
+The optional precheck defaults to false, so the principal audit and
+certificate format are directly comparable to the complete six-query
+path.  Its successful path returns the same whole-cut certificate as the
+ordinary path; its early obstruction uses a smaller four-query schema.
+
+\subsection{What is and is not trusted}
+
+The whole-cut certificate has four proof layers and an exact conclusion:
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}p{0.21\linewidth}YY@{}}
+\toprule
+Layer & Claimed data & Independent check\\
+\midrule
+Source parallelity & Core handles, bundle bases, fibre cover and port
+ownership & Reconstruct the source geometry and verify the four orbit proofs\\
+Ordered boundary & Maximal interval/circle interfaces and signed source
+port walks & Independently reconstruct and replay the endpoint and gap data\\
+Relative compiler & Forest, residual rows, attachments, component mergers,
+private counts & Rebuild finite source paths and relative counts without
+calling the compiler\\
+Peeling & Row/column deletion schedule and final residual & Timestamp scan
+of immutable source incidences; stopping inequalities\\
+Conclusion & Exact genus histogram or exact raw-obstruction statement &
+Recompute ranks, multiplicities, Euler characteristic, and result fields\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+The enclosing verifier imports neither the relative compiler nor the
+peeling producer.  The existing source verifiers reconstruct the source
+geometry independently rather than accepting a geometry dictionary because
+it carries a matching checksum.  Both source proofs are bound to the
+\emph{same} input triangulation and normal vector.  The finite compiler
+verifier alone is conditional on its supplied geometric inputs; it is the
+enclosing verifier that closes this source-authentication boundary.
+
+A source fingerprint guards against accidental substitution, but it is not
+the mathematical reason a conclusion is correct.  The reason is the
+reconstruction, the geometric theorems, and the exact incidence replay.
+The certificate includes no unchecked Boolean saying that a residual row
+is geometrically valid or that a component is a ball.
+
+The early certificate follows the same principle with fewer layers.  It
+contains the authenticated source parallelity proof, a finite core forest
+and row record, a peeling certificate with nonempty residual, and the exact
+conclusion \texttt{INCONCLUSIVE}.  Its checker independently reconstructs
+the core rows before verifying the stopping set.  By
+Corollary~\ref{cor:row-subset-monotonicity}, no eventual saturated row can
+make that fixed core subset peel.
+
+\subsection{Status and integer semantics}
+
+\texttt{READY} in the finite compiler means that a relative presentation
+has been compiled.  It is not a topology result.  \texttt{COMPLETE} in the
+whole-cut consumer means that every row has cancelled and that the exact
+handlebody census follows.  \texttt{OBSTRUCTED} in the matrix layer means
+that full-row raw positive cancellation is impossible.  At the topology
+boundary it becomes \texttt{INCONCLUSIVE}.
+
+The source matrices retain empty rows.  Omitting an empty residual row
+would incorrectly turn the M\"obius-on-a-ball example into a ball
+certificate.  Counts are capped individually at two only for incidence
+logic.  The total of those capped counts remains uncapped for deletion
+bookkeeping; saturating the total itself would lose the information needed
+to know when a column becomes a leaf.
+
+Encoded integers use the existing native hexadecimal convention for very
+large values.  The code never disables Python's global decimal conversion
+limit.  Genus, multiplicity, and Euler arithmetic use exact integers.
+Boolean values are rejected where exact integers are required.  Certificate
+record keys and canonical lists are checked, and caller cancellation
+exceptions propagate rather than being swallowed as false proofs.
+
+\subsection{Why integration remains opt-in}
+
+Replacing the old minimum-fill routine globally would change the meaning
+of its partial output.  On an obstructed matrix, the old routine can make
+many legal partial cancellations, whereas column peeling may stop
+immediately with a canonical residual.  Neither method promises maximum
+partial cancellation.  A consumer using only the full-row verdict can
+switch safely after the stated theorem and tests; a consumer using the
+old partial schedule needs a separate interface review.
+
+The supplied integration patch therefore adds new modules without changing
+the default solver or its old proof schemas.  A caller can explicitly
+invoke the extended whole-cut consumer and independently replay its result.
+Promoting it into a knot-recognition schedule would additionally require
+the selected-surface and peripheral correctness obligations of that
+schedule.  The integration notes list the exact files and test commands.

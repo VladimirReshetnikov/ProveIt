@@ -1,0 +1,511 @@
+\section{Compiling saturated bundles without expanding their genus}
+\label{sec:relative-geometry}
+
+A parallelity component with every base boundary circle attached to the core
+differs fundamentally from one with an unattached boundary interval.  The
+incoming hierarchy-kernel report proves that a proper-boundary attachment
+adds only relative one-handles.  It also shows that a fully attached bordered
+base requires at most one additional two-handle, but leaves that handle's
+attaching curve uncompiled~\cite{incoming-hierarchy-kernels}.  The result of
+this section supplies the geometric intersection data needed to use that
+remaining handle in the maintained cancellation model.
+
+The new information is more precise than a relation in a fundamental-group
+presentation.  We identify the unsigned intersections of an \emph{embedded}
+residual attaching curve with the original core cocores.  Its potentially
+numerous additional one-handles can then be omitted from the cancellation
+matrix, while their number is retained exactly.  The resulting certificate
+determines an unmarked handlebody census.  It does not specify the position
+of every inherited boundary-pattern curve after the cancellations.
+
+\subsection{The geometric input and its source product charts}
+\label{geom:input}
+
+Let $K$ be a compact orientable three-manifold supplied with an actual
+handle decomposition containing zero-, one-, and two-handles and no
+three-handles.  Write $H$ for the union of its zero- and one-handles.
+Thus $H$ is a disjoint union of handlebodies; we do not initially assert
+that the components of $K$ are handlebodies.  For an original one-handle
+$h$, let $D_h$ denote its cocore disc.  The original two-handle attaching
+curves are embedded, pairwise disjoint curves on $\partial H$.
+
+Suppose that orientable total interval bundles
+\[
+ p_i:E_i\longrightarrow B_i
+\]
+are attached to $K$, where every $B_i$ is a connected compact surface
+with nonempty boundary.  Their complete intersections with the core are
+$p_i^{-1}(A_i)$, for compact one-dimensional submanifolds
+$A_i\subseteq\partial B_i$.  Distinct bundle interiors are disjoint,
+and the interfaces have compatible corner collars and no unrecorded
+intersections.  Adjacent source ports have already been amalgamated at
+their actual common corners, so the connected components of $A_i$ are
+genuine maximal closed intervals or whole boundary circles.
+
+For an attached component, $A_i\ne\varnothing$.  Put
+\[
+ a_i=\#\{\text{interval components of }A_i\},\qquad
+ c_i=\#\{\text{circle components of }A_i\},\qquad
+ b_i=|\pi_0(\partial B_i)|.
+\]
+We call the component \emph{saturated} if $A_i=\partial B_i$ and set
+$\varepsilon_i=1$ in that case; otherwise set $\varepsilon_i=0$.
+For a genuine boundary submanifold this is equivalent to
+$c_i=b_i$, in which case necessarily $a_i=0$.
+
+\begin{definition}[Compatibility with the source cocores]
+\label{geom:def-compatible}
+The attaching charts are compatible with the original core cocores if,
+after the fixed compatible rounding and amalgamation of their specified
+corner contacts, their entire port rectangles and collars lie in the
+surviving part of $\partial H$ outside the original two-handle attaching
+regions, and every core-facing port has one of the following product
+descriptions:
+\begin{enumerate}
+\item A core-zero port lies in the boundary of its specified zero-handle
+and misses all $\partial D_h$.
+\item A core-one port is a rectangle whose base-arc coordinate runs
+between the two ends of its specified one-handle and whose other
+coordinate is the interval-bundle fibre.  It meets $\partial D_h$, for
+that one-handle $h$, in one complete fibre, and misses every other
+$\partial D_{h'}$.
+\end{enumerate}
+The statements concern the entire rectangles, including their collars,
+and not only the signed words of their midpoint paths.
+\end{definition}
+
+These are the original source charts used by the maintained disk-bundle
+absorption operator~\cite{marked-parallelity-85}.  A core-one port comes
+from the face-sector side of an edge-cap polygon.  The transverse
+coordinate of the source one-handle runs from one tetrahedron chamber
+to the other; the bundle fibre runs through the gap between parallel
+normal sheets.  A middle transverse cocore therefore cuts the port in
+one complete fibre.  The source tetrahedron--face flags distinguish its
+two ends even for a self-pairing.  This product fact justifies
+Definition~\ref{geom:def-compatible} for the native adapter.
+
+The midpoint section is preserved by a fibre reversal.  Consequently a
+whole attaching circle has a well-defined embedded midpoint curve
+$\gamma_{ij}$, with actual unsigned incidence
+\begin{equation}
+ n_{ij,h}=|\gamma_{ij}\cap\partial D_h|
+ =\#\{\text{core-one ports on that circle owned by }h\}.
+ \label{geom:eq-annulus-incidence}
+\end{equation}
+The finite source walk also verifies that consecutive port segments
+join and that the circle closes.  Neither an exponent sum nor a freely
+reduced word can replace the count in
+\eqref{geom:eq-annulus-incidence}.
+
+The cocore compatibility is a substantive hypothesis.  For an arbitrary
+annulus parametrization and an arbitrary meridian system, a cocore
+boundary can have an additional component running parallel to the
+annulus core.  Midpoint intersection numbers alone would then fail to
+certify that an entire band foot avoids that boundary.  We compile the
+new rows against the original source cocores, before any disc slides,
+so that the verified rectangle description remains available.
+
+\subsection{Relative bands and the contribution of a saturated base}
+\label{geom:relative-counts}
+
+We recall the relative count from the incoming report, including the
+geometric reason for it.  This count is prior work within the project;
+the residual incidence theorem below is the extension developed here.
+
+\begin{lemma}[Relative band count]
+\label{geom:lem-relative-count}
+Let $B$ be a connected compact bordered surface and let
+$\varnothing\ne A\subseteq\partial B$ have $a$ interval components
+and $c$ circle components.  Set
+$\varepsilon=\mathbf{1}_{A=\partial B}$.  An orientable total interval
+bundle over $B$, attached along its vertical bundle over $A$, admits a
+relative decomposition with
+\begin{equation}
+ h_1=a-\chi(B)+\varepsilon,
+ \qquad h_2=\varepsilon,
+ \label{geom:eq-relative-count}
+\end{equation}
+and no additional zero- or three-handles.  The one-handles connect the
+$a+c$ initial interface collars.  In particular
+\[
+ \lambda=h_1-(a+c)+1=1-\chi(B)-c+\varepsilon\geq0.
+\]
+\end{lemma}
+
+\begin{proof}
+First suppose that $A\ne\partial B$.  Triangulate the pair $(B,A)$ and
+choose a boundary edge outside $A$.  Root a spanning tree of the dual
+triangle graph at a triangle incident to that edge.  Collapse this
+triangle across the chosen boundary edge, and subsequently collapse
+each triangle across its edge to its already removed parent.  These
+are free edges when used.  No chosen edge lies in $A$, so the result
+is a connected graph containing $A$, with its relative regular
+neighbourhood homeomorphic to $B$.
+
+Begin with collars of the components of $A$.  In a vertex-disc and
+edge-band neighbourhood of the graph, absorb every additional vertex
+disc along a forest rooted at those collars.  This leaves only surface
+bands.  Since the initial collar has Euler characteristic $a$ and each
+band decreases Euler characteristic by one, there are $a-\chi(B)$
+bands.  Their incidence graph connects the $a+c$ initial collars.
+The interval bundle over each band is a three-dimensional one-handle.
+The interval bundle over an initial collar is merely an outward collar
+of the given interface and is absorbed into the core.  For a circular
+component, its loop preserves orientation in the base collar, so
+orientability of the total space forces trivial fibre reversal around
+it; its vertical interface is therefore an annulus with a product
+collar.  The interval case is a product directly.
+
+If $A=\partial B$, remove the interior of a small disc $\Delta$ in $B$.
+The punctured surface $B^\circ$ has a free boundary circle and
+$\chi(B^\circ)=\chi(B)-1$.  The preceding argument gives
+$1-\chi(B)$ one-handles, since now $a=0$.  Restoring
+$p^{-1}(\Delta)=\Delta\times I$ attaches one two-handle along
+$\partial\Delta\times I$.  A possibly twisted surface band still
+lifts to a three-dimensional one-handle; the orientability assumption
+concerns the total space.  This also proves the nonorientable-base case.
+\end{proof}
+
+For a saturated base of orientable genus $g$ with $b$ boundary circles,
+$h_1=2g+b-1$.  For a nonorientable base with $k$ crosscaps and $b$
+boundary circles, $h_1=k+b-1$.  These can be large numerical quantities.
+The argument gives an existence statement for the relative bands; it
+does not require us to write a list with one entry for every band.
+
+\subsection{The geometric residual incidence theorem}
+\label{geom:residual}
+
+\begin{theorem}[Residual incidence from the source annuli]
+\label{geom:thm-residual-incidence}
+Assume the geometric input of Section~\ref{geom:input}, including
+compatibility with the original core cocores.  Let $E\to B$ be saturated,
+with attaching-annulus midpoint curves $\gamma_1,\ldots,\gamma_b$.
+There is a relative handle presentation with $r=1-\chi(B)$ new
+one-handles and one residual two-handle $R$ such that:
+\begin{enumerate}
+\item Its attaching curve $\alpha_R$ has original-core incidence
+\begin{equation}
+ |\alpha_R\cap\partial D_h|
+ =\sum_{j=1}^{b}|\gamma_j\cap\partial D_h|.
+ \label{geom:eq-residual-row}
+\end{equation}
+\item It meets the cocore of each of these $r$ new one-handles exactly
+twice.
+\item Original core attaching curves and residual curves belonging to
+other bundle components miss all these $r$ new cocores.
+\end{enumerate}
+All the attaching curves occur simultaneously as disjoint embedded
+curves on the boundary of the enlarged zero/one-handle union.
+\end{theorem}
+
+\begin{proof}
+Use the punctured surface $B^\circ=B\setminus\operatorname{int}\Delta$
+from Lemma~\ref{geom:lem-relative-count}.  Its $b$ old boundary circles
+are the attaching set, and its only free boundary circle is
+$C=\partial\Delta$.  Choose its relative presentation as the regular
+neighbourhood of the old boundary collars and $r$ bands.  The inner
+edge of each collar remains one of the old boundary circles.  Every
+other boundary segment must therefore lie on $C$.  In particular,
+\emph{both long sides of every band occur on $C$, each exactly once}.
+
+We arrange the entire band feet to avoid the old cocores.  First extend
+the old cocore discs through the added interface collars by product
+strips.  By Definition~\ref{geom:def-compatible}, their traces on each
+vertical annulus are finitely many complete interval fibres.  On the
+free edge of the corresponding base collar these fibres give a finite
+set of marked points.
+
+Shrink and relocate the finitely many band-foot intervals into small
+unmarked arcs, preserving their cyclic order on that free edge.  An
+orientation-preserving circle homeomorphism realizes this relocation.
+Interpolate it across the collar to the identity on the \emph{actual
+attaching edge} of $B$.  Thus the resulting collar isotopy fixes $A$
+pointwise.  Its lift fixes the given attaching annulus pointwise and
+does not modify the external gluing map.  Since the cocore traces are
+entire fibres, the lifted foot rectangles and sufficiently small
+neighbourhoods of them miss all old cocore boundaries.  Avoiding just
+the midpoint points without this product hypothesis would not suffice.
+
+The free circle $C$ follows the outer edge of each old collar except
+where a band foot has replaced a short subarc.  Every old cocore
+crossing lies outside those feet and is encountered exactly once.
+The portions on the bands lie in new one-handles and add no traversal
+of an original core one-handle.  This proves
+\eqref{geom:eq-residual-row}.
+
+Lift the bands to one-handles and restore $\Delta\times I$.  The
+midpoint section of its attaching annulus gives the embedded curve
+$\alpha_R$.  Each long side of a band crosses the lifted band cocore
+once, so the two sides give exactly two geometric intersections.
+Twisting a surface band can change the signs of these passages but
+cannot change their unsigned number.
+
+The original attaching curves lie outside the interface collars, and
+different bundles have disjoint charts.  Their residual curves can
+therefore be constructed disjointly, and no such curve uses another
+bundle's bands.  The entire construction adds one-handles before
+two-handles and creates no three-handle.  It is consequently a genuine
+geometric handle presentation with all the asserted intersections.
+\end{proof}
+
+For $B$ a disc, $r=0$ and
+\eqref{geom:eq-residual-row} is exactly the earlier disk-absorption
+formula~\cite{marked-parallelity-85}.  For a higher-genus or nonorientable
+base, the theorem compiles the same finite kind of row even though
+the residual curve may run through a very large family of new handles.
+It neither produces a short freely reduced word nor needs one.
+
+\subsection{Connecting different cores and counting the private handles}
+\label{geom:connectors}
+
+Contract a spanning forest of the original zero/one-handle graph.
+Let its connected components be indexed by $j$.  Component $j$ has
+$v_j$ original zero-handles, $e_j$ original one-handles, and $f_j$
+original two-handles.  Its remaining original one-handle count is
+\[
+ d_j=e_j-v_j+1.
+\]
+Contracting a tree handle deletes its incidence column and retains the
+other original cocores.  It does not freely reduce any attaching curve.
+
+Form the bipartite attachment multigraph $\Gamma$: its vertices are
+the original core components and the attached bases, and each connected
+interval or circle interface gives one edge.  Repeated attachments are
+retained as separate edges.  For a connected component $C$ of this
+graph, let $q_C$ be its number of core vertices and put
+\begin{equation}
+ H_C=\sum_{B_i\in C}(a_i-\chi(B_i)+\varepsilon_i),
+ \qquad
+ p_C=H_C-q_C+1.
+ \label{geom:eq-private-count}
+\end{equation}
+
+\begin{lemma}[Connector forest]
+\label{geom:lem-connector-forest}
+The enlarged zero/one-handle union indexed by $C$ is connected.
+Exactly $q_C-1$ of its added one-handles can be contracted as a
+spanning tree joining the original core components.  Its remaining
+added one-handles number $p_C\geq0$.
+\end{lemma}
+
+\begin{proof}
+The relative-band graph for one attached base connects all its
+interface collars.  After those collars are absorbed into the core,
+it therefore connects precisely the core components incident to that
+base.  Doing this for all bases gives the same connected-component
+relation as $\Gamma$.  Higher-index handles do not join components.
+Hence the added one-handle graph on the $q_C$ original core pieces is
+connected.  Choose a spanning tree, which has $q_C-1$ edges, and
+contract its corresponding handles.  The remaining number is
+$H_C-(q_C-1)$, as claimed.
+\end{proof}
+
+We call these remaining added handles \emph{private} to distinguish
+them from the original core columns on which the cancellation search
+will operate.  Initially each private column has either only zero
+entries or a single entry equal to two in its own saturated residual
+row.  Tree contraction merely deletes some added columns and leaves
+this property intact.
+
+The correction by $q_C-1$ is essential.  A single saturated annulus
+has $1-\chi(B)=1$ relative band.  If its two boundary annuli attach
+to distinct core components, that band joins them and is contracted;
+there is no surviving private handle.  More generally, one saturated
+base meeting $s$ distinct cores leaves $1-\chi(B)-(s-1)$ added
+handles after those mergers.  This is $2g+b-s$ for an orientable
+base and $k+b-s$ for a nonorientable base.
+
+\subsection{The finite active matrix and the handlebody census}
+\label{geom:active-matrix}
+
+The full geometric positive-pivot operation at an entry $n_{rg}=1$
+has unsigned update rule
+\begin{equation}
+ n'_{ih}=n_{ih}+n_{ig}n_{rh}
+ \qquad(i\ne r,\ h\ne g).
+ \label{geom:eq-positive-pivot}
+\end{equation}
+The maintained geometric disc-slide theorem realizes this rule by
+embedded disc slides followed by a one/two-handle cancellation
+\cite{marked-parallelity-85}.  Its hypothesis is the actual one-point
+intersection, not a unit algebraic intersection number.
+
+An initially even column stays even under
+\eqref{geom:eq-positive-pivot}.  More generally, an initial column
+with entries only zero or at least two can never acquire a unit
+entry; see Lemma~\ref{lem:inert-columns}.  Thus no private column
+can ever be used as a pivot.  The original-column submatrix evolves
+autonomously under the same rule, since an update on an original
+column refers only to entries in that column and in the selected
+original pivot column.
+
+\begin{proposition}[Active incidence compilation]
+\label{geom:prop-active-compilation}
+After the forest contractions above, form a matrix $N$ as follows.
+Keep the rows of the original core two-handles, restricted to the
+surviving original one-handles.  Append one row for every saturated
+base, with entries given by \eqref{geom:eq-residual-row}.  Do not
+append any row for an unsaturated base and do not represent any
+private column.
+
+The full relative geometric presentation admits a positive-pivot
+schedule eliminating every two-handle if and only if $N$ does.
+Any successful schedule for $N$ certifies actual geometric
+cancellations in the full presentation.  This equivalence remains
+true when all positive entries are capped at two.
+\end{proposition}
+
+\begin{proof}
+Private columns cannot pivot, and deleting them leaves the updates
+on the other columns unchanged.  A full schedule therefore restricts
+to a schedule on $N$.  Conversely, execute a schedule for $N$ on the
+full matrix.  Its selected entries are still one, so the geometric
+disc-slide and cancellation theorem applies at every step.  All rows
+are removed.  The map $n\mapsto\min(2,n)$ preserves addition and
+multiplication in the saturated nonnegative semiring, and detects
+the predicate $n=1$ exactly.  It therefore preserves the argument.
+\end{proof}
+
+Theorem~\ref{thm:column-peeling} supplies the complete finite procedure
+for full-row elimination in this raw model.  In particular, the
+large matrix implicit in the relative presentation need never be
+materialized: the producer and checker work with the original
+core columns, the original rows, and one additional finite row per
+saturated base.
+
+\begin{theorem}[Certified whole-cut handlebody census]
+\label{geom:thm-census}
+Assume the source geometric contract, no core three-handles, and
+bordered bases.  Suppose the compiled active matrix has a verified
+schedule eliminating all its rows.  Then each component $X_C$
+indexed by the attachment graph is a handlebody, of genus
+\begin{align}
+ G_C
+ &=\sum_{j\in C}d_j+p_C-\sum_{j\in C}f_j
+     -\sum_{i\in C}\varepsilon_i
+ \label{geom:eq-census}\\
+ &=\sum_{j\in C}(e_j-v_j+1-f_j)
+   +\sum_{i\in C}(a_i-\chi(B_i))-q_C+1.
+ \label{geom:eq-census-euler}
+\end{align}
+Every unported bordered bundle is a separate handlebody of genus
+$1-\chi(B_i)$ and contributes its entire authenticated multiplicity.
+These data determine the complete genus histogram of the cut.
+\end{theorem}
+
+\begin{proof}
+After contracting the two forests, the connected zero/one-handle
+union for $C$ is a handlebody with
+$\sum_jd_j+p_C$ one-handles.  There are
+$\sum_jf_j+\sum_i\varepsilon_i$ two-handles.  By
+Proposition~\ref{geom:prop-active-compilation}, the checked schedule
+cancels all of them geometrically, leaving exactly the number of
+one-handles in \eqref{geom:eq-census}.  Substitution of
+\eqref{geom:eq-private-count} gives
+\eqref{geom:eq-census-euler}.
+
+An orientable total interval bundle over a connected bordered
+surface is a handlebody: choose proper arcs cutting the base to a
+disc and lift them to cocore discs.  There are $1-\chi(B_i)$ arcs,
+including for a nonorientable base.  An unported component has no
+intersection with the core or with another bundle component, so it
+must be counted separately with its full multiplicity.
+\end{proof}
+
+There is an independent Euler check.  The intersection of the core
+with a proper interval interface is a disc, and with a complete
+circle interface is an annulus.  Hence
+\[
+ \chi(X_C)=\sum_{j\in C}(v_j-e_j+f_j)
+           +\sum_{i\in C}\chi(B_i)-\sum_{i\in C}a_i,
+\]
+which equals $1-G_C$ by \eqref{geom:eq-census-euler}.  This equality
+checks the count; it does not substitute for the cancellation proof.
+In particular, the conditional expression $G_C=0$ is not a ball
+certificate when the active matrix has a surviving row.
+
+\subsection{Examples and boundaries of the conclusion}
+\label{geom:examples}
+
+\paragraph{A saturated annulus joining two solid tori.}
+Let its boundary annuli attach to solid-torus cores whose standard
+meridians meet their midpoint curves $p$ and $q$ times respectively.
+Choose the usual embedded slopes with these positive geometric
+winding numbers.  The connecting band merges the two cores and
+is contracted.  The active matrix is the single row $(p,q)$, with
+no private columns.  If $p=1$ or $q=1$, one geometric cancellation
+proves that the union is a solid torus.  The genus computation is
+$2+0-1=1$.
+
+For $p=2$ and $q=3$ there is no unit pivot.  This refusal is
+necessary for this example: van Kampen gives
+\[
+ \langle x,y\mid x^2=y^3\rangle,
+\]
+which maps onto the nonabelian group $S_3$ by sending $x$ to a
+transposition and $y$ to a three-cycle.  Its abelianization is
+$\mathbb Z$, so first homology alone would not distinguish it
+from the positive solid-torus cases.
+
+\paragraph{A saturated M\"obius bundle.}
+The orientable interval bundle over a M\"obius band is a solid
+torus, with the vertical boundary representing the square of its
+core generator.  Attach that annulus to a solid-torus core along
+an annulus with one geometric meridian intersection.  The relative
+description has one private one-handle and one residual row whose
+active part is $(1)$.  Cancelling against the original core handle
+leaves one private handle, proving a solid torus.  The corresponding
+relation can be written $x=a^2$, but the positive conclusion comes
+from the embedded cancellation.
+
+If instead the same vertical annulus is attached to a
+nullhomotopic annulus on the boundary of a ball, the active matrix
+has one \emph{empty} row.  Its private column has incidence two.
+No cancellation is authorized.  Indeed the resulting group is
+$\langle a\mid a^2\rangle\cong\mathbb Z/2$, whereas its Euler
+characteristic is one and its boundary is a sphere.  This is a
+concrete reason to keep the surviving-row obligation separate
+from the conditional genus arithmetic.
+
+\paragraph{Arbitrarily large binary genus.}
+Let $B$ be orientable of genus $g$ with one boundary component,
+and attach its vertical boundary annulus to a solid-torus core
+along a curve meeting a standard meridian once.  There are $2g$
+private handles and one active unit entry.  The residual cancels
+the original core handle, leaving a handlebody of genus $2g$.
+For $g=2^L$ the genus counter requires $O(L)$ bits, while the
+active matrix still contains just one entry.  This is a family
+of explicitly specified relative topological attachments.  It
+does not assert that every member has a normal-cut source
+triangulation with $O(L)$ tetrahedra.
+
+\paragraph{What successful augmentation does and does not imply.}
+No core handlebody conclusion is assumed by the compiler, but a
+successful full column-peeling schedule restricts to one for any
+subset of its rows: deleting the other rows can only make its
+pivot columns less occupied.  Thus successful joint cancellation
+implies raw cancellability of the original core rows themselves.
+Adding saturated residual rows cannot rescue a core outside that
+raw cancellation class.  This observation also justifies an early
+filter: an obstruction in the original core matrix permits this
+consumer to stop before requesting the ordered-boundary queries.
+It is a refusal by this consumer, not a proof of non-handlebodyness.
+
+If the active matrix stalls, disc slides that reduce geometric
+intersection numbers, another meridian system, or a different
+handle presentation might still succeed.  Closed bases and core
+three-handles remain outside the present operator.  A successful
+histogram concerns the \emph{entire supplied cut}, including
+isolated components.  A knot verdict additionally requires the
+appropriate cutting-surface and peripheral information together
+with authenticated provenance from the input knot diagram.
+
+Finally, the private bands and the residual curve are constructed
+by existence in the proof, while their required incidences are
+compiled from source charts.  The certificate does not provide
+a source address for an arbitrary private cocore, nor the
+transport of a later boundary pattern through the chosen band
+decomposition.  Closing those geometric interfaces, controlling
+surface discovery, and bounding all hierarchy stages remain
+necessary to reach the quasi-polynomial objective discussed in
+Lackenby's program~\cite{lackenby2026}.

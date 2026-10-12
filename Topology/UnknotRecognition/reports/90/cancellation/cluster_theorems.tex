@@ -1,0 +1,362 @@
+\section{Discovery by connected cancellation profiles}
+\label{sec:cancellation-clusters}
+
+The cancellation parameter can be refined by retaining the positions of the
+exceptional edges.  The refinement below is independent of any proposed
+global bound on that parameter.  It does not assume that a quadrilateral
+sector is supplied, and it accommodates repeated local occurrences of a
+global edge.
+
+Let $\mathcal T$ have $t$ tetrahedra and $m$ global edges, one global vertex,
+and first Betti number one.  Assume that its underlying compact connected
+orientable manifold has exactly one torus boundary.  Write $c$ for a
+primitive integral cocycle and $b_e=|c_e|$.  Every essential normal disc has
+weights $w=b+u$, where all $u_e$ are nonnegative even integers.  Its
+cancellation support is $F=\{e:u_e>0\}$.
+
+Define $G$ to have the global edges as its vertices, with two distinct
+vertices adjacent when their edges occur in a common tetrahedron.  Let
+\[
+ d=\max_e\#\{\Delta:e\text{ occurs in }\Delta\},\qquad
+ q(F)=\#\pi_0(G[F]).
+\]
+An edge occurring several times in one tetrahedron contributes one to
+$d$, although all its local occurrences are retained in the equations.
+Thus the maximum graph degree is at most $5d$.  Put $q(\varnothing)=0$.
+Both $d$ and $q$ concern this triangulation; neither is invariant under
+changes of source.
+
+\subsection{The local product theorem}
+
+Use the global edge-coordinate hyperplanes $\mathcal H$: the equations
+$w_e=0$, the three differences of opposite-edge sums in each tetrahedron,
+and the twelve face-corner expressions in each tetrahedron.  There are at
+most $m+15t$ rows.  Every row is supported on at most four global edges,
+has integer coefficients with sum of absolute values at most four, and
+comes from one tetrahedron or one edge.  Identifications can cancel or
+combine terms but do not increase this bound.
+
+For a set $S$ of edges let $\operatorname{st}(S)$ be the tetrahedra that
+meet it, and let $\mathcal H_S$ consist of the rows whose restriction to
+$\mathbb R^S$ is nonzero.  Then
+\begin{equation}\label{eq:cluster-row-count}
+ |\mathcal H_S|\le |S|+15|\operatorname{st}(S)|
+                    \le (1+15d)|S|.
+\end{equation}
+
+\begin{theorem}[Product of local affine profiles]\label{thm:cluster-product}
+Let $F_1,\ldots,F_r$ be the components of $G[F]$.  Fix any admissible
+quadrilateral sector $Q$.  In the affine space $b+\mathbb R^F$, the
+conditions for membership in its edge-coordinate cone $C_Q$ factor as a
+Cartesian product of polyhedra on the separate coordinate sets $F_i$.
+The $i$th factor uses only tetrahedra in $\operatorname{st}(F_i)$.
+
+Suppose $w=b+u$ generates a standard vertex normal ray and that
+$\operatorname{supp}b\not\subseteq F$.  For each $i$ there are
+$s_i=|F_i|$ hyperplanes from $\mathcal H_{F_i}$ such that the system
+\begin{equation}\label{eq:cluster-affine}
+ R_i u_{F_i}=-a_i,\qquad (a_i)_\ell=\ell(b),
+ \quad (R_i)_{\ell,e}=\ell_e,
+\end{equation}
+is nonsingular and has exactly the target increment as its solution.
+Its local reconstruction agrees with $w$ on
+$\operatorname{st}(F_i)$ and with the coherent vector elsewhere.
+\end{theorem}
+
+\begin{proof}
+No tetrahedron can meet two different $F_i$, since its edges would join
+those components in $G[F]$.  The edge-coordinate description of normal
+surfaces uses only local four-point conditions and face-corner
+inequalities: normal matching is automatic when global edge weights
+agree.  The constraints in a tetrahedron therefore involve at most one
+group of variable increments.  Constraints in an untouched tetrahedron
+are constant.  If that constant violates the chosen sector, the slice is
+empty; otherwise its nonempty factors have the stated product form.  For
+a sector containing the target the latter alternative applies.
+
+Choose an unchanged edge $e$ with $b_e>0$.  The affine slice fixes
+$w_e=b_e$, and hence meets the ray $\mathbb R_{>0}w$ at just one point.
+Extremality of that ray implies that $w$ is an extreme point of
+$C_Q\cap(b+\mathbb R^F)$.  An extreme point of a nonempty Cartesian
+product is extreme in every factor: a nontrivial decomposition in one
+factor would give such a decomposition of the product point.
+
+At an extreme point of a polyhedron in $\mathbb R^{s_i}$, the active
+equalities and inequality boundaries have normals spanning all of
+$\mathbb R^{s_i}$.  Otherwise a small displacement in a nonzero common
+null direction, of either sign, would stay feasible.  These active
+boundaries are all rows from $\mathcal H_{F_i}$.  Select $s_i$
+independent ones.  This gives \eqref{eq:cluster-affine}.  Restrictions of
+one global row cannot couple different components, which also supplies
+a direct block-rank proof.  Finally, each local reconstruction is a
+target tetrahedron or a coherent tetrahedron, so it is admissible and
+matches globally.  No equality of the target and coherent quadrilateral
+types is used.
+\end{proof}
+
+\begin{lemma}[The exceptional support is connected]\label{lem:cluster-exception}
+If a nonzero admissible standard normal vector spans an extreme ray,
+the support of its positive global edge weights is connected in $G$.
+Consequently, if $w=b+u$ is a vertex disc with $u_e>0$ exactly on $F$
+and $\operatorname{supp}b\subseteq F$, then $G[F]$ is connected.
+\end{lemma}
+
+\begin{proof}
+If the positive edge support has several components, restrict $w$ to
+one component and set every other edge weight to zero.  In each
+tetrahedron the resulting weights are either the original weights or
+all zero, because a tetrahedron cannot meet two components.  Local
+reconstruction gives either the original standard coordinates or zero.
+These vectors satisfy matching and the same quadrilateral constraints.
+They are nonzero and sum to the original vector, giving a
+nonproportional nonnegative decomposition and contradicting extremality.
+In the exceptional situation the positive edge support is precisely $F$.
+\end{proof}
+
+The lemma concerns the support of $w$, not the support of $w-b$.
+Subtracting a coherent vector can disconnect that support.  In
+particular it supplies no justification for replacing a component budget
+$q(F)\le r$ by the unrestricted assertion $q(F)=1$.
+
+\subsection{A complete algorithm and its cost}
+
+A \emph{profile on $S$} consists of a positive even integral solution of
+\eqref{eq:cluster-affine}, the standard coordinates reconstructed on
+$\operatorname{st}(S)$, and its change in Euler characteristic.  Every
+candidate is checked locally before retention.  Distinct descriptions
+that produce the same increments are deduplicated.  The parity
+restriction loses no essential discs: adding even increments to the
+coherent edge weights preserves even total weight on every face.
+
+Enumerate all connected edge sets $S$ with $1\le |S|\le k$.  For each,
+enumerate the $|S|$-subsets of $\mathcal H_S$, solve the square affine
+systems, and retain their profiles.  Combine at most $r$ profiles whose
+supports are pairwise nonadjacent in $G$ and whose total size is at most
+$k$.  Their tetrahedron stars are disjoint, so their local replacement
+coordinates assemble without conflict.  The coherent surface is tested
+separately.
+
+For an exceptional connected set $S$ containing
+$\operatorname{supp}b$, additionally choose $|S|-1$ rows from
+$\mathcal H_S$.  Restrict these rows to $\mathbb R^S$, append
+$\sum_{e\in S}w_e=1$, and solve whenever the square matrix is
+nonsingular.  Keep strictly positive directions and reconstruct a
+primitive integral normal vector.  Recompute its actual increments
+relative to $b$ before claiming membership in a cancellation class.  The
+usual active-ray argument supplies one of these systems for every
+exceptional vertex disc.  Lemma~\ref{lem:cluster-exception} ensures that
+no disconnected exceptional support is omitted.
+
+\paragraph{Why the positive gate certifies a connected disc.}
+For a primitive admissible integral vector $x$, let $J$ be its positive
+standard-coordinate support.  If the matching matrix restricted to $J$
+has nullity one, each connected component vector is $\lambda x$ for
+some $\lambda>0$.  Bezout coefficients for $\gcd(x_j)=1$ show that an
+integral vector $\lambda x$ has integral $\lambda$: if
+$\sum a_jx_j=1$, then $\lambda=\sum a_j(\lambda x_j)$.  Since the
+component coefficients sum to one, there is exactly one component.
+Nonzero boundary cohomology modulo two ensures nonempty boundary.  The
+classification of compact connected surfaces then makes $\chi(x)=1$
+equivalent to a disc.  Its boundary is essential because an essential
+simple torus curve has primitive slope, whereas an inessential one has
+zero mod-two homology class.  The gate computes the class modulo vertex
+coboundaries, and a nonzero supported minor supplies independent exact
+rank evidence.  This is the incoming polynomial gate, reused unchanged.
+
+\begin{theorem}[Cancellation-cluster discovery]\label{thm:cluster-complexity}
+There is a deterministic exact algorithm which, on a source satisfying
+the stated hypotheses, finds an essential normal disc whenever there is
+a standard vertex essential disc with
+\[
+                         |F|\le k,\qquad q(F)\le r.
+\]
+Writing $B$ for a bound on the binary length of the coherent weights and
+source indices, its bit complexity is bounded by
+\begin{equation}\label{eq:cluster-cost}
+          t^{r+O(1)}(C d^2)^k\operatorname{poly}(k,B)
+\end{equation}
+for an absolute constant $C$.  A polynomial rank-and-boundary vertex-disc
+gate suffices; no bound in the expanded normal-piece count is needed.
+The component budget may first be replaced by $\min\{r,k\}$.
+For $r=0$ only the coherent case is promised.  The bound may always be
+combined, by an ordinary race or by comparing certified input
+parameters, with the previous unrestricted cancellation-support bound.
+\end{theorem}
+
+\begin{proof}
+For a promised nonexceptional disc, Theorem~\ref{thm:cluster-product}
+places the true increment on every component among the retained
+profiles.  These profiles have pairwise nonadjacent supports, and the
+combination stage reconstructs the entire disc.  The exceptional case
+was covered above.  Primitive normalization followed by the exact
+supported-rank, Euler, and boundary-cohomology gate verifies every
+reported positive result.  On a torus boundary a primitive vertex normal
+vector of Euler characteristic one and nonzero boundary class modulo two
+is an essential disc.  This gate is polynomial in the encoded source and
+coordinates.
+
+For counting, a graph of maximum degree $\Delta$ has at most
+$m(4\max\{1,\Delta\})^{s-1}$ connected sets of size $s$.  One
+elementary enumeration chooses a root, a rooted ordered spanning-tree
+shape (at most $4^{s-1}$ choices), and one neighbor for each tree edge;
+every connected set has such a description.  With $\Delta\le5d$, this
+is at most $m(20d)^{s-1}$.  Equation~\eqref{eq:cluster-row-count} and
+$\binom Ns\le(eN/s)^s$ bound the affine systems for one support by
+$[e(1+15d)]^s$.  Thus, for some absolute $C_0$, the number of size-$s$
+profiles and the work descriptions producing them are at most
+$m(C_0d^2)^s$, up to polynomial factors per description.  The
+exceptional systems have the same bound: for $s\ge2$ use
+$\binom{(1+15d)s}{s-1}\le[2e(1+15d)]^{s-1}$, and handle $s=1$
+directly.
+
+For $a\le r$ components of total size $s\le k$, there are
+$\binom{s-1}{a-1}$ ordered positive size compositions.  Even before
+rejecting incompatible supports, their product lists have length at
+most $m^a(C_0d^2)^s$.  Summing over $a,s$ costs a factor at most
+$\operatorname{poly}(k)2^k m^r$.  Each exact solve, assembly and
+verification costs a fixed polynomial in $t,k,B$ by the bit estimate
+below.  Absorb the absolute exponential constants into $C$ to obtain
+\eqref{eq:cluster-cost}.  Enumeration, rejected extensions, local
+reconstruction, and verification are included in these charges.
+\end{proof}
+
+\begin{proposition}[Anchored systems have short binary solutions]
+For an affine profile on $s$ edges, the rational increments have a
+common denominator of magnitude at most $4^s$ and numerators of
+magnitude at most $s4^s\max_e b_e$.  In particular their bit length is
+$B+O(s+\log(s+1))$.  The integral profiles retained by the algorithm and
+their assembled normal vectors have bit length
+$B+O(k+\log(k+1))$ per coordinate.
+\end{proposition}
+
+\begin{proof}
+Every row of the square matrix $R$ has Euclidean norm at most four.
+Hadamard's inequality gives $|\det R|\le4^s$, and every cofactor has
+magnitude at most $4^{s-1}$.  The right-hand side has entries of
+magnitude at most $4\max b_e$.  The adjugate formula therefore gives
+the asserted numerator bound.  Only the single right-hand side carries
+the $B$-bit coherent weights; multiplying $B$ by the system order is
+unnecessary.  Local reconstruction consists of sums, differences,
+minima, and division by two.  The retained profiles have even integral
+increments, and disjoint-star assembly takes one profile value per
+changed edge and one replacement row per changed tetrahedron.
+Exceptional homogeneous rays have integer cofactor representatives of
+$O(s)$ bits before reconstruction and primitive normalization, so they
+obey the same final bound.
+\end{proof}
+
+\subsection{A certified disc with two separated cancellation components}
+\label{sec:cluster-counterexample}
+
+Start with the incoming eight-tetrahedron coherent obstruction, attach
+four of its prescribed Fibonacci boundary layers, and perform the
+$2$--$3$ moves at the currently labelled sites
+\[
+                        (4,0),\quad(5,0),\quad(12,0).
+\]
+The resulting solid torus has fifteen tetrahedra, seventeen global edges,
+one vertex, maximum tetrahedron-incidence degree $d=8$, and Regina
+isomorphism signature
+\begin{center}\texttt{pHKzvvPAPQMcbcdlhlhjmmmlnoohqxrorfjidicxak}.\end{center}
+Its primitive coherent vector has Euler characteristic $-7$.  The
+source-bound witness supplied in \texttt{disconnected\_disc.json} is a
+primitive standard vertex meridian $D$ with
+\[
+                 w(D)=b+4\mathbf e_{47}+4\mathbf e_{53}.
+\]
+The tetrahedron stars are $\operatorname{st}(47)=\{7,13\}$ and
+$\operatorname{st}(53)=\{8\}$, so the cancellation support has two
+singleton components in $G$.  The witness has $133$ normal pieces and
+Euler characteristic one; the coherent vector has $127$ pieces.  All
+coordinates, full face pairings, the move history, and an independently
+replayable rank-and-boundary certificate are retained.
+
+This is a counterexample to the claim that the cancellation support of
+every vertex meridian is connected.  The new algorithm with $k=2,r=1$
+exhausts its restricted class without finding a disc, whereas $k=2,r=2$
+finds $D$.  The incoming complete weight-space algorithm independently
+recovers $D$ from the supplied support $\{47,53\}$.
+
+\begin{proposition}[Exact minimum cancellation support in the retained source]
+\label{prop:cluster-fixture-minimum}
+For this fifteen-tetrahedron triangulation, the minimum cancellation
+support size among standard vertex meridians is
+$\kappa_V(\mathcal T)=2$.
+\end{proposition}
+
+\begin{proof}[Proof by exact finite algebraic exhaustion]
+The independently certified vector $D$ supplies the upper bound.  The
+coherent vector has Euler characteristic $-7$, so support size zero is
+impossible.  Moreover $b$ is nonzero on fifteen of the seventeen global
+edges.  Thus for any singleton $F=\{e\}$ the exceptional case
+$\operatorname{supp}b\subseteq F$ is excluded.  By the active-equation
+argument in Theorem~\ref{thm:cluster-product}, a vertex meridian with
+this support must occur at an offset
+\[
+       \delta=-\frac{\ell(b)}{\ell_e}>0,
+       \qquad \delta\in 2\mathbb Z,
+       \qquad \ell\in\mathcal H,\quad \ell_e\ne0.
+\]
+The script \texttt{audit\_one\_edge\_inventory.py} constructs the dense
+global rows directly from the local corner and opposite-sum formulas,
+independently of the new profile producer and its sparse hyperplane
+builder.  It obtains $119$ distinct rows, $327$ nonzero row--edge
+incidences, and $35$ distinct positive even pairs $(e,\delta)$.  Exact
+local normal reconstruction rejects $32$ pairs.  The remaining three
+are
+\[
+\begin{array}{c|r|r}
+e&\delta&\chi(b+\delta\mathbf 1_e)\\ \hline
+42&4&-3\\
+47&4&-3\\
+53&4&-3
+\end{array}
+\]
+and hence none is a disc.  This exhausts support sizes zero and one,
+proving the lower bound.  The source hash, all offsets, all three normal
+vectors, and exact Euler characteristics are retained in
+\texttt{artifacts/one\_edge\_inventory.json}.
+\end{proof}
+
+This finite proof uses the maintained cocycle and coordinate routines
+and the incoming local normal decoder; it is independent of the new
+candidate enumeration, not an independent reimplementation of every
+topological primitive.  It is a reproducible exact computation, not a
+proof-assistant formalization or a separate generic negative-certificate
+format.  It does not rule out one-component cancellation supports of
+arbitrary size, nor does it require the following full vertex census.
+
+For additional finite evidence, Regina 7.4 standard-coordinate tree
+traversal and direct double description independently produced the same
+$821$ vertex vectors.  Exactly three passed the meridian test; their
+$(|F|,q(F))$ pairs are $(2,2),(4,2),(4,2)$.  Every positive meridian
+passes the separate exact certificate checker.  The completeness of
+this additional census relies on those external enumeration
+implementations; the package does not contain an independently checked
+negative certificate for absence of all possible one-component vertex
+meridians.  The explicit positive counterexample and the restricted
+algorithmic theorem do not depend on that stronger census conclusion.
+
+\subsection{Scope of the improvement}
+
+For bounded $d$, fixed $r$, and $k=O(\log t)$,
+\eqref{eq:cluster-cost} is polynomial.  For example, bounded $d$,
+$r=O(\log t)$, and $k=O((\log t)^2)$ give quasipolynomial discovery.
+More generally, when $B$ is polynomial in $t$, the sufficient budget is
+\[
+       r\log(t+1)+k\log(d+1)=O((\log(t+1))^2).
+\]
+These implications are conditional on the existence of a suitable
+vertex disc in a certified source.  An edge may meet $\Theta(t)$
+tetrahedra, $r$ may equal $k$, and no theorem here supplies a source
+family with the required bounds.  In the absence of such information,
+the unrestricted incoming algorithm can be asymptotically better.
+
+The result is restricted to one global vertex and rank-one cocycles.
+With several vertices, the signed cocycle can vary by vertex
+coboundaries; independently solving local factors with a fixed vector
+$b$ is then incomplete.  The earlier sign-chamber method or a separately
+proved treatment of shared cocycle parameters is needed.  Boundary
+cohomology in the positive verifier must still be taken modulo all
+boundary-vertex coboundaries; a nonzero raw parity vector is insufficient
+in that more general setting.

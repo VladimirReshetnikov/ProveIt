@@ -1,0 +1,395 @@
+% Research notes for incorporation into the main article.
+% This is a LaTeX fragment: the parent manuscript supplies amsmath/amsthm.
+% Bibliographic records at the end may be merged into its bibliography.
+
+\section{Repetition kernels from aligned component partitions}
+\label{sec:aligned-routing}
+
+The four-copy theorem for connected tiles extends to a class of disconnected
+tiles substantially larger than matchings of individual input and output ports.
+The correct hypothesis concerns the partitions of the interface indices induced
+by connected components.  In particular, componentwise transport avoids taking
+the least common multiple of permutation cycle lengths.
+
+\subsection{Conventions and the connected primitive}
+
+All graphs are finite undirected multigraphs; loops and parallel edge occurrences
+are retained.  Every edge has unit cut cost.  A tile has ordered disjoint
+interfaces
+\[
+ L=(\ell_1,\ldots,\ell_w),\qquad R=(r_1,\ldots,r_w),
+\]
+where every listed vertex is distinct and $w\geq1$.  Serial composition identifies
+the output of one occurrence with the input of the next, coordinate by coordinate.
+It identifies vertices, never edges.  Private vertices in distinct occurrences
+remain distinct unless a prescribed serial seam identifies boundary vertices.
+
+For a coloring $c:V(G)\to\{0,1\}$ write
+\[
+ \begin{aligned}
+ q_G(c)&=|\{uv\in E(G):c(u)\ne c(v)\}|,\\
+ F_G(c)&=\{a:\text{an edge has both endpoints colored }a\}.
+ \end{aligned}
+\]
+For a threshold $k\geq0$, the marked signature $\mathsf S_k(G)$ is the minimum
+cut cost for each prescribed coloring of its exposed vertices and each
+\emph{exact} mark set $F\subseteq\{0,1\}$, with every value exceeding $k$ and
+infeasibility represented by the common value $k+1$.
+
+The incoming four-copy article proves the following primitive
+\cite{incoming-four-copy}.  It is recalled to make the dependency of the new
+result explicit.
+
+\begin{lemma}[Connected repetition primitive]
+\label{lem:route-connected}
+For a connected tile $W$ with equal nonempty input and output widths, put
+\[
+ a_k=\begin{cases}4,&k=3,\\ k+2,&k\ne3.\end{cases}
+\]
+Then, for every positive integer $q$,
+\[
+ \mathsf S_k(W^{\circ q})
+ =\mathsf S_k(W^{\circ\min(q,a_k)}).
+\]
+Moreover, a coloring of $W^{\circ a_k}$ with cut cost at most $k$ contains a
+zero-cost occurrence of $W$.  Such an occurrence is monochromatic and may be
+duplicated arbitrarily without changing boundary colors, cut cost, or exact
+edge marks.
+\end{lemma}
+
+The duplication assertion follows because $a_k>k$, every positive-cost
+occurrence contributes at least one, and connectedness makes a zero-cost
+coloring monochromatic.  The distinction between equality of \emph{minimum}
+signatures and preservation of every individual coloring remains relevant:
+compression in the connected four-copy proof can lower an individual coloring's
+cost; lifting from the kernel by duplication preserves its cost exactly.
+
+\subsection{Aligned partitions}
+
+\begin{definition}[Aligned component partitions]
+\label{def:route-aligned}
+Let $C_1,\ldots,C_d$ be all connected components of a tile $T$.  Define
+\[
+ A_j=\{i:\ell_i\in C_j\},\qquad B_j=\{i:r_i\in C_j\}.
+\]
+The tile has aligned component partitions if every $A_j$ and $B_j$ is nonempty
+and the two unordered collections of subsets of $[w]$ coincide:
+\[
+ \{A_1,\ldots,A_d\}=\{B_1,\ldots,B_d\}.
+\]
+There is then a unique permutation $\sigma$ of $[d]$ satisfying
+$B_j=A_{\sigma(j)}$ for every $j$.
+\end{definition}
+
+The sets in either collection are a partition of $[w]$.  The condition is
+testable directly from the component graph and the port lists.  It includes a
+connected tile ($d=1$), and the permutation-zero class where every component
+has exactly one input and one output ($d=w$).  It also permits variable component
+widths.  For example, one component can transport a one-element block to a
+two-element block, provided another component transports the latter block back.
+Thus $|A_j|=|B_j|$ is \emph{not} required for individual components.
+
+Within component $C_j$, order its input ports by their original indices in
+$A_j$ and its output ports by their original indices in $A_{\sigma(j)}$.
+Its individual input and output widths may differ.  Adjacent components in a
+$\sigma$-orbit have matching intermediate interfaces because they use exactly
+the same index set.  A complete orbit word returns to its initial index set
+and therefore is an ordinary equal-width connected tile.
+
+\begin{lemma}[Decomposition into component chains]
+\label{lem:route-chains}
+Suppose $T$ has aligned component partitions.  For every $N\geq1$, its open
+power is the disjoint union, over $j\in[d]$, of the connected component chains
+\[
+ P_{j,N}=C_j\circ C_{\sigma(j)}\circ\cdots\circ C_{\sigma^{N-1}(j)}.
+\]
+The input ports of this chain are $L|_{A_j}$ and its output ports are
+$R|_{A_{\sigma^N(j)}}$, with their original coordinate labels.
+\end{lemma}
+
+\begin{proof}
+At a serial seam, all outputs of $C_j$ have indices in $B_j=A_{\sigma(j)}$,
+so they are identified with inputs of exactly one component in the next layer,
+namely $C_{\sigma(j)}$.  Every one of those input ports is used.  Conversely,
+each component in the next layer has exactly one predecessor component because
+$\sigma$ is a permutation.  Consequently distinct chains do not merge or split.
+Every component occurrence is on exactly one chain, the one whose initial
+index is $\sigma^{-s}(j)$ if it is $C_j$ in layer $s$.  Each chain is connected
+because its components are connected and consecutive components are glued
+along a nonempty interface.  The assertion about external ports follows by
+tracking these index sets through the $N$ layers.
+\end{proof}
+
+\subsection{The componentwise kernel theorem}
+
+Let $\mathcal O$ run over the cycles of $\sigma$, and put
+\[
+ h_{\mathcal O}=|\mathcal O|,\qquad
+ Q_{\mathcal O}=\sum_{j\in\mathcal O}
+       \bigl(|V(C_j)|+|E(C_j)|\bigr),\qquad
+ Q=\sum_{\mathcal O}Q_{\mathcal O}.
+\]
+For a fixed $j\in\mathcal O$, define the full-cycle word and prefix word by
+\[
+ W_j=C_j\circ\cdots\circ C_{\sigma^{h_{\mathcal O}-1}(j)},
+ \qquad
+ V_{j,r}=C_j\circ\cdots\circ C_{\sigma^{r-1}(j)}.
+\]
+The word $V_{j,0}$ is empty: it is an identity interface and contributes no
+new edge or private vertex.  This convention is used in formulas; an
+implementation need not create a zero-exponent block.
+
+\begin{theorem}[Kernel without a global permutation period]
+\label{thm:route-kernel}
+Let $T$ have aligned component partitions and let $N\geq1$ be given in binary.
+For each cycle $\mathcal O$, write
+\[
+ N=q_{\mathcal O}h_{\mathcal O}+r_{\mathcal O},
+ \qquad 0\leq r_{\mathcal O}<h_{\mathcal O}.
+\]
+Replace the chain starting at $j\in\mathcal O$ by
+\[
+ K_{j,N}
+ =W_j^{\circ\min(q_{\mathcal O},a_k)}
+      \circ V_{j,r_{\mathcal O}},
+\]
+omitting an empty factor.  Give this chain the original exposed input labels
+$A_j$ and output labels $A_{\sigma^N(j)}$.  Let $K(T,N)$ be the disjoint union
+of these $d$ chains.  Then
+\[
+ \mathsf S_k(T^{\circ N})=\mathsf S_k(K(T,N)).
+\]
+Its explicit size, counting vertices and edge occurrences before any external
+gluing, is at most
+\[
+ (a_k+1)\sum_{\mathcal O}h_{\mathcal O}Q_{\mathcal O}
+ \leq (a_k+1)dQ.
+\]
+In particular the bound is $5\sum_{\mathcal O}h_{\mathcal O}Q_{\mathcal O}
+\leq5dQ$ at threshold three, and is bounded by
+$(k+3)\sum_{\mathcal O}h_{\mathcal O}Q_{\mathcal O}$ for every $k$.
+For fixed $k$ the kernel is constructible in polynomial bit time in the explicit
+input size and $\log(N+1)$.  No global order $\operatorname{ord}(\sigma)$ is
+constructed as a word length or used for expansion.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:route-chains},
+\[
+ P_{j,N}=W_j^{\circ q_{\mathcal O}}\circ V_{j,r_{\mathcal O}}.
+\]
+The full-cycle word $W_j$ is connected and has input and output index set
+$A_j$, so Lemma~\ref{lem:route-connected} applies to its repeated factor when
+$q_{\mathcal O}>0$.  If $q_{\mathcal O}=0$, then $N<h_{\mathcal O}$ and the
+entire chain is the explicitly retained prefix of $N$ components.  There is
+therefore no use of the connected primitive at exponent zero.
+
+Composition with the unchanged prefix preserves the marked signature:
+compatible boundary colors agree on the seam, cut costs add because edges
+are disjoint, and exact marks combine by union.  The same argument for
+disjoint union combines the $d$ chain replacements.  Saturation at $k+1$ is
+legitimate because all cut costs are nonnegative.  This proves signature
+equality with all original exposed colors prescribed.
+
+There is a potentially important boundary-label issue.  The retained number
+of component occurrences is
+$\min(q_{\mathcal O},a_k)h_{\mathcal O}+r_{\mathcal O}$, which is congruent
+to $N$ modulo $h_{\mathcal O}$.  Thus the terminal component index is the
+original one, $\sigma^N(j)$.  More importantly, its actual port labels are
+retained coordinatewise.  Different cycles may have different retained
+lengths; the output of the construction is not asserted to be a common
+power $T^{\circ M}$ for one integer $M$.
+
+Each full-cycle word contains one occurrence of each component in
+$\mathcal O$, so its size is at most $Q_{\mathcal O}$.  The prefix has size
+at most $Q_{\mathcal O}$.  Each of the $h_{\mathcal O}$ chains associated
+with the cycle therefore contributes at most $(a_k+1)Q_{\mathcal O}$.
+Summing gives the stated bound; vertex identifications only reduce it.
+
+Connected components, index partitions, and permutation cycles are computed
+from the explicit tile.  Division of a binary $N$ by an integer at most $d$,
+followed by comparison of its quotient with the fixed number $a_k$, is
+polynomial in the encoded input size.  The construction writes only the
+bounded number of component occurrences just counted.  If graph identifiers
+are encoded in binary, the bit size adds the usual logarithmic factor for
+identifiers; it remains polynomial.  This also proves the complexity claim.
+\end{proof}
+
+\begin{corollary}[Singleton routes]
+If every component has one input and one output, write $\pi(i)$ for the
+output index of the component containing $\ell_i$.  Then $T^{\circ N}$ has
+$w$ connected two-terminal chains, the chain starting at $\ell_i$ ending at
+$r_{\pi^N(i)}$.  Theorem~\ref{thm:route-kernel} gives a threshold-three
+kernel of size at most $5wQ$ using the individual cycle lengths of $\pi$.
+\end{corollary}
+
+\subsection{Contextual replacement and mixed flat descriptions}
+
+\begin{theorem}[Contextual equivalence]
+\label{thm:route-context}
+Suppose an arbitrary finite graph context contains edge-disjoint tile-power
+macros.  Each macro has either a connected tile or aligned component
+partitions.  The context may identify any of the exposed macro vertices
+with each other or with context vertices, including ports belonging to the
+same macro.  It has no access to private macro vertices.
+
+Replacing every macro by its kernel preserves the marked signature at
+threshold $k$ on any exposed context vertices.  In particular it preserves
+the existence of a cut of size at most $k$ whose two shores each contain an
+edge.  Connected macros contribute $O(Q_i)$ at fixed $k$; an aligned macro
+contributes
+$O(\sum_{\mathcal O}h_{\mathcal O}Q_{\mathcal O})=O(d_iQ_i)$.
+Thus any finite flat mixture of these macros has a polynomial-size explicit
+query kernel, independently of the numeric multiplicities.
+\end{theorem}
+
+\begin{proof}
+Fix a coloring of the context vertices, including every equivalence class
+of identified exposed vertices.  Its restriction prescribes compatible
+colors on the exposed vertices of every macro.  For each choice of exact
+local mark sets, the optimal global cost is the sum of the context cost
+and the optimal macro costs; the global mark set is the union of their
+exact mark sets.  Theorem~\ref{thm:route-kernel} and the connected primitive
+preserve each summand at threshold $k$.  Taking minima over local mark
+sets and all allowed context colorings proves the assertion.
+
+The argument permits arbitrary identifications among exposed vertices:
+they merely restrict the allowed colorings.  It does not permit an
+additional edge or gluing at a private vertex, because the signature did
+not record the color of that vertex.  All sizes add over the explicitly
+listed macros and context, and quotienting can only reduce vertex count.
+\end{proof}
+
+This theorem concerns a \emph{flat} input: a capped tile is explicit.
+Unrestricted nesting of macro definitions is not covered by the size
+bound without an additional argument controlling intermediate expansion.
+The bound also does not by itself validate a spherical embedding, preserve
+the graph's entire topology, or certify that an ambient 3-manifold is a
+ball.  Its topological use is the threshold-three terminal query on an
+actual spherical cubic pattern in a separately certified ball.
+
+\subsection{Exact source-witness lifting}
+
+\begin{theorem}[Cycle-word run certificates]
+\label{thm:route-lift}
+A threshold-three marked cut of $K(T,N)$ lifts to a coloring of the original
+$T^{\circ N}$ with the same cost, exposed colors, and exact marks.
+For each component chain, its lifted description uses at most four retained
+full-cycle coloring blocks and one prefix coloring block.  One of the
+full-cycle blocks may carry a binary repetition count.  The description and
+its verification are polynomial in the encoded source and kernel sizes.
+At most three original cut-edge addresses and two original monochromatic
+edge addresses suffice to list its cut and its two edge witnesses.
+\end{theorem}
+
+\begin{proof}
+If $q_{\mathcal O}\leq4$, the chain was not shortened, and its explicit
+kernel coloring is already a source coloring.  If $q_{\mathcal O}>4$,
+its kernel contains four copies of the connected word $W_j$.  Their total
+cost is at most the global cost, at most three.  One of these four copies
+therefore has zero cost and is monochromatic.  Replace it by
+$q_{\mathcal O}-3$ copies with that same monochromatic coloring.  Its
+input and output colors agree, so the seams remain valid.  Its cost remains
+zero, and its monochromatic edge mark is unchanged.  All other full-cycle
+blocks and the prefix are left unchanged.
+
+Do this independently on each component chain.  The chains have no internal
+shared vertices, and their exposed colors are unchanged, so every external
+identification remains valid.  Exact global marks and cost are preserved.
+This produces the asserted run representation.
+
+An edge in component $C_{\sigma^u(j)}$ of full-cycle occurrence $v$ has
+original tile-copy index $vh_{\mathcal O}+u$, using zero-based indices.
+An edge in the prefix has original tile-copy index
+$q_{\mathcal O}h_{\mathcal O}+u$.  Keep its original local edge-occurrence
+identifier.  These formulas locate edges in the source without enumerating
+omitted copies.  A positive-cost run can contain at most three cut edges
+in total, while a repeated monochromatic run contributes none.  Consequently
+all cut addresses can be listed directly, and a first monochromatic edge
+for each mark gives the two mark witnesses.  The copy indices have
+$O(\log(N+1))$ bits.  Checking local colors, seams, edge costs, mark unions,
+and the binary run counts requires only polynomial work.
+\end{proof}
+
+For a general fixed threshold $k$, use $a_k$ full-cycle blocks and the
+same proof, since $a_k>k$.  The two edge-mark witnesses remain sufficient;
+the cut list has at most $k$ addresses.
+
+\subsection{Hypotheses that must survive implementation}
+
+\paragraph{Original output transport.}
+Consider the width-two matching with edges $\ell_1r_2$ and $\ell_2r_1$.
+At exponent five, input colors $(0,1)$ and output colors $(1,0)$ admit
+a zero-cost coloring with both marks.  Blindly replacing the exponent
+by four changes the output transport to the identity; those boundary
+colors then require positive cost.  Cyclewise reduction preserves the
+original labeled output, whereas a single global cap need not.
+
+\paragraph{A partition mismatch really can merge chains.}
+Let a width-three tile have two components, one with edges
+$\ell_1r_1,\ell_2r_1$, the other with edges
+$\ell_3r_2,\ell_3r_3$.  Its input partition is
+$\{\{1,2\},\{3\}\}$ while its output partition is
+$\{\{1\},\{2,3\}\}$.  The first tile occurrence has two components,
+but the square of the tile is connected: the second occurrence's component
+containing $\ell_1,\ell_2$ joins the two previous components, and the other
+second-layer component attaches to the same union.  Thus there is no fixed
+two-chain decomposition.  This example disproves that decomposition outside
+the alignment condition; it does not prove that every possible kernel fails.
+Section~\ref{sec:through-reblocking} supplies a verified reblocking strategy
+that applies to this example and, more generally, to every tile whose
+components all meet both interfaces.
+
+\paragraph{Naive independent strands lose constraints.}
+A connected four-spoke star with boundary leaves
+$\ell_1,\ell_2,r_1,r_2$ cannot be replaced by two independent paths
+merely by pairing $\ell_i$ with $r_i$.  Prescribing
+$c(\ell_1)=c(r_1)=0$ and $c(\ell_2)=c(r_2)=1$ gives zero cost and both
+marks on the two independent paths, but is not a zero-cost coloring of
+the connected star.  Shared component vertices cannot be duplicated as
+if they were independent channels.
+
+\paragraph{Reversal and orientation metadata.}
+Reversing a tile means interchanging its input and output lists and
+reversing every component word.  It replaces $\sigma$ by $\sigma^{-1}$
+and preserves the alignment condition.  The same theorem applies to
+that explicitly reversed tile.  Edge directions or fibre-orientation
+metadata do not affect an undirected cut cost, but any such data needed
+for geometric provenance must still be transported separately.  A
+negative fibre sign is not an instruction to complement a shore color.
+If a different formalism imposes color-complementing seams or accesses
+hidden corners, it is outside the vertex-identification model used here.
+
+\paragraph{Sharpness and bounds not claimed.}
+The cutoff four cannot be improved uniformly in this class, because the
+class contains every connected tile.  For a one-edge tile, a path with
+both endpoint colors zero needs at least four edges to have both marks:
+the coloring $0,0,1,1,0$ realizes cost two on four edges, while three
+edges cannot realize both monochromatic edge marks with those endpoints.
+This establishes sharpness of the \emph{connected primitive cutoff},
+not optimality of the factor $dQ$ in the routed size bound.
+
+\subsection{Relation to existing graph-sparsification results}
+
+The preservation of terminal cut information under graph replacement is
+classical.  Hagerup, Katajainen, Nishimura, and Ragde developed mimicking
+networks for external flow behavior \cite{hagerup1998}.  For thresholded
+terminal connectivity, Chalermsook and coauthors construct
+connectivity-$c$ mimicking networks of $O(pc^4)$ edges for $p$ terminals,
+with algorithms polynomial in the explicit graph size for fixed $c$
+\cite{chalermsook2021}.  Liu subsequently obtained
+$\widetilde O(pc^3)$ edges with polynomial construction time in the
+explicit graph size and $c$ \cite{liu2023}.
+
+These results are essential context: this work does not claim that small-cut
+preservation or polynomial-size terminal cut representatives are new.
+The statement established here is a particular \emph{marked},
+binary-multiplicity graph-grammar reduction, constructed without expanding
+the input power, together with source-coloring lifting.  Ordinary terminal
+minimum-cut values do not automatically determine the exact edge-mark
+states used by the terminal pattern query.  The literature search located
+no identical cyclewise formulation, but this is not a priority claim.
+
+% Bibliography records for merging into the parent manuscript.
+% The existing incoming report should be identified by its exact source hash
+% in the final source audit; do not invent a repository commit for it.

@@ -1,0 +1,295 @@
+\section{Further research questions and proposed approaches}
+\label{sec:research-program}
+
+The research priorities below are chosen to connect the proved local
+results to a complete hierarchy.  Each has a concrete success criterion.
+Several are mathematical questions rather than requests for more
+benchmarking; a fast implementation cannot substitute for their missing
+proofs.
+
+\subsection{Priority I: preserve geometry while shrinking the state}
+
+\begin{problem}[Patterned ball absorption with shared source addresses]
+\label{prob:patterned-balls}
+Given a verified unused-cocore decomposition of an irreducible manifold,
+a boundary pattern in explicit or compressed source charts, and the
+rooted forest of Theorem~\ref{thm:attachment-kernel}, construct a
+pattern-preserving reduced presentation and a verifiable transport map.
+Bound its encoded size in terms of the source size, the retained genus
+budget, and a precisely defined pattern-interface parameter.
+\end{problem}
+
+The promising approach is to retain an absorbed ball only when its pattern
+has information that cannot be carried through its parent collar by the
+chosen chart representation.  The other balls become shared transport
+nodes.  Proposition~\ref{prop:forest-transport} prevents the forest paths
+themselves from causing quadratic duplication, once the local transport
+maps have been constructed.  A successful proof must also control the
+complexity of those maps.  Merely storing one Boolean ``marked'' flag per
+ball does not encode an embedded graph on its boundary, and a fixed genus
+does not bound the normal weight of a curve on that boundary.
+
+A useful first target is a pattern that is a disjoint family of arcs,
+with every endpoint on an explicitly listed attaching disc.  The next
+target allows trivalent vertices and closed components.  For each class,
+one should either prove a polynomial compressed transport bound or exhibit
+a family forcing the proposed representation to grow.  The theorem should
+state which isotopies are allowed at the retained core and which boundary
+components remain individually labelled.  These are part of the input
+contract, not implementation details that can be chosen after a proof.
+
+\begin{problem}[A normal-coordinate adapter for the retained core]
+\label{prob:core-normal-adapter}
+Turn the initial admissible handle subpresentation into a normal or
+regulated-surface coordinate system whose solutions have an explicit
+source interpretation.  Construct a polynomial-time map for the surfaces
+and boundary data actually needed by the next hierarchy step.
+\end{problem}
+
+The four local characteristic graphs give a finite starting catalogue.
+For each graph, enumerate the allowed local disc types, their boundary
+arcs, and matching equations.  Prove that assembling these records gives
+exactly the intended embedded surfaces, including the restrictions needed
+to avoid incompatible local choices.  The main challenge is the relation
+between this inherited handle structure and any new triangulation: a
+small count of local types is not, by itself, a bound on every global
+coordinate or a surface-search algorithm.  An adapter tested on the
+canonical trefoil and figure-eight cores would be a concrete first
+implementation milestone, but its completeness needs a separate proof.
+
+\begin{problem}[Reconstruction relative to a specified pattern]
+Strengthen Corollary~\ref{cor:normal-cut-reconstruction} to an output
+that retains a specified boundary pattern, seam identification and
+normal-coordinate charts.  State and prove the additional parameter
+needed beyond $t+b_0(S)+\chi_-(S)$.
+\end{problem}
+
+There are two useful output models to compare.  One emits an ordinary
+triangulation with the marking expanded into its individual normal arcs;
+the other retains a small triangulation and a compressed marking or
+transport circuit.  A binary normal-coordinate vector is itself a
+compressed representation and must be distinguished from the first model.
+The research should begin by finding families that separate precisely
+specified encodings, for example repeated twists in a boundary collar.
+Large normal weight alone does not imply large binary coordinate length.
+The extension of a vertical-annulus twist used in
+the unmarked proof explains why the unmarked complexity can stay small
+while a prescribed marking changes.  Algorithms for curves in surfaces
+\cite{Lackenby2026Curves} are candidates for comparing or normalizing the
+resulting compressed markings, once the three-dimensional chart transfer
+has been supplied.
+
+\subsection{Priority II: make native orbit compression quantitative}
+
+\begin{problem}[A uniform trace bound for ownership-weight queries]
+\label{prob:weight-runs}
+For the particular maintained weighted-orbit implementation used here,
+prove a polynomial upper bound on its intermediate weight runs, cycles
+and replay-certificate size for authenticated native ownership queries,
+as a function of source records and binary interval lengths.
+\end{problem}
+
+The published weighted orbit theorem gives a polynomial algorithm for
+the abstract task.  It does not automatically give such a bound for a
+different implementation's exact scheduling and proof trace.  The new
+length field adds owner intervals that were absent from the sparse
+endpoint-mask input.  This raises the observed run count on some cases
+even while removing a whole census.  A correct proof must therefore
+track owner-interval fragmentation, not reuse a port-only sparse-token
+bound.
+
+One possible route is to decompose the weight function into two channels:
+a small terminal channel and a structured edge-mass channel.  The
+terminal channel has a conservation certificate; the mass channel is
+the image of disjoint affine owners.  If native geometric constraints
+force a bounded number of mass breakpoints per surviving orbit phase,
+they may give a sharper bound than an arbitrary weighted-query analysis.
+If this invariant fails, a counterexample should guide a revised
+representation or a direct implementation of the published weighted
+algorithm.  Maintaining exact independent replay is a useful requirement
+for either route.
+
+\begin{problem}[Optimal deterministic pair labels]
+Let $r$ labels be inserted once each into an unknown partition.  Find
+nonnegative integer labels with the smallest maximum bit length that
+permit exact unordered-pair decoding, a separate additive length channel,
+and a verifiable global inventory, without a quadratic decoding table.
+\end{problem}
+
+The pair code in Section~\ref{sec:native-moments} uses a quadratic moment
+and a radix of order $r^3$.  It has $O(\log r)$-bit labels and an explicit
+integer-square-root decoder.  For a codec that must recover each pair
+from its scalar sum alone, the $\binom r2$ distinct unordered pairs must
+have distinct sums.  Labels drawn from $[0,M]$ then give only $2M+1$
+possible sums, so
+\[
+  2M+1\geq\binom r2,\qquad M=\Omega(r^2).
+\]
+This lower bound applies to that local additive decoding contract; it is
+not a lower bound for every encoding that might exploit the complete
+inventory globally.  It leaves a factor of order $r$ between the present
+magnitude and the counting bound, while the bit-length order is already
+optimal for the local contract.  Closing this gap requires both smaller
+values and an efficient inverse for their pair sums.
+
+There is a useful way to separate the inventory requirement from that
+inverse problem.  Suppose $u_i\in[0,M]$ have distinct sums on distinct
+unordered pairs.  Shift them to $v_i=M+1+u_i$.  Every singleton is then at
+most $2M+1$, whereas every pair sum is at least $2M+2$.  Pair-sum
+injectivity is unchanged.  With an owner radix $D>2\max_i v_i$, zero-
+and one-label orbits cannot masquerade as a decodable pair, and the
+consumption argument of Lemma~\ref{lem:native-pair-global-inventory}
+applies under the same complete-histogram and multiplicity checks when
+the recovered matching exhausts the authenticated inventory.  Thus an
+efficiently invertible Sidon-type construction would
+be a candidate; existence of distinct pair sums alone is insufficient.
+Any change should be benchmarked against the current power-of-two radix,
+whose divisions are bit shifts.
+
+\begin{problem}[Compatible boundary frames and passive transport]
+Augment the native boundary output with local fibre frames on all relevant
+base-boundary components, including passive components, together with the
+transition and orientation-obstruction data required to compare them.
+Prove that these data suffice for a stated gluing or surgery operation.
+No global fibre orientation is required when the bundle obstructs one.
+\end{problem}
+
+The present output gives local fibre transport across active gaps and
+retains passive multiplicities through the optional full packet.  It
+does not supply a chosen parametrisation of every passive boundary circle
+or source paths comparing all local frames.  For an orientable total
+interval bundle, fibre holonomy around a base-boundary circle is already
+trivial: its vertical boundary is an annulus, not a M\"obius band.  Thus
+the missing data here are parametrisations and source-based frame
+comparisons, rather than an undetermined boundary fibre flip.  A
+finite-group lift from the incoming moment report is a candidate primitive
+for transport along specified source paths, including interior paths used
+to compare frames.  It must be checked against the bundle's orientability
+data.
+Testing a few nonorientable bases is useful for finding mistakes; the
+main result should be a sufficiency theorem for the complete gluing
+record.  The certificate must preserve components with no active port,
+because a terminal-only census cannot see them.
+
+\subsection{Priority III: bound a complete hierarchy}
+
+\begin{problem}[A complete quantitative hierarchy theorem]
+\label{prob:global-depth}
+Prove, or locate and verify in full detail, the precise hierarchy
+construction needed for a bound of $L=O((\log n)^2)$ together with the
+surface and pattern parameter $G=n^{O(1)}$ and polynomial local work.
+Then identify the additional argument required for the stronger
+$L=O(\log n)$ version of the announcement.
+\end{problem}
+
+The February and March 2021 statements should be tracked separately.
+The 2026 preprint is a substantial source of rigorous machinery, but
+its iteration estimate does not furnish every bound in
+Theorem~\ref{thm:conditional-accounting}.  A useful research artifact
+would map each assumption of that theorem to a proved proposition,
+including its actual parameter and whether it applies with empty,
+essential, or arbitrary boundary pattern.  This would expose any missing
+hypothesis before implementing a search that relies on it.
+
+\begin{problem}[Discover useful surfaces without exhaustive enumeration]
+Develop a complete method to select the normal or regulated surfaces
+needed by that hierarchy within the target total budget.  Bound the
+encoded normal coordinates and the number of unsuccessful candidates.
+\end{problem}
+
+The new initial core removes certified irrelevant source handles, so
+it is a better input to such a search.  The genus kernel may also allow
+the search to focus on a small number of interacting nonball pieces.
+Nevertheless, a single retained torus-boundary piece can already be
+an arbitrary knot exterior.  Neither reduction permits a claim that
+enumerating all fundamental surfaces becomes quasipolynomial.
+A promising direction is a selector tied to a proved hierarchy potential,
+with a certificate that either supplies the required surface or justifies
+one of the special-region alternatives.  A heuristic ranking can help
+experiments, but a worst-case proof must bound the fallback search too.
+
+\begin{problem}[Control intersections in multisurface states]
+Give a compressed, source-authenticated representation of the intersecting
+surfaces permitted by the announced multisurface method, and prove that
+its size remains within the state bound of
+Theorem~\ref{thm:conditional-accounting}.
+\end{problem}
+
+Proposition~\ref{prop:isotropic-obstruction} rules out an easy replacement
+by a disjoint basis.  The relevant interface must encode intersection
+curves and arcs, their order on source pieces, and the effect of cutting
+in successive complements.  Native first-return queries may recover
+some of the necessary transitions.  Sparse cut grammars and disconnected
+tile kernels from the incoming packages may then compress repeated
+regions.  The research burden is to prove both geometric realizability
+and a bound on the width or number of such regions along the actual
+hierarchy.  A fast grammar algorithm on unrestricted input does not
+provide that geometric bound.
+
+\begin{problem}[A combined potential for topology, interfaces and marks]
+Find a potential that controls hierarchy depth while charging retained
+nonball deficits, attachment cycles, active interfaces, and the cost of
+the boundary pattern in one state representation.
+\end{problem}
+
+The exact identity $\delta=\beta+\sum(1-\chi(K_v))$ supplies an additive
+topological budget.  The moment compiler supplies an output bound in the
+number of active ports and logarithmic lengths.  These fit naturally
+into a proposed potential with separate topological and interface terms.
+The difficult issue is monotonicity: a valid cut can increase boundary
+genus and expose new ports.  A successful potential must prove that such
+increases are paid for by progress in the global hierarchy, or by a
+special-region reduction.  Simply adding the available size parameters
+does not prove any decrease.  This is a central mathematical question,
+not a matter of choosing convenient benchmark weights.
+
+\subsection{Priority IV: make performance evidence useful for integration}
+
+\begin{problem}[Choose source operators by measured structural cost]
+Determine when the maintained boundary-period certificate, the unused
+component certificate, the four-field moment codec, or the compact pair
+codec has the best completed production-and-replay cost.  Design a
+deterministic, inexpensive selection rule with a correctness-preserving
+fallback.
+\end{problem}
+
+The delivered results already rule out an unconditional wall-clock claim.
+The unused-handle certificate has extra component records and can be
+larger on small sources; the ownership query can generate more weight
+runs; padded trefoil examples may become slower despite a smaller core.
+Candidate predictors include surviving attaching occurrences, the number
+of zero-degree handles, owner-run count, port count, and binary coordinate
+length.  They should be obtained from work already required by the source
+compiler whenever possible.  The fallback must retain exact status and
+certificate semantics; a timeout is not evidence of knottedness.
+
+\begin{problem}[Extend independent evidence beyond the present fixtures]
+Build a stable corpus of valid relabelled triangulations, reducible
+controls, high-valence source edges, large binary normal coordinates,
+port-free bundles, and independently known knot types.  Measure both
+local operations and end-to-end recognition when an opt-in integration
+exists.
+\end{problem}
+
+The immediate deliverable should be a source-identified record for every
+case, its expected theorem domain, exact proof replay, and raw samples.
+Separate favorable asymptotic families from finite stress tests.  Retain
+negative cases and historical baselines.  The present package follows
+that convention, but its finite banks are not a random sample of all
+knot exteriors or all normal surfaces.  A broad integration evaluation
+should follow the mathematical and representation milestones above,
+so that any observed speedup can be attributed to a completed operation.
+
+\subsection{A proposed order of work}
+
+The most direct next milestone is the normal-coordinate adapter on the
+four initial local templates, together with an opt-in call to the
+authenticated initial compiler.  In parallel, the ownership-weight
+trace bound can be pursued without changing the topology.  The next
+geometric milestone is patterned ball absorption and compatible bundle
+charts.  Only then is it reasonable to combine the incoming grammar and
+tile kernels into a recurring hierarchy state.  The global depth and
+surface-selection arguments should be developed alongside that work,
+with every needed quantitative claim recorded explicitly.  This ordering
+makes each implementation step consume a proved interface and makes
+failure to achieve the target exponent mathematically diagnosable.

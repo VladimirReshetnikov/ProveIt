@@ -1,0 +1,85 @@
+\section{Encoded normal coordinates and the cancellation model}
+\label{sec:normal-background}
+
+We work with a finite triangulation given by explicit tetrahedron face
+pairings. Tetrahedra may have identified faces and edges; local edge
+occurrences are retained before passing to global edge classes. The source
+validator checks the manifold and boundary hypotheses required by each
+operator. Numerical surface coordinates and multiplicities use exact binary
+integers. Bit length, not numerical value, is the size charged for such a
+quantity. The source tetrahedron count is $t$, while $n$ later denotes the
+original knot-diagram input size. These parameters are not interchangeable
+without a proved conversion and hierarchy-size bound.
+
+\subsection{Why cancellation is a nonnegative even increment}
+
+In the one-vertex, rank-one setting, choose a primitive integral cocycle $c$.
+An essential properly embedded disc in an orientable manifold is coorientable.
+Its essential boundary on the unique torus is nonseparating, and a curve
+running along that torus can be pushed to cross the disc once. The dual
+cohomology class of the disc is consequently primitive. Since the first Betti
+number is one, that class is $[c]$ or $-[c]$.
+
+An oriented edge has some positive and some negative intersections with the
+disc. Their signed difference is the value of its dual cocycle, while their
+sum is its geometric edge weight. In a one-vertex triangulation every vertex
+coboundary is zero. The representative is therefore exactly $c$ or $-c$ on
+every edge, and
+\[
+ w_e=|c_e|+2z_e,\qquad z_e\in\mathbb Z_{\geq0}.
+\]
+This is the incoming cancellation model \cite{incoming-cancellation}.
+It does not assert that every such increment is a normal surface, a vertex
+ray, or a disc. Those are separate constraints. With several global vertices,
+nonzero coboundaries change the representative and couple the local searches;
+fixing $|c|$ then loses completeness.
+
+\subsection{Local reconstruction and its finite hyperplanes}
+
+Write $w_{ij}$ for the six local edge weights of a tetrahedron with vertices
+$0,1,2,3$. The corner number in a face $ijk$ at $i$ is
+\[
+ a_{i;jk}=\frac{w_{ij}+w_{ik}-w_{jk}}2.
+\]
+For a normal surface these are nonnegative integers. Of the three opposite-edge
+sums
+\[
+ w_{01}+w_{23},\qquad w_{02}+w_{13},\qquad w_{03}+w_{12},
+\]
+the maximum is attained at least twice. Choosing which smaller sum is allowed
+specifies the quadrilateral sector. The four triangle counts are the minima
+of the three corner numbers at each tetrahedron vertex. The remaining corner
+differences specify the single permitted quadrilateral count. These formulas
+uniquely reconstruct admissible standard coordinates from the local edge
+weights; on a sector boundary the zero quadrilateral types agree.
+
+For example, if the permitted quadrilateral avoids edges $01$ and $23$ and
+has count $q$, those edges have weights $x_0+x_1$ and $x_2+x_3$, while
+each other edge $ij$ has weight $x_i+x_j+q$. The opposite-edge sums are
+then $\sum_i x_i$, $\sum_i x_i+2q$, $\sum_i x_i+2q$.
+This also proves the four-point description and the triangle-minimum rule
+directly in each of the three sectors.
+
+On a glued face the three shared global edge weights determine the same
+three corner numbers on both sides, so normal matching is automatic.
+The affine sector boundaries are therefore among the edge-zero equations,
+the three differences of opposite-edge sums, and the twelve corner-zero
+equations per tetrahedron. Their integer coefficient $\ell^1$ norms are at
+most four even after local occurrences have been identified. These sparse
+hyperplanes are the source of the local profile theorem.
+
+\subsection{Discovery and verification have different costs}
+
+A primitive standard normal vector lies on a standard vertex ray if the
+matching equations restricted to its positive coordinates have nullity one.
+The incoming gate exhibits a nonzero maximal minor, verifies exact normal
+coordinates, computes Euler characteristic, and checks boundary cohomology
+modulo coboundaries. It does not expand the surface into its normal pieces
+\cite{incoming-cancellation}. We reuse that gate unchanged. The new search
+chooses vectors to present to it; it does not substitute an approximate
+numerical rank test or a claim based only on Euler characteristic.
+
+In particular, a huge number of triangles in a disc need not make a supplied
+witness difficult to verify. Finding that witness can still require examining
+many candidate supports. The component parameter introduced next controls
+that combinatorial work under a precise existence hypothesis.

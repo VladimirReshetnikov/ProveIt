@@ -1,0 +1,135 @@
+\section{Scope, source audit, and the research question}
+\label{sec:position}
+
+\subsection{What this continuation changes}
+
+The immediate mathematical question is precise. After choosing a spanning
+forest in an authenticated geometric handle core, let $n_{ih}$ count the
+actual intersections of the $i$th two-handle attaching curve with the
+cocore of the $h$th surviving one-handle. The existing implementation accepts
+a positive singleton pivot $n_{rg}=1$ and updates
+\begin{equation}\label{eq:positive-pivot}
+ n'_{ih}=n_{ih}+n_{ig}n_{rh}\qquad(i\ne r,\ h\ne g).
+\end{equation}
+It seeks to remove every two-handle. We ask whether finding a successful
+order, including its surviving one-handles, actually requires branching.
+
+The answer is no. A unit column leaf is a column whose total incidence on
+the live rows is exactly one. Its pivot has no fill in the remaining rows.
+Repeatedly deleting such leaves is complete for the entire positive raw
+model, even on rectangular matrices. A stopped nonempty row set is a
+certificate that \emph{no} positive pivot order can finish. This is a stronger
+statement than a failure of a chosen order.
+
+The second question concerns an interval-bundle component whose entire base
+boundary is attached to the core. Previous work localizes its obstruction
+to a single residual two-handle, but the number of added one-handles can
+be very large. We show that these added columns need never be generated
+for raw cancellation: they are even. The only relevant row is the aggregate
+of the source boundary-circle incidences on old core cocores. This connects
+the exact matrix theorem to a new source-bound geometric operator.
+
+\subsection{The pinned repository and incoming reports}
+
+The inspected source is the public
+\href{https://github.com/VladimirReshetnikov/ProveIt}{ProveIt repository},
+at commit
+\begin{center}\texttt{704600626606a9097cfd89d4e3d2bbc63c8dd1cb}.\end{center}
+The target subtree is \path{Topology/UnknotRecognition}; the supplied
+incoming directory contains four research archives\cite{repo,incoming}.
+All source paths and hashes used for integration are retained in the package.
+
+The maintained pipeline already includes compressed normal-cut cells,
+parallelity bases and their ordered interfaces, source handle charts,
+raw geometric cancellation, disk-base absorption, and a simultaneous
+primitive-annulus rule. The latter uses a spare unattached base boundary
+to supply dual disks. The incoming hierarchy report proves a more general
+relative-band theorem for nonsaturated attachments and a one-two-handle
+localization for each saturated base. We use these results as starting
+points, give the needed geometry explicitly, and identify our additions.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.28\textwidth}
+>{\raggedright\arraybackslash}p{.36\textwidth}
+>{\raggedright\arraybackslash}p{.29\textwidth}@{}}
+\toprule
+Source checkpoint & Existing result & Role in this report\\
+\midrule\endhead
+Maintained core cancellation & Saturated positive pivots; complete square
+row-leaf test; rectangular capped planner & Replace repeated rectangular
+scans and strengthen the completeness analysis\\
+Maintained primitive annuli & A spare base boundary gives a simultaneous
+geometric primitive family & Preserve this case and admit certain fully
+attached bases\\
+Incoming hierarchy kernels & Relative one-handles for nonsaturated bases;
+one residual two-handle for each saturated base & Compute the residual old
+incidences and eliminate all added even columns from search\\
+Incoming disconnected tile kernels & Exact finite kernels for repeated
+disconnected cubic tiles & Complementary terminal-pattern work; not rederived\\
+Incoming moment-coded returns & Two-moment recovery of ordered boundary
+first returns & Complementary interface optimization; not integrated here\\
+Incoming sparse cut grammars & Composition of bounded-cut graph responses
+through connected grammars & Complementary hierarchy-state work; not rederived\\
+\bottomrule
+\end{longtable}
+
+The current min-fill rectangular planner deserves a correction, rather
+than a false coverage claim. Its documentation calls it incomplete.
+Our theorem shows that its particular zero-fill priority is already complete
+for full raw row cancellation. The new algorithm therefore gives a simpler
+proof, smaller search work and faster replay; it does not create previously
+missing successes in that old raw model. New geometric coverage comes from
+the saturated-bundle extension.
+
+\subsection{The quasi-polynomial target and current primary sources}
+
+The 109-page 2021 talk linked by the repository states a running time
+$n^{O(\log n)}$\cite{lackenby-talk}. The shorter Oxford handout displays
+$2^{O((\log n)^3)}$\cite{lackenby-oxford}. Both are quasi-polynomial, but they
+are distinct bounds. We retain the stronger $n^{O(\log n)}$ expression as
+the user's target and do not equate it with the handout's exponent.
+
+Lackenby's July 2026 preprint\cite{lackenby-2026} presents a complete
+hierarchy algorithm and efficient certificates, while reserving speed-up
+for later work. Its Section 9 explicitly does not provide the precision
+needed for a running-time estimate. Proposition 9.1 bounds iterations in
+terms of hierarchy length $L$ and pattern-complexity bound $g$ by
+$L(g+1)^L$. Theorems 14.1 and 14.4 concern efficient certification and
+compressed cut structure. These results give important mathematical
+infrastructure, but they do not turn an arbitrary local optimization into
+the announced global time bound. Section~\ref{sec:hierarchy} records the
+remaining obligations and the exact place of our operator.
+
+\subsection{Prior art and the intended novelty claim}
+
+Unit-column peeling and stopping sets have substantial prior art.
+Richardson--Urbanke\cite[Appendix C]{richardson-urbanke} define stopping
+sets on constraint rows, prove union closure, and identify the unique
+maximal stopping set as the residual of degree-one-column elimination.
+Di et al.\cite[Definition 1.1 and Lemma 1.1]{di-et-al} use the corresponding
+criterion for erasure decoding, including a multigraph formulation.
+Uniquely restricted matchings provide a related matrix language\cite{urm}.
+We do not claim to invent these constructions.
+
+The mathematical additions developed here are the explicit persistence
+identity under \eqref{eq:positive-pivot}, its complete geometric raw-cancellation
+consequence, the source-incidence formula for saturated residual curves,
+and the resulting parity exclusion of unexpanded band handles. The code
+contribution is a native producer and separate replay path for these
+results. The asserted novelty is relative to the inspected project and
+the primary sources just identified. No claim of exhaustive bibliographic
+priority is needed for the proofs or implementation.
+
+\subsection{Notation and conventions}
+
+All matrices have entries in $\NN=\{0,1,2,\ldots\}$. Counts are unsigned
+geometric counts, not exponent sums. A row denotes an attaching curve
+or a residual saturated-bundle relation, and a column denotes a one-handle
+cocore. We allow zero rows, empty matrices and unused columns. A full
+cancellation removes all rows; it need not remove all columns.
+
+For a source triangulation, $T$ denotes its tetrahedron count, $P$ its
+number of active interface ports, and $B$ the aggregate bit-length parameter
+of its binary coordinates and topology counters. For a finite sparse
+matrix, $m,n,I$ denote its row count, column count and number of nonzero
+entries. Distinguishing $I$ from the sum of numerical entries is essential:
+neither large multiplicities nor large base genus are expanded.

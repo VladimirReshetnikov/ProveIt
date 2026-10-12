@@ -1,0 +1,141 @@
+\section{Terminal interpretation and independently replayed certificates}
+\label{sec:terminal-certification}
+
+\subsection{What the graph query means topologically}
+
+The graph query used by the prototypes asks whether a cubic graph has a cut
+of size at most three with an edge on each shore. Loops count twice toward
+degree and never cross a cut; parallel edges remain distinct occurrences.
+For a cubic graph this is exactly a cut with a cycle on each shore. Indeed,
+if a shore induces a forest with $v$ vertices and $a$ components, then
+\[
+ |\delta X|=3v-2(v-a)=v+2a.
+\]
+A forest containing an edge has $v\geq2$, $a\geq1$, and hence boundary at
+least four. The argument explains why the two monochromatic-edge marks carry
+the needed information at threshold three. At threshold four they do not
+have the same interpretation.
+
+For an actual cubic pattern $P\subset\partial B^3=S^2$, essentiality means
+that every transverse simple closed curve crossing at most three pattern
+edges bounds, on at least one side, a disc whose pattern is empty, an arc,
+or a tripod. The incoming primal criterion states that essentiality is
+equivalent to absence of the marked cut just described
+\cite{incoming-four-copy,lackenby2026}.
+
+For completeness, a violating curve has a cycle on either side: a forest in
+a disc with at most three boundary leaves can only be empty, an arc, or a
+tripod, since a tree with $v$ trivalent interior vertices has $v+2$ boundary
+leaves. Coloring graph vertices by side of the curve gives a marked cut of
+size at most three. Conversely, in a connected plane graph choose a smallest
+cut having cycles on both shores. Both shores are connected; otherwise the
+boundary of a cycle-containing component is smaller and the opposite cycle
+persists. Such a cut is a bond. The boundary of a regular neighborhood of
+one shore, with complementary regions away from the other shore filled,
+gives a simple curve crossing exactly its edges. If the cubic graph is
+disconnected, a regular-neighborhood boundary separates two cycle-containing
+components at cost zero. This proves the criterion in all represented cases.
+
+Ordinary edge connectivity would give the wrong predicate. The three edges
+incident to a vertex of $K_4$ cut off an allowed tripod. A triangular prism
+also has edge connectivity three, but its three rungs separate two cycles.
+The marked query distinguishes them. A geometric importer must additionally
+handle vertex-free circle components and the empty pattern; the closed-chain
+API here encodes the nonempty cubic part.
+
+\subsection{A finite graph certificate engine}
+
+On a finite kernel of size $K$, enumerate pairs of edge occurrences with
+disjoint endpoint sets. Require one edge to be monochromatic zero and the
+other monochromatic one. Give the arcs fixing their endpoints capacity four,
+and replace every non-loop undirected edge by two opposed unit-capacity arcs.
+An integral flow computation need only find four units of flow or a smaller
+minimum cut. In the latter case the induced coloring has the required marks.
+If every anchor pair supports four units, no marked cut of size at most three
+exists. This is the unchanged incoming finite certificate engine
+\cite{incoming-four-copy}.
+
+A negative graph proof lists a shore; replay recounts its exact cut and its
+two edge marks. A positive graph proof supplies residual augmenting paths
+reaching four for every disjoint anchor pair. The checker verifies those paths
+and requires the complete set of pairs. It does not perform max-flow search.
+With sparse flow construction, the reference producer has a conservative
+$O(K^3)$ structural bound and $O(K^3\log(K+1))$ certificate size. The
+independent dense reference replay has an $O(K^4)$ bound. These are adequate
+polynomial bounds, not claims to optimal algorithms for cyclic connectivity.
+
+In a source chain, private vertices must have degree three. At every serial
+seam the corresponding output and input degrees must sum to three. The same
+checks apply within every repeated block and at the final closure. Interfaces
+are injective and disjoint before the stated seam quotient. These local
+conditions prove that the actual expanded graph is cubic, including possible
+loop edges after closure. The reblocking step is an exact rebracketing of that
+quotient; the routing step retains the degrees at its genuine labeled seams.
+
+\subsection{Three replay layers for the pattern kernel}
+
+The pattern producer and checker share immutable input types and elementary
+validation. They use separate component reconstruction and gluing procedures.
+The producer follows component chains; replay independently identifies
+components with a disjoint-set structure and assembles fresh-copy quotient
+vertices. It verifies the finite graph proof on the reconstructed kernel.
+For a negative result it also verifies local component color masks, consecutive
+seams, repeated monochromatic cycle words, the exact binary count of original
+copies, and the complete list of cut edges and monochromatic anchors.
+
+The through-component wrapper adds a preceding exact reblocking layer. Its
+certificate binds the original chain, a bounded aligned power of each tile,
+the unchanged remainder, the adapted-source identity, and the nested routing
+proof. Its checker constructs the bounded power independently and checks the
+actual component partitions. The affine address maps in
+Section~\ref{sec:through-reblocking} then recover original block, copy, and
+edge-occurrence identifiers. Thus a cut on the reduced graph is accompanied
+by a succinct coloring of the original graph, even when its exponent has
+thousands of bits.
+
+It is useful to keep the three correctness assertions separate:
+\begin{enumerate}
+\item The original tile grammar and the adapted grammar describe the same
+finite graph before reduction, with an exact map of edges.
+\item The adapted grammar and the bounded kernel have the same marked query
+signature; source colors for a low cut lift by zero-cost repetition.
+\item The finite graph proof establishes the query answer on that kernel.
+\end{enumerate}
+For a topological conclusion there is a fourth, geometric assertion: the
+source grammar is the actual spherical pattern on an independently certified
+ball. No graph certificate supplies it.
+
+\subsection{Return values and the native integration contract}
+
+The three new operators have intentionally different meanings.
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}P{0.23\linewidth}P{0.27\linewidth}Y@{}}
+\toprule
+Operator & Successful output & Meaning of other outcomes\\
+\midrule
+Cancellation search & \texttt{DISC\_FOUND}, with source-bound normal
+coordinates and vertex-disc proof & Exhaustion only covers the stated class;
+limits and unsupported sources remain inconclusive\\
+Bundle classification & \texttt{COMPLETE}, with exact component/genus census
+and source proofs & Saturated bases or unresolved cores remain inconclusive\\
+Pattern query & \texttt{LOW\_CYCLIC\_CUT} or
+\texttt{NO\_LOW\_CYCLIC\_CUT}, with proof & Malformed or unsupported
+large tiles are rejected; neither result alone is a knot verdict\\
+\bottomrule
+\end{tabularx}\end{center}
+
+Discovery limits are charged globally within one query, including attempted
+systems and profile combinations. External cancellation propagates. Replaying
+a supplied positive certificate does not call the candidate search. Geometry
+replay checks the underlying source-parallelity, boundary-word, and raw-core
+proofs before computing the finite census. These choices make every positive
+claim reviewable without treating an implementation timeout as evidence of a
+negative topological conclusion.
+
+The proposed repository integration is additive and opt-in. First import the
+specific incoming dependencies, then add the new cluster and bundle modules,
+then expose the graph operator at a boundary where its grammar contract is
+proved. A native recognizer benchmark would be meaningful only after that
+producer exists. The present measurements report the actual local operations
+performed; they do not substitute synthetic graph times for knot-recognition
+times.

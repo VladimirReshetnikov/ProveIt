@@ -1,0 +1,151 @@
+\section{Further research questions and proposed next work}
+\label{sec:research}
+
+The following questions are ordered by how directly they build on the
+proved and implemented results. Each asks for a concrete mathematical
+or computational advance, with a criterion by which progress can be assessed.
+
+\subsection{Transport an embedded boundary pattern through a no-fill schedule}
+
+Can the immutable donor structure be lifted from unsigned rows to ordered
+strand systems on the boundary of the handlebody? The input should specify
+actual source endpoints, local cyclic orders and fibre transport, not only
+intersection counts. The output should encode the induced pattern after
+each geometric cancellation or directly on the final handlebody.
+
+The passenger theorem bounds the growth of numerical counts. The unresolved
+issue is the geometry of their concatenation. A successful result should
+give a polynomial bound on the size of a shared representation and an
+independent replay theorem. Small counterexamples with equal incidence
+and different boundary order should be part of the validation set.
+
+\subsection{Give saturated bands a compressed marked realization}
+
+The saturated theorem omits a potentially enormous family of even band
+columns because they cannot be pivots. Can one retain those bands as a
+small typed family while transporting specified markings through them?
+The target is a source-certified relative band system, with attachment
+addresses and cyclic order, whose encoding is polynomial in the source
+and the bit length of the base topology.
+
+An abstract free-group presentation with a large product of commutators
+does not settle this geometric problem. The representation should support
+both orientable and nonorientable bases and arbitrary compatible annular
+gluing twists. The punctured-torus and M\"obius examples provide elementary
+test cases, while the seven new source cuts provide native regression cases.
+
+\subsection{Identify small repairs of a raw stopping core}
+
+Which geometric moves destroy a specified stopping set by decreasing
+actual intersections? The persistence theorem proves that searching more
+positive pivot orders cannot help. A useful repair theorem would identify
+a bounded-size configuration in every blocked core belonging to a
+specified topological class and supply a verified transformation that
+reduces a stated potential.
+
+The class should be restricted first. For example, study layered solid
+tori or source cuts with a bounded number of saturated relations. The
+goal is a theorem with explicit dependence on the chosen parameter,
+not a promise inferred from random small examples. The blocked ball
+matrix $\left(\begin{smallmatrix}1&1\\1&2\end{smallmatrix}\right)$ is the
+first required test: a useful repair can undo a handle slide, but no
+positive raw pivot order can finish it.
+
+\subsection{Optimize the choice of source forest with certified scope}
+
+Our completeness theorem fixes the core forest. How does
+$\Stop(A)$ change when a tree edge is exchanged with a nonforest edge?
+An incremental exact incidence update could avoid reconstructing the
+entire source for every forest. The difficult part is to prove the
+geometric cocore correspondence and to bound a complete family of
+forests or exchanges.
+
+A practical first deliverable is a source-certified one-edge exchange
+with an independently verified new aggregate matrix. A later theorem
+could characterize a class in which polynomially many exchanges expose
+full raw cancellation. The mere existence of a successful forest does
+not give a fast complete search over all forests.
+
+\subsection{Use a stopping certificate to focus higher-level moves}
+
+The residual is a canonical row set in a fixed matrix. Can repair proposals
+be restricted to neighborhoods of that set while preserving completeness?
+One possibility is to keep a typed incidence graph containing its rows,
+their columns and the nearby geometric charts. A theorem would need to
+show that irrelevant regions can be retained by identity while a useful
+repair is found inside the selected region.
+
+This is a locality question about geometric simplification, not a
+consequence of the algebraic stopping condition alone. Its benefit would
+be a smaller complete move neighborhood with an explicit certificate of
+unchanged exterior data.
+
+\subsection{Extend the consumer to three-handle cores}
+
+Ten cuts in the retained audit still have core three-handles. Can a dual
+source peeling rule identify geometric two/three-handle cancellations
+without flattening the compressed cut? A suitable rule must authenticate
+the attaching sphere and its unique intersection, rather than treating
+an algebraic incidence as sufficient.
+
+Begin with cases where a genuine free face is present and record its
+effect on all interface charts. Then investigate whether a bounded
+sequence of dual moves covers a useful larger class. Every accepted
+reduction should have an independent source replay and preserve the
+component census used by the present implementation.
+
+\subsection{Resolve the eleven remaining raw stalls}
+
+The source audit gives eleven cuts with a failed combined raw system.
+Their exact canonical stopping witnesses are included: six obstructions
+already lie in the original core, and five require added saturated disk
+relations. Classify the geometry behind those witnesses: shared annular
+powers, interacting original two-handles, graph cycles, or another
+configuration. This is a finite, concrete next experiment.
+
+The desired output is not merely a longer list of heuristic moves. It
+is a small set of proved geometric lemmas, each supported by source
+certificates, that either resolves a family of stalls or explains why
+a new surface or disk system is needed. Some test cuts may actually
+fail to be handlebodies; in those cases a separate authenticated
+topological obstruction is the appropriate goal. Any cases still
+unsupported should remain inconclusive.
+
+\subsection{Unify geometric source compilation with the incoming interface kernels}
+
+The moment-coded first-return report compresses boundary observations,
+while the present operator consumes their ordered annular words. Can the
+source proofs be reused without changing their trust boundary, reducing
+the repeated orbit-query cost that dominates small examples?
+
+The interface contract must preserve shared corners, actual gaps,
+orientation transport, whole-circle detection and port ownership. A
+useful implementation should retain the old query as a differential
+oracle and record both complete-query and finite-kernel timings. This
+question is promising precisely because the current empirical evidence
+does not show a broad whole-query speedup from the new core planner alone.
+
+\subsection{Find a useful-surface coverage theorem with an explicit budget}
+
+Can every nonterminal member of a restricted hierarchy class be advanced
+by a surface whose active interface, saturated residue and repair cost
+have a provable bound? Candidate parameters include the number of
+saturated relations and the geometry of their stopping core. A useful
+theorem should specify how the surface is found, how failures are
+charged and how the inherited pattern is transported.
+
+An existence theorem without a producer or an upper bound on failed
+candidates is insufficient for the running-time target. Conversely, a
+complete producer on a clearly defined restricted class would already
+be a substantial result, even before extension to all knot exteriors.
+
+\subsection{Prove a global branching and state-size potential}
+
+Find a potential controlling branching, resets and encoded state size.
+Theorem~\ref{thm:global-contract} asks for an $O((\log n)^2)$ path
+branching budget with polynomial depth and per-state work.
+
+The potential must include boundary patterns, geometric repairs and
+source rebuilding. A raw stopping core alone cannot suffice: coordinate
+changes can create or remove it. Proving this combined bound is the
+principal remaining step toward a general $n^{O(\log n)}$ recognizer.

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Derived moment-coded boundary kernel, not a knot certificate",
+  "type": "object",
+  "required": ["schema", "pairs", "port_owners", "active_counts", "passive_counts", "weighted_calls"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "moment-boundary-kernel-v1"},
+    "pairs": {"type": "array", "items": {"type": "object", "required": ["endpoints", "unmarked_edges", "zero"], "additionalProperties": false, "properties": {
+      "endpoints": {"type": "array", "minItems": 2, "maxItems": 2, "items": {"type": "integer", "minimum": 1}},
+      "unmarked_edges": {"$ref": "#/$defs/count"},
+      "zero": {"type": "boolean"}
+    }}},
+    "port_owners": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+    "active_counts": {"type": "array", "items": {"type": "integer", "minimum": 0}},
+    "passive_counts": {"type": "array", "items": {"$ref": "#/$defs/count"}},
+    "weighted_calls": {"type": "integer", "minimum": 0}
+  },
+  "$defs": {"count": {"oneOf": [{"type": "integer", "minimum": 0}, {"type": "string", "pattern": "^0x[0-9a-f]+$"}]}},
+  "$comment": "Arithmetic constraints, endpoint partition, ownership, geometry, and source-certificate binding require the checked compiler; structural JSON validation does not establish them."
+}

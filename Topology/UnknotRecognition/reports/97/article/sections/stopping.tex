@@ -1,0 +1,218 @@
+\section{Stopping sets survive positive raw cancellation}
+\label{sec:stopping}
+
+\begin{definition}[Positive raw pivot]
+Let $N=(n_{ih})$ be a nonnegative integral matrix. A positive raw pivot at
+$(r,g)$ is allowed when $n_{rg}=1$. It deletes row $r$ and column $g$ and
+replaces the other entries by \eqref{eq:positive-pivot}. A full raw
+cancellation is a finite sequence of such pivots that removes every row.
+\end{definition}
+
+The adjective positive refers to the plus sign in the update. In particular,
+this operation is not Gaussian elimination over a field. It records a
+geometric disk-slide model before any subsequent reduction of intersections.
+
+\begin{definition}[Stopping set]
+A nonempty set $R$ of rows of $N$ is a stopping set if, for each column $h$,
+\begin{equation}\label{eq:stopping}
+ S_h(R):=\sum_{i\in R}n_{ih}\in\{0,2,3,\ldots\}.
+\end{equation}
+Thus no column has exactly one crossing into $R$. The empty set is admitted
+when discussing unions, but it is never an obstruction certificate.
+\end{definition}
+
+A coefficient two in a single row counts as two crossings. Replacing the
+matrix by its Boolean support would lose precisely this distinction.
+
+\begin{theorem}[Persistence under every positive pivot]
+\label{thm:persistence}
+Suppose $R$ is a stopping set of $N$ and a positive raw pivot is performed
+at $(r,g)$. If $r\notin R$, then $R$ is a stopping set of the new matrix.
+If $r\in R$, then $R\setminus\{r\}$ is nonempty and is a stopping set of
+the new matrix. Consequently a matrix with a nonempty stopping set admits
+no full raw cancellation.
+\end{theorem}
+
+\begin{proof}
+First let $r\notin R$. For every surviving column $h$,
+\[
+ S'_h(R)=S_h(R)+S_g(R)n_{rh}.
+\]
+Each summand is either zero or at least two, because $S_h(R)$ and $S_g(R)$
+have that property. Their sum therefore cannot equal one.
+
+Now let $r\in R$. Since $n_{rg}=1$, the stopping condition at $g$ forces
+$S_g(R)\ge2$. Put
+\[
+ k=\sum_{i\in R\setminus\{r\}}n_{ig}=S_g(R)-1\ge1.
+\]
+In particular $R\setminus\{r\}$ is nonempty. For any surviving $h$,
+\begin{align}
+ S'_h(R\setminus\{r\})
+ &=S_h(R)-n_{rh}+k n_{rh}\notag\\
+ &=S_h(R)+(k-1)n_{rh}.\label{eq:stopping-persistence}
+\end{align}
+If $S_h(R)=0$, nonnegativity implies $n_{rh}=0$ and the expression is zero.
+If $S_h(R)\ge2$, it remains at least two. This proves persistence in both
+cases. Inductively, a nonempty stopping set survives every prefix of a
+positive pivot sequence, so such a sequence cannot remove every row.
+\end{proof}
+
+The short identity \eqref{eq:stopping-persistence} is useful because it
+rules out \emph{all} positive pivot orders directly. It does not presume
+a matching, a chosen survivor set or a deterministic producer.
+
+\begin{definition}[Column-leaf deletion]
+A column $g$ is a unit leaf in the current matrix if
+$\sum_i n_{ig}=1$. There is then a unique incident row $r$, its entry is
+one, and its positive pivot has no fill: all surviving $n_{ig}$ vanish.
+A column-leaf deletion removes this row and column.
+\end{definition}
+
+\begin{theorem}[Complete rectangular raw cancellation]
+\label{thm:complete}
+For every finite nonnegative integral matrix $N$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $N$ admits a full positive raw cancellation;
+\item $N$ has no nonempty stopping set;
+\item every maximal sequence of unit column-leaf deletions removes all rows;
+\item some sequence of unit column-leaf deletions removes all rows.
+\end{enumerate}
+In particular, deciding full raw cancellation requires no branching over
+pivot orders or over the columns that will survive.
+\end{theorem}
+
+\begin{proof}
+Theorem~\ref{thm:persistence} gives (i)$\Rightarrow$(ii).
+Run any maximal column-leaf sequence. If rows remain, call their set $R$.
+Every undeleted column has total zero or at least two on $R$, because the
+sequence is maximal. Each deleted column had only its designated row live
+when it was removed; hence its total on the final $R$ is zero. No fill has
+ever occurred. Therefore $R$ is a stopping set of the original matrix.
+This proves (ii)$\Rightarrow$(iii). Implication (iii)$\Rightarrow$(iv) is
+immediate, and every leaf deletion is a valid raw pivot, giving
+(iv)$\Rightarrow$(i).
+\end{proof}
+
+\begin{corollary}[A canonical obstruction]
+\label{cor:canonical}
+There is a unique largest stopping set, with the empty set allowed.
+Every maximal column-leaf sequence leaves exactly this row set, denoted
+$\Stop(N)$. Thus the residual row set is independent of tie choices,
+although pivot columns and successful schedules need not be unique.
+\end{corollary}
+
+\begin{proof}
+The union of stopping sets is a stopping set: if a column meets the union,
+it meets one constituent set and already has total at least two there.
+Because there are finitely many rows, their union gives the largest set.
+No column leaf can delete a row in an extant stopping set, since that set
+would have column sum one. Hence every original stopping set lies in the
+final residual. The proof of Theorem~\ref{thm:complete} shows that the
+residual is itself a stopping set. The two containments prove the claim.
+\end{proof}
+
+This canonical peeling statement is the classical stopping-set phenomenon
+identified in the prior-art discussion. The additional persistence theorem
+explains why the same obstruction remains valid when the allowed operations
+are enlarged from leaf deletions to all positive raw pivots.
+
+\subsection{Exact saturation and sparse representation}
+
+\begin{lemma}[Saturation at two is exact for the model]
+\label{lem:saturation}
+The map $\capTwo(a)=\min(2,a)$ preserves addition and multiplication when
+the target operations are capped at two. It preserves the singleton
+predicate and the stopping-set predicate. It therefore preserves the
+existence of a full positive raw cancellation.
+\end{lemma}
+
+\begin{proof}
+For $a,b\in\NN$, both
+$\min(2,a+b)=\min(2,\min(2,a)+\min(2,b))$ and
+$\min(2,ab)=\min(2,\min(2,a)\min(2,b))$ follow by splitting into whether
+the result is zero, one or at least two. The same identities commute
+with \eqref{eq:positive-pivot}. A sum is one exactly when one summand is
+one and all the others are zero, which is also unchanged by capping.
+\end{proof}
+
+Actual crossing multiplicities may consequently be arbitrarily large in
+binary without changing the finite peeling state. Values zero, one and
+at least two are all that the decision needs. This statement does not
+authorize replacing a geometric count by a signed exponent sum.
+
+\subsection{A matching interpretation, without a matching algorithm}
+
+\begin{corollary}[Unit uniquely restricted row matching]
+\label{cor:matching}
+A full raw cancellation exists if and only if there is a set of $m$
+columns whose $m\times m$ submatrix has permanent one. Equivalently,
+the weighted bipartite incidence multigraph has a row-saturating matching
+whose induced square subgraph has a unique perfect matching, all of whose
+chosen edge multiplicities are one.
+\end{corollary}
+
+\begin{proof}
+Suppose peeling removes all rows. Select the $m$ pivot columns and order
+both rows and those columns by deletion time. A pivot column has its
+diagonal entry one and no nonzero in any later row. Thus the selected
+square matrix is triangular with unit diagonal. Its only nonzero
+permanent term is the diagonal term.
+
+Conversely, a nonnegative integral square matrix of permanent one has a
+unique perfect matching with unit chosen entries. Orient an off-matching
+incidence from its row's matched pair to the incident column's matched
+pair. A directed cycle would give an alternating cycle and a second
+perfect matching. The directed graph is therefore acyclic and has a
+source. Its matched column has no incidence from other rows. Removing
+that pair and repeating gives column-leaf deletion of the selected minor.
+These are also column leaves in the full matrix, because the selected
+minor includes every row. Other columns do not affect a leaf's column sum.
+\end{proof}
+
+There is no need to compute a permanent or to enumerate the selected
+columns. The direct obstruction theorem supplies the complete algorithm.
+The distinction between \emph{saturating all rows} and maximizing the
+size of a partially constrained matching should be retained when comparing
+this corollary with matching literature.
+
+\subsection{Boundary cases and limits of the conclusion}
+
+\begin{example}[A zero row]
+A single all-zero row is a stopping set. A raw singleton cancellation
+cannot remove its two-handle, even if that handle has some other geometric
+disposal, such as a later two/three-handle cancellation. Three-handles are
+outside the present model.
+\end{example}
+
+\begin{example}[Peeling is not maximum partial cancellation]
+For
+$N=\left(\begin{smallmatrix}1&1\\1&1\end{smallmatrix}\right)$, every
+column has total two and no column leaf exists. A positive pivot can
+nevertheless remove one row and leave the matrix $(2)$. Thus
+$|\Stop(N)|$ is not the minimum number of rows attainable by an arbitrary
+partial raw sequence. The theorem decides complete cancellation and gives
+a canonical source obstruction; it does not optimize partial progress.
+\end{example}
+
+\begin{example}[A unimodular raw obstruction]\label{ex:unimodular}
+The matrix
+\[
+ U=\begin{pmatrix}1&1\\1&2\end{pmatrix}
+\]
+has determinant one, but its entire row set is a stopping set. Every legal
+first raw pivot leaves the single entry three. Signed linear algebra
+therefore cannot replace the unsigned criterion. The group presentation
+$\langle x,y\mid xy,xy^2\rangle$ is trivial, since the two equations give
+$y=1$ and then $x=1$. Its raw occurrence matrix is $U$.
+
+There is also a geometric ball realization. Begin with the standard
+genus-two handlebody and its two cancelling two-handles, attached along
+the two primitive generator curves. Slide the first attaching curve over
+the second to obtain $xy$, then slide the second over the first to obtain
+the cyclic word $xy^2$, choosing the bands with no additional cocore crossings. These are
+ordinary geometric two-handle slides, so the resulting manifold is still
+a ball. The indicated raw incidence is $U$. This supplies a concrete
+reason that a raw obstruction must not be reported as a nonball or
+knottedness certificate.
+\end{example}

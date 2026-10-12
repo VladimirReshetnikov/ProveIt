@@ -1,0 +1,333 @@
+\section{Unsaturated interval bundles are relative one-handle additions}
+\label{sec:unsaturated}
+
+The incoming marked-parallelity classifier rejects every annular interface,
+although many such interfaces are topologically harmless.  The distinction
+that matters is whether the \emph{entire boundary of a base surface} is
+attached.  The following result eliminates all nonsaturated bases at once.
+It is a statement about genuine embedded interval bundles; a table of
+Euler characteristics does not supply its geometric hypotheses.
+
+\subsection{The relative surface-spine lemma}
+
+Let $B$ be a connected compact surface with nonempty boundary.  Let
+$A\subseteq\partial B$ be a nonempty compact one-dimensional submanifold,
+with $a$ interval components and $c$ circle components.  Endpoints are
+included.  Assume that $A\ne\partial B$.  Equivalently, if $b$ denotes the
+number of boundary components, then $c<b$; maximal interval runs have
+already been merged at their actual source corners.  Write
+\[
+ m=a+c,\qquad h=a-\chi(B),\qquad
+ \lambda=h-m+1=1-\chi(B)-c.
+\]
+
+\begin{lemma}[Relative surface bands]\label{lem:relative-bands}
+The pair $(B,A)$ admits a handle decomposition starting with a collar of
+$A$ and adding exactly $h$ surface one-handles, with no additional zero-
+or two-handles.  The collar has $m$ components.  The one-handles connect
+these components, so $h\geq m-1$ and $\lambda\geq0$.
+\end{lemma}
+
+\begin{proof}
+Choose a triangulation in which $A$ is a boundary subcomplex.  Since $A$ is
+proper, choose an edge $e$ in the interior of a complementary boundary
+interval, subdividing first if necessary.  The dual graph of the triangles,
+using interior triangle adjacencies, is connected.  Root a spanning tree
+at the triangle incident to $e$.
+
+Collapse that triangle across $e$.  Then process the remaining triangles
+in an order in which a parent precedes its children in the dual tree,
+collapsing each triangle across its edge to its parent.  Such an edge is
+free at that point: the parent triangle has been removed and there is at
+most one other incident triangle.  It was not the edge across which the
+parent collapsed.  All chosen edges except $e$ are interior edges of the
+original triangulation.  Thus no edge or vertex of $A$ is removed.
+After every triangle has been processed the surviving complex is a
+connected finite graph $L$ containing $A$.
+
+In a surface, this collapse gives a relative regular-neighborhood
+presentation: reverse a triangle collapse by enlarging a collar of its
+surviving two-edge path.  This local enlargement is an isotopy of the
+boundary away from $A$, so a regular neighborhood of $L$ relative to $A$
+is homeomorphic to $B$ with its specified attachment subset.
+
+Take small vertex discs and edge bands for $L$, while beginning with the
+collar of $A$.  Any graph vertices outside that collar can be joined to
+it by a forest containing no cycle after each component of $A$ has been
+contracted.  More explicitly, root one tree at each component of $A$ and
+extend the trees until every vertex has been reached, assigning each
+previously unreached vertex to its first reaching tree.  Absorb each
+extra vertex disc along its parent band, in order away from the roots.
+This cancels every additional zero-handle against one one-handle without
+joining two components of the initial collar.  All remaining bands are
+surface one-handles; bands may be twisted when $B$ is nonorientable.
+There are no two-handles.
+
+A collar of an interval has Euler characteristic one and a collar of a
+circle has Euler characteristic zero.  Every band decreases Euler
+characteristic by one.  Consequently its number is
+$h=\chi(A)-\chi(B)=a-\chi(B)$.  A connected result obtained from $m$
+initial components requires at least $m-1$ connecting bands.
+\end{proof}
+
+The triangulation used in this proof can be very large.  The proof is an
+existence argument for a terminal topological classification, and does
+not promise a polynomial-size explicit band system when the genus is
+binary encoded.  The algorithm below computes its invariant count
+without constructing those bands.
+
+\subsection{A geometric relative-handle theorem}
+
+\begin{theorem}[Proper-boundary bundle attachment]\label{thm:proper-bundle}
+Let $E\to B$ be an interval bundle with orientable total space, and suppose
+$B,A$ satisfy Lemma~\ref{lem:relative-bands}.  Let $K$ be a compact
+three-manifold, and glue $E|_A$ into $\partial K$ by an embedding with the
+usual compatible corner collars.  Suppose the resulting three-manifold
+$X=K\cup E$ is orientable.
+
+After absorbing a collar of the interface into $K$, the pair has a relative
+handle decomposition consisting of exactly $a-\chi(B)$ three-dimensional
+one-handles and no handles of other indices.  In particular, the assertion
+holds for arbitrary embeddings of the annular components of $E|_A$ into
+$\partial K$; no primitivity, slope, or null-homotopy assumption is needed.
+\end{theorem}
+
+\begin{proof}
+Over a collar of $A$, the total bundle is a collar of $E|_A$.  This can be
+seen separately on interval and circle components.  The interval case is
+a product.  A boundary circle has an annular collar in $B$, and the
+orientation character of $B$ is zero around it.  Orientability of $E$
+therefore forces trivial fibre reversal there.  Thus the total bundle
+over this collar is $(S^1\times I)\times I$, with the prescribed attaching
+annulus as one collar face.  Gluing all these collar pieces to $K$
+only enlarges its boundary collar, giving a manifold homeomorphic to $K$.
+This conclusion does not depend on how the interface annulus sits on that
+boundary.
+
+Now lift the relative surface decomposition from
+Lemma~\ref{lem:relative-bands}.  An individual band is a disc, so its
+interval bundle is trivial.  Its lift is $D^1\times D^2$, attached along
+the two discs $\partial D^1\times D^2$.  It is therefore a genuine
+three-dimensional one-handle.  The attaching discs have disjoint collars
+at each stage, as supplied by the actual base handle decomposition and
+bundle charts.  There are exactly $a-\chi(B)$ such bands.
+
+When a surface band is twisted, the fibre transition can reverse also;
+the total space remains orientable by hypothesis.  These transitions
+alter attaching parametrizations, not the fact that the lifted piece is
+a three-dimensional one-handle.  The argument is consequently valid for
+nonorientable bases as well.
+\end{proof}
+
+One must distinguish this theorem from a claim that all annular sums of
+handlebodies are handlebodies.  Properness of $A$ is essential.  For an
+unsaturated annulus base, one attached boundary circle gives $h=0$, so the
+solid-torus bundle is just an outward collar of the annular interface.
+For a saturated M\"obius base, the vertical annulus represents the square
+of a solid-torus generator and the theorem does not apply.
+
+\subsection{Exact free products and handlebody classification}
+
+Suppose that $K=\bigsqcup_jK_j$, and that pairwise disjoint bundles
+$E_i\to B_i$ are attached along $E_i|_{A_i}$.  Assume the complete
+intersection contract: all intersections with the core are precisely
+these vertical interfaces, with no unrecorded triple intersections.
+Attached bases have $A_i\ne\varnothing$ and actual multiplicity one.
+Assume they are all unsaturated.  Let $\Gamma$ be the bipartite multigraph
+with a core vertex for every $K_j$, a base vertex for every attached $B_i$,
+and one edge for each connected component of $A_i$.  Parallel edges are
+retained.  Put
+\[
+ \lambda_i=1-\chi(B_i)-c_i.
+\]
+A connected component $C$ of $\Gamma$ has cycle rank
+$\beta_1(C)=|E(C)|-|V(C)|+1$.
+
+\begin{theorem}[Nonabelian unsaturated condensation]\label{thm:free-condense}
+For the component $X_C$ indexed by $C$, there is a free-product decomposition
+\[
+ \pi_1(X_C)\cong
+ \mathop{*}_{K_j\in C}\pi_1(K_j)
+ *F_{r_C},\qquad
+ r_C=\sum_{B_i\in C}\lambda_i+\beta_1(C).
+\]
+Here $F_r$ denotes the free group of rank $r$.  After choices of basepoint
+paths, each natural core inclusion corresponds to the inclusion of its
+free factor.  In particular all core fundamental groups inject.
+
+Moreover, $X_C$ is a handlebody if and only if every $K_j$ in $C$ is a
+handlebody.  If their genera are $g_j$, its genus is
+\begin{equation}\label{eq:unsaturated-genus}
+ G_C=\sum_{K_j\in C}g_j+
+     \sum_{B_i\in C}\bigl(1-\chi(B_i)-c_i\bigr)+\beta_1(C).
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Apply Theorem~\ref{thm:proper-bundle} simultaneously to all attached bases.
+The result is obtained from its core pieces by
+$H=\sum_i(a_i-\chi(B_i))$ one-handles.  These handles connect precisely
+the core pieces indexed by $C$, because each original $B_i$ is connected
+and its interfaces are nonempty.  If $q$ denotes the number of core
+pieces in $C$, choose $q-1$ of the connecting one-handles forming a tree
+on them.  These tree handles give the free product of the core groups.
+Each of the other $H-q+1$ handles adjoins a free generator, by van Kampen.
+But
+\[
+ H-q+1=
+ \sum_i\bigl(1-\chi(B_i)-c_i\bigr)
+ +\Bigl(\sum_i(a_i+c_i)-q-\#\{B_i\in C\}+1\Bigr),
+\]
+and the second parenthesis is $\beta_1(C)$.  This proves the group
+statement with the indicated natural inclusions.
+
+One-handles added to orientable handlebodies yield orientable handlebodies,
+with genus equal to the sum of the old genera plus $H-q+1$.  This gives
+\eqref{eq:unsaturated-genus}.  Conversely, cutting the resulting
+handlebody along all the one-handle co-core discs recovers the core
+pieces with their added collars.  Cutting a handlebody along disjoint
+properly embedded discs produces handlebodies; equivalently such a disc
+system extends, after disc slides, to a complete meridian system.
+Hence every recovered core piece is a handlebody.
+\end{proof}
+
+This is stronger than an integral-homology decomposition.  It explains
+geometrically why unsaturated bases in the incoming interface-homology
+formula impose no new relations on the core.  No assertion about an
+explicit transported generating system or a compressed representation of
+all boundary inclusions follows from the existence of the splitting.
+
+\begin{corollary}[Exact ball criterion in this class]\label{cor:unsat-ball}
+Assume the core genera have been certified.  Then $X_C$ is a ball exactly
+when all core pieces in $C$ are balls, $C$ is a tree, and every attached
+base in $C$ is orientable and planar with exactly one boundary component
+not attached as a complete circle.
+\end{corollary}
+\begin{proof}
+All terms in \eqref{eq:unsaturated-genus} are nonnegative.  For an orientable
+base of genus $g$ and boundary count $b$,
+$\lambda=2g+b-1-c$, which vanishes under $c<b$ exactly when $g=0$ and
+$b=c+1$.  For a nonorientable base with $k\geq1$ crosscaps,
+$\lambda=k+b-1-c\geq1$.  The remaining summands vanish precisely as stated.
+A connected genus-zero handlebody is a ball.
+\end{proof}
+
+Unattached bordered bundles are separate handlebodies of genus
+$1-\chi(B)$ and can be counted with binary multiplicity.  Their components
+must be included before asserting that the \emph{whole cut} is one ball.
+Closed bases are outside this operator.  A single ball component among
+several components does not certify the unknot.
+
+\subsection{Localizing the remaining two-handles}
+
+\begin{corollary}[One two-handle per saturated base]\label{cor:saturation-localize}
+Keep the genuine bundle and interface hypotheses, but allow $A=\partial B$.
+Set $\varepsilon=1$ in that case and $\varepsilon=0$ otherwise.  The bundle
+attachment admits a relative handle decomposition with
+\[
+ h_1=a-\chi(B)+\varepsilon,\qquad h_2=\varepsilon,
+\]
+and no additional zero- or three-handles.  Thus, after all unsaturated
+attachments have been reduced, at most one additional two-handle is
+needed for each saturated base.
+\end{corollary}
+\begin{proof}
+The unsaturated case is Theorem~\ref{thm:proper-bundle}.  In the saturated
+case, remove the interior of a small disc $D$ from $B$.  The punctured
+surface $B^\circ$ has one additional, unattached boundary circle and
+$\chi(B^\circ)=\chi(B)-1$.  Its attachment set is still $A$, with $a=0$,
+so its interval bundle contributes $1-\chi(B)$ one-handles.  Restoring
+$D\times I$ attaches along $\partial D\times I$, exactly the attaching
+annulus of one three-dimensional two-handle.
+\end{proof}
+
+For a connected attachment-graph component $C$, let $\sigma$ be its
+number of saturated bases and put
+\[
+ r_C=\sum_{B_i\in C}(1-\chi(B_i)-c_i+\varepsilon_i)+\beta_1(C).
+\]
+Taking all relative one-handles first and then the $\sigma$ two-handles
+also gives the exact, generally noncanonical presentation
+\begin{equation}\label{eq:bounded-relators}
+ \pi_1(X_C)\cong
+ \left(\mathop{*}_{K_j\in C}\pi_1(K_j)*F_{r_C}\right)
+ \big/\langle\!\langle R_1,\ldots,R_\sigma\rangle\!\rangle.
+\end{equation}
+Indeed, the one-handles give the displayed free product as in
+Theorem~\ref{thm:free-condense}, and van Kampen adds one normal relation
+for each two-handle.  The original core maps may cease to be injective
+after imposing these relations.  The formula bounds the number of new
+relators independently of numerical base genus; it does not furnish
+their words or their embedding data.
+
+This localizes the topological source of new relations, but does not
+bound the length of the surviving attaching curve.  A high-genus saturated
+base can contribute a long product of commutators or squares.  An
+algorithm using this corollary must retain that curve and its embedding;
+its binary genus counter is not an attaching-map certificate.  The
+native prototype deliberately leaves these saturated cases unresolved.
+
+\subsection{A saturated counterexample with identical first Betti number}
+
+Let $K$ be a solid torus with generator $x$.  In its boundary choose an
+embedded annulus whose core is a primitive torus slope with longitudinal
+winding number $3$.  Let $E$ be the orientable interval bundle over a
+M\"obius band.  Then $E$ is a solid torus with generator $y$, while the
+core of its vertical annulus represents $y^2$.  Glue these two annuli by
+an orientation-compatible homeomorphism.  Van Kampen gives
+\[
+ \pi_1(K\cup E)=\langle x,y\mid x^3=y^2\rangle.
+\]
+Its abelianization is $\mathbb Z$, since $\gcd(3,2)=1$.  Its group is
+nonabelian: the assignments $x\mapsto(123)$ and $y\mapsto(12)$ give a
+surjection onto $S_3$.  The resulting connected manifold is consequently
+not a genus-one handlebody despite having its first integral homology.
+The M\"obius base is saturated, as required for exclusion from the theorem.
+
+For comparison, use an annulus base and attach only one boundary circle
+to the same winding-three annulus in $K$.  Its group presentation is
+$\langle x,y\mid x^3=y\rangle\cong\mathbb Z$, and the relative collar
+proof identifies the entire resulting manifold with $K$.  The positive
+conclusion here comes from the collar geometry, not just the group.
+
+\subsection{Encoded algorithm, certification, and limits}
+
+The supplied finite operator records each core genus, each base signature
+$(\chi,b,\text{orientation},\text{multiplicity})$, and the actual component
+owner of every maximal interval or circle interface.  It rejects closed
+bases and returns \texttt{INCONCLUSIVE} whenever an attached base is
+saturated.  It then forms $\Gamma$, computes its connected components,
+and applies \eqref{eq:unsaturated-genus}; isolated profiles are added as
+binary counts.  A separate checker uses a core-only graph traversal and
+the independent relative-handle formula
+\[
+ G_C=\sum_jg_j+\sum_i(a_i-\chi(B_i))-q+1.
+\]
+It verifies the source fingerprint and exact integer types.  Producer
+functions are not invoked during replay.
+
+For $s$ explicitly named pieces, $p$ interfaces, and maximal numerical
+bit length $L$, standard graph traversal and binary arithmetic give
+polynomial bit cost in $s+p+L$.  A straightforward implementation can
+rescan the interface list for each component, giving an adequate
+$O((s+p)^2)$ structural bound; indexing interfaces by component makes that
+phase linear.  Multiplication of an isolated multiplicity by a genus is
+charged at its binary cost.  Neither numerical genus nor multiplicity
+is ever an iteration bound.
+
+The native adapter invokes the incoming source-parallelity, ordered
+boundary-word, and core-handlebody certificate producers.  Its verifier
+replays those source proofs before deriving the finite model.  It checks
+that ports are partitioned exactly once and that all ports in one
+connected interface have one actual core owner and one actual base
+owner.  Thus a user-supplied incidence table alone does not become a
+source-normal-cut certificate.
+
+The output is a terminal \emph{unmarked} topological census.  The proof
+provides a homeomorphism and a relative band system by existence, but the
+implementation does not emit their source charts.  Subsequent hierarchy
+operations needing transported curves, intersection sequences, or a
+lifted cutting disc require extra representations and bounds.  Saturated
+planar and nonorientable bases still require genuine two-handle or other
+attachment information.  This result removes a concrete transition
+obstruction; it does not establish a complete quasi-polynomial recognizer.

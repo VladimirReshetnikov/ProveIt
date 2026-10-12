@@ -1,0 +1,121 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usepackage{xurl}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Scalar-Separator Elimination for Normal-Surface Search},pdfauthor={Research continuation for Vladimir Reshetnikov; assisted by ChatGPT},pdfsubject={Exact conic messages and source-bound normal-surface rays},pdfkeywords={ProveIt, unknot recognition, normal surfaces, scalar separators, exact algorithms}}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Scalar separators for normal-surface search}
+\fancyhead[R]{\small ProveIt research}
+\fancyfoot[C]{\thepage}
+\setlength{\headheight}{14pt}
+\setlength{\emergencystretch}{2em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\im}{\operatorname{im}}
+\newcommand{\cone}{\operatorname{cone}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\pos}{\textsf{POSITIVE}}
+\newcommand{\nonpos}{\textsf{NONPOSITIVE}}
+\title{\textbf{Scalar-Separator Elimination\newline for Normal-Surface Search}\\[7pt]
+\large Exact conic messages, source-bound extreme rays,\\
+and a quasi-polynomial width criterion}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+\small ProveIt / Topology / UnknotRecognition\\
+\small Mathematical development and implementation assisted by ChatGPT}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The latest ProveIt work separates two tasks that must not be confused:
+processing a supplied, binary-encoded normal surface and discovering a useful
+surface. We address discovery. For homogeneous nonnegative matching equations
+with local incompatibility constraints, we prove that a subtree attached
+through one signed scalar has an exact positive-objective continuation with
+only two rational slopes, two availability bits, and a zero-port positive flag.
+This replaces a product of local compatibility searches by their sum.
+
+A polynomial exact compiler recognizes supplied column partitions whose cut
+spaces have dimension at most one. A further theorem shows that the resulting
+flux-sign subdivisions introduce no new extreme rays. Consequently, the
+implemented ray-gluing procedure returns primitive connected normal witnesses
+when bound to genuine standard matching equations. We give two explicit bit
+bounds: one for the delivered rational ray enumerator, and a sharper local
+intrinsic-dimension bound using a polynomial-time linear-programming primitive.
+Both yield conditional quasi-polynomial recognition criteria with all source,
+decomposition, and geometric costs stated.
+
+The package includes 27 passing unit tests, 768 independent global-oracle
+queries repeated on source-recompiled models, 1,536 certificate replays,
+455 source-extremality checks, and actual one- and two-tetrahedron matching
+fixtures. On the latter, a verified nongeometric column split reduces candidate
+bases from 3,432 to 1,856 and gives a measured 1.94-fold gain for eight complete
+anchored Euler queries in the delivered kernel. A two-coordinate interface
+example proves that a literal finite union of convex cones may already require
+exponentially many pieces. No unrestricted quasi-polynomial unknot recognizer,
+native production integration, or universal small-separator theorem is claimed.
+\end{abstract}
+\vspace{4pt}
+\noindent\textbf{Reading guide.} Sections~\ref{sec:messages}--\ref{sec:extreme}
+contain the main proofs. Section~\ref{sec:complexity} distinguishes implemented
+and theoretical bounds. Section~\ref{sec:geometry} states the exact recognition
+interface. Section~\ref{sec:evidence} records both improvements and negative
+findings. The executable package is standard-library Python.
+\newpage
+\tableofcontents
+\newpage
+\input{context.tex}
+\input{theory.tex}
+\input{applications.tex}
+\input{experiments.tex}
+\input{future.tex}
+\begin{thebibliography}{99}
+\bibitem{lack2026} M. Lackenby, \emph{Incompressible surfaces, hierarchies and
+unknot recognition}, arXiv:2607.23350v1 (2026), especially Sections 9, 10 and 14.
+\url{https://arxiv.org/abs/2607.23350}.
+\bibitem{lacktalk} M. Lackenby, \emph{A quasi-polynomial time algorithm for
+unknot recognition}, lecture slides (2021), linked from the author's publication
+page. \url{https://people.maths.ox.ac.uk/lackenby/}.
+\bibitem{bo} B. A. Burton and M. Ozlen, \emph{A fast branching algorithm for
+unknot recognition with experimental polynomial-time behaviour},
+arXiv:1211.1079v3 (2014), Sections 2--3.
+\url{https://arxiv.org/abs/1211.1079}.
+\bibitem{haken} W. Haken, \emph{Theorie der Normalfl\"achen}, Acta Mathematica
+105 (1961), 245--375.
+\bibitem{lp} L. G. Khachiyan, \emph{A polynomial algorithm in linear programming},
+Soviet Mathematics Doklady 20 (1979), 191--194.
+\bibitem{connections} S. Borgwardt, W. Grewe and J. Lee, \emph{On the Combinatorial Diameters of Parallel and
+Series Connections}, arXiv:2203.09587v3 (2023), introduction and Section 1.1.
+\url{https://arxiv.org/abs/2203.09587}.
+\bibitem{repo87} ProveIt, report 87, \emph{Certified reductions for unknot
+recognition}, especially \code{article/support_theory.tex} and
+\code{article/search_budget.tex} (2026). Inspected source path:
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/4840e384b5a2961aabbb9cc78023b9ac5990acb0/Topology/UnknotRecognition/reports/87}.
+\bibitem{repocut} ProveIt, \emph{Full three-dimensional normal cuts in affine
+cell families}, \code{Topology/UnknotRecognition/synthesis/cut_cells.tex}
+(2026). Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}.
+\bibitem{repofixture} ProveIt,
+\path{Topology/UnknotRecognition/fast/tests/test_normal_sector_integration.py},
+source fixtures and geometric scope tests (2026). Repository as above.
+\end{thebibliography}
+\end{document}

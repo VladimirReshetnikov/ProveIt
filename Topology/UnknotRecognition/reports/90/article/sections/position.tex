@@ -1,0 +1,144 @@
+\section{Research position and the advances established here}
+\label{sec:position}
+
+The useful objective is to reduce the work of a complete geometric recognizer
+while preserving a verifiable path from each computation to the original
+topological input. Binary normal coordinates already remove the need to list
+every normal disc. They do not, by themselves, bound the search for a useful
+surface, the cost of constructing the next patterned manifold, or the number
+of unsuccessful hierarchy attempts. The three reductions in this report
+address these three interfaces at different points.
+
+The search result replaces a parameter counting arbitrary exceptional edges
+by a more informative pair: their total number and their number of connected
+regions. The geometric result identifies a large class of interval-bundle
+attachments for which actual topology is determined by a relative one-handle
+construction. The pattern result eliminates large repetitions even when a
+tile initially has disconnected, mismatched component partitions. Each result
+has a concrete producer/checker implementation or an explicitly identified
+mathematical extension. None is used to infer a global theorem whose
+hypotheses have not been proved.
+
+\subsection{The maintained baseline and the incoming reports}
+
+The inspected repository checkpoint, labelled ``New research reports,'' is
+\begin{center}\small\texttt{a28a49ee5c4145db0facbeb1e7f65cd8a2816775}.\end{center}
+It includes a substantial maintained recognizer, many preceding
+research modules, and the six relevant incoming packages listed below
+\cite{repo,repo-parallelity,incoming-cancellation,incoming-reductions,
+incoming-marked,incoming-homology,incoming-corners,incoming-four-copy}.
+The present archive does not replace the maintained recognizer or change its
+default dispatch policy.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}P{0.22\linewidth}YY@{}}
+\toprule
+Prior component & Available at the checkpoint & Contribution of this report\\
+\midrule
+Cancellation and edge-space discovery & Complete bounded-support ray search;
+polynomial positive vertex-disc gate & Connected local profiles, component-sensitive
+complexity, disconnected meridian witness\\
+Geometric reductions & Certified local changes and source provenance & A
+parameterized search theorem compatible with certified source changes\\
+Marked parallelity & Source interval bundles, ordered interfaces, core proofs;
+disk-interface census & Proper-boundary annular attachments, free-product
+classification, five new native completions\\
+Interface homology & Integral condensation with base and attachment data &
+Geometric strengthening for unsaturated bases; localization of residual relations\\
+Corner-aware boundary kernels & Genuine corner identifications and maximal
+boundary runs & Attachment counts use actual merged runs and actual owners\\
+Four-copy patterns & Sharp connected repetition kernel; restricted eventual
+periodicity for disconnected tiles & Independent component routing and bounded
+reblocking for every through-component tile\\
+\bottomrule
+\end{tabularx}\end{center}
+
+In particular, the maintained source-parallelity construction already gives an
+\emph{inherited} complementary core with at most $30t$ handles for a
+$t$-tetrahedron source, independently of the normal multiplicities
+\cite{repo-parallelity}. This is an important existing geometric result.
+It is different from a complete construction of an admissible, uniform-type,
+patterned hierarchy structure with every subsequent curve and disc transported.
+The latter obligations are preserved here. A raw bounded core must not be
+silently promoted to that stronger object.
+
+The incoming cancellation bound has the form
+\[
+ t^{k+O(1)}\exp\bigl(O(k\log(k+1))\bigr)\poly(B),
+\]
+where $k$ is a cancellation-support budget. Our bound
+\[
+ t^{r+O(1)}(Cd^2)^k\poly(k,B)
+\]
+improves a different part of the parameter range. It can be worse when an edge
+meets many tetrahedra or the support has many components. There is therefore
+no reason to discard the earlier method; a parameter-aware dispatch or a
+cost-accounted race can retain both.
+
+\subsection{External mathematical context}
+
+The quasi-polynomial objective must be situated in the existing literature.
+Lackenby's announcement of quasi-polynomial unknot recognition predates this
+work. His 2026 preprint develops incompressible-surface hierarchies, efficient
+cutting operations, and certificate constructions; its discussion of hierarchy
+iterations explicitly distinguishes established procedures from a completed
+precise running-time analysis \cite{lackenby-talk,lackenby2026}.
+We distinguish the general class $2^{(\log n)^{O(1)}}$ from the stronger
+target $n^{O(\log n)}$ stated in the February 2021 slides throughout.
+The present report is an implementation-oriented research continuation, not a
+claim that quasi-polynomial recognition was first proposed here.
+
+Compressed orbit counting already has the foundational Agol--Hass--Thurston
+algorithm \cite{aht}. The source-parallelity machinery and efficient operations
+on surface curves should be built on this literature, including Lackenby's
+2026 curve algorithms \cite{lackenby-curves}. The difficult interfaces cannot
+be dismissed by saying that all compressed topological operations are unknown.
+Conversely, a polynomial algorithm for a specified surface-curve operation
+does not automatically construct the missing three-dimensional source charts.
+
+The algebra of the component partitions used below is classical: these
+through-component diagrams are block bijections in the dual symmetric inverse
+monoid \cite{fitzgerald-leech1998,easdown-east-fitzgerald2008}. Terminal cut
+sparsification is also established theory
+\cite{hagerup1998,chalermsook2021,liu2023}. Our contribution is the specific
+marked, binary-power reduction with explicit source lifting, together with its
+elementary sharp reblocking bound and application to this research interface.
+The proofs are presented for direct assessment. The search performed for this
+report does not establish exhaustive priority for their specialized formulations.
+
+\subsection{A map of the main statements}
+
+The following distinctions are part of the claims, not implementation details.
+The cancellation theorem promises a disc when a suitable vertex disc lies in
+the specified class; failure to find one is not a nontrivial-knot certificate.
+The bundle theorem proves actual topology from actual embedded attachments;
+an arbitrary incidence spreadsheet is not such an attachment. The graph theorem
+preserves a terminal query; it does not preserve the entire graph up to
+homeomorphism or certify the surrounding manifold to be a ball.
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}P{0.27\linewidth}YY@{}}
+\toprule
+Result & Exact mathematical content & Remaining interface\\
+\midrule
+Theorem~\ref{thm:cluster-complexity} & Complete discovery in a specified
+$(k,r,d)$ class with polynomial bit arithmetic & Prove useful parameter bounds
+on sources actually reached by recognition\\
+Theorems~\ref{thm:proper-bundle}, \ref{thm:free-condense} & Relative one-handles;
+free factors; exact handlebody genera & Transport marked curves and source
+charts through the reduction\\
+Corollary~\ref{cor:saturation-localize} & One residual two-handle per saturated
+base & Encode and process its genuine attaching curve\\
+Theorem~\ref{thm:route-kernel} & $5dQ$ marked kernel for aligned routing &
+Produce a faithful descriptor from geometric data\\
+Theorem~\ref{thm:through-reblocking}, Corollary~\ref{cor:through-kernel} & Sharp
+linear reblocking; $6d^2Q$ kernel for all through tiles & Handle components
+missing an interface and unrestricted nesting\\
+\bottomrule
+\end{tabularx}\end{center}
+
+The report gives complete local proofs, a separate finite replay path for each
+positive output class, and retained reproducible evidence. It does not contain
+a formal proof-assistant verification. That distinction matters particularly
+for the native geometric adapters, whose accepted source proofs remain part of
+the trusted mathematical and software interface.

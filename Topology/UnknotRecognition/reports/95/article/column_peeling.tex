@@ -1,0 +1,265 @@
+% A proof contribution for the parent article; not a standalone deliverable.
+\section{The exact rectangular cancellation criterion}
+\label{sec:column-peeling}
+
+The maintained core solver first peels rows and, for rectangular matrices,
+falls back to a saturated positive-pivot heuristic.  There is a dual source
+criterion that decides full row completion directly.  This is a consequence
+of report~56's raw-epoch theorem\cite{raw-epoch-56}, applied to the transposed incidence matrix
+with an empty survivor alphabet.  We give a direct proof because it reveals
+a short obstruction certificate and avoids searching over surviving columns.
+No priority claim is made for the underlying matching or closure criterion.
+
+Let $A=(a_{ic})$ be a nonnegative integral $m\times n$ matrix.  A
+\emph{positive unit pivot} at $(r,c)$ is allowed when $a_{rc}=1$; it deletes
+row $r$ and column $c$ and changes every surviving entry to
+\[
+ a'_{ih}=a_{ih}+a_{ic}a_{rh}.
+\]
+The question is whether some sequence deletes every row.  All occurrences
+are unsigned geometric incidences; signed exponent sums and freely reduced
+words define a different problem.
+
+A \emph{column peel} deletes row $r$ using a column $c$ whose total over
+the live rows is exactly one.  Then $a_{rc}=1$ and $a_{ic}=0$ for $i\ne r$,
+so the positive update has no fill.  A set $U$ of source rows is a
+\emph{stopping set} when
+\[
+              \sum_{i\in U}a_{ic}\ne1\qquad\text{for every column }c.
+\]
+The empty set is allowed, and a nonempty zero row is itself an obstruction.
+
+\begin{lemma}[Reverse unit-pivot lemma, recalled with proof]
+\label{lem:reverse-positive-pivot-self-contained}
+Let $A$ be square and let $B$ result from a positive unit pivot.  If
+$\operatorname{per}(B)=1$, then $\operatorname{per}(A)=1$.
+\end{lemma}
+\begin{proof}
+Regard each entry as the number of separately labelled edges between its row
+and column.  An edge counted by $b_{ih}$ has a tag indicating either an
+original edge counted by $a_{ih}$, or an ordered pair consisting of an
+$a_{ic}$ edge and an $a_{rh}$ edge.  Call the latter a composite edge.
+
+The unique tagged perfect matching of $B$ has at most one composite edge.
+Otherwise, take two such edges $(i,h)$ and $(j,k)$.  Exchanging their second
+factors gives valid composite edges $(i,k)$ and $(j,h)$, and hence a distinct
+perfect matching.  If there is no composite edge, append the unique pivot
+edge $(r,c)$ to obtain a matching of $A$.  If there is one, replace it by
+its two labelled source edges.  This again produces a matching of $A$.
+
+There is also an injection from perfect matchings of $A$ to tagged perfect
+matchings of $B$.  A matching using $(r,c)$ maps to its restriction, with all
+edges tagged as original.  A matching not using $(r,c)$ has unique edges
+$(i,c)$ and $(r,h)$; replace them by their composite edge $(i,h)$ and tag the
+remaining edges as original.  The image, including its tags, recovers the
+source matching in either case.  Therefore $A$ has at most one matching,
+and the preceding construction shows that it has at least one.
+\end{proof}
+
+\begin{theorem}[Full-row positive cancellation]
+\label{thm:column-peeling}
+The following statements are equivalent.
+\begin{enumerate}
+\item Some positive unit-pivot sequence deletes every row of $A$.
+\item $A$ has an $m\times m$ submatrix, using all rows, with permanent one.
+\item Column peeling deletes every row, for every choice of eligible column.
+\item The source has no nonempty stopping set.
+\end{enumerate}
+Consequently no enumeration of the $n-m$ surviving columns is required.
+\end{theorem}
+
+\begin{proof}
+For $m=0$ all statements hold with the empty minor having permanent one.
+If a positive-pivot sequence succeeds, record its $m$ chosen source columns.
+Restrict to these columns throughout the sequence.  The restricted matrices
+obey exactly the same positive-pivot rule and end at the empty matrix.
+Lemma~\ref{lem:reverse-positive-pivot-self-contained}, proved in report~56
+and recalled above, implies that permanent one after a positive pivot gives
+permanent one before it.  Reversing the complete sequence proves the second
+statement.  In particular $m\le n$ is necessary.
+
+Suppose a chosen square minor has permanent one.  Its unique edge-labelled
+perfect matching uses unit entries.  For any nonempty source-row set $U$,
+restrict that matching to $U$ and to its matched columns.  This smaller square
+matrix also has permanent one: another matching would extend, using the
+unchanged matching outside $U$, to another matching of the original minor.
+Relabel its matched entries onto the diagonal.  If every column had another
+positive entry, the directed graph of off-diagonal positive entries would
+have positive indegree at every vertex and hence a directed cycle.  Exchanging
+the matched columns around that cycle would produce a second perfect
+matching.  Some column therefore contains just one unit entry in the rows
+$U$.  Thus $U$ is not a stopping set, proving the fourth statement.
+
+If peeling stops on a nonempty set $U$, every column has total zero or at
+least two on $U$, so $U$ is a stopping set.  Under the fourth statement this
+cannot happen, whatever eligible columns were selected.  This proves the
+third statement.  Finally every column peel is a legal positive pivot with
+zero fill, proving the first statement from the third.
+\end{proof}
+
+\begin{theorem}[Canonical obstruction core]
+\label{thm:stopping-core}
+Column peeling leaves exactly the union $K$ of all source stopping sets.
+Thus its residual row set is independent of pivot order.  A nonempty subset
+$U$ satisfying the stopping inequalities is already a complete certificate
+that full-row positive cancellation is impossible; maximality is unnecessary
+for that conclusion.
+\end{theorem}
+\begin{proof}
+The union of stopping sets is a stopping set.  Indeed, if a column has a
+positive entry somewhere in the union, that row lies in one constituent
+stopping set, where the column total is already at least two.  Its total in
+the union is consequently at least two.
+
+No peeling sequence can delete a row of a fixed stopping set $U$: at the
+first alleged deletion, every row of $U$ is still present, so a column
+meeting the selected row has total at least two.  Therefore the union $K$
+survives every peel.  The final residual $R$ is itself a stopping set, hence
+$R\subseteq K$.  The two inclusions yield $R=K$.
+\end{proof}
+
+\paragraph{The scope of a negative answer.}
+The all-one $2\times2$ matrix is a stopping core, but it has four allowed
+unit pivots.  Any such pivot leaves the one-entry matrix $(2)$.
+Column peeling therefore computes neither a maximum partial cancellation nor
+a minimum topological handle decomposition.  An obstructed authenticated
+core can still be a handlebody after geometric moves outside this raw model.
+
+\begin{corollary}[Row-subset monotonicity and an early core filter]
+\label{cor:row-subset-monotonicity}
+If a matrix permits full-row positive cancellation, so does every matrix
+obtained by restricting it to a subset of rows.  Equivalently, adding rows
+cannot rescue an obstructed source matrix.  This remains true if one also
+adds columns whose entries in all original rows are zero.
+
+For the saturated-bundle construction, an original core stopping subset
+therefore remains an obstruction in the joint presentation.  With the same
+original-core forest fixed, the original core can be checked before
+constructing the full ordered bundle boundary interface.  An obstruction
+suffices to return an inconclusive result from this particular handlebody
+certificate method.
+\end{corollary}
+\begin{proof}
+Take a complete column-peeling schedule and retain only its moves on the
+chosen row subset.  At each retained move, the chosen column has the same
+single unit occurrence as before: the omitted rows can only reduce its
+total, and the selected row itself remains.  Thus the restricted schedule
+also completes.
+
+Alternatively, a stopping subset of original rows remains a stopping subset
+after adding any other rows.  Its column totals are computed only over the
+chosen subset, and any newly added column contributes zero there.  The
+saturated compiler leaves original-core rows unchanged in active columns
+and gives them zero in private bundle columns.  The same obstruction
+therefore applies to its joint matrix.
+\end{proof}
+
+This is a statement about the fixed raw geometric presentation.  It is not
+the topological assertion that attaching another piece can never turn a
+non-handlebody into a handlebody.  A different original-core forest, geometric
+normalization, new disk system, or an allowed two/three-handle cancellation
+may change the raw problem and lies outside the early filter's conclusion.
+
+\subsection{Sparse discovery and independent verification}
+
+\begin{lemma}[Columns with no unit entries are inert]
+\label{lem:inert-columns}
+Suppose every initial entry of a column is zero or at least two.  That column
+can never contain a unit entry under any positive-pivot sequence.  Removing
+any family of such columns leaves the answer to full-row completion unchanged.
+The omitted columns must still be counted when computing surviving genus.
+\end{lemma}
+\begin{proof}
+For an omitted column $h$, a surviving entry changes from $a_{ih}$ to
+$a_{ih}+a_{ic}a_{rh}$.  If both $a_{ih}$ and $a_{rh}$ are zero or at least
+two, their displayed sum is again zero or at least two.  Induction shows that
+$h$ can never be a pivot column.  Updates in any other column do not depend
+on $h$, so a sequence on the full matrix projects to the same sequence after
+omission, and any sequence on the smaller matrix lifts with identical pivot
+entries.  Omission is an algebraic search reduction, not deletion of the
+corresponding one-handles from the topological object.
+\end{proof}
+
+This applies in particular to private columns whose only initial entry is
+two, as in the saturated-bundle compiler.  The invariant requires only the
+absence of unit entries; divisibility by two is stronger than necessary.
+
+Replace every positive source multiplicity by its cap $\min(2,a_{ic})$.
+This leaves all stopping inequalities and column-singleton predicates
+unchanged.  For each column maintain the \emph{uncapped sum of these capped
+entries} over live rows, together with the xor of their distinct dense row
+indices.  A column of total one has exactly one unit occurrence, whose row
+is the xor.  On deleting that row, visit its immutable source incidences
+once, subtract their capped entries from the column totals, and xor out the
+row index.  Enqueue a column when its total first becomes one.
+
+Column totals decrease strictly when visited.  Each column enters the queue
+at most once and each nonzero source incidence is removed at most once.  If
+$I$ is the number of nonzero source incidences, discovery uses $O(m+n+I)$
+expected dictionary operations and working entries, apart from sorting the
+reported residual labels.  That final normalization costs $O(m\log(m+1))$
+comparisons.  Dense indices and capped-entry column totals have
+$O(\log(m+n+1))$ bits.  Arbitrary source-label bit lengths and the time to
+read uncapped input integers are charged separately.
+
+The independent verifier does not simulate the queue.  It assigns a deletion
+time to every row in the certificate and records the proposed pivot column.
+For pivot $(r,c)$ at time $t$ it checks from the immutable source that
+$a_{rc}=1$ and that every other row incident to $c$ has a deletion time less
+than $t$.  A single scan of source incidences verifies these inequalities for
+all moves.  The same scan checks that every residual column has total zero
+or at least two.  Thus the certificate proves both a legal deletion sequence
+and a fixed point; Theorem~\ref{thm:stopping-core} identifies the latter as
+the canonical obstruction.  On a complete result the residual is empty.
+
+\subsection{A correction to the old producer's status description}
+
+The pinned native saturated producer minimizes
+\[
+  \Bigl(\sum_h a_{rh}-1\Bigr)
+  \Bigl(\sum_i a_{ic}-1\Bigr)
+\]
+over unit pivots, with the entries capped at two.  A zero score means a
+unit row leaf or a unit column leaf.  In fact this producer is already
+complete for the \emph{full-row} decision, although its docstring describes
+it as incomplete.
+
+\begin{proposition}[Completeness of minimum-fill greedy for full completion]
+Any positive-pivot producer that always prefers a zero-fill pivot whenever
+one exists decides full-row completion correctly, provided it runs until all
+rows disappear or no unit pivot remains.
+\end{proposition}
+\begin{proof}
+Assume full completion exists.  Theorem~\ref{thm:column-peeling} supplies a
+unit column leaf, so a zero-fill pivot is available.  It remains to show that
+either type of zero-fill pivot preserves existence of a permanent-one minor.
+
+For a row leaf, its sole unit column belongs to every matching covering all
+rows.  Remove that forced matched pair from a permanent-one minor.  For a
+column leaf at row $r$, if the minor already includes that column the same
+argument applies.  Otherwise replace the column matched to $r$ by the new
+leaf column.  Any matching of the resulting square minor must pair this
+column with $r$; another matching on the remaining rows would extend to a
+second matching of the old minor.  Thus the replacement minor still has
+permanent one.  Removing the leaf pair leaves a permanent-one minor for the
+residual matrix.  Since zero-fill pivots do not alter surviving entries,
+induction proves completion.
+
+Conversely a completed output is itself a positive-pivot sequence.  If the
+source is obstructed, no choices made by any producer can complete it.
+\end{proof}
+
+The new solver therefore improves the work bound and the negative certificate;
+it does not increase successful inputs merely by replacing that old
+minimum-fill routine.  It also avoids the old producer's potentially large
+partial fill work once full completion is impossible.
+
+\subsection{Exact work families}
+
+For the $m\times(m+1)$ chain matrix $a_{i,i}=a_{i,i+1}=1$, the new pass
+visits $2m$ source incidences and then at most $2m$ removal incidences.
+The old producer rebuilds row and column totals at every pivot; its native
+\texttt{entry\_scans} counter is $2m(m+1)$ on this family.  The same count
+holds for the rectangular fan with $a_{i,i}=1$ and $a_{i,m}\ge2$.
+These are source-incidence planner bounds; no crossing-count interpretation
+or end-to-end knot-recognition speedup follows from the matrices alone.

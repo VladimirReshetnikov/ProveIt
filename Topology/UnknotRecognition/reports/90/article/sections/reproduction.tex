@@ -1,0 +1,76 @@
+\section{Reproduction, dependency provenance, and file inventory}
+
+The archive is self-contained for the three standard-library prototype suites
+and the retained certificate replays. Run from its root:
+\begin{verbatim}
+python3 verify_all.py
+PYTHONPATH=code python3 -m routed_patterns \
+  examples/through_4097_bits.json --through \
+  --output reproduced_through_certificate.json
+PYTHONPATH=code python3 -m routed_patterns \
+  examples/through_4097_bits.json \
+  --verify examples/through_4097_bits_certificate.json
+python3 experiments/reblocking_partition_audit.py \
+  --max-width 5 --output results/repeated_partition_audit.json
+python3 experiments/connected_cutoff_audit.py
+cd article
+latexmk -pdf -interaction=nonstopmode hierarchy_kernels.tex
+\end{verbatim}
+
+The verification runner isolates the three import environments, so the
+different incoming dependency snapshots cannot accidentally replace one
+another. It records the observed test counts and all saved-certificate
+replays. The cancellation package defaults to its bundled runtime; environment
+overrides can instead point to an explicitly prepared repository checkout.
+The geometry package contains only its pinned transitive upstream modules and
+the retained corpus, plus minimal reproduction package namespaces.
+
+The recorded interpreter is CPython 3.12.14 on Linux x86-64. The production
+code uses exact integers and rational arithmetic from the standard library.
+Regina 7.4 is optional for the expanded geometric and full vertex-enumeration
+oracles \cite{regina}; it is not needed for replaying the retained positive
+certificates. Matplotlib is used only to regenerate the report's static
+performance figure. The article builds with pdf\LaTeX\ and ordinary TeX Live
+packages. Long full-enumeration benchmarks are separate from the quick
+verification command and should be run without simultaneous compute-heavy
+jobs.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.40\linewidth}
+>{\raggedright\arraybackslash}p{0.55\linewidth}@{}}
+\toprule
+Path & Role\\\midrule\endhead
+\path{article/hierarchy_kernels.tex}, \path{article/sections/} & Main article,
+complete theorem proofs, experiment interpretation, and research program\\
+\path{article/hierarchy_kernels.pdf} & Compiled and visually checked report\\
+\path{article/connected_cutoff_supplement.tex} & Exact cutoff theorem and
+sharp constructions at every threshold\\
+\path{code/routed_patterns/} & New aligned routing, exact cutoff,
+through-component reblocking, and independent checker\\
+\path{code/pattern_kernel/} & Unchanged incoming tile types, finite graph
+certificate engine, replay, and small full-signature oracle\\
+\path{cancellation/fastunknot/} & New connected-profile discovery module and
+unchanged incoming positive vertex-disc gate\\
+\path{cancellation/runtime/} & Minimal pinned search dependencies and the
+coherent-obstruction source fixture\\
+\path{cancellation/artifacts/} & Exact disconnected disc, all external vertex
+vectors, one-edge inventory, tests, and paired timing records\\
+\path{geometry/code/unsaturated_bundles/} & Finite proper-boundary classifier,
+independent census replay, and native source adapter\\
+\path{geometry/vendor/}, \path{geometry/evidence/} & Pinned incoming runtime,
+106-case corpus, five newly completed source certificates, and measurements\\
+\path{examples/} & Four graph sources and independently replayable proofs,
+including the large misaligned through-component example\\
+\path{experiments/}, \path{results/} & Full-signature and partition audits,
+source-coloring comparisons, timing drivers, raw results, and review records\\
+\path{verify_all.py} & Quick isolated test and saved-certificate replay runner\\
+\path{integration/INTEGRATION.md} & Additive repository placement and exact
+native adapter contracts\\
+\path{provenance/} & Source checkpoint and copied-dependency identities\\
+\bottomrule
+\end{longtable}
+
+The archive deliberately includes enough pinned source to reproduce the
+results without a live branch moving underneath them. Those copied modules
+are not counted as new implementations. No maintained checkout changes,
+remote repository writes, full native regression-suite run, or end-to-end
+knot-recognition performance result is implied by this package.

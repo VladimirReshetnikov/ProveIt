@@ -1,0 +1,173 @@
+\section{Research objective and the audited baseline}
+\label{sec:introduction}
+
+The objective is an algorithm, starting from a classical knot diagram with
+$n$ crossings, whose complete running time has a proved bound of
+$\exp((\log n)^{O(1)})$.  Efficient arithmetic on a supplied normal surface
+is necessary, but a recognition algorithm must also find the right
+surfaces, justify every simplification, transport the required boundary
+data, and bound the total work over the entire hierarchy.  We work at that
+interface between local compression and global topology.
+
+The repository audit was made at commit
+\texttt{704600626606a9097cfd89d4e3d2bbc63c8dd1cb}, dated
+12 October 2026.  Both the maintained
+\code{Topology/UnknotRecognition} implementation and the four archives then
+present in \code{docs/incoming} were inspected \cite{ProveItPinned}.
+The maintained recognizers describe a general exponential guarantee.
+They already contain extensive local compression machinery: weighted
+interval orbits, normal-cut cells, source-bound parallelity geometry,
+ordered boundary words, handle cancellation, cohomology transport, and
+independent certificate checkers.  The present work therefore begins with
+their actual interfaces rather than proposing those ingredients afresh.
+
+\subsection{What is inherited, and what is added}
+
+The incoming material materially changes the research starting point.
+Table~\ref{tab:incoming-audit} records the distinction used throughout this
+article.  Exact filenames, source paths and SHA-256 hashes appear in the
+accompanying \code{SOURCE\_AUDIT.json}.  These archives are project research
+documents, not external peer-reviewed results; a statement inherited from
+one is identified as such, and is not silently promoted to an implemented
+property of the maintained recognizer.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabularx}{\linewidth}{@{}P{.23\linewidth}YY@{}}
+\toprule
+Incoming package, 12 October 2026 & Relevant existing contribution &
+Consequence for this continuation\\
+\midrule
+Moment-coded first returns & Abstract endpoint moments, exact edge mass,
+finite-group lifts, and passive component accounting & The missing
+source-to-owner bridge is implemented on native parallelity geometry;
+the pair encoding is sharpened.\\
+Disconnected tile kernels & Compressed powers and disconnected-component
+handling & We do not claim a new arbitrary-power kernel.  The unresolved
+native chart and hierarchy interfaces remain research tasks.\\
+Unknot hierarchy kernels & Clustered search, interval bundles, and local
+hierarchy kernels & A small local kernel is not identified with a complete
+bounded-depth hierarchy.\\
+Sparse cut grammars & Bounded-width compressed response constructions &
+Geometric realizability and width control must precede use in a global
+complexity proof.\\
+\bottomrule
+\end{tabularx}
+\caption{The four pending packages used to distinguish inherited work from
+the additions in this report.}
+\label{tab:incoming-audit}
+\end{table}
+
+There are two concrete gaps in the maintained code that motivate the new
+implementations.  The source-handle reducer can expose one-handles that
+meet no remaining two-handle.  Its existing positive certificate then
+transports a cocycle back to the original boundary to establish essentiality.
+Unused bridges do not supply that nonseparating witness, and the code
+explicitly leaves their ball sides as a next reduction.  We process every
+unused handle together, use irreducibility only through an authenticated
+geometric contract, and retain the unique torus core when appropriate.
+
+The maintained parallelity-boundary compiler obtains its cyclic interface
+from two weighted scalar censuses using endpoint masks.  The incoming
+moment report proposes arithmetic labels abstractly, but does not supply
+an authenticated owner for every actual native old-boundary edge.  We
+construct those owners from the free-edge records, count each edge exactly
+once on each fibre sheet, and assemble the native cyclic output directly
+from one census.  This supplies exact lengths in addition to the existing
+word and local fibre data.
+
+\subsection{Main results and their status}
+
+\begin{enumerate}
+\item \textbf{A genus budget and a sharp attachment bound.}
+If $M$ is compact, connected, orientable and irreducible, with connected
+boundary of genus $g$, cutting unused one-handle cocores gives pieces
+$K_v$ and a connected attachment multigraph $Q$ satisfying
+\[
+ g=\beta(Q)+\sum_{K_v\text{ nonball}}(1-\chi(K_v)).
+\]
+Every nonball term is at least one.  A rooted forest then absorbs all ball
+pieces, leaving either at most $g$ specified nonball pieces joined by at
+most $g-1$ handles, or one ball with $g$ handles.
+The general topological theorem and its graph certificate are proved in
+Section~\ref{sec:attachment-kernel}.  The graph implementation does not
+construct parametrizations of discarded balls.
+
+\item \textbf{A complete initial empty-pattern reduction.}
+For an irreducible torus source the budget has exactly two cases.  One
+certifies a solid torus; the other retains a unique Euler-zero component
+homeomorphic to the source.  The deletion-only dual tetrahedral
+presentation gives an additional finite local-type theorem, making this
+retained core admissible for the initial empty pattern.  The source
+compiler, independent replay and canonical-diagram wrapper are implemented
+in Section~\ref{sec:unused-handles}.  Reducible sources with the same
+numerical signature are included as executable counterexamples to omitting
+the irreducibility hypothesis.
+
+\item \textbf{A proved improvement in certificate arithmetic.}
+Cancellation can be replayed by decrementing nonnegative geometric
+occurrence counts, visiting each deleted attaching row once.  On the
+specified Fibonacci layered-solid-torus family, the native explicit
+transported dual vector requires $\Theta(t^2)$ bits.  The new
+incidence/component certificate has $O(t\log(t+1))$ bits and avoids that
+transport.  This is a comparison with the precise maintained format;
+it is not a lower bound for every possible compressed cocycle.
+
+\item \textbf{A native one-census boundary operation.}
+Source ownership and a scalar moment encoding recover the full native
+cyclic skeleton, exact unmarked gap lengths, and local fibre flips.
+For $p$ ports, terminal labels use $O(\log(p+1))$ bits.  Exact integer
+arithmetic and a global inventory check recover pairs without probabilistic
+hashing.  Section~\ref{sec:native-moments} supplies the geometry, proof,
+independent source-bound verifier, comparisons, and limits of the output.
+
+\item \textbf{An output-sensitive reconstruction statement.}
+For a supplied orientable normal surface $S$ in a $t$-tetrahedron source,
+the entire unmarked cut manifold admits a triangulation of size
+$O(t+b_0(S)+\chi_-(S))$ under the explicit compressed-cut construction.
+This is derived from published parallelity machinery and surface
+classification.  It counts all components and charges attaching data.
+It is a theoretical consequence here, not a delivered retriangulation
+implementation; see Section~\ref{sec:unmarked-reconstruction}.
+
+\item \textbf{A global accounting theorem and testable research targets.}
+Section~\ref{sec:global-accounting} states sufficient quantitative
+conditions for the announced exponent, with the unresolved assumptions
+visible.  Section~\ref{sec:research-program} turns those assumptions into
+specific mathematical and implementation questions.
+\end{enumerate}
+
+\subsection{Conventions and epistemic boundaries}
+
+All integer input is binary.  A normal vector with a $B$-bit entry is not
+expanded into its individual discs.  $t$ denotes the current number of
+tetrahedra, $W$ a normal weight, and $p$ the number of retained core ports.
+The native corner namespace has size $N$; $N$ can be exponentially larger
+than its binary description.  A compressed component type with multiplicity
+$m$ is one record with a binary count, unless explicit expansion is part of
+the requested output.  Every asymptotic statement distinguishes arithmetic
+bit cost, incidence updates and output size where this affects the claim.
+
+A valid decomposition of a supplied manifold and a recognition verdict are
+different outputs.  Source validation checks that the finite triangulation
+or normal packet is the one being discussed.  It does not turn a torus
+boundary into irreducibility.  The diagram wrapper supplies the latter
+through a checked construction of a classical knot exterior in $S^3$.
+Likewise, an incidence hash identifies finite input data; it is not a proof
+that an abstract Euler-one label represents a ball.
+
+The term \emph{independent checker} means that a checker does not call its
+producer's discovery routine and reconstructs the relevant source through
+the stated separate path.  It does not mean a formal proof assistant has
+verified the Python code, or that no shared parser or arithmetic library is
+used.  Tests that deliberately disable producer routines make this software
+boundary observable.  Exact proofs establish the mathematical statements;
+finite tests assess the implementations on their specified domains.
+
+The new results are contributions relative to the inspected project state.
+Disc cutting, boundary connected sum, surface classification, moment
+identities and union--find are established ingredients.  No general priority
+claim is made for these ingredients or for every possible formulation of
+the deductions.  The claimed advances are the precise combined statements,
+their source-authenticated implementations, the quantitative separation on
+a stated family, and the research obligations that remain after them.

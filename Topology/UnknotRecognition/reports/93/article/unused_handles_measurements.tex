@@ -1,0 +1,40 @@
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{lrrrrr}
+\hline
+Source & $t$ & Native ms & New ms & Native/New & Core $h_0$ \\
+\hline
+Fibonacci $t=1$ & 1 & 0.473 & 0.458 & 1.034 & --- \\
+Fibonacci $t=16$ & 16 & 6.250 & 6.180 & 1.011 & --- \\
+Fibonacci $t=64$ & 64 & 22.753 & 21.435 & 1.061 & --- \\
+Fibonacci $t=256$ & 256 & 173.290 & 159.682 & 1.085 & --- \\
+Fibonacci $t=512$ & 512 & 667.727 & 578.314 & 1.155 & --- \\
+Canonical unknot & 40 & 11.925 & 11.690 & 1.020 & --- \\
+Canonical trefoil & 60 & 19.005 & 20.213 & 0.940 & 48 \\
+Canonical figure-eight & 80 & 29.950 & 28.445 & 1.053 & 68 \\
+Trefoil + 32 buds & 92 & 30.324 & 29.663 & 1.022 & 48 \\
+Trefoil + 256 buds & 316 & 108.484 & 117.183 & 0.926 & 48 \\
+\hline
+\end{tabular}
+\caption{5 paired repetitions per source, in randomized order. Values are medians of complete producer-plus-replay times. Ratios below one are regressions. A dash marks the all-ball cycle branch.}
+\label{tab:unused-timings}
+\end{table}
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{rrrrr}
+\hline
+Fibonacci $t$ & Native bytes & New bytes & Max. dual bits & Sum dual bits \\
+\hline
+1 & 581 & 699 & 1 & 1 \\
+16 & 2441 & 4010 & 11 & 111 \\
+64 & 9787 & 14865 & 44 & 1510 \\
+256 & 58924 & 59551 & 178 & 23103 \\
+512 & 172549 & 119503 & 355 & 91702 \\
+\hline
+\end{tabular}
+\caption{Exact compact-JSON sizes and bit counts. The new decomposition has additional per-component records, so its asymptotic improvement need not appear at small sizes. Total dual bits includes one bit for each zero entry.}
+\label{tab:unused-bits}
+\end{table}
+
+The canonical trefoil core retains $(h_0,h_1,h_2)=(48,82,34)$ from a source with 60 tetrahedra; the figure-eight core retains $(68,118,50)$ from 80 tetrahedra. Every added boundary bud leaves the trefoil core unchanged. At $t=512$, the new Fibonacci certificate uses 119,503 bytes versus 172,549 bytes for the maintained certificate; at $t=64$, it instead uses 14,865 versus 9,787 bytes. These finite measurements agree with the scope, and the crossover limitations, of Proposition~\ref{prop:unused-fibonacci-separation}. Timing regressions on some sources remain visible; the source-validation and raw-cell construction costs are included in both arms.
