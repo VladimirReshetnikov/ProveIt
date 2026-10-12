@@ -34,6 +34,46 @@ def _forest(core, check):
     return edges, roots
 
 
+def _deferred_forest(core, planned, check):
+    """Select a spanning forest disjoint from a full-matrix peeling trace.
+
+    Report 105's bridge argument uses uncapped source cycle parity. Earlier
+    pivot columns vanish in each later live row, so a graph pivot is never
+    a bridge. The emitted certificate still contracts this forest first.
+    """
+    pivots = {c for _, c in planned['cancellations']}
+    n = len(core['handles0'])
+    parent, size, least = list(range(n)), [1]*n, list(range(n))
+
+    def root(v):
+        while parent[v] != v:
+            parent[v] = parent[parent[v]]
+            v = parent[v]
+        return v
+
+    tree = []
+    for handle in core['handles1']:
+        check()
+        if handle['id'] in pivots:
+            continue
+        a, b = map(root, handle['ends'])
+        if a == b:
+            continue
+        if size[a] < size[b]:
+            a, b = b, a
+        parent[b] = a
+        size[a] += size[b]
+        least[a] = min(least[a], least[b])
+        tree.append(handle['id'])
+    component = [least[root(v)] for v in range(n)]
+    for handle in core['handles1']:
+        check()
+        a, b = handle['ends']
+        if component[a] != component[b]:
+            raise ArithmeticError('deferred pivots disconnected a source component')
+    return tree, component
+
+
 def _occurrences(core, tree, check):
     tree = set(tree)
     rows = {}
@@ -280,7 +320,7 @@ def leaf_cancellation_plan(counts, *, check=lambda: None):
                 stats=dict(incidence_visits=visits))
 
 
-def core_handlebody_certificate(core, *, forest=None, check=lambda: None):
+def core_handlebody_certificate(core, *, forest=None, defer_forest=False, check=lambda: None):
     """Plan certified cancellations on a source-authenticated geometric core.
 
     A COMPLETE result gives a handlebody for each core component.  Three-handles
@@ -290,20 +330,34 @@ def core_handlebody_certificate(core, *, forest=None, check=lambda: None):
     ``verify_core_handlebody_certificate``.
     A supplied forest is checked to span every source zero/one component;
     it must be reused when this core is augmented by later two-handles.
+    With defer_forest=True, full column peeling discovers pivots before a
+    disjoint forest is chosen. Additional rows require a new full discovery.
     """
     check()
+    if type(defer_forest) is not bool or (defer_forest and forest is not None):
+        raise ValueError('defer_forest must be bool and cannot override a supplied forest')
     result = dict(status='INCONCLUSIVE',
                   trust='geometric core cancellation; requires authenticated handle charts')
     if core['handles3']:
         result['reason'] = 'core_has_three_handles'
         return result
-    tree, component = _chosen_forest(core, forest, check)
-    counts = _occurrences(core, tree, check)
-    planned = leaf_cancellation_plan(counts, check=check)
-    method = 'leaf'
-    if planned['remaining_rows']:
+    if defer_forest:
+        counts = _occurrences(core, (), check)
         planned = column_cancellation_plan(counts, check=check)
         method = 'column_leaf'
+        if planned['remaining_rows']:
+            result.update(reason='all_lower_forests_raw_obstruction',
+                          remaining_two_handles=planned['remaining_rows'], stats=planned['stats'])
+            return result
+        tree, component = _deferred_forest(core, planned, check)
+    else:
+        tree, component = _chosen_forest(core, forest, check)
+        counts = _occurrences(core, tree, check)
+        planned = leaf_cancellation_plan(counts, check=check)
+        method = 'leaf'
+        if planned['remaining_rows']:
+            planned = column_cancellation_plan(counts, check=check)
+            method = 'column_leaf'
     result['stats'] = planned['stats']
     if planned['remaining_rows']:
         reason = ('raw_ball_cancellation_obstruction'
