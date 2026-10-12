@@ -2,10 +2,10 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **135, 130, 249 and
+authored by **ProveIt Contributors**. The volumes have **140, 130, 249 and
 86 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **557 pages**.
-They share twelve chapters, thirteen figures and 142 references. The
+[combined edition](docs/manuscript/polylogarithms.pdf) has **562 pages**.
+They share twelve chapters, thirteen figures and 145 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
@@ -655,3 +655,21 @@ integrates these results and extends them to every repeated primitive, with
 complete homogeneous polynomials in consecutive reciprocals. The four
 volumes retain ProveIt Contributors authorship. Inverse geometry, exact
 radius and Borel reconstruction retain separate pending audits.
+
+
+### Quadratic feedback boundary report, October 12, 2026
+
+The new [boundary-feedback continuation](../Transseries/docs/series-and-transseries/Quadratic_Polylogarithm_Feedback_Boundary_Completion/README.md)
+has one original home beside its predecessor in Transseries. Its
+[proof audit](../Transseries/docs/series-and-transseries/Quadratic_Polylogarithm_Feedback_Boundary_Completion/INTAKE-PROOF-AUDIT.md)
+checks the dominant radius, supercritical coefficient constant at integer
+and noninteger orders, the three critical laws and the physical threshold.
+This closes the predecessor's explicitly open boundary question, without
+retracting its correct interior theorem. All five full supplied suites
+replayed successfully on an isolated copy; exact arithmetic checks and
+high-precision diagnostics remain distinct from the analytic proof.
+The imported ZIP was removed in placement. Section 1.7 now integrates the
+phase theorem and physical threshold and develops exact finite
+Bessel-polynomial coefficients, order spectra and shift recurrences.
+Detailed critical charts and crossover refinements remain separate
+integration scopes.

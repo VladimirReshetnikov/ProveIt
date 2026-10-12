@@ -1,0 +1,310 @@
+\section{Quadratic feedback: finite coefficients and boundary inversion}
+\label{qfb:section}
+
+Order jets describe how a polylogarithm changes with its order. Nonlinear
+feedback asks a complementary question: what remains explicit when the
+unknown also occurs in the argument? Consider the germ
+\begin{equation}\label{qfb:model}
+ uv(r)-\frac{v(r)^2}{2}=\Li_s(re^{v(r)}),\qquad v(0)=0,\qquad u>0,
+ \qquad a_n(s,u)=[r^n]v(r).
+\end{equation}
+The feedback reports \cite{qfb:reports} establish its interior inverse
+geometry and complete the boundary regimes. We first develop an exact
+finite coefficient formula, exposing a classical Bessel-polynomial
+structure. We then reconcile the global radius theorem. This order keeps
+finite identities, local expansions and global continuation distinct.
+
+\subsection{Two Lagrange inversions and a Bessel-polynomial formula}
+Let
+\[
+ C_{n,k}(s)=
+ \sum_{\substack{m_1+\cdots+m_k=n\\m_i\ge1}}(m_1\cdots m_k)^{-s}
+ =[t^n]\Li_s(t)^k .
+\]
+The sum is finite, so it is entire in $s$. Define the classical Bessel
+polynomial \cite{qfb:bessel}
+\[
+ y_d(z)=\sum_{j=0}^d\frac{(d+j)!}{(d-j)!\,j!}\left(\frac z2\right)^j,
+ \qquad y_0=1,\quad y_1=1+z.
+\]
+The positivity of its coefficients will be useful, but its role here is
+an exact change of coordinates, not an asymptotic approximation.
+
+\begin{theorem}[Finite Bessel coefficient identity]\label{qfb:bessel-theorem}
+For $n\ge1$, $s\in\mathbb C$ and $u>0$,
+\begin{align}
+ a_n(s,u)&=\sum_{k=1}^n Q_{n,k}(u)C_{n,k}(s),\label{qfb:finite}\\
+ Q_{n,k}(u)&=\frac{n^{k-1}}{k!\,u^k}
+                 y_{k-1}\left(\frac1{nu}\right)\notag\\
+ &=\sum_{j=0}^{k-1}
+ \frac{(k-1+j)!\,n^{k-1-j}}
+ {k!\,j!\,(k-1-j)!\,2^j u^{k+j}}.\label{qfb:weight}
+\end{align}
+More generally, replace $\Li_s(t)$ by any holomorphic germ
+$A(t)$ with $A(0)=0$ and replace $C_{n,k}$ by $[t^n]A(t)^k$.
+The same formula holds for every complex $u\ne0$.
+\end{theorem}
+\begin{proof}
+The implicit derivative of the defining equation in $v$ at the origin
+is $u\ne0$, so the germ exists and is unique. Set
+$f(t)=u-\sqrt{u^2-2A(t)}$, choosing the square root with value $u$.
+Then $v=f(t)$ and $t=re^{f(t)}$. Lagrange inversion gives
+\[
+ [r^n]v=\frac1n[t^{n-1}]f'(t)e^{nf(t)}
+       =\frac1n[t^n]e^{nf(t)}.
+\]
+For the second inversion write $g(z)=u-\sqrt{u^2-2z}$.
+Its inverse is $z=g(u-g/2)$, whence
+\[
+ [z^k]e^{ng(z)}
+ =\frac nk[w^{k-1}]e^{nw}(u-w/2)^{-k}.
+\]
+Expand both factors on the right and divide by the first factor $n$.
+The result is \eqref{qfb:weight}. Composing $z=A(t)$ requires only
+$1\le k\le n$, because $A(0)=0$. This proves both assertions.
+\end{proof}
+
+For fixed $n$, the weights have a short exact recurrence:
+\begin{equation}\label{qfb:weight-recurrence}
+ k(k+1)u^2Q_{n,k+1}
+ =k(2k-1)Q_{n,k}+n^2Q_{n,k-1}\qquad(k\ge2),
+\end{equation}
+with $Q_{n,1}=u^{-1}$ and
+$Q_{n,2}=n/(2u^2)+1/(2u^3)$. It follows either by comparing
+\eqref{qfb:weight}, or from
+$y_k=(2k-1)zy_{k-1}+y_{k-2}$.
+For example,
+\begin{align*}
+ a_1&=\frac1u,\\
+ a_2&=\frac{2^{-s}}u+\frac1{u^2}+\frac1{2u^3},\\
+ a_3&=\frac{3^{-s}}u+
+       2^{-s}\left(\frac3{u^2}+\frac1{u^3}\right)
+       +\frac3{2u^3}+\frac3{2u^4}+\frac1{2u^5}.
+\end{align*}
+For real $s$, $a_n$ is a polynomial in $u^{-1}$ with strictly positive
+coefficients at every degree from $1$ through $2n-1$. The highest
+coefficient is $\operatorname{Cat}_{n-1}/2^{n-1}$, where
+$\operatorname{Cat}_d=(2d)!/(d!(d+1)!)$; for $n\ge2$ the next is
+$n\operatorname{Cat}_{n-1}/2^{n-1}$. Only the composition into $n$
+ones contributes to these last two powers, so they are independent of $s$.
+
+\subsection{Finite order spectra and exact recurrences}
+Let $\mathcal M_n$ be the set of products of all ordered compositions
+of $n$, with arbitrary positive length. If $N_{n,k}(M)$ counts the
+compositions of length $k$ and product $M$, put
+\[
+ W_{n,M}(u)=\sum_{k=1}^n Q_{n,k}(u)N_{n,k}(M).
+\]
+\begin{corollary}[A finite Dirichlet polynomial in the order]
+\label{qfb:order-spectrum}
+For $u>0$,
+\begin{equation}\label{qfb:dirichlet}
+ a_n(s,u)=\sum_{M\in\mathcal M_n}W_{n,M}(u)M^{-s},
+ \qquad W_{n,M}(u)>0.
+\end{equation}
+Consequently
+\begin{equation}\label{qfb:annihilator}
+ \prod_{M\in\mathcal M_n}(\partial_s+\log M)\,a_n(s,u)=0.
+\end{equation}
+This is the monic constant-coefficient annihilator of least degree.
+For a real $h\ne0$, define
+$P_{n,h}(X)=\prod_{M\in\mathcal M_n}(X-M^{-h})
+ =\sum_{j=0}^d p_jX^j$. Then, identically in $s$,
+\begin{equation}\label{qfb:order-shift}
+ \sum_{j=0}^d p_j a_n(s+jh,u)=0.
+\end{equation}
+In particular $W_{n,1}=Q_{n,n}$ and
+$\lim_{s\to+\infty}a_n(s,u)=Q_{n,n}(u)$.
+\end{corollary}
+\begin{proof}
+Group the finite sum \eqref{qfb:finite} by the composition product.
+Every product in the support occurs with a positive weight. Applying a
+constant-coefficient differential operator with polynomial $P$ gives
+$\sum_M W_{n,M}P(-\log M)M^{-s}$. Distinct real exponentials are
+linearly independent: differentiating at one point gives a Vandermonde
+matrix in their distinct exponents. Hence any annihilator must vanish
+at every $-\log M$, proving minimality. The shift formula follows by
+the same calculation with the distinct eigenvalues $M^{-h}$.
+The product is one only for the composition entirely of ones, proving
+the final statements.
+\end{proof}
+
+This finite spectrum concerns a fixed Taylor coefficient, not the
+complete function as $n$ varies. All order derivatives are explicit:
+$\partial_s^j a_n=\sum_M W_{n,M}(-\log M)^jM^{-s}$.
+For instance $\mathcal M_3=\{1,2,3\}$, so the unit-order samples satisfy
+\[
+ a_3(s+3,u)-\frac{11}{6}a_3(s+2,u)
+          +a_3(s+1,u)-\frac16a_3(s,u)=0.
+\]
+This exact relation survives every choice of positive feedback $u$.
+
+\subsection{The positive branch and its exact radius}
+The finite formula proves $a_n>0$ for real $s$. Now suppose $s>0$
+and write, for $s>2$,
+\[
+ A=\zeta(s-1),\qquad U_c(s)=\sqrt{2\zeta(s)+A^2}.
+\]
+\begin{theorem}[Complete quadratic-feedback classification]
+\label{qfb:phase}
+The radius $R$ of \eqref{qfb:model} is the unique singular point on its
+circle of convergence, and the Taylor series converges absolutely there.
+Its value and coefficient equivalents are as follows.
+
+If $0<s\le2$, or if $s>2$ and $u<U_c(s)$, let $t_*\in(0,1)$ be
+the unique solution of
+\[
+ u^2=2\Li_s(t_*)+\Li_{s-1}(t_*)^2,\qquad w_*=\Li_{s-1}(t_*).
+\]
+Then
+\begin{equation}\label{qfb:interior}
+ R=t_*e^{w_*-u},\qquad
+ a_n\sim\sqrt{\frac{w_*}{2\pi(1+\Li_{s-2}(t_*))}}\,
+                  R^{-n}n^{-3/2}.
+\end{equation}
+For $s>2$ and $u\ge U_c(s)$ set
+$b=\sqrt{u^2-2\zeta(s)}$, $v_c=u-b$, $R_b=e^{-v_c}$.
+Here $R=R_b$. If $b>A$, then
+\begin{equation}\label{qfb:supercritical}
+ a_n\sim\frac{b^{s-1}}{(b-A)^s}R_b^{-n}n^{-s}.
+\end{equation}
+If $b=A$, the three critical laws are
+\begin{equation}\label{qfb:critical}
+ a_n\sim R_b^{-n}
+ \begin{cases}
+ \displaystyle
+ \frac{(A/\Gamma(1-s))^{1/(s-1)}}{-\Gamma(-1/(s-1))}
+                 n^{-1-1/(s-1)},&2<s<3,\\[6pt]
+ \displaystyle \sqrt{A/\pi}\,n^{-3/2}(\log n)^{-1/2},&s=3,\\[4pt]
+ \displaystyle \sqrt{\frac{A}{2\pi(1+\zeta(s-2))}}\,n^{-3/2},&s>3.
+ \end{cases}
+\end{equation}
+\end{theorem}
+\begin{proof}
+The parametrization from the first Lagrange inversion has
+\[
+ \frac{d}{dt}\log r(t)=
+ \frac1t\left(1-\frac{\Li_{s-1}(t)}
+                    {\sqrt{u^2-2\Li_s(t)}}\right).
+\]
+The characteristic right side $2\Li_s(t)+\Li_{s-1}(t)^2$ increases
+strictly from zero, with endpoint infinity for $s\le2$ and $U_c(s)^2$
+otherwise. Any characteristic point precedes a zero of the radicand.
+Thus the positive branch increases to the stated fold or endpoint.
+
+For a global convergence argument, iterate
+$\Phi(r,v)=v^2/(2u)+u^{-1}\sum_{m\ge1}r^me^{mv}/m^s$ from zero.
+The coefficients are nonnegative and stabilize degree by degree; for
+each positive $r$ below the proposed radius, the real iterates are
+bounded by the parametrized solution. The Taylor series therefore
+converges there and agrees with that solution by local uniqueness.
+Monotone convergence at the endpoint shows $\sum_n a_nR^n=v_c$,
+or $u-w_*$ in the interior case.
+
+At $|r|=R$, $r\ne R$, strict positivity in every degree implies
+$|v(r)|<v(R)$. Hence $|re^{v(r)}|<1$, or $<t_*$ in the interior
+case. Moreover
+\[
+ |\Phi_v(r,v(r))|
+ \le\frac{|v(r)|+\Li_{s-1}(|re^{v(r)}|)}u<1.
+\]
+At the positive endpoint the upper comparison is
+$(v_c+A)/u\le1$, or $(u-w_*+w_*)/u=1$.
+The implicit function theorem extends across every other point of the
+circle. It remains to prove that the positive endpoint is singular.
+
+For the boundary cases put $x=-\operatorname{Log}t$,
+$d=-\operatorname{Log}(r/R_b)$ and
+\[
+ D_s(x)=\zeta(s)-\Li_s(e^{-x}),\qquad
+ K_s(x)=Ax+\frac{x^2}{2}-D_s(x).
+\]
+The selected square root gives the exact identities
+\begin{align}
+ (b+x)d-\frac{d^2}{2}&=(b-A)x+K_s(x),&
+ v&=v_c+d-x,\label{qfb:normal}\\
+ K_s(x)&=\int_0^x(x-t)\{1+\Li_{s-2}(e^{-t})\}\,dt.\notag
+\end{align}
+The integral converges at zero for $s>2$. The paired expansion
+\eqref{rj:lerch} at $a=1$ gives, for noninteger $s$,
+\[
+ K_s(x)=\Gamma(1-s)x^{s-1}
+       +\frac{1+\zeta(s-2)}2x^2+O(x^3).
+\]
+At $s=3$ it gives instead
+\begin{equation}\label{qfb:K3}
+ K_3(x)=\frac{x^2}{2}\left(\log\frac1x+\frac52\right)
+           +\frac{x^3}{12}-\frac{x^4}{288}+O(x^6).
+\end{equation}
+The $5/2$ includes the quadratic feedback contribution.
+
+If $b>A$, put $\kappa=1-A/b>0$. The first nonanalytic term
+of $v$ after inversion is $\Gamma(1-s)d^{s-1}/(b\kappa^s)$.
+At integer $s=m\ge3$, pairing first gives the term
+$(-1)^m d^{m-1}\log d/(b(m-1)!\kappa^m)$.
+Power or integer-logarithm transfer cancels the Gamma factor or
+the signed factorial and proves \eqref{qfb:supercritical}.
+
+At $b=A$, the leading terms of $d$ are
+$\Gamma(1-s)x^{s-1}/A$, $x^2\log(1/x)/(2A)$, or
+$(1+\zeta(s-2))x^2/(2A)$ in the three regimes.
+Inverting and using $v=v_c+d-x$ gives \eqref{qfb:critical} by
+power--logarithm transfer \cite{qfb:transfer}. In particular the middle
+inverse has leading term $2\sqrt A\,d^{1/2}(\log(1/d))^{-1/2}$.
+At an interior fold, expansion of the parametrization gives the
+square-root amplitude $\sqrt{2w_* /(1+\Li_{s-2}(t_*))}$,
+which proves \eqref{qfb:interior}.
+
+For completeness these transfers have the required complex domains.
+For $d\sim cx^p$ on a closed slit sector, use the model inverse
+$(d/c)^{1/p}$; for $d\sim cx^2\log(1/x)$ use
+$(2d/(c\log(1/d)))^{1/2}$. On a fixed small relative circle around
+that model, the normalized convergent expansion tends uniformly to
+the corresponding power equation. Rouch\'e's theorem gives one root.
+Differentiated convergent expansions make its derivative nonzero,
+so the local inverses glue on smaller slit sectors.
+The analytic coordinate $d=1-r/R_b+O((1-r/R_b)^2)$ supplies the
+local dent. A finite cover of the remaining circle, using the already
+proved implicit continuations, completes the transfer domain.
+The nonanalytic leading terms prove genuine singularity and the
+asserted radius.
+\end{proof}
+
+\begin{corollary}[Physical evaluation threshold]\label{qfb:physical}
+For each $s>0$, let $t_s\in(0,1)$ be the unique solution of
+$\log t_s+\Li_{s-1}(t_s)=0$, and put
+$u_s^2=2\Li_s(t_s)+\Li_{s-1}(t_s)^2$.
+The Taylor series at $r=-e^{-u}$ converges exactly when $u\ge u_s$,
+and converges absolutely at equality.
+\end{corollary}
+\begin{proof}
+The left side increases strictly from negative infinity to a positive
+limit. In the interior regime $e^{-u}/R=e^{-w_*}/t_*$, giving exactly
+the stated threshold. For $s>2$ it occurs below $U_c(s)$; at and above
+that transition $e^{-u}/R_b=e^{-b}<1$. Outside the radius the series
+diverges, and the theorem gives absolute convergence on its circle.
+\end{proof}
+
+\subsection{Evidence and the next inverse questions}
+The interior result and boundary completion retain the attribution in
+\cite{qfb:reports}. The latter resolves an explicitly posed project
+question; it is not a correction to a theorem that claimed those cases.
+The finite Bessel formula and order-spectrum identities above develop
+the exact Lagrange representation using classical polynomial machinery.
+They make no publication-priority claim.
+
+Independent rational computations compare \eqref{qfb:finite} with
+coefficient iteration of the original equation, including signed input
+kernels; separate checks test the weight and order-shift recurrences.
+The incoming full suites also reproduce the marginal coefficient ratio
+$0.739119713$ to its leading estimate at $n=2048$, versus $1.010075657$
+after the second logarithmic refinement. The finite discrepancy motivates
+the refined inverse charts but is not a bound or a proof of an equivalent.
+
+The report's convergent critical charts, complete logarithmic correction
+calculus and joint crossover refinements retain separate integration
+scopes. Its local complex folds do not settle global access from the
+Taylor germ. Also, when $b<A$ is real, $R_b=e^{b-u}$ is an endpoint
+reference smaller than the actual interior radius. The compound-Poisson
+coefficient identity uses that reference on both sides of criticality;
+it must not silently replace the radius established above.

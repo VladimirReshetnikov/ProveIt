@@ -941,3 +941,44 @@ changed combined bodies match freshly reviewed volume pages. Only centered
 footer numbers are excluded, with every other text/image/drawing bound
 checked. No current contact sheet was opened. All five PDFs retain
 ProveIt Contributors authorship. No Lean or remote-CI claim is made.
+
+## Quadratic feedback, October 12, 2026 (Pacific)
+
+October 12, 2026 (Pacific). Section 1.7 develops an exact finite
+Bessel-polynomial formula for every feedback Taylor coefficient. Grouping
+ordered compositions by their product gives a finite Dirichlet polynomial
+in the order, its minimal constant-coefficient differential annihilator,
+and exact shift recurrences. Two Lagrange inversions prove the universal
+formula, including arbitrary holomorphic input kernels and nonzero complex
+feedback parameters. The positive polylogarithm model retains its sharper
+real hypotheses for the global phase theorem.
+
+The audited incoming boundary classification and physical threshold are
+reconciled with full attribution. The interior theorem was correct in its
+stated range; its explicitly open boundary question is now closed here.
+Convergent critical charts, full logarithmic refinements and joint
+crossover branches remain separate synthesis tasks.
+
+Independent exact verification compares 240 polylogarithm and 120 signed
+kernel coefficients against direct iteration of the original equation,
+checks 450 Bessel-weight recurrences and 50 order-shift cases, and retains
+three corruption controls. All five original incoming suites have complete
+isolated replays and 14 recorded-outcome checks. These finite checks are
+distinct from the analytic all-order proof.
+
+Final pages 140/130/249/86 (605 total), combined 562,
+145 references. All four volumes compile independently. The coupled
+volumes and combined edition converge in three rounds/passes without
+final gate issues; 46 external PDF destinations resolve.
+Visual review opens 12 changed volume bodies and 6 unmatched
+combined bodies, with 593 and 548 bodies respectively inherited
+by exact raster comparison and 8 changed combined bodies matched to
+fresh volume review. Only centered footer page numbers are excluded,
+with other content bounds checked. No current contact sheets were opened.
+All PDFs retain ProveIt Contributors authorship.
+
+The twenty-second delivery is preserved once in Transseries: 39 tracked
+originals and one ignored bare manifest recoverable in the committed
+arrival ZIP. Placement c0f20fbd88 retired that ZIP. The canonical archive
+ledger now covers 130 archives and 4704 tracked original members.
+No Lean, interval-certification or remote-CI claim is made.

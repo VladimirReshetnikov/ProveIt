@@ -2655,3 +2655,21 @@ See [`../MANIFEST.md`](../../../FabiusFunction/docs/semi-formalized-research-fro
   Their overlap and proof audit are recorded in the collective manuscript's
   editorial ledger. These are conventional research reports with finite
   checks, not new Lean formalization or a rebuilt Transseries volume.
+
+
+## Quadratic feedback boundary continuation, October 12, 2026
+
+[Boundary Completion for Quadratic Polylogarithm Feedback](Quadratic_Polylogarithm_Feedback_Boundary_Completion/README.md)
+continues the explicit question in Resonant_Polylogarithm_Transseries,
+article.tex lines 1279–1297, and the collection's nonlinear inverse and
+critical-endpoint programme. Its original TeX/PDF, code and supplied
+evidence are preserved together. The
+[intake proof audit](Quadratic_Polylogarithm_Feedback_Boundary_Completion/INTAKE-PROOF-AUDIT.md)
+accepts the conventional proof of the complete radius/coefficient phase
+classification and physical convergence threshold. All five full supplied
+suites rerun successfully in isolation with declared package versions.
+The convergent charts, logarithmic transfer and crossover refinements
+retain separate canonical integration tasks. Section 1.7 of the collective
+Polylogarithms manuscript now incorporates the phase classification and
+physical threshold, and develops finite Bessel-polynomial coefficient and
+order-spectrum identities. The Transseries volumes have not been rebuilt.

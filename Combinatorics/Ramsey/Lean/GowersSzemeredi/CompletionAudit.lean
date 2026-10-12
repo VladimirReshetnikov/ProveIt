@@ -232,6 +232,14 @@ example : ∀ k : Nat, 2 ≤ k → ∀ alpha : Real, 0 < alpha → alpha ≤ 1 /
               e * P.carrier.card ≤
                 LeanProofs.GowersSzemeredi.section16LargeMultilinearFrequencyCount f P mu alpha :=
   fun _ hk => LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerX hk
+example : ∀ d, 16 ≤ d → LeanProofs.GowersSzemeredi.Theorem181AtSharp 2 d :=
+  fun _ hd => LeanProofs.GowersSzemeredi.theorem_18_1_d2_sixteen_le hd
+example : ∀ L, 18 ≤ L → LeanProofs.GowersSzemeredi.Theorem182AtSharp 0 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.theorem_18_2_L0_eighteen_le hL
+example : ∀ L, 18 ≤ L → LeanProofs.GowersSzemeredi.Corollary187AtSharp 0 L :=
+  fun _ hL => LeanProofs.GowersSzemeredi.corollary_18_7_L0_eighteen_le hL
+example : LeanProofs.GowersSzemeredi.Theorem13AtFrom 0 18 :=
+  LeanProofs.GowersSzemeredi.theorem_1_3_L0_eighteen_le
 
 open Lean Elab Command in
 run_cmd do
@@ -290,7 +298,12 @@ run_cmd do
     ``LeanProofs.GowersSzemeredi.van_der_waerden_L0,
     ``LeanProofs.GowersSzemeredi.theorem_1_3_L0_nineteen_le,
     ``LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_fejerX,
-    ``LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerX
+    ``LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerX,
+    ``LeanProofs.GowersSzemeredi.theorem_18_1_d2_sixteen_le,
+    ``LeanProofs.GowersSzemeredi.theorem_18_2_L0_eighteen_le,
+    ``LeanProofs.GowersSzemeredi.corollary_18_7_L0_eighteen_le,
+    ``LeanProofs.GowersSzemeredi.van_der_waerden_L0_eighteen_le,
+    ``LeanProofs.GowersSzemeredi.theorem_1_3_L0_eighteen_le
   ]
   for name in fejer do
     let info ← getConstInfo name
@@ -299,7 +312,7 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the Fejér-route strengthenings: Theorem 18.1 at d+6 in every degree, Theorem 18.2 and Corollary 18.7 at L+4 in every length, the van der Waerden bound and Theorem 1.3 at k+4, their printed consequences, the polynomial Theorem 16.2 and Corollary 16.11 at the Fejér classes, and d+5 (d >= 12), L+3 (L >= 14) with the van der Waerden bound and Theorem 1.3 at k+3 (k >= 14), and from the small dimension-two seed d+4 (d >= 13), d+5 (d >= 9), L+3 (L >= 11) with the van der Waerden bound and Theorem 1.3 at k+3 (k >= 11), and the polynomial Theorem 16.2 / Corollary 16.11 at its classes, and from the exact small-dimension classes d+5 in every degree, d+4 (d >= 11), L+3 in every length with the van der Waerden bound and Theorem 1.3 at k+3, and from the polynomial Bohr radius L+2 (L >= 13) with the van der Waerden bound and Theorem 1.3 at k+2 (k >= 13), and from the polynomial base budget d+3 (d >= 11), d+4 (d >= 8), L+1 (L >= 13), L+2 (L >= 10) with the van der Waerden bound and Theorem 1.3 at k+1 (k >= 13) and k+2 (k >= 10), and from class constant 5/2 d+2 (d >= 17) and L+0 (L >= 19) with the van der Waerden bound and Theorem 1.3 at k (k >= 19), and the polynomial Theorem 16.2 / Corollary 16.11 at those classes; only approved axioms."
+  logInfo "Checked the Fejér-route strengthenings: Theorem 18.1 at d+6 in every degree, Theorem 18.2 and Corollary 18.7 at L+4 in every length, the van der Waerden bound and Theorem 1.3 at k+4, their printed consequences, the polynomial Theorem 16.2 and Corollary 16.11 at the Fejér classes, and d+5 (d >= 12), L+3 (L >= 14) with the van der Waerden bound and Theorem 1.3 at k+3 (k >= 14), and from the small dimension-two seed d+4 (d >= 13), d+5 (d >= 9), L+3 (L >= 11) with the van der Waerden bound and Theorem 1.3 at k+3 (k >= 11), and the polynomial Theorem 16.2 / Corollary 16.11 at its classes, and from the exact small-dimension classes d+5 in every degree, d+4 (d >= 11), L+3 in every length with the van der Waerden bound and Theorem 1.3 at k+3, and from the polynomial Bohr radius L+2 (L >= 13) with the van der Waerden bound and Theorem 1.3 at k+2 (k >= 13), and from the polynomial base budget d+3 (d >= 11), d+4 (d >= 8), L+1 (L >= 13), L+2 (L >= 10) with the van der Waerden bound and Theorem 1.3 at k+1 (k >= 13) and k+2 (k >= 10), and from class constant 5/2 d+2 (d >= 17) and L+0 (L >= 19) with the van der Waerden bound and Theorem 1.3 at k (k >= 19), and the polynomial Theorem 16.2 / Corollary 16.11 at those classes, and with the exact table to dimension 14 d+2 (d >= 16) and L+0 (L >= 18); only approved axioms."
 
 -- The refutation is checked separately; it is never counted as a proof
 -- of the original printed encoding or hidden among the 120 companions.
