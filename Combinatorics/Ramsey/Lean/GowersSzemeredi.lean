@@ -1263,6 +1263,12 @@ import GowersSzemeredi.Proofs18CoverModulusFejerJT
 import GowersSzemeredi.Proofs18CoverDensityFejerJT
 import GowersSzemeredi.Proofs18CoverExponentsFejerJT
 import GowersSzemeredi.Proofs18CoverFejerHeadlineJT
+import GowersSzemeredi.Proofs16UniformCoverTwoTight
+import GowersSzemeredi.Proofs16SplitTwoTrackClassesT3
+import GowersSzemeredi.Proofs18CoverModulusFejerJT3
+import GowersSzemeredi.Proofs18CoverDensityFejerJT3
+import GowersSzemeredi.Proofs18CoverExponentsFejerJT3
+import GowersSzemeredi.Proofs18CoverFejerHeadlineK3
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

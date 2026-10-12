@@ -23,6 +23,7 @@ import GowersSzemeredi.Proofs18CoverFejerHeadlineK
 import GowersSzemeredi.Proofs16PolynomialFejerJ
 import GowersSzemeredi.Proofs18CoverFejerHeadlineJM
 import GowersSzemeredi.Proofs18CoverFejerHeadlineJT
+import GowersSzemeredi.Proofs18CoverFejerHeadlineK3
 
 /-! **Theorem 18.1 at `d + 6` and Theorem 18.2 / Corollary 18.7 at `L + 4`
 in every degree and length** (Notes L.16d).
@@ -928,5 +929,31 @@ theorem theorem_18_1_d3_eight_le {d : Nat} (hd : 8 ≤ d) : Theorem181AtSharp 3 
     (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
     (fun k _ => section16RecurrenceProfileWith_explicit k)
     (fun k => explicit_family_constants_poly_le k) hpp hp hK hpB hd
+
+/-! ### The tight dimension-two count (Notes L.16y) -/
+
+/-- **Theorem 18.2 at every length `L ≥ 13` with no offset.** -/
+theorem theorem_18_2_L0_thirteen_le {L : Nat} (hL : 13 ≤ L) : Theorem182AtSharp 0 L :=
+  theorem_18_2_L0_thirteen_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hL
+
+/-- **Corollary 18.7 at every length `L ≥ 13` with no offset.** -/
+theorem corollary_18_7_L0_thirteen_le {L : Nat} (hL : 13 ≤ L) : Corollary187AtSharp 0 L :=
+  (theorem_18_2_L0_thirteen_le hL).corollary_18_7
+
+/-- **Van der Waerden numbers**: for `k ≥ 13` and `r ≥ 2`, `W(k, r) ≤ 2^2^r^2^2^k`. -/
+theorem van_der_waerden_L0_thirteen_le {k : Nat} (hk : 13 ≤ k) {r : Nat} (hr : 2 ≤ r) (N : Nat)
+    (hN : szemerediThresholdAt 0 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
+    HasMonochromaticAP N r color k :=
+  (theorem_18_2_L0_thirteen_le hk).van_der_waerden hr N hN color
+
+/-- **Theorem 1.3 with constant `2^(-2^k)` for every `k ≥ 13`.** -/
+theorem theorem_1_3_L0_thirteen_le : Theorem13AtFrom 0 13 :=
+  theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L0_thirteen_le hk
 
 end LeanProofs.GowersSzemeredi
