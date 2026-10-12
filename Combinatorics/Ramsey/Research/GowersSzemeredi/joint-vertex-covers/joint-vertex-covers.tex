@@ -278,6 +278,43 @@ The small cases stay at $d+6$ and $L+4$ because of the class recursion's
 transient near $l=4$, where the family exponent squares,
 $a_{l+1}\approx2^{l+5}a_l^2$.
 
+\emph{The dimension-two family exponent.} Since the family exponent squares,
+$\log_2a_l\approx(\log_2a_2/4)\,2^l$, so the constant $14$ above is set by
+$a_2=2^{46}$. That value only reflects the passage from a power class, which
+sets the family exponent equal to the parameter degree. The dimension-two
+controls are polynomials of fixed degree in the number $M=n\,m$ of pieces:
+the base controls are linear in $M$. In the two bases $\nu=n+1$ and
+$W=2V/(\gamma\theta\rho)$:
+\begin{itemize}
+\item the count is at most $\nu^{11}W^{2^{41}}$;
+\item the inverse width exponent is at most $\nu^{29}W^{2^{46}}$.
+\end{itemize}
+So dimension two is a split class with $a_2=32$ and $D_2=2^{48}$, and the
+invariants become
+\[
+  2^{l+6}a_l\le2^{4\cdot2^l},\qquad D_l\le2^{4\cdot2^l+3(l+4)^2+30}.
+\]
+The class degree is then $4\cdot2^l+3(l+4)^2+32$.
+
+At this class degree the density degree of the step is about $28\cdot2^k$.
+That is below the $32\cdot2^k$ which the $\eta$ step of the printed
+envelope asks of it, but the $\eta$ step only absorbs the constant
+$2^{2(k+2)^3}\,2^{k+1}(2/\alpha)^2$, and $3(k+4)^2$ suffices for that. One
+step then costs $28\cdot2^k+O(k^2)$, so the Theorem~18.1 envelope tends to
+$56\cdot2^k<64\cdot2^k$.
+
+\begin{theorem}\label{thm:fejer4}
+Theorem~18.1 holds with exponent $\alpha^{2^{2^{d+4}}}$ at every degree
+$d\ge13$, and with $\alpha^{2^{2^{d+5}}}$ at every degree $d\ge9$.
+Theorem~18.2 and Corollary~18.7 hold with $L+3$ at every length $L\ge11$; in
+particular $W(k,r)\le2^{2^{r^{2^{2^{k+3}}}}}$ and Theorem~1.3 holds with
+density exponent $2^{-2^{k+3}}$ for $k\ge11$.
+\end{theorem}
+
+The Theorem~18.2 envelope cannot reach $L+2$ in this way: its threshold
+branch alone is $64\cdot2^k+8>64\cdot2^k$. Nor can $d+3$ be reached, since
+the base budget contributes $16\cdot2^k$ to every step.
+
 \section{Theorem 16.2 and Corollary 16.11 with polynomial controls}
 
 The printed Theorem~16.2 restricts a relation with the product property to a
@@ -313,6 +350,15 @@ With the Fej\'er classes of \S\ref{sec:fejer} both exponents shrink:
 \item the corollary has $e^{-1}\le(2/\alpha)^{2^{101\cdot2^k+k+24}}$\\
   (\lean{corollary\_16\_11\_polynomial\_fejer}).
 \end{itemize}
+With the dimension-two family exponent $32$ (Theorem~\ref{thm:fejer4}) they
+shrink further:
+\begin{itemize}
+\item the graph count becomes
+  $\max(1,(4V/\gamma\theta\rho)^{2^{4\cdot2^k+3(k+4)^2+32}})$\\
+  (\lean{theorem\_16\_2\_polynomial\_fejerS});
+\item the corollary has $e^{-1}\le(2/\alpha)^{2^{32\cdot2^k+9(k+4)^2+k+120}}$\\
+  (\lean{corollary\_16\_11\_polynomial\_fejerS}).
+\end{itemize}
 
 \section{Further questions}
 
@@ -323,21 +369,14 @@ With the Fej\'er classes of \S\ref{sec:fejer} both exponents shrink:
   Lemma~\ref{lem:joint}, should cost about $68\cdot2^k$. The envelope would
   drop from about $472\cdot2^k$ to about $336\cdot2^k$. This changes none of
   the constants in the table.
-\item \emph{The class degree.} Under the Fej\'er $\theta_1$ the face covers
-  have degree $2^{23\cdot2^l}$ (\S\ref{sec:fejer}). The split-class invariant
-  is $2^{l+6}a_l\le2^{14\cdot2^l}$, forced by the dimension-two seed $2^{46}$.
-  That seed is dominated by the dimension-two piece counts, whose Lemma~16.3
-  density $2^{-2000}(\gamma\theta)^{10000}$ multiplies the budget degree by
-  $10^4$. Is there a class construction with a smaller constant? Together
-  with a base budget near $16\cdot2^k$ (the bound on $V$; the Fej\'er
-  $\theta_1$ no longer forces $32\cdot2^k$), it would be needed for $c=5$ in
-  Theorem~18.1 in \emph{every} degree. Theorem~\ref{thm:fejer5} gives
-  $c=5$ from degree $12$ on. Below that, the actual class degree peaks near
-  $16\cdot2^l$ at $l=4$, because the family exponent squares from one
-  dimension to the next. Even a dimension-two seed of $2^{36}$ leaves the
-  maximum envelope at $134\cdot2^k>128\cdot2^k$. So $c=5$ at small degrees
-  seems to need a class step whose family exponent grows linearly rather
-  than quadratically.
+\item \emph{Small degrees.} With the dimension-two family exponent $32$
+  (Theorem~\ref{thm:fejer4}) the class constant is $4$, and $c=5$ holds from
+  degree $9$ on and $c=4$ from degree $13$ on. Below degree $9$ the obstacle
+  is the additive slack $3(l+4)^2+32$ of the class degree, which dominates
+  $4\cdot2^l$ for small $l$. The Theorem~18.1 envelope peaks at about
+  $212\cdot2^k$ at $k=3$. Is there a class recursion whose slack is linear in
+  $l$, or whose small dimensions are bounded directly? That would carry $c=5$
+  to every degree.
 \item \emph{Fixed-precision slices with the Fej\'er classes.} Composing the
   two slice controls jointly would lower the step cost from $101\cdot2^k$ to
   about $78\cdot2^k$. That is still above $64\cdot2^k$, so it changes no
@@ -376,6 +415,10 @@ Theorem~\ref{thm:fejer} & \lean{theorem\_18\_1\_d6}, \lean{theorem\_18\_2\_L4}, 
 & \lean{van\_der\_waerden\_L4}, \lean{theorem\_1\_3\_L4} (\lean{Proofs18CoverFejerAllDegrees})\\
 Theorem~\ref{thm:fejer5} & \lean{theorem\_18\_1\_d5\_twelve\_le}, \lean{theorem\_18\_2\_L3\_fourteen\_le},\\
 & \lean{Proofs18TightClassesFejerQ}, \lean{Proofs18CoverFejerHeadlineQ}\\
+Theorem~\ref{thm:fejer4} & \lean{theorem\_18\_1\_d4\_thirteen\_le}, \lean{theorem\_18\_1\_d5\_nine\_le},\\
+& \lean{theorem\_18\_2\_L3\_eleven\_le}, \lean{theorem\_1\_3\_L3\_eleven\_le},\\
+& \lean{Proofs16UniformCoverTwoSplit}, \lean{Proofs18TightClassesFejerS},\\
+& \lean{Proofs18EtaStepSmall}, \lean{Proofs18CoverFejerHeadlineS}\\
 Fej\'er polynomial 16.2, 16.11 & \lean{Proofs16PolynomialFejer}, \lean{theorem\_16\_2\_polynomial\_fejer},\\
 & \lean{corollary\_16\_11\_polynomial\_fejer}\\
 polynomial Theorem 16.2 & \lean{Proofs16PolynomialStructure}, \lean{theorem\_16\_2\_polynomial}\\

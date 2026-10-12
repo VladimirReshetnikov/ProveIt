@@ -36,6 +36,7 @@ map").
 | `assemble_polyq.py` | `Proofs16PolynomialFejerQ` | `Proofs16PolynomialFejer` |
 | `assemble_etasmall.py` | `Proofs18EtaStepSmall` | `Proofs18GenericDensity` (`fixDeg k ≤ m` ↦ `3(k+4)² ≤ m`) |
 | `assemble_s.py` | `Proofs18Cover{Modulus,Density,Exponents}FejerS`, `Proofs18CoverFejerHeadlineS` | the `…FejerQ` modules (`uDegS`, `sDeg`, η via `eta_step_small`); headline head/tail in `headline_s_{head,tail}.lean.txt` |
+| `assemble_polys.py` | `Proofs16PolynomialFejerS` | `Proofs16PolynomialFejerQ` (reuses the renames of `assemble_s.py`) |
 | `assemble_polyf.py` | `Proofs16PolynomialFejer` | `Proofs16PolynomialStructure`, `…Corollary` |
 | `mkstub_fejer18.py`, `mkstub_auditfejer.py` | stub checks of `Proofs18CoverFejerAllDegrees` and the Fejér block of `CompletionAudit.lean` | — |
 

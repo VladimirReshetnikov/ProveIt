@@ -446,6 +446,25 @@ Verification of the cover route (2026-10-11)
   commonDiffPartitionBoundAt_of, multilinearPartitionBoundAt_explicit,
   section16RecurrenceProfileWith_explicit (18.1); the last only (18.2 and
   consequences). Needs the full build on the Codex machine.
+  The small dimension-two seed (notes L.16j). Proofs16UniformCoverTwoSplit
+  proves dimension two is a split class at family exponent 32
+  (splitUniformClass_two_small; through toSplit it was 2^46). The split
+  recursion squares the family exponent, so the class constant drops from 14
+  to 4: Proofs18TightClassesFejerS, class degree sDeg l = 4*2^l + 3(l+4)^2 + 32.
+  Proofs18EtaStepSmall removes the eta step's printed side condition
+  fixDeg k <= m (3(k+4)^2 <= m suffices); without this, one step costs
+  32*2^k and d+4 is lost. The step then costs 28*2^k + O(k^2)
+  (Proofs18Cover*FejerS, Proofs18CoverFejerHeadlineS). Bridge theorems:
+  theorem_18_1_d4_thirteen_le (Theorem181AtSharp 4 d for every d >= 13),
+  theorem_18_1_d5_nine_le (d+5 for every d >= 9), theorem_18_2_L3_eleven_le
+  and corollary_18_7_L3_eleven_le (L+3 for every L >= 11),
+  van_der_waerden_L3_eleven_le, theorem_1_3_L3_eleven_le (Theorem13AtFrom 3 11),
+  theorem_16_2_polynomial_fejerS (graph-count exponent 4*2^k+3(k+4)^2+32) and
+  corollary_16_11_polynomial_fejerS (e^-1 <= (2/alpha)^(2^(32*2^k+9(k+4)^2+k+120))).
+  Same stub axioms; stub-checked and pinned in CompletionAudit. The
+  remaining limits of this envelope are recorded in notes L.16j: L+2 is
+  blocked by the 2^(k+6) threshold branch, and d+3 by the 16*2^k base budget
+  in rho.
 
 Sharper exponents for Theorems 18.1 and 18.2 — 2026-10-11 (notes L.15)
   The joint-cover envelopes are a quarter of the printed budgets, so:
