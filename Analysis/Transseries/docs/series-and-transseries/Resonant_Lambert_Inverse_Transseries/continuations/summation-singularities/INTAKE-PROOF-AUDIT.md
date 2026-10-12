@@ -79,3 +79,15 @@ remain original. No collective volume was rebuilt by this audit, and no
 Lean formalization is claimed. The all-inverse-index-order question remains
 open in this source; the current correction compiler is separate ongoing
 research until its uniform remainder proof is written and reviewed.
+
+
+## Canonical all-order extension, 12 October 2026
+
+The subsequent [Volume I section](../../../../../../Polylogarithms/docs/manuscript/chapters/01-lambert-late-coefficients.tex) now supplies the written
+uniform remainder argument and finite Faulhaber/Poisson correction formula
+for every fixed order. Theorem 1.26 resolves the all-order question noted
+above, and gives higher-polylogarithm boundary models. Its compiler checks
+through order four; the explicit second correction also has a separate
+small-multiset calculation in the text. This supersedes the earlier
+research-status sentence without changing the delivered article. Global
+continuation and a full local alien description remain separate questions.

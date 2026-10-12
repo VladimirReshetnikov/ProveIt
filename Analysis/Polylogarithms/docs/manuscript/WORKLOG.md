@@ -1046,3 +1046,38 @@ audited. No current contact sheet was opened.
 All PDFs retain ProveIt Contributors authorship. Original report evidence
 is unchanged. The (2,3,4) case and the arithmetic classification outside
 this certificate class remain open. No Lean or remote-CI claim is made.
+
+## All late Lambert coefficients, October 12, 2026 (Pacific)
+
+October 12, 2026 (Pacific). Volume I now gives a finite Faulhaber/Poisson
+formula for every fixed inverse-index correction, a uniform factorial-vertex
+proof, and the explicit second correction. It resolves the all-order question
+in the preserved summation-and-singularities continuation. The resulting
+Borel models use polylogarithms of successively higher order, with the stated
+finite differentiability of the remainder on the closed initial disk.
+
+Independent rational computation checks 65 finite product coefficients and
+the first two explicit correction formulas. Forty complete finite coefficient
+values, recomputed from the delivered verifier on an isolated copy, support
+the first five asymptotic orders through n=201, including complex coupling
+and a vanishing leading parity amplitude. Numerical comparisons are
+diagnostics, not interval certificates; the written proof establishes the
+uniform infinite statement. No convergence in correction order, global
+Borel continuation, or full local alien calculus is inferred.
+
+Final pages 149/130/253/86 (618 total),
+combined 575, 150 references. All four volumes compile independently.
+Coupled volume and combined builds converge without final gate issues;
+58 external PDF destinations resolve. Manual review opens 12
+changed volume bodies and 7 unmatched combined bodies. Exact
+raster comparison retains 606 prior volume bodies and 561
+prior combined bodies, with 7 additional combined bodies matched to
+freshly reviewed volume pages. Only centered footer numbers are excluded,
+with other content bounds audited. No current contact sheet was opened.
+
+The archive record now covers 134 retired archives and 4779 tracked original
+members. Four recent packages are registered without changing their original
+evidence. Three newer incoming packages remain pending. The separate audit
+accepts the angular and endpoint conclusions of summation-and-singularities;
+their canonical synthesis remains outstanding. All PDFs retain ProveIt
+Contributors authorship. No Lean or remote-CI claim is made.
