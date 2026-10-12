@@ -4426,6 +4426,16 @@ The Bernoulli averaging, the hyperedge bookkeeping, the parity moment and the
 vertex injectivity are copied from `Proofs15Restriction`, where they are
 private.
 
+*Lemma 15.6 with the Fejér exponent* (`Proofs15FejerProduct`, light,
+standard axioms only). `fejer_product_restriction` is Lemma 15.6 with the
+arrangement density `(βγ/2)^(fejerProductExponent k)`, where
+`fejerProductExponent k = 2^(3k+7)·2^(k+4)·(k+6) ≤ 2^(5k+14)`
+(`fejerProductExponent_le`). The printed density is `(βγ/2)^(2^(2^(k+5)))`.
+`lemma_15_6_of_fejer_product` recovers the printed lemma. This is the
+single-exponential `θ₁` of the L.16 analysis, `log₂ E₁′ ≤ 5k + 14`, now
+proved. What remains is the propagation through Section 16, which hardwires
+the printed `section16ThetaOne`.
+
 *Propagation (model).* `models/model_fejer.py` mirrors the split-class
 recursion of `Proofs16SplitStepBounds` exactly (`splitStepA`, `splitStepD`).
 Its θ₁-driven inputs are:
