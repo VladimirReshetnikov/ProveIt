@@ -1147,6 +1147,9 @@ import GowersSzemeredi.Proofs16TightRadius
 import GowersSzemeredi.Proofs16SplitFejerDegrees
 import GowersSzemeredi.Proofs16Lemma5With
 import GowersSzemeredi.Proofs16DenseSelectionWith
+import GowersSzemeredi.Proofs16IntegerPrintedCorollary
+import GowersSzemeredi.Proofs13PrintedSquareBounds
+import GowersSzemeredi.Proofs13IntegerSparseSquare
 import GowersSzemeredi.Proofs16PolyPieceTwoDataWith
 import GowersSzemeredi.Proofs16PolyCoverTwoFejer
 import GowersSzemeredi.Proofs18FejerSeedCounts
@@ -1155,6 +1158,11 @@ import GowersSzemeredi.Proofs16UniformCoverTwoFejer
 import GowersSzemeredi.Proofs16ClassPiecesWith
 import GowersSzemeredi.Proofs16ClassStepFejer
 import GowersSzemeredi.Proofs16ClassStepBoundsFejer
+import GowersSzemeredi.Proofs16ClassStepDegreesFejer
+import GowersSzemeredi.Proofs16SplitStepFejer
+import GowersSzemeredi.Proofs16SinglePieceCoverGlobalWith
+import GowersSzemeredi.Proofs18SinglePieceCoverInverseFejer
+import GowersSzemeredi.Proofs18TightClassesFejer
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
