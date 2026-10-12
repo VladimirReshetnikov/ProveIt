@@ -5,26 +5,26 @@ organized as four volumes. Each has its own source and compiled PDF.
 
 | Volume | Material | PDF | Pages |
 |---|---|---|---:|
-| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 130 |
-| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 129 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 248 |
-| IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 85 |
+| I | Polylogarithm identities, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 135 |
+| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 130 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 249 |
+| IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 86 |
 
 The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 141 references. The scientific text is shared
+and the shared bibliography of 142 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[552-page combined snapshot](polylogarithms.pdf) remain available.
+[557-page combined snapshot](polylogarithms.pdf) remain available.
 
-The [inventory](source-inventory.json) accounts for **1,794 textual source
+The [inventory](source-inventory.json) accounts for **1,810 textual source
 files**, including overlapping articles, fragments and correction registers.
 The [editorial ledger](EDITORIAL-LEDGER.md) maps accepted mathematical claims
-and pending research integration. The 124 imported archives preserve 4,550
-original tracked members; 50 ignored bare checksum records remain recoverable
+and pending research integration. The 129 imported archives preserve 4,665
+original tracked members; 53 ignored bare checksum records remain recoverable
 in arrival history. Each imported ZIP was retired in its placement commit.
 All eleven complete mathematical suites in the seventeenth and eighteenth
 intakes pass on isolated copies. Preservation and finite replay do not imply
@@ -406,3 +406,16 @@ denominators of degree at most two require only 1,L,L^2,Li2, with arbitrary
 polynomial part and integer pole separation. A shifted-double-pole example
 has an ordinary zeta endpoint. Sharpness and spectral refinements remain
 separate pending proofs; functional weight is not arithmetic independence.
+
+
+The twenty-first intake preserves five resonant-jet and inverse-transseries
+packages and records full isolated mathematical replay passes. Two packages
+have a single original home in the Transseries collection. The fixed-sector
+R1 extension and pure-logarithm normalization have conventional proof audits.
+A derived order-lowering identity gives finite antiderivatives of every
+normalized jet; its proof and independent checks are in the
+[intake audit](verification/TWENTY-FIRST-INTAKE-AUDIT.md). Section 1.6 now incorporates
+the fixed-sector theorem, exact normalization, monodromy and primitives.
+The collective continuation also proves every repeated primitive in finite
+complete-homogeneous coordinates. The inverse-geometry and Borel branches
+remain separate pending audits.

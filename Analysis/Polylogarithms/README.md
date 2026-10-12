@@ -2,17 +2,17 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **130, 129, 248 and
-85 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **552 pages**.
-They share twelve chapters, thirteen figures and 141 references. The
+authored by **ProveIt Contributors**. The volumes have **135, 130, 249 and
+86 pages**, each compiling independently; the retained
+[combined edition](docs/manuscript/polylogarithms.pdf) has **557 pages**.
+They share twelve chapters, thirteen figures and 142 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
 finite certificates, numerical diagnostics, PDF builds and visual review.
 
-The inventory covers **1794 textual provenance documents**. **124 incoming
-archives / 4550 original tracked members** are preserved; imported ZIPs are
+The inventory covers **1810 textual provenance documents**. **129 incoming
+archives / 4665 original tracked members** are preserved; imported ZIPs are
 retired in their placement commits and recoverable from arrival history.
 Delivered PDFs, sources, code and receipts retain their original evidence
 scopes. Intake notes use a separate filename, preserving delivered
@@ -639,3 +639,19 @@ at most two use only 1,L,L^2,Li2, with arbitrary polynomial part and
 nonpositive integer poles. Anchored Euler primitives, finite differential
 modules and a shifted-double-pole ordinary zeta endpoint are included.
 Formal sharpness and spectral/Hahn refinements remain separate audits.
+
+
+### Resonant jets and inverse transseries: twenty-first intake
+
+Five packages now have preserved originals, retired arrival archives, and
+full isolated mathematical replays. The [reconciliation and proof audit](docs/manuscript/verification/TWENTY-FIRST-INTAKE-AUDIT.md)
+maps their overlap and pending claims. Three continue the
+[uniform-transition report](docs/reports/uniform-transition-continuation/RESONANT-INVERSION-INTAKE.md);
+the exact-core dilogarithm and weighted endpoint-inverse packages have one
+original copy in [Transseries](../Transseries/docs/series-and-transseries/README.md).
+The fixed-sector R1 proof is audited, and an exact order-lowering identity
+gives finite primitives for all normalized resonant jets. Section 1.6
+integrates these results and extends them to every repeated primitive, with
+complete homogeneous polynomials in consecutive reciprocals. The four
+volumes retain ProveIt Contributors authorship. Inverse geometry, exact
+radius and Borel reconstruction retain separate pending audits.

@@ -2635,3 +2635,23 @@ coefficient lists the stage asserts were reproduced independently in exact
 rational arithmetic (see the package README).
 
 See [`../MANIFEST.md`](../../../FabiusFunction/docs/semi-formalized-research-frontiers/drafts/MANIFEST.md) for the group record.
+
+
+## Resonant polylogarithm continuations, October 12, 2026
+
+- [Resonant Polylogarithm Transseries](Resonant_Polylogarithm_Transseries/README.md)
+  continues nonlinear Stokes transport and exact-core inverse charts. Its
+  model-specific claims concern positive Laurent sectors, a sharp
+  dilogarithmic radius and physical threshold, with Gamma and periodic
+  Borel jets. Full pinned-dependency replay passes; independent review of
+  the complete radius proof remains pending.
+- [Polylogarithm Resonance and Inverse Transseries](Polylogarithm_Resonance_And_Inverse_Transseries/README.md)
+  continues endpoint inverse charts through weighted logarithmic deficits,
+  Fuss-Catalan support and uniform order-two transitions. Full replay with
+  declared dependencies passes. Its global coefficient asymptotics and
+  proposed external corrections require separate analytic review.
+- Three related pure-jet, fold and complex-sector reports have their single
+  original home in the [Polylogarithms resonance spine](../../../Polylogarithms/docs/reports/uniform-transition-continuation/RESONANT-INVERSION-INTAKE.md).
+  Their overlap and proof audit are recorded in the collective manuscript's
+  editorial ledger. These are conventional research reports with finite
+  checks, not new Lean formalization or a rebuilt Transseries volume.

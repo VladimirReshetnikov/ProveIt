@@ -1,0 +1,99 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{mathpazo}
+\usepackage[a4paper,margin=27mm,headheight=15pt]{geometry}
+\usepackage{microtype,amsmath,amssymb,amsthm,mathtools,bm}
+\usepackage{booktabs,longtable,array,graphicx,xcolor,enumitem}
+\usepackage{fancyhdr}
+\usepackage{xurl,needspace,placeins}
+\usepackage[unicode,pdfencoding=auto]{hyperref}
+\usepackage[nameinlink,capitalise]{cleveref}
+\definecolor{ink}{HTML}{183653}
+\definecolor{accent}{HTML}{246B77}
+\definecolor{soft}{HTML}{EDF3F5}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent,
+  pdftitle={Boundary completion for quadratic polylogarithm feedback},
+  pdfauthor={Research report prepared for the ProveIt project}}
+\setlength{\emergencystretch}{2em}
+\setlength{\parskip}{3pt}
+\numberwithin{equation}{section}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Li}{\operatorname{Li}}
+\newcommand{\ee}{\mathrm e}
+\newcommand{\ii}{\mathrm i}
+\newcommand{\dd}{\mathrm d}
+\newcommand{\C}{\mathbb C}
+\newcommand{\R}{\mathbb R}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\E}{\mathbb E}
+\newcommand{\coef}[2]{[#1^{#2}]}
+\newcommand{\Uc}{U_{\mathrm c}}
+\newcommand{\Rb}{R_{\mathrm b}}
+\newcommand{\vc}{v_{\mathrm b}}
+\newcommand{\ph}{\varphi}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\Log}{\operatorname{Log}}
+\newcommand{\rem}{\mathcal R}
+\newcommand{\supp}{\operatorname{supp}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{ink}Quadratic polylogarithm feedback}
+\fancyhead[R]{\small\color{ink}ProveIt research}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\setlist[enumerate]{itemsep=4pt,topsep=5pt}
+\setlist[itemize]{itemsep=3pt,topsep=5pt}
+\title{\color{ink}\bfseries Boundary Completion for\\Quadratic Polylogarithm Feedback\\[5pt]
+  \large Convergent inverse transseries, logarithmic resonance,\\
+  and coefficient transitions}
+\author{Research report prepared for the ProveIt project}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We resolve the boundary-feedback question explicitly left open in the
+incoming report \emph{Resonant Polylogarithm Transseries}.  For the germ
+$v(0)=0$ determined by
+$uv-v^2/2=\Li_s(r\ee^v)$, we prove the exact Taylor radius, unique dominant
+singularity, and leading coefficient law for every $s>0$ and $u>0$.
+For $s>2$, the critical parameter is
+$\Uc(s)^2=2\zeta(s)+\zeta(s-1)^2$.  Above it we prove the previously
+conjectured $R^{-n}n^{-s}$ law, including all integer orders.  At equality
+the three coefficient scales are $R^{-n}n^{-1-1/(s-1)}$ for $2<s<3$,
+$R^{-n}n^{-3/2}(\log n)^{-1/2}$ for $s=3$, and $R^{-n}n^{-3/2}$ for
+$s>3$, with explicit constants.  An exact integral normal form yields
+convergent inverse charts in finitely many power and logarithmic
+coordinates.  At order three an exact Lambert core gives every
+inverse-logarithmic coefficient correction; the first correction has a
+particularly simple constant.  We also construct a convergent uniform
+chart as the order crosses three and prove the coefficient crossover
+as the feedback parameter crosses its critical value.  The proofs use
+classical polylogarithm continuation, holomorphic inversion, singularity
+analysis, and a directly proved lattice local limit argument.  The
+contribution is the completed nonlinear model, its exact constants and
+charts, and the resolution of a repository conjecture; the general
+stable-law and singularity-analysis mechanisms are credited to their
+antecedents.  Reproducible algebraic and numerical checks accompany the
+proofs.
+\end{abstract}
+\clearpage
+\tableofcontents
+\newpage
+\input{sections/01-scope}
+\input{sections/02-phase}
+\input{sections/03-charts}
+\input{sections/04-logarithmic}
+\input{sections/05-order-crossover}
+\input{sections/06-coefficient-crossover}
+\input{sections/07-verification-research}
+\input{references}
+\end{document}

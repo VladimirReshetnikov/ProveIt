@@ -1,3 +1,30 @@
+# Resonant order jets and arbitrary repeated primitives
+
+October 12, 2026 (Pacific). Section 1.6 integrates the audited fixed-sector
+R1 extension, reciprocal-Gamma pure-logarithm normalization and exact
+monodromy. Theorems 1.16 and 1.17 develop the order-lowering ladder and
+all repeated primitives. Complete homogeneous polynomials in consecutive
+reciprocals give the finite jet coefficients; the polynomial endpoint fixes
+the integration constant. The proof includes the integrable m=0 family.
+Growing jets/windows, inverse geometry and Borel reconstruction remain
+separate research scopes. Original reports are unchanged and credited.
+
+Independent checks pass: 3780 exact coefficient-basis cases, 72 single and
+252 repeated primitive cancellations, 24 direct defining-series diagnostics
+at 85 digits, and nine native Wolfram symbolic checks. The all-order result
+is established by the manuscript's analytic proof, not finite tests.
+
+Final pages 135/130/249/86 (600 total), combined 557,
+142 references. Three coupled rounds, three serial combined passes and
+three cold passes for each volume pass without final log issues.
+All 43 external destinations resolve. Visual review opens 15 changed
+volume bodies and 6 unmatched combined bodies; 585 volume and
+543 combined bodies inherit exact raster-matched review, and 8
+changed combined bodies match freshly reviewed volume pages. Only centered
+footer numbers are excluded, with every other text/image/drawing bound
+checked. No current contact sheet was opened. All five PDFs retain
+ProveIt Contributors authorship. No Lean or remote-CI claim is made.
+
 # All-rank rational Hankel polylogarithm alphabets
 
 October 12, 2026 (Pacific). Section 8.47 integrates the audited compiler

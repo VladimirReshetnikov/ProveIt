@@ -1,0 +1,129 @@
+\section{Research question, source audit, and precise contribution}
+\label{sec:scope}
+
+The nonlinear feedback equation
+\begin{equation}\label{eq:model}
+ uv(r)-\frac{v(r)^2}{2}=\Li_s\bigl(r\ee^{v(r)}\bigr),
+ \qquad v(0)=0,\qquad s>0,\quad u>0,
+\end{equation}
+provides a concrete meeting point for polylogarithms and transseries.
+The polylogarithm supplies a boundary singularity whose exponent changes
+with $s$.  Nonlinear inversion may reach that singularity before, after,
+or exactly when the ordinary inverse derivative vanishes.  The equality
+case produces fractional powers, logarithms, and iterated logarithms;
+it is especially well suited to a precise distinction between a formal
+expansion and a convergent analytic chart.
+
+The source report \cite{RepoFeedback}, Theorem \texttt{thm:feedback},
+proves the case in which an interior characteristic point exists.
+Its first question in Section \texttt{sec:future} asks for the remaining
+boundary cases and prints the supercritical coefficient constant as an
+unproved candidate.  We prove that candidate and all critical cases.
+This is a resolution of an explicitly stated project question, not a
+claim to settle a previously established open problem in the wider
+literature.
+
+\subsection{Snapshot and comparison sources}
+
+The repository was inspected at commit
+\begin{center}
+\small\texttt{6207c3d40047fd8d1400a4d509fee71c9a3a8132}.
+\end{center}
+The review covered the two topic indexes, the incoming-report index,
+the five incoming ZIP articles, and the relevant critical-feedback
+and endpoint articles in the Transseries collection.  It was a focused
+mathematical audit, not a line-by-line verification of the complete
+552-page Polylogarithms manuscript or of every Transseries report.
+The source inventory and hashes are recorded in \texttt{provenance.json}.
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.25\textwidth}>{\raggedright\arraybackslash}p{0.36\textwidth}>{\raggedright\arraybackslash}p{0.33\textwidth}@{}}
+\toprule
+Source & Result already available & Role in this report\\
+\midrule
+\endhead
+Incoming feedback report \cite{RepoFeedback}
+& Positive finite coefficients, exact interior radius and fold,
+and the boundary conjecture
+& Interior theorem credited; boundary conjecture proved and extended\\
+Critical Hahn report \cite{RepoHahn}
+& Linear feedback with power tails, critical fractional inverses,
+stable coefficient laws, coupling crossover
+& General mechanism and comparison model\\
+Gaussian endpoint report \cite{RepoGaussian}
+& Uniform order crossover for eventually exact power tails,
+Lambert coordinates and local limits
+& Antecedent for the order--logarithm scaling\\
+Other four incoming articles \cite{RepoJets,RepoUniform,RepoNormalized,RepoFolds}
+& Resonant order jets, ordinary polylogarithm inverse charts,
+complex critical values and folds
+& Prevents presenting those existing charts as new results\\
+\bottomrule
+\end{longtable}
+\addtocounter{table}{-1}% This uncaptioned comparison is not a numbered table.
+
+The nonlinear function arising here is
+\begin{equation}\label{eq:fdef-intro}
+ f_u(t)=u-\sqrt{u^2-2\Li_s(t)}.
+\end{equation}
+Even when its coefficients have a power-law tail, they are not in
+general eventually an exact multiple of $n^{-s}$.  Thus the existing
+theorems for a polylogarithm plus a finite polynomial do not by
+themselves verify this model's endpoint continuation or its correction
+constants.  We give those proofs explicitly.
+
+\subsection{Classical inputs and novelty boundary}
+
+We use the classical convergent Jonqui\`ere expansion
+\begin{equation}\label{eq:jonquiere}
+ \Li_s(\ee^{-x})=
+ \Gamma(1-s)x^{s-1}+
+ \sum_{k\ge0}\zeta(s-k)\frac{(-x)^k}{k!},
+ \qquad 0<|x|<2\pi,
+\end{equation}
+for nonintegral positive $s$, with a fixed branch of $\Log x$.
+At positive integers the colliding Gamma and zeta terms are combined
+before the parameter limit is taken.  These are classical identities,
+recorded in DLMF \S25.12 \cite{DLMFPolylog}.
+All displayed local series below are restricted to sufficiently small
+sectors within this convergence domain.
+
+The conversion of local singular expansions into Taylor coefficient
+asymptotics is the singularity-analysis theory of Flajolet and Odlyzko
+\cite{FO}.  The relation between implicit generating functions,
+conditioned sums, and stable laws is also classical; Janson
+\cite{Janson}, especially Sections 17--18, provides an extensive
+treatment.  We include the particular Fourier proof needed for a
+varying feedback parameter, so that the uniformity is not left to an
+unstated invocation of a fixed-distribution theorem.
+
+The exact boundary formula, the nonlinear critical charts, the
+order-three correction polynomials, and the explicit uniform order
+chart are the results established here for \eqref{eq:model}.
+Their novelty relative to the inspected repository is documented above.
+A focused literature search found the standard general mechanisms and
+their antecedents; it did not establish publication priority for every
+model-specific formula.  No theorem is advertised as a new general
+principle of probability or transseries.
+
+\subsection{Conventions}
+
+Write
+\[
+ a_n(s,u)=\coef r n v(r),\qquad
+ A_s=\zeta(s-1)\quad(s>2),\qquad
+ \Uc(s)=\sqrt{2\zeta(s)+A_s^2}.
+\]
+An assertion about the coefficients $a_n$ always concerns the germ
+$v(0)=0$ of \eqref{eq:model}.  It is not automatically an assertion
+about the ordinary compositional inverse of $-\Li_s(-\ee^x)$.
+The incoming source already makes this distinction; the special
+dilogarithm identification does not extend to arbitrary $s$.
+
+All square roots on a positive real argument denote the positive root.
+Local inverse branches are selected by positivity for positive real
+variables and then continued to a slit sector.  A \emph{convergent
+transseries chart} means a holomorphic function of finitely many small
+coordinates whose ordinary multivariable Taylor series converges
+absolutely after substitution.  This claim is stronger than a
+Poincar\'e asymptotic expansion.  The asymptotic coefficient expansions
+obtained after singularity transfer need not themselves converge.
