@@ -120,6 +120,7 @@ modification times.
 | `107/` | `ProveIt_Matroidal_Dual_Forests_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | matroidal dual selection, exact deletion deficit and abstract support-three hardness | placed only; tests not rerun and integration unapplied |
 | `108/` | `ProveIt_Nonlinear_Activation_Forests_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | nonlinear activation columns, witness partitions and parameterized forest selection | placed only; tests not rerun and integration unapplied |
 | `109/` | `ProveIt_Ordered_Interface_Kernels_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | ordered incidence interfaces, optimal deferred kernels and width-parameterized dynamic programming | placed only; tests not rerun and integration unapplied |
+| `110/` | `ProveIt_Ordered_Pivot_Interfaces_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | weighted ordered pivot interfaces and repeat-safe transfer optimality | placed only; tests not rerun and integration unapplied |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -931,3 +932,22 @@ The committed ZIPs are retired and recoverable from their arrival commit.
 Existing ignore rules apply without checksum or line-ending work. The
 [placement record](../synthesis/data/incoming-106-109-placement.json) records
 provenance, file counts and historical matches.
+
+## Further arrival of 12 October 2026: report 110
+
+[110 article](110/article/ordered_pivot_interfaces.tex), **Ordered Pivot
+Interfaces**, continues the programme's positive-cancellation and residual
+optimization research. The package targets source revision
+`ac9c845a5c507c5d7a17d45b2d8de84fc046d455` and was delivered in
+`250f0c32ae06170f9edcf46f30d14283c6e8e7b7`. Its article develops weighted
+ordered states on a supplied incidence decomposition, repeat-safe max-plus
+interfaces, and a connected low-width residual obstruction family. These are
+authors' claims pending separate review; the package does not claim general
+quasi-polynomial unknot recognition.
+
+All 36 delivered files are preserved with the single wrapper removed. None
+of their Git blobs matched prior history. This is placement only: no tests,
+patch application or soundness review was performed. The committed ZIP is
+retired and remains recoverable from its arrival commit. Existing attributes
+and ignore rules apply without checksum or line-ending work. See the
+[placement record](../synthesis/data/incoming-110-placement.json).
