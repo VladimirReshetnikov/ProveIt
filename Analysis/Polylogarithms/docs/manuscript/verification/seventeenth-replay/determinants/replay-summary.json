@@ -1,0 +1,44 @@
+{
+  "part": "determinants",
+  "source_folder": "stieltjes-harmonic-resonance/continuations/finite-difference-determinants",
+  "commands": [
+    {
+      "arguments": [
+        "verification/verify_exact.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/verify_numeric.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "identity_cli.py",
+        "--rank",
+        "3",
+        "--order",
+        "3",
+        "--shift",
+        "1"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "results/exact_checks.json",
+    "results/numerical_checks.json"
+  ],
+  "source_code_sha256": {
+    "build.py": "b7b7c382b61abcd4862541192592a3ad6966ad7ee4f8d7fdb21473b3b30018ea",
+    "identity_cli.py": "abbf4dd705907ea84bc0569158d9f8dc185f8bba6d88319d8c7e91eb6ce52a24",
+    "verify_manifest.py": "5f13d12bb38bd5d9709a8d27aef13b6fe38b25899a51c77287465d7803ba569b",
+    "verification/core.py": "503b7db150bc6907a5475ea39d1438edf947d46e1e54097b4d2481209523550e",
+    "verification/verify_exact.py": "8b677a49efb78e00b625c97fdcb008e66c1e93751f15e3a0d62f7dcf3110ffe1",
+    "verification/verify_numeric.py": "ed8b0e6e2f501f342012b13cea016d899b5525436d4b3394fe6934b9d3e9aaa6"
+  },
+  "passed": true,
+  "scope": "Complete specified mathematical suites, freshly run on a copy with assertions and UTF-8 enabled. Per-command outputs retained separately. Exact finite assertions, numerical diagnostics and canonical analytic acceptance have separate scopes. No package-manifest validation or original document rebuild is performed."
+}

@@ -2,10 +2,10 @@
 
 The canonical reading artifact is the collective four-volume manuscript,
 [Polylogarithms and their Arithmetic Bridges](docs/manuscript/README.md),
-authored by **ProveIt Contributors**. The volumes have **130, 129, 224 and
+authored by **ProveIt Contributors**. The volumes have **130, 129, 233 and
 85 pages**, each compiling independently; the retained
-[combined edition](docs/manuscript/polylogarithms.pdf) has **527 pages**.
-They share twelve chapters, thirteen figures and 137 references. The
+[combined edition](docs/manuscript/polylogarithms.pdf) has **536 pages**.
+They share twelve chapters, thirteen figures and 138 references. The
 [editorial ledger](docs/manuscript/EDITORIAL-LEDGER.md) separates accepted
 proofs from pending analytic claims, and the
 [validation record](docs/manuscript/VALIDATION.md) distinguishes proofs,
@@ -572,3 +572,15 @@ suite and the full five-script harmonic-parity/resolvent suite pass freshly
 on copies. Preserve the narrower analytic acceptance scopes: other report
 branches and the remaining sixteen deliveries await their own audits. No
 external-paper erratum or arithmetic-independence claim is adopted here.
+
+
+The collective manuscript now proves complete formal harmonic-tail prefix
+reconstruction at smaller orders ten, twelve and fourteen (Section 8.45).
+It includes the analytic moment formula, exact Padé multiplier and effective
+eventual proof, then complete finite certificates; all three give ordinary
+convergent polygamma-product identity families. Orders ten/twelve are credited
+to the incoming reports; the independently certified order-fourteen extension
+checks every remaining case with two algorithms. Formal rank does not imply
+arithmetic independence, and the unrestricted rank and Gaussian questions
+remain open. The seventeenth/eighteenth intake ledger records all eleven
+full isolated replays and their remaining analytic integration branches.

@@ -4,8 +4,10 @@ import GowersSzemeredi.Proofs16PolynomialStructure
 
 The printed Corollary 16.11 (`Corollary1611At`) finds, for a function that is
 not uniform of degree `k + 1`, a box of width `N^e` carrying a multilinear
-frequency on an `e` fraction, with `e = section16CorollaryExponent α k`: a
-tower in `1/α`. The single-piece step with the joint-cover remainder gives
+frequency on an `e` fraction, with `e = section16CorollaryExponent α k`, whose
+reciprocal is exponential in a polynomial of `1/α` (it is `(α/8)·C^r` with an
+iteration count `r` polynomial in `1/α`). The single-piece step with the
+joint-cover remainder gives
 the same conclusion with `e` **polynomial** in `α`:
 `e⁻¹ ≤ (2/α)^(2^(expDegC k μ₀ μK + 3))`, where `e` is the smaller of the
 localization exponent `Eloc` and the box density

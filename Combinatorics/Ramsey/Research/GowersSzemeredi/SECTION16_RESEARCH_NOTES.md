@@ -4302,7 +4302,10 @@ and `theorem_16_2_polynomial_implies_printed : theorem_16_2`; stub axiom
 
 **L.15j: Corollary 16.11 with polynomial exponents.** The printed Corollary
 16.11 gives width `N^e` and frequency density `e` with
-`e = section16CorollaryExponent α k`, a tower in `1/α`. The single-piece step
+`e = section16CorollaryExponent α k = (α/8)·C(r⁻¹α/8, α/2)^r`, where
+`r = 4α⁻²·s(α/4, α/2)` is polynomial in `1/α`; hence `e⁻¹ = exp(poly(1/α))`,
+exponential in a polynomial of `1/α` (the first L.15j draft wrongly called it
+a tower). The single-piece step
 with the joint-cover remainder gives the same conclusion with
 `e = min(Eloc, box density)` and `e⁻¹ ≤ (2/α)^(2^(236·2^k + k + 24))`,
 polynomial in `1/α` (`Proofs16PolynomialCorollary`, light:
@@ -4312,6 +4315,137 @@ polynomial in `1/α` (`Proofs16PolynomialCorollary`, light:
 `k + 1 ≥ 3`, stub axiom `section16RecurrenceProfileWith_explicit` only; in
 `CompletionAudit.lean`). Oddness of `N` is not assumed: the modulus
 threshold supplies it.
+
+**L.16: a Fejér selection for Lemma 15.5, and what it would buy (analysis,
+not formalized).** L.15f traced the `d + 6` / `L + 4` barrier to the printed
+`θ₁ = (θγ/4)^(2^(2^(k+5)))`. The double exponential is created in one place.
+
+*Where it comes from.* Lemma 15.5 (`Proofs15Restriction`) keeps a point `x`
+with probability `(1 + cos(2πθ_x/N))/2`, where `θ_x = Σ_F c_F·F(x)` over the
+features `F ∈ {φ} ∪ {x^A : A ⊆ [k+1]}` with uniform coefficients `c_F`.
+An 8-arrangement has `M = 2^(k+4)` vertices. Expanding the product over the
+digits `{0, 0, 1, −1}`, a non-degenerate arrangement survives with
+probability `2^(−M)`, or `2^(−M)(1 + 2·2^(−M))` if it is respected
+(`selectionValidRelations_card`). The advantage per stage is `2·2^(−M)`, so
+the proof runs `2^(M−1)` stages per doubling of the respected ratio. This is
+the exponent `S = M·2^(M−1) = 2^(2^(k+4)+k+3)`
+(`selection_vertex_times_amplification`). Lemma 15.6 multiplies `S` by at
+most `2^(3k+7)` (`lemma156_scale_ratio_bound`), which gives `2^(2^(k+5))`.
+
+*The Fejér selection.* Use one stage with the Fejér kernel instead:
+`F_m(u) = |Σ_{j=0}^{m} e(ju/N)|²/(m+1)²`. It satisfies `0 ≤ F_m ≤ 1`, and its
+Fourier coefficients are `F̂_m(j) = (m+1−|j|)/(m+1)²` for `|j| ≤ m` and zero
+otherwise (`m < N/2`). For an arrangement `R` with distinct vertices,
+averaging over the coefficients gives
+`E ∏_z F_m(θ_{x_z}) = Σ_{η ∈ [−m,m]^M} ∏_z F̂_m(η_z)·[η annihilates every feature on R]`.
+Call `R` *`m`-degenerate* when some `η ∈ [−m, m]^M` annihilates all
+monomials on `R` without being a modular multiple of the parity coefficient
+`ε`. This is `GeneralArrangement.IsDegenerate` with "ternary" replaced by
+`|η| ≤ m`.
+
+*Why the multiples of ε are the only annihilators.* An arrangement is 16
+cubes with a common side `h` and an additive tuple of cross-sections. The
+annihilators of all monomials are the `w` with `Σ w_j = 0` and
+`Σ w_j y_j = 0` (alternating over cube vertices). This is a codimension-two
+space over `Z_N`. Its small-coefficient members other than `jε` exist only
+on a codimension-one set of cross-sections, which is the degeneracy.
+
+For `R` not `m`-degenerate, the annihilators in range are therefore `jε` with
+`|j| ≤ m`, and `jε` annihilates `φ` iff `j = 0` or `R` is respected (`N`
+prime). So the survival probability is:
+* `(m+1)^(−M)·Ω` for respected `R`, where
+  `Ω = Σ_{|j|≤m} (1 − |j|/(m+1))^M`;
+* `(m+1)^(−M)` otherwise.
+
+With `m + 1 = M·T`, Bernoulli's inequality gives
+`(1 − j/(MT))^M ≥ 1 − j/T`, hence `Ω ≥ T`: one stage achieves what the Riesz
+selection needs `log T` doublings for.
+
+*Fejér Lemma 15.5.* Assume the hypotheses of Lemma 15.5 and set
+`T = ⌈3/(αη)⌉`. Then there is `B' ⊆ B` with
+`generalArrangementCount 8 B' ≥ (MT)^(−M)·β^15·N^(17k+15)` and
+`(1 − η)·general ≤ respected`.
+
+*Proof.* Write `X`, `Y` and `Z` for the respected non-degenerate,
+non-respected non-degenerate and `m`-degenerate arrangements in `B'`, and
+`G = β^15·N^(17k+15)`. The general count in `B` is at most `G`, as in the
+Riesz proof. Put `W = ηX − (Y + Z) − η(MT)^(−M)G`. Then
+`E W ≥ (MT)^(−M)·G·(ηαT − 1 − η) − O(D_m)`, where `D_m` is the number of
+`m`-degenerate arrangements. That count is at most `(2m+1)^M·poly(k)·N^(17k+14)`
+by Lemma 15.4 with digit range `m`, because its factor `3^(2d·2^k)` only
+counts patterns. So `E W > 0` once `N ≥ N0(k, α, η)`. An outcome with
+`W ≥ 0` gives both conclusions, since `ηX ≥ Y + Z ≥ (1 − η)(Y + Z)` and
+`X ≥ (MT)^(−M)G`. ∎
+
+*Exponent.* `(MT)^(−M) ≥ (αη/4)^(S′)` with
+`S′ = M·(1 + ⌈(k+5)/2⌉) ≈ (k+7)·2^(k+3)`, against
+`S = 2^(2^(k+4)+k+3)`. Lemma 15.6 then gives `θ₁′` with exponent
+`E₁′ ≤ 2^(3k+7)·S′`, so `log₂ E₁′ ≈ 4k + 13` instead of `2^(k+5)`.
+
+*Obligation.* Lemma 15.4 must hold for integer patterns with
+`|η| ≤ m < N/2`. The two coefficient cases (`lemma154_case_one_card_le`,
+`lemma154_case_two_card_le`) are stated for an arbitrary coefficient
+function. Ternarity enters only through `corollary_15_2_holds` in case one,
+and that corollary is true for every coefficient vector over `Z_N`.
+Invariance in `y` at `A = [k]` forces `Σ_e c_e ∏_{i∈B} e_i = 0` for every
+`B ⊊ [k]`, because the sides are invertible. The monomials `∏_{i∈B} e_i`
+form a basis of the functions on `{0,1}^k`, so the annihilator of the proper
+ones is spanned by the parity function. The `m`-range Lemma 15.4 is
+therefore the printed proof with a general Corollary 15.2 and
+`(2m+1)^(2d·2^k)` patterns. **Formalized**:
+* `Proofs15WalshGeneral` provides `signedWalsh_multiple_of_invariant` and
+  `booleanWalsh_multiple_of_invariant` (Lemma 15.1 and Corollary 15.2 for any
+  integer coefficients), and `corollary_15_2_of_general`.
+* `Proofs15DegenerateRange` provides `IsDegenerateWithin m`,
+  `isDegenerateWithin_one_iff` and `degenerate_count_within_le`:
+  `#{m-degenerate} ≤ (2m+1)^(2d·2^k)·k·N^((2d+1)k+2d−2)`.
+
+Both are light modules, kernel-checked, and use only the standard axioms.
+
+*Propagation (model).* `models/model_fejer.py` mirrors the split-class
+recursion of `Proofs16SplitStepBounds` exactly (`splitStepA`, `splitStepD`).
+Its θ₁-driven inputs are:
+* `stepP = 2^(2^(k+5)+6) = 64·E₁`;
+* `stepT = 2^(2^(k+6)) = E₁²`, the Bohr exponent of `ζ = 2^(−s)`;
+* the dimension-two seed `2^132`, which is the Bohr exponent `2^128` plus 4;
+* `fixDeg = 2^(k+5) + 7`.
+
+With the printed inputs the model reproduces the formalized results: class
+constant `66.1` (`68` in Lean), envelope `≈ 461·2^k`, and `d + 7` / `L + 5`.
+With the Fejér inputs (`64E₁′`, `E₁′²`, seed `2^38`, `log₂E₁′ + 8`):
+* the class constant drops to `14.0`, with its peak at `k = 4`, tending to
+  `10.8`;
+* the base budget `μ₀ = 16·2^k`, from the Section 5 constant `V`, now
+  dominates;
+* the envelope is at most `141·2^k`, and `116·2^k` asymptotically.
+
+This would give Theorem 18.1 at `d + 6` and Theorems 18.2 and 18.7 at
+`L + 4` in every degree and length (`d + 5` / `L + 3` for `k = 2` and
+`k ≥ 7`). Through L.15g–L.15h that means Theorem 1.3 with `2^(−2^(k+4))`
+and `W(k, r) ≤ 2^2^r^2^2^(k+4)`.
+
+*Caveats.*
+1. *Sensitivity* (`models/model_fejer_sens.py`,
+   `models/model_seed_threshold.py`). The gain hinges on the dimension-two
+   seed, not on the Bohr exponent `stepT`:
+   * Fejér θ₁ with the printed seed `2^132` stays at `d + 7` / `L + 5`;
+   * Fejér θ₁ with the printed `stepT` still reaches `d + 6` / `L + 4`;
+   * the threshold is a seed log-degree of at most `120`.
+
+   The printed `s` is composed across dimensions:
+   `log₂ deg s(k) = 2^(k+6) = 64 + Σ_{j≤k} 2^(j+5)`, the sum of the
+   θ₁ log-degrees. Recomputing it with the Fejér θ₁ (keeping the printed
+   base 64) gives `log₂ deg s(1) = 82`, hence seed `2^86`, class constant
+   `26`, envelope `≤ 205·2^k`, and still `d + 6` / `L + 4`. That `s` is
+   driven only by θ₁ is read off the printed degrees, not proved.
+2. The model is the envelope model, not a proof.
+3. Formalizing needs a θ₁-parametric Section 16: `section16ThetaOne` is
+   hardwired in 88 modules (483 lines), `multipleS` in 72.
+
+The first step is self-contained: a Fejér Lemma 15.5 together with the
+`m`-range Lemma 15.4. The refactor is a campaign of its own, and the
+cascade-cost rule applies. The next barrier, `d + 5`, is `μ₀ = 16·2^k` from
+`V` plus the transient class peak.
 
 A three-page mathematical write-up of L.12-L.15j is in
 `joint-vertex-covers/joint-vertex-covers.tex` (PDF beside it).

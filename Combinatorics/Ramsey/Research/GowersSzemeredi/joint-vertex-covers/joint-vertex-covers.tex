@@ -227,7 +227,8 @@ large on an $e$ fraction, with
   e^{-1}\le(2/\alpha)^{2^{236\cdot2^k+k+24}}
 \]
 for every $k\ge2$ (\lean{corollary\_16\_11\_polynomial}). The printed exponent
-is a tower in $1/\alpha$.
+is $(\alpha/8)\,c(r^{-1}\alpha/8,\alpha/2)^{r}$ with $r$ polynomial in
+$1/\alpha$, so its reciprocal is exponential in a polynomial of $1/\alpha$.
 
 \section{Further questions}
 
@@ -247,7 +248,17 @@ is a tower in $1/\alpha$.
   degree, a step would cost about $134\cdot2^k$, above the $128\cdot2^k$ that
   $c=6$ for Theorem~18.1 or $c=4$ for Theorem~18.2 would need. Can the
   double-exponential exponent $2^{2^{k+5}}$ of $\theta_1$ in Lemmas 16.5 and
-  16.7 be lowered? Only that would move these constants further.
+  16.7 be lowered? Only that would move these constants further. The
+  exponent is created by the random selection of Lemma~15.5, whose Riesz
+  kernel $(1+\cos)/2$ gives a respected arrangement of $M=2^{k+4}$ vertices
+  an advantage of only $1+2^{1-M}$ per stage. A single Fej\'er stage of
+  order $m\approx M/(\alpha\eta)$ gives an advantage of about
+  $1/(\alpha\eta)$ at density cost $(\alpha\eta/2M)^{M}$, provided Lemma~15.4
+  is extended from ternary to $[-m,m]$ coefficients. Then $\theta_1$ has
+  exponent about $(k+7)\,2^{4k+10}$. An exact model of the class recursion
+  gives a class degree $2^{14\cdot2^l}$ and step cost below $128\cdot2^k$:
+  Theorem~18.1 at $c=6$ and Theorem~18.2 at $c=4$ (notes, L.16; not
+  formalized).
 \end{enumerate}
 
 \section{Formalization}\label{sec:lean}
@@ -296,6 +307,6 @@ audit's record is
 \lean{2026-10-11-numbered-and-bounds.json}.
 \end{center}
 The research notes
-(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.15j) record the development.
+(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.16) record the development.
 
 \end{document}

@@ -770,3 +770,20 @@ The completed 16603-row native search has rank 4985 modulo 2147483647,
 43 more than the preceding first-letter experiment, and does not close the
 target. This is a finite-field diagnostic. It establishes neither rational
 nonmembership nor a period counterexample; Gaussian S6/revised S8 stay open.
+
+
+## Complete fixed-order harmonic-tail prefixes, October 12, 2026
+
+Place and publish five seventeenth and six eighteenth reports without changing delivered files. Preserve 454 tracked originals and six ignored recoverable records; retire all eleven ZIPs in their placement commits. Run all eleven full mathematical suites on isolated copies, including fresh native and Python complete order-twelve lists. Record the later exact match for the quadratic predecessor Library article separately from its original provenance. The long boundary-product provenance tree uses a shorter parent path, retaining every inner filename.
+
+Reconcile the analytic centered moment model, Faulhaber constant cancellation, complete Pade multiplier, general highest-degree factorization and effective eventual theorem. Combine the source order-ten congruence with its one missing exact case and eventual threshold; credit the incoming order-ten/twelve completions. Independently reconstruct the exceptional matrix over rationals and in Wolfram, checking every coefficient, both inverse products and the determinant.
+
+Extend to smaller order fourteen: regenerate the exact sufficient threshold B7=80640; certify all 80632 remaining cases over prime 7340033. Two independently generated complete Bernoulli tables agree, with full reciprocal-product identities and safe integer convolution bounds. Native forward-difference/Gaussian determinants match independent symbolic Stirling/subset determinants on every case. Repeat the canonical reproducer in fresh scratch and compare complete preserved payloads. Five exact rational original/retained determinant comparisons and wrong-sign controls pass. Generate all eight ordinary identity weights and counterterms for (14,16), then state the general ordinary convergent identity family in Section 8.45.
+
+The general all-pair rank conjecture, numerical arithmetic independence and Gaussian S6/revised S8 remain open. Ten further packages are observed in incoming; the gap-six delivery claims a complete family, still awaiting intake, full replay and analytic audit. It must not be marked accepted merely from its claim-status record.
+
+The final scientific-body comparison caught a helper encoding error in old
+Chapter 8 punctuation. Restore that driver from its committed UTF-8 source
+and append only the new input; the resulting diff has exactly two added
+lines. Fix the helper decoding and rebuild every PDF, then repeat cold builds
+and final raster review. The mathematical certificate inputs were unaffected.
