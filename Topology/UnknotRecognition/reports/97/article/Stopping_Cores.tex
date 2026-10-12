@@ -1,0 +1,98 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,array,enumitem}
+\usepackage{needspace}
+\usepackage{xcolor,graphicx,fancyhdr}
+\usepackage[hyphens]{url}
+\definecolor{ink}{HTML}{18384E}
+\definecolor{accent}{HTML}{006B72}
+\usepackage[colorlinks=true,linkcolor=ink,citecolor=accent,urlcolor=accent]{hyperref}
+\usepackage{bookmark}
+\hypersetup{pdftitle={Stopping Sets, Saturated Bundles, and Exact Raw Cancellation},
+  pdfauthor={Research continuation for Vladimir Reshetnikov; development with ChatGPT},
+  pdfsubject={Certified local improvements for the ProveIt unknot-recognition program}}
+\usepackage{listings}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,
+  keepspaces=true,frame=single,rulecolor=\color{black!15},xleftmargin=.5em,
+  xrightmargin=.5em,showstringspaces=false}
+\setlist{topsep=5pt,itemsep=3pt,parsep=0pt}
+\setlength{\emergencystretch}{3em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Stop}{\operatorname{Stop}}
+\newcommand{\capTwo}{\operatorname{cap}_2}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\per}{\operatorname{per}}
+\newcommand{\raw}{\mathsf{raw}}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textcolor{ink}{ProveIt: unknot recognition}}
+\fancyhead[R]{\small Stopping cores and saturated bundles}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{.3pt}
+\title{\textcolor{ink}{Stopping Sets, Saturated Bundles,\\and Exact Raw Cancellation}\\[.5em]
+\large A certified performance improvement for the ProveIt unknot-recognition program}
+\author{Research continuation prepared for Vladimir Reshetnikov\\
+\small Mathematical development and implementation with ChatGPT}
+\date{12 October 2026\\\small Source revision \texttt{704600626606a9097cfd89d4e3d2bbc63c8dd1cb}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We study two specific bottlenecks in the source-certified normal-cut pipeline.
+First, we prove that complete positive raw cancellation of an arbitrary
+rectangular nonnegative incidence matrix is equivalent to deletion of unit
+column leaves. A nonempty stopping set survives every positive Schur update,
+which proves completeness of a sparse source algorithm and provides a short
+obstruction certificate. The canonical peeling construction is classical in
+coding theory; the persistence argument and its use in geometric cancellation
+are the contributions developed here. This strengthens the repository's
+square-only completeness statement, removes repeated matrix scans, and shows
+that survivor-set enumeration is unnecessary for this decision problem.
+
+Second, we continue the incoming one-two-handle theorem for saturated interval
+bundles. Their residual attaching curves have a source-computable unsigned
+incidence on old core cocores, while every added band column is even and can
+never supply a raw singleton pivot. Thus arbitrarily large numerical base
+genus can be excluded from cancellation search. We implement a whole-cut
+certificate that combines the old core rows with one aggregate row per
+saturated base and independently verifies the resulting handlebody census.
+All geometric conclusions are tied to authenticated embedded source charts.
+
+The package includes proofs, a repository integration patch with updated files,
+independent checkers, exhaustive algebraic tests, source-cut comparisons,
+paired measurements, and a focused research agenda. The improvement concerns
+supplied-cut certification. It neither implements nor proves a general
+quasi-polynomial unknot recognizer; surface production, transported boundary
+patterns, and total hierarchy work remain separate obligations.
+\end{abstract}
+\clearpage
+\tableofcontents
+\clearpage
+\input{sections/position}
+\input{sections/stopping}
+\input{sections/algorithms}
+\input{sections/passengers}
+\input{sections/geometry}
+\input{sections/implementation}
+\input{sections/measurements}
+\input{sections/hierarchy}
+\input{sections/research}
+\clearpage
+\input{references}
+\appendix
+\input{sections/reproduction}
+\end{document}

@@ -1,0 +1,126 @@
+\section{Exact transport of additional incidence counts}
+\label{sec:passengers}
+
+Complete no-fill schedules also simplify the transport of an additional
+nonnegative incidence row. This is an algebraic refinement with a clear
+use in later geometric work. It transports counts under the stated positive
+update; it does not recover cyclic order, strand endpoints or an embedding.
+
+Let $N$ now contain the \emph{exact uncapped} source counts, and let
+$((r_0,g_0),\ldots,(r_{m-1},g_{m-1}))$ be a verified complete
+column-leaf schedule. Let $p=(p_h)$ be an additional nonnegative row, called
+a passenger. When the pivot $(r_i,g_i)$ is applied to it, the formal positive
+transport rule is
+\begin{equation}\label{eq:passenger-update}
+ p'_h=p_h+p_{g_i}n_{r_i h}\quad(h\ne g_i),
+ \qquad p'_{g_i}\text{ is deleted}.
+\end{equation}
+In a geometric application this formula must itself be justified by the
+chosen disk slides and the placement of the passenger curves. The theorem
+below is conditional on this exact update rule, not on abelianized words.
+
+\begin{lemma}[Immutable donors form a directed acyclic graph]
+\label{lem:donor-dag}
+For $j<i$, the source entry $n_{r_i g_j}$ is zero. A donor row therefore
+contains only its own pivot column, later pivot columns and survivor
+columns. Apart from deleting its pivot entry, its exact source coefficients
+can be used without any row update throughout the whole schedule.
+\end{lemma}
+
+\begin{proof}
+When column $g_j$ was used, row $r_i$ was still live. The column-leaf
+condition forces its entry in that row to be zero. Every preceding pivot
+has no fill in any surviving donor, so the surviving row entries have
+always agreed with the source. This proves both statements.
+\end{proof}
+
+Form a directed weighted graph on the matrix columns. For every nonpivot
+entry of donor row $r_i$, put an edge $g_i\to h$ of weight $n_{r_i h}$.
+Order the pivot columns by schedule time and put survivors afterwards.
+Lemma~\ref{lem:donor-dag} makes this a directed acyclic graph, with survivor
+columns as sinks. The pivot entries themselves do not give edges.
+
+\Needspace{13\baselineskip}
+\begin{theorem}[Sparse positive transport and a bit bound]
+\label{thm:passenger}
+One passenger row can be transported exactly by reading every nonpivot
+donor incidence once, using $O(I+m+|\supp p|)$ big-integer operations.
+For a survivor $h$, the final entry is
+\begin{equation}\label{eq:passenger-paths}
+ p_h^{\mathrm{out}}
+ =\sum_{v}p_v\sum_{\gamma:v\leadsto h}
+          \prod_{e\in\gamma}w_e,
+\end{equation}
+with the length-zero path included. Let $E$ be the number of donor graph
+edges, let
+\[
+ L_N=\sum_{e}\left\lceil\log_2(1+w_e)\right\rceil,
+ \qquad
+ B_p=\max\left(\{0\}\cup
+       \{\lceil\log_2(1+p_v)\rceil:v\in\supp p\}\right),
+\]
+and let $q$ be the number of appearing source or passenger columns.
+Every intermediate and final nonzero passenger entry has bit length at
+most
+\begin{equation}\label{eq:passenger-bit}
+ B_p+L_N+E+\lceil\log_2(q+1)\rceil+1.
+\end{equation}
+Hence transport is polynomial in the encoded exact source data, even when
+the numerical coefficients grow exponentially in the number of rows.
+\end{theorem}
+
+\begin{proof}
+At pivot $g_i$, distribute its current passenger coefficient along its
+outgoing donor edges, multiplying by their weights, and then delete it.
+The immutable-donor lemma shows that these are exactly the updates
+\eqref{eq:passenger-update}. Every graph edge is processed once, giving
+the structural operation count.
+
+Induction in topological order identifies the value reaching a vertex
+with the sum over all directed paths reaching that vertex. This proves
+\eqref{eq:passenger-paths}; columns occurring only in the passenger have
+only their length-zero contribution.
+
+A directed path uses every edge at most once. Its edge set determines
+the path, so there are at most $2^E$ paths from any fixed starting vertex
+to a specified vertex. Each path product is at most $2^{L_N}$, and
+each initial passenger value is less than $2^{B_p}$. Summing over at most
+$q$ starting vertices gives the stated conservative bit bound. An
+intermediate entry is a sub-sum of the analogous nonnegative path
+expression ending at that vertex, so it satisfies the bound as well.
+Polynomial-time integer multiplication
+then gives polynomial bit complexity.
+\end{proof}
+
+\begin{example}[Two branching paths]
+Use columns $(g_0,g_1,g_2,z)$ and the source rows
+\[
+ N=\begin{pmatrix}
+ 1&2&3&0\\
+ 0&1&0&5\\
+ 0&0&1&7
+ \end{pmatrix},\qquad
+ p=(11,0,0,13).
+\]
+The complete column schedule uses $g_0,g_1,g_2$. The final survivor entry is
+\[
+ p_z^{\mathrm{out}}=13+11(2\cdot5+3\cdot7)=354.
+\]
+Using capped donor counts would instead give $101$. Capping is exact for
+the cancellation \emph{decision}, but not for the transported values.
+\end{example}
+
+The delivered \code{raw_passenger_transport} module first checks the full
+schedule using the independent source timestamp verifier, then applies
+the uncapped donor updates. Its tests compare with an independent explicit
+positive-pivot oracle. The API includes columns that appear only in the
+passenger and retains them as survivors.
+
+This gives a concrete polynomial-bit algebraic step toward tracking
+additional curves through a successful cancellation. It is intentionally
+short of geometric boundary-pattern transport. Two patterns with identical
+unsigned incidence can have different cyclic orders and topology.
+Moreover, the virtual band columns of Section~\ref{sec:saturated-bundles}
+were omitted for a decision proof; this theorem does not reconstruct
+per-band passenger data from a genus counter. A compressed geometric
+representation of those additional markings remains a research problem.

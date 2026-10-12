@@ -1,0 +1,184 @@
+\section{Completed experiments and what they establish}
+\label{sec:evidence}
+
+\subsection{Evidence design}
+
+The package retains exact sources, positive certificates, source reconstruction
+records, independent finite oracles, raw timing rounds, and explicit negative
+controls. Its tests answer different questions: local algebraic completeness
+on specified finite sources, preservation of a complete marked signature,
+correctness of graph assembly, correctness of the original-source witness,
+and native geometric coverage. Their counts should not be added and described
+as distinct knot instances.
+
+The final quick runner executes 27 routing/reblocking test methods, 14 bundle
+test methods, and 11 cancellation test methods, then replays the retained
+graph and native positive certificates. These are focused suites for the
+additive prototypes. The maintained recognizer's full regression suite and
+end-to-end native knot benchmarks are outside the reported experiment.
+
+\input{search_evidence.tex}
+
+\input{sections/native_evidence.tex}
+
+\subsection{Complete signatures, exact source maps, and sharp examples}
+
+The main routing audit samples 240 aligned source tiles of widths one through
+three, retaining loops and multiple edges. Twenty-seven sources have
+components with unequal input and output widths. An independent frontier
+coloring oracle evaluates the assembled kernel; the source is evaluated by
+exact marked-signature multiplication. The two exponents per source give 480
+complete-signature comparisons covering 53,760 table entries, all equal.
+The largest kernel in this audit has 154 edges. Another 60 explicit cubic
+source verdicts agree with their kernel verdicts.
+
+A separate reviewer audit reconstructs 300 flat chains with shuffled vertex
+identifiers, shuffled edge records, reversed tiles, multiple macros, and
+exponents extending beyond $10^{20}$. Its producer/checker graph identities
+agree. On 120 finite shuffled and reversed cubic chains, every available
+negative witness was expanded to the original source: 105 complete colorings,
+covering 96,252 actual edge occurrences, reproduce their exact crossing and
+anchor addresses. Additional targeted chains combine unstable periods two
+and three, including zero quotients and nonempty remainders in both blocks.
+
+The reblocking audit enumerates all through-component partition diagrams of
+widths one through five: respectively $1,3,25,339,6721$, or 7,089 in total.
+Independent explicit stacking checks alignment by exponent $d$ and verifies
+10,656 strict component-count drops before first alignment. The cubic sharp
+family in the wrapper tests attains first alignment $m=d$ for $d=2,\ldots,8$.
+These finite checks test the implementation and examples; the equivalence
+recurrence proves the bound at arbitrary width.
+
+The exact connected-cutoff audit compares 2,048 full signatures on 64 random
+connected tiles at thresholds zero through seven, covering 81,920 entries.
+It also checks the small-threshold sharp paths and fourteen comb examples at
+$k=3,\ldots,16$. An unrestricted independent max-flow calculation gives
+minimum cuts $k$ at exponent $k$ and $k+1$ at exponent $k+1$ for the comb
+boundary prescription. All checks pass. The general-threshold production
+constructor now uses the proved exact cutoff; the certified topological
+pattern query remains threshold three.
+
+\begin{figure}[tb]
+\centering
+\begin{tikzpicture}[scale=.8,vertex/.style={circle,fill=Ink,inner sep=2.4pt},
+ every node/.style={font=\small}]
+\foreach \y in {0,1,2}{
+ \node[vertex] (a\y) at (0,-\y) {};
+ \node[vertex] (b\y) at (2,-\y) {};
+ \node[vertex] (c\y) at (6,-\y) {};
+ \node[vertex] (d\y) at (8,-\y) {};
+ \node[vertex] (e\y) at (10,-\y) {};
+}
+\draw[Accent,very thick] (a0)--(b0) (a1)--(b0);
+\draw[BurntOrange,very thick] (a2)--(b1) (a2)--(b2);
+\draw[Ink,very thick] (c0)--(d0) (c1)--(d0) (c2)--(d1) (c2)--(d2)
+ (d0)--(e0) (d1)--(e0) (d2)--(e1) (d2)--(e2);
+\draw[-{Stealth[length=3mm]},gray,thick] (3,-1)--(5,-1);
+\node at (1,.65) {$T$: two components};
+\node at (8,.65) {$T^{\circ2}$: connected};
+\node[align=center] at (1,-3) {Input blocks $\{0,1\},\{2\}$\\
+Output blocks $\{0\},\{1,2\}$};
+\node at (8,-2.65) {All three layers are actual interface vertices};
+\end{tikzpicture}
+\caption{A through tile with initially different component partitions.
+After two copies the graph is connected and hence aligned. This diagram
+illustrates exact reblocking only; it is not a cubic terminal pattern.}
+\label{fig:reblocking}
+\end{figure}
+
+\subsection{Large binary graph examples}
+
+The aligned star--triangle tile has seven vertices and six edges, interfaces
+$L=(0,1,2)$ and $R=(3,4,5)$, and edge list
+\[
+ (0,6),(4,6),(5,6),(1,2),(2,3),(3,1).
+\]
+Its star component transports one input port to two output ports; its
+triangle component transports the two remaining input ports to one output.
+The induced component permutation is a transposition. Its closed $N$-copy
+graph has $4N$ vertices and $6N$ edges. At $N=1$ it is $K_4$, supplying a
+positive finite graph certificate. At odd large $N$, the routed kernel has
+36 vertices and 54 edges. For $N=2^{4096}+1$, the retained proof lifts its
+negative query answer without enumerating any missing copies.
+
+The misaligned through example also uses $N=2^{4096}+1$, but needs an
+exact reblocking period of two first. It produces a 54-vertex, 81-edge kernel.
+Its source and formatted certificate occupy 1,806 and 11,384 bytes,
+respectively. A three-edge cut includes an original edge at copy $N-1$,
+which tests the nonzero-tail address formula rather than only an early
+retained copy. Five source-production-plus-replay samples have median
+1.519 milliseconds. This is a local binary-input demonstration; the
+prototype has not constructed a corresponding native knot hierarchy.
+
+For an illustration of the avoided global period, use permutation cycles
+of lengths
+\[
+ 2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71.
+\]
+The width is 639 and their global order is
+$557940830126698960967415390$. At exponent $2^{2048}+12345$, componentwise
+construction writes 132,226 vertices and 131,587 edges in 0.249 seconds in
+the retained run. It never writes that global order as a word. This example
+uses matching components and has degree two after closure; it tests only
+the general graph-kernel construction and makes no cubic terminal verdict.
+
+\subsection{Paired graph-query performance}
+
+Both timed arms construct their graph, answer the same cubic marked-cut
+predicate with the same finite certificate engine, and replay a certificate.
+The explicit arm expands the entire source. The routed arm constructs the
+bounded kernel and additionally replays its source reduction. Parsing,
+serialization, sphere and ball validation, and knot recognition are outside
+both timers. Each case has a warmup and seven paired rounds with shuffled
+arm order; garbage collection occurs outside each timer. The final routing
+run followed completion of the other in-session benchmark jobs.
+
+\input{sections/routing_table.tex}
+
+Times are separate medians; ``paired ratio'' is the median of the seven
+within-round explicit/routed ratios, so it need not equal the ratio of the
+two displayed medians. The identical-explicit A/A control at 129 copies has
+paired median ratio 1.009. The one-, three-, nine-, and thirty-three-copy
+cases expose genuine reduction overhead. At 8,193 copies, the explicit
+median is 80.700 milliseconds and the routed median is 0.459 milliseconds.
+The family has a quickly found negative cut at the larger sizes; this is
+a complete local graph query, not a worst-case positive-flow benchmark or a
+comparison with the fastest possible cubic-connectivity implementation.
+
+For exponent lengths $65,257,1025,4097,16385$ bits, the same aligned
+54-edge kernel has retained query-plus-replay medians
+$0.293,0.277,0.305,0.414,0.610$ milliseconds. The corresponding compact
+JSON certificate sizes are $1768,1960,2728,5800,18088$ bytes under this
+benchmark's serialization. Graph size is constant in that experiment;
+arithmetic, source binding, and certificate size still depend on exponent
+bit length. The source and certificate formatting for the separate through
+example is different and should not be compared byte-for-byte as an
+algorithmic compression ratio.
+
+\begin{figure}[tb]
+\centering
+\includegraphics[width=\linewidth]{figures/performance.pdf}
+\caption{Two distinct local performance comparisons. Lines show retained
+medians and shading shows the observed sample ranges. Left: complete
+radius-two candidate generation on the layered obstruction family, with
+equal candidate sets and no topology-gate timing. Right: graph construction,
+query, and certificate replay on the star--triangle family. These measurements
+do not establish an end-to-end asymptotic knot-recognition bound.}
+\label{fig:performance}
+\end{figure}
+
+\subsection{Interpretation and limitations of the measurements}
+
+The strongest measured search gain is in exhaustive multi-edge candidate
+generation. The clearest geometric gain is additional completed native
+classifications. The graph gain removes numerical multiplicity from a query
+whose faithful source grammar is already supplied. These are different
+improvements and cannot be multiplied to obtain a claimed recognition speedup.
+
+All timings come from one shared execution environment and small deliberately
+specified families. Raw rounds and ranges are retained; no hardware-isolation
+claim is made. The proofs establish the stated asymptotic reductions under
+their hypotheses. The experiments establish agreement, rejection behavior,
+source lifting, and the local costs actually measured. A broader native
+workload is needed to decide the dispatch policy and identify which remaining
+geometric interface dominates a complete run.

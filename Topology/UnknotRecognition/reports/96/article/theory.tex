@@ -1,0 +1,358 @@
+\section{Two slopes suffice at a scalar interface}
+\label{sec:messages}
+
+Consider a subtree $T_v$, with parent interface $\tau$. Write $f_v$ for the sum
+of objective contributions of its private coordinates. A compatible assignment
+means one satisfying all equations, nonnegativity conditions and forbidden
+pairs inside the subtree.
+
+\begin{definition}[Continuation message]
+The zero-port flag $Z_v$ is true when a compatible assignment satisfies
+$\tau=0$ and $f_v>0$. For $s\in\{-1,1\}$, sign $s$ is available when some
+compatible assignment has $\tau=s$. When $Z_v$ is false and sign $s$ is available,
+put
+\[
+ \alpha_{v,s}=\max\{f_v:\tau=s,\ \text{the subtree assignment is compatible}\}.
+\]
+An unavailable sign is represented by a separate symbol, not by the numerical
+value zero.
+\end{definition}
+
+\begin{theorem}[Exact scalar continuation]
+\label{thm:message}
+If $Z_v$ is false, each available $\alpha_{v,s}$ is finite, attained, and rational.
+For every specified scalar $t$, the best subtree objective is exactly
+\[
+ F_v(t)=
+ \begin{cases}
+ 0,&t=0,\\
+ |t|\alpha_{v,\operatorname{sgn}t},&t\ne0\text{ and its sign is available},\\
+ -\infty,&t\ne0\text{ and its sign is unavailable}.
+ \end{cases}
+\]
+If $Z_v$ is true, the full tree already has a positive assignment, obtained by
+extending a positive zero-port witness by zero outside the subtree.
+\end{theorem}
+
+\begin{proof}
+Choose one allowed coordinate face for every local compatibility condition and
+one sign for every internal scalar. Replacing a scalar of fixed sign by a
+nonnegative variable gives a rational polyhedral cone. There are finitely many
+such choices. Intersecting each cone with $\tau=s$ produces a rational
+polyhedron, possibly empty.
+
+If the objective is unbounded above on a nonempty such polyhedron, linear
+programming gives a recession direction with parent coordinate zero and
+positive objective. The direction remains in the same coordinate face and
+sign chamber, so it is compatible. This would make $Z_v$ true. Thus every
+nonempty normalized polyhedron has finite optimum. A finite optimum of a
+rational polyhedron is attained at a rational point. Taking the maximum over
+the finitely many nonempty choices proves the first assertion.
+
+When $t\ne0$, multiplication or division by $|t|$ is a bijection between the
+fiber at $\operatorname{sgn}t$ and the fiber at $t$, preserving compatibility.
+The objective scales by $|t|$, giving the displayed formula. At zero, no
+positive objective is possible by hypothesis, and the zero assignment attains
+zero. Finally, a zero-parent-port assignment satisfies the outside equations
+when every outside coordinate and port is set to zero. Homogeneity and the
+absence of cross-bag conflicts prove the last assertion.
+\end{proof}
+
+\begin{corollary}[Context equivalence for the decision query]
+Replacing a subtree by its exact two-slope message preserves whether any
+homogeneous context attached only at that scalar has positive total objective.
+The message need not preserve the set of internal surfaces, component counts,
+full normal coordinates, or arbitrary topological attachment data.
+\end{corollary}
+
+The theorem is not a convex-hull relaxation. Availability is retained for both
+signs, the value at zero is treated separately, and the best witness for one
+sign need not have the same compatibility pattern as the best witness for the
+other. The reduction is valid because the context sees precisely one scalar
+and one additive objective contribution.
+
+\subsection{Local recurrence}
+
+At a vertex $v$, fix signs $\sigma_e\in\{-1,1\}$ on all incident edges and
+write $\tau_e=\sigma_e z_e$, $z_e\geq0$. The local homogeneous cone in
+$(x_v,z)$ is
+\[
+ K_{v,\sigma}=\left\{(x_v,z)\geq0:
+ B_vx_v+\sum_{e\ni v}\sigma_e h_{v,e}z_e=0\right\}.
+\]
+Unavailable child signs force their corresponding $z_e$ to zero. Caller-disabled
+original coordinates also vanish. These are coordinate faces, not new general
+inequalities. On this cone the effective local objective is linear:
+\begin{equation}\label{eq:effective}
+ g_{v,\sigma}(x_v,z)=c_v^Tx_v+
+ \sum_{e\text{ child of }v}\alpha_{e,\sigma_e}z_e.
+\end{equation}
+Terms on forced-zero child coordinates are omitted.
+
+Take every local extreme ray that satisfies the local forbidden pairs and
+coordinate-zero restrictions. A positive value of $g_{v,\sigma}$ on a ray with
+zero parent port produces $Z_v$. Otherwise, for a ray with parent value $z_p>0$,
+its candidate parent slope is $g_{v,\sigma}/z_p$. Maximize these candidates
+separately for the two parent signs. At the root there is no parent port;
+a positive effective value answers the original query.
+
+\begin{proposition}[Completeness of the local-ray recurrence]
+\label{prop:recurrence}
+The recurrence computes the messages of Theorem~\ref{thm:message} exactly.
+It remains exact when prepared ray lists are reused after any further original
+coordinate deletions and any change of the linear objective.
+\end{proposition}
+
+\begin{proof}
+In a fixed sign chamber, a compatible vector lies in a coordinate face on which
+its conflicting coordinates vanish. The extreme rays of this face are extreme
+rays of the unrestricted local cone and have support contained in that of the
+vector. They therefore satisfy all its incompatibility and zero conditions.
+
+Express the vector as a nonnegative combination of those rays. If its parent
+port is zero, every constituent ray has zero parent port, since that coordinate
+is nonnegative in the chamber. Positive total objective then requires one
+positive zero-port ray. If its parent port is positive and no positive
+zero-port ray exists, zero-port terms cannot improve the objective. The ratio
+of objective to parent port on the remaining sum is a weighted average of the
+ratios on its positive-port rays. Its maximum is therefore attained by one ray.
+
+By induction, a child slope is attainable by a child assignment with the exact
+required sign and scale. Independently attaching those child assignments
+realizes every retained local candidate. No incompatible choice is combined
+inside a private coordinate block. This proves both inequalities needed for
+exactness. Further coordinate deletions select additional faces, whose rays
+are obtained simply by filtering the prepared lists. Objectives change scores,
+not the underlying rays.
+\end{proof}
+
+\subsection{Witness recipes and negative evidence}
+
+A maximizing message retains one local ray and references the chosen child
+recipes. To reconstruct a witness, scale a child's stored ray so that its
+parent scalar equals the requested scalar. Set an entire child subtree to zero
+when that scalar is zero. A zero-port positive witness found below the root is
+similarly extended by zero outside its origin subtree.
+
+The implementation uses an explicit stack, not recursion proportional to the
+height of the input tree. It emits original coordinates and signed edge fluxes.
+A positive checker needs only exact equation checks, nonnegativity, local pair
+checks, zero-coordinate checks, and evaluation of the original objective.
+
+For a negative answer, the supplied packet contains complete local ray lists
+and all finite slopes or unavailable symbols. An independent replay enumerates
+local positive supports rather than the producer's active zero sets, compares
+the ray lists, and checks the scalar recurrence. This checker is exponential
+in local bag size. Its existence is not a polynomial-size negative certificate
+claim for arbitrary bags. Its support-enumeration cost is bounded by
+$\poly(N)\sum_v2^{b_v+2\delta_v}$ with the parameters defined below; it need
+not be polynomial in the smaller active-zero-set budget alone.
+
+\section{Compiling rank-one column cuts from the source}
+\label{sec:compiler}
+
+Suppose a rooted tree carries a partition $(I_v)_v$ of the original columns of
+$A$. Empty internal bags are allowed. Every forbidden pair must lie wholly in
+one bag. For a nonroot vertex $v$, let $S_v$ be the union of the column bags
+in its rooted subtree. Define
+\begin{equation}\label{eq:cutrank}
+ \lambda_v=\dim\bigl(\im A_{S_v}\cap\im A_{\overline{S_v}}\bigr)
+ =\rank A_{S_v}+\rank A_{\overline{S_v}}-\rank A.
+\end{equation}
+The equality holds because the sum of the two column spaces is $\im A$.
+The relevant quantity is this column-space intersection dimension, not the
+number of geometric boundary faces, the graph cut size, or the rank of an
+arbitrarily selected submatrix of crossing entries.
+
+Assume $\lambda_v\leq1$ on every tree edge. If it equals one, choose a primitive
+integer generator $w_v$ of the intersection line. If it equals zero, set
+$w_v=0$ and require $\tau_v=0$ at both endpoints. For nonzero $w_v$, define the
+signed flux by
+\begin{equation}\label{eq:flux}
+ A_{S_v}x_{S_v}=w_v\tau_v.
+\end{equation}
+The scalar can have either sign; replacing it by its absolute value would be
+an unsound source transformation.
+
+The compiled equation at vertex $v$ is
+\begin{equation}\label{eq:node}
+ A_{I_v}x_{I_v}+
+ \sum_{u:\operatorname{parent}(u)=v}w_u\tau_u
+ -\begin{cases}w_v\tau_v,&v\ne0,\\0,&v=0\end{cases}=0.
+\end{equation}
+The objective and all forbidden pairs are copied to their unique original
+coordinate bags. No elimination of original coordinates is needed.
+
+\begin{theorem}[Exact source compilation]
+\label{thm:compiler}
+Projection to the original coordinates is a linear bijection from the solution
+space of the compiled equations to $\ker A$. The inverse is given by the unique
+fluxes in \eqref{eq:flux}, with zero flux on rank-zero cuts. This bijection
+preserves nonnegativity of original coordinates, every source forbidden pair,
+original coordinate deletions, and every linear objective on original
+coordinates. Compilation and independent source verification have polynomial
+rational bit complexity in the source and supplied-tree encoding.
+\end{theorem}
+
+\begin{proof}
+Given $Ax=0$, the vector $A_{S_v}x_{S_v}$ belongs to $\im A_{S_v}$ and equals
+$-A_{\overline{S_v}}x_{\overline{S_v}}$, so it lies in the displayed intersection.
+It therefore determines the unique stated scalar. Partitioning $S_v$ into
+$I_v$ and its child subtrees yields \eqref{eq:node}.
+
+Conversely, sum \eqref{eq:node} over the entire tree. Each nonroot flux term
+appears once positively and once negatively, leaving $Ax=0$. Summing only over
+a rooted subtree gives \eqref{eq:flux}. Thus no spurious scalar solutions
+survive, including on edges with zero intersection. This proves bijectivity.
+The additional claims follow because original coordinates and local forbidden
+pairs have not been altered.
+
+Exact Gaussian elimination computes the two column-space bases and their
+intersection. Rational basis entries, intersection generators and their
+primitive integer scalings have polynomial encoding length by determinant
+bounds. There are polynomially many cuts and local row records. An independent
+checker can compute the three ranks in \eqref{eq:cutrank}, check that a proposed
+nonzero $w_v$ lies in both column spaces, require zero exactly when the
+intersection has dimension zero, and compare every compiled row with
+\eqref{eq:node}. These are polynomial exact linear-algebra operations.
+\end{proof}
+
+\begin{remark}[Rank zero and rejected cuts]
+The explicit zero-flux equations on rank-zero cuts are necessary. A zero
+coefficient $w_v$ alone would leave an unrelated auxiliary scalar free. A cut
+with $\lambda_v>1$ is rejected, not projected onto a selected direction. A
+forbidden pair crossing bags is likewise rejected, not silently dropped.
+Both rejection paths are exercised by the tests.
+\end{remark}
+
+\subsection{An exact and reusable source contract}
+
+The compiler accepts $A$, its declared number of columns, a partition into bags,
+a rooted tree, and the complete forbidden-pair list. The returned model retains
+original column names and the primitive cut generators. The source verifier
+uses rank-and-membership checks, not the producer's intersection-basis routine.
+
+If a source column is later disabled, the same compiled system with that
+original coordinate set to zero remains exact. Rebuilding smaller cut spaces
+may improve performance, but is not required for correctness. If the source
+matching equations themselves change, such as after a Pachner move or crushing,
+a new source compilation or a separately proved transport certificate is
+required. An old small-width tree has no automatic authority over the new
+triangulation.
+
+\section{Source-bound gluing preserves extreme rays}
+\label{sec:extreme}
+
+An arbitrary signed scalar presentation can introduce artificial extreme rays.
+For example, present $\R_+^2$ using the redundant free scalar $\tau=a-b$.
+The chamber $\tau\geq0$ has the ray $(a,b)=(1,1)$, which is not extreme in
+$\R_+^2$. It is therefore not enough to observe that a local signed ray was
+chosen. The source-cut structure of Theorem~\ref{thm:compiler} repairs this gap.
+
+For each sign vector $\sigma$ on the nonzero rank-one cuts, let
+\[
+ C_\sigma=\{x\in C(A):\sigma_v\tau_v(x)\geq0\text{ for every such }v\}.
+\]
+The scalars are now the unique source-bound linear functionals.
+
+\begin{lemma}[Zero flux splits the source vector]
+\label{lem:zerosplit}
+If $x\in C(A)$ and $\tau_v(x)=0$, the restrictions of $x$ to $S_v$ and to
+$\overline{S_v}$, extended by zero, both belong to $C(A)$. More generally,
+remove every zero-flux edge from the tree. Restricting $x$ to the original
+columns of each remaining tree component gives feasible vectors whose sum
+is $x$. Each restricted vector belongs to every sign chamber containing $x$.
+\end{lemma}
+
+\begin{proof}
+Equation~\eqref{eq:flux} gives $A_{S_v}x_{S_v}=0$, and the complementary
+identity follows from $Ax=0$. For several edges, use the compiled equations:
+retain a component's original coordinates and its internal fluxes and set all
+other coordinates and fluxes to zero. Its boundary fluxes were already zero,
+so every local equation remains true. The compiler theorem proves source
+feasibility and identifies the retained fluxes as the unique source fluxes.
+An internal flux keeps its sign, and an external one becomes zero.
+\end{proof}
+
+\begin{theorem}[No new source rays under flux-sign subdivision]
+\label{thm:nonew}
+Every extreme ray of every $C_\sigma$ is an extreme ray of $C(A)$. Conversely,
+every extreme ray of $C(A)$ is an extreme ray of any $C_\sigma$ containing it.
+Thus the union of the flux-sign chamber ray sets is exactly the source ray set.
+The same statements hold after any original coordinate-face restrictions.
+\end{theorem}
+
+\begin{proof}
+Let $x\ne0$ span an extreme ray of $C_\sigma$. By
+Lemma~\ref{lem:zerosplit}, splitting the tree at the zero-flux edges decomposes
+$x$ into feasible vectors in the same chamber with disjoint original supports.
+Extremality implies that only one tree component carries a nonzero vector.
+The source compiler's injectivity rules out a different component supported
+only by nonzero auxiliary fluxes.
+
+Let $F$ be the coordinate face of $C(A)$ obtained by setting every coordinate
+outside $\supp x$ to zero. The vector $x$ lies in the relative interior of $F$:
+it is positive on all allowed support coordinates, so sufficiently small
+perturbations in $\operatorname{span}F$ preserve nonnegativity.
+
+Every zero-flux edge separates the single occupied tree component entirely
+onto one side. For any $y\in F$, all its coordinates are on that side, and
+$Ay=0$ forces the cut flux of $y$ to be zero. Thus every sign inequality that
+is an equality at $x$ is identically zero on $F$. All other sign inequalities
+are strict at $x$ and remain valid under sufficiently small perturbations.
+If $\dim F\geq2$, there is a vector $u\in\operatorname{span}F$ not parallel to
+$x$ for which $x\pm\varepsilon u\in C_\sigma$ for small $\varepsilon>0$.
+This contradicts extremality. Hence $F$ has dimension one, so $x$ is an extreme
+ray of $C(A)$.
+
+The converse is immediate: a decomposition in the smaller cone would be a
+decomposition in the larger cone. Coordinate-zero restrictions commute with
+all the restrictions and zero extensions in the argument, proving the last
+assertion.
+\end{proof}
+
+\begin{theorem}[Ray gluing and connected primitive witnesses]
+\label{thm:gluing}
+In the source-compiled model, suppose the local-ray recurrence chooses a single
+local extreme ray at each nonzero recipe node and uses the zero assignment on
+zero-port child subtrees. Every resulting nonzero global witness spans an
+extreme ray of the original matching cone, and satisfies the original
+compatibility constraints. If the source is a genuine standard normal-surface
+system, its primitive integer normalization represents a connected normal
+surface.
+\end{theorem}
+
+\begin{proof}
+Choose the global flux-sign chamber containing the reconstructed assignment.
+Consider a decomposition of this assignment into two vectors of that chamber,
+using the nonnegative variables obtained after fixing signs. At the origin
+node, the local vector is an extreme ray, so the two local summands are scalar
+multiples of it. Every nonzero child port forces the same scalar ratio at the
+child: its chosen local ray is extreme and its parent port is nonzero. This
+ratio propagates through all nonzero recipe edges. On a zero child subtree,
+all nonnegative chamber coordinates are zero, so both summands vanish there.
+Outside an early positive witness's origin subtree the same argument applies.
+Thus the full assignment is extreme in the compiled chamber. Projection is
+injective, and Theorem~\ref{thm:nonew} makes the source vector extreme in $C(A)$.
+Original incompatibilities hold because they are local and every chosen ray
+satisfies them.
+
+Scale the source vector to the primitive nonnegative integer vector $p$ on its
+ray. Normal matching and compatibility give an embedded normal surface with
+coordinate vector $p$~\cite{haken}. If it had two nonempty connected components,
+their coordinate vectors would be nonzero nonnegative integer vectors summing
+to $p$. Extremality makes each a nonnegative scalar multiple of $p$. An integer
+vector parallel to a primitive integer vector is an integer multiple: apply a
+Bezout combination of the coordinates of $p$, whose gcd is one. Each nonzero
+component would therefore contribute at least $p$, a contradiction.
+\end{proof}
+
+\begin{remark}[Why the stronger conclusion is source-sensitive]
+The generic scalar solver is correct even for a model with redundant ports.
+Its positive output need not then be source-extreme. The code includes the
+$(a,b,a-b)$ counterexample and offers greedy original-support minimization as
+a safe fallback for a genuinely source-equivalent generic model. For a model
+accepted by the rank-one source compiler, the preceding theorem makes that
+extra search unnecessary. Independent rank tests on the positive support
+provide an inexpensive additional audit when the source matrix is available.
+\end{remark}

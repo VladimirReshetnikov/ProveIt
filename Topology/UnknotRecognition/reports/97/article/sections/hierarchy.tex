@@ -1,0 +1,157 @@
+\section{What the reduction contributes to the hierarchy goal}
+\label{sec:hierarchy}
+
+\subsection{A smaller exact local problem}
+
+The saturated reduction replaces a potentially huge explicit relative
+handle system by the matrix
+\[
+ A\in\NN^{(f+s)\times c},\qquad
+ |\supp A|\le I_0+P.
+\]
+The new band handles affect genus counts and a geometric existence proof,
+but they do not become cancellation choices. Complete source cancellation
+is a deterministic sparse operation. A failure is accompanied by a
+coordinate-dependent stopping obstruction to the entire raw rule.
+
+These are useful improvements for a hierarchy implementation because they
+give a precise accounting unit: the finite inherited core and active
+interfaces, with numerical topological data kept in binary. They also
+exclude an unproductive source of search. For a fixed matrix, branching
+over its positive raw pivot orders or proposed survivors cannot discover
+a full cancellation when the complete column test fails.
+
+The result is not a bound on how many different matrices a hierarchy must
+visit. A new normal surface, a different disk system or a genuinely
+intersection-reducing move can change the stopping set. Controlling those
+changes remains a geometric question.
+
+\subsection{A precise global accounting criterion}
+
+It is helpful to state a global cost target in a form that does not confuse
+deterministic work with branching. The following elementary search-tree
+lemma is an accounting device, not a new unknot-recognition theorem.
+
+\begin{lemma}[Branch-product bound]\label{lem:branch-product}
+Let a finite rooted search tree have maximum depth $D$. At an internal
+vertex $v$, let $b(v)\ge1$ be its number of children. Suppose every
+root-to-leaf path satisfies
+\[
+ \sum_{v\text{ on the path}}\log_2 b(v)\le K.
+\]
+Then the tree has at most $2^K$ leaves and at most $(D+1)2^K$ vertices.
+\end{lemma}
+
+\begin{proof}
+Start with mass one at the root and divide each vertex's mass equally
+among its children. A leaf receives
+$\prod_v b(v)^{-1}\ge2^{-K}$, while the leaf masses sum to one. Thus
+there are at most $2^K$ leaves. Every vertex lies on some root-to-leaf
+path, and the union of those paths has at most $(D+1)$ vertices per leaf.
+\end{proof}
+
+\Needspace{14\baselineskip}
+\begin{theorem}[A sufficient quasi-polynomial integration contract]
+\label{thm:global-contract}
+Suppose a complete deterministic recognition procedure on an $n$-crossing
+diagram has a finite search tree with the following properties:
+\begin{enumerate}
+\item Every explored state, source certificate and transported boundary
+pattern has encoded size at most $n^a$ for a fixed constant $a$.
+\item Each node's full processing cost, including source construction,
+all rejected local candidates and independent local certification, is
+polynomial in $n$.
+\item The depth is polynomial in $n$, and the sum of $\log_2 b(v)$ along
+every root-to-leaf path is $O((\log n)^2)$.
+\item Every terminal conclusion is sound, and the search covers all
+required alternatives, so completed exhaustion justifies its negative
+conclusions.
+\end{enumerate}
+Then the procedure runs in $n^{O(\log n)}$ bit time. The cancellation
+operators developed in this report satisfy a polynomial local-cost
+requirement once their authenticated source data is available.
+\end{theorem}
+
+\begin{proof}
+Lemma~\ref{lem:branch-product} bounds the node count by
+$\poly(n)2^{O((\log n)^2)}=n^{O(\log n)}$. Multiplying by the
+polynomial per-node bit cost preserves this bound. The last hypothesis
+supplies decision correctness. The finite cancellation bound follows
+from Theorems~\ref{thm:linear} and~\ref{thm:saturated-even-columns},
+Proposition~\ref{prop:compiled-size}, and polynomial binary arithmetic
+for the census.
+\end{proof}
+
+The hypotheses are intentionally explicit. They have \emph{not} been proved
+for the maintained general recognizer. A polynomial number of deterministic
+steps along a branch would be harmless under this contract; an uncontrolled
+number of branching choices or a large rebuild cost would not be. Binary
+compression of one supplied cut addresses only part of the first two items.
+
+Lackenby's hierarchy work provides the mathematical framework for further
+development\cite{lackenby-2026,lackenby-talk}. Efficient existence and
+verification statements must be distinguished from finding the desired
+surface and from bounding all unsuccessful work. A short certificate
+does not by itself give a comparably fast deterministic producer.
+
+\subsection{Remaining obligations with concrete failure modes}
+
+\paragraph{Surface coverage.}
+A supplied-cut census says nothing about whether a producer can find a
+useful surface within a small collection of sectors. Dense normal vectors
+and large coordinates may be perfectly manageable once supplied; they
+can still be difficult to discover. A complete theorem must quantify
+the entire candidate set, including rejected candidates.
+
+\paragraph{Marked transport.}
+The new proof establishes an unmarked homeomorphism type and raw
+incidence properties. A later hierarchy step needs the inherited
+boundary pattern as embedded curves and graphs. Unsigned passenger
+transport supplies exact numerical data under its update rule, but
+does not retain cyclic order or identify which endpoints join. These
+missing data can affect essentiality of a terminal pattern.
+
+\paragraph{Escaping a raw stopping set.}
+Example~\ref{ex:unimodular} shows that even a ball can have a blocked
+chosen raw system. A complete algorithm therefore needs operations that
+can lower actual geometric intersections or change the chosen source
+decomposition. Pure positive pivots cannot do this. The required repair
+cost must be bounded on all instances, not inferred from a successful
+finite corpus.
+
+\paragraph{Three-handles and closed bases.}
+The present consumer excludes both. A source core with a three-handle
+does not become simpler merely because its boundary genera are known.
+A valid extension requires actual geometric removals or a separate
+certified topological argument.
+
+\paragraph{State identity and restarts.}
+The canonical stopping set belongs to one labelled source matrix.
+It does not provide canonical representatives of embedded handle
+structures. Memoization can be sound only if its keys retain the
+needed geometric and marking information. Rebuilding after a
+compression or changing the forest can introduce new states; their
+number and encoded sizes must be included in the global sum.
+
+\paragraph{Diagram provenance and final decisions.}
+The normal-cut source contracts bind a triangulation and normal vector.
+They do not independently bind an arbitrary diagram to that exterior.
+The exact full recognizer retains its existing routes and fallback.
+The experimental APIs in this package issue supplied-cut results, not
+new standalone knot verdicts.
+
+\subsection{A realistic next milestone}
+
+The most direct continuation is a \emph{marked} version of the complete
+column certificate. Its no-fill order has immutable donors and a directed
+acyclic dependency graph. This removes uncertainty about pivot discovery
+and limits numerical growth, allowing the geometric work to focus on
+transporting embedded strand data through a fixed successful schedule.
+
+A useful milestone would accept an authenticated source core and a finite
+marked pattern, produce the entire surviving marked handlebody structure,
+and independently replay every strand attachment without expanding large
+parallel families. Combining that with one fully certified next hierarchy
+cut would demonstrate a genuine transition, rather than another isolated
+topological census. It would still need a global coverage and branching
+argument to achieve the quasi-polynomial target.

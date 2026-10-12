@@ -18,5 +18,76 @@ remaining refusals comprise eight stalled raw schedules, three square raw
 obstructions, and ten cores with three-handles. No previous success is lost.
 The source-pinned records are retained in \path{data/boundary-kernel-audit.json}
 and the focused log in \path{data/boundary-kernel-focused.txt}.
-Full regression is still running; no performance comparison is inferred
+The full Regina-enabled regression passes all 1,678 tests, with no skips,
+in 570.513 seconds. Its 13,846 expanded-sheet comparisons and 196,712
+marked-cover comparisons also pass. The full log is retained in
+\path{data/boundary-kernel-tests.txt}. No performance comparison is inferred
 from this concurrently executed validation audit.
+
+A separate direct-kernel audit exercises v5 on all 96 sources without
+three-handles, including those for which production prefers v1--v4. It
+constructs 85 source certificates, independently replays all of them and
+matches the 78 available literal oracle histograms. The other eleven
+schedules conservatively fail. The direct certificates need not equal the
+preferred older certificates; the ordinary producer still preserves those
+older records. The driver and pinned results are retained in
+\path{data/boundary-kernel-direct-audit.py} and its companion JSON.
+
+\paragraph{Paired timings and binary capacity.}
+After regression, direct audits and the implementation article build
+finished, six finite cuts were measured in five shuffled paired rounds after
+warmup. Native time includes whole-cut certificate production and independent
+replay; the explicit path constructs Regina's actual cut and recognizes each
+component. Parsing and serialization are excluded. Every histogram agrees.
+Three identical-code explicit A/A pairs accompany every case. The driver and
+all samples are retained in \path{data/boundary-kernel-benchmark.py} and its
+companion JSON, including the corpus, driver and runtime source hashes.
+
+\input{tables/boundary_kernel_timing.tex}
+
+The nine-tetrahedron source at 256 copies has median native time 10.338
+seconds and explicit time 23.580 seconds, with paired ratio 2.281. The other
+five cases favor explicit construction, with paired ratios from 0.007 to
+0.448. A/A medians range from 0.968 to 1.026, but native timing also varies:
+for example, the ten-tetrahedron one-copy samples span 4.568--8.329 seconds,
+and its 256-copy samples span 10.200--17.691 seconds. The table reports medians
+of paired ratios, which need not equal the ratios of the two marginal medians.
+These measurements support a gain for one supplied family and regressions
+for the others; they are not a universal speedup or full unknot-recognition
+benchmark.
+
+For each family a separate single-run capacity check uses multiplier
+$N=2^{16384}$. The nine-tetrahedron query takes 46.349 seconds for production
+plus replay and its serialized certificate contains 138,607,389 bytes.
+Its census is $N$ balls, two genus-three handlebodies, and $N-1$ genus-five
+handlebodies. The ten-tetrahedron query takes 43.830 seconds and serializes
+to 137,651,867 bytes; it certifies $N$ balls, two genus-two handlebodies, and
+$N-1$ genus-three handlebodies. No literal expansion is attempted.
+
+The two added kernels have respectively 24 and 27 two-handle pivots,
+eight and nine annular rows, five and three retained boundary columns,
+and one and zero omitted genus columns. Thus the binary multiplicity does
+not require an expanded handle matrix. The large complete certificates also
+contain all source-orbit proofs; their roughly 138 MB serialized sizes are
+a practical limitation that the small final cancellation record does not
+remove. The publication consistency script checks the exact binary censuses,
+all runtime pins, previous certificate hashes, and the retained validation
+artifacts in \path{data/boundary-kernel-publication-check.json}.
+
+\paragraph{Next obstruction: a source two/three-handle diagnostic.}
+For the ten remaining sources with three-handles, a separate probe assigns
+ends to each extreme source edge gap. With zero normal weight, its two ends
+are the original edge endpoints; with positive weight, one end is the
+corresponding original vertex and the other lies on the cut boundary.
+The probe repeatedly deletes a candidate two/three pair when exactly one
+end belongs to a remaining interior vertex handle, counting repeated ends
+with multiplicity. It then tests the remaining rows with the boundary kernel.
+
+All ten diagnostic reductions remove every three-handle. Seven resulting
+kernels eliminate all two-handles and match the literal handlebody genera.
+The other three kernels fail, and each corresponding literal cut contains a
+non-handlebody component. These are promising candidate reductions, not seven
+additional accepted cuts: independent authentication of the dual endpoints
+and replay of the geometric two/three moves remain to be implemented. The
+production count remains 85. The diagnostic driver and records are retained
+in \path{data/core-three-handle-probe.py} and its companion JSON.

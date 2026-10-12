@@ -1,0 +1,50 @@
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+\toprule
+Copies $N$ & Vertices & Sparse (ms) & Literal (ms) & Literal/sparse\\
+\midrule
+1 & 2 & 0.262 & 0.121 & 0.46\\
+2 & 4 & 0.417 & 0.168 & 0.40\\
+4 & 8 & 0.671 & 0.392 & 0.58\\
+8 & 16 & 1.023 & 3.602 & 3.52\\
+16 & 32 & 0.986 & 28.235 & 28.64\\
+32 & 64 & 1.162 & 429.938 & 369.85\\
+\bottomrule
+\end{tabular}
+\caption{Complete ladder-query medians. Ratios below one favor the literal path. No knot-recognition work is included.}
+\label{tab:ladder}
+\end{table}
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrrr}
+\toprule
+Arms $a$ & Root states & Indexed (ms) & Control (ms) & Time ratio & Work ratio\\
+\midrule
+4 & 186 & 1.088 & 1.072 & 0.99 & 1.96\\
+8 & 1,394 & 7.765 & 9.809 & 1.26 & 9.15\\
+12 & 4,650 & 32.092 & 62.519 & 1.95 & 28.03\\
+16 & 10,978 & 90.453 & 247.086 & 2.73 & 64.37\\
+\bottomrule
+\end{tabular}
+\caption{Cost-indexed star joins versus the same producer without cost indexing. Time and work ratios are control/indexed. Work counts are logical candidate counts, not machine operations.}
+\label{tab:stars}
+\end{table}
+\begin{table}[ht]
+\centering
+\begin{tabular}{rrrrr}
+\toprule
+Copies & Rules & Total states & Solve (ms) & Complete replay (ms)\\
+\midrule
+$2^{8}$ & 10 & 260 & 1.476 & 13.388\\
+$2^{32}$ & 34 & 980 & 5.926 & 56.015\\
+$2^{128}$ & 130 & 3,860 & 24.606 & 224.357\\
+$2^{256}$ & 258 & 7,700 & 50.953 & 470.832\\
+$2^{512}$ & 514 & 15,380 & 112.289 & 970.095\\
+$2^{1024}$ & 1,026 & 30,740 & 289.052 & 2069.746\\
+\bottomrule
+\end{tabular}
+\caption{Binary ladder powers. Solve times are medians of five calls on a supplied grammar; complete replay is one separately timed call, with no claim of median precision. Peak table size is 32 in every row.}
+\label{tab:binary}
+\end{table}
+The two identical A/A controls had median B/A ratios 0.938 and 0.973. These are empirical noise controls, not confidence intervals. The full raw repeat data are retained in \mbox{\code{data/benchmark.json}}.

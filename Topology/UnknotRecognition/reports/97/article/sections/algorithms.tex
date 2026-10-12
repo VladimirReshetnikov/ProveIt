@@ -1,0 +1,202 @@
+\section{Sparse discovery, independent replay, and the old planner}
+\label{sec:algorithms}
+
+\subsection{An immutable-source algorithm}
+
+Peeling needs no evolving matrix. For every source column $h$, maintain the
+number $d_h$ of incident live rows and the identity of its sole owner when
+$d_h=1$. An incident row with entry at least two does not make a unit leaf.
+When row $r$ is removed, visit its source nonzero columns once, decrease
+their incident-row counts, and enqueue newly exposed unit leaves.
+
+\begin{lstlisting}[caption={Complete raw cancellation from source incidence.}]
+build row-to-column incidence lists
+for each column h:
+    degree[h] = number of nonzero incident rows
+    owner[h] = XOR of those row labels
+enqueue h if degree[h] == 1 and N[owner[h], h] == 1
+
+while the queue is nonempty:
+    pop h
+    if degree[h] != 1: continue
+    r = owner[h]
+    record the cancellation (r,h)
+    mark r deleted
+    for each nonzero source column c of row r:
+        degree[c] -= 1
+        owner[c] ^= r
+        if degree[c] == 1 and N[owner[c],c] == 1:
+            enqueue c
+
+return the schedule and the remaining row set
+\end{lstlisting}
+
+XOR is only an efficient owner-recovery implementation. Dense row labels
+make it a word operation; an incident-list representation gives the same
+mathematical algorithm. An all-zero row is retained. A column that is
+initially absent is irrelevant. The queue may contain stale entries, which
+are ignored after their degrees cease to be one.
+
+\begin{theorem}[Sparse structural bound]\label{thm:linear}
+After indexing the rows and columns, the complete raw-cancellation decision,
+a successful schedule or a canonical stopping set, and the associated
+sparse source data require $O(I+m+n)$ structural operations and
+$O(I+m+n)$ words of storage. A successful schedule has at most $m$ pairs.
+If labels use $O(\log(m+n+2))$ bits and the binary input length is $\Lambda$,
+a deterministic dense-array implementation has bit cost
+\[
+ O\bigl(\Lambda+(I+m+n)\log(m+n+2)\bigr)
+\]
+under elementary word arithmetic. Sorting arbitrary external labels may
+add a logarithmic preprocessing factor.
+\end{theorem}
+
+\begin{proof}
+Each nonzero is read once during construction and visited at most once
+when its row is deleted. A column's live degree decreases monotonically,
+so it becomes degree one at most once. It is consequently enqueued at
+most once, including initial leaves. Queue processing is linear in the
+number of appearing columns. All other work is proportional to the row
+and column arrays or the schedule. Entries are capped at two while reading;
+the later algorithm does not perform arithmetic on their original magnitudes.
+Counters and row labels require logarithmic space. These observations give
+both structural and bit bounds.
+\end{proof}
+
+The provided core producer follows this sparse queue design. The standalone
+saturated-bundle producer calls the same public sparse planner. Python dictionaries
+are implementation data structures, not a proof of adversarial constant-time
+hashing. The deterministic bound above describes the indexed algorithm;
+the empirical measurements concern the supplied Python implementation.
+
+\subsection{Positive certificates without producer replay}
+
+Let a proposed schedule be
+$((r_0,g_0),\ldots,(r_{s-1},g_{s-1}))$. Define $\tau(r_i)=i$ and
+$\tau(r)=+\infty$ for every unlisted row. No row or pivot column may repeat.
+
+\begin{theorem}[Timestamp certificate]\label{thm:timestamp}
+The schedule is a valid no-fill column-leaf prefix if and only if, for each
+$i$, the source entry $n_{r_i g_i}$ equals one and every different row $r$
+with $n_{rg_i}>0$ satisfies $\tau(r)<i$. It is a complete certificate if,
+in addition, every source row is listed. These conditions can be checked
+by one scan of the source incidence and the schedule.
+\end{theorem}
+
+\begin{proof}
+At step $i$, the live source rows are exactly those with deletion time
+at least $i$. The stated inequality therefore says that column $g_i$
+has only row $r_i$ left and that its entry is one. Previous column-leaf
+pivots have created no fill, so the source incidence on live rows is the
+actual incidence. Induction proves validity. Conversely, each genuine
+leaf step forces those source incidences to belong to earlier deleted
+rows. The extra coverage condition is exactly complete cancellation.
+\end{proof}
+
+The independent checker does not call the producer, maintain its queue,
+or carry out \eqref{eq:positive-pivot}. It builds row timestamps and checks
+source inequalities. The certificate occupies
+$O(m\log(m+n+2))$ bits, apart from externally supplied source identifiers.
+The same checker can verify a proper prefix by retaining $+\infty$ on
+unlisted rows.
+
+\subsection{Obstruction certificates}
+
+An obstruction certificate supplies a nonempty, duplicate-free list $R$
+of source row labels. The checker accumulates
+$\min(2,\sum_{r\in R}n_{rh})$ for each appearing column and rejects if
+any result is one. Theorem~\ref{thm:persistence} proves that an accepted
+certificate rules out all full positive raw schedules for those input
+counts. The checker need not trust the producer's claim that $R$ is
+canonical; any nonempty stopping set suffices.
+
+This distinction is useful for independent verification. Canonical discovery
+is a deterministic algorithmic convenience, whereas the obstruction theorem
+is a short local certificate. Relabelling the source changes labels, not
+the existence of the certified stopping set. Changing the disk system can
+change the matrix and may remove its obstruction.
+
+\subsection{Why the retained capped planner was already complete}
+
+The source implementation's legacy capped planner scores a candidate
+$n_{rg}=1$ by
+\[
+ \left(\sum_h n_{rh}-1\right)
+ \left(\sum_i n_{ig}-1\right)
+\]
+using capped entries. A zero score means that the donor is a unit row
+leaf or that the pivot column is a unit column leaf. In either case no
+surviving entry receives fill. The planner chooses a minimum score.
+
+\begin{proposition}[Completeness of zero-fill priority]
+\label{prop:old-complete}
+A producer that always chooses a zero-fill raw pivot when one exists is
+complete for full positive row cancellation. In particular, the retained
+min-fill capped planner already had this completeness property, despite
+its earlier documentation.
+\end{proposition}
+
+\begin{proof}
+If the current matrix is fully cancellable, Theorem~\ref{thm:complete}
+supplies a unit column leaf, so a zero-fill pivot exists. A column-leaf
+pivot preserves full cancellability: any stopping set of its reduced
+matrix would already be a stopping set of the original matrix, since the
+removed pivot column is zero on the remaining rows.
+
+Consider instead a unit row leaf $r$ at column $g$. If the reduced matrix
+had a stopping set $R$, examine its source sum at $g$. If that sum is zero
+or at least two, $R$ itself obstructs the original matrix. If it is one,
+then $R\cup\{r\}$ obstructs it: the sum at $g$ becomes two and the row
+leaf contributes nothing elsewhere. Either case contradicts full
+cancellability. Hence this zero-fill pivot is safe as well.
+
+Induction shows that zero-fill priority succeeds whenever any positive
+schedule succeeds. Its successful outputs are always valid schedules, so
+the converse implication requires no further argument.
+\end{proof}
+
+This proof does not assert that \emph{every} arbitrary singleton choice
+preserves full cancellability. It establishes precisely the property used
+by the retained producer. The native change removes repeated candidate
+scans and unneeded positive updates, while preserving its complete-success
+set. Legacy certificates remain independently replayable.
+
+\subsection{A family exposing the avoidable scan cost}
+
+For $m\ge2$, consider the $m\times(m+1)$ bidiagonal chain with
+$n_{r,r}=n_{r,r+1}=1$ and all other entries zero:
+\[
+ N_m=\begin{pmatrix}
+ 1&1&0&\cdots&0\\
+ 0&1&1&\cdots&0\\
+ \vdots&\ddots&\ddots&\ddots&\vdots\\
+ 0&\cdots&0&1&1
+ \end{pmatrix}.
+\]
+It has $I=2m$ source incidences, no initial unit row leaf, and exposed unit
+columns at the ends. Peeling successively exposes the next column.
+A planner that rescans every surviving incidence at each
+step performs $\Theta(m^2)$ source visits. The queue algorithm performs
+$\Theta(m)$ visits. Both find a complete certificate; their distinction
+is avoidable repeated work.
+
+This is a matrix family, not a benchmark of knot recognition. It has a
+geometric interpretation as a primitive attaching family on a handlebody
+with one remaining handle, but an arbitrary caller-provided copy of the
+matrix does not authenticate that interpretation. The genuine source-cut
+audit in Section~\ref{sec:measurements} supplies the separate geometric
+validation for the native paths.
+
+\subsection{An exact boundary between useful and wasted raw search}
+
+After a verified stopping set is found, further enumeration of positive
+pivot orders cannot establish complete cancellation. This is a mathematical
+termination rule for the raw subproblem, not a heuristic timeout. A higher
+level search must change something outside this model: the geometric disk
+system, the forest, the attaching geometry, or the decomposition surface.
+
+For this reason the residual row set is a useful search diagnostic. It names
+the curves whose joint incidence has no unique crossing. It does not measure
+all remaining topology, and its cardinality is not a global hierarchy
+potential. A strategy that treats the residual size as a guaranteed decreasing
+topological complexity would need a further theorem.

@@ -1,0 +1,181 @@
+\section{Encoded cost and the remaining global complexity gap}
+\label{sec:complexity}
+
+The size parameters must distinguish four different objects: the knot
+diagram, an explicit triangulation at one stage, a binary normal vector,
+and a supplied proof.  Let $n$ be the crossing count of a diagram, $t$ the
+number of tetrahedra in a particular source triangulation, and
+\[
+ b=\max\bigl(1,\max_{i,j}\lceil\log_2(1+x_{ij})\rceil\bigr)
+\]
+the maximum coordinate bit length.  The explicit coordinate input has
+$7t$ entries, so reading it already costs $\Omega(tb)$ bits in the worst
+case.  Neither $t$ nor $b$ is silently replaced by $n$ during a hierarchy.
+
+For the finite relative compiler, let $s$ count the explicit core handles,
+source attaching-cycle occurrences, ports, base-profile records, and
+ordered attachment letters.  Let $B\geq\log_2(s+2)$ bound the bit lengths
+of all source labels, profile integers, and resulting counters, and let
+$M(B)$ denote a multiplication cost for $B$-bit integers.  The number of
+private one-handles is a \emph{value} stored in one of these integers; it
+is not included in $s$ as a list of handle objects.
+
+\subsection{What the finite compiler actually bounds}
+
+\begin{proposition}[Finite compressed compilation cost]
+\label{prop:finite-cost}
+Given authenticated finite source geometry, base profiles, and an ordered
+attachment skeleton of size $(s,B)$ satisfying the hypotheses of
+Theorem~\ref{geom:thm-residual-incidence}, the active incidence matrix has
+at most one additional row per attached base and no additional column.
+It can be constructed and independently replayed in time polynomial in
+$s$ and $B$, independently of the numerical private-handle count and of
+the numerical multiplicity of an isolated bundle.
+
+For the delivered straightforward implementation, a conservative bound
+is $O(s^2M(B))$ bit work under bounded-cost dictionary indexing of the
+explicit labels, with $O(s)$ stored finite records and their $B$-bit
+payloads.  Deterministic sorting or balanced dictionaries preserve a
+polynomial bound.  The square factor is an implementation bound for
+repeated component scans, not an inherent lower bound.
+\end{proposition}
+
+\begin{proof}
+An original core attaching cycle is scanned once to form its row after
+deleting forest columns.  Every source port occurs once in the ordered
+attachment components.  A saturated row is the capped sum of the core-one
+ports in its own circles.  Since the profiles partition ports, these scans
+cannot create a list proportional to the base genus.  The active nonzero
+count is bounded by the number of original cycle occurrences plus the
+number of core-one ports.
+
+Union--find on the explicit core and attachment records determines which
+original cores are joined.  The delivered code then scans profiles,
+attachments, handles, and rows for each joined component.  There are at
+most $s$ components and $s$ records per scan.  The genus and Euler formulas
+use sums and products of encoded integers; charging each such operation
+by $M(B)$ gives the stated conservative bound.  The checker reconstructs
+the same mathematical quantities with separate code and the same type of
+finite scans.  Isolated multiplicity contributes a multiplication to the
+histogram rather than repeated graph vertices.  At no point is a private
+handle enumerated.
+\end{proof}
+
+In the maintained normal-cut source model, core handles and total source
+incidences are $O(t)$, and the source port bound is $66t$
+\cite{marked-parallelity-85}.  In particular the active matrix has at most
+$12t+66t$ rows and $8t$ original columns, using conservative handle and
+ported-base bounds.  These are upper bounds, not typical dimensions.
+The inherited orbit computations and their encoded output sizes remain
+separate costs.  Agol--Hass--Thurston orbit counting is the foundational
+compressed connectivity tool\cite{AHT2006}; calling a finite adapter
+polynomial does not supply a new proof for every upstream discovery path.
+
+For the matrix layer itself, the stronger bound from
+Section~\ref{sec:column-peeling} is available.  With $m$ rows, $k$ active
+columns, and $I$ source nonzeros, discovery takes $O(m+k+I)$ expected
+dictionary operations, apart from final label sorting.  The counts used
+for leaf detection have $O(\log(m+1))$ bits after individual capping.  A
+literal count of $2^{16384}$ costs time to read, but never causes that many
+updates.
+
+The full census producer has the form
+\[
+ D_{\rm source}(t,b)+D_{\rm boundary}(t,b)
+ +\operatorname{poly}(s,B),
+\]
+where the first two terms are actual upstream discovery costs.  Its replay
+has the analogous source-verification terms plus the cost to read the
+supplied orbit traces.  A trace-operation cap bounds the number of trace
+records admitted; it is not a hard bound on time, bytes, or malformed
+input nesting.  The optional precheck can omit the boundary term on a
+certified original-core obstruction.  Successful cases still pay for the
+complete source and attachment information.
+
+\subsection{Existence of a large handle system versus outputting it}
+
+Theorem~\ref{geom:thm-census} certifies an invariant of a genuine finite
+manifold without printing every disc in a complete disc system.  That
+distinction is unavoidable when a profile permits $2^B$ private handles.
+A certificate consisting of their count and the residual-incidence
+theorem can be short.  A literal output with one named cocore per handle
+has an immediate $\Omega(2^B)$ output-size lower bound.
+
+This is why the present compiler cannot simply be declared a general
+hierarchy-transition routine.  A later surface might need to cross, or
+refer to, individual private cocores.  A short \emph{addressing and
+transport scheme} for those cocores is then an additional obligation.
+The current proof neither allocates those objects nor gives source
+addresses for all of them.  The arbitrary-genus example proves that the
+terminal census can remain compressed; it does not bound the cost of
+all possible later geometric queries.
+
+\subsection{A conditional composition theorem}
+
+The following elementary theorem makes the global target falsifiable.
+Its hypotheses are the missing interface bounds, rather than conclusions
+drawn from the local experiment.
+
+\begin{theorem}[Sufficient bounds for a quasi-polynomial composition]
+\label{thm:conditional-composition}
+Consider a correct recognition algorithm on $n$-crossing diagrams with
+at most
+\[
+ H(n)=L(n)(g(n)+1)^{L(n)}
+\]
+charged control steps.  Suppose every step tries at most $C(n)$ candidates,
+each candidate and its certificate have encoded size at most $S(n)$,
+and discovery, transitions, and replay together take at most a fixed
+polynomial in $n+C(n)+S(n)$ per charged step.  If
+\[
+ C(n),S(n),g(n)\leq n^{O(1)},
+ \qquad L(n)=O((\log n)^a),
+\]
+for a fixed $a\geq1$, then its total time is
+\[
+ 2^{O((\log n)^{a+1})}.
+\]
+In particular $a=1$ suffices for the February slide exponent, and $a=2$
+suffices for the March slide exponent.
+\end{theorem}
+
+\begin{proof}
+Take logarithms of the step bound:
+\[
+ \log H=\log L+L\log(g+1)
+       =O((\log n)^{a+1}).
+\]
+Multiplying by a fixed polynomial in the stipulated polynomial quantities
+adds only $O(\log n)$ to the logarithm of the running time.  A polynomial
+preprocessing or final verification phase is absorbed in the same bound.
+\end{proof}
+
+The hypothesis includes \emph{finding} the candidate surfaces and
+compression discs.  A small verified certificate proves efficient checking
+of that certificate; it does not bound a search that might inspect
+exponentially many alternatives.  Similarly, a polynomial formula in $t$
+and $b$ does not help globally if successive stages make either quantity
+exponential in the original $n$.
+
+Even granting $g(n)=n^{O(1)}$, the weaker bound $L(n)=O(n)$ gives
+$2^{O(n\log n)}$ by this calculation.  Reducing a local quadratic pass to
+a linear pass changes the polynomial factor.  It does not change this
+reset exponent.  To improve that exponent, one must either shorten the
+hierarchy, reduce the number of resets, or amortize several charged steps
+by a stronger theorem.  The ambient-block result later in this article
+explores the third possibility under explicit extra geometric hypotheses.
+
+\subsection{Why simple potential shortcuts do not close the gap}
+
+Replacing a lexicographic vector by its sum requires a proof that a repair
+does not recreate large later entries.  The sum has no monotonicity merely
+because the first altered coordinate decreases.  Likewise, replacing an
+integer intersection count $I$ by $\log(I+1)$ does not bound a process
+that can delete only one intersection at a time: the logarithmic decrement
+can be arbitrarily small.  The potential theorem below retains an honest
+numerical intersection term and gives a concrete binary-size obstruction.
+
+These observations guide implementation priorities.  Fast local replay is
+valuable and directly measurable.  The global objective additionally needs
+a geometrically justified amortization argument, with bounds expressed in
+the original input size and maintained throughout every transformation.

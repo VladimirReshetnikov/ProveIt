@@ -1,0 +1,82 @@
+% Source-status section, audited 12 October 2026.
+% Citation keys are supplied in literature-references.bib.
+\section{Sources and the announced quasipolynomial bound}
+\label{sec:literature-status}
+
+The source record contains two different quantitative versions of Lackenby's
+2021 announcement.  They should not be silently identified.
+\begin{center}
+\begin{tabular}{lll}
+\hline
+Source & Stated running time & Stated hierarchy depth\\
+\hline
+February 2021 author slides & $n^{O(\log n)}$ & $O(\log n)$\\
+March 2021 Oxford slides & $2^{O((\log n)^3)}$ & $O((\log n)^2)$\\
+15 April 2021 Princeton abstract & $2^{O((\log n)^3)}$ & not specified\\
+\hline
+\end{tabular}
+\end{center}
+Here $n$ is the number of crossings of the input knot diagram.  The first
+row is explicit in the February slides, including their complexity summary;
+it also agrees with Oxford's news announcement
+\cite{Lackenby2021February,Oxford2021Announcement}.  The later slide version
+and Princeton abstract state the weaker, still quasipolynomial bound
+\cite{Lackenby2021Oxford,Lackenby2021Princeton}.  Thus the earlier
+$n^{O(\log n)}$ figure is a documented historical claim, while
+\[
+  2^{O((\log n)^3)}=n^{O((\log n)^2)}
+\]
+is the later explicit benchmark used here.  Matching the stronger exponent
+would require an additional argument, not a change of notation.
+
+The later slides describe a hierarchy procedure whose cost is controlled by
+its depth and a polynomially bounded surface parameter.  They combine
+compressed parallelity bundles, multisurfaces, and modifications of
+generalised Heegaard splittings.  Their logarithmic-squared depth bound uses
+a dichotomy involving boundary-genus growth and special regions satisfying
+a Cheeger-type inequality \cite{Lackenby2021Oxford}.  This architecture is
+more than an efficient enumeration of fundamental normal surfaces.  A
+multisurface in those slides consists of individually embedded surfaces
+representing independent relative homology classes; the surfaces may
+intersect, and successive cuts are taken in their complements.  A collection
+of simultaneously disjoint representatives cannot be substituted without
+proof.
+
+As of this article's source audit on 12 October 2026, the sources located for
+the quasipolynomial complexity theorem are announcements and slides.  A
+complete published proof of that bound was not located.  This is a statement
+about the material found in the audit, not a claim that no other manuscript
+exists.  The author posted a substantial new preprint,
+\emph{Incompressible surfaces, hierarchies and unknot recognition}, on
+25 July 2026 \cite{Lackenby2026Hierarchies}.  It develops an algorithm for
+incompressibility and essential boundary patterns in irreducible compact
+orientable $3$-manifolds, and discusses future speed-ups.  Proposition~9.1
+bounds an iteration count by $L(g+1)^L$ in terms of the maximum hierarchy
+length $L$ and pattern complexity $g$; it does not supply the bounds on those
+parameters needed for the announced exponent.  Theorem~14.4 provides
+compressed parallelity-bundle extraction for uniform handle structures.
+Its stronger admissibility procedure in Proposition~14.2 assumes both
+irreducibility and an essential boundary pattern.  Those hypotheses must be
+checked before using that procedure in an unknot-recognition implementation.
+
+Several necessary ingredients are already published.  Agol, Hass, and
+Thurston give polynomial-time orbit counting for interval pairings and a
+weighted extension useful for normal-surface component data
+\cite{AgolHassThurston2006}.  Their weighted output permits an interval of
+orbits with one common weight vector; multiplicities need not be expanded.
+This matters whenever the normal input contains exponentially many repeated
+components.  Lackenby's certification paper supplies the explicit core and
+ordered interval-bundle attachments used in
+Section~\ref{sec:unmarked-reconstruction}
+\cite{Lackenby2021Certification}.  These results justify compressed cutting,
+but do not establish a fast method of finding a suitable short hierarchy.
+
+Boundary markings have their own algorithmic theory.  The published
+\emph{Some Fast Algorithms for Curves in Surfaces} gives algorithms for
+geometric intersection numbers and, for essential curves and arcs, isotopy,
+with polynomial dependence on triangulation size and logarithmic dependence
+on normal weights \cite{Lackenby2026Curves}.  This offers a concrete source of
+subroutines for a future marking-aware implementation.  It does not by itself
+bound the complexity of transferring an arbitrary hierarchy pattern through
+a $3$-dimensional reconstruction.  The research program must state that
+transfer problem separately and prove its complexity.

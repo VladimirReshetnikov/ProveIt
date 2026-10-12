@@ -1,0 +1,2430 @@
+{
+  "seed": 6101201,
+  "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.41",
+  "timer": "perf_counter_ns",
+  "rounds": 7,
+  "warmup_rounds": 1,
+  "scope": "Complete circle-interface query using restricted block oracle. Source packet construction, compile, and common-output serialization are timed. No general AHT or knot recognizer benchmark.",
+  "summary": [
+    {
+      "case": "loop",
+      "ports": 1,
+      "source_pairings": 0,
+      "count_calls": 2,
+      "packed_ms": 0.02678,
+      "vector_ms": 0.025527,
+      "coning_ms": 0.029173,
+      "coning_over_packed": 1.1510432068342369,
+      "vector_over_packed": 0.9670762065365776,
+      "packed_control_over_packed": 0.9529489075078035,
+      "circle_length_bits": 1,
+      "namespace_bits": 2
+    },
+    {
+      "case": "small",
+      "ports": 4,
+      "source_pairings": 4,
+      "count_calls": 24,
+      "packed_ms": 0.086268,
+      "vector_ms": 0.096653,
+      "coning_ms": 0.549683,
+      "coning_over_packed": 6.678192210240999,
+      "vector_over_packed": 1.0989926567501411,
+      "packed_control_over_packed": 0.9954175211080434,
+      "circle_length_bits": 4,
+      "namespace_bits": 5
+    },
+    {
+      "case": "short",
+      "ports": 16,
+      "source_pairings": 17,
+      "count_calls": 150,
+      "packed_ms": 0.278873,
+      "vector_ms": 0.320765,
+      "coning_ms": 7.235273,
+      "coning_over_packed": 25.947764432473917,
+      "vector_over_packed": 1.1535196716276213,
+      "packed_control_over_packed": 0.9482772842525813,
+      "circle_length_bits": 7,
+      "namespace_bits": 8
+    },
+    {
+      "case": "ports32",
+      "ports": 32,
+      "source_pairings": 33,
+      "count_calls": 368,
+      "packed_ms": 0.572968,
+      "vector_ms": 0.678503,
+      "coning_ms": 34.981047,
+      "coning_over_packed": 62.740862704921604,
+      "vector_over_packed": 1.1857480100533717,
+      "packed_control_over_packed": 1.0132989373888264,
+      "circle_length_bits": 13,
+      "namespace_bits": 14
+    },
+    {
+      "case": "ports64",
+      "ports": 64,
+      "source_pairings": 65,
+      "count_calls": 856,
+      "packed_ms": 1.032828,
+      "vector_ms": 1.251542,
+      "coning_ms": 146.192277,
+      "coning_over_packed": 141.9239177634173,
+      "vector_over_packed": 1.2315669268859335,
+      "packed_control_over_packed": 1.038488606508884,
+      "circle_length_bits": 20,
+      "namespace_bits": 21
+    },
+    {
+      "case": "binary1024",
+      "ports": 16,
+      "source_pairings": 17,
+      "count_calls": 150,
+      "packed_ms": 0.340002,
+      "vector_ms": 0.396696,
+      "coning_ms": 8.309841,
+      "coning_over_packed": 25.102888547690455,
+      "vector_over_packed": 1.1667460779642473,
+      "packed_control_over_packed": 1.06628049008488,
+      "circle_length_bits": 1025,
+      "namespace_bits": 1026
+    },
+    {
+      "case": "binary16384",
+      "ports": 16,
+      "source_pairings": 17,
+      "count_calls": 152,
+      "packed_ms": 0.911496,
+      "vector_ms": 0.89409,
+      "coning_ms": 17.724073,
+      "coning_over_packed": 19.445036511405426,
+      "vector_over_packed": 0.9829193335084857,
+      "packed_control_over_packed": 1.001607437894693,
+      "circle_length_bits": 16385,
+      "namespace_bits": 16386
+    },
+    {
+      "case": "few_huge",
+      "ports": 2,
+      "source_pairings": 3,
+      "count_calls": 10,
+      "packed_ms": 0.127559,
+      "vector_ms": 0.12861,
+      "coning_ms": 0.273183,
+      "coning_over_packed": 2.156762499170042,
+      "vector_over_packed": 1.0296839322196851,
+      "packed_control_over_packed": 0.9762070884845444,
+      "circle_length_bits": 16385,
+      "namespace_bits": 16386
+    }
+  ],
+  "samples": [
+    {
+      "case": "loop",
+      "round": -1,
+      "arm": "packed_control",
+      "nanoseconds": 68612,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": true
+    },
+    {
+      "case": "loop",
+      "round": -1,
+      "arm": "vector",
+      "nanoseconds": 42944,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": true
+    },
+    {
+      "case": "loop",
+      "round": -1,
+      "arm": "packed",
+      "nanoseconds": 38687,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": true
+    },
+    {
+      "case": "loop",
+      "round": -1,
+      "arm": "coning",
+      "nanoseconds": 77295,
+      "oracle_calls": 2,
+      "output_bytes": 68,
+      "warmup": true
+    },
+    {
+      "case": "loop",
+      "round": 0,
+      "arm": "coning",
+      "nanoseconds": 44056,
+      "oracle_calls": 2,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 0,
+      "arm": "vector",
+      "nanoseconds": 35432,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 0,
+      "arm": "packed_control",
+      "nanoseconds": 34211,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 0,
+      "arm": "packed",
+      "nanoseconds": 30726,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 1,
+      "arm": "packed",
+      "nanoseconds": 30435,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 1,
+      "arm": "coning",
+      "nanoseconds": 35032,
+      "oracle_calls": 2,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 1,
+      "arm": "vector",
+      "nanoseconds": 30845,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 1,
+      "arm": "packed_control",
+      "nanoseconds": 29003,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 2,
+      "arm": "coning",
+      "nanoseconds": 32318,
+      "oracle_calls": 2,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 2,
+      "arm": "packed",
+      "nanoseconds": 28062,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 2,
+      "arm": "packed_control",
+      "nanoseconds": 25729,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 2,
+      "arm": "vector",
+      "nanoseconds": 25608,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 3,
+      "arm": "coning",
+      "nanoseconds": 28753,
+      "oracle_calls": 2,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 3,
+      "arm": "vector",
+      "nanoseconds": 25527,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 3,
+      "arm": "packed_control",
+      "nanoseconds": 25327,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 3,
+      "arm": "packed",
+      "nanoseconds": 26780,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 4,
+      "arm": "packed_control",
+      "nanoseconds": 25828,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 4,
+      "arm": "coning",
+      "nanoseconds": 29173,
+      "oracle_calls": 2,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 4,
+      "arm": "packed",
+      "nanoseconds": 25828,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 4,
+      "arm": "vector",
+      "nanoseconds": 24496,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 5,
+      "arm": "packed",
+      "nanoseconds": 23966,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 5,
+      "arm": "packed_control",
+      "nanoseconds": 24105,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 5,
+      "arm": "vector",
+      "nanoseconds": 23895,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 5,
+      "arm": "coning",
+      "nanoseconds": 28342,
+      "oracle_calls": 2,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 6,
+      "arm": "vector",
+      "nanoseconds": 24086,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 6,
+      "arm": "packed",
+      "nanoseconds": 24906,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 6,
+      "arm": "packed_control",
+      "nanoseconds": 23575,
+      "oracle_calls": 1,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "loop",
+      "round": 6,
+      "arm": "coning",
+      "nanoseconds": 26459,
+      "oracle_calls": 2,
+      "output_bytes": 68,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": -1,
+      "arm": "vector",
+      "nanoseconds": 104675,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": true
+    },
+    {
+      "case": "small",
+      "round": -1,
+      "arm": "coning",
+      "nanoseconds": 630393,
+      "oracle_calls": 24,
+      "output_bytes": 110,
+      "warmup": true
+    },
+    {
+      "case": "small",
+      "round": -1,
+      "arm": "packed",
+      "nanoseconds": 99327,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": true
+    },
+    {
+      "case": "small",
+      "round": -1,
+      "arm": "packed_control",
+      "nanoseconds": 88260,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": true
+    },
+    {
+      "case": "small",
+      "round": 0,
+      "arm": "vector",
+      "nanoseconds": 116803,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 0,
+      "arm": "coning",
+      "nanoseconds": 566678,
+      "oracle_calls": 24,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 0,
+      "arm": "packed_control",
+      "nanoseconds": 89933,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 0,
+      "arm": "packed",
+      "nanoseconds": 84855,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 1,
+      "arm": "coning",
+      "nanoseconds": 619346,
+      "oracle_calls": 24,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 1,
+      "arm": "packed",
+      "nanoseconds": 92237,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 1,
+      "arm": "vector",
+      "nanoseconds": 96653,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 1,
+      "arm": "packed_control",
+      "nanoseconds": 82372,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 2,
+      "arm": "vector",
+      "nanoseconds": 91155,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 2,
+      "arm": "packed",
+      "nanoseconds": 80208,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 2,
+      "arm": "packed_control",
+      "nanoseconds": 97074,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 2,
+      "arm": "coning",
+      "nanoseconds": 549683,
+      "oracle_calls": 24,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 3,
+      "arm": "vector",
+      "nanoseconds": 96943,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 3,
+      "arm": "packed",
+      "nanoseconds": 86268,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 3,
+      "arm": "coning",
+      "nanoseconds": 583943,
+      "oracle_calls": 24,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 3,
+      "arm": "packed_control",
+      "nanoseconds": 92527,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 4,
+      "arm": "packed",
+      "nanoseconds": 87289,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 4,
+      "arm": "vector",
+      "nanoseconds": 95621,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 4,
+      "arm": "coning",
+      "nanoseconds": 544896,
+      "oracle_calls": 24,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 4,
+      "arm": "packed_control",
+      "nanoseconds": 86889,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 5,
+      "arm": "vector",
+      "nanoseconds": 98036,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 5,
+      "arm": "coning",
+      "nanoseconds": 535282,
+      "oracle_calls": 24,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 5,
+      "arm": "packed_control",
+      "nanoseconds": 89202,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 5,
+      "arm": "packed",
+      "nanoseconds": 99527,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 6,
+      "arm": "vector",
+      "nanoseconds": 93388,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 6,
+      "arm": "coning",
+      "nanoseconds": 535802,
+      "oracle_calls": 24,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 6,
+      "arm": "packed",
+      "nanoseconds": 84976,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "small",
+      "round": 6,
+      "arm": "packed_control",
+      "nanoseconds": 81861,
+      "oracle_calls": 1,
+      "output_bytes": 110,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": -1,
+      "arm": "vector",
+      "nanoseconds": 326663,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": true
+    },
+    {
+      "case": "short",
+      "round": -1,
+      "arm": "packed",
+      "nanoseconds": 319402,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": true
+    },
+    {
+      "case": "short",
+      "round": -1,
+      "arm": "packed_control",
+      "nanoseconds": 267375,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": true
+    },
+    {
+      "case": "short",
+      "round": -1,
+      "arm": "coning",
+      "nanoseconds": 7215274,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": true
+    },
+    {
+      "case": "short",
+      "round": 0,
+      "arm": "packed",
+      "nanoseconds": 331120,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 0,
+      "arm": "packed_control",
+      "nanoseconds": 267105,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 0,
+      "arm": "vector",
+      "nanoseconds": 312492,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 0,
+      "arm": "coning",
+      "nanoseconds": 7354009,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 1,
+      "arm": "packed",
+      "nanoseconds": 286504,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 1,
+      "arm": "packed_control",
+      "nanoseconds": 265874,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 1,
+      "arm": "vector",
+      "nanoseconds": 330488,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 1,
+      "arm": "coning",
+      "nanoseconds": 7230717,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 2,
+      "arm": "vector",
+      "nanoseconds": 320765,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 2,
+      "arm": "coning",
+      "nanoseconds": 7256755,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 2,
+      "arm": "packed",
+      "nanoseconds": 327845,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 2,
+      "arm": "packed_control",
+      "nanoseconds": 270550,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 3,
+      "arm": "packed_control",
+      "nanoseconds": 264411,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 3,
+      "arm": "packed",
+      "nanoseconds": 278833,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 3,
+      "arm": "coning",
+      "nanoseconds": 7235093,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 3,
+      "arm": "vector",
+      "nanoseconds": 325552,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 4,
+      "arm": "packed",
+      "nanoseconds": 272182,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 4,
+      "arm": "packed_control",
+      "nanoseconds": 281987,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 4,
+      "arm": "coning",
+      "nanoseconds": 7235273,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 4,
+      "arm": "vector",
+      "nanoseconds": 320554,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 5,
+      "arm": "packed_control",
+      "nanoseconds": 286523,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 5,
+      "arm": "coning",
+      "nanoseconds": 7220080,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 5,
+      "arm": "packed",
+      "nanoseconds": 275448,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 5,
+      "arm": "vector",
+      "nanoseconds": 316378,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 6,
+      "arm": "vector",
+      "nanoseconds": 326934,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 6,
+      "arm": "coning",
+      "nanoseconds": 7537960,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 6,
+      "arm": "packed_control",
+      "nanoseconds": 311581,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "short",
+      "round": 6,
+      "arm": "packed",
+      "nanoseconds": 278873,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": -1,
+      "arm": "vector",
+      "nanoseconds": 726264,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": true
+    },
+    {
+      "case": "ports32",
+      "round": -1,
+      "arm": "packed_control",
+      "nanoseconds": 546448,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": true
+    },
+    {
+      "case": "ports32",
+      "round": -1,
+      "arm": "coning",
+      "nanoseconds": 34064131,
+      "oracle_calls": 368,
+      "output_bytes": 557,
+      "warmup": true
+    },
+    {
+      "case": "ports32",
+      "round": -1,
+      "arm": "packed",
+      "nanoseconds": 592877,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": true
+    },
+    {
+      "case": "ports32",
+      "round": 0,
+      "arm": "packed_control",
+      "nanoseconds": 533429,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 0,
+      "arm": "coning",
+      "nanoseconds": 34223156,
+      "oracle_calls": 368,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 0,
+      "arm": "vector",
+      "nanoseconds": 678503,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 0,
+      "arm": "packed",
+      "nanoseconds": 601530,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 1,
+      "arm": "packed_control",
+      "nanoseconds": 529694,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 1,
+      "arm": "coning",
+      "nanoseconds": 34981047,
+      "oracle_calls": 368,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 1,
+      "arm": "vector",
+      "nanoseconds": 683611,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 1,
+      "arm": "packed",
+      "nanoseconds": 576523,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 2,
+      "arm": "coning",
+      "nanoseconds": 36532603,
+      "oracle_calls": 368,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 2,
+      "arm": "packed_control",
+      "nanoseconds": 755037,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 2,
+      "arm": "vector",
+      "nanoseconds": 680436,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 2,
+      "arm": "packed",
+      "nanoseconds": 561991,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 3,
+      "arm": "packed_control",
+      "nanoseconds": 544025,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 3,
+      "arm": "vector",
+      "nanoseconds": 604574,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 3,
+      "arm": "packed",
+      "nanoseconds": 536885,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 3,
+      "arm": "coning",
+      "nanoseconds": 34431103,
+      "oracle_calls": 368,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 4,
+      "arm": "packed_control",
+      "nanoseconds": 589622,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 4,
+      "arm": "packed",
+      "nanoseconds": 530885,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 4,
+      "arm": "coning",
+      "nanoseconds": 35309294,
+      "oracle_calls": 368,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 4,
+      "arm": "vector",
+      "nanoseconds": 661288,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 5,
+      "arm": "packed",
+      "nanoseconds": 573939,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 5,
+      "arm": "coning",
+      "nanoseconds": 36009428,
+      "oracle_calls": 368,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 5,
+      "arm": "packed_control",
+      "nanoseconds": 635831,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 5,
+      "arm": "vector",
+      "nanoseconds": 649861,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 6,
+      "arm": "vector",
+      "nanoseconds": 687467,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 6,
+      "arm": "coning",
+      "nanoseconds": 34634104,
+      "oracle_calls": 368,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 6,
+      "arm": "packed_control",
+      "nanoseconds": 578827,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports32",
+      "round": 6,
+      "arm": "packed",
+      "nanoseconds": 572968,
+      "oracle_calls": 1,
+      "output_bytes": 557,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": -1,
+      "arm": "coning",
+      "nanoseconds": 154030906,
+      "oracle_calls": 856,
+      "output_bytes": 1098,
+      "warmup": true
+    },
+    {
+      "case": "ports64",
+      "round": -1,
+      "arm": "packed",
+      "nanoseconds": 1137062,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": true
+    },
+    {
+      "case": "ports64",
+      "round": -1,
+      "arm": "vector",
+      "nanoseconds": 1240505,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": true
+    },
+    {
+      "case": "ports64",
+      "round": -1,
+      "arm": "packed_control",
+      "nanoseconds": 1022953,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": true
+    },
+    {
+      "case": "ports64",
+      "round": 0,
+      "arm": "vector",
+      "nanoseconds": 1372020,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 0,
+      "arm": "packed",
+      "nanoseconds": 1052427,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 0,
+      "arm": "packed_control",
+      "nanoseconds": 1037475,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 0,
+      "arm": "coning",
+      "nanoseconds": 149364563,
+      "oracle_calls": 856,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 1,
+      "arm": "vector",
+      "nanoseconds": 1251542,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 1,
+      "arm": "packed_control",
+      "nanoseconds": 1108189,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 1,
+      "arm": "packed",
+      "nanoseconds": 1014881,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 1,
+      "arm": "coning",
+      "nanoseconds": 151599540,
+      "oracle_calls": 856,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 2,
+      "arm": "packed_control",
+      "nanoseconds": 1116662,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 2,
+      "arm": "packed",
+      "nanoseconds": 1025216,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 2,
+      "arm": "coning",
+      "nanoseconds": 147714242,
+      "oracle_calls": 856,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 2,
+      "arm": "vector",
+      "nanoseconds": 1338250,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 3,
+      "arm": "vector",
+      "nanoseconds": 1163731,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 3,
+      "arm": "packed",
+      "nanoseconds": 1069953,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 3,
+      "arm": "coning",
+      "nanoseconds": 145761263,
+      "oracle_calls": 856,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 3,
+      "arm": "packed_control",
+      "nanoseconds": 1111134,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 4,
+      "arm": "packed",
+      "nanoseconds": 1032828,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 4,
+      "arm": "coning",
+      "nanoseconds": 145857065,
+      "oracle_calls": 856,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 4,
+      "arm": "vector",
+      "nanoseconds": 1259894,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 4,
+      "arm": "packed_control",
+      "nanoseconds": 1079327,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 5,
+      "arm": "vector",
+      "nanoseconds": 1181257,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 5,
+      "arm": "coning",
+      "nanoseconds": 146015308,
+      "oracle_calls": 856,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 5,
+      "arm": "packed",
+      "nanoseconds": 1112353,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 5,
+      "arm": "packed_control",
+      "nanoseconds": 1038263,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 6,
+      "arm": "packed",
+      "nanoseconds": 1015810,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 6,
+      "arm": "packed_control",
+      "nanoseconds": 1013697,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 6,
+      "arm": "coning",
+      "nanoseconds": 146192277,
+      "oracle_calls": 856,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "ports64",
+      "round": 6,
+      "arm": "vector",
+      "nanoseconds": 1251038,
+      "oracle_calls": 1,
+      "output_bytes": 1098,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": -1,
+      "arm": "packed",
+      "nanoseconds": 373091,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": true
+    },
+    {
+      "case": "binary1024",
+      "round": -1,
+      "arm": "packed_control",
+      "nanoseconds": 338510,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": true
+    },
+    {
+      "case": "binary1024",
+      "round": -1,
+      "arm": "coning",
+      "nanoseconds": 8465532,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": true
+    },
+    {
+      "case": "binary1024",
+      "round": -1,
+      "arm": "vector",
+      "nanoseconds": 406210,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": true
+    },
+    {
+      "case": "binary1024",
+      "round": 0,
+      "arm": "coning",
+      "nanoseconds": 8271043,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 0,
+      "arm": "vector",
+      "nanoseconds": 428102,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 0,
+      "arm": "packed_control",
+      "nanoseconds": 350267,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 0,
+      "arm": "packed",
+      "nanoseconds": 328235,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 1,
+      "arm": "packed_control",
+      "nanoseconds": 342195,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 1,
+      "arm": "packed",
+      "nanoseconds": 320924,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 1,
+      "arm": "vector",
+      "nanoseconds": 383617,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 1,
+      "arm": "coning",
+      "nanoseconds": 8481725,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 2,
+      "arm": "packed_control",
+      "nanoseconds": 357278,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 2,
+      "arm": "coning",
+      "nanoseconds": 8309841,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 2,
+      "arm": "vector",
+      "nanoseconds": 396696,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 2,
+      "arm": "packed",
+      "nanoseconds": 340002,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 3,
+      "arm": "packed_control",
+      "nanoseconds": 396005,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 3,
+      "arm": "coning",
+      "nanoseconds": 8301859,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 3,
+      "arm": "packed",
+      "nanoseconds": 346311,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 3,
+      "arm": "vector",
+      "nanoseconds": 398609,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 4,
+      "arm": "packed",
+      "nanoseconds": 329317,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 4,
+      "arm": "packed_control",
+      "nanoseconds": 340072,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 4,
+      "arm": "coning",
+      "nanoseconds": 8280177,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 4,
+      "arm": "vector",
+      "nanoseconds": 385459,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 5,
+      "arm": "packed",
+      "nanoseconds": 353953,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 5,
+      "arm": "vector",
+      "nanoseconds": 370477,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 5,
+      "arm": "coning",
+      "nanoseconds": 8345834,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 5,
+      "arm": "packed_control",
+      "nanoseconds": 379610,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 6,
+      "arm": "packed",
+      "nanoseconds": 348445,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 6,
+      "arm": "coning",
+      "nanoseconds": 8746976,
+      "oracle_calls": 150,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 6,
+      "arm": "packed_control",
+      "nanoseconds": 364819,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary1024",
+      "round": 6,
+      "arm": "vector",
+      "nanoseconds": 402855,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": -1,
+      "arm": "vector",
+      "nanoseconds": 914951,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": true
+    },
+    {
+      "case": "binary16384",
+      "round": -1,
+      "arm": "coning",
+      "nanoseconds": 17696061,
+      "oracle_calls": 152,
+      "output_bytes": 301,
+      "warmup": true
+    },
+    {
+      "case": "binary16384",
+      "round": -1,
+      "arm": "packed_control",
+      "nanoseconds": 943263,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": true
+    },
+    {
+      "case": "binary16384",
+      "round": -1,
+      "arm": "packed",
+      "nanoseconds": 881342,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": true
+    },
+    {
+      "case": "binary16384",
+      "round": 0,
+      "arm": "coning",
+      "nanoseconds": 17728870,
+      "oracle_calls": 152,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 0,
+      "arm": "packed_control",
+      "nanoseconds": 942512,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 0,
+      "arm": "vector",
+      "nanoseconds": 897165,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 0,
+      "arm": "packed",
+      "nanoseconds": 906899,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 1,
+      "arm": "coning",
+      "nanoseconds": 18034392,
+      "oracle_calls": 152,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 1,
+      "arm": "vector",
+      "nanoseconds": 930965,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 1,
+      "arm": "packed_control",
+      "nanoseconds": 939066,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 1,
+      "arm": "packed",
+      "nanoseconds": 885738,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 2,
+      "arm": "coning",
+      "nanoseconds": 17677184,
+      "oracle_calls": 152,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 2,
+      "arm": "packed_control",
+      "nanoseconds": 917215,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 2,
+      "arm": "packed",
+      "nanoseconds": 915743,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 2,
+      "arm": "vector",
+      "nanoseconds": 904836,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 3,
+      "arm": "coning",
+      "nanoseconds": 17964969,
+      "oracle_calls": 152,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 3,
+      "arm": "packed",
+      "nanoseconds": 946558,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 3,
+      "arm": "packed_control",
+      "nanoseconds": 913669,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 3,
+      "arm": "vector",
+      "nanoseconds": 894090,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 4,
+      "arm": "packed_control",
+      "nanoseconds": 884867,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 4,
+      "arm": "vector",
+      "nanoseconds": 884647,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 4,
+      "arm": "coning",
+      "nanoseconds": 17724073,
+      "oracle_calls": 152,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 4,
+      "arm": "packed",
+      "nanoseconds": 911496,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 5,
+      "arm": "vector",
+      "nanoseconds": 890405,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 5,
+      "arm": "packed",
+      "nanoseconds": 905878,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 5,
+      "arm": "coning",
+      "nanoseconds": 17615543,
+      "oracle_calls": 152,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 5,
+      "arm": "packed_control",
+      "nanoseconds": 1244417,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 6,
+      "arm": "coning",
+      "nanoseconds": 17642713,
+      "oracle_calls": 152,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 6,
+      "arm": "packed",
+      "nanoseconds": 928791,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 6,
+      "arm": "vector",
+      "nanoseconds": 882263,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "binary16384",
+      "round": 6,
+      "arm": "packed_control",
+      "nanoseconds": 886950,
+      "oracle_calls": 1,
+      "output_bytes": 301,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": -1,
+      "arm": "vector",
+      "nanoseconds": 157853,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": true
+    },
+    {
+      "case": "few_huge",
+      "round": -1,
+      "arm": "packed_control",
+      "nanoseconds": 140247,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": true
+    },
+    {
+      "case": "few_huge",
+      "round": -1,
+      "arm": "coning",
+      "nanoseconds": 274205,
+      "oracle_calls": 10,
+      "output_bytes": 82,
+      "warmup": true
+    },
+    {
+      "case": "few_huge",
+      "round": -1,
+      "arm": "packed",
+      "nanoseconds": 135119,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": true
+    },
+    {
+      "case": "few_huge",
+      "round": 0,
+      "arm": "vector",
+      "nanoseconds": 200045,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 0,
+      "arm": "coning",
+      "nanoseconds": 313523,
+      "oracle_calls": 10,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 0,
+      "arm": "packed",
+      "nanoseconds": 139186,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 0,
+      "arm": "packed_control",
+      "nanoseconds": 128239,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 1,
+      "arm": "packed_control",
+      "nanoseconds": 125465,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 1,
+      "arm": "vector",
+      "nanoseconds": 129572,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 1,
+      "arm": "packed",
+      "nanoseconds": 123582,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 1,
+      "arm": "coning",
+      "nanoseconds": 282697,
+      "oracle_calls": 10,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 2,
+      "arm": "coning",
+      "nanoseconds": 272703,
+      "oracle_calls": 10,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 2,
+      "arm": "packed_control",
+      "nanoseconds": 130422,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 2,
+      "arm": "packed",
+      "nanoseconds": 124815,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 2,
+      "arm": "vector",
+      "nanoseconds": 128520,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 3,
+      "arm": "packed_control",
+      "nanoseconds": 124063,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 3,
+      "arm": "packed",
+      "nanoseconds": 120488,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 3,
+      "arm": "vector",
+      "nanoseconds": 145384,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 3,
+      "arm": "coning",
+      "nanoseconds": 259864,
+      "oracle_calls": 10,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 4,
+      "arm": "packed",
+      "nanoseconds": 127559,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 4,
+      "arm": "vector",
+      "nanoseconds": 128610,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 4,
+      "arm": "packed_control",
+      "nanoseconds": 124524,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 4,
+      "arm": "coning",
+      "nanoseconds": 273844,
+      "oracle_calls": 10,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 5,
+      "arm": "coning",
+      "nanoseconds": 248027,
+      "oracle_calls": 10,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 5,
+      "arm": "packed",
+      "nanoseconds": 128740,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 5,
+      "arm": "packed_control",
+      "nanoseconds": 123882,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 5,
+      "arm": "vector",
+      "nanoseconds": 125786,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 6,
+      "arm": "vector",
+      "nanoseconds": 123202,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 6,
+      "arm": "coning",
+      "nanoseconds": 273183,
+      "oracle_calls": 10,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 6,
+      "arm": "packed",
+      "nanoseconds": 127749,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    },
+    {
+      "case": "few_huge",
+      "round": 6,
+      "arm": "packed_control",
+      "nanoseconds": 121199,
+      "oracle_calls": 1,
+      "output_bytes": 82,
+      "warmup": false
+    }
+  ],
+  "metadata_note": "Both circle_length_bits and full namespace_bits are reported. Each timed packet has a silent block of the same length as its circle, so N=2*circle_length. Timing samples are unchanged."
+}

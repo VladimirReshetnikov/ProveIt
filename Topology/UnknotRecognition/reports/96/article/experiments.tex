@@ -1,0 +1,232 @@
+\section{Implementation, verification, and experiments}
+\label{sec:evidence}
+\input{evidence_macros.tex}
+
+\subsection{Delivered components}
+
+The Python package has four implementation modules. \code{exact.py} provides
+rational Gaussian elimination, nullspaces, primitive integer normalization,
+active-zero-set ray enumeration, and a separate positive-support oracle.
+\code{model.py} validates tree incidence and private coordinate ownership,
+compiles source cuts, eliminates auxiliary ports for small independent audits,
+and independently replays source compilations. \code{solver.py} prepares local
+sign-chamber rays, evaluates messages, reconstructs witnesses, and checks
+positive or negative packets. \code{fixtures.py} supplies reproducible algebraic
+models and source-derived matching and Euler arithmetic for two repository
+triangulations.
+
+All mathematical arithmetic uses Python integers and \code{Fraction}. There is
+no floating-point feasibility decision, no external LP solver, and no Regina
+runtime dependency. Floating-point values occur only in timing measurements.
+The core API is:
+\begin{verbatim}
+model, generators = compile_source(A, n, bags, parents, pairs)
+assert verify_source_compilation(
+    A, n, bags, parents, pairs, model, generators)
+prepared = Prepared(model)
+answer = prepared.solve(objective, zeros=disabled_columns)
+assert verify(model, objective, answer, zeros=disabled_columns)
+\end{verbatim}
+For this source API, original column names are their zero-based decimal strings.
+The complete executable example is in the package README. The caller must
+separately authenticate the source matrix and Euler functional to a valid
+triangulation and the triangulation to the knot diagram.
+
+The ray enumerator is intentionally transparent rather than optimized for
+large dense bags. There is no implicit cutoff: the caller must not submit a
+huge binomial budget accidentally. Production integration should add explicit
+budgets and cancellation, returning an inconclusive status on exhaustion.
+Exhaustion must never be translated into \nonpos\ or a knot verdict.
+
+\subsection{Verification design}
+
+The unit suite has \textbf{27 passing test methods}. Included are zero-dimensional
+cones, forced-zero coordinates, rank deficiency, large rational coefficients,
+100 seeded random comparisons of the two local ray enumerators, positive
+zero-port shortcuts, unavailable signs, negative fluxes, objective changes,
+coordinate deletion reuse, primitive support minimization, malformed trees,
+rank-two cut rejection, cross-bag conflict rejection, incorrect source
+generators, omitted negative rays, altered slopes, corrupted positive
+coordinates, incorrect objectives, and invalid face reciprocity.
+
+The two local enumeration methods are algorithmically different. The producer
+chooses $d-1$ vanishing coordinate rows in a kernel parameterization. The checker
+chooses a positive support in the original coordinates and requires the
+restricted matching kernel to have dimension one. They share the elementary
+rational elimination implementation, so this is not a formally verified or
+fully independently implemented arithmetic stack. That common dependency is
+an explicit residual risk.
+
+\subsection{Independent global-oracle audit}
+
+Using seed $12102026$, the experiment constructs 96 small scalar-tree models
+with one to four vertices, one or two private coordinates per vertex, signed
+local equations, and local forbidden pairs. For each model it eliminates all
+ports to obtain a global source matrix, enumerates that source's admissible
+rays by positive supports, and tests eight exact rational objectives. Four of
+the eight also allow additional randomly chosen original-coordinate deletions.
+
+The resulting \textbf{768 queries} comprise \textbf{455 positive} and
+\textbf{313 nonpositive} outcomes. Every outcome agrees with the independent
+global oracle. The same source is then compiled afresh from its column cuts,
+and all 768 queries are repeated on that source-bound model. Each source
+compilation passes the separate rank-and-membership checker.
+
+Both the original and recompiled packets are independently replayed, for
+\textbf{1,536 packet replays}. Every one of the 455 positive source-compiled
+vectors also passes a direct extremality test:
+\[
+ \dim\ker A_{\supp x}=1.
+\]
+The audit therefore tests the additional source-bound ray theorem, not merely
+agreement of Boolean answers. There are 384 coordinate-face queries in the
+768-query set. Raw cases, objectives, deleted columns and statuses are saved
+in \code{evidence/results.json}; the generation schedule is reproducible.
+
+These are finite algebraic checks. They do not prove the theorems, which have
+separate proofs above, and they are not a sample of 96 knot exteriors.
+
+\subsection{Actual normal-coordinate fixtures}
+
+The first fixture is the repository's one-tetrahedron solid torus: faces 0 and
+1 are identified by the vertex permutation $(1,2,3,0)$ and its inverse, while
+faces 2 and 3 remain boundary faces. The second attaches a tetrahedral ball
+along face 2 using permutation $(0,1,3,2)$~\cite{repofixture}.
+The matching adapter constructs, for every identified face and every face
+corner, the equality of its normal-arc counts. It validates reciprocal
+face-pairing data, but not all manifold-link conditions.
+
+The Euler adapter uses $V-E+F$: a local normal disc contributes one face,
+a normal arc contributes one half when its source face is glued and one when
+it lies on the boundary, and a normal edge point contributes the reciprocal
+of the number of local tetrahedron edges in its source edge class. The two
+known meridian vectors have Euler characteristic one under this functional.
+
+The one-tetrahedron matrix has rank 3 and four admissible rays. The
+14-coordinate capped matrix has rank 6 and twelve admissible rays. In each
+case the full local ray set agrees with independent global support enumeration.
+There are 21 coordinate-positivity probes and twelve zero-triangle Euler
+queries over the two fixtures. In the first fixture, the meridian query returns
+\[
+ (1,1,0,0,0,0,1),
+\]
+exactly the repository's expected standard vector. All supplied positive
+vectors are checked in the original matching equations.
+
+The capped example should not be confused with a ready-made one-vertex
+recognition benchmark: its extra tetrahedron can change the vertex inventory.
+The anchored Euler predicates are valid algebraic queries, but their positive
+answers are not individually advertised as unknot verdicts.
+
+\subsection{A genuine source split, and a rejected geometric split}
+
+Splitting the capped fixture by its two tetrahedra gives cut-space dimension
+\emph{three}, not one. The compiler correctly rejects that proposal. A single
+shared source face has three normal-arc types; geometric adjacency alone does
+not supply a scalar interface.
+
+A different, nongeometric column partition does have rank one:
+\[
+ I_1=\{0,1,10\},\qquad
+ I_0=\{2,3,4,5,6,7,8,9,11,12,13\}.
+\]
+All quadrilateral triples remain in $I_0$, so no incompatibility crosses the
+partition. With the repository-derived matching-row order, the verified
+intersection generator is
+\[
+ w_1=(1,0,-1,1,1,0)^T.
+\]
+This split groups three triangle coordinates; it is a matrix decomposition,
+not a cut of the triangulation into the two displayed bags.
+
+The one-bag ray preparation examines 3,432 active-zero-set candidates and emits
+12 admissible rays. The split preparation examines 1,856 candidates and emits
+13 local rays in total. The latter number is larger: the improvement is in
+local candidate search, not in a claim that every local inventory is smaller
+than the final global ray set.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{lrr}
+\toprule
+ & One source bag & Verified scalar split\\
+\midrule
+Candidate zero sets & 3,432 & 1,856\\
+Retained local rays & 12 & 13\\
+Anchored Euler queries & 8 & 8\\
+Median complete kernel time (s) & \SourceOneTime & \SourceSplitTime\\
+\bottomrule
+\end{tabular}
+\caption{Seven paired runs on the actual capped source fixture. Timed scope
+includes matching and Euler construction, source compilation and rank replay,
+ray preparation, all eight queries, and positive arithmetic verification.}
+\end{table}
+
+The median paired one-bag/split ratio is \textbf{\SourceGain-fold}. An
+identical-code one-bag control gives median control/one-bag ratio
+\SourceControl. Run order was independently shuffled in each of the seven
+rounds. Every arm returned the same eight Boolean outcomes; witnesses need
+not be identical. This is a source-local performance gain in the delivered
+implementation, not a comparison with ProveIt's optimized native routines,
+not a whole-knot benchmark, and not evidence for a universal asymptotic width
+bound.
+
+\subsection{Algebraic scaling and small-input overhead}
+
+The gain-chain benchmark compares the complete supplied-model query with
+literal enumeration of all binary gain histories. Each timed kernel call
+constructs the model, enumerates local rays, and executes the scalar search.
+Independent certificate replay is outside both timed arms. All benchmark
+objectives are $t_m-3^m t_0$, so both methods must certify nonpositivity rather
+than benefiting from a first positive witness. Seven pairs and an identical-code
+kernel control are used at each size.
+
+\begin{table}[ht]
+\centering\small
+\input{gain_table.tex}
+\caption{Algebraic gain-chain timings. ``Paired gain'' is the median of the
+seven literal/kernel ratios, not the ratio of the two reported medians.
+The literal baseline is complete history enumeration, not the best algorithm
+for this analytically soluble family.}
+\end{table}
+
+The smallest cases strongly favor literal traversal. At $m=18$, the kernel
+handles 38 retained local rays rather than 262,144 histories and achieves a
+median paired gain of \LastGain-fold. This is the expected crossover for a
+high-overhead exact rational method replacing an exponential enumeration.
+The unfavorable small cases are retained in the evidence instead of selecting
+only the favorable endpoint.
+
+\begin{table}[ht]
+\centering\small
+\input{large_table.tex}
+\caption{Larger supplied algebraic chains. These are single unpaired scaling
+runs, not stable comparative timing estimates. There are $2^m$ admissible
+histories, none explicitly enumerated by the kernel.}
+\end{table}
+
+The largest run uses 1,024 stages, 2,050 local rays, and 16,388 candidate zero
+sets. Its largest message numerator occupies 1,624 bits. These counts provide
+a direct check that large multiplicities remain binary arithmetic rather than
+loop bounds. No claim is made that these chains are realized by the tested
+normal triangulations.
+
+The two-port counter is separately checked for all stages $1\leq m\leq12$:
+its binary histories give every integer slope in the specified interval,
+without omissions or repetitions. The finite check supports the construction;
+the all-$m$ lower bound is proved in Theorem~\ref{thm:twoport}.
+
+\subsection{Limits of this validation}
+
+No complete local clone of ProveIt was available, the incoming ZIP bodies were
+not inspected, Regina was not installed, and the native maintained suite was
+not run. None of the upstream README's large test counts are claimed as tests
+of this package. No GitHub branch, issue, or pull request was created or changed.
+
+The delivered negative verifier is complete but expensive for large bags. The
+source compiler is polynomial for a supplied partition but does not discover
+one. The prototype has no production cancellation interface. The small source
+benchmark does not establish a performance distribution over knot diagrams.
+Finally, no Lean formalization is included; the assurance consists of the
+written proofs, exact source contracts, executable checks, and disclosed
+finite experiments.

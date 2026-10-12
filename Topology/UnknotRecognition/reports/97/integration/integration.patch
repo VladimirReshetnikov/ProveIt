@@ -1,0 +1,3171 @@
+diff --git a/Topology/UnknotRecognition/fast/benchmark_column_cancellation.py b/Topology/UnknotRecognition/fast/benchmark_column_cancellation.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..55321c3f4566a00d80f5a020ad30266349ce5623
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/benchmark_column_cancellation.py
+@@ -0,0 +1,194 @@
++"""Paired raw cancellation and genuine source-cut benchmarks.
++
++Run from fast/: python benchmark_column_cancellation.py --output RESULTS.json
++The two baseline modules are exact files from the pinned source commit.
++Synthetic matrices measure one kernel; they are not knot inputs. The real
++106-case corpus measures prepared cores and complete supplied-cut queries.
++"""
++
++import argparse
++from collections import Counter
++from datetime import datetime, timezone
++from hashlib import sha256
++import importlib
++import importlib.util
++import json
++from pathlib import Path
++import platform
++from statistics import median
++from time import perf_counter
++
++from fastunknot.column_cancellation_verify import verify_column_cancellations
++from fastunknot.core_handlebody import column_cancellation_plan, core_handlebody_certificate
++from fastunknot.core_handlebody_verify import verify_core_handlebody_certificate
++from fastunknot.normal_cut_handlebodies_verify import verify_normal_cut_handlebodies
++from fastunknot.normal_parallelity_geometry import _parallelity_geometry
++from fastunknot.normal_surface_geometry import _prepare, _coordinates
++
++
++ROOT = Path(__file__).resolve().parent
++BASELINE = '704600626606a9097cfd89d4e3d2bbc63c8dd1cb'
++
++
++def load_baseline(filename, module_name):
++    path = ROOT / 'column_cancellation_research' / filename
++    spec = importlib.util.spec_from_file_location(module_name, path)
++    module = importlib.util.module_from_spec(spec)
++    spec.loader.exec_module(module)
++    return module
++
++
++def timed(function, repeats):
++    started = perf_counter()
++    for _ in range(repeats):
++        function()
++    return (perf_counter() - started) / repeats
++
++
++def paired(before, after, trials=5, target_seconds=0.02):
++    probe = [timed(before, 1), timed(after, 1)]
++    repeats = [max(1, min(256, int(target_seconds / max(value, 1e-9))))
++               for value in probe]
++    samples = [[], []]
++    functions = [before, after]
++    for trial in range(trials):
++        for index in ((0, 1) if trial % 2 == 0 else (1, 0)):
++            samples[index].append(timed(functions[index], repeats[index]))
++    centers = list(map(median, samples))
++    return dict(before_seconds=samples[0], after_seconds=samples[1],
++                before_median_seconds=centers[0], after_median_seconds=centers[1],
++                before_over_after=centers[0] / centers[1],
++                repeats=repeats, trials=trials)
++
++
++def synthetic_core(size):
++    """Incidence-only cyclic words; not an authenticated embedded 3D input."""
++    return dict(handles0=[dict(id=0)],
++                handles1=[dict(id=c, ends=[0, 0]) for c in range(size + 1)],
++                handles2=[dict(id=r, cycle=[dict(dimension=0, handle=0),
++                                              dict(dimension=1, handle=r),
++                                              dict(dimension=0, handle=0),
++                                              dict(dimension=1, handle=r + 1)])
++                          for r in range(size)], handles3=[])
++
++
++def main():
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--output', type=Path,
++                        default=ROOT / 'results/column_cancellation_20261012.json')
++    parser.add_argument('--trials', type=int, default=5)
++    parser.add_argument('--skip-whole-cuts', action='store_true')
++    args = parser.parse_args()
++    old = load_baseline('baseline_core_handlebody.py', 'column_baseline_core')
++    old_verify = load_baseline('baseline_core_handlebody_verify.py',
++                               'fastunknot.column_baseline_verify')
++    output = dict(baseline_commit=BASELINE,
++                  generated_utc=datetime.now(timezone.utc).isoformat(),
++                  environment=dict(python=platform.python_version(),
++                                   implementation=platform.python_implementation(),
++                                   platform=platform.platform()),
++                  scope='raw positive-singleton core cancellation; no knot decision gain',
++                  synthetic_producer=[], synthetic_replay=[])
++
++    for size in (16, 64, 256, 1024, 4096):
++        counts = {r: {r: 1, r + 1: 1} for r in range(size)}
++        a, b = old.capped_cancellation_plan(counts), column_cancellation_plan(counts)
++        assert not a['remaining_rows'] and not b['remaining_rows']
++        assert verify_column_cancellations(counts, b['cancellations'])
++        record = dict(rows=size, columns=size + 1, nonzeros=2 * size,
++                      before_stats=a['stats'], after_stats=b['stats'])
++        record.update(paired(lambda: old.capped_cancellation_plan(counts),
++                             lambda: column_cancellation_plan(counts), args.trials))
++        output['synthetic_producer'].append(record)
++        print('producer', size, record['before_over_after'], flush=True)
++
++    for size in (16, 32, 64, 128, 256):
++        core = synthetic_core(size)
++        result = core_handlebody_certificate(core)
++        new_proof = result['certificate']
++        old_proof = dict(new_proof, schema='normal-core-handlebody-v1', method='capped')
++        assert old_verify.verify_core_handlebody_certificate(core, old_proof)
++        assert verify_core_handlebody_certificate(core, new_proof)
++        record = dict(rows=size, columns=size + 1,
++                      scope='conditional core replay on synthetic incidence words')
++        record.update(paired(
++            lambda: old_verify.verify_core_handlebody_certificate(core, old_proof),
++            lambda: verify_core_handlebody_certificate(core, new_proof), args.trials))
++        output['synthetic_replay'].append(record)
++        print('replay', size, record['before_over_after'], flush=True)
++
++    corpus_path = ROOT / 'marked_parallelity_research/corpus.json'
++    cases = json.loads(corpus_path.read_text())['cases']
++    output['corpus_sha256'] = sha256(corpus_path.read_bytes()).hexdigest()
++    cores, source_records = [], []
++    for case in cases:
++        prepared = _prepare(case['triangulation'], lambda: None)
++        vector = _coordinates(prepared, case['coordinates'], lambda: None)
++        core = _parallelity_geometry(prepared, vector, lambda: None)['core']
++        a, b = old.core_handlebody_certificate(core), core_handlebody_certificate(core)
++        assert a['status'] == b['status']
++        if a['status'] == 'COMPLETE':
++            assert [c['genus'] for c in a['components']] == [c['genus'] for c in b['components']]
++            assert old_verify.verify_core_handlebody_certificate(core, a['certificate'])
++            assert verify_core_handlebody_certificate(core, b['certificate'])
++        source_records.append(dict(id=case['id'], status=b['status'],
++                                   method=b.get('certificate', {}).get('method'),
++                                   reason=b.get('reason')))
++        cores.append((core, a, b))
++    output['source_cases'] = source_records
++    output['source_summary'] = dict(Counter(r['method'] or r['reason'] for r in source_records))
++    output['source_core_producer_all_106'] = paired(
++        lambda: [old.core_handlebody_certificate(c) for c, _, _ in cores],
++        lambda: [core_handlebody_certificate(c) for c, _, _ in cores], args.trials)
++    column = [(c, a, b) for c, a, b in cores
++              if b.get('certificate', {}).get('method') == 'column_leaf']
++    output['source_core_producer_column_24'] = paired(
++        lambda: [old.core_handlebody_certificate(c) for c, _, _ in column],
++        lambda: [core_handlebody_certificate(c) for c, _, _ in column], args.trials)
++    complete = [(c, a, b) for c, a, b in cores if b['status'] == 'COMPLETE']
++    output['source_core_replay_complete_90'] = paired(
++        lambda: [old_verify.verify_core_handlebody_certificate(c, a['certificate'])
++                 for c, a, _ in complete],
++        lambda: [verify_core_handlebody_certificate(c, b['certificate'])
++                 for c, _, b in complete], args.trials)
++    print('source core producer all 106',
++          output['source_core_producer_all_106']['before_over_after'], flush=True)
++    print('source core replay complete 90',
++          output['source_core_replay_complete_90']['before_over_after'], flush=True)
++
++    if not args.skip_whole_cuts:
++        cut_module = importlib.import_module('fastunknot.normal_cut_handlebodies')
++        current = cut_module.core_handlebody_certificate
++
++        def whole(legacy=False):
++            cut_module.core_handlebody_certificate = old.core_handlebody_certificate if legacy else current
++            try:
++                return [cut_module.normal_cut_handlebodies(
++                    c['triangulation'], c['coordinates'], record_certificate=True) for c in cases]
++            finally:
++                cut_module.core_handlebody_certificate = current
++
++        a, b = whole(True), whole(False)
++        outcome = Counter()
++        proofs = 0
++        for case, left, right in zip(cases, a, b):
++            assert left['status'] == right['status'], case['id']
++            assert left.get('census') == right.get('census'), case['id']
++            outcome[right['status']] += 1
++            if right['status'] == 'COMPLETE':
++                for result in (left, right):
++                    assert verify_normal_cut_handlebodies(
++                        case['triangulation'], case['coordinates'], result['certificate'])
++                    proofs += 1
++        output['whole_cut_validation'] = dict(outcomes=outcome, independently_replayed=proofs)
++        output['whole_cut_producer_all_106'] = paired(
++            lambda: whole(True), lambda: whole(False), args.trials, target_seconds=0.0)
++        print('whole-cut producer all 106',
++              output['whole_cut_producer_all_106']['before_over_after'], flush=True)
++    args.output.parent.mkdir(parents=True, exist_ok=True)
++    args.output.write_text(json.dumps(output, indent=2) + '\n')
++    print(args.output, flush=True)
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/column_cancellation_research/baseline_core_handlebody.py b/Topology/UnknotRecognition/fast/column_cancellation_research/baseline_core_handlebody.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..13935f9cfa9ecf70fa5966a2ceec58f0f3167ff7
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/column_cancellation_research/baseline_core_handlebody.py
+@@ -0,0 +1,187 @@
++"""Small certificates that an authenticated geometric handle core is a handlebody.
++
++Only a spanning forest and raw geometric 1/2 cancellations are used.  The
++attaching curves must come from the source-parallelity handle charts: an
++arbitrary group presentation is not an acceptable substitute for this input.
++All belt-intersection counts are saturated at two.  No words are expanded,
++freely reduced, or replaced by algebraic exponent sums.
++"""
++
++from heapq import heappop, heappush
++
++
++def _forest(core, check):
++    count = len(core['handles0'])
++    parent = list(range(count))
++
++    def root(a):
++        while parent[a] != a:
++            parent[a] = parent[parent[a]]
++            a = parent[a]
++        return a
++
++    edges = []
++    for handle in core['handles1']:
++        check()
++        a, b = map(root, handle['ends'])
++        if a != b:
++            parent[max(a, b)] = min(a, b)
++            edges.append(handle['id'])
++    roots = [root(a) for a in range(count)]
++    return edges, roots
++
++
++def _occurrences(core, tree, check):
++    tree = set(tree)
++    rows = {}
++    for handle in core['handles2']:
++        check()
++        row = {}
++        for flag in handle['cycle']:
++            if flag['dimension'] == 1 and flag['handle'] not in tree:
++                h = flag['handle']
++                row[h] = min(2, row.get(h, 0) + 1)
++        rows[handle['id']] = row
++    return rows
++
++
++def capped_cancellation_plan(counts, *, check=lambda: None):
++    """Return a sound raw singleton schedule for nonnegative occurrence rows.
++
++    This deterministic greedy producer is deliberately incomplete.  The
++    independent verifier accepts any supplied successful schedule.  Values
++    zero, one and at least two carry all information needed for admissibility.
++    Row and column labels must be nonnegative integers.
++    """
++    rows = {}
++    for r, values in counts.items():
++        check()
++        if type(r) is not int or r < 0 or type(values) is not dict:
++            raise ValueError('invalid occurrence row')
++        row = {}
++        for c, value in values.items():
++            if type(c) is not int or c < 0 or type(value) is not int or value < 0:
++                raise ValueError('invalid occurrence entry')
++            if value:
++                row[c] = min(2, value)
++        rows[r] = row
++    schedule, updates, scans = [], 0, 0
++    while rows:
++        check()
++        totals = {}
++        for row in rows.values():
++            for c, value in row.items():
++                totals[c] = totals.get(c, 0) + value
++                scans += 1
++        candidates = []
++        for r, row in rows.items():
++            size = sum(row.values())
++            for c, value in row.items():
++                scans += 1
++                if value == 1:
++                    candidates.append(((size - 1) * (totals[c] - 1), size, r, c))
++        if not candidates:
++            break
++        _, _, r, c = min(candidates)
++        donor = rows.pop(r)
++        donor.pop(c)
++        for row in rows.values():
++            check()
++            multiplicity = row.pop(c, 0)
++            if multiplicity:
++                for h, value in donor.items():
++                    row[h] = min(2, row.get(h, 0) + multiplicity * value)
++                    updates += 1
++        schedule.append([r, c])
++    return dict(cancellations=schedule, remaining_rows=sorted(rows),
++                stats=dict(entry_scans=scans, entry_updates=updates))
++
++
++def leaf_cancellation_plan(counts, *, check=lambda: None):
++    """Peel source rows having one remaining crossing, without fill or words.
++
++    For a square occurrence matrix this is complete for raw singleton
++    eliminability: permanent one is equivalent to this leaf ordering.  For
++    rectangular matrices a stalled pass is only a conservative failure.
++    """
++    rows = {r: {c: min(2, v) for c, v in values.items() if v}
++            for r, values in counts.items()}
++    incident = {}
++    for r, row in rows.items():
++        for c in row:
++            incident.setdefault(c, []).append(r)
++    queue = []
++    for r, row in rows.items():
++        if len(row) == 1 and next(iter(row.values())) == 1:
++            heappush(queue, r)
++    schedule, visits = [], 0
++    while queue:
++        check()
++        r = heappop(queue)
++        if r not in rows:
++            continue
++        row = rows[r]
++        if len(row) != 1 or next(iter(row.values())) != 1:
++            continue
++        rows.pop(r)
++        c = next(iter(row))
++        schedule.append([r, c])
++        for i in incident[c]:
++            check()
++            visits += 1
++            if i in rows:
++                rows[i].pop(c, None)
++                if len(rows[i]) == 1 and next(iter(rows[i].values())) == 1:
++                    heappush(queue, i)
++    return dict(cancellations=schedule, remaining_rows=sorted(rows),
++                stats=dict(incidence_visits=visits))
++
++
++def core_handlebody_certificate(core, *, check=lambda: None):
++    """Plan certified cancellations on a source-authenticated geometric core.
++
++    A COMPLETE result gives a handlebody for each core component.  Three-handles
++    and stalled raw cancellation produce INCONCLUSIVE, never a negative result.
++    Authenticating the source and its handle charts belongs to the enclosing
++    normal-cut certificate.  The small certificate is checked independently by
++    ``verify_core_handlebody_certificate``.
++    """
++    check()
++    result = dict(status='INCONCLUSIVE',
++                  trust='geometric core cancellation; requires authenticated handle charts')
++    if core['handles3']:
++        result['reason'] = 'core_has_three_handles'
++        return result
++    tree, component = _forest(core, check)
++    counts = _occurrences(core, tree, check)
++    planned = leaf_cancellation_plan(counts, check=check)
++    method = 'leaf'
++    if planned['remaining_rows']:
++        columns = len(core['handles1']) - len(tree)
++        if columns == len(core['handles2']):
++            result.update(reason='raw_ball_cancellation_obstruction',
++                          remaining_two_handles=planned['remaining_rows'],
++                          stats=planned['stats'])
++            return result
++        planned = capped_cancellation_plan(counts, check=check)
++        method = 'capped'
++    result['stats'] = planned['stats']
++    if planned['remaining_rows']:
++        result.update(reason='raw_cancellation_stalled',
++                      remaining_two_handles=planned['remaining_rows'])
++        return result
++    survivors = set(range(len(core['handles1']))) - set(tree)
++    survivors.difference_update(c for _, c in planned['cancellations'])
++    components = []
++    for representative in sorted(set(component)):
++        check()
++        vertices = [i for i, r in enumerate(component) if r == representative]
++        loops = [i for i in sorted(survivors)
++                 if component[core['handles1'][i]['ends'][0]] == representative]
++        components.append(dict(id=representative, zero_handles=vertices,
++                               remaining_one_handles=loops, genus=len(loops)))
++    proof = dict(schema='normal-core-handlebody-v1', method=method, forest=tree,
++                 cancellations=planned['cancellations'], components=components)
++    result.update(status='COMPLETE', certificate=proof, components=components)
++    check()
++    return result
+diff --git a/Topology/UnknotRecognition/fast/column_cancellation_research/baseline_core_handlebody_verify.py b/Topology/UnknotRecognition/fast/column_cancellation_research/baseline_core_handlebody_verify.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..9819307acca29c06789bb986a978c6eed0c83b36
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/column_cancellation_research/baseline_core_handlebody_verify.py
+@@ -0,0 +1,131 @@
++"""Independent replay of forest contraction and geometric singleton cancellations.
++
++The source-parallelity checker authenticates the handle charts.  This checker
++reconstructs all counts from those charts, accepts no count summaries, and
++imports no producer code or group-presentation simplifier.
++"""
++
++from .integer_codec import certificate_equal
++
++
++def verify_core_handlebody_certificate(core, certificate, *, check=lambda: None):
++    """Check a core certificate, conditional on authenticated geometric charts."""
++    check()
++    required = {'schema', 'method', 'forest', 'cancellations', 'components'}
++    if type(certificate) is not dict or set(certificate) != required:
++        return False
++    if certificate['schema'] != 'normal-core-handlebody-v1' or core['handles3']:
++        return False
++    if certificate['method'] not in ('leaf', 'capped'):
++        return False
++    forest, moves = certificate['forest'], certificate['cancellations']
++    if type(forest) is not list or type(moves) is not list:
++        return False
++    vertices, edges, discs = [core[f'handles{i}'] for i in range(3)]
++    for handles in (vertices, edges, discs):
++        if any(type(h['id']) is not int or h['id'] != i for i, h in enumerate(handles)):
++            return False
++    if not vertices:
++        return False
++    n, m = len(vertices), len(edges)
++    sets = [{i} for i in range(n)]
++    owner = list(range(n))
++    seen = set()
++    for e in forest:
++        check()
++        if type(e) is not int or e < 0 or e >= m or e in seen:
++            return False
++        seen.add(e)
++        a, b = edges[e]['ends']
++        if type(a) is not int or type(b) is not int or not (0 <= a < n and 0 <= b < n):
++            return False
++        x, y = owner[a], owner[b]
++        if x == y:
++            return False
++        low, high = min(x, y), max(x, y)
++        for point in sets[high]:
++            owner[point] = low
++        sets[low].update(sets[high])
++        sets[high].clear()
++    for edge in edges:
++        check()
++        a, b = edge['ends']
++        if type(a) is not int or type(b) is not int or not (0 <= a < n and 0 <= b < n):
++            return False
++        if owner[a] != owner[b]:
++            return False  # The supplied forest must span every 0/1 component.
++
++    # Reconstruct the raw intersection matrix, including repeated occurrences.
++    matrix = []
++    for disc in discs:
++        check()
++        cycle = disc['cycle']
++        if type(cycle) is not list or not cycle or len(cycle) % 2:
++            return False
++        row = {}
++        for j in range(0, len(cycle), 2):
++            point, crossing = cycle[j], cycle[j + 1]
++            if point['dimension'] != 0 or crossing['dimension'] != 1:
++                return False
++            v, e = point['handle'], crossing['handle']
++            following = cycle[(j + 2) % len(cycle)]['handle']
++            if any(type(x) is not int for x in (v, e, following)):
++                return False
++            if not (0 <= v < n and 0 <= following < n and 0 <= e < m):
++                return False
++            if sorted((v, following)) != sorted(edges[e]['ends']):
++                return False
++            if e not in seen:
++                row[e] = min(2, row.get(e, 0) + 1)
++        matrix.append(row)
++    live_rows = set(range(len(discs)))
++    live_columns = set(range(m)) - seen
++    if certificate['method'] == 'leaf':
++        # Independently check a triangular source pattern.  Earlier leaf
++        # removals add no other crossings, so timestamps replace all updates.
++        removed_at = {}
++        for time, move in enumerate(moves):
++            check()
++            if type(move) is not list or len(move) != 2:
++                return False
++            r, c = move
++            if type(r) is not int or type(c) is not int:
++                return False
++            if r not in live_rows or c not in live_columns:
++                return False
++            if matrix[r].get(c, 0) != 1:
++                return False
++            if any(h != c and h not in removed_at for h in matrix[r]):
++                return False
++            live_rows.remove(r)
++            live_columns.remove(c)
++            removed_at[c] = time
++        moves = []
++    else:
++        matrix = [[row.get(c, 0) for c in range(m)] for row in matrix]
++    for move in moves:
++        check()
++        if type(move) is not list or len(move) != 2:
++            return False
++        r, c = move
++        if type(r) is not int or type(c) is not int:
++            return False
++        if r not in live_rows or c not in live_columns or matrix[r][c] != 1:
++            return False
++        live_rows.remove(r)
++        live_columns.remove(c)
++        for i in live_rows:
++            check()
++            for h in live_columns:
++                matrix[i][h] = min(2, matrix[i][h] + matrix[i][c] * matrix[r][h])
++            matrix[i][c] = 0
++    if live_rows:
++        return False
++    expected = []
++    for component in sorted(set(owner)):
++        points = [v for v in range(n) if owner[v] == component]
++        loops = [e for e in sorted(live_columns) if owner[edges[e]['ends'][0]] == component]
++        expected.append(dict(id=component, zero_handles=points,
++                             remaining_one_handles=loops, genus=len(loops)))
++    check()
++    return certificate_equal(certificate['components'], expected)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/column_cancellation_verify.py b/Topology/UnknotRecognition/fast/fastunknot/column_cancellation_verify.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..8f2e8ff08f6ad6c8c25766d4c0ed25f80d476759
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/column_cancellation_verify.py
+@@ -0,0 +1,83 @@
++"""Independent immutable-source checks for raw column cancellation.
++
++These are algebraic checks on authenticated nonnegative occurrence rows.
++They do not certify a geometric handle structure or a knot verdict.  This
++module imports no producer and never updates an incidence matrix.
++"""
++
++
++def _valid_counts(counts, check):
++    if type(counts) is not dict:
++        return False
++    for r, row in counts.items():
++        check()
++        if type(r) is not int or r < 0 or type(row) is not dict:
++            return False
++        for c, value in row.items():
++            check()
++            if type(c) is not int or c < 0 or type(value) is not int or value < 0:
++                return False
++    return True
++
++
++def verify_column_cancellations(counts, cancellations, *, complete=True,
++                                check=lambda: None):
++    """Check a no-fill prefix, or a complete trace, by source timestamps."""
++    check()
++    if type(complete) is not bool or not _valid_counts(counts, check):
++        return False
++    if type(cancellations) is not list:
++        return False
++    row_time, column_pivot = {}, {}
++    for time, move in enumerate(cancellations):
++        check()
++        if type(move) is not list or len(move) != 2:
++            return False
++        r, c = move
++        if type(r) is not int or type(c) is not int or c < 0:
++            return False
++        if r not in counts or r in row_time or c in column_pivot:
++            return False
++        if counts[r].get(c, 0) != 1:
++            return False
++        row_time[r] = time
++        column_pivot[c] = (r, time)
++    if complete and len(row_time) != len(counts):
++        return False
++    infinity = len(cancellations)
++    for r, row in counts.items():
++        check()
++        for c, value in row.items():
++            check()
++            if not value or c not in column_pivot:
++                continue
++            pivot_row, time = column_pivot[c]
++            if r != pivot_row and row_time.get(r, infinity) >= time:
++                return False
++    check()
++    return True
++
++
++def verify_raw_cancellation_obstruction(counts, blocked_rows, *, check=lambda: None):
++    """Verify a nonempty row set with no unit column sum.
++
++    Such a set rules out every full positive-singleton cancellation of the
++    supplied matrix.  It does not rule out other geometric simplifications.
++    Any blocked set suffices; a verifier need not trust canonical discovery.
++    """
++    check()
++    if not _valid_counts(counts, check) or type(blocked_rows) is not list:
++        return False
++    if not blocked_rows or any(type(r) is not int for r in blocked_rows):
++        return False
++    selected = set(blocked_rows)
++    if len(selected) != len(blocked_rows) or not selected <= counts.keys():
++        return False
++    totals = {}
++    for r in blocked_rows:
++        check()
++        for c, value in counts[r].items():
++            check()
++            totals[c] = min(2, totals.get(c, 0) + value)
++    check()
++    return all(value != 1 for value in totals.values())
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/core_handlebody.py b/Topology/UnknotRecognition/fast/fastunknot/core_handlebody.py
+index 13935f9cfa9ecf70fa5966a2ceec58f0f3167ff7..7c09a2374105c6c2bb80008262ed43cf0c2ed050 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/core_handlebody.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/core_handlebody.py
+@@ -7,6 +7,7 @@ All belt-intersection counts are saturated at two.  No words are expanded,
+ freely reduced, or replaced by algebraic exponent sums.
+ """
+ 
++from collections import deque
+ from heapq import heappop, heappush
+ 
+ 
+@@ -48,9 +49,11 @@ def _occurrences(core, tree, check):
+ def capped_cancellation_plan(counts, *, check=lambda: None):
+     """Return a sound raw singleton schedule for nonnegative occurrence rows.
+ 
+-    This deterministic greedy producer is deliberately incomplete.  The
+-    independent verifier accepts any supplied successful schedule.  Values
+-    zero, one and at least two carry all information needed for admissibility.
++    Kept as the legacy producer and a comparison oracle.  Its minimum-fill
++    rule is complete for full row cancellation: whenever completion is
++    possible, a zero-fill row or column leaf exists and the minimum score
++    selects one.  The source column queue below avoids repeated rescanning.
++    Values zero, one and at least two carry all information for admissibility.
+     Row and column labels must be nonnegative integers.
+     """
+     rows = {}
+@@ -97,6 +100,70 @@ def capped_cancellation_plan(counts, *, check=lambda: None):
+                 stats=dict(entry_scans=scans, entry_updates=updates))
+ 
+ 
++def column_cancellation_plan(counts, *, check=lambda: None):
++    """Completely decide full raw row cancellation without positive fill.
++
++    A unit column leaf has total live incidence one.  Delete its sole row
++    and the column.  Other columns retain their immutable source entries.
++    The process succeeds exactly when *some* positive-singleton schedule
++    can remove every row, for arbitrary rectangular nonnegative matrices.
++
++    If it stops, the surviving rows form the unique greatest nonempty
++    blocked set: every column sum on those rows is zero or at least two.
++    This is an obstruction only to the specified raw cancellation model.
++    Discovery processes each source incidence a bounded number of times.
++    Queue order follows the input dictionaries and needs no label sorting.
++    """
++    check()
++    if type(counts) is not dict:
++        raise ValueError('invalid occurrence matrix')
++    rows, degree, owner_xor = {}, {}, {}
++    incidences = 0
++    for r, values in counts.items():
++        check()
++        if type(r) is not int or r < 0 or type(values) is not dict:
++            raise ValueError('invalid occurrence row')
++        row = {}
++        for c, value in values.items():
++            check()
++            if type(c) is not int or c < 0 or type(value) is not int or value < 0:
++                raise ValueError('invalid occurrence entry')
++            if value:
++                incidences += 1
++                row[c] = min(2, value)
++                degree[c] = degree.get(c, 0) + 1
++                owner_xor[c] = owner_xor.get(c, 0) ^ r
++        rows[r] = row
++    queue = deque(c for c in degree
++                  if degree[c] == 1 and rows[owner_xor[c]][c] == 1)
++    pushes, pops, visits = len(queue), 0, 0
++    schedule = []
++    while queue:
++        check()
++        c = queue.popleft()
++        pops += 1
++        if degree[c] != 1:
++            continue
++        r = owner_xor[c]
++        row = rows.pop(r)
++        if row[c] != 1:
++            raise ArithmeticError('nonunit entry entered the column-leaf queue')
++        schedule.append([r, c])
++        for h in row:
++            check()
++            visits += 1
++            degree[h] -= 1
++            owner_xor[h] ^= r
++            if degree[h] == 1 and rows[owner_xor[h]][h] == 1:
++                queue.append(h)
++                pushes += 1
++    check()
++    return dict(cancellations=schedule, remaining_rows=list(rows),
++                stats=dict(source_incidences=incidences,
++                           incidence_visits=visits, queue_pushes=pushes,
++                           queue_pops=pops, entry_updates=0))
++
++
+ def leaf_cancellation_plan(counts, *, check=lambda: None):
+     """Peel source rows having one remaining crossing, without fill or words.
+ 
+@@ -163,8 +230,8 @@ def core_handlebody_certificate(core, *, check=lambda: None):
+                           remaining_two_handles=planned['remaining_rows'],
+                           stats=planned['stats'])
+             return result
+-        planned = capped_cancellation_plan(counts, check=check)
+-        method = 'capped'
++        planned = column_cancellation_plan(counts, check=check)
++        method = 'column_leaf'
+     result['stats'] = planned['stats']
+     if planned['remaining_rows']:
+         result.update(reason='raw_cancellation_stalled',
+@@ -180,7 +247,9 @@ def core_handlebody_certificate(core, *, check=lambda: None):
+                  if component[core['handles1'][i]['ends'][0]] == representative]
+         components.append(dict(id=representative, zero_handles=vertices,
+                                remaining_one_handles=loops, genus=len(loops)))
+-    proof = dict(schema='normal-core-handlebody-v1', method=method, forest=tree,
++    schema = ('normal-core-handlebody-v2' if method == 'column_leaf'
++              else 'normal-core-handlebody-v1')
++    proof = dict(schema=schema, method=method, forest=tree,
+                  cancellations=planned['cancellations'], components=components)
+     result.update(status='COMPLETE', certificate=proof, components=components)
+     check()
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/core_handlebody_verify.py b/Topology/UnknotRecognition/fast/fastunknot/core_handlebody_verify.py
+index 9819307acca29c06789bb986a978c6eed0c83b36..3beb491595da13cefe48b32d52d97822ce5f8b54 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/core_handlebody_verify.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/core_handlebody_verify.py
+@@ -6,6 +6,7 @@ imports no producer code or group-presentation simplifier.
+ """
+ 
+ from .integer_codec import certificate_equal
++from .column_cancellation_verify import verify_column_cancellations
+ 
+ 
+ def verify_core_handlebody_certificate(core, certificate, *, check=lambda: None):
+@@ -14,9 +15,10 @@ def verify_core_handlebody_certificate(core, certificate, *, check=lambda: None)
+     required = {'schema', 'method', 'forest', 'cancellations', 'components'}
+     if type(certificate) is not dict or set(certificate) != required:
+         return False
+-    if certificate['schema'] != 'normal-core-handlebody-v1' or core['handles3']:
+-        return False
+-    if certificate['method'] not in ('leaf', 'capped'):
++    version, method = certificate['schema'], certificate['method']
++    supported = ((version == 'normal-core-handlebody-v1' and method in ('leaf', 'capped'))
++                 or (version == 'normal-core-handlebody-v2' and method == 'column_leaf'))
++    if not supported or core['handles3']:
+         return False
+     forest, moves = certificate['forest'], certificate['cancellations']
+     if type(forest) is not list or type(moves) is not list:
+@@ -80,7 +82,17 @@ def verify_core_handlebody_certificate(core, certificate, *, check=lambda: None)
+         matrix.append(row)
+     live_rows = set(range(len(discs)))
+     live_columns = set(range(m)) - seen
+-    if certificate['method'] == 'leaf':
++    if method == 'column_leaf':
++        if not verify_column_cancellations(dict(enumerate(matrix)), moves, check=check):
++            return False
++        for r, c in moves:
++            check()
++            if c not in live_columns:
++                return False
++            live_rows.remove(r)
++            live_columns.remove(c)
++        moves = []
++    elif method == 'leaf':
+         # Independently check a triangular source pattern.  Earlier leaf
+         # removals add no other crossings, so timestamps replace all updates.
+         removed_at = {}
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_saturated.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_saturated.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..7af7a5756612897ed05801ab17cfb90abad6ef31
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_saturated.py
+@@ -0,0 +1,273 @@
++"""Opt-in source census with saturated bundle relations and core cancellations.
++
++A saturated bordered interval bundle has a relative decomposition with
++1-chi(base) one-handles and one two-handle.  The latter crosses each inherited
++core cocore as often as the full annular boundary words do in total.  New
++bundle handles are never enumerated or selected as pivots.  Column-leaf
++cancellation removes all old and new two-handles when this sufficient
++geometric criterion succeeds.  Unsaturated bundles attach afterwards.
++
++This is an unmarked whole-cut topology certificate, not a knot verdict or a
++boundary-pattern transport certificate.  Source contracts are authenticated
++by the parallelity and boundary-word proofs in the enclosing certificate.
++"""
++
++from collections import Counter
++
++from .core_handlebody import column_cancellation_plan
++from .normal_parallelity import normal_cut_parallelity
++from .parallelity_boundary_words import normal_parallelity_boundary_words
++
++
++def _forest(core, check):
++    parent = list(range(len(core['handles0'])))
++
++    def root(v):
++        while parent[v] != v:
++            parent[v] = parent[parent[v]]
++            v = parent[v]
++        return v
++
++    selected = []
++    for h in core['handles1']:
++        check()
++        a, b = (root(v) for v in h['ends'])
++        if a != b:
++            parent[max(a, b)] = min(a, b)
++            selected.append(h['id'])
++    return selected, [root(v) for v in range(len(parent))]
++
++
++def _circle_crossings(g, word, check):
++    """Authenticate the midpoint core path at each face-sector port."""
++    paths, crossings = [], []
++    for letter in word:
++        check()
++        port = g['ports'][abs(letter) - 1]
++        number = port['core_handle']
++        if port['core_dimension'] == 0:
++            paths.append((number, number))
++            continue
++        if port['core_dimension'] != 1:
++            raise ArithmeticError('invalid annular core port dimension')
++        poly, slot = g['polygons'][port['polygon']], port['edge']
++        if poly['kind'] != 'edge_cap' or poly['edges'][slot]['kind'] != 'face_sector':
++            raise ArithmeticError('annular port is not a face sector')
++        handle = g['core']['handles1'][number]
++        ends = [(handle['tetrahedron'], handle['face']),
++                (handle['target_tetrahedron'], handle['target_face'])]
++        flags = [(poly['vertices'][(slot + j) % len(poly['vertices'])]['tetrahedron'],
++                  poly['vertices'][(slot + j) % len(poly['vertices'])]['face'])
++                 for j in (0, 1)]
++        if flags == ends:
++            sign = 1
++        elif flags == ends[::-1]:
++            sign = -1
++        else:
++            raise ArithmeticError('annular endpoint charts disagree')
++        sign *= 1 if letter > 0 else -1
++        paths.append(tuple(handle['ends'][::sign]))
++        crossings.append(number)
++    if not paths or any(paths[j][1] != paths[(j + 1) % len(paths)][0]
++                        for j in range(len(paths))):
++        raise ArithmeticError('annular midpoint word is not a closed core path')
++    return crossings
++
++
++def _source_rows(g, summary, skeleton, forest, components, check):
++    profiles, core = summary['base_profiles'], g['core']
++    if core['handles3']:
++        return None, 'core_has_three_handles'
++    if any(p['boundary_components'] <= 0 for p in profiles):
++        return None, 'closed_bundle_base'
++    by_port = {port: i for i, p in enumerate(profiles) for port in p['core_ports']}
++    attached = {i: [] for i, p in enumerate(profiles) if p['core_ports']}
++    edges = []
++    for j, a in enumerate(skeleton['attachment_components']):
++        check()
++        ports = [abs(letter) - 1 for letter in a['word']]
++        if not ports or a['kind'] not in ('circle', 'interval'):
++            raise ArithmeticError('invalid attachment component')
++        bases = {by_port[p] for p in ports}
++        if len(bases) != 1:
++            raise ArithmeticError('attachment has inconsistent base owners')
++        base = bases.pop()
++        owners = set()
++        for p in ports:
++            port = g['ports'][p]
++            if port['core_dimension'] == 0:
++                v = port['core_handle']
++            elif port['core_dimension'] == 1:
++                v = core['handles1'][port['core_handle']]['ends'][0]
++            else:
++                raise ArithmeticError('invalid core-facing port')
++            owners.add(components[v])
++        if len(owners) != 1:
++            raise ArithmeticError('attachment has inconsistent core owners')
++        attached[base].append(j)
++        edges.append(dict(attachment=j, base_profile=base,
++                          core_component=owners.pop(), kind=a['kind']))
++    saturated = []
++    for base, indices in sorted(attached.items()):
++        check()
++        p = profiles[base]
++        if p['multiplicity'] != 1:
++            raise ArithmeticError('ported base has non-unit multiplicity')
++        circles = [j for j in indices
++                   if skeleton['attachment_components'][j]['kind'] == 'circle']
++        if len(circles) > p['boundary_components']:
++            raise ArithmeticError('too many full base boundary components')
++        if len(circles) == p['boundary_components']:
++            if len(circles) != len(indices):
++                raise ArithmeticError('saturated base has a proper interval')
++            saturated.append(base)
++    removed = set(forest)
++    rows = {}
++    for h in core['handles2']:
++        row = Counter()
++        for flag in h['cycle']:
++            if flag['dimension'] == 1 and flag['handle'] not in removed:
++                row[flag['handle']] += 1
++        rows[h['id']] = {c: min(2, n) for c, n in row.items()}
++    records = []
++    for base in saturated:
++        row = Counter()
++        for j in attached[base]:
++            a = skeleton['attachment_components'][j]
++            row.update(c for c in _circle_crossings(g, a['word'], check)
++                       if c not in removed)
++        number = len(core['handles2']) + len(records)
++        rows[number] = {c: min(2, n) for c, n in row.items()}
++        records.append(dict(base_profile=base, relation=number,
++                            annular_attachments=attached[base],
++                            relative_one_handles=1-profiles[base]['euler_characteristic']))
++    return dict(rows=rows, saturated=records, attachments=edges), None
++
++
++def _census(g, summary, source, components, check):
++    core, profiles = g['core'], summary['base_profiles']
++    core_chi = Counter(components)
++    for h in core['handles1']:
++        core_chi[components[h['ends'][0]]] -= 1
++    for h in core['handles2']:
++        owners = {components[f['handle']] for f in h['cycle'] if f['dimension'] == 0}
++        if not owners:
++            owners = {components[core['handles1'][f['handle']]['ends'][0]]
++                      for f in h['cycle'] if f['dimension'] == 1}
++        if len(owners) != 1:
++            raise ArithmeticError('core two-handle owner is not unique')
++        core_chi[owners.pop()] += 1
++    nodes = [('core', i) for i in sorted(set(components))]
++    nodes += [('base', i) for i, p in enumerate(profiles) if p['core_ports']]
++    parent = {n: n for n in nodes}
++
++    def root(v):
++        while parent[v] != v:
++            parent[v] = parent[parent[v]]
++            v = parent[v]
++        return v
++
++    for e in source['attachments']:
++        a, b = root(('base', e['base_profile'])), root(('core', e['core_component']))
++        if a != b:
++            parent[max(a, b)] = min(a, b)
++    groups = {}
++    for n in nodes:
++        groups.setdefault(root(n), []).append(n)
++    grouped_edges = {key: [] for key in groups}
++    for edge in source['attachments']:
++        grouped_edges[root(('base', edge['base_profile']))].append(edge)
++    histogram, joined = Counter(), []
++    for key, group in sorted(groups.items()):
++        check()
++        selected = grouped_edges[key]
++        chi = sum(core_chi[n] for kind, n in group if kind == 'core')
++        chi += sum(profiles[n]['euler_characteristic'] for kind, n in group if kind == 'base')
++        chi -= sum(e['kind'] == 'interval' for e in selected)
++        genus = 1 - chi
++        if genus < 0:
++            raise ArithmeticError('successful cancellation has negative genus')
++        histogram[genus] += 1
++        joined.append(dict(core_components=[n for kind, n in group if kind == 'core'],
++                           base_profiles=[n for kind, n in group if kind == 'base'],
++                           attachments=[e['attachment'] for e in selected],
++                           genus=genus, euler_characteristic=chi))
++    isolated = []
++    for i, p in enumerate(profiles):
++        if not p['core_ports']:
++            genus = 1 - p['euler_characteristic']
++            histogram[genus] += p['multiplicity']
++            isolated.append(dict(base_profile=i, genus=genus,
++                                 multiplicity=p['multiplicity']))
++    euler = sum((1-g)*n for g, n in histogram.items())
++    expected = (summary['core_euler_characteristic'] + summary['bundle_euler_characteristic']
++                - summary['attachment_euler_characteristic'])
++    if euler != expected:
++        raise ArithmeticError('saturated census violates source Euler identity')
++    return dict(histogram=[dict(genus=g, multiplicity=n) for g, n in sorted(histogram.items())],
++                components=sum(histogram.values()), ball_components=histogram[0],
++                all_balls=all(g == 0 for g in histogram), euler_characteristic=euler,
++                joined_components=joined, isolated_bundles=isolated)
++
++
++def saturated_source_census(g, summary, skeleton, *, check=lambda: None):
++    """Finite operator; its inputs need the enclosing source authentications."""
++    check()
++    forest, components = _forest(g['core'], check)
++    source, reason = _source_rows(g, summary, skeleton, forest, components, check)
++    if source is None:
++        return dict(status='INCONCLUSIVE', reason=reason)
++    plan = column_cancellation_plan(source['rows'], check=check)
++    schedule, remaining = plan['cancellations'], plan['remaining_rows']
++    stats = dict(rows=len(source['rows']), incidence=sum(map(len, source['rows'].values())),
++                 saturated_bases=len(source['saturated']),
++                 incidence_visits=plan['stats']['incidence_visits'])
++    if remaining:
++        return dict(status='INCONCLUSIVE', reason='saturated_raw_cancellation_stalled',
++                    remaining_rows=remaining, stats=stats)
++    census = _census(g, summary, source, components, check)
++    proof = dict(schema='saturated-source-census-v1', forest=forest,
++                 saturated_bases=source['saturated'], cancellations=schedule, census=census)
++    return dict(status='COMPLETE', census=census, certificate=proof, stats=stats)
++
++
++def normal_cut_saturated(triangulation, coordinates, *, max_cycles=None,
++                         record_certificate=False, check=lambda: None):
++    """Classify a supplied cut, retaining INCONCLUSIVE on unsupported inputs."""
++    check()
++    if type(record_certificate) is not bool:
++        raise ValueError('record_certificate must be bool')
++    if max_cycles is not None and (type(max_cycles) is not int or max_cycles < 0):
++        raise ValueError('max_cycles must be a nonnegative integer or None')
++    p = normal_cut_parallelity(triangulation, coordinates, max_cycles=max_cycles,
++                              record_certificate=record_certificate, check=check)
++    result = dict(status='INCONCLUSIVE', trust='source cut census; no standalone knot verdict',
++                  stats=dict(parallelity=p['stats']))
++    if p['status'] != 'COMPLETE':
++        result['reason'] = 'parallelity_budget_exhausted'
++        return result
++    if p['geometry']['core']['handles3']:
++        result['reason'] = 'core_has_three_handles'
++        return result
++    remaining = max_cycles
++    if remaining is not None:
++        remaining -= sum(s['orbit_cycles'] for s in p['stats'].values())
++    b = normal_parallelity_boundary_words(triangulation, coordinates, max_cycles=remaining,
++                                          record_certificate=record_certificate, check=check)
++    result['stats']['boundary'] = b['stats']
++    if b['status'] != 'COMPLETE':
++        result['reason'] = 'boundary_budget_exhausted'
++        return result
++    finite = saturated_source_census(p['geometry'], p['summary'], b['skeleton'], check=check)
++    result['stats']['finite'] = finite.get('stats', {})
++    if finite['status'] != 'COMPLETE':
++        result['reason'] = finite['reason']
++        if 'remaining_rows' in finite:
++            result['remaining_rows'] = finite['remaining_rows']
++        return result
++    result.update(status='COMPLETE', census=finite['census'])
++    if record_certificate:
++        result['certificate'] = dict(schema='normal-cut-saturated-v1',
++            parallelity=p['certificate'], boundary=b['certificate'], finite=finite['certificate'])
++    check()
++    return result
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_saturated_verify.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_saturated_verify.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..f5409c9ce8f1a93eeaa04ebee93361be0514a646
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_saturated_verify.py
+@@ -0,0 +1,309 @@
++"""Independent replay of source-bound saturated-bundle census certificates.
++
++Imports no saturated producer, its forest builder, row constructor, planner,
++or census routine.  Source-orbit verification remains delegated to the
++established independent source checkers.
++"""
++
++from collections import Counter
++
++from .integer_codec import encoded_integer, certificate_equal
++from .normal_parallelity_verify import verify_normal_cut_parallelity
++from .parallelity_boundary_words_verify import verify_parallelity_boundary_words
++
++
++class _CallbackFailure(Exception):
++    pass
++
++
++def _decode(x):
++    if isinstance(x, dict):
++        return {k: _decode(v) for k, v in x.items()}
++    if isinstance(x, list):
++        return [_decode(v) for v in x]
++    if isinstance(x, str) and x.lower().lstrip('+-').startswith('0x'):
++        return encoded_integer(x)
++    return x
++
++
++def _int(x):
++    if type(x) is not int:
++        raise ValueError('expected exact integer')
++    return x
++
++
++def _components_and_forest(core, supplied, check):
++    n = len(core['handles0'])
++    adjacency = [[] for _ in range(n)]
++    for h in core['handles1']:
++        a, b = h['ends']
++        adjacency[a].append(b)
++        adjacency[b].append(a)
++    labels = [None] * n
++    for start in range(n):
++        if labels[start] is not None:
++            continue
++        labels[start] = start
++        todo = [start]
++        while todo:
++            check()
++            for v in adjacency[todo.pop()]:
++                if labels[v] is None:
++                    labels[v] = start
++                    todo.append(v)
++    if type(supplied) is not list:
++        return None
++    forest = [_int(v) for v in supplied]
++    if len(set(forest)) != len(forest):
++        return None
++    parent = list(range(n))
++
++    def root(v):
++        while parent[v] != v:
++            v = parent[v]
++        return v
++
++    for h in forest:
++        check()
++        if not 0 <= h < len(core['handles1']):
++            return None
++        a, b = map(root, core['handles1'][h]['ends'])
++        if a == b:
++            return None
++        parent[b] = a
++    if len(forest) != n-len(set(labels)):
++        return None
++    return labels, set(forest)
++
++
++def _walk(g, letters, check):
++    pieces, handles = [], []
++    for letter in letters:
++        check()
++        p = g['ports'][abs(letter)-1]
++        h = p['core_handle']
++        if p['core_dimension'] == 0:
++            pieces.append((h, h))
++            continue
++        if p['core_dimension'] != 1:
++            raise ValueError('invalid annular port')
++        poly = g['polygons'][p['polygon']]
++        edge = p['edge']
++        if poly['kind'] != 'edge_cap' or poly['edges'][edge]['kind'] != 'face_sector':
++            raise ValueError('annular port lacks a face-sector chart')
++        data = g['core']['handles1'][h]
++        lookup = {(data['tetrahedron'], data['face']): 0,
++                  (data['target_tetrahedron'], data['target_face']): 1}
++        if len(lookup) != 2:
++            raise ValueError('non-distinct source face flags')
++        points = [poly['vertices'][(edge+j) % len(poly['vertices'])] for j in (0, 1)]
++        directions = [lookup.get((v['tetrahedron'], v['face'])) for v in points]
++        if None in directions or sorted(directions) != [0, 1]:
++            raise ValueError('annular crossing has invalid endpoint charts')
++        if letter < 0:
++            directions.reverse()
++        pieces.append(tuple(data['ends'][d] for d in directions))
++        handles.append(h)
++    if not pieces or any(stop != pieces[(j+1) % len(pieces)][0]
++                         for j, (_, stop) in enumerate(pieces)):
++        raise ValueError('annular source path does not close')
++    return handles
++
++
++def replay_saturated_source_census(g, summary, skeleton, certificate, *, check=lambda: None):
++    """Finite replay after independent authentication of all three source objects."""
++    check()
++    callback = check
++
++    def check():
++        try:
++            callback()
++        except Exception as error:
++            raise _CallbackFailure(error) from error
++
++    try:
++        cert = _decode(certificate)
++        if type(cert) is not dict or set(cert) != {
++                'schema', 'forest', 'saturated_bases', 'cancellations', 'census'}:
++            return False
++        if cert['schema'] != 'saturated-source-census-v1':
++            return False
++        core, profiles = g['core'], summary['base_profiles']
++        if core['handles3'] or any(p['boundary_components'] <= 0 for p in profiles):
++            return False
++        connected = _components_and_forest(core, cert['forest'], check)
++        if connected is None:
++            return False
++        component, forest = connected
++        owner = {}
++        for i, p in enumerate(profiles):
++            for port in p['core_ports']:
++                if port in owner or p['multiplicity'] != 1:
++                    return False
++                owner[port] = i
++        if set(owner) != set(range(len(g['ports']))):
++            return False
++        attachments, by_base = [], {i: [] for i, p in enumerate(profiles) if p['core_ports']}
++        for index, a in enumerate(skeleton['attachment_components']):
++            check()
++            if a['kind'] not in ('circle', 'interval') or not a['word']:
++                return False
++            ports = [abs(x)-1 for x in a['word']]
++            bases, cores = {owner[p] for p in ports}, set()
++            if len(bases) != 1:
++                return False
++            base = next(iter(bases))
++            for p in ports:
++                port = g['ports'][p]
++                dimension, h = port['core_dimension'], port['core_handle']
++                if dimension == 0:
++                    cores.add(component[h])
++                elif dimension == 1:
++                    cores.add(component[core['handles1'][h]['ends'][0]])
++                else:
++                    return False
++            if len(cores) != 1:
++                return False
++            by_base[base].append(index)
++            attachments.append((base, next(iter(cores)), a['kind'], index))
++        rows = {}
++        for h in core['handles2']:
++            values = Counter(f['handle'] for f in h['cycle']
++                             if f['dimension'] == 1 and f['handle'] not in forest)
++            rows[h['id']] = {c: min(2, v) for c, v in values.items()}
++        expected_bases = []
++        for base in sorted(by_base):
++            indices = by_base[base]
++            circles = [j for j in indices if skeleton['attachment_components'][j]['kind'] == 'circle']
++            if len(circles) > profiles[base]['boundary_components']:
++                return False
++            if len(circles) < profiles[base]['boundary_components']:
++                continue
++            if len(circles) != len(indices):
++                return False
++            counts = Counter()
++            for j in circles:
++                counts.update(c for c in _walk(g, skeleton['attachment_components'][j]['word'], check)
++                              if c not in forest)
++            r = len(core['handles2']) + len(expected_bases)
++            rows[r] = {c: min(2, value) for c, value in counts.items()}
++            expected_bases.append(dict(base_profile=base, relation=r,
++                annular_attachments=indices,
++                relative_one_handles=1-profiles[base]['euler_characteristic']))
++        if not certificate_equal(cert['saturated_bases'], expected_bases):
++            return False
++        if type(cert['cancellations']) is not list:
++            return False
++        used = set()
++        for pair in cert['cancellations']:
++            check()
++            if type(pair) is not list or len(pair) != 2:
++                return False
++            r, c = map(_int, pair)
++            if r not in rows or c in used or rows[r].get(c) != 1:
++                return False
++            if any(other != r and row.get(c, 0) for other, row in rows.items()):
++                return False
++            used.add(c)
++            del rows[r]
++        if rows:
++            return False
++
++        # Independent connected-component traversal and source Euler census.
++        vertices = {('core', c) for c in component}
++        vertices.update(('base', b) for b in by_base)
++        neighbors = {v: [] for v in vertices}
++        for b, c, _, _ in attachments:
++            neighbors['base', b].append(('core', c))
++            neighbors['core', c].append(('base', b))
++        core_chi = Counter(component)
++        for h in core['handles1']:
++            core_chi[component[h['ends'][0]]] -= 1
++        for h in core['handles2']:
++            owners = {component[f['handle']] for f in h['cycle'] if f['dimension'] == 0}
++            if not owners:
++                owners = {component[core['handles1'][f['handle']]['ends'][0]]
++                          for f in h['cycle'] if f['dimension'] == 1}
++            if len(owners) != 1:
++                return False
++            core_chi[next(iter(owners))] += 1
++        histogram, joined = Counter(), []
++        while vertices:
++            check()
++            start = min(vertices)
++            group, todo = set(), [start]
++            while todo:
++                v = todo.pop()
++                if v in group:
++                    continue
++                group.add(v)
++                todo.extend(neighbors[v])
++            vertices.difference_update(group)
++            cs = sorted(n for kind, n in group if kind == 'core')
++            bs = sorted(n for kind, n in group if kind == 'base')
++            selected = [(b, c, kind, index) for b, c, kind, index in attachments if b in bs]
++            chi = sum(core_chi[n] for n in cs)
++            chi += sum(profiles[n]['euler_characteristic'] for n in bs)
++            chi -= sum(kind == 'interval' for _, _, kind, _ in selected)
++            genus = 1-chi
++            if genus < 0:
++                return False
++            histogram[genus] += 1
++            joined.append(dict(core_components=cs, base_profiles=bs,
++                attachments=[index for _, _, _, index in selected],
++                genus=genus, euler_characteristic=chi))
++        isolated = []
++        for i, p in enumerate(profiles):
++            if not p['core_ports']:
++                genus = 1-p['euler_characteristic']
++                if genus < 0:
++                    return False
++                histogram[genus] += p['multiplicity']
++                isolated.append(dict(base_profile=i, genus=genus, multiplicity=p['multiplicity']))
++        euler = sum((1-g)*n for g, n in histogram.items())
++        if euler != (summary['core_euler_characteristic'] + summary['bundle_euler_characteristic']
++                     - summary['attachment_euler_characteristic']):
++            return False
++        expected = dict(histogram=[dict(genus=g, multiplicity=n) for g, n in sorted(histogram.items())],
++            components=sum(histogram.values()), ball_components=histogram[0],
++            all_balls=all(g == 0 for g in histogram), euler_characteristic=euler,
++            joined_components=joined, isolated_bundles=isolated)
++        return certificate_equal(cert['census'], expected)
++    except (KeyError, IndexError, TypeError, ValueError):
++        return False
++    except _CallbackFailure as error:
++        raise error.args[0]
++
++
++def verify_normal_cut_saturated(triangulation, coordinates, certificate, *,
++                                max_operations=None, check=lambda: None):
++    """Replay all six source-orbit proofs before the new finite argument."""
++    check()
++    if max_operations is not None and (type(max_operations) is not int or max_operations < 0):
++        raise ValueError('max_operations must be a nonnegative integer or None')
++    if type(certificate) is not dict or set(certificate) != {'schema', 'parallelity', 'boundary', 'finite'}:
++        return False
++    if certificate['schema'] != 'normal-cut-saturated-v1':
++        return False
++    p, b = certificate['parallelity'], certificate['boundary']
++    if max_operations is not None:
++        try:
++            traces = []
++            for name in ('vertex_selector', 'boundary_selector', 'polygon_weights', 'fibre_cover'):
++                proof = p[name]
++                if name.endswith('selector'):
++                    proof = proof['weighted_certificate']
++                traces.append(proof['orbit_proof']['operations'])
++            for name in ('vertex_partition', 'gap_cover'):
++                if b[name] is not None:
++                    traces.append(b[name]['orbit_proof']['operations'])
++            if sum(map(len, traces)) > max_operations:
++                return False
++        except (KeyError, TypeError):
++            return False
++    if not verify_normal_cut_parallelity(triangulation, coordinates, p, check=check):
++        return False
++    if not verify_parallelity_boundary_words(triangulation, coordinates, b, check=check):
++        return False
++    return replay_saturated_source_census(_decode(p['geometry']), _decode(p['summary']),
++                                          _decode(b['skeleton']), certificate['finite'], check=check)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/raw_passenger_transport.py b/Topology/UnknotRecognition/fast/fastunknot/raw_passenger_transport.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..88b1960e5d774e35eb817b507132de6ed28dc115
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/raw_passenger_transport.py
+@@ -0,0 +1,59 @@
++"""Transport one exact unsigned row through source column-leaf cancellation.
++
++This is an algebra-only operation on an authenticated occurrence matrix.
++It does not recover geometric markings, cyclic order, signs, or an embedding.
++Donor counts must be the original, uncapped nonnegative integers: replacing
++them by zero/one/at-least-two data can preserve a cancellation decision while
++changing the transported row.
++"""
++
++from .column_cancellation_verify import verify_column_cancellations
++
++
++def transport_raw_passenger(counts, cancellations, passenger, *, check=lambda: None):
++    """Return the sparse surviving row after a complete source-leaf schedule.
++
++    ``counts`` maps nonnegative integer donor row IDs to dictionaries mapping
++    nonnegative integer column IDs to exact nonnegative integer counts.
++    ``cancellations`` is a complete list of ``[row, column]`` source column
++    leaves. ``passenger`` is an extra row in the same column space; columns
++    appearing only in this row are permitted and survive unchanged.
++
++    The independent timestamp checker validates the donor schedule. At a
++    pivot ``(r, g)``, the extra row changes by
++
++        passenger[h] += passenger[g] * counts[r][h]    (h != g),
++
++    and column ``g`` disappears. Every donor row is read only once during
++    transport; no donor matrix fill is constructed. There are at most as
++    many arithmetic updates as nonzero off-pivot source incidences.
++
++    Inputs are not mutated. Explicit zero coefficients are omitted from the
++    result. Malformed data or a non-complete/non-leaf schedule raises
++    ``ValueError``. Exceptions raised by ``check`` propagate unchanged.
++    """
++    check()
++    if type(passenger) is not dict:
++        raise ValueError('passenger must be an exact nonnegative count dictionary')
++    result = {}
++    for column, value in passenger.items():
++        check()
++        if (type(column) is not int or column < 0 or
++                type(value) is not int or value < 0):
++            raise ValueError('passenger keys and values must be nonnegative integers')
++        if value:
++            result[column] = value
++    if not verify_column_cancellations(counts, cancellations, check=check):
++        raise ValueError('invalid complete source column-leaf cancellation schedule')
++
++    for row, pivot in cancellations:
++        check()
++        coefficient = result.pop(pivot, 0)
++        if not coefficient:
++            continue
++        for column, multiplicity in counts[row].items():
++            check()
++            if column != pivot and multiplicity:
++                result[column] = result.get(column, 0) + coefficient * multiplicity
++    check()
++    return result
+diff --git a/Topology/UnknotRecognition/fast/results/column_cancellation_20261012.json b/Topology/UnknotRecognition/fast/results/column_cancellation_20261012.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..4f6073b2d2b42e1e5e53e4454b63a3a5f43be901
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/results/column_cancellation_20261012.json
+@@ -0,0 +1,1087 @@
++{
++  "baseline_commit": "704600626606a9097cfd89d4e3d2bbc63c8dd1cb",
++  "generated_utc": "2026-10-12T19:39:03.652043+00:00",
++  "environment": {
++    "python": "3.12.14",
++    "implementation": "CPython",
++    "platform": "Linux-6.18.44-x86_64-with-glibc2.39"
++  },
++  "scope": "raw positive-singleton core cancellation; no knot decision gain",
++  "synthetic_producer": [
++    {
++      "rows": 16,
++      "columns": 17,
++      "nonzeros": 32,
++      "before_stats": {
++        "entry_scans": 544,
++        "entry_updates": 0
++      },
++      "after_stats": {
++        "source_incidences": 32,
++        "incidence_visits": 32,
++        "queue_pushes": 17,
++        "queue_pops": 17,
++        "entry_updates": 0
++      },
++      "before_seconds": [
++        0.00010743911848919382,
++        0.00011468930805810414,
++        9.677257819594463e-05,
++        0.00012162303317821545,
++        0.00010595635544912563
++      ],
++      "after_seconds": [
++        1.866475390954747e-05,
++        1.895805468166145e-05,
++        1.8476929696475963e-05,
++        2.153604687293864e-05,
++        2.261275000137175e-05
++      ],
++      "before_median_seconds": 0.00010743911848919382,
++      "after_median_seconds": 1.895805468166145e-05,
++      "before_over_after": 5.667201635045503,
++      "repeats": [
++        211,
++        256
++      ],
++      "trials": 5
++    },
++    {
++      "rows": 64,
++      "columns": 65,
++      "nonzeros": 128,
++      "before_stats": {
++        "entry_scans": 8320,
++        "entry_updates": 0
++      },
++      "after_stats": {
++        "source_incidences": 128,
++        "incidence_visits": 128,
++        "queue_pushes": 65,
++        "queue_pops": 65,
++        "entry_updates": 0
++      },
++      "before_seconds": [
++        0.0014051131249743776,
++        0.0014845055000023422,
++        0.00143184787498285,
++        0.0013538531875383342,
++        0.0016732931874230417
++      ],
++      "after_seconds": [
++        7.546637890243346e-05,
++        7.93784179791146e-05,
++        7.336277343483744e-05,
++        7.644093359715498e-05,
++        0.00010398700000280314
++      ],
++      "before_median_seconds": 0.00143184787498285,
++      "after_median_seconds": 7.644093359715498e-05,
++      "before_over_after": 18.731428406260875,
++      "repeats": [
++        16,
++        256
++      ],
++      "trials": 5
++    },
++    {
++      "rows": 256,
++      "columns": 257,
++      "nonzeros": 512,
++      "before_stats": {
++        "entry_scans": 131584,
++        "entry_updates": 0
++      },
++      "after_stats": {
++        "source_incidences": 512,
++        "incidence_visits": 512,
++        "queue_pushes": 257,
++        "queue_pops": 257,
++        "entry_updates": 0
++      },
++      "before_seconds": [
++        0.033270537001953926,
++        0.02553476100001717,
++        0.02009718800036353,
++        0.019910476003133226,
++        0.02012207499865326
++      ],
++      "after_seconds": [
++        0.0005155307940988089,
++        0.0005037362058347379,
++        0.0003058997058628045,
++        0.0002918267058275352,
++        0.0005364597646428807
++      ],
++      "before_median_seconds": 0.02012207499865326,
++      "after_median_seconds": 0.0005037362058347379,
++      "before_over_after": 39.94565958448253,
++      "repeats": [
++        1,
++        34
++      ],
++      "trials": 5
++    },
++    {
++      "rows": 1024,
++      "columns": 1025,
++      "nonzeros": 2048,
++      "before_stats": {
++        "entry_scans": 2099200,
++        "entry_updates": 0
++      },
++      "after_stats": {
++        "source_incidences": 2048,
++        "incidence_visits": 2048,
++        "queue_pushes": 1025,
++        "queue_pops": 1025,
++        "entry_updates": 0
++      },
++      "before_seconds": [
++        0.47905468799945083,
++        0.5520290910026233,
++        0.5521067330009828,
++        0.4613589660002617,
++        0.5661925610002072
++      ],
++      "after_seconds": [
++        0.0023804734285347096,
++        0.0023129000001063105,
++        0.0023959204284307945,
++        0.0024020298567068365,
++        0.002391015999559646
++      ],
++      "before_median_seconds": 0.5520290910026233,
++      "after_median_seconds": 0.002391015999559646,
++      "before_over_after": 230.87636849953773,
++      "repeats": [
++        1,
++        7
++      ],
++      "trials": 5
++    },
++    {
++      "rows": 4096,
++      "columns": 4097,
++      "nonzeros": 8192,
++      "before_stats": {
++        "entry_scans": 33562624,
++        "entry_updates": 0
++      },
++      "after_stats": {
++        "source_incidences": 8192,
++        "incidence_visits": 8192,
++        "queue_pushes": 4097,
++        "queue_pops": 4097,
++        "entry_updates": 0
++      },
++      "before_seconds": [
++        7.2933075850014575,
++        6.60125697499825,
++        7.456991566003126,
++        7.901531406001595,
++        7.766423060998932
++      ],
++      "after_seconds": [
++        0.009536258000783468,
++        0.0056973289999101935,
++        0.007257796666332676,
++        0.006649106999248033,
++        0.010334667333760686
++      ],
++      "before_median_seconds": 7.456991566003126,
++      "after_median_seconds": 0.007257796666332676,
++      "before_over_after": 1027.4456434684193,
++      "repeats": [
++        1,
++        3
++      ],
++      "trials": 5
++    }
++  ],
++  "synthetic_replay": [
++    {
++      "rows": 16,
++      "columns": 17,
++      "scope": "conditional core replay on synthetic incidence words",
++      "before_seconds": [
++        0.00037625411536842317,
++        0.0003745109038740898,
++        0.0003744180576876925,
++        0.0003750709615465334,
++        0.0003778239807406163
++      ],
++      "after_seconds": [
++        8.876166009878065e-05,
++        8.849672905916092e-05,
++        8.892875861232008e-05,
++        8.862317733514224e-05,
++        8.931407390111883e-05
++      ],
++      "before_median_seconds": 0.0003750709615465334,
++      "after_median_seconds": 8.876166009878065e-05,
++      "before_over_after": 4.2255965146339785,
++      "repeats": [
++        52,
++        203
++      ],
++      "trials": 5
++    },
++    {
++      "rows": 32,
++      "columns": 33,
++      "scope": "conditional core replay on synthetic incidence words",
++      "before_seconds": [
++        0.002472390285609955,
++        0.001610441142734739,
++        0.0020763348573901957,
++        0.0024148919999009066,
++        0.001964159857119999
++      ],
++      "after_seconds": [
++        0.00016661916521590447,
++        0.00016555328696520757,
++        0.00016260553042546076,
++        0.00016074114780918614,
++        0.0001040016174121537
++      ],
++      "before_median_seconds": 0.0020763348573901957,
++      "after_median_seconds": 0.00016260553042546076,
++      "before_over_after": 12.76915275856499,
++      "repeats": [
++        7,
++        115
++      ],
++      "trials": 5
++    },
++    {
++      "rows": 64,
++      "columns": 65,
++      "scope": "conditional core replay on synthetic incidence words",
++      "before_seconds": [
++        0.010094517998368246,
++        0.010890860001381952,
++        0.010381782001786632,
++        0.010578217999864137,
++        0.01356920099715353
++      ],
++      "after_seconds": [
++        0.00018134334484408288,
++        0.00017966805744331447,
++        0.00019542155170146827,
++        0.00019581289656678396,
++        0.0003187309770112932
++      ],
++      "before_median_seconds": 0.010578217999864137,
++      "after_median_seconds": 0.00019542155170146827,
++      "before_over_after": 54.13025281890984,
++      "repeats": [
++        1,
++        87
++      ],
++      "trials": 5
++    },
++    {
++      "rows": 128,
++      "columns": 129,
++      "scope": "conditional core replay on synthetic incidence words",
++      "before_seconds": [
++        0.14490888799991808,
++        0.1383572919985454,
++        0.0806203940010164,
++        0.08076899700245121,
++        0.09899872300229617
++      ],
++      "after_seconds": [
++        0.000638609391266389,
++        0.000633883086898688,
++        0.0003622297392765809,
++        0.00038108386956003454,
++        0.0003728131303670006
++      ],
++      "before_median_seconds": 0.09899872300229617,
++      "after_median_seconds": 0.00038108386956003454,
++      "before_over_after": 259.78198215681834,
++      "repeats": [
++        1,
++        23
++      ],
++      "trials": 5
++    },
++    {
++      "rows": 256,
++      "columns": 257,
++      "scope": "conditional core replay on synthetic incidence words",
++      "before_seconds": [
++        0.8240065950012649,
++        0.6376086710006348,
++        0.6488676720000512,
++        0.7298372789991845,
++        0.741054987996904
++      ],
++      "after_seconds": [
++        0.0010044333077810453,
++        0.0007964244614413474,
++        0.0007193843076283184,
++        0.0007344170769031805,
++        0.0007764413077473784
++      ],
++      "before_median_seconds": 0.7298372789991845,
++      "after_median_seconds": 0.0007764413077473784,
++      "before_over_after": 939.9773965099795,
++      "repeats": [
++        1,
++        13
++      ],
++      "trials": 5
++    }
++  ],
++  "corpus_sha256": "97b4ceed6f068885760d80dea214538634998dd405b77e76926c1f93db03da5c",
++  "source_cases": [
++    {
++      "id": "pilot/fibonacci_lst_01/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/fibonacci_lst_02/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/fibonacci_lst_03/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/fibonacci_lst_04/0",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "raw_cancellation_stalled"
++    },
++    {
++      "id": "pilot/fibonacci_lst_05/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/fibonacci_lst_06/0",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "raw_cancellation_stalled"
++    },
++    {
++      "id": "pilot/fibonacci_lst_07/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/fibonacci_lst_08/0",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "raw_cancellation_stalled"
++    },
++    {
++      "id": "pilot/fibonacci_lst_09/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/fibonacci_lst_10/0",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "raw_cancellation_stalled"
++    },
++    {
++      "id": "pilot/lst_0_1/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/lst_1_1/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/lst_1_3/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/lst_1_5/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/lst_1_8/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/lst_2_5/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/lst_2_7/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/lst_3_7/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/lst_3_8/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/lst_4_7/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/lst_4_9/0",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "raw_cancellation_stalled"
++    },
++    {
++      "id": "pilot/lst_5_7/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/lst_5_12/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/lst_7_10/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/cap_1_2_1/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/cap_1_2_2/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/cap_1_2_3/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/cap_3_5_1/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/cap_3_5_2/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/cap_3_5_3/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/interior_1_2/0",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "core_has_three_handles"
++    },
++    {
++      "id": "pilot/interior_2_3/0",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "core_has_three_handles"
++    },
++    {
++      "id": "pilot/interior_3_5/0",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "core_has_three_handles"
++    },
++    {
++      "id": "pilot/pachner23_2_3_1/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/pachner23_2_3_2/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/pachner23_2_3_3/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/pachner23_3_5_1/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/pachner23_3_5_2/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/pachner23_3_5_3/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/pachner23_5_8_1/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/pachner23_5_8_2/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/pachner23_5_8_3/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/finite_trefoil/0",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "raw_cancellation_stalled"
++    },
++    {
++      "id": "pilot/finite_trefoil_interior/0",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "core_has_three_handles"
++    },
++    {
++      "id": "pilot/finite_figureEight/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/finite_figureEight_interior/0",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "core_has_three_handles"
++    },
++    {
++      "id": "pilot/solid_torus_sum_rp3/0",
++      "status": "COMPLETE",
++      "method": "column_leaf",
++      "reason": null
++    },
++    {
++      "id": "pilot/solid_torus_sum_s2xs1/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "fibonacci_lst_01/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "fibonacci_lst_02/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "fibonacci_lst_03/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "fibonacci_lst_04/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "fibonacci_lst_05/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "fibonacci_lst_06/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "fibonacci_lst_07/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "fibonacci_lst_08/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "fibonacci_lst_09/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "fibonacci_lst_10/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_0_1/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_1_1/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_1_3/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_1_5/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_1_8/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_2_5/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_2_7/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_3_7/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_3_8/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_4_7/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_4_9/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_5_7/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_5_12/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "lst_7_10/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "cap_1_2_1/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "cap_1_2_2/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "cap_1_2_3/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "cap_3_5_1/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "cap_3_5_2/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "cap_3_5_3/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "interior_1_2/mixed",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "core_has_three_handles"
++    },
++    {
++      "id": "interior_2_3/mixed",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "core_has_three_handles"
++    },
++    {
++      "id": "interior_3_5/mixed",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "core_has_three_handles"
++    },
++    {
++      "id": "pachner23_2_3_1/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pachner23_2_3_2/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pachner23_2_3_3/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pachner23_3_5_1/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pachner23_3_5_2/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pachner23_3_5_3/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pachner23_5_8_1/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pachner23_5_8_2/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "pachner23_5_8_3/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "finite_trefoil/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "finite_trefoil_interior/mixed",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "core_has_three_handles"
++    },
++    {
++      "id": "finite_figureEight/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "finite_figureEight_interior/mixed",
++      "status": "INCONCLUSIVE",
++      "method": null,
++      "reason": "core_has_three_handles"
++    },
++    {
++      "id": "solid_torus_sum_rp3/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "solid_torus_sum_s2xs1/mixed",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "relabel/1/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "relabel/2/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "relabel/4/0",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "binary/1/128",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "binary/1/500",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "binary/4/128",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "binary/4/500",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "binary/16/128",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "binary/16/500",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    },
++    {
++      "id": "binary/1/16384",
++      "status": "COMPLETE",
++      "method": "leaf",
++      "reason": null
++    }
++  ],
++  "source_summary": {
++    "leaf": 66,
++    "column_leaf": 24,
++    "raw_cancellation_stalled": 6,
++    "core_has_three_handles": 10
++  },
++  "source_core_producer_all_106": {
++    "before_seconds": [
++      0.004806658000234165,
++      0.007707103999564424,
++      0.007499117499719432,
++      0.004715085749921855,
++      0.0043267052506053005
++    ],
++    "after_seconds": [
++      0.004583024600287899,
++      0.006515497800137382,
++      0.00689289980000467,
++      0.006655176799540641,
++      0.003873256799852243
++    ],
++    "before_median_seconds": 0.004806658000234165,
++    "after_median_seconds": 0.006515497800137382,
++    "before_over_after": 0.7377269009488139,
++    "repeats": [
++      4,
++      5
++    ],
++    "trials": 5
++  },
++  "source_core_producer_column_24": {
++    "before_seconds": [
++      0.0014912125001761264,
++      0.0017461361426934932,
++      0.001363375071377959,
++      0.0013383201426872152,
++      0.0013974294285747288
++    ],
++    "after_seconds": [
++      0.0009308776316174772,
++      0.0013346565788915062,
++      0.0010370158948047135,
++      0.0008495343157081056,
++      0.0009737793158197555
++    ],
++    "before_median_seconds": 0.0013974294285747288,
++    "after_median_seconds": 0.0009737793158197555,
++    "before_over_after": 1.435057621241762,
++    "repeats": [
++      14,
++      19
++    ],
++    "trials": 5
++  },
++  "source_core_replay_complete_90": {
++    "before_seconds": [
++      0.006806731500546448,
++      0.007486255999538116,
++      0.007086534498739638,
++      0.006597951000003377,
++      0.007083730499289231
++    ],
++    "after_seconds": [
++      0.005649749000440352,
++      0.005499361999682151,
++      0.005900567499338649,
++      0.00570307450107066,
++      0.00972227049896901
++    ],
++    "before_median_seconds": 0.007083730499289231,
++    "after_median_seconds": 0.00570307450107066,
++    "before_over_after": 1.2420897706946272,
++    "repeats": [
++      2,
++      2
++    ],
++    "trials": 5
++  },
++  "whole_cut_validation": {
++    "outcomes": {
++      "COMPLETE": 78,
++      "INCONCLUSIVE": 28
++    },
++    "independently_replayed": 156
++  },
++  "whole_cut_producer_all_106": {
++    "before_seconds": [
++      34.958501108001656,
++      37.52831444899857,
++      36.79779534100089,
++      36.51534697200259,
++      33.558135876999586
++    ],
++    "after_seconds": [
++      36.317417121998005,
++      33.74867651399836,
++      36.211456149001606,
++      36.66288177499882,
++      32.79316045000087
++    ],
++    "before_median_seconds": 36.51534697200259,
++    "after_median_seconds": 36.211456149001606,
++    "before_over_after": 1.0083921182774465,
++    "repeats": [
++      1,
++      1
++    ],
++    "trials": 5
++  }
++}
+diff --git a/Topology/UnknotRecognition/fast/results/column_cancellation_tests.txt b/Topology/UnknotRecognition/fast/results/column_cancellation_tests.txt
+new file mode 100644
+index 0000000000000000000000000000000000000000..569b96d9818f5e607c47214c2f28cb3b927b0b24
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/results/column_cancellation_tests.txt
+@@ -0,0 +1,41 @@
++test_all_106_source_cores_and_legacy_capped_replay (tests.test_column_cancellation.ColumnCancellationTests.test_all_106_source_cores_and_legacy_capped_replay) ... ok
++test_blocked_does_not_mean_no_partial_pivot_or_nonhandlebody (tests.test_column_cancellation.ColumnCancellationTests.test_blocked_does_not_mean_no_partial_pivot_or_nonhandlebody) ... ok
++test_callbacks_propagate_even_when_callable_is_false (tests.test_column_cancellation.ColumnCancellationTests.test_callbacks_propagate_even_when_callable_is_false) ... ok
++test_exhaustive_all_saturated_schedules_on_31096_matrices (tests.test_column_cancellation.ColumnCancellationTests.test_exhaustive_all_saturated_schedules_on_31096_matrices) ... ok
++test_hostile_prefixes_obstructions_and_input_types (tests.test_column_cancellation.ColumnCancellationTests.test_hostile_prefixes_obstructions_and_input_types) ... ok
++test_selected_minors_and_canonical_greatest_blocked_set (tests.test_column_cancellation.ColumnCancellationTests.test_selected_minors_and_canonical_greatest_blocked_set) ... ok
++test_sparse_queue_work_bound_and_long_rectangular_chain (tests.test_column_cancellation.ColumnCancellationTests.test_sparse_queue_work_bound_and_long_rectangular_chain) ... ok
++test_callbacks_propagate (tests.test_core_handlebody.CoreHandlebodyTests.test_callbacks_propagate) ... ok
++test_forged_counts_cannot_enter_small_certificate (tests.test_core_handlebody.CoreHandlebodyTests.test_forged_counts_cannot_enter_small_certificate) ... ok
++test_independent_replay_does_not_use_producer (tests.test_core_handlebody.CoreHandlebodyTests.test_independent_replay_does_not_use_producer) ... ok
++test_layered_ball_and_empty_solid_torus_cores (tests.test_core_handlebody.CoreHandlebodyTests.test_layered_ball_and_empty_solid_torus_cores) ... ok
++test_saturated_schedule_matches_unbounded_integer_counts (tests.test_core_handlebody.CoreHandlebodyTests.test_saturated_schedule_matches_unbounded_integer_counts) ... ok
++test_square_leaf_completeness_against_exact_permanents (tests.test_core_handlebody.CoreHandlebodyTests.test_square_leaf_completeness_against_exact_permanents) ... ok
++test_three_handles_and_zero_relator_are_inconclusive (tests.test_core_handlebody.CoreHandlebodyTests.test_three_handles_and_zero_relator_are_inconclusive) ... ok
++test_adjacent_ports_are_one_disk_and_disk_circles_are_absorbed (tests.test_normal_cut_handlebodies.NormalCutHandlebodyTests.test_adjacent_ports_are_one_disk_and_disk_circles_are_absorbed) ... ok
++test_false_callable_callback_is_not_ignored (tests.test_normal_cut_handlebodies.NormalCutHandlebodyTests.test_false_callable_callback_is_not_ignored) ... ok
++test_hexadecimal_core_components_are_decoded_before_graph_replay (tests.test_normal_cut_handlebodies.NormalCutHandlebodyTests.test_hexadecimal_core_components_are_decoded_before_graph_replay) ... ok
++test_hostile_genus_owner_and_operation_caps (tests.test_normal_cut_handlebodies.NormalCutHandlebodyTests.test_hostile_genus_owner_and_operation_caps) ... ok
++test_huge_binary_census_and_disabled_producers (tests.test_normal_cut_handlebodies.NormalCutHandlebodyTests.test_huge_binary_census_and_disabled_producers) ... ok
++test_one_sided_surfaces_can_give_solid_torus_cuts (tests.test_normal_cut_handlebodies.NormalCutHandlebodyTests.test_one_sided_surfaces_can_give_solid_torus_cuts) ... ok
++test_parallel_meridians_and_empty_cuts (tests.test_normal_cut_handlebodies.NormalCutHandlebodyTests.test_parallel_meridians_and_empty_cuts) ... ok
++test_binary_multiplicity_and_legacy_versions (tests.test_bundle_primitive_annuli.BundlePrimitiveAnnuliTests.test_binary_multiplicity_and_legacy_versions) ... ok
++test_disabled_producers_hexadecimal_transport_and_budgets (tests.test_bundle_primitive_annuli.BundlePrimitiveAnnuliTests.test_disabled_producers_hexadecimal_transport_and_budgets) ... ok
++test_hostile_family_records_and_schema_downgrade (tests.test_bundle_primitive_annuli.BundlePrimitiveAnnuliTests.test_hostile_family_records_and_schema_downgrade) ... ok
++test_multiple_primitive_annuli_and_disks_share_a_census (tests.test_bundle_primitive_annuli.BundlePrimitiveAnnuliTests.test_multiple_primitive_annuli_and_disks_share_a_census) ... ok
++test_no_spare_boundary_and_mobius_boundary_remain_unresolved (tests.test_bundle_primitive_annuli.BundlePrimitiveAnnuliTests.test_no_spare_boundary_and_mobius_boundary_remain_unresolved) ... ok
++test_nonorientable_base_and_simultaneous_families (tests.test_bundle_primitive_annuli.BundlePrimitiveAnnuliTests.test_nonorientable_base_and_simultaneous_families) ... ok
++test_relabelled_sources_preserve_all_component_genera (tests.test_bundle_primitive_annuli.BundlePrimitiveAnnuliTests.test_relabelled_sources_preserve_all_component_genera) ... ok
++test_binary_multiple_preserves_exact_component_multiplicity (tests.test_disk_bundle_absorption.DiskBundleAbsorptionTests.test_binary_multiple_preserves_exact_component_multiplicity) ... ok
++test_exact_hexadecimal_absorption_transport_and_caps (tests.test_disk_bundle_absorption.DiskBundleAbsorptionTests.test_exact_hexadecimal_absorption_transport_and_caps) ... ok
++test_face_flag_corruption_fails_low_level_reconstruction (tests.test_disk_bundle_absorption.DiskBundleAbsorptionTests.test_face_flag_corruption_fails_low_level_reconstruction) ... ok
++test_forged_absorption_and_omitted_two_handles_are_rejected (tests.test_disk_bundle_absorption.DiskBundleAbsorptionTests.test_forged_absorption_and_omitted_two_handles_are_rejected) ... ok
++test_full_annulus_becomes_a_source_two_handle (tests.test_disk_bundle_absorption.DiskBundleAbsorptionTests.test_full_annulus_becomes_a_source_two_handle) ... ok
++test_nondisk_annuli_and_stalled_augmented_cores_remain_unresolved (tests.test_disk_bundle_absorption.DiskBundleAbsorptionTests.test_nondisk_annuli_and_stalled_augmented_cores_remain_unresolved) ... ok
++test_relabelled_self_pairings_preserve_census (tests.test_disk_bundle_absorption.DiskBundleAbsorptionTests.test_relabelled_self_pairings_preserve_census) ... ok
++test_replay_does_not_call_producers (tests.test_disk_bundle_absorption.DiskBundleAbsorptionTests.test_replay_does_not_call_producers) ... ok
++
++----------------------------------------------------------------------
++Ran 36 tests in 16.341s
++
++OK
+diff --git a/Topology/UnknotRecognition/fast/tests/test_column_cancellation.py b/Topology/UnknotRecognition/fast/tests/test_column_cancellation.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..1b07bce63ced51954a6a11f1262d6fd403f4a43e
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_column_cancellation.py
+@@ -0,0 +1,192 @@
++"""Complete raw cancellation against exhaustive schedules and genuine cores."""
++
++from copy import deepcopy
++from functools import lru_cache
++from itertools import combinations, permutations, product
++import json
++from pathlib import Path
++import random
++import unittest
++from unittest.mock import patch
++
++from fastunknot.column_cancellation_verify import (
++    verify_column_cancellations, verify_raw_cancellation_obstruction)
++from fastunknot.core_handlebody import (
++    capped_cancellation_plan, column_cancellation_plan, core_handlebody_certificate,
++    _forest, _occurrences)
++from fastunknot.core_handlebody_verify import verify_core_handlebody_certificate
++from fastunknot.normal_parallelity_geometry import _parallelity_geometry
++from fastunknot.normal_surface_geometry import _prepare, _coordinates
++
++
++@lru_cache(None)
++def exhaustive_positive_cancellation(matrix):
++    """Search every legal saturated pivot; no leaf/matching theorem is used."""
++    if not matrix:
++        return True
++    m, n = len(matrix), len(matrix[0])
++    for r in range(m):
++        for c in range(n):
++            if matrix[r][c] != 1:
++                continue
++            after = tuple(tuple(min(2, matrix[i][h] + matrix[i][c] * matrix[r][h])
++                                for h in range(n) if h != c)
++                          for i in range(m) if i != r)
++            if exhaustive_positive_cancellation(after):
++                return True
++    return False
++
++
++def permanent_one_minor(matrix):
++    m, n = len(matrix), len(matrix[0]) if matrix else 0
++    for columns in combinations(range(n), m):
++        total = 0
++        for order in permutations(columns):
++            term = 1
++            for r, c in enumerate(order):
++                term *= matrix[r][c]
++            total += term
++        if total == 1:
++            return True
++    return False
++
++
++class ColumnCancellationTests(unittest.TestCase):
++    def test_exhaustive_all_saturated_schedules_on_31096_matrices(self):
++        observed = 0
++        for m, n, radix in ((1, 3, 3), (2, 3, 3), (2, 4, 3),
++                            (3, 3, 3), (3, 4, 2)):
++            for entries in product(range(radix), repeat=m * n):
++                matrix = tuple(tuple(entries[r * n:(r + 1) * n]) for r in range(m))
++                counts = {r: dict(enumerate(row)) for r, row in enumerate(matrix)}
++                result = column_cancellation_plan(counts)
++                success = not result['remaining_rows']
++                self.assertEqual(success, exhaustive_positive_cancellation(matrix), matrix)
++                self.assertEqual(success,
++                                 not capped_cancellation_plan(counts)['remaining_rows'], matrix)
++                self.assertTrue(verify_column_cancellations(
++                    counts, result['cancellations'], complete=success))
++                if not success:
++                    self.assertTrue(verify_raw_cancellation_obstruction(
++                        counts, result['remaining_rows']))
++                observed += 1
++        self.assertEqual(observed, 31096)
++
++    def test_selected_minors_and_canonical_greatest_blocked_set(self):
++        rng = random.Random(26101231)
++        for _ in range(350):
++            m, n = rng.randrange(1, 6), rng.randrange(1, 7)
++            matrix = [[rng.randrange(3) for _ in range(n)] for _ in range(m)]
++            counts = {r: dict(enumerate(row)) for r, row in enumerate(matrix)}
++            result = column_cancellation_plan(counts)
++            self.assertEqual(not result['remaining_rows'], permanent_one_minor(matrix))
++            greatest = set()
++            for bits in range(1, 1 << m):
++                selected = [r for r in range(m) if bits >> r & 1]
++                if all(sum(matrix[r][c] for r in selected) != 1 for c in range(n)):
++                    greatest.update(selected)
++            self.assertEqual(set(result['remaining_rows']), greatest)
++            row_order = list(counts)
++            rng.shuffle(row_order)
++            shuffled = {}
++            for r in row_order:
++                columns = list(counts[r])
++                rng.shuffle(columns)
++                shuffled[r] = {c: counts[r][c] for c in columns}
++            other = column_cancellation_plan(shuffled)
++            self.assertEqual(set(other['remaining_rows']), greatest)
++
++    def test_sparse_queue_work_bound_and_long_rectangular_chain(self):
++        size = 4000
++        counts = {r: {r: 1, r + 1: 1} for r in range(size)}
++        result = column_cancellation_plan(counts)
++        self.assertEqual(result['remaining_rows'], [])
++        self.assertEqual(result['stats']['incidence_visits'], 2 * size)
++        self.assertLessEqual(result['stats']['queue_pushes'], size + 1)
++        self.assertEqual(result['stats']['entry_updates'], 0)
++        self.assertTrue(verify_column_cancellations(counts, result['cancellations']))
++
++    def test_blocked_does_not_mean_no_partial_pivot_or_nonhandlebody(self):
++        counts = {0: {0: 1, 1: 1}, 1: {0: 1, 1: 1}}
++        column = column_cancellation_plan(counts)
++        legacy = capped_cancellation_plan(counts)
++        self.assertEqual(column['cancellations'], [])
++        self.assertEqual(len(legacy['cancellations']), 1)
++        self.assertTrue(verify_raw_cancellation_obstruction(counts, [0, 1]))
++        self.assertFalse(verify_raw_cancellation_obstruction(counts, [0]))
++
++    def test_hostile_prefixes_obstructions_and_input_types(self):
++        counts = {4: {10: 1, 12: 1}, 6: {12: 1, 18: 1}}
++        before = deepcopy(counts)
++        good = column_cancellation_plan(counts)
++        self.assertEqual(counts, before)
++        self.assertTrue(verify_column_cancellations(counts, good['cancellations']))
++        for moves in ([[[4, 12], [6, 18]]], [[4, 12], [6, 18]],
++                      [[4, 10], [4, 12]], [[4, 10], [6, True]],
++                      [[4, 10]], [[4, 10], [6, 10]]):
++            self.assertFalse(verify_column_cancellations(counts, moves))
++        self.assertTrue(verify_column_cancellations(counts, [[4, 10]], complete=False))
++        for rows in ([], [4], [4, 4], [True], [100]):
++            self.assertFalse(verify_raw_cancellation_obstruction(counts, rows))
++        for bad in ({True: {0: 1}}, {0: {False: 1}}, {0: {0: True}},
++                    {0: {0: -1}}, {0: []}, []):
++            with self.assertRaises(ValueError):
++                column_cancellation_plan(bad)
++            self.assertFalse(verify_column_cancellations(bad, []))
++        self.assertTrue(verify_column_cancellations({}, []))
++        self.assertTrue(verify_raw_cancellation_obstruction({0: {}}, [0]))
++        huge = {0: {0: 1 << 16000, 1: 1}, 1: {0: 1}}
++        result = column_cancellation_plan(huge)
++        self.assertFalse(result['remaining_rows'])
++        self.assertTrue(verify_column_cancellations(huge, result['cancellations']))
++
++    def test_all_106_source_cores_and_legacy_capped_replay(self):
++        bank = json.loads((Path(__file__).parents[1] /
++                           'marked_parallelity_research/corpus.json').read_text())['cases']
++        column_cases = 0
++        for case in bank:
++            prepared = _prepare(case['triangulation'], lambda: None)
++            vector = _coordinates(prepared, case['coordinates'], lambda: None)
++            core = _parallelity_geometry(prepared, vector, lambda: None)['core']
++            result = core_handlebody_certificate(core)
++            if core['handles3']:
++                self.assertEqual(result['reason'], 'core_has_three_handles')
++                continue
++            tree, _ = _forest(core, lambda: None)
++            counts = _occurrences(core, tree, lambda: None)
++            legacy = capped_cancellation_plan(counts)
++            self.assertEqual(result['status'] == 'COMPLETE', not legacy['remaining_rows'])
++            if result['status'] != 'COMPLETE':
++                continue
++            proof = result['certificate']
++            with patch('fastunknot.core_handlebody.column_cancellation_plan',
++                       side_effect=AssertionError('producer used')):
++                self.assertTrue(verify_core_handlebody_certificate(core, proof))
++            if proof['method'] == 'column_leaf':
++                column_cases += 1
++                self.assertEqual(proof['schema'], 'normal-core-handlebody-v2')
++                old = deepcopy(proof)
++                old.update(schema='normal-core-handlebody-v1', method='capped')
++                self.assertTrue(verify_core_handlebody_certificate(core, old))
++                bad = deepcopy(proof)
++                bad['cancellations'].append(bad['cancellations'][0])
++                self.assertFalse(verify_core_handlebody_certificate(core, bad))
++        self.assertEqual(len(bank), 106)
++        self.assertEqual(column_cases, 24)
++
++    def test_callbacks_propagate_even_when_callable_is_false(self):
++        class Stop:
++            def __bool__(self):
++                return False
++            def __call__(self):
++                raise RuntimeError('cancelled')
++        with self.assertRaisesRegex(RuntimeError, 'cancelled'):
++            column_cancellation_plan({}, check=Stop())
++        with self.assertRaisesRegex(RuntimeError, 'cancelled'):
++            verify_column_cancellations({}, [], check=Stop())
++        with self.assertRaisesRegex(RuntimeError, 'cancelled'):
++            verify_raw_cancellation_obstruction({0: {}}, [0], check=Stop())
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_normal_cut_saturated.py b/Topology/UnknotRecognition/fast/tests/test_normal_cut_saturated.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..b38ca2bbf468bf70d12fdec149f69ba559c74720
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_normal_cut_saturated.py
+@@ -0,0 +1,207 @@
++"""Focused geometric-contract and source-replay checks for saturated bundles."""
++
++from copy import deepcopy
++import json
++from pathlib import Path
++import unittest
++from unittest.mock import patch
++
++from fastunknot.integer_codec import json_safe
++from fastunknot.normal_cut_saturated import normal_cut_saturated, saturated_source_census
++from fastunknot.normal_cut_saturated_verify import (
++    replay_saturated_source_census, verify_normal_cut_saturated,
++)
++
++
++def abstract_bundle(core_genus, boundary_words, *, genus=0, crosscaps=None,
++                    core_relations=()):
++    """Hand-specified geometric interface model, not a source-normal certificate.
++
++    Words are lists of unsigned old core-handle IDs. Each letter receives an
++    individual face-sector chart. These fixtures exercise only the finite
++    operator; native source authentication is tested separately below.
++    """
++    b = len(boundary_words)
++    chi = 2-b-2*genus if crosscaps is None else 2-b-crosscaps
++    handles1 = [dict(id=h, ends=[0, 0], tetrahedron=h, target_tetrahedron=h,
++                    face=0, target_face=1) for h in range(core_genus)]
++    handles2 = [dict(id=i, cycle=[dict(dimension=0, handle=0)] +
++                    [dict(dimension=1, handle=h) for h in word])
++                for i, word in enumerate(core_relations)]
++    core = dict(handles0=[dict(id=0)], handles1=handles1,
++                handles2=handles2, handles3=[])
++    polygons, ports, attachments = [], [], []
++    for word in boundary_words:
++        symbols = []
++        for h in word:
++            p = len(ports)
++            polygons.append(dict(kind='edge_cap', edges=[dict(kind='face_sector')],
++                vertices=[dict(tetrahedron=h, face=0), dict(tetrahedron=h, face=1)]))
++            ports.append(dict(id=p, core_dimension=1, core_handle=h, polygon=p, edge=0))
++            symbols.append(p+1)
++        attachments.append(dict(kind='circle', word=symbols))
++    profile = dict(euler_characteristic=chi, boundary_components=b,
++        multiplicity=1, orientable=crosscaps is None, product=crosscaps is None,
++        genus=genus if crosscaps is None else None, crosscaps=crosscaps,
++        core_ports=list(range(len(ports))))
++    g = dict(core=core, polygons=polygons, ports=ports)
++    summary = dict(base_profiles=[profile], core_euler_characteristic=1-core_genus+len(handles2),
++                   bundle_euler_characteristic=chi, attachment_euler_characteristic=0)
++    return g, summary, dict(attachment_components=attachments)
++
++
++class FiniteSaturatedTests(unittest.TestCase):
++    def complete(self, model):
++        result = saturated_source_census(*model)
++        self.assertEqual(result['status'], 'COMPLETE')
++        self.assertTrue(replay_saturated_source_census(*model, result['certificate']))
++        return result
++
++    def test_disk_special_case(self):
++        self.assertEqual(self.complete(abstract_bundle(1, [[0]]))['census']['histogram'],
++                         [dict(genus=0, multiplicity=1)])
++
++    def test_punctured_torus_saturated_anchor(self):
++        result = self.complete(abstract_bundle(1, [[0]], genus=1))
++        self.assertEqual(result['census']['histogram'], [dict(genus=2, multiplicity=1)])
++        self.assertEqual(result['certificate']['saturated_bases'][0]['relative_one_handles'], 2)
++
++    def test_mobius_saturated_anchor(self):
++        result = self.complete(abstract_bundle(1, [[0]], crosscaps=1))
++        self.assertEqual(result['census']['histogram'], [dict(genus=1, multiplicity=1)])
++
++    def test_saturated_trefoil_amalgam_is_not_accepted(self):
++        model = abstract_bundle(1, [[0, 0, 0]], crosscaps=1)
++        self.assertEqual(saturated_source_census(*model)['status'], 'INCONCLUSIVE')
++
++    def test_annulus_two_distinct_core_handles(self):
++        result = self.complete(abstract_bundle(2, [[0], [1]]))
++        self.assertEqual(result['census']['histogram'], [dict(genus=2, multiplicity=1)])
++        self.assertEqual(len(result['certificate']['cancellations']), 1)
++
++    def test_annular_words_must_be_aggregated(self):
++        # Two individually primitive annuli give aggregate coefficient two.
++        model = abstract_bundle(1, [[0], [0]])
++        self.assertEqual(saturated_source_census(*model)['status'], 'INCONCLUSIVE')
++
++    def test_mixed_core_and_bundle_rows(self):
++        result = self.complete(abstract_bundle(2, [[0, 1]], genus=1, core_relations=[[1]]))
++        self.assertEqual(result['certificate']['cancellations'], [[1, 0], [0, 1]])
++        self.assertEqual(result['census']['histogram'], [dict(genus=2, multiplicity=1)])
++
++    def test_binary_genus_and_hexadecimal_replay(self):
++        g = (1 << 16384)+17
++        model = abstract_bundle(1, [[0]], genus=g)
++        result = self.complete(model)
++        self.assertEqual(result['census']['histogram'], [dict(genus=2*g, multiplicity=1)])
++        cert = json.loads(json.dumps(json_safe(result['certificate'])))
++        self.assertTrue(replay_saturated_source_census(*model, cert))
++        self.assertLess(len(json.dumps(cert)), 30000)
++        self.assertEqual(result['stats']['incidence'], 1)
++
++    def test_false_relations_and_census_mutations(self):
++        model = abstract_bundle(1, [[0]], genus=1)
++        proof = self.complete(model)['certificate']
++        mutations = []
++        q = deepcopy(proof); q['saturated_bases'] = []; mutations.append(q)
++        q = deepcopy(proof); q['cancellations'] = []; mutations.append(q)
++        q = deepcopy(proof); q['cancellations'][0][1] = True; mutations.append(q)
++        q = deepcopy(proof); q['census']['histogram'][0]['genus'] = 0; mutations.append(q)
++        q = deepcopy(proof); q['saturated_bases'][0]['relative_one_handles'] = 0; mutations.append(q)
++        q = deepcopy(proof); q['forest'] = [0]; mutations.append(q)
++        for q in mutations:
++            self.assertFalse(replay_saturated_source_census(*model, q))
++
++    def test_source_chart_mutation(self):
++        model = abstract_bundle(1, [[0]], genus=1)
++        proof = self.complete(model)['certificate']
++        g, summary, skeleton = deepcopy(model)
++        g['polygons'][0]['edges'][0]['kind'] = 'not_a_face_sector'
++        self.assertFalse(replay_saturated_source_census(g, summary, skeleton, proof))
++
++    def test_callback_abort(self):
++        def stop():
++            raise TimeoutError('stopped')
++        with self.assertRaises(TimeoutError):
++            saturated_source_census(*abstract_bundle(1, [[0]]), check=stop)
++
++    def test_replay_callback_value_error_propagates(self):
++        model = abstract_bundle(1, [[0]], genus=1)
++        proof = self.complete(model)['certificate']
++        calls = 0
++
++        def stop_inside():
++            nonlocal calls
++            calls += 1
++            if calls == 3:
++                raise ValueError('callback cancellation')
++
++        with self.assertRaisesRegex(ValueError, 'callback cancellation'):
++            replay_saturated_source_census(*model, proof, check=stop_inside)
++
++    def test_malformed_pivot_tuples_rejected(self):
++        model = abstract_bundle(1, [[0]], genus=1)
++        proof = self.complete(model)['certificate']
++        for pairs in ([[-1, 0]], [[0, -1]], [[0]], [(0, 0)], [[0, 0], [0, 0]]):
++            q = deepcopy(proof)
++            q['cancellations'] = pairs
++            self.assertFalse(replay_saturated_source_census(*model, q))
++
++
++class NativeSaturatedTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        path = Path(__file__).resolve().parents[1] / 'marked_parallelity_research/corpus.json'
++        cls.cases = {c['id']: c for c in json.loads(path.read_text())['cases']}
++        cls.case = cls.cases['pilot/fibonacci_lst_05/0']
++        cls.result = normal_cut_saturated(cls.case['triangulation'], cls.case['coordinates'],
++                                         record_certificate=True)
++        if cls.result['status'] != 'COMPLETE':
++            raise AssertionError('native saturated fixture did not complete')
++
++    def test_native_nondisk_saturation(self):
++        p = self.result['certificate']
++        profiles = p['parallelity']['summary']['base_profiles']
++        self.assertTrue(any(profiles[r['base_profile']]['euler_characteristic'] != 1
++                            for r in p['finite']['saturated_bases']))
++        self.assertTrue(verify_normal_cut_saturated(self.case['triangulation'],
++                        self.case['coordinates'], p))
++
++    def test_replay_with_producers_disabled(self):
++        names = ['normal_cut_saturated.normal_cut_saturated',
++                 'normal_cut_saturated.saturated_source_census',
++                 'normal_parallelity.normal_cut_parallelity',
++                 'parallelity_boundary_words.normal_parallelity_boundary_words']
++        patches = [patch('fastunknot.'+name, side_effect=AssertionError(name)) for name in names]
++        for p in patches:
++            p.start()
++        try:
++            self.assertTrue(verify_normal_cut_saturated(self.case['triangulation'],
++                            self.case['coordinates'], self.result['certificate']))
++        finally:
++            for p in reversed(patches):
++                p.stop()
++
++    def test_outer_schema_and_source_mutations(self):
++        proof = self.result['certificate']
++        for field in ('schema', 'summary'):
++            q = deepcopy(proof)
++            if field == 'schema':
++                q['schema'] = 'normal-cut-handlebodies-v3'
++            else:
++                q['parallelity']['summary']['bundle_euler_characteristic'] += 1
++            self.assertFalse(verify_normal_cut_saturated(self.case['triangulation'],
++                             self.case['coordinates'], q))
++
++    def test_shared_budget_and_hex_transport(self):
++        case = self.case
++        proof = json.loads(json.dumps(json_safe(self.result['certificate'])))
++        self.assertTrue(verify_normal_cut_saturated(case['triangulation'], case['coordinates'], proof))
++        self.assertFalse(verify_normal_cut_saturated(case['triangulation'], case['coordinates'],
++                                                    proof, max_operations=0))
++        result = normal_cut_saturated(case['triangulation'], case['coordinates'], max_cycles=0)
++        self.assertEqual(result['status'], 'INCONCLUSIVE')
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_raw_passenger_transport.py b/Topology/UnknotRecognition/fast/tests/test_raw_passenger_transport.py
+new file mode 100644
+index 0000000000000000000000000000000000000000..562921715c093503911333170f1a7156529c3915
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_raw_passenger_transport.py
+@@ -0,0 +1,171 @@
++"""Compare sparse passenger transport with full positive matrix elimination."""
++
++from copy import deepcopy
++from itertools import permutations, product
++import random
++import unittest
++
++from fastunknot.raw_passenger_transport import transport_raw_passenger
++
++
++def full_matrix_oracle(counts, schedule, passenger):
++    """Independent dense update of donors and passenger; no timestamp checker.
++
++    Invalid donor column-leaf schedules return None. A separate object labels
++    the passenger row, and every surviving row/column pair is updated, even
++    when the sparse algorithm can omit its zero fill.
++    """
++    marker = object()
++    rows = {r: dict(row) for r, row in counts.items()}
++    rows[marker] = dict(passenger)
++    columns = set(passenger)
++    for row in counts.values():
++        columns.update(row)
++    for r, g in schedule:
++        if r not in rows or g not in columns or rows[r].get(g, 0) != 1:
++            return None
++        if any(i != r and i is not marker and row.get(g, 0)
++               for i, row in rows.items()):
++            return None
++        previous = rows
++        columns = columns - {g}
++        rows = {}
++        for i, row in previous.items():
++            if i == r:
++                continue
++            rows[i] = {h: row.get(h, 0) + row.get(g, 0) * previous[r].get(h, 0)
++                       for h in columns}
++    if set(rows) != {marker}:
++        return None
++    return {h: value for h, value in rows[marker].items() if value}
++
++
++class RawPassengerTransportTests(unittest.TestCase):
++    def test_branching_merging_and_initial_internal_coefficients(self):
++        counts = {10: {5: 1, 7: 2, 9: 3, 20: 4},
++                  11: {7: 1, 9: 5, 20: 6},
++                  12: {9: 1, 20: 7}}
++        schedule = [[10, 5], [11, 7], [12, 9]]
++        passenger = {5: 11, 7: 13, 9: 17, 20: 19, 99: 23}
++        # Contributions are 11*(4+2*6+3*7+2*5*7) + 13*(6+5*7) + 17*7 + 19.
++        expected = {20: 1848, 99: 23}
++        self.assertEqual(full_matrix_oracle(counts, schedule, passenger), expected)
++        self.assertEqual(transport_raw_passenger(counts, schedule, passenger), expected)
++
++    def test_uncapped_counts_and_large_integer_products(self):
++        a, b, c = (1 << 8192) + 3, (1 << 4096) + 5, (1 << 1024) + 7
++        x, d, e = (1 << 2048) + 11, 13, 17
++        counts = {0: {0: 1, 1: a, 3: b},
++                  1: {1: 1, 2: c, 3: d},
++                  2: {2: 1, 3: e}}
++        schedule = [[0, 0], [1, 1], [2, 2]]
++        expected = {3: x * (b + a * d + a * c * e)}
++        self.assertEqual(transport_raw_passenger(counts, schedule, {0: x}), expected)
++        self.assertEqual(full_matrix_oracle(counts, schedule, {0: x}), expected)
++        capped = {r: {h: min(2, v) for h, v in row.items()} for r, row in counts.items()}
++        self.assertNotEqual(transport_raw_passenger(capped, schedule, {0: x}), expected)
++
++    def test_exhaustive_two_by_three_sources(self):
++        accepted = 0
++        for entries in product(range(3), repeat=6):
++            counts = {r: {h: entries[3*r+h] for h in range(3)
++                          if entries[3*r+h]} for r in range(2)}
++            for row_order in permutations(range(2)):
++                for columns in permutations(range(3), 2):
++                    schedule = [list(pair) for pair in zip(row_order, columns)]
++                    passenger = {0: 2, 1: 3, 2: 5, 9: 7}
++                    expected = full_matrix_oracle(counts, schedule, passenger)
++                    if expected is None:
++                        continue
++                    accepted += 1
++                    self.assertEqual(transport_raw_passenger(counts, schedule, passenger),
++                                     expected)
++        self.assertGreater(accepted, 100)
++
++    def test_random_acyclic_sources_with_relabelled_columns(self):
++        rng = random.Random(20261012)
++        for _ in range(120):
++            size = rng.randrange(1, 9)
++            columns = rng.sample(range(100, 300), size + 4)
++            row_ids = rng.sample(range(500, 800), size)
++            counts = {}
++            for i, row_id in enumerate(row_ids):
++                row = {columns[i]: 1}
++                for j in range(i + 1, len(columns)):
++                    value = rng.randrange(6)
++                    if value:
++                        row[columns[j]] = value
++                counts[row_id] = row
++            schedule = [[row_ids[i], columns[i]] for i in range(size)]
++            passenger = {h: rng.randrange(12) for h in columns}
++            passenger[997] = 19
++            expected = full_matrix_oracle(counts, schedule, passenger)
++            self.assertIsNotNone(expected)
++            self.assertEqual(transport_raw_passenger(counts, schedule, passenger), expected)
++
++    def test_empty_and_zero_passengers_and_unrelated_columns(self):
++        self.assertEqual(transport_raw_passenger({}, [], {}), {})
++        self.assertEqual(transport_raw_passenger({}, [], {3: 0, 7: 11}), {7: 11})
++        counts, schedule = {4: {6: 1, 8: 9}}, [[4, 6]]
++        self.assertEqual(transport_raw_passenger(counts, schedule, {}), {})
++        self.assertEqual(transport_raw_passenger(counts, schedule, {6: 0, 13: 2}), {13: 2})
++        self.assertEqual(transport_raw_passenger({0: {0: 1}}, [[0, 0]], {0: 5}), {})
++
++    def test_multiple_survivors_and_explicit_source_zeros(self):
++        counts = {2: {4: 1, 7: 0, 9: 3, 12: 5},
++                  3: {7: 1, 4: 0, 9: 11, 12: 0}}
++        schedule = [[2, 4], [3, 7]]
++        self.assertEqual(transport_raw_passenger(counts, schedule, {4: 2, 7: 3}),
++                         {9: 39, 12: 10})
++
++    def test_inputs_are_not_mutated(self):
++        counts = {2: {3: 1, 4: 5}, 7: {4: 1, 9: 11}}
++        schedule, passenger = [[2, 3], [7, 4]], {3: 13, 4: 0, 99: 0}
++        original = deepcopy((counts, schedule, passenger))
++        transport_raw_passenger(counts, schedule, passenger)
++        self.assertEqual((counts, schedule, passenger), original)
++
++    def test_invalid_donor_data_and_schedules(self):
++        cases = [
++            ({0: {0: 1}}, []),
++            ({0: {0: 1}}, [(0, 0)]),
++            ({0: {0: 1}}, [[0, 0], [0, 0]]),
++            ({0: {0: 1}, 1: {0: 1, 1: 1}}, [[0, 0], [1, 1]]),
++            ({0: {0: 1}}, [[0, True]]),
++            ({0: {0: 1}}, [[True, 0]]),
++            ({0: {0: 1}}, [[0, -1]]),
++            ({0: {0: 2}}, [[0, 0]]),
++            ({0: {}}, [[0, 0]]),
++            ({0: {0: -1}}, [[0, 0]]),
++            ({0: {0: True}}, [[0, 0]]),
++            ({False: {0: 1}}, [[0, 0]]),
++            ({0: {False: 1}}, [[0, 0]]),
++            ({0: {0: 1.0}}, [[0, 0]]),
++            ([], []),
++            ({0: []}, [[0, 0]]),
++        ]
++        for counts, schedule in cases:
++            with self.assertRaises(ValueError):
++                transport_raw_passenger(counts, schedule, {})
++
++    def test_invalid_passenger_data(self):
++        for passenger in ([], None, {0: -1}, {-1: 2}, {True: 2},
++                          {0: True}, {0: 1.0}, {'0': 1}, {0: '0x1'}):
++            with self.assertRaises(ValueError):
++                transport_raw_passenger({}, [], passenger)
++
++    def test_callback_exception_propagates(self):
++        calls = 0
++
++        def abort():
++            nonlocal calls
++            calls += 1
++            if calls == 5:
++                raise ValueError('passenger transport cancellation')
++
++        with self.assertRaisesRegex(ValueError, 'passenger transport cancellation'):
++            transport_raw_passenger({0: {0: 1, 1: 3}}, [[0, 0]], {0: 7}, check=abort)
++
++
++if __name__ == '__main__':
++    unittest.main()

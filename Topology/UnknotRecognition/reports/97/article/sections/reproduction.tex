@@ -1,0 +1,183 @@
+\section{Package contents, integration, and reproduction}
+\label{sec:reproduction}
+
+\subsection{Layout and source identity}
+
+The archive is rooted at
+\path{ProveIt_Unknot_Stopping_Cores_2026-10-12/}.
+Its top-level README describes the recommended integration order and
+the scope of each API. The important directories are:
+\begin{description}[style=nextline,leftmargin=1em]
+\item[\path{article/}]
+This article's complete TeX sources, reference list, compiled PDF,
+vector and raster figure, figure-generation script and build script.
+\item[\path{integration/}]
+A repository-relative patch, complete updated source files, old/new
+file hashes and checked integration instructions. Existing code changes
+are limited to the core producer and verifier; the saturated and
+passenger APIs are added modules.
+\item[\path{artifacts/column_cancellation/}]
+The complete paired benchmark JSON and focused test log.
+The reproducible benchmark driver and exact baseline modules are part
+of the repository integration overlay.
+\item[\path{artifacts/saturated/}]
+The full 106-case audit, environment, source provenance, exact seven
+new cases and their source certificates, the worked matrix for case 019,
+focused test log and portable audit driver.
+\item[\path{artifacts/validation/}]
+The complete maintained-suite log, separate passenger test log and
+validation summary.
+\item[\path{artifacts/source/}]
+The exact retained 106-case corpus, previous primitive-annulus audit,
+and their provenance hashes.
+\end{description}
+
+The source integration targets repository revision
+\begin{center}\texttt{704600626606a9097cfd89d4e3d2bbc63c8dd1cb}.\end{center}
+A later revision
+requires reviewing the affected interfaces and replaying the retained
+evidence. The package does not include a duplicate repository checkout.
+Its patch was checked against exact pinned base files in an isolated
+tree. The complete replacements provide a convenient second way to
+inspect every proposed source change.
+
+\subsection{Apply and validate the source changes}
+
+Let \code{PROVEIT_CHECKOUT} be the root of a checkout at the pinned
+revision, and \code{RESEARCH_PACKAGE} the root of this unpacked package.
+Review \path{integration/README.md} and its old/new hash manifest first.
+The essential Git operations, run from the checkout root, are:
+\begin{lstlisting}
+git apply --check "$RESEARCH_PACKAGE/integration/integration.patch"
+git apply "$RESEARCH_PACKAGE/integration/integration.patch"
+\end{lstlisting}
+These commands are provided for the maintainer's integration workflow.
+This research run made no remote commit or repository publication.
+
+Run the tests from
+\path{Topology/UnknotRecognition/fast} in the patched checkout:
+\begin{lstlisting}
+python3 -m unittest tests.test_column_cancellation \
+    tests.test_normal_cut_saturated \
+    tests.test_raw_passenger_transport -v
+python3 -m unittest discover -s tests
+\end{lstlisting}
+The finite producer and replay code use Python's standard library and
+the existing ProveIt modules. The maintained repository's broader tests
+and oracle comparisons retain their existing dependency requirements.
+The retained fresh literal-cut audit used Regina 7.4.
+
+\subsection{Reproduce the paired benchmark}
+
+From the same \path{fast} directory:
+\begin{lstlisting}
+python3 benchmark_column_cancellation.py \
+    --trials 5 --output reproduced-column-cancellation.json
+\end{lstlisting}
+The driver locates its baseline modules and corpus relative to its own
+file. It compares the same source cores and verifies the successful
+results before recording timings. The optional
+\code{--skip-whole-cuts} flag is useful for a finite-kernel-only
+experiment, but such a run cannot reproduce the complete-query row in
+the article's table. The largest synthetic baseline and the complete
+query make the full experiment appreciably longer than a unit test.
+
+Timing samples are environment-dependent. Reproduction should confirm
+the algebraic outcomes, source censuses and operation counters; it need
+not reproduce the saved wall-clock numbers digit for digit. A proposed
+optimization should retain both affected-subset and all-case timings,
+including regressions.
+
+\subsection{Reproduce the saturated source audit}
+
+The packaged driver accepts an explicit checkout path:
+\begin{lstlisting}
+python3 "$RESEARCH_PACKAGE/artifacts/saturated/run_audit.py" \
+    --checkout "$PROVEIT_CHECKOUT" --fresh-oracles \
+    --output reproduced-saturated/audit.json
+\end{lstlisting}
+It reruns the source producer, disables producer entry points during
+independent replay, preserves earlier successes, and invokes the
+maintained Regina literal-cut oracle subject to its expansion cap.
+Omitting \code{--fresh-oracles} uses the historical comparison packets
+while still rerunning the new source pipeline. The output directory is
+separate from the retained audit by default.
+
+For a single retained certificate, use the source wrapper's verifier:
+\begin{lstlisting}[language=Python]
+import json
+from fastunknot.normal_cut_saturated_verify import \
+    verify_normal_cut_saturated
+
+with open("/path/to/certificates/019.json") as source:
+    case = json.load(source)
+assert verify_normal_cut_saturated(
+    case["triangulation"], case["coordinates"],
+    case["certificate"])
+\end{lstlisting}
+The certificate contains the labelled source gluings. No inference from
+the isomorphism signature or from the expected genus is needed.
+
+\Needspace{13\baselineskip}
+\subsection{Call the new operators}
+
+The saturated wrapper is opt-in:
+\begin{lstlisting}[language=Python]
+from fastunknot.normal_cut_saturated import normal_cut_saturated
+from fastunknot.normal_cut_saturated_verify import \
+    verify_normal_cut_saturated
+
+answer = normal_cut_saturated(
+    triangulation, coordinates, record_certificate=True)
+if answer["status"] == "COMPLETE":
+    assert verify_normal_cut_saturated(
+        triangulation, coordinates, answer["certificate"])
+    histogram = answer["census"]["histogram"]
+\end{lstlisting}
+The lower-level \code{saturated_source_census} is conditional on
+already authenticated geometry, base summaries and an ordered boundary
+skeleton. The wrapper supplies that authentication.
+
+For exact count transport after a complete column schedule:
+\begin{lstlisting}[language=Python]
+from fastunknot.core_handlebody import column_cancellation_plan
+from fastunknot.raw_passenger_transport import transport_raw_passenger
+
+counts = {0: {0: 1, 1: 2, 2: 3},
+          1: {1: 1, 3: 5}, 2: {2: 1, 3: 7}}
+plan = column_cancellation_plan(counts)
+passenger = transport_raw_passenger(
+    counts, plan["cancellations"], {0: 11, 3: 13})
+assert passenger == {3: 354}
+\end{lstlisting}
+The original exact \code{counts} must be supplied, not a capped copy.
+The operation verifies its donor schedule but does not authenticate
+embedded passenger geometry.
+
+\subsection{Build the article and figure}
+
+From any working directory, run
+\begin{lstlisting}
+python3 /path/to/package/article/build.py
+\end{lstlisting}
+The script uses \code{latexmk} when available and otherwise runs
+\code{pdflatex} three times. It needs a standard TeX installation with
+the packages named in the source. All included figure files are already
+built. To regenerate them from the retained benchmark JSON, run
+\code{article/make_figures.py} with Matplotlib installed, then rebuild
+the article. The delivered PDF was compiled, checked for unresolved
+references and layout defects, rendered, and visually inspected.
+
+\subsection{Interpretation and integration limits}
+
+The patch upgrades raw planning and replay, and adds a broader positive
+source-cut census. It does not change the recognizer's dispatcher or
+its exact fallback policy. A caller must preserve \code{INCONCLUSIVE}
+as an unsupported or unfinished result. A stopping-set certificate
+excludes only a complete raw schedule in its named source matrix.
+
+The next integration milestone is to preserve embedded boundary data
+through these complete schedules and certify a subsequent hierarchy
+transition. The present article supplies precise local theorems,
+implementations and evidence on which that work can build; the global
+quasi-polynomial claim remains a research objective.

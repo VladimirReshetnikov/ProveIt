@@ -5537,6 +5537,95 @@ spectrum exponent `Eb`, the remainder exponent `Er` and the slice exponent
 The model `models/model_two_track.py` reproduces `tDegM` in its one-track
 case. With the two tracks it predicts exactly this table.
 
+**L.16y: the dimension-two count, unrounded (2026-10-12).** After L.16x the
+Theorem 18.1 thresholds no longer move under per-step savings or under the
+exponent seed. The count seed now moves Theorem 18.2: `(11, 2^39)` gives
+`L + 0` from 13 (`model_two_track.py`). The count's parameter degree is
+about six times that of the face count `q_f`
+(`uniTwoFejerCount_le_split`: `2^24 + 2·SB + 2·PB`). The corpus bounds `q_f`
+by `u^(2^38)`, rounding twice: Lemma 16.3's exponent `10002` up to `2^14`
+(`section16BaseFamilyBound_le_dyadic_power`), and then
+`(2^23+1)·2^14 ≤ 2^38`. Unrounded, `q_f ≤ u^(10002·(2^23+1)) ≈ u^(2^36.29)`
+(`polyPieceFaceCountW_fejer_le_tight`), and the count is at most
+`(n+1)^11·W^(2^39)` (`uniTwoFejerCount_le_split_tight`; degree about
+`2^38.87`). No sharpening of Lemma 16.3 is needed. Modules:
+`Proofs16UniformCoverTwoTight` (`assemble_tight.py`, including the seed
+`splitUniformClass2_two_tight`); `Proofs16SplitTwoTrackClassesT3`
+(`assemble_t3.py`), the table `tDegT3`
+`…, 120, 186, 286, 450, 740, 1275, 2298, 4292, 8223, 16027, 31570`; the joint-slice
+chain `Proofs18Cover{Modulus,Density,Exponents}FejerJT3`; and
+`Proofs18CoverFejerHeadlineK3` (`assemble_k3.py`), the K envelope over
+`tDegT3`. In the bridge: Theorem 18.2 and Corollary 18.7 at `L + 0` from
+`L = 13`, `W(k, r) ≤ 2^2^r^2^2^k` and Theorem 1.3 with density exponent
+`2^(-2^k)` for `k ≥ 13`. Theorem 18.1 does not move.
+The polynomial Theorem 16.2 and Corollary 16.11 move with the class table:
+`Proofs16PolynomialFejerT3` (`assemble_polyt3.py`) gives Theorem 16.2 with graph
+count exponent `2^tDegT3 k` and Corollary 16.11 with
+`e⁻¹ ≤ (2/α)^(2^(2·tDegT3 k + 7k + 38))` (`theorem_16_2_polynomial_fejerT3`,
+`corollary_16_11_polynomial_fejerJT3`). `tDegT3` is 6–22% below `tDegZ` in
+dimensions 3–14.
+
+**L.16z: where the thresholds stand, measured (2026-10-12).** The results are
+Theorem 18.1 at `d + 4` in every degree, `d + 3` from 8 and `d + 2` from 11;
+Theorem 18.2, Corollary 18.7, `W(k, r)` and Theorem 1.3 at `+3` in every
+length, `+2` from 8, `+1` from 11 and `+0` from 13. On the T3 baseline the
+exact envelope model (`models/model_two_track.py` with the J and K
+envelopes) puts each remaining input below the size that would move a
+threshold:
+* dimension-two seeds: no change for any count seed `(a_c, D_c)` down to
+  `(6, 2^37)` or `(11, 2^30)`, nor for any exponent seed down to `(16, 2^36)`;
+* per-step savings in the envelope: none up to 24 units (Theorem 18.1) or
+  89 units (Theorem 18.2);
+* the base envelopes `PolyEnvBound 3 74` and `EnvBound 3 62`: none, even at 0;
+* the partition constant: the exact `log₂` gives nothing beyond `partDeg`;
+* the class-step constants `P(k) = 64·F(k)` and `T(k) = 22·F(k) + 105`: dividing
+  `T` by 64, or `P` by up to `2^10`, changes nothing. Only `P/2^20` would give
+  `d + 2` from 10, `d + 3` from 7 and `L + 1` from 10. `P` is a product of
+  structural powers of two (`2^(3k+7)·2^(k+4)·(k+6)`), not a rounding.
+So the remaining thresholds are set by the structure of the step: two class
+degrees per step (L.16t) and the doubling of the split recursion
+(`a_{k+1} ≈ 3a_k²·2^k`). `d + 1` still needs a class constant below 2.
+Two more checks on the same baseline. Separate count and exponent degrees
+in the envelope (`PolyCoverAt` with `Q` at the count degree, which is all
+that `ρ₁` and the slices use) change nothing: the two tracks have degrees
+`40/47, 74/77` in dimensions 2–3 and agree to within 3 from dimension 4 on.
+`d + 3` in every degree misses at `d = 4…7` by 111–282 units, and degree 3
+would need the base envelope `74 + 1 ≤ 64`. `L + 2` in every length misses at
+`L = 6, 7` by 26 and 51 units, which would need the base envelope
+`EnvBound 3 62` down to about 11.
+
+The base envelopes (L.16z addendum). `PolyEnvBound 3 74` comes from the cubic
+exponent `σ`. Of its four contributions (row exponent `2^69`, square factors
+`2^42` and `2^45`, local count `2^59`), the row exponent rests on the
+phase-partition constant `p ≤ 2^(2^64)` of `progressionPhasePartition_explicit`,
+which uses the old `explicit_family_constants_le 1`. The polynomial
+`explicit_family_constants_poly_le 1` gives `p ≤ 2^(2^20)`, and plausibly a
+base near 61, with `σ` then set by the local count (an estimate; this was not
+formalized). It would not move a threshold. The model gives the same Theorem 18.1
+thresholds for every base from 74 down to 40, because the envelope in
+dimensions 4–7 exceeds the `d + 3` budget by 111–282 units, and a smaller
+base lowers every dimension by the same amount. `EnvBound 3 62` (the
+Theorem 18.2 base) is set by the cubic inverse threshold
+(`exp exp X^(2^62)`), the gain (`2^60`) and the exponent (`exp X^(2^61)`).
+`L + 2` in every length would need about 11, far below these constants of
+the cubic inverse theorem.
+
+The route to `d + 1`, examined (L.16z addendum). The two class degrees per step
+compound because the slice cover runs at a precision `θ_S/4 ~ ρ₁³` set by the
+first cover's output, and a class count `Q(t)` carries the full class degree in
+its dependence on `t`. A three-base class, with count
+`(n+1)^a·(V·2/(γθ))^D·(1/ρ)^E`, would make the second cover cost only its
+precision exponent `E`. In the split step, however, the piece bound `Pb` is the
+lower count at family size `M·S` and precision `ρ/4`, and the samples
+`S ~ Qr·M/ρ` have `ρ`-exponent `E·2^k + 1`. So `Pb` has `ρ`-exponent
+`a(E·2^k + 1) + E`, and `E' ≈ 2a·E·2^k`: `log E` grows like `Σ log a_k ~ c·2^k`,
+the same growth as `log D`. Tracking the precision separately therefore does
+not remove the compounding. Covering the remainder and the slices jointly would
+need the anchor pair before the remainder (the anchors come from the
+spectrum cell), and covering all anchors jointly costs `Q^|J|` with `|J| ~ N`.
+Reordering the covers (slices first) compounds the same way, since the vertex
+covers are also `k`-dimensional (`nonTop_card_le_k` is exact).
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`

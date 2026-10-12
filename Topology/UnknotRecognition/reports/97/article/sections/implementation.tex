@@ -1,0 +1,212 @@
+\section{Native implementation and certificate boundaries}
+\label{sec:implementation}
+
+\subsection{Core cancellation integration}
+
+The implementation lives in \path{Topology/UnknotRecognition/fast}.
+The successful row-leaf fast path is retained. For a rectangular core,
+\code{core_handlebody_certificate} now calls
+\code{column_cancellation_plan}, which scans immutable source incidence
+and returns a schedule together with its residual rows and structural
+counters. The old \code{capped_cancellation_plan} remains available for
+compatibility and paired comparisons; its completeness documentation is
+corrected as in Proposition~\ref{prop:old-complete}.
+
+The new module \code{column_cancellation_verify} supplies two checks:
+\begin{itemize}
+\item \code{verify_column_cancellations} checks deletion timestamps.
+\item \code{verify_raw_cancellation_obstruction} checks the stopping
+condition directly.
+\end{itemize}
+Neither imports a producer.
+The core verifier supports a nested
+\code{normal-core-handlebody-v2} certificate with method
+\code{column_leaf}. Existing \code{normal-core-handlebody-v1} leaf and
+capped certificates remain accepted. The surrounding whole-cut certificate
+schemas need not change simply because their nested core proof is faster.
+
+The old square row-leaf obstruction path remains a specialized early exit.
+The canonical stopping-set theorem applies directly to the public column
+planner's returned residual; a legacy row-leaf residual is not silently
+relabelled as that canonical source set. Callers requiring a new independent
+stopping certificate should use the column planner and the stopping checker.
+
+Linear cancellation complexity is a statement about the kernel after
+source incidence has been built. Existing forest validation, source geometry
+reconstruction and component assembly keep their own costs. We do not
+claim that modifying the planner makes those unrelated operations linear.
+
+\subsection{Source compilation for saturated bases}
+
+The new \code{normal_cut_saturated} module adds a separate whole-cut query.
+Its low-level finite operation is \code{saturated_source_census}; the public
+wrapper is \code{normal_cut_saturated}. These are opt-in APIs. They do not
+dispatch a new verdict in the main knot recognizer.
+
+The finite source compiler performs the following operations.
+\begin{enumerate}
+\item Choose a forest in the actual core zero/one-handle graph and recover
+the core components. A core three-handle triggers an inconclusive result.
+\item Read the authenticated base profiles and ordered attachment components.
+Reject closed bases. Each ported base must have multiplicity one, and each
+maximal attachment must have a unique base owner and a unique core owner.
+\item Count complete attaching circles for each base. A base is saturated
+exactly when this count equals its total number of boundary components.
+It then has no proper interval attachments. Unported boundary circles are
+included in the profile count, so they cannot be accidentally ignored.
+\item Extract the old two-handle rows from the actual cyclic source flags.
+For each saturated base, traverse all of its full annular words and sum
+their old nonforest one-handle crossings into one row.
+\item Apply complete column cancellation to the combined source matrix.
+If it succeeds, compute connected attachment components and their Euler
+characteristics, then use the proved handlebody class to obtain genera.
+\end{enumerate}
+
+The fourth step needs more than a word of core vertex labels. An individual
+core one-handle may be a loop, so its two ends can belong to the same core
+zero-handle. The compiler checks the tetrahedron/face flags at both ends
+of every face-sector port, retains the direction of the corresponding
+midpoint path, and checks that consecutive path ends join to a closed
+curve. Every crossing is counted in absolute value, including repeated
+passages and passages with opposite orientations. The independent verifier
+reconstructs the same geometry with a separate path routine.
+
+\begin{proposition}[Size of the compiled cancellation kernel]
+\label{prop:compiled-size}
+Let the old core have $f$ two-handles and $c$ nonforest one-handles, and
+let $s$ bases be saturated. The compiled matrix has $f+s$ rows and $c$
+possible columns. If $I_0$ is the number of nonzero old core incidences
+and $P$ is the total number of active ports, it has at most $I_0+P$
+nonzeros. In particular, its size is independent of the numerical sum
+$\sum_i(1-\chi(F_i))$ of added band handles.
+\end{proposition}
+
+\begin{proof}
+There is one row per old two-handle and exactly one per saturated base.
+Only old nonforest columns are stored. Each full annular boundary word
+uses source ports; the attachment skeleton partitions the ports among
+maximal attachments. A core one-handle crossing uses such a port, and
+summing crossings into rows can merge nonzeros but cannot create more
+than the number of contributing ports. Theorem~\ref{thm:saturated-even-columns}
+shows that no omitted band column is needed for the cancellation decision.
+\end{proof}
+
+In the repository's source representation the finite core and active
+ports are bounded in terms of $T$\cite{repo}. Even using the coarse
+$I_0\le fc$, this is a polynomial-size kernel. With explicit source
+incidence lists, construction is charged to their actual total length.
+Binary Euler characteristics and multiplicities are retained as integers
+and use the established hexadecimal codec for transport.
+
+\subsection{The whole-cut proof and its independent replay}
+
+A successful wrapper returns a \code{normal-cut-saturated-v1} certificate
+with three components: the parallelity source proof, the ordered-boundary
+source proof, and a \code{saturated-source-census-v1} finite proof. The
+finite proof names the forest, every saturated base and its relation label,
+the full cancellation schedule, and the resulting census.
+
+The independent \code{normal_cut_saturated_verify} module first replays
+both existing source proofs. Only then does it inspect the source geometry,
+base profiles and boundary skeleton contained in them. It independently
+checks the forest, reconstructs saturated ownership and raw crossing
+counts, checks every pivot, and computes attachment components by graph
+traversal. The producer uses a different component-construction path.
+Both check the redundant source Euler identity
+\[
+ \chi(\text{cut})=\chi(\text{core})+\chi(\text{bundles})
+                  -\chi(\text{interfaces}).
+\]
+That identity is an arithmetic consistency check after the geometric proof;
+it is not the proof that a component is a handlebody.
+
+The supplied finite saturated verifier deliberately retains a direct scan
+of surviving source rows at each pivot. Its matrix-check cost is polynomial,
+with a coarse $O(mI+m^2)$ bound, rather than the linear timestamp bound
+already implemented in the separate core checker. This keeps the new
+geometric replay easy to inspect. Theorem~\ref{thm:timestamp} identifies
+a later compatible optimization if this finite replay becomes material.
+Whole-cut cost still includes the source orbit proofs, which dominate
+many of the measured small examples.
+
+There are six source orbit traces across the parallelity and boundary
+queries. The producer's cycle allowance is shared across the two stages;
+the wrapper subtracts the consumed parallelity cycles before the boundary
+query. Replay counts all six supplied traces against its operation cap.
+Caller abort exceptions propagate. Certificate mutation checks reject
+invalid schema fields, repeated pivots, nonexistent or Boolean labels,
+changed relative-handle counts, altered source charts and changed genus
+claims. The existing exact integer codec handles large signed and
+hexadecimal quantities.
+
+\subsection{Examples the extension must distinguish}
+
+\paragraph{A saturated disk.}
+Here $\chi(F)=1$, so the relative bundle has no one-handles and one
+two-handle. Its row is the full annular attachment row. The new construction
+recovers the existing disk-base absorption case.
+
+\paragraph{A saturated punctured surface with a core anchor.}
+Let a once-bordered orientable genus-$q$ surface be attached to a solid
+torus along a core annulus meeting its cocore once. The aggregate matrix
+is $(1)$, for every $q$. The old core handle cancels the residual two-handle,
+leaving a genus-$2q$ handlebody. The matrix size is constant even if $q$
+has thousands of bits. A nonorientable base of crosscap number $q$ gives
+the same calculation with a genus-$q$ result.
+
+\paragraph{Two individually primitive annuli on the same handle.}
+Take an annulus base and attach both boundary annuli to longitudinal
+annuli of one solid torus. The aggregate row is $(2)$, so the criterion
+refuses. Treating the two boundary circles as separate singleton rows
+would be erroneous. With product gluings, this construction is the product
+of a circle with a disk to which one orientable band has been attached;
+the result is $T^2\times I$, not a handlebody. Its fundamental group is
+$\mathbb Z^2$. The aggregate row detects the missing relative primitivity.
+
+\paragraph{A saturated M\"obius base attached with multiplicity three.}
+The vertical annulus of the orientable interval bundle over a M\"obius
+band winds twice around its solid-torus core. Gluing it to a winding-three
+annulus in another solid torus gives the amalgam
+$\langle x,y\mid x^3=y^2\rangle$, the familiar torus-knot group used in
+the incoming counterexample\cite{hierarchy-incoming}. The old aggregate
+row $(3)$ is blocked. Its infinite cyclic abelianization does not justify
+a handlebody conclusion. With a winding-one attachment instead, the row
+is $(1)$ and the core generator cancels.
+
+\paragraph{Interleaved core and bundle relations.}
+The combined matrix need not be solved in two phases. A saturated row can
+expose the next old core row, and an old core cancellation can expose a
+saturated row. The producer handles this mixed schedule directly.
+If the combined matrix fully cancels, its original-core row submatrix also
+fully cancels: any stopping set of that submatrix would obstruct the
+combined matrix. Thus joint cancellation cannot cure a fixed old-core
+raw obstruction.
+
+The distinction concerns the choice and retention of a compatible
+schedule. For the algebraic matrix
+\[
+ A=\begin{pmatrix}1&1&1\\2&1&0\end{pmatrix},
+\]
+declare the first row to be an old core relation. The joint column
+schedule pivots first in its third column, then in the second row's
+second column. But the core-only matrix also admits a pivot in its
+first column. Committing to that choice transports the second row to
+$(3,2)$, which is blocked. An arbitrary core-only success and its unmarked
+census therefore do not replace a schedule checked against all annular
+data. This example asserts an algebraic scheduling fact, not an
+authenticated source realization of that matrix.
+
+\subsection{Exactly what a successful result certifies}
+
+The output is a complete binary histogram of handlebody genera for a
+\emph{supplied normal cut}. Isolated bundle components contribute their full
+multiplicities. The result distinguishes one ball from several balls and
+from a ball accompanied by positive-genus components.
+
+A knot conclusion needs the separate facts that the input is the authenticated
+exterior of the queried diagram and that the cutting data supplies the
+appropriate disk or hierarchy argument. The wrapper itself proves neither
+of those facts. In particular, a raw stopping certificate proves failure
+of a restricted cancellation model, while a resource-limited or unsupported
+query returns \code{INCONCLUSIVE}. These are part of the mathematical
+input/output contract, not optional interpretations of the results.

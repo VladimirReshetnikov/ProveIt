@@ -1,0 +1,388 @@
+\section{Retaining ambient surfaces through ordinary compression}
+\label{sec:seam-repair}
+
+The saturated-bundle operator concerns the topology of a supplied cut.  A
+different obstruction to a fast hierarchy algorithm is repeated replacement
+of later surfaces after an earlier surface is compressed.  The hierarchy
+algorithm of~\cite[Sections~6 and~9]{lackenby2026} uses precisely such a
+replacement step.  This section gives an additive repair bound for a
+restricted, explicitly stated situation: the cut-open surfaces are the
+pieces of a certified family of surfaces in one fixed ambient manifold.
+The result does not construct the required families or provide a new
+unknot-recognition algorithm.  Its purpose is to identify geometric data
+under which the choice of every later ambient surface can be retained.
+
+\subsection{The additional gluing obligation}
+
+An ordinary sequential hierarchy does not automatically supply simultaneous
+ambient surfaces.  After an earlier cut, a later surface can have unrelated
+boundary traces on the two copies of the cutting surface.  Changing that
+earlier surface can expose attachments on its opposite side which were
+absent from the side on which a compression disk was found.  A list of
+homology vectors does not record this information.
+
+We use a \emph{surface atlas} to mean a concrete PL cut-and-reglue
+presentation, with the surface pieces labeled and cooriented, and with the
+following additional conditions.  Traces bearing the same label agree
+under every specified face identification.  Every internal boundary arc is
+paired exactly once; unpaired boundary lies on the true boundary of the
+ambient manifold.  Coorientations agree across the identifications.
+Distinct patches of a single label have disjoint interiors.  At the
+identified edges and corners, the link of each label is a single embedded
+circle at an interior surface point, or a single properly embedded interval
+at a boundary surface point, in the corresponding ambient link.
+
+These are conditions on actual charts and gluing maps.  In an explicit
+finite refinement they are finite incidence and link tests.  No verifier
+for an arbitrary binary-compressed surface atlas is implemented here.
+
+In the following, a \emph{cut-open face} is a connected part of a labeled
+surface cut along its intersections with the other surfaces, realized on
+one boundary side of a cut piece.  It can have positive genus or several
+boundary components; it is not required to be a polygon.  Its interior
+maps injectively into the corresponding ambient surface.  A \emph{seam}
+is an actual trace of one of the other cutting surfaces.  Auxiliary
+subdivision edges in the atlas are not seams.  Thus essentiality below is
+tested in the whole cut-open face, even when it is authenticated using
+many polygon charts.
+
+\begin{lemma}[What an authenticated atlas supplies]
+\label{lem:seam-atlas}
+Under the preceding conditions, the quotient of the patches with any one
+label is a properly embedded cooriented PL surface.  In an orientable
+ambient manifold it is oriented.  Suppose an embedded disk in one cut
+piece has interior disjoint from its boundary faces, and has boundary in
+the interior of a single cut-open face of one label, disjoint from
+all seams and other labels.  Its image under regluing is an embedded disk
+whose interior avoids the whole surface family and whose boundary meets
+only that labeled surface.
+\end{lemma}
+
+\begin{proof}
+At a patch interior the required local surface chart is already supplied.
+Across an identified face, the paired traces give two compatible local
+halves of a surface.  The edge and corner link conditions supply the local
+product charts at the remaining points; in particular they exclude
+branching, self-intersection, and an unpaired internal boundary.  The
+boundary condition identifies the resulting surface boundary with a subset
+of the true manifold boundary.  The coorientations glue, and an ambient
+orientation converts a coorientation into a surface orientation.
+
+Regluing is injective on the interior of each cut piece.  On the boundary
+of the stated disk, it is injective because this boundary lies inside one
+cut-open face whose interior embeds in its labeled ambient surface.
+No interior point of the
+disk can be identified with a boundary point: the former is off the
+surface family and the latter lies on it.  The disk image is therefore
+embedded.  The same conditions show that it meets no other labeled
+surface and meets its own label only along its boundary.
+\end{proof}
+
+The local link tests in Lemma~\ref{lem:seam-atlas} must not be omitted.
+Agreement of formal boundary chains alone would allow a branched or
+immersed quotient.  Conversely, once the ambient surfaces have been
+authenticated, the repair theorem below is purely geometric and does not
+depend on a particular triangulation of them.
+
+\subsection{A potential for one fixed ambient family}
+
+Let $M$ be a compact orientable irreducible $3$-manifold, and let $P$ be a
+boundary pattern.  Let
+\[
+                         \mathcal F=(F_1,\ldots,F_k)
+\]
+be connected oriented surfaces properly embedded in $M$, in general
+position and transverse to $P$.  Assume that the classes
+$[F_1],\ldots,[F_k]$ are linearly independent in
+$H_2(M,\partial M;\mathbb Q)$.  Pairwise intersections are finite unions
+of arcs and circles.  Triple intersections, if present, are included in
+the atlas; they do not split a component of a pairwise intersection.
+
+Use the pattern complexity from~\cite[Section~3]{lackenby2026}, measured
+against the fixed original pattern $P$:
+\begin{equation}
+ c_P(F_i)=-4\chi(F_i)+|\partial F_i\cap P|,
+ \qquad
+ \iota(\mathcal F)=
+       \sum_{1\le i<j\le k}\#\pi_0(F_i\cap F_j).
+ \label{eq:seam-complexities}
+\end{equation}
+Here $\#\pi_0$ counts geometric connected components, with no algebraic
+cancellation.  The pattern in~\eqref{eq:seam-complexities} is not the
+changing pattern of an intermediate cut.
+
+\begin{lemma}[Negative complexity and a nonzero relative class]
+\label{lem:seam-negative}
+Let $F$ be a connected oriented surface properly embedded in $M$ with
+$[F]\ne0$ in $H_2(M,\partial M;\mathbb Q)$.  If $c_P(F)<0$, then $F$
+is a violating disk for $(M,P)$.
+\end{lemma}
+
+\begin{proof}
+A connected orientable surface of negative pattern complexity is either
+a sphere or a disk meeting $P$ at most three times.  An embedded sphere
+bounds a ball by irreducibility, so its relative homology class is zero.
+This contradicts the nonzero-class assumption.  If a disk is not violating,
+the definition supplies a disk in
+$\partial M$ with the same boundary and with the permitted empty, arc, or
+tripod intersection with $P$.  Together the two disks bound a ball, after
+the usual small boundary perturbation, by irreducibility.  The original
+disk is boundary-parallel and represents zero in relative homology,
+again contradicting the hypothesis.  Thus the disk is violating.
+\end{proof}
+
+Accordingly, suppose throughout a nonterminal stage that every
+$c_P(F_i)$ is nonnegative.  Define
+\begin{equation}
+                  Q(\mathcal F)
+                  =\sum_{i=1}^k c_P(F_i)+\iota(\mathcal F).
+                  \label{eq:seam-potential}
+\end{equation}
+This is a nonnegative integer.  The intersection term is essential: a
+loop can be essential in a cut-open face while bounding a disk in its
+uncut ambient surface.  Such a loop leads to a disk exchange, rather
+than to a reduction in the surface's Euler characteristic.
+
+\begin{theorem}[Ordinary compression repair in an ambient block]
+\label{thm:seam-repair}
+Assume the preceding hypotheses and an authenticated atlas for
+$\mathcal F$.  Suppose a disk $D$ in one of its cut pieces satisfies the
+disk hypotheses of Lemma~\ref{lem:seam-atlas}, and that its boundary
+$\alpha$ is essential in that cut-open face, which has label $j$.
+Then one can either obtain a violating disk for $(M,P)$ or replace
+$F_j$ by a connected oriented proper surface $G$, retaining all the
+other ambient surfaces, such that their $k$ relative classes remain
+independent and
+\[
+                   Q(F_1,\ldots,G,\ldots,F_k)
+                      <Q(\mathcal F).
+\]
+More precisely:
+\begin{enumerate}
+\item If $\alpha$ is essential in the ambient surface $F_j$, then
+      $G$ can be chosen among the components of the compression of
+      $F_j$ along $D$, and in the nonterminal case
+      \[
+          c_P(G)\le c_P(F_j)-4,
+          \qquad \iota(\mathcal F_{\mathrm{new}})
+                         \le\iota(\mathcal F).
+      \]
+\item If $\alpha$ bounds a disk in the ambient $F_j$, then $G$ can
+      be obtained by a disk exchange.  It has the same relative class,
+      Euler characteristic, and boundary as $F_j$, while
+      \[
+                     \iota(\mathcal F_{\mathrm{new}})
+                         <\iota(\mathcal F).
+      \]
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:seam-atlas}, regluing gives an embedded disk in $M$
+meeting $F_j$ exactly in its boundary and avoiding every $F_i$ with
+$i\ne j$.  We continue to denote this image by $D$.  A sufficiently
+small surgery neighborhood of $D$ is disjoint from the other surfaces.
+
+First suppose that $\alpha$ is essential in $F_j$.  Let $F'_j$ be the
+oriented surface obtained by compression.  The surgery trace gives
+\begin{equation}
+                   [F'_j]=[F_j]
+                   \quad\hbox{in }H_2(M,\partial M;\mathbb Q).
+                   \label{eq:seam-class}
+\end{equation}
+Write $V$ for the span of the other $k-1$ classes.  At least one
+connected component $G$ of $F'_j$ has $[G]\notin V$, since otherwise
+their sum~\eqref{eq:seam-class} would belong to $V$.  Choosing such a
+component preserves rank $k$.  In particular $[G]\ne0$.  If
+$c_P(G)<0$, Lemma~\ref{lem:seam-negative}, with the newly independent
+family, supplies the asserted violating disk.
+
+For the remaining case we prove the quantitative drop, including the
+effect of a possibly discarded component.  Compression increases total
+Euler characteristic by two and leaves the boundary and its intersections
+with $P$ unchanged.  Consequently
+\begin{equation}
+                       c_P(F'_j)=c_P(F_j)-8.
+                       \label{eq:seam-eight}
+\end{equation}
+There are at most two components.  No component is a sphere.  Indeed, a
+separating compression would produce a sphere only if $\alpha$ already
+bounded a disk in $F_j$, contrary to this case.  A nonseparating
+compression produces a sphere only when $F_j$ is a closed torus.  Then
+\eqref{eq:seam-class} and irreducibility would force $[F_j]=0$, again
+contrary to independence.
+
+Every connected sphere-free orientable surface has Euler characteristic
+at most one, so a discarded component, if present, has pattern
+complexity at least $-4$.  Subtracting that complexity
+from~\eqref{eq:seam-eight} yields
+$c_P(G)\le c_P(F_j)-4$.  All intersections with the other surfaces
+are disjoint from the surgery neighborhood.  Each lies entirely in a
+component of the compressed surface, because it misses the compressed
+circle.  Selecting $G$ therefore deletes entire pairwise intersection
+arcs or circles and introduces none.  This proves the first case.
+
+Now suppose that $\alpha$ bounds a disk $E\subset F_j$.  It must
+contain a pairwise intersection circle: if its interior missed every
+other surface, it would lift to a disk in the same cut-open face,
+contradicting the essentiality hypothesis there.  Since $\alpha$ is
+disjoint from the other surfaces and $E$ lies in the interior of
+$F_j$, every pairwise intersection component meeting $E$ is a whole
+circle contained in its interior.
+
+The embedded sphere $E\cup D$ bounds a ball $B$ by irreducibility.
+The connected surface $F_j\setminus\operatorname{int}E$ lies outside
+this ball.  If it lay inside, then in the closed-surface case the whole
+$F_j$ could be pushed into $B$, forcing its relative class to be zero.
+In the case with boundary, its boundary on $\partial M$ rules out that
+possibility, since $B$ is bounded by a sphere in the interior of $M$.
+Thus the usual disk exchange across $B$ replaces $E$ by a small
+parallel copy of $D$ while retaining an embedded oriented proper
+surface.  The isotopy may pass through other members of the family;
+their mutual disjointness during the isotopy is not a hypothesis.
+
+The replacement disk is disjoint from all the other surfaces.  It
+therefore deletes every intersection circle in $E$ and creates no new
+intersection.  At least one circle is deleted.  The surface's relative
+class, Euler characteristic, and boundary are unchanged.  This proves
+the second case, and hence the strict decrease of
+\eqref{eq:seam-potential} in either nonterminal case.
+\end{proof}
+
+\begin{corollary}[Additive bound for the specified repairs]
+\label{cor:seam-budget}
+Starting from one family satisfying the theorem, any sequence of its
+specified nonterminal repairs has length at most
+\[
+             \left\lfloor\frac{C_0}{4}\right\rfloor+I_0,
+ \qquad C_0=\sum_i c_P(F_i^{\mathrm{initial}}),
+ \qquad I_0=\iota(\mathcal F_{\mathrm{initial}}).
+\]
+This is at most $Q(\mathcal F_{\mathrm{initial}})$.  If the last repair
+instead terminates by producing a violating disk, the total number of
+repairs is at most
+$\lfloor C_0/4\rfloor+I_0+1$.
+\end{corollary}
+
+\begin{proof}
+The $k$ classes remain independent.  At each nonterminal stage their
+pattern complexities are nonnegative.  Each nonterminal compression
+along a curve essential in its ambient surface reduces their sum by at
+least four; disk exchanges preserve that sum.  There can therefore be at
+most $\lfloor C_0/4\rfloor$ such compressions.  Each disk exchange
+decreases the intersection count by at least one, and a compression never
+increases that count.  There can consequently be at most $I_0$ disk
+exchanges.  Adding these distinct operation counts proves the claimed
+bound.  A terminal surgery is allowed to leave the nonnegative-complexity
+regime, so it is counted separately.
+\end{proof}
+
+\begin{corollary}[Retaining individually nonzero labels]
+\label{cor:seam-nonzero}
+The geometric repair and additive bound remain valid if mutual
+independence is replaced by the weaker assumption
+\[
+               [F_i]\ne0\quad\text{for every }i.
+\]
+In this version every retained label has a connected representative with
+nonzero relative class.  No mutual independence conclusion is asserted.
+The number of labels is unrestricted by the dimension of the homology
+group.  As before, the initial stage is nonterminal only if all its
+pattern complexities are nonnegative.
+\end{corollary}
+
+\begin{proof}
+For an essential compression, the oriented sum of the classes of its
+components is the nonzero class $[F_j]$.  Hence at least one component
+$G$ has nonzero class.  Choose that component.  The exclusion of sphere
+components in the proof of Theorem~\ref{thm:seam-repair} uses only
+$[F_j]\ne0$ and irreducibility.  The resulting estimate
+$c_P(G)\leq c_P(F_j)-4$ is therefore unchanged.  If $c_P(G)<0$,
+Lemma~\ref{lem:seam-negative} still produces a violating disk.
+Otherwise the same intersection argument proves a strict decrease of
+$Q$, and all labels still have nonzero classes.
+
+In the disk-exchange case, the only homological input was that $F_j$
+cannot be pushed into a ball.  Its nonzero class supplies exactly that
+input.  The exchange preserves its individual class and strictly
+decreases the intersection term.  The separate compression and
+disk-exchange counts in Corollary~\ref{cor:seam-budget} are therefore
+unchanged: at most $\lfloor C_0/4\rfloor+I_0$ nonterminal repairs
+and at most one additional terminal repair.
+\end{proof}
+
+Keeping every component of $F'_j$ as one labeled oriented surface would
+preserve the individual class $[F_j]$.  The connected-component selection
+used in the theorem preserves independence and the number of labels, but
+need not preserve that individual class.  This distinction matters if a
+later construction requires one fixed cohomology basis rather than merely
+an independent family.
+
+\subsection{What the additive estimate does not establish}
+
+\paragraph{Ambient retention still requires updated cut data.}
+The unchanged objects are the other surfaces embedded in $M$.  Their
+pieces in the successive cuts, the induced boundary patterns, and their
+source certificates can change.  Discarding one compressed component can
+glue together several old pieces of a later surface.  The theorem therefore
+permits retaining ambient surface choices; it does not justify reusing
+old normal coordinates, handle structures, source digests, or suffix
+certificates without verification.
+
+\paragraph{The disks have restricted boundary behavior.}
+The hypotheses cover an ordinary compression whose boundary stays in one
+surface face and misses every seam.  They do not cover general
+pattern-compressions involving arcs on the original boundary or several
+labeled faces.  Such an extension must account for the changed pattern
+intersections and for the reconnection of seam traces.  Nor does the theorem
+find all the disks it permits.
+
+\paragraph{No simultaneous normalization bound is supplied.}
+The repaired surfaces need not be normal in the previous handle structure.
+Normalizing one of them can change its intersections with the others.  To
+use Corollary~\ref{cor:seam-budget} inside a normal-surface algorithm, one
+would need to control that change or charge it to another bounded
+quantity.  Likewise, irreducibility proves that the disk-exchange ball
+exists; this proof supplies no bound for a compressed description of the
+resulting isotopy.
+
+\paragraph{The potential is geometric, not automatically polynomial in
+the input bit length.}
+For example, take the two vertical annuli in $T^2\times I$ above curves
+of slopes $(1,0)$ and $(1,N)$ in minimal position.  Their pattern
+complexities for $P=\varnothing$ are zero, but their pairwise intersection
+has $N$ arcs.  A slope or twist description can store $N$ in binary.
+Thus even an additive bound in $Q$ can be exponential in a compressed
+description length.  The example illustrates the size of the bound; it
+does not assert that these annuli actually require $N$ repairs.
+
+\paragraph{Homological independence has limited force.}
+The preserved assertions are embeddedness, orientation, properness,
+connectedness of each selected representative, and independence in the
+fixed ambient relative homology group.  The theorem asserts neither
+incompressibility nor pattern-incompressibility.  It also does not prove
+nonseparation of every later cut-open surface after several previous cuts,
+or the $q$-complexity descent required by the hierarchy algorithm.
+
+For the independent version there is also a strict rank restriction:
+$k\leq\dim H_2(M,\partial M;\mathbb Q)=b_1(M)$ by
+Poincar\'e--Lefschetz duality.  For a knot exterior, abelianizing a
+Wirtinger presentation identifies all arc generators with one meridian
+generator, so $b_1(M)=1$.  The independent version consequently cannot
+retain a whole multisurface hierarchy in the original knot exterior.
+Its multiple-label use requires an appropriate later ambient block of
+larger first Betti number and a suitable atlas there.
+Corollary~\ref{cor:seam-nonzero} avoids this rank restriction by retaining
+only individual nonzero classes, and so permits several ambient labels
+even in a knot exterior.  Neither version proves that the resulting
+pieces form a valid sequential hierarchy.  In particular, the corollary
+does not replace the missing later-cut nonseparation argument.
+
+The resulting research problem is concrete.  Construct ambient atlases
+whose geometric intersection complexity is controlled, authenticate their
+seams without expanding binary multiplicities, and retain that control
+through simultaneous normalization and pattern-compression.  The local
+cutting and bundle results, including the incoming relative-handle
+work~\cite{incoming-hierarchy-kernels}, address different parts of this
+construction.  The additive repair theorem does not close those remaining
+obligations or imply a global quasi-polynomial recognition bound.

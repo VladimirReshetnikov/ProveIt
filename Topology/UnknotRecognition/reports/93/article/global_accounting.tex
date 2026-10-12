@@ -1,0 +1,241 @@
+\section{What a quasipolynomial completion must prove}
+\label{sec:global-accounting}
+
+The preceding operations address different terms in a hierarchy's cost.
+The genus budget limits the network joining retained pieces.  The native
+moment compiler limits the description of a boundary response.  Unmarked
+reconstruction limits the size of one new triangulation when the cutting
+surface has controlled topological complexity.  None of these statements
+bounds the number of hierarchy states visited, or the cost of discovering
+the next useful surface.  This section makes that remaining distinction
+quantitative.
+
+\subsection{Four costs that must be bounded together}
+
+For a state $H$, write $s(H)$ for its complete encoded size, including its
+manifold presentation, boundary pattern, normal-coordinate charts,
+compressed component multiplicities, and any proof data the algorithm
+must retain.  This is deliberately more than the tetrahedron count.  A
+prospective algorithm must bound the following quantities.
+
+\begin{enumerate}
+\item \emph{Search volume:} the number $J(n)$ of state visits or elementary
+hierarchy iterations processed on an $n$-crossing input.  A repeated visit
+is counted again.
+\item \emph{State volume:} the maximum value $S(n)=\max_H s(H)$ during
+that computation, including the largest binary integer lengths.
+\item \emph{Local work:} the work needed to discover, perform and verify
+the permitted transition from a state of size $s$.  A polynomial-time
+checker for a supplied surface does not bound its discovery cost.
+\item \emph{Completion:} a proof that every permitted branch is handled,
+that the selected hierarchy operations remain sound, and that the final
+test distinguishes all knots.  A resource cap returning
+\code{INCONCLUSIVE} is an honest software contract, but not completeness.
+\end{enumerate}
+
+If local work is at most $S(n)^a$ for a fixed constant $a$, then the direct
+accounting bound is $J(n)S(n)^a$, plus input construction.  This elementary
+product is useful because it exposes exactly where a claimed fast local
+primitive can and cannot change the overall exponent.
+
+\begin{theorem}[Conditional hierarchy accounting]
+\label{thm:conditional-accounting}
+Suppose a complete and correct recognition procedure on diagrams with
+$n\geq2$ crossings has parameters $L=L(n)\geq1$ and $G=G(n)\geq1$.
+Assume its input construction takes polynomial time in $n$, and that all
+subsequent work, including its final decision, is charged to the iterations
+below.
+Assume fixed constants $a,c,C>0$ and $A>1$ satisfy all of the following.
+\begin{enumerate}[label=(\roman*)]
+\item It performs at most $C(L+1)(G+1)^L$ elementary iterations, counting
+revisits to a state again.
+\item $G\leq n^c$, and every encoded state and transition output has
+size at most $n^c A^{cL}(L+1)^c$.
+\item Discovery, source validation, exact local computation, certificate
+production and replay for one iteration together cost at most the $a$th
+power of this size, times a fixed constant.
+\end{enumerate}
+Then its total running time is
+\[
+ \exp\!\bigl(O((L+1)\log n+L+\log(L+1))\bigr).
+\]
+In particular, $L=O((\log n)^2)$ gives
+$2^{O((\log n)^3)}$, while $L=O(\log n)$ gives
+$n^{O(\log n)}$.
+\end{theorem}
+\begin{proof}
+Multiply the bounds in (i) and (iii), using (ii), and take logarithms.
+Up to constant factors, the logarithm of the iteration cost is at most
+\[
+ \log(L+1)+L\log(G+1)
+ +ac\log n+acL\log A+ac\log(L+1).
+\]
+Since $\log(G+1)=O(\log n)$ and $A,a,c$ are fixed, this is the stated
+expression.  Adding the polynomial input-construction cost does not
+change it, since that cost has logarithm $O(\log n)$.  Substituting either
+bound on $L$ proves the last two claims.
+\end{proof}
+
+This is an implication, not a new hierarchy-existence theorem.  Its first
+assumption matches the form of the iteration bound in Proposition~9.1 of
+the 2026 preprint \cite{Lackenby2026Hierarchies}; a finite search tree of
+depth $L$ and branching at most $G+1$ also has the stated coarse bound.
+The geometric meanings of $L$ and $G$ must come from the actual procedure,
+not from arbitrary tuning parameters.  The theorem explains why the two
+2021 depth announcements lead to genuinely different exponents.
+
+\subsection{What the unmarked reconstruction bound contributes}
+
+\begin{proposition}[Iteration of an unmarked size bound]
+\label{prop:reset-recurrence}
+Suppose a sequence of unmarked reconstructions satisfies
+\[
+ t_{i+1}\leq A(t_i+k_i+1),\qquad A\geq1,
+\]
+where $k_i=b_0(S_i)+\chi_-(S_i)$ counts every cutting component.
+Then
+\[
+ t_i\leq A^i\left(t_0+\sum_{j<i}(k_j+1)\right).
+\]
+If $t_0,k_j\leq n^c$ and $i\leq L$, then
+\[
+ \log(t_i+1)=O(L+\log(L+1)+\log n)
+\]
+for fixed $A,c$.
+\end{proposition}
+\begin{proof}
+For $i=0$ the assertion is equality.  Given the bound for $i$, multiply
+by $A$ and use $A\leq A^{i+1}$ to absorb the next additive term.  This
+proves the first inequality by induction.  The sum is at most
+$i(n^c+1)$, which gives the logarithmic estimate.
+\end{proof}
+
+Thus even a constant-factor expansion at each of
+$O((\log n)^2)$ cuts can remain compatible with the later announced
+quasipolynomial exponent.  A perfectly size-preserving reset is not
+necessary for this accounting.  What is necessary is control of the
+\emph{whole} state: the statement above does not bound the word describing
+a carried boundary pattern, the normal coordinates of the next surface,
+or the search required to find it.  If the remainder of each state has
+\emph{total} encoded size polynomial in $t_i$ and $n$, the encoded-state
+part of assumption (ii) in Theorem~\ref{thm:conditional-accounting} follows
+after adjusting the fixed constants.  A polynomial bound for $G$ and the
+discovery-time bound in (iii) remain separate obligations.  Small output
+size alone supplies neither of them.
+
+Nor can one discard multiplicities to make $k_i$ appear small.  The
+nested-sphere example in Section~\ref{sec:unmarked-reconstruction} shows
+that a single type record can represent exponentially many components.
+A hierarchy may have a valid rule for purging those components; otherwise
+their explicit reconstruction is a real output cost.  Any proposed reset
+must state which of these two contracts it implements.
+
+\subsection{Sharing already supplied transport along a forest}
+
+The rooted forest of Section~\ref{sec:attachment-kernel} gives a precise
+place to store transport information without expanding every source route.
+There is an elementary algebraic principle behind this design.
+
+\begin{proposition}[Forest transport circuit]
+\label{prop:forest-transport}
+Let $Q$ be a finite oriented graph with a rooted spanning forest $F$, and
+suppose every oriented edge $e$ has a supplied label $a_e$ in a group,
+with $a_{\bar e}=a_e^{-1}$.  Labels may instead be words in a formal group
+alphabet, represented by shared expression nodes.  There is a circuit with
+$O(|V(Q)|+|E(Q)|)$ additional product and inverse gates that labels every
+nonforest edge of the contracted graph and preserves the products around
+closed walks based at roots.  Only the original label descriptions are
+needed as input leaves.
+
+If group multiplication and inversion have unit cost, all contracted
+labels can be evaluated using $O(|V(Q)|+|E(Q)|)$ group operations.  The
+claim is about supplied algebraic transport; it does not construct a
+geometric transport map on a boundary pattern.
+\end{proposition}
+\begin{proof}
+Let $P_v$ be the product along the forest route from $v$ to its root,
+with products written in path order.  For a root set $P_v=1$; otherwise
+define a shared gate
+\[
+ P_v=a_{(v,\operatorname{parent}(v))}\,P_{\operatorname{parent}(v)}.
+\]
+For an edge $e:u\longrightarrow v$ not in the forest, assign
+\[
+                   a'_e=P_u^{-1}a_eP_v.
+\]
+Each vertex requires a bounded number of gates and each retained edge
+requires a bounded number more.  A forest edge has transformed label one.
+Along any walk, the consecutive $P_vP_v^{-1}$ factors cancel, leaving
+$P_{\rm start}^{-1}$, the original path product, and $P_{\rm end}$.
+For a closed walk based at a root both outside factors are one.  Processing
+the forest from roots to leaves and then processing the nonforest edges
+gives the operation count.  No path is expanded as a word.
+\end{proof}
+
+This supplies a useful interface for a future patterned reducer.  Local
+fibre signs can be evaluated in $C_2$ immediately.  Longer curve or chart
+instructions can remain as a circuit until a consumer requests them.
+The missing step is geometric: prove that the proposed source labels
+encode the required maps, provide compatible domains, and bound the cost
+of the subsequent equality or isotopy problem.  The delivered graph
+module stores the parent forest; it does not implement arbitrary group
+evaluation or a mapping-class-group engine.  Keeping that distinction
+prevents an algebraic compression from being mistaken for a solved
+three-dimensional marking problem.
+
+\subsection{Why simultaneous disjoint homology bases are insufficient}
+
+The word ``multisurface'' in the announced architecture cannot be replaced
+by ``a disjoint collection forming a full relative homology basis.''  The
+obstruction is already visible in a product.
+
+\begin{proposition}[A disjointness obstruction]
+\label{prop:isotropic-obstruction}
+Let $M=\Sigma_h\times I$, where $\Sigma_h$ is a closed connected orientable
+surface of genus $h\geq1$.  Suppose pairwise disjoint, compact, properly
+embedded, oriented surfaces $S_1,\ldots,S_k$ represent linearly independent classes
+in $H_2(M,\partial M;\Q)$.  Then $k\leq h$, although that relative
+homology group has dimension $2h$.
+\end{proposition}
+\begin{proof}
+Poincar\'e--Lefschetz duality identifies their classes with linearly
+independent classes $\alpha_i\in H^1(M;\Q)$.  Disjoint representatives
+have zero mutual intersection, so $\alpha_i\smile\alpha_j=0$ for
+$i\ne j$.  For $i=j$, the same vanishing follows from graded
+commutativity over $\Q$.  Pullback along the inclusion of
+$\Sigma_h\times\{1/2\}$ identifies $H^1(M;\Q)$ with its
+$2h$-dimensional surface cohomology and preserves cup products.
+The cup-product pairing, evaluated on $[\Sigma_h]$, is nondegenerate
+and alternating.  An isotropic subspace of a $2h$-dimensional symplectic
+space has dimension at most $h$: its inclusion in its symplectic
+orthogonal gives $k\leq2h-k$.  This proves the result.
+\end{proof}
+
+The product in this example also embeds in $S^3$, as a small collar of an
+embedded closed genus-$h$ surface.  Thus restricting attention to compact
+submanifolds of $S^3$ does not remove the obstruction.
+This classical obstruction identifies a concrete design requirement.
+An implementation must support the intersections permitted by the
+multisurface method, or justify a different hierarchy with equivalent
+quantitative control.  Fast software for a disjoint special case does
+not settle that requirement.
+
+\subsection{The remaining logical gap}
+
+The initial torus reducer starts with empty pattern and a verified
+irreducible knot exterior.  A later cut normally introduces new boundary
+data.  Erasing it when absorbing a ball may change the problem being
+solved, even though the underlying unmarked manifold is unchanged.
+Likewise, a cyclic word and a fibre flip do not automatically specify a
+compatible system of boundary charts and all transition maps needed for
+a gluing operation.  A nonorientable base with orientable total interval
+bundle has no global fibre orientation; local frames and their transition
+data are the appropriate objects.  The output contract of the native
+compiler deliberately stops before these gluing assertions.
+
+To close the global gap one must prove a complete surface-discovery
+procedure with the required hierarchy length, establish bounds on the
+pattern and its transport, and maintain those bounds through every
+reconstruction and simplification.  The current contributions reduce
+specific costs and remove specific missing source interfaces.  They
+provide no shortcut around these remaining theorems.
