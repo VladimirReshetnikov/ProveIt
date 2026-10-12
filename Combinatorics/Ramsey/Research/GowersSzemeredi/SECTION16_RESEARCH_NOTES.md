@@ -6960,9 +6960,12 @@ These counts do not describe repository-wide deletions. The original final
 statements and bounds are unchanged.
 
 The combined compatibility audit, including the strengthened Fejer bounds
-and `Proofs18LengthSixExplicit`, is running separately. The immutable focused
-report is `verification/2026-10-12-final-uniform-imports.json`. The goal stays
-active; broader compatibility is not yet claimed for this extraction.
+and `Proofs18LengthSixExplicit`, passes 1,409 native modules. Every direct
+Gowers module client of the changed modules lies in this audited closure.
+The final theorem and strengthened-bound checks use only approved axioms.
+Immutable reports are `verification/2026-10-12-final-uniform-imports.json`
+and `verification/2026-10-12-final-uniform-compatibility.json`, with source
+manifests. The full facade remains separate. The goal stays active.
 
 ## F. Routes
 
