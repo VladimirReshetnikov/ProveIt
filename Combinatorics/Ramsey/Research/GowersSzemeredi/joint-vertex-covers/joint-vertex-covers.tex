@@ -315,6 +315,33 @@ The Theorem~18.2 envelope cannot reach $L+2$ in this way: its threshold
 branch alone is $64\cdot2^k+8>64\cdot2^k$. Nor can $d+3$ be reached, since
 the base budget contributes $16\cdot2^k$ to every step.
 
+\emph{Exact small dimensions.} In small dimensions the slack $3(l+4)^2+32$
+dominates the class degree, but there the split degrees are explicit numbers.
+\begin{center}\small
+\begin{tabular}{l*{12}{r}}
+\toprule
+$l$ & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12\\
+\midrule
+true & 17 & 49 & 85 & 136 & 210 & 326 & 524 & 881 & 1550 & 2841 & 5371 & 10375\\
+bound & 115 & 156 & 211 & 288 & 403 & 588 & 907 & 1488 & 2587 & 4716 & 8899 & 17184\\
+\bottomrule
+\end{tabular}
+\end{center}
+The table compares their log-degrees $\lceil\log_2(a_l+D_l+l+1)\rceil$ with
+the bound $4\cdot2^l+3(l+4)^2+32$; the kernel evaluates them. With these
+degrees the envelope peaks at $124.4\cdot2^k$ (at $k=3$), below
+$128\cdot2^k$. The kernel also evaluates the envelope up to $k=12$, and the
+invariants carry it beyond. Degrees $d\le3$ and lengths $L\le5$ come from the
+explicit corpus bounds.
+
+\begin{theorem}\label{thm:fejer5all}
+Theorem~18.1 holds with exponent $\alpha^{2^{2^{d+5}}}$ in every degree $d$,
+and with $\alpha^{2^{2^{d+4}}}$ at every degree $d\ge11$. Theorem~18.2 and
+Corollary~18.7 hold with $L+3$ in every length $L$. Hence
+$W(k,r)\le2^{2^{r^{2^{2^{k+3}}}}}$ for every $k$, and Theorem~1.3 holds with
+density exponent $2^{-2^{k+3}}$.
+\end{theorem}
+
 \section{Theorem 16.2 and Corollary 16.11 with polynomial controls}
 
 The printed Theorem~16.2 restricts a relation with the product property to a
@@ -369,14 +396,12 @@ shrink further:
   Lemma~\ref{lem:joint}, should cost about $68\cdot2^k$. The envelope would
   drop from about $472\cdot2^k$ to about $336\cdot2^k$. This changes none of
   the constants in the table.
-\item \emph{Small degrees.} With the dimension-two family exponent $32$
-  (Theorem~\ref{thm:fejer4}) the class constant is $4$, and $c=5$ holds from
-  degree $9$ on and $c=4$ from degree $13$ on. Below degree $9$ the obstacle
-  is the additive slack $3(l+4)^2+32$ of the class degree, which dominates
-  $4\cdot2^l$ for small $l$. The Theorem~18.1 envelope peaks at about
-  $212\cdot2^k$ at $k=3$. Is there a class recursion whose slack is linear in
-  $l$, or whose small dimensions are bounded directly? That would carry $c=5$
-  to every degree.
+\item \emph{$d+4$ at small degrees.} With the exact small-dimension degrees
+  (Theorem~\ref{thm:fejer5all}), $c=5$ holds in every degree and $c=4$ from
+  degree $11$ on. Between degrees $4$ and $10$ the envelope lies between
+  $64\cdot2^k$ and $124.4\cdot2^k$. Reaching $c=4$ there needs a smaller
+  step in dimensions $2$ to $8$. The base budget alone contributes
+  $16\cdot2^k$, and the class degree about $49$ to $881$.
 \item \emph{Fixed-precision slices with the Fej\'er classes.} Composing the
   two slice controls jointly would lower the step cost from $101\cdot2^k$ to
   about $78\cdot2^k$. That is still above $64\cdot2^k$, so it changes no
@@ -419,6 +444,10 @@ Theorem~\ref{thm:fejer4} & \lean{theorem\_18\_1\_d4\_thirteen\_le}, \lean{theore
 & \lean{theorem\_18\_2\_L3\_eleven\_le}, \lean{theorem\_1\_3\_L3\_eleven\_le},\\
 & \lean{Proofs16UniformCoverTwoSplit}, \lean{Proofs18TightClassesFejerS},\\
 & \lean{Proofs18EtaStepSmall}, \lean{Proofs18CoverFejerHeadlineS}\\
+Theorem~\ref{thm:fejer5all} & \lean{theorem\_18\_1\_d5}, \lean{theorem\_18\_1\_d4\_eleven\_le}, \lean{theorem\_18\_2\_L3},\\
+& \lean{corollary\_18\_7\_L3}, \lean{van\_der\_waerden\_L3\_all}, \lean{theorem\_1\_3\_L3},\\
+& \lean{Proofs18TightClassesFejerT}, \lean{Proofs18CoverFejerHeadlineT},\\
+& \lean{Proofs18CoverFejerLowDegrees5}, \lean{Proofs18CoverFejerShortLengths3}\\
 Fej\'er polynomial 16.2, 16.11 & \lean{Proofs16PolynomialFejer}, \lean{theorem\_16\_2\_polynomial\_fejer},\\
 & \lean{corollary\_16\_11\_polynomial\_fejer}\\
 polynomial Theorem 16.2 & \lean{Proofs16PolynomialStructure}, \lean{theorem\_16\_2\_polynomial}\\

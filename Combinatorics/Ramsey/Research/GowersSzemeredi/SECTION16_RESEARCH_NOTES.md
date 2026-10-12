@@ -5161,6 +5161,20 @@ envelope is therefore `polyGenMuE` / `polyEnvBound_allE`. The collision
 showed up only as `has already been declared` together with `decide`
 "proving" false statements, because `decide` evaluated the other definition.
 
+*Every degree and every length.* Degrees `0, …, 3` hold at `d + 5`:
+`Proofs18CoverFejerLowDegrees5`, generated from the `d + 6` module, needs
+`2^16 ≤ 2^(2^(2+5))` and `74 + 1 ≤ 2^(3+5)`. Lengths `L ≤ 5` hold at `L + 3`:
+`Proofs18CoverFejerShortLengths3` puts towers with `21` and `73` on top,
+below `2^7` and `2^8`. The bridge (stub-checked, pinned in CompletionAudit)
+proves:
+* **`theorem_18_1_d5`: Theorem 18.1 at `d + 5` in every degree**;
+* `theorem_18_1_d4_eleven_le`: `d + 4` for `d ≥ 11`;
+* **`theorem_18_2_L3`, `corollary_18_7_L3`: `L + 3` in every length**;
+* `van_der_waerden_L3_all`: `W(k, r) ≤ 2^2^r^2^2^(k+3)` for every `k`;
+* `theorem_1_3_L3`: Theorem 1.3 with constant `2^(-2^(k+3))`.
+
+The printed offsets are `d + 10` and `L + 9`.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`

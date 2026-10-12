@@ -29,6 +29,7 @@ map").
 | `assemble_coverf.py` | `Proofs18Cover{Modulus,Density,Exponents}Fejer` | `Proofs18Cover{Modulus,Density,Exponents}` |
 | `assemble_headf.py` | `Proofs18CoverFejerHeadline` | `Proofs18CoverDegrees`, `…TightBase`, `…ThresholdsSharp` (+ hand-written closed forms) |
 | `mk_fejer_low_short.py` | `Proofs18CoverFejerLowDegrees`, `…ShortLengths` | `Proofs18CoverSharperLowDegrees`, `Proofs18CoverThresholdsSharp` |
+| `mk_low5_short3.py` | `Proofs18CoverFejerLowDegrees5`, `…ShortLengths3` | `Proofs18CoverFejerLowDegrees` (6 ↦ 5), `Proofs18CoverFejerShortLengths` (4 ↦ 3) |
 | `assemble_l163sharp.py` | `Proofs16BaseCaseRestrictionSharp` | `Proofs16BaseCaseRestriction` |
 | `assemble_febq.py` | `Proofs18FejerEnvelopeBaseQ` | `Proofs18GenericEnvelopeBase` (atom `2^(k+5)` ↦ `5k+14`) |
 | `assemble_coverq.py` | `Proofs18Cover{Modulus,Density,Exponents}FejerQ` | the `…Fejer` modules (`uDegQ`, `fixDegQ`) |
