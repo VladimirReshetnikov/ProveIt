@@ -42,8 +42,8 @@ Scope
   threshold, and the near-one range is broadened to alpha>333/334 with a
   genuine global integer square. ModulusFidelityAudit verifies all six new
   range results over 1,461 modules using only the approved axioms. The
-  large-width branch's genuine integer geometry remains open; no
-  counterexample to the printed Theorem 13.12 is claimed.
+  integer-square audit below now closes the large-width geometry as well;
+  no counterexample to the printed Theorem 13.12 is claimed.
 
   The genuine integer-box residue construction is also proved: canonical
   ascending axes retain the exact carrier and width, and prescribed-step
@@ -61,8 +61,8 @@ Scope
   refinement, and lift-and-slice recurrence. All original thresholds,
   width exponents, diameter constants and common-difference estimates are
   retained. The modulus need not be prime. Their representation gaps are
-  closed; the remaining Section 16 covers and large-width Theorem 13.12
-  rectangle still need genuine integer geometry.
+  closed; the remaining Section 16 cover and structure constructions
+  still need genuine integer geometry.
 
   RectangleFidelityAudit verifies eleven further results over 1,477
   modules, with only the approved axioms. Two proper modular progressions
@@ -71,8 +71,23 @@ Scope
   cells per axis. A subset of relative density delta in their product
   contains a genuine integer rectangle of relative density at least
   delta/4, with both side lengths at least delta*sqrt(m)/16. These results
-  hold over every nonzero modulus. Equal-side extraction and the printed
-  numerical bounds are still needed for the large-width Theorem 13.12.
+  hold over every nonzero modulus. The following audit completes the
+  equal-side extraction and the printed numerical comparisons.
+
+  IntegerSquareFidelityAudit verifies sixteen further results and the
+  exact genuine integer-representative statement of Theorem 13.12 over
+  1,482 modules. Clamped equal-length covers remain inside their parent
+  integer progressions and cover every point. Square extraction retains
+  density delta/16 and any positive side length at most delta*sqrt(m)/16.
+  The already verified Fourier modulus threshold absorbs the width loss,
+  rounding and density loss into the original printed bounds. The theorem
+  holds over every prime modulus, without an additional eventual-modulus
+  restriction. The catalogue companion now uses this genuine theorem.
+  The full native check again verifies all 120 exact catalogue companions,
+  all preceding fidelity audits and all sixteen new results, permitting
+  only propext, Classical.choice and Quot.sound. The source-representation
+  gap in Theorem 13.12 is closed. The remaining Section 16 constructions
+  and complete statement-by-statement source audit keep the goal active.
 
   At the preceding completed catalogue checkpoint, all 120
   numbered statement definitions have exact companion proofs, with no
@@ -105,6 +120,10 @@ Scope
 
   Reproduce the production and axiom checks with:
     python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.CompletionAudit
+  Reproduce the latest full integer-fidelity checks with:
+    python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.IntegerSquareFidelityAudit
+  Its exact input hashes and verification results are recorded in:
+    Research/GowersSzemeredi/verification/2026-10-11-integer-square-fidelity.json
   The exact input hashes and verification results are recorded in
     Research/GowersSzemeredi/verification/2026-10-11-numbered-and-bounds.json
   The source ledger records every numbered definition, TeX heading lines,

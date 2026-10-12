@@ -16,6 +16,7 @@ theorem dense_common_step_integer_rectangle {N : Nat} [NeZero N]
     ∃ Q T : NatAP, ∃ E : Finset (Pair N),
       Q.IsProper ∧ T.IsProper ∧ Q.step = T.step ∧
       Q.carrier ⊆ Finset.range N ∧ T.carrier ⊆ Finset.range N ∧
+      (Q.toModAP N).carrier ⊆ P.carrier ∧ (T.toModAP N).carrier ⊆ R.carrier ∧
       delta * Real.sqrt P.length / 16 ≤ Q.length ∧
       delta * Real.sqrt P.length / 16 ≤ T.length ∧
       E ⊆ B ∧ E ⊆ (Q.toModAP N).carrier.product (T.toModAP N).carrier ∧
@@ -76,6 +77,8 @@ theorem dense_common_step_integer_rectangle {N : Nat} [NeZero N]
     (square_root_rectangle_capacity (Nat.cast_nonneg _) hd.le hMreal hLreal)
   refine ⟨Q i, T j, A i j, (hQprops i).1, (hTprops j).1,
     (hQprops i).2.1.trans (hTprops j).2.1.symm, (hQprops i).2.2, (hTprops j).2.2,
+    (fun x hx => (hQpart.1 x).mpr ⟨i, hx⟩),
+    (fun x hx => (hTpart.1 x).mpr ⟨j, hx⟩),
     hQi, hTj, Finset.inter_subset_right, Finset.inter_subset_left, hcell⟩
 
 end LeanProofs.GowersSzemeredi
