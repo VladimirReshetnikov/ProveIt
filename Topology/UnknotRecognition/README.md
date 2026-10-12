@@ -86,6 +86,16 @@ PDFs in `docs/arXiv-2607.23350v1/`.
 
 ## Compressed geometry continuation (11 October 2026)
 
+The new [full raw-cut constructor](synthesis/cut_cells.tex) retains all four
+cell dimensions in binary affine families with signed attaching maps and
+reconstruction charts. Its bit-cost proof is polynomial in source tetrahedra
+and coordinate bits. All 1,599 maintained tests pass with no skips; 1,755
+explicit cuts agree in homology over F2/F3 and 110 source proofs independently
+replay. Full construction/serialization measurements retain both the
+25.792x ratio on 4,096 copies and substantial small-input regressions.
+The three-dimensional raw cut is now described; parallelity collapse,
+bounded admissible cores and the general hierarchy complexity proof remain open.
+
 The new [cut-boundary constructor](synthesis/cut_boundary.tex) supplies
 full binary polygon, edge and vertex families with oriented attachments and
 source-chamber carriers. It determines all boundary genera and each cut
@@ -93,7 +103,8 @@ piece's boundary count and total genus. All 1,589 maintained tests pass with
 Regina and no skips; 1,755 explicit cuts agree and 110 saved proofs independently
 replay. The maintained article records the polynomial encoded-cost proof,
 complete-query gains, small-input regressions and a sphere-boundary nonball
-counterexample. Interior geometry and the general hierarchy bound remain open.
+counterexample. Its boundary-only output is complemented by the raw cut above;
+bounded-core geometry and the general hierarchy bound remain open.
 
 Weighted static contraction now merges ordered boundaries in linear work.
 Core-facing prism ports use an exact three-coordinate additive bitset when
