@@ -1,0 +1,989 @@
+\section{Geometric certificates for the core and its marked attachments}
+\label{geo:section}
+
+A bounded complementary core is useful only if its topology can be
+certified and the omitted product regions can be glued back correctly.
+This section supplies a conservative consumer of the existing native
+normal-cut geometry.  The consumer has two parts.  First, it certifies
+handlebodies by cancellations witnessed by \emph{actual geometric
+intersection counts}.  Second, it reconstructs the topology of an assembly
+whose interfaces are separated disks.  A complete polynomial criterion is
+obtained for the ball cores accessible to raw singleton cancellation.
+An explicit infinite family shows that this criterion can succeed uniformly
+when the normal coordinates grow exponentially.
+
+The algebraic source-closure principle used below is already present in
+ProveIt report~56, \texttt{reports/56/article/raw\_epoch.tex}
+\cite{ProveIt2026}.  We prove the needed matrix statement for completeness.
+The contribution here is its geometric realization and its application to
+source-authenticated normal-cut handles.  Neither the classical handle
+cancellation theorem nor the elementary topology of interval bundles is
+claimed as new.
+
+\subsection{The geometric input and the role of literal occurrences}
+\label{geo:input}
+
+We use the full geometric conclusion of the existing source-parallelity
+construction, described in \texttt{synthesis/parallelity.tex}
+\cite{ProveIt2026}.  This conclusion supplies an embedded interval bundle,
+its complete base polygons and fiber identifications, and an inherited
+complementary handle structure.  The polygon construction includes contacts
+of dimensions zero--one, zero--two, and one--two, together with the source
+edge and vertex strata.  Its core records contain both ends of every
+one-handle, the alternating attaching sectors of every two-handle, and the
+vertex-link charts of every three-handle.  We invoke this geometric
+conclusion, rather than infer an embedding from Euler characteristics,
+component histograms, or an abstract presentation.
+
+\begin{definition}[Authenticated core incidence data]
+\label{geo:def-incidence}
+Let $K$ be a compact orientable three-manifold with a genuine finite handle
+decomposition.  Suppose that it has no three-handles.  Its zero- and
+one-handles form a disjoint union of handlebodies.  Contract a spanning
+forest of their incidence graph by geometric zero/one-handle cancellations.
+In one resulting connected component, let
+\[
+ D_1,\ldots,D_k
+\]
+be the complete system of co-core disks of the remaining one-handles, and
+let $\alpha_1,\ldots,\alpha_f$ be the disjoint embedded two-handle attaching
+curves on the boundary of this handlebody.  Put the curves and disk
+boundaries in the transverse position specified by the handle charts and
+set
+\[
+ n_{ih}=\bigl|\alpha_i\cap\partial D_h\bigr|.
+ \tag{G1}\label{geo:eq-incidence}
+\]
+The matrix $(n_{ih})$ is authenticated when every counted occurrence is an
+actual passage through the corresponding source one-handle, with its
+source attaching sector retained.
+\end{definition}
+
+A forest cancellation only absorbs tree one-handles into zero-handles.
+The other co-core disks survive, so deleting the tree-handle entries from
+the source attaching lists gives the incidences in
+\eqref{geo:eq-incidence}.  A two-handle cannot connect distinct components
+of the zero/one-handle union: its attaching circle is connected.  Thus the
+forest also identifies the components relevant to all subsequent
+cancellations.
+
+This contract is stronger than a cellular boundary matrix or a
+fundamental-group presentation.  An exponent sum of $1$, or a letter
+occurring once after free reduction, need not mean that an attaching curve
+meets a belt circle once.  All occurrences in
+\eqref{geo:eq-incidence} are unsigned \emph{geometric} occurrences.  There
+is no free reduction, cancellation of opposite signs, or replacement by a
+homotopic curve hidden in this definition.
+
+\subsection{A geometric realization of positive incidence elimination}
+\label{geo:slides}
+
+\begin{lemma}[Meridian-disk realization of a raw singleton pivot]
+\label{geo:lem-slide}
+Let $H$ be an orientable handlebody with a complete disk system
+$D_1,\ldots,D_k$, and let $\alpha_1,\ldots,\alpha_f$ be pairwise disjoint
+embedded attaching curves on $\partial H$.  Write
+$n_{ih}=|\alpha_i\cap\partial D_h|$.  Suppose that $n_{rg}=1$.
+Attach the two-handle with attaching curve $\alpha_r$.  The resulting
+manifold is a handlebody of genus $k-1$ with a complete disk system indexed
+by $h\ne g$ for which the surviving attaching curves have incidences
+\[
+ n'_{ih}=n_{ih}+n_{ig}n_{rh},
+ \qquad i\ne r,\quad h\ne g.
+ \tag{G2}\label{geo:eq-positive-pivot}
+\]
+In particular, the equality counts actual intersections; it is not merely
+an equality of homology classes or group words.
+\end{lemma}
+
+\begin{proof}
+Keep $D_g$ fixed, and write $q$ for its unique intersection with
+$\alpha_r$.  If $\alpha_r$ meets another disk boundary, choose such an
+intersection $p$ adjacent to $q$ along $\alpha_r$, among all current
+intersections with disk boundaries.  Suppose that $p$ lies on
+$\partial D_h$.  The intervening arc has interior disjoint from all disk
+boundaries.  It is also disjoint from every other attaching curve, since
+those curves are disjoint from $\alpha_r$.
+
+Slide $D_h$ over a parallel copy of $D_g$ along a thin band following this
+arc.  Choose the copy on the side of $D_g$ approached by the arc, and choose
+its endpoint just before $q$.  The band then misses $D_g$ itself.  The
+standard boundary connected sum replaces $D_h$ by a properly embedded disk
+and preserves a disjoint complete disk system.  This elementary disk slide
+can be seen in a regular neighborhood of the two disks and the band:
+sliding one disk across the parallel copy changes the chosen meridian
+system without changing the handlebody cut out by it.
+
+The smoothing at the band removes the intersection at $p$ and the unique
+intersection of $\alpha_r$ with the parallel copy of $\partial D_g$.
+The two sides of the band miss $\alpha_r$.  Thus the replacement for $D_h$
+has exactly one fewer intersection with $\alpha_r$; the intersections of
+$\alpha_r$ with the other disks are unchanged.  Small band endpoints and a
+sufficiently thin band miss all other attaching curves.  For any $i\ne r$,
+the new disk boundary consequently consists, for purposes of counting
+intersections with $\alpha_i$, of the old $\partial D_h$ and one parallel
+copy of $\partial D_g$.  Its intersection count increases by exactly
+$n_{ig}$.
+
+Repeat this operation, always using the fixed disk $D_g$ and an adjacent
+intersection along $\alpha_r$.  At each step the total number of
+intersections of $\alpha_r$ with the other disk boundaries decreases by
+one.  Hence the process terminates.  The disk indexed by $h$ has been slid
+exactly $n_{rh}$ times, whereas $D_g$ and its intersections with the other
+attaching curves have remained fixed.  The resulting disks $E_h$, $h\ne
+g$, are disjoint from $\alpha_r$ and satisfy
+\[
+ |\alpha_i\cap\partial E_h|=n_{ih}+n_{ig}n_{rh}.
+\]
+
+In the disk system consisting of $D_g$ and the $E_h$, the selected
+attaching curve goes over the handle dual to $D_g$ exactly once and misses
+all other co-cores.  Its one/two-handle pair therefore cancels by the
+geometric one-point cancellation theorem; see, for example,
+\cite[Section~10.1.3, Lemma~10.3]{SadykovNotes}.  Equivalently, cutting along
+the $E_h$ leaves a solid torus, and attaching a two-handle along a curve
+meeting its meridian once turns that solid torus into a ball.  Thus the
+$E_h$ form a complete disk system after attachment.  Every other attaching
+curve is disjoint from $\alpha_r$, so it lies on the new boundary, and its
+intersections with the $E_h$ are unchanged.  This proves
+\eqref{geo:eq-positive-pivot}.
+\end{proof}
+
+\begin{remark}[What the construction does and does not record]
+\label{geo:rem-geometric-existence}
+The proof permits very many disk slides.  Its purpose is to prove that a
+specific integer update is geometrically realizable.  A classifier can
+verify that update without expanding the disks or constructing the
+resulting boundary homeomorphism.  If a later hierarchy operation needs an
+explicit lifted disk or the transported position of a peripheral curve,
+that additional output must have its own representation and complexity
+bound.  The present certificate asserts the handlebody type and the
+existence of the indicated complete disk system.
+\end{remark}
+
+\begin{proposition}[Saturation removes occurrence growth from verification]
+\label{geo:prop-saturation}
+Let $C=\{0,1,2\}$ have operations
+\[
+ a\mathbin{\oplus}b=\min\{2,a+b\},\qquad
+ a\mathbin{\otimes}b=\min\{2,ab\},
+\]
+and let $\sigma(n)=\min\{2,n\}$ for $n\in\mathbb N$.
+Starting from authenticated incidences, store only $c_{ih}=\sigma(n_{ih})$.
+A pivot $(r,g)$ is geometrically valid whenever $c_{rg}=1$.  After deleting
+its row and column, the exact saturated incidences are
+\[
+ c'_{ih}
+ =c_{ih}\mathbin{\oplus}(c_{ig}\mathbin{\otimes}c_{rh})
+ =\min\{2,c_{ih}+c_{ig}c_{rh}\}.
+ \tag{G3}\label{geo:eq-capped-pivot}
+\]
+For $k+f=O(T)$, a supplied sequence removing all two-handles is replayed in
+$O(T^3)$ operations on constant-sized entries and $O(T^2)$ working space.
+Its forest and pivot labels use $O(T\log(T+1))$ bits.
+\end{proposition}
+
+\begin{proof}
+The map $\sigma$ preserves zero, one, addition and multiplication when its
+codomain uses $\oplus$ and $\otimes$.  This follows directly by separating
+the cases $0$, $1$, and at least $2$.  In particular,
+$\sigma(n)=1$ if and only if $n=1$.  Lemma~\ref{geo:lem-slide} and induction
+therefore show that every stored matrix is exactly the saturation of an
+actual geometric incidence matrix.  No large integer or word needs to be
+reconstructed.  There are at most $\min\{k,f\}$ pivots, each of which
+updates at most $kf$ entries.  The remaining bounds follow from the matrix
+size and from recording $O(T)$ source identifiers.
+\end{proof}
+
+The operation bound concerns this matrix phase after the source charts
+have been authenticated.  It does not absorb the cost of input validation,
+normal-coordinate arithmetic, the interval-orbit proofs used to obtain the
+parallelity data, or a preceding search for the normal surface.
+
+\begin{corollary}[Core handlebody certificate]
+\label{geo:cor-core-handlebody}
+Consider a connected authenticated core with $v$ zero-handles, $e$
+one-handles, $f$ two-handles, and no three-handles.  If a sequence of valid
+pivots removes every two-handle after spanning-tree contraction, the core
+is a handlebody of genus
+\[
+ g=e-v+1-f.
+ \tag{G4}\label{geo:eq-core-genus}
+\]
+\end{corollary}
+
+\begin{proof}
+Tree contraction leaves one zero-handle and $k=e-v+1$ one-handles.
+Each pivot attaches one of the remaining two-handles and reduces the
+handlebody genus by one, by Lemma~\ref{geo:lem-slide}.  After all $f$
+attachments have been made, no further handles remain.  The result is a
+handlebody of genus $k-f$.
+\end{proof}
+
+The hypothesis excluding three-handles is essential to this conclusion.
+The actual attaching curves and their disjointness are essential as well:
+an arbitrary integer matrix is not a certificate of a three-manifold's
+topology.  Failure of a search for these pivots does not show that the core
+is not a handlebody.
+
+\subsection{A complete polynomial criterion within the ball-core class}
+\label{geo:ball-closure}
+
+There is a substantial improvement over trying arbitrary singleton
+pivots.  In the square case, an entire successful raw elimination can be
+discovered without forming any fill entries.  This is the geometric
+application of the immutable-source theorem from report~56
+\cite{ProveIt2026}.
+
+\begin{lemma}[Reversing a successful positive unit pivot]
+\label{geo:lem-permanent-pivot}
+Let $A=(a_{ij})$ be a square matrix of nonnegative integers with $a_{dc}=1$.
+For $i\ne d$ and $j\ne c$, put
+\[
+ b_{ij}=a_{ij}+a_{ic}a_{dj}.
+\]
+If $\operatorname{per}(B)=1$, then $\operatorname{per}(A)=1$.
+The permanent of the empty matrix is understood to be $1$.
+\end{lemma}
+
+\begin{proof}
+View a matrix entry as a number of separately labelled edges in a
+bipartite multigraph.  A permanent counts its edge-labelled perfect
+matchings.  Tag each edge of $B$ either as a direct edge of $A$, or as an
+ordered pair consisting of an edge from $i$ to $c$ and an edge from $d$ to
+$j$.
+
+The unique tagged perfect matching of $B$ contains at most one pair-created
+edge.  If it contained two, say in positions $(i,j)$ and $(k,\ell)$, then
+$i\ne k$ and $j\ne\ell$.  Exchanging their destination factors would
+produce pair-created edges in positions $(i,\ell)$ and $(k,j)$, giving a
+second tagged perfect matching.  If the unique matching contains no
+pair-created edge, adjoin the unique edge $(d,c)$ to obtain a perfect
+matching of $A$.  If it contains one, replace that edge by its two
+component edges to obtain a perfect matching of $A$.
+
+Conversely, map any perfect matching of $A$ into a tagged perfect matching
+of $B$.  If it uses $(d,c)$, delete that edge.  Otherwise there is a unique
+row matched to $c$ and a unique column matched from $d$; replace these two
+edges by the corresponding pair-created edge.  This map is injective:
+the zero-or-one number of pair-created edges distinguishes the cases, and
+the tags recover all original edge labels.  Hence $A$ has at least one and
+at most one perfect matching.
+\end{proof}
+
+\begin{definition}[Source row-leaf deletion]
+\label{geo:def-leaf}
+In a matrix with some rows and columns already deleted, a row is a
+\emph{source row leaf} if its immutable source entries have exactly one
+nonzero among the live columns, and that entry equals $1$.  A row-leaf
+deletion removes this row and its unique live column.  No fill update is
+performed.
+\end{definition}
+
+\begin{theorem}[Complete source criterion for raw ball-core cancellation]
+\label{geo:thm-ball-closure}
+Let a connected authenticated core have no three-handles and satisfy
+\[
+ k=e-v+1=f.
+\]
+Let $A$ be its square unsigned incidence matrix after spanning-tree
+contraction.  The following conditions are equivalent:
+\begin{enumerate}
+\item Some sequence of positive singleton pivots
+      \eqref{geo:eq-positive-pivot} removes every row and column.
+\item The source matrix satisfies $\operatorname{per}(A)=1$.
+\item Source row-leaf deletion removes every row and column.
+\end{enumerate}
+Whenever these conditions hold, the core is a three-ball.  Condition~3 is
+decidable in $O(k+f+I)$ structural operations after source preparation,
+where $I$ is the number of nonzero source incidences.  A successful trace
+has a verifier with the same linear bound and
+$O((k+f)\log(k+f+1))$-bit labels.
+\end{theorem}
+
+\begin{proof}
+A successful sequence in condition~1 ends in the empty matrix.  Apply
+Lemma~\ref{geo:lem-permanent-pivot} backwards through the sequence to obtain
+condition~2.
+
+Suppose condition~2 holds.  Let its unique edge-labelled perfect matching
+assign one column to each row.  Every matched entry equals $1$, since two
+parallel edges in such an entry would give two matchings.  Name each row
+by its matched column, and draw a directed edge $x\to y$ whenever $y\ne x$
+and that row has a nonzero entry in column $y$.  A directed cycle would
+allow the matched columns along the cycle to be exchanged, producing a
+second perfect matching.  The directed graph is therefore acyclic.  A
+sink row has no nonzero entry except its unit matched entry, and is a
+source row leaf.  Deleting it and its column leaves a matrix whose
+permanent is still $1$.  Induction proves condition~3.
+
+Finally, a row leaf has zero in every other live column.  Thus the fill
+term in \eqref{geo:eq-positive-pivot} vanishes for all surviving entries.
+Every source row-leaf deletion is consequently a valid positive singleton
+pivot, and condition~3 implies condition~1.  Lemma~\ref{geo:lem-slide}
+realizes these pivots geometrically.  Corollary~\ref{geo:cor-core-handlebody}
+gives genus $k-f=0$.
+
+For discovery, store each row's live support size and an incidence list
+from each column to its source rows.  Put the eligible rows in a queue.
+On deleting a column, update its incident rows; each source incidence is
+processed a bounded number of times.  A row enters the queue only when its
+live support becomes one, with stale entries discarded if its support
+subsequently becomes zero.  This gives the stated structural bound.
+
+An independent checker need not recreate a sequence of mutable matrices.
+Assign each deleted column its deletion time.  For every supplied pivot,
+check that its source entry equals $1$, and that every other source column
+in that row has an earlier deletion time.  Check that each row and column
+appears exactly once.  These source conditions state precisely that each
+step is a row-leaf deletion.  Scanning the immutable incidences verifies
+all conditions in linear structural work.  Identifiers, times and counters
+have logarithmic bit length.
+\end{proof}
+
+\begin{remark}[Scope of completeness]
+\label{geo:rem-class-completeness}
+The theorem is complete for the specified raw geometric cancellation
+model on the supplied handle structure.  It is not a recognition theorem
+for all ball cores.  A ball can require a different disk system, more
+general slides, a different spanning tree, or other geometric operations
+before this model succeeds.  Even when the source permanent is one, a
+poor arbitrary singleton pivot can create positive fill and become stuck.
+The source row-leaf procedure avoids this order dependence.  The permanent
+is used only in the proof and is never computed by the algorithm.
+\end{remark}
+
+\begin{proposition}[A bounded-genus extension]
+\label{geo:prop-fixed-genus}
+Let a connected authenticated core have $k$ non-tree one-handles, $f$
+two-handles, no three-handles, and $g=k-f\ge0$.  Fix a set $S$ of $g$
+one-handles to survive.  A complete raw singleton cancellation with these
+survivors exists if and only if the square source matrix on all rows and
+on columns outside $S$ has permanent one, equivalently if source row-leaf
+deletion succeeds when the columns in $S$ are treated as already known.
+Therefore exhaustive search over survivor sets is complete within this
+raw model in
+\[
+ \binom{k}{g}\,\operatorname{poly}(T)
+ \tag{G5}\label{geo:eq-genus-search}
+\]
+work when $k+f=O(T)$.  This is polynomial for fixed $g$ and
+$2^{O((\log(T+1))^2)}\operatorname{poly}(T)$ when $g=O(\log(T+1))$.
+\end{proposition}
+
+\begin{proof}
+Restrict any successful positive-pivot sequence to the non-survivor
+columns.  The restricted square matrix follows the same positive-pivot
+rule and ends empty, so its permanent is one by
+Lemma~\ref{geo:lem-permanent-pivot}.  Conversely, apply the row-leaf order
+of Theorem~\ref{geo:thm-ball-closure} to this restricted matrix.  A donor
+row can have arbitrary source entries in $S$.  Previously eliminated
+columns have images supported only in $S$ and still earlier columns.
+Consequently they introduce no occurrence of a different live
+non-survivor column.  The unique live non-survivor occurrence remains
+exactly one, and every cancellation is geometrically valid by
+Lemma~\ref{geo:lem-slide}.  All $f=k-g$ rows are consumed.  Enumerate the
+$\binom{k}{g}$ possible survivor sets and apply the source test to each.
+Finally $\binom{k}{g}\le k^g$ gives the displayed asymptotic consequences.
+\end{proof}
+
+The exhaustive survivor search in this proposition is a theoretical
+extension of the core certificate, not an assertion that the delivered
+implementation searches every such set.  Its geometric use is new to this
+consumer; the corresponding immutable-source closure principle was
+already proved in report~56 \cite{ProveIt2026}.  It also does not bound a
+hierarchy's genera or prove that every unknot enters this cancellation
+class.
+
+\subsection{Interval bundles and the actual marked interface}
+\label{geo:bundles}
+
+\begin{lemma}[An orientable interval bundle over a bordered surface]
+\label{geo:lem-ibundle}
+Let $F$ be a connected compact surface with nonempty boundary, and let
+$p:P\to F$ be an interval bundle whose total space is orientable.  Then
+$P$ is a handlebody of genus
+\[
+ 1-\chi(F).
+ \tag{G6}\label{geo:eq-bundle-genus}
+\]
+If $F$ is orientable of genus $h$ with $b>0$ boundary components, this genus
+is $2h+b-1$.  If $F$ is nonorientable with $q$ crosscaps and $b>0$ boundary
+components, it is $q+b-1$.
+\end{lemma}
+
+\begin{proof}
+A connected compact surface with nonempty boundary admits
+$1-\chi(F)$ disjoint properly embedded arcs that cut it into a disk.  For
+example, take the co-core arcs in a decomposition of $F$ into one disk and
+$1-\chi(F)$ surface one-handles.  The inverse image of each arc under $p$
+is a properly embedded disk.  Cutting $P$ along these disks gives the
+interval bundle over a disk, namely $D^2\times I$, a three-ball.  The disks
+are therefore a complete meridian system.  Orientability of the total
+space ensures that reconstructing it uses orientable three-dimensional
+one-handles, proving the handlebody assertion and the genus formula.  The
+two displayed specializations follow from surface Euler characteristic.
+\end{proof}
+
+In particular, the orientable interval bundle over a M\"obius band is a
+solid torus.  Requiring the base to be orientable would incorrectly discard
+this useful case.  Conversely, the nonempty-boundary hypothesis must be
+checked: for example, $S^2\times I$ is not a handlebody, and the arc-cutting
+argument does not apply to a closed base.
+
+\begin{lemma}[Maximal marked runs give the disk interfaces]
+\label{geo:lem-interface}
+Assume the full existing source-parallelity conclusion: in the cut
+three-manifold the selected total interval bundle $p:P\to F$ is embedded,
+its complementary inherited core is $K$, and
+\[
+ P\cap K=p^{-1}(A),
+ \qquad A\subseteq\partial F,
+ \tag{G7}\label{geo:eq-intersection}
+\]
+where $A$ is the union of the closed core-labelled base arcs, with all
+source endpoint contacts included.  On each completed base boundary
+circle, amalgamate consecutive core-labelled arcs into maximal connected
+runs.  If no run is a whole boundary circle, then every component of
+$P\cap K$ is an embedded disk.  Distinct such components have separated
+closures and admit compatible corner collars.  If a run is a whole
+boundary circle, its inverse image is an annulus and is outside this
+disk-interface conclusion.
+\end{lemma}
+
+\begin{proof}
+The completed base boundary is a compact one-manifold.  A finite union of
+its closed cell arcs has connected components that are either closed
+intervals or entire circles; an interval is maximal precisely after all
+consecutive selected arcs have been amalgamated.  Distinct interval
+components are separated by nonempty open complementary arcs.  An
+interval bundle over a closed interval is a disk.  Over a boundary circle
+of a surface, an interval bundle with orientable total space restricts to
+an annulus: the base has an annular collar there, so orientation of the
+total space rules out reversal of the fiber around that circle.
+
+Equation~\eqref{geo:eq-intersection} is a statement about the embedded
+bundle and core, not merely their quotient data.  Thus each inverse-image
+disk is embedded also on the core side.  Distinct components are disjoint
+compact subsets of this embedded product boundary; there are only finitely
+many core arcs, and hence finitely many such components.  Choose disjoint
+small neighborhoods and use the fiber charts and boundary collars to
+round their corners compatibly.  The rounded disks still have disjoint
+closures.  An apparent shared corner between different bundle components,
+or an alternating corner that was not identified in the completed base,
+would contradict the assumed embedded interval-bundle structure and its
+full product-intersection formula.  This is why the source theorem's edge
+and vertex contacts are needed.
+\end{proof}
+
+The existing geometric theorem supplying
+\eqref{geo:eq-intersection} is the trusted mathematical input here; its
+source charts are reconstructed by the geometry verifier
+\cite{ProveIt2026}.  The new ordered boundary word certifies which maximal
+components of $A$ are intervals and which are circles.  A cyclic word scan
+alone would not establish \eqref{geo:eq-intersection}.  In particular, a
+single face port is not automatically one disk interface.  Several ports
+can constitute one disk, or together form an annulus.  Independently
+shrinking every face port would change the attachment and is not a valid
+substitute for using its true maximal run.
+
+Each maximal run has one owner component of the core, as verified from the
+source attachment charts.  This owner is a core \emph{component}, not
+necessarily one core handle: consecutive arcs can face distinct handles
+within that same component.
+
+\subsection{Disk gluing gives an exact genus formula}
+\label{geo:disk-gluing}
+
+\begin{theorem}[Handlebodies glued along separated disks]
+\label{geo:thm-disk-gluing}
+Let $\{H_v:v\in V\}$ be finitely many connected orientable handlebodies of
+genera $g_v$.  Specify pairs of embedded closed disks on their boundaries,
+all with pairwise disjoint closures before gluing, and a homeomorphism for
+each pair.  Suppose that the quotient, with corners rounded, is orientable.
+Let $\Gamma$ be the incidence multigraph, with one vertex per handlebody
+and one edge per disk pair; loops and parallel edges are allowed.  Every
+connected component $C$ of $\Gamma$ gives a handlebody component of the
+quotient, of genus
+\[
+ G_C=\sum_{v\in V(C)}g_v+|E(C)|-|V(C)|+1.
+ \tag{G8}\label{geo:eq-gluing-genus}
+\]
+It is a three-ball if and only if every constituent genus is zero and
+$C$ is a tree.
+\end{theorem}
+
+\begin{proof}
+The pieces meet only in the specified disk identifications, so the graph
+records connectedness exactly.  Work with one connected graph component
+and choose a spanning tree.
+
+Choose a complete meridian system in each $H_v$ that misses all its marked
+disks.  Such a choice always exists: first move the finitely many marked
+boundary disks, by a boundary isotopy, into small disjoint neighborhoods
+away from any chosen meridian boundaries; extend the isotopy over a collar
+of the handlebody and pull the meridian system back.  Thus this step does
+not impose an extra condition on the placement or gluing maps of the
+marked disks.
+
+Cut the quotient along all these local meridian disks.  Also cut along the
+gluing disk corresponding to each edge outside the chosen spanning tree.
+The remaining manifold is a tree of balls glued along boundary disks.  It
+is a ball, by repeatedly deleting a leaf ball and applying the elementary
+ball-attachment lemma; compare \cite[Lemma~1.3]{Hatcher2007}.  Consequently
+the local meridian disks together with the non-tree gluing disks form a
+complete meridian system.  Their total number is
+\[
+ \sum_v g_v+|E|-|V|+1.
+\]
+The orientability hypothesis yields an orientable handlebody of this
+genus.  Every $g_v$ is nonnegative, and $|E|-|V|+1$ is the nonnegative cycle
+rank of a connected graph.  Their sum is zero exactly in the stated ball
+case.
+\end{proof}
+
+\begin{corollary}[A terminal classifier for a marked normal cut]
+\label{geo:cor-normal-cut-classifier}
+Take the existing authenticated normal-cut parallelity decomposition.
+Assume that every core component has a successful certificate from
+Corollary~\ref{geo:cor-core-handlebody}, every interval-bundle base has
+nonempty boundary, and every maximal core-labelled boundary run is proper.
+Then each component of the entire cut is a handlebody.  Its genus is given
+by \eqref{geo:eq-gluing-genus}, using the core genera from
+\eqref{geo:eq-core-genus}, the bundle genera from
+\eqref{geo:eq-bundle-genus}, and the actual maximal-run incidence graph.
+In particular, the entire cut is one three-ball exactly when that graph is
+connected and acyclic and all its vertex genera are zero.
+\end{corollary}
+
+\begin{proof}
+The core certificates give the handlebody pieces.  Lemma~\ref{geo:lem-ibundle}
+gives the same conclusion for the bundle pieces, including those with
+nonorientable bases.  Lemma~\ref{geo:lem-interface} supplies their separated
+disk interfaces.  Apply Theorem~\ref{geo:thm-disk-gluing}.
+\end{proof}
+
+This classification uses only the existence of the homeomorphisms supplied
+by the core cancellations.  Such a homeomorphism automatically transports
+the originally authenticated boundary disks to disjoint embedded disks.
+Because Theorem~\ref{geo:thm-disk-gluing} allows arbitrary disk placements,
+one need not explicitly transport their parametrizations to compute the
+genus.  Explicit marking transport would again be necessary for a later
+operation that needs specified curves or disks, rather than this terminal
+topological type.
+
+An implementation must also preserve the distinction between an actual
+piece and a multiplicity-weighted profile of pieces.  A bundle component
+with a core port has a source owner and multiplicity one.  Unattached
+repeated profiles can contribute many isolated graph components.  The
+one-ball conclusion requires the total connected-component count to be
+one, including those unattached components.
+
+\subsection{A concrete extension: absorbing disc-base annuli}
+\label{geo:annulus-absorption}
+
+A full core-labelled boundary circle prevents disk gluing.  For a disk base,
+however, its bundle is a two-handle.  Lackenby's refined algorithm already uses
+this replacement for interior parallelity bundles\cite[Section~10, step~$(2')$]{Lackenby2026}.
+The contribution below supplies the source-chart incidence row and proves
+compatibility with the present geometric cancellation certificates.
+
+\begin{proposition}[Source-aware absorption of a disc-base bundle]
+\label{geo:prop-annulus-absorption}
+In the authenticated source-parallelity decomposition, let $P\to F$ be a
+connected bundle component whose base is a disk and whose entire base
+boundary is core-labelled.  Then $P$ can be absorbed into its owner core
+component as one two-handle.  No zero-, one-, or three-handles need be
+added.
+
+Use the full ordered boundary port circle and its native source charts.
+Every port of core dimension one is a face-sector strip running from one
+end of that source one-handle to the other, and every port of core dimension
+zero lies in a zero-handle boundary.  Thus the new attaching circle has
+raw unsigned incidence
+\[
+ n^{\mathrm{new}}_h
+ =\#\{\text{ports on this circle of core dimension one and owner }h\}.
+ \tag{G9}\label{geo:eq-absorbed-row}
+\]
+After deleting spanning-forest columns, this row may be appended to the
+existing authenticated core incidence matrix.  The geometric pivot,
+saturation, and source row-leaf theorems then apply to the augmented core.
+The assertion holds simultaneously for any collection of such bundle
+components.  There are $O(T)$ possible absorbed components and $O(T)$
+source port occurrences in all their new rows together.
+\end{proposition}
+
+\begin{proof}
+An interval bundle over a disk is $D^2\times I$.  Its intersection with the
+core is, by the full source product-intersection conclusion,
+\[
+ p^{-1}(\partial F)=\partial D^2\times I.
+\]
+This is exactly the attaching region of a three-dimensional two-handle.
+The annulus is connected, so its image lies in one core component.  The
+two horizontal disks are the free boundary of the attached handle.
+
+To authenticate its attaching circle relative to the core's zero/one
+structure, choose the midpoint section of its fibers around $\partial F$.
+The native fiber transition maps preserve this midpoint, including maps
+that reverse the fiber.  The resulting curve is therefore an embedded
+circle in the attaching annulus.  On a core-zero port it lies in the
+boundary of the indicated zero-handle.  The native constructor's
+core-one ports come precisely from the \texttt{face\_sector} sides of
+selected edge-cap polygons.  Each such side traverses the lateral boundary
+of its core one-handle between the two source tetrahedron ends, even when
+those ends belong to the same tetrahedron or zero-handle.  The midpoint
+curve consequently meets that one-handle's co-core exactly once.  The
+source face flags, rather than equality of the tetrahedron names, identify
+these ends.  This proves \eqref{geo:eq-absorbed-row}.
+
+There is also an explicit signed chart check, although the saturated
+classifier needs only unsigned occurrences.  Let the oriented source ends
+of a core one-handle $h$ have flags $(t_h,f_h)$ and $(u_h,g_h)$.  For the
+face-sector port $p$, inspect the initial and terminal cap-edge endpoint
+flags in its local direction and set
+\[
+ \delta_p=
+ \begin{cases}
+ +1,&\text{initial}=(t_h,f_h),\quad\text{terminal}=(u_h,g_h),\\
+ -1,&\text{initial}=(u_h,g_h),\quad\text{terminal}=(t_h,f_h).
+ \end{cases}
+ \tag{G10}\label{geo:eq-port-sign}
+\]
+Require one of these two cases.  If the port is traversed with sign $s_p$
+in the canonical boundary word, its raw letter is $x_h^{s_p\delta_p}$.
+A core-zero port stays in its owner zero-handle, while a core-one port
+moves between the two stated ends.  The resulting sequence must be a
+closed path in the source zero/one graph.  Both tetrahedron and face flags
+are needed: equality of tetrahedron labels alone does not distinguish the
+two ends of a self-pairing.  No abelian signed sum replaces the unsigned
+count in \eqref{geo:eq-absorbed-row}.
+
+These port charts lie in the boundary of the core zero/one-handle union
+outside the attaching regions of the original core two-handles.  This is
+part of the genuine source dual-handle structure: the complete lower
+attachments of complementary handles stay in the core, while the selected
+product contacts occupy their recorded, disjoint boundary regions.
+Compatible small collars make the new midpoint circles disjoint from the
+original two-handle attaching curves.  Hence all the new handles can be
+placed at the same two-handle stage, with exactly the authenticated rows
+just computed.  Tree contraction deletes only the tree entries, as before.
+The preceding geometric cancellation theorems apply to this augmented
+handle structure without introducing a three-handle.
+
+Different bundle components are disjoint in the embedded source bundle,
+so their attaching annuli and midpoint curves can be regularized
+disjointly.  Absorbing them leaves the marked interfaces of the remaining
+components intact.  Each absorbed component contains at least one core
+port, and every port has one actual owner.  The native $O(T)$ port bound
+therefore bounds both the number of new two-handles and the total number
+of port occurrences used in their rows.
+\end{proof}
+
+This proposition is a proved extension of the conservative classifier;
+absorption is not performed by the delivered disk-interface consumer.
+It suggests a direct next implementation: identify the certified base
+signature $(\chi,b)=(1,1)$ with its complete boundary core-labelled,
+append its source-authenticated incidence row, run the core cancellation
+checker again, and apply disk gluing to the remaining bundle pieces.
+The base's surface structure and the full port charts must be verified;
+the two numerical values $(\chi,b)$ alone would not supply the necessary
+geometric conclusion.  A bundle over an annulus or a M\"obius band is a
+solid torus rather than a two-handle, so the proposition does not silently
+extend to those cases.
+
+\subsection{Why one ball after a connected cut certifies the unknot}
+\label{geo:terminal}
+
+\begin{proposition}[The one-ball cut criterion]
+\label{geo:prop-terminal}
+Let $M$ be a connected compact orientable three-manifold with boundary one
+torus.  Let $S\subset M$ be a connected orientable properly embedded
+surface with nonempty boundary.  If the manifold obtained by cutting $M$
+along $S$ is one three-ball, then $S$ is a disk and $M$ is a solid torus.
+If $M$ is an authenticated knot exterior in $S^3$, this certifies that the
+knot is the unknot.
+\end{proposition}
+
+\begin{proof}
+The ambient and surface orientability imply that $S$ is two-sided.  Let
+$M_S$ denote the manifold cut along a product neighborhood of $S$.
+Euler characteristic under this cut gives
+\[
+ \chi(M_S)=\chi(M)+\chi(S).
+\]
+For a compact orientable three-manifold,
+$\chi(M)=\tfrac12\chi(\partial M)$; this also follows by doubling and using
+the vanishing Euler characteristic of a closed odd-dimensional manifold.
+The torus boundary gives $\chi(M)=0$, while the ball hypothesis gives
+$\chi(M_S)=1$.  Hence $\chi(S)=1$.  Classification of connected orientable
+surfaces with nonempty boundary implies that $S$ is a disk.
+
+Reconstructing $M$ from the cut ball inserts a neighborhood of this disk,
+namely one three-dimensional one-handle attached along its two boundary
+copies.  Orientability makes the result a solid torus.
+
+For a knot exterior, an essential meridian disk of this exterior has
+boundary equal, up to orientation, to the knot's preferred longitude:
+that primitive slope generates the kernel of the map from the boundary
+torus's first homology to the exterior's first homology.  Inside the knot's
+tubular neighborhood this longitude cobounds an annulus with the knot.
+The disk and annulus form an embedded spanning disk for the knot, proving
+that it is the unknot.
+\end{proof}
+
+The hypotheses must be used literally.  Finding a ball among several cut
+components is insufficient.  A cut component of positive handlebody genus
+is insufficient.  A multiple normal vector can describe a disconnected
+surface, so its connectedness and orientability cannot be inferred from a
+successful core certificate.
+
+\subsection{An all-size Fibonacci family with ball cores}
+\label{geo:fibonacci}
+
+We now prove a uniform success theorem for the native complementary core
+of the layered solid-torus fixture from report~67
+\cite{ProveIt2026}.  This gives a construction and proof for every family
+member; finite timings play no role in the theorem.
+
+Let $F_1=F_2=1$ and $F_{j+2}=F_{j+1}+F_j$.  For $t\ge1$, number the
+tetrahedra $0,\ldots,t-1$.  For each $j<t-1$, glue face $0$ of tetrahedron
+$j$ to the next tetrahedron using the vertex permutation
+\[
+ P_0=(2,1,3,0),
+\]
+and face $1$ using
+\[
+ P_1=(0,3,1,2).
+\]
+At the last tetrahedron, pair face $0$ to face $1$ using
+$P=(1,2,3,0)$.  Thus the unpaired faces are the top faces $2$ and $3$.
+For an arbitrary positive integer $m$, use normal-coordinate rows
+\[
+ m\bigl(F_{t-j+1},F_{t-j+1},0,0,0,0,F_{t-j}\bigr),
+ \qquad 0\le j<t.
+ \tag{G11}\label{geo:eq-fibonacci-vector}
+\]
+The primitive fixture is the standard meridian of this layered solid
+torus.  The following theorem concerns its native \emph{complementary
+core}, for every positive scale, not the number of components of the
+whole cut.
+
+\begin{theorem}[Uniform ball-core certificates for the Fibonacci fixtures]
+\label{geo:thm-fibonacci}
+For every $t\ge1$ and every positive integer $m$, the native core of the
+cut specified by \eqref{geo:eq-fibonacci-vector} has handle counts
+\[
+ h_0=4t,\qquad h_1=6t-3,\qquad h_2=2t-2,\qquad h_3=0,
+ \tag{G12}\label{geo:eq-fibonacci-counts}
+\]
+and is a three-ball.  With the native source ordering described below,
+the increasing-identifier spanning tree followed by immutable-source
+row-leaf deletion removes every two-handle.  The certificate has
+$O(t\log(t+1))$ bits and $O(t)$ source incidences, independently of $m$ and
+of the numerical normal weights.
+\end{theorem}
+
+\begin{proof}
+We describe the zero/one-handle graph, enumerate all interior edge links,
+and exhibit a row-leaf order valid for every $t$.
+
+\paragraph{The zero/one-handle graph.}
+At tetrahedron $j$ the occupied triangle types are $0$ and $1$, and the
+occupied quadrilateral type is column $6$.  The four exceptional chambers
+are denoted $A_j,B_j,U_j,V_j$: the two quad-end chambers, followed by the
+triangle tips at vertices $0$ and $1$.  In this order their identifiers are
+$4j,4j+1,4j+2,4j+3$.  Applying the two layer permutations to the central
+face region and its occupied corner regions gives the following
+one-handles in each nonfinal layer:
+\[
+\begin{array}{c|c}
+\text{identifier}&\text{ends}\\ \hline
+6j   &(B_j,A_{j+1})\\
+6j+1 &(V_j,V_{j+1})\\
+6j+2 &(A_j,U_{j+1})\\
+6j+3 &(A_j,B_{j+1})\\
+6j+4 &(U_j,U_{j+1})\\
+6j+5 &(B_j,V_{j+1}).
+\end{array}
+ \tag{G13}\label{geo:eq-fibonacci-graph}
+\]
+The last self-pairing gives three more one-handles, of identifiers
+$6t-6,6t-5,6t-4$, with ends
+\[
+ (B_{t-1},A_{t-1}),\qquad
+ (V_{t-1},B_{t-1}),\qquad
+ (A_{t-1},U_{t-1}),
+\]
+respectively.  These lists already prove $h_0=4t$ and $h_1=6t-3$.
+
+For $t\ge3$, the increasing-identifier spanning tree consists of
+\[
+ \{0,\ldots,10\}\ \cup\!
+ \bigcup_{j=2}^{t-2}\{6j,6j+1,6j+2,6j+3\}.
+ \tag{G14}\label{geo:eq-fibonacci-tree}
+\]
+Indeed, the first six edges in \eqref{geo:eq-fibonacci-graph} form two
+trees on four vertices each.  Edges $6,7,8,9$ attach the four vertices of
+tetrahedron $2$, and edge $10$ joins the two previous trees.  Thus the first
+eleven edges form a tree on the first twelve vertices.  Thereafter the
+first four edges of a layer each attach one new vertex to the existing tree.  The other two
+edges of that layer join vertices already connected, as do the three
+final self-pairing edges.  Thus \eqref{geo:eq-fibonacci-tree} has exactly
+$4t-1$ edges and is the claimed spanning tree.  When $t=2$ the tree is
+$\{0,\ldots,6\}$, and when $t=1$ all three one-handles form the tree.
+
+The bottom self-pairing identifies vertices $1,2,3,0$ successively.  The
+layer permutations propagate this identification to every preceding
+tetrahedron.  All source vertices consequently lie in the single boundary
+vertex class containing the top vertices.  There are no interior vertex
+links and hence no core three-handles.
+
+\paragraph{The complete edge inventory.}
+Write $(j;ab)$ for local edge $\{a,b\}$ in tetrahedron $j$.  For every
+$0\le j\le t-2$ there is an interior edge $E_j$ represented by $(j;23)$.
+For $0\le j\le t-4$, its cyclic list of local occurrences is
+\[
+ (j;23),\ (j+1;12),\ (j+2;13),\ (j+3;01),\
+ (j+2;02),\ (j+1;03).
+ \tag{G15}\label{geo:eq-fibonacci-link-general}
+\]
+The exit faces are, in order, $1,0,0,3,3,2$.  Each transition follows by
+applying the indicated layer permutation or its inverse.  For the
+penultimate edge, $j=t-3$, the bottom self-pairing shortens the list to
+\[
+ (j;23),\ (j+1;12),\ (j+2;13),\ (j+2;02),\ (j+1;03),
+ \tag{G16}\label{geo:eq-fibonacci-link-penultimate}
+\]
+and for the terminal edge, $j=t-2$, the list is
+\[
+ (j;23),\ (j+1;12),\ (j+1;23),\ (j+1;03).
+ \tag{G17}\label{geo:eq-fibonacci-link-last}
+\]
+These cycles are disjoint as sets of local edge occurrences.  For
+$t\ge3$, the remaining occurrences form exactly the following three
+boundary classes:
+\[
+\begin{split}
+ &\{(0;01)\},\\
+ &\{(0;02),(0;13),(1;01)\},\\
+ &\{(0;03),(0;12),(1;02),(1;13),(2;01)\}.
+\end{split}
+ \tag{G18}\label{geo:eq-fibonacci-boundary-edges}
+\]
+Their transitions again follow directly from the face maps; each class
+meets a top boundary face.  The interior lists use $6t-9$ local edge
+occurrences and the boundary lists use the remaining nine, so this is the
+complete edge inventory.  For $t=2$, omit $(2;01)$ from the last boundary
+class; the sole interior cycle is \eqref{geo:eq-fibonacci-link-last}.  For
+$t=1$, the three boundary classes in the only tetrahedron are
+$\{01\}$, $\{02,13\}$ and $\{03,12,23\}$, and there is no interior edge.
+
+Every $E_j$ has positive normal edge weight, equal to $mF_{t-j}$.  The
+native core therefore has exactly two two-handles around it, at rank zero
+and at the full edge weight.  Thus there are exactly $2t-2$ core
+two-handles, proving the remaining count in
+\eqref{geo:eq-fibonacci-counts}.
+
+\paragraph{The literal attaching rows.}
+Give these two handles identifiers $2j$ and $2j+1$.  Reading their endpoint
+ranks around \eqref{geo:eq-fibonacci-link-general} and using
+\eqref{geo:eq-fibonacci-graph} gives the following one-handle crossing
+lists for $0\le j\le t-4$:
+\[
+\begin{split}
+ 2j:\quad &(6j+5,\ 6j+7,\ 6j+13,\ 6j+17,\ 6j+9,\ 6j),\\
+ 2j+1:\quad &(6j+3,\ 6j+6,\ 6j+14,\ 6j+16,\ 6j+10,\ 6j+2).
+\end{split}
+ \tag{G19}\label{geo:eq-fibonacci-full-general}
+\]
+For $j=t-3$, the shortened link gives
+\[
+\begin{split}
+ 2j:\quad &(6j+5,\ 6j+7,\ 6j+13,\ 6j+9,\ 6j),\\
+ 2j+1:\quad &(6j+3,\ 6j+6,\ 6j+14,\ 6j+10,\ 6j+2),
+\end{split}
+ \tag{G20}\label{geo:eq-fibonacci-full-penultimate}
+\]
+and for $j=t-2$ it gives
+\[
+\begin{split}
+ 2j:\quad &(6j+5,\ 6j+7,\ 6j+6,\ 6j),\\
+ 2j+1:\quad &(6j+3,\ 6j+6,\ 6j+8,\ 6j+2).
+\end{split}
+ \tag{G21}\label{geo:eq-fibonacci-full-last}
+\]
+For example, the two endpoint ranks at a face arm select its corner-end
+and central exceptional regions respectively; applying the face
+permutation selects the corresponding endpoint in
+\eqref{geo:eq-fibonacci-graph}.  The cyclic edge lists enumerate every
+such passage, so there are no additional crossings.  All entries in the
+displayed lists have multiplicity one.  The numerical values of the full
+edge ranks do not change which exceptional endpoint is selected.
+
+\paragraph{A uniform source row-leaf order.}
+Assume $t\ge3$.  Name the non-tree columns
+\[
+ \begin{array}{ll}
+ a_j=6j+5,&1\le j\le t-2,\\
+ b_j=6j+4,&2\le j\le t-2,\\
+ x=6t-6,\quad y=6t-5,\quad z=6t-4.&
+ \end{array}
+ \tag{G22}\label{geo:eq-fibonacci-columns}
+\]
+Use $a_0$ and $b_1$ as formal names for absent columns: their identifiers
+$5$ and $10$ belong to the spanning tree.  Deleting the tree entries from
+\eqref{geo:eq-fibonacci-full-general}--\eqref{geo:eq-fibonacci-full-last}
+gives the following support table, where absent formal columns are
+omitted:
+\[
+\begin{array}{c|c|c}
+\text{range}&\text{row }2j&\text{row }2j+1\\ \hline
+0\le j\le t-4 &\{a_j,a_{j+2}\}&\{b_{j+1},b_{j+2}\}\\
+j=t-3 &\{a_{t-3},y\}&\{b_{t-2},z\}\\
+j=t-2 &\{a_{t-2},x,y\}&\{x,z\}.
+\end{array}
+ \tag{G23}\label{geo:eq-fibonacci-reduced}
+\]
+This is a square matrix of size $2t-2$.
+
+First peel the odd rows in increasing order.  Since $b_1$ is absent, the
+successive deleted columns are
+\[
+ b_2,b_3,\ldots,b_{t-2},z,x.
+\]
+The initial range is empty when $t=3$; the same rule still deletes $z$
+and then $x$.
+
+After $x$ is removed, view the even rows as edges on the formal vertices
+$a_0,a_1,\ldots,a_{t-2},y$.  The first range of rows supplies the parity-step
+edges $a_j a_{j+2}$.  The last two even rows join the final vertices of
+these two parity chains to $y$.  Their union is therefore a single path,
+with one endpoint the absent column $a_0$.  Peel along this path from that
+endpoint.  The deleted columns are the even-indexed $a$'s in increasing
+order, followed by $y$, followed by the odd-indexed $a$'s in decreasing
+order, ending at $a_1$.  Every row is a source row leaf when it is used.
+Thus all even rows are removed as well.
+
+For $t=2$, the two surviving columns have identifiers $7$ and $8$, and the
+two reduced rows form the identity matrix.  For $t=1$, the reduced matrix
+is empty.  Theorem~\ref{geo:thm-ball-closure} now proves that the core is a
+ball for every $t$.
+
+Finally, multiplying \eqref{geo:eq-fibonacci-vector} by a positive integer
+changes neither its occupied disk types nor the positivity of any relevant
+edge weight.  Every exceptional chamber, endpoint rank, source crossing
+list and leaf order above therefore remains unchanged for all $m\ge1$.
+There are $O(t)$ forest edges and pivots, and each crossing list has bounded
+length, proving the certificate-size assertion.
+\end{proof}
+
+The primitive coordinates in this family already have exponential
+numerical weight in $t$, whereas the core certificate is linear in its
+number of source records.  The theorem establishes an exact, nontrivial
+independence from normal multiplicity for this core decision.  It does not
+identify a coordinate's numerical magnitude with its binary input length,
+and it does not extend the one-ball cut criterion to disconnected
+multiples.  The marked interval-bundle assembly remains necessary to
+classify the entire cut.

@@ -1,0 +1,218 @@
+% Classical input: DLMF 25.12.12. Repository comparison in PROVENANCE.json.
+\section{A local classification at reciprocal orders}
+\label{sec:endpoints}
+
+This section sharpens the nonintegral inverse chart and establishes
+an obstruction to the extension proposed in Research Question~9 of
+\emph{Resonant Order Jets and Convergent Inverse Transseries:
+for Polylogarithms and Logarithmically Weighted Tails}
+\cite{repo-inverse}. The starting expansion is classical; the
+classification and uniform reciprocal-order chart below are deductions
+from it. The source theorem is not contradicted: its global
+endpoint-circle assertion is stated only for integer orders.
+
+The nonintegral charts in the predecessor imply an exceptional phenomenon
+that is worth separating from the integer-order resonance theory.
+Write $s=1+\alpha>1$ and
+\[
+ D_\alpha(t)=\zeta(1+\alpha)-\operatorname{Li}_{1+\alpha}(e^{-t}).
+\]
+For nonintegral $\alpha$, the classical convergent expansion \cite{dlmf-polylog} gives
+\[
+ D_\alpha(t)=b(\alpha)t^\alpha+tA_\alpha(t),\qquad
+ b(\alpha)=-\Gamma(-\alpha),\qquad
+ A_\alpha(t)=\sum_{k\ge1}\frac{(-1)^{k+1}\zeta(1+\alpha-k)}{k!}t^{k-1}.
+\]
+Initially $0<|t|<2\pi$, $-\pi<\arg t<\pi$, and
+$t^\alpha=\exp(\alpha\log t)$ uses the principal logarithm.
+Further continuation is on the logarithmic covering.
+The function $A_\alpha(t)$ is jointly holomorphic for $t$ near zero and
+$\alpha$ in any sufficiently small neighborhood avoiding the nonnegative
+integers.  Let $t_\alpha(y)$ denote the inverse which is positive for
+positive small $y$.
+
+\begin{theorem}[Minimal local ramification]\label{thm:ramification}
+For real $s>1$ the minimal degree of a finite ramification $y=w^N$
+making the endpoint inverse $t_{s-1}(y)$ holomorphic is as follows.
+\begin{enumerate}
+\item If $0<\alpha=s-1<1$ and $\alpha=p/q$ is in lowest terms,
+the minimal degree is $p$.
+\item If $\alpha>1$ is nonintegral and $\alpha=p/q$ is in lowest
+terms, the minimal degree is $q$.
+\item If $\alpha$ is irrational, or if $s$ is a positive integer
+at least two, no finite ramification suffices.
+\end{enumerate}
+In particular, the endpoint inverse is holomorphic without ramification
+if and only if $s=1+1/m$ for an integer $m\ge2$.
+The same classification holds for the endpoint germ
+$\operatorname{Li}_{s}^{\langle-1\rangle}(\zeta(s)-y)=e^{-t_{s-1}(y)}$.
+\end{theorem}
+
+\begin{proof}
+Suppose first that $0<\alpha=p/q<1$.  The substitution $t=\xi^q$
+makes the forward germ holomorphic:
+\[
+ D_\alpha(\xi^q)=b\xi^p+\xi^q A_\alpha(\xi^q).
+\]
+The factor multiplying $\xi^p$ is nonzero at zero, so an analytic
+change of coordinate reduces this germ to $\eta^p$.  Its local inverse
+is therefore holomorphic in $y^{1/p}$, and its $t$ coordinate starts
+with $b^{-q/p}y^{q/p}$.  Since $p$ and $q$ are coprime, this leading
+term forces every possible ramification degree to be divisible by $p$.
+Thus the minimal degree is exactly $p$.
+
+If $\alpha=p/q>1$ is nonintegral, the same substitution gives a
+forward germ of order $q$, because $A_\alpha(0)=\zeta(\alpha)>0$.
+It follows that the inverse $t$ is holomorphic in $y^{1/q}$.  To see
+minimality, let $T(y)$ be the analytic inverse of $tA_\alpha(t)$.
+Expansion of the inverse equation gives
+\[
+ t_\alpha(y)=T(y)-b\zeta(\alpha)^{-\alpha-1}y^\alpha+o(y^\alpha),
+\]
+after retaining the analytic terms of $T$ through the relevant degree.
+The displayed fractional coefficient is nonzero, so $q$ divides every
+possible ramification degree.
+
+For irrational $\alpha<1$, the leading exponent $1/\alpha$ is
+irrational.  For irrational $\alpha>1$, the preceding first
+nonanalytic exponent is $\alpha$.  Neither can occur in a convergent
+Puiseux germ.  At $s=2$,
+$D_1(t)=t(1-\log t)+O(t^2)$, whence
+$t_1(y)\sim y/\log(1/y)$, which is not Puiseux.
+At integer $s=m+1\ge3$, the singular term of the forward deficit is
+$(-1)^m t^m\log t/m!$, and its linear coefficient is $a=\zeta(m)>0$.
+Therefore the inverse has a nonzero logarithmic term
+$(-1)^{m+1}y^m\log y/(m!a^{m+1})$ in addition to its analytic part.
+Finite ramification multiplies the logarithm by a nonzero integer
+and does not remove it.
+Finally $t\mapsto e^{-t}$ is biholomorphic near zero, so it preserves
+these ramification degrees.
+\end{proof}
+
+\subsection{Explicit coefficients at the removable endpoints}
+
+Fix an integer $m\ge2$, put $\alpha=1/m$ and $b_m=-\Gamma(-1/m)>0$,
+and define
+\[
+ G_m(\xi)=b_m+\sum_{k\ge1}
+ \frac{(-1)^{k+1}\zeta(1+1/m-k)}{k!}\xi^{mk-1}.
+\]
+Then $y=\xi G_m(\xi)$, $t=\xi^m$, and Lagrange inversion gives
+the exact finite extraction formulas
+\[
+ [y^n]t_{1/m}(y)=\frac mn[\xi^{n-m}]G_m(\xi)^{-n},
+\]
+\[
+ [y^n]e^{-t_{1/m}(y)}
+ =-\frac mn[\xi^{n-m}]e^{-\xi^m}G_m(\xi)^{-n}\qquad(n\ge1).
+\]
+Coefficients with a negative extraction exponent vanish.  In particular
+\[
+ t_{1/m}(y)=b_m^{-m}y^m
+ -m\zeta(1/m)b_m^{-2m}y^{2m-1}+O(y^{3m-2}).
+\]
+This last remainder follows because the next possible degree in
+$t(y)$ is $3m-2$ (the term with $k=2$ first contributes at $3m-1$).
+For the ordinary inverse endpoint germ, every derivative of order
+$1,\ldots,m-1$ vanishes, and its $m$th derivative with respect to
+$w=\zeta(s)-y$ equals
+$(-1)^{m+1}m!b_m^{-m}$.
+
+For example, at $s=3/2$ one has $b_2=2\sqrt\pi$ and
+\[
+ t_{1/2}(y)=\frac{y^2}{4\pi}
+ -\frac{\zeta(1/2)}{8\pi^2}y^3
+ +\frac{5\zeta(1/2)^2}{64\pi^3}y^4+O(y^5).
+\]
+Thus the square-root singularity of the forward polylogarithm has
+become a quadratic stationary point of its holomorphic endpoint inverse.
+
+\subsection{A uniform chart crossing a removable endpoint}
+
+The apparent disappearance of branching is not uniform under order
+perturbation.  Nevertheless a short exact equation gives a convergent
+chart that is uniform at the reciprocal order.
+
+\begin{samepage}
+\begin{theorem}[Reciprocal-order crossover chart]\label{thm:reciprocal-chart}
+Let $m\ge2$ and let $K$ be a compact real interval.  Put
+\[
+ \alpha=\frac1m+\epsilon,\quad T=\log(1/y),\quad
+ \tau=\epsilon T,\quad h=T^{-1},\quad r=y^{m-1},\quad q=y^m.
+\]
+There is a function $U(h,r,q;\tau)$ holomorphic in its first three
+variables near zero, with a complex neighborhood of $K$ for the last
+variable and neighborhoods uniform on $K$, such that the physical
+inverse satisfies
+\[
+ t_\alpha(y)=y^m U(T^{-1},y^{m-1},y^m;\epsilon T).
+\]
+Its value at the origin is
+\[
+ U(0,0,0;\tau)=b_m^{-m}e^{m^2\tau}.
+\]
+The Taylor series in the three independent small variables converges
+after physical substitution for sufficiently small positive $y$.
+\end{theorem}
+\end{samepage}
+
+\begin{proof}
+Substitute $t=y^m U$ into $D_\alpha(t)=y$ and divide by $y$.
+The exact equation is
+\[
+ b(1/m+h\tau)e^{-m\tau}U^{1/m+h\tau}
+ +rU A_{1/m+h\tau}(qU)=1.
+\]
+For $h=r=q=0$ its indicated solution is
+$U_0(\tau)=b_m^{-m}e^{m^2\tau}$.
+Choose the logarithm
+$\log U_0(\tau)=-m\log b_m+m^2\tau$ and write $U=U_0V$.
+In this coordinate the equation is holomorphic near $V=1$, and its
+$V$ derivative at $h=r=q=0$, $V=1$ is $1/m$.
+The holomorphic implicit function theorem and a finite compactness
+cover of $K$ give the claimed uniform chart.  Local uniqueness glues
+the charts.  The physical positive branch is selected by continuity
+from positive $y$ and the strictly increasing real forward deficit.
+\end{proof}
+
+For each fixed $j\ge1$, differentiation in $\alpha$ at fixed deficit
+$y$ gives
+\[
+ \left.\partial_\alpha^j t_\alpha(y)\right|_{\alpha=1/m}
+ =b_m^{-m}(-m^2)^j y^m(\log y)^j
+ +O\bigl(y^m(1+|\log y|)^{j-1}\bigr).
+\]
+One may prove this either from the uniform chart or by differentiating
+$b(\alpha)^{-1/\alpha}y^{1/\alpha}$ and the jointly holomorphic
+two-generator remainder.  Derivatives of the latter acquire at most
+fixed powers of $\log y$ and retain a positive additional power of
+$y$.  Thus order differentiation exposes an infinite logarithmic
+monodromy which is absent from the base germ.
+Here the independent variable is the deficit $y$; differentiation at
+fixed $w$ also differentiates $\zeta(s)-w$ and is a different operation.
+
+\subsection{Why the integer endpoint-circle proof cannot extend verbatim}
+
+For $0<\alpha=s-1<1/2$ and $u\downarrow0$, the upper-bank value is
+\[
+ \operatorname{Li}_{1+\alpha}(e^u+i0)
+ =\zeta(1+\alpha)+\Gamma(-\alpha)e^{-i\pi\alpha}u^\alpha+O(u).
+\]
+Since $\Gamma(-\alpha)<0$ and $\cos(\pi\alpha)>0$, this yields
+\[
+ |\operatorname{Li}_{s}(e^u+i0)|
+ =\zeta(s)+\Gamma(1-s)\cos(\pi(s-1))u^{s-1}
+ +o(u^{s-1})<\zeta(s)
+\]
+for every sufficiently small positive $u$.
+Consequently the cut-modulus assertion in the integer-order theorem
+fails for every $1<s<3/2$.  The predecessor states that assertion only
+for integers, so this is a negative answer to a proposed extension,
+not a counterexample to a printed theorem.
+
+The cut entering the endpoint circle does not itself determine the
+Taylor radius of an analytically continued inverse: the cut is a
+boundary of the chosen forward sheet, not necessarily an inverse
+singularity.  Likewise endpoint removability does not rule out another
+singularity of the same modulus.  Determining the global radius at the
+reciprocal orders remains a separate problem.

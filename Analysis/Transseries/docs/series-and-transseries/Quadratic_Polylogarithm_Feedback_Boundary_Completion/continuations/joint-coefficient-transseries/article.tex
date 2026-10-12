@@ -1,0 +1,131 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,array,longtable,enumitem,graphicx}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,placeins}
+\usepackage[unicode,colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\usepackage{bookmark}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Li}{Li}
+\DeclareMathOperator{\Log}{Log}
+\DeclareMathOperator{\Rea}{Re}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\R}{\mathbb R}
+\newcommand{\C}{\mathbb C}
+\newcommand{\N}{\mathbb N}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Prob}{\mathbb P}
+\newcommand{\HH}{\mathcal H}
+\newcommand{\ph}{\varphi}
+\newcommand{\normal}{\mathfrak g}
+\newcommand{\stir}[2]{\left\{\begin{matrix}#1\\#2\end{matrix}\right\}}
+\newcommand{\pin}{\texttt{8f5afd4d7565df808359f6a0c22f87f79a119bb9}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Polylogarithmic coefficient transseries}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\emergencystretch}{2em}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\textfraction}{0.08}
+\renewcommand{\floatpagefraction}{0.85}
+\setcounter{topnumber}{3}
+\setlist{itemsep=3pt,topsep=5pt}
+\numberwithin{equation}{section}
+\hypersetup{pdftitle={Uniform coefficient transseries across the polylogarithmic order-three resonance},pdfauthor={Research continuation for the ProveIt project}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\centering
+{\small\scshape Analysis / Polylogarithms / Transseries\par}
+\vspace{1.2cm}
+{\LARGE\bfseries Uniform Coefficient Transseries\par}
+\vspace{0.25cm}
+{\LARGE\bfseries across the Polylogarithmic\par}
+\vspace{0.25cm}
+{\LARGE\bfseries Order-Three Resonance\par}
+\vspace{0.65cm}
+{\large Exact normalization, Gaussian order derivatives,\par
+Lambert transitions, and reciprocal-order inverse germs\par}
+\vspace{0.9cm}
+{Prepared for Vladimir Reshetnikov and the ProveIt project\par}
+{12 October 2026\par}
+\vspace{0.65cm}
+\begin{minipage}{0.94\textwidth}
+\begin{abstract}
+The quadratic-feedback equation
+$uv-v^2/2=\Li_s(re^v)$ has different coefficient laws below, at,
+and above $s=3$. Recent repository work determines its fixed-order laws
+and a joint varying-order inverse chart, but explicitly leaves the
+corresponding joint coefficient problem open. We resolve that problem
+when $(s-3)\log n$ remains bounded, allowing the feedback parameter to
+vary simultaneously. A pole-paired scalar equation defines an exact
+Gaussian scale. In that scale every inverse-logarithmic correction is
+a finite Stirling-number combination of order derivatives of a
+parabolic cylinder function. We prove an absolute remainder of order
+$(\log n)^{-N-1}$ at every fixed order, uniformly over all lattice
+locations and compact parameter sets.
+
+At exact resonance the scale is expressed by the lower Lambert branch.
+At the center the correction functions reduce to finite Gamma moments,
+and reproduce the previous marginal coefficient polynomials at every
+order. More generally the entire logarithmic expansion survives positive
+analytic composition of the polylogarithm; the nonlinear composition
+enters only through its first two endpoint derivatives after centering
+and endpoint normalization. The same expansion yields relative
+positive-tail matching in every fixed power-of-$\log n$ window and an
+explicit Lambert location for the Gaussian--power-tail transition.
+
+A separate local theorem classifies finite ramification of inverse
+polylogarithms for every real $s>1$. The endpoint is removable precisely
+at $s=1+1/m$, $m\ge2$. We give a convergent crossover chart through those
+orders and prove that the integer cut-modulus argument cannot extend
+to $1<s<3/2$. Complete analytic proofs, a focused source audit, exact
+symbolic checks, numerical diagnostics, and further research targets
+accompany the report.
+\end{abstract}
+\end{minipage}
+\vfill
+\begin{minipage}{0.94\textwidth}\small
+\textbf{Scope and status.} This is an unrefereed research manuscript with
+conventional proofs and reproducible checks. The results are not
+proof-assistant formalized. The contribution is specified relative to
+the inspected repository snapshot and the primary literature;
+worldwide publication priority is not asserted. All coefficient
+expansions are fixed-order asymptotic statements. The reciprocal-order
+local chart has a separate, proved convergence assertion.
+\end{minipage}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\begingroup
+\small
+\setlength{\parskip}{0pt}
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01-scope}
+\input{sections/02-model-and-scale}
+\input{sections/03-gaussian-jets}
+\input{sections/04-uniform-expansion}
+\input{sections/05-marginal-and-universality}
+\input{sections/06-positive-wing}
+\input{sections/07-reciprocal-endpoints}
+\input{sections/08-verification-and-research}
+\input{references}
+\end{document}

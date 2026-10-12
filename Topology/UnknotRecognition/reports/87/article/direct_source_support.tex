@@ -1,0 +1,51 @@
+\Needspace{11\baselineskip}
+\subsection{A direct sparse-source formulation}
+
+\begin{corollary}[A direct source LP with small coefficients]\label{cor:direct-source-support}
+For a finite triangulation with $t$ tetrahedra and a compatible set of
+$k\leq t$ allowed quadrilateral types, maximal quadrilateral support has
+an original-source primal--dual certificate of $O(t^2)$ bits,
+obtainable by rational linear programming without triangle elimination.
+\end{corollary}
+\begin{proof}
+Retain all $4t$ triangle columns and the $k$ allowed quadrilateral columns
+in the original matching matrix $M_\Sigma$.  It has $p\leq5t$ columns,
+$m\leq6t$ rows and entries of absolute value at most $2$: each paired
+face contributes three equations, each comparing a triangle-plus-quad
+arc count on its two sides.  Every row has at most four nonzero entries;
+every column has at most four, since a triangle has three face arcs and
+a quadrilateral four.  Self-gluings can identify or cancel these
+incidences and do not increase their number.
+The vector $u=(\mathbf1_{4t},0_k)$ satisfies
+$M_\Sigma u=0$.  Hence every triangle coordinate belongs to maximal
+support, and every $y=M_\Sigma^{\mathsf T}\lambda\geq0$ satisfies
+$0=u^{\mathsf T}y$, forcing all its triangle coefficients to vanish.
+The joint support LP therefore directly gives the required source dual
+and a nonnegative standard primal vector in the stated sector.
+Its standard form has at most $3p+2m\leq27t$ nonnegative variables and
+equality rank $\rho\leq m+2p\leq16t$.  Its three row types have at most
+$4$, $9$ and $3$ nonzero entries, all of absolute value at most $2$;
+their Euclidean norms are therefore at most $6$.  Choose independent
+original equality rows and a basic feasible solution as above.  The
+square basis matrix has determinant of absolute value at most $6^\rho$
+by Hadamard's inequality.  In a Cramer numerator, replacing a column by
+the right-hand side in $\{0,1\}^{\rho}$ raises each squared row norm by
+at most one, so every such numerator has absolute value at most $7^\rho$.
+All reduced denominators divide the same basis determinant; clearing
+the primal denominators therefore preserves the numerator bound.
+Taking the difference of split dual multipliers introduces at most a
+factor of two.  Thus every certificate entry has $O(t)$ bits, and its
+$O(t)$ entries require $O(t^2)$ bits in total, including row and column
+indices.  Zero extension restores
+the primal's disallowed quadrilateral coordinates; the multipliers
+already refer to the original source rows.
+\end{proof}
+
+This is a certificate-existence result and an alternative theoretical
+LP formulation.  The producer benchmarked in this package uses the
+quadrilateral quotient.  The full standard kernel retains vertex-link
+directions, so its dimension must not replace the effective quadrilateral
+dimension used for low-dimensional dispatch; that dispatch still uses
+the quotient.  The witness bound is an existence bound, not a bound on
+arbitrary solver outputs or a performance claim for an implemented
+direct-source solver.

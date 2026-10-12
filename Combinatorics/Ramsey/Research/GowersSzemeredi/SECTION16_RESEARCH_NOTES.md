@@ -5423,6 +5423,42 @@ thresholds. The exact logarithm `⌈log₂ 32·PPC⌉` gives the same thresholds
 (`model_jppc.py`). In Theorem 18.1 the constant is charged at `2^(k+9)` and
 the sharp bound saves only 4 units per step, so nothing changes there.
 
+**L.16t: the remaining levers, quantified (2026-10-12).** After L.16r and
+L.16s, the per-term sensitivity models (`model_jsens.py`, `model_ksens.py`,
+`model_jseed2.py` in the session scratch, reproduced by the formulas of
+`assemble_j.py` and `assemble_k.py`) give:
+* Theorem 18.2 is robust. Its thresholds do not move under the exact
+  logarithm of the partition constant, under any dimension-two seed from
+  `2^48` down to `2^41`, or under per-step savings up to 89 units. Even
+  dropping the partition cost entirely only gives `L + 2` from 6.
+* Theorem 18.1 moves only with the class table. A saving of 12 units per step
+  gives `d + 3` from 8, and 21 gives `d + 2` from 11. Among the inputs, only
+  the dimension-two seed has that size: `D₂ ≤ 2^42` gives `d + 3` from 8.
+* The seed cannot get there by sharpening Lemma 16.3. The face and spectrum
+  counts are `section16BaseFamilyBound δ b ≤ (2/(δb))^(2^14)`, with
+  `δ⁻¹ ≤ u^(2^22)` and `b⁻¹ ≤ u^(2^23)`; this is where the `u^(2^38)`
+  comes from. The sharper `lemma163AlphaSharp`
+  (`2^(-1882)·γ^9312·θ^1165`) gives `9314·2^22 + 1165·2^23 ≈ 2^35.5`,
+  hence counts `u^(2^36)` and a seed of about `2^46`, still short of `2^42`.
+  Every exponent here rests on `θ₁′ ≥ u^(-2^19)`, that is on the Fejér
+  product exponent `fejerProductExponent 1 = 229376`. The seed lever is
+  therefore a 16-fold sharpening of Lemmas 15.5/15.6.
+* `d + 1` needs an envelope below `8·2^k`. The step keeps two class degrees,
+  `ρ₁` from the joint vertex covers and one from the joint slices. They
+  compound, because the slice precision `θ_S/4 ~ ρ₁³` is set by `ρ₁`: a
+  cover at the vertex precision cannot capture a slice set of relative
+  density `θ_S`. Removing the second degree needs a step in which the slice
+  sets are fixed before the remainder.
+
+Peer change checked: commit `a74e88d` (source fidelity) made
+`Proofs10Regular` import the new `ComponentTradeoff`. Its edits to
+`Definitions`, `Section10` and `Sections06_07` are comments only. In
+`Proofs10Regular`, `lemma_10_5_holds` keeps its type `lemma_10_5`, and two
+theorems are added (`lemma_10_5_all_tradeoffs_holds`,
+`lemma_10_5_original_sqrt_holds`). The new source compiles against the
+cached dependencies. The trust-mode builds of L.16r/s therefore rest on
+unchanged statements.
+
 **L.15b: Corollary 18.7 at the same thresholds.** At `δ = 1/2` the
 parameterized threshold is the five-level two-colour tower with `k + c` on
 top (`szemerediThresholdAt_half`), so `Theorem182AtSharp.corollary_18_7`

@@ -1,0 +1,676 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=24mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,tabularx}
+\usepackage{enumitem,fancyhdr}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\hypersetup{hidelinks,pdftitle={Corner-Aware Boundary Kernels for Compressed Unknot Hierarchies},pdfauthor={Research continuation prepared for the ProveIt project}}
+\urlstyle{same}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=*}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Corner-aware boundary kernels}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F_2}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\bits}{\mathsf B}
+\newcommand{\AHT}{C_{\mathrm{AHT}}}
+\newcommand{\Ker}{\mathcal K}
+\newcommand{\sq}{\mathbin{\backslash\!\backslash}}
+\newcommand{\snap}{\texttt{ed166080d7db14dd7a91d07788996f02947dd92a}}
+\title{\textbf{Corner-Aware Boundary Kernels\\for Compressed Unknot Hierarchies}\\[7pt]
+\large Exact port surgery, orbit-count compilation,\\and interval-bundle consequences}
+\author{Research continuation prepared for the ProveIt project}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+The current ProveIt source-parallelity construction provides a bounded complementary core and binary polygon families for its interval-bundle interfaces. We develop a next-stage interface operator: compile each marked base boundary into a finite cyclic kernel, retaining shared corners, coherent orientation frames, and the distinction between a zero-length and a positive unmarked path. With $p$ marked edges, at most $2p$ boundary edges and $2p$ corners are needed, regardless of normal multiplicity. An unweighted interval-orbit compiler recovers this information in $O(p\log(p+1))$ count queries, without tracing long boundary paths. A third relation cancels silent interior-corner orbits when the source namespace contains more than boundary corners.
+
+We prove an exact gluing theorem, including the correction
+$\chi'=\sum\chi+m-(q-q')$ for $m$ paired edges and the pre- and post-quotient corner counts $q,q'$. It covers adjacent ports, loop cells, self-gluings of distinct edges, nonorientable bases, and sequential continuation. We derive a local quasi-polynomial enumeration bound for small interfaces and consequences for certified orientation interval bundles. A separate corner-holonomy criterion states when normalized fibre gluings extend over the quotient vertices.
+
+A standard-library reference implementation passes 18 tests containing 7,688 exhaustive signed polygon cases, 1,600 randomized surface/composition cases, and 700 boundary-compiler cases. Binary stress cases reach 16,385-bit coordinates. Paired measurements include both large-path gains and small-input regressions against an independent literal-expansion reference. The native source-geometry adapter and upstream execution are not included in these measurements. The results establish exact compressed interface primitives, not a general quasi-polynomial unknot recognizer; admissibility, source provenance, creation of new ports, and global hierarchy bounds remain explicit obligations.
+\end{abstract}
+\newpage
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The research checkpoint and the question being solved}
+\label{sec:checkpoint}
+
+\subsection{Continuing after the existing parallelity extraction}
+The relevant repository checkpoint is \snap. This article is based on a targeted reading of the maintained raw-cut, parallelity, interval-orbit, and sparse-incidence sources, not an exhaustive audit of all historical reports. The source paths and blob identifiers are recorded in \code{SOURCE\_AUDIT.json}.
+
+The maintained raw-cut constructor retains the full source attaching charts rather than only cellular boundary matrices \cite{rawcut}. The later parallelity section already extracts product handles in all relevant indices, classifies the base surfaces, and retains a complementary core with at most $30T$ handles and at most $66T$ core-facing base arcs, for $T$ source tetrahedra \cite{parallelity}. Thus, simply proposing ``extract the parallelity bundle'' would repeat work that is already present.
+
+Our target is more specific. Suppose several possible corrections, local reattachments, or base-surface surgeries must be evaluated at the same interface. Can one avoid rediscovering the huge unmarked boundary paths for each candidate, while retaining enough information to calculate the actual topology after the gluings? The answer is yes for the operations defined here. The correct small state is not just a component histogram or a port-incidence mask. It is a \emph{corner-aware cyclic boundary kernel}.
+
+The distinction is important: the existing source packet does retain geometric attachment locations. We do not allege that it has discarded them. This continuation compiles those locations into a query-oriented representation and proves exactly what the representation preserves. Likewise, subset coning is already used by the repository's sparse-incidence module \cite{sparse}. We specialize that technique to residual boundary paths and add the corner information needed for exact surface surgery.
+
+\subsection{External foundations and attribution}
+The algorithmic foundation is the Agol--Hass--Thurston unweighted orbit-counting theorem: a system of $k$ interval pairings on an integer universe of size $N$ admits orbit counting in time polynomial in $k$ and $\log(N+1)$ \cite[Theorem~12]{aht}. We denote such a bound by $\AHT(k,\bits)$, where $\bits$ bounds the binary endpoint sizes. We do not propose a new AHT algorithm.
+
+Lackenby's 2026 manuscript supplies a hierarchy framework and a cutting theorem with compressed parallelity information; its Section~9 separately identifies the iteration bound $L(g+1)^L$ and leaves the controlling quantities and operation costs to further analysis \cite[Sections~9 and 14]{lackenby}. Our results address an interface primitive within this research direction. They do not replace its geometric hypotheses.
+
+Surface classification, parity constraints for orientation, and thickening a surface with boundary to a handlebody are classical ingredients. The proposed contribution is their constructive combination with a corner-sensitive orbit-count compiler, exact repeated surgery, and an auditable implementation contract. No exhaustive priority search has been performed, so ``new'' below means established in this continuation relative to the inspected repository material, not a claim of first publication in the literature.
+
+\subsection{The precise result and its boundary}
+The main operator takes compact connected surface types, a finite list of marked boundary cells with source ownership and frames, and either their cyclic boundary data or compressed relations from which that data can be recovered. It returns exact surface types and a new marked boundary kernel after any supplied disjoint pairing of marked cells.
+
+It does \emph{not} decide whether an abstract pairing is realized by a permitted move of the three-dimensional hierarchy. It does not retain arbitrary curves through the interiors of the base surfaces. It does not certify that a proposed three-manifold is an interval bundle from its boundary topology. These are different questions, and treating them as equivalent would invalidate the application to unknot recognition.
+
+\section{Marked surfaces and the finite interface}
+\label{sec:model}
+
+\begin{definition}[Source object]
+A marked surface consists of a finite disjoint union
+$B=\bigsqcup_{i=1}^s B_i$ of compact connected surfaces and a finite boundary CW structure. A \emph{port} is a named open boundary one-cell together with its two endpoint occurrences and a parameter direction. Port interiors are disjoint, but their closures may meet. A port may be a loop cell whose endpoint occurrences lie at the same vertex. Every named port is a distinct one-cell.
+\end{definition}
+
+The allowance for common endpoints is deliberate. A union of core-facing arcs can contain an entire boundary circle, and its Euler characteristic then differs from the number of arcs. A cellulation with a loop edge is not a regular CW structure, but its characteristic interval and its two endpoint occurrences are perfectly well defined. All quotient calculations below use these occurrences, not a set that forgets multiplicity.
+
+For every component we store
+\begin{equation}
+       (\chi_i,b_i,o_i),\qquad o_i\in\{0,1\},
+\end{equation}
+where $b_i$ is its boundary count and $o_i=1$ means orientable. Valid connected types satisfy
+\begin{equation}\label{eq:classification}
+  \chi_i=2-2g_i-b_i\quad(o_i=1),\qquad
+  \chi_i=2-k_i-b_i\quad(o_i=0),
+\end{equation}
+with $g_i\ge0$ and $k_i\ge1$. These numbers may be binary encoded and large. Storing them does not construct an explicit triangulation of that genus.
+
+An \emph{active} boundary component contains a port. All other boundary components are \emph{passive}; only their count on each $B_i$ is stored. On an orientable component, choose a surface orientation and use its coherent induced direction on every boundary component. A port frame bit $r_e$ records whether the supplied port parameter is opposite to the stored boundary direction. On a nonorientable component, choose each boundary direction independently.
+
+\begin{definition}[Normalized boundary kernel]
+On every active boundary circle, retain each port as one edge. Replace each maximal \emph{positive} unmarked path between consecutive ports by one gap edge. When consecutive ports share a corner, insert no gap. Record the resulting cyclic words, their component owners, the port frames, and the component types above. This is the normalized kernel $\Ker(B)$.
+\end{definition}
+
+A numerical length attached to a gap is optional metadata. Its positivity matters; its physical size does not enter the gluing theorem. In the orbit-count compiler, the stored length one means ``a nonempty source path was suppressed,'' not ``the source path consisted of one edge.'' It is not a source reconstruction certificate.
+
+\begin{theorem}[Linear marked-boundary kernel]\label{thm:kernel}
+If $B$ has $p$ ports, its normalized active boundary contains at most $2p$ edges and at most $2p$ corners. Together with $s$ component records, it can be encoded in
+\[
+ O\big((s+p)(\bits+\log(s+p+1))\big)
+\]
+bits when labels, optional lengths, and component statistics have at most $\bits$ bits. No bound on the physical number of unmarked boundary edges is needed.
+
+For any finite sequence of pairings of the existing named ports, the kernel preserves the component types and remaining marked boundary data calculated in Theorem~\ref{thm:glue}.
+\end{theorem}
+\begin{proof}
+An active circle with $r$ ports has exactly $r$ cyclic positions between consecutive ports. At most one gap is retained at each position. Its retained number of edges is therefore between $r$ and $2r$. A cellulation of a circle has equally many edges and vertices, including a one-edge loop. Summing gives both bounds.
+
+Suppressing an unmarked degree-two vertex replaces a subdivided interval by an interval with the same endpoints. A boundary collar extends this change to a homeomorphism of the source surface, respecting every marked cell and its parameter up to an endpoint-preserving reparameterization. Such a change neither inserts a corner between adjacent ports nor identifies two distinct retained corners. It commutes with an identification of marked characteristic intervals. Repeating the suppressions proves that every allowed gluing may be performed before or after normalization with the same marked topological result. The component types and frames complete the finite input needed by the calculation in Theorem~\ref{thm:glue}.
+\end{proof}
+
+\begin{remark}[Not a universal boundary-pattern encoding]
+An unmarked path may carry important geometric history even when it is topologically just an interval. The kernel preserves the observer consisting of port-edge surgery, component type, and surviving port boundary data. It does not preserve a word in the fundamental group, a transverse intersection sequence with an additional pattern, or the source path needed to lift a future witness. Such annotations must be retained separately and charged to the encoding size.
+\end{remark}
+
+\section{Compiling first-return data with unweighted counts}
+\label{sec:compiler}
+
+\subsection{Three relations on corner occurrences}
+Assume first that the source universe contains only occurrences of boundary vertices. Let $V$ be the equivalence relation identifying occurrences of the same boundary vertex. Let $R$ add to $V$ the identifications of the endpoints of every \emph{unmarked} boundary edge. Let $F$ additionally include the endpoints of the marked edges. Thus $F$ is full boundary connectivity.
+
+In a binary polygon-family representation, $V,R,F$ are supplied as interval-pairing systems. The compiler needs their count oracles, not lists of their individual orbits. Removing a finite list of singleton marked-edge occurrences from a family is handled by splitting its parameter interval at those occurrences; removing $p$ occurrences adds at most $O(p)$ pieces across the family list. This statement presupposes that the source has already supplied the correct endpoint maps and that its marks are whole singleton edge occurrences. It is not an algorithm for locating arbitrary embedded curves.
+
+Label the two endpoint occurrences of each port, giving a list of $2p$ terminals. Different entries in this list may denote the same point of the occurrence universe. We must not deduplicate this terminal list.
+
+\begin{lemma}[Residual paths]\label{lem:paths}
+For a valid marked boundary, each $R$-component that contains terminals contains exactly two terminal occurrences. These components are the $p$ residual paths obtained by deleting the interiors of the ports. They include isolated vertices between adjacent ports. If $b_0$ is the number of passive boundary circles, then
+\begin{equation}\label{eq:residual}
+             c_R=p+b_0,
+\end{equation}
+where $c_R$ is the number of $R$-classes. The two terminals of a residual path are already $V$-equivalent if and only if that path has zero edges.
+\end{lemma}
+\begin{proof}
+A circle with $r\ge1$ distinguished open edges becomes a disjoint union of $r$ closed paths when those open edges are removed. At a common endpoint of consecutive ports, one of these paths is a point, with two terminal occurrences at that point. Every other residual path has two distinct endpoint vertices, because it is a proper connected interval in the circle. A passive circle is unchanged and contains no terminals. The assertions follow by summing over the boundary circles.
+\end{proof}
+
+The pairing of terminals lying in the same residual path is the \emph{first-return matching}. Alternating a port edge with its residual matching edge reconstructs every active boundary circle. The extra comparison with $V$ determines which matching edges should become positive gaps and which should merely identify corners.
+
+\subsection{The coning primitive}
+\begin{lemma}[Coning and membership]\label{lem:coning}
+Let $\sim$ be any finite equivalence relation with $c$ classes, accessed by a count oracle that accepts additional point identifications. For a nonempty finite list $S$, identify its points to one chosen hub. If the resulting count is $c_S$, then the number of original classes meeting $S$ is
+\[
+                    c-c_S+1.
+\]
+For a further point $x$, let $c_{S,x}$ be the count after also identifying $x$ to the hub. Then $x$ belongs to a class meeting $S$ precisely when $c_{S,x}=c_S$; otherwise $c_{S,x}=c_S-1$.
+\end{lemma}
+\begin{proof}
+If $S$ meets $r$ classes, coning replaces those $r$ classes by one and changes nothing else, so $c_S=c-r+1$. Adding $x$ either changes nothing or merges exactly one additional class. Repeated points and repeated classes in $S$ do not change the argument.
+\end{proof}
+
+This lemma is elementary, and coning is already implemented in ProveIt's sparse-incidence machinery \cite{sparse}. Its role here is to answer ``which one of these terminal occurrences is the other end of my residual path?'' without walking the path.
+
+\begin{theorem}[Corner-aware first-return compilation]\label{thm:compile}
+Suppose the source supplies valid relations $V,R$, the terminal occurrence list, the component types, the port owners, and coherent port frames. The first-return matching and its zero/positive gap bits can be recovered using at most
+\begin{equation}\label{eq:queries}
+  3+2p\lceil\log_2(\max\{2,2p\})\rceil+2p
+\end{equation}
+unweighted orbit-count calls. Each call adds at most $2p-1$ singleton pairings. From these data, the normalized kernel can be constructed without expanding a boundary path.
+
+If the base interval systems have at most $k$ pairings and binary endpoints of length at most $\bits$, the total bit cost is bounded by
+\begin{equation}\label{eq:compiler-cost}
+\begin{split}
+ O\big(&p\log(p+1)\,\AHT(k+O(p),\bits)\\
+       &+p^2(\bits+\log(p+1))
+        +(s+p)(\bits+\log(s+p+1))\big),
+\end{split}
+\end{equation}
+with the harmless constant-call cost added when $p=0$.
+\end{theorem}
+\begin{proof}
+First count $V$ and $R$. Cone all terminals in $R$ and verify that exactly $p$ classes are touched. This uses a third count. Select an unmatched terminal $x$. Its mate is among the other unmatched terminal occurrences. Divide that list approximately in half; by Lemma~\ref{lem:coning}, two coned counts determine whether the mate belongs to the selected half. Continue by binary search. At most $\lceil\log_2(2p)\rceil$ membership tests identify a candidate mate $y$.
+
+Verify directly that identifying $x$ with $y$ does not reduce the $R$-count. Then compare the $V$-count before and after the same identification. Equality means a zero residual path; a decrease of one means a positive path. Literal equality of the represented points permits either redundant query to be omitted. Remove the two terminal occurrences and repeat. There are $p$ pairs, giving~\eqref{eq:queries}.
+
+The source degree-two hypothesis already proves that the mate exists and is unique among terminal occurrences. The global touched-class check and the final pair checks also reject malformed terminal signatures: every touched class must be a union of complete recovered pairs, and there are $p$ such classes and only $p$ pairs, so each has exactly one pair. This diagnostic does not replace validating the source as a surface.
+
+A cone on at most $2p$ terminals uses at most $2p-1$ singleton identifications. Thus every query is an instance of the unweighted orbit-count theorem with $k+O(p)$ pairings and unchanged coordinate size. At a binary search step, only one half is coned; the sizes of the tested sets along that search sum to $O(p)$. Over all mates, the total number of explicitly assembled singleton records is $O(p^2)$, not $O(p^2\log p)$. Integer and bookkeeping costs give~\eqref{eq:compiler-cost}. Finally alternate port edges with matching edges, retain only positive matching edges as gaps, and attach the supplied owners and orientation frames.
+\end{proof}
+
+\subsection{Cancelling silent interior vertices}
+A source polygon packet naturally has an \emph{all-corner} namespace. Interior quotient vertices can then be isolated classes in both $R$ and $F$. Counting them as passive boundary circles would be an error. Extracting a separate boundary-only namespace is possible in some implementations, but is not necessary.
+
+\begin{theorem}[Silent-orbit cancellation]\label{thm:silent}
+Suppose $V,R,F$ use the same occurrence universe, with exactly $z$ classes untouched by all boundary-edge relations and containing no boundary terminals. Suppose the remaining classes describe the actual boundary as above. Let $b=\sum_i b_i$ be the certified total boundary count and $a$ the number of active boundary circles. Then
+\begin{align}
+ c_F&=z+b, & c_R&=z+p+b-a,\
+ z&=c_F-b, & c_R-c_F&=p-a.\label{eq:cancel}
+\end{align}
+One additional full-boundary count therefore removes the silent contribution from the first-return compiler. In particular,
+\[
+                 b_0=c_R-p-(c_F-b).
+\]
+\end{theorem}
+\begin{proof}
+Each silent class contributes one to both counts. Full boundary connectivity has one class per boundary circle. Removing marked interiors replaces an active circle containing $r$ ports by $r$ paths, while leaving passive circles unchanged. Summing gives the identities.
+\end{proof}
+
+The hypotheses exclude any hidden relation that joins a silent vertex to the boundary. They also require that $b$ is certified independently, rather than inferred from the same uncorrected count. The executable mixed-namespace test includes four boundary vertices and ten silent interior classes; omitting the third relation correctly fails its consistency check.
+
+\subsection{Orientations and the certificate boundary}
+The terminal matching does not by itself orient an orientable surface coherently. Independent arbitrary directions on its boundary circles would lose the information needed for later self-gluings. The compiler therefore accepts coherent frame bits from the source. In a signed source relation, these can in principle be recovered by parity-cover connectivity queries relative to a component anchor: the lift of a point lies in the anchor sheet exactly when the transport parity is zero. This uses the existing signed-cover idea, but a complete source-to-frame implementation is a separate integration task.
+
+The reference compiler records every relation name, singleton augmentation, and count. Its recomputation checker reruns the supplied oracles and detects a changed transcript. It is \emph{not} an independent proof-only verifier of AHT traces. The optional upstream adapter requests the repository's count certificates, but their independent replay must be connected to the maintained verifier during integration. A short final kernel does not imply a comparably short complete proof transcript: $O(p^2)$ explicit singleton records and the underlying count proofs must be charged separately.
+
+Budgets are shared across queries. An exhausted query or cycle allowance raises an incomplete-result exception; it never becomes a negative topological or knot certificate. Cancellation has the same no-result semantics.
+
+\section{An exact gluing theorem with corner correction}
+\label{sec:glue}
+
+Choose $m$ disjoint pairs of distinct named port cells. Each port occurs in at most one pair. The two cells may lie on the same component, on the same boundary circle, or at a common endpoint. For every pair specify whether the map preserves or reverses their supplied interval parameters. Denote this bit by $\rho_e$, with reversal equal to one.
+
+A pair of loop cells is glued by the corresponding map of their characteristic intervals, respecting the identified endpoints. Pairing a cell with itself is excluded. Partial interval identifications or a port used more than once require a different input model.
+
+Let $G$ be the graph with one vertex for each source component and one edge for each port pair; loops are allowed. Its connected components index the connected output surfaces. For one such group $J$, let $q_J$ be the number of retained source corners and $q'_J$ the number of their classes under all paired endpoint identifications. Let $m_J$ be the number of port pairs in this group.
+
+\begin{theorem}[Exact corner-aware surgery]\label{thm:glue}
+The quotient by the supplied port pairings is a compact surface. For each connected group $J$ its Euler characteristic is
+\begin{equation}\label{eq:main}
+ \boxed{\displaystyle
+       \chi'_J=\sum_{i\in J}\chi_i+m_J-(q_J-q'_J).}
+\end{equation}
+Its boundary is the disjoint union of the passive source boundary circles and the cycles of the multigraph formed by the surviving unpaired boundary edges after the corner quotient. Endpoint occurrences of a loop contribute twice to degree.
+
+If all source components in $J$ are orientable, the quotient is orientable precisely when the equations
+\begin{equation}\label{eq:orientation}
+ x_i\oplus x_j=1\oplus\rho_e\oplus r_e\oplus r_f
+\end{equation}
+are consistent, one for each paired port $(e,f)$ on source components $i,j$. If any source component is nonorientable, the quotient is nonorientable. Its genus or crosscap count is then given by~\eqref{eq:classification} using the computed $\chi'_J,b'_J$.
+
+All these quantities, and a normalized kernel for the unpaired ports, can be computed with storage polynomial in $s+p$ and $\bits$, independent of physical gap lengths.
+\end{theorem}
+\begin{proof}
+\emph{The local surface condition.} An interior point of a source surface is unchanged. An interior point of a paired boundary edge has two half-disc neighborhoods glued along their diameter and hence a disc neighborhood. At every source boundary corner, the link is an interval with two endpoint occurrences. Pairing an incident edge joins the corresponding endpoints of such link intervals. Every link endpoint is used at most once, because every boundary edge is paired at most once. The resulting link graph has degree at most two, and its connected components are intervals or circles.
+
+The corner equivalence relation is generated by precisely those joins, so a quotient corner corresponds to one connected link component, not an arbitrary disjoint union of links. Thus its neighborhood is a half-disc or a disc. This remains true for a loop edge, provided both endpoint occurrences are retained. It proves that the quotient is a surface. It also shows that every surviving boundary vertex has degree two in the surviving boundary multigraph.
+
+\emph{Connected components.} Gluing a nonempty boundary cell joins exactly the source components incident to the corresponding edge of $G$. No other components are joined. Thus the components are indexed by the connected components of $G$.
+
+\emph{Euler characteristic.} Use a finite CW decomposition of each source surface extending the retained boundary cellulation. A nonregular loop cell is allowed. The gluing changes only boundary cells. In group $J$, it replaces $q_J$ corner cells by $q'_J$ cells, so the zero-cell count decreases by $q_J-q'_J$. It replaces each pair of one-cells by one one-cell, so the one-cell count decreases by $m_J$. The two-cell count is unchanged. Therefore
+\[
+ \chi'_J-\sum_{i\in J}\chi_i
+       =-(q_J-q'_J)-(-m_J),
+\]
+which is~\eqref{eq:main}. No subtraction rule based solely on the number of paired arcs is valid without accounting for their common corners.
+
+\emph{Boundary count.} All paired open edges become interior. All unpaired edges remain boundary edges. The link calculation shows that their endpoint-occurrence multigraph is a disjoint union of circles. A loop contributes two incidences at its vertex, as required. Passive source circles are disjoint from all identifications and remain boundary components. Counting these two kinds of circles gives $b'_J$.
+
+\emph{Orientability.} Temporarily fix the supplied orientation on each orientable source component. Reversing that orientation is represented by $x_i=1$. The gluing reverses stored boundary directions exactly when $\rho_e\oplus r_e\oplus r_f=1$. Oriented surfaces glue coherently across a seam precisely when their induced boundary orientations oppose each other. Incorporating the choices $x_i,x_j$ gives~\eqref{eq:orientation}. Consistency is necessary and sufficient, because orientations then agree along every seam and around every quotient corner. An inconsistent parity cycle obstructs orientation.
+
+A nonorientable source has an orientation-reversing closed curve in its interior. The gluing is confined to the boundary and leaves that interior embedded, so the obstruction persists. Finally, classification yields the stated genus or crosscap count.
+
+\emph{Algorithm and continuation data.} Use one disjoint-set structure on source components and another on corners. A parity disjoint-set structure, or a graph traversal with parity labels, solves~\eqref{eq:orientation}. Traverse the surviving boundary multigraph using half-edge occurrences. For an orientable output, choose a solution $x_i$ and direct each surviving edge according to the resulting induced boundary orientation; adjust its port frame accordingly. For a nonorientable output, any direction on each output boundary cycle is allowed. Suppress positive unmarked paths again and retain the remaining labels. The sizes are bounded by Theorem~\ref{thm:kernel}.
+\end{proof}
+
+\subsection{Cost of the finite operation}
+Let $H=s+p$ and let $\bits'$ bound the largest intermediate integer bit length. The graph operations use $O(H)$ vertices and edges, disjoint-set work $O(H\alpha(H))$, and sorting or canonical-label work $O(H\log(H+1))$ in a conventional implementation. Arithmetic on the component statistics costs $O(H\bits')$ for additions in a schoolbook bit model; label comparisons and serialization contribute their actual lengths. A conservative bound is
+\[
+      O\big(H(\bits'+\log(H+1))\log(H+1)\big)
+\]
+bit operations, with the usual handling of the constant-size case. This is more than sufficient for the present asymptotic application. The implementation uses Python dictionaries and disjoint-set forests; no wall-clock claim is deduced from this asymptotic notation.
+
+The largest new Euler magnitude is at most $\sum_i|\chi_i|+O(p)$, and the largest new boundary count is at most $\sum_i b_i+O(p)$. Thus the bit length grows by at most $O(\log(s+p+1))$ in one operation. An input gap of length $2^{16384}$ is never used as a loop bound.
+
+\section{Why corners and cyclic order cannot be omitted}
+\label{sec:examples}
+
+\subsection{The same two ports can give a sphere or an annulus}
+Take a disc whose entire boundary is the two-edge cyclic word $(a,b)$. Pair $a$ and $b$ reversing their induced boundary directions. The two existing vertices remain distinct: $q=q'=2$ and $m=1$. Equation~\eqref{eq:main} gives $\chi'=2$, and no boundary remains. The result is a sphere.
+
+Now take a disc with cyclic word $(a,u,b,v)$, where $u,v$ are positive unmarked gaps. Apply the same port pairing. Now $q=4$, $q'=2$, and $\chi'=1+1-2=0$. Two boundary circles remain, so the result is an annulus. The port set, source genus, and number of paired edges are identical. Only the corner/gap data distinguish these outcomes.
+
+With the second word, preserving rather than reversing the induced directions produces a M\"obius band: $\chi'=0$, one boundary circle, and an inconsistent orientation equation. With the first word and the preserving pairing, the result is a projective plane. These are genuine changes of topology, not cosmetic subdivisions.
+
+\subsection{A port mask does not determine boundary genus}
+Consider a disc with four ports, separated by positive gaps, in cyclic order $a,b,c,d$. Glue $a$ to $c$ and $b$ to $d$, reversing boundary directions. The paired endpoints are disjoint, so $\chi'=1-2=-1$. The remaining boundary graph is one circle, giving a once-punctured torus.
+
+Keep the same labels and pairings but put the ports in cyclic order $a,c,b,d$, again with positive intervening gaps. The result has the same $\chi'=-1$ but three boundary circles, giving a pair of pants. An incidence mask containing all four ports is identical in the two examples. A representation suitable for repeated surgery must therefore retain cyclic order, not just membership.
+
+\subsection{Entire boundary circles and orientation frames}
+An annulus with one loop port on each boundary circle can have those circles glued to give either a torus or a Klein bottle. The orientation equation must compare the \emph{coherent induced} directions of the two circles. Giving both circles arbitrary unrelated directions without recording the change would reverse this conclusion on some inputs.
+
+Similarly, gluing the single loop port of one disc to that of another gives a sphere. Here $q=2$, $q'=1$, $m=1$, and $\chi'=1+1+1-1=2$. These examples test loop incidences as well as the general corner correction.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}Xlll@{}}\toprule
+Source boundary data and pairing & $\chi'$ & $b'$ & Output\\\midrule
+Disc $(a,b)$, reverse & 2 & 0 & Sphere\\
+Disc $(a,u,b,v)$, reverse & 0 & 2 & Annulus\\
+Disc $(a,u,b,v)$, preserve & 0 & 1 & M\"obius band\\
+Disc, alternating paired ports & $-1$ & 1 & Punctured torus\\
+Disc, nonalternating paired ports & $-1$ & 3 & Pair of pants\\
+Annulus, two loop ports, reverse & 0 & 0 & Torus\\
+Annulus, two loop ports, preserve & 0 & 0 & Klein bottle\\\bottomrule
+\end{tabularx}
+\end{center}
+Here ``reverse'' and ``preserve'' refer to the coherent stored boundary directions; a supplied port parameter is converted using its frame bit.
+
+\subsection{Correction to a tempting optimization, not an allegation}
+The general shortcut $\chi'=\sum\chi-m$ is valid when the two endpoint identifications for every pair reduce the vertex count independently, so that $q-q'=2m$. It fails for adjacent ports, redundant endpoint identifications, and whole-circle attachments. The correct replacement is~\eqref{eq:main}.
+
+The maintained parallelity article already computes the Euler characteristic of the full core-contact subset using vertices minus edges \cite{parallelity}. Our counterexamples reinforce that design choice. They are not evidence of an existing incorrect verdict in ProveIt. The integration recommendation is to preserve this corner sensitivity when turning source contact data into a reusable surgery kernel.
+
+\section{Composition, epochs, and small-interface search}
+\label{sec:composition}
+
+\begin{theorem}[Exact continuation]\label{thm:composition}
+Let $\mathcal P$ and $\mathcal Q$ be disjoint sets of port pairings, with each original port used at most once in their union. Gluing $\mathcal P$, normalizing the output kernel, and then gluing $\mathcal Q$ gives the same component types and remaining marked boundary data, up to the permitted cyclic reparameterizations and orientation choices, as gluing $\mathcal P\cup\mathcal Q$ at once.
+\end{theorem}
+\begin{proof}
+Both constructions impose the equivalence relation generated by the same identifications of characteristic intervals. Forming the quotients in two stages therefore gives the same topological quotient. By Theorem~\ref{thm:kernel}, intermediate suppression of unmarked degree-two vertices extends across a collar and commutes with the remaining marked-edge identifications. The coherent output orientation frames in Theorem~\ref{thm:glue} are precisely what makes the next stage use the same actual parameter maps. Passive circles have no remaining ports and cannot participate in $\mathcal Q$. Hence discarding their cellulations while retaining their counts is also safe.
+\end{proof}
+
+The theorem gives a useful engineering separation. Compile a source interface once. Evaluate many hypothetical pairings on copies of its small kernel. Carry the output kernel into later \emph{port-only} operations without returning to the large source. A new cutting surface, a new marked interior curve, or a requested port inside a suppressed path ends this fixed-interface regime and needs additional source work.
+
+\begin{corollary}[Fixed-interface amortization]\label{cor:amortize}
+For $Q$ independent surgery queries on the same $p$-port interface, the total cost is
+\[
+ C_{\mathrm{compile}}(k,p,s,\bits)
+       +Q\,\operatorname{poly}(s+p,\bits),
+\]
+rather than $Q$ complete first-return discoveries. Along a single continuation that only consumes existing ports, there are at most $\lfloor p/2\rfloor$ nonempty gluing updates and never more than $p$ ports.
+\end{corollary}
+\begin{proof}
+The compiler is independent of the chosen pairing. Each nonempty update consumes at least two distinct named ports and creates none. Apply Theorem~\ref{thm:composition} to reuse the normalized output.
+\end{proof}
+
+The physical length of a suppressed path is absent from both terms except through binary metadata and source count cost. The number of \emph{new} interface epochs is not bounded by this corollary.
+
+\begin{theorem}[Signed pairing enumeration]\label{thm:enumeration}
+For $p$ labelled ports, the number of partial pairings with an independent preserve/reverse choice on each paired edge pair is
+\begin{equation}\label{eq:paircount}
+ A_p=\sum_{j=0}^{\lfloor p/2\rfloor}
+                   \frac{p!}{(p-2j)!\,j!}.
+\end{equation}
+As $p\to\infty$, $A_p=\exp(\Theta(p\log p))$. Given a compiled interface, all these abstract surgery outcomes can be enumerated in
+\[
+          \exp(O(p\log(p+1)))\operatorname{poly}(s,\bits)
+\]
+time, including exact component classification for each pairing.
+\end{theorem}
+\begin{proof}
+For a pairing with $j$ pairs, choose the $2j$ participating ports and partition them into unordered pairs. This gives $p!/((p-2j)!2^j j!)$ possibilities. Each pair has two parameter-map signs, cancelling $2^j$ and giving~\eqref{eq:paircount}.
+
+For an upper bound, each port can be left unpaired or assigned a partner and a sign, giving at most $(2p+1)^p$ descriptions, which overcounts but suffices. For a lower bound, use the term $j=\lfloor p/2\rfloor$ and the factorial estimate $\log(r!)=r\log r-r+O(\log(r+1))$. Its logarithm is $\tfrac12p\log p+O(p)$. Thus the growth has the stated order. Apply Theorem~\ref{thm:glue} to each pairing; its polynomial factor is absorbed in the exponential in $p$.
+\end{proof}
+
+\begin{corollary}[A restricted quasi-polynomial query class]\label{cor:qp}
+Suppose an input of size $n$ supplies an interface with $s,\bits$ polynomially bounded in $n$ and a polynomial-cost compilation. If $p=O(\log n)$, all abstract signed pairing outcomes can be enumerated in $n^{O(\log\log(n+2))}$ time. More generally, if
+\[
+            p=O\!\left(\frac{(\log n)^2}{\log\log(n+2)}\right),
+\]
+then the enumeration takes $n^{O(\log n)}$ time.
+\end{corollary}
+\begin{proof}
+Substitute the stated bounds into $p\log(p+1)$ in Theorem~\ref{thm:enumeration}.
+\end{proof}
+
+This is an unconditional result about the specified query problem, not an unknot-recognition theorem for all diagrams with some unverified width property. In particular, the enumeration includes pairings that may have no admissible three-dimensional realization. It also ignores any separate cost of selecting the geometric interface in the first place.
+
+\section{Consequences for actual interval bundles}
+\label{sec:bundles}
+
+\subsection{The orientation interval bundle}
+For a compact connected surface $B$, let $E(B)\to B$ be its orientable interval bundle: the product $B\times I$ when $B$ is orientable, and the interval bundle whose fibre-reversal character equals the orientation character of $B$ when $B$ is nonorientable. In both cases the total three-manifold is orientable.
+
+This definition includes a certificate obligation in an algorithmic application. A three-manifold with the same boundary statistics is not thereby identified with $E(B)$.
+
+\begin{theorem}[Bundle type from the certified base]\label{thm:bundle}
+Let $B$ be compact and connected, with Euler characteristic $\chi$ and boundary count $b$.
+
+If $b>0$, $E(B)$ is a handlebody of genus $1-\chi$. In particular, it is a three-ball if and only if $B$ is a disc.
+
+If $b=0$ and $B$ is orientable of genus $g$, then $\partial E(B)$ has two components of genus $g$. If $b=0$ and $B$ is nonorientable of crosscap number $k$, then $\partial E(B)$ is connected of genus $k-1=1-\chi$. In either closed-base case, $E(B)$ is not a handlebody.
+\end{theorem}
+\begin{proof}
+A compact connected surface with boundary has a handle decomposition with one disc and $1-\chi$ bands, or equivalently a graph spine of rank $1-\chi$. Thickening this decomposition by the orientation interval bundle gives one three-ball and $1-\chi$ three-dimensional one-handles. The total space is orientable, including when a base band is twisted, because the fibre twists with the base orientation character. It is consequently a handlebody of the stated genus.
+
+Its genus is zero exactly when $\chi=1$. Among compact connected surfaces with nonempty boundary,~\eqref{eq:classification} shows that this forces an orientable disc. This proves the first assertion.
+
+For a closed orientable base, the bundle is a product, with its two horizontal copies as boundary. For a closed nonorientable base, its horizontal boundary is the connected orientation double cover. That cover has Euler characteristic $2\chi$, and hence genus $1-\chi=k-1$.
+
+A closed orientable base gives a total boundary with two components, whereas a handlebody has connected boundary. For a closed nonorientable base, the bundle retracts onto $B$. Over $\F$, a closed surface has nonzero $H_2$, whereas a handlebody retracts onto a graph and has zero $H_2$. This excludes a handlebody in the remaining cases.
+\end{proof}
+
+For completeness, the horizontal boundary above a nonorientable base with $b>0$ is its connected orientation double cover, with $2b$ boundary circles and genus $1-\chi-b$. Above an orientable base it consists of two copies of the base. The vertical annuli join these horizontal boundaries to form the connected boundary of the handlebody. These formulas are used by the small bundle-summary module; all genera and multiplicities are returned as integers without triangulating the spaces.
+
+\begin{example}[A spherical boundary is not a ball certificate]\label{ex:rp2}
+Take $B=\mathbb{RP}^2$. Then $\chi=1$, $b=0$, and $\partial E(B)\cong S^2$. Nevertheless $E(B)$ retracts onto $\mathbb{RP}^2$ and has fundamental group $\mathbb Z/2\mathbb Z$, so it is not a three-ball. This rules out inferring a ball verdict from a sphere-boundary inventory alone, even in a very small interval-bundle example.
+\end{example}
+
+\subsection{A local fibre compatibility theorem}
+The base kernel does not encode every fibre gluing. A separate check is needed when one tries to promote abstract base surgery to an actual gluing of supplied interval bundles.
+
+\begin{definition}[Normalized fibre data]
+At every retained source corner choose a product chart in the interval bundle. Assume each paired port rectangle is glued by a base endpoint map and a constant fibre map that is exactly $t\mapsto t$ or $t\mapsto1-t$ in these charts. In particular, the data specify the corner fibre identifications, not just their isotopy classes.
+\end{definition}
+
+At a quotient corner, form its link graph as in the proof of Theorem~\ref{thm:glue}. Source link intervals carry the product trivialization. A join induced by a paired port endpoint carries a fibre-reversal bit. The xor of the bits around a circular link is its \emph{corner holonomy}.
+
+\begin{theorem}[Corner-holonomy extension criterion]\label{thm:holonomy}
+For normalized fibre data, the given quotient fibre structure extends as a locally trivial interval bundle over every quotient corner if and only if the corner holonomy is zero on every circular vertex link. An interval vertex link imposes no additional condition. These tests require only $O(p)$ corner-link data and linear graph traversal once the kernel and fibre bits are supplied.
+\end{theorem}
+\begin{proof}
+For a link that is an interval, propagate a chosen fibre coordinate along its source intervals and joins. There is no cycle, so this produces a product chart over a half-disc neighborhood of the corner, with no consistency condition.
+
+For a circular link, begin with one product coordinate and propagate around the link. The returning coordinate is identical to the starting coordinate precisely when the xor is zero, since all fibre maps are identity or reflection. In that case the propagated charts identify the fibers over the common corner consistently and give the product of a disc neighborhood with $I$.
+
+If the xor is one, the prescribed identification over the central vertex identifies a fibre coordinate $t$ with $1-t$. Equivalently, the interval bundle over the punctured disc has nontrivial reversal around the puncture, whereas the restriction of any interval bundle over a disc has trivial reversal. It cannot extend with the prescribed fibre structure. This proves necessity and sufficiency. The number of link intervals and joins is bounded by the retained corner incidences.
+\end{proof}
+
+The exact normalization hypothesis is essential. Merely knowing the parity of arbitrary fibre homeomorphisms does not assert that their full composition at a corner is the identity. Additional chart normalization or a full monodromy check is needed in that more general setting. Also, passing the local test alone does not prove that the resulting total bundle is the \emph{orientation} interval bundle; its global fibre character must agree with the base orientation character. In an already certified orientable ambient bundle this is automatic, but it must not be silently assumed for arbitrary proposed gluings.
+
+The holonomy theorem is proved here but is not part of the executable prototype. Its implementation should accompany, rather than precede, a source adapter that retains the required fibre charts.
+
+\section{Applying the operator to the maintained source geometry}
+\label{sec:integration}
+
+\subsection{A one-cut polynomial consequence}
+The maintained source parallelity packet has a finite list of source-labelled core-facing arcs, all at singleton ranks, with $p\le66T$ \cite{parallelity}. Its source polygon and gluing families have size $O(T)$. Components containing a core port are individually distinguished in that packet; port-free profiles may instead have binary multiplicities. Those multiplicities must remain aggregated, not expanded into an explicit list of $s$ surfaces.
+
+\begin{corollary}[Compilation at one supplied cut]\label{cor:onecut}
+Suppose a validated source-parallelity packet supplies the correct $V,R,F$ interval systems, the statistics and owners of its active base components, and coherent frames. With $T$ source tetrahedra and coordinate bit length $\bits$, its core-facing boundary kernel has at most $132T$ active edges and $132T$ corners and can be compiled in polynomial bit time in $T$ and $\bits$ using unweighted AHT counts. Port-free profiles can be passed through unchanged as binary-multiplicity metadata.
+\end{corollary}
+\begin{proof}
+Apply $p\le66T$ to Theorem~\ref{thm:kernel}. Splitting the $O(T)$ boundary-edge families to exclude the singleton ports leaves $O(T)$ pieces. Theorem~\ref{thm:compile}, with Theorem~\ref{thm:silent} when needed, is polynomial because $k,p=O(T)$ and the AHT count bound is polynomial. A component without a port is never touched by the permitted surgery, so its grouped profile does not need expansion.
+\end{proof}
+
+This corollary does not unconditionally replace the existing weighted classification engine with a complete polynomial implementation. Its component types and source-to-terminal assignments are inputs. It isolates the subsequent \emph{ordered boundary transfer} from the cost of obtaining those inputs. In particular, it does not assert an output-size bound for a general weighted orbit histogram.
+
+\subsection{The proposed native adapter}
+The optional \code{upstream.py} wrapper matches the inspected \code{count\_orbits} API. It builds singleton \code{IntervalPairing} augmentations, shares query and AHT-cycle caps, propagates incomplete results, and retains requested count certificates. It has not been executed against the native repository in this work.
+
+The substantial remaining adapter should start from the packet's source charts, not from reconstructed numerical guesses. Its contract has four parts:
+\begin{enumerate}
+\item Construct $V$ from actual quotient-corner identifications. Construct $F$ by adding only actual free-boundary edge identifications. Construct $R$ by omitting the named core-facing arcs, splitting their affine families at exact ranks.
+\item Produce each port's two endpoint \emph{occurrences}, its component owner, and its coherent induced boundary frame. Preserve fibre bits independently from rank-map slope, particularly at singleton ranks.
+\item Authenticate the supplied component statistics and the distinction between boundary and silent interior-corner classes. Keep port-free repeated profiles aggregated.
+\item Bind all count queries, their native proofs, and the final cyclic words to the original packet fingerprint. Independently replay those proofs and the finite surgery calculation.
+\end{enumerate}
+
+The prototype does not contain this geometric adapter. Passing an arbitrary pair of count functions to the compiler is not a proof that they came from a particular normal cut. This distinction is the main integration trust boundary.
+
+\subsection{Where repeated-query performance should improve}
+The best candidate workload is a fixed core interface on which many hypothetical local corrections are tested. Today, the source charts already make those locations meaningful. The new proposal pays once for the ordered first-return information and makes later abstract topology tests insensitive to path multiplicity.
+
+If only one small query is made, compilation and canonicalization may be pure overhead. If most runtime is spent discovering decomposing surfaces or validating a three-dimensional correction, this operator need not improve total runtime at all. Therefore it should initially be an opt-in research utility with a paired end-to-end benchmark, not a replacement default based solely on the local measurements below.
+
+\section{What this does and does not prove about quasi-polynomial time}
+\label{sec:global}
+
+\subsection{Local encoded cost versus global search}
+Let $n$ be the original diagram size. Let $E(n)$ be the number of distinct source-interface epochs generated during a complete run, and let $Q_e$ be the number of finite surgery queries made at epoch $e$. Let $k_e,p_e,s_e,\bits_e$ denote its actual parameters. The interface contribution is bounded by
+\begin{equation}\label{eq:epoch-cost}
+ \sum_{e=1}^{E(n)}
+ \left(C_{\mathrm{compile}}(k_e,p_e,s_e,\bits_e)
+       +Q_e\operatorname{poly}(s_e+p_e,\bits_e)\right).
+\end{equation}
+This is a useful accounting expression because it does not hide recompilation, source growth, or repeated search in a single ``compressed'' operation.
+
+For a sequence that only consumes fixed ports, Corollary~\ref{cor:amortize} controls the number of updates. It does not control $E(n)$ when new cuts or pattern intersections create new ports. Nor does $p\le66T$ at one supplied cut prove that every later $T_e$ remains polynomial in $n$. A statement of that form requires a compatible admissible-core and source-reconstruction theorem.
+
+\begin{proposition}[A sufficient global cost condition]\label{prop:global}
+Consider a complete, correct hierarchy algorithm whose number of visits to each kind of step is at most $L(g+1)^L$, and whose number of step types is polynomial in $n$. Suppose every visit, including source construction, proof verification, search, and all required interface queries, has bit cost at most $C(n)$. Then its total bit time is at most
+\[
+                 \operatorname{poly}(n)L(g+1)^L C(n).
+\]
+In particular, $L=O(\log n)$, $g=n^{O(1)}$, and $C(n)=n^{O(1)}$ imply $n^{O(\log n)}$ time. More generally it suffices that
+\[
+  \log C(n)+\log(L+1)+L\log(g+1)=O((\log n)^c)
+\]
+for some fixed $c$, to obtain a quasi-polynomial bound.
+\end{proposition}
+\begin{proof}
+Sum the per-visit cost over the bounded visits and step types, then take logarithms. The stated substitutions give the claimed exponents.
+\end{proof}
+
+The iteration expression is the one isolated in Lackenby's Section~9 \cite{lackenby}; the multiplication by full encoded step cost is indispensable. Proposition~\ref{prop:global} is an accounting implication, not a proof of its hypotheses for the maintained recognizer. The interface compiler removes a potential dependence on expanded boundary length from one part of $C(n)$, provided its inputs are supplied with the stated bounds.
+
+\subsection{Three independent obstacles remain}
+First, \emph{geometric validity}: a signed pairing of base arcs is not automatically a permitted compression, pattern compression, weak reduction, or parallelity removal in a given three-manifold. Source charts, fibre compatibility, and the actual local move must be checked.
+
+Second, \emph{provenance and new markings}: a correct base type does not tell us how to lift a later violating disc into the original source. Suppressed paths need reconstruction information when they carry such a witness. New markings can force a fresh interface description.
+
+Third, \emph{global resource control}: no theorem here bounds hierarchy depth, surface complexity, core growth under every correction, or the number and size of epochs. A large family of cheap local queries may still be exponential in number. Theorem~\ref{thm:enumeration} makes that dependence explicit instead of concealing it.
+
+These obstacles are compatible with pursuing the quasi-polynomial goal. They specify the next proofs required, and they identify precisely which cost dependence the present results have removed.
+
+\section{Implementation, independent checks, and measurements}
+\label{sec:validation}
+
+\subsection{Delivered components and their status}
+The package uses the Python standard library and declares Python~3.10 or newer. The completed runs used Python~3.13.5 on Linux. It does not modify ordinary recognition dispatch.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}\toprule
+Module & Implemented responsibility\\\midrule
+\code{surfaces.py} & Typed surface/kernel objects, normalization, corner quotients, orientation parity, exact surgery, continuation frames, hexadecimal JSON.\\
+\code{compiler.py} & Count-only first-return recovery, zero-gap detection, optional silent-orbit cancellation, shared query cap, transcript recording and recomputation.\\
+\code{oracles.py} & Explicit small equivalence oracle and analytic large-block test oracles. These are not a new general interval-orbit engine.\\
+\code{bundles.py} & Topological summary of an already certified orientation interval bundle.\\
+\code{upstream.py} & Optional wrapper for the inspected native AHT API; native execution and source geometry adapter not completed here.\\
+\code{tests/reference.py} & Independent literal boundary subdivision and graph/BFS quotient oracle.\\\bottomrule
+\end{tabularx}
+\end{center}
+
+The fibre-holonomy criterion is a paper theorem, not an implemented routine. No Lean proof is supplied. Mathematical proofs, exhaustive finite checks, randomized checks, and native integration are distinct levels of evidence and are reported separately.
+
+\subsection{Completed correctness checks}
+The retained suite has 18 test methods and passes without skipped tests. Its parameterized cases include:
+\begin{enumerate}
+\item All 7,688 signed partial pairings of the all-marked polygon boundaries with one through eight ports. Adjacent ports, repeated endpoint identifications, closed quotients, and nonorientable outcomes occur naturally in this corpus.
+\item 1,600 deterministic-seed randomized surface cases. These include several source components, multiple boundaries, orientable and nonorientable types, arbitrary port frames, gaps, and partial self- or cross-component gluings. The kernel is checked against a literal expanded boundary quotient. Batch and sequential operations are compared, followed by additional continuation queries on unused ports.
+\item 700 randomized compiler cases. Recovered cyclic data are subjected to surgery and compared with the literal source; transcript recomputation and the query bound are checked.
+\item Fixed counterexamples from Section~\ref{sec:examples}, large integer JSON roundtrips, shared budgets, cancellation, a tampered transcript, mixed all-corner namespaces, and orientation-bundle summaries including the spherical-boundary nonball.
+\end{enumerate}
+
+The largest binary stress coordinate is $2^{16384}$, which has 16,385 bits. These tests use analytic block equivalence systems with exact count formulas and finite augmentations. They demonstrate that the compiler and kernel do not expand the coordinate universe. They do not benchmark general AHT discovery at that size.
+
+The literal oracle is independent of the producer's disjoint-set/parity implementation: it expands boundary subdivisions and uses graph traversal to compute the quotient and orientation constraints. It shares the mathematical specification, as any reference must, but not the compressed path suppression. Agreement is substantial regression evidence, not a substitute for the local-link and Euler proofs.
+
+The upstream repository's regression suite, Regina cuts, and actual knot diagrams were not run for this package. Consequently no statement about improved knot verdicts or an end-to-end recognizer speedup is supported by these tests.
+
+\subsection{Paired local gluing benchmark}
+The timed input is two discs, each with eight named ports separated by unmarked gaps of common length $\ell$. All eight cross-component pairs are supplied, with a fixed permutation of the port labels. The expanded boundary has $16(\ell+1)$ edges; the kernel has 32. Both arms receive the same encoded surface description and compute the complete component-type signature after the prescribed gluing.
+
+The kernel arm includes normalized kernel construction and surgery. The literal arm explicitly expands the unmarked paths and uses the independent reference quotient. Input preparation is outside both timers. This comparison isolates avoidance of physical boundary expansion; the literal arm is \emph{not} the maintained ProveIt implementation.
+
+One warmup is followed by seven shuffled paired rounds, including an identical literal control arm. Timings are batched to reduce submillisecond noise: 128 queries per kernel sample, and $\max\{1,\lfloor4096/E\rfloor\}$ queries per literal sample, where $E$ is the physical edge count. Tables report per-query batch means summarized by their median. The speed ratio is the median of the paired literal/kernel ratios, not the quotient of independent medians. The A/A column is the median literal/control ratio.
+
+\input{benchmark_table.tex}
+
+Values above one favor the kernel. The first cases retain the small-input overhead rather than concealing it. The largest gains are local improvements over literal expansion, not evidence of comparable gains over the native compressed parallelity engine. The identical-arm controls also expose timing variation: in the delivered run their medians range from 0.905 to 1.276. This was not a dedicated-machine experiment, and no confidence interval is claimed. Ratios close to one should not be interpreted as robust improvements. The exact reduction from physical boundary size to the fixed kernel is stronger evidence than a precise wall-clock multiplier.
+
+The first, unbatched pilot timing file is retained separately as \code{benchmark-first-pass.json}; its noisier samples are not pooled into this table. The batched protocol was chosen to address that noise. All raw samples, execution order, environment details, and deterministic seeds are in \code{data/benchmark.json}.
+
+\subsection{Large-bit compiler benchmark}
+A second benchmark holds the number of ports at 12 and uses analytic block-count callbacks on paths whose binary lengths grow. It times compilation, not surface-source validation or AHT. The number of count calls stays fixed at 113 and the maximum singleton augmentation at 23; the output has 24 edges.
+
+\input{binary_table.tex}
+
+These results support a narrow implementation statement: the compiler's control flow is independent of the numerical path length on this family, while big-integer costs can still grow with bit length. They do not establish the performance of general interval-orbit discovery, native proof replay, or a complete hierarchy on large normal vectors.
+
+\section{Further research questions and concrete next experiments}
+\label{sec:future}
+
+\paragraph{1. Build and certify the native $V/R/F$ adapter.}
+Start with the existing source-parallelity polygon packet. Derive terminal occurrences and free-boundary relations independently from its source charts; verify the mixed-namespace identity~\eqref{eq:cancel} and the cyclic words against explicit small cuts. The desired theorem is that the source adapter itself has polynomial encoded cost and authenticates exactly the boundary of each active base component. This is the most direct next integration step.
+
+\paragraph{2. Retain coherent orientation frames and fibre charts together.}
+Can the existing signed polygon data produce all active port frames and the normalized corner fibre maps with only $O(T)$ additional records? A useful result would couple parity-cover connectivity with a replayable chart-normalization proof, rather than infer fibre reversal from a singleton rank-map slope.
+
+\paragraph{3. Implement the holonomy criterion on actual bundle candidates.}
+Test Theorem~\ref{thm:holonomy} on source-derived gluing proposals. Include examples where base surgery is valid but the prescribed fibre identification does not extend. Determine which hierarchy moves guarantee the zero-holonomy condition automatically and which require an explicit local check.
+
+\paragraph{4. Add compressed witness paths without losing the size bound.}
+A gap currently certifies only a positive boundary interval. Can each such gap carry a short straight-line reconstruction program in source interval maps, with a polynomial verifier and efficient substitution after repeated gluing? The key challenge is bounding the program size under composition; a final small cyclic word does not bound an unshared expansion of its provenance.
+
+\paragraph{5. Extend the observer to patterned base surfaces.}
+What additional finite data are sufficient when prescribed pattern arcs cross the base interior or when a later move requires an essentiality test? Cyclic port order and genus are insufficient for arbitrary curve homotopy. A promising restricted problem is a base cut along a certified small arc system, with compressed words recording crossings of that system.
+
+\paragraph{6. Bound new port creation across corrections.}
+The fixed-interface port budget is monotone, but new source cuts create new epochs. Seek an amortized quantity that charges newly created ports to a bounded decrease of pattern complexity or to controlled branching. A proof should count discarded work and rebuilt suffixes of a hierarchy, not merely the final hierarchy length.
+
+\paragraph{7. Relate inherited cores to admissible uniform-type cores.}
+The $30T$ source core is not itself a global bound on every later admissible patterned state. Can normalization, pattern transport, and bundle removal be organized so that the total number of interface records remains polynomial in the original diagram size? Any affirmative theorem needs exact hypotheses on new surfaces and a source-preserving reconstruction map.
+
+\paragraph{8. Exploit small interfaces without enumerating all pairings.}
+Theorem~\ref{thm:enumeration} gives the full abstract choice count. Which geometric move families occupy only polynomially many, or $2^{O(p)}$, equivalence classes of these choices? Prove a reduction using the move's topology, rather than identify arbitrary pairings solely because their resulting genera agree. The latter may lose essential witness information.
+
+\paragraph{9. Connect interface control to balanced hierarchy depth.}
+Can a balanced decomposition theorem simultaneously bound depth, surface complexity, and interface size after correction? A balance condition on a final decomposition is not enough: its preservation during weak reduction or backtracking must be proved. Such a result would supply hypotheses in Proposition~\ref{prop:global} instead of another isolated compressed primitive.
+
+\paragraph{10. Measure complete native workloads and formalize the finite core.}
+After the source adapter is verified, compare compile-once queries against the maintained native operation on identical source packets, with shared total budgets and proof replay included. Record small-input regressions and cases dominated by other stages. Independently, the finite corner quotient, parity equations, and Euler correction are suitable targets for Lean formalization; a formal theorem should cover loop cells and adjacent ports rather than assume distinct endpoints.
+
+\section{Conclusion}
+The useful step forward is a precise interface theorem, not a new claim about the entire recognizer. A large compressed parallelity base can be compiled to a small cyclic boundary state that remembers exactly the corners required for later port surgery. Unweighted counts recover the first-return paths without traversing them, and a comparison of vertex and residual relations distinguishes adjacency from a positive gap. Silent interior classes can be cancelled rather than mistaken for boundary circles.
+
+The resulting surgery operator is exact under composition. Its Euler formula handles the cases that defeat naive arc-count bookkeeping, and its orientation equations and boundary traversal give the full surface classification. For certified interval bundles, those classifications yield useful handlebody and ball consequences, while the projective-plane example prevents an invalid boundary-only shortcut.
+
+This removes physical boundary multiplicity from one repeatable hierarchy operation. The remaining work is sharply located: source-to-kernel certification, geometric validity and fibre data, witness lifting, new-port control, admissible cores, and global depth/search bounds. The delivered proofs and tests support the local operator; they do not yet support a general quasi-polynomial unknot-recognition claim.
+
+\appendix
+\section{Executable interface and reproduction}
+\label{app:reproduce}
+From the package root:
+\begin{verbatim}
+PYTHONPATH=src:tests python -m unittest discover -s tests -v
+PYTHONPATH=src python examples/counterexamples.py
+python benchmark.py --output data/benchmark-rerun.json
+python make_tables.py
+cd article
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The POSIX \code{build.sh} regenerates the tables and performs three LaTeX passes from any working directory, stabilizing the contents and cross-references. On Windows, set \code{PYTHONPATH} with the platform's normal environment-variable syntax or install the local package with \code{python -m pip install -e .}; the test reference directory must still be importable for the unittest run.
+
+A minimal corner-sensitive example is:
+\begin{verbatim}
+from corner_kernel import Surface, Edge, Gluing
+from corner_kernel import make_kernel, glue, signature
+
+K = make_kernel([Surface(1, 1)], [
+    (0, [Edge('a'), Edge('b')])
+])
+assert signature(glue(K, [Gluing('a', 'b', 1)]).kernel) \
+       == ((2, 0, True),)  # sphere, not chi = 0
+\end{verbatim}
+To represent positive gaps, insert \code{Edge(length=N)} between ports. Never insert a zero-length gap; adjacency is represented by consecutive port cells with a shared corner.
+
+The compiler takes callbacks \code{count(extra)} whose extra arguments are finite pairs of point indices. Each callback must count the base relation plus precisely those singleton identifications, on the same namespace. Native interval endpoints are inclusive; the terminal indices are zero-based. The source-derived $V/R/F$ relations are not synthesized by the optional wrapper.
+
+\section{Proof and evidence ledger}
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}\toprule
+Claim & Evidence and limitation\\\midrule
+$2p$ kernel, exact gluing, composition & Mathematical proofs and independent finite regression checks.\\
+Polynomial count-only compiler & Reduction to classical unweighted AHT; executable callback compiler. Native geometric input construction remains separate.\\
+Silent-orbit cancellation & Exact count identities; executable mixed-namespace regression.\\
+Small-interface enumeration & Explicit counting proof; no assertion that all pairings are geometric moves.\\
+Orientation-bundle consequences & Proofs and formula tests; assumes an actual certified bundle.\\
+Corner fibre extension & Proof for normalized identity/reflection fibre charts; not implemented.\\
+Measured local performance & Shuffled paired batch samples with literal A/A control; not native or full-recognizer performance.\\
+General quasi-polynomial recognition & Not established by this continuation.\\\bottomrule
+\end{tabularx}
+\end{center}
+
+\newpage
+\begin{thebibliography}{9}
+\small\raggedright
+\bibitem{aht}
+I.~Agol, J.~Hass, and W.~P.~Thurston,
+\emph{The computational complexity of knot genus and spanning area},
+Transactions of the American Mathematical Society \textbf{358} (2006), 3821--3850.
+DOI: \href{https://doi.org/10.1090/S0002-9947-05-03919-X}{10.1090/S0002-9947-05-03919-X}.
+\url{https://arxiv.org/abs/math/0205057}. Theorem~12 is the unweighted orbit-counting result used here.
+
+\bibitem{lackenby}
+M.~Lackenby, \emph{Incompressible surfaces, hierarchies and unknot recognition},
+arXiv:2607.23350v1, 25 July 2026.
+\url{https://arxiv.org/html/2607.23350v1}.
+Sections~9, 10, and 14 are relevant to the distinction between iterations, compressed cutting, and full algorithmic cost.
+
+\bibitem{parallelity}
+ProveIt project, \emph{Source parallelity in all handle dimensions and a bounded inherited core}, maintained source
+\path{Topology/UnknotRecognition/synthesis/parallelity.tex},
+at commit \snap.
+Blob \texttt{9e6698d589568dafc35d7a39df7ad6f74ee46ca0}.
+Repository: \url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{rawcut}
+ProveIt project, \emph{Full three-dimensional normal cuts in affine cell families},
+\path{Topology/UnknotRecognition/synthesis/cut_cells.tex}.
+Inspected blob \texttt{dc12b1a58aedaed78f00b63109b0aa5214832ca1}.
+Repository as above.
+
+\bibitem{orbits}
+ProveIt project, \path{Topology/UnknotRecognition/fast/fastunknot/interval_orbits.py},
+at commit \snap.
+Inspected blob \texttt{afb9092838e8197519f6e61f79e07711eb910170}; initial API and representation contract inspected, together with its use in the sparse-incidence module.
+
+\bibitem{sparse}
+ProveIt project, \path{Topology/UnknotRecognition/fast/fastunknot/sparse_incidence.py},
+at commit \snap.
+Inspected blob \texttt{2813c5d39d94fafbdd65f6472380763bd7fcbde9}; coned orbit queries and shared-budget API.
+\end{thebibliography}
+\end{document}

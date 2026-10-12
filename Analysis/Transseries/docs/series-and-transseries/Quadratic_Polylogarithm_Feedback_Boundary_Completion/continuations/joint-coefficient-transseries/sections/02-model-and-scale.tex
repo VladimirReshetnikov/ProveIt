@@ -1,0 +1,212 @@
+\section{The exact coefficient law and the resonant scale}
+\label{sec:model}
+
+\subsection{Quadratic feedback as a compound-Poisson coefficient}
+
+For real $s>2$ and $b>0$, set
+\begin{equation}\label{eq:parameters}
+ u=\sqrt{b^2+2\zeta(s)},\qquad
+ A=\zeta(s-1),\qquad v_c=u-b,\qquad R_b=e^{-v_c}.
+\end{equation}
+Consider the unique germ
+\begin{equation}\label{eq:model}
+ uv(r)-\frac{v(r)^2}{2}=\Li_s(re^{v(r)}),\qquad v(0)=0,
+ \qquad a_n=[r^n]v(r).
+\end{equation}
+Define
+\begin{equation}\label{eq:f}
+ f(z)=u-\sqrt{u^2-2\Li_s(z)}=\sum_{k\ge1}c_kz^k,
+\end{equation}
+using the square root equal to $u$ at zero. Since
+$2\zeta(s)<u^2$, the Taylor expansion of the outer square root converges
+absolutely on the whole image of $|z|\le1$. In particular,
+\begin{equation}\label{eq:positive-intensity}
+ c_k\ge\frac1{u k^s}>0,\qquad
+ \sum_{k\ge1}c_k=f(1)=v_c,\qquad f'(1)=\frac Ab.
+\end{equation}
+
+\begin{proposition}[Exact coefficient--probability identity]
+\label{prop:poisson}
+Let $X_n$ be the nonnegative integer-valued compound-Poisson variable
+with probability generating function
+\begin{equation}\label{eq:pgf}
+ \E z^{X_n}=\exp\{n(f(z)-f(1))\}.
+\end{equation}
+Then
+\begin{equation}\label{eq:probability-identity}
+ R_b^n a_n=\frac1n\Prob(X_n=n),\qquad
+ \E X_n=\frac{nA}{b}.
+\end{equation}
+The identity holds for every $b>0$, including $b<A$.
+\end{proposition}
+
+\begin{proof}
+Put $z=re^{v}$ in \eqref{eq:model}. Solving the quadratic equation
+on its germ gives $v=f(z)$, so $z=re^{f(z)}$. Lagrange inversion gives
+\[
+ a_n=\frac1n[z^{n-1}]f'(z)e^{nf(z)}
+     =\frac1n[z^n]e^{nf(z)}.
+\]
+For the second equality differentiate $e^{nf(z)}$ and compare its
+$z^{n-1}$ coefficient. Positivity and summability in
+\eqref{eq:positive-intensity} make
+$\exp\{n\sum c_k(z^k-1)\}$ a probability generating function:
+take a Poisson number of jumps of total intensity $nf(1)$, with
+jump probabilities $c_k/f(1)$. Multiplication by $e^{-nf(1)}$
+proves the coefficient identity. Differentiation at $z=1$ proves
+the mean formula.
+\end{proof}
+
+The endpoint reference $R_b$ is the actual Taylor radius at and above
+$b=A$. Below that threshold the branch first encounters an interior
+fold and the radius is larger than $R_b$ \cite{repo-boundary}.
+No radius claim is needed for \eqref{eq:probability-identity}.
+
+\subsection{Pairing the colliding Gamma and zeta terms}
+
+Write $s=3+\eps$ and define
+\begin{align}
+ E_2(\eps)&=\frac{\Gamma(1-\eps)}{(1+\eps)(1+\eps/2)},
+ & Z(\eps)&=\zeta(1+\eps)-\eps^{-1},\label{eq:E-Z}\\
+ K_\eps(\ell)&=Z(\eps)+
+      \frac{1-E_2(\eps)e^{-\eps\ell}}{\eps}.
+      \label{eq:K}
+\end{align}
+Both expressions are interpreted by removal of the singularity at
+$\eps=0$. The elementary values are
+\begin{equation}\label{eq:resonant-values}
+ E_2(0)=1,\quad E_2'(0)=\gamma-\frac32,\quad
+ Z(0)=\gamma,\quad K_0(\ell)=\ell+\frac32.
+\end{equation}
+Gamma recurrence gives
+$2\Gamma(-2-\eps)=-E_2(\eps)/\eps$. Pairing that term with the
+zeta pole in the convergent Jonqui\`ere expansion yields the following
+uniform local statement.
+
+\begin{lemma}[The centered local exponent]
+\label{lem:local}
+There are $r>0$ and $C<\infty$, uniform for $b\in[b_-,b_+]$ and
+real $|\eps|\le1/4$, such that, for
+$0<|t|<r$ and $|\arg t|\le\pi/2$,
+\begin{equation}\label{eq:local-exponent}
+ f(e^{-t})-f(1)+\frac Ab t
+ =\frac{t^2}{2b}\left\{K_\eps(-\Log t)+\nu\right\}
+   +\mathcal E(t),\qquad \nu=\frac{A^2}{b^2},
+\end{equation}
+where $|\mathcal E(t)|\le C|t|^{5/2}$.
+\end{lemma}
+
+\begin{proof}
+The classical normally convergent expansion \cite[25.12.12]{dlmf-polylog}
+gives, after pairing,
+\begin{equation}\label{eq:deficit-pair}
+ D_s(t):=\zeta(s)-\Li_s(e^{-t})
+ =At-\frac{t^2}{2}K_\eps(-\Log t)+t^3 J_\eps(t),
+\end{equation}
+where $J_\eps$ is jointly holomorphic for $t$ near zero and $\eps$
+near the indicated compact interval. Normal convergence can also be
+checked by the zeta functional equation: the coefficients of the
+analytic tail have geometric majorants on each smaller disk
+$|t|<r<2\pi$. All poles near $\eps=0$ occur in the displayed paired term.
+
+Using
+\[
+ \frac{1-e^{-\eps\ell}}{\eps}
+  =\ell\int_0^1e^{-\eps\ell v}\,dv
+\]
+and the bounded regular part of $(E_2(\eps)-1)/\eps$ gives
+\[
+ |K_\eps(-\Log t)|
+ \le C|t|^{-1/4}(1+|\log|t||)\le C'|t|^{-1/2}.
+\]
+Thus $D_s(t)=At+O(|t|^{3/2})=O(|t|)$. Uniformly in $b$,
+\[
+ b-\sqrt{b^2+2D}
+ =-\frac Db+\frac{D^2}{2b^3}+O(|D|^3).
+\]
+Inserting \eqref{eq:deficit-pair} leaves the displayed terms of
+\eqref{eq:local-exponent}; the difference between $D^2$ and
+$A^2t^2$ is $O(|t|^{5/2})$. This proves the bound, including the
+imaginary boundary rays by continuation and continuity.
+\end{proof}
+
+The nonlinear feedback contributes precisely $\nu$ to the quadratic
+regular part. At criticality $b=A$, this is $1$, changing the
+resonant constant from $3/2$ to $5/2$.
+
+\subsection{A scalar equation absorbing the slow logarithms}
+
+Define $B=B(n,\eps,b)>1$ by
+\begin{equation}\label{eq:scale}
+ \boxed{\displaystyle\quad
+ V:=\frac{bB^2}{n}=K_\eps(\log B)+\nu.
+ \quad}
+\end{equation}
+This defines a scale from the paired quadratic exponent; it does not
+assume that the underlying distribution has a finite variance. Put
+\begin{equation}\label{eq:q-xi}
+ q=\frac{E_2(\eps)B^{-\eps}}{V},\qquad
+ \xi_m=\frac{m-nA/b}{B},\qquad \xi=\xi_n.
+\end{equation}
+
+\begin{theorem}[Existence, uniqueness, and size of the scale]
+\label{thm:scale}
+Uniformly for $|\lambda|\le\Lambda$ and $b\in[b_-,b_+]$,
+\eqref{eq:scale} has exactly one solution $B>1$ for all sufficiently
+large $n$. Let
+\begin{equation}\label{eq:leading-scale}
+ \ph(\lambda)=\frac{1-e^{-\lambda}}{\lambda},\quad \ph(0)=1,
+ \qquad B_0^2=\frac{nL}{2b}\ph(\lambda).
+\end{equation}
+Then
+\begin{align}
+ \frac B{B_0}
+ &=1+\frac{C_\lambda}{L\ph(\lambda)}
+       +O\left(\frac{(\log L)^2}{L^2}\right),\label{eq:scale-first}\\
+ C_\lambda
+ &=\gamma+\nu+e^{-\lambda}
+   \left\{\frac12\log L+\frac12\log\frac{\ph(\lambda)}{2b}
+                   -\gamma+\frac32\right\},\label{eq:C-lambda}\\
+ q&=\frac{2e^{-\lambda}}{L\ph(\lambda)}
+          +O\left(\frac{\log L}{L^2}\right).
+          \label{eq:q-equivalent}
+\end{align}
+In particular $q>0$ and $q\asymp L^{-1}$ on the specified parameter sets.
+\end{theorem}
+
+\begin{proof}
+Set $H=\log B$ and
+$F(H)=be^{2H}/n-K_\eps(H)-\nu$. For small real $\eps$,
+$K_\eps(0)+\nu$ is uniformly positive by
+\eqref{eq:resonant-values}. Thus $F(0)<0$ for large $n$.
+Moreover
+\[
+ F'(H)=e^{-\eps H}
+ \left\{\frac{2b}{n}e^{(2+\eps)H}-E_2(\eps)\right\}.
+\]
+The braced expression increases strictly, because $2+\eps>0$.
+It follows that $F$ first decreases and then increases, or increases
+throughout. In both cases $F(H)\to+\infty$ as $H\to\infty$:
+the growth exponent $2$ dominates the possible growth exponent
+$-\eps$ of $K_\eps$. Hence there is exactly one positive zero.
+
+Write $H_0=\log B_0$
+$=\tfrac12\{L+\log L+\log(\ph(\lambda)/(2b))\}$.
+The representation \eqref{eq:K}, with
+$\eps=2\lambda/L$, gives uniformly, including $\lambda=0$,
+\[
+ K_\eps(H_0)+\nu
+ =\frac L2\ph(\lambda)+C_\lambda
+                   +O((\log L)^2/L).
+\]
+For example the first term follows from
+$(1-e^{-\lambda})/\eps=L\ph(\lambda)/2$; the next term uses
+$E_2'(0)=\gamma-3/2$. First bracket the root by $B=cB_0$
+for fixed constants $c<1$ and $c>1$; the leading terms have opposite
+signs. Then the derivative at the bracketed root is of order $L$.
+Taylor's theorem in $H-H_0$ improves the bracket to
+$H-H_0=C_\lambda/(L\ph(\lambda))+O((\log L)^2/L^2)$.
+Exponentiation gives \eqref{eq:scale-first}. Finally
+$E_2(\eps)B^{-\eps}=e^{-\lambda}(1+O(\log L/L))$
+and $V=L\ph(\lambda)/2+O(\log L)$, proving the $q$ formula.
+\end{proof}

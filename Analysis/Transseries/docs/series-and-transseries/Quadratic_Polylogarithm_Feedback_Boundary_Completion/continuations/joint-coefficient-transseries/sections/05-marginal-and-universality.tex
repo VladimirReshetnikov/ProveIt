@@ -1,0 +1,226 @@
+\section{Lambert resummation and nonlinear universality}
+\label{sec:universality}
+
+\subsection{A convergent chart for the scale itself}
+
+The coefficient expansion is asymptotic. The scalar scale $B$ has a
+stronger analytic structure that explains how it absorbs the
+$\log\log n$ corrections.
+
+\begin{proposition}[Convergent two-variable scale chart]
+\label{prop:scale-chart}
+Let $h=L^{-1}$, $w=L^{-1}\log L$, and
+$c=\log(\ph(\lambda)/(2b))$. There is a holomorphic germ
+$Y(h,w;\lambda,b)$, with $Y(0,0;\lambda,b)=1$, uniform on compact
+real $(\lambda,b)$ sets as above, such that
+\begin{equation}\label{eq:Y-scale}
+ B^2=B_0^2Y(L^{-1},L^{-1}\log L;\lambda,b).
+\end{equation}
+It is determined by the removable holomorphic equation
+\begin{equation}\label{eq:Y-equation}
+\begin{split}
+ Y={}&\frac{1-e^{-\lambda}E_2(2\lambda h)
+                e^{-\lambda w-\lambda h(c+\log Y)}}{
+                \lambda\ph(\lambda)}\\
+ &+\frac{2h}{\ph(\lambda)}
+   \left\{Z(2\lambda h)+\frac{\zeta(2+2\lambda h)^2}{b^2}\right\}.
+\end{split}
+\end{equation}
+Its Taylor series in the two independent variables converges after
+physical substitution for sufficiently large $L$.
+\end{proposition}
+
+\begin{proof}
+The quotient is holomorphic at $\lambda=0$, since its numerator
+vanishes there. At $h=w=0$, the right side equals
+$(1-e^{-\lambda})/(\lambda\ph(\lambda))=1$ and its $Y$
+derivative is zero. The implicit function theorem therefore applies
+with derivative one after moving $Y$ to the left. A finite compactness
+cover and uniqueness give a common neighborhood. Substituting
+$B^2=B_0^2Y$ into \eqref{eq:scale} gives
+\eqref{eq:Y-equation} exactly. The unique large positive solution
+from \cref{thm:scale} identifies the branch.
+\end{proof}
+
+\subsection{Exact marginal Lambert scale}
+
+At $\eps=0$, equation \eqref{eq:scale} is
+\[
+ \frac{bB^2}{n}=\log B+\frac32+\nu,
+ \qquad \nu=\frac{\zeta(2)^2}{b^2}.
+\]
+Set $T=2bB^2/n$. Then
+\begin{align}
+ T-\log T&=L+3+2\nu-\log(2b),\label{eq:Lambert-scale}\\
+ T&=-W_{-1}\left(-\frac{2b}{n}e^{-3-2\nu}\right),
+ &B^2&=\frac n{2b}T,\qquad q=\frac2T.
+       \label{eq:Lambert-explicit}
+\end{align}
+The lower real branch is required because $T\to\infty$
+\cite{dlmf-lambert}. This is a scale for the coefficient law.
+The coefficient scale and the earlier inverse-function Lambert core
+have different constants; the following exact matching explains them.
+
+\begin{corollary}[All marginal central coefficients as constants]
+\label{cor:marginal}
+Let $s=3$, $b=A=\zeta(2)$, and let $T>1$ solve
+\begin{equation}\label{eq:critical-T}
+ T-\log T=L+5-\log(2A).
+\end{equation}
+Define
+\begin{equation}\label{eq:Dj}
+ D_j=\frac1{\sqrt\pi\,j!}
+   \Rea\left[(\partial_z+\log2+i\pi)^j\Gamma(z)
+                                  \right]_{z=j+1/2},
+ \qquad D_0=1.
+\end{equation}
+For each fixed $N$,
+\begin{equation}\label{eq:marginal-T-series}
+ R_b^n a_n=\sqrt{\frac A\pi}\,n^{-3/2}T^{-1/2}
+       \left\{\sum_{j=0}^N\frac{D_j}{T^j}
+                     +O(T^{-N-1})\right\}.
+\end{equation}
+If $Q_j(Y)$ denotes the Gamma-moment polynomial of
+\cite{repo-moments}, then exactly
+\begin{equation}\label{eq:matching}
+ D_j=Q_j(-\log2).
+\end{equation}
+Thus the exact Lambert scale turns the previous logarithmic
+polynomials into a sequence of constants.
+\end{corollary}
+
+\begin{proof}
+At $\eps=0$ only $k=j$ survives in \eqref{eq:correction}.
+Since $q=2/T$, the normalized central coefficient of $T^{-j}$ is
+$(-1)^j\HH_{2j}^{[j]}(0)/(j!\normal(0))$.
+Equation \eqref{eq:central-C} gives precisely \eqref{eq:Dj}.
+The leading prefactor is
+$\normal(0)/(nB)=\sqrt{A/\pi}\,n^{-3/2}T^{-1/2}$.
+Finally the predecessor defines
+\[
+ Q_j(Y)=\frac1{\sqrt\pi\,j!}\Rea\left[
+             (\partial_z-Y+i\pi)^j\Gamma(z)
+                                  \right]_{z=j+1/2},
+\]
+so substitution gives \eqref{eq:matching}, with no asymptotic
+comparison needed.
+\end{proof}
+
+For $C=\gamma+\log2$, the first constants are
+\begin{align}
+ D_1&=1-\frac C2,\notag\\
+ D_2&=1-2C+\frac{3C^2}{8}-\frac{3\pi^2}{16}.
+ \label{eq:D-first}
+\end{align}
+Re-expanding \eqref{eq:critical-T} in $L$ gives, in particular,
+\begin{equation}\label{eq:marginal-old-first}
+ R_b^n a_n=\sqrt{\frac A\pi}\,n^{-3/2}L^{-1/2}
+ \left\{1-\frac{\log L-\log A+\gamma+3}{2L}
+              +O\left(\frac{(\log L)^2}{L^2}\right)\right\}.
+\end{equation}
+This agrees with the integrated marginal result, including its
+constant $\gamma+3$. At higher orders the same conclusion follows
+from the exact identity \eqref{eq:matching} and the convergent scale
+chart, rather than from a comparison of a few numerical values.
+
+\subsection{Positive analytic outer functions}
+
+The square root is not essential to the all-order logarithmic
+calculus. Let $G$ vary in a family of holomorphic functions satisfying
+the following uniform hypotheses for all sufficiently small real
+$\eps$:
+\begin{enumerate}[label=(\roman*)]
+\item $G(0)=0$, and the Taylor coefficients of $G$ at zero are
+nonnegative real numbers;
+\item there are $\eta,M>0$ such that $G$ is holomorphic on
+$|w|<\zeta(3+\eps)+\eta$ and bounded by $M$ there;
+\item $G'(0)\ge\eta$.
+\end{enumerate}
+Shrinking $\eta$ makes it harmless to use the same symbol for the
+uniform lower bound and the disk margin. Compact families with fixed
+positive margins satisfy these conditions. Put
+\begin{equation}\label{eq:G-parameters}
+ f(z)=G(\Li_{3+\eps}(z)),\quad
+ c=G'(\zeta(3+\eps)),\quad
+ \kappa=\frac{A^2G''(\zeta(3+\eps))}{c},\quad \mu=cA.
+\end{equation}
+Then $c$ is bounded above and away from zero, and $\kappa$ is
+nonnegative and bounded. Define $X_n$ using \eqref{eq:pgf} and set
+\begin{equation}\label{eq:G-scale}
+ \frac{B^2}{nc}=K_\eps(\log B)+\kappa=:V,
+ \qquad q=\frac{E_2(\eps)B^{-\eps}}{V},\qquad
+ \xi_m=\frac{m-n\mu}{B}.
+\end{equation}
+
+\begin{theorem}[Two-derivative composition principle]
+\label{thm:universality}
+Under the preceding uniform hypotheses, \cref{thm:all-orders}
+holds with \eqref{eq:G-scale} in place of
+\eqref{eq:scale}--\eqref{eq:q-xi}, and with precisely the same
+functions $\mathcal C_j$. The leading scale is
+\begin{equation}\label{eq:G-leading}
+ B^2\sim\frac{ncL}{2}\ph(\lambda).
+\end{equation}
+For the germ $v(r)=f(re^{v(r)})$, write $a_n=[r^n]v(r)$ and
+$R=e^{-f(1)}$. Then $nBR^n a_n$ has the same expansion at
+$\xi=(n-n\mu)/B$.
+
+After normalization by $f(1)$ and centering, all inverse-logarithmic
+orders depend on the outer function only through its first two
+derivatives at $\zeta(3+\eps)$. Higher derivatives contribute to the
+remainder beyond every fixed inverse-logarithmic order.
+\end{theorem}
+
+\begin{proof}
+The positive Taylor coefficients and the linear term of $G$ imply
+$[z^k]f(z)\ge\eta k^{-3-\eps}$. Uniform boundedness on the larger
+disk supplies uniform endpoint derivatives by Cauchy's estimates.
+Writing $D=\zeta(s)-\Li_s(e^{-t})$, Taylor expansion at the endpoint
+gives
+\[
+ G(\zeta(s)-D)-G(\zeta(s))
+ =-cD+\frac12G''(\zeta(s))D^2+O(|D|^3).
+\]
+The proof of \cref{lem:local} therefore yields
+\[
+ f(e^{-t})-f(1)+\mu t
+  =\frac{ct^2}{2}\{K_\eps(-\Log t)+\kappa\}
+                                      +O(|t|^{5/2}).
+\]
+The scale existence proof applies with $b$ replaced by $1/c$ and
+$\nu$ replaced by $\kappa$. The positive-intensity proof of
+\cref{lem:fourier-tail} also applies verbatim with the indicated
+uniform lower bound. The entire finite-expansion proof depends only
+on these two facts, so it gives the same $\mathcal C_j$ and remainder.
+Lagrange inversion proves the last coefficient identity exactly as in
+\cref{prop:poisson}. Terms involving higher derivatives of $G$ begin
+at $O(D^3)$ and are covered by the uniform local remainder.
+\end{proof}
+
+For the square-root family, choose the disk margin smaller than
+$b_-^2/2$. Its branch point is at
+$w=u^2/2=\zeta(s)+b^2/2$, and $G'(0)=1/u$ is uniformly positive.
+Thus the main quadratic model satisfies the hypotheses, with uniform
+boundedness on a slightly smaller common margin.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Outer function $G(w)$ & $c$ & $\kappa$\\
+\midrule
+$a w$ & $a$ & $0$\\
+$u-\sqrt{u^2-2w}$ & $b^{-1}$ & $A^2/b^2$\\
+$a(e^{\beta w}-1)/\beta$ & $a e^{\beta\zeta(s)}$ & $\beta A^2$\\
+$-(a/\beta)\log(1-\beta w)$ & $a/(1-\beta\zeta(s))$
+ & $\beta A^2/(1-\beta\zeta(s))$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Here $a>0$, $\beta>0$, and in the last row
+$\beta\zeta(s)<1$ with a uniform margin. The limit $\beta=0$
+recovers the linear row. Compact parameter subsets satisfying the
+stated margins provide concrete examples of the theorem.
+
+The principle does not say that these models have the same full
+transseries. Their coefficients at exponential scales in $L$ can
+depend on higher endpoint derivatives and on other singularities.

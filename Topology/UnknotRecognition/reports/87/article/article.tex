@@ -1,0 +1,863 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=25mm,headheight=15pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,tabularx,array}
+\usepackage{enumitem,xcolor,graphicx,tikz}
+\usepackage{fancyhdr,xurl,needspace}
+\usepackage[colorlinks=true,linkcolor=navy,citecolor=teal,urlcolor=teal]{hyperref}
+\definecolor{navy}{RGB}{25,49,80}
+\definecolor{teal}{RGB}{0,101,106}
+\definecolor{lightblue}{RGB}{235,242,247}
+\hypersetup{pdftitle={Certified support and attachment-preserving product reductions for unknot recognition},
+ pdfauthor={Research continuation for the ProveIt project}}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{ProveIt / Unknot recognition}}
+\fancyhead[R]{\small Certified reductions}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}
+\setlength{\parindent}{0pt}
+\setlist{nosep,leftmargin=*}
+\emergencystretch=2em
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{problem}[theorem]{Research problem}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\R}{\mathbb R}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\N}{\mathbb N}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\spanlin}{\operatorname{span}}
+\newcommand{\cone}{\operatorname{cone}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\nnz}{\operatorname{nnz}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\code}[1]{\texttt{#1}}
+\newcommand{\cut}{\mathbin{\backslash\!\backslash}}
+\newcommand{\I}{[0,1]}
+\newcommand{\Done}{\textsc{Complete}}
+\newcommand{\Unknown}{\textsc{Inconclusive}}
+\title{\color{navy}\bfseries Certified support and attachment-preserving\\
+product reductions for unknot recognition}
+\author{Research continuation for the ProveIt project}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We develop two reductions at the present boundary between implemented
+normal-surface operations and a controlled hierarchy algorithm.
+The algebraic reduction determines the full feasible support of a
+nonnegative matching cone before ray enumeration. Its certificate consists
+of a feasible vector and a nonnegative row-space vector with complementary
+supports. The certificate is checked by exact arithmetic in the original
+source equations. A direct formulation in these sparse equations has an
+$O(t^2)$-bit certificate for $t$ tetrahedra, without triangle elimination.
+We prove an exact quotient theorem for extensions,
+dual activation constraints, a sparse family invisible to bounded-size
+combinations of its specified rows, and an intrinsic-dimension bound for
+conflict branching.
+The geometric reduction extracts the signed cyclic order of core ports
+on compressed parallelity bases. Puncturing the boundary at the ports
+converts ordering into endpoint matching; a second query fixes relative
+fibre coordinates. Zero gaps are retained. Disc-base components consequently
+admit explicit linear-size product templates preserving their labelled
+attachments and the canonical first-cut seams. We provide implementations,
+independent checkers, source audits, reproducible measurements, and precise
+integration interfaces. The reductions remove specific sources of wasted
+work and lost attaching information. The complete sector-cover and
+patterned-hierarchy bounds needed for a general quasi-polynomial recognizer
+remain open.
+\end{abstract}
+{\small\setlength{\parskip}{0pt}\tableofcontents}
+\newpage
+
+\section{The research question and the source checkpoint}
+\label{sec:context}
+
+The objective is a recognizer with a proved quasi-polynomial worst-case
+bound, starting from the existing implementation in
+\path{Topology/UnknotRecognition}. This requires controlling both the
+search for useful surfaces and the topological representation after
+cutting. A fast first cut is insufficient if the next step must expand the
+surface or reconstruct its attachments from a large unstructured object.
+Similarly, fast enumeration in a low-dimensional cone is insufficient if
+discovering that cone requires an expensive enumeration in a much larger
+space.
+
+This article addresses these two interfaces. Its mathematical results
+are stated independently of the implementations. Its experimental claims
+refer only to completed measurements recorded in the package. In
+particular, a supplied-sector computation, a parallelity query, and complete
+unknot recognition are different tasks.
+
+\subsection{Precisely what was inspected}
+
+The working checkout is
+\[
+\text{\code{90e16db798c8d976bbe0c062e07cf20565e0b63a}}.
+\]
+Its relevant \code{fast/} and \code{synthesis/} trees agree exactly with the
+last topology update
+\[
+\text{\code{e7b51c4708baefbc5836ef233301a7de3552f86b}},
+\]
+dated 12 October 2026. The tree identities and individual source hashes are
+retained in the package manifest. This distinction matters because the
+repository contains simultaneous work in other mathematical areas.
+
+The source already contains the following ingredients
+\cite{repo}:
+\begin{itemize}
+\item exact supplied-sector matching kernels and complete standard-ray
+enumeration, including specialized geometry in dimensions at most three;
+\item inexpensive sufficient forced-zero rules, and a complete feasible-span
+reduction obtained \emph{after} a complete quadrilateral-ray enumeration;
+\item compressed normal components, raw cuts in all cell dimensions, and
+independent source reconstruction;
+\item full source parallelity bases, fibre twisting, and an inherited
+complementary core with at most \(30t\) handles;
+\item a general exact recognition fallback, without a proved general
+quasi-polynomial bound.
+\end{itemize}
+
+The first contribution avoids the expensive prerequisite in the second
+item. The second makes a particular part of the fourth item's implicit
+attaching information explicit and usable by a replacement operation.
+The original source packet remains available as provenance.
+
+\subsection{Literature and the meaning of the target}
+
+Two primary versions of Lackenby's 2021 announcement state different
+exponents. The February slides give
+\(n^{O(\log n)}\); the March Oxford handout gives
+\(2^{O((\log n)^3)}=n^{O((\log n)^2)}\)
+\cite{lackenby-feb,lackenby-mar}. Both are quasi-polynomial.
+The repository's attribution of the first bound to the February slides is
+therefore supported. One should specify the version instead of silently
+substituting the March exponent.
+
+The July 2026 preprint supplies a hierarchy algorithm and important
+compressed-decomposition results. Proposition 9.1 bounds the number of
+iterations by \(L(g+1)^L\), in terms of hierarchy length and pattern
+complexity; its later sections study bounded handle types and certificates
+\cite{lackenby2026}. These results motivate the present interfaces.
+They do not supply the missing global bound for the code studied here.
+
+The linear-algebra foundation below is the theorem of alternatives and
+rational linear programming \cite{boyd,khachiyan}. The orbit foundation is the
+Agol--Hass--Thurston interval-pairing method \cite{aht}. We do not claim either
+foundation, ordinary strict complementarity, or the PL classification of
+a disc bundle as new. The contributions are the specific complete
+certificates, transfer statements, obstruction families, compressed
+port reconstruction, relative replacement specification, and their
+implementation at this repository checkpoint. Priority of these derived
+results in the broader literature is not asserted.
+
+\subsection{A contribution ledger}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{.27\textwidth}>{\raggedright\arraybackslash}p{.42\textwidth}>{\raggedright\arraybackslash}p{.23\textwidth}@{}}
+\toprule
+Result & What it establishes & Status in this package\\
+\midrule
+Exact support certificate &
+Every removed coordinate is impossible; every retained coordinate is
+positive in one feasible vector. & Proved and implemented.\\
+Direct sparse-source LP &
+An original-source certificate of $O(t^2)$ bits without triangle
+elimination. & Proved alternative formulation.\\
+Quotient extension and dual activation &
+When support can be reused, how dimension changes, and why a small column
+change can still revive a large cone. & Proved; future search interface.\\
+Bounded-row obstruction &
+Sparse matching-like systems of arbitrarily large raw nullity evade
+bounded-row sign consequences. & Proved; abstract fixtures.\\
+Dimension-controlled conflict search &
+A bound exponential in feasible span dimension for homogeneous
+linear feasibility with quadrilateral exclusions. &
+Proved; no essential-disc inference.\\
+Cyclic port and fibre recovery &
+The order, endpoint orientation, gap data, and relative fibre information
+at core contacts. & Proved and implemented.\\
+Disc product templates &
+A small PL replacement relative to labelled core attachments and
+canonical first-cut seams. & Proved; explicit templates emitted.\\
+General quasi-polynomial recognition &
+Complete useful-surface discovery and a controlled patterned hierarchy. &
+Open.\\
+\bottomrule
+\end{longtable}
+
+\section{Normal coordinates and the precise algebraic interface}
+\label{sec:normal-interface}
+
+Let \(t\) denote the number of tetrahedra. A standard normal vector has
+four triangle and three quadrilateral coordinates in each tetrahedron.
+Across each paired face, the three types of normal arcs must match.
+Write these homogeneous integer equations as
+\[
+M_\triangle a+M_\square q=0.
+\]
+Nonnegativity is required. In addition, at most one quadrilateral type
+can be nonzero in each tetrahedron. Throughout the supplied-sector
+interface, the allowed types \(\Sigma\) already satisfy this compatibility
+restriction. A coordinate may be allowed and still be forced to zero.
+
+The existing source kernel eliminates triangle differences, retaining
+vertex-link freedom, and obtains a homogeneous rational system
+\[
+A_\Sigma q=0,\qquad q\geq0.
+\]
+The relevant cone is
+\[
+C_\Sigma=\ker(A_\Sigma)\cap\R_{\geq0}^{k},\qquad k=|\Sigma|.
+\]
+Its \emph{raw nullity} is \(d=k-\rank A_\Sigma\).
+Its \emph{effective dimension} is
+\[
+s=\dim\spanlin C_\Sigma.
+\]
+The two can be very different: a linear kernel contains signed directions
+that may be absent from the nonnegative cone.
+
+For this finite compact source model, a quadrilateral solution satisfying
+the elimination equations admits triangle potentials. Adding sufficiently
+large vertex links makes all triangle coordinates nonnegative. This
+source-kernel property is already implemented and is independently
+checkable through the original face equations. It is not an assertion
+about arbitrary ideal or spun-normal coordinate systems.
+
+\subsection{Why a complete support certificate changes the cost}
+
+Let
+\[
+S=\{j:\text{there is }q\in C_\Sigma\text{ with }q_j>0\}.
+\]
+After proving that all coordinates outside \(S\) vanish, the restricted
+cone has a strictly positive point. It therefore spans its whole restricted
+kernel:
+\[
+\spanlin C_\Sigma\cong\ker A_{\Sigma,S}.
+\]
+Consequently the existing low-dimensional ray machinery can be dispatched
+using \(s\), without first enumerating in raw dimension \(d\).
+
+This is a substantive difference from merely assigning numerical zeros to
+small coordinates in an LP solution. An LP vertex typically has many zero
+coordinates that are positive elsewhere in the cone. The certificate
+must prove which zeros are \emph{unavoidable}, and must prove that its
+retained set is complete.
+
+\subsection{A certificate directly in source equations}
+
+The implementation can bind the support statement to the source without
+asking the verifier to trust the producer's elimination:
+\begin{enumerate}
+\item supply an integral standard normal vector \(v=(a,q)\) whose
+quadrilateral support is exactly \(S\);
+\item supply coefficients \(\lambda\) on the original face-matching rows;
+\item verify
+\[
+M_\triangle^{\mathsf T}\lambda=0,\qquad
+y_\Sigma=(M_\square)_\Sigma^{\mathsf T}\lambda\geq0;
+\]
+\item verify \(q\geq0\), the original matching equations, and
+\(q_j+y_j\geq1\) for every allowed quadrilateral coordinate.
+\end{enumerate}
+Here the nonnegativity requirement concerns only allowed columns; coefficients
+on disallowed quadrilateral columns are unrestricted. For any source-feasible
+standard vector \((a',q')\) in the stated sector, \(q'\) vanishes outside
+\(\Sigma\), and
+\[
+0=\lambda^{\mathsf T}(M_\triangle a'+M_\square q')
+  =y_\Sigma^{\mathsf T}q'_\Sigma.
+\]
+Thus every coordinate on which \(y\) is positive vanishes in every
+source-feasible vector. The supplied \(q\) witnesses simultaneous positivity
+on the complementary set. Triangle cancellation in the dual is essential:
+without it, triangle coordinates could compensate for a positive
+quadrilateral term.
+
+Only columns in the stated sector are considered. A certificate for one
+sector does not justify deleting a type in a larger sector unless the
+extension conditions proved below are checked.
+
+\input{support_theory.tex}
+
+\section{Implementing source support certificates}
+\label{sec:support-implementation}
+
+\subsection{Producer and independent checker}
+
+The new producer accepts either an explicit rational matrix or a source
+triangulation with compatible allowed quadrilateral types. In the generic
+interface the mathematical certificate is a pair \((x,\lambda)\).
+In the source interface it is a normal vector together with coefficients
+on the source face equations. The independent checker verifies exact
+matrix products, signs, support coverage, and source identity. It does not
+accept a numerical LP status as a proof.
+
+The current source validator accepts finite, connected, compact, orientable
+3-manifold triangulations with exactly one torus boundary component.
+It checks this source class directly; it does not establish provenance
+from a knot diagram. The abstract rational-cone theorems have no such
+topological restriction. The same source-class restriction applies to
+the geometric APIs used below.
+
+The automatic search path uses floating-point linear programming to
+propose a support partition and candidate witnesses. Exact reconstruction
+then solves the corresponding rational equations; the result is accepted
+only if the full certificate passes. An exact rational simplex path is
+also available. The implementation details and tested solver modes are
+recorded with the experiments.
+
+This distinction separates three claims that are easy to confuse:
+\begin{itemize}
+\item a complete mathematical certificate always exists;
+\item rational linear programming admits polynomial-time algorithms;
+\item the particular numerical or simplex producer in this package has
+no claimed polynomial worst-case running time.
+\end{itemize}
+The verifier is independent of that last issue. Failure to find or
+reconstruct a certificate produces \Unknown, not an exclusion.
+
+\input{direct_source_support.tex}
+
+\subsection{The opt-in sector wrapper}
+
+After successful verification, the wrapper rebuilds the existing source
+kernel on the retained allowed types. This preserves the exact matching
+geometry and canonical lifting behavior. It then calls the ordinary
+supplied-sector discovery machinery.
+
+For a positive result, the disc certificate still concerns the actual
+source triangulation and full normal coordinates. For a negative
+supplied-sector result, the support certificate and the reduced-sector
+exhaustion must both be retained. The first proves that every feasible
+vector in the requested sector lies in the reduced sector. The second
+proves that the reduced sector has been completely searched. Together
+they establish coverage of the originally requested sector. A capped
+ray search does not satisfy the second premise.
+
+This package adds an explicit opt-in interface. It does not alter the
+existing default recognition policy. The measured overhead on easy
+sectors is one reason to preserve that choice.
+
+\subsection{Cancellation and numerical failure}
+
+The producer's own reconstruction, source traversal, and verification
+loops accept cancellation checks. Calls into a third-party LP solver
+are checked at their boundaries; the package does not claim that a
+long solver call cooperatively interrupts at every internal pivot.
+The reproducibility notes state this limitation explicitly.
+
+No floating-point tolerance licenses a removal. A support proposed by a
+numerical solution can be wrong because of scaling, degeneracy, or a tiny
+coordinate; the exact primal--dual conditions reject it. This makes
+aggressive numerical proposal generation compatible with exact
+downstream certificates.
+
+\section{Compressed parallelity and the missing order information}
+\label{sec:geometry-interface}
+
+After cutting along a normal surface \(F\), the current source constructor
+describes selected product handles of indices zero, one, and two.
+They form an interval bundle \(E\to B\), together with a complementary
+core \(K\). A core port is a labelled free base edge whose interval product
+meets a particular core chart. Original-boundary free edges are retained
+separately.
+
+The base is encoded by polygon families and interval pairings. If a
+normal coordinate has \(B\) bits, a family can represent exponentially
+many polygons while storing only its binary endpoints. The existing
+summary records Euler characteristic, boundary count, orientability,
+and the set of core ports on each connected base component. It does not
+explicitly list the cyclic order of those ports along each boundary
+circle.
+
+That order is already implicit in the complete source geometry. The
+problem is to extract it without expanding the polygons.
+
+\subsection{The topological information that must survive}
+
+The output needed for a replacement is more precise than a port set.
+It includes:
+\begin{enumerate}
+\item the cyclic sequence of port labels;
+\item the entry and exit endpoint of every traversed port;
+\item whether each complementary gap is a point or a nonempty arc;
+\item the relative identification of the two fibre endpoints at the ports;
+\item the original source chart for every contact with the core.
+\end{enumerate}
+
+A zero gap means that neighboring port closures meet. Replacing it by a
+positive gap changes the attachment subset. A fibre reversal may not be
+visible in a singleton integer rank map. It must be carried as a separate
+bit. These two details are indispensable even when all bases are discs.
+
+\begin{example}[An unordered profile does not determine a marked disc]
+Take an oriented disc with four labelled boundary ports, each separated
+from its neighbors by a nonempty unmarked gap. The cyclic words
+\[
+(1,2,3,4)\quad\text{and}\quad(1,3,2,4)
+\]
+have the same Euler characteristic, the same boundary count, and the
+same port set. No homeomorphism between the discs that preserves each
+port label carries one marking to the other: boundary homeomorphisms
+preserve cyclic order up to reversal. The example concerns the labelled
+relative attachment problem; it need not distinguish the unlabelled
+homeomorphism type of the resulting ambient 3-manifold.
+\end{example}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=1.08]
+\foreach \cx/\lab in {0/{1,2,3,4},4.7/{1,3,2,4}} {
+  \draw[gray!45] (\cx,0) circle (1.45);
+  \foreach \ang in {0,90,180,270} {
+    \draw[line width=4pt,teal] (\cx,0) ++(\ang+13:1.45)
+       arc[start angle=\ang+13,end angle=\ang+63,radius=1.45];
+  }
+}
+\node at (.75,.85) {\small 1};
+\node at (-.85,.75) {\small 2};
+\node at (-.75,-.85) {\small 3};
+\node at (.85,-.75) {\small 4};
+\node at (5.45,.85) {\small 1};
+\node at (3.85,.75) {\small 3};
+\node at (3.95,-.85) {\small 2};
+\node at (5.55,-.75) {\small 4};
+\node at (0,-2) {\small \(1,2,3,4\)};
+\node at (4.7,-2) {\small \(1,3,2,4\)};
+\end{tikzpicture}
+\caption{The same four ports can have inequivalent cyclic attachment
+data. Green arcs are labelled ports; gray arcs are nonempty gaps.
+The diagrams specify cyclic order only.}
+\label{fig:ports}
+\end{figure}
+
+\input{geometry_theory.tex}
+
+\section{Composition, scope, and asymptotic consequences}
+\label{sec:composition}
+
+The two reductions act on different objects. Support reduction simplifies
+the search description before a normal surface is selected. Port recovery
+simplifies a geometric interface after the surface has been cut.
+Neither reduction substitutes algebraic evidence for a topological
+witness.
+
+\subsection{A source-preserving composition theorem}
+
+\begin{theorem}[Compositional soundness of the two interfaces]
+Suppose the input triangulation and normal-coordinate conventions satisfy
+the validated source interfaces. Perform the following operations:
+\begin{enumerate}
+\item remove sector coordinates only after a complete support certificate
+has been independently verified;
+\item obtain a normal surface by a certified source search in the reduced
+sector;
+\item construct and verify its source cut and parallelity packet;
+\item recover and verify port words and fibre data;
+\item replace only certified disc-base product components, using the
+recorded relative charts and the pattern convention of the disc-template
+theorem.
+\end{enumerate}
+Then no normal vector in the original requested sector is lost by the
+first operation. Each replaced cut component is homeomorphic to its
+template relative to the core and the specified marked boundary data.
+Every conclusion made by an unchanged valid downstream procedure on these
+equivalent objects remains sound.
+\end{theorem}
+\begin{proof}
+The support theorem identifies an actual coordinate face containing every
+feasible vector, and restriction and zero extension give inverse linear
+isomorphisms of the relevant standard cones. The source search therefore
+returns a surface in the original triangulation. Independent cut
+verification fixes the geometric object to which the port data refer.
+The disc-template theorem supplies a PL homeomorphism on each replaced
+bundle whose restriction to the attachment set agrees with the retained
+source chart. Extend these homeomorphisms by the identity on the core and
+on all unreplaced pieces. They agree on intersections, so the gluing lemma
+gives the asserted homeomorphism of the cut object with its replacement.
+A valid invariant statement transports across this homeomorphism.
+\end{proof}
+
+The last phrase is deliberately conditional on the validity of the
+downstream procedure. For example, proving the cut boundary is a sphere
+does not prove that the component is a ball. Likewise, a standard normal
+coordinate vector need not satisfy every local normality condition in
+a patterned handle hierarchy.
+
+\subsection{The bound obtained for a supplied sector}
+
+Write \(L_A\) for the bit length of the exact source system, \(s\) for its
+effective quadrilateral dimension, and \(V\) for the work of essential-disc
+tests and their certificates. Let \(\mathsf{LP}(L_A)\) denote the actual
+support-producer cost. The support-and-enumerate route has the form
+\[
+\mathsf{LP}(L_A)+\poly(L_A)+(1+k)^{O(s)}\poly(L_A)+V.
+\]
+The first term is present even if support is unchanged. In the
+mathematical algorithm using a polynomial-time rational LP routine,
+it is polynomial in \(L_A\). The production solver in this package is
+not assigned that worst-case bound.
+
+If \(s=O(\log N)\), \(k,L_A\leq N^{O(1)}\), and the remaining certified
+tests have comparable cost, this \emph{supplied-sector task} is
+quasi-polynomial in \(N\). If the geometry falls within the existing
+specialized dimensions \(s\leq3\), its enumeration is substantially
+more concrete. Neither statement controls how many sectors must be
+considered to find a disc.
+
+\subsection{The bound obtained for geometric replacement}
+
+Let \(P\) be the encoded polygon-pairing size, \(W\) its represented
+integer universe, and \(q\) the number of singleton core ports. The
+endpoint-orbit formulation yields polynomial reductions in
+\[
+P+q+\log(W+1)
+\]
+to ordinary interval-orbit counting. The fast implementation uses weighted
+queries and is charged for its realized exact traces and weighted
+partitions. Its emitted disc templates have total combinatorial size
+\(O(q)\) for port-bearing disc components, in addition to the inherited
+core and source provenance.
+
+At the inspected checkpoint, \(q\leq66t\) and the inherited core has at
+most \(30t\) handles. These are bounds from the preceding source
+parallelity construction, not newly proved global hierarchy bounds.
+The present theorem explains how to preserve the marked contacts when
+using those bounds.
+
+A component with no core port requires separate treatment. A disc product
+is then an isolated ball component relative to this decomposition.
+One may retain a single template and binary multiplicity when the
+specified marks are identical; arbitrary source-boundary marks or
+component identities cannot be discarded. Non-disc bases retain their
+original compressed bundle representation.
+
+\subsection{What is still required for the desired recognizer}
+
+A sufficient global theorem would need all of the following, with the
+parameters referring to an input diagram of \(n\) crossings:
+\begin{enumerate}
+\item a source binding from the diagram to the exterior and its peripheral
+data, with polynomial encoded size;
+\item a complete family of candidate sectors, charts, or hierarchy surfaces
+whose total search work is quasi-polynomial;
+\item controlled effective dimensions or another finite search parameter;
+\item admissible patterned handle structures after each transformation,
+including every inherited pattern arc and each required normality
+condition;
+\item a bound on the total number of successful and failed transitions,
+restarts, and certificate operations;
+\item a bound on encoded state growth, together with valid positive and
+negative terminal tests.
+\end{enumerate}
+The new interfaces help with items 3, 4, and 6. They do not establish
+items 2 or 5. In particular, the one-column revival example prevents a
+naive claim that nearby sectors automatically inherit a small effective
+dimension. The disc-template theorem also cannot be applied to an annulus
+or a nonorientable base just because their ports are easy to list.
+
+\input{search_budget.tex}
+
+\input{experiments.tex}
+
+\section{Integration decisions and corrections to tempting arguments}
+\label{sec:decisions}
+
+\subsection{The support rule should initially remain explicit}
+
+Exact complete support can be valuable when raw dimension overstates
+feasible dimension. It can be pure overhead when the cheap matching
+preprocessor already finds every forced zero, or when the original
+sector is already easy. The opt-in wrapper makes this cost visible.
+A later policy can use raw dimension, the result of cheap propagation,
+and historical support-certificate reuse to decide when to invoke the
+new producer. Such a policy must be tested on complete calls, including
+verification and recompilation.
+
+A support certificate is reusable mathematical information. It should
+be cached with its source digest and allowed column set, not just with
+the retained dimension. An incompatible sector, changed face gluing,
+or changed column ordering invalidates that binding.
+
+There is a further implementation detail behind the reuse theorems:
+their column sets belong to a fixed matrix. A sector-dependent elimination
+may change the displayed row basis. A cached multiplier must therefore
+be transported back to the original source equations, or represented in
+one fixed source constraint system, before evaluating a newly allowed
+column. Padding an unrelated reduced row vector with zeros is not a
+valid transport operation.
+
+\subsection{Templates are a relative replacement, not deletion}
+
+A disc bundle attached to the core can change the topology of the union.
+Its being homeomorphic to a ball does not authorize removing it.
+The emitted template is glued using the same labelled relative
+attachment data. This is why cyclic order, gap incidence, and fibre
+gauges are part of the result.
+
+The initial pattern convention is equally important. The theorem
+preserves the horizontal/vertical seam marking arising from a first cut
+with no additional old pattern inside the bundle. For a later hierarchy
+step, inherited marked curves can wind through the base. Those curves
+must be transported explicitly or supplied in an additional compressed
+pattern representation. The package does not silently erase them.
+
+\subsection{Effective dimension is not a numerical rank estimate}
+
+All reported exact dimensions arise from rational matrix ranks and
+verified support. A floating-point rank or a tolerance-based count of
+small coordinates is inadequate in a certificate path. This is
+especially relevant to layered families, where integral normal
+coordinates grow quickly even though their encoded descriptions are
+short.
+
+\subsection{How to interpret the obstruction examples}
+
+The cyclic sparse matrix family is an unconditional obstruction to
+bounded-row sign inference for general rational matching systems.
+It uses small coefficients and sparse rows. We do not assert that every
+member is the quadrilateral matching matrix of a triangulated
+3-manifold. Geometric realization would be an additional theorem.
+
+Similarly, the one-column revival example establishes that an algebraic
+dimension-continuity argument is false without its dual sign hypothesis.
+It does not establish that every geometric sector neighborhood has such
+a jump. This distinction prevents an abstract hardness or counterexample
+from being promoted into a topological impossibility claim; the same
+care is required when applying the abstract hardness results of
+Burton and He \cite{burton-he}.
+
+\section{Further research questions and concrete next experiments}
+\label{sec:future}
+
+The most useful next work is to connect the proved interfaces to
+structural theorems about triangulations. The following questions are
+ordered roughly by how directly they continue the present implementation.
+
+\begin{problem}[A solver with a controlled exact running time]
+Can the maximal-support producer use a practical rational LP method with
+a suitable polynomial bit-complexity guarantee, while retaining the
+current small independent checker? Compare exact simplex, rational
+reconstruction of interior-point solutions, and support-only separation
+methods on the same source corpus. Compare the sparse original-source
+formulation of Corollary~\ref{cor:direct-source-support} with elimination
+into quadrilateral coordinates, measuring coefficient growth and total
+certificate-production cost. The question concerns the producer;
+the certificate format already supplies the proof interface.
+\end{problem}
+
+\begin{problem}[Certifiable support reuse over sector neighborhoods]
+Implement the quotient-extension and dual-activation theorems as
+persistent search data. Measure how often dual sign tests dispose of
+an extension without a new LP, and how many quotient coordinates remain.
+For replacements, identify precisely which part of the old positive
+support survives; an extension theorem cannot be reused after deleting
+its positive anchor.
+\end{problem}
+
+\begin{problem}[Geometric realization of hidden forced zeros]
+Do triangulated knot exteriors realize families in which every useful
+nonnegative row consequence requires an unbounded number of source
+rows, while effective dimension stays bounded? Either a construction or
+a geometric obstruction would explain when complete support reduction
+can change asymptotic behavior rather than just constant factors.
+\end{problem}
+
+\begin{problem}[Small effective dimension from topology]
+Which explicit classes of triangulations admit a complete family of
+useful sectors with effective dimension \(O(\log n)\), even when every
+meridian uses \(\Omega(t)\) tetrahedra? Dense quadrilateral support and
+small feasible dimension are compatible. The objective is a topological
+coverage theorem, not an assumption about the successful sector.
+\end{problem}
+
+\begin{problem}[Objective-aware conflict branching]
+Implement the dimension-controlled feasibility search with certificate
+reuse. Determine which triangle gauges, homological constraints, or
+boundary conditions give a useful linear target while preserving
+essential-disc coverage. Positive Euler characteristic alone must not
+be substituted for essentiality.
+\end{problem}
+
+\begin{problem}[Patterned disc-bundle replacements]
+Extend the port-word interface to a compressed marked graph embedded in
+the disc base or on its boundary. Preserve trivalent vertices, cyclic
+incidence, and source charts. Establish a replacement bound in the
+number of genuinely distinct marks rather than the number of
+represented normal discs. Existing fast curve algorithms
+\cite{lackenby-curves} are a natural external primitive.
+\end{problem}
+
+\begin{problem}[Annular and higher-genus base templates]
+For annular bases carrying inherited marked arcs, develop a compressed
+relative-coordinate system that transports the entire marked pattern
+through a replacement. A chosen transverse reference arc permits winding
+integers; record their changes under Dehn twists and distinguish such
+reference-dependent coordinates from invariants under the permitted
+boundary-preserving homeomorphisms. Without a fixed interior reference or
+required isotopy class, a Dehn twist is itself a boundary-fixed
+homeomorphism and is not an obstruction to unpatterned annulus
+classification. Determine whether the needed integers and subdivision
+data remain polynomially encoded through the hierarchy. For higher genus,
+construct a compressed cut graph with explicit source charts and prove
+that it transports every inherited mark.
+\end{problem}
+
+\begin{problem}[Admissibility after relative replacement]
+Construct the characteristic surface and boundary pattern of the
+resulting handle structure, then verify the actual admissibility
+conditions. The existing one-tetrahedron empty-cut obstruction shows
+that bounded inherited handle count does not imply admissibility.
+A reduction must either return the required admissible structure or a
+correctly transported violating disc.
+\end{problem}
+
+\begin{problem}[A deterministic cost bound for the used weighted engine]
+The unweighted orbit reduction gives a clean polynomial theoretical
+route. The current faster implementation accounts for realized weighted
+partitions and traces. Prove a uniform bound for the particular
+port-endpoint weight systems, whose nonzero endpoint masks occur only
+\(q\) times, or exploit their special two-endpoint structure to avoid
+general weighted refinement.
+\end{problem}
+
+\begin{problem}[Reusing unaffected hierarchy components]
+After a compression or admissibility repair, which later pieces retain
+valid source and attachment certificates? Build a dependency relation
+with a geometric persistence proof. Then bound total recomputation
+using that relation. Merely caching a syntactically similar object
+does not prove that its source manifold and pattern are unchanged.
+\end{problem}
+
+\begin{problem}[A genuinely global complexity potential]
+Find a potential that charges sector discovery, unsuccessful LP calls,
+cutting, pattern transport, and hierarchy restarts together. A useful
+target is a total logarithmic state budget of \(O((\log n)^2)\) for an
+\(n^{O(\log n)}\) bound, or \(O((\log n)^3)\) for the broader announced
+quasi-polynomial scale. The potential must charge failed searches too.
+\end{problem}
+
+\begin{problem}[Broader complete-task measurement]
+Move from controlled source families to a larger collection of hard
+unknot diagrams. Record diagram conversion, positive and negative
+searches, certificate verification, and fallback work in one budget.
+Retain regressions and inconclusive cases. Use paired timing with
+identical-code controls before adopting an automatic policy.
+\end{problem}
+
+\section{Assessment}
+
+The concrete algebraic gain is the ability to certify the feasible
+coordinate face before enumerating its rays. The new certificate
+makes the effective dimension usable earlier and provides reusable
+dual information for neighboring searches. The concrete geometric
+gain is a small, explicit relative description of disc products,
+including the attachment details that an unordered topological
+profile omits.
+
+Both developments replace an implicit or expensive intermediate step
+by an exact checkable interface. Their proofs identify useful
+parameters and also show why several appealing shortcuts fail.
+The remaining challenge is to prove that these parameters stay
+controlled in a complete hierarchy for every unknot exterior.
+
+\appendix
+\section{Reproduction and artifact map}
+\label{app:reproduction}
+
+The ZIP contains the article sources and PDF, the new Python modules
+and tests arranged as an overlay for the inspected repository, a patch,
+raw JSON evidence, environment details, and reproduction instructions.
+The source hashes bind the experiments to the relevant baseline and
+new modules. The article does not require network access to compile:
+run \code{latexmk -pdf article.tex} in the article directory.
+
+The code overlay is designed for the inspected \code{fast/} package.
+Apply the patch only after checking it against the target checkout.
+The exact commands and dependencies in \path{README.md} supersede
+abbreviated examples in the prose. Raw evidence distinguishes
+source audits, abstract matrix cases, operation counts, kernel timings,
+and complete wrapper timings.
+
+A later compiler or Python version may change execution times.
+Mathematical assertions in the checkers are exact. Floating-point
+solutions are only proposals, and a failed or interrupted proposal
+cannot create a mathematical exclusion.
+
+\begin{thebibliography}{99}
+\raggedright
+\bibitem{repo}
+V. Reshetnikov and contributors,
+\emph{ProveIt: Topology/UnknotRecognition},
+source checkpoint \code{e7b51c4708baefbc5836ef233301a7de3552f86b},
+12 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt/tree/e7b51c4708baefbc5836ef233301a7de3552f86b/Topology/UnknotRecognition}.
+
+\bibitem{lackenby-feb}
+M. Lackenby,
+\emph{Unknot recognition in quasi-polynomial time},
+February 2021 lecture slides, pp.~13--14.
+\url{https://people.maths.ox.ac.uk/lackenby/quasipolynomial-talk.pdf}.
+
+\bibitem{lackenby-mar}
+M. Lackenby,
+\emph{Unknot recognition in quasi-polynomial time},
+March 2021 Oxford handout, p.~7.
+\url{https://people.maths.ox.ac.uk/lackenby/quasipolynomial-talk-oxford-compressed.pdf}.
+
+\bibitem{lackenby2026}
+M. Lackenby,
+\emph{Incompressible surfaces, hierarchies and unknot recognition},
+arXiv:2607.23350v1, 25 July 2026.
+\url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{aht}
+I. Agol, J. Hass, and W. P. Thurston,
+\emph{The computational complexity of knot genus and spanning area},
+Transactions of the American Mathematical Society \textbf{358} (2006),
+3821--3850; arXiv:math/0205057v2.
+\url{https://arxiv.org/abs/math/0205057}.
+
+\bibitem{boyd}
+S. Boyd and L. Vandenberghe,
+\emph{Convex Optimization},
+Cambridge University Press, 2004, Chapter 5.
+\url{https://web.stanford.edu/~boyd/cvxbook/}.
+
+\bibitem{khachiyan}
+L. G. Khachiyan,
+\emph{A polynomial algorithm in linear programming},
+Doklady Akademii Nauk SSSR \textbf{244}(5) (1979), 1093--1096;
+English translation, Soviet Mathematics Doklady \textbf{20} (1979), 191--194.
+\url{https://www.mathnet.ru/eng/dan42319}.
+
+\bibitem{burton-he}
+B. A. Burton and A. He,
+\emph{On the hardness of finding normal surfaces},
+Journal of Applied and Computational Topology \textbf{5} (2021),
+583--619.
+\url{https://doi.org/10.1007/s41468-021-00076-0}.
+
+\bibitem{lackenby-curves}
+M. Lackenby,
+\emph{Some fast algorithms for curves in surfaces},
+arXiv:2401.16056v2, 20 March 2026.
+\url{https://arxiv.org/abs/2401.16056}.
+\end{thebibliography}
+\end{document}
+

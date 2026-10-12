@@ -31,8 +31,12 @@ bridge, not an identification of the analytic models.
 Placement and ZIP retirement precede canonical editing. They do not imply
 proof acceptance, Lean formalization, interval certification, or a rebuilt
 collective PDF. Original historical authorship is preserved; the collective
-author remains ProveIt Contributors. The joint-coefficient analytic report
-remains pending. Unknot packages belong to a separate research intake.
+author remains ProveIt Contributors. A concurrent intake on origin/main placed both this report and the
+joint-coefficient continuation in commit 16cfc70aa2, replayed them in
+8415aba32c, and catalogued batch 142 in abe39ce3a9. Both chose this same
+order-filter home. This merge retains one copy of each original member and
+all parallel reconciliation and verification evidence. The independent
+analytic proof audit and canonical synthesis remain separate work.
 
 ## Original package members
 

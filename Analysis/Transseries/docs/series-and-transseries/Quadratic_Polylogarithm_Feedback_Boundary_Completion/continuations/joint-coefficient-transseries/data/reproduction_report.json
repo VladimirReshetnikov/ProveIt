@@ -1,0 +1,166 @@
+{
+  "schema_version": 1,
+  "status": "PASS",
+  "purpose": "Independent rerun of the three packaged verification scripts after conversion to package-relative output paths.",
+  "verification_date_utc": "2026-10-12",
+  "source_snapshot": "8f5afd4d7565df808359f6a0c22f87f79a119bb9",
+  "environment": {
+    "executable": "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "python": "3.12.14",
+    "implementation": "CPython",
+    "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+    "machine": "x86_64",
+    "numpy": "2.3.5",
+    "mpmath": "1.3.0",
+    "sympy": "1.14.0",
+    "numpy_longdouble_precision_digits": 18,
+    "numpy_longdouble_min_exponent": -16382
+  },
+  "runs": [
+    {
+      "script": "verify_coefficients.py",
+      "command": "python3 verify_coefficients.py",
+      "cwd": "/workspace/scratch/162366e40f34/output/Polylogarithmic_Joint_Coefficient_Transseries/code",
+      "started_utc": "2026-10-12T16:43:21.567Z",
+      "completion_observed_utc": "2026-10-12T16:43:35.648Z",
+      "exit_code": 0,
+      "arguments": "defaults",
+      "executions": 1
+    },
+    {
+      "script": "verify_symbolic.py",
+      "command": "python3 verify_symbolic.py",
+      "cwd": "/workspace/scratch/162366e40f34/output/Polylogarithmic_Joint_Coefficient_Transseries/code",
+      "started_utc": "2026-10-12T16:43:21.568Z",
+      "completion_observed_utc": "2026-10-12T16:43:35.648Z",
+      "exit_code": 0,
+      "arguments": "defaults",
+      "executions": 1
+    },
+    {
+      "script": "verify_endpoints.py",
+      "command": "python3 verify_endpoints.py",
+      "cwd": "/workspace/scratch/162366e40f34/output/Polylogarithmic_Joint_Coefficient_Transseries/code",
+      "started_utc": "2026-10-12T16:43:21.568Z",
+      "completion_observed_utc": "2026-10-12T16:43:35.648Z",
+      "exit_code": 0,
+      "arguments": "defaults",
+      "executions": 1
+    }
+  ],
+  "results": {
+    "verify_coefficients.py": {
+      "output_artifacts": [
+        "data/coefficient_validation.json",
+        "data/coefficient_validation.csv"
+      ],
+      "coefficient_comparisons": 36,
+      "grid": {
+        "indices": [
+          128,
+          512,
+          2048,
+          4096
+        ],
+        "lambda": [
+          -1,
+          0,
+          1
+        ],
+        "exact_xi": [
+          -1,
+          0,
+          1
+        ]
+      },
+      "mpmath_working_digits": 75,
+      "reported_elapsed_seconds": 12.398746550999931,
+      "original_equation_vs_lagrange_identity": {
+        "arithmetic": "exact fractions",
+        "degree": 8,
+        "status": "PASS"
+      },
+      "order_derivative_fourier_checks": 3,
+      "maximum_order_derivative_fourier_absolute_difference": "1.3817869688151111400618162980480639e-76",
+      "high_precision_reference_cases": 4,
+      "reference_digits": [
+        75,
+        60
+      ],
+      "maximum_longdouble_relative_difference": "2.6358178781431406274140547699118024e-17",
+      "longdouble_acceptance_tolerance": "5e-14",
+      "maximum_sixty_vs_seventy_five_digit_relative_difference": "2.9445471818286979653956800696144094e-60",
+      "high_precision_acceptance_tolerance": "1e-52",
+      "max_absolute_relative_error_at_n_4096_by_order_0_to_3": [
+        "0.4934388378489477463077972",
+        "0.07032584854935954004353101",
+        "0.02417721207648455562047005",
+        "0.01070257428489698942629409"
+      ]
+    },
+    "verify_symbolic.py": {
+      "output_artifacts": [
+        "data/symbolic_validation.json"
+      ],
+      "status": "PASS",
+      "exact_stirling_expansion_checks": 6,
+      "stirling_expansion_degree": 5,
+      "exact_central_gamma_checks": 36,
+      "exact_marginal_identity_checks": 5,
+      "marginal_coefficient_indices": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "independent_fourier_vs_parabolic_cylinder_checks": 9,
+      "mpmath_working_digits": 80,
+      "maximum_kernel_absolute_difference": "5.271099e-82",
+      "kernel_acceptance_tolerance": "1e-65"
+    },
+    "verify_endpoints.py": {
+      "output_artifacts": [
+        "data/endpoint_diagnostics.json"
+      ],
+      "reciprocal_endpoint_cases": 9,
+      "reciprocal_orders": [
+        2,
+        3,
+        4
+      ],
+      "cut_modulus_cases": 6,
+      "cut_orders": [
+        "1.25",
+        "1.4"
+      ],
+      "all_observed_scaled_cut_modulus_differences_negative": true,
+      "mpmath_working_digits": 80,
+      "interpretation": "The endpoint numerical rows corroborate the proved local expansions; the cut rows approach the negative limiting constants stated in the article."
+    }
+  },
+  "portability": {
+    "execution_directory": "code/",
+    "commands_use_only_packaged_verification_scripts": true,
+    "default_output_resolution": "Path(__file__).resolve().parent.parent / 'data'",
+    "external_repository_checkout_required": false,
+    "network_required": false,
+    "hardcoded_workspace_path_literals_in_verification_scripts": [],
+    "third_party_dependencies": [
+      "mpmath",
+      "numpy",
+      "sympy"
+    ],
+    "dependency_imports_succeeded": true,
+    "dependency_installations_needed": false,
+    "platform_note": "numpy.longdouble has 18 decimal digits on this x86_64 Linux runtime. The coefficient script adapts its reference-check tolerance to platforms with lower longdouble precision.",
+    "scope": "Static inspection confirms package-relative data paths and no external repository imports. Execution was performed from the final package code directory; no additional relocation test was run."
+  },
+  "interpretation": {
+    "exact_checks": "Finite exact symbolic and rational identities passed.",
+    "floating_point_checks": "Floating-point comparisons are diagnostics, not interval certificates or substitutes for the article's proofs.",
+    "theorem_scope": "The numerical grids do not establish asymptotic uniformity; that conclusion rests on the article's analytic arguments."
+  },
+  "logs": "Console logs are intentionally omitted. Detailed numerical rows are present in the listed JSON/CSV data artifacts."
+}
+

@@ -1,0 +1,492 @@
+% Independent mathematical audit notes.  No preamble; all assertions below
+% concern linear cones unless a separate geometric hypothesis is stated.
+% Standard foundations: Farkas alternatives, rational LP, basic feasible
+% solutions, rank-nullity, and elementary face theory.  The application and
+% the explicit transfer/family statements should not be advertised as a new
+% discovery of strict complementarity or polynomial-time linear programming.
+
+\section{Complete support by one primal--dual feasibility problem}
+
+Let $A\in\mathbb Q^{m\times k}$ and write
+\[
+ C(A)=\{x\in\mathbb R^k:Ax=0,\ x\geq0\},\qquad
+ S(A)=\{j:\text{some }x\in C(A)\text{ has }x_j>0\}.
+\]
+The complement $F(A)=\{1,\ldots,k\}\setminus S(A)$ is the set of
+coordinates forced to zero.  All inequalities between vectors are
+coordinatewise.  A dual exposing vector means a vector
+$y=A^T\lambda\geq0$ whose zero set is exactly $S(A)$.
+
+\begin{theorem}[Complete support from a joint linear certificate]
+The linear system
+\begin{equation}\label{eq:audit-joint}
+ Ax=0,\qquad y=A^T\lambda,\qquad x\geq0,\quad y\geq0,
+ \qquad x+y\geq\mathbf1
+\end{equation}
+is feasible for every rational matrix $A$.  Every feasible solution has
+\[
+ \operatorname{supp}(x)=S(A),\qquad
+ \operatorname{supp}(y)=F(A).
+\]
+In particular, a verifier needs only exact matrix arithmetic and sign
+tests, rather than access to the optimization routine producing the
+certificate.
+\end{theorem}
+
+\begin{proof}
+First prove the coordinate alternative.  Let $a_j$ be column $j$ of
+$A$.  There is an element of $C(A)$ with positive $j$th coordinate if
+and only if
+\[
+ A_{-j}u=-a_j,\qquad u\geq0
+\]
+is feasible: scale the positive coordinate to one.  If this system is
+infeasible, Farkas' lemma supplies $\lambda^{(j)}$ such that
+\[
+ A_{-j}^T\lambda^{(j)}\geq0,
+ \qquad a_j^T\lambda^{(j)}>0.
+\]
+Thus $A^T\lambda^{(j)}\geq0$, with a positive $j$th coordinate.
+Conversely, such a vector forces $x_j=0$ for every $x\in C(A)$, since
+\[
+ 0=(Ax)^T\lambda^{(j)}=x^TA^T\lambda^{(j)}
+\]
+is a sum of nonnegative terms.  This also checks the sign in the Farkas
+alternative.
+
+For each $j\in S(A)$ choose a primal witness and scale it so its $j$th
+coordinate is at least one.  Their sum $x$ is positive on every
+coordinate of $S(A)$ and zero outside $S(A)$.  For each $j\in F(A)$
+choose the dual witness just constructed and scale it so its $j$th
+coordinate is at least one.  Sum the corresponding multipliers to obtain
+$\lambda$, and set $y=A^T\lambda$.  Every summand of $y$ vanishes on
+$S(A)$ by orthogonality with feasible primal witnesses.  Consequently
+$x+y\geq\mathbf1$, proving existence.  Empty sums cause no difficulty.
+
+Now consider any solution of \eqref{eq:audit-joint}.  We have
+$x^Ty=0$, so nonnegativity gives $x_jy_j=0$ for each $j$.
+The last inequality ensures that exactly one of $x_j,y_j$ is positive.
+Every positive $x_j$ witnesses $j\in S(A)$, while every positive $y_j$
+forces $j\notin S(A)$.  This proves the claimed partition.
+\end{proof}
+
+The theorem is a specialization of classical alternatives and strict
+complementarity for the nonnegative orthant.  Its use here is a complete
+replacement for sufficient one-row or two-row sign propagation.
+
+\subsection{Polynomial bit complexity, including redundant rows and lineality}
+
+\begin{proposition}[Small exact certificates]
+After clearing row denominators, suppose $A$ is integral with
+$|A_{ij}|\leq H$, where $H\geq1$.  System
+\eqref{eq:audit-joint} has a rational solution of polynomial encoding
+length in $m,k,\log H$.  More explicitly, put $v=3k+2m$ and let
+$\rho\leq m+2k$ be the rank of the equality matrix in the standard-form
+system below.  One may choose a common denominator and all primal and
+dual variable numerators of magnitude at most
+\[
+ D=\rho!H^\rho,
+\]
+except that a multiplier $\lambda_i$ obtained as a difference of two
+nonnegative variables may require the bound $2D$.  The convention
+$D=1$ applies if $\rho=0$.  In particular the total number of bits is
+$O(v\rho(\log(H+1)+\log(\rho+1)))$, up to ordinary bookkeeping.
+\end{proposition}
+
+\begin{proof}
+Split $\lambda=\lambda^+-\lambda^-$ and introduce a nonnegative surplus
+vector $z$.  All variables in
+\[
+ Ax=0,\qquad A^T\lambda^+-A^T\lambda^- - y=0,
+ \qquad x+y-z=\mathbf1,
+ \qquad x,y,z,\lambda^+,\lambda^-\geq0
+\]
+are nonnegative.  This is a feasible standard-form rational system
+$Mu=b$, with integral coefficients bounded by $H$ and with entries of
+$b$ equal to zero or one.  Remove redundant equality rows, leaving
+$\rho$ independent rows.  Row removal means choosing a subset of the
+original rows; it does not enlarge the coefficient bound.  Since the
+system is feasible, the removed equations follow from those retained
+with the correct right-hand sides.
+
+For completeness, a nonempty standard-form feasible set has a basic
+feasible solution even when the original free-multiplier formulation
+has lineality.  Choose a feasible vector with minimum positive support.
+If the columns of $M$ on that support were dependent, perturb within
+their dependence in a direction and for a distance that makes one
+positive coordinate zero while keeping all others nonnegative.  This
+preserves the equalities and contradicts minimality.  The support
+columns are therefore independent.  Extend them to a basis of $\rho$
+columns, assigning zero to any added coordinates.  This produces a
+basic feasible solution.  Equivalently, the nonnegative standard-form
+feasible set contains no affine line, despite potentially unbounded
+recession directions.
+
+Cramer's rule on the corresponding $\rho\times\rho$ nonsingular
+integer matrix bounds its determinant and all numerator determinants
+by $\rho!H^\rho$.  The determinant is a nonzero integer.  This proves
+the bounds and the claimed encoding length.  Recombining the split
+multipliers introduces at most the stated factor two.
+
+For rational $A$, clearing denominators row by row has polynomial bit
+cost in its input encoding.  If $A'=RA$ is the resulting integer matrix,
+where $R$ is diagonal, a multiplier $\mu$ for $A'$ corresponds to the
+source multiplier $R\mu$ for $A$.  This transformation again has
+polynomial encoding length.
+\end{proof}
+
+Classical rational linear-programming algorithms therefore find such a
+certificate in polynomial bit time.  This statement concerns the
+mathematical LP primitive; it does not assert a polynomial pivot bound
+for a chosen simplex implementation.  Clearing a common positive
+denominator in a joint certificate also produces integral $x,y,\lambda$:
+the inequality $x+y\geq\mathbf1$ becomes stronger after this scaling.
+
+\section{The support restriction is the intrinsic linear span}
+
+\begin{proposition}[Effective dimension]
+Let $S=S(A)$.  Extension by zero gives a cone isomorphism
+\[
+ C(A_S)\longrightarrow C(A),
+\]
+and
+\[
+ \operatorname{span} C(A_S)=\ker A_S,
+ \qquad \dim\operatorname{span} C(A)=|S|-\operatorname{rank} A_S.
+\]
+\end{proposition}
+
+\begin{proof}
+All deleted coordinates vanish on $C(A)$, so restriction and extension
+by zero are inverse linear maps on the cones.  There is a vector
+$p\in\ker A_S$ with $p>0$.  Given $u\in\ker A_S$, choose
+$\epsilon>0$ small enough that $p\pm\epsilon u\geq0$.  Both of these
+vectors belong to $C(A_S)$, and their difference is $2\epsilon u$.
+This proves the span assertion.  Rank-nullity gives the formula.
+\end{proof}
+
+Extension by zero also preserves the complete face lattice, extreme
+rays, linear objectives and the integral lattice in these coordinate
+spaces.  More generally it preserves any further conditions on the
+retained coordinates.  When applying this to normal surfaces, one must
+still justify the relationship between the matching cone used for
+support computation and the actual standard-coordinate source cone.
+Forced zeros in a relaxation safely remain forced in every geometric
+subcone; maximality in a relaxation does not establish maximality after
+quadrilateral exclusions or other geometric restrictions.
+
+\section{Exact reuse when allowed columns are deleted or added}
+
+Throughout this section, all columns belong to one fixed matrix of
+source constraints.  The results do not authorize reuse across a
+Pachner move or any other change to the source equations without a
+separate transport proof.  Write $C_I=C(A_I)$ for an allowed column set
+$I$.  Let $S=S(A_I)$, $F=I\setminus S$, and choose a complete exposing
+multiplier $\lambda$ such that
+\[
+ y_i=a_i^T\lambda=0\ (i\in S),\qquad
+ y_i>0\ (i\in F).
+\]
+
+\subsection{Deletion and lifting a smaller dual certificate}
+
+\begin{proposition}[Restriction and dual lifting]
+For $I'\subseteq I$, every coordinate of $F\cap I'$ remains forced
+zero.  Complete support for $I'$ may therefore be computed using only
+$R=S\cap I'$.  If $I'$ contains $S$, the original support and effective
+dimension are unchanged.  In general the effective dimension cannot
+increase.
+
+Suppose $\eta$ is a complete exposing multiplier for the smaller cone
+$C(A_R)$, and put $v_i=a_i^T\eta$ for all $i\in I'$.  Define
+\[
+ \alpha=1+\max_{i\in F\cap I'}
+              \frac{\max(0,-v_i)}{y_i},
+\]
+where the maximum of an empty set is zero.  Then
+$\eta+\alpha\lambda$ is a complete exposing multiplier on $I'$.
+All these operations preserve polynomial certificate bit length.
+\end{proposition}
+
+\begin{proof}
+The restriction of $y$ is still a nonnegative row-space consequence,
+so its positive coordinates remain zero on every feasible vector.
+This gives the cone isomorphism with $C(A_R)$.  The cone for $I'$ is a
+coordinate face of the old cone, embedded with zeros, so its dimension
+cannot increase.  If only old forced coordinates are deleted, the cones
+are identical under that embedding.
+
+On $R$, the old exposing vector is zero, so the new exposing vector
+equals $v$.  On $F\cap I'$, its coefficient is
+$v_i+\alpha y_i\geq y_i>0$.  Its zero set is therefore precisely the
+new maximal support.  Rational maxima, products and quotients of the
+displayed certificate entries have polynomial bit length.
+\end{proof}
+
+\subsection{Which added columns can invalidate an exposing vector?}
+
+\begin{theorem}[Dual sign test for extensions]
+Add columns indexed by $E$, disjoint from $I$, and let
+\[
+ w_e=a_e^T\lambda,\qquad
+ E_+=\{e:w_e>0\},\quad E_0=\{e:w_e=0\},\quad
+ E_-=\{e:w_e<0\}.
+\]
+Every $q\in C_{I\cup E}$ satisfies the exact balance identity
+\begin{equation}\label{eq:audit-portal}
+ \sum_{i\in F}y_iq_i+\sum_{e\in E_+}w_eq_e
+       =\sum_{e\in E_-}(-w_e)q_e.
+\end{equation}
+Consequently, positive use of an old forced coordinate or of a column
+in $E_+$ requires positive use of at least one column in $E_-$.
+
+If $E_-=\varnothing$, every coordinate in $F\cup E_+$ is still forced
+zero, and the expanded cone is isomorphic to $C(A_{S\cup E_0})$.
+Writing $d=\dim\operatorname{span}C_I$ and $d'$ for the corresponding
+dimension after extension, one has
+\[
+ d\leq d'\leq d+|E_0|.
+\]
+If every added column has strictly positive $w_e$, the old cone and
+support remain unchanged.
+\end{theorem}
+
+\begin{proof}
+Apply $\lambda^T$ to the matching equation for $q$ and move its negative
+terms to the other side.  This proves \eqref{eq:audit-portal}.
+Every summand on both sides is nonnegative, giving the necessity
+statement and, when $E_-$ is empty, all asserted forced zeros.
+Old feasible vectors extend by zero, so $d'\geq d$.  Since
+$\dim\ker A_S=d$, adding $|E_0|$ columns increases the kernel dimension
+by at most $|E_0|$.  The new feasible span lies in that kernel, yielding
+the upper bound.  The last assertion follows when $E_0$ is empty.
+\end{proof}
+
+\begin{example}[One added column can cause arbitrary revival]
+Let $A_I=(1,\ldots,1)$ have $r$ columns.  Its nonnegative kernel is
+zero.  Add the single column $-1$.  The new cone is
+\[
+ \{(u_1,\ldots,u_r,t)\geq0:t=u_1+\cdots+u_r\},
+\]
+which has all $r+1$ coordinates in its maximal support and dimension
+$r$.  The old multiplier $\lambda=1$ evaluates negatively on the added
+column.  Thus no dimension bound depending only on the old effective
+dimension and the number of added columns can hold without additional
+hypotheses.  In particular the nonnegative sign hypothesis above is
+substantive.
+\end{example}
+
+\subsection{Contracting the live core}
+
+\begin{theorem}[Quotient extension and exact dimension sequence]
+Let $S$ be a column set admitting $p>0$ with $A_Sp=0$.  Set
+$V=\operatorname{im}A_S$, and choose an exact linear map $Q$ with
+$\ker Q=V$.  For any allowed set $J\supseteq S$, put
+\[
+ R=J\setminus S,\qquad B=QA_R.
+\]
+The coordinate projection onto $R$ maps $C(A_J)$ surjectively onto
+$C(B)$.  If $U=S(B)$, then
+\[
+ S(A_J)=S\cup U.
+\]
+There is a short exact sequence of real vector spaces
+\[
+ 0\longrightarrow\ker A_S
+   \xrightarrow{\;u\mapsto(u,0)\;}
+   \operatorname{span}C(A_J)
+   \xrightarrow{\;\pi_R\;}
+   \operatorname{span}C(B)
+   \longrightarrow0.
+\]
+Hence the effective dimensions satisfy the exact additive identity
+\[
+ \dim\operatorname{span}C(A_J)
+       =\dim\ker A_S+\dim\operatorname{span}C(B).
+\]
+All matrix constructions can be performed in polynomial rational bit
+time.  The theorem includes $S=\varnothing$, with $V=0$ and a vacuous
+positive vector.
+\end{theorem}
+
+\begin{proof}
+First observe that the columns in $S$ positively generate their entire
+linear span: if $A_Su=v$ for signed coefficients $u$, then
+$A_S(u+cp)=v$, and $u+cp\geq0$ for all sufficiently large $c$.
+Thus $\operatorname{cone}(A_S)=V$.
+
+If $(x,z)\in C(A_J)$, applying $Q$ gives $Bz=0$, so the projection is
+well-defined.  Conversely, let $z\geq0$ satisfy $Bz=0$.  Then
+$A_Rz\in V$, so choose signed $u$ with $A_Su=-A_Rz$.  For sufficiently
+large $c$, $u+cp\geq0$ and $(u+cp,z)\in C(A_J)$.  This proves
+surjectivity on the cones.  Every coordinate of $S$ remains feasible
+by embedding the original positive vector; surjectivity determines
+exactly which coordinates of $R$ are feasible.  This proves the
+support identity.
+
+The injection in the displayed sequence is well-defined because
+$\ker A_S=\operatorname{span}C(A_S)$ and $C(A_S)$ embeds into
+$C(A_J)$.  Surjectivity of the last arrow follows by taking spans of
+the already established cone surjectivity.  A vector in the middle
+space with zero $R$ coordinates has form $(u,0)$, and its matching
+equation says $A_Su=0$.  Conversely every such vector belongs to the
+image of the first arrow.  This proves exactness and therefore the
+dimension formula.
+
+An exact basis of the annihilator of $\operatorname{im}A_S$ provides
+$Q$.  Standard rational elimination and its minor bounds give the
+stated construction and bit bounds.
+\end{proof}
+
+This quotient construction preserves the linear nonnegative cone.
+If $J$ contains mutually incompatible quadrilateral types, the lift by
+$cp$ may use incompatible types; the theorem then describes a safe
+matching relaxation and does not itself solve the compatibility
+problem.  For a compatible fixed sector, this particular obstruction
+does not occur, although the separate geometric verification remains.
+
+\section{Sparse families separating raw and effective dimension}
+
+\begin{theorem}[Cyclic obstruction to bounded-row sign propagation]
+Fix integers $m\geq3$ and $s\geq1$.  Use nonnegative variables
+$p_1,\ldots,p_m,z_1,\ldots,z_m,t_1,\ldots,t_{s-1}$, with cyclic
+indices on the $z$ variables, and impose
+\[
+ p_i+z_i-z_{i+1}=0\qquad(1\leq i\leq m).
+\]
+In the displayed variable ordering the matrix is already in reduced
+row-echelon form.  Its rank is $m$ and its raw matching nullity is
+$m+s-1$.  Its nonnegative cone has maximal support consisting of all
+$z$ and $t$ coordinates and has effective dimension $s$.
+
+Every nonzero nonnegative linear combination of the displayed rows
+uses all $m$ rows.  Here ``nonnegative linear combination'' means a
+row combination whose resulting coefficients are all nonnegative;
+the combination's multipliers are not assumed nonnegative in advance.
+Thus any sign-forcing method examining only spans of at most $h<m$
+of these rows makes no first step and therefore no progress.
+\end{theorem}
+
+\begin{proof}
+The $p$ columns form the identity matrix, proving the rank and RREF
+claims.  Sum all equations to obtain $\sum_i p_i=0$.  Nonnegativity
+forces $p_i=0$ for every $i$, after which the equations require all
+$z_i$ to be equal.  The common value and the $s-1$ free $t$ values
+parameterize the cone as $\mathbb R_+^s$.  Setting the common value
+and all free values to one proves the support statement.
+
+For a row combination with multipliers $\lambda_i$, the $p_i$
+coefficient is $\lambda_i$, so a nonnegative resulting row requires
+$\lambda_i\geq0$.  Its $z_i$ coefficient is
+$\lambda_i-\lambda_{i-1}$.  All these coefficients are nonnegative
+and their sum is zero.  They are therefore all zero, forcing all
+$\lambda_i$ to be equal.  A nonzero nonnegative result consequently
+has every multiplier strictly positive and uses all $m$ rows.
+No bounded-row sign step is initially available, so there are no
+earlier forced zeros from which an iterative closure could begin.
+\end{proof}
+
+An exact joint certificate is particularly small:
+\[
+ x_p=0,\quad x_z=\mathbf1,\quad x_t=\mathbf1,
+ \qquad \lambda=\mathbf1,
+ \qquad y_p=\mathbf1,\quad y_z=y_t=0.
+\]
+Every row has three nonzero entries, and every matrix entry is in
+$\{-1,0,1\}$.  For fixed $s$, the raw dimension tends to infinity
+while the complete support reduction exposes a fixed-dimensional
+feasible cone.
+
+The obstruction is deliberately relative to the specified row family,
+including its RREF presentation.  It is not invariant under arbitrary
+change of row basis: a basis containing the sum of all rows would
+immediately reveal the forced zeros.  That dependence is exactly why
+fixed one-row and two-row closure is insufficient.
+
+\begin{example}[A bounded-coefficient variant with effective dimension zero]
+Replace the cyclic equations by
+\[
+ p_i-z_i+2z_{i+1}=0.
+\]
+Their sum forces all $p_i,z_i$ to vanish, so the nonnegative cone is
+zero despite raw nullity $m$.  A nonnegative row consequence has
+$\lambda_i\geq0$ and $\lambda_i\leq2\lambda_{i-1}$.  If one
+multiplier vanishes, these cyclic inequalities force every multiplier
+to vanish.  Thus every nonzero nonnegative consequence again uses all
+$m$ rows.  Appending $s$ unconstrained nonnegative columns gives raw
+nullity $m+s$ and effective dimension $s$, for any $s\geq0$.
+\end{example}
+
+These are structural examples for abstract rational matching systems.
+No realization by triangulated knot exteriors, or by the repository's
+actual source-derived sector equations, is asserted.  They establish
+an algebraic separation and supply regression cases; a geometric
+realization theorem would be additional research.
+
+\section{Conflict branching controlled by intrinsic dimension}
+
+\begin{theorem}[A dimension bound for compatibility search]
+Let $A$ and $\ell$ be rational, and let $\mathcal P$ be a set of
+forbidden coordinate pairs.  Consider the decision problem
+\[
+ Ax=0,\quad x\geq0,\quad \ell^Tx>0,
+ \qquad x_ix_j=0\quad\text{for every }\{i,j\}\in\mathcal P.
+\]
+Put $d=\dim\operatorname{span}C(A)$, and let $N$ be the bit length of
+the rational input and pair list.  Following complete support
+restriction, this problem can be solved using at most
+$2^{d+1}-1$ additional linear-feasibility queries, each of polynomial
+bit complexity in $N$.  Its total bit running time is
+$2^{O(d)}\operatorname{poly}(N)$.
+In particular $d=O(\log N)$ gives a polynomial bound, and
+$d=O((\log N)^2)$ gives $N^{O(\log N)}$.
+\end{theorem}
+
+\begin{proof}
+Use homogeneity to replace $\ell^Tx>0$ by $\ell^Tx\geq1$.
+At a search node retain the matching equations, nonnegativity and
+the coordinate-zero equations selected along its path.  Query
+feasibility with $\ell^Tx\geq1$.  An infeasible node is rejected.
+If a feasible witness has no forbidden pair positive, it solves the
+problem.  Otherwise choose a forbidden pair $\{i,j\}$ whose two
+coordinates are positive in this witness and branch on $x_i=0$ and
+$x_j=0$.  Every compatible feasible vector belongs to at least one
+child, so the branching is complete.
+
+Let $C_v$ be the homogeneous matching cone at a feasible node.
+The coordinate functionals $x_i$ and $x_j$ are both nonzero on
+$\operatorname{span}C_v$, as witnessed by the positive conflicting
+coordinates.  Each child cone is contained in the kernel of one of
+these nonzero functionals.  Consequently each child has span
+dimension at most $\dim\operatorname{span}C_v-1$; the child is also
+a proper coordinate face of $C_v$.  At depth $d$ every remaining
+cone is zero, so its normalized LP is infeasible.  A binary tree of
+depth at most $d$ has at most $2^{d+1}-1$ nodes.
+
+All node systems consist of the original input and coordinate-zero
+conditions, so their input bit lengths remain polynomial in $N$.
+Rational linear programming supplies the required polynomial cost per
+query.  The displayed complexity consequences follow directly.
+\end{proof}
+
+It is enough to compute complete support once at the root: its
+restricted kernel has dimension exactly $d$.  Recomputing support at
+children can improve practical pruning and dimension estimates but is
+unnecessary for the bound.  Similarly, a zero-dimensional homogeneous
+cone can be rejected before an LP call, improving constants but not
+the theorem's stated bound.
+
+Quadrilateral exclusions are represented by the three forbidden pairs
+among the three quadrilateral types of each tetrahedron.  The theorem
+is a refinement of familiar LP-guided compatibility branching, not an
+assertion that such branching was previously unknown.  Its useful
+parameter is the intrinsic matching-cone dimension exposed by the
+complete support certificate.
+
+This theorem is an algebraic existence result.  An arbitrary positive
+linear objective does not imply an essential normal disc.  Even when
+the objective is Euler characteristic in genuine standard normal
+coordinates, vertex links, spheres, disconnected components and
+boundary-parallel discs require the applicable established geometric
+arguments and verification steps.  Nor has a logarithmic-squared
+bound on $d$ for arbitrary knot-exterior inputs been proved here.

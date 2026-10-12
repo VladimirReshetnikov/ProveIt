@@ -720,3 +720,24 @@ Volume I. The order-jet and boundary-transfer synthesis remains pending.
 The collective author remains **ProveIt Contributors**.
 The order-jet report's proposed equation-number correction is qualified in
 its audit: the cited arXiv HTML uses 60a/b and the PDF uses 3.36a/b.
+
+
+### Joint coefficients and order-zero filters: intake of 12 October 2026
+
+Two further complete deliveries have their original home in Transseries:
+[joint coefficient transseries](../Transseries/docs/series-and-transseries/Quadratic_Polylogarithm_Feedback_Boundary_Completion/continuations/joint-coefficient-transseries/OVERVIEW.md)
+and [order-jet filters](../Transseries/docs/series-and-transseries/Resonant_Polylogarithm_Transseries/continuations/order-jet-filters/OVERVIEW.md).
+The former proposes the compact joint-window answer to the boundary report's
+Q1 and a positive-window part of Q2; its marginal Gamma moments agree with
+the existing collective chapter. Its local inverse classification overlaps
+the reversion continuation, while the reciprocal-order crossover chart is
+a separate refinement. The latter extends the resonant completion dictionary
+with sharp cancellation filters and an independently continued order-zero
+digamma inverse.
+
+The full default verification programs pass on isolated copies. Fresh evidence
+and scope reconciliation are retained beside the delivered originals; complete
+analytic review and incorporation into the collective manuscript remain
+pending. Numerical evidence is not interval certification. The local
+cut-modulus obstruction affects a proposed real-order extension, not the
+existing integer theorem or the unresolved global inverse-radius question.
