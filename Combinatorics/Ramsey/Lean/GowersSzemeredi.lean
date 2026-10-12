@@ -1141,6 +1141,7 @@ import GowersSzemeredi.Proofs16PolynomialStructure
 import GowersSzemeredi.Proofs16PolynomialCorollary
 import GowersSzemeredi.Proofs15WalshGeneral
 import GowersSzemeredi.Proofs15DegenerateRange
+import GowersSzemeredi.Proofs15FejerSelection
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
