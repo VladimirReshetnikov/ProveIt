@@ -1,0 +1,241 @@
+\section{Source audit and proposed integration corrections}
+\label{audit:section}
+
+The audit found no new counterexample to a theorem in the inherited
+material on which the proofs here depend. It did find several places
+where the status of a direction must be updated when the newer reports
+are integrated. An older question remains a valid historical record
+even when a later incoming article answers it. The appropriate change
+is a dated completion note and a link to the proof, while retaining
+the original provenance.
+
+\paragraph{A verified editorial duplication.}
+The retrieved manuscript \file{README.md} repeats the paragraph beginning
+``The complete 1,032-input first-letter X family consecutively.
+Remove its second occurrence while retaining the first and the surrounding
+research-status text. This duplication was already noted in the latest
+incoming source-status report; it is an editorial cleanup, not a new
+mathematical erratum. The separate statements about pending canonical
+analytic integration remain appropriate and should not be rewritten as
+though every incoming result had already been incorporated.
+
+\subsection{What should change in the current research map}
+
+The fixed-gap map should now record complete gaps $2,4,6,8,10$.
+The gap-eight proof belongs to \cite{PolygammaResonances}; only gap ten
+is completed in this article. The smaller-order-through-twelve results
+from earlier work are another source of coverage and should not be
+counted again as new gap-ten cases. The pair $(14,24)$ is included as
+an explicit example outside that earlier smaller-order range.
+
+The compact inverse-row question receives a constructive bounded-size
+answer in Theorem~\ref{gt:inverse}: at fixed half-gap $m$, every entry
+is a quotient involving an $(m+1)$-square determinant. This does not
+answer the stronger request for a short product or for a recurrence
+using only a fixed number of final rows. Nor does the gap-ten proof
+remove the finite computational component; the source's request for
+a structural proof without finite completion remains open.
+
+The three-cluster question $B^r,C,D$ in
+\emph{Gamma Normalizations and Colored Moments} is answered by the
+explicit dictionary in Section~\ref{tri:sec:main}
+\cite{GammaColored}. A status note should retain the distinction between
+the finite colored dictionary for one spectral term and the convergent
+infinite spectral sum for the Gamma face. The much broader cluster
+pattern $B^r,C^s,D^t$ with arbitrary multiplicities remains open in the
+form posed there.
+
+The collision question should now distinguish three levels. The
+two-factor theorem for all positive monomial scales and all Stieltjes
+indices is inherited. The present arbitrary-factor theorem evaluates
+the complete local correction at Stieltjes index zero, uniformly for
+all positive paths. Complete scalar values are additionally obtained
+for the one-derivative centered family, including the uncentered
+triple. The corresponding arbitrary-factor theorem at positive
+Stieltjes indices is a further question.
+
+Finally, the first and sixth research questions of the expanded
+\emph{Universal Gamma Normal Forms} package receive the answers in
+Section~\ref{hp:section}. The universal normal coefficients themselves
+remain an attributed input. The new finite formula is for the
+compensating polynomial $H_m$, and the new analytic result is the
+convergence of the infinite substitutions for a holomorphic field.
+
+\subsection{Conventions that materially affect correctness}
+
+\paragraph{Nonvanishing does not imply positivity.}
+The real fundamental determinant has
+$f_{6,5}>0$, $f_{b,5}<0$ for $7\le b\le17$, and $f_{18,5}>0$.
+Thus the conjectural strengthening $f_{b,5}>0$ at every admissible
+index is false. This is an explicit obstruction to that possible
+heuristic, not a claim that the predecessor asserted it. The
+finite-field certificate proves nonvanishing. Real positivity is
+proved separately only for $b\ge73728$.
+
+\paragraph{The constant depends on the scale relation.}
+The nonresonant triple in \eqref{intro:triple} cannot be applied to
+$(\alpha_1,\alpha_2,\alpha_3)=(3,2,1)$.
+The extra terms in \eqref{pc:integer-triple} are a concrete correction
+to such an extension. A power--logarithm constant is also different
+from the ordinary limit of the original divergent family. The
+explicit $Q$ subtraction states exactly which ordinary limit is
+available.
+
+\paragraph{Exact regular coefficients are necessary for arbitrary paths.}
+Replacing $A_{S,d}(\boldsymbol a)$ by a prematurely truncated expression
+in the shifts can destroy uniformity. For example, if
+$a_{\min}=e^{-1/t^2}$ and $a_{\max}=t$, then
+$a_{\max}|\log a_{\min}|=1/t$ does not tend to zero.
+Theorem~\ref{pc:uniform} keeps the shift dependence of every retained
+regular coefficient exactly; its remainder proof therefore needs no
+assumption on relative rates.
+
+\paragraph{Labelled derivatives and confluent derivatives differ.}
+The mixed operator $\partial_{C_1}\cdots\partial_{C_m}$ is applied
+before $C_1=\cdots=C_m$ is imposed. A total derivative along that
+diagonal has extra multiplicities and other partial derivatives.
+The factorial $(m-1)!$ in the confluent divided difference is part
+of the theorem. Likewise, the three-cluster primitive must retain
+its two edge terms; its mixed derivative alone does not determine
+the primitive without boundary data.
+
+\paragraph{Endpoints and branches stay in the formulas.}
+The compensator $UH_m$ and the endpoint term $YH_m$ in
+\eqref{hp:weighted} are essential. Discarding a total derivative
+under an unweighted finite-part integral requires its own endpoint
+calculation. For the colored formulas the displayed real branch is
+continued using letters outside the integration path. Iterated-integral
+shuffle keeps those letters; a stuffle conversion outside the initial
+disk needs additional branch bookkeeping if it introduces new
+cumulative colors.
+
+\paragraph{The arithmetic questions remain arithmetic questions.}
+An invertible rational coefficient matrix does not prove independence
+of its evaluated constants. A depth-three representation does not
+prove that depth three is necessary. The Gaussian $S_6$ identity and
+the current revised $S_8$ period candidate remain unresolved in the
+inspected research programme; the present results provide no proof of
+those equalities. These restrictions should remain visible in any
+combined manuscript overview.
+
+\section{Further research questions}
+\label{questions:section}
+
+The following questions are chosen for their potential to produce
+identities, structural formulas and exact evaluations. The thresholds
+used in the gap-ten proof are tools for nonvanishing, rather than
+the main objects of interest.
+
+\begin{enumerate}[label=\textbf{Q\arabic*.},leftmargin=*]
+\item \textbf{Arbitrary unequal even harmonic tails.}
+Prove or disprove $\det M_{b,m}\ne0$ for every $b>m\ge1$.
+Can a transform, a sign-regular kernel, a Pad\'e interpretation or a
+spectral argument account for the nonvanishing despite the finite
+sign changes? The full two-parameter problem is stronger than
+settling each of finitely many gaps.
+
+\item \textbf{The next fixed gap and a reusable exact completion theorem.}
+Complete gap twelve using the effective Gamma basis and the causal
+convolution method. A useful further result would be an explicit
+algorithm that takes $m$, derives a valid analytic threshold and
+produces a fully replayable finite certificate, including a principled
+choice of primes when one reduction vanishes. A zero residue is not
+evidence of a zero rational determinant.
+
+\item \textbf{Closed Green columns and inverse harmonic coordinates.}
+Find a hypergeometric, Pad\'e or integrable representation of
+$\mathsf G_{s,N}$ that eliminates its long causal recurrence.
+Determine whether the bounded determinant in
+\eqref{gt:inverse-formula} admits a short quotient of special functions.
+The resulting formulas would turn high-order zeta-coordinate sums
+into more recognizable identities.
+
+\item \textbf{Positive-index Stieltjes collisions with three or more factors.}
+For $q_i\ge0$, extend the uniform local theorem to
+$\prod_i\partial_x^{r_i}\gamma_{q_i}(x+a_i)$, with a fully evaluated
+correction and a uniform error for arbitrary positive paths.
+The singular kernels now contain logarithms of several shifted
+variables. An effective route is to introduce independent spectral
+powers before differentiating, while retaining every regular
+coefficient needed for uniformity. A formal derivative of an
+unproved uniform family is insufficient.
+
+\item \textbf{A finite classification of resonant scale contributions.}
+For a fixed derivative pattern and fixed number of factors, classify
+the integer relations among the $\alpha_i$ that can contribute to
+the log-free constant. The rational kernel makes each specified
+monomial case finite. Is there a compact chamber description with
+explicit transition polynomials and amplitude logarithms?
+The difference between \eqref{intro:triple} and
+\eqref{pc:integer-triple} provides a first exact test case.
+
+\item \textbf{More than one derivative-bearing factor.}
+Find full scalar evaluations for centered products with two or more
+nonzero derivative orders. The local correction is already given by
+Theorem~\ref{pc:uniform}; the unresolved step is the merged product.
+Which patterns are total derivatives of finite polygamma polynomials,
+and which force marked-zeta or genuine new moment coordinates?
+
+\item \textbf{Generating functions for the ordered constant rows.}
+Use \eqref{pc:all-powers-formula} to sum in $N$ and in the derivative
+position $r$. Seek polylogarithmic or Gamma expressions for these
+double generating functions, and relations with harmonic-number
+weights. The adjacent-difference and zero-sum identities give two
+exact constraints on any proposed answer.
+
+\item \textbf{A finite primitive for more displaced masses.}
+Integrate \eqref{tri:eq:Gamma-mixed} for
+$B^r,C_1,\ldots,C_m$ with $m\ge3$, keeping all lower-dimensional
+face data. Is depth at most $m+1$ sufficient uniformly in $r$?
+Can the edge reconstruction be expressed by a finite symmetric
+dictionary with controlled letters, rather than by unresolved
+parameter derivatives?
+
+\item \textbf{Three clusters with arbitrary multiplicities.}
+Extend $B^r,C,D$ to $B^r,C^s,D^t$ and identify the smallest useful
+uniform depth bound. The one-unit multiplicities in the present
+proof produce an elementary simplex resolvent; the general problem
+requires retaining additional Dirichlet powers without losing the
+finite colored description.
+
+\item \textbf{Arithmetic collapse of the Gamma spectral sum.}
+Find special positive $a$ and nonnegative masses for which
+\eqref{tri:eq:Gamma} reduces to finitely many Gamma, zeta or
+multiple-polylogarithm constants. Coincident masses, rational
+shifts and imaginary-Gamma multiplication identities give natural
+families to test. Any reduction should state its period basis and
+branch conventions before invoking a numerical relation search.
+
+\item \textbf{Signs and full support of the compensators.}
+The exact data through weight $24$ suggest that for every $m\ge2$
+all monomials of weight $m-1$ occur in $H_m$, with coefficient sign
+$(-1)^{m-|\boldsymbol a|}$.
+Prove or refute this statement. A positive integral formula for the
+absolute coefficients would explain the cancellations in the
+Euler-homotopy expression and could also control their denominators.
+
+\item \textbf{Sharp analytic domains and continuation of the canonical series.}
+Determine the true convergence domains of $\mathfrak N_U$ and
+$\mathfrak H_U$ for $U=\psi$ and $U=-\gamma_q$.
+The sufficient domain $|t|<x/2$ makes the translation identity
+rigorous; it is not asserted to be sharp. Can the normal and
+primitive pieces continue separately to the natural singular locus
+of the Gamma or Stieltjes ratio, or do they develop additional
+singularities that cancel only in their sum?
+
+\item \textbf{Label-preserving and difference-algebra normal forms.}
+Develop a canonical complement for several independent fields that
+retains the individual Gamma factors and their mixed derivative
+relations. In a separate direction, replace the ordinary derivation
+by a difference operator and derive the changed homotopy and product
+rules. Simply substituting a $q$-Gamma function into an ordinary
+derivative formula would not resolve this structural question.
+
+\item \textbf{The unresolved Gaussian periods.}
+Continue the Gaussian $S_6$ and revised $S_8$ problems in a declared
+relation system. Seek a new analytic transformation, a complete
+iterated-integral reduction or a certified functional identity.
+Finite relation searches and numerical agreement can guide that
+work but do not become proofs merely by increasing precision or
+the size of a relation matrix.
+\end{enumerate}

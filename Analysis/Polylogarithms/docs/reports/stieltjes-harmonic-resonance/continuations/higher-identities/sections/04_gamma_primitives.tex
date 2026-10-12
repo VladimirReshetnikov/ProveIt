@@ -1,0 +1,409 @@
+\section{Closed Gamma primitive certificates and analytic infinite jets}
+\label{hp:section}
+
+The newer of the two incoming \emph{Universal Gamma Normal Forms}
+packages gives every canonical coefficient of the inverse-Gamma
+differential hierarchy. Its research questions~1 and~6 ask, respectively,
+for a nonrecursive formula for the compensating total derivative and
+for analytic meaning of the infinite-jet generator. We answer those
+questions here. The algebraic device used for the first answer is the
+classical one-dimensional Euler homotopy operator
+\cite{PooleHereman,HeremanDeconinckPoole}. Its application to the incoming
+coefficient theorem, rather than the homotopy operator itself, is the
+continuation result. The convergence theorem below supplies an analytic
+domain for actual holomorphic logarithmic derivatives.
+
+\subsection{Definitions and the inherited coefficient formula}
+
+Let
+\[
+ \mathcal R=\mathbb Q[u_0,u_1,\ldots],\qquad Du_j=u_{j+1},
+ \qquad \operatorname{wt}(u_j)=j+1.
+\]
+The factor degree of $u^{\boldsymbol a}=\prod_j u_j^{a_j}$ is
+$|\boldsymbol a|=\sum_j a_j$. A monomial is canonical if it is a
+power of $u_0$, or if its largest positive index occurs at least twice.
+The canonical complement of $D\mathcal R$ gives unique polynomials
+$\mathcal N(P),\mathcal H(P)$ satisfying
+\begin{equation}\label{hp:decomposition}
+ P=\mathcal N(P)+D\mathcal H(P),\qquad
+ [1]\mathcal H(P)=0.
+\end{equation}
+This complement is classical \cite[Proposition~4.10]{Guo2014}.
+For completeness, a unique largest derivative $u_j$ can be removed by
+writing a suitable multiple of the monomial with $u_j$ replaced by
+$u_{j-1}$ as a total derivative. The remainder has lower highest
+index. This proves existence by termination. If $H$ is nonconstant
+with highest index $j$, then $DH$ contains the nonzero part
+$u_{j+1}\partial H/\partial u_j$, whose monomials are noncanonical.
+Thus a canonical total derivative is zero, proving uniqueness.
+
+Define
+\begin{equation}\label{hp:hierarchy}
+ A_0=1,\qquad A_{m+1}=u_0A_m-DA_m,
+ \qquad N_m=\mathcal N(A_m),\quad H_m=\mathcal H(A_m).
+\end{equation}
+Their raw generating series is
+\begin{equation}\label{hp:raw-generator}
+ \sum_{m\ge0}A_m\frac{t^m}{m!}
+ =\exp\left(\sum_{j\ge0}
+                   \frac{(-1)^j u_jt^{j+1}}{(j+1)!}\right).
+\end{equation}
+Consequently, at weight $m=\sum(j+1)a_j$,
+\begin{equation}\label{hp:raw-coefficient}
+ a(\boldsymbol a):=[u^{\boldsymbol a}]A_m
+ =\frac{(-1)^{m-|\boldsymbol a|}m!}
+        {\prod_j\bigl(a_j!\,((j+1)!)^{a_j}\bigr)}.
+\end{equation}
+
+Here is the precise part of the incoming theorem used below
+\cite{UniversalIncoming}. Set
+\begin{equation}\label{hp:C}
+ C_j(v)=\frac{(v+1)^{j+1}-(v-1)^{j+1}}
+                  {2^{j+1}(j+1)!}.
+\end{equation}
+The coefficient $n(\boldsymbol a)=[u^{\boldsymbol a}]N_m$ is one
+for $u_0^m$, zero for a unique highest positive derivative, and zero
+when $\sum j a_j$ is odd. In the remaining case, with highest index
+$d\ge1$ and $a_d\ge2$, it is
+\begin{equation}\label{hp:normal-coefficient}
+ n(\boldsymbol a)=
+ \frac{(-1)^d m!}{4^d d!(d+1)!\prod_j a_j!}
+ \int_0^1(1-v^2)^d
+     C_d(v)^{a_d-2}\prod_{j=1}^{d-1}C_j(v)^{a_j}\,dv.
+\end{equation}
+The integrand is a polynomial, so this is an explicit finite rational
+number. We retain attribution for this coefficient formula; the new
+primitive formula starts with it as an input.
+
+\subsection{A nonrecursive formula for every compensator}
+
+For a differential polynomial define
+\begin{align}
+ E(P)&=\sum_{j\ge0}(-D)^j\frac{\partial P}{\partial u_j},
+                                      \label{hp:Euler}\\
+ B(P)&=\sum_{j\ge1}\sum_{k=0}^{j-1}
+           u_{j-1-k}(-D)^k\frac{\partial P}{\partial u_j}.
+                                      \label{hp:boundary}
+\end{align}
+Let $K$ denote the factor-degree operator:
+$K(u^{\boldsymbol a})=|\boldsymbol a|u^{\boldsymbol a}$.
+Its inverse is defined on polynomials without constant term by
+division of each coefficient by its positive factor degree.
+
+\begin{lemma}[Euler homotopy identity]\label{hp:homotopy-lemma}
+For every $P\in\mathcal R$,
+\begin{equation}\label{hp:Euler-boundary}
+                 KP=u_0E(P)+DB(P).
+\end{equation}
+If $P$ has zero constant term and $E(P)=0$, then
+\begin{equation}\label{hp:closed-homotopy}
+                   D\bigl(BK^{-1}P\bigr)=P.
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+For an arbitrary polynomial $Q$ and $j\ge1$, direct differentiation
+of a telescoping sum gives
+\[
+ u_jQ-u_0(-D)^jQ
+ =D\left(\sum_{k=0}^{j-1}u_{j-1-k}(-D)^kQ\right).
+\]
+Substitute $Q=\partial P/\partial u_j$ and sum over $j$, including
+the $j=0$ term separately. Euler's identity for factor degree yields
+\eqref{hp:Euler-boundary}. The operators $D$ and $B$ preserve factor
+degree, while $E$ lowers it by one. Apply the identity separately
+to each positive factor-degree component of $P$, then divide by that
+degree. This proves \eqref{hp:closed-homotopy}. In particular no
+analytic integration and no recursive integration by parts is involved.
+\end{proof}
+
+\begin{theorem}[Complete finite primitive formula]\label{hp:closed}
+For every $m\ge1$,
+\begin{equation}\label{hp:Hclosed}
+ \boxed{\displaystyle H_m=BK^{-1}(A_m-N_m).}
+\end{equation}
+Equivalently, let $p(\boldsymbol a)=a(\boldsymbol a)-n(\boldsymbol a)$
+with the explicit coefficients in
+\eqref{hp:raw-coefficient}--\eqref{hp:normal-coefficient}. Then
+\begin{equation}\label{hp:finite-sum}
+ \boxed{\displaystyle
+ H_m=\sum_{\sum(j+1)a_j=m}\frac{p(\boldsymbol a)}{|\boldsymbol a|}
+       \sum_{j\ge1}a_j\sum_{k=0}^{j-1}(-1)^k
+                  u_{j-1-k}D^k u^{\boldsymbol a-\boldsymbol e_j}.}
+\end{equation}
+All sums are finite. Together with \eqref{hp:normal-coefficient},
+this determines both polynomials in the canonical decomposition
+without any recursive normal reduction.
+\end{theorem}
+
+\begin{proof}
+The polynomial $A_m-N_m$ is a total derivative by
+\eqref{hp:decomposition}. The identity $E(DQ)=0$ follows by cancellation
+from
+$\partial_{u_j}D=D\partial_{u_j}+\partial_{u_{j-1}}$.
+Lemma~\ref{hp:homotopy-lemma} therefore shows that the right side of
+\eqref{hp:Hclosed} differentiates to $A_m-N_m$.
+It has zero constant term, so uniqueness in
+\eqref{hp:decomposition} identifies it with $H_m$.
+Expanding the two operators gives \eqref{hp:finite-sum}.
+\end{proof}
+
+If a formula without powers of $D$ is desired, every term is expanded by
+\begin{equation}\label{hp:Dexpansion}
+ D^k u^{\boldsymbol b}
+ =k!\sum_{\substack{\sum_{r\ge0}b_{i,r}=b_i\ (i\ge0)\\
+                         \sum_{i,r}r b_{i,r}=k}}
+       \prod_i\frac{b_i!}{\prod_r b_{i,r}!(r!)^{b_{i,r}}}
+       \prod_{i,r}u_{i+r}^{b_{i,r}}.
+\end{equation}
+This is simply the multinomial Leibniz rule. Thus the word
+``nonrecursive'' describes a literal finite coefficient formula,
+not an instruction to run an integration-by-parts recurrence in disguise.
+
+\subsection{An explicit higher Gamma primitive}
+
+For example,
+\begin{align}
+ N_6={}&u_0^6-15u_0^2u_1^2+u_2^2,\label{hp:N6}\\
+ H_6={}&-3u_0^5+20u_0^3u_1-15u_0^2u_2-15u_0u_1^2
+             +6u_0u_3+9u_1u_2-u_4.\label{hp:H6}
+\end{align}
+At weight eight the normal part is
+\begin{equation}\label{hp:N8}
+ N_8=u_0^8-70u_0^4u_1^2+28u_0^2u_2^2-7u_1^4-u_3^2,
+\end{equation}
+and the companion polynomial, supplied completely by the same formula, is
+\begin{align}
+ H_8={}&-4u_0^7+56u_0^5u_1-70u_0^4u_2-140u_0^3u_1^2
+              +56u_0^3u_3\notag\\
+      &+252u_0^2u_1u_2-28u_0^2u_4+112u_0u_1^3
+              -112u_0u_1u_3\notag\\
+      &-84u_0u_2^2+8u_0u_5-98u_1^2u_2+20u_1u_4
+              +36u_2u_3-u_6.\label{hp:H8}
+\end{align}
+These low-weight examples are illustrations of the closed construction,
+not claims of new historical evaluations.
+
+For a smooth function $U$, substitute $u_j=U^{(j)}$ and let $Y'=-UY$.
+The inherited weighted identity now has a fully nonrecursive right side:
+\begin{equation}\label{hp:weighted}
+ \boxed{\displaystyle
+ \int Y\bigl(N_m(U)+U H_m(U)\bigr)\,dx
+       =-Y\bigl(A_{m-1}(U)+H_m(U)\bigr)+C.}
+\end{equation}
+Indeed $(YA_{m-1})'=-YA_m$ and
+$(YH_m)'=Y(DH_m-UH_m)$. The formula follows on adding these two
+identities. The compensator $UH_m$ and the endpoint value of $YH_m$
+are part of the formula; neither can be discarded.
+
+Taking $U=\psi$ and $Y=1/\Gamma$ gives exact Gamma--polygamma
+antiderivatives at every weight. Taking instead
+\begin{equation}\label{hp:StieltjesU}
+ F_q(x)=\frac{(-1)^q}{q+1}\zeta^{(q+1)}(0,x),\quad
+ U_q(x)=-\gamma_q(x),\quad Y_q(x)=e^{-F_q(x)}
+\end{equation}
+gives the corresponding all-index Stieltjes primitives.
+Here $\zeta^{(q+1)}$ denotes an order derivative, not an argument
+derivative. The standard identity
+$\partial_x\zeta(s,x)=-s\zeta(s+1,x)$ and the Laurent convention
+$\zeta(1+s,x)=s^{-1}+\sum_{q\ge0}(-1)^q\gamma_q(x)s^q/q!$
+give $F_q'=-\gamma_q=U_q$ \cite{DLMFHurwitz}.
+Thus $Y_q'=-U_qY_q$, as required. At $q=0$,
+$F_0=\log\Gamma-\tfrac12\log(2\pi)$.
+
+\subsection{The infinite-jet formula is analytic for holomorphic fields}
+
+The incoming coefficient theorem is formal in infinitely many jets.
+The following result permits their actual substitution from a
+holomorphic function. Define the entire function
+\[
+ \phi(z)=\frac{e^z-1-z}{z^2},\qquad \phi(0)=\frac12.
+\]
+For $x$ in a domain of holomorphy of $U$, put
+$x_j=t^{j+1}U^{(j)}(x)$ and
+$S_{r-1}(v)=\sum_{j=1}^{r-1}C_j(v)x_j$.
+
+\begin{theorem}[Analytic normal generator]\label{hp:analyticN}
+Suppose $U$ is holomorphic on $|x-x_0|<R$. The series
+\begin{equation}\label{hp:Nanalytic}
+ \boxed{\displaystyle
+ \mathfrak N_U(x,t)=e^{tU(x)}\left[
+ 1+\frac12\sum_{r\ge1}
+ \frac{(-1)^r x_r^2}{4^r r!(r+1)!}
+ \int_{-1}^1(1-v^2)^r e^{S_{r-1}(v)}
+                         \phi(C_r(v)x_r)\,dv\right]}
+\end{equation}
+converges absolutely and locally uniformly when
+\begin{equation}\label{hp:normaldomain}
+                        |x-x_0|+|t|<R.
+\end{equation}
+It is holomorphic there and has Taylor series
+\begin{equation}\label{hp:normalTaylor}
+            \mathfrak N_U(x,t)=\sum_{m\ge0}N_m(U(x))\frac{t^m}{m!}.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+Cover any compact subset of \eqref{hp:normaldomain} by finitely
+many sufficiently small compact polydisks. On each such polydisk
+choose $\rho$ with $\sup|t|<\rho<R-\sup|x-x_0|$. Cauchy's
+estimate supplies $M>0$ such that, uniformly there,
+\[
+ |U^{(r)}(x)|\le Mr!\rho^{-r},\qquad |t|<\rho.
+\]
+For real $-1\le v\le1$, the explicit positive-coefficient formula
+for $C_j$ gives $|C_j(v)|\le1/(j+1)!$. Hence
+\[
+ \sum_{j\ge1}|C_j(v)x_j|
+ \le M|t|\sum_{j\ge1}\frac{(|t|/\rho)^j}{j+1}<\infty
+\]
+uniformly. Also $|\phi(z)|\le e^{|z|}/2$, from its elementary
+integral representation
+$\phi(z)=\int_0^1(1-s)e^{sz}\,ds$.
+Apart from a uniform constant, the absolute value of the $r$th
+summand of \eqref{hp:Nanalytic} is consequently at most
+\[
+ \frac{|x_r|^2}{4^r r!(r+1)!}
+ \le\frac{M^2|t|^2}{r+1}
+                  \left(\frac{|t|}{2\rho}\right)^{2r}.
+\]
+This is summable. The same reasoning applies on each compact
+subset, proving normal convergence and holomorphy. At any fixed
+power of $t$ only finitely many $r$ contribute. Expanding the
+exponential and $\phi$, then using
+\eqref{hp:normal-coefficient}, gives exactly the canonical
+coefficients. This proves \eqref{hp:normalTaylor}.
+\end{proof}
+
+The factor $\phi$ removes all apparent singularities before any
+infinite summation. In particular odd-index kernels cause no
+finite-part integral in the analytic formula.
+
+\begin{theorem}[Analytic primitive and translation identity]
+\label{hp:analyticH}
+Under the same hypothesis, the canonical series
+\begin{equation}\label{hp:Hanalytic}
+           \mathfrak H_U(x,t)=\sum_{m\ge1}H_m(U(x))\frac{t^m}{m!}
+\end{equation}
+converges locally uniformly on the smaller domain
+\begin{equation}\label{hp:primitivedomain}
+                        |x-x_0|+2|t|<R.
+\end{equation}
+If $F'=U$ locally, then on this domain
+\begin{equation}\label{hp:translation}
+ \boxed{\displaystyle
+ e^{F(x)-F(x-t)}=\mathfrak N_U(x,t)
+                               +\partial_x\mathfrak H_U(x,t).}
+\end{equation}
+The expression on the left is independent of the additive constant
+in $F$.
+\end{theorem}
+
+\begin{proof}
+We provide the convergence justification, since the formal
+decomposition alone is insufficient. Let $P=A-N$ denote the
+formal generating-series difference. The coefficientwise homotopy
+formula can be written as
+\begin{equation}\label{hp:Hintegral}
+ \mathfrak H_U=\int_0^1\sum_{j\ge1}\sum_{k=0}^{j-1}
+ U^{(j-1-k)}(x)(-\partial_x)^k
+       \left.(\partial_{u_j}P)\right|_{u_r=\lambda U^{(r)}(x)}
+                                      \,d\lambda.
+\end{equation}
+The factor of $\lambda$ from differentiating $P(\lambda u)$
+cancels the $1/\lambda$ in $K^{-1}P=\int_0^1P(\lambda u)d\lambda/\lambda$.
+There is therefore no singular endpoint in \eqref{hp:Hintegral}.
+
+Fix a compact subset of \eqref{hp:primitivedomain}. Around each
+of its $x$ values choose a disk of radius $\rho>|t|$ whose
+closure still satisfies the normal-generator condition with
+the same $t$. The raw exponential gives immediately
+\[
+ |\partial_{u_j}A|\le C\frac{|t|^{j+1}}{(j+1)!}.
+\]
+Differentiation of \eqref{hp:Nanalytic}, uniformly for
+$0\le\lambda\le1$, gives the same bound for
+$\partial_{u_j}N$. To see the only potentially different term,
+differentiate the $r=j$ summand in its nonsingular form and use
+\[
+ \left|\frac{d}{dy}\{y^2\phi(cy)\}\right|
+   =\left|y\frac{e^{cy}-1}{cy}\right|
+   \le |y|e^{|cy|},
+\]
+with continuous interpretation at $cy=0$. The prefactor
+$1/(4^jj!(j+1)!)$ and Cauchy's jet estimate then give
+the required bound. For $r>j$ there is just the factor
+$t^{j+1}C_j$, and the already summable majorant applies.
+These bounds hold on a slightly larger compact set, so Cauchy's
+estimate in $x$ yields
+\[
+ \left|\partial_x^k(\partial_{u_j}P)(\lambda U)\right|
+ \le C\frac{k!\,|t|^{j+1}}{(j+1)!\rho^k},\qquad
+ |U^{(j-1-k)}(x)|\le M\frac{(j-1-k)!}{\rho^{j-1-k}}.
+\]
+If necessary shrink $\rho$ slightly to have both bounds with
+one common radius still exceeding $|t|$. Since
+\[
+ \sum_{k=0}^{j-1}\frac{k!(j-1-k)!}{(j+1)!}\le\frac1{j+1},
+\]
+the $j$th group in \eqref{hp:Hintegral} is bounded by
+$CM|t|^{j+1}\rho^{1-j}/(j+1)$, a summable series.
+The same bounds prove normal convergence on compact subsets.
+Coefficient extraction is justified and reproduces
+Theorem~\ref{hp:closed}. Finally the convergent raw series is
+$\exp(\int_{x-t}^xU(s)ds)=e^{F(x)-F(x-t)}$.
+The coefficientwise equality $A_m=N_m+DH_m$, now between
+holomorphic functions, proves \eqref{hp:translation}.
+\end{proof}
+
+\begin{corollary}[Gamma and Stieltjes translation formulas]
+\label{hp:specialtranslations}
+For positive $x$ and $|t|<x/2$,
+\begin{align}
+ \frac{\Gamma(x)}{\Gamma(x-t)}
+     &=\mathfrak N_{\psi}(x,t)
+                         +\partial_x\mathfrak H_{\psi}(x,t),
+                                                    \label{hp:Gammatrans}\\
+ \exp\bigl(F_q(x)-F_q(x-t)\bigr)
+     &=\mathfrak N_{-\gamma_q}(x,t)
+                         +\partial_x\mathfrak H_{-\gamma_q}(x,t),
+                                                    \label{hp:Stieltjestrans}
+\end{align}
+with $F_q$ as in \eqref{hp:StieltjesU}. These are ordinary
+holomorphic identities in $t$ and local holomorphic identities in $x$.
+On a positive interval $[a,b]$ with $|t|<a/2$ they may be
+integrated termwise and retain the exact endpoint difference
+$\mathfrak H_U(b,t)-\mathfrak H_U(a,t)$.
+\end{corollary}
+
+\begin{proof}
+Both $\psi$ and $\gamma_q$ are holomorphic on the right half-plane.
+At a fixed positive $x$, every disk of radius $R<x$ is available.
+Take $2|t|<R<x$ in Theorem~\ref{hp:analyticH}, then substitute
+the standard primitives. Compactness gives uniformity on $[a,b]$.
+\end{proof}
+
+No sharp convergence radius is asserted. The purpose of the domain is
+to justify infinite-jet substitution, coefficientwise differentiation,
+and anchored integration for actual special functions.
+
+\subsection{Independent finite checks and the remaining question}
+
+The accompanying \texttt{normal\_forms.py} constructs $A_m$ by
+its differential recurrence, constructs $N_m$ independently from
+the rational beta coefficient formula, and computes $H_m$ in two
+ways: the direct canonical reduction and the closed Euler homotopy.
+Through weight~20 all results agree, including $A_m=N_m+DH_m$
+and the full Euler--boundary identity. There are 106 recorded
+exact assertions, including a rejected coefficient corruption.
+These checks support implementation correctness; the proofs of
+the all-order assertions are the theorems above.
+
+An additional exploratory calculation through weight~24 suggests
+that for $2\le m\le24$ every monomial of weight $m-1$ occurs in
+$H_m$, with sign
+$(-1)^{m-|\boldsymbol a|}$ for its coefficient. We do not use or
+claim this as a theorem. A positivity formula for the absolute
+coefficients in \eqref{hp:finite-sum} would strengthen the
+closed primitive result and explain the observed full support.

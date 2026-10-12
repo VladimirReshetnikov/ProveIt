@@ -1,0 +1,198 @@
+\section{Verification, source audit, and further research}
+\label{sec:audit}
+
+\subsection{What has actually been verified}
+The exact verification program constructs the Bell polynomials by
+\eqref{eq:Bell-recur} and reduces them by the independent terminating
+algorithm of Proposition~\ref{prop:normal}. It then compares the resulting
+rational coefficients with the beta formulas. This route does not use the
+cubic variational recurrence to compute the normal coefficients.
+
+The supplied recorded run has the following scope:
+\begin{center}
+\begin{tabular}{lr}
+\toprule
+Exact check & Count\\
+\midrule
+Full identities $A_m=N_m+\D H_m$, weights $0$--$30$ & 31\\
+Functional support assertions in those normal forms & 2974\\
+Cubic-sector coefficients, including prescribed parity zeros & 973\\
+Quadratic-sector coefficients & 575\\
+Affine-sector coefficients & 256\\
+All-index symbolic density identities & 4\\
+Independent beta versus double-sum comparisons & 216\\
+Endpoint-vanishing assertions for the mixed kernels & 288\\
+\bottomrule
+\end{tabular}
+\end{center}
+The four symbolic identities involve an indeterminate $n$ where
+appropriate; the other counts are finite regression checks.
+A second exact script checks all four displayed spectral integrals, the four
+low-$b$ rational coefficient families, twelve partial-fraction instances, and
+the printed $H_8$ and $N_{11}$ against the certificates.
+The exact run used Python 3.13.5 and SymPy 1.14.0. Rational normal-form
+coefficients use Python's exact \texttt{Fraction} arithmetic. JSON
+certificates include both $N_m$ and $H_m$ at weights 8, 11, 14, 20, 24,
+and 30, and a separate file lists nonzero mixed examples.
+
+The numerical program performs 30 independent diagnostics: eight
+small-parameter comparisons of the compact integral with independently
+reduced normal coefficients, three weighted digamma evaluations, nine
+Hurwitz endpoint identities, nine polylogarithm sums, and one
+first-Stieltjes integral. Most use 50 decimal digits; the Stieltjes
+integral uses 35. The configured tolerances are $10^{-38}$ and
+$10^{-28}$ respectively, and all tests pass. These are arbitrary-precision
+floating-point diagnostics, not certified error intervals. A truncated
+normal-series comparison is likewise a diagnostic, not a bound for its
+uncomputed remainder.
+
+No proof assistant was run. The article supplies analytic and algebraic
+proofs, the exact script checks the finite rational identities, and the
+numerical script tests the special-function normalizations. These are
+three different forms of evidence and are not conflated.
+
+\subsection{Corrections and safeguards from the source review}
+Within the narrowly inspected mathematical core, no substantive error is
+asserted. The normal decomposition, the finite-jet lemma, and the prior
+quadratic recurrence are retained with attribution. The new density
+solution is a continuation, not a purported correction to those results.
+
+There is an editorial duplication in the inspected manuscript README:
+the paragraph beginning with the complete 1,032-input first-letter $X$
+family, its rank 1,008, and kernel dimension 24 appears twice
+consecutively \cite{RepoMain}. The proposed edit is simply to remove the
+second occurrence, after checking that the current version still has it.
+No mathematical assertion in that paragraph is changed.
+
+The following normalization safeguards are important for integration.
+They are not claims that the inspected source made each error. First,
+$\sigma_d\NF\ne\NF\sigma_d$ in general; the example after
+Lemma~\ref{lem:finitejet} supplies an exact counterexample. Second,
+$\sigma_3N_m$ is not the full normal polynomial once higher derivative
+sectors occur, as \eqref{eq:N11} shows. Third, the polynomial primitive
+$H_m$ is essential in ordinary definite integrals. Fourth, the Laurent
+residue at $s=1$ must be retained when multiplying the endpoint expansion;
+otherwise the generalized harmonic corrections in
+\eqref{eq:Stieltjes-endpoint} can be lost. Finally, the finite rational
+coefficient rank of a declared basis says nothing by itself about
+arithmetic independence of the corresponding zeta periods.
+
+The incoming archive names were visible, including packages concerning
+Gamma normalizations, colored moments, and Stieltjes resonances. Their
+contents were not exhaustively reconciled with this article. The
+integration note therefore requests a focused overlap check rather than
+claiming that this is the globally newest result in every one of those
+packages. The repository remains unchanged by this delivery.
+
+\subsection{An all-derivative-order conjecture}
+\label{sec:conjecture}
+The density formula has a striking extension which is supported by exact
+checks but is not proved here. For $j\ge0$, put
+\begin{equation}\label{eq:qj}
+ q_j(v)=\frac{(1+v)^{j+1}-(v-1)^{j+1}}
+               {2^{j+1}(j+1)!}.
+\end{equation}
+Then $q_0=1$, $q_1=v/2$, $q_2=h$, $q_3=k$, and
+$q_j'=q_{j-1}/2$ for $j\ge1$.
+
+\begin{conjecture}[Universal highest-derivative density]
+\label{conj:universal}
+Let $r\ge1$ and let
+$M=u_0^a\prod_{j=1}^ru_j^{m_j}$ be functional with $m_r\ge2$ and
+weight $W=a+\sum_{j=1}^r(j+1)m_j$. Then
+\begin{equation}\label{eq:universal-conjecture}
+\begin{split}
+ [M]N_W={}&\frac{(-1)^rW!}
+ {4^r r!(r+1)!\,a!\prod_{j=1}^rm_j!}\\
+ &\times\avg{(1-v^2)^r q_r(v)^{m_r-2}
+                   \prod_{j=1}^{r-1}q_j(v)^{m_j}}.
+\end{split}
+\end{equation}
+\end{conjecture}
+
+The cases $r=1,2,3$ follow from the affine formula,
+Theorem~\ref{thm:quadratic}, and Theorem~\ref{thm:main}. The exact
+exploratory program compares 438 nonzero coefficients with highest index
+at least four through weight 24, and every one agrees. That finite
+comparison does \emph{not} prove the conjecture, nor does it check all
+absent monomials beyond the proved sectors.
+
+In generating-function form the conjectured contribution of the largest
+index $r$ is
+\begin{equation}\label{eq:universal-increment}
+ \frac{(-1)^r x_r^2}{4^r r!(r+1)!}
+ \avg{(1-v^2)^r
+   \exp\left(\sum_{j=1}^{r-1}x_jq_j(v)\right)\Erem(x_rq_r(v))},
+ \qquad x_j=u_jt^{j+1},
+\end{equation}
+with the overall Appell factor $e^{u_0t}$. For $r=1$ this expression is
+the affine correction $f_{\mathrm{aff}}(y)-1$ with $x_1=2y$.
+The factor $(1-v^2)^r$, the derivative ladder for $q_j$, and the
+normal-basis condition all point toward a general variational transport
+proof. Such a proof is not supplied by the cubic calculation alone.
+
+\subsection{Further research questions}
+\paragraph{1. Prove or refute the universal density.}
+Establish \eqref{eq:universal-conjecture} at arbitrary $r$, or exhibit a
+first counterexample. A desirable proof would replace the order-three
+polynomial identity by a uniform identity using $q_j'=q_{j-1}/2$ and the
+$r$ endpoint zeros of $(1-v^2)^r$. The conjecture is specific enough for
+independent symbolic or proof-assistant attack.
+
+\paragraph{2. Find a closed endpoint formula, not only a terminating algorithm.}
+The canonical $H_m$ is completely specified and verifiable at every
+weight, but a compact generating representation analogous to
+\eqref{eq:main} would make analytic integrations more transparent. It must
+respect the constant normalization and distinguish a primitive of the
+full normal form from one of a truncated projection.
+
+\paragraph{3. Determine the arithmetic image of the new mixed kernels.}
+For rational $a>1$, classify the finite Hurwitz-zeta derivative spaces
+actually occupied by $\avg{v^kW_{b,n}(v)\gamma_q(a+v)}$. The endpoint
+formula gives an explicit spanning family, but does not prove minimality
+or numerical period independence. Distribution identities and parity may
+yield substantially smaller exact families.
+
+\paragraph{4. Reconcile Lerch confluence with the Hurwitz residue.}
+Develop a uniform two-parameter formula near $(z,s)=(1,1)$ that separates
+the emerging Hurwitz pole from the analytic Lerch remainder. This would
+turn the present warning about order of limits into an exact confluence
+theorem for every mixed kernel and its order derivatives.
+
+\paragraph{5. Evaluate additional nonlinear polygamma combinations.}
+The formulas here supply exact coefficient identities and retained
+Gamma endpoints. A further task is to evaluate selected individual
+integrals, for example those involving $\psi''(\psi''')^2$, in explicitly
+declared convergent zeta-derivative or multiple-polylogarithm coordinates.
+The high-derivative remainder in \eqref{eq:projected-endpoint} must remain
+visible until it is independently reduced.
+
+\paragraph{6. Study convergence beyond a fixed projection.}
+Every fixed cubic projection is entire in its finite set of variables.
+This does not establish convergence of a sum over all derivative indices
+after substituting the infinite jet of digamma. A rigorous study should
+separate formal coefficient identities from analytic convergence of the
+full normal-form generating series.
+
+\paragraph{7. Formalize the proof-carrying coefficient compiler.}
+Formalize the terminating monomial reduction and the identity
+$A_m=N_m+\D H_m$, then verify the rational certificate files. The
+all-index density identities are a compact subsequent target because they
+reduce to polynomial arithmetic with an indeterminate index.
+
+\paragraph{8. Preserve the separate period problems.}
+The present work does not resolve the general unequal-even-tail optimal
+prefix problem, the Gaussian $S_6$ identity, or the revised $S_8$ candidate
+in the inspected manuscript. Their exact branch conventions and lower
+weight constants remain separate research tasks. No conclusion about
+those problems follows from the coefficient formula proved here.
+
+\subsection*{Conclusion}
+A previously coupled infinite coefficient problem collapses to one entire
+beta-density formula. The endpoint factor that proves the formula also
+organizes exact Hurwitz, Stieltjes, Lerch, and ordinary polylogarithm
+identities. The result is an all-weight theorem in a specified normal
+basis, with retained primitives and reproducible checks, rather than a
+finite table promoted to a conjectural theorem. The universal extension
+has been deliberately left at its actual status: a precise and strongly
+tested further question.

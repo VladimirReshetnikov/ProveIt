@@ -1,0 +1,475 @@
+% Scratch research section. All labels carry the prefix tri:.
+% Requires amsmath, amssymb, amsthm; no custom macros assumed.
+% The face I_k is the ordinary perspective face used in the incoming reports.
+
+\section{Mixed mass derivatives and the three-cluster polylogarithm dictionary}
+\label{tri:sec:main}
+
+The incoming two-cluster theorem evaluates
+$I_{r+s}(G_a;B^r,C^s)$, and explicitly leaves $B^r,C,D$ with two
+unequal displaced masses as its next target \cite{GammaColored}. We resolve that target
+by a finite dictionary of weight $r+2$ and depth at most three,
+uniformly in $r$. An accompanying theorem is stronger at the
+differential level: the mixed derivative in arbitrarily many singly
+labelled displaced masses is a divided difference of one classical
+polylogarithm. The spectral sum in the Gamma application remains an
+ordinary infinite sum; no arithmetic closure or minimal-depth claim
+is made.
+
+\subsection{Normalization and the inherited coefficient identity}
+
+For $k\ge2$, write $\Sigma_k=\{t_i\ge0:\sum_i t_i=1\}$ with
+measure $dt_1\cdots dt_{k-1}$. For nonempty $T\subseteq\{1,\ldots,k\}$
+let $t_T=\sum_{i\in T}t_i$ and
+$b_T=\sum_{i\in T}t_i b_i/t_T$. The perspective $t_TF(b_T)$ is
+filled by zero when $t_T=0$. Set
+\begin{align}
+ \mathcal H_k(F;t)&=\sum_{\varnothing\ne T}
+                (-1)^{k-|T|}t_TF(b_T),\label{tri:eq:H}\\
+ I_k(F;b_1,\ldots,b_k)&=\int_{\Sigma_k}
+                   \mathcal H_k(F;t)\frac{dt}{t_1\cdots t_k}.
+                   \label{tri:eq:I}
+\end{align}
+These integrals are ordinary and absolutely convergent for $C^1$
+functions on the mass interval. The perspectives are Lipschitz and
+the alternating numerator vanishes on each coordinate face, so it
+is bounded by a constant times $\min_i t_i$. This also supplies
+locally integrable bounds after sufficiently small independent
+complex powers of the $t_i$ are inserted. Constants and affine
+functions are annihilated.
+
+Let $D_F(\boldsymbol\alpha;\boldsymbol b)$ be the normalized
+Dirichlet mean of $F(\sum t_i b_i)$, with total parameter
+$A=\sum_i\alpha_i$. The independent-regulator identity inherited
+from the two-cluster report \cite{GammaColored} implies
+\begin{equation}\label{tri:eq:coefficient}
+ I_k(F;\boldsymbol b)
+  =[\alpha_1\cdots\alpha_k]\{A D_F(\boldsymbol\alpha;\boldsymbol b)\}.
+\end{equation}
+Indeed, the normalized alternating Dirichlet integral equals
+$(\prod_i\alpha_i)^{-1}$ times the subset alternating sum of
+$A_TD_F(\boldsymbol\alpha_T;\boldsymbol b_T)$; every proper subset
+omits a variable and disappears under squarefree coefficient
+extraction. When $r$ labels have the common mass $B$, their
+parameters aggregate into $X$, and hence
+\begin{equation}\label{tri:eq:cluster-coefficient}
+ I_{r+m}(F;B^r,C_1,\ldots,C_m)
+  =r![X^rY_1\cdots Y_m]\{A D_F(X,Y_1,\ldots,Y_m)\}.
+\end{equation}
+Here $r\ge1$, $m\ge1$, and $A=X+Y_1+\cdots+Y_m$.
+All coefficients below are taken in the holomorphic continuation
+of the displayed normalized mean. For the logarithms used below,
+its existence also follows directly by expanding around the largest
+positive spectral factor: the resulting Dirichlet moment series
+has a geometric convergence margin and denominators
+$(1+A)_{n-1}$.
+
+\subsection{Arbitrarily many mixed derivatives reduce to one classical polylogarithm}
+
+For an analytic function $f$, its divided difference \cite{DeBoor} is denoted by
+$f[C_1,\ldots,C_m]$; thus one node means $f(C_1)$ and two nodes
+mean $(f(C_1)-f(C_2))/(C_1-C_2)$. Repeated nodes are assigned
+their unique confluent values, so
+$f[C,\ldots,C]=f^{(m-1)}(C)/(m-1)!$.
+
+\begin{theorem}[Classical-polylogarithm mixed derivatives]
+\label{tri:thm:mixed}
+Let $\sigma>0$, $B,C_1,\ldots,C_m\ge0$, $r,m\ge1$, and put
+\begin{equation}\label{tri:eq:g}
+ g_{r,\sigma,B}(C)=\frac{1}{\sigma+C}
+       \operatorname{Li}_r\!\left(\frac{C-B}{\sigma+C}\right).
+\end{equation}
+Then
+\begin{equation}\label{tri:eq:mixed}
+ \boxed{\displaystyle
+ \partial_{C_1}\cdots\partial_{C_m}
+ I_{r+m}\bigl(U\mapsto-\log(\sigma+U);
+                  B^r,C_1,\ldots,C_m\bigr)
+ =(-1)^r r!\,g_{r,\sigma,B}[C_1,\ldots,C_m].}
+\end{equation}
+The derivative is taken in each independently labelled displaced
+mass before any nodes are made equal. In particular, the bound of
+one on classical polylogarithm depth is independent of both $r$ and
+$m$.
+\end{theorem}
+
+\begin{proof}
+Write $S_B=\sigma+B$ and $S_j=\sigma+C_j$. Differentiate the
+Dirichlet mean in \eqref{tri:eq:cluster-coefficient}. Since
+\[
+ \partial_{C_1}\cdots\partial_{C_m}
+   [-\log(S_Bt_0+\sum_jS_jt_j)]
+  =(-1)^m(m-1)!\frac{t_1\cdots t_m}
+                      {(S_Bt_0+\sum_jS_jt_j)^m},
+\]
+the coefficient of $Y_1\cdots Y_m$, first at $\Re X>0$, is
+\[
+ (-1)^m(m-1)!X\int_{\Sigma_{m+1}}
+        \frac{t_0^{X-1}}{(S_Bt_0+\sum_jS_jt_j)^m}\,dt.
+\]
+This follows either by shifting each $Y_j$ by one in the Dirichlet
+density or directly from $1/\Gamma(Y_j)=Y_j+O(Y_j^2)$.
+At a fixed $t=t_0$, the ordinary simplex resolvent integral gives
+\[
+ \int_{\Sigma_m}\frac{du}
+       {(S_Bt+(1-t)\sum_jS_ju_j)^m}
+  =\frac{1}{(m-1)!\prod_{j=1}^m(S_Bt+(1-t)S_j)}.
+\]
+For completeness, this is the positive-parameter Feynman identity:
+write the product of $m$ reciprocal positive numbers as a Laplace
+integral over the positive orthant and separate its radial variable.
+Therefore the required coefficient of the differentiated mean is
+\begin{equation}\label{tri:eq:parameter-integral}
+ (-1)^mX\int_0^1
+  \frac{t^{X-1}(1-t)^{m-1}}
+       {\prod_j(S_Bt+(1-t)S_j)}\,dt.
+\end{equation}
+At fixed $t$, the divided difference of
+$C\mapsto(S_Bt+(1-t)(\sigma+C))^{-1}$ is
+$(-1)^{m-1}(1-t)^{m-1}$ divided by the product in
+\eqref{tri:eq:parameter-integral}. Thus that expression is the
+negative divided difference of
+\[
+ R_X(C)=X\int_0^1
+             \frac{t^{X-1}}{S_Bt+(1-t)(\sigma+C)}\,dt.
+\]
+Writing $z=(C-B)/(\sigma+C)$ yields, initially for $|z|<1$,
+\begin{equation}\label{tri:eq:RX}
+ R_X(C)=\frac1{\sigma+C}
+       \left(1+\sum_{n=1}^{\infty}\frac{Xz^n}{X+n}\right),
+ \qquad
+ [X^r]R_X(C)=\frac{(-1)^{r-1}}{\sigma+C}\operatorname{Li}_r(z).
+\end{equation}
+The series is normally convergent near $X=0$ on each compact
+$z$-disk. Its integral representation continues it through every
+real $z<1$ without crossing a singularity; equivalently, subtract
+the value at $t=0$ before continuing the $X$ integral. Now take
+$r![X^r]$ and use \eqref{tri:eq:cluster-coefficient}. All mass
+derivatives and confluent limits are justified by local holomorphy
+away from nonpositive spectral factors. This proves the theorem.
+\end{proof}
+
+For $m=1$, integration from $C=B$ recovers the inherited
+one-displaced formula
+\begin{equation}\label{tri:eq:one-displaced}
+ I_{r+1}(-\log(\sigma+U);B^r,C)
+   =(-1)^r r!\operatorname{Li}_{1,r}
+                         \!\left(\frac{C-B}{\sigma+C}\right),
+\end{equation}
+because $d\operatorname{Li}_{1,r}(z)/dz=
+\operatorname{Li}_r(z)/(1-z)$ and the face vanishes when all masses
+coincide. This recovery checks the factorial and sign conventions.
+
+\subsection{A uniform finite dictionary for the three-cluster primitive}
+
+It is useful to specify colored multiple polylogarithms by cumulative
+colors, which avoids apparent quotients by zero. For positive
+indices $s_1,\ldots,s_d$, define
+\begin{equation}\label{tri:eq:cumulative}
+ \mathcal C_{s_1,\ldots,s_d}(c_1,\ldots,c_d)
+ =\sum_{n_1>\cdots>n_d\ge1}
+ \frac{c_1^{n_1-n_2}c_2^{n_2-n_3}\cdots
+            c_{d-1}^{n_{d-1}-n_d}c_d^{n_d}}
+      {n_1^{s_1}\cdots n_d^{s_d}}.
+\end{equation}
+For $|c_j|<1$ this series converges absolutely. In the conventional
+colored notation it is
+$\operatorname{Li}_{s_1,\ldots,s_d}
+(c_1,c_2/c_1,\ldots,c_d/c_{d-1})$, interpreted continuously
+when a color is zero. The one-variable convention used by the
+incoming reports is
+$\operatorname{Li}_{s_1,\ldots,s_d}(z)=
+\mathcal C_{s_1,\ldots,s_d}(z,\ldots,z)$.
+For real cumulative colors below one, the continuation is the
+iterated-integral branch continued from zero, with letters
+$0,1/c_1,\ldots,1/c_d$ and the path $[0,1]$. No letter crosses
+that path on the stated real domain.
+
+Put $H(z)=\operatorname{Li}_1(z)=-\log(1-z)$ and
+\begin{align}
+ \mathcal S_r(z,w)
+   ={}&\mathcal C_{1,1,r}(z,w,w)
+      +\mathcal C_{1,r,1}(z,z,w)
+      +\mathcal C_{1,r+1}(z,w),\label{tri:eq:S}\\
+ \mathcal K_r(z,w)
+   ={}&H(w)\operatorname{Li}_{1,r}(z)
+       +H(z)\operatorname{Li}_{1,r}(w)
+       -\mathcal S_r(z,w)-\mathcal S_r(w,z),\label{tri:eq:K}\\
+ \mathcal P_r(z,w)
+   ={}&(r+1)\{\operatorname{Li}_{1,r+1}(z)
+                    +\operatorname{Li}_{1,r+1}(w)\}
+       +\mathcal K_r(z,w).\label{tri:eq:P}
+\end{align}
+Every term has weight $r+2$; the products in \eqref{tri:eq:K}
+can be shuffled as iterated integrals into depth at most three,
+retaining the same safe letters for real negative colors.
+Thus the formula gives
+a finite dictionary with an upper bound of three on depth for
+every $r\ge1$.
+
+\begin{theorem}[Three-cluster logarithmic face]
+\label{tri:thm:three}
+For $\sigma>0$, $B,C,D\ge0$, $r\ge1$, let
+$z=(C-B)/(\sigma+C)$ and $w=(D-B)/(\sigma+D)$. Then
+\begin{equation}\label{tri:eq:three}
+ \boxed{\displaystyle
+ I_{r+2}(-\log(\sigma+U);B^r,C,D)
+       =(-1)^{r+1}r!\mathcal P_r(z,w).}
+\end{equation}
+In particular, if $B\le C,D$, all cumulative colors in the finite
+dictionary lie in $[0,1)$, regardless of the sizes of the mass
+displacements. The result therefore requires no small-displacement
+hypothesis.
+\end{theorem}
+
+\begin{proof}
+The key harmonic identity, valid for $|z|,|w|<1$, is
+\begin{equation}\label{tri:eq:K-series}
+ \mathcal K_r(z,w)
+  =\sum_{m,n\ge1}\frac{z^mw^n}{mn}
+    \{H_{m-1}^{(r)}+H_{n-1}^{(r)}-H_{m+n-1}^{(r)}\}.
+\end{equation}
+To check its finite reduction, the first two harmonic terms give
+the two products in \eqref{tri:eq:K}. For the last term use
+$1/(mn)=(1/m+1/n)/(m+n)$ and put $N=m+n$. The harmonic index
+$j<N$ can lie below $m$, above $m$, or equal $m$; these three
+cases give respectively
+$\mathcal C_{1,1,r}(z,w,w)$,
+$\mathcal C_{1,r,1}(z,z,w)$, and
+$\mathcal C_{1,r+1}(z,w)$. Exchanging $z,w$ supplies the other
+half. All rearrangements are absolute.
+
+Write $f_r(z)=(1-z)\operatorname{Li}_r(z)$. Differentiating
+\eqref{tri:eq:K-series} gives
+\begin{equation}\label{tri:eq:K-mixed}
+ \partial_z\partial_w\mathcal K_r(z,w)
+   =-\frac{f_r[z,w]}{(1-z)(1-w)}.
+\end{equation}
+Indeed,
+$\sum_{n\ge1}H_{n-1}^{(r)}z^{n-1}=
+\operatorname{Li}_r(z)/(1-z)$, while the diagonal sum involving
+$H_{m+n-1}^{(r)}$ equals
+\[
+ \frac{\operatorname{Li}_r(z)/(1-z)
+                    -\operatorname{Li}_r(w)/(1-w)}{z-w}.
+\]
+Combining these expressions proves \eqref{tri:eq:K-mixed},
+including its removable diagonal.
+
+Now $z'=(1-z)/(\sigma+C)$,
+$w'=(1-w)/(\sigma+D)$,
+\[
+ z-w=\frac{(\sigma+B)(C-D)}{(\sigma+C)(\sigma+D)},
+ \qquad f_r(z)=(\sigma+B)g_{r,\sigma,B}(C).
+\]
+Consequently the mixed $C,D$ derivative of the right side of
+\eqref{tri:eq:three} agrees exactly with
+Theorem~\ref{tri:thm:mixed} for $m=2$. On $C=B$ or $D=B$,
+$\mathcal K_r$ vanishes and the remaining term is precisely
+the inherited one-displaced formula with $r+1$ base labels.
+Equality follows from two integrations of the common mixed
+derivative, starting on those two coordinate edges. The proof
+initially applies in a neighborhood of $C=D=B$ and throughout
+$B\le C,D$ by the absolutely convergent color series. Analytic
+continuation along the positive mass domain gives every stated
+$B,C,D\ge0$.
+\end{proof}
+
+The formula is symmetric under $C\leftrightarrow D$. Its two
+principal collision checks are
+\begin{align}
+ \mathcal P_r(z,0)&=(r+1)\operatorname{Li}_{1,r+1}(z),
+                      \label{tri:eq:axis}\\
+ \mathcal P_r(z,z)&=2r\operatorname{Li}_{1,r+1}(z)
+       +2\sum_{j=1}^{r}\operatorname{Li}_{1,j,r+1-j}(z).
+                      \label{tri:eq:diagonal}
+\end{align}
+The second identity recovers twice the predecessor's $P_{r,2}$.
+It also follows directly from the shuffle identity
+\[
+ H(z)\operatorname{Li}_{1,r}(z)
+  =\operatorname{Li}_{1,1,r}(z)
+      +\operatorname{Li}_{1,r,1}(z)
+      +\sum_{j=1}^{r}\operatorname{Li}_{1,j,r+1-j}(z).
+\]
+Thus the three-cluster formula has the correct labelled
+multiplicity even when the two displaced masses become equal.
+
+\subsection{Gamma faces, confluent derivatives, and polygamma values}
+
+For $a>0$, $U\ge0$, put
+\[
+ G_a(U)=\log\Gamma(a+i\sqrt U)+\log\Gamma(a-i\sqrt U)
+                                     -\log(2\pi).
+\]
+The analytic logarithms are continued from positive real Gamma
+arguments. The ordinary Gamma product \cite[\S5.8]{DLMF} gives
+\[
+ G_a(U)=2\log\Gamma(a)-\log(2\pi)
+       -\sum_{n=0}^{\infty}
+           \log\left(1+\frac{U}{(n+a)^2}\right).
+\]
+Its second mass derivative is normally convergent on compact
+nonnegative mass sets, so every ordinary face may be applied
+termwise after subtracting an affine function from each term.
+
+\begin{corollary}[The three-cluster Gamma dictionary]
+\label{tri:cor:Gamma}
+For $a>0$, $B,C,D\ge0$ and $r\ge1$, set
+\[
+ z_n=\frac{C-B}{(n+a)^2+C},\qquad
+ w_n=\frac{D-B}{(n+a)^2+D}.
+\]
+Then
+\begin{equation}\label{tri:eq:Gamma}
+ \boxed{\displaystyle
+ I_{r+2}(G_a;B^r,C,D)
+   =(-1)^{r+1}r!\sum_{n=0}^{\infty}\mathcal P_r(z_n,w_n).}
+\end{equation}
+The sum is ordinary and absolutely convergent, locally normally
+in the stated parameter domain. Each spectral term has a finite
+colored multiple-polylogarithm representation of depth at most
+three.
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{tri:thm:three} termwise to the Gamma product.
+For a direct tail bound, \eqref{tri:eq:K-series} gives
+\[
+ \mathcal P_r(z,w)=\frac{r+1}{2}(z^2+w^2)-zw
+                     +O((|z|+|w|)^3).
+\]
+Both colors are $O(n^{-2})$, so the spectral summands are
+$O(n^{-4})$. Compact local holomorphic extensions give the same
+normal convergence for every fixed parameter derivative.
+\end{proof}
+
+Define the normally convergent classical-polylogarithm sum
+\begin{equation}\label{tri:eq:spectralg}
+ \mathfrak g_{r,a,B}(C)=\sum_{n=0}^{\infty}
+      \frac{\operatorname{Li}_r((C-B)/((n+a)^2+C))}
+           {(n+a)^2+C}.
+\end{equation}
+Theorem~\ref{tri:thm:mixed} gives, for every $m\ge1$,
+\begin{equation}\label{tri:eq:Gamma-mixed}
+ \boxed{\displaystyle
+ \partial_{C_1}\cdots\partial_{C_m}
+ I_{r+m}(G_a;B^r,C_1,\ldots,C_m)
+   =(-1)^r r!\mathfrak g_{r,a,B}[C_1,\ldots,C_m].}
+\end{equation}
+For example, the first case beyond the two-cluster primitive is
+\begin{equation}\label{tri:eq:dilog-example}
+ \partial_C\partial_D I_4(G_a;B,B,C,D)
+   =\frac{2}{C-D}\sum_{n=0}^{\infty}
+      \left\{\frac{\operatorname{Li}_2(z_n)}{(n+a)^2+C}
+             -\frac{\operatorname{Li}_2(w_n)}{(n+a)^2+D}\right\}.
+\end{equation}
+At $C=D$ it is the corresponding derivative of
+$\mathfrak g_{2,a,B}$; no singular mass denominator remains.
+
+More generally, making $m$ independent displaced masses equal
+after differentiation gives
+\begin{equation}\label{tri:eq:confluent}
+ \left.\partial_{C_1}\cdots\partial_{C_m}
+ I_{r+m}(G_a;B^r,C_1,\ldots,C_m)\right|_{C_j=C}
+ =\frac{(-1)^r r!}{(m-1)!}\,
+                    \partial_C^{m-1}\mathfrak g_{r,a,B}(C).
+\end{equation}
+Every finite derivative here involves only classical polylogarithms
+$\operatorname{Li}_{r-j}$ and rational mass factors. Negative
+polylogarithm orders are rational functions. The distinction
+between these labelled mixed derivatives and total derivatives
+along a diagonal is essential.
+
+At the complete mass collision $C=B$, the formula has a finite
+harmonic-polygamma specialization. Let
+$H_n^\star(\{1\}^r)=\sum_{n\ge j_1\ge\cdots\ge j_r\ge1}
+(j_1\cdots j_r)^{-1}$. For $m\ge2$,
+\begin{equation}\label{tri:eq:complete-collision}
+ \left.\partial_{C_1}\cdots\partial_{C_m}
+ I_{r+m}(G_a;B^r,C_1,\ldots,C_m)\right|_{C_j=B}
+ =(-1)^{r+m}r!H_{m-1}^\star(\{1\}^r)
+             \sum_{n=0}^{\infty}((n+a)^2+B)^{-m}.
+\end{equation}
+Indeed the coefficient of $u^N$ in
+$(1+u)^{-1}\operatorname{Li}_r(u/(1+u))$ is
+$(-1)^{N+1}H_N^\star(\{1\}^r)$; this follows from the elementary
+binomial identity
+$\sum_{j=1}^N(-1)^{j-1}\binom Nj/j^r=H_N^\star(\{1\}^r)$.
+At $B=0$ the final sum is $\zeta(2m,a)$; at $B>0$ it is a
+finite derivative of the paired digamma resolvent
+\[
+ \sum_{n=0}^{\infty}((n+a)^2+B)^{-1}
+  =\frac{\psi(a+i\sqrt B)-\psi(a-i\sqrt B)}{2i\sqrt B}.
+\]
+This is a consistency check with the predecessor's all-degree
+collision formula, not a separate novelty claim for those
+coefficients.
+
+\subsection{An independent ordinary integral for verification}
+
+The finite dictionary also admits a single scalar logarithmic
+integral that is convenient for numerical verification. Put
+$q=(B-C)/(\sigma+B)$, $p=(B-D)/(\sigma+B)$,
+$L(t)=\log(1-t)$, $a(t)=-\log(1-qt)$, and
+$b(t)=-\log(1-pt)$. Then
+\begin{align}\label{tri:eq:log-integral}
+ I_{r+2}(-\log(\sigma+U);B^r,C,D)
+  =\int_0^1\bigg[&L^r\{a'(L+b)+b'(L+a)\}\notag\\
+       &\quad +(r+1)\frac{L^r(a+b)}t
+       +r\frac{L^{r-1}ab}t\bigg]dt.
+\end{align}
+All apparent singularities at zero are removable or integrable;
+at one only powers of $\log(1-t)$ occur. One derivation uses
+independent Gamma variables and Frullani's formula to write
+\[
+ A D_{-\log}(X,Y,Z)
+   =\mathcal L(X,Y,Z)
+     +\int_0^1(1-t)^{X+Y+Z}
+       \frac{d}{dt}\frac{(1-qt)^{-Y}(1-pt)^{-Z}-1}{t}\,dt.
+\]
+Here $\mathcal L$ is linear in $X,Y,Z$.
+Extract $r![X^rYZ]$ and integrate the double-pole term using
+the primitive $(1-t)/t$, which vanishes at $t=1$.
+This produces \eqref{tri:eq:log-integral} without endpoint
+finite parts.
+
+For an additional check wholly in the local mass series, let
+$h_j(N)=H_{N-1}^{\star}(\{1\}^j)$. When $|q|,|p|<1$,
+the independent Dirichlet moment expansion gives
+\begin{align}\label{tri:eq:collision-check}
+ I_{r+2}(-\log(\sigma+U);B^r,C,D)
+ =(-1)^r r!\bigg[&\sum_{m,n\ge1}\frac{q^mp^n}{mn}h_r(m+n)\notag\\
+ &-(r+1)\sum_{m\ge1}\frac{q^m+p^m}{m}h_{r+1}(m)\bigg].
+\end{align}
+The two sums arise respectively from terms using both displaced
+Dirichlet parameters and from terms using just one. This provides
+an independently organized harmonic computation of the same face.
+
+The supplied verifier records 231 assertions: 192 exact rational
+binomial--harmonic checks, fourteen comparisons from seven scalar
+parameter cases, 24 independently computed mixed-derivative checks,
+and one Gamma spectral check. The scalar cases include
+$r=1,2,3,6$, a displaced mass below the base, an equal-outlier
+collision, and a zero displacement. At $\sigma=1$, $B=0$,
+$C=1/5$, $D=2/5$, $r=2$, for example, the common scalar value is
+\[
+ -0.307903203351030388542590020916578537605405701313403\ldots.
+\]
+The finite colored dictionary, the ordinary scalar integral, and
+the local Dirichlet series agree at 75-digit working precision
+with scaled residuals below $1.5\cdot10^{-75}$. The independent
+mixed-derivative checks use the predecessor's monomial-face
+formula and include both complete and partial confluence; their
+largest scaled residual is below $6\cdot10^{-72}$.
+The Gamma example is
+\begin{equation}\label{tri:eq:Gamma-value}
+ I_4(G_1;0,0,1/5,2/5)
+  =-0.3411810552611179668555780745233632208321622014483386\ldots.
+\end{equation}
+A finite colored-MPL spectral head plus an exact-form Hurwitz
+tail agrees with the independent complete Hurwitz collision
+series to a scaled residual below $1.4\cdot10^{-76}$.
+These are floating-point diagnostics, not interval certificates
+or substitutes for the analytic proofs.
+

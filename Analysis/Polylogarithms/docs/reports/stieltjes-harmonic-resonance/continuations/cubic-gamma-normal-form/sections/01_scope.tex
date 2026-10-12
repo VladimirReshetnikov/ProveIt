@@ -1,0 +1,87 @@
+\section{The research question and the scope of the answer}
+\label{sec:scope}
+
+The inspected ProveIt manuscript develops exact identities among
+polylogarithms, Gamma derivatives, harmonic tails, and Hurwitz--Stieltjes
+coordinates \cite{RepoMain}. Its differential-polynomial continuation
+already proves a canonical integration-by-parts normal form and a complete
+recurrence for the variables $u_0,u_1,u_2$ \cite{RepoQuadratic}. A later
+continuation treats square sectors on an affine background and explicitly
+asks for every coefficient
+\begin{equation}\label{eq:source-question}
+ [u_0^a u_1^k u_2^b u_3^2]N_{a+2k+3b+8},\qquad b>0,
+\end{equation}
+with parity and the endpoint primitive retained \cite[Question 1]{RepoQuestions}.
+Here $u_r$ represents the $r$th derivative of digamma, and $N_m$ is the
+canonical normal representative of
+$(-1)^m\Gamma(x)(\mathrm d/\mathrm dx)^m\Gamma(x)^{-1}$.
+
+We answer \eqref{eq:source-question} without restricting $a,k,b$. More
+strongly, we allow any number $n\ge2$ of $u_3$ factors. The answer is a
+finite rational sum whose summands have four consecutive odd factors in
+the denominator. Its underlying integral is a beta moment with the
+endpoint factor $(1-v^2)^3$. This factor is not decorative: its three
+vanishing endpoint derivatives are exactly what makes the third-order
+variational transport close.
+
+\subsection{A preview in ordinary coefficients}
+For $m=a+2k+3b+4n$ and $n\ge2$, the coefficient vanishes when $k+n$ is
+odd. When $k+n$ is even it is
+\begin{equation}\label{eq:preview}
+\begin{split}
+ &[u_0^a u_1^k u_2^b u_3^n]N_m\\
+ &\quad=-\frac{m!}{192\,a!\,2^k k!\,b!\,n!\,24^b48^{n-2}}
+ \sum_{j=0}^{b}\sum_{\ell=0}^{n-2}
+ \frac{\binom bj3^j\binom{n-2}{\ell}}
+ {\displaystyle\prod_{r=0}^{3}(k+n+2j+2\ell-1+2r)}.
+\end{split}
+\end{equation}
+For example, the coefficients of $u_2u_3^2$, $u_2^2u_3^2$, and
+$u_1u_3^3$ are respectively $-55$, $-3640$, and $-3185/3$. These are
+coefficients in the specified rational normal basis, not assertions of
+arithmetic independence after special-function substitution.
+
+\subsection{What is inherited, and what is established here}
+The normal-form decomposition and the finite-jet Euler principle are
+inherited. We reproduce their elementary proofs so that the article does
+not depend on trusting a computation or an inaccessible manuscript.
+The underlying functional-monomial framework is credited in the source to
+Guo, Regensburger, and Rosenkranz \cite{GRR}. The preceding pure-$u_2$
+recurrence is also inherited; its beta-density solution and the complete
+cubic-background formula are the developments proved below.
+
+The polynomial-weight Hurwitz and Lerch integration-by-parts mechanism
+uses classical special-function identities \cite{DLMF25,DLMF14}. We do not
+claim that mechanism, the standard Gamma--zeta relations, or elementary
+partial fractions as new. Their application to the newly determined mixed
+coefficient kernels gives the exact families and concrete evaluations in
+Sections~\ref{sec:hurwitz} and \ref{sec:polylog}. Historical priority for
+these specializations has not been exhaustively investigated.
+
+The incoming directory was inventoried during source selection, but its
+binary packages were not exhaustively read or replayed. In particular,
+the conclusions here are not a claim that every current delivery has been
+reconciled. The provenance file distinguishes the inspected text from
+archive names seen in the directory. Since the repository changed during
+retrieval, we record file-level identifiers where available instead of
+claiming a single atomic repository snapshot.
+
+\subsection{Conventions}
+All formal polynomial identities are over $\Q$. We write
+\[
+ \avg{f(v)}=\frac12\int_{-1}^1f(v)\dd v,
+ \qquad [t^m]F(t)\text{ for ordinary coefficient extraction}.
+\]
+The exponential generating functions carry their displayed factorials.
+The notation $\zeta^{(r)}(s,a)$ always means an \emph{order} derivative,
+$\partial_s^r\zeta(s,a)$; $\psi^{(r)}(a)$ always means an \emph{argument}
+derivative. Stieltjes constants use the convention
+\begin{equation}\label{eq:stieltjes-convention}
+ \zeta(1+\epsilon,a)=\frac1\epsilon+
+ \sum_{q\ge0}\frac{(-1)^q}{q!}\gamma_q(a)\epsilon^q,
+ \qquad \gamma_0(a)=-\psi(a).
+\end{equation}
+For analytic integral formulas we initially impose $\Re a>1$, so that
+$a+v$ stays in the right half-plane. All polylogarithm series are initially
+used on $|z|<1$, eliminating branch ambiguity. Extensions and removable
+singularities are stated where used.

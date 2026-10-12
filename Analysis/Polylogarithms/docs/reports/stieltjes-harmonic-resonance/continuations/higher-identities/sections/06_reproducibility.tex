@@ -1,0 +1,120 @@
+\section{Proof certificates and reproducibility}
+\label{repro:section}
+
+The archive contains the standalone source and PDF of this article,
+the same text in modular sections for integration, exact coefficient
+data, numerical receipts, and the programs used to generate them.
+The build is local and requires no network access. The scripts never
+need repository credentials or external services.
+
+\subsection{What was checked}
+
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth}>{\raggedright\arraybackslash}p{0.48\textwidth}>{\raggedright\arraybackslash}p{0.23\textwidth}@{}}
+\toprule
+Component & Recorded check & Mathematical role\\
+\midrule
+\endhead
+Gap-ten finite interval & $73722$ nonzero residues for every
+$6\le b\le73727$ modulo $998244353$. & Exact finite part of the
+proof.\\[5pt]
+Gap-ten independent audit & All full recurrence identities;
+$506$ direct boundary determinants; $64$ Bernoulli coefficients;
+original matrices for $6\le b\le18$; $293$ inverse entries at
+$b=6,7,8,12$. & Independent normalization and implementation
+checks.\\[5pt]
+Gap-ten infinite tail & A complex Stirling remainder and a rational
+determinant/permanent margin for $b\ge73728$. & Analytic proof,
+not a numerical extrapolation.\\[5pt]
+Polygamma contacts & $21$ exact kernel checks, including repeated
+nodes; the complete resonant triple; centered rows $N=2,\ldots,8$,
+their adjacent differences and zero sums. & Exact finite checks
+of algebra and implementation.\\[5pt]
+Shifted-integral diagnostics & $12$ quadratures at $65$ decimal
+working precision, with all three derivative positions and both
+centered and uncentered triples. & Asymptotic diagnostics; not
+interval certificates.\\[5pt]
+Three-cluster formulas & $192$ exact harmonic checks, $14$ scalar
+comparisons, $24$ mixed-derivative comparisons and one Gamma
+spectral comparison: $231$ assertions in all. & Exact arithmetic
+plus floating-point diagnostics, separated in the receipt.\\[5pt]
+Gamma normal forms & $106$ exact assertions through weight $20$,
+using an independent reducer, the beta coefficient formula and
+Euler homotopy, including a rejected coefficient corruption.
+& Finite verification of the all-order algebraic formulas.\\
+\bottomrule
+\end{longtable}
+
+The finite-field proof is reproducible from its recurrence and
+source code. Each transform is arithmetic in a prime field, with
+the prime, primitive root and nonzero denominators checked.
+No floating-point operation decides the nonvanishing statement.
+The certificate hash in Section~\ref{gt:section} identifies the
+record, while the verifier establishes the mathematical content.
+
+The three-cluster numerical comparisons use independently arranged
+formulas: cumulative-color sums, an ordinary scalar logarithmic
+integral and coefficients from the Dirichlet moment expansion.
+At $75$ decimal working precision the scalar scaled residuals are
+below $1.5\times10^{-75}$ and the mixed-derivative residuals below
+$6\times10^{-72}$ for the recorded cases. These statements describe
+observed residuals, not certified errors in every reported digit.
+
+For the collision quadratures, the largest residual after subtracting
+the exact contact and the merged baseline decreases from approximately
+$0.0187914$ at $\epsilon=10^{-3}$ to $0.000372220$ at
+$\epsilon=10^{-5}$. The proof of the limit is uniform dominated
+convergence. The quadratures are useful precisely because they compare
+the original positive-shift integral to the independently assembled
+finite correction.
+
+\subsection{Programs and exact records}
+
+The main reproduction command is
+\begin{quote}
+\verb|python3 reproduce.py --exact|
+\end{quote}
+It rebuilds the C++ verifier, recomputes the full gap-ten interval,
+compares its bytes with the included certificate, and runs the
+independent rational, contact and normal-form checks.
+The optional numerical suite is
+\begin{quote}
+\verb|python3 reproduce.py --numeric|
+\end{quote}
+The PDF is built from the standalone source with
+\begin{quote}
+\verb|latexmk -pdf Higher_Identities.tex|
+\end{quote}
+The file \file{README.txt} gives the dependencies and individual
+commands. Exact rational data use numerator/denominator strings;
+they do not require a computer algebra system to parse.
+The full $(14,24)$ polynomial pair is in
+\file{code/gap_ten/gap_ten_14_24_example.json}.
+
+\subsection{Provenance and limits of the verification}
+
+The supplied source manifest records the bytes retrieved from the
+moving main branch. The repository HEAD reported during retrieval was
+\begin{center}\small\ttfamily
+e4ea0a4c7937d7ac0091048065222d1b58370482.
+\end{center}
+The individual file hashes, rather than an assumption that every
+request was an atomic checkout of that HEAD, are the definitive
+identifiers of the inspected snapshots. The two similarly named
+\emph{Universal Gamma Normal Forms} archives are both recorded;
+the expanded version with the suffix \texttt{(2)} supplies the
+two explicit research questions addressed here.
+
+The principal analytic dependencies have been restated with their
+normalizations. The complementary-minor and Gamma-basis constructions
+in the gap-ten section retain their attribution to the ordered-boundary
+report; the universal normal coefficients retain theirs to the
+universal-normal-form report. Classical sources support the standard
+Gamma, Hurwitz-zeta, divided-difference and homotopy facts. A separate
+\file{INTEGRATION_NOTES.txt} maps the new conclusions to the existing
+questions without rewriting historical archives.
+
+The proofs have been checked across the independent research sections,
+and the displayed finite formulas have the recorded computational
+support. This is a research contribution for further expert review
+and integration, not a claim that the entire surrounding manuscript
+or the worldwide literature has been exhaustively verified.
