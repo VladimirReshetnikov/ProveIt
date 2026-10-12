@@ -11,22 +11,26 @@ dimension-two seed `2^132`. They give `log₂ D_k ≈ 68·2^k`
 `(P, T)` (`splitStepDWith`, a copy of `splitStepD` with `stepP k`, `stepT k`
 replaced). Its bound `splitStepDWith_le` is the corpus's generic
 `split_degree_poly`.
-* `fejer_split_step`: if `P ≤ 2^(5k+20)` and `T ≤ 2^(5k+19)`, the
-  invariants `2^(k+6)·a_k ≤ 2^(9·2^k)` and `D_k ≤ 2^(17·2^k)` propagate,
-  for `k ≥ 2`.
+* `fejer_split_step c`: if `P ≤ 2^(5k+20)` and `T ≤ 2^(5k+19)`, the
+  invariants `2^(k+6)·a_k ≤ 2^(c·2^k)` and `D_k ≤ 2^((c+8)·2^k)` propagate,
+  for `k ≥ 2` and any `c`.
 * `fejerStepP k = 64·fejerProductExponent k` and
   `fejerStepT k = 22·fejerProductExponent k + 105` (the tight radius of
   `Proofs16TightRadius`) satisfy these bounds (`fejerStepP_le`,
   `fejerStepT_le`).
 * `splitPairWith`: the recursion with these inputs from a seed `(a₂, D₂)`.
-  For a seed with `a₂ ≤ 2^28`, `D₂ ≤ 2^68`:
-  `split_pair_with_bounds` gives `log₂ D_k ≤ 17·2^k` in every dimension,
-  against `68·2^k` today.
+  `split_pair_with_bounds c` gives `log₂ D_k ≤ (c+8)·2^k` when
+  `2^8·a₂ ≤ 2^(4c)` and `D₂ ≤ 2^(4(c+8))`.
+  `split_pair_with_bounds_fourteen` covers any seed `a₂ ≤ 2^48`,
+  `D₂ ≤ 2^88` with `log₂ D_k ≤ 22·2^k`, against `68·2^k` today.
 
-By the envelope model (`models/model_tight_s.py`) a class constant `≤ 18`
-gives Theorem 18.1 at `d + 6` and Theorem 18.2 at `L + 4`. The seed is the
-dimension-two base, which the model puts at `2^26` for the tight radius;
-proving that is part of the propagation (Notes L.16b). -/
+The seed is the dimension-two base. Under the Fejér θ₁ its counts are about
+`2^34` (`section16BaseFamilyBound`, whose Lemma 16.3 density
+`2^(−2000)(γθ)^10000` multiplies the budget degree by `10^4`), so the seed
+is about `2^35` to `2^40`: inside the `2^48` of the `c = 14` instance. By
+the envelope model (`models/model_tight_s.py`) a class constant up to 25
+gives Theorem 18.1 at `d + 6` and Theorem 18.2 at `L + 4`. Proving the seed
+bound is the dimension-two part of the propagation (Notes L.16c). -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -92,42 +96,44 @@ theorem split_step_arith (X Y Z : Nat) (hX : 1 ≤ X) (hY : 1 ≤ Y) :
   have h : 1 * 1 ≤ X * Y := Nat.mul_le_mul hX hY
   nlinarith [Nat.mul_le_mul_left Z h]
 
-/-- **The invariants propagate** when `P ≤ 2^(5k+20)` and `T ≤ 2^(5k+19)`. -/
-theorem fejer_split_step {k a D a' D' P T : Nat} (hk : 2 ≤ k) (ha : 1 ≤ a)
-    (hA : 2 ^ (k + 6) * a ≤ 2 ^ (9 * 2 ^ k)) (hDb : D ≤ 2 ^ (17 * 2 ^ k))
+/-- **The invariants propagate** when `P ≤ 2^(5k+20)` and `T ≤ 2^(5k+19)`:
+`2^(k+6)·a ≤ 2^(c·2^k)` and `D ≤ 2^((c+8)·2^k)`, for any `c`. -/
+theorem fejer_split_step (c : Nat) {k a D a' D' P T : Nat} (hk : 2 ≤ k) (ha : 1 ≤ a)
+    (hA : 2 ^ (k + 6) * a ≤ 2 ^ (c * 2 ^ k)) (hDb : D ≤ 2 ^ ((c + 8) * 2 ^ k))
     (ha' : a' ≤ 2 ^ (k + 5) * (a * a)) (hD' : D' ≤ 2 ^ (k + 6) * (a * (a + D)) * P + T)
     (hP : P ≤ 2 ^ (5 * k + 20)) (hT : T ≤ 2 ^ (5 * k + 19)) :
-    2 ^ (k + 1 + 6) * a' ≤ 2 ^ (9 * 2 ^ (k + 1)) ∧ D' ≤ 2 ^ (17 * 2 ^ (k + 1)) := by
+    2 ^ (k + 1 + 6) * a' ≤ 2 ^ (c * 2 ^ (k + 1)) ∧ D' ≤ 2 ^ ((c + 8) * 2 ^ (k + 1)) := by
   constructor
   · calc 2 ^ (k + 1 + 6) * a' ≤ 2 ^ (k + 1 + 6) * (2 ^ (k + 5) * (a * a)) :=
           Nat.mul_le_mul_left _ ha'
       _ = (2 ^ (k + 6) * a) * (2 ^ (k + 6) * a) := by ring
-      _ ≤ 2 ^ (9 * 2 ^ k) * 2 ^ (9 * 2 ^ k) := Nat.mul_le_mul hA hA
-      _ = 2 ^ (9 * 2 ^ (k + 1)) := by rw [← pow_add, double_exponent 9 k]
-  · have haX : a ≤ 2 ^ (9 * 2 ^ k) :=
+      _ ≤ 2 ^ (c * 2 ^ k) * 2 ^ (c * 2 ^ k) := Nat.mul_le_mul hA hA
+      _ = 2 ^ (c * 2 ^ (k + 1)) := by rw [← pow_add, double_exponent c k]
+  · have haX : a ≤ 2 ^ (c * 2 ^ k) :=
       le_trans (Nat.le_mul_of_pos_left a (Nat.two_pow_pos _)) hA
-    have hXY : 2 ^ (9 * 2 ^ k) ≤ 2 ^ (17 * 2 ^ k) :=
-      Nat.pow_le_pow_right (by norm_num) (by omega)
-    have hsum : a + D ≤ 2 * 2 ^ (17 * 2 ^ k) := by omega
-    have hkey : 2 ^ (5 * k + 22) * 2 ^ (9 * 2 ^ k) ≤ 2 ^ (17 * 2 ^ k) := by
+    have hXY : 2 ^ (c * 2 ^ k) ≤ 2 ^ ((c + 8) * 2 ^ k) :=
+      Nat.pow_le_pow_right (by norm_num) (Nat.mul_le_mul_right _ (by omega))
+    have hsum : a + D ≤ 2 * 2 ^ ((c + 8) * 2 ^ k) := by omega
+    have hkey : 2 ^ (5 * k + 22) * 2 ^ (c * 2 ^ k) ≤ 2 ^ ((c + 8) * 2 ^ k) := by
       rw [← pow_add]
       apply Nat.pow_le_pow_right (by norm_num)
       have := five_k_le_eight_pow k hk
+      rw [add_mul]
       omega
     have e20 : 2 ^ (5 * k + 20) = 2 * 2 ^ (5 * k + 19) := by rw [show 5 * k + 20 = (5 * k + 19) + 1 by ring, pow_succ]; ring
     have e22 : 2 ^ (5 * k + 22) = 8 * 2 ^ (5 * k + 19) := by
       rw [show 5 * k + 22 = (5 * k + 19) + 3 by ring, pow_add]; ring
-    have hX1 : 1 ≤ 2 ^ (9 * 2 ^ k) := Nat.one_le_two_pow
-    have hY1 : 1 ≤ 2 ^ (17 * 2 ^ k) := Nat.one_le_two_pow
+    have hX1 : 1 ≤ 2 ^ (c * 2 ^ k) := Nat.one_le_two_pow
+    have hY1 : 1 ≤ 2 ^ ((c + 8) * 2 ^ k) := Nat.one_le_two_pow
     calc D' ≤ 2 ^ (k + 6) * (a * (a + D)) * P + T := hD'
       _ = (2 ^ (k + 6) * a) * (a + D) * P + T := by ring
-      _ ≤ 2 ^ (9 * 2 ^ k) * (2 * 2 ^ (17 * 2 ^ k)) * 2 ^ (5 * k + 20) + 2 ^ (5 * k + 19) :=
+      _ ≤ 2 ^ (c * 2 ^ k) * (2 * 2 ^ ((c + 8) * 2 ^ k)) * 2 ^ (5 * k + 20) + 2 ^ (5 * k + 19) :=
           Nat.add_le_add (Nat.mul_le_mul (Nat.mul_le_mul hA hsum) hP) hT
-      _ ≤ (2 ^ (5 * k + 22) * 2 ^ (9 * 2 ^ k)) * 2 ^ (17 * 2 ^ k) := by
+      _ ≤ (2 ^ (5 * k + 22) * 2 ^ (c * 2 ^ k)) * 2 ^ ((c + 8) * 2 ^ k) := by
           rw [e20, e22]
           exact split_step_arith _ _ _ hX1 hY1
-      _ ≤ 2 ^ (17 * 2 ^ k) * 2 ^ (17 * 2 ^ k) := Nat.mul_le_mul_right _ hkey
-      _ = 2 ^ (17 * 2 ^ (k + 1)) := by rw [← pow_add, double_exponent 17 k]
+      _ ≤ 2 ^ ((c + 8) * 2 ^ k) * 2 ^ ((c + 8) * 2 ^ k) := Nat.mul_le_mul_right _ hkey
+      _ = 2 ^ ((c + 8) * 2 ^ (k + 1)) := by rw [← pow_add, double_exponent (c + 8) k]
 
 /-! ### The Fejér inputs -/
 
@@ -181,30 +187,43 @@ theorem splitPairWith_succ (seedA seedD : Nat) {k : Nat} (hk : 2 ≤ k) :
           (splitPairWith seedA seedD k).1 (splitPairWith seedA seedD k).2) := by
   rw [splitPairWith, if_neg (by omega)]
 
-/-- **The split degrees with the Fejér inputs**: `log₂ D_k ≤ 17·2^k` in every
-dimension `k ≥ 2`, for a seed `a₂ ≤ 2^28`, `D₂ ≤ 2^68`. -/
-theorem split_pair_with_bounds {seedA seedD : Nat} (hA1 : 1 ≤ seedA) (hD1 : 1 ≤ seedD)
-    (hA : seedA ≤ 2 ^ 28) (hD : seedD ≤ 2 ^ 68) : ∀ k, 2 ≤ k →
+/-- **The split degrees with the Fejér inputs**, for any invariant constant
+`c`: from a seed with `2^8·a₂ ≤ 2^(4c)` and `D₂ ≤ 2^(4(c+8))`,
+`log₂ D_k ≤ (c+8)·2^k` in every dimension `k ≥ 2`. -/
+theorem split_pair_with_bounds (c : Nat) {seedA seedD : Nat} (hA1 : 1 ≤ seedA) (hD1 : 1 ≤ seedD)
+    (hA : 2 ^ 8 * seedA ≤ 2 ^ (c * 4)) (hD : seedD ≤ 2 ^ ((c + 8) * 4)) : ∀ k, 2 ≤ k →
     1 ≤ (splitPairWith seedA seedD k).1 ∧ 1 ≤ (splitPairWith seedA seedD k).2 ∧
-      2 ^ (k + 6) * (splitPairWith seedA seedD k).1 ≤ 2 ^ (9 * 2 ^ k) ∧
-      (splitPairWith seedA seedD k).2 ≤ 2 ^ (17 * 2 ^ k) := by
+      2 ^ (k + 6) * (splitPairWith seedA seedD k).1 ≤ 2 ^ (c * 2 ^ k) ∧
+      (splitPairWith seedA seedD k).2 ≤ 2 ^ ((c + 8) * 2 ^ k) := by
   intro k hk
   induction k, hk using Nat.le_induction with
   | base =>
     rw [splitPairWith_two]
     refine ⟨hA1, hD1, ?_, ?_⟩
-    · calc 2 ^ (2 + 6) * seedA ≤ 2 ^ (2 + 6) * 2 ^ 28 := Nat.mul_le_mul_left _ hA
-        _ = 2 ^ (9 * 2 ^ 2) := by norm_num
+    · simpa using hA
     · simpa using hD
   | succ k hk ih =>
     obtain ⟨ha, hDp, hAb, hDb⟩ := ih
     rw [splitPairWith_succ _ _ hk]
     set a := (splitPairWith seedA seedD k).1
     set D := (splitPairWith seedA seedD k).2
-    obtain ⟨h1, h2⟩ := fejer_split_step hk ha hAb hDb (splitStepA_le ha)
+    obtain ⟨h1, h2⟩ := fejer_split_step c hk ha hAb hDb (splitStepA_le ha)
       (splitStepDWith_le ha hDp (fejerStepP_ge k)) (fejerStepP_le k) (fejerStepT_le k)
     refine ⟨?_, ?_, h1, h2⟩
     · unfold splitStepA sCountN; omega
     · unfold splitStepDWith wCountW; omega
+
+/-- **At `c = 14`**: any seed `a₂ ≤ 2^48`, `D₂ ≤ 2^88` gives
+`log₂ D_k ≤ 22·2^k`. Dimension-two counts under the Fejér θ₁ are about
+`2^34` (Notes L.16c), well inside. -/
+theorem split_pair_with_bounds_fourteen {seedA seedD : Nat} (hA1 : 1 ≤ seedA) (hD1 : 1 ≤ seedD)
+    (hA : seedA ≤ 2 ^ 48) (hD : seedD ≤ 2 ^ 88) : ∀ k, 2 ≤ k →
+    (splitPairWith seedA seedD k).2 ≤ 2 ^ (22 * 2 ^ k) := by
+  intro k hk
+  have h := split_pair_with_bounds 14 hA1 hD1
+    (by calc 2 ^ 8 * seedA ≤ 2 ^ 8 * 2 ^ 48 := Nat.mul_le_mul_left _ hA
+          _ = 2 ^ (14 * 4) := by norm_num)
+    (by simpa using hD) k hk
+  simpa using h.2.2.2
 
 end LeanProofs.GowersSzemeredi

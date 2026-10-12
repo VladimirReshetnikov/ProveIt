@@ -4513,22 +4513,46 @@ These are the radius inputs either propagation route needs.
   `(P, T)`. `splitStepDWith_stepP` checks that it is `splitStepD` at the
   printed inputs. Its bound `splitStepDWith_le` is the corpus's generic
   `split_degree_poly`.
-* `fejer_split_step`: the invariants `2^(k+6)·a_k ≤ 2^(9·2^k)` and
-  `D_k ≤ 2^(17·2^k)` propagate when `P ≤ 2^(5k+20)` and `T ≤ 2^(5k+19)`,
-  for `k ≥ 2`.
+* `fejer_split_step c`: the invariants `2^(k+6)·a_k ≤ 2^(c·2^k)` and
+  `D_k ≤ 2^((c+8)·2^k)` propagate when `P ≤ 2^(5k+20)` and
+  `T ≤ 2^(5k+19)`, for `k ≥ 2` and any `c`.
 * `fejerStepP = 64·fejerProductExponent` and
   `fejerStepT = 22·fejerProductExponent + 105` satisfy these bounds.
-* `split_pair_with_bounds`: for the recursion `splitPairWith` with these
-  inputs and a seed `a₂ ≤ 2^28`, `D₂ ≤ 2^68`, `log₂ D_k ≤ 17·2^k` in every
-  dimension. Today's bounds are `75·2^k` (crude) and `68·2^k` (tight).
+* `split_pair_with_bounds c`: for the recursion `splitPairWith` with these
+  inputs, a seed with `2^8·a₂ ≤ 2^(4c)` and `D₂ ≤ 2^(4(c+8))` gives
+  `log₂ D_k ≤ (c+8)·2^k` in every dimension.
+* `split_pair_with_bounds_fourteen`: any seed `a₂ ≤ 2^48`, `D₂ ≤ 2^88`
+  gives `log₂ D_k ≤ 22·2^k`. Today's bounds are `75·2^k` (crude) and
+  `68·2^k` (tight).
 
-By the envelope model, a class constant of 17 (`2D ≤ 2^(17·2^k+1)`) already
-gives `d + 6` / `L + 4`. `d + 5` / `L + 3` would need the exact recursion
-(constant about 11.1, threshold about 11.5). The seed hypothesis is the
-model's prediction for the tight radius (`2^26`) and is not yet proved: the
-dimension-two base classes (`Proofs18LengthSix*`, the `2^132` of
-`sixEb_inv_le_power`) still use the printed `s`. Proving it is the
-dimension-two part of the propagation.
+*The dimension-two seed (correction of L.16b's model).* The model put the
+seed at `2^(log₂ stepT(1) + 4)`, Bohr only. The dimension-two base also
+carries the piece counts:
+* `polyPieceFaceCount` and `polyPieceSpecCount` are
+  `section16BaseFamilyBound(·, polyPieceBudget)`;
+* `polyPieceBudget = θ₂(θ₁(θ,γ,1))/8`, θ₁-driven, of degree about
+  `8A(1) + 32`;
+* the Lemma 16.3 density `lemma163Alpha = 2^(−2000)(γθ)^10000` then
+  multiplies that degree by `10^4`.
+
+This is the printed `2^84` of `polyPieceFaceCount_le_power`. Under the
+Fejér θ₁ (`A(1) ≈ 2^17.8`) the counts are about `2^34`, so the seed is
+about `2^35` to `2^40`. That is inside the `2^48` of the `c = 14`
+instance. Proving it is the dimension-two part of the propagation: the
+base classes (`Proofs18LengthSix*`) still use the printed θ₁ and `s`.
+
+Rerunning the model with these seeds:
+
+| seed | class constant | envelope max | headline |
+|---|---|---|---|
+| `2^26` (L.16b) | 11.1 | `125·2^k` | `d+5` / `L+3` |
+| `2^36` | 13.6 | `138·2^k` | `d+6` / `L+4` |
+| `2^40` | 14.6 | `144·2^k` | `d+6` / `L+4` |
+| `2^48` | 16.6 | `154·2^k` | `d+6` / `L+4` |
+
+Constant class constants up to 25 also give `d + 6` / `L + 4`. So
+**`d + 5` / `L + 3` is withdrawn**: it would need the Lemma 16.3 exponent
+10000 to shrink as well. **`d + 6` / `L + 4` stands**, with a wide margin.
 
 How this was checked: 59 of the 491 ancestors of `Proofs16ClassStep` mention
 `section16Zeta`. They were searched for bounds on `multipleS` and for upper
@@ -4556,6 +4580,10 @@ degree `stepT = 22A + 105` and the dimension-two seed
   pending exact Lean bounds. `d + 6` / `L + 4` has a margin of about 2.
 * Through L.15g–L.15h, `d + 5` / `L + 3` would give Theorem 1.3 with
   `2^(−2^(k+3))` and `W(k, r) ≤ 2^2^r^2^2^(k+3)`.
+* *Correction (L.16c).* The `2^26` seed omitted the dimension-two piece
+  counts. Their Lemma 16.3 exponent 10000 puts the seed near `2^35`–`2^40`,
+  where the model gives `d + 6` / `L + 4` and not `d + 5` / `L + 3`. The
+  `d + 5` row above is withdrawn.
 
 *Revised propagation plan.* Steps 1–3 of L.16 apply, and the Bohr radius
 must be decoupled too. Carry the class route with
