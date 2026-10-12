@@ -4580,6 +4580,38 @@ Next in the dimension-two chain:
 * then the counts and exponents of `Proofs18LengthSix*`, to prove the
   dimension-two seed.
 
+*Progress* (all light, standard axioms only):
+* `Proofs16DenseSelectionWith`: `section16_dense_induced_selection_with`
+  and `lemma_16_7_with`. Lemma 16.7 never used the printed θ₁ beyond
+  `θ₁ ≥ 0`.
+* `Proofs16PolyPieceTwoDataWith`: `section16_poly_piece_two_data_with`, the
+  producer of the dimension-two pieces, which seed the split-class
+  recursion. Also the parameterized budget and counts
+  `polyPieceBudgetW`, `polyPieceSpecCountW` and `polyPieceFaceCountW`,
+  which equal the corpus definitions at the printed θ₁ by `rfl`.
+
+*What the map shows.* The family Lemma 16.6 that everything rests on,
+`AbstractFamilyLemma166At` (proved from the recurrence profiles), is
+already generic: it holds for every `0 < ζ ≤ 1/2` and every spectrum
+family. The printed θ₁ and ζ are baked in only by bridges built on it
+(`AllScaleFamilyLemma166At`, `AllScaleLemma166WidthAt`) and by the piece
+producers. The class route and the uniform dimension-two cover
+(`Proofs16PolyCoverTwo`, `Proofs16UniformCoverTwo`) consume the generic
+lemma directly. So the remaining parameterization stays light.
+
+*Remaining for the dimension-two seed:*
+1. An explicit threshold for the Fejér Lemmas 15.5/15.6. The corpus
+   decomposition uses `lemma_15_6_of_density_lower_explicit` because the
+   headline tracks threshold sizes. `fejer_scale_estimate` builds its `N₀`
+   explicitly (`max(m+1, 3, ⌈2c₀/(scale·t)⌉)`) but states only `∃ N₀`.
+2. `Proofs16PolyCoverTwoWith`: the greedy decomposition
+   (`section16_poly_piece_two_of_subrelation`,
+   `section16_poly_cover_two_large`) with the Fejér Lemma 15.6 at `k = 1`
+   and `section16_poly_piece_two_data_with` at the tight radius.
+3. The counts and exponents (`Proofs18LengthSixCounts`/`Exponents`) with
+   the `W` definitions, giving the seed degrees. The expectation is about
+   `2^35`–`2^40` (L.16c).
+
 How this was checked: 59 of the 491 ancestors of `Proofs16ClassStep` mention
 `section16Zeta`. They were searched for bounds on `multipleS` and for upper
 bounds on `ζ`, and nothing else turned up. A search is not a proof: the
