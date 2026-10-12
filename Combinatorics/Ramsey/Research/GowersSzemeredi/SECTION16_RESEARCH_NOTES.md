@@ -7049,8 +7049,12 @@ an indirect dependency in `LatticeSheetHaar`. Separating the Gaussian sections
 and importing `GramCovolume` directly resolves it. The interval dilation and
 common-denominator consumers also import their estimates directly. Both extracts, all four
 changed consumers and both full geometric modules now pass a 549-module native
-compilation check. The final theorem audit is rebuilding, with the stronger
-bounds queued afterward. A new final-proof checkpoint is not yet claimed.
+compilation check. `FinalAudit` now passes 659 native modules and
+`FinalProofSimplificationAudit` passes 829, with only `propext`,
+`Classical.choice` and `Quot.sound`. These preserve the original final
+theorems and stronger all-degree bounds. The source manifests and completed
+audit reports are `verification/2026-10-12-final-lattice-gaussian.json` and
+`verification/2026-10-12-final-lattice-gaussian-compatibility.json`.
 
 The measured final import closure is 658 modules / 142,691 lines, down by
 504 modules / 102,086 lines from L.57. Against the original aggregate entry,

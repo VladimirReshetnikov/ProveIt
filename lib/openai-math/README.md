@@ -101,7 +101,10 @@ the geometric sheet branch in the final Gowers theorem's imports.
 The provenance checker compares both extracts with the pinned upstream text
 and the single documented compatibility rename. The extracts, four changed
 consumers and both original geometric modules compile in a 549-module native
-check. The final theorem and stronger-bound audits are running separately.
+check. The focused final theorem audit passes 659 modules and the
+stronger-bound compatibility audit passes 829, with only `propext`,
+`Classical.choice` and `Quot.sound`. The minimal final import closure is
+658 local modules / 142,691 source lines, excluding external Mathlib.
 The full-port audit above is historical, not a claim of a fresh full-port
 audit after this extraction. The selected upstream closure is unchanged;
 there are now 19 local compatibility modules.
