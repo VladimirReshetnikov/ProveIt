@@ -3,6 +3,7 @@ import GowersSzemeredi.Proofs18CoverSharperLowDegrees
 import GowersSzemeredi.Proofs18CoverSharperShortLengths
 import GowersSzemeredi.Proofs18CoverThresholdsSharp
 import GowersSzemeredi.Proofs18CoverVanDerWaerden
+import GowersSzemeredi.Proofs18CoverHeadline
 
 /-! **Theorem 18.1 in every degree with exponent `α^(2^(2^(d+7)))`** (Notes L.15c).
 
@@ -90,5 +91,9 @@ theorem van_der_waerden_printed (k : Nat) {r : Nat} (hr : 2 ≤ r) (N : Nat)
     (hN : szemerediThresholdAt 9 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
     HasMonochromaticAP N r color k :=
   ((theorem_18_2_L5 k).mono (by norm_num)).van_der_waerden hr N hN color
+
+/-- **Theorem 1.3 with constant `2^(-2^(k+5))`** (printed: `2^(-2^(k+9))`). -/
+theorem theorem_1_3_L5 : Theorem13At 5 :=
+  theorem13At_of_sharp theorem_18_2_L5
 
 end LeanProofs.GowersSzemeredi

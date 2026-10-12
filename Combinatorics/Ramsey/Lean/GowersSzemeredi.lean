@@ -1136,6 +1136,7 @@ import GowersSzemeredi.Proofs18CoverSharperAllDegrees
 import GowersSzemeredi.Proofs18CoverSharperShortLengths
 import GowersSzemeredi.Proofs18CoverThresholdsSharp
 import GowersSzemeredi.Proofs18CoverVanDerWaerden
+import GowersSzemeredi.Proofs18CoverHeadline
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
