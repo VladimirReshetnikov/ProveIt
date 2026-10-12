@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs16IntegerBoxes
+import GowersSzemeredi.Proofs16AscendingIntegerBoxes
 
 /-! Prescribed-step refinements of genuine integer boxes. Natural index
 partitions preserve nonwrapping geometry and the full width budget. -/
@@ -59,14 +59,14 @@ theorem NatAP.toModAP_section5Transport (N : Nat) (P R : NatAP) :
 /-- A canonical genuine integer box admits a genuine refinement with the
 same target lengths and prescribed positive integer step as the original
 modular construction. No primality hypothesis is used. -/
-theorem integerAxesBox_residue_partition {N k : Nat} [NeZero N]
+theorem integerAxesBox_ascending_residue_partition {N k : Nat} [NeZero N]
     (Q : Fin k → NatAP) (d : Nat) (hd : 0 < d) (hstep : ∀ i, (Q i).step = d)
     (hQ : ∀ i, (Q i).IsProper) (hparent : ∀ i, (Q i).carrier ⊆ Finset.range N)
     (hk : 0 < k) (p v : Nat) (hp : 0 < p) (hv : 1 ≤ v)
     (hsize : p * v ^ 2 ≤ (integerAxesBox N Q d hstep).width) :
     ∃ M : Nat, ∃ R : Fin M → Box N k,
       IsBoxPartition R (integerAxesBox N Q d hstep) ∧
-      (∀ j, (R j).HasIntegerRepresentatives) ∧
+      (∀ j, (R j).IsAscendingInteger) ∧
       (∀ j, v - 1 ≤ (R j).width) ∧
       (∀ j i, 0 < ((R j).axis i).length ∧
         (((R j).axis i).length = v - 1 ∨ ((R j).axis i).length = v)) ∧
@@ -95,12 +95,11 @@ theorem integerAxesBox_residue_partition {N k : Nat} [NeZero N]
   refine ⟨_, R, boxProductCell_partition P m A _ hAstep hApart, ?_, ?_, ?_, fun _ => rfl⟩
   · intro j
     let z := (Fintype.equivFin (∀ i, Fin (m i))).symm j
-    refine ⟨p * d, Nat.mul_pos hp hd, Or.inl rfl, fun i => U i (z i), fun i => ?_⟩
+    refine ⟨p * d, (fun i => U i (z i)), Nat.mul_pos hp hd, rfl, fun i => ?_⟩
     refine ⟨section5NatTransport_isProper (Q i) (T i (z i)) (hQ i) (hTproper i (z i)).1,
-      hUstep i (z i), rfl, ?_, ?_⟩
+      hUstep i (z i), ?_, rfl⟩
     · exact (section5NatTransport_subset (Q i) (T i (z i))
         ((hTpart i).cell_subset (z i))).trans (hparent i)
-    · exact ((U i (z i)).toModAP_carrier N).symm
   · intro j
     apply Box.le_width_of_le_axis _ hk
     intro i
@@ -109,6 +108,47 @@ theorem integerAxesBox_residue_partition {N k : Nat} [NeZero N]
     omega
   · intro j i
     exact (hTproper i _).2
+
+/-- Compatibility statement with set-theoretic integer representatives. -/
+theorem integerAxesBox_residue_partition {N k : Nat} [NeZero N]
+    (Q : Fin k → NatAP) (d : Nat) (hd : 0 < d) (hstep : ∀ i, (Q i).step = d)
+    (hQ : ∀ i, (Q i).IsProper) (hparent : ∀ i, (Q i).carrier ⊆ Finset.range N)
+    (hk : 0 < k) (p v : Nat) (hp : 0 < p) (hv : 1 ≤ v)
+    (hsize : p * v ^ 2 ≤ (integerAxesBox N Q d hstep).width) :
+    ∃ M : Nat, ∃ R : Fin M → Box N k,
+      IsBoxPartition R (integerAxesBox N Q d hstep) ∧
+      (∀ j, (R j).HasIntegerRepresentatives) ∧
+      (∀ j, v - 1 ≤ (R j).width) ∧
+      (∀ j i, 0 < ((R j).axis i).length ∧
+        (((R j).axis i).length = v - 1 ∨ ((R j).axis i).length = v)) ∧
+      ∀ j, (R j).commonDiff = ((p * d : Nat) : ZMod N) := by
+  obtain ⟨M, R, hpart, hR, hwidth, hlengths, hcommon⟩ :=
+    integerAxesBox_ascending_residue_partition Q d hd hstep hQ hparent hk p v hp hv hsize
+  exact ⟨M, R, hpart, fun j => (hR j).toGenuine, hwidth, hlengths, hcommon⟩
+
+/-- An ascending stored parameterization retains its exact positive
+prescribed modular step in every ascending output cell. -/
+theorem Box.ascending_residue_partition {N k : Nat} [NeZero N]
+    (P : Box N k) (hP : P.IsAscendingInteger) (hk : 0 < k)
+    (p v : Nat) (hp : 0 < p) (hv : 1 ≤ v) (hsize : p * v ^ 2 ≤ P.width) :
+    ∃ M : Nat, ∃ R : Fin M → Box N k,
+      IsBoxPartition R P ∧ (∀ j, (R j).IsAscendingInteger) ∧
+      (∀ j, v - 1 ≤ (R j).width) ∧
+      (∀ j i, 0 < ((R j).axis i).length ∧
+        (((R j).axis i).length = v - 1 ∨ ((R j).axis i).length = v)) ∧
+      ∀ j, (R j).commonDiff = (p : ZMod N) * P.commonDiff := by
+  obtain ⟨d, Q, hd, hcommon, hQ⟩ := hP
+  let hstep := fun i => (hQ i).2.1
+  have hPeq : integerAxesBox N Q d hstep = P := by
+    apply Box.eq_of_axis_eq_commonDiff_eq
+    · exact funext (fun i => (hQ i).2.2.2)
+    · exact hcommon
+  obtain ⟨M, R, hpart, hR, hwidth, hlengths, hdiff⟩ :=
+    integerAxesBox_ascending_residue_partition Q d hd hstep (fun i => (hQ i).1)
+      (fun i => (hQ i).2.2.1) hk p v hp hv (by rwa [hPeq])
+  refine ⟨M, R, by simpa only [hPeq] using hpart, hR, hwidth, hlengths, ?_⟩
+  intro j
+  rw [hdiff j, Nat.cast_mul, hcommon]
 
 /-- Every genuine integer box admits a genuine prescribed-multiple
 refinement, without losing the uniform width guarantee. The common
