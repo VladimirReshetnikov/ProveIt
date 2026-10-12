@@ -4863,6 +4863,49 @@ produce those parents in genuine short-parent relation covers and retain
 the certificates through the family and structural cover induction. The
 full statement-by-statement source-fidelity audit is also still pending.
 
+## L.27 Genuine short-parent covers and abstract family Lemma 16.6 (2026-10-11)
+
+`Proofs16IntegerShortParents` transports the existing bounded natural
+interval chunks through each ascending axis. Product assembly retains
+one positive integer difference, exact partitions, widths at least `r`
+and axis lengths in `[r,2r)`. Quarter-scale localization then preserves
+the original lower width `m/8`, half-modulus bound and final-axis length
+bound, without a square-scale assumption.
+
+`Proofs16IntegerLocalCover` defines `IntegerMultiplyLinearWith` on genuine
+integer input boxes, with ascending integer output cells. Combining its
+covers over a partition retains the original graph-count bound, good-set
+mass and width exponent. Its short-parent construction supplies actual
+integer parents and refined cells with the same factor-eight width budget.
+These are consequences of the lower-dimensional cover hypothesis, not a
+proof that every product relation already satisfies that hypothesis.
+
+`Proofs16IntegerBoxFactors` proves the singleton, projection and canonical
+factor certificates. `Proofs16IntegerFamilyLemma6` normalizes either input
+orientation, uses the genuine short-parent cover, recovers equality of
+natural parent and final-axis steps, and invokes the explicit genuine
+retiled family profile. Flattening retains the common partition, all
+family linearity conclusions and the same polynomial profile width.
+`integerAbstractFamilyLemma166At_explicit` uses the existing named Schmidt
+constants, with no supplied recurrence assumption. The lemma requires only
+a nonzero modulus. The faithful global base and structural cover induction
+remain to be proved, together with the family remainder construction.
+
+The source audit also found that the existing
+`multipleLinearity_uncapped_loss_counterexample` had not been reflected
+visibly in the TeX. `Proofs16IntegerLossRange` now separately proves the
+refutation with genuine integer input and output boxes: at `theta=2` and
+`gamma=r=1`, the width-two box in `ZMod 2` requires a cell of width at least
+four. The paper's definition and Theorem 16.2 now display the parameter
+ranges already used by Lean, with an editorial explanation. The annotated
+PDF was rebuilt twice and page 95 visually inspected; the original
+published PDF is preserved.
+
+`LocalIntegerFidelityAudit` checks eleven new positive theorems and the
+new genuine-box refutation over 1,498 native modules. It also checks the
+existing refutation separately. Only `propext`, `Classical.choice` and
+`Quot.sound` occur. No refutation is counted as a positive companion proof.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
