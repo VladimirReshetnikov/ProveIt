@@ -3494,34 +3494,31 @@ $$
 
 A term contributes to the sum over all the $s_{A}$ if and only if all the sums $\sum_{\epsilon, h} \eta(\epsilon, h) \prod_{i \in A} \lambda(\epsilon, h)_{i}$ are zero, and if $\lambda$ is non-degenerate, then this can happen only when $\eta$ is a multiple of $\eta_{0}$. If $\lambda$ is non-degenerate, $\eta \neq 0$ and the term contributes to the sum over $t$, then we must have in addition that $\sum_{\epsilon, h} \eta_{0}(\epsilon, h) \phi(\lambda(\epsilon, h))=0$. It is not hard to see that this is precisely the definition of $\phi$ respecting the 8-arrangement $\lambda$. The contribution of a non-zero term to the sum over $t$ and the $s_{A}$ is $2^{-2^{k+5}} N^{2^{k+1}+1}$ and the number of multiples of $\eta_{0}$, counted with multiplicity, is $2^{2^{k+4}}+2$, since 0 can be produced in $2^{2^{k+4}}$ ways, and $\pm \eta_{0}$ in one way each.
 
-Therefore, if $\lambda$ is non-degenerate, the single-stage sum over $t$ and the $s_{A}$ is $2^{-2^{k+4}} N^{2^{k+1}+1}$ if $\phi$ does not respect $\lambda$ and $2^{-2^{k+4}} N^{2^{k+1}+1}\left(1+2\cdot2^{-2^{k+4}}\right)$ if it does. It follows that the probability that $\lambda$ belongs to $B^{\prime}$ is $2^{-2^{k+4} r}$ if $\phi$ does not respect $\lambda$ and $2^{-2^{k+4} r}\left(1+2\cdot2^{-2^{k+4}}\right)^{r}$ if it does. Therefore, our hypotheses imply that the expected number $X$ of 8-arrangements respected by $\phi$ is at least $2^{-2^{k+4} r}\left(1+2\cdot2^{-2^{k+4}}\right)^{r} \alpha \beta^{15} N^{17 k+15}$, and the expected number $Y$ of non-degenerate 8-arrangements not respected by $\phi$ is at most $2^{-2^{k+4} r} \beta^{15} N^{17 k+15}$. Using the fact that
+Therefore, if $\lambda$ is non-degenerate, the single-stage sum over $t$ and the $s_{A}$ is $2^{-2^{k+4}} N^{2^{k+1}+1}$ if $\phi$ does not respect $\lambda$ and $2^{-2^{k+4}} N^{2^{k+1}+1}\left(1+2\cdot2^{-2^{k+4}}\right)$ if it does. It follows that the probability that $\lambda$ belongs to $B^{\prime}$ is $2^{-2^{k+4} r}$ if $\phi$ does not respect $\lambda$ and $2^{-2^{k+4} r}\left(1+2\cdot2^{-2^{k+4}}\right)^{r}$ if it does.
 
-$$
-1+2\cdot2^{-2^{k+4}} \geqslant 2^{2^{-2^{k+4}+1}}
-$$
+\textit{Editorial proof refinement (Lean-verified explicit threshold).}
+The degenerate arrangements must be accounted for in both the good and bad counts. The following choice keeps enough margin to prove exactly the displayed largeness condition, including $\eta=1$.
+Put $a=\alpha\eta$, $V=2^{k+4}$, $K=2^{V-1}$, $E=VK=2^{2^{k+4}+k+3}$ and $t=(a/4)^E$. The hypotheses imply $\alpha\leqslant1$, since the total number of arrangements is at most $M=\beta^{15}N^{17k+15}$; thus $0<a\leqslant1$. Choose $m$ with $a/4\leqslant q=2^{-m}<a/2$ and set $r=Km$. Write $A=1+2\cdot2^{-V}$. Bernoulli's inequality gives $A^K\geqslant2$, hence $qA^r\geqslant1$.
 
-we can deduce that if $2^{2^{-2^{k+4}+1} r} \geqslant 2 / \alpha \eta$, then
-
-$$
-\begin{aligned}
-\eta \mathbb{E} X-\mathbb{E} Y & \geqslant \alpha \eta(2 / \alpha \eta) 2^{-2^{k+4} r} \beta^{15} N^{17 k+15}-2^{-2^{k+4} r} \beta^{15} N^{17 k+15} \\
-& \geqslant 2^{-2^{k+4} r} \beta^{15} N^{17 k+15}
-\end{aligned}
-$$
-
-But $2^{2^{-2^{k+4}+1} r} \geqslant 2 / \alpha \eta$ if and only if $2^{r} \geqslant(2 / \alpha \eta)^{2^{2^{k+4}-1}}$ if and only if $2^{-r} \leqslant(\alpha \eta / 2)^{2^{2^{k+4}-1}}$ if and only if
-
-$$
-2^{-2^{k+4} r} \leqslant(\alpha \eta / 2)^{2^{2^{k+4}-1} 2^{k+4}}=(\alpha \eta / 2)^{2^{2^{k+4}+k+3}} .
-$$
-
-Let $r$ be an integer such that
-
-$$
-2(\alpha \eta / 4)^{2^{2^{k+4}+k+3}} \leqslant 2^{-2^{k+4} r} \leqslant(\alpha \eta / 2)^{2^{2^{k+4}+k+3}} .
-$$
-
-Write $L=(\alpha \eta / 4)^{2^{2^{k+4}+k+3}} \beta^{15} N^{17 k+15}$. The preceding expectation is at least $2L$. Hence there is a realization for which $\eta X-Y\geqslant 2L$. By Lemma 15.4 and the assumed lower bound on $N$, the total number $Z$ of degenerate 8-arrangements is at most $L$. It follows that $X\geqslant L$ and $Y+Z\leqslant\eta X$, which proves the lemma. \(\square\)
+For $x=a/4$, we have $x\leqslant q\leqslant2x$ and
+\[
+q(a-q)-3x^2=(q-x)(3x-q)\geqslant0.
+\]
+Since $E\geqslant2$, it follows that
+\[
+q^E(aA^r-1)\geqslant q^{E-2}q(a-q)
+  \geqslant3x^E=3t.
+\]
+Let $Z$ be the total number of degenerate arrangements. Lemma 15.4 and the displayed hypothesis give $Z\leqslant tM$. For the non-degenerate good and bad arrangements, the expected score $\eta X-Y$ is at least
+\[
+q^E(aA^r-1)M-\eta(2^{-V}A)^r Z
+  \geqslant3tM-\eta Z,
+\]
+because $2^{-V}A\leqslant1$. Passing to all arrangements can decrease this score by at most a further $Z$. (Equivalently, first average the phase weights and then perform independent Bernoulli selection of the vertices.) Some subset therefore has total good and bad counts $X',Y'$ satisfying
+\[
+\eta X'-Y'\geqslant3tM-(1+\eta)Z\geqslant tM.
+\]
+Consequently $X'\geqslant tM$ and $Y'\leqslant\eta X'$. The respected proportion is at least $1/(1+\eta)\geqslant1-\eta$, as required. This proves the displayed threshold for $k\geqslant1$ under the standing odd-prime convention. The height-zero case has a separate verified exceptional-set constant. \(\square\)
 
 The final lemma of this section is a combination of the previous one with Lemma 14.8 in the case $\eta=2^{-44}$, which is the value that will be used in applications.
 

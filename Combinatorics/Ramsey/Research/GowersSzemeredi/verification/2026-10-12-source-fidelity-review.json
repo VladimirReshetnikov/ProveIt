@@ -2,7 +2,7 @@
   "date": "2026-10-12",
   "scope": "Incremental statement-level comparison of actual hypotheses, numerical bounds and geometric meaning. This is separate from the120-companion kernel audit and does not claim completion of unreviewed entries. Current annotated source and original stronger claims are distinguished.",
   "paper": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-  "paper_sha256": "ab88eb15cdcb948ad10f79640c46ef37a0f9e1102ba68559435c2f9ef949a3f1",
+  "paper_sha256": "c308bd44994e20ef50d80e4dc93c85d21ef1e96fc803e61bdc828a90d3043b49",
   "reviewed_sections01_03_sha256": "d7926af871dbe1323494485a38310b78721b436601eef937dbe41b3dd3782589",
   "statement_count": 120,
   "reviewed_statement_count": 120,
@@ -2003,19 +2003,25 @@
         {
           "name": "lemma_15_5_holds",
           "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15Restriction.lean",
-          "line": 3631
+          "line": 3708
+        },
+        {
+          "name": "lemma_15_5_printed_threshold",
+          "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15PrintedThreshold.lean",
+          "line": 11
         }
       ],
-      "status": "eventual_statement_verified_displayed_threshold_open",
-      "native_audited_companion": "lemma_15_5_holds",
-      "evidence": "The verified companion quantifies positive alpha,beta,0<eta<=1 and someN0 depending on all parameters and k. Its count (alpha*eta/4)^E*beta^15*N^(17*k+15), E=2^(2^(k+4)+k+3), and respected proportion1-eta match. The current annotated explicit condition t*beta^15*N>=3^(2^(k+4))*k is not the threshold provided by selection_scale_estimate_explicit: that theorem uses max3 (2*Cdeg/((1-eta)*t*beta^15)) for eta<1. The sharper displayed condition and the literal no-largeness original reading remain open, without a counterexample claim.",
+      "status": "displayed_explicit_threshold_verified_original_no_largeness_scope_open",
+      "native_audited_companion": "lemma_15_5_printed_threshold",
+      "evidence": "The exact annotated threshold t*beta^15*N>=3^(2^(k+4))*k is now natively proved for k>=1 and odd prime N, including eta=1, by lemma_15_5_printed_threshold. The dyadic margin is at least three times t, absorbing both good and bad degenerate-arrangement losses. The generic scale threshold is max3(Cdeg/(t*scale)); a height-zero version holds over arbitrary cyclic groups with its separate exceptional constant. The original reading without any modulus-largeness condition remains open, without a counterexample claim.",
       "reviewed_source_file": "Combinatorics/Ramsey/Papers/sz-thm-gowers-proof/sz-thm-gowers-proof.tex",
-      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean"
+      "reviewed_encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
+      "additional_native_audit": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-12-selection-threshold.json"
     },
     {
       "statement": "lemma_15_6",
       "source_heading_lines": [
-        3528
+        3525
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections14_15.lean",
       "encoded_line": 435,
@@ -2035,7 +2041,7 @@
     {
       "statement": "lemma_16_1",
       "source_heading_lines": [
-        3539
+        3536
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 96,
@@ -2055,7 +2061,7 @@
     {
       "statement": "theorem_16_2",
       "source_heading_lines": [
-        3569
+        3566
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 142,
@@ -2080,7 +2086,7 @@
     {
       "statement": "lemma_16_3",
       "source_heading_lines": [
-        3573
+        3570
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 146,
@@ -2100,7 +2106,7 @@
     {
       "statement": "lemma_16_4",
       "source_heading_lines": [
-        3581
+        3578
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 304,
@@ -2120,7 +2126,7 @@
     {
       "statement": "lemma_16_5",
       "source_heading_lines": [
-        3609
+        3606
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 324,
@@ -2141,7 +2147,7 @@
     {
       "statement": "lemma_16_6",
       "source_heading_lines": [
-        3641
+        3638
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 443,
@@ -2161,7 +2167,7 @@
     {
       "statement": "lemma_16_7",
       "source_heading_lines": [
-        3649
+        3646
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 510,
@@ -2181,7 +2187,7 @@
     {
       "statement": "lemma_16_8",
       "source_heading_lines": [
-        3661
+        3658
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 575,
@@ -2201,7 +2207,7 @@
     {
       "statement": "lemma_16_9",
       "source_heading_lines": [
-        3673
+        3670
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 749,
@@ -2221,7 +2227,7 @@
     {
       "statement": "lemma_16_10",
       "source_heading_lines": [
-        3737
+        3734
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 912,
@@ -2241,7 +2247,7 @@
     {
       "statement": "corollary_16_11",
       "source_heading_lines": [
-        3778
+        3775
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Section16.lean",
       "encoded_line": 976,
@@ -2261,7 +2267,7 @@
     {
       "statement": "lemma_17_1",
       "source_heading_lines": [
-        3834
+        3831
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 38,
@@ -2282,7 +2288,7 @@
     {
       "statement": "proposition_17_2",
       "source_heading_lines": [
-        3859
+        3856
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 48,
@@ -2303,7 +2309,7 @@
     {
       "statement": "lemma_17_4",
       "source_heading_lines": [
-        3900
+        3897
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 91,
@@ -2323,7 +2329,7 @@
     {
       "statement": "corollary_17_5",
       "source_heading_lines": [
-        3904
+        3901
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 103,
@@ -2343,7 +2349,7 @@
     {
       "statement": "corollary_17_6",
       "source_heading_lines": [
-        3908
+        3905
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 117,
@@ -2363,7 +2369,7 @@
     {
       "statement": "proposition_17_7",
       "source_heading_lines": [
-        3943
+        3940
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 140,
@@ -2384,7 +2390,7 @@
     {
       "statement": "theorem_18_1",
       "source_heading_lines": [
-        4068
+        4065
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 171,
@@ -2397,7 +2403,7 @@
         {
           "name": "theorem_18_1_d6_implies_printed",
           "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverFejerAllDegrees.lean",
-          "line": 96
+          "line": 99
         },
         {
           "name": "theorem_18_1_d7_implies_printed",
@@ -2414,7 +2420,7 @@
     {
       "statement": "theorem_18_2",
       "source_heading_lines": [
-        4120
+        4117
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 190,
@@ -2427,7 +2433,7 @@
         {
           "name": "theorem_18_2_L4_implies_printed",
           "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverFejerAllDegrees.lean",
-          "line": 117
+          "line": 120
         },
         {
           "name": "theorem_18_2_L6_implies_printed",
@@ -2444,7 +2450,7 @@
     {
       "statement": "corollary_18_7",
       "source_heading_lines": [
-        4135
+        4132
       ],
       "encoded_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Sections17_18.lean",
       "encoded_line": 203,
@@ -2457,7 +2463,7 @@
         {
           "name": "corollary_18_7_L4_implies_printed",
           "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverFejerAllDegrees.lean",
-          "line": 122
+          "line": 125
         },
         {
           "name": "corollary_18_7_L6_implies_printed",
@@ -2500,5 +2506,6 @@
   "reviewed_section16_sha256": "a39792df29795e9903fded3cd460efbcd0e80d7e695d8958d741538deb73aba3",
   "reviewed_sections17_18_sha256": "74027961cd05b94022c2e298ae96bc5ddd5b17425143725c2ba2fbc24c68922f",
   "review_complete_is_not_goal_complete": "All120 numbered entries have now been compared at statement level. Many original bounds, characteristic ranges, geometry-and-bound combinations and native counterexamples remain open as recorded per entry. goal_complete stays false.",
-  "new_phase_scope_kernel_status": "PhaseDegreeCoreAudit passed16 native modules; the post-merge PhaseDegreeFidelityAudit passed1672, including incoming Fejer-JM bounds. Both Section17 refutations are certified. The exported facade is running separately."
+  "new_phase_scope_kernel_status": "PhaseDegreeCoreAudit passed16 native modules; the post-merge PhaseDegreeFidelityAudit passed1672, including incoming Fejer-JM bounds. Both Section17 refutations are certified. The exported facade is running separately.",
+  "new_selection_threshold_kernel_status": "SelectionThresholdCoreAudit passed12 native modules. The displayed15.5 threshold is certified; the expanded downstream fidelity audit is running separately."
 }
