@@ -27,3 +27,9 @@ runtime from an isolated copy in 159.509 seconds. The native nine tests pass
 in 164.451 seconds; five whole-cut integration tests pass in 6.662 seconds.
 The delivered report's source tests and binary metrics were written only to
 the isolated copy, and are retained separately with the native evidence.
+
+The full maintained suite subsequently passes all 1,710 tests in 735.091
+seconds, without skips. The 120-source differential audit preserves all
+102 complete censuses, replays both backends, preserves all 92 historical
+mask-certificate hashes, and agrees with 95 retained literal references.
+The delivered files have not been changed by these integration checks.

@@ -4437,3 +4437,10 @@ validated native geometric contract. Gap lengths and local fibre flips do
 not encode arbitrary hidden boundary markings. The theory and bit-size
 bounds are in [moment_boundary.tex](../synthesis/moment_boundary.tex); a
 uniform bound for every maintained weighted-orbit trace remains unproved.
+
+All 1,710 maintained tests pass. The 120-case backend audit preserves all
+102 completed censuses and 92 earlier mask-certificate hashes, with 95
+agreements against retained literal Regina references. Full certificate
+sizes fall by 0.39–19.65% in the seven timed cases; median paired mask/moment
+time ratios range from 0.932 to 1.142. The article retains regressions,
+raw samples, A/A controls and source pins.
