@@ -15,6 +15,7 @@ import GowersSzemeredi.Proofs18CoverFejerHeadlineU
 import GowersSzemeredi.Proofs18CoverFejerHeadlineW
 import GowersSzemeredi.Proofs18CoverFejerHeadlineX
 import GowersSzemeredi.Proofs16PolynomialFejerX
+import GowersSzemeredi.Proofs18CoverFejerHeadlineZ
 
 /-! **Theorem 18.1 at `d + 6` and Theorem 18.2 / Corollary 18.7 at `L + 4`
 in every degree and length** (Notes L.16d).
@@ -591,5 +592,42 @@ theorem corollary_16_11_polynomial_fejerX {k : Nat} (hk : 2 ≤ k) :
     (fun k _ => section16RecurrenceProfileWith_explicit k)
     (fun k => explicit_family_constants_poly_le k) hk alpha ha ha2
   exact ⟨e, he0, pw_mono (two_div_ge_two ha ha2) hei (expDegX_tight_le k), hN⟩
+
+/-! ### The exact class table to dimension `14` (Notes L.16o) -/
+
+/-- **Theorem 18.1 at every degree `d ≥ 16` with `d + 2` in place of `d + 10`.** -/
+theorem theorem_18_1_d2_sixteen_le {d : Nat} (hd : 16 ≤ d) : Theorem181AtSharp 2 d := by
+  obtain ⟨K, p, hpp, hp, hK, hpB⟩ := progressionPhasePartition_explicit
+  exact theorem_18_1_d2_sixteen_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hpp hp hK hpB hd
+
+/-- **Theorem 18.2 at every length `L ≥ 18` with no offset.** -/
+theorem theorem_18_2_L0_eighteen_le {L : Nat} (hL : 18 ≤ L) : Theorem182AtSharp 0 L :=
+  theorem_18_2_L0_eighteen_le_of_profiles_poly
+    (fun k => ⌈multiaffinePartitionK (k + 1) (2 ^ (k + 1))⌉₊)
+    (fun k => (k + 1) * multiaffinePartitionP (k + 1) (2 ^ (k + 1)))
+    (fun k => two_le_ceil_multiaffinePartitionK (k + 1) (2 ^ (k + 1)))
+    (fun k => Nat.mul_pos (Nat.succ_pos k) (multiaffinePartitionP_pos _ _))
+    (fun k _ => section16RecurrenceProfileWith_explicit k)
+    (fun k => explicit_family_constants_poly_le k) hL
+
+/-- **Corollary 18.7 at every length `L ≥ 18` with no offset.** -/
+theorem corollary_18_7_L0_eighteen_le {L : Nat} (hL : 18 ≤ L) : Corollary187AtSharp 0 L :=
+  (theorem_18_2_L0_eighteen_le hL).corollary_18_7
+
+/-- **Van der Waerden numbers**: for `k ≥ 18` and `r ≥ 2`, `W(k, r) ≤ 2^2^r^2^2^k`. -/
+theorem van_der_waerden_L0_eighteen_le {k : Nat} (hk : 18 ≤ k) {r : Nat} (hr : 2 ≤ r) (N : Nat)
+    (hN : szemerediThresholdAt 0 (1 / (r : Real)) k ≤ N) (color : Nat → Fin r) :
+    HasMonochromaticAP N r color k :=
+  (theorem_18_2_L0_eighteen_le hk).van_der_waerden hr N hN color
+
+/-- **Theorem 1.3 with constant `2^(-2^k)` for every `k ≥ 18`.** -/
+theorem theorem_1_3_L0_eighteen_le : Theorem13AtFrom 0 18 :=
+  theorem13AtFrom_of_sharp fun _ hk => theorem_18_2_L0_eighteen_le hk
 
 end LeanProofs.GowersSzemeredi
