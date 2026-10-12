@@ -7020,8 +7020,11 @@ entry point imports 1,162 modules / 244,777 lines, down by 34 modules and
 4,832 source lines from L.56. Against the original aggregate baseline this
 is 127 fewer modules / 19,916 fewer lines in the import closure, not a claim
 of repository-wide deletions. The final statements and bounds are unchanged.
-The stronger-bound compatibility check is running separately; its completion
-is not yet claimed. The goal remains active.
+The stronger-bound compatibility audit also passes 1,333 native modules,
+including the original final theorem, shared recurrence inputs and stronger
+all-degree bounds, with only approved axioms. Its immutable report is
+`verification/2026-10-12-final-cover-budget-compatibility.json`. The complete
+facade is outside this focused check. The goal remains active.
 
 ## F. Routes
 
