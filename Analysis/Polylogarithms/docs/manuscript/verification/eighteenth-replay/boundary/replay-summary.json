@@ -1,0 +1,63 @@
+{
+  "part": "boundary",
+  "source_folder": "tail-boundaries",
+  "commands": [
+    {
+      "arguments": [
+        "verification/tails/run_tail_checks.py",
+        "--full"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/kernels/verify_kernels.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/mellin/verify_mellin_polylog.py"
+      ],
+      "exit_code": 0
+    },
+    {
+      "arguments": [
+        "verification/stieltjes/code/verify_stieltjes_edge.py",
+        "--mode",
+        "all"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "fresh_result_files": [
+    "verification/kernels/kernel_exact.json",
+    "verification/kernels/kernel_numeric.json",
+    "verification/mellin/mellin_checks.json",
+    "verification/stieltjes/data/edge_exact.json",
+    "verification/stieltjes/data/edge_numeric.json",
+    "verification/stieltjes/data/edge_numeric_checkpoint.json",
+    "verification/tails/coefficient_norm_bound_a6.json",
+    "verification/tails/complete_p10.json",
+    "verification/tails/replay_p12_independent.json",
+    "verification/tails/run_tail_checks_full.json",
+    "verification/tails/verify_p10_independent.json"
+  ],
+  "source_code_sha256": {
+    "build.py": "603b7cd6a2d4d6e068d2f27721f8e2991a9766549ed6c7a4ff3df5e180ebcf99",
+    "verify_all.py": "a9b322822a73e030c2619913062834020c7a86e9ac81b3232fe628969ce9674c",
+    "verification/kernels/verify_kernels.py": "56ff6ee8f41838e7f13b78f92c6347140e55f60960ee99e218f556a5beed57fc",
+    "verification/mellin/verify_mellin_polylog.py": "e60b7e734f619ee5e2f7f246fe7be32303e358f7fefb88f1316660fe9970d472",
+    "verification/tails/coefficient_norm_bound.py": "62c7bf40e5560932b9d7a9ab170050e81442d3fc301d10a27116a5fd6f8aa432",
+    "verification/tails/complete_p10.py": "dd2925f83a27d14fde756f7edb542b1470ee97c4a3c7f310d870c43ef4cfcb9e",
+    "verification/tails/replay_p12_independent.py": "a540f946123a811e17e9a8319636796756d3fa086a553f8c18d2d0d8f85954b4",
+    "verification/tails/run_tail_checks.py": "efa1845b98c28da11d1f6efdddfe678cfc96f673670c3ac8a6c27b9d7fc3dea7",
+    "verification/tails/verify_p10_independent.py": "e08426d1b85b3a8bad47775a98b7beb460f24e3c44bc5f6af89f24b6bf878c6a",
+    "verification/tails/provenance_inputs/ProveIt_Quartic_Spectral_Reconstruction_2026-10-11/verification/eventual/eventual_threshold.py": "45717018b6f6ad709e5a81b13aaba2d440362a7f46a9e6a652b2bed8388f9e4e",
+    "verification/tails/provenance_inputs/ProveIt_Quartic_Spectral_Reconstruction_2026-10-11/verification/eventual/verify_general_normalization.py": "38f1c802b1d4ab781d305f01186bb8308311a636a8f195b685156d6d94d54f7a",
+    "verification/tails/provenance_inputs/ProveIt_Alternating_Tails_Spectral_Defects_2026-10-11/verification/verify_rank_refinement.py": "61a96e81f7d49737e6adc55e906c93ba411256987ce4bd37f074efff8ea0e72d",
+    "verification/stieltjes/code/verify_stieltjes_edge.py": "9daaa8aa976c528d71b362f439074438354a808203eed16002e7e065ed38876d"
+  },
+  "passed": true,
+  "scope": "Complete specified mathematical suites, freshly run on a copy with assertions and UTF-8 enabled. Per-command outputs retained separately. Exact finite assertions, numerical diagnostics and canonical analytic acceptance have separate scopes. No package-manifest validation or original document rebuild is performed."
+}
