@@ -7,7 +7,12 @@ from unittest.mock import patch
 
 from fastunknot.diagram import Diagram
 from fastunknot.normal_crushing_chain import make_crushing_chain, verify_crushing_chain
-from fastunknot.normal_crushing_search import recognize_by_crushing, verify_crushing_recognition
+from functools import partial
+from fastunknot.normal_crushing_search import recognize_by_crushing as _recognize_by_crushing
+from fastunknot.normal_crushing_search import verify_crushing_recognition
+
+# These tests isolate sector discovery; preprocessing has its own integration tests.
+recognize_by_crushing = partial(_recognize_by_crushing, reduce_vertices=False)
 from fastunknot import normal_crushing_search as search_module
 from fastunknot.normal_sector import SearchLimit, _source_hash, build_sector_kernel, sector_rays
 from fastunknot.normal_sector_verify import verify_sector_exhaustion

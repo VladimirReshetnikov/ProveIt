@@ -4618,3 +4618,21 @@ claimed. A small number of active vertex groups bounds the number of anchor
 LPs, conditional on a polynomial LP policy. The full compatible-sector family
 still needs a general quasi-polynomial bound. Proofs and comparisons are in
 [Euler-LP crushing](../synthesis/euler_lp_crushing.tex).
+
+The crushing backend now defaults to `reduce_vertices=True`. Before sector
+search on each source, it constructs an expanded-edge-link positive ray and
+crushes it until the source has one vertex or the chain proves the unknot.
+The construction and existing independent crushing replay take polynomial
+time; they use no sector enumeration or LP. Preprocessing shares
+`max_crushes` with search but consumes no sector, candidate, pivot, or anchor
+allowance. Set `reduce_vertices=False` to compare the previous search policy.
+
+`normal_vertex_reduction.vertex_reduction_ray` also accepts a supplied finite
+source and returns `ONE_VERTEX` or a positive ray with diagnostic raw and
+canonical coordinates. A torus-boundary check alone supplies no knot
+provenance; the diagram chain supplies that premise. Every extracted ray
+uses the existing independent crushing certificate. One-vertex preprocessing
+removes the Cartesian anchor-product obstruction on every search source;
+the exact simplex pivot policy and complete sector family still lack the
+requested quasi-polynomial bound. See
+[the vertex-reduction proof](../synthesis/vertex_reduction.tex).
