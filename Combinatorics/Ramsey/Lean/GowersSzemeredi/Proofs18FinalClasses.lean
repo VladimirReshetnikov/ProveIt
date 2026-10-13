@@ -3,7 +3,7 @@ import GowersSzemeredi.Proofs18TightClassesFejer
 import GowersSzemeredi.Proofs16UniformCoverTwoSplit
 import GowersSzemeredi.Proofs16WeylBudgetGrowth
 import GowersSzemeredi.Proofs18CoverSharperLowDegrees
-import GowersSzemeredi.Proofs18CoverSharperShortLengths
+import GowersSzemeredi.Proofs18ShortLengthsFromCubic
 import GowersSzemeredi.Proofs18EtaStepSmall
 import GowersSzemeredi.Proofs18JointSliceInverseFejer
 

@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs18ColorClass
-import GowersSzemeredi.Proofs18CoverSharperShortLengths
+import GowersSzemeredi.Proofs18SharpInterfaces
 
 /-! **Van der Waerden numbers with `r` colours** (Notes L.15g).
 
