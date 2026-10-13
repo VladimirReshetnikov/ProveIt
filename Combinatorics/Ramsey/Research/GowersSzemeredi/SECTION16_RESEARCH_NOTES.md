@@ -5659,12 +5659,12 @@ keeps only the best statements (with Corollary 18.7, van der Waerden numbers,
 Theorem 1.3 and the printed consequences). Measured: 63 modules and 19,081
 lines retired, 3,501 added; the bridge 993 → 186 lines and 101 → 25
 theorems; the Fejér block of `CompletionAudit` 341 → 96 lines. No threshold
-changed. Subsequent sharing and import cleanup leave 3,240 lines in the
+changed. Subsequent sharing and import cleanup leave 2,977 lines in the
 four proof modules and 182 in the bridge. The current route passes the
 778-module native `FinalProofSimplificationAudit`, covering all 25 public
 bridge theorems, FinalInputs methods, shared induction, fits and threshold
 comparisons, with approved axioms. The bridge itself imports 745 modules.
-See L.68 and `verification/2026-10-12-final-merged-short-phase-compatibility.json`.
+See L.70 and `verification/2026-10-12-final-spectrum-width-sharing-compatibility.json`.
 The complete facade remains a separate check.
 
 **Van der Waerden numbers: our bounds and the literature (2026-10-12).** Gowers
@@ -5673,7 +5673,7 @@ results here keep that shape with a smaller top constant:
 `van_der_waerden_L3_all` (`k + 3`, every `k`), `van_der_waerden_L2_eight_le`
 (`k + 2`, `k ≥ 8`), `van_der_waerden_L1_eleven_le` (`k + 1`, `k ≥ 11`) and
 `van_der_waerden_L0_thirteen_le` (`W(k, r) ≤ 2^2^r^2^2^k`, `k ≥ 13`). They are
-verified by the 778-module focused native audit in L.68. They tighten the
+verified by the 778-module focused native audit in L.70. They tighten the
 constants in Gowers's argument. Published bounds of a different shape are
 much stronger in `r` for fixed `k`:
 * `k = 3`: Kelley–Meka (2023), sharpened by Bloom–Sisask,
@@ -7468,6 +7468,91 @@ The original-final audit still has all 651 input hashes unchanged. The
 prior L.67 report remains an immutable record of the pre-merge proofs.
 Full-facade checks and original-statement fidelity gaps remain separate,
 and the simplification goal remains active.
+
+### L.69. Share low-degree and envelope proofs; simplify modulus conditions (2026-10-12)
+
+**One low-degree proof.** The six offset-four Theorem 18.1 declarations
+move from `Proofs18Final` to `Proofs18CoverSharperLowDegrees`, with their
+proof bodies unchanged. The offset-six and offset-seven degree-zero,
+linear, quadratic and cubic statements follow by monotonicity; their
+quadratic numerical comparisons use the shared
+`section18ExponentAt_antitone`. The final route retains every old export
+through its existing imports. These four production files shrink by 247
+lines; no import is added.
+
+**Two common envelope estimates.** `mul32_nat_le_pw` turns a natural
+partition bound `P <= 2^q` into `32*P <= X^(2^j)` whenever `q+5 <= 2^j`.
+`polyPartConst_mul32_le_pw` specializes it to the ordinary partition
+budget; the two sharper final budgets use the same scalar lemma directly.
+`inv_mul_div_four_le_pw` bounds the reciprocal of the product density:
+if `x^-1,y^-1 <= X^(2^a)`, then `(x*y/4)^-1 <= X^(2^(a+2))`.
+Each estimate replaces eleven copied proof blocks, covering the original,
+polynomial, cover, graded, Fejér and consolidated final envelope steps.
+All old numerical budgets and hypotheses are preserved. The ten affected
+production files shrink by 150 lines.
+
+**Modulus proof.** `GenParamsJT3.modulus_conditions` unpacks the maximum
+threshold with `max_le_iff` and uses transparent local definitions for
+the nested width, spectrum width and final width. This removes equality
+witnesses and repeated rewrites. Exponent monotonicity supplies
+`N^(F/2) <= N^F` once, replacing two square expansions. The minimum-width
+branch retains the threshold from `hN8`; the square-root branch needs only
+nonnegativity and the same exponent comparison, with its original
+`6 <= N^Eloc` premise. `ranges` reuses its Fejér bounds and the identical
+Eth/Ec definitions; the slice estimate drops unused reciprocal-cover
+facts. FinalStep shrinks by 67 lines with its 49 declaration headers intact.
+
+Against `52c5406d6`, fifteen production files lose 464 lines. All 258
+existing declaration headers and variable scopes are preserved, as are
+all existing definitions and all 25 stronger bridge proofs. The six moved
+proofs are byte-identical. The four consolidated proof files contain
+2,993 lines. The stronger bridge closure remains 745 modules and loses
+430 source lines, to 160,922. See
+`verification/2026-10-12-low-degree-envelope-simplification.json`.
+
+Native verification passes for the original-final 648-module audit and
+the 778-module focused compatibility audit, using only `propext`,
+`Classical.choice` and `Quot.sound`. The latter adds 37 explicit checks:
+the low-degree interfaces, three new arithmetic lemmas, all eleven
+envelope-step consumers and the three changed FinalStep proofs. See
+`verification/2026-10-12-final-low-degree-envelope-sharing.json` and
+`verification/2026-10-12-final-low-degree-envelope-sharing-compatibility.json`,
+with immutable source manifests. The focused audit closure is 169,780
+lines, 427 fewer including the additional checks. The original-final
+closure is 647 modules / 135,362 lines, five fewer source lines. The
+source inventory is refreshed for the moved declarations, preserving
+every classification and companion name; it remains separate from
+source-fidelity certification.
+Full-facade verification and remaining original-statement fidelity gaps
+are separate, and the simplification goal remains active.
+
+### L.70. Share the spectrum cell width estimate (2026-10-12)
+
+The length-six, generic, graded, cover, Fejer and final modulus proofs
+repeat one scalar estimate: if `zeta > 0`, `m >= 1`, `2*b <= e` and
+`16/zeta <= m^(b/2)`, then `m^(b/2) <= spectrumCellWidth zeta m e / 8`.
+`spectrumCellWidth_div8_ge_rpow`, beside `spectrumCellWidth_eq` in
+`Proofs18LengthSixScale`, now proves this once. It needs no positivity
+assumption on `b`; the positive base gives the required nonnegative real
+power. All six consumers pass exactly their previous four premises.
+
+Against `73dea6f5c`, six production files lose 72 lines. The namespace-aware
+source comparison preserves all 205 old declaration headers and variable
+scopes, every existing definition and import, and all 25 stronger bridge
+proofs. The four consolidated proof files contain 2,977 lines. No module
+or import edge is added. The original-final closure is 647 modules /
+135,338 lines; the stronger bridge is 745 / 160,866; the focused audit is
+778 / 169,714. The inventory is byte-identical. See
+`verification/2026-10-12-spectrum-width-simplification.json`.
+
+The original-final audit passes 648 native modules and the focused audit
+passes 778. Six additional named checks cover the helper and the five
+previously unnamed modulus consumers; the final consumer was already
+checked. Only `propext`, `Classical.choice` and `Quot.sound` occur. See
+`verification/2026-10-12-final-spectrum-width-sharing.json` and
+`verification/2026-10-12-final-spectrum-width-sharing-compatibility.json`,
+with their immutable source manifests. Full-facade checks and original
+paper fidelity gaps remain separate. The simplification goal remains active.
 
 ## F. Routes
 

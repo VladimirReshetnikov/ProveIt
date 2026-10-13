@@ -212,8 +212,8 @@ theorem ranges (hV : 1 ≤ P.V) (hp : 0 < P.p) {alpha : Real} (ha : 0 < alpha)
   have ha1 : alpha ≤ 1 := by linarith
   have hg : 0 < alpha / 2 := half_pos ha
   have hg1 : alpha / 2 ≤ 1 := by linarith
-  have hX : (1 : Real) ≤ 2 / alpha := by rw [le_div_iff₀ ha]; linarith
-  obtain ⟨hθ₂, hθ₂1⟩ := section16ThetaTwo_pos_le_with (fejerThetaOne_bounds P.k ha (by linarith) (half_pos ha) (by linarith)).1 (fejerThetaOne_bounds P.k ha (by linarith) (half_pos ha) (by linarith)).2
+  obtain ⟨hθ0, hθ1⟩ := fejerThetaOne_bounds P.k ha ha1 hg hg1
+  obtain ⟨hθ₂, hθ₂1⟩ := section16ThetaTwo_pos_le_with hθ0 hθ1
   have hB : 0 < P.B alpha ∧ P.B alpha ≤ 1 := by
     unfold B globalBudgetW
     have hden : (1 : Real) ≤ 2 * (2 ^ P.k + 1) := by
@@ -222,14 +222,14 @@ theorem ranges (hV : 1 ≤ P.V) (hp : 0 < P.p) {alpha : Real} (ha : 0 < alpha)
     refine ⟨by positivity, ?_⟩
     rw [div_le_one (by positivity)]
     linarith
-  obtain ⟨-, -, hd0, hd1⟩ := section16_theta_delta_bounds_with (fejerThetaOne_bounds P.k ha (by linarith) (half_pos ha) (by linarith)).1 (fejerThetaOne_bounds P.k ha (by linarith) (half_pos ha) (by linarith)).2
+  obtain ⟨-, -, hd0, hd1⟩ := section16_theta_delta_bounds_with hθ0 hθ1
   have hT2 : 0 < P.T2 alpha ∧ P.T2 alpha ≤ 1 := by
     unfold T2 globalTheta2W; exact ⟨by positivity, by linarith⟩
   have hEw : ∀ l s, 0 < s → s ≤ 1 → 0 < P.Ewg alpha l s ∧ P.Ewg alpha l s ≤ 1 :=
     fun l s hs hs1 => uExp_pos hV (uDegT3 l) hg hg1 hB.1 hB.2 hs hs1
   have hR1 : 0 < P.Rho1 alpha ∧ P.Rho1 alpha ≤ 1 :=
     coverRho1W_pos_le _ (fun l g t s _ _ => one_le_uCount P.V (uDegT3 l) g t s) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2)
-      P.k (fejerThetaOne_bounds P.k ha (by linarith) (half_pos ha) (by linarith)).1 (fejerThetaOne_bounds P.k ha (by linarith) (half_pos ha) (by linarith)).2
+      P.k hθ0 hθ1
   have hR : 0 < P.Rho alpha ∧ P.Rho alpha ≤ 1 := by
     unfold Rho spectrumPieceRho
     refine ⟨by have := hR1.1; positivity, ?_⟩
@@ -256,8 +256,7 @@ theorem ranges (hV : 1 ≤ P.V) (hp : 0 < P.p) {alpha : Real} (ha : 0 < alpha)
     uExp_pos hV (uDegT3 P.k) hd0 hd1 hB.1 hB.2 (by have := hR1.1; positivity) (by linarith [hR1.2])
   have hEth : 0 < P.Eth alpha ∧ P.Eth alpha ≤ 1 :=
     uExp_pos hV (uDegT3 P.k) hg hg1 hB.1 hB.2 (by linarith [hS.1]) (by linarith [hS.1, hS.2])
-  have hEc : 0 < P.Ec alpha ∧ P.Ec alpha ≤ 1 :=
-    uExp_pos hV (uDegT3 P.k) hg hg1 hB.1 hB.2 (by linarith [hS.1]) (by linarith [hS.1, hS.2])
+  have hEc : 0 < P.Ec alpha ∧ P.Ec alpha ≤ 1 := hEth
   obtain ⟨n0, n1⟩ := coverExpW_pos_le (fun l => uExp P.V (uDegT3 l))
     (fun l g t s => uExp_pos_le P.V (uDegT3 l) g t s) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k
   have nt : (1 : Real) ≤ 1 := le_rfl
@@ -266,7 +265,7 @@ theorem ranges (hV : 1 ≤ P.V) (hp : 0 < P.p) {alpha : Real} (ha : 0 < alpha)
     have h1 := familyRecExp_le_one P.k P.p (P.QM alpha) hp
     unfold Bexp
     exact ⟨by positivity, by linarith⟩
-  obtain ⟨hz, -⟩ := tightZeta_pos_le_half (fejerThetaOne_bounds P.k ha (by linarith) (half_pos ha) (by linarith)).1 (by linarith [(fejerThetaOne_bounds P.k ha (by linarith) (half_pos ha) (by linarith)).2])
+  obtain ⟨hz, -⟩ := tightZeta_pos_le_half hθ0 (by linarith only [hθ1])
   exact ⟨hB, ⟨hd0, hd1⟩, hT2, hR1, hR, hS, hCS, hEm, hEth, hEc, ⟨n0, n1, nt⟩, hBx, hz, hEw⟩
 
 /-- The localization exponent lies in `(0, 1/2]`. -/
@@ -313,57 +312,26 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
   obtain ⟨he, -, hF, -, hmE, -⟩ := P.Eloc_pos_le hV hp ha haHalf
   -- the modulus is large
   have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hT : ∀ X : Real, X ≤ P.Tloc alpha → X ≤ N := fun X hX => hX.trans hN
-  have hN3 : (3 : Real) ≤ N := hT _ ((le_max_left _ _).trans (le_max_left _ _))
-  have hN156 : fejerProductThreshold P.k (alpha / 2) (alpha / 2) ≤ N :=
-    hT _ ((le_max_right _ _).trans (le_max_left _ _))
-  have hNM : P.MThr alpha ≤ N :=
-    hT _ ((le_max_left _ _).trans (le_max_right _ _))
-  have hN4 : (4 : Real) ^ (1 / P.NestExp alpha) ≤ N :=
-    hT _ ((le_max_left _ _).trans ((le_max_right _ _).trans (le_max_right _ _)))
-  have hNR : P.MReq alpha ^ (1 / P.MExp alpha) ≤ N :=
-    hT _ ((le_max_left _ _).trans ((le_max_right _ _).trans ((le_max_right _ _).trans
-      (le_max_right _ _))))
-  have hN6 : (6 : Real) ^ (1 / P.Eloc alpha) ≤ N :=
-    hT _ ((le_max_left _ _).trans ((le_max_right _ _).trans ((le_max_right _ _).trans
-      ((le_max_right _ _).trans (le_max_right _ _)))))
-  have hN8 : (8 : Real) ^ (2 / P.F alpha) ≤ N :=
-    hT _ ((le_max_right _ _).trans ((le_max_right _ _).trans ((le_max_right _ _).trans
-      ((le_max_right _ _).trans (le_max_right _ _)))))
+  simp only [Tloc, max_le_iff] at hN
+  obtain ⟨⟨hN3, hN156⟩, hNM, hN4, hNR, hN6, hN8⟩ := hN
   have hprime : N.Prime := Fact.out
   have hodd : Odd N := hprime.odd_of_ne_two (by
     intro h2; rw [h2] at hN3; norm_num at hN3)
   -- the nested width and `m`
-  obtain ⟨NW, hNW⟩ : ∃ NW : Nat, coverRemWidthW (fun l => uExp P.V (uDegT3 l)) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k N = NW := ⟨_, rfl⟩
+  let NW : Nat := coverRemWidthW (fun l => uExp P.V (uDegT3 l))
+    (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k N
   have hnest := coverRemWidthW_powerLB (fun l => uExp P.V (uDegT3 l)) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k
-  have hNWpow : (N : Real) ^ P.NestExp alpha ≤ NW := by
-    have h : (N : Real) ^ P.NestExp alpha ≤
-        ((coverRemWidthW (fun l => uExp P.V (uDegT3 l)) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k N : Nat) : Real) :=
-      hnest N (hNM.trans' (le_max_left _ _))
-    have hNW' : coverRemWidthW (fun l => uExp P.V (uDegT3 l)) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k N = NW :=
-      hNW
-    rw [hNW'] at h
-    exact h
+  have hNWpow : (N : Real) ^ P.NestExp alpha ≤ NW :=
+    hnest N (hNM.trans' (le_max_left _ _))
   have hNW4 : (4 : Real) ≤ NW :=
     (le_rpow_of_rpow_inv_le haN (by norm_num) hN4).trans hNWpow
-  obtain ⟨m, hm⟩ : ∃ m : Nat, coverWidth (uExp P.V (uDegT3 P.k) (P.Delta alpha) (P.B alpha))
-      (coverRho1W (fun l => uCount P.V (uDegT3 l)) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k / 2)
-      ⌈(NW : Real) / 8⌉₊ = m := ⟨_, rfl⟩
+  let m : Nat := coverWidth (uExp P.V (uDegT3 P.k) (P.Delta alpha) (P.B alpha))
+    (P.Rho1 alpha / 2) ⌈(NW : Real) / 8⌉₊
   have hmpow : (N : Real) ^ P.MExp alpha ≤ m := by
     have hcov := coverWidth_div8_powerLB (uExp P.V (uDegT3 P.k) (P.Delta alpha) (P.B alpha))
       (P.Rho1 alpha / 2) hEm
     have hcomp := WidthPowerLB.comp hnest hcov haN (by positivity) hNT (by norm_num)
-    have h := hcomp N hNM
-    have hm' : coverWidth (uExp P.V (uDegT3 P.k) (P.Delta alpha) (P.B alpha)) (P.Rho1 alpha / 2)
-        ⌈((coverRemWidthW (fun l => uExp P.V (uDegT3 l)) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k N : Nat) : Real) / 8⌉₊ = m := by
-      have hNW' : coverRemWidthW (fun l => uExp P.V (uDegT3 l)) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k N =
-          NW := hNW
-      rw [hNW']; exact hm
-    have h' : (N : Real) ^ P.MExp alpha ≤
-        (coverWidth (uExp P.V (uDegT3 P.k) (P.Delta alpha) (P.B alpha)) (P.Rho1 alpha / 2)
-          ⌈((coverRemWidthW (fun l => uExp P.V (uDegT3 l)) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k N : Nat) : Real) / 8⌉₊ : Real) := h
-    rw [hm'] at h'
-    exact h'
+    exact hcomp N hNM
   have hm1 : (1 : Real) ≤ m :=
     (Real.one_le_rpow (by linarith) hmE.le).trans hmpow
   have hmReq : P.MReq alpha ≤ m :=
@@ -404,29 +372,10 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
     refine ⟨?_, heps⟩
     have hm0 : 0 ≤ (m : Real) ^ (P.Bexp alpha / 2) := Real.rpow_nonneg (by linarith) _
     have hSCW : (m : Real) ^ (P.Bexp alpha / 2) ≤
-        spectrumCellWidth (P.Zeta alpha) m (familyRecExp P.k P.p q) / 8 := by
-      have hmono := spectrumCellWidth_mono_exp hζ.le (by exact_mod_cast hm1) heps
-      rw [spectrumCellWidth_eq] at hmono
-      have hpow : (m : Real) ^ (2 * P.Bexp alpha / 2) =
-          (m : Real) ^ (P.Bexp alpha / 2) * (m : Real) ^ (P.Bexp alpha / 2) := by
-        rw [← Real.rpow_add (by linarith)]; ring_nf
-      rw [hpow] at hmono
-      have hk : 16 ≤ P.Zeta alpha * (m : Real) ^ (P.Bexp alpha / 2) := by
-        have := mul_le_mul_of_nonneg_left hmb16 hζ.le
-        have h16 : P.Zeta alpha * (16 / P.Zeta alpha) = 16 := by field_simp
-        linarith
-      have hprod := mul_le_mul_of_nonneg_left hk hm0
-      have hxx : (m : Real) ^ (P.Bexp alpha / 2) *
-          (P.Zeta alpha * (m : Real) ^ (P.Bexp alpha / 2)) =
-          P.Zeta alpha / 2 *
-            ((m : Real) ^ (P.Bexp alpha / 2) * (m : Real) ^ (P.Bexp alpha / 2)) * 2 := by ring
-      rw [hxx] at hprod
-      linarith
-    obtain ⟨L, hLdef⟩ : ∃ L : Nat,
-        ⌈spectrumCellWidth (P.Zeta alpha) m (familyRecExp P.k P.p q) / 8⌉₊ = L := ⟨_, rfl⟩
-    rw [hLdef]
-    have hLge : (m : Real) ^ (P.Bexp alpha / 2) ≤ L := by
-      rw [← hLdef]; exact hSCW.trans (Nat.le_ceil _)
+        spectrumCellWidth (P.Zeta alpha) m (familyRecExp P.k P.p q) / 8 :=
+      spectrumCellWidth_div8_ge_rpow hζ (by exact_mod_cast hm1) heps hmb16
+    let L : Nat := ⌈spectrumCellWidth (P.Zeta alpha) m (familyRecExp P.k P.p q) / 8⌉₊
+    have hLge : (m : Real) ^ (P.Bexp alpha / 2) ≤ L := hSCW.trans (Nat.le_ceil _)
     show (N : Real) ^ P.F alpha ≤ ((⌈(L : Real) ^ (P.Eth alpha * P.Ec alpha)⌉₊ : Nat) : Real)
     refine le_trans ?_ (Nat.le_ceil _)
     have hEE : 0 ≤ P.Eth alpha * P.Ec alpha := mul_nonneg hEth.le hEc.le
@@ -445,13 +394,16 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
       unfold F; ring
     rw [hexp1]
     exact hNm
+  have h6pow : (6 : Real) ≤ (N : Real) ^ P.Eloc alpha :=
+    le_rpow_of_rpow_inv_le he (by norm_num) hN6
+  have hFhalf : (N : Real) ^ (P.F alpha / 2) ≤ (N : Real) ^ P.F alpha :=
+    Real.rpow_le_rpow_of_exponent_le (by linarith only [hN3]) (by linarith only [hF])
   unfold SinglePieceModulusConditionsFJ SinglePieceGlobalScaleFJ singlePieceGlobalWidthFJ
   simp only [hρ1eq, hthSeq, hcSeq, hBudeq, hZeq, hDeq]
-  refine ⟨hodd, hN156, ?_, m, ⟨by rw [hNW]; exact_mod_cast hNW4, by exact_mod_cast hm1,
-    by rw [hNW]; exact le_of_eq hm.symm, ?_⟩, ?_⟩
+  refine ⟨hodd, hN156, ?_, m, ⟨by exact_mod_cast hNW4, by exact_mod_cast hm1,
+    le_rfl, ?_⟩, ?_⟩
   · -- `4 ≤ N^e`
-    have h6 := le_rpow_of_rpow_inv_le he (by norm_num) hN6
-    linarith
+    linarith only [h6pow]
   · intro q hq
     obtain ⟨hFq, heps⟩ := hFin q hq
     have hqM : q ≤ P.QM alpha := Nat.le_floor hq
@@ -474,39 +426,18 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
       rw [mul_div_cancel₀ _ hρ3.ne'] at this
       exact this
     · have hN8' : (8 : Real) ^ (1 / (P.F alpha / 2)) ≤ N := by
-        rw [show 1 / (P.F alpha / 2) = 2 / P.F alpha by field_simp]
-        exact hN8
-      have h8 := le_rpow_of_rpow_inv_le (by positivity : 0 < P.F alpha / 2) (by norm_num) hN8'
-      have hNF : (8 : Real) ≤ (N : Real) ^ P.F alpha := by
-        have h1 : (1 : Real) ≤ (N : Real) ^ (P.F alpha / 2) :=
-          Real.one_le_rpow (by linarith) (by positivity)
-        have hsplit : (N : Real) ^ P.F alpha =
-            (N : Real) ^ (P.F alpha / 2) * (N : Real) ^ (P.F alpha / 2) := by
-          rw [← Real.rpow_add hNpos]; ring_nf
-        rw [hsplit]
-        exact h8.trans (le_mul_of_one_le_right (by linarith) h1)
-      have h2 := hNF.trans hFq
+        simpa only [one_div_div] using hN8
+      have h8 := le_rpow_of_rpow_inv_le (half_pos hF) (by norm_num) hN8'
+      have h2 := (h8.trans hFhalf).trans hFq
       exact (Nat.cast_le (α := Real)).mp (by rw [Nat.cast_ofNat]; linarith)
   · intro q hq
     obtain ⟨hFq, -⟩ := hFin q hq
-    have h6 := le_rpow_of_rpow_inv_le he (by norm_num) hN6
-    have hN8' : (8 : Real) ^ (1 / (P.F alpha / 2)) ≤ N := by
-      rw [show 1 / (P.F alpha / 2) = 2 / P.F alpha by field_simp]
-      exact hN8
-    have h8 := le_rpow_of_rpow_inv_le (by positivity : 0 < P.F alpha / 2) (by norm_num) hN8'
     have hx4 : ((N : Real) ^ P.Eloc alpha) ^ 4 / 8 ≤ (N : Real) ^ P.F alpha := by
       have hpow4 : ((N : Real) ^ P.Eloc alpha) ^ 4 = (N : Real) ^ (P.F alpha / 2) := by
         rw [← Real.rpow_natCast, ← Real.rpow_mul hNpos.le]; unfold Eloc; push_cast; ring_nf
       rw [hpow4]
-      have hsplit : (N : Real) ^ P.F alpha =
-          (N : Real) ^ (P.F alpha / 2) * (N : Real) ^ (P.F alpha / 2) := by
-        rw [← Real.rpow_add hNpos]; ring_nf
-      have h0 : 0 ≤ (N : Real) ^ (P.F alpha / 2) := Real.rpow_nonneg hNpos.le _
-      rw [hsplit]
-      have hx8 : (N : Real) ^ (P.F alpha / 2) / 8 ≤ (N : Real) ^ (P.F alpha / 2) := by
-        linarith
-      exact hx8.trans (le_mul_of_one_le_right h0 (by linarith))
-    exact nat_sqrt_pred_pred_ge h6 (hx4.trans hFq)
+      exact (div_le_self (Real.rpow_nonneg hNpos.le _) (by norm_num)).trans hFhalf
+    exact nat_sqrt_pred_pred_ge h6pow (hx4.trans hFq)
 
 end GenParamsJT3
 
@@ -839,32 +770,18 @@ theorem slice_exps_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alph
     (P.Eth alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ (rhoDegJT3 P.k P.μ0 + tDegT3 P.k + 9)) ∧
       (P.Ec alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ (rhoDegJT3 P.k P.μ0 + tDegT3 P.k + 9)) := by
   have hX := two_div_ge_two ha ha2
-  have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   have hri := P.rho1_inv_leJT3 ha ha2 H.hV H.hVμ H.hμ0
   set k := P.k with hkdef
   set ρ := rhoDegJT3 k P.μ0 with hρdef
   set μD := tDegT3 k with hμDdef
   have hρ1 : μD + P.μ0 + 3 ≤ ρ := (rhoDegJT3_ge k P.μ0).1
   obtain ⟨hB0, hB1, hBi⟩ := budget_gen_bounds_fejerW k ha ha2
-  obtain ⟨ht0, ht1, -⟩ := T2_gen_bounds_fejerW k ha ha2
   obtain ⟨hr0, hr1⟩ : 0 < P.Rho1 alpha ∧ P.Rho1 alpha ≤ 1 := P.rho1_pos_le ha ha2
   obtain ⟨hR0, hR1, hRi⟩ := GenParams.rho_step hX hr0 hr1 hri (by omega)
   obtain ⟨hS0, hS1, hSi⟩ := GenParams.thetaS_step hX hR0 hR1 hRi
   have hThS : P.ThS alpha =
       singlePieceTheta ((P.Rho1 alpha) / 2 * ((P.Rho1 alpha) / 2 / 2)) 1 := rfl
   rw [← hThS] at hS0 hS1 hSi
-  have hbase := baseCFW_recipPowerLB (D := uDegT3 k) (k := k) ha ha2 H.hV H.hVμ
-    H.hμ0
-  have ha0 : uDegT3 k * 2 ^ P.μ0 + 1 ≤ 2 ^ (μD + P.μ0 + 1) := by
-    have h1 : uDegT3 k * 2 ^ P.μ0 ≤ 2 ^ μD * 2 ^ P.μ0 := Nat.mul_le_mul_right _ le_rfl
-    have h2 : 2 ^ (μD + P.μ0 + 1) = 2 * (2 ^ μD * 2 ^ P.μ0) := by rw [pow_add, pow_add]; ring
-    have h3 : 1 ≤ 2 ^ μD * 2 ^ P.μ0 := Nat.one_le_iff_ne_zero.mpr (by positivity)
-    omega
-  have hb0 : uDegT3 k + 1 ≤ 2 ^ (μD + 1) := by
-    have : 2 ^ (μD + 1) = 2 * 2 ^ μD := by rw [pow_succ]; ring
-    have := Nat.one_le_two_pow (n := μD)
-    have hD : uDegT3 k ≤ 2 ^ μD := le_rfl
-    omega
   have hslice : ∀ {s : Real} {m : Nat}, 0 < s → s ≤ 1 → s⁻¹ ≤ (2 / alpha) ^ (2 ^ m) →
       P.μ0 ≤ m + 1 → (uExp P.V (uDegT3 k) (alpha / 2) (globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k) (s / 2))⁻¹ ≤
         (2 / alpha) ^ (2 ^ (m + 1 + 1 + μD)) := by

@@ -1,3 +1,62 @@
+# Stieltjes contour transport, product moments and colored exceptions
+
+12 October 2026 (Pacific). Volume III, Sections 8.51--8.53 extend the
+generalized Stieltjes research with full proofs and separate experiments.
+The contour theorem gives slit-plane reconstruction and precise negative-
+shift principal values, both bank corrections and the exact jump. Higher
+Stieltjes Mellin kernels use explicitly normalized logarithmic boundary
+distributions. The balanced-product theorem gives an exponentially
+convergent Barnes coordinate on 0<Re(v)<p+q+2; adjacent-shift products yield
+factorials and finite ordinary-zeta combinations. Gram determinants,
+Laguerre coordinates and unequal-shift hypergeometric derivatives follow.
+
+The colored theorem classifies the complete homogeneous coefficient space
+at a fixed color and shift. Nonuniqueness occurs exactly at two consecutive
+tail zeros. A necessary-and-sufficient consecutive-zero criterion gives
+every extra ordinary integer moment. At the golden shift and alternating
+color, A4=A5=0 while A6=1/2; the resulting moments have explicit Hurwitz
+order-derivative values and an exact vanishing combination. The scalar
+balanced and colored foundations are credited to the preserved reports;
+in particular, the older colored-balancing question had already been
+answered by a later report. Full classification of the algebraic zero
+locus and finite single-zeta reduction of unrestricted products remain
+open. The detailed audit is `verification/STIELTJES-EXTENSIONS-AUDIT.md`.
+
+New exact checks include 1,070 colored coefficient/zero-pattern identities
+with five rejected corruptions, 16 contour polynomial identities and one
+pole-coalescence check, seven Gram determinants, seven integer-weight
+coefficient polynomials and 28 Laguerre products. Numerical evidence
+consists of nine principal-value reconstructions, one precision/cutoff
+refinement, six ordinary beta-cut quadratures, 17 product/unequal-shift
+diagnostics and 12 colored comparisons. All declared thresholds pass.
+The golden moments are checked at 55 and 70 digits with longer cutoffs
+and more asymptotic terms; the maximum of the six 70-digit discrepancies
+is about 1.25e-67. Finite checks are distinct from analytic proofs, and
+floating-point quadratures are not interval certificates.
+
+All four coupled PDFs converge in three complete build rounds. The
+combined source and each isolated volume compile in three passes, with
+clean final logs. Page counts are 191/132/275/88 (686 total) and 637 in
+the combined edition, with 165 references. Every PDF retains ProveIt
+Contributors as author. All 70 cross-volume destinations resolve.
+
+Visual review opened all 23 changed volume pages and three unmatched
+combined contents pages. Exact raster comparisons retain 663 previously
+reviewed volume bodies and 618 previously reviewed combined bodies; 16
+additional combined bodies match freshly reviewed volume pages. Only
+centered footer page numbers are omitted by the comparison, with all
+other text/image/drawing bounds checked. No current contact sheet was
+opened. The preceding review records are preserved under the
+`stieltjes-reconstruction-*visual-review.json` names.
+
+The source inventory remains 1,810 documents; the archive register remains
+137 retired archives, 4,861 tracked original members and 58 archive-only
+checksum records. Original reports and evidence are unchanged. No Lean
+formalization, rigorous interval or remote-CI claim is made. The research
+goal remains active. The final manifests pin 308 canonical source files
+and 6,791 dependencies. All 488 receipt gates pass; these checks audit
+recorded evidence and do not rerun mathematics or replace the proofs.
+
 # Stieltjes reflection identities and zero-Mellin reconstruction
 
 12 October 2026 (Pacific). Two new sections in Volume III extend the

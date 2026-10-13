@@ -354,7 +354,7 @@ outcomes['mixed-twist-independent-diagnostics']=x['numerical_diagnostics']['work
 x=read('twisted-mixed-native.json')
 outcomes['twisted-mixed-native']=x['all_pass'] and x['all_exact_pass'] and x['exact_partial_fraction_checks']==25 and x['numerical_diagnostics']['working_precision']==70 and not x['numerical_diagnostics']['interval_certified'] and len(x['numerical_diagnostics']['rows'])==9 and all(c['passed'] for c in x['numerical_diagnostics']['rows'])
 visual=read('visual-review.json');prior_visual=read('twelfth-visual-review.json')
-outcomes['recorded-visual-review']=(visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==623 and visual['visual_page_coverage']==623 and visual['contact_sheets_reviewed']==0 and visual['scientific_figures_reviewed']==13 and not visual['findings'])
+outcomes['recorded-visual-review']=(visual['passed'] and visual['pdf_sha256']==pdfhash and visual['page_count']==637 and visual['visual_page_coverage']==637 and visual['contact_sheets_reviewed']==0 and visual['scientific_figures_reviewed']==13 and not visual['findings'])
 x=read('eleventh-combined-raster-comparison.json')
 matched={r['page'] for r in x['exact_matching_page_bodies']};fresh=set(x['changed_page_bodies'])
 outcomes['historical-weighted-combined-raster-review-coverage']=(x['pdf_sha256']=='8c78372ceb178cf7b6153269523ee0ea76fef7655cd1ffb4d79f2a4e5a6f7e14' and x['page_count']==463 and x['crop_bottom_points']==57 and x['excluded_content_is_only_page_numbers'] and len(matched)==451 and len(fresh)==12 and not matched&fresh and matched|fresh==set(range(1,464)) and fresh==set(read('eleventh-visual-review.json')['full_pages_reviewed']))
@@ -467,9 +467,9 @@ volume_visual=read('volume-visual-review.json')
 volume_standalone=read('volume-standalone-results.json')
 volume_plan=read('volume-plan.json')
 outcomes['four-volume-build']=volume_build['passed'] and volume_build['converged'] and len(volume_build['volumes'])==4 and len(volume_build['rounds'])>=3 and volume_build['rounds'][-1]['reference_state_sha256']==volume_build['rounds'][-2]['reference_state_sha256']
-outcomes['four-volume-partition-and-links']=volume_inspection['passed'] and volume_inspection['chapter_partition_complete'] and volume_inspection['total_pages']==669 and volume_inspection['external_destinations_verified']==70 and not volume_inspection['issues']
+outcomes['four-volume-partition-and-links']=volume_inspection['passed'] and volume_inspection['chapter_partition_complete'] and volume_inspection['total_pages']==686 and volume_inspection['external_destinations_verified']==70 and not volume_inspection['issues']
 outcomes['four-volume-independent-compilation']=volume_standalone['passed'] and len(volume_standalone['volumes'])==4 and all(x['passed'] and x['text_matches_primary'] and x['PDF_link_targets_match'] and len(x['passes'])==3 for x in volume_standalone['volumes'])
-outcomes['four-volume-recorded-visual-review']=(volume_visual['passed'] and not volume_visual['findings'] and volume_visual['total_pages']==669 and volume_visual['total_contact_sheets_reviewed']==0 and volume_visual['total_contact_sheets_covered']==44 and len(volume_visual['volumes'])==4)
+outcomes['four-volume-recorded-visual-review']=(volume_visual['passed'] and not volume_visual['findings'] and volume_visual['total_pages']==686 and volume_visual['total_contact_sheets_reviewed']==0 and volume_visual['total_contact_sheets_covered']==45 and len(volume_visual['volumes'])==4)
 prior_volume_visual=read('twelfth-volume-visual-review.json')
 raster_comparison=read('eleventh-volume-raster-comparison.json')
 outcomes['historical-weighted-volume-raster-review-coverage']=(sum(len(x['same_index_identical_pages']) for x in raster_comparison['volumes'][1:])==367 and all(not set(x['same_index_identical_pages'])&set(x['changed_pages']) and set(x['same_index_identical_pages'])|set(x['changed_pages'])==set(range(1,x['page_count']+1)) and x['pdf_sha256']==next(r for r in twelfth_rasters['pdfs'] if r['pdf']==x['pdf'])['previous_pdf_sha256'] for x in raster_comparison['volumes']))
@@ -477,7 +477,7 @@ outcomes['historical-twelfth-volume-raster-review-coverage']=(sum(len(x['same_in
 
 visual_vol13=read('thirteenth-volume-visual-review.json')
 outcomes['thirteenth-volume-raster-review-coverage']=(sum(len(x['exact_matching_scientific_bodies']) for x in thirteenth_rasters['pdfs'][:4])==499 and sum(len(x['changed_scientific_bodies']) for x in thirteenth_rasters['pdfs'][:4])==28 and all(not {r['page'] for r in x['exact_matching_scientific_bodies']}&set(x['changed_scientific_bodies']) and {r['page'] for r in x['exact_matching_scientific_bodies']}|set(x['changed_scientific_bodies'])==set(range(1,x['page_count']+1)) and visual_vol13['volumes'][i]['pdf_sha256']==x['pdf_sha256'] and set(x['changed_scientific_bodies'])==set(visual_vol13['volumes'][i]['full_pages_reviewed']) for i,x in enumerate(thirteenth_rasters['pdfs'][:4])) and all(r['reviewed_volume_page'] in visual_vol13['volumes'][r['volume_number']-1]['full_pages_reviewed'] and r['pdf_sha256']==visual_vol13['volumes'][r['volume_number']-1]['pdf_sha256'] for r in cross13['exact_matching_reviewed_bodies']))
-for number,pages in [(1, 190), (2, 131), (3, 261), (4, 87)]:
+for number,pages in [(1, 191), (2, 132), (3, 275), (4, 88)]:
     item=next(x for x in volume_build['volumes'] if x['number']==number)
     inspection=next(x for x in volume_inspection['volumes'] if x['number']==number)
     review=next(x for x in volume_visual['volumes'] if x['number']==number)
@@ -896,6 +896,7 @@ outcomes['stieltjes-digamma-and-mellin-quadratures']=(x['all_absolute_errors_bel
 a,b=x['reconstruction'][:2]
 outcomes['stieltjes-digamma-precision-refinement']=(a['dps']==50 and b['dps']==70 and a['a']==b['a'] and a['b']==b['b'] and len(a['rows'])==len(b['rows'])==6 and all(r['n']==s['n'] and abs(Decimal(r['quadrature'])-Decimal(s['quadrature']))<Decimal('1e-40') for r,s in zip(a['rows'],b['rows'])))
 
+visual_strec=read('stieltjes-reconstruction-visual-review.json');volume_strec=read('stieltjes-reconstruction-volume-visual-review.json')
 r=read('stieltjes-reconstruction-raster-comparison.json');c=read('stieltjes-reconstruction-cross-edition-review.json')
 x=r['pdfs'][-1]
 matched={a['page'] for a in x['exact_matching_scientific_bodies']}
@@ -903,29 +904,48 @@ fresh=set(x['changed_scientific_bodies'])
 reviewed={a['combined_page'] for a in c['exact_matching_reviewed_bodies']}
 outcomes['stieltjes-reconstruction-combined-review-coverage']=(
     r['baseline_commit']=='0cdfdf14eff2e404ff3060ae7ca8048f251828a8'
-    and x['pdf_sha256']==visual['pdf_sha256']==c['combined_pdf_sha256']
+    and x['pdf_sha256']==visual_strec['pdf_sha256']==c['combined_pdf_sha256']
     and x['previous_pdf_sha256']==visual_jct['pdf_sha256'] and x['page_count']==623
     and r['crop_bottom_points']==c['crop_bottom_points']==57
     and r['excluded_content_is_only_centered_footer_page_numbers']
     and c['excluded_content_is_only_centered_footer_page_numbers']
-    and len(matched)==visual['inherited_reviewed_scientific_page_bodies']
+    and len(matched)==visual_strec['inherited_reviewed_scientific_page_bodies']
     and not matched&fresh and matched|fresh==set(range(1,624))
-    and len(reviewed)==visual['exact_matching_fresh_volume_bodies']
-    and not reviewed&set(visual['full_pages_reviewed'])
-    and reviewed|set(visual['full_pages_reviewed'])==fresh
-    and c['remaining_full_pages_to_review']==visual['full_pages_reviewed'])
+    and len(reviewed)==visual_strec['exact_matching_fresh_volume_bodies']
+    and not reviewed&set(visual_strec['full_pages_reviewed'])
+    and reviewed|set(visual_strec['full_pages_reviewed'])==fresh
+    and c['remaining_full_pages_to_review']==visual_strec['full_pages_reviewed'])
 outcomes['stieltjes-reconstruction-volume-review-coverage']=(
-    sum(len(x['exact_matching_scientific_bodies']) for x in r['pdfs'][:4])==volume_visual['inherited_reviewed_scientific_page_bodies']
-    and sum(len(x['changed_scientific_bodies']) for x in r['pdfs'][:4])==volume_visual['full_pages_reviewed']
+    sum(len(x['exact_matching_scientific_bodies']) for x in r['pdfs'][:4])==volume_strec['inherited_reviewed_scientific_page_bodies']
+    and sum(len(x['changed_scientific_bodies']) for x in r['pdfs'][:4])==volume_strec['full_pages_reviewed']
     and all(not {a['page'] for a in x['exact_matching_scientific_bodies']}&set(x['changed_scientific_bodies'])
         and {a['page'] for a in x['exact_matching_scientific_bodies']}|set(x['changed_scientific_bodies'])==set(range(1,x['page_count']+1))
-        and volume_visual['volumes'][i]['pdf_sha256']==x['pdf_sha256']
+        and volume_strec['volumes'][i]['pdf_sha256']==x['pdf_sha256']
         and x['previous_pdf_sha256']==volume_jct['volumes'][i]['pdf_sha256']
-        and set(x['changed_scientific_bodies'])==set(volume_visual['volumes'][i]['full_pages_reviewed'])
+        and set(x['changed_scientific_bodies'])==set(volume_strec['volumes'][i]['full_pages_reviewed'])
         for i,x in enumerate(r['pdfs'][:4]))
-    and all(a['reviewed_volume_page'] in volume_visual['volumes'][a['volume_number']-1]['full_pages_reviewed']
-        and a['pdf_sha256']==volume_visual['volumes'][a['volume_number']-1]['pdf_sha256']
+    and all(a['reviewed_volume_page'] in volume_strec['volumes'][a['volume_number']-1]['full_pages_reviewed']
+        and a['pdf_sha256']==volume_strec['volumes'][a['volume_number']-1]['pdf_sha256']
         for a in c['exact_matching_reviewed_bodies']))
+
+x=read('check_stieltjes_contour_exact.json')
+outcomes['stieltjes-contour-exact-coefficients']=(x['status']=='PASS' and len(x['symbolic_identities'])==8 and x['counts']=={'reconstruction':8,'jump':8,'rational_pole_coalescence':1} and all(r['reconstruction_residual']==r['jump_residual']=='0' for r in x['symbolic_identities']) and x['coalesced_poles']=={'7/5':1,'2/5':-1})
+x=read('check_stieltjes_contour_numeric.json')
+outcomes['stieltjes-contour-independent-diagnostics']=(x['status']=='PASS' and len(x['PV_reconstruction_checks'])==9 and all(Decimal(r['absolute_error'])<Decimal('1e-43') for r in x['PV_reconstruction_checks']) and x['precision_refinement']['dps']==95 and Decimal(x['precision_refinement']['absolute_error'])<Decimal('1e-53') and len(x['ordinary_beta_cut_integrals'])==6 and all(Decimal(r['ordinary_quadrature_error'])<Decimal('1e-13') for r in x['ordinary_beta_cut_integrals']) and len(x['negative_controls'])==3 and all(x['negative_controls'].values()))
+x=read('check_stieltjes_bilinear.json')
+outcomes['stieltjes-bilinear-Barnes-and-Gram']=(x['status']=='PASS' and len(x['barnes'])==3 and len(x['factorial_gram'])==5 and all(r['diagnostic_pass'] and Decimal(r['absolute_error'])<Decimal('1e-28') for r in x['barnes']+x['factorial_gram']) and len(x['determinants'])==7 and all(r['pass_exact'] and r['determinant']==r['target'] for r in x['determinants']))
+x=read('check_stieltjes_bilinear_shifted.json')
+outcomes['stieltjes-bilinear-integer-and-unequal-shifts']=(x['status']=='PASS' and len(x['coefficient_checks'])==7 and all(r['binomial_samples_exact'] for r in x['coefficient_checks']) and len(x['integer_weight_checks'])==6 and len(x['hypergeometric_checks'])==3 and all(r['diagnostic_pass'] and Decimal(r['absolute_error'])<Decimal('1e-30') for r in x['integer_weight_checks']+x['hypergeometric_checks']) and len(x['laguerre_orthogonality_checks'])==28 and all(r['pass'] for r in x['laguerre_orthogonality_checks']))
+x=read('check_stieltjes_colored_exact.json')
+outcomes['stieltjes-colored-fixed-shift-exact']=(x['exact_checks']==len(x['checks'])==1070 and x['negative_controls']==len(x['rejected_controls'])==5 and len(set(x['checks']))==1070)
+x=read('check_stieltjes_colored_numeric.json');runs=x['runs']
+outcomes['stieltjes-colored-ordinary-moment-diagnostics']=(len(runs)==2 and [r['dps'] for r in runs]==[55,70] and [r['cutoff'] for r in runs]==[64,80] and [r['tail_order'] for r in runs]==[80,90] and all(len(run['records'])==6 and all(Decimal(r['absolute_error'])<Decimal('1e-40') for r in run['records']) for run in runs))
+outcomes['stieltjes-colored-moment-refinement']=(len(runs)==2 and all(a['q']==b['q'] and a['m']==b['m'] and abs(Decimal(a['lhs'])-Decimal(b['lhs']))<Decimal('1e-40') for a,b in zip(runs[0]['records'][:3],runs[1]['records'][:3])))
+
+r=read('stieltjes-extensions-raster-comparison.json');c=read('stieltjes-extensions-cross-edition-review.json')
+x=r['pdfs'][-1];matched={a['page'] for a in x['exact_matching_scientific_bodies']};fresh=set(x['changed_scientific_bodies']);reviewed={a['combined_page'] for a in c['exact_matching_reviewed_bodies']}
+outcomes['stieltjes-extensions-combined-review-coverage']=(r['baseline_commit']=='4b9e83b4bf3379a7f11415b8e1422561f3a9e798' and x['pdf_sha256']==visual['pdf_sha256']==c['combined_pdf_sha256'] and x['previous_pdf_sha256']==visual_strec['pdf_sha256'] and r['crop_bottom_points']==c['crop_bottom_points']==57 and r['excluded_content_is_only_centered_footer_page_numbers'] and c['excluded_content_is_only_centered_footer_page_numbers'] and len(matched)==visual['inherited_reviewed_scientific_page_bodies'] and not matched&fresh and matched|fresh==set(range(1,x['page_count']+1)) and len(reviewed)==visual['exact_matching_fresh_volume_bodies'] and not reviewed&set(visual['full_pages_reviewed']) and reviewed|set(visual['full_pages_reviewed'])==fresh and c['remaining_full_pages_to_review']==visual['full_pages_reviewed'])
+outcomes['stieltjes-extensions-volume-review-coverage']=(sum(len(x['exact_matching_scientific_bodies']) for x in r['pdfs'][:4])==volume_visual['inherited_reviewed_scientific_page_bodies'] and sum(len(x['changed_scientific_bodies']) for x in r['pdfs'][:4])==volume_visual['full_pages_reviewed'] and all(not {a['page'] for a in x['exact_matching_scientific_bodies']}&set(x['changed_scientific_bodies']) and {a['page'] for a in x['exact_matching_scientific_bodies']}|set(x['changed_scientific_bodies'])==set(range(1,x['page_count']+1)) and volume_visual['volumes'][i]['pdf_sha256']==x['pdf_sha256'] and x['previous_pdf_sha256']==volume_strec['volumes'][i]['pdf_sha256'] and set(x['changed_scientific_bodies'])==set(volume_visual['volumes'][i]['full_pages_reviewed']) for i,x in enumerate(r['pdfs'][:4])) and all(a['reviewed_volume_page'] in volume_visual['volumes'][a['volume_number']-1]['full_pages_reviewed'] and a['pdf_sha256']==volume_visual['volumes'][a['volume_number']-1]['pdf_sha256'] for a in c['exact_matching_reviewed_bodies']))
 
 result=dict(changed_sources=changed,changed_dependencies=changed_dependencies,pdf_sha256=pdfhash,
  pdf_matches_build=pdfhash==build['pdf_sha256'],pdf_matches_render=pdfhash==render['pdf_sha256'],
@@ -933,6 +953,6 @@ result=dict(changed_sources=changed,changed_dependencies=changed_dependencies,pd
  pdf_static_checks=render['static_passed'],document_integrity=doc['passed'],recorded_outcomes=outcomes,
  asymptotic_diagnostic_records=diagnostic_records,incoming_archive_errors=archive_errors,
  scope='Recorded evidence integrity only; visual review and scientific replay are separate activities.')
-result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==623 and result['source_documents']==1810 and render.get('pdf_author')=='ProveIt Contributors'
+result['passed']=not changed and not changed_dependencies and all(outcomes.values()) and all(result[k] for k in ['pdf_matches_build','pdf_matches_render','converged_build','pdf_static_checks','document_integrity']) and result['page_count']==637 and result['source_documents']==1810 and render.get('pdf_author')=='ProveIt Contributors'
 (V/'receipt-integrity.json').write_text(json.dumps(result,indent=2)+'\n',encoding='utf-8')
 print(json.dumps(result,indent=2));raise SystemExit(0 if result['passed'] else 1)

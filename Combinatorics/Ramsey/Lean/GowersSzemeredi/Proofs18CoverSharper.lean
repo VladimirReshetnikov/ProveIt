@@ -48,6 +48,13 @@ def Theorem181AtSharp (c k : Nat) : Prop :=
 theorem theorem181AtSharp_ten_iff (k : Nat) : Theorem181AtSharp 10 k ↔ Theorem181At k :=
   Iff.rfl
 
+/-- Increasing the offset decreases the exponent on the unit interval. -/
+theorem section18ExponentAt_antitone {c c' k : Nat} {alpha : Real} (hc : c ≤ c')
+    (ha : 0 ≤ alpha) (ha1 : alpha ≤ 1) :
+    section18ExponentAt c' alpha k ≤ section18ExponentAt c alpha k :=
+  pow_le_pow_of_le_one ha ha1
+    (Nat.pow_le_pow_right (by norm_num) (Nat.pow_le_pow_right (by norm_num) (by omega)))
+
 /-- A smaller constant gives a stronger statement. -/
 theorem Theorem181AtSharp.mono {c c' k : Nat} (h : Theorem181AtSharp c k) (hc : c ≤ c') :
     Theorem181AtSharp c' k := by
@@ -56,8 +63,7 @@ theorem Theorem181AtSharp.mono {c c' k : Nat} (h : Theorem181AtSharp c k) (hc : 
   refine ⟨N0, fun N _ _ hN A hA => ?_⟩
   obtain ⟨M, P, hp, hpr, h1, h2⟩ := hN0 N hN A hA
   have hle : section18ExponentAt c' alpha k ≤ section18ExponentAt c alpha k :=
-    pow_le_pow_of_le_one ha.le (by linarith)
-      (Nat.pow_le_pow_right (by norm_num) (Nat.pow_le_pow_right (by norm_num) (by omega)))
+    section18ExponentAt_antitone hc ha.le (by linarith)
   have hN1 : (1 : Real) ≤ N := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
   exact ⟨M, P, hp, hpr, (Real.rpow_le_rpow_of_exponent_le hN1 hle).trans h1,
     (mul_le_mul_of_nonneg_right hle (Nat.cast_nonneg _)).trans h2⟩

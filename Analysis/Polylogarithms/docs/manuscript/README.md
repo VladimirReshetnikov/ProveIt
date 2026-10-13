@@ -5,14 +5,31 @@ organized as four volumes. Each has its own source and compiled PDF.
 
 | Volume | Material | PDF | Pages |
 |---|---|---|---:|
-| I | Polylogarithm identities, inverse expansions, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 190 |
-| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 131 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 261 |
-| IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 87 |
+| I | Polylogarithm identities, inverse expansions, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 191 |
+| II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 132 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 275 |
+| IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 88 |
 
-The four volume PDFs contain 669 pages in total.
+The four volume PDFs contain 686 pages in total.
 
-Two new sections in Volume III develop exact identities for generalized
+Volume III, Sections 8.51--8.53 now establish three further families of
+generalized Stieltjes identities. The digamma reconstruction extends to
+negative shifts with explicit principal values and upper/lower residue
+corrections. Balanced products admit an exponentially convergent Barnes
+coordinate; adjacent-shift products give factorials and finite sums of
+ordinary zeta values, with an associated Laguerre orthogonality.
+For colored kernels, a complete fixed-shift classification and an exact
+consecutive-zero criterion determine all extra ordinary moments.
+At the alternating color and golden-ratio shift, two consecutive vanished
+tails yield three evaluated moments and
+`integral(x^5 (C_4^(-1)(x,phi)-3 C_5^(-1)(x,phi)), x=0..infinity)=0`.
+The kernels are explicit finite combinations of generalized Stieltjes
+functions. The scalar balanced and colored foundations are attributed to
+the preserved reports that already prove them. Full proof review, finite
+exact checks and independent quadrature are distinguished in
+[the extension audit](verification/STIELTJES-EXTENSIONS-AUDIT.md).
+
+Sections 8.49--8.50 of Volume III develop exact identities for generalized
 Stieltjes functions. Alternating shifted correlations cancel every lower
 Stieltjes layer. A zero-Mellin endpoint formula raises the Stieltjes index,
 and a single ordinary integral reconstructs every shifted Stieltjes
@@ -67,17 +84,17 @@ The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 163 references. The scientific text is shared
+and the shared bibliography of 165 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[623-page combined snapshot](polylogarithms.pdf) remain available.
+[637-page combined snapshot](polylogarithms.pdf) remain available.
 
 The [inventory](source-inventory.json) accounts for **1,810 textual source
 files**, including overlapping articles, fragments and correction registers.
 The [editorial ledger](EDITORIAL-LEDGER.md) maps accepted mathematical claims
-and pending research integration. The 135 imported archives preserve 4,806
-original tracked members; 56 ignored bare checksum records remain recoverable
+and pending research integration. The 137 imported archives preserve 4,861
+original tracked members; 58 ignored bare checksum records remain recoverable
 in arrival history. Each imported ZIP was retired in its placement commit.
 All eleven complete mathematical suites in the seventeenth and eighteenth
 intakes pass on isolated copies. Preservation and finite replay do not imply

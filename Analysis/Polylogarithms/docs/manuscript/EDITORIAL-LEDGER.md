@@ -901,10 +901,10 @@ recoverable records. No delivered source, evidence or note is rewritten.
 
 | Group | Reconciliation and acceptance boundary |
 |---|---|
-| `balanced-stieltjes-moments` | Ordinary Mellin moments in the positive translation of conventional Stieltjes constants, balanced tail cancellation and Bernoulli-root/filter families. Preserve failed preliminary polylogarithm derivative diagnostics separately from corrected full replays. This does not solve harmonic Stieltjes R_r,k or the twist convolution problem. The filtered raw Mellin theorem and its positive-integer specialization are now proved and attributed in the canonical translation-Mellin section. Balanced-profile, root and additional logarithmic-moment families retain a pending canonical integration scope. |
+| `balanced-stieltjes-moments` | Ordinary Mellin moments in the positive translation of conventional Stieltjes constants, balanced tail cancellation and Bernoulli-root/filter families. Preserve failed preliminary polylogarithm derivative diagnostics separately from corrected full replays. This does not solve harmonic Stieltjes R_r,k or the twist convolution problem. The filtered raw Mellin theorem, its positive-integer specialization, and now the balanced scalar profiles, decay and Mellin transform are proved and attributed canonically. The new contour and product sections extend questions 2 and 5 for the stated translation families and explicit Barnes/adjacent-shift product classes. Remaining Bernoulli-root and additional logarithmic-moment families retain a pending canonical integration scope. |
 | `boundary-contacts-log-spectra` | Confirm and correct the actual fifth reciprocal-Gamma print error, with independent exact Taylor and native Wolfram audits. Independent bilinear contact hyperplanes, negative jets and full logarithmic spectral finite parts have complete supplied replays; their analytic integration remains pending. |
 | `connected-spectral-gamma` | Keep independent regulators and the polar hyperplane before diagonal restriction. Connected all-factor spectral derivatives, collision constants and primitives remain a distinct pending branch. Provenance deliberately records per-file moving reads rather than one atomic source pin. |
-| `gamma-normalizations-colored-moments` | Complete seven-program replay includes the optional depth-two integral diagnostic and exact printed-RHS bridge. Preserve Gustafson attribution, weighted Gamma-statistic range and colored/cluster conventions. These are distinct from Gaussian S6/S8 and fixed-order prefix rank; analytic integration pending. |
+| `gamma-normalizations-colored-moments` | Complete seven-program replay includes the optional depth-two integral diagnostic and exact printed-RHS bridge. Preserve Gustafson attribution, weighted Gamma-statistic range and colored/cluster conventions. The colored kernel, tail expansion, scalar Mellin formula, root-of-unity Stieltjes dictionary and single-tail exceptional value are now attributed and proved canonically. Fixed-shift classification, the consecutive-zero ordinary-moment criterion and the alternating golden-shift example extend the report's simultaneous-zero question. Classification of all zero locations remains open. Gamma determinants, Gaussian statistics, cluster laws, primitives, color-one normalization and further moment families retain separate pending integration scopes; these are distinct from Gaussian S6/S8 and fixed-order prefix rank. |
 | `gap-six-harmonic-determinants` | Full eight-program replay passes, including all 2044 finite cases. The Gamma integral basis and effective infinite nonvanishing proof are still separate canonical audit work. An independent all-half-gap algebraic bridge audit is recorded in verification/FIXED-GAP-BRIDGE-AUDIT.md. Modular nonzero residues do not prove signs or arithmetic independence. |
 | `lattice-contacts-mixed-zeta` | The unmodified runner fails after successful mixed-tail numerical comparisons because write_text is applied to a filename string. Preserve the failed run and two fresh partial receipts. A full new isolated replay passes with a parenthesis-only output-Path repair, recorded and reproduced by the harness; no mathematical expression changes. Lattice, modular, independent-shift and spectral-face analytic integration remains pending. |
 | `lerch-selectors` | Full exact/numerical/coefficient suites pass. The Library predecessor now has an exact 74172-byte match to the preserved affine report; keep the older provenance qualification and add later evidence separately. Retain C(s), integer-length and finite-remainder scopes; external-paper corrections await primary-source review. |
@@ -1361,3 +1361,20 @@ open. No Lean or remote-CI claim is made.
 ## Reflected correlations and zero-Mellin Stieltjes reconstruction, October 12, 2026
 
 Restore the reflected two-generator algebra from the preserved convolution-calculus report and extend its normalized spectral family to arbitrary orientations. The neutral total-order identity and all-index alternating correlation formula retain the exact mean-zero contact term. The separate positive-translation section credits the balanced-stieltjes-moments filtered Mellin theorem before deriving zero-endpoint raising, digamma-only reconstruction and finite operator reconstruction. Original reports are unchanged. See verification/STIELTJES-RECONSTRUCTION-AUDIT.md for the proof and attribution boundary; no global novelty or arithmetic-independence assertion is made.
+
+## Stieltjes contour transport, product moments and colored exceptions, October 12, 2026
+
+Continue the ordinary translation identities to the principal slit plane and
+give both negative-real banks by explicit principal values and residues.
+Higher Stieltjes Mellin kernels receive their precise logarithmic boundary
+distribution. Develop an absolutely convergent single Barnes contour for
+balanced products, finite factorial/zeta evaluations of adjacent-shift
+products, their Laguerre Gram coordinates and unequal-shift hypergeometric
+derivatives. Prove the full homogeneous coefficient classification at a
+fixed color and shift, and the necessary-and-sufficient consecutive-zero
+criterion for extra ordinary moments. At the golden shift and alternating
+color, two vanished tails yield three evaluated moments and a vanishing
+combination. These are extensions of explicitly credited preserved reports,
+with self-contained proofs and independent exact/numerical diagnostics.
+See `verification/STIELTJES-EXTENSIONS-AUDIT.md` for assumptions, source
+reconciliation, proof review and the remaining open boundaries.
