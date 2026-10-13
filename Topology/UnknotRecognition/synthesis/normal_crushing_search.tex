@@ -1,0 +1,262 @@
+\section{Source-authenticated crushing and positive quadrilateral search}
+\label{sec:normal-crushing-search}
+
+The preceding filtered search stayed on one triangulation and accumulated
+rejected-support clauses.  The new unmarked route consumes a positive normal
+ray by crushing and restarts on a strictly smaller triangulation.  This
+removes the need to bound the number of geometric rejections on a fixed
+source.  It also changes the required discovery query: any positive-Euler
+non-link ray suffices, so quadrilateral corners suffice even when they do
+not include an essential disc.  The implementation provides independently
+replayed quotients, diagram-bound successor chains, and a complete additive
+recognition backend.  General quasi-polynomial discovery remains open.
+
+\subsection{The topological premise and its source authentication}
+
+We use the classical crushing theorem in the form of
+Burton--Ozlen~\cite[Observations~3--4 and Lemma~5]{burton-ozlen}.
+For a classical knot exterior, crushing a connected positive-Euler normal
+surface with quadrilateral content either leaves the same exterior as the
+unique torus-boundary component or proves that the knot is trivial when no
+such component remains.  The surviving tetrahedra are precisely those with
+zero quadrilateral coordinates.  Thus a retained successor is strictly
+smaller.  The no-torus conclusion also holds at one tetrahedron: the
+$t>1$ hypothesis in Lemma~5 permits replacing that case by a smaller
+one-tetrahedron solid torus, whereas our checker terminates directly.
+
+The low-level source validator establishes a finite compact orientable
+manifold with one torus boundary.  It does not establish that the manifold
+is a knot exterior.  Accordingly, \path{normal_crushing.py} produces only
+a conditional quotient packet.  In \path{normal_crushing_chain.py}, the
+independent canonical diagram-exterior checker authenticates the initial
+source; optional boundary shellings are independently replayed; every
+subsequent quotient is authenticated against the preceding selected source.
+Only this diagram-bound chain interprets absence of a torus as an unknot
+certificate.  A partial chain with status \texttt{REDUCED} authenticates a
+smaller exterior and has no recognition verdict.
+
+This distinction is necessary.  A compact orientable torus-boundary
+manifold may have a closed connected-sum factor that crushing removes.
+Source-format validation alone would then be insufficient to identify a
+surviving component with the original manifold.  The chain's inductive
+knot-exterior premise supplies the missing topological information.
+
+\subsection{Primitive full-source rays supply connectedness}
+
+Coordinates are validated against every original normal matching equation,
+nonnegativity and per-tetrahedron quadrilateral compatibility.  The producer
+restricts the original matching matrix to the positive support and checks
+nullity one.  The verifier reconstructs those columns and uses its own
+reverse-pivot kernel chart to check primitive integral scale and full-source
+extremality.  This one-shot check avoids preparing all $7t$ columns merely
+to validate a single ray.  Euler characteristic is computed from exact face,
+edge and normal-disc counts, without expanding any coordinate multiplicity.
+A positive Euler value and at least one quadrilateral are mandatory.
+Explicitly, for $S=\operatorname{supp}(x)$ the rank condition is
+$\operatorname{rank}(A_{[:,S]})=|S|-1$, using exact rational elimination.
+
+\begin{lemma}[Connected primitive normal ray]
+An admissible primitive integral extreme ray of the full matching cone
+represents a connected normal surface.
+\end{lemma}
+\begin{proof}
+Every connected component has a nonzero nonnegative integral matching
+vector, and these vectors sum to the supplied vector $x$.  Extremality
+makes each component vector $\lambda_i x$ for some $\lambda_i>0$.
+Since the coordinates of $x$ have greatest common divisor one, an integer
+linear combination of them equals one.  Applying that combination to
+$\lambda_i x$ shows that $\lambda_i$ is an integer.  The equality
+$\sum_i\lambda_i=1$ therefore permits only one component.
+\end{proof}
+
+The full matching cone matters.  An arbitrary extra linear constraint can
+make a disconnected vector extreme in a smaller cone.  Coordinate-zero
+sector restrictions are faces and do not cause this problem, but the
+crushing checker always retains every original matching equation and adds
+no new linear constraints.
+In an authenticated knot exterior, a connected positive-Euler embedded
+surface is a sphere or disc, since an embedded projective plane is excluded.
+Any quadrilateral excludes a vertex link and guarantees strict size descent.
+Triangle-only, nonprimitive, nonpositive and nonextreme inputs are rejected
+by this ray interface rather than silently normalized or repurposed.
+
+\subsection{Face states, erased cycles and independent quotient replay}
+
+For a tetrahedron with nonzero quadrilateral type $q$, the two vertex pairs
+are $\{0,q+1\}$ and its complement.  The local face transition exchanges
+the two vertices in the pair containing the entry face label and fixes
+the remaining pair.  The producer composes these local permutations with
+source face gluings, starting from every retained face.  A path ends at
+another retained face or at the source boundary.  The resulting endpoint
+and permutation specify the quotient face record.
+
+The directed state is a tetrahedron together with its entry face.  A path
+may revisit a tetrahedron through a different face, so a tetrahedron-only
+cycle guard is incorrect.  Distinct retained-face traversals use disjoint
+directed entry states; reverse traversal uses the paired exit states.
+There are at most $4t$ such states.  This bounds the producer's aggregate
+face-transition work independently of the normal coordinate magnitudes.
+
+The independent checker does not call this tracer.  It builds a labelled
+graph on the $4t$ face states.  Source face pairings and internal quad-pair
+transitions are its edges.  Each vertex has degree at most two.  A connected
+component with two retained endpoints determines a quotient gluing, obtained
+by propagating permutation labels.  A component with one retained endpoint
+ends at the boundary.  Components with no retained endpoint are erased and
+may be cycles.  Such isolated cycles are legitimate; only a repeated state
+reachable from a retained endpoint contradicts the path structure.
+
+The packet contains original coordinates, retained source indices, the
+entire quotient, its complete component census, the chosen torus component,
+and the renumbered successor.  The checker derives each field independently.
+Every quotient component is validated, including components discarded from
+the successor: face pairings must be reciprocal, edge reversals are excluded,
+orientations must be consistent, and vertex links must be finite spheres or
+discs.  Boundary components are assembled explicitly and their Euler
+characteristics computed.  Selecting the unique component with one torus
+boundary therefore does not confuse a closed component or a failed manifold
+validation with disappearance of the torus.
+
+The component census is shared validated topology code; quotient discovery
+and source extremality have separate producer and checker implementations.
+Regina is used only as an external research oracle, never as a dependency
+of a maintained producer or certificate verifier.  Callbacks are guarded
+through nested verification so that caller exceptions cannot be swallowed
+as malformed data or converted into resource exhaustion.
+
+\subsection{Why positive quadrilateral corners are now enough}
+
+Fix one allowed quadrilateral type per tetrahedron, permitting its coordinate
+to be zero.  Let $Q$ be the nonnegative quadrilateral matching cone.  The
+triangle matching equations supply linear potentials $\ell_{vc}(q)$ at
+the corners incident to each global vertex $v$.  The canonical lift subtracts
+their minimum at that vertex, making at least one triangle coordinate zero.
+As established in the all-dimensional Euler-convexity result, its Euler
+characteristic has the form
+\[
+ F(q)=L(q)-\sum_v\chi(V_v)\min_c\ell_{vc}(q),
+\]
+where $L$ is linear and each vertex link $V_v$ has Euler value one or two.
+Consequently $F$ is convex and positively homogeneous.
+
+\begin{proposition}[A positive Q corner suffices for crushing]
+If this sector contains a canonical surface with positive Euler
+characteristic and nonzero quadrilateral vector, it contains a positive
+canonical lift of a Q-cone extreme ray.  The primitive lift is a full
+matching-cone extreme ray and is eligible for the crushing interface.
+\end{proposition}
+\begin{proof}
+Intersect $Q$ with $\sum_jq_j=1$.  This is a compact polytope when nonempty.
+Writing a point as a convex combination of its vertices, convexity bounds
+its $F$ value above by the corresponding weighted average of vertex values.
+Thus a positive value forces a positive vertex value.  Homogeneity preserves
+the sign when a ray is made primitive.
+
+Let $x$ be a canonical lift of such an extreme Q ray and suppose $x=u+w$
+in the nonnegative full matching cone.  Projecting to Q gives proportional
+vectors, say $q(u)=\lambda q(x)$ and $q(w)=(1-\lambda)q(x)$, with
+$0\leq\lambda\leq1$.  The difference $u-\lambda x$ is triangle-only
+matching data, hence a linear combination of vertex links.  At each vertex,
+a zero triangle coordinate of $x$ is also zero in $u$ and $w$, so the
+corresponding link coefficient in the difference is zero.  Therefore
+$u=\lambda x$ and $w=(1-\lambda)x$.  This proves full-cone extremality.
+The preceding lemma proves connectedness of its primitive representative.
+\end{proof}
+
+For direct essential-disc selection a positive Q corner may be inadequate:
+it can have trivial boundary while an essential standard ray lies elsewhere.
+Crushing makes that distinction unnecessary for the next progress step.
+The new driver therefore uses only the quadrilateral phase of the native
+sector enumerator and restarts after its first positive ray.  It does not
+build standard minimum-envelope arrangements or support-exclusion masks.
+
+\subsection{Complete global search and independently checked negative coverage}
+
+At a source with $t$ tetrahedra, enumerate the $3^t$ maximal type assignments.
+These sectors cover every admissible normal vector: tetrahedra with no
+quadrilateral can be assigned any type.  In each sector enumerate all Q
+corners until a positive lift is found.  Crush and independently replay that
+lift, append the source-bound step, and restart on the selected successor.
+No torus ends with an independently checked \texttt{UNKNOT} certificate.
+If every sector completes without a positive lift, return \texttt{KNOTTED}
+with the complete final-source sector exhaustion packets.
+
+The producer retains the existing sufficient matching-row screen for
+source-proven forced-zero types when the initial Q nullity exceeds three.
+It searches the resulting face and zero-expands negative witnesses back
+into the full original assignment.  The independent exhaustion checker
+replays any accompanying matching-support proof against that original source.
+This screen is polynomial but need not identify every forced zero.
+
+The default traversal first draws sixteen assignments with the fixed seed
+37, discarding duplicates, and then visits all remaining assignments in
+lexicographic order.  This bounded deterministic prefix is a heuristic:
+neither its effectiveness nor completeness relies on a probability model.
+The \texttt{canonical} option omits the prefix.  Both orders visit each
+assignment exactly once per source, and completed negative packets are
+sorted into canonical order before their independent replay.
+
+\begin{proposition}[Completeness of unbounded crushing search]
+On a classical knot diagram, unbounded search terminates with the correct
+verdict.  There are at most $t_0$ crushing steps, and at most $t_0-1$ steps
+retaining a nonempty successor, where $t_0$ is the initial tetrahedron count.
+\end{proposition}
+\begin{proof}
+The diagram and shelling checkers establish the initial exterior.  Each
+verified nonterminal crush preserves that invariant and strictly decreases
+the number of tetrahedra; a terminal crush proves triviality by the stated
+topological theorem.  There cannot be more than $t_0$ strict decreases to
+zero.  Every individual sector search is finite.
+
+If the current exterior belongs to the unknot, the normal-disc theorem gives
+an essential normal disc.  Subtractable vertex links can be realized as
+disjoint components, so this connected disc has zero minimum triangle
+multiplicity at every vertex.  It has no vertex-link component, so its normal
+vector is canonical, and it has nonzero quadrilateral content.  Its sector
+therefore contains a positive Q corner by the preceding proposition.  Hence
+complete exhaustion of every sector cannot occur for the unknot.  Conversely,
+a verified no-torus terminal cannot occur for a nontrivial knot.  Finiteness
+of all searches and strict descent leave exactly the asserted outcomes.
+\end{proof}
+
+The recognition certificate verifier imports no discovery routines.  For
+an unknot it checks the whole chain and requires no negative-sector packet.
+For a knottedness claim it first authenticates the final reduced exterior,
+then requires every maximal assignment exactly once in canonical order,
+with a completed nonpositive Q-sector certificate.  The existing independent
+dense sector checker reconstructs the Q corners and their Euler values.
+A missing sector, a partial search, or an unsuccessful checker call cannot
+establish the negative verdict.
+
+Configured sector and candidate limits are shared across all sources and
+stages; a separate crushing limit bounds performed successor steps.  Reaching
+a limit returns \texttt{INCONCLUSIVE} with an authenticated partial chain.
+Preparation is not charged as a candidate, and these counts are not total
+time or memory budgets.  Caller cancellation remains distinct from the
+backend's own limits.  This complete backend is additive; the default
+recognizer's dispatch policy is unchanged.
+
+\subsection{Asymptotic accounting and the remaining target}
+
+In a sector with Q nullity $d\geq1$ and at most $t$ allowed types, both native
+Q enumeration and independent dense Q replay solve at most
+$\binom{t}{d-1}\leq2^t$ candidate systems.  Nullity zero has no Q rays
+and requires no candidates.  Each system has polynomial exact-bit
+cost.  Canonical primitive coordinates satisfy the inherited exponential
+height bound and thus have $O(t)$ bits.  Combining $3^t$ assignments and at
+most $t_0$ decreasing stages gives a crude $6^{t_0}\operatorname{poly}(t_0)$
+algebraic-work bound.  Current Python hash tables do not establish that
+literal comparison-model bound against adversarial collisions; even charging
+quadratic table work preserves the unconditional $2^{O(t_0)}$ bit-time class.
+Neither bound is quasi-polynomial in diagram size.
+
+The useful conditional statement is sharper than a bound on fixed-source
+rejection counts.  Suppose a complete positive-nonlink oracle can be built
+and run in quasi-polynomial time on every successor of binary size polynomial
+in the initial diagram size.  The polynomial number of crushing stages and
+their polynomial source/surface/quotient checks preserve quasi-polynomial
+time.  No marked annulus, suture or peripheral-cochain transport is required
+for this unmarked route.  The missing condition is now a complete efficient
+positive search on every smaller exterior, not a geometric bound on the
+support-filtered algorithm's rejected-ray count.  The present exhaustive
+sector family does not satisfy that condition.
