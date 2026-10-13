@@ -164,51 +164,6 @@ def splitSeedSmallA : Nat := 32
 /-- The parameter degree of the small dimension-two seed. -/
 def splitSeedSmallD : Nat := 2 ^ 48
 
-/-- The exponent arithmetic of the step, with `2^k` and `(k+4)²` as atoms. -/
-theorem quad4_exponent_step (k : Nat) :
-    4 * 2 ^ k + (4 * 2 ^ k + 3 * (k + 4) ^ 2 + 30) + (5 * k + 22) ≤
-      4 * 2 ^ (k + 1) + 3 * (k + 1 + 4) ^ 2 + 30 := by
-  have h1 : 3 * (k + 1 + 4) ^ 2 = 3 * (k + 4) ^ 2 + 6 * k + 27 := by ring
-  have h2 : 2 ^ (k + 1) = 2 * 2 ^ k := by rw [pow_succ]; ring
-  rw [h1, h2]
-  omega
-
-/-- **The invariants at class constant `4` propagate.** -/
-theorem fejer_split_step_quad4 {k a D a' D' P T : Nat} (ha : 1 ≤ a)
-    (hA : 2 ^ (k + 6) * a ≤ 2 ^ (4 * 2 ^ k)) (hDb : D ≤ 2 ^ (4 * 2 ^ k + 3 * (k + 4) ^ 2 + 30))
-    (ha' : a' ≤ 2 ^ (k + 5) * (a * a)) (hD' : D' ≤ 2 ^ (k + 6) * (a * (a + D)) * P + T)
-    (hP : P ≤ 2 ^ (5 * k + 20)) (hT : T ≤ 2 ^ (5 * k + 19)) :
-    2 ^ (k + 1 + 6) * a' ≤ 2 ^ (4 * 2 ^ (k + 1)) ∧
-      D' ≤ 2 ^ (4 * 2 ^ (k + 1) + 3 * (k + 1 + 4) ^ 2 + 30) := by
-  constructor
-  · calc 2 ^ (k + 1 + 6) * a' ≤ 2 ^ (k + 1 + 6) * (2 ^ (k + 5) * (a * a)) :=
-          Nat.mul_le_mul_left _ ha'
-      _ = (2 ^ (k + 6) * a) * (2 ^ (k + 6) * a) := by ring
-      _ ≤ 2 ^ (4 * 2 ^ k) * 2 ^ (4 * 2 ^ k) := Nat.mul_le_mul hA hA
-      _ = 2 ^ (4 * 2 ^ (k + 1)) := by rw [← pow_add, double_exponent 4 k]
-  · set X := 2 ^ (4 * 2 ^ k) with hXdef
-    set Y := 2 ^ (4 * 2 ^ k + 3 * (k + 4) ^ 2 + 30) with hYdef
-    set Z := 2 ^ (5 * k + 19) with hZdef
-    have haX : a ≤ X := le_trans (Nat.le_mul_of_pos_left a (Nat.two_pow_pos _)) hA
-    have hXY : X ≤ Y := Nat.pow_le_pow_right (by norm_num) (by omega)
-    have hsum : a + D ≤ 2 * Y := by omega
-    have e20 : 2 ^ (5 * k + 20) = 2 * Z := by
-      rw [hZdef, show 5 * k + 20 = (5 * k + 19) + 1 by ring, pow_succ]; ring
-    have hX1 : 1 ≤ X := Nat.one_le_two_pow
-    have hY1 : 1 ≤ Y := Nat.one_le_two_pow
-    have hprod : 8 * Z * X * Y =
-        2 ^ (4 * 2 ^ k + (4 * 2 ^ k + 3 * (k + 4) ^ 2 + 30) + (5 * k + 22)) := by
-      rw [hXdef, hYdef, hZdef, pow_add, pow_add, show 5 * k + 22 = (5 * k + 19) + 3 by ring, pow_add]
-      ring
-    calc D' ≤ 2 ^ (k + 6) * (a * (a + D)) * P + T := hD'
-      _ = (2 ^ (k + 6) * a) * (a + D) * P + T := by ring
-      _ ≤ X * (2 * Y) * (2 * Z) + Z :=
-          Nat.add_le_add (Nat.mul_le_mul (Nat.mul_le_mul hA hsum) (e20 ▸ hP)) hT
-      _ ≤ 8 * Z * X * Y := split_step_arith _ _ _ hX1 hY1
-      _ = _ := hprod
-      _ ≤ 2 ^ (4 * 2 ^ (k + 1) + 3 * (k + 1 + 4) ^ 2 + 30) :=
-          Nat.pow_le_pow_right (by norm_num) (quad4_exponent_step k)
-
 end LeanProofs.GowersSzemeredi
 
 namespace LeanProofs.GowersSzemeredi
@@ -527,39 +482,14 @@ theorem splitPairMax_succ (seedA seedD : Nat) {k : Nat} (hk : 2 ≤ k) :
           (splitPairMax seedA seedD k).1 (splitPairMax seedA seedD k).2) := by
   rw [splitPairMax, if_neg (by omega)]
 
-/-- **The split invariants at class constant `4` in every dimension `l ≥ 2`**,
-from the small seed `(32, 2^48)`. -/
-theorem split_pair_max_quad : ∀ l, 2 ≤ l →
-    1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).1 ∧
-      1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).2 ∧
-      2 ^ (l + 6) * (splitPairMax splitSeedSmallA splitSeedSmallD l).1 ≤ 2 ^ (4 * 2 ^ l) ∧
-      (splitPairMax splitSeedSmallA splitSeedSmallD l).2 ≤
-        2 ^ (4 * 2 ^ l + 3 * (l + 4) ^ 2 + 30) := by
-  intro l hl
-  induction l, hl using Nat.le_induction with
-  | base =>
-    rw [splitPairMax_two]
-    unfold splitSeedSmallA splitSeedSmallD
-    refine ⟨by norm_num, Nat.one_le_two_pow, by norm_num, ?_⟩
-    exact Nat.pow_le_pow_right (by norm_num) (by norm_num)
-  | succ k hk ih =>
-    obtain ⟨ha, hDp, hAb, hDb⟩ := ih
-    rw [splitPairMax_succ _ _ hk]
-    set a := (splitPairMax splitSeedSmallA splitSeedSmallD k).1
-    set D := (splitPairMax splitSeedSmallA splitSeedSmallD k).2
-    obtain ⟨h1, h2⟩ := fejer_split_step_quad4 ha hAb hDb ((splitStepAMax_le_sum k a).trans (splitStepA_le ha))
-      ((splitStepDMaxWith_le_sum _ _ k a D).trans (splitStepDWith_le ha hDp (fejerStepP_ge k))) (fejerStepP_le k) (fejerStepT_le k)
-    refine ⟨?_, ?_, h1, h2⟩
-    · exact (show 1 ≤ sCountN k a by unfold sCountN; omega).trans (le_max_left _ _)
-    · exact (show 1 ≤ wCountW (fejerStepP k) k a D by unfold wCountW; omega).trans
-        ((le_max_left _ _).trans (le_max_left _ _))
-
 /-- The exact twelfth dimension fits the invariant at constant `5/2`. -/
 theorem split_pair_max_twelve_half :
-    2 ^ (12 + 6) * (splitPairMax splitSeedSmallA splitSeedSmallD 12).1 ≤ 2 ^ (5 * 2 ^ (12 - 1)) ∧
+    1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD 12).1 ∧
+      1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD 12).2 ∧
+      2 ^ (12 + 6) * (splitPairMax splitSeedSmallA splitSeedSmallD 12).1 ≤ 2 ^ (5 * 2 ^ (12 - 1)) ∧
       (splitPairMax splitSeedSmallA splitSeedSmallD 12).2 ≤
         2 ^ (5 * 2 ^ (12 - 1) + 3 * (12 + 4) ^ 2) := by
-  constructor <;> decide +kernel
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> decide +kernel
 
 /-- **The split invariants at class constant `5/2` in every dimension `l ≥ 12`.** -/
 theorem split_pair_max_half : ∀ l, 12 ≤ l →
@@ -570,9 +500,7 @@ theorem split_pair_max_half : ∀ l, 12 ≤ l →
         2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2) := by
   intro l hl
   induction l, hl using Nat.le_induction with
-  | base =>
-    obtain ⟨ha, hD, -, -⟩ := split_pair_max_quad 12 (by norm_num)
-    exact ⟨ha, hD, split_pair_max_twelve_half⟩
+  | base => exact split_pair_max_twelve_half
   | succ k hk ih =>
     obtain ⟨ha, hDp, hAb, hDb⟩ := ih
     rw [splitPairMax_succ _ _ (by omega)]
@@ -590,46 +518,29 @@ theorem split_pair_max_half : ∀ l, 12 ≤ l →
       rw [← he, hs]
       omega
 
-/-- The exact class log-degrees in dimensions `0, …, 14`. -/
-def tTableM : List Nat :=
-  [17, 17, 49, 85, 134, 205, 317, 505, 842, 1472, 2684, 5057, 9746, 19064, 37637]
-
-/-- The class log-degree: exact up to dimension `14`, constant `5/2` beyond. -/
-def tDegM (l : Nat) : Nat := if l ≤ 14 then tTableM.getD l 0 else 5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 + 2
-
-/-- The class degree from the table to dimension `14`. -/
-def uDegM (l : Nat) : Nat := 2 ^ tDegM l
-
-theorem tDegM_eq_of_ge {l : Nat} (hl : 15 ≤ l) :
-    tDegM l = 5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 + 2 := by
-  unfold tDegM; rw [if_neg (by omega)]
-
-/-- **The max-split degrees fit `uDegM`**, kernel-evaluated up to dimension `14`. -/
-theorem split_pair_max_le_uDegM {l : Nat} (hl : 2 ≤ l) :
+/-- **The max-split degrees beyond dimension `14`**, in closed form. -/
+theorem split_pair_max_le_closed {l : Nat} (hl : 15 ≤ l) :
     (splitPairMax splitSeedSmallA splitSeedSmallD l).1 +
-      (splitPairMax splitSeedSmallA splitSeedSmallD l).2 + l + 1 ≤ uDegM l := by
-  rcases Nat.lt_or_ge l 15 with h | h
-  · interval_cases l <;> decide +kernel
-  · obtain ⟨-, -, hA, hD⟩ := split_pair_max_half l (by omega)
-    unfold uDegM
-    rw [tDegM_eq_of_ge h]
-    set a := (splitPairMax splitSeedSmallA splitSeedSmallD l).1
-    set D := (splitPairMax splitSeedSmallA splitSeedSmallD l).2
-    set Y := 2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2) with hYdef
-    have ha : a ≤ Y := by
-      have h1 : a ≤ 2 ^ (5 * 2 ^ (l - 1)) :=
-        le_trans (Nat.le_mul_of_pos_left a (Nat.two_pow_pos _)) hA
-      exact h1.trans (Nat.pow_le_pow_right (by norm_num) (by omega))
-    have hl1 : l + 1 ≤ Y := by
-      have h1 : l + 1 ≤ 2 ^ (l + 1) := Nat.lt_two_pow_self.le
-      have h2 : l + 1 ≤ 5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 := by
-        have : l + 1 ≤ (l + 4) ^ 2 := by nlinarith
-        omega
-      exact h1.trans (Nat.pow_le_pow_right (by norm_num) h2)
-    have h4 : 2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 + 2) = 4 * Y := by
-      rw [hYdef, pow_add]; ring
-    rw [h4]
-    omega
+      (splitPairMax splitSeedSmallA splitSeedSmallD l).2 + l + 1 ≤
+        2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 + 2) := by
+  obtain ⟨-, -, hA, hD⟩ := split_pair_max_half l (by omega)
+  set a := (splitPairMax splitSeedSmallA splitSeedSmallD l).1
+  set D := (splitPairMax splitSeedSmallA splitSeedSmallD l).2
+  set Y := 2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2) with hYdef
+  have ha : a ≤ Y := by
+    have h1 : a ≤ 2 ^ (5 * 2 ^ (l - 1)) :=
+      le_trans (Nat.le_mul_of_pos_left a (Nat.two_pow_pos _)) hA
+    exact h1.trans (Nat.pow_le_pow_right (by norm_num) (by omega))
+  have hl1 : l + 1 ≤ Y := by
+    have h1 : l + 1 ≤ 2 ^ (l + 1) := Nat.lt_two_pow_self.le
+    have h2 : l + 1 ≤ 5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 := by
+      have : l + 1 ≤ (l + 4) ^ 2 := by nlinarith
+      omega
+    exact h1.trans (Nat.pow_le_pow_right (by norm_num) h2)
+  have h4 : 2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 + 2) = 4 * Y := by
+    rw [hYdef, pow_add]; ring
+  rw [h4]
+  omega
 
 end LeanProofs.GowersSzemeredi
 
@@ -1373,10 +1284,8 @@ theorem split_quad3_le_uDegT3 {l : Nat} (hl : 2 ≤ l) :
   rcases Nat.lt_or_ge l 15 with h | h
   · interval_cases l <;> decide +kernel
   · obtain ⟨-, -, -, -, hac, hDc, hae, hDe⟩ := split_quad3_le_max l hl
-    have hM := split_pair_max_le_uDegM hl
-    have hMT : uDegM l = uDegT3 l := by
-      unfold uDegM uDegT3; rw [tDegM_eq_of_ge h, tDegT3_eq_of_ge h]
-    rw [← hMT]
+    have hM := split_pair_max_le_closed h
+    unfold uDegT3; rw [tDegT3_eq_of_ge h]
     have h1 := max_le hac hae
     have h2 := max_le hDc hDe
     omega

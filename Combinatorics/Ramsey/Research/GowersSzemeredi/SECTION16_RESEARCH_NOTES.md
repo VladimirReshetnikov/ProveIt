@@ -5641,7 +5641,9 @@ So the route now consists of the declarations those bounds use, found by a
 constant-level closure from the final statements and extracted in their
 original order (`fejer-generators/final_extract.py`, `assemble_final.py`):
 * `Proofs18FinalClasses`: the classes `tDegT3` and `polyCoverAt_classT3`, with
-  the envelope-base bounds they need;
+  the envelope-base bounds they need (beyond dimension 14 the two-track degrees
+  are bounded through the max-pair recursion in closed form; the max-pair
+  table and its class-constant-4 induction are no longer needed);
 * `Proofs18FinalStep`: the joint-slice step `GenParamsJT3`;
 * `Proofs18FinalEnvelopes`: `polyGenMuJT3` and `genMuXK3`, their closed forms
   beyond dimension 14 and one fit lemma each; a structure `FinalInputs`
@@ -5655,7 +5657,7 @@ original order (`fejer-generators/final_extract.py`, `assemble_final.py`):
 The bridge `Proofs18CoverFejerAllDegrees` defines `explicitFinalInputs` and
 keeps only the best statements (with Corollary 18.7, van der Waerden numbers,
 Theorem 1.3 and the printed consequences). Measured: 63 modules and 19,081
-lines retired, 3,501 added; the bridge 993 → 189 lines and 101 → 25
+lines retired, 3,410 added; the bridge 993 → 189 lines and 101 → 25
 theorems; the Fejér block of `CompletionAudit` 341 → 96 lines. No threshold
 changed. The merged production route now passes the 852-module native
 `FinalProofSimplificationAudit`, covering all 25 public bridge theorems and
