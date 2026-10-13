@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18CoverSharperShortLengths
+import GowersSzemeredi.Proofs18SharpInterfaces
 import GowersSzemeredi.Proofs01QuantitativeHeadline
 
 /-! **Theorem 1.3 with a sharper constant** (Notes L.15h).

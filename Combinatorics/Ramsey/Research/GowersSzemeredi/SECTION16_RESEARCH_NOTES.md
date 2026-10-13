@@ -8628,6 +8628,178 @@ original-paper fidelity issues are unchanged. This checkpoint does not
 establish complete original-paper fidelity; the simplification goal
 remains active.
 
+### L.92. Share dimension-two piece decomposition (2026-10-13)
+
+One helper now handles the greedy relation decomposition, the floor bound
+on the number of pieces, padding and coverage transport used by four
+printed and Fejer proofs. The two large-cover proofs apply their existing
+family-cover theorems to those pieces; the two uniform-decomposition
+proofs specialize the helper directly. Existing assumptions, piece counts
+and numerical bounds remain unchanged.
+
+All 47 complete statements and scope contexts and all 23 definitions
+remain exact. Four proof bodies shrink from 194 to 32 lines, and the
+helper adds 28 proof lines: 134 fewer in total. Including all 41 lines
+of helper declarations, documentation and spacing, four production files
+shrink from 1,031 to 910 lines, saving 121. No old declaration is removed
+and no import or option changes. Five new focused checks name the helper
+and all four changed proofs, retaining all 279 earlier names. Modified
+Lean source shrinks by 116 lines after those additions.
+
+All six fresh checks pass: original audit (642), stronger bridge (719),
+focused audit (783), downstream audit (1,098), historical explicit audit
+(701) and historical bridge (560), with every current input hash verified.
+The named audits allow only `propext`, `Classical.choice` and `Quot.sound`.
+Focused explicitly checks all five affected declarations; historical
+explicit retains its three named checks. The two standalone bridge
+records link the fresh focused audit; their compilation does not audit
+every export. The stronger bridge is 719 / 153,172 source lines; focused
+is 783 / 167,740. The original and historical routes each lose 40 source
+and 53 proof lines. The six-target union is 1,204 / 226,396 with 1,207
+hashed inputs; module sets are unchanged.
+See `verification/2026-10-13-piece-two-decomposition{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-piece-two-decomposition-simplification.json`.
+
+Selected coverage is 179 of 182 affected import consumers; the standard
+four targets cover 171. The facade, Audit and PortImportAudit remain
+excluded with unchanged source hashes. The regenerated 120-statement
+inventory is byte-identical to the baseline. Final bounds, the accepted Lemma 16.10 correction and open
+original-paper fidelity issues are unchanged. This checkpoint does not
+establish complete original-paper fidelity; the simplification goal
+remains active.
+
+### L.93. Short lengths from existing quadratic and cubic bounds (2026-10-13)
+
+The offset-three short-length theorem now uses the existing four-term
+quadratic bound for lengths 2–4 and the cubic envelope through the general
+density iteration for length 5. Lengths 0–1 follow from positive density.
+For lengths 2–4, the same positive common difference is retained when
+taking a prefix, and 21 ≤ 2^(k+3) compares the real thresholds without a
+rounding gap. For length 5, `envBound_three` supplies `EnvBound 3 62`;
+the general theorem's budget is 62 + 10 + 14 = 86 ≤ 256. All final
+numerical bounds and hypotheses remain unchanged.
+
+The canonical route no longer needs Roth's phase/density arguments or the
+separate five-term iteration. Ten old modules leave the stronger final
+closure and a 64-line module enters. The net reduction is 2,788 source
+lines and 2,052 actual tactic-body lines, with the module count falling
+from 719 to 710. This is a dependency reduction, not repository deletion:
+legacy arguments and scalar comparisons remain available and audited.
+The repository grows by 28 source lines; the one rewritten proof grows
+from 12 to 33 tactic-body lines. The focused and downstream closures each
+grow by one module and 28 source lines.
+
+All 60 old declaration statements and contexts and all 11 definitions
+are preserved. Three declarations move to the new short-length owner;
+two monotonicity blocks are byte-identical and only the short-length
+proof changes. The legacy owner imports their new module and continues
+to export the old declarations. The final class route uses the new owner,
+while the headline and van der Waerden bridges need only SharpInterfaces.
+The frozen proposal's PLAN count of 14→35 includes two non-proof lines
+on each side; the preserved erratum records the actual 12→33 count.
+The frozen dependency ledger also omitted 10 tactic lines in declarations
+with same-line attributes. Its restricted count was 2,042; the complete
+count is 2,092 removed minus 40 added, or 2,052 fewer tactic-body lines.
+Both corrections concern metadata only; the Lean source is unchanged.
+
+No audit entries are added. The focused audit retains all 284 names and
+already checks the rewritten short-length theorem. Its existing
+offset-six check uses both relocated monotonicity lemmas transitively.
+Roth's and the separate five-term route's existing audit entries remain
+in the full focused/downstream targets.
+
+The 622-module core check passes on its first attempt with the frozen
+source unchanged. Three fresh native checks pass: the stronger bridge
+(710), focused audit (784) and downstream audit (1,099), with all current
+input hashes verified. The named audits allow only `propext`,
+`Classical.choice` and `Quot.sound`; standalone bridge compilation is
+not an axiom audit of every export. The original audit (642) and
+historical explicit audit (701) and bridge (560) retain the completed
+L.92 records after every own-target input hash is revalidated; no new
+runs of those targets are claimed. The historical explicit audit checks
+its three existing names. The retained bridge's old focused-audit link
+is historical metadata; current named checks use the fresh L.93 audit. The three fresh targets cover
+1,121 modules / 215,419 source lines with 1,124 source/configuration
+inputs; all six selected targets cover 1,205 / 226,424 with 1,208 inputs.
+The original and historical closures have unchanged source bytes.
+
+The selected scope covers 51 of 54 affected import consumers, including
+all affected proof owners. The three aggregate targets GowersSzemeredi,
+Audit and PortImportAudit remain excluded with unchanged source hashes.
+The regenerated 120-statement inventory changes only the three relocated
+or shifted theorem locations and their filename-based list order; all
+statement statuses and other content remain unchanged. See
+`verification/2026-10-13-short-route{-stronger,-compatibility,-downstream}.json`,
+`verification/2026-10-13-piece-two-decomposition{-original,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-short-route-simplification.json`.
+The documented Lemma 16.10 correction remains in force; this checkpoint
+does not establish complete original-paper fidelity or full-facade
+verification. The final-proof simplification goal remains active.
+
+### L.94. Modular linear headlines from the quadratic inverse theorem (2026-10-13)
+
+The two modular degree-one headlines now follow from the existing
+quadratic inverse theorem at density parameter alpha². Lemma 3.4 sends
+degree-two uniformity at alpha² to degree-one uniformity at
+sqrt(alpha²) = alpha, so the original degree-one obstruction suffices.
+The fixed-power estimate bounds both quadratic discrepancy parameters
+below by (alpha²)^49462 = alpha^98924. Since 98924 ≤ 2^17, the existing
+printed and offset-four headline coefficients follow. The existential
+modulus threshold may increase; no quantitative restriction on that
+witness is part of these theorem statements. All final bounds and
+hypotheses remain unchanged.
+
+The same fixed-power estimate replaces four repeated quadratic coefficient
+comparisons. Its 35-line proof moves byte-identically to the common
+quadratic owner; the source cost of that relocation is fully included.
+Six proof bodies shrink from 206 to 60 actual tactic-body lines. Across
+four production files this removes 149 source lines and 146 tactic-body
+lines. All 35 old complete statements and contexts and all four definitions
+are preserved; no declaration is added or deleted.
+
+The genuinely sharper integer offset-one degree-one theorem retains its
+Fourier proof unchanged. Its owner explicitly imports the old linear
+module and continues to export every prior declaration. The stronger
+final route drops that linear module: 710→709 modules, 182 fewer source
+lines and 150 fewer tactic-body lines. This route change retains the
+legacy helpers and the sharper integer theorem. The original and selected
+historical target source closures remain unchanged.
+
+Three printed-proof checks are added to the focused audit, preserving all
+284 prior entries in order and bringing the total to 287. The three sharp
+proofs already have explicit focused checks. The relocated helper retains
+its existing IntegerFidelityAudit check. The focused closure falls by
+105 source lines including the three added audit entries; the downstream
+closure falls by 149. The six-target source union shrinks by 146 lines
+with 1,205 modules and 1,208 source/configuration inputs retained.
+
+The 719-module core check passes on its first attempt with the frozen
+source unchanged. Three fresh full native checks pass: stronger bridge
+(709), focused audit (784) and downstream audit (1,099), with every current
+input hash verified. The named audits allow only `propext`,
+`Classical.choice` and `Quot.sound`; standalone compilation does not
+claim an axiom audit of every export. Completed L.92 original audit
+(642), historical explicit audit (701) and historical bridge (560) records
+are retained after rechecking each complete own-target input manifest,
+without new runs. The explicit audit retains its three named checks;
+the old bridge's focused-audit link is historical metadata. The fresh
+scope covers 1,121 modules / 215,273 source lines with 1,124 inputs;
+including the retained targets gives 1,205 / 226,278 with 1,208 inputs.
+
+The selected native scope covers 72 of 75 affected import consumers;
+all seven modules with narrower imports are covered. The three aggregate
+targets GowersSzemeredi, Audit and PortImportAudit remain excluded.
+The regenerated inventory preserves all 120 statement statuses and all
+other content, including every duplicate short-name occurrence. Exactly
+16 line references change; filenames and list order do not. See
+`verification/2026-10-13-quadratic-linear-route{-stronger,-compatibility,-downstream}.json`,
+`verification/2026-10-13-piece-two-decomposition{-original,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-quadratic-linear-route-simplification.json`. The documented Lemma 16.10
+correction and original-paper fidelity limits remain unchanged; this
+checkpoint does not establish complete original-paper fidelity or
+full-facade verification. The final-proof simplification goal remains
+active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
