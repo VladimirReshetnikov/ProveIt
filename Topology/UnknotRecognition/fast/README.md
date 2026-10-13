@@ -4667,3 +4667,19 @@ Bland pivot count still lack quasi-polynomial bounds. The default recognition
 dispatcher and default crushing sector method remain unchanged. See the
 [Euler-tree theory](../synthesis/euler_branch_tree.tex) and
 [reproducible audit and comparisons](euler_tree_research/README.md).
+
+The exact LP backend now selects an independent subset of original matching
+rows before constructing its tableau. `solve_nonnegative_kernel(...,
+reduce_rows=False)` retains the previous tableau for comparison. Returned
+`equation_rows` maps tableau equalities to the original rows; negative duals
+always retain the original row dimension, with zeroes at discarded rows.
+Every positive point and lifted dual is checked against the original system.
+This polynomial preprocessing reduces tableau dimensions without proving a
+polynomial bound on simplex pivots.
+
+Version-2 Euler-tree replay now caches independently reconstructed full dual
+images and source-fixed objectives, each in a source-local 256-entry cache.
+Every supplied payload is still parsed, every required anchor is checked,
+and every currently allowed column is tested again. Cache hits cannot reuse
+an acceptance decision across masks or sources. See
+[the row-basis and replay proof](../synthesis/euler_rank_replay.tex).
