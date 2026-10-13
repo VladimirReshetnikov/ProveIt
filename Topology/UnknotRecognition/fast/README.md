@@ -4928,6 +4928,27 @@ The regression run passes 336 tests across 38 modules, with Regina and no
 skips. A final seven-test verifier replay strengthens the independent outer
 successor mutation controls. Logs are retained in `synthesis/data/pachner-descent-*`.
 
+The fixed fourteen-call whole-diagram audit retains every complete or partial
+proof. Trefoil pivots fall from 428 to 259, figure-eight from 1,917 to 676,
+and T25 from 7,113 to 693. The two-trefoil call instead rises from 3,398 to
+3,526 pivots, despite fewer tree nodes. T27 completes at 2,545 pivots where
+the baseline exhausts 10,000; both W34 calls remain inconclusive at that cap.
+All twelve noncircle endpoints match the separate staged experiment exactly.
+Its complete negative trees and original STANDARD extreme-ray checks prove
+endpoint resolving values 1, 0, 2, 1 and 2 for T, F, TT, T25 and T27.
+In particular T25 changes from exact 3 to 1; this establishes no general
+monotonicity or family bound. See the fixed inputs, archival distinction and
+reproduction commands in
+[`pachner_descent_research`](pachner_descent_research/README.md).
+All 49 evidence corruption controls are rejected, including a native-valid
+same-diagram proof whose terminal source differs from the measured endpoint.
+The 50-call paired benchmark includes recognition, independent proof replay
+and full-result serialization. Median paired baseline/enabled time ratios are
+0.9200 for trefoil, 1.1413 for figure-eight, 1.0270 for TT and 1.7181 for T25.
+Thus the trefoil control regresses despite fewer pivots. All samples and A/A
+controls are retained; the circle performs no macro search. These finite
+shared-host measurements support no universal speedup or asymptotic bound.
+
 ### Polynomial exact LP policy
 
 `solve_nonnegative_kernel` now defaults to `policy='polynomial'`. It performs
