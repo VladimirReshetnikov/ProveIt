@@ -8,6 +8,33 @@ policy. Its proof covers the oriented forward reconstruction, strict
 tetrahedron descent, polynomial bit work and the new mixed reduction-chain
 schema. This removes exposed collars without assuming that normal rays or
 their conflicts survive the move. Global resolving-set bounds remain open.
+The full audit replays 42 inverse steps across nine source families, 36
+conditional supplied-source reduction arms, and six genuine diagram proofs.
+The 208 affected regression tests pass without skips. Peeling helps the
+supplied layered sources; none of the three genuine diagram controls exposes
+a removable layer. Evidence and reproduction commands are in
+[`boundary_unlayer_research`](../fast/boundary_unlayer_research/README.md).
+
+[`conflict_composition.tex`](conflict_composition.tex) gives an authenticated
+23-tetrahedron two-trefoil source with `h >= 5`. Seven independently checked
+positive root rays suffice for a short hitting-set proof; all 35 retained
+rays and all 8,855 four-element candidates also receive exact replay.
+The optional peeling operation leaves this source unchanged. This is a finite
+lower bound for the direct crushing driver, not for the existing recognition
+router, which already splits this visible connected sum. A complete negative
+canonical-cone proof and a growing lower-bound family remain open.
+See [`conflict_composition_research`](../fast/conflict_composition_research/README.md).
+
+The current [PDF](report.pdf) has 781 pages. The inverse-layer section starts
+on page 767 and the connected-sum section on page 772. The new evidence pages
+770–775 were visually reviewed; three final build passes leave no unresolved
+references or new overflow warnings. Run `python -B -S
+data/boundary_unlayer_publication.py` from this directory to check the full
+publication at this source revision. It includes all 60 benchmark calls,
+the separate 37-corruption replay check, and the connected-sum audit's current
+source pins. The latter's 35 STANDARD rank checks have their own replay
+command in its package README. The benchmark JSON is losslessly compacted
+for storage; all retained values and timing observations are unchanged.
 
 [`conflict_candidates.tex`](conflict_candidates.tex) proves the optional
 conflict-directed candidate policy's `O(A*(3*delta)^h*poly(t,L))` bit bound.
@@ -20,7 +47,7 @@ agree under both policies. Trefoil discovery uses 40 oracle nodes instead of
 64; figure-eight uses 29 instead of 36. Complete work counts, paired timings
 and reproduction commands are in
 [`conflict_candidate_research`](../fast/conflict_candidate_research/README.md).
-The general resolving parameter `h` remains unbounded.
+No uniform bound on the general resolving parameter `h` has been proved.
 
 [`boundary_transversal.tex`](boundary_transversal.tex) refutes two possible
 geometric shortcuts: neither boundary-face tetrahedra nor all boundary-edge
@@ -31,13 +58,13 @@ fresh Regina construction agrees with all six. Reproduction commands and
 scope are in [`boundary_transversal_research`](../fast/boundary_transversal_research/README.md).
 These examples do not prove that minimum resolving size grows.
 
-The rebuilt [report PDF](report.pdf) has 772 pages. The candidate section
+The candidate-policy publication rebuilt the report to 772 pages. Its candidate section
 spans pages 756–761 and the boundary-counterexample section pages 761–766;
-their proofs and tables have been visually reviewed. Three build passes
-leave no unresolved references or new overflow warnings. The current bundle
-is checked by `python -B -S -m conflict_candidate_research.check_evidence
+their proofs and tables were visually reviewed. Three build passes
+left no unresolved references or new overflow warnings. That historical bundle
+is checked at its recorded source revision by `python -B -S -m conflict_candidate_research.check_evidence
 --benchmark ../synthesis/data/conflict-candidate-benchmark.json --publication`
-from `fast/`; its manifest records the current sources and complete evidence.
+from `fast/`; its manifest records that source snapshot and complete evidence.
 
 [`exact_polynomial_lp.tex`](exact_polynomial_lp.tex) proves the maintained
 polynomial exact LP policy: a bounded Bland prefix, rational outward-rounded
