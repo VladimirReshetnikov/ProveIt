@@ -112,34 +112,10 @@ theorem classDelta_inv_le {gamma theta : Real} (k : Nat) (hg : 0 < gamma) (hg1 :
     (classDelta theta gamma k)⁻¹ ≤ (2 / (gamma * theta)) ^ (2 ^ (2 ^ (k + 5) + 5)) := by
   obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   obtain ⟨h0, h1, -, -⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
-  have hθi := thetaOne_inv_le_gen k hg hg1 ht ht1
-  have hval : (classDelta theta gamma k)⁻¹ = (2 : Real) ^ (37 : Real) *
-      (4 / section16ThetaOne theta gamma k) ^ ((11 : Real) / 2) := by
-    unfold classDelta section16Delta
-    rw [mul_inv, Real.rpow_neg (by norm_num), inv_inv, ← Real.inv_rpow (by positivity), inv_div]
-  rw [hval]
-  set t := section16ThetaOne theta gamma k
-  set u := 2 / (gamma * theta) with hu
-  clear_value u t
-  have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
-  have hu1 : 1 ≤ u := le_trans (by norm_num) hu2
-  have h4t : 4 / t ≤ u ^ (2 ^ (2 ^ (k + 5) + 1) + 2) := by
-    rw [div_eq_mul_inv, pow_add, mul_comm]
-    exact mul_le_mul hθi (show (4 : Real) ≤ u ^ 2 by nlinarith only [hu2]) (by norm_num)
-      (pow_nonneg hupos.le _)
-  have h4t1 : 1 ≤ 4 / t := by rw [le_div_iff₀ h0]; linarith only [h1]
-  have h37 : (2 : Real) ^ (37 : Real) ≤ u ^ 37 := by
-    rw [show (37 : Real) = ((37 : Nat) : Real) by norm_num, Real.rpow_natCast]
-    exact pow_le_pow_left₀ (by norm_num) hu2 37
-  have h6 : (4 / t) ^ ((11 : Real) / 2) ≤ (4 / t) ^ 6 := by
-    rw [show (4 / t) ^ 6 = (4 / t) ^ ((6 : Nat) : Real) by rw [Real.rpow_natCast]]
-    exact Real.rpow_le_rpow_of_exponent_le h4t1 (by norm_num)
-  calc (2 : Real) ^ (37 : Real) * (4 / t) ^ ((11 : Real) / 2)
-      ≤ u ^ 37 * (u ^ (2 ^ (2 ^ (k + 5) + 1) + 2)) ^ 6 :=
-        mul_le_mul h37 (h6.trans (pow_le_pow_left₀ (by positivity) h4t 6))
-          (Real.rpow_nonneg (by positivity) _) (pow_nonneg hupos.le _)
-    _ = u ^ (37 + (2 ^ (2 ^ (k + 5) + 1) + 2) * 6) := by rw [← pow_mul, ← pow_add]
-    _ ≤ u ^ (2 ^ (2 ^ (k + 5) + 5)) := pow_le_pow_right₀ hu1 (gen_exp_fact2 k)
+  have ha : 5 ≤ 2 ^ (k + 5) + 1 := by have := two_pow_k5_ge k; omega
+  have h := section16Delta_inv_le_pw hu2 ha h0 h1 (thetaOne_inv_le_gen k hg hg1 ht ht1)
+  exact h.trans (pow_le_pow_right₀ (one_le_two.trans hu2)
+    (Nat.pow_le_pow_right (by norm_num) (by omega)))
 
 theorem classPieces_le_gen {gamma theta : Real} (k : Nat) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) :
