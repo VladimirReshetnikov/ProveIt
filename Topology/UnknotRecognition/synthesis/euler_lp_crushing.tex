@@ -1,0 +1,220 @@
+\section{Fair sector search and exact Euler-LP crushing}
+\label{sec:euler-lp-crushing}
+
+The preceding complete crushing backend can spend its entire finite allowance
+in one sector before considering a later easy positive surface.  It also
+enumerates Q corners even when a short linear feasibility certificate could
+settle canonical positivity.  This section develops two improvements: a
+deterministic restart schedule and an exact Euler-LP route with independent
+Farkas replay.  These are changes to discovery and its evidence, not new
+topological premises.  The diagram-bound crushing theorem and strict
+tetrahedron descent remain those of Section~\ref{sec:normal-crushing-search}.
+
+The LP implementation selectively adapts the solver and Euler certificate
+ideas preserved in report~67, discussed in
+Section~\ref{sec:completion-theorems}.  Its archived files remain unchanged.
+The maintained version adds current source checks, cancellation handling,
+binary certificate transport, support extraction and diagram-level use.
+Neither the complete sector family nor the exact simplex solver currently
+has a general quasi-polynomial implementation bound.
+
+\subsection{Canonical Euler characteristic as finitely many linear objectives}
+
+Fix a compatible allowed quadrilateral set of size $k\leq t$.  Source
+matching equations give a nonnegative Q cone
+\[
+ Q=\{q\in\mathbb R^k:Cq=0,\ q\geq0\}.
+\]
+After contracting zero-labelled triangle equations, let $G_v$ be the
+remaining corner classes at vertex $v$, with linear triangle potentials
+$\ell_{vc}$.  Constant groups are absorbed into the linear part.  For the
+nonconstant groups, canonical Euler characteristic is
+\[
+ F(q)=L(q)-\sum_v w_v\min_{c\in G_v}\ell_{vc}(q),
+ \qquad w_v=\chi(\operatorname{link}v)\in\{1,2\}.
+\]
+The source validator supplies the finite compact manifold premise behind
+these positive weights.  Choosing one corner class independently at every
+active vertex gives the identity
+\[
+ F(q)=\max_{\alpha\in\prod_vG_v} c_\alpha^{\mathsf T}q,
+ \qquad c_\alpha=L-\sum_v w_v\ell_{v,\alpha_v}.
+\]
+Consequently $F>0$ somewhere on $Q$ if and only if one homogeneous rational
+LP is feasible:
+\[
+ Cq=0,\qquad q\geq0,\qquad c_\alpha^{\mathsf T}q\geq1.
+\]
+No inequalities asserting that the chosen anchors are actual minima are
+needed.  The implication $c_\alpha^{\mathsf T}q>0\Rightarrow F(q)>0$
+holds for every anchor tuple; choosing actual minima proves the converse.
+
+The producer solves the normalized problem $Cq=0$, $q\geq0$,
+$\sum q_j\leq1$, stopping at the first positive basic point.  A feasible
+slack basis for $Cq\leq0$, $-Cq\leq0$ and $\sum q_j\leq1$ avoids a separate
+phase-I solve.  Exact Bland pivots terminate, but their number has no
+polynomial bound.  All rational numerators and denominators are carried
+exactly; floating positivity tolerances are not used.
+
+\subsection{Independent negative certificates and an envelope shortcut}
+
+For a nonpositive anchor objective the solver returns a rational multiplier
+$y_\alpha$ satisfying
+\[
+ C^{\mathsf T}y_\alpha\geq c_\alpha
+\]
+componentwise.  If $q\geq0$ and $Cq=0$, this inequality implies
+$c_\alpha^{\mathsf T}q\leq y_\alpha^{\mathsf T}Cq=0$.
+Checking all anchor tuples therefore excludes positive canonical Euler
+throughout the supplied sector.  Even with no active groups the Cartesian
+product contains its single empty tuple; an empty list of anchor proofs
+does not discharge that obligation.
+
+The checker reconstructs triangle components, potentials, cycle equations
+and Euler coefficients from the original source matching rows.  It imports
+no LP solver, sector constructor or ray enumerator.  It requires every
+anchor in canonical order with the exact rational inequality, or one
+componentwise envelope certificate.  A valid packet proves precisely the
+source and allowed sector named in it.
+
+The envelope objective
+\[
+ e_j=L_j-\sum_v w_v\min_{c\in G_v}\ell_{vc,j}
+\]
+dominates every $c_\alpha$ componentwise.  Thus one multiplier with
+$C^{\mathsf T}y\geq e$ excludes the whole sector.  A positive envelope
+point by itself is inconclusive: for example, on $q=(s,s)$ the two
+objectives $(1,-2)$ and $(-2,1)$ both have value $-s$, while their envelope
+$(1,1)$ has value $2s$.
+
+The maintained producer nevertheless evaluates the actual $F(q)$ at a
+positive envelope point.  If this value is positive, it constructs the
+canonical lift and checks its source-derived Euler characteristic before
+returning a witness.  Otherwise it continues the complete anchor search.
+This additional check can avoid anchor enumeration without mistaking the
+linear relaxation's objective for the surface's Euler value.
+
+Source-row forcing can delete Q coordinates before the LP.  The new
+reduction wrapper retains the original sector, the full matching implication
+proof, and the Euler packet on exactly the retained types.  Its independent
+checker proves every forced zero from original matching equations before
+replaying the smaller sector.  A proof about an arbitrary smaller sector
+cannot stand in for the original negative query.  Nested reduction wrappers,
+altered retained masks and mismatched source digests are rejected.
+
+\subsection{Turning any canonical positive witness into a crushable ray}
+
+A positive Euler certificate intentionally proves a canonical vector, not
+connectedness or extremality.  This permits future exact feasibility
+methods to return a nonbasic point.  The maintained extractor supplies the
+remaining ray contract without expanding normal discs.
+
+Let $x$ be the independently validated positive canonical standard vector,
+$S=\operatorname{supp}x$, and $M$ the original matching matrix.  Prepare the
+kernel only of $M_{[:,S]}$, retain the exact original Euler coefficients on
+$S$, and apply the support descent of the preceding reusable-kernel section.
+After primitive rescaling, zero-expand the resulting ray into the original
+$7t$ coordinates.
+
+\begin{proposition}[Positive support extraction for crushing]
+This procedure returns a primitive admissible positive full matching-cone
+extreme ray with a quadrilateral and support contained in $S$.
+\end{proposition}
+\begin{proof}
+The nonnegative cone restricted to $S$ is a coordinate face of the full
+matching cone, and its extreme rays are extreme in that full cone.  The
+descent preserves every initial zero and never decreases the normalized
+positive Euler objective.  The retained support contains no incompatible
+quad pair.  At every vertex at least one triangle coordinate is initially
+zero, because $x$ is canonical; these zeros persist.  A nonzero triangle-only
+matching vector would be a nonnegative sum of vertex links and would violate
+one of those zeros.  The output therefore has a quadrilateral.  Primitive
+integral scaling and full-source extremality give connectedness by the
+lemma in Section~\ref{sec:normal-crushing-search}.  The crushing verifier
+independently rechecks the complete original source and ray contract.
+\end{proof}
+
+Preparing the positive support instead of all $7t$ columns is especially
+useful for these one-shot queries.  The extractor still retains every
+original matching equation; it does not impose an unrelated linear slice
+that could make a disconnected surface appear extreme.
+
+\subsection{Growing prefixes, fair restarts and shared allowances}
+
+Round $r$ visits the first $\min(16\cdot2^r,3^t)$ assignments in the selected
+deterministic order, allowing $q_0 2^r$ candidates for each unfinished
+sector, with $q_0=64$ by default.  Completed negative sectors are skipped.
+An unfinished corner job retains its prepared kernel and matching-reduction
+proof, but restarts its deterministic enumerator; a partial transcript is
+discarded.  The growing prefix gives later sectors an early opportunity,
+while growing the quota revisits expensive early sectors before traversing
+the entire exponential family.  The sequential policy remains available
+as \texttt{sector_quantum=None}.
+
+For a deterministic corner job that completes or finds its first positive
+after $W>0$ candidates, all aborted attempt quotas are less than $W$.
+They form a geometric sequence whose sum is less than $2W$.  Adding the
+final $W$ candidates bounds that job's repeated candidate work by $3W$.
+Zero-candidate jobs complete on their first visit.  Source preparation is
+cached for unfinished jobs; enumerator initialization, prefix traversal
+and certificate processing remain additional work.  Cached kernels, the
+explored assignment prefix and negative certificates can still occupy
+exponential memory.  Fairness supplies no small global sector count.
+
+The Euler-LP option uses the same growing schedule with separate per-attempt
+pivot and anchor quotas.  It rebuilds its LP state on retry and charges every
+repeated pivot and anchor.  Source matching preparation remains cached in
+the enclosing job.  Since a quota can stop either resource, the clean
+geometric bound concerns the sum of pivot and anchor counts, rather than
+a separate constant-factor guarantee for each count.  All unbounded jobs
+are finite: anchor products are finite and exact Bland pivoting terminates.
+Both complete modes therefore retain the strict-descent completeness proof.
+
+The public crushing API keeps corner search as its default and exposes
+\texttt{sector_method='lp'} with \texttt{lp_strategy='envelope'} or
+\texttt{'anchors'}.  Global sector starts and crushing steps are shared
+across successors.  Corner bases, LP pivots and LP anchors have explicit,
+separate allowances; only the selected method's work counts are consumed.
+Reaching an applicable allowance returns an authenticated partial chain,
+not a negative sector proof.  Caller exceptions remain distinct from those
+local limits and propagate through nested replay unchanged.
+
+For a final knottedness packet the global verifier still requires exactly
+all $3^t$ maximal assignments in canonical order.  Each can carry a complete
+Q-corner exhaustion, a native Euler-LP proof, or a source-proven matching
+reduction followed by an Euler-LP proof.  The checker independently verifies
+each packet's full original assignment.  Neither the traversal order nor
+mixed proof methods permit a missing sector or a partial negative claim.
+
+\subsection{What a fixed-sector parameter bound would prove}
+
+Let $g$ be the number of nonconstant corner groups and $m_v=|G_v|$.  Their
+total number of classes is at most $4t$.  A sharper support bound follows
+from the triangle incidence graph: allowing $k$ quad coordinates removes
+at most $4k$ zero-labelled triangle adjacency edges.  Since the original
+corner graph at each vertex is connected, contraction leaves
+$\sum_v(m_v-1)\leq4k$.  Hence, when $g>0$, the number of anchor objectives
+satisfies
+\[
+ A=\prod_v m_v\leq
+ \min\{(4t/g)^g,\ (1+4k/g)^g\}.
+\]
+For $g=0$ the count is one.  Identifying potentials equal on $\ker C$ can
+only reduce this bound, but the current certificate format requires its
+explicit source-derived corner groups and does not silently omit anchors.
+
+The producer retains at most 256 cached duals, always including the zero
+dual, so coordinatewise dominance tests add only polynomial work per
+anchor.  An unbounded all-previous-duals scan would instead permit quadratic
+work in $A$; no such scan is needed for correctness.
+
+With a polynomial exact LP policy this would give $A\operatorname{poly}(t)$
+fixed-sector discovery and replay, followed by polynomial support extraction
+and crushing.  One active vertex needs at most $\min(4t,4k+1)$ anchor LPs,
+plus at most one preliminary envelope LP;
+$g=O(\log t)$ gives a quasi-polynomial fixed-sector bound.  These are
+conditional time bounds, not bounds for the maintained Bland solver.
+Moreover, the full $3^t$ compatible sector family remains even with a
+polynomial solver.  A uniform small sector/backdoor family or a suitable
+source decomposition on every crushing successor is still required for
+the requested general quasi-polynomial recognizer.

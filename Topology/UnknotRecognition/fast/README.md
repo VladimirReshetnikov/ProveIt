@@ -4588,3 +4588,33 @@ The complete sector search and its negative replay remain exponential. See
 [the crushing theory](../synthesis/normal_crushing_search.tex) and
 [the audit workflow](normal_crushing_research/README.md) for the proofs,
 independent quotient comparisons, traversal ablations and measured limitations.
+
+### Fair scheduling and exact Euler-LP certificates
+
+Crushing search now uses `sector_quantum=64`: each round doubles both the
+visited sector prefix and the per-sector allowance. Unfinished jobs restart
+with cached source preparation, charging all repeated candidates. Completed
+negatives are skipped. `sector_quantum=None` preserves sequential traversal.
+This prevents an early difficult sector from monopolizing a finite candidate
+budget; it does not reduce the worst-case number of sectors.
+
+`sector_method='lp'` selects exact canonical Euler feasibility, with separate
+global `max_pivots` and `max_anchors` limits (both default to 10000). Its default
+`lp_strategy='envelope'` first tries one dominating objective and checks any
+positive point's actual canonical Euler value; `'anchors'` directly considers
+all corner-anchor objectives. Negative certificates use exact Farkas duals.
+`normal_euler_verify.verify_sector_euler_certificate` reconstructs their model
+from the source without importing the solver. Matching-reduction wrappers bind
+reduced LPs to the original full sector.
+
+`positive_ray.extract_positive_ray` converts any valid canonical positive
+normal point to a primitive positive full-source extreme ray by descending
+within its original positive support. The crushing checker independently
+revalidates this ray. The global negative verifier supports either complete
+corner or Euler-LP evidence for each final-source assignment.
+
+The maintained simplex uses exact Bland pivots; no polynomial pivot bound is
+claimed. A small number of active vertex groups bounds the number of anchor
+LPs, conditional on a polynomial LP policy. The full compatible-sector family
+still needs a general quasi-polynomial bound. Proofs and comparisons are in
+[Euler-LP crushing](../synthesis/euler_lp_crushing.tex).
