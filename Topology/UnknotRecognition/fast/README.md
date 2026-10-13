@@ -1,5 +1,15 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+The signed-annulus continuation now transports authenticated passive curves in
+shared grammars and checks one common basis change per geometric core. Its
+polynomial rank-two support-block method adds five certified cuts to the
+expanded native bank (117/126), preserving all 112 earlier positive packets.
+Fresh literal Regina cuts agree in all five cases. The default phase runs
+after the earlier portfolio; `annulus_method='counts'` disables it. It shares
+source/boundary packets and preserves cancellation callbacks. See
+[`signed_primitive_annuli.tex`](../synthesis/signed_primitive_annuli.tex) for
+proofs, encoded complexity and the remaining global hierarchy obligations.
+
 The 12 October whole-cut portfolio now tries an Euler-checked signed free-group
 terminal after its geometric attempts refuse. `group_fallback=False` retains
 the earlier geometric-only policy. The fallback shares source and boundary

@@ -135,8 +135,58 @@ def _kernel_fallback(result, parallelity, boundary, record_certificate, check, *
     return result
 
 
+def _signed_cut(parallelity, boundary, candidate, record_certificate, check):
+    """Try cached geometric candidates after the established portfolio refuses.
+
+    All pending annuli enter one common-basis test per core component. This
+    consumes the geometric core proof, never merely an abstract free-group proof.
+    """
+    from .signed_annulus_basis import signed_annulus_basis
+    geometry, reduction, prepared, forest, defer_forest, ready = candidate
+    summary, skeleton = parallelity['summary'], boundary['skeleton']
+    if ready is None:
+        deferred = {i for i, p in enumerate(summary['base_profiles'])
+                    if (p['euler_characteristic'], p['boundary_components']) != (1, 1)}
+        absorption = absorb_disk_bundles(geometry, summary, skeleton,
+                                         primitive_bases=deferred, check=check)
+        if absorption is None:
+            return None
+        augmented, absorption_proof, absorbed = absorption
+        core = (prepared if prepared is not None and
+                len(augmented['handles2']) == len(geometry['core']['handles2'])
+                else core_handlebody_certificate(augmented, forest=forest,
+                                                  defer_forest=defer_forest, check=check))
+        if core['status'] != 'COMPLETE':
+            return None
+    else:
+        augmented, absorption_proof, absorbed, core = ready
+    transported = signed_annulus_basis(geometry, summary, skeleton, augmented,
+                                       core['certificate'], check=check)
+    if transported is None:
+        return None
+    proof, owners, statistics = transported
+    census, reason = _census(geometry, summary, skeleton, core['components'], check,
+                             absorbed, {}, owners)
+    if census is None:
+        return None
+    result = dict(status='COMPLETE', census=census,
+                  stats=dict(parallelity=parallelity['stats'], boundary=boundary['stats'],
+                             core=core.get('stats', {}), signed_annuli=statistics),
+                  trust='source cut unmarked handlebodies; no standalone knot verdict')
+    if record_certificate:
+        result['certificate'] = dict(schema='normal-cut-handlebodies-signed-annuli-v1',
+            parallelity=parallelity['certificate'], boundary=boundary['certificate'],
+            absorption=absorption_proof, core=core['certificate'],
+            signed_annuli=proof, census=census)
+        if reduction is not None:
+            result['certificate'].update(schema='normal-cut-handlebodies-signed-annuli-v2',
+                                         core_reduction=reduction)
+    check()
+    return result
+
+
 def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_core,
-                 top_forest, forest, check, *, defer_forest=False):
+                 top_forest, forest, check, *, defer_forest=False, annulus_candidates=None):
     """One finite forest choice, sharing immutable source and boundary packets."""
     result = dict(status='INCONCLUSIVE', stats=dict(parallelity=parallelity['stats']),
                   trust='source cut handlebodies; no standalone knot verdict')
@@ -168,8 +218,11 @@ def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_co
         return result
     if reduction is not None:
         result['reason'] = 'boundary_kernel_cancellation_stalled'
-        return _kernel_fallback(result, parallelity, boundary, record_certificate, check,
-                                geometry=geometry, reduction=reduction, forest=forest, defer_forest=defer_forest)
+        result = _kernel_fallback(result, parallelity, boundary, record_certificate, check,
+                                 geometry=geometry, reduction=reduction, forest=forest, defer_forest=defer_forest)
+        if result['status'] != 'COMPLETE' and annulus_candidates is not None:
+            annulus_candidates.append((geometry, reduction, prepared_core, forest, defer_forest, None))
+        return result
     family = primitive_bundle_annuli(parallelity['summary'], boundary['skeleton'], check=check)
     core_side = family is None
     if core_side:
@@ -198,7 +251,12 @@ def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_co
             boundary['skeleton'], augmented, core['certificate'], check=check)
         if transported is None:
             result['reason'] = 'annular_core_attachment'
-            return _kernel_fallback(result, parallelity, boundary, record_certificate, check, forest=forest, defer_forest=defer_forest)
+            result = _kernel_fallback(result, parallelity, boundary, record_certificate, check,
+                                      forest=forest, defer_forest=defer_forest)
+            if result['status'] != 'COMPLETE' and annulus_candidates is not None:
+                annulus_candidates.append((geometry, reduction, prepared_core, forest, defer_forest,
+                                           (augmented, absorption_proof, absorbed, core)))
+            return result
         core_annuli_proof, core_annuli, result['stats']['core_annuli'] = transported
     census, reason = _census(parallelity['geometry'], parallelity['summary'],
                             boundary['skeleton'], core['components'], check, absorbed, primitive, core_annuli)
@@ -225,7 +283,8 @@ def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_co
 
 def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
                            record_certificate=False, precheck_core=True, boundary_method='masks',
-                           top_forest='max_weight', lower_forest='adaptive', group_fallback=True, check=lambda: None):
+                           top_forest='max_weight', lower_forest='adaptive', group_fallback=True,
+                           annulus_method='signed_rank_two', check=lambda: None):
     """Classify the whole supplied cut using geometric or Euler/group criteria.
 
     A COMPLETE result is an exact binary multiplicity census of handlebodies.
@@ -248,6 +307,11 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     of the original disk-base cut presentation and checks the source Euler
     characteristic. It reuses the source and boundary packets and cycle budget.
     The resulting census is unmarked; no geometric handle slides are claimed.
+    Finally signed_rank_two tries cached geometric core candidates and a common
+    basis change for every pending annulus, using compressed signed words.
+    counts disables this last phase. All earlier successes retain their packets.
+    Each finite candidate uses the signed-word kernel's documented node/work caps;
+    resource refusal remains inconclusive. No additional orbit query is started.
     """
     check()
     if type(boundary_method) is not str or boundary_method not in ('masks', 'moments'):
@@ -256,6 +320,8 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
         raise ValueError('top_forest must be queue or max_weight')
     if type(lower_forest) is not str or lower_forest not in ('adaptive', 'source', 'max_passages', 'reverse_id', 'deferred'):
         raise ValueError('invalid lower_forest policy')
+    if type(annulus_method) is not str or annulus_method not in ('counts', 'signed_rank_two'):
+        raise ValueError('annulus_method must be counts or signed_rank_two')
     if type(group_fallback) is not bool:
         raise ValueError('group_fallback must be bool')
     if type(precheck_core) is not bool:
@@ -290,6 +356,7 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
 
     modes = ('source', 'max_passages', 'deferred') if lower_forest == 'adaptive' else (lower_forest,)
     attempts = []
+    annulus_candidates = [] if annulus_method == 'signed_rank_two' else None
     source_core = parallelity['geometry']['core']
     for mode in modes:
         check()
@@ -297,7 +364,8 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
         if attempts and mode == 'max_passages' and set(forest) == set(select_core_forest(source_core, strategy='source', check=check)):
             continue  # Same fixed forest; still allow full-matrix deferred discovery.
         result = _attempt_cut(parallelity, discover_boundary, record_certificate,
-                              precheck_core, top_forest, forest, check, defer_forest=mode == 'deferred')
+                              precheck_core, top_forest, forest, check, defer_forest=mode == 'deferred',
+                              annulus_candidates=annulus_candidates)
         attempts.append(dict(strategy=mode, status=result['status'], reason=result.get('reason')))
         if result['status'] == 'COMPLETE' or result.get('reason') == 'boundary_budget_exhausted':
             break
@@ -320,6 +388,18 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
                 result = _group_result(parallelity, packet, record_certificate, check)
             attempts.append(dict(strategy='euler_free', status=result['status'],
                                  reason=result.get('reason')))
+    if (result['status'] != 'COMPLETE' and result.get('reason') != 'boundary_budget_exhausted'
+            and annulus_candidates):
+        # Every queued candidate has already discovered this same boundary.
+        for candidate in annulus_candidates:
+            check()
+            signed = _signed_cut(parallelity, boundary, candidate, record_certificate, check)
+            attempts.append(dict(strategy='signed_rank_two',
+                                 status='COMPLETE' if signed is not None else 'INCONCLUSIVE',
+                                 reason=None if signed is not None else 'signed_annulus_refusal'))
+            if signed is not None:
+                result = signed
+                break
     if len(attempts) > 1 or lower_forest not in ('source', 'adaptive'):
         result['stats']['lower_forest_attempts'] = attempts
     check()
