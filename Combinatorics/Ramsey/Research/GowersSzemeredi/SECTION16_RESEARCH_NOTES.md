@@ -8736,6 +8736,70 @@ The documented Lemma 16.10 correction remains in force; this checkpoint
 does not establish complete original-paper fidelity or full-facade
 verification. The final-proof simplification goal remains active.
 
+### L.94. Modular linear headlines from the quadratic inverse theorem (2026-10-13)
+
+The two modular degree-one headlines now follow from the existing
+quadratic inverse theorem at density parameter alpha². Lemma 3.4 sends
+degree-two uniformity at alpha² to degree-one uniformity at
+sqrt(alpha²) = alpha, so the original degree-one obstruction suffices.
+The fixed-power estimate bounds both quadratic discrepancy parameters
+below by (alpha²)^49462 = alpha^98924. Since 98924 ≤ 2^17, the existing
+printed and offset-four headline coefficients follow. The existential
+modulus threshold may increase; no quantitative restriction on that
+witness is part of these theorem statements. All final bounds and
+hypotheses remain unchanged.
+
+The same fixed-power estimate replaces four repeated quadratic coefficient
+comparisons. Its 35-line proof moves byte-identically to the common
+quadratic owner; the source cost of that relocation is fully included.
+Six proof bodies shrink from 206 to 60 actual tactic-body lines. Across
+four production files this removes 149 source lines and 146 tactic-body
+lines. All 35 old complete statements and contexts and all four definitions
+are preserved; no declaration is added or deleted.
+
+The genuinely sharper integer offset-one degree-one theorem retains its
+Fourier proof unchanged. Its owner explicitly imports the old linear
+module and continues to export every prior declaration. The stronger
+final route drops that linear module: 710→709 modules, 182 fewer source
+lines and 150 fewer tactic-body lines. This route change retains the
+legacy helpers and the sharper integer theorem. The original and selected
+historical target source closures remain unchanged.
+
+Three printed-proof checks are added to the focused audit, preserving all
+284 prior entries in order and bringing the total to 287. The three sharp
+proofs already have explicit focused checks. The relocated helper retains
+its existing IntegerFidelityAudit check. The focused closure falls by
+105 source lines including the three added audit entries; the downstream
+closure falls by 149. The six-target source union shrinks by 146 lines
+with 1,205 modules and 1,208 source/configuration inputs retained.
+
+The 719-module core check passes on its first attempt with the frozen
+source unchanged. Three fresh full native checks pass: stronger bridge
+(709), focused audit (784) and downstream audit (1,099), with every current
+input hash verified. The named audits allow only `propext`,
+`Classical.choice` and `Quot.sound`; standalone compilation does not
+claim an axiom audit of every export. Completed L.92 original audit
+(642), historical explicit audit (701) and historical bridge (560) records
+are retained after rechecking each complete own-target input manifest,
+without new runs. The explicit audit retains its three named checks;
+the old bridge's focused-audit link is historical metadata. The fresh
+scope covers 1,121 modules / 215,273 source lines with 1,124 inputs;
+including the retained targets gives 1,205 / 226,278 with 1,208 inputs.
+
+The selected native scope covers 72 of 75 affected import consumers;
+all seven modules with narrower imports are covered. The three aggregate
+targets GowersSzemeredi, Audit and PortImportAudit remain excluded.
+The regenerated inventory preserves all 120 statement statuses and all
+other content, including every duplicate short-name occurrence. Exactly
+16 line references change; filenames and list order do not. See
+`verification/2026-10-13-quadratic-linear-route{-stronger,-compatibility,-downstream}.json`,
+`verification/2026-10-13-piece-two-decomposition{-original,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-quadratic-linear-route-simplification.json`. The documented Lemma 16.10
+correction and original-paper fidelity limits remain unchanged; this
+checkpoint does not establish complete original-paper fidelity or
+full-facade verification. The final-proof simplification goal remains
+active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
