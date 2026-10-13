@@ -213,31 +213,6 @@ namespace GenParams
 
 variable {alpha : Real}
 
-/-- `8VX/B ≤ X^(2^μ₀)`, at any budget degree `b ≥ 7`. -/
-theorem slice_const_le_deg {V B : Real} {μV b μ0 : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
-    (hV : 1 ≤ V) (hVμ : V ≤ 2 ^ (2 ^ μV)) (hB : 0 < B)
-    (h7 : 7 ≤ b)
-    (hBi : B⁻¹ ≤ (2 / alpha) ^ (2 ^ b)) (hμ0 : max μV b + 2 ≤ μ0) :
-    8 * V * (2 / alpha) * B⁻¹ ≤ (2 / alpha) ^ (2 ^ μ0) := by
-  have hX := two_div_ge_two ha ha2
-  set m := max μV b
-  have hm7 : 7 ≤ m := le_trans h7 (le_max_right μV b)
-  have hV' : V ≤ (2 / alpha) ^ (2 ^ m) := pw_mono hX (pw_const hX hVμ) (le_max_left _ _)
-  have hB' : B⁻¹ ≤ (2 / alpha) ^ (2 ^ m) := pw_mono hX hBi (le_max_right _ _)
-  have hm2 : 3 ≤ 2 ^ m :=
-    le_trans (by norm_num : 3 ≤ 2 ^ 2) (Nat.pow_le_pow_right (by norm_num) (by omega))
-  have h8 : (8 : Real) ≤ (2 / alpha) ^ (2 ^ m) :=
-    pw_const hX (by
-      calc (8 : Real) = 2 ^ 3 := by norm_num
-        _ ≤ 2 ^ (2 ^ m) := pow_le_pow_right₀ (by norm_num) hm2)
-  have hXm : 2 / alpha ≤ (2 / alpha) ^ (2 ^ m) := pw_X hX m
-  have h1 := pw_mul hX (by norm_num) (by linarith) h8 hV'
-  have h2 := pw_mul hX (by positivity) (inv_pos.mpr hB).le hXm hB'
-  have h3 := pw_mul hX (by positivity) (by positivity) h1 h2
-  have e : 8 * V * (2 / alpha) * B⁻¹ = 8 * V * ((2 / alpha) * B⁻¹) := by ring
-  rw [e]
-  exact pw_mono hX h3 (by omega)
-
 /-- `(α/2)⁻¹ ≤ X^(2^b)` at any degree. -/
 theorem half_inv_le_deg (b : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     (alpha / 2)⁻¹ ≤ (2 / alpha) ^ (2 ^ b) := by
@@ -272,36 +247,8 @@ theorem baseCFW_recipPowerLB {V : Real} {D k μV μ0 : Nat} (ha : 0 < alpha)
     (ha2 : alpha ≤ 1 / 2) (hV : 1 ≤ V) (hVμ : V ≤ 2 ^ (2 ^ μV))
     (hμ0 : max μV (pDeg k) + 2 ≤ μ0) :
     RecipPowerLB (2 / alpha) (baseCF V D k alpha) (D * 2 ^ μ0 + 1) (D + 1) := by
-  have hX := two_div_ge_two ha ha2
   obtain ⟨hB0, hB1, hBi⟩ := budget_gen_bounds_fejerW k ha ha2
-  have hc := GenParams.slice_const_le_deg (V := V) (B := globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k)
-    (μV := μV) (b := pDeg k) (μ0 := μ0) ha ha2 hV hVμ hB0 (seven_le_pDeg k) hBi hμ0
-  intro s hs hs1
-  have hs2 : 0 < s / 2 := half_pos hs
-  have hs21 : s / 2 ≤ 1 := by linarith
-  have hg : 0 < alpha / 2 := half_pos ha
-  have hg1 : alpha / 2 ≤ 1 := by linarith
-  set B := globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k with hBdef
-  have hQ1 := one_le_uCount V D (alpha / 2) B (s / 2)
-  have hQ0 : 0 < uCount V D (alpha / 2) B (s / 2) := lt_of_lt_of_le zero_lt_one hQ1
-  have hQeq := uCount_eq hV D hg hg1 hB0 hB1 hs2 hs21
-  rw [GenParams.uniformBase_slice V ha hB0 hs] at hQeq
-  show 0 < s / 2 / uCount V D (alpha / 2) B (s / 2) ∧
-    s / 2 / uCount V D (alpha / 2) B (s / 2) ≤ 1 ∧
-    (s / 2 / uCount V D (alpha / 2) B (s / 2))⁻¹ ≤
-      (2 / alpha) ^ (D * 2 ^ μ0 + 1) * s⁻¹ ^ (D + 1)
-  refine ⟨div_pos hs2 hQ0, (div_le_one hQ0).mpr (by linarith), ?_⟩
-  rw [inv_div, hQeq]
-  set X := 2 / alpha with hXdef
-  have hsi : 0 ≤ s⁻¹ := (inv_pos.mpr hs).le
-  have hcs : 8 * V * X * B⁻¹ * s⁻¹ ≤ X ^ (2 ^ μ0) * s⁻¹ := mul_le_mul_of_nonneg_right hc hsi
-  have hpow := pow_le_pow_left₀ (by positivity) hcs D
-  have h2X : (2 : Real) ≤ X ^ 1 := by rw [pow_one]; exact hX
-  calc (8 * V * X * B⁻¹ * s⁻¹) ^ D / (s / 2) = 2 * (s⁻¹ * (8 * V * X * B⁻¹ * s⁻¹) ^ D) := by
-        rw [div_eq_mul_inv, inv_div]; ring
-    _ ≤ X ^ 1 * (s⁻¹ * (X ^ (2 ^ μ0) * s⁻¹) ^ D) :=
-        mul_le_mul h2X (mul_le_mul_of_nonneg_left hpow hsi) (by positivity) (by positivity)
-    _ = X ^ (D * 2 ^ μ0 + 1) * s⁻¹ ^ (D + 1) := by ring
+  exact uniform_baseC_recipPowerLB_of_budget ha ha2 hV hVμ hB0 hB1 (seven_le_pDeg k) hBi hμ0
 
 end Fixed
 

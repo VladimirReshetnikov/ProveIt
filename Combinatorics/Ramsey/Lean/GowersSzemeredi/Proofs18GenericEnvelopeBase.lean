@@ -289,15 +289,15 @@ theorem uniformBase_slice (V : Real) {B s : Real} (ha : 0 < alpha) (hB : 0 < B) 
   field_simp
   ring
 
-/-- `8VX/B ≤ X^(2^μ₀)`. -/
-theorem slice_const_le {V B : Real} {μV k μ0 : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
+/-- `8VX/B ≤ X^(2^μ₀)`, at any budget degree `b ≥ 7`. -/
+theorem slice_const_le_deg {V B : Real} {μV b μ0 : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
     (hV : 1 ≤ V) (hVμ : V ≤ 2 ^ (2 ^ μV)) (hB : 0 < B)
-    (hBi : B⁻¹ ≤ (2 / alpha) ^ (2 ^ fixDeg k)) (hμ0 : max μV (fixDeg k) + 2 ≤ μ0) :
+    (h7 : 7 ≤ b)
+    (hBi : B⁻¹ ≤ (2 / alpha) ^ (2 ^ b)) (hμ0 : max μV b + 2 ≤ μ0) :
     8 * V * (2 / alpha) * B⁻¹ ≤ (2 / alpha) ^ (2 ^ μ0) := by
   have hX := two_div_ge_two ha ha2
-  set m := max μV (fixDeg k)
-  have h7 : 7 ≤ fixDeg k := Nat.le_add_left 7 _
-  have hm7 : 7 ≤ m := le_trans h7 (le_max_right μV (fixDeg k))
+  set m := max μV b
+  have hm7 : 7 ≤ m := le_trans h7 (le_max_right μV b)
   have hV' : V ≤ (2 / alpha) ^ (2 ^ m) := pw_mono hX (pw_const hX hVμ) (le_max_left _ _)
   have hB' : B⁻¹ ≤ (2 / alpha) ^ (2 ^ m) := pw_mono hX hBi (le_max_right _ _)
   have hm2 : 3 ≤ 2 ^ m :=
@@ -314,38 +314,42 @@ theorem slice_const_le {V B : Real} {μV k μ0 : Nat} (ha : 0 < alpha) (ha2 : al
   rw [e]
   exact pw_mono hX h3 (by omega)
 
+/-- `8VX/B ≤ X^(2^μ₀)`. -/
+theorem slice_const_le {V B : Real} {μV k μ0 : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
+    (hV : 1 ≤ V) (hVμ : V ≤ 2 ^ (2 ^ μV)) (hB : 0 < B)
+    (hBi : B⁻¹ ≤ (2 / alpha) ^ (2 ^ fixDeg k)) (hμ0 : max μV (fixDeg k) + 2 ≤ μ0) :
+    8 * V * (2 / alpha) * B⁻¹ ≤ (2 / alpha) ^ (2 ^ μ0) := by
+  exact slice_const_le_deg ha ha2 hV hVμ hB
+    (show 7 ≤ fixDeg k from Nat.le_add_left 7 _) hBi hμ0
+
 end GenParams
 
-/-- The uniform slice density is a reciprocal power, independently of any
-single-piece parameter structure. -/
-theorem uniform_baseC_recipPowerLB {alpha V : Real} {D k μV μ0 : Nat} (ha : 0 < alpha)
-    (ha2 : alpha ≤ 1 / 2) (hV : 1 ≤ V) (hVμ : V ≤ 2 ^ (2 ^ μV))
-    (hμ0 : max μV (fixDeg k) + 2 ≤ μ0) :
+/-- The uniform slice density at any positive budget with a reciprocal-power bound. -/
+theorem uniform_baseC_recipPowerLB_of_budget {alpha V B : Real} {D μV b μ0 : Nat}
+    (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV : 1 ≤ V) (hVμ : V ≤ 2 ^ (2 ^ μV))
+    (hB0 : 0 < B) (hB1 : B ≤ 1) (h7 : 7 ≤ b)
+    (hBi : B⁻¹ ≤ (2 / alpha) ^ (2 ^ b)) (hμ0 : max μV b + 2 ≤ μ0) :
     RecipPowerLB (2 / alpha)
-      (fun s => s / 2 / uCount V D (alpha / 2) (globalBudget alpha (alpha / 2) k) (s / 2))
+      (fun s => s / 2 / uCount V D (alpha / 2) B (s / 2))
       (D * 2 ^ μ0 + 1) (D + 1) := by
   have hX := two_div_ge_two ha ha2
-  obtain ⟨hB0, hB1, hBi⟩ := budget_gen_bounds k ha ha2
-  have hc := GenParams.slice_const_le (V := V) (B := globalBudget alpha (alpha / 2) k) (μV := μV) (k := k)
-    (μ0 := μ0) ha ha2 hV hVμ hB0 hBi hμ0
+  have hc := GenParams.slice_const_le_deg ha ha2 hV hVμ hB0 h7 hBi hμ0
   intro s hs hs1
   have hs2 : 0 < s / 2 := half_pos hs
   have hs21 : s / 2 ≤ 1 := by linarith
   have hg : 0 < alpha / 2 := half_pos ha
   have hg1 : alpha / 2 ≤ 1 := by linarith
-  have hQ1 := one_le_uCount V D (alpha / 2) (globalBudget alpha (alpha / 2) k) (s / 2)
-  have hQ0 : 0 < uCount V D (alpha / 2) (globalBudget alpha (alpha / 2) k) (s / 2) :=
-    lt_of_lt_of_le zero_lt_one hQ1
+  have hQ1 := one_le_uCount V D (alpha / 2) B (s / 2)
+  have hQ0 : 0 < uCount V D (alpha / 2) B (s / 2) := lt_of_lt_of_le zero_lt_one hQ1
   have hQeq := uCount_eq hV D hg hg1 hB0 hB1 hs2 hs21
   rw [GenParams.uniformBase_slice V ha hB0 hs] at hQeq
-  show 0 < s / 2 / uCount V D (alpha / 2) (globalBudget alpha (alpha / 2) k) (s / 2) ∧
-    s / 2 / uCount V D (alpha / 2) (globalBudget alpha (alpha / 2) k) (s / 2) ≤ 1 ∧
-    (s / 2 / uCount V D (alpha / 2) (globalBudget alpha (alpha / 2) k) (s / 2))⁻¹ ≤
+  show 0 < s / 2 / uCount V D (alpha / 2) B (s / 2) ∧
+    s / 2 / uCount V D (alpha / 2) B (s / 2) ≤ 1 ∧
+    (s / 2 / uCount V D (alpha / 2) B (s / 2))⁻¹ ≤
       (2 / alpha) ^ (D * 2 ^ μ0 + 1) * s⁻¹ ^ (D + 1)
   refine ⟨div_pos hs2 hQ0, (div_le_one hQ0).mpr (by linarith), ?_⟩
   rw [inv_div, hQeq]
   set X := 2 / alpha with hXdef
-  set B := globalBudget alpha (alpha / 2) k
   have hsi : 0 ≤ s⁻¹ := (inv_pos.mpr hs).le
   have hcs : 8 * V * X * B⁻¹ * s⁻¹ ≤ X ^ (2 ^ μ0) * s⁻¹ := mul_le_mul_of_nonneg_right hc hsi
   have hpow := pow_le_pow_left₀ (by positivity) hcs D
@@ -355,6 +359,18 @@ theorem uniform_baseC_recipPowerLB {alpha V : Real} {D k μV μ0 : Nat} (ha : 0 
     _ ≤ X ^ 1 * (s⁻¹ * (X ^ (2 ^ μ0) * s⁻¹) ^ D) :=
         mul_le_mul h2X (mul_le_mul_of_nonneg_left hpow hsi) (by positivity) (by positivity)
     _ = X ^ (D * 2 ^ μ0 + 1) * s⁻¹ ^ (D + 1) := by ring
+
+/-- The uniform slice density is a reciprocal power, independently of any
+single-piece parameter structure. -/
+theorem uniform_baseC_recipPowerLB {alpha V : Real} {D k μV μ0 : Nat} (ha : 0 < alpha)
+    (ha2 : alpha ≤ 1 / 2) (hV : 1 ≤ V) (hVμ : V ≤ 2 ^ (2 ^ μV))
+    (hμ0 : max μV (fixDeg k) + 2 ≤ μ0) :
+    RecipPowerLB (2 / alpha)
+      (fun s => s / 2 / uCount V D (alpha / 2) (globalBudget alpha (alpha / 2) k) (s / 2))
+      (D * 2 ^ μ0 + 1) (D + 1) := by
+  obtain ⟨hB0, hB1, hBi⟩ := budget_gen_bounds k ha ha2
+  exact uniform_baseC_recipPowerLB_of_budget ha ha2 hV hVμ hB0 hB1
+    (show 7 ≤ fixDeg k from Nat.le_add_left 7 _) hBi hμ0
 
 namespace GenParams
 
