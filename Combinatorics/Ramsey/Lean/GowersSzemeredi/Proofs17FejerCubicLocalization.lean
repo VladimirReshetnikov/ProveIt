@@ -13,22 +13,22 @@ def fejerCubicPrimeModelThreshold (alpha T : Real) : Real :=
     (positivePowerThreshold (12 * max 2 T) 1
       ((1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53)))))
 
-theorem fejer_cubic_nonuniformity_localized_phase_removal :
-    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 →
-      ∀ (N : Nat) [NeZero N] [Fact N.Prime], section13FejerOddSquareThreshold alpha ≤ N →
-        ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 3 →
-        ∃ phi : ZMod N → ZMod N, ∃ M l : Nat, ∃ Q : Fin M → ModAP N,
-          PolynomialOn 3 Finset.univ phi ∧
-          IsPartition (fun i => (Q i).carrier) Finset.univ ∧
-          (∀ i, (Q i).IsProper ∧ ((Q i).length = l ∨ (Q i).length = l + 1)) ∧
-          (N : Real) ^ ((1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53))) / 12 ≤ l ∧
-          (∀ i, ((Q i).length : Real) ≤ Real.sqrt N) ∧
-          ¬ UniformOnPartition (phaseTwist f phi) 2
-            ((2 : Real) ^ (-(58 : Int)) * alpha ^ 2 * (alpha / 2) ^ ((2 : Nat) ^ 42)) Q (l + 1) := by
-  intro alpha hα hαone
+/-- **Cubic localization** (Section 17) at any odd-square exponent. -/
+theorem FejerOddSquareAt.localized {alpha e T : Real} (h : FejerOddSquareAt alpha e T)
+    (hα : 0 < alpha) :
+    ∀ (N : Nat) [NeZero N] [Fact N.Prime], T ≤ N →
+      ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 3 →
+      ∃ phi : ZMod N → ZMod N, ∃ M l : Nat, ∃ Q : Fin M → ModAP N,
+        PolynomialOn 3 Finset.univ phi ∧
+        IsPartition (fun i => (Q i).carrier) Finset.univ ∧
+        (∀ i, (Q i).IsProper ∧ ((Q i).length = l ∨ (Q i).length = l + 1)) ∧
+        (N : Real) ^ e / 12 ≤ l ∧
+        (∀ i, ((Q i).length : Real) ≤ Real.sqrt N) ∧
+        ¬ UniformOnPartition (phaseTwist f phi) 2
+          ((2 : Real) ^ (-(58 : Int)) * alpha ^ 2 * (alpha / 2) ^ ((2 : Nat) ^ 42)) Q (l + 1) := by
   intro N _ _ hN f hf hnot
   obtain ⟨m, P, R, B, psi, hmodd, hmpos, hmsqrt, hsize, hPs, hPR, hP, hR,
-    hPl, hRl, hB, hmass, hbil, hfourier⟩ := theorem_13_12_fejer_odd_square_explicit alpha hα hαone N hN f hf hnot
+    hPl, hRl, hB, hmass, hbil, hfourier⟩ := h N hN f hf hnot
   obtain ⟨mu, hmu, hagree⟩ := hbil
   let delta := (alpha / 2) ^ ((2 : Nat) ^ 42) / 4
   let rho := delta * alpha ^ 2 / 4
@@ -56,6 +56,23 @@ theorem fejer_cubic_nonuniformity_localized_phase_removal :
   · intro i
     exact (by exact_mod_cast hupper i : ((Q i).length : Real) ≤ m).trans hmsqrt
   · simpa only [Nat.cast_ofNat, hconstant] using hnonuniform
+
+theorem fejer_cubic_nonuniformity_localized_phase_removal :
+    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 →
+      ∀ (N : Nat) [NeZero N] [Fact N.Prime], section13FejerOddSquareThreshold alpha ≤ N →
+        ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 3 →
+        ∃ phi : ZMod N → ZMod N, ∃ M l : Nat, ∃ Q : Fin M → ModAP N,
+          PolynomialOn 3 Finset.univ phi ∧
+          IsPartition (fun i => (Q i).carrier) Finset.univ ∧
+          (∀ i, (Q i).IsProper ∧ ((Q i).length = l ∨ (Q i).length = l + 1)) ∧
+          (N : Real) ^ ((1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53))) / 12 ≤ l ∧
+          (∀ i, ((Q i).length : Real) ≤ Real.sqrt N) ∧
+          ¬ UniformOnPartition (phaseTwist f phi) 2
+            ((2 : Real) ^ (-(58 : Int)) * alpha ^ 2 * (alpha / 2) ^ ((2 : Nat) ^ 42)) Q (l + 1) := by
+  intro alpha hα hαone
+  exact FejerOddSquareAt.localized (theorem_13_12_fejer_odd_square_explicit alpha hα hαone :
+    FejerOddSquareAt alpha ((1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53)))
+      (section13FejerOddSquareThreshold alpha)) hα
 
 
 end LeanProofs.GowersSzemeredi

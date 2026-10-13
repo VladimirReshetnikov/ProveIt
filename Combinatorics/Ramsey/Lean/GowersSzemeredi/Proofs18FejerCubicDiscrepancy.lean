@@ -25,28 +25,10 @@ theorem fejer_cubic_nonuniformity_discrepancy_partition (alpha : Real)
         (∀ j, (R j).IsProper) ∧
         (N : Real) ^ fejerCubicDiscrepancyExponent alpha ≤ averageCellSize (fun j => (R j).carrier) ∧
         fejerCubicDiscrepancyParameter alpha * N ≤ ∑ j, ‖∑ x ∈ (R j).carrier, f x‖ := by
-  let e := fejerCubicLocalizationExponent alpha * fejerCubicLocalCountExponent alpha
-  let beta := fejerCubicTwistedDiscrepancyParameter alpha
-  let D := fejerCubicTwistedCountConstant alpha
-  have he : 0 < e := mul_pos (by unfold fejerCubicLocalizationExponent; positivity)
-    (fejerCubicLocalCountExponent_bounds hα hαone).1
-  have hβ : 0 < beta := by
-    have h := fejerCubicDiscrepancyParameter_pos hα
-    change 0 < beta / 2 at h
-    linarith only [h]
-  have hD : 0 < D := by
-    have h := lt_of_lt_of_le zero_lt_one (le_max_left (1 : Real)
-      (2 * boundaryRefinementConstant (1 / 16) * (8 : Real) ^ (1 - fejerCubicLocalCountExponent alpha)))
-    dsimp [D, fejerCubicTwistedCountConstant, fejerCubicLocalCountConstant]
-    positivity
-  intro N _ _ hN f hf hnot
-  obtain ⟨phi, l, K, Q, hpoly, hlength, hQ, _, hcount, hdis⟩ :=
-    fejer_cubic_nonuniformity_twisted_discrepancy alpha hα hαone N
-      ((le_max_left _ _).trans hN) f hf hnot
-  have hcount' : (K : Real) ≤ D * (N : Real) ^ (1 - e) :=
-    fejer_cubic_twisted_count_power hα hαone hlength hcount
-  exact polynomial_phase_inverse_partition (by omega : 1 ≤ 3) he hβ hD f hf
-    Q (fun _ => phi) (fun _ => hpoly) hQ hcount' hdis ((le_max_right _ _).trans hN)
+  exact FejerOddSquareAt.functionDiscrepancyBound (theorem_13_12_fejer_odd_square_explicit alpha hα hαone :
+    FejerOddSquareAt alpha (fejerCubicLocalizationExponent alpha)
+      (section13FejerOddSquareThreshold alpha)) hα hαone
+    (section13_fejer_explicit_exponent_bounds hα hαone).1
 
 /-- The cubic inverse interface with every threshold specified by a finite formula. -/
 theorem fejer_cubic_function_discrepancy_bound {alpha : Real}
