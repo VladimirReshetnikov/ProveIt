@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18GenericStep
+import GowersSzemeredi.Proofs18ExponentialCalculus
 
 /-! Power-of-two envelopes for the single-piece step in any dimension
 (Notes L.7a, F3c).
