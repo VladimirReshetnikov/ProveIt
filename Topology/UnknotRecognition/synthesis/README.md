@@ -8,6 +8,11 @@ It branches on missed conflicts, partitions candidates without repetition
 within each depth pass, and safely forgets old conflicts in a fixed cache.
 The original subset policy remains the default. All 200 affected tests pass,
 including independent geometric replay, cache eviction, and shared limits.
+The fresh 352-query original STANDARD audit and six complete diagram proofs
+agree under both policies. Trefoil discovery uses 40 oracle nodes instead of
+64; figure-eight uses 29 instead of 36. Complete work counts, paired timings
+and reproduction commands are in
+[`conflict_candidate_research`](../fast/conflict_candidate_research/README.md).
 The general resolving parameter `h` remains unbounded.
 
 [`boundary_transversal.tex`](boundary_transversal.tex) refutes two possible
@@ -18,6 +23,14 @@ STANDARD rank checks authenticate all 19 retained rays and six layerings;
 fresh Regina construction agrees with all six. Reproduction commands and
 scope are in [`boundary_transversal_research`](../fast/boundary_transversal_research/README.md).
 These examples do not prove that minimum resolving size grows.
+
+The rebuilt [report PDF](report.pdf) has 772 pages. The candidate section
+spans pages 756–761 and the boundary-counterexample section pages 761–766;
+their proofs and tables have been visually reviewed. Three build passes
+leave no unresolved references or new overflow warnings. The current bundle
+is checked by `python -B -S -m conflict_candidate_research.check_evidence
+--benchmark ../synthesis/data/conflict-candidate-benchmark.json --publication`
+from `fast/`; its manifest records the current sources and complete evidence.
 
 [`exact_polynomial_lp.tex`](exact_polynomial_lp.tex) proves the maintained
 polynomial exact LP policy: a bounded Bland prefix, rational outward-rounded
