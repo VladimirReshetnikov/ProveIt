@@ -1,0 +1,309 @@
+\section{Coordinate factors and balanced compatibility separators}
+\label{sec:euler-coordinate-factors}
+
+This is a prospective algebraic search rule.  It does not identify geometric
+surface components, does not assert that the maintained recognizer already
+uses the rule, and does not supply a general quasi-polynomial bound.
+Fix an allowed Q mask $J$, write $n=|J|$, and let $C$ be the restriction of
+the exact source cycle matrix to those columns.  All evaluations below use
+the same full-source canonical Euler function
+\[
+ K_J=\{q\ge0:Cq=0\},\qquad
+ F(q)=\max_{\alpha\in\mathcal A}c_\alpha^{\mathsf T}q,
+ \qquad A=|\mathcal A|,
+\]
+with omitted coordinates extended by zero.  In particular $F$ is positively
+homogeneous and subadditive.  Coordinate restriction preserves quadrilateral
+compatibility.
+
+\begin{proposition}[An exact coordinate-product certificate]
+Let $B_1,\ldots,B_s$ be a partition of $J$ into nonempty sets and put
+$C_i=C[:,B_i]$.  The following conditions are equivalent:
+\[
+ \ker C=\bigoplus_i\ker C_i,
+ \qquad
+ \operatorname{rank}C=\sum_i\operatorname{rank}C_i,
+\]
+where each summand is extended by zero.  Under these conditions,
+$K_J=\prod_i K_{B_i}$ in disjoint coordinates.
+\end{proposition}
+\begin{proof}
+The displayed direct sum is always contained in $\ker C$.  Its dimension
+is $n-\sum_i\operatorname{rank}C_i$, whereas the dimension of $\ker C$ is
+$n-\operatorname{rank}C$.  Dimension equality proves the equivalence.
+Intersecting the signed-space equality with the nonnegative orthant proves
+the cone product.
+\end{proof}
+
+A polynomial exact construction chooses a column basis $I$, expresses every
+nonbasis column as $C_j=\sum_{i\in I}a_{ij}C_i$, and joins the indices in the
+support of each fundamental relation
+$e_j-\sum_i a_{ij}e_i$.  These relations span the kernel.  Each support is a
+minimal dependence, so their union components form the finest coordinate
+partition: the linear-matroid components.  Zero columns are singleton loops;
+a singleton coloop has zero kernel.  An independent consumer need not trust
+this construction.  It reconstructs the source matrix and checks the literal
+partition and the exact rank equality above.  Rational elimination has
+polynomial bit complexity in the source encoding length.
+
+\begin{proposition}[Completeness after implicit-zero deletion]
+If $K_J$ contains a vector strictly positive on $J$, its literal coordinate
+product partitions are exactly the rank-additive partitions of $C$.
+In general, let $J^+$ contain the coordinates positive in at least one
+vector of $K_J$.  After deleting $J\setminus J^+$, the matroid components
+give the finest coordinate product partition of the remaining cone.
+\end{proposition}
+\begin{proof}
+If $u>0$ lies in $K_J$ and $v\in\ker C$, then $u+\varepsilon v\ge0$ for
+sufficiently small positive $\varepsilon$.  Both this vector and $u$ are
+in $K_J$, so $\operatorname{span}K_J=\ker C$.  A coordinate product of
+the cone gives a direct sum of these spans.  Each factor is its intersection
+with that coordinate axis, since the other factors contain zero.
+In each block the restricted
+positive vector proves that its cone spans the full restricted kernel.
+Thus a cone product forces the signed-kernel product and rank additivity;
+the converse was proved above.  For $J^+$, summing one nonnegative witness
+per positive coordinate gives a vector strictly positive on every retained
+coordinate.  All deleted coordinates vanish identically, so the same
+argument applies.
+\end{proof}
+
+The set $J^+$ can be found by polynomially many normalized coordinate LPs:
+test whether the maximum of $q_j$ subject to $Cq=0$, $q\ge0$ and
+$\mathbf1^{\mathsf T}q\le1$ is positive, for each $j$.
+A nonpositive dual certifies deletion; a positive answer retains the
+coordinate.  A capped query authorizes no deletion.  With complete polynomial
+LPs this gives a polynomial construction, but it may cost more than the
+rank-only test.  No such new preprocessing is installed here.  These are
+products of the formal nonnegative matching cone; compatibility and canonical
+Euler impose additional conditions.
+
+\begin{proposition}[Positive search and negative composition]
+There is a compatible $q\in K_J$ with $F(q)>0$ if and only if some factor
+contains a compatible $q_i\in K_{B_i}$ with $F(q_i)>0$.
+\end{proposition}
+\begin{proof}
+A factor witness extends by zero to a source witness.  Conversely, write a
+compatible source vector as $q=\sum_i q_i$ using its literal restrictions to
+the factors.  Each restriction is compatible and belongs to its factor cone.
+Subadditivity gives $0<F(q)\le\sum_iF(q_i)$, so one summand is positive.
+This is a formal-coordinate argument; no assertion about connected normal
+surface components is needed.
+\end{proof}
+
+Consequently complete negative proofs for all factor masks imply negativity
+of the parent mask.  A capped factor does not meet this requirement.  The
+existing supplied-source search already accepts each such mask, but a new
+outer certificate would have to bind the source, parent mask, rank-certified
+partition, and all complete child proofs.  Concatenating child packets does
+not make an ordinary branch-tree certificate.  Original STANDARD validation
+and independent crushing replay still apply to every returned positive point.
+
+\begin{proposition}[The resolving number adds across coordinate factors]
+Use the full-source function $F$ to define each factor's incompatible positive
+root-ray conflict hypergraph $\mathcal H_i$, with transversal number $h_i$.
+Then the parent resolving number satisfies $h_J=\sum_i h_i$.
+\end{proposition}
+\begin{proof}
+An extreme ray of a product has only one nonzero factor, since two nonzero
+factor restrictions give a nontrivial nonnegative decomposition.  Conversely,
+a factor extreme ray is extreme in the parent: a nonnegative decomposition
+must vanish outside its factor.  Its canonical Euler value and complete
+conflict set are unchanged.  Thus the parent hypergraph is the union of the
+$\mathcal H_i$.
+
+These hypergraphs have disjoint conflict-bearing tetrahedron sets.  A conflict
+needs at least two Q columns in its factor.  Two distinct factors could conflict
+at the same tetrahedron only if they contained at least four of its three Q
+columns.  Therefore hitting sets for the factor hypergraphs may be chosen
+independently and their minimum cardinalities add.  Compatible positive rays
+are excluded in every definition; no prior negativity assumption is used.
+\end{proof}
+
+For the full source, the three Q columns of each tetrahedron sum to zero,
+by the local block-ones identity of Section~\ref{sec:conditional-type-matching}.
+To see this in the original matching system, put one in its three Q
+coordinates and minus one in its four triangle coordinates, with all
+other coordinates zero.  Each face arc is then zero, so this signed
+STANDARD vector satisfies every matching equation.  Its Q projection
+is the asserted three-column relation.  Restricting this relation to each
+matroid component still gives a relation.  Any component containing a nonzero
+column from the triple must therefore contain at least two columns of that
+triple; there cannot be two such components among three columns.  Hence all
+its nonzero columns belong to one matroid component.  Zero columns remain
+singleton loop factors with compatible unit rays.  The full all-ones vector
+lies in the kernel, so its restriction gives a strictly positive kernel vector in every factor.
+This proves nonnegative feasibility, not positive canonical Euler, and does
+not classify a factor as negative or positive.
+
+Let $t_i$ count tetrahedra represented by $B_i$, so $\sum_i t_i\le3t$.
+Running the existing subset search independently on the factors, with shared
+operational accounting, has conditional bit bound
+\[
+ \sum_i A(3t_i)^{O(h_i)}\operatorname{poly}(t,L).
+\]
+With $\delta_i$ the maximum of $1$ and all conflict widths encountered in
+factor $i$ (so an execution with no conflicts has $\delta_i=1$), the
+conflict-directed version of Section~\ref{sec:conflict-candidates} gives
+\[
+ O\!\left(A\sum_i(3\delta_i)^{h_i}\operatorname{poly}(t,L)\right).
+\]
+These sums include each factor's unsuccessful candidates and depth restarts.
+They can replace exponential dependence on $\sum_i h_i$ by dependence on the
+largest factor parameter.  They provide no improvement when the source has
+one nontrivial factor.  For authenticated one-vertex stages, $A\le4t$; a full
+recognizer would also sum over its polynomially many strict descent stages.
+
+\subsection{A sufficient balanced-separator hypothesis}
+Fix a constant base size $m_0$.  Suppose every factor mask with $m>m_0$
+columns admits at most $k(t)$ ambiguous tetrahedra such that every singleton
+assignment there leaves only coordinate factors with at most $\alpha m$
+columns, for a fixed $\alpha<1$.  An assignment retains one currently allowed
+Q type at each chosen tetrahedron and deletes the other types there.
+These assignments cover every compatible vector, including vectors that
+vanish in a chosen tetrahedron.  Call these tetrahedra a balanced compatibility
+separator.  There are at most $3^{k(t)}$ assignments, and within each assignment
+the child factor sizes sum to at most $m$.  Masks of size at most $m_0$ can be
+handled by a constant number of compatible-sector searches, each using at
+most $A+1$ LP queries.  A factor path has $O(\log(3t))$ levels.  The size is the number of
+retained Q columns, not the number of tetrahedra, and the same global
+nondecreasing bound $k(t)$ is required at every descendant.  Thus recursive
+branching followed by additive factor composition has at most
+$t3^{O(k(t)\log t)}$ factor nodes.  Exhaustive discovery of each separator
+costs $(3t)^{O(k(t))}$ polynomial rank work, and fits the overall conditional
+bound
+\[
+ A\,t^{O(k(t))}\operatorname{poly}(t,L).
+\]
+A polylogarithmic separator theorem would therefore suffice for
+quasi-polynomial search without a small whole-source resolving number.
+No such theorem is established for the native triangulations.  The condition
+is an exact possible next target, and requires a mixed split/factor checker;
+small conflicts or short negative explanations alone do not establish it.
+
+
+To lift this source-stage bound to recognition, the initial triangulation
+size must be polynomial in the diagram length; every authenticated successor
+must have polynomial-size exact source algebra; the anchor count must remain
+polynomially bounded, as it does with $A\le4t$ at the maintained one-vertex
+search stages; and the separator hypothesis must hold at every descendant
+factor at every stage.  With polynomial preprocessing, independent replay,
+primitive basic-ray recovery, and at most
+$O(t_0)$ strict-decrease stages from an initial size $t_0$, their sum is still
+quasi-polynomial for polylogarithmic $k(t_0)$.  A property of one full root
+matrix is insufficient.  Failing the algebraic separator test also does not
+rule out immediate LP-negative children, which a complete search can accept
+without further decomposition.
+
+\subsection{Exact finite probes and their limitation}
+
+Two separate algebra-only probes use the labelled geometric-arm endpoints
+of Section~\ref{sec:geometric-descent-crushing}.  Every original diagram and
+complete or partial chain is authenticated again with discovery disabled.
+The empty-diagram endpoint is terminal and supplies no Q matrix.  Each
+of the other six endpoints has exactly one vertex, lying on the boundary,
+and two boundary faces.
+The independent verifier's full-source model supplies the matrices; no LP,
+recognition search, ray discovery, or timing experiment is run.
+
+The first probe checks an exact row transformation to reduced echelon form,
+spanning of the original row space, complete fundamental-circuit kernel
+bases, and component ranks in reverse column order.  Every matrix has
+one matroid component, no zero columns, no coloops, rank $t-1$, and
+nullity $2t+1$.  Component indicator vectors are checked directly against
+original matching and canonical Euler.  Such nonnegative witnesses do not
+classify positive canonical Euler existence.
+
+The second probe retains every one-tetrahedron singleton assignment:
+$3(7+10+16+11+17+31)=276$ masks.  It stores the retained-column map and
+complete component data against the original matrix, rather than replacing
+that matrix with an unbound projection.  A separate replay reconstructs all
+masks, checks complete kernel bases and exact rank additivity, and recomputes
+the finest partitions using a different elimination order.
+
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Source & $t$ & Full Q columns & Singleton masks & Largest remaining factor\\
+\midrule
+Trefoil & 7 & 21 & 21 & 19\\
+Figure eight & 10 & 30 & 30 & 28\\
+$TT$ & 16 & 48 & 48 & 46\\
+$T(2,5)$ & 11 & 33 & 33 & 31\\
+$T(2,7)$ & 17 & 51 & 51 & 49\\
+$W(3,4)$ & 31 & 93 & 93 & 91\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every one of the 276 masks still has one matroid component, with no zero
+columns or coloops.  Its size is exactly $3t-2$, and it includes a retained
+column from every original tetrahedron.  All tetrahedra tie under the
+best worst-case measure over their three assignments.  There is no algebraic
+reduction beyond the two types removed by the assignment itself.
+In particular none of these one-tetrahedron choices attains a two-thirds
+balance.  These finite results neither rule out larger separators nor prove
+an asymptotic lower bound.  Signed-kernel connectivity alone does not certify
+nonnegative feasibility or establish that the Euler queries are difficult.
+Separately, Section~\ref{sec:conditional-type-matching} supplies original
+STANDARD nonnegative matching witnesses for all $276$ singleton masks on
+these same labelled source tables.  Those witnesses allow incompatible Q
+types in the other tetrahedra and do not establish positive canonical Euler.
+They do establish full feasible support in each tested singleton mask.
+Indeed its retained type has a positive coordinate in the supplied witness;
+adding a block-ones kernel vector in every other tetrahedron makes all
+remaining Q coordinates strictly positive while preserving the singleton
+restriction.  The full roots already have the all-ones vector.  By the
+completeness proposition, the connected matroids therefore rule out every
+nontrivial literal coordinate product of these six full and $276$ restricted
+nonnegative Q cones.  This conclusion uses the prior matching witnesses and
+the proved local identity, not signed-kernel connectivity alone or a new LP
+experiment.  It does not rule out other search decompositions.
+
+Root-only factorization and a one-tetrahedron split therefore offer no
+factor-search benefit on this fixed corpus.  No factor producer or new
+negative certificate schema is installed.  The retained scripts, full
+records, logs, and portable independent replay are under
+\path{data/coordinate-factor-*}; their source bindings distinguish the
+historical geometric discovery from the fresh algebra-only work.
+The portable replay authenticates all seven chains, six full matrices and
+$276$ restricted matrices without LP or recognition discovery.  Its first
+inventory attempt stopped before these checks because a repository-relative
+Git path was used from a project subdirectory.  The failed source and outputs
+are retained; only repository-root resolution changed before the successful
+replay.  No experiment record or native algorithm changed in that repair.
+
+\subsection{A precise limitation of a connected-sum construction}
+
+A different route to understanding a large resolving number would embed
+many old positive incompatible rays in one actual knot exterior.  The
+following limited transport statement removes one of its obligations.
+Suppose an old triangulated piece is retained literally in a larger finite
+triangulation by attaching only former boundary faces, so every old internal
+matching equation remains.  Suppose an old nonzero Q extreme ray $r$ admits
+a global matching extension whose Q vector is $(r,0)$ on old and new
+tetrahedra.  Then this global Q ray is extreme.  Indeed a nonnegative
+decomposition of $(r,0)$ vanishes on all new Q coordinates.  Restricting
+matching lifts of its summands to the old tetrahedra gives old Q-kernel
+vectors.  Old extremality makes both proportional to $r$, and their zero
+extensions are therefore proportional globally.
+
+This statement concerns strict Q-support locality.  Merely keeping the
+\emph{conflicts} in the old piece while adding compatible nonzero Q
+coordinates elsewhere does not give the same argument: the extension fiber
+could contain new directions.  Nor does extremality alone preserve canonical
+Euler positivity.  A connected-sum family still needs a genuine gluing,
+matching triangle traces, canonical Euler control, growth relative to source
+size, and persistence through the actual preprocessing policy.
+
+There is a direct obstruction to the most literal proposed port.  An embedded
+annulus that is a boundary-face subcomplex has two disjoint nonempty boundary
+circles.  Each circle contains a triangulation vertex.  A one-vertex torus
+boundary cannot contain these two disjoint circles as subcomplexes, because
+both would contain its sole vertex.  Thus the six present endpoints do not
+already carry such an embedded annular boundary-face port.  The Q-zero
+$2\leftrightarrow3$ transport of Section~\ref{sec:q-zero-pachner-transport}
+preserves the vertices and cannot by itself create one.  Boundary subdivision
+with a separately proved witness map, or cutting along a normal annulus with
+controlled trace and Euler transport, would be additional work.  The observed
+$h=1$ and $h=2$ cases do not replace those construction obligations.
