@@ -1,6 +1,5 @@
 import GowersSzemeredi.Proofs18CoverModulus
-import GowersSzemeredi.Proofs18GenericDensity
-import GowersSzemeredi.Proofs18GenericExponents
+import GowersSzemeredi.Proofs18GenericEnvelopeBase
 
 /-! The density envelope of the single-piece step with the joint-cover
 remainder (Notes L.12).
@@ -257,7 +256,7 @@ theorem yIn_boundsC {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
   set μD := 68 * 2 ^ k with hμDdef
   have hρ1 : μD + P.μ0 + 3 ≤ rhoDegC k P.μ0 := (rhoDegC_ge k P.μ0).1
   have hρ2 : fixDeg k + 1 ≤ rhoDegC k P.μ0 := (rhoDegC_ge k P.μ0).2
-  have hbase := GenParams.baseC_recipPowerLB (D := uDeg68 k) (K := P.K) (p := P.p) ha ha2 hV hVμ hμ0
+  have hbase := uniform_baseC_recipPowerLB (D := uDeg68 k) ha ha2 hV hVμ hμ0
   have hD : uDeg68 k ≤ 2 ^ μD := le_rfl
   have ha0 : uDeg68 k * 2 ^ P.μ0 + 1 ≤ 2 ^ (μD + P.μ0 + 1) := by
     have h1 : uDeg68 k * 2 ^ P.μ0 ≤ 2 ^ μD * 2 ^ P.μ0 := Nat.mul_le_mul_right _ hD

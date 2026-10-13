@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18GenericThresholds
+import GowersSzemeredi.Proofs18GenericEnvelopeBase
 import GowersSzemeredi.Proofs16SinglePieceCoverGlobalWith
 import GowersSzemeredi.Proofs16ClassStepBoundsFejer
 import GowersSzemeredi.Proofs16RadiusComparison
@@ -168,36 +168,9 @@ theorem baseCF_recipPowerLB {V : Real} {D k μV μ0 : Nat} (ha : 0 < alpha)
     (ha2 : alpha ≤ 1 / 2) (hV : 1 ≤ V) (hVμ : V ≤ 2 ^ (2 ^ μV))
     (hμ0 : max μV (fixDeg k) + 2 ≤ μ0) :
     RecipPowerLB (2 / alpha) (baseCF V D k alpha) (D * 2 ^ μ0 + 1) (D + 1) := by
-  have hX := two_div_ge_two ha ha2
   obtain ⟨hB0, hB1, hBi⟩ := budget_gen_bounds_fejer k ha ha2
-  have hc := GenParams.slice_const_le (V := V) (B := globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k)
-    (μV := μV) (k := k) (μ0 := μ0) ha ha2 hV hVμ hB0 hBi hμ0
-  intro s hs hs1
-  have hs2 : 0 < s / 2 := half_pos hs
-  have hs21 : s / 2 ≤ 1 := by linarith
-  have hg : 0 < alpha / 2 := half_pos ha
-  have hg1 : alpha / 2 ≤ 1 := by linarith
-  set B := globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k with hBdef
-  have hQ1 := one_le_uCount V D (alpha / 2) B (s / 2)
-  have hQ0 : 0 < uCount V D (alpha / 2) B (s / 2) := lt_of_lt_of_le zero_lt_one hQ1
-  have hQeq := uCount_eq hV D hg hg1 hB0 hB1 hs2 hs21
-  rw [GenParams.uniformBase_slice V ha hB0 hs] at hQeq
-  show 0 < s / 2 / uCount V D (alpha / 2) B (s / 2) ∧
-    s / 2 / uCount V D (alpha / 2) B (s / 2) ≤ 1 ∧
-    (s / 2 / uCount V D (alpha / 2) B (s / 2))⁻¹ ≤
-      (2 / alpha) ^ (D * 2 ^ μ0 + 1) * s⁻¹ ^ (D + 1)
-  refine ⟨div_pos hs2 hQ0, (div_le_one hQ0).mpr (by linarith), ?_⟩
-  rw [inv_div, hQeq]
-  set X := 2 / alpha with hXdef
-  have hsi : 0 ≤ s⁻¹ := (inv_pos.mpr hs).le
-  have hcs : 8 * V * X * B⁻¹ * s⁻¹ ≤ X ^ (2 ^ μ0) * s⁻¹ := mul_le_mul_of_nonneg_right hc hsi
-  have hpow := pow_le_pow_left₀ (by positivity) hcs D
-  have h2X : (2 : Real) ≤ X ^ 1 := by rw [pow_one]; exact hX
-  calc (8 * V * X * B⁻¹ * s⁻¹) ^ D / (s / 2) = 2 * (s⁻¹ * (8 * V * X * B⁻¹ * s⁻¹) ^ D) := by
-        rw [div_eq_mul_inv, inv_div]; ring
-    _ ≤ X ^ 1 * (s⁻¹ * (X ^ (2 ^ μ0) * s⁻¹) ^ D) :=
-        mul_le_mul h2X (mul_le_mul_of_nonneg_left hpow hsi) (by positivity) (by positivity)
-    _ = X ^ (D * 2 ^ μ0 + 1) * s⁻¹ ^ (D + 1) := by ring
+  exact uniform_baseC_recipPowerLB_of_budget ha ha2 hV hVμ hB0 hB1
+    (show 7 ≤ fixDeg k from Nat.le_add_left 7 _) hBi hμ0
 
 end Fixed
 

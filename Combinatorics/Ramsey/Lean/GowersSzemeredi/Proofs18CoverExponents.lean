@@ -1,6 +1,4 @@
 import GowersSzemeredi.Proofs18CoverDensity
-import GowersSzemeredi.Proofs18GenericExponents
-import GowersSzemeredi.Proofs18GenericThresholds
 
 /-! The width exponents and thresholds of the single-piece step with the
 joint-cover remainder (Notes L.12).
@@ -118,8 +116,7 @@ theorem slice_exps_inv_leC {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha)
   have hThS : P.ThS alpha =
       singlePieceTheta ((P.Rho1 alpha) / 2 * ((P.Rho1 alpha) / 2 / 2)) 1 := rfl
   rw [← hThS] at hS0 hS1 hSi
-  have hbase := GenParams.baseC_recipPowerLB (D := uDeg68 k) (K := P.K) (p := P.p) ha ha2 H.hV H.hVμ
-    H.hμ0
+  have hbase := uniform_baseC_recipPowerLB (D := uDeg68 k) ha ha2 H.hV H.hVμ H.hμ0
   have ha0 : uDeg68 k * 2 ^ P.μ0 + 1 ≤ 2 ^ (μD + P.μ0 + 1) := by
     have h1 : uDeg68 k * 2 ^ P.μ0 ≤ 2 ^ μD * 2 ^ P.μ0 := Nat.mul_le_mul_right _ le_rfl
     have h2 : 2 ^ (μD + P.μ0 + 1) = 2 * (2 ^ μD * 2 ^ P.μ0) := by rw [pow_add, pow_add]; ring
@@ -132,7 +129,8 @@ theorem slice_exps_inv_leC {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha)
     omega
   obtain ⟨hc0, hc1, hci⟩ := GenParams.cS_step hX hbase hS0 hS1 hSi ha0 hb0 (by omega)
   have hCS : P.CS alpha =
-      (GenParams.std P.V (uDeg68 k) P.k P.K P.p P.μ0).baseC alpha (P.ThS alpha) := rfl
+      P.ThS alpha / 2 / uCount P.V (uDeg68 k) (alpha / 2)
+        (globalBudget alpha (alpha / 2) k) (P.ThS alpha / 2) := rfl
   rw [← hCS] at hc0 hc1 hci
   have hslice : ∀ {s : Real} {m : Nat}, 0 < s → s ≤ 1 → s⁻¹ ≤ (2 / alpha) ^ (2 ^ m) →
       P.μ0 ≤ m + 1 → (uExp P.V (uDeg68 k) (alpha / 2) (globalBudget alpha (alpha / 2) k) (s / 2))⁻¹ ≤

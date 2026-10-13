@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16PolynomialFejer
+import GowersSzemeredi.Proofs18GenericLengths
 import GowersSzemeredi.Proofs18CoverExplicit
 import GowersSzemeredi.Proofs18CoverFejerHeadline
 import GowersSzemeredi.Proofs18CoverFejerLowDegrees
@@ -21,7 +22,17 @@ import Lean.Util.CollectAxioms
 open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for name in #[``LeanProofs.GowersSzemeredi.localization_width_bounds,
+  for name in #[``LeanProofs.GowersSzemeredi.uniform_baseC_recipPowerLB_of_budget,
+      ``LeanProofs.GowersSzemeredi.GenParams.slice_const_le_deg,
+      ``LeanProofs.GowersSzemeredi.GenParams.slice_const_le,
+      ``LeanProofs.GowersSzemeredi.baseCF_recipPowerLB,
+      ``LeanProofs.GowersSzemeredi.baseCFW_recipPowerLB,
+      ``LeanProofs.GowersSzemeredi.uniform_baseC_recipPowerLB,
+      ``LeanProofs.GowersSzemeredi.GenParams.baseC_recipPowerLB,
+      ``LeanProofs.GowersSzemeredi.GenParamsC.yIn_boundsC,
+      ``LeanProofs.GowersSzemeredi.GenParamsC.slice_exps_inv_leC,
+      ``LeanProofs.GowersSzemeredi.tightHyp_of_profiles,
+      ``LeanProofs.GowersSzemeredi.localization_width_bounds,
       ``LeanProofs.GowersSzemeredi.spectrumCellWidth_scale_bounds,
       ``LeanProofs.GowersSzemeredi.short_thr_step_le,
       ``LeanProofs.GowersSzemeredi.family_constants_poly_le,
@@ -195,4 +206,4 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked shared modulus size and square-root localization bounds, short-localization threshold estimates, polynomial family constants and cubic base, shared localization ranges and pointwise power composition, the shared spectrum width estimate and all six modulus consumers, shared low-degree proofs, partition and density estimates, modulus conditions, the shared short-length proof and explicit phase input, Roth and double-exponential conversions and phase-refinement estimates, uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
+  logInfo "Checked shared estimates, original final statements, all 25 stronger-bound theorems and compatibility interfaces with only approved axioms."

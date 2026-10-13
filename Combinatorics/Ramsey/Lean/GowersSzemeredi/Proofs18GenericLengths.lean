@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18GenericSzemeredi
+import GowersSzemeredi.Proofs18GenericEnvelopeStep
 
 /-! Theorem 18.2 and Corollary 18.7 at lengths `6 ≤ L ≤ 10`, from the
 recurrence profiles (Notes L.7a, F4).
@@ -20,8 +21,6 @@ namespace LeanProofs.GowersSzemeredi
 
 /-- The log-log-degree of the class base `V` in dimension `k`. -/
 def genMuV (k : Nat) : Nat := 2 ^ (k + 6)
-/-- The log-log-degree of the recurrence constants in dimension `k`. -/
-def genMuK (k : Nat) : Nat := 2 ^ (k + 5)
 /-- The fixed-parameter exponent in dimension `k`. -/
 def genMu0 (k : Nat) : Nat := max (genMuV k) (fixDeg k) + 2
 /-- The log-degree of the cover control in dimension `k`. -/

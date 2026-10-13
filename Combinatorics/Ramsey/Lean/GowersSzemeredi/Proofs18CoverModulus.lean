@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18GenericModulus
+import GowersSzemeredi.Proofs18LengthSixScale
 import GowersSzemeredi.Proofs18SinglePieceCoverInverse
 import GowersSzemeredi.Proofs18TightClasses
 
