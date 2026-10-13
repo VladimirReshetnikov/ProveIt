@@ -159,62 +159,10 @@ private def lemma134Scale (N : Nat) (theta : Real) (q : Nat) : Real :=
   section13ThetaOne theta / (64 * Real.pi) *
     (N : Real) ^ (section13ThetaOne theta ^ 2 / (16 * (q : Real)))
 
-private def lemma134Floor (N : Nat) (theta : Real) (q : Nat) : Nat :=
-  ⌊lemma134Scale N theta q⌋₊
-
-private lemma lemma134_scale_nonneg (N : Nat) (theta : Real) (q : Nat)
-    (htheta : 0 < theta) : 0 ≤ lemma134Scale N theta q := by
-  unfold lemma134Scale
-  exact mul_nonneg
-    (div_nonneg (lemma134_thetaOne_pos theta htheta).le (by positivity))
-    (Real.rpow_nonneg (by positivity) _)
-
-private lemma lemma134_floor_spec (N : Nat) (theta : Real) (q : Nat)
-    (htheta : 0 < theta) :
-    IsNatFloor (lemma134Scale N theta q) (lemma134Floor N theta q) := by
-  unfold IsNatFloor lemma134Floor
-  exact (Nat.floor_eq_iff (lemma134_scale_nonneg N theta q htheta)).1 rfl
-
 private def lemma134EmptyProgression (N : Nat) : ModAP N where
   start := 0
   step := 1
   length := 0
-
-private lemma lemma134_empty_stage {N : Nat} [NeZero N]
-    (S : Section13Context N) (theta : Real) (q : Nat)
-    (hprime : Nat.Prime N) (htheta : 0 < theta) (hq : 0 < q)
-    (hqBound : (q : Real) ≤ section13QBound theta)
-    (hm : lemma134Floor N theta q ≤ 1) :
-    ∃ D : Stage134Data N, IsStage134Data S theta D := by
-  letI : Fact N.Prime := ⟨hprime⟩
-  let P := lemma134EmptyProgression N
-  let D : Stage134Data N :=
-    { q := q
-      m := lemma134Floor N theta q
-      P := P
-      H := ∅
-      a := fun _ => 0
-      b := fun _ => 0 }
-  refine ⟨D, hq, ?_, ?_, ?_, hqBound, ?_, ?_, ?_, ?_⟩
-  · change (1 : ZMod N) != 0
-    exact bne_iff_ne.mpr one_ne_zero
-  · change (Finset.card ∅ : Nat) = 0
-    simp
-  · simp [D, P, lemma134EmptyProgression, ModAP.carrier]
-  · simpa only [D, lemma134Scale] using
-      lemma134_floor_spec N theta q htheta
-  ·
-    have hzeroOrOne : lemma134Floor N theta q = 0 ∨
-        lemma134Floor N theta q = 1 := by omega
-    rcases hzeroOrOne with hm0 | hm1
-    · left
-      change 0 = lemma134Floor N theta q
-      exact hm0.symm
-    · right
-      change 0 + 1 = lemma134Floor N theta q
-      exact hm1.symm
-  · simp [goodHeightWeight, D, P, lemma134EmptyProgression]
-  · simp [D]
 
 /-! ### Averaging over translated progressions -/
 
@@ -1198,24 +1146,6 @@ private lemma lemma134_scale_le_modulus {N q : Nat} [NeZero N]
         (by norm_num)
     _ = N := one_mul _
 
-private lemma lemma134_floor_pred_bounds {N q : Nat} [NeZero N]
-    (theta : Real) (htheta : 0 < theta)
-    (htheta₁One : section13ThetaOne theta ≤ 1) (hq : 0 < q)
-    (hm : 2 ≤ lemma134Floor N theta q) :
-    let l := lemma134Floor N theta q - 1
-    0 < l ∧ (l : Real) < lemma134Scale N theta q ∧ l ≤ N := by
-  let m := lemma134Floor N theta q
-  let l := m - 1
-  have hfloor := lemma134_floor_spec N theta q htheta
-  have hl : 0 < l := by omega
-  have hlm : l < m := by omega
-  have hlScale : (l : Real) < lemma134Scale N theta q := by
-    exact (by exact_mod_cast hlm : (l : Real) < m).trans_le hfloor.1
-  have hmNReal : (m : Real) ≤ N :=
-    hfloor.1.trans (lemma134_scale_le_modulus theta htheta htheta₁One hq)
-  have hmN : m ≤ N := by exact_mod_cast hmNReal
-  exact ⟨hl, hlScale, (Nat.sub_le m 1).trans hmN⟩
-
 private lemma lemma134_progression_difference {N l : Nat}
     (d s x y : ZMod N)
     (hx : x ∈ (lemma134Progression d s l).carrier)
@@ -1470,103 +1400,6 @@ private lemma lemma134_exists_common_step
 
 /-! ### Lemma 13.4 -/
 
-/-- **Gowers, Lemma 13.4**, with the prime-modulus and quantitative
-`theta`-range hypotheses restored in the statement. -/
-theorem lemma_13_4_holds : lemma_13_4 := by
-  intro N _ S theta hprime htheta hthetaBound
-  classical
-  letI : Fact N.Prime := ⟨hprime⟩
-  obtain ⟨q₀, B, sigma, G, hGcard, hFreiman, hBlarge,
-      hq₀Bound, hcover⟩ :=
-    corollary_13_3_holds N S.A theta hprime htheta
-  let q := max 1 q₀
-  have hq : 0 < q := by
-    exact (by norm_num : 0 < 1).trans_le (Nat.le_max_left 1 q₀)
-  have hq₀q : q₀ ≤ q := Nat.le_max_right 1 q₀
-  have hqBound : (q : Real) ≤ section13QBound theta := by
-    have hOneBound := lemma134_qBound_one_le S theta htheta hthetaBound
-    simpa only [q, Nat.cast_max, Nat.cast_one] using
-      (max_le hOneBound hq₀Bound)
-  have htheta₁ : 0 < section13ThetaOne theta :=
-    lemma134_thetaOne_pos theta htheta
-  have htheta₁One : section13ThetaOne theta ≤ 1 :=
-    lemma134_thetaOne_le_one S theta htheta hthetaBound
-  let m := lemma134Floor N theta q
-  by_cases hmSmall : m ≤ 1
-  · exact lemma134_empty_stage S theta q hprime htheta hq hqBound
-      (by simpa only [m] using hmSmall)
-  · have hmLarge : 2 ≤ m := by omega
-    let l := m - 1
-    obtain ⟨hl, hlScale, hlN⟩ :=
-      lemma134_floor_pred_bounds theta htheta htheta₁One hq
-        (by simpa only [m] using hmLarge)
-    obtain ⟨d, hdBohr, hd⟩ := lemma134_exists_common_step B sigma theta htheta
-      htheta₁One hq hq₀q hl hlScale hBlarge hFreiman
-    obtain ⟨s, havg⟩ :=
-      lemma134_exists_progression_average S G d hd hlN
-    let P := lemma134Progression d s l
-    let H := P.carrier ∩ G
-    have hproper : P.IsProper := by
-      exact lemma134_progression_proper d s hd hlN
-    have hgoodG : S.alpha ^ 32 * (N : Real) ^ 32 / 4 ≤
-        goodHeightWeight S G :=
-      lemma134_good_exceptional_lower S theta G htheta hthetaBound hGcard
-    have hpFirst := lemma134_piece_affine_on_progression B sigma
-      (section13ThetaOne theta) hprime htheta₁ hl hBlarge hFreiman d s hdBohr
-    choose a₀ b₀ haffine using hpFirst
-    let a : Fin q → ZMod N := fun j =>
-      if hj : (j : Nat) < q₀ then a₀ ⟨j, hj⟩ else 0
-    let b : Fin q → ZMod N := fun j =>
-      if hj : (j : Nat) < q₀ then b₀ ⟨j, hj⟩ else 0
-    let D : Stage134Data N :=
-      { q := q
-        m := m
-        P := P
-        H := H
-        a := a
-        b := b }
-    refine ⟨D, hq, ?_, hproper, ?_, hqBound, ?_, ?_, ?_, ?_⟩
-    · change d != 0
-      exact bne_iff_ne.mpr hd
-    · intro h hh
-      exact (Finset.mem_inter.mp hh).1
-    · simpa only [D, m, lemma134Scale] using
-        lemma134_floor_spec N theta q htheta
-    · right
-      change l + 1 = m
-      omega
-    · have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-      have hsource :
-          (l : Real) * (S.alpha ^ 32 * (N : Real) ^ 32 / 4) ≤
-            (N : Real) * goodHeightWeight S H := by
-        calc
-          (l : Real) * (S.alpha ^ 32 * (N : Real) ^ 32 / 4) ≤
-              (l : Real) * goodHeightWeight S G :=
-            mul_le_mul_of_nonneg_left hgoodG (by positivity)
-          _ ≤ (N : Real) * goodHeightWeight S H := by
-            simpa only [H, P] using havg
-      apply le_of_mul_le_mul_left (a := (N : Real))
-      · calc
-          (N : Real) *
-              (S.alpha ^ 32 * (N : Real) ^ 31 * (l : Real) / 8) =
-              (l : Real) * (S.alpha ^ 32 * (N : Real) ^ 32 / 8) := by ring
-          _ ≤ (l : Real) * (S.alpha ^ 32 * (N : Real) ^ 32 / 4) := by
-            have hnonneg : 0 ≤
-                (l : Real) * (S.alpha ^ 32 * (N : Real) ^ 32) := by
-              positivity
-            nlinarith
-          _ ≤ (N : Real) * goodHeightWeight S H := hsource
-      · exact hN
-    · intro h hh r hr
-      have hh' := Finset.mem_inter.mp hh
-      obtain ⟨i, hiB, hir⟩ := hcover h hh'.2 r hr
-      let j : Fin q := Fin.castLE hq₀q i
-      refine ⟨j, ?_⟩
-      have hsigma := haffine i h
-        (Finset.mem_inter.mpr ⟨hiB, hh'.1⟩)
-      rw [hir, hsigma]
-      simp [D, a, b, j, Fin.castLE]
-
 /-- The full Lemma 13.4 conclusion with the displayed real graph budget
 used in the floor defining the progression length. The finite list has its
 actual natural cardinality, bounded by that same real budget. -/
@@ -1583,14 +1416,16 @@ def IsStage134DataAtRealBound {N : Nat} [NeZero N] (S : Section13Context N)
     theta * (N : Real) ^ 2 ≤ ‖fourier (verticalEdgeFiberFunction S.A h) r‖ →
     ∃ i, r = D.a i * h + D.b i
 
-/-- Lemma 13.4 at any real graph budget above the source bound. In particular,
-this uses the fixed printed budget, without replacing it by the actual count
-inside the floor formula. -/
-theorem lemma_13_4_at_real_graph_bound
-    (N : Nat) [NeZero N] (S : Section13Context N) (theta Qbound : Real)
+/-- One construction for a graph budget chosen from the actual list size.
+The source count bound is retained separately from the budget in the floor. -/
+private theorem lemma134_at_graph_budget
+    (N : Nat) [NeZero N] (S : Section13Context N) (theta : Real)
+    (budget : Nat → Real)
     (hprime : N.Prime) (htheta : 0 < theta) (hthetaBound : theta ≤ S.alpha ^ 32 / 4)
-    (hQbound : section13QBound theta ≤ Qbound) :
-    ∃ D : Stage134Data N, IsStage134DataAtRealBound S theta Qbound D := by
+    (hbudget : ∀ q : Nat, 0 < q → (q : Real) ≤ section13QBound theta →
+      (q : Real) ≤ budget q) :
+    ∃ D : Stage134Data N, (D.q : Real) ≤ section13QBound theta ∧
+      IsStage134DataAtRealBound S theta (budget D.q) D := by
   classical
   letI : Fact N.Prime := ⟨hprime⟩
   obtain ⟨q₀, B, sigma, G, hGcard, hFreiman, hBlarge,
@@ -1608,8 +1443,9 @@ theorem lemma_13_4_at_real_graph_bound
     lemma134_thetaOne_pos theta htheta
   have htheta₁One : section13ThetaOne theta ≤ 1 :=
     lemma134_thetaOne_le_one S theta htheta hthetaBound
+  let Qbound : Real := budget q
   have hqR : (0 : Real) < q := by exact_mod_cast hq
-  have hqQ : (q : Real) ≤ Qbound := hqBound.trans hQbound
+  have hqQ : (q : Real) ≤ Qbound := hbudget q hq hqBound
   let scale : Real := section13ThetaOne theta / (64 * Real.pi) *
     (N : Real) ^ (section13ThetaOne theta ^ 2 / (16 * Qbound))
   have hscaleNonneg : 0 ≤ scale := by
@@ -1628,7 +1464,7 @@ theorem lemma_13_4_at_real_graph_bound
   · let P := lemma134EmptyProgression N
     let D : Stage134Data N :=
       { q := q, m := m, P := P, H := ∅, a := fun _ => 0, b := fun _ => 0 }
-    refine ⟨D, hq, ?_, ?_, ?_, hqQ, hfloor, ?_, ?_, ?_⟩
+    refine ⟨D, hqBound, hq, ?_, ?_, ?_, hqQ, hfloor, ?_, ?_, ?_⟩
     · change (1 : ZMod N) != 0
       exact bne_iff_ne.mpr one_ne_zero
     · change (Finset.card ∅ : Nat) = 0
@@ -1674,7 +1510,7 @@ theorem lemma_13_4_at_real_graph_bound
         H := H
         a := a
         b := b }
-    refine ⟨D, hq, ?_, hproper, ?_, hqQ, ?_, ?_, ?_, ?_⟩
+    refine ⟨D, hqBound, hq, ?_, hproper, ?_, hqQ, ?_, ?_, ?_, ?_⟩
     · change d != 0
       exact bne_iff_ne.mpr hd
     · intro h hh
@@ -1683,28 +1519,20 @@ theorem lemma_13_4_at_real_graph_bound
     · right
       change l + 1 = m
       omega
-    · have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-      have hsource :
-          (l : Real) * (S.alpha ^ 32 * (N : Real) ^ 32 / 4) ≤
-            (N : Real) * goodHeightWeight S H := by
-        calc
-          (l : Real) * (S.alpha ^ 32 * (N : Real) ^ 32 / 4) ≤
-              (l : Real) * goodHeightWeight S G :=
-            mul_le_mul_of_nonneg_left hgoodG (by positivity)
-          _ ≤ (N : Real) * goodHeightWeight S H := by
-            simpa only [H, P] using havg
-      apply le_of_mul_le_mul_left (a := (N : Real))
+    · apply le_of_mul_le_mul_left (a := (N : Real))
       · calc
           (N : Real) *
               (S.alpha ^ 32 * (N : Real) ^ 31 * (l : Real) / 8) =
               (l : Real) * (S.alpha ^ 32 * (N : Real) ^ 32 / 8) := by ring
-          _ ≤ (l : Real) * (S.alpha ^ 32 * (N : Real) ^ 32 / 4) := by
-            have hnonneg : 0 ≤
-                (l : Real) * (S.alpha ^ 32 * (N : Real) ^ 32) := by
-              positivity
-            nlinarith
-          _ ≤ (N : Real) * goodHeightWeight S H := hsource
-      · exact hN
+          _ ≤ (l : Real) * (S.alpha ^ 32 * (N : Real) ^ 32 / 4) :=
+            mul_le_mul_of_nonneg_left
+              (div_le_div_of_nonneg_left (by positivity) (by norm_num) (by norm_num))
+              (Nat.cast_nonneg l)
+          _ ≤ (l : Real) * goodHeightWeight S G :=
+            mul_le_mul_of_nonneg_left hgoodG (Nat.cast_nonneg l)
+          _ ≤ (N : Real) * goodHeightWeight S H := by
+            simpa only [H, P] using havg
+      · exact_mod_cast NeZero.pos N
     · intro h hh r hr
       have hh' := Finset.mem_inter.mp hh
       obtain ⟨i, hiB, hir⟩ := hcover h hh'.2 r hr
@@ -1714,6 +1542,27 @@ theorem lemma_13_4_at_real_graph_bound
         (Finset.mem_inter.mpr ⟨hiB, hh'.1⟩)
       rw [hir, hsigma]
       simp [D, a, b, j, Fin.castLE]
+
+/-- **Gowers, Lemma 13.4**, with the prime-modulus and quantitative
+`theta`-range hypotheses restored in the statement. -/
+theorem lemma_13_4_holds : lemma_13_4 := by
+  intro N _ S theta hprime htheta hthetaBound
+  obtain ⟨D, hqBound, hD⟩ := lemma134_at_graph_budget N S theta (fun q => (q : Real))
+    hprime htheta hthetaBound (fun _ _ _ => le_rfl)
+  rcases hD with ⟨hq, hstep, hproper, hH, _, hfloor, hlength, hweight, hcover⟩
+  exact ⟨D, hq, hstep, hproper, hH, hqBound, hfloor, hlength, hweight, hcover⟩
+
+/-- Lemma 13.4 at any real graph budget above the source bound. In particular,
+this uses the fixed printed budget, without replacing it by the actual count
+inside the floor formula. -/
+theorem lemma_13_4_at_real_graph_bound
+    (N : Nat) [NeZero N] (S : Section13Context N) (theta Qbound : Real)
+    (hprime : N.Prime) (htheta : 0 < theta) (hthetaBound : theta ≤ S.alpha ^ 32 / 4)
+    (hQbound : section13QBound theta ≤ Qbound) :
+    ∃ D : Stage134Data N, IsStage134DataAtRealBound S theta Qbound D := by
+  obtain ⟨D, _, hD⟩ := lemma134_at_graph_budget N S theta (fun _ => Qbound)
+    hprime htheta hthetaBound (fun _ _ hq => hq.trans hQbound)
+  exact ⟨D, hD⟩
 
 /-- The fixed-real-budget floor interpretation displayed in Lemma 13.4. -/
 theorem lemma_13_4_fixed_real_bound
