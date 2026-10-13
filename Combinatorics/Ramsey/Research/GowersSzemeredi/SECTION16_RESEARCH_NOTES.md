@@ -7213,6 +7213,36 @@ comparison is recorded in
 The complete facade and remaining original-statement fidelity gaps remain
 separate. The simplification goal remains active.
 
+### L.62. Share the envelope induction and cover setup (2026-10-12)
+
+The original final route, the earlier cover variants and the consolidated
+Fejer route repeated the same class-cover setup and induction from degree
+three. `Proofs18EnvelopeInduction` now supplies two shared lemmas:
+`classCovers_of_profiles` instantiates a class-cover theorem using recurrence
+profiles and raises its base to the current dimension; `envelope_induction`
+propagates a predicate along its envelope recurrence from the cubic case.
+
+Nine discrepancy/polynomial envelope proofs use the shared induction. Ten
+places, including the polynomial Corollary 16.11, use the cover setup.
+The original theorem statements and numerical bounds are unchanged.
+Putting the step hypothesis first lets Lean infer the recurrence step
+without unfolding the large envelope definitions; the predicate and budget
+are explicit at each call. The shared module is 42 lines, and the combined
+production sources shrink by 54 lines. See
+`verification/2026-10-12-envelope-induction-simplification.json` for exact
+statement comparisons and source counts.
+
+FinalAudit passes 648 native modules with only approved axioms; see
+`verification/2026-10-12-final-envelope-induction.json`. The minimal original
+final closure imports 647 modules / 135,365 lines, one module and 33 lines
+more than L.61. The change shares proof structure across the original and
+strengthened routes; it is not a reduction of that minimal import closure.
+The expanded audit names both helpers, all nine envelope theorems and the
+polynomial corollary, in addition to the original final and all 25 stronger
+bridge theorems. That native audit is running separately. The complete
+facade and original-statement fidelity gaps remain separate, and the
+simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

@@ -14,7 +14,19 @@ import Lean.Util.CollectAxioms
 open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for name in #[``LeanProofs.GowersSzemeredi.double_exp_le_szemerediThresholdAt,
+  for name in #[``LeanProofs.GowersSzemeredi.classCovers_of_profiles,
+      ``LeanProofs.GowersSzemeredi.envelope_induction,
+      ``LeanProofs.GowersSzemeredi.envBound_allC,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_allC,
+      ``LeanProofs.GowersSzemeredi.envBound_allT,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_allT,
+      ``LeanProofs.GowersSzemeredi.envBound_allX,
+      ``LeanProofs.GowersSzemeredi.envBound_allXF,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_allF,
+      ``LeanProofs.GowersSzemeredi.envBound_allXK3,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_allJT3,
+      ``LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerJT3_of_profiles,
+      ``LeanProofs.GowersSzemeredi.double_exp_le_szemerediThresholdAt,
       ``LeanProofs.GowersSzemeredi.theorem182AtSharp_of_envBound,
       ``LeanProofs.GowersSzemeredi.double_exp_le_szemerediThreshold,
       ``LeanProofs.GowersSzemeredi.theorem182At_of_envBound,
@@ -64,4 +76,4 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the shared threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
+  logInfo "Checked the shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."

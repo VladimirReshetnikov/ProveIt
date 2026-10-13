@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18CoverExponentsFejer
 import GowersSzemeredi.Proofs18CoverThresholdsSharp
+import GowersSzemeredi.Proofs18EnvelopeInduction
 
 /-! **Theorem 18.1 at `d + 6` and Theorem 18.2 / Corollary 18.7 at `L + 4`,
 from the recurrence profiles, under the Fejér θ₁** (Notes L.16d).
@@ -221,28 +222,17 @@ theorem polyEnvBound_allF (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : �
     {Kφ : Real} {pφ : Nat} (hpp : ProgressionPhasePartition Kφ pφ) (hpφ : 0 < pφ)
     (hKφ : Kφ ≤ 2 ^ pφ) (hpφB : (pφ : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) :
     ∀ k, 2 ≤ k → PolyEnvBound (k + 2) (polyGenMuF k) := by
-  have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
-    fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
-  have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
   have hstep : ∀ k, 2 ≤ k → ∀ μ, PolyEnvBound (k + 1) μ →
       PolyEnvBound (k + 2) (envStepF k (tightMu0 k) (genMuK k) μ) := by
     intro k hk μ hlow
     let P : GenParamsF := ⟨classV Kc pc k, k, Kc k, pc k, tightMu0 k⟩
     have H : P.CHyp (tightMuV k) (genMuK k) := tightHyp_of_profiles_fejer Kc pc hK hp hconst hk
-    have hcov : ∀ l, 1 ≤ l → l ≤ P.k →
-        PolyCoverAt l (uCount P.V (uDeg23 l)) (uExp P.V (uDeg23 l)) := by
-      intro l hl1 hlk
-      have hcl := polyCoverAt_class23 Kc pc hK1 hp hlem hl1
-      exact hcl.uniform_mono (one_le_classV Kc pc l) (classV_mono Kc pc hlk) le_rfl
+    have hcov := classCovers_of_profiles Kc pc hK hp hrec (degree := uDeg23) (k := k)
+      (fun hK1 => polyCoverAt_class23 Kc pc hK1 hp)
     exact polyEnvBound_stepF P H (by show 1 ≤ k; omega) hcov (hrec k (by omega)) hlow
   intro k hk
-  induction k, hk using Nat.le_induction with
-  | base =>
-    exact hstep 2 le_rfl 74 (polyEnvBound_three_of_phase_partition hpp hpφ hKφ hpφB)
-  | succ k hk ih =>
-    rw [polyGenMuF_succ (by omega)]
-    exact hstep (k + 1) (by omega) (polyGenMuF k) ih
+  exact envelope_induction (P := PolyEnvBound) (budget := polyGenMuF) hstep
+    (polyEnvBound_three_of_phase_partition hpp hpφ hKφ hpφB) (fun _ h => polyGenMuF_succ h) k (by omega)
 
 
 /-- The Theorem 18.2 envelope at the tight base budget, without the cubic branch. -/
@@ -261,27 +251,17 @@ theorem envBound_allXF (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : ∀ 
       Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
     (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) :
     ∀ k, 2 ≤ k → EnvBound (k + 2) (genMuXF k) := by
-  have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
-    fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
-  have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
   have hstep : ∀ k, 2 ≤ k → ∀ μ, EnvBound (k + 1) μ →
       EnvBound (k + 2) (envStepFTx k (tightMu0 k) (genMuK k) μ) := by
     intro k hk μ hlow
     let P : GenParamsF := ⟨classV Kc pc k, k, Kc k, pc k, tightMu0 k⟩
     have H : P.CHyp (tightMuV k) (genMuK k) := tightHyp_of_profiles_fejer Kc pc hK hp hconst hk
-    have hcov : ∀ l, 1 ≤ l → l ≤ P.k →
-        PolyCoverAt l (uCount P.V (uDeg23 l)) (uExp P.V (uDeg23 l)) := by
-      intro l hl1 hlk
-      have hcl := polyCoverAt_class23 Kc pc hK1 hp hlem hl1
-      exact hcl.uniform_mono (one_le_classV Kc pc l) (classV_mono Kc pc hlk) le_rfl
+    have hcov := classCovers_of_profiles Kc pc hK hp hrec (degree := uDeg23) (k := k)
+      (fun hK1 => polyCoverAt_class23 Kc pc hK1 hp)
     exact envBound_stepFx P H (by show 1 ≤ k; omega) hcov (hrec k (by omega)) hlow
   intro k hk
-  induction k, hk using Nat.le_induction with
-  | base => exact hstep 2 le_rfl 62 envBound_three
-  | succ k hk ih =>
-    rw [genMuXF_succ (by omega)]
-    exact hstep (k + 1) (by omega) (genMuXF k) ih
+  exact envelope_induction (P := EnvBound) (budget := genMuXF) hstep
+    envBound_three (fun _ h => genMuXF_succ h) k (by omega)
 
 
 

@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18CoverBudget
 import GowersSzemeredi.Proofs18ThresholdAt
+import GowersSzemeredi.Proofs18EnvelopeInduction
 
 /-! The uniform `L+5` threshold for lengths at least six.
 
@@ -225,27 +226,17 @@ theorem envBound_allX (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : ∀ k
       Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
     (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) :
     ∀ k, 2 ≤ k → EnvBound (k + 2) (genMuX k) := by
-  have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
-    fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
-  have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
   have hstep : ∀ k, 2 ≤ k → ∀ μ, EnvBound (k + 1) μ →
       EnvBound (k + 2) (envStepCTx k (tightMu0 k) (genMuK k) μ) := by
     intro k hk μ hlow
     let P : GenParamsC := ⟨classV Kc pc k, k, Kc k, pc k, tightMu0 k⟩
     have H : P.CHyp (tightMuV k) (genMuK k) := tightHyp_of_profiles Kc pc hK hp hconst hk
-    have hcov : ∀ l, 1 ≤ l → l ≤ P.k →
-        PolyCoverAt l (uCount P.V (uDeg68 l)) (uExp P.V (uDeg68 l)) := by
-      intro l hl1 hlk
-      have hcl := polyCoverAt_class68 Kc pc hK1 hp hlem hl1
-      exact hcl.uniform_mono (one_le_classV Kc pc l) (classV_mono Kc pc hlk) le_rfl
+    have hcov := classCovers_of_profiles Kc pc hK hp hrec (degree := uDeg68) (k := k)
+      (fun hK1 => polyCoverAt_class68 Kc pc hK1 hp)
     exact envBound_stepCx P H (by show 1 ≤ k; omega) hcov (hrec k (by omega)) hlow
   intro k hk
-  induction k, hk using Nat.le_induction with
-  | base => exact hstep 2 le_rfl 62 envBound_three
-  | succ k hk ih =>
-    rw [genMuX_succ (by omega)]
-    exact hstep (k + 1) (by omega) (genMuX k) ih
+  exact envelope_induction (P := EnvBound) (budget := genMuX) hstep
+    envBound_three (fun _ h => genMuX_succ h) k (by omega)
 
 
 theorem envStepCTx_le_tight (k μ : Nat) :

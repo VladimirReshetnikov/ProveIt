@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18FinalStep
+import GowersSzemeredi.Proofs18EnvelopeInduction
 
 /-! **The final route, part 3: the envelopes and their fits** (Notes L.16-final).
 
@@ -321,27 +322,17 @@ theorem envBound_allXK3 (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : ∀
       Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
     (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16))) :
     ∀ k, 2 ≤ k → EnvBound (k + 2) (genMuXK3 k) := by
-  have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
-    fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
-  have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
   have hstep : ∀ k, 2 ≤ k → ∀ μ, EnvBound (k + 1) μ →
       EnvBound (k + 2) (envStepKTx3 k (tightMu0Z k) (genMuKZ k) μ) := by
     intro k hk μ hlow
     let P : GenParamsJT3 := ⟨classV Kc pc k, k, Kc k, pc k, tightMu0Z k⟩
     have H : P.CHyp (tightMuW k) (genMuKZ k) := tightHyp_of_profiles_fejerJT3 Kc pc hK hp hconst hk
-    have hcov : ∀ l, 1 ≤ l → l ≤ P.k →
-        PolyCoverAt l (uCount P.V (uDegT3 l)) (uExp P.V (uDegT3 l)) := by
-      intro l hl1 hlk
-      have hcl := polyCoverAt_classT3 Kc pc hK1 hp hlem hl1
-      exact hcl.uniform_mono (one_le_classV Kc pc l) (classV_mono Kc pc hlk) le_rfl
+    have hcov := classCovers_of_profiles Kc pc hK hp hrec (degree := uDegT3) (k := k)
+      (fun hK1 => polyCoverAt_classT3 Kc pc hK1 hp)
     exact envBound_stepKx3 P H (by show 1 ≤ k; omega) hcov (hrec k (by omega)) hlow
   intro k hk
-  induction k, hk using Nat.le_induction with
-  | base => exact hstep 2 le_rfl 62 envBound_three
-  | succ k hk ih =>
-    rw [genMuXK3_succ (by omega)]
-    exact hstep (k + 1) (by omega) (genMuXK3 k) ih
+  exact envelope_induction (P := EnvBound) (budget := genMuXK3) hstep
+    envBound_three (fun _ h => genMuXK3_succ h) k (by omega)
 
 theorem envStepKTx3_le_tight {k : Nat} (hk : 15 ≤ k) (μ : Nat) :
     envStepKTx3 k (tightMu0Z k) (genMuKZ k) μ ≤
@@ -492,17 +483,10 @@ theorem corollary_16_11_polynomial_fejerJT3_of_profiles (Kc pc : Nat → Nat) (h
               e * P.carrier.card ≤ section16LargeMultilinearFrequencyCount f P mu alpha := by
   intro alpha ha ha2
   have hX := two_div_ge_two ha ha2
-  have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
-    fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
-  have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
   let P : GenParamsJT3 := ⟨classV Kc pc k, k, Kc k, pc k, tightMu0Z k⟩
   have H : P.CHyp (tightMuW k) (genMuKZ k) := tightHyp_of_profiles_fejerJT3 Kc pc hK hp hconst hk
-  have hcov : ∀ l, 1 ≤ l → l ≤ P.k →
-      PolyCoverAt l (uCount P.V (uDegT3 l)) (uExp P.V (uDegT3 l)) := by
-    intro l hl1 hlk
-    have hcl := polyCoverAt_classT3 Kc pc hK1 hp hlem hl1
-    exact hcl.uniform_mono (one_le_classV Kc pc l) (classV_mono Kc pc hlk) le_rfl
+  have hcov := classCovers_of_profiles Kc pc hK hp hrec (degree := uDegT3) (k := k)
+    (fun hK1 => polyCoverAt_classT3 Kc pc hK1 hp)
   have hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ uCount P.V (uDegT3 l) g t s :=
     fun l g t s _ _ => one_le_uCount P.V (uDegT3 l) g t s
   have hretile : ∀ q, Section16RetiledLinearityBound P.k q (familyRecExp P.k P.p q)
@@ -644,28 +628,17 @@ theorem polyEnvBound_allJT3 (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp :
     {Kφ : Real} {pφ : Nat} (hpp : ProgressionPhasePartition Kφ pφ) (hpφ : 0 < pφ)
     (hKφ : Kφ ≤ 2 ^ pφ) (hpφB : (pφ : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) :
     ∀ k, 2 ≤ k → PolyEnvBound (k + 2) (polyGenMuJT3 k) := by
-  have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
-    fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
-  have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
   have hstep : ∀ k, 2 ≤ k → ∀ μ, PolyEnvBound (k + 1) μ →
       PolyEnvBound (k + 2) (envStepJT3 k (tightMu0Z k) (genMuKZ k) μ) := by
     intro k hk μ hlow
     let P : GenParamsJT3 := ⟨classV Kc pc k, k, Kc k, pc k, tightMu0Z k⟩
     have H : P.CHyp (tightMuW k) (genMuKZ k) := tightHyp_of_profiles_fejerJT3 Kc pc hK hp hconst hk
-    have hcov : ∀ l, 1 ≤ l → l ≤ P.k →
-        PolyCoverAt l (uCount P.V (uDegT3 l)) (uExp P.V (uDegT3 l)) := by
-      intro l hl1 hlk
-      have hcl := polyCoverAt_classT3 Kc pc hK1 hp hlem hl1
-      exact hcl.uniform_mono (one_le_classV Kc pc l) (classV_mono Kc pc hlk) le_rfl
+    have hcov := classCovers_of_profiles Kc pc hK hp hrec (degree := uDegT3) (k := k)
+      (fun hK1 => polyCoverAt_classT3 Kc pc hK1 hp)
     exact polyEnvBound_stepJT3 P H (by show 1 ≤ k; omega) hcov (hrec k (by omega)) hlow
   intro k hk
-  induction k, hk using Nat.le_induction with
-  | base =>
-    exact hstep 2 le_rfl 74 (polyEnvBound_three_of_phase_partition hpp hpφ hKφ hpφB)
-  | succ k hk ih =>
-    rw [polyGenMuJT3_succ (by omega)]
-    exact hstep (k + 1) (by omega) (polyGenMuJT3 k) ih
+  exact envelope_induction (P := PolyEnvBound) (budget := polyGenMuJT3) hstep
+    (polyEnvBound_three_of_phase_partition hpp hpφ hKφ hpφB) (fun _ h => polyGenMuJT3_succ h) k (by omega)
 
 
 /-! ### Closed forms -/
