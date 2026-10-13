@@ -138,11 +138,8 @@ theorem polyCoverAt_one_uniform {V : Real} (hV : 1 ≤ V) {D : Nat} (hD : 2 ^ 13
   have hw2 : ∀ gamma theta rho : Real, 0 < gamma → gamma ≤ 1 → 0 < theta → theta ≤ 1 →
       0 < rho → rho ≤ 1 → (2 : Real) ≤ 2 / (gamma * theta * rho) := by
     intro gamma theta rho hg hg1 ht ht1 hr hr1
-    obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-    have hle : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-      div_le_div_of_nonneg_left (by norm_num) (by positivity)
-        (mul_le_of_le_one_right (by positivity) hr1)
-    exact hv2.trans hle
+    obtain ⟨hv2, hvw, -⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
+    exact hv2.trans hvw
   refine polyCoverAt_one.weaken ?_ ?_ ?_
   · intro gamma theta rho hg hg1 ht ht1 hr hr1
     have hw := two_div_le_uniformBase hV hg ht hr

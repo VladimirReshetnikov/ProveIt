@@ -404,16 +404,7 @@ theorem polyTwoFamExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
     (hp : (p1 : Real) ≤ (2 / (gamma * theta * rho)) ^ 3) :
     (polyTwoFamExp (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) theta gamma rho)⁻¹ ≤
       (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 130) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-  have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-    div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-  have hrw : rho⁻¹ ≤ 2 / (gamma * theta * rho) := by
-    rw [show 2 / (gamma * theta * rho) = 2 / (gamma * theta) * rho⁻¹ by field_simp]
-    have h2 : (1 : Real) ≤ 2 / (gamma * theta) := by rw [le_div_iff₀ hgt]; linarith
-    have := inv_pos.mpr hr
-    nlinarith
-  obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  obtain ⟨hv2, hvw, hrw⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
   obtain ⟨hζ0, hζ1, hζi⟩ := section16Zeta_one_bounds hg ht
   have hm := polyTwoPieces_le_power hg hg1 ht ht1
   have hqs := polyPieceSpecCount_le_power hg hg1 ht ht1
@@ -447,11 +438,7 @@ theorem polyTwoEb_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
     (hp : (p1 : Real) ≤ (2 / (gamma * theta * rho)) ^ 3) :
     (polyTwoEb (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) gamma theta rho)⁻¹ ≤
       (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 132) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-  have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-    div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-  obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  obtain ⟨hv2, hvw, -⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
   have hfam := polyTwoFamExp_inv_le_power hK1 hp1 hg hg1 ht ht1 hr hr1 hK hp
   have hfam0 := polyTwoFamExp_pos (A := familyWidthPrefactor K1) (Bq := familyWidthDivisor 1 p1)
     (theta := theta) (gamma := gamma) (familyWidthDivisor_pos hp1) hr
@@ -479,16 +466,7 @@ theorem sixEb_inv_le_power (l : Nat) {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
       (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 132) := by
   unfold sixEb
   split_ifs
-  · have hgt : 0 < gamma * theta := mul_pos hg ht
-    have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-    have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-      div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-    have hrw : rho⁻¹ ≤ 2 / (gamma * theta * rho) := by
-      rw [show 2 / (gamma * theta * rho) = 2 / (gamma * theta) * rho⁻¹ by field_simp]
-      have h2 : (1 : Real) ≤ 2 / (gamma * theta) := by rw [le_div_iff₀ hgt]; linarith
-      have := inv_pos.mpr hr
-      nlinarith
-    obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  · obtain ⟨hv2, hvw, hrw⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
     have hB := section16BaseFamilyBound_le_dyadic_power hg hg1 ht ht1
     have hB0 := section16BaseFamilyBound_pos gamma theta
     set v := 2 / (gamma * theta) with hv

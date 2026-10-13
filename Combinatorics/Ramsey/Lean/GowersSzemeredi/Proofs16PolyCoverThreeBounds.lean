@@ -305,19 +305,8 @@ theorem three_base_facts {gamma theta rho W0 : Real} (hg : 0 < gamma) (hg1 : gam
     2 ≤ W0 * (2 / (gamma * theta * rho)) ∧
       2 / (gamma * theta) ≤ W0 * (2 / (gamma * theta * rho)) ∧
       rho⁻¹ ≤ W0 * (2 / (gamma * theta * rho)) ∧ W0 ≤ W0 * (2 / (gamma * theta * rho)) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-  have hw2 : 2 ≤ 2 / (gamma * theta * rho) := by
-    rw [le_div_iff₀ (by positivity)]
-    have : gamma * theta * rho ≤ 1 := mul_le_one₀ hgt1 hr.le hr1
-    linarith
-  have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-    div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-  have hrw : rho⁻¹ ≤ 2 / (gamma * theta * rho) := by
-    rw [show 2 / (gamma * theta * rho) = 2 / (gamma * theta) * rho⁻¹ by field_simp]
-    have h2 : (1 : Real) ≤ 2 / (gamma * theta) := by rw [le_div_iff₀ hgt]; linarith
-    have := inv_pos.mpr hr
-    nlinarith
+  obtain ⟨hv2, hvw, hrw⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
+  have hw2 : 2 ≤ 2 / (gamma * theta * rho) := hv2.trans hvw
   have hle : 2 / (gamma * theta * rho) ≤ W0 * (2 / (gamma * theta * rho)) :=
     le_mul_of_one_le_left (by positivity) hW0
   refine ⟨hw2.trans hle, hvw.trans hle, hrw.trans hle, ?_⟩

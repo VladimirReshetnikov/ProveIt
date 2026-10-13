@@ -29,18 +29,10 @@ theorem polyCoverAt_one_uniform_low {V : Real} (hV : 1 ≤ V) {D : Nat} (hD : 2 
       (section16BaseFamilyBound gamma theta : Real) ≤
         (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 14) := by
     intro gamma theta rho hg hg1 ht ht1 hr hr1
-    have hgt : 0 < gamma * theta := mul_pos hg ht
-    have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-    have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-      div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-    obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+    obtain ⟨hv2, hvw, hrw⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
     have hB := section16BaseFamilyBound_le_dyadic_power hg hg1 ht ht1
-    have hw2 : 2 ≤ 2 / (gamma * theta * rho) := hv2.trans hvw
-    refine ⟨hw2, ?_, hB.trans (pow_le_pow_left₀ (le_trans (by norm_num) hv2) hvw _)⟩
-    rw [pow_one, show 2 / (gamma * theta * rho) = 2 / (gamma * theta) * rho⁻¹ by field_simp]
-    have h1 : (1 : Real) ≤ 2 / (gamma * theta) := le_trans (by norm_num) hv2
-    have hr0 : 0 ≤ rho⁻¹ := (inv_pos.mpr hr).le
-    nlinarith
+    exact ⟨hv2.trans hvw, by simpa only [pow_one] using hrw,
+      hB.trans (pow_le_pow_left₀ (le_trans (by norm_num) hv2) hvw _)⟩
   refine polyCoverAt_one.weaken ?_ ?_ ?_
   · intro gamma theta rho hg hg1 ht ht1 hr hr1
     obtain ⟨hw2', -, hB'⟩ := hbase gamma theta rho hg hg1 ht ht1 hr hr1

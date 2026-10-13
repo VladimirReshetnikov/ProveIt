@@ -29,6 +29,23 @@ def famTwoPb (m ql : Nat) : Nat → Real → Real :=
   fun r _ => ((3 * (m * (r * ql) + 1) : Nat) : Real)
 def famTwoEs (m ql : Nat) : Nat → Real → Real := fun r => cubicBaseExponent (m * (r * ql) + 1)
 
+/-- The common dimension-two line and slice factors give a positive capped exponent. -/
+theorem famTwoCappedExponent_pos {Bq : Nat → Real} (hB : ∀ q, 0 < Bq q)
+    {m qs qr ql : Nat} {rho T : Real} (hrho : 0 < rho) :
+    0 < section16CappedWidthExponent
+      (pieceLineExponent Bq (famTwoQb m qs) (famTwoEb m qs) (famTwoEr m qr) rho *
+        famPieceSliceExponent (famTwoQr m qr) (famTwoEs m ql) m rho / 4) T := by
+  apply section16CappedWidthExponent_pos
+  have h8 : 0 < rho / 8 := by positivity
+  have h4 : 0 < rho / 4 := by positivity
+  have hEb := cubicBaseExponent_pos (Nat.succ_pos (m * qs)) h8
+  have hEr := cubicBaseExponent_pos (Nat.succ_pos (m * qr)) h8
+  have hEs := cubicBaseExponent_pos
+    (Nat.succ_pos (m * (famPieceSamples (famTwoQr m qr) m rho * ql))) h4
+  have hBq := hB ⌊famTwoQb m qs (rho / 8)⌋₊
+  simp only [pieceLineExponent, famPieceSliceExponent, famTwoEb, famTwoEr, famTwoEs]
+  positivity
+
 /-- Stacked slices of a set with final-coordinate Freiman families. -/
 theorem stackedSlices_relFreimanCover {N r ql : Nat} [NeZero N]
     {D : Finset (Point N 2)} {phi : Point N 2 → ZMod N}

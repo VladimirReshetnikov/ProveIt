@@ -225,20 +225,7 @@ theorem polyTwoFejerFamExp_pos {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q)
     {theta gamma : Real} {rho : Real} (hrho : 0 < rho) :
     0 < polyTwoFejerFamExp A Bq theta gamma rho := by
   unfold polyTwoFejerFamExp
-  apply section16CappedWidthExponent_pos
-  have h8 : 0 < rho / 8 := by positivity
-  have h4 : 0 < rho / 4 := by positivity
-  have hEb := cubicBaseExponent_pos
-    (Nat.succ_pos (polyTwoFejerPieces gamma theta * polyPieceSpecCountW (fejerThetaOne theta gamma 1))) h8
-  have hEr := cubicBaseExponent_pos
-    (Nat.succ_pos (polyTwoFejerPieces gamma theta * polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma)) h8
-  have hEs := cubicBaseExponent_pos (Nat.succ_pos (polyTwoFejerPieces gamma theta *
-    (famPieceSamples (famTwoQr (polyTwoFejerPieces gamma theta) (polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma))
-      (polyTwoFejerPieces gamma theta) rho * polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma))) h4
-  have hBq := hB ⌊famTwoQb (polyTwoFejerPieces gamma theta) (polyPieceSpecCountW (fejerThetaOne theta gamma 1))
-    (rho / 8)⌋₊
-  simp only [pieceLineExponent, famPieceSliceExponent, famTwoEb, famTwoEr, famTwoEs]
-  positivity
+  exact famTwoCappedExponent_pos hB hrho
 
 /-- **`PolyCoverAt 2`**, from the family Lemma 16.6 at a power width. -/
 theorem polyCoverAt_two_fejer_of_family_lemma6 {A Bq : Nat → Real} (hA : ∀ q, 0 < A q)
