@@ -8581,6 +8581,53 @@ Final bounds, the accepted Lemma 16.10 correction and open original-paper
 fidelity issues are unchanged. This checkpoint does not establish complete original-paper
 fidelity; the simplification goal remains active.
 
+### L.91. Share count, positivity and radius estimates (2026-10-13)
+
+Three shared lemmas replace repeated dimension-two count, capped-exponent
+positivity and radius-scale arguments. The count estimate gives
+`w^(11*a + 6*b + 54)` under its explicit count and radius hypotheses;
+the radius lemma serves 14 callers. Existing assumptions and numerical
+bounds remain unchanged. A stale Fejer proof comment is also corrected.
+
+All 147 complete statements and scope contexts and all 30 definitions
+remain exact. Twenty proof bodies shrink from 558 to 353 lines; the
+three helpers add 28 proof lines, giving a net reduction of 177. Including
+all 47 lines of helper declarations, documentation and spacing, 12
+production files shrink from 3,663 to 3,505 lines, saving 158. No old
+declaration is removed and no import or option changes.
+
+Two audit files add 20 checks: focused gains 19 names, retaining all 260
+earlier names; historical explicit adds `three_base_facts`, retaining its
+two export checks. The two changed polynomial width estimates already
+have focused checks, and the changed integer caller already has a check
+in `IntegerOriginalCorollaryCoreAudit`. Together these audits explicitly
+cover all 23 changed or new declarations. The modified Lean files shrink
+by 138 lines after the audit additions. Two frozen metadata line references
+are corrected in the review; the proof sources and audit coverage agree.
+
+All six fresh checks pass: original audit (642), stronger bridge (719),
+focused audit (783), downstream audit (1,098), historical explicit audit
+(701) and historical bridge (560), with every current input hash verified.
+The named audits allow only `propext`, `Classical.choice` and `Quot.sound`.
+Affected declarations are checked in three places: 21 in focused, one in
+historical explicit and one in the existing integer core audit imported
+by downstream. Historical explicit also retains its two export checks.
+Standalone bridge compilation does not audit every export; its record
+links the three fresh audits for the distributed 23-declaration coverage.
+The stronger bridge is 719 / 153,293 source lines; focused is 783 /
+167,856, saving 120 lines after its additions. The six-target union is
+1,204 / 226,512 with 1,207 hashed inputs; module sets are unchanged.
+See `verification/2026-10-13-controls-radius{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-controls-radius-simplification.json`.
+
+Selected coverage is 180 of 183 affected import consumers; the standard
+four targets cover 172. The facade, Audit and PortImportAudit remain
+excluded with unchanged source hashes. The regenerated 120-statement
+inventory is byte-identical to the baseline. Final bounds, the accepted Lemma 16.10 correction and open
+original-paper fidelity issues are unchanged. This checkpoint does not
+establish complete original-paper fidelity; the simplification goal
+remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

@@ -250,20 +250,7 @@ theorem polyTwoFamExp_pos {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q)
     {theta gamma : Real} {rho : Real} (hrho : 0 < rho) :
     0 < polyTwoFamExp A Bq theta gamma rho := by
   unfold polyTwoFamExp
-  apply section16CappedWidthExponent_pos
-  have h8 : 0 < rho / 8 := by positivity
-  have h4 : 0 < rho / 4 := by positivity
-  have hEb := cubicBaseExponent_pos
-    (Nat.succ_pos (polyTwoPieces gamma theta * polyPieceSpecCount theta gamma)) h8
-  have hEr := cubicBaseExponent_pos
-    (Nat.succ_pos (polyTwoPieces gamma theta * polyPieceFaceCount theta gamma)) h8
-  have hEs := cubicBaseExponent_pos (Nat.succ_pos (polyTwoPieces gamma theta *
-    (famPieceSamples (famTwoQr (polyTwoPieces gamma theta) (polyPieceFaceCount theta gamma))
-      (polyTwoPieces gamma theta) rho * polyPieceFaceCount theta gamma))) h4
-  have hBq := hB ⌊famTwoQb (polyTwoPieces gamma theta) (polyPieceSpecCount theta gamma)
-    (rho / 8)⌋₊
-  simp only [pieceLineExponent, famPieceSliceExponent, famTwoEb, famTwoEr, famTwoEs]
-  positivity
+  exact famTwoCappedExponent_pos hB hrho
 
 /-- **`PolyCoverAt 2`**, from the family Lemma 16.6 at a power width. -/
 theorem polyCoverAt_two_of_family_lemma6 {A Bq : Nat → Real} (hA : ∀ q, 0 < A q)

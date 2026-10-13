@@ -26,28 +26,13 @@ theorem uniTwoExp_pos {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q)
     {theta gamma : Real} (M : Nat) {rho : Real} (hrho : 0 < rho) :
     0 < uniTwoExp A Bq theta gamma M rho := by
   unfold uniTwoExp
-  apply section16CappedWidthExponent_pos
-  have h8 : 0 < rho / 8 := by positivity
-  have h4 : 0 < rho / 4 := by positivity
-  have hEb := cubicBaseExponent_pos
-    (Nat.succ_pos (M * polyPieceSpecCount theta gamma)) h8
-  have hEr := cubicBaseExponent_pos
-    (Nat.succ_pos (M * polyPieceFaceCount theta gamma)) h8
-  have hEs := cubicBaseExponent_pos (Nat.succ_pos (M *
-    (famPieceSamples (famTwoQr (M) (polyPieceFaceCount theta gamma))
-      (M) rho * polyPieceFaceCount theta gamma))) h4
-  have hBq := hB ⌊famTwoQb (M) (polyPieceSpecCount theta gamma)
-    (rho / 8)⌋₊
-  simp only [pieceLineExponent, famPieceSliceExponent, famTwoEb, famTwoEr, famTwoEs]
-  positivity
+  exact famTwoCappedExponent_pos hB hrho
 
 theorem uniTwoCount_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1)
     {w : Real} (hvw : 2 / (gamma * theta) ≤ w) (hrw : rho⁻¹ ≤ w)
     {M : Nat} (hM : (M : Real) ≤ w ^ ((2 : Nat) ^ 84)) :
     uniTwoCount theta gamma M rho ≤ w ^ ((2 : Nat) ^ 89) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
   obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   have hq := polyPieceFaceCount_le_power hg hg1 ht ht1
   set v := 2 / (gamma * theta) with hv
@@ -55,24 +40,10 @@ theorem uniTwoCount_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : ga
   have hw2 : 2 ≤ w := hv2.trans hvw
   have hv0 : 0 ≤ v := le_trans (by norm_num) hv2
   -- both counts below `w^(2^84)`
-  have hm' : (M : Real) ≤ w ^ ((2 : Nat) ^ 84) := hM
   have hq' : (polyPieceFaceCount theta gamma : Real) ≤ w ^ ((2 : Nat) ^ 84) :=
     hq.trans (pow_le_pow_left₀ hv0 hvw _)
-  set m := M with hmM
-  set ql := polyPieceFaceCount theta gamma
-  have hQr := famTwoQr_le_power hw2 hm' hq' (rho / 8)
-  have hS := famPieceSamples_le_power (Qr := famTwoQr m ql) hw2 hr hrw hQr hm'
-  have hP := famTwoPb_le_power hw2 hm' hq' hS (rho / 4)
-  have hP0 : 0 ≤ famTwoPb m ql (famPieceSamples (famTwoQr m ql) m rho) (rho / 4) := by
-    unfold famTwoPb; exact Nat.cast_nonneg _
-  have hG := famPieceGraphBound_le_power (Pb := famTwoPb m ql) hw2 hm' hS hP0 hP
   unfold uniTwoCount
-  apply max_le
-  · exact le_pow_mono hw2 (by norm_num) hG
-  · have h9 : ((3 ^ (1 + 1) * m : Nat) : Real) ≤ w ^ (4 + (2 : Nat) ^ 84) := by
-      rw [Nat.cast_mul]
-      exact const_mul_le_pow hw2 (Nat.cast_nonneg _) (by norm_num) (Nat.cast_nonneg _) hm'
-    exact le_pow_mono hw2 (by norm_num) h9
+  exact le_pow_mono hw2 (by norm_num) (famTwoCount_le_power hw2 hr hrw hM hq')
 
 theorem uniTwoExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
     {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1)

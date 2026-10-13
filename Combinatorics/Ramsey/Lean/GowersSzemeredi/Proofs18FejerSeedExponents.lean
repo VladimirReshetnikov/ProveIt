@@ -61,16 +61,7 @@ theorem tightZeta_fejer_one_bounds {gamma theta : Real} (hg : 0 < gamma) (hg1 : 
 theorem polyTwoFejerFamCount_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1) :
     polyTwoFejerFamCount theta gamma rho ≤ (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 43) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-  have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-    div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-  have hrw : rho⁻¹ ≤ 2 / (gamma * theta * rho) := by
-    rw [show 2 / (gamma * theta * rho) = 2 / (gamma * theta) * rho⁻¹ by field_simp]
-    have h2 : (1 : Real) ≤ 2 / (gamma * theta) := by rw [le_div_iff₀ hgt]; linarith
-    have := inv_pos.mpr hr
-    nlinarith
-  obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  obtain ⟨hv2, hvw, hrw⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
   have hm := polyTwoFejerPieces_le_power hg hg1 ht ht1
   have hq := polyPieceFaceCountW_fejer_le_power hg hg1 ht ht1
   set v := 2 / (gamma * theta) with hv
@@ -83,21 +74,8 @@ theorem polyTwoFejerFamCount_le_power {gamma theta rho : Real} (hg : 0 < gamma) 
     le_pow_mono hw2 (by norm_num) (hm.trans (pow_le_pow_left₀ hv0 hvw _))
   have hq' : (polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma : Real) ≤ w ^ ((2 : Nat) ^ 38) :=
     hq.trans (pow_le_pow_left₀ hv0 hvw _)
-  set m := polyTwoFejerPieces gamma theta
-  set ql := polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma
-  have hQr := famTwoQr_le_power hw2 hm' hq' (rho / 8)
-  have hS := famPieceSamples_le_power (Qr := famTwoQr m ql) hw2 hr hrw hQr hm'
-  have hP := famTwoPb_le_power hw2 hm' hq' hS (rho / 4)
-  have hP0 : 0 ≤ famTwoPb m ql (famPieceSamples (famTwoQr m ql) m rho) (rho / 4) := by
-    unfold famTwoPb; exact Nat.cast_nonneg _
-  have hG := famPieceGraphBound_le_power (Pb := famTwoPb m ql) hw2 hm' hS hP0 hP
   unfold polyTwoFejerFamCount
-  apply max_le
-  · exact le_pow_mono hw2 (by norm_num) hG
-  · have h9 : ((3 ^ (1 + 1) * m : Nat) : Real) ≤ w ^ (4 + (2 : Nat) ^ 38) := by
-      rw [Nat.cast_mul]
-      exact const_mul_le_pow hw2 (Nat.cast_nonneg _) (by norm_num) (Nat.cast_nonneg _) hm'
-    exact le_pow_mono hw2 (by norm_num) h9
+  exact le_pow_mono hw2 (by norm_num) (famTwoCount_le_power hw2 hr hrw hm' hq')
 
 /-! ### The counts of the length-six route -/
 
@@ -105,11 +83,7 @@ theorem polyTwoFejerFamCount_le_power {gamma theta rho : Real} (hg : 0 < gamma) 
 theorem polyTwoFejerQb_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1) :
     polyTwoFejerQb gamma theta rho ≤ (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 44) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-  have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-    div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-  obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  obtain ⟨hv2, hvw, -⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
   have hthr3 : (3 : Real) ≤ polyTwoFejerThreshold theta gamma := by
     unfold polyTwoFejerThreshold; exact le_max_left _ _
   have hthr := polyTwoFejerThreshold_le_power hg hg1 ht ht1
@@ -139,16 +113,7 @@ theorem polyTwoFejerFamExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < 
     (hp : (p1 : Real) ≤ (2 / (gamma * theta * rho)) ^ 3) :
     (polyTwoFejerFamExp (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) theta gamma rho)⁻¹ ≤
       (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 46) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-  have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-    div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-  have hrw : rho⁻¹ ≤ 2 / (gamma * theta * rho) := by
-    rw [show 2 / (gamma * theta * rho) = 2 / (gamma * theta) * rho⁻¹ by field_simp]
-    have h2 : (1 : Real) ≤ 2 / (gamma * theta) := by rw [le_div_iff₀ hgt]; linarith
-    have := inv_pos.mpr hr
-    nlinarith
-  obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  obtain ⟨hv2, hvw, hrw⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
   obtain ⟨hζ0, hζ1, hζi⟩ := tightZeta_fejer_one_bounds hg hg1 ht ht1
   have hm := polyTwoFejerPieces_le_power hg hg1 ht ht1
   have hqs := polyPieceSpecCountW_fejer_le_power hg hg1 ht ht1
@@ -182,11 +147,7 @@ theorem polyTwoFejerEb_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
     (hp : (p1 : Real) ≤ (2 / (gamma * theta * rho)) ^ 3) :
     (polyTwoFejerEb (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) gamma theta rho)⁻¹ ≤
       (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 46) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-  have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-    div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-  obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  obtain ⟨hv2, hvw, -⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
   have hfam := polyTwoFejerFamExp_inv_le_power hK1 hp1 hg hg1 ht ht1 hr hr1 hK hp
   have hfam0 := polyTwoFejerFamExp_pos (A := familyWidthPrefactor K1) (Bq := familyWidthDivisor 1 p1)
     (theta := theta) (gamma := gamma) (familyWidthDivisor_pos hp1) hr

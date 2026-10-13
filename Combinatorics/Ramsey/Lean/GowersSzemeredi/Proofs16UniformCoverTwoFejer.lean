@@ -157,53 +157,24 @@ theorem uniTwoFejerExp_pos {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q)
     {theta gamma : Real} (M : Nat) {rho : Real} (hrho : 0 < rho) :
     0 < uniTwoFejerExp A Bq theta gamma M rho := by
   unfold uniTwoFejerExp
-  apply section16CappedWidthExponent_pos
-  have h8 : 0 < rho / 8 := by positivity
-  have h4 : 0 < rho / 4 := by positivity
-  have hEb := cubicBaseExponent_pos
-    (Nat.succ_pos (M * polyPieceSpecCountW (fejerThetaOne theta gamma 1))) h8
-  have hEr := cubicBaseExponent_pos
-    (Nat.succ_pos (M * polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma)) h8
-  have hEs := cubicBaseExponent_pos (Nat.succ_pos (M *
-    (famPieceSamples (famTwoQr (M) (polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma))
-      (M) rho * polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma))) h4
-  have hBq := hB ⌊famTwoQb (M) (polyPieceSpecCountW (fejerThetaOne theta gamma 1))
-    (rho / 8)⌋₊
-  simp only [pieceLineExponent, famPieceSliceExponent, famTwoEb, famTwoEr, famTwoEs]
-  positivity
+  exact famTwoCappedExponent_pos hB hrho
 
 theorem uniTwoFejerCount_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1)
     {w : Real} (hvw : 2 / (gamma * theta) ≤ w) (hrw : rho⁻¹ ≤ w)
     {M : Nat} (hM : (M : Real) ≤ w ^ ((2 : Nat) ^ 38)) :
     uniTwoFejerCount theta gamma M rho ≤ w ^ ((2 : Nat) ^ 43) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
   obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   have hq := polyPieceFaceCountW_fejer_le_power hg hg1 ht ht1
   set v := 2 / (gamma * theta) with hv
   clear_value v
   have hw2 : 2 ≤ w := hv2.trans hvw
   have hv0 : 0 ≤ v := le_trans (by norm_num) hv2
-  -- both counts below `w^(2^84)`
-  have hm' : (M : Real) ≤ w ^ ((2 : Nat) ^ 38) := hM
+  -- both counts below `w^(2^38)`
   have hq' : (polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma : Real) ≤ w ^ ((2 : Nat) ^ 38) :=
     hq.trans (pow_le_pow_left₀ hv0 hvw _)
-  set m := M with hmM
-  set ql := polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma
-  have hQr := famTwoQr_le_power hw2 hm' hq' (rho / 8)
-  have hS := famPieceSamples_le_power (Qr := famTwoQr m ql) hw2 hr hrw hQr hm'
-  have hP := famTwoPb_le_power hw2 hm' hq' hS (rho / 4)
-  have hP0 : 0 ≤ famTwoPb m ql (famPieceSamples (famTwoQr m ql) m rho) (rho / 4) := by
-    unfold famTwoPb; exact Nat.cast_nonneg _
-  have hG := famPieceGraphBound_le_power (Pb := famTwoPb m ql) hw2 hm' hS hP0 hP
   unfold uniTwoFejerCount
-  apply max_le
-  · exact le_pow_mono hw2 (by norm_num) hG
-  · have h9 : ((3 ^ (1 + 1) * m : Nat) : Real) ≤ w ^ (4 + (2 : Nat) ^ 38) := by
-      rw [Nat.cast_mul]
-      exact const_mul_le_pow hw2 (Nat.cast_nonneg _) (by norm_num) (Nat.cast_nonneg _) hm'
-    exact le_pow_mono hw2 (by norm_num) h9
+  exact le_pow_mono hw2 (by norm_num) (famTwoCount_le_power hw2 hr hrw hM hq')
 
 theorem uniTwoFejerExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
     {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1)
