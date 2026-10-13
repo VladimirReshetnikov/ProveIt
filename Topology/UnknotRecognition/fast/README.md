@@ -4761,6 +4761,31 @@ counterexample has eleven tetrahedra. Original STANDARD rank replay and fresh
 layering reconstruction verify these finite obstructions; they do not give a
 family with growing minimum resolving size.
 
+### Certified inverse boundary layers
+
+`recognize_by_crushing(..., unlayer_boundary=True)` tries a certified deletion
+of the exposed outer boundary layer after vertex reduction. The two triangles
+of a one-vertex torus boundary determine at most one candidate tetrahedron.
+The independent checker reconstructs the forward layering, checks its shared
+edge with orientation, verifies all unchanged face pairings and edge classes,
+and validates both compact manifolds. Identified quadrilateral sides are
+allowed by the layering theorem; embedded-tetrahedron shellings stay separate.
+
+The source-only API is `boundary_unlayer.unlayer_boundary_once`. An accepted
+step preserves the compact manifold and deletes exactly one tetrahedron.
+Repeated peeling takes polynomial bit work and reverses explicitly layered
+collars. It does not preserve the normal cone or assert that its minimum
+resolving size decreases. The [theory section](../synthesis/boundary_unlayer.tex)
+proves a conservative `O(t**3 * log(t+2)**2)` bound for the full peeling pass.
+
+Enabled diagram queries emit `diagram-crushing-v2`, mixing existing normal
+crushes with `normal-boundary-unlayer-v1` packets. Each move is independently
+replayed before the driver accepts progress. `max_crushes` counts both kinds
+of strict reduction; `crushing_steps` and `boundary_unlayerings` distinguish
+them. All previous search work remains charged when the smaller source starts
+fresh algebra. The default remains false and retains the original v1 chain.
+An unlayer packet by itself authenticates no knot diagram or boundary marking.
+
 ### Polynomial exact LP policy
 
 `solve_nonnegative_kernel` now defaults to `policy='polynomial'`. It performs

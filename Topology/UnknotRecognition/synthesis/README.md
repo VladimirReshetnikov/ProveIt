@@ -2,6 +2,13 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`boundary_unlayer.tex`](boundary_unlayer.tex) integrates independently
+certified inverse boundary layers into an optional diagram preprocessing
+policy. Its proof covers the oriented forward reconstruction, strict
+tetrahedron descent, polynomial bit work and the new mixed reduction-chain
+schema. This removes exposed collars without assuming that normal rays or
+their conflicts survive the move. Global resolving-set bounds remain open.
+
 [`conflict_candidates.tex`](conflict_candidates.tex) proves the optional
 conflict-directed candidate policy's `O(A*(3*delta)^h*poly(t,L))` bit bound.
 It branches on missed conflicts, partitions candidates without repetition
