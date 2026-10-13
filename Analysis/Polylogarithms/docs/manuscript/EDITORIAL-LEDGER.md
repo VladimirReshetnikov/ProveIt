@@ -901,7 +901,7 @@ recoverable records. No delivered source, evidence or note is rewritten.
 
 | Group | Reconciliation and acceptance boundary |
 |---|---|
-| `balanced-stieltjes-moments` | Ordinary Mellin moments in the positive translation of conventional Stieltjes constants, balanced tail cancellation and Bernoulli-root/filter families. Preserve failed preliminary polylogarithm derivative diagnostics separately from corrected full replays. This does not solve harmonic Stieltjes R_r,k or the twist convolution problem. Canonical analytic integration pending. |
+| `balanced-stieltjes-moments` | Ordinary Mellin moments in the positive translation of conventional Stieltjes constants, balanced tail cancellation and Bernoulli-root/filter families. Preserve failed preliminary polylogarithm derivative diagnostics separately from corrected full replays. This does not solve harmonic Stieltjes R_r,k or the twist convolution problem. The filtered raw Mellin theorem and its positive-integer specialization are now proved and attributed in the canonical translation-Mellin section. Balanced-profile, root and additional logarithmic-moment families retain a pending canonical integration scope. |
 | `boundary-contacts-log-spectra` | Confirm and correct the actual fifth reciprocal-Gamma print error, with independent exact Taylor and native Wolfram audits. Independent bilinear contact hyperplanes, negative jets and full logarithmic spectral finite parts have complete supplied replays; their analytic integration remains pending. |
 | `connected-spectral-gamma` | Keep independent regulators and the polar hyperplane before diagonal restriction. Connected all-factor spectral derivatives, collision constants and primitives remain a distinct pending branch. Provenance deliberately records per-file moving reads rather than one atomic source pin. |
 | `gamma-normalizations-colored-moments` | Complete seven-program replay includes the optional depth-two integral diagnostic and exact printed-RHS bridge. Preserve Gustafson attribution, weighted Gamma-statistic range and colored/cluster conventions. These are distinct from Gaussian S6/S8 and fixed-order prefix rank; analytic integration pending. |
@@ -1357,3 +1357,7 @@ this audit. This completes the joint report's canonical synthesis, not
 the continuing research goal. Negative growing relative windows, global
 removable-endpoint geometry and full smaller-sector expansions remain
 open. No Lean or remote-CI claim is made.
+
+## Reflected correlations and zero-Mellin Stieltjes reconstruction, October 12, 2026
+
+Restore the reflected two-generator algebra from the preserved convolution-calculus report and extend its normalized spectral family to arbitrary orientations. The neutral total-order identity and all-index alternating correlation formula retain the exact mean-zero contact term. The separate positive-translation section credits the balanced-stieltjes-moments filtered Mellin theorem before deriving zero-endpoint raising, digamma-only reconstruction and finite operator reconstruction. Original reports are unchanged. See verification/STIELTJES-RECONSTRUCTION-AUDIT.md for the proof and attribution boundary; no global novelty or arithmetic-independence assertion is made.

@@ -1,3 +1,95 @@
+# Stieltjes reflection identities and zero-Mellin reconstruction
+
+12 October 2026 (Pacific). Two new sections in Volume III extend the
+calculus of generalized Stieltjes functions gamma_n(a), with the conventional
+normalization gamma_0=-psi. The reflected convolution algebra has the
+unique normal form P(X)+(X-Y)*Q(X), with unit I=delta_0-1 and exact relation
+(X-Y)*(X-Y)=-pi^2 I. The many-factor analytic generator removes its apparent
+total-order pole before coefficient extraction. Its neutral-order
+restriction gives all-index alternating shifted-correlation identities
+that cancel the lower Stieltjes layers, retaining the required constant
+contact term and reflected signs.
+
+The joint reflection algebra is restored from the preserved
+convolution-calculus report, with explicit attribution. The many-factor
+generator, neutral restriction and alternating binomial identity extend
+that foundation. Positive-integer filtered Mellin values specialize the
+existing balanced-stieltjes-moments report's stronger two-variable theorem;
+the canonical section supplies an independent cancelled-Laplace proof.
+This milestone does not integrate that report's separate balanced
+profiles, Bernoulli-root families or full logarithmic-moment theorem.
+Original reports and evidence remain unchanged, and no historical
+priority claim follows from the bounded source comparison.
+
+The new zero-Mellin endpoint identity raises a Stieltjes index by an
+ordinary convergent translation integral, with an explicit finite zeta
+correction. A second identity reconstructs every shifted Stieltjes
+difference from digamma alone through a single ordinary integral with
+polynomial kernel Im((log(x)+i*pi)^n)/pi. The even-index correction comes
+from the removed Mellin pole and is indispensable. A finite coefficient
+formula with prefactor exp(gamma*z)/Gamma(1-z) reconstructs the same
+functions from repeated translation integrals.
+
+All shifts are positive. Annihilating shift powers 0 through r-1 gives
+the open Mellin strip 0<Re(v)<r; resonant integer values require 1<=k<r,
+and the Bernoulli zero cancels the Gamma pole before differentiation.
+The endpoint and reconstruction formulas require only zero total weight.
+Their split is fixed at x=1; replacing it by rho changes the raising
+integral by -F_n(0)*log(rho). The translation operator preserves the
+algebraic span, so each asserted iterate is a finite ordinary convergent
+integral. No convergence of an operator exponential or infinite
+iterated-integral interchange is asserted.
+
+Independent exact programs verify 7 reflection normal forms and
+56 polarized generator coefficients on both Fourier branches, with
+4 negative controls; 18 alternating identities and 54 neutral-family
+coefficients, with 3 negative controls; and 58 Mellin/reconstruction
+identities, with 4 negative controls. The last group includes exact
+adjacent-shift controls and finite operator reconstruction. The written
+proofs establish the all-index statements; these finite checks test the
+coefficient formulas, branches, signs and normalization.
+
+The numerical program records 44 comparisons: 22 digamma-only
+reconstructions, 4 transformed raising integrals and 18 positive-integer
+resonances already supplied by the report. Every recorded absolute error
+is below 1e-40. The reconstruction includes a 50/70-digit refinement;
+the 70-digit index-six residual is approximately 6.70e-64. Digamma
+quadrature is independent of the reference Stieltjes implementation.
+Stable endpoint expansions avoid cancellation in point evaluation, and
+the other families use one-dimensional Laplace quadratures. These are
+floating-point diagnostics, not interval certificates. The detailed
+proof and attribution audit is
+`verification/STIELTJES-RECONSTRUCTION-AUDIT.md`.
+
+Final pages are 190/131/261/87 (669 total), with a 623-page combined
+edition, 163 references and thirteen inherited scientific figures. Coupled
+references converge in three complete rounds; the combined source and all
+four isolated volume sources compile in three passes with clean final
+logs. All 70 external PDF destinations resolve. The local contents font
+in Volume III avoids a page containing only its final contents entry.
+Every PDF retains ProveIt Contributors as author.
+
+Visual review covers 14 changed volume bodies and 3 unmatched combined
+contents pages. Exact full-PNG comparisons carry the opened-page review
+through the final contents-only rebuild. Exact scientific-body comparisons
+retain 655 prior volume pages and 611 prior combined pages; 9 further
+combined bodies match the freshly reviewed volume pages. Only centered
+footer page numbers are excluded from body matching, with all other
+text/image/drawing bounds audited. No current contact sheet was opened.
+
+The source inventory still covers 1,810 original textual documents. The
+archive register remains 137 retired analytic archives, 4,861 preserved
+tracked members and 58 archive-only checksum records. Original reports
+and evidence are unchanged, and docs/incoming contains only its README.
+This milestone establishes the new analytic identities without a Lean
+formalization, interval certification or remote-CI claim. The continuing
+research goal remains active.
+
+The final manifest pins 297 canonical source files and 6,780 dependencies.
+All 479 receipt gates pass, checking the recorded build, mathematical,
+visual and archive evidence; these integrity checks do not rerun the
+mathematics or replace the analytic proofs.
+
 # Joint coefficient laws and matched endpoint derivatives
 
 12 October 2026 (Pacific). Volume I, Sections 1.11--1.12 integrate the

@@ -1,0 +1,284 @@
+\section{Translation Mellin transforms and exact Stieltjes raising}
+\label{stmell:section}
+The reflected formulas above close periodic convolutions. Positive
+translations give a complementary ordinary integral calculus for the
+same generalized Stieltjes functions. The filtered positive-integer
+moments below specialize the stronger logarithmic-moment theorem in
+\cite{stmell:balanced}; we give a short Laplace proof on the whole
+convergence strip. The zero-Mellin endpoint then yields the raising,
+digamma-reconstruction and finite-operator identities developed here.
+The classical inputs are the Hurwitz integral, Bernoulli values and
+Lerch identity \cite[Eqs.~25.11.25, 25.11.14, 25.11.18]{intdist:DLMFHurwitz}.
+These results concern the conventional Laurent coefficients
+$\gamma_n(a)$, with $\gamma_0=-\psi$.
+
+Fix positive real numbers $a_1,\ldots,a_J$ and complex weights
+$c_1,\ldots,c_J$. For an integer $r\ge1$, assume
+\[
+ \sum_{j=1}^J c_j a_j^\ell=0\qquad(0\le\ell<r).
+\]
+Write $\Delta F=\sum_jc_jF(a_j)$ and
+\[
+ F_n(x)=\sum_jc_j\gamma_n(x+a_j),\qquad
+ Z(u)=\Delta\zeta(1+u,\cdot).
+\]
+The Stieltjes convention is
+$Z(u)=\sum_{n\ge0}(-1)^nF_n(0)u^n/n!$.
+Since the weights sum to zero, $Z$ is entire.
+
+\begin{theorem}[A cancelled translation Mellin transform]
+For $n\ge0$ and $0<\operatorname{Re}v<r$, the integral
+$\int_0^\infty x^{v-1}F_n(x)\,dx$ converges absolutely and equals
+\begin{equation}\label{stmell:master}
+ \int_0^\infty x^{v-1}F_n(x)\,dx
+ =(-1)^n\left.\partial_u^n\left\{
+ \frac{\Gamma(v)\Gamma(1+u-v)}{\Gamma(1+u)}
+ \Delta\zeta(1+u-v,\cdot)\right\}\right|_{u=0}.
+\end{equation}
+At every pole of the displayed Gamma factor the product is continued
+before differentiation. The right side is jointly holomorphic locally
+in $u,v$ subject to $\operatorname{Re}v>0$ and
+$\operatorname{Re}v<r+\operatorname{Re}u$.
+\end{theorem}
+
+\begin{proof}
+Set
+\[
+ Q(t)=\frac{\sum_jc_je^{-a_jt}}{1-e^{-t}}.
+\]
+The cancellation assumptions give $Q(t)=O(t^{r-1})$ at zero;
+at infinity it decreases exponentially. The standard Hurwitz integral,
+summed before continuation, gives
+\[
+ \sum_jc_j\zeta(s,x+a_j)
+ =\frac1{\Gamma(s)}\int_0^\infty t^{s-1}e^{-xt}Q(t)\,dt
+ \qquad(\operatorname{Re}s>1-r).
+\]
+Initially this follows from the classical formula for
+$\operatorname{Re}s>1$, and continuation proves the stated extension.
+The integral itself is holomorphic in the larger half-plane.
+Absolute Fubini, with
+$\int_0^\infty x^{v-1}e^{-xt}\,dx=\Gamma(v)t^{-v}$,
+then gives
+\[
+ \int_0^\infty x^{v-1}\sum_jc_j\zeta(s,x+a_j)\,dx
+ =\frac{\Gamma(v)\Gamma(s-v)}{\Gamma(s)}
+       \Delta\zeta(s-v,\cdot),
+\]
+whenever $\operatorname{Re}v>0$ and
+$\operatorname{Re}(s-v)>1-r$. The Gamma--zeta product is represented
+by the convergent $t$-integral, so all apparent poles there are
+removable. Compact subdomains admit logarithmic derivatives of every
+fixed order under both integrals. Put $s=1+u$ and extract the
+Stieltjes coefficient to obtain the assertion.
+In particular $F_n(x)=O(x^{-r}(1+\log^n x))$ as $x\to\infty$;
+this also follows directly by scaling $t=y/x$ in the Laplace integral.
+There is no singularity at $x=0$, because all $a_j$ are positive.
+\end{proof}
+
+\begin{corollary}[Every resonant integer Mellin value]
+Let $1\le k<r$, and let $h_d(1,1/2,\ldots,1/(k-1))$ be the complete
+homogeneous symmetric polynomial, defined by
+\[
+ \prod_{\ell=1}^{k-1}(1-u/\ell)^{-1}
+ =\sum_{d\ge0}h_d(1,1/2,\ldots,1/(k-1))u^d.
+\]
+For an empty alphabet, $h_0=1$ and $h_d=0$ for $d>0$.
+Then, for every $n\ge0$,
+\begin{equation}\label{stmell:integer}
+ \int_0^\infty x^{k-1}F_n(x)\,dx
+ =(-1)^{n+k-1}n!\sum_{j=0}^n
+ \frac{h_{n-j}(1,1/2,\ldots,1/(k-1))}{(j+1)!}
+ \Delta\zeta^{[j+1]}(1-k,\cdot).
+\end{equation}
+\end{corollary}
+\begin{proof}
+The Bernoulli identity
+$\zeta(1-k,a)=-B_k(a)/k$ and $k<r$ give
+$\Delta\zeta(1-k,\cdot)=0$ exactly. Gamma recurrence gives
+\[
+ \frac{\Gamma(k)\Gamma(1+u-k)}{\Gamma(1+u)}
+ =\frac{(-1)^{k-1}}u
+       \prod_{\ell=1}^{k-1}(1-u/\ell)^{-1}.
+\]
+The simple zero of the Hurwitz combination is at least sufficient to
+cancel $1/u$; it need not have precisely order one. Expanding the two
+holomorphic factors after this cancellation proves the formula.
+\end{proof}
+
+For an alternating $r$th difference choose $a_j=a+jh$ and
+$c_j=(-1)^j\binom rj$, $0\le j\le r$, with $a,h>0$.
+Then the numerator of $Q$ is exactly $e^{-at}(1-e^{-ht})^r$.
+In particular, at $r=2,k=1,n=0$, Lerch's identity gives
+\begin{equation}\label{stmell:loggamma}
+ \int_0^\infty
+ [\gamma_0(x+a)-2\gamma_0(x+a+h)+\gamma_0(x+a+2h)]\,dx
+ =\log\Gamma(a)-2\log\Gamma(a+h)+\log\Gamma(a+2h).
+\end{equation}
+The sign is positive: $\gamma_0=-\psi$, and the integral also follows
+by the fundamental theorem of calculus and the vanishing asymptotic
+second difference of $\log\Gamma$.
+More generally the same second-difference integral for index $n$ is
+$(-1)^n\Delta\zeta^{[n+1]}(0,\cdot)/(n+1)$.
+
+\begin{theorem}[An ordinary integral raising the Stieltjes index]
+Only the zero-sum condition on the weights is needed. Define
+\[
+ \mathcal TF_n=
+ \int_0^1\frac{F_n(x)-F_n(0)}x\,dx
+ +\int_1^\infty\frac{F_n(x)}x\,dx.
+\]
+These are ordinary absolutely convergent integrals. For all $n\ge0$,
+\begin{equation}\label{stmell:raising}
+ \boxed{\displaystyle
+ \mathcal TF_n=F_{n+1}(0)+
+ \sum_{k=1}^n\frac{n!}{(n-k)!}\zeta(k+1)F_{n-k}(0).}
+\end{equation}
+The split at $1$ fixes the normalization; a split at $\rho>0$ subtracts
+$F_n(0)\log\rho$ from the displayed answer.
+\end{theorem}
+\begin{proof}
+The Mellin integral has Laurent expansion
+$F_n(0)/v+\mathcal TF_n+O(v)$ near $v=0$. This follows by subtracting
+the constant on $(0,1)$; the resulting integrals are holomorphic in a
+strip about $v=0$. At general $s=1+u$, the constant term at $v=0$
+of the right side of the master transform is
+\[
+ -\Delta\zeta'(s,\cdot)-[\gamma+\psi(s)]\Delta\zeta(s,\cdot).
+\]
+Now use
+\[
+ \gamma+\psi(1+u)
+ =\sum_{k\ge1}(-1)^{k+1}\zeta(k+1)u^k.
+\]
+Taking $(-1)^n\partial_u^n$ at zero gives the stated finite formula.
+\end{proof}
+
+For two shifts $F_n(x)=\gamma_n(a+x)-\gamma_n(b+x)$ the first identities
+are $\mathcal TF_0=F_1(0)$,
+$\mathcal TF_1=F_2(0)+\zeta(2)F_0(0)$, and
+$\mathcal TF_2=F_3(0)+2\zeta(2)F_1(0)+2\zeta(3)F_0(0)$.
+
+\begin{theorem}[All Stieltjes differences from a single digamma integral]
+Let the weights have sum zero. Put $d_n=F_n(0)$ and
+$f(x)=F_0(x)=-\sum_jc_j\psi(x+a_j)$. For $n\ge1$ let
+\[
+ p_n(y)=\frac{\operatorname{Im}(y+\mathrm i\pi)^n}{\pi}
+ =\sum_{k=0}^{\lfloor(n-1)/2\rfloor}
+ (-1)^k\binom n{2k+1}\pi^{2k}y^{n-2k-1}
+ \qquad(y\in\mathbb R).
+\]
+Then the following two integrals converge absolutely and give exactly
+\begin{align}\label{stmell:digamma-reconstruct}
+ d_n={}&\int_0^1p_n(\log x)\frac{f(x)-d_0}{x}\,dx
+       +\int_1^\infty p_n(\log x)\frac{f(x)}x\,dx\notag\\
+ &+\mathbf1_{2\mid n}\frac{(-1)^{n/2}\pi^n}{n+1}d_0.
+\end{align}
+The real-coefficient polynomial on the second line of its definition
+extends the formula to complex weights; the notation involving an
+imaginary part is applied only to the real variable $y$.
+\end{theorem}
+\begin{proof}
+At $u=0$ the master transform and Gamma reflection give
+\[
+ \int_0^\infty x^{v-1}f(x)\,dx
+ =\frac{\pi}{\sin\pi v}\Delta\zeta(1-v,\cdot),
+ \qquad0<\operatorname{Re}v<1.
+\]
+After subtracting $d_0$ on $(0,1)$, the left side is
+$d_0/v+\sum_{j\ge0}M_jv^j/j!$ in a neighborhood of zero, where
+\[
+ M_j=\int_0^1\log^j x\frac{f(x)-d_0}{x}\,dx
+       +\int_1^\infty\log^j x\frac{f(x)}x\,dx.
+\]
+These integrals converge: $f(x)-d_0=O(x)$ at zero and
+$f(x)=O(x^{-1})$ at infinity. All fixed logarithmic weights and a
+common neighborhood of $v=0$ are controlled by these same estimates.
+Multiplying by $\sin(\pi v)/\pi$ yields
+\[
+ \sum_{n\ge0}\frac{d_nv^n}{n!}
+ =\frac{\sin\pi v}{\pi}
+     \left(\frac{d_0}v+\sum_{j\ge0}\frac{M_jv^j}{j!}\right).
+\]
+The coefficient of $v^n$ from $d_0/v$ is zero for odd $n$ and
+$(-1)^{n/2}\pi^nd_0/(n+1)!$ for even $n$.
+The other coefficients give the displayed polynomial $p_n$.
+\end{proof}
+
+Thus $d_1=M_0$, $d_2=2M_1-\pi^2d_0/3$,
+$d_3=3M_2-\pi^2M_0$, and
+$d_4=4M_3-4\pi^2M_1+\pi^4d_0/5$.
+The formula uses only digamma values under one integral and applies to
+arbitrary positive shifts, not just rational shifts or adjacent shifts.
+There is no appeal to an infinite series of iterated integral operators.
+
+\begin{corollary}[Finite reconstruction by ordinary translation integrals]
+For $y\ge0$ define
+\[
+ (Tf)(y)=\int_0^1\frac{f(y+x)-f(y)}x\,dx
+              +\int_1^\infty\frac{f(y+x)}x\,dx.
+\]
+The space of finite linear combinations of $F_0,F_1,\ldots$ is invariant under $T$.
+Every finite iterate $T^jF_0$ is therefore defined by ordinary
+convergent integrals. For every $n\ge0$,
+\begin{equation}\label{stmell:finite-operator}
+ F_n(y)=n![z^n]\frac{e^{\gamma z}}{\Gamma(1-z)}
+             \sum_{j=0}^n\frac{z^j}{j!}(T^jF_0)(y).
+\end{equation}
+In particular $F_1=TF_0$,
+$F_2=T^2F_0-\zeta(2)F_0$, and
+$F_3=T^3F_0-3\zeta(2)TF_0-2\zeta(3)F_0$.
+\end{corollary}
+\begin{proof}
+Apply the raising identity to the shifted positive nodes $a_j+y$.
+It proves the invariance assertion, and hence defines every finite
+iterate without any completion of the span. In the ring of formal
+power series with coefficients in that span, let
+$\Phi(z)=\sum_{n\ge0}F_nz^n/n!$. The raising identity states
+\[
+ T\Phi=\partial_z\Phi+C(z)\Phi,
+ \qquad C(z)=\sum_{k\ge1}\zeta(k+1)z^k.
+\]
+Put $A(z)=\exp(\sum_{k\ge2}\zeta(k)z^k/k)$.
+Then $\partial_z(A\Phi)=T(A\Phi)$ and $(A\Phi)(0)=F_0$.
+Coefficient recursion gives
+$[z^j]A\Phi=T^jF_0/j!$. Multiplication by
+$A^{-1}=e^{\gamma z}/\Gamma(1-z)$ proves the finite formula.
+Only formal coefficient identities and finitely many actual
+integrals are asserted; no convergence of an operator exponential is
+required.
+\end{proof}
+
+\paragraph{Independent one-dimensional verification route.}
+Define polynomials $P_n$ by
+\[
+ \frac{e^{uy}}{\Gamma(1+u)}=\sum_{n\ge0}P_n(y)u^n/n!.
+\]
+For example $P_0=1$, $P_1=y+\gamma$,
+$P_2=(y+\gamma)^2-\zeta(2)$, and
+$P_3=(y+\gamma)^3-3\zeta(2)(y+\gamma)+2\zeta(3)$.
+The cancelled Hurwitz integral gives
+\[
+ F_n(x)=(-1)^n\int_0^\infty e^{-xt}Q(t)P_n(\log t)\,dt.
+\]
+Hence Mellin moments can be evaluated without nested Stieltjes
+quadrature, using the ordinary integral
+\[
+ (-1)^n\Gamma(v)\int_0^\infty t^{-v}Q(t)P_n(\log t)\,dt.
+\]
+The raising integral is independently evaluated by
+\[
+ \mathcal TF_n=(-1)^{n+1}\int_0^\infty
+ Q(t)P_n(\log t)(\gamma+\log t)\,dt,
+\]
+using the elementary Frullani normalization
+$\int_0^1(e^{-xt}-1)\,dx/x+\int_1^\infty e^{-xt}\,dx/x
+=-\gamma-\log t$. These transformed quadratures are numerical
+checks of the identities, not additional general proofs.
+
+% Literature/source boundary:
+% Classical analytic input: DLMF 25.11.25 (Hurwitz Laplace integral),
+% DLMF 25.11.14 (Bernoulli values), DLMF 25.11.18 (Lerch identity),
+% and Gamma recurrence / the Taylor expansion of digamma at 1.
+% No claim of historical priority is made. A finite targeted literature
+% search does not establish that these consequences are new globally.
