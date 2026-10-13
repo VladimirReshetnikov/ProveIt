@@ -39,8 +39,13 @@ theorem separatelyFreimanEight_subset {N : Nat} [NeZero N]
       simpa [horizontalSection] using hAB hxA
     exact IsAddFreimanHom.subset hsec (hB.2 y) (Set.mapsTo_univ _ _)
 
-theorem section13_fejer_frequency_graph (alpha : Real) (halpha : 0 < alpha) (halpha1 : alpha ≤ 1) :
-    ∃ N₀ : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →
+def section13FrequencyGraphThreshold (alpha : Real) : Nat :=
+  let a := alpha / 2
+  let delta := a ^ (14409429 : Nat)
+  fejerPurificationThreshold delta (delta ^ 97 * a ^ 336) ((1 / 2 : Real) ^ 44)
+
+theorem section13_fejer_frequency_graph_explicit (alpha : Real) (halpha : 0 < alpha) (halpha1 : alpha ≤ 1) :
+    ∀ (N : Nat) [NeZero N] [Fact N.Prime], section13FrequencyGraphThreshold alpha ≤ N →
       ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 3 →
       ∃ A : Finset (Pair N), ∃ phi : Pair N → ZMod N,
         (alpha / 2) ^ (4207554485 : Nat) * (N : Real) ^ 2 ≤ A.card ∧
@@ -59,8 +64,6 @@ theorem section13_fejer_frequency_graph (alpha : Real) (halpha : 0 < alpha) (hal
   have hr1 : rho ≤ 1 := mul_le_one₀ (pow_le_one₀ hd.le hd1) (by positivity) (pow_le_one₀ ha.le ha1)
   have he : 0 < eta := by dsimp [eta]; positivity
   have he1 : eta ≤ 1 := pow_le_one₀ (by norm_num) (by norm_num)
-  obtain ⟨N₀, hN₀⟩ := section13_fejer_density_uniform delta rho eta hd hr hr1 he he1
-  refine ⟨N₀, ?_⟩
   intro N _ _ hN f hf hnot
   obtain ⟨U, phi, hU, hfreiman, hfourier⟩ := section13_prepared_frequency_graph alpha halpha halpha1 f hf hnot
   have hn : (0 : Real) < N := by exact_mod_cast NeZero.pos N
@@ -79,7 +82,7 @@ theorem section13_fejer_frequency_graph (alpha : Real) (halpha : 0 < alpha) (hal
   have habundance : rho * beta ^ 15 * (N : Real) ^ 32 ≤ respectedArrangementCount 8 U phi :=
     (mul_le_mul_of_nonneg_right hrb (pow_nonneg hn.le 32)).trans
       (lemma_12_4_holds N beta a f U phi hb ha hf hcard hfourier)
-  obtain ⟨A, hAU, hmass, hmostly⟩ := hN₀ N hN U phi beta hdb hcard habundance
+  obtain ⟨A, hAU, hmass, hmostly⟩ := section13_fejer_density_explicit delta rho eta hd hr hr1 he he1 N hN U phi beta hdb hcard habundance
   have hcoef : a ^ (4207554485 : Nat) ≤ ((2 : Real) ^ 77)⁻¹ * rho ^ 3 * eta ^ 3 * beta :=
     (section13_fejer_graph_coefficient ha hahalf).trans
       (mul_le_mul_of_nonneg_left hdb
@@ -91,5 +94,15 @@ theorem section13_fejer_frequency_graph (alpha : Real) (halpha : 0 < alpha) (hal
     have ht := hfourier z (hAU hz)
     convert ht using 1
     ring
+
+theorem section13_fejer_frequency_graph (alpha : Real) (halpha : 0 < alpha) (halpha1 : alpha ≤ 1) :
+    ∃ N₀ : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →
+      ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 3 →
+      ∃ A : Finset (Pair N), ∃ phi : Pair N → ZMod N,
+        (alpha / 2) ^ (4207554485 : Nat) * (N : Real) ^ 2 ≤ A.card ∧
+        SeparatelyFreimanEight A phi ∧ MostlyRespectsEight A phi ((2 : Real) ^ (-(44 : Int))) ∧
+        ∀ z, z ∈ A → alpha * N / 2 ≤ ‖secondDifferenceFourier f z.1 z.2 (phi z)‖ := by
+  exact ⟨section13FrequencyGraphThreshold alpha,
+    section13_fejer_frequency_graph_explicit alpha halpha halpha1⟩
 
 end LeanProofs.GowersSzemeredi
