@@ -7150,9 +7150,15 @@ Mathlib series/integer lemmas directly. `Proofs16ClassStepBounds` imports its
 length-six count bound directly. All three proof bodies are byte-for-byte
 unchanged and each module passes an isolated native compile.
 
-The original final import closure now contains 644 local modules / 135,304
-lines, down by six modules / 2,987 lines from L.59 and fourteen modules /
-7,387 lines from L.58. These are import-closure measurements, not deletions.
+The first downstream rebuild identified `exp_mul_le` in
+`Proofs16ClassStepDegrees` as an indirect dependency of the old aggregate.
+`Proofs18ExponentialProduct` now supplies it and `exp_pow_sq_le`; both proofs
+are moved unchanged from `Proofs18LengthSixThresholds`, which re-exports them.
+The class-step consumer imports these elementary facts directly.
+
+The original final import closure now contains 645 local modules / 135,328
+lines, down by five modules / 2,963 lines from L.59 and thirteen modules /
+7,363 lines from L.58. These are import-closure measurements, not deletions.
 The native original-final audit is running against these edits.
 
 The merged origin/main consolidation (L.16-final, commit `2a36bd714`)
@@ -7160,8 +7166,8 @@ replaces the generated variant chains with `Proofs18FinalClasses`,
 `Proofs18FinalStep`, `Proofs18FinalEnvelopes` and `Proofs18Final`.
 `FinalProofSimplificationAudit` now checks every one of the bridge's 25 public
 theorems, alongside the original final and older Section 13/cubic interfaces.
-The consolidated bridge imports 828 local modules / 174,855 lines; the
-expanded audit imports 850 / 180,467. Its full production audit follows the
+The consolidated bridge imports 829 local modules / 174,867 lines; the
+expanded audit imports 851 / 180,479. Its full production audit follows the
 original-final audit and is still pending. The complete facade and remaining
 original-statement fidelity gaps remain separate. The goal remains active.
 

@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16ClassStepBounds
+import GowersSzemeredi.Proofs18ExponentialProduct
 
 /-! The step of route (II) with power controls (Notes L.6, E5 part B).
 
