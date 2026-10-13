@@ -4819,7 +4819,7 @@ the children independently and invokes no factor discovery or LP producer.
 All nine work caps are shared across attempted children: sectors, bases,
 reductions, pivots, anchors, tree nodes, candidate states, ellipsoid iterations
 and feasibility calls. Reduction counts include optional inverse boundary
-layers. Failed child work stays charged, and a later child can still prove
+layers and optional Pachner 3→2 moves. Failed child work stays charged, and a later child can still prove
 knottedness after an earlier inconclusive result. `factor_results` retains every
 attempt. Additive statistics sum attempted child work; peak statistics take
 the maximum. An inconclusive aggregate has no recognition certificate.
@@ -4843,6 +4843,36 @@ complete result serialization. Median paired raw/factored ratios are 10.0809
 for UU and 1.2525 for UT; circle, trefoil and figure-eight single-factor controls
 regress (0.6971, 0.8153 and 0.8287). The retained A/A measurements and paired
 spread record shared-host variation. This remains an optional interface.
+This evidence is retained at revision `fafaf68f5`, before the optional 3→2
+policy below; its recorded source pins belong to that publication.
+
+### Optional certified Pachner 3→2 reduction
+
+Pass `reduce_pachner32=True` to either direct crushing interface to try a
+deterministic strict simplification before Euler search. After vertex reduction
+and enabled inverse boundary layering, the driver scans interior degree-three
+edges incident to three distinct tetrahedra. It accepts the first independently
+verified formal bipyramid replacement, removing exactly one tetrahedron, then
+restarts preprocessing and builds fresh normal algebra on the successor.
+
+`normal_pachner32.reduce_pachner32_once(source)` exposes the local operation.
+`REDUCED` includes a `normal-pachner-32-v1` source-bound packet; `UNCHANGED`
+means the finite candidate scan found no verified move. Neither is a knot
+verdict or a minimum-triangulation claim. The independent checker is
+`normal_pachner32_verify.verify_normal_pachner32`. It validates both finite
+torus-boundary manifolds and the complete formal boundary maps, including
+identifications between boundary facets of the selected region. Identified
+global vertices are allowed.
+
+The enabled driver emits `diagram-crushing-v3`; older v1/v2 chains retain their
+previous step types. `max_crushes` charges normal crushes, inverse layers and
+`pachner32_moves` together, including failed child work in the factored wrapper.
+`pachner32_calls` and `pachner32_candidates` retain scan work, which may occur
+before an exhausted move allowance prevents appending a candidate. Caller
+callback exceptions retain their identity. Polynomial strict preprocessing
+does not imply monotonicity of the resolving parameter or a general
+quasi-polynomial recognition bound. See
+[the relative-boundary proof](../synthesis/strict_pachner32.tex).
 
 ### Polynomial exact LP policy
 

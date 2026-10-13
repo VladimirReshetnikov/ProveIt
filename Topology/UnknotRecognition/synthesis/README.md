@@ -2,6 +2,20 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`strict_pachner32.tex`](strict_pachner32.tex) proves the optional strict 3→2
+preprocessing policy. Its independent checker compares the entire formal
+bipyramid boundary, including attachments within the region itself. Each move
+preserves the finite compact manifold and removes one tetrahedron. The v3
+diagram chain shares the same global reduction allowance across normal
+crushes, inverse layers and Pachner moves, and every new source receives fresh
+normal algebra. Conservative preprocessing and accepted-chain size bounds are
+polynomial; no general resolving-parameter bound follows.
+The 267-test regression run passes across 29 modules with Regina and no skips.
+The current [PDF](report.pdf) has 794 pages; the new section spans pages
+782–787, visually reviewed after three build passes. There are no unresolved
+references or new overflow warnings. Test commands and logs are retained under
+`data/strict-pachner32-*`.
+
 [`factored_crushing.tex`](factored_crushing.tex) composes native crushing proofs
 over the existing visible interlacement factors. A separate checker reconstructs
 the exact factor PDs and verifies one knotted child or every trivial child.
@@ -15,9 +29,9 @@ including genuine child proofs, 313 independent factor reconstruction cases,
 strict certificate mutations and shared-budget controls. Logs and the exact
 command are retained under `data/factored-crushing-tests.txt` and
 `data/factored-crushing-test-command.txt`.
-The current [PDF](report.pdf) has 789 pages; the factorwise theory and evidence
-span pages 775–782 and were visually reviewed after three build passes. There are no
-unresolved references or new overflow warnings. The restricted-family
+The factorwise publication at `fafaf68f5` rebuilt the PDF to 789 pages;
+its theory and evidence spanned pages 775–782 and were visually reviewed after
+three build passes with no unresolved references or new overflow warnings. The restricted-family
 `poly(n+1) * 2^O(s)` bound uses uncapped source-tree search with polynomial LP,
 where `s` is the largest visible crossing block. Polylogarithmic `s` gives a
 quasi-polynomial bound for that restricted family; arbitrary diagrams remain open.
@@ -33,7 +47,8 @@ are retained. This compares the direct APIs, not the existing high-level router.
 See [`factored_crushing_research`](../fast/factored_crushing_research/README.md)
 for the full protocol. `python -B -S data/factored_crushing_publication.py`
 checks the complete evidence, 19 corruption controls, source pins, tests and
-final report build at this publication's recorded revision.
+final report build at the recorded publication revision `fafaf68f5`. Its native
+source pins precede the optional 3→2 extension and are historical.
 
 [`boundary_unlayer.tex`](boundary_unlayer.tex) integrates independently
 certified inverse boundary layers into an optional diagram preprocessing
