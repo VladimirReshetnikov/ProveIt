@@ -21,6 +21,7 @@ from .normal_crushing_chain import verify_crushing_chain
 from .normal_sector_verify import verify_sector_exhaustion
 from .normal_euler_verify import verify_sector_euler_certificate
 from .normal_euler_tree_verify import verify_euler_branch_tree
+from .euler_lp_budget import (fallback_statistics, validate_lp_controls, merge_fallback)
 
 
 class _CallbackRaised(BaseException):
@@ -170,6 +171,8 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                           lp_strategy='envelope', reduce_vertices=True,
                           max_tree_nodes=256, tree_model='source',
                           max_hitting_subsets=10000,
+                          lp_policy='polynomial', lp_fast_path_pivots=None,
+                          max_ellipsoid_iterations=10000, max_feasibility_calls=10000,
                           check=lambda: None):
     """Recognize with globally shared search caps, returning three-way status.
 
@@ -196,8 +199,9 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
     ``max_anchors`` allowances count every repeated pivot and anchor; bases are
     unused. The per-attempt quantum applies to each LP count separately.
     ``lp_strategy`` selects 'envelope' (actual-point check then anchors) or
-    'anchors'. These finite exact simplex computations have no polynomial
-    pivot bound. Negative recognition may mix independently checked Euler-LP
+    'anchors'. The default LP policy uses a polynomially capped Bland prefix
+    and exact rational ellipsoid recovery; ``lp_policy='bland'`` retains the
+    legacy comparison policy. Negative recognition may mix independently checked Euler-LP
     and corner-exhaustion packets, always on all full final-source assignments.
 
     ``reduce_vertices=True`` first constructs expanded-edge-link positive rays
@@ -226,6 +230,14 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
     Learning and dual caches restart on each new source. This policy requires
     ``tree_model='source'`` and uses the same independently checked v2 negative
     recognition schema. No general small-transversal bound is assumed.
+
+    ``max_ellipsoid_iterations`` and ``max_feasibility_calls`` count fallback
+    work across all anchors, nodes, candidate restarts and crushing successors.
+    Both default to 10000; None removes a cap. Flat LP scheduling also applies
+    its per-attempt quantum to these counts. ``lp_fast_path_pivots`` can lower
+    the internal polynomial prefix limit, useful for fallback comparisons.
+    The user's max_pivots remains a hard simplex-work cap and prevents fallback
+    when exhausted. The Bland comparison ignores unused fallback budgets.
     """
     for name, value in (('max_sectors', max_sectors), ('max_bases', max_bases),
                         ('max_crushes', max_crushes), ('max_pivots', max_pivots),
@@ -247,6 +259,8 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
         raise ValueError('tree_model must be source or restricted')
     if sector_method == 'transversal' and tree_model != 'source':
         raise ValueError('transversal search requires tree_model=source')
+    validate_lp_controls(lp_policy, lp_fast_path_pivots,
+                         max_ellipsoid_iterations, max_feasibility_calls)
     return _safe_call(_recognize_by_crushing, check, diagram,
                       max_sectors=max_sectors, max_bases=max_bases,
                       max_crushes=max_crushes, sector_order=sector_order,
@@ -254,13 +268,18 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                       max_pivots=max_pivots, max_anchors=max_anchors,
                       lp_strategy=lp_strategy, reduce_vertices=reduce_vertices,
                       max_tree_nodes=max_tree_nodes, tree_model=tree_model,
-                      max_hitting_subsets=max_hitting_subsets)
+                      max_hitting_subsets=max_hitting_subsets,
+                      lp_policy=lp_policy, lp_fast_path_pivots=lp_fast_path_pivots,
+                      max_ellipsoid_iterations=max_ellipsoid_iterations,
+                      max_feasibility_calls=max_feasibility_calls)
 
 
 def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                           sector_order, sector_quantum, sector_method,
                           max_pivots, max_anchors, lp_strategy, reduce_vertices,
-                          max_tree_nodes, tree_model, max_hitting_subsets, check):
+                          max_tree_nodes, tree_model, max_hitting_subsets,
+                          lp_policy, lp_fast_path_pivots,
+                          max_ellipsoid_iterations, max_feasibility_calls, check):
     # Keep producer imports outside the independent verifier's import path.
     from .diagram_exterior import diagram_exterior
     from .diagram_exterior_verify import verify_diagram_exterior
@@ -299,6 +318,7 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
         stats.update(lp_calls=0, lp_pivots=0, anchors_tested=0,
                      reused_anchors=0, envelope_calls=0, lp_tableau_updates=0,
                      maximum_tableau_bits=0, extraction_steps=0)
+        stats.update(fallback_statistics())
     if sector_method in ('tree', 'transversal'):
         stats.update(nodes_attempted=0, branch_splits=0, negative_leaves=0,
                      positive_relaxations=0, incompatible_positive_points=0,
@@ -403,7 +423,12 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                     else min(quantum, remaining))
         result = decide_sector_euler(current, job['kernel'].support,
             strategy=lp_strategy, max_pivots=allowance(max_pivots, stats['lp_pivots']),
-            max_anchors=allowance(max_anchors, stats['anchors_tested']), check=check)
+            max_anchors=allowance(max_anchors, stats['anchors_tested']),
+            lp_policy=lp_policy, lp_fast_path_pivots=lp_fast_path_pivots,
+            max_ellipsoid_iterations=allowance(max_ellipsoid_iterations, stats['lp_ellipsoid_iterations']),
+            max_feasibility_calls=allowance(max_feasibility_calls, stats['lp_feasibility_calls']),
+            check=check)
+        merge_fallback(stats, result['stats'])
         for name in ('lp_calls', 'lp_pivots', 'anchors_tested', 'reused_anchors',
                      'envelope_calls', 'lp_tableau_updates'):
             stats[name] += result['stats'][name]
@@ -451,7 +476,11 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
             options = dict(strategy=lp_strategy,
                 max_nodes=remaining(max_tree_nodes, 'nodes_attempted'),
                 max_pivots=remaining(max_pivots, 'lp_pivots'),
-                max_anchors=remaining(max_anchors, 'anchors_tested'), check=check)
+                max_anchors=remaining(max_anchors, 'anchors_tested'),
+                lp_policy=lp_policy, lp_fast_path_pivots=lp_fast_path_pivots,
+                max_ellipsoid_iterations=remaining(max_ellipsoid_iterations, 'lp_ellipsoid_iterations'),
+                max_feasibility_calls=remaining(max_feasibility_calls, 'lp_feasibility_calls'),
+                check=check)
             if sector_method == 'tree':
                 result = search_euler_tree(current, model=tree_model, **options)
             else:
@@ -463,6 +492,7 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                     stats[field] += result['stats'][field]
                 stats['maximum_transversal_size'] = max(stats['maximum_transversal_size'],
                     result['stats']['maximum_transversal_size'])
+            merge_fallback(stats, result['stats'])
             for field in ('nodes_attempted', 'branch_splits', 'negative_leaves', 'lp_calls',
                           'lp_pivots', 'anchors_tested', 'reused_anchors', 'envelope_calls',
                           'lp_tableau_updates', 'positive_relaxations',
@@ -503,7 +533,13 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
             if sector_method == 'lp':
                 result = attempt_lp(jobs[assignment], quantum)
                 exhausted = ((max_pivots is not None and stats['lp_pivots'] >= max_pivots)
-                             or (max_anchors is not None and stats['anchors_tested'] >= max_anchors))
+                             or (max_anchors is not None and stats['anchors_tested'] >= max_anchors)
+                             or (max_ellipsoid_iterations is not None
+                                 and stats['lp_ellipsoid_iterations'] >= max_ellipsoid_iterations
+                                 and result.get('reason') == 'shared ellipsoid iteration allowance exhausted')
+                             or (max_feasibility_calls is not None
+                                 and stats['lp_feasibility_calls'] >= max_feasibility_calls
+                                 and result.get('reason') == 'shared feasibility decision allowance exhausted'))
             else:
                 remaining = None if max_bases is None else max_bases-stats['bases_attempted']
                 allowance = (remaining if quantum is None else quantum if remaining is None

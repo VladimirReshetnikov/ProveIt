@@ -4613,10 +4613,10 @@ within its original positive support. The crushing checker independently
 revalidates this ray. The global negative verifier supports either complete
 corner or Euler-LP evidence for each final-source assignment.
 
-The maintained simplex uses exact Bland pivots; no polynomial pivot bound is
-claimed. A small number of active vertex groups bounds the number of anchor
-LPs, conditional on a polynomial LP policy. The full compatible-sector family
-still needs a general quasi-polynomial bound. Proofs and comparisons are in
+The default exact LP policy now limits the Bland prefix and uses a polynomial
+rational ellipsoid fallback, including exact witness recovery. A small number
+of active vertex groups bounds the number of anchor LPs. The full compatible-sector
+family still needs a general quasi-polynomial bound. Proofs and comparisons are in
 [Euler-LP crushing](../synthesis/euler_lp_crushing.tex).
 
 The crushing backend now defaults to `reduce_vertices=True`. Before sector
@@ -4633,8 +4633,7 @@ canonical coordinates. A torus-boundary check alone supplies no knot
 provenance; the diagram chain supplies that premise. Every extracted ray
 uses the existing independent crushing certificate. One-vertex preprocessing
 removes the Cartesian anchor-product obstruction on every search source;
-the exact simplex pivot policy and complete sector family still lack the
-requested quasi-polynomial bound. See
+the complete sector family still lacks the requested quasi-polynomial bound. See
 [the vertex-reduction proof](../synthesis/vertex_reduction.tex).
 
 
@@ -4662,8 +4661,8 @@ partial root mask proves only a restricted claim. Global knottedness requires
 a full root and authenticated diagram crushing chain, using the new
 `diagram-crushing-recognition-v2` schema. Terminal unknot chains retain v1.
 
-Tree depth is at most the tetrahedron count, but general node count and exact
-Bland pivot count still lack quasi-polynomial bounds. The default recognition
+Tree depth is at most the tetrahedron count, but the general node count still
+lacks a quasi-polynomial bound. The default recognition
 dispatcher and default crushing sector method remain unchanged. See the
 [Euler-tree theory](../synthesis/euler_branch_tree.tex) and
 [reproducible audit and comparisons](euler_tree_research/README.md).
@@ -4706,10 +4705,9 @@ negative proof. Learning restarts on each smaller source after a crush.
 
 For a source whose incompatible positive root extreme rays have a hitting set
 of size `h`, the policy tests at most `sum(comb(t,k), k=0..h)` subsets and uses
-trees of depth at most `h`. With a polynomial exact LP/basic-ray policy this
+trees of depth at most `h`. With the default polynomial exact LP/basic-ray policy this
 gives `(3t)^O(h)` work, times the anchor-family and polynomial arithmetic
-costs. A general polylogarithmic bound on `h` remains unproved, and the current
-Bland backend still lacks a polynomial pivot bound. Without a small `h`,
+costs. A general polylogarithmic bound on `h` remains unproved. Without a small `h`,
 restarting candidate trees can cost more than ordinary DFS; this option does
 not change the default dispatcher or crushing sector method.
 
@@ -4719,3 +4717,34 @@ nodes. Learning completes the bounded figure-eight query where DFS remains
 inconclusive; on the trefoil it is slightly slower in the paired measurement.
 See [the theory and tradeoff](../synthesis/euler_transversal.tex) and
 [the source-pinned audit and timings](euler_transversal_research/README.md).
+
+### Polynomial exact LP policy
+
+`solve_nonnegative_kernel` now defaults to `policy='polynomial'`. It performs
+at most `(n + retained_rows + 1)**2` exact Bland pivots, then switches to
+exact rational bounded feasibility. `fast_path_pivots=0` forces the fallback
+when the initial tableau has not already decided the query; any larger
+setting can only lower the proved prefix limit. `policy='bland'` retains the
+uncapped legacy policy for comparisons. Explicit `max_pivots` remains a hard
+user allowance: exhausting it returns `INCONCLUSIVE` rather than bypassing it.
+
+The fallback uses a determinant separation gap, rational outward rounding,
+and a polynomial cut bound. It recovers an exact vertex by feasible face
+restrictions; relaxed centres are never original-system witnesses. A positive
+point descends to a primitive extreme ray, with the existing slack-basis
+contract, and negative multipliers are lifted to all original equations.
+Both alternatives undergo exact original-system checks before return.
+
+Euler source APIs and `recognize_by_crushing` expose this choice as
+`lp_policy`, with `lp_fast_path_pivots` for a shorter prefix. Separate
+`max_ellipsoid_iterations` and `max_feasibility_calls` allowances are shared
+across anchors, tree nodes, failed transversal candidates, fair sector retries,
+and crushing successors. They default to `None` in source APIs and 10000 in
+the diagram driver. Set all limits to `None` for the uncapped complexity
+statement. Unused zero fallback allowances do not block successful Bland
+prefixes. Counters distinguish pivots, cuts, feasibility decisions, and
+support descent; partial fallback work never certifies a negative result.
+
+The local LP bit bound is polynomial in encoded input size, not strongly
+polynomial, and does not bound the number of geometric search queries. See
+[the implementation and complete bit-complexity proof](../synthesis/exact_polynomial_lp.tex).

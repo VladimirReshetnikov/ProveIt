@@ -3,20 +3,24 @@
 This additive supplied-source search shares the exact fixed-source mask oracle
 with the ordinary Euler tree. It does not authenticate a knot exterior. Negative
 output uses the existing complete tree certificate; failed candidates never
-become negative evidence. Tree size, hitting-set search and Bland pivots have no
-general polynomial or quasi-polynomial bound.
+become negative evidence. Tree size and hitting-set search have no general
+quasi-polynomial bound, even with the default polynomial exact LP policy.
 """
 from itertools import combinations
 
 from .normal_euler_tree import _EulerMaskOracle, _euler_search_stats, _mask
 from .normal_sector import _source_hash
 from .normal_surface_geometry import _prepare, _coordinates
+from .euler_lp_budget import validate_lp_controls
 
 
 def search_euler_transversal(triangulation, allowed_types=None, *,
                              strategy='envelope', max_nodes=None,
                              max_pivots=None, max_anchors=None,
-                             max_hitting_subsets=10000, check=lambda: None):
+                             max_hitting_subsets=10000,
+                             lp_policy='polynomial', lp_fast_path_pivots=None,
+                             max_ellipsoid_iterations=None, max_feasibility_calls=None,
+                             check=lambda: None):
     """Return a positive canonical vector, complete negative tree, or a cap.
 
     Each incompatible positive basic ray supplies a necessary conflict-hitting
@@ -25,7 +29,9 @@ def search_euler_transversal(triangulation, allowed_types=None, *,
     conflict set misses that candidate refutes it. Source algebra and at most
     256 source-row dual bounds are shared across every candidate restart.
 
-    All oracle nodes, LP pivots and anchors count against shared allowances.
+    All oracle nodes, LP pivots, anchors, ellipsoid updates and feasibility
+    calls count against shared allowances across every candidate restart.
+    lp_policy='bland' retains the comparison solver and ignores fallback caps.
     max_hitting_subsets separately charges each unique candidate subset tested
     against the learned constraints, including subsets rejected before an LP.
     None removes any allowance. Callback exceptions propagate unchanged.
@@ -41,6 +47,8 @@ def search_euler_transversal(triangulation, allowed_types=None, *,
             raise ValueError(name+' must be a nonnegative integer or None')
     if strategy not in ('envelope', 'anchors'):
         raise ValueError('strategy must be envelope or anchors')
+    validate_lp_controls(lp_policy, lp_fast_path_pivots,
+                         max_ellipsoid_iterations, max_feasibility_calls)
     prepared = _prepare(triangulation, check)
     root = _mask(allowed_types, len(prepared['tetrahedra']))
     digest = _source_hash(triangulation)
@@ -50,7 +58,10 @@ def search_euler_transversal(triangulation, allowed_types=None, *,
                  maximum_transversal_size=0)
     oracle = _EulerMaskOracle(triangulation, prepared, strategy=strategy,
                               model='source', max_pivots=max_pivots,
-                              max_anchors=max_anchors, check=check, stats=stats)
+                              max_anchors=max_anchors, check=check, stats=stats,
+                              lp_policy=lp_policy, lp_fast_path_pivots=lp_fast_path_pivots,
+                              max_ellipsoid_iterations=max_ellipsoid_iterations,
+                              max_feasibility_calls=max_feasibility_calls)
     choices = {}
     for t, q in root:
         choices.setdefault(t, []).append(q)
