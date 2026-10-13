@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18FinalStep
 import GowersSzemeredi.Proofs18EnvelopeInduction
+import GowersSzemeredi.Proofs18RefinementThresholdBounds
 
 /-! **The final route, part 3: the envelopes and their fits** (Notes L.16-final).
 

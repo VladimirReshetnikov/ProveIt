@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs16PolynomialCorollary
-import GowersSzemeredi.Proofs18CoverFejerHeadline
+import GowersSzemeredi.Proofs18CoverExponentsFejer
 
 /-! **Theorem 16.2 and Corollary 16.11 with polynomial controls at the Fejér
 classes** (Notes L.16e).

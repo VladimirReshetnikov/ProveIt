@@ -7,12 +7,26 @@ organized as four volumes. Each has its own source and compiled PDF.
 |---|---|---|---:|
 | I | Polylogarithm identities, inverse expansions, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 191 |
 | II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 132 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 275 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 281 |
 | IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 88 |
 
-The four volume PDFs contain 686 pages in total.
+The four volume PDFs contain 692 pages in total.
 
-Volume III, Sections 8.51--8.53 now establish three further families of
+Volume III now gives an all-order character-valued dictionary for ordinary
+Stieltjes moments. Primitive characters yield explicit positive-order
+Dirichlet L-values with Gauss-sum coefficients. For imprimitive characters,
+omitted Euler factors create additional order-zero cancellations. Two
+explicit digamma combinations have integrals `log(7)/3` and zero, and their
+first moments are evaluated in `L(2,chi_3)`. These are ordinary absolutely
+convergent integrals. The preceding colored section now classifies the
+alternating exception at every order using Brillhart's classical theorem,
+excludes all central-shift nonalternating exceptions by a direct recurrence,
+and gives exact polynomial certificates for the full unit-circle
+classification through order eight. See
+[the character and classification audit](verification/STIELTJES-CHARACTERS-AUDIT.md)
+for proofs, attribution, evidence and the remaining higher-order scope.
+
+Volume III, Sections 8.51--8.53 establish three further families of
 generalized Stieltjes identities. The digamma reconstruction extends to
 negative shifts with explicit principal values and upper/lower residue
 corrections. Balanced products admit an exponentially convergent Barnes
@@ -84,11 +98,11 @@ The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 165 references. The scientific text is shared
+and the shared bibliography of 167 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[637-page combined snapshot](polylogarithms.pdf) remain available.
+[643-page combined snapshot](polylogarithms.pdf) remain available.
 
 The [inventory](source-inventory.json) accounts for **1,810 textual source
 files**, including overlapping articles, fragments and correction registers.
