@@ -17,12 +17,6 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private theorem exists_two_color_class_half (N : Nat) (color : Nat → Fin 2) :
-    ∃ c : Fin 2,
-      (N : Real) / 2 ≤
-        (((Finset.Icc 1 N).filter fun x => color x = c).card : Real) :=
-  exists_color_class_ge (by decide) N color
-
 private theorem szemeredi_half_threshold_le_two_color (k : Nat) :
     szemerediThreshold (1 / 2 : Real) k ≤ twoColorThreshold k := by
   simp only [szemerediThreshold, twoColorThreshold]
@@ -37,20 +31,8 @@ theorem corollary_18_7_at_of_half_density {k : Nat}
     ∀ N : Nat, twoColorThreshold k ≤ N →
       ∀ color : Nat → Fin 2, HasMonochromaticAP N 2 color k := by
   intro N hN color
-  obtain ⟨c, hc⟩ := exists_two_color_class_half N color
-  let A := (Finset.Icc 1 N).filter fun x => color x = c
-  have hthreshold : szemerediThreshold (1 / 2 : Real) k ≤ N :=
-    (szemeredi_half_threshold_le_two_color k).trans hN
-  have hAsub : A ⊆ Finset.Icc 1 N := Finset.filter_subset _ _
-  have hAcard : (1 / 2 : Real) * N ≤ A.card := by
-    simpa [A, div_eq_mul_inv, mul_comm] using hc
-  obtain ⟨a, d, hd, hmem⟩ := h N hthreshold A hAsub hAcard
-  refine ⟨a, d, c, hd, ?_⟩
-  intro i hi
-  have hai := hmem i hi
-  have haiA : a + i * d ∈ A := hai
-  have hfilter := Finset.mem_filter.mp haiA
-  exact ⟨hfilter.1, hfilter.2⟩
+  exact hasMonochromaticAP_of_density (by decide)
+    (h N ((szemeredi_half_threshold_le_two_color k).trans hN)) color
 
 /-- The quantitative theorem gives the printed two-color bound by applying
 its single-length consequence at density one half. -/

@@ -18,4 +18,18 @@ theorem exists_color_class_ge {r : Nat} (hr : 0 < r) (N : Nat) (color : Nat → 
     (by simp [nsmul_eq_mul, mul_div_cancel₀ _ hrR.ne'])
   exact ⟨c, hc⟩
 
+/-- A density theorem at `1/r` gives a monochromatic progression in every
+`r`-coloring, by applying it to a largest color class. -/
+theorem hasMonochromaticAP_of_density {N r k : Nat} (hr : 0 < r)
+    (h : ∀ A : Finset Nat, A ⊆ Finset.Icc 1 N →
+      (1 / (r : Real)) * N ≤ A.card → HasNatAP A k)
+    (color : Nat → Fin r) : HasMonochromaticAP N r color k := by
+  classical
+  obtain ⟨col, hcol⟩ := exists_color_class_ge hr N color
+  let A := (Finset.Icc 1 N).filter fun x => color x = col
+  have hcard : (1 / (r : Real)) * N ≤ A.card := by
+    simpa only [div_eq_mul_inv, one_mul, mul_comm] using hcol
+  obtain ⟨a, d, hd, hmem⟩ := h A (Finset.filter_subset _ _) hcard
+  exact ⟨a, d, col, hd, fun i hi => Finset.mem_filter.mp (hmem i hi)⟩
+
 end LeanProofs.GowersSzemeredi
