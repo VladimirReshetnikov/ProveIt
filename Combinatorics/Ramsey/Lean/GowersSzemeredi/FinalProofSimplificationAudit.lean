@@ -22,7 +22,9 @@ import Lean.Util.CollectAxioms
 open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for name in #[``LeanProofs.GowersSzemeredi.splitCnt_controls,
+  for name in #[``LeanProofs.GowersSzemeredi.famTwoQr_le_two_bases,
+      ``LeanProofs.GowersSzemeredi.famTwoCount_le_two_bases,
+      ``LeanProofs.GowersSzemeredi.splitCnt_controls,
       ``LeanProofs.GowersSzemeredi.split_Qr_le,
       ``LeanProofs.GowersSzemeredi.split_Qr_le_fejer,
       ``LeanProofs.GowersSzemeredi.uniTwoFejerCount_le_split_tight,

@@ -80,6 +80,44 @@ theorem affine_le_tb {ν W : Real} {M q : Nat} {a b c : Nat} (hν : 1 ≤ ν) (h
   push_cast
   exact tb_add_one hν hW h
 
+/-- The dimension-two remainder count from separate family and face bounds. -/
+theorem famTwoQr_le_two_bases {ν W : Real} {M q a b c : Nat} (hν : 1 ≤ ν) (hW : 2 ≤ W)
+    (hM : (M : Real) ≤ ν ^ a * W ^ b) (hq : (q : Real) ≤ ν ^ 0 * W ^ c) (t : Real) :
+    famTwoQr M q t ≤ ν ^ a * W ^ (4 + (b + c + 1)) := by
+  unfold famTwoQr
+  apply max_le <;> rw [Nat.cast_mul] <;>
+    exact tb_const_mul hν hW (by norm_num) (by norm_num) (Nat.cast_nonneg _) (affine_le_tb hν hW hM hq)
+
+/-- The dimension-two family count is polynomial in its family and face bounds. -/
+theorem famTwoCount_le_two_bases {ν W rho : Real} {M q a b c : Nat} (hν : 1 ≤ ν) (hW : 2 ≤ W)
+    (hr : 0 < rho) (hrW : rho⁻¹ ≤ W) (hM : (M : Real) ≤ ν ^ a * W ^ b)
+    (hq : (q : Real) ≤ ν ^ 0 * W ^ c) :
+    max (famPieceGraphBound (famTwoQr M q) (famTwoPb M q) M rho)
+      ((3 ^ (1 + 1) * M : Nat) : Real) ≤ ν ^ (11 * a) * W ^ (11 * b + 6 * c + 54) := by
+  have hW1 : 1 ≤ W := by linarith only [hW]
+  have hQr := famTwoQr_le_two_bases hν hW hM hq (rho / 8)
+  have hS : (famPieceSamples (famTwoQr M q) M rho : Real) ≤
+      ν ^ (2 * a) * W ^ (2 * b + c + 12) := by
+    exact (famPieceSamples_le_two_bases hν hW hr hrW hQr hM).trans_eq (by congr 2 <;> ring)
+  set S := famPieceSamples (famTwoQr M q) M rho
+  have hSq := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hS hq
+  have hprod := tb_mul hν hW1 (Nat.cast_nonneg _) (by positivity) hM hSq
+  have hplus : ((M * (S * q) + 1 : Nat) : Real) ≤ ν ^ (3 * a) * W ^ (3 * b + 2 * c + 13) := by
+    rw [Nat.cast_add, Nat.cast_mul, Nat.cast_mul, Nat.cast_one]
+    exact (tb_add_one hν hW hprod).trans_eq (by congr 2 <;> ring)
+  have hPb : famTwoPb M q S (rho / 4) ≤ ν ^ (3 * a) * W ^ (3 * b + 2 * c + 15) := by
+    unfold famTwoPb
+    rw [Nat.cast_mul]
+    exact (tb_const_mul (c := (3 : Real)) (j := 2) hν hW (by norm_num) (by norm_num)
+      (Nat.cast_nonneg _) hplus).trans_eq (by congr 2 <;> ring)
+  have hP0 : 0 ≤ famTwoPb M q S (rho / 4) := by unfold famTwoPb; exact Nat.cast_nonneg _
+  have hG := famPieceGraphBound_le_mul_sq (tb_one_le hν hW1) (tb_one_le hν hW1) hM hS hP0 hPb
+  refine max_le (hG.trans_eq (by ring)) ?_
+  have h9 : ((3 ^ (1 + 1) * M : Nat) : Real) ≤ ν ^ a * W ^ (4 + b) := by
+    rw [Nat.cast_mul]
+    exact tb_const_mul hν hW (by norm_num) (by norm_num) (Nat.cast_nonneg _) hM
+  exact h9.trans (tb_mono hν hW1 (by omega) (by omega))
+
 /-- **The dimension-two count, in two bases**: `≤ ν^11·W^(2^41)`. -/
 theorem uniTwoFejerCount_le_split {V : Real} (hV : 1 ≤ V) {gamma theta rho : Real} (hg : 0 < gamma)
     (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1) (n : Nat) :
@@ -87,63 +125,10 @@ theorem uniTwoFejerCount_le_split {V : Real} (hV : 1 ≤ V) {gamma theta rho : R
       ((n : Real) + 1) ^ 11 * splitW V theta gamma rho ^ ((2 : Nat) ^ 41) := by
   obtain ⟨hW2, -, hrW, -⟩ := splitW_facts hV hg hg1 ht ht1 hr hr1
   obtain ⟨hM, hqf, -⟩ := two_split_basics hV hg hg1 ht ht1 hr hr1 n
-  set W := splitW V theta gamma rho with hWdef
-  set ν : Real := (n : Real) + 1 with hνdef
-  set M := n * polyTwoFejerPieces gamma theta with hMdef
-  set qf := polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma with hqfdef
-  clear_value W
-  have hν : 1 ≤ ν := by rw [hνdef]; have := Nat.cast_nonneg (α := Real) n; linarith
-  have hW1 : 1 ≤ W := by linarith
-  have hW0 : 0 ≤ W := by linarith
-  have hν0 : 0 ≤ ν := by linarith
-  -- the remainder count
-  have hMq := affine_le_tb hν hW2 hM hqf
-  have hQr : ∀ t, famTwoQr M qf t ≤ ν ^ 1 * W ^ (4 + ((2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1)) := by
-    intro t
-    unfold famTwoQr
-    have h9 : ((9 * (M * qf + 1) : Nat) : Real) ≤ ν ^ 1 * W ^ (4 + ((2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1)) := by
-      rw [Nat.cast_mul]
-      exact tb_const_mul hν hW2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) hMq
-    apply max_le
-    · refine le_trans ?_ h9
-      exact_mod_cast Nat.mul_le_mul_right _ (by norm_num : 3 ≤ 9)
-    · simpa using h9
-  -- the samples
-  set Q := (4 : Nat) + ((2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1) with hQdef
-  have hS : (famPieceSamples (famTwoQr M qf) M rho : Real) ≤
-      ν ^ (1 + 1) * W ^ (5 + (Q + (2 : Nat) ^ 24 + 1) + 1) := by
-    convert famPieceSamples_le_two_bases (b := Q) hν hW2 hr hrW (hQr (rho / 8)) hM using 1 <;> ring
-  set S := famPieceSamples (famTwoQr M qf) M rho with hSdef
-  set SB := 5 + (Q + (2 : Nat) ^ 24 + 1) + 1 with hSBdef
-  -- the slice count
-  have hSq : ((S : Real) * qf) ≤ ν ^ 2 * W ^ (SB + (2 : Nat) ^ 38) := by
-    have h := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hS hqf
-    simpa using h
-  have hPb : famTwoPb M qf S (rho / 4) ≤ ν ^ 3 * W ^ (2 + ((2 : Nat) ^ 24 + (SB + (2 : Nat) ^ 38)) + 1) := by
-    unfold famTwoPb
-    have h1 := tb_mul hν hW1 (Nat.cast_nonneg _) (by positivity) hM hSq
-    have h2 : ((M * (S * qf) + 1 : Nat) : Real) ≤ ν ^ (1 + 2) * W ^ ((2 : Nat) ^ 24 + (SB + (2 : Nat) ^ 38) + 1) := by
-      push_cast
-      have : (M : Real) * ((S : Real) * qf) + 1 ≤ ν ^ (1 + 2) * W ^ ((2 : Nat) ^ 24 + (SB + (2 : Nat) ^ 38) + 1) :=
-        tb_add_one hν hW2 h1
-      exact this
-    rw [Nat.cast_mul, show ν ^ 3 * W ^ (2 + ((2 : Nat) ^ 24 + (SB + (2 : Nat) ^ 38)) + 1) =
-      ν ^ (1 + 2) * W ^ (2 + ((2 : Nat) ^ 24 + (SB + (2 : Nat) ^ 38) + 1)) by ring_nf]
-    exact tb_const_mul hν hW2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) h2
-  set PB := 2 + ((2 : Nat) ^ 24 + (SB + (2 : Nat) ^ 38)) + 1 with hPBdef
-  have hP0 : 0 ≤ famTwoPb M qf S (rho / 4) := by unfold famTwoPb; exact Nat.cast_nonneg _
-  -- the graph bound
-  have hG : famPieceGraphBound (famTwoQr M qf) (famTwoPb M qf) M rho ≤
-      ν ^ 11 * W ^ ((2 : Nat) ^ 24 + (2 * SB + PB + PB)) := by
-    have h := famPieceGraphBound_le_mul_sq (tb_one_le hν hW1) (tb_one_le hν hW1) hM hS hP0 hPb
-    convert h using 1 <;> ring
+  have hν : (1 : Real) ≤ (n : Real) + 1 := by have := Nat.cast_nonneg (α := Real) n; linarith
+  have h := famTwoCount_le_two_bases hν hW2 hr hrW hM hqf
   unfold uniTwoFejerCount
-  refine max_le (hG.trans (tb_mono hν hW1 le_rfl ?_)) ?_
-  · rw [hPBdef, hSBdef, hQdef]; norm_num
-  · have h9 : ((3 ^ (1 + 1) * M : Nat) : Real) ≤ ν ^ 1 * W ^ (4 + (2 : Nat) ^ 24) := by
-      rw [Nat.cast_mul]
-      exact tb_const_mul hν hW2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) hM
-    exact h9.trans (tb_mono hν hW1 (by norm_num) (by norm_num))
+  exact h.trans (tb_mono hν (by linarith only [hW2]) (by norm_num) (by norm_num))
 
 /-- The samples of the dimension-two family, in two bases. -/
 theorem twoSamples_le_split {ν W rho : Real} {M q : Nat} (hν : 1 ≤ ν) (hW : 2 ≤ W) (hr : 0 < rho)
@@ -151,18 +136,8 @@ theorem twoSamples_le_split {ν W rho : Real} {M q : Nat} (hν : 1 ≤ ν) (hW :
     (hq : (q : Real) ≤ ν ^ 0 * W ^ ((2 : Nat) ^ 38)) :
     (famPieceSamples (famTwoQr M q) M rho : Real) ≤
       ν ^ (1 + 1) * W ^ (5 + (4 + ((2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1) + (2 : Nat) ^ 24 + 1) + 1) := by
-  have hMq := affine_le_tb hν hW hM hq
-  have hQr : ∀ t, famTwoQr M q t ≤ ν ^ 1 * W ^ (4 + ((2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1)) := by
-    intro t
-    unfold famTwoQr
-    have h9 : ((9 * (M * q + 1) : Nat) : Real) ≤ ν ^ 1 * W ^ (4 + ((2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1)) := by
-      rw [Nat.cast_mul]
-      exact tb_const_mul hν hW (by norm_num) (by norm_num) (Nat.cast_nonneg _) hMq
-    apply max_le
-    · refine le_trans ?_ h9
-      exact_mod_cast Nat.mul_le_mul_right _ (by norm_num : 3 ≤ 9)
-    · simpa using h9
-  convert famPieceSamples_le_two_bases hν hW hr hrW (hQr (rho / 8)) hM using 1 <;> ring
+  have hQr := famTwoQr_le_two_bases hν hW hM hq (rho / 8)
+  convert famPieceSamples_le_two_bases hν hW hr hrW hQr hM using 1 <;> ring
 
 /-- **The dimension-two width exponent, in two bases**: its inverse is at most
 `ν^29·W^(2^46)`. -/

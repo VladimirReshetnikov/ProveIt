@@ -464,63 +464,10 @@ theorem uniTwoFejerCount_le_split_tight {V : Real} (hV : 1 ≤ V) {gamma theta r
     have hu0 : (0 : Real) ≤ 2 / (gamma * theta) := le_trans (by norm_num) hu2
     rw [pow_zero, one_mul]
     exact (polyPieceFaceCountW_fejer_le_tight hg hg1 ht ht1).trans (pow_le_pow_left₀ hu0 hvW _)
-  set W := splitW V theta gamma rho with hWdef
-  set ν : Real := (n : Real) + 1 with hνdef
-  set M := n * polyTwoFejerPieces gamma theta with hMdef
-  set qf := polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma with hqfdef
-  clear_value W
-  have hν : 1 ≤ ν := by rw [hνdef]; have := Nat.cast_nonneg (α := Real) n; linarith
-  have hW1 : 1 ≤ W := by linarith
-  have hW0 : 0 ≤ W := by linarith
-  have hν0 : 0 ≤ ν := by linarith
-  -- the remainder count
-  have hMq := affine_le_tb hν hW2 hM hqf
-  have hQr : ∀ t, famTwoQr M qf t ≤ ν ^ 1 * W ^ (4 + ((2 : Nat) ^ 24 + (10002 * (2 ^ 23 + 1) : Nat) + 1)) := by
-    intro t
-    unfold famTwoQr
-    have h9 : ((9 * (M * qf + 1) : Nat) : Real) ≤ ν ^ 1 * W ^ (4 + ((2 : Nat) ^ 24 + (10002 * (2 ^ 23 + 1) : Nat) + 1)) := by
-      rw [Nat.cast_mul]
-      exact tb_const_mul hν hW2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) hMq
-    apply max_le
-    · refine le_trans ?_ h9
-      exact_mod_cast Nat.mul_le_mul_right _ (by norm_num : 3 ≤ 9)
-    · simpa using h9
-  -- the samples
-  set Q := (4 : Nat) + ((2 : Nat) ^ 24 + (10002 * (2 ^ 23 + 1) : Nat) + 1) with hQdef
-  have hS : (famPieceSamples (famTwoQr M qf) M rho : Real) ≤
-      ν ^ (1 + 1) * W ^ (5 + (Q + (2 : Nat) ^ 24 + 1) + 1) := by
-    convert famPieceSamples_le_two_bases (b := Q) hν hW2 hr hrW (hQr (rho / 8)) hM using 1 <;> ring
-  set S := famPieceSamples (famTwoQr M qf) M rho with hSdef
-  set SB := 5 + (Q + (2 : Nat) ^ 24 + 1) + 1 with hSBdef
-  -- the slice count
-  have hSq : ((S : Real) * qf) ≤ ν ^ 2 * W ^ (SB + (10002 * (2 ^ 23 + 1) : Nat)) := by
-    have h := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hS hqf
-    simpa using h
-  have hPb : famTwoPb M qf S (rho / 4) ≤ ν ^ 3 * W ^ (2 + ((2 : Nat) ^ 24 + (SB + (10002 * (2 ^ 23 + 1) : Nat))) + 1) := by
-    unfold famTwoPb
-    have h1 := tb_mul hν hW1 (Nat.cast_nonneg _) (by positivity) hM hSq
-    have h2 : ((M * (S * qf) + 1 : Nat) : Real) ≤ ν ^ (1 + 2) * W ^ ((2 : Nat) ^ 24 + (SB + (10002 * (2 ^ 23 + 1) : Nat)) + 1) := by
-      push_cast
-      have : (M : Real) * ((S : Real) * qf) + 1 ≤ ν ^ (1 + 2) * W ^ ((2 : Nat) ^ 24 + (SB + (10002 * (2 ^ 23 + 1) : Nat)) + 1) :=
-        tb_add_one hν hW2 h1
-      exact this
-    rw [Nat.cast_mul, show ν ^ 3 * W ^ (2 + ((2 : Nat) ^ 24 + (SB + (10002 * (2 ^ 23 + 1) : Nat))) + 1) =
-      ν ^ (1 + 2) * W ^ (2 + ((2 : Nat) ^ 24 + (SB + (10002 * (2 ^ 23 + 1) : Nat)) + 1)) by ring_nf]
-    exact tb_const_mul hν hW2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) h2
-  set PB := 2 + ((2 : Nat) ^ 24 + (SB + (10002 * (2 ^ 23 + 1) : Nat))) + 1 with hPBdef
-  have hP0 : 0 ≤ famTwoPb M qf S (rho / 4) := by unfold famTwoPb; exact Nat.cast_nonneg _
-  -- the graph bound
-  have hG : famPieceGraphBound (famTwoQr M qf) (famTwoPb M qf) M rho ≤
-      ν ^ 11 * W ^ ((2 : Nat) ^ 24 + (2 * SB + PB + PB)) := by
-    have h := famPieceGraphBound_le_mul_sq (tb_one_le hν hW1) (tb_one_le hν hW1) hM hS hP0 hPb
-    convert h using 1 <;> ring
+  have hν : (1 : Real) ≤ (n : Real) + 1 := by have := Nat.cast_nonneg (α := Real) n; linarith
+  have h := famTwoCount_le_two_bases hν hW2 hr hrW hM hqf
   unfold uniTwoFejerCount
-  refine max_le (hG.trans (tb_mono hν hW1 le_rfl ?_)) ?_
-  · rw [hPBdef, hSBdef, hQdef]; norm_num
-  · have h9 : ((3 ^ (1 + 1) * M : Nat) : Real) ≤ ν ^ 1 * W ^ (4 + (2 : Nat) ^ 24) := by
-      rw [Nat.cast_mul]
-      exact tb_const_mul hν hW2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) hM
-    exact h9.trans (tb_mono hν hW1 (by norm_num) (by norm_num))
+  exact h.trans (tb_mono hν (by linarith only [hW2]) (by norm_num) (by norm_num))
 
 /-- **Dimension two as a two-track class at the tight count**: count `(11, 2^39)`, exponent `(29, 2^46)`. -/
 theorem splitUniformClass2_two_tight {K1 p1 : Nat} (hK1 : 1 ≤ K1) (hp1 : 0 < p1)
