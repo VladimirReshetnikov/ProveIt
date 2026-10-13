@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs05IntegerRepresentatives
-import GowersSzemeredi.Proofs13ContextExtraction
+import GowersSzemeredi.Proofs13PreparedFrequencyGraph
 
 /-! The small-width case of the printed Theorem 13.12, over every prime
 modulus without an eventual-large-modulus hypothesis. A single large

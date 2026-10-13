@@ -9,6 +9,38 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  Shared threshold proof checkpoint: the printed threshold conversion and
+  density-iteration deduction are now specializations at offset nine of the
+  parameterized proofs. Three power comparisons use Mathlib directly.
+  This removes 50 production-source lines with all public statements and
+  bounds unchanged. FinalAudit passes 647 native modules with only approved
+  axioms; final imports 646 modules / 135,332 lines. The expanded audit
+  passes 852 modules, covering both threshold interfaces, phase refinement,
+  the original final and all 25 consolidated stronger-bound theorems.
+  The named results use only approved axioms. See Notes L.61 and the
+  final-shared-threshold / final-shared-threshold-compatibility reports.
+
+  Direct-import and consolidated-route checkpoint: three aggregate
+  imports are replaced by their direct inputs, with every proof body
+  unchanged. FinalAudit passes 647 native modules. The expanded compatibility
+  audit passes 852, checking all 25 public theorems in the consolidated
+  stronger-bound bridge, original final results and older Section 13/cubic
+  interfaces. Named proofs use only the three approved axioms. Final imports
+  646 modules / 135,382 lines, four modules / 2,909 lines fewer than L.59.
+  The complete facade and original-statement fidelity gaps remain separate.
+  See Notes L.60 and the final-direct-imports/final-consolidated-compatibility
+  verification reports. The simplification goal remains active.
+
+  Section 13 simplification checkpoint: graph preparation, spectral
+  estimates and odd-length bounds are shared independently of the older
+  extraction route. The prepared graph theorem is 79 lines rather than 108;
+  shorter fibre-sum conversions remove another 14 lines. FinalAudit passes
+  651 native modules with only approved axioms. That checkpoint imported
+  650 modules / 138,291 lines. Its compatibility run was intentionally
+  superseded by the incoming stronger-route consolidation, and is not
+  claimed as passed; the merged replacement audit is covered by L.60.
+  See Notes L.59.
+
   Lattice-import simplification checkpoint: lattice basics and Gaussian
   normalization are extracted with unchanged ported proofs and checked
   upstream provenance. Both extracts, four changed consumers and both full

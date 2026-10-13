@@ -1,0 +1,272 @@
+\section{Exact partial cancellation with cycle-block kernels}
+\label{sec:cycle-block-cancellation}
+
+The all-forest obstructions of Section~\ref{sec:representative-activation}
+leave a different local question: how much of a stalled core can be
+cancelled, with what certified residual cost?  Report~116 supplies a
+weighted matrix optimizer parameterized by the largest individual block
+cycle rank.  We adapt that optimizer in
+\path{fastunknot/cycle_block_cancellation.py}, add a polynomial exact
+single-deferral test, replace recursive enumeration by an explicit stack,
+and reject cyclic prefixes using rollback reachability.  This is an
+additive matrix API.  It is not inserted into the recognizer's verdict
+path, because a partial plan still requires ordered geometric transport
+and residual processing.
+
+\subsection{Positive cancellation and source-private plans}
+
+Let $A$ be the sparse nonnegative matrix of original unsigned occurrences,
+with a nonnegative binary weight $w_r$ per row.  A positive unit pivot
+$(r,c)$ removes its row and column and sends every surviving entry to
+$A'_{sh}=A_{sh}+A_{sc}A_{rh}$.  A source-private order
+$(r_i,c_i)_{i=1}^k$ uses distinct rows and columns with
+$A_{r_i c_i}=1$ and $A_{r_j c_i}=0$ for $j>i$.  Its selected donors
+therefore remain unchanged by earlier pivots; passive rows may acquire
+fill.  The objective is to maximize the total weight of selected rows.
+
+For unrestricted positive pivots, a set of rows is eliminable exactly
+when its original submatrix has a source-private order.  Indeed, failure
+of private peeling leaves a nonempty stopping set $Q$ whose column
+totals are all zero or at least two.  If a pivot row is outside $Q$, its
+new totals are $s'_h=s_h+s_c A_{rh}$.  If it belongs to $Q$, the surviving
+set is nonempty and has totals $s'_h=s_h+(s_c-2)A_{rh}$.  Neither formula
+can create a unit total.  Thus positive fill cannot remove the entire
+stopping set.  Conversely a private order is a valid positive sequence.
+This is the inherited positive/private equivalence, not a new geometric
+cancellation theorem.  Restrictions to designated original unit pairs
+are supported for private orders only.
+
+A globally private eligible pair can be forced without reducing the
+optimum: prepend it to any plan omitting its row, or move its row to the
+front of a plan containing it.  Its column vanishes on every other row.
+Nonnegative weights are needed here.  The implementation first runs this
+queue to exhaustion, retaining its exact prefix.
+
+\begin{proposition}[Exact minimum-weight single deferral]
+Suppose forced private peeling has stalled on a nonempty residual row
+set $R$.  Put $\mu=\min_{r\in R}w_r$ and $W=\sum_{r\in R}w_r$.
+If deleting a row $r$ of weight $\mu$ permits complete private peeling
+of $R\setminus\{r\}$, the residual optimum is $W-\mu$.
+\end{proposition}
+\begin{proof}
+Complete private elimination of $R$ is impossible: a valid complete
+order would begin with a globally private eligible column, contradicting
+the stalled queue.  Every feasible selected subset therefore omits at
+least one row and loses weight at least $\mu$.  The proposed trace attains
+the upper bound $W-\mu$.  This also covers $\mu=0$.  The already forced
+prefix is compatible with that trace and adds its fixed weight.
+\end{proof}
+
+We try minimum-weight rows in label order and stop on the first successful
+trace.  The default allowance is eight trials; its exhaustion, like failure,
+falls through to the complete block optimizer.  The allowance can be set to
+\code{None}.  If $m$
+is the number of residual rows, $z$ the nonzero count and $n$ the number
+of active columns, the prepass uses at most $m$ sparse peeling queries,
+each costing $O(m+z+n\log(n+2))$ operations in the straightforward
+implementation.  Thus its overhead is polynomial in the encoded input.
+The option \code{single\_deferral=False} disables it for controlled
+block-kernel experiments.  It runs only after exhausted forced peeling;
+an already completely peelable input never loses a row.
+
+\subsection{From matchings to six-state blocks}
+
+Form the bipartite support graph on rows and columns having an eligible
+unit entry.  Retain every nonzero edge in those columns, including heavy
+entries; only eligible unit edges may be matched.  Orient matched edges
+row-to-column and all other edges column-to-row.  Directed cycles are
+exactly alternating cycles.  Their absence is equivalent to a private
+order of the matched pairs by reverse topological sorting.  This is the
+classical uniquely restricted matching formulation; related
+parameterized algorithms include \cite{cycle-urm}.
+
+Every simple cycle lies in a single vertex-biconnected block.  Blocks
+therefore communicate only through the matching capacity of each shared
+articulation vertex.  A block sends two scores according to whether it
+occupies its parent vertex.  At a vertex, either no child occupies it or
+one child does.  Summing the unoccupied child responses and taking the
+largest nonnegative occupied-minus-unoccupied gain gives the two exact
+responses to the parent block.  Witnesses are stored in a shared DAG.
+
+Inside one block, suppress vertices of degree two, keeping the parent
+articulation.  A path exposes its first and last matching flags
+$(\alpha,\beta)$ and a direction $d\in\{-,0,+\}$: nonzero means that
+every oriented edge points consistently along the whole path.  There
+are at most four zero-direction states and one state in each nonzero
+direction, since a consistent direction uniquely determines every
+matching flag.  A constant-state dynamic program along the path includes
+the appropriate occupied/free descendant score at each internal vertex.
+
+For block cycle rank $b=|E|-|V|+1\ge2$, the identity
+$\sum_v(\deg(v)-2)=2b-2$ gives at most $2b-2$ branch vertices.  Keeping
+the parent adds at most one more; suppression then gives at most $3b-2$
+paths.  Rank-one blocks are cycles opened as one root-to-root path.
+Enumerate the six-state choices, reject conflicting endpoint capacities,
+and require the directed path skeleton to be acyclic.  A directed cycle
+in the original block traverses entire degree-two paths, so this skeleton
+criterion is exact, including root-to-root self-loops.
+
+Writing $\kappa$ for the maximum individual block rank, this yields
+$\operatorname{poly}(\Lambda)2^{O(\kappa)}$ bit complexity.  Scores sum
+binary input row weights and have polynomial bit length.  The number of
+blocks contributes a polynomial factor, not an exponent depending on
+the sum of their ranks.  Cactus tractability is classical; the delivered
+refinement combines weighted eligibility, six-state paths and the
+individual-block parameter.
+
+\subsection{Cycle rejection before the leaf and unbounded stack depth}
+
+The reference enumerator checks directed acyclicity only at complete
+assignments.  Our maintained implementation stores each terminal's
+reachability set as a bit mask.  Adding $u\to v$ creates a cycle exactly
+when $u=v$ or $v$ already reaches $u$.  Otherwise, for every ancestor of
+$u$, including $u$, insert $v$ and every descendant of $v$ into its mask.
+Save only changed masks, then restore them on backtracking.
+
+This update is the exact new transitive closure: every new path consists
+of an old path to $u$, the new arc, and an old path from $v$.  Since the
+prefix was acyclic, no later choice can repair a rejected cycle.  Pruning
+therefore loses no feasible matching.  Closure maintenance contributes
+only polynomial factors in the block size and preserves the
+$2^{O(\kappa)}$ bound.  Its overhead can still hurt small instances.
+
+An explicit stack holds choice iterators, accumulated scores and rollback
+records.  This removes the delivered implementation's hard maximum of
+256 paths.  The optional operational path cap defaults to 128 but accepts
+\code{None}; setting every cap to \code{None} now exposes the finite
+uncapped algorithm without a recursion-depth qualification.  A completed
+270-path test on $K_{2,270}$ disables the single-deferral prepass.  Its
+optimum is one: two matched row/column pairs would alternate on a
+four-cycle.
+
+\begin{proposition}[A family with a lower search exponent]
+On the all-unit two-row, $s$-column matrix with unit row weights and
+$s\ge3$, the delivered
+leaf-only skeleton enumeration takes $\Theta(s^3)$ search operations,
+whereas the maintained cycle-prefix enumeration takes $\Theta(s^2)$.
+With single deferral enabled, peeling settles the matrix in $O(s)$
+arithmetic work, apart from external-label sorting.
+\end{proposition}
+\begin{proof}
+The support graph is $K_{2,s}$.  Its skeleton has two row terminals and
+$s$ length-two paths.  Each path permits exactly three states: neither
+endpoint matched, only the first matched, or only the second matched.
+At a prefix of $i$ paths, endpoint capacity alone permits
+$1+2i+i(i-1)=i^2+i+1$ assignments.  The last term consists of two matched
+rows on different paths; those assignments form directed two-cycles in
+the skeleton.  The reference search retains them until all $s$ paths are
+assigned.  Summing its prefix counts gives $\Theta(s^3)$ work, even
+though only $s^2+s+1$ leaves reach its final acyclicity check.
+
+Immediate cycle rejection retains just $1+2i$ assignments at depth $i$.
+Each has at most three extensions and closure updates on two terminals
+cost constant work.  The sum is $\Theta(s^2)$, with $2s+1$ complete
+assignments.  Finally, forced peeling initially stalls; omitting either
+row lets the remaining row pivot on any column.  The minimum-weight
+single-deferral test therefore proves the optimum one after two linear
+incidence scans.  Sorting arbitrary external labels is a separate cost.
+\end{proof}
+
+Callbacks run even on empty input.  Caller exceptions propagate,
+including exceptions of the public \code{ResourceLimit} type;
+they are distinguished from internal budget exhaustion.  This corrects
+the delivered implementation's broad catch, which could turn that caller
+exception into a resource-status result.  A resource refusal remains
+inconclusive.  The work counter is not a hard memory or wall-clock bound.
+
+\subsection{Deferred forests and the geometric limit}
+
+If each uncapped row is a mod-two cycle in the zero/one-handle graph, the
+pivot columns of a partial private plan can be removed without disconnecting
+any original component.  At step $i$, its donor row avoids all earlier
+pivots and uses $c_i$ exactly once.  The surviving parity cycle witnesses
+that $c_i$ is not a bridge.  A spanning forest disjoint from all selected
+pivots therefore exists, and any prescribed disjoint forest extends to one.
+Restoring or removing other forest columns does not affect the private
+trace.  Consequently optimizing partial cancellation on all columns
+already optimizes over all lower spanning forests.  This extends the
+earlier full-cancellation argument to weighted partial plans; saturated
+counts cannot replace uncapped parity here.
+
+The delivered numerical transport circuit writes donor effects backwards
+as $T_i=R_i+\sum_{j>i}A_{r_i c_j}T_j$ and passive effects as
+$P_p=R_p+\sum_i A_{p c_i}T_i$.  There are linearly many source coefficient
+occurrences.  Scalar linear observables evaluate without materializing
+quadratic passive fill, with polynomial bit lengths by the finite
+acyclic-path expansion.  This circuit still lacks cyclic order, signs,
+ribbon data and protected boundary patterns.  It is retained as delivered
+research, not promoted as a geometric successor representation.
+
+\subsection{Native evidence and comparison scope}
+
+The native audit authenticates 126 source parallelity packets, independently
+replays the existing maximum-weight top reduction, and reconstructs exact
+full-column counts.  All 126 maintained matrix optimizations complete and
+agree in objective with report~110's ordered-interface optimizer and its
+independent feasible-plan replay.  Of these, 124 completely peel.  The
+other two attain the known optimal residual weight one:
+\begin{center}
+\begin{tabular}{lrrrr}
+source & rows & forced & residual & new trials\\
+\hline
+\path{nested_1_4_6/interior_links}&42&32&10&1\\
+\path{interior_loop/interior_links}&9&5&4&1
+\end{tabular}
+\end{center}
+Both are settled by one minimum-weight deferral trial.  The selected
+original row is zero in both new plans; the nested case's ordered-interface
+plan instead defers row 24.  These are different valid matrix plans, so
+downstream basis-dependent data cannot be copied between them.
+
+The direct block implementation before this prepass exhausts two million
+events on the nested residual, whose block rank is 11 and whose skeleton
+has 20 paths.  That failed audit is retained.  The delivered block solver
+likewise reaches its default work cap on that input.  Its current ordered
+decomposition has width four and peak 3840 states.  The final prepass uses
+544 charged events on the nested matrix and 114 on the loop matrix;
+these event counts have different definitions from ordered DP states.
+They are not timing ratios.  Native source authentication and compatible
+forest construction are executed; geometric partial cancellation is not.
+
+The 50 delivered tests and their 31,581 exhaustive matrix-case roles
+(63,162 plans with prepeeling on/off) pass both on the original scratch
+copy and with the maintained optimizer substituted.  The randomized
+audit additionally checks weights, restrictions, relabelling, positive
+transport and 4800 forest choices.  Ten maintained tests add an independent
+512-input binary enumeration, 500 weighted restricted inputs, the deep
+stack example, malformed packets, empty rows, exact single deferral and
+callback/resource separation and prepass fallback.  The supplied large algebra audit also
+passes on the original copy.  These checks do not validate geometric
+partial transport or prove a global unknot complexity bound.
+
+\input{data/cycle-block-benchmark-table.tex}
+
+Here ``ordered/new'' is the median of paired query ratios, not the ratio
+of separately computed medians.  The native nested and loop matrix queries
+give paired factors about 45.3 and 7.7 against the specified ordered
+implementation.  The already peelable Pachner case is slightly slower
+than that comparator.  The first uncapped single-deferral prepass run
+regressed on the 128-block cactus (48.31\,ms versus the delivered solver's
+15.27\,ms).  After limiting the prepass to eight candidates, the final
+run is near parity with the delivered solver (15.18 versus 15.26\,ms).
+Both runs and their exact tested source snapshots are retained; samples
+are not pooled or replaced.
+
+With single deferral disabled, a separate complete-query ablation on
+$K_{2,s}$ for $s=16,48,96$ gives median paired delivered/new ratios
+2.25, 7.32 and 16.42.  This isolates the iterative cycle-prefix implementation
+from the new optimality prepass.  The largest query falls from about
+448.27\,ms to 27.08\,ms.  These graphs are synthetic, not claimed native
+normal-cut families.
+
+The timings are complete \emph{matrix} queries from already prepared
+counts: normalization, discovery, feasible-plan replay and JSON
+serialization.  Source geometry, attaching-curve transport and residual
+recognition are excluded.  Nine randomized-order rounds and three A/A
+controls are retained, together with a separate prefix-pruning ablation.
+A capped refusal has no speedup ratio against a completed answer.  The
+results compare specified implementations, not all algorithms for uniquely
+restricted matching.  No new knot verdict or whole-cut positive follows
+from this matrix optimization.  General quasi-polynomial recognition still
+requires useful-surface coverage, controlled marked geometric successors
+and aggregate hierarchy accounting.

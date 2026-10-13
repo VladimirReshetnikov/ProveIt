@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs13FejerFourierExtraction
-import GowersSzemeredi.Proofs13ExplicitFourierExponent
+import GowersSzemeredi.Proofs13SpectralExponentBound
 
 /-! The purified graph improves the explicit all-parameter length exponent
 from top power 2^88 to 2^53. The density bound is simultaneously 2^42. -/

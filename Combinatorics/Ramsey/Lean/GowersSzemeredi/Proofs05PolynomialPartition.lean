@@ -1,4 +1,6 @@
-import GowersSzemeredi.Proofs05MissingInterval
+import GowersSzemeredi.Proofs05FourierInterval
+import Mathlib.Analysis.PSeries
+import Mathlib.Data.Int.Lemmas
 import GowersSzemeredi.Proofs05Weyl
 import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.ProofInfrastructure

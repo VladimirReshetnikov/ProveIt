@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs13ExplicitFourierExponent
+import GowersSzemeredi.Proofs13SpectralExponentBound
 import GowersSzemeredi.Proofs13FejerThresholdPolynomial
 
 /-! The large spectral parameter controls the reciprocal Bohr radii and

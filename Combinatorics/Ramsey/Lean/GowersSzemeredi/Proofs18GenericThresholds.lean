@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18GenericExponents
+import GowersSzemeredi.Proofs18ExponentialCalculus
 
 /-! The modulus threshold of the single-piece step in any dimension is single
 exponential in a power of `X = 2/α` (Notes L.7a, F3c).

@@ -1,5 +1,6 @@
+import GowersSzemeredi.Proofs05BoxPartition
 import GowersSzemeredi.Proofs16EqualSideBoxCover
-import GowersSzemeredi.Proofs13OddFourierSquare
+import GowersSzemeredi.Proofs13OddSquareBounds
 import GowersSzemeredi.Proofs16BaseCaseLongBoxTransport
 
 /-! Short odd equal-side boxes retaining a quantified portion of a dense

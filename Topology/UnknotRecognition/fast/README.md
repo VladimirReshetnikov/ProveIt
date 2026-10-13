@@ -1,5 +1,24 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+The additive `port_subspace` preprocessor reduces a shared nonnegative port to
+the intersection of its blocks' linear images, preserving all feasible tuples
+and linear queries. It lowers the projective atlas exponent to the intrinsic
+dimension, with local rays recomputed after restriction. On 202 native Euler
+queries it improves the research atlas but remains slower than the existing
+sector solver; atlas-selected witnesses also find fewer essential discs.
+See [the audit and reproduction notes](projective_port_research/README.md).
+This backend is not used by the recognizer's default dispatch.
+
+The signed-annulus continuation now transports authenticated passive curves in
+shared grammars and checks one common basis change per geometric core. Its
+polynomial rank-two support-block method adds five certified cuts to the
+expanded native bank (117/126), preserving all 112 earlier positive packets.
+Fresh literal Regina cuts agree in all five cases. The default phase runs
+after the earlier portfolio; `annulus_method='counts'` disables it. It shares
+source/boundary packets and preserves cancellation callbacks. See
+[`signed_primitive_annuli.tex`](../synthesis/signed_primitive_annuli.tex) for
+proofs, encoded complexity and the remaining global hierarchy obligations.
+
 The 12 October whole-cut portfolio now tries an Euler-checked signed free-group
 terminal after its geometric attempts refuse. `group_fallback=False` retains
 the earlier geometric-only policy. The fallback shares source and boundary

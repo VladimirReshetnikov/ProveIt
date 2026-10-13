@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs13ExplicitFourierThreshold
-import GowersSzemeredi.Proofs13OddFourierSquare
+import GowersSzemeredi.Proofs13OddSquareBounds
 
 /-! Odd Fourier-square extraction above a completely explicit modulus. -/
 set_option autoImplicit false

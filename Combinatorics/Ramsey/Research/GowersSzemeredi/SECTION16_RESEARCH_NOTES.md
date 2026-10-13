@@ -5657,8 +5657,11 @@ keeps only the best statements (with Corollary 18.7, van der Waerden numbers,
 Theorem 1.3 and the printed consequences). Measured: 63 modules and 19,081
 lines retired, 3,501 added; the bridge 993 → 189 lines and 101 → 25
 theorems; the Fejér block of `CompletionAudit` 341 → 96 lines. No threshold
-changed. Each new module builds locally; the bridge and audit block pass
-the stub check.
+changed. The merged production route now passes the 852-module native
+`FinalProofSimplificationAudit`, covering all 25 public bridge theorems and
+checking their axioms. See L.60 and
+`verification/2026-10-12-final-consolidated-compatibility.json`.
+The complete facade remains a separate check.
 
 **Van der Waerden numbers: our bounds and the literature (2026-10-12).** Gowers
 proves `W(k, r) ≤ 2^2^r^2^2^(k+9)`; this is the form Wikipedia cites. The Lean
@@ -5666,8 +5669,7 @@ results here keep that shape with a smaller top constant:
 `van_der_waerden_L3_all` (`k + 3`, every `k`), `van_der_waerden_L2_eight_le`
 (`k + 2`, `k ≥ 8`), `van_der_waerden_L1_eleven_le` (`k + 1`, `k ≥ 11`) and
 `van_der_waerden_L0_thirteen_le` (`W(k, r) ≤ 2^2^r^2^2^k`, `k ≥ 13`). They are
-locally verified: per-module builds and the stub-checked bridge, with the
-production run pending. They tighten Gowers's own argument; they are not new
+verified by the 852-module focused native audit in L.60. They tighten Gowers's own argument; they are not new
 mathematics. Published bounds of a different shape are much stronger in `r`
 for fixed `k`:
 * `k = 3`: Kelley–Meka (2023), sharpened by Bloom–Sisask,
@@ -7100,6 +7102,118 @@ See `verification/2026-10-12-lattice-gaussian-clients.json` and
 `verification/2026-10-12-final-lattice-gaussian-dependencies.json`. The full
 OAI port audit remains historical; no fresh complete port or facade audit is
 claimed. The simplification goal remains active.
+
+
+### L.59. Share the Section 13 inputs used by the final proof (2026-10-12)
+
+The final theorem uses the prepared frequency graph, its arrangement-count
+bound, two elementary spectral estimates and odd-length rounding. These were
+bundled with the older context/Fourier extraction route, importing the entire
+3,255-line `Proofs12Restriction` and its combination theorem.
+
+`Proofs13PreparedFrequencyGraph`, `Proofs13SpectralExponentBound` and
+`Proofs13OddSquareBounds` now supply the shared inputs directly. The original
+context, explicit-exponent and odd-square modules re-export the moved public
+declarations and retain their original theorem statements and proof bodies.
+The quadratic odd-progression and higher-dimensional box consumers import
+their power-budget and width lemmas directly. Fourier-box transport imports
+the required statements directly.
+
+The prepared frequency graph's two coefficient calculations are now one
+private inequality, instantiated at exponents 1 and 12,359. Its theorem is
+79 lines rather than 108; the statement and retained density exponent
+14,409,429 are unchanged. The original final theorem
+passes its 651-module native audit with only `propext`, `Classical.choice`
+and `Quot.sound`; see `verification/2026-10-12-final-section13-inputs.json`.
+The expanded compatibility run was intentionally superseded before completion
+when origin/main retired 63 variant modules in favor of the consolidated
+stronger route. Its explicit supersession record is
+`verification/2026-10-12-section13-compatibility-superseded.json`.
+L.60 verifies the merged production route and retains the older theorem checks.
+
+Two further fibre-sum conversions reduce to one rewrite each, removing
+14 lines. The Fejer cubic localization and discrepancy modules also import
+their lower-level inputs directly, without the older cubic extraction route.
+The older cubic theorems remain in the expanded compatibility audit.
+
+The measured final import closure is 650 modules / 138,291 lines, down by
+eight modules / 4,400 lines from L.58. Eleven old modules are no longer imported
+and three shared modules replace them. The current dependency snapshot is
+`verification/2026-10-12-final-section13-direct-dependencies.json`. The source-preservation comparisons
+and dependency snapshot are in
+`verification/2026-10-12-final-section13-inputs-dependencies.json`.
+These are import-closure counts, not repository-wide deletions. The final
+statements and numerical bounds are unchanged. The complete facade and
+original-paper fidelity remain separate. The simplification goal remains active.
+
+### L.60. Replace three aggregate imports and audit the consolidated route (2026-10-12)
+
+`Proofs17LocalizedPhaseRemoval` no longer imports `Proofs17FinitePatterns`.
+`Proofs05PolynomialPartition` imports its Fourier-interval facts and the
+Mathlib series/integer lemmas directly. `Proofs16ClassStepBounds` imports its
+length-six count bound directly. All three proof bodies are byte-for-byte
+unchanged and each module passes an isolated native compile.
+
+The first downstream rebuild identified `exp_mul_le` in
+`Proofs16ClassStepDegrees` as an indirect dependency of the old aggregate.
+`Proofs18ExponentialProduct` now supplies it and `exp_pow_sq_le`; both proofs
+are moved unchanged from `Proofs18LengthSixThresholds`, which re-exports them.
+The class-step consumer imports these elementary facts directly.
+A further downstream check exposed `rpow_le_exp_pow` in the generic envelope.
+`Proofs18ExponentialCalculus` now shares the remaining elementary sum and
+power bounds, including `natpow_le_exp_pow`, with direct imports in all three
+generic consumers. The extracted proofs are unchanged. A check against the
+recorded final declaration dependencies confirms that these are all the
+proof inputs from the six excluded aggregate modules.
+
+The original final import closure now contains 646 local modules / 135,382
+lines, down by four modules / 2,909 lines from L.59 and twelve modules /
+7,309 lines from L.58. These are import-closure measurements, not deletions.
+The original-final native audit passes 647 modules with only the approved
+axioms; see `verification/2026-10-12-final-direct-imports.json`.
+
+The merged origin/main consolidation (L.16-final, commit `2a36bd714`)
+replaces the generated variant chains with `Proofs18FinalClasses`,
+`Proofs18FinalStep`, `Proofs18FinalEnvelopes` and `Proofs18Final`.
+`FinalProofSimplificationAudit` now checks every one of the bridge's 25 public
+theorems, alongside the original final and older Section 13/cubic interfaces.
+The consolidated bridge imports 830 local modules / 174,880 lines; the
+expanded audit imports 852 / 180,492. Its production native audit passes
+852 modules, with only `propext`, `Classical.choice` and `Quot.sound` in
+the named proofs; see
+`verification/2026-10-12-final-consolidated-compatibility.json`.
+Both reports include immutable source-input manifests. The complete facade
+and remaining original-statement fidelity gaps remain separate. The goal
+remains active.
+
+### L.61. Share the printed and variable-offset threshold proof (2026-10-12)
+
+The final density iteration's conversion from natural exponentials to the
+base-two tower was duplicated in `Proofs18GenericSzemeredi` (printed offset
+nine) and `Proofs18ThresholdAt` (arbitrary offset). The deduction of Theorem
+18.2 from the discrepancy envelope was duplicated there as well.
+
+Both parameterized proofs and their threshold definitions now live in
+`Proofs18GenericSzemeredi`. The two printed theorems retain exactly their
+statements and each specializes the shared proof at `c = 9` in one line.
+`Proofs18ThresholdAt` re-exports all of its public declarations. Three power
+comparisons in `inv_thr_le_ex` also use `Real.rpow_le_self_of_one_le` directly.
+The combined threshold modules shrink from 380 to 336 lines, and the long
+threshold module from 335 to 329: 50 production-source lines removed.
+
+FinalAudit passes all 647 native modules with only the approved axioms;
+see `verification/2026-10-12-final-shared-threshold.json`. The final import
+closure remains 646 modules, now 135,332 source lines. The expanded audit
+also explicitly checks both threshold conversions, both envelope deductions
+and `inv_thr_le_ex`. It passes 852 native modules, including all 25 stronger
+bridge theorems and the older Section 13/cubic interfaces, with only
+`propext`, `Classical.choice` and `Quot.sound`; see
+`verification/2026-10-12-final-shared-threshold-compatibility.json`.
+Both audit reports include immutable source-input manifests. The source
+comparison is recorded in
+`verification/2026-10-12-shared-threshold-simplification.json`.
+The complete facade and remaining original-statement fidelity gaps remain
+separate. The simplification goal remains active.
 
 ## F. Routes
 

@@ -1,5 +1,6 @@
+import GowersSzemeredi.Proofs13IntegerBudgets
 import GowersSzemeredi.Proofs08AffineFrequencyProgression
-import GowersSzemeredi.Proofs13OddFourierSquare
+import GowersSzemeredi.Proofs13OddSquareBounds
 
 /-! Short odd progressions retain half the affine-frequency density. -/
 set_option autoImplicit false

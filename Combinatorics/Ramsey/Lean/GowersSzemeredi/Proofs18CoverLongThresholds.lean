@@ -69,15 +69,11 @@ theorem inv_thr_le_ex {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M
   have hσ16' : 0 ≤ σ / 16 := by positivity
   have hr1 : (1 : Real) ≤ 2 * ((k + 1 + 2 : Nat) : Real) := by push_cast; linarith
   have hc1 : (1 : Real) ≤ 6 * ((k + 1 : Nat) : Real) := by push_cast; linarith
-  have hrpow : (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 - σ / 16) ≤ 2 * ((k + 1 + 2 : Nat) : Real) := by
-    calc (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 - σ / 16) ≤
-          (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 : Real) :=
-          Real.rpow_le_rpow_of_exponent_le hr1 (by linarith)
-      _ = _ := Real.rpow_one _
-  have hcpow : (6 * ((k + 1 : Nat) : Real)) ^ (σ / 16) ≤ 6 * ((k + 1 : Nat) : Real) := by
-    calc (6 * ((k + 1 : Nat) : Real)) ^ (σ / 16) ≤ (6 * ((k + 1 : Nat) : Real)) ^ (1 : Real) :=
-          Real.rpow_le_rpow_of_exponent_le hc1 hσ16
-      _ = _ := Real.rpow_one _
+  have hrpow : (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 - σ / 16) ≤
+      2 * ((k + 1 + 2 : Nat) : Real) :=
+    Real.rpow_le_self_of_one_le hr1 (by linarith)
+  have hcpow : (6 * ((k + 1 : Nat) : Real)) ^ (σ / 16) ≤
+      6 * ((k + 1 : Nat) : Real) := Real.rpow_le_self_of_one_le hc1 hσ16
   have hB0 : 0 ≤ boundaryRefinementConstant (1 / 16) := (section5LocalRefinementConstant_pos _ _).le
   have hr : 2 * ((k + 1 + 2 : Nat) : Real) ≤ X ^ (2 ^ (k + 3)) := by
     have := small_nat_le_pw hX (k := k) (c := 2 * (k + 1 + 2)) (by omega)
@@ -108,10 +104,8 @@ theorem inv_thr_le_ex {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M
     exact_mod_cast polyPartConst_pos (k + 1 + 1)
   have hDp : (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ^
       ((polynomialPartitionConstant (k + 1 + 1) : Real))⁻¹ ≤
-      inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ := by
-    calc _ ≤ (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ^ (1 : Real) :=
-          Real.rpow_le_rpow_of_exponent_le hD1 (inv_le_one_of_one_le₀ hP1)
-      _ = _ := Real.rpow_one _
+      inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ :=
+    Real.rpow_le_self_of_one_le hD1 (inv_le_one_of_one_le₀ hP1)
   have hPIC : phaseInverseConstant (k + 1 + 1) (η * β / 2)
       (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ≤
       Real.exp (X ^ (2 ^ (max (max (M + 4 * (k + 3) ^ 2 + 4) (k + 16)) s))) := by
