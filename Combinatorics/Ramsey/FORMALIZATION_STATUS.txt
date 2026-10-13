@@ -438,31 +438,20 @@ Scope
   1.2, 1.3 and 18.2) do have unconditional checked proofs about genuine
   natural-number progressions, using only the three approved axioms.
 
-  PRODUCTION HANDOFF (2026-10-12, notes L.16q-L.16z): the 30 modules below were
-  added after the 2026-10-11 production run. Each builds against cached
-  dependencies (one module per invocation, no sorry); the bridge
-  Proofs18CoverFejerAllDegrees and the Fejer block of CompletionAudit pass the
-  stub check; all are imported by the facade. They still need the full
-  production run (Codex machine). Its CompletionAudit logInfo should end with
-  '... with the tight dimension-two count L+0 (L >= 13) with the van der
-  Waerden bound and Theorem 1.3 at k (k >= 13), and the polynomial Theorem
-  16.2 and Corollary 16.11 at the tight two-track classes; only approved
+  PRODUCTION HANDOFF (2026-10-12, notes L.16q-L.16-final): the 9 modules below were
+  added after the 2026-10-11 production run, and Proofs18CoverFejerAllDegrees,
+  CompletionAudit, IntegerOriginalCorollaryFidelityAudit and the facade were
+  rewritten for the final route (notes L.16-final), which retired 63 variant modules.
+  Each new module builds against cached dependencies (one module per
+  invocation, no sorry); the bridge and the final-route block of
+  CompletionAudit pass the stub check; all are imported by the facade. They
+  still need the full production run (Codex machine). Its CompletionAudit
+  logInfo for the final route should end with '... and the polynomial
+  Theorem 16.2 and Corollary 16.11 at the classes tDegT3; only approved
   axioms.'
     Proofs16JointSliceCell Proofs16JointSliceCore Proofs16JointSliceGlobal
-    Proofs16JointSliceSpectrum Proofs16PolynomialFejerJ
-    Proofs16PolynomialFejerT3 Proofs16SplitTwoTrack
-    Proofs16SplitTwoTrackClasses Proofs16SplitTwoTrackClassesT3
-    Proofs16UniformCoverTwoTight Proofs18CoverDensityFejerJ
-    Proofs18CoverDensityFejerJM Proofs18CoverDensityFejerJT
-    Proofs18CoverDensityFejerJT3 Proofs18CoverExponentsFejerJ
-    Proofs18CoverExponentsFejerJM Proofs18CoverExponentsFejerJT
-    Proofs18CoverExponentsFejerJT3 Proofs18CoverFejerHeadlineJ
-    Proofs18CoverFejerHeadlineJM Proofs18CoverFejerHeadlineJT
-    Proofs18CoverFejerHeadlineK Proofs18CoverFejerHeadlineK3
-    Proofs18CoverFejerLowDegrees4 Proofs18CoverModulusFejerJ
-    Proofs18CoverModulusFejerJM Proofs18CoverModulusFejerJT
-    Proofs18CoverModulusFejerJT3 Proofs18JointSliceInverseFejer
-    Proofs18TightClassesFejerM
+    Proofs16JointSliceSpectrum Proofs18JointSliceInverseFejer
+    Proofs18FinalClasses Proofs18FinalStep Proofs18FinalEnvelopes Proofs18Final
   Reproduce the production and axiom checks with:
     python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.CompletionAudit
   Reproduce the latest full integer-fidelity checks with:
@@ -601,6 +590,31 @@ Verification of the cover route (2026-10-11)
   degrees satisfy log2 D_k <= (c+8)*2^k for a seed 2^8*a2 <= 2^(4c),
   D2 <= 2^(4(c+8)); at c = 14, any seed a2 <= 2^48, D2 <= 2^88 gives
   22*2^k (vs 68*2^k). The d+5/L+3 of notes L.16b is withdrawn.
+
+  The final route (notes L.16-final, 2026-10-12). One class table (tDegT3) carries
+  every best bound, so the copy-generated variant chains of notes L.16i-y
+  (63 modules, 19081 lines: Proofs18Cover{Modulus,Density,Exponents}Fejer*,
+  Proofs18CoverFejerHeadline*, Proofs18TightClassesFejer*,
+  Proofs16PolynomialFejer*, Proofs16SplitTwoTrack*, Proofs16UniformCoverTwoTight,
+  Proofs18FejerEnvelopeBase{Q,W}, Proofs18CoverFejerLowDegrees{4,5},
+  Proofs18CoverFejerShortLengths3) are replaced by the declarations the final
+  bounds use, in four light modules (3,619 lines): Proofs18FinalClasses (the
+  classes tDegT3 and their covers), Proofs18FinalStep (the joint-slice step
+  GenParamsJT3), Proofs18FinalEnvelopes (the Theorem 18.1 envelope
+  polyGenMuJT3 and the Theorem 18.2 envelope genMuXK3 with their fits, the
+  polynomial Theorem 16.2 / Corollary 16.11), and Proofs18Final (one
+  structure FinalInputs of corpus inputs; FinalInputs.theorem_18_1_d4 /
+  _d3 / _d2 and FinalInputs.theorem_18_2_L3 / _L2 / _L1 / _L0, each a
+  one-line fit). The bridge Proofs18CoverFejerAllDegrees (993 -> 189 lines)
+  instantiates explicitFinalInputs and keeps only the best statements:
+  theorem_18_1_d4 (every d), theorem_18_1_d3_eight_le, theorem_18_1_d2_eleven_le,
+  theorem_18_2_L3 / corollary_18_7_L3 (every L), _L2_eight_le, _L1_eleven_le,
+  _L0_thirteen_le, with van der Waerden and Theorem 1.3 at each, the printed
+  consequences theorem_18_1_d4_implies_printed, theorem_18_2_L3_implies_printed,
+  corollary_18_7_L3_implies_printed, and theorem_16_2_polynomial_fejerT3,
+  corollary_16_11_polynomial_fejerJT3. The superseded bridge theorems below
+  (d+6, L+4, ..., L+0 from L = 14) are retired; the paragraphs that follow
+  are the history of the route, and the modules they name no longer exist.
 
   Theorem 18.1 at d+6, Theorems 18.2 / Corollary 18.7 at L+4 (notes L.16d,
   L.16e, 2026-10-12). The Fejer theta_1 and the tight radius are propagated

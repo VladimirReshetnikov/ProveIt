@@ -66,6 +66,9 @@ map").
 | `assemble_k3.py` | `Proofs18Cover{Modulus,Density,Exponents}FejerJT3`, `Proofs18CoverFejerHeadlineK3` | the J chain and the K (Theorem 18.2) envelope over `tDegT3`, `L + 0` from 13 |
 | `patch_k3.py` | the tight-count block of `Proofs18CoverFejerAllDegrees`, `CompletionAudit.lean`, notes, status, TeX | — |
 | `assemble_polyt3.py`, `patch_polyt3.py` | `Proofs16PolynomialFejerT3` and its bridge block | Theorem 16.2 / Corollary 16.11 at `tDegT3` |
+| `final_extract.py`, `assemble_final.py` | `Proofs18FinalClasses`, `Proofs18FinalStep`, `Proofs18FinalEnvelopes`, `Proofs18Final` | the final route (notes L.16-final): the declarations the final bounds use, extracted from the variant modules in their original order, the Theorem 18.1 step over `tDegT3` (renamed from the JT step), the fits, and `FinalInputs` |
+| `retire.py`, `audit_final_section.lean.txt` | deletes the 63 variant modules, rewrites the facade, the bridge, `IntegerOriginalCorollaryFidelityAudit` and the final-route block of `CompletionAudit.lean` | — |
+| `mkstub_final.py` | stub check of the new bridge and audit block | — |
 | `mkstub_fejer18.py`, `mkstub_auditfejer.py` | stub checks of `Proofs18CoverFejerAllDegrees` and the Fejér block of `CompletionAudit.lean` | — |
 
 Hand-written modules (no generator): `Proofs15WalshGeneral`,
@@ -74,6 +77,12 @@ Hand-written modules (no generator): `Proofs15WalshGeneral`,
 `Proofs18TightClassesFejer`, `Proofs18TightClassesFejerQ`, `Proofs18TightClassesFejerS`, `Proofs18TightClassesFejerT`, `Proofs18TightClassesFejerX`,
 `Proofs16UniformCoverTwoSplit`, `Proofs18FejerEnvelopeBase` and the bridge
 `Proofs18CoverFejerAllDegrees`.
+
+Since the final route (notes L.16-final), the variant chains generated above
+(suffixes Q, S, T, U, W, X, Z, Y, J, JM, JT, JT3, K, K3, and the generated low-degree
+and short-length variants) no longer exist; their scripts document how the
+route was reached. The unsuffixed base modules and the joint-slice modules
+remain.
 
 Caveats:
 * The scripts hard-code the worktree path where they ran, and some outputs
