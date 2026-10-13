@@ -5659,12 +5659,12 @@ keeps only the best statements (with Corollary 18.7, van der Waerden numbers,
 Theorem 1.3 and the printed consequences). Measured: 63 modules and 19,081
 lines retired, 3,501 added; the bridge 993 → 186 lines and 101 → 25
 theorems; the Fejér block of `CompletionAudit` 341 → 96 lines. No threshold
-changed. Subsequent sharing and import cleanup leave 2,993 lines in the
+changed. Subsequent sharing and import cleanup leave 2,977 lines in the
 four proof modules and 182 in the bridge. The current route passes the
 778-module native `FinalProofSimplificationAudit`, covering all 25 public
 bridge theorems, FinalInputs methods, shared induction, fits and threshold
 comparisons, with approved axioms. The bridge itself imports 745 modules.
-See L.69 and `verification/2026-10-12-final-low-degree-envelope-sharing-compatibility.json`.
+See L.70 and `verification/2026-10-12-final-spectrum-width-sharing-compatibility.json`.
 The complete facade remains a separate check.
 
 **Van der Waerden numbers: our bounds and the literature (2026-10-12).** Gowers
@@ -5673,7 +5673,7 @@ results here keep that shape with a smaller top constant:
 `van_der_waerden_L3_all` (`k + 3`, every `k`), `van_der_waerden_L2_eight_le`
 (`k + 2`, `k ≥ 8`), `van_der_waerden_L1_eleven_le` (`k + 1`, `k ≥ 11`) and
 `van_der_waerden_L0_thirteen_le` (`W(k, r) ≤ 2^2^r^2^2^k`, `k ≥ 13`). They are
-verified by the 778-module focused native audit in L.69. They tighten the
+verified by the 778-module focused native audit in L.70. They tighten the
 constants in Gowers's argument. Published bounds of a different shape are
 much stronger in `r` for fixed `k`:
 * `k = 3`: Kelley–Meka (2023), sharpened by Bloom–Sisask,
@@ -7525,6 +7525,34 @@ every classification and companion name; it remains separate from
 source-fidelity certification.
 Full-facade verification and remaining original-statement fidelity gaps
 are separate, and the simplification goal remains active.
+
+### L.70. Share the spectrum cell width estimate (2026-10-12)
+
+The length-six, generic, graded, cover, Fejer and final modulus proofs
+repeat one scalar estimate: if `zeta > 0`, `m >= 1`, `2*b <= e` and
+`16/zeta <= m^(b/2)`, then `m^(b/2) <= spectrumCellWidth zeta m e / 8`.
+`spectrumCellWidth_div8_ge_rpow`, beside `spectrumCellWidth_eq` in
+`Proofs18LengthSixScale`, now proves this once. It needs no positivity
+assumption on `b`; the positive base gives the required nonnegative real
+power. All six consumers pass exactly their previous four premises.
+
+Against `73dea6f5c`, six production files lose 72 lines. The namespace-aware
+source comparison preserves all 205 old declaration headers and variable
+scopes, every existing definition and import, and all 25 stronger bridge
+proofs. The four consolidated proof files contain 2,977 lines. No module
+or import edge is added. The original-final closure is 647 modules /
+135,338 lines; the stronger bridge is 745 / 160,866; the focused audit is
+778 / 169,714. The inventory is byte-identical. See
+`verification/2026-10-12-spectrum-width-simplification.json`.
+
+The original-final audit passes 648 native modules and the focused audit
+passes 778. Six additional named checks cover the helper and the five
+previously unnamed modulus consumers; the final consumer was already
+checked. Only `propext`, `Classical.choice` and `Quot.sound` occur. See
+`verification/2026-10-12-final-spectrum-width-sharing.json` and
+`verification/2026-10-12-final-spectrum-width-sharing-compatibility.json`,
+with their immutable source manifests. Full-facade checks and original
+paper fidelity gaps remain separate. The simplification goal remains active.
 
 ## F. Routes
 
