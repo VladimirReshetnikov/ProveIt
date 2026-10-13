@@ -54,6 +54,9 @@ def main():
     # these inputs keep their original meaning.
     files.update((DATA/'boundary-unlayer-audit.json',
                   DATA/'coherent-obstruction-certificate.json',
+                  ROOT/'reports/79/repro/fast/commitment_research/coherent-obstruction-certificate.json',
+                  ROOT/'reports/79/repro/fast/shared_cover_research/results/exhaustion.json',
+                  ROOT/'fast/tests/fixtures/causal_noncanonical.json',
                   ROOT/'fast/conflict_composition_research/data/generation/tt-state.json.gz',
                   ROOT/'fast/strict_pachner32_research/data/generation/euler-queries.json.gz'))
     files = python_dependencies(files)
