@@ -2,6 +2,15 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`intrinsic_port_atlases.tex`](intrinsic_port_atlases.tex) reviews report 113
+and proves a polynomial reduction from the ambient common-port dimension to
+the dimension of the intersection of the local linear images. It includes the
+recomputed-ray caveat, 2,160 independent algebra queries, 202 native Euler
+queries, paired full-query timings, and nine native counterexamples to
+replacing disc search by one atlas-selected positive-Euler witness. The
+intrinsic atlas is faster than the delivered atlas but slower than the
+existing sector method. General quasi-polynomial complexity remains unproved.
+
 `orbit_certificates.tex` adds independent local replay for both classical and
 sharp AHT traces, and exact component-incidence histograms with shared marked
 unions and one total cycle budget. All 831 maintained tests pass with Regina;
