@@ -112,7 +112,12 @@ def _recount(g, summary, skeleton, components, check, absorbed=frozenset(), prim
 
 def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
                                   max_operations=None, check=lambda: None):
-    """Replay four source traces and the selected boundary proofs independently."""
+    """Replay source and boundary proofs and the selected terminal independently.
+
+    The operation cap includes powered Nielsen move records for signed-annulus
+    packets (and Tietze pivots for Euler/group packets), in addition to orbit
+    operation records. It does not count machine instructions.
+    """
     check()
     if max_operations is not None and (type(max_operations) is not int or max_operations < 0):
         raise ValueError('max_operations must be a nonnegative integer or None')
@@ -127,6 +132,11 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
         fields.remove('core')
         fields.add('kernel')
         if version == 'normal-cut-handlebodies-v6':
+            fields.add('core_reduction')
+    elif version in ('normal-cut-handlebodies-signed-annuli-v1',
+                     'normal-cut-handlebodies-signed-annuli-v2'):
+        fields.update(('absorption', 'signed_annuli'))
+        if version == 'normal-cut-handlebodies-signed-annuli-v2':
             fields.add('core_reduction')
     elif version == 'normal-cut-handlebodies-v4':
         fields.update(('absorption', 'core_annuli'))
@@ -154,6 +164,10 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
             for name in boundary_names:
                 if b[name] is not None:
                     operations += len(b[name]['orbit_proof']['operations'])
+            if version in ('normal-cut-handlebodies-signed-annuli-v1',
+                           'normal-cut-handlebodies-signed-annuli-v2'):
+                operations += sum(len(c['basis']['moves'])
+                                  for c in certificate['signed_annuli']['components'])
         except (KeyError, TypeError):
             return False
         if operations > max_operations:
@@ -167,7 +181,7 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
     # Large source integers may use the established exact hexadecimal codec.
     geometry, summary = _decode(p['geometry']), _decode(p['summary'])
     skeleton = _decode(b['skeleton'])
-    if version == 'normal-cut-handlebodies-v6':
+    if version in ('normal-cut-handlebodies-v6', 'normal-cut-handlebodies-signed-annuli-v2'):
         geometry = replay_core_three_handles(geometry, certificate['core_reduction'], check=check)
         if geometry is None:
             return False
@@ -186,11 +200,13 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
         if primitive is None:
             return False
     deferred = primitive
-    if version == 'normal-cut-handlebodies-v4':
+    if version in ('normal-cut-handlebodies-v4', 'normal-cut-handlebodies-signed-annuli-v1',
+                   'normal-cut-handlebodies-signed-annuli-v2'):
         deferred = {i for i, p in enumerate(summary['base_profiles'])
                     if (p['euler_characteristic'], p['boundary_components']) != (1, 1)}
     if version in ('normal-cut-handlebodies-v2', 'normal-cut-handlebodies-v3',
-                   'normal-cut-handlebodies-v4'):
+                   'normal-cut-handlebodies-v4', 'normal-cut-handlebodies-signed-annuli-v1',
+                   'normal-cut-handlebodies-signed-annuli-v2'):
         replay = replay_disk_bundle_absorption(geometry, summary, skeleton,
                                                certificate['absorption'], primitive_bases=deferred, check=check)
         if replay is None:
@@ -202,6 +218,17 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
     if version == 'normal-cut-handlebodies-v4':
         core_annuli = replay_core_primitive_annuli(geometry, summary, skeleton, augmented,
                             core_proof, certificate['core_annuli'], check=check)
+        if core_annuli is None:
+            return False
+    elif version in ('normal-cut-handlebodies-signed-annuli-v1',
+                     'normal-cut-handlebodies-signed-annuli-v2'):
+        from .signed_annulus_basis_verify import replay_signed_annulus_basis
+        try:
+            signed_proof = _decode(certificate['signed_annuli'])
+        except ValueError:
+            return False
+        core_annuli = replay_signed_annulus_basis(geometry, summary, skeleton, augmented,
+                            core_proof, signed_proof, check=check)
         if core_annuli is None:
             return False
     expected = _recount(geometry, summary, skeleton, core_proof['components'], check, absorbed, primitive, core_annuli)

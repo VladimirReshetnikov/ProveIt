@@ -1,0 +1,315 @@
+\section{Compressed common-basis certificates for primitive annuli}
+\label{sec:signed-primitive-annuli}
+
+The next 12 October continuation integrates the signed primitive-annulus
+method of report~114.  This is a different terminal from
+Section~\ref{sec:euler-group-terminal}: it starts with a geometrically
+certified handlebody core and interprets all remaining annular interfaces
+on that core.  It transports their actual signed words through the core
+cancellations in a shared grammar, then finds one basis change for the
+whole family.  Small generator-support blocks admit a complete polynomial
+algebraic test.  The maintained whole-cut portfolio uses this test after
+its earlier geometric and Euler/group methods refuse.
+
+The objective is to avoid expanding exponentially long transported curves
+or searching elementary basis moves one at a time.  The result is an
+unmarked handlebody census.  Neither the algebraic basis certificate nor
+the existence of dual disks provides the marked successor geometry needed
+for a complete hierarchy.  The general quasi-polynomial goal remains open.
+
+\subsection{The geometric hypothesis: one primitive family}
+
+Let $H$ be an orientable handlebody, and let $\beta_1,\ldots,\beta_q$ be
+pairwise disjoint embedded simple closed curves in its boundary.  Their
+conjugacy classes are a \emph{conjugate primitive family} if one
+automorphism $\Phi$ of $\pi_1(H)=F_r$ takes them to conjugates of distinct
+basis letters, with signs.  Different curves may have different
+conjugators; they must share the same automorphism.
+
+\begin{proposition}[Primitive family relative to disk interfaces]
+\label{signed-annuli:bridge}
+The classes form a conjugate primitive family if and only if there are
+pairwise disjoint properly embedded disks $D_1,\ldots,D_q$ in $H$ with
+$|\partial D_i\cap\beta_j|=\delta_{ij}$.  The disks can be chosen to avoid
+any prescribed finite collection of disjoint disk attachment regions in
+$\partial H$ disjoint from the curves.
+\end{proposition}
+\begin{proof}
+For any subset $J$ of the curves, attach two-handles to $H$ along those
+curves.  The result is connected, compact and orientable with nonempty
+boundary.  Its fundamental group is the quotient by their normal
+closures, namely $F_{r-|J|}$, since one common basis witness identifies
+all the classes.  Each two-handle increases Euler characteristic by one,
+so its Euler characteristic is $1-r+|J|$.  Proposition~\ref{euler-group:criterion}
+therefore says it is a handlebody.  This holds for every subset, so
+Gordon's primitive-set theorem supplies simultaneous dual disks
+\cite{signed-gordon}.  The proof quantifies over subsets; the algorithm
+never enumerates them.  The single common basis certificate establishes
+the group statement for all of them at once.
+
+Conversely, in the graph dual to cutting along the given dual disks,
+$\beta_i$ traverses its distinguished edge exactly once and no other
+edge.  That edge is a loop.  The dual graph is connected and all edges
+are loops, so its complement is connected.  Extend these disks to a
+complete meridian system.  In the resulting basis each curve contains
+its distinguished generator once and every other distinguished generator
+zero times; all other letters belong to the complementary generators.
+Simultaneous Nielsen changes fixing those complementary generators send
+the curves to distinct basis classes.
+
+Finally isotope the entire disjoint meridian-boundary family off the
+prescribed disk regions.  Successive outermost arcs can be pushed to
+boundary collars disjoint from the $\beta_i$.  No essential meridian
+boundary lies entirely inside a disk region.  Isotopy extension carries
+the boundary isotopy to the disks.  Thin annular neighborhoods of the
+curves then meet their dual disks in exactly one spanning arc each.
+\end{proof}
+
+The argument includes \emph{every} pending annulus in a core component.
+It does not claim that the dual disks can also avoid omitted annular
+interfaces.  Testing curves separately is insufficient: two primitive
+curves can compete for the same basis generator.  Likewise, unimodular
+exponent-sum data are necessary but do not establish a common primitive
+family.  The actual compressed words must pass the common automorphism
+test below.
+
+Attaching all these primitive annuli to the remaining bordered bundle
+pieces gives the previously established disk-gluing census.  In each
+core component, the number of incident annuli is subtracted from its
+handlebody genus.  Distinct target generators ensure this number does
+not exceed the core rank.  The graph of disk attachments then adds its
+cycle ranks, and unported bundle profiles retain their binary
+multiplicities.  The original source-cut Euler identity remains a
+consistency check.  The geometric primitive-family theorem supplies the
+topological conclusion.
+
+\subsection{Authenticating signs and transporting passive curves}
+
+The source compiler receives the authenticated parallelity charts,
+ordered boundary words, disk-bundle absorption and a complete geometric
+core proof.  It reads signs from oriented source-face flags.  An edge
+with equal endpoints still has distinct source and target face flags,
+so endpoint order alone would lose essential information.  Original
+core two-handles and absorbed disk-bundle circles give active signed
+relators.  Every non-disk annular circle gives a passive signed word.
+Source forests erase their crossings; no free cancellation is used to
+justify a geometric pivot.
+
+For a column-private geometric cancellation, its pivot generator occurs
+once in its donor row and zero times in all other remaining real rows,
+counting unsigned passages.  The source proofs authenticate that stronger
+geometric condition.  Write the signed donor cyclically as
+$x^\epsilon u$.  In the quotient its pivot satisfies $x=u^{-\epsilon}$.
+Since an earlier pivot cannot appear in any later surviving row, the
+dependencies are triangular.  Process the cancellation list backwards:
+surviving generators are letters, and each eliminated generator becomes
+a shared concatenation of images already constructed.  Build all passive
+words from these same images.  For the geometric row-leaf method the
+successively eliminated generators map to the identity; the compiler
+checks that every other letter in the donor was eliminated earlier.
+
+\begin{proposition}[Shared signed transport]
+If the original active and passive words have total length $L$, the
+component has $r$ generators, the complete geometric schedule has $p$
+cancellations, and there are $q$ passive roots, their quotient words have
+a shared straight-line representation with $O(L+r+p+q)$ productions.
+\end{proposition}
+\begin{proof}
+Each donor contributes concatenations for its literal letters only once.
+References to generator images reuse existing nodes rather than copy
+expanded words.  Inverse images are cached and share the reversed
+productions.  Each passive word contributes its literal concatenations
+once.  Surviving letters, pivot entries and output roots supply the
+remaining linear terms.  No represented word length enters the count.
+\end{proof}
+
+This is a grammar-size statement, not a claim of linear bit time.
+Lengths can be exponential in the number of productions, and storing and
+operating on their binary values has an additional polynomial cost.
+The established deterministic compressed free and cyclic reduction
+kernel from Section~\ref{sec:compressed-words} is used when reduction is
+needed.  The source compiler itself preserves signs and cyclic order.
+
+A certified two/three-handle reduction is compatible with this adapter:
+it retains every zero/one-handle, all ports, and the actual cycles of
+retained two-handles.  After independently replaying that geometric
+reduction, the same signed source construction applies.  An abstract
+Euler/group handlebody certificate is not substituted for the required
+geometric core cancellation proof.
+
+\subsection{A supplied common automorphism stays compressed}
+
+Allowed basis moves are inversion, interchange, and a powered Nielsen
+move $x_i\mapsto x_j^k x_i$ or $x_i x_j^k$, with $i\ne j$ and nonzero
+binary integer $k$.  Let $B$ count move records and their exponent bit
+lengths, and let $S$ be the source grammar size.
+
+Process the move list backwards, maintaining the images under the suffix
+already processed.  An inversion uses the inverse of one suffix image;
+a swap exchanges two references; a multiplication concatenates one
+suffix image with a binary power of another.  Binary powering creates
+$O(\log(|k|+1))$ productions.  Once the suffix images are complete, map
+the original grammar once, preserving its shared productions.  Thus all
+transformed roots together need $O(S+r+B)$ grammar productions before
+free reduction.  Their length bit sizes are polynomial in $S+B+r$.
+
+The checker independently constructs suffix layers, uses a different
+binary powering traversal and evaluates the source DAG separately.
+Its layer dictionaries can cost $O(rm)$ references for $m$ moves; that
+is still polynomial, and is not described as linear storage.  Producer
+and checker share the existing exact compressed-word kernel, not the
+Euclidean selector or the source compiler.  An independent literal
+forward-substitution audit tests this shared-kernel boundary.
+
+\subsection{Complete polynomial discovery for rank-two support blocks}
+
+\begin{proposition}[A common lift for two conjugacy classes]
+Let $u,v\in F(a,b)$ have exponent-sum columns forming a matrix $A$.
+They are a conjugate primitive pair if and only if $\det A=\pm1$ and,
+for any automorphism $\Phi$ with abelianization $A^{-1}$, the cyclically
+reduced words $\Phi(u)$ and $\Phi(v)$ are respectively $a$ and $b$.
+\end{proposition}
+\begin{proof}
+A primitive pair admits a common witness, which can be composed with a
+signed permutation so that its ordered target classes are $[a],[b]$.
+The witness has abelianization $A^{-1}$.  Since
+$\operatorname{Out}(F_2)\cong\operatorname{GL}_2(\mathbb Z)$, any two
+such lifts differ by an inner automorphism, hence agree on conjugacy
+classes.  Conversely the displayed tests themselves give a witness.
+\end{proof}
+
+Exponent sums are computed by exact DAG arithmetic.  Euclidean row
+operations factor the inverse unimodular matrix into swaps, inversions
+and integer shears of polynomial encoded length.  These lift to powered
+Nielsen moves, whose common action is evaluated by the preceding shared
+construction.  Compressed cyclic reduction completes the test.
+For a single class, use coprime exponent sums, a Euclidean lift taking
+that vector to $(1,0)$, and the final one-letter test.  The deterministic
+polynomial rank-two compressed primitivity algorithm and the distinction
+from general fixed-rank nondeterministic certification are established
+in Kapovich's work \cite{signed-kapovich}.  The simultaneous pair test
+above is its elementary common-lift consequence, with the order and
+signs fixed explicitly.
+
+The choice of a fast rank-two routine does not by itself justify ignoring
+other generators.  The following inheritance observation does.
+
+\begin{lemma}[Inheritance by containing subgroups]
+If a tuple in a subgroup $A\leq F$ is conjugate primitive in $F$, it is
+conjugate primitive in $A$.
+\end{lemma}
+\begin{proof}
+Choose an ambient basis with distinct letters $z_i$ such that each tuple
+entry is $h_i z_i^{\epsilon_i}h_i^{-1}$.  In the covering graph of the
+basis rose corresponding to $A$, the lift of $h_i$ ends at a vertex
+where the $z_i$ edge is a loop, by uniqueness of path lifting.  These
+loop edges are distinct.  A spanning tree contains none of them, so the
+associated free basis of $A$ contains the corresponding tree-based
+loops.  The original entries are their conjugates by the loops
+$h_i t_i^{-1}$ in $A$, where $t_i$ is the tree path to that vertex.
+\end{proof}
+
+Cyclically reduce every input word and join generators that appear in
+one support.  If every resulting support component contains at most two
+generators, run the exact single-class or pair test in each block.
+Rank-one blocks allow only one class of exponent $\pm1$, rank-two blocks
+allow at most two classes, and trivial classes fail.  Successful block
+automorphisms extend by the identity and commute.  Conversely the
+inheritance lemma shows that a primitive family in the ambient group
+must be primitive in each support block.  This proves a complete
+polynomial algebraic decision method on the stated restricted class,
+uniformly in the total rank.
+
+Larger support blocks are a method refusal.  The verifier can still
+accept a supplied common automorphism in arbitrary rank.  Its ability
+to replay such a certificate is not a completeness theorem for the
+producer.  The maintained finite node and work allowances can also
+cause refusal within the restricted class; the polynomial theorem
+concerns sufficient resource allowances, not success at a fixed ceiling.
+A repeated strict Whitehead descent is not an adequate replacement:
+compressed input can represent words requiring exponentially many
+individual decreasing elementary moves.
+
+\subsection{Maintained integration and resource contracts}
+
+The default \path{annulus_method='signed_rank_two'} adds a late phase.
+The existing source, maximum-passage and deferred forest attempts, then
+the Euler/group terminal, retain priority.  Earlier positive packets
+are returned without alteration.  A refusing geometric attempt retains
+its authenticated candidate for the late phase.  On the unreduced path,
+the augmented core and its successful certificate are reused directly.
+On the reduced path, the cached top reduction and prepared core are
+reused; disk absorption and an augmented core proof are computed only
+if needed.  Deferred forest selection is also passed to that augmented
+core computation.
+
+All attempts share the same source and lazy boundary packet.  The signed
+phase starts no new orbit query.  The \path{counts} option disables the
+new phase.  At most three cached candidates arise from the adaptive
+forest portfolio.  Each candidate uses one word arena for all its
+components, with the existing limits of one million nodes and ten
+million work units.  These are per-candidate word-kernel limits; the
+orbit cycle allowance remains shared across the whole query.
+Resource exhaustion means no conclusion.  No partial primitive family
+is used to certify a cut.
+
+The two source-bound signed certificate schemas distinguish the original
+core and the independently replayed top-reduced core.  Replay authenticates
+source, boundary, reduction if present, disk absorption, geometric core,
+signed source words, the shared quotient and each component's common
+basis certificate.  The whole-cut operation cap counts the recorded
+orbit operations plus powered Nielsen move records; it is not a count
+of machine instructions or exponent magnitudes.
+
+The integration fixes a delivered callback issue: a callback's
+\path{ValueError}, \path{TypeError}, arithmetic exception or
+\path{CompressedLimit} must propagate, even when an internal verifier
+would ordinarily catch that exception class as malformed input or a
+resource refusal.  Explicit callback guards distinguish the cases.
+The algebra checker restores the arena's original callback in a
+\path{finally} block.  Falsey callback objects are used normally.
+
+\subsection{Validation evidence and limits}
+
+The delivered patch's 18 focused tests passed at its exact source pin
+in a scratch checkout.  The maintained integration passes 25 focused
+tests.  The seven additional tests cover both boundary backends, shared
+source discovery and cached core reuse, recordless agreement, exact
+cycle and Nielsen-operation caps, independent replay of all five native
+packets with producer helpers disabled, malformed evidence, word-budget
+refusal, and late falsey callbacks including restoration of the original
+word-arena callback.  The signed packet is decoded through the established
+exact hexadecimal integer codec before algebraic replay; malformed exponent
+encodings, booleans and floats reject.
+
+A fresh independent algebra audit uses literal rank-two Whitehead
+minimization, without the exponent-sum selector or compressed-word
+kernel.  It covers 1104 exhaustive single words and 6576 exhaustive
+ordered pairs, plus 400 unstructured random cases, 397 generated
+positive cases and nine controls.  All 1284 positive certificates replay.
+A separate compiler comparison checks 396 Nielsen sequences on 4008
+literal words and their inverse round trips.  Six compiler-generation
+attempts and three positive-generation attempts exceeded the explicit
+literal-generation cap and are retained as skips, not included as
+successful comparisons.  Ninety-five altered packets or inputs agree
+with the independent oracle: 91 reject and four valid alterations still
+accept.  These finite checks substantiate implementation behavior;
+they do not replace the proofs above.
+
+The separate-process native audit compares against commit
+\code{92f5213cf}.  The original 120 cases retain their 112 positive
+certificate bytes.  Adding the five delivered gain fixtures and one
+retained refusal gives 126 cases; exactly five new cuts are certified,
+for 117 positives.  Every new positive independently replays.  Fresh
+literal Regina cuts confirm two genus-two handlebodies for each of
+\path{finite_figureEight/vertex71} and
+\path{finite_figureEight_interior/vertex134}, \path{vertex136},
+\path{vertex205}, \path{vertex290}.  Their expanded cuts contain
+297, 377, 386, 398 and 398 tetrahedra respectively.  The coprime-exponent
+control \path{finite_figureEight/vertex98} remains inconclusive.
+
+Broad-suite and controlled performance evidence are appended after their
+ongoing runs.  Native signed transport and
+rank-two discovery improve a local terminal.  Global useful-surface
+coverage, marked geometric successors and aggregate hierarchy accounting
+remain required for the user's general quasi-polynomial objective.
