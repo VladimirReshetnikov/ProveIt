@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18GenericDensity
+import GowersSzemeredi.Proofs18GenericEnvelopeBase
 
 /-! **The η and `yIn` steps with a polynomial side condition** (Notes L.16j).
 

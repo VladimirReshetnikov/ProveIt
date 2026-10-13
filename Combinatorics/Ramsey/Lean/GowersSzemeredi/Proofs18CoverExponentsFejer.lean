@@ -356,12 +356,7 @@ theorem tightHyp_of_profiles_fejer (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k
     (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) {k : Nat}
     (hk : 2 ≤ k) :
     (⟨classV Kc pc k, k, Kc k, pc k, tightMu0 k⟩ : GenParamsF).CHyp (tightMuV k) (genMuK k) := by
-  obtain ⟨hV, -, -, -, -, -, hKk, hKμ, hpk, hpμ⟩ := stdHyp_of_profiles Kc pc hK hp hconst hk
-  refine ⟨hV, classV_le_tight Kc pc hconst k, le_rfl, ?_, hKk, hKμ, hpk, hpμ⟩
-  show k ≤ 2 ^ tightMu0 k
-  calc k ≤ 2 ^ k := Nat.lt_two_pow_self.le
-    _ ≤ 2 ^ tightMu0 k := Nat.pow_le_pow_right (by norm_num) (by
-        unfold tightMu0 fixDeg; have := Nat.lt_two_pow_self (n := k + 5)
-        have := le_max_right (tightMuV k) (2 ^ (k + 5) + 7); omega)
+  obtain ⟨hV, hVμ, hμ0, hk0, hKk, hKμ, hpk, hpμ⟩ := tightHyp_of_profiles Kc pc hK hp hconst hk
+  exact ⟨hV, hVμ, hμ0, hk0, hKk, hKμ, hpk, hpμ⟩
 
 end LeanProofs.GowersSzemeredi

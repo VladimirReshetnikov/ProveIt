@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18GenericThresholds
+import GowersSzemeredi.Proofs18GenericEnvelopeBase
 import GowersSzemeredi.Proofs16SinglePieceCoverGlobalWith
 import GowersSzemeredi.Proofs16ClassStepBoundsFejer
 import GowersSzemeredi.Proofs16RadiusComparison

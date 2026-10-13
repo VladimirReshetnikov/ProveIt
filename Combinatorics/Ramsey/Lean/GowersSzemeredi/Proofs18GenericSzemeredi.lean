@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18GenericEnvelopeStep
+import GowersSzemeredi.Proofs18EnvelopeBounds
 import GowersSzemeredi.Proofs18ExponentialCalculus
 import GowersSzemeredi.Proofs18DensityIterationExponentialBudget
 import GowersSzemeredi.Proofs18GeneralIteration

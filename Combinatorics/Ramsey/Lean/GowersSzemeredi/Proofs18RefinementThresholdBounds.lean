@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18GenericEnvelopeStep
+import GowersSzemeredi.Proofs18EnvelopeBounds
 
 /-! The phase-refinement threshold at the exponential level.
 

@@ -1,7 +1,7 @@
 import GowersSzemeredi.Proofs13PolySquareExtraction
 import GowersSzemeredi.Proofs18FejerCubicAt
 import GowersSzemeredi.Proofs18FejerReciprocalBudgets
-import GowersSzemeredi.Proofs18GenericEnvelopeStep
+import GowersSzemeredi.Proofs18EnvelopeBounds
 import GowersSzemeredi.Proofs18TheoremOneDegrees
 
 /-! **Theorem 18.1 at degree three**, from a polynomial phase partition
