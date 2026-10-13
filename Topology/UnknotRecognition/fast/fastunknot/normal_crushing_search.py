@@ -171,6 +171,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                           lp_strategy='envelope', reduce_vertices=True,
                           max_tree_nodes=256, tree_model='source',
                           max_hitting_subsets=10000,
+                          transversal_candidate_policy='subsets',
                           lp_policy='polynomial', lp_fast_path_pivots=None,
                           max_ellipsoid_iterations=10000, max_feasibility_calls=10000,
                           check=lambda: None):
@@ -231,6 +232,12 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
     ``tree_model='source'`` and uses the same independently checked v2 negative
     recognition schema. No general small-transversal bound is assumed.
 
+    ``transversal_candidate_policy='conflicts'`` selects iterative deepening
+    on missed conflict choices with a 256-edge cache. The default 'subsets'
+    retains the unique-subset comparison stream. In conflicts mode the shared
+    max_hitting_subsets limit charges every partial candidate-search state,
+    including repeat visits at larger depths, before any candidate LP work.
+
     ``max_ellipsoid_iterations`` and ``max_feasibility_calls`` count fallback
     work across all anchors, nodes, candidate restarts and crushing successors.
     Both default to 10000; None removes a cap. Flat LP scheduling also applies
@@ -259,6 +266,9 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
         raise ValueError('tree_model must be source or restricted')
     if sector_method == 'transversal' and tree_model != 'source':
         raise ValueError('transversal search requires tree_model=source')
+    if (type(transversal_candidate_policy) is not str
+            or transversal_candidate_policy not in ('subsets', 'conflicts')):
+        raise ValueError('transversal_candidate_policy must be subsets or conflicts')
     validate_lp_controls(lp_policy, lp_fast_path_pivots,
                          max_ellipsoid_iterations, max_feasibility_calls)
     return _safe_call(_recognize_by_crushing, check, diagram,
@@ -269,6 +279,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                       lp_strategy=lp_strategy, reduce_vertices=reduce_vertices,
                       max_tree_nodes=max_tree_nodes, tree_model=tree_model,
                       max_hitting_subsets=max_hitting_subsets,
+                      transversal_candidate_policy=transversal_candidate_policy,
                       lp_policy=lp_policy, lp_fast_path_pivots=lp_fast_path_pivots,
                       max_ellipsoid_iterations=max_ellipsoid_iterations,
                       max_feasibility_calls=max_feasibility_calls)
@@ -278,6 +289,7 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                           sector_order, sector_quantum, sector_method,
                           max_pivots, max_anchors, lp_strategy, reduce_vertices,
                           max_tree_nodes, tree_model, max_hitting_subsets,
+                          transversal_candidate_policy,
                           lp_policy, lp_fast_path_pivots,
                           max_ellipsoid_iterations, max_feasibility_calls, check):
     # Keep producer imports outside the independent verifier's import path.
@@ -327,7 +339,8 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
     if sector_method == 'transversal':
         stats.update(hitting_subsets_tested=0, transversal_candidates=0,
                      transversal_restarts=0, learned_conflicts=0,
-                     maximum_transversal_size=0)
+                     maximum_transversal_size=0, maximum_conflict_size=0,
+                     peak_cached_conflicts=0, conflict_cache_evictions=0)
     if reduce_vertices:
         stats.update(vertex_reduction_calls=0, vertex_reduction_crushes=0)
 
@@ -486,12 +499,13 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
             else:
                 result = search_euler_transversal(current,
                     max_hitting_subsets=remaining(max_hitting_subsets, 'hitting_subsets_tested'),
+                    candidate_policy=transversal_candidate_policy,
                     **options)
                 for field in ('hitting_subsets_tested', 'transversal_candidates',
-                              'transversal_restarts', 'learned_conflicts'):
+                              'transversal_restarts', 'learned_conflicts', 'conflict_cache_evictions'):
                     stats[field] += result['stats'][field]
-                stats['maximum_transversal_size'] = max(stats['maximum_transversal_size'],
-                    result['stats']['maximum_transversal_size'])
+                for field in ('maximum_transversal_size', 'maximum_conflict_size', 'peak_cached_conflicts'):
+                    stats[field] = max(stats[field], result['stats'][field])
             merge_fallback(stats, result['stats'])
             for field in ('nodes_attempted', 'branch_splits', 'negative_leaves', 'lp_calls',
                           'lp_pivots', 'anchors_tested', 'reused_anchors', 'envelope_calls',
