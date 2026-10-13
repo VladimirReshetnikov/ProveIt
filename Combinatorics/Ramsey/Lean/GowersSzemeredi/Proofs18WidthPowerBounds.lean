@@ -17,6 +17,12 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
+/-- Pointwise power lower bounds compose by multiplying their exponents. -/
+theorem rpow_le_comp {x y z a b : Real} (hx : 0 ≤ x) (hb : 0 ≤ b)
+    (hxy : x ^ a ≤ y) (hyz : y ^ b ≤ z) : x ^ (a * b) ≤ z := by
+  rw [Real.rpow_mul hx]
+  exact (Real.rpow_le_rpow (Real.rpow_nonneg hx _) hxy hb).trans hyz
+
 /-- `w L ≥ L^a` for every `L ≥ L₀`. -/
 def WidthPowerLB (w : Nat → Nat) (a L0 : Real) : Prop :=
   ∀ L : Nat, L0 ≤ L → (L : Real) ^ a ≤ w L
@@ -78,6 +84,25 @@ theorem nat_sqrt_pred_pred_ge {n : Nat} {x : Real} (hx : 6 ≤ x)
   have hfinal : k ≤ Nat.sqrt (n - 1) - 1 := by omega
   exact hxk.trans (by exact_mod_cast hfinal)
 
+/-- A power lower bound for the slice width survives the square-root localization.
+The same bound also supplies the elementary size condition `2 ≤ L`. -/
+theorem localization_width_bounds {x f : Real} {L : Nat} (hx : 1 ≤ x) (hf : 0 ≤ f)
+    (h6 : 6 ≤ x ^ (f / 8)) (hL : x ^ f ≤ L) :
+    2 ≤ L ∧ x ^ (f / 8) ≤ ((Nat.sqrt (L - 1) - 1 : Nat) : Real) := by
+  have hfull : x ^ (f / 8) ≤ x ^ f :=
+    Real.rpow_le_rpow_of_exponent_le hx (by linarith)
+  have hL6 : (6 : Real) ≤ L := (h6.trans hfull).trans hL
+  refine ⟨by exact_mod_cast (show (2 : Real) ≤ L by linarith), ?_⟩
+  apply nat_sqrt_pred_pred_ge h6
+  have hpow4 : (x ^ (f / 8)) ^ 4 = x ^ (f / 2) := by
+    rw [← Real.rpow_natCast, ← Real.rpow_mul (zero_le_one.trans hx)]
+    congr 1
+    norm_num
+    ring
+  rw [hpow4]
+  exact ((div_le_self (Real.rpow_nonneg (zero_le_one.trans hx) _) (by norm_num)).trans
+    (Real.rpow_le_rpow_of_exponent_le hx (by linarith))).trans hL
+
 /-- **One unused-coordinate step**: `L^a` becomes `L^(a/4)`. -/
 theorem liftLastW_powerLB {w : Real → Nat → Nat} {t a L0 : Real} (ha : 0 < a) (ha1 : a ≤ 1)
     (hL00 : 0 ≤ L0) (h : WidthPowerLB (w (t / 2)) a L0) :
@@ -137,9 +162,7 @@ theorem WidthPowerLB.comp {w v : Nat → Nat} {a b L0 L1 : Real}
     have h := Real.rpow_le_rpow (Real.rpow_nonneg hL1 _) hL1' ha.le
     rwa [← Real.rpow_mul hL1, show 1 / a * a = 1 by field_simp, Real.rpow_one] at h
   have hvw := hv (w L) (hLa.trans hwL)
-  calc (L : Real) ^ (a * b) = ((L : Real) ^ a) ^ b := Real.rpow_mul hLpos a b
-    _ ≤ (w L : Real) ^ b := Real.rpow_le_rpow (Real.rpow_nonneg hLpos _) hwL hb
-    _ ≤ _ := hvw
+  exact rpow_le_comp hLpos hb hwL hvw
 
 /-- One lift of a cover width. -/
 theorem liftLastW_coverWidth_powerLB {E : Real → Real} {t : Real}

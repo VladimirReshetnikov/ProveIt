@@ -126,20 +126,7 @@ theorem envBound_stepFx (P : GenParamsF) {μV μK μ : Nat} (H : P.CHyp μV μK)
       h32P hEli
     exact ex_mul' hX (inv_pos.mpr s0).le (ex_of_pw h1) si'
   -- the thresholds
-  have hc : 6 * ((k + 1 : Nat) : Real) ≤ 2 ^ (2 ^ (k + 3)) := by
-    have := small_nat_le_pw (le_refl (2 : Real)) (k := k) (c := 6 * (k + 1)) (by omega)
-    push_cast at this ⊢; linarith
-  have hd : (((k + 1 + 2 : Nat) : Real) ^ (2 : Nat)) ≤ 2 ^ (2 ^ (k + 3)) := by
-    have h1 : k + 1 + 2 ≤ 2 ^ (k + 3) := by
-      have := Nat.lt_two_pow_self (n := k + 3); omega
-    have h2 : 2 * (k + 3) ≤ 2 ^ (k + 3) := by
-      have := Nat.lt_two_pow_self (n := k + 2); rw [pow_succ]; omega
-    have hnat : (k + 1 + 2) ^ 2 ≤ 2 ^ (2 ^ (k + 3)) :=
-      calc (k + 1 + 2) ^ 2 ≤ (2 ^ (k + 3)) ^ 2 := Nat.pow_le_pow_left h1 2
-        _ = 2 ^ (2 * (k + 3)) := by rw [← pow_mul]; ring_nf
-        _ ≤ 2 ^ (2 ^ (k + 3)) := Nat.pow_le_pow_right (by norm_num) h2
-    exact_mod_cast hnat
-  have hshort := short_thr_le hX (d := k + 1) (j := k + 3) hEl0 hEli (by positivity) hc Ti' hTl hd
+  have hshort := short_thr_step_le hX (k := k) hEl0 hEli Ti' hTl
   have hinv := inv_thr_le_ex hX (k := k) he0 heta1 b0 b1 hei' bi' s0 s16 σ0' hσ'
   -- assemble
   refine ⟨P.eta alpha * β / 4, _, _, hstep, div_pos (mul_pos he0 b0) (by norm_num), ?_, σ0', σ16',
@@ -153,20 +140,6 @@ theorem envBound_stepFx (P : GenParamsF) {μV μK μ : Nat} (H : P.CHyp μV μK)
     · unfold envStepFTx; rw [← hdddef, ← hThdef]; omega
     · unfold envStepFTx; rw [← hdddef, ← hThdef]; omega
 
-
-
-/-- The standing hypotheses at the tight base budget. -/
-theorem tightHyp_of_profiles_fejer (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : ∀ k, 0 < pc k)
-    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) {k : Nat}
-    (hk : 2 ≤ k) :
-    (⟨classV Kc pc k, k, Kc k, pc k, tightMu0 k⟩ : GenParamsF).CHyp (tightMuV k) (genMuK k) := by
-  obtain ⟨hV, -, -, -, -, -, hKk, hKμ, hpk, hpμ⟩ := stdHyp_of_profiles Kc pc hK hp hconst hk
-  refine ⟨hV, classV_le_tight Kc pc hconst k, le_rfl, ?_, hKk, hKμ, hpk, hpμ⟩
-  show k ≤ 2 ^ tightMu0 k
-  calc k ≤ 2 ^ k := Nat.lt_two_pow_self.le
-    _ ≤ 2 ^ tightMu0 k := Nat.pow_le_pow_right (by norm_num) (by
-        unfold tightMu0 fixDeg; have := Nat.lt_two_pow_self (n := k + 5)
-        have := le_max_right (tightMuV k) (2 ^ (k + 5) + 7); omega)
 
 
 /-- The Theorem 18.1 envelope at the tight base budget. -/

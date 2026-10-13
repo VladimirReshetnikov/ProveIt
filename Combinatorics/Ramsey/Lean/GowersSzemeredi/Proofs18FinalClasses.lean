@@ -1,8 +1,9 @@
-import GowersSzemeredi.Proofs16PolynomialFejer
+import GowersSzemeredi.Proofs18FejerEnvelopeBase
+import GowersSzemeredi.Proofs18TightClassesFejer
 import GowersSzemeredi.Proofs16UniformCoverTwoSplit
 import GowersSzemeredi.Proofs16WeylBudgetGrowth
-import GowersSzemeredi.Proofs18CoverFejerLowDegrees
-import GowersSzemeredi.Proofs18CoverFejerShortLengths
+import GowersSzemeredi.Proofs18CoverSharperLowDegrees
+import GowersSzemeredi.Proofs18CoverSharperShortLengths
 import GowersSzemeredi.Proofs18EtaStepSmall
 import GowersSzemeredi.Proofs18JointSliceInverseFejer
 
@@ -303,76 +304,6 @@ theorem baseCFW_recipPowerLB {V : Real} {D k μV μ0 : Nat} (ha : 0 < alpha)
     _ = X ^ (D * 2 ^ μ0 + 1) * s⁻¹ ^ (D + 1) := by ring
 
 end Fixed
-
-/-- **The family-lemma constants are at most `2^(2^(4k+16))`**, given the
-shapes the Schmidt layer produces (the estimates of
-`family_constants_tower_le`, without the final tower). -/
-theorem family_constants_poly_le (k : Nat) {MK : Real} {MP Pu : Nat}
-    (hMK : MK ≤ 2 ^ (schmidtKExp k + k + 2)) (hPu : Pu ≤ 1 + (k + 1) * schmidtPBnd k)
-    (hMP : MP ≤ (2 * (k + 1 + 1) * Pu + 4) ^ (2 ^ (k + 1))) :
-    ((⌈MK⌉₊ : Nat) : Real) + (((k + 1) * MP : Nat) : Real) ≤
-      2 ^ ((2 : Nat) ^ (4 * k + 16)) := by
-  set E := schmidtKExp k with hEdef
-  have hE := schmidtKExp_le k
-  have hPB := schmidtPBnd_le k
-  have hkA : k + 1 ≤ 2 ^ k := Nat.lt_two_pow_self
-  have hKc : ⌈MK⌉₊ ≤ 2 ^ (E + k + 2) := by
-    have : MK ≤ ((2 ^ (E + k + 2) : Nat) : Real) := by push_cast; exact hMK
-    exact (Nat.ceil_le).mpr this
-  have hPu' : Pu ≤ 2 ^ (5 * k + 17) := by
-    have h1 : (k + 1) * schmidtPBnd k ≤ 2 ^ k * 2 ^ (4 * k + 16) := Nat.mul_le_mul hkA hPB
-    have h2 : 2 ^ k * 2 ^ (4 * k + 16) = 2 ^ (5 * k + 16) := by rw [← pow_add]; ring_nf
-    have h3 : 2 ^ (5 * k + 17) = 2 ^ (5 * k + 16) * 2 := by rw [pow_succ]
-    have h4 : 1 ≤ 2 ^ (5 * k + 16) := Nat.one_le_two_pow
-    omega
-  have hinner : 2 * (k + 1 + 1) * Pu + 4 ≤ 2 ^ (6 * k + 20) := by
-    have h1 : 2 * (k + 1 + 1) ≤ 2 ^ (k + 2) := by
-      have h := Nat.lt_two_pow_self (n := k + 1)
-      rw [show k + 2 = (k + 1) + 1 by ring, pow_succ]; omega
-    have h2 : 2 * (k + 1 + 1) * Pu ≤ 2 ^ (k + 2) * 2 ^ (5 * k + 17) := Nat.mul_le_mul h1 hPu'
-    have h3 : 2 ^ (k + 2) * 2 ^ (5 * k + 17) = 2 ^ (6 * k + 19) := by rw [← pow_add]; ring_nf
-    have h4 : 2 ^ (6 * k + 20) = 2 ^ (6 * k + 19) * 2 := by rw [pow_succ]
-    have h5 : 4 ≤ 2 ^ (6 * k + 19) := by
-      calc 4 = 2 ^ 2 := by norm_num
-        _ ≤ 2 ^ (6 * k + 19) := Nat.pow_le_pow_right (by norm_num) (by omega)
-    omega
-  have hMP' : (k + 1) * MP ≤ 2 ^ (k + (6 * k + 20) * 2 ^ (k + 1)) := by
-    have h1 : MP ≤ 2 ^ ((6 * k + 20) * 2 ^ (k + 1)) :=
-      hMP.trans ((Nat.pow_le_pow_left hinner _).trans (le_of_eq (by rw [← pow_mul])))
-    calc (k + 1) * MP ≤ 2 ^ k * 2 ^ ((6 * k + 20) * 2 ^ (k + 1)) := Nat.mul_le_mul hkA h1
-      _ = 2 ^ (k + (6 * k + 20) * 2 ^ (k + 1)) := by rw [← pow_add]
-  have hP14 : k + 2 ≤ 2 ^ (4 * k + 14) := by
-    have h1 : k + 2 < 2 ^ (k + 2) := Nat.lt_two_pow_self
-    have h2 : 2 ^ (k + 2) ≤ 2 ^ (4 * k + 14) := Nat.pow_le_pow_right (by norm_num) (by omega)
-    omega
-  have hexp1 : E + k + 2 ≤ 2 ^ (4 * k + 14) + 2 ^ (4 * k + 14) := by omega
-  have hexp2 : k + (6 * k + 20) * 2 ^ (k + 1) ≤ 2 ^ (4 * k + 14) + 2 ^ (4 * k + 14) := by
-    have h1 : 6 * k + 20 ≤ 2 ^ (k + 5) := by
-      have : k < 2 ^ k := Nat.lt_two_pow_self
-      have h32 : 2 ^ (k + 5) = 2 ^ k * 32 := by rw [pow_add]; norm_num
-      omega
-    have h2 : (6 * k + 20) * 2 ^ (k + 1) ≤ 2 ^ (k + 5) * 2 ^ (k + 1) := Nat.mul_le_mul_right _ h1
-    have h3 : 2 ^ (k + 5) * 2 ^ (k + 1) = 2 ^ (2 * k + 6) := by rw [← pow_add]; ring_nf
-    have h4 : 2 ^ (2 * k + 6) ≤ 2 ^ (4 * k + 14) := Nat.pow_le_pow_right (by norm_num) (by omega)
-    have h5 : k ≤ 2 ^ (4 * k + 14) := by omega
-    calc k + (6 * k + 20) * 2 ^ (k + 1) ≤ 2 ^ (4 * k + 14) + 2 ^ (2 * k + 6) := by
-          rw [← h3]; exact Nat.add_le_add h5 h2
-      _ ≤ 2 ^ (4 * k + 14) + 2 ^ (4 * k + 14) := Nat.add_le_add_left h4 _
-  have hsum : ⌈MK⌉₊ + (k + 1) * MP ≤ 2 ^ (2 ^ (4 * k + 14) + 2 ^ (4 * k + 14) + 1) := by
-    have hA := hKc.trans (Nat.pow_le_pow_right (by norm_num) hexp1)
-    have hB := hMP'.trans (Nat.pow_le_pow_right (by norm_num) hexp2)
-    rw [pow_succ]
-    omega
-  have hfin : 2 ^ (2 ^ (4 * k + 14) + 2 ^ (4 * k + 14) + 1) ≤ 2 ^ (2 ^ (4 * k + 16)) := by
-    apply Nat.pow_le_pow_right (by norm_num)
-    have h1 : 2 ^ (4 * k + 16) = 4 * 2 ^ (4 * k + 14) := by
-      rw [show 4 * k + 16 = (4 * k + 14) + 2 by ring, pow_add]; ring
-    have h2 : 1 ≤ 2 ^ (4 * k + 14) := Nat.one_le_two_pow
-    omega
-  have hcast : ((⌈MK⌉₊ + (k + 1) * MP : Nat) : Real) ≤ ((2 ^ (2 ^ (4 * k + 16)) : Nat) : Real) := by
-    exact_mod_cast hsum.trans hfin
-  push_cast at hcast ⊢
-  exact hcast
 
 /-- The polynomial bound on the class base. -/
 def tightMuW (k : Nat) : Nat := 4 * k + 13

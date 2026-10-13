@@ -136,6 +136,25 @@ theorem spectrumCellWidth_eq {zeta : Real} {m : Nat} {e : Real} :
   rw [Real.sqrt_eq_rpow, ← Real.rpow_mul (Nat.cast_nonneg m)]
   ring_nf
 
+/-- The reciprocal-radius and reciprocal-density scales give the two spectrum
+cell size conditions of the inverse step. -/
+theorem spectrumCellWidth_scale_bounds {zeta rho b e : Real} (hz : 0 < zeta) (hr : 0 < rho)
+    {m : Nat} (hm : 1 ≤ m) (he : 2 * b ≤ e)
+    (h8 : 8 / zeta ≤ (m : Real) ^ b) (hrho : 4 / (zeta * rho ^ 3) ≤ (m : Real) ^ b) :
+    4 ≤ spectrumCellWidth zeta m e ∧ 2 ≤ rho ^ 3 * spectrumCellWidth zeta m e := by
+  have hw := spectrumCellWidth_mono_exp hz.le hm he
+  rw [spectrumCellWidth_eq, show 2 * b / 2 = b by ring] at hw
+  constructor
+  · calc 4 = zeta / 2 * (8 / zeta) := by field_simp; ring
+         _ ≤ zeta / 2 * (m : Real) ^ b := mul_le_mul_of_nonneg_left h8 (by positivity)
+         _ ≤ _ := hw
+  · have hr3 : 0 < rho ^ 3 := by positivity
+    have h : 2 / rho ^ 3 ≤ spectrumCellWidth zeta m e := by
+      calc 2 / rho ^ 3 = zeta / 2 * (4 / (zeta * rho ^ 3)) := by field_simp; ring
+           _ ≤ zeta / 2 * (m : Real) ^ b := mul_le_mul_of_nonneg_left hrho (by positivity)
+           _ ≤ _ := hw
+    simpa only [mul_comm] using (div_le_iff₀ hr3).mp h
+
 /-- Above the reciprocal-radius scale, one eighth of the spectrum cell width
 still dominates the half-power of the input length. -/
 theorem spectrumCellWidth_div8_ge_rpow {zeta b e : Real} (hz : 0 < zeta)
@@ -159,6 +178,28 @@ theorem spectrumCellWidth_div8_ge_rpow {zeta b e : Real} (hz : 0 < zeta)
       zeta / 2 * ((m : Real) ^ (b / 2) * (m : Real) ^ (b / 2)) * 2 := by ring
   rw [hxx] at hprod
   linarith
+
+/-- Composing five exponents in `(0, 1]` preserves that range through the
+width products; the final localization exponent, divided by eight, is at most one half. -/
+theorem localization_exponents_pos_le {a em b eth ec : Real}
+    (ha : 0 < a ∧ a ≤ 1) (hem : 0 < em ∧ em ≤ 1)
+    (hb : 0 < b ∧ b ≤ 1) (heth : 0 < eth ∧ eth ≤ 1) (hec : 0 < ec ∧ ec ≤ 1) :
+    let m := a * (em / 2)
+    let f := m * (b * (eth * ec) / 2)
+    0 < f / 8 ∧ f / 8 ≤ 1 / 2 ∧ 0 < f ∧ f ≤ 1 ∧ 0 < m ∧ m ≤ 1 := by
+  have hm0 : 0 < a * (em / 2) := mul_pos ha.1 (div_pos hem.1 two_pos)
+  have hm1 : a * (em / 2) ≤ 1 :=
+    mul_le_one₀ ha.2 (by linarith [hem.1]) (by linarith [hem.2])
+  have hee0 := mul_pos heth.1 hec.1
+  have hee1 := mul_le_one₀ heth.2 hec.1.le hec.2
+  have hin0 : 0 < b * (eth * ec) / 2 := div_pos (mul_pos hb.1 hee0) two_pos
+  have hin1 : b * (eth * ec) / 2 ≤ 1 := by
+    have := mul_le_one₀ hb.2 hee0.le hee1
+    linarith
+  have hf0 := mul_pos hm0 hin0
+  have hf1 := mul_le_one₀ hm1 hin0.le hin1
+  dsimp only
+  exact ⟨div_pos hf0 (by norm_num), by linarith, hf0, hf1, hm0, hm1⟩
 
 /-! ### The parameters of the length-six route -/
 
@@ -290,9 +331,6 @@ theorem ls_modulus_conditions {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {K2 p
   have hN6 : (6 : Real) ^ (1 / lsE A Bq p2 alpha) ≤ N :=
     hT _ ((le_max_left _ _).trans ((le_max_right _ _).trans ((le_max_right _ _).trans
       ((le_max_right _ _).trans (le_max_right _ _)))))
-  have hN8 : (8 : Real) ^ (2 / lsF A Bq p2 alpha) ≤ N :=
-    hT _ ((le_max_right _ _).trans ((le_max_right _ _).trans ((le_max_right _ _).trans
-      ((le_max_right _ _).trans (le_max_right _ _)))))
   have hprime : N.Prime := Fact.out
   have hodd : Odd N := hprime.odd_of_ne_two (by
     intro h2; rw [h2] at hN3; norm_num at hN3)
@@ -367,110 +405,46 @@ theorem ls_modulus_conditions {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {K2 p
       have := familyRecExp_antitone (k := 2) hp2 hqM
       linarith
     refine ⟨?_, heps⟩
-    have hm0 : 0 ≤ (m : Real) ^ (lsB p2 alpha / 2) := Real.rpow_nonneg (by linarith) _
     have hSCW : (m : Real) ^ (lsB p2 alpha / 2) ≤
         spectrumCellWidth (lsZeta alpha) m (familyRecExp 2 p2 q) / 8 :=
       spectrumCellWidth_div8_ge_rpow hζ (by exact_mod_cast hm1) heps hmb16
-    obtain ⟨L, hLdef⟩ : ∃ L : Nat,
-        ⌈spectrumCellWidth (lsZeta alpha) m (familyRecExp 2 p2 q) / 8⌉₊ = L := ⟨_, rfl⟩
-    rw [hLdef]
-    have hLge : (m : Real) ^ (lsB p2 alpha / 2) ≤ L := by
-      rw [← hLdef]; exact hSCW.trans (Nat.le_ceil _)
+    let L : Nat := ⌈spectrumCellWidth (lsZeta alpha) m (familyRecExp 2 p2 q) / 8⌉₊
+    have hLge : (m : Real) ^ (lsB p2 alpha / 2) ≤ L := hSCW.trans (Nat.le_ceil _)
     have hin := coverWidth_powerLB (sixEb A Bq 2 (alpha / 2) (lsBudget alpha)) (lsThS alpha)
       hEth.le L (by positivity)
-    obtain ⟨X, hXdef⟩ : ∃ X : Nat,
-        coverWidth (sixEb A Bq 2 (alpha / 2) (lsBudget alpha)) (lsThS alpha) L = X := ⟨_, rfl⟩
-    rw [hXdef] at hin
-    rw [hXdef]
+    let X : Nat := coverWidth (sixEb A Bq 2 (alpha / 2) (lsBudget alpha)) (lsThS alpha) L
     have hout := coverWidth_powerLB (sixEb A Bq 2 (alpha / 2) (lsBudget alpha)) (lsCS alpha)
       hEc.le X (by positivity)
-    refine le_trans ?_ hout
-    have hstep1 : ((m : Real) ^ (lsB p2 alpha / 2)) ^ lsEth A Bq alpha ≤
-        (L : Real) ^ lsEth A Bq alpha :=
-      Real.rpow_le_rpow hm0 hLge hEth.le
-    have hstep2 : (((m : Real) ^ (lsB p2 alpha / 2)) ^ lsEth A Bq alpha) ^ lsEc A Bq alpha ≤
-        (X : Real) ^ lsEc A Bq alpha :=
-      Real.rpow_le_rpow (Real.rpow_nonneg hm0 _) (hstep1.trans hin) hEc.le
-    refine le_trans ?_ hstep2
-    have hNm : ((N : Real) ^ lsMExp A Bq alpha) ^
-        (lsB p2 alpha / 2 * lsEth A Bq alpha * lsEc A Bq alpha) ≤
-        (m : Real) ^ (lsB p2 alpha / 2 * lsEth A Bq alpha * lsEc A Bq alpha) :=
-      Real.rpow_le_rpow (Real.rpow_nonneg hNpos.le _) hmpow
-        (mul_nonneg (mul_nonneg (by positivity) hEth.le) hEc.le)
-    rw [← Real.rpow_mul (by linarith), ← Real.rpow_mul (by linarith)]
-    rw [← Real.rpow_mul hNpos.le] at hNm
-    have hexp1 : lsF A Bq p2 alpha =
-        lsMExp A Bq alpha * (lsB p2 alpha / 2 * (lsEth A Bq alpha * lsEc A Bq alpha)) := by
+    have hNL := rpow_le_comp hNpos.le (half_pos hb).le hmpow hLge
+    have hNX := rpow_le_comp hNpos.le hEth.le hNL hin
+    have hNY := rpow_le_comp hNpos.le hEc.le hNX hout
+    have hexp : lsF A Bq p2 alpha =
+        ((lsMExp A Bq alpha * (lsB p2 alpha / 2)) * lsEth A Bq alpha) * lsEc A Bq alpha := by
       unfold lsF; ring
-    have e3 : lsB p2 alpha / 2 * lsEth A Bq alpha * lsEc A Bq alpha =
-        lsB p2 alpha / 2 * (lsEth A Bq alpha * lsEc A Bq alpha) := by ring
-    rw [e3] at hNm
-    rw [hexp1]
-    exact hNm
+    rw [hexp]
+    exact hNY
+  have h6pow : (6 : Real) ≤ (N : Real) ^ lsE A Bq p2 alpha :=
+    le_rpow_of_rpow_inv_le he (by norm_num) hN6
+  have hloc {L : Nat} (hL : (N : Real) ^ lsF A Bq p2 alpha ≤ L) :
+      2 ≤ L ∧ (N : Real) ^ lsE A Bq p2 alpha ≤ ((Nat.sqrt (L - 1) - 1 : Nat) : Real) :=
+    localization_width_bounds (by linarith only [hN3]) hF.le h6pow hL
   unfold SinglePieceModulusConditions SinglePieceGlobalScale singlePieceGlobalWidth
   simp only [hρ1eq, hthSeq, hcSeq, hBudeq, hZeq, hQeq]
   refine ⟨hodd, hN156, ?_, m, ⟨by rw [hNW]; exact_mod_cast hNW4, by exact_mod_cast hm1,
     by rw [hNW]; exact le_of_eq hm.symm, ?_⟩, ?_⟩
   · -- `4 ≤ N^e`
-    have h6 := le_rpow_of_rpow_inv_le he (by norm_num) hN6
-    linarith
+    linarith only [h6pow]
   · intro q hq
     obtain ⟨hFq, heps⟩ := hFin q hq
     have hqM : q ≤ lsQM alpha := Nat.le_floor hq
     have hthrq : (familyRecThr 2 K2 p2 q : Real) ≤ familyRecThr 2 K2 p2 (lsQM alpha) :=
       Nat.cast_le.mpr (familyRecThr_mono (by omega) hqM)
-    have hSCWq := spectrumCellWidth_mono_exp hζ.le (by exact_mod_cast hm1) heps
-    rw [spectrumCellWidth_eq] at hSCWq
-    rw [show 2 * lsB p2 alpha / 2 = lsB p2 alpha by ring] at hSCWq
-    refine ⟨Nat.cast_le.mp (hthrq.trans hthr), ?_, ?_, ?_⟩
-    · have := mul_le_mul_of_nonneg_left hmb8 (by positivity : (0 : Real) ≤ lsZeta alpha / 2)
-      have h4 : lsZeta alpha / 2 * (8 / lsZeta alpha) = 4 := by field_simp; ring
-      linarith
-    · have := mul_le_mul_of_nonneg_left hmbρ (by positivity : (0 : Real) ≤ lsZeta alpha / 2)
-      have h2 : lsZeta alpha / 2 * (4 / (lsZeta alpha * lsRho alpha ^ 3)) = 2 / lsRho alpha ^ 3 := by
-        field_simp; ring
-      have hρ3 : 0 < lsRho alpha ^ 3 := by positivity
-      have hge : 2 / lsRho alpha ^ 3 ≤
-          spectrumCellWidth (lsZeta alpha) m (familyRecExp 2 p2 q) := by linarith
-      have := mul_le_mul_of_nonneg_left hge hρ3.le
-      rw [mul_div_cancel₀ _ hρ3.ne'] at this
-      exact this
-    · have hN8' : (8 : Real) ^ (1 / (lsF A Bq p2 alpha / 2)) ≤ N := by
-        rw [show 1 / (lsF A Bq p2 alpha / 2) = 2 / lsF A Bq p2 alpha by field_simp]
-        exact hN8
-      have h8 := le_rpow_of_rpow_inv_le (by positivity : 0 < lsF A Bq p2 alpha / 2)
-        (by norm_num) hN8'
-      have hNF : (8 : Real) ≤ (N : Real) ^ lsF A Bq p2 alpha := by
-        have h1 : (1 : Real) ≤ (N : Real) ^ (lsF A Bq p2 alpha / 2) :=
-          Real.one_le_rpow (by linarith) (by positivity)
-        have hsplit : (N : Real) ^ lsF A Bq p2 alpha =
-            (N : Real) ^ (lsF A Bq p2 alpha / 2) * (N : Real) ^ (lsF A Bq p2 alpha / 2) := by
-          rw [← Real.rpow_add hNpos]; ring_nf
-        rw [hsplit]
-        exact h8.trans (le_mul_of_one_le_right (by linarith) h1)
-      have h2 := hNF.trans hFq
-      exact (Nat.cast_le (α := Real)).mp (by rw [Nat.cast_ofNat]; linarith)
+    obtain ⟨hcell4, hcellrho⟩ :=
+      spectrumCellWidth_scale_bounds hζ hρ (by exact_mod_cast hm1) heps hmb8 hmbρ
+    exact ⟨Nat.cast_le.mp (hthrq.trans hthr), hcell4, hcellrho, (hloc hFq).1⟩
   · intro q hq
     obtain ⟨hFq, -⟩ := hFin q hq
-    have h6 := le_rpow_of_rpow_inv_le he (by norm_num) hN6
-    have hN8' : (8 : Real) ^ (1 / (lsF A Bq p2 alpha / 2)) ≤ N := by
-      rw [show 1 / (lsF A Bq p2 alpha / 2) = 2 / lsF A Bq p2 alpha by field_simp]
-      exact hN8
-    have h8 := le_rpow_of_rpow_inv_le (by positivity : 0 < lsF A Bq p2 alpha / 2)
-      (by norm_num) hN8'
-    have hx4 : ((N : Real) ^ lsE A Bq p2 alpha) ^ 4 / 8 ≤ (N : Real) ^ lsF A Bq p2 alpha := by
-      have hpow4 : ((N : Real) ^ lsE A Bq p2 alpha) ^ 4 = (N : Real) ^ (lsF A Bq p2 alpha / 2) := by
-        rw [← Real.rpow_natCast, ← Real.rpow_mul hNpos.le]; unfold lsE; push_cast; ring_nf
-      rw [hpow4]
-      have hsplit : (N : Real) ^ lsF A Bq p2 alpha =
-          (N : Real) ^ (lsF A Bq p2 alpha / 2) * (N : Real) ^ (lsF A Bq p2 alpha / 2) := by
-        rw [← Real.rpow_add hNpos]; ring_nf
-      have h0 : 0 ≤ (N : Real) ^ (lsF A Bq p2 alpha / 2) := Real.rpow_nonneg hNpos.le _
-      rw [hsplit]
-      have hx8 : (N : Real) ^ (lsF A Bq p2 alpha / 2) / 8 ≤ (N : Real) ^ (lsF A Bq p2 alpha / 2) := by
-        linarith
-      exact hx8.trans (le_mul_of_one_le_right h0 (by linarith))
-    exact nat_sqrt_pred_pred_ge h6 (hx4.trans hFq)
+    exact (hloc hFq).2
 
 
 theorem familyRecExp_le_one (k p q : Nat) (hp : 0 < p) : familyRecExp k p q ≤ 1 := by
@@ -529,38 +503,12 @@ theorem lsE_pos_le {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {p2 : Nat} (hp2 
   have haN' := lsNestExp_le_one (alpha := alpha) hE hC ht2 ht21
   have hb := familyRecExp_pos 2 p2 (lsQM alpha) hp2
   have hb' := familyRecExp_le_one 2 p2 (lsQM alpha) hp2
-  have hm : 0 < lsMExp A Bq alpha ∧ lsMExp A Bq alpha ≤ 1 := by
-    have hEm2 : 0 < lsEm A Bq alpha := hEm
-    have hEm2' : lsEm A Bq alpha ≤ 1 := hEm'
-    unfold lsMExp
-    refine ⟨mul_pos haN (by positivity), ?_⟩
-    calc lsNestExp (sixEb A Bq) (lsC alpha) alpha (lsT2 alpha) * (lsEm A Bq alpha / 2)
-        ≤ 1 * 1 := mul_le_mul haN' (by linarith) (by positivity) zero_le_one
-      _ = 1 := one_mul 1
-  have hBpos : 0 < lsB p2 alpha := by unfold lsB; positivity
-  have hBle : lsB p2 alpha ≤ 1 := by unfold lsB; linarith
-  have hEthEc : 0 < lsEth A Bq alpha * lsEc A Bq alpha ∧
-      lsEth A Bq alpha * lsEc A Bq alpha ≤ 1 := by
-    have h1 : 0 < lsEth A Bq alpha := hEth
-    have h2 : 0 < lsEc A Bq alpha := hEc
-    refine ⟨mul_pos h1 h2, ?_⟩
-    calc lsEth A Bq alpha * lsEc A Bq alpha ≤ 1 * 1 :=
-          mul_le_mul hEth' hEc' h2.le zero_le_one
-      _ = 1 := one_mul 1
-  have hinner : 0 < lsB p2 alpha * (lsEth A Bq alpha * lsEc A Bq alpha) / 2 ∧
-      lsB p2 alpha * (lsEth A Bq alpha * lsEc A Bq alpha) / 2 ≤ 1 := by
-    refine ⟨by have := hEthEc.1; positivity, ?_⟩
-    have : lsB p2 alpha * (lsEth A Bq alpha * lsEc A Bq alpha) ≤ 1 * 1 :=
-      mul_le_mul hBle hEthEc.2 hEthEc.1.le zero_le_one
-    linarith
-  have hF : 0 < lsF A Bq p2 alpha ∧ lsF A Bq p2 alpha ≤ 1 := by
-    unfold lsF
-    refine ⟨mul_pos hm.1 hinner.1, ?_⟩
-    calc lsMExp A Bq alpha * (lsB p2 alpha * (lsEth A Bq alpha * lsEc A Bq alpha) / 2)
-        ≤ 1 * 1 := mul_le_mul hm.2 hinner.2 hinner.1.le zero_le_one
-      _ = 1 := one_mul 1
-  unfold lsE
-  exact ⟨by linarith [hF.1], by linarith [hF.2]⟩
+  have hBx : 0 < lsB p2 alpha ∧ lsB p2 alpha ≤ 1 := by
+    unfold lsB
+    exact ⟨by positivity, by linarith⟩
+  have h := localization_exponents_pos_le ⟨haN, haN'⟩ ⟨hEm, hEm'⟩ hBx
+    ⟨hEth, hEth'⟩ ⟨hEc, hEc'⟩
+  exact ⟨h.1, h.2.1⟩
 
 /-- **The degree-four discrepancy bound of the length-six route**, from the
 two recurrence profiles alone. -/

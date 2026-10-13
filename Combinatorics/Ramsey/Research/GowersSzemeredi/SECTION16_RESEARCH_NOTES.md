@@ -7554,6 +7554,94 @@ checked. Only `propext`, `Classical.choice` and `Quot.sound` occur. See
 with their immutable source manifests. Full-facade checks and original
 paper fidelity gaps remain separate. The simplification goal remains active.
 
+### L.71. Share localization arithmetic and trim stronger-route dependencies (2026-10-12)
+
+`rpow_le_comp` composes pointwise power lower bounds by multiplying their
+exponents. The six modulus proofs use it directly, as does
+`WidthPowerLB.comp`. `localization_exponents_pos_le` bounds the common
+products of exponents in `(0, 1]`; all six localization-range proofs now
+specialize it. Five parameter-range proofs use the existing unconditional
+`uExp_pos_le` and `one_le_uCount` facts and the shared single-piece bounds.
+The ordinary half-scale arguments and the final joint quarter-scale
+arguments are unchanged.
+
+Two shared modules separate elementary interfaces from the historical
+cover-envelope routes: `Proofs18SharpInterfaces` contains the parameterized
+Theorem 18.1 and coloring interfaces, while
+`Proofs18RefinementThresholdBounds` contains the common phase-refinement
+estimate. The standing Fejer hypotheses move beside the exponents that
+use them. The old owners re-export all moved declarations. Nineteen of
+the twenty moved blocks are identical; `two_color_class_half` now
+specializes `exists_color_class_ge` instead of repeating the counting
+proof. The strongest final route imports its direct low-degree and
+short-length inputs.
+
+Against `053e1844f`, twenty production files, including the two new modules,
+lose 274 lines. All 421 existing declaration headers and variable scopes,
+198 definition bodies, and all 25 stronger bridge proofs are preserved.
+The four consolidated proof files contain 2,937 lines. The stronger bridge
+closure drops from 745 modules / 160,866 lines to 737 / 159,219, saving
+eight modules and 1,647 imported lines. The original-final closure adds
+the refinement helper but falls by 114 lines, to 648 / 135,224. See
+`verification/2026-10-12-localization-composition-simplification.json`.
+
+Native verification passes the original-final 649-module audit and the
+expanded focused 782-module audit, with only `propext`, `Classical.choice`
+and `Quot.sound`. The latter adds twenty named checks and explicitly
+imports the old source owners and both legacy sharper-bound consumers.
+Its closure has 169,679 source lines, 35 fewer despite the additional
+coverage. See `verification/2026-10-12-final-localization-composition.json`
+and `verification/2026-10-12-final-localization-composition-compatibility.json`,
+with immutable source manifests. The source inventory is refreshed for
+line shifts only; every classification and companion name is unchanged.
+Full-facade checks and remaining original-paper fidelity gaps are separate.
+All numerical bounds are preserved, and the simplification goal remains active.
+
+### L.72. Share modulus scales and use the direct polynomial bases (2026-10-12)
+
+For `N >= 1` and `F >= 0`, `localization_width_bounds` derives both the
+elementary slice-size bound and the square-root localization bound from `6 <= N^(F/8)` and `N^F <= L`.
+Exponent monotonicity gives `N^(F/8) <= N^F` and
+`(N^(F/8))^4/8 <= N^(F/2) <= N^F`; the existing natural-square-root lemma
+then applies. All six modulus proofs use this argument, so they no longer
+need the separate `8^(2/F)` premise in their proofs. Their threshold
+definitions are unchanged. `spectrumCellWidth_scale_bounds` similarly
+supplies their two reciprocal-radius/density size conditions once.
+`short_thr_step_le` supplies the geometric constants for six envelope
+steps by specializing the existing short-localization estimate.
+
+The stronger `family_constants_poly_le` moves unchanged into
+`Proofs16WeylBudgetGrowth`; its older tower bound follows by exponent
+monotonicity. The printed cubic theorem now specializes its polynomial
+base envelope. The polynomial-envelope interfaces live beside that base
+in `Proofs18PolyCubicDegree`, and the refinement threshold imports its
+arithmetic inputs directly. The final class construction uses the lower
+Fejer APIs without the historical polynomial and cover bookkeeping.
+The final step imports the cover modulus and product-estimate owners directly.
+All seven moved declarations remain available from their old owners.
+
+Against `8dbf48d45`, twenty production files lose 324 lines. All 473
+existing declaration headers and variable scopes, 211 definition bodies,
+all seven moved blocks, and all 25 stronger bridge proofs are unchanged.
+The four consolidated proof files contain 2,835 lines. The stronger bridge
+falls from 737 modules / 159,219 lines to 728 / 157,301: nine modules and
+1,918 imported source lines fewer. The original-final closure remains
+648 modules and loses 87 lines, to 135,137. See
+`verification/2026-10-12-shared-scale-simplification.json`.
+
+Native verification passes the original-final 649-module audit and the
+782-module focused compatibility audit, with only `propext`,
+`Classical.choice` and `Quot.sound`. Eleven new named checks cover the
+helpers, family estimates and relocated cubic/refinement interfaces;
+an explicit PolynomialFejer import retains the previous compatibility
+scope. The focused closure has 169,367 source lines, 312 fewer. See
+`verification/2026-10-12-final-shared-scale.json` and
+`verification/2026-10-12-final-shared-scale-compatibility.json`, with
+immutable source manifests. The inventory is refreshed for moved source
+locations without changing classifications or companion names.
+Full-facade checks and original-paper fidelity gaps remain separate.
+All final numerical bounds are unchanged; the simplification goal is active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs18RothThresholdBounds
-import GowersSzemeredi.Proofs18CoverColorings
+import GowersSzemeredi.Proofs18SharpInterfaces
 import GowersSzemeredi.Proofs18SzemerediSmallLengths
 
 /-! **Theorem 18.2 with `L + 3` at lengths `L ≤ 5`**, and its weaker

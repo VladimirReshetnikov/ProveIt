@@ -1,4 +1,10 @@
+import GowersSzemeredi.Proofs16PolynomialFejer
 import GowersSzemeredi.Proofs18CoverExplicit
+import GowersSzemeredi.Proofs18CoverFejerHeadline
+import GowersSzemeredi.Proofs18CoverFejerLowDegrees
+import GowersSzemeredi.Proofs18CoverFejerShortLengths
+import GowersSzemeredi.Proofs18CoverColorings
+import GowersSzemeredi.Proofs18CoverSharperAllDegrees
 import GowersSzemeredi.Proofs18CoverFejerAllDegrees
 import GowersSzemeredi.Proofs18LengthSixSzemeredi
 import GowersSzemeredi.Proofs13ContextExtraction
@@ -15,7 +21,38 @@ import Lean.Util.CollectAxioms
 open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for name in #[``LeanProofs.GowersSzemeredi.spectrumCellWidth_div8_ge_rpow,
+  for name in #[``LeanProofs.GowersSzemeredi.localization_width_bounds,
+      ``LeanProofs.GowersSzemeredi.spectrumCellWidth_scale_bounds,
+      ``LeanProofs.GowersSzemeredi.short_thr_step_le,
+      ``LeanProofs.GowersSzemeredi.family_constants_poly_le,
+      ``LeanProofs.GowersSzemeredi.family_constants_tower_le,
+      ``LeanProofs.GowersSzemeredi.cube_le_two_pow_sharp,
+      ``LeanProofs.GowersSzemeredi.sq_le_two_pow_four,
+      ``LeanProofs.GowersSzemeredi.PolyEnvBound.mono,
+      ``LeanProofs.GowersSzemeredi.theorem181At_of_polyEnvBound,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_three_of_phase_partition,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_three_of_phase_partition,
+      ``LeanProofs.GowersSzemeredi.two_color_class_half,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d7,
+      ``LeanProofs.GowersSzemeredi.theorem_18_2_L5,
+      ``LeanProofs.GowersSzemeredi.van_der_waerden_printed,
+      ``LeanProofs.GowersSzemeredi.theorem_1_3_L5,
+      ``LeanProofs.GowersSzemeredi.exists_color_class_ge,
+      ``LeanProofs.GowersSzemeredi.tightHyp_of_profiles_fejer,
+      ``LeanProofs.GowersSzemeredi.rpow_le_comp,
+      ``LeanProofs.GowersSzemeredi.WidthPowerLB.comp,
+      ``LeanProofs.GowersSzemeredi.localization_exponents_pos_le,
+      ``LeanProofs.GowersSzemeredi.lsE_pos_le,
+      ``LeanProofs.GowersSzemeredi.GenParams.Eloc_pos_le,
+      ``LeanProofs.GowersSzemeredi.GenParamsG.Eloc_pos_le,
+      ``LeanProofs.GowersSzemeredi.GenParamsC.Eloc_pos_le,
+      ``LeanProofs.GowersSzemeredi.GenParamsF.Eloc_pos_le,
+      ``LeanProofs.GowersSzemeredi.GenParamsJT3.Eloc_pos_le,
+      ``LeanProofs.GowersSzemeredi.GenParams.ranges,
+      ``LeanProofs.GowersSzemeredi.GenParamsG.ranges,
+      ``LeanProofs.GowersSzemeredi.GenParamsC.ranges,
+      ``LeanProofs.GowersSzemeredi.GenParamsF.ranges,
+      ``LeanProofs.GowersSzemeredi.spectrumCellWidth_div8_ge_rpow,
       ``LeanProofs.GowersSzemeredi.ls_modulus_conditions,
       ``LeanProofs.GowersSzemeredi.GenParams.modulus_conditions,
       ``LeanProofs.GowersSzemeredi.GenParamsG.modulus_conditions,
@@ -158,4 +195,4 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the shared spectrum width estimate and all six modulus consumers, shared low-degree proofs, partition and density estimates, modulus conditions, the shared short-length proof and explicit phase input, Roth and double-exponential conversions and phase-refinement estimates, uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
+  logInfo "Checked shared modulus size and square-root localization bounds, short-localization threshold estimates, polynomial family constants and cubic base, shared localization ranges and pointwise power composition, the shared spectrum width estimate and all six modulus consumers, shared low-degree proofs, partition and density estimates, modulus conditions, the shared short-length proof and explicit phase input, Roth and double-exponential conversions and phase-refinement estimates, uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
