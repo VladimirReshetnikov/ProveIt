@@ -8492,6 +8492,58 @@ correction and open original-paper
 fidelity issues retain their status; this checkpoint does not establish
 complete original-paper fidelity. The simplification goal remains active.
 
+### L.89. Share the dimension-two width calculation (2026-10-13)
+
+`famTwoWidth_inv_le_power` puts the common line, slice and rounded-width
+calculation in the existing length-six exponent module. Under its explicit
+family, radius and positivity hypotheses, family and face counts bounded
+by `w^d` and an inverse-radius bound `exp(w^t)` give the inverse-width
+bound `w^(max t (2*d+9) + 52*d + 222)`. Three existing width proofs
+specialize the same estimate, preserving their `w^(2^130)` and Fejer
+`w^(2^46)` targets. No final numerical bound changes.
+
+All 31 existing complete statements and scope contexts and all four
+definitions remain exact. Three proof bodies shrink from 439 to 85
+lines; the helper adds 126 proof lines, giving 211 in total and a net
+reduction of 228 actual proof-body lines. Including all 140 lines of
+helper declaration, documentation and spacing, the three production
+files shrink from 1,166 to 952 lines, saving 214. No old declaration or
+import is removed; all other proofs and options stay exact.
+
+The original final is 641 local modules / 133,000 source lines and its
+audit 642 / 133,034, saving 96 source and 110 proof lines. The stronger
+final is 626 / 139,446 and its bridge 719 / 153,558, saving 214 source
+and 228 proof lines. Four new named checks give focused 783 / 168,101,
+a source reduction of 210 lines; all 255 earlier names remain. The
+downstream audit is 1,098 / 211,704. Historical explicit audit and bridge
+are 701 / 138,713 and 560 / 119,107, each saving 96 source lines.
+Module sets are unchanged; these counts do not measure compilation speed.
+
+All six fresh native checks pass: original audit (642), stronger bridge
+(719), focused audit (783), downstream audit (1,098), historical explicit
+audit (701) and historical bridge (560). All current manifest hashes are
+verified. The named audits allow only `propext`, `Classical.choice` and
+`Quot.sound`; the focused audit explicitly checks the new helper and all
+three changed proofs. The historical explicit audit checks its two named
+exports. Standalone bridge compilation does not claim an axiom audit of
+every export; its changed-declaration link points to the fresh focused
+audit. No prior native record substitutes for a new run in this checkpoint.
+
+The four standard targets cover 158 of 168 affected import consumers;
+adding both historical targets covers 165, including every affected proof
+owner. The four-target union is 1,121 modules / 215,794 source lines with
+1,124 hashed inputs. All six cover 1,204 / 226,775 with 1,207 inputs.
+See `verification/2026-10-13-two-width{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-two-width-simplification.json`.
+
+The facade, Audit and PortImportAudit remain excluded with
+baseline-identical source hashes. Full-facade verification remains
+separate. The regenerated 120-statement inventory is byte-identical to
+the checkpoint baseline. The accepted Lemma 16.10 correction and open
+original-paper fidelity issues retain their
+status; this checkpoint does not establish complete original-paper
+fidelity. The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
