@@ -7,12 +7,30 @@ organized as four volumes. Each has its own source and compiled PDF.
 |---|---|---|---:|
 | I | Polylogarithm identities, inverse expansions, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 191 |
 | II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 132 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 290 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 303 |
 | IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 88 |
 
-The four volume PDFs contain 701 pages in total.
+The four volume PDFs contain 714 pages in total.
 
-Two further sections of Volume III construct ordinary Stieltjes identities
+Volume III now reconstructs every absolute generalized Stieltjes function
+from one ordinary, absolutely convergent digamma integral. The symmetric
+kernel for `a>0`, `lambda>1` is
+`2*psi(a+x)-psi(a+lambda*x)-psi(a+x/lambda)`; explicit polynomial
+logarithmic weights recover every index. Repeated dilation roots produce
+arbitrary logarithmic moment blocks, while centered principal-character
+moments have a universal cubic coefficient. The differential limit supplies
+explicit first-Stieltjes identities and a positive, completely monotone
+digamma kernel with moments `1/2`, `1/12`, and `zeta(3)/(2*pi^2)`.
+
+A separate proof excludes consecutive nonalternating unit-circle tails at
+every order throughout `0<a<=7`, and eventually at every fixed positive
+shift. The smaller strip `0<a<=2` admits the stronger exclusion for every
+nonreal color. These are proved infinite families; the unrestricted
+consecutive-tail conjecture remains open outside the proved regions.
+See [the absolute reconstruction and confluence audit](verification/STIELTJES-ABSOLUTE-AUDIT.md)
+for the identities, proof review and separate exact/numerical evidence.
+
+The preceding sections of Volume III construct ordinary Stieltjes identities
 by algebraic tail cancellation and by finite dilations. An exactly
 certified nonalternating unit-circle color has a vanished order-fifteen
 tail, with both neighbors nonzero. It supplies one extra ordinary moment,
@@ -116,11 +134,11 @@ The volumes partition all twelve chapters and the literature appendix.
 Chapter, theorem and equation numbering is retained so research-report
 citations stay stable. Cross-volume references link to their exact PDF
 destinations; keep the four PDFs together. Each volume has its own contents
-and the shared bibliography of 167 references. The scientific text is shared
+and the shared bibliography of 169 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[651-page combined snapshot](polylogarithms.pdf) remain available.
+[665-page combined snapshot](polylogarithms.pdf) remain available.
 
 The [inventory](source-inventory.json) accounts for **1,810 textual source
 files**, including overlapping articles, fragments and correction registers.

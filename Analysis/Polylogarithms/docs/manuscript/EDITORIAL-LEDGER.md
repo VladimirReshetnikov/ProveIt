@@ -1427,3 +1427,38 @@ extra integer moments. Explicit digamma and first-index Stieltjes
 examples were independently checked. Foundational Mellin scaling,
 the preserved scalar report, and classical zeta evaluations remain
 credited. See `verification/STIELTJES-MOMENT-FILTERS-AUDIT.md`.
+
+
+## Absolute Stieltjes reconstruction and differential limits, October 13, 2026
+
+Extend the zero-Mellin program from differences to each absolute generalized
+Stieltjes coefficient. A mixed centered digamma difference has convergent
+logarithmic moments at both endpoints; an explicit even reciprocal germ
+inverts them at every index. The colored analogue needs only one centered
+dilation difference. Prescribed repeated roots of a finite dilation
+polynomial give arbitrary logarithmic moment blocks and a sharp support
+bound. The principal-character specialization yields centered logarithmic
+identities with a universal normalized cubic coefficient.
+
+Prove weighted Mellin L1 confluence of finite dilations to a polynomial in
+the Euler differential operator. The resulting explicit first-index
+Stieltjes kernel has moments 1/12, zero, and -3*zeta(3)/(8*pi^2).
+A separate positive digamma kernel has an elementary Laplace density and
+moments 1/2, 1/12, and zeta(3)/(2*pi^2). Its positivity uses the explicitly
+credited classical Lazarevic inequality. The signed first-Stieltjes
+density requires an additive constant whose transformed contribution
+vanishes; the proof retains this essential cancellation.
+
+Use Euler-Frobenius real roots, the shift recurrence and a quantitative
+angular argument to exclude consecutive nonalternating tails at every
+order for 0<a<=7. The previous exact classification handles the remaining
+finite orders. Further exact regions prove eventual exclusion at each
+fixed positive shift and exclusion for every nonreal color when 0<a<=2.
+The unrestricted conjecture remains open. The prior isolated order-15
+single-tail zero is consistent with this stronger consecutive-tail result.
+
+Original evidence remains unchanged. The scalar balanced transform,
+colored transform, classical Euler-Frobenius facts and hyperbolic inequality
+retain their attribution. General analytic proofs, finite exact diagnostics,
+independent noninterval quadrature and document validation are recorded
+separately in `verification/STIELTJES-ABSOLUTE-AUDIT.md`.

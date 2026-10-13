@@ -1,0 +1,222 @@
+\section{Analytic exclusion of nonalternating consecutive tails}
+\label{stex:section}
+
+The finite unit-circle theorem can be complemented by an all-order
+argument on a range of shifts.  Its classical input is the negative
+simple-root property of the Euler--Frobenius numerator on the unit shift
+interval; see Janson, Remark~A.2~\cite{stex:Janson}.  We give the short
+interlacing proof below, as well as the elementary Enestr\"om--Kakeya
+argument needed for a finite shift sum.  The new reduction compares their
+angular logarithmic derivatives.  No historical-priority claim is made
+for these classical polynomial facts or for the resulting exclusion.
+
+Throughout, $A_k(w,a)=\Phi(w,-k,a)$, $k\ge0$, and $a>0$.
+A nonalternating unit-circle color means $|w|=1$, $w\notin\{1,-1\}$.
+
+\subsection{The base interval and a bound for finite shift sums}
+
+\begin{lemma}[Classical negative roots and an angular lower bound]
+\label{stex:base}
+For $0<b\le1$ and $k\ge1$, the numerator
+\[
+ F_{k,b}(w)=(1-w)^{k+1}A_k(w,b)
+\]
+has only simple negative real roots.  Its degree is $k$ when $b<1$
+and $k-1$ when $b=1$.  If $w=e^{i\theta}$ with $0<\theta<\pi$, then
+\begin{equation}\label{stex:lower}
+ \Im\frac{w\partial_w A_k(w,b)}{A_k(w,b)}
+       >\frac{k+1}{4}\sin\theta.
+\end{equation}
+\end{lemma}
+\begin{proof}
+The numerator recurrence is
+\[
+ F_{k+1,b}=w(1-w)F'_{k,b}
+            +[b+(k+1-b)w]F_{k,b},\qquad F_{0,b}=1.
+\]
+For $0<b<1$ its constant and leading coefficients are $b^k$ and
+$(1-b)^k$.  Suppose the $k$ roots of $F_{k,b}$ are simple and negative,
+listed in increasing order.  At each root the next numerator has the
+sign of $w(1-w)F'_{k,b}$, which alternates and is opposite to the sign
+of $F'_{k,b}$.  Its signs at $-\infty$ and $0$ provide the two remaining
+intervals.  Thus $F_{k+1,b}$ has one negative root in each interval
+separated by those $k$ roots, accounting for its entire degree.
+The induction starts at $F_{1,b}=b+(1-b)w$.
+For $b=1$ start instead at $F_{1,1}=1$; the same recurrence has
+positive constant and leading coefficients, degree $k-1$ at order $k$,
+and the identical sign argument applies.
+
+Write the roots as $-r_j$, $r_j>0$; an empty product is allowed.  Then
+\[
+ \frac{w\partial_w A_k}{A_k}
+   =\sum_j\frac{w}{w+r_j}+(k+1)\frac{w}{1-w}.
+\]
+For a unit color in the upper half-plane,
+\[
+ \Im\frac{w}{w+r_j}
+       =\frac{r_j\sin\theta}{|w+r_j|^2}>0,
+ \qquad
+ \Im\frac{w}{1-w}=\frac{\sin\theta}{|1-w|^2}>
+                              \frac{\sin\theta}{4}.
+\]
+This proves \eqref{stex:lower}, including the empty-product case.
+\end{proof}
+
+\begin{lemma}[Angular bound for a polynomial whose roots lie in a disc]
+\label{stex:upper}
+Let $S$ be a real polynomial of degree $d$ whose complex roots have
+modulus at most $\rho<1$.  For $w=e^{i\theta}$, $0<\theta<\pi$,
+\begin{equation}\label{stex:upper-formula}
+ \left|\Im\frac{wS'(w)}{S(w)}\right|
+       \le\frac{d\rho}{(1-\rho)^2}\sin\theta.
+\end{equation}
+In particular, for $n\ge2$, $b>0$, and $k\ge1$, the polynomial
+\begin{equation}\label{stex:S}
+ S_{k,n,b}(w)=\sum_{j=0}^{n-1}(b+j)^k w^j
+\end{equation}
+satisfies this bound with
+\[
+ d=n-1,\qquad
+ \rho=\left(\frac{b+n-2}{b+n-1}\right)^k<1.
+\]
+\end{lemma}
+\begin{proof}
+If the roots are $z_1,\ldots,z_d$, set $p_m=\sum_jz_j^m$.
+The coefficients of $S$ are real, so every $p_m$ is real, and
+$|p_m|\le d\rho^m$.  The normally convergent expansion on the unit
+circle gives
+\[
+ \frac{wS'(w)}{S(w)}=d+\sum_{m\ge1}p_m w^{-m}.
+\]
+Using $|\sin(m\theta)|\le m\sin\theta$ and
+$\sum_{m\ge1}m\rho^m=\rho/(1-\rho)^2$ proves the bound.
+
+For completeness, if $S(w)=\sum_{j=0}^d c_jw^j$ with all $c_j>0$,
+its roots lie in the disc of radius $\max_{1\le j\le d}c_{j-1}/c_j$.
+Scale $w=\rho v$ so that the new coefficients $a_j=c_j\rho^j$
+are nondecreasing.  If the scaled polynomial vanished at $|v|>1$,
+the identity
+\[
+ (1-v)\sum_{j=0}^d a_jv^j
+    =a_0+\sum_{j=1}^d(a_j-a_{j-1})v^j-a_dv^{d+1}
+\]
+would give $a_d|v|^{d+1}\le a_d|v|^d$, a contradiction.
+For \eqref{stex:S} the successive coefficient ratios increase with $j$;
+their maximum is the stated $\rho$.
+\end{proof}
+
+The base argument gives a further conclusion outside the unit circle.
+For $0<a\le2$, no pair $A_k(w,a),A_{k+1}(w,a)$ can vanish
+at any nonreal color $w$. Indeed, in the upper half-plane
+$\Im(w/(w+r))=r\Im(w)/|w+r|^2>0$ for $r>0$, and
+$\Im(w/(1-w))=\Im(w)/|1-w|^2>0$. For $a\le1$ the
+negative-root lemma excludes a single nonreal zero; for
+$1<a\le2$ the shift sum is a nonzero constant. The proof
+below then applies without a unit-modulus assumption.
+
+\subsection{The exclusion criterion}
+
+\begin{theorem}[A sufficient analytic exclusion criterion]
+\label{stex:criterion}
+Let $k\ge1$, and write uniquely
+\[
+ a=b+n,\qquad 0<b\le1,\qquad n\in\mathbb Z_{\ge0}.
+\]
+There are no simultaneous zeros $A_k(w,a)=A_{k+1}(w,a)=0$ at
+nonalternating unit-circle colors if either $n\le1$, or $n\ge2$ and
+\begin{equation}\label{stex:criterion-formula}
+ (k+1)(1-\rho)^2\ge4(n-1)\rho,
+ \qquad
+ \rho=\left(\frac{a-2}{a-1}\right)^k.
+\end{equation}
+For every bounded interval of positive shifts, the criterion excludes
+all sufficiently large orders uniformly.
+\end{theorem}
+\begin{proof}
+Because the coefficients are real, complex conjugation reduces the
+problem to $w=e^{i\theta}$, $0<\theta<\pi$.  If $n=0$, the
+negative-root lemma excludes even a single zero at such a color.
+For $n\ge1$, iteration of the Lerch shift identity gives
+\begin{equation}\label{stex:shift}
+ w^nA_k(w,b+n)=A_k(w,b)-S_{k,n,b}(w).
+\end{equation}
+Moreover
+\[
+ w\partial_w A_k(w,a)=A_{k+1}(w,a)-aA_k(w,a).
+\]
+Consequently simultaneous zeros imply both
+$A_k(w,b)=S_{k,n,b}(w)$ and
+$w\partial_w A_k(w,b)=wS'_{k,n,b}(w)$.
+The common value is nonzero by Lemma~\ref{stex:base}, so their
+logarithmic derivatives are equal.  If $n=1$, $S$ is the nonzero
+constant $b^k$, contradicting \eqref{stex:lower}.
+For $n\ge2$, Lemma~\ref{stex:upper} and
+\eqref{stex:criterion-formula} contradict the strict lower bound
+\eqref{stex:lower}.  Notice that equality in the displayed criterion
+still excludes a zero.
+
+For fixed $a>2$, the ratio $(a-2)/(a-1)$ is strictly between zero and
+one.  On a bounded shift interval it is bounded above by a constant
+less than one, and $n$ is bounded.  Thus $\rho$ decays geometrically
+with $k$, while $k+1$ increases, proving the final assertion.
+\end{proof}
+
+\begin{corollary}[All-order exclusion on $0<a\le7$]
+\label{stex:seven}
+For every $k\ge0$, $0<a\le7$, and $|w|=1$ with
+$w\notin\{1,-1\}$, the pair $A_k(w,a),A_{k+1}(w,a)$ cannot
+vanish simultaneously.
+\end{corollary}
+\begin{proof}
+The case $k=0$ follows from $A_0=(1-w)^{-1}\ne0$.
+For $1\le k\le7$, apply the published unit-circle classification
+through order eight, Theorem~\ref{stcol:circle-eight}, with $q=k+1$.
+For $k\ge8$, write $a=b+n$ as above.  Then $n\le6$.
+The cases $n\le1$ are already covered.  Otherwise
+$n-1\le5$ and $\rho\le(5/6)^k\le(5/6)^8$.
+The exact rational margin is
+\[
+ 9\left(1-\left(\frac56\right)^8\right)^2
+       -20\left(\frac56\right)^8
+   =\frac{1831480182729}{2821109907456}>0.
+\]
+As $k$ increases, the left positive term in
+$(k+1)(1-\rho)^2-4(n-1)\rho$ increases and the subtracted term
+decreases.  The sufficient criterion therefore holds for all $k\ge8$.
+The all-order conclusion depends on this monotonic argument and on
+the previously certified finite range; it is not an extrapolation
+of a finite search.
+\end{proof}
+
+\begin{corollary}[A simple linear shift-order region]
+\label{stex:linear}
+For $k\ge1$, nonalternating unit-circle consecutive zeros are impossible
+whenever $0<a\le1+2k/3$.
+\end{corollary}
+\begin{proof}
+Only $a>2$ needs consideration.  Then $n-1<a-1\le2k/3$, and
+\[
+ \rho=\left(1-\frac1{a-1}\right)^k
+       <e^{-k/(a-1)}\le e^{-3/2}<\frac9{40}.
+\]
+The last bound follows, for example, by comparing the first seven
+positive Taylor terms of $e^{3/2}$ with $40/9$.
+Since $u/(1-u)^2$ increases on $(0,1)$,
+\[
+ \frac{4(n-1)\rho}{(1-\rho)^2}
+       <\frac{8k}{3}\frac{9/40}{(1-9/40)^2}
+       =\frac{960}{961}k<k+1.
+\]
+The criterion applies.
+\end{proof}
+
+On the strip $0<a\le7$, every fixed-shift homogeneous balance at a
+nonalternating unit-circle color is therefore unique, and each colored
+kernel has at most one extra ordinary positive-integer Mellin moment.
+The algebraic order-fifteen point, with $a_*\approx5.94585$, lies in
+this strip and has precisely one such moment, so the one-moment bound
+is attained.  The theorem excludes consecutive vanishing, not single
+vanishing.  At the alternating color the already established Brillhart
+classification still supplies the golden-shift exception.
+Outside the sufficient regions above, the global nonalternating
+consecutive-tail problem remains open in this investigation.

@@ -1,0 +1,421 @@
+\section{Absolute Stieltjes reconstruction and logarithmic dilation identities}
+\label{stconf:section}
+
+Repeated zeros in the dilation polynomial control logarithmic moments
+as well as ordinary power moments. At the zero-Mellin endpoint this
+gives a direct reconstruction of the \emph{absolute} generalized
+Stieltjes functions from convergent digamma integrals. The translation
+formulas in Section~\ref{stmell:section} reconstruct their differences;
+the additional dilation cancellation below removes both endpoint
+obstructions without a split-integral subtraction. The scalar Mellin
+foundation remains the one proved in \cite{stmell:balanced} and
+recalled in Lemma~\ref{stbil:scalar}. The higher-logarithm coefficient
+principle is already present in that report; the results here specify
+the dilation kernels, their endpoint convergence, and an invertible
+coefficient formula.
+
+\subsection{An ordinary digamma integral for every absolute Stieltjes index}
+
+Let $a>0$ and $L,M>0$, and set $p=LM$. Define
+\begin{align}
+ \mathcal K_{L,M}(x,a)
+   ={}&-\psi\left(a+e^{(L+M)/2}x\right)
+       +\psi\left(a+e^{(M-L)/2}x\right)\notag\\
+     &+\psi\left(a+e^{(L-M)/2}x\right)
+       -\psi\left(a+e^{-(L+M)/2}x\right),\qquad x>0,
+       \label{stconf:digamma-kernel}\\
+ N_j(a;L,M)&=\int_0^\infty
+           \frac{\log^j x}{x}\mathcal K_{L,M}(x,a)\,dx.
+       \label{stconf:N}
+\end{align}
+Thus equal scales give the three-term expression
+\[
+ \mathcal K_{L,L}(x,a)
+      =2\psi(a+x)-\psi(a+e^Lx)-\psi(a+e^{-L}x).
+\]
+Introduce the even holomorphic germ
+\begin{equation}\label{stconf:even-germ}
+ E_{L,M}(u)=\frac{\sin\pi u}{\pi u}
+       \frac{Lu}{2\sinh(Lu/2)}\frac{Mu}{2\sinh(Mu/2)}
+       =\sum_{j\ge0}e_{2j}(L,M)u^{2j}.
+\end{equation}
+Its constant term is one. All appearances of these quotients at zero
+mean their removable values.
+
+\begin{theorem}[Absolute digamma reconstruction at every index]
+\label{stconf:absolute}
+Every integral \eqref{stconf:N} converges absolutely. For all $n\ge0$,
+\begin{equation}\label{stconf:absolute-formula}
+ \boxed{\displaystyle
+ \gamma_n(a)=\frac{n!}{LM}
+   \sum_{j=0}^{\lfloor(n+1)/2\rfloor}
+    \frac{e_{2j}(L,M)}{(n+1-2j)!}N_{n+1-2j}(a;L,M).}
+\end{equation}
+In particular $N_0=-LM$. Equivalently, with the explicit polynomial
+\[
+ P_n(y;L,M)=n!\sum_{j=0}^{\lfloor(n+1)/2\rfloor}
+                    \frac{e_{2j}(L,M)y^{n+1-2j}}{(n+1-2j)!},
+\]
+each coefficient is a single ordinary integral:
+\begin{equation}\label{stconf:single}
+ \gamma_n(a)=\frac1{LM}\int_0^\infty
+          P_n(\log x;L,M)\mathcal K_{L,M}(x,a)\,\frac{dx}{x}.
+\end{equation}
+No choice of an integration cutoff or finite-part constant is involved.
+\end{theorem}
+\begin{proof}
+At zero the four constant terms $\psi(a)$ cancel, so the kernel is
+$O(x)$. At infinity use
+$\psi(a+bx)=\log x+\log b+O(x^{-1})$ for each positive $b$.
+Both logarithmic combinations cancel, so the kernel is $O(x^{-1})$.
+Consequently its Mellin integral is holomorphic on
+$-1<\Re u<1$. On every smaller closed strip, each derivative in the Mellin parameter
+is dominated by the same endpoint bounds times a fixed power of
+$1+|\log x|$. This proves ordinary absolute convergence of every
+$N_j$ and permits differentiation under the integral.
+
+The relation $C_0(x,a)=\log x-\psi(x+a)$ writes the kernel as
+\[
+ C_0(e^{(L+M)/2}x,a)-C_0(e^{(M-L)/2}x,a)
+ -C_0(e^{(L-M)/2}x,a)+C_0(e^{-(L+M)/2}x,a).
+\]
+On $0<\Re u<1$ its scalar Mellin transform is therefore
+\begin{equation}\label{stconf:digamma-mellin}
+ \int_0^\infty x^{u-1}\mathcal K_{L,M}(x,a)\,dx
+ =4\sinh(Lu/2)\sinh(Mu/2)
+                \frac{\pi}{\sin\pi u}\zeta(1-u,a).
+\end{equation}
+The independently proved endpoint bounds continue this identity
+holomorphically through $u=0$. Multiplication by
+\eqref{stconf:even-germ} gives the local equality
+\begin{equation}\label{stconf:absolute-germ}
+ \frac{E_{L,M}(u)}{LM}\sum_{j\ge0}N_j\frac{u^j}{j!}
+       =u\zeta(1-u,a)
+       =-1+\sum_{n\ge0}\gamma_n(a)\frac{u^{n+1}}{n!}.
+\end{equation}
+The series represent holomorphic germs near zero, rather than merely
+formal expressions for divergent integrals. Constant and higher
+coefficients prove all the claims.
+\end{proof}
+
+The coefficients in \eqref{stconf:even-germ} have the finite formula
+\begin{equation}\label{stconf:coefficient}
+ e_{2j}(L,M)=
+ \sum_{v+w+t=j}
+ \frac{(-1)^v\pi^{2v}}{(2v+1)!}
+ \frac{B_{2w}(1/2)L^{2w}}{(2w)!}
+ \frac{B_{2t}(1/2)M^{2t}}{(2t)!},
+\end{equation}
+by the classical Bernoulli generating function. In particular put
+\[
+ A=\frac{\pi^2}{6}+\frac{L^2+M^2}{24};
+ \qquad e_0=1,\quad e_2=-A.
+\]
+The first three absolute reconstruction formulas are
+\begin{align}
+ \gamma_0(a)&=\frac{N_1}{LM},\label{stconf:gamma0}\\
+ \gamma_1(a)&=\frac{N_2}{2LM}+A,\label{stconf:gamma1}\\
+ \gamma_2(a)&=\frac{N_3}{3LM}-2A\frac{N_1}{LM}.
+                   \label{stconf:gamma2}
+\end{align}
+These use the conventional Laurent coefficients, so
+$\gamma_0(a)=-\psi(a)$. Equal scales give
+$A=\pi^2/6+L^2/12$. Odd-index coefficients use even logarithmic
+moments and the known constant $N_0$; even-index coefficients use
+only odd logarithmic moments.
+
+For comparison with uncentered dilations, put $\lambda=e^L$,
+$\mu=e^M$ and
+\[
+ H(x,a)=-\psi(a+x)+\psi(a+x/\lambda)+\psi(a+x/\mu)
+                             -\psi(a+x/(\lambda\mu)).
+\]
+Then $\mathcal K_{L,M}(x,a)=H(\sqrt{\lambda\mu}\,x,a)$.
+Thus $N_j$ is exactly the ordinary integral of
+$H(x,a)(\log x-\tfrac12\log(\lambda\mu))^j/x$.
+The symmetry and the even coefficient germ arise from this change
+of variable; no endpoint term is discarded.
+
+\subsection{The colored endpoint and an alternating example}
+
+Let $\omega\in\mathbb C\setminus[1,\infty)$ and $a,L>0$. With the
+Lerch branch and colored kernels of Section~\ref{stcol:section}, set
+\begin{align}
+ \mathcal J_L^\omega(x,a)&=
+      \Phi(\omega,1,a+e^{L/2}x)
+          -\Phi(\omega,1,a+e^{-L/2}x),\notag\\
+ T_j&=\int_0^\infty\frac{\log^j x}{x}
+                                 \mathcal J_L^\omega(x,a)\,dx,\notag\\
+ E_L^{\rm col}(u)&=\frac{\sin\pi u}{\pi u}
+                         \frac{Lu}{2\sinh(Lu/2)}
+                    =\sum_{j\ge0}f_{2j}(L)u^{2j}.
+\end{align}
+\begin{theorem}[Colored absolute endpoint reconstruction]
+\label{stconf:colored-endpoint}
+Every $T_j$ converges absolutely, and for every $n\ge0$,
+\begin{equation}\label{stconf:colored-inversion}
+ \partial_s^n\Phi(\omega,1,a)
+ =\frac{(-1)^{n+1}n!}{L}
+     \sum_{j=0}^{\lfloor n/2\rfloor}
+             \frac{f_{2j}(L)}{(n-2j)!}T_{n-2j}.
+\end{equation}
+\end{theorem}
+\begin{proof}
+Analyticity at the positive shift gives $\mathcal J=O(x)$ at zero.
+The colored tail expansion gives $\mathcal J=O(x^{-1})$ at infinity.
+The same domination argument as above gives a holomorphic Mellin
+integral on $-1<\Re u<1$. Scaling in the colored scalar transform
+first on $0<\Re u<1$, then continuing through zero, gives
+\[
+ \sum_{j\ge0}T_j\frac{u^j}{j!}
+  =-2\sinh(Lu/2)\frac\pi{\sin\pi u}\Phi(\omega,1-u,a).
+\]
+Multiplying by $E_L^{\rm col}$ gives $-L\Phi(\omega,1-u,a)$.
+Coefficient extraction proves \eqref{stconf:colored-inversion}.
+The absence of the uncolored Laurent pole explains why one dilation
+difference suffices here, whereas the digamma reconstruction uses two.
+\end{proof}
+
+For $\omega=-1$, $a=1$, and $L=\log2$, put
+\[
+ f(x)=\tfrac12\left[\psi\left(\tfrac{x+2}{2}\right)
+                        -\psi\left(\tfrac{x+1}{2}\right)\right],
+ \qquad J(x)=f(\sqrt2x)-f(x/\sqrt2).
+\]
+The identity $\Phi(-1,s,1)=(1-2^{1-s})\zeta(s)$ and
+$f_2=-\pi^2/6-L^2/24$ give the explicit ordinary moments
+\begin{align}
+ \int_0^\infty J(x)\,\frac{dx}{x}&=-L^2,\notag\\
+ \int_0^\infty \log x\,J(x)\,\frac{dx}{x}
+     &=L^2\gamma-\tfrac12L^3,\notag\\
+ \int_0^\infty \log^2x\,J(x)\,\frac{dx}{x}
+     &=2L^2\gamma_1+L^3\gamma-\frac{\pi^2L^2}{3}
+                                       -\frac{5L^4}{12}.
+        \label{stconf:alternating-example}
+\end{align}
+For any root-of-unity color the same theorem is a generalized-Stieltjes
+identity through the finite dictionary \eqref{stcol:dictionary}.
+
+\subsection{Repeated roots at ordinary positive-integer moments}
+
+The same finite-dilation mechanism applies either to the uncolored
+kernel $\mathcal C_q=C_q$ with $G(s)=\zeta(s,a)$, or the colored
+kernel $\mathcal C_q=C_q^\omega$ with $G(s)=\Phi(\omega,s,a)$.
+The positive shifts and color domain are as above. Fix integers
+$0\le q\le K$. For each $k=q,\ldots,K$ choose a multiplicity
+$r_k\ge1$ and numbers $\lambda_{k,\nu}>1$, $1\le\nu\le r_k$.
+Put
+\begin{equation}\label{stconf:product}
+ D(s)=\prod_{k=q}^K\prod_{\nu=1}^{r_k}
+                  (1-\lambda_{k,\nu}^{-s-k})
+        =\sum_h c_hh^{-s},\qquad
+ \mathcal H_q(x)=\sum_h\frac{c_h}{h}\mathcal C_q(x/h,a).
+\end{equation}
+Repeated scales in the finite expansion are combined. Its Laurent
+subtraction in the uncolored case remains $D(1)/z$.
+
+\begin{theorem}[Confluent ordinary moment blocks]
+\label{stconf:blocks}
+For every $k=q,\ldots,K$ and $\ell\ge0$, the integral
+\[
+ M_{k,\ell}=\int_0^\infty x^k\log^\ell x\,\mathcal H_q(x)\,dx
+\]
+is absolutely convergent. Let $\rho_k$ be the zero multiplicity of
+$G$ at $-k$, with $\rho_k=0$ when $G(-k)\ne0$. Then
+\begin{equation}\label{stconf:vanishing-order}
+ M_{k,\ell}=0\quad(0\le\ell<r_k+\rho_k-1),\qquad
+ M_{k,r_k+\rho_k-1}\ne0.
+\end{equation}
+In particular, put
+\[
+ W_k=\prod_{\nu=1}^{r_k}\log\lambda_{k,\nu}\;
+      \prod_{\substack{j=q\\j\ne k}}^K
+            \prod_{\nu=1}^{r_j}(1-\lambda_{j,\nu}^{k-j}).
+\]
+Then the first potentially nonzero logarithmic moment is
+\begin{equation}\label{stconf:first-log}
+ M_{k,r_k-1}
+   =(-1)^{k+r_k+1}(r_k-1)!Q_q(k+1)W_kG(-k).
+\end{equation}
+More generally the complete convergent moment germ is
+\begin{equation}\label{stconf:bulk-germ}
+ \sum_{\ell\ge0}M_{k,\ell}\frac{u^\ell}{\ell!}
+  =(-1)^{k+1}\frac\pi{\sin\pi u}
+       Q_q(k+1+u)D(-k-u)G(-k-u).
+\end{equation}
+\end{theorem}
+\begin{proof}
+For either scalar family the tail coefficient indexed by $j\ge q$
+is a nonzero Pochhammer factor times $D(-j)G(-j)$. The specified
+roots cancel every index $q,\ldots,K$, so
+$\mathcal H_q(x)=O(x^{-K-2})$. At zero it is bounded by a fixed
+power of $1+|\log x|$. Consequently all the displayed moments are
+ordinary and absolutely convergent. For $u$ in a sufficiently small
+disc, their integrands and all derivatives are dominated at infinity
+by $x^{-2+\epsilon}$ times powers of $\log x$, and at zero by
+$x^{k-\epsilon}$ times such powers. This proves the holomorphic
+moment germ and its coefficient interpretation.
+
+Finite summation of the appropriate scalar Mellin transform identifies
+that germ with \eqref{stconf:bulk-germ}. At $-k$, the factors assigned
+to $k$ have simple zeros, and none assigned to another integer vanishes.
+Thus $D(-k-u)=(-1)^{r_k}W_ku^{r_k}+O(u^{r_k+1})$.
+Also $Q_q(k+1)=q!e_q(1,1/2,\ldots,1/k)>0$ since $k\ge q$.
+The sine contributes exactly one pole. The total order is therefore
+$r_k+\rho_k-1$, proving the sharp vanishing assertion, while its
+leading coefficient for $\rho_k=0$ gives \eqref{stconf:first-log}.
+The scalar functions here are not identically zero, so their zero
+orders are finite.
+\end{proof}
+
+For a single repeated scale at $k=q$, take
+\[
+ \mathcal H_q(x)=\sum_{j=0}^r(-1)^j\binom rj
+                 \lambda^{-(q+1)j}\mathcal C_q(x/\lambda^j,a).
+\]
+Its first $r-1$ logarithmic moments of weight $x^q$ vanish and
+\[
+ \int_0^\infty x^q\log^{r-1}x\,\mathcal H_q(x)\,dx
+   =(-1)^{q+r+1}(r-1)!(\log\lambda)^rG(-q).
+\]
+For example, at the alternating color and $q=1,r=2$,
+\[
+ V(x)=C_1^{-1}(x,a)-2\lambda^{-2}C_1^{-1}(x/\lambda,a)
+                              +\lambda^{-4}C_1^{-1}(x/\lambda^2,a)
+\]
+satisfies the exact pair
+\begin{equation}\label{stconf:colored-bulk}
+ \int_0^\infty xV(x)\,dx=0,\qquad
+ \int_0^\infty x\log x\,V(x)\,dx
+                     =\frac{2a-1}{4}(\log\lambda)^2.
+\end{equation}
+Here $\Phi(-1,-1,a)=(2a-1)/4$; at $a=1/2$ the second moment
+also vanishes, exactly as the sharper zero-order statement predicts.
+
+\subsection{The support bound for prescribed multiplicities}
+
+Let $R=\sum_{k=q}^Kr_k$. Any nonzero Dirichlet polynomial
+$D(s)=\sum_{j=1}^Jc_jh_j^{-s}$ with distinct positive scales and
+zeros of multiplicity at least $r_k$ at all $-k$ requires
+$J\ge R+1$. To prove this, a nonzero real exponential sum with $J$
+distinct real exponents has at most $J-1$ real zeros counted with
+multiplicity: divide by one exponential, differentiate, and apply
+Rolle's theorem inductively. For complex coefficients, choose a nonzero
+real or imaginary component; all prescribed zeros are retained in
+that component. This proves the same lower bound. A common scale
+$\lambda>1$ attains it, since
+\[
+ D(s)=\prod_{k=q}^K(1-\lambda^{-s-k})^{r_k}
+\]
+is a degree-$R$ polynomial in $\lambda^{-s}$ with all $R+1$
+coefficients nonzero. Up to normalization it is the unique filter on
+the prescribed scales $1,\lambda,\ldots,\lambda^R$ with these zero
+multiplicities. This is a statement about the specified zeros of $D$;
+intrinsic zeros of $G$ can supply additional moment vanishing without
+increasing the number of scales.
+
+\subsection{Principal characters and universal centered logarithmic moments}
+\label{stlog:principal}
+
+Repeated Euler zeros give particularly explicit logarithmic identities.
+Let $d>1$, let $p_1,\ldots,p_r$ be its distinct prime divisors, and put
+\[
+ d_0=\prod_{j=1}^rp_j,\quad \ell_j=\log p_j,\quad
+ A_d=\frac{(-1)^r}{2}\prod_{j=1}^r\ell_j,\quad
+ c_d=\frac12\log d_0-\log(2\pi).
+\]
+Use the principal kernel of \eqref{stdil:principal-kernel} at order zero:
+\[
+ K_d(x)=\sum_{h\mid d_0}\frac{\mu(h)}h
+             [\log(x/h)-\psi(1+x/h)].
+\]
+For $d>1$, it is $O(1+|\log x|)$ at zero and $O(x^{-2})$ at infinity.
+Thus every centered logarithmic moment
+\[
+ N_j(d)=\int_0^\infty (\log x-c_d)^jK_d(x)\,dx
+ \qquad(j\ge0)
+\]
+is an absolutely convergent ordinary integral.
+
+\begin{theorem}[The principal logarithmic germ]
+\label{stlog:principal-germ}
+Define $\operatorname{sinhc}z=\sinh(z)/z$, with value one at zero.
+In a neighborhood of $h=0$,
+\begin{align}
+ \sum_{j\ge0}\frac{N_j(d)}{j!}h^j
+ &=A_dh^{r-1}\,\Gamma(1+h)[h\zeta(1+h)]
+       \sec\frac{\pi h}{2}
+       \prod_{j=1}^r\operatorname{sinhc}\frac{h\ell_j}{2}.
+       \label{stlog:principal-series}
+\end{align}
+The apparently singular factor $h\zeta(1+h)$ has its removable value one.
+Writing $\gamma=\gamma_0(1)$ and $\gamma_j=\gamma_j(1)$, the first moments are
+\begin{align}
+ N_j(d)&=0 &&(0\le j<r-1),\notag\\
+ N_{r-1}(d)&=A_d(r-1)!,&
+ N_r(d)&=0,\label{stlog:first-moments}\\
+ N_{r+1}(d)&=A_d(r+1)!
+  \left(\frac{5\pi^2}{24}-\frac{\gamma^2}{2}-\gamma_1
+                 +\frac1{24}\sum_{j=1}^r\ell_j^2\right),\notag\\
+ N_{r+2}(d)&=A_d(r+2)!
+  \left(\frac{\gamma_2}{2}+\gamma\gamma_1
+                          +\frac{\gamma^3-\zeta(3)}3\right).
+                          \label{stlog:universal-cubic}
+\end{align}
+In particular, the normalized coefficient in the last line is independent
+of the chosen primes and of their number.
+\end{theorem}
+\begin{proof}
+The endpoint estimates give a holomorphic Mellin integral on
+$-1<\Re h<1$, and allow differentiation of every fixed order near zero.
+By \eqref{stdil:mellin}, its uncentered germ is
+\[
+ \int_0^\infty x^hK_d(x)\,dx
+   =\pi\csc\bigl(\pi(1+h)\bigr)\zeta(-h)
+                   \prod_{j=1}^r(1-p_j^h).
+\]
+The classical zeta reflection formula \cite{stchar:classical} gives
+\[
+ \zeta(-h)=-(2\pi)^{-h}\frac{\sin(\pi h/2)}{\pi}
+                     \Gamma(1+h)\zeta(1+h),
+\]
+while the elementary product identity is
+\[
+ \prod_{j=1}^r(1-p_j^h)
+   =(-1)^rh^r\left(\prod_j\ell_j\right)
+       e^{h\sum_j\ell_j/2}
+       \prod_j\operatorname{sinhc}\frac{h\ell_j}{2}.
+\]
+Combining them and multiplying by $e^{-c_dh}$ proves
+\eqref{stlog:principal-series}, first away from zero and then by removability.
+The familiar gamma Taylor expansion and the defining Stieltjes expansion yield
+\begin{align*}
+ \Gamma(1+h)[h\zeta(1+h)]
+   &=1+\left(\frac{\zeta(2)}2-\frac{\gamma^2}2-\gamma_1\right)h^2\\
+   &\quad+\left(\frac{\gamma_2}2+\gamma\gamma_1
+                  +\frac{\gamma^3-\zeta(3)}3\right)h^3+O(h^4).
+\end{align*}
+There is no linear term. The secant and hyperbolic factors are even,
+with quadratic coefficient $\pi^2/8+\sum_j\ell_j^2/24$.
+Coefficient extraction proves every displayed formula. In particular,
+the absence of a linear term proves the centered zero at order $r$,
+and evenness leaves the cubic coefficient independent of the primes.
+\end{proof}
+
+For instance, $d=6$ gives
+\[
+ K_6(x)=C_0(x,1)-\tfrac12C_0(x/2,1)
+                    -\tfrac13C_0(x/3,1)+\tfrac16C_0(x/6,1),
+\]
+and the concrete identities
+\[
+ \int_0^\infty K_6(x)\,dx=0,\qquad
+ \int_0^\infty\log x\,K_6(x)\,dx=\frac{\log2\log3}{2},
+\]
+\[
+ \int_0^\infty
+       \log^2\!\left(\frac{2\pi x}{\sqrt6}\right)K_6(x)\,dx=0.
+\]
+Higher prime powers do not change these kernels or identities: only the
+distinct prime divisors enter. Their source is the exact Euler product
+and classical functional equation, not a conjectural arithmetic relation.
