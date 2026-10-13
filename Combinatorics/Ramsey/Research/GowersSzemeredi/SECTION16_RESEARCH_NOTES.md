@@ -7750,6 +7750,41 @@ All final numerical bounds and original-paper fidelity status are
 unchanged. Full-facade checks remain separate, and the simplification
 goal remains active.
 
+### L.76. Use nonnegative bases in exponential power estimates (2026-10-12)
+
+`ex_rpow_of_nonneg` compares a real power directly with a power of an
+exponential, using `Real.rpow_le_rpow`, `Real.exp_mul` and `pw_mul'`.
+Nonnegativity of the base suffices, including at zero; the previous
+`ex_rpow` theorem remains as a one-line specialization with its original
+signature. The five modulus-requirement proofs use the new estimate to
+remove repeated lower-base bounds and the radius upper bounds needed
+only by those arguments. Within each proof, one local constant estimate
+also supplies the previously separate factors 4, 8 and 16.
+
+Against `f5320083a`, the six production files lose 72 source lines.
+The six replaced proof bodies and the new helper contain 319 lines
+instead of 396, a net reduction of 77 proof-body lines. All 127 old
+declaration headers and variable scopes, 40 definition bodies, imports,
+owner exports and all 25 public stronger bridge proofs are preserved.
+No declaration moves or module changes occur. The stronger bridge stays
+at 722 modules and falls from 155,485 to 155,474 imported source lines;
+the original final stays at 641 modules and falls from 133,332 to
+133,321 lines. Both final routes therefore lose 11 source lines. The
+other reductions shorten historical threshold variants and the focused
+audit. See `verification/2026-10-12-nonnegative-rpow-simplification.json`.
+
+Native verification passes the 642-module original-final audit and the
+783-module focused compatibility audit, with only `propext`,
+`Classical.choice` and `Quot.sound`. Seven added named checks cover the
+new helper, its retained interface and all five modulus-requirement
+theorems; all prior checks remain. The focused closure has 169,229 source
+lines, 65 fewer. See `verification/2026-10-12-final-nonnegative-rpow.json`
+and `verification/2026-10-12-final-nonnegative-rpow-compatibility.json`,
+with immutable source manifests. The regenerated inventory is
+byte-identical. Final numerical bounds and original-paper fidelity
+status are unchanged. Full-facade checks remain separate, and the
+simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
