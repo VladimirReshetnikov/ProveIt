@@ -126,7 +126,7 @@ modification times.
 | `113/` | `ProveIt_Projective_Port_Atlases_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | projective common-port atlases and source-bound normal-surface discovery | placed only; tests not rerun and integration unapplied |
 | `114/` | `ProveIt_Signed_Primitive_Annuli_2026-10-12.zip` | complete delivered article, patch, runtime snapshot and evidence | no unrestricted quasi-polynomial recognizer | signed primitive annuli, compressed basis certificates and native source transport | separately integrated: five new native positives; 25 final focused tests and broader regression evidence in synthesis |
 | `115/` | `ProveIt_Representative_Activation_2026-10-12.zip` | complete delivered article, research kernel, adapters and evidence | no unrestricted quasi-polynomial recognizer | representative-family activation search for fixed dual-forest selection | separately reviewed: 71 delivered tests, 126 authenticated native cuts; no coverage gain, kept in research tooling |
-| `116/` | `ProveIt_Cycle_Block_Kernels_2026-10-12.zip` | complete delivered article, local optimizer, adapter and evidence | no unrestricted quasi-polynomial recognizer | six-state cycle-block optimization, partial deferred forests and numerical transport | placed only; tests not rerun and integration unapplied |
+| `116/` | `ProveIt_Cycle_Block_Kernels_2026-10-12.zip` | complete delivered article, local optimizer, adapter and evidence | no unrestricted quasi-polynomial recognizer | six-state cycle-block optimization, partial deferred forests and numerical transport | separately adapted as a matrix API: 50 delivered tests, ten maintained tests, 126 authenticated native matrices; no geometric partial successor |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -1069,3 +1069,10 @@ intake. Files are staged as delivered under existing attributes and ignores,
 without checksum or line-ending work. The ZIP is retired and remains
 recoverable from arrival commit `8eb8529b4`; the incoming README is preserved.
 See the [placement record](../synthesis/data/incoming-116-placement.json).
+
+The subsequent [cycle-block continuation](../synthesis/cycle_block_cancellation.tex)
+reviews the local theorem, adds a bounded exact single-deferral prepass and
+iterative cycle-prefix pruning, and records the native comparisons and retained
+regressions. The original report remains unchanged. Its numerical transport
+and symbolic power code remain research material; the maintained matrix API
+does not change the recognizer's verdict path.

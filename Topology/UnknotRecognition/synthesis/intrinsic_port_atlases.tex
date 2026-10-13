@@ -1,0 +1,174 @@
+\section{Intrinsic common-port atlases for surface discovery}
+\label{sec:intrinsic-port-atlases}
+
+Report~113 supplies an objective-independent projective atlas for a
+collection of normal-coordinate blocks sharing one common port.  Its
+exponent depends on the number of port coordinates.  The new maintained
+preprocessor \path{fastunknot/port_subspace.py} replaces that ambient
+dimension by the dimension of the intersection of the blocks' linear
+port images.  This is a polynomial exact reduction of the discovery
+query.  The atlas remains a research backend, accessed through
+\path{projective_port_research/common.py}; the ordinary recognizer's
+dispatch is unchanged.
+
+\subsection{The common-port model and the inherited atlas theorem}
+
+Block $i$ has coordinates $x_i\geq0$, rational matching equations
+$A_i x_i=0$, and pairwise coordinate incompatibilities.  Its port matrix
+$P_i$ is entrywise nonnegative with $d$ rows.  Feasible tuples satisfy
+$P_i x_i=y$ for every $i$.  The query asks whether
+\[
+ c_0^T y+\sum_i c_i^T x_i>0,
+\]
+possibly with specified coordinates set to zero.  All blocks share this
+\emph{same} $y$; this is not a theorem for arbitrary chains or trees of
+different seams.  Cross-block incompatibilities must be accounted for by
+the source compiler, not silently discarded.
+
+For each block enumerate its admissible extreme rays.  A positive
+zero-port ray answers the query immediately; other zero-port summands
+can be removed without decreasing the objective.  Normalize every
+remaining ray by the sum of its port coordinates.  At fixed normalized
+$y$, an optimal compatible local mixture uses at most $d$ linearly
+independent port columns.  These mixtures define simplices in the
+standard $(d-1)$-simplex, with affine objective on each chosen local
+piece.  The common refinement has an objective-independent vertex atlas.
+For $d=2$ the union of local normalized ray images suffices.  For larger
+$d$, local ray images alone do not suffice: two medians can meet at a
+new interior point.  Report~113 constructs the required refinement by
+adjoining the coordinate frame to each local point set, spanning
+hyperplanes with $(d-1)$-subsets, and intersecting $(d-1)$ such
+hyperplanes with the normalization hyperplane.  Extending independent
+simplex columns by coordinate vectors shows that every simplex face is
+in the arrangement.  An affine objective attains its maximum at a
+vertex of the relevant common cell.  Keeping all local mixtures at
+each vertex also preserves later coordinate-zero queries.
+
+With $R$ enumerated local rays, the inherited bound after enumeration is
+\[
+ \operatorname{poly}(\Lambda,d)(R+d+1)^{d^2-d+1},
+\]
+where $\Lambda$ includes the binary source and query encoding.  Complete
+support enumeration costs $2^{n_i}\operatorname{poly}(\Lambda)$ per block;
+the alternative zero-set enumeration examines
+$\binom{n_i}{h_i-1}$ candidates when $h_i=\dim\ker A_i>0$.
+These are actual enumeration costs, not unit-cost oracles.
+
+\subsection{A polynomial intrinsic-dimension reduction}
+
+\begin{theorem}[Common-image restriction]
+\label{thm:intrinsic-common-port}
+Let $W_i=P_i\ker A_i\subseteq\mathbb Q^d$ and
+$W=\bigcap_i W_i$, of dimension $r$.  In polynomial bit time one can
+construct new block equations and nonnegative port matrices with $r$
+rows, when $r>0$, such that synchronized feasible coordinate tuples are
+exactly the original ones.  Coordinates, incompatibilities, and all
+coordinate-zero restrictions are preserved.  Every linear objective
+transforms exactly.  For $r=0$, one dummy identically zero port row
+suffices.
+\end{theorem}
+
+\begin{proof}
+Compute bases of $\ker A_i$, their images under $P_i$, and their
+annihilators.  The sum of these annihilators is $W^\perp$; let its row
+basis be $H$.  Replace each local equation matrix by a row basis of
+\[
+ A'_i=\begin{pmatrix}A_i\\ HP_i\end{pmatrix}.
+\]
+Every original synchronized tuple has common port in every $W_i$,
+hence satisfies these added equations.  Conversely they merely require
+the individual port images to belong to $W$.
+
+Put a row basis $T$ of $W$ in reduced row echelon form and let $J$ be
+its $r$ pivot columns.  Then $T_{:,J}=I_r$.  Projection to coordinates
+$J$ is injective on $W$, and a port with selected coordinates $z$ has
+unique full lift $y=T^Tz$.  Set $P'_i=(P_i)_{J,:}$.  These matrices
+remain entrywise nonnegative, even if $T$ contains negative entries.
+Equality of the reduced ports is equivalent to equality of the full
+ports, since all full ports now lie in $W$.  No inequalities implied by
+the unselected coordinates are lost: the original nonnegative variables
+and equations remain.  Replace the master objective by $c'_0=Tc_0$;
+then $(c'_0)^Tz=c_0^Ty$ exactly.  Leave all local objectives unchanged.
+If $r=0$, the added equations force every full port to vanish; a dummy
+zero row and zero master objective implement this case.
+
+The construction uses a polynomial number of rational matrix products
+and eliminations of polynomial size.  The bit lengths of the resulting
+bases are polynomially bounded by minors after denominator clearing;
+there is no iterative enumeration hidden in the construction.  This
+also bounds the added constraints and lifting matrix in the binary
+input length.
+\end{proof}
+
+The word ``linear'' is essential: $W_i$ is a linear image of a kernel,
+not a claim about the span of a compatible nonnegative cone.  Ignoring
+nonnegativity at this preparatory step yields a safe overestimate, which
+may leave further reductions undiscovered.  No claim of minimal
+possible port dimension is made.
+
+\begin{corollary}[Intrinsic atlas exponent]
+After recomputing rays of the restricted blocks, let their total number
+be $R'$ and their nullities be $h'_i\leq h_i$.  For $r\geq1$ the atlas
+bound becomes
+\[
+ \operatorname{poly}(\Lambda,r)(R'+r+1)^{r^2-r+1},
+\]
+in addition to the polynomial preprocessor and the new local
+enumerations.  Thus the logarithmic common-port hypothesis in the
+conditional quasi-polynomial result can be imposed on $r$, even when
+the original $d$ is larger.
+\end{corollary}
+
+One must \emph{recompute} local rays.  For example, a block with no
+equations and identity two-coordinate port has rays $(1,0)$ and
+$(0,1)$.  Synchronizing with a one-variable block of port $(u,u)$ adds
+$x_1=x_2$ to the first block.  Its new ray $(1,1)$ is neither old ray.
+There is no asserted inequality $R'\leq R$.  Small intrinsic dimension
+alone therefore does not bound the entire algorithm.  If both local
+coordinate counts and $r$ are $O(\log N)$, with polynomial binary
+source length, the displayed costs give $2^{O(\log^3N)}$; bounded local
+nullity provides a separate way to control ray enumeration.
+
+The projective normalization also changes: $\sum_j z_j=1$ need not
+equal $\sum_j y_j=1$.  The feasible homogeneous tuples and objective
+signs agree, but normalized optimal values generally do not.  The
+research adapter returns a lifted full port, the original coordinate
+vectors, and the objective evaluated on those vectors.  It does not
+compare differently normalized optima.
+
+\subsection{Source recovery and the unresolved geometric hypotheses}
+
+An assembled positive vector need not be extreme, even after primitive
+integer scaling.  The report's source recovery normalizes its coordinate
+sum and descends its support: choose a nonzero vector in the supported
+matching kernel with coordinate sum zero, orient it so the objective
+does not decrease, and move until a positive coordinate vanishes.
+There are at most $n-1$ reductions.  Integer null vectors have
+polynomially bounded entries from minors, and each step multiplies a
+common denominator by at most one such entry; hence the entire descent
+has polynomial bit complexity.  It preserves positivity, conflicts,
+and forced zeros.  The final primitive matching ray has one-dimensional
+support kernel, which the independent source verifier checks directly.
+
+For authenticated standard normal coordinates, such a primitive
+admissible extreme ray is connected: every component vector lies on
+the same extreme ray, and integrality plus primitivity makes its scale
+a positive integer.  This does not itself prove essential boundary,
+diagram provenance, or a useful hierarchy reduction.  Positive
+normal-surface candidates still require the existing independent native
+disc checks.  Complete negative atlas answers concern only the supplied
+algebraic query; a resource limit is inconclusive.
+
+Neither report~113 nor this reduction proves that all required native
+discovery problems possess suitable small blocks or small intrinsic
+common-port dimension.  In particular, a constant dimension on each
+seam of an arbitrary chain is insufficient; the report encodes a
+binary-gain product-choice problem in such chains.  Likewise deleting
+$s$ vertices from a connected degree-$\Delta$ tetrahedral adjacency
+graph leaves at most $\Delta s$ private components.  If their sizes are
+at most $b$, then $t\leq s+\Delta sb$, obstructing simultaneous
+logarithmic raw separator and raw component sizes for large $t$.
+Algebraic compression must be proved, not inferred from a drawing of
+small separators.  Useful-surface discovery, marked successor repair,
+and aggregate hierarchy costs remain open obligations for the general
+quasi-polynomial recognizer.
