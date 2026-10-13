@@ -266,3 +266,117 @@ metadata.  Positive results retain original normal-coordinate validation,
 support extraction and authenticated crushing continuation.  The next
 section tests a possible geometric route to small resolving sets; the
 candidate bound itself provides no general quasi-polynomial theorem.
+
+\subsection{Fresh finite comparisons and independent replay}
+
+The maintained package \path{fast/conflict_candidate_research} compares
+both policies against fresh Regina original STANDARD vertex enumeration.
+Its three supplied sources have $35$ STANDARD vertices in total.  The
+audit checks all $64$ Q masks on a two-tetrahedron layered solid torus,
+plus twelve masks each on sources with an interior vertex and multiple
+boundary vertices.  Each of these $88$ masks runs under both candidate
+policies and both envelope-first and anchor-only LP strategies, with
+supplied-source operational limits removed.  The resulting $352$
+queries comprise $124$ positive and $228$ negative results, all agreeing
+with the independently filtered STANDARD lists.
+
+Every positive answer is checked against original source incidences,
+then reduced to a primitive extreme ray whose coordinates occur in the
+fresh STANDARD enumeration.  Each of the $124$ resulting native crushing
+quotients agrees with Regina's quotient with the exact retained labels.
+Every negative answer has a complete independently replayed Euler tree.
+The solver-free saved-evidence checker validates all these coordinates,
+quotients and trees without invoking discovery or Regina.  Completeness
+of the finite STANDARD lists remains evidence from the fresh enumeration;
+saved replay alone does not prove that an arbitrary supplied list is complete.
+
+Fresh diagram runs under both policies give two circle unknot proofs and
+four complete knot proofs, on the trefoil and figure-eight braids.
+All $58$ labelled crushing steps agree with Regina, and all six recognition
+certificates replay independently.  Both policies reach exactly the same
+retained labelled knot-exterior sources.  The previous nineteen positive
+root-ray witnesses are checked afresh for each policy, giving $38$ witness
+replays.  Their disjoint conflict sets and each new negative tree prove
+the same exact minimum resolving sizes $h=3$ and $h=2$ on those sources.
+This is fresh verification of retained discoveries, not fresh exhaustive
+root-ray enumeration.
+
+The entire diagram-query discovery counts, including every failed
+candidate and depth restart, are:
+\begin{center}
+\small
+\begin{tabular}{llrrrr}
+\toprule
+Case & Policy & Oracle nodes & LP calls & Pivots & Anchors \\
+\midrule
+trefoil & subsets & 64 & 124 & 1811 & 1644 \\
+trefoil & conflicts & 40 & 85 & 1268 & 892 \\
+figure-eight & subsets & 36 & 114 & 5433 & 733 \\
+figure-eight & conflicts & 29 & 98 & 5016 & 600 \\
+\bottomrule
+\end{tabular}
+\end{center}
+The trefoil policy visits $18$ partial candidate states, makes seven
+candidate queries and learns six conflicts, of maximum size three.
+The figure-eight policy visits $14$ states, makes eight queries and
+learns nine conflicts, of maximum size five.  Neither reaches the cache
+capacity or enters ellipsoid fallback.  The circle is settled by vertex
+preprocessing alone, with no candidate or LP work; its timing is an
+unchanged-path control.  Subset counts of $70$ and $86$ have a different
+operational unit from partial-state counts and must not be interpreted
+as equal-cost instructions.
+
+All $200$ affected regression tests pass with Regina available and no
+skips.  Besides policy agreement, these include minimum hitting sets
+against exact abstract enumeration, forced one-edge cache eviction,
+genuine positive crushing and complete negative replay, strict options,
+callback identity, and shared limits across depth passes and crushing
+successors.  A forced polynomial-fallback case checks global ellipsoid
+and feasibility allowances.  An abstract singleton conflict on the last
+of $1000$ elements reduces $1001$ inspected subsets to three partial
+states; this tests the candidate filter, not geometric knot performance.
+
+\subsection{Paired complete-query timings}
+
+Both arms use the same polynomial LP backend, source-model equations,
+vertex preprocessing, and finite allowances: $256$ Euler nodes and
+$10000$ each for pivots, anchors, candidate-state work, ellipsoid updates
+and feasibility calls.  Crushing steps are uncapped.  Five shuffled
+pairs and one shuffled subsets/subsets A/A pair are retained per diagram,
+with one complete query per sample.  Exterior construction, shelling,
+preprocessing, all candidate work, LP discovery, internal replay and
+full-result serialization are timed.  Imports, diagram objects and
+separate independent warmup replay are outside the timer.
+
+Every timed result equals its independently verified warmup by full
+serialized digest; each warmup also equals the separate audit's result
+for that policy.  All measured arms complete the expected recognition.
+The process was pinned to CPU~5 and this task's other heavy jobs were
+paused; unrelated Lean builds could still run on the six-CPU host.
+Affinity does not reserve an exclusive core.  The environment record
+and A/A controls accompany the samples.
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{3pt}
+\input{data/conflict-candidate-table.tex}
+\end{center}
+
+Times are marginal median milliseconds; the comparison is the median
+of paired subsets/conflicts ratios.  U denotes \path{UNKNOT} and K
+denotes \path{KNOTTED}.  Trefoil medians are $3.090$ and $2.510$
+seconds, with paired ratio $1.230$ and A/A ratio $0.981$.
+Figure-eight medians are $9.699$ and $9.189$ seconds, with paired
+ratio $1.054$ and A/A ratio $0.990$.  The observed improvement is
+larger on the trefoil; the figure-eight timing difference is modest.
+Circle medians are $8.736$ and $8.751$ milliseconds, with paired ratio
+$0.992$ and A/A ratio $1.012$, consistent with its unchanged search path.
+These small samples support the finite work reductions but do not establish
+a timing advantage across other diagrams or input sizes.
+
+The saved checker reconstructs the shuffle,
+all sample arithmetic, medians and ratios.  Its publication manifest
+also checks the boundary-counterexample evidence, source files, tests,
+article and rebuilt PDF.  The finite work reductions above do not bound
+the parameters $h$ or $\delta$ for an input family.  The subset default
+is retained, and general quasi-polynomial recognition remains unproved.

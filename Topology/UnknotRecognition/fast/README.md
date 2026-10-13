@@ -4741,6 +4741,26 @@ counts cache insertions, including relearning after eviction; cache peak,
 eviction count, and maximum observed conflict size are reported separately.
 All existing LP, node, fallback, and successor limits remain shared.
 
+The fresh [candidate-policy audit](conflict_candidate_research/README.md)
+checks 352 supplied-source queries against original STANDARD enumeration,
+all six complete diagram proofs, and 58 labelled crushing steps. Both knot
+endpoints retain independently proved exact resolving sizes 3 and 2.
+Trefoil discovery falls from 64 to 40 oracle nodes and 124 to 85 LP calls;
+figure-eight falls from 36 to 29 nodes and 114 to 98 LP calls. These totals
+include unsuccessful candidates. All 200 affected tests pass with Regina.
+Five paired complete-query measurements give subset/conflict ratios 1.230
+on trefoil and 1.054 on figure-eight, with A/A ratios 0.981 and 0.990.
+The circle uses preprocessing alone and remains near timing parity.
+All raw samples, finite allowances, environment limitations and replayed
+warmup proofs are retained; the subset policy remains the default.
+
+The companion [boundary-counterexample study](boundary_transversal_research/README.md)
+shows that boundary-face tetrahedra and even all boundary-edge stars need not
+cover the positive conflict hypergraph. Its smallest retained edge-star
+counterexample has eleven tetrahedra. Original STANDARD rank replay and fresh
+layering reconstruction verify these finite obstructions; they do not give a
+family with growing minimum resolving size.
+
 ### Polynomial exact LP policy
 
 `solve_nonnegative_kernel` now defaults to `policy='polynomial'`. It performs
