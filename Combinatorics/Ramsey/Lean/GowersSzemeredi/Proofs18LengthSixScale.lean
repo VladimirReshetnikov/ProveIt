@@ -136,6 +136,30 @@ theorem spectrumCellWidth_eq {zeta : Real} {m : Nat} {e : Real} :
   rw [Real.sqrt_eq_rpow, ← Real.rpow_mul (Nat.cast_nonneg m)]
   ring_nf
 
+/-- Above the reciprocal-radius scale, one eighth of the spectrum cell width
+still dominates the half-power of the input length. -/
+theorem spectrumCellWidth_div8_ge_rpow {zeta b e : Real} (hz : 0 < zeta)
+    {m : Nat} (hm : 1 ≤ m) (he : 2 * b ≤ e)
+    (hscale : 16 / zeta ≤ (m : Real) ^ (b / 2)) :
+    (m : Real) ^ (b / 2) ≤ spectrumCellWidth zeta m e / 8 := by
+  have hmpos : (0 : Real) < m := lt_of_lt_of_le zero_lt_one (by exact_mod_cast hm)
+  have hm0 : 0 ≤ (m : Real) ^ (b / 2) := Real.rpow_nonneg hmpos.le _
+  have hmono := spectrumCellWidth_mono_exp hz.le hm he
+  rw [spectrumCellWidth_eq] at hmono
+  have hpow : (m : Real) ^ (2 * b / 2) =
+      (m : Real) ^ (b / 2) * (m : Real) ^ (b / 2) := by
+    rw [← Real.rpow_add hmpos]; ring_nf
+  rw [hpow] at hmono
+  have hk : 16 ≤ zeta * (m : Real) ^ (b / 2) := by
+    have := mul_le_mul_of_nonneg_left hscale hz.le
+    have h16 : zeta * (16 / zeta) = 16 := by field_simp
+    linarith
+  have hprod := mul_le_mul_of_nonneg_left hk hm0
+  have hxx : (m : Real) ^ (b / 2) * (zeta * (m : Real) ^ (b / 2)) =
+      zeta / 2 * ((m : Real) ^ (b / 2) * (m : Real) ^ (b / 2)) * 2 := by ring
+  rw [hxx] at hprod
+  linarith
+
 /-! ### The parameters of the length-six route -/
 
 section Params
@@ -345,24 +369,8 @@ theorem ls_modulus_conditions {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {K2 p
     refine ⟨?_, heps⟩
     have hm0 : 0 ≤ (m : Real) ^ (lsB p2 alpha / 2) := Real.rpow_nonneg (by linarith) _
     have hSCW : (m : Real) ^ (lsB p2 alpha / 2) ≤
-        spectrumCellWidth (lsZeta alpha) m (familyRecExp 2 p2 q) / 8 := by
-      have hmono := spectrumCellWidth_mono_exp hζ.le (by exact_mod_cast hm1) heps
-      rw [spectrumCellWidth_eq] at hmono
-      have hpow : (m : Real) ^ (2 * lsB p2 alpha / 2) =
-          (m : Real) ^ (lsB p2 alpha / 2) * (m : Real) ^ (lsB p2 alpha / 2) := by
-        rw [← Real.rpow_add (by linarith)]; ring_nf
-      rw [hpow] at hmono
-      have hk : 16 ≤ lsZeta alpha * (m : Real) ^ (lsB p2 alpha / 2) := by
-        have := mul_le_mul_of_nonneg_left hmb16 hζ.le
-        have h16 : lsZeta alpha * (16 / lsZeta alpha) = 16 := by field_simp
-        linarith
-      have hprod := mul_le_mul_of_nonneg_left hk hm0
-      have hxx : (m : Real) ^ (lsB p2 alpha / 2) *
-          (lsZeta alpha * (m : Real) ^ (lsB p2 alpha / 2)) =
-          lsZeta alpha / 2 *
-            ((m : Real) ^ (lsB p2 alpha / 2) * (m : Real) ^ (lsB p2 alpha / 2)) * 2 := by ring
-      rw [hxx] at hprod
-      linarith
+        spectrumCellWidth (lsZeta alpha) m (familyRecExp 2 p2 q) / 8 :=
+      spectrumCellWidth_div8_ge_rpow hζ (by exact_mod_cast hm1) heps hmb16
     obtain ⟨L, hLdef⟩ : ∃ L : Nat,
         ⌈spectrumCellWidth (lsZeta alpha) m (familyRecExp 2 p2 q) / 8⌉₊ = L := ⟨_, rfl⟩
     rw [hLdef]

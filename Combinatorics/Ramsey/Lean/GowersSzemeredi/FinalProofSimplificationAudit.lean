@@ -15,7 +15,13 @@ import Lean.Util.CollectAxioms
 open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for name in #[``LeanProofs.GowersSzemeredi.section18ExponentAt_antitone,
+  for name in #[``LeanProofs.GowersSzemeredi.spectrumCellWidth_div8_ge_rpow,
+      ``LeanProofs.GowersSzemeredi.ls_modulus_conditions,
+      ``LeanProofs.GowersSzemeredi.GenParams.modulus_conditions,
+      ``LeanProofs.GowersSzemeredi.GenParamsG.modulus_conditions,
+      ``LeanProofs.GowersSzemeredi.GenParamsC.modulus_conditions,
+      ``LeanProofs.GowersSzemeredi.GenParamsF.modulus_conditions,
+      ``LeanProofs.GowersSzemeredi.section18ExponentAt_antitone,
       ``LeanProofs.GowersSzemeredi.Theorem181AtSharp.mono,
       ``LeanProofs.GowersSzemeredi.mul32_nat_le_pw,
       ``LeanProofs.GowersSzemeredi.polyPartConst_mul32_le_pw,
@@ -152,4 +158,4 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked shared low-degree proofs, partition and density estimates, modulus conditions, the shared short-length proof and explicit phase input, Roth and double-exponential conversions and phase-refinement estimates, uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
+  logInfo "Checked the shared spectrum width estimate and all six modulus consumers, shared low-degree proofs, partition and density estimates, modulus conditions, the shared short-length proof and explicit phase input, Roth and double-exponential conversions and phase-refinement estimates, uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
