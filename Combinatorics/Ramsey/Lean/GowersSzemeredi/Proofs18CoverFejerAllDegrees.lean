@@ -168,8 +168,7 @@ theorem theorem_1_3_L0_thirteen_le : Theorem13AtFrom 0 13 :=
 theorem theorem_16_2_polynomial_fejerT3 {k : Nat} (hk : 1 ≤ k) :
     PolyCoverAt k (uCount (2 ^ (2 ^ tightMuW k)) (uDegT3 k))
       (uExp (2 ^ (2 ^ tightMuW k)) (uDegT3 k)) :=
-  let I := explicitFinalInputs
-  theorem_16_2_polynomial_fejerT3_of_profiles I.Kc I.pc I.two_le_Kc I.pc_pos I.profile I.const hk
+  explicitFinalInputs.theorem_16_2_polynomial hk
 
 /-- **Corollary 16.11 with exponent `(2/α)^(-2^(2·tDegT3 k + 7k + 38))`.** -/
 theorem corollary_16_11_polynomial_fejerJT3 {k : Nat} (hk : 2 ≤ k) :
@@ -181,9 +180,7 @@ theorem corollary_16_11_polynomial_fejerJT3 {k : Nat} (hk : 2 ≤ k) :
               IsMultilinear mu ∧ (N : Real) ^ e ≤ P.width ∧
               e * P.carrier.card ≤ section16LargeMultilinearFrequencyCount f P mu alpha := by
   intro alpha ha ha2
-  let I := explicitFinalInputs
-  obtain ⟨e, he0, hei, hN⟩ := corollary_16_11_polynomial_fejerJT3_of_profiles I.Kc I.pc
-    I.two_le_Kc I.pc_pos I.profile I.const hk alpha ha ha2
+  obtain ⟨e, he0, hei, hN⟩ := explicitFinalInputs.corollary_16_11_polynomial hk alpha ha ha2
   exact ⟨e, he0, pw_mono (two_div_ge_two ha ha2) hei (expDegJT3_tight_le k), hN⟩
 
 end LeanProofs.GowersSzemeredi

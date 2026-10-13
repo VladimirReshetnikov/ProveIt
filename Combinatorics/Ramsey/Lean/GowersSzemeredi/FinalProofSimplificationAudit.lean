@@ -14,7 +14,13 @@ import Lean.Util.CollectAxioms
 open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for name in #[``LeanProofs.GowersSzemeredi.classCovers_of_profiles,
+  for name in #[``LeanProofs.GowersSzemeredi.FinalInputs.hyp,
+      ``LeanProofs.GowersSzemeredi.FinalInputs.cover,
+      ``LeanProofs.GowersSzemeredi.FinalInputs.covers,
+      ``LeanProofs.GowersSzemeredi.FinalInputs.theorem_16_2_polynomial,
+      ``LeanProofs.GowersSzemeredi.genMuXK3_fit,
+      ``LeanProofs.GowersSzemeredi.polyGenMuJT3_fit,
+      ``LeanProofs.GowersSzemeredi.classCovers_of_profiles,
       ``LeanProofs.GowersSzemeredi.envelope_induction,
       ``LeanProofs.GowersSzemeredi.envBound_allC,
       ``LeanProofs.GowersSzemeredi.polyEnvBound_allC,
@@ -23,9 +29,9 @@ run_cmd do
       ``LeanProofs.GowersSzemeredi.envBound_allX,
       ``LeanProofs.GowersSzemeredi.envBound_allXF,
       ``LeanProofs.GowersSzemeredi.polyEnvBound_allF,
-      ``LeanProofs.GowersSzemeredi.envBound_allXK3,
-      ``LeanProofs.GowersSzemeredi.polyEnvBound_allJT3,
-      ``LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerJT3_of_profiles,
+      ``LeanProofs.GowersSzemeredi.FinalInputs.envBound,
+      ``LeanProofs.GowersSzemeredi.FinalInputs.polyEnvBound,
+      ``LeanProofs.GowersSzemeredi.FinalInputs.corollary_16_11_polynomial,
       ``LeanProofs.GowersSzemeredi.double_exp_le_szemerediThresholdAt,
       ``LeanProofs.GowersSzemeredi.theorem182AtSharp_of_envBound,
       ``LeanProofs.GowersSzemeredi.double_exp_le_szemerediThreshold,
