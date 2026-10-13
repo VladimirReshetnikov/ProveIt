@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs18IntervalPartitionUnwrap
-import GowersSzemeredi.Proofs18SupportedFunctionDiscrepancy
+import GowersSzemeredi.Proofs18FunctionDiscrepancyReduction
 
 /-! Full ordinary interval discrepancy partitions obtained from the function
 inverse theorem. Wrapping cells are split, so no discrepancy is discarded. -/

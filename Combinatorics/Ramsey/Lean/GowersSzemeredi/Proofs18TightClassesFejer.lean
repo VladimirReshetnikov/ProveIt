@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18TightClasses
+import GowersSzemeredi.Proofs18UniformCovers
 import GowersSzemeredi.Proofs16SplitStepFejer
 
 /-! **The class covers at degree `2^(23·2^l)` under the Fejér θ₁** (Notes L.16d).
