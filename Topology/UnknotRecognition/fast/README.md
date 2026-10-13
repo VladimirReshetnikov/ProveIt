@@ -4975,8 +4975,8 @@ shapes and statistics.
 Conservative bit bounds are O(t⁵ log²(t+2)) for one complete geometric query
 and O(t⁶ log²(t+2)) for repeated strict preprocessing. Search working storage
 is O(t log(t+2)), plus O(t² log(t+2)) if all accepted packets are retained.
-These improve the proved bounds for the cochain implementation, without a
-new timing claim. Geometric `pachner_descent_work` counts all producer
+These improve the proved bounds for the cochain implementation. Geometric
+`pachner_descent_work` counts all producer
 callbacks, including preparation and final replay; its units differ from
 the cochain counter and cannot be used as a speed ratio.
 See [the full proof and interface contract](../synthesis/geometric_descent_crushing.tex).
@@ -4985,6 +4985,27 @@ The regression passes 364 tests across 41 modules with Regina and no skips,
 including genuine diagram and factorwise proofs, shared budgets, strict
 packet replay and exact preservation of the default cochain result. Commands
 and logs are retained under `synthesis/data/geometric-descent-*`.
+
+The frozen [comparison protocol](geometric_descent_research/README.md) at
+`66817eceb` now has fourteen fresh whole-diagram calls and fifty timing calls.
+Both methods reach exactly the same labelled endpoints on all seven inputs,
+with identical LP pivot and search-node totals. Both W34 calls remain
+inconclusive at 10,000 pivots. On circle, trefoil, figure-eight, TT and T25,
+median paired cochain/geometric timing ratios are 0.9890, 0.9849, 1.0487,
+1.0431 and 1.0584. Every trefoil pair is a regression; TT has an A/A ratio of
+1.2191. The article retains every pair, warmup, full result and repeat control.
+CPU5 affinity on the shared host gives no exclusive-core guarantee. These
+measurements establish no universal speedup or general complexity bound.
+
+The external saved-evidence controls accept three valid cases and reject
+27 mutations, including a native-valid same-diagram legacy proof that violates
+the geometric experimental policy. Exact typed argument caching is confined
+to four native verifier entry points; the research acceptance checks rerun.
+`data/geometric_descent_evidence_publication.py`, run from `synthesis`, freshly
+replays the saved audit and binds all timed outputs and current publication
+files. The earlier core publication and its 364-test manifest remain historical
+records of `2149e2e56`; current native and test dependencies are checked against
+that tested snapshot without rerunning discovery or timings.
 
 ### Conditional matching elimination
 

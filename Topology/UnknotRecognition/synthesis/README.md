@@ -9,8 +9,8 @@ preprocessing time, and O(t log(t+2)) search working space. Version 5 chains
 independently replay all elementary formal boundary replacements. Select it
 with `reduce_pachner_descent=True, pachner_descent_method='geometric'`;
 the default method remains `cochain`, and preprocessing remains disabled by
-default. These are improved upper bounds for a fixed preprocessing family,
-with no new timing comparison or general quasi-polynomial recognition claim.
+default. These improve upper bounds for a fixed preprocessing family; general
+quasi-polynomial recognition remains unproved.
 The broader regression passes 364 tests across 41 modules with Regina and
 no skips. Its 28 new tests cover independent source packets, complete local
 branching and genuine diagram/factorwise integration; commands and logs are
@@ -26,13 +26,36 @@ experiment groups, all source chains and 12 corruption controls; its 326 fresh
 source pins are separate from historical generation pins. See
 [`conditional_type_research`](../fast/conditional_type_research/README.md).
 
-The current [PDF](report.pdf) has 817 pages. The geometric section begins
-on page 802 and the conditional-matching section on page 806; their new
-material ends on page 810. Three final build passes have no unresolved
-references or new overflow warnings. The publication helper
-`python -B -S data/geometric_descent_publication.py` freshly replays the
-conditional archive and pins the report, implementation, tests and retained
-validation logs, without running discovery or new timings.
+The frozen comparison protocol at `66817eceb` now has fourteen fresh
+whole-diagram audit calls and fifty complete timing calls. Both methods have
+exactly equal labelled endpoints and identical LP pivot/node totals on all
+seven audit cases. Both W34 runs remain inconclusive at 10,000 pivots. The
+predeclared five-case timing set retains every warmup, pair and A/A repeat;
+median paired cochain/geometric ratios are 0.9890, 0.9849, 1.0487, 1.0431 and
+1.0584 for circle, trefoil, figure-eight, TT and T25. The trefoil regresses in
+all three pairs; TT's A/A ratio is 1.2191. Shared-host variation and finite
+coverage prevent a universal speedup claim. The geometric article gives the
+complete tables, timing boundary, source comparisons and proof scope.
+
+The saved-evidence controls accept three valid cases and reject 27 mutations,
+including native-valid same-diagram evidence for the wrong experimental
+policy. Repeated native verifier calls use an explicitly recorded exact typed
+argument cache; all research acceptance checks rerun. The publication helper
+`python -B -S data/geometric_descent_evidence_publication.py` freshly replays
+all audit proofs, binds all fifty full timing outputs, and checks the retained
+controls, native/test dependencies, article, PDF and three build logs. It
+runs no discovery, timing, tests or PDF build. Its outputs use the prefix
+`data/geometric-descent-evidence-publication`.
+
+The earlier 817-page geometric/conditional core publication and
+`data/geometric_descent_publication.py` describe revision `2149e2e56`.
+Their source manifest remains a historical record; the new helper checks
+that current native code and regression dependencies still match the
+364-test snapshot. The current [PDF](report.pdf) has 820 pages. Section 188 begins on page 802;
+its new empirical subsections span pages 806–809, and Section 189 begins on
+page 809. Three final build passes have no unresolved references or new
+diagnostics. Exact PDF bytes and page count are recorded in the new
+evidence-publication manifest.
 
 [`pachner_descent_crushing.tex`](pachner_descent_crushing.tex) adds optional
 fixed one-upward Pachner preprocessing to the direct and factored crushing
