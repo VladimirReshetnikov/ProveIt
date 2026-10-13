@@ -253,6 +253,28 @@ theorem small_nat_le_pw {X : Real} (hX : 2 ≤ X) {k c : Nat} (hc : c ≤ 6 * (k
     _ ≤ X ^ (k + 6) := pow_le_pow_left₀ (by norm_num) hX _
     _ ≤ X ^ (2 ^ (k + 3)) := pw_natpow hX h2
 
+/-- The short-localization threshold at a single-piece step: both geometric
+constants fit the level `k + 3`. -/
+theorem short_thr_step_le {X : Real} (hX : 2 ≤ X) {k : Nat} {e T Tl : Real} {m a t : Nat}
+    (he0 : 0 < e) (heI : e⁻¹ ≤ X ^ (2 ^ a))
+    (hT : T ≤ Real.exp (Real.exp (X ^ (2 ^ m)))) (hTl : Tl ≤ Real.exp (X ^ (2 ^ t))) :
+    shortLocalizationThreshold (k + 1) e (6 * ((k + 1 : Nat) : Real)) T Tl ≤
+      Real.exp (Real.exp (X ^ (2 ^ (max (max m (k + 3)) (max a t) + 2)))) := by
+  have hc : 6 * ((k + 1 : Nat) : Real) ≤ 2 ^ (2 ^ (k + 3)) := by
+    have := small_nat_le_pw (le_refl (2 : Real)) (k := k) (c := 6 * (k + 1)) (by omega)
+    push_cast at this ⊢; linarith
+  have hd : (((k + 1 + 2 : Nat) : Real) ^ (2 : Nat)) ≤ 2 ^ (2 ^ (k + 3)) := by
+    have h1 : k + 1 + 2 ≤ 2 ^ (k + 3) := by
+      have := Nat.lt_two_pow_self (n := k + 3); omega
+    have h2 : 2 * (k + 3) ≤ 2 ^ (k + 3) := by
+      have := Nat.lt_two_pow_self (n := k + 2); rw [pow_succ]; omega
+    have hnat : (k + 1 + 2) ^ 2 ≤ 2 ^ (2 ^ (k + 3)) :=
+      calc (k + 1 + 2) ^ 2 ≤ (2 ^ (k + 3)) ^ 2 := Nat.pow_le_pow_left h1 2
+        _ = 2 ^ (2 * (k + 3)) := by rw [← pow_mul]; ring_nf
+        _ ≤ 2 ^ (2 ^ (k + 3)) := Nat.pow_le_pow_right (by norm_num) h2
+    exact_mod_cast hnat
+  exact short_thr_le hX (d := k + 1) (j := k + 3) he0 heI (by positivity) hc hT hTl hd
+
 /-- **The phase-refinement threshold.** -/
 theorem inv_thr_le {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M s : Nat}
     (hη0 : 0 < η) (hη1 : η ≤ 1) (hβ0 : 0 < β) (hβ1 : β ≤ 1)
@@ -400,20 +422,7 @@ theorem envBound_step {V : Real} {D k K p μV μD μ0 μK μ : Nat}
     exact ex_mul' hX (inv_pos.mpr s0).le (ex_of_pw h1) si'
   -- the thresholds
   have hTl := GenParams.Tloc_le_exp ⟨hV, hVμ, hμ0, hD, hkD, hk0, hK, hKμ, hp, hpμ⟩ hk ha ha2
-  have hc : 6 * ((k + 1 : Nat) : Real) ≤ 2 ^ (2 ^ (k + 3)) := by
-    have := small_nat_le_pw (le_refl (2 : Real)) (k := k) (c := 6 * (k + 1)) (by omega)
-    push_cast at this ⊢; linarith
-  have hd : (((k + 1 + 2 : Nat) : Real) ^ (2 : Nat)) ≤ 2 ^ (2 ^ (k + 3)) := by
-    have h1 : k + 1 + 2 ≤ 2 ^ (k + 3) := by
-      have := Nat.lt_two_pow_self (n := k + 3); omega
-    have h2 : 2 * (k + 3) ≤ 2 ^ (k + 3) := by
-      have := Nat.lt_two_pow_self (n := k + 2); rw [pow_succ]; omega
-    have hnat : (k + 1 + 2) ^ 2 ≤ 2 ^ (2 ^ (k + 3)) :=
-      calc (k + 1 + 2) ^ 2 ≤ (2 ^ (k + 3)) ^ 2 := Nat.pow_le_pow_left h1 2
-        _ = 2 ^ (2 * (k + 3)) := by rw [← pow_mul]; ring_nf
-        _ ≤ 2 ^ (2 ^ (k + 3)) := Nat.pow_le_pow_right (by norm_num) h2
-    exact_mod_cast hnat
-  have hshort := short_thr_le hX (d := k + 1) (j := k + 3) hEl0 hEli (by positivity) hc Ti' hTl hd
+  have hshort := short_thr_step_le hX (k := k) hEl0 hEli Ti' hTl
   have hinv := inv_thr_le hX (k := k) he0 heta1 b0 b1 hei' bi' s0 s16 σ0' hσ'
   -- assemble
   refine ⟨(GenParams.std V D k K p μ0).eta alpha * β / 4, _, _, hstep,

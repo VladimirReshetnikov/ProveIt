@@ -1,3 +1,4 @@
+import GowersSzemeredi.Proofs16PolynomialFejer
 import GowersSzemeredi.Proofs18CoverExplicit
 import GowersSzemeredi.Proofs18CoverFejerHeadline
 import GowersSzemeredi.Proofs18CoverFejerLowDegrees
@@ -20,7 +21,18 @@ import Lean.Util.CollectAxioms
 open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for name in #[``LeanProofs.GowersSzemeredi.two_color_class_half,
+  for name in #[``LeanProofs.GowersSzemeredi.localization_width_bounds,
+      ``LeanProofs.GowersSzemeredi.spectrumCellWidth_scale_bounds,
+      ``LeanProofs.GowersSzemeredi.short_thr_step_le,
+      ``LeanProofs.GowersSzemeredi.family_constants_poly_le,
+      ``LeanProofs.GowersSzemeredi.family_constants_tower_le,
+      ``LeanProofs.GowersSzemeredi.cube_le_two_pow_sharp,
+      ``LeanProofs.GowersSzemeredi.sq_le_two_pow_four,
+      ``LeanProofs.GowersSzemeredi.PolyEnvBound.mono,
+      ``LeanProofs.GowersSzemeredi.theorem181At_of_polyEnvBound,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_three_of_phase_partition,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_three_of_phase_partition,
+      ``LeanProofs.GowersSzemeredi.two_color_class_half,
       ``LeanProofs.GowersSzemeredi.theorem_18_1_d7,
       ``LeanProofs.GowersSzemeredi.theorem_18_2_L5,
       ``LeanProofs.GowersSzemeredi.van_der_waerden_printed,
@@ -183,4 +195,4 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked shared localization ranges and pointwise power composition, the shared spectrum width estimate and all six modulus consumers, shared low-degree proofs, partition and density estimates, modulus conditions, the shared short-length proof and explicit phase input, Roth and double-exponential conversions and phase-refinement estimates, uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
+  logInfo "Checked shared modulus size and square-root localization bounds, short-localization threshold estimates, polynomial family constants and cubic base, shared localization ranges and pointwise power composition, the shared spectrum width estimate and all six modulus consumers, shared low-degree proofs, partition and density estimates, modulus conditions, the shared short-length proof and explicit phase input, Roth and double-exponential conversions and phase-refinement estimates, uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."

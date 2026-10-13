@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18CoverBudget
+import GowersSzemeredi.Proofs18GenericEnvelopeStep
 
 /-! The phase-refinement threshold at the exponential level.
 
@@ -7,6 +7,31 @@ shared by the legacy cover envelopes and the final envelope. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
+
+/-- `(k+3)³ ≤ 32·2^k`. -/
+theorem cube_le_two_pow_sharp (k : Nat) : (k + 3) ^ 3 ≤ 32 * 2 ^ k := by
+  induction k with
+  | zero => norm_num
+  | succ k ih =>
+    rcases Nat.eq_zero_or_pos k with h | h
+    · subst h; norm_num
+    · have hstep : (k + 1 + 3) ^ 3 ≤ 2 * (k + 3) ^ 3 := by
+        have hk : 1 ≤ k := h
+        nlinarith [sq_nonneg (k : Nat), hk]
+      calc (k + 1 + 3) ^ 3 ≤ 2 * (k + 3) ^ 3 := hstep
+        _ ≤ 2 * (32 * 2 ^ k) := Nat.mul_le_mul_left _ ih
+        _ = 32 * 2 ^ (k + 1) := by rw [pow_succ]; ring
+
+/-- `(k+4)² ≤ 4·2^k` for `k ≥ 4`. -/
+theorem sq_le_two_pow_four : ∀ k, 4 ≤ k → (k + 4) ^ 2 ≤ 4 * 2 ^ k := by
+  intro k hk
+  induction k, hk using Nat.le_induction with
+  | base => norm_num
+  | succ k hk ih =>
+    have hstep : (k + 1 + 4) ^ 2 ≤ 2 * (k + 4) ^ 2 := by nlinarith
+    calc (k + 1 + 4) ^ 2 ≤ 2 * (k + 4) ^ 2 := hstep
+      _ ≤ 2 * (4 * 2 ^ k) := Nat.mul_le_mul_left _ ih
+      _ = 4 * 2 ^ (k + 1) := by rw [pow_succ]; ring
 
 /-- `2^n ≤ e^n`. -/
 theorem two_pow_le_exp_nat (n : Nat) : (2 : Real) ^ n ≤ Real.exp n := by

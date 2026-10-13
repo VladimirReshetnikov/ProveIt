@@ -136,6 +136,25 @@ theorem spectrumCellWidth_eq {zeta : Real} {m : Nat} {e : Real} :
   rw [Real.sqrt_eq_rpow, ← Real.rpow_mul (Nat.cast_nonneg m)]
   ring_nf
 
+/-- The reciprocal-radius and reciprocal-density scales give the two spectrum
+cell size conditions of the inverse step. -/
+theorem spectrumCellWidth_scale_bounds {zeta rho b e : Real} (hz : 0 < zeta) (hr : 0 < rho)
+    {m : Nat} (hm : 1 ≤ m) (he : 2 * b ≤ e)
+    (h8 : 8 / zeta ≤ (m : Real) ^ b) (hrho : 4 / (zeta * rho ^ 3) ≤ (m : Real) ^ b) :
+    4 ≤ spectrumCellWidth zeta m e ∧ 2 ≤ rho ^ 3 * spectrumCellWidth zeta m e := by
+  have hw := spectrumCellWidth_mono_exp hz.le hm he
+  rw [spectrumCellWidth_eq, show 2 * b / 2 = b by ring] at hw
+  constructor
+  · calc 4 = zeta / 2 * (8 / zeta) := by field_simp; ring
+         _ ≤ zeta / 2 * (m : Real) ^ b := mul_le_mul_of_nonneg_left h8 (by positivity)
+         _ ≤ _ := hw
+  · have hr3 : 0 < rho ^ 3 := by positivity
+    have h : 2 / rho ^ 3 ≤ spectrumCellWidth zeta m e := by
+      calc 2 / rho ^ 3 = zeta / 2 * (4 / (zeta * rho ^ 3)) := by field_simp; ring
+           _ ≤ zeta / 2 * (m : Real) ^ b := mul_le_mul_of_nonneg_left hrho (by positivity)
+           _ ≤ _ := hw
+    simpa only [mul_comm] using (div_le_iff₀ hr3).mp h
+
 /-- Above the reciprocal-radius scale, one eighth of the spectrum cell width
 still dominates the half-power of the input length. -/
 theorem spectrumCellWidth_div8_ge_rpow {zeta b e : Real} (hz : 0 < zeta)
@@ -312,9 +331,6 @@ theorem ls_modulus_conditions {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {K2 p
   have hN6 : (6 : Real) ^ (1 / lsE A Bq p2 alpha) ≤ N :=
     hT _ ((le_max_left _ _).trans ((le_max_right _ _).trans ((le_max_right _ _).trans
       ((le_max_right _ _).trans (le_max_right _ _)))))
-  have hN8 : (8 : Real) ^ (2 / lsF A Bq p2 alpha) ≤ N :=
-    hT _ ((le_max_right _ _).trans ((le_max_right _ _).trans ((le_max_right _ _).trans
-      ((le_max_right _ _).trans (le_max_right _ _)))))
   have hprime : N.Prime := Fact.out
   have hodd : Odd N := hprime.odd_of_ne_two (by
     intro h2; rw [h2] at hN3; norm_num at hN3)
@@ -407,70 +423,28 @@ theorem ls_modulus_conditions {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {K2 p
       unfold lsF; ring
     rw [hexp]
     exact hNY
+  have h6pow : (6 : Real) ≤ (N : Real) ^ lsE A Bq p2 alpha :=
+    le_rpow_of_rpow_inv_le he (by norm_num) hN6
+  have hloc {L : Nat} (hL : (N : Real) ^ lsF A Bq p2 alpha ≤ L) :
+      2 ≤ L ∧ (N : Real) ^ lsE A Bq p2 alpha ≤ ((Nat.sqrt (L - 1) - 1 : Nat) : Real) :=
+    localization_width_bounds (by linarith only [hN3]) hF.le h6pow hL
   unfold SinglePieceModulusConditions SinglePieceGlobalScale singlePieceGlobalWidth
   simp only [hρ1eq, hthSeq, hcSeq, hBudeq, hZeq, hQeq]
   refine ⟨hodd, hN156, ?_, m, ⟨by rw [hNW]; exact_mod_cast hNW4, by exact_mod_cast hm1,
     by rw [hNW]; exact le_of_eq hm.symm, ?_⟩, ?_⟩
   · -- `4 ≤ N^e`
-    have h6 := le_rpow_of_rpow_inv_le he (by norm_num) hN6
-    linarith
+    linarith only [h6pow]
   · intro q hq
     obtain ⟨hFq, heps⟩ := hFin q hq
     have hqM : q ≤ lsQM alpha := Nat.le_floor hq
     have hthrq : (familyRecThr 2 K2 p2 q : Real) ≤ familyRecThr 2 K2 p2 (lsQM alpha) :=
       Nat.cast_le.mpr (familyRecThr_mono (by omega) hqM)
-    have hSCWq := spectrumCellWidth_mono_exp hζ.le (by exact_mod_cast hm1) heps
-    rw [spectrumCellWidth_eq] at hSCWq
-    rw [show 2 * lsB p2 alpha / 2 = lsB p2 alpha by ring] at hSCWq
-    refine ⟨Nat.cast_le.mp (hthrq.trans hthr), ?_, ?_, ?_⟩
-    · have := mul_le_mul_of_nonneg_left hmb8 (by positivity : (0 : Real) ≤ lsZeta alpha / 2)
-      have h4 : lsZeta alpha / 2 * (8 / lsZeta alpha) = 4 := by field_simp; ring
-      linarith
-    · have := mul_le_mul_of_nonneg_left hmbρ (by positivity : (0 : Real) ≤ lsZeta alpha / 2)
-      have h2 : lsZeta alpha / 2 * (4 / (lsZeta alpha * lsRho alpha ^ 3)) = 2 / lsRho alpha ^ 3 := by
-        field_simp; ring
-      have hρ3 : 0 < lsRho alpha ^ 3 := by positivity
-      have hge : 2 / lsRho alpha ^ 3 ≤
-          spectrumCellWidth (lsZeta alpha) m (familyRecExp 2 p2 q) := by linarith
-      have := mul_le_mul_of_nonneg_left hge hρ3.le
-      rw [mul_div_cancel₀ _ hρ3.ne'] at this
-      exact this
-    · have hN8' : (8 : Real) ^ (1 / (lsF A Bq p2 alpha / 2)) ≤ N := by
-        rw [show 1 / (lsF A Bq p2 alpha / 2) = 2 / lsF A Bq p2 alpha by field_simp]
-        exact hN8
-      have h8 := le_rpow_of_rpow_inv_le (by positivity : 0 < lsF A Bq p2 alpha / 2)
-        (by norm_num) hN8'
-      have hNF : (8 : Real) ≤ (N : Real) ^ lsF A Bq p2 alpha := by
-        have h1 : (1 : Real) ≤ (N : Real) ^ (lsF A Bq p2 alpha / 2) :=
-          Real.one_le_rpow (by linarith) (by positivity)
-        have hsplit : (N : Real) ^ lsF A Bq p2 alpha =
-            (N : Real) ^ (lsF A Bq p2 alpha / 2) * (N : Real) ^ (lsF A Bq p2 alpha / 2) := by
-          rw [← Real.rpow_add hNpos]; ring_nf
-        rw [hsplit]
-        exact h8.trans (le_mul_of_one_le_right (by linarith) h1)
-      have h2 := hNF.trans hFq
-      exact (Nat.cast_le (α := Real)).mp (by rw [Nat.cast_ofNat]; linarith)
+    obtain ⟨hcell4, hcellrho⟩ :=
+      spectrumCellWidth_scale_bounds hζ hρ (by exact_mod_cast hm1) heps hmb8 hmbρ
+    exact ⟨Nat.cast_le.mp (hthrq.trans hthr), hcell4, hcellrho, (hloc hFq).1⟩
   · intro q hq
     obtain ⟨hFq, -⟩ := hFin q hq
-    have h6 := le_rpow_of_rpow_inv_le he (by norm_num) hN6
-    have hN8' : (8 : Real) ^ (1 / (lsF A Bq p2 alpha / 2)) ≤ N := by
-      rw [show 1 / (lsF A Bq p2 alpha / 2) = 2 / lsF A Bq p2 alpha by field_simp]
-      exact hN8
-    have h8 := le_rpow_of_rpow_inv_le (by positivity : 0 < lsF A Bq p2 alpha / 2)
-      (by norm_num) hN8'
-    have hx4 : ((N : Real) ^ lsE A Bq p2 alpha) ^ 4 / 8 ≤ (N : Real) ^ lsF A Bq p2 alpha := by
-      have hpow4 : ((N : Real) ^ lsE A Bq p2 alpha) ^ 4 = (N : Real) ^ (lsF A Bq p2 alpha / 2) := by
-        rw [← Real.rpow_natCast, ← Real.rpow_mul hNpos.le]; unfold lsE; push_cast; ring_nf
-      rw [hpow4]
-      have hsplit : (N : Real) ^ lsF A Bq p2 alpha =
-          (N : Real) ^ (lsF A Bq p2 alpha / 2) * (N : Real) ^ (lsF A Bq p2 alpha / 2) := by
-        rw [← Real.rpow_add hNpos]; ring_nf
-      have h0 : 0 ≤ (N : Real) ^ (lsF A Bq p2 alpha / 2) := Real.rpow_nonneg hNpos.le _
-      rw [hsplit]
-      have hx8 : (N : Real) ^ (lsF A Bq p2 alpha / 2) / 8 ≤ (N : Real) ^ (lsF A Bq p2 alpha / 2) := by
-        linarith
-      exact hx8.trans (le_mul_of_one_le_right h0 (by linarith))
-    exact nat_sqrt_pred_pred_ge h6 (hx4.trans hFq)
+    exact (hloc hFq).2
 
 
 theorem familyRecExp_le_one (k p q : Nat) (hp : 0 < p) : familyRecExp k p q ≤ 1 := by

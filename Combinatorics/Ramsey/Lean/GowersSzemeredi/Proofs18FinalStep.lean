@@ -1,4 +1,6 @@
 import GowersSzemeredi.Proofs18FinalClasses
+import GowersSzemeredi.Proofs18CoverModulusFejer
+import GowersSzemeredi.Proofs18CoverDensity
 
 /-! **The final route, part 2: the joint-slice step at `tDegT3`** (Notes L.16-final).
 
@@ -282,7 +284,7 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
   -- the modulus is large
   have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   simp only [Tloc, max_le_iff] at hN
-  obtain ⟨⟨hN3, hN156⟩, hNM, hN4, hNR, hN6, hN8⟩ := hN
+  obtain ⟨⟨hN3, hN156⟩, hNM, hN4, hNR, hN6, -⟩ := hN
   have hprime : N.Prime := Fact.out
   have hodd : Odd N := hprime.odd_of_ne_two (by
     intro h2; rw [h2] at hN3; norm_num at hN3)
@@ -355,8 +357,9 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
     exact hNY
   have h6pow : (6 : Real) ≤ (N : Real) ^ P.Eloc alpha :=
     le_rpow_of_rpow_inv_le he (by norm_num) hN6
-  have hFhalf : (N : Real) ^ (P.F alpha / 2) ≤ (N : Real) ^ P.F alpha :=
-    Real.rpow_le_rpow_of_exponent_le (by linarith only [hN3]) (by linarith only [hF])
+  have hloc {L : Nat} (hL : (N : Real) ^ P.F alpha ≤ L) :
+      2 ≤ L ∧ (N : Real) ^ P.Eloc alpha ≤ ((Nat.sqrt (L - 1) - 1 : Nat) : Real) :=
+    localization_width_bounds (by linarith only [hN3]) hF.le h6pow hL
   unfold SinglePieceModulusConditionsFJ SinglePieceGlobalScaleFJ singlePieceGlobalWidthFJ
   simp only [hρ1eq, hthSeq, hcSeq, hBudeq, hZeq, hDeq]
   refine ⟨hodd, hN156, ?_, m, ⟨by exact_mod_cast hNW4, by exact_mod_cast hm1,
@@ -368,35 +371,12 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
     have hqM : q ≤ P.QM alpha := Nat.le_floor hq
     have hthrq : (familyRecThr P.k P.K P.p q : Real) ≤ familyRecThr P.k P.K P.p (P.QM alpha) :=
       Nat.cast_le.mpr (familyRecThr_mono (by omega) hqM)
-    have hSCWq := spectrumCellWidth_mono_exp hζ.le (by exact_mod_cast hm1) heps
-    rw [spectrumCellWidth_eq] at hSCWq
-    rw [show 2 * P.Bexp alpha / 2 = P.Bexp alpha by ring] at hSCWq
-    refine ⟨Nat.cast_le.mp (hthrq.trans hthr), ?_, ?_, ?_⟩
-    · have := mul_le_mul_of_nonneg_left hmb8 (by positivity : (0 : Real) ≤ P.Zeta alpha / 2)
-      have h4 : P.Zeta alpha / 2 * (8 / P.Zeta alpha) = 4 := by field_simp; ring
-      linarith
-    · have := mul_le_mul_of_nonneg_left hmbρ (by positivity : (0 : Real) ≤ P.Zeta alpha / 2)
-      have h2 : P.Zeta alpha / 2 * (4 / (P.Zeta alpha * P.Rho alpha ^ 3)) = 2 / P.Rho alpha ^ 3 := by
-        field_simp; ring
-      have hρ3 : 0 < P.Rho alpha ^ 3 := by positivity
-      have hge : 2 / P.Rho alpha ^ 3 ≤
-          spectrumCellWidth (P.Zeta alpha) m (familyRecExp P.k P.p q) := by linarith
-      have := mul_le_mul_of_nonneg_left hge hρ3.le
-      rw [mul_div_cancel₀ _ hρ3.ne'] at this
-      exact this
-    · have hN8' : (8 : Real) ^ (1 / (P.F alpha / 2)) ≤ N := by
-        simpa only [one_div_div] using hN8
-      have h8 := le_rpow_of_rpow_inv_le (half_pos hF) (by norm_num) hN8'
-      have h2 := (h8.trans hFhalf).trans hFq
-      exact (Nat.cast_le (α := Real)).mp (by rw [Nat.cast_ofNat]; linarith)
+    obtain ⟨hcell4, hcellrho⟩ :=
+      spectrumCellWidth_scale_bounds hζ hρ (by exact_mod_cast hm1) heps hmb8 hmbρ
+    exact ⟨Nat.cast_le.mp (hthrq.trans hthr), hcell4, hcellrho, (hloc hFq).1⟩
   · intro q hq
     obtain ⟨hFq, -⟩ := hFin q hq
-    have hx4 : ((N : Real) ^ P.Eloc alpha) ^ 4 / 8 ≤ (N : Real) ^ P.F alpha := by
-      have hpow4 : ((N : Real) ^ P.Eloc alpha) ^ 4 = (N : Real) ^ (P.F alpha / 2) := by
-        rw [← Real.rpow_natCast, ← Real.rpow_mul hNpos.le]; unfold Eloc; push_cast; ring_nf
-      rw [hpow4]
-      exact (div_le_self (Real.rpow_nonneg hNpos.le _) (by norm_num)).trans hFhalf
-    exact nat_sqrt_pred_pred_ge h6pow (hx4.trans hFq)
+    exact (hloc hFq).2
 
 end GenParamsJT3
 
