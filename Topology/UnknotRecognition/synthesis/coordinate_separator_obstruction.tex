@@ -1,0 +1,129 @@
+\section{Why triple relations alone do not give small separators}
+\label{sec:coordinate-separator-obstruction}
+
+The balanced compatibility-separator hypothesis of
+Section~\ref{sec:euler-coordinate-factors} needs more than the local
+three-column relation, rank $t-1$ and polynomial encoding.  The following
+explicit family shows this for abstract rational cones.  It is not a family
+of native triangulations and has no prescribed canonical Euler function.
+Consequently it proves no lower bound for unknot recognition or its resolving
+parameter.
+
+\begin{proposition}[An explicit family with no small coordinate separator]
+For every $t\ge3$ there is an integer $(t-1)\times3t$ matrix $C$, partitioned
+into $t$ triples summing to zero, with $O(t\log t)$-bit entries, such that:
+\begin{enumerate}
+\item Every set of at most $t-1$ columns using at most two from each triple
+is independent.  In particular $\operatorname{rank}C=t-1$.
+\item After restricting any set of $s$ triples to arbitrary singletons,
+the retained column matroid has one component of size $3t-2s$.
+\item If $s\le\lfloor(t+1)/2\rfloor$, the restricted nonnegative kernel
+contains a vector strictly positive on every retained coordinate.  Its
+nonnegative cone has no nontrivial literal coordinate product, even after
+exact implicit-zero deletion.
+\end{enumerate}
+For balance factor $2/3$, the smallest singleton separator has size
+$\lceil t/2\rceil$, with or without implicit-zero deletion.
+\end{proposition}
+
+\begin{proof}
+Put $r=t-1$ and define
+\[
+ v(a)=(1,a,\ldots,a^{r-1})^{\mathsf T},\qquad
+ u_i=v(2i-1),\quad v_i=v(2i),\quad w_i=-u_i-v_i
+ \quad(1\le i\le t).
+\]
+Use these triples as the columns of $C$, in increasing group order.
+For any $r$ chosen columns using at most two per group, expand its determinant
+multilinearly.  Within a two-column group, the three possible pairs reduce
+with fixed signs:
+\[
+ (u_i,v_i)\mapsto +(u_i,v_i),\qquad
+ (u_i,w_i)\mapsto -(u_i,v_i),\qquad
+ (v_i,w_i)\mapsto +(u_i,v_i).
+\]
+Here the notation describes their contribution to the determinant with all
+other columns fixed.  A singleton $w_i$ contributes the negative sum of the
+choices $u_i$ and $v_i$.  Every resulting term therefore has the same overall
+sign.  Its moment-curve nodes are distinct and increasing: the two nodes
+of a group are adjacent and precede every node of the next group.  Each
+remaining determinant is the strictly positive Vandermonde product
+\[
+                      \prod_{a<b}(x_b-x_a).
+\]
+There is at least one term and none can cancel, so the original minor is
+nonzero.  A smaller admissible set extends to such an $r$-element set, proving
+the first assertion.
+
+Every transversal with one column per group has $t=r+1$ columns and is
+dependent, while every proper subset is independent.  It is therefore a
+circuit.  In any singleton-restricted mask, choose one retained column in
+each group to form a transversal $T_0$.  All its columns lie in one matroid
+component.  Any other retained column replaces its group's member of $T_0$
+to give another circuit sharing $t-1>0$ columns with $T_0$.  Thus every
+retained column is in that same component.  The rank is still $r$ and the
+nullity is $2t+1-2s$.
+
+For the third assertion, put value one in every fixed singleton coordinate.
+There are $g=t-s$ untouched full groups.  If
+$s\le\lfloor(t+1)/2\rfloor$, then $2g\ge r$, so we can choose $r$ columns
+from these groups using at most two per group.  Their matrix is invertible.
+Solve for signed coefficients on those columns that cancel the sum of the
+fixed singleton columns, setting the other untouched coordinates to zero.
+This produces a signed kernel vector $z$ whose singleton values are one.
+In each untouched group, add
+\[
+              \lambda_i(1,1,1),\qquad
+              \lambda_i=1+\max(0,-z_j:j\text{ in group }i).
+\]
+The group sum relation keeps the vector in the kernel and makes every
+untouched coordinate strictly positive.  Singleton coordinates remain one.
+Thus there are no implicit zeros.  The cone spans the signed kernel by the
+full-support proposition of Section~\ref{sec:euler-coordinate-factors};
+the connected matroid excludes every nontrivial coordinate cone product.
+
+The single remaining factor has $3t-2s$ columns.  To reduce it to at most
+$(2/3)3t=2t$ requires $s\ge\lceil t/2\rceil$.  Below this threshold full
+support prevents implicit-zero deletion from helping.  At the threshold,
+any choice of groups suffices just by removing the competing columns, and
+full support still holds.  This proves the exact separator size.
+\end{proof}
+
+The construction is explicit and polynomial in its output length.  Each
+moment entry has at most $(t-2)\log_2(2t)+O(1)$ bits, and adding the two
+entries for $w_i$ adds at most one bit.  The full matrix therefore has
+$O(t^3\log t)$ bits.  Cramer's rule applied to the signed solve in the proof
+also gives a full-support rational vector of polynomial encoding length;
+the right-hand side is a sum of at most $t$ input columns.  The subsequent
+group shifts preserve that polynomial bound.  No genericity assumption or
+search over exponentially many determinants is needed to construct the
+matrix.
+
+More generally, without implicit-zero deletion, any fixed balance factor
+$0<\alpha<1$ requires
+\[
+                s\ge\left\lceil\tfrac32(1-\alpha)t\right\rceil.
+\]
+If this number exceeds $t$, the specified singleton/factor mechanism cannot
+achieve that balance.  With implicit-zero deletion allowed, a necessary
+bound is
+\[
+ s\ge\min\left\{\lfloor(t+1)/2\rfloor+1,
+                 \left\lceil\tfrac32(1-\alpha)t\right\rceil\right\},
+\]
+which is still $\Omega(t)$ for fixed $\alpha<1$.  Outside the proved
+full-support range, signed connectivity alone cannot justify the stronger
+cone conclusion.  Indeed fixing all groups to their $u_i$ columns makes the
+nonnegative kernel zero, since every entry in the first row is positive,
+even though those columns still form a signed circuit.
+
+This family satisfies the tempting algebraic premises uniformly, including
+full support after every sufficiently small singleton restriction.  Thus
+those premises cannot establish polylogarithmic balanced coordinate
+separators.  A theorem for the native sources must use further restrictions
+on matrices realized by authenticated knot-exterior triangulations, or use
+their canonical Euler functions to close branches without an algebraic
+split.  The family supplies neither such a realization nor an Euler-positive
+ray.  It also says nothing about non-coordinate decompositions or the cost
+of directly deciding these abstract cones; a connected matching cone can
+still be rejected by an easy Euler query.

@@ -1,6 +1,6 @@
 """Exact feasibility certificates for a nonnegative rational kernel.
 
-The default policy caps the feasible-basis Bland fast path polynomially,
+The default caps a Dantzig/full-slack-lex feasible-basis prefix polynomially,
 then uses a rational ellipsoid fallback with exact point/ray/dual recovery.
 The explicit policy='bland' comparison mode retains legacy pivot behavior.
 All returned rational numbers use JSON pairs [numerator, denominator].
@@ -109,8 +109,55 @@ def _prepare_kernel_matrix(matrix, width, *, reduce_rows=True, check=lambda: Non
     return _parse_kernel_matrix(matrix, width, reduce_rows, check)
 
 
-def _solve_prepared_kernel(source, c, selected, *, max_pivots, check):
-    """Run the audited exact Bland tableau on already validated source data."""
+def _dantzig_entering(reduced, check):
+    """Largest positive real reduced cost, with the least-index tie break."""
+    entering = None
+    for j, coefficient in enumerate(reduced):
+        check()
+        if coefficient > 0 and (entering is None or coefficient > reduced[entering]):
+            entering = j
+    return entering
+
+
+def _lexicographic_leaving(candidates, tableau, rhs, column, n, check):
+    """Compare RHS then the full original slack block, divided by the pivot.
+
+    The original slack block is B^-1, including currently basic slacks.
+    Positive entering coefficients allow exact cross multiplication of each
+    component. Only the first unequal component matters; no Fraction ratios
+    or entire key tuples are allocated. The state is local to this call.
+    """
+    best = None
+    m = len(tableau)
+    for i in candidates:
+        check()
+        if best is None:
+            best = i
+            continue
+        a, b = tableau[i][column], tableau[best][column]
+        an, ad = a.numerator, a.denominator
+        bn, bd = b.numerator, b.denominator
+        for j in range(-1, m):
+            check()
+            x = rhs[i] if j < 0 else tableau[i][n+j]
+            y = rhs[best] if j < 0 else tableau[best][n+j]
+            # x/a < y/b iff xn*ad*yd*bn < yn*bd*xd*an;
+            # every denominator and both pivot numerators are positive.
+            left = x.numerator * ad * y.denominator * bn
+            right = y.numerator * bd * x.denominator * an
+            if left < right:
+                best = i
+                break
+            if left > right:
+                break
+    return best
+
+
+def _solve_prepared_kernel(source, c, selected, *, max_pivots, check,
+                           pivot_rule='bland'):
+    """Run one fresh exact tableau with a call-local pivot rule."""
+    if type(pivot_rule) is not str or pivot_rule not in ('bland', 'dantzig_lex'):
+        raise ValueError('unsupported private pivot rule')
     n = len(c)
     retained = [source[i] for i in selected]
     r = len(retained)
@@ -149,8 +196,11 @@ def _solve_prepared_kernel(source, c, selected, *, max_pivots, check):
             return dict(status='POSITIVE', x=[_pair(x) for x in vector],
                         primitive_x=_primitive(vector), objective=_pair(value),
                         basis=basis, equation_rows=selected, stats=stats())
-        entering = next((j for j, coefficient in enumerate(reduced)
+        if pivot_rule == 'bland':
+            entering = next((j for j, coefficient in enumerate(reduced)
                          if coefficient > 0), None)
+        else:
+            entering = _dantzig_entering(reduced, check)
         if entering is None:
             dual = [-reduced[n+i] for i in range(m)]
             y = [Fraction(0)]*len(source)
@@ -170,7 +220,10 @@ def _solve_prepared_kernel(source, c, selected, *, max_pivots, check):
         candidates = [i for i in range(m) if tableau[i][entering] > 0]
         if not candidates:
             raise ArithmeticError('the normalized kernel LP cannot be unbounded')
-        leaving = min(candidates, key=lambda i: (rhs[i]/tableau[i][entering], basis[i]))
+        if pivot_rule == 'bland':
+            leaving = min(candidates, key=lambda i: (rhs[i]/tableau[i][entering], basis[i]))
+        else:
+            leaving = _lexicographic_leaving(candidates, tableau, rhs, entering, n, check)
         pivot = tableau[leaving][entering]
         tableau[leaving] = [x/pivot for x in tableau[leaving]]
         rhs[leaving] /= pivot
@@ -416,7 +469,8 @@ def _run_kernel_policy(prepared, cost, *, max_pivots, policy,
         fast_limit = min(fast_limit, fast_path_pivots)
     actual_limit = fast_limit if max_pivots is None else min(fast_limit, max_pivots)
     answer = _solve_prepared_kernel(source, cost, selected,
-                                   max_pivots=actual_limit, check=check)
+                                   max_pivots=actual_limit, check=check,
+                                   pivot_rule='dantzig_lex')
     stats = answer['stats']
     stats.update(polynomial_pivot_limit=polynomial_limit,
                  fast_path_pivot_limit=fast_limit, fallback_used=0,
@@ -471,8 +525,9 @@ def solve_nonnegative_kernel(matrix, objective, *, max_pivots=None,
     POSITIVE retains the normalized basic-point, primitive-ray, and slack
     basis fields; NONPOSITIVE retains C^T y>=c on all original input rows.
 
-    The default caps Bland at (n+retained_rows+1)^2 pivots, optionally lowered
-    by fast_path_pivots, then invokes polynomial exact bounded feasibility.
+    The default caps Dantzig/full-slack lex at (n+retained_rows+1)^2 pivots,
+    optionally lowered by fast_path_pivots, then invokes polynomial exact
+    bounded feasibility.
     policy='bland' preserves the legacy uncapped comparison implementation.
     max_pivots is always a hard USER allowance: exhausting it prevents a
     fallback. The internal polynomial prefix limit is not a user allowance.

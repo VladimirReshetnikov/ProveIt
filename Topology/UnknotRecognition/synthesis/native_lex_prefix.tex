@@ -1,0 +1,170 @@
+\section{Native lazy lexicographic pivot selection}
+\label{sec:native-lex-prefix}
+
+The polynomial LP policy now uses Dantzig entering and full original-slack
+lexicographic leaving in its capped simplex prefix.  Explicit
+\path{policy='bland'} retains the preceding Bland implementation.  The
+finite evidence of Section~\ref{sec:whole-call-prefix} motivated this change:
+the candidate completed the W34 call within the shared pivot allowance,
+while also increasing the number of LP queries and, on some inputs, search
+nodes.  This section describes the maintained implementation and its fresh
+validation.  It does not reinterpret the frozen pilot as a test of newer
+native sources.
+
+\subsection{An exact comparison without materialized ratio tuples}
+
+Dantzig entering scans all reduced costs, selects the largest strictly
+positive rational value and retains the least column index on equality.
+It includes slack variables.  For leaving, write $m$ for the tableau row
+count, $n$ for the original variable count, and $a_i=T_{ij}>0$ for the
+entering coefficient of a candidate row.  The mathematical key remains
+\[
+ \left(d_i/a_i,T_{i,n}/a_i,\ldots,T_{i,n+m-1}/a_i\right).
+\]
+The implementation compares one candidate with the current best row, starting
+with the right-hand side and then visiting every original slack column in
+order until the first unequal component.  It constructs neither the complete
+tuple nor a slice of the slack block.
+
+For two components and their positive divisors, let
+\[
+ x=p/q,\quad a=u/v,\qquad y=r/s,\quad b=w/z,
+ \qquad q,s,u,v,w,z>0.
+\]
+Then the exact comparison is
+\[
+            x/a<y/b \quad\Longleftrightarrow\quad
+            pvsw<rzqu.
+\]
+The numerators $p,r$ may be negative.  All factors cleared from denominators
+are positive, so no sign reversal occurs.  The code forms these two integer
+products directly, avoiding intermediate Fraction construction, reduction
+and division.  It replaces the incumbent only on strict less and stops on
+strict greater.  If every component is equal it retains the earlier candidate,
+matching the stable literal tuple minimum even on artificial helper inputs.
+Distinct rows of a genuine invertible original slack block cannot have equal
+complete keys, as proved in Proposition~\ref{prop:capped-pivot-lex}.
+
+Skipping later components after a difference is an exact implementation of
+lexicographic order.  It does not omit any original slack column from that
+order: every column remains available when preceding components tie.
+In particular currently basic original slacks remain essential.  Comparing
+the unscaled components would be incorrect when the entering coefficients
+differ.
+
+\subsection{Call-local dispatch and preserved contracts}
+
+The private tableau helper receives a call-local rule.  Its default remains
+Bland; the common polynomial controller supplies the lexicographic rule
+explicitly.  The explicit Bland branch retains its old invocation and its
+literal entering/leaving expressions.  The public and prepared entry-point
+signatures, strict validation, immutable prepared matrix, original-row
+selection and returned dictionary schemas are unchanged.
+
+There is no module-global selector replacement, shared mutable tableau,
+warm-start basis, or selector state stored in the prepared context.
+Each objective retains a fresh tableau, right-hand side and basis.  A
+callback can invoke either policy through either entry point without changing
+the suspended call's rule.  The candidate and each actually compared
+component provide cancellation polls, and callback exceptions propagate
+without interception or substitution.  Poll counts intentionally differ
+from both the old polynomial prefix and the tuple-based experiment; the
+equivalence concerns the exact pivot choices and results when callbacks do
+not interrupt or mutate external inputs.
+
+Positive and nonpositive terminal checks still precede the hard pivot-cap
+check.  A conclusion reached on the last allowed pivot is accepted.  An
+exhausted user allowance prevents fallback; reaching only the internal
+prefix limit permits the unchanged exact fallback if the user allowance
+remains.  Zero internal prefix and zero user allowance therefore retain
+different meanings.  Ellipsoid updates and feasibility calls keep their
+separate counters and caps.  Selector comparisons and callback polls are
+not relabelled as pivots or tableau updates.
+
+\subsection{Correctness and bit cost}
+
+The complete original slack block is $B^{-1}$.  The leaving comparison is
+therefore exactly the fixed symbolic right-hand-side perturbation of
+Proposition~\ref{prop:capped-pivot-lex}.  Dantzig's chosen real reduced cost
+is strictly positive.  The proof of formal feasibility and no repeated
+basis consequently applies unchanged.  Only the unperturbed positive
+objective causes a positive return; the original-row primal, primitive-ray
+and homogeneous-dual meanings remain unchanged.  The exact fallback and
+its support and basis recovery are not modified.
+
+Suppose the numerators and denominators of tableau entries have at most
+$B$ bits.  Each four-factor comparison product has at most $4B+O(1)$ bits.
+There are at most $O(m^2)$ component comparisons per pivot, and the entering
+scan takes $O(n+m)$ comparisons.  Beyond the pre-existing candidate list,
+the selector retains only a constant number of row indices and $O(B)$-bit
+integers.  Early differences can reduce work, but do not improve the
+worst-case comparison bound.  This cost fits the existing dense tableau
+scale $O(m(n+m))$ with polynomial-size exact arithmetic.
+
+All feasible bases belong to the same fixed augmented input matrix, so the
+determinant bounds on tableau bit size do not depend on the selector.
+The default $(n+r+1)^2$-pivot limit, with $r$ retained independent rows,
+therefore preserves the polynomial prefix and the conservative complete
+$O(U^{19})$ kernel bound of Section~\ref{sec:exact-polynomial-lp}.
+As there, arbitrary work performed inside caller callbacks is not part of
+the solver's own operation bound.  Anti-cycling alone would not give a
+polynomial pivot theorem; the prefix cap and polynomial fallback remain
+necessary to the stated bound.
+
+The source-search bound involving the resolving parameter remains
+$O(A(3\delta)^h\operatorname{poly}(t,L))$ under its existing hypotheses.
+Changing a pivot rule supplies no uniform bound on $h$, no balanced-separator
+theorem and no general quasi-polynomial recognition result.
+
+\subsection{Fresh regression and adoption evidence}
+
+The focused run passes $32$ tests in the new selector, prepared-matrix and
+polynomial-LP modules.  The complete regression then passes $408$ tests
+across $45$ modules with Regina and no skips.  All $363$ files in its exact
+pre-run native, test, fixture and command closure remain unchanged afterward.
+The old $394$-test snapshot remains a record of the preceding implementation.
+
+The $14$ new methods cover largest-cost entering and stable ties, every
+potentially decisive slack component, signed rational and large-bit entries,
+genuine dependent zero-right-hand-side degeneracy, and complete result
+agreement with the literal divided-Fraction tuple rule.  Five retained
+pre-change Bland controls check complete public and prepared results.
+Independent small-cone vertex enumeration and original slack-basis solves
+check positive outputs; every original-row dual inequality is checked for
+negative outputs.  Real two-tetrahedron tree/transversal cases have independent
+negative-tree or normal-crushing replay.
+
+Cap and fallback controls include the last allowed pivot and zero internal
+versus user limits.  Forty-eight nested policy, entry-point and exit-type
+combinations exercise call-local state and exception identity.  Cancellation
+is checked at every visited poll of small positive and negative prefixes,
+at distinct fallback sites, and through a final-slack selector comparison.
+No existing test expectation was weakened to accommodate a changed ray.
+
+A separate fresh call starts from the original W34 planar diagram using the
+maintained native implementation and the archived candidate's exact options.
+It makes one recognition call, with no injected source, selector replacement,
+archived native import or wall-clock cutoff.  It returns \texttt{KNOTTED}
+after $62$ LP calls, $6{,}606$ pivots and $33{,}094{,}980$ tableau updates,
+with no fallback.  The terminal search visits one node and tests $124$
+anchors, reusing $63$.  The full typed result, statistics and labelled source
+ledger equal the archived candidate's after both proofs have been checked.
+This is one new whole-call observation; the earlier fourteen-call comparison
+and its $449$ retained queries remain historical evidence.
+
+The reconstructed chain starts with $160$ tetrahedra, shells to $148$, and
+accepts $32$ vertex-reduction crushes, three strict $3$--$2$ moves and three
+up--down--down macros.  Its endpoint has $31$ tetrahedra, one vertex and two
+boundary faces.  The saved negative certificate and every original-diagram
+preprocessing step pass independent verification.  A second, separate process
+replays the saved result and the one archived comparison proof with discovery
+disabled, starting no recognition calls.  All $302$ current native, runner,
+accessor and archive pins remain unchanged through both executions.
+The proof checks validate the returned certificate and work counters; they
+do not reconstruct a fresh per-query LP operation trace or measure runtime.
+
+Commands, pre-run source pins, complete logs and the publication binding are
+retained under \path{data/native-lex-prefix-*}.  The publication helper runs
+no tests, discovery, timing experiment or PDF build.  The earlier fixed-query
+and whole-call archives retain their original sources and results.  No
+elapsed-time or universal speedup is claimed for this native change.

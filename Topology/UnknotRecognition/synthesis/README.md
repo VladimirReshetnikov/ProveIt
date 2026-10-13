@@ -2,12 +2,59 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`native_lex_prefix.tex`](native_lex_prefix.tex) adopts Dantzig entering and
+full original-slack lexicographic leaving for the polynomial LP prefix.
+Lazy exact integer comparisons avoid constructing full ratio tuples;
+explicit Bland behavior, call-local state, immutable matrix preparation,
+hard caps and exact fallback are preserved. The focused run passes 32 tests;
+the complete regression passes 408 tests in 45 modules with Regina and no
+skips. All 363 pre-run native/test/fixture/command pins remain unchanged.
+The polynomial LP bound survives, with no smaller admissibility-search
+exponent or timing claim.
+
+[`coordinate_separator_obstruction.tex`](coordinate_separator_obstruction.tex)
+constructs explicit polynomial-size integer matrices whose triples sum to
+zero and whose rank and full-support properties match the proposed algebraic
+premises. Their nonnegative kernels remain coordinate-indecomposable after
+every small singleton restriction. Two-thirds balance requires exactly
+`ceil(t/2)` such restrictions, including when implicit-zero deletion is
+allowed. This proves that the algebraic premises alone cannot give the
+needed polylogarithmic separators. No native triangulation realization,
+canonical Euler function or recognition lower bound is claimed.
+
+One fresh call from the original W34 diagram certifies it as knotted using
+the current native code: 62 LP calls, 6,606 pivots, 33,094,980 tableau updates
+and no fallback. Its complete typed result, counters and source ledger equal
+the archived candidate's after independent proof verification. A separate
+discovery-disabled process rechecks the saved proof and its one historical
+comparison; all 302 execution pins remain unchanged. The fourteen earlier
+calls and 449 queries are historical evidence, not reruns of this native code.
+
+The current [PDF](report.pdf) has 848 pages. Section 196 spans pages 836–839
+and Section 197 pages 839–840. Three build passes complete with no unresolved
+references or additional final diagnostics; the new comparison, evidence
+and proof pages were visually checked.
+
+From this directory, the current evidence commands are:
+
+```sh
+python -B -S data/native_lex_prefix_whole_call.py run --output data/native-lex-prefix-whole-call.json
+python -B -S data/native_lex_prefix_whole_call.py check --input data/native-lex-prefix-whole-call.json --output data/native-lex-prefix-whole-call-replay.json
+python -B -S data/native_lex_prefix_publication.py
+```
+
+The whole-call helper refuses to overwrite existing records; use new output
+paths for another run or replay. The publication helper authenticates the
+saved tests, separate replay, article/PDF and build records. It performs no
+recognition, LP discovery, proof replay, tests, timing or PDF build.
+
 [`whole_call_prefix.tex`](whole_call_prefix.tex) compares the prepared Bland
 and Dantzig/full-slack lexicographic polynomial prefixes in fourteen fresh
 whole-diagram calls against frozen `4d1f76f06`. Each arm shares its own
 10,000-pivot allowance across the actual complete query stream. Every
 preprocessing step, query, capped result and changed conflict is retained;
-this is count-only evidence, with no timing claim or native default change.
+this is count-only evidence, with no timing claim; the frozen experiment
+itself made no native default change.
 The candidate certifies W34 as knotted in 6,606 pivots; Bland remains
 inconclusive at 10,000. All 449 LP queries remain in the evidence. The
 candidate makes more LP calls on every nontrivial input and more search
@@ -38,12 +85,12 @@ first portable-replay preflight failed on a Git working-directory path;
 its source and outputs are retained, and only repository-root resolution
 changed before the successful replay. No native algorithm changed.
 
-The current [PDF](report.pdf) has 844 pages. Section 194 spans pages 829–832
-and Section 195 pages 832–836. Three final passes have no unresolved
-references or new diagnostics; the new tables and proof pages were visually
-checked. Native code and all 361 regression dependencies still match the
-394-test, 44-module checkpoint with Regina and no skips. No new native test
-run is claimed for these evidence and theory additions.
+The publication at `774f878ed` has an 844-page PDF. Section 194 spans pages
+829–832 and Section 195 pages 832–836. Its three final passes have no
+unresolved references or new diagnostics; new tables and proof pages were
+visually checked. That checkpoint's native code and all 361 regression
+dependencies match the historical 394-test, 44-module run. Those historical
+pins are not validation of the later native default change.
 
 From this directory, the separate archival replay commands are:
 
@@ -54,8 +101,8 @@ python -B -S data/coordinate_factor_replay.py --output data/coordinate-factor-re
 
 Both helpers refuse to overwrite retained output; use new output paths for
 another replay. Both separately executed replays passed. The publication
-command `python -B -S data/prefix_factor_evidence_publication.py` authenticates
-them, the prior tested source closure, the current article/PDF and all final
+helper `data/prefix_factor_evidence_publication.py` authenticates that
+historical checkpoint's replays, tested source closure, article/PDF and final
 build logs. It launches no solver discovery, tests, timing, certificate
 replay or PDF build. Its records use `data/prefix-factor-evidence-publication`.
 General quasi-polynomial recognition remains unproved.
@@ -71,9 +118,10 @@ canonical Euler values, root-ray extremality and integral primitive scale.
 The theorem allows formal boundary selfattachments and incompatible outside
 coordinates. It does not yet provide an algorithmic shortcut or a bound on
 the unrestricted resolving parameter.
-The combined regression passes 394 tests across 44 modules with Regina and no
-skips. All 361 files in the pre-run native/test/fixture closure are unchanged
-after the run. The command and complete log are retained under
+At that prepared-matrix checkpoint, the combined regression passed 394 tests
+across 44 modules with Regina and no skips. All 361 files in its pre-run
+native/test/fixture closure were unchanged after the run. The command and
+complete log are retained under
 `data/prepared-euler-matrix-*`.
 The core publication at `4e152f0ef` has an 832-page [PDF](report.pdf), with
 Section 191 on pages 817–822 and Section 192 on pages 822–824. Its three build
