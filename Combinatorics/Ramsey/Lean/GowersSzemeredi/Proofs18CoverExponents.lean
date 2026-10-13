@@ -154,8 +154,8 @@ theorem Eloc_inv_leC {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha2 
   have hM2 : rhoDegC P.k P.μ0 + 68 * 2 ^ P.k + P.k + 7 ≤ M := by
     rw [hMdef]; unfold expDegC; exact (le_max_left _ _).trans (le_max_right _ _)
   obtain ⟨hE0, -, -, -, -, -⟩ := P.Eloc_pos_le H.hV H.hp ha ha2
-  obtain ⟨-, -, -, -, -, -, -, ⟨hEm0, -⟩, ⟨hEth0, -⟩, ⟨hEc0, -⟩, ⟨hN0, -, -⟩, ⟨hBx0, -⟩,
-    -, -⟩ := P.ranges H.hV H.hp ha ha2
+  obtain ⟨-, ⟨hEm0, -⟩, ⟨hEth0, -⟩, ⟨hEc0, -⟩, ⟨hN0, -⟩, ⟨hBx0, -⟩, -⟩ :=
+    P.ranges H.hV H.hp ha ha2
   have hNE := P.nestExp_inv_leC ha ha2 H.hV H.hVμ H.hμ0
   obtain ⟨hEm, -, hBx⟩ := P.spectrum_exps_inv_leC H ha ha2
   obtain ⟨hEth, hEc⟩ := P.slice_exps_inv_leC H ha ha2
@@ -259,8 +259,7 @@ theorem Tloc_le_expC {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha :
   obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leC H ha ha2
   obtain ⟨hEm, -, -⟩ := P.spectrum_exps_inv_leC H ha ha2
   have hNE := P.nestExp_inv_leC ha ha2 H.hV H.hVμ H.hμ0
-  obtain ⟨-, -, -, -, -, -, -, ⟨hEm0, -⟩, -, -, ⟨hN0, -, -⟩, -, -, -⟩ :=
-    P.ranges H.hV H.hp ha ha2
+  obtain ⟨-, ⟨hEm0, -⟩, -, -, ⟨hN0, -⟩, -, -⟩ := P.ranges H.hV H.hp ha ha2
   obtain ⟨hR1, hR⟩ := P.MReq_le_expC H ha ha2
   have hL := lemma156_gen_le hk ha ha2
   set k := P.k with hkdef
