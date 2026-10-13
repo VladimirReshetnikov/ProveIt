@@ -169,6 +169,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                           max_pivots=10000, max_anchors=10000,
                           lp_strategy='envelope', reduce_vertices=True,
                           max_tree_nodes=256, tree_model='source',
+                          max_hitting_subsets=10000,
                           check=lambda: None):
     """Recognize with globally shared search caps, returning three-way status.
 
@@ -216,37 +217,50 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
     ``tree_model='source'`` retains one full-source Q model across nodes and
     rechecks cached duals on each current mask. ``'restricted'`` rebuilds the
     algebra per mask and retains separate node caches for comparison.
+
+    ``sector_method='transversal'`` learns full conflict sets from incompatible
+    positive Q rays, then searches with splits confined to a candidate hitting
+    set. Failed candidates count toward the same global node, pivot and anchor
+    caps. ``max_hitting_subsets`` counts every tested subset, including those
+    filtered without an LP, across all candidates and crushing successors.
+    Learning and dual caches restart on each new source. This policy requires
+    ``tree_model='source'`` and uses the same independently checked v2 negative
+    recognition schema. No general small-transversal bound is assumed.
     """
     for name, value in (('max_sectors', max_sectors), ('max_bases', max_bases),
                         ('max_crushes', max_crushes), ('max_pivots', max_pivots),
-                        ('max_anchors', max_anchors), ('max_tree_nodes', max_tree_nodes)):
+                        ('max_anchors', max_anchors), ('max_tree_nodes', max_tree_nodes),
+                        ('max_hitting_subsets', max_hitting_subsets)):
         if value is not None and (type(value) is not int or value < 0):
             raise ValueError(name + ' must be a nonnegative integer or None')
     if sector_order not in ('diversified', 'canonical'):
         raise ValueError('sector_order must be diversified or canonical')
     if sector_quantum is not None and (type(sector_quantum) is not int or sector_quantum <= 0):
         raise ValueError('sector_quantum must be a positive integer or None')
-    if sector_method not in ('corners', 'lp', 'tree'):
-        raise ValueError('sector_method must be corners, lp or tree')
+    if sector_method not in ('corners', 'lp', 'tree', 'transversal'):
+        raise ValueError('sector_method must be corners, lp, tree or transversal')
     if lp_strategy not in ('anchors', 'envelope'):
         raise ValueError('lp_strategy must be anchors or envelope')
     if type(reduce_vertices) is not bool:
         raise ValueError('reduce_vertices must be a boolean')
     if tree_model not in ('source', 'restricted'):
         raise ValueError('tree_model must be source or restricted')
+    if sector_method == 'transversal' and tree_model != 'source':
+        raise ValueError('transversal search requires tree_model=source')
     return _safe_call(_recognize_by_crushing, check, diagram,
                       max_sectors=max_sectors, max_bases=max_bases,
                       max_crushes=max_crushes, sector_order=sector_order,
                       sector_quantum=sector_quantum, sector_method=sector_method,
                       max_pivots=max_pivots, max_anchors=max_anchors,
                       lp_strategy=lp_strategy, reduce_vertices=reduce_vertices,
-                      max_tree_nodes=max_tree_nodes, tree_model=tree_model)
+                      max_tree_nodes=max_tree_nodes, tree_model=tree_model,
+                      max_hitting_subsets=max_hitting_subsets)
 
 
 def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                           sector_order, sector_quantum, sector_method,
                           max_pivots, max_anchors, lp_strategy, reduce_vertices,
-                          max_tree_nodes, tree_model, check):
+                          max_tree_nodes, tree_model, max_hitting_subsets, check):
     # Keep producer imports outside the independent verifier's import path.
     from .diagram_exterior import diagram_exterior
     from .diagram_exterior_verify import verify_diagram_exterior
@@ -261,6 +275,7 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
     from .positive_ray import extract_positive_ray
     from .normal_vertex_reduction import vertex_reduction_ray
     from .normal_euler_tree import search_euler_tree
+    from .normal_euler_transversal import search_euler_transversal
 
     check()
     source = Diagram.from_pd(diagram.pd)
@@ -280,15 +295,19 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                  matching_support_checks=0, matching_support_reductions=0,
                  forced_zero_types=0, sector_restarts=0,
                  sector_quantum_exhaustions=0, max_cached_sector_jobs=0)
-    if sector_method in ('lp', 'tree'):
+    if sector_method in ('lp', 'tree', 'transversal'):
         stats.update(lp_calls=0, lp_pivots=0, anchors_tested=0,
                      reused_anchors=0, envelope_calls=0, lp_tableau_updates=0,
                      maximum_tableau_bits=0, extraction_steps=0)
-    if sector_method == 'tree':
+    if sector_method in ('tree', 'transversal'):
         stats.update(nodes_attempted=0, branch_splits=0, negative_leaves=0,
                      positive_relaxations=0, incompatible_positive_points=0,
                      nonpositive_envelope_points=0, reused_envelopes=0,
                      maximum_tree_depth=0, kernel_preparations=0)
+    if sector_method == 'transversal':
+        stats.update(hitting_subsets_tested=0, transversal_candidates=0,
+                     transversal_restarts=0, learned_conflicts=0,
+                     maximum_transversal_size=0)
     if reduce_vertices:
         stats.update(vertex_reduction_calls=0, vertex_reduction_crushes=0)
 
@@ -426,13 +445,24 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                 raise ArithmeticError('unexpected vertex reduction outcome')
         count = len(current['tetrahedra'])
         digest = _source_hash(current)
-        if sector_method == 'tree':
+        if sector_method in ('tree', 'transversal'):
             def remaining(cap, field):
                 return None if cap is None else cap-stats[field]
-            result = search_euler_tree(current, strategy=lp_strategy, model=tree_model,
+            options = dict(strategy=lp_strategy,
                 max_nodes=remaining(max_tree_nodes, 'nodes_attempted'),
                 max_pivots=remaining(max_pivots, 'lp_pivots'),
                 max_anchors=remaining(max_anchors, 'anchors_tested'), check=check)
+            if sector_method == 'tree':
+                result = search_euler_tree(current, model=tree_model, **options)
+            else:
+                result = search_euler_transversal(current,
+                    max_hitting_subsets=remaining(max_hitting_subsets, 'hitting_subsets_tested'),
+                    **options)
+                for field in ('hitting_subsets_tested', 'transversal_candidates',
+                              'transversal_restarts', 'learned_conflicts'):
+                    stats[field] += result['stats'][field]
+                stats['maximum_transversal_size'] = max(stats['maximum_transversal_size'],
+                    result['stats']['maximum_transversal_size'])
             for field in ('nodes_attempted', 'branch_splits', 'negative_leaves', 'lp_calls',
                           'lp_pivots', 'anchors_tested', 'reused_anchors', 'envelope_calls',
                           'lp_tableau_updates', 'positive_relaxations',

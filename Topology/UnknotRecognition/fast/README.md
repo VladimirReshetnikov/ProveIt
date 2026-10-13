@@ -4683,3 +4683,32 @@ Every supplied payload is still parsed, every required anchor is checked,
 and every currently allowed column is tested again. Cache hits cannot reuse
 an acceptance decision across masks or sources. See
 [the row-basis and replay proof](../synthesis/euler_rank_replay.tex).
+
+### Learning a uniform set of quadrilateral splits
+
+`sector_method='transversal'` reuses the full-source Euler oracle while learning
+the complete conflict sets of incompatible positive basic Q rays. It tests
+candidate sets of tetrahedra in increasing size and searches with splits
+restricted to that set. A positive ray whose conflicts miss the candidate
+refutes it; the next candidate reuses source algebra and checked dual bounds.
+A completed negative search carries the same independently replayed branch
+tree and authenticated crushing chain as `sector_method='tree'`.
+
+The low-level API is
+`normal_euler_transversal.search_euler_transversal(source, allowed_types=None)`.
+It supports both Euler strategies and requires the full-source model. At the
+diagram level, `tree_model='restricted'` is rejected for this policy.
+`max_tree_nodes`, `max_pivots`, and `max_anchors` count work across all failed
+candidates and crushing successors. The additional `max_hitting_subsets=10000`
+counts every tested subset, including subsets rejected before an LP call;
+`None` removes this limit. Exhaustion returns `INCONCLUSIVE` with no partial
+negative proof. Learning restarts on each smaller source after a crush.
+
+For a source whose incompatible positive root extreme rays have a hitting set
+of size `h`, the policy tests at most `sum(comb(t,k), k=0..h)` subsets and uses
+trees of depth at most `h`. With a polynomial exact LP/basic-ray policy this
+gives `(3t)^O(h)` work, times the anchor-family and polynomial arithmetic
+costs. A general polylogarithmic bound on `h` remains unproved, and the current
+Bland backend still lacks a polynomial pivot bound. Without a small `h`,
+restarting candidate trees can cost more than ordinary DFS; this option does
+not change the default dispatcher or crushing sector method.
