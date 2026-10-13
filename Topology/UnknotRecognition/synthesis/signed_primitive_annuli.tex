@@ -218,7 +218,9 @@ automorphisms extend by the identity and commute.  Conversely the
 inheritance lemma shows that a primitive family in the ambient group
 must be primitive in each support block.  This proves a complete
 polynomial algebraic decision method on the stated restricted class,
-uniformly in the total rank.
+uniformly in the total rank.  The support restriction is measured in the
+surviving basis supplied by the geometric proof; no search over all such
+bases is claimed.
 
 Larger support blocks are a method refusal.  The verifier can still
 accept a supplied common automorphism in arbitrary rank.  Its ability
@@ -308,8 +310,63 @@ literal Regina cuts confirm two genus-two handlebodies for each of
 297, 377, 386, 398 and 398 tetrahedra respectively.  The coprime-exponent
 control \path{finite_figureEight/vertex98} remains inconclusive.
 
-Broad-suite and controlled performance evidence are appended after their
-ongoing runs.  Native signed transport and
+The broad regression run passed all 1798 then-collected tests in
+778.008 seconds, with Regina available and no skips.  It had loaded the
+checker before the final hexadecimal-transport correction.  The subsequent
+25-test signed suite includes the additional codec test and passes against
+the final checker.  The final native audit replays all 117 positive
+certificates, and the five unchanged delivered signed packets also replay
+with producer helpers disabled.  The maintained suite consequently has
+1799 distinct tests covered by the broad run and focused validation; no
+claim of a single 1799-test full run is made.  Both pre-correction native
+audit records and the final replay evidence are retained.
+
+\subsection{Whole-query latency and compressed scaling}
+
+The native measurements use separate warm baseline and current workers,
+seven alternating before/after pairs and three baseline/baseline control
+pairs per input.  Timed work includes source production and independent
+replay of every positive packet.  Startup, source-file loading, certificate
+hashing and JSON transport are outside the timed region.  No validation
+runs concurrently with these measurements.  The first three rows compare
+identical positive certificates.  The last five compare an earlier refusal
+with a new certified result, so their speed ratios are omitted.
+
+\input{data/signed-annuli-native-table.tex}
+
+The first run measured a substantial slowdown on the Fibonacci 8 pilot
+(paired ratio $0.710$), alongside a variable A/A control ($1.167$).
+A separately retained diagnostic run of 21 pairs and seven A/A controls
+measured before/after medians of 97.60/99.43\,ms, paired ratio $0.998$,
+and control ratio $0.986$.  This follow-up did not reproduce the initial
+slowdown.  Both runs are retained without pooling or replacing samples;
+neither establishes a speedup for the unchanged positive path.  The other
+two common positives are also near parity in the initial run.  New positive
+queries take about 186--338\,ms including replay, compared with earlier
+refusals at about 84--169\,ms.  These are costs of added coverage, not
+recognition speedup factors.
+
+A separate full-grid algebra experiment has 22 parameter choices across
+four families, with three repetitions each.  All 22 complete and replay
+within the stated node/work caps.  Its complete-query timer includes
+source-grammar construction, discovery, independent grammar reconstruction
+and certificate replay.  The narrower component timers are retained with
+their separate labels.  Four largest-family records are shown below;
+``length bits'' is the bit length of the total represented word length,
+not a count of allocated letters.
+
+\input{data/signed-annuli-compression-table.tex}
+
+For the depth-2048 triangular cancellation chain, the passive word has
+length $2^{2048}+1$.  Source compilation uses 4101 grammar nodes and the
+completed producer and independent checker each use 4105 nodes; the
+whole algebra query has median time about 143\,ms.  This gives direct
+implementation evidence for avoiding literal expansion, while the
+shared-grammar and polynomial algorithms above supply the asymptotic
+argument.  These generated algebraic families are not asserted to be
+compiled normal-surface inputs.  All raw samples, original and diagnostic
+native runs, source hashes, independent audits and publication checks are
+retained under \path{synthesis/data/signed-annuli-*}.  Native signed transport and
 rank-two discovery improve a local terminal.  Global useful-surface
 coverage, marked geometric successors and aggregate hierarchy accounting
 remain required for the user's general quasi-polynomial objective.

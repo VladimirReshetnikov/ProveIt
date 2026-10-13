@@ -1,0 +1,272 @@
+{
+  "audit": "independent-rank-two-whitehead-and-nielsen-v1",
+  "audit_script_sha256": "3a796975451266878932a0fe2c756b4d9c2cb5aa8509c9690a193b13f2cc872a",
+  "bounds": {
+    "ordered_pair_total_cyclic_length": 6,
+    "random_cases": 400,
+    "requested_compiler_cases": 400,
+    "single_cyclic_length": 6
+  },
+  "certificate_failures": [],
+  "compiler_failures": [],
+  "compiler_move_coverage": {
+    "invert": 508,
+    "left": 768,
+    "multiply": 1532,
+    "negative_power": 744,
+    "positive_power": 788,
+    "power_above_one": 1226,
+    "right": 764,
+    "swap": 506
+  },
+  "controls": [
+    {
+      "determinant": 2,
+      "individually_primitive": [
+        true,
+        true
+      ],
+      "jointly_primitive": false,
+      "name": "primitive_separate_det_two",
+      "words": [
+        [
+          1
+        ],
+        [
+          1,
+          2,
+          2
+        ]
+      ]
+    },
+    {
+      "determinant": 0,
+      "individually_primitive": [
+        true,
+        true
+      ],
+      "jointly_primitive": false,
+      "name": "primitive_duplicate_det_zero",
+      "words": [
+        [
+          1
+        ],
+        [
+          1
+        ]
+      ]
+    },
+    {
+      "determinant": 1,
+      "individually_primitive": [
+        false,
+        true
+      ],
+      "jointly_primitive": false,
+      "name": "unimodular_one_nonprimitive",
+      "words": [
+        [
+          1,
+          1,
+          2,
+          -1,
+          -2
+        ],
+        [
+          2
+        ]
+      ]
+    },
+    {
+      "determinant": 1,
+      "individually_primitive": [
+        false,
+        false
+      ],
+      "jointly_primitive": false,
+      "name": "unimodular_both_nonprimitive",
+      "words": [
+        [
+          1,
+          1,
+          2,
+          -1,
+          -2
+        ],
+        [
+          2,
+          2,
+          1,
+          -2,
+          -1
+        ]
+      ]
+    },
+    {
+      "determinant": 1,
+      "individually_primitive": [
+        true,
+        true
+      ],
+      "jointly_primitive": true,
+      "name": "independently_conjugated_basis",
+      "words": [
+        [
+          2,
+          1,
+          -2
+        ],
+        [
+          1,
+          2,
+          -1
+        ]
+      ]
+    },
+    {
+      "determinant": 0,
+      "individually_primitive": [
+        false,
+        true
+      ],
+      "jointly_primitive": false,
+      "name": "empty_class",
+      "words": [
+        [],
+        [
+          2
+        ]
+      ]
+    },
+    {
+      "determinant": 0,
+      "individually_primitive": [
+        false,
+        true
+      ],
+      "jointly_primitive": false,
+      "name": "freely_trivial",
+      "words": [
+        [
+          1,
+          -1
+        ],
+        [
+          2
+        ]
+      ]
+    },
+    {
+      "individually_primitive": [
+        true,
+        true,
+        true
+      ],
+      "jointly_primitive": false,
+      "name": "rank_bound",
+      "words": [
+        [
+          1
+        ],
+        [
+          2
+        ],
+        [
+          1,
+          2
+        ]
+      ]
+    },
+    {
+      "individually_primitive": [],
+      "jointly_primitive": true,
+      "name": "empty_tuple",
+      "words": []
+    }
+  ],
+  "corruption_counts": {
+    "accepted": 4,
+    "changed_valid_syntax": 24,
+    "malformed_schema": 71,
+    "rejected": 91
+  },
+  "corruption_failures": [],
+  "counts": {
+    "compiler_generation_cap_skips": 6,
+    "compiler_inverse_roundtrips": 4008,
+    "compiler_literal_words": 4008,
+    "compiler_sequences": 396,
+    "controls": 9,
+    "controls_positive": 2,
+    "exhaustive_pair": 6576,
+    "exhaustive_pair_positive": 648,
+    "exhaustive_single": 1104,
+    "exhaustive_single_positive": 196,
+    "positive_certificates_checked": 1284,
+    "positive_generation_cap_skips": 3,
+    "random_positive": 397,
+    "random_positive_positive": 397,
+    "random_unstructured": 400,
+    "random_unstructured_positive": 41
+  },
+  "decision_discrepancies": [],
+  "elapsed_seconds": 11.771,
+  "invalid_alphabet": [
+    {
+      "outcome": "ValueError",
+      "word": [
+        3
+      ]
+    },
+    {
+      "outcome": "ValueError",
+      "word": [
+        3,
+        1,
+        -3
+      ]
+    },
+    {
+      "outcome": "ValueError",
+      "word": [
+        3,
+        -3,
+        1
+      ]
+    }
+  ],
+  "limitations": [
+    "Finite explicit regressions do not prove asymptotic complexity.",
+    "No topology, embedding, marking, or native-knot recognition is tested.",
+    "Production verifier shares WordArena; the explicit Whitehead and forward-substitution oracles do not."
+  ],
+  "maxima": {
+    "compiler_moves": 14,
+    "compiler_raw_length": 36687
+  },
+  "oracle": {
+    "cache": {
+      "currsize": 1579,
+      "hits": 8397,
+      "maxsize": null,
+      "misses": 1579
+    },
+    "method": "strict total cyclic-length descent; terminal distinct one-letter classes",
+    "type_II_maps": 16
+  },
+  "passed": true,
+  "production_files_changed_during_run": [],
+  "production_sha256": {
+    "compressed_words.py": "55daf4a565d4b2683f2a808db68a8c20ca73d31922a5abe375ff0beec4555fa2",
+    "cyclic_basis.py": "c1777bd14854b3aa3af9c6183726bb91f9c8b0afa8f5737797f45d956aeba91a",
+    "cyclic_basis_verify.py": "18f1f37c0473882d412d0143c8a9bfdd682dd2acef92ce570656ecb8138e8abc"
+  },
+  "reasons": {
+    "COMPLETE": 1284,
+    "dependent_annular_classes": 124,
+    "nonprimitive_cyclic_class": 810,
+    "nonprimitive_homology": 6261,
+    "trivial_annular_class": 7
+  },
+  "seed": 20261012
+}
