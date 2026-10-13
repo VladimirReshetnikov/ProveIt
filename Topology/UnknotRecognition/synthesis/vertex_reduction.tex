@@ -1,0 +1,249 @@
+\section{Polynomial reduction to one vertex before surface search}
+\label{sec:vertex-reduction}
+
+The anchor product in Section~\ref{sec:euler-lp-crushing} need not remain
+a global source of exponential work.  The maintained
+\path{fast/fastunknot/normal_vertex_reduction.py} constructs a positive
+normal ray whenever the current authenticated knot exterior has more than
+one vertex.  Repeated verified crushing reaches a one-vertex source, or
+already proves that the knot is trivial, before sector discovery begins.
+The construction uses no LP or sector enumeration.
+
+The geometric input is Burton--Ozlen's one-vertex construction
+\cite[Lemma~6]{burton-ozlen}.  Their expanded edge neighbourhood has a normal
+frontier consisting of discs and spheres, including a disc that is not a
+vertex link.  The implementation uses this entire bounded-coordinate
+frontier, removes its vertex-link components, and applies the existing
+positive support extractor.  It need not identify the particular disc used
+in the published construction.  This adaptation separates the geometric
+existence argument from the independently checked ray and quotient.
+
+\subsection{Local incidence closure and the normal frontier}
+
+The supplied-source validator reconstructs the global vertices, edges and
+faces of the finite triangulation.  With several boundary vertices, the
+producer chooses a boundary edge joining distinct vertices.  With one
+boundary vertex and at least one interior vertex, it chooses an edge from
+the boundary vertex to an interior vertex.  The boundary and source
+one-skeletons supply these edges by connectedness.  The initial closed
+edge neighbourhood meets the boundary in a disc.
+
+Starting from this edge and its endpoints, the producer repeatedly includes
+a face whenever at least two of its three local edge occurrences are
+already included; inclusion adds all edges and vertices of that face.
+Occurrences, rather than distinct global edge identifiers, are essential:
+an edge can occur twice around one face of a generalized triangulation.
+Glued partner faces share one global face identifier.  After face closure,
+every tetrahedron whose four faces are included is absorbed.  Deferring
+this last step is equivalent to performing it during closure, since it
+introduces no new lower-dimensional cells.
+
+For each unabsorbed tetrahedron, closure permits at most one included face.
+That face contributes a normal triangle parallel to it.  If no face is
+included, the included edges are absent, a single edge, or two opposite
+edges; each contributes its adjacent normal quadrilateral.  Each included
+vertex not accounted for by these pieces contributes its vertex triangle.
+An included vertex opposite an included face therefore gives a second
+parallel triangle.  Two opposite included edges give two parallel copies
+of the same quad type, not two incompatible types.
+
+Consequently the constructed vector $x$ has
+\[
+ 0\le x_i\le2,\qquad \sum_i x_i\le4t.
+\]
+The implementation checks both inequalities, matching, admissibility and
+Euler characteristic from the source.  It also records the seed edge,
+face additions, absorbed tetrahedra and local piece patterns as diagnostics.
+
+\subsection{Why whole-frontier peeling preserves a positive witness}
+
+Write $V_v$ for the normal vertex link at global vertex $v$, and let $m_v$
+be the minimum triangle coordinate of $x$ among its corners.  Set
+\[
+ x^{\rm can}=x-\sum_v m_vV_v.
+\]
+This subtraction removes actual disjoint vertex-link components.  A link
+can be placed nearest its vertex, disjoint from the remaining normal
+surface; the nonnegative matching vector after subtraction realizes the
+remainder.  Normal coordinates determine the surface up to normal isotopy,
+so the operation does not replace a nonlink component by an unrelated
+surface with the same Euler count.
+
+The expanded frontier has only disc and sphere components, and at least
+one nonlink disc.  Removing all its vertex-link components leaves that
+disc, so
+\[
+ \chi(x^{\rm can})>0.
+\]
+There is a triangle zero at every global vertex.  A nonzero triangle-only
+matching vector is a nonnegative sum of vertex links; those zeros exclude
+such a remainder.  Hence $x^{\rm can}$ also has a quadrilateral.  The
+producer checks these conclusions before attempting extraction.
+
+Let $S=\operatorname{supp}(x^{\rm can})$.  The extractor works with every
+original matching equation restricted to $S$, using the exact Euler
+objective.  Section~\ref{sec:reusable-source-kernels} proves polynomial
+support descent to a primitive positive extreme ray $r$, with
+$\operatorname{supp}(r)\subseteq S$.  This coordinate face is a face of
+the full matching cone.  Thus $r$ is full-source extreme; its primitive
+integer coordinates give connectedness.  The inherited zeros preserve
+admissibility and exclude a vertex link.  On a classical knot exterior,
+the connected positive surface is a disc or a sphere.
+
+\subsection{Progress uses tetrahedra, not the number of vertices}
+
+\begin{proposition}[Complete polynomial vertex reduction]
+For a finite triangulation of a classical knot exterior, the maintained
+reduction with an unrestricted crushing allowance terminates at a one-vertex
+triangulation of the same exterior, or certifies the unknot.  Its bit
+complexity is polynomial in the initial explicit triangulation size.
+\end{proposition}
+\begin{proof}
+At a source with several vertices, the preceding construction supplies a
+primitive positive nonlink ray.  The crushing theorem of
+Section~\ref{sec:normal-crushing-search}, using
+\cite[Lemma~5]{burton-ozlen}, applies to any such ray.  A surviving component
+with torus boundary is the same knot exterior; if no torus component
+survives, the knot is trivial.  At least one quadrilateral is present, so
+each nonterminal successor has strictly fewer tetrahedra.  The next source
+therefore satisfies the same hypotheses whenever another reduction is
+needed.  No step requires the number of vertices itself to decrease.
+Strict tetrahedron descent bounds the total number of reductions by the
+initial number of tetrahedra.
+
+There are $O(t)$ global faces and at most $O(t)$ successful face additions.
+Repeated scans therefore take $O(t^2)$ combinatorial work.  The frontier
+and its peeled vector have constant-size coordinates.  Exact source-kernel
+preparation, support descent, coordinate validation and quotient replay
+have polynomial bit complexity.  The primitive extracted coordinates have
+polynomial bit length, and the quotient construction uses their quad
+types without expanding their multiplicities.  Each successor is again
+an explicit face pairing with fewer tetrahedra.  Summing polynomial work
+over the bounded number of successors proves the assertion.
+\end{proof}
+
+The published construction has an $O(t^3)$ bound using its own component
+extraction procedure.  That exponent is not asserted for this implementation:
+our dense exact source elimination and independent replay add polynomial
+work whose degree need not match the published algorithm.
+
+\subsection{Integration, certificates and the remaining complexity gap}
+
+The crushing driver enables this preprocessing by default through
+\texttt{reduce\_vertices=True}.  It invokes the reduction before sector
+search on every current source, including
+successors produced by later search rays.  Reduction crushes and search
+crushes share the same \texttt{max\_crushes} allowance.  A reached allowance
+returns an authenticated partial chain; preprocessing consumes no sector,
+corner-candidate, LP-pivot or LP-anchor allowance.  Its work remains part
+of the complete running time, and callback cancellation propagates.
+
+Extracted rays use the existing \path{normal-ray-crushing-v1} packet,
+within the diagram-bound chain and recognition schemas.  The independent checker
+validates the source coordinates, primitive full-source extremality,
+quotient, retained component and strict descent.  It need not trust the
+expansion diagnostics or re-run its discovery procedure.  The low-level
+\texttt{ONE\_VERTEX} result reports a vertex count, not a knot verdict;
+classical knot-exterior provenance comes from the authenticated chain,
+not merely from having torus boundary.
+
+When this preprocessing is enabled, every source passed to sector search
+has one vertex.  Thus a supplied sector has at most one active corner
+group, and its complete anchor family has at most
+$\min(4t,4k+1)$ members for $k$ allowed quad types; an empty active family
+still has its single empty tuple.  An envelope call adds at most one LP.
+This removes the general Cartesian anchor-product obstruction
+unconditionally for these authenticated search sources.  It does not
+bound the pivot count of exact Bland simplex, nor compress the complete
+$3^t$ quadrilateral sector family.  Those remaining obligations still
+prevent a claim of general quasi-polynomial recognition complexity.
+
+\subsection{Native tests, independent oracle checks and timing}
+
+The integrated implementation passes 97 focused tests.  New controls cover
+repeated local occurrences of one global edge, two parallel triangles,
+actual vertex-link sphere removal, exact source validation, caller
+cancellation and crushing allowances shared across preprocessing and later
+sector discovery.  Setting every search allowance to zero still permits
+preprocessing to prove the crossing-free unknot.  A zero crushing allowance
+instead returns the unchanged authenticated source chain.
+
+The fresh audit includes 38 supplied triangulations and 29 reduction steps
+in three authenticated diagram chains.  Three supplied sources already
+have one vertex.  All other 64 queries produce positive rays.  For each,
+Regina independently constructs the selected edge's normalized linking
+surface: its entire labelled coordinate vector agrees with the native raw
+frontier.  Regina's vertex identifications independently reproduce the
+canonical peeling.  Its explicit components confirm the disc/sphere
+census, and the extracted ray passes independent support-rank,
+primitivity and connectedness checks.  All 64 native crushing quotients
+agree exactly with Regina's labelled gluings, component census and torus
+successor.  Thirteen fresh original standard-vertex enumerations, containing
+784 vertices in total, each contain the extracted ray exactly once.
+
+The retained controls include seven nontrivial expansions with repeated
+selected-edge face occurrences, seven double-triangle vectors and three
+queries that actually remove vertex-link spheres.  A 14-tetrahedron
+control has raw Euler characteristic three and canonical Euler
+characteristic one.  One control needs a genuine positive support-descent
+step.  The finite family contains no double-quad coordinate; the local
+proof covers that pattern, but no such oracle example is claimed here.
+
+The diagram chains reduce the shelled circle's five tetrahedra to a
+terminal unknot.  The trefoil reaches a one-vertex triangulation with ten
+tetrahedra from 48 in twelve crushes; the figure-eight reaches one vertex
+and thirteen tetrahedra from 68 in sixteen crushes.  Every chain replays
+through the existing independent verifier.  The latter two records prove
+only the authenticated reductions, not knottedness.
+
+\begin{center}
+\input{data/vertex-reduction-table.tex}
+\end{center}
+
+The table gives median whole-query milliseconds.  ``Prior Q'' and
+``Prior LP'' load the preceding fair-search driver from commit
+\texttt{c7ebc2073}; only that driver is historical and its shared dependencies
+use the current pinned sources.  ``Vertex Q'' and ``Vertex LP'' enable the
+new preprocessing.  Both positive fixtures terminate during preprocessing,
+before either Q or LP discovery, so the two new methods differ only in
+their selected configuration and output statistics.  ``Adaptive'' remains
+the maintained adaptive-disc principal baseline.
+
+Nine seeded, randomly ordered five-arm repetitions each average three
+complete queries.  Source construction, shelling, discovery, internal
+replay and serialization are timed.  Imports, diagram objects and separate
+independent replay of each warm-up output are outside the timer; every
+timed serialized result matches that verified output.  Three adaptive A/A
+pairs give the final dimensionless column.  The median paired prior/new
+ratios are 1.398 and 1.425 for Q, and 1.727 and 1.747 for LP.  Preprocessing
+therefore improves these complete positive crushing queries, while adaptive
+disc search remains slightly faster.  These two fixtures do not establish
+a general empirical scaling law.
+
+The separate trefoil probe uses the same 64-sector allowance for four
+crushing arms, with 10,000 Q candidates or separate LP allowances of
+1,000 pivots and 4,096 anchors.  Each has a 30-second cooperative ceiling,
+which none reaches.  Prior fair Q takes 11.37 seconds, spends 442 candidates
+and ends at twelve tetrahedra; prior fair LP takes 15.36 seconds and ends
+at the same source size after 696 pivots and 269 anchors.  With vertex
+preprocessing, Q takes 1.27 seconds and uses 71 candidates; LP takes 2.76
+seconds and uses 896 pivots and 175 anchors.  Both new arms finish their
+64-sector allowance at the one-vertex, ten-tetrahedron source, with all
+twelve crushes performed by preprocessing.  In particular, fewer LP pivots
+are not the explanation for this observed runtime improvement.
+
+All four runs return \texttt{INCONCLUSIVE}, and every saved partial chain
+independently replays.  Their remaining sources and explored sector families
+differ; these are single bounded progress profiles, not repeated timings
+of complete trefoil recognition.  The general recognizer's default dispatch
+is unchanged by the additive crushing-backend policy.
+
+Experiment runners are in \path{fast/vertex_reduction_research/}.
+Saved records use the prefix \path{vertex-reduction-} under
+\path{synthesis/data/}.  The evidence checker
+replays source-bound rays and complete chains without discovery, checks
+the retained oracle records and timing arithmetic, and pins the native
+sources.  The final publication manifest also pins the article, PDF,
+focused test log and evidence.  The polynomial preprocessing theorem is
+established, while general quasi-polynomial recognition remains the active
+target.

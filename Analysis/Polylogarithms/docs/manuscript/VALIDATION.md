@@ -1,3 +1,72 @@
+# Character-valued Stieltjes identities and colored-tail classification
+
+12 October 2026 (Pacific). Volume III, Section 8.54 establishes an
+all-order ordinary-moment dictionary for every nonprincipal Dirichlet
+character. Its primitive values are explicit Gauss-sum multiples of
+positive-order L-values. For imprimitive characters, finite Euler-factor
+removal gives an exact dilation identity and a complete account of the
+exceptional order-zero moments. Inducing the odd character modulo three
+to moduli 21 and 273 gives explicit digamma integrals with values log(7)/3
+and zero, evaluated first moments in L(2,chi_3), and the ordinary identity
+integral x*(K_0-K_1)=0. All displayed combined integrals converge absolutely.
+Principal characters require a different subtraction and are excluded.
+
+Section 8.53.5 now uses Brillhart's classical theorem to classify all
+alternating exceptions, at every order. Only order five at the positive
+golden shift admits nonunique balancing; only the order-four golden
+kernel has two extra ordinary integer moments. A separate self-contained
+secant-polynomial recurrence excludes every central-shift nonalternating
+unit-circle tail. Explicit rational Bezout identities classify the full
+unit circle through order eight. The noncentral higher-order problem
+remains open. No all-order assertion is inferred from a finite sweep.
+
+The unit-circle checker reconstructs original-color numerators independently
+of the certificate generator and verifies 41 base identities plus 16
+derivative/recurrence identities; all nine corrupt-certificate controls are
+rejected. Character evidence adds 36 exact rational tail checks, 36
+direct-modulus/Euler-factor comparisons and 16 finite Euler gcd checks.
+Two precision runs at 50 and 65 digits check seven ordinary moments,
+one vanishing combination and five finite Stieltjes definitions each.
+The worst ordinary residual improves from 6.84e-31 to 3.06e-39.
+Four additional nonreal-character checks verify the phase and conjugation
+in the functional equation. All ten numerical wrong-formula controls
+are rejected. These floating-point computations are noninterval
+diagnostics; the written proofs and exact certificates have separate scope.
+
+The mathematical source/proof audit is
+`verification/STIELTJES-CHARACTERS-AUDIT.md`. Classical Euler-polynomial
+and Dirichlet-function inputs are explicitly credited. The original
+Brillhart proof was not accessible; the precise theorem statement was
+checked in Howard's primary paper and DLMF. The full manuscript proofs
+were independently reviewed. No Lean formalization or remote-CI claim
+is made, and the continuing research goal remains active.
+
+Final PDFs have 191/132/281/88 pages (692 total), and the combined edition
+has 643 pages with 167 references. The four coupled volumes converge in
+three complete rounds; each isolated volume and the combined edition
+compile in three serial passes with clean final logs. All 70 external
+PDF destinations resolve. An overlong inline formula found in the first
+build was displayed separately before these final builds.
+
+Visual review opened all 11 changed volume pages and three unmatched
+combined contents pages. Exact body comparisons retain 681 prior volume
+pages and 633 prior combined pages; seven additional combined pages match
+freshly reviewed volume pages. Only centered footer page numbers are
+excluded, with every other text/image/drawing bound checked. The previous
+review is retained in the `stieltjes-extensions-*visual-review.json` files.
+All PDFs retain ProveIt Contributors as author.
+
+The 1,810-source inventory and the 137-archive/4,861-original-member/
+58-archive-only evidence register remain unchanged. No incoming archive
+was present during this research milestone. Current upstream changes
+at the prepublication fetch concern other research areas.
+
+The final manifests pin 314 canonical sources and 6,799 dependencies.
+All 496 receipt gates pass with no changed source or dependency digest.
+The gates audit recorded evidence; they do not rerun the mathematics or
+replace the independent proofs and visual review.
+
+
 # Stieltjes contour transport, product moments and colored exceptions
 
 12 October 2026 (Pacific). Volume III, Sections 8.51--8.53 extend the

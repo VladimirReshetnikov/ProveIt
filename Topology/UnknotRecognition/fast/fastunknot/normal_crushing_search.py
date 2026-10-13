@@ -154,7 +154,8 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                           max_crushes=None, sector_order='diversified',
                           sector_quantum=64, sector_method='corners',
                           max_pivots=10000, max_anchors=10000,
-                          lp_strategy='envelope', check=lambda: None):
+                          lp_strategy='envelope', reduce_vertices=True,
+                          check=lambda: None):
     """Recognize with globally shared search caps, returning three-way status.
 
     ``max_sectors`` counts distinct begun maximal sectors across smaller sources;
@@ -183,6 +184,13 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
     'anchors'. These finite exact simplex computations have no polynomial
     pivot bound. Negative recognition may mix independently checked Euler-LP
     and corner-exhaustion packets, always on all full final-source assignments.
+
+    ``reduce_vertices=True`` first constructs expanded-edge-link positive rays
+    on each source with multiple vertices, without sector search. Their crushes
+    use the same independent verifier and shared ``max_crushes`` allowance.
+    Strict tetrahedron descent reaches a one-vertex source or a terminal unknot
+    chain in polynomially many such steps. This does not bound the remaining
+    sector family. ``False`` retains the search-only policy for comparisons.
     """
     for name, value in (('max_sectors', max_sectors), ('max_bases', max_bases),
                         ('max_crushes', max_crushes), ('max_pivots', max_pivots),
@@ -197,17 +205,19 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
         raise ValueError('sector_method must be corners or lp')
     if lp_strategy not in ('anchors', 'envelope'):
         raise ValueError('lp_strategy must be anchors or envelope')
+    if type(reduce_vertices) is not bool:
+        raise ValueError('reduce_vertices must be a boolean')
     return _safe_call(_recognize_by_crushing, check, diagram,
                       max_sectors=max_sectors, max_bases=max_bases,
                       max_crushes=max_crushes, sector_order=sector_order,
                       sector_quantum=sector_quantum, sector_method=sector_method,
                       max_pivots=max_pivots, max_anchors=max_anchors,
-                      lp_strategy=lp_strategy)
+                      lp_strategy=lp_strategy, reduce_vertices=reduce_vertices)
 
 
 def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                           sector_order, sector_quantum, sector_method,
-                          max_pivots, max_anchors, lp_strategy, check):
+                          max_pivots, max_anchors, lp_strategy, reduce_vertices, check):
     # Keep producer imports outside the independent verifier's import path.
     from .diagram_exterior import diagram_exterior
     from .diagram_exterior_verify import verify_diagram_exterior
@@ -220,6 +230,7 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
     from .normal_surface_geometry import _coordinates
     from .normal_euler import decide_sector_euler
     from .positive_ray import extract_positive_ray
+    from .normal_vertex_reduction import vertex_reduction_ray
 
     check()
     source = Diagram.from_pd(diagram.pd)
@@ -243,6 +254,8 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
         stats.update(lp_calls=0, lp_pivots=0, anchors_tested=0,
                      reused_anchors=0, envelope_calls=0, lp_tableau_updates=0,
                      maximum_tableau_bits=0, extraction_steps=0)
+    if reduce_vertices:
+        stats.update(vertex_reduction_calls=0, vertex_reduction_crushes=0)
 
     def chain():
         return dict(schema='diagram-crushing-v1', input_pd=[list(row) for row in source.pd],
@@ -259,6 +272,20 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
         if not verify_crushing_recognition(source, certificate, check=check):
             raise ArithmeticError('independent crushing recognition replay failed')
         return dict(status=status, certificate=certificate, stats=stats)
+
+    def apply_crush(coordinates):
+        nonlocal current
+        count = len(current['tetrahedra'])
+        result = crush_normal_ray(current, coordinates, check=check)
+        packet = result['certificate']
+        if not verify_normal_crushing(current, packet, check=check):
+            raise ArithmeticError('independent normal crushing replay failed')
+        successor = packet['successor']
+        if successor is not None and len(successor['tetrahedra']) >= count:
+            raise ArithmeticError('normal crushing did not strictly shrink the source')
+        steps.append(packet)
+        stats['crushing_steps'] += 1
+        current = successor
 
     def prepare_job(assignment):
         allowed = [[t, q] for t, q in enumerate(assignment)]
@@ -347,6 +374,19 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
     while current is not None:
         check()
         stats['stages'] += 1
+        if reduce_vertices:
+            reduction = vertex_reduction_ray(current, check=check)
+            stats['vertex_reduction_calls'] += 1
+            if reduction['status'] == 'POSITIVE_EULER':
+                stats['rays_examined'] += 1
+                stats['positive_euler_rays'] += 1
+                if max_crushes is not None and len(steps) >= max_crushes:
+                    return inconclusive('shared crushing-step allowance exhausted')
+                apply_crush(reduction['coordinates'])
+                stats['vertex_reduction_crushes'] += 1
+                continue
+            if reduction['status'] != 'ONE_VERTEX':
+                raise ArithmeticError('unexpected vertex reduction outcome')
         count = len(current['tetrahedra'])
         digest = _source_hash(current)
         exhaustion = {}
@@ -383,16 +423,7 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                 continue
             if max_crushes is not None and len(steps) >= max_crushes:
                 return inconclusive('shared crushing-step allowance exhausted')
-            result = crush_normal_ray(current, result['coordinates'], check=check)
-            packet = result['certificate']
-            if not verify_normal_crushing(current, packet, check=check):
-                raise ArithmeticError('independent normal crushing replay failed')
-            successor = packet['successor']
-            if successor is not None and len(successor['tetrahedra']) >= count:
-                raise ArithmeticError('normal crushing did not strictly shrink the source')
-            steps.append(packet)
-            stats['crushing_steps'] += 1
-            current = successor
+            apply_crush(result['coordinates'])
             # Every sector/exhaustion packet is relative to the old source;
             # restart all maximal assignments on the authenticated successor.
             break

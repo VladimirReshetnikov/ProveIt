@@ -94,7 +94,7 @@ for p in [jct_home/'INTAKE-PROOF-AUDIT.md',*sorted((jct_home/'intake-verificatio
         name='../../../Transseries/docs/series-and-transseries/Quadratic_Polylogarithm_Feedback_Boundary_Completion/continuations/joint-coefficient-transseries/'+p.relative_to(jct_home).as_posix()
         dependencies[name]={'sha256':digest(p,'lf-normalized'),'mode':'lf-normalized'}
 
-for name in ['STIELTJES-RECONSTRUCTION-AUDIT.md','STIELTJES-EXTENSIONS-AUDIT.md']:
+for name in ['STIELTJES-RECONSTRUCTION-AUDIT.md','STIELTJES-EXTENSIONS-AUDIT.md','STIELTJES-CHARACTERS-AUDIT.md']:
     p=V/name
     dependencies[p.relative_to(B).as_posix()]={'sha256':digest(p,'lf-normalized'),'mode':'lf-normalized'}
 
