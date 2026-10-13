@@ -1,0 +1,90 @@
+\section{Exactness barriers and nonvacuous parameter accounting}
+\label{sec:barriers}
+
+\subsection{Incompatible domains cannot be convexified}
+\begin{example}[A false positive from mixing modes]
+\label{ex:convex}
+Let the first block have two coordinate rays with port images $e_1,e_2$, but forbid their simultaneous use. Its normalized feasible set is $\{e_1,e_2\}$, not their joining segment. Let the second block have one ray with port $(1,1)$, normalized to $(1/2,1/2)$. The only common unnormalized port is zero, and neither block has a nonzero zero-port vector. The strict positive query is therefore negative for every objective. Replacing the first block's feasible set by its convex hull falsely makes the midpoint feasible.
+\end{example}
+
+The package rejects such mixing by support compatibility \emph{before} admitting a simplex. It keeps distinct source rays even when their port points coincide, because equality of projected data does not imply interchangeable continuations. This is an exact union-of-compatible-cones method, not a convex relaxation.
+
+\subsection{Two-coordinate chains can encode exact cover}
+The common-master hypothesis is substantive. In a chain there is a different port $y_i$ at each seam, whereas \eqref{eq:model} requires every block to use the same $y$.
+
+\begin{theorem}[Endpoint-constrained two-port gain chains]
+\label{thm:chain}
+Consider a chain of nonnegative two-coordinate interfaces $(a_i,b_i)$. At stage $i$, choose one of
+\[
+ (a_i,b_i)=(a_{i-1},b_{i-1})\quad\text{or}\quad
+ (a_i,b_i)=(a_{i-1},g_i b_{i-1}),
+\]
+where $g_i$ is a positive integer in binary. Impose $a_0=b_0>0$ and $b_m=Qa_m$ for a positive binary integer $Q$. Deciding feasibility is NP-complete. Each stage can be encoded by a four-variable orthant cone, four local forbidden pairs, and nonnegative two-coordinate input and output maps.
+\end{theorem}
+\begin{proof}
+We reduce exact cover, one of the classical problems in Karp's framework \cite{karp}. Let the universe be $\{1,\ldots,u\}$, with subsets $S_1,\ldots,S_m$. Choose distinct primes $p_1,\ldots,p_u$ and define
+\[
+ g_i=\prod_{j\in S_i}p_j,\qquad Q=\prod_{j=1}^u p_j.
+\]
+The first $u$ primes have polynomially bounded magnitude and can be produced by a polynomial-size sieve. Thus all gains and the target have polynomial total bit length in the exact-cover input.
+
+The chain preserves $a_i=a_0$ and gives
+\[
+ b_m/a_m=\prod_{i\in I}g_i
+\]
+for its chosen gain stages $I$. Unique prime factorization shows that this product equals $Q$ exactly when the selected subsets cover each universe element once. Conversely, an exact cover specifies a feasible chain by taking $a_i=1$ and the corresponding partial products for $b_i$.
+
+For the promised local encoding, use variables $(u,v,\bar u,\bar v)\ge0$, with every cross pair between $\{u,v\}$ and $\{\bar u,\bar v\}$ forbidden. The input and output ports are
+\[
+ (u+\bar u,v+\bar v),\qquad (u+\bar u,v+g_i\bar v).
+\]
+The two allowed supports implement the two alternatives. Positivity of the transported first coordinate forces a definite mode at each stage; the initial equality makes the second coordinate positive too. A list of mode bits is a polynomial-size certificate. The partial products have bit lengths bounded by the sum of the gain bit lengths and can be checked in polynomial time. Hence the decision problem lies in NP as well as being NP-hard.
+\end{proof}
+
+This is a theorem about rational conic interfaces, not a reduction to knot diagrams. It does not make unknot recognition NP-hard, and it does not refute a specialized topological hierarchy strategy. It does show why constant seam dimension alone cannot justify extending the present synchronized algorithm to every decomposition tree. Flattening such a chain requires retaining all seam coordinates in a common master or absorbing substantial history into larger local blocks.
+
+Taking distinct prime gains without imposing an endpoint also yields $2^m$ distinct terminal slopes. This elementary phenomenon is closely related to report 96's warning about explicit two-coordinate continuation unions. Our atlas avoids it only under its stated synchronization condition.
+
+\begin{corollary}[A tractable finite-gain comparison]
+\label{cor:gain-alphabet}
+If the gain chain uses only $q$ distinct positive integers, with multiplicities $m_1,\ldots,m_q$, endpoint feasibility can instead be decided in
+\[
+ \poly(m,B)\prod_{j=1}^q(m_j+1)\le\poly(m,B)(m+1)^q
+\]
+bit time, where $B$ bounds the total binary input length. Thus fixed $q$ gives polynomial time and $q=O(\log m)$ gives quasi-polynomial time.
+\end{corollary}
+\begin{proof}
+The terminal product depends only on the number of times each distinct gain was selected. Enumerate the possible count vectors $0\le e_j\le m_j$, compute their exact products, and test equality with $Q$. Every count vector is realizable by selecting that many occurrences of each gain. Product bit lengths are bounded by the sum of the bit lengths of the chosen gains. Repeated equal products can be merged but need not be merged for the displayed bound.
+\end{proof}
+
+This elementary comparison identifies an additional possible route through higher-rank chains: prove a small multiplicative alphabet or an analogous source-authenticated commuting transfer structure. Uniformly small local matrix dimensions alone do not provide that property. Nor does the corollary address arbitrary noncommuting transfer maps or additional intermediate-domain restrictions.
+
+\subsection{A naive tetrahedron-separator criterion is asymptotically too strong}
+The source compiler suggests deleting $s$ entire tetrahedra and making each remaining dual-graph component a private block. If every such component has at most $b$ tetrahedra, then $d=7s$ master coordinates and at most $7(s+b)$ local coordinates suffice. Standard face equations and quadrilateral conflicts are local under this partition. Substitution in Theorem~\ref{thm:cost} gives a formal bound
+\begin{equation}
+ \poly(t)\exp\bigl(O(s^2(s+b+\log(t+2)))\bigr)
+ \label{eq:naive-tet}
+\end{equation}
+for a $t$-tetrahedron source, assuming $s\ge1$.
+
+It would be misleading to advertise $s,b=O(\log t)$ here as a broad asymptotic class of connected triangulations. The degree bound on the dual graph prevents that regime on arbitrarily large inputs.
+
+\begin{proposition}[Bounded-degree master obstruction]
+\label{prop:degree}
+Let $G$ be a connected graph of maximum degree $\Delta$. Delete a nonempty set of $s$ vertices and suppose every remaining component has at most $b$ vertices. Then
+\begin{equation}
+ |V(G)|\le s+\Delta sb.
+ \label{eq:degree}
+\end{equation}
+In particular, for a connected triangulation dual graph, $t\le s+4sb$. There is no unbounded family of such graphs with both $s$ and $b$ bounded by fixed multiples of $\log t$.
+\end{proposition}
+\begin{proof}
+Every component of $G-S$ has at least one edge to $S$, since $G$ is connected. At most $\Delta s$ edges leave $S$, so at most $\Delta s$ components remain. Counting their vertices proves \eqref{eq:degree}. A tetrahedron has four faces, so its dual graph has degree at most four, with multiplicities harmless for this bound. Finally, $s+4sb=O((\log t)^2)=o(t)$ under the asserted logarithmic bounds, a contradiction for sufficiently large $t$.
+\end{proof}
+
+This obstruction is useful for research planning. It prevents turning a formal parameter substitution into a spurious topological complexity advance. The theorem does not obstruct a small \emph{algebraic} interface after exact compression, nor the bounded-nullity alternative in Corollary~\ref{cor:nullity}. A long region may contain many source coordinates while having only a few independent parameters. Source-authenticated elimination of those determined coordinates, product-region compression, or a reusable family of small-nullity sectors is therefore a more plausible way to reach a nontrivial logarithmic-interface regime than deleting a logarithmic number of raw tetrahedra.
+
+The same counting observation applies to any connected bounded-incidence source-coordinate graph. A small high-degree master in an algebraic model may be perfectly legitimate, but its geometric exporter must explain how that master summarizes the original bounded-degree geometry. Simply renaming many boundary equations as a few ports is not an equivalence proof.
+
+\subsection{What is not inferred from the experiments}
+The two-tetrahedron fixture establishes that three-port discovery can be compiled and checked on an actual repository source and that it improves one delivered exhaustive baseline. It does not establish a large-family geometric parameter theorem. The synchronized sleeve benchmark establishes that the implementation avoids a genuine $2^m$ product of local mode choices in its own model. Those sleeves have not been exported as a family of authenticated knot exteriors. Neither observation supplies the missing global coverage or hierarchy depth bounds.

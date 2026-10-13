@@ -1,0 +1,120 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,array,longtable,enumitem,needspace}
+\usepackage{graphicx,xcolor,hyperref,xurl,fancyhdr,listings,tikz}
+\usetikzlibrary{arrows.meta,positioning,fit}
+\definecolor{ink}{RGB}{28,57,77}
+\definecolor{accent}{RGB}{20,112,124}
+\definecolor{pale}{RGB}{243,247,248}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=accent,
+ pdftitle={Lazy Weight Replay and Native Chamber Graphs for Unknot Recognition},
+ pdfauthor={Research continuation for Vladimir Reshetnikov's ProveIt project}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Lazy replay and native chamber graphs}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{0.35em}
+\setlength{\parindent}{1.1em}
+\setlength{\emergencystretch}{3em}
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlist{itemsep=0.25em,topsep=0.4em}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+ showstringspaces=false,frame=single,framerule=0.25pt,
+ backgroundcolor=\color{pale},xleftmargin=0.35em,xrightmargin=0.35em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\bits}{\operatorname{bits}}
+\newcommand{\cc}{\operatorname{cc}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\cut}{\mathbin{\backslash\!\backslash}}
+\DeclareRobustCommand{\code}[1]{\nolinkurl{#1}}
+\newcommand{\Run}{\mathcal R}
+\newcommand{\Cost}{\mathcal C}
+\newcommand{\BaseCommit}{\texttt{e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.28in}
+{\large\sffamily\color{accent} TOPOLOGY / COMPUTATIONAL GEOMETRY\par}
+\vspace{0.25in}
+{\LARGE\bfseries Lazy Weight Replay and\par Native Chamber Graphs\par}
+\vspace{0.16in}
+{\Large for Unknot Recognition\par}
+\vspace{0.25in}
+{\large Receiver-independent interval transport,\par
+source-authenticated nonseparating batches,\par
+and a reproducible implementation\par}
+\vspace{0.28in}
+{Research continuation prepared for Vladimir Reshetnikov's ProveIt project\par}
+{Developed with ChatGPT; 12 October 2026\par}
+\vspace{0.2in}
+\begin{abstract}
+Two concrete operations remain costly or incomplete in the current compressed
+geometry program. The weighted certificate checker repeatedly reconstructs
+constant-run partitions, including receiver intervals on which the same
+vector is added uniformly. The earlier chamber-graph framework, meanwhile,
+accepts geometric component labels and side locations that its native caller
+does not yet supply.
+
+We replace the checker's flat weight state by a deterministic balanced
+sequence with implicit integer lengths and lazy vector additions. A
+translation or reflection fold with \(S\) deleted suffix runs uses
+\(O((S+1)\log(R+2))\) tree work, together with residue sorting for translations,
+independently of the number of receiver runs. A complete family of legal
+Agol--Hass--Thurston traces separates the previous \(\Omega(HL)\) repeated
+receiver work from the new \(O(L+H\log(L+2))\) weight transport. We retain the
+independent residue-derivative arithmetic and the original certificate schema.
+
+We also implement a native chamber-graph exporter for a supplied normal
+surface with explicit component representatives. Exact scalar orbit censuses
+authenticate the component labels and locate both sides in the cut
+complement; the normal double checks two-sidedness. An independent checker
+reconstructs the side markers from raw cut-cell charts. The resulting graph
+supports the earlier exact cographic criterion for simultaneous
+nonseparation on actual source inputs.
+
+The package contains complete proofs, code, independent checks, source
+fixtures, certificates, paired measurements, and integration instructions.
+Classical weighted orbit counting, the previously proved two-boundary run
+bound, and the earlier cographic theorem are explicitly attributed. The
+remaining hierarchy-discovery, witness-transport, restart, and encoded-state
+obligations are not assumed solved. No general quasi-polynomial unknot
+recognition theorem is claimed.
+\end{abstract}
+\vfill
+{\small\textbf{Source checkpoint.} \BaseCommit.\par
+\textbf{Status.} Local algorithms and their stated bounds are proved;
+finite experiments test the delivered implementation. The global
+\(n^{O(\log n)}\) target remains open for this implementation.}
+\end{titlepage}
+\pagenumbering{roman}
+\hypersetup{pageanchor=true}
+\begingroup
+\setlength{\parskip}{0pt}
+\small
+\tableofcontents
+\endgroup
+\clearpage
+\pagenumbering{arabic}
+\input{sections/01_scope}
+\input{sections/02_lazy_replay}
+\input{sections/03_separation}
+\input{sections/04_chambers}
+\input{sections/05_validation}
+\input{sections/06_global}
+\input{sections/07_integration}
+\input{bibliography}
+\end{document}

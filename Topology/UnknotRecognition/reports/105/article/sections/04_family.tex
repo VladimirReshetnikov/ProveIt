@@ -1,0 +1,115 @@
+\section{A geometric family with exponentially many lower forests}
+\label{sec:forest-separation-family}
+
+The small closed-walk example extends to a family in which the candidate
+forest space is exponential, although delayed discovery is linear in the
+input size.  This does not establish a lower bound on all competing
+algorithms: the particular family also admits a direct block decomposition.
+Its purpose is to prove a strict, scalable difference between a canonical
+forest policy, unpruned forest enumeration, and the new complete strategy.
+
+\begin{theorem}[Theta-block separation family]
+\label{thm:theta-family}
+For every $h\ge1$, there is a connected graph $G_h$ with $h+1$ vertices and
+$3h$ edges, and $2h$ specified closed attaching walks, with the following
+properties.
+\begin{enumerate}
+\item $G_h$ has exactly $3^h$ spanning trees.  Exactly $2^h$ of them permit
+complete raw positive-singleton cancellation of all $2h$ rows.
+\item The source-order canonical forest leaves every row in a stopping
+set.  Full-matrix peeling deletes all rows, using $5h$ nonzero incidences,
+and then obtains a disjoint spanning forest in $O(h)$ indexed work.
+\item These unsigned attaching incidences admit a genuine geometric
+handle realization of a three-ball.  This existence statement does not
+assert that the repository's normal-cut front end produces that handle
+structure.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Take vertices $v_0,v_1,\ldots,v_h$.  For each $i$, join $v_0$ to $v_i$ by
+three parallel edges $a_i,b_i,c_i$, in this source order.  The two closed
+walks in block $i$ have words
+\[
+ a_ic_i^{-1}b_ic_i^{-1},\qquad b_ic_i^{-1}.
+\]
+Their raw incidence block, with columns $a_i,b_i,c_i$, is
+\[
+ N_i=\begin{pmatrix}1&1&2\\0&1&1\end{pmatrix}.
+\]
+There are no incidences between blocks.  Every spanning tree must contain
+exactly one edge from each triple, so there are $3^h$ trees.
+
+Choosing $a_i$ in a block leaves
+$\left(\begin{smallmatrix}1&2\\1&1\end{smallmatrix}\right)$, a nonempty
+stopping set.  No operations in other blocks can change that obstruction.
+Choosing $b_i$ or $c_i$ leaves respectively
+\[
+ \begin{pmatrix}1&2\\0&1\end{pmatrix},\qquad
+ \begin{pmatrix}1&1\\0&1\end{pmatrix},
+\]
+each completely column-peelable.  Thus success is equivalent to choosing
+one of $b_i,c_i$ independently for every block, giving exactly $2^h$
+successful trees.  The canonical tree chooses every $a_i$, so its entire
+$2h$-row matrix is blocked.  In the full matrix, column $a_i$ first removes
+the first row of block $i$, after which $b_i$ or $c_i$ removes the second.
+There are $6h$ literal occurrences and $5h$ nonzero incidences, and each is
+processed only a bounded number of times.
+
+For geometric realization, begin with two zero-handles and three
+one-handles $a_i,b_i,c_i$ joining them.  A zero-handle boundary with its
+three one-handle feet removed is a pair of pants.  Choose two disjoint
+seams joining the $a_i$ foot to the $c_i$ foot and the $b_i$ foot to the
+$c_i$ foot.  Choose compatible seams at the other zero-handle.  Distinct
+product strips through the one-handles join the seams into two disjoint
+simple attaching curves $x_i,y_i$ whose literal passages are
+$a_ic_i^{-1}$ and $b_ic_i^{-1}$.  Contracting $c_i$ gives a single
+zero-handle, and the two curves cancel the remaining one-handles, so
+attaching two-handles along this system gives a ball.
+
+Slide the two-handle attached along $x_i$ over the one attached along
+$y_i$.  Realize the slide by an embedded band in the boundary of the
+central zero-handle, with interior disjoint from both curves and every
+one-handle foot, and use a parallel copy of $y_i$.  Such a band exists in
+the complement of the two chosen seams.  The slid curve and the original
+$y_i$ remain disjoint and simple.  The based word can depend on orientation and basepoint conventions;
+the theorem asserts realization of the unsigned incidence matrix, for
+which either orientation of the parallel copy has the same count.  Since
+the band itself stays in the zero-handle, its raw passages are precisely
+the sum of the passages of $x_i$ and $y_i$, namely $(1,1,2)$.  The second
+row remains $(0,1,1)$.  A geometric two-handle slide preserves the
+three-manifold, so this is still a handle decomposition of a ball.
+
+Place $h$ copies in disjoint regions of one central zero-handle, with
+separate outer zero-handles.  Equivalently, take boundary connected sums
+of the constructed balls and merge their central zero-handles.  The
+result is a three-ball with exactly the graph $G_h$ and the stated
+unsigned block incidence matrix.  The proof is an explicit handle
+construction; converting it to the particular authenticated
+normal-parallelity source schema remains separate implementation work.
+\end{proof}
+
+\begin{proposition}[Cost of a specified unpruned enumeration]
+For the family above, enumerate spanning trees in lexicographic order
+$(s_1,\ldots,s_h)\in\{0,1,2\}^h$, with choices $a_i,b_i,c_i$ respectively,
+and run the column-leaf test separately on each tree.  The first success
+occurs after
+\[
+ \frac{3^h+1}{2}
+\]
+tested trees.
+\end{proposition}
+\begin{proof}
+The lexicographically first successful vector is $(1,\ldots,1)$.  Its
+zero-based ternary index is
+$\sum_{j=0}^{h-1}3^j=(3^h-1)/2$.  Including this final successful trial
+gives the displayed count.
+\end{proof}
+
+A block-aware solver does not need this enumeration, and neither does
+the deferred-forest theorem.  The exact count concerns the stated
+baseline, not an intrinsic exponential lower bound.  The saved benchmark
+driver reports all raw timings for this baseline, for deferred discovery
+on the same family, and for both native core policies on the common
+success subset.  Source geometry preparation, dual reduction, and
+certificate replay are excluded from those kernel timings and must not
+be conflated with end-to-end recognition time.

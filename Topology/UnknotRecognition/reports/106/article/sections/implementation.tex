@@ -1,0 +1,244 @@
+\section{Removing repeated source construction and quadratic contraction replay}
+\label{sec:implementation-prefix}
+
+This section records two implementation changes at the pinned source
+revision.  Both preserve every
+complete certificate and every native terminal decision in the tested corpus.
+The first avoids reconstructing the same finite source charts twice in a
+single composed call.  The second improves a repeatedly executed substep of
+the independent orbit checker from quadratic to quasilinear arithmetic work
+in the number of current interval pairings.  Neither changes the class of
+certificates accepted, the number of AHT reduction cycles, or the scope of the
+normal-cut handlebody recognizer.
+
+\subsection{What the profile actually identifies}
+
+The profiled workload is the repository's complete
+\texttt{marked\_parallelity\_research/corpus.json}, with 106 source cuts.  The
+unmodified pinned implementation returns 92 complete handlebody censuses and
+14 inconclusive outcomes; every complete certificate was replayed.  A full
+\texttt{cProfile} run recorded approximately $545$ million function calls.
+The cumulative times are diagnostic measurements under instrumentation, not
+unprofiled performance claims.  The producer's static-support contraction
+routine accounted for $44.982$ seconds; independent weighted replay accounted
+for $23.075$ seconds; unweighted orbit verification accounted for $19.048$
+seconds.  These nested categories overlap and must not be added.  By
+comparison, all 184 calls to the independent source parallelity reconstruction
+accounted for $1.600$ seconds.  Thus source reuse is especially useful for
+small or source-dominated cuts; the main measured workload is dominated by
+orbit reduction and transport.
+
+The precise avoidable checker cost is visible in three independent replay
+paths.  To remap each of the four endpoints of every current pairing after
+removing static gaps, they separately computed
+\[
+ x-\sum_{[\ell,r]\in\mathcal G,\ r<x}(r-\ell+1).
+\]
+For $k$ pairing rows and $g$ gaps, this costs $O(kg)$ integer arithmetic and
+comparison operations.  The producer's weighted row mapper already used a
+prefix table; the new work extends the efficient idea to the independently
+implemented verifier and proves the common mathematical contract explicitly.
+
+\subsection{An order quotient and its inverse}
+
+Use zero-based coordinates $U_N=\{0,\ldots,N-1\}$ in this proof;
+the maintained one-based coordinates are obtained by translating all labels
+by one.  Let
+\[
+ G_j=[\ell_j,r_j]\cap\mathbb Z\qquad(1\le j\le g)
+\]
+be the increasing maximal gaps in the union of the domains and ranges of a
+finite interval-pairing system.  Consequently every pairing domain and every
+pairing range is disjoint from every $G_j$.  Put
+\[
+ L_j=r_j-\ell_j+1,\qquad S_0=0,\qquad
+ S_j=\sum_{i=1}^j L_i,\qquad
+ q(x)=\#\{j:r_j<x\}.
+\]
+
+\begin{theorem}[Exact contraction and prefix replay]
+\label{thm:prefix-replay}
+The function
+\[
+ \phi(x)=x-S_{q(x)}
+\]
+is the increasing bijection from $U_N\setminus\bigcup_jG_j$ to
+$U_{N-S_g}$.  For each original interval isometry, conjugation by $\phi$
+is the interval isometry with the same orientation sign and remapped
+endpoints.  Every deleted point is an isolated orbit, so contraction reduces
+the total orbit count by exactly $S_g$ and preserves the orbit relation on
+all remaining points.
+
+The increasing anchors $\alpha_j=\ell_j-S_{j-1}$ determine the inverse:
+\[
+ \phi^{-1}(y)=y+S_{\#\{j:\alpha_j\le y\}},\qquad
+ 0\le y<N-S_g.
+\]
+After the gaps have been authenticated, all endpoints of $k$ pairing rows
+can be remapped in
+\[
+ O\bigl(g+k\log(g+2)\bigr)
+\]
+integer arithmetic and comparison operations and $O(g+k)$ integer words of
+working space.  For $B$-bit endpoints, the elementary bit bound is
+$O((g+k\log(g+2))B)$.
+\end{theorem}
+
+\begin{proof}
+For an undeleted point $x$, the number of deleted points strictly below it
+is exactly $S_{q(x)}$.  Therefore $\phi(x)$ counts the undeleted points
+strictly below $x$, proving both monotonicity and bijectivity.  On any pairing
+domain $[a,b]$, the deleted-prefix count is constant because a static gap
+cannot meet that domain.  The same is true on its paired range $[c,d]$.
+Thus $\phi$ restricts to a translation on each interval.  Conjugating a
+translation or reflection by these translations gives an interval isometry
+of the same sign; its endpoints are precisely $\phi(a),\phi(b),\phi(c),\phi(d)$.
+Hence the pairing graph restricted to retained vertices is carried
+isomorphically to the contracted pairing graph.  A static point has no
+nontrivial incident pairing arrow and is an isolated orbit.
+
+After the first $j-1$ gaps have been removed, the beginning of gap $j$ has
+coordinate $\alpha_j$.  Inserting that gap shifts exactly the points at or
+after $\alpha_j$.  The gaps are maximal, so successive gaps are separated by
+at least one retained point, and their anchors are strictly increasing.
+Counting the gaps whose anchors do not exceed $y$ gives the displayed
+inverse formula.  This also covers a leading gap; a trailing gap has its
+anchor outside the contracted universe and is never inserted below an
+allowed $y$.
+
+Build the ordered list $(r_j)$ and prefix sums $(S_j)$ in $O(g)$ operations.
+The strict inequality $r_j<x$ is implemented by lower-bound binary search
+for $x$ in $(r_j)$.  Four searches and four subtractions per row give the
+stated bound.  The integers never exceed the original universe size, so
+addition, subtraction and comparison have the claimed elementary $B$-bit
+cost.  No point of a gap is expanded.
+\end{proof}
+
+\begin{corollary}[Replay cost per authenticated contraction]
+If a contraction acts on $k\ge1$ interval-pairing rows, its maximal static-gap
+list has at most $2k+1$ entries.  The endpoint-remapping part of the old
+checker had an $O(k^2B)$ worst-case bound; the prefix implementation has an
+$O(k\log(k+2)B)$ bound.  More precisely, a fixed trace with contraction events
+indexed by $i$ changes its endpoint-remapping bound from
+$O(\sum_i k_i g_i B_i)$ to
+$O(\sum_i(g_i+k_i\log(g_i+2))B_i)$.
+\end{corollary}
+
+\begin{proof}
+There are $2k$ domain or range intervals, so their union has at most $2k$
+components and its complement has at most $2k+1$ maximal gaps.  Apply
+Theorem~\ref{thm:prefix-replay} to each contraction event independently.
+\end{proof}
+
+The corollary concerns endpoint transport, not every operation performed
+by the full weighted checker.  Weight-run overlays, reflection and
+translation folds, source reconstruction, and geometric terminal checks
+remain separately charged.  The existing polynomial-in-compressed-input
+AHT guarantee is not converted into a new bound for the overall unknot
+recognition problem by this local improvement.
+
+\subsection{Independent implementation and authentication order}
+
+The new private function
+\texttt{interval\_orbit\_verify.\_contract\_pairings}
+constructs its own gap-end and prefix arrays.  The unweighted checker calls
+it only after independently recomputing all static gaps and checking exact
+equality with the proposed list.  The weighted histogram and transversal
+checkers call the same verifier-side helper only after the unweighted trace
+has already been authenticated.  The helper imports no producer module and
+is not a public verifier entry point.  Weighted transport continues to use
+its existing independent formulas; selector transport continues to restore
+original labels by reverse gap insertion.  The inverse formula above
+explains why forward contraction and original-label restoration remain
+compatible.
+
+The producer change is smaller.  Its old union scan maintained both a
+rightmost endpoint and a continually rewritten list of merged occupied
+intervals.  The new scan records an occupied interval only when its component
+ends, using one running start and one running right endpoint.  Intervals
+that overlap or are adjacent remain one component; a strict separation
+emits exactly one maximal gap.  Sorting order, gap order, endpoint mapping,
+returned pairing objects in the no-gap case, event statistics, and the
+certificate trace are unchanged.  This reduces allocation and redundant
+integer operations without changing the producer's asymptotic sorting
+bound.
+
+\subsection{Source reuse inside one composed call}
+
+The original composed producer constructs source parallelity geometry in
+\texttt{normal\_cut\_parallelity}, then reconstructs the same geometry when
+asking for ordered boundary words.  The revised producer passes its own
+already constructed geometry to a private boundary continuation.  The public
+boundary-word API still performs full source preparation and coordinate
+validation when called on its own.
+
+The checker has a separate implementation of this reuse.  Its private
+parallelity replay returns the independently reconstructed source geometry,
+the independently recounted summary, and the source digest only after all
+four parallelity proofs have passed.  The composed checker then passes that
+reference geometry to the private boundary replay, which verifies the two
+boundary traces and their source digest.  The subsequent finite geometric
+checks consume the reconstructed reference geometry and summary.  They no
+longer decode charts back out of the certificate after authenticating them.
+No cache survives a public call, and no public parameter accepts a prepared
+source, source geometry, or authentication token.  There is consequently no
+cross-call cache-invalidation condition to maintain.
+
+\begin{proposition}[Extensional preservation under local reuse]
+For fixed source input and certificate, on executions that complete without
+cancellation or callback exceptions, replacing repeated deterministic source
+reconstruction by one invocation-local reconstruction leaves the acceptance
+predicate unchanged.  Callbacks must not mutate the source or proof during
+the call.  Reusing a producer's geometry within the
+producer and reusing independently reconstructed geometry within the checker
+do not introduce a producer-to-checker trust dependency.
+\end{proposition}
+
+\begin{proof}
+Let $R(S)$ be the deterministic reference reconstruction of source $S$ and
+let $V_1,V_2$ be the two existing replay predicates.  The old predicate is
+$V_1(R(S),P_1)\wedge V_2(R(S),P_2)$; the revised predicate computes
+$G=R(S)$ once and evaluates $V_1(G,P_1)\wedge V_2(G,P_2)$.  These are
+extensionally equal.  All ordinary public calls still reconstruct from the
+actual source, and no reference object is supplied by either certificate
+or producer.  The callbacks continue to propagate cancellation; a cancelled
+call returns no successful authentication and stores nothing for later use.
+\end{proof}
+
+This proposition compares completed executions.  A callback that cancels on
+its $j$th invocation may cancel one version and allow the other to finish;
+equality of that behavior is not asserted.  Both propagate cancellation and
+callback exceptions without authenticating the interrupted call.
+
+The count of callback invocations is intentionally not an invariant: the
+removed duplicate work no longer needs callbacks, while prefix construction
+adds callbacks inside its own bounded loops.  Certificate-operation budgets
+are invariant: the composed checker still totals all six supplied traces
+before replay, and the producer still shares its cycle allowance across
+all six discoveries.
+
+\subsection{Validation and limits}
+
+The focused validation includes existing interval-orbit, weighted-orbit,
+weighted-transversal, contraction, source-parallelity, boundary-word,
+handlebody and three-handle tests.  New tests exhaust every retained/deleted
+mask for universe sizes $0$ through $9$, checking the forward map against a
+literal oracle and the inverse against the original retained labels.  A
+further 700 deterministic random signed interval systems check both the
+producer union sweep and verifier endpoint map against naive arithmetic.
+A $2^{16384}$-scale case confirms exact binary arithmetic without point
+expansion.  Hostile tests cover wrong, reordered and overlapping gap lists,
+coordinate and source mutation between calls, matching false digest strings,
+mutated nested source charts, callback exceptions, exact operation-budget
+boundaries, and attempted injection of public prepared-source parameters.
+Producer helpers are deliberately disabled while independent checkers run.
+
+The paired timing experiment uses the entire 106-case native source corpus,
+with separately imported pinned-baseline, source-reuse-only and final
+implementations.  Every repeated result, statistic, census, and complete
+certificate is compared for exact equality.  Method order is randomized
+within each case and repetition.  The recorded timings are complete native
+cut-census production plus independent replay; they do not measure standalone
+unknot decisions and are not an asymptotic experiment.  The report preserves
+all individual timings and source hashes, permitting inspection of small
+cases, orbit-dominated cases, and inconclusive calls separately.

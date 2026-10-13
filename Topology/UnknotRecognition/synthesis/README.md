@@ -1788,3 +1788,54 @@ The source-pinned audit, retained baseline, raw timing samples, test logs
 and publication checker are under `data/moment-boundary-*`. The article
 distinguishes these local bounds from the unproved native scheduling,
 surface-discovery, pattern-transport and global hierarchy bounds.
+
+### Weighted source dual forests (12 October 2026)
+
+The [weighted forest section](weighted_top_forest.tex) proves that complete
+source top reductions are precisely dual spanning trees and that a maximum
+weight tree minimizes retained raw attaching incidence for the fixed lower
+forest. The native default now uses a priority heap; queue mode reproduces
+the earlier proofs, and independent geometric checkers remain unchanged.
+
+The 120-source audit gains two certified cuts, reaching 104 completed
+censuses with 97 fresh literal positive agreements. Raw retained cost falls
+on 23 of 24 cores with three-handles. Paired full-query timings are near
+parity where both modes succeed; new positive timings include work the old
+mode refused. A separate report-99 probe adds no bare-core coverage with
+its restricted polynomial solver. All evidence, baseline modules and the
+publication checker are under `data/weighted-forest-*`. Global recognition
+complexity remains unproved.
+
+`lower_forests.tex` carries an explicit source lower forest through top
+reduction, core cancellation, annular transport and the bundle kernel.
+The source-first adaptive policy retries maximum original passage weight
+using one cached set of orbit queries. Independent v3 kernel replay
+validates the supplied spanning forest, while old v1/v2 semantics remain.
+The fresh 120-source audit completes 110 cuts, preserves all 104 prior
+certificates exactly and agrees with 103 fresh literal positive cuts.
+Six retained baseline modules and eight paired full-query measurements
+show no consistent common-positive speedup; the improvement is certified
+coverage. Source pins and evidence are under `data/lower-forest-*`.
+General quasi-polynomial recognition remains unproved.
+
+`deferred_forests_native.tex` integrates report 105's all-lower-forests
+raw-completeness theorem into the core, absorbed core and complete annular
+kernel. That producer integration left all verifiers unchanged. The adaptive third attempt shares
+expensive queries and preserves all 110 previous certificates. Fresh
+coverage reaches 111/120, with 104 literal positive agreements. A separate
+coupled-forest source probe replays 114 positive core reductions and gives
+two independent stopping-set packing obstructions; four bounded searches
+are inconclusive on cases the incumbent already solves. Full evidence and
+paired timings are under `data/deferred-forest-*`.
+
+`gap_prefix_replay.tex` proves the authenticated static-gap prefix mapping
+bound O(G + P log(G+2)), replacing repeated endpoint scans in three orbit
+checkers. Report 106's corresponding producer scan is also integrated.
+The source-pinned validation and paired complete-query experiment are in
+`data/gap-prefix-*`; this local bound does not bound native trace length.
+The complete gap-prefix comparison preserves all 111 positive certificates
+on 120 sources. Validation covers 1,737 methods across the broad run and
+its fourteen-method missing-Regina rerun. The separate report 110 matrix
+probe finds exactly one optimally deferred row in each of the two bare-core
+refusals, without performing geometric passive transport. Reports 111 and
+112 are preserved as incoming research only, pending separate review.

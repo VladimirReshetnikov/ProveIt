@@ -131,16 +131,20 @@ def _contract(n, pairs, check=lambda: None):
     """
     intervals = sorted((lo, hi) for p in pairs
                        for lo, hi in ((p.a, p.b), (p.c, p.d)))
-    occupied, gaps, end = [], [], 0
+    occupied, gaps, end, first = [], [], 0, None
     for lo, hi in intervals:
         check()
         if lo > end:
             gaps.append([end, lo-1])
-        end = max(end, hi+1)
-        if occupied and lo <= occupied[-1][1]+1:
-            occupied[-1] = (occupied[-1][0], max(hi, occupied[-1][1]))
-        else:
-            occupied.append((lo, hi))
+            if first is not None:
+                occupied.append((first, end-1))
+            first = lo
+        elif first is None:
+            first = lo
+        if hi >= end:
+            end = hi+1
+    if first is not None:
+        occupied.append((first, end-1))
     if end < n:
         gaps.append([end, n-1])
     if not gaps:

@@ -1,0 +1,281 @@
+\section{Consequences for the hierarchy program and further research}
+\label{sec:global}
+
+The results improve two specific entries in the complexity ledger:
+weighted certificate evaluation and authentication of a graph interface.
+They do not reduce the number of candidate surfaces considered, justify an
+arbitrary reordering of a hierarchy, or bound how many times an earlier
+surface can invalidate later work. It is useful to state these distinctions
+as mathematical dependencies rather than as a single undifferentiated
+claim of progress.
+
+\subsection{The remaining global budget}
+
+Let \(\Sigma\) be the set of actually visited geometric states, counting
+revisits that require new work. A useful implementation ledger is
+\[
+ T_{\rm total}\ \le\
+ \sum_{\sigma\in\Sigma}
+ \left(C_{\rm source}(\sigma)+C_{\rm search}(\sigma)
+       +C_{\rm edit}(\sigma)+C_{\rm verify}(\sigma)
+       +C_{\rm output}(\sigma)\right).
+\]
+Every term must be evaluated in encoded size: source records, coordinate
+bits, pattern labels, certificate events, and output records. The lazy
+ledger improves a term inside \(C_{\rm verify}\). The chamber observer
+supplies a checked predicate that may eventually help control
+\(\Sigma\), once its geometric witnesses can be transported.
+
+If the number of visited states were at most \(n^{a\log n}\) and every
+state's total encoded work at most \(n^b\), then the displayed sum would
+be \(n^{a\log n+b}\). That elementary multiplication explains what would
+be sufficient for the announced target, but neither hypothesis follows
+from a polynomial orbit primitive. In particular, a polynomially bounded
+hierarchy length does not by itself bound the number of discarded and
+rebuilt suffixes.
+
+The restart estimate \(L(g+1)^L\) in the cited hierarchy discussion is
+especially informative here. For \(g\le n^a\) and \(L\le cn\), it
+only yields \(n^{O(n)}=\exp(O(n\log n))\); it does not yield
+\(n^{O(\log n)}\). A logarithmic effective dependency depth, or another
+proved reuse or search mechanism of comparable strength, would need to
+replace that accounting for this implementation. Earlier repository
+reports already establish abstract dependency and weighted reset
+bounds~\cite{repair,persistence}. The unresolved issue is to authenticate
+their hypotheses through actual geometric operations, rather than
+state the abstract recurrence again.
+
+\subsection{A source-to-graph complexity statement}
+
+\begin{corollary}[Encoded native chamber query]
+\label{cor:encoded-chamber}
+Let the validated triangulation have \(t\) tetrahedra and the maximum
+coordinate bit length be \(B\). Let the supplied representative list have
+length \(k\). Subject to the established encoded bounds for the native
+normal arc and chamber interval systems and a polynomial AHT schedule,
+the complete chamber query and verification of its produced certificate
+have polynomial cost in \(t+B+k\), including all three orbit queries and
+the binary source data. Verification of an arbitrary supplied trace also
+charges that trace's encoded length. The graph has \(k\) edges and at
+most \(k+1\) vertices. For nonnegative additive component rewards, it
+supports a maximum-reward simultaneously nonseparating subbatch by a
+minimum spanning tree of the authenticated graph.
+\end{corollary}
+\begin{proof}
+The local interval systems have a number of records polynomial in \(t\)
+and endpoints with \(O(B+\log(t+1))\) bits. The first and third queries add
+at most \(k\) and \(2k\) singleton intervals with marker values of at most
+\(k\) and \(2k\) bits respectively. Doubling adds one bit to the relevant
+coordinates. Apply the encoded weighted-orbit bounds to these actual
+systems and include their checked traces. The lazy implementation has
+polynomial run, value, and output bounds and the finer ledger of
+Corollary~\ref{cor:lazy-replay}. The graph construction and its independent
+verification are polynomial in \(k\). The vertex bound and the spanning-tree
+optimization follow from Theorem~\ref{thm:native-chamber} and
+Corollary~\ref{cor:batch-optimizer}.
+\end{proof}
+
+This statement is polynomial in the \emph{explicit} representative count.
+For \(m\) parallel meridian discs of a solid torus, the graph is a cycle
+with \(m\) edges, with a loop when \(m=1\) and two parallel edges when
+\(m=2\). An explicit output takes \(\Omega(m)\) records although the normal
+vector uses only \(O(\log m)\) multiplicity bits. This family explains
+exactly why the parameter \(k\) cannot be deleted from the corollary.
+
+\subsection{What has and has not become reusable}
+
+Before this continuation, report~92's graph decoder could authenticate a
+finite scalar partition relative to a supplied source relation and side
+markers. It could not derive all of those inputs from the native normal
+vector. The new exporter supplies that missing step for labelled components
+of one normal surface. This turns an abstract input contract into an
+executable source-bound observer.
+
+There are still two distinct geometric gaps. First, a path in a chamber
+graph lifts to a path in the manifold by connectedness, but that existence
+argument does not produce a compressed, source-addressed path. Second, an
+edit can leave the graph numerically unchanged while altering the embedded
+surfaces, boundary marking, or the predicates needed by the hierarchy.
+Neither unchanged graph data nor a reused orbit trace proves that a
+certificate survives such an edit.
+
+For actual persistent hierarchy work, a certificate should eventually
+include the surface, its side data, a geometric dual route, and the
+source records read in validating all relevant predicates. Only then can
+an edit be checked against the certificate's geometric dependencies.
+Reports~92 and~98 already identify this distinction
+\cite{persistence,gauge}. The present exporter advances the source
+authentication layer; it does not skip the route or edit layers.
+
+\Needspace{9\baselineskip}
+\subsection{The initial knot-exterior limitation}
+
+\begin{proposition}[No large first nonseparating batch]
+\label{prop:rank-one}
+In a knot exterior in \(S^3\), a system of disjoint compact connected
+two-sided properly embedded surfaces whose simultaneous cut complement
+is connected has at most one member.
+\end{proposition}
+\begin{proof}
+The chamber-cycle argument in Section~\ref{sec:chambers} provides, for
+such a system of \(j\) surfaces, \(j\) independent integral intersection
+functionals on \(H_1(M;\Z)\). A knot exterior has
+\(H_1(M;\Z)\cong\Z\), so \(j\le1\). Equivalently, the graph cycle rank
+cannot exceed the first Betti number.
+\end{proof}
+
+This is the earlier obstruction from report~92, included here because it
+applies directly to the new API. It rules out a proposed algorithm that
+obtains a large initial parallel batch merely by asking this observer for
+many disjoint nonseparating components. It does not bound sequential
+hierarchy length. Later surfaces live in later cut pieces and need not
+coembed as a disjoint system in the original exterior.
+
+\subsection{A useful next replay theorem}
+
+Lazy addition is favorable when the receiver is complicated and the
+transported addition is simple. A dense reflection can instead have
+\(S\) comparable with \(R\), in which case a flat linear sweep can be
+cheaper than \(S\) separate logarithmic updates.
+
+\begin{proposition}[A cost-controlled hybrid, not implemented here]
+\label{prop:hybrid}
+Suppose both the lazy evaluator and an eager linear merge of the old
+weight function with the canonical transported addition are available.
+The stored total and suffix run counts permit a choice, before either
+receiver is expanded, with structural cost
+\[
+ O\!\left(
+ S\log(S+1)+
+ \min\{R,(S+1)\log(R+2)\}
+ \right)
+\]
+for a translation fold, and with no sorting term for reflection.
+Corresponding vector arithmetic and binary costs must also be included.
+\end{proposition}
+\begin{proof}
+The lazy option is Theorem~\ref{thm:lazy-fold}. The eager option
+materializes the current tree, reports the suffix, constructs the
+transported addition, merges the two ordered partitions, and rebuilds a
+balanced tree. Excluding the translation's common residue sorting term,
+this costs \(O(R+S)=O(R)\), since \(S\le R\). A suffix count is obtained
+from an \(O(\log R)\) split, and the total count is stored at the root.
+Select the cheaper upper bound. The selection overhead is dominated by
+the displayed bound. Both options compute the same exact canonical
+function, so the choice changes cost only.
+\end{proof}
+
+The proposition is a proved design option, not a statement that the
+delivered implementation already chooses between those two whole-state
+strategies. The measured code uses the lazy replay method and retains the
+old complete flat verifier as an explicit reference. Any production
+threshold should be tested against actual source distributions, including
+small cases and dense reflection cases.
+
+\subsection{Research questions with concrete next deliverables}
+
+\begin{enumerate}[leftmargin=*,label=\textbf{\arabic*.}]
+\item \textbf{Lazy representative transversals.}
+The ordinary histogram verifier now avoids repeated receiver scans, but
+the separate least-representative verifier retains its older forward
+weights and reverse gap-insertion procedure. Can a labelled order
+structure achieve comparable bounds while preserving the \emph{least
+original representative}, not merely the correct histogram? A useful
+deliverable is a replay engine with an independent label oracle and a
+full-query benchmark.
+
+\item \textbf{Ordered batch range additions.}
+Can all \(S\) consecutive addition intervals be applied by one joint
+tree traversal in
+\(O(S\log(1+R/S)+S)\) structural work? Any proof must include
+canonical seam merging, lazy-tag propagation, and the cost of creating
+and discarding temporary boundaries. This could improve the dense
+regime without flattening the entire state.
+
+\item \textbf{A measured hybrid policy.}
+Implement Proposition~\ref{prop:hybrid}, or a simpler justified
+threshold, and test whether small-case overhead or dense reflections
+warrant the extra branch. Compare complete replay, not just isolated
+tree updates.
+
+\item \textbf{Histogram aggregation with a strict comparison bound.}
+The delivered evaluator uses Python dictionaries for emitted vectors,
+as does the established checker. A sorted emission ledger or an
+ordered map would make the fine comparison bound independent of hash
+behavior. Determine whether that choice is helpful at the dimensions
+and vector sizes actually produced by the geometry.
+
+\item \textbf{A separate lazy producer.}
+The producer retains quotient/remainder transport while the verifier
+uses a residue derivative. Apply receiver-independent storage to
+production with a separately written transport path, and measure
+whether generation becomes the next bottleneck. Sharing the same
+arithmetic between both sides would weaken the present differential
+check.
+
+\item \textbf{Integration with static endpoint contraction.}
+The incoming exceptional-row package changes other replay costs,
+including pairing endpoint contraction and source reuse. Combine the
+patches at one source revision and measure their interaction. Ratios
+from different baselines must not be multiplied to manufacture a
+combined speed-up.
+
+\item \textbf{Automatic component representatives.}
+The native graph API validates representatives; it does not discover a
+short exhaustive list for an arbitrary normal vector. Can least
+representative intervals be converted to normal-disc addresses
+without enumerating components that occur in large parallel
+multiplicity? State the unavoidable output dependence explicitly.
+
+\item \textbf{A graph grammar for parallel families.}
+Replace the explicit \(k\)-edge output by a source-certified grammar
+when many components have repeated chamber incidence. The cycle
+family of parallel meridians supplies a basic binary test. Report~98's
+graph operators can be used only after the grammar's geometric
+interpretation has been authenticated.
+
+\item \textbf{Geometric dual-route extraction.}
+Given an accepted graph and a spanning tree of the undeleted edges,
+construct a route in actual source charts crossing a selected
+component once. The route should remain short in encoded size even
+when its literal length is large, and its verifier should reconstruct
+all endpoint identifications.
+
+\item \textbf{Persistence through a real local edit.}
+Apply one genuine source edit, transport the component and dual-route
+certificates, and prove precisely which read records remain valid.
+This is the next needed connection to the causal-restart theory,
+rather than another abstract dependency bound.
+
+\item \textbf{Broader finite boundary contracts.}
+The current source validator admits one torus boundary. Later hierarchy
+pieces can have many boundary components and corners or patterns.
+Extend the validator and the side-marker construction to that setting
+without treating boundary Euler characteristic as a substitute for
+the full manifold-link checks.
+
+\item \textbf{Marked-boundary transport.}
+The graph records sides of the supplied surfaces, not all later
+boundary-pattern arcs. Determine which additional labels are
+sufficient to preserve the hierarchy predicates, and bound their
+growth under cut, compression, and normalization.
+
+\item \textbf{Measure actual dependency depth.}
+Once the preceding geometric operations exist, instrument genuine
+certificate invalidations. Test whether the validated dependency depth
+is logarithmic, and whether counter ranges and version changes obey
+the already proved reset models. Disjoint surface supports alone are
+insufficient evidence.
+
+\item \textbf{Joint source, trace, and state bounds.}
+Give one recurrence in the original crossing number that bounds
+source size, coordinate and pattern bits, generated candidates,
+all orbit traces, and all restarts. A polynomial local primitive
+becomes part of a quasi-polynomial recognizer only after this joint
+accounting is established.
+\end{enumerate}
+
+The immediate implementable priorities are labelled transversal replay,
+automatic representative addresses, and one source-authenticated dual
+route. The next substantial geometric milestone is persistence of that
+route and all required predicates through an actual hierarchy edit.

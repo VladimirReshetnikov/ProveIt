@@ -1,0 +1,14 @@
+{
+  "reason": "Historical source-forest refusal fixtures must explicitly select the source policy after adaptive default adds these positives.",
+  "files": {
+    "fast/tests/test_core_primitive_annuli.py": {
+      "before_sha256": "3802271d4122547ee92831ac9374f9d8f243a657498234f1049b61bc9100cdfd",
+      "after_sha256": "f6eab51ff60b9412299542626c67d67b4be46865b0e553e2f4d401a465221d3d"
+    },
+    "fast/tests/test_disk_bundle_absorption.py": {
+      "before_sha256": "5fe48fc3ea7f133f7668e04879a0f1410eec9feb4678cfee6b5e03167c9318cb",
+      "after_sha256": "12b54d6da3b92a8c24b9b9a63e201cea359522ec5f5d2ffc4684da058d17fd50"
+    }
+  },
+  "patch": "diff --git a/Topology/UnknotRecognition/fast/tests/test_core_primitive_annuli.py b/Topology/UnknotRecognition/fast/tests/test_core_primitive_annuli.py\nindex 3ff927e01..b3f1d0256 100644\n--- a/Topology/UnknotRecognition/fast/tests/test_core_primitive_annuli.py\n+++ b/Topology/UnknotRecognition/fast/tests/test_core_primitive_annuli.py\n@@ -128,7 +128,7 @@ class CorePrimitiveAnnuliTests(unittest.TestCase):\n         self.assertTrue(verify_normal_cut_handlebodies(self.raw, json_safe(rows), p))\n         for name, reason in [('pilot/fibonacci_lst_06/0', 'raw_cancellation_stalled')]:\n             c = next(c for c in self.bank if c['id'] == name)\n-            a = normal_cut_handlebodies(c['triangulation'], c['coordinates'])\n+            a = normal_cut_handlebodies(c['triangulation'], c['coordinates'], lower_forest='source')\n             self.assertEqual(a['status'], 'INCONCLUSIVE')\n             self.assertEqual(a['reason'], reason)\n \ndiff --git a/Topology/UnknotRecognition/fast/tests/test_disk_bundle_absorption.py b/Topology/UnknotRecognition/fast/tests/test_disk_bundle_absorption.py\nindex 817e4b14c..3c5f5d60f 100644\n--- a/Topology/UnknotRecognition/fast/tests/test_disk_bundle_absorption.py\n+++ b/Topology/UnknotRecognition/fast/tests/test_disk_bundle_absorption.py\n@@ -56,7 +56,7 @@ class DiskBundleAbsorptionTests(unittest.TestCase):\n         for name, reason in [('pilot/fibonacci_lst_04/0', 'raw_cancellation_stalled')]:\n             c = next(c for c in self.bank if c['id'] == name)\n             a = normal_cut_handlebodies(c['triangulation'], c['coordinates'],\n-                                       record_certificate=True)\n+                                       record_certificate=True, lower_forest='source')\n             self.assertEqual(a['status'], 'INCONCLUSIVE')\n             self.assertEqual(a['reason'], reason)\n             self.assertNotIn('certificate', a)\n"
+}

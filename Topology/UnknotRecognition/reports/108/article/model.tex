@@ -1,0 +1,136 @@
+\section{Unsigned cancellation and its geometric input}
+\label{sec:model}
+
+\subsection{The finite decision problem}
+
+Let $R$ be a finite set of row labels and $C$ a finite set of columns. The
+matrix $A=(a_{rc})$ has nonnegative integer entries and is stored sparsely.
+Each row either labels one edge of a finite connected undirected
+multigraph $G$ or is declared unavailable for top cancellation. The graph
+has a distinguished exterior vertex $0$. Parallel edges are distinct row
+labels; loops cannot belong to a forest. Write $E\subseteq R$ for the
+eligible nonloop edges and $r=|V(G)|-1$ for the rank.
+
+A top choice is a spanning tree $T\subseteq E$. It removes the rows of
+$T$. On the remaining row set $L$, a column $c$ is a legal leaf when
+\[
+                         \sum_{r\in L}a_{rc}=1.
+\]
+There is then a unique row $u\in L$ with $a_{uc}=1$; delete $u$ and
+record the pair $(u,c)$. Continue until every row is deleted or no leaf
+remains. The input question is whether \emph{some} top tree gives complete
+peeling. Rows unavailable for top cancellation can still be deleted by
+leaf pivots; excluding them from the matrix would change the problem.
+
+\begin{lemma}[Saturation preserves the finite problem]
+\label{lem:saturation}
+Replacing every positive entry $a$ by $\min(2,a)$ preserves the legal
+leaf predicate on every subset of rows, and therefore preserves every
+peeling trace and the answer for every top tree.
+\end{lemma}
+\begin{proof}
+A sum of nonnegative integers is one exactly when one summand is one and
+every other summand is zero. Saturation preserves zero, one, and the
+property of being at least two. This applies to each column on every
+row subset.
+\end{proof}
+
+This observation does \emph{not} license saturating counts before a
+parity or signed-chain calculation: an odd count of three would become
+even. The implementation's input digest binds the uncapped integers,
+and its cycle-compatibility check uses their actual parities.
+
+\begin{definition}[Stopping set]
+A nonempty subset $S\subseteq R$ is a stopping set if every column sum
+$\sum_{r\in S}a_{rc}$ is zero or at least two.
+\end{definition}
+
+\begin{proposition}[Exact immutable obstruction]
+\label{prop:stopping}
+Peeling a row subset $L$ completes if and only if $L$ contains no stopping
+set. Its final residue is independent of the order of legal leaf choices
+and equals the union of all stopping subsets of $L$.
+\end{proposition}
+\begin{proof}
+A stopping set cannot lose its first row to a legal leaf: the corresponding
+column would already have sum at least two inside that stopping set.
+Consequently every stopping subset remains throughout every peeling
+execution. Conversely, a nonempty terminal residue has no unit column and
+is itself stopping. The union of stopping sets is stopping: for a column
+with a positive contribution to the union, one constituent stopping set
+already contributes at least two. The union of all stopping subsets is therefore the largest stopping
+residue, possibly empty. Every terminal residue contains this union, and a
+nonempty terminal residue is itself stopping and hence contained in it.
+If the union is empty, all executions complete.
+\end{proof}
+
+The preceding incoming reports prove that complete positive raw
+cancellation can always be witnessed by such immutable column peeling
+\cite{repo-positive,repo-dual-normalization}. This completion theorem is
+the reason a search over more complicated positive substitutions is
+unnecessary for the present decision problem. A certificate below uses
+only the original matrix entries and an ordinary tree.
+
+\subsection{Activation reverses the viewpoint}
+
+Call a removed row \emph{active}. A top tree is the initial active set.
+A column with support $H$ can activate its row $u$ exactly when
+\[
+               a_{uc}=1,\qquad H\setminus\{u\}\subseteq X,
+\]
+where $X$ is the current active set. Thus it gives the Horn rule
+$H\setminus\{u\}\to u$ for each of its unit entries. A column with no
+unit entry gives no rule. A unit singleton is an unconditional rule;
+two-row supports give directed unary rules. Supports of three or more
+rows are the nonlinear part of the system.
+
+The closure $\cl_A(X)$ is obtained by repeatedly applying all legal
+rules. Finite monotonicity shows that it exists and is independent of the
+application order. The tree $T$ is successful exactly when
+$\cl_A(T)=R$. This is an independent-key problem for a Horn closure,
+where independence is taken in an external graphic matroid.
+
+\subsection{Source-relative geometric interpretation}
+
+The native complementary core is a handle structure obtained from an
+authenticated triangulation and normal coordinate vector. After fixing
+the lower $0/1$ forest, its surviving one-handle cocores index columns.
+Two-handle attaching curves give \emph{geometric occurrence counts};
+algebraic exponent sums cannot replace them. The cap graph records the
+two actual three-handle ends of each source two-handle, with exposed ends
+sent to the exterior root. Its rooted spanning trees give legal $2/3$
+cancellation schedules under the source-relative theorem proved in the
+incoming packages \cite{repo-dual-normalization,repo-relative-top}.
+
+After top cancellation, an immutable column leaf supplies a one/two
+cancellation in the already authenticated source model. Finite bundle
+boundary relations must also be included. In particular, later annular
+rows are not eligible cap edges and are represented as unavailable rows.
+Their omission would turn an incomplete core criterion into an unsound
+whole-cut criterion.
+
+The graph--matrix algorithm does not independently certify that these
+data arise from a manifold. Its positive output becomes a geometric
+certificate only after the cap graph, the occurrence matrix, and the
+required relative charts have been reconstructed and checked. A negative
+output says that this \emph{fixed raw forest-and-peeling criterion} cannot
+complete. It does not say that the cut piece is not a handlebody, or that
+the original knot is nontrivial.
+
+\subsection{Why the exceptional column shape is natural}
+
+For original native one-handle cocores, a triangular source-face region
+has at most three actual boundary occurrences. A column containing a
+unit and more than two owners therefore has precisely three distinct
+unit owners. Moreover, the raw parity incidences obey the
+boundary-of-boundary identity \cite{repo-dual-normalization}. The new
+source audit rechecks these properties before saturation. It also finds
+the same three-occurrence bound on every reconstructed finite boundary
+matrix in the maintained corpus. The latter is an experimental statement
+about those matrices, not a universal theorem about arbitrary interfaces.
+
+The parameter $k$ will count nonlinear columns after free cancellations.
+The local theorem supplies no uniform polylogarithmic bound on $k$ in
+the original crossing number, and does not derive one from the underlying
+manifold type or from the number of bits per normal coordinate. Establishing useful
+geometric control of $k$ is one of the main next questions.

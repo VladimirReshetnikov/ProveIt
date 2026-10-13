@@ -6888,6 +6888,217 @@ A separate two-element-modulus corollary is also proved. The annotated Lemmas
 this numerical obstruction from a claim about unspecified contextual data.
 These proofs are included in the combined 1,249-module audit.
 
+### L.53. Simplifying the final proof's recurrence inputs (2026-10-12)
+
+The final covering proof previously imported its all-dimensional recurrence
+profile through the length-six theorem. That bridge also brought in the
+older explicit variety decomposition and its fixed-dimensional constants,
+even though the general profile only needs the partition construction and
+its all-dimensional numerical bounds.
+
+The generic partition inequalities now live in Proofs05ExplicitPartitionBounds.
+Proofs16ExplicitRecurrenceProfiles assembles the family recurrence profile
+and its bounds directly. The old modules import these declarations, retaining
+their names and statements. The profile is used directly through definitional
+equality, without an extra conversion theorem. In the final length split,
+L<6 now invokes the existing result for L<=5; L>=6 uses the general cover.
+It no longer imports the separately proved length-six bridge for an unused
+endpoint of the short-length branch.
+
+Compared with the unchanged proof sources at commit2d4382ed1, the local
+import closure of Proofs18CoverExplicit falls from1,289 to1,214 modules and
+from264,693 to254,988 source lines. The strengthened Fejer bridge falls
+from1,402 to1,327 modules and from300,689 to290,984 lines. These are import
+closure measurements, excluding external Mathlib sources; they do not claim
+that9,705 lines were deleted from the repository. The legacy proofs remain
+available to their own users. The generic all-dimensional bridge loses97
+modules from its import closure.
+
+FinalProofSimplificationAudit has compiled the original quantitative final
+theorem, both headline consequences and the stronger coloring bounds through
+the simplified inputs, checking only propext, Classical.choice and Quot.sound.
+The serial native invocation passes all 1,404 modules, including the separate
+compatibility check of the old length-six module. A complete facade check
+remains separate. The ongoing
+objective is to shorten and simplify the final proof while preserving its
+statement and bounds; this first reduction does not close that objective.
+
+### L.54. Shared coloring argument and progression prefixes (verified, 2026-10-12)
+
+The two-color case and the arbitrary finite-color case share one application
+of Mathlib's real-valued finite pigeonhole principle. The full two-color
+consequence reuses the single-length consequence. The coloring simplification
+passed its 1,328-module native audit, including the original final statements
+and strengthened Fejer bounds, with only the three approved axioms.
+
+The canonical final proof now removes the nontrivial short-length case split.
+For k>=2, apply the improved L+5 theorem at L=max(k,6). Since L+5<=k+9,
+the original threshold suffices, and a prefix of the resulting progression
+has length k. For k=1, positive density and the positive threshold give a
+point of the set. `theorem_18_2_of_long_progressions` proves this reduction;
+`theorem_18_2_padded` supplies the explicit recurrence profiles.
+
+Import `GowersSzemeredi.Final` for the original final theorem and its
+consequences. It defines the existing names `theorem_18_2_explicit`,
+`corollary_18_7_explicit`, `theorem_1_2_explicit` and `theorem_1_3_explicit`
+with their original types. `Proofs18CoverExplicit` re-exports these and derives
+its single-length API from the final proof, handling length zero vacuously.
+It retains the separate Theorem 18.1 construction and historical helpers.
+
+`FinalAudit` passes 1,209 native modules and checks all six new/canonical
+proofs for approved axioms. `FinalProofSimplificationAudit` then passes
+1,330 modules with the migrated public names and stronger bounds together.
+The minimal final entry point has 1,208 local modules / 253,637 source lines;
+the pre-simplification aggregate had 1,289 / 264,693. Thus this entry point
+avoids 81 modules and 11,056 lines from the old import closure. The aggregate
+still imports 1,221 modules because it additionally exposes Theorem 18.1 and
+legacy helper results; the comparison is not a repository-wide deletion count.
+The stronger-bound bridge now has 1,329 modules / 290,955 source lines.
+
+Verification reports: `2026-10-12-final-coloring-simplification`,
+`2026-10-12-final-prefix-proof` and `2026-10-12-final-prefix-compatibility`,
+with immutable source manifests. Further simplification should remove
+incidental short-length and polynomial-envelope imports from the uniform
+long-length route. The goal remains active; final statements and bounds
+are unchanged, and this audit does not settle open original intermediate
+statements or replace a full facade check.
+
+### L.55. Direct imports for the uniform final argument (2026-10-12)
+
+The final route no longer imports the specialized length-six envelope or
+Szemeredi proof, Roth's explicit theorem, or the completed four- and five-term
+threshold proofs. Three small modules give the shared results their own homes:
+
+* `Proofs18SingleLengthStatements`: `Theorem182At`, `Corollary187At`, their
+  equivalences with the full statements, and the half-density consequence;
+* `Proofs18DoubleExponentialBounds`: four elementary estimates, including
+  `section18_exp_le_two_rpow`, formerly housed in specialized proofs;
+* `Proofs18CoverLongThresholds`: the existing uniform L+5 argument, without
+  importing separate short-length threshold comparisons.
+
+The general density proof imports `Proofs18GeneralIteration` directly.
+That iteration is essential; an initial import check exposed its previous
+incidental availability through the length-six route. The legacy short-length
+modules re-export the moved declarations, and their explicit bridge now names
+its short-length import. All extracted declarations and proof bodies are
+byte-identical to their previous versions. The prefix proof has only an import
+change and an unused binder-name cleanup.
+
+`FinalAudit` passes 1,197 native modules with only approved axioms. Its entry
+point has 1,196 local modules / 249,652 source lines, down from 1,208 / 253,637
+at L.54: 12 fewer modules and 3,985 fewer lines in the import closure. Against
+the original aggregate baseline, it avoids 93 modules and 15,041 source lines.
+These counts do not describe repository-wide deletions. The original final
+statements and bounds are unchanged.
+
+The combined compatibility audit, including the strengthened Fejer bounds
+and `Proofs18LengthSixExplicit`, passes 1,409 native modules. Every direct
+client in the GowersSzemeredi directory lies in this audited closure;
+the top-level GowersSzemeredi facade is excluded from that client count.
+The final theorem and strengthened-bound checks use only approved axioms.
+Immutable reports are `verification/2026-10-12-final-uniform-imports.json`
+and `verification/2026-10-12-final-uniform-compatibility.json`, with source
+manifests. The full facade remains separate. The goal stays active.
+
+### L.56. Shorter exact log-log conversion (2026-10-12)
+
+`Proofs01QuantitativeHeadline` is reduced from 154 to 111 lines. The private
+inner-exponent wrapper is inlined; two unused positivity lemmas and three
+redundant wrappers are removed. The reciprocal-exponent identity is shared
+in both multiplication orders. The natural cutoff is its explicit ceiling,
+so its comparison with N uses `Nat.le_ceil` directly. The elementary bound
+`2^x <= exp(x)` uses only its one required numerical hypothesis, avoiding
+unrelated local inequalities in the arithmetic tactic.
+
+The signatures of `headline_density_threshold` and
+`theorem_1_3_holds_of_theorem_18_2` are unchanged. The same displayed density
+constant `2^(-2^(k+9))`, concrete cutoff and positive-step natural
+progressions are retained. The independent final-entry and stronger-bound
+audits pass 1,332 native modules together with only approved axioms; see
+`verification/2026-10-12-final-headline-simplification.json` and its immutable
+source manifest. The minimal entry point now has 1,196 local modules /
+249,609 lines. This line count is an import-closure measurement; the headline
+module itself has 43 fewer source lines.
+
+The L.55 direct-client coverage refers to modules inside the
+GowersSzemeredi directory. It excludes the top-level facade, as the original
+compatibility report's limits already indicate. The full facade and open
+original intermediate statements remain separate. The simplification goal
+stays active.
+
+### L.57. Separate the final cover budgets from polynomial envelopes (2026-10-12)
+
+A Lean traversal of the four final theorems at commit 19bc1ca0f finds
+7,220 transitively used local declarations in 484 modules, compared with
+1,196 imported local modules. This is a proof-dependency diagnostic, not a
+sufficient import list: syntax and tactic dependencies are excluded. The
+query source and per-module counts are recorded in
+`verification/2026-10-12-final-declaration-dependencies.json`.
+
+In particular, the final proof used only the two elementary power identities
+from `Proofs18CoverDegrees`; it used the threshold conversion and cubic
+estimate from `Proofs18CoverSharper`, and six budget inputs/estimates from
+`Proofs18CoverTightBase`. Their polynomial-envelope results were not used.
+
+`Proofs18CoverBudget` now contains the shared class budgets and elementary
+estimates. `Proofs18ThresholdAt` contains the parameterized final threshold
+and its deduction from a discrepancy envelope. `Proofs18CoverLongThresholds`
+imports these directly. The old degree/sharper/tight-base modules re-export
+the moved declarations and retain their separate proofs. All extracted proof
+bodies and declaration types are unchanged.
+
+`FinalAudit` passes 1,163 native modules with only approved axioms. The minimal
+entry point imports 1,162 modules / 244,777 lines, down by 34 modules and
+4,832 source lines from L.56. Against the original aggregate baseline this
+is 127 fewer modules / 19,916 fewer lines in the import closure, not a claim
+of repository-wide deletions. The final statements and bounds are unchanged.
+The stronger-bound compatibility audit also passes 1,333 native modules,
+including the original final theorem, shared recurrence inputs and stronger
+all-degree bounds, with only approved axioms. Its immutable report is
+`verification/2026-10-12-final-cover-budget-compatibility.json`. The complete
+facade is outside this focused check. The goal remains active.
+
+
+### L.58. Separate recurrence lattice facts from geometric sheets (2026-10-12)
+
+`OAI.Compat.NormalizedLatticeBasics` now contains the initial basic lattice
+sections of `NormalizedLatticeSheet`. `OAI.Compat.NormalizedLatticeGaussian`
+contains the covolume and Gaussian normalization sections of `LatticeSheetHaar`.
+The original modules re-export all moved declarations and retain the geometric
+sheet results. Four Fourier/recurrence consumers import the extracts directly.
+All declaration types, ported proof bodies, instances and simp attributes
+are unchanged.
+
+The provenance checker now verifies that the basics extract is identical to
+the pinned upstream sections, and the Gaussian extract differs only by the
+already documented `isClosed_of_discrete` compatibility rename. All 4,134
+pinned source hashes match; the selected upstream closure is unchanged, with
+19 local compatibility modules instead of 17. Apache-2.0 license text,
+modification notices and source attribution are retained.
+
+The initial basics-only change compiled its two direct consumers but exposed
+an indirect dependency in `LatticeSheetHaar`. Separating the Gaussian sections
+and importing `GramCovolume` directly resolves it. The interval dilation and
+common-denominator consumers also import their estimates directly. Both extracts, all four
+changed consumers and both full geometric modules now pass a 549-module native
+compilation check. `FinalAudit` now passes 659 native modules and
+`FinalProofSimplificationAudit` passes 829, with only `propext`,
+`Classical.choice` and `Quot.sound`. These preserve the original final
+theorems and stronger all-degree bounds. The source manifests and completed
+audit reports are `verification/2026-10-12-final-lattice-gaussian.json` and
+`verification/2026-10-12-final-lattice-gaussian-compatibility.json`.
+
+The measured final import closure is 658 modules / 142,691 lines, down by
+504 modules / 102,086 lines from L.57. Against the original aggregate entry,
+this is 631 fewer modules / 122,002 fewer lines. These are import-closure
+counts, not repository-wide deletions or proof-completion counts. The final
+statement and numerical bounds are unchanged.
+
+See `verification/2026-10-12-lattice-gaussian-clients.json` and
+`verification/2026-10-12-final-lattice-gaussian-dependencies.json`. The full
+OAI port audit remains historical; no fresh complete port or facade audit is
+claimed. The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

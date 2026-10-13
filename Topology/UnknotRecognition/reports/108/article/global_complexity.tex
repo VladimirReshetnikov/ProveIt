@@ -1,0 +1,90 @@
+\section{What the local theorem contributes to a quasi-polynomial bound}
+\label{sec:global}
+
+The useful improvement is a change of parameter. If the cap graph has
+$s$ non-exterior vertices, straightforward top-tree search can have
+depth $s$ and a branching factor depending on the matrix size. The present
+algorithm permits arbitrary $s$ at each fixed number of nonlinear
+columns. It gives a polynomial-time local operator for $k=0,1,2,\ldots$
+held constant, with one uniform algorithm and a computable parameter factor.
+
+Let $N_i$ be the encoded size of the $i$th supplied graph--matrix problem,
+and let $k_i$ be its residual triple-column parameter. For a sequence of
+$Q$ such calls, including unsuccessful calls, the local work is bounded by
+\begin{equation}
+ \sum_{i=1}^{Q}2^{O(k_i\log(k_i+2))}\operatorname{poly}(N_i).
+ \label{eq:cumulative-local}
+\end{equation}
+The polynomial exponent is independent of $k_i$. If $N_i\le n^a$ and
+$k_i\le K(n)$ for every call, this is at most
+\[
+             Q\,n^{O(1)}2^{O(K(n)\log(K(n)+2))}.
+\]
+Two parameter regimes make the scale concrete:
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Uniform residual parameter & Local cost for polynomial-size inputs \\
+\midrule
+$K(n)=O(\log n/\log\log n)$ & $n^{O(1)}$ \\
+$K(n)=O(\log n)$ & $n^{O(\log\log n)}$ \\
+$K(n)=O((\log n)^a)$, fixed $a>0$ &
+$\exp(O((\log n)^a\log\log n))\,n^{O(1)}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+Under the additional uniform deficit hypothesis of
+Corollary~\ref{cor:bounded-deficit}, bounded $\Delta$ sharpens the
+$K(n)=O(\log n)$ line to polynomial local time. It also permits
+$K(n)=O((\log n)^2)$ within $n^{O(\log n)}$ local time.
+
+Small values of $n$ are absorbed into constants; the first line is an
+asymptotic assertion as $n$ tends to infinity.
+
+\begin{theorem}[Conditional transfer to an entire recognition procedure]
+\label{thm:global-transfer}
+Suppose an exact hierarchy procedure on an $n$-crossing input satisfies:
+\begin{enumerate}
+\item it makes at most $\exp(O((\log n)^b))$ calls to the present operator,
+including calls made after resets and on failed branches;
+\item each call has encoded size at most $n^a$ and residual nonlinear
+premise budget at most $O((\log n)^c)$, for fixed $a,b,c$;
+\item all other work, including surface discovery, source authentication,
+marked geometric transport, and final certification, has a
+quasi-polynomial total bound.
+\end{enumerate}
+Then substituting the present exact operator preserves a
+quasi-polynomial total bound. More precisely, its contribution is
+\[
+ \exp\!\left(O((\log n)^b+(
+                   \log n)^c\log\log n+\log n)\right).
+\]
+\end{theorem}
+\begin{proof}
+Apply the general premise-budget extension of
+Theorem~\ref{thm:column-fpt} to every call, and use the uniform size and
+parameter bounds in \eqref{eq:cumulative-local}. Multiplication by the
+number of calls adds their logarithmic costs. The sum with the stated
+quasi-polynomial bound for the other operations remains quasi-polynomial.
+\end{proof}
+
+This is an accounting theorem with explicit premises. The finite solver
+proves none of the three hierarchy hypotheses by itself. In particular,
+a polynomial encoded-time cut does not bound the number of candidate
+surfaces or the number of restored hierarchy states. A small certificate
+does not imply an efficient search for it.
+
+The rank-layer reduction provides an additional structural direction.
+Under native cycle compatibility, if a scenario leaves $p$ mandatory
+source groups and $q$ residual demands, then it can succeed only if
+$p\le r\le p+q$. The difference $r-p$ measures the number of
+additional independent initial-seed witnesses needed to justify nonlinear
+activation, beyond the mandatory unary source representatives. Controlling that difference, or decomposing the exceptional
+columns into independently solvable regions, may be more feasible than
+bounding every raw column count.
+
+The current source experiments deliberately retain large-parameter cases.
+Stellar subdivisions give examples with increasing numbers of nonlinear
+columns while the underlying manifold remains a solid torus. This makes
+clear why the same topological type, or small normal weight alone, cannot
+justify assuming that every labelled raw instance has small $k$.

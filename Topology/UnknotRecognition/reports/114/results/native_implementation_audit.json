@@ -1,0 +1,64 @@
+{
+  "schema": "signed-annulus-native-implementation-audit-v1",
+  "source_revision": "e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39",
+  "files": {
+    "fastunknot/signed_annulus_source.py": "28a2449ebd4b4629a75e18c8f1eff409d4d00345ac3d83ecd8820162039cf5bf",
+    "fastunknot/signed_annulus_source_verify.py": "e7d4971d140e9404c6636dbf2b35789dc5792559a238b1d7f1bcde77d81e87ab",
+    "fastunknot/normal_cut_handlebodies.py": "d349d2d4c052cb1abb3b9fa1b94655a66820b7ec23f25ebdd39eb0dd1786e640",
+    "fastunknot/normal_cut_handlebodies_verify.py": "f967d58f1ff8ac0a059d0935730f593a33ef84d8aa360e972d3b4316102405dd",
+    "tests/test_signed_annulus_source.py": "87e8d9ba347015803cc39f61d6944b93c865b2f3c076d258d2c7931ab03a29e4",
+    "tests/test_signed_annulus_integration.py": "192bee2144254c66491422cfa5348f1b912fc141eddb95c3c5f562defadaeac2",
+    "tests/test_core_primitive_annuli.py": "895d2d76b87a767ec9bdf71d8ee88da53149c7ec7ef0d16bf11c0e63f4e29033",
+    "tests/test_disk_bundle_absorption.py": "629070638202bd20d4b01082934d7d21f1443ee644b0873ec2371b347762a93d",
+    "signed_annulus_research/corpus.json": "85e16c2b747b2cccb19d26989909587b4fb26b9fd65dc8328393ded6a94d3397",
+    "signed_annulus_research/reproduce.py": "768b363808a9103ba1aa0ca29cf6a47edaa6f80246a3490d3c638e09d38b7353",
+    "signed_annulus_research/README.md": "5c25f69a1877eb67302067a47c31d91b9dbd55e813500ec22a239eb2010e8437"
+  },
+  "public_method": {
+    "parameter": "annulus_method",
+    "default": "counts",
+    "opt_in": "signed_rank_two",
+    "existing_schemas_unchanged": true,
+    "new_schemas": [
+      "normal-cut-handlebodies-signed-annuli-v1",
+      "normal-cut-handlebodies-signed-annuli-v2"
+    ]
+  },
+  "source_adapter_contract": [
+    "Enclosing caller authenticates parallelity geometry, boundary skeleton, disk absorption, and COMPLETE geometric core proof.",
+    "Only leaf and column_leaf geometric core schedules supported.",
+    "Original row signs determined by oriented (tetrahedron,face) flags, including self-loop one-handles.",
+    "Absorbed disk relators independently retraced; exact appended augmented cycles compared.",
+    "Forest crossings dropped; active and passive cyclic words retain source orientation and initial point.",
+    "All passive annuli assigned to exact base profile and geometrically certified core component.",
+    "Top-reduced branch replays existing two/three-handle reduction first and consumes retained original zero/one-handles and attaching cycles.",
+    "No arbitrary marked hierarchy interface transport claimed."
+  ],
+  "complexity_note": "The source grammar uses O(source letters) concatenation/inversion operations, and schedule validation scans O(source letters) incidences. Bit arithmetic and free-word reduction costs are additional. The whole source adapter is polynomial; current component grouping scans all one-handles per component.",
+  "test_corrections": [
+    "Historical Fibonacci04 refusal test explicitly chooses lower_forest=source.",
+    "Historical Fibonacci06 refusal test explicitly chooses lower_forest=source.",
+    "Exact pinned original wrapper already completes both under adaptive default; no production change for either case."
+  ],
+  "native_fixture_ids": [
+    "finite_figureEight/vertex71",
+    "finite_figureEight_interior/vertex134",
+    "finite_figureEight_interior/vertex136",
+    "finite_figureEight_interior/vertex205",
+    "finite_figureEight_interior/vertex290"
+  ],
+  "native_verification": "All five opt-in COMPLETE proofs independently replay and match Regina7.4 actual cut triangulations; each census is two genus2 handlebodies.",
+  "retained_refusal": "finite_figureEight/vertex98: x^5 y^2 is not primitive despite coprime exponent sums.",
+  "regression_audit": "regression_audit.json",
+  "native_replay": "native_replay_final/native_replay.json",
+  "exploration_summary": "exploration_summary.json",
+  "regression_coverage": {
+    "collected_tests": 1741,
+    "all_passed_across_full_run_and_targeted_rerun": true,
+    "full_run_passed": 1733,
+    "restored_fixture_rerun_passed": 8,
+    "full_run_subtests_passed": 1750,
+    "remaining_failures_or_errors": 0,
+    "single_clean_full_invocation_claimed": false
+  }
+}

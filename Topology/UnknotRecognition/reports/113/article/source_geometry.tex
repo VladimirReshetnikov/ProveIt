@@ -1,0 +1,120 @@
+\section{Compiling the atlas from a source system}
+\label{sec:source}
+The atlas should not be attached to a loosely related boundary model. The implementation starts from a rational source
+\begin{equation}
+ Ax=0,\qquad x\ge0,\qquad x_ax_b=0\quad(\{a,b\}\in\mathcal F).
+ \label{eq:source}
+\end{equation}
+All source coordinate labels are retained. The following two constructions are exact algebraic reductions, not geometric claims about what an arbitrary matrix represents.
+
+\subsection{Two blocks with sign-separated crossing equations}
+Partition source coordinates into nonempty sets $L,R$. A source row is local if it is supported in only one set. A crossing row is accepted when, after possibly reversing its sign, it has the form
+\[
+ u^Tx_L-v^Tx_R=0,\qquad u,v\ge0.
+\]
+Retain the local rows in their respective blocks. Use $u^Tx_L$ and $v^Tx_R$ as corresponding coordinates of the common port, one coordinate for each accepted crossing row. Every forbidden pair must remain wholly in one block; a crossing forbidden pair is rejected.
+
+\begin{proposition}[Unsigned two-block source equivalence]
+\label{prop:two-source}
+Concatenation gives a bijection between the feasible source vectors and the synchronized tuples produced by this compiler. Objectives split by source coordinates, and coordinate-zero restrictions translate without loss. The port coordinates and source equations may be redundant; full rank is not required.
+\end{proposition}
+\begin{proof}
+A feasible source vector satisfies every local row and makes the two nonnegative parts of each crossing row equal. It therefore yields a feasible synchronized tuple. Conversely, synchronization of all port coordinates restores every crossing source equation, while the local equations were retained verbatim. The partition preserves nonnegativity, and locality of forbidden pairs preserves all compatibility constraints. Concatenation and restriction are inverse maps. Objectives and zeros follow the same coordinate partition.
+\end{proof}
+
+With no crossing equations the implementation supplies one identically zero dummy port; the pieces are independent and Lemma~\ref{lem:zero} decides the positive query. This is a harmless encoding convention, not a claim that an absent interface has geometric dimension one.
+
+A standard normal face equation matches one triangle-plus-quadrilateral arc count on one side of a face to the corresponding count on the other. A single separating face therefore gives three unsigned port coordinates. The two-tetrahedron fixture in Section~\ref{sec:evidence} is compiled in exactly this way.
+
+\subsection{Duplicated master-coordinate compiler}
+Choose a nonempty set $Y$ of source coordinates, with $|Y|=d$. Partition the remaining coordinates into private blocks $B_1,\ldots,B_m$. Require every source row to contain private coordinates from at most one $B_i$, and impose the analogous requirement on forbidden pairs. A row supported wholly in $Y$ is allowed.
+
+In block $i$, retain the coordinates of $B_i$ and introduce a copy of $x_Y$. Insert the source rows whose private support lies in $B_i$; duplicate master-only rows in every block. Translate the forbidden pairs in the same fashion. The local port map projects onto the master copy. Put source objective coefficients for private coordinates in their blocks and count the master coefficients only once, in $c_0$.
+
+\begin{theorem}[Master-coordinate source equivalence]
+\label{thm:master-source}
+The construction above is an exact reduction of \eqref{eq:source} to the synchronized model. It preserves every linear objective and coordinate-zero restriction. Restriction from the source and agreement-checked reconstruction are mutually inverse. Given the source partition, compilation takes polynomial bit time.
+\end{theorem}
+\begin{proof}
+A feasible source vector restricts to every local block. All master copies agree, and all copied equations and conflicts hold. Conversely, synchronization identifies the master copies, so the private blocks and common master reconstruct one source vector. Every source row was inserted at least once in a block containing its entire support. Every forbidden pair was likewise retained. Thus the reconstructed vector satisfies all source constraints. Counting master objective coefficients only once gives exactly the original objective. Forced zeros translate to every copy of a master coordinate and to the unique copy of a private coordinate. Matrix copying, support inspection and index translation are polynomial operations.
+\end{proof}
+
+For a given $Y$, the private partition need not be guessed. Build the constraint-incidence graph whose vertices are source coordinates, connecting coordinates appearing in a common equation or forbidden pair. After deleting $Y$, its connected components are the canonical maximal private blocks. In code, each row support is joined by a spanning star rather than expanding it to a quadratic-size clique. This produces the same connected components in work linear in the listed supports, up to union-find overhead. A caller may group components into larger blocks; it may not split a connected private support across blocks.
+
+\subsection{What source replay proves}
+The package does not trust an assembled port vector as a geometric certificate. A positive tuple is first checked against the local equations, port equalities and conflicts. Its source coordinates are then reconstructed and checked directly against the original matrix, original conflicts, objective and forced zeros. The primitive extreme output described next receives an independent rank and gcd check.
+
+The independent checker imports neither the atlas producer nor its linear-algebra helpers. It uses reverse-column rational elimination rather than the producer's reduced-row-echelon implementation. This independence is useful for implementation errors, but it does not authenticate the origin of a source matrix. In particular, a user-supplied matrix called ``normal matching'' is not thereby proven to be the matching matrix of the input knot exterior.
+
+\section{Recovering a primitive connected source witness}
+\label{sec:witness}
+
+\subsection{Why primitive assembly is insufficient}
+\begin{example}[Two ports can produce a nonextreme source vector]
+\label{ex:nonextreme}
+Take a first block
+\[
+ K_1=\{(a,b,c,d)\ge0:a+b=c+d\},\qquad P_1(a,b,c,d)=(a+c,b+d),
+\]
+and a second block with one coordinate $u\ge0$ and port $P_2u=(u,3u)$. There are no conflicts. The first cone has rays
+\[
+ (1,0,1,0),\ (1,0,0,1),\ (0,1,1,0),\ (0,1,0,1),
+\]
+with normalized slopes $0,1/2,1/2,1$. The second block forces slope $3/4$. A valid two-ray interpolation of the first and fourth rays, followed by primitive source scaling, gives
+\[
+ x=(a,b,c,d,u)=(1,3,1,3,2).
+\]
+Although $\gcd(x)=1$, it is not an extreme source ray:
+\begin{equation}
+ (1,3,1,3,2)=(0,2,1,1,1)+(1,1,0,2,1).
+ \label{eq:nonextreme-sum}
+\end{equation}
+Both summands satisfy all source equations and are nonproportional. The source support kernel has dimension two. The delivered atlas, with its deterministic tie order and objective one on every coordinate, actually produces this example before recovery.
+\end{example}
+
+The counterexample is not an error in the atlas theorem: the vector is feasible and its objective is optimal. It is an error only to infer source extremality or normal-surface connectedness from primitive scaling alone. The rank-one source no-new-rays result of report 96 cannot be carried into this higher-rank setting without additional hypotheses.
+
+\subsection{Support descent preserving the positive query}
+\begin{theorem}[Polynomial-bit extreme-witness extraction]
+\label{thm:descent}
+Let $x$ be a feasible source vector with $c^Tx>0$. A deterministic exact algorithm produces a primitive integer extreme ray $r$ of $\{x\ge0:Ax=0\}$ satisfying
+\[
+ \supp(r)\subseteq\supp(x),\qquad c^Tr>0.
+\]
+It preserves all source incompatibilities and coordinate-zero restrictions. It takes at most $n-1$ support reductions and polynomial bit time in the source and witness encoding lengths.
+\end{theorem}
+\begin{proof}
+Normalize $\one^Tx=1$ and write $S=\supp(x)$. If $\dim\ker(A|_S)=1$, Proposition~\ref{prop:support} finishes the construction. Otherwise the augmented system
+\[
+ A|_S z=0,\qquad\one^Tz=0
+\]
+has a nonzero solution. Choose an integer solution $z$ by exact elimination and denominator clearing. Since it is nonzero and has coordinate sum zero, it has both positive and negative entries. Reverse its sign when necessary so that $c|_S^Tz\ge0$.
+
+Set
+\[
+ t=\min_{j\in S:z_j<0}\frac{x_j}{-z_j}>0.
+\]
+Then $x+tz$, interpreted as zero off $S$, remains nonnegative, satisfies the source equations and normalization, and has objective at least $c^Tx>0$. At least one positive coordinate becomes zero. Repeat. No support can disappear completely because normalization is preserved. After at most $n-1$ reductions, the support kernel is one-dimensional. Primitive integer scaling preserves the strict objective sign and yields the required ray. Support only shrinks, so no conflict or excluded coordinate can reappear.
+
+It remains to control bits, rather than merely count reductions. Clear denominators of the fixed source matrix once. At every stage the augmented matrix consists of a column restriction of that matrix together with a row of ones. A nonzero integer null vector can be chosen from bounded minors of this matrix; its entries therefore have polynomially bounded bit length uniformly over the stages. Write the current normalized vector over a common denominator $D$. If coordinate $j$ determines the chosen step, the next common denominator divides $D|z_j|$. Its logarithm grows by at most the polynomial bit bound for $z_j$, once per reduction. Normalized coordinates remain in $[0,1]$, so their numerators have the same bit bound. There are only linearly many reductions, and exact elimination, comparisons, arithmetic and final gcd computation remain polynomial-bit operations.
+\end{proof}
+
+The objective in this theorem is the original source objective. Recovery is not required to preserve the chosen atlas port or its normalization. It is required to preserve source feasibility, compatibility, forced zeros and positivity, which are exactly the discovery contract. An application that requires a fixed peripheral value would need to retain those extra source equations during descent.
+
+\subsection{Connectedness in authenticated standard normal coordinates}
+\begin{corollary}[Primitive normal source rays are connected]
+\label{cor:connected}
+Assume the source is the standard normal matching system of a validated triangulation, with the genuine quadrilateral conflicts. Then the primitive admissible extreme ray returned by Theorem~\ref{thm:descent} represents a connected normal surface.
+\end{corollary}
+\begin{proof}
+Standard normal coordinates realize admissible nonnegative integer vectors as embedded normal surfaces, uniquely up to normal isotopy; see the normal-surface background in \cite{bo,bps}. Suppose the surface of a primitive extreme vector $r$ has at least two components. The coordinate vector of each component is a nonzero nonnegative integer matching vector, and their sum is $r$. Extremality forces each component vector to equal $\lambda r$ for some $\lambda>0$.
+
+Because $r$ is primitive, integers $b_j$ exist with $\sum_jb_jr_j=1$. If $\lambda r$ is integral, then $\lambda=\sum_jb_j(\lambda r_j)$ is an integer. Thus every component uses at least one whole copy of $r$, impossible when two or more such vectors sum to $r$. The surface is connected.
+\end{proof}
+
+This corollary does not prove that the connected surface is an essential disc. A positive Euler objective by itself does not establish essential boundary, rule out an irrelevant closed component in a general manifold, authenticate a peripheral marking, or bind the triangulation to the supplied knot diagram. Those are separate geometric checks. The example in \eqref{eq:nonextreme-sum} is purely algebraic; we do not assert that its matrix is a normal matching system.
+
+\subsection{Certificates and negative answers}
+A positive source certificate supplies an exact integer coordinate vector, interpreted relative to the caller's source identifier, objective and zero restrictions. The independent checker receives those source data explicitly; the packet is not a self-authenticating geometric object. The mathematical content checked here is: all coordinates are nonnegative; matching and conflicts hold; the objective is positive; the excluded coordinates vanish; the gcd is one; and the restricted source matrix has nullity one. The optional descent trace records how the witness was found, but the independent checker need not trust or replay that producer trace.
+
+No short proof packet for \nonpos\ is claimed. Such an answer currently depends on complete local enumeration and complete atlas evaluation, with the source compilers justified by their proofs and small independent global-oracle audits. A production promotion should retain the usual three-outcome wrapper: positive verified discovery, completed negative \emph{query}, or inconclusive due to unsupported geometry or resource limits. A negative query is not automatically a knottedness certificate.

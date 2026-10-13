@@ -70,6 +70,29 @@ def main():
         require(section_theorem_source(extract, name, 'Erdos3.FreimanModel.ProveItExtract') ==
                 section_theorem_source(original, name, 'Erdos3.FreimanModel'),
                 f'Freiman extract differs from its pinned statement or proof body: {name}')
+    original_lattice = (upstream / lattice_path / 'NormalizedLatticeSheet.lean').read_text()
+    lattice_extract = (PORT / 'lean/OAI/Compat/NormalizedLatticeBasics.lean').read_text()
+    require('Modified for ProveIt' in lattice_extract and manifest['revision'] in lattice_extract,
+            'Missing pinned provenance or modification notice in the lattice extract')
+    namespace = 'namespace OAI\n'
+    geometry_section = 'section\n\nnamespace Erdos3\n\nopen Module\n'
+    start = original_lattice.index(namespace)
+    end = original_lattice.index(geometry_section, start)
+    require(lattice_extract[lattice_extract.index(namespace):] ==
+            original_lattice[start:end] + 'end OAI\n',
+            'Lattice basics extract differs from its pinned declarations or proof bodies')
+    original_gaussian = (upstream / lattice_path / 'LatticeSheetHaar.lean').read_text()
+    gaussian_extract = (PORT / 'lean/OAI/Compat/NormalizedLatticeGaussian.lean').read_text()
+    require('Modified for ProveIt' in gaussian_extract and manifest['revision'] in gaussian_extract,
+            'Missing pinned provenance or modification notice in the Gaussian extract')
+    start = original_gaussian.index(namespace)
+    end = original_gaussian.index(
+        'section\n\nnamespace Erdos3\n\nopen MeasureTheory Module Set\n', start)
+    expected_gaussian = original_gaussian[start:end].replace(
+        'AddSubgroup.isClosed_of_discreteTopology', 'AddSubgroup.isClosed_of_discrete')
+    require(gaussian_extract[gaussian_extract.index(namespace):] ==
+            expected_gaussian + 'end OAI\n',
+            'Gaussian extract differs from pinned declarations or documented port adaptation')
     for entry in manifest.get('mathlib_backports', []):
         path = Path(*entry['module'].split('.')).with_suffix('.lean')
         require(entry['copyright'] in (PORT / 'lean' / path).read_text(),
@@ -79,6 +102,8 @@ def main():
     print(f'{len(manifest["modules"])} pinned upstream hashes match; '
           f'{modified} adapted files have modification notices.')
     print('Both Freiman extract statements and proof bodies match the pinned originals.')
+    print('Lattice basics declarations and proof bodies match the pinned original.')
+    print('Gaussian extract matches pinned declarations and the documented compatibility rename.')
     print('Upstream license unchanged; pinned provenance and recorded copyright notices retained.')
     print('Separate Mathlib source hashes are recorded in the manifest, not checked by this command.')
 

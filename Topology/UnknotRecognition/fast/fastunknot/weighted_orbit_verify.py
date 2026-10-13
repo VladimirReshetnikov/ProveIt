@@ -11,7 +11,7 @@ from collections import defaultdict
 from math import gcd
 import re
 
-from .interval_orbit_verify import verify_orbit_certificate
+from .interval_orbit_verify import verify_orbit_certificate, _contract_pairings
 
 
 class _InvalidWeightedProof(ValueError):
@@ -261,11 +261,7 @@ def _replay(size, pairs, runs, trace, dimension, poll):
             gaps = [[_integer(x) for x in gap] for gap in event["gaps"]]
             runs, size = _contract_weights(runs, size, gaps, histogram, poll)
 
-            def shift(point):
-                return point - sum(hi - lo + 1 for lo, hi in gaps if hi < point)
-
-            pairs = [[shift(a), shift(b), shift(c), shift(d), sign]
-                     for a, b, c, d, sign in pairs]
+            pairs, _ = _contract_pairings(pairs, gaps, poll)
         elif kind == "truncate":
             index = _integer(event["index"])
             cut = _integer(event["new_size"])

@@ -1,0 +1,105 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo,courier}
+\usepackage[margin=26mm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,graphicx,booktabs,longtable,array,enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{fancyhdr,listings,xurl}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue,pdfauthor={Research continuation prepared for the ProveIt project},pdftitle={Euler-checked free-group terminals for compressed normal cuts}]{hyperref}
+\hypersetup{pdfsubject={Unknot recognition, normal surfaces, handlebody certificates, exact complexity}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{question}[theorem]{Research question}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Inconclusive}{\textsc{Inconclusive}}
+\newcommand{\Complete}{\textsc{Complete}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+\newcommand{\cut}{\mathbin{\backslash\!\backslash}}
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlist{itemsep=3pt,topsep=5pt}
+\setcounter{tocdepth}{2}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\textsc{ProveIt research continuation}}
+\fancyhead[R]{\small Euler-checked group terminals}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{black!20},backgroundcolor=\color{black!2},showstringspaces=false}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{12mm}
+{\color{MidnightBlue}\large\scshape ProveIt \quad / \quad Topology \quad / \quad Research continuation\par}
+\vspace{14mm}
+{\huge\bfseries Euler-checked free-group terminals\par}
+\vspace{3mm}
+{\LARGE for compressed normal cuts\par}
+\vspace{9mm}
+{\Large A polynomial terminal certificate and an exact homology ledger\par
+Toward quasi-polynomial unknot recognition\par}
+\vspace{13mm}
+{\large Prepared for the ProveIt project\par}
+{\normalsize Research and implementation continuation by ChatGPT\par}
+\vspace{3mm}
+{\large 12 October 2026\par}
+\vspace{12mm}
+\begin{abstract}
+The current compressed normal-cut machinery authenticates a finite core and
+parallelity bundles, but purely geometric column cancellation leaves terminal
+handlebodies unrecognized. We develop a source-bound algebraic terminal
+certificate. If every parallelity base is a disk, the whole cut has a finite
+presentation with at most $74t$ generators, $78t$ relators and $78t$ signed
+letters, where $t$ is the source tetrahedron count; these active bounds do not
+depend on the numerical normal weight. A deterministic, nonincreasing singleton
+Tietze policy has polynomial discovery and independent replay costs.
+
+The topological gate is exact: for an orientable cut with $c$ nonempty-boundary
+components and certified aggregate free rank $r$, every component is a
+handlebody exactly when $\chi=c-r$. No separate irreducibility certificate is
+needed. If $z$ freely trivial relators were deleted and $h_3$ source three-handles
+were retained in the Euler ledger, a completed trace satisfies
+$b_2=z-h_3$; already a partial trace with $z>h_3$ proves a whole-cut obstruction.
+The construction resolves the previously missed figure-eight test cut, with
+handlebody genera two and one, using genuine signed substitutions beyond
+initial free reduction and unsigned peeling.
+
+Full proofs, source-bound certificates, an opt-in native implementation,
+independent verifiers, corpus audits, reproducible measurements, integration
+instructions and explicit counterexamples to completeness accompany the article.
+Conditional search-budget theorems identify the remaining global obligations.
+The generic quasi-polynomial recognition bound is not proved here.
+\end{abstract}
+\vfill
+{\small Baseline: \texttt{9bacc258bff4b34b4a92b6fa71d290ba5e60ea26}.\par
+Theorems, empirical findings, conditional results and open problems are
+distinguished throughout. The supplied patch is for review and integration.}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+\begingroup\small
+\tableofcontents
+\endgroup
+\clearpage
+\input{sections/01_scope}
+\input{sections/02_terminal_theory}
+\input{sections/03_native_case}
+\input{sections/04_implementation}
+\input{sections/05_experiments}
+\input{sections/06_global_bridge}
+\input{sections/07_research}
+\appendix
+\input{sections/08_reproduction}
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

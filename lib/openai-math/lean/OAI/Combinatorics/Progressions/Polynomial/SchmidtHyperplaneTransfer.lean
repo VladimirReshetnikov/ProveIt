@@ -1,6 +1,7 @@
+/- Modified for ProveIt: Import the extracted lattice basics directly; statements and proof bodies unchanged. -/
 import OAI.Combinatorics.Progressions.Lattices.LatticeGaussianHyperplane
 import OAI.Combinatorics.Progressions.Lattices.LatticeGaussianTemperature
-import OAI.Combinatorics.Progressions.Lattices.NormalizedLatticeSheet
+import OAI.Compat.NormalizedLatticeBasics
 
 namespace OAI
 

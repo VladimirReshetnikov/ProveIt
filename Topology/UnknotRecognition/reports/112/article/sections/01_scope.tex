@@ -1,0 +1,181 @@
+\section{Purpose, checkpoint, and contribution}
+\label{sec:scope}
+
+The aim of this continuation is to improve operations that an eventual
+efficient geometric recognizer must execute, while making their mathematical
+and implementation contracts precise. The result has two parts. The first
+accelerates an existing independently checked operation. The second supplies
+a missing geometric input to an earlier graph algorithm. Their relationship
+is direct: the new geometric observer is itself built from weighted orbit
+queries, so it benefits from improved weighted replay without weakening the
+source checks.
+
+\subsection{The present complexity target}
+
+Lackenby's February 2021 announcement states an
+\(n^{O(\log n)}\) unknot recognition bound in the crossing number
+\cite{announcement,talk}. His July 2026 preprint gives a hierarchy algorithm
+for incompressibility and unknot recognition. Section~9 explicitly leaves
+some operation costs insufficiently specified for a time estimate.
+Proposition~9.1 gives the iteration bound \(L(g+1)^L\);
+Proposition~10.2 bounds refined hierarchy length by
+\(4c_q(\mathcal H)\). Theorems~14.1 and 14.4 provide efficient hierarchy
+encoding and compressed cutting results \cite{lackenby26}. These are
+substantial existing results. This paper neither reconstructs a complete
+proof of the announced bound nor attributes a new polynomial weighted-orbit
+theorem to itself.
+
+Classical Agol--Hass--Thurston orbit counting and its weighted extension are
+the mathematical foundation of the local operations studied here
+\cite[Theorems~12 and 16]{aht}. The question addressed by our first part is
+more specific: how much of the current weight partition must an independently
+checked replay actually revisit?
+
+\subsection{Encoding and notation}
+
+The global target uses the diagram crossing number \(n\). For a local
+normal-surface query, \(T\) is the tetrahedron count, \(B\) the maximum
+normal-coordinate bit length, and \(k\) the number of explicitly labelled
+components. For an orbit query, \(N\) is the numerical interval size,
+\(R\) the number of canonical constant runs, and \(d\) the dimension of a
+weight vector. Endpoint costs depend on \(\log(N+1)\), not on \(N\)
+literal iterations. A certificate is itself input to its checker, so its
+encoded length is charged whenever an arbitrary supplied trace is
+considered. These distinctions prevent an operation count in a large
+normal coordinate from being mistaken for a polynomial encoded bound.
+
+\subsection{What was inspected}
+
+The implementation checkpoint is \BaseCommit, the \code{main} revision
+observed at the beginning of this work. All patches and reproduced
+measurements in the package refer to that fixed source. Later repository
+changes are not silently incorporated into the baseline.
+
+The inspected source includes the native \code{fastunknot} modules for
+weighted histograms, weighted representative transversals, normal surface
+geometry, raw cut cells, cut complement components, parallelity bundles,
+ordered boundary interfaces, and supplied-cut handlebody certification. The
+maintained source and reports distinguish these supplied geometric queries
+from the complete diagram recognizer \cite{repo}.
+
+The incoming directory at this checkpoint contains four relevant packages:
+\emph{Exceptional Rows}, \emph{Matroidal Dual Forests},
+\emph{Nonlinear Activation Forests}, and \emph{Ordered Interface Kernels}.
+Their source and integration descriptions were inspected for overlap.
+They address finite forest/cancellation selection and related replay
+optimizations. None supplies the lazy receiver operation or the native
+component-labelled chamber exporter delivered here. Earlier reports do,
+however, prove several tempting candidate results already. These
+are used with attribution.
+
+\begin{table}[htbp]
+\centering\small
+\begin{tabular}{L{0.24\textwidth}L{0.34\textwidth}L{0.32\textwidth}}
+\toprule
+Topic & Earlier result & Contribution of this continuation\\
+\midrule
+Weighted orbit counting &
+Polynomial encoded computation, classical AHT &
+A faster replay of the same checked traces\\
+\addlinespace
+Native fold run growth &
+\(R_T\le R_0+2T\), already in \code{suffix_folds.tex} &
+Use this bound to control a lazy balanced representation\\
+\addlinespace
+Receiver-local arithmetic &
+Flat producer work \(O(R)+O((S+P)d)\) &
+Remove the receiver-run term \(P\) from tree and vector updates\\
+\addlinespace
+Chamber graphs &
+One-census compiler and cographic nonseparation in report~92 &
+Authenticate labels and side locations from actual normal coordinates\\
+\addlinespace
+Hierarchy resets &
+Weighted dependency-path bounds in reports~23 and~92 &
+No replacement theorem asserted; identify the still-missing geometric bridge\\
+\bottomrule
+\end{tabular}
+\caption{Attribution and scope. \(R\) is the total number of weight runs,
+\(S\) the deleted suffix runs, \(P\) the receiver runs, and \(d\) the vector
+dimension.}
+\label{tab:scope}
+\end{table}
+
+\subsection{The first main result}
+
+The earlier suffix-fold optimization already avoids some vector additions
+outside the receiving interval, but its state is a flat sequence
+\cite{suffix}. A receiver containing many different vectors is still
+visited throughout. The checker reconstructs even more of the flat
+partition. This is a representation cost, not a necessary part of checking
+the topological source.
+
+Our key observation is elementary but useful: adding the same vector to all
+runs of an interval preserves every equality and inequality between
+neighbouring runs inside that interval. An exact checker can therefore
+store that addition at the root of a balanced subtree. It need only split
+at the interval endpoints and inspect the two resulting seams.
+
+Theorem~\ref{thm:lazy-fold} makes this observation quantitative. In
+particular, the work does not grow with the number of pre-existing receiver
+runs. The complete source family in Theorem~\ref{thm:star} shows why this
+changes an asymptotic term rather than only a constant factor. The
+implementation preserves the residue-anchor and discrete-derivative
+checker, so production and replay still use different transport arithmetic.
+
+\subsection{The second main result}
+
+A finite graph can encode which components of a disjoint two-sided surface
+system may be cut simultaneously without disconnecting the ambient manifold.
+The graph alone is easy to use. The difficult interface question is whether
+its vertices and edges genuinely describe the supplied source.
+
+The native exporter takes one embedded normal surface together with an
+explicit representative disc for each of its claimed connected components.
+It verifies that the representatives are distinct and exhaustive
+\emph{as component labels}, verifies two-sidedness, and locates both sides
+of each component in the actual cut complement. A successful certificate
+therefore supplies the missing geometric contract of report~92 for this
+input class \cite{persistence}. Its checker derives side locations through
+a separate raw cut-cell construction rather than importing the exporter.
+
+The number of components \(k\) is an explicit input/output parameter. A
+normal vector can encode an enormous number of parallel components. This
+exporter does not compress an exponentially large arbitrary labelled graph
+into a constant-size answer. For a connected large-coordinate surface,
+however, \(k=1\), and a single representative suffices regardless of the
+number of normal discs.
+
+\subsection{What the results establish}
+
+The local replay theorem is unconditional for the specified checked
+interval trace and exact weight representation. The native chamber theorem
+is unconditional under the implemented geometric source contract:
+a validated finite connected compact orientable triangulation with one
+torus boundary, an admissible normal vector, and correctly authenticated
+component representatives whose two-sidedness gate succeeds.
+
+The chamber theorem does not require the components to be incompressible,
+and does not prove that they are. The resulting graph certifies
+nonseparation only. Neither a connected complement nor a graph loop is a
+handlebody certificate. Moreover, the graph does not yet contain a
+geometric path crossing a particular component once, or a support
+certificate showing that such a path survives a later edit.
+
+For the same reason, the new replay engine does not alter the correctness
+criterion of the complete recognizer. It reduces work needed to check
+existing local certificates. A performance claim about a supplied normal
+cut is reported as such, rather than as a speed-up for arbitrary knot
+recognition.
+
+\subsection{Novelty in the appropriate sense}
+
+Balanced sequence trees, delayed range additions, normal-surface
+connectivity, and dual graphs are established ideas. No priority claim is
+made for those foundations. The contributions here are the exact
+receiver-independent replay construction with its native trace separation,
+the source-derived chamber-label interface and its independently reconstructed
+checker, and the executable evidence connecting them to this implementation.
+An exhaustive literature priority search for these combinations has not
+been performed. The proofs should be judged on their stated claims, and the
+measurements on their executed scopes.

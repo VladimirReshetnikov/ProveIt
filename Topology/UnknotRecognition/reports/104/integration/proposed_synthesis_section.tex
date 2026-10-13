@@ -1,0 +1,34 @@
+% Proposed text only; adapt labels and bibliography to the maintained synthesis.
+\subsection{Private-cocore queries without the passive matrix}
+For a fixed authenticated source and complete zero-real-fill schedule, the
+private-cocore query requires only the image of each passive column in
+\(\{\mathsf{empty},1,\ldots,q,\mathsf{many}\}\). Here owner \(i\) means
+exactly one occurrence of curve \(i\), and \(\mathsf{many}\) means at least
+two total occurrences, including two belonging to the same curve.
+Nonnegative addition and scalar multiplication descend exactly to these
+states. Evaluating the source dependency program therefore computes all
+private columns and their canonical least witnesses in
+\(O(s+z+m+n+q)\) structural work. Source reconstruction and binary input
+costs remain separate.
+
+An independent checker propagates a saturated total and the weighted owner
+sum modulo \(q+1\). It decodes the residue only when the exact total is one,
+so it uses no probabilistic fingerprint. A complete acyclic source-unit
+matching can first be normalized to a column-private order: a weighted-path
+argument proves invariance of the whole final passive matrix for the fixed
+matching. Source-zero pivots created by fill remain outside this shortcut.
+
+For omissions of at most \(k\) passive curves, a bounded-support atlas retains
+capped coefficients on supports of size at most \(k+1\), and an overflow tag
+otherwise. It answers every such query exactly. A complete search needs at
+most \((k+1)(n+1)^k\) nodes, giving a local quasipolynomial bound when
+\(k=O(\log N)\) and encoded source size is polynomial in \(N\). Exception
+selection on unrestricted matrices already contains Dominating Set. This
+hardness statement has not been transferred to the native geometric family.
+
+The standalone package supplies proofs, an independently replayable matrix
+ledger, differential tests and controlled matrix benchmarks, including
+small-input regressions. It does not register a new native whole-cut schema.
+Legacy records containing full final rows must retain their original replay
+semantics; omitted attachments must remain as transported residual geometry.
+None of these local bounds establishes a general quasipolynomial recognizer.

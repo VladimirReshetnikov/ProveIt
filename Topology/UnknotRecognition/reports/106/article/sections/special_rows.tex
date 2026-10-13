@@ -1,0 +1,281 @@
+% Stronger section fragment.  Reuses notation and tree-copy construction in
+% exceptional_columns_theorems.tex.  This supersedes its factorial FPT bound.
+\section{Compressing all exceptional schedules into a Boolean determinant filter}
+\label{sec:special-row-sieve}
+
+The schedule method exposes a deterministic exact algorithm, but its
+factorial enumeration is unnecessary for randomized discovery.  Every
+exceptional column can change only one of its incident rows.  Keeping track
+of those rows captures all nonlinear activation, while ordinary rows are
+handled by graph reachability and the fixed source-component constraints.
+This gives a single-exponential parameter bound.
+
+Let $P$ and $Z$ be the ordinary implication graph and ordinary seed set,
+and let
+\[
+             U=\bigcup_{c\in E}\operatorname{supp}(c),
+             \qquad t=|U|\leq3k.
+\]
+Use $\operatorname{Cl}(X)$ for the closure of $X\cup Z$ under ordinary
+reachability and all exceptional rules.  For a triple $\{u,v,w\}$ these
+rules are $\{u,v\}\to w$, $\{u,w\}\to v$, and $\{v,w\}\to u$.
+Equivalently, $\operatorname{Cl}(X)$ consists of the rows removed by
+peeling after initially deleting $X$.  All rules concern removed rows.
+
+Define a monotone Boolean function on subsets of the special rows by
+\begin{equation}\label{eq:special-truth}
+             f(A)=\mathbf 1\{U\subseteq\operatorname{Cl}(A)\},
+                    \qquad A\subseteq U.
+\end{equation}
+The seeds $Z$ are always included in this definition.  They will not be
+encoded as colors that a tree is required to hit.  In particular $f$ may
+already be one on the empty set.
+
+Let $S_1,\ldots,S_q$ now denote the source SCCs of the ordinary graph $P$
+that are disjoint from $Z\cup U$.  These groups are fixed for the entire
+algorithm, independently of the tree and the Boolean input $A$.
+For a spanning tree $T$, define its special influence set by
+\begin{equation}\label{eq:special-influence}
+        H(T)=\operatorname{Reach}_P(T)\cap U
+             =\{u\in U:T\cap\operatorname{Anc}(u)\ne\varnothing\}.
+\end{equation}
+Only influence from $T$ is included here.  Influence from the free seeds
+is already accounted for in $f$.
+
+\begin{lemma}[Exact special-row criterion]\label{lem:special-criterion}
+A spanning tree $T$ leaves a completely peelable matrix if and only if
+\begin{equation}\label{eq:special-criterion}
+       T\cap S_a\ne\varnothing\quad(1\leq a\leq q),
+                    \qquad f(H(T))=1.
+\end{equation}
+\end{lemma}
+\begin{proof}
+First we prove that the special rows activated from $T$ are exactly those
+activated from $H(T)$.  Before any exceptional rule fires, their special
+sets are respectively
+\[
+     \operatorname{Reach}_P(Z\cup T)\cap U
+       \quad\text{and}\quad
+     \operatorname{Reach}_P(Z\cup H(T))\cap U.
+\]
+These sets agree.  Every member of $H(T)$ is reachable from $T$; conversely
+every special row reachable from $T$ is already a member of $H(T)$.
+If the special sets agree at some stage, precisely the same exceptional
+rules are enabled, because every premise and head of every such rule
+lies in $U$.  Their new heads also lie in $U$.  Ordinary closure from a
+common set of new special heads has the same effect on special rows.
+Induction over the finite monotone closure process proves
+\begin{equation}\label{eq:special-closure-equality}
+          \operatorname{Cl}(T)\cap U
+             =\operatorname{Cl}(H(T))\cap U.
+\end{equation}
+There is no need to retain the initially activated ordinary rows outside
+$U$: their only future effect on special rows has already been included
+in $H(T)$.
+
+If all rows peel, \eqref{eq:special-closure-equality} gives $f(H(T))=1$.
+A source SCC disjoint from $Z\cup U$ cannot receive an ordinary implication
+from another SCC and cannot contain an exceptional head or a seed.
+It therefore must contain a deleted tree row.  This proves necessity.
+
+Conversely suppose \eqref{eq:special-criterion}.  All special rows become
+active by \eqref{eq:special-closure-equality}.  Every source SCC of $P$
+then contains an active row: a seed in $Z$, a special row in $U$, or a tree
+row by the hitting condition.  Every SCC of a finite condensation DAG is
+reachable from a source SCC.  Ordinary closure therefore activates all
+rows.  This is complete peeling.
+\end{proof}
+
+\subsection{Computing the activation table without expanded words}
+
+The table of $f$ can be computed in $2^t\operatorname{poly}(N)$ time.
+Precompute ordinary reachability between special rows and the free mask
+$\operatorname{Reach}_P(Z)\cap U$.  For each initial mask $A$, repeatedly
+add the ordinary successors of active special rows and every exceptional
+head whose prerequisites are active.  At most $t$ strict mask enlargements
+can occur.  The resulting mask is all of $U$ exactly when $f(A)=1$.
+This is a finite monotone closure computation on bit masks, not an
+exponential expansion in normal-surface weight.
+
+For a more economical parameter, let $d$ be the number of ordinary SCCs
+that meet $U$.  Two rows of one SCC have identical ordinary ancestor sets,
+and one becomes active ordinarily whenever the other does.  Hence one
+color per such SCC suffices.  Choose one representative of each SCC,
+interpret an initial color mask as activating its representatives, and
+use the same closure test on all special rows.  Thus all statements below
+hold with $t$ replaced by
+\begin{equation}\label{eq:activation-dimension}
+             d\leq t\leq3k.
+\end{equation}
+For clarity the algebraic proof is written with the individual-row set
+$U$; replacing it by SCC colors changes none of its identities.
+
+\subsection{An arbitrary Boolean filter on common bases}
+
+Use the copied graphic-incidence/Vandermonde construction from
+Lemma~\ref{lem:tree-cover-sieve}, with the fixed groups $S_1,\ldots,S_q$
+from Lemma~\ref{lem:special-criterion}.  If $q>r$, no tree can hit all
+these disjoint groups.  Otherwise common bases of the two represented
+matroids correspond exactly to spanning trees that hit all these groups.
+There are at most $M\leq2m$ copies, each with its own variable $z_e$.
+
+Assign to a copy of a row $e$ the color mask
+\[
+             C(e)=\{u\in U:e\in\operatorname{Anc}(u)\}.
+\]
+The union of the masks in a copied spanning-tree basis is exactly $H(T)$.
+For $A\subseteq U$, let
+\[
+     P_A(z)=\det\bigl(A_{\rm gr} D_A(z)B^{\mathsf T}\bigr),
+\]
+where $D_A(z)$ retains $z_e$ if $C(e)\cap A=\varnothing$, and sets that
+entry to zero otherwise.  Thus a common basis $F$ occurs in $P_A$ exactly
+when its hit mask $H(F)$ avoids $A$.
+
+Define
+\begin{equation}\label{eq:boolean-mobius}
+     g(K)=f(U\setminus K),\qquad
+     c_A=\sum_{B\subseteq A}(-1)^{|A\setminus B|}g(B),
+\end{equation}
+and form the polynomial
+\begin{equation}\label{eq:boolean-determinant-filter}
+                        Q(z)=\sum_{A\subseteq U}c_A P_A(z).
+\end{equation}
+
+\begin{theorem}[Boolean common-basis sieve]\label{thm:boolean-basis-sieve}
+The polynomial $Q$ is multilinear and homogeneous of degree $r$.  Its
+monomials with nonzero coefficient encode exactly the copied spanning-tree
+bases whose underlying trees satisfy \eqref{eq:special-criterion}.
+In particular
+\[
+              Q\not\equiv0
+                \quad\Longleftrightarrow\quad
+              \text{forest-compatible raw completion exists}.
+\]
+This holds over any field for which the two matrix representations are
+valid.  The Boolean function need not be monotone for the algebraic
+identity; monotonicity enters only its interpretation as activation.
+\end{theorem}
+\begin{proof}
+Cauchy--Binet associates a common basis $F$ with the distinct monomial
+$\prod_{e\in F}z_e$ and its nonzero coefficient
+$\det((A_{\rm gr})_F)\det(B_F)$.  It occurs in $P_A$ precisely when
+$A\subseteq U\setminus H(F)$.  Its coefficient in $Q$ is therefore its
+original coefficient multiplied by
+\[
+          \sum_{A\subseteq U\setminus H(F)}c_A
+             =g(U\setminus H(F))=f(H(F)).
+\]
+The middle identity is subset-lattice M\"obius inversion.  To verify it
+directly, substitute \eqref{eq:boolean-mobius}, interchange the two finite
+sums, and use
+$\sum_{A:\,B\subseteq A\subseteq K}(-1)^{|A\setminus B|}=0$
+unless $B=K$, in which case it is one.  Thus the multiplier is exactly
+zero or one.  The identity holds over the integers and after reduction
+in any characteristic.  Large or negative intermediate $c_A$ do not
+introduce an additional characteristic restriction.
+
+Distinct bases use distinct copy variables, so different encodings do
+not share a monomial.  Every surviving basis coefficient remains nonzero.
+The exact special-row criterion now proves the final equivalence.
+Multilinearity and homogeneity follow directly from the degree-$r$
+Cauchy--Binet monomials.
+\end{proof}
+
+\subsection{Single-exponential discovery with checked witnesses}
+
+\begin{theorem}[Activation-dimension algorithm]\label{thm:activation-fpt}
+Let $d$ be the number of ordinary SCCs incident with exceptional columns.
+For every $0<\varepsilon<1$, there is a randomized algorithm with time
+\begin{equation}\label{eq:activation-time}
+                 2^d\operatorname{poly}(N,\log(1/\varepsilon))
+                      \ \leq\ 
+                 8^k\operatorname{poly}(N,\log(1/\varepsilon))
+\end{equation}
+that finds a spanning tree and a verified unit-column peel order with
+probability at least $1-\varepsilon$ whenever a completion exists.
+It never reports an incorrect positive certificate.  It uses
+$O(2^d\log N+\operatorname{poly}(N))$ bits of space.  There is also a
+polynomial-space variant with time
+\[
+                   3^d\operatorname{poly}(N,\log(1/\varepsilon)).
+\]
+\end{theorem}
+\begin{proof}
+Compute ordinary SCCs, ancestor masks, and the truth table on the $d$
+SCC colors.  Choose a prime field with characteristic
+$P>\max(M,2r)$, of polynomial magnitude in $N$.  The represented graphic
+matroid and the filler Vandermonde matroid are valid over this field.
+Compute $g$ and its subset M\"obius transform $c$ by the standard in-place
+recurrence
+\[
+     c[A]\leftarrow c[A]-c[A\setminus\{i\}]
+       \quad\text{for each color }i\text{ and each }A\ni i.
+\]
+There are $O(d2^d)$ field operations.  All coefficients may be computed
+modulo $P$; their integer identities have already been proved.
+
+An evaluation of $Q$ uses $2^d$ determinants of order $r$ and polynomial
+additional work.  If completion exists, $Q$ is a nonzero degree-$r$
+polynomial, so a uniform random assignment misses with probability at
+most $r/P<1/2$.  With
+$b=\max\{1,\lceil\log_2(1/\varepsilon)\rceil\}$ independent trials,
+the probability of missing every time is at most $\varepsilon$.
+A nonzero evaluation guarantees existence without qualification.
+
+Use the deterministic repeated-deletion extraction from
+Lemma~\ref{lem:tree-cover-sieve}, now with $Q$ in place of $\Phi$.
+All of its hypotheses hold: $Q$ is homogeneous and multilinear of degree
+$r$, and $P>M$.  At most $O(M^2)$ further evaluations produce exactly
+$r$ copies forming a common basis with $f(H)=1$.  Decode its tree and
+run the independent unit-column peeling checker on the original matrix.
+Lemma~\ref{lem:special-criterion} proves that every row is removed.
+No random choices are used during extraction, so the error bound remains
+that of the initial identity tests.
+
+Storing $f$, $g$, and $c$ costs $O(2^d\log N)$ bits when values are stored
+modulo $P$, in addition to the polynomial graph and matrix storage.
+For polynomial space, do not store these tables.  Compute each $c_A$
+directly from its subsets, evaluating $f$ by closure as needed.  Summed
+over all $A$, the number of truth-value computations is
+\[
+                          \sum_{A\subseteq[d]}2^{|A|}=3^d.
+\]
+Every determinant, coefficient, and restriction can then be processed
+sequentially.  The repeated extraction calls multiply the time only by
+a polynomial factor.
+\end{proof}
+
+The randomized algorithm has one-sided misses.  A production interface
+can report \texttt{SUCCESS} only after exact replay, and return
+\texttt{INCONCLUSIVE} when the tested assignments are all zero.  An exact
+negative decision may use the deterministic schedule solver, an existing
+stopping-set certificate, or exhaustive search.  Probabilistic failure
+to find a witness is not a topological obstruction.
+
+\begin{corollary}[Larger exceptional supports]
+The activation-dimension theorem remains valid if exceptional active
+columns have arbitrary finite support and arbitrary positive counts,
+provided that $U$ contains every row incident with them.  For a unit entry
+on row $h$, its rule requires every other support row to have been removed.
+Columns with no unit entry remain inert.  The running time is
+$2^d\operatorname{poly}(N,\log(1/\varepsilon))$, where $d$ counts the
+ordinary SCCs meeting this larger exceptional-row set.
+\end{corollary}
+\begin{proof}
+Every exceptional rule still has all its premises and head in $U$.
+The exact special-row criterion and Boolean filter use no bound on rule
+arity.  A finite closure test is polynomial in the explicitly encoded
+rule incidence.  The triple-specific inequality $d\leq3k$ is the only
+part that no longer applies.
+\end{proof}
+
+\paragraph{Concrete consequence and its boundary.}
+If current states have encoded size $N=n^{O(1)}$ and activation dimension
+$d=O(\log n)$, this local tree-selection problem has randomized
+polynomial-time certificate discovery.  For $d=O((\log n)^a)$ it has
+quasi-polynomial local time.  No such dimension bound is established for
+all states of a general unknot hierarchy.  The theorem also leaves intact
+fixed-interface stopping obstructions: it decides the same restricted
+geometric move class more efficiently, and does not make that class
+complete for handlebody recognition.

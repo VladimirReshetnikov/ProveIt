@@ -1,6 +1,6 @@
 import GowersSzemeredi.Proofs18QuadraticSharperEnvelope
 import GowersSzemeredi.Proofs18GeneralIteration
-import Mathlib.Analysis.Complex.ExponentialBounds
+import GowersSzemeredi.Proofs18DoubleExponentialBounds
 
 /-! The fully explicit four-term iteration fits the source's stated
 quantitative Szemeredi threshold. This is a restricted instance only. -/
@@ -8,13 +8,6 @@ set_option autoImplicit false
 set_option maxRecDepth 12000
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
-
-theorem section18_exp_le_two_rpow {x : Real} (hx : 0 ≤ x) :
-    Real.exp x ≤ (2 : Real) ^ (2 * x) := by
-  rw [Real.rpow_def_of_pos (by norm_num : (0 : Real) < 2)]
-  apply Real.exp_le_exp.mpr
-  have hh := Real.log_two_gt_d9
-  nlinarith
 
 /-- A concrete base-two double-exponential bound, throughout
 0 < delta <= 1/2, with no unspecified multiplicative constant. -/

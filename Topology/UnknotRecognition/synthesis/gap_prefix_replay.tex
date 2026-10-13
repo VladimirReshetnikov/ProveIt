@@ -1,0 +1,106 @@
+\subsection{Authenticated gap contraction by prefix sums}
+\label{marked-cut:gap-prefix}
+
+Report 106 supplies a further local improvement to interval-orbit replay.
+Its gap-contraction patch has now been integrated separately from report
+intake. The change affects the unweighted, weighted-histogram and weighted
+least-representative checkers, together with the producer's occupied-interval
+scan. It preserves the certificate languages and the geometric source
+contracts. The other proposals in that report are not integrated by this
+change.
+
+\paragraph{The exact order quotient.}
+At a contraction event let the current universe be
+$\{0,\ldots,n-1\}$ and let its static gaps be the increasing, disjoint,
+inclusive intervals $[\ell_i,h_i]$, $1\leq i\leq G$. These are exactly the
+points outside all current pairing domains and ranges. In particular every
+pairing endpoint lies outside the gaps. Set
+\[
+ D_0=0,\qquad D_j=\sum_{i=1}^j(h_i-\ell_i+1),\qquad
+ j(x)=\#\{i:h_i<x\}.
+\]
+The order quotient on a retained point is
+\[
+ q(x)=x-D_{j(x)}.
+\]
+
+\begin{proposition}[Prefix contraction of authenticated intervals]
+For $P$ pairing rows and $G$ authenticated static gaps, all four endpoints
+of every row and the removed-point count can be computed with
+$O(G+P\log(G+2))$ arithmetic operations, using $O(G)$ auxiliary prefix
+storage in addition to the output. The map is exactly the preceding
+checker's repeated-sum map, including orientation-reversing rows.
+\end{proposition}
+\begin{proof}
+There are precisely $D_{j(x)}$ removed integers strictly below a retained
+point $x$. Subtracting that number gives its zero-based rank among retained
+points. The sorted list of gap upper endpoints and its length-prefix table
+are built in one scan. A lower-bound binary search returns the first upper
+endpoint at least $x$, hence exactly the number strictly below $x$.
+There are four searches per pairing row. Each entire pairing domain and
+range consists of retained points, so the quotient acts by a translation
+on each such interval, preserves its length, and carries its affine
+isometry to the affine isometry with the mapped endpoints and original
+sign. The total number removed is $D_G$.
+\end{proof}
+
+The old mapper separately scanned every gap for each endpoint, costing
+$O(PG+G)$ arithmetic operations. There are at most $2P$ occupied input
+intervals, so their complement has $G\leq 2P+1$ components. Consequently
+sorting and merging those intervals, comparing the authenticated gap list,
+and mapping all endpoints together cost
+$O((P+1)\log(P+2))$ arithmetic operations, apart from certificate parsing
+and callbacks. The preceding repeated-sum stage could be quadratic in $P$.
+This bound is for one unweighted contraction event; it does not include
+the distinct work of transporting a weighted run partition.
+
+If $B$ bounds the bit length of $n$ and
+the authenticated endpoints, all prefix values lie between zero and $n$.
+Ordinary binary-integer additions, subtractions and comparisons therefore
+give the conservative bit bound
+$O(B(G+P\log(G+2)))$ for the new mapper, excluding language allocation and
+callback overhead. No represented point is expanded. The theorem concerns
+the mapping stage: authenticating the gaps still sorts the current pairing
+intervals, and weighted replay still transports the weight runs.
+
+\paragraph{Authentication precedes acceleration.}
+The unweighted checker reconstructs the exact complement of all current
+pairing intervals and compares it with the decoded event. Missing,
+reordered, overlapping, out-of-range or noninteger gaps fail before the
+prefix helper is called. Weighted histogram and representative replay
+first authenticate the complete unweighted trace through that checker.
+Only then do they use the same checker-local prefix helper on their own
+reconstructed pairing rows. The helper imports no producer code and caches
+nothing between calls. It is deliberately a private routine whose
+preconditions are supplied by these authenticated callers.
+
+The producer keeps a separate occupied-interval implementation. Its sorted
+scan now tracks the beginning and exclusive end of one occupied block and
+emits the block only when a genuine gap starts. Adjacent intervals stay
+in one block. This avoids repeatedly rewriting the final occupied tuple
+inside a long overlapping block; it does not change the producer's
+asymptotic sorting bound. The no-gap path still reuses the existing pairing
+list. Cooperative callbacks are polled in the prefix and row scans;
+cancellation exceptions propagate rather than becoming negative verdicts.
+The number of polls is not a certificate invariant.
+
+\paragraph{Original labels and scope.}
+The weighted least-representative checker already uses prefix sums for the
+inverse order map. That inverse has the opposite boundary convention:
+if $a_i=\ell_i-D_{i-1}$ is a collapsed gap anchor, restoring a surviving
+rank adds the prefix for anchors \emph{at most} that rank. Forward mapping
+therefore uses a lower-bound search on upper endpoints, while inverse
+mapping uses an upper-bound search on collapsed anchors. The new forward
+helper leaves this distinction intact.
+
+This improvement removes a repeated gap scan within each admitted trace.
+It does not supply a new bound on the number of contraction events.
+For a single scheduled orbit instance, the earlier AHT analysis already
+provides polynomial dependence on the pairing count and endpoint bit
+lengths \cite{aht-orbits}. That statement does not pay for the number and
+sizes of instances generated by a complete recognition hierarchy.
+Useful-surface discovery, marked successor transport and aggregate query
+and hierarchy accounting remain separate obligations for quasi-polynomial
+unknot recognition.
+
+\input{gap_prefix_replay_results.tex}

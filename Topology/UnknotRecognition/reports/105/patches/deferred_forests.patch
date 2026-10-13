@@ -1,0 +1,579 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/bundle_boundary_kernel.py b/Topology/UnknotRecognition/fast/fastunknot/bundle_boundary_kernel.py
+index e84ea43e5..a91d1f6f5 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/bundle_boundary_kernel.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/bundle_boundary_kernel.py
+@@ -11,13 +11,18 @@ from .core_handlebody import _forest, _occurrences, column_cancellation_plan
+ from .disk_bundle_absorption import source_core_circle
+ 
+ 
+-def bundle_boundary_kernel(g, summary, skeleton, *, check=lambda: None):
++def bundle_boundary_kernel(g, summary, skeleton, *, check=lambda: None,
++                           forest_strategy='canonical'):
+     """Return (certificate, census, stats), or None for a conservative refusal."""
+     check()
++    if forest_strategy not in ('canonical', 'deferred'):
++        raise ValueError('forest_strategy must be canonical or deferred')
+     core, profiles = g['core'], summary['base_profiles']
+     if core['handles3'] or any(p['boundary_components'] <= 0 for p in profiles):
+         return None
+     tree, component = _forest(core, check)
++    if forest_strategy == 'deferred':
++        tree = []
+     rows = _occurrences(core, tree, check)
+     forest = set(tree)
+     owner = {port: i for i, p in enumerate(profiles) for port in p['core_ports']}
+@@ -92,12 +97,25 @@ def bundle_boundary_kernel(g, summary, skeleton, *, check=lambda: None):
+     planned = column_cancellation_plan(rows, check=check)
+     if planned['remaining_rows']:
+         return None
++    removed = {h for _, h in planned['cancellations']}
++    if forest_strategy == 'deferred':
++        # Every row restricts to a closed walk in the original core graph.
++        # A core column leaf is therefore a nonbridge after earlier pivots
++        # have been deleted. Base columns are loops and need no exclusion
++        # from the core forest. Choose the forest only after discovering
++        # the complete schedule; certificates still contract it first.
++        tree, surviving_component = _forest(core, check, forbidden=removed)
++        if surviving_component != component:
++            raise ArithmeticError('deferred boundary pivots changed core connectivity')
++        for h in tree:
++            del column_node[h]
+     # Retained column leaves have no fill on the retained matrix. An omitted
+     # column may meet the donor twice; the projected schedule still lifts to
+     # the complete geometric model without expanding those columns.
+-    proof = dict(schema='bundle-boundary-kernel-v2', forest=tree, bridge_forest=bridges,
++    version = ('bundle-boundary-kernel-v3' if forest_strategy == 'deferred'
++               else 'bundle-boundary-kernel-v2')
++    proof = dict(schema=version, forest=tree, bridge_forest=bridges,
+                  curves=curves, families=families, cancellations=planned['cancellations'])
+-    removed = {h for _, h in planned['cancellations']}
+     groups = {}
+     for n in nodes:
+         groups.setdefault(root(n), []).append(n)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/bundle_boundary_kernel_verify.py b/Topology/UnknotRecognition/fast/fastunknot/bundle_boundary_kernel_verify.py
+index 5e29398b8..46f6d4f98 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/bundle_boundary_kernel_verify.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/bundle_boundary_kernel_verify.py
+@@ -17,22 +17,46 @@ def replay_bundle_boundary_kernel(g, summary, skeleton, certificate, *, check=la
+     if type(certificate) is not dict or set(certificate) != required:
+         return None
+     version = certificate['schema']
+-    if version not in ('bundle-boundary-kernel-v1', 'bundle-boundary-kernel-v2'):
++    if version not in ('bundle-boundary-kernel-v1', 'bundle-boundary-kernel-v2',
++                       'bundle-boundary-kernel-v3'):
+         return None
+     core, bases = g['core'], summary['base_profiles']
+     if core['handles3'] or any(p['boundary_components'] <= 0 for p in bases):
+         return None
+     if not core['handles0']:
+         return None
+-    # Independent set-merging constructs the canonical source forest.
++    # Legacy schemas authenticate the canonical forest. The new schema
++    # accepts any supplied spanning forest, checked from source endpoints;
++    # its discovery order and the producer's graph routines are irrelevant.
+     component = list(range(len(core['handles0'])))
+     tree = []
+-    for h in core['handles1']:
++    if version == 'bundle-boundary-kernel-v3':
++        supplied = certificate['forest']
++        if type(supplied) is not list:
++            return None
++        try:
++            selected = [encoded_integer(e) for e in supplied]
++        except ValueError:
++            return None
++        if (len(set(selected)) != len(selected) or
++                any(e < 0 or e >= len(core['handles1']) for e in selected)):
++            return None
++        candidate_edges = [core['handles1'][e] for e in selected]
++    else:
++        candidate_edges = core['handles1']
++    for h in candidate_edges:
+         check()
+         a, b = (component[v] for v in h['ends'])
+         if a != b:
+             component = [min(a,b) if x in (a,b) else x for x in component]
+             tree.append(h['id'])
++        elif version == 'bundle-boundary-kernel-v3':
++            return None
++    if version == 'bundle-boundary-kernel-v3':
++        for h in core['handles1']:
++            check()
++            if component[h['ends'][0]] != component[h['ends'][1]]:
++                return None
+     on_tree = set(tree)
+     columns = {h['id']: ('core', component[h['ends'][0]]) for h in core['handles1']
+                if h['id'] not in on_tree}
+@@ -128,7 +152,7 @@ def replay_bundle_boundary_kernel(g, summary, skeleton, certificate, *, check=la
+             decoded_moves.append([encoded_integer(x) for x in move])
+         except ValueError:
+             return None
+-    if version == 'bundle-boundary-kernel-v2':
++    if version in ('bundle-boundary-kernel-v2', 'bundle-boundary-kernel-v3'):
+         if not verify_column_cancellations(raw_rows, decoded_moves, check=check):
+             return None
+         live_columns = set(columns)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/core_handlebody.py b/Topology/UnknotRecognition/fast/fastunknot/core_handlebody.py
+index 3c27ec790..9fae649d5 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/core_handlebody.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/core_handlebody.py
+@@ -13,7 +13,7 @@ from collections import deque
+ from heapq import heappop, heappush
+ 
+ 
+-def _forest(core, check):
++def _forest(core, check, forbidden=()):
+     count = len(core['handles0'])
+     parent = list(range(count))
+ 
+@@ -23,9 +23,12 @@ def _forest(core, check):
+             a = parent[a]
+         return a
+ 
++    forbidden = set(forbidden)
+     edges = []
+     for handle in core['handles1']:
+         check()
++        if handle['id'] in forbidden:
++            continue
+         a, b = map(root, handle['ends'])
+         if a != b:
+             parent[max(a, b)] = min(a, b)
+@@ -206,28 +209,55 @@ def leaf_cancellation_plan(counts, *, check=lambda: None):
+                 stats=dict(incidence_visits=visits))
+ 
+ 
+-def core_handlebody_certificate(core, *, check=lambda: None):
++def core_handlebody_certificate(core, *, check=lambda: None,
++                               forest_strategy='canonical'):
+     """Plan certified cancellations on a source-authenticated geometric core.
+ 
+     A COMPLETE result gives a handlebody for each core component.  Three-handles
+     and stalled raw cancellation produce INCONCLUSIVE, never a negative result.
+     Authenticating the source and its handle charts belongs to the enclosing
+     normal-cut certificate.  The small certificate is checked independently by
+-    ``verify_core_handlebody_certificate``.
++    ``verify_core_handlebody_certificate``.  ``forest_strategy='deferred'``
++    peels all source columns before selecting a forest disjoint from its
++    pivots.  Closed attaching walks guarantee that such a forest exists.
++    This decides success over every primal forest, for a fixed set of rows.
++    The legacy canonical strategy remains the default.
+     """
+     check()
++    if forest_strategy not in ('canonical', 'deferred'):
++        raise ValueError('unknown core forest strategy')
+     result = dict(status='INCONCLUSIVE',
+                   trust='geometric core cancellation; requires authenticated handle charts')
+     if core['handles3']:
+         result['reason'] = 'core_has_three_handles'
+         return result
+-    tree, component = _forest(core, check)
+-    counts = _occurrences(core, tree, check)
+-    planned = leaf_cancellation_plan(counts, check=check)
+-    method = 'leaf'
+-    if planned['remaining_rows']:
++    if forest_strategy == 'deferred':
++        counts = _occurrences(core, (), check)
+         planned = column_cancellation_plan(counts, check=check)
+         method = 'column_leaf'
++        if planned['remaining_rows']:
++            result.update(reason='all_primal_forests_raw_obstruction',
++                          remaining_two_handles=planned['remaining_rows'],
++                          stats=planned['stats'])
++            return result
++        pivots = {c for _, c in planned['cancellations']}
++        tree, component = _forest(core, check, forbidden=pivots)
++        # Each pivot occurs once on a surviving closed attaching walk, and
++        # hence is not a bridge after deletion of the earlier pivots.
++        # Reject malformed geometry instead of emitting an invalid forest.
++        for handle in core['handles1']:
++            check()
++            a, b = handle['ends']
++            if component[a] != component[b]:
++                raise ArithmeticError('deferred pivots disconnected a source component')
++    else:
++        tree, component = _forest(core, check)
++        counts = _occurrences(core, tree, check)
++        planned = leaf_cancellation_plan(counts, check=check)
++        method = 'leaf'
++        if planned['remaining_rows']:
++            planned = column_cancellation_plan(counts, check=check)
++            method = 'column_leaf'
+     result['stats'] = planned['stats']
+     if planned['remaining_rows']:
+         reason = ('raw_ball_cancellation_obstruction'
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
+index d2ca6208f..d1f66829d 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
+@@ -113,10 +113,11 @@ def _census(geometry, summary, skeleton, components, check, absorbed=frozenset()
+ 
+ 
+ def _kernel_fallback(result, parallelity, boundary, record_certificate, check, *,
+-                     geometry=None, reduction=None):
++                     geometry=None, reduction=None, forest_strategy='canonical'):
+     geometry = parallelity['geometry'] if geometry is None else geometry
+     kernel = bundle_boundary_kernel(geometry, parallelity['summary'],
+-                                    boundary['skeleton'], check=check)
++                                    boundary['skeleton'], check=check,
++                                    forest_strategy=forest_strategy)
+     if kernel is None:
+         return result
+     proof, census, stats = kernel
+@@ -133,7 +134,8 @@ def _kernel_fallback(result, parallelity, boundary, record_certificate, check, *
+ 
+ 
+ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+-                           record_certificate=False, precheck_core=True, check=lambda: None):
++                           record_certificate=False, precheck_core=True, check=lambda: None,
++                           forest_strategy='canonical'):
+     """Classify the whole supplied cut when the disk-gluing criterion succeeds.
+ 
+     A COMPLETE result is an exact binary multiplicity census of handlebodies.
+@@ -143,8 +145,13 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+     also cover the polynomial core and finite interface computations. The
+     optional core precheck defaults on: a raw obstruction skips boundary
+     discovery, without claiming any negative topological conclusion.
++    The optional deferred forest strategy completes the same raw geometric
++    model across all primal spanning forests. It does not add handle slides
++    or a general handlebody recognition claim.
+     """
+     check()
++    if forest_strategy not in ('canonical', 'deferred'):
++        raise ValueError('forest_strategy must be canonical or deferred')
+     if type(precheck_core) is not bool:
+         raise ValueError('precheck_core must be bool')
+     if type(record_certificate) is not bool:
+@@ -169,7 +176,8 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+         result['stats']['core_reduction'] = dict(cancelled_23=len(reduction['cancellations']))
+     prepared_core = None
+     if precheck_core:
+-        prepared_core = core_handlebody_certificate(geometry['core'], check=check)
++        prepared_core = core_handlebody_certificate(geometry['core'], check=check,
++                                                    forest_strategy=forest_strategy)
+         result['stats']['core_precheck'] = prepared_core.get('stats', {})
+         if prepared_core['status'] != 'COMPLETE':
+             # Added bundle columns vanish on the original core rows. A source
+@@ -189,7 +197,8 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+     if reduction is not None:
+         result['reason'] = 'boundary_kernel_cancellation_stalled'
+         return _kernel_fallback(result, parallelity, boundary, record_certificate, check,
+-                                geometry=geometry, reduction=reduction)
++                                geometry=geometry, reduction=reduction,
++                                forest_strategy=forest_strategy)
+     family = primitive_bundle_annuli(parallelity['summary'], boundary['skeleton'], check=check)
+     core_side = family is None
+     if core_side:
+@@ -207,18 +216,21 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+     augmented, absorption_proof, absorbed = absorption
+     core = (prepared_core if prepared_core is not None and
+             len(augmented['handles2']) == len(parallelity['geometry']['core']['handles2'])
+-            else core_handlebody_certificate(augmented, check=check))
++            else core_handlebody_certificate(augmented, check=check,
++                                             forest_strategy=forest_strategy))
+     result['stats']['core'] = core.get('stats', {})
+     if core['status'] != 'COMPLETE':
+         result['reason'] = core['reason']
+-        return _kernel_fallback(result, parallelity, boundary, record_certificate, check)
++        return _kernel_fallback(result, parallelity, boundary, record_certificate, check,
++                                forest_strategy=forest_strategy)
+     core_annuli = {}
+     if core_side:
+         transported = core_primitive_annuli(parallelity['geometry'], parallelity['summary'],
+             boundary['skeleton'], augmented, core['certificate'], check=check)
+         if transported is None:
+             result['reason'] = 'annular_core_attachment'
+-            return _kernel_fallback(result, parallelity, boundary, record_certificate, check)
++            return _kernel_fallback(result, parallelity, boundary, record_certificate, check,
++                                    forest_strategy=forest_strategy)
+         core_annuli_proof, core_annuli, result['stats']['core_annuli'] = transported
+     census, reason = _census(parallelity['geometry'], parallelity['summary'],
+                             boundary['skeleton'], core['components'], check, absorbed, primitive, core_annuli)
+diff --git a/Topology/UnknotRecognition/fast/tests/test_deferred_forest.py b/Topology/UnknotRecognition/fast/tests/test_deferred_forest.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_deferred_forest.py
+@@ -0,0 +1,158 @@
++"""Deferred primal forests on closed walks and authenticated native cuts."""
++from copy import deepcopy
++from itertools import combinations
++import json
++from pathlib import Path
++import random
++import unittest
++
++from fastunknot.core_handlebody import (
++    _forest, _occurrences, column_cancellation_plan, core_handlebody_certificate)
++from fastunknot.core_handlebody_verify import verify_core_handlebody_certificate
++from fastunknot.core_three_handle_reduction import reduce_core_three_handles
++from fastunknot.normal_parallelity_geometry import _parallelity_geometry
++from fastunknot.normal_surface_geometry import _prepare, _coordinates
++
++ROOT = Path(__file__).parents[1]
++BANK = json.loads((ROOT / 'marked_parallelity_research/corpus.json').read_text())['cases']
++EXTRA = json.loads((ROOT / 'marked_parallelity_research/three_handle_corpus.json').read_text())['cases']
++
++
++def source_core(case):
++    p = _prepare(case['triangulation'], lambda: None)
++    g = _parallelity_geometry(p, _coordinates(p, case['coordinates'], lambda: None),
++                             lambda: None)
++    return reduce_core_three_handles(g)[0]['core']
++
++
++def abstract_core(n, edges, walks):
++    """Closed graph walks only; these synthetic charts assert no manifold input."""
++    rows = []
++    for i, walk in enumerate(walks):
++        cycle = []
++        for v, e in walk:
++            cycle.extend([dict(dimension=0, handle=v), dict(dimension=1, handle=e)])
++        rows.append(dict(id=i, cycle=cycle))
++    return dict(handles0=[dict(id=v) for v in range(n)],
++                handles1=[dict(id=e, ends=list(pair)) for e, pair in enumerate(edges)],
++                handles2=rows, handles3=[])
++
++
++def forests(core):
++    n = len(core['handles0'])
++    size = len(_forest(core, lambda: None)[0])
++    for chosen in combinations(range(len(core['handles1'])), size):
++        component = list(range(n))
++        for e in chosen:
++            a, b = (component[v] for v in core['handles1'][e]['ends'])
++            if a == b:
++                break
++            component = [min(a, b) if x in (a, b) else x for x in component]
++        else:
++            if all(component[h['ends'][0]] == component[h['ends'][1]]
++                   for h in core['handles1']):
++                yield chosen
++
++
++class DeferredForestTests(unittest.TestCase):
++    def test_two_vertex_closed_walk_strict_example(self):
++        core = abstract_core(2, [(0, 1), (0, 1), (0, 1)], [
++            [(0, 0), (1, 2), (0, 1), (1, 2)], [(0, 1), (1, 2)]])
++        old = core_handlebody_certificate(core)
++        new = core_handlebody_certificate(core, forest_strategy='deferred')
++        self.assertEqual(old['status'], 'INCONCLUSIVE')
++        self.assertEqual(new['status'], 'COMPLETE')
++        self.assertEqual(new['certificate']['forest'], [1])
++        self.assertEqual(new['certificate']['cancellations'], [[0, 0], [1, 2]])
++        self.assertTrue(verify_core_handlebody_certificate(core, new['certificate']))
++
++    def test_native_corpus_strict_coverage_and_old_checker(self):
++        counts = [0, 0]
++        improved = []
++        for case in BANK + EXTRA:
++            core = source_core(case)
++            original = deepcopy(core)
++            old = core_handlebody_certificate(core)
++            new = core_handlebody_certificate(core, forest_strategy='deferred')
++            self.assertEqual(core, original)
++            for i, r in enumerate((old, new)):
++                counts[i] += r['status'] == 'COMPLETE'
++                if r['status'] == 'COMPLETE':
++                    self.assertTrue(verify_core_handlebody_certificate(core, r['certificate']))
++            if old['status'] == 'COMPLETE':
++                self.assertEqual(new['status'], 'COMPLETE')
++            elif new['status'] == 'COMPLETE':
++                improved.append(case['id'])
++        self.assertEqual(counts, [110, 118])
++        self.assertEqual(improved, [
++            'pilot/fibonacci_lst_04/0', 'pilot/fibonacci_lst_06/0',
++            'pilot/fibonacci_lst_08/0', 'pilot/fibonacci_lst_10/0',
++            'pilot/lst_4_9/0', 'pilot/finite_trefoil/0',
++            'interior_loop/empty', 'interior_loop/boundary_link'])
++
++    def test_exhaustive_forests_on_seeded_closed_walks(self):
++        rng = random.Random(2026101201)
++        examined = 0
++        for _ in range(120):
++            n = rng.randrange(1, 5)
++            edges = [(v-1, v) for v in range(1, n)]
++            edges += [(rng.randrange(n), rng.randrange(n))
++                      for _ in range(rng.randrange(1, 5))]
++            adjacency = {v: [] for v in range(n)}
++            for e, (a, b) in enumerate(edges):
++                adjacency[a].append((e, b))
++                adjacency[b].append((e, a))
++            walks = []
++            for _ in range(rng.randrange(1, 5)):
++                start = v = rng.randrange(n)
++                walk = []
++                for _ in range(rng.randrange(1, 5)):
++                    e, w = rng.choice(adjacency[v])
++                    walk.append((v, e))
++                    v = w
++                # The path edges connect consecutive labels and close the walk.
++                while v != start:
++                    w = v-1 if v > start else v+1
++                    e = max(v, w)-1
++                    walk.append((v, e))
++                    v = w
++                walks.append(walk)
++            core = abstract_core(n, edges, walks)
++            result = core_handlebody_certificate(core, forest_strategy='deferred')
++            success = False
++            for tree in forests(core):
++                rows = _occurrences(core, tree, lambda: None)
++                plan = column_cancellation_plan(rows)
++                success |= not plan['remaining_rows']
++                examined += 1
++            self.assertEqual(result['status'] == 'COMPLETE', success)
++            if success:
++                self.assertTrue(verify_core_handlebody_certificate(core, result['certificate']))
++        self.assertGreater(examined, 200)
++
++    def test_repeated_bridge_and_loop_are_not_conflated(self):
++        # A closed walk crosses the bridge twice and the loop once.
++        core = abstract_core(2, [(0, 1), (1, 1)], [[(0, 0), (1, 1), (1, 0)]])
++        r = core_handlebody_certificate(core, forest_strategy='deferred')
++        self.assertEqual(r['certificate']['forest'], [0])
++        self.assertEqual(r['certificate']['cancellations'], [[0, 1]])
++        self.assertTrue(verify_core_handlebody_certificate(core, r['certificate']))
++        bad = deepcopy(r['certificate'])
++        bad['forest'] = [1]
++        self.assertFalse(verify_core_handlebody_certificate(core, bad))
++        bad = deepcopy(r['certificate'])
++        bad['cancellations'] = [[0, 0]]
++        self.assertFalse(verify_core_handlebody_certificate(core, bad))
++
++    def test_invalid_strategy_and_interruption(self):
++        core = abstract_core(1, [(0, 0)], [[(0, 0)]])
++        with self.assertRaises(ValueError):
++            core_handlebody_certificate(core, forest_strategy='unknown')
++        def stop():
++            raise RuntimeError('stopped')
++        with self.assertRaisesRegex(RuntimeError, 'stopped'):
++            core_handlebody_certificate(core, forest_strategy='deferred', check=stop)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_deferred_boundary_kernel.py b/Topology/UnknotRecognition/fast/tests/test_deferred_boundary_kernel.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_deferred_boundary_kernel.py
+@@ -0,0 +1,120 @@
++"""Deferred forest proofs through the source-authenticated whole-cut wrapper."""
++from contextlib import ExitStack
++from copy import deepcopy
++import json
++from pathlib import Path
++import random
++import unittest
++from unittest.mock import patch
++
++from fastunknot.bundle_boundary_kernel import bundle_boundary_kernel
++from fastunknot.bundle_boundary_kernel_verify import replay_bundle_boundary_kernel
++from fastunknot.normal_cut_handlebodies import normal_cut_handlebodies
++from fastunknot.normal_cut_handlebodies_verify import verify_normal_cut_handlebodies
++from tests.test_normal_surface_orbits import relabel
++
++
++class DeferredBoundaryKernelTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        root = Path(__file__).parents[1]/'marked_parallelity_research'
++        bank = json.loads((root/'corpus.json').read_text())['cases']
++        extra = json.loads((root/'three_handle_corpus.json').read_text())['cases']
++        ids = ('pilot/fibonacci_lst_08/0', 'pilot/fibonacci_lst_10/0',
++               'interior_loop/empty')
++        cls.cases = [next(c for c in bank+extra if c['id'] == name) for name in ids]
++        cls.results = [normal_cut_handlebodies(c['triangulation'], c['coordinates'],
++            forest_strategy='deferred', record_certificate=True) for c in cls.cases]
++
++    def test_native_gains_and_literal_oracle(self):
++        from marked_parallelity_research.audit_census import oracle
++        for c, result in zip(self.cases, self.results):
++            legacy = normal_cut_handlebodies(c['triangulation'], c['coordinates'])
++            self.assertEqual(legacy['status'], 'INCONCLUSIVE')
++            self.assertEqual(result['status'], 'COMPLETE')
++            self.assertTrue(verify_normal_cut_handlebodies(c['triangulation'],
++                c['coordinates'], result['certificate']))
++            self.assertEqual(result['census']['histogram'], oracle(c)['histogram'])
++        self.assertEqual(self.results[0]['certificate']['kernel']['schema'],
++                         'bundle-boundary-kernel-v3')
++
++    def test_supplied_forest_is_checked_independently(self):
++        c, result = self.cases[0], self.results[0]
++        names = ('fastunknot.bundle_boundary_kernel.bundle_boundary_kernel',
++                 'fastunknot.bundle_boundary_kernel._forest',
++                 'fastunknot.bundle_boundary_kernel.column_cancellation_plan',
++                 'fastunknot.core_handlebody.core_handlebody_certificate',
++                 'fastunknot.normal_cut_handlebodies._census')
++        proof = deepcopy(result['certificate'])
++        proof['kernel']['forest'] = [hex(h) for h in proof['kernel']['forest']]
++        with ExitStack() as stack:
++            for name in names:
++                stack.enter_context(patch(name, side_effect=AssertionError('producer called')))
++            self.assertTrue(verify_normal_cut_handlebodies(c['triangulation'],
++                c['coordinates'], proof))
++
++    def test_nonforests_and_invalid_pivots_are_rejected(self):
++        c, result = self.cases[0], self.results[0]
++        mutations = [
++            lambda p: p['kernel']['forest'].pop(),
++            lambda p: p['kernel']['forest'].append(p['kernel']['forest'][0]),
++            lambda p: p['kernel']['forest'].__setitem__(0, True),
++            lambda p: p['kernel']['forest'].__setitem__(0, -1),
++            lambda p: p['kernel']['forest'].__setitem__(0, '0xno'),
++            lambda p: p['kernel']['forest'].__setitem__(0, 10**9),
++            lambda p: p['kernel']['cancellations'].pop(),
++            lambda p: p['kernel']['cancellations'][0].__setitem__(1,
++                p['kernel']['forest'][0]),
++            lambda p: p['kernel'].update(schema='bundle-boundary-kernel-v2'),
++        ]
++        for mutate in mutations:
++            proof = deepcopy(result['certificate'])
++            mutate(proof)
++            self.assertFalse(verify_normal_cut_handlebodies(c['triangulation'],
++                c['coordinates'], proof))
++
++    def test_budget_and_callback_contracts(self):
++        c = self.cases[0]
++        self.assertEqual(normal_cut_handlebodies(c['triangulation'], c['coordinates'],
++            forest_strategy='deferred', max_cycles=0)['status'], 'INCONCLUSIVE')
++        self.assertFalse(verify_normal_cut_handlebodies(c['triangulation'],
++            c['coordinates'], self.results[0]['certificate'], max_operations=0))
++        with self.assertRaises(ValueError):
++            normal_cut_handlebodies(c['triangulation'], c['coordinates'],
++                                   forest_strategy='invalid')
++        with self.assertRaises(ValueError):
++            bundle_boundary_kernel({}, {}, {}, forest_strategy='invalid')
++        def stop():
++            raise RuntimeError('stop')
++        with self.assertRaisesRegex(RuntimeError, 'stop'):
++            normal_cut_handlebodies(c['triangulation'], c['coordinates'],
++                                   forest_strategy='deferred', check=stop)
++
++    def test_direct_kernel_replay_and_binary_scaling(self):
++        c, result = self.cases[0], self.results[0]
++        proof = result['certificate']
++        self.assertEqual(replay_bundle_boundary_kernel(proof['parallelity']['geometry'],
++            proof['parallelity']['summary'], proof['boundary']['skeleton'],
++            proof['kernel']), result['census'])
++        rows = [[(1 << 128)*n for n in row] for row in c['coordinates']]
++        scaled = normal_cut_handlebodies(c['triangulation'], rows,
++            forest_strategy='deferred', record_certificate=True)
++        self.assertEqual(scaled['status'], 'COMPLETE')
++        self.assertTrue(verify_normal_cut_handlebodies(c['triangulation'], rows,
++                                                    scaled['certificate']))
++
++    def test_relabelled_native_sources_replay(self):
++        c = self.cases[0]
++        rng = random.Random(26101271)
++        for _ in range(3):
++            raw, rows = relabel(c['triangulation'], c['coordinates'], rng)
++            result = normal_cut_handlebodies(raw, rows,
++                forest_strategy='deferred', record_certificate=True)
++            self.assertEqual(result['status'], 'COMPLETE')
++            self.assertEqual(result['census']['histogram'],
++                             self.results[0]['census']['histogram'])
++            self.assertTrue(verify_normal_cut_handlebodies(raw, rows, result['certificate']))
++
++
++if __name__ == '__main__':
++    unittest.main()

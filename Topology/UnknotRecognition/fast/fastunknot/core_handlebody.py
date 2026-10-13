@@ -34,6 +34,46 @@ def _forest(core, check):
     return edges, roots
 
 
+def _deferred_forest(core, planned, check):
+    """Select a spanning forest disjoint from a full-matrix peeling trace.
+
+    Report 105's bridge argument uses uncapped source cycle parity. Earlier
+    pivot columns vanish in each later live row, so a graph pivot is never
+    a bridge. The emitted certificate still contracts this forest first.
+    """
+    pivots = {c for _, c in planned['cancellations']}
+    n = len(core['handles0'])
+    parent, size, least = list(range(n)), [1]*n, list(range(n))
+
+    def root(v):
+        while parent[v] != v:
+            parent[v] = parent[parent[v]]
+            v = parent[v]
+        return v
+
+    tree = []
+    for handle in core['handles1']:
+        check()
+        if handle['id'] in pivots:
+            continue
+        a, b = map(root, handle['ends'])
+        if a == b:
+            continue
+        if size[a] < size[b]:
+            a, b = b, a
+        parent[b] = a
+        size[a] += size[b]
+        least[a] = min(least[a], least[b])
+        tree.append(handle['id'])
+    component = [least[root(v)] for v in range(n)]
+    for handle in core['handles1']:
+        check()
+        a, b = handle['ends']
+        if component[a] != component[b]:
+            raise ArithmeticError('deferred pivots disconnected a source component')
+    return tree, component
+
+
 def _occurrences(core, tree, check):
     tree = set(tree)
     rows = {}
@@ -46,6 +86,80 @@ def _occurrences(core, tree, check):
                 row[h] = min(2, row.get(h, 0) + 1)
         rows[handle['id']] = row
     return rows
+
+
+def _chosen_forest(core, forest, check):
+    """Validate a supplied lower forest and recover canonical component labels."""
+    if forest is None:
+        return _forest(core, check)
+    if type(forest) is not list:
+        raise ValueError('forest must be a list of source one-handle identifiers')
+    n = len(core['handles0'])
+    parent, size, least = list(range(n)), [1]*n, list(range(n))
+    def root(v):
+        while parent[v] != v:
+            parent[v] = parent[parent[v]]
+            v = parent[v]
+        return v
+    seen = set()
+    for edge in forest:
+        check()
+        if type(edge) is not int or not 0 <= edge < len(core['handles1']) or edge in seen:
+            raise ValueError('invalid or repeated source forest edge')
+        seen.add(edge)
+        a, b = map(root, core['handles1'][edge]['ends'])
+        if a == b:
+            raise ValueError('source forest contains a cycle')
+        if size[a] < size[b]:
+            a, b = b, a
+        parent[b] = a
+        size[a] += size[b]
+        least[a] = min(least[a], least[b])
+    for h in core['handles1']:
+        check()
+        if root(h['ends'][0]) != root(h['ends'][1]):
+            raise ValueError('source forest does not span every component')
+    return list(forest), [least[root(v)] for v in range(n)]
+
+
+def select_core_forest(core, *, strategy='max_passages', check=lambda: None):
+    """Choose a source lower forest; its later use must keep this choice fixed.
+
+    Maximum passage weight minimizes original raw incidence outside the
+    forest. It does not optimize subsequent cancellation or joint top trees.
+    """
+    check()
+    if type(strategy) is not str or strategy not in ('source', 'max_passages', 'reverse_id'):
+        raise ValueError('invalid lower forest strategy')
+    if strategy == 'source':
+        return _forest(core, check)[0]
+    costs = [0]*len(core['handles1'])
+    if strategy == 'max_passages':
+        for row in core['handles2']:
+            for flag in row['cycle']:
+                check()
+                if flag['dimension'] == 1:
+                    costs[flag['handle']] += 1
+    order = sorted(range(len(costs)), key=(lambda e: (-costs[e], e))
+                   if strategy == 'max_passages' else (lambda e: -e))
+    parent, size = list(range(len(core['handles0']))), [1]*len(core['handles0'])
+    def root(v):
+        while parent[v] != v:
+            parent[v] = parent[parent[v]]
+            v = parent[v]
+        return v
+    tree = []
+    for edge in order:
+        check()
+        a, b = map(root, core['handles1'][edge]['ends'])
+        if a == b:
+            continue
+        if size[a] < size[b]:
+            a, b = b, a
+        parent[b] = a
+        size[a] += size[b]
+        tree.append(edge)
+    return tree
 
 
 def capped_cancellation_plan(counts, *, check=lambda: None):
@@ -206,7 +320,7 @@ def leaf_cancellation_plan(counts, *, check=lambda: None):
                 stats=dict(incidence_visits=visits))
 
 
-def core_handlebody_certificate(core, *, check=lambda: None):
+def core_handlebody_certificate(core, *, forest=None, defer_forest=False, check=lambda: None):
     """Plan certified cancellations on a source-authenticated geometric core.
 
     A COMPLETE result gives a handlebody for each core component.  Three-handles
@@ -214,20 +328,36 @@ def core_handlebody_certificate(core, *, check=lambda: None):
     Authenticating the source and its handle charts belongs to the enclosing
     normal-cut certificate.  The small certificate is checked independently by
     ``verify_core_handlebody_certificate``.
+    A supplied forest is checked to span every source zero/one component;
+    it must be reused when this core is augmented by later two-handles.
+    With defer_forest=True, full column peeling discovers pivots before a
+    disjoint forest is chosen. Additional rows require a new full discovery.
     """
     check()
+    if type(defer_forest) is not bool or (defer_forest and forest is not None):
+        raise ValueError('defer_forest must be bool and cannot override a supplied forest')
     result = dict(status='INCONCLUSIVE',
                   trust='geometric core cancellation; requires authenticated handle charts')
     if core['handles3']:
         result['reason'] = 'core_has_three_handles'
         return result
-    tree, component = _forest(core, check)
-    counts = _occurrences(core, tree, check)
-    planned = leaf_cancellation_plan(counts, check=check)
-    method = 'leaf'
-    if planned['remaining_rows']:
+    if defer_forest:
+        counts = _occurrences(core, (), check)
         planned = column_cancellation_plan(counts, check=check)
         method = 'column_leaf'
+        if planned['remaining_rows']:
+            result.update(reason='all_lower_forests_raw_obstruction',
+                          remaining_two_handles=planned['remaining_rows'], stats=planned['stats'])
+            return result
+        tree, component = _deferred_forest(core, planned, check)
+    else:
+        tree, component = _chosen_forest(core, forest, check)
+        counts = _occurrences(core, tree, check)
+        planned = leaf_cancellation_plan(counts, check=check)
+        method = 'leaf'
+        if planned['remaining_rows']:
+            planned = column_cancellation_plan(counts, check=check)
+            method = 'column_leaf'
     result['stats'] = planned['stats']
     if planned['remaining_rows']:
         reason = ('raw_ball_cancellation_obstruction'

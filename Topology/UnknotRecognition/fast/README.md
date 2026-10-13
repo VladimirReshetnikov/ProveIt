@@ -1,5 +1,18 @@
 # fastunknot 0.3.0: braid and structural certificates with optional shared backends
 
+The 12 October whole-cut portfolio now tries an Euler-checked signed free-group
+terminal after its geometric attempts refuse. `group_fallback=False` retains
+the earlier geometric-only policy. The fallback shares source and boundary
+queries and their cycle budget, and independently checks the original cut's
+Euler characteristic before certifying unmarked handlebodies. On the 120-case
+native bank it certifies 112 cuts; all 111 prior positive certificates remain
+byte-identical. The added figure-eight cut agrees with literal Regina cutting.
+The finite signed-word policy has polynomial local discovery and replay costs,
+but is incomplete even for free groups. See
+[`euler_group_terminal.tex`](../synthesis/euler_group_terminal.tex) for the proof,
+source bounds, API contract and evidence. The general quasi-polynomial goal
+remains open.
+
 `normal_cut_cells.normal_cut_cell_complex(source, coordinates)` now retains
 the complete raw three-dimensional cut in binary CW families, including
 interior vertices, edge gaps, source-face regions, cut chambers and oriented
@@ -4393,8 +4406,8 @@ Pachner-generated fixtures validate nested boundary-forest chains and
 repeated endpoints; ten produce certified whole-cut censuses. Two genuine
 handlebody misses are caused by the selected dual forest, as demonstrated
 by six independently replayed alternative certificates in the retained
-`three-handles-choice-probe` experiment. The production selector currently
-uses one deterministic forest.
+`three-handles-choice-probe` experiment. The subsequent weighted selector
+below resolves both of these particular misses.
 
 
 Complete-query measurements compare native production plus replay with
@@ -4444,3 +4457,65 @@ agreements against retained literal Regina references. Full certificate
 sizes fall by 0.39–19.65% in the seven timed cases; median paired mask/moment
 time ratios range from 0.932 to 1.142. The article retains regressions,
 raw samples, A/A controls and source pins.
+
+### Weighted source top forests
+
+`normal_cut_handlebodies(..., top_forest='max_weight')` now chooses a dual
+spanning tree that minimizes retained raw attaching passages outside the
+fixed lower forest. A maximum heap extends the existing degree/xor queue;
+graph selection takes `O(T log(T+1))` comparisons after source preparation
+and cost construction. `top_forest='queue'` reproduces the earlier selector.
+The low-level `reduce_core_three_handles` retains `strategy='queue'` as its
+default and accepts `strategy='max_weight'` explicitly.
+
+On the 120-source audit, completed cuts increase from 102 to 104, preserving
+all earlier completed censuses. Queue mode preserves all 102 earlier proof
+hashes; the 85 proofs without top reductions are unchanged under either
+mode. Fresh literal Regina cuts agree with all 97 comparable positives;
+seven larger inputs exceed the explicit expansion cap. Raw retained cost
+decreases on 23 of the 24 cores with three-handles. Common-success paired
+timings show no broad elapsed-time gain, so the improvement is a proved
+local cost optimum and two additional certified cuts.
+
+The independent geometric checkers and v6 certificate schema are unchanged.
+Additive cost optimality does not imply complete later raw cancellation,
+complete handlebody recognition, or a general quasi-polynomial bound.
+See [weighted_top_forest.tex](../synthesis/weighted_top_forest.tex) for proofs,
+counterexamples, scope of the restricted polynomial forest solver, and all
+timing samples and validation records.
+All 1,716 maintained tests pass, with no skips.
+
+## Deferred lower-forest discovery
+
+The whole-cut API now accepts `lower_forest='deferred'`; its adaptive
+policy tries this after the existing source and maximum-passage choices.
+`core_handlebody_certificate(..., defer_forest=True)` and
+`bundle_boundary_kernel(..., defer_forest=True)` first peel the full raw
+matrix, then find a spanning source forest disjoint from the pivots. A
+supplied `forest` and deferred discovery are mutually exclusive.
+
+For authenticated cycle rows this decides whether any lower forest allows
+complete raw cancellation, without enumerating forests. The kernel includes
+all annular rows before discovery, and absorption triggers new discovery
+when it adds rows. Certificates still execute the forest first, using
+existing core v2 and kernel v3 formats and unchanged independent checkers.
+The adaptive attempts share source and boundary discovery and one budget.
+
+The fresh 120-source audit completes 111 cuts and preserves all 110 prior
+positive certificates exactly. All 104 directly comparable positive cuts
+agree with fresh Regina cutting; seven exceed the literal expansion cap.
+The new success is `pachner23_5_8_2/mixed`. Nine remain inconclusive.
+These results concern a local sufficient certificate class, not a complete
+quasi-polynomial recognizer. See
+[the implementation article](../synthesis/deferred_forests_native.tex) and
+[evidence](../synthesis/data/deferred-forest-audit.json).
+
+Static-gap contraction in the unweighted, weighted-histogram and weighted
+least-representative checkers uses authenticated gap prefix sums. Mapping
+P pairing rows across G gaps costs O(G + P log(G+2)) arithmetic operations,
+without expanding represented points. All gap lists are authenticated
+before mapping, and certificate formats are unchanged. A fresh 120-source
+comparison preserves all 111 positive cut certificates and all nine
+inconclusive outcomes. Eleven paired complete-query measurements, including
+small regressions, are retained in `../synthesis/data/gap-prefix-*`; the
+local mapping bound does not establish general recognition complexity.

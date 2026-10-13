@@ -1,0 +1,235 @@
+\section{Package contents, reproduction and integration}
+\label{sec:reproduction}
+
+\subsection{Files and dependencies}
+
+The archive is intended to be placed in \code{docs/incoming} or assigned a new
+research-report number after review. Its root contains a README, integration
+instructions, a claim ledger, source provenance, license notes and SHA-256
+checksums. The article directory contains this complete \LaTeX{} source,
+section files, bibliography, reproducible vector figure and compiled PDF.
+The integration directory contains a unified patch and a complete eleven-file
+overlay under repository-relative paths.
+
+The production extension uses only the Python standard library. The delivered
+audit scripts additionally use Regina 7.4 for explicit independent comparisons;
+the saved run used Python 3.12.14. Regenerating the scientific figure requires
+Matplotlib. Building the article uses pdf\LaTeX{} and BibTeX, with ordinary
+mathematical and typography packages. Versions and exact source hashes appear
+in the result files. The package does not vendor the whole ProveIt runtime or
+third-party software.
+
+\begin{longtable}{P{0.39\linewidth}P{0.54\linewidth}}
+\toprule
+Path & Purpose \\
+\midrule
+\endhead
+\path{article/Euler_Group_Terminals.tex} & Main article and full proofs \\
+\path{article/Euler_Group_Terminals.pdf} & Rendered article \\
+\path{integration/euler_group_terminals.patch} & Patch against the pinned production source \\
+\path{integration/overlay/} & Six new production modules, three new test modules and two updated entry-point modules \\
+\path{fixtures/} & Exact 106 historical and 14 interior-extension sources \\
+\path{certificates/group/} & All 76 complete new group-terminal packets \\
+\path{certificates/figure_eight.json} & Convenient standalone target packet, also used by the independent algebraic audit \\
+\path{certificates/euler_defects.json} & Five source-bound free-group proofs with exact positive $b_2$ \\
+\path{comparison/deferred/} & Four unchanged attributed incoming modules used only for the deferred comparison \\
+\path{results/} & Coverage audit, group audit, regression logs, replay reports, raw benchmark samples and methodology \\
+\path{tools/} & Portable replay, audit, benchmark and figure-generation commands \\
+\bottomrule
+\end{longtable}
+
+\subsection{Replay before rediscovery}
+
+Apply the patch to a separate checkout at the pinned commit as described in
+\code{INTEGRATION.md}. From the unpacked package, set a task-specific shell
+variable to that checkout's fast runtime:
+\begin{lstlisting}[language=bash]
+fast_root=/path/to/ProveIt/Topology/UnknotRecognition/fast
+python tools/verify_packets.py --fast-root "$fast_root"
+python tools/audit_euler_defects.py --fast-root "$fast_root" \
+  --replay-only certificates/euler_defects.json \\
+  --output /tmp/euler_defect_replay.json
+\end{lstlisting}
+The first command uses the existing public whole-cut verifier dispatch, so it
+checks the new schema through the intended integration interface. It requires
+no Regina installation and performs no proof discovery. Malformed JSON is
+rejected before replay, including duplicate keys and floating-point values.
+The source packets use the established exact integer codec for huge values.
+
+Reproduce the independent algebraic audit with:
+\begin{lstlisting}[language=bash]
+python tools/audit_freeness.py --fast-root "$fast_root" \
+  --target certificates/figure_eight.json \
+  --output /tmp/independent_freeness.json
+\end{lstlisting}
+This command requires Regina and must run without Python's \code{-O}, since
+the research audit uses assertions. It produces the 10203-presentation corpus,
+source hashes, exact checks and counterexamples. Omitting the target omits its
+two components and leaves 10201 presentations.
+
+The complete fresh native audit is:
+\begin{lstlisting}[language=bash]
+python tools/audit_native.py --fast-root "$fast_root" \
+  --output /tmp/native_audit.json --packets /tmp/group_packets
+\end{lstlisting}
+It creates an isolated runtime for the deferred comparison, uses the four
+preserved modules and replays those positives as well. It launches literal
+Regina oracle calls with the documented 4096-disk cap and per-case timeout.
+The command does not modify the production checkout. Its \code{--resume}
+option requires matching source identities; the main report explains the
+single integer-transport recovery in the saved run.
+
+\subsection{Tests and measurements}
+
+In the integrated fast runtime, run:
+\begin{lstlisting}[language=bash]
+python -m unittest tests.test_free_group_elimination \
+  tests.test_euler_group_terminal tests.test_source_cut_group -v
+python -m unittest discover -s tests -v
+\end{lstlisting}
+The saved focused and full runs contain 33 and 1749 passing tests,
+respectively. Existing fixture directories from the repository are needed for
+the full suite; the eleven-file overlay alone is not a standalone copy of all
+ProveIt dependencies.
+
+For descriptive complete-query timings, run after other benchmark and audit
+jobs have finished:
+\begin{lstlisting}[language=bash]
+python tools/benchmark_terminals.py --fast-root "$fast_root" \
+  --output /tmp/terminal_benchmarks.json
+\end{lstlisting}
+The script preserves unsuccessful statuses and case timeouts. It never forms
+a recognition speed ratio using an inconclusive arm. The one-tetrahedron
+families exercise binary multiplicity; the new target cases exercise changed
+terminal coverage. The raw A/A arms help identify timing noise. Neither these
+few samples nor a log-log chart establishes an asymptotic exponent.
+
+\subsection{Build and inspect the article}
+
+From the package root:
+\begin{lstlisting}[language=bash]
+python tools/generate_figures.py
+bash article/build.sh
+\end{lstlisting}
+The build script changes into its own article directory and runs pdf\LaTeX,
+BibTeX and two final pdf\LaTeX{} passes. The source bibliography uses primary
+literature and pinned repository links. The supplied PDF was compiled, rendered
+to page images and visually checked; the final build log is retained. There
+are no external image downloads or generated raster illustrations required to
+rebuild the article.
+
+\subsection{Merging with the incoming deferred work}
+
+The patch is verified against the exact current production baseline. The
+incoming deferred overlay and this patch both edit
+\code{normal\_cut\_handlebodies.py}; applying one full-file overlay on top of the
+other would discard logic. Integrate their argument handling and fast-path
+choice deliberately. Preserve the new public verifier dispatch and the old
+certificate schemas, then rerun the focused checks, the new target and the
+combined corpus. The 112-case union is evidence for this combined portfolio's
+potential coverage; the package does not claim that the incoming
+\code{forest\_strategy} option is already merged into the new wrapper.
+
+\section{Additional logical boundaries}
+
+\paragraph{Closed components.}
+The nonempty-boundary condition in Theorem~\ref{thm:free-euler} is essential.
+The closed manifold $S^1\times S^2$ has $c=r=1$ and $\chi=0$, so it satisfies
+$\chi=c-r$ while not being a handlebody. The current source validator excludes
+this input. Reusing the theorem in a broader source API requires establishing
+the boundary condition for every cut component or adding a separate closed
+component classification.
+
+\paragraph{Source authentication before rank arithmetic.}
+The same numerical presentation, genus and Euler arrays can be attached to
+unrelated geometry. All numerical equations in the terminal gate are
+conditional on the verified presentation actually presenting the whole-cut
+groups. Neither a checksum nor a plausible genus histogram supplies that
+topological identification. Signs at loop one-handles, full annular disk
+attachments, interval bridges, core two-handles and binary isolated balls are
+all part of the binding.
+
+\paragraph{Certificates versus constructive homeomorphisms.}
+The trace certifies a group isomorphism and the theorem determines the
+unmarked three-manifold type. It does not produce an explicit PL homeomorphism
+to a standard handlebody. A downstream algorithm requiring meridian disks,
+boundary embeddings or a re-triangulated marked successor must request and
+verify those objects separately.
+
+\paragraph{Historical scope.}
+The compression data model, raw stopping-set analysis and deferred-forest
+results are attributed to the preceding ProveIt work. The topological ingredients
+are classical. The contributions claimed here are the particular complete
+source-bound disk compiler and its active bounds, the Euler-checked signed
+terminal and exact relator ledger, the residual terminal reduction, the new
+native certificates, and the explicit conditional research programme. No claim
+of exhaustive historical priority or a completed quasi-polynomial recognition
+theorem is made.
+
+\section{A profile-directed bounded-expansion certificate}
+\label{sec:bounded-expansion}
+
+The mixed Pachner profile identifies substantial compressed-orbit overhead on
+small represented universes. Expansion can be a sensible small-case method
+only if the decision to expand is itself tied to encoded input size. This
+design lemma gives an explicit safe guard and a complete exact witness. It
+uses standard graph connectivity, and is proposed as a future source-query
+adapter rather than an implemented normal-cut backend.
+
+\begin{proposition}[Polynomially guarded explicit orbit replay]
+\label{prop:guarded-expansion}
+Let $q$ interval pairings generate an equivalence relation on
+$\{0,\ldots,U-1\}$. Each pairing is an affine bijection of integer intervals
+with slope $+1$ or $-1$, specified by binary endpoints. Let $N\geq2$ be the
+total bit length of the complete query, including any binary piecewise-constant
+additive weights in explicitly listed finite-dimensional integer vectors
+(or sparse vectors over explicitly named coordinates). Fix a constant $d\geq1$.
+
+When $U\leq N^d$, the exact orbit partition admits a certificate consisting of
+at most $\max\{U-1,0\}$ source-witnessed forest edges, using
+$O(U(\log(U+1)+\log(q+1)))$ bits. Discovery and independent replay, including
+the total weight of every orbit, have polynomial bit complexity in $N$ for
+certificates within this size bound. If a separate compressed backend costs
+$T_{\mathrm{comp}}(N)$, this guarded hybrid has bound
+$T_{\mathrm{comp}}(N)+\operatorname{poly}_d(N)$; in particular it preserves a
+polynomial or quasi-polynomial complexity class.
+\end{proposition}
+\begin{proof}
+Create one graph vertex per point and, for every source pairing and every point
+in its domain, the corresponding undirected relation edge. There are at most
+$qU$ such edges. A spanning forest can be constructed by a standard
+union-by-size disjoint-set traversal. Record each accepted forest edge by its
+source pairing index and domain point; the other endpoint is reconstructed
+from that pairing. Distinct source indices and points require the stated bit
+length. The forest has $U-c$ edges, where $c\geq1$ is its component count when
+$U>0$; the empty universe has the empty certificate.
+
+For independent replay, check the domain and affine image of every listed
+edge, reject loops or repeated-cycle edges in the claimed forest, and compute
+its components by a separate graph traversal. Then enumerate every source
+pairing edge and check that its endpoints lie in one forest component. Every
+forest edge belongs to the source relation, so forest connectivity is contained
+in the generated equivalence relation. The last check proves the reverse
+containment. Thus the partition is exact: neither splitting a true orbit nor
+merging distinct orbits can pass.
+
+Evaluate the source weight description at each point and add the resulting
+integer vectors over its certified component. A direct scan of the input
+weight records at each point already has polynomial cost when $U\leq N^d$.
+With $R$ input weight records and largest coefficient bit length $b$, each
+resulting coordinate sum has $O(b+\log(R+1)+\log(U+1))$ bits, and the number of
+explicitly named weight coordinates is at most $N$. All graph work, enumeration and exact
+arithmetic are consequently polynomial in $N$ for fixed $d$. The guard is
+tested on binary integers before allocating any point array. For larger $U$,
+the explicit algorithm is not entered at all.
+\end{proof}
+
+The proposal still needs a native schema and source adapter for each weighted
+query and each auxiliary fibre-cover query. The source must authenticate the
+pairings and weight descriptions just as it does for compressed orbit traces.
+An explicit witness for a small universe is not permission to expand a huge
+normal surface. The exponent $d$ is fixed independently of numerical weights;
+the threshold depends on their encoded bit lengths. Benchmarking both modes on complete source-bound
+queries would determine a practical threshold. This is a concrete next
+performance experiment supported by the observed profile and by a proved
+encoded-complexity guard.

@@ -3,7 +3,7 @@ import GowersSzemeredi.Proofs18GradedDegrees
 import GowersSzemeredi.Proofs18TheoremOneLinear
 import GowersSzemeredi.Proofs16PhasePartitionOne
 import GowersSzemeredi.Proofs16SimultaneousRecurrence
-import GowersSzemeredi.Proofs16AllDimensionsExplicit
+import GowersSzemeredi.Proofs16ExplicitRecurrenceProfiles
 
 /-! **Theorem 18.1 at every degree up to nine.**
 

@@ -1,3 +1,5 @@
+/- Modified for ProveIt: Import the interval dilation estimate directly after separating Gaussian normalization from geometric sheets. Statements and proof bodies unchanged. -/
+import OAI.Combinatorics.Progressions.Estimates.SymmetricIntervalDilation
 import OAI.Combinatorics.Progressions.Polynomial.SchmidtGaussianMean
 
 namespace OAI

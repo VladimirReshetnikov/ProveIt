@@ -1,0 +1,273 @@
+\section{From local algorithms to a global complexity argument}
+\label{sec:global}
+
+\subsection{An explicit ledger of the remaining obligations}
+
+A local algorithm can be fixed-parameter tractable while the enclosing
+recognizer remains exponential.  There are four independent quantities to
+control: the cost of producing a legal next surface or move, the number of
+states visited, the encoded size of each state, and the cost of resolving
+the terminal topology.  A small matrix at one successful cut gives no bound
+on the other three quantities.
+
+The reviewed hierarchy preprint supplies a polynomial compressed-cutting
+primitive for handle structures of uniform type, polynomial in handle count
+and logarithmic extended weight.  It returns the complement of the parallelity
+bundle and the bundle topology and attachment data (Theorem 14.4), while
+Section 9 separates a step-count analysis from
+a full runtime estimate \cite{Lackenby2026}.  This is the appropriate
+interface for the present work: geometry must arrive in a compressed,
+source-authenticated representation, and its attachment information must
+survive every simplification.
+
+\begin{center}
+\begin{tabular}{P{0.25\textwidth}P{0.31\textwidth}P{0.33\textwidth}}
+\toprule
+Obligation & Result available here & Still required globally\\
+\midrule
+Raw local completion & Exact $J$-state reduction; deterministic width
+algorithm & Completeness of the chosen geometric move class at every
+needed state.\\
+Representation size & No expansion in multiplicity in these finite
+operators & Bounds on handles, charts, runs, and integer bit lengths
+after all cuts and transports.\\
+Hierarchy control & Explicit local cost parameters & A bound on total
+states, restarts, and surface-production work.\\
+Boundary and bundle data & Existing native verifier; five new accepted
+packets & Complete primitive-attachment, puncture, and terminal handling
+where current certificates refuse.\\
+Randomness & One-sided local witness misses, exact positive replay & A
+global error schedule, or a deterministic structural regime.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{A conditional composition bound}
+
+The following accounting statement makes the target testable.  It is a
+conditional composition result, not a theorem that the hypotheses hold
+for all knot diagrams.
+
+\begin{proposition}[A sufficient deterministic route to quasi-polynomial time]
+\label{prop:global-conditional}
+Suppose a correct and complete recognition algorithm on $n$-crossing input
+diagrams has the following independently established properties:
+\begin{enumerate}
+\item it visits at most $Q(n)$ states and makes at most polynomially many
+  local completion calls per state;
+\item each call is equivalent to the finite completion problem of this
+  article, with explicit encoded size $N\leq n^b$ for a fixed $b$;
+\item all remaining production, transport, and verification work per state
+  is bounded by $n^b$ after increasing $b$ if necessary;
+\item the implication width of every local call is at most $w(n)$.
+\end{enumerate}
+If $Q(n)\leq\exp(O((\log n)^a))$ and
+$w(n)=O((\log n)^c)$ for fixed $a,c\geq0$, then replacing its finite
+completion calls by the deterministic width algorithm gives total time
+\[
+       \exp\!\left(O\left((\log n)^{\max\{a,c+1,1\}}\right)\right).
+\]
+In particular it is quasi-polynomial.  The correctness and completeness
+assumption includes all geometric and terminal decisions, not only the
+existence of the local certificates considered here.
+\end{proposition}
+\begin{proof}
+For $w>0$, the ideal bound gives $J\leq(d+1)^w\leq(N+1)^w$.
+The deterministic width algorithm therefore costs $N^{O(w+1)}$ per call.
+For $w=0$ it is polynomial as well.  Substituting $N\leq n^b$ gives
+\(\exp(O((w(n)+1)\log n))\).  Multiplying by the permitted number of
+states and calls and adding the other work yields the displayed bound.
+Because each local algorithm solves exactly the specified finite problem,
+this replacement does not alter an independently proved global correctness
+argument.
+\end{proof}
+
+The randomized alternative replaces the local factor by
+$2^d\poly(N)$, or more precisely $J\poly(N)$.  With a known upper bound
+on the number of relevant calls, distribute a desired total miss allowance
+$\varepsilon$ among them and repeat independent identity tests accordingly.
+A union bound controls the probability of any required local witness being
+missed, provided all other completeness obligations are met.  A zero test
+still cannot be treated as a deterministic negative certificate.
+
+For example, polynomial state size and $d=O(\log n)$ give a polynomial
+randomized local cost.  Polynomial state size and $w=O(\log n)$ give a
+deterministic local cost $\exp(O((\log n)^2))$.  If a hierarchy visits
+$\exp(O((\log n)^3))$ states, the total bound remains quasi-polynomial
+but has the larger exponent.  This explains why an article must specify
+whether it controls local work, the state count, or both.
+
+The bound $k\leq2T$ for a raw core with $T$ tetrahedra is insufficient on
+its own: $8^{2T}$ is exponential in $T$.  Nor does observing
+$\kappa\leq1$ on 106 inputs establish such a bound on an infinite class.
+The useful advance is that there are now precise quantities---$\kappa$,
+$d$, $J$, $w$, and $q$---for a global geometric theorem to control.
+
+\section{Proposed research program}
+\label{sec:research}
+
+The next projects should have a definite theorem, failure example, or
+replayable artifact as their output.  The order below emphasizes the two
+current positive gaps in annular attachment, then the structural questions
+most directly connected to asymptotic complexity.
+
+\subsection{Geometric continuation and choice of lower forest}
+
+\paragraph{1. Complete the two newly exposed Fibonacci attachment cases.}
+The index-eight and index-ten Fibonacci cuts now admit raw core
+cancellation under the optimized lower forest, yet their annular interface
+stage refuses.  Export the exact remaining annular curves, the lower-forest
+basis, and all source endpoint maps.  Determine whether a verified change
+of meridian system makes the attachment primitive in the required geometric
+sense.  A useful result is a family theorem with a compressed construction,
+not just two extra successes.  The deliverable should be a source-bound
+move sequence followed by an unchanged terminal check, together with a
+bound in layer count and coordinate bit length.
+
+\paragraph{2. Optimize lower forests for completion, not only for $k$.}
+The graphic-nullity formula solves the parameter objective exactly, but
+minimizing that objective need not preserve a successful attaching pattern.
+Study the joint choice of lower and top forests.  First search for an
+explicit native example where every minimum-$k$ lower forest fails but
+another lower forest succeeds.  If such examples exist, identify a secondary
+objective or a bounded family of exchanges that preserves completeness.
+If they do not occur in a well-defined native subclass, prove the exchange
+property.  The reverse-order rescue of the Pachner case already shows why
+a single numerical score should not silently replace a portfolio.
+
+\paragraph{3. Authenticate geometric tightening and handle slides.}
+Actual unsigned occurrences can exceed the algebraic obstruction after
+curves are tightened or the meridian system changes.  Signed exponent sums,
+gcd tests, or free-group simplification alone do not provide the geometric
+disc required by the current certificate.  Develop a compiler for an
+embedded boundary-curve isotopy or a geometrically realized handle slide,
+with certified endpoint transport and intersection counts.  Existing
+polynomial compressed-curve algorithms supply relevant primitives
+\cite{LackenbyCurves2026}; the open work is their integration with this
+marked source representation and simultaneous annular attachments.
+The first milestone is a checker for one move, including its inverse and
+the preservation of boundary pattern and orientability.
+
+\paragraph{4. Specify punctured-handlebody terminals separately.}
+Six original refusals contain non-handlebody pieces according to the
+historical oracle.  Some applications may instead want a handlebody after
+certified sphere capping.  Define that terminal class explicitly, including
+which boundary spheres are capped and how the original component is
+recovered.  A new puncture certificate should not be accepted as an ordinary
+handlebody certificate.  This project can turn otherwise misleading
+``misses'' into a useful terminal specification while preserving the
+logical meaning of the existing genus census.
+
+\subsection{Sharper structural parameters and exact algorithms}
+
+\paragraph{5. Exploit native cycle compatibility of triple supports.}
+The current theorem permits arbitrary exceptional supports.  Source
+boundary compatibility imposes additional mod-two cycle conditions in the
+dual graph, as audited in the preceding normalization report
+\cite{IncomingForests2026}.  A three-edge even subgraph has very restricted
+forms, involving triangles, parallel edges, and loops.  Determine whether
+these constraints give a stronger exchange theorem, a smaller effective
+parameter, or a polynomial class beyond support two.  The target is an
+exact reduction respecting actual unsigned entries; parity can constrain
+the search but cannot substitute for a unit crossing.  Any hardness
+construction used to delimit this problem must satisfy the native source
+constraints before being called a topological hardness result.
+
+\paragraph{6. Saturate unary consequences before building the poset.}
+Forward chaining from one row may imply another through several nonlinear
+rules.  Such a unary logical consequence is safe to add as an ordinary
+implication if its derivation is retained.  Investigate whether repeatedly
+adding these consequences substantially collapses the special-SCC poset,
+and prove the exact correspondence with the original closure semantics.
+The obvious polynomial preprocessing tries closure from each row.  The
+interesting questions are whether a smaller set of representatives suffices,
+how much $J$ or $w$ can decrease, and whether native zero patterns impose
+a uniform bound on the saturated width.  The positive checker can continue
+to replay the final tree and pivots in the original matrix.
+
+\paragraph{7. Determine the best exact route when $q$, $w$, and $d$ differ.}
+The present alternatives have costs $J\poly(N)$ with one-sided randomness,
+$J(m+1)^w\poly(N)$ deterministically, and $2^qJ\poly(N)$ by exact counting.
+Implement the Kirchhoff alternative with fraction-free or certified modular
+determinants, then compare these regimes using source-derived parameters.
+Seek a deterministic $2^{O(d)}\poly(N)$ algorithm when $q$ is large.
+The signed common-basis polynomial is the concrete difficulty; a positivity
+argument for a different polynomial must prove that it has exactly the
+required support.  General nonnegative-polynomial detection results are
+relevant context, but do not directly apply to the mixed-sign common-basis
+enumerator \cite{BrandKorchemnaSkotnica2023}.
+
+\paragraph{8. Replace large explicit ideal tables when the frontier is small.}
+A poset can have many ideals even when a particular elimination ordering
+has a small active frontier.  Study a decision diagram or a dynamic program
+that compiles the activation function and ideal constraints together.
+Specify exactly what boundary information must be retained so that a tree
+outside the processed region is represented faithfully.  It is not enough
+to compress the Boolean function if the graphic common-basis constraints
+lose their dependence across the boundary.  A useful theorem would express
+time in an explicitly defined width of the combined dependency and graphic
+structure, with an independent witness extractor.
+
+\subsection{Verification, representation size, and the hierarchy}
+
+\paragraph{9. Produce portable negative finite certificates.}
+The deterministic search can exhaust its finite space, but most of its
+negative outputs currently have no exported proof object.  Develop a
+certificate that an independent checker can validate without trusting the
+search program.  Possible starting points are per-state graphic rank
+obstructions, a shared acyclic proof of all failed representative choices,
+or exact Kirchhoff filtered counts in the small-$q$ regime.  The certificate
+must remain bound to the original graph and matrix, and its verification
+cost and size should be included in the parameter bound.  Randomized zero
+evaluations are insufficient.
+
+\paragraph{10. Improve the remaining compressed transport costs.}
+The prefix theorem removes repeated gap sums, but the measured runtime
+still includes weight-run overlays, translations, reflection folds,
+selector restoration, and repeated trace traversals.  Profile these after
+the current patch.  Investigate sorted batched endpoint transport and
+interval-run composition, with explicit bit bounds and retained/deleted
+endpoint conventions.  A proposed improvement should preserve independently
+authenticated gap lists and demonstrate a gain on complete native replay.
+The corpus's $2^{16384}$ coordinate scale is a useful check that a convenient
+array representation has not introduced point expansion.
+
+\paragraph{11. Build native stress families for the actual new parameters.}
+The present raw corpus has dual rank at most one and very small ideal
+counts.  Create triangulated source families with increasing dual rank,
+controlled exceptional-column cycles, nontrivial implication chains, and
+large binary coordinates.  Report $T$, row count, dual rank, $k$, $\kappa$,
+$d$, $J$, $w$, $q$, certificate size, and replay time.  Keep abstract
+graph/matrix generators separately labelled: they are excellent logical
+tests but do not establish realizability by a triangulated source.
+Prioritize families that distinguish an exponential number of activation
+masks from a polynomial number of ideals.
+
+\paragraph{12. Prove a hierarchy-wide complexity budget.}
+Track the number of active nonparallel handles, boundary-pattern records,
+interval runs, restart events, and coordinate bit lengths throughout a
+complete hierarchy implementation.  Seek an amortized invariant bounding
+both the number of visited states and the maximum local ideal complexity.
+A decrease in handle count alone is insufficient if a restart duplicates
+many states or an attachment representation grows too quickly.  The desired
+deliverable is a theorem supplying the hypotheses of
+\cref{prop:global-conditional}, or a counterexample showing which proposed
+potential fails.  This is the central remaining bridge from the proved
+local operators to Lackenby's announced asymptotic target.
+
+\subsection{Recommended next integration checkpoint}
+
+The behavior-preserving speed patch is ready for ordinary code review and
+the repository's usual integration gates.  The lower-forest portfolio is
+separate and can be reviewed with its five full packets and shared resource
+limits.  The exceptional-row solvers should enter as research operators
+with measured dispatch parameters, explicit state/work limits, and the
+unchanged finite verifier.  Their source adapter must carry all lower-forest
+and attachment provenance before they are used as native geometric claims.
+
+For the next research iteration, the highest-value concrete target is the
+source-authenticated annular continuation of the two larger Fibonacci
+examples.  In parallel, the structural priority is to test and then prove
+a bound on implication width after geometric simplification.  Those tasks
+would connect the native coverage improvement and the new deterministic
+complexity theorem at an interface where both can be checked precisely.

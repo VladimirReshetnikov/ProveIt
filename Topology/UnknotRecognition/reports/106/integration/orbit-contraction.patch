@@ -1,0 +1,281 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/interval_orbit_verify.py b/Topology/UnknotRecognition/fast/fastunknot/interval_orbit_verify.py
+index d3264cd..ce227c6 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/interval_orbit_verify.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/interval_orbit_verify.py
+@@ -10,6 +10,7 @@ version 2 permits the exact Fine--Wilf threshold. Neither version asserts
+ anything about a knot or the provenance of a normal-surface triangulation.
+ """
+ 
++from bisect import bisect_left
+ from math import gcd
+ import re
+ 
+@@ -92,6 +93,30 @@ def _gaps(size, pairs):
+     return result
+ 
+ 
++
++def _contract_pairings(rows, gaps, check=lambda: None):
++    """Remap pairing endpoints using authenticated static-gap prefix sums.
++
++    Precondition: gaps are increasing, disjoint inclusive intervals, and no
++    row endpoint lies in a gap. The unweighted checker establishes this before
++    calling; weighted checker continuations first authenticate the full trace.
++    This helper imports no producer code and stores no cross-call state.
++    Its arithmetic cost is O(g + k log(g+2)) for g gaps and k rows.
++    """
++    ends, prefix = [], [0]
++    for lo, hi in gaps:
++        check()
++        ends.append(hi)
++        prefix.append(prefix[-1] + hi - lo + 1)
++    mapped = []
++    for a, b, c, d, sign in rows:
++        check()
++        mapped.append([a - prefix[bisect_left(ends, a)],
++                       b - prefix[bisect_left(ends, b)],
++                       c - prefix[bisect_left(ends, c)],
++                       d - prefix[bisect_left(ends, d)], sign])
++    return mapped, prefix[-1]
++
+ def _inverse_image(interval, pairing, power):
+     """Certify a power of one partial inverse and return its affine map.
+ 
+@@ -218,12 +243,8 @@ def _verify(size, pairings, certificate, check):
+                 raise _InvalidCertificate("Contraction gaps are not static")
+             actual = decoded_gaps
+ 
+-            def shifted(point):
+-                return point - sum(hi - lo + 1 for lo, hi in actual if hi < point)
+-
+-            decrease = sum(hi - lo + 1 for lo, hi in actual)
+-            current = [[shifted(a), shifted(b), shifted(c), shifted(d), sign]
+-                       for a, b, c, d, sign in current]
++            current, decrease = _contract_pairings(
++                current, actual, check if check is not None else lambda: None)
+             size -= decrease
+             removed_orbits += decrease
+ 
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/interval_orbits.py b/Topology/UnknotRecognition/fast/fastunknot/interval_orbits.py
+index afb9092..2544f7b 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/interval_orbits.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/interval_orbits.py
+@@ -131,16 +131,20 @@ def _contract(n, pairs, check=lambda: None):
+     """
+     intervals = sorted((lo, hi) for p in pairs
+                        for lo, hi in ((p.a, p.b), (p.c, p.d)))
+-    occupied, gaps, end = [], [], 0
++    occupied, gaps, end, first = [], [], 0, None
+     for lo, hi in intervals:
+         check()
+         if lo > end:
+             gaps.append([end, lo-1])
+-        end = max(end, hi+1)
+-        if occupied and lo <= occupied[-1][1]+1:
+-            occupied[-1] = (occupied[-1][0], max(hi, occupied[-1][1]))
+-        else:
+-            occupied.append((lo, hi))
++            if first is not None:
++                occupied.append((first, end-1))
++            first = lo
++        elif first is None:
++            first = lo
++        if hi >= end:
++            end = hi+1
++    if first is not None:
++        occupied.append((first, end-1))
+     if end < n:
+         gaps.append([end, n-1])
+     if not gaps:
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/weighted_orbit_verify.py b/Topology/UnknotRecognition/fast/fastunknot/weighted_orbit_verify.py
+index c8a05de..9388162 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/weighted_orbit_verify.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/weighted_orbit_verify.py
+@@ -11,7 +11,7 @@ from collections import defaultdict
+ from math import gcd
+ import re
+ 
+-from .interval_orbit_verify import verify_orbit_certificate
++from .interval_orbit_verify import verify_orbit_certificate, _contract_pairings
+ 
+ 
+ class _InvalidWeightedProof(ValueError):
+@@ -261,11 +261,7 @@ def _replay(size, pairs, runs, trace, dimension, poll):
+             gaps = [[_integer(x) for x in gap] for gap in event["gaps"]]
+             runs, size = _contract_weights(runs, size, gaps, histogram, poll)
+ 
+-            def shift(point):
+-                return point - sum(hi - lo + 1 for lo, hi in gaps if hi < point)
+-
+-            pairs = [[shift(a), shift(b), shift(c), shift(d), sign]
+-                     for a, b, c, d, sign in pairs]
++            pairs, _ = _contract_pairings(pairs, gaps, poll)
+         elif kind == "truncate":
+             index = _integer(event["index"])
+             cut = _integer(event["new_size"])
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/weighted_transversal_verify.py b/Topology/UnknotRecognition/fast/fastunknot/weighted_transversal_verify.py
+index 914cd5d..c95c3ac 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/weighted_transversal_verify.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/weighted_transversal_verify.py
+@@ -4,6 +4,7 @@ from collections import defaultdict
+ from math import gcd
+ 
+ from .integer_codec import encoded_integer
++from .interval_orbit_verify import _contract_pairings
+ from .weighted_orbit_verify import (_check_weighted_certificate,
+     _contract_weights, _translation_fold, _reflection_fold, _move_interval, _InvalidWeightedProof)
+ 
+@@ -48,8 +49,7 @@ def _reverse_tags(size, pairs, runs, trace, dimension, check):
+                     end = min(stop, runs[ri][1]); emitted.append((point, end, runs[ri][2])); point = end
+             history.append((gaps, emitted))
+             runs, size = _contract_weights(runs, size, gaps, histogram, check)
+-            def shift(point): return point-sum(hi-lo+1 for lo, hi in gaps if hi < point)
+-            pairs = [[shift(a), shift(b), shift(c), shift(d), s] for a, b, c, d, s in pairs]
++            pairs, _ = _contract_pairings(pairs, gaps, check)
+         elif kind == 'truncate':
+             i, cut = encoded_integer(event['index']), encoded_integer(event['new_size']); a, b, c, d, sign = pairs[i]
+             runs = (_translation_fold(runs, size, cut, c-a, dimension, check) if sign == 1 else
+diff --git a/Topology/UnknotRecognition/fast/tests/test_gap_prefix_replay.py b/Topology/UnknotRecognition/fast/tests/test_gap_prefix_replay.py
+new file mode 100644
+index 0000000..6bfd8a6
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_gap_prefix_replay.py
+@@ -0,0 +1,138 @@
++"""Literal order quotients, reflected arrows, exact traces and hostile gaps."""
++
++from bisect import bisect_right
++from copy import deepcopy
++from itertools import product
++import random
++import unittest
++from unittest.mock import patch
++
++from fastunknot.interval_orbits import IntervalPairing, _contract, count_orbits
++from fastunknot.interval_orbit_verify import _contract_pairings, verify_orbit_certificate
++from fastunknot.weighted_orbits import weighted_orbit_histogram
++from fastunknot.weighted_orbit_verify import verify_weighted_orbit_certificate
++from fastunknot.weighted_transversal import weighted_orbit_transversal
++from fastunknot.weighted_transversal_verify import verify_weighted_orbit_transversal
++
++
++def naive_rows(rows, gaps):
++    def shift(point):
++        return point - sum(hi - lo + 1 for lo, hi in gaps if hi < point)
++    return [[shift(a), shift(b), shift(c), shift(d), sign]
++            for a, b, c, d, sign in rows]
++
++
++def literal_gaps(n, retained):
++    result = []
++    point = 0
++    while point < n:
++        if point in retained:
++            point += 1
++            continue
++        lo = point
++        while point < n and point not in retained:
++            point += 1
++        result.append([lo, point - 1])
++    return result
++
++
++class GapPrefixReplayTests(unittest.TestCase):
++    def test_all_tiny_complements_and_inverse_order_maps(self):
++        for n in range(10):
++            for bits in product((False, True), repeat=n):
++                kept = [i for i, bit in enumerate(bits) if bit]
++                gaps = literal_gaps(n, set(kept))
++                rows = [[point] * 4 + [1] for point in kept]
++                actual, removed = _contract_pairings(rows, gaps)
++                self.assertEqual(actual, naive_rows(rows, gaps))
++                self.assertEqual(actual, [[rank] * 4 + [1] for rank in range(len(kept))])
++                self.assertEqual(removed, n - len(kept))
++                anchors, prefix = [], [0]
++                for lo, hi in gaps:
++                    anchors.append(lo - prefix[-1])
++                    prefix.append(prefix[-1] + hi - lo + 1)
++                restored = [rank + prefix[bisect_right(anchors, rank)]
++                            for rank in range(len(kept))]
++                self.assertEqual(restored, kept)
++                pairs = [IntervalPairing(*row[:4]) for row in rows]
++                size, mapped, count, produced_gaps = _contract(n, pairs)
++                self.assertEqual((size, count, produced_gaps), (len(kept), removed, gaps))
++                self.assertEqual([[p.a, p.b, p.c, p.d, 1] for p in mapped], actual)
++                if not gaps:
++                    self.assertIs(mapped, pairs)
++
++    def test_arbitrary_signed_pairings_match_literal_oracle(self):
++        rng = random.Random(20261012)
++        for _ in range(700):
++            n = rng.randrange(1, 65)
++            pairs = []
++            for _ in range(rng.randrange(1, 17)):
++                width = rng.randrange(1, n + 1)
++                a, c = (rng.randrange(n - width + 1) for _ in range(2))
++                pairs.append(IntervalPairing(a, a + width - 1,
++                                            c, c + width - 1, bool(rng.randrange(2))))
++            retained = {x for p in pairs for lo, hi in ((p.a, p.b), (p.c, p.d))
++                        for x in range(lo, hi + 1)}
++            gaps = literal_gaps(n, retained)
++            rows = [[p.a, p.b, p.c, p.d, -1 if p.reverse else 1] for p in pairs]
++            expected = naive_rows(rows, gaps)
++            actual, removed = _contract_pairings(rows, gaps)
++            self.assertEqual(actual, expected)
++            size, mapped, amount, produced = _contract(n, pairs)
++            self.assertEqual((size, amount, produced), (n - removed, removed, gaps))
++            self.assertEqual([[p.a, p.b, p.c, p.d, -1 if p.reverse else 1]
++                              for p in mapped], actual)
++
++    def test_enormous_gaps_do_not_expand_points(self):
++        scale = 1 << 16384
++        gaps = [[0, scale - 1], [scale + 3, 3 * scale - 1]]
++        rows = [[scale, scale + 2, 3 * scale, 3 * scale + 2, -1]]
++        self.assertEqual(_contract_pairings(rows, gaps),
++                         ([[0, 2, 3, 5, -1]], 3 * scale - 3))
++
++    def test_bad_gaps_still_fail_before_prefix_transport(self):
++        n = 12
++        pairs = [IntervalPairing(2, 3, 8, 9, True)]
++        proof = count_orbits(n, pairs, record_certificate=True).certificate
++        self.assertTrue(verify_orbit_certificate(n, pairs, proof))
++        index = next(i for i, event in enumerate(proof['operations']) if event['op'] == 'contract')
++        malformed = ([[0, 0]], [[0, 2], [4, 7], [10, 11]],
++                     [[4, 7], [0, 1], [10, 11]], [[0, 1], [1, 7], [10, 11]])
++        for gaps in malformed:
++            bad = deepcopy(proof)
++            bad['operations'][index]['gaps'] = gaps
++            with patch('fastunknot.interval_orbit_verify._contract_pairings',
++                       side_effect=AssertionError('unauthenticated gaps remapped')):
++                self.assertFalse(verify_orbit_certificate(n, pairs, bad))
++
++    def test_weighted_and_selector_checkers_keep_independent_code(self):
++        n = 36
++        pairs = [IntervalPairing(2, 5, 12, 15, True),
++                 IntervalPairing(12, 15, 28, 31)]
++        weights = [(0, 7, (2, -1)), (10, 19, (-3, 2)), (27, 36, (1, 4))]
++        weighted = weighted_orbit_histogram(n, pairs, weights, dimension=2,
++                                           record_certificate=True)
++        selector = weighted_orbit_transversal(n, pairs, weights, dimension=2,
++                                             record_certificate=True)
++        with patch('fastunknot.weighted_orbits._contract_rows',
++                   side_effect=AssertionError('producer row mapper used')):
++            self.assertTrue(verify_weighted_orbit_certificate(
++                n, pairs, weights, weighted['certificate'], dimension=2))
++            self.assertTrue(verify_weighted_orbit_transversal(
++                n, pairs, weights, selector['certificate'], dimension=2))
++
++    def test_callbacks_run_inside_long_prefix_and_endpoint_scans(self):
++        class Cancel(Exception):
++            pass
++        checks = 0
++        def stop():
++            nonlocal checks
++            checks += 1
++            if checks == 3:
++                raise Cancel()
++        with self.assertRaises(Cancel):
++            _contract_pairings([[8, 8, 8, 8, 1]], [[0, 1], [3, 4], [6, 7]], stop)
++
++
++if __name__ == '__main__':
++    unittest.main()

@@ -1,0 +1,247 @@
+% Article fragment.  Requires amsmath, amssymb and theorem environments.
+\section{Postponing the lower forest eliminates a search variable}
+\label{sec:deferred-primal-forest}
+
+The previous complete dual-forest search held the zero/one forest fixed.
+The previous weighted-tree proposal alternated additive optimizations of
+both forests.  For the specific objective of \emph{complete raw one/two
+cancellation}, however, a different argument eliminates the lower-forest
+search entirely.  The producer should first find column leaves in the full
+source incidence matrix, and only then choose a zero/one forest that avoids
+its pivots.  The actual geometric certificate still contracts this chosen
+forest \emph{before} performing its one/two cancellations.  Only discovery
+is postponed; no commutation of geometric moves is assumed.
+
+\subsection{The graph constraint that the matrix-only model forgets}
+
+Let $G=(V,E)$ be a finite multigraph, with loops and parallel edges allowed.
+Write $c(G)$ for its number of connected components.  A spanning forest
+always spans each original component.  Let $R$ be a finite row set, and let
+$J$ be a disjoint set of auxiliary columns.  Consider a nonnegative integer
+matrix
+\[
+ N=(n_{rx})_{r\in R,\ x\in E\sqcup J}.
+\]
+Assume that, for each row $r$, its restriction $(n_{re})_{e\in E}$ is the
+literal edge-occurrence vector of a closed walk in $G$.  A union of closed
+walks also suffices.  An empty restriction is permitted when a row has only
+auxiliary columns.  Equivalently for the argument below, it suffices that
+the uncapped occurrence vector reduce modulo two to a graph cycle:
+\[
+ \sum_{e\ni v} n_{re}=0\pmod 2 \qquad(v\in V),
+\]
+where a loop contributes twice.  One must formulate this condition before
+saturation: replacing a coefficient three by two preserves singleton tests
+but not parity.
+
+A \emph{column-leaf move} chooses a live column $x$ for which
+\[
+ \sum_{r\in R_{\mathrm{live}}}n_{rx}=1.
+\]
+It deletes its unique incident row and deletes column $x$.  Other entries
+are unchanged.  All earlier pivot columns have zero occurrence in every
+later live row.  Thus source entries remain immutable, and the existing
+sparse queue and independent timestamp checker apply unchanged.
+
+\begin{lemma}[A closed walk cannot traverse a bridge exactly once]
+\label{lem:bridge-crossing}
+If $e$ is a bridge of a multigraph and $\gamma$ is a closed walk, the number
+of traversals of $e$ by $\gamma$ is even.  In particular, it is never one.
+\end{lemma}
+\begin{proof}
+Deleting $e$ partitions its original component into two vertex sets.  Every
+traversal of $e$ changes the side occupied by the walk.  The initial and
+final vertices agree, so the number of side changes is even.  A loop is
+never a bridge.  The same proof is the mod-two cut-cycle orthogonality
+identity and therefore applies to a union of closed walks.
+\end{proof}
+
+\begin{theorem}[Pivot deletion preserves the source components]
+\label{thm:deferred-connectivity}
+Run any finite column-leaf sequence on the full matrix $N$, and let $P$
+be its pivot columns that belong to $E$.  Then $G-P$ has the same connected
+components as $G$.  Consequently there is a spanning forest $T$ of $G$
+with $T\cap P=\varnothing$.
+\end{theorem}
+\begin{proof}
+Order the moves chronologically.  Auxiliary pivots do not remove graph
+edges.  Suppose the next graph pivot is $e$, in row $r$, and let $P_0$ be
+the graph pivots of earlier moves.  When an earlier column was a leaf, all
+rows that would survive that move had zero entry in that column.  In
+particular $n_{rp}=0$ for every $p\in P_0$.  The closed walk for $r$
+therefore lies in $G-P_0$.  The current pivot condition gives $n_{re}=1$.
+By Lemma~\ref{lem:bridge-crossing}, $e$ is not a bridge of $G-P_0$.
+Deleting it preserves every component.  Induction proves the assertion.
+A spanning forest of $G-P$ now also spans $G$.
+\end{proof}
+
+In graphic-matroid language, $P$ is independent in the cographic matroid:
+its complement contains a spanning forest.  This observation is a
+consequence of closed attaching curves, not a property of arbitrary
+nonnegative matrices equipped with an unrelated graph.
+
+\begin{theorem}[Exact removal of the primal-forest choice]
+\label{thm:all-primal-forests}
+Under the hypotheses above, the following conditions are equivalent:
+\begin{enumerate}
+\item Full-matrix column-leaf peeling deletes every row of $N$.
+\item There exists a spanning forest $T$ of $G$ such that column-leaf
+peeling deletes every row after columns $T$ are discarded.
+\item There exists a spanning forest $T$ of $G$ such that some sequence of
+raw positive-singleton cancellations deletes every row after columns $T$
+are discarded, with the usual nonnegative fill update.
+\end{enumerate}
+Whenever these conditions hold, a full-matrix peeling sequence followed by
+a spanning-forest computation in $G-P$ constructs $T$ and its complete
+certificate.  There is no enumeration of primal forests.
+\end{theorem}
+\begin{proof}
+For $(1)\Rightarrow(2)$, choose the forest supplied by
+Theorem~\ref{thm:deferred-connectivity}.  No recorded pivot is in $T$.
+Deleting additional nonpivot columns does not change any pivot-column sum,
+so the identical row/column sequence is valid after discarding $T$.
+The implication $(2)\Rightarrow(3)$ is immediate: column leaves are
+zero-fill positive-singleton moves.
+
+For $(3)\Rightarrow(2)$ use Theorem~\ref{thm:raw-completeness}: a nonnegative matrix admits a complete
+positive-singleton sequence exactly when its column-leaf process deletes
+all rows.  Finally, any column-leaf sequence using only columns outside
+$T$ is also valid in the full matrix.  Its pivot-column sums are identical,
+and the extra columns do not invalidate leaves.  Hence $(2)\Rightarrow(1)$.
+\end{proof}
+
+\begin{corollary}[A forest-independent refusal certificate]
+\label{cor:all-forests-obstruction}
+If full-matrix peeling leaves a nonempty stopping set $S\subseteq R$, then
+no primal forest permits complete raw positive-singleton elimination.
+The assertion concerns the specified geometric intersection model; it is
+not a certificate that the represented manifold is not a handlebody.
+\end{corollary}
+\begin{proof}
+Every full-matrix column sum on $S$ is zero or at least two.  Restricting
+the column set by deleting any forest preserves that property.  Thus $S$
+remains a stopping set in every forest-complement matrix.  The full-row
+cancellation theorem excludes a complete sequence in each such matrix.
+\end{proof}
+
+The stopping certificate needs only the nonempty list of source row
+identifiers.  An independent checker reconstructs the uncancelled source
+occurrences, saturates each column total on that list at two, and rejects
+if any total is one.  No forest search is needed to verify the universal
+quantifier in the corollary.
+
+\subsection{What is optimized when peeling stops}
+
+Let $S$ be the terminal full-matrix column-leaf residual.  For a forest
+$T$, let $S_T$ be the terminal residual after discarding $T$.  The greatest
+stopping-set property gives $S\subseteq S_T$ for every $T$.  Moreover, the
+forest constructed from the complete \emph{partial} full-matrix peeling
+sequence attains $S_T=S$: the recorded prefix is valid, and the remaining
+rows $S$ still form a stopping set.  Thus delayed forest discovery also
+finds the smallest possible terminal column-leaf residual over all primal
+forests.
+
+This last statement must not be strengthened to arbitrary
+positive-singleton partial schedules.  The matrix
+\[
+ \begin{pmatrix}1&1\\1&1\end{pmatrix}
+\]
+has no column leaf, but a positive singleton pivot deletes one row and
+leaves the single entry two.  Both rows can be realized combinatorially as
+the same closed walk $ab$ on a graph with one vertex and two loops.  The
+all-forest theorem optimizes \emph{complete success}, and the partial
+statement optimizes \emph{column-leaf residuals}; it does not solve a
+maximum-length positive-fill cancellation problem.
+
+\subsection{A small strict example}
+
+Let $G$ have two vertices and three parallel edges $e_0,e_1,e_2$, all
+oriented from the first vertex to the second.  Take closed walks
+\[
+ \gamma_0=e_0e_2^{-1}e_1e_2^{-1},\qquad
+ \gamma_1=e_1e_2^{-1}.
+\]
+Their unsigned occurrence matrix is
+\[
+ N=\begin{pmatrix}1&1&2\\0&1&1\end{pmatrix}.
+\]
+The canonical forest $\{e_0\}$ leaves
+\[
+ \begin{pmatrix}1&2\\1&1\end{pmatrix},
+\]
+which is a stopping set.  Full-matrix peeling instead uses pivots
+$(\gamma_0,e_0)$ and $(\gamma_1,e_2)$.  Their deletion leaves the spanning
+forest $\{e_1\}$; contracting this forest first gives the triangular
+matrix
+\[
+ \begin{pmatrix}1&2\\0&1\end{pmatrix},
+\]
+with precisely the same valid cancellation sequence.  This example is a
+closed-walk incidence construction, not a claim that arbitrary graph
+walks constitute authenticated manifold charts.  Actual source examples
+are recorded below.
+
+\subsection{Source rows, annular rows, and the order of authentication}
+
+For a fixed source-authenticated two/three reduction, retain its surviving
+two-handle rows and all original zero/one handles.  Each retained attaching
+cycle is literally a closed walk through these handles.  The theorem
+therefore applies after any chosen legal dual forest.  It eliminates the
+lower forest as a search variable for each dual choice; it does not decide
+which upper forest should be chosen.
+
+For the finite bundle-boundary kernel, use the \emph{whole} retained row
+set, including annular gluing rows, before choosing the source forest.
+The existing midpoint tracer \texttt{source\_core\_circle} checks that
+each annular core path closes in the original zero/one graph.  The
+dedicated base columns are auxiliary columns $J$ and are not members of
+the source forest.  A source-column pivot still has a closed core walk
+through it exactly once, so Theorem~\ref{thm:deferred-connectivity}
+continues to apply.  Omitting columns permanently incapable of providing a
+singleton must retain the already-proved lifting hypothesis of the finite
+kernel; the delayed-forest argument does not replace that hypothesis.
+
+This extension cannot simply ignore annular rows while selecting a
+forest.  A source-core leaf can cease to be a leaf after annular rows are
+added.  The full finite boundary matrix must therefore be assembled first,
+and its source pivot columns determine the deferred forest.
+
+The core verifier already validates an arbitrary supplied spanning forest
+against the authenticated source graph.  It accepts the new producer's
+existing \texttt{normal-core-handlebody-v2} records unchanged.  For the
+whole-boundary kernel we implement the new schema
+\texttt{bundle-boundary-kernel-v3}: its independent checker validates the
+supplied forest, reconstructs the post-forest matrix from source geometry,
+and checks the same cancellation and census claims.  Older schemas retain
+their canonical-forest meaning.  In every case, the geometric replay
+contracts the forest before its one/two cancellations.
+
+These certificates concern the supported fixed core or finite boundary
+matrix.  Conservative returns elsewhere in the wrapper, the chosen dual
+forest, omitted-column lifting conditions, and construction of a bounded
+marked hierarchy successor remain separate obligations.  No assertion
+about arbitrary group-word simplifications or commuting geometric moves
+is used.
+
+\subsection{Finite discovery cost}
+
+Let $L$ be the number of literal source and annular edge occurrences,
+and let $I$ be the number of nonzero saturated row/column incidences.
+Constructing the matrix costs $O(L)$ indexed operations, and the column
+queue uses $O(I+|R|+|E|+|J|)$ indexed work.  A depth-first or breadth-first
+traversal of $G-P$ finds a spanning forest in $O(|V|+|E|)$ work.  Thus the
+abstract discovery algorithm has a linear bound in these finite explicit
+parameters and uses linear space.
+
+The shipped implementation reuses the existing deterministic disjoint-set
+helper, with path halving and minimum-label linking, to retain the original
+component identifiers.  It does not use union by rank or size; we therefore
+do not attach the usual inverse-Ackermann bound to that helper.  Sorting,
+component-census loops, Python integer/dictionary operations, source
+preparation, and certificate replay also have their own costs.  The
+linear indexed theorem is not a claim that the entire native producer is
+linear in its encoded input.  Nothing in deferred discovery requires
+expanding a family represented only by an omitted genus counter.
+
+Native core and whole-cut measurements are reported separately in
+Section~\ref{sec:experiments}.

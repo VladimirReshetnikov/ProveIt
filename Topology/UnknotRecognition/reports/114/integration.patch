@@ -1,0 +1,5072 @@
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/cyclic_basis.py b/Topology/UnknotRecognition/fast/fastunknot/cyclic_basis.py
+new file mode 100644
+index 00000000..83b8bbcb
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/cyclic_basis.py
+@@ -0,0 +1,258 @@
++"""Compressed certificates for a common basis of cyclic boundary words.
++
++This is an algebraic component, not a knot or handlebody recognizer.  A caller
++must authenticate the embedded curves and their marking before using Gordon's
++primitive-multicurve theorem.  The producer is complete when each connected
++component of the cyclically reduced generator-support graph has size at most
++two.  Larger components are a method refusal, never a nonprimitivity claim.
++
++The rank-two singleton algorithm is the Euclidean method of Kapovich (2026).
++Pairs use one lift of their inverse homology matrix.  Supplied powered Nielsen
++certificates are replayed backwards, retaining a linear shared grammar before
++the established deterministic compressed free reduction.
++"""
++
++from .compressed_words import CompressedLimit, WordArena
++
++
++def concatenate(arena, nodes):
++    """Join node references in a balanced tree, without free reduction."""
++    nodes = list(nodes)
++    while len(nodes) > 1:
++        nodes = [arena.concat(nodes[i], nodes[i + 1]) if i + 1 < len(nodes)
++                 else nodes[i] for i in range(0, len(nodes), 2)]
++    arena.tick()
++    return nodes[0] if nodes else 0
++
++
++def map_unreduced(arena, roots, images):
++    """Apply a supplied letter map once; preserve shared source productions."""
++    mapped = {0: 0}
++    for node in arena._reachable(roots):
++        rule = arena.rules[node]
++        if rule[0] == 't':
++            mapped[node] = images[rule[1]]
++        else:
++            mapped[node] = arena.concat(mapped[rule[1]], mapped[rule[2]])
++    return [mapped[root] for root in roots]
++
++
++def _labels(generators):
++    if (type(generators) is not list or
++            any(type(g) is not int or g <= 0 for g in generators) or
++            generators != sorted(set(generators))):
++        raise ValueError('generators must be sorted distinct positive integers')
++    return set(generators)
++
++
++def compile_nielsen(arena, generators, moves):
++    """Compile psi_m ... psi_1 by suffix images, scanning the list backwards.
++
++    Moves are inversion, interchange, and x_i -> x_j^k x_i or x_i x_j^k,
++    with i != j and binary k != 0.  No group simplification is needed here.
++    """
++    alive = _labels(generators)
++    if type(moves) is not list:
++        raise ValueError('moves must be a list')
++    images = {g: arena.letter(g) for g in generators}
++    for move in reversed(moves):
++        arena.tick()
++        if type(move) is not dict:
++            raise ValueError('invalid Nielsen move')
++        kind = move.get('kind')
++        if kind == 'invert':
++            if set(move) != {'kind', 'generator'}:
++                raise ValueError('invalid inversion fields')
++            i = move['generator']
++            if type(i) is not int or i not in alive:
++                raise ValueError('inversion outside alphabet')
++            images[i] = arena.inverse(images[i])
++        elif kind == 'swap':
++            if set(move) != {'kind', 'first', 'second'}:
++                raise ValueError('invalid interchange fields')
++            i, j = move['first'], move['second']
++            if (type(i) is not int or type(j) is not int or
++                    i not in alive or j not in alive or i == j):
++                raise ValueError('invalid interchange generators')
++            images[i], images[j] = images[j], images[i]
++        elif kind == 'multiply':
++            if set(move) != {'kind', 'target', 'donor', 'exponent', 'side'}:
++                raise ValueError('invalid multiplication fields')
++            i, j, k = move['target'], move['donor'], move['exponent']
++            if (type(i) is not int or type(j) is not int or i == j or
++                    i not in alive or j not in alive or type(k) is not int or
++                    k == 0 or move['side'] not in ('left', 'right')):
++                raise ValueError('invalid powered Nielsen multiplication')
++            power = arena.power(images[j], k)
++            images[i] = (arena.concat(power, images[i]) if move['side'] == 'left'
++                         else arena.concat(images[i], power))
++        else:
++            raise ValueError('unknown Nielsen move')
++    images.update({-g: arena.inverse(images[g]) for g in generators})
++    return images
++
++
++def _profiles(arena, roots):
++    """Exact signed exponent sums and signed support, per reachable node."""
++    sums, support = {0: {}}, {0: frozenset()}
++    for node in arena._reachable(roots):
++        arena.tick()
++        rule = arena.rules[node]
++        if rule[0] == 't':
++            letter = rule[1]
++            sums[node] = {abs(letter): 1 if letter > 0 else -1}
++            support[node] = frozenset((abs(letter),))
++        else:
++            a, b = rule[1:]
++            row = dict(sums[a])
++            for g, n in sums[b].items():
++                row[g] = row.get(g, 0) + n
++            sums[node] = row
++            support[node] = support[a] | support[b]
++    return [sums[x] for x in roots], [support[x] for x in roots]
++
++
++def rank_two_lift(labels, vectors):
++    """Lift inverse homology data for one or two ordered classes in F_2.
++
++    Return (moves, target letters), or None for the homological obstruction.
++    Completeness is a statement about primitive CONJUGACY classes, not based
++    generating pairs: independent conjugations are intentionally allowed.
++    """
++    from math import gcd
++    a, b = labels
++    if len(vectors) not in (1, 2):
++        return None
++    values = [list(v) for v in vectors]
++    p, q = values[0]
++    if gcd(abs(p), abs(q)) != 1:
++        return None
++    if len(values) == 2 and abs(p * values[1][1] - q * values[1][0]) != 1:
++        return None
++    moves = []
++
++    def invert(column):
++        moves.append(dict(kind='invert', generator=(a, b)[column]))
++        for value in values:
++            value[column] = -value[column]
++
++    def shear(target, donor, exponent):
++        # x_target -> x_donor^exponent x_target adds target counts to donor.
++        moves.append(dict(kind='multiply', target=(a, b)[target],
++                          donor=(a, b)[donor], exponent=exponent, side='left'))
++        for value in values:
++            value[donor] += exponent * value[target]
++
++    if values[0][0] < 0:
++        invert(0)
++    if values[0][1] < 0:
++        invert(1)
++    while all(values[0]):
++        p, q = values[0]
++        if p >= q:
++            shear(1, 0, -(p // q))
++        else:
++            shear(0, 1, -(q // p))
++    if values[0][0] == 0:
++        moves.append(dict(kind='swap', first=a, second=b))
++        values = [[y, x] for x, y in values]
++    if values[0] != [1, 0]:
++        raise ArithmeticError('Euclidean lift did not reach a primitive vector')
++    if len(values) == 2:
++        p, q = values[1]
++        if abs(q) != 1:
++            raise ArithmeticError('unimodular pair lost its determinant')
++        if p:
++            shear(1, 0, -p * q)
++        if values[1][1] < 0:
++            invert(1)
++        if values[1] != [0, 1]:
++            raise ArithmeticError('pair lift failed')
++    return moves, [a, b][:len(values)]
++
++
++def cyclic_basis_blocks(arena, roots, generators):
++    """Find a common basis certificate for support blocks of size at most two.
++
++    A negative result has a reason.  'unsupported_support_block' is outside
++    the exact restricted class; the other failures certify algebraic
++    nonprimitivity within a supported block, not non-handlebodyness.
++    """
++    alive = _labels(generators)
++    for node in arena._reachable(roots):
++        rule = arena.rules[node]
++        if rule[0] == 't' and abs(rule[1]) not in alive:
++            raise ValueError('source word outside component alphabet')
++    reduced = [arena.cyclic_reduce(root) for root in roots]
++    if any(not root for root in reduced):
++        return dict(status='INCONCLUSIVE', reason='trivial_annular_class')
++    sums, support = _profiles(arena, reduced)
++    if any(not s <= alive for s in support):
++        raise ValueError('word outside component alphabet')
++    parent = {g: g for g in generators}
++
++    def find(g):
++        while parent[g] != g:
++            parent[g] = parent[parent[g]]
++            g = parent[g]
++        return g
++
++    for letters in support:
++        letters = sorted(letters)
++        for g in letters[1:]:
++            parent[find(g)] = find(letters[0])
++    groups = {}
++    for slot, letters in enumerate(support):
++        key = find(min(letters))
++        groups.setdefault(key, []).append(slot)
++    moves, targets, blocks = [], [None] * len(roots), []
++    for key, slots in sorted(groups.items()):
++        labels = sorted(set().union(*(support[i] for i in slots)))
++        if len(labels) > 2:
++            return dict(status='INCONCLUSIVE', reason='unsupported_support_block',
++                        block_generators=labels)
++        if len(slots) > len(labels):
++            return dict(status='INCONCLUSIVE', reason='dependent_annular_classes',
++                        block_generators=labels)
++        local_moves = []
++        if len(labels) == 1:
++            g = labels[0]
++            value = sums[slots[0]].get(g, 0)
++            if abs(value) != 1:
++                return dict(status='INCONCLUSIVE', reason='nonprimitive_homology')
++            if value < 0:
++                local_moves.append(dict(kind='invert', generator=g))
++            local_targets = [g]
++        else:
++            vectors = [[sums[i].get(g, 0) for g in labels] for i in slots]
++            lift = rank_two_lift(labels, vectors)
++            if lift is None:
++                return dict(status='INCONCLUSIVE', reason='nonprimitive_homology')
++            local_moves, local_targets = lift
++        moves.extend(local_moves)
++        for i, target in zip(slots, local_targets):
++            targets[i] = target
++        blocks.append(dict(generators=labels, slots=slots))
++    images = compile_nielsen(arena, generators, moves)
++    mapped = map_unreduced(arena, reduced, images)
++    terminal = [arena.cyclic_reduce(root) for root in mapped]
++    if any(arena.lengths[root] != 1 or arena.first[root] != target
++           for root, target in zip(terminal, targets)):
++        return dict(status='INCONCLUSIVE', reason='nonprimitive_cyclic_class')
++    certificate = dict(schema='cyclic-basis-nielsen-v1', generators=generators,
++                       moves=moves, targets=targets)
++    return dict(status='COMPLETE', certificate=certificate, blocks=blocks,
++                stats=dict(nielsen_moves=len(moves), blocks=len(blocks),
++                           maximum_block=max((len(b['generators']) for b in blocks), default=0)))
++
++
++def literal_cyclic_basis(words, generators, *, max_nodes=1000000, max_work=10000000):
++    """Convenience entry point for experiments; all decision paths stay exact."""
++    arena = WordArena(max_nodes=max_nodes, max_work=max_work)
++    try:
++        roots = [arena.from_word(word) for word in words]
++        result = cyclic_basis_blocks(arena, roots, generators)
++        result['arena_stats'] = dict(arena.stats, grammar_nodes=len(arena.rules) - 1)
++        return result
++    except CompressedLimit as error:
++        return dict(status='INCONCLUSIVE', reason='compressed_word_budget', detail=str(error))
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/cyclic_basis_verify.py b/Topology/UnknotRecognition/fast/fastunknot/cyclic_basis_verify.py
+new file mode 100644
+index 00000000..63e9897d
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/cyclic_basis_verify.py
+@@ -0,0 +1,115 @@
++"""Independent replay of cyclic basis evidence using suffix image layers.
++
++No producer, Euclidean selector, block decomposition, or source-curve compiler
++is imported.  The shared trusted word kernel is the existing deterministic
++WordArena.  The checker builds suffix automorphism images by a different
++recursive-layer traversal, and verifies the final conjugacy classes directly.
++"""
++
++from .compressed_words import CompressedLimit, WordArena
++
++
++def verify_cyclic_basis(arena, roots, generators, certificate):
++    """Replay a supplied common automorphism; no rank-two restriction needed."""
++    try:
++        if (type(certificate) is not dict or set(certificate) !=
++                {'schema', 'generators', 'moves', 'targets'} or
++                certificate['schema'] != 'cyclic-basis-nielsen-v1' or
++                type(certificate['generators']) is not list or
++                any(type(g) is not int for g in certificate['generators']) or
++                certificate['generators'] != generators or
++                type(generators) is not list or
++                any(type(g) is not int or g <= 0 for g in generators) or
++                generators != sorted(set(generators))):
++            return False
++        moves, targets = certificate['moves'], certificate['targets']
++        if (type(moves) is not list or type(targets) is not list or
++                len(targets) != len(roots) or
++                any(type(g) is not int or g not in generators for g in targets) or
++                len(set(targets)) != len(targets)):
++            return False
++        # Each layer means the suffix automorphism after the named step.
++        # Keeping all generator images at every layer costs O(rank * moves)
++        # references, while new word productions depend only on changed images.
++        layers = [{g: arena.letter(g) for g in generators}]
++        alphabet = set(generators)
++        for position in range(len(moves) - 1, -1, -1):
++            arena.tick()
++            step, previous = moves[position], layers[-1]
++            if type(step) is not dict:
++                return False
++            current = dict(previous)
++            operation = step.get('kind')
++            if operation == 'invert':
++                if set(step) != {'kind', 'generator'}:
++                    return False
++                x = step['generator']
++                if type(x) is not int or x not in alphabet:
++                    return False
++                current[x] = arena.inverse(previous[x])
++            elif operation == 'swap':
++                if set(step) != {'kind', 'first', 'second'}:
++                    return False
++                x, y = step['first'], step['second']
++                if (type(x) is not int or type(y) is not int or x == y or
++                        x not in alphabet or y not in alphabet):
++                    return False
++                current[x], current[y] = previous[y], previous[x]
++            elif operation == 'multiply':
++                if set(step) != {'kind', 'target', 'donor', 'exponent', 'side'}:
++                    return False
++                x, y, exponent = step['target'], step['donor'], step['exponent']
++                if (type(x) is not int or type(y) is not int or x == y or
++                        x not in alphabet or y not in alphabet or
++                        type(exponent) is not int or exponent == 0 or
++                        step['side'] not in ('left', 'right')):
++                    return False
++                # Independent binary powering by a left-to-right bit scan.
++                atom = previous[y] if exponent > 0 else arena.inverse(previous[y])
++                power = 0
++                for bit in bin(abs(exponent))[2:]:
++                    power = arena.concat(power, power)
++                    if bit == '1':
++                        power = arena.concat(power, atom)
++                current[x] = (arena.concat(power, previous[x]) if step['side'] == 'left'
++                              else arena.concat(previous[x], power))
++            else:
++                return False
++            layers.append(current)
++        final = layers[-1]
++        # Evaluate source grammar without calling the producer's map routine.
++        memo = {0: 0}
++        stack = [(root, False) for root in roots]
++        while stack:
++            arena.tick()
++            node, ready = stack.pop()
++            if node in memo:
++                continue
++            rule = arena.rules[node]
++            if rule[0] == 't':
++                letter = rule[1]
++                if abs(letter) not in alphabet:
++                    return False
++                value = final[abs(letter)]
++                memo[node] = value if letter > 0 else arena.inverse(value)
++            elif ready:
++                memo[node] = arena.concat(memo[rule[1]], memo[rule[2]])
++            else:
++                stack.extend(((node, True), (rule[2], False), (rule[1], False)))
++        for root, target in zip(roots, targets):
++            answer = arena.cyclic_reduce(memo[root])
++            if arena.lengths[answer] != 1 or arena.first[answer] != target:
++                return False
++        return True
++    except (KeyError, TypeError, ValueError, IndexError, CompressedLimit):
++        return False
++
++
++def verify_literal_cyclic_basis(words, generators, certificate, *,
++                                max_nodes=1000000, max_work=10000000):
++    arena = WordArena(max_nodes=max_nodes, max_work=max_work)
++    try:
++        roots = [arena.from_word(word) for word in words]
++        return verify_cyclic_basis(arena, roots, generators, certificate)
++    except (ValueError, TypeError, CompressedLimit):
++        return False
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
+index b8f43a22..e8eebfb1 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies.py
+@@ -133,8 +133,52 @@ def _kernel_fallback(result, parallelity, boundary, record_certificate, check, *
+     return result
+ 
+ 
++def _signed_reduced_fallback(result, parallelity, boundary, geometry, reduction,
++                             prepared_core, forest, record_certificate, check):
++    """Try the signed criterion after the existing authenticated 2/3 reduction.
++
++    The top reduction retains every zero/one handle and every retained
++    two-handle's original attaching cycle.  No annular chart or boundary word
++    changes.  This helper consumes that existing topology certificate; it
++    does not claim to transport a marked hierarchy interface.
++    """
++    from .signed_annulus_basis import signed_annulus_basis
++    summary, skeleton = parallelity['summary'], boundary['skeleton']
++    deferred = {i for i, p in enumerate(summary['base_profiles'])
++                if (p['euler_characteristic'], p['boundary_components']) != (1, 1)}
++    absorption = absorb_disk_bundles(geometry, summary, skeleton,
++                                     primitive_bases=deferred, check=check)
++    if absorption is None:
++        return result
++    augmented, absorption_proof, absorbed = absorption
++    core = (prepared_core if prepared_core is not None and
++            len(augmented['handles2']) == len(geometry['core']['handles2'])
++            else core_handlebody_certificate(augmented, forest=forest, check=check))
++    if core['status'] != 'COMPLETE':
++        return result
++    transported = signed_annulus_basis(geometry, summary, skeleton, augmented,
++                                       core['certificate'], check=check)
++    if transported is None:
++        return result
++    proof, owners, statistics = transported
++    census, reason = _census(geometry, summary, skeleton, core['components'], check,
++                             absorbed, {}, owners)
++    if census is None:
++        return result
++    result.pop('reason', None)
++    result.update(status='COMPLETE', census=census)
++    result['stats']['core'] = core.get('stats', {})
++    result['stats']['signed_annuli'] = statistics
++    if record_certificate:
++        result['certificate'] = dict(schema='normal-cut-handlebodies-signed-annuli-v2',
++            parallelity=parallelity['certificate'], boundary=boundary['certificate'],
++            core_reduction=reduction, absorption=absorption_proof,
++            core=core['certificate'], signed_annuli=proof, census=census)
++    return result
++
++
+ def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_core,
+-                 top_forest, forest, check):
++                 top_forest, forest, annulus_method, check):
+     """One finite forest choice, sharing immutable source and boundary packets."""
+     result = dict(status='INCONCLUSIVE', stats=dict(parallelity=parallelity['stats']),
+                   trust='source cut handlebodies; no standalone knot verdict')
+@@ -164,8 +208,12 @@ def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_co
+         return result
+     if reduction is not None:
+         result['reason'] = 'boundary_kernel_cancellation_stalled'
+-        return _kernel_fallback(result, parallelity, boundary, record_certificate, check,
+-                                geometry=geometry, reduction=reduction, forest=forest)
++        result = _kernel_fallback(result, parallelity, boundary, record_certificate, check,
++                                   geometry=geometry, reduction=reduction, forest=forest)
++        if result['status'] == 'COMPLETE' or annulus_method == 'counts':
++            return result
++        return _signed_reduced_fallback(result, parallelity, boundary, geometry, reduction,
++                                        prepared_core, forest, record_certificate, check)
+     family = primitive_bundle_annuli(parallelity['summary'], boundary['skeleton'], check=check)
+     core_side = family is None
+     if core_side:
+@@ -188,14 +236,20 @@ def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_co
+     if core['status'] != 'COMPLETE':
+         result['reason'] = core['reason']
+         return _kernel_fallback(result, parallelity, boundary, record_certificate, check, forest=forest)
+-    core_annuli = {}
++    core_annuli, signed_annuli = {}, False
+     if core_side:
+         transported = core_primitive_annuli(parallelity['geometry'], parallelity['summary'],
+             boundary['skeleton'], augmented, core['certificate'], check=check)
++        if transported is None and annulus_method == 'signed_rank_two':
++            from .signed_annulus_basis import signed_annulus_basis
++            transported = signed_annulus_basis(parallelity['geometry'], parallelity['summary'],
++                boundary['skeleton'], augmented, core['certificate'], check=check)
++            signed_annuli = transported is not None
+         if transported is None:
+             result['reason'] = 'annular_core_attachment'
+             return _kernel_fallback(result, parallelity, boundary, record_certificate, check, forest=forest)
+-        core_annuli_proof, core_annuli, result['stats']['core_annuli'] = transported
++        core_annuli_proof, core_annuli, annuli_stats = transported
++        result['stats']['signed_annuli' if signed_annuli else 'core_annuli'] = annuli_stats
+     census, reason = _census(parallelity['geometry'], parallelity['summary'],
+                             boundary['skeleton'], core['components'], check, absorbed, primitive, core_annuli)
+     if census is None:
+@@ -212,7 +266,11 @@ def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_co
+         if primitive:
+             result['certificate'].update(schema='normal-cut-handlebodies-v3',
+                                          absorption=absorption_proof, primitive_annuli=primitive_proof)
+-        if core_side:
++        if signed_annuli:
++            result['certificate'].update(schema='normal-cut-handlebodies-signed-annuli-v1',
++                                         absorption=absorption_proof,
++                                         signed_annuli=core_annuli_proof)
++        elif core_side:
+             result['certificate'].update(schema='normal-cut-handlebodies-v4',
+                                          absorption=absorption_proof, core_annuli=core_annuli_proof)
+     check()
+@@ -221,7 +279,8 @@ def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_co
+ 
+ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+                            record_certificate=False, precheck_core=True, boundary_method='masks',
+-                           top_forest='max_weight', lower_forest='adaptive', check=lambda: None):
++                           top_forest='max_weight', lower_forest='adaptive',
++                           annulus_method='counts', check=lambda: None):
+     """Classify the whole supplied cut when the disk-gluing criterion succeeds.
+ 
+     A COMPLETE result is an exact binary multiplicity census of handlebodies.
+@@ -236,6 +295,11 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+     earlier top-handle selector. Neither choice guarantees later cancellation.
+     The adaptive lower policy tries the source forest, then maximum original
+     passage weight on refusal. It shares every orbit query between attempts.
++    The opt-in signed_rank_two annulus method tries a common cyclic basis
++    certificate after the raw primitive-family criterion refuses; it still
++    requires a geometrically certified handlebody core. After a certified
++    two/three-handle reduction, the same optional criterion is tried only
++    when the existing boundary kernel has refused.
+     """
+     check()
+     if type(boundary_method) is not str or boundary_method not in ('masks', 'moments'):
+@@ -244,6 +308,8 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+         raise ValueError('top_forest must be queue or max_weight')
+     if type(lower_forest) is not str or lower_forest not in ('adaptive', 'source', 'max_passages', 'reverse_id'):
+         raise ValueError('invalid lower_forest policy')
++    if type(annulus_method) is not str or annulus_method not in ('counts', 'signed_rank_two'):
++        raise ValueError('annulus_method must be counts or signed_rank_two')
+     if type(precheck_core) is not bool:
+         raise ValueError('precheck_core must be bool')
+     if type(record_certificate) is not bool:
+@@ -283,7 +349,7 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
+         if attempts and set(forest) == set(select_core_forest(source_core, strategy='source', check=check)):
+             break  # Same contractions and raw matrix; no duplicate finite work.
+         result = _attempt_cut(parallelity, discover_boundary, record_certificate,
+-                              precheck_core, top_forest, forest, check)
++                              precheck_core, top_forest, forest, annulus_method, check)
+         attempts.append(dict(strategy=mode, status=result['status'], reason=result.get('reason')))
+         if result['status'] == 'COMPLETE' or result.get('reason') == 'boundary_budget_exhausted':
+             break
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py
+index 53800ca0..7fb504db 100644
+--- a/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py
++++ b/Topology/UnknotRecognition/fast/fastunknot/normal_cut_handlebodies_verify.py
+@@ -124,6 +124,11 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
+         fields.add('kernel')
+         if version == 'normal-cut-handlebodies-v6':
+             fields.add('core_reduction')
++    elif version in ('normal-cut-handlebodies-signed-annuli-v1',
++                     'normal-cut-handlebodies-signed-annuli-v2'):
++        fields.update(('absorption', 'signed_annuli'))
++        if version == 'normal-cut-handlebodies-signed-annuli-v2':
++            fields.add('core_reduction')
+     elif version == 'normal-cut-handlebodies-v4':
+         fields.update(('absorption', 'core_annuli'))
+     elif version == 'normal-cut-handlebodies-v3':
+@@ -163,7 +168,7 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
+     # Large source integers may use the established exact hexadecimal codec.
+     geometry, summary = _decode(p['geometry']), _decode(p['summary'])
+     skeleton = _decode(b['skeleton'])
+-    if version == 'normal-cut-handlebodies-v6':
++    if version in ('normal-cut-handlebodies-v6', 'normal-cut-handlebodies-signed-annuli-v2'):
+         geometry = replay_core_three_handles(geometry, certificate['core_reduction'], check=check)
+         if geometry is None:
+             return False
+@@ -182,11 +187,13 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
+         if primitive is None:
+             return False
+     deferred = primitive
+-    if version == 'normal-cut-handlebodies-v4':
++    if version in ('normal-cut-handlebodies-v4', 'normal-cut-handlebodies-signed-annuli-v1',
++                   'normal-cut-handlebodies-signed-annuli-v2'):
+         deferred = {i for i, p in enumerate(summary['base_profiles'])
+                     if (p['euler_characteristic'], p['boundary_components']) != (1, 1)}
+     if version in ('normal-cut-handlebodies-v2', 'normal-cut-handlebodies-v3',
+-                   'normal-cut-handlebodies-v4'):
++                   'normal-cut-handlebodies-v4', 'normal-cut-handlebodies-signed-annuli-v1',
++                   'normal-cut-handlebodies-signed-annuli-v2'):
+         replay = replay_disk_bundle_absorption(geometry, summary, skeleton,
+                                                certificate['absorption'], primitive_bases=deferred, check=check)
+         if replay is None:
+@@ -200,6 +207,13 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
+                             core_proof, certificate['core_annuli'], check=check)
+         if core_annuli is None:
+             return False
++    elif version in ('normal-cut-handlebodies-signed-annuli-v1',
++                     'normal-cut-handlebodies-signed-annuli-v2'):
++        from .signed_annulus_basis_verify import replay_signed_annulus_basis
++        core_annuli = replay_signed_annulus_basis(geometry, summary, skeleton, augmented,
++                            core_proof, certificate['signed_annuli'], check=check)
++        if core_annuli is None:
++            return False
+     expected = _recount(geometry, summary, skeleton, core_proof['components'], check, absorbed, primitive, core_annuli)
+     check()
+     return expected is not None and certificate_equal(certificate['census'], expected)
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/signed_annulus_basis.py b/Topology/UnknotRecognition/fast/fastunknot/signed_annulus_basis.py
+new file mode 100644
+index 00000000..6085577f
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/signed_annulus_basis.py
+@@ -0,0 +1,100 @@
++"""Basis certificates for authenticated passive annuli after core cancellation.
++
++The source compiler supplies signed words.  No coordinate multiplicity or
++expanded substituted word is allocated.  The new terminal argument is Gordon's
++simultaneous primitive-multicurve theorem, conditional on the existing source
++geometry and geometric core certificate.
++"""
++
++from .compressed_words import CompressedLimit, WordArena
++from .cyclic_basis import concatenate, cyclic_basis_blocks
++from .signed_annulus_source import signed_annulus_source
++
++
++def compile_signed_quotient(arena, packet):
++    """Compile a column-private or row-leaf cancellation into a shared map.
++
++    The input packet is conditional on authenticated geometry and a complete
++    geometric core proof.  Extra algebraic checks here also protect standalone
++    experiments from a false triangular schedule.
++    """
++    rows = {r['two_handle']: r['word'] for r in packet['active']}
++    generators = sorted(g for c in packet['components'] for g in c['generators'])
++    surviving = sorted(g for c in packet['components']
++                       for g in c['surviving_generators'])
++    schedule = packet['cancellations']
++    if (len(rows) != len(packet['active']) or len(schedule) != len(rows) or
++            {r for r, _ in schedule} != set(rows) or
++            len({g for _, g in schedule}) != len(schedule) or
++            set(generators) != set(surviving) | {g for _, g in schedule} or
++            set(surviving) & {g for _, g in schedule}):
++        raise ValueError('invalid complete signed cancellation schedule')
++    images = {g: arena.letter(g) for g in surviving}
++    images.update({-g: arena.inverse(images[g]) for g in surviving})
++    if packet['method'] == 'leaf':
++        removed = set()
++        for row, g in schedule:
++            arena.tick()
++            word = rows[row]
++            if (sum(abs(x) == g for x in word) != 1 or
++                    any(abs(x) != g and abs(x) not in removed for x in word)):
++                raise ValueError('false source row-leaf schedule')
++            removed.add(g)
++            images[g] = images[-g] = 0
++    elif packet['method'] == 'column_leaf':
++        for row, g in reversed(schedule):
++            arena.tick()
++            word = rows[row]
++            positions = [i for i, letter in enumerate(word) if abs(letter) == g]
++            if len(positions) != 1:
++                raise ValueError('source donor does not have a unique pivot')
++            pos = positions[0]
++            donor = word[pos + 1:] + word[:pos]
++            if any(letter not in images for letter in donor):
++                raise ValueError('source dependencies are not triangular')
++            value = concatenate(arena, (images[letter] for letter in donor))
++            if word[pos] > 0:
++                value = arena.inverse(value)
++            images[g], images[-g] = value, arena.inverse(value)
++    else:
++        raise ValueError('unsupported signed cancellation method')
++    if set(images) != set(generators) | {-g for g in generators}:
++        raise ValueError('incomplete source quotient map')
++    roots = [concatenate(arena, (images[x] for x in row['word']))
++             for row in packet['passive']]
++    return roots
++
++
++def signed_annulus_basis(g, summary, skeleton, augmented, core_proof, *,
++                         max_nodes=1000000, max_work=10000000, check=lambda: None):
++    """Return (evidence, attachment owners, stats), or None on method refusal."""
++    packet = signed_annulus_source(g, summary, skeleton, augmented, core_proof,
++                                   check=check)
++    if packet is None:
++        return None
++    arena = WordArena(max_nodes=max_nodes, max_work=max_work, check=check)
++    try:
++        roots = compile_signed_quotient(arena, packet)
++        records, owners = [], {}
++        for component in packet['components']:
++            arena.tick()
++            slots = [i for i, row in enumerate(packet['passive'])
++                     if row['core_component'] == component['id']]
++            chosen = [roots[i] for i in slots]
++            result = cyclic_basis_blocks(arena, chosen, component['surviving_generators'])
++            if result['status'] != 'COMPLETE':
++                return None
++            records.append(dict(core_component=component['id'], slots=slots,
++                                basis=result['certificate']))
++            for i in slots:
++                owners[packet['passive'][i]['attachment']] = component['id']
++        certificate = dict(schema='signed-primitive-annuli-v1', source=packet,
++                           components=records)
++        stats = dict(arena.stats, grammar_nodes=len(arena.rules) - 1,
++                     source_letters=sum(len(r['word']) for r in packet['active'] +
++                                        packet['passive']),
++                     annuli=len(packet['passive']),
++                     nielsen_moves=sum(len(c['basis']['moves']) for c in records))
++        return certificate, owners, stats
++    except CompressedLimit:
++        return None
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/signed_annulus_basis_verify.py b/Topology/UnknotRecognition/fast/fastunknot/signed_annulus_basis_verify.py
+new file mode 100644
+index 00000000..1828ed5b
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/signed_annulus_basis_verify.py
+@@ -0,0 +1,118 @@
++"""Independent signed-source, quotient, and common-basis replay for annuli."""
++
++from .compressed_words import CompressedLimit, WordArena
++from .cyclic_basis_verify import verify_cyclic_basis
++from .signed_annulus_source_verify import verify_signed_annulus_source
++
++
++def _quotient_words(arena, packet):
++    """Independent source-recursion evaluation; do not import the producer."""
++    rows = {item['two_handle']: item['word'] for item in packet['active']}
++    moves = packet['cancellations']
++    if len(rows) != len(packet['active']) or len(moves) != len(rows):
++        return None
++    eliminated = [g for _, g in moves]
++    if len(set(eliminated)) != len(eliminated) or {r for r, _ in moves} != set(rows):
++        return None
++    alive = [g for c in packet['components'] for g in c['surviving_generators']]
++    all_labels = [g for c in packet['components'] for g in c['generators']]
++    if (len(set(all_labels)) != len(all_labels) or set(alive) & set(eliminated) or
++            set(all_labels) != set(alive) | set(eliminated)):
++        return None
++    substitution = {g: arena.letter(g) for g in alive}
++    if packet['method'] == 'leaf':
++        dead = set()
++        for row, g in moves:
++            word = rows[row]
++            if (sum(abs(x) == g for x in word) != 1 or
++                    any(abs(x) not in dead | {g} for x in word)):
++                return None
++            substitution[g] = 0
++            dead.add(g)
++    elif packet['method'] == 'column_leaf':
++        # A pivot may occur only in rows removed no later than its own row.
++        # Scan incidences once instead of scanning all rows for every pivot.
++        deleted_at = {r: i for i, (r, _) in enumerate(moves)}
++        pivot_at = {g: i for i, (_, g) in enumerate(moves)}
++        for row, word in rows.items():
++            arena.tick()
++            for letter in word:
++                arena.tick()
++                time = pivot_at.get(abs(letter))
++                if time is not None and deleted_at[row] > time:
++                    return None
++        for row, g in moves:
++            if sum(abs(x) == g for x in rows[row]) != 1:
++                return None
++        for row, g in moves[::-1]:
++            word = rows[row]
++            location = next(i for i, letter in enumerate(word) if abs(letter) == g)
++            letters = word[location + 1:] + word[:location]
++            if word[location] > 0:
++                letters = [-x for x in reversed(letters)]
++            value = 0
++            for letter in letters:
++                if abs(letter) not in substitution:
++                    return None
++                piece = substitution[abs(letter)]
++                if letter < 0:
++                    piece = arena.inverse(piece)
++                value = arena.concat(value, piece)
++            substitution[g] = value
++    else:
++        return None
++    roots = []
++    for record in packet['passive']:
++        value = 0
++        for letter in record['word']:
++            if abs(letter) not in substitution:
++                return None
++            piece = substitution[abs(letter)]
++            value = arena.concat(value, piece if letter > 0 else arena.inverse(piece))
++        roots.append(value)
++    return roots
++
++
++def replay_signed_annulus_basis(g, summary, skeleton, augmented, core_proof,
++                                certificate, *, max_nodes=1000000,
++                                max_work=10000000, check=lambda: None):
++    """Return the reconstructed attachment owners, or None on failed replay.
++
++    Source geometry, disk absorption, and the geometric core certificate must
++    already have been authenticated by the enclosing whole-cut verifier.
++    """
++    try:
++        if (type(certificate) is not dict or set(certificate) !=
++                {'schema', 'source', 'components'} or
++                certificate['schema'] != 'signed-primitive-annuli-v1' or
++                type(certificate['components']) is not list):
++            return None
++        packet = certificate['source']
++        if not verify_signed_annulus_source(g, summary, skeleton, augmented,
++                                            core_proof, packet, check=check):
++            return None
++        arena = WordArena(max_nodes=max_nodes, max_work=max_work, check=check)
++        roots = _quotient_words(arena, packet)
++        if roots is None or len(certificate['components']) != len(packet['components']):
++            return None
++        owners = {}
++        for component, proof in zip(packet['components'], certificate['components']):
++            if (type(proof) is not dict or set(proof) !=
++                    {'core_component', 'slots', 'basis'} or
++                    type(proof['core_component']) is not int or
++                    proof['core_component'] != component['id']):
++                return None
++            slots = [i for i, row in enumerate(packet['passive'])
++                     if row['core_component'] == component['id']]
++            if (type(proof['slots']) is not list or
++                    any(type(i) is not int for i in proof['slots']) or proof['slots'] != slots):
++                return None
++            if not verify_cyclic_basis(arena, [roots[i] for i in slots],
++                                        component['surviving_generators'], proof['basis']):
++                return None
++            for i in slots:
++                row = packet['passive'][i]
++                owners[row['attachment']] = component['id']
++        return owners
++    except (KeyError, TypeError, ValueError, IndexError, CompressedLimit):
++        return None
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/signed_annulus_source.py b/Topology/UnknotRecognition/fast/fastunknot/signed_annulus_source.py
+new file mode 100644
+index 00000000..8cd5c7b5
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/signed_annulus_source.py
+@@ -0,0 +1,128 @@
++"""Signed source words for passive annuli on an authenticated handlebody core.
++
++This adapter makes no topological conclusion and does no word reduction.
++The enclosing caller must authenticate the parallelity geometry, boundary
++skeleton, disk absorption, and successful core proof.  In particular, signs
++come from oriented source face flags, not from endpoint order: a one-handle
++can have equal endpoints and still has two distinct oriented face flags.
++"""
++
++from .disk_bundle_absorption import source_core_circle
++from .integer_codec import certificate_equal
++
++
++def signed_annulus_source(g, summary, skeleton, augmented, core_proof, *,
++                          check=lambda: None):
++    """Return a raw signed source packet, or None for an unsupported input.
++
++    Letters are ``sign * (one_handle_id + 1)``.  A forest crossing contributes
++    the empty word.  Both active relators and passive annular curves retain
++    their cyclic starting point and orientation; no free or cyclic reduction
++    occurs here.  Only leaf and column-leaf core proofs are supported.  All
++    supplied inputs are conditional on the enclosing source authentication.
++    """
++    check()
++    if ((core_proof.get('schema'), core_proof.get('method')) not in (
++            ('normal-core-handlebody-v1', 'leaf'),
++            ('normal-core-handlebody-v2', 'column_leaf'))):
++        return None
++    core = g['core']
++    if core['handles3'] or augmented['handles3']:
++        return None
++    tree = set(core_proof['forest'])
++    owner = {v: c['id'] for c in core_proof['components']
++             for v in c['zero_handles']}
++    profiles = summary['base_profiles']
++    base_owner = {port: i for i, p in enumerate(profiles)
++                  for port in p['core_ports']}
++    for dimension in (0, 1, 3):
++        if not certificate_equal(augmented[f'handles{dimension}'],
++                                 core[f'handles{dimension}']):
++            return None
++    original_count = len(core['handles2'])
++    if not certificate_equal(augmented['handles2'][:original_count],
++                             core['handles2']):
++        return None
++
++    active = []
++    for row in core['handles2']:
++        check()
++        word = []
++        component = owner[row['cycle'][0]['handle']]
++        for flag in row['cycle']:
++            check()
++            if flag['dimension'] != 1:
++                if owner[flag['handle']] != component:
++                    return None
++                continue
++            h = core['handles1'][flag['handle']]
++            source = (h['tetrahedron'], h['face'])
++            target = (h['target_tetrahedron'], h['target_face'])
++            occurrence = (flag['tetrahedron'], flag['face'])
++            if source == target:
++                return None
++            if occurrence == source:
++                sign = 1
++            elif occurrence == target:
++                sign = -1
++            else:
++                return None
++            if h['id'] not in tree:
++                word.append(sign * (h['id'] + 1))
++        active.append(dict(two_handle=row['id'], core_component=component,
++                           word=word))
++
++    passive, added, absorbed = [], [], set()
++    for index, attachment in enumerate(skeleton['attachment_components']):
++        check()
++        if attachment['kind'] == 'interval':
++            continue
++        if attachment['kind'] != 'circle' or not attachment['word']:
++            return None
++        ports = [abs(x) - 1 for x in attachment['word']]
++        bases = {base_owner[p] for p in ports}
++        if len(bases) != 1:
++            return None
++        base = bases.pop()
++        profile = profiles[base]
++        components = set()
++        for p in ports:
++            port = g['ports'][p]
++            vertex = (port['core_handle'] if port['core_dimension'] == 0 else
++                      core['handles1'][port['core_handle']]['ends'][0])
++            components.add(owner[vertex])
++        if len(components) != 1:
++            return None
++        component = components.pop()
++        crossings, cycle = source_core_circle(g, attachment['word'], check=check)
++        word = [x['sign'] * (x['handle'] + 1) for x in crossings
++                if x['handle'] not in tree]
++        if (profile['euler_characteristic'], profile['boundary_components']) == (1, 1):
++            if (base in absorbed or profile['multiplicity'] != 1 or not profile['orientable'] or
++                    not profile['product'] or set(profile['core_ports']) != set(ports)):
++                return None
++            absorbed.add(base)
++            number = original_count + len(added)
++            added.append(dict(id=number, cycle=cycle))
++            active.append(dict(two_handle=number, core_component=component,
++                               word=word))
++        else:
++            if profile['multiplicity'] != 1 or profile['boundary_components'] < 1:
++                return None
++            passive.append(dict(attachment=index, base_profile=base,
++                                core_component=component, word=word))
++    if not certificate_equal(augmented['handles2'][original_count:], added):
++        return None
++
++    components = []
++    for c in core_proof['components']:
++        check()
++        generators = [h['id'] + 1 for h in core['handles1']
++                      if h['id'] not in tree and owner[h['ends'][0]] == c['id']]
++        components.append(dict(id=c['id'], generators=generators,
++                               surviving_generators=[h + 1 for h in
++                                                     c['remaining_one_handles']]))
++    return dict(schema='signed-core-annulus-source-v1',
++                method=core_proof['method'], forest=list(core_proof['forest']),
++                active=active, passive=passive, components=components,
++                cancellations=[[r, h + 1] for r, h in core_proof['cancellations']])
+diff --git a/Topology/UnknotRecognition/fast/fastunknot/signed_annulus_source_verify.py b/Topology/UnknotRecognition/fast/fastunknot/signed_annulus_source_verify.py
+new file mode 100644
+index 00000000..3ab3e9db
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/fastunknot/signed_annulus_source_verify.py
+@@ -0,0 +1,147 @@
++"""Independent signed source reconstruction; no producer or word reducer import.
++
++The enclosing verifier authenticates the parallelity charts, marked boundary,
++absorbed disk bundles, and successful geometric core proof.  This checker
++rebuilds the corresponding signed words, including self-loop orientations,
++and authenticates the source packet consumed by later algebraic replay.
++"""
++
++from .disk_bundle_absorption_verify import reconstruct_core_circle
++from .integer_codec import certificate_equal
++
++
++def verify_signed_annulus_source(g, summary, skeleton, augmented, core_proof,
++                                  certificate, *, check=lambda: None):
++    """Replay a signed source packet conditional on enclosing authentication."""
++    check()
++    try:
++        return _verify(g, summary, skeleton, augmented, core_proof, certificate, check)
++    except (ArithmeticError, IndexError, KeyError, TypeError, ValueError):
++        return False
++
++
++def _verify(g, summary, skeleton, augmented, proof, certificate, check):
++    fields = {'schema', 'method', 'forest', 'active', 'passive', 'components',
++              'cancellations'}
++    if type(certificate) is not dict or set(certificate) != fields:
++        return False
++    if ((proof['schema'], proof['method']) not in (
++            ('normal-core-handlebody-v1', 'leaf'),
++            ('normal-core-handlebody-v2', 'column_leaf'))):
++        return False
++    core = g['core']
++    if core['handles3'] or augmented['handles3']:
++        return False
++    for k in ('handles0', 'handles1', 'handles3'):
++        if not certificate_equal(core[k], augmented[k]):
++            return False
++    n = len(core['handles2'])
++    if not certificate_equal(core['handles2'], augmented['handles2'][:n]):
++        return False
++    labels = {}
++    for component in proof['components']:
++        for vertex in component['zero_handles']:
++            if vertex in labels:
++                return False
++            labels[vertex] = component['id']
++    forest = set(proof['forest'])
++
++    # This table uses the oriented source face, not either endpoint vertex.
++    directions = {}
++    for h in core['handles1']:
++        check()
++        left = (h['id'], h['tetrahedron'], h['face'])
++        right = (h['id'], h['target_tetrahedron'], h['target_face'])
++        if left == right:
++            return False
++        directions[left], directions[right] = h['id'] + 1, -h['id'] - 1
++    relations = []
++    for h in core['handles2']:
++        check()
++        vertices = [x['handle'] for x in h['cycle'] if x['dimension'] == 0]
++        if not vertices or len({labels[v] for v in vertices}) != 1:
++            return False
++        letters = []
++        for flag in h['cycle']:
++            check()
++            if flag['dimension'] == 1:
++                value = directions[(flag['handle'], flag['tetrahedron'], flag['face'])]
++                if flag['handle'] not in forest:
++                    letters.append(value)
++        relations.append(dict(two_handle=h['id'], core_component=labels[vertices[0]],
++                              word=letters))
++
++    boundary_profiles = summary['base_profiles']
++    port_profiles = {}
++    for i, p in enumerate(boundary_profiles):
++        for port in p['core_ports']:
++            if port in port_profiles:
++                return False
++            port_profiles[port] = i
++    passengers, absorbed_rows, absorbed_bases = [], [], set()
++    for i, a in enumerate(skeleton['attachment_components']):
++        check()
++        if a['kind'] == 'interval':
++            continue
++        if a['kind'] != 'circle' or not a['word']:
++            return False
++        ports = [abs(letter) - 1 for letter in a['word']]
++        base = port_profiles[ports[0]]
++        if any(port_profiles[port] != base for port in ports):
++            return False
++        pieces = []
++        for port_id in ports:
++            port = g['ports'][port_id]
++            if port['core_dimension'] == 0:
++                pieces.append(labels[port['core_handle']])
++            elif port['core_dimension'] == 1:
++                edge = core['handles1'][port['core_handle']]
++                pieces.extend(labels[v] for v in edge['ends'])
++            else:
++                return False
++        if len(set(pieces)) != 1:
++            return False
++        component = pieces[0]
++        reconstructed = reconstruct_core_circle(g, a, check=check)
++        if reconstructed is None:
++            return False
++        crossings, cycle = reconstructed
++        letters = []
++        for x in crossings:
++            check()
++            if x['handle'] not in forest:
++                letters.append((x['handle'] + 1) * x['sign'])
++        p = boundary_profiles[base]
++        if (p['euler_characteristic'], p['boundary_components']) == (1, 1):
++            if (base in absorbed_bases or p['multiplicity'] != 1 or
++                    not p['orientable'] or not p['product'] or
++                    set(p['core_ports']) != set(ports)):
++                return False
++            absorbed_bases.add(base)
++            row = n + len(absorbed_rows)
++            absorbed_rows.append(dict(id=row, cycle=cycle))
++            relations.append(dict(two_handle=row, core_component=component, word=letters))
++        else:
++            if p['multiplicity'] != 1 or p['boundary_components'] < 1:
++                return False
++            passengers.append(dict(attachment=i, base_profile=base,
++                                   core_component=component, word=letters))
++    if not certificate_equal(augmented['handles2'][n:], absorbed_rows):
++        return False
++
++    component_records = []
++    for c in proof['components']:
++        check()
++        generators = []
++        for h in core['handles1']:
++            if h['id'] not in forest and labels[h['ends'][0]] == c['id']:
++                generators.append(h['id'] + 1)
++        component_records.append(dict(id=c['id'], generators=generators,
++                                      surviving_generators=[h + 1 for h in
++                                                            c['remaining_one_handles']]))
++    expected = dict(schema='signed-core-annulus-source-v1', method=proof['method'],
++                    forest=proof['forest'], active=relations, passive=passengers,
++                    components=component_records,
++                    cancellations=[[r, h + 1] for r, h in proof['cancellations']])
++    check()
++    return certificate_equal(certificate, expected)
+diff --git a/Topology/UnknotRecognition/fast/signed_annulus_research/README.md b/Topology/UnknotRecognition/fast/signed_annulus_research/README.md
+new file mode 100644
+index 00000000..33e7af42
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/signed_annulus_research/README.md
+@@ -0,0 +1,61 @@
++# Signed primitive annuli: native regression fixture
++
++The embedded fixture comes from the `finite_figureEight` record, standard
++vertex surface 71, in report 57's discovery bank at repository revision
++`e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39`. It uses 10 tetrahedra and 30 normal
++disks. The exact triangulation, normal coordinates, source JSON hash, and
++expected outcomes are in `corpus.json`.
++
++The same bank supplies further fixtures in the `finite_figureEight_interior`
++record. These require the established source-certified two/three-handle
++reduction before the signed criterion. Both the ordinary and top-reduced
++certificate schemas are checked independently. A retained-refusal fixture
++has transported curve `x^5 y^2`; coprime exponent sums alone do not certify
++free-group primitivity.
++
++The existing geometric core certificate succeeds. Two remaining annuli have
++source words `z x^-1 y^-1` and `z^-1 y^-1 x^-1 y`, where the certified core
++cancellation kills `z`. Their conjugacy classes become `x^-1 y^-1` and
++`x^-1`; one common automorphism carries these to distinct free generators.
++The old unsigned primitive-family and whole-cut kernel criteria refuse this
++input. The opt-in signed method certifies two genus-two handlebodies.
++
++This is a terminal census for a supplied normal cut. It is not a verdict that
++the figure-eight knot is trivial, and it does not construct the global
++quasipolynomial unknot-recognition hierarchy.
++
++From `fast/`, run:
++
++```bash
++python -m signed_annulus_research.reproduce --output /tmp/signed-annulus-replay --regina
++python -m unittest tests.test_cyclic_basis tests.test_signed_annulus_source tests.test_signed_annulus_integration -v
++```
++
++The first command exports the full authenticated certificate and an audit
++JSON. The optional `--regina` flag independently constructs the actual cut
++triangulation and recognises its handlebody components. The historical bank
++hash is checked when the report 57 source is present; the embedded fixture is
++otherwise sufficient for replay.
++
++The public entry point retains `annulus_method='counts'` by default. Enable
++the new conservative fallback with `annulus_method='signed_rank_two'`.
++
++## Regression environment
++
++The complete upstream test suite additionally uses the repository's report
++and synthesis fixtures. Its transitive dependencies include
++`Topology/UnknotRecognition/synthesis/data/cocycle-reuse-audit.json`, loaded
++by the existing transport-annulus tests. One frozen-output comparison also
++reads commit `1aeabfa735c78a30b732405b101009d376d56f18` from Git history. A
++shallow or sparse checkout must retain these inputs. They are not needed by
++the embedded five-case reproduction above.
++
++The final full regression run passed 1,733 tests and 1,750 subtests in 506.68
++seconds. Eight further tests were blocked at setup because that transitive
++fixture had been excluded while narrowing the isolated checkout. After
++restoring its exact pinned contents, all eight passed in 0.99 seconds. Thus
++all 1,741 collected tests passed across the full run and its targeted rerun.
++The supplied regression audit preserves the logs and explains the earlier
++disk-space failures, missing historical commit, and two pre-existing stale
++forest expectations. Those historical refusal assertions now explicitly
++select `lower_forest='source'`; the production default remains unchanged.
+diff --git a/Topology/UnknotRecognition/fast/signed_annulus_research/corpus.json b/Topology/UnknotRecognition/fast/signed_annulus_research/corpus.json
+new file mode 100644
+index 00000000..0d7832e7
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/signed_annulus_research/corpus.json
+@@ -0,0 +1,3426 @@
++{
++  "schema": "signed-annulus-native-corpus-v1",
++  "source_revision": "e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39",
++  "source_path": "Topology/UnknotRecognition/reports/57/results/discovery_corpus.json",
++  "source_sha256": "0433e6c7d99bb402b79909467a7eada862ca004dc4082ee25794add0e712914e",
++  "cases": [
++    {
++      "id": "finite_figureEight/vertex71",
++      "triangulation": {
++        "tetrahedra": [
++          [
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                2,
++                3,
++                1,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                1,
++                3,
++                0,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                2,
++                0,
++                3,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            },
++            null,
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            }
++          ],
++          [
++            null,
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                1,
++                3,
++                0,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                3,
++                2,
++                0,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                2,
++                0,
++                3,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            }
++          ]
++        ]
++      },
++      "coordinates": [
++        [
++          1,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ],
++        [
++          0,
++          0,
++          0,
++          0,
++          0,
++          0,
++          2
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ],
++        [
++          1,
++          1,
++          0,
++          0,
++          1,
++          0,
++          0
++        ],
++        [
++          0,
++          0,
++          0,
++          0,
++          0,
++          0,
++          2
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ],
++        [
++          1,
++          1,
++          0,
++          0,
++          1,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ]
++      ],
++      "source_record": "finite_figureEight",
++      "source_standard_vertex_index": 71,
++      "expected_old_status": "INCONCLUSIVE",
++      "expected_old_reason": "annular_core_attachment",
++      "expected_histogram": [
++        {
++          "genus": 2,
++          "multiplicity": 2
++        }
++      ],
++      "expected_certificate_schema": "normal-cut-handlebodies-signed-annuli-v1"
++    },
++    {
++      "id": "finite_figureEight_interior/vertex134",
++      "triangulation": {
++        "tetrahedra": [
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                2,
++                0,
++                3,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            },
++            null,
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            }
++          ],
++          [
++            null,
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                1,
++                3,
++                0,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                3,
++                2,
++                0,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                2,
++                0,
++                3,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                3,
++                1,
++                2,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                1,
++                3,
++                0,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                2,
++                3,
++                1,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                3,
++                1,
++                2,
++                0
++              ]
++            }
++          ]
++        ]
++      },
++      "coordinates": [
++        [
++          0,
++          0,
++          0,
++          0,
++          0,
++          0,
++          2
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ],
++        [
++          1,
++          1,
++          0,
++          0,
++          1,
++          0,
++          0
++        ],
++        [
++          0,
++          0,
++          0,
++          0,
++          0,
++          0,
++          2
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ],
++        [
++          1,
++          1,
++          0,
++          0,
++          1,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ],
++        [
++          2,
++          0,
++          0,
++          0,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ],
++        [
++          1,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ],
++        [
++          0,
++          0,
++          0,
++          2,
++          0,
++          0,
++          0
++        ]
++      ],
++      "source_record": "finite_figureEight_interior",
++      "source_standard_vertex_index": 134,
++      "expected_old_status": "INCONCLUSIVE",
++      "expected_old_reason": "boundary_kernel_cancellation_stalled",
++      "expected_histogram": [
++        {
++          "genus": 2,
++          "multiplicity": 2
++        }
++      ],
++      "expected_certificate_schema": "normal-cut-handlebodies-signed-annuli-v2"
++    },
++    {
++      "id": "finite_figureEight_interior/vertex136",
++      "triangulation": {
++        "tetrahedra": [
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                2,
++                0,
++                3,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            },
++            null,
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            }
++          ],
++          [
++            null,
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                1,
++                3,
++                0,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                3,
++                2,
++                0,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                2,
++                0,
++                3,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                3,
++                1,
++                2,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                1,
++                3,
++                0,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                2,
++                3,
++                1,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                3,
++                1,
++                2,
++                0
++              ]
++            }
++          ]
++        ]
++      },
++      "coordinates": [
++        [
++          0,
++          0,
++          0,
++          0,
++          0,
++          0,
++          2
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ],
++        [
++          1,
++          1,
++          0,
++          0,
++          1,
++          0,
++          0
++        ],
++        [
++          0,
++          0,
++          0,
++          0,
++          0,
++          0,
++          2
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ],
++        [
++          1,
++          1,
++          0,
++          0,
++          1,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ],
++        [
++          1,
++          0,
++          0,
++          0,
++          0,
++          0,
++          1
++        ],
++        [
++          1,
++          1,
++          0,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          0,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ]
++      ],
++      "source_record": "finite_figureEight_interior",
++      "source_standard_vertex_index": 136,
++      "expected_old_status": "INCONCLUSIVE",
++      "expected_old_reason": "boundary_kernel_cancellation_stalled",
++      "expected_histogram": [
++        {
++          "genus": 2,
++          "multiplicity": 2
++        }
++      ],
++      "expected_certificate_schema": "normal-cut-handlebodies-signed-annuli-v2"
++    },
++    {
++      "id": "finite_figureEight_interior/vertex205",
++      "triangulation": {
++        "tetrahedra": [
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                2,
++                0,
++                3,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            },
++            null,
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            }
++          ],
++          [
++            null,
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                1,
++                3,
++                0,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                3,
++                2,
++                0,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                2,
++                0,
++                3,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                3,
++                1,
++                2,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                1,
++                3,
++                0,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                2,
++                3,
++                1,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                3,
++                1,
++                2,
++                0
++              ]
++            }
++          ]
++        ]
++      },
++      "coordinates": [
++        [
++          0,
++          0,
++          0,
++          0,
++          0,
++          0,
++          2
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ],
++        [
++          1,
++          1,
++          0,
++          0,
++          1,
++          0,
++          0
++        ],
++        [
++          0,
++          0,
++          0,
++          0,
++          0,
++          0,
++          2
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ],
++        [
++          1,
++          1,
++          0,
++          0,
++          1,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ],
++        [
++          0,
++          0,
++          0,
++          0,
++          0,
++          0,
++          2
++        ],
++        [
++          0,
++          1,
++          0,
++          1,
++          0,
++          1,
++          0
++        ],
++        [
++          0,
++          0,
++          1,
++          1,
++          1,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ]
++      ],
++      "source_record": "finite_figureEight_interior",
++      "source_standard_vertex_index": 205,
++      "expected_old_status": "INCONCLUSIVE",
++      "expected_old_reason": "boundary_kernel_cancellation_stalled",
++      "expected_histogram": [
++        {
++          "genus": 2,
++          "multiplicity": 2
++        }
++      ],
++      "expected_certificate_schema": "normal-cut-handlebodies-signed-annuli-v2"
++    },
++    {
++      "id": "finite_figureEight_interior/vertex290",
++      "triangulation": {
++        "tetrahedra": [
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                2,
++                0,
++                3,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            },
++            null,
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            }
++          ],
++          [
++            null,
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                1,
++                3,
++                0,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                3,
++                2,
++                0,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                2,
++                0,
++                3,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                3,
++                1,
++                2,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                1,
++                3,
++                0,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 12,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                2,
++                3,
++                1,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 11,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 10,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                3,
++                1,
++                2,
++                0
++              ]
++            }
++          ]
++        ]
++      },
++      "coordinates": [
++        [
++          0,
++          0,
++          0,
++          0,
++          0,
++          0,
++          2
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ],
++        [
++          1,
++          1,
++          0,
++          0,
++          1,
++          0,
++          0
++        ],
++        [
++          0,
++          0,
++          0,
++          0,
++          0,
++          0,
++          2
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ],
++        [
++          1,
++          1,
++          0,
++          0,
++          1,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ],
++        [
++          1,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ],
++        [
++          1,
++          1,
++          0,
++          0,
++          1,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          1,
++          0,
++          0,
++          1,
++          0
++        ],
++        [
++          0,
++          0,
++          0,
++          0,
++          0,
++          0,
++          2
++        ]
++      ],
++      "source_record": "finite_figureEight_interior",
++      "source_standard_vertex_index": 290,
++      "expected_old_status": "INCONCLUSIVE",
++      "expected_old_reason": "boundary_kernel_cancellation_stalled",
++      "expected_histogram": [
++        {
++          "genus": 2,
++          "multiplicity": 2
++        }
++      ],
++      "expected_certificate_schema": "normal-cut-handlebodies-signed-annuli-v2"
++    }
++  ],
++  "refusals": [
++    {
++      "id": "finite_figureEight/vertex98",
++      "triangulation": {
++        "tetrahedra": [
++          [
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                2,
++                3,
++                1,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                1,
++                3,
++                0,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                2,
++                0,
++                3,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            },
++            null,
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            }
++          ],
++          [
++            null,
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                1,
++                3,
++                0,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 3,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                1,
++                2,
++                3,
++                0
++              ]
++            },
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                3,
++                2,
++                0,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 2,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                2,
++                0,
++                3,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 1,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                3,
++                2,
++                1
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 0,
++              "permutation": [
++                2,
++                1,
++                0,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 6,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 9,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 5,
++              "permutation": [
++                3,
++                0,
++                1,
++                2
++              ]
++            }
++          ],
++          [
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            },
++            {
++              "tetrahedron": 7,
++              "permutation": [
++                0,
++                2,
++                1,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 4,
++              "permutation": [
++                1,
++                0,
++                2,
++                3
++              ]
++            },
++            {
++              "tetrahedron": 8,
++              "permutation": [
++                0,
++                1,
++                3,
++                2
++              ]
++            }
++          ]
++        ]
++      },
++      "coordinates": [
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          0,
++          0,
++          1,
++          1,
++          1,
++          0,
++          0
++        ],
++        [
++          1,
++          0,
++          0,
++          1,
++          0,
++          0,
++          1
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          1,
++          1,
++          1,
++          1,
++          0,
++          0,
++          0
++        ],
++        [
++          0,
++          1,
++          1,
++          0,
++          0,
++          0,
++          1
++        ],
++        [
++          0,
++          0,
++          1,
++          1,
++          1,
++          0,
++          0
++        ],
++        [
++          0,
++          1,
++          1,
++          0,
++          0,
++          0,
++          1
++        ],
++        [
++          0,
++          1,
++          0,
++          1,
++          0,
++          1,
++          0
++        ]
++      ],
++      "source_record": "finite_figureEight",
++      "source_standard_vertex_index": 98,
++      "expected_old_status": "INCONCLUSIVE",
++      "expected_old_reason": "annular_core_attachment",
++      "expected_new_status": "INCONCLUSIVE",
++      "expected_new_reason": "annular_core_attachment",
++      "transported_word": [
++        13,
++        13,
++        13,
++        13,
++        13,
++        51,
++        51
++      ],
++      "exponent_vector": [
++        5,
++        2
++      ]
++    }
++  ]
++}
+diff --git a/Topology/UnknotRecognition/fast/signed_annulus_research/reproduce.py b/Topology/UnknotRecognition/fast/signed_annulus_research/reproduce.py
+new file mode 100644
+index 00000000..a61edddc
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/signed_annulus_research/reproduce.py
+@@ -0,0 +1,102 @@
++"""Replay embedded native annulus fixtures and optionally compare Regina cuts.
++
++From fast/: python -m signed_annulus_research.reproduce --output PATH --regina
++The JSON fixture is sufficient for replay; the source-bank hash is checked
++when that historical source file is present in the checkout.
++"""
++
++import argparse
++import hashlib
++import json
++from pathlib import Path
++import platform
++import time
++
++from fastunknot.integer_codec import json_safe
++from fastunknot.normal_cut_handlebodies import normal_cut_handlebodies
++from fastunknot.normal_cut_handlebodies_verify import verify_normal_cut_handlebodies
++
++
++def run(output, use_regina=False):
++    output = Path(output)
++    output.mkdir(parents=True, exist_ok=True)
++    certificates = output / 'certificates'
++    certificates.mkdir(exist_ok=True)
++    fixture = Path(__file__).with_name('corpus.json')
++    bank = json.loads(fixture.read_text())
++    repository = Path(__file__).resolve().parents[4]
++    historical = repository / bank['source_path']
++    source_check = None
++    if historical.exists():
++        source_check = hashlib.sha256(historical.read_bytes()).hexdigest() == bank['source_sha256']
++        if not source_check:
++            raise AssertionError('historical discovery-bank hash changed')
++    records = []
++    for case in bank['cases']:
++        start = time.perf_counter()
++        old = normal_cut_handlebodies(case['triangulation'], case['coordinates'],
++                                      boundary_method='moments', annulus_method='counts')
++        old_seconds = time.perf_counter() - start
++        start = time.perf_counter()
++        new = normal_cut_handlebodies(case['triangulation'], case['coordinates'],
++                                      boundary_method='moments', annulus_method='signed_rank_two',
++                                      record_certificate=True)
++        new_seconds = time.perf_counter() - start
++        assert old['status'] == case['expected_old_status'], case['id']
++        assert old.get('reason') == case['expected_old_reason'], case['id']
++        assert new['status'] == 'COMPLETE', case['id']
++        assert new['census']['histogram'] == case['expected_histogram'], case['id']
++        assert new['certificate']['schema'] == case['expected_certificate_schema']
++        start = time.perf_counter()
++        replayed = verify_normal_cut_handlebodies(case['triangulation'], case['coordinates'],
++                                                  new['certificate'])
++        replay_seconds = time.perf_counter() - start
++        assert replayed, case['id']
++        encoded = json.dumps(json_safe(new['certificate']), sort_keys=True,
++                             separators=(',', ':')).encode()
++        name = case['id'].replace('/', '__') + '.json'
++        (certificates / name).write_text(json.dumps(json_safe(new['certificate']), indent=2) + '\n')
++        record = dict(id=case['id'], source_record=case['source_record'],
++                      source_standard_vertex_index=case['source_standard_vertex_index'],
++                      tetrahedra=len(case['coordinates']),
++                      normal_disks=sum(map(sum, case['coordinates'])),
++                      old_status=old['status'], old_reason=old.get('reason'),
++                      old_seconds=old_seconds, new_status=new['status'],
++                      new_seconds=new_seconds, replayed=replayed,
++                      replay_seconds=replay_seconds, census=new['census'],
++                      signed_stats=new['stats']['signed_annuli'],
++                      certificate_bytes=len(encoded),
++                      certificate_sha256=hashlib.sha256(encoded).hexdigest(),
++                      certificate_path='certificates/' + name)
++        if use_regina:
++            import regina
++            from marked_parallelity_research.audit_census import oracle
++            reference = oracle(case)
++            assert reference['histogram'] == new['census']['histogram'], case['id']
++            record['regina'] = dict(reference, version=regina.versionString())
++        records.append(record)
++    refusals = []
++    for case in bank.get('refusals', []):
++        result = normal_cut_handlebodies(case['triangulation'], case['coordinates'],
++                                         boundary_method='moments', annulus_method='signed_rank_two')
++        assert result['status'] == case['expected_new_status'], case['id']
++        assert result.get('reason') == case['expected_new_reason'], case['id']
++        refusals.append(dict(id=case['id'], status=result['status'], reason=result.get('reason')))
++    report = dict(schema='signed-annulus-native-replay-v1',
++                  source_revision=bank['source_revision'],
++                  source_bank_hash_checked=source_check,
++                  fixture_sha256=hashlib.sha256(fixture.read_bytes()).hexdigest(),
++                  python=platform.python_version(), records=records, refusals=refusals)
++    (output / 'native_replay.json').write_text(json.dumps(json_safe(report), indent=2) + '\n')
++    print(json.dumps(dict(cases=len(records), independently_replayed=len(records),
++                         retained_refusals=len(refusals),
++                         regina_agreements=len(records) if use_regina else None)))
++    return report
++
++
++if __name__ == '__main__':
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--output', required=True)
++    parser.add_argument('--regina', action='store_true')
++    args = parser.parse_args()
++    run(args.output, args.regina)
+diff --git a/Topology/UnknotRecognition/fast/tests/test_core_primitive_annuli.py b/Topology/UnknotRecognition/fast/tests/test_core_primitive_annuli.py
+index 3ff927e0..4e0d5c83 100644
+--- a/Topology/UnknotRecognition/fast/tests/test_core_primitive_annuli.py
++++ b/Topology/UnknotRecognition/fast/tests/test_core_primitive_annuli.py
+@@ -128,7 +128,11 @@ class CorePrimitiveAnnuliTests(unittest.TestCase):
+         self.assertTrue(verify_normal_cut_handlebodies(self.raw, json_safe(rows), p))
+         for name, reason in [('pilot/fibonacci_lst_06/0', 'raw_cancellation_stalled')]:
+             c = next(c for c in self.bank if c['id'] == name)
+-            a = normal_cut_handlebodies(c['triangulation'], c['coordinates'])
++            # This historical refusal concerns the source forest.  The later
++            # adaptive default already certifies the same cut at the pinned
++            # baseline revision; do not mislabel that improvement a failure.
++            a = normal_cut_handlebodies(c['triangulation'], c['coordinates'],
++                                        lower_forest='source')
+             self.assertEqual(a['status'], 'INCONCLUSIVE')
+             self.assertEqual(a['reason'], reason)
+ 
+diff --git a/Topology/UnknotRecognition/fast/tests/test_cyclic_basis.py b/Topology/UnknotRecognition/fast/tests/test_cyclic_basis.py
+new file mode 100644
+index 00000000..ae295b4d
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_cyclic_basis.py
+@@ -0,0 +1,76 @@
++"""Regression risks distinct from the exhaustive literal research audit."""
++
++from copy import deepcopy
++import unittest
++
++from fastunknot.compressed_words import WordArena
++from fastunknot.cyclic_basis import cyclic_basis_blocks, literal_cyclic_basis
++from fastunknot.cyclic_basis_verify import verify_cyclic_basis, verify_literal_cyclic_basis
++from fastunknot.signed_annulus_basis import compile_signed_quotient
++from fastunknot.signed_annulus_basis_verify import _quotient_words
++
++
++class CyclicBasisTests(unittest.TestCase):
++    def test_unimodularity_and_separate_primitivity_are_insufficient(self):
++        for words in ([[1, 1, 2, 2, 2], [1, 2, 2]],
++                      [[1], [1, 2, 2]], [[1], [1]]):
++            self.assertEqual(literal_cyclic_basis(words, [1, 2])['status'], 'INCONCLUSIVE')
++
++    def test_independent_conjugators_and_small_blocks(self):
++        words = [[2, 1, -2], [1, 2, -1], [3, 4], [3, 4, 4], [-7]]
++        answer = literal_cyclic_basis(words, [1, 2, 3, 4, 5, 6, 7])
++        self.assertEqual(answer['status'], 'COMPLETE')
++        self.assertTrue(verify_literal_cyclic_basis(words, [1, 2, 3, 4, 5, 6, 7],
++                                                   answer['certificate']))
++
++    def test_general_checker_can_verify_beyond_producer_class(self):
++        # a[b,c], b, c is a basis with identity homology, but support rank3.
++        words = [[1, 2, 3, -2, -3], [2], [3]]
++        answer = literal_cyclic_basis(words, [1, 2, 3])
++        self.assertEqual(answer['reason'], 'unsupported_support_block')
++        proof = dict(schema='cyclic-basis-nielsen-v1', generators=[1, 2, 3],
++            targets=[1, 2, 3], moves=[
++                dict(kind='multiply', target=1, donor=donor, exponent=exponent, side='right')
++                for donor, exponent in ((2, -1), (3, -1), (2, 1), (3, 1))])
++        self.assertTrue(verify_literal_cyclic_basis(words, [1, 2, 3], proof))
++
++    def test_alphabet_validation_before_cyclic_reduction(self):
++        for word in ([3], [3, 1, -3], [3, -3, 1]):
++            with self.assertRaises(ValueError):
++                literal_cyclic_basis([word], [1, 2])
++        good = literal_cyclic_basis([[1], [2]], [1, 2])['certificate']
++        for bad in ([True, 2], [1.0, 2.0]):
++            proof = deepcopy(good)
++            proof['generators'] = bad
++            self.assertFalse(verify_literal_cyclic_basis([[1], [2]], [1, 2], proof))
++
++    def test_exponential_passive_transport_stays_compressed(self):
++        depth = 512
++        chain = list(range(3, depth + 3)) + [2]
++        packet = dict(method='column_leaf',
++            active=[dict(two_handle=i, word=[chain[i], -chain[i+1], -chain[i+1]])
++                    for i in range(depth)],
++            passive=[dict(word=[1, chain[0]])],
++            components=[dict(generators=[1, 2] + chain[:-1], surviving_generators=[1, 2])],
++            cancellations=[[i, chain[i]] for i in range(depth)])
++        a = WordArena(max_nodes=100000, max_work=1000000)
++        roots = compile_signed_quotient(a, packet)
++        self.assertEqual(a.lengths[roots[0]], (1 << depth) + 1)
++        self.assertLess(len(a.rules), 3 * depth)
++        result = cyclic_basis_blocks(a, roots, [1, 2])
++        self.assertEqual(result['status'], 'COMPLETE')
++        b = WordArena(max_nodes=100000, max_work=1000000)
++        independent = _quotient_words(b, packet)
++        self.assertTrue(verify_cyclic_basis(b, independent, [1, 2], result['certificate']))
++        invalid = deepcopy(packet)
++        invalid['active'][-1]['word'].append(chain[0])
++        self.assertIsNone(_quotient_words(WordArena(), invalid))
++
++    def test_budget_is_a_refusal(self):
++        result = literal_cyclic_basis([[1, 2]], [1, 2], max_nodes=0)
++        self.assertEqual(result['status'], 'INCONCLUSIVE')
++        self.assertEqual(result['reason'], 'compressed_word_budget')
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_disk_bundle_absorption.py b/Topology/UnknotRecognition/fast/tests/test_disk_bundle_absorption.py
+index 817e4b14..f7aba400 100644
+--- a/Topology/UnknotRecognition/fast/tests/test_disk_bundle_absorption.py
++++ b/Topology/UnknotRecognition/fast/tests/test_disk_bundle_absorption.py
+@@ -55,8 +55,10 @@ class DiskBundleAbsorptionTests(unittest.TestCase):
+     def test_nondisk_annuli_and_stalled_augmented_cores_remain_unresolved(self):
+         for name, reason in [('pilot/fibonacci_lst_04/0', 'raw_cancellation_stalled')]:
+             c = next(c for c in self.bank if c['id'] == name)
++            # This is a refusal of the historical source forest.  The current
++            # adaptive default already certifies it using maximum passages.
+             a = normal_cut_handlebodies(c['triangulation'], c['coordinates'],
+-                                       record_certificate=True)
++                                       record_certificate=True, lower_forest='source')
+             self.assertEqual(a['status'], 'INCONCLUSIVE')
+             self.assertEqual(a['reason'], reason)
+             self.assertNotIn('certificate', a)
+diff --git a/Topology/UnknotRecognition/fast/tests/test_signed_annulus_integration.py b/Topology/UnknotRecognition/fast/tests/test_signed_annulus_integration.py
+new file mode 100644
+index 00000000..56499ca5
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_signed_annulus_integration.py
+@@ -0,0 +1,114 @@
++"""Native source authentication for opt-in signed annulus certificates."""
++
++from copy import deepcopy
++import json
++from pathlib import Path
++import unittest
++
++from fastunknot.normal_cut_handlebodies import normal_cut_handlebodies
++from fastunknot.normal_cut_handlebodies_verify import verify_normal_cut_handlebodies
++
++
++def native_case(name):
++    path = Path(__file__).resolve().parents[1] / 'marked_parallelity_research/corpus.json'
++    return next(c for c in json.loads(path.read_text())['cases'] if c['id'] == name)
++
++
++class SignedAnnulusIntegrationTests(unittest.TestCase):
++    def test_opt_in_preserves_native_complete_censuses(self):
++        for name in ('pilot/fibonacci_lst_05/0', 'fibonacci_lst_05/mixed',
++                     'lst_1_1/mixed'):
++            c = native_case(name)
++            old = normal_cut_handlebodies(c['triangulation'], c['coordinates'],
++                                          boundary_method='moments')
++            new = normal_cut_handlebodies(c['triangulation'], c['coordinates'],
++                                          boundary_method='moments',
++                                          annulus_method='signed_rank_two',
++                                          record_certificate=True)
++            self.assertEqual(new['status'], 'COMPLETE')
++            self.assertEqual(new['census'], old['census'])
++            self.assertTrue(verify_normal_cut_handlebodies(c['triangulation'],
++                                                           c['coordinates'],
++                                                           new['certificate']))
++
++    def test_native_signed_envelope_and_replay(self):
++        # This genuine normal surface was in report 57's discovery bank, but
++        # not the small marked-parallelity corpus.  It has a complete raw core
++        # and a simultaneous primitive annular family missed by raw counts.
++        path = Path(__file__).resolve().parents[1] / 'signed_annulus_research/corpus.json'
++        c = json.loads(path.read_text())['cases'][0]
++        baseline = normal_cut_handlebodies(c['triangulation'], c['coordinates'],
++                                           boundary_method='moments')
++        self.assertEqual(baseline['status'], 'INCONCLUSIVE')
++        self.assertEqual(baseline['reason'], 'annular_core_attachment')
++        result = normal_cut_handlebodies(c['triangulation'], c['coordinates'],
++                                         boundary_method='moments',
++                                         annulus_method='signed_rank_two',
++                                         record_certificate=True)
++        self.assertEqual(result['status'], 'COMPLETE')
++        self.assertEqual(result['census']['histogram'], c['expected_histogram'])
++        certificate = result['certificate']
++        self.assertEqual(certificate['schema'], 'normal-cut-handlebodies-signed-annuli-v1')
++        self.assertTrue(verify_normal_cut_handlebodies(c['triangulation'],
++                                                       c['coordinates'], certificate))
++        mutated = deepcopy(certificate)
++        mutated['signed_annuli'] = {}
++        self.assertFalse(verify_normal_cut_handlebodies(c['triangulation'],
++                                                        c['coordinates'], mutated))
++        mutated = deepcopy(certificate)
++        mutated['signed_annuli']['source']['passive'][0]['word'][0] *= -1
++        self.assertFalse(verify_normal_cut_handlebodies(c['triangulation'],
++                                                        c['coordinates'], mutated))
++        mutated = deepcopy(certificate)
++        mutated['census']['histogram'][0]['genus'] += 1
++        self.assertFalse(verify_normal_cut_handlebodies(c['triangulation'],
++                                                        c['coordinates'], mutated))
++        mutated = deepcopy(certificate)
++        del mutated['absorption']
++        self.assertFalse(verify_normal_cut_handlebodies(c['triangulation'],
++                                                        c['coordinates'], mutated))
++
++    def test_invalid_method_rejected_before_source_processing(self):
++        for bad in (None, True, 1, 'whitehead', [], {}):
++            with self.assertRaises(ValueError):
++                normal_cut_handlebodies({}, [], annulus_method=bad)
++
++    def test_signed_family_after_authenticated_top_reduction(self):
++        path = Path(__file__).resolve().parents[1] / 'signed_annulus_research/corpus.json'
++        for c in json.loads(path.read_text())['cases'][1:]:
++            old = normal_cut_handlebodies(c['triangulation'], c['coordinates'],
++                                          boundary_method='moments')
++            self.assertEqual(old['status'], 'INCONCLUSIVE')
++            self.assertEqual(old['reason'], 'boundary_kernel_cancellation_stalled')
++            result = normal_cut_handlebodies(c['triangulation'], c['coordinates'],
++                                             boundary_method='moments',
++                                             annulus_method='signed_rank_two',
++                                             record_certificate=True)
++            self.assertEqual(result['status'], 'COMPLETE')
++            self.assertEqual(result['census']['histogram'], c['expected_histogram'])
++            certificate = result['certificate']
++            self.assertEqual(certificate['schema'], 'normal-cut-handlebodies-signed-annuli-v2')
++            self.assertTrue(verify_normal_cut_handlebodies(c['triangulation'],
++                                                           c['coordinates'], certificate))
++            mutated = deepcopy(certificate)
++            mutated['core_reduction']['cancellations'][0]['two_handle'] = -1
++            self.assertFalse(verify_normal_cut_handlebodies(c['triangulation'],
++                                                            c['coordinates'], mutated))
++
++    def test_coprime_abelianization_does_not_certify_native_primitivity(self):
++        path = Path(__file__).resolve().parents[1] / 'signed_annulus_research/corpus.json'
++        c = json.loads(path.read_text())['refusals'][0]
++        # The actual transported curve is x^5 y^2.  Its exponent vector is
++        # primitive in Z^2, but this curve is not primitive in the free group.
++        self.assertEqual(c['exponent_vector'], [5, 2])
++        result = normal_cut_handlebodies(c['triangulation'], c['coordinates'],
++                                         boundary_method='moments',
++                                         annulus_method='signed_rank_two',
++                                         record_certificate=True)
++        self.assertEqual(result['status'], 'INCONCLUSIVE')
++        self.assertEqual(result['reason'], 'annular_core_attachment')
++        self.assertNotIn('certificate', result)
++
++
++if __name__ == '__main__':
++    unittest.main()
+diff --git a/Topology/UnknotRecognition/fast/tests/test_signed_annulus_source.py b/Topology/UnknotRecognition/fast/tests/test_signed_annulus_source.py
+new file mode 100644
+index 00000000..e310f337
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_signed_annulus_source.py
+@@ -0,0 +1,118 @@
++"""Source-sign and independent replay tests; these are not knot verdicts."""
++
++from copy import deepcopy
++import json
++from pathlib import Path
++import unittest
++
++from fastunknot.core_handlebody import core_handlebody_certificate
++from fastunknot.disk_bundle_absorption import absorb_disk_bundles
++from fastunknot.normal_parallelity import normal_cut_parallelity
++from fastunknot.parallelity_boundary_moments import _compile
++from fastunknot.signed_annulus_source import signed_annulus_source
++from fastunknot.signed_annulus_source_verify import verify_signed_annulus_source
++
++
++def native_parts(name):
++    path = Path(__file__).resolve().parents[1] / 'marked_parallelity_research/corpus.json'
++    case = next(c for c in json.loads(path.read_text())['cases'] if c['id'] == name)
++    parallelity = normal_cut_parallelity(case['triangulation'], case['coordinates'],
++                                         record_certificate=True)
++    geometry, summary = parallelity['geometry'], parallelity['summary']
++    boundary = _compile(geometry, parallelity['certificate']['input_sha256'],
++                        None, True, lambda: None, 'pair')['skeleton']
++    deferred = {i for i, p in enumerate(summary['base_profiles'])
++                if (p['euler_characteristic'], p['boundary_components']) != (1, 1)}
++    augmented, _, _ = absorb_disk_bundles(geometry, summary, boundary,
++                                         primitive_bases=deferred)
++    core = core_handlebody_certificate(augmented)
++    if core['status'] != 'COMPLETE':
++        raise AssertionError('fixture has no authenticated complete core')
++    return geometry, summary, boundary, augmented, core['certificate']
++
++
++class SignedAnnulusSourceTests(unittest.TestCase):
++    def test_native_annulus_source_word(self):
++        parts = native_parts('pilot/fibonacci_lst_05/0')
++        packet = signed_annulus_source(*parts)
++        self.assertEqual(packet['method'], 'column_leaf')
++        self.assertEqual(len(packet['passive']), 1)
++        self.assertEqual(packet['passive'][0]['word'], [-13, -13, 5])
++        self.assertTrue(verify_signed_annulus_source(*parts, packet))
++
++    def test_native_disk_absorption_and_leaf_source(self):
++        parts = native_parts('fibonacci_lst_05/mixed')
++        packet = signed_annulus_source(*parts)
++        self.assertEqual(packet['method'], 'leaf')
++        self.assertEqual(len(packet['passive']), 2)
++        self.assertGreater(len(packet['active']), len(parts[0]['core']['handles2']))
++        self.assertTrue(verify_signed_annulus_source(*parts, packet))
++
++    def test_native_multiple_base_components(self):
++        parts = native_parts('fibonacci_lst_09/mixed')
++        packet = signed_annulus_source(*parts)
++        self.assertEqual(len(packet['passive']), 6)
++        self.assertEqual(len({r['base_profile'] for r in packet['passive']}), 2)
++        self.assertTrue(verify_signed_annulus_source(*parts, packet))
++
++    def test_self_loop_uses_face_flags_and_keeps_inverse_neighbors(self):
++        # A conditional handle-chart fixture isolates the orientation issue:
++        # both endpoint vertices agree, while the two face flags differ.
++        core = dict(handles0=[dict(id=0)], handles1=[
++            dict(id=0, ends=[0, 0], tetrahedron=0, face=0,
++                 target_tetrahedron=0, target_face=1),
++            dict(id=1, ends=[0, 0], tetrahedron=0, face=2,
++                 target_tetrahedron=0, target_face=3)], handles2=[
++            dict(id=0, cycle=[
++                dict(dimension=0, handle=0),
++                dict(dimension=1, handle=0, tetrahedron=0, face=0),
++                dict(dimension=0, handle=0),
++                dict(dimension=1, handle=0, tetrahedron=0, face=1),
++                dict(dimension=0, handle=0),
++                dict(dimension=1, handle=1, tetrahedron=0, face=2)])], handles3=[])
++        proof = core_handlebody_certificate(core)['certificate']
++        parts = (dict(core=core, ports=[]), dict(base_profiles=[]),
++                 dict(attachment_components=[]), core, proof)
++        packet = signed_annulus_source(*parts)
++        self.assertEqual(packet['active'][0]['word'], [1, -1, 2])
++        self.assertEqual(packet['cancellations'], [[0, 2]])
++        self.assertTrue(verify_signed_annulus_source(*parts, packet))
++        corrupted = deepcopy(packet)
++        corrupted['active'][0]['word'][1] = 1
++        self.assertFalse(verify_signed_annulus_source(*parts, corrupted))
++
++    def test_source_packet_mutations_are_rejected(self):
++        parts = native_parts('pilot/fibonacci_lst_05/0')
++        packet = signed_annulus_source(*parts)
++        changes = [
++            lambda p: p['passive'][0]['word'].__setitem__(0, 13),
++            lambda p: p['passive'][0].__setitem__('core_component', -1),
++            lambda p: p['passive'][0].__setitem__('base_profile', -1),
++            lambda p: p['components'][0]['generators'].append(999),
++            lambda p: p.__setitem__('method', 'capped'),
++            lambda p: p.__setitem__('untrusted_extra', True),
++            lambda p: p['passive'][0]['word'].__setitem__(0, True),
++        ]
++        for change in changes:
++            mutated = deepcopy(packet)
++            change(mutated)
++            self.assertFalse(verify_signed_annulus_source(*parts, mutated))
++
++    def test_absorbed_disk_cycle_corruption_is_rejected(self):
++        parts = list(native_parts('fibonacci_lst_05/mixed'))
++        packet = signed_annulus_source(*parts)
++        parts[3] = deepcopy(parts[3])
++        parts[3]['handles2'][-1]['cycle'][0]['handle'] += 1
++        self.assertIsNone(signed_annulus_source(*parts))
++        self.assertFalse(verify_signed_annulus_source(*parts, packet))
++
++    def test_legacy_capped_proof_is_unsupported(self):
++        parts = list(native_parts('pilot/fibonacci_lst_05/0'))
++        packet = signed_annulus_source(*parts)
++        parts[4] = dict(parts[4], schema='normal-core-handlebody-v1', method='capped')
++        self.assertIsNone(signed_annulus_source(*parts))
++        self.assertFalse(verify_signed_annulus_source(*parts, packet))
++
++
++if __name__ == '__main__':
++    unittest.main()

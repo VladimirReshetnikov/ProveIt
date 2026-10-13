@@ -1,0 +1,367 @@
+\section{A native source certificate for the chamber graph}
+\label{sec:chambers}
+
+The cographic persistence proposal in repository report~92~\cite{persistence} assumes an
+authenticated chamber graph. Its integration contract explicitly leaves the
+native source exporter open. We now implement this interface for the
+components of one supplied embedded normal surface. The new operator is
+\texttt{normal\_chamber\_graph}; independent replay is
+\texttt{verify\_normal\_chamber\_graph}. Both operate on the maintained finite,
+connected, orientable source triangulations with one torus boundary.
+
+This section establishes component identities before using them as graph
+edges. A list of compatible normal coordinate vectors does not by itself
+specify labelled disjoint representatives. Our input instead consists of one
+normal vector $x$ satisfying the source matching and quadrilateral constraints,
+together with one proposed representative disc
+\[
+ d_i=(t_i,c_i,r_i),\qquad 0\le r_i<x_{t_i,c_i},\qquad 0\le i<k,
+\]
+per component. The connected components of this single embedded surface
+already have a common geometric realization. Exact orbit certificates verify
+that the proposed labels are exhaustive and distinct.
+
+\subsection{Authenticating the component labels}
+
+Let $X$ be the maintained normal-arc interval system. Its points are normal
+intersection points on globally oriented source edges; its orbits are the
+connected components of the normal surface. For each marked disc choose one
+of its normal vertices $p_i\in X$. The source chart authenticates that this
+point belongs to $d_i$.
+
+\begin{lemma}[Exhaustive labels from a scalar census]
+\label{lem:component-marker-census}
+Assign the weight $2^i$ to $p_i$, adding weights when marked points coincide.
+The exact weighted orbit histogram equals
+\[
+ \bigl\{(2^i,1):0\le i<k\bigr\}
+\]
+if and only if the marked discs lie in distinct surface components and every
+component contains a marked disc.
+\end{lemma}
+\begin{proof}
+Each marker is assigned once. An orbit has weight equal to the sum of the
+distinct marker powers belonging to it, so the sum has no binary carries.
+An unmarked component contributes an orbit of weight zero. A component
+containing two or more labels contributes a weight with at least two nonzero
+bits. The stated histogram therefore forces one marker per component and no
+unmarked component. Conversely, an exhaustive distinct labelling gives
+exactly those $k$ singleton-bit weights, each with multiplicity one.
+\end{proof}
+
+Two different discs on one component are consequently rejected as a proposed
+two-component labelling. A component with no representative cannot disappear
+from the output. The producer performs this scalar weighted query first and
+returns \texttt{INCONCLUSIVE} without a graph if the required histogram fails.
+When no representative list is supplied, it tries the first present normal
+disc. This deliberate default handles a connected nonempty surface; it does
+not assert that an arbitrary supplied vector is connected.
+
+\begin{lemma}[The two-sidedness gate]
+\label{lem:component-two-sided}
+Suppose Lemma~\ref{lem:component-marker-census} authenticates $k$ components.
+All components are two-sided if and only if the normal surface with vector
+$2x$ has $2k$ components.
+\end{lemma}
+\begin{proof}
+The surface with doubled coordinates is the horizontal boundary of the
+normal interval bundle. A connected two-sided component contributes two
+horizontal components, whereas a connected one-sided component contributes
+one connected double. If their respective counts are $a$ and $b$, the two
+component counts are $a+b=k$ and $2a+b$. The latter equals $2k$ precisely
+when $b=0$.
+\end{proof}
+
+The implementation directly checks the doubled orbit count. It does not
+divide by a common coordinate factor. An odd multiplicity of a one-sided
+surface can contain a one-sided component; its even double can instead be
+connected and two-sided. Both behaviours are covered by native fixtures.
+For every accepted connected component, choosing a side at the representative
+disc determines a global coorientation. Choosing a different disc can reverse
+that coorientation, which simply reverses the corresponding graph edge.
+
+\subsection{Locating the sides in the actual cut}
+
+The cut-chamber interval system identifies local normal chambers only through
+original face regions. It never crosses the supplied surface. Its orbits
+are therefore the connected components of the manifold cut along all the
+surface components.
+
+The marker addresses use the existing source rank conventions. In a
+tetrahedron containing $q$ quadrilaterals, the central chamber chain has
+addresses $c,c+1,\ldots,c+q$. Quadrilateral number $r$ lies between $c+r$
+and $c+r+1$. A triangle stack at a vertex has consecutive arm chambers;
+each triangle lies between consecutive arm chambers, except the last one,
+which meets the appropriate end of the central chain. These formulas use
+binary integer ranks and do not enumerate the intervening chambers.
+
+\paragraph{The affine addresses used by the exporter.}
+For precision, write the triangle counts in one tetrahedron as
+$t_0,\ldots,t_3$. If quadrilaterals are present, their unique allowed
+column is $4+j$, with $j\in\{0,1,2\}$, and their number is $q$.
+When $q=0$, set $j=0$ purely for the formulas below.
+In the maintained convention, this type separates the vertex pair
+$\{0,j+1\}$ from its complementary pair. Let $C$ be the first central
+chain address. The first arm address at vertex $v$ is
+\[
+ A_v=C+q+1+\sum_{u<v}t_u.
+\]
+The next tetrahedron starts after the chain and all four arms.
+The adjacent chamber atoms of triangle $(v,r)$ are
+\[
+ \left(A_v+r,\
+ \begin{cases}
+ A_v+r+1,&r+1<t_v,\\
+ C,&r+1=t_v\text{ and }(q=0\text{ or }v\in\{0,j+1\}),\\
+ C+q,&r+1=t_v,\ q>0,\ v\notin\{0,j+1\}.
+ \end{cases}\right).
+\]
+For quadrilateral $(4+j,r)$ they are simply $(C+r,C+r+1)$.
+These pairs are ordered choices of local negative and positive side.
+
+The surface-component marker also has an explicit affine address.
+For a triangle at vertex $v$, choose the directed local edge from $v$
+to the smallest different vertex; its intersection rank from $v$ is
+$u=r$. For a quadrilateral of type $j$, choose the directed edge from
+vertex zero to the smallest vertex outside $\{0,j+1\}$; the intersection
+rank from zero is $u=t_0+r$. If the resulting global edge has weight
+$W_e$, interval offset $O_e$, and the directed local edge agrees with
+its global orientation when $\epsilon=0$, then the marker is
+\[
+ p=O_e+
+ \begin{cases}
+ u,&\epsilon=0,\\
+ W_e-1-u,&\epsilon=1.
+ \end{cases}
+\]
+The source edge-orientation data include the reversal needed if the
+chosen directed edge opposes the canonical local edge ordering.
+
+\begin{lemma}[Affine marker correctness]
+\label{lem:affine-markers}
+The preceding formulas address one vertex of the marked normal disc
+and the two actual cut chambers adjacent to its opposite sides.
+Their evaluation is polynomial in source size and coordinate bit length
+and does not depend on the disc's numerical rank through iteration.
+\end{lemma}
+\begin{proof}
+Nested triangles at one vertex cut off the consecutive arm chambers;
+after the last triangle, the next chamber is the central chain endpoint
+on that vertex's side of the quadrilaterals. Consecutive quadrilaterals
+separate consecutive chain chambers. These observations give the two
+chamber formulas, including a zero-quadrilateral tetrahedron.
+
+Along an edge starting at $v$, the $t_v$ triangle intersections occur
+first, in their vertex-stack order. Along an edge crossing a quadrilateral
+type from vertex zero, the quadrilateral intersections follow the
+$t_0$ triangle intersections in their chain order. Hence the indicated
+rank is a vertex of the specified disc. Matching equations identify the
+same globally oriented intersection ranks across every source face.
+Reversal of a finite ordered set of $W_e$ intersection points sends
+$u$ to $W_e-1-u$, proving the last formula. All expressions use a bounded
+number of additions, comparisons, and orientation lookups after the
+source offset scan, per representative. They perform no loop over $q$,
+$t_v$, or $r$.
+\end{proof}
+
+The independent checker derives these side addresses through horizontal
+faces of its raw cell charts; it does not copy the exporter's formulas
+as an assumed list of markers.
+
+For component $i$, let $p_i^-$ and $p_i^+$ be the two chamber atoms adjacent
+to its representative disc. Assign them scalar weights $2^{2i}$ and
+$2^{2i+1}$. If several side markers name the same atom, their weights add.
+
+\begin{theorem}[Source-authenticated chamber export]
+\label{thm:native-chamber}
+Assume $k>0$ and that the representative census and the two-sidedness gate
+both succeed.
+The exact chamber-side histogram determines the oriented chamber graph of
+the labelled embedded normal surface. Its vertices are the histogram masks;
+edge $i$ runs from the mask containing bit $2i$ to the mask containing bit
+$2i+1$. Every mask is nonzero and has multiplicity one, the masks are
+pairwise bit-disjoint, and together they contain all $2k$ marker bits.
+The resulting graph is connected.
+\end{theorem}
+\begin{proof}
+For a connected two-sided component $F_i$, each of
+$F_i\times\{-1\}$ and $F_i\times\{+1\}$ is connected and lies in one
+chamber of the full cut. Thus a marker at any disc on that side identifies
+the chamber containing the entire side.
+
+Every chamber touches at least one side when the surface is nonempty.
+Otherwise that chamber has no surface boundary along which it can be glued
+to another chamber. It would remain a separate component when all cut sides
+are reglued, contrary to connectedness of the source. Because every side has
+one authenticated marker, no chamber is unmarked.
+
+The orbit sum on a chamber is exactly the sum of its distinct side-marker
+powers. Hence it is a nonzero mask. No two chambers can contain the same
+bit, so nonzero masks cannot repeat and their multiplicities are one.
+Every marker lies in a chamber, giving exhaustive bit coverage. The stated
+edge construction records exactly the two chambers adjacent to each $F_i$.
+Regluing all components recovers the connected source, so this graph is
+connected.
+\end{proof}
+
+The native exporter also checks these consequences explicitly: the bit
+partition, complete coverage, and graph connectedness. It retains loops,
+multiple edges, and bridges. Vertex labels are made deterministic by sorting
+the chamber masks according to their smallest present bit. Empty coordinates
+give a separate exact case with one vertex, no edges, and mask zero, using
+the validated connected-source hypothesis.
+
+\begin{corollary}[All labelled subcuts from one native graph]
+\label{cor:batch-optimizer}
+Let $G$ be an accepted chamber graph and let $J$ be a subset of its surface
+labels. Then
+\[
+ \#\pi_0\bigl(M\mathbin{\backslash\!\backslash}
+                \textstyle\bigcup_{i\in J}F_i\bigr)
+   =\#\pi_0(G\setminus J).
+\]
+Consequently, $J$ is simultaneously nonseparating if and only if
+$G\setminus J$ is connected. The largest such batch has cardinality
+$k-|V(G)|+1$, and the complement of a spanning tree attains this value.
+For nonnegative additive retention weights, a maximum-reward batch is the
+complement of a minimum-weight spanning tree.
+\end{corollary}
+\begin{proof}
+Start with the full cut and glue back the components whose labels do not
+belong to $J$. Gluing the two sides of one connected component merges exactly
+the chamber components at the endpoints of its graph edge; if the endpoints
+already agree, the component partition is unchanged. After all such gluings,
+the remaining connected-component partition is precisely that of the
+subgraph containing the edges outside $J$. A connected spanning subgraph has
+at least $|V(G)|-1$ edges. A spanning tree reaches this minimum; minimizing
+its deleted retention weight gives the weighted statement.
+\end{proof}
+
+The graph-topological and cographic consequences in this corollary are
+already present at the abstract level in report~92. The new work supplies
+their independently authenticated native source input on the stated domain.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+ chamber/.style={circle,draw=ink,fill=pale,minimum size=11mm},
+ every edge/.style={draw=ink,thick},
+ >=Stealth]
+\node[chamber] (a) at (0,1.8) {$C_0$};
+\node[chamber] (b) at (-1.8,-0.8) {$C_1$};
+\node[chamber] (c) at (1.8,-0.8) {$C_2$};
+\draw[thick,->,ink] (a) -- node[left] {$F_0$} (b);
+\draw[thick,->,ink] (b) -- node[below] {$F_1$} (c);
+\draw[thick,->,accent] (c) -- node[right] {$F_2$} (a);
+\node[align=left,text width=6.6cm,anchor=west] at (3.1,0.4)
+ {Three parallel meridian discs produce three chambers and a cycle.\\[0.7em]
+ Any one disc is a nonseparating batch: deleting one edge leaves the graph
+ connected. Deleting two edges disconnects it.};
+\end{tikzpicture}
+\caption{A native stored example. Edge orientations choose component
+coorientations and do not affect the connectivity criterion. The highlighted
+edge is the complement of a spanning tree.}
+\label{fig:three-meridians}
+\end{figure}
+
+\begin{proposition}[The chamber cycle obstruction, recalled]
+\label{prop:cycle-obstruction}
+For a connected orientable source and a disjoint system of connected
+two-sided properly embedded surfaces,
+\[
+ \dim_{\Q}H_1(G;\Q)=k-|V(G)|+1
+ \ \le\ \dim_{\Q}H_1(M;\Q).
+\]
+\end{proposition}
+\begin{proof}
+Choose a spanning tree of $G$. For every edge outside the tree, its edge
+together with the tree path between its endpoints is a fundamental cycle;
+loops are included. Realize the crossings of that cycle in small collars
+of the corresponding surface components. Within each intervening chamber,
+join consecutive collar endpoints by a path, using connectedness of the
+chamber. The resulting closed curve in $M$ crosses the chosen non-tree
+component once and crosses no other non-tree component.
+
+Coorient the surfaces and orient each curve accordingly. Algebraic
+intersection with the non-tree components defines linear functionals on
+$H_1(M;\Q)$: the surfaces determine relative homology classes and their
+boundaries lie in $\partial M$. On the constructed curves the matrix of
+these functionals is the identity. Thus these curves have linearly
+independent homology classes, one for each of the $k-|V(G)|+1$ non-tree
+edges.
+\end{proof}
+
+This proof establishes existence of the paths. It supplies neither a
+compressed path representation nor a source-support certificate for a
+later edit. That distinction matters when using the graph in a hierarchy.
+The obstruction itself is earlier mathematics from report~92.
+
+\subsection{Independent verification and encoding costs}
+
+The certificate \texttt{normal-chamber-graph-v1} contains the source
+fingerprint, disc representatives, all marker addresses, the graph, and
+three proof records: a weighted surface-label census, an unweighted
+orientation-double count, and a weighted chamber-side census. Source changes
+or changed normal coordinates invalidate the fingerprint.
+
+The checker obtains the two chamber atoms from the independent raw cut-cell
+reference~\cite{cutcells}, using its horizontal-face-to-chamber incidences. It derives the
+surface marker from an independently reconstructed normal-arc recipe,
+including the source edge orientation. It independently reconstructs chamber
+pairings through the face-region reference, then replays all three orbit
+proofs. It imports no exporter, chamber producer, graph decoder, or orbit
+search. The validated finite source and the established normal-arc compiler
+remain shared primitives, as in the maintained topology checkers.
+
+Let $T$ be the tetrahedron count, $B$ the maximum normal-coordinate
+bit length, and $k$ the explicit label count. The source incidence data
+use $O(T\log(T+1))$ bits. Each orbit system has $O(T)$ interval
+pairings with polynomially bounded endpoint bit lengths. Each marker query
+starts with $O(k)$ runs. All marker weights are nonnegative and their total
+mass is less than $2^{2k}$, so all transported scalars have $O(k)$ bits.
+The graph has $k$ edges and at most $k+1$ vertices. Its incidence lists use
+$O(k\log k)$ bits, while the current integer-mask and weight-run records
+can require $O(k^2)$ bits. The complete construction and replay remain
+polynomial in $T$, $B$, $k$, and the certificate trace lengths.
+
+This is an output-sensitive assertion. A binary vector can describe
+$N$ parallel discs, with $k=N$ exponential in the coordinate encoding.
+Explicitly labelling all those components requires a correspondingly large
+output. The operator does not hide this cost or silently quotient parallel
+components. Incomplete component coverage is refused. In particular,
+large-coordinate successful examples below are connected surfaces with
+exponentially many discs, rather than exponentially many labelled components.
+
+All three orbit queries share the caller's cycle allowance. An exhausted
+allowance yields \texttt{INCONCLUSIVE} without a graph or certificate.
+The checker can bound the combined number of recorded orbit events.
+Neither limit is represented as a topological negative conclusion.
+
+\subsection{An explicit native interface}
+
+The supplied triangulation uses the maintained finite-source JSON schema;
+normal coordinates are seven entries per tetrahedron in the established
+four-triangle, three-quadrilateral order. Disc columns and ranks begin at
+zero. A minimal use of the new API is:
+
+\begin{lstlisting}[language=Python]
+from fastunknot.normal_chamber_graph import normal_chamber_graph
+from fastunknot.normal_chamber_graph_verify import verify_normal_chamber_graph
+
+representatives = [{"tetrahedron": t, "column": c, "rank": r}]
+result = normal_chamber_graph(
+    triangulation, coordinates, representatives,
+    record_certificate=True,
+)
+# Authenticate before consuming a successful graph:
+if result["status"] == "COMPLETE":
+    accepted = verify_normal_chamber_graph(
+        triangulation, coordinates, result["certificate"]
+    )
+\end{lstlisting}
+
+The complete call and checker signatures, including work bounds and
+callback arguments, appear in the delivered source and reproduction
+examples. The graph result is a new observer; it does not dispatch an
+unknot verdict or replace the supplied-cut handlebody checker.
+

@@ -114,6 +114,18 @@ modification times.
 | `101/` | `ProveIt_Flag_Regularization_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | occurrence-preserving affine flag regularization and the missing general native atlas exporter | placed only; delivered tests not rerun and patches unapplied |
 | `102/` | `ProveIt_Positive_Cancellation_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | complete rectangular positive cancellation, optimal row deferral and exact passive-count transport | placed only; delivered tests not rerun and patches unapplied |
 | `103/` | `ProveIt_Relative_Top_Handles_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | relative top-handle elimination, universal source trees, homological short-row rigidity and exceptional-row kernels | placed only; delivered tests not rerun and patches unapplied |
+| `104/` | `ProveIt_Private_Cocore_Transport_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | owner-state private-cocore transport, source-unit normalization and bounded-exception atlases | placed only; delivered tests not rerun and overlay unapplied |
+| `105/` | `ProveIt_Deferred_Forests_2026-10-12.zip` | complete delivered article, overlay, finite selector and evidence | no unrestricted quasi-polynomial recognizer | deferred primal forests and exceptional-interface dual selection | placed only; delivered tests not rerun and patch unapplied |
+| `106/` | `ProveIt_Exceptional_Rows_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | exceptional-row closure, order ideals, lower triple-count optimization and certificate replay | placed only; tests not rerun and integration unapplied |
+| `107/` | `ProveIt_Matroidal_Dual_Forests_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | matroidal dual selection, exact deletion deficit and abstract support-three hardness | placed only; tests not rerun and integration unapplied |
+| `108/` | `ProveIt_Nonlinear_Activation_Forests_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | nonlinear activation columns, witness partitions and parameterized forest selection | placed only; tests not rerun and integration unapplied |
+| `109/` | `ProveIt_Ordered_Interface_Kernels_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | ordered incidence interfaces, optimal deferred kernels and width-parameterized dynamic programming | placed only; tests not rerun and integration unapplied |
+| `110/` | `ProveIt_Ordered_Pivot_Interfaces_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | weighted ordered pivot interfaces and repeat-safe transfer optimality | placed only; tests not rerun and integration unapplied |
+| `111/` | `ProveIt_Euler_Group_Terminals_2026-10-12.zip` | complete delivered article, patch, source packets and evidence | no unrestricted quasi-polynomial recognizer | Euler-checked free-group whole-cut terminals | placed only; tests not rerun and patch unapplied |
+| `112/` | `ProveIt_Lazy_Replay_Chamber_Graphs_2026-10-12.zip` | complete delivered article, patch, runtime snapshot and evidence | no unrestricted quasi-polynomial recognizer | lazy weighted replay and source-authenticated chamber graphs | placed only; tests not rerun and patch unapplied |
+| `113/` | `ProveIt_Projective_Port_Atlases_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | projective common-port atlases and source-bound normal-surface discovery | placed only; tests not rerun and integration unapplied |
+| `114/` | `ProveIt_Signed_Primitive_Annuli_2026-10-12.zip` | complete delivered article, patch, runtime snapshot and evidence | no unrestricted quasi-polynomial recognizer | signed primitive annuli, compressed basis certificates and native source transport | placed only; tests not rerun and patch unapplied |
+| `115/` | `ProveIt_Representative_Activation_2026-10-12.zip` | complete delivered article, research kernel, adapters and evidence | no unrestricted quasi-polynomial recognizer | representative-family activation search for fixed dual-forest selection | placed only; tests not rerun and integration unapplied |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -832,3 +844,196 @@ weighted forest objectives, source-relative port preservation, algebraic
 progress witnesses and generic affine regularization have different source
 contracts. Integration and comparison with the maintained implementation
 are separate work.
+
+The subsequent weighted-forest integration is recorded in added status
+files for [99](99/INTEGRATION-STATUS.md) and [100](100/INTEGRATION-STATUS.md).
+It minimizes retained raw incidence with a maximum-weight dual tree and
+unchanged source verifiers. The fresh 120-source audit improves completed
+cut censuses from 102 to 104, preserves all earlier successes and agrees
+with 97 fresh literal positive references. The original queue remains
+available. Report 99's restricted exact solver was separately tested from
+an isolated copy; it adds no bare-core completions on this bank and remains
+a research component. Delivered report files are unchanged.
+
+
+## Further arrival of 12 October 2026: report 104
+
+The private-cocore transport archive from `dc68ebe67` is preserved intact as
+report 104, with only its single wrapper removed. All 34 extracted files
+were inventoried by Git blob identity and have no prior history match. The
+complete [article](104/article/private_cocore_transport.tex), PDF, code,
+proposed overlay and supplied evidence remain as delivered. The package is
+pinned to `32008c6397fa6f3613c4dda277ab18e99dcdd36e`; its source audit
+records the three maintained files reviewed and the unreviewed incoming
+archive boundary.
+
+The report studies a query-specific owner algebra, passive transport under
+source-unit matching normalization and bounded-exception search. Its
+quasi-polynomial statement is conditional on the exception parameter and
+encoded-input bounds; it does not claim a general recognizer. No test,
+patch application or soundness review was performed during placement.
+Delivered numerical claims remain the author's evidence. Existing ignore
+rules apply to checksum manifests without special handling; no checksum
+or line-ending audit was made. The committed archive is retired and remains
+recoverable from its arrival commit. See the separate
+[placement record](../synthesis/data/incoming-104-placement.json).
+
+
+## Further arrival of 12 October 2026: report 105
+
+The deferred-forests archive from `9bacc258b` is preserved as report 105,
+with only its single wrapper removed. The 97 extracted files were
+inventoried against Git history. Five blobs match earlier material: four
+retained native baseline modules and the attributed report-99 degree-two
+selector. Each match was confirmed in the introducing commit's tree; the
+manuscript and its new components have no earlier placement match.
+
+The [article](105/article/Deferred_Forests_and_Exceptional_Incidence.tex)
+and supplied PDF concern deferred lower-forest discovery, an exact
+exceptional-interface selector, coupled finite forest selection, and
+conditional global complexity accounting. Its source pin is
+`c6d0ec8aa0b6308310ab6c081ba29d8bc363ede5`. This is an unknot-recognition
+programme continuation and therefore belongs in this numbered collection.
+The original overlay, patch, certificates and measurements remain delivered
+research material. Their claimed extra coverage and local completeness
+are not incorporated into the maintained implementation by this placement.
+
+No test, patch application or soundness review was performed during intake.
+The ZIP is retired after placement and remains recoverable at its arrival
+commit. Existing ignore rules apply without checksum or line-ending work.
+See the [placement record](../synthesis/data/incoming-105-placement.json).
+
+The later, separate [review of report 105](105/INTEGRATION-STATUS.md) records
+the deferred-forest proof with its source cycle hypothesis, 11 isolated
+delivered tests, replay of all 17 supplied positive packets by current
+native checkers, and a fresh 50,658-input finite-selector audit. A native
+research probe certifies 118 bare cores. The delivered whole-cut packet for
+`pachner23_5_8_2/mixed` is a current producer miss and a concrete integration
+target; it is not included in the maintained 110-source success count.
+
+
+## Further arrival of 12 October 2026: reports 106–109
+
+The four archives in `e0b2f802f` are numbered in archive-name order and
+preserved with their single wrappers removed. All are continuations of
+the unknot-recognition programme, pinned to
+`c6d0ec8aa0b6308310ab6c081ba29d8bc363ede5`, so they belong in this numbered
+collection. Their mathematical topics were identified from their articles,
+not just archive names.
+
+- [106 article](106/article/exceptional_rows_and_certificate_replay.tex): exceptional-row closure, order ideals, lower triple-count optimization and certificate replay. 83 delivered files; 3 match older blobs.
+- [107 article](107/article/article.tex): matroidal dual selection, exact deletion deficit and abstract support-three hardness. 51 delivered files; 0 match older blobs.
+- [108 article](108/article/nonlinear_activation_forests.tex): nonlinear activation columns, witness partitions and parameterized forest selection. 76 delivered files; 3 match older blobs.
+- [109 article](109/article.tex): ordered incidence interfaces, optimal deferred kernels and width-parameterized dynamic programming. 47 delivered files; 6 match older blobs.
+
+The reused files are attributed predecessor modules and licences, not a
+prior placement of any of the four manuscripts. Every match was confirmed
+in the corresponding commit tree. PDFs, source, proposed integrations and
+authors' evidence remain delivered material. No tests, patch application
+or soundness review were performed during this intake. Numerical and
+complexity claims remain the authors' claims pending separate review.
+
+The committed ZIPs are retired and recoverable from their arrival commit.
+Existing ignore rules apply without checksum or line-ending work. The
+[placement record](../synthesis/data/incoming-106-109-placement.json) records
+provenance, file counts and historical matches.
+
+## Further arrival of 12 October 2026: report 110
+
+[110 article](110/article/ordered_pivot_interfaces.tex), **Ordered Pivot
+Interfaces**, continues the programme's positive-cancellation and residual
+optimization research. The package targets source revision
+`ac9c845a5c507c5d7a17d45b2d8de84fc046d455` and was delivered in
+`250f0c32ae06170f9edcf46f30d14283c6e8e7b7`. Its article develops weighted
+ordered states on a supplied incidence decomposition, repeat-safe max-plus
+interfaces, and a connected low-width residual obstruction family. These are
+authors' claims pending separate review; the package does not claim general
+quasi-polynomial unknot recognition.
+
+All 36 delivered files are preserved with the single wrapper removed. None
+of their Git blobs matched prior history. This is placement only: no tests,
+patch application or soundness review was performed. The committed ZIP is
+retired and remains recoverable from its arrival commit. Existing attributes
+and ignore rules apply without checksum or line-ending work. See the
+[placement record](../synthesis/data/incoming-110-placement.json).
+
+## Further arrivals of 12 October 2026: reports 111–112
+
+The two archives in `82a9ab98ca664d4a4a2d97c35fd2c985ea0ed91e` are
+numbered in archive-name order, with their single wrappers removed. Their
+articles concern the unknot-recognition programme and belong in this
+numbered collection. Both are placement only.
+
+- [111 article](111/article/Euler_Group_Terminals.tex), pinned to
+  `9bacc258bff4b34b4a92b6fa71d290ba5e60ea26`: Euler-checked free-group
+  terminals for complete normal cuts, a disk-base source compiler and
+  nonincreasing signed singleton reductions. 154 delivered files; seven
+  match older blobs (comparison modules, corpora and a licence).
+- [112 article](112/article/Lazy_Replay_and_Native_Chamber_Graphs.tex), pinned
+  to `e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39`: lazy vector additions
+  during weighted orbit replay and native component/chamber authentication.
+  331 delivered files; 266 match older blobs, predominantly the attributed
+  native dependency snapshot and baseline verifier.
+
+The historical matches were confirmed in commit trees; neither manuscript
+was previously placed. All numerical, correctness and complexity statements
+remain delivered claims pending separate review. No tests, patch application
+or soundness review were performed during intake. Original PDFs, proposed
+integrations, evidence and source layouts are retained. Existing ignore
+rules and attributes apply without checksum or line-ending work. The ZIPs
+are retired and recoverable from their arrival commit; the drop-zone README
+is preserved. See the
+[placement record](../synthesis/data/incoming-111-112-placement.json).
+
+## Further arrivals of 12 October 2026: reports 113–114
+
+The two archives in `3cfc0ad4df13e07e6478b51ead54b4ea1e0c3c85` are
+numbered in archive-name order with their single wrappers removed. Their
+articles continue this programme's surface-discovery and terminal work,
+so both belong in the numbered unknot collection.
+
+- [113 article](113/article/article.tex), pinned to
+  `74de08949619863b002b5fcf01813a2faddde212`: objective-independent common-port
+  atlases, source compilation and support descent, with parameter regimes
+  and a bounded-degree obstruction to a naive small-master strategy.
+  All 39 delivered files are new to the Git blob history.
+- [114 article](114/article/signed_primitive_annuli.tex), pinned to
+  `e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39`: signed passive transport and
+  common-basis primitive-annulus certificates for rank-at-most-two support
+  blocks. Of 803 delivered files, 733 match older blobs, predominantly
+  the attributed native Python dependency/test snapshot.
+
+Historical matches were confirmed in commit trees; neither manuscript was
+previously placed. This is placement only: no tests, patch application or
+soundness review. Numerical and mathematical claims remain delivered
+claims pending separate review. Existing attributes and ignore rules apply
+without checksum or line-ending work. Both ZIPs are retired and remain
+recoverable from their arrival commit; the incoming README is preserved.
+See the [placement record](../synthesis/data/incoming-113-114-placement.json).
+
+
+## Further arrival of 12 October 2026: report 115
+
+Manuscript 01, [Single-Exponential Activation Kernels for Dual-Forest
+Selection](115/article/article.tex), is placed as the next report with its
+single wrapper removed. It continues this programme's fixed unsigned
+cancellation-matrix and boundary-rooted dual-graph selection problem, so it
+belongs in the numbered unknot collection. Its repository pin is
+`e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39`.
+
+The manuscript proposes a one-sided randomized `2^{O(b)}` local search using
+activation closure, generic mandatory contraction and representative families,
+with independently replayed discrete positive certificates. It also describes
+a deterministic exact low-rank case, local negative frontier certificates,
+parity diagnostics and a record-level native adapter. These are delivered
+claims: full native geometry, passive-interface transport and a general
+quasi-polynomial recognition theorem are not supplied.
+
+Of 61 delivered files, eleven match earlier Git blobs: the license, a build
+script and the attributed vendored matroidal baseline. Matches were confirmed
+in historical commit trees; the manuscript itself was not previously placed.
+No tests, patch application or soundness review were performed during this
+intake. Files are staged as delivered under existing attributes and ignores,
+without checksum or line-ending work. The ZIP is retired and remains recoverable
+from arrival commit `1913e9156`; the incoming README is preserved. See the
+[placement record](../synthesis/data/incoming-115-placement.json).

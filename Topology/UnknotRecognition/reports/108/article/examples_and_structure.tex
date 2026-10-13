@@ -1,0 +1,125 @@
+\section{Examples, obstructions, and another polynomial regime}
+\label{sec:examples}
+
+\subsection{A triangle is already beyond the unary theorem}
+
+Take a cap graph that is a triangle, with its three edges as rows and one
+column having entry one in each row. There are no free rows or ordinary
+implications, so $k=1$. Every top tree has two edges; deleting those rows
+leaves a legal unit pivot in the third row. An algorithm restricted to
+two-row column supports declines this input, while the new solver handles
+it exactly. The input satisfies raw cap parity, and activation preserves
+the rank-two span of its tree.
+
+In contrast, three parallel edges with the same one-column matrix have
+rank one. Any top tree removes only one row, leaving column total two;
+no tree succeeds. This second input does not satisfy cap parity and
+illustrates why the general theorem is useful independently of the native
+geometric hypothesis. Rank pruning must not be enabled on it.
+
+\subsection{Two prerequisites can have one forest witness}
+
+Let rows $d,w,x$ be three parallel edges and let $y$ be a graph loop. Use
+the occurrence matrix
+\[
+\begin{array}{c|rrrr}
+       &c_1&c_2&c_3&c_4\\\hline
+ d&1&1&2&0\\
+ w&1&0&0&1\\
+ x&0&1&0&1\\
+ y&0&0&1&1
+\end{array}.
+\]
+The ordinary rules include $d\leftrightarrow w$, $d\leftrightarrow x$,
+and $d\to y$. The last column is nonlinear. For its selected output $w$,
+the prerequisites $x$ and $y$ can both be reached from the single forest
+edge $d$. The set $\{d\}$ is a spanning tree and activates all rows.
+Demanding two distinct edges for these two prerequisites would incorrectly
+reject this legal branch. The partition with $x,y$ in one witness block
+expresses the correct requirement. This matrix is also parity-compatible:
+its two-row odd supports are parallel pairs, and the odd support of the
+last column is a parallel pair plus a loop.
+
+\subsection{Circular implications are not initial information}
+
+Consider four unavailable rows $a,b,c,d$, free singleton columns for
+$b,d$, and triple columns on $\{a,b,c\}$ and $\{a,c,d\}$. Choose
+$a$ and $c$ as the respective nonlinear outputs. After the free rows are
+activated, the only remaining rules are $c\to a$ and $a\to c$.
+Neither can begin. Treating both selected outputs as initially available
+would manufacture a false positive. Both the chronological construction
+and the distinguished-block closure test reject the unsupported cycle.
+
+\subsection{Certified matroid closure can remove the parameter bound}
+
+The preceding algorithms place a matroid constraint on an arbitrary Horn
+closure. A stronger, independently certified hypothesis gives another
+polynomial regime. Matroid Horn functions are an established subject;
+the following reduction is a direct application of classical matroid
+intersection, included as a useful design direction \cite{matroid-horn,edmonds}.
+
+\begin{proposition}[Two-matroid activation criterion]
+\label{prop:matroid-activation}
+Suppose activation from seeds $F$ is exactly $\cl_C(Z\cup F)$ for a
+matroid $C$ on $R$, with polynomial-time rank testing. Let $M$ be the
+external seed matroid on eligible rows $E$, and put $E_0=E\setminus Z$.
+There is an $M$-independent seed activating all of $R$ if and only if
+$M|E_0$ and $(C/Z)|E_0$ have a
+common independent set of size $\rho_C(R)-\rho_C(Z)$.
+\end{proposition}
+\begin{proof}
+A successful independent seed spans $C/Z$, hence contains a basis of that
+contraction. This subset remains independent in $M$. Conversely, a common
+independent set of the stated size spans $C/Z$, and adjoining $Z$ therefore
+activates every row. Ordinary matroid intersection decides the condition.
+\end{proof}
+
+One concrete certificate labels the rows by edges of an auxiliary simple
+chordal graph $H$, includes all its triangle implications, and checks that
+every additional activation rule is valid in the graphic matroid of $H$.
+These conditions force equality between activation and graphic closure.
+To see sufficiency directly, suppose the endpoints of a missing edge $e$
+are joined by a path of already active edges. The path and $e$ form a
+cycle. For a triangle, its rule activates $e$. A longer cycle has a chord:
+first derive that chord along the smaller cycle not containing $e$, then
+derive $e$ along the other smaller cycle. Induction proves the claim.
+Every allowed rule preserves graphic span, giving the reverse containment.
+
+This class permits arbitrarily many nonlinear columns. For example,
+complete auxiliary graphs contain quadratically many edges and cubically
+many triangle columns, while the certified closure test is polynomial.
+The sufficient certificate is stronger than checking that each individual
+column has even cap parity.
+
+\begin{example}[Parity does not imply the matroid exchange axiom]
+\label{ex:nonmatroid}
+Use the six edges of $K_4$ as rows, but supply only the three triangle
+columns $124,134,234$, omitting $123$. Every column is parity-compatible.
+Let $X=\{12,13\}$, $a=14$, and $b=23$. Then
+\[
+ \cl_A(X)=X,\qquad
+ b\in\cl_A(X\cup\{a\}),\qquad
+ a\notin\cl_A(X\cup\{b\}).
+\]
+Indeed, adding $14$ derives $24$, then $34$, then $23$. Adding $23$
+leaves just the three edges of the omitted triangle, from which no supplied
+rule fires. This violates the exchange axiom for matroid closure.
+\end{example}
+
+The example separates a useful proved rank invariant from the much stronger
+closure hypothesis in Proposition~\ref{prop:matroid-activation}. Sampling
+exchange identities, or verifying one parity identity per column, cannot
+replace a complete certificate for that hypothesis.
+
+\subsection{A family with fixed nonlinear parameter and unbounded top rank}
+
+Begin with the one-column triangle and attach $h$ new vertices to its root,
+each by two parallel edges. Give each parallel pair its own two-unit
+column, with no additional incidences. The connected graph has rank $h+2$
+and exactly $3\cdot2^h$ spanning trees, while $k=1$ for every $h$.
+Every spanning tree selects two triangle edges and one edge of each pair;
+all complementary rows peel immediately. The fixed-parameter theorem
+treats the entire family in polynomial encoded time. This is a structural
+separation from enumerating all top trees, not an experimental claim that
+the existing obstruction-guided search explores all $3\cdot2^h$ trees.
+Its first candidate can already succeed.

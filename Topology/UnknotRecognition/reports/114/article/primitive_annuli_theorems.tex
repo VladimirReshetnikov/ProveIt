@@ -1,0 +1,383 @@
+% Internal theory fragment for the parent article.  Not a standalone deliverable.
+% Suggested classical references:
+% Gordon, Topology Appl. 27 (1987), 285--299, DOI 10.1016/0166-8641(87)90093-9.
+% Hensel, J. Topol. (2021), DOI 10.1112/topo.12186, Section 4.
+% Kapovich, arXiv:2607.21499v1, Sections 3.1 and 8 (23 July 2026).
+% Schleimer's compressed free/cyclic reduction, cited by Kapovich.
+
+\section{Primitive annuli from authenticated compressed multiwords}
+\label{sec:primitive}
+
+The input to this section is a geometrically authenticated handlebody core,
+not an arbitrary presentation of a free group.  Its remaining annular
+midpoint curves are embedded and pairwise disjoint in the boundary.  Their
+words must be obtained from the signed source paths and the certified core
+cancellations.  The role of algebra is to find a different disk system for
+these already authenticated curves.
+
+\subsection{A classical geometric bridge and its relative form}
+
+An ordered family $(w_1,\ldots,w_q)$ in a free group $F_r$ is
+\emph{conjugate primitive} if there is one automorphism $\Phi$ of $F_r$,
+distinct basis letters $x_{j_1},\ldots,x_{j_q}$, and signs
+$\epsilon_i\in\{-1,1\}$ such that $\Phi(w_i)$ is conjugate to
+$x_{j_i}^{\epsilon_i}$ for every $i$.  The conjugators may differ; the
+automorphism may not.
+
+\begin{proposition}[Classical bridge, relative to disk ports]
+\label{prop:bridge}
+Let $H$ be an orientable handlebody of genus $r$, and let
+$\beta_1,\ldots,\beta_q$ be disjoint embedded simple closed curves in
+$\partial H$.  Their conjugacy classes form a conjugate primitive family
+if and only if there are disjoint properly embedded disks
+$D_1,\ldots,D_q$ with
+\[
+ |\partial D_i\cap\beta_j|=\delta_{ij}.
+\]
+The disks may be chosen to avoid any prescribed finite family of disjoint
+disk attachment regions in $\partial H$ that is disjoint from the curves.
+Consequently sufficiently thin annular neighborhoods of the curves form
+a simultaneous primitive family relative to those disk regions.
+\end{proposition}
+
+\begin{proof}
+We give the reduction to classical results to make the exact hypothesis
+clear.  For one simple boundary curve, being a primitive element of the
+free fundamental group is equivalent to possessing a dual meridian
+disk~\cite[Section~4]{hensel2021}.
+In particular, attaching a two-handle along it gives a handlebody of genus
+one less.  These are the usual primitive-curve facts.
+
+Suppose the classes form a conjugate primitive family.  For any subset
+$J\subseteq\{1,\ldots,q\}$, attach the two-handles indexed by $J$ in
+any order.  After some of these attachments, the fundamental group is the
+quotient by the normal closure of the corresponding basis elements.  The
+remaining indexed curves are conjugates of distinct remaining basis
+elements, and hence are primitive. They remain embedded boundary curves because the original curves
+were disjoint.  The one-curve result applies at every stage, so every subset
+of the two-handle attachments gives a handlebody.  Gordon's theorem on
+primitive sets of boundary loops~\cite{gordon1987} now supplies simultaneous
+dual disks.
+This use of Gordon's theorem is essential: requiring only the manifold
+obtained after \emph{all} attachments to be a handlebody is a weaker
+condition in general.
+
+Conversely the dual disks have connected complement: in the graph dual to
+cutting along them, the curve $\beta_i$ crosses exactly the edge indexed
+by $D_i$ exactly once, so that edge is a loop.  The dual graph is connected
+and all its edges are loops, hence it has one vertex.  Extend the dual disks
+to a complete disk system.  In its free
+basis, the word of $\beta_i$ contains its own distinguished generator once
+and all the other distinguished generators zero times.  It has the form
+$U_i x_{j_i}^{\epsilon_i}V_i$, where $U_i,V_i$ use only the remaining
+generators.  Simultaneous Nielsen changes fixing those remaining generators
+send these words to distinct basis letters, up to conjugacy.
+
+Finally isotope the boundaries of the dual disks off the prescribed disk
+regions.  An outermost arc of intersection in one of those regions can be
+pushed to its boundary collar; choose outermost arcs for the whole disjoint
+boundary family.  This removes intersections without changing intersections
+with the $\beta_i$, since the disk regions and their sufficiently small
+collars avoid those curves.  No essential meridian boundary can be contained
+entirely in a disk region.  Isotopy extension carries this simultaneous
+boundary isotopy to the properly embedded disks.  After taking thin annular
+neighborhoods, each unique crossing becomes one spanning arc.
+\end{proof}
+
+This proposition is an application of established topology, not a new
+classification theorem.  It does not assert that the disks avoid additional
+\emph{annular} ports whose curves were left out of the multiword.  Such a
+relative annular assertion needs an additional theorem or certificate.
+Our terminal rule therefore includes every pending annulus in the relevant
+core component.
+
+\subsection{Linear grammar size for signed passive transport}
+
+\begin{proposition}[Signed triangular source transport]
+\label{prop:transport}
+Suppose a geometrically verified core has a complete column-private
+cancellation schedule $(r_1,g_1),\ldots,(r_p,g_p)$.  Here column-private
+means that, when $r_i$ is deleted, $g_i$ occurs once in $r_i$ and zero times
+in every other remaining real attaching word, counting unsigned geometric
+passages.  Let $L$ be the total length of the original signed real attaching
+words and the signed passive words after deletion of source-forest letters.
+There is a shared straight-line program of size $O(L+r+p+q)$ representing
+all final passive conjugacy classes over the $r$ surviving generators.
+It can be constructed without expanding any substituted word.
+\end{proposition}
+
+\begin{proof}
+Every later real attaching word contains none of the earlier pivot
+generators.  Thus the donor words are unchanged source words; there is no
+positive fill among the real rows.  Write the donor at stage $i$ as
+\[
+ W_{r_i}=A_i g_i^{\epsilon_i}B_i,\qquad \epsilon_i\in\{-1,1\}.
+\]
+Its relation solves to
+\[
+ g_i=(B_iA_i)^{-\epsilon_i}.
+\]
+Every generator on the right is either a later pivot or a survivor.  Process
+the pivots in reverse order, replacing each such generator occurrence by a
+reference to its already constructed root.  The inverse of a root is a
+shared formal inverse, or can be implemented by a second grammar with
+reversed products at a constant-factor increase in size.  Each original
+letter contributes only a bounded number of grammar symbols.  Translate
+the passive source words once using these roots.
+
+The defining equations are triangular.  Eliminating them is an explicit
+Tietze isomorphism from the source core presentation to the free group on
+the surviving generators.  Since the core's handlebody status and source
+paths were authenticated separately, the resulting roots represent the
+actual passive curves in a free basis of that handlebody.  Binarization
+preserves the stated linear bound.  In particular every expanded word has
+length at most $2^{O(L+r+p+q)}$, whose binary length is polynomial.
+\end{proof}
+
+For the row-leaf shortcut, the donor at each step contains its pivot once
+and only previously killed generators otherwise. Induction sends every
+cancelled generator to the identity; the passive roots are obtained by one
+shared deletion map. This gives the same linear structural bound.
+
+The complete column-peeling result already in the repository allows this
+schedule whenever its fixed positive cancellation matrix can be completely
+cancelled.  We do not claim the same linear grammar construction for an
+arbitrary positive-fill schedule.  Its new output here is the signed ordered
+multiword; the existing positive transport theorem supplies numerical
+incidence counts instead.
+
+\subsection{Replay of a prescribed powered Nielsen certificate}
+
+Use elementary Nielsen transformations consisting of inversions, swaps, and
+\[
+ x_i\mapsto x_i x_j^k\quad\hbox{or}\quad
+ x_i\mapsto x_j^k x_i,\qquad i\ne j,\quad k\in\mathbb Z,
+\]
+with all other generators fixed.  Exponents are binary integers.
+
+\begin{proposition}[Shared backward replay]
+\label{prop:backward}
+Let a shared input grammar have size $S$ and let a supplied sequence be
+$\psi_1,\ldots,\psi_m$, applied in that chronological order, so the
+resulting automorphism is $\Phi=\psi_m\circ\cdots\circ\psi_1$.
+Put
+\[
+ B=\sum_{\text{powered steps}}\bigl(1+\lceil\log_2(|k|+1)\rceil\bigr)
+   +\#\{\text{swaps and inversions}\}.
+\]
+All transformed input roots have one shared grammar of size $O(S+r+B)$.
+The construction takes polynomial bit time; lengths have $O(S+B+1)$ bits,
+apart from the encoding of generator labels. Whether this supplied sequence
+carries the input roots to the specified distinct generator conjugacy
+classes can then be verified using deterministic compressed free and
+cyclic reduction~\cite{schleimer2008}.
+\end{proposition}
+
+\begin{proof}
+Scan the sequence backwards.  Maintain roots $I_t=S_0(x_t)$ for the suffix
+automorphism $S_0$ already processed.  When prepending
+$\psi:x_i\mapsto x_i x_j^k$, the new composite is $S_0\circ\psi$, so
+the only changed root is
+\[
+ I_i^{\mathrm{new}}=I_i^{\mathrm{old}}
+                      (I_j^{\mathrm{old}})^k.
+\]
+For the left version use $(I_j^{\mathrm{old}})^kI_i^{\mathrm{old}}$.
+An inversion replaces one root by its inverse; a swap exchanges two old
+roots simultaneously.  Binary powering adds $O(\log(|k|+1))$ grammar nodes.
+All newly appended nodes refer only to old nodes, so the construction is
+acyclic.  Rebuild the original grammar once with its terminals mapped to
+the final $I_t$; the original sharing is retained across every passive root.
+
+This proves the size bound and the composition convention.  At each step
+the maximum expanded generator-image length increases by at most
+$1+|k|$.  Combining this product with the original grammar's exponential
+length bound gives the stated bit bound.  Apply compressed cyclic reduction
+to each transformed root and check that the results are distinct single
+basis letters, with the permitted signs.
+\end{proof}
+
+This is a source-specific use and binary-power formulation of the standard
+compressed evaluation of prescribed automorphism sequences.  The general
+linear sharing principle is already present in Schleimer's work and in
+Kapovich's Proposition 3.2~\cite{kapovich2026}.  It does not bound the length of a sequence that
+a search must discover.
+
+\section{An exact rank-two simultaneous terminal}
+\label{sec:ranktwo}
+
+\begin{theorem}[One homology lift decides a pair in rank two]
+\label{thm:pair}
+Let $u,v\in F(a,b)$ be given by straight-line programs, and let
+\[
+ A=\begin{pmatrix}\operatorname{exp}_a(u)&\operatorname{exp}_a(v)\\
+                   \operatorname{exp}_b(u)&\operatorname{exp}_b(v)
+   \end{pmatrix}.
+\]
+If $\det A\notin\{-1,1\}$, the two conjugacy classes are not a
+conjugate primitive pair.  Otherwise choose \emph{any} automorphism
+$\Phi$ whose abelianization matrix is $A^{-1}$.  Then the pair is conjugate
+primitive if and only if
+\[
+ \operatorname{cycred}(\Phi(u))=a,
+ \qquad
+ \operatorname{cycred}(\Phi(v))=b.
+\]
+There is a deterministic polynomial-time algorithm on the compressed input
+that constructs a powered Nielsen lift and performs these two tests.
+\end{theorem}
+
+\begin{proof}
+Necessity of the determinant condition follows by abelianization.  If the
+tuple is conjugate primitive, compose its witnessing automorphism with a
+signed permutation so that its two classes go to $[a]$ and $[b]$ in the
+given order.  Call the resulting automorphism $\Psi$.  Its matrix must be
+$A^{-1}$.
+
+The classical rank-two isomorphism
+$\operatorname{Out}(F_2)\cong\operatorname{GL}_2(\mathbb Z)$ says that
+two automorphisms with the same abelianization differ by an inner
+automorphism; see the recalled proof of the classical rank-two facts
+in~\cite[Proposition~8.1]{kapovich2026}.  Hence $\Phi$ and $\Psi$ have the same action on conjugacy
+classes.  The two displayed tests follow.  Conversely, if those tests pass,
+$\Phi$ itself witnesses conjugate primitivity.
+
+Exponent sums are obtained by addition and sign reversal on the grammar
+DAG; their bit lengths are polynomial in its size.  The Euclidean algorithm
+expresses the unimodular matrix $A^{-1}$ as a polynomial-size sequence of
+integer shears, row interchanges, and sign changes.  Lift these operations
+to powered Nielsen transformations.  The previous proposition constructs
+their shared compressed action in polynomial size.  Compressed cyclic
+reduction completes the decision in polynomial time.
+\end{proof}
+
+One explicit matrix procedure first sends the first column of $A$ to
+$(1,0)^\mathsf{T}$ by Euclidean row operations.  The new matrix has the
+form $\left(\begin{smallmatrix}1&t\\0&\delta\end{smallmatrix}\right)$
+with $\delta=\pm1$.  Invert the second row if needed, then subtract $t$
+times that row from the first.  The total left multiplier is $A^{-1}$.
+The shear $\left(\begin{smallmatrix}1&k\\0&1\end{smallmatrix}\right)$
+is lifted, for example, by $b\mapsto ba^k$, and the other shear by
+$a\mapsto ab^k$.  Keeping this column-vector convention explicit prevents
+a transpose or composition-order error.
+
+For a single class, the corresponding compressed rank-two algorithm is
+already proved by Kapovich~\cite[Theorem~8.7]{kapovich2026}: test coprime exponent sums, construct a
+Euclidean lift sending that vector to $(1,0)^\mathsf{T}$, and test final
+cyclic length one.  The underlying rank-two fact can also be seen directly.
+If a primitive element $z$ has exponent vector $(1,0)^\mathsf{T}$, choose
+$\Psi$ with $\Psi(a)=z$.  Its matrix has the form
+$\left(\begin{smallmatrix}1&t\\0&\delta\end{smallmatrix}\right)$,
+where $\delta=\pm1$.  The automorphism fixing $a$ and sending
+$b$ to $a^t b^\delta$ has the same matrix.  The two automorphisms differ
+by an inner automorphism, so $z$ is conjugate to $a$.  Thus the single-class
+final test is also exact for any chosen homology lift.
+
+The pair theorem is a short simultaneous corollary of
+the classical rank-two outer-automorphism fact.  Its contribution here is an
+exact native annular-family terminal with a checkable common lift, rather
+than a claim to a new general primitivity algorithm.
+
+\subsection{Independent small generator blocks in arbitrary rank}
+
+\begin{lemma}[Conjugate primitive families descend to containing subgroups]
+\label{lem:heredity}
+Let $A$ be a subgroup of a free group $F$, and let a finite tuple of elements
+of $A$ be conjugate primitive in $F$.  It is conjugate primitive in $A$.
+Here the same basis-extension definition is used if $A$ has infinite rank.
+\end{lemma}
+
+\begin{proof}
+We use the standard spanning-tree construction of a free basis~\cite{kapovichmyasnikov2002}.
+Choose an ambient basis containing $z_1,\ldots,z_q$ such that each given
+element has the form $h_i z_i^{\epsilon_i}h_i^{-1}$.  Consider the covering
+graph of the corresponding basis rose associated to $A$.  The lift of
+$h_i$ from its base vertex ends at a vertex $v_i$.  Since
+$h_i z_i^{\epsilon_i}h_i^{-1}\in A$, uniqueness of path lifting says
+that the $z_i$-edge at $v_i$ is a loop edge.  These loop edges are distinct
+for distinct $i$, since their labels are distinct.
+
+Choose a spanning tree in the covering graph; it contains none of those
+loop edges.  The usual graph basis therefore contains every based loop
+$t_i z_i t_i^{-1}$, where $t_i$ is the tree path to $v_i$.  The path
+$h_i t_i^{-1}$ is a loop based at the covering's base vertex and hence
+represents an element of $A$.  It conjugates $t_i z_i^{\epsilon_i}t_i^{-1}$
+to the original given element.  The tuple is consequently conjugate to
+distinct elements of a basis of $A$, as required.  This is the covering
+graph form of the relevant special case of the Kurosh theorem.
+\end{proof}
+
+\begin{theorem}[Exact recognition on blocks of at most two generators]
+\label{thm:blocks}
+Let $F_r$ have a specified basis partitioned into disjoint blocks
+$X_1,\ldots,X_s$, each of cardinality at most two, and unused generators.
+Suppose every input conjugacy class is nontrivial and has a cyclically reduced
+representative over one block.  Then the whole tuple is conjugate primitive
+in $F_r$ if and only if every tuple assigned to a block is conjugate
+primitive in that block's free group.  This is decidable in deterministic
+polynomial time on compressed words.
+\end{theorem}
+
+\begin{proof}
+If every block passes, extend its witnessing automorphism by the identity
+on all other blocks.  The resulting block automorphisms commute and their
+product sends the whole tuple to distinct generator conjugacy classes.
+For the converse apply the preceding lemma to each block free factor.
+
+A block of rank one can contain at most one curve, whose exponent must be
+$1$ or $-1$.  A block of rank two can contain at most two curves.  Use the
+known compressed single-class algorithm for one and the pair theorem for
+two.  More curves than the block rank fail by independence in abelianization.
+Trivial input classes fail.  These tests use polynomially many calls on
+polynomial-size grammars, and all primitivity-discovery calls have the same
+fixed rank-two bound.
+\end{proof}
+
+An automatic version cyclically reduces each word, computes its set of
+appearing generators from the grammar, and joins generators occurring in
+the same support.  If every nonempty connected component has at most two
+generators, these components give the required partition.  If a component
+is larger, this particular exact terminal has no conclusion.  Failure of a
+primitive-family test is not a negative handlebody or knot certificate.
+
+\subsection{A strict separation from unsigned singleton criteria}
+
+Let $\theta(a)=ab$, $\theta(b)=a$, and put
+$u_n=\theta^n(a)$, $v_n=\theta^n(b)$.  This is a basis pair for every
+$n$, and it admits a shared grammar of size $O(n)$.  For $n\ge4$, each
+word contains each generator at least twice.  Consequently its unsigned
+two-by-two incidence matrix has every entry at least two: the private
+cocore test has no candidate and positive singleton cancellation cannot
+start.  The simultaneous rank-two criterion accepts the pair.
+
+This is a geometric criterion separation as well.  A handlebody homeomorphism
+realizing $\theta^n$ takes two standard disjoint longitude curves to a
+disjoint conjugate primitive pair. Each unsigned geometric cocore
+intersection count is at least the absolute corresponding homology
+coordinate, so every relevant core entry is still at least two even if
+these representatives have extra backtracking. One can then attach a solid-torus
+orientable interval bundle over a M\"obius band to each annulus.  Each
+bundle has just one fully attached boundary and supplies no unit boundary
+column: that boundary represents the square of its solid-torus generator.
+Thus each new bundle column has entry two in its own row and zero in the
+other. Every column total in the two-row unsigned presentation is at least
+two, so the prior stopping-set theorem excludes every complete positive
+cancellation in that presentation. The core-side primitive family still
+gives a genus-two handlebody by the gluing formula: its reduced core genus
+is zero, the two bundle genera sum to two, and the attachment graph is a
+tree. An implementation claim about \emph{compressed source geometry}
+requires a separately authenticated representation of those homeomorphism
+images.  The word grammar by itself is not such a representation.
+
+Two safeguards illustrate why the nonabelian and simultaneous checks remain
+necessary.  The word $a^2b^3$ has coprime exponent sums but is not primitive:
+its quotient group has a surjection onto $S_3$, by sending $a$ to a
+transposition and $b$ to a three-cycle.  A primitive relator in $F_2$
+would instead give a cyclic quotient.  In fact the pair $(a^2b^3,ab^2)$
+has a unimodular exponent matrix, of determinant one, and still fails
+the nonabelian test.  This last pair is an algebraic control; no source
+embedding is inferred from those two words.
+Also, two parallel copies of a primitive boundary curve are individually
+primitive but do not form a primitive family, since their two homology
+columns are dependent.  No amount of separate single-curve testing repairs
+that simultaneous defect.

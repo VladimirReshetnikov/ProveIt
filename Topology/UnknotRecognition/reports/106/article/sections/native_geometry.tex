@@ -1,0 +1,117 @@
+\section{A geometric parameter and an optimal lower forest}
+The raw arity statement in the preceding report is restated here with a
+source-level proof, followed by two refinements useful for choosing the
+lower forest \cite{IncomingForests2026}.  This section distinguishes lower
+zero/one-handle contraction from the top two/three-handle forest problem.
+
+\subsection{Why raw source cores have column arity at most three}
+\label{sec:raw-core-arity}
+
+The three-row condition of the finite matrix solver has a direct geometric
+source.  The following statement concerns the raw source core before any
+bundle-attachment rows are added.  It counts geometric occurrences, including
+repeated incidences caused by face identifications, rather than signed
+intersection numbers or freely reduced words.
+
+\begin{proposition}[Triangular-face arity]
+\label{prop:triangular-face-arity}
+In the maintained source parallelity decomposition of a finite triangulation,
+the total unsigned number of raw core two-handle belt crossings through any
+fixed core one-handle is at most three.  It is at most two for a corner
+one-handle.  These bounds persist after contraction of any lower spanning
+forest and deletion of any top-forest rows.
+
+Consequently the source raw matrix satisfies the three-row hypothesis:
+every column containing a unit entry has support in at most three rows.
+If the support has size three, all three entries are one and the column
+comes from the central region of an internally paired triangular face.
+For a triangulation with $T$ tetrahedra, the number $k$ of such exceptional
+columns satisfies $k\le 2T$.
+\end{proposition}
+
+\begin{proof}
+A core one-handle is dual to one region of an internally paired triangular
+face.  The source decomposition retains its central region and, for each
+nonempty normal-arc corner family, the triangular region closest to that
+original face vertex.  Every other face region is a parallelity strip.
+A central region meets each of the face's three original edges in at most
+one interval.  A retained corner region meets at most the two original
+edges incident with its corner.
+
+The raw core two-handles are dual to extreme gaps of original triangulation
+edges: one gap if the edge weight is zero and two extreme gaps otherwise.
+A crossing through the belt disc of the chosen core one-handle is precisely
+one incidence of such an extreme gap with the chosen face region.  Each
+original face-edge side contributes at most one such incidence.  In
+particular, a positive-weight edge cannot contribute both extreme gaps to
+the same face region; these are separated by the normal intersection points.
+For a zero-weight edge there is only one gap.  Pairing the two face copies
+identifies their side incidences, so it does not double the count.
+Global identifications may make two sides incident with the same two-handle,
+but these remain two occurrences among the same three (or two) local sides.
+The unsigned total is therefore bounded as asserted.
+
+Deleting forest columns or top-forest rows only removes incidences.
+Saturating an entry at two also cannot increase its column sum.  Three
+positive entries in a column whose sum is at most three must all be one.
+There is at most one central-region one-handle for each internal face pair,
+and at most $2T$ internal face pairs in a $T$-tetrahedron triangulation.
+\end{proof}
+
+A useful refinement detects which central regions can contribute.  Write
+$c_u,c_v,c_w$ for the three nonnegative corner normal-arc counts in a paired
+face, using the matching equations to identify the counts on its two copies.
+The normal weight on its edge $uv$ is $c_u+c_v$, while the central face gap
+has rank $c_u$ from $u$.  This gap is extreme exactly when $c_u=0$ or $c_v=0$.
+For a central region to contribute three raw occurrences, this must hold on
+all three face edges.  Thus at most one of $c_u,c_v,c_w$ may be positive.
+Boundary-edge exclusions or global row identifications may lower the arity
+further.  In particular,
+\[
+ k\le \#\{\text{internal face pairs with at most one positive corner-arc family}\},
+\]
+even before subtracting central columns chosen in the lower forest.  This
+refinement depends on the normal-coordinate zero pattern, not on the binary
+lengths of its positive multiplicities.
+
+The proposition does not apply automatically after arbitrary annular bundle
+rows or additional geometric relations are appended to the matrix.  Nor does
+$k\le 2T$ by itself imply a quasipolynomial bound in diagram size.  Its use is
+to establish a natural, source-geometric domain for the parameterized solver,
+while leaving the required small-$k$ or hierarchy-wide bounds explicit.
+
+\begin{proposition}[An optimal lower forest for the exceptional-column parameter]
+\label{prop:optimal-lower-forest}
+Form the raw $0/1$-handle multigraph $G$ before lower forest contraction, and
+let $E_3$ be its edges whose raw incidence columns contain three distinct
+unit rows.  For a spanning forest $F$ of $G$, let $k(F)$ be the number of
+such columns remaining after lower contraction, before any top-row deletion,
+interface augmentation, or additional geometric move.  Then
+\[
+ \kappa:=\min_F k(F)=|E_3|-r_G(E_3),
+\]
+where $r_G$ is the graphic-matroid rank.  Equivalently, $\kappa$ is the cycle
+nullity of the spanning subgraph with edge set $E_3$, counting loops and
+parallel edges in the usual multigraph sense.  A minimum-parameter forest
+is constructed by processing $E_3$ first in a greedy spanning-forest
+algorithm, then extending with all other edges.
+\end{proposition}
+
+\begin{proof}
+Lower contraction deletes exactly the columns in $F$ and changes no
+incidence in a retained column, so $k(F)=|E_3\setminus F|$.  Since
+$F\cap E_3$ is a forest, it has at most $r_G(E_3)$ edges.  Conversely, any
+maximal forest in the subgraph $E_3$ has $r_G(E_3)$ edges and extends to a
+spanning forest of $G$.  Extension never removes a chosen edge.  This proves
+both the equality and the constructive claim, including disconnected graphs,
+loops, and parallel edges.
+\end{proof}
+
+The optimization concerns the parameter, not recognition success.  Different
+lower forests can leave different positive-peeling problems, and a forest
+minimizing $k$ need not preserve a success available for some other lower
+forest.  A certificate produced with the chosen forest remains independently
+checkable; a refusal retains its restricted meaning.  Thus the guaranteed
+$8^k\operatorname{poly}(N)$ finite solver can be run with the smallest
+available raw-core parameter $\kappa$, while exhaustive completeness over
+all choices of lower forest remains a separate question.

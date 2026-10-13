@@ -1,0 +1,1762 @@
+diff --git a/Topology/UnknotRecognition/fast/triple_forest_research/__init__.py b/Topology/UnknotRecognition/fast/triple_forest_research/__init__.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/triple_forest_research/__init__.py
+@@ -0,0 +1 @@
++"""Certified forest selection with exceptional three-row columns."""
+diff --git a/Topology/UnknotRecognition/fast/triple_forest_research/base.py b/Topology/UnknotRecognition/fast/triple_forest_research/base.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/triple_forest_research/base.py
+@@ -0,0 +1,467 @@
++"""Exact dual-forest selection with immutable unsigned row incidence.
++
++This is a finite graph/matrix operator.  It does not authenticate a manifold
++and does not issue knot or nonball verdicts.  All integers are exact.
++
++Input: {'vertices': positive int, 'columns': nonnegative int,
++        'edges': [[u,v] or None, ...],
++        'rows': [[[column, positive_count], ...], ...]}.
++Vertex 0 is the distinguished boundary root.  An edge is associated with
++one matrix row; None marks a row unavailable for top-handle cancellation.
++Counts are capped at two on input, preserving all decisions below.
++"""
++
++from collections import deque
++
++
++class InvalidProblem(ValueError):
++    pass
++
++
++class BudgetExhausted(RuntimeError):
++    pass
++
++
++def _integer(x):
++    return isinstance(x, int) and not isinstance(x, bool)
++
++
++def normalize(problem):
++    if not isinstance(problem, dict):
++        raise InvalidProblem("problem must be a dictionary")
++    if set(problem) != {"vertices", "columns", "edges", "rows"}:
++        raise InvalidProblem("unexpected or missing problem fields")
++    v, h = problem["vertices"], problem["columns"]
++    if not _integer(v) or v < 1 or not _integer(h) or h < 0:
++        raise InvalidProblem("invalid vertex or column count")
++    edges, rows = problem["edges"], problem["rows"]
++    if not isinstance(edges, (tuple, list)) or not isinstance(rows, (tuple, list)):
++        raise InvalidProblem("edges and rows must be sequences")
++    if len(edges) != len(rows):
++        raise InvalidProblem("exactly one edge record per row is required")
++    ee, aa = [], []
++    for edge, row in zip(edges, rows):
++        if edge is None:
++            ee.append(None)
++        else:
++            if not isinstance(edge, (tuple, list)) or len(edge) != 2:
++                raise InvalidProblem("invalid edge")
++            if any(not _integer(x) or not 0 <= x < v for x in edge):
++                raise InvalidProblem("edge endpoint outside namespace")
++            ee.append(tuple(edge))
++        if not isinstance(row, (tuple, list)):
++            raise InvalidProblem("invalid sparse row")
++        values = {}
++        for item in row:
++            if not isinstance(item, (tuple, list)) or len(item) != 2:
++                raise InvalidProblem("invalid sparse incidence")
++            c, a = item
++            if not _integer(c) or not 0 <= c < h or not _integer(a) or a < 1:
++                raise InvalidProblem("invalid column or count")
++            if c in values:
++                raise InvalidProblem("duplicate sparse column")
++            values[c] = min(2, a)
++        aa.append(tuple(sorted(values.items())))
++    return v, h, tuple(ee), tuple(aa)
++
++
++class Work:
++    def __init__(self, max_work=None, max_nodes=None):
++        for name, value in (("max_work", max_work), ("max_nodes", max_nodes)):
++            if value is not None and (not _integer(value) or value < 0):
++                raise InvalidProblem("invalid " + name)
++        self.maximum = max_work
++        self.max_nodes = max_nodes
++        self.counts = {}
++        self.total = 0
++
++    def tick(self, label, amount=1):
++        self.counts[label] = self.counts.get(label, 0) + amount
++        self.total += amount
++        if self.maximum is not None and self.total > self.maximum:
++            raise BudgetExhausted("structural work budget exhausted")
++        if label == "search_nodes" and self.max_nodes is not None:
++            if self.counts[label] > self.max_nodes:
++                raise BudgetExhausted("search node budget exhausted")
++
++    def export(self):
++        return dict(self.counts, structural_work=self.total)
++
++
++class DSU:
++    def __init__(self):
++        self.parent = {}
++        self.size = {}
++
++    def find(self, x):
++        if x not in self.parent:
++            self.parent[x] = x
++            self.size[x] = 1
++        root = x
++        while self.parent[root] != root:
++            root = self.parent[root]
++        while self.parent[x] != x:
++            previous = x
++            x = self.parent[x]
++            self.parent[previous] = root
++        return root
++
++    def join(self, u, v):
++        u, v = self.find(u), self.find(v)
++        if u == v:
++            return False
++        if self.size[u] < self.size[v]:
++            u, v = v, u
++        self.parent[v] = u
++        self.size[u] += self.size[v]
++        return True
++
++
++def _source_connectivity(data, work):
++    v, _, edges, _ = data
++    adjacency = {0: []}
++    for edge in edges:
++        work.tick("graph_edge_visits")
++        if edge is not None:
++            a, b = edge
++            adjacency.setdefault(a, []).append(b)
++            adjacency.setdefault(b, []).append(a)
++    # A huge binary namespace with omitted vertices is rejected without a
++    # huge array allocation; its least omitted vertex is a one-vertex cut.
++    if len(adjacency) < v:
++        absent = 0
++        for x in sorted(adjacency):
++            if x != absent:
++                break
++            absent += 1
++        return {"kind": "unrooted", "vertices": [absent]}
++    reached, queue = {0}, deque([0])
++    while queue:
++        for y in adjacency[queue.popleft()]:
++            work.tick("graph_arc_visits")
++            if y not in reached:
++                reached.add(y)
++                queue.append(y)
++    if len(reached) != v:
++        return {"kind": "unrooted", "vertices": sorted(set(adjacency) - reached)}
++    return None
++
++
++def _forest(data, selected, work):
++    dsu = DSU()
++    for e in selected:
++        work.tick("forest_edge_visits")
++        edge = data[2][e]
++        if edge is None or not dsu.join(*edge):
++            raise AssertionError("internal selected set is not a forest")
++    return dsu
++
++
++def _extend_tree(data, selected, work):
++    dsu = _forest(data, selected, work)
++    chosen = set(selected)
++    for e, edge in enumerate(data[2]):
++        work.tick("extension_edge_visits")
++        if edge is not None and e not in chosen and dsu.join(*edge):
++            chosen.add(e)
++    if len(chosen) != data[0] - 1:
++        raise AssertionError("connected graph forest failed to extend")
++    return sorted(chosen)
++
++
++def _peel(data, row_ids, work):
++    rows = data[3]
++    live = set(row_ids)
++    totals, owner = {}, {}
++    for r in sorted(live):
++        work.tick("peel_row_visits")
++        for c, a in rows[r]:
++            work.tick("peel_incidence_visits")
++            totals[c] = totals.get(c, 0) + a
++            owner[c] = owner.get(c, 0) ^ r
++    queue = deque(sorted(c for c, a in totals.items() if a == 1))
++    schedule = []
++    work.tick("peel_calls")
++    while queue:
++        c = queue.popleft()
++        work.tick("peel_queue_pops")
++        if totals[c] != 1:
++            continue
++        r = owner[c]
++        if r not in live:
++            raise AssertionError("stale sole owner")
++        live.remove(r)
++        schedule.append([r, c])
++        for h, a in rows[r]:
++            work.tick("peel_removal_visits")
++            totals[h] -= a
++            owner[h] ^= r
++            if totals[h] == 1:
++                queue.append(h)
++    return schedule, sorted(live)
++
++
++def _minimize_stop(data, stop, work):
++    current = set(stop)
++    for row in stop:
++        if row not in current:
++            continue
++        work.tick("witness_minimization_calls")
++        _, residual = _peel(data, current - {row}, work)
++        if residual:
++            current = set(residual)
++    return sorted(current)
++
++
++def _positive(data, selected, work):
++    tree = _extend_tree(data, selected, work)
++    schedule, residual = _peel(data, set(range(len(data[3]))) - set(tree), work)
++    if residual:
++        raise AssertionError("claimed success did not survive tree extension")
++    return {"kind": "success", "tree": tree, "peeling": schedule}
++
++
++def solve_by_stopping(problem, *, minimize_witness=True, max_work=None, max_nodes=None):
++    """Complete obstruction-guided search; exhaustion is class-specific."""
++    data = normalize(problem)
++    work = Work(max_work, max_nodes)
++    if not isinstance(minimize_witness, bool):
++        raise InvalidProblem("minimize_witness must be Boolean")
++    try:
++        failure = _source_connectivity(data, work)
++        if failure:
++            return {"status": "NO_FOREST", "certificate": failure,
++                    "method": "stopping_search", "stats": work.export()}
++
++        def search(selected):
++            work.tick("search_nodes")
++            dsu = _forest(data, selected, work)
++            _, residual = _peel(data, set(range(len(data[3]))) - set(selected), work)
++            if not residual:
++                work.tick("success_leaves")
++                return True, _positive(data, selected, work)
++            witness = _minimize_stop(data, residual, work) if minimize_witness else residual
++            eligible = []
++            for e in witness:
++                work.tick("candidate_edge_tests")
++                edge = data[2][e]
++                if edge is not None and dsu.find(edge[0]) != dsu.find(edge[1]):
++                    eligible.append(e)
++            if not eligible:
++                work.tick("blocked_leaves")
++                return False, {"kind": "blocked", "witness": witness}
++            children = []
++            if len(eligible) == 1:
++                work.tick("forced_choices")
++            for e in eligible:
++                work.tick("branch_edges")
++                yes, proof = search(tuple(sorted((*selected, e))))
++                if yes:
++                    return True, proof
++                children.append({"row": e, "proof": proof})
++            return False, {"kind": "split", "witness": witness, "children": children}
++
++        yes, proof = search(())
++        return {"status": "SUCCESS" if yes else "NO_FOREST", "certificate": proof,
++                "method": "stopping_search", "stats": work.export()}
++    except (BudgetExhausted, RecursionError) as error:
++        return {"status": "INCONCLUSIVE", "reason": str(error),
++                "method": "stopping_search", "stats": work.export()}
++
++
++def _degree_two_groups(data, work):
++    """Return seed-free source SCC row groups, or None outside the regime."""
++    rows = data[3]
++    owners = {}
++    for r, row in enumerate(rows):
++        for c, a in row:
++            work.tick("dependency_incidence_visits")
++            owners.setdefault(c, []).append((r, a))
++    outgoing = [[] for _ in rows]
++    incoming = [[] for _ in rows]
++    seeds = set()
++    for occupants in owners.values():
++        if not any(a == 1 for _, a in occupants):
++            continue  # An inert column can never offer a raw unit pivot.
++        if len(occupants) > 2:
++            return None
++        if len(occupants) == 1:
++            seeds.add(occupants[0][0])
++        else:
++            for target, a in occupants:
++                if a == 1:
++                    source = occupants[1][0] if target == occupants[0][0] else occupants[0][0]
++                    outgoing[source].append(target)
++                    incoming[target].append(source)
++                    work.tick("dependency_arcs")
++    # Iterative Kosaraju keeps recursion depth independent of source size.
++    seen, finish = set(), []
++    for initial in range(len(rows)):
++        if initial in seen:
++            continue
++        seen.add(initial)
++        stack = [(initial, 0)]
++        while stack:
++            u, index = stack[-1]
++            work.tick("scc_stack_steps")
++            if index < len(outgoing[u]):
++                v = outgoing[u][index]
++                stack[-1] = (u, index + 1)
++                if v not in seen:
++                    seen.add(v)
++                    stack.append((v, 0))
++            else:
++                finish.append(u)
++                stack.pop()
++    component = [-1] * len(rows)
++    groups = []
++    for initial in reversed(finish):
++        if component[initial] != -1:
++            continue
++        label = len(groups)
++        group, stack = [], [initial]
++        component[initial] = label
++        while stack:
++            u = stack.pop()
++            group.append(u)
++            work.tick("scc_vertex_visits")
++            for v in incoming[u]:
++                if component[v] == -1:
++                    component[v] = label
++                    stack.append(v)
++        groups.append(sorted(group))
++    source = [True] * len(groups)
++    for u, targets in enumerate(outgoing):
++        for v in targets:
++            if component[u] != component[v]:
++                source[component[v]] = False
++    return sorted((group for i, group in enumerate(groups)
++                   if source[i] and seeds.isdisjoint(group)), key=lambda group: group[0])
++
++
++def _graphic_independent(data, members, work):
++    dsu = DSU()
++    work.tick("graphic_oracle_calls")
++    for e in sorted(members):
++        work.tick("graphic_oracle_edge_visits")
++        if data[2][e] is None or not dsu.join(*data[2][e]):
++            return False
++    return True
++
++
++def _rainbow_forest(data, groups, work):
++    """Standard shortest augmenting paths for graphic/partition intersection."""
++    color = {e: i for i, group in enumerate(groups) for e in group if data[2][e] is not None}
++    ground = sorted(color)
++    chosen = set()
++    while len(chosen) < len(groups):
++        work.tick("matroid_augmentation_rounds")
++        outside = [e for e in ground if e not in chosen]
++        used = {color[e] for e in chosen}
++        sources = [e for e in outside if _graphic_independent(data, chosen | {e}, work)]
++        parent = {e: None for e in sources}
++        queue = deque(sources)
++        terminal = None
++        while queue:
++            u = queue.popleft()
++            work.tick("exchange_queue_pops")
++            if u not in chosen and color[u] not in used:
++                terminal = u
++                break
++            if u not in chosen:
++                # Exchange in the partition matroid: same color, or a color
++                # not yet present (the latter case was already a terminal).
++                neighbors = [f for f in sorted(chosen)
++                             if color[u] == color[f] or color[u] not in used]
++                work.tick("partition_exchange_tests", len(chosen))
++            else:
++                neighbors = [e for e in outside
++                             if _graphic_independent(data, (chosen - {u}) | {e}, work)]
++            for v in neighbors:
++                if v not in parent:
++                    parent[v] = u
++                    queue.append(v)
++        if terminal is None:
++            represented = {color[e] for e in parent}
++            missing = [i for i in range(len(groups)) if i not in represented]
++            obstruction = [groups[i] for i in missing]
++            # The standard matroid-intersection min-max witness yields a
++            # Rado defect.  Check it again before emitting a negative result.
++            dsu, rank = DSU(), 0
++            for group in obstruction:
++                for e in group:
++                    edge = data[2][e]
++                    work.tick("rado_rank_edge_visits")
++                    if edge is not None and dsu.join(*edge):
++                        rank += 1
++            if not obstruction or rank >= len(obstruction):
++                raise AssertionError("invalid matroid-intersection Rado witness")
++            return None, {"kind": "rank_obstruction", "stopping_sets": obstruction, "rank": rank}
++        path = []
++        while terminal is not None:
++            path.append(terminal)
++            terminal = parent[terminal]
++        work.tick("matroid_path_vertices", len(path))
++        chosen.symmetric_difference_update(path)
++        if len({color[e] for e in chosen}) != len(chosen):
++            raise AssertionError("augmenting path lost partition independence")
++        if not _graphic_independent(data, chosen, work):
++            raise AssertionError("augmenting path lost graphic independence")
++        work.tick("matroid_augmentations")
++    return sorted(chosen), None
++
++
++def solve_degree_two(problem, *, max_work=None):
++    """Polynomial exact solver when every non-inert column has support <= 2."""
++    data = normalize(problem)
++    work = Work(max_work)
++    try:
++        failure = _source_connectivity(data, work)
++        if failure:
++            return {"status": "NO_FOREST", "certificate": failure,
++                    "method": "degree_two", "stats": work.export()}
++        groups = _degree_two_groups(data, work)
++        if groups is None:
++            return {"status": "INCONCLUSIVE", "reason": "non-inert column support exceeds two",
++                    "method": "degree_two", "stats": work.export()}
++        work.tick("source_scc_groups", len(groups))
++        selected, failure = _rainbow_forest(data, groups, work)
++        proof = failure if failure is not None else _positive(data, selected, work)
++        return {"status": "NO_FOREST" if failure else "SUCCESS", "certificate": proof,
++                "method": "degree_two", "stats": work.export()}
++    except BudgetExhausted as error:
++        return {"status": "INCONCLUSIVE", "reason": str(error),
++                "method": "degree_two", "stats": work.export()}
++
++
++def from_dense(vertices, edges, matrix, columns=None):
++    """Convenience encoder; the solver itself remains sparse."""
++    width = columns if columns is not None else (len(matrix[0]) if matrix else 0)
++    if any(len(row) != width for row in matrix):
++        raise InvalidProblem("dense row widths disagree")
++    return {"vertices": vertices, "columns": width, "edges": edges,
++            "rows": [[[c, a] for c, a in enumerate(row) if a] for row in matrix]}
++
++
++def main():
++    import argparse
++    import json
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("input")
++    parser.add_argument("--method", choices=("degree-two", "search"), default="degree-two")
++    parser.add_argument("--max-work", type=int)
++    parser.add_argument("--max-nodes", type=int)
++    parser.add_argument("--no-minimize", action="store_true")
++    args = parser.parse_args()
++    with open(args.input, encoding="utf-8") as stream:
++        problem = json.load(stream)
++    if args.method == "degree-two":
++        result = solve_degree_two(problem, max_work=args.max_work)
++    else:
++        result = solve_by_stopping(problem, minimize_witness=not args.no_minimize,
++                                  max_work=args.max_work, max_nodes=args.max_nodes)
++    print(json.dumps(result, indent=2))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/Topology/UnknotRecognition/fast/triple_forest_research/base_verify.py b/Topology/UnknotRecognition/fast/triple_forest_research/base_verify.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/triple_forest_research/base_verify.py
+@@ -0,0 +1,228 @@
++"""Independent finite verifier for dual forest / unsigned peeling certificates.
++
++Imports no producer code.  Successful verification concerns the supplied
++graph and incidence matrix only; source geometry is a separate obligation.
++"""
++
++
++class Rejected(ValueError):
++    pass
++
++
++def _int(value):
++    return type(value) is int
++
++
++def _require(condition, message):
++    if not condition:
++        raise Rejected(message)
++
++
++def _read(problem):
++    _require(type(problem) is dict and set(problem) == {"vertices", "columns", "edges", "rows"},
++             "invalid problem fields")
++    vertices, columns = problem["vertices"], problem["columns"]
++    _require(_int(vertices) and vertices >= 1, "invalid vertices")
++    _require(_int(columns) and columns >= 0, "invalid columns")
++    edge_input, row_input = problem["edges"], problem["rows"]
++    _require(isinstance(edge_input, (list, tuple)) and isinstance(row_input, (list, tuple)),
++             "invalid source lists")
++    _require(len(edge_input) == len(row_input), "edge/row count mismatch")
++    edges, rows = [], []
++    for edge in edge_input:
++        if edge is None:
++            edges.append(None)
++        else:
++            _require(isinstance(edge, (list, tuple)) and len(edge) == 2, "invalid source edge")
++            _require(all(_int(x) and 0 <= x < vertices for x in edge), "invalid source endpoint")
++            edges.append((edge[0], edge[1]))
++    for record in row_input:
++        _require(isinstance(record, (list, tuple)), "invalid source row")
++        row = {}
++        for pair in record:
++            _require(isinstance(pair, (list, tuple)) and len(pair) == 2, "invalid source pair")
++            c, a = pair
++            _require(_int(c) and 0 <= c < columns and _int(a) and a > 0,
++                     "invalid source incidence")
++            _require(c not in row, "duplicate source incidence")
++            row[c] = 1 if a == 1 else 2
++        rows.append(row)
++    return vertices, columns, edges, rows
++
++
++def _row_set(record, number, label, nonempty=False):
++    _require(isinstance(record, (list, tuple)), "invalid " + label)
++    _require(all(_int(r) and 0 <= r < number for r in record), "out of range " + label)
++    result = set(record)
++    _require(len(result) == len(record), "duplicate " + label)
++    _require(bool(result) or not nonempty, "empty " + label)
++    return result
++
++
++def _partition_after(edges, chosen):
++    # This checker uses explicit set-of-vertices blocks, deliberately separate
++    # from the producer's union-find and all of its search routines.
++    blocks = []
++    rank = 0
++    for e in chosen:
++        edge = edges[e]
++        _require(edge is not None, "selected ineligible edge")
++        u, v = edge
++        ui = next((i for i, block in enumerate(blocks) if u in block), None)
++        vi = next((i for i, block in enumerate(blocks) if v in block), None)
++        if u == v or (ui is not None and ui == vi):
++            continue
++        rank += 1
++        if ui is None and vi is None:
++            blocks.append({u, v})
++        elif ui is None:
++            blocks[vi].add(u)
++        elif vi is None:
++            blocks[ui].add(v)
++        else:
++            blocks[ui].update(blocks[vi])
++            del blocks[vi]
++    return blocks, rank
++
++
++def _same_component(blocks, u, v):
++    return u == v or any(u in block and v in block for block in blocks)
++
++
++def _stopping(rows, witness, deleted):
++    selected = _row_set(witness, len(rows), "stopping witness", nonempty=True)
++    _require(selected.isdisjoint(deleted), "stopping witness contains a deleted row")
++    totals = {}
++    for r in selected:
++        for c, a in rows[r].items():
++            totals[c] = min(2, totals.get(c, 0) + a)
++    _require(all(a != 1 for a in totals.values()), "witness is not a stopping set")
++    return selected
++
++
++def _success(data, certificate):
++    vertices, columns, edges, rows = data
++    _require(set(certificate) == {"kind", "tree", "peeling"}, "invalid success fields")
++    tree = _row_set(certificate["tree"], len(rows), "tree")
++    _require(len(tree) == vertices - 1, "incorrect spanning tree cardinality")
++    _, rank = _partition_after(edges, sorted(tree))
++    _require(rank == vertices - 1, "tree is cyclic or disconnected")
++    moves = certificate["peeling"]
++    _require(isinstance(moves, (list, tuple)), "invalid peeling sequence")
++    times, pivots = {}, set()
++    for t, move in enumerate(moves):
++        _require(isinstance(move, (list, tuple)) and len(move) == 2, "invalid peeling move")
++        r, c = move
++        _require(_int(r) and 0 <= r < len(rows) and r not in tree and r not in times,
++                 "invalid peeling row")
++        _require(_int(c) and 0 <= c < columns and c not in pivots, "invalid pivot column")
++        _require(rows[r].get(c, 0) == 1, "pivot is not a unit source incidence")
++        times[r] = t
++        pivots.add(c)
++    _require(set(times) == set(range(len(rows))) - tree, "peeling does not cover surviving rows")
++    pivot_time = {c: (t, r) for r, c in moves for t in [times[r]]}
++    for r, row in enumerate(rows):
++        if r in tree:
++            continue
++        for c in row:
++            if c in pivot_time:
++                t, owner = pivot_time[c]
++                if r != owner:
++                    _require(times[r] < t, "source incidence survives at a claimed leaf pivot")
++
++
++def _negative(data, certificate):
++    vertices, _, edges, rows = data
++    pending = [(certificate, frozenset())]
++    while pending:
++        node, deleted = pending.pop()
++        _require(type(node) is dict and type(node.get("kind")) is str, "invalid proof node")
++        blocks, rank = _partition_after(edges, sorted(deleted))
++        _require(rank == len(deleted), "proof path is not an independent forest")
++        kind = node["kind"]
++        if kind == "unrooted":
++            _require(not deleted and set(node) == {"kind", "vertices"}, "invalid unrooted fields")
++            cut = _row_set(node["vertices"], vertices, "unrooted vertex cut", nonempty=True)
++            _require(0 not in cut, "unrooted cut contains root")
++            for edge in edges:
++                if edge is not None:
++                    _require((edge[0] in cut) == (edge[1] in cut), "source edge crosses unrooted cut")
++        elif kind == "rank_obstruction":
++            _require(set(node) == {"kind", "stopping_sets", "rank"}, "invalid rank proof fields")
++            family = node["stopping_sets"]
++            _require(isinstance(family, (list, tuple)) and family, "empty stopping family")
++            used, ground = set(), set()
++            for record in family:
++                stop = _stopping(rows, record, deleted)
++                _require(used.isdisjoint(stop), "rank witnesses overlap")
++                used.update(stop)
++                ground.update(r for r in stop if edges[r] is not None)
++            _, extended_rank = _partition_after(edges, sorted(set(deleted) | ground))
++            relative_rank = extended_rank - rank
++            _require(_int(node["rank"]) and node["rank"] == relative_rank, "incorrect rank value")
++            _require(relative_rank < len(family), "no rank defect")
++        elif kind in ("split", "blocked"):
++            required = {"kind", "witness", "children"} if kind == "split" else {"kind", "witness"}
++            _require(set(node) == required, "invalid stopping node fields")
++            witness = _stopping(rows, node["witness"], deleted)
++            possible = {r for r in witness if edges[r] is not None
++                        and not _same_component(blocks, *edges[r])}
++            if kind == "blocked":
++                _require(not possible, "blocked node has an independent candidate")
++                continue
++            children = node["children"]
++            _require(isinstance(children, (list, tuple)) and possible, "invalid split children")
++            seen = set()
++            for child in children:
++                _require(type(child) is dict and set(child) == {"row", "proof"}, "invalid child")
++                e = child["row"]
++                _require(_int(e) and e in possible and e not in seen, "incorrect or repeated branch")
++                seen.add(e)
++                pending.append((child["proof"], deleted | {e}))
++            _require(seen == possible, "split omits an independent candidate")
++        else:
++            raise Rejected("unknown negative proof node")
++
++
++def check_result(problem, result):
++    """Return (accepted, explanation); INCONCLUSIVE has no affirmative proof."""
++    try:
++        data = _read(problem)
++        _require(type(result) is dict, "invalid result")
++        status = result.get("status")
++        proof = result.get("certificate")
++        _require(type(proof) is dict, "no complete certificate")
++        if status == "SUCCESS":
++            _require(proof.get("kind") == "success", "wrong positive certificate type")
++            _success(data, proof)
++        elif status == "NO_FOREST":
++            _negative(data, proof)
++        else:
++            raise Rejected("result makes no completed certificate claim")
++        return True, "verified for supplied graph and unsigned incidence"
++    except (Rejected, KeyError, TypeError, IndexError, ValueError) as error:
++        return False, str(error)
++
++
++def verify(problem, result):
++    return check_result(problem, result)[0]
++
++
++def main():
++    import argparse
++    import json
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("problem")
++    parser.add_argument("result")
++    args = parser.parse_args()
++    with open(args.problem, encoding="utf-8") as stream:
++        problem = json.load(stream)
++    with open(args.result, encoding="utf-8") as stream:
++        result = json.load(stream)
++    good, reason = check_result(problem, result)
++    print(json.dumps({"accepted": good, "reason": reason}, indent=2))
++    raise SystemExit(0 if good else 1)
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/Topology/UnknotRecognition/fast/triple_forest_research/nonlinear.py b/Topology/UnknotRecognition/fast/triple_forest_research/nonlinear.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/triple_forest_research/nonlinear.py
+@@ -0,0 +1,277 @@
++"""A Boolean determinant sieve for exact forest-compatible row peeling.
++
++Only the ordinary SCCs incident to non-inert columns of support greater
++than two enter the state table.  Free SCCs are removed.  If the resulting
++reachability poset has J ideals on d elements, discovery has J*poly(input
++size) time and J*poly(input size) space; J <= 2**d and d <= 3k for k triples.
++
++SUCCESS always has a producer-independent tree/peeling certificate.  A zero
++randomized evaluation gives INCONCLUSIVE.  The input is a supplied finite
++graph and unsigned matrix, not a knot diagram or an authenticated manifold.
++"""
++
++from random import Random, SystemRandom
++
++from . import base
++from .solver import (DEFAULT_PRIME, CoverageSieve, _bits, _forced_cover,
++                     _prepare, _prime64)
++
++
++def _closure_table(prepared, special, work, initial_masks=None):
++    full = sum(1 << row for row in special)
++    rules = [(sum(1 << row for row in rows), sum(1 << row for row in units))
++             for _, rows, units in prepared["triples"]]
++    values = []
++    if initial_masks is None:
++        initial_masks = range(1 << len(special))
++    for mask in initial_masks:
++        work.tick("closure_table_masks")
++        known = prepared["known"]
++        for index in _bits(mask):
++            known |= prepared["reach"][special[index]]
++        while True:
++            previous = known
++            for support, unit in rules:
++                work.tick("nonlinear_rule_tests")
++                missing = support & ~known
++                if missing and missing & (missing - 1) == 0 and missing & unit:
++                    row = missing.bit_length() - 1
++                    known |= prepared["reach"][row]
++            if known == previous:
++                break
++        values.append(int(known & full == full))
++    return values
++
++
++def _mobius_filter(values, work):
++    r"""c[A] = sum_{B subset A} (-1)**|A\B| f(U\B), over the integers."""
++    size = len(values)
++    full = size - 1
++    coefficients = [values[full ^ mask] for mask in range(size)]
++    bit = 1
++    while bit < size:
++        for mask in range(size):
++            if mask & bit:
++                coefficients[mask] -= coefficients[mask ^ bit]
++                work.tick("mobius_updates")
++        bit <<= 1
++    return coefficients
++
++
++def _iter_ideal_masks(prepared, special, work, max_states=None):
++    """Stream ideals in topological color order with O(d*J) DFS visits."""
++    predecessors = []
++    for index, row in enumerate(special):
++        predecessors.append(sum(1 << previous for previous in range(index)
++                                if prepared["ancestors"][row] & (1 << special[previous])))
++    produced, stack = 0, [(0, 0)]
++    while stack:
++        index, mask = stack.pop()
++        work.tick("ideal_prefixes")
++        if index == len(special):
++            produced += 1
++            if max_states is not None and produced > max_states:
++                raise base.BudgetExhausted("ideal-state limit exceeded")
++            yield mask
++            continue
++        stack.append((index + 1, mask))
++        if predecessors[index] & mask == predecessors[index]:
++            stack.append((index + 1, mask | (1 << index)))
++
++
++def _ideal_masks(prepared, special, work, max_states=None):
++    return sorted(_iter_ideal_masks(prepared, special, work, max_states))
++
++
++def _ideal_mobius(ideals, values, dimensions, work):
++    """Invert subset sums on ideals; reverse topological order is essential."""
++    position = {mask: index for index, mask in enumerate(ideals)}
++    coefficients = list(values)
++    for color in reversed(range(dimensions)):
++        bit = 1 << color
++        for index, mask in enumerate(ideals):
++            work.tick("ideal_mobius_tests")
++            if mask & bit and (mask ^ bit) in position:
++                coefficients[index] -= coefficients[position[mask ^ bit]]
++                work.tick("ideal_mobius_updates")
++    return tuple(zip(ideals, coefficients))
++
++
++def _special_state(data, work):
++    prepared = _prepare(data, work, support_bound=None)
++    original_special = sorted({row for _, rows, _ in prepared["triples"] for row in rows})
++    # Ancestor sets coincide exactly within an ordinary SCC.  Ordering by
++    # their cardinality gives a linear extension: strict reachability implies
++    # strict ancestor inclusion.  Free SCCs require no activation coordinate.
++    representatives = {}
++    for row in original_special:
++        if not prepared["known"] & (1 << row):
++            representatives.setdefault(prepared["ancestors"][row], row)
++    special = sorted(representatives.values(),
++                     key=lambda row: (prepared["ancestors"][row].bit_count(), row))
++    work.tick("exceptional_columns", len(prepared["triples"]))
++    work.tick("special_rows", len(original_special))
++    work.tick("table_bits", len(special))
++    special_mask = sum(1 << row for row in original_special)
++    mandatory = []
++    for group in prepared["source_groups"]:
++        mask = sum(1 << row for row in group)
++        if not mask & special_mask:
++            mandatory.append(mask & prepared["eligible"])
++    return prepared, special, mandatory
++
++
++def solve_boolean(problem, *, max_work=None, max_table_bits=None, max_states=None,
++                  seed=None, prime=DEFAULT_PRIME, trials=1):
++    """One-sided witness discovery in J*poly(N) <= 2**d poly(N), exact replay.
++
++    The probability theorem assumes independent uniform field samples.
++    ``seed`` is for reproducible experiments only.  The fixed 64-bit prime
++    implementation requires prime > twice the eligible edge count; the
++    unbounded mathematical algorithm chooses a suitable prime as input grows.
++    A requested table/work limit returns INCONCLUSIVE, never a negative verdict.
++    """
++    data = base.normalize(problem)
++    work = base.Work(max_work)
++    if max_table_bits is not None and (type(max_table_bits) is not int
++                                      or max_table_bits < 0):
++        raise base.InvalidProblem("max_table_bits must be nonnegative or None")
++    if type(trials) is not int or trials < 1:
++        raise base.InvalidProblem("trials must be a positive integer")
++    if max_states is not None and (type(max_states) is not int or max_states < 0):
++        raise base.InvalidProblem("max_states must be nonnegative or None")
++    if seed is not None and type(seed) is not int:
++        raise base.InvalidProblem("seed must be an integer or None")
++    if not _prime64(prime):
++        raise base.InvalidProblem("prime must be prime and smaller than 2**64")
++    method = "boolean_forest_sieve"
++    try:
++        failure = base._source_connectivity(data, work)
++        if failure:
++            return dict(status="NO_FOREST", method=method, certificate=failure,
++                        stats=work.export())
++        prepared, special, mandatory = _special_state(data, work)
++        if max_table_bits is not None and len(special) > max_table_bits:
++            return dict(status="INCONCLUSIVE", method=method,
++                        reason="exceptional-row table limit exceeded", stats=work.export())
++        # This exact feasibility precheck addresses the partition requirements
++        # only.  Failure is sound; success still needs the nonlinear filter.
++        candidate = _forced_cover(data, mandatory, (), work)
++        if candidate is None:
++            return dict(status="NO_FOREST", method=method, certificate=None,
++                        evidence="deterministic mandatory-group matroid obstruction",
++                        stats=work.export())
++        schedule, residual = base._peel(data, set(range(len(data[3]))) - set(candidate), work)
++        if not residual:
++            return dict(status="SUCCESS", method=method,
++                        certificate=dict(kind="success", tree=candidate, peeling=schedule),
++                        stats=work.export())
++        ideals = _ideal_masks(prepared, special, work, max_states)
++        full = (1 << len(special)) - 1
++        values = _closure_table(prepared, special, work,
++                                (full ^ mask for mask in ideals))
++        mask_coefficients = _ideal_mobius(ideals, values, len(special), work)
++        requirements = tuple(prepared["ancestors"][row] & prepared["eligible"]
++                             for row in special)
++        work.tick("ideal_states", len(ideals))
++        work.tick("nonzero_filter_coefficients",
++                  sum(value != 0 for _, value in mask_coefficients))
++        rng = SystemRandom() if seed is None else Random(seed)
++        for _ in range(trials):
++            work.tick("randomized_trials")
++            sieve = CoverageSieve(data, mandatory, requirements, prime, rng, work,
++                                  mask_coefficients=mask_coefficients)
++            tree = sieve.tree()
++            if tree is not None:
++                certificate = base._positive(data, tree, work)
++                return dict(status="SUCCESS", method=method, certificate=certificate,
++                            stats=work.export())
++        return dict(status="INCONCLUSIVE", method=method,
++                    reason="zero Boolean-filter evaluations; no negative certificate",
++                    uniform_random_failure_bound=dict(numerator=data[0] - 1,
++                                                      denominator=prime, power=trials),
++                    randomness="uniform system randomness" if seed is None else
++                    "seeded reproducible experiment; probability theorem needs uniform samples",
++                    stats=work.export())
++    except base.BudgetExhausted as error:
++        return dict(status="INCONCLUSIVE", method=method, reason=str(error),
++                    stats=work.export())
++
++
++def solve_width(problem, *, max_work=None, max_states=None):
++    """Deterministic exact discovery in J*(m+1)**w*poly(N), polynomial space.
++
++    Ideals and representative choices are streamed.  An exhaustive negative
++    answer is an algorithmic conclusion; this implementation exports no
++    portable negative certificate except for source disconnection.  Every
++    success is checked against the original unsigned matrix.  A work/state
++    limit returns INCONCLUSIVE.
++    """
++    data, work = base.normalize(problem), base.Work(max_work)
++    method = "width_forest_search"
++    if max_states is not None and (type(max_states) is not int or max_states < 0):
++        raise base.InvalidProblem("max_states must be nonnegative or None")
++    try:
++        failure = base._source_connectivity(data, work)
++        if failure:
++            return dict(status="NO_FOREST", method=method, certificate=failure,
++                        stats=work.export())
++        prepared, special, mandatory = _special_state(data, work)
++        candidate = _forced_cover(data, mandatory, (), work)
++        if candidate is not None:
++            schedule, residual = base._peel(data, set(range(len(data[3]))) - set(candidate), work)
++            if not residual:
++                return dict(status="SUCCESS", method=method,
++                            certificate=dict(kind="success", tree=candidate, peeling=schedule),
++                            stats=work.export())
++            full = (1 << len(special)) - 1
++            for ideal in _iter_ideal_masks(prepared, special, work, max_states):
++                work.tick("ideal_states")
++                hit = full ^ ideal
++                if not _closure_table(prepared, special, work, (hit,))[0]:
++                    continue
++                minimum = [i for i in _bits(hit) if not any(
++                    prepared["ancestors"][special[i]] & (1 << special[j])
++                    for j in _bits(hit) if j != i)]
++                work.tick("accepted_ideal_states")
++                work.counts["largest_minimal_frontier"] = max(
++                    work.counts.get("largest_minimal_frontier", 0), len(minimum))
++                requirements = tuple(prepared["ancestors"][special[i]] & prepared["eligible"]
++                                     for i in minimum)
++                tree = _forced_cover(data, mandatory, requirements, work)
++                if tree is not None:
++                    return dict(status="SUCCESS", method=method,
++                                certificate=base._positive(data, tree, work), stats=work.export())
++        return dict(status="NO_FOREST", method=method, certificate=None,
++                    evidence="mandatory-group obstruction or exhaustive ideal-state and representative search",
++                    stats=work.export())
++    except base.BudgetExhausted as error:
++        return dict(status="INCONCLUSIVE", method=method, reason=str(error),
++                    stats=work.export())
++
++
++def main():
++    import argparse
++    import json
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("input")
++    parser.add_argument("--seed", type=int)
++    parser.add_argument("--max-work", type=int)
++    parser.add_argument("--max-table-bits", type=int)
++    parser.add_argument("--max-states", type=int)
++    parser.add_argument("--trials", type=int, default=1)
++    parser.add_argument("--deterministic-width", action="store_true")
++    args = parser.parse_args()
++    with open(args.input, encoding="utf-8") as stream:
++        problem = json.load(stream)
++    if args.deterministic_width:
++        result = solve_width(problem, max_work=args.max_work, max_states=args.max_states)
++    else:
++        result = solve_boolean(problem, seed=args.seed, max_work=args.max_work,
++                               max_table_bits=args.max_table_bits, max_states=args.max_states,
++                               trials=args.trials)
++    print(json.dumps(result, indent=2))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/Topology/UnknotRecognition/fast/triple_forest_research/solver.py b/Topology/UnknotRecognition/fast/triple_forest_research/solver.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/triple_forest_research/solver.py
+@@ -0,0 +1,391 @@
++"""Forest-compatible peeling with few exceptional three-row columns.
++
++The deterministic solver is exact when uncapped.  The randomized solver has
++one-sided failure: it returns a separately replayable SUCCESS, or INCONCLUSIVE.
++Neither solver authenticates a manifold or decides a knot type.
++
++The unchanged ``base`` and ``base_verify`` kernels are vendored from the
++2026-10-12 incoming Dual Forest Normalization report; see ATTRIBUTION.md.
++"""
++
++from itertools import permutations, product
++from random import Random, SystemRandom
++
++from . import base
++
++
++DEFAULT_PRIME = (1 << 61) - 1
++
++
++def _bits(mask):
++    while mask:
++        bit = mask & -mask
++        yield bit.bit_length() - 1
++        mask ^= bit
++
++
++def _prepare(data, work, *, support_bound=3):
++    count = len(data[3])
++    owners = {}
++    for row, entries in enumerate(data[3]):
++        for column, value in entries:
++            work.tick("dependency_entries")
++            owners.setdefault(column, []).append((row, value))
++    triples, incoming, seeds = [], [[] for _ in range(count)], set()
++    ordinary = set()
++    for column, entries in sorted(owners.items()):
++        unit = tuple(row for row, value in entries if value == 1)
++        if not unit:
++            continue
++        if support_bound is not None and len(entries) > support_bound:
++            return None
++        if len(entries) > 2:
++            triples.append((column, tuple(row for row, _ in entries), unit))
++        else:
++            ordinary.add(column)
++            if len(entries) == 1:
++                seeds.add(entries[0][0])
++            else:
++                for target in unit:
++                    incoming[target].extend(row for row, _ in entries if row != target)
++    # All transitive ancestor sets, including the vertex itself.  This simple
++    # O(R(R+I)) implementation deliberately avoids a hidden search oracle.
++    ancestors = []
++    for row in range(count):
++        reached, stack = 1 << row, [row]
++        while stack:
++            vertex = stack.pop()
++            work.tick("ancestor_vertices")
++            for previous in incoming[vertex]:
++                work.tick("ancestor_arcs")
++                if not reached & (1 << previous):
++                    reached |= 1 << previous
++                    stack.append(previous)
++        ancestors.append(reached)
++    reach = [0] * count
++    for target, mask in enumerate(ancestors):
++        for previous in _bits(mask):
++            work.tick("reachability_pairs")
++            reach[previous] |= 1 << target
++    known = 0
++    for row in seeds:
++        known |= reach[row]
++    ordinary_rows = tuple(tuple((c, a) for c, a in row if c in ordinary)
++                          for row in data[3])
++    groups = base._degree_two_groups((*data[:3], ordinary_rows), work)
++    eligible = sum(1 << row for row, edge in enumerate(data[2])
++                   if edge is not None and edge[0] != edge[1])
++    return dict(triples=triples, ancestors=ancestors, reach=reach,
++                known=known, source_groups=groups, eligible=eligible)
++
++
++def _histories(prepared):
++    triples = prepared["triples"]
++    for length in range(len(triples) + 1):
++        for order in permutations(range(len(triples)), length):
++            for targets in product(*(triples[index][2] for index in order)):
++                yield tuple(zip(order, targets))
++
++
++def _obligations(prepared, history, work):
++    known, target_mask, requirements = prepared["known"], 0, set()
++    eligible = prepared["eligible"]
++    for index, target in history:
++        _, rows, _ = prepared["triples"][index]
++        for row in rows:
++            work.tick("prerequisite_tests")
++            if row != target and not known & (1 << row):
++                requirement = prepared["ancestors"][row] & eligible
++                if not requirement:
++                    return None
++                requirements.add(requirement)
++        known |= prepared["reach"][target]
++        target_mask |= 1 << target
++    mandatory = []
++    for group in prepared["source_groups"]:
++        mask = sum(1 << row for row in group)
++        if mask & target_mask:
++            continue
++        mask &= eligible
++        if not mask:
++            return None
++        mandatory.append(mask)
++    # Any hit of a smaller required set also hits a superset.  A mandatory
++    # group contained in a prerequisite makes that prerequisite automatic.
++    reduced = []
++    for mask in sorted(requirements, key=lambda x: (x.bit_count(), x)):
++        if any(other & mask == other for other in (*mandatory, *reduced)):
++            continue
++        reduced.append(mask)
++    work.tick("required_set_reductions", len(requirements))
++    return tuple(sorted(mandatory)), tuple(sorted(reduced))
++
++
++def _forced_cover(data, mandatory, requirements, work):
++    """Enumerate only prerequisite representatives; intersect the rest."""
++    visited = set()
++    for representatives in product(*(_bits(mask) for mask in requirements)):
++        work.tick("representative_tuples")
++        forced = frozenset(representatives)
++        if forced in visited:
++            continue
++        if len(visited) < 4096:
++            visited.add(forced)
++        if not base._graphic_independent(data, forced, work):
++            continue
++        dsu = base._forest(data, forced, work)
++        contracted = tuple(None if edge is None else
++                           (dsu.find(edge[0]), dsu.find(edge[1]))
++                           for edge in data[2])
++        contracted_data = (data[0], data[1], contracted, data[3])
++        forced_mask = sum(1 << row for row in forced)
++        groups = [list(_bits(mask)) for mask in mandatory if not mask & forced_mask]
++        chosen, failure = base._rainbow_forest(contracted_data, groups, work)
++        if failure is None:
++            return base._extend_tree(data, forced | set(chosen), work)
++    return None
++
++
++def _prime64(number):
++    """Deterministic Miller--Rabin for the explicitly bounded 64-bit domain."""
++    if type(number) is not int or not 2 <= number < (1 << 64):
++        return False
++    for small in (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37):
++        if number % small == 0:
++            return number == small
++    odd, shifts = number - 1, 0
++    while odd % 2 == 0:
++        odd //= 2
++        shifts += 1
++    for witness in (2, 325, 9375, 28178, 450775, 9780504, 1795265022):
++        if witness % number == 0:
++            continue
++        value = pow(witness, odd, number)
++        if value in (1, number - 1):
++            continue
++        for _ in range(shifts - 1):
++            value = value * value % number
++            if value == number - 1:
++                break
++        else:
++            return False
++    return True
++
++
++def _determinant(matrix, prime, work):
++    size = len(matrix)
++    answer = 1
++    for column in range(size):
++        pivot = next((row for row in range(column, size)
++                      if matrix[row][column] % prime), None)
++        work.tick("determinant_pivot_tests", size - column)
++        if pivot is None:
++            return 0
++        if pivot != column:
++            matrix[pivot], matrix[column] = matrix[column], matrix[pivot]
++            answer = -answer
++        value = matrix[column][column] % prime
++        answer = answer * value % prime
++        inverse = pow(value, prime - 2, prime)
++        for row in range(column + 1, size):
++            multiplier = matrix[row][column] * inverse % prime
++            if multiplier:
++                for other in range(column + 1, size):
++                    matrix[row][other] = (matrix[row][other]
++                                          - multiplier * matrix[column][other]) % prime
++                work.tick("field_elimination_updates", size - column - 1)
++    return answer % prime
++
++
++class CoverageSieve:
++    """Common-basis determinant with exact inclusion--exclusion on colors.
++
++    The columns for a mandatory representative and for a filler use distinct
++    random variables even when they come from the same original edge.
++    """
++
++    def __init__(self, data, mandatory, requirements, prime, rng, work,
++                 coefficients=None, mask_coefficients=None):
++        self.rank = data[0] - 1
++        self.prime, self.work = prime, work
++        self.colors = len(requirements)
++        self.coefficients = coefficients
++        self.mask_coefficients = mask_coefficients
++        self.copies = []
++        self.impossible = len(mandatory) > self.rank
++        group_of = {row: group for group, mask in enumerate(mandatory)
++                    for row in _bits(mask)}
++        filler_rank = self.rank - len(mandatory)
++        if filler_rank < 0:
++            return
++        eligible = [row for row, edge in enumerate(data[2])
++                    if edge is not None and edge[0] != edge[1]]
++        if prime <= 2 * len(eligible):
++            raise base.InvalidProblem("prime must exceed twice the eligible edge count")
++        for label, row in enumerate(eligible, 1):
++            edge = data[2][row]
++            vector_a = tuple((vertex - 1, sign) for vertex, sign in
++                             ((edge[0], 1), (edge[1], -1)) if vertex != 0)
++            color_mask = sum(1 << index for index, mask in enumerate(requirements)
++                             if mask & (1 << row))
++            if row in group_of:
++                self.copies.append((row, vector_a, ((group_of[row], 1),),
++                                    color_mask, rng.randrange(prime)))
++            if filler_rank:
++                powers, power = [], 1
++                for index in range(filler_rank):
++                    powers.append((len(mandatory) + index, power))
++                    power = power * label % prime
++                self.copies.append((row, vector_a, tuple(powers), color_mask,
++                                    rng.randrange(prime)))
++        work.tick("sieve_copies", len(self.copies))
++
++    def evaluate(self, active):
++        answer = 0
++        entries = (self.mask_coefficients if self.mask_coefficients is not None else
++                   ((missing, (-1 if missing.bit_count() % 2 else 1)
++                     if self.coefficients is None else self.coefficients[missing])
++                    for missing in range(1 << self.colors)))
++        for missing, coefficient in entries:
++            if coefficient % self.prime == 0:
++                continue
++            self.work.tick("sieve_determinants")
++            matrix = [[0] * self.rank for _ in range(self.rank)]
++            for index in sorted(active):
++                _, vector_a, vector_b, colors, weight = self.copies[index]
++                self.work.tick("sieve_copy_visits")
++                if colors & missing:
++                    continue
++                for row, sign in vector_a:
++                    for column, value in vector_b:
++                        matrix[row][column] = (matrix[row][column]
++                                               + sign * weight * value) % self.prime
++                    self.work.tick("sieve_outer_updates", len(vector_b))
++            determinant = _determinant(matrix, self.prime, self.work)
++            answer += coefficient * determinant
++        return answer % self.prime
++
++    def tree(self):
++        if self.impossible:
++            return None
++        active = set(range(len(self.copies)))
++        if len(active) < self.rank or self.evaluate(active) == 0:
++            return None
++        # Repeated passes are essential: a deletion made later in a pass can
++        # change an earlier zero deletion-test into a nonzero test.
++        while len(active) > self.rank:
++            removed = False
++            for index in sorted(active):
++                if len(active) == self.rank:
++                    break
++                self.work.tick("self_reduction_tests")
++                if self.evaluate(active - {index}):
++                    active.remove(index)
++                    removed = True
++            if not removed:
++                raise ArithmeticError("homogeneous self-reduction invariant failed")
++        return sorted(self.copies[index][0] for index in active)
++
++
++def _solve(problem, *, randomized, max_work, max_histories, seed, prime):
++    data = base.normalize(problem)
++    work = base.Work(max_work, max_histories)
++    method = "triple_sieve" if randomized else "triple_deterministic"
++    try:
++        failure = base._source_connectivity(data, work)
++        if failure:
++            return dict(status="NO_FOREST", method=method, certificate=failure,
++                        stats=work.export())
++        prepared = _prepare(data, work)
++        if prepared is None:
++            return dict(status="INCONCLUSIVE", method=method,
++                        reason="a non-inert column has support greater than three",
++                        stats=work.export())
++        work.tick("exceptional_columns", len(prepared["triples"]))
++        if randomized:
++            if not _prime64(prime):
++                raise base.InvalidProblem("prime must be prime and smaller than 2**64")
++            if seed is not None and type(seed) is not int:
++                raise base.InvalidProblem("seed must be an integer or None")
++            rng = SystemRandom() if seed is None else Random(seed)
++        seen = set()
++        for history in _histories(prepared):
++            work.tick("search_nodes")
++            obligations = _obligations(prepared, history, work)
++            if obligations is None or obligations in seen:
++                continue
++            if len(seen) < 4096:
++                seen.add(obligations)
++            mandatory, requirements = obligations
++            work.tick("distinct_obligations")
++            work.counts["maximum_prerequisite_sets"] = max(
++                work.counts.get("maximum_prerequisite_sets", 0), len(requirements))
++            if not requirements:
++                # The k=0 and no-prerequisite cases remain deterministic.
++                tree = _forced_cover(data, mandatory, requirements, work)
++            elif randomized:
++                sieve = CoverageSieve(data, mandatory, requirements, prime, rng, work)
++                tree = sieve.tree() if len(mandatory) <= data[0] - 1 else None
++            else:
++                tree = _forced_cover(data, mandatory, requirements, work)
++            if tree is not None:
++                certificate = base._positive(data, tree, work)
++                return dict(status="SUCCESS", method=method, certificate=certificate,
++                            history=[[prepared["triples"][i][0], r] for i, r in history],
++                            stats=work.export())
++        if randomized:
++            return dict(status="INCONCLUSIVE", method=method,
++                        reason="no witness found; randomized zero is not a negative certificate",
++                        false_negative_bound=dict(numerator=data[0] - 1, denominator=prime),
++                        randomness="uniform system randomness" if seed is None else
++                        "seeded reproducible experiment; no adversarial probability guarantee",
++                        stats=work.export())
++        return dict(status="NO_FOREST", method=method,
++                    evidence="exhaustive deterministic history and representative search",
++                    certificate=None, stats=work.export())
++    except base.BudgetExhausted as error:
++        return dict(status="INCONCLUSIVE", method=method, reason=str(error),
++                    stats=work.export())
++
++
++def solve(problem, *, max_work=None, max_histories=None):
++    """Exact deterministic N**O(k) decision; positive results carry proofs.
++
++    Exhaustive negative answers are algorithmic conclusions, not exported
++    compact certificates.  All resource exhaustion returns INCONCLUSIVE.
++    """
++    return _solve(problem, randomized=False, max_work=max_work,
++                  max_histories=max_histories, seed=None, prime=DEFAULT_PRIME)
++
++
++def solve_randomized(problem, *, max_work=None, max_histories=None,
++                     seed=None, prime=DEFAULT_PRIME):
++    """One-sided 2**O(k log(k+2))*poly(N) witness search in the stated regime.
++
++    A fixed seed is provided solely for reproducible experiments.  The
++    probability theorem assumes independent uniform field samples.
++    """
++    return _solve(problem, randomized=True, max_work=max_work,
++                  max_histories=max_histories, seed=seed, prime=prime)
++
++
++def main():
++    import argparse
++    import json
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument("input")
++    parser.add_argument("--randomized", action="store_true")
++    parser.add_argument("--seed", type=int)
++    parser.add_argument("--max-work", type=int)
++    parser.add_argument("--max-histories", type=int)
++    args = parser.parse_args()
++    with open(args.input, encoding="utf-8") as stream:
++        problem = json.load(stream)
++    keywords = dict(max_work=args.max_work, max_histories=args.max_histories)
++    result = (solve_randomized(problem, seed=args.seed, **keywords)
++              if args.randomized else solve(problem, **keywords))
++    print(json.dumps(result, indent=2))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/Topology/UnknotRecognition/fast/triple_forest_research/ATTRIBUTION.md b/Topology/UnknotRecognition/fast/triple_forest_research/ATTRIBUTION.md
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/triple_forest_research/ATTRIBUTION.md
+@@ -0,0 +1,22 @@
++# Provenance of the finite kernels
++
++`base.py` and `base_verify.py` are unchanged copies of the discovery and
++independent verification kernels in the preceding ProveIt incoming package
++`ProveIt_Dual_Forest_Normalization_2026-10-12.zip`, under `code/forest_search/`.
++They are vendored to make this research module standalone and avoid changing
++the predecessor's import conventions. The independent verifier imports no
++producer code.
++
++The repository checkpoint is `c6d0ec8aa0b6308310ab6c081ba29d8bc363ede5`.
++The repository's MIT No Attribution license is retained in the delivered
++package's root `LICENSE`. The incoming package and its results are credited
++as prior work in the article; these two kernels are not claimed as new work.
++
++`solver.py` and `nonlinear.py` implement the new exceptional-column,
++Boolean/ideal, and deterministic-width algorithms. See the article for the
++proofs, exact scope, and resource/randomness conventions.
++
++## Exact copied-file hashes
++
++- `base.py` from `code/forest_search/dual_forest_search.py`: `d93fc23c4eab48c44f858d5408f2017e191185625f70c7c592d6d5edeaf658b8`
++- `base_verify.py` from `code/forest_search/dual_forest_verify.py`: `8bfdaa4850605ada8b20b45e473548984c9314b7393dca8b27193266da6f8783`
+diff --git a/Topology/UnknotRecognition/fast/triple_forest_research/README.md b/Topology/UnknotRecognition/fast/triple_forest_research/README.md
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/triple_forest_research/README.md
+@@ -0,0 +1,99 @@
++# Exceptional-row forest research
++
++This module solves a finite problem: choose a spanning tree in a supplied
++rooted multigraph, delete its matrix rows, and completely peel the remaining
++unsigned occurrence matrix on private unit columns. It does not authenticate
++a triangulation, classify a manifold, or decide a knot type by itself.
++
++The complete proofs and experiments appear in **Exceptional Rows and Fast
++Certificate Replay for Unknot Recognition**, 12 October 2026. The baseline
++repository revision is `c6d0ec8aa0b6308310ab6c081ba29d8bc363ede5`.
++
++## Exact input
++
++```json
++{
++  "vertices": 2,
++  "columns": 2,
++  "edges": [[0, 1], [0, 1], [0, 0]],
++  "rows": [[[0, 1], [1, 1]], [[0, 1], [1, 2]], [[0, 1]]]
++}
++```
++
++Every row has a corresponding edge. Root vertex is zero; a loop or `null`
++edge is unavailable to a spanning tree. Sparse column indices in each row
++must be distinct, and all stored counts are positive integers. Counts are
++actual unsigned occurrences. The decision procedure caps counts at two;
++that operation is not suitable for source-parity calculations.
++
++## API and independent replay
++
++```python
++from triple_forest_research.nonlinear import solve_boolean, solve_width
++from triple_forest_research.base_verify import verify
++
++result = solve_width(problem, max_work=5_000_000, max_states=100_000)
++# Alternative: randomized discovery with a deterministic certificate.
++result = solve_boolean(problem, max_work=20_000_000,
++                       max_states=100_000, trials=2)
++if result['status'] == 'SUCCESS':
++    assert verify(problem, result)
++```
++
++The discovery functions produce a tree and a complete pivot order. Call the
++separate checker before relying on the result. The checker imports no
++discovery code and reads the original graph and matrix. Every positive in
++the delivered audits is independently replayed.
++
++`solve_width` is deterministic and exact when uncapped. `solve_boolean`
++has one-sided witness misses: a zero evaluation is `INCONCLUSIVE`, never a
++negative proof. `seed=None` uses system randomness; an integer seed is
++provided only for reproducibility. The mathematical probability guarantee
++assumes independent uniform field samples. The default prime is `2**61-1`;
++the finite implementation checks a 64-bit prime domain and rejects a prime
++too small for the edge-copy construction. The asymptotic theorem chooses a
++suitable growing prime. Resource limits always yield `INCONCLUSIVE` if they
++interrupt search. A deterministic precheck can finish without enumerating
++any ideal states.
++
++The deterministic solver's exhaustive `NO_FOREST` is a finite algorithmic
++conclusion. Except for source disconnection, this implementation does not
++export a portable negative proof for all such conclusions. Passing that
++result to the independent checker therefore does not turn it into a
++certified negative. Source geometry and complete native terminal topology
++remain additional obligations in every case.
++
++## Parameters and algorithms
++
++Let `m` count rows, `N` the explicit encoded input length, `k` the number of
++useful exceptional columns, `d` the nonfree ordinary SCCs meeting their
++supports, `J` the ideals of the resulting reachability poset, and `w` its
++width. A column is useful if some entry equals one; useful columns of support
++at least three are exceptional.
++
++| Entry point | Bound | Scope |
++| --- | --- | --- |
++| `nonlinear.solve_boolean` | `J poly(N)`, `J <= 2**d` | Arbitrary useful support; one-sided randomization |
++| `nonlinear.solve_width` | `J (m+1)**w poly(N)` | Deterministic, polynomial space |
++| `solver.solve` | `3**k k! (m+1)**(2k) poly(N)` | Useful support at most three; exact fallback |
++| `solver.solve_randomized` | `2**O(k log(k+2)) poly(N)` | Reference schedule/covering sieve |
++
++For native triple-unit columns, `d <= 3k`, giving `8**k poly(N)` randomized
++time. A width-`w` chain partition bounds `J <= (1+d/w)**w` for `w>0`.
++Thus fixed width gives a deterministic polynomial local algorithm.
++These are not general quasi-polynomial unknot-recognition theorems.
++
++## Command line
++
++From a directory whose Python path contains this package:
++
++```sh
++python -m triple_forest_research.nonlinear input.json --seed 20261012
++python -m triple_forest_research.nonlinear input.json --deterministic-width
++python -m triple_forest_research.solver input.json
++```
++
++The unchanged `base.py` and `base_verify.py` are attributed in
++`ATTRIBUTION.md`. A future native adapter must export the exact source matrix
++and transport the lower forest and all attachment data before treating the
++finite certificate as a geometric statement.
+diff --git a/Topology/UnknotRecognition/fast/tests/test_triple_forest_research.py b/Topology/UnknotRecognition/fast/tests/test_triple_forest_research.py
+new file mode 100644
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_triple_forest_research.py
+@@ -0,0 +1,237 @@
++"""Independent finite checks for the exceptional-row research solvers."""
++
++import copy
++import itertools
++import random
++import unittest
++
++from triple_forest_research import base, base_verify, nonlinear, solver
++
++
++def brute_trees(problem):
++    """Tiny independent graph/peeling oracle, with explicit block merging."""
++    rank = problem["vertices"] - 1
++    answers = []
++    for chosen in itertools.combinations(range(len(problem["rows"])), rank):
++        blocks = [{vertex} for vertex in range(problem["vertices"])]
++        for row in chosen:
++            edge = problem["edges"][row]
++            if edge is None:
++                break
++            left = next(i for i, block in enumerate(blocks) if edge[0] in block)
++            right = next(i for i, block in enumerate(blocks) if edge[1] in block)
++            if left == right:
++                break
++            blocks[left].update(blocks[right])
++            del blocks[right]
++        else:
++            if len(blocks) != 1:
++                continue
++            live = set(range(len(problem["rows"]))) - set(chosen)
++            while live:
++                owner, totals = {}, {}
++                for row in live:
++                    for column, value in problem["rows"][row]:
++                        totals[column] = totals.get(column, 0) + value
++                        owner[column] = row
++                private = next((column for column, value in totals.items() if value == 1), None)
++                if private is None:
++                    break
++                live.remove(owner[private])
++            if not live:
++                answers.append(chosen)
++    return answers
++
++
++def one_triple():
++    # First spanning tree stalls; deleting row 1 seeds row 0 and then row 2.
++    return base.from_dense(2, [[0, 1], [0, 1], [0, 0]],
++                           [[1, 1], [1, 2], [1, 0]])
++
++
++class Values:
++    def __init__(self, values):
++        self.values = iter(values)
++
++    def randrange(self, prime):
++        value = next(self.values)
++        assert 0 <= value < prime
++        return value
++
++
++class ExceptionalRowsTests(unittest.TestCase):
++    def test_new_three_row_success(self):
++        problem = one_triple()
++        self.assertEqual(base.solve_degree_two(problem)["status"], "INCONCLUSIVE")
++        for result in (solver.solve(problem), solver.solve_randomized(problem, seed=10),
++                       nonlinear.solve_boolean(problem, seed=10),
++                       nonlinear.solve_width(problem)):
++            self.assertEqual(result["status"], "SUCCESS")
++            self.assertEqual(result["certificate"]["tree"], [1])
++            self.assertTrue(base_verify.verify(problem, result))
++
++    def test_future_head_does_not_seed_its_own_prerequisites(self):
++        problem = base.from_dense(1, [[0, 0]] * 3,
++                                  [[1, 2, 2], [1, 1, 0], [1, 0, 1]])
++        self.assertFalse(brute_trees(problem))
++        self.assertEqual(solver.solve(problem)["status"], "NO_FOREST")
++        result = nonlinear.solve_boolean(problem, seed=20)
++        self.assertEqual(result["status"], "INCONCLUSIVE")
++
++    def test_exhaustive_binary_three_by_two(self):
++        choices = [None, [0, 0], [0, 1], [1, 1]]
++        checked = 0
++        for edges in itertools.product(choices, repeat=3):
++            for bits in itertools.product((0, 1), repeat=6):
++                matrix = [list(bits[2 * row:2 * row + 2]) for row in range(3)]
++                problem = base.from_dense(2, list(edges), matrix)
++                expected = bool(brute_trees(problem))
++                exact = solver.solve(problem)
++                self.assertEqual(exact["status"] == "SUCCESS", expected)
++                random_result = nonlinear.solve_boolean(problem, seed=checked)
++                self.assertEqual(random_result["status"] == "SUCCESS", expected)
++                width_result = nonlinear.solve_width(problem)
++                self.assertEqual(width_result["status"] == "SUCCESS", expected)
++                if expected:
++                    self.assertTrue(base_verify.verify(problem, exact))
++                    self.assertTrue(base_verify.verify(problem, random_result))
++                    self.assertTrue(base_verify.verify(problem, width_result))
++                checked += 1
++        self.assertEqual(checked, 4096)
++
++    def test_generated_weighted_wider_columns(self):
++        rng = random.Random(4218003)
++        for case in range(320):
++            vertices, rows = rng.randint(1, 4), rng.randint(3, 7)
++            edges = [None if rng.randrange(7) == 0 else
++                     [rng.randrange(vertices), rng.randrange(vertices)] for _ in range(rows)]
++            matrix = [[rng.choice((0, 0, 1, 1, 2)) for _ in range(3)] for _ in range(rows)]
++            problem = base.from_dense(vertices, edges, matrix)
++            expected = bool(brute_trees(problem))
++            result = nonlinear.solve_boolean(problem, seed=case, trials=2)
++            self.assertEqual(result["status"] == "SUCCESS", expected)
++            exact = nonlinear.solve_width(problem)
++            self.assertEqual(exact["status"] == "SUCCESS", expected)
++            if expected:
++                self.assertTrue(base_verify.verify(problem, result))
++                self.assertTrue(base_verify.verify(problem, exact))
++
++    def test_boolean_mobius_identity_for_every_three_bit_function(self):
++        for truth_bits in range(256):
++            values = [(truth_bits >> mask) & 1 for mask in range(8)]
++            coefficients = nonlinear._mobius_filter(values, base.Work())
++            for hit in range(8):
++                actual = sum(coefficients[mask] for mask in range(8) if mask & hit == 0)
++                self.assertEqual(actual, values[hit])
++
++    def test_ideal_filter_chain_and_all_small_posets(self):
++        rng = random.Random(76879)
++        for dimension in range(1, 7):
++            # A directed acyclic graph in label order; include a chain and
++            # an antichain explicitly.  Check by enumerating all subsets.
++            for sample in range(30):
++                ancestors = [1 << i for i in range(dimension)]
++                for i in range(dimension):
++                    for j in range(i):
++                        if sample == 0 or (sample > 1 and rng.randrange(3) == 0):
++                            ancestors[i] |= ancestors[j]
++                prepared = {"ancestors": ancestors}
++                ideals = nonlinear._ideal_masks(prepared, list(range(dimension)), base.Work())
++                expected = [mask for mask in range(1 << dimension)
++                            if all(ancestors[i] & mask == ancestors[i]
++                                   for i in range(dimension) if mask & (1 << i))]
++                self.assertEqual(ideals, expected)
++                if sample == 0:
++                    self.assertEqual(len(ideals), dimension + 1)
++                if sample == 1:
++                    self.assertEqual(len(ideals), 1 << dimension)
++                values = [rng.randrange(-7, 8) for _ in ideals]
++                coefficients = nonlinear._ideal_mobius(ideals, values, dimension, base.Work())
++                for index, mask in enumerate(ideals):
++                    self.assertEqual(sum(value for subset, value in coefficients
++                                         if subset & mask == subset), values[index])
++
++    def test_scc_order_is_not_row_order(self):
++        # Ordinary implications go backwards in row-label order.
++        problem = base.from_dense(2, [[0, 1], [0, 0], [0, 0]],
++                                  [[1, 1, 0], [1, 2, 1], [1, 0, 2]])
++        prepared, special, _ = nonlinear._special_state(base.normalize(problem), base.Work())
++        self.assertEqual(special, [2, 1, 0])
++        self.assertEqual(nonlinear._ideal_masks(prepared, special, base.Work()), [0, 1, 3, 7])
++        self.assertEqual(nonlinear.solve_width(problem)["status"] == "SUCCESS",
++                         bool(brute_trees(problem)))
++
++    def test_repeated_pass_extraction(self):
++        problem = base.from_dense(2, [[0, 1]] * 3, [[], [], []], columns=0)
++        work = base.Work()
++        sieve = solver.CoverageSieve(base.normalize(problem), (), (), 7,
++                                    Values([1, 1, 6]), work)
++        self.assertEqual(sieve.tree(), [1])
++        self.assertEqual(work.counts["self_reduction_tests"], 4)
++
++    def test_distinct_copy_variables_prevent_symbolic_cancellation(self):
++        problem = base.from_dense(3, [[0, 1], [0, 2]], [[], []], columns=0)
++        data = base.normalize(problem)
++        # Identifying the two variables for each edge cancels the polynomial.
++        bad = solver.CoverageSieve(data, (3,), (), 7, Values([1, 1, 1, 1]), base.Work())
++        self.assertIsNone(bad.tree())
++        good = solver.CoverageSieve(data, (3,), (), 7, Values([1, 2, 3, 4]), base.Work())
++        self.assertEqual(good.tree(), [0, 1])
++
++    def test_too_many_mandatory_groups(self):
++        data = base.normalize(base.from_dense(2, [[0, 1], [0, 1]], [[], []], columns=0))
++        sieve = solver.CoverageSieve(data, (1, 2), (), 7, Values([]), base.Work())
++        self.assertIsNone(sieve.tree())
++
++    def test_budgets_are_inconclusive(self):
++        problem = one_triple()
++        self.assertEqual(solver.solve(problem, max_work=0)["status"], "INCONCLUSIVE")
++        self.assertEqual(solver.solve(problem, max_histories=0)["status"], "INCONCLUSIVE")
++        self.assertEqual(nonlinear.solve_boolean(problem, max_table_bits=0)["status"],
++                         "INCONCLUSIVE")
++        self.assertEqual(nonlinear.solve_boolean(problem, max_states=0)["status"],
++                         "INCONCLUSIVE")
++        self.assertEqual(nonlinear.solve_width(problem, max_states=0)["status"],
++                         "INCONCLUSIVE")
++
++    def test_independent_replay_rejects_mutated_source_and_proof(self):
++        problem = one_triple()
++        result = nonlinear.solve_boolean(problem, seed=7)
++        changed = copy.deepcopy(problem)
++        changed["rows"][2][0][1] = 2
++        self.assertFalse(base_verify.verify(changed, result))
++        changed = copy.deepcopy(result)
++        changed["certificate"]["tree"] = [0]
++        self.assertFalse(base_verify.verify(problem, changed))
++        changed = copy.deepcopy(result)
++        changed["certificate"]["peeling"].pop()
++        self.assertFalse(base_verify.verify(problem, changed))
++
++    def test_no_randomized_zero_is_a_negative_certificate(self):
++        problem = base.from_dense(2, [[0, 1]] * 3, [[1], [1], [1]])
++        result = nonlinear.solve_boolean(problem, seed=8)
++        self.assertEqual(result["status"], "INCONCLUSIVE")
++        self.assertFalse(base_verify.verify(problem, result))
++
++    def test_large_counts_and_unbounded_inert_support(self):
++        problem = base.from_dense(2, [[0, 1], [0, 0], [0, 0], [0, 0]],
++                                  [[2**1000, 0, 0, 0], [2**1000, 1, 0, 0],
++                                   [2**1000, 0, 1, 0], [2**1000, 0, 0, 1]])
++        self.assertEqual(nonlinear.solve_boolean(problem)["status"], "SUCCESS")
++
++    def test_input_validation(self):
++        for prime in (0, 2**64, 9, True):
++            with self.assertRaises(ValueError):
++                nonlinear.solve_boolean(one_triple(), prime=prime)
++        with self.assertRaises(ValueError):
++            nonlinear.solve_boolean(one_triple(), trials=0)
++        with self.assertRaises(ValueError):
++            nonlinear.solve_boolean(one_triple(), max_table_bits=-1)
++        malformed = one_triple()
++        malformed["rows"][0].append(malformed["rows"][0][0])
++        with self.assertRaises(ValueError):
++            nonlinear.solve_boolean(malformed)
++
++
++if __name__ == "__main__":
++    unittest.main()

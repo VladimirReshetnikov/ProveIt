@@ -1,0 +1,1 @@
+Four unchanged runtime modules retained from d9456c5bdb94820bfa9e480e9ed73c10a769e59a before native gap-prefix integration. The benchmark runs separate worker interpreters with these modules overlaid onto otherwise identical package copies. All source inputs, certificates and outputs are compared; process startup and corpus loading are outside timing.

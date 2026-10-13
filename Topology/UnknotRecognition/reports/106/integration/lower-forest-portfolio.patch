@@ -1,0 +1,549 @@
+diff --git a/Topology/UnknotRecognition/fast/lower_forest_research/__init__.py b/Topology/UnknotRecognition/fast/lower_forest_research/__init__.py
+new file mode 100644
+index 0000000..ec5cfd8
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/lower_forest_research/__init__.py
+@@ -0,0 +1,8 @@
++"""Optional bounded lower-forest producer experiments.
++
++The maintained producer and every verifier remain unchanged by this package.
++"""
++
++from .producer import normal_cut_handlebodies_with_forests
++
++__all__ = ['normal_cut_handlebodies_with_forests']
+diff --git a/Topology/UnknotRecognition/fast/lower_forest_research/producer.py b/Topology/UnknotRecognition/fast/lower_forest_research/producer.py
+new file mode 100644
+index 0000000..b5e81d7
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/lower_forest_research/producer.py
+@@ -0,0 +1,151 @@
++"""A bounded, baseline-first portfolio of geometric lower spanning forests.
++
++This module is a producer adapter for the native API pinned in the accompanying
++research report.  It never supplies a verifier with prepared source geometry.
++Its successful packets use the ordinary native schema and independent checker.
++The two alternative policies are exceptional-unit-columns first and reverse
++handle order.  They do not decide all possible lower forests.
++"""
++
++from types import FunctionType
++
++from fastunknot.core_handlebody import (
++    _forest, _occurrences, column_cancellation_plan,
++    core_handlebody_certificate, leaf_cancellation_plan,
++)
++from fastunknot.core_handlebody_verify import verify_core_handlebody_certificate
++from fastunknot.normal_cut_handlebodies import normal_cut_handlebodies as _native
++
++
++def _orbit_cycles(result):
++    """Count the actual discovery cycles spent by one native composed call."""
++    return sum(item.get('orbit_cycles', 0)
++               for phase in ('parallelity', 'boundary')
++               for item in result.get('stats', {}).get(phase, {}).values())
++
++
++def _alternative_core(core, state, *, check):
++    baseline = core_handlebody_certificate(core, check=check)
++    if baseline['status'] == 'COMPLETE' or core['handles3']:
++        return baseline
++    check()
++    original = core['handles1']
++    identifiers = list(range(len(original)))
++    raw_rows = _occurrences(core, [], check)
++    owners, totals = {}, {}
++    for row in raw_rows.values():
++        check()
++        for column, value in row.items():
++            owners[column] = owners.get(column, 0) + 1
++            totals[column] = totals.get(column, 0) + value
++    exceptional = {c for c in owners if owners[c] == totals[c] == 3}
++    orders = (
++        ('exceptional_first', sorted(identifiers,
++                                    key=lambda i: (i not in exceptional, i))),
++        ('reverse', list(reversed(identifiers))),
++    )
++    record = dict(core_counts=[len(core[f'handles{i}']) for i in range(4)],
++                  baseline_reason=baseline.get('reason'), trials=[])
++    state['core_searches'].append(record)
++    for policy, order in orders:
++        check()
++        if state['extra_forests'] == state['max_extra_forests']:
++            state['forest_limit_reached'] = True
++            break
++        state['extra_forests'] += 1
++        # Only the traversal order changes.  Source labels, handle charts and
++        # attaching cycles retain their original identities and contents.
++        forest, owners = _forest(
++            dict(core, handles1=[original[i] for i in order]), check)
++        counts = _occurrences(core, forest, check)
++        planned = leaf_cancellation_plan(counts, check=check)
++        method = 'leaf'
++        if planned['remaining_rows']:
++            planned = column_cancellation_plan(counts, check=check)
++            method = 'column_leaf'
++        trial = dict(policy=policy, forest=forest,
++                     remaining_rows=planned['remaining_rows'])
++        record['trials'].append(trial)
++        if planned['remaining_rows']:
++            continue
++        alive = set(identifiers) - set(forest)
++        alive.difference_update(c for _, c in planned['cancellations'])
++        components = []
++        for owner in sorted(set(owners)):
++            check()
++            vertices = [v for v, root in enumerate(owners) if root == owner]
++            loops = [i for i in sorted(alive)
++                     if owners[original[i]['ends'][0]] == owner]
++            components.append(dict(id=owner, zero_handles=vertices,
++                                   remaining_one_handles=loops, genus=len(loops)))
++        schema = ('normal-core-handlebody-v2' if method == 'column_leaf'
++                  else 'normal-core-handlebody-v1')
++        proof = dict(schema=schema, method=method, forest=forest,
++                     cancellations=planned['cancellations'], components=components)
++        if not verify_core_handlebody_certificate(core, proof, check=check):
++            raise ArithmeticError('alternative lower-forest proof failed native replay')
++        trial['independent_core_replay'] = True
++        check()
++        return dict(status='COMPLETE', trust=baseline['trust'],
++                    stats=planned['stats'], certificate=proof, components=components)
++    return baseline
++
++
++def normal_cut_handlebodies_with_forests(
++        triangulation, coordinates, *, max_extra_forests=4, max_cycles=None,
++        record_certificate=False, precheck_core=True, check=lambda: None):
++    """Try the native producer, then at most two alternative policies per core.
++
++    Every native COMPLETE result is returned immediately and unchanged.  On a
++    native refusal, retry the same whole-cut logic with a private core-planner
++    binding.  The total number of alternative forests, across all core calls in
++    that retry, is bounded by ``max_extra_forests``.  Its default four permits
++    both policies for an initial core and for a disk-bundle-augmented core.
++    Zero disables the retry.  There is no randomized search or retained state.
++
++    ``max_cycles`` bounds the sum of orbit-discovery cycles spent by the initial
++    call and retry.  The native cycle accounting is preserved within each call.
++    A depleted allowance or unsuccessful policy portfolio yields INCONCLUSIVE;
++    it provides no negative topological conclusion.  Callback cancellation
++    propagates immediately.  No public module globals or source inputs change.
++
++    FunctionType copies the already imported function's globals rather than
++    loading a file or mutating its module.  This research adapter depends on the
++    native core-planner binding; it does not promise compatibility with future
++    rewrites of the composed producer.
++    """
++    check()
++    if type(max_extra_forests) is not int or max_extra_forests < 0:
++        raise ValueError('max_extra_forests must be a nonnegative integer')
++    # Delegate native option and source validation to the unchanged public API.
++    baseline = _native(triangulation, coordinates, max_cycles=max_cycles,
++                       record_certificate=record_certificate,
++                       precheck_core=precheck_core, check=check)
++    if baseline['status'] == 'COMPLETE' or max_extra_forests == 0:
++        return baseline
++    used = _orbit_cycles(baseline)
++    if max_cycles is not None and used >= max_cycles:
++        return baseline
++    state = dict(max_extra_forests=max_extra_forests, extra_forests=0,
++                 forest_limit_reached=False, core_searches=[])
++
++    def alternate(core, *, check=lambda: None):
++        return _alternative_core(core, state, check=check)
++
++    if 'core_handlebody_certificate' not in _native.__code__.co_names:
++        raise RuntimeError('native producer no longer exposes its core planner binding')
++    private_globals = dict(_native.__globals__, core_handlebody_certificate=alternate)
++    retry = FunctionType(_native.__code__, private_globals, _native.__name__,
++                         _native.__defaults__, _native.__closure__)
++    retry.__kwdefaults__ = dict(_native.__kwdefaults__ or {})
++    remaining = None if max_cycles is None else max_cycles - used
++    result = retry(triangulation, coordinates, max_cycles=remaining,
++                   record_certificate=record_certificate,
++                   precheck_core=precheck_core, check=check)
++    state.update(baseline_reason=baseline.get('reason'),
++                 baseline_orbit_cycles=used,
++                 retry_orbit_cycles=_orbit_cycles(result))
++    state['total_orbit_cycles'] = used + state['retry_orbit_cycles']
++    result['stats']['lower_forest_portfolio'] = state
++    check()
++    return result
+diff --git a/Topology/UnknotRecognition/fast/lower_forest_research/audit.py b/Topology/UnknotRecognition/fast/lower_forest_research/audit.py
+new file mode 100644
+index 0000000..10f594e
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/lower_forest_research/audit.py
+@@ -0,0 +1,109 @@
++"""Audit every refusal from an authenticated full-corpus baseline report.
++
++Run from the native ``fast`` directory as ``python -m lower_forest_research.audit
++--baseline /path/paired_native_benchmark.json --output /path/output``.
++The baseline supplies selection and original coverage; the producer API itself
++has no corpus-specific identifiers.  All newly successful packets undergo full
++independent source-bound replay using the unmodified native verifier.
++"""
++
++import argparse
++from collections import Counter
++from copy import deepcopy
++import hashlib
++import json
++from pathlib import Path
++import time
++
++from fastunknot.integer_codec import json_safe
++from fastunknot.normal_cut_handlebodies import normal_cut_handlebodies
++from fastunknot.normal_cut_handlebodies_verify import verify_normal_cut_handlebodies
++from .producer import normal_cut_handlebodies_with_forests
++
++
++def _digest(data):
++    return hashlib.sha256(data).hexdigest()
++
++
++def main():
++    parser = argparse.ArgumentParser(description=__doc__)
++    parser.add_argument('--baseline', type=Path, required=True)
++    parser.add_argument('--output', type=Path, required=True)
++    parser.add_argument('--corpus', type=Path,
++                        default=Path(__file__).resolve().parents[1] /
++                        'marked_parallelity_research/corpus.json')
++    parser.add_argument('--previous-packets', type=Path)
++    args = parser.parse_args()
++    corpus_bytes, baseline_bytes = args.corpus.read_bytes(), args.baseline.read_bytes()
++    corpus, baseline = json.loads(corpus_bytes), json.loads(baseline_bytes)
++    if _digest(corpus_bytes) != baseline['corpus_sha256']:
++        raise ValueError('baseline evidence belongs to a different corpus')
++    evidence = {c['id']: c for c in baseline['cases']}
++    if set(evidence) != {c['id'] for c in corpus['cases']}:
++        raise ValueError('baseline evidence does not cover exactly this corpus')
++    if any(not c['exact_output_parity'] for c in evidence.values()):
++        raise ValueError('baseline evidence lacks full native output parity')
++    counts = Counter(c['status'] for c in evidence.values())
++    targets = [c for c in corpus['cases'] if evidence[c['id']]['status'] != 'COMPLETE']
++    report = dict(source_pin=baseline['source_pin'], corpus_sha256=_digest(corpus_bytes),
++                  baseline_evidence_file=args.baseline.name,
++                  baseline_evidence_sha256=_digest(baseline_bytes),
++                  baseline_counts=dict(counts), policies=['exceptional_first', 'reverse'],
++                  max_extra_forests=4, random_search=False,
++                  note='Native COMPLETE inputs return unchanged; all baseline refusals are freshly audited.',
++                  cases=[])
++    args.output.mkdir(parents=True, exist_ok=True)
++    for case in targets:
++        before = deepcopy(case)
++        native = normal_cut_handlebodies(case['triangulation'], case['coordinates'],
++                                        record_certificate=True)
++        if native['status'] != evidence[case['id']]['status']:
++            raise AssertionError('baseline status changed')
++        start = time.perf_counter()
++        result = normal_cut_handlebodies_with_forests(
++            case['triangulation'], case['coordinates'], record_certificate=True)
++        entry = dict(id=case['id'], native_status=native['status'],
++                     native_reason=native.get('reason'), status=result['status'],
++                     reason=result.get('reason'), producer_seconds=time.perf_counter() - start,
++                     portfolio=result['stats'].get('lower_forest_portfolio'),
++                     input_sha256=_digest(json.dumps(json_safe(dict(
++                         triangulation=case['triangulation'], coordinates=case['coordinates'])),
++                         sort_keys=True, separators=(',', ':')).encode()))
++        if result['status'] == 'COMPLETE':
++            start = time.perf_counter()
++            if not verify_normal_cut_handlebodies(
++                    case['triangulation'], case['coordinates'], result['certificate']):
++                raise AssertionError('new packet failed independent whole-cut replay')
++            entry.update(independent_full_replay=True,
++                         replay_seconds=time.perf_counter() - start, census=result['census'])
++            name = case['id'].replace('/', '__') + '.json'
++            packet = json_safe(dict(id=case['id'], triangulation=case['triangulation'],
++                                    coordinates=case['coordinates'], certificate=result['certificate']))
++            if args.previous_packets and (args.previous_packets / name).exists():
++                previous = (args.previous_packets / name).read_bytes()
++                if json.loads(previous) != packet:
++                    raise AssertionError('deterministic packet differs from exploratory packet')
++                packet_bytes = previous
++                entry['same_packet_as_exploration'] = True
++            else:
++                packet_bytes = (json.dumps(packet, indent=2) + '\n').encode()
++            (args.output / name).write_bytes(packet_bytes)
++            entry.update(packet=name, packet_sha256=_digest(packet_bytes))
++        if case != before:
++            raise AssertionError('producer mutated source input')
++        entry['source_inputs_unchanged'] = True
++        report['cases'].append(entry)
++        print(json.dumps(dict(id=entry['id'], status=entry['status'], reason=entry['reason'],
++                              extra_forests=(entry['portfolio'] or {}).get('extra_forests', 0))), flush=True)
++    new = sum(c['status'] == 'COMPLETE' for c in report['cases'])
++    report.update(all_baseline_refusals_audited=len(report['cases']) == len(targets),
++                  new_source_bound_complete=new,
++                  portfolio_counts=dict(COMPLETE=counts['COMPLETE'] + new,
++                                        INCONCLUSIVE=len(corpus['cases']) - counts['COMPLETE'] - new))
++    (args.output / 'bounded_lower_forest_audit.json').write_text(json.dumps(report, indent=2) + '\n')
++    print(json.dumps({k: report[k] for k in ('all_baseline_refusals_audited',
++                                           'new_source_bound_complete', 'portfolio_counts')}), flush=True)
++
++
++if __name__ == '__main__':
++    main()
+diff --git a/Topology/UnknotRecognition/fast/lower_forest_research/README.md b/Topology/UnknotRecognition/fast/lower_forest_research/README.md
+new file mode 100644
+index 0000000..e950724
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/lower_forest_research/README.md
+@@ -0,0 +1,111 @@
++# Bounded lower spanning forest portfolio
++
++This optional research producer is based on native revision
++`c6d0ec8aa0b6308310ab6c081ba29d8bc363ede5`. It calls the ordinary
++`normal_cut_handlebodies` first. Every native `COMPLETE` result is returned
++immediately and unchanged. Following a native refusal, it retries the same
++whole-cut producer with a private core-planner binding and these two policies:
++
++1. Process one-handle edges whose raw columns have exactly three distinct unit
++   owners before all other edges, keeping the original order within each group.
++2. Process one-handle edges in reverse source order.
++
++Each policy constructs a spanning forest, runs the existing geometric row-leaf
++and column-leaf planners, and verifies any successful core proof with
++`verify_core_handlebody_certificate`. The resulting whole-cut certificate uses
++an existing native schema. It must be checked with the ordinary public
++`verify_normal_cut_handlebodies` on the actual triangulation and coordinates.
++No verifier accepts a prepared source from the adapter.
++
++The first policy minimizes the number of remaining three-owner unit columns
++in a raw source core: if these edges form `E3` in the original zero/one-handle
++multigraph, the optimum is the graphic cycle nullity `|E3| - rank(E3)`.
++Minimizing this parameter does not imply the best cancellation outcome. The
++second policy supplies a deliberately different forest. This bounded portfolio
++does not decide feasibility over all lower spanning forests.
++
++## API
++
++From the repository's `Topology/UnknotRecognition/fast` directory:
++
++```python
++from lower_forest_research import normal_cut_handlebodies_with_forests
++from fastunknot.normal_cut_handlebodies_verify import verify_normal_cut_handlebodies
++
++result = normal_cut_handlebodies_with_forests(
++    triangulation, coordinates,
++    max_extra_forests=4,
++    max_cycles=None,
++    record_certificate=True,
++    precheck_core=True,
++    check=lambda: None,
++)
++if result['status'] == 'COMPLETE':
++    assert verify_normal_cut_handlebodies(
++        triangulation, coordinates, result['certificate'])
++```
++
++`max_extra_forests` bounds the total alternative forests across every core call
++in the retry. Four permits both policies on an initial core and on a later
++disk-bundle-augmented core. Zero disables the retry. The adapter stops at the
++first successful core policy. It has no random search and retains no state
++between calls. `max_cycles` is shared across the initial whole-cut call and
++the retry. Callback exceptions propagate. Exhausted limits and unsuccessful
++search return `INCONCLUSIVE`, which is not a negative topological result.
++
++The adapter copies the imported composed function's globals using
++`types.FunctionType`; it neither reloads a source file nor changes any public
++module binding. Source charts and handle identifiers remain unchanged, and
++only a local list of traversal references is reordered. This construction is
++portable to the same native package version when installed outside a checkout.
++It depends on the current composed producer's core-planner binding and does
++not promise compatibility with future rewrites of that internal interface.
++
++## Reproduction
++
++The independent full native benchmark establishes 92 complete and 14 refused
++cuts on the 106-case `marked_parallelity_research/corpus.json`. Its SHA-256 is
++`97b4ceed6f068885760d80dea214538634998dd405b77e76926c1f93db03da5c`.
++The following audit checks the corpus hash against that evidence, selects
++*every* baseline refusal, recomputes the native status, tries the two policies,
++and independently replays every newly successful whole-cut packet:
++
++```sh
++python -m lower_forest_research.audit \
++  --baseline /path/paired_native_benchmark.json \
++  --output /path/bounded_lower_forest_results
++python -m unittest tests.test_lower_forest_portfolio
++```
++
++The October 12, 2026 audit found five additional independently verified
++handlebody censuses. Its optional portfolio coverage is therefore **97/106**;
++the maintained native default remains **92/106**. These are source-cut census
++results, not a 97/106 standalone knot-recognition success rate.
++
++| Source case | Successful alternative | Whole-cut genus histogram |
++| --- | --- | --- |
++| `pilot/fibonacci_lst_04/0` | exceptional first | genus 1: 1; genus 2: 1 |
++| `pilot/fibonacci_lst_06/0` | exceptional first, raw and augmented | genus 1: 1; genus 2: 1 |
++| `pilot/lst_4_9/0` | exceptional first, raw and augmented | genus 1: 1; genus 2: 1 |
++| `pilot/finite_trefoil/0` | exceptional first | genus 2: 1 |
++| `pachner23_5_8_2/mixed` | reverse | genus 0: 1; genus 1: 2 |
++
++All five histograms also agree with the separately identified historical
++Regina oracle report; that agreement is supporting evidence, not the new
++proof. The proof evidence is each source-bound packet and independent native
++replay. The five saved packet files exactly match those from the preliminary
++broader exploration; the final adapter uses only the two deterministic
++policies stated above.
++
++The nine remaining refusals include two cases whose cores now cancel but
++whose annular attachments remain unsupported (`fibonacci_lst_08` and
++`fibonacci_lst_10`), one raw core that still stalls (`finite_figureEight`), and
++six cases identified by the historical oracle as containing non-handlebody
++components. The adapter continues to refuse all six. No negative certificate
++or completeness claim is made for the nine refusals.
++
++The focused tests cover successful independent replay and proof tampering,
++exact preservation of baseline successes, unchanged source inputs and public
++module bindings, operation without source-file loading, repeatability,
++cancellation during forest traversal, invalid options, shared discovery-cycle
++limits, global alternative-forest limits, and the need for the reverse policy.
+diff --git a/Topology/UnknotRecognition/fast/tests/test_lower_forest_portfolio.py b/Topology/UnknotRecognition/fast/tests/test_lower_forest_portfolio.py
+new file mode 100644
+index 0000000..aa8569b
+--- /dev/null
++++ b/Topology/UnknotRecognition/fast/tests/test_lower_forest_portfolio.py
+@@ -0,0 +1,140 @@
++"""Portability, source integrity and refusal tests for the optional adapter."""
++
++from copy import deepcopy
++import importlib
++import json
++from pathlib import Path
++import unittest
++from unittest.mock import patch
++
++from fastunknot.normal_cut_handlebodies import normal_cut_handlebodies
++from fastunknot.normal_cut_handlebodies_verify import verify_normal_cut_handlebodies
++from lower_forest_research import normal_cut_handlebodies_with_forests
++from normal_orbit_research.fixtures import layered_torus
++
++
++class LowerForestPortfolioTests(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        corpus = Path(__file__).resolve().parents[1] / 'marked_parallelity_research/corpus.json'
++        cls.cases = {c['id']: c for c in json.loads(corpus.read_text())['cases']}
++
++    def source(self, name='pilot/fibonacci_lst_04/0'):
++        case = deepcopy(self.cases[name])
++        return case['triangulation'], case['coordinates']
++
++    def test_success_uses_ordinary_independent_whole_cut_replay(self):
++        raw, rows = self.source()
++        result = normal_cut_handlebodies_with_forests(raw, rows, record_certificate=True)
++        self.assertEqual(result['status'], 'COMPLETE')
++        self.assertTrue(verify_normal_cut_handlebodies(raw, rows, result['certificate']))
++        stats = result['stats']['lower_forest_portfolio']
++        self.assertEqual(stats['extra_forests'], 1)
++        self.assertEqual(stats['core_searches'][0]['trials'][0]['policy'], 'exceptional_first')
++        broken = deepcopy(result['certificate'])
++        broken['core']['forest'].append(broken['core']['forest'][0])
++        self.assertFalse(verify_normal_cut_handlebodies(raw, rows, broken))
++
++    def test_baseline_complete_returns_exact_native_result(self):
++        raw, rows = layered_torus(1)
++        expected = normal_cut_handlebodies(raw, rows, record_certificate=True)
++        actual = normal_cut_handlebodies_with_forests(raw, rows, record_certificate=True)
++        self.assertEqual(actual, expected)
++        self.assertNotIn('lower_forest_portfolio', actual['stats'])
++
++    def test_zero_limit_returns_native_refusal(self):
++        raw, rows = self.source()
++        expected = normal_cut_handlebodies(raw, rows, record_certificate=True)
++        self.assertEqual(expected['status'], 'INCONCLUSIVE')
++        self.assertEqual(normal_cut_handlebodies_with_forests(
++            raw, rows, max_extra_forests=0, record_certificate=True), expected)
++
++    def test_second_policy_and_global_forest_limit(self):
++        raw, rows = self.source('pachner23_5_8_2/mixed')
++        limited = normal_cut_handlebodies_with_forests(raw, rows, max_extra_forests=1)
++        self.assertEqual(limited['status'], 'INCONCLUSIVE')
++        self.assertTrue(limited['stats']['lower_forest_portfolio']['forest_limit_reached'])
++        complete = normal_cut_handlebodies_with_forests(
++            raw, rows, max_extra_forests=2, record_certificate=True)
++        self.assertEqual(complete['status'], 'COMPLETE')
++        stats = complete['stats']['lower_forest_portfolio']
++        self.assertEqual(stats['extra_forests'], 2)
++        self.assertEqual([t['policy'] for t in stats['core_searches'][0]['trials']],
++                         ['exceptional_first', 'reverse'])
++        self.assertTrue(verify_normal_cut_handlebodies(raw, rows, complete['certificate']))
++
++    def test_augmented_core_shares_extra_forest_limit(self):
++        raw, rows = self.source('pilot/fibonacci_lst_06/0')
++        limited = normal_cut_handlebodies_with_forests(raw, rows, max_extra_forests=1)
++        self.assertEqual(limited['status'], 'INCONCLUSIVE')
++        self.assertEqual(limited['stats']['lower_forest_portfolio']['extra_forests'], 1)
++        complete = normal_cut_handlebodies_with_forests(
++            raw, rows, max_extra_forests=2, record_certificate=True)
++        self.assertEqual(complete['status'], 'COMPLETE')
++        self.assertTrue(verify_normal_cut_handlebodies(raw, rows, complete['certificate']))
++
++    def test_inputs_and_public_modules_are_unchanged_without_file_loading(self):
++        raw, rows = self.source()
++        before = deepcopy((raw, rows))
++        module = importlib.import_module('fastunknot.normal_cut_handlebodies')
++        global_bindings = dict(vars(module))
++        with patch('pathlib.Path.read_text', side_effect=AssertionError('no source reload')):
++            result = normal_cut_handlebodies_with_forests(raw, rows, record_certificate=True)
++        self.assertEqual(result['status'], 'COMPLETE')
++        self.assertEqual((raw, rows), before)
++        self.assertEqual(set(vars(module)), set(global_bindings))
++        for key, value in global_bindings.items():
++            self.assertIs(vars(module)[key], value)
++        again = normal_cut_handlebodies_with_forests(raw, rows, record_certificate=True)
++        self.assertEqual(result, again)
++
++    def test_cancellation_callback_covers_alternative_planning(self):
++        raw, rows = self.source()
++        from lower_forest_research import producer
++        original = producer._forest
++
++        class Cancel(Exception):
++            pass
++
++        active = False
++
++        def observed_forest(core, check):
++            nonlocal active
++            active = True
++            return original(core, check)
++
++        def stop():
++            if active:
++                raise Cancel('stop during alternative forest traversal')
++
++        with patch.object(producer, '_forest', side_effect=observed_forest):
++            with self.assertRaises(Cancel):
++                normal_cut_handlebodies_with_forests(raw, rows, check=stop)
++        self.assertEqual(normal_cut_handlebodies_with_forests(raw, rows)['status'], 'COMPLETE')
++
++    def test_shared_cycle_budget_never_resets_on_retry(self):
++        raw, rows = self.source()
++        unrestricted = normal_cut_handlebodies_with_forests(raw, rows, record_certificate=True)
++        spent = unrestricted['stats']['lower_forest_portfolio']['total_orbit_cycles']
++        self.assertGreater(spent, 0)
++        limited = normal_cut_handlebodies_with_forests(raw, rows, max_cycles=spent - 1)
++        self.assertEqual(limited['status'], 'INCONCLUSIVE')
++        sufficient = normal_cut_handlebodies_with_forests(
++            raw, rows, max_cycles=spent, record_certificate=True)
++        self.assertEqual(sufficient['status'], 'COMPLETE')
++        self.assertEqual(sufficient['certificate'], unrestricted['certificate'])
++        self.assertEqual(normal_cut_handlebodies_with_forests(
++            raw, rows, max_cycles=0)['status'], 'INCONCLUSIVE')
++
++    def test_invalid_new_options_and_native_validation(self):
++        raw, rows = self.source()
++        for value in (-1, True, None, 0.5, '2'):
++            with self.assertRaises(ValueError):
++                normal_cut_handlebodies_with_forests(raw, rows, max_extra_forests=value)
++        for option in ({'max_cycles': -1}, {'record_certificate': 1}, {'precheck_core': 1}):
++            with self.assertRaises(ValueError):
++                normal_cut_handlebodies_with_forests(raw, rows, **option)
++
++
++if __name__ == '__main__':
++    unittest.main()

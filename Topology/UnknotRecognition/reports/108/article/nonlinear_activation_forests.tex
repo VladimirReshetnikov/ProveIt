@@ -1,0 +1,85 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype,booktabs,longtable,tabularx,array,enumitem}
+\usepackage{xcolor,graphicx,tikz,fancyhdr,listings}
+\usetikzlibrary{arrows.meta,positioning}
+\definecolor{Accent}{HTML}{234E70}
+\definecolor{Pale}{HTML}{F2F5F8}
+\usepackage[colorlinks=true,linkcolor=Accent,citecolor=Accent,urlcolor=Accent]{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+\hypersetup{pdftitle={Few Nonlinear Columns: Fixed-Parameter Forest Selection for Compressed Unknot Hierarchies},pdfauthor={Research continuation for the ProveIt project}}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\Reach}{\operatorname{Reach}}
+\newcommand{\Stop}{\operatorname{Stop}}
+\newcommand{\Ftwo}{\mathbb F_2}
+\newcommand{\bits}{\operatorname{bits}}
+\setlist{itemsep=3pt,topsep=5pt}
+\setlength{\emergencystretch}{2em}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\color{Accent}Few nonlinear columns}
+\fancyhead[R]{\small ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\lstset{basicstyle=\small\ttfamily,breaklines=true,columns=fullflexible,keepspaces=true,frame=single,rulecolor=\color{Accent!30},backgroundcolor=\color{Pale},showstringspaces=false}
+\title{\color{Accent}\textbf{Few Nonlinear Columns}\\[5pt]
+\Large Fixed-Parameter Forest Selection\\for Compressed Unknot Hierarchies}
+\author{Research continuation prepared for\\Vladimir Reshetnikov's ProveIt project}
+\date{12 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We resolve a parameterized forest-selection problem explicitly left open by
+the recent ProveIt research on dual-forest normalization. A candidate forest
+removes top handles; the remaining unsigned occurrence matrix must admit
+complete unit-column peeling. Columns supported on two rows give directed
+implications and a polynomial independent-transversal problem. A column
+with three unit entries introduces a two-premise activation rule.
+
+If there are $k$ such nonlinear columns, we give an exact deterministic
+algorithm with cost $3^k B_{2k+1}\operatorname{poly}(N)$, where $N$ is the
+encoded input length and $B_j$ is a Bell number. The exponential factor
+depends on the nonlinear columns, while the number of top handles may be
+arbitrary. An initial event-order proof isolates at most $2k$ residual demands.
+A sharper reduction dispenses with event-order enumeration: one
+distinguished partition block records undemanded prerequisites, while
+other blocks share forest witnesses before matroid intersection. We also prove a weighted
+optimization extension and a sharper rank-layer reduction for columns
+satisfying the native boundary-of-boundary identity.
+
+The accompanying exact Python implementation constructs independently
+checkable positive and negative certificates. Fresh source reconstruction,
+independent finite oracles, controlled performance comparisons, and detailed
+integration contracts distinguish the proved finite operator from its
+topological use. The result is a local algorithmic advance toward compressed
+hierarchies. A bound on the nonlinear parameter along every unknot hierarchy,
+efficient surface discovery, and global control of hierarchy visits remain
+separate mathematical obligations.
+\end{abstract}
+\clearpage
+\tableofcontents
+\newpage
+\input{position}
+\input{model}
+\input{theory}
+\input{factorial_free}
+\input{examples_and_structure}
+\input{implementation}
+\input{experiments}
+\input{global_complexity}
+\input{research_questions}
+\input{bibliography}
+\end{document}

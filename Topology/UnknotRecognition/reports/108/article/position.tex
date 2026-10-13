@@ -1,0 +1,104 @@
+\section{Problem, contribution, and relation to the current repository}
+\label{sec:position}
+
+The computational target is an exact recognizer with a proved
+quasi-polynomial worst-case bound in the original diagram size. The present
+contribution addresses one definite obstruction inside that programme:
+\emph{choose a legal top-handle forest so that the surviving raw attaching
+relations can all be eliminated}. For a fixed forest, this is already a
+linear-work peeling problem. Finding a good forest is the difficult part.
+
+The newest dual-forest-normalization package proves a polynomial algorithm
+when every column containing a unit entry meets at most two rows. It asks
+explicitly for a parameterized extension to the remaining native column
+shape $(1,1,1)$ \cite{repo-dual-normalization}. We supply that extension.
+The resulting theorem applies to arbitrary supplied finite occurrence
+systems with the stated shape; geometric authentication is required only
+when interpreting a successful matrix certificate as handle cancellation.
+
+\subsection{Exact source boundary}
+
+The inspected repository head was
+\begin{center}
+\small\texttt{ada929648530f8689c26426e132a1b3e1c69c724}.
+\end{center}
+Its maintained \texttt{fast/} subtree has Git object identity
+\begin{center}
+\small\texttt{697afe0edf113951dd53f8fe9b4c5011f6227b94}.
+\end{center}
+All 913 files in that subtree were checked byte-for-byte against their
+Git blob identities. The local baseline is the preceding commit
+\texttt{c6d0ec8aa0b6308310ab6c081ba29d8bc363ede5}; the inspected head adds
+the relative-top-handles archive and does not alter the maintained runtime.
+All six archives then present in \texttt{docs/incoming/} were extracted and
+matched to their published Git blob hashes before their contents were used.
+The provenance files in this package retain those identities.
+
+The incoming work is substantial. It would be incorrect to describe its
+forest, stopping-set, and compression results as new results of this paper.
+The following table states the relevant difference in scope.
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{@{}p{.29\linewidth}X@{}}
+\toprule
+Earlier contribution & Relation to the present result \\
+\midrule
+Dual-forest normalization & Polynomial two-row-column case; general
+obstruction-guided search parameterized by top-forest depth. We allow
+nonlinear columns with fixed-parameter dependence on their number. \\
+Relative top handles & Source-relative elimination and a kernel for
+exceptional \emph{rows} after a fixed forest. Our parameter counts
+\emph{columns}, and the forest is selected during the algorithm. \\
+Positive cancellation & Exact completion by immutable column peeling,
+deferral, and passive-count transport. We use its completion criterion. \\
+Dual forests and homological progress & Native weighted forest heuristics
+and an algebraic progress certificate. Our weighted theorem optimizes over
+\emph{successful} forests under the nonlinear parameter bound. \\
+Component-gauge cut atlases & Exact small-cut queries on supplied graph
+grammars; a different graph operation from selecting handle-cancellation
+forests. \\
+Flag regularization & Compressed regular cell structures and a controlled
+Morse interface; it does not perform the forest search solved here. \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\subsection{Current external mathematical baseline}
+
+Lackenby's February 2021 Davis slides announce $n^{O(\log n)}$, while his
+March 2021 Oxford slides state $2^{O((\log n)^3)}$ and explain the latter
+using a hierarchy length of order $(\log n)^2$ and a polynomial pattern
+bound \cite{lackenby-davis,lackenby-oxford}. These are two dated formulations
+of the announced programme and should not be silently identified.
+
+The July 2026 preprint gives a rigorous hierarchy framework. Proposition
+9.1 bounds step visits in terms of hierarchy length and pattern complexity;
+Theorem 14.4 supplies polynomial encoded-time cutting and parallelity-bundle
+information. The manuscript leaves further acceleration to future work
+\cite{lackenby2026}. Our local selection theorem fits between the
+compressed geometric construction and its subsequent cancellation test.
+
+\subsection{Attribution and novelty boundary}
+
+Sets generating every variable under definite-Horn closure are usually
+called \emph{keys}. Symmetric all-but-one implications are studied as
+hypergraph Horn functions \cite{horn-keys,hypergraph-horn}. Column peeling
+also has established connections to stopping sets and triangular matching
+patterns \cite{stopping-sets,uniquely-restricted}. Independent transversals
+and their algorithmic solution are classical matroid theory
+\cite{rado,edmonds}.
+
+The contribution here is the bounded-event reduction with an external
+forest constraint: mandatory unary source components absorb all but a
+bounded family of predecessor requirements; the remaining requirements can
+share witnesses and are handled by a set-partition reduction. A separate
+geometric rank invariant sharpens this reduction on authenticated native
+incidence data. We did not identify this exact parameterized theorem in a
+focused primary-source search. That search and the repository audit support
+the stated project contribution; they do not establish worldwide priority.
+
+The mathematical arguments are research-draft proofs, backed by independent
+computational checks. They have not been formalized in a proof assistant or
+subjected to journal peer review. The package contains all details needed
+to scrutinize the claims at the finite-operator level.

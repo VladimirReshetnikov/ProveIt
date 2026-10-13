@@ -9,6 +9,7 @@ from .core_handlebody_verify import verify_core_handlebody_certificate
 from .core_three_handle_reduction_verify import replay_core_three_handles
 from .disk_bundle_absorption_verify import replay_disk_bundle_absorption
 from .integer_codec import encoded_integer, certificate_equal
+from .normal_cut_groups_verify import verify_normal_cut_group_handlebodies
 from .normal_parallelity_verify import verify_normal_cut_parallelity
 from .parallelity_boundary_words_verify import verify_parallelity_boundary_words
 from .parallelity_boundary_moments_verify import verify_parallelity_moment_words
@@ -119,6 +120,9 @@ def verify_normal_cut_handlebodies(triangulation, coordinates, certificate, *,
     if type(certificate) is not dict:
         return False
     version = certificate.get('schema')
+    if version == 'normal-cut-euler-free-v1':
+        return verify_normal_cut_group_handlebodies(triangulation, coordinates, certificate,
+                                                    max_operations=max_operations, check=check)
     if version in ('normal-cut-handlebodies-v5', 'normal-cut-handlebodies-v6'):
         fields.remove('core')
         fields.add('kernel')
