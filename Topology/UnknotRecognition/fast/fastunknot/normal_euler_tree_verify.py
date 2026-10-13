@@ -7,6 +7,7 @@ positive relaxed point has no topological meaning without compatibility checks.
 This module verifies only negative statements. It imports no LP solver, search
 producer, sector constructor or ray enumerator.
 """
+from collections import OrderedDict
 from hashlib import sha256
 from itertools import product
 from math import prod
@@ -14,6 +15,9 @@ import json
 
 from .normal_surface_geometry import _prepare
 from .normal_euler_verify import _reference_model, _rational
+
+
+_REPLAY_CACHE_LIMIT = 256
 
 
 class _CallbackRaised(BaseException):
@@ -81,6 +85,59 @@ def _dominates(matrix, dual, objective, columns, check):
     return True
 
 
+def _cached(cache, key, build, check):
+    """Bounded source-local exact values, never cached acceptance decisions."""
+    check()
+    if key in cache:
+        cache.move_to_end(key)
+        return cache[key]
+    value = build()
+    if _REPLAY_CACHE_LIMIT:
+        cache[key] = value
+        if len(cache) > _REPLAY_CACHE_LIMIT:
+            cache.popitem(last=False)
+    return value
+
+
+def _dual_image(matrix, dual, width, check):
+    image = []
+    for j in range(width):
+        check()
+        image.append(sum(row[j]*coefficient for row, coefficient in zip(matrix, dual)))
+    return tuple(image)
+
+
+def _euler_objective(linear, groups, potentials, weights, anchors, check):
+    objective = list(linear)
+    if anchors is None:
+        for group, weight in zip(groups, weights):
+            check()
+            for j in range(len(linear)):
+                objective[j] -= weight*min(potentials[c][j] for c in group)
+    else:
+        for anchor, weight in zip(anchors, weights):
+            check()
+            for j, value in enumerate(potentials[anchor]):
+                objective[j] -= weight*value
+    return tuple(objective)
+
+
+def _source_dominates(source_model, dual, anchors, columns, check):
+    matrix, linear, groups, potentials, weights = source_model['model']
+    images = source_model.setdefault('dual_images', OrderedDict())
+    objectives = source_model.setdefault('objectives', OrderedDict())
+    # Parsed exact rational tuples identify duals; equivalent encodings share
+    # arithmetic only after the caller has validated every supplied field.
+    image = _cached(images, dual, lambda: _dual_image(matrix, dual, len(linear), check), check)
+    objective = _cached(objectives, anchors, lambda: _euler_objective(
+        linear, groups, potentials, weights, anchors, check), check)
+    for j in columns:
+        check()
+        if image[j] < objective[j]:
+            return False
+    return True
+
+
 def _leaf(prepared, digest, certificate, check, *, expected_mask=None, source_model=None):
     check()
     if not (type(certificate) is dict and
@@ -109,14 +166,14 @@ def _leaf(prepared, digest, certificate, check, *, expected_mask=None, source_mo
     else:
         matrix, linear, groups, potentials, weights = _reference_model(prepared, mask, check)
         columns = range(len(mask))
+    def dominates(dual, anchors):
+        if certificate['schema'] == 'normal-euler-relaxation-v2':
+            return _source_dominates(source_model, dual, anchors, columns, check)
+        objective = _euler_objective(linear, groups, potentials, weights, anchors, check)
+        return _dominates(matrix, dual, objective, columns, check)
     if kind == 'envelope':
         dual = _dual(certificate['multipliers'], len(matrix))
-        objective = list(linear)
-        for group, weight in zip(groups, weights):
-            check()
-            for j in range(len(linear)):
-                objective[j] -= weight*min(potentials[c][j] for c in group)
-        valid = _dominates(matrix, dual, objective, columns, check)
+        valid = dominates(dual, None)
         check()
         return valid
     records = certificate['duals']
@@ -130,11 +187,7 @@ def _leaf(prepared, digest, certificate, check, *, expected_mask=None, source_mo
                 or record['anchors'] != list(anchors)):
             return False
         dual = _dual(record['multipliers'], len(matrix))
-        objective = list(linear)
-        for anchor, weight in zip(anchors, weights):
-            for j, value in enumerate(potentials[anchor]):
-                objective[j] -= weight*value
-        if not _dominates(matrix, dual, objective, columns, check):
+        if not dominates(dual, anchors):
             return False
     check()
     return True
@@ -174,6 +227,9 @@ def verify_euler_branch_tree(triangulation, certificate, *, check=lambda: None):
     derived context. Nodes contain no trusted masks, child counts or pointers.
     Version 1 and version 2 negative leaves may be mixed. The full source model
     needed by version 2 is reconstructed at most once during a tree replay.
+    Independently computed full dual products and Euler objectives each retain
+    at most 256 entries within this call. Every field and every current-mask
+    inequality is checked again, including on cache hits.
     """
     return _safe_call(_verify_tree, triangulation, certificate, check)
 

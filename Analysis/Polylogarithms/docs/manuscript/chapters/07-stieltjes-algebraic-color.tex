@@ -1,0 +1,344 @@
+\section{An algebraic nonalternating color and its ordinary moments}
+\label{stalg:section}
+
+The finite exclusion theorem concerns two consecutive tails.  A single
+tail can vanish at a positive real shift and a nonalternating unit-circle
+color.  We now construct such a point exactly at order fifteen.  The
+experimental elimination that located it is replaced by a rational
+polynomial certificate and rational interval arithmetic; rounded root
+coordinates play no role in the proof.
+
+\subsection{Exact construction of a single-tail zero}
+
+Retain the polynomials $U_k,V_k$ defined by
+\eqref{stcol:circle-recurrence}--\eqref{stcol:circle-parity}.
+Their primitive integer multiples at order fifteen are denoted by
+$\widehat U_{15},\widehat V_{15}$, with positive leading coefficients
+in $X$.  The electronic certificate gives three explicit rational
+polynomials $P,N,D$ of degrees $42,37,36$, respectively.
+For a compact algebraic specification of $P$, set
+\begin{align*}
+ H(Y)={}&638512875Y^7+2766889125Y^6+4838508675Y^5
+           +4339860525Y^4\\
+       &+2087700615Y^3+507350025Y^2+50307087Y+929569.
+\end{align*}
+Then $P$ is the primitive positive-leading polynomial proportional to
+\[
+ \frac{\operatorname{Res}_X(\widehat U_{15},\widehat V_{15})}{H(Y)}.
+\]
+To specify the rational lift, write the penultimate nonzero member of
+the subresultant sequence in $X$ as $s_1(Y)X+s_0(Y)$.
+Express $-s_0/s_1=A/B$ in coprime integer polynomials, with combined
+coefficient gcd one and positive leading coefficient of $B$.
+Set $N=A\bmod P$ and $D=B\bmod P$.  This fixes the displayed degrees
+and coefficient normalization; common nonzero constant rescalings
+would give the same rational function.
+The full coefficient data are in
+\path{verification/stieltjes-order15-certificate.json}.
+The verifier uses these coefficients directly and does not require
+resultants, subresultants, or a numerical root solver.
+
+Let $\alpha$ be the unique positive root of $P$, and set
+\begin{equation}\label{stalg:point}
+ Y_* = \alpha,\qquad X_* = \frac{N(\alpha)}{D(\alpha)},\qquad
+ a_* = \frac12+\sqrt{X_*},\qquad
+ \omega_* = \frac{i\sqrt{Y_*}-1}{i\sqrt{Y_*}+1},
+\end{equation}
+where both square roots are positive.  The following exact bounds in
+particular justify all parts of this definition:
+\begin{align}
+ 1.815595925979801707460779
+       &<Y_*<1.815595925979801707460780,\label{stalg:Y-box}\\
+ 29.657283232254912190830035
+       &<X_*<29.657283232254912190830036.\label{stalg:X-box}
+\end{align}
+For orientation only,
+\begin{align*}
+ a_*&\approx5.945850092708659217196080,\\
+ \omega_*&\approx0.289670800576961966747392
+                  +0.957126338208860455927037\,i.
+\end{align*}
+
+\begin{theorem}[A certified nonalternating single-tail zero]
+\label{stalg:zero}
+The point \eqref{stalg:point} is well-defined, with
+$a_*>0$, $|\omega_*|=1$, and $\omega_*\notin\{1,-1\}$.
+It satisfies
+\begin{equation}\label{stalg:three-tails}
+ A_{15}(\omega_*,a_*)=0,\qquad
+ A_{14}(\omega_*,a_*)\ne0,\qquad
+ A_{16}(\omega_*,a_*)\ne0.
+\end{equation}
+The conjugate point has the same properties.  The order-fifteen zero
+is simple as a root in the shift with color fixed, and as a root in
+the color with shift fixed.
+\end{theorem}
+\begin{proof}
+The coefficient signs of $P$ are positive in degrees $32$ through $42$
+and negative in degrees $0$ through $31$.  There is exactly one
+Descartes sign variation.  The exact signs $P(1)<0<P(2)$ prove existence
+of a positive root; Descartes' rule, counting multiplicity, proves
+uniqueness and simplicity.  The certificate contains a narrower
+dyadic isolating interval $J\subset(1,2)$, with opposite endpoint signs.
+Exact rational interval Horner evaluation proves that $D(J)$ excludes
+zero, and that $J$ and $N(J)/D(J)$ lie in the respective rational
+boxes \eqref{stalg:Y-box}--\eqref{stalg:X-box}.
+
+Direct polynomial division verifies
+\begin{equation}\label{stalg:modular}
+ D(Y)^7 U_{15}\!\left(\frac{N(Y)}{D(Y)},Y\right)
+ \equiv
+ D(Y)^7 V_{15}\!\left(\frac{N(Y)}{D(Y)},Y\right)
+ \equiv0\pmod{P(Y)}.
+\end{equation}
+Both left sides are polynomials: the degree in $X$ is seven.
+Since $D(\alpha)\ne0$, the two components of
+$B_{15}=bU_{15}+itV_{15}$ vanish at the point.  Here
+$b=\sqrt{X_*}>0$ and $t=\sqrt{Y_*}>0$, so the Cayley formula gives
+the asserted shift and color domain.
+
+Rational interval evaluation on the displayed rectangle also proves
+\[
+ 1.8903\times10^9<U_{14}(X_*,Y_*)<1.8904\times10^9,
+ \qquad
+ 4.0119\times10^{11}<U_{16}(X_*,Y_*)<4.0120\times10^{11}.
+\]
+These are nonzero real components of $B_{14}$ and $B_{16}$.
+Thus both neighboring tails are nonzero.  All these finite assertions
+are checked after reconstructing the tails from the original numerator
+recurrence \eqref{stcol:numerator-recurrence}, independently of the
+Cayley recurrence used in discovery.  Finally,
+\[
+ \partial_aA_{15}=15A_{14},\qquad
+ \omega\partial_\omega A_{15}=A_{16}-aA_{15}
+\]
+prove both simple-root claims.  Conjugation preserves the rational
+tail equations and gives the lower unit-circle point.
+\end{proof}
+
+\subsection{The additional ordinary integral}
+
+For this point write $\Phi_*(s)=\Phi(\omega_*,s,a_*)$.
+The colored kernel remains the explicit order derivative
+\[
+ C_q^{\omega_*}(x,a_*)=
+ \left.\partial_z^q\bigl[x^z
+          \Phi(\omega_*,1+z,x+a_*)\bigr]\right|_{z=0}.
+\]
+The exceptional-moment theorem now gives
+\begin{equation}\label{stalg:moment}
+ \boxed{\displaystyle
+ \int_0^\infty x^{15}C_{15}^{\omega_*}(x,a_*)\,dx
+       =-\Phi_*'(-15).}
+\end{equation}
+This integral converges absolutely.  Indeed the vanished $A_{15}$
+removes the $x^{-16}$ tail, whereas the nonzero $A_{16}$ leaves an
+$x^{-17}$ leading term.  Consequently weight $x^{16}$ already gives
+logarithmic divergence: precisely one extra ordinary positive-integer
+moment exists.  The kernel $C_{14}^{\omega_*}$ has no extra moment,
+because its leading $A_{14}$ is nonzero.
+
+This example establishes single-tail vanishing away from the alternating
+color.  It does not give two consecutive vanishing tails, and its
+order-fifteen fixed-shift homogeneous balance remains unique by
+Theorem~\ref{stcol:classification}.  No exhaustive order-fifteen locus,
+minimal algebraic degree, or higher-order consecutive-tail classification
+is asserted.  The certified algebraic hypotheses and the analytic
+Mellin theorem prove \eqref{stalg:moment}; no high-order quadrature of
+this particular integral is needed for that conclusion.
+
+\subsection{Logarithmic identities at a vanished colored tail}
+\label{st15:logarithmic}
+
+The certified order-fifteen point also gives identities involving two
+successive kernel orders.  We first state these at any vanished tail.
+The analytic device is ordinary differentiation of the colored Mellin
+transform; no novelty claim is made for that device.  Its explicit
+coefficients, a positive integral for the first coefficient, and the
+application to the certified algebraic point are useful here.
+
+Fix $q\ge1$, $a>0$, $\omega\in\Omega$, and assume
+$A_q(\omega,a)=0$.  For $c>0$ put
+\[
+ L_j^{(r)}(c)=\int_0^\infty
+     x^q\log^j(x/c)\,C_r^\omega(x,a)\,dx,
+ \qquad r\in\{q,q+1\},\quad j\ge0.
+\]
+Every integral here is ordinary and absolutely convergent.
+Indeed, \eqref{stcol:tail} gives $C_q,C_{q+1}=O(x^{-q-2})$
+at infinity under the single assumption $A_q=0$, and the kernels
+are $O(1+|\log x|^{q+1})$ at zero.  These bounds also justify
+locally normal Mellin differentiation in $|h|<1$ around $u=q+1$.
+
+\begin{proposition}[A triangular logarithmic hierarchy]
+\label{st15:log-hierarchy}
+Use the functions $Q_r$ of \eqref{stcol:Q}, and define the analytic germ
+\[
+ R_q(h)=\frac{Q_{q+1}(q+1+h)}{Q_q(q+1+h)}.
+\]
+Its denominator equals $1$ at zero, while $R_q(0)=0$.  For every
+$j\ge0$,
+\begin{equation}\label{st15:log-hierarchy-formula}
+ L_j^{(q+1)}(c)
+   =\sum_{\ell=1}^j\binom j\ell
+           R_q^{(\ell)}(0)L_{j-\ell}^{(q)}(c).
+\end{equation}
+An empty sum is zero.  In particular,
+\begin{equation}\label{st15:log-vanishing}
+ \boxed{\displaystyle
+ \int_0^\infty x^q\left[
+      \log(x/c)C_{q+1}^\omega(x,a)-\kappa_q C_q^\omega(x,a)
+                      \right]dx=0,}
+\end{equation}
+where the strictly positive constant admits the three equivalent forms
+\begin{align}
+ \kappa_q
+ &=\int_0^\infty\left(\frac{t}{e^t-1}\right)^{q+1}dt
+       \label{st15:kappa-positive}\\
+ &=(q+1)\sum_{n=q+1}^\infty
+          \frac{(n-1)(n-2)\cdots(n-q)}{n^{q+2}}
+       \label{st15:kappa-series}\\
+ &=(q+1)\sum_{r=0}^q(-1)^r e_r(1,2,\ldots,q)\zeta(r+2).
+       \label{st15:kappa-zeta}
+\end{align}
+Thus $0<\kappa_{q+1}<\kappa_q<\zeta(2)$ for $q\ge1$.
+\end{proposition}
+\begin{proof}
+The Mellin formula, continued to $u=q+1+h$, gives
+\[
+ \sum_{j\ge0}L_j^{(r)}(c)\frac{h^j}{j!}
+   =c^{-h}\frac{(-1)^{q+1}\pi}{\sin\pi h}
+         Q_r(q+1+h)\Phi(\omega,-q-h,a).
+\]
+The apparent singularity at $h=0$ is removable because $A_q=0$.
+The generating functions for $r=q+1$ and $r=q$ therefore differ
+by multiplication by $R_q(h)$.  Coefficient comparison proves
+\eqref{st15:log-hierarchy-formula}.  This argument uses holomorphic
+integrals on a common neighborhood, so it assigns no value to a
+divergent integral.
+
+For the first coefficient, write
+\[
+ P_q(z)=\frac{(1+z)_q}{q!}
+       =\prod_{k=1}^q\left(1+\frac zk\right).
+\]
+Differentiating the defining gamma quotient in its first parameter shows
+\[
+ \kappa_q=R'_q(0)=Q'_{q+1}(q+1)
+  =(q+1)![z^{q+1}]P_q(z)
+       \bigl[\psi(q+1+z)-\psi(q+1)\bigr].
+\]
+In $|z|<q+1$ the last bracket is
+\[
+ \sum_{n=q+1}^\infty\left(\frac1n-\frac1{n+z}\right).
+\]
+Taking the indicated coefficient gives the positive series
+\eqref{st15:kappa-series}.  Equivalently, the product in its numerator
+expands as $\sum_{r=0}^q(-1)^r e_r(1,\ldots,q)n^{q-r}$.
+The same product vanishes for $n=1,\ldots,q$; extending the sum to
+$n\ge1$ proves \eqref{st15:kappa-zeta}.
+
+Finally,
+\[
+ \frac1{(e^t-1)^{q+1}}
+     =\sum_{n=q+1}^\infty\binom{n-1}{q}e^{-nt}.
+\]
+All terms are nonnegative.  Tonelli's theorem and
+$\int_0^\infty t^{q+1}e^{-nt}\,dt=(q+1)!/n^{q+2}$
+prove \eqref{st15:kappa-positive}.  Since $0<t/(e^t-1)<1$
+for $t>0$, strict decrease follows.  The $q=0$ integral is $\zeta(2)$,
+which supplies the stated upper bound.
+\end{proof}
+
+For completeness, the first logarithmic moment of the original order
+also has a direct special-function expression.  Set
+\[
+ \alpha_q=\sum_{r=1}^q(-1)^{r+1}
+             e_r(1,\ldots,q)\zeta(r+1)-H_q.
+\]
+The same gamma-quotient calculation gives $Q'_q(q+1)=\alpha_q$.
+Here the harmonic correction follows from
+\[
+ \sum_{r=1}^q(-1)^{r+1}e_r(1,\ldots,q)H_q^{(r+1)}=H_q,
+\]
+because for each $n\le q$ the product
+$\prod_{k=1}^q(1-k/n)$ vanishes.  Expanding the removable Mellin
+value to first order yields
+\begin{equation}\label{st15:first-log-moment}
+ \int_0^\infty x^q\log x\,C_q^\omega(x,a)\,dx
+  =(-1)^q\left[
+       \alpha_q\,\partial_s\Phi(\omega,-q,a)
+       -\tfrac12\partial_s^2\Phi(\omega,-q,a)\right].
+\end{equation}
+The unweighted value is \eqref{stcol:exceptional-value};
+\eqref{st15:log-hierarchy-formula} supplies all higher logarithmic
+relations without repeatedly expanding the Lerch derivatives.
+
+At the certified point $(\omega_*,a_*)$ the case $q=15$ gives, for
+every $c>0$,
+\begin{equation}\label{st15:certified-log-identity}
+ \int_0^\infty x^{15}\left[
+      \log(x/c)C_{16}^{\omega_*}(x,a_*)
+          -\left\{\int_0^\infty
+               \left(\frac{t}{e^t-1}\right)^{16}dt\right\}
+                 C_{15}^{\omega_*}(x,a_*)\right]dx=0.
+\end{equation}
+Both kernels are $O(x^{-17})$ at infinity.  Consequently every logarithmic
+weight in this subsection is allowed, although the next positive integer
+power weight for $C_{15}$ is excluded by $A_{16}(\omega_*,a_*)\ne0$.
+
+\subsection{Real transversality of the certified point}
+\label{st15:transversality}
+
+The nonzero adjacent tails prove that the shift and color roots are
+separately simple.  A stronger local statement requires the real
+Jacobian, rather than either separate derivative.  Choose a local
+angular coordinate $\omega=e^{i\theta}$ around $\omega_*$.  The identities
+\[
+ \partial_a A_{15}=15A_{14},\qquad
+ \partial_\theta A_{15}=i(A_{16}-aA_{15})
+\]
+follow directly from the Lerch shift and color differentiation formulas.
+At the certified zero they give
+\begin{equation}\label{st15:Jacobian}
+ J_*:=\det\frac{\partial(\Re A_{15},\Im A_{15})}
+                    {\partial(a,\theta)}(a_*,\theta_*)
+       =15\Re\!\left(\overline{A_{14}}A_{16}\right).
+\end{equation}
+
+Use the certificate coordinates $X=(a-\tfrac12)^2$, $Y=t^2$,
+$\omega=(it-1)/(it+1)$, and its even-order decomposition
+\[
+ (1-\omega)A_k=U_k(X,Y)+i(a-\tfrac12)tV_k(X,Y).
+\]
+Since $|1-\omega|^2=4/(1+Y)$, equation \eqref{st15:Jacobian} becomes
+\[
+ J_*={15(1+Y_*)\over4}
+   \bigl[U_{14}U_{16}+X_*Y_*V_{14}V_{16}\bigr](X_*,Y_*).
+\]
+Independent rational interval evaluation of the reconstructed adjacent
+polynomials, using the certified $X,Y$ enclosure, proves the readable
+strict bounds
+\begin{equation}\label{st15:Jacobian-bound}
+ -5\cdot10^{20}<J_*<-4\cdot10^{20}.
+\end{equation}
+The tighter rational endpoints are preserved in the checker output.
+
+\begin{corollary}[Isolation within real shifts and unit-circle colors]
+There is a neighborhood of $(a_*,\theta_*)$ in the real parameter plane
+in which it is the only zero of $A_{15}(e^{i\theta},a)$.
+Every distinct parameter pair in a sufficiently small such neighborhood
+therefore loses the extra ordinary moment of $C_{15}$.
+\end{corollary}
+\begin{proof}
+The real inverse-function theorem applies by
+\eqref{st15:Jacobian-bound}.  Away from its unique zero the weighted
+integrand has the nonzero leading term
+\[
+ x^{15}C_{15}^{e^{i\theta}}(x,a)
+       =-\frac{A_{15}(e^{i\theta},a)}x+O(x^{-2}),
+\]
+so its improper integral diverges logarithmically.  This is a local
+statement about a single tail.  It supplies no global classification
+and does not settle consecutive-tail exclusion.
+\end{proof}

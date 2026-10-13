@@ -40,8 +40,32 @@ def _primitive(vector):
     return [value // common for value in integers] if common else integers
 
 
+def _independent_rows(matrix, check):
+    """Select original rows spanning the same rational row space.
+
+    Elimination is only the independence test. The simplex receives selected
+    original rows, so its dual lifts by inserting zeroes rather than applying
+    an unchecked or numerically recovered row transformation.
+    """
+    echelon, selected = [], []
+    for index, original in enumerate(matrix):
+        check()
+        row = original[:]
+        for column, pivot in echelon:
+            check()
+            factor = row[column]
+            if factor:
+                row = [x-factor*y for x, y in zip(row, pivot)]
+        column = next((j for j, value in enumerate(row) if value), None)
+        if column is not None:
+            divisor = row[column]
+            echelon.append((column, [value/divisor for value in row]))
+            selected.append(index)
+    return selected
+
+
 def solve_nonnegative_kernel(matrix, objective, *, max_pivots=None,
-                             check=lambda: None):
+                             reduce_rows=True, check=lambda: None):
     """Decide whether C x=0, x>=0 has a point with objective*x>0.
 
     POSITIVE returns a basic feasible rational vector of the normalized
@@ -54,9 +78,18 @@ def solve_nonnegative_kernel(matrix, objective, *, max_pivots=None,
     method uses C,-C,sum(x)<=1 with a feasible all-slack initial basis.  A
     positive basic solution terminates the search early; it need not attain
     the maximum.  No numerical solver or normal-surface code is used.
+
+    By default an exact original-row basis replaces redundant equalities
+    before tableau construction. ``reduce_rows=False`` retains all input rows
+    for comparison. Returned duals always have the original row dimension;
+    ``equation_rows`` identifies the selected original rows in tableau order.
+    Basis slack indices refer to these rows, their negatives, then the sum
+    inequality. This polynomial preprocessing does not bound Bland pivots.
     """
     if max_pivots is not None and (type(max_pivots) is not int or max_pivots < 0):
         raise ValueError('max_pivots must be a nonnegative integer or None')
+    if type(reduce_rows) is not bool:
+        raise ValueError('reduce_rows must be a boolean')
     if type(matrix) not in (list, tuple) or type(objective) not in (list, tuple):
         raise ValueError('matrix and objective must be lists or tuples')
     check()
@@ -68,8 +101,10 @@ def solve_nonnegative_kernel(matrix, objective, *, max_pivots=None,
         if type(row) not in (list, tuple) or len(row) != n:
             raise ValueError('matrix rows must have the objective width')
         source.append([_fraction(value) for value in row])
-    r = len(source)
-    inequalities = source + [[-value for value in row] for row in source]
+    selected = _independent_rows(source, check) if reduce_rows else list(range(len(source)))
+    retained = [source[i] for i in selected]
+    r = len(retained)
+    inequalities = retained + [[-value for value in row] for row in retained]
     inequalities.append([Fraction(1)] * n)
     m, width = len(inequalities), n + len(inequalities)
     tableau = []
@@ -86,7 +121,7 @@ def solve_nonnegative_kernel(matrix, objective, *, max_pivots=None,
         largest = max((max(abs(x.numerator).bit_length(), x.denominator.bit_length())
                        for row in tableau for x in row), default=0)
         return dict(pivots=pivots, tableau_updates=updates,
-                    variables=n, equations=r, tableau_rows=m,
+                    variables=n, equations=len(source), retained_equations=r, tableau_rows=m,
                     tableau_columns=width, maximum_tableau_bits=largest)
 
     while True:
@@ -103,22 +138,25 @@ def solve_nonnegative_kernel(matrix, objective, *, max_pivots=None,
             check()
             return dict(status='POSITIVE', x=[_pair(x) for x in vector],
                         primitive_x=_primitive(vector), objective=_pair(value),
-                        basis=basis, stats=stats())
+                        basis=basis, equation_rows=selected, stats=stats())
         entering = next((j for j, coefficient in enumerate(reduced)
                          if coefficient > 0), None)
         if entering is None:
             dual = [-reduced[n+i] for i in range(m)]
-            y = [dual[i] - dual[r+i] for i in range(r)]
+            y = [Fraction(0)]*len(source)
+            for i, original in enumerate(selected):
+                y[original] = dual[i] - dual[r+i]
             if (value != 0 or any(x < 0 for x in dual) or dual[-1] != 0
-                    or any(sum(source[i][j]*y[i] for i in range(r)) < c[j]
+                    or any(sum(source[i][j]*y[i] for i in range(len(source))) < c[j]
                            for j in range(n))):
                 raise ArithmeticError('simplex produced an invalid homogeneous dual')
             check()
-            return dict(status='NONPOSITIVE', y=[_pair(x) for x in y], stats=stats())
+            return dict(status='NONPOSITIVE', y=[_pair(x) for x in y],
+                        equation_rows=selected, stats=stats())
         if max_pivots is not None and pivots >= max_pivots:
             check()
             return dict(status='INCONCLUSIVE', reason='LP pivot allowance exhausted',
-                        stats=stats())
+                        equation_rows=selected, stats=stats())
         candidates = [i for i in range(m) if tableau[i][entering] > 0]
         if not candidates:
             raise ArithmeticError('the normalized kernel LP cannot be unbounded')
