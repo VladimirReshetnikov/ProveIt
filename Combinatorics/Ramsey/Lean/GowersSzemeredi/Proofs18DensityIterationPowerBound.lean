@@ -33,7 +33,7 @@ theorem densityIterationClosedThreshold_le_double_exp_of_exp_power_bounds
     _ ≤ Real.exp a * (Real.exp (X ^ r)) ^ ⌈gain⁻¹⌉₊ :=
       mul_le_mul hA (pow_le_pow_left₀ (by positivity) hb _) (by positivity) (Real.exp_pos _).le
     _ = Real.exp (a + (⌈gain⁻¹⌉₊ : Real) * X ^ r) := by rw [← Real.exp_nat_mul, ← Real.exp_add]
-    _ ≤ _ := Real.exp_le_exp.mpr (add_le_add_left hprod a)
+    _ ≤ _ := Real.exp_le_exp.mpr (add_le_add le_rfl hprod)
 
 theorem densityIterationClosedThreshold_le_double_exp
     (T c rho gain K X : Real) (g r p : Nat) (hgain : 0 < gain) (hX : 2 ≤ X)
