@@ -8628,6 +8628,46 @@ original-paper fidelity issues are unchanged. This checkpoint does not
 establish complete original-paper fidelity; the simplification goal
 remains active.
 
+### L.92. Share dimension-two piece decomposition (2026-10-13)
+
+One helper now handles the greedy relation decomposition, the floor bound
+on the number of pieces, padding and coverage transport used by four
+printed and Fejer proofs. The two large-cover proofs apply their existing
+family-cover theorems to those pieces; the two uniform-decomposition
+proofs specialize the helper directly. Existing assumptions, piece counts
+and numerical bounds remain unchanged.
+
+All 47 complete statements and scope contexts and all 23 definitions
+remain exact. Four proof bodies shrink from 194 to 32 lines, and the
+helper adds 28 proof lines: 134 fewer in total. Including all 41 lines
+of helper declarations, documentation and spacing, four production files
+shrink from 1,031 to 910 lines, saving 121. No old declaration is removed
+and no import or option changes. Five new focused checks name the helper
+and all four changed proofs, retaining all 279 earlier names. Modified
+Lean source shrinks by 116 lines after those additions.
+
+All six fresh checks pass: original audit (642), stronger bridge (719),
+focused audit (783), downstream audit (1,098), historical explicit audit
+(701) and historical bridge (560), with every current input hash verified.
+The named audits allow only `propext`, `Classical.choice` and `Quot.sound`.
+Focused explicitly checks all five affected declarations; historical
+explicit retains its three named checks. The two standalone bridge
+records link the fresh focused audit; their compilation does not audit
+every export. The stronger bridge is 719 / 153,172 source lines; focused
+is 783 / 167,740. The original and historical routes each lose 40 source
+and 53 proof lines. The six-target union is 1,204 / 226,396 with 1,207
+hashed inputs; module sets are unchanged.
+See `verification/2026-10-13-piece-two-decomposition{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-piece-two-decomposition-simplification.json`.
+
+Selected coverage is 179 of 182 affected import consumers; the standard
+four targets cover 171. The facade, Audit and PortImportAudit remain
+excluded with unchanged source hashes. The regenerated 120-statement
+inventory is byte-identical to the baseline. Final bounds, the accepted Lemma 16.10 correction and open
+original-paper fidelity issues are unchanged. This checkpoint does not
+establish complete original-paper fidelity; the simplification goal
+remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
