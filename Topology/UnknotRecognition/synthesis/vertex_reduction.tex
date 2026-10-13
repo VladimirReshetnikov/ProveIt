@@ -138,9 +138,8 @@ returns an authenticated partial chain; preprocessing consumes no sector,
 corner-candidate, LP-pivot or LP-anchor allowance.  Its work remains part
 of the complete running time, and callback cancellation propagates.
 
-There is no new trusted recognition certificate.  Extracted rays use the
-existing \texttt{normal-ray-crushing-v1} packet, within the existing
-diagram-bound chain and recognition schemas.  The independent checker
+Extracted rays use the existing \path{normal-ray-crushing-v1} packet,
+within the diagram-bound chain and recognition schemas.  The independent checker
 validates the source coordinates, primitive full-source extremality,
 quotient, retained component and strict descent.  It need not trust the
 expansion diagnostics or re-run its discovery procedure.  The low-level
@@ -158,3 +157,93 @@ unconditionally for these authenticated search sources.  It does not
 bound the pivot count of exact Bland simplex, nor compress the complete
 $3^t$ quadrilateral sector family.  Those remaining obligations still
 prevent a claim of general quasi-polynomial recognition complexity.
+
+\subsection{Native tests, independent oracle checks and timing}
+
+The integrated implementation passes 97 focused tests.  New controls cover
+repeated local occurrences of one global edge, two parallel triangles,
+actual vertex-link sphere removal, exact source validation, caller
+cancellation and crushing allowances shared across preprocessing and later
+sector discovery.  Setting every search allowance to zero still permits
+preprocessing to prove the crossing-free unknot.  A zero crushing allowance
+instead returns the unchanged authenticated source chain.
+
+The fresh audit includes 38 supplied triangulations and 29 reduction steps
+in three authenticated diagram chains.  Three supplied sources already
+have one vertex.  All other 64 queries produce positive rays.  For each,
+Regina independently constructs the selected edge's normalized linking
+surface: its entire labelled coordinate vector agrees with the native raw
+frontier.  Regina's vertex identifications independently reproduce the
+canonical peeling.  Its explicit components confirm the disc/sphere
+census, and the extracted ray passes independent support-rank,
+primitivity and connectedness checks.  All 64 native crushing quotients
+agree exactly with Regina's labelled gluings, component census and torus
+successor.  Thirteen fresh original standard-vertex enumerations, containing
+784 vertices in total, each contain the extracted ray exactly once.
+
+The retained controls include seven nontrivial expansions with repeated
+selected-edge face occurrences, seven double-triangle vectors and three
+queries that actually remove vertex-link spheres.  A 14-tetrahedron
+control has raw Euler characteristic three and canonical Euler
+characteristic one.  One control needs a genuine positive support-descent
+step.  The finite family contains no double-quad coordinate; the local
+proof covers that pattern, but no such oracle example is claimed here.
+
+The diagram chains reduce the shelled circle's five tetrahedra to a
+terminal unknot.  The trefoil reaches a one-vertex triangulation with ten
+tetrahedra from 48 in twelve crushes; the figure-eight reaches one vertex
+and thirteen tetrahedra from 68 in sixteen crushes.  Every chain replays
+through the existing independent verifier.  The latter two records prove
+only the authenticated reductions, not knottedness.
+
+\begin{center}
+\input{data/vertex-reduction-table.tex}
+\end{center}
+
+The table gives median whole-query milliseconds.  ``Prior Q'' and
+``Prior LP'' load the preceding fair-search driver from commit
+\texttt{c7ebc2073}; only that driver is historical and its shared dependencies
+use the current pinned sources.  ``Vertex Q'' and ``Vertex LP'' enable the
+new preprocessing.  Both positive fixtures terminate during preprocessing,
+before either Q or LP discovery, so the two new methods differ only in
+their selected configuration and output statistics.  ``Adaptive'' remains
+the maintained adaptive-disc principal baseline.
+
+Nine seeded, randomly ordered five-arm repetitions each average three
+complete queries.  Source construction, shelling, discovery, internal
+replay and serialization are timed.  Imports, diagram objects and separate
+independent replay of each warm-up output are outside the timer; every
+timed serialized result matches that verified output.  Three adaptive A/A
+pairs give the final dimensionless column.  The median paired prior/new
+ratios are 1.398 and 1.425 for Q, and 1.727 and 1.747 for LP.  Preprocessing
+therefore improves these complete positive crushing queries, while adaptive
+disc search remains slightly faster.  These two fixtures do not establish
+a general empirical scaling law.
+
+The separate trefoil probe uses the same 64-sector allowance for four
+crushing arms, with 10,000 Q candidates or separate LP allowances of
+1,000 pivots and 4,096 anchors.  Each has a 30-second cooperative ceiling,
+which none reaches.  Prior fair Q takes 11.37 seconds, spends 442 candidates
+and ends at twelve tetrahedra; prior fair LP takes 15.36 seconds and ends
+at the same source size after 696 pivots and 269 anchors.  With vertex
+preprocessing, Q takes 1.27 seconds and uses 71 candidates; LP takes 2.76
+seconds and uses 896 pivots and 175 anchors.  Both new arms finish their
+64-sector allowance at the one-vertex, ten-tetrahedron source, with all
+twelve crushes performed by preprocessing.  In particular, fewer LP pivots
+are not the explanation for this observed runtime improvement.
+
+All four runs return \texttt{INCONCLUSIVE}, and every saved partial chain
+independently replays.  Their remaining sources and explored sector families
+differ; these are single bounded progress profiles, not repeated timings
+of complete trefoil recognition.  The general recognizer's default dispatch
+is unchanged by the additive crushing-backend policy.
+
+Experiment runners are in \path{fast/vertex_reduction_research/}.
+Saved records use the prefix \path{vertex-reduction-} under
+\path{synthesis/data/}.  The evidence checker
+replays source-bound rays and complete chains without discovery, checks
+the retained oracle records and timing arithmetic, and pins the native
+sources.  The final publication manifest also pins the article, PDF,
+focused test log and evidence.  The polynomial preprocessing theorem is
+established, while general quasi-polynomial recognition remains the active
+target.
