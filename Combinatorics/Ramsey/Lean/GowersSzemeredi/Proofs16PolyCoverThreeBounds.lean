@@ -215,63 +215,15 @@ theorem lemma156ExplicitThreshold_two_le {gamma theta : Real} (hg : 0 < gamma) (
   obtain ⟨hu2, -, -, h1, h2⟩ := prod_scale_basic hg hg1 ht ht1
   set u := 2 / (gamma * theta) with hu
   clear_value u
-  have hu1 : 1 ≤ u := le_trans (by norm_num) hu2
   have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
-  have hu3 : (3 : Real) ≤ u ^ 2 := by nlinarith only [hu2]
-  have hu4 : (u ^ 2)⁻¹ ≤ 1 / 4 := by
-    rw [one_div]; exact inv_anti₀ (by norm_num) (by nlinarith only [hu2])
-  have heta : ((2 : Real)⁻¹ ^ 44) = ((2 : Real) ^ 44)⁻¹ := by rw [inv_pow]
-  have h12 : (1 : Real) / 4 ≤ (1 - (2 : Real)⁻¹ ^ 44) / 2 := by rw [heta]; norm_num
-  have heta0 : 0 ≤ (1 - (2 : Real)⁻¹ ^ 44) / 2 := by rw [heta]; norm_num
-  have h46 : ((2 : Real) ^ 46)⁻¹ ≤ (2 : Real)⁻¹ ^ 44 / 4 := by rw [heta]; norm_num
-  have h46u : (u ^ 46)⁻¹ ≤ ((2 : Real) ^ 46)⁻¹ :=
-    inv_anti₀ (by positivity) (pow_le_pow_left₀ (by norm_num) hu2 46)
-  have h103 : (3 : Real) ^ (16 * 2 ^ 2) * 2 ≤ u ^ 103 :=
-    (show (3 : Real) ^ (16 * 2 ^ 2) * 2 ≤ (2 : Real) ^ 103 by norm_num).trans
-      (pow_le_pow_left₀ (by norm_num) hu2 103)
   have hbase : (u ^ 3136)⁻¹ ≤ (theta / 2) ^ (7 * 4 ^ (2 + 1)) * gamma ^ (21 * 2 * 4 ^ (2 + 1)) := by
     have hp1 := pow_le_pow_left₀ (inv_pos.mpr hupos).le h1 (7 * 4 ^ (2 + 1))
     have hp2 := pow_le_pow_left₀ (inv_pos.mpr hupos).le h2 (21 * 2 * 4 ^ (2 + 1))
     calc (u ^ 3136)⁻¹ = u⁻¹ ^ (7 * 4 ^ (2 + 1)) * u⁻¹ ^ (21 * 2 * 4 ^ (2 + 1)) := by
           rw [← pow_add, inv_pow]; norm_num
       _ ≤ _ := mul_le_mul hp1 hp2 (by positivity) (by positivity)
-  set a := (theta / 2) ^ (7 * 4 ^ (2 + 1)) * gamma ^ (21 * 2 * 4 ^ (2 + 1)) with ha'
-  have hapos : 0 < a := lt_of_lt_of_le (by positivity) hbase
-  have hb : (u ^ 3182)⁻¹ ≤ a * (2 : Real)⁻¹ ^ 44 / 4 := by
-    calc (u ^ 3182)⁻¹ = (u ^ 3136)⁻¹ * (u ^ 46)⁻¹ := by rw [← mul_inv, ← pow_add]
-      _ ≤ a * ((2 : Real)⁻¹ ^ 44 / 4) :=
-          mul_le_mul hbase (h46u.trans h46) (by positivity) hapos.le
-      _ = a * (2 : Real)⁻¹ ^ 44 / 4 := by ring
-  set E := arrangementSelectionExponent 2 with hE
-  have hEval : E = (2 : Nat) ^ 69 := by rw [hE]; unfold arrangementSelectionExponent; norm_num
-  have hsel : (u ^ (3182 * (2 : Nat) ^ 69))⁻¹ ≤ (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E := by
-    rw [hEval]
-    have h := pow_le_pow_left₀ (inv_pos.mpr (pow_pos hupos _)).le hb ((2 : Nat) ^ 69)
-    rw [inv_pow, ← pow_mul] at h
-    exact h
-  have hden : (u ^ (3182 * (2 : Nat) ^ 69 + 2))⁻¹ ≤
-      (1 - (2 : Real)⁻¹ ^ 44) * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E / 2 * 1 := by
-    calc (u ^ (3182 * (2 : Nat) ^ 69 + 2))⁻¹ = (u ^ 2)⁻¹ * (u ^ (3182 * (2 : Nat) ^ 69))⁻¹ := by
-          rw [← mul_inv, ← pow_add, add_comm]
-      _ ≤ (1 - (2 : Real)⁻¹ ^ 44) / 2 * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E :=
-          mul_le_mul (hu4.trans h12) hsel (inv_pos.mpr (pow_pos hupos _)).le heta0
-      _ = (1 - (2 : Real)⁻¹ ^ 44) * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E / 2 * 1 := by ring
-  have hdenpos : 0 < (1 - (2 : Real)⁻¹ ^ 44) * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E / 2 * 1 :=
-    lt_of_lt_of_le (inv_pos.mpr (pow_pos hupos _)) hden
-  have hkey : u ^ 103 ≤ u ^ ((2 : Nat) ^ 81) * (u ^ (3182 * (2 : Nat) ^ 69 + 2))⁻¹ := by
-    rw [← div_eq_mul_inv, le_div_iff₀ (pow_pos hupos _), ← pow_add]
-    exact pow_le_pow_right₀ hu1 (by norm_num)
-  unfold lemma156ExplicitThreshold
-  rw [if_neg (by norm_num)]
-  unfold selectionExplicitThreshold
-  apply max_le
-  · exact hu3.trans (pow_le_pow_right₀ hu1 (by norm_num))
-  · rw [← hE, div_le_iff₀ hdenpos, show ((2 : Nat) : Real) = 2 by norm_num]
-    calc (3 : Real) ^ (16 * 2 ^ 2) * 2 ≤ u ^ 103 := h103
-      _ ≤ u ^ ((2 : Nat) ^ 81) * (u ^ (3182 * (2 : Nat) ^ 69 + 2))⁻¹ := hkey
-      _ ≤ u ^ ((2 : Nat) ^ 81) *
-          ((1 - (2 : Real)⁻¹ ^ 44) * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E / 2 * 1) :=
-        mul_le_mul_of_nonneg_left hden (pow_pos hupos _).le
+  exact lemma156ExplicitThreshold_le_power_of_selection_base (by norm_num) hu2 hbase
+    (by norm_num [arrangementSelectionExponent])
 
 theorem polyThreeThreshold_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) :

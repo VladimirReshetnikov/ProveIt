@@ -8,7 +8,8 @@ matching the large recurrence constants. -/
 open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for name in #[``LeanProofs.GowersSzemeredi.polyCoverAt_three_of_family_lemma6,
+  for name in #[``LeanProofs.GowersSzemeredi.lemma156ExplicitThreshold_two_le,
+      ``LeanProofs.GowersSzemeredi.polyCoverAt_three_of_family_lemma6,
       ``LeanProofs.GowersSzemeredi.three_base_facts,
       ``LeanProofs.GowersSzemeredi.theorem_16_2_three,
       ``LeanProofs.GowersSzemeredi.corollary_16_11_three] do

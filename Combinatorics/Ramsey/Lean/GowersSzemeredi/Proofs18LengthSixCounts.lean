@@ -222,71 +222,80 @@ theorem polyTwoPieces_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamm
 
 /-! ### Lemma 15.6's threshold -/
 
-theorem lemma156ExplicitThreshold_one_le_power {gamma theta : Real} (hg : 0 < gamma)
-    (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
-    lemma156ExplicitThreshold 1 (theta / 2) gamma ≤ (2 / (gamma * theta)) ^ ((2 : Nat) ^ 45) := by
-  obtain ⟨hu2, -, -, h1, h2⟩ := prod_scale_basic hg hg1 ht ht1
-  set u := 2 / (gamma * theta) with hu
-  clear_value u
-  have hu1 : 1 ≤ u := le_trans (by norm_num) hu2
-  have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
-  have hu3 : (3 : Real) ≤ u ^ 2 := by nlinarith
+/-- A reciprocal-power lower bound on the selection density bounds Lemma 15.6's
+threshold. The constants 46 and 2 absorb the fixed selection margin. -/
+theorem lemma156ExplicitThreshold_le_power_of_selection_base
+    {beta gamma u : Real} {k c p : Nat} (hk : 1 ≤ k) (hu : 2 ≤ u)
+    (hbase : (u ^ c)⁻¹ ≤ beta ^ (7 * 4 ^ (k + 1)) * gamma ^ (21 * k * 4 ^ (k + 1)))
+    (hdegree : 32 * 2 ^ k + k + ((c + 46) * arrangementSelectionExponent k + 2) ≤ p) :
+    lemma156ExplicitThreshold k beta gamma ≤ u ^ p := by
+  have hu1 : 1 ≤ u := le_trans (by norm_num) hu
+  have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu
+  have hu3 : (3 : Real) ≤ u ^ 2 := by nlinarith only [hu]
   have hu4 : (u ^ 2)⁻¹ ≤ 1 / 4 := by
-    rw [one_div]; exact inv_anti₀ (by norm_num) (by nlinarith)
+    rw [one_div]; exact inv_anti₀ (by norm_num) (by nlinarith only [hu])
   have heta : ((2 : Real)⁻¹ ^ 44) = ((2 : Real) ^ 44)⁻¹ := by rw [inv_pow]
   have h12 : (1 : Real) / 4 ≤ (1 - (2 : Real)⁻¹ ^ 44) / 2 := by rw [heta]; norm_num
   have heta0 : 0 ≤ (1 - (2 : Real)⁻¹ ^ 44) / 2 := by rw [heta]; norm_num
   have h46 : ((2 : Real) ^ 46)⁻¹ ≤ (2 : Real)⁻¹ ^ 44 / 4 := by rw [heta]; norm_num
   have h46u : (u ^ 46)⁻¹ ≤ ((2 : Real) ^ 46)⁻¹ :=
-    inv_anti₀ (by positivity) (pow_le_pow_left₀ (by norm_num) hu2 46)
-  have h51 : (3 : Real) ^ (16 * 2 ^ 1) * 1 ≤ u ^ 51 :=
-    (show (3 : Real) ^ (16 * 2 ^ 1) * 1 ≤ (2 : Real) ^ 51 by norm_num).trans
-      (pow_le_pow_left₀ (by norm_num) hu2 51)
-  -- the selection base `a = (θ/2)^112 γ^336 ≥ u^(-448)`
-  have hbase : (u ^ 448)⁻¹ ≤ (theta / 2) ^ (7 * 4 ^ (1 + 1)) * gamma ^ (21 * 1 * 4 ^ (1 + 1)) := by
-    have hp1 := pow_le_pow_left₀ (inv_pos.mpr hupos).le h1 (7 * 4 ^ (1 + 1))
-    have hp2 := pow_le_pow_left₀ (inv_pos.mpr hupos).le h2 (21 * 1 * 4 ^ (1 + 1))
-    calc (u ^ 448)⁻¹ = u⁻¹ ^ (7 * 4 ^ (1 + 1)) * u⁻¹ ^ (21 * 1 * 4 ^ (1 + 1)) := by
-          rw [← pow_add, inv_pow]; norm_num
-      _ ≤ _ := mul_le_mul hp1 hp2 (by positivity) (by positivity)
-  set a := (theta / 2) ^ (7 * 4 ^ (1 + 1)) * gamma ^ (21 * 1 * 4 ^ (1 + 1)) with ha
+    inv_anti₀ (by positivity) (pow_le_pow_left₀ (by norm_num) hu 46)
+  have hC : (3 : Real) ^ (16 * 2 ^ k) * (k : Real) ≤ u ^ (32 * 2 ^ k + k) := by
+    have h3 : (3 : Real) ^ (16 * 2 ^ k) ≤ u ^ (32 * 2 ^ k) := by
+      rw [show 32 * 2 ^ k = 2 * (16 * 2 ^ k) by ring, pow_mul u 2 (16 * 2 ^ k)]
+      exact pow_le_pow_left₀ (by norm_num) hu3 _
+    have hkk : (k : Real) ≤ u ^ k := by
+      have hk2 : (k : Real) ≤ 2 ^ k := by exact_mod_cast (Nat.lt_two_pow_self (n := k)).le
+      exact hk2.trans (pow_le_pow_left₀ (by norm_num) hu k)
+    rw [pow_add]
+    exact mul_le_mul h3 hkk (Nat.cast_nonneg _) (pow_nonneg hupos.le _)
+  set a := beta ^ (7 * 4 ^ (k + 1)) * gamma ^ (21 * k * 4 ^ (k + 1)) with ha
   have hapos : 0 < a := lt_of_lt_of_le (by positivity) hbase
-  have hb : (u ^ 494)⁻¹ ≤ a * (2 : Real)⁻¹ ^ 44 / 4 := by
-    calc (u ^ 494)⁻¹ = (u ^ 448)⁻¹ * (u ^ 46)⁻¹ := by rw [← mul_inv, ← pow_add]
+  have hb : (u ^ (c + 46))⁻¹ ≤ a * (2 : Real)⁻¹ ^ 44 / 4 := by
+    calc (u ^ (c + 46))⁻¹ = (u ^ c)⁻¹ * (u ^ 46)⁻¹ := by rw [← mul_inv, ← pow_add]
       _ ≤ a * ((2 : Real)⁻¹ ^ 44 / 4) :=
           mul_le_mul hbase (h46u.trans h46) (by positivity) hapos.le
       _ = a * (2 : Real)⁻¹ ^ 44 / 4 := by ring
-  set E := arrangementSelectionExponent 1 with hE
-  have hEval : E = (2 : Nat) ^ 36 := by rw [hE]; unfold arrangementSelectionExponent; norm_num
-  -- from here on the context carries exponents beyond `2^24`: no `linarith`
-  have hsel : (u ^ (494 * (2 : Nat) ^ 36))⁻¹ ≤ (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E := by
-    rw [hEval]
-    have h := pow_le_pow_left₀ (inv_pos.mpr (pow_pos hupos _)).le hb ((2 : Nat) ^ 36)
+  set E := arrangementSelectionExponent k with hE
+  have hsel : (u ^ ((c + 46) * E))⁻¹ ≤ (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E := by
+    have h := pow_le_pow_left₀ (inv_pos.mpr (pow_pos hupos _)).le hb E
     rw [inv_pow, ← pow_mul] at h
     exact h
-  have hden : (u ^ (494 * (2 : Nat) ^ 36 + 2))⁻¹ ≤
+  have hden : (u ^ ((c + 46) * E + 2))⁻¹ ≤
       (1 - (2 : Real)⁻¹ ^ 44) * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E / 2 * 1 := by
-    calc (u ^ (494 * (2 : Nat) ^ 36 + 2))⁻¹ = (u ^ 2)⁻¹ * (u ^ (494 * (2 : Nat) ^ 36))⁻¹ := by
+    calc (u ^ ((c + 46) * E + 2))⁻¹ = (u ^ 2)⁻¹ * (u ^ ((c + 46) * E))⁻¹ := by
           rw [← mul_inv, ← pow_add, add_comm]
       _ ≤ (1 - (2 : Real)⁻¹ ^ 44) / 2 * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E :=
           mul_le_mul (hu4.trans h12) hsel (inv_pos.mpr (pow_pos hupos _)).le heta0
       _ = (1 - (2 : Real)⁻¹ ^ 44) * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E / 2 * 1 := by ring
   have hdenpos : 0 < (1 - (2 : Real)⁻¹ ^ 44) * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E / 2 * 1 :=
     lt_of_lt_of_le (inv_pos.mpr (pow_pos hupos _)) hden
-  have hkey : u ^ 51 ≤ u ^ ((2 : Nat) ^ 45) * (u ^ (494 * (2 : Nat) ^ 36 + 2))⁻¹ := by
+  have hkey : u ^ (32 * 2 ^ k + k) ≤ u ^ p * (u ^ ((c + 46) * E + 2))⁻¹ := by
     rw [← div_eq_mul_inv, le_div_iff₀ (pow_pos hupos _), ← pow_add]
-    exact pow_le_pow_right₀ hu1 (by norm_num)
+    exact pow_le_pow_right₀ hu1 hdegree
   unfold lemma156ExplicitThreshold
-  rw [if_neg (by norm_num)]
+  rw [if_neg (by omega)]
   unfold selectionExplicitThreshold
   apply max_le
-  · exact hu3.trans (pow_le_pow_right₀ hu1 (by norm_num))
-  · rw [← hE, div_le_iff₀ hdenpos, Nat.cast_one]
-    calc (3 : Real) ^ (16 * 2 ^ 1) * 1 ≤ u ^ 51 := h51
-      _ ≤ u ^ ((2 : Nat) ^ 45) * (u ^ (494 * (2 : Nat) ^ 36 + 2))⁻¹ := hkey
-      _ ≤ u ^ ((2 : Nat) ^ 45) *
-          ((1 - (2 : Real)⁻¹ ^ 44) * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E / 2 * 1) :=
-        mul_le_mul_of_nonneg_left hden (pow_pos hupos _).le
+  · exact hu3.trans (pow_le_pow_right₀ hu1 (by omega))
+  · rw [← hE, div_le_iff₀ hdenpos]
+    exact hC.trans (hkey.trans (mul_le_mul_of_nonneg_left hden (pow_pos hupos _).le))
+
+theorem lemma156ExplicitThreshold_one_le_power {gamma theta : Real} (hg : 0 < gamma)
+    (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
+    lemma156ExplicitThreshold 1 (theta / 2) gamma ≤ (2 / (gamma * theta)) ^ ((2 : Nat) ^ 45) := by
+  obtain ⟨hu2, -, -, h1, h2⟩ := prod_scale_basic hg hg1 ht ht1
+  set u := 2 / (gamma * theta) with hu
+  clear_value u
+  have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
+  have hbase : (u ^ 448)⁻¹ ≤ (theta / 2) ^ (7 * 4 ^ (1 + 1)) * gamma ^ (21 * 1 * 4 ^ (1 + 1)) := by
+    have hp1 := pow_le_pow_left₀ (inv_pos.mpr hupos).le h1 (7 * 4 ^ (1 + 1))
+    have hp2 := pow_le_pow_left₀ (inv_pos.mpr hupos).le h2 (21 * 1 * 4 ^ (1 + 1))
+    calc (u ^ 448)⁻¹ = u⁻¹ ^ (7 * 4 ^ (1 + 1)) * u⁻¹ ^ (21 * 1 * 4 ^ (1 + 1)) := by
+          rw [← pow_add, inv_pow]; norm_num
+      _ ≤ _ := mul_le_mul hp1 hp2 (by positivity) (by positivity)
+  exact lemma156ExplicitThreshold_le_power_of_selection_base (by norm_num) hu2 hbase
+    (by norm_num [arrangementSelectionExponent])
 
 theorem polyTwoThreshold_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) :
