@@ -325,28 +325,41 @@ theorem nat_max_one_le_pow {w : Real} {n a : Nat} (hw : 2 ≤ w) (hn : (n : Real
   rw [Nat.cast_max, Nat.cast_one]
   exact max_le (one_le_pow₀ (le_trans (by norm_num) hw)) hn
 
+/-- The sample count from separate family-size and parameter bases. -/
+theorem famPieceSamples_le_two_bases {ν w rho : Real} {Qr : Real → Real}
+    {n a b c d : Nat} (hν : 1 ≤ ν) (hw : 2 ≤ w) (hrho : 0 < rho) (hrw : rho⁻¹ ≤ w)
+    (hQ : Qr (rho / 8) ≤ ν ^ a * w ^ b) (hn : (n : Real) ≤ ν ^ c * w ^ d) :
+    (famPieceSamples Qr n rho : Real) ≤ ν ^ (a + c) * w ^ (b + d + 7) := by
+  have hw1 : 1 ≤ w := by linarith only [hw]
+  have hQ1 : max 1 (Qr (rho / 8)) ≤ ν ^ a * w ^ b :=
+    max_le (one_le_mul_of_one_le_of_one_le (one_le_pow₀ hν) (one_le_pow₀ hw1)) hQ
+  have hn1 : ((max 1 n : Nat) : Real) ≤ ν ^ c * w ^ d := by
+    rw [Nat.cast_max, Nat.cast_one]
+    exact max_le (one_le_mul_of_one_le_of_one_le (one_le_pow₀ hν) (one_le_pow₀ hw1)) hn
+  have hQ0 : 0 ≤ max 1 (Qr (rho / 8)) := zero_le_one.trans (le_max_left _ _)
+  set X := ν ^ (a + c) * w ^ (b + d + 1) with hXdef
+  have hX1 : 1 ≤ X := one_le_mul_of_one_le_of_one_le (one_le_pow₀ hν) (one_le_pow₀ hw1)
+  have hprod : max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) * rho⁻¹ ≤ X := by
+    have h := mul_le_mul (mul_le_mul hQ1 hn1 (Nat.cast_nonneg _) (by positivity))
+      hrw (inv_pos.mpr hrho).le (by positivity)
+    exact h.trans_eq (by rw [hXdef]; ring)
+  have h25 : (25 : Real) ≤ w ^ 6 :=
+    (by norm_num : (25 : Real) ≤ 2 ^ 6).trans (pow_le_pow_left₀ (by norm_num) hw 6)
+  unfold famPieceSamples
+  calc (⌈6 * max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) / (rho / 4)⌉₊ : Real)
+      ≤ 6 * max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) / (rho / 4) + 1 :=
+        (Nat.ceil_lt_add_one (by positivity)).le
+    _ = 24 * (max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) * rho⁻¹) + 1 := by field_simp; ring
+    _ ≤ 25 * X := by nlinarith only [hprod, hX1]
+    _ ≤ w ^ 6 * X := mul_le_mul_of_nonneg_right h25 (zero_le_one.trans hX1)
+    _ = ν ^ (a + c) * w ^ (b + d + 7) := by rw [hXdef]; ring
+
 /-- The sample count of the family piece cover. -/
 theorem famPieceSamples_le_power {w rho : Real} {Qr : Real → Real} {n a b : Nat} (hw : 2 ≤ w)
     (hrho : 0 < rho) (hrw : rho⁻¹ ≤ w) (hQ : Qr (rho / 8) ≤ w ^ a) (hn : (n : Real) ≤ w ^ b) :
     (famPieceSamples Qr n rho : Real) ≤ w ^ (a + b + 7) := by
-  have hw0 : 0 ≤ w := le_trans (by norm_num) hw
-  have hQ1 : max 1 (Qr (rho / 8)) ≤ w ^ a := max_le (one_le_pow₀ (le_trans (by norm_num) hw)) hQ
-  have hn1 := nat_max_one_le_pow hw hn
-  have hQ0 : 0 ≤ max 1 (Qr (rho / 8)) := le_trans zero_le_one (le_max_left _ _)
-  have hn0 : (0 : Real) ≤ ((max 1 n : Nat) : Real) := Nat.cast_nonneg _
-  have hprod : max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) * rho⁻¹ ≤ w ^ (a + b + 1) :=
-    mul_le_pow_add (mul_nonneg hQ0 hn0) (inv_pos.mpr hrho).le
-      (mul_le_pow_add hQ0 hn0 hQ1 hn1 hw0) (by rw [pow_one]; exact hrw) hw0
-  have hin : 6 * max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) / (rho / 4) ≤
-      w ^ (5 + (a + b + 1)) := by
-    rw [show 6 * max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) / (rho / 4) =
-      24 * (max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) * rho⁻¹) by field_simp; ring]
-    exact const_mul_le_pow hw (by norm_num) (by norm_num)
-      (mul_nonneg (mul_nonneg hQ0 hn0) (inv_pos.mpr hrho).le) hprod
-  have hin0 : 0 ≤ 6 * max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) / (rho / 4) := by
-    positivity
-  unfold famPieceSamples
-  exact le_pow_mono hw (by omega) (ceil_le_pow_succ hw hin0 hin)
+  simpa using famPieceSamples_le_two_bases (ν := 1) (a := 0) (b := a) (c := 0) (d := b)
+    (by norm_num) hw hrho hrw (by simpa using hQ) (by simpa using hn)
 
 /-- A graph-count bound from separate bounds on the family, samples and slices. -/
 theorem famPieceGraphBound_le_mul_sq {N S B rho : Real} {Qr : Real → Real}

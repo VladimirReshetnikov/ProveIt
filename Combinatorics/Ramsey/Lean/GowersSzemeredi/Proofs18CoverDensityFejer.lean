@@ -150,23 +150,10 @@ theorem nestExp_inv_leF {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV
   have hfk : P.k + 1 ≤ fixDeg P.k := by
     unfold fixDeg; have := Nat.lt_two_pow_self (n := P.k + 5); omega
   have hka : P.k + 3 ≤ P.μ0 + 1 + 23 * 2 ^ P.k := by omega
-  have heq : (P.NestExp alpha)⁻¹ =
-      ∏ e ∈ Finset.univ.filter (fun e : Fin P.k → Bool => e ≠ fun _ => true),
-        (16 : Real) ^ (P.k + 1 - (section16VertexDirections e).card) *
-          uCount P.V (uDeg23 (section16VertexDirections e).card) (alpha / 2)
-            (globalBudgetW (fejerThetaOne alpha (alpha / 2) P.k) P.k) (coverPrecW (fejerThetaOne alpha (alpha / 2) P.k) P.k) := by
-    show (coverExpW (fun l => uExp P.V (uDeg23 l)) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k)⁻¹ = _
-    unfold coverExpW
+  refine pw_mono hX (a := P.μ0 + 1 + 23 * 2 ^ P.k + 1 + P.k) ?_ ?_
+  · unfold NestExp coverExpW
     rw [← Finset.prod_inv_distrib]
-    refine Finset.prod_congr rfl fun e _ => ?_
-    unfold uExp
-    rw [inv_div, div_inv_eq_mul]
-  rw [heq]
-  have h : ∏ e ∈ Finset.univ.filter (fun e : Fin P.k → Bool => e ≠ fun _ => true),
-        (16 : Real) ^ (P.k + 1 - (section16VertexDirections e).card) *
-          uCount P.V (uDeg23 (section16VertexDirections e).card) (alpha / 2)
-            (globalBudgetW (fejerThetaOne alpha (alpha / 2) P.k) P.k) (coverPrecW (fejerThetaOne alpha (alpha / 2) P.k) P.k) ≤
-      (2 / alpha) ^ (2 ^ (P.μ0 + 1 + 23 * 2 ^ P.k + 1 + P.k)) := by
+    simp only [uExp, inv_div, div_inv_eq_mul]
     refine prod_le_pw _ hX ?_ ?_ (nonTop_card_le P.k)
     · intro e _
       exact mul_nonneg (by positivity) (zero_le_one.trans (one_le_uCount _ _ _ _ _))
@@ -178,9 +165,8 @@ theorem nestExp_inv_leF {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV
       have hm := pw_mul' hX (by positivity) (zero_le_one.trans (one_le_uCount _ _ _ _ _)) h16 hu
       rw [max_eq_right (by omega)] at hm
       exact hm
-  refine pw_mono hX h ?_
-  have := rhoDegC_gF P.k P.μ0
-  omega
+  · have := rhoDegC_gF P.k P.μ0
+    omega
 
 /-- The log-degree of the input parameter `yIn`. -/
 def densDegF (k μ0 : Nat) : Nat := rhoDegF k μ0 + 2 * (23 * 2 ^ k) + 13

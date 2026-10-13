@@ -112,27 +112,7 @@ theorem uniTwoFejerCount_le_split {V : Real} (hV : 1 ≤ V) {gamma theta rho : R
   set Q := (4 : Nat) + ((2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1) with hQdef
   have hS : (famPieceSamples (famTwoQr M qf) M rho : Real) ≤
       ν ^ (1 + 1) * W ^ (5 + (Q + (2 : Nat) ^ 24 + 1) + 1) := by
-    unfold famPieceSamples
-    have hQ1 : max 1 (famTwoQr M qf (rho / 8)) ≤ ν ^ 1 * W ^ Q :=
-      max_le (tb_one_le hν hW1) (hQr _)
-    have hM1 : ((max 1 M : Nat) : Real) ≤ ν ^ 1 * W ^ ((2 : Nat) ^ 24) := by
-      rw [Nat.cast_max, Nat.cast_one]; exact max_le (tb_one_le hν hW1) hM
-    have hprod := tb_mul hν hW1 (le_trans zero_le_one (le_max_left _ _)) (Nat.cast_nonneg _) hQ1 hM1
-    have hρ : rho⁻¹ ≤ ν ^ 0 * W ^ 1 := by rw [pow_zero, one_mul, pow_one]; exact hrW
-    have hprod2 := tb_mul hν hW1 (by positivity) (inv_pos.mpr hr).le hprod hρ
-    have hx0 : 0 ≤ 6 * max 1 (famTwoQr M qf (rho / 8)) * ((max 1 M : Nat) : Real) / (rho / 4) := by
-      have : (0 : Real) ≤ max 1 (famTwoQr M qf (rho / 8)) := le_trans zero_le_one (le_max_left _ _)
-      positivity
-    have hval : 6 * max 1 (famTwoQr M qf (rho / 8)) * ((max 1 M : Nat) : Real) / (rho / 4) =
-        24 * (max 1 (famTwoQr M qf (rho / 8)) * ((max 1 M : Nat) : Real) * rho⁻¹) := by
-      field_simp; ring
-    have h24 := tb_const_mul (c := (24 : Real)) (j := 5) hν hW2 (by norm_num) (by norm_num)
-      (by have : (0 : Real) ≤ max 1 (famTwoQr M qf (rho / 8)) := le_trans zero_le_one (le_max_left _ _)
-          positivity) hprod2
-    have hceil := (Nat.ceil_lt_add_one hx0).le
-    rw [hval] at hceil ⊢
-    rw [Nat.add_zero] at h24
-    exact hceil.trans (tb_add_one hν hW2 h24)
+    convert famPieceSamples_le_two_bases (b := Q) hν hW2 hr hrW (hQr (rho / 8)) hM using 1 <;> ring
   set S := famPieceSamples (famTwoQr M qf) M rho with hSdef
   set SB := 5 + (Q + (2 : Nat) ^ 24 + 1) + 1 with hSBdef
   -- the slice count
@@ -171,7 +151,6 @@ theorem twoSamples_le_split {ν W rho : Real} {M q : Nat} (hν : 1 ≤ ν) (hW :
     (hq : (q : Real) ≤ ν ^ 0 * W ^ ((2 : Nat) ^ 38)) :
     (famPieceSamples (famTwoQr M q) M rho : Real) ≤
       ν ^ (1 + 1) * W ^ (5 + (4 + ((2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1) + (2 : Nat) ^ 24 + 1) + 1) := by
-  have hW1 : 1 ≤ W := by linarith
   have hMq := affine_le_tb hν hW hM hq
   have hQr : ∀ t, famTwoQr M q t ≤ ν ^ 1 * W ^ (4 + ((2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1)) := by
     intro t
@@ -183,26 +162,7 @@ theorem twoSamples_le_split {ν W rho : Real} {M q : Nat} (hν : 1 ≤ ν) (hW :
     · refine le_trans ?_ h9
       exact_mod_cast Nat.mul_le_mul_right _ (by norm_num : 3 ≤ 9)
     · simpa using h9
-  unfold famPieceSamples
-  have hQ1 : max 1 (famTwoQr M q (rho / 8)) ≤ ν ^ 1 * W ^ (4 + ((2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1)) :=
-    max_le (tb_one_le hν hW1) (hQr _)
-  have hM1 : ((max 1 M : Nat) : Real) ≤ ν ^ 1 * W ^ ((2 : Nat) ^ 24) := by
-    rw [Nat.cast_max, Nat.cast_one]; exact max_le (tb_one_le hν hW1) hM
-  have hQ0 : (0 : Real) ≤ max 1 (famTwoQr M q (rho / 8)) := le_trans zero_le_one (le_max_left _ _)
-  have hprod := tb_mul hν hW1 hQ0 (Nat.cast_nonneg _) hQ1 hM1
-  have hρ : rho⁻¹ ≤ ν ^ 0 * W ^ 1 := by rw [pow_zero, one_mul, pow_one]; exact hrW
-  have hprod2 := tb_mul hν hW1 (by positivity) (inv_pos.mpr hr).le hprod hρ
-  have hx0 : 0 ≤ 6 * max 1 (famTwoQr M q (rho / 8)) * ((max 1 M : Nat) : Real) / (rho / 4) := by
-    positivity
-  have hval : 6 * max 1 (famTwoQr M q (rho / 8)) * ((max 1 M : Nat) : Real) / (rho / 4) =
-      24 * (max 1 (famTwoQr M q (rho / 8)) * ((max 1 M : Nat) : Real) * rho⁻¹) := by
-    field_simp; ring
-  have h24 := tb_const_mul (c := (24 : Real)) (j := 5) hν hW (by norm_num) (by norm_num)
-    (by positivity) hprod2
-  have hceil := (Nat.ceil_lt_add_one hx0).le
-  rw [hval] at hceil ⊢
-  rw [Nat.add_zero] at h24
-  exact hceil.trans (tb_add_one hν hW h24)
+  convert famPieceSamples_le_two_bases hν hW hr hrW (hQr (rho / 8)) hM using 1 <;> ring
 
 /-- **The dimension-two width exponent, in two bases**: its inverse is at most
 `ν^29·W^(2^46)`. -/

@@ -164,23 +164,10 @@ theorem nestExp_inv_leC {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV
   have hfk : P.k + 1 ≤ fixDeg P.k := by
     unfold fixDeg; have := Nat.lt_two_pow_self (n := P.k + 5); omega
   have hka : P.k + 3 ≤ P.μ0 + 1 + 68 * 2 ^ P.k := by omega
-  have heq : (P.NestExp alpha)⁻¹ =
-      ∏ e ∈ Finset.univ.filter (fun e : Fin P.k → Bool => e ≠ fun _ => true),
-        (16 : Real) ^ (P.k + 1 - (section16VertexDirections e).card) *
-          uCount P.V (uDeg68 (section16VertexDirections e).card) (alpha / 2)
-            (globalBudget alpha (alpha / 2) P.k) (coverPrec alpha (alpha / 2) P.k) := by
-    show (coverExp (fun l => uExp P.V (uDeg68 l)) alpha (alpha / 2) P.k)⁻¹ = _
-    unfold coverExp
+  refine pw_mono hX (a := P.μ0 + 1 + 68 * 2 ^ P.k + 1 + P.k) ?_ ?_
+  · unfold NestExp coverExp
     rw [← Finset.prod_inv_distrib]
-    refine Finset.prod_congr rfl fun e _ => ?_
-    unfold uExp
-    rw [inv_div, div_inv_eq_mul]
-  rw [heq]
-  have h : ∏ e ∈ Finset.univ.filter (fun e : Fin P.k → Bool => e ≠ fun _ => true),
-        (16 : Real) ^ (P.k + 1 - (section16VertexDirections e).card) *
-          uCount P.V (uDeg68 (section16VertexDirections e).card) (alpha / 2)
-            (globalBudget alpha (alpha / 2) P.k) (coverPrec alpha (alpha / 2) P.k) ≤
-      (2 / alpha) ^ (2 ^ (P.μ0 + 1 + 68 * 2 ^ P.k + 1 + P.k)) := by
+    simp only [uExp, inv_div, div_inv_eq_mul]
     refine prod_le_pw _ hX ?_ ?_ (nonTop_card_le P.k)
     · intro e _
       exact mul_nonneg (by positivity) (zero_le_one.trans (one_le_uCount _ _ _ _ _))
@@ -192,9 +179,8 @@ theorem nestExp_inv_leC {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV
       have hm := pw_mul' hX (by positivity) (zero_le_one.trans (one_le_uCount _ _ _ _ _)) h16 hu
       rw [max_eq_right (by omega)] at hm
       exact hm
-  refine pw_mono hX h ?_
-  have := rhoDegC_ge P.k P.μ0
-  omega
+  · have := rhoDegC_ge P.k P.μ0
+    omega
 
 /-- The log-degree of the input parameter `yIn`. -/
 def densDegC (k μ0 : Nat) : Nat := rhoDegC k μ0 + 2 * (68 * 2 ^ k) + 13
