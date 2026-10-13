@@ -1,7 +1,7 @@
 import GowersSzemeredi.Proofs13PolyStage136
 import GowersSzemeredi.Proofs13UniformDensityParameters
 import GowersSzemeredi.Proofs13RecurrenceParameterBudgets
-import GowersSzemeredi.Proofs13ExplicitFourierExponent
+import GowersSzemeredi.Proofs13SpectralExponentBound
 
 /-! The row-length exponent of the polynomial Section 13 route (Notes L.7c, P3a).
 

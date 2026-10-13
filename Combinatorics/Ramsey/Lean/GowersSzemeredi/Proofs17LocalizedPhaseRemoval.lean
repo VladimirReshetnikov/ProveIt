@@ -1,4 +1,3 @@
-import GowersSzemeredi.Proofs17FinitePatterns
 import GowersSzemeredi.Proofs17Regions
 import GowersSzemeredi.Proofs17PhaseRemoval
 import Mathlib.Analysis.MeanInequalities

@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs16ClassStep
-import GowersSzemeredi.Proofs16PolyCoverThreeBounds
+import GowersSzemeredi.Proofs18LengthSixCounts
 
 /-! Power bounds for the step of route (II), in every dimension (Notes L.6, E5).
 

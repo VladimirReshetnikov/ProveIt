@@ -1,6 +1,5 @@
 import GowersSzemeredi.Proofs18GeneralLocalInverseAssembly
 import GowersSzemeredi.Proofs18FejerCubicParameters
-import GowersSzemeredi.Proofs18CubicTwistedDiscrepancy
 import GowersSzemeredi.Proofs18FejerCubicCellModels
 
 /-! Explicit modulus threshold for the global cubic twisted discrepancy partition. -/

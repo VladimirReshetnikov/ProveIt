@@ -1,4 +1,6 @@
-import GowersSzemeredi.Proofs17CubicLocalization
+import GowersSzemeredi.Proofs13FourierBoxTransport
+import GowersSzemeredi.Proofs17LocalizedPhaseRemoval
+import GowersSzemeredi.Proofs17PartitionEnergy
 import GowersSzemeredi.Proofs13FejerOddSquare
 
 /-! Cubic polynomial localization at an explicit starting modulus. -/
