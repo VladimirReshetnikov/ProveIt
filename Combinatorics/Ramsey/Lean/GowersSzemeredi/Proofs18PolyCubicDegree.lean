@@ -29,14 +29,6 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-/-- A phase partition persists for every larger exponent constant. -/
-theorem ProgressionPhasePartition.mono {K : Real} {p p' : Nat}
-    (h : ProgressionPhasePartition K p) (hpp' : p ≤ p') : ProgressionPhasePartition K p' := by
-  intro N _ q P hP a b H hH hKH hsize
-  refine h N q P hP a b H hH hKH (le_trans ?_ hsize)
-  have hH1 : (1 : Real) ≤ H := by exact_mod_cast hH
-  exact pow_le_pow_right₀ hH1 (Nat.mul_le_mul_right _ hpp')
-
 /-- **The polynomial Fejér square.** The corpus frequency graph followed by
 the polynomial Section 13 square extraction. -/
 theorem fejerSquareAt_poly {alpha : Real} (hα : 0 < alpha) (hαone : alpha ≤ 1)
