@@ -5641,7 +5641,9 @@ So the route now consists of the declarations those bounds use, found by a
 constant-level closure from the final statements and extracted in their
 original order (`fejer-generators/final_extract.py`, `assemble_final.py`):
 * `Proofs18FinalClasses`: the classes `tDegT3` and `polyCoverAt_classT3`, with
-  the envelope-base bounds they need;
+  the envelope-base bounds they need (beyond dimension 14 the two-track degrees
+  are bounded through the max-pair recursion in closed form; the max-pair
+  table and its class-constant-4 induction are no longer needed);
 * `Proofs18FinalStep`: the joint-slice step `GenParamsJT3`;
 * `Proofs18FinalEnvelopes`: `polyGenMuJT3` and `genMuXK3`, their closed forms
   beyond dimension 14 and one fit lemma each; a structure `FinalInputs`
@@ -5657,10 +5659,12 @@ keeps only the best statements (with Corollary 18.7, van der Waerden numbers,
 Theorem 1.3 and the printed consequences). Measured: 63 modules and 19,081
 lines retired, 3,501 added; the bridge 993 → 186 lines and 101 → 25
 theorems; the Fejér block of `CompletionAudit` 341 → 96 lines. No threshold
-changed. The merged production route now passes the 853-module native
-`FinalProofSimplificationAudit`, covering all 25 public bridge theorems,
-FinalInputs methods, shared induction and fit lemmas, with approved axioms.
-See L.63 and `verification/2026-10-12-final-inputs-merged-compatibility.json`.
+changed. Subsequent sharing and import cleanup leave 3,240 lines in the
+four proof modules and 182 in the bridge. The current route passes the
+778-module native `FinalProofSimplificationAudit`, covering all 25 public
+bridge theorems, FinalInputs methods, shared induction, fits and threshold
+comparisons, with approved axioms. The bridge itself imports 745 modules.
+See L.68 and `verification/2026-10-12-final-merged-short-phase-compatibility.json`.
 The complete facade remains a separate check.
 
 **Van der Waerden numbers: our bounds and the literature (2026-10-12).** Gowers
@@ -5669,16 +5673,19 @@ results here keep that shape with a smaller top constant:
 `van_der_waerden_L3_all` (`k + 3`, every `k`), `van_der_waerden_L2_eight_le`
 (`k + 2`, `k ≥ 8`), `van_der_waerden_L1_eleven_le` (`k + 1`, `k ≥ 11`) and
 `van_der_waerden_L0_thirteen_le` (`W(k, r) ≤ 2^2^r^2^2^k`, `k ≥ 13`). They are
-verified by the 853-module focused native audit in L.63. They tighten Gowers's own argument; they are not new
-mathematics. Published bounds of a different shape are much stronger in `r`
-for fixed `k`:
+verified by the 778-module focused native audit in L.68. They tighten the
+constants in Gowers's argument. Published bounds of a different shape are
+much stronger in `r` for fixed `k`:
 * `k = 3`: Kelley–Meka (2023), sharpened by Bloom–Sisask,
   `r_3(N) ≤ N·exp(−c(log N)^β)` (`β = 1/12`, then `1/9`), so
   `W(3, r) ≤ exp(C(log r)^{1/β})`;
 * `k = 4`: Green–Tao, `r_4(N) ≤ N(log N)^{−c}`, so `W(4, r) ≤ exp(r^C)`;
-* `k ≥ 5`: Leng–Sah–Sawhney (2024), `r_k(N) ≤ N·exp(−(log log N)^{c_k})`, so
-  `W(k, r) ≤ exp(exp((log r)^{C_k}))`, with constants depending on `k` and not
-  in Gowers's explicit tower form.
+* `k ≥ 5`: [Leng–Sah–Sawhney (2024)](https://arxiv.org/abs/2402.17995),
+  `r_k(N) ≪_k N·exp(−(log log N)^{c_k})`. By applying this to the largest
+  colour class, it follows that `W(k, r) ≤ exp(exp(C_k*(log r)^{D_k}))`,
+  for suitable positive constants depending on `k`. This is stronger as
+  `r` grows with `k` fixed, but does not give the same explicit dependence
+  on both parameters. That result is not formalized here.
 The results here therefore improve the explicit constant in Gowers's formula,
 not the best known general bound.
 
@@ -7308,6 +7315,159 @@ one from length eleven, and zero from length thirteen. Lean states these
 as the direct monochromatic-progression property for every coloring and
 at least two colors. The complete facade and remaining original-statement
 fidelity gaps are separate; the simplification goal remains active.
+
+
+### L.65. Share the tower and phase-refinement estimates (2026-10-12)
+
+Two elementary lemmas in `Proofs18DoubleExponentialBounds` convert
+`exp(exp x)` to a base-two tower: a linear-margin version assumes
+`1 + 2*x <= y`, and a power-budget version assumes `2 <= u` and
+`q + 2 <= E`. Nine threshold comparisons now use them. The generic,
+quadratic, five-term and length-six comparisons also share the argument
+that two spare powers absorb the conversion. Five Roth threshold
+comparisons use the linear-margin lemma.
+
+The phase-refinement estimates differ only in their bound for the
+polynomial partition constant. `inv_thr_le_ex_of_partition_bound` takes
+that exponent as an input; `inv_thr_le_ex` and `inv_thr_le_ex_sharp`
+are short specializations. Their exact original statements and budgets
+are preserved. The generic uniformity exponent no longer splits off
+length zero, and the closed-threshold proof uses its existing local
+constant-bound helper for the degree-one refinement constant.
+
+The twelve production modules shrink by 157 lines. All 112 existing
+public theorem statements in those modules compare byte-for-byte with
+commit `219e277be`, and all 25 stronger bridge statements are unchanged.
+The source comparison is recorded in
+`verification/2026-10-12-shared-exponential-conversions-simplification.json`.
+
+FinalAudit passes 648 native modules. The expanded compatibility audit
+passes 853, explicitly naming both new tower lemmas, the generic and
+sharper phase estimates, all nine conversion sites, and the two simplified
+generic arithmetic lemmas. It retains the original final results, all 25
+stronger bridge theorems and the older Section 13/cubic interfaces.
+Only `propext`, `Classical.choice` and `Quot.sound` occur. See
+`verification/2026-10-12-final-shared-exponential-conversions.json` and
+`verification/2026-10-12-final-shared-exponential-conversions-compatibility.json`,
+with immutable source manifests.
+
+The original-final closure remains 647 modules / 135,367 lines: the shared
+helper signatures add eleven lines to that minimal closure while removing
+repetition across the original and stronger routes. The expanded audit
+closure is 853 modules / 180,167 lines. The incoming main changes concern
+source-kernel work outside Gowers and preserve every recorded proof input.
+Full-facade verification and original-statement fidelity gaps remain
+separate, and the simplification goal remains active.
+
+
+### L.66. Remove historical imports from the stronger-bound bridge (2026-10-12)
+
+`Proofs18CoverFejerAllDegrees` now imports only `Proofs18Final`,
+`Proofs18PolyCubicDegreeExplicit` and `Proofs18CoverVanDerWaerden`.
+The historical length-six bridge, explicit variety decomposition,
+variety-constant bounds and all-dimensions cover bridge supplied no
+uniquely used declarations. The explicit recurrence profiles, Schmidt
+estimates, partition bounds and progression phase partition already
+come through the retained imports. The strongest length-six case uses
+the general final envelope proof.
+
+Only four import lines change in the production bridge. Every theorem
+statement and proof body is byte-identical. Its dependency closure falls
+from 831 modules / 174,516 lines to 750 / 163,368: 81 fewer modules and
+11,148 fewer imported source lines. The bridge itself is now 182 lines.
+The four consolidated proof modules contain 3,416 lines after L.65.
+See `verification/2026-10-12-direct-stronger-bridge-imports.json` for the
+excluded modules and exact source comparisons.
+
+The focused audit imports `Proofs18LengthSixSzemeredi` directly, retaining
+the changed historical length-six comparison without importing its
+explicit-constant bridge. No named theorem or axiom check is removed.
+The fresh audit passes 776 native modules with only `propext`,
+`Classical.choice` and `Quot.sound`, including all 25 public stronger-bound
+bridge results; see
+`verification/2026-10-12-final-direct-stronger-bridge-compatibility.json`
+and its immutable source manifest. The audit closure is 170,482 lines,
+77 modules and 9,685 lines fewer than L.65.
+
+The original-final closure remains 647 modules / 135,367 lines, and all
+651 input hashes of its completed 648-module L.65 audit are unchanged.
+The stronger bridge now avoids its historical length-six proof route;
+that proof remains checked independently as a compatibility interface.
+The complete facade and remaining original-statement fidelity gaps are
+separate, and the simplification goal remains active.
+
+### L.67. Share short-length proofs and isolate the explicit phase input (2026-10-12)
+
+The strongest short-length theorem is proved once at offset three. Its
+Roth, quadratic and five-term threshold comparisons now live in
+`Proofs18CoverSharperShortLengths`; the offset-four, five and six versions
+follow by threshold monotonicity. Their short-length theorems likewise
+specialize `theorem_18_2_L3_le_five`. The original printed Roth comparison
+and the offset-three comparison share `roth_exp_exp_le_two_tower`: for
+`u >= 2`, first bound `10^12*u <= u^41`, then absorb the conversion to base
+two with two spare powers. Its separate module keeps this unused helper
+out of the canonical original-final closure.
+
+`ProgressionPhasePartition.mono` now lives beside its definition in
+`Proofs13PolyRecurrence`. A light `Proofs16ExplicitPhasePartition` module
+contains the unchanged explicit common-difference and progression phase
+partition proofs. The stronger bridge imports it directly. The older
+`Proofs18PolyCubicDegreeExplicit` still re-exports the same declarations,
+but its graded-degree proof chain is no longer needed to supply this
+single input to the stronger final route.
+
+The eleven production files, including both new modules, shrink by 200
+lines. All 98 existing declaration headers and their variable scopes are
+preserved, including the seven moved declarations; six moved proof bodies are byte-identical, while the
+Roth proof intentionally uses the shared conversion. All 25 stronger
+bridge declarations are unchanged. The four consolidated proof modules
+now contain 3,331 lines, and the bridge remains 182 lines. The source and
+closure comparisons are recorded in
+`verification/2026-10-12-shared-short-phase-simplification.json`.
+
+The stronger bridge closure falls from 750 modules / 163,368 lines to
+745 / 161,443: five fewer modules and 1,925 fewer source lines. The focused
+audit retains the historical bridge and every existing check, and adds
+explicit checks for the moved phase inputs, new Roth helper, all short-
+length theorems and threshold specializations. Its closure is 778 modules /
+170,298 lines, adding two modules but removing 184 source lines. Native
+verification passes with only `propext`, `Classical.choice` and `Quot.sound`;
+see `verification/2026-10-12-final-shared-short-phase-compatibility.json`
+and its immutable source manifest.
+
+The original-final closure is unchanged at 647 modules / 135,367 lines.
+Its 648-module checker succeeds with up-to-date dependencies, and all 651
+input hashes of the completed L.65 audit remain identical. The complete
+facade and remaining original-statement fidelity gaps are separate; the
+simplification goal remains active.
+
+### L.68. Verify the merged closed-form class bound (2026-10-12)
+
+Before publication, `origin/main` supplied a further simplification in
+`Proofs18FinalClasses` (`9cfd595aa`). Beyond dimension 14 the two-track
+bound uses the max-pair recursion directly in closed form. The auxiliary
+max-pair table and its offset-four invariant induction disappear. The
+finite dimension-twelve base now kernel-checks positivity along with its
+two bounds, so the subsequent induction no longer needs that older
+invariant. Eight unused intermediate declarations are removed, one
+closed-form bound is added, and the base theorem gains two positivity
+conjuncts. No remaining module uses a deleted declaration.
+
+This removes another 91 production lines. The class table `tTableT3`,
+its degree definitions, final cover statements and all 25 stronger bridge
+theorems retain their statements and numerical bounds. Combined with
+L.67, production sources shrink by 291 lines; the four consolidated
+proof modules now contain 3,240 lines. The stronger bridge closure is
+745 modules / 161,352 lines; the focused audit is 778 / 170,207.
+The merged native audit passes with only the three approved axioms; see
+`verification/2026-10-12-final-merged-short-phase-compatibility.json`
+and its immutable input manifest. The source comparison is recorded in
+`verification/2026-10-12-merged-short-phase-review.json`.
+
+The original-final audit still has all 651 input hashes unchanged. The
+prior L.67 report remains an immutable record of the pre-merge proofs.
+Full-facade checks and original-statement fidelity gaps remain separate,
+and the simplification goal remains active.
 
 ## F. Routes
 

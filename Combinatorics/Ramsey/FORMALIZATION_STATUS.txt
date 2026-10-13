@@ -9,6 +9,52 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  Merged class-bound checkpoint: the upstream two-track simplification
+  removes the auxiliary max-pair table and its offset-four induction.
+  Its dimension-twelve base directly checks positivity and both bounds;
+  large dimensions use a closed-form max-pair estimate. This removes 91
+  further lines, for 291 production lines saved with the previous changes.
+  Final bounds and all 25 public stronger-bridge statements are unchanged.
+  The combined 778-module native audit passes with only approved axioms;
+  the stronger bridge is 745 modules / 161,352 lines. The original-final
+  audit retains all 651 source hashes. See Notes L.68 and the
+  final-merged-short-phase-compatibility report. The goal remains active.
+
+  Shared short-length and phase-input checkpoint: offset-three proofs now
+  supply the weaker short-length theorems and comparisons by monotonicity;
+  one Roth-to-tower estimate supplies the printed and stronger routes.
+  The explicit phase input has its own light module, with monotonicity
+  beside the partition definition. Eleven production files shrink by 200
+  lines without changing existing theorem statements or numerical bounds.
+  The stronger bridge closure is 745 modules / 161,443 lines, down five
+  modules and 1,925 lines. The fresh focused audit passes 778 native modules
+  with only approved axioms, retaining all 25 public bridge theorems and
+  the historical interfaces. Original-final verification retains all 651
+  source hashes and its 648-module checker passes. See Notes L.67 and the
+  shared-short-phase verification reports. The goal remains active.
+
+  Direct stronger-bridge checkpoint: four unused historical imports are
+  removed with every theorem statement and proof body unchanged. The
+  stronger bridge now imports 750 modules / 163,368 lines, a reduction of
+  81 modules / 11,148 lines. The fresh focused audit passes 776 modules
+  with only approved axioms; every named check and all 25 stronger public
+  bridge theorems remain covered. The changed historical length-six proof
+  is imported directly by the audit. The original-final 648-module audit
+  retains identical source hashes. See Notes L.66 and the
+  final-direct-stronger-bridge-compatibility verification report.
+
+  Shared tower and phase-refinement checkpoint: nine threshold comparisons
+  use two elementary conversion lemmas, and the original and sharper phase
+  estimates specialize one proof parameterized by the partition budget.
+  Two generic arithmetic arguments are shorter. The twelve production
+  modules shrink by 157 lines; all 112 existing theorem statements in those
+  modules and all 25 stronger bridge statements are unchanged. FinalAudit
+  passes 648 native modules and the expanded audit passes 853, with only
+  approved axioms. The original-final closure is 647 / 135,367 lines; shared
+  helper signatures add eleven lines there while eliminating repetition
+  across routes. See Notes L.65 and the shared-exponential-conversions
+  verification reports. The simplification goal remains active.
+
   Uniform long-progression checkpoint: genMuX_le now covers every k >= 2,
   so the original final threshold proof uses one estimate for all lengths
   at least six. The separate length-six and length-seven branches disappear,
@@ -720,14 +766,14 @@ Verification of the cover route (2026-10-11)
   Proofs16PolynomialFejer*, Proofs16SplitTwoTrack*, Proofs16UniformCoverTwoTight,
   Proofs18FejerEnvelopeBase{Q,W}, Proofs18CoverFejerLowDegrees{4,5},
   Proofs18CoverFejerShortLengths3) are replaced by the declarations the final
-  bounds use, in four light modules (3,501 lines): Proofs18FinalClasses (the
+  bounds use, in four light modules (3,240 lines after the L.68 merge): Proofs18FinalClasses (the
   classes tDegT3 and their covers), Proofs18FinalStep (the joint-slice step
   GenParamsJT3), Proofs18FinalEnvelopes (the Theorem 18.1 envelope
   polyGenMuJT3 and the Theorem 18.2 envelope genMuXK3 with their fits, and
   one structure FinalInputs of corpus inputs from which both envelopes and
   the polynomial Theorem 16.2 / Corollary 16.11 follow), and Proofs18Final
   (FinalInputs.theorem_18_1_d4 / _d3 / _d2 and FinalInputs.theorem_18_2_L3 /
-  _L2 / _L1 / _L0, each one line). The bridge Proofs18CoverFejerAllDegrees (993 -> 189 lines)
+  _L2 / _L1 / _L0, each one line). The bridge Proofs18CoverFejerAllDegrees (993 -> 182 lines after L.66)
   instantiates explicitFinalInputs and keeps only the best statements:
   theorem_18_1_d4 (every d), theorem_18_1_d3_eight_le, theorem_18_1_d2_eleven_le,
   theorem_18_2_L3 / corollary_18_7_L3 (every L), _L2_eight_le, _L1_eleven_le,

@@ -1,9 +1,5 @@
 import GowersSzemeredi.Proofs18Final
-import GowersSzemeredi.Proofs18LengthSixExplicit
-import GowersSzemeredi.Proofs16ExplicitVarietyDecomposition
-import GowersSzemeredi.Proofs18PolyCubicDegreeExplicit
-import GowersSzemeredi.Proofs16ExplicitConstantBounds
-import GowersSzemeredi.Proofs16AllDimensionsExplicit
+import GowersSzemeredi.Proofs16ExplicitPhasePartition
 import GowersSzemeredi.Proofs18CoverVanDerWaerden
 
 /-! **The final bounds of Sections 16 and 18** (Notes L.16-final).

@@ -42,6 +42,14 @@ def ProgressionPhasePartition (K : Real) (p : Nat) : Prop :=
         ∀ i j h, h ∈ (Q j).carrier →
           (centeredAbs ((a i * h + b i) * (Q j).step) : Real) ≤ (4 / H) * N
 
+/-- A phase partition persists for every larger exponent constant. -/
+theorem ProgressionPhasePartition.mono {K : Real} {p p' : Nat}
+    (h : ProgressionPhasePartition K p) (hpp' : p ≤ p') : ProgressionPhasePartition K p' := by
+  intro N _ q P hP a b H hH hKH hsize
+  refine h N q P hP a b H hH hKH (le_trans ?_ hsize)
+  have hH1 : (1 : Real) ≤ H := by exact_mod_cast hH
+  exact pow_le_pow_right₀ hH1 (Nat.mul_le_mul_right _ hpp')
+
 /-- Stage 13.5 data at a length exponent `eL` and a precision exponent `eP`. -/
 def IsStage135At {N : Nat} [NeZero N] (S : Section13Context N)
     (D : Stage134Data N) (E : Stage135Data N) (eL eP : Real) : Prop :=

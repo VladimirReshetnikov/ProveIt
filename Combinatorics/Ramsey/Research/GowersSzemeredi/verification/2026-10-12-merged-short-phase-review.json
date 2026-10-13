@@ -1,0 +1,118 @@
+{
+  "status": "read_only_source_review_passed",
+  "baseline_commit": "34c7cc2b5f944ae8d5ecbc8075090e16894d5b8a",
+  "reviewed_head": "1da6c66d14116b7a8ff37d50772268b2837205e2",
+  "scope": "Incoming closed-form two-track class simplification after the shared short-length and explicit phase-input checkpoint. This report is a source review and import-graph measurement, not a Lean verification result.",
+  "source_module": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalClasses.lean",
+  "source_lines_before": 1410,
+  "source_lines_after": 1319,
+  "source_line_delta": -91,
+  "removed_intermediate_declarations": [
+    "fejer_split_step_quad4",
+    "quad4_exponent_step",
+    "split_pair_max_le_uDegM",
+    "split_pair_max_quad",
+    "tDegM",
+    "tDegM_eq_of_ge",
+    "tTableM",
+    "uDegM"
+  ],
+  "new_intermediate_declarations": [
+    "split_pair_max_le_closed"
+  ],
+  "strengthened_intermediate_statement": {
+    "name": "split_pair_max_twelve_half",
+    "change": "Adds positivity of both max-pair components to the existing two numerical bounds; all four conjuncts are kernel-decided at dimension 12."
+  },
+  "other_retained_declaration_headers_unchanged": 60,
+  "final_budget_definitions_byte_identical": {
+    "tTableT3": true,
+    "tDegT3": true,
+    "uDegT3": true
+  },
+  "final_cover_statements_byte_identical": {
+    "split_quad3_le_uDegT3": true,
+    "polyCoverAt_classT3": true
+  },
+  "stronger_bridge_byte_identical": true,
+  "stronger_bridge_public_theorem_count": 25,
+  "stronger_bridge_public_theorems": [
+    "explicit_family_constants_poly_le",
+    "theorem_18_1_d4",
+    "theorem_18_1_d3_eight_le",
+    "theorem_18_1_d2_eleven_le",
+    "theorem_18_1_d4_implies_printed",
+    "theorem_18_2_L3",
+    "corollary_18_7_L3",
+    "theorem_18_2_L3_implies_printed",
+    "corollary_18_7_L3_implies_printed",
+    "van_der_waerden_L3_all",
+    "theorem_1_3_L3",
+    "theorem_18_2_L2_eight_le",
+    "corollary_18_7_L2_eight_le",
+    "van_der_waerden_L2_eight_le",
+    "theorem_1_3_L2_eight_le",
+    "theorem_18_2_L1_eleven_le",
+    "corollary_18_7_L1_eleven_le",
+    "van_der_waerden_L1_eleven_le",
+    "theorem_1_3_L1_eleven_le",
+    "theorem_18_2_L0_thirteen_le",
+    "corollary_18_7_L0_thirteen_le",
+    "van_der_waerden_L0_thirteen_le",
+    "theorem_1_3_L0_thirteen_le",
+    "theorem_16_2_polynomial_fejerT3",
+    "corollary_16_11_polynomial_fejerJT3"
+  ],
+  "removed_name_reference_check": {
+    "searched_roots": [
+      "Combinatorics/Ramsey/Lean",
+      "Combinatorics/Ramsey/scripts"
+    ],
+    "matching_lines": [],
+    "result": "No remaining occurrence, hence no external production consumer, of any deleted declaration."
+  },
+  "proof_review": "The former max-pair table was used only to obtain its closed form above dimension 14; split_pair_max_le_closed proves that same closed form directly. The actual final table tTableT3 still handles dimensions 0 through 14. The max-pair induction starts at dimension 12 with explicit positivity rather than the removed class-constant-4 induction. No final numerical budget changes.",
+  "dependency_measurements": {
+    "GowersSzemeredi.Final": {
+      "before": {
+        "module_count": 647,
+        "source_lines": 135367
+      },
+      "after": {
+        "module_count": 647,
+        "source_lines": 135367
+      }
+    },
+    "GowersSzemeredi.FinalAudit": {
+      "before": {
+        "module_count": 648,
+        "source_lines": 135401
+      },
+      "after": {
+        "module_count": 648,
+        "source_lines": 135401
+      }
+    },
+    "GowersSzemeredi.Proofs18CoverFejerAllDegrees": {
+      "before": {
+        "module_count": 745,
+        "source_lines": 161443
+      },
+      "after": {
+        "module_count": 745,
+        "source_lines": 161352
+      }
+    },
+    "GowersSzemeredi.FinalProofSimplificationAudit": {
+      "before": {
+        "module_count": 778,
+        "source_lines": 170298
+      },
+      "after": {
+        "module_count": 778,
+        "source_lines": 170207
+      }
+    }
+  },
+  "verification_limit": "Root is running a fresh native audit for the merged source. No Lean process was launched by this reviewer."
+}
