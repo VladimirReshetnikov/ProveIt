@@ -19,34 +19,6 @@ namespace LeanProofs.GowersSzemeredi
 
 /-! ### The cover remainder width at density `t1` -/
 
-theorem coverExpW_pos_le (Eb : Nat → Real → Real → Real → Real)
-    (hEb : ∀ l g t s, 0 < Eb l g t s ∧ Eb l g t s ≤ 1) (t1 gamma : Real) (k : Nat) :
-    0 < coverExpW Eb t1 gamma k ∧ coverExpW Eb t1 gamma k ≤ 1 := by
-  unfold coverExpW
-  have hf : ∀ e : Fin k → Bool,
-      0 < Eb (section16VertexDirections e).card gamma (globalBudgetW t1 k)
-          (coverPrecW t1 k) / 16 ^ (k + 1 - (section16VertexDirections e).card) ∧
-        Eb (section16VertexDirections e).card gamma (globalBudgetW t1 k)
-          (coverPrecW t1 k) / 16 ^ (k + 1 - (section16VertexDirections e).card) ≤ 1 := by
-    intro e
-    obtain ⟨h0, h1⟩ := hEb (section16VertexDirections e).card gamma (globalBudgetW t1 k)
-      (coverPrecW t1 k)
-    have h16 : (1 : Real) ≤ 16 ^ (k + 1 - (section16VertexDirections e).card) :=
-      one_le_pow₀ (by norm_num)
-    refine ⟨by positivity, ?_⟩
-    rw [div_le_one (by positivity)]
-    linarith
-  refine ⟨Finset.prod_pos fun e _ => (hf e).1, ?_⟩
-  calc _ ≤ ∏ _e ∈ Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true), (1 : Real) :=
-        Finset.prod_le_prod (fun e _ => (hf e).1.le) fun e _ => (hf e).2
-    _ = 1 := by simp
-
-/-- The remainder width is `N^coverExpW`, with no threshold. -/
-theorem coverRemWidthW_powerLB (Eb : Nat → Real → Real → Real → Real) (t1 gamma : Real)
-    (k : Nat) :
-    WidthPowerLB (fun L => coverRemWidthW Eb t1 gamma k L) (coverExpW Eb t1 gamma k) 1 :=
-  fun _ _ => Nat.le_ceil _
-
 /-! ### The parameters -/
 
 /-- The data of the single-piece step with the joint-cover remainder in dimension `k`. -/
