@@ -147,80 +147,6 @@ theorem FejerOddSquareAt.localized {alpha e T : Real} (h : FejerOddSquareAt alph
 def fejerCubicPrimeModelThresholdAt (e T₀ T : Real) : Real :=
   max 256 (max T₀ (positivePowerThreshold (12 * max 2 T) 1 e))
 
-/-- **Many comparable prime models** at any odd-square exponent. -/
-theorem FejerOddSquareAt.manyPrimeModels {alpha e T₀ : Real} (h : FejerOddSquareAt alpha e T₀)
-    (T : Real) (hα : 0 < alpha) (he : 0 < e) :
-    ∀ (N : Nat) [NeZero N] [Fact N.Prime], fejerCubicPrimeModelThresholdAt e T₀ T ≤ N →
-      ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 3 →
-      ∃ phi : ZMod N → ZMod N, ∃ K l : Nat, ∃ Q : Fin K → ModAP N,
-        PolynomialOn 3 Finset.univ phi ∧
-        IsPartition (fun i => (Q i).carrier) Finset.univ ∧
-        (∀ i, (Q i).IsProper ∧ ((Q i).length = l ∨ (Q i).length = l + 1)) ∧
-        (N : Real) ^ e / 12 ≤ l ∧
-        ∃ B : Finset (Fin K),
-          fejerCubicLocalizedMassParameter alpha * N < ∑ i ∈ B, ((Q i).carrier.card : Real) ∧
-          ∀ i ∈ B, ∃ M : Nat, ∃ hM : M.Prime,
-            letI : NeZero M := ⟨hM.ne_zero⟩
-            T ≤ (M : Real) ∧ 4 * (Q i).length < M ∧ M ≤ 8 * (Q i).length ∧
-            (M : Real) ≤ (N : Real) / 2 ∧
-            DiscValued (intervalExtension M ((Q i).pullbackFunction (phaseTwist f phi))) ∧
-            ¬ UniformOfDegree (intervalExtension M ((Q i).pullbackFunction (phaseTwist f phi)))
-              (fejerCubicLocalQuadraticParameter alpha) 2 := by
-  let beta := (2 : Real) ^ (-(58 : Int)) * alpha ^ 2 * (alpha / 2) ^ ((2 : Nat) ^ 42)
-  have hβ : 0 < beta := by dsimp [beta]; positivity
-  intro N _ _ hN f hf hnot
-  have hNloc : T₀ ≤ (N : Real) := (le_max_left _ _).trans ((le_max_right _ _).trans hN)
-  obtain ⟨phi, K, l, Q, hpoly, hpart, hproper, hlength, hupper, hfail⟩ :=
-    h.localized hα N hNloc f hf hnot
-  have hlarge : 12 * max 2 T ≤ (N : Real) ^ e := by
-    simpa only [one_mul] using positivePowerThreshold_spec zero_lt_one he
-      ((le_max_right _ _).trans ((le_max_right _ _).trans hN) :
-        positivePowerThreshold (12 * max 2 T) 1 e ≤ (N : Real))
-  have hlmax : max 2 T ≤ (l : Real) := by linarith only [hlarge, hlength]
-  have hl : 2 ≤ l := by exact_mod_cast ((le_max_left 2 T).trans hlmax)
-  have hlT : T ≤ (l : Real) := (le_max_right 2 T).trans hlmax
-  have hNreal : (256 : Real) ≤ N := (le_max_left _ _).trans hN
-  have hroot0 := Real.sqrt_nonneg (N : Real)
-  have hrootsq := Real.sq_sqrt (Nat.cast_nonneg N : (0 : Real) ≤ N)
-  have hroot : 16 ≤ Real.sqrt N := by nlinarith only [hNreal, hroot0, hrootsq]
-  have hrootprod := mul_nonneg hroot0 (sub_nonneg.mpr hroot)
-  have hrootupper : 8 * Real.sqrt N ≤ (N : Real) / 2 := by nlinarith only [hrootsq, hrootprod]
-  have hgeom (i : Fin K) : 2 ≤ (Q i).length ∧ (Q i).length ≤ l + 1 ∧
-      (2 + 2) * (Q i).length ≤ N := by
-    have hU := hupper i
-    have hs : (4 : Real) * (Q i).length ≤ N := by nlinarith only [hU, hrootupper, hNreal]
-    have hs' : 4 * (Q i).length ≤ N := by exact_mod_cast hs
-    rcases (hproper i).2 with hi | hi <;> omega
-  obtain ⟨B, hmass, hB⟩ := partition_nonuniformity_prime_models
-    (phaseTwist f phi) Q beta (phaseTwist_discValued hf phi) hβ.le
-    (by omega) hpart (fun i => (hproper i).1) hgeom hfail
-  have hmassparam : beta / 2 = fejerCubicLocalizedMassParameter alpha := by
-    dsimp [beta, fejerCubicLocalizedMassParameter]
-    generalize (alpha / 2) ^ ((2 : Nat) ^ 42) = a
-    norm_num
-    ring
-  have hparam : (beta / 2) / (2 * (2 + 2 : Nat) : Real) ^ (2 + 2) =
-      fejerCubicLocalQuadraticParameter alpha := by
-    dsimp [beta, fejerCubicLocalQuadraticParameter]
-    generalize (alpha / 2) ^ ((2 : Nat) ^ 42) = a
-    norm_num
-    ring
-  refine ⟨phi, K, l, Q, hpoly, hpart, hproper, hlength, B, ?_, ?_⟩
-  · simpa only [hmassparam] using hmass
-  · intro i hi
-    obtain ⟨M, hM, hMlow, hMup, hdisc, hnew⟩ := hB i hi
-    letI : NeZero M := ⟨hM.ne_zero⟩
-    have hM8 : M ≤ 8 * (Q i).length := by omega
-    have hMhalf : (M : Real) ≤ (N : Real) / 2 := by
-      have hMr : (M : Real) ≤ 8 * (Q i).length := by exact_mod_cast hM8
-      have hU := hupper i
-      nlinarith only [hMr, hU, hrootupper]
-    have hlM : l ≤ M := by
-      have hli : l ≤ (Q i).length := by rcases (hproper i).2 with h | h <;> omega
-      omega
-    refine ⟨M, hM, hlT.trans (by exact_mod_cast hlM), hMlow, hM8, hMhalf, hdisc, ?_⟩
-    simpa only [hparam] using hnew
-
 def fejerCubicTwistedThresholdAt (alpha e T₀ : Real) : Real :=
   fejerCubicPrimeModelThresholdAt e T₀
     (max 4 (quadraticExponentialThreshold (fejerCubicLocalQuadraticParameter alpha)))
@@ -241,47 +167,65 @@ theorem FejerOddSquareAt.twistedDiscrepancy {alpha e T₀ : Real} (h : FejerOddS
           ∑ j, ‖∑ x ∈ (R j).carrier, phaseTwist f phi x‖ := by
   let a := fejerCubicLocalQuadraticParameter alpha
   let b := quadraticDiscrepancyParameter a
+  let eta := (2 : Real) ^ (-(58 : Int)) * alpha ^ 2 * (alpha / 2) ^ ((2 : Nat) ^ 42)
+  let T := max 4 (quadraticExponentialThreshold a)
   have ha : 0 < a := fejerCubicLocalQuadraticParameter_pos hα
   have haone : a ≤ 1 := fejerCubicLocalQuadraticParameter_le_one hα.le hαone
   have hb : 0 < b := by dsimp [b, quadraticDiscrepancyParameter]; positivity
   obtain ⟨ht, htone⟩ := fejerCubicLocalCountExponent_bounds hα hαone
-  intro N _ _ hN f hf hnot
-  obtain ⟨phi, K, l, Q, hpoly, hQ, hproper, hlength, B, hmass, hB⟩ :=
-    h.manyPrimeModels (max 4 (quadraticExponentialThreshold a)) hα he N hN f hf hnot
-  have hNr : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hlpos : (0 : Real) < l :=
-    (by positivity : 0 < (N : Real) ^ e / 12).trans_le hlength
-  have hl : 1 ≤ l := by
-    have hh : 0 < l := by exact_mod_cast hlpos
-    omega
   have hσ : 0 ≤ quadraticDiscrepancyExponent a := by
     change 0 < quadraticDiscrepancyExponent a / 16 at ht
     linarith only [ht]
   have hσ16 : quadraticDiscrepancyExponent a ≤ 16 := by
     change quadraticDiscrepancyExponent a / 16 ≤ 1 at htone
     linarith only [htone]
-  have hmodels (i : Fin K) (hi : i ∈ B) : ∃ M : Nat, ∃ hM : M.Prime,
-      letI : NeZero M := ⟨hM.ne_zero⟩
-      4 ≤ M ∧ (Q i).length ≤ M ∧ quadraticExponentialThreshold a ≤ (M : Real) ∧
-      (M : Real) ≤ 8 * (Q i).length ∧
-      ¬ UniformOfDegree (intervalExtension M ((Q i).pullbackFunction (phaseTwist f phi))) a 2 := by
-    obtain ⟨M, hM, hT, hMlow, hMup, _, _, hnon⟩ := hB i hi
-    letI : NeZero M := ⟨hM.ne_zero⟩
-    refine ⟨M, hM, ?_, by omega, (le_max_right _ _).trans hT, ?_, hnon⟩
-    · exact_mod_cast ((le_max_left _ _).trans hT : (4 : Real) ≤ M)
-    · exact_mod_cast hMup
-  obtain ⟨J, R, hR, hp, hc, hd⟩ :=
-    (quadratic_function_discrepancy_bound ha haone).selected_prime_model_partition
-      hb.le hσ hσ16 (by norm_num : (0 : Real) ≤ 8)
-      (phaseTwist f phi) (phaseTwist_discValued hf phi) Q B hQ (fun i => (hproper i).1) hl
-      (fun i => by rcases (hproper i).2 with hi | hi <;> omega) hmodels
+  have hparam : (eta / 2) / (2 * (2 + 2 : Nat) : Real) ^ (2 + 2) = a := by
+    dsimp [eta, a, fejerCubicLocalQuadraticParameter]
+    generalize (alpha / 2) ^ ((2 : Nat) ^ 42) = z
+    norm_num
+    ring
+  have hbound : FunctionDiscrepancyBound 2
+      ((eta / 2) / (2 * (2 + 2 : Nat) : Real) ^ (2 + 2)) b
+      (quadraticDiscrepancyExponent a) (quadraticExponentialThreshold a) := by
+    rw [hparam]
+    exact quadratic_function_discrepancy_bound ha haone
+  intro N _ _ hN f hf hnot
+  have hNloc : T₀ ≤ (N : Real) := (le_max_left _ _).trans ((le_max_right _ _).trans hN)
+  obtain ⟨phi, K, l, Q, hpoly, hQ, hproper, hlength, hupper, hfail⟩ :=
+    h.localized hα N hNloc f hf hnot
+  have hlarge : 12 * max 2 T ≤ (N : Real) ^ e := by
+    simpa only [one_mul] using positivePowerThreshold_spec zero_lt_one he
+      ((le_max_right _ _).trans ((le_max_right _ _).trans hN) :
+        positivePowerThreshold (12 * max 2 T) 1 e ≤ (N : Real))
+  have hlmax : max 2 T ≤ (l : Real) := by linarith only [hlarge, hlength]
+  have hl : 2 ≤ l := by exact_mod_cast ((le_max_left 2 T).trans hlmax)
+  have hT : quadraticExponentialThreshold a ≤ (l : Real) :=
+    (le_max_right _ _).trans ((le_max_right 2 T).trans hlmax)
+  have hNreal : (256 : Real) ≤ N := (le_max_left _ _).trans hN
+  have hroot0 := Real.sqrt_nonneg (N : Real)
+  have hrootsq := Real.sq_sqrt (Nat.cast_nonneg N : (0 : Real) ≤ N)
+  have hroot : 4 ≤ Real.sqrt N := by nlinarith only [hNreal, hroot0, hrootsq]
+  have hrootprod := mul_nonneg hroot0 (sub_nonneg.mpr hroot)
+  have hgeom (i : Fin K) : l ≤ (Q i).length ∧ (Q i).length ≤ l + 1 ∧
+      (2 + 2) * (Q i).length ≤ N := by
+    have hs : (4 : Real) * (Q i).length ≤ N := by nlinarith only [hupper i, hrootsq, hrootprod]
+    have hs' : 4 * (Q i).length ≤ N := by exact_mod_cast hs
+    rcases (hproper i).2 with hi | hi <;> omega
+  obtain ⟨J, R, hR, hp, hc, hd⟩ := hbound.localized_partition (by dsimp [eta]; positivity) hb.le hσ hσ16
+    (phaseTwist f phi) (phaseTwist_discValued hf phi) Q hQ (fun i => (hproper i).1)
+    hl hT (by omega) hgeom hfail
+  simp only [show (2 * (2 + 2 : Nat) : Real) = 8 by norm_num] at hc
   refine ⟨phi, l, J, R, hpoly, hlength, hR, hp, hc, ?_⟩
-  have hm := mul_le_mul_of_nonneg_left hmass.le hb.le
-  have hm' : fejerCubicTwistedDiscrepancyParameter alpha * N ≤
-      b * ∑ i ∈ B, ((Q i).carrier.card : Real) := by
-    change (fejerCubicLocalizedMassParameter alpha * b) * N ≤ _
-    nlinarith only [hm]
-  exact hm'.trans hd
+  have hmassparam : eta / 2 = fejerCubicLocalizedMassParameter alpha := by
+    dsimp [eta, fejerCubicLocalizedMassParameter]
+    generalize (alpha / 2) ^ ((2 : Nat) ^ 42) = z
+    norm_num
+    ring
+  have hmass : eta * b / 2 = fejerCubicTwistedDiscrepancyParameter alpha := by
+    change eta * b / 2 = fejerCubicLocalizedMassParameter alpha * b
+    rw [← hmassparam]
+    ring
+  simpa only [hmass] using hd
 
 /-- The common-cell-length count as a power of the modulus, at any exponent. -/
 theorem fejer_cubic_twisted_count_power_at {alpha e : Real} (hα : 0 < alpha)
