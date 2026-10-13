@@ -8,6 +8,11 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
+def fejerCubicPrimeModelThreshold (alpha T : Real) : Real :=
+  max 256 (max (section13FejerOddSquareThreshold alpha)
+    (positivePowerThreshold (12 * max 2 T) 1
+      ((1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53)))))
+
 theorem fejer_cubic_nonuniformity_localized_phase_removal :
     ∀ alpha : Real, 0 < alpha → alpha ≤ 1 →
       ∀ (N : Nat) [NeZero N] [Fact N.Prime], section13FejerOddSquareThreshold alpha ≤ N →

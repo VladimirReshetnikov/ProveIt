@@ -9,6 +9,24 @@ noncomputable section
 open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
 
+/-- Convert a common-cell-length count into a power of the original modulus. -/
+theorem partition_count_power_of_length {N l J : Nat} [NeZero N]
+    {e t D c : Real} (ht : 0 ≤ t) (hD : 0 ≤ D) (hc : 0 < c)
+    (hl : (N : Real) ^ e / c ≤ l)
+    (hcount : (J : Real) ≤ D * N / (l : Real) ^ t) :
+    (J : Real) ≤ (D * c ^ t) * (N : Real) ^ (1 - e * t) := by
+  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+  have hbase : 0 < (N : Real) ^ e / c := by positivity
+  have hpow := Real.rpow_le_rpow hbase.le hl ht
+  calc
+    (J : Real) ≤ D * N / (l : Real) ^ t := hcount
+    _ ≤ D * N / ((N : Real) ^ e / c) ^ t :=
+      div_le_div_of_nonneg_left (by positivity) (Real.rpow_pos_of_pos hbase t) hpow
+    _ = _ := by
+      rw [Real.div_rpow (Real.rpow_nonneg hN.le _) hc.le,
+        ← Real.rpow_mul hN.le, Real.rpow_sub hN, Real.rpow_one]
+      field_simp
+
 /-- Count constant for a modular-diameter tolerance epsilon*N. -/
 def boundaryRefinementConstant (epsilon : Real) : Real :=
   section5LocalRefinementConstant 1 (4 * Real.pi * epsilon)

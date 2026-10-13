@@ -17,12 +17,20 @@ import GowersSzemeredi.Proofs13PolyRowExponent
 import GowersSzemeredi.Proofs13ExplicitOddSquare
 import GowersSzemeredi.Proofs17ExplicitCubicLocalization
 import GowersSzemeredi.Proofs18CubicDiscrepancy
+import GowersSzemeredi.Proofs18FejerCubicCellModels
 import Lean.Util.CollectAxioms
 
 open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for name in #[``LeanProofs.GowersSzemeredi.section16Delta_one_inv_le,
+  for name in #[``LeanProofs.GowersSzemeredi.fejerCubicPrimeModelThreshold,
+      ``LeanProofs.GowersSzemeredi.fejer_cubic_nonuniformity_twisted_discrepancy,
+      ``LeanProofs.GowersSzemeredi.fejer_cubic_nonuniformity_many_prime_models,
+      ``LeanProofs.GowersSzemeredi.partition_count_power_of_length,
+      ``LeanProofs.GowersSzemeredi.fejer_cubic_twisted_count_power,
+      ``LeanProofs.GowersSzemeredi.cubic_twisted_count_power,
+      ``LeanProofs.GowersSzemeredi.fejer_cubic_twisted_count_power_at,
+      ``LeanProofs.GowersSzemeredi.section16Delta_one_inv_le,
       ``LeanProofs.GowersSzemeredi.section16Delta_fejer_one_inv_le,
       ``LeanProofs.GowersSzemeredi.thetaTwo_fejer_bounds,
       ``LeanProofs.GowersSzemeredi.delta_fejer_bounds5,

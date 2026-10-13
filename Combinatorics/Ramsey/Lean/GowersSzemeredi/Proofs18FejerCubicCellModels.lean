@@ -9,11 +9,6 @@ noncomputable section
 namespace LeanProofs.GowersSzemeredi
 open scoped BigOperators
 
-def fejerCubicPrimeModelThreshold (alpha T : Real) : Real :=
-  max 256 (max (section13FejerOddSquareThreshold alpha)
-    (positivePowerThreshold (12 * max 2 T) 1
-      ((1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53)))))
-
 theorem fejer_cubic_nonuniformity_many_prime_models (alpha T : Real)
     (hα : 0 < alpha) (hαone : alpha ≤ 1) :
     ∀ (N : Nat) [NeZero N] [Fact N.Prime], fejerCubicPrimeModelThreshold alpha T ≤ N →
