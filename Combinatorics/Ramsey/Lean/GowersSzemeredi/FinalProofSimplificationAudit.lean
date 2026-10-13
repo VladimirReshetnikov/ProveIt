@@ -30,11 +30,33 @@ run_cmd do
       ``LeanProofs.GowersSzemeredi.lemma_13_11_holds,
       ``LeanProofs.GowersSzemeredi.theorem_13_12_with_explicit_bound,
       ``LeanProofs.GowersSzemeredi.theorem_13_12_odd_square,
-      ``LeanProofs.GowersSzemeredi.cubic_nonuniformity_localized_phase_removal_with_upper] do
+      ``LeanProofs.GowersSzemeredi.cubic_nonuniformity_localized_phase_removal_with_upper,
+      ``LeanProofs.GowersSzemeredi.explicit_family_constants_poly_le,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d4,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d3_eight_le,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d2_eleven_le,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d4_implies_printed,
+      ``LeanProofs.GowersSzemeredi.corollary_18_7_L3,
+      ``LeanProofs.GowersSzemeredi.theorem_18_2_L3_implies_printed,
+      ``LeanProofs.GowersSzemeredi.corollary_18_7_L3_implies_printed,
+      ``LeanProofs.GowersSzemeredi.theorem_1_3_L3,
+      ``LeanProofs.GowersSzemeredi.theorem_18_2_L2_eight_le,
+      ``LeanProofs.GowersSzemeredi.corollary_18_7_L2_eight_le,
+      ``LeanProofs.GowersSzemeredi.van_der_waerden_L2_eight_le,
+      ``LeanProofs.GowersSzemeredi.theorem_1_3_L2_eight_le,
+      ``LeanProofs.GowersSzemeredi.theorem_18_2_L1_eleven_le,
+      ``LeanProofs.GowersSzemeredi.corollary_18_7_L1_eleven_le,
+      ``LeanProofs.GowersSzemeredi.van_der_waerden_L1_eleven_le,
+      ``LeanProofs.GowersSzemeredi.theorem_1_3_L1_eleven_le,
+      ``LeanProofs.GowersSzemeredi.theorem_18_2_L0_thirteen_le,
+      ``LeanProofs.GowersSzemeredi.corollary_18_7_L0_thirteen_le,
+      ``LeanProofs.GowersSzemeredi.theorem_1_3_L0_thirteen_le,
+      ``LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_fejerT3,
+      ``LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerJT3] do
     let info ← getConstInfo name
     unless info.isTheorem do
       throwError "{name} is not a theorem"
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the simplified recurrence inputs, original final quantitative theorem, strengthened bounds and Section 13 compatibility theorems with only approved axioms."
+  logInfo "Checked the simplified recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."

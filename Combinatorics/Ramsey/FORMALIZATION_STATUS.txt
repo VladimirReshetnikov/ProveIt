@@ -9,13 +9,23 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
-  Section 13 simplification in progress: graph preparation, spectral
-  estimates and odd-length bounds are separated from the older extraction
-  route. The prepared graph theorem is 79 lines rather than 108, sharing
-  its two coefficient calculations. The new inputs compile; final and
-  expanded compatibility audits are running. Final imports are measured at
-  650 modules / 138,291 lines. The Fejer route also imports its lower-level
-  inputs directly; the shorter fibre-sum conversions remove another 14 lines.
+  Direct-import simplification in progress: three unused aggregate imports
+  are replaced by their direct inputs, leaving every proof body unchanged.
+  Each changed module passes an isolated native check. Final imports now
+  measure 644 modules / 135,304 lines, six modules / 2,987 lines fewer than
+  L.59. The fresh original-final audit is running, followed by an expanded
+  audit of all 25 public theorems in the consolidated stronger-bound bridge
+  from origin/main. Full production verification of that consolidation is
+  pending. See Notes L.60.
+
+  Section 13 simplification checkpoint: graph preparation, spectral
+  estimates and odd-length bounds are shared independently of the older
+  extraction route. The prepared graph theorem is 79 lines rather than 108;
+  shorter fibre-sum conversions remove another 14 lines. FinalAudit passes
+  651 native modules with only approved axioms. That checkpoint imported
+  650 modules / 138,291 lines. Its compatibility run was intentionally
+  superseded by the incoming stronger-route consolidation, and is not
+  claimed as passed; the merged replacement audit is covered by L.60.
   See Notes L.59.
 
   Lattice-import simplification checkpoint: lattice basics and Gaussian
