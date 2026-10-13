@@ -187,9 +187,7 @@ def MReq : Real :=
 def Tloc : Real :=
   max (max 3 (fejerProductThreshold P.k (alpha / 2) (alpha / 2)))
     (max (P.MThr alpha)
-      (max (4 ^ (1 / P.NestExp alpha))
-        (max (P.MReq alpha ^ (1 / P.MExp alpha))
-          (max (6 ^ (1 / P.Eloc alpha)) (8 ^ (2 / P.F alpha))))))
+      (max (P.MReq alpha ^ (1 / P.MExp alpha)) (6 ^ (1 / P.Eloc alpha))))
 
 /-- The parameter ranges used by the localization and modulus estimates. -/
 theorem ranges (hV : 1 ≤ P.V) (hp : 0 < P.p) {alpha : Real} (ha : 0 < alpha)
@@ -247,7 +245,7 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
   -- the modulus is large
   have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   simp only [Tloc, max_le_iff] at hN
-  obtain ⟨⟨hN3, hN156⟩, hNM, hN4, hNR, hN6, -⟩ := hN
+  obtain ⟨⟨hN3, hN156⟩, hNM, hNR, hN6⟩ := hN
   have hprime : N.Prime := Fact.out
   have hodd : Odd N := hprime.odd_of_ne_two (by
     intro h2; rw [h2] at hN3; norm_num at hN3)
@@ -258,7 +256,8 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
   have hNWpow : (N : Real) ^ P.NestExp alpha ≤ NW :=
     hnest N (hNM.trans' (le_max_left _ _))
   have hNW4 : (4 : Real) ≤ NW :=
-    (le_rpow_of_rpow_inv_le haN (by norm_num) hN4).trans hNWpow
+    (by norm_num : (4 : Real) ≤ 64).trans
+      ((le_rpow_of_rpow_inv_le haN (by norm_num) ((le_max_right _ _).trans hNM)).trans hNWpow)
   let m : Nat := coverWidth (uExp P.V (uDegT3 P.k) (P.Delta alpha) (P.B alpha))
     (P.Rho1 alpha / 2) ⌈(NW : Real) / 8⌉₊
   have hmpow : (N : Real) ^ P.MExp alpha ≤ m := by
@@ -846,16 +845,8 @@ theorem Tloc_le_expJT3 {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha
   -- the roots
   have h64 : (64 : Real) ^ (1 / P.NestExp alpha) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) :=
     ex_mono hX (ex_root (j := 3) hX (by norm_num) (by norm_num) hN0 hNE') (by omega)
-  have h4 : (4 : Real) ^ (1 / P.NestExp alpha) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) :=
-    ex_mono hX (ex_root (j := 2) hX (by norm_num) (by norm_num) hN0 hNE') (by omega)
   have h6 : (6 : Real) ^ (1 / P.Eloc alpha) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) :=
     ex_mono hX (ex_root (j := 2) hX (by norm_num) (by norm_num) hEl0 hEli) (by omega)
-  have hF : P.F alpha = 8 * P.Eloc alpha := by show P.F alpha = 8 * (P.F alpha / 8); ring
-  have h8 : (8 : Real) ^ (2 / P.F alpha) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) := by
-    have hle : 2 / P.F alpha ≤ 1 / P.Eloc alpha := by
-      rw [hF, div_le_div_iff₀ (mul_pos (by norm_num) hEl0) hEl0]; nlinarith
-    refine (Real.rpow_le_rpow_of_exponent_le (by norm_num) hle).trans ?_
-    exact ex_mono hX (ex_root (j := 2) hX (by norm_num) (by norm_num) hEl0 hEli) (by omega)
   -- the requirement on `m`
   have hMR : P.MReq alpha ^ (1 / P.MExp alpha) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) := by
     rw [one_div]
@@ -874,10 +865,8 @@ theorem Tloc_le_expJT3 {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha
     ex_of_pw (pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega))
   show max (max 3 (fejerProductThreshold k (alpha / 2) (alpha / 2)))
     (max (P.MThr alpha)
-      (max (4 ^ (1 / P.NestExp alpha))
-        (max (P.MReq alpha ^ (1 / P.MExp alpha))
-          (max (6 ^ (1 / P.Eloc alpha)) (8 ^ (2 / P.F alpha)))))) ≤ _
-  exact max_le (max_le h3 hL') (max_le hMT (max_le h4 (max_le hMR (max_le h6 h8))))
+      (max (P.MReq alpha ^ (1 / P.MExp alpha)) (6 ^ (1 / P.Eloc alpha)))) ≤ _
+  exact max_le (max_le h3 hL') (max_le hMT (max_le hMR h6))
 
 end GenParamsJT3
 
