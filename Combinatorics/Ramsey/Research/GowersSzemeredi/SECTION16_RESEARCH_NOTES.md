@@ -7239,7 +7239,10 @@ more than L.61. The change shares proof structure across the original and
 strengthened routes; it is not a reduction of that minimal import closure.
 The expanded audit names both helpers, all nine envelope theorems and the
 polynomial corollary, in addition to the original final and all 25 stronger
-bridge theorems. That native audit is running separately. The complete
+bridge theorems. It passes 853 native modules with only `propext`,
+`Classical.choice` and `Quot.sound`; see
+`verification/2026-10-12-final-envelope-induction-compatibility.json`.
+Both audit reports have immutable source-input manifests. The complete
 facade and original-statement fidelity gaps remain separate, and the
 simplification goal remains active.
 
