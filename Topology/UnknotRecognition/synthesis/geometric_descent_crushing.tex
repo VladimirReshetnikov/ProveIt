@@ -343,3 +343,198 @@ with the earlier reduction and recognition suites.  These finite
 checks support the implementation and compatibility contracts; they
 provide neither a measured policy speed comparison nor a universal
 bound on the normal-search parameter.
+
+
+\subsection{Frozen whole-diagram comparison and exact endpoints}
+\label{subsec:geometric-descent-whole-call}
+
+The subsequent experiment compares the explicit cochain and geometric
+methods on the same native implementation.  The implementation and
+364-test checkpoint were published at revision \path{2149e2e56}; the
+comparison protocol was committed at \path{66817eceb} before this
+experiment.  Its package, \path{fast/geometric_descent_research}, pins
+all 299 native Python modules and its six own files, including the
+protocol README.  All 305 pins remain unchanged throughout discovery,
+timing and independent evidence replay.  Generated evidence is stored
+outside the frozen package, under \path{synthesis/data}.
+
+Both arms enable vertex reduction, boundary unlayering, strict $3\to2$
+preprocessing and first-descent macros; only
+\path{pachner_descent_method} differs.  The raw whole-diagram driver
+is used even for $TT$, rather than its visible-factor wrapper.
+The common transversal/source policy uses polynomial exact LP with
+its default bounded fast-path prefix.  Each ordinary call has caps of
+256 search nodes, 10,000 pivots, anchors and candidate hitting subsets,
+256 sectors, 10,000 bases, and 10,000 ellipsoid iterations and
+feasibility calls.  The sector quantum is 64.  The shared reduction
+allowance is unlimited, but every accepted reduction decreases source
+size.  There is no wall cutoff.  These limits control the recognition
+search; the selected fixed-family geometric searches remain uncapped.
+
+The seven predeclared inputs are the circle, trefoil, figure-eight,
+$TT=\operatorname{closure}(\sigma_1^3\sigma_2^3)$,
+$T25=\operatorname{closure}(\sigma_1^5)$,
+$T27=\operatorname{closure}(\sigma_1^7)$ and
+$W34=\operatorname{closure}((\sigma_1\sigma_2^{-1})^4)$.
+Their exact PD inputs and braid definitions are retained.  All fourteen
+ordinary calls return and pass independent full-certificate or
+partial-chain replay.  No additional supplied-source normal queries
+are made.  The two returned endpoints agree as complete labelled,
+literal-typed source tables on every input; the circle's terminal
+endpoint is \path{None}, not a retained triangulation.  The results
+below are common to both arms.
+\begin{center}
+\begin{tabular}{lrrrrl}
+\hline
+Input & Final $t$ & Macros & LP pivots & Nodes & Outcome\\
+\hline
+circle & --- & 0 & 0 & 0 & unknot\\
+trefoil & 7 & 1 & 259 & 5 & knotted\\
+figure-eight & 10 & 1 & 676 & 1 & knotted\\
+$TT$ & 16 & 1 & 3,526 & 16 & knotted\\
+$T25$ & 11 & 3 & 693 & 7 & knotted\\
+$T27$ & 17 & 4 & 2,545 & 15 & knotted\\
+$W34$ & 31 & 3 & 10,000 & 1 & inconclusive\\
+\hline
+\end{tabular}
+\end{center}
+Each of the six nonterminal endpoints has one vertex and two boundary
+faces.  Each arm retains thirteen $UDD$ macros in total, with thirteen
+expansions and twenty-six contractions.  Independent source-bound
+macro replay reconstructs those elementary counts and checks the
+intermediate sizes.  The checker also reconstructs accepted crushing,
+unlayering and strict-contraction totals from the chain.  The LP and
+search counters are returned diagnostics checked for literal integer
+types and cap consistency; their complete execution traces are not
+independently reconstructed.
+
+Both $W34$ runs reach the pivot cap and retain authenticated partial
+chains.  Their common endpoint is not a negative-cone certificate or a
+knot verdict.  Equality of these seven pairs is a measured finite
+outcome, not a general endpoint-equality theorem.  This experiment
+neither replays the earlier endpoint-specific $h$ proofs nor claims
+transport of that parameter through a geometric macro.
+
+\subsection{Fifty complete timing calls, including regressions}
+
+The timing set was fixed before the audit: circle, trefoil,
+figure-eight, $TT$ and $T25$.  All five had to have the same conclusive
+verdict in both audit arms; otherwise the complete timing experiment
+would have been declined.  $T27$ and $W34$ were excluded in advance,
+independently of their eventual outcomes.  Each admitted case receives
+one warmup per arm, three pairs in alternating arm order, and one
+cochain A/A pair: fifty complete calls altogether.  All fifty return
+and pass validation, with no failures or omitted samples.
+
+Each timer includes fresh recognition, independent proof replay and
+source/operation accounting, full-result canonical serialization and
+SHA-256.  The complete timed result, including its diagnostic fields,
+must match the new audit result for that case and arm exactly.
+Validated input construction, native module initialization, option
+preparation, reference serialization and evidence-file writes are
+outside the timer.  No additional native module initializes within
+a sample, and no Regina call occurs there.  Full results, warmups,
+orders and durations are retained, not just summary ratios.
+
+The run uses Python 3.13.14 on a six-logical-CPU Linux host, with CPU5
+affinity.  This task runs no competing heavy job during measurement,
+but unrelated Lean work remains active; affinity does not reserve a
+core.  Before/after process snapshots and the complete command are
+retained.  Thus these observations describe one finite shared-host
+experiment, with no population or exclusive-machine inference.
+
+Let $r_i$ be the cochain duration divided by the geometric duration
+in pair $i$.  A value above one favours geometric discovery in this
+whole-call measurement.  The median paired ratio is the median of the
+three $r_i$, not the ratio of the separately reported arm medians.
+Durations in the following table are median milliseconds from the
+three paired samples only; warmups and A/A controls are retained
+separately.
+\begin{center}
+\begin{tabular}{lrrrr}
+\hline
+Input & Cochain ms & Geometric ms & Median $r_i$ & A/A\\
+\hline
+circle & 22.314 & 22.489 & 0.9890 & 1.0040\\
+trefoil & 2,097.501 & 2,129.760 & 0.9849 & 1.0633\\
+figure-eight & 5,661.581 & 5,421.603 & 1.0487 & 0.9933\\
+$TT$ & 24,423.435 & 24,312.776 & 1.0431 & 1.2191\\
+$T25$ & 11,615.256 & 10,872.636 & 1.0584 & 0.9448\\
+\hline
+\end{tabular}
+\end{center}
+Every paired ratio is shown below, including regressions.
+\begin{center}
+\begin{tabular}{lrrr}
+\hline
+Input & $r_1$ & $r_2$ & $r_3$\\
+\hline
+circle & 0.9888 & 0.9890 & 1.0065\\
+trefoil & 0.9932 & 0.8932 & 0.9849\\
+figure-eight & 0.9987 & 1.0487 & 1.0894\\
+$TT$ & 1.0431 & 0.9998 & 1.4597\\
+$T25$ & 0.9875 & 1.0874 & 1.0584\\
+\hline
+\end{tabular}
+\end{center}
+The circle invokes neither macro search, so its timing difference
+cannot demonstrate an algorithmic benefit.  Every trefoil pair is a
+regression for the geometric arm.  The other three cases have median
+paired ratios above one, but each includes a pair at or below one.
+The $TT$ A/A ratio of $1.2191$ and its third paired ratio of $1.4597$
+make host variation particularly visible.  No universal speedup,
+statistical significance or isolated macro-search speed factor follows
+from these observations.  The improvement proved above concerns the
+preprocessing upper bound and streaming storage; it remains valid
+independently of these noisy timings.  Absolute durations from the
+older experiment in Section~\ref{sec:pachner-descent-crushing} have a
+different measurement context and are not a second control arm here.
+
+\subsection{Saved-evidence rejection and publication scope}
+
+The external script \path{geometric-descent-corruption-controls.py}
+checks the frozen audit and benchmark without invoking discovery or
+performing new timings.  It accepts three valid controls and rejects
+27 reproducible mutations.  Each mutation is retained as a JSON-path
+edit program with a digest of the resulting document.  The controls
+cover source pins, cases and arm coverage, input PDs, literal counters,
+caps, method selection, chain schema, partial-versus-complete status,
+macro source binding, elementary accounting, endpoint hashes, timed
+payloads, pair order and summary arithmetic.  Altered warmup and paired
+payloads remain rejected when their advertised hashes are recomputed.
+
+A stronger policy control reuses a valid cochain proof for the same
+diagram inside a version-five chain.  The general native verifier
+accepts it, as required for compatibility.  The experiment's geometric
+arm rejects it because the selected policy requires geometric macros.
+The corresponding altered timed result is rejected even with a fresh
+full-result digest and byte count.  This distinguishes a valid knot
+proof from evidence for the claimed experimental arm.
+
+For repeated rejection controls only, a transparent cache stores actual
+Boolean returns of four native verifier entry points, keyed by the
+complete typed source/diagram and proof arguments.  A changed native
+argument misses; callbacks bypass this cache and exceptions propagate
+uncached.  Unchanged valid controls populate it first.  All research
+checks of configuration, coverage, statistics, policy, endpoint
+comparison and timing arithmetic rerun for every mutation.  Hits,
+misses, bypasses and exceptions are retained.  This is not a claim of
+fresh native replay for every duplicate proof, nor an exhaustive
+adversarial or execution-trace audit.
+
+The publication helper \path{geometric_descent_evidence_publication.py}
+freshly replays the complete saved audit, binds all fifty full timing
+outputs, checks the retained rejection records and environment, and
+pins the current article, PDF and build logs.  It verifies that native
+code and regression dependencies remain those covered by the published
+364-test run.  Historical core and cochain source manifests retain
+their original meaning; they are not rewritten as current source
+records.  The helper runs neither discovery, timing, tests nor a PDF
+build.  The resulting evidence establishes this finite comparison
+and its proof boundaries.  General quasi-polynomial unknot recognition
+remains unproved.
+
+This comparison and its source pins belong to revision \path{3d3498207}.
+The later direct-ray optimization in Section~\ref{sec:direct-crush-positive}
+changes native code; it does not reinterpret these historical timings as
+measurements of that newer implementation.

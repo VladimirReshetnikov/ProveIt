@@ -4975,16 +4975,37 @@ shapes and statistics.
 Conservative bit bounds are O(t⁵ log²(t+2)) for one complete geometric query
 and O(t⁶ log²(t+2)) for repeated strict preprocessing. Search working storage
 is O(t log(t+2)), plus O(t² log(t+2)) if all accepted packets are retained.
-These improve the proved bounds for the cochain implementation, without a
-new timing claim. Geometric `pachner_descent_work` counts all producer
+These improve the proved bounds for the cochain implementation. Geometric
+`pachner_descent_work` counts all producer
 callbacks, including preparation and final replay; its units differ from
 the cochain counter and cannot be used as a speed ratio.
 See [the full proof and interface contract](../synthesis/geometric_descent_crushing.tex).
 General quasi-polynomial recognition remains unproved.
-The regression passes 364 tests across 41 modules with Regina and no skips,
-including genuine diagram and factorwise proofs, shared budgets, strict
+The core regression at `2149e2e56` passes 364 tests across 41 modules with
+Regina and no skips, including genuine diagram and factorwise proofs, shared budgets, strict
 packet replay and exact preservation of the default cochain result. Commands
 and logs are retained under `synthesis/data/geometric-descent-*`.
+
+The frozen [comparison protocol](geometric_descent_research/README.md) at
+`66817eceb` now has fourteen fresh whole-diagram calls and fifty timing calls.
+Both methods reach exactly the same labelled endpoints on all seven inputs,
+with identical LP pivot and search-node totals. Both W34 calls remain
+inconclusive at 10,000 pivots. On circle, trefoil, figure-eight, TT and T25,
+median paired cochain/geometric timing ratios are 0.9890, 0.9849, 1.0487,
+1.0431 and 1.0584. Every trefoil pair is a regression; TT has an A/A ratio of
+1.2191. The article retains every pair, warmup, full result and repeat control.
+CPU5 affinity on the shared host gives no exclusive-core guarantee. These
+measurements establish no universal speedup or general complexity bound.
+
+The external saved-evidence controls accept three valid cases and reject
+27 mutations, including a native-valid same-diagram legacy proof that violates
+the geometric experimental policy. Exact typed argument caching is confined
+to four native verifier entry points; the research acceptance checks rerun.
+The comparison and `data/geometric_descent_evidence_publication.py` belong to
+revision `3d3498207`. That helper replays the saved audit and binds all timed
+outputs and publication files at that revision. The earlier core publication
+and its 364-test manifest belong to `2149e2e56`. Later native changes do not
+reinterpret those historical source pins or timing measurements.
 
 ### Conditional matching elimination
 
@@ -4999,6 +5020,35 @@ These witnesses need not be globally compatible or have positive Euler
 characteristic. No native conditional-elimination rule is added; the
 [theory article](../synthesis/conditional_type_matching.tex) distinguishes
 monotonicity of the retained-mask parameter from the unchanged full-source h.
+
+### Direct crushing of native positive rays
+
+LP, Euler-tree and transversal recognition now send native positive coordinates
+directly through the crushing constructor's original matching/support-rank
+checks and independent quotient replay. A canonical lift of a primitive Q
+extreme ray is already primitive and full-STANDARD extreme, even with multiple
+vertices. The old driver nevertheless rebuilt a support chart to extract that
+same ray; removing that pass saves additive algebraic work, not an LP call or
+a proved time exponent.
+
+Valid nonprimitive or nonextreme positive points still use checked extraction
+and one retry. Only dedicated pre-quotient classification errors activate that
+repair; malformed input, impossible rank, quotient failure and caller exceptions
+propagate. The shared reduction cap is checked before validating or extracting
+an unaccepted candidate. Corner enumeration and expanded-edge vertex reduction
+retain their existing paths, including necessary vertex-link extraction.
+
+See [the proof and acceptance contract](../synthesis/direct_crush_positive.tex).
+Independent crushing verifiers and packet schemas are unchanged. Historical
+geometric/cochain timings remain measurements of `3d3498207`; this change has
+no new timing claim or general quasi-polynomial recognition bound.
+The updated regression passes 383 tests across 43 modules with Regina and no
+skips. Nineteen new tests cover direct native rays, actual LP fallback,
+nonextreme/scaled-point repair, callback identity, shared limits and independent
+quotient rejection. Six configurations retain exact full-result equality to
+real extraction-first emulation. Source-only controls are distinguished from
+genuine diagram proofs. The test command, full log and pre-run 360-file snapshot
+are retained under `synthesis/data/direct-crush-positive-*`.
 
 ### Polynomial exact LP policy
 

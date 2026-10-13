@@ -242,13 +242,13 @@ class CrushingEulerLPTests(unittest.TestCase):
                     self.assertEqual(calls[-1], (2, 2))
                     self.assertTrue(verify_crushing_recognition(self.diagram, result['certificate']))
 
-    def test_nested_matching_euler_and_support_descent_preserve_callback_identity(self):
+    def test_nested_matching_euler_and_direct_crushing_preserve_callback_identity(self):
         from fastunknot.sector_matching_support import matching_support
-        from fastunknot.source_kernel import SourceKernel
+        from fastunknot.normal_crushing import crush_normal_ray
         stages = [('fastunknot.sector_matching_support.matching_support', matching_support),
                   ('fastunknot.normal_crushing_search.verify_sector_euler_certificate',
                    verify_sector_euler_certificate),
-                  ('fastunknot.source_kernel.SourceKernel.extreme_witness', SourceKernel.extreme_witness)]
+                  ('fastunknot.normal_crushing.crush_normal_ray', crush_normal_ray)]
         for target, original in stages:
             for kind in (ValueError, NormalOrbitError, SearchLimit):
                 active = [False]

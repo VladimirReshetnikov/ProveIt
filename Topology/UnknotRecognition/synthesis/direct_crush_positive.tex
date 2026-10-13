@@ -1,0 +1,298 @@
+\section{Direct crushing of positive rays with classified point repair}
+\label{sec:direct-crush-positive}
+
+The positive outputs of the maintained Euler LP, tree and transversal
+searches already have the extremality needed by the crushing constructor.
+The driver now tries that constructor directly.  It performs the more
+general positive-point extraction only when the constructor identifies
+nonprimitive scale or a higher-dimensional positive support.  The original
+matching equations and the independent quotient checker still decide
+whether a step may enter the diagram-bound chain.
+
+This changes the unconditional standard-coordinate extraction described in
+Section~\ref{sec:euler-lp-crushing}.  The generic Q-coordinate extraction
+inside the polynomial LP fallback remains necessary and unchanged.  So does
+the extraction used to obtain a ray from an expanded-edge vertex link in
+Section~\ref{sec:vertex-reduction}.  The change removes a redundant algebraic
+pass on native positive rays; it supplies neither a new discovery theorem
+nor a bound on the number of admissibility branches.
+
+\subsection{Canonical Q rays lift to full matching-cone rays}
+
+Let $A$ be the original standard matching matrix of a validated finite
+triangulation with $t$ tetrahedra.  Write
+\[
+ K_{\mathrm{std}}=\{x\in\mathbb R^{7t}:Ax=0,\ x\ge0\},
+ \qquad K_Q=\{q\in\mathbb R^{3t}:Cq=0,\ q\ge0\},
+\]
+where $C$ is obtained by eliminating triangle coordinates, and let $\pi$
+denote projection to quadrilateral coordinates.  These cones do not impose
+the quadrilateral compatibility condition.  Compatibility is checked
+separately before interpreting a vector as an embedded normal surface.
+
+For each global vertex $v$, let $L_v$ be its triangle-only vertex-link
+vector.  Triangle-only matching vectors are precisely the linear
+combinations of these vectors: equality of triangle counts propagates
+across every face identification of a corner at the same global vertex.
+The supports of the different $L_v$ are disjoint.  The canonical lift
+$X(q)$ subtracts the minimum triangle potential independently at each
+vertex.  It is nonnegative and has a zero triangle coordinate at every
+global vertex.  In particular $\pi(K_{\mathrm{std}})=K_Q$.
+
+For a mask $J$ of retained quadrilateral types, define
+\[
+ K_J=\{q\in K_Q:q_j=0\text{ for }j\notin J\}.
+\]
+It is a coordinate face of $K_Q$, even when $J$ retains several types in
+one tetrahedron.  If $q=u+w$ in $K_Q$ and $q\in K_J$, nonnegativity forces
+both summands to vanish outside $J$.  Therefore an extreme ray of $K_J$
+is an extreme ray of $K_Q$.  This applies to masks reached by branching,
+matching-support deletion, and transversal candidate restrictions.
+
+\begin{proposition}[Canonical lifting with any finite number of vertices]
+Let $q\ne0$ generate an extreme ray of $K_Q$.  Its canonical lift $X(q)$
+generates an extreme ray of $K_{\mathrm{std}}$.  If $q$ is primitive
+integral, then $X(q)$ is integral and primitive.  No one-vertex hypothesis
+is required.
+\end{proposition}
+\begin{proof}
+Suppose $X(q)=y+z$ with $y,z\in K_{\mathrm{std}}$.  Projecting gives
+$q=\pi(y)+\pi(z)$, so Q extremality gives $\pi(y)=\alpha q$ and
+$\pi(z)=(1-\alpha)q$ for some $0\le\alpha\le1$.  The signed matching
+vector $y-\alpha X(q)$ is triangle-only, hence
+\[
+ y-\alpha X(q)=\sum_v a_v L_v.
+\]
+At each vertex choose a zero triangle coordinate of $X(q)$.  Nonnegativity
+of $y$ and $z$ makes both coordinates zero there.  Since only $L_v$ has a
+nonzero entry at that corner, $a_v=0$.  Thus all coefficients vanish and
+the original decomposition is proportional.
+
+For integrality, each triangle matching equation equates two triangle
+coordinates up to an integral linear combination of Q coordinates.
+Choose a root potential zero in each corner-identification component and
+propagate along a spanning forest.  Integral $q$ gives integral potentials;
+the equations $Cq=0$ ensure consistency around the remaining edges.
+Subtracting an integral minimum at each vertex gives an integral canonical
+lift.  Finally, any common divisor of all entries of $X(q)$ divides all
+entries of $q$.  Primitive $q$ therefore makes $X(q)$ primitive.
+\end{proof}
+
+The zero at \emph{every} vertex is essential to the argument.  A zero at
+one vertex cannot eliminate a vertex-link summand at another.  Conversely,
+a nonnegative full-standard extreme ray with nonzero quadrilateral content
+must have a triangle zero at every vertex: if all corners at $v$ were
+positive, a positive multiple of $L_v$ could be subtracted, leaving a
+nonnegative matching vector with nonzero quadrilateral content.  Those two
+summands would contradict extremality.
+
+\subsection{Why the native positive outputs satisfy the stronger invariant}
+
+For the simplex policy, the Q problem uses the normalized cone
+$q\ge0$, $Cq=0$, $\mathbf1^{\mathsf T}q\le1$.  The paired matching
+inequalities and their slack variables determine the slacks uniquely from
+$q$.  Thus a basic feasible solution projects to a vertex of that
+normalized cone.  A nonzero vertex lies on an extreme Q ray.  Stopping at
+the first strictly positive objective does not change this basis property;
+primitive rescaling then gives an integral Q ray.
+
+The polynomial policy has an additional obligation because its auxiliary
+box can create vertices unrelated to Q extremality.  As proved in
+Section~\ref{sec:exact-polynomial-lp}, the fallback performs original-kernel
+support descent before returning, and checks support nullity one and its
+legacy basis data.  This Q extraction remains part of the LP solver.
+The Euler oracle subsequently evaluates the actual canonical Euler value
+and accepts a normal-surface result only after quadrilateral compatibility
+has been checked.  A positive envelope objective alone is insufficient.
+
+Tree and transversal calls solve on coordinate masks of the same source
+cone.  The face argument above transfers their returned Q extremality to
+the full source.  Their canonical compatible positive lifts therefore
+meet the full-standard extremality theorem.  This is an invariant of the
+maintained producers, not an extra assertion trusted from their packets.
+The public positive Euler certificate deliberately permits a canonical
+positive point that is not extreme.  Its verifier continues to establish
+matching, compatibility, canonicality, primitive Q coordinates and
+positive Euler, without claiming connectedness or extremality.
+
+\subsection{Original-support validation and the narrow repair branch}
+
+The constructor \path{crush_normal_ray} first validates the finite source,
+exact nonnegative coordinates, every original matching equation,
+quadrilateral compatibility, positive Euler and nonzero quadrilateral
+content.  It then checks the gcd and the original positive-support rank.
+For $S=\{j:x_j>0\}$, the required equality is
+\[
+ \operatorname{rank}A_{[:,S]}=|S|-1.
+\]
+Indeed $x_S$ is strictly positive, so it lies in the relative interior of
+the nonnegative cone in $\ker A_{[:,S]}$.  Nullity one gives a ray; larger
+nullity allows small nonproportional perturbations in both directions.
+No objective equality, normalization row or extra restriction is inserted
+into this rank check.  A nonzero matching vector also proves that the rank
+cannot exceed $|S|-1$.
+
+Two private subclasses of the existing geometry validation error identify
+the repairable stages.  The constructor raises
+\path{_NonPrimitiveNormalPoint} at the gcd check and
+\path{_NonExtremeNormalPoint} only for support nullity greater than one.
+An impossible rank greater than $|S|-1$ raises an arithmetic invariant
+error.  Both classifications occur before quotient construction.  Neither
+classification establishes canonicality; the first does not establish
+extremality either.
+
+The driver's local \path{apply_crush} permits repair only for positive
+results from LP, tree and transversal discovery.  Its protected exception
+scope contains just the first constructor call.  If one of the two
+classified errors occurs, \path{extract_positive_ray} revalidates the
+point, including canonical zeros at every vertex, and obtains a primitive
+positive ray by support descent.  A single constructor retry uses that
+ray.  Exceptions from extraction or the retry propagate; they do not
+trigger further repair.  Malformed coordinates, failed matching,
+nonpositive Euler, triangle-only input, and quotient failures are not
+classified as recoverable.
+
+This retains the previous ability to accept a canonical positive
+nonextreme point or a positive integral rescaling.  It also retains the
+rejection of vertex-link contamination that removes a required canonical
+zero.  It does not narrow the standalone positive Euler certificate
+language or relax the standalone crushing constructor.
+
+After either successful constructor call, the independent crushing checker
+reconstructs the full original-support system and verifies primitivity,
+membership and extremality using its separate right-pivot kernel code.
+It reconstructs the labelled quotient and component census independently.
+The driver checks strict successor size descent before appending a step;
+all of this occurs outside the repair catch.  Final diagram-bound replay
+is unchanged, including the authenticated knot-exterior premise needed
+to interpret loss of the torus.  No certificate schema changes.
+
+\subsection{Cancellation, shared budgets and retained extraction}
+
+The outer driver wraps every caller callback exception in its private
+\texttt{BaseException} carrier.  Consequently even a caller-raised instance
+of a repair-classification exception cannot enter the repair branch.
+The outer wrapper restores the original exception object and traceback.
+The same guarded callback is passed through extraction, retry and
+independent verification.  No generic validation-error catch is added.
+
+The shared reduction allowance is checked before the attempted crush or
+repair.  If it is exhausted, the returned partial chain contains only
+previously accepted steps.  The candidate has supplied no new topological
+claim.  Moving this check before the former unconditional extraction can
+reduce callback work and extraction statistics on that inconclusive path;
+it preserves neither an exact callback count nor validation of the
+unaccepted candidate.  Discovery work already performed remains charged,
+and no unappended crush is charged as a successful reduction.
+The existing \path{extraction_steps} statistic remains present for these
+search modes and counts actual fallback support steps.  On genuine native
+primitive ray outputs it is zero.
+
+Corner enumeration already supplied rays directly and keeps that path.
+Expanded-edge vertex reduction keeps its own positive-point extraction:
+the raw or peeled link can have higher-dimensional support.  Its extracted
+ray has a full-standard extremality guarantee and need not be Q extreme.
+The lifting theorem therefore licenses no removal of that extraction.
+
+\subsection{The precise cost improvement and its limits}
+
+For a genuine native positive ray, the previous standard-coordinate
+extraction had zero support-descent steps.  It nevertheless prepared the
+source, performed input and output coordinate censuses, compiled the Euler
+functional, built a source kernel chart, and normalized the result.  Since
+the input was already primitive, the output was the same coordinate vector.
+The subsequent crushing constructor repeated left-pivot elimination on
+the same original positive-support matrix.  The direct path removes the
+first of these passes; it removes no LP solve.
+
+There are $O(t)$ matching rows and at most $7t$ columns, or at most $5t$
+positive columns for compatible data.  The dense elimination used here has
+an $O(t^3)$ rational-arithmetic upper bound.  Before the common final-chain
+replay, the old native-ray path performed three principal support
+eliminations: the extractor's chart, the constructor's rank check, and the
+independent checker's chart.  The new path performs the last two.  Their
+coefficient and coordinate bit bounds, established for the original
+matching systems, are unchanged.  The old native-ray path already had
+zero tangent descent, so comparing a generic higher-dimensional extraction
+bound against this direct path would overstate the improvement.
+
+Thus this is removal of additive polynomial work, not a proved smaller
+per-ray time or space exponent.  A genuinely nonextreme fallback pays for
+its initial failed rank check as well as the extraction and retry.  A
+nonprimitive fallback pays for the failed scale check before extraction.
+Neither exceptional path has an improved worst-case bound.  The number
+of LP queries, branching masks, transversal candidates and authenticated
+crushing stages is unaffected on the native successful path.  No general
+quasi-polynomial recognition bound, resolving-parameter monotonicity,
+empirical speedup, or timing result is asserted by this argument.
+
+\subsection{Regression controls and reproducible publication}
+
+Seven focused constructor tests distinguish recoverable scale and support
+failures from invalid matching data, incompatible types, malformed literal
+coordinates, nonpositive input and an impossible computed rank.  The genuine
+canonical point
+\[
+ \begin{pmatrix}
+ 1&1&2&2&1&0&0\\
+ 1&1&0&0&3&0&0
+ \end{pmatrix}
+\]
+on the boundary-capped one-tetrahedron torus has support nullity two.
+Its extraction takes one support-descent step and yields an independently
+replayable crush.  Adding a positive vertex-link summand still fails the
+extractor's canonicality check.  Primitive rays scaled by $2$ or $2^{20000}$
+exercise normalization without decimal expansion of large integers.
+Caller exception identity is checked through the constructor, including
+instances of the new classification errors.
+
+Twelve driver controls exercise the shortcut and its repair boundary.
+Genuine circle recognition under Bland with anchors or the envelope shortcut,
+and under tree and transversal search, succeeds with driver extraction
+disabled.  Actual polynomial fallback under both LP strategies is tested on the
+tiny supplied torus source.  Each of these six configurations gives exactly
+the same full returned result as a comparison wrapper that performs the
+removed real extraction before every crush.  Its extracted vector equals
+the supplied primitive vector and its descent count is zero.  These are
+functional comparisons, not timings.
+
+The nonextreme two-tetrahedron point above is repaired exactly once in each
+of the LP, tree and transversal paths.  These controls deliberately substitute
+the point after a successful native query.  In the LP control its independently
+accepted positive Euler packet explicitly contains the nonextreme point.
+Huge rescalings normalize before one retry.  Other tests reject a constructed
+false quotient at independent replay, preserve ordinary geometry failures,
+and show that a classification error from the verifier or from a retry
+cannot reenter repair.  Callback tests cover the initial constructor,
+extraction, retry and independent verification, including caller-raised
+instances of both classification errors.  Exhausting the shared reduction
+allowance suppresses both extraction and construction while retaining a
+replayable partial chain.  Genuine factor controls charge only accepted
+crushes.  Genuine trefoil preprocessing still calls the vertex-link
+extractor and returns an authenticated one-vertex partial chain; this
+control claims no nonzero support-descent count for those particular links.
+
+The supplied-source harness replaces diagram provenance and initial source
+setup; native LP, geometry, support extraction and
+quotient replay remain active.  Their full diagram proofs fail independent
+replay outside that harness.  Thus they establish the conditional source
+and driver contracts, not new genuine diagram verdicts.  The separate
+circle, factor and trefoil controls use ordinary diagram authentication.
+
+
+The complete regression passes 383 tests across 43 modules with Regina
+available and no skipped tests, including the nineteen new methods above.
+Before the run, all native Python modules, the declared test import closure,
+seven serialized fixtures and the exact command were pinned: 360 files
+altogether.  Those bytes remain unchanged after the run.  The retained
+command, complete verbose output and pre-run source map use the prefix
+\path{data/direct-crush-positive}.
+
+The helper \path{direct_crush_positive_publication.py} verifies that source
+map, the exact declared and observed test coverage, all three final PDF
+builds and the current article closure.  It authenticates the historical
+formatting-warning baseline against the previous publication's digest.
+It pins the new implementation, tests, article, PDF and retained validation
+artifacts without running tests, certificate replay, discovery or timings.
+Historical cochain/geometric measurements remain attached to revision
+\path{3d3498207}; they are not measurements of this direct-ray change.
