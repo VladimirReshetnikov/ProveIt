@@ -8926,6 +8926,56 @@ preserves every duplicate short-name occurrence. This checkpoint does
 not establish complete original-paper fidelity; the accepted correction
 and previously documented limitations remain.
 
+### L.97. Direct variable cubic localization (2026-10-13)
+
+`FejerOddSquareAt.twistedDiscrepancy` now uses the existing localized
+assembly directly. The unchanged threshold supplies the required cell
+lengths, quadratic threshold and geometric bound. Its conclusion and
+all six parameter definitions are unchanged.
+
+The obsolete unnumbered intermediate `FejerOddSquareAt.manyPrimeModels`
+is intentionally deleted after replacing its sole caller. Its full old
+source and exact 72-line declaration, including the 54-line proof, are
+archived with the verification evidence. The deletion review found no
+other caller, explicit audit entry or numbered-paper catalogue mapping.
+The fixed explicit many-model theorem remains in its compatibility
+owner and focused audit. This change preserves the 14 retained
+statements and contexts. The internal API removal is intentional.
+Historical verification records remain unchanged.
+
+The surviving proof grows from 43 to 61 tactic lines; removing the
+unused 54-line proof reduces the combined total from 97 to 61. The
+production module shrinks from 343 to 287 lines: 56 fewer source and
+36 fewer proof lines. One focused check gives 301 named declarations:
+300 theorems and the retained threshold definition. All keep the
+approved-axiom check, with a net checkpoint reduction of 55 source lines.
+Module imports and final numeric bounds remain unchanged.
+
+Three fresh native targets pass: stronger bridge (708), focused audit
+(784) and downstream audit (1,098). Thirteen completed L.96 results are
+retained after checking each entire own-target source/configuration
+manifest against current bytes. These comprise the original audit (641),
+historical explicit audit (700), historical
+bridge (559) and ten additional historical compilation targets, including
+the repaired 194-module comparison target; no new runs of those thirteen
+targets are claimed. Their older linked focused-audit references remain
+historical metadata. Fresh named audits
+and standalone compilation retain their distinct scopes.
+
+The three fresh targets cover 71 of 74 affected consumers. The three
+broad aggregate targets remain excluded. The selected sixteen-target
+union has 1,238 modules / 229,161 source lines and 1,241 inputs; its
+six regular targets have 1,205 modules / 226,116 lines.
+
+The 223-module core passes on the first attempt without source repairs.
+All 1,241 current source/configuration hashes are checked, and the
+regenerated inventory is byte-identical, preserving all 120 statement
+statuses and duplicate occurrences. Exact source, intentional deletion
+archive, fresh and retained native evidence are recorded in
+`verification/2026-10-13-variable-cubic-localization-simplification.json`.
+This checkpoint does not establish complete original-paper fidelity;
+the accepted correction and previously documented limitations remain.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
