@@ -1,4 +1,3 @@
-import GowersSzemeredi.Proofs18SinglePieceCoverInverse
 import GowersSzemeredi.Proofs16SinglePieceCoverGlobalWith
 import GowersSzemeredi.Proofs16ClassStepFejer
 

@@ -22,18 +22,9 @@ namespace LeanProofs.GowersSzemeredi
 theorem Theorem182AtSharp.van_der_waerden {c k : Nat} (h : Theorem182AtSharp c k) {r : Nat}
     (hr : 2 ≤ r) (N : Nat) (hN : szemerediThresholdAt c (1 / (r : Real)) k ≤ N)
     (color : Nat → Fin r) : HasMonochromaticAP N r color k := by
-  classical
-  obtain ⟨col, hcol⟩ := exists_color_class_ge (by omega) N color
-  let A := (Finset.Icc 1 N).filter fun x => color x = col
   have hrR : (2 : Real) ≤ r := by exact_mod_cast hr
-  have hδ : 0 < 1 / (r : Real) := by positivity
-  have hδ2 : 1 / (r : Real) ≤ 1 / 2 := one_div_le_one_div_of_le (by norm_num) hrR
-  have hAcard : 1 / (r : Real) * N ≤ A.card := by
-    have : 1 / (r : Real) * N = (N : Real) / r := by ring
-    rw [this]; exact hcol
-  obtain ⟨a, d, hd, hmem⟩ := h (1 / (r : Real)) N hδ hδ2 hN A (Finset.filter_subset _ _) hAcard
-  refine ⟨a, d, col, hd, fun i hi => ?_⟩
-  have hai : a + i * d ∈ A := hmem i hi
-  exact Finset.mem_filter.mp hai
+  exact hasMonochromaticAP_of_density (by omega)
+    (h (1 / (r : Real)) N (by positivity)
+      (one_div_le_one_div_of_le (by norm_num) hrR) hN) color
 
 end LeanProofs.GowersSzemeredi

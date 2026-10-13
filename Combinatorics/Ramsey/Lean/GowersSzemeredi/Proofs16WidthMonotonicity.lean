@@ -59,6 +59,39 @@ theorem section16Lemma6Width_antitone_count {m p q k : Nat} {sigma delta theta1 
   rw [section16Lemma6Width_eq_sqrt, section16Lemma6Width_eq_sqrt]
   exact lemma6WidthWith_antitone_count hpq hz ha
 
+/-- The Lemma 16.9 width for spectrum controls with count `q` and exponent `a`. -/
+def lemma9WidthWith (m q k : Nat) (sigma theta gamma a zeta : Real) : Real :=
+  (zeta / 2) * Real.sqrt ((m : Real) ^
+    ((multipleC (sigma / (2 * section16Lemma9R theta gamma k)) gamma (k + 1)) ^
+      section16Lemma9R theta gamma k * (a * section16RecurrenceExponent k q)))
+
+theorem lemma9WidthWith_le_cell_width {m n q k : Nat}
+    {sigma theta gamma a zeta : Real} (hz : 0 ≤ zeta) (ha : 0 ≤ a)
+    (hcell : (m : Real) ^ ((multipleC (sigma / (2 * section16Lemma9R theta gamma k)) gamma
+      (k + 1)) ^ section16Lemma9R theta gamma k) ≤ n) :
+    lemma9WidthWith m q k sigma theta gamma a zeta ≤ lemma6WidthWith n q k a zeta := by
+  unfold lemma9WidthWith lemma6WidthWith
+  apply mul_le_mul_of_nonneg_left _ (by positivity)
+  apply Real.sqrt_le_sqrt
+  have he := (section16RecurrenceExponent_pos_le_one k q).1
+  rw [Real.rpow_mul (Nat.cast_nonneg m)]
+  exact Real.rpow_le_rpow (by positivity) hcell (mul_nonneg ha he.le)
+
+/-- The printed Lemma 16.9 width is exactly the arbitrary-control width
+at its printed spectrum exponent. -/
+theorem section16Lemma9Width_eq_with (m q k : Nat)
+    (sigma theta gamma delta theta1 zeta : Real) :
+    section16Lemma9Width m q k sigma theta gamma delta theta1 zeta =
+      lemma9WidthWith m q k sigma theta gamma
+        ((multipleC (sigma / (2 * section16T delta theta1 k)) delta k) ^
+          section16T delta theta1 k) zeta := by
+  unfold section16Lemma9Width lemma9WidthWith
+  dsimp only
+  rw [Real.sqrt_eq_rpow, ← Real.rpow_mul (Nat.cast_nonneg m)]
+  congr 2
+  simp only [section16RecurrenceExponent, zpow_neg, zpow_natCast, div_eq_mul_inv, mul_inv_rev]
+  ring
+
 /-- Taking the Lemma 16.6 width on a cell of the gamma-side partition
 produces exactly the composite exponent displayed in Lemma 16.9. -/
 theorem section16Lemma9Width_le_cell_width {m n q k : Nat}
@@ -69,36 +102,11 @@ theorem section16Lemma9Width_le_cell_width {m n q k : Nat}
       section16Lemma9R theta gamma k) ≤ n) :
     section16Lemma9Width m q k sigma theta gamma delta theta1 zeta ≤
       section16Lemma6Width n q k (sigma / 2) delta theta1 zeta := by
-  let t := section16T delta theta1 k
-  let a := (multipleC (sigma / (2 * section16Lemma9R theta gamma k)) gamma (k + 1)) ^
-    section16Lemma9R theta gamma k
-  let b := (multipleC (sigma / (2 * t)) delta k) ^ t
-  have harg : t⁻¹ * (sigma / 2) = sigma / (2 * t) := by
+  have harg : (section16T delta theta1 k)⁻¹ * (sigma / 2) =
+      sigma / (2 * section16T delta theta1 k) := by
     simp only [div_eq_mul_inv, mul_inv_rev]
     ring
-  have hb : 0 ≤ b := by
-    dsimp only [b]
-    rw [← harg]
-    exact ha
-  have he : 0 ≤ b / (2 * (section16K k : Real) ^ (2 ^ (k + 1) * q)) := by positivity
-  have hleft : section16Lemma9Width m q k sigma theta gamma delta theta1 zeta =
-      (zeta / 2) * ((m : Real) ^ a) ^ (b / (2 * (section16K k : Real) ^ (2 ^ (k + 1) * q))) := by
-    unfold section16Lemma9Width
-    dsimp only
-    rw [← Real.rpow_mul (Nat.cast_nonneg m)]
-    congr 2
-    change a * b / _ = a * (b / _)
-    ring
-  have hright : section16Lemma6Width n q k (sigma / 2) delta theta1 zeta =
-      (zeta / 2) * (n : Real) ^ (b / (2 * (section16K k : Real) ^ (2 ^ (k + 1) * q))) := by
-    unfold section16Lemma6Width
-    dsimp only
-    have harg' : (sigma / 2) / t = sigma / (2 * t) := by
-      simp only [div_eq_mul_inv, mul_inv_rev]
-      ring
-    rw [harg']
-  rw [hleft, hright]
-  apply mul_le_mul_of_nonneg_left _ (by positivity)
-  exact Real.rpow_le_rpow (Real.rpow_nonneg (Nat.cast_nonneg _) _) hcell he
+  rw [section16Lemma9Width_eq_with, section16Lemma6Width_eq_sqrt]
+  simpa only [lemma6WidthWith, harg] using lemma9WidthWith_le_cell_width hz ha hcell
 
 end LeanProofs.GowersSzemeredi

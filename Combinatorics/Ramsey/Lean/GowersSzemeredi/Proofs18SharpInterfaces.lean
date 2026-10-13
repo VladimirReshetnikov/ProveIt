@@ -127,19 +127,8 @@ theorem two_color_class_half (N : Nat) (color : Nat → Fin 2) :
 theorem Theorem182AtSharp.corollary_18_7 {c k : Nat} (h : Theorem182AtSharp c k) :
     Corollary187AtSharp c k := by
   intro N hN color
-  obtain ⟨col, hcol⟩ := two_color_class_half N color
-  let A := (Finset.Icc 1 N).filter fun x => color x = col
-  have hthreshold : szemerediThresholdAt c (1 / 2 : Real) k ≤ N := by
-    rw [szemerediThresholdAt_half]; exact hN
-  have hAsub : A ⊆ Finset.Icc 1 N := Finset.filter_subset _ _
-  have hAcard : (1 / 2 : Real) * N ≤ A.card := by
-    simpa [A, div_eq_mul_inv, mul_comm] using hcol
-  obtain ⟨a, d, hd, hmem⟩ := h (1 / 2 : Real) N (by norm_num) (by norm_num) hthreshold A hAsub hAcard
-  refine ⟨a, d, col, hd, ?_⟩
-  intro i hi
-  have hai := hmem i hi
-  have haiA : a + i * d ∈ A := hai
-  have hfilter := Finset.mem_filter.mp haiA
-  exact ⟨hfilter.1, hfilter.2⟩
+  exact hasMonochromaticAP_of_density (by decide)
+    (h (1 / 2) N (by norm_num) (by norm_num)
+      (by simpa only [szemerediThresholdAt_half] using hN)) color
 
 end LeanProofs.GowersSzemeredi

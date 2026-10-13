@@ -9159,6 +9159,64 @@ occurrences; only the two projected companion line locations change.
 Evidence is in `verification/2026-10-13-lemma6-common-base-sharing-simplification.json`. This checkpoint preserves the documented
 correction and prior original-paper fidelity limits.
 
+### L.102. Shared constructions and quantitative estimates (2026-10-13)
+
+Six source stages share the printed/generic Lemma 16.9 construction,
+headline and density-iteration thresholds, coloring conversion, the
+single-piece core, retained-domain counting, and selection thresholds.
+Four unused imports are narrowed. Four declarations move unchanged and
+remain available through their previous owners; the narrower imports'
+lost transitive exports are included in the compatibility review.
+
+Across 24 production owners, all 230 retained complete interfaces and
+contexts and 35 definitions stay exact. Nineteen existing proof bodies
+are rewritten, six helpers are added, and two redundant private proofs
+are removed with their original text archived. Including every helper,
+production loses 871 source lines and 926 proof-body lines: 925 tactic
+lines and one term-proof line. Twenty-nine audit additions leave a net
+842 source lines. These are repository-wide savings, distinct from the
+larger savings when obsolete imported modules leave a final route.
+
+The original Final route loses three modules, 839 source lines and
+756 proof lines; its FinalAudit closure becomes 639 modules. The stronger
+all-degrees route loses five modules, 1,468 source lines and 1,156 proof
+lines, leaving 703 modules. The focused audit becomes 782 modules and
+loses 957 source/954 proof lines including its new checks. The complete
+ledger includes standalone owner growth and the remaining historical
+routes; moving a declaration is not counted as deleting its proof.
+
+The focused audit preserves all 326 old names in order and its existing
+definition-kind guard. Its 28 additions give 354 declarations: 353 theorems
+and one definition. One historical explicit addition preserves the old
+four names and brings that audit to five. All 27 changed, new or moved
+public theorem names are explicitly checked; the changed private
+headline estimate is reached through its named public caller.
+
+Two same-line elaboration repairs make the addition-order proof explicit
+and add the missing multiplication-by-one normalization in the coloring
+helper. Both earlier failed core logs and receipts remain archived; the
+successful 593-module retry validates the cumulative repaired inputs. The frozen
+six-stage source and both repair overlays remain preserved. These repairs
+change no interface, hypothesis, import, or source/proof-line count.
+
+The 593-module production core and all 49 fresh native target checks pass. No baseline result is eligible for retention on these changed
+inputs. The selected union contains 1,890 modules, 281,991 source lines
+and 1,893 source/configuration inputs. It covers 937 of 940 affected
+consumers, excluding GowersSzemeredi, GowersSzemeredi.Audit and
+GowersSzemeredi.PortImportAudit. A standalone module compilation does not
+claim an axiom audit of every declaration it exports.
+
+The accepted source and exact applied-source review are verified. The
+regenerated full inventory matches the accepted source. The complete projected inventory preserves all 120 rows,
+statuses, key/list order and duplicate occurrences. Only five line
+locations change: 66→48, 96→77, 158→194, 33→27 and 57→39. Final numerical
+bounds, progression endpoints and step conditions, the accepted Lemma
+16.10 correction, and the prior original-paper fidelity limits remain
+unchanged. These source simplifications do not discharge those separate
+fidelity gaps or establish a further numerical improvement.
+
+Evidence: `verification/2026-10-13-successor-batch-simplification.json`.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

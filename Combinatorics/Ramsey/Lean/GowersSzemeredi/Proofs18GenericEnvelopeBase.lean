@@ -708,8 +708,6 @@ theorem lemma156_gen_le {alpha : Real} {k : Nat} (hk : 1 ≤ k) (ha : 0 < alpha)
   have hX := two_div_ge_two ha ha2
   have hXa : (alpha / 2)⁻¹ = 2 / alpha := inv_div _ _
   set u := 2 / alpha with hu
-  have hu1 : 1 ≤ u := le_trans (by norm_num) hX
-  have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hX
   have hinv : u⁻¹ = alpha / 2 := by rw [← hXa, inv_inv]
   set N1 := 7 * 4 ^ (k + 1) + 21 * k * 4 ^ (k + 1) with hN1
   set E := arrangementSelectionExponent k with hE
@@ -717,44 +715,6 @@ theorem lemma156_gen_le {alpha : Real} {k : Nat} (hk : 1 ≤ k) (ha : 0 < alpha)
   -- the selection base `a = (α/2)^N1 = u^(-N1)`
   have hbase : (u ^ N1)⁻¹ = (alpha / 2) ^ (7 * 4 ^ (k + 1)) * (alpha / 2) ^ (21 * k * 4 ^ (k + 1)) := by
     rw [← pow_add, ← hinv, inv_pow]
-  set a := (alpha / 2) ^ (7 * 4 ^ (k + 1)) * (alpha / 2) ^ (21 * k * 4 ^ (k + 1)) with ha'
-  have hapos : 0 < a := by rw [← hbase]; positivity
-  have heta : ((2 : Real)⁻¹ ^ 44) = ((2 : Real) ^ 44)⁻¹ := by rw [inv_pow]
-  have h46u : (u ^ 46)⁻¹ ≤ ((2 : Real) ^ 46)⁻¹ :=
-    inv_anti₀ (by positivity) (pow_le_pow_left₀ (by norm_num) hX 46)
-  have h46 : ((2 : Real) ^ 46)⁻¹ ≤ (2 : Real)⁻¹ ^ 44 / 4 := by rw [heta]; norm_num
-  have hb : (u ^ (N1 + 46))⁻¹ ≤ a * (2 : Real)⁻¹ ^ 44 / 4 := by
-    calc (u ^ (N1 + 46))⁻¹ = (u ^ N1)⁻¹ * (u ^ 46)⁻¹ := by rw [← mul_inv, ← pow_add]
-      _ ≤ a * ((2 : Real)⁻¹ ^ 44 / 4) :=
-          mul_le_mul (le_of_eq hbase) (h46u.trans h46) (by positivity) hapos.le
-      _ = a * (2 : Real)⁻¹ ^ 44 / 4 := by ring
-  have hsel : (u ^ ((N1 + 46) * E))⁻¹ ≤ (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E := by
-    have h := pow_le_pow_left₀ (inv_pos.mpr (pow_pos hupos _)).le hb E
-    rw [inv_pow, ← pow_mul] at h
-    exact h
-  have h12 : (1 : Real) / 4 ≤ (1 - (2 : Real)⁻¹ ^ 44) / 2 := by rw [heta]; norm_num
-  have heta0 : 0 ≤ (1 - (2 : Real)⁻¹ ^ 44) / 2 := by rw [heta]; norm_num
-  have hu4 : (u ^ 2)⁻¹ ≤ 1 / 4 := by
-    rw [one_div]; exact inv_anti₀ (by norm_num) (by nlinarith only [hX])
-  have hden : (u ^ ((N1 + 46) * E + 2))⁻¹ ≤
-      (1 - (2 : Real)⁻¹ ^ 44) * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E / 2 * 1 := by
-    calc (u ^ ((N1 + 46) * E + 2))⁻¹ = (u ^ 2)⁻¹ * (u ^ ((N1 + 46) * E))⁻¹ := by
-          rw [← mul_inv, ← pow_add, add_comm]
-      _ ≤ (1 - (2 : Real)⁻¹ ^ 44) / 2 * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E :=
-          mul_le_mul (hu4.trans h12) hsel (inv_pos.mpr (pow_pos hupos _)).le heta0
-      _ = (1 - (2 : Real)⁻¹ ^ 44) * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E / 2 * 1 := by ring
-  have hdenpos : 0 < (1 - (2 : Real)⁻¹ ^ 44) * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E / 2 * 1 :=
-    lt_of_lt_of_le (inv_pos.mpr (pow_pos hupos _)) hden
-  -- the numerator `3^(16·2^k)·k ≤ u^(2^(k+5)+k)`
-  have hC : (3 : Real) ^ (16 * 2 ^ k) * k ≤ u ^ (2 ^ (k + 5) + k) := by
-    have h3 : (3 : Real) ^ (16 * 2 ^ k) ≤ 2 ^ (2 ^ (k + 5)) := by
-      calc (3 : Real) ^ (16 * 2 ^ k) ≤ 4 ^ (16 * 2 ^ k) := pow_le_pow_left₀ (by norm_num) (by norm_num) _
-        _ = 2 ^ (2 ^ (k + 5)) := by
-            rw [show (4 : Real) = 2 ^ 2 by norm_num, ← pow_mul]; congr 1; rw [pow_add]; ring
-    have hk' : (k : Real) ≤ 2 ^ k := by exact_mod_cast Nat.lt_two_pow_self.le
-    rw [pow_add]
-    exact mul_le_mul (h3.trans (pow_le_pow_left₀ (by norm_num) hX _))
-      (hk'.trans (pow_le_pow_left₀ (by norm_num) hX _)) (Nat.cast_nonneg _) (by positivity)
   have hexp : 2 ^ (k + 5) + k + ((N1 + 46) * E + 2) ≤ 2 ^ (2 ^ (k + 4) + 4 * k + 13) := by
     have h1 : 2 ^ (k + 5) + k + 2 ≤ 2 ^ (2 ^ (k + 4) + 4 * k + 11) := by
       have h := Nat.lt_two_pow_self (n := k + 5)
@@ -766,24 +726,8 @@ theorem lemma156_gen_le {alpha : Real} {k : Nat} (hk : 1 ≤ k) (ha : 0 < alpha)
       rw [show 2 ^ (k + 4) + 4 * k + 13 = (2 ^ (k + 4) + 4 * k + 11) + 2 by ring, pow_add]; ring
     generalize (N1 + 46) * E = P at hdeg ⊢
     omega
-  unfold lemma156ExplicitThreshold
-  rw [if_neg (by omega)]
-  unfold selectionExplicitThreshold
-  apply max_le
-  · have : (3 : Real) ≤ u ^ 2 := by nlinarith only [hX]
-    exact this.trans (pow_le_pow_right₀ hu1
-      (le_trans (by norm_num : 2 ≤ 2 ^ 1) (Nat.pow_le_pow_right (by norm_num)
-        (by have := Nat.one_le_two_pow (n := k + 4); omega))))
-  · rw [← hE, div_le_iff₀ hdenpos]
-    calc (3 : Real) ^ (16 * 2 ^ k) * k ≤ u ^ (2 ^ (k + 5) + k) := hC
-      _ = u ^ (2 ^ (k + 2 + 3) + k + ((N1 + 46) * E + 2)) * (u ^ ((N1 + 46) * E + 2))⁻¹ := by
-          rw [show 2 ^ (k + 2 + 3) = 2 ^ (k + 5) by ring, pow_add u (2 ^ (k + 5) + k),
-            mul_assoc, mul_inv_cancel₀ (pow_pos hupos _).ne', mul_one]
-      _ ≤ u ^ (2 ^ (2 ^ (k + 4) + 4 * k + 13)) *
-          ((1 - (2 : Real)⁻¹ ^ 44) * (a * (2 : Real)⁻¹ ^ 44 / 4) ^ E / 2 * 1) :=
-          mul_le_mul (pow_le_pow_right₀ hu1 (by
-            rw [show 2 ^ (k + 2 + 3) = 2 ^ (k + 5) by ring]; exact hexp)) hden
-            (inv_pos.mpr (pow_pos hupos _)).le (pow_pos hupos _).le
+  exact lemma156ExplicitThreshold_le_power_of_selection_base hk hX hbase.le (by
+    simpa only [show 32 * 2 ^ k = 2 ^ (k + 5) by rw [pow_add]; ring] using hexp)
 
 /-- The log-log-degree of the recurrence constants in dimension `k`. -/
 def genMuK (k : Nat) : Nat := 2 ^ (k + 5)

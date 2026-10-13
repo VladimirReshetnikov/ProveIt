@@ -1,4 +1,5 @@
-import GowersSzemeredi.Proofs18LinearFourierObstruction
+import GowersSzemeredi.Proofs08QuadraticFrequencies
+import GowersSzemeredi.Proofs18IntervalCubeEnergy
 import GowersSzemeredi.Proofs17PartitionEnergy
 
 /-! Retaining the total Fourier bias of a nonuniform progression partition.
