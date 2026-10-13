@@ -23,7 +23,8 @@ import Lean.Util.CollectAxioms
 open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for name in #[``LeanProofs.GowersSzemeredi.fejerCubicPrimeModelThreshold,
+  let definitionName := ``LeanProofs.GowersSzemeredi.fejerCubicPrimeModelThreshold
+  for name in #[definitionName,
       ``LeanProofs.GowersSzemeredi.fejer_cubic_nonuniformity_twisted_discrepancy,
       ``LeanProofs.GowersSzemeredi.fejer_cubic_nonuniformity_many_prime_models,
       ``LeanProofs.GowersSzemeredi.partition_count_power_of_length,
@@ -324,8 +325,8 @@ run_cmd do
       ``LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_fejerT3,
       ``LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerJT3] do
     let info ← getConstInfo name
-    unless info.isTheorem do
-      throwError "{name} is not a theorem"
+    unless (if name == definitionName then info.isDefinition else info.isTheorem) do
+      throwError "{name} has an unexpected declaration kind"
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
