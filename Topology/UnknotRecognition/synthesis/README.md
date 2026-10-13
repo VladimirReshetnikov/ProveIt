@@ -2,6 +2,15 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`exact_polynomial_lp.tex`](exact_polynomial_lp.tex) proves the maintained
+polynomial exact LP policy: a bounded Bland prefix, rational outward-rounded
+ellipsoid feasibility, exact original-point and extreme-ray recovery, and
+original-row dual scaling. It includes a conservative finite-bit bound and
+the shared pivot, ellipsoid-update, and feasibility-call allowances used by
+Euler search and crushing. This resolves the local LP complexity obligation;
+a general quasi-polynomial bound on complete admissibility search remains
+unproved. Historical evidence below retains its original source pins.
+
 [`euler_transversal.tex`](euler_transversal.tex) describes the optional
 conflict-learning search and proves its conditional bound in the minimum
 uniform transversal size. It explains the extreme-ray requirement, complete

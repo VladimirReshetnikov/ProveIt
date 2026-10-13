@@ -7,13 +7,16 @@ coordinates or selects an unresolved tetrahedron for complete branching.
 Nonpositive duals exclude whole partial masks and are independently replayable.
 
 This supplied-source search does not authenticate a knot exterior. Complete
-search is finite, but the tree and Bland pivot counts have no polynomial or
-quasi-polynomial bound. Finite allowances return no negative certificate.
+search is finite, but the tree has no general quasi-polynomial bound. The
+default LP policy is polynomial; legacy Bland remains an explicit comparison.
+Finite allowances return no negative certificate.
 """
 from fractions import Fraction
 from itertools import product
 
 from .exact_lp import solve_nonnegative_kernel
+from .euler_lp_budget import (fallback_statistics, validate_lp_controls,
+                              lp_options, record_fallback)
 from .integer_codec import json_safe
 from .normal_euler import _euler_model
 from .normal_sector import _assemble_sector_kernel, _source_hash
@@ -88,7 +91,7 @@ def _formal_lift(kernel, quadrilaterals, check):
 
 
 def _euler_search_stats():
-    return dict(nodes_attempted=0, branch_splits=0, negative_leaves=0,
+    return dict(fallback_statistics(), nodes_attempted=0, branch_splits=0, negative_leaves=0,
                  lp_calls=0, lp_pivots=0, anchors_tested=0, reused_anchors=0,
                  envelope_calls=0, reused_envelopes=0,
                  lp_tableau_updates=0, maximum_tableau_bits=0,
@@ -101,10 +104,15 @@ class _EulerMaskOracle:
     """Shared exact mask oracle; one cache and shared caps per search call."""
 
     def __init__(self, triangulation, prepared, *, strategy, model,
-                 max_pivots, max_anchors, check, stats):
+                 max_pivots, max_anchors, check, stats, lp_policy='polynomial',
+                 lp_fast_path_pivots=None, max_ellipsoid_iterations=None,
+                 max_feasibility_calls=None):
         self.triangulation, self.prepared = triangulation, prepared
         self.strategy, self.model, self.check = strategy, model, check
         self.max_pivots, self.max_anchors = max_pivots, max_anchors
+        self.lp_policy, self.lp_fast_path_pivots = lp_policy, lp_fast_path_pivots
+        self.max_ellipsoid_iterations = max_ellipsoid_iterations
+        self.max_feasibility_calls = max_feasibility_calls
         self.stats, self.digest = stats, _source_hash(triangulation)
         self.source_context, self.source_cache = None, None
 
@@ -154,11 +162,14 @@ class _EulerMaskOracle:
                 del cache[1]
 
         def solve(objective):
-            remaining = None if max_pivots is None else max_pivots-stats['lp_pivots']
             result = solve_nonnegative_kernel(matrix, [objective[j] for j in active],
-                                             max_pivots=remaining, check=check)
+                **lp_options(stats, policy=self.lp_policy,
+                    fast_path_pivots=self.lp_fast_path_pivots, max_pivots=max_pivots,
+                    max_ellipsoid_iterations=self.max_ellipsoid_iterations,
+                    max_feasibility_calls=self.max_feasibility_calls), check=check)
             stats['lp_calls'] += 1
             stats['lp_pivots'] += result['stats']['pivots']
+            record_fallback(stats, result['stats'])
             stats['lp_tableau_updates'] += result['stats']['tableau_updates']
             stats['maximum_tableau_bits'] = max(stats['maximum_tableau_bits'],
                                                  result['stats']['maximum_tableau_bits'])
@@ -239,10 +250,14 @@ class _EulerMaskOracle:
 
 def search_euler_tree(triangulation, allowed_types=None, *, strategy='envelope', model='source',
                       max_nodes=None, max_pivots=None, max_anchors=None,
+                      lp_policy='polynomial', lp_fast_path_pivots=None,
+                      max_ellipsoid_iterations=None, max_feasibility_calls=None,
                       check=lambda: None):
     """Return a compatible positive point, a full exclusion tree, or a cap.
 
-    All node, pivot and anchor allowances are shared across the entire tree.
+    All node, pivot, anchor, ellipsoid and feasibility-call allowances are
+    shared across the entire tree. The default LP policy has a polynomial
+    prefix and exact fallback; lp_policy='bland' ignores fallback caps.
     Nodes are explored in deterministic depth-first order with an explicit
     stack. At a conflicting tetrahedron, every currently allowed singleton
     type gets a child; its zero-Q possibility is covered in every child.
@@ -264,13 +279,18 @@ def search_euler_tree(triangulation, allowed_types=None, *, strategy='envelope',
         raise ValueError('strategy must be envelope or anchors')
     if model not in ('source', 'restricted'):
         raise ValueError('model must be source or restricted')
+    validate_lp_controls(lp_policy, lp_fast_path_pivots,
+                         max_ellipsoid_iterations, max_feasibility_calls)
     prepared = _prepare(triangulation, check)
     root = _mask(allowed_types, len(prepared['tetrahedra']))
     digest = _source_hash(triangulation)
     stats = _euler_search_stats()
     oracle = _EulerMaskOracle(triangulation, prepared, strategy=strategy, model=model,
                               max_pivots=max_pivots, max_anchors=max_anchors,
-                              check=check, stats=stats)
+                              check=check, stats=stats, lp_policy=lp_policy,
+                              lp_fast_path_pivots=lp_fast_path_pivots,
+                              max_ellipsoid_iterations=max_ellipsoid_iterations,
+                              max_feasibility_calls=max_feasibility_calls)
 
     def inconclusive(reason):
         return dict(status='INCONCLUSIVE', reason=reason, stats=stats)

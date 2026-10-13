@@ -7,7 +7,9 @@ an exact uniform parameter for the fixed-source Q cone and an optional
 search policy that learns constraints on that parameter.  The policy can
 reuse the mask oracle and negative certificate format from
 Section~\ref{sec:euler-branch-tree}.  Its general quasi-polynomial bound
-remains conditional on a structural theorem and a polynomial LP backend.
+remains conditional on a structural theorem.  The polynomial LP backend
+and basic-ray recovery needed by the parameterized argument are now supplied
+by Section~\ref{sec:exact-polynomial-lp}.
 
 \subsection{Coordinate faces retain the root extreme rays}
 
@@ -151,10 +153,11 @@ conflict and also remains invalid.  Therefore continuing the stream
 still selects a minimum hitting set of the known hypergraph, without
 retesting earlier subsets.
 
-\begin{proposition}[Conditional learning bound]
+\begin{proposition}[Parameterized learning bound]
 \label{thm:transversal-learning-bound}
-Disable operational caps and assume an exact polynomial-bit LP procedure
-with polynomial basic-ray recovery.  The learning policy is complete.
+Disable operational caps and select the polynomial exact LP policy of
+Section~\ref{sec:exact-polynomial-lp}, including its basic-ray recovery.
+The learning policy is complete.
 Writing $h=h(T)$, it tests at most
 \[
  \sum_{k=0}^{h}\binom tk
@@ -184,15 +187,17 @@ all conflicts, proving completeness independently of a small parameter.
 
 Each oracle node uses at most one envelope query and $A$ anchor queries,
 with polynomial source arithmetic and proof data under the stated LP
-hypothesis.  Hypergraph membership tests, subset generation and retained
+policy.  Hypergraph membership tests, subset generation and retained
 conflicts add a polynomial in the number of charged nodes and subsets,
 which remains $(3t)^{O(h)}\operatorname{poly}(t)$.  The supplied-set statement removes
 the subset-learning factor.
 \end{proof}
 
-The native producer retains exact Bland simplex and makes no polynomial
-pivot claim.  Its node, pivot and anchor allowances are shared across
-all candidate restarts.  A separate \path{max_hitting_subsets} allowance,
+The native producer defaults to the polynomial LP policy, retaining an
+explicit Bland comparison.  Node, pivot, anchor, ellipsoid-update and
+feasibility-call allowances are shared across all candidate restarts.
+The polynomial policy proves a bit bound for each complete LP call, rather
+than a bound on the unrestricted Bland trajectory.  A separate \path{max_hitting_subsets} allowance,
 $10{,}000$ by default, charges every tested subset, including those rejected
 before an LP call.  All caller interruptions propagate, and any exhausted
 allowance returns \path{INCONCLUSIVE} without a partial negative packet.
@@ -267,8 +272,9 @@ The next global obligation is therefore a bound on a uniform resolving
 parameter, or a different structured search theorem, rather than the
 already automatic minimum-Q normalization.  A polylogarithmic bound on
 $h$ at all authenticated one-vertex stages, together with the polynomial
-LP hypothesis, would give quasi-polynomial search through the polynomially
-many crushing stages.  No such universal bound is established here.
+LP policy of Section~\ref{sec:exact-polynomial-lp}, would give
+quasi-polynomial search through the polynomially many crushing stages.
+No such universal bound on $h$ is established here.
 
 \subsection{Fresh finite audit and exact resolving numbers}
 
@@ -346,8 +352,10 @@ and 733, with 1584 and 655 reuses, respectively.  Each prepares the fixed
 source kernel once.  These operation counts are for the entire learning
 process, not merely the final successful tree.  They demonstrate completion
 within the common allowances of 256 nodes, 10000 pivots, 10000 anchors, and
-10000 tested subsets; they establish neither a polynomial pivot bound nor a
-bound on $h$ for a family of triangulations.
+10000 tested subsets.  These measurements used the historical LP policy;
+they establish neither a polynomial pivot bound for unbounded Bland nor a
+bound on $h$ for a family of triangulations.  The later polynomial-policy
+proof is separate from this finite evidence.
 
 \subsection{Complete-query measurements and the practical tradeoff}
 

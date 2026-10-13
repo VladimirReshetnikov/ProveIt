@@ -11,6 +11,8 @@ from math import prod
 from fractions import Fraction
 
 from .exact_lp import solve_nonnegative_kernel
+from .euler_lp_budget import (fallback_statistics, validate_lp_controls,
+                              lp_options, record_fallback)
 from .integer_codec import json_safe
 from .normal_sector import build_sector_kernel, _source_hash
 from .normal_surface_geometry import _coordinates, _EDGES, _quad
@@ -77,7 +79,10 @@ def _euler_model(kernel, check=lambda: None):
 
 
 def decide_sector_euler(triangulation, allowed_types, *, strategy='anchors',
-                        max_anchors=None, max_pivots=None, check=lambda: None):
+                        max_anchors=None, max_pivots=None,
+                        lp_policy='polynomial', lp_fast_path_pivots=None,
+                        max_ellipsoid_iterations=None, max_feasibility_calls=None,
+                        check=lambda: None):
     """Return POSITIVE_EULER, NO_POSITIVE_EULER, or INCONCLUSIVE.
 
     The source is a supplied finite triangulation, not an authenticated knot
@@ -97,14 +102,19 @@ def decide_sector_euler(triangulation, allowed_types, *, strategy='anchors',
 
     With one active global vertex there are at most min(4t,4k+1) anchor LPs
     and at most one preliminary envelope LP; arbitrary
-    matching nullity is allowed.  Rational LP has polynomial algorithms, but
-    the shipped exact Bland simplex has no polynomial pivot guarantee.
+    matching nullity is allowed. The default LP policy caps Bland polynomially
+    before exact rational ellipsoid recovery. lp_policy='bland' retains the
+    legacy comparison policy and ignores fallback caps. All anchors and the
+    envelope share max_ellipsoid_iterations and max_feasibility_calls; a finite
+    exhaustion returns INCONCLUSIVE, never a negative certificate.
     """
     for name, cap in (('max_anchors', max_anchors), ('max_pivots', max_pivots)):
         if cap is not None and (type(cap) is not int or cap < 0):
             raise ValueError(name+' must be a nonnegative integer or None')
     if strategy not in ('anchors', 'envelope'):
         raise ValueError('strategy must be anchors or envelope')
+    validate_lp_controls(lp_policy, lp_fast_path_pivots,
+                         max_ellipsoid_iterations, max_feasibility_calls)
     check()
     kernel = build_sector_kernel(triangulation, allowed_types, check=check)
     linear, weights = _euler_model(kernel, check)
@@ -112,19 +122,22 @@ def decide_sector_euler(triangulation, allowed_types, *, strategy='anchors',
                       anchors_total=prod(map(len, kernel.groups)), anchors_tested=0,
                       strategy=strategy, lp_calls=0, reused_anchors=0, envelope_calls=0,
                       lp_pivots=0, lp_tableau_updates=0, maximum_tableau_bits=0)
+    statistics.update(fallback_statistics())
     duals = []
     # Every objective dominated by zero has an immediate homogeneous dual.
     cache = [(tuple(0 for _ in kernel.support), [[0, 1] for _ in kernel.cycle_rows])]
 
     def solve(objective):
-        remaining = None if max_pivots is None else max_pivots-statistics['lp_pivots']
         result = solve_nonnegative_kernel(kernel.cycle_rows, objective,
-                                         max_pivots=remaining, check=check)
+            **lp_options(statistics, policy=lp_policy, fast_path_pivots=lp_fast_path_pivots,
+                max_pivots=max_pivots, max_ellipsoid_iterations=max_ellipsoid_iterations,
+                max_feasibility_calls=max_feasibility_calls), check=check)
         statistics['lp_calls'] += 1
         statistics['lp_pivots'] += result['stats']['pivots']
         statistics['lp_tableau_updates'] += result['stats']['tableau_updates']
         statistics['maximum_tableau_bits'] = max(statistics['maximum_tableau_bits'],
                                                  result['stats']['maximum_tableau_bits'])
+        record_fallback(statistics, result['stats'])
         return result
 
     def positive(result):

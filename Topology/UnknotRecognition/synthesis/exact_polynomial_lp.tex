@@ -1,0 +1,549 @@
+\section{An exact polynomial policy for the kernel LP alternative}
+\label{sec:exact-polynomial-lp}
+
+The LP interface used by the Euler searches can be made polynomial in the
+binary encoding of its rational input while preserving its two exact output
+forms.  The maintained polynomial policy keeps a bounded prefix of the existing
+Bland simplex implementation and then uses a fully rational, outward-rounded
+ellipsoid algorithm.  An explicit determinant gap makes feasibility decisions
+exact; a sequence of tight-row decisions recovers an original feasible point;
+and support descent recovers the extreme ray required by conflict learning.
+This removes the unbounded-simplex-pivot obligation for this interface.  It
+does not bound the number of admissibility branches or prove quasi-polynomial
+unknot recognition.
+
+The classical basis for polynomial-bit ellipsoid feasibility and exact
+primal/dual optimization is due to Khachiyan and its subsequent refinements.
+Our primary references are Gr\"otschel, Lov\'asz and Schrijver,
+\emph{Geometric Algorithms and Combinatorial Optimization},
+Sections~3.1--3.2 (especially Theorem~3.2.1 and Lemmas~3.2.8--3.2.10) and
+Sections~6.4--6.5, including Theorem~6.5.17; and G\'acs and Lov\'asz,
+``Khachiyan's algorithm for linear programming'',
+\emph{Mathematical Programming Studies}~14 (1981), 61--68.\footnote{
+Author-hosted book:
+\url{https://www.zib.de/userpage/groetschel/pubnew/paper/groetschellovaszschrijver1988.pdf}.
+Original G\'acs--Lov\'asz publication:
+\url{https://doi.org/10.1007/BFb0120921}.}
+These references justify the general exact finite-bit framework.  The
+particular gap, grid, rounding constants, recovery procedure, and accounting
+below are specified and proved here; a real-arithmetic ellipsoid iteration
+bound alone would not justify this implementation.
+
+\subsection{Contract, exact input, and bounded alternatives}
+
+For $C\in\mathbb Q^{m\times n}$ and $c\in\mathbb Q^n$, the required alternative is
+\begin{align*}
+ &Cx=0,\quad x\ge0,\quad c^{\mathsf T}x>0,
+ &&\text{or}\\
+ &C^{\mathsf T}y\ge c.
+\end{align*}
+The positive output is a primitive kernel extreme ray, together with its
+normalization $\sum_jx_j=1$ and a compatible slack-form basis.  The negative
+output gives a multiplier for every original input row, including rows
+omitted during rank preprocessing.  The final inequalities are evaluated
+exactly on the original rational input.  A finite work allowance may instead
+produce \texttt{INCONCLUSIVE}; no incomplete recovery is a certificate.
+
+Choose $r$ independent \emph{original} rows.  Their rational row span is the
+whole row space of $C$.  Multiply selected row $i$ by a positive integer
+$s_i$, and the objective by a positive integer $s_c$, clearing denominators:
+\[
+ C_I=\operatorname{diag}(s_i)C_{\rm selected},
+ \qquad c_I=s_c c.
+\]
+Least common multiples of input denominators have polynomial encoding
+length.  Let $H\ge1$ bound the absolute integer entries in $C_I$ and $c_I$.
+For $n\ge1$, put
+\[
+ k=\min(n,r+1),\qquad B_P=(kH)^k.
+\]
+The positive alternative is equivalent to feasibility of
+\begin{equation}
+ C_Ix=0,\qquad c_I^{\mathsf T}x=1,
+ \qquad 0\le x_j\le B_P.
+ \label{eq:polynomial-lp-primal-box}
+\end{equation}
+Indeed, a positive kernel point rescales to the unbounded slice.  A nonempty
+standard-form polyhedron has a basic feasible point, supported on at most
+$\operatorname{rank}[C_I;c_I^{\mathsf T}]\le k$ columns.  Cramer's rule writes
+its coordinates as ratios of integer determinants, with a nonzero integer
+denominator of magnitude at least one.  The numerator is bounded by
+$k!H^k\le B_P$, since the right side consists of zeroes and a one.  Thus the
+box preserves at least one feasible point.
+
+If this slice is empty, the homogeneous Farkas alternative supplies
+$C_I^{\mathsf T}y_I\ge c_I$.  Because the selected rows are independent,
+$C_I^{\mathsf T}$ is injective: this dual polyhedron has no lineality.
+A nonempty pointed polyhedron has a vertex.  At such a vertex $r$ independent
+inequalities are tight, and Cramer's rule bounds each coordinate by
+$r!H^r\le B_D=(rH)^r$.  It therefore suffices to find a point in
+\begin{equation}
+ -C_I^{\mathsf T}y_I\le-c_I,
+ \qquad -B_D\le (y_I)_i\le B_D.
+ \label{eq:polynomial-lp-dual-box}
+\end{equation}
+For $r=0$ this is the zero-dimensional constant-inequality problem; the
+implementation uses the radius convention $(\max(r,1)H)^r$.
+The original-row answer is
+\[
+ y_{{\rm original},j_i}=\frac{s_i}{s_c}(y_I)_i,
+ \qquad y_{{\rm original},j}=0\quad(j\notin\{j_1,\ldots,j_r\}).
+\]
+Consequently $C^{\mathsf T}y_{\rm original}\ge c$.  Importantly, a failed
+primal decision does not by itself become a negative certificate: the dual
+point is constructed separately and its original inequalities are checked.
+For $n=0$ a zero multiplier is immediate.  For rank zero and $n>0$, a positive
+objective coefficient gives a coordinate ray; otherwise the zero multiplier
+works.  These cases also fit the exact zero/one-dimensional routines below.
+
+\subsection{A determinant gap for exact bounded feasibility}
+
+Consider an explicit bounded system
+\[
+ P=\{z\in\mathbb R^d:Az\le b\},
+\]
+including all box inequalities $-B\le z_j\le B$, where $B\ge0$ is rational.
+Integerize each entire inequality, including its right side, by a positive
+multiplier; common integer factors may then be removed.  Let
+\[
+ H_A=\max(1,|A_{ij}|),\qquad
+ D=((d+1)H_A)^{d+1},\qquad \epsilon=\frac1{2D},
+ \qquad P_\epsilon=\{z:Az\le b+\epsilon\mathbf1\}.
+\]
+The coefficient height $H_A$ need not include the right sides.  Their bit
+length still contributes to the overall input size and to arithmetic costs.
+A zero row with negative right side is an immediate contradiction.
+
+\begin{proposition}[Exact perturbation gap]
+The original system $P$ is feasible if and only if $P_\epsilon$ is feasible.
+\end{proposition}
+\begin{proof}
+If $P$ is empty, Farkas multipliers can be normalized to satisfy
+$\lambda\ge0$, $A^{\mathsf T}\lambda=0$, $\mathbf1^{\mathsf T}\lambda=1$,
+and $b^{\mathsf T}\lambda<0$.  Minimize $b^{\mathsf T}\lambda$ on this
+compact multiplier polytope.  A minimizing vertex uses at most $d+1$
+independent columns of $[A^{\mathsf T};\mathbf1^{\mathsf T}]$.  Its
+coordinates have a common nonzero integer determinant denominator with
+magnitude at most $D$.  Since $b$ is integral, its negative objective is
+at most $-1/D$.  Hence
+\[
+ \lambda^{\mathsf T}(b+\epsilon\mathbf1)
+ \le-\frac1D+\frac1{2D}<0,
+\]
+which certifies that $P_\epsilon$ is empty too.  The reverse implication
+uses $P\subseteq P_\epsilon$.
+\end{proof}
+
+If $z_0\in P$ and $d\ge1$, then $P_\epsilon$ contains the Euclidean ball
+around $z_0$ of radius
+\[
+ r_0=\frac{\epsilon}{dH_A},
+\]
+because every row has norm at most $\sqrt d H_A\le dH_A$.  Each integerized
+box row has coefficient magnitude at least one.  Thus
+$P_\epsilon\subseteq[-B-1,B+1]^d$, which is enclosed by the radius
+\[
+ R=d(B+1)
+\]
+ball about zero.  This supplies a uniform positive inner radius even when
+the original polytope is lower dimensional, as happens with matching
+constraints and forced zero coordinates.  In dimension zero one checks
+constant inequalities.  In dimension one exact interval intersection
+solves the original system directly.  The ellipsoid construction below
+is used only for $d\ge2$.
+
+\subsection{Rational central cuts and explicit outward rounding}
+
+Write
+\[
+ E(a,Q)=\{z:(z-a)^{\mathsf T}Q^{-1}(z-a)\le1\},
+ \qquad Q\succ0.
+\]
+Start with $a=0$ and $Q=R^2I$.  At a rational center, scan the inequalities
+of $P_\epsilon$ exactly.  If none is violated, the perturbation proposition
+proves feasibility of the original system, although this center is not yet
+an original feasible point.  Otherwise a nonzero violated row $g$ supplies
+a central halfspace $g^{\mathsf T}(z-a)\le0$ containing $P_\epsilon$.
+Let $w=Qg$ and $s=g^{\mathsf T}Qg>0$.  The ideal update is
+\begin{align*}
+ a_*&=a-\frac{w}{(d+1)\sqrt s},\\
+ Q_*&=\frac{d^2}{d^2-1}
+       \left(Q-\frac{2ww^{\mathsf T}}{(d+1)s}\right).
+\end{align*}
+It contains the retained half-ellipsoid.  To check this directly, map the
+old ellipsoid to the unit ball and the cut to its first coordinate
+$u\in[-1,0]$.  The new squared axes are $d^2/(d+1)^2$ in the cut direction
+and $d^2/(d^2-1)$ perpendicular to it.  The new squared norm of a retained
+unit-ball point is at most
+\[
+ 1+\frac{2(d+1)u(u+1)}{d^2}\le1.
+\]
+For the ideal volume ratio $v_d$, putting $x=1/d$ gives
+\[
+ -2\log v_d
+ =(1/x+1)\log(1+x)+(1/x-1)\log(1-x)
+ =x+\sum_{j\ge1}\frac{x^{2j+1}}{(2j+1)(j+1)}\ge x.
+\]
+In particular $\log v_d\le-1/(2d)$.
+
+Set the following explicit rational/integer parameters:
+\begin{align*}
+ K&=\lceil\log_2(R/r_0)\rceil,&
+ N&=4d^2(K+1),& \rho&=\frac1{100d^2},\\
+ p_i&=2(i+1)+\lceil\log_2(200d^3)\rceil,&
+ \delta_i&=2^{-p_i},& \lambda_i&=4^{-(i+1)}.
+\end{align*}
+At update $i$, round every coordinate of $a_*$ down to the
+$\delta_i$ grid to obtain $\widehat a$.  Form $Q_0=(1+\rho)^2Q_*$,
+round each entry down to the same grid, and add $d\delta_i$ to each diagonal
+entry.  Call the resulting symmetric matrix $\widehat Q$.  All logarithm
+ceilings are computed with integer bit lengths and exact comparisons.
+
+\begin{proposition}[Containment and progress of the stored update]
+At every update the stored ellipsoid contains $P_\epsilon$.  Its shape is
+positive definite, with minimum eigenvalue at least $R^2 4^{-(i+1)}$ after
+update $i$.  Each stored update decreases log volume by more than $1/(3d)$.
+\end{proposition}
+\begin{proof}
+The Cauchy--Schwarz inequality in the $Q$ inner product gives
+$ww^{\mathsf T}/s\preceq Q$.  Consequently
+\[
+ Q_*\succeq\left(\frac d{d+1}\right)^2Q\succeq Q/4.
+\]
+Inductively $\lambda_{\min}(Q_*)\ge R^2\lambda_i\ge\lambda_i$, since
+$R\ge1$.  The chosen grid satisfies
+$\delta_i\le\rho\lambda_i/(2d)$.  Its center error has Euclidean norm at
+most $\sqrt d\delta_i$, hence $Q_*$ norm at most
+$\sqrt d\delta_i/\sqrt{\lambda_i}\le\rho$.  The norm triangle inequality
+therefore gives
+\[
+ E(a_*,Q_*)\subseteq E(\widehat a,(1+\rho)^2Q_*).
+\]
+For the symmetric entrywise matrix-rounding error $T$, every entry has
+absolute value at most $\delta_i$, so $\|T\|_2\le d\delta_i$.  It follows that
+\[
+ 0\preceq T+d\delta_i I\preceq2d\delta_i I\preceq\rho Q_0,
+ \qquad Q_0\preceq\widehat Q\preceq(1+\rho)^3Q_*.
+\]
+This proves positive definiteness, the claimed lower eigenvalue bound,
+and outward containment.  The inflation changes volume relative to the
+ideal update by at most $(1+\rho)^{3d/2}$.  Therefore
+\[
+ \log(\text{stored volume ratio})
+ \le-\frac1{2d}+\frac{3d\rho}2
+ =-\frac{97}{200d}<-\frac1{3d}.
+\]
+\end{proof}
+
+After $N$ updates without an accepted center, the enclosing volume is less
+than $e^{-N/(3d)}$ times the initial volume.  The definition of $N$ gives
+$N/(3d)>d\log(R/r_0)$, so this is smaller than the volume of the inner-radius
+ball forced by any feasible original point.  Reaching this cutoff therefore
+proves infeasibility.  It is an exact volume argument, not an iteration
+heuristic.  Plain rational arithmetic without the explicit grid, inflation,
+and diagonal correction would not prove these claims.
+
+\subsection{No irrational arithmetic and no unbounded stored precision}
+
+The adaptive grids are nested, with precision increasing by two each update.
+The old center is therefore integral after multiplication by $2^{p_i}$.
+The required rounded center coordinate is exactly
+\[
+ 2^{p_i}\widehat a_j
+ =2^{p_i}a_j-\left\lceil\frac{t_j}{\sqrt s}\right\rceil,
+ \qquad t_j=\frac{2^{p_i}w_j}{d+1}.
+\]
+For $t_j>0$, set $u=t_j^2/s$.  Then
+$\lfloor t_j/\sqrt s\rfloor=\operatorname{isqrt}
+(\lfloor\operatorname{num}(u)/\operatorname{den}(u)\rfloor)$.
+The exact square comparison decides whether the ceiling needs one more.
+For negative $t_j$, the required ceiling is the negative of the corresponding
+nonnegative floor; zero is immediate.  Thus rational operations and integer
+square root implement the ideal-center rounding exactly.
+
+The upper shape inequality is also explicit:
+\[
+ \widehat Q\preceq(1+\rho)^3\frac{d^2}{d^2-1}Q\preceq2Q
+ \quad(d\ge2).
+\]
+The largest shape eigenvalue is at most $R^2 2^i$.  An ideal center move has
+Euclidean norm at most $\sqrt{\lambda_{\max}(Q)}/(d+1)$, followed by a grid
+error of at most $\sqrt d\delta_i$.  Hence center magnitudes have
+$O(N+\log R+\log N+\log d)$ bits before denominator accounting.
+After an update every shape and center entry is dyadic with denominator
+$2^{p_i}$, and
+\[
+ p_i\le2N+\lceil\log_2(200d^3)\rceil=O(N+\log d).
+\]
+The initial rational shape need not be dyadic; its encoding is bounded by
+that of $R^2$.  Exact intermediate formulas combine only polynomially many
+bits: the products $Qg$ share the dyadic shape denominator, the row $g$ is
+integer, and the scalar $s$ supplies an explicit rational denominator for
+the rank-one update.  The integer-square-root inputs obey the same bound.
+Since $\log D=O(d\log(dH_A))$,
+\[
+ N=O\bigl(d^2(\log R+d\log(dH_A))\bigr).
+\]
+Both the number of cuts and their bit cost are polynomial.  Starting with
+the final precision on every update is unnecessary; the finer successive
+grids retain this worst-case proof without imposing late precision early.
+
+\subsection{Recovering an exact original point by tightening rows}
+
+An accepted ellipsoid center solves only the perturbed inequalities.  To
+recover an original feasible point, first decide that $P$ is nonempty by
+the exact decision procedure above.  Maintain a nonempty face $F$, initially
+$P$.  Scan the original inequalities, including the box rows.  For
+$a_i^{\mathsf T}z\le b_i$, decide feasibility of
+\[
+ F\cap\{z:a_i^{\mathsf T}z\ge b_i\}.
+\]
+When feasible, retain that reverse inequality permanently, making the
+original row tight.  Each such decision uses the same determinant-gap
+procedure, applied to the current explicit row system.
+
+After the scan the final face is a singleton.  Otherwise a positive-dimensional
+bounded polytope $F$ has a proper nonempty boundary face where some original
+inequality becomes tight.  When that row was inspected, the then-current
+face contained this final boundary face, so the equality test was feasible.
+The reverse inequality would have been retained, contradicting that the row
+is nonconstant on final $F$.  Thus the retained equalities have rank $d$.
+Exact Gaussian elimination obtains their unique point, and every original
+inequality is checked directly.  One may stop as soon as rank $d$ is reached.
+
+There are at most one plus the original number of rows decision calls.
+Reverse inequalities have exactly the original integer coefficient and
+right-side heights, and the row count at most doubles.  Thus this recovery
+is polynomial too.  It does not guess an exact answer by rounding a nearly
+feasible center, and it requires no simultaneous Diophantine reconstruction.
+An exhausted shared decision/cut allowance returns no partial point.
+
+\subsection{From a boxed point to an extreme kernel ray}
+
+The recovered point of~\eqref{eq:polynomial-lp-primal-box} has positive
+objective, but the artificial box can create vertices that are not kernel
+extreme rays.  This distinction matters: the uniform resolving-set theorem
+on positive inputs uses root extreme-ray conflicts.  The LP wrapper therefore
+runs the generic original-source support descent on the recovered point,
+using $C$ and $c$ with an \emph{empty} compatibility list.
+
+Normalize $\mathbf1^{\mathsf T}x=1$.  If the matching kernel on its positive
+support has dimension greater than one, its normalized face admits a nonzero
+tangent direction $d$ with $Cd=0$ and $\mathbf1^{\mathsf T}d=0$.  Orient $d$
+so $c^{\mathsf T}d\ge0$, move to the first coordinate-zero endpoint, and
+retain all previous zeroes.  Such an endpoint exists in the bounded simplex;
+it deletes a positive coordinate while preserving nonnegative matching and
+strictly positive objective.  At most $n-1$ steps reach a support of matching
+nullity one.  The final primitive integer vector is an extreme ray of the
+original nonnegative kernel cone.
+
+This procedure also has an explicit bound on its \emph{intermediate} bit
+lengths.  Clear the original matching denominators and let $H\ge1$ bound
+the resulting integer height.  The source identity chart describes each
+chosen direction by original matching rows, accumulated coordinate-zero
+rows, the row of ones, and unit constraints on surviving original free
+coordinates.  The chart's parameters are actual original source coordinates;
+its restrictions preserve the identity submatrix at the surviving free
+indices.  Selecting one chart direction therefore amounts to setting one
+such original free coordinate to one and the others to zero in this
+original-variable system.  Select a nonsingular square subsystem.  Its
+integer coefficient height is still at most $H$, including the unit and
+sum rows, and its right side has only zeroes and ones.  All rational
+direction coordinates have a common Cramer denominator; clearing that
+single denominator and removing a gcd bounds every primitive integer
+entry by
+\[
+ M=n!H^n
+\]
+Write the current normalized point as $v/D$ with integral
+$v$ and $D>0$.  If $d_j<0$ is the coordinate killed at the endpoint, then
+\[
+ x'_k=\frac{v_k(-d_j)+v_jd_k}{D(-d_j)}.
+\]
+A common denominator is multiplied by at most $M$ per step, so
+$\log D_{\rm final}\le\log D_{\rm initial}+n\log M$.
+All intermediate coordinates remain in the unit simplex, bounding their
+numerators as well.  The initial recovered vertex has determinant-bounded
+rational coordinates; taking a common denominator and normalizing its sum
+adds only polynomially many bits.  This justifies the actual support-descent
+trajectory, not merely the final ray's encoding length.
+
+For the legacy basis output, let $C_T$ denote the rows retained in the
+simplex tableau, and consider its slack matrix
+\[
+ \left[\begin{array}{c} C_T\\-C_T\\\mathbf1^{\mathsf T}\end{array}
+ \ \middle|\ I\right].
+\]
+The positive support columns are independent after the normalization row
+is appended, since their matching nullity is one.  Extend these columns
+to a basis using the remaining columns, which is always possible because
+of the identity slack block.  The normalized ray with all matching and
+normalization slacks zero is the corresponding nonnegative basic solution.
+The fallback independently checks the support rank and basis rank, as well
+as the original-source primal inequalities.  When the explicit
+\texttt{reduce\_rows=False} ablation is used, $C_T$ includes every original
+row for legacy slack indexing, while the bounded feasibility systems still
+use an independent original-row subset.
+
+This generic kernel extraction is separate from the later extraction in
+\emph{original standard normal coordinates} needed for crushing.  An
+unrestricted Q ray may be incompatible.  Neither its positive linear
+objective nor its extremality alone asserts an embedded surface: the Euler
+oracle still checks the actual canonical formal Euler and the quadrilateral
+condition before any positive normal-surface result is returned.
+
+\subsection{The Bland prefix has polynomial bit cost}
+
+Let $r_T$ be the number of tableau rows selected from the input, and put
+\[
+ P_0=(n+r_T+1)^2.
+\]
+The polynomial policy allows at most $P_0$ Bland pivots as its fast path.
+The optional \texttt{fast\_path\_pivots} can decrease this bound but cannot
+increase it.  A conclusive original simplex answer is returned immediately;
+otherwise the internal cap triggers the exact fallback.  The explicit
+\texttt{policy='bland'} ablation retains the old finite but potentially
+exponential uncapped simplex trajectory.
+
+Bounding the number of pivots is only part of the argument.  Put
+$m_T=2r_T+1$ and integerize the \emph{fixed} source slack system.  Row clearing
+scales its slack coefficient and right side along with its source
+coefficients.  Accordingly the integer height $H_T$ must include the
+row-clearing multipliers, not just the integerized matching entries.
+At every pivot the basis matrix is a nonsingular $m_T$-column submatrix of
+this fixed system.  The tableau and right side are $B^{-1}A$ and $B^{-1}b$.
+Cramer's rule bounds their reduced numerators and denominators by minors of
+the fixed input matrix, giving
+\[
+ O\bigl(m_T(\log m_T+\log H_T)\bigr)
+\]
+bits per entry.  Clearing objective denominators gives a polynomial bound
+for $c_j-c_B^{\mathsf T}B^{-1}A_j$ and $c_B^{\mathsf T}B^{-1}b$ as well.
+Every pivot performs polynomially many rational additions, multiplications,
+and divisions.  Exact Fraction reduction after each operation bounds the
+temporary products and sums polynomially.  Thus the $P_0$-pivot prefix has
+polynomial bit cost even along a degenerate simplex sequence.  Invoking
+Bland finiteness alone would not prove this.
+
+Independent-original-row selection likewise uses an exact echelon chart
+with entries given by ratios of source minors.  The controller shares strict
+parsing and this selection with the fast path.  Its conclusive results keep
+the established basic-basis invariant and original primal/dual checks;
+additional independent support/basis elimination is reserved for fallback
+answers and research replay.  This avoids repeating fallback-only work on
+every ordinary fast-path result without weakening its mathematical contract.
+
+\subsection{A conservative explicit binary-complexity bound}
+
+\begin{proposition}[Polynomial kernel-alternative policy]
+On explicit rational input, with no finite caller caps and constant-cost
+cancellation polling, the specified polynomial policy returns a positive
+original-cone extreme ray or an original-row dual in polynomial bit time.
+\end{proposition}
+\begin{proof}
+The capped simplex prefix has polynomial bit cost by the preceding argument.
+The primal and dual boxes preserve feasible witnesses of the relevant
+alternative.  The determinant gap, outward rounding, and volume cutoff give
+an exact polynomial bounded-feasibility decision.  Tight-row recovery uses
+polynomially many such decisions.  Source support descent and slack-basis
+completion are polynomial and preserve the required extreme-ray contract.
+The separate final original-system checks establish the claimed alternatives.
+
+For an explicit deliberately loose bound, let $L$ be the total binary length
+of all rational input coefficients, and set
+\[
+ U=2+n+m+L.
+\]
+Denominator clearing gives $\log H=O(U)$ and primal/dual box radii with
+$O(U^2)$ bits.  Each fallback system has dimension and row count $O(U)$.
+One decision needs $O(U^4)$ cuts, each exact recovery needs $O(U)$ decisions,
+and the whole primal/dual fallback therefore needs $O(U^5)$ cuts.  Each cut
+uses $O(U^2)$ rational/rounding operations.  The adaptive stored entries and
+intermediate quantities have $O(U^4)$ bits; the retained-face solves,
+source descent, and polynomial Bland prefix fit within these loose bounds.
+Thus $O(U^7)$ exact arithmetic or integer-square-root operations on
+$O(U^4)$-bit operands suffice.  Even elementary cubic bit bounds for those
+operations give the conservative bound $O(U^{19})$.  Its purpose is to make
+the polynomial claim explicit, not to describe expected practical speed.
+\end{proof}
+
+The bound includes rational input magnitudes and denominator lengths; it is
+not a strongly polynomial bound.  Faster integer arithmetic and tighter rank
+accounting improve it.  Work performed inside an arbitrary caller callback
+is outside the solver's own complexity bound.
+
+\subsection{Finite allowances, cancellation, and the remaining global gap}
+
+An explicit \texttt{max\_pivots} remains a hard caller allowance.  If it is
+exhausted before a conclusive answer, the wrapper returns
+\texttt{INCONCLUSIVE}; fallback cannot bypass it.  Reaching only the internal
+polynomial prefix limit starts fallback.  Separate
+\texttt{max\_ellipsoid\_iterations} and \texttt{max\_feasibility\_calls}
+allowances count every fallback update and every feasibility decision,
+including all primal recovery and dual recovery calls.  No ellipsoid update
+is described as a simplex pivot.  Exact constant/interval decisions may
+finish with zero updates, but still count as decisions.  Exhausted caps do
+not produce a primal, dual, or basis payload.
+
+Cancellation polling occurs in preparation, row scans, rounding/shape loops,
+equality recovery, and support descent.  The callback is invoked directly:
+its exception object propagates unchanged, including exceptions normally used
+for validation and subclasses of \texttt{BaseException}.  There is no broad
+exception-to-infeasibility conversion.  One integer or rational operation
+is not independently preemptible.
+
+The maintained Euler callers share these counters across objectives,
+anchors, masks, candidate restarts, and authenticated crushing successors.
+The common \path{euler_lp_budget.py} helper subtracts previously charged
+work before each LP and merges all returned counters, including capped
+attempts.  The compatible-sector, tree, and transversal APIs expose
+\path{lp_policy='polynomial'}, \path{lp_fast_path_pivots},
+\path{max_ellipsoid_iterations}, and \path{max_feasibility_calls}.
+Their direct defaults leave fallback work uncapped; the public diagram
+crushing driver defaults the two fallback allowances to $10000$ each.
+Passing \texttt{None} disables an allowance.  The explicit Bland comparison
+ignores unused fallback budgets at these caller interfaces, while the
+low-level solver rejects fallback-only controls under its Bland policy.
+
+The flat fair sector scheduler applies its local attempt quota separately
+to pivots, anchors, ellipsoid updates, and feasibility calls, in addition
+to their global remaining allowances.  Tree and transversal search share
+one oracle budget throughout their nodes and candidate restarts; the
+crushing driver subtracts every prior successor's work before starting
+another source.  A fixed-source dual-cache hit needs no new LP call;
+uncached calls include their entire capped prefix and fallback.  Summed
+statistics distinguish \path{lp_fallbacks}, \path{lp_ellipsoid_iterations},
+\path{lp_feasibility_calls}, and \path{lp_support_descent_steps}; maximum
+precision, dimension, and planned-cut statistics are merged by maximum.
+Independent negative-tree replay continues to check original source dual
+inequalities and does not rerun either simplex or the ellipsoid algorithm.
+
+The integrated regression run records 192 tests in $55.862$ seconds,
+with one optional Regina census test skipped because the system interpreter
+lacks Regina.  That single test was rerun under the Regina interpreter and
+passed in $0.178$ seconds.  The logs are
+\path{data/exact-polynomial-lp-tests.txt} and
+\path{data/exact-polynomial-lp-regina-test.txt}.  New caller-budget controls
+exercise genuine one-dimensional recovery, real fallback work across
+transversal restarts, a shared cut cap across fair retries, and complete
+fast paths with unused zero fallback allowances.  The successor-accounting
+control uses explicitly synthetic discovery costs on three genuine crushing
+steps; it tests budget propagation rather than measuring discovery.  These
+regressions support the implementation contract.  They are neither an
+isolated performance experiment nor a substitute for the bit-complexity
+proof, and no fallback speedup is claimed here.
+
+For a prepared source with $A$ canonical Euler anchors, this policy supplies
+polynomial bit work per exact LP call.  Conditional on a resolving number
+$h$, the transversal argument therefore retains its bound
+\[
+ A(3t)^{O(h)}\operatorname{poly}(t,L),
+\]
+with the former unbounded-Bland hypothesis discharged for this policy.
+After one-vertex preprocessing the source anchor count is at most $4t$.
+The unresolved structural obligation is a uniform small resolving parameter,
+or a different bound on the complete admissibility search.  General branch
+coverage remains exponential; the finite $h=3$ and $h=2$ examples do not bound
+a family.  Consequently polynomial exact LP, even together with certified
+polynomially many crushing stages, does not establish quasi-polynomial
+unknot recognition.

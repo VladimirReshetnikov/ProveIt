@@ -24,7 +24,10 @@ from tests.test_normal_crushing_search import REDUCTION_RAY
 
 def empty_lp_stats(**updates):
     result = dict(lp_calls=0, lp_pivots=0, anchors_tested=0, reused_anchors=0,
-                  envelope_calls=0, lp_tableau_updates=0, maximum_tableau_bits=0)
+                  envelope_calls=0, lp_tableau_updates=0, maximum_tableau_bits=0,
+                  lp_fallbacks=0, lp_ellipsoid_iterations=0, lp_feasibility_calls=0,
+                  lp_support_descent_steps=0, maximum_ellipsoid_precision=0,
+                  maximum_ellipsoid_dimension=0, maximum_planned_ellipsoid_iterations=0)
     result.update(updates)
     return result
 
@@ -211,14 +214,14 @@ class CrushingEulerLPTests(unittest.TestCase):
         # Synthetic unfinished jobs isolate scheduling/accounting. The final
         # witness and all geometry still come from actual native LP/replay.
         calls = []
-        def delayed(source, allowed, *, strategy, max_pivots, max_anchors, check):
+        def delayed(source, allowed, *, strategy, max_pivots, max_anchors, check, **lp_options):
             calls.append((max_pivots, max_anchors))
             if min(max_pivots, max_anchors) < 2:
                 used = min(1, max_pivots, max_anchors)
                 return dict(status='INCONCLUSIVE', reason='synthetic per-attempt allowance',
                             stats=empty_lp_stats(lp_calls=1, lp_pivots=used, anchors_tested=used))
             return decide_sector_euler(source, allowed, strategy=strategy,
-                max_pivots=max_pivots, max_anchors=max_anchors, check=check)
+                max_pivots=max_pivots, max_anchors=max_anchors, check=check, **lp_options)
         with patch('fastunknot.normal_euler.decide_sector_euler', delayed):
             for cap in (16, 18):
                 calls.clear()
