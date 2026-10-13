@@ -31,6 +31,17 @@ theorem ex_root (hX : 2 ≤ X) {c e : Real} {j m : Nat} (hc1 : 1 ≤ c) (hc : c 
 theorem four_le_pw_one (hX : 2 ≤ X) : (4 : Real) ≤ X ^ (2 ^ 1) := by
   rw [pow_one]; nlinarith
 
+/-- Multiplying two densities and dividing by four costs two envelope levels. -/
+theorem inv_mul_div_four_le_pw (hX : 2 ≤ X) {x y : Real} {a : Nat}
+    (hx : 0 < x) (hy : 0 < y) (hxi : x⁻¹ ≤ X ^ (2 ^ a)) (hyi : y⁻¹ ≤ X ^ (2 ^ a)) :
+    (x * y / 4)⁻¹ ≤ X ^ (2 ^ (a + 2)) := by
+  rw [show (x * y / 4)⁻¹ = 4 * (x⁻¹ * y⁻¹) by field_simp]
+  have hxy := pw_mul hX (inv_pos.mpr hx).le (inv_pos.mpr hy).le hxi hyi
+  have h4 : (4 : Real) ≤ X ^ (2 ^ (a + 1)) :=
+    (four_le_pw_one hX).trans (pw_mono hX le_rfl (by omega))
+  exact pw_mul hX (by norm_num)
+    (mul_nonneg (inv_pos.mpr hx).le (inv_pos.mpr hy).le) h4 hxy
+
 end Calc
 
 /-! ### The nested width thresholds -/

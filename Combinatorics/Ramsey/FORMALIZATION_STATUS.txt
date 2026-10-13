@@ -9,6 +9,42 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  Shared low-degree and envelope checkpoint: offset-six/seven low-degree
+  results derive from the strongest offset-four proof; two shared numeric
+  estimates replace eleven copies each in the envelope steps. The final
+  modulus proof uses transparent width definitions and exponent monotonicity,
+  and drops unused slice facts. Fifteen production files lose 464 lines;
+  all 258 existing declaration headers and final bounds are unchanged.
+  FinalAudit passes 648 modules; the focused audit passes 778, with 37 new
+  explicit checks and only approved axioms. The stronger bridge closure
+  is 745 modules / 160,922 lines, and the original-final closure is
+  647 / 135,362. See Notes L.69 and the low-degree-envelope-sharing
+  verification reports. The simplification goal remains active.
+
+  Merged class-bound checkpoint: the upstream two-track simplification
+  removes the auxiliary max-pair table and its offset-four induction.
+  Its dimension-twelve base directly checks positivity and both bounds;
+  large dimensions use a closed-form max-pair estimate. This removes 91
+  further lines, for 291 production lines saved with the previous changes.
+  Final bounds and all 25 public stronger-bridge statements are unchanged.
+  The combined 778-module native audit passes with only approved axioms;
+  the stronger bridge is 745 modules / 161,352 lines. The original-final
+  audit retains all 651 source hashes. See Notes L.68 and the
+  final-merged-short-phase-compatibility report. The goal remains active.
+
+  Shared short-length and phase-input checkpoint: offset-three proofs now
+  supply the weaker short-length theorems and comparisons by monotonicity;
+  one Roth-to-tower estimate supplies the printed and stronger routes.
+  The explicit phase input has its own light module, with monotonicity
+  beside the partition definition. Eleven production files shrink by 200
+  lines without changing existing theorem statements or numerical bounds.
+  The stronger bridge closure is 745 modules / 161,443 lines, down five
+  modules and 1,925 lines. The fresh focused audit passes 778 native modules
+  with only approved axioms, retaining all 25 public bridge theorems and
+  the historical interfaces. Original-final verification retains all 651
+  source hashes and its 648-module checker passes. See Notes L.67 and the
+  shared-short-phase verification reports. The goal remains active.
+
   Direct stronger-bridge checkpoint: four unused historical imports are
   removed with every theorem statement and proof body unchanged. The
   stronger bridge now imports 750 modules / 163,368 lines, a reduction of
@@ -742,7 +778,7 @@ Verification of the cover route (2026-10-11)
   Proofs16PolynomialFejer*, Proofs16SplitTwoTrack*, Proofs16UniformCoverTwoTight,
   Proofs18FejerEnvelopeBase{Q,W}, Proofs18CoverFejerLowDegrees{4,5},
   Proofs18CoverFejerShortLengths3) are replaced by the declarations the final
-  bounds use, in four light modules (3,416 lines after L.65): Proofs18FinalClasses (the
+  bounds use, in four light modules (2,993 lines after L.69): Proofs18FinalClasses (the
   classes tDegT3 and their covers), Proofs18FinalStep (the joint-slice step
   GenParamsJT3), Proofs18FinalEnvelopes (the Theorem 18.1 envelope
   polyGenMuJT3 and the Theorem 18.2 envelope genMuXK3 with their fits, and

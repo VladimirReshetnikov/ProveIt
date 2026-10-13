@@ -1,3 +1,4 @@
+import GowersSzemeredi.Proofs18RothThresholdBounds
 import GowersSzemeredi.Proofs02Roth
 import GowersSzemeredi.Proofs18SingleLengthStatements
 import GowersSzemeredi.Proofs18FiveTermSourceThreshold
@@ -13,8 +14,9 @@ exactly the conjunctions over all positive lengths, and proves every length
 * `k ≤ 3`: from Roth's theorem with its explicit constant
   (`roth_explicit_threshold`). For `delta ≤ 1/2` and every `k`,
   `exp(exp(10^12/delta)) ≤ szemerediThreshold delta k`, because with
-  `u = 1/delta ≥ 2` one has `1 + 2*10^12*u ≤ u^42 ≤ u^(2^(2^(k+9)))`. A
-  three-term progression contains the shorter ones.
+  `u = 1/delta ≥ 2` one has `10^12*u ≤ u^41` and two spare powers
+  absorb the conversion to base two. A three-term progression contains
+  the shorter ones.
 * `k = 4, 5`: the existing `theorem_18_2_four_holds` and
   `theorem_18_2_five_holds`.
 
@@ -28,39 +30,10 @@ namespace LeanProofs.GowersSzemeredi
 theorem roth_threshold_le_szemerediThreshold (k : Nat) {delta : Real}
     (hδ : 0 < delta) (hδ2 : delta ≤ 1 / 2) :
     Real.exp (Real.exp (1000000000000 * delta⁻¹)) ≤ szemerediThreshold delta k := by
-  have hu : (2 : Real) ≤ delta⁻¹ := by
-    rw [← one_div]
-    exact (le_div_iff₀ hδ).mpr (by linarith)
-  have hu1 : (1 : Real) ≤ delta⁻¹ := by linarith
-  have hu0 : (0 : Real) ≤ delta⁻¹ := by linarith
-  -- The exponent of `delta⁻¹` in the source threshold is at least 42.
-  have hx : (6 : Real) ≤ (2 : Real) ^ (k + 9 : Nat) := by
-    have h9 : (2 : Real) ^ (9 : Nat) ≤ (2 : Real) ^ (k + 9 : Nat) :=
-      pow_le_pow_right₀ (by norm_num) (by omega)
-    have h512 : (6 : Real) ≤ (2 : Real) ^ (9 : Nat) := by norm_num
-    linarith
-  have hE : (42 : Real) ≤ (2 : Real) ^ ((2 : Real) ^ (k + 9 : Nat)) := by
-    have h64 : (2 : Real) ^ (6 : Real) ≤ (2 : Real) ^ ((2 : Real) ^ (k + 9 : Nat)) :=
-      Real.rpow_le_rpow_of_exponent_le (by norm_num) hx
-    have h64' : (2 : Real) ^ (6 : Real) = 64 := by
-      rw [show (6 : Real) = ((6 : Nat) : Real) by norm_num, Real.rpow_natCast]
-      norm_num
-    linarith
-  have hpow42 : delta⁻¹ ^ (42 : Nat) ≤
-      delta⁻¹ ^ ((2 : Real) ^ ((2 : Real) ^ (k + 9 : Nat))) := by
-    rw [← Real.rpow_natCast]
-    exact Real.rpow_le_rpow_of_exponent_le hu1 (by exact_mod_cast hE)
-  have h41 : (2 : Real) ^ (41 : Nat) ≤ delta⁻¹ ^ (41 : Nat) :=
-    pow_le_pow_left₀ (by norm_num) hu 41
-  have hinner : 1 + 2 * (1000000000000 * delta⁻¹) ≤
-      delta⁻¹ ^ ((2 : Real) ^ ((2 : Real) ^ (k + 9 : Nat))) := by
-    have h41' : (2000000000001 : Real) ≤ delta⁻¹ ^ (41 : Nat) := by
-      have : (2000000000001 : Real) ≤ (2 : Real) ^ (41 : Nat) := by norm_num
-      linarith
-    have h42 : delta⁻¹ ^ (42 : Nat) = delta⁻¹ * delta⁻¹ ^ (41 : Nat) := by ring
-    nlinarith [mul_le_mul_of_nonneg_left h41' hu0, hpow42, h42, hu1]
   unfold szemerediThreshold
-  exact exp_exp_le_two_rpow_two_rpow (by positivity) hinner
+  apply roth_exp_exp_le_two_tower (n := k + 9) ?_ (by omega)
+  rw [← one_div, le_div_iff₀ hδ]
+  linarith only [hδ2]
 
 /-- **Theorem 18.2 for lengths at most three**, from Roth's theorem. -/
 theorem theorem_18_2_le_three {k : Nat} (hk : k ≤ 3) : Theorem182At k := by
