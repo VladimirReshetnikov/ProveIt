@@ -8374,6 +8374,124 @@ Final bounds, the accepted Lemma 16.10 correction and open original-paper
 fidelity issues retain their status. This checkpoint does not establish
 complete original-paper fidelity. The simplification goal remains active.
 
+### L.87. Reuse split controls and the tight count estimates (2026-10-13)
+
+`splitCnt_controls` moves earlier in its existing module, preserving its
+41-line declaration exactly. Six split proofs reuse its lower bound and
+apply multiplication and power monotonicity directly for their upper
+bounds. This removes seven repeated control calculations without adding
+any helper or changing assumptions. The tight dimension-two count proof
+also reuses `famPieceSamples_le_two_bases` and
+`famPieceGraphBound_le_mul_sq`, preserving its `ν^11 * W^(2^39)` target.
+
+The two disjoint changes preserve all 118 existing complete statements
+and scope contexts and all 51 definitions. Seven proof bodies change;
+no declaration is added or removed. Imports and options stay exact. The
+three production files shrink from 2,260 to 2,152 lines, removing 108
+source lines. The changed proofs shrink from 734 to 626 lines, also
+removing 108 actual proof-body lines. The unchanged relocated theorem
+is not counted as deleted proof or new helper overhead.
+
+The original final is 641 local modules / 133,096 source lines, saving
+30 lines; its audit is 642 / 133,130. The stronger final is 626 / 139,738
+and its bridge 719 / 153,850, each saving 108 lines. Four additional
+named checks make the focused audit 783 / 168,387, a reduction of 104
+source lines. The downstream audit is 1,098 / 211,996. Module sets are
+unchanged. These source counts do not measure compilation speed.
+
+All four fresh native checks pass: the original audit (642), standalone
+stronger bridge (719), focused audit (783) and downstream audit (1,098).
+Every current manifest hash is verified. The focused audit retains all
+249 earlier names and adds four, covering the seven changed proofs and
+the relocated control theorem. The named audits allow only `propext`,
+`Classical.choice` and `Quot.sound`; standalone bridge compilation does
+not claim an axiom audit of every export.
+
+The historical explicit audit (701 / 138,809) and standalone bridge
+(560 / 119,203) import no changed module. Their completed L.86 records
+are retained after revalidating every current input hash; they are not
+fresh runs. The historical explicit audit checks its two named exports.
+The four fresh targets cover 1,121 modules / 216,080 source lines with
+1,124 hashed inputs. Adding the two retained historical targets gives
+1,204 / 227,061 and 1,207 inputs. The old historical bridge's link to the
+L.86 focused audit remains historical metadata; this checkpoint's named
+axiom evidence is the fresh L.87 focused audit.
+
+The final core check passes 618 modules. Nine same-size elaboration
+repairs make seven power identities and two positivity steps explicit;
+statements, options and source/proof counts are unchanged. The frozen
+proposals and three failed core logs remain recorded separately. See
+`verification/2026-10-13-control-tight{-original,-stronger,-compatibility,-downstream}.json`,
+`verification/2026-10-13-sample-inverse{-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-control-tight-simplification.json`.
+
+The changed files have 122 import consumers. The four fresh targets
+cover 119, including every affected proof owner; the facade, Audit and
+PortImportAudit remain excluded with baseline-identical source hashes.
+Full-facade verification remains separate. The regenerated 120-statement
+inventory is byte-identical to the checkpoint baseline. Final numerical
+bounds, the accepted Lemma 16.10 correction
+and open original-paper fidelity issues retain their status. This
+checkpoint does not establish complete original-paper fidelity. The
+simplification goal remains active.
+
+### L.88. Share the dimension-two count formula (2026-10-13)
+
+Two estimates in `Proofs16UniformCoverTwoSplit` express the remainder
+and total family counts in separate family and face bounds. Under
+`ν ≥ 1`, `W ≥ 2`, `ρ > 0` and `ρ⁻¹ ≤ W`, family and face bounds
+`M ≤ ν^a * W^b` and `q ≤ ν^0 * W^c` give the count estimate
+`ν^(11*a) * W^(11*b + 6*c + 54)`. The loose and tight count proofs
+specialize this formula, preserving their existing `ν^11 * W^(2^41)`
+and `ν^11 * W^(2^39)` targets. The sample proof reuses the remainder
+estimate. The final numerical bounds are unchanged.
+
+All 51 existing complete statements and scope contexts and all nine
+definitions remain exact. Three existing proof bodies shrink from 137
+to 21 lines; the two helper proofs add 26, giving 47 lines in total
+and a net reduction of 90 actual proof-body lines. Including all 38
+lines of helper declarations, documentation and spacing, the two
+production files shrink from 1,185 to 1,107 lines, saving 78. No old
+declaration or import is removed; all other proofs and options stay exact.
+
+The stronger final is 626 local modules / 139,660 source lines and
+its bridge is 719 / 153,772, each saving 78 lines. Two new helper
+checks give focused 783 / 168,311, a reduction of 76 lines; all 253
+previous names are retained. The downstream audit is 1,098 / 211,918.
+The original final and all module sets are unchanged. Source counts
+do not measure compilation speed.
+
+The 618-module core check passes on its first attempt with the frozen
+proposal unchanged. Three fresh native checks pass: standalone stronger
+bridge (719), focused audit (783) and downstream audit (1,098), with all
+current manifest hashes verified. The named audits allow only `propext`,
+`Classical.choice` and `Quot.sound`. Both new helpers and all three changed
+proofs are named in the focused audit; standalone bridge compilation
+does not claim an axiom audit of every export.
+
+The original audit (642 / 133,130) and historical explicit audit
+(701 / 138,809) and bridge (560 / 119,203) have unchanged inputs. Their
+completed L.87/L.86 records are retained after rechecking every current
+own-target input hash, without new runs. The explicit audit checks its
+two named exports. The historical bridge's old focused-audit link remains
+historical metadata; current named checks use the fresh L.88 audit.
+The three fresh targets cover 1,120 modules / 215,970 source lines with
+1,123 hashed inputs; including the three retained targets gives
+1,204 / 226,985 and 1,207 inputs. See
+`verification/2026-10-13-two-count{-stronger,-compatibility,-downstream}.json`,
+`verification/2026-10-13-control-tight-original.json`,
+`verification/2026-10-13-sample-inverse{-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-two-count-simplification.json`.
+
+The selected native scope covers 43 of 46 affected import consumers,
+including every affected proof owner. The facade, Audit and PortImportAudit
+remain excluded with baseline-identical source hashes. Full-facade
+verification remains separate. The regenerated 120-statement inventory
+is byte-identical to the checkpoint baseline. The accepted Lemma 16.10
+correction and open original-paper
+fidelity issues retain their status; this checkpoint does not establish
+complete original-paper fidelity. The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
