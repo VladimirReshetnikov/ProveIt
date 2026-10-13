@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18FejerCubicParameters
+import GowersSzemeredi.Proofs18CubicDiscrepancy
 
 /-! Strict improvements in both cubic inverse parameters, for every alpha in (0,1].
 These comparisons concern the proved discrepancy and average-size parameters;
