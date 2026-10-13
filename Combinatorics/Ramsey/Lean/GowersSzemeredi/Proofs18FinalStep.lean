@@ -67,20 +67,12 @@ theorem GenParams.joint_dens_step {X : Real} (hX : 2 ≤ X) {c : Real → Real} 
     0 < θ * ((θ - (θ / 4 + θ / 4)) / (Q (θ / 4) * Q (θ / 4))) ∧
       θ * ((θ - (θ / 4 + θ / 4)) / (Q (θ / 4) * Q (θ / 4))) ≤ 1 ∧
       (θ * ((θ - (θ / 4 + θ / 4)) / (Q (θ / 4) * Q (θ / 4))))⁻¹ ≤ X ^ (2 ^ (m + μb + 3)) := by
-  have hX1 : (1 : Real) ≤ X := by linarith
   have h20 : 0 < θ / 2 := half_pos hθ0
   have h21 : θ / 2 ≤ 1 := by linarith
   have h2i : (θ / 2)⁻¹ ≤ X ^ (2 ^ (m + 1)) := by
     rw [inv_div, div_eq_mul_inv]
     exact pw_mul hX (by norm_num) (inv_pos.mpr hθ0).le (hX.trans (pw_X hX _)) hθi
-  obtain ⟨hc0, -, hci⟩ := hc.apply_le hX1 h20 h21 h2i
-  have hci' : (c (θ / 2))⁻¹ ≤ X ^ (2 ^ (m + μb + 2)) := by
-    refine hci.trans (pow_le_pow_right₀ hX1 ?_)
-    have h1 : 2 ^ (m + 1) * b0 ≤ 2 ^ (m + 1) * 2 ^ μb := Nat.mul_le_mul_left _ hb0
-    have h2 : 2 ^ (m + 1) * 2 ^ μb = 2 ^ (m + μb + 1) := by rw [← pow_add]; ring_nf
-    have h3 : 2 ^ μa ≤ 2 ^ (m + μb + 1) := Nat.pow_le_pow_right (by norm_num) (by omega)
-    have h4 : 2 ^ (m + μb + 2) = 2 * 2 ^ (m + μb + 1) := by rw [pow_succ]; ring
-    omega
+  obtain ⟨hc0, -, hci⟩ := GenParams.cS_step hX hc h20 h21 h2i ha0 hb0 (by omega)
   have hq := hQ1 (θ / 4) (by linarith) (by linarith)
   have hqq : 1 ≤ Q (θ / 4) * Q (θ / 4) := by nlinarith
   have hf0 : 0 ≤ (θ - (θ / 4 + θ / 4)) / (Q (θ / 4) * Q (θ / 4)) :=
@@ -97,12 +89,12 @@ theorem GenParams.joint_dens_step {X : Real} (hX : 2 ≤ X) {c : Real → Real} 
   rw [hval] at hle ⊢
   have hcc := mul_pos hc0 hc0
   refine ⟨by linarith, hle, ?_⟩
-  have hsq := pw_mul hX (inv_pos.mpr hc0).le (inv_pos.mpr hc0).le hci' hci'
+  have hsq := pw_mul hX (inv_pos.mpr hc0).le (inv_pos.mpr hc0).le hci hci
   have hinv : (8 * (c (θ / 2) * c (θ / 2)))⁻¹ ≤ (c (θ / 2))⁻¹ * (c (θ / 2))⁻¹ := by
     rw [mul_inv, mul_inv]
     have h0 : 0 ≤ (c (θ / 2))⁻¹ * (c (θ / 2))⁻¹ := by positivity
     nlinarith
-  exact hinv.trans hsq
+  exact pw_mono hX (hinv.trans hsq) (by omega)
 
 end LeanProofs.GowersSzemeredi
 
