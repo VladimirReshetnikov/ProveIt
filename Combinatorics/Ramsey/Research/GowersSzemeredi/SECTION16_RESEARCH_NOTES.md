@@ -7681,6 +7681,41 @@ names are unchanged; source locations are refreshed. Full-facade checks
 and original-paper fidelity gaps remain separate. All final numerical
 bounds are unchanged, and the simplification goal remains active.
 
+### L.74. Share the reciprocal-density proof across budgets (2026-10-12)
+
+`uniform_baseC_recipPowerLB_of_budget` proves the reciprocal-power estimate
+for the slice density `s/2/uCount V D (alpha/2) B (s/2)` from the unit-range
+budget and its reciprocal-power bound. The three existing density theorems
+specialize this helper at their original budgets and degrees. Their
+conclusions keep the same exponents `D * 2^mu0 + 1` and `D + 1`.
+`GenParams.slice_const_le_deg` moves unchanged into the shared base, and
+its fixed-degree variant now specializes it. All old names and owner
+exports remain available, with no import changes.
+
+Against `a2b042b5e`, the three production files lose 64 source lines.
+The four replaced proof bodies plus the new shared proof contain 37
+lines instead of 110, a net reduction of 73 proof-body lines. The moved
+scalar theorem counts as zero deletion. All 120 old declaration headers
+and variable scopes, 23 definition bodies and all 25 public stronger
+bridge proofs remain unchanged. The stronger bridge stays at 722 modules
+and falls from 155,624 to 155,560 imported source lines. The original
+final stays at 641 modules and grows from 133,322 to 133,338 lines because
+it imports the generalized helper and its compatibility wrapper. These
+are explicit dependency-size tradeoffs, not a reduction in both routes.
+See `verification/2026-10-12-reciprocal-budget-simplification.json`.
+
+Native verification passes the original-final 642-module audit and the
+783-module focused compatibility audit, with only `propext`,
+`Classical.choice` and `Quot.sound`. Five new named checks cover the new
+budget helper, both slice-constant forms and both Fejer density wrappers;
+all earlier checks remain. The focused closure has 169,360 source lines,
+59 fewer. See `verification/2026-10-12-final-reciprocal-budget.json` and
+`verification/2026-10-12-final-reciprocal-budget-compatibility.json`, with
+immutable source manifests. Inventory classifications, companion names
+and source locations are unchanged. All final numerical bounds and
+original-paper fidelity status are unchanged. Full-facade checks remain
+separate, and the simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
