@@ -158,17 +158,9 @@ theorem envBound_stepKx3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp μV �
   -- the localization exponent and `σ′`
   obtain ⟨σ0', σ16', σeq⟩ := sigma_step (d := k + 1) hEl0 hEl2 s0 s16
   have h32P : 32 * (polynomialPartitionConstant (k + 1 + 1) : Real) ≤
-      (2 / alpha) ^ (2 ^ (partDeg k + 4)) := by
-    refine pw_const hX ?_
-    have hP := polyPartConst_le_sharp k
-    have hn : partDeg k + 5 ≤ 2 ^ (partDeg k + 4) :=
-      Nat.lt_two_pow_self (n := partDeg k + 4)
-    have hnat : 32 * polynomialPartitionConstant (k + 1 + 1) ≤ 2 ^ (2 ^ (partDeg k + 4)) := by
-      calc 32 * polynomialPartitionConstant (k + 1 + 1) ≤ 2 ^ 5 * 2 ^ (partDeg k) :=
-            Nat.mul_le_mul (by norm_num) hP
-        _ = 2 ^ (partDeg k + 5) := by rw [← pow_add]; ring_nf
-        _ ≤ 2 ^ (2 ^ (partDeg k + 4)) := Nat.pow_le_pow_right (by norm_num) hn
-    exact_mod_cast hnat
+      (2 / alpha) ^ (2 ^ (partDeg k + 4)) :=
+    mul32_nat_le_pw hX (polyPartConst_le_sharp k)
+      (Nat.lt_two_pow_self (n := partDeg k + 4))
   set S := max (max (partDeg k + 4) (E + 3) + 1) M1 + 1 with hSdef
   have hσ' : (inverseStepExponent (k + 1) (P.Eloc alpha) σ)⁻¹ ≤
       Real.exp ((2 / alpha) ^ (2 ^ S)) := by
@@ -197,12 +189,7 @@ theorem envBound_stepKx3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp μV �
     ?_, ex_mono hX hσ' ?_, ?_⟩
   · have : P.eta alpha * β ≤ 1 := mul_le_one₀ heta1 b0.le b1
     linarith
-  · rw [show (P.eta alpha * β / 4)⁻¹ = 4 * ((P.eta alpha)⁻¹ * β⁻¹) by field_simp]
-    have h1 := pw_mul hX (inv_pos.mpr he0).le (inv_pos.mpr b0).le hei' bi'
-    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ (M1 + 1)) :=
-      (four_le_pw_one hX).trans (pw_mono hX le_rfl (by omega))
-    refine (pw_mul hX (by norm_num) (mul_nonneg (inv_pos.mpr he0).le (inv_pos.mpr b0).le) h4 h1).trans
-      (pw_mono hX le_rfl ?_)
+  · refine pw_mono hX (inv_mul_div_four_le_pw hX he0 b0 hei' bi') ?_
     unfold envStepKTx3; rw [← hdddef]; omega
   · unfold envStepKTx3; rw [← hdddef, ← hThdef]; omega
   · refine max_le (dex_mono hX hshort ?_) (dex_mono hX hinv ?_)
@@ -335,17 +322,10 @@ theorem polyEnvBound_stepJT3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp �
   have heta1 : P.eta alpha ≤ 1 := by linarith
   obtain ⟨σ0', σ16', σeq⟩ := sigma_step (d := k + 1) hEl0 hEl2 s0 s16
   have h32P : 32 * (polynomialPartitionConstant (k + 1 + 1) : Real) ≤
-      (2 / alpha) ^ (2 ^ (k + 9)) := by
-    refine pw_const hX ?_
-    have hP := polyPartConst_le (k + 1 + 1)
-    rw [show k + 1 + 1 + 1 = k + 3 by ring] at hP
-    have hn : 4 * (k + 3) ^ 2 + 5 ≤ 2 ^ (k + 9) := four_sq_add_five_le k
-    have hnat : 32 * polynomialPartitionConstant (k + 1 + 1) ≤ 2 ^ (2 ^ (k + 9)) := by
-      calc 32 * polynomialPartitionConstant (k + 1 + 1) ≤ 2 ^ 5 * 2 ^ (4 * (k + 3) ^ 2) :=
-            Nat.mul_le_mul (by norm_num) hP
-        _ = 2 ^ (4 * (k + 3) ^ 2 + 5) := by rw [← pow_add]; ring_nf
-        _ ≤ 2 ^ (2 ^ (k + 9)) := Nat.pow_le_pow_right (by norm_num) hn
-    exact_mod_cast hnat
+      (2 / alpha) ^ (2 ^ (k + 9)) :=
+    mul32_nat_le_pw hX
+      (by simpa only [show k + 1 + 1 + 1 = k + 3 by omega]
+        using polyPartConst_le (k + 1 + 1)) (four_sq_add_five_le k)
   set S := max (max (k + 9) (E + 3) + 1) M1 + 1 with hSdef
   have hσ' : (inverseStepExponent (k + 1) (P.Eloc alpha) σ)⁻¹ ≤ (2 / alpha) ^ (2 ^ S) := by
     rw [σeq]
@@ -359,12 +339,7 @@ theorem polyEnvBound_stepJT3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp �
     ?_, pw_mono hX hσ' ?_⟩
   · have : P.eta alpha * β ≤ 1 := mul_le_one₀ heta1 b0.le b1
     linarith
-  · rw [show (P.eta alpha * β / 4)⁻¹ = 4 * ((P.eta alpha)⁻¹ * β⁻¹) by field_simp]
-    have h1 := pw_mul hX (inv_pos.mpr he0).le (inv_pos.mpr b0).le hei' bi'
-    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ (M1 + 1)) :=
-      (four_le_pw_one hX).trans (pw_mono hX le_rfl (by omega))
-    refine (pw_mul hX (by norm_num) (mul_nonneg (inv_pos.mpr he0).le (inv_pos.mpr b0).le) h4 h1).trans
-      (pw_mono hX le_rfl ?_)
+  · refine pw_mono hX (inv_mul_div_four_le_pw hX he0 b0 hei' bi') ?_
     unfold envStepJT3; rw [← hdddef]; omega
   · unfold envStepJT3; rw [← hdddef, ← hEdef]; omega
 

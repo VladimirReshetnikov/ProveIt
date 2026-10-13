@@ -76,19 +76,7 @@ theorem polyEnvBound_step {V : Real} {D k K p μV μD μ0 μK μ : Nat}
   obtain ⟨hEl0, hEli⟩ := GenParams.Eloc_inv_le (K := K) ha ha2 hV hVμ hμ0 hD hkD hk0 hp hpμ
   obtain ⟨-, hEl2, -⟩ := (GenParams.std V D k K p μ0).Eloc_pos_le hV hp ha ha2
   obtain ⟨σ0', σ16', σeq⟩ := sigma_step (d := k + 1) hEl0 hEl2 s0 s16
-  have h32P : 32 * (polynomialPartitionConstant (k + 1 + 1) : Real) ≤
-      (2 / alpha) ^ (2 ^ (4 * (k + 3) ^ 2 + 4)) := by
-    refine pw_const hX ?_
-    have hP := polyPartConst_le (k + 1 + 1)
-    rw [show k + 1 + 1 + 1 = k + 3 by ring] at hP
-    have hn : 4 * (k + 3) ^ 2 + 5 ≤ 2 ^ (4 * (k + 3) ^ 2 + 4) :=
-      Nat.lt_two_pow_self (n := 4 * (k + 3) ^ 2 + 4)
-    have hnat : 32 * polynomialPartitionConstant (k + 1 + 1) ≤ 2 ^ (2 ^ (4 * (k + 3) ^ 2 + 4)) := by
-      calc 32 * polynomialPartitionConstant (k + 1 + 1) ≤ 2 ^ 5 * 2 ^ (4 * (k + 3) ^ 2) :=
-            Nat.mul_le_mul (by norm_num) hP
-        _ = 2 ^ (4 * (k + 3) ^ 2 + 5) := by rw [← pow_add]; ring_nf
-        _ ≤ 2 ^ (2 ^ (4 * (k + 3) ^ 2 + 4)) := Nat.pow_le_pow_right (by norm_num) hn
-    exact_mod_cast hnat
+  have h32P := polyPartConst_mul32_le_pw hX k
   set S := max (max (4 * (k + 3) ^ 2 + 4) (E + 3) + 1) M1 + 1 with hSdef
   have hσ' : (inverseStepExponent (k + 1) ((GenParams.std V D k K p μ0).Eloc alpha) σ)⁻¹ ≤
       (2 / alpha) ^ (2 ^ S) := by
@@ -103,13 +91,7 @@ theorem polyEnvBound_step {V : Real} {D k K p μV μD μ0 μK μ : Nat}
     div_pos (mul_pos he0 b0) (by norm_num), ?_, σ0', σ16', ?_, pw_mono hX hσ' ?_⟩
   · have : (GenParams.std V D k K p μ0).eta alpha * β ≤ 1 := mul_le_one₀ heta1 b0.le b1
     linarith
-  · rw [show ((GenParams.std V D k K p μ0).eta alpha * β / 4)⁻¹ =
-      4 * (((GenParams.std V D k K p μ0).eta alpha)⁻¹ * β⁻¹) by field_simp]
-    have h1 := pw_mul hX (inv_pos.mpr he0).le (inv_pos.mpr b0).le hei' bi'
-    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ (M1 + 1)) :=
-      (four_le_pw_one hX).trans (pw_mono hX le_rfl (by omega))
-    refine (pw_mul hX (by norm_num) (mul_nonneg (inv_pos.mpr he0).le (inv_pos.mpr b0).le) h4 h1).trans
-      (pw_mono hX le_rfl ?_)
+  · refine pw_mono hX (inv_mul_div_four_le_pw hX he0 b0 hei' bi') ?_
     unfold envStep; rw [← hdddef]; omega
   · unfold envStep; rw [← hdddef, ← hThdef]; omega
 

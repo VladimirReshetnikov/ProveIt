@@ -49,6 +49,16 @@ theorem pw_pow (hX : 2 ≤ X) {x : Real} {a c n : Nat} (hx0 : 0 ≤ x) (hx : x �
 theorem pw_const (hX : 2 ≤ X) {c : Real} {a : Nat} (hc : c ≤ 2 ^ (2 ^ a)) : c ≤ X ^ (2 ^ a) :=
   hc.trans (pow_le_pow_left₀ (by norm_num) hX _)
 
+/-- A factor of 32 adds five to a natural power-of-two budget. -/
+theorem mul32_nat_le_pw (hX : 2 ≤ X) {P q j : Nat}
+    (hP : P ≤ 2 ^ q) (hq : q + 5 ≤ 2 ^ j) : 32 * (P : Real) ≤ X ^ (2 ^ j) := by
+  refine pw_const hX ?_
+  have hnat : 32 * P ≤ 2 ^ (2 ^ j) := by
+    calc 32 * P ≤ 2 ^ 5 * 2 ^ q := Nat.mul_le_mul (by norm_num) hP
+      _ = 2 ^ (q + 5) := by rw [← pow_add]; ring_nf
+      _ ≤ 2 ^ (2 ^ j) := Nat.pow_le_pow_right (by norm_num) hq
+  exact_mod_cast hnat
+
 theorem pw_X (hX : 2 ≤ X) (a : Nat) : X ≤ X ^ (2 ^ a) := by
   calc X = X ^ 1 := (pow_one X).symm
     _ ≤ X ^ (2 ^ a) := pow_le_pow_right₀ (le_trans (by norm_num) hX) (Nat.one_le_two_pow)
