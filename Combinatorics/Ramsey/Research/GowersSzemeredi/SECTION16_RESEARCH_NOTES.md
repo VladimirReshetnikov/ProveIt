@@ -8976,6 +8976,59 @@ archive, fresh and retained native evidence are recorded in
 This checkpoint does not establish complete original-paper fidelity;
 the accepted correction and previously documented limitations remain.
 
+### L.98. Shared fixed and generic cubic proof chains (2026-10-13)
+
+The fixed cubic chain now specializes its existing generic odd-square,
+localization, twisted-partition and discrepancy lemmas. Its four proof
+bodies shrink from 150 to 18 tactic lines, with all 24 retained
+statements/contexts, 10 definitions and final numerical bounds unchanged.
+`FejerSquareAt`, `FejerOddSquareAt`, `FejerSquareAt.oddSquare` and
+`FejerOddSquareAt.localized` move byte-for-byte to their earlier owners.
+Moving generic localization to the localization module keeps that stage
+independent of the later discrepancy chain. All four moved declarations
+remain available from their old owner; no declaration is deleted.
+
+The five production files lose 130 source and 132 proof lines. Four
+focused checks retain every old entry and the kind-aware validator,
+raising its scope from 301 to 305 declarations: 304 theorems and one
+threshold definition, all checked for approved axioms. Including those
+four audit lines, the repository loses 126 Lean source lines.
+
+The stronger and downstream closures save 130 source/132 proof lines.
+The original final and historical fixed routes have an explicit cost:
+they gain the generic owner, one module and 157 source/16 tactic lines.
+The selected cubic argument bodies total 152 lines before and after;
+the added 16 are retained helper and wrapper bodies. The change removes
+duplicate proofs globally without claiming to shorten that original
+route. The generic owner's narrower imports remove five transitive
+exports with no active downstream name use; direct owner APIs and all
+headline bounds remain intact.
+
+Eleven fresh native targets pass: the six regular checks
+(642/708/784/1,098/701/560) plus five affected standalone targets
+(262/397/474/436/296). Five completed L.96 compilation results
+(207/182/246/194/151) are retained after checking their entire
+own-target input manifests against current bytes. Those retained
+results are not new runs; their old focused-audit links stay historical.
+Named axiom checks and standalone compilation have distinct scopes.
+
+The six regular targets cover 200 of 212 affected consumers. The five
+additional fresh targets extend this to 209, excluding the three broad
+aggregate targets. The selected sixteen-target union contains 1,238
+modules, 229,035 source lines and 1,241 source/configuration inputs.
+The first core attempt rejected field notation on an ascribed function
+expression. Four explicit namespace applications preserve the arguments,
+type ascriptions, statements and line counts. The failed attempt and exact
+repair remain separately recorded. The 223-module core passes on retry,
+and all eleven fresh full targets pass. All 1,241 current input hashes
+are verified. See `verification/2026-10-13-cubic-chain-sharing-simplification.json`
+for exact source, moved blocks, repairs and fresh/retained native evidence.
+The regenerated inventory preserves every complete row, order, duplicate
+occurrence and all 120 statuses. Its sole location change moves
+`theorem_13_12_fejer_odd_square_explicit` from line 24 to 82 in the same file.
+This checkpoint does not establish complete original-paper fidelity;
+the accepted correction and previous limitations remain.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
