@@ -17,12 +17,45 @@ The combined regression passes 394 tests across 44 modules with Regina and no
 skips. All 361 files in the pre-run native/test/fixture closure are unchanged
 after the run. The command and complete log are retained under
 `data/prepared-euler-matrix-*`.
-The current [PDF](report.pdf) has 832 pages. Section 191 spans pages 817–822
-and Section 192 pages 822–824. Three build passes finish without unresolved
-references or new diagnostics. Run
-`python -B -S data/prepared_euler_matrix_publication.py` to check the tested
+The core publication at `4e152f0ef` has an 832-page [PDF](report.pdf), with
+Section 191 on pages 817–822 and Section 192 on pages 822–824. Its three build
+passes finish without unresolved references or new diagnostics. The historical
+helper
+`data/prepared_euler_matrix_publication.py` checks that checkpoint's tested
 source closure, exact test coverage, article and PDF artifacts; this helper
 runs no tests, certificate replay, discovery, timing or PDF build.
+
+The supplemental comparison executes the actual predecessor sources from
+`973c6fdee` in 492 fixed pairs (984 calls). All complete typed outputs and
+existing counters agree; all 348 raw LP pairs also have equal callback counts
+and site order after normalizing the extracted parsing helper's locations.
+Independent original-row and Euler-certificate replay validates conclusive
+answers. All capped outcomes remain. See
+`data/prepared-euler-matrix-differential.{json,txt}` and its runner. The first
+inventory attempt stopped before any query because it assumed a namespace
+package had an initializer file; its source and failure log are preserved,
+and only that path handling changed before the successful full run.
+
+[`capped_pivot_pilot.tex`](capped_pivot_pilot.tex) proves the exact full-slack
+lexicographic leaving rule and its compatibility with the bounded polynomial
+prefix. On all eight captured W34 queries, Bland/Dantzig/Dantzig-lex use
+10,000/9,187/784 pivots with 1/2/0 inconclusive outcomes. Lex regresses on the
+positive envelope (3 to 51 pivots); ordinary Dantzig hits two caps. All three
+arms and original query allowances are retained. This is a fixed-query pilot
+against frozen `973c6fdee`, with no new whole-call verdict, timing claim,
+production pivot change or general quasi-polynomial bound.
+The complete snapshot, protocol, scripts, results and logs are in
+`data/lp-pivot-pilot-973c6fdee.tar.gz`. Its isolated replay helper
+`data/lp_pivot_pilot_replay.py` disables discovery and checks all 21 controls,
+three callback arms, eight captured queries and 24 arm/query records.
+The current [PDF](report.pdf) has 836 pages: Section 191 spans pages 818–823,
+Section 192 pages 823–826, and Section 193 pages 826–829. Three final passes
+have no unresolved references or new diagnostics. Run
+`python -B -S data/prepared_euler_matrix_evidence_publication.py` to freshly
+replay the saved differential answers, authenticate the separately executed
+isolated pilot replay, and bind the current article and PDF. It verifies that
+the native code and complete test dependencies still match the 394-test core;
+it runs no solver discovery, tests, timings or PDF build.
 
 [`direct_crush_positive.tex`](direct_crush_positive.tex) removes redundant
 STANDARD extraction of native LP/tree/transversal rays. It proves canonical
