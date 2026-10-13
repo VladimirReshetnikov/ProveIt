@@ -9,6 +9,24 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  Short-length route checkpoint: the stronger final route uses quadratic
+  prefixes for lengths 2–4 and the existing cubic envelope for length 5,
+  retaining the same final bounds and assumptions. Its closure falls from
+  719 to 710 modules, with 2,788 fewer source lines and 2,052 fewer actual
+  tactic-body lines. Legacy Roth/five-term arguments remain audited; the
+  repository grows by 28 source lines and the rewritten proof by 21.
+  All 60 old statements/contexts and 11 definitions are preserved; three
+  declarations move, two byte-identically. The focused audit retains all
+  284 entries. All three fresh checks (710/784/1,099) pass with current
+  input hashes verified. Completed L.92 original 642 and historical
+  701/560 records are retained after own-input hash checks, without new
+  runs. The 120-statement inventory changes only three theorem locations
+  and their list order. Selected coverage is
+  51/54 affected consumers, excluding the three aggregate targets. This
+  does not claim complete original-paper fidelity. See Research/
+  GowersSzemeredi/SECTION16_RESEARCH_NOTES.md §L.93 and verification/
+  2026-10-13-short-route-simplification.json.
+
   Piece-decomposition checkpoint: one shared construction replaces four
   dimension-two decomposition proofs. All 47 statements/contexts and
   23 definitions remain exact. Including helper overhead, four production

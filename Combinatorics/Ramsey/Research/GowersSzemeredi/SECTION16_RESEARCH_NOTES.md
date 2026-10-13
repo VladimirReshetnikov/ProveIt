@@ -8668,6 +8668,74 @@ original-paper fidelity issues are unchanged. This checkpoint does not
 establish complete original-paper fidelity; the simplification goal
 remains active.
 
+### L.93. Short lengths from existing quadratic and cubic bounds (2026-10-13)
+
+The offset-three short-length theorem now uses the existing four-term
+quadratic bound for lengths 2–4 and the cubic envelope through the general
+density iteration for length 5. Lengths 0–1 follow from positive density.
+For lengths 2–4, the same positive common difference is retained when
+taking a prefix, and 21 ≤ 2^(k+3) compares the real thresholds without a
+rounding gap. For length 5, `envBound_three` supplies `EnvBound 3 62`;
+the general theorem's budget is 62 + 10 + 14 = 86 ≤ 256. All final
+numerical bounds and hypotheses remain unchanged.
+
+The canonical route no longer needs Roth's phase/density arguments or the
+separate five-term iteration. Ten old modules leave the stronger final
+closure and a 64-line module enters. The net reduction is 2,788 source
+lines and 2,052 actual tactic-body lines, with the module count falling
+from 719 to 710. This is a dependency reduction, not repository deletion:
+legacy arguments and scalar comparisons remain available and audited.
+The repository grows by 28 source lines; the one rewritten proof grows
+from 12 to 33 tactic-body lines. The focused and downstream closures each
+grow by one module and 28 source lines.
+
+All 60 old declaration statements and contexts and all 11 definitions
+are preserved. Three declarations move to the new short-length owner;
+two monotonicity blocks are byte-identical and only the short-length
+proof changes. The legacy owner imports their new module and continues
+to export the old declarations. The final class route uses the new owner,
+while the headline and van der Waerden bridges need only SharpInterfaces.
+The frozen proposal's PLAN count of 14→35 includes two non-proof lines
+on each side; the preserved erratum records the actual 12→33 count.
+The frozen dependency ledger also omitted 10 tactic lines in declarations
+with same-line attributes. Its restricted count was 2,042; the complete
+count is 2,092 removed minus 40 added, or 2,052 fewer tactic-body lines.
+Both corrections concern metadata only; the Lean source is unchanged.
+
+No audit entries are added. The focused audit retains all 284 names and
+already checks the rewritten short-length theorem. Its existing
+offset-six check uses both relocated monotonicity lemmas transitively.
+Roth's and the separate five-term route's existing audit entries remain
+in the full focused/downstream targets.
+
+The 622-module core check passes on its first attempt with the frozen
+source unchanged. Three fresh native checks pass: the stronger bridge
+(710), focused audit (784) and downstream audit (1,099), with all current
+input hashes verified. The named audits allow only `propext`,
+`Classical.choice` and `Quot.sound`; standalone bridge compilation is
+not an axiom audit of every export. The original audit (642) and
+historical explicit audit (701) and bridge (560) retain the completed
+L.92 records after every own-target input hash is revalidated; no new
+runs of those targets are claimed. The historical explicit audit checks
+its three existing names. The retained bridge's old focused-audit link
+is historical metadata; current named checks use the fresh L.93 audit. The three fresh targets cover
+1,121 modules / 215,419 source lines with 1,124 source/configuration
+inputs; all six selected targets cover 1,205 / 226,424 with 1,208 inputs.
+The original and historical closures have unchanged source bytes.
+
+The selected scope covers 51 of 54 affected import consumers, including
+all affected proof owners. The three aggregate targets GowersSzemeredi,
+Audit and PortImportAudit remain excluded with unchanged source hashes.
+The regenerated 120-statement inventory changes only the three relocated
+or shifted theorem locations and their filename-based list order; all
+statement statuses and other content remain unchanged. See
+`verification/2026-10-13-short-route{-stronger,-compatibility,-downstream}.json`,
+`verification/2026-10-13-piece-two-decomposition{-original,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-short-route-simplification.json`.
+The documented Lemma 16.10 correction remains in force; this checkpoint
+does not establish complete original-paper fidelity or full-facade
+verification. The final-proof simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
