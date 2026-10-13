@@ -286,16 +286,8 @@ theorem Tloc_le_expC {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha :
   -- the roots
   have h64 : (64 : Real) ^ (1 / P.NestExp alpha) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) :=
     ex_mono hX (ex_root (j := 3) hX (by norm_num) (by norm_num) hN0 hNE') (by omega)
-  have h4 : (4 : Real) ^ (1 / P.NestExp alpha) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) :=
-    ex_mono hX (ex_root (j := 2) hX (by norm_num) (by norm_num) hN0 hNE') (by omega)
   have h6 : (6 : Real) ^ (1 / P.Eloc alpha) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) :=
     ex_mono hX (ex_root (j := 2) hX (by norm_num) (by norm_num) hEl0 hEli) (by omega)
-  have hF : P.F alpha = 8 * P.Eloc alpha := by show P.F alpha = 8 * (P.F alpha / 8); ring
-  have h8 : (8 : Real) ^ (2 / P.F alpha) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) := by
-    have hle : 2 / P.F alpha ≤ 1 / P.Eloc alpha := by
-      rw [hF, div_le_div_iff₀ (by positivity) hEl0]; nlinarith
-    refine (Real.rpow_le_rpow_of_exponent_le (by norm_num) hle).trans ?_
-    exact ex_mono hX (ex_root (j := 2) hX (by norm_num) (by norm_num) hEl0 hEli) (by omega)
   -- the requirement on `m`
   have hMR : P.MReq alpha ^ (1 / P.MExp alpha) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) := by
     rw [one_div]
@@ -317,10 +309,8 @@ theorem Tloc_le_expC {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha :
     ex_of_pw (pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega))
   show max (max 3 (lemma156ExplicitThreshold k (alpha / 2) (alpha / 2)))
     (max (P.MThr alpha)
-      (max (4 ^ (1 / P.NestExp alpha))
-        (max (P.MReq alpha ^ (1 / P.MExp alpha))
-          (max (6 ^ (1 / P.Eloc alpha)) (8 ^ (2 / P.F alpha)))))) ≤ _
-  exact max_le (max_le h3 hL') (max_le hMT (max_le h4 (max_le hMR (max_le h6 h8))))
+      (max (P.MReq alpha ^ (1 / P.MExp alpha)) (6 ^ (1 / P.Eloc alpha)))) ≤ _
+  exact max_le (max_le h3 hL') (max_le hMT (max_le hMR h6))
 
 end GenParamsC
 

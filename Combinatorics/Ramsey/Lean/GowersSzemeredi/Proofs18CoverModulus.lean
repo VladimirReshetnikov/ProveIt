@@ -117,9 +117,7 @@ def MReq : Real :=
 def Tloc : Real :=
   max (max 3 (lemma156ExplicitThreshold P.k (alpha / 2) (alpha / 2)))
     (max (P.MThr alpha)
-      (max (4 ^ (1 / P.NestExp alpha))
-        (max (P.MReq alpha ^ (1 / P.MExp alpha))
-          (max (6 ^ (1 / P.Eloc alpha)) (8 ^ (2 / P.F alpha))))))
+      (max (P.MReq alpha ^ (1 / P.MExp alpha)) (6 ^ (1 / P.Eloc alpha))))
 
 /-! ### Ranges -/
 
@@ -206,54 +204,26 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
   obtain ⟨he, -, hF, -, hmE, -⟩ := P.Eloc_pos_le hV hp ha haHalf
   -- the modulus is large
   have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hT : ∀ X : Real, X ≤ P.Tloc alpha → X ≤ N := fun X hX => hX.trans hN
-  have hN3 : (3 : Real) ≤ N := hT _ ((le_max_left _ _).trans (le_max_left _ _))
-  have hN156 : lemma156ExplicitThreshold P.k (alpha / 2) (alpha / 2) ≤ N :=
-    hT _ ((le_max_right _ _).trans (le_max_left _ _))
-  have hNM : P.MThr alpha ≤ N :=
-    hT _ ((le_max_left _ _).trans (le_max_right _ _))
-  have hN4 : (4 : Real) ^ (1 / P.NestExp alpha) ≤ N :=
-    hT _ ((le_max_left _ _).trans ((le_max_right _ _).trans (le_max_right _ _)))
-  have hNR : P.MReq alpha ^ (1 / P.MExp alpha) ≤ N :=
-    hT _ ((le_max_left _ _).trans ((le_max_right _ _).trans ((le_max_right _ _).trans
-      (le_max_right _ _))))
-  have hN6 : (6 : Real) ^ (1 / P.Eloc alpha) ≤ N :=
-    hT _ ((le_max_left _ _).trans ((le_max_right _ _).trans ((le_max_right _ _).trans
-      ((le_max_right _ _).trans (le_max_right _ _)))))
+  simp only [Tloc, max_le_iff] at hN
+  obtain ⟨⟨hN3, hN156⟩, hNM, hNR, hN6⟩ := hN
   have hprime : N.Prime := Fact.out
   have hodd : Odd N := hprime.odd_of_ne_two (by
     intro h2; rw [h2] at hN3; norm_num at hN3)
   -- the nested width and `m`
-  obtain ⟨NW, hNW⟩ : ∃ NW : Nat, coverRemWidth (fun l => uExp P.V (uDeg68 l)) alpha (alpha / 2) P.k N = NW := ⟨_, rfl⟩
+  let NW : Nat := coverRemWidth (fun l => uExp P.V (uDeg68 l)) alpha (alpha / 2) P.k N
   have hnest := coverRemWidth_powerLB (fun l => uExp P.V (uDeg68 l)) alpha (alpha / 2) P.k
-  have hNWpow : (N : Real) ^ P.NestExp alpha ≤ NW := by
-    have h : (N : Real) ^ P.NestExp alpha ≤
-        ((coverRemWidth (fun l => uExp P.V (uDeg68 l)) alpha (alpha / 2) P.k N : Nat) : Real) :=
-      hnest N (hNM.trans' (le_max_left _ _))
-    have hNW' : coverRemWidth (fun l => uExp P.V (uDeg68 l)) alpha (alpha / 2) P.k N = NW :=
-      hNW
-    rw [hNW'] at h
-    exact h
+  have hNWpow : (N : Real) ^ P.NestExp alpha ≤ NW :=
+    hnest N (hNM.trans' (le_max_left _ _))
   have hNW4 : (4 : Real) ≤ NW :=
-    (le_rpow_of_rpow_inv_le haN (by norm_num) hN4).trans hNWpow
-  obtain ⟨m, hm⟩ : ∃ m : Nat, coverWidth (uExp P.V (uDeg68 P.k) (P.Delta alpha) (P.B alpha))
-      (coverRho1 (fun l => uCount P.V (uDeg68 l)) alpha (alpha / 2) P.k / 2)
-      ⌈(NW : Real) / 8⌉₊ = m := ⟨_, rfl⟩
+    (by norm_num : (4 : Real) ≤ 64).trans
+      ((le_rpow_of_rpow_inv_le haN (by norm_num) ((le_max_right _ _).trans hNM)).trans hNWpow)
+  let m : Nat := coverWidth (uExp P.V (uDeg68 P.k) (P.Delta alpha) (P.B alpha))
+    (P.Rho1 alpha / 2) ⌈(NW : Real) / 8⌉₊
   have hmpow : (N : Real) ^ P.MExp alpha ≤ m := by
     have hcov := coverWidth_div8_powerLB (uExp P.V (uDeg68 P.k) (P.Delta alpha) (P.B alpha))
       (P.Rho1 alpha / 2) hEm
     have hcomp := WidthPowerLB.comp hnest hcov haN (by positivity) hNT (by norm_num)
-    have h := hcomp N hNM
-    have hm' : coverWidth (uExp P.V (uDeg68 P.k) (P.Delta alpha) (P.B alpha)) (P.Rho1 alpha / 2)
-        ⌈((coverRemWidth (fun l => uExp P.V (uDeg68 l)) alpha (alpha / 2) P.k N : Nat) : Real) / 8⌉₊ = m := by
-      have hNW' : coverRemWidth (fun l => uExp P.V (uDeg68 l)) alpha (alpha / 2) P.k N =
-          NW := hNW
-      rw [hNW']; exact hm
-    have h' : (N : Real) ^ P.MExp alpha ≤
-        (coverWidth (uExp P.V (uDeg68 P.k) (P.Delta alpha) (P.B alpha)) (P.Rho1 alpha / 2)
-          ⌈((coverRemWidth (fun l => uExp P.V (uDeg68 l)) alpha (alpha / 2) P.k N : Nat) : Real) / 8⌉₊ : Real) := h
-    rw [hm'] at h'
-    exact h'
+    exact hcomp N hNM
   have hm1 : (1 : Real) ≤ m :=
     (Real.one_le_rpow (by linarith) hmE.le).trans hmpow
   have hmReq : P.MReq alpha ≤ m :=
@@ -317,8 +287,8 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
     localization_width_bounds (by linarith only [hN3]) hF.le h6pow hL
   unfold SinglePieceModulusConditionsC SinglePieceGlobalScaleC singlePieceGlobalWidthC
   simp only [hρ1eq, hthSeq, hcSeq, hBudeq, hZeq, hDeq]
-  refine ⟨hodd, hN156, ?_, m, ⟨by rw [hNW]; exact_mod_cast hNW4, by exact_mod_cast hm1,
-    by rw [hNW]; exact le_of_eq hm.symm, ?_⟩, ?_⟩
+  refine ⟨hodd, hN156, ?_, m, ⟨by exact_mod_cast hNW4, by exact_mod_cast hm1,
+    le_rfl, ?_⟩, ?_⟩
   · -- `4 ≤ N^e`
     linarith only [h6pow]
   · intro q hq
