@@ -37,4 +37,4 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the simplified recurrence inputs, original final quantitative theorem strengthened bounds and Section 13 compatibility theorems with only approved axioms."
+  logInfo "Checked the simplified recurrence inputs, original final quantitative theorem, strengthened bounds and Section 13 compatibility theorems with only approved axioms."
