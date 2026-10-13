@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18CoverBudget
 import GowersSzemeredi.Proofs18ThresholdAt
+import GowersSzemeredi.Proofs18EnvelopeInduction
 
 /-! The uniform `L+5` threshold for lengths at least six.
 
@@ -35,13 +36,14 @@ theorem forty_cube_le (k : Nat) : 40 * (k + 1 + 1) ^ 3 + 2 ≤ 2 ^ (k + 11) := b
 
 /-- **The phase-refinement threshold, with the constants at the exponential
 level.** -/
-theorem inv_thr_le_ex {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M s : Nat}
+theorem inv_thr_le_ex_of_partition_bound {X : Real} (hX : 2 ≤ X) {k q : Nat} {η β e σ : Real} {M s : Nat}
+    (hpart : polynomialPartitionConstant (k + 1 + 1) ≤ 2 ^ q)
     (hη0 : 0 < η) (hη1 : η ≤ 1) (hβ0 : 0 < β) (hβ1 : β ≤ 1)
     (hηi : η⁻¹ ≤ X ^ (2 ^ M)) (hβi : β⁻¹ ≤ X ^ (2 ^ M)) (hs0 : 0 < σ) (hs16 : σ ≤ 16)
     (hσ'0 : 0 < inverseStepExponent (k + 1) e σ)
     (hσ' : (inverseStepExponent (k + 1) e σ)⁻¹ ≤ Real.exp (X ^ (2 ^ s))) :
     inverseStepThreshold (k + 1) η β e (6 * ((k + 1 : Nat) : Real)) σ ≤
-      Real.exp (Real.exp (X ^ (2 ^ (max (max (M + 4 * (k + 3) ^ 2 + 4) (k + 16)) s + 1)))) := by
+      Real.exp (Real.exp (X ^ (2 ^ (max (max (M + q + 4) (k + 16)) s + 1)))) := by
   -- the refinement constant at `b = ηβ/2`
   have hb : 0 < η * β / 2 := by positivity
   have hbi : (η * β / 2)⁻¹ ≤ X ^ (2 ^ (M + 2)) := by
@@ -58,11 +60,10 @@ theorem inv_thr_le_ex {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M
   have hs5 : section5LocalRefinementConstant (k + 1 + 1) 1 ≤ Real.exp (X ^ (2 ^ (k + 11))) :=
     (s5_one_le (d := k + 1 + 1) (by omega)).trans (two_tower_le_ex hX (forty_cube_le k))
   have hpow : ((η * β / 2)⁻¹) ^ polynomialPartitionConstant (k + 1 + 1) ≤
-      X ^ (2 ^ (M + 2 + 4 * (k + 1 + 1 + 1) ^ 2)) :=
-    pw_pow hX (inv_pos.mpr hb).le hbi (polyPartConst_le (k + 1 + 1))
-  rw [show k + 1 + 1 + 1 = k + 3 by ring] at hpow
+      X ^ (2 ^ (M + 2 + q)) :=
+    pw_pow hX (inv_pos.mpr hb).le hbi hpart
   have hR : section5LocalRefinementConstant (k + 1 + 1) (η * β / 2) ≤
-      Real.exp (X ^ (2 ^ (max (k + 11) (M + 2 + 4 * (k + 3) ^ 2) + 1))) :=
+      Real.exp (X ^ (2 ^ (max (k + 11) (M + 2 + q) + 1))) :=
     hscaled.trans (ex_mul' hX (pow_nonneg (inv_pos.mpr hb).le _) hs5 (ex_of_pw hpow))
   -- the count constant
   have hσ16 : σ / 16 ≤ 1 := by linarith
@@ -108,7 +109,7 @@ theorem inv_thr_le_ex {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M
     Real.rpow_le_self_of_one_le hD1 (inv_le_one_of_one_le₀ hP1)
   have hPIC : phaseInverseConstant (k + 1 + 1) (η * β / 2)
       (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ≤
-      Real.exp (X ^ (2 ^ (max (max (M + 4 * (k + 3) ^ 2 + 4) (k + 16)) s))) := by
+      Real.exp (X ^ (2 ^ (max (max (M + q + 4) (k + 16)) s))) := by
     unfold phaseInverseConstant
     have := ex_mul' hX (Real.rpow_nonneg (le_trans zero_le_one hD1) _) hR (hDp.trans hD)
     exact ex_mono hX this (by omega)
@@ -116,6 +117,18 @@ theorem inv_thr_le_ex {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M
   have hppt := positivePowerThreshold_one_le_double_exp hσ'0.le (le_exp_exp_of_le_exp hPIC) hσ'
   refine hppt.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr ?_))
   exact pw_add hX (pw_mono hX le_rfl le_rfl) (pw_mono hX le_rfl (le_max_right _ s))
+
+/-- The phase-refinement estimate with the original polynomial partition budget. -/
+theorem inv_thr_le_ex {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M s : Nat}
+    (hη0 : 0 < η) (hη1 : η ≤ 1) (hβ0 : 0 < β) (hβ1 : β ≤ 1)
+    (hηi : η⁻¹ ≤ X ^ (2 ^ M)) (hβi : β⁻¹ ≤ X ^ (2 ^ M)) (hs0 : 0 < σ) (hs16 : σ ≤ 16)
+    (hσ'0 : 0 < inverseStepExponent (k + 1) e σ)
+    (hσ' : (inverseStepExponent (k + 1) e σ)⁻¹ ≤ Real.exp (X ^ (2 ^ s))) :
+    inverseStepThreshold (k + 1) η β e (6 * ((k + 1 : Nat) : Real)) σ ≤
+      Real.exp (Real.exp (X ^ (2 ^ (max (max (M + 4 * (k + 3) ^ 2 + 4) (k + 16)) s + 1)))) := by
+  exact inv_thr_le_ex_of_partition_bound hX
+    (by simpa only [show k + 1 + 1 + 1 = k + 3 by omega] using polyPartConst_le (k + 1 + 1))
+    hη0 hη1 hβ0 hβ1 hηi hβi hs0 hs16 hσ'0 hσ'
 
 /-- The envelope after one step, with the threshold, without the cubic branch. -/
 def envStepCTx (k μ0 μK μ : Nat) : Nat :=
@@ -225,27 +238,17 @@ theorem envBound_allX (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : ∀ k
       Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
     (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) :
     ∀ k, 2 ≤ k → EnvBound (k + 2) (genMuX k) := by
-  have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
-    fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
-  have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
   have hstep : ∀ k, 2 ≤ k → ∀ μ, EnvBound (k + 1) μ →
       EnvBound (k + 2) (envStepCTx k (tightMu0 k) (genMuK k) μ) := by
     intro k hk μ hlow
     let P : GenParamsC := ⟨classV Kc pc k, k, Kc k, pc k, tightMu0 k⟩
     have H : P.CHyp (tightMuV k) (genMuK k) := tightHyp_of_profiles Kc pc hK hp hconst hk
-    have hcov : ∀ l, 1 ≤ l → l ≤ P.k →
-        PolyCoverAt l (uCount P.V (uDeg68 l)) (uExp P.V (uDeg68 l)) := by
-      intro l hl1 hlk
-      have hcl := polyCoverAt_class68 Kc pc hK1 hp hlem hl1
-      exact hcl.uniform_mono (one_le_classV Kc pc l) (classV_mono Kc pc hlk) le_rfl
+    have hcov := classCovers_of_profiles Kc pc hK hp hrec (degree := uDeg68) (k := k)
+      (fun hK1 => polyCoverAt_class68 Kc pc hK1 hp)
     exact envBound_stepCx P H (by show 1 ≤ k; omega) hcov (hrec k (by omega)) hlow
   intro k hk
-  induction k, hk using Nat.le_induction with
-  | base => exact hstep 2 le_rfl 62 envBound_three
-  | succ k hk ih =>
-    rw [genMuX_succ (by omega)]
-    exact hstep (k + 1) (by omega) (genMuX k) ih
+  exact envelope_induction (P := EnvBound) (budget := genMuX) hstep
+    envBound_three (fun _ h => genMuX_succ h) k (by omega)
 
 
 theorem envStepCTx_le_tight (k μ : Nat) :
@@ -270,22 +273,25 @@ theorem genMuX_small : genMuX 2 + 2 * 6 + 14 ≤ 2 ^ (6 + 5) ∧
     genMuX 3 + 2 * 7 + 14 ≤ 2 ^ (7 + 5) ∧ genMuX 4 ≤ 500 * 2 ^ 4 := by
   decide
 
-/-- **The Theorem 18.2 envelope without the cubic branch is `≤ 500·2^k`**, `k ≥ 4`. -/
-theorem genMuX_le : ∀ k, 4 ≤ k → genMuX k ≤ 500 * 2 ^ k := by
+/-- **The Theorem 18.2 envelope without the cubic branch is `≤ 500·2^k`**, `k ≥ 2`. -/
+theorem genMuX_le : ∀ k, 2 ≤ k → genMuX k ≤ 500 * 2 ^ k := by
   intro k hk
-  induction k, hk using Nat.le_induction with
-  | base => exact genMuX_small.2.2
-  | succ k hk ih =>
-    rw [genMuX_succ (by omega)]
-    have h1 := envStepCTx_le_tight (k + 1) (genMuX k)
-    have h2 := sq_le_two_pow_four k hk
-    have h3 : 16 ≤ 2 ^ k := le_trans (by norm_num : 16 ≤ 2 ^ 4) (Nat.pow_le_pow_right (by norm_num) hk)
-    have h4 := Nat.lt_two_pow_self (n := k)
-    rw [show k + 1 + 3 = k + 4 by ring] at h1
-    rw [pow_succ] at h1 ⊢
-    generalize (k + 4) ^ 2 = s at *
-    generalize 2 ^ k = x at *
-    omega
+  rcases Nat.lt_or_ge k 4 with hsmall | hk4
+  · interval_cases k <;> decide
+  · clear hk
+    induction k, hk4 using Nat.le_induction with
+    | base => exact genMuX_small.2.2
+    | succ k hk ih =>
+      rw [genMuX_succ (by omega)]
+      have h1 := envStepCTx_le_tight (k + 1) (genMuX k)
+      have h2 := sq_le_two_pow_four k hk
+      have h3 : 16 ≤ 2 ^ k := le_trans (by norm_num : 16 ≤ 2 ^ 4) (Nat.pow_le_pow_right (by norm_num) hk)
+      have h4 := Nat.lt_two_pow_self (n := k)
+      rw [show k + 1 + 3 = k + 4 by ring] at h1
+      rw [pow_succ] at h1 ⊢
+      generalize (k + 4) ^ 2 = s at *
+      generalize 2 ^ k = x at *
+      omega
 
 theorem genMuX_ge : ∀ k, 2 ≤ k → 236 * 2 ^ k ≤ genMuX k := by
   intro k hk
@@ -306,24 +312,12 @@ theorem theorem_18_2_L5_all_of_profiles_cover (Kc pc : Nat → Nat) (hK : ∀ k,
   rw [show L - 4 + 2 = L - 2 by omega] at henv
   have hge := genMuX_ge (L - 4) (by omega)
   have hk := Nat.lt_two_pow_self (n := L - 4)
-  have h4 : 4 ≤ 2 ^ (L - 4) :=
-    le_trans (by norm_num : 4 ≤ 2 ^ 2) (Nat.pow_le_pow_right (by norm_num) (by omega))
-  have h42 : 42 ≤ genMuX (L - 4) := by omega
-  have hLμ : 4 * L + 20 ≤ 2 ^ genMuX (L - 4) := by
-    have := Nat.lt_two_pow_self (n := genMuX (L - 4))
-    omega
-  refine theorem182AtSharp_of_envBound (by omega) henv h42 hLμ ?_
-  rcases Nat.lt_or_ge L 8 with hL | hL
-  · obtain ⟨h6, h7, -⟩ := genMuX_small
-    interval_cases L
-    · exact h6
-    · exact h7
-  · have hle := genMuX_le (L - 4) (by omega)
-    have h16 : 16 ≤ 2 ^ (L - 4) :=
-      le_trans (by norm_num : 16 ≤ 2 ^ 4) (Nat.pow_le_pow_right (by norm_num) (by omega))
-    have h2 : 2 ^ (L + 5) = 512 * 2 ^ (L - 4) := by
-      rw [show L + 5 = (L - 4) + 9 by omega, pow_add]; ring
-    rw [h2]
-    omega
+  have hpow := Nat.lt_two_pow_self (n := genMuX (L - 4))
+  have hle := genMuX_le (L - 4) (by omega)
+  refine theorem182AtSharp_of_envBound (by omega) henv (by omega) (by omega) ?_
+  have h2 : 2 ^ (L + 5) = 512 * 2 ^ (L - 4) := by
+    rw [show L + 5 = (L - 4) + 9 by omega, pow_add]; ring
+  rw [h2]
+  omega
 
 end LeanProofs.GowersSzemeredi

@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18FinalStep
+import GowersSzemeredi.Proofs18EnvelopeInduction
 
 /-! **The final route, part 3: the envelopes and their fits** (Notes L.16-final).
 
@@ -111,109 +112,12 @@ theorem inv_thr_le_ex_sharp {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Re
     (hσ' : (inverseStepExponent (k + 1) e σ)⁻¹ ≤ Real.exp (X ^ (2 ^ s))) :
     inverseStepThreshold (k + 1) η β e (6 * ((k + 1 : Nat) : Real)) σ ≤
       Real.exp (Real.exp (X ^ (2 ^ (max (max (M + partDeg k + 4) (k + 16)) s + 1)))) := by
-  -- the refinement constant at `b = ηβ/2`
-  have hb : 0 < η * β / 2 := by positivity
-  have hbi : (η * β / 2)⁻¹ ≤ X ^ (2 ^ (M + 2)) := by
-    rw [show (η * β / 2)⁻¹ = 2 * (η⁻¹ * β⁻¹) by field_simp]
-    have h1 := pw_mul hX (inv_pos.mpr hη0).le (inv_pos.mpr hβ0).le hηi hβi
-    exact pw_mul' hX (by norm_num) (by positivity) (hX.trans (pw_X hX M)) h1 |>.trans
-      (pw_mono hX le_rfl (by omega))
-  have hb1 : 1 ≤ (η * β / 2)⁻¹ := by
-    rw [one_le_inv₀ hb]
-    have : η * β ≤ 1 := mul_le_one₀ hη1 hβ0.le hβ1
-    linarith
-  have hscaled := section5LocalRefinementConstant_le_scaled (k + 1 + 1) (η * β / 2)
-    (η * β / 2)⁻¹ hb hb1 le_rfl
-  have hs5 : section5LocalRefinementConstant (k + 1 + 1) 1 ≤ Real.exp (X ^ (2 ^ (k + 11))) :=
-    (s5_one_le (d := k + 1 + 1) (by omega)).trans (two_tower_le_ex hX (forty_cube_le k))
-  have hpow : ((η * β / 2)⁻¹) ^ polynomialPartitionConstant (k + 1 + 1) ≤
-      X ^ (2 ^ (M + 2 + partDeg k)) :=
-    pw_pow hX (inv_pos.mpr hb).le hbi (polyPartConst_le_sharp k)
-  have hR : section5LocalRefinementConstant (k + 1 + 1) (η * β / 2) ≤
-      Real.exp (X ^ (2 ^ (max (k + 11) (M + 2 + partDeg k) + 1))) :=
-    hscaled.trans (ex_mul' hX (pow_nonneg (inv_pos.mpr hb).le _) hs5 (ex_of_pw hpow))
-  -- the count constant
-  have hσ16 : σ / 16 ≤ 1 := by linarith
-  have hσ16' : 0 ≤ σ / 16 := by positivity
-  have hr1 : (1 : Real) ≤ 2 * ((k + 1 + 2 : Nat) : Real) := by push_cast; linarith
-  have hc1 : (1 : Real) ≤ 6 * ((k + 1 : Nat) : Real) := by push_cast; linarith
-  have hrpow : (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 - σ / 16) ≤ 2 * ((k + 1 + 2 : Nat) : Real) := by
-    calc (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 - σ / 16) ≤
-          (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 : Real) :=
-          Real.rpow_le_rpow_of_exponent_le hr1 (by linarith)
-      _ = _ := Real.rpow_one _
-  have hcpow : (6 * ((k + 1 : Nat) : Real)) ^ (σ / 16) ≤ 6 * ((k + 1 : Nat) : Real) := by
-    calc (6 * ((k + 1 : Nat) : Real)) ^ (σ / 16) ≤ (6 * ((k + 1 : Nat) : Real)) ^ (1 : Real) :=
-          Real.rpow_le_rpow_of_exponent_le hc1 hσ16
-      _ = _ := Real.rpow_one _
-  have hB0 : 0 ≤ boundaryRefinementConstant (1 / 16) := (section5LocalRefinementConstant_pos _ _).le
-  have hr : 2 * ((k + 1 + 2 : Nat) : Real) ≤ X ^ (2 ^ (k + 3)) := by
-    have := small_nat_le_pw hX (k := k) (c := 2 * (k + 1 + 2)) (by omega)
-    push_cast at this ⊢; linarith
-  have hc : 6 * ((k + 1 : Nat) : Real) ≤ X ^ (2 ^ (k + 3)) := by
-    have := small_nat_le_pw hX (k := k) (c := 6 * (k + 1)) (by omega)
-    push_cast at this ⊢; linarith
-  have hBe : boundaryRefinementConstant (1 / 16) ≤ Real.exp (X ^ (2 ^ 11)) :=
-    cubic_boundary_refinement_constant_upper.trans (two_tower_le_ex hX (by norm_num))
-  have h2e : (2 : Real) ≤ Real.exp (X ^ (2 ^ 0)) :=
-    ex_of_pw (hX.trans (pw_X hX 0))
-  have h2B : 2 * boundaryRefinementConstant (1 / 16) ≤ Real.exp (X ^ (2 ^ (max 0 11 + 1))) :=
-    ex_mul' hX hB0 h2e hBe
-  have hD : inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ ≤
-      Real.exp (X ^ (2 ^ (k + 14))) := by
-    unfold inverseStepCountConstant localInverseAssemblyConstant
-    have hmax : max 1 (2 * boundaryRefinementConstant (1 / 16) *
-        (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 - σ / 16)) ≤
-        Real.exp (X ^ (2 ^ (max (max 0 11 + 1) (k + 3) + 1))) :=
-      max_le (Real.one_le_exp (by positivity)) (ex_mul' hX (Real.rpow_nonneg (by linarith) _) h2B
-        (ex_of_pw (hrpow.trans hr)))
-    have := ex_mul' hX (Real.rpow_nonneg (by linarith) _) hmax (ex_of_pw (hcpow.trans hc))
-    exact ex_mono hX this (by omega)
-  have hD1 : 1 ≤ inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ := by
-    unfold inverseStepCountConstant localInverseAssemblyConstant
-    exact one_le_mul_of_one_le_of_one_le (le_max_left _ _) (Real.one_le_rpow hc1 hσ16')
-  have hP1 : (1 : Real) ≤ polynomialPartitionConstant (k + 1 + 1) := by
-    exact_mod_cast polyPartConst_pos (k + 1 + 1)
-  have hDp : (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ^
-      ((polynomialPartitionConstant (k + 1 + 1) : Real))⁻¹ ≤
-      inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ := by
-    calc _ ≤ (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ^ (1 : Real) :=
-          Real.rpow_le_rpow_of_exponent_le hD1 (inv_le_one_of_one_le₀ hP1)
-      _ = _ := Real.rpow_one _
-  have hPIC : phaseInverseConstant (k + 1 + 1) (η * β / 2)
-      (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ≤
-      Real.exp (X ^ (2 ^ (max (max (M + partDeg k + 4) (k + 16)) s))) := by
-    unfold phaseInverseConstant
-    have := ex_mul' hX (Real.rpow_nonneg (le_trans zero_le_one hD1) _) hR (hDp.trans hD)
-    exact ex_mono hX this (by omega)
-  unfold inverseStepThreshold
-  have hppt := positivePowerThreshold_one_le_double_exp hσ'0.le (le_exp_exp_of_le_exp hPIC) hσ'
-  refine hppt.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr ?_))
-  exact pw_add hX (pw_mono hX le_rfl le_rfl) (pw_mono hX le_rfl (le_max_right _ s))
+  exact inv_thr_le_ex_of_partition_bound hX (polyPartConst_le_sharp k)
+    hη0 hη1 hβ0 hβ1 hηi hβi hs0 hs16 hσ'0 hσ'
 
 end LeanProofs.GowersSzemeredi
 
 namespace LeanProofs.GowersSzemeredi
-
-/-- The standing hypotheses at the polynomial base budget. -/
-theorem tightHyp_of_profiles_fejerJT3 (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : ∀ k, 0 < pc k)
-    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16))) {k : Nat}
-    (hk : 2 ≤ k) :
-    (⟨classV Kc pc k, k, Kc k, pc k, tightMu0Z k⟩ : GenParamsJT3).CHyp (tightMuW k) (genMuKZ k) := by
-  have hKr : (Kc k : Real) ≤ 2 ^ ((2 : Nat) ^ genMuKZ k) := by
-    have := hconst k; unfold genMuKZ; linarith [Nat.cast_nonneg (α := Real) (pc k)]
-  have hpr : (pc k : Real) ≤ 2 ^ ((2 : Nat) ^ genMuKZ k) := by
-    have := hconst k; unfold genMuKZ; linarith [Nat.cast_nonneg (α := Real) (Kc k)]
-  refine ⟨one_le_classV Kc pc k, classV_le_poly Kc pc hconst k, le_rfl, ?_, hK k, ?_, hp k, ?_⟩
-  · show k ≤ 2 ^ tightMu0Z k
-    calc k ≤ 2 ^ k := Nat.lt_two_pow_self.le
-      _ ≤ 2 ^ tightMu0Z k := Nat.pow_le_pow_right (by norm_num) (by
-          unfold tightMu0Z; have := five_k_le_pDeg k
-          have := le_max_right (tightMuW k) (pDeg k); omega)
-  · have : ((Kc k : Nat) : Real) ≤ ((2 ^ 2 ^ genMuKZ k : Nat) : Real) := by push_cast; exact hKr
-    exact_mod_cast this
-  · have : ((pc k : Nat) : Real) ≤ ((2 ^ 2 ^ genMuKZ k : Nat) : Real) := by push_cast; exact hpr
-    exact_mod_cast this
 
 /-- The envelope after one step, with the threshold, without the cubic branch. -/
 def envStepKTx3 (k μ0 μK μ : Nat) : Nat :=
@@ -316,33 +220,6 @@ theorem genMuXK3_succ {k : Nat} (hk : 1 ≤ k) :
   obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
   rfl
 
-theorem envBound_allXK3 (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : ∀ k, 0 < pc k)
-    (hrec : ∀ k, 1 ≤ k →
-      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
-    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16))) :
-    ∀ k, 2 ≤ k → EnvBound (k + 2) (genMuXK3 k) := by
-  have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
-    fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
-  have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
-  have hstep : ∀ k, 2 ≤ k → ∀ μ, EnvBound (k + 1) μ →
-      EnvBound (k + 2) (envStepKTx3 k (tightMu0Z k) (genMuKZ k) μ) := by
-    intro k hk μ hlow
-    let P : GenParamsJT3 := ⟨classV Kc pc k, k, Kc k, pc k, tightMu0Z k⟩
-    have H : P.CHyp (tightMuW k) (genMuKZ k) := tightHyp_of_profiles_fejerJT3 Kc pc hK hp hconst hk
-    have hcov : ∀ l, 1 ≤ l → l ≤ P.k →
-        PolyCoverAt l (uCount P.V (uDegT3 l)) (uExp P.V (uDegT3 l)) := by
-      intro l hl1 hlk
-      have hcl := polyCoverAt_classT3 Kc pc hK1 hp hlem hl1
-      exact hcl.uniform_mono (one_le_classV Kc pc l) (classV_mono Kc pc hlk) le_rfl
-    exact envBound_stepKx3 P H (by show 1 ≤ k; omega) hcov (hrec k (by omega)) hlow
-  intro k hk
-  induction k, hk using Nat.le_induction with
-  | base => exact hstep 2 le_rfl 62 envBound_three
-  | succ k hk ih =>
-    rw [genMuXK3_succ (by omega)]
-    exact hstep (k + 1) (by omega) (genMuXK3 k) ih
-
 theorem envStepKTx3_le_tight {k : Nat} (hk : 15 ≤ k) (μ : Nat) :
     envStepKTx3 k (tightMu0Z k) (genMuKZ k) μ ≤
       μ + 10 * 2 ^ (k - 1) + 6 * (k + 4) ^ 2 + partDeg k + 6 * k + 59 := by
@@ -386,27 +263,6 @@ theorem genMuXK3_ge {k : Nat} (hk : 2 ≤ k) : 5 * k + 33 ≤ genMuXK3 k := by
   rw [genMuXK3_succ (by omega)]
   exact envStepKTx3_ge _ _ _ _
 
-theorem genMuXK3_small16 {k : Nat} (h1 : 9 ≤ k) (h2 : k ≤ 14) :
-    genMuXK3 k + 2 * k + 22 ≤ 16 * 2 ^ k := by
-  interval_cases k <;> decide +kernel
-
-theorem genMuXK3_fit16 {k : Nat} (hk : 9 ≤ k) : genMuXK3 k + 2 * k + 22 ≤ 16 * 2 ^ k := by
-  rcases Nat.lt_or_ge k 15 with h | h
-  · exact genMuXK3_small16 hk (by omega)
-  · have := genMuXK3_le16 k h
-    have h16 : 16 * 2 ^ k ≤ 16 * 2 ^ k := Nat.mul_le_mul_right _ (by norm_num)
-    omega
-
-end LeanProofs.GowersSzemeredi
-
-namespace LeanProofs.GowersSzemeredi
-
-theorem tightMuW_le_tightMuV (k : Nat) : tightMuW k ≤ tightMuV k := by
-  unfold tightMuW tightMuV
-  have h := Nat.lt_two_pow_self (n := k)
-  have h16 : 2 ^ (k + 4) = 16 * 2 ^ k := by rw [pow_add]; ring
-  omega
-
 end LeanProofs.GowersSzemeredi
 
 namespace LeanProofs.GowersSzemeredi
@@ -437,18 +293,6 @@ end LeanProofs.GowersSzemeredi
 
 namespace LeanProofs.GowersSzemeredi
 
-theorem uDegT3_le_uDeg68 {k : Nat} (hk : 1 ≤ k) : uDegT3 k ≤ uDeg68 k := by
-  unfold uDegT3 uDeg68
-  refine Nat.pow_le_pow_right (by norm_num) ?_
-  rcases Nat.lt_or_ge k 15 with h | h
-  · interval_cases k <;> decide
-  · rw [tDegT3_eq_of_ge h]
-    have h1 := sq_le_two_pow_four k (by omega)
-    have h2 : 2 ^ k = 2 * 2 ^ (k - 1) := by
-      rw [show k = (k - 1) + 1 by omega, pow_succ]; simp; ring
-    have h3 : 1 ≤ 2 ^ (k - 1) := Nat.one_le_two_pow
-    omega
-
 /-- The exponent degree of the joint-slice step at `(tDegT3, tightMu0Z)`: two
 class degrees (`3·tDegT3` at the X step). -/
 theorem expDegJT3_tight_le (k : Nat) :
@@ -456,106 +300,6 @@ theorem expDegJT3_tight_le (k : Nat) :
   unfold GenParamsJT3.expDegJT3 GenParamsJT3.rhoDegJT3 tightMu0Z tightMuW genMuKZ pDeg
   simp only [max_def]
   split_ifs <;> omega
-
-/-- **Theorem 16.2 with polynomial controls in every dimension**, from the
-recurrence profiles. -/
-theorem theorem_16_2_polynomial_fejerT3_of_profiles (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
-    (hp : ∀ k, 0 < pc k)
-    (hrec : ∀ k, 1 ≤ k →
-      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
-    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16)))
-    {k : Nat} (hk : 1 ≤ k) :
-    PolyCoverAt k (uCount (2 ^ (2 ^ tightMuW k)) (uDegT3 k))
-      (uExp (2 ^ (2 ^ tightMuW k)) (uDegT3 k)) := by
-  have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
-    fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
-  have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
-  exact (polyCoverAt_classT3 Kc pc hK1 hp hlem hk).uniform_mono (one_le_classV Kc pc k)
-    (classV_le_poly Kc pc hconst k) le_rfl
-
-/-- **Corollary 16.11 with polynomial exponents in dimension `k + 1`**, from
-the recurrence profiles. -/
-theorem corollary_16_11_polynomial_fejerJT3_of_profiles (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)
-    (hp : ∀ k, 0 < pc k)
-    (hrec : ∀ k, 1 ≤ k →
-      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
-    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16)))
-    {k : Nat} (hk : 2 ≤ k) :
-    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 / 2 →
-      ∃ e : Real, 0 < e ∧
-        e⁻¹ ≤ (2 / alpha) ^ (2 ^ (GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3)) ∧
-        ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
-          ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha (k + 2) →
-            ∃ P : Box N (k + 1), ∃ mu : Point N (k + 1) → ZMod N,
-              IsMultilinear mu ∧ (N : Real) ^ e ≤ P.width ∧
-              e * P.carrier.card ≤ section16LargeMultilinearFrequencyCount f P mu alpha := by
-  intro alpha ha ha2
-  have hX := two_div_ge_two ha ha2
-  have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
-    fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
-  have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
-  let P : GenParamsJT3 := ⟨classV Kc pc k, k, Kc k, pc k, tightMu0Z k⟩
-  have H : P.CHyp (tightMuW k) (genMuKZ k) := tightHyp_of_profiles_fejerJT3 Kc pc hK hp hconst hk
-  have hcov : ∀ l, 1 ≤ l → l ≤ P.k →
-      PolyCoverAt l (uCount P.V (uDegT3 l)) (uExp P.V (uDegT3 l)) := by
-    intro l hl1 hlk
-    have hcl := polyCoverAt_classT3 Kc pc hK1 hp hlem hl1
-    exact hcl.uniform_mono (one_le_classV Kc pc l) (classV_mono Kc pc hlk) le_rfl
-  have hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ uCount P.V (uDegT3 l) g t s :=
-    fun l g t s _ _ => one_le_uCount P.V (uDegT3 l) g t s
-  have hretile : ∀ q, Section16RetiledLinearityBound P.k q (familyRecExp P.k P.p q)
-      (familyRecThr P.k P.K P.p q) :=
-    fun q => ((hrec k (by omega)).retiled_family
-      (fun q => familyRecThr_pos (by have := hK k; omega) q) q).single
-  -- the two exponents
-  obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leJT3 H ha ha2
-  obtain ⟨-, -, hei, -, -, -⟩ := P.yIn_boundsJT3 ha ha2 H.hV H.hVμ H.hμ0
-  set D := singlePieceGlobalDensityFJ (fun l => uCount P.V (uDegT3 l)) alpha (alpha / 2) P.k with hDdef
-  have hD0 : 0 < D := singlePieceGlobalDensityFJ_pos ha (by linarith) hQb
-  have heta0 : 0 < P.eta alpha := by
-    exact singlePieceEtaFJ_pos ha (by linarith) hQb
-  have hetaD : P.eta alpha ≤ D := singlePieceEtaFJ_le_density ha (by linarith) hD0.le
-  have hDi : D⁻¹ ≤ (2 / alpha) ^ (2 ^ (GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3)) := by
-    refine (inv_anti₀ heta0 hetaD).trans (pw_mono hX hei ?_)
-    show GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + 10 ≤
-      GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3
-    unfold GenParamsJT3.expDegJT3
-    have := le_max_left (GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + 9)
-      (max (GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + k + 7) (genMuKZ k + 2))
-    omega
-  refine ⟨min (P.Eloc alpha) D, lt_min hEl0 hD0, ?_, ⌈P.Tloc alpha⌉₊, ?_⟩
-  · rcases min_choice (P.Eloc alpha) D with h | h
-    · rw [h]; exact hEli
-    · rw [h]; exact hDi
-  · intro N _ _ hN f hf hnot
-    have hT : P.Tloc alpha ≤ N := (Nat.le_ceil _).trans (by exact_mod_cast hN)
-    obtain ⟨hodd, h15, -, m, hscale, hwide⟩ :=
-      P.modulus_conditions H.hV H.hK H.hp ha ha2 N hT
-    obtain ⟨q, hq, B, mu, -, hmu, hBw, hcount⟩ := single_piece_frequency_box_global_cover_fejer_joint
-      (Qb := fun l => uCount P.V (uDegT3 l)) (Eb := fun l => uExp P.V (uDegT3 l))
-      (by show 1 ≤ k; omega) ha ha2 hcov hQb
-      (fun l g t s _ _ => (uExp_pos_le P.V (uDegT3 l) g t s).1)
-      (fun l g t s _ _ => (uExp_pos_le P.V (uDegT3 l) g t s).2)
-      (familyRecExp P.k P.p) (familyRecThr P.k P.K P.p) hretile hodd h15 m hscale f hf hnot
-    have hN1 : (1 : Real) ≤ N := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
-    refine ⟨B, mu, hmu, ?_, ?_⟩
-    · calc (N : Real) ^ min (P.Eloc alpha) D ≤ (N : Real) ^ P.Eloc alpha :=
-            Real.rpow_le_rpow_of_exponent_le hN1 (min_le_left _ _)
-        _ ≤ _ := hwide q hq
-        _ ≤ B.width := by exact_mod_cast hBw
-    · calc min (P.Eloc alpha) D * B.carrier.card ≤ D * B.carrier.card :=
-            mul_le_mul_of_nonneg_right (min_le_right _ _) (Nat.cast_nonneg _)
-        _ ≤ _ := hcount
-
-/-- **The polynomial form at `uDegT3` implies the printed Theorem 16.2.** -/
-theorem theorem162At_of_polynomial_fejerT3 {k : Nat} (hk : 1 ≤ k)
-    (h : PolyCoverAt k (uCount (2 ^ (2 ^ tightMuW k)) (uDegT3 k))
-      (uExp (2 ^ (2 ^ tightMuW k)) (uDegT3 k))) : Theorem162At k :=
-  theorem162At_of_polynomial (h.uniform_mono (one_le_pow₀ (by norm_num))
-    (pow_le_pow_right₀ (by norm_num) (Nat.pow_le_pow_right (by norm_num) (tightMuW_le_tightMuV k)))
-    (uDegT3_le_uDeg68 hk))
 
 end LeanProofs.GowersSzemeredi
 
@@ -624,7 +368,6 @@ theorem polyEnvBound_stepJT3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp �
     unfold envStepJT3; rw [← hdddef]; omega
   · unfold envStepJT3; rw [← hdddef, ← hEdef]; omega
 
-
 /-- The Theorem 18.1 envelope at the tight base budget. -/
 def polyGenMuJT3 : Nat → Nat
   | 0 => 74
@@ -635,38 +378,6 @@ theorem polyGenMuJT3_succ {k : Nat} (hk : 1 ≤ k) :
     polyGenMuJT3 (k + 1) = envStepJT3 (k + 1) (tightMu0Z (k + 1)) (genMuKZ (k + 1)) (polyGenMuJT3 k) := by
   obtain ⟨j, rfl⟩ : ∃ j, k = j + 1 := ⟨k - 1, by omega⟩
   rfl
-
-
-theorem polyEnvBound_allJT3 (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : ∀ k, 0 < pc k)
-    (hrec : ∀ k, 1 ≤ k →
-      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
-    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16)))
-    {Kφ : Real} {pφ : Nat} (hpp : ProgressionPhasePartition Kφ pφ) (hpφ : 0 < pφ)
-    (hKφ : Kφ ≤ 2 ^ pφ) (hpφB : (pφ : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) :
-    ∀ k, 2 ≤ k → PolyEnvBound (k + 2) (polyGenMuJT3 k) := by
-  have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
-    fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
-  have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
-  have hstep : ∀ k, 2 ≤ k → ∀ μ, PolyEnvBound (k + 1) μ →
-      PolyEnvBound (k + 2) (envStepJT3 k (tightMu0Z k) (genMuKZ k) μ) := by
-    intro k hk μ hlow
-    let P : GenParamsJT3 := ⟨classV Kc pc k, k, Kc k, pc k, tightMu0Z k⟩
-    have H : P.CHyp (tightMuW k) (genMuKZ k) := tightHyp_of_profiles_fejerJT3 Kc pc hK hp hconst hk
-    have hcov : ∀ l, 1 ≤ l → l ≤ P.k →
-        PolyCoverAt l (uCount P.V (uDegT3 l)) (uExp P.V (uDegT3 l)) := by
-      intro l hl1 hlk
-      have hcl := polyCoverAt_classT3 Kc pc hK1 hp hlem hl1
-      exact hcl.uniform_mono (one_le_classV Kc pc l) (classV_mono Kc pc hlk) le_rfl
-    exact polyEnvBound_stepJT3 P H (by show 1 ≤ k; omega) hcov (hrec k (by omega)) hlow
-  intro k hk
-  induction k, hk using Nat.le_induction with
-  | base =>
-    exact hstep 2 le_rfl 74 (polyEnvBound_three_of_phase_partition hpp hpφ hKφ hpφB)
-  | succ k hk ih =>
-    rw [polyGenMuJT3_succ (by omega)]
-    exact hstep (k + 1) (by omega) (polyGenMuJT3 k) ih
-
 
 /-! ### Closed forms -/
 
@@ -698,70 +409,167 @@ theorem polyGenMuJT3_le16 : ∀ k, 15 ≤ k → polyGenMuJT3 k + 4 * k + 128 ≤
     generalize 2 ^ k = x at *
     omega
 
-theorem polyGenMuJT3_small16 {k : Nat} (h1 : 9 ≤ k) (h2 : k ≤ 14) :
-    polyGenMuJT3 k + 1 ≤ 16 * 2 ^ k := by
-  interval_cases k <;> decide +kernel
+/-- **The inputs of the final route**: recurrence profiles with family constants
+`Kc`, `pc` at most `2^(2^(4k+16))`, and a progression phase partition. -/
+structure FinalInputs where
+  Kc : Nat → Nat
+  pc : Nat → Nat
+  two_le_Kc : ∀ k, 2 ≤ Kc k
+  pc_pos : ∀ k, 0 < pc k
+  profile : ∀ k, 1 ≤ k →
+    Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k))
+  const : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ (4 * k + 16))
+  phase : ∃ (K : Real) (p : Nat), ProgressionPhasePartition K p ∧ 0 < p ∧ K ≤ 2 ^ p ∧
+    (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)
 
-theorem polyGenMuJT3_fit16 {k : Nat} (hk : 9 ≤ k) : polyGenMuJT3 k + 1 ≤ 16 * 2 ^ k := by
+/-- The fit of the Theorem 18.1 envelope from `k0` on, given the dimensions `k0, …, 14`. -/
+theorem polyGenMuJT3_fit {C k0 k : Nat} (hC : 16 ≤ C)
+    (hsmall : ∀ j, k0 ≤ j → j ≤ 14 → polyGenMuJT3 j + 1 ≤ C * 2 ^ j) (hk : k0 ≤ k) :
+    polyGenMuJT3 k + 1 ≤ C * 2 ^ k := by
   rcases Nat.lt_or_ge k 15 with h | h
-  · exact polyGenMuJT3_small16 hk (by omega)
+  · exact hsmall k hk (by omega)
   · have := polyGenMuJT3_le16 k h
-    have h16 : 16 * 2 ^ k ≤ 16 * 2 ^ k := Nat.mul_le_mul_right _ (by norm_num)
+    have := Nat.mul_le_mul_right (2 ^ k) hC
     omega
 
-theorem polyGenMuJT3_small32 {k : Nat} (h1 : 6 ≤ k) (h2 : k ≤ 14) :
-    polyGenMuJT3 k + 1 ≤ 32 * 2 ^ k := by
-  interval_cases k <;> decide +kernel
-
-theorem polyGenMuJT3_fit32 {k : Nat} (hk : 6 ≤ k) : polyGenMuJT3 k + 1 ≤ 32 * 2 ^ k := by
+/-- The fit of the Theorem 18.2 envelope from `k0` on, given the dimensions `k0, …, 14`. -/
+theorem genMuXK3_fit {C k0 k : Nat} (hC : 16 ≤ C)
+    (hsmall : ∀ j, k0 ≤ j → j ≤ 14 → genMuXK3 j + 2 * j + 22 ≤ C * 2 ^ j) (hk : k0 ≤ k) :
+    genMuXK3 k + 2 * k + 22 ≤ C * 2 ^ k := by
   rcases Nat.lt_or_ge k 15 with h | h
-  · exact polyGenMuJT3_small32 hk (by omega)
-  · have := polyGenMuJT3_le16 k h
-    have h16 : 16 * 2 ^ k ≤ 32 * 2 ^ k := Nat.mul_le_mul_right _ (by norm_num)
-    omega
-
-theorem polyGenMuJT3_small64 {k : Nat} (h1 : 2 ≤ k) (h2 : k ≤ 14) :
-    polyGenMuJT3 k + 1 ≤ 64 * 2 ^ k := by
-  interval_cases k <;> decide +kernel
-
-theorem polyGenMuJT3_fit64 {k : Nat} (hk : 2 ≤ k) : polyGenMuJT3 k + 1 ≤ 64 * 2 ^ k := by
-  rcases Nat.lt_or_ge k 15 with h | h
-  · exact polyGenMuJT3_small64 hk (by omega)
-  · have := polyGenMuJT3_le16 k h
-    have h16 : 16 * 2 ^ k ≤ 64 * 2 ^ k := Nat.mul_le_mul_right _ (by norm_num)
-    omega
-
-theorem genMuXK3_small32 {k : Nat} (h1 : 7 ≤ k) (h2 : k ≤ 14) :
-    genMuXK3 k + 2 * k + 22 ≤ 32 * 2 ^ k := by
-  interval_cases k <;> decide +kernel
-
-theorem genMuXK3_fit32 {k : Nat} (hk : 7 ≤ k) : genMuXK3 k + 2 * k + 22 ≤ 32 * 2 ^ k := by
-  rcases Nat.lt_or_ge k 15 with h | h
-  · exact genMuXK3_small32 hk (by omega)
+  · exact hsmall k hk (by omega)
   · have := genMuXK3_le16 k h
-    have h16 : 16 * 2 ^ k ≤ 32 * 2 ^ k := Nat.mul_le_mul_right _ (by norm_num)
+    have := Nat.mul_le_mul_right (2 ^ k) hC
     omega
 
-theorem genMuXK3_small64 {k : Nat} (h1 : 4 ≤ k) (h2 : k ≤ 14) :
-    genMuXK3 k + 2 * k + 22 ≤ 64 * 2 ^ k := by
-  interval_cases k <;> decide +kernel
+namespace FinalInputs
 
-theorem genMuXK3_fit64 {k : Nat} (hk : 4 ≤ k) : genMuXK3 k + 2 * k + 22 ≤ 64 * 2 ^ k := by
-  rcases Nat.lt_or_ge k 15 with h | h
-  · exact genMuXK3_small64 hk (by omega)
-  · have := genMuXK3_le16 k h
-    have h16 : 16 * 2 ^ k ≤ 64 * 2 ^ k := Nat.mul_le_mul_right _ (by norm_num)
+variable (I : FinalInputs)
+include I
+
+/-- The parameters of the step in dimension `k`. -/
+def params (k : Nat) : GenParamsJT3 := ⟨classV I.Kc I.pc k, k, I.Kc k, I.pc k, tightMu0Z k⟩
+
+/-- The standing hypotheses of the step at the polynomial base budget. -/
+theorem hyp {k : Nat} (hk : 2 ≤ k) : (I.params k).CHyp (tightMuW k) (genMuKZ k) := by
+  have hKr : (I.Kc k : Real) ≤ 2 ^ ((2 : Nat) ^ genMuKZ k) := by
+    have := I.const k; unfold genMuKZ; linarith [Nat.cast_nonneg (α := Real) (I.pc k)]
+  have hpr : (I.pc k : Real) ≤ 2 ^ ((2 : Nat) ^ genMuKZ k) := by
+    have := I.const k; unfold genMuKZ; linarith [Nat.cast_nonneg (α := Real) (I.Kc k)]
+  refine ⟨one_le_classV I.Kc I.pc k, classV_le_poly I.Kc I.pc I.const k, le_rfl, ?_, I.two_le_Kc k,
+    ?_, I.pc_pos k, ?_⟩
+  · show k ≤ 2 ^ tightMu0Z k
+    calc k ≤ 2 ^ k := Nat.lt_two_pow_self.le
+      _ ≤ 2 ^ tightMu0Z k := Nat.pow_le_pow_right (by norm_num) (by
+          unfold tightMu0Z; have := five_k_le_pDeg k
+          have := le_max_right (tightMuW k) (pDeg k); omega)
+  · have : ((I.Kc k : Nat) : Real) ≤ ((2 ^ 2 ^ genMuKZ k : Nat) : Real) := by push_cast; exact hKr
+    exact_mod_cast this
+  · have : ((I.pc k : Nat) : Real) ≤ ((2 ^ 2 ^ genMuKZ k : Nat) : Real) := by push_cast; exact hpr
+    exact_mod_cast this
+
+/-- The polynomial covers at the classes `tDegT3`, over the class base in dimension `l`. -/
+theorem cover {l : Nat} (hl : 1 ≤ l) :
+    PolyCoverAt l (uCount (classV I.Kc I.pc l) (uDegT3 l)) (uExp (classV I.Kc I.pc l) (uDegT3 l)) :=
+  polyCoverAt_classT3 I.Kc I.pc (fun k => le_trans (by norm_num) (I.two_le_Kc k)) I.pc_pos
+    (fun k hk => abstractFamilyLemma166At_of k (I.two_le_Kc k) (I.pc_pos k) (I.profile k hk)) hl
+
+/-- The covers the step in dimension `k` needs. -/
+theorem covers (k : Nat) : ∀ l, 1 ≤ l → l ≤ (I.params k).k →
+    PolyCoverAt l (uCount (I.params k).V (uDegT3 l)) (uExp (I.params k).V (uDegT3 l)) :=
+  fun _ hl1 hlk => (I.cover hl1).uniform_mono (one_le_classV I.Kc I.pc _)
+    (classV_mono I.Kc I.pc hlk) le_rfl
+
+/-- **The Theorem 18.2 envelope** in every dimension `k ≥ 2`. -/
+theorem envBound : ∀ k, 2 ≤ k → EnvBound (k + 2) (genMuXK3 k) := by
+  have hstep : ∀ k, 2 ≤ k → ∀ μ, EnvBound (k + 1) μ →
+      EnvBound (k + 2) (envStepKTx3 k (tightMu0Z k) (genMuKZ k) μ) := by
+    intro k hk μ hlow
+    exact envBound_stepKx3 (I.params k) (I.hyp hk) (by show 1 ≤ k; omega) (I.covers k)
+      (I.profile k (by omega)) hlow
+  intro k hk
+  exact envelope_induction (P := EnvBound) (budget := genMuXK3) hstep
+    envBound_three (fun _ h => genMuXK3_succ h) k (by omega)
+
+/-- **The Theorem 18.1 envelope** in every dimension `k ≥ 2`. -/
+theorem polyEnvBound : ∀ k, 2 ≤ k → PolyEnvBound (k + 2) (polyGenMuJT3 k) := by
+  obtain ⟨K, p, hpp, hp, hK, hpB⟩ := I.phase
+  have hstep : ∀ k, 2 ≤ k → ∀ μ, PolyEnvBound (k + 1) μ →
+      PolyEnvBound (k + 2) (envStepJT3 k (tightMu0Z k) (genMuKZ k) μ) := by
+    intro k hk μ hlow
+    exact polyEnvBound_stepJT3 (I.params k) (I.hyp hk) (by show 1 ≤ k; omega) (I.covers k)
+      (I.profile k (by omega)) hlow
+  intro k hk
+  exact envelope_induction (P := PolyEnvBound) (budget := polyGenMuJT3) hstep
+    (polyEnvBound_three_of_phase_partition hpp hp hK hpB)
+    (fun _ h => polyGenMuJT3_succ h) k (by omega)
+
+/-- **Theorem 16.2 with polynomial controls** at the classes `tDegT3`, in every dimension. -/
+theorem theorem_16_2_polynomial {k : Nat} (hk : 1 ≤ k) :
+    PolyCoverAt k (uCount (2 ^ (2 ^ tightMuW k)) (uDegT3 k))
+      (uExp (2 ^ (2 ^ tightMuW k)) (uDegT3 k)) :=
+  (I.cover hk).uniform_mono (one_le_classV I.Kc I.pc k) (classV_le_poly I.Kc I.pc I.const k) le_rfl
+
+/-- **Corollary 16.11 with polynomial exponents** in dimension `k + 1`. -/
+theorem corollary_16_11_polynomial {k : Nat} (hk : 2 ≤ k) :
+    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 / 2 →
+      ∃ e : Real, 0 < e ∧
+        e⁻¹ ≤ (2 / alpha) ^ (2 ^ (GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3)) ∧
+        ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
+          ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha (k + 2) →
+            ∃ P : Box N (k + 1), ∃ mu : Point N (k + 1) → ZMod N,
+              IsMultilinear mu ∧ (N : Real) ^ e ≤ P.width ∧
+              e * P.carrier.card ≤ section16LargeMultilinearFrequencyCount f P mu alpha := by
+  intro alpha ha ha2
+  have hX := two_div_ge_two ha ha2
+  let P := I.params k
+  have H : P.CHyp (tightMuW k) (genMuKZ k) := I.hyp hk
+  have hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ uCount P.V (uDegT3 l) g t s :=
+    fun l g t s _ _ => one_le_uCount P.V (uDegT3 l) g t s
+  have hretile : ∀ q, Section16RetiledLinearityBound P.k q (familyRecExp P.k P.p q)
+      (familyRecThr P.k P.K P.p q) :=
+    fun q => ((I.profile k (by omega)).retiled_family
+      (fun q => familyRecThr_pos (by have := I.two_le_Kc k; omega) q) q).single
+  -- the two exponents
+  obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leJT3 H ha ha2
+  obtain ⟨-, -, hei, -, -, -⟩ := P.yIn_boundsJT3 ha ha2 H.hV H.hVμ H.hμ0
+  set D := singlePieceGlobalDensityFJ (fun l => uCount P.V (uDegT3 l)) alpha (alpha / 2) P.k with hDdef
+  have hD0 : 0 < D := singlePieceGlobalDensityFJ_pos ha (by linarith) hQb
+  have heta0 : 0 < P.eta alpha := by
+    exact singlePieceEtaFJ_pos ha (by linarith) hQb
+  have hetaD : P.eta alpha ≤ D := singlePieceEtaFJ_le_density ha (by linarith) hD0.le
+  have hDi : D⁻¹ ≤ (2 / alpha) ^ (2 ^ (GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3)) := by
+    refine (inv_anti₀ heta0 hetaD).trans (pw_mono hX hei ?_)
+    show GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + 10 ≤
+      GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3
+    unfold GenParamsJT3.expDegJT3
+    have := le_max_left (GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + 9)
+      (max (GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + k + 7) (genMuKZ k + 2))
     omega
+  refine ⟨min (P.Eloc alpha) D, lt_min hEl0 hD0, ?_, ⌈P.Tloc alpha⌉₊, ?_⟩
+  · rcases min_choice (P.Eloc alpha) D with h | h
+    · rw [h]; exact hEli
+    · rw [h]; exact hDi
+  · intro N _ _ hN f hf hnot
+    have hT : P.Tloc alpha ≤ N := (Nat.le_ceil _).trans (by exact_mod_cast hN)
+    obtain ⟨hodd, h15, -, m, hscale, hwide⟩ :=
+      P.modulus_conditions H.hV H.hK H.hp ha ha2 N hT
+    obtain ⟨q, hq, B, mu, -, hmu, hBw, hcount⟩ := single_piece_frequency_box_global_cover_fejer_joint
+      (Qb := fun l => uCount P.V (uDegT3 l)) (Eb := fun l => uExp P.V (uDegT3 l))
+      (by show 1 ≤ k; omega) ha ha2 (I.covers k) hQb
+      (fun l g t s _ _ => (uExp_pos_le P.V (uDegT3 l) g t s).1)
+      (fun l g t s _ _ => (uExp_pos_le P.V (uDegT3 l) g t s).2)
+      (familyRecExp P.k P.p) (familyRecThr P.k P.K P.p) hretile hodd h15 m hscale f hf hnot
+    have hN1 : (1 : Real) ≤ N := by exact_mod_cast Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
+    refine ⟨B, mu, hmu, ?_, ?_⟩
+    · calc (N : Real) ^ min (P.Eloc alpha) D ≤ (N : Real) ^ P.Eloc alpha :=
+            Real.rpow_le_rpow_of_exponent_le hN1 (min_le_left _ _)
+        _ ≤ _ := hwide q hq
+        _ ≤ B.width := by exact_mod_cast hBw
+    · calc min (P.Eloc alpha) D * B.carrier.card ≤ D * B.carrier.card :=
+            mul_le_mul_of_nonneg_right (min_le_right _ _) (Nat.cast_nonneg _)
+        _ ≤ _ := hcount
 
-theorem genMuXK3_small128 {k : Nat} (h1 : 2 ≤ k) (h2 : k ≤ 14) :
-    genMuXK3 k + 2 * k + 22 ≤ 128 * 2 ^ k := by
-  interval_cases k <;> decide +kernel
-
-theorem genMuXK3_fit128 {k : Nat} (hk : 2 ≤ k) : genMuXK3 k + 2 * k + 22 ≤ 128 * 2 ^ k := by
-  rcases Nat.lt_or_ge k 15 with h | h
-  · exact genMuXK3_small128 hk (by omega)
-  · have := genMuXK3_le16 k h
-    have h16 : 16 * 2 ^ k ≤ 128 * 2 ^ k := Nat.mul_le_mul_right _ (by norm_num)
-    omega
+end FinalInputs
 
 end LeanProofs.GowersSzemeredi

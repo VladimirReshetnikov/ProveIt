@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18CoverExplicit
 import GowersSzemeredi.Proofs18CoverFejerAllDegrees
+import GowersSzemeredi.Proofs18LengthSixSzemeredi
 import GowersSzemeredi.Proofs13ContextExtraction
 import GowersSzemeredi.Proofs13ExplicitFourierExponent
 import GowersSzemeredi.Proofs13OddFourierSquare
@@ -14,7 +15,41 @@ import Lean.Util.CollectAxioms
 open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for name in #[``LeanProofs.GowersSzemeredi.double_exp_le_szemerediThresholdAt,
+  for name in #[``LeanProofs.GowersSzemeredi.FinalInputs.hyp,
+      ``LeanProofs.GowersSzemeredi.FinalInputs.cover,
+      ``LeanProofs.GowersSzemeredi.FinalInputs.covers,
+      ``LeanProofs.GowersSzemeredi.FinalInputs.theorem_16_2_polynomial,
+      ``LeanProofs.GowersSzemeredi.exp_exp_le_two_rpow_two_rpow,
+      ``LeanProofs.GowersSzemeredi.exp_exp_pow_le_two_rpow_two_rpow,
+      ``LeanProofs.GowersSzemeredi.interval_exponent_le,
+      ``LeanProofs.GowersSzemeredi.closedThreshold_le_of_env,
+      ``LeanProofs.GowersSzemeredi.inv_thr_le_ex_of_partition_bound,
+      ``LeanProofs.GowersSzemeredi.inv_thr_le_ex_sharp,
+      ``LeanProofs.GowersSzemeredi.quadraticIntervalClosedThreshold_le_explicit_tower,
+      ``LeanProofs.GowersSzemeredi.fejerFiveTermThreshold_le_explicit_tower,
+      ``LeanProofs.GowersSzemeredi.lengthSixClosedThreshold_le_source,
+      ``LeanProofs.GowersSzemeredi.roth_threshold_le_szemerediThreshold,
+      ``LeanProofs.GowersSzemeredi.roth_threshold_le_szemerediThresholdAt_three,
+      ``LeanProofs.GowersSzemeredi.roth_threshold_le_szemerediThresholdAt_four,
+      ``LeanProofs.GowersSzemeredi.roth_threshold_le_szemerediThresholdAt_five,
+      ``LeanProofs.GowersSzemeredi.roth_threshold_le_szemerediThresholdAt_six,
+      ``LeanProofs.GowersSzemeredi.genMuX_le,
+      ``LeanProofs.GowersSzemeredi.theorem_18_2_L5_all_of_profiles_cover,
+      ``LeanProofs.GowersSzemeredi.genMuXK3_fit,
+      ``LeanProofs.GowersSzemeredi.polyGenMuJT3_fit,
+      ``LeanProofs.GowersSzemeredi.classCovers_of_profiles,
+      ``LeanProofs.GowersSzemeredi.envelope_induction,
+      ``LeanProofs.GowersSzemeredi.envBound_allC,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_allC,
+      ``LeanProofs.GowersSzemeredi.envBound_allT,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_allT,
+      ``LeanProofs.GowersSzemeredi.envBound_allX,
+      ``LeanProofs.GowersSzemeredi.envBound_allXF,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_allF,
+      ``LeanProofs.GowersSzemeredi.FinalInputs.envBound,
+      ``LeanProofs.GowersSzemeredi.FinalInputs.polyEnvBound,
+      ``LeanProofs.GowersSzemeredi.FinalInputs.corollary_16_11_polynomial,
+      ``LeanProofs.GowersSzemeredi.double_exp_le_szemerediThresholdAt,
       ``LeanProofs.GowersSzemeredi.theorem182AtSharp_of_envBound,
       ``LeanProofs.GowersSzemeredi.double_exp_le_szemerediThreshold,
       ``LeanProofs.GowersSzemeredi.theorem182At_of_envBound,
@@ -64,4 +99,4 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the shared threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
+  logInfo "Checked the shared double-exponential conversions and phase-refinement estimates, uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."

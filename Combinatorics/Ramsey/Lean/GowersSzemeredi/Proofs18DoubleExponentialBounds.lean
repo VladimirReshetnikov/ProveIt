@@ -35,4 +35,30 @@ theorem section18_exp_le_two_rpow {x : Real} (hx : 0 ≤ x) :
   have hh := Real.log_two_gt_d9
   nlinarith
 
+/-- Convert a natural double exponential to a base-two tower using a linear margin. -/
+theorem exp_exp_le_two_rpow_two_rpow {x y : Real} (hx : 0 ≤ x) (hxy : 1 + 2 * x ≤ y) :
+    Real.exp (Real.exp x) ≤ (2 : Real) ^ ((2 : Real) ^ y) := by
+  apply (section18_exp_le_two_rpow (Real.exp_pos _).le).trans
+  apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
+  calc
+    2 * Real.exp x ≤ 2 * (2 : Real) ^ (2 * x) :=
+      mul_le_mul_of_nonneg_left (section18_exp_le_two_rpow hx) (by norm_num)
+    _ = (2 : Real) ^ (1 + 2 * x) := by
+      rw [Real.rpow_add (by norm_num : (0 : Real) < 2), Real.rpow_one]
+    _ ≤ _ := Real.rpow_le_rpow_of_exponent_le (by norm_num) hxy
+
+/-- Two spare powers of a base at least two absorb the double-exponential conversion. -/
+theorem exp_exp_pow_le_two_rpow_two_rpow {u : Real} {q E : Nat}
+    (hu : 2 ≤ u) (hqE : q + 2 ≤ E) :
+    Real.exp (Real.exp (u ^ q)) ≤ (2 : Real) ^ ((2 : Real) ^ (u ^ E)) := by
+  have hu0 : 0 ≤ u := le_trans (by norm_num) hu
+  have hu1 : 1 ≤ u := le_trans (by norm_num) hu
+  apply exp_exp_le_two_rpow_two_rpow (pow_nonneg hu0 _)
+  calc
+    1 + 2 * u ^ q ≤ u ^ q * 4 := by linarith only [one_le_pow₀ hu1 (n := q)]
+    _ ≤ u ^ q * u ^ 2 :=
+      mul_le_mul_of_nonneg_left (by nlinarith only [hu] : (4 : Real) ≤ u ^ 2) (pow_nonneg hu0 _)
+    _ = u ^ (q + 2) := (pow_add u q 2).symm
+    _ ≤ _ := pow_le_pow_right₀ hu1 hqE
+
 end LeanProofs.GowersSzemeredi

@@ -1,0 +1,261 @@
+\section{Predicate-filtered common-port discovery}
+\label{sec:predicate-filtered-atlases}
+
+The nine candidate-selection counterexamples in
+Section~\ref{sec:intrinsic-port-atlases} require a complete continuation
+after a positive but nonessential witness.  The new research adapter
+\path{projective_port_research/filtered.py} provides that continuation.
+It excludes previously rejected source extreme rays by support clauses
+and solves the resulting query with a bitmask dynamic program at each
+atlas vertex.  This preserves the common-port method's avoidance of a
+Cartesian product of local modes.  It supplies a conditional complexity
+bound in the number of rejected witnesses; it does not supply a general
+geometric bound on that number.
+
+Burton and Ozlen use linear programming to guide a branching search
+for positive-Euler surfaces~\cite{burton-ozlen}.  The operation developed here is a
+support-filtered continuation of this repository's common-port oracle.
+
+\subsection{Why the geometric predicate remains explicit}
+
+On a connected positive-Euler normal surface, a nonempty boundary forces
+the surface to be a disc.  On a torus, an embedded simple closed curve
+is essential exactly when its mod-two homology class is nonzero: an
+essential curve represents a primitive integral class, which cannot
+have both coordinates even.  The maintained checker computes these
+parities from exact edge intersection counts along a boundary homology
+basis, together with independent connectivity and Euler checks.
+
+The raw parity condition is not homogeneous: doubling coordinates
+erases parity without changing the projective ray.  Thus it cannot
+simply be appended as an ordinary linear matching equation.  The
+primitive connected source representative matters.  We retain the
+native geometric predicate after source-extreme recovery and require
+an independently replayable positive disc packet before acceptance.
+This also avoids assuming orientability or connectedness of an
+arbitrary atlas mixture.
+
+\subsection{Support exclusion preserves every other extreme candidate}
+
+Let $C=\{x\geq0:Ax=0\}$ be the original source matching cone, with
+coordinate incompatibilities and any fixed coordinate-zero face.
+Write $\operatorname{supp}(x)=\{j:x_j>0\}$.
+
+\begin{lemma}[Incomparable extreme supports]
+Distinct rays of $C$ have incomparable supports if both rays are
+extreme.  In particular, after rejecting a primitive extreme ray $r$,
+every other source extreme ray satisfies
+\[
+ \bigvee_{j\in\operatorname{supp}(r)} x_j=0.
+ \tag{support exclusion}
+\]
+\end{lemma}
+\begin{proof}
+The kernel of $A$ restricted to the support of an extreme ray is
+one-dimensional.  If another ray's support were contained in it, both
+vectors would belong to this same one-dimensional space, hence define
+the same ray.  Coordinate-zero faces and incompatibilities do not
+affect this argument for their admissible full-cone extreme rays.
+\end{proof}
+
+The clause removes some nonextreme vectors as well, namely all vectors
+whose support contains the rejected support.  This is intentional:
+the contract is discovery among positive source extreme rays.  No
+claim is made that arbitrary nonextreme accepted surfaces survive.
+Support descent preserves all clauses, since it only removes positive
+coordinates.  A new positive query therefore yields a source extreme
+ray different from every previous rejection.
+
+\subsection{Union-mask optimization at an atlas vertex}
+
+Suppose $q$ source supports $S_1,\ldots,S_q$ have been excluded.  For a
+local mixture in block $i$, form a $q$-bit mask: bit $a$ is set if some
+source coordinate in $S_a$ represented in block $i$ vanishes in the
+mixture.  Duplicated master coordinates are harmless, because source
+compilation enforces agreement of all copies.  The union of local masks
+is all bits exactly when the assembled source vector satisfies every
+exclusion.  Zero coefficients in a barycentric mixture are respected;
+the mask uses its actual support, not the union of all simplex columns.
+
+At each atlas vertex, first retain the best local objective for each
+mask in each block.  Starting with the transformed master objective,
+combine a prefix mask $M$ and a local mask $L$ into $M\cup L$, keeping
+the largest exact objective and a reconstruction path per resulting
+mask.  There are at most $2^q$ prefix states.  Acceptance of the full
+mask gives the best objective at that vertex satisfying the clauses.
+
+\begin{proposition}[Complete support-filtered atlas query]
+The union-mask procedure, together with a separate zero-port scan,
+decides whether a positive synchronized source vector satisfies all
+fixed coordinate zeros and all $q$ support exclusions.  It uses the
+same objective-independent atlas as the unrestricted query.
+\end{proposition}
+\begin{proof}
+For any feasible vector satisfying the clauses, choose one zero
+coordinate witnessing each clause.  These choices impose a particular
+local coordinate-zero face on every block.  The inherited atlas theorem
+is complete for every such choice of faces: some common atlas vertex
+has compatible local mixtures on those faces with positive total
+objective whenever the original vector does.  Their masks cover all
+clauses, so the dynamic program considers them.  Conversely every
+selected mixture is locally feasible and compatible, its port is the
+common atlas vertex, and the full union mask witnesses every clause.
+Thus a positive reconstructed vector is valid.
+
+For zero port, decompose each block vector into compatible zero-port
+rays.  Every summand has support contained in the full source support,
+so satisfies all exclusions that the full vector satisfies.  Positive
+total objective implies that some summand is positive.  It suffices to
+scan single-block positive zero-port rays with every other block set
+to zero.  Nonpositive zero-port summands in a nonzero-port solution
+can be discarded without losing any exclusion or lowering its
+objective.  These arguments also handle zero-dimensional common image.
+\end{proof}
+
+The proof does not enumerate the potentially large product of choices
+of a zero coordinate for each clause.  It uses those choices only to
+prove completeness of the already constructed atlas; the algorithm
+stores masks instead.
+
+\subsection{Complete filtered extreme-ray search and cost}
+
+Repeatedly solve the positive query, recover a primitive source extreme
+ray by support descent, and verify its original source equations,
+incompatibilities, coordinate zeros, positivity and extremality.  Apply
+the caller's fixed, exactly evaluated predicate.  An inconclusive
+inspection must propagate; it cannot be recorded as a rejection.
+Accept a successful ray; otherwise
+append its support exclusion.  A completed negative query proves that
+no accepted positive source extreme ray remains, since every other
+extreme ray satisfies every exclusion.  Termination without caps follows
+from finiteness of the source extreme rays and distinctness of all
+rejections.
+
+Let $P$ be atlas preparation cost, $T$ its total cached local mixture
+count plus its zero-port ray count, $N$ the binary source size, and $q$ the number of rejected rays
+before acceptance or complete exhaustion.  Mask formation is polynomial
+in $q,N$ per cached choice, and transitions are bounded by $2^q T$
+per query.  Including all $q+1$ queries, source recovery and polynomial
+predicate verification, the cost is bounded by
+\[
+ P+(q+1)2^q\operatorname{poly}(N,q)(T+1).
+\]
+The memory for a dynamic-program layer is $2^q\operatorname{poly}(N,q)$,
+besides the prepared atlas and retained witnesses.  The default research
+caps are sixteen rejected supports and one million total mask
+transitions shared across the entire search.  They can be disabled;
+exhaustion returns \texttt{INCONCLUSIVE}, never a completed negative.
+Preparation is outside the transition cap.  Caller cancellation and
+predicate exceptions, including exceptions with the same class as an
+internal cap, propagate unchanged.
+
+\begin{corollary}[Conditional quasi-polynomial filtered discovery]
+If the local coordinate bound and intrinsic port dimension are
+$O(\log N)$ and the number of rejected positive extreme witnesses is
+$q=\log^{O(1)}N$, then a polynomially checked acceptance predicate can
+be handled in quasi-polynomial time.  More explicitly, the inherited
+atlas bound gives $2^{O(\log^3N+q)}\operatorname{poly}(N,q)$.
+\end{corollary}
+
+This is a condition on the actual rejection count, not on the number
+of local blocks or the number of boundary homology generators.  A
+scalar shared port can already support $2^m$ global extreme rays:
+take $m$ two-coordinate blocks with $x_{i,0}+x_{i,1}=y$; at $y=1$
+the section is an $m$-cube.  An arbitrary predicate can reject all of
+them.  No universal small-rejection theorem follows from small port
+dimension.  For the native application, a negative result means no
+accepted positive extreme ray in the specified sector and anchor
+face.  Turning this into a global geometric negative requires the
+appropriate vertex-disc and search-coverage theorems.  The present
+work does not establish the general quasi-polynomial recognizer.
+
+\subsection{Independent finite verification and recovered native discs}
+
+Six focused tests cover distributed clause coverage, duplicated source
+masters, zero-port rays, nonextreme assemblies followed by source
+recovery, explicit caps, and callback and predicate exceptions.
+On sixty small random matrix models, 480 support-filtered queries
+agree with independent whole-source extreme-ray enumeration, including
+arbitrary support clauses and additional coordinate zeros.  The same
+tests reject every positive extreme ray of each model and require
+exact equality of the complete rejection list with the independent
+positive-ray set: no duplicates and no omissions.
+
+The native audit repeats all 202 anchored queries from the 22-sector
+bank of Section~\ref{sec:intrinsic-port-atlases}.  The filtered atlas
+now agrees with complete standard-sector-ray inspection: sixty queries
+produce independently certified essential discs, and 142 complete
+without an accepted positive extreme ray.  All nine discs missed by
+the single-witness atlas policy are recovered.  Each query rejects at
+most one ray.  In total the filtered procedure makes 220 positive
+oracle calls, records eighteen rejections, and performs 374 mask
+transitions.  Its traces contain 78 inspected candidates, compared
+with 69 for the native enumeration policy; both count repeats across
+anchor queries.  With a per-source witness cache, the actual distinct
+geometric inspections are 28 and 25 respectively.
+
+For all 112 two-tetrahedron queries, the accepted-ray oracle is also
+rebuilt by independent exhaustive whole-source enumeration.  For the
+larger three- and five-tetrahedron fixtures, the retained complete native
+sector enumerator supplies the comparison set.  Publication replay
+reconstructs source matching equations, checks every saved source ray
+and exclusion against its original coordinates, replays every geometric
+packet, and compares every completed answer with that complete finite
+set.  It invokes no atlas discovery.  These are supplied triangulations;
+no new knot-diagram ancestry certificate is asserted.
+
+The abstract cube audit checks the rejection-count obstruction directly
+for one through seven scalar-port blocks.  Rejecting every ray gives
+exactly $2^m$ distinct rays and $2^m+1$ positive-oracle calls, with 254
+total rays across the seven cases.  The largest case takes 18,443 mask
+transitions.  A four-rejection cap completes the first two cases and
+correctly returns inconclusive on the other five.  This is an algebraic
+counterexample to inferring a small rejection count from small port
+dimension, not a family of triangulated knot exteriors.
+
+\subsection{Complete geometric-query timing and the remaining cost}
+
+The benchmark now compares the same geometric answer in each arm:
+accepted positive source extreme ray or complete absence in the stated
+sector and anchor face.  All preparation, source validation, every
+query, source recovery, native geometric inspection, independent
+certificate replay and JSON serialization are timed.  Both arms use
+their own initially empty per-source witness cache; fixture construction
+is excluded.  These timings should not be mixed with the preceding
+single-witness Euler-query benchmark, which had different output
+semantics and no shared geometric inspection cache.
+
+\begin{table}[ht]
+\centering\small
+\input{data/filtered-atlas-table.tex}
+\caption{Complete accepted-extreme query batches, with seven randomized
+paired rounds and three duplicate filtered-arm controls. Ratios are
+medians of paired ratios.}
+\label{tab:filtered-atlas-times}
+\end{table}
+
+The filtered atlas is between $3.07$ and $7.70$ times slower than the
+maintained native sector enumerator on these batches.  The duplicate
+controls range from $0.955$ to $1.003$.  Thus this change closes the
+demonstrated candidate-completeness gap and proves the conditional
+filtering bound, but provides no native speedup in this bank.  The
+research backend remains outside ordinary recognizer dispatch.
+Repeated exact kernel solves in local ray preparation, source recovery
+and extremality verification remain concrete performance targets.
+A separate instrumented profile of the five-tetrahedron batch attributes
+about $0.437$ seconds to the nineteen searches and $0.250$ seconds to
+atlas preparation; within these, source verification accounts for
+$0.218$ seconds, source recovery for $0.180$ seconds, and local zero-set
+ray enumeration for $0.170$ seconds.  These cumulative times overlap
+and include profiler overhead; they are not benchmark samples.  They
+show why optimizing only the 374 observed mask transitions across the
+entire bank would leave substantial work untouched.
+
+The directory \path{projective_port_research/} contains the
+\path{filtered*.py} scripts and independent replay in
+\path{check_filtered.py}.
+Retained evidence has prefix \path{data/filtered-atlas-}.
+The remaining global obligations still
+include a suitable native decomposition and search-coverage theorem,
+a justified bound or replacement for rejected-witness processing,
+marked geometric successor repair, and aggregate hierarchy accounting.

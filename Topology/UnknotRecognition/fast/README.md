@@ -5,9 +5,16 @@ the intersection of its blocks' linear images, preserving all feasible tuples
 and linear queries. It lowers the projective atlas exponent to the intrinsic
 dimension, with local rays recomputed after restriction. On 202 native Euler
 queries it improves the research atlas but remains slower than the existing
-sector solver; atlas-selected witnesses also find fewer essential discs.
+sector solver; the single-witness atlas policy also finds fewer essential discs.
 See [the audit and reproduction notes](projective_port_research/README.md).
 This backend is not used by the recognizer's default dispatch.
+
+The predicate-filtered continuation now recovers all nine missed discs by
+excluding rejected extreme supports and combining exclusion masks across blocks.
+It agrees with complete native sector-ray inspection on 202 anchored queries.
+Its conditional bound adds a factor exponential in rejected witnesses; native
+timings still favor the existing sector solver. See
+[`predicate_filtered_atlases.tex`](../synthesis/predicate_filtered_atlases.tex).
 
 The signed-annulus continuation now transports authenticated passive curves in
 shared grammars and checks one common basis change per geometric core. Its

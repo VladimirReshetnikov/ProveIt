@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs18CoverBudget
 import GowersSzemeredi.Proofs18PolyDegrees
 import GowersSzemeredi.Proofs18GenericLengths
+import GowersSzemeredi.Proofs18EnvelopeInduction
 
 /-! **Theorem 18.1, Theorem 18.2 and Corollary 18.7 in every degree and
 length**, from the recurrence profiles, with the joint-cover remainder
@@ -106,29 +107,18 @@ theorem polyEnvBound_allC (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : �
     {Kφ : Real} {pφ : Nat} (hpp : ProgressionPhasePartition Kφ pφ) (hpφ : 0 < pφ)
     (hKφ : Kφ ≤ 2 ^ pφ) (hpφB : (pφ : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) :
     ∀ k, 2 ≤ k → PolyEnvBound (k + 2) (polyGenMuC k) := by
-  have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
-    fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
-  have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
   have hstep : ∀ k, 2 ≤ k → ∀ μ, PolyEnvBound (k + 1) μ →
       PolyEnvBound (k + 2) (envStepC k (genMu0 k) (genMuK k) μ) := by
     intro k hk μ hlow
     obtain ⟨hV, hVμ, hμ0, -, -, hk0, hKk, hKμ, hpk, hpμ⟩ := stdHyp_of_profiles Kc pc hK hp hconst hk
     let P : GenParamsC := ⟨classV Kc pc k, k, Kc k, pc k, genMu0 k⟩
     have H : P.CHyp (genMuV k) (genMuK k) := ⟨hV, hVμ, hμ0, hk0, hKk, hKμ, hpk, hpμ⟩
-    have hcov : ∀ l, 1 ≤ l → l ≤ P.k →
-        PolyCoverAt l (uCount P.V (uDeg68 l)) (uExp P.V (uDeg68 l)) := by
-      intro l hl1 hlk
-      have hcl := polyCoverAt_class68 Kc pc hK1 hp hlem hl1
-      exact hcl.uniform_mono (one_le_classV Kc pc l) (classV_mono Kc pc hlk) le_rfl
+    have hcov := classCovers_of_profiles Kc pc hK hp hrec (degree := uDeg68) (k := k)
+      (fun hK1 => polyCoverAt_class68 Kc pc hK1 hp)
     exact polyEnvBound_stepC P H (by show 1 ≤ k; omega) hcov (hrec k (by omega)) hlow
   intro k hk
-  induction k, hk using Nat.le_induction with
-  | base =>
-    exact hstep 2 le_rfl 74 (polyEnvBound_three_of_phase_partition hpp hpφ hKφ hpφB)
-  | succ k hk ih =>
-    rw [polyGenMuC_succ (by omega)]
-    exact hstep (k + 1) (by omega) (polyGenMuC k) ih
+  exact envelope_induction (P := PolyEnvBound) (budget := polyGenMuC) hstep
+    (polyEnvBound_three_of_phase_partition hpp hpφ hKφ hpφB) (fun _ h => polyGenMuC_succ h) k (by omega)
 
 /-- The envelope after one step, with the threshold. -/
 def envStepCT (k μ0 μK μ : Nat) : Nat :=
@@ -239,28 +229,18 @@ theorem envBound_allC (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp : ∀ k
       Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))
     (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) :
     ∀ k, 2 ≤ k → EnvBound (k + 2) (genMuC k) := by
-  have hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k
-      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))) :=
-    fun k hk => abstractFamilyLemma166At_of k (hK k) (hp k) (hrec k hk)
-  have hK1 : ∀ k, 1 ≤ Kc k := fun k => le_trans (by norm_num) (hK k)
   have hstep : ∀ k, 2 ≤ k → ∀ μ, EnvBound (k + 1) μ →
       EnvBound (k + 2) (envStepCT k (genMu0 k) (genMuK k) μ) := by
     intro k hk μ hlow
     obtain ⟨hV, hVμ, hμ0, -, -, hk0, hKk, hKμ, hpk, hpμ⟩ := stdHyp_of_profiles Kc pc hK hp hconst hk
     let P : GenParamsC := ⟨classV Kc pc k, k, Kc k, pc k, genMu0 k⟩
     have H : P.CHyp (genMuV k) (genMuK k) := ⟨hV, hVμ, hμ0, hk0, hKk, hKμ, hpk, hpμ⟩
-    have hcov : ∀ l, 1 ≤ l → l ≤ P.k →
-        PolyCoverAt l (uCount P.V (uDeg68 l)) (uExp P.V (uDeg68 l)) := by
-      intro l hl1 hlk
-      have hcl := polyCoverAt_class68 Kc pc hK1 hp hlem hl1
-      exact hcl.uniform_mono (one_le_classV Kc pc l) (classV_mono Kc pc hlk) le_rfl
+    have hcov := classCovers_of_profiles Kc pc hK hp hrec (degree := uDeg68) (k := k)
+      (fun hK1 => polyCoverAt_class68 Kc pc hK1 hp)
     exact envBound_stepC P H (by show 1 ≤ k; omega) hcov (hrec k (by omega)) hlow
   intro k hk
-  induction k, hk using Nat.le_induction with
-  | base => exact hstep 2 le_rfl 62 envBound_three
-  | succ k hk ih =>
-    rw [genMuC_succ (by omega)]
-    exact hstep (k + 1) (by omega) (genMuC k) ih
+  exact envelope_induction (P := EnvBound) (budget := genMuC) hstep
+    envBound_three (fun _ h => genMuC_succ h) k (by omega)
 
 
 /-! ### Closed-form envelopes -/
