@@ -153,6 +153,17 @@ def build_sector_kernel(triangulation, allowed_types, *, check=lambda: None):
     prepared = _prepare(triangulation, check)
     count = len(prepared['tetrahedra'])
     support = _support(allowed_types, count)
+    return _assemble_sector_kernel(triangulation, prepared, support, check)
+
+
+def _assemble_sector_kernel(triangulation, prepared, support, check):
+    """Shared algebra for an already validated, sorted unique Q mask.
+
+    The public builder above still requires compatible masks. Internal
+    relaxation producers may retain several Q types in a tetrahedron; their
+    formal lifts must not use SectorKernel.lift before compatibility is known.
+    """
+    count = len(prepared['tetrahedra'])
     index = {item: j for j, item in enumerate(support)}
     k = len(support)
     parent = list(range(4*count))

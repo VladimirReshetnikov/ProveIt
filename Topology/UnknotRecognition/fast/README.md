@@ -4636,3 +4636,34 @@ removes the Cartesian anchor-product obstruction on every search source;
 the exact simplex pivot policy and complete sector family still lack the
 requested quasi-polynomial bound. See
 [the vertex-reduction proof](../synthesis/vertex_reduction.tex).
+
+
+### Certified Euler trees over partial quadrilateral masks
+
+`sector_method='tree'` searches a tree of masks that may permit multiple quad
+types in one tetrahedron. An exact negative Euler relaxation closes an entire
+mask. An incompatible positive formal point selects a tetrahedron to split
+into all its allowed singleton choices. Compatible positive points pass the
+existing support extraction and independently checked crushing pipeline.
+
+The default `tree_model='source'` builds the full Q model once per source.
+It rechecks cached full-source dual bounds against every retained column of
+each new query. `tree_model='restricted'` rebuilds the model at each node for
+comparison. Both `lp_strategy='envelope'` and `'anchors'` remain available.
+`max_tree_nodes=256`, `max_pivots=10000`, and `max_anchors=10000` are shared
+across every crushing successor; `None` removes a limit. Sector and corner
+limits are unused in tree mode. Exhausted limits return `INCONCLUSIVE`.
+
+`normal_euler_tree.search_euler_tree(source, allowed_types=None)` is the
+low-level mask API. Complete negative results carry a flat preorder proof
+checked by `normal_euler_tree_verify.verify_euler_branch_tree`. The checker
+derives all child masks and reconstructs the dual model independently. A
+partial root mask proves only a restricted claim. Global knottedness requires
+a full root and authenticated diagram crushing chain, using the new
+`diagram-crushing-recognition-v2` schema. Terminal unknot chains retain v1.
+
+Tree depth is at most the tetrahedron count, but general node count and exact
+Bland pivot count still lack quasi-polynomial bounds. The default recognition
+dispatcher and default crushing sector method remain unchanged. See the
+[Euler-tree theory](../synthesis/euler_branch_tree.tex) and
+[reproducible audit and comparisons](euler_tree_research/README.md).
