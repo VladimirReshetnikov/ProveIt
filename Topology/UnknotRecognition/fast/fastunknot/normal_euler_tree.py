@@ -87,50 +87,33 @@ def _formal_lift(kernel, quadrilaterals, check):
     return rows, chi, conflicts
 
 
-def search_euler_tree(triangulation, allowed_types=None, *, strategy='envelope', model='source',
-                      max_nodes=None, max_pivots=None, max_anchors=None,
-                      check=lambda: None):
-    """Return a compatible positive point, a full exclusion tree, or a cap.
-
-    All node, pivot and anchor allowances are shared across the entire tree.
-    Nodes are explored in deterministic depth-first order with an explicit
-    stack. At a conflicting tetrahedron, every currently allowed singleton
-    type gets a child; its zero-Q possibility is covered in every child.
-    Positive output may be nonextreme and requires support extraction before
-    crushing. Negative output is only about this supplied source and root mask.
-    Caller cancellation exceptions propagate unchanged.
-
-    model='source' builds the all-3t source algebra once. Every node restricts
-    its columns, and up to 256 source-row dual bounds are reused across nodes.
-    Its v2 negative leaves retain every full-source anchor objective.
-    model='restricted' rebuilds and contracts the algebra on each node mask,
-    using a local dual cache and the original v1 negative leaf format.
-    """
-    for name, cap in (('max_nodes', max_nodes), ('max_pivots', max_pivots),
-                      ('max_anchors', max_anchors)):
-        if cap is not None and (type(cap) is not int or cap < 0):
-            raise ValueError(name+' must be a nonnegative integer or None')
-    if strategy not in ('envelope', 'anchors'):
-        raise ValueError('strategy must be envelope or anchors')
-    if model not in ('source', 'restricted'):
-        raise ValueError('model must be source or restricted')
-    prepared = _prepare(triangulation, check)
-    root = _mask(allowed_types, len(prepared['tetrahedra']))
-    digest = _source_hash(triangulation)
-    stats = dict(nodes_attempted=0, branch_splits=0, negative_leaves=0,
+def _euler_search_stats():
+    return dict(nodes_attempted=0, branch_splits=0, negative_leaves=0,
                  lp_calls=0, lp_pivots=0, anchors_tested=0, reused_anchors=0,
                  envelope_calls=0, reused_envelopes=0,
                  lp_tableau_updates=0, maximum_tableau_bits=0,
                  positive_relaxations=0, incompatible_positive_points=0,
                  nonpositive_envelope_points=0, maximum_depth=0,
                  kernel_preparations=0)
-    source_context, source_cache = None, None
 
-    def inconclusive(reason):
-        return dict(status='INCONCLUSIVE', reason=reason, stats=stats)
 
-    def attempt(mask):
-        nonlocal source_context, source_cache
+class _EulerMaskOracle:
+    """Shared exact mask oracle; one cache and shared caps per search call."""
+
+    def __init__(self, triangulation, prepared, *, strategy, model,
+                 max_pivots, max_anchors, check, stats):
+        self.triangulation, self.prepared = triangulation, prepared
+        self.strategy, self.model, self.check = strategy, model, check
+        self.max_pivots, self.max_anchors = max_pivots, max_anchors
+        self.stats, self.digest = stats, _source_hash(triangulation)
+        self.source_context, self.source_cache = None, None
+
+    def attempt(self, mask):
+        triangulation, prepared = self.triangulation, self.prepared
+        strategy, model, check = self.strategy, self.model, self.check
+        max_pivots, max_anchors = self.max_pivots, self.max_anchors
+        stats, digest = self.stats, self.digest
+        source_context, source_cache = self.source_context, self.source_cache
         if model == 'source':
             if source_context is None:
                 full = tuple((t, q) for t in range(len(prepared['tetrahedra'])) for q in range(3))
@@ -138,6 +121,7 @@ def search_euler_tree(triangulation, allowed_types=None, *, strategy='envelope',
                 linear, weights = _euler_model(kernel, check)
                 source_context = kernel, linear, weights
                 source_cache = [(tuple(0 for _ in full), [[0, 1] for _ in kernel.cycle_rows])]
+                self.source_context, self.source_cache = source_context, source_cache
                 stats['kernel_preparations'] += 1
             kernel, linear, weights = source_context
             active = tuple(3*t+q for t, q in mask)
@@ -252,6 +236,46 @@ def search_euler_tree(triangulation, allowed_types=None, *, strategy='envelope',
             remember(result['y'])
         return negative('anchors', dict(duals=duals))
 
+
+def search_euler_tree(triangulation, allowed_types=None, *, strategy='envelope', model='source',
+                      max_nodes=None, max_pivots=None, max_anchors=None,
+                      check=lambda: None):
+    """Return a compatible positive point, a full exclusion tree, or a cap.
+
+    All node, pivot and anchor allowances are shared across the entire tree.
+    Nodes are explored in deterministic depth-first order with an explicit
+    stack. At a conflicting tetrahedron, every currently allowed singleton
+    type gets a child; its zero-Q possibility is covered in every child.
+    Positive output may be nonextreme and requires support extraction before
+    crushing. Negative output is only about this supplied source and root mask.
+    Caller cancellation exceptions propagate unchanged.
+
+    model='source' builds the all-3t source algebra once. Every node restricts
+    its columns, and up to 256 source-row dual bounds are reused across nodes.
+    Its v2 negative leaves retain every full-source anchor objective.
+    model='restricted' rebuilds and contracts the algebra on each node mask,
+    using a local dual cache and the original v1 negative leaf format.
+    """
+    for name, cap in (('max_nodes', max_nodes), ('max_pivots', max_pivots),
+                      ('max_anchors', max_anchors)):
+        if cap is not None and (type(cap) is not int or cap < 0):
+            raise ValueError(name+' must be a nonnegative integer or None')
+    if strategy not in ('envelope', 'anchors'):
+        raise ValueError('strategy must be envelope or anchors')
+    if model not in ('source', 'restricted'):
+        raise ValueError('model must be source or restricted')
+    prepared = _prepare(triangulation, check)
+    root = _mask(allowed_types, len(prepared['tetrahedra']))
+    digest = _source_hash(triangulation)
+    stats = _euler_search_stats()
+    oracle = _EulerMaskOracle(triangulation, prepared, strategy=strategy, model=model,
+                              max_pivots=max_pivots, max_anchors=max_anchors,
+                              check=check, stats=stats)
+
+    def inconclusive(reason):
+        return dict(status='INCONCLUSIVE', reason=reason, stats=stats)
+
+
     pending, nodes = [(root, 0)], []
     while pending:
         check()
@@ -260,7 +284,7 @@ def search_euler_tree(triangulation, allowed_types=None, *, strategy='envelope',
         mask, depth = pending.pop()
         stats['nodes_attempted'] += 1
         stats['maximum_depth'] = max(stats['maximum_depth'], depth)
-        result = attempt(mask)
+        result = oracle.attempt(mask)
         if result['status'] == 'INCONCLUSIVE':
             return inconclusive(result['reason'])
         if result['status'] == 'NEGATIVE':
