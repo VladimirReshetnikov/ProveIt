@@ -19,7 +19,7 @@ Our primary references are Gr\"otschel, Lov\'asz and Schrijver,
 Sections~3.1--3.2 (especially Theorem~3.2.1 and Lemmas~3.2.8--3.2.10) and
 Sections~6.4--6.5, including Theorem~6.5.17; and G\'acs and Lov\'asz,
 ``Khachiyan's algorithm for linear programming'',
-\emph{Mathematical Programming Studies}~14 (1981), 61--68.\footnote{
+\emph{Mathematical Programming Studies}~14 (1981), 61--68.\footnote{\raggedright
 Author-hosted book:
 \url{https://www.zib.de/userpage/groetschel/pubnew/paper/groetschellovaszschrijver1988.pdf}.
 Original G\'acs--Lov\'asz publication:
@@ -399,8 +399,8 @@ Let $r_T$ be the number of tableau rows selected from the input, and put
  P_0=(n+r_T+1)^2.
 \]
 The polynomial policy allows at most $P_0$ Bland pivots as its fast path.
-The optional \texttt{fast\_path\_pivots} can decrease this bound but cannot
-increase it.  A conclusive original simplex answer is returned immediately;
+The optional \path{fast_path_pivots} can only lower this bound.
+A conclusive original simplex answer is returned immediately;
 otherwise the internal cap triggers the exact fallback.  The explicit
 \texttt{policy='bland'} ablation retains the old finite but potentially
 exponential uncapped simplex trajectory.
@@ -547,3 +547,83 @@ coverage remains exponential; the finite $h=3$ and $h=2$ examples do not bound
 a family.  Consequently polynomial exact LP, even together with certified
 polynomially many crushing stages, does not establish quasi-polynomial
 unknot recognition.
+
+\subsection{Fresh exact audit of the maintained policy}
+
+The source-pinned package \path{fast/polynomial_lp_research} performs fresh
+discovery with the maintained implementation.  Its 15 rational kernel cones
+are each queried under both row policies and both the explicit Bland policy
+and the polynomial policy with a zero-pivot prefix.  The independent oracle
+enumerates the normalized cone vertices using Leibniz determinants and
+Cramer's rule, without any producer elimination helper.  All 60 queries
+agree: 20 are positive and 40 nonpositive.  Every positive answer is checked
+for original matching, primitive normalization, support nullity one, and a
+nonsingular original slack basis.  Every negative answer satisfies all
+original-row dual inequalities.  Twenty-two queries actually enter fallback,
+using 16642 ellipsoid updates and 100 feasibility decisions in total;
+trivial zero-pivot conclusions are not counted as fallback discoveries.
+
+The inputs include dependent rational rows, unsorted pivots, a genuine
+four-dimensional negative problem, and seeded small controls.  Two further
+three-dimensional bounded systems have independently known outcomes: an
+explicit singleton and a pair of inequalities whose sum is a strict
+constant contradiction.  Twelve consecutive updates from each are retained.
+Their solver-free replay checks all principal minors for outward matrix
+containment, positive definiteness, the spectral floor, a rational volume
+decrease bound, nested dyadic precision, and exact center rounding.  It also
+checks 51 signed integer-square-root ceilings by squared inequalities.
+These 24 recorded updates test implementation arithmetic; the general
+containment and cutoff claims come from the proof above.
+
+Two genuine geometric queries force fallback as well.  A two-tetrahedron
+layered-torus mask gives a complete negative tree after candidate restarts;
+its source-derived dual leaves and complete coverage replay independently.
+A one-tetrahedron source is obtained from an authenticated partial crushing
+chain of the circle.  Its positive sector is freshly solved by fallback,
+checked in original normal coordinates, extracted, and used to complete an
+independently replayed crushing chain.  The small-source tests establish
+neither an exhaustive family audit nor a practical advantage for forcing
+the ellipsoid path.
+
+The saved evidence is \path{data/polynomial-lp-audit.json}.  The independent
+checker runs with \texttt{python -S}, invokes no LP or crushing discovery,
+and replays all retained original-system and geometric certificates.  The
+audit and timing files pin every native Python module and their precise
+research dependencies; the final publication manifest additionally pins
+the article, compiled PDF, regression logs, and generated timing table.
+
+\subsection{Complete-query comparison with the retained Bland policy}
+
+The separate paired experiment compares \path{lp_policy='polynomial'} with
+\path{lp_policy='bland'} in the same pinned native implementation.  Both
+use source-model transversal search, envelope-first objectives, vertex
+reduction, and identical finite shared allowances: 256 tree nodes and
+10000 each for pivots, anchors, tested subsets, ellipsoid updates, and
+feasibility decisions.  Each case has three shuffled paired samples and
+one shuffled Bland/Bland A/A pair, with batch size one.  The fixed seed is
+2026101301.  Construction, shelling, preprocessing, discovery, internal
+replay, and full result serialization are timed; diagram objects, imports,
+and a separate independent warmup replay are outside the timer.
+
+\begin{center}
+\input{data/polynomial-lp-table.tex}
+\end{center}
+The ratio column is the median of the paired ratios, not the ratio of
+the two marginal medians.  Every timed output equals its independently
+replayed warmup byte for byte, and the full outputs also agree between
+policies.  Both policies complete the circle as \texttt{UNKNOT} and the
+trefoil and figure-eight as \texttt{KNOTTED}.  No query in this experiment
+enters ellipsoid fallback.  Vertex preprocessing alone resolves the circle,
+so that case performs no LP call; the trefoil and figure-eight use 124 and
+114 LP calls, with 1811 and 5433 pivots, respectively.
+
+The paired Bland/polynomial ratios are $0.997$, $0.985$, and $0.998$;
+the corresponding A/A ratios are $1.033$, $1.017$, and $0.999$.
+These short measurements support retaining the common fast path and expose
+its finite overhead and timing variation.  They establish neither a
+practical fallback speedup nor a broad performance claim.  The improvement
+proved here is the worst-case binary complexity of each uncapped LP query.
+Raw samples, complete warmups, source pins, and independently recomputed
+table values are in \path{data/polynomial-lp-benchmark.json} and
+\path{data/polynomial-lp-replay.txt}.  Reproduction commands are in
+\path{fast/polynomial_lp_research/README.md}.

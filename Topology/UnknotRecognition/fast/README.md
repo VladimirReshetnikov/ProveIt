@@ -4748,3 +4748,8 @@ support descent; partial fallback work never certifies a negative result.
 The local LP bit bound is polynomial in encoded input size, not strongly
 polynomial, and does not bound the number of geometric search queries. See
 [the implementation and complete bit-complexity proof](../synthesis/exact_polynomial_lp.tex).
+The [fresh audit and paired comparison](polynomial_lp_research/README.md)
+check 60 exact cone queries and genuine geometric fallback certificates.
+Complete circle, trefoil, and figure-eight results match the legacy policy
+exactly. Those timing examples stay on the fast path; the measurements
+document common-path overhead and do not claim a practical fallback speedup.

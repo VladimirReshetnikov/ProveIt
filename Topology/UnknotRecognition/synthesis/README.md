@@ -9,7 +9,13 @@ original-row dual scaling. It includes a conservative finite-bit bound and
 the shared pivot, ellipsoid-update, and feasibility-call allowances used by
 Euler search and crushing. This resolves the local LP complexity obligation;
 a general quasi-polynomial bound on complete admissibility search remains
-unproved. Historical evidence below retains its original source pins.
+unproved. The fresh audit checks 60 exact cone queries, 24 retained rational
+rounding updates, and genuine positive/negative geometric fallback results.
+Three paired complete-query measurements preserve identical outputs and
+report small common-path timing differences; none enters fallback, so no
+practical ellipsoid speedup is claimed. Reproduction commands and source pins
+are in [`polynomial_lp_research`](../fast/polynomial_lp_research/README.md).
+Historical evidence below retains its original source pins.
 
 [`euler_transversal.tex`](euler_transversal.tex) describes the optional
 conflict-learning search and proves its conditional bound in the minimum
