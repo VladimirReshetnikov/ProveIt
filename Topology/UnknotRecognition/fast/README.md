@@ -4874,6 +4874,23 @@ does not imply monotonicity of the resolving parameter or a general
 quasi-polynomial recognition bound. See
 [the relative-boundary proof](../synthesis/strict_pachner32.tex).
 
+The complete eight-call audit compares the flag off/on on circle, trefoil,
+figure-eight and the whole two-trefoil diagram under identical search caps.
+Trefoil uses 7 nodes and 428 pivots instead of 40 and 1,268; figure-eight uses
+7 and 1,917 instead of 29 and 5,016. The whole two-trefoil baseline exhausts
+10,000 pivots; six 3→2 moves enable a complete proof using 3,398 pivots.
+These are genuine direct-driver calls with all preprocessing and partial work
+retained. A separate archived replay validates nine local moves and three
+full-root negative trees, including a finite resolving-parameter decrease
+from at least 5 to at most 3 on those exact two-trefoil sources. Reproduction
+and scope are in
+[`strict_pachner32_research`](strict_pachner32_research/README.md).
+All 30 predeclared timing calls match their audited outputs. Median paired
+complete-call speedups are 1.4257 for trefoil and 1.5841 for figure-eight,
+including preprocessing, independent replay and full result serialization.
+The circle has no 3→2 scan and supplies no measured simplifier benefit.
+Paired samples and A/A variation are retained; the policy remains optional.
+
 ### Polynomial exact LP policy
 
 `solve_nonnegative_kernel` now defaults to `policy='polynomial'`. It performs

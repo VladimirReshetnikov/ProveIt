@@ -11,10 +11,27 @@ crushes, inverse layers and Pachner moves, and every new source receives fresh
 normal algebra. Conservative preprocessing and accepted-chain size bounds are
 polynomial; no general resolving-parameter bound follows.
 The 267-test regression run passes across 29 modules with Regina and no skips.
-The current [PDF](report.pdf) has 794 pages; the new section spans pages
-782–787, visually reviewed after three build passes. There are no unresolved
+The current [PDF](report.pdf) has 797 pages; the new section spans pages
+782–790, visually reviewed after three build passes. There are no unresolved
 references or new overflow warnings. Test commands and logs are retained under
 `data/strict-pachner32-*`.
+The fresh eight-call audit independently replays every returned whole-diagram
+proof or partial chain. Trefoil pivots fall from 1,268 to 428, figure-eight
+from 5,016 to 1,917, and the whole two-trefoil call completes at 3,398 pivots
+where the baseline exhausts 10,000. A separate archival replay authenticates
+nine local moves and three negative Euler trees. On its exact two-trefoil
+sources, six moves take the earlier `h >= 5` source to one with `h <= 3`;
+this proves no general monotonicity or asymptotic family bound. Protocols,
+source pins and the distinction between fresh replay and historical Regina
+controls are in
+[`strict_pachner32_research`](../fast/strict_pachner32_research/README.md).
+The 30-call paired benchmark includes all preprocessing, proof replay and
+complete result serialization. Median paired speedups are 1.4257 for trefoil
+and 1.5841 for figure-eight; the circle performs no new scan. A/A controls and
+all paired samples retain host variation. Run `python -B -S
+data/strict_pachner32_publication.py` from this directory to check the complete
+publication, including 27 fresh evidence mutations and 29 archived packet
+mutations, at its recorded source revision.
 
 [`factored_crushing.tex`](factored_crushing.tex) composes native crushing proofs
 over the existing visible interlacement factors. A separate checker reconstructs

@@ -392,3 +392,219 @@ chains replay and the factored result remains inconclusive.  A separate
 complete call supplies the required nontrivial child verdict.  These
 checks establish proof composition and accounting, not a timing gain
 or a uniform bound for the remaining search.
+
+\subsection{A complete eight-call diagram audit}
+\label{sec:strict-pachner32-audit}
+
+The retained \path{data/strict-pachner32-audit.json} compares the raw
+crushing interface with the new option disabled and enabled on the circle,
+trefoil, figure-eight and visible two-trefoil sum $TT$.  This comparison
+uses whole-diagram exteriors in both arms; visible-factor recognition is
+not invoked.  The two option maps differ only in
+\path{reduce_pachner32}.  Both enable vertex reduction and inverse
+boundary layering, and use source-model transversal search with the
+\path{conflicts} candidate policy, the polynomial LP policy and envelope
+strategy.  Tree nodes have allowance $256$; pivots, anchors, candidate
+states, ellipsoid iterations and feasibility calls each have allowance
+$10000$.  The shared reduction allowance is unbounded.  The unused
+sector and basis allowances are $256$ and $10000$, sector order is
+diversified, sector quantum is $64$, and the LP fast-path setting is
+\path{None}.  All search allowances apply cumulatively across source
+restarts.
+
+Every one of the eight predeclared calls returned, with no wall-clock
+cutoff and no unreturned call.  The separate
+\path{data/strict-pachner32-replay.txt} records full independent replay
+without discovery under $320$ current source-file pins.  In the table,
+$U$, $K$ and $I$ mean \path{UNKNOT}, \path{KNOTTED} and
+\path{INCONCLUSIVE}; $N$ and $P$ are returned node and pivot counts,
+$C$ counts normal crushes, and $M$ counts accepted $3\to2$ moves.
+A dash in the last column means a terminal absent successor, not a
+zero-tetrahedron finite source.
+
+\begin{center}\small
+\begin{tabular}{llcrrrrr}
+\toprule
+Input & Option & Status & $N$ & $P$ & $C$ & $M$ & Final $t$\\
+\midrule
+Circle & Disabled & U & 0 & 0 & 1 & 0 & ---\\
+Circle & Enabled & U & 0 & 0 & 1 & 0 & ---\\
+Trefoil & Disabled & K & 40 & 1268 & 12 & 0 & 10\\
+Trefoil & Enabled & K & 7 & 428 & 12 & 2 & 8\\
+Figure-eight & Disabled & K & 29 & 5016 & 16 & 0 & 13\\
+Figure-eight & Enabled & K & 7 & 1917 & 16 & 1 & 12\\
+$TT$ & Disabled & I & 27 & 10000 & 24 & 0 & 23\\
+$TT$ & Enabled & K & 56 & 3398 & 24 & 6 & 17\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All eight calls perform zero inverse boundary layers, ellipsoid iterations
+and fallback feasibility calls.  The circle terminates during vertex
+reduction before any $3\to2$ scan.  The trefoil uses two moves, reducing
+the searched source from $10$ to $8$ tetrahedra; the reported search
+counts change from $40$ to $7$ nodes and from $1268$ to $428$ pivots.
+The figure-eight uses one move, from $13$ to $12$ tetrahedra, and its
+counts change from $29$ to $7$ nodes and from $5016$ to $1917$ pivots.
+The enabled calls perform three and two scans, respectively, including
+the final unsuccessful scan.
+
+For $TT$, the disabled arm reaches the $10000$-pivot limit and returns
+only an independently verified partial chain.  The enabled arm makes
+six moves and completes a negative proof using $3398$ pivots.  Its seven
+source scans test six candidates; each accepted candidate contributes
+one of the six recorded moves.  The $56$ enabled nodes cover a complete
+search on a different source, whereas the $27$ baseline nodes are only
+a capped prefix.  The completed verdict under the same declared
+allowances is a finite improvement in completion.  These unequal outcomes
+do not supply a recognition-speed ratio, and the table alone makes no
+elapsed-time claim.
+
+\subsection{Archived sources and certified resolving-set upper bounds}
+\label{sec:strict-pachner32-resolving-bounds}
+
+The research package separately retains the historical generation files
+under \path{fast/strict_pachner32_research/data/generation}.  Current
+independent replay checks three original diagram chains, nine local
+relative-boundary moves, and three complete negative Euler trees on their
+terminal sources.  The preserved source traces and split sets are:
+\begin{center}\small
+\begin{tabular}{llll}
+\toprule
+Source & Tetrahedron trace & Split set $S$ & Certified upper bound\\
+\midrule
+Trefoil & $10,9,8$ & $\{3\}$ & $h\le1$\\
+Figure-eight & $13,12$ & $\{6\}$ & $h\le1$\\
+$TT$ & $23,22,21,20,19,18,17$ & $\{0,7,14\}$ & $h\le3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each root mask contains all three quadrilateral types in every
+tetrahedron.  The retained trees have $4$, $4$ and $40$ proof nodes,
+respectively.  These proof-node counts describe the retained negative
+trees, whereas the eight-call table counts all visited discovery nodes,
+including failed candidates.  The recorded labelled-source digests for
+both endpoints match those of the corresponding fresh driver arms.
+
+\begin{proposition}[A negative tree gives a conflict transversal]
+\label{prop:strict-pachner32-tree-upper-bound}
+For a fixed finite one-vertex source $T$, suppose an independently verified full-root
+negative Euler tree splits only tetrahedra in a set $S$.  Then $S$
+meets the conflict set of every incompatible positive root Q extreme
+ray.  In particular, $h(T)\le |S|$.
+\end{proposition}
+\begin{proof}
+Let $q$ be such a ray and suppose its conflict set misses $S$.  Thus at
+each tetrahedron in $S$, $q$ has at most one positive quadrilateral type.
+Start at the full root mask.  Whenever the tree splits a tetrahedron,
+follow the child permitting that positive type; if all three entries
+of $q$ there are zero, choose any child.  The support of $q$ remains
+allowed at every chosen node.  The finite path reaches a negative leaf.
+Its independently checked relaxation certificate excludes every positive
+canonical-Euler vector in that mask, including incompatible vectors;
+positive rescaling gives the LP normalization without changing support.
+This contradicts the assumed positivity of $q$.  Therefore every
+such conflict meets $S$, which proves the claimed transversal bound.
+\end{proof}
+
+Section~\ref{sec:conflict-composition} proved $h\ge5$ for the exact
+labelled $23$-tetrahedron $TT$ source.  The archived initial source here
+has the same digest
+\begin{center}\scriptsize
+\path{825247bfc387213d7cc965a33018a448043469eecf0a9edd3ce8d7a1b5fcb6f9}.
+\end{center}
+After six checked $3\to2$ moves, the exact $17$-tetrahedron successor
+has the upper bound $h\le3$ just proved.  Thus these particular
+homeomorphic sources exhibit a certified strict decrease in the resolving
+parameter between their endpoints.  The argument does not compare each
+successive intermediate value, prove monotonicity under a chosen move,
+or give a bound for arbitrary sources of the same knot type.
+The trefoil and figure-eight conclusions are upper bounds on their
+specific $8$- and $12$-tetrahedron sources.  Without a separately verified
+positive incompatible root-ray witness there, the displayed $h\le1$
+does not assert the exact value $h=1$.
+
+The archive's original native hashes remain generation-time metadata;
+they are not treated as current-source pin assertions.  Its stored and
+decompressed file hashes are checked, while the proofs are freshly
+replayed using the current pinned native verifiers.  The nine retained
+Regina comparisons record historically accepted moves and combinatorial
+isomorphisms.  No fresh Regina invocation occurs in the solver-free
+archive replay, and these oracle records are corroboration rather than
+the topological acceptance condition.  The archived supplied-source
+queries remain a separate evidence set from the eight genuine integrated
+driver calls above.
+
+The replay also rechecks the all-region selfattachment packet and $29$
+archived malformed-source or packet controls.  Separately,
+\path{data/strict-pachner32-corruption-controls.json} records $27$
+rejected mutations of genuine retained circle results, with both unmodified
+arms accepted.  The script and fixture are retained and hashed.  These
+new controls cover proof corruption, option binding, and malformed or
+inconsistent discovery counters; they are distinct from the $29$ archived
+local controls.
+
+Reduction counts and source sizes are independently recovered from the
+authenticated packets.  Other node, pivot, anchor and candidate counts
+are reported discovery statistics: replay checks their literal types,
+nonnegativity, cap inequalities and recorded accounting relations, but
+does not reconstruct the LP execution trace or independently recount
+every search event.  Verdict proofs and the split-set upper bounds above
+do not rely on the accuracy of those diagnostic counters.  The completed
+finite cases and archived parameter decrease establish no general
+monotonicity or quasi-polynomial recognition bound.
+
+\subsection{Paired complete-call timing controls}
+
+The separate \path{data/strict-pachner32-benchmark.json} retains the
+predeclared $30$-call comparison on circle, trefoil and figure-eight.
+Each input receives one warmup per arm, three alternating-order pairs,
+and one disabled-option A/A pair.  All calls return the same conclusive
+verdict as their audited arm.  Each timer includes fresh recognition,
+independent proof replay, canonical serialization of the complete result
+and its SHA256 hash.  Imports and prepared input PDs precede the timer;
+all result hashes match the complete audit outputs.  No certificate or
+discovery result is reused between calls.
+
+Measurement uses CPU~5 affinity on a shared six-logical-CPU host.  No
+other heavy job from this task runs during the experiment; unrelated
+repository jobs may run, and the retained before/after process record
+includes a Lean build.  Affinity is not an exclusive reservation.
+The environment and exact command are retained in
+\path{data/strict-pachner32-environment.json}.
+
+The table gives each arm's median milliseconds, the median of the
+three paired disabled/enabled ratios, and the disabled-option A/A ratio.
+The paired ratio is not computed by dividing the two marginal medians.
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Input & Disabled ms & Enabled ms & Paired ratio & A/A\\
+\midrule
+Circle & 11.274 & 11.107 & 1.0150 & 0.8743\\
+Trefoil & 2908.772 & 2040.256 & 1.4257 & 1.1534\\
+Figure-eight & 10103.027 & 6387.541 & 1.5841 & 0.9394\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The trefoil's three paired ratios range from $1.3365$ to $1.4864$;
+the figure-eight's range from $1.5712$ to $1.6426$.  Both retain a
+finite complete-call improvement after paying for all simplification
+and proof work.  The circle performs no $3\to2$ scan, so its small
+ratio above one supplies no evidence of a simplifier speedup.  The
+A/A controls retain observable shared-host variation.  No confidence
+interval, scaling law or universal performance claim is inferred from
+these three pairs per input.  The $TT$ case belongs to the separate
+eight-call audit and has no timing comparison, since its baseline
+does not complete recognition under the selected allowances.
+
+Independent replay verifies all audit and warmup proofs, binds each
+paired and A/A sample to its exact full audited result, checks call
+coverage and order, and recomputes the summaries.  The helper
+\path{data/strict_pachner32_publication.py} checks these $8$ audit and
+$30$ benchmark calls together with the archived proofs, both mutation
+control sets, the $267$-test record and final PDF build.  Its source
+manifest includes the native and research code, retained data, static
+test dependencies and every included TeX source.  The preprocessing
+polynomial flag is true; the general quasi-polynomial flag is false.
