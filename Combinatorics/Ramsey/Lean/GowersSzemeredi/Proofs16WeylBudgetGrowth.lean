@@ -287,22 +287,21 @@ theorem uniform_base_le (k E : Nat) :
   have hk1 : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
   constructor <;> nlinarith
 
-/-- **The family-lemma constants are at most `2^(2^(2^(k+5)))`**, given the
-shapes the Schmidt layer produces. -/
-theorem family_constants_tower_le (k : Nat) {MK : Real} {MP Pu : Nat}
+/-- **The family-lemma constants are at most `2^(2^(4k+16))`**, given the
+shapes the Schmidt layer produces (the estimates of
+`family_constants_tower_le`, without the final tower). -/
+theorem family_constants_poly_le (k : Nat) {MK : Real} {MP Pu : Nat}
     (hMK : MK ≤ 2 ^ (schmidtKExp k + k + 2)) (hPu : Pu ≤ 1 + (k + 1) * schmidtPBnd k)
     (hMP : MP ≤ (2 * (k + 1 + 1) * Pu + 4) ^ (2 ^ (k + 1))) :
     ((⌈MK⌉₊ : Nat) : Real) + (((k + 1) * MP : Nat) : Real) ≤
-      2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5))) := by
+      2 ^ ((2 : Nat) ^ (4 * k + 16)) := by
   set E := schmidtKExp k with hEdef
   have hE := schmidtKExp_le k
   have hPB := schmidtPBnd_le k
   have hkA : k + 1 ≤ 2 ^ k := Nat.lt_two_pow_self
-  -- the base constant, in ℕ
   have hKc : ⌈MK⌉₊ ≤ 2 ^ (E + k + 2) := by
     have : MK ≤ ((2 ^ (E + k + 2) : Nat) : Real) := by push_cast; exact hMK
     exact (Nat.ceil_le).mpr this
-  -- the exponent constant, in ℕ
   have hPu' : Pu ≤ 2 ^ (5 * k + 17) := by
     have h1 : (k + 1) * schmidtPBnd k ≤ 2 ^ k * 2 ^ (4 * k + 16) := Nat.mul_le_mul hkA hPB
     have h2 : 2 ^ k * 2 ^ (4 * k + 16) = 2 ^ (5 * k + 16) := by rw [← pow_add]; ring_nf
@@ -325,7 +324,6 @@ theorem family_constants_tower_le (k : Nat) {MK : Real} {MP Pu : Nat}
       hMP.trans ((Nat.pow_le_pow_left hinner _).trans (le_of_eq (by rw [← pow_mul])))
     calc (k + 1) * MP ≤ 2 ^ k * 2 ^ ((6 * k + 20) * 2 ^ (k + 1)) := Nat.mul_le_mul hkA h1
       _ = 2 ^ (k + (6 * k + 20) * 2 ^ (k + 1)) := by rw [← pow_add]
-  -- both below `2^M` with `M = 2^(4k+14) + 2^(4k+14)`
   have hP14 : k + 2 ≤ 2 ^ (4 * k + 14) := by
     have h1 : k + 2 < 2 ^ (k + 2) := Nat.lt_two_pow_self
     have h2 : 2 ^ (k + 2) ≤ 2 ^ (4 * k + 14) := Nat.pow_le_pow_right (by norm_num) (by omega)
@@ -348,19 +346,29 @@ theorem family_constants_tower_le (k : Nat) {MK : Real} {MP Pu : Nat}
     have hB := hMP'.trans (Nat.pow_le_pow_right (by norm_num) hexp2)
     rw [pow_succ]
     omega
-  have hfin : 2 ^ (2 ^ (4 * k + 14) + 2 ^ (4 * k + 14) + 1) ≤ 2 ^ (2 ^ (2 ^ (k + 5))) := by
+  have hfin : 2 ^ (2 ^ (4 * k + 14) + 2 ^ (4 * k + 14) + 1) ≤ 2 ^ (2 ^ (4 * k + 16)) := by
     apply Nat.pow_le_pow_right (by norm_num)
-    have h1 : 2 ^ (4 * k + 14) + 2 ^ (4 * k + 14) = 2 ^ (4 * k + 15) := by
-      rw [show 4 * k + 15 = (4 * k + 14) + 1 by ring, pow_succ]; ring
-    have h2 : 2 ^ (4 * k + 15) < 2 ^ (2 ^ (k + 5)) := by
-      apply Nat.pow_lt_pow_right (by norm_num)
-      have : k < 2 ^ k := Nat.lt_two_pow_self
-      have h32 : 2 ^ (k + 5) = 2 ^ k * 32 := by rw [pow_add]; norm_num
-      omega
+    have h1 : 2 ^ (4 * k + 16) = 4 * 2 ^ (4 * k + 14) := by
+      rw [show 4 * k + 16 = (4 * k + 14) + 2 by ring, pow_add]; ring
+    have h2 : 1 ≤ 2 ^ (4 * k + 14) := Nat.one_le_two_pow
     omega
-  have hcast : ((⌈MK⌉₊ + (k + 1) * MP : Nat) : Real) ≤ ((2 ^ (2 ^ (2 ^ (k + 5))) : Nat) : Real) := by
+  have hcast : ((⌈MK⌉₊ + (k + 1) * MP : Nat) : Real) ≤ ((2 ^ (2 ^ (4 * k + 16)) : Nat) : Real) := by
     exact_mod_cast hsum.trans hfin
   push_cast at hcast ⊢
   exact hcast
+
+/-- **The family-lemma constants are at most `2^(2^(2^(k+5)))`**, given the
+shapes the Schmidt layer produces. -/
+theorem family_constants_tower_le (k : Nat) {MK : Real} {MP Pu : Nat}
+    (hMK : MK ≤ 2 ^ (schmidtKExp k + k + 2)) (hPu : Pu ≤ 1 + (k + 1) * schmidtPBnd k)
+    (hMP : MP ≤ (2 * (k + 1 + 1) * Pu + 4) ^ (2 ^ (k + 1))) :
+    ((⌈MK⌉₊ : Nat) : Real) + (((k + 1) * MP : Nat) : Real) ≤
+      2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5))) := by
+  refine (family_constants_poly_le k hMK hPu hMP).trans ?_
+  apply pow_le_pow_right₀ (by norm_num)
+  apply Nat.pow_le_pow_right (by norm_num)
+  have hk : k < 2 ^ k := Nat.lt_two_pow_self
+  have h32 : 2 ^ (k + 5) = 2 ^ k * 32 := by rw [pow_add]; norm_num
+  omega
 
 end LeanProofs.GowersSzemeredi

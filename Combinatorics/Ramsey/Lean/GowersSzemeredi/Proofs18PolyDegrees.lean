@@ -22,29 +22,6 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-/-- A degree-`d` discrepancy bound with polynomial envelopes for `β` and `σ`. -/
-def PolyEnvBound (d μ : Nat) : Prop :=
-  ∀ alpha : Real, 0 < alpha → alpha ≤ 1 / 2 →
-    ∃ beta sigma T : Real, FunctionDiscrepancyBound d alpha beta sigma T ∧
-      0 < beta ∧ beta ≤ 1 ∧ 0 < sigma ∧ sigma ≤ 16 ∧
-      beta⁻¹ ≤ (2 / alpha) ^ (2 ^ μ) ∧ sigma⁻¹ ≤ (2 / alpha) ^ (2 ^ μ)
-
-theorem PolyEnvBound.mono {d μ μ' : Nat} (h : PolyEnvBound d μ) (hμ : μ ≤ μ') :
-    PolyEnvBound d μ' := by
-  intro alpha ha ha2
-  obtain ⟨b, s, T, hB, b0, b1, s0, s16, bi, si⟩ := h alpha ha ha2
-  have hX := two_div_ge_two ha ha2
-  exact ⟨b, s, T, hB, b0, b1, s0, s16, pw_mono hX bi hμ, pw_mono hX si hμ⟩
-
-/-- **Theorem 18.1 from a polynomial envelope** that fits `2^(d+10)`. -/
-theorem theorem181At_of_polyEnvBound {d μ : Nat} (h : PolyEnvBound d μ)
-    (hμ : μ + 1 ≤ 2 ^ (d + 10)) : Theorem181At d := by
-  apply Theorem181At.of_function_discrepancy
-  intro alpha ha ha2
-  obtain ⟨b, s, T, hB, b0, -, s0, -, bi, si⟩ := h alpha ha ha2
-  exact ⟨b, s, T, section18Exponent_le_of_inv_le ha ha2 b0 hμ bi,
-    section18Exponent_le_of_inv_le ha ha2 s0 hμ si, hB⟩
-
 /-- **The single-piece step with polynomial envelopes.** -/
 theorem polyEnvBound_step {V : Real} {D k K p μV μD μ0 μK μ : Nat}
     (H : GenParams.StdHyp V D k K p μV μD μ0 μK) (hk : 1 ≤ k) (hcov : UniformCovers k V D)
@@ -94,35 +71,6 @@ theorem polyEnvBound_step {V : Real} {D k K p μV μD μ0 μK μ : Nat}
   · refine pw_mono hX (inv_mul_div_four_le_pw hX he0 b0 hei' bi') ?_
     unfold envStep; rw [← hdddef]; omega
   · unfold envStep; rw [← hdddef, ← hThdef]; omega
-
-/-- **Degree three with polynomial envelopes**, from a phase partition. -/
-theorem polyEnvBound_three_of_phase_partition {K : Real} {p : Nat}
-    (hpp : ProgressionPhasePartition K p) (hp : 0 < p) (hK : K ≤ 2 ^ p)
-    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) : PolyEnvBound 3 74 := by
-  intro alpha hα hα2
-  have hαone : alpha ≤ 1 := by linarith only [hα2]
-  have hX : 2 ≤ 2 / alpha := two_div_ge_two hα hα2
-  have hδ : 0 < (alpha / 2) ^ (4207554485 : Nat) := pow_pos (by positivity) _
-  have hδone : (alpha / 2) ^ (4207554485 : Nat) ≤ 1 :=
-    pow_le_one₀ (by positivity) (by linarith only [hαone])
-  have hδinv : ((alpha / 2) ^ (4207554485 : Nat))⁻¹ ≤ (2 / alpha) ^ (2 ^ 32) := by
-    rw [← inv_pow, inv_div]
-    exact pw_natpow hX (by norm_num)
-  obtain ⟨he, hehalf, _⟩ := section13PolySquareExponent_bounds hX hδ hδone hδinv hp hpB
-  obtain ⟨hσ, hσinv⟩ := fejerCubicDiscrepancyExponentAt_poly_bounds hα hα2 hp hpB
-  obtain ⟨hκ, hκ1⟩ := fejerCubicLocalCountExponent_bounds hα hαone
-  have hK3 : (1 : Real) ≤ (polynomialPartitionConstant 3 : Real) := by
-    exact_mod_cast polyPartConst_pos 3
-  have hσ16 : fejerCubicDiscrepancyExponentAt alpha
-      (section13PolySquareExponent p ((alpha / 2) ^ (4207554485 : Nat))) ≤ 16 := by
-    unfold fejerCubicDiscrepancyExponentAt phaseInverseExponent
-    rw [div_le_iff₀ (by positivity)]
-    nlinarith only [he, hehalf, hκ, hκ1, hK3]
-  refine ⟨fejerCubicDiscrepancyParameter alpha, _, _,
-    (fejerSquareAt_poly hα hαone hpp hp hK hpB).functionDiscrepancyBound hα hαone he hehalf,
-    fejerCubicDiscrepancyParameter_pos hα, fejerCubicDiscrepancyParameter_le_one hα hαone,
-    hσ, hσ16, ?_, hσinv⟩
-  exact pw_mono hX (fejerCubicDiscrepancyParameter_inv_le_power hα hαone) (by norm_num)
 
 /-- The polynomial envelope of the degree-`(k+2)` bound after the steps in
 dimensions `2, …, k`. -/

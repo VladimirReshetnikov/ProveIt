@@ -1,4 +1,5 @@
-import GowersSzemeredi.Proofs18PolyDegrees
+import GowersSzemeredi.Proofs18PolyCubicDegree
+import GowersSzemeredi.Proofs18GenericSzemeredi
 import GowersSzemeredi.Proofs18Consequences
 
 /-! Parameterized final exponents and the elementary coloring conversion.

@@ -14,6 +14,10 @@ average-cell exponent at least `section18Exponent α 3 = α^(2^8192)`.
 * The corpus exponent is doubly exponential: its square exponent carries the
   catalogue row exponent `2^(−13Q)`.
 
+The module also supplies `PolyEnvBound`, its monotonicity and conversion
+to Theorem 18.1, and `polyEnvBound_three_of_phase_partition`. The printed
+degree-three theorem specializes this shared polynomial base.
+
 Here the square comes from `section13_complete_square_extraction_poly`, at
 the density `δ = (α/2)^4207554485` of the corpus frequency graph
 (`fejerSquareAt_poly`). The resulting σ satisfies `σ⁻¹ ≤ (2/α)^(2^74)`:
@@ -272,12 +276,33 @@ theorem fejerCubicDiscrepancyExponentAt_poly_bounds {alpha : Real} (hα : 0 < al
   rw [div_eq_mul_inv]
   exact pw_mono hX hall (by norm_num)
 
-/-- **Theorem 18.1 at degree three**, from a polynomial phase partition of
-progressions with `K ≤ 2^p` and `p ≤ 2^(2^64)`. -/
-theorem theorem_18_1_three_of_phase_partition {K : Real} {p : Nat}
-    (hpp : ProgressionPhasePartition K p) (hp : 0 < p) (hK : K ≤ 2 ^ p)
-    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) : Theorem181At 3 := by
+/-- A degree-`d` discrepancy bound with polynomial envelopes for `β` and `σ`. -/
+def PolyEnvBound (d μ : Nat) : Prop :=
+  ∀ alpha : Real, 0 < alpha → alpha ≤ 1 / 2 →
+    ∃ beta sigma T : Real, FunctionDiscrepancyBound d alpha beta sigma T ∧
+      0 < beta ∧ beta ≤ 1 ∧ 0 < sigma ∧ sigma ≤ 16 ∧
+      beta⁻¹ ≤ (2 / alpha) ^ (2 ^ μ) ∧ sigma⁻¹ ≤ (2 / alpha) ^ (2 ^ μ)
+
+theorem PolyEnvBound.mono {d μ μ' : Nat} (h : PolyEnvBound d μ) (hμ : μ ≤ μ') :
+    PolyEnvBound d μ' := by
+  intro alpha ha ha2
+  obtain ⟨b, s, T, hB, b0, b1, s0, s16, bi, si⟩ := h alpha ha ha2
+  have hX := two_div_ge_two ha ha2
+  exact ⟨b, s, T, hB, b0, b1, s0, s16, pw_mono hX bi hμ, pw_mono hX si hμ⟩
+
+/-- **Theorem 18.1 from a polynomial envelope** that fits `2^(d+10)`. -/
+theorem theorem181At_of_polyEnvBound {d μ : Nat} (h : PolyEnvBound d μ)
+    (hμ : μ + 1 ≤ 2 ^ (d + 10)) : Theorem181At d := by
   apply Theorem181At.of_function_discrepancy
+  intro alpha ha ha2
+  obtain ⟨b, s, T, hB, b0, -, s0, -, bi, si⟩ := h alpha ha ha2
+  exact ⟨b, s, T, section18Exponent_le_of_inv_le ha ha2 b0 hμ bi,
+    section18Exponent_le_of_inv_le ha ha2 s0 hμ si, hB⟩
+
+/-- **Degree three with polynomial envelopes**, from a phase partition. -/
+theorem polyEnvBound_three_of_phase_partition {K : Real} {p : Nat}
+    (hpp : ProgressionPhasePartition K p) (hp : 0 < p) (hK : K ≤ 2 ^ p)
+    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) : PolyEnvBound 3 74 := by
   intro alpha hα hα2
   have hαone : alpha ≤ 1 := by linarith only [hα2]
   have hX : 2 ≤ 2 / alpha := two_div_ge_two hα hα2
@@ -289,10 +314,26 @@ theorem theorem_18_1_three_of_phase_partition {K : Real} {p : Nat}
     exact pw_natpow hX (by norm_num)
   obtain ⟨he, hehalf, _⟩ := section13PolySquareExponent_bounds hX hδ hδone hδinv hp hpB
   obtain ⟨hσ, hσinv⟩ := fejerCubicDiscrepancyExponentAt_poly_bounds hα hα2 hp hpB
-  refine ⟨fejerCubicDiscrepancyParameter alpha, _, _, ?_, ?_,
-    (fejerSquareAt_poly hα hαone hpp hp hK hpB).functionDiscrepancyBound hα hαone he hehalf⟩
-  · exact section18Exponent_le_of_inv_le hα hα2 (fejerCubicDiscrepancyParameter_pos hα)
-      (μ := 59) (by norm_num) (fejerCubicDiscrepancyParameter_inv_le_power hα hαone)
-  · exact section18Exponent_le_of_inv_le hα hα2 hσ (μ := 74) (by norm_num) hσinv
+  obtain ⟨hκ, hκ1⟩ := fejerCubicLocalCountExponent_bounds hα hαone
+  have hK3 : (1 : Real) ≤ (polynomialPartitionConstant 3 : Real) := by
+    exact_mod_cast polyPartConst_pos 3
+  have hσ16 : fejerCubicDiscrepancyExponentAt alpha
+      (section13PolySquareExponent p ((alpha / 2) ^ (4207554485 : Nat))) ≤ 16 := by
+    unfold fejerCubicDiscrepancyExponentAt phaseInverseExponent
+    rw [div_le_iff₀ (by positivity)]
+    nlinarith only [he, hehalf, hκ, hκ1, hK3]
+  refine ⟨fejerCubicDiscrepancyParameter alpha, _, _,
+    (fejerSquareAt_poly hα hαone hpp hp hK hpB).functionDiscrepancyBound hα hαone he hehalf,
+    fejerCubicDiscrepancyParameter_pos hα, fejerCubicDiscrepancyParameter_le_one hα hαone,
+    hσ, hσ16, ?_, hσinv⟩
+  exact pw_mono hX (fejerCubicDiscrepancyParameter_inv_le_power hα hαone) (by norm_num)
+
+/-- **Theorem 18.1 at degree three**, from a polynomial phase partition of
+progressions with `K ≤ 2^p` and `p ≤ 2^(2^64)`. -/
+theorem theorem_18_1_three_of_phase_partition {K : Real} {p : Nat}
+    (hpp : ProgressionPhasePartition K p) (hp : 0 < p) (hK : K ≤ 2 ^ p)
+    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) : Theorem181At 3 := by
+  exact theorem181At_of_polyEnvBound
+    (polyEnvBound_three_of_phase_partition hpp hp hK hpB) (by norm_num)
 
 end LeanProofs.GowersSzemeredi

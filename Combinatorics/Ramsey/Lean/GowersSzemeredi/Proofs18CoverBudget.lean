@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18CoverExponents
 import GowersSzemeredi.Proofs18GenericLengths
+import GowersSzemeredi.Proofs18RefinementThresholdBounds
 
 /-! Shared class budgets and elementary estimates for the uniform cover step.
 The polynomial and final-threshold arguments use the same budget inputs. -/
@@ -61,30 +62,5 @@ theorem two_pow_six_mul (k : Nat) : 2 ^ (k + 6) = 64 * 2 ^ k := by rw [pow_add];
 theorem two_pow_five_mul (k : Nat) : 2 ^ (k + 5) = 32 * 2 ^ k := by rw [pow_add]; ring
 
 theorem two_pow_four_mul (k : Nat) : 2 ^ (k + 4) = 16 * 2 ^ k := by rw [pow_add]; ring
-
-/-- `(k+3)³ ≤ 32·2^k`. -/
-theorem cube_le_two_pow_sharp (k : Nat) : (k + 3) ^ 3 ≤ 32 * 2 ^ k := by
-  induction k with
-  | zero => norm_num
-  | succ k ih =>
-    rcases Nat.eq_zero_or_pos k with h | h
-    · subst h; norm_num
-    · have hstep : (k + 1 + 3) ^ 3 ≤ 2 * (k + 3) ^ 3 := by
-        have hk : 1 ≤ k := h
-        nlinarith [sq_nonneg (k : Nat), hk]
-      calc (k + 1 + 3) ^ 3 ≤ 2 * (k + 3) ^ 3 := hstep
-        _ ≤ 2 * (32 * 2 ^ k) := Nat.mul_le_mul_left _ ih
-        _ = 32 * 2 ^ (k + 1) := by rw [pow_succ]; ring
-
-/-- `(k+4)² ≤ 4·2^k` for `k ≥ 4`. -/
-theorem sq_le_two_pow_four : ∀ k, 4 ≤ k → (k + 4) ^ 2 ≤ 4 * 2 ^ k := by
-  intro k hk
-  induction k, hk using Nat.le_induction with
-  | base => norm_num
-  | succ k hk ih =>
-    have hstep : (k + 1 + 4) ^ 2 ≤ 2 * (k + 4) ^ 2 := by nlinarith
-    calc (k + 1 + 4) ^ 2 ≤ 2 * (k + 4) ^ 2 := hstep
-      _ ≤ 2 * (4 * 2 ^ k) := Nat.mul_le_mul_left _ ih
-      _ = 4 * 2 ^ (k + 1) := by rw [pow_succ]; ring
 
 end LeanProofs.GowersSzemeredi

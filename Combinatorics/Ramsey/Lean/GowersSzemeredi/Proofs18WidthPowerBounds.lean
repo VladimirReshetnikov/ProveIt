@@ -84,6 +84,25 @@ theorem nat_sqrt_pred_pred_ge {n : Nat} {x : Real} (hx : 6 ≤ x)
   have hfinal : k ≤ Nat.sqrt (n - 1) - 1 := by omega
   exact hxk.trans (by exact_mod_cast hfinal)
 
+/-- A power lower bound for the slice width survives the square-root localization.
+The same bound also supplies the elementary size condition `2 ≤ L`. -/
+theorem localization_width_bounds {x f : Real} {L : Nat} (hx : 1 ≤ x) (hf : 0 ≤ f)
+    (h6 : 6 ≤ x ^ (f / 8)) (hL : x ^ f ≤ L) :
+    2 ≤ L ∧ x ^ (f / 8) ≤ ((Nat.sqrt (L - 1) - 1 : Nat) : Real) := by
+  have hfull : x ^ (f / 8) ≤ x ^ f :=
+    Real.rpow_le_rpow_of_exponent_le hx (by linarith)
+  have hL6 : (6 : Real) ≤ L := (h6.trans hfull).trans hL
+  refine ⟨by exact_mod_cast (show (2 : Real) ≤ L by linarith), ?_⟩
+  apply nat_sqrt_pred_pred_ge h6
+  have hpow4 : (x ^ (f / 8)) ^ 4 = x ^ (f / 2) := by
+    rw [← Real.rpow_natCast, ← Real.rpow_mul (zero_le_one.trans hx)]
+    congr 1
+    norm_num
+    ring
+  rw [hpow4]
+  exact ((div_le_self (Real.rpow_nonneg (zero_le_one.trans hx) _) (by norm_num)).trans
+    (Real.rpow_le_rpow_of_exponent_le hx (by linarith))).trans hL
+
 /-- **One unused-coordinate step**: `L^a` becomes `L^(a/4)`. -/
 theorem liftLastW_powerLB {w : Real → Nat → Nat} {t a L0 : Real} (ha : 0 < a) (ha1 : a ≤ 1)
     (hL00 : 0 ≤ L0) (h : WidthPowerLB (w (t / 2)) a L0) :
