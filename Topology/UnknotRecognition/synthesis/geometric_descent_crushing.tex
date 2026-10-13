@@ -1,0 +1,345 @@
+\section{Direct geometric first descent without cochain bookkeeping}
+\label{sec:geometric-descent-crushing}
+
+The fixed one-upward policy of
+Section~\ref{sec:pachner-descent-crushing} uses an identically zero
+cochain to reuse a general transported-surface search.  Its acceptance
+claim is geometric: the endpoint triangulates the same compact manifold
+with one fewer tetrahedron.  The new source adapter
+\path{reduce_geometric_descent_once} implements that fixed geometric
+search directly.  It retains independent elementary move verification
+and removes cochain transport, cover completion, incarnation interning
+and global marked-endpoint caches from this discovery path.
+
+The published cochain producer and its packet language remain available.
+The new method has a distinct proof schema because its evidence consists
+of elementary relative-boundary replacements, not a transported cochain
+and a common original cover.  The methods need not choose the same
+labelled endpoint.  A shorter discovery implementation by itself gives
+no measured speed claim or bound on subsequent normal-surface search.
+
+\subsection{Exhausting the complete fixed family directly}
+
+Let the initial finite source contain $t$ tetrahedra.  Write $U$ for an
+expansion $2\to3$ and $D$ for a contraction $3\to2$.  An intermediate
+source reached by $u$ expansions and $d$ contractions has $t+u-d$
+tetrahedra.  If at most one expansion is allowed in total, every proper
+prefix of a first strict descent satisfies
+\[
+                              d\le u\le1.
+\]
+Hence its complete word is $D$ or $UDD$.  This elementary count proves
+that an exhaustive search over those two words is sufficient; no
+connected-cover locality theorem is needed for this specialization.
+
+The implemented search first lists all candidate contractions of the
+initial source.  If one independently verifies, it returns that $D$.
+Otherwise it visits every candidate expansion, every candidate first
+contraction of that expanded source, and every candidate final
+contraction of the resulting $UD$ source.  It stops at the first fully
+verified smaller endpoint.  Inverse moves are not skipped.  The search
+is depth first and discards a completed branch before advancing to the
+next; it retains neither all attempted sources nor an attempt log.
+
+Keeping every first contraction after each expansion is necessary.
+Two different $D$ choices can give different $UD$ sources, only one of
+which admits a final contraction.  Thus a policy that takes just the
+first $D$, fails to find another $D$, and proceeds to the next $U$
+would not exhaust the claimed family.  Once a final $D$ verifies,
+however, any such final contraction is a sufficient witness.
+
+The upward order is increasing local $(\text{tetrahedron},\text{face})$
+among paired faces joining two distinct tetrahedra.  Both reciprocal
+orientations are retained.  This redundant constant factor avoids
+depending on an isomorphism quotient to justify the enumerated choices.
+Different paired faces between the same two tetrahedra remain distinct
+candidates.
+
+For downward moves, source preparation reconstructs global edge classes.
+An eligible class is interior and has three local incidences in three
+distinct tetrahedra.  Each is represented by its least local
+$(\text{tetrahedron},a,b)$ with $a<b$, and representatives are tried
+in increasing order.  Formal apex and belt labels are reconstructed
+by the existing $3\to2$ constructor.  A legal formal three-tetrahedron
+bipyramid occurs among these candidates; exchanging apex labels or
+permuting the three belt labels changes its presentation, not the
+relative-boundary replacement it represents.
+
+Eligibility is only a discovery filter.  Every constructed successor
+must pass the independent elementary verifier before becoming a search
+prefix.  Expected local constructor rejection advances the scan;
+failure of independent replay for a returned construction raises an
+error rather than contributing to an exhaustion assertion.  The
+uncapped public adapter returns \path{REDUCED} or \path{UNCHANGED}.
+There is no node, upward, work or cover-limit option that could truncate
+the family while returning unchanged.  Caller cancellation propagates.
+An unchanged result excludes only the maintained formal $D/UDD$ family,
+not more general simplification or an essential normal disc.
+
+\subsection{A purely geometric source packet}
+
+The packet has exactly four fields: \path{schema},
+\path{source_sha256}, \path{steps} and \path{successor}.
+Its schema is \path{normal-geometric-descent-v1}.  The source digest
+is SHA-256 of the complete labelled input in canonical JSON with sorted
+keys and compact separators.  Each step has exactly
+\path{triangulation} and \path{certificate}.  These hold the full
+labelled intermediate source and its elementary proof, using schema
+\path{pachner-23-v1} or \path{pachner-32-v1}.  There are no height, normal
+coordinate, cover or disc fields in this outer proof language.
+
+The independent entry point \path{verify_normal_geometric_descent}
+receives the source explicitly and reconstructs the sequence from it.
+It accepts only the schema words
+\[
+ \begin{array}{c|c}
+ \text{Elementary word} & \text{Successive sizes}\\
+ \hline
+ D   & t-1\\
+ UDD & t+1,\ t,\ t-1.
+ \end{array}
+\]
+The final source must be nonempty.  The checker enforces literal field
+and index types, replays every elementary proof from its actual
+predecessor, and compares the declared successor with the replayed
+endpoint by type-sensitive equality.  A Boolean or floating-point
+replacement for an integer label cannot supply an equal source.
+
+The elementary checkers independently validate each complete finite
+connected orientable compact source with one torus boundary.  They
+compare every survivor record, every formal internal facet pairing,
+and all six formal boundary attachment maps.  This includes
+selfattachments between boundary facets of the chosen region.
+The common bipyramid homeomorphism fixes its formal boundary and
+therefore descends through these full quotient relations, as proved
+in Proposition~\ref{prop:strict-pachner32-relative}.  Composing one or
+three such maps proves that the endpoint is homeomorphic to the
+supplied source relative to the corresponding ambient boundary.
+No embedded image of the closed formal ball is assumed.
+
+All vertices of the two formal bipyramid triangulations lie on their
+common boundary.  Thus each elementary move preserves ambient vertex
+equivalence classes.  The source interface permits multiple vertices
+and preserves a one-vertex source when given one.  It requires no
+cohomology generator, peripheral slope or normal-cone transport.
+Diagram provenance, when needed for a recognition verdict, is supplied
+by the outer authenticated chain.
+
+The independent checker imports no discovery producer.  Both the
+producer and checker guard caller callbacks with private
+\path{BaseException} carriers.  In particular a caller-raised
+\path{NormalOrbitError} must not be caught as malformed input inside
+an elementary verifier, and a caller-raised search-limit exception
+must not become ordinary geometric exhaustion.  The original exception
+object and traceback are preserved.  A discovered endpoint is exposed
+only after the complete source-bound packet passes independent replay.
+
+\subsection{Explicit time, storage and certificate bounds}
+
+Let $L=\log(t+2)$.  A live source has at most $t+1$ tetrahedra.
+There are at most $4(t+1)$ paired local-face ports, including both
+orientations, and $O(t)$ eligible edge representatives among its
+$6(t+1)$ local edge incidences.  At most $O(t)$ expansions and
+$O(t^2)$ $UD$ prefixes are visited.  Their final contraction scans
+therefore test at most $O(t^3)$ candidates altogether.  This count
+allows unsuccessful formal-region attempts and repeated geometries;
+it assumes no cache hit or commuting-trace reduction.
+
+\begin{proposition}[Streaming geometric first-descent cost]
+\label{prop:geometric-descent-crushing-cost}
+For a validated source with $t$ tetrahedra, one uncapped direct search
+has the conservative bit bounds
+\[
+ \text{discovery time }O(t^5L^2),\qquad
+ \text{working space }O(tL).
+\]
+An accepted packet has $O(tL)$ bits and independent replay costs
+$O(t^2L^2)$.  Arbitrary work performed by a caller callback is charged
+separately.
+\end{proposition}
+\begin{proof}
+Use the local bound
+\[
+                         P(s)=O(s^2\log^2(s+2))
+\]
+from Section~\ref{sec:strict-pachner32} for source preparation,
+candidate construction and independent relative-boundary replay.
+It includes dense source copying and relabelling, sparse matching-row
+construction performed by the validator, complete finite-manifold
+checks, source hashing and exact comparisons.  All indices and
+incidence counts have logarithmic bit length.  Even pessimistic linear
+scans for local associative lookup fit this bound.  The actual
+producer and elementary verifier may prepare the same source more
+than once; the fixed number of such preparations per candidate is
+included in $P$.
+
+There are $O(t^3)$ candidate attempts.  Preparing and sorting the
+$O(t)$ candidates at each of the $O(t^2)$ possible nonterminal
+prefixes is also covered by this bound.  Thus total discovery is
+$O(t^3P(t+1))=O(t^5L^2)$.  Final source hashing, packet construction
+and a second complete replay of its at most three elementary moves
+fit the same bound.  There is no global endpoint, incarnation or
+cover dictionary whose accumulated size needs an additional lookup
+factor.
+
+For storage, inspect the local representations rather than bounding
+space by the running time.  Complete source preparation retains
+$O(s)$ face, vertex, edge, adjacency, union-find, link and boundary
+records.  It creates $O(s)$ sparse matching rows, each with at most
+four entries, and performs no dense elimination.  The constructor and
+elementary checker retain $O(s)$ source and survivor records and
+constant-size formal-region dictionaries.  Hence each local call uses
+$O(s\log(s+2))$ bits.  The call stack has fixed depth; candidate lists
+at its finitely many levels have $O(t)$ local ports.  A fixed number
+of full sources and elementary proofs remain live while exploring a
+branch.  Counters have $O(L)$ bits since their values are polynomial
+in $t$.  Old source preparations, completed branches and unused
+attempt records are not accumulated.  This proves $O(tL)$ working
+storage for the implemented search.
+
+A packet has one or three full intermediate sources plus its final
+successor, each encoded in $O(tL)$ bits.  Its local proofs contain
+only a constant number of source indices and formal labels.  The
+whole packet therefore has $O(tL)$ bits, even when serialization
+repeats its last source.  Its independent verifier makes constantly
+many local replays and exact comparisons, costing $O(P(t+1))$.
+\end{proof}
+
+Repeatedly accepting this strict macro permits fewer than $t$
+successes, with at most $3(t-1)$ elementary moves in their proofs.
+Including terminal unsuccessful scans gives conservative discovery
+cost $O(t^6L^2)$, peak search working space $O(tL)$, and retained
+accepted-chain size $O(t^2L)$.  Replaying that whole accepted chain
+costs $O(t^3L^2)$.  The same polynomial overhead applies when other
+strictly decreasing preprocessors are interleaved; normal Euler
+search remains a separate cost.
+Keeping the accepted chain in memory as well as the current search
+uses $O(t^2L)$ bits in total.
+
+Compared with the conservative implementation bounds in
+Section~\ref{sec:pachner-descent-crushing}, the per-query estimate
+changes from $O(t^6L^2)$ to $O(t^5L^2)$, and the repeated-preprocessing
+estimate from $O(t^7L^2)$ to $O(t^6L^2)$.  The working-storage estimate
+changes from $O(t^3L)$ to $O(tL)$.  These compare proved upper bounds:
+they are not lower bounds on the legacy implementation's actual cost,
+and they do not imply a measured speed factor on any given input.
+
+The streaming storage bound is a property of the new native producer.
+The earlier scratch prototype retained a list of all candidate-attempt
+metadata, which could itself occupy $O(t^3L)$ bits.  That diagnostic
+list is absent here.  Neither the prototype's elapsed runtime nor a
+comparison between its callback counts and legacy counts establishes
+a measured benefit for the native integration.
+
+\subsection{Diagnostic units and recognition integration}
+
+The result preserves the common source-adapter statistics.
+The size fields are \path{initial_tetrahedra} and \path{remaining_tetrahedra}.
+Discovery uses \path{search_nodes} and \path{search_work}; accepted moves
+use \path{macros}, \path{upward_moves} and \path{downward_moves}.
+The final flag is \path{search_complete}.  A geometric search node is the root or a
+verified $U$ or $UD$ prefix; the selected terminal $D$ or $UDD$
+endpoint is not counted as another node.  Work counts all invocations
+of the caller callback throughout this adapter, including initial
+preparation and final independent packet replay.  Additional candidate,
+rejection and scan counters are additive diagnostics.  Accepted
+upward and downward counts refer only to the returned macro, not to
+discarded branches.
+
+These units differ from the legacy cochain engine's popped-frame and
+cooperative-checkpoint counters.  They must not be divided to obtain
+a computational speed ratio.  Neither is an independent count of
+bit operations.  A success has \path{search_complete=False}; a full
+unsuccessful enumeration has \path{search_complete=True}.  Neither
+flag is a knot verdict.  Interrupted calls propagate without returning
+a purported complete work total.
+
+The direct and factored recognition interfaces select the policy with
+\path{pachner_descent_method}, whose values are \path{cochain} and
+\path{geometric}.  The default remains \path{cochain}; the existing
+\path{reduce_pachner_descent} flag still determines whether this
+preprocessing stage runs.  When enabled with the geometric method,
+the mixed chain uses \path{diagram-crushing-v5} and accepts the new
+geometric packet through its independent checker.  Older chain
+versions retain their earlier step languages.  This method selection
+does not reinterpret the legacy zero-cochain proof.
+Version five also replays all earlier reduction kinds, including the
+legacy cochain macro.  Choosing a method while the enabling flag is
+false does not introduce a new step kind or change the existing chain
+schema.
+
+The scheduling priority remains enabled vertex reduction, boundary
+unlayering, strict $3\to2$ scanning, and then first-descent search.
+One accepted geometric macro uses one shared reduction-budget unit,
+including when its proof has three elementary moves.  Accepted
+elementary counts are separate.  Returned discovery work is recorded
+even if the reduction allowance prevents appending a discovered macro.
+Every changed source restarts preprocessing and normal algebra; no
+matching matrix, LP dual or conflict cache is carried to a different
+labelled source without a separate proof.
+
+Independent elementary homeomorphisms and decreasing tetrahedron
+count do not imply decreasing canonical-Euler search difficulty or
+$h(T')\le h(T)$.  The new enumeration can select a different labelled
+endpoint from the cochain search, and a returned trace need not carry
+that older packet's connected-cover witness.  Endpoint-specific
+parameter proofs and timing claims therefore require their own exact
+source comparisons and fresh complete-call evidence.  The result of
+this section is a complete polynomial specialization of the fixed
+geometric family; the missing universal quasi-polynomial recognition
+bound remains missing.
+
+\subsection{Focused native verification controls}
+
+The eleven focused producer tests pass without Regina.  Their real
+trefoil control starts at the authenticated eight-tetrahedron source
+and independently verifies a $UDD$ endpoint with seven tetrahedra.
+A separate control puts the inverse expansion first among the
+contractions of the expanded source.  That inverse gives a valid $UD$
+prefix with no final contraction; the test then requires discovery to
+continue to a later first contraction and complete a genuine $UDD$
+proof.  This checks the branching obligation directly.
+
+Other controls exercise a direct contraction whose region contains all
+source tetrahedra and has formal-boundary selfattachments, preservation
+of a six-vertex finite source, and complete exhaustion on a one-tetrahedron
+source.  They check that no cover, cochain or normal-disc producer is
+used, that replay still succeeds with elementary discovery disabled,
+and that input data are not mutated.  Independently rejected constructions
+raise instead of becoming unchanged results.  Callback controls cover
+source preparation, both elementary constructors, both elementary
+verifiers, final packet replay and the last checkpoint of exhaustion.
+The reported work counter is also checked against actual callback
+invocations.  These are finite regression controls for the stated
+contracts, not a timing comparison with the cochain policy.
+
+Eight additional tests target the independent geometric verifier.
+They replay both a selfattached direct contraction and a multivertex
+$UDD$ packet with discovery, cover and solver routines disabled.
+They reject malformed literal fields, altered intermediate sources,
+and an outer successor that disagrees with an otherwise valid inner
+proof.  A valid legacy sequence of shape $DUD$ is rejected because it
+does not satisfy this packet's first-descent contract.  Callback
+exception identity is checked within source validation, boundary-map
+verification and final successor comparison.
+
+Nine integration tests exercise genuine diagram recognition and the
+factored interface.  They check exact equality between the default
+legacy result and explicit \path{cochain} selection, replay of an old
+macro in a version-five chain, and rejection of the new geometric
+packet by versions one through four.  Genuine factored controls check
+that a three-move macro consumes one shared reduction-budget unit and
+that a completed negative child has a replayable composed proof.
+A separate scheduling harness stubs only the diagram-to-source premise
+to isolate macro, unlayering and terminal-crushing budget boundaries;
+its artificial diagram authentication is not evidence for a genuine
+diagram verdict.  Denied acceptance retains the completed discovery
+diagnostics, and independently rejected packets fail closed.
+
+The complete regression run passes 364 tests across 41 modules with
+Regina available and no skipped tests.  This includes the eleven
+producer, eight verifier and nine integration controls above, together
+with the earlier reduction and recognition suites.  These finite
+checks support the implementation and compatibility contracts; they
+provide neither a measured policy speed comparison nor a universal
+bound on the normal-search parameter.

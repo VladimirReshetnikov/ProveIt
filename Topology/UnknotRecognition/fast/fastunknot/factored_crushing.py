@@ -35,7 +35,7 @@ MAX_STATS = frozenset((
 POLICY_OPTIONS = frozenset((
     'sector_order', 'sector_quantum', 'sector_method', 'lp_strategy',
     'reduce_vertices', 'unlayer_boundary', 'reduce_pachner32', 'tree_model',
-    'reduce_pachner_descent',
+    'reduce_pachner_descent', 'pachner_descent_method',
     'transversal_candidate_policy', 'lp_policy', 'lp_fast_path_pivots',
 ))
 FACTOR_STATS = frozenset(('factors_total', 'factors_attempted', 'factors_unknot',
@@ -66,6 +66,9 @@ def _options(diagram, check, supplied):
                  'reduce_pachner_descent'):
         if type(options[name]) is not bool:
             raise ValueError(name+' must be a boolean')
+    method = options['pachner_descent_method']
+    if type(method) is not str or method not in ('cochain', 'geometric'):
+        raise ValueError('pachner_descent_method must be cochain or geometric')
     if options['tree_model'] not in ('source', 'restricted'):
         raise ValueError('tree_model must be source or restricted')
     if options['sector_method'] == 'transversal' and options['tree_model'] != 'source':

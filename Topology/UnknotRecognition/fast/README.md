@@ -4948,6 +4948,57 @@ and full-result serialization. Median paired baseline/enabled time ratios are
 Thus the trefoil control regresses despite fewer pivots. All samples and A/A
 controls are retained; the circle performs no macro search. These finite
 shared-host measurements support no universal speedup or asymptotic bound.
+These tests, measurements and source pins describe revision `55028b28a`
+and the cochain method, which remains the default method.
+
+### Direct geometric one-upward descent
+
+Set `reduce_pachner_descent=True, pachner_descent_method='geometric'`
+to enumerate every first descent with at most one total expansion directly.
+The source API is `normal_geometric_descent.reduce_geometric_descent_once`;
+its independent checker is
+`normal_geometric_descent_verify.verify_normal_geometric_descent`.
+The search streams all D and UDD words, including every possible first
+contraction after each expansion. It keeps only the current branch and local
+candidate lists. Each returned elementary replacement is independently
+verified, including all formal boundary selfattachments.
+
+A `normal-geometric-descent-v1` packet contains one or three elementary
+proofs and their full intermediate triangulations. Version 5 crushing chains
+accept these packets and all earlier reduction kinds. Each accepted macro
+uses one shared `max_crushes` unit. A denied append still records its discovery
+work. The existing stage priority and restart on each changed source apply.
+The method selector defaults to `cochain`; the enabling flag still defaults
+to false. With the flag disabled, either valid method retains previous result
+shapes and statistics.
+
+Conservative bit bounds are O(t⁵ log²(t+2)) for one complete geometric query
+and O(t⁶ log²(t+2)) for repeated strict preprocessing. Search working storage
+is O(t log(t+2)), plus O(t² log(t+2)) if all accepted packets are retained.
+These improve the proved bounds for the cochain implementation, without a
+new timing claim. Geometric `pachner_descent_work` counts all producer
+callbacks, including preparation and final replay; its units differ from
+the cochain counter and cannot be used as a speed ratio.
+See [the full proof and interface contract](../synthesis/geometric_descent_crushing.tex).
+General quasi-polynomial recognition remains unproved.
+The regression passes 364 tests across 41 modules with Regina and no skips,
+including genuine diagram and factorwise proofs, shared budgets, strict
+packet replay and exact preservation of the default cochain result. Commands
+and logs are retained under `synthesis/data/geometric-descent-*`.
+
+### Conditional matching elimination
+
+The [archived matching experiments](conditional_type_research/README.md)
+test whether excluding a Q type's two local competitors forces that type
+to zero. A local block-ones identity makes the initial nonnegative support
+test equivalent to an exact linear-kernel test. All 276 initial tests on six
+authenticated sources have independently replayed nonnegative STANDARD
+matching witnesses, so the rule deletes nothing on these sources. A separate
+cheap scan remains recorded as capped on W34. Twelve corruptions are rejected.
+These witnesses need not be globally compatible or have positive Euler
+characteristic. No native conditional-elimination rule is added; the
+[theory article](../synthesis/conditional_type_matching.tex) distinguishes
+monotonicity of the retained-mask parameter from the unchanged full-source h.
 
 ### Polynomial exact LP policy
 

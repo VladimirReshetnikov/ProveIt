@@ -170,6 +170,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                           max_pivots=10000, max_anchors=10000,
                           lp_strategy='envelope', reduce_vertices=True, unlayer_boundary=False,
                           reduce_pachner32=False, reduce_pachner_descent=False,
+                          pachner_descent_method='cochain',
                           max_tree_nodes=256, tree_model='source',
                           max_hitting_subsets=10000,
                           transversal_candidate_policy='subsets',
@@ -255,12 +256,16 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
 
     ``reduce_pachner_descent=True`` then searches for a first strict Pachner
     descent with at most one total 2-3 expansion. The complete polynomial
-    search uses zero cochain heights and no normal-disc or LP queries. A v4
-    chain records each accepted macro as one max_crushes operation, even when
+    search uses no normal-disc or LP queries. The default method 'cochain'
+    uses zero cochain heights and a v4 chain. Method 'geometric' directly
+    enumerates D and UDD words, using a v5 chain and geometric certificates.
+    Either chain records each accepted macro as one max_crushes operation, even when
     its trace contains one expansion and two contractions. Separate diagnostics
     count search nodes/work and accepted elementary upward/downward moves.
     Every changed source restarts preprocessing and normal algebra. Default
-    False preserves the previous chain schemas and statistics.
+    False preserves the previous chain schemas and statistics. Node/work
+    diagnostics have method-specific units: geometric work counts all producer
+    callbacks, including source preparation and final independent replay.
 
     ``max_ellipsoid_iterations`` and ``max_feasibility_calls`` count fallback
     work across all anchors, nodes, candidate restarts and crushing successors.
@@ -299,6 +304,9 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
         raise ValueError('reduce_pachner32 must be a boolean')
     if type(reduce_pachner_descent) is not bool:
         raise ValueError('reduce_pachner_descent must be a boolean')
+    if (type(pachner_descent_method) is not str
+            or pachner_descent_method not in ('cochain', 'geometric')):
+        raise ValueError('pachner_descent_method must be cochain or geometric')
     validate_lp_controls(lp_policy, lp_fast_path_pivots,
                          max_ellipsoid_iterations, max_feasibility_calls)
     return _safe_call(_recognize_by_crushing, check, diagram,
@@ -310,6 +318,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                       unlayer_boundary=unlayer_boundary,
                       reduce_pachner32=reduce_pachner32,
                       reduce_pachner_descent=reduce_pachner_descent,
+                      pachner_descent_method=pachner_descent_method,
                       max_tree_nodes=max_tree_nodes, tree_model=tree_model,
                       max_hitting_subsets=max_hitting_subsets,
                       transversal_candidate_policy=transversal_candidate_policy,
@@ -322,6 +331,7 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                           sector_order, sector_quantum, sector_method,
                           max_pivots, max_anchors, lp_strategy, reduce_vertices, unlayer_boundary,
                           reduce_pachner32, reduce_pachner_descent,
+                          pachner_descent_method,
                           max_tree_nodes, tree_model, max_hitting_subsets,
                           transversal_candidate_policy,
                           lp_policy, lp_fast_path_pivots,
@@ -347,8 +357,12 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
         from .normal_pachner32 import reduce_pachner32_once
         from .normal_pachner32_verify import verify_normal_pachner32
     if reduce_pachner_descent:
-        from .normal_pachner_descent import reduce_pachner_descent_once
-        from .normal_pachner_descent_verify import verify_normal_pachner_descent
+        if pachner_descent_method == 'geometric':
+            from .normal_geometric_descent import reduce_geometric_descent_once as reduce_descent_once
+            from .normal_geometric_descent_verify import verify_normal_geometric_descent as verify_descent
+        else:
+            from .normal_pachner_descent import reduce_pachner_descent_once as reduce_descent_once
+            from .normal_pachner_descent_verify import verify_normal_pachner_descent as verify_descent
 
     check()
     source = Diagram.from_pd(diagram.pd)
@@ -396,7 +410,9 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                      pachner_descent_upward_moves=0, pachner_descent_downward_moves=0)
 
     def chain():
-        schema = ('diagram-crushing-v4' if reduce_pachner_descent else
+        schema = ('diagram-crushing-v5' if reduce_pachner_descent and
+                  pachner_descent_method == 'geometric' else
+                  'diagram-crushing-v4' if reduce_pachner_descent else
                   'diagram-crushing-v3' if reduce_pachner32 else
                   'diagram-crushing-v2' if unlayer_boundary else 'diagram-crushing-v1')
         return dict(schema=schema,
@@ -575,7 +591,7 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
             if reduction['status'] != 'UNCHANGED':
                 raise ArithmeticError('unexpected Pachner 3-2 outcome')
         if reduce_pachner_descent:
-            reduction = reduce_pachner_descent_once(current, check=check)
+            reduction = reduce_descent_once(current, check=check)
             stats['pachner_descent_calls'] += 1
             stats['pachner_descent_nodes'] += reduction['stats']['search_nodes']
             stats['pachner_descent_work'] += reduction['stats']['search_work']
@@ -583,7 +599,7 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                 if max_crushes is not None and len(steps) >= max_crushes:
                     return inconclusive('shared crushing-step allowance exhausted')
                 packet = reduction['certificate']
-                if not verify_normal_pachner_descent(current, packet, check=check):
+                if not verify_descent(current, packet, check=check):
                     raise ArithmeticError('independent Pachner descent replay failed')
                 successor = packet['successor']
                 if len(successor['tetrahedra']) != len(current['tetrahedra'])-1:

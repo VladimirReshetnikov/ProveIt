@@ -2,6 +2,38 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`geometric_descent_crushing.tex`](geometric_descent_crushing.tex) implements
+an optional direct geometric enumeration of D and UDD first descents. The
+method has conservative O(t⁵ log²(t+2)) query time, O(t⁶ log²(t+2)) repeated
+preprocessing time, and O(t log(t+2)) search working space. Version 5 chains
+independently replay all elementary formal boundary replacements. Select it
+with `reduce_pachner_descent=True, pachner_descent_method='geometric'`;
+the default method remains `cochain`, and preprocessing remains disabled by
+default. These are improved upper bounds for a fixed preprocessing family,
+with no new timing comparison or general quasi-polynomial recognition claim.
+The broader regression passes 364 tests across 41 modules with Regina and
+no skips. Its 28 new tests cover independent source packets, complete local
+branching and genuine diagram/factorwise integration; commands and logs are
+retained under `data/geometric-descent-*`.
+
+[`conditional_type_matching.tex`](conditional_type_matching.tex) proves the
+sound conditional deletion rule and its initial linear-kernel criterion.
+All 276 types on six retained sources have independently verified nonnegative
+STANDARD matching witnesses. Thus this matching-only rule removes nothing
+there, even with complete nonnegative feasibility. The earlier cheap scan's
+W34 cap remains explicit. The portable archival replay checks both byte-exact
+experiment groups, all source chains and 12 corruption controls; its 326 fresh
+source pins are separate from historical generation pins. See
+[`conditional_type_research`](../fast/conditional_type_research/README.md).
+
+The current [PDF](report.pdf) has 817 pages. The geometric section begins
+on page 802 and the conditional-matching section on page 806; their new
+material ends on page 810. Three final build passes have no unresolved
+references or new overflow warnings. The publication helper
+`python -B -S data/geometric_descent_publication.py` freshly replays the
+conditional archive and pins the report, implementation, tests and retained
+validation logs, without running discovery or new timings.
+
 [`pachner_descent_crushing.tex`](pachner_descent_crushing.tex) adds optional
 fixed one-upward Pachner preprocessing to the direct and factored crushing
 drivers. Each accepted macro has at most three elementary moves and removes
@@ -40,11 +72,12 @@ baseline/enabled time ratios are 0.9200 for trefoil, 1.1413 for figure-eight,
 1.0270 for TT and 1.7181 for T25, including preprocessing, proof replay and
 complete result serialization. The trefoil regression, all paired samples
 and A/A controls remain visible. The circle performs no macro search.
-Run `python -B -S data/pachner_descent_publication.py` from this directory
-after the final build to replay the complete evidence and pin the publication.
+At revision `55028b28a`, `data/pachner_descent_publication.py` replays
+and pins that complete evidence publication. Its source pins are historical
+after later implementation changes.
 It checks that the native code and test dependencies still match the earlier
 336-test regression; it runs neither discovery nor new timings.
-The current [PDF](report.pdf) has 809 pages. Section 187 spans pages 791–802;
+That publication's [PDF](report.pdf) has 809 pages. Section 187 spans pages 791–802;
 the new empirical pages 797–802 pass visual review after three build passes.
 The final build has no unresolved references or new overflow warnings.
 
