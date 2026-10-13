@@ -5644,16 +5644,18 @@ original order (`fejer-generators/final_extract.py`, `assemble_final.py`):
   the envelope-base bounds they need;
 * `Proofs18FinalStep`: the joint-slice step `GenParamsJT3`;
 * `Proofs18FinalEnvelopes`: `polyGenMuJT3` and `genMuXK3`, their closed forms
-  beyond dimension 14, the kernel-evaluated ranges, the fits, and the
-  polynomial Theorem 16.2 / Corollary 16.11;
-* `Proofs18Final`: a structure `FinalInputs` bundling the corpus inputs (the
-  recurrence profiles, family constants at most `2^(2^(4k+16))`, a phase
-  partition), two generic lemmas `theorem_18_1_of_fit` and
-  `theorem_18_2_of_fit`, and the seven bounds, each one line.
+  beyond dimension 14 and one fit lemma each; a structure `FinalInputs`
+  bundling the corpus inputs (the recurrence profiles, family constants at
+  most `2^(2^(4k+16))`, a phase partition), from which the step parameters,
+  hypotheses and covers are derived once, and with them both envelopes and
+  the polynomial Theorem 16.2 / Corollary 16.11;
+* `Proofs18Final`: two generic lemmas `theorem_18_1_of_fit` and
+  `theorem_18_2_of_fit` (from a starting dimension and a kernel-evaluated
+  range up to 14), and the seven bounds, each one line.
 The bridge `Proofs18CoverFejerAllDegrees` defines `explicitFinalInputs` and
 keeps only the best statements (with Corollary 18.7, van der Waerden numbers,
 Theorem 1.3 and the printed consequences). Measured: 63 modules and 19,081
-lines retired, 3,619 added; the bridge 993 → 189 lines and 101 → 25
+lines retired, 3,501 added; the bridge 993 → 189 lines and 101 → 25
 theorems; the Fejér block of `CompletionAudit` 341 → 96 lines. No threshold
 changed. Each new module builds locally; the bridge and audit block pass
 the stub check.
