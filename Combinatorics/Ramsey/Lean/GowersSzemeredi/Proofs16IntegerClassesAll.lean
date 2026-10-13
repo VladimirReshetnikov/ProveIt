@@ -91,9 +91,6 @@ theorem PowerUniformClass.integerPolyCoverAt {k : Nat} {V : Real} {dC dE dT : Na
         (pow_le_pow_right₀ (by linarith) hDE)
   · have hNlt : (N : Real) < (V * (2 / (gamma * theta))) ^ dT := lt_of_not_ge hN
     set T := (V * (2 / (gamma * theta))) ^ dT with hT
-    obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-    have hVu2 : 2 ≤ V * (2 / (gamma * theta)) := by nlinarith
-    have hT1 : 1 ≤ T := one_le_pow₀ (by linarith)
     refine ⟨Finset.univ, ?_, ?_⟩
     · have hc : ((Finset.univ : Finset (Point N k)).card : Real) = (N : Real) ^ k := by
         simp [Point, ZMod.card]
@@ -103,14 +100,8 @@ theorem PowerUniformClass.integerPolyCoverAt {k : Nat} {V : Real} {dC dE dT : Na
     have hfib : ∀ x : Point N k,
         ((restrictRelation Gamma Finset.univ).filter fun z => z.1 = x).card ≤ ⌈T⌉₊ := by
       intro x
-      have h1 : ((restrictRelation Gamma Finset.univ).filter fun z => z.1 = x).card ≤ N := by
-        refine (Finset.card_le_card_of_injOn (fun z => z.2) (fun _ _ => Finset.mem_univ _)
-          ?_).trans (by simp [ZMod.card])
-        intro z hz z' hz' h
-        exact Prod.ext ((Finset.mem_filter.mp hz).2.trans (Finset.mem_filter.mp hz').2.symm) h
-      refine h1.trans ?_
-      have : (N : Real) ≤ ⌈T⌉₊ := hNlt.le.trans (Nat.le_ceil _)
-      exact_mod_cast this
+      refine (relation_fiber_card_le_modulus _ x).trans ?_
+      exact_mod_cast hNlt.le.trans (Nat.le_ceil T)
     have hcov := integerMultiplyLinearWith_of_large_box_covers hk
       (Gamma := restrictRelation Gamma Finset.univ) ⌈T⌉₊ hfib
       (fun rho => uniformBase V 1 theta gamma rho ^ D)
@@ -122,70 +113,11 @@ theorem PowerUniformClass.integerPolyCoverAt {k : Nat} {V : Real} {dC dE dT : Na
         linarith)
     refine hcov.weaken ?_ ?_ ?_
     · intro rho hr hr1
-      obtain ⟨-, -, -, hVw, hw2⟩ := hfacts rho hr hr1
-      set w := uniformBase V 1 theta gamma rho
-      have hw1 : 1 ≤ w := by linarith
-      refine max_le le_rfl ?_
-      -- `3^k ⌈T⌉ ≤ w^k · w^(dT+1)`
-      have hTw : T ≤ w ^ dT := pow_le_pow_left₀ (by linarith) hVw dT
-      have hceil : ((⌈T⌉₊ : Nat) : Real) ≤ w ^ (dT + 1) := by
-        have h := Nat.ceil_lt_add_one (show 0 ≤ T by linarith)
-        rw [pow_succ]
-        have : T + 1 ≤ w ^ dT * w := by nlinarith [one_le_pow₀ hw1 (n := dT)]
-        linarith
-      have h3 : ((3 : Nat) : Real) ^ k ≤ w ^ k := by
-        refine pow_le_pow_left₀ (by norm_num) ?_ k
-        have := (hfacts rho hr hr1).2.2.2.1
-        have hV2 : (2 : Real) * 2 ≤ w := by
-          have h22 : (2 : Real) * 2 ≤ 2 * (V * (2 / (gamma * theta))) := by nlinarith
-          have : 2 * (V * (2 / (gamma * theta))) ≤ w := by
-            show 2 * (V * (2 / (gamma * theta))) ≤ uniformBase V 1 theta gamma rho
-            unfold uniformBase
-            have hri : 1 ≤ rho⁻¹ := one_le_inv₀ hr |>.mpr hr1
-            have hs : 2 / (gamma * theta * rho) = 2 / (gamma * theta) * rho⁻¹ := by field_simp
-            rw [hs]
-            have hpos : 0 ≤ V * (2 / (gamma * theta)) := by positivity
-            push_cast
-            nlinarith
-          linarith
-        push_cast
-        linarith
-      calc ((3 ^ k * ⌈T⌉₊ : Nat) : Real) = ((3 : Nat) : Real) ^ k * ((⌈T⌉₊ : Nat) : Real) := by
-            push_cast; ring
-        _ ≤ w ^ k * w ^ (dT + 1) :=
-            mul_le_mul h3 hceil (Nat.cast_nonneg _) (pow_nonneg (by linarith) _)
-        _ = w ^ (dT + k + 1) := by rw [← pow_add]; ring_nf
-        _ ≤ w ^ D := pow_le_pow_right₀ hw1 hDT
+      exact max_le le_rfl (uniformBase_small_controls hV hg hg1 ht ht1 hr hr1 hDT).1
     · intro rho hr hr1
       have := (hfacts rho hr hr1).2.2.2.2
       positivity
     · intro rho hr hr1
-      obtain ⟨-, -, -, hVw, hw2⟩ := hfacts rho hr hr1
-      set w := uniformBase V 1 theta gamma rho
-      have hw1 : 1 ≤ w := by linarith
-      refine le_min le_rfl ?_
-      -- `(w^D)⁻¹ ≤ log 2 / log (max 2 T)`
-      have hM2 : 1 < max 2 T := lt_of_lt_of_le (by norm_num) (le_max_left _ _)
-      have hlog : Real.log (max 2 T) ≤ max 2 T := (Real.log_le_sub_one_of_pos
-        (by linarith)).trans (by linarith)
-      have hlogpos : 0 < Real.log (max 2 T) := Real.log_pos hM2
-      have hl2 : (1 / 2 : Real) ≤ Real.log 2 := by
-        have := Real.log_two_gt_d9; linarith
-      have hTw : T ≤ w ^ dT := pow_le_pow_left₀ (by linarith) hVw dT
-      have hmax : 2 * max 2 T ≤ w ^ D := by
-        rcases le_total 2 T with h | h
-        · rw [max_eq_right h]
-          calc 2 * T ≤ w * w ^ dT := mul_le_mul hw2 hTw (by linarith) (by linarith)
-            _ = w ^ (dT + 1) := by rw [pow_succ]; ring
-            _ ≤ w ^ D := pow_le_pow_right₀ hw1 (by omega)
-        · rw [max_eq_left h]
-          calc (2 : Real) * 2 ≤ w ^ 2 := by nlinarith
-            _ ≤ w ^ D := pow_le_pow_right₀ hw1 (by omega)
-      have hm0 : 0 < max 2 T := lt_trans zero_lt_one hM2
-      calc (w ^ D)⁻¹ ≤ (2 * max 2 T)⁻¹ := inv_anti₀ (by positivity) hmax
-        _ = (1 / 2) / max 2 T := by field_simp
-        _ ≤ Real.log 2 / max 2 T := div_le_div_of_nonneg_right hl2 hm0.le
-        _ ≤ Real.log 2 / Real.log (max 2 T) :=
-            div_le_div_of_nonneg_left (Real.log_nonneg (by norm_num)) hlogpos hlog
+      exact (uniformBase_small_controls hV hg hg1 ht ht1 hr hr1 hDT).2
 
 end LeanProofs.GowersSzemeredi

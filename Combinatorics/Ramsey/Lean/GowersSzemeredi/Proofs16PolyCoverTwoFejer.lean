@@ -208,28 +208,9 @@ theorem polyCoverAt_two_fejer_of_family_lemma6 {A Bq : Nat → Real} (hA : ∀ q
       rw [hc]
       have : (0 : Real) ≤ (N : Real) ^ 2 := by positivity
       nlinarith
-    · have hfib : ∀ x : Point N 2,
-          ((restrictRelation Gamma Finset.univ).filter fun z => z.1 = x).card ≤
-            ⌈polyTwoFejerThreshold theta gamma⌉₊ := by
-        intro x
-        have h1 : ((restrictRelation Gamma Finset.univ).filter fun z => z.1 = x).card ≤ N := by
-          refine (Finset.card_le_card_of_injOn (fun z => z.2) (fun _ _ => Finset.mem_univ _)
-            ?_).trans (by simp [ZMod.card])
-          intro z hz z' hz' h
-          exact Prod.ext ((Finset.mem_filter.mp hz).2.trans (Finset.mem_filter.mp hz').2.symm) h
-        refine h1.trans ?_
-        have : (N : Real) ≤ ⌈polyTwoFejerThreshold theta gamma⌉₊ :=
-          hNlt.le.trans (Nat.le_ceil _)
-        exact_mod_cast this
-      have hcov := multiplyLinearWith_of_large_box_covers (by norm_num : 0 < 2)
-        (Gamma := restrictRelation Gamma Finset.univ) ⌈polyTwoFejerThreshold theta gamma⌉₊ hfib
+    · exact multiplyLinearWith_of_small_modulus (by norm_num : 0 < 2) hNlt
+        (restrictRelation Gamma Finset.univ)
         (polyTwoFejerFamCount theta gamma) (polyTwoFejerFamExp A Bq theta gamma)
-        (fun _ => polyTwoFejerThreshold theta gamma)
-        (fun s hs hs1 => polyTwoFejerFamExp_pos hB hs) (by
-          intro s _ _ P hP hlarge
-          exfalso
-          have hw : (P.width : Real) ≤ N := by exact_mod_cast P.width_le_modulus hP
-          linarith)
-      exact hcov
+        (fun s hs hs1 => polyTwoFejerFamExp_pos hB hs)
 
 end LeanProofs.GowersSzemeredi

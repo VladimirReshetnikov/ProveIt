@@ -313,27 +313,8 @@ theorem polyCoverAt_three_of_family_lemma6
       rw [hc]
       have : (0 : Real) ≤ (N : Real) ^ 3 := by positivity
       nlinarith
-    · have hfib : ∀ x : Point N 3,
-          ((restrictRelation Gamma Finset.univ).filter fun z => z.1 = x).card ≤
-            ⌈polyThreeThreshold theta gamma⌉₊ := by
-        intro x
-        have h1 : ((restrictRelation Gamma Finset.univ).filter fun z => z.1 = x).card ≤ N := by
-          refine (Finset.card_le_card_of_injOn (fun z => z.2) (fun _ _ => Finset.mem_univ _)
-            ?_).trans (by simp [ZMod.card])
-          intro z hz z' hz' h
-          exact Prod.ext ((Finset.mem_filter.mp hz).2.trans (Finset.mem_filter.mp hz').2.symm) h
-        refine h1.trans ?_
-        have : (N : Real) ≤ ⌈polyThreeThreshold theta gamma⌉₊ :=
-          hNlt.le.trans (Nat.le_ceil _)
-        exact_mod_cast this
-      have hcov := multiplyLinearWith_of_large_box_covers (by norm_num : 0 < 3)
-        (Gamma := restrictRelation Gamma Finset.univ) ⌈polyThreeThreshold theta gamma⌉₊ hfib
+    · exact multiplyLinearWith_of_small_modulus (by norm_num : 0 < 3) hNlt
+        (restrictRelation Gamma Finset.univ)
         (polyThreeFamCount K1 p1 theta gamma) (polyThreeFamExp A2 Bq2 K1 p1 theta gamma)
-        (fun _ => polyThreeThreshold theta gamma)
-        (fun s hs hs1 => polyThreeFamExp_pos hB2 hp1 ht ht1 hg hg1 hs hs1) (by
-          intro s _ _ P hP hlarge
-          exfalso
-          have hw : (P.width : Real) ≤ N := by exact_mod_cast P.width_le_modulus hP
-          linarith)
-      exact hcov
+        (fun s hs hs1 => polyThreeFamExp_pos hB2 hp1 ht ht1 hg hg1 hs hs1)
 end LeanProofs.GowersSzemeredi

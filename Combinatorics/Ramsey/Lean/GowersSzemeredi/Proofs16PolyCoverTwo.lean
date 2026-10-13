@@ -31,6 +31,33 @@ open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
 open BaseCase
 
+/-- A relation has at most one modulus worth of values over any point. -/
+theorem relation_fiber_card_le_modulus {N k : Nat} [NeZero N]
+    (Gamma : Finset (Point N k × ZMod N)) (x : Point N k) :
+    (Gamma.filter fun z => z.1 = x).card ≤ N := by
+  classical
+  refine (Finset.card_le_card_of_injOn (fun z => z.2) (fun _ _ => Finset.mem_univ _)
+    ?_).trans (by simp [ZMod.card])
+  intro z hz z' hz' h
+  exact Prod.ext ((Finset.mem_filter.mp hz).2.trans (Finset.mem_filter.mp hz').2.symm) h
+
+/-- Below the threshold, every box is covered by the coarse relation construction. -/
+theorem multiplyLinearWith_of_small_modulus {N k : Nat} [NeZero N]
+    (hk : 0 < k) {T : Real} (hN : (N : Real) < T)
+    (Gamma : Finset (Point N k × ZMod N)) (Q E : Real → Real)
+    (hE : ∀ s, 0 < s → s ≤ 1 → 0 < E s) :
+    MultiplyLinearWith
+      (fun s => max (Q s) ((3 ^ k * ⌈T⌉₊ : Nat) : Real))
+      (fun s => section16CappedWidthExponent (E s) T) Gamma := by
+  refine multiplyLinearWith_of_large_box_covers hk ⌈T⌉₊ ?_ Q E (fun _ => T) hE ?_
+  · intro x
+    refine (relation_fiber_card_le_modulus Gamma x).trans ?_
+    exact_mod_cast hN.le.trans (Nat.le_ceil T)
+  · intro s _ _ P hP hlarge
+    exfalso
+    have hw : (P.width : Real) ≤ N := by exact_mod_cast P.width_le_modulus hP
+    linarith
+
 /-! ### Operations on piece data -/
 
 theorem relFreimanCover_empty {N : Nat} [NeZero N] (q : Nat) :
@@ -274,28 +301,9 @@ theorem polyCoverAt_two_of_family_lemma6 {A Bq : Nat → Real} (hA : ∀ q, 0 < 
       rw [hc]
       have : (0 : Real) ≤ (N : Real) ^ 2 := by positivity
       nlinarith
-    · have hfib : ∀ x : Point N 2,
-          ((restrictRelation Gamma Finset.univ).filter fun z => z.1 = x).card ≤
-            ⌈polyTwoThreshold theta gamma⌉₊ := by
-        intro x
-        have h1 : ((restrictRelation Gamma Finset.univ).filter fun z => z.1 = x).card ≤ N := by
-          refine (Finset.card_le_card_of_injOn (fun z => z.2) (fun _ _ => Finset.mem_univ _)
-            ?_).trans (by simp [ZMod.card])
-          intro z hz z' hz' h
-          exact Prod.ext ((Finset.mem_filter.mp hz).2.trans (Finset.mem_filter.mp hz').2.symm) h
-        refine h1.trans ?_
-        have : (N : Real) ≤ ⌈polyTwoThreshold theta gamma⌉₊ :=
-          hNlt.le.trans (Nat.le_ceil _)
-        exact_mod_cast this
-      have hcov := multiplyLinearWith_of_large_box_covers (by norm_num : 0 < 2)
-        (Gamma := restrictRelation Gamma Finset.univ) ⌈polyTwoThreshold theta gamma⌉₊ hfib
+    · exact multiplyLinearWith_of_small_modulus (by norm_num : 0 < 2) hNlt
+        (restrictRelation Gamma Finset.univ)
         (polyTwoFamCount theta gamma) (polyTwoFamExp A Bq theta gamma)
-        (fun _ => polyTwoThreshold theta gamma)
-        (fun s hs hs1 => polyTwoFamExp_pos hB hs) (by
-          intro s _ _ P hP hlarge
-          exfalso
-          have hw : (P.width : Real) ≤ N := by exact_mod_cast P.width_le_modulus hP
-          linarith)
-      exact hcov
+        (fun s hs hs1 => polyTwoFamExp_pos hB hs)
 
 end LeanProofs.GowersSzemeredi
