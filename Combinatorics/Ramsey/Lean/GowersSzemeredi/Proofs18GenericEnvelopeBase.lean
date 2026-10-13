@@ -410,6 +410,20 @@ theorem fixDeg_cube (k : Nat) : 2 * (k + 2) ^ 3 + k + 3 ≤ 2 ^ fixDeg k ∧
       exact Nat.pow_le_pow_right (by norm_num) (by omega)
     omega
 
+/-- `c(θ_S)` for the base density: the first half of `dens_step`. -/
+theorem cS_step {X : Real} (hX : 2 ≤ X) {c : Real → Real} {a0 b0 : Nat}
+    (hc : RecipPowerLB X c a0 b0) {θ : Real} {m μa μb : Nat} (hθ0 : 0 < θ) (hθ1 : θ ≤ 1)
+    (hθi : θ⁻¹ ≤ X ^ (2 ^ m)) (ha0 : a0 ≤ 2 ^ μa) (hb0 : b0 ≤ 2 ^ μb) (hμa : μa ≤ m) :
+    0 < c θ ∧ c θ ≤ 1 ∧ (c θ)⁻¹ ≤ X ^ (2 ^ (m + μb + 1)) := by
+  have hX1 : (1 : Real) ≤ X := by linarith
+  obtain ⟨hc0, hc1, hci⟩ := hc.apply_le hX1 hθ0 hθ1 hθi
+  refine ⟨hc0, hc1, hci.trans (pow_le_pow_right₀ hX1 ?_)⟩
+  have h1 : 2 ^ m * b0 ≤ 2 ^ m * 2 ^ μb := Nat.mul_le_mul_left _ hb0
+  have h2 : 2 ^ m * 2 ^ μb = 2 ^ (m + μb) := by rw [← pow_add]
+  have h3 : 2 ^ μa ≤ 2 ^ (m + μb) := Nat.pow_le_pow_right (by norm_num) (by omega)
+  have h4 : 2 ^ (m + μb + 1) = 2 * 2 ^ (m + μb) := by rw [pow_succ]; ring
+  omega
+
 section Steps
 
 variable {X : Real}
@@ -457,33 +471,18 @@ theorem dens_step (hX : 2 ≤ X) {c : Real → Real} {a0 b0 : Nat} (hc : RecipPo
     {θ : Real} {m μa μb : Nat} (hθ0 : 0 < θ) (hθ1 : θ ≤ 1) (hθi : θ⁻¹ ≤ X ^ (2 ^ m))
     (ha0 : a0 ≤ 2 ^ μa) (hb0 : b0 ≤ 2 ^ μb) (hμa : μa ≤ m) :
     0 < θ * c (c θ) ∧ θ * c (c θ) ≤ 1 ∧ (θ * c (c θ))⁻¹ ≤ X ^ (2 ^ (m + 2 * μb + 4)) := by
-  have hX1 : (1 : Real) ≤ X := by linarith
-  obtain ⟨hc0, hc1, hci⟩ := hc.apply_le hX1 hθ0 hθ1 hθi
-  have hci' : (c θ)⁻¹ ≤ X ^ (2 ^ (m + μb + 1)) := by
-    refine hci.trans (pow_le_pow_right₀ hX1 ?_)
-    have h1 : 2 ^ m * b0 ≤ 2 ^ m * 2 ^ μb := Nat.mul_le_mul_left _ hb0
-    have h2 : 2 ^ m * 2 ^ μb = 2 ^ (m + μb) := by rw [← pow_add]
-    have h3 : 2 ^ μa ≤ 2 ^ (m + μb) := Nat.pow_le_pow_right (by norm_num) (by omega)
-    have h4 : 2 ^ (m + μb + 1) = 2 * 2 ^ (m + μb) := by rw [pow_succ]; ring
-    omega
-  obtain ⟨hd0, hd1, hdi⟩ := hc.apply_le hX1 hc0 hc1 hci'
-  have hdi' : (c (c θ))⁻¹ ≤ X ^ (2 ^ (m + 2 * μb + 2)) := by
-    refine hdi.trans (pow_le_pow_right₀ hX1 ?_)
-    have h1 : 2 ^ (m + μb + 1) * b0 ≤ 2 ^ (m + μb + 1) * 2 ^ μb := Nat.mul_le_mul_left _ hb0
-    have h2 : 2 ^ (m + μb + 1) * 2 ^ μb = 2 ^ (m + 2 * μb + 1) := by rw [← pow_add]; ring_nf
-    have h3 : 2 ^ μa ≤ 2 ^ (m + 2 * μb + 1) := Nat.pow_le_pow_right (by norm_num) (by omega)
-    have h4 : 2 ^ (m + 2 * μb + 2) = 2 * 2 ^ (m + 2 * μb + 1) := by rw [pow_succ]; ring
-    omega
+  obtain ⟨hc0, hc1, hci⟩ := cS_step hX hc hθ0 hθ1 hθi ha0 hb0 hμa
+  obtain ⟨hd0, hd1, hdi⟩ := cS_step hX hc hc0 hc1 hci ha0 hb0 (by omega)
   refine ⟨mul_pos hθ0 hd0, (mul_le_mul hθ1 hd1 hd0.le zero_le_one).trans (by norm_num), ?_⟩
   rw [mul_inv]
-  have := pw_mul' hX (inv_pos.mpr hθ0).le (inv_pos.mpr hd0).le hθi hdi'
+  have := pw_mul' hX (inv_pos.mpr hθ0).le (inv_pos.mpr hd0).le hθi hdi
   exact pw_mono hX this (by omega)
 
 end Steps
 
-/-- `η` from the single-piece density. -/
-theorem eta_step {alpha d : Real} {k m : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
-    (hd0 : 0 < d) (hd1 : d ≤ 1) (hdi : d⁻¹ ≤ (2 / alpha) ^ (2 ^ m)) (hm : fixDeg k ≤ m) :
+/-- The density-to-η estimate under its exact scalar absorption condition. -/
+theorem eta_step_of_cube_le {alpha d : Real} {k m : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
+    (hd0 : 0 < d) (hd1 : d ≤ 1) (hdi : d⁻¹ ≤ (2 / alpha) ^ (2 ^ m)) (hcube : 2 * (k + 2) ^ 3 + k + 3 ≤ 2 ^ m) :
     0 < (2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) * (d / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4) ∧
       (2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) * (d / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4) ≤
         alpha / 8 ∧
@@ -498,8 +497,7 @@ theorem eta_step {alpha d : Real} {k m : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 
   have hz1 : (2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) ≤ 1 :=
     zpow_le_one_of_nonpos₀ (by norm_num) (neg_nonpos.mpr (by positivity))
   have h2k : (2 : Real) ≤ 2 ^ (k + 1) := by
-    calc (2 : Real) = 2 ^ 1 := by norm_num
-      _ ≤ 2 ^ (k + 1) := pow_le_pow_right₀ (by norm_num) (by omega)
+    simpa using pow_le_pow_right₀ (a := (2 : Real)) (by norm_num) (show 1 ≤ k + 1 by omega)
   have hin0 : 0 < d / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4 :=
     div_pos (mul_pos (div_pos hd0 (by positivity)) (pow_pos ha 2)) (by norm_num)
   refine ⟨mul_pos hz0 hin0, ?_, ?_⟩
@@ -517,27 +515,33 @@ theorem eta_step {alpha d : Real} {k m : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 
         (2 : Real) ^ (k + 1) * (2 / alpha) ^ 2 * d⁻¹ := by
       field_simp; ring
     rw [hval]
-    have hcube := (fixDeg_cube k).1
     have hc : (2 : Real) ^ (2 * (k + 2) ^ 3) * ((2 : Real) ^ (k + 1) * (2 / alpha) ^ 2) ≤
         (2 / alpha) ^ (2 ^ m) := by
-      have h1 : (2 : Real) ^ (2 * (k + 2) ^ 3) * (2 : Real) ^ (k + 1) ≤
-          (2 / alpha) ^ (2 * (k + 2) ^ 3) * (2 / alpha) ^ (k + 1) :=
-        mul_le_mul (pow_le_pow_left₀ (by norm_num) hX _) (pow_le_pow_left₀ (by norm_num) hX _)
-          (by positivity) (by positivity)
-      have hfix : 2 ^ fixDeg k ≤ 2 ^ m := Nat.pow_le_pow_right (by norm_num) hm
       calc (2 : Real) ^ (2 * (k + 2) ^ 3) * ((2 : Real) ^ (k + 1) * (2 / alpha) ^ 2)
-          = (2 : Real) ^ (2 * (k + 2) ^ 3) * (2 : Real) ^ (k + 1) * (2 / alpha) ^ 2 := by ring
-        _ ≤ (2 / alpha) ^ (2 * (k + 2) ^ 3) * (2 / alpha) ^ (k + 1) * (2 / alpha) ^ 2 :=
-            mul_le_mul_of_nonneg_right h1 (by positivity)
+          ≤ (2 / alpha) ^ (2 * (k + 2) ^ 3) * ((2 / alpha) ^ (k + 1) * (2 / alpha) ^ 2) :=
+            mul_le_mul (pow_le_pow_left₀ (by norm_num) hX _)
+              (mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by norm_num) hX _) (by positivity))
+              (by positivity) (by positivity)
         _ = (2 / alpha) ^ (2 * (k + 2) ^ 3 + k + 3) := by rw [← pow_add, ← pow_add]; ring_nf
-        _ ≤ (2 / alpha) ^ (2 ^ m) := pow_le_pow_right₀ hX1 (by omega)
+        _ ≤ (2 / alpha) ^ (2 ^ m) := pow_le_pow_right₀ hX1 hcube
     calc (2 : Real) ^ (2 * (k + 2) ^ 3) * ((2 : Real) ^ (k + 1) * (2 / alpha) ^ 2 * d⁻¹)
         = (2 : Real) ^ (2 * (k + 2) ^ 3) * ((2 : Real) ^ (k + 1) * (2 / alpha) ^ 2) * d⁻¹ := by ring
       _ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := pw_mul hX (by positivity) (inv_pos.mpr hd0).le hc hdi
 
-/-- `yIn` from `η`. -/
-theorem yIn_step {alpha e : Real} {k m : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
-    (he0 : 0 < e) (he8 : e ≤ alpha / 8) (hei : e⁻¹ ≤ (2 / alpha) ^ (2 ^ m)) (hm : fixDeg k ≤ m) :
+/-- `η` from the single-piece density. -/
+theorem eta_step {alpha d : Real} {k m : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
+    (hd0 : 0 < d) (hd1 : d ≤ 1) (hdi : d⁻¹ ≤ (2 / alpha) ^ (2 ^ m)) (hm : fixDeg k ≤ m) :
+    0 < (2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) * (d / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4) ∧
+      (2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) * (d / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4) ≤
+        alpha / 8 ∧
+      ((2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) * (d / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4))⁻¹ ≤
+        (2 / alpha) ^ (2 ^ (m + 1)) := by
+  exact eta_step_of_cube_le ha ha2 hd0 hd1 hdi
+    ((fixDeg_cube k).1.trans (Nat.pow_le_pow_right (by norm_num) hm))
+
+/-- The η-to-input estimate under its exact scalar denominator condition. -/
+theorem yIn_step_of_den_le {alpha e : Real} {k m : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
+    (he0 : 0 < e) (he8 : e ≤ alpha / 8) (hei : e⁻¹ ≤ (2 / alpha) ^ (2 ^ m)) (hden : 2 * (2 * (k + 3)) ^ (k + 3) ≤ 2 ^ (2 ^ m)) :
     0 < (e / 2) / (2 * (k + 1 + 2 : Nat) : Real) ^ (k + 1 + 2) ∧
       (e / 2) / (2 * (k + 1 + 2 : Nat) : Real) ^ (k + 1 + 2) ≤ alpha ∧
       ((e / 2) / (2 * (k + 1 + 2 : Nat) : Real) ^ (k + 1 + 2))⁻¹ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := by
@@ -550,18 +554,22 @@ theorem yIn_step {alpha e : Real} {k m : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 
     nlinarith
   · rw [inv_div]
     have hc : 2 * (2 * (k + 1 + 2 : Nat) : Real) ^ (k + 1 + 2) ≤ (2 / alpha) ^ (2 ^ m) := by
-      have hnat : (2 * (2 * (k + 1 + 2 : Nat)) ^ (k + 1 + 2) : Nat) ≤ 2 ^ (2 ^ m) := by
-        have h1 : 2 * (2 * (k + 3)) ^ (k + 3) ≤ 2 ^ fixDeg k := (fixDeg_cube k).2
-        have h2 : 2 ^ fixDeg k ≤ 2 ^ (2 ^ m) :=
-          Nat.pow_le_pow_right (by norm_num) (by have := Nat.lt_two_pow_self (n := m); omega)
-        rw [show k + 1 + 2 = k + 3 by ring]
-        omega
       refine pw_const hX ?_
-      exact_mod_cast hnat
+      exact_mod_cast hden
     calc (2 * (k + 1 + 2 : Nat) : Real) ^ (k + 1 + 2) / (e / 2)
         = 2 * (2 * (k + 1 + 2 : Nat) : Real) ^ (k + 1 + 2) * e⁻¹ := by
           rw [div_eq_mul_inv, inv_div]; ring
       _ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := pw_mul hX (by positivity) (inv_pos.mpr he0).le hc hei
+
+/-- `yIn` from `η`. -/
+theorem yIn_step {alpha e : Real} {k m : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
+    (he0 : 0 < e) (he8 : e ≤ alpha / 8) (hei : e⁻¹ ≤ (2 / alpha) ^ (2 ^ m)) (hm : fixDeg k ≤ m) :
+    0 < (e / 2) / (2 * (k + 1 + 2 : Nat) : Real) ^ (k + 1 + 2) ∧
+      (e / 2) / (2 * (k + 1 + 2 : Nat) : Real) ^ (k + 1 + 2) ≤ alpha ∧
+      ((e / 2) / (2 * (k + 1 + 2 : Nat) : Real) ^ (k + 1 + 2))⁻¹ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := by
+  exact yIn_step_of_den_le ha ha2 he0 he8 hei
+    ((fixDeg_cube k).2.trans (Nat.pow_le_pow_right (by norm_num)
+      (hm.trans (Nat.le_of_lt (Nat.lt_two_pow_self (n := m))))))
 
 end GenParams
 
@@ -596,20 +604,6 @@ theorem uCount_scale_le {X V γ θ s : Real} {D μV μD μ0 c : Nat} (hX : 2 ≤
 namespace GenParams
 
 variable {alpha : Real}
-
-/-- `c(θ_S)` for the base density: the first half of `dens_step`. -/
-theorem cS_step {X : Real} (hX : 2 ≤ X) {c : Real → Real} {a0 b0 : Nat}
-    (hc : RecipPowerLB X c a0 b0) {θ : Real} {m μa μb : Nat} (hθ0 : 0 < θ) (hθ1 : θ ≤ 1)
-    (hθi : θ⁻¹ ≤ X ^ (2 ^ m)) (ha0 : a0 ≤ 2 ^ μa) (hb0 : b0 ≤ 2 ^ μb) (hμa : μa ≤ m) :
-    0 < c θ ∧ c θ ≤ 1 ∧ (c θ)⁻¹ ≤ X ^ (2 ^ (m + μb + 1)) := by
-  have hX1 : (1 : Real) ≤ X := by linarith
-  obtain ⟨hc0, hc1, hci⟩ := hc.apply_le hX1 hθ0 hθ1 hθi
-  refine ⟨hc0, hc1, hci.trans (pow_le_pow_right₀ hX1 ?_)⟩
-  have h1 : 2 ^ m * b0 ≤ 2 ^ m * 2 ^ μb := Nat.mul_le_mul_left _ hb0
-  have h2 : 2 ^ m * 2 ^ μb = 2 ^ (m + μb) := by rw [← pow_add]
-  have h3 : 2 ^ μa ≤ 2 ^ (m + μb) := Nat.pow_le_pow_right (by norm_num) (by omega)
-  have h4 : 2 ^ (m + μb + 1) = 2 * 2 ^ (m + μb) := by rw [pow_succ]; ring
-  omega
 
 /-- `(α/2)⁻¹ = X`. -/
 theorem half_inv_le (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
