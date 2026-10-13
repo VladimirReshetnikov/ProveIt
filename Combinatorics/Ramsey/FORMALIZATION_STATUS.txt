@@ -9,6 +9,17 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  Shared spectrum width checkpoint: one scalar estimate now supplies the
+  length-six, generic, graded, cover, Fejer and final modulus proofs. Six
+  production files lose 72 lines; all 205 existing declaration headers,
+  variable scopes, definitions and imports remain unchanged. The original
+  final audit passes 648 native modules and the expanded focused audit
+  passes 778, naming the helper and all six consumers and using only
+  approved axioms. The original-final closure is 647 / 135,338 lines;
+  the stronger bridge is 745 / 160,866. See Notes L.70 and the
+  spectrum-width-sharing verification reports. All numerical bounds are
+  preserved, and the simplification goal remains active.
+
   Shared low-degree and envelope checkpoint: offset-six/seven low-degree
   results derive from the strongest offset-four proof; two shared numeric
   estimates replace eleven copies each in the envelope steps. The final
@@ -778,7 +789,7 @@ Verification of the cover route (2026-10-11)
   Proofs16PolynomialFejer*, Proofs16SplitTwoTrack*, Proofs16UniformCoverTwoTight,
   Proofs18FejerEnvelopeBase{Q,W}, Proofs18CoverFejerLowDegrees{4,5},
   Proofs18CoverFejerShortLengths3) are replaced by the declarations the final
-  bounds use, in four light modules (2,993 lines after L.69): Proofs18FinalClasses (the
+  bounds use, in four light modules (2,977 lines after L.70): Proofs18FinalClasses (the
   classes tDegT3 and their covers), Proofs18FinalStep (the joint-slice step
   GenParamsJT3), Proofs18FinalEnvelopes (the Theorem 18.1 envelope
   polyGenMuJT3 and the Theorem 18.2 envelope genMuXK3 with their fits, and

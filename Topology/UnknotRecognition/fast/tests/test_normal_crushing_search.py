@@ -7,7 +7,12 @@ from unittest.mock import patch
 
 from fastunknot.diagram import Diagram
 from fastunknot.normal_crushing_chain import make_crushing_chain, verify_crushing_chain
-from fastunknot.normal_crushing_search import recognize_by_crushing, verify_crushing_recognition
+from functools import partial
+from fastunknot.normal_crushing_search import recognize_by_crushing as _recognize_by_crushing
+from fastunknot.normal_crushing_search import verify_crushing_recognition
+
+# These tests isolate sector discovery; preprocessing has its own integration tests.
+recognize_by_crushing = partial(_recognize_by_crushing, reduce_vertices=False)
 from fastunknot import normal_crushing_search as search_module
 from fastunknot.normal_sector import SearchLimit, _source_hash, build_sector_kernel, sector_rays
 from fastunknot.normal_sector_verify import verify_sector_exhaustion
@@ -62,7 +67,8 @@ class CrushingRecognitionTests(unittest.TestCase):
         self.assertEqual(self.result['stats'], dict(initial_tetrahedra=20,
             shelled_tetrahedra=5, sectors_attempted=1, bases_attempted=1,
             rays_examined=1, positive_euler_rays=1, crushing_steps=1, stages=1,
-            matching_support_checks=1, matching_support_reductions=0, forced_zero_types=0))
+            matching_support_checks=1, matching_support_reductions=0, forced_zero_types=0,
+            sector_restarts=0, sector_quantum_exhaustions=0, max_cached_sector_jobs=1))
         self.assertEqual(self.proof['schema'], 'diagram-crushing-recognition-v1')
         self.assertEqual(self.proof['exhaustion'], [])
         self.assertIsNone(self.proof['chain']['triangulation'])
