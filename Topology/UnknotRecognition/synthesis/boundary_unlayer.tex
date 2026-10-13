@@ -213,3 +213,165 @@ is asserted to be invariant or monotone.  Sources with their two
 boundary faces in different tetrahedra may still have difficult conflict
 hypergraphs.  A uniform small-parameter theorem remains a separate
 requirement for general quasi-polynomial recognition.
+
+\subsection{Independent replay and finite experimental protocol}
+
+The source-frozen experiment in
+\path{fast/boundary_unlayer_research} uses nine supplied sources:
+layered solid tori of sizes $1,2,4,8,16$, independently relabelled
+copies of sizes $4,8$, and the retained three-layer trefoil and
+figure-eight collars of Section~\ref{sec:boundary-transversal}.
+Their expected inverse-layer counts are respectively
+$0,1,3,7,15,3,7,3,3$, totalling $42$.  Every accepted packet receives
+native independent replay and a fresh Regina deletion of the specified
+labelled tetrahedron.  The resulting face arrays must agree exactly.
+The known predecessors are also compared literally where retained;
+Regina checks manifold validity and first homology, and independently
+recognizes the solid-torus controls.  Homology alone is not used to
+identify any manifold.
+
+Each supplied source is tested with peeling disabled and enabled under
+both the depth-first Euler policy and conflict-directed transversal
+policy.  The resulting $36$ arms perform a complete reduction:
+query for positive canonical Euler characteristic, extract and crush
+a positive ray, and restart until a terminal quotient, a complete
+negative endpoint, or a finite allowance is reached.  Comparing only
+one Euler decision would be misleading, since changing the
+triangulation can change the canonical normal cone.  The shared limits
+per arm are $256$ tree nodes and $10000$ pivots, anchors, ellipsoid
+iterations and feasibility calls, with $10000$ candidate states for
+the transversal policy.  There is also a $20$-second exploratory
+discovery limit.  Every partial reduction receives uncapped independent
+replay after discovery stops.
+
+An interruption inside a search query can occur before that query
+returns its work counters.  Such records explicitly have
+\path{unreturned_query=true} and \path{work_complete=false}.
+Their recorded counters sum returned queries only and are lower bounds
+on actual search work.  A capped or interrupted arm is inconclusive;
+neither its partial chain nor its truncated counters establish a
+negative result or a complete-work improvement.  Recorded discovery
+times are diagnostic, separate from the paired benchmark.
+
+The supplied-source outcomes are conditional reductions.  They become
+knot verdicts only after authenticating the original source as the
+appropriate classical knot exterior.  In particular, the retained
+forward collars have not been added to the diagram-chain schema.
+The separate genuine controls start from the circle, trefoil and
+figure-eight diagrams, each with the transversal policy and peeling
+disabled and enabled.  These six arms must replay their original
+diagram construction, all reductions and their final recognition
+certificate.
+
+The predeclared paired protocol measures the layered tori of sizes
+$1,4,8$ under the depth-first policy, and the three genuine diagrams
+under the transversal policy.  Each of these six cases has one warmup
+per arm, three alternating paired rounds and one baseline/baseline
+control pair: $60$ calls in all.  Every timer includes a fresh complete
+reduction or recognition, independent proof replay, canonical JSON
+serialization and hashing.  Imports and prepared input objects are
+outside the timer; no Regina work occurs inside it.  Apart from the
+diagnostic discovery-time field, every complete result must agree
+exactly with its source-specific audited result, including proof and
+work counters.  Ratios are reported only for pairs with the same
+complete outcome.  The three supplied-source timing cases do not
+measure diagram-recognition speedups.
+
+The maintained regression run passes $208$ tests with Regina available
+and no skips.  The eight new tests cover the six retained collar
+inverses, $16$ independent relabellings, all $31$ deletions from a
+$32$-tetrahedron layered torus, malformed and foreign-source packets,
+callback exception identity, genuine diagram replay, and mixed-chain
+limits.  The mixed-chain limit test uses a supplied-source harness for
+the initial diagram premise; it is explicitly not a genuine diagram
+authentication example.  A sabotaged producer returning an invalid
+nonshrinking packet is rejected before the driver records progress.
+The independent research replay requires neither Regina nor a search
+producer; its optional Regina mode regenerates the external deletion
+and topology checks.  Full publication replay requires all prescribed
+sources and arms, rather than accepting a partial scan as coverage.
+
+\subsection{Observed reductions and their limits}
+
+The final audit passes all $42$ labelled inverse steps.  Of the $36$
+supplied-source arms, $27$ reach a terminal quotient, three prove a
+complete negative endpoint, and six remain inconclusive.  All $14$
+peeled solid-torus arms terminate, including the relabelled controls.
+Every such arm needs one Euler node and one LP pivot after peeling.
+The depth-first complete-work counts for the original layered tori are
+\[
+\begin{array}{c|rr|rr|r}
+\text{initial size}&\multicolumn{2}{c|}{\text{baseline}}&
+ \multicolumn{2}{c|}{\text{peeling enabled}}&\text{inverse layers}\\
+ &\text{nodes}&\text{pivots}&\text{nodes}&\text{pivots}&\\ \hline
+1&1&1&1&1&0\\
+2&10&15&1&1&1\\
+4&16&98&1&1&3\\
+8&28&671&1&1&7\\
+16&52&7721&1&1&15
+\end{array}
+\]
+Each entry includes all returned queries through the terminal normal
+crush.  The $16$-tetrahedron baseline transversal arm, in contrast,
+is interrupted before its first query returns.  Its recorded zero
+nodes and pivots are explicitly incomplete counters, not an assertion
+of zero work.
+
+For the trefoil collar, both baseline policies exhaust their shared
+anchor allowance.  Removing three layers permits complete negative
+proofs: depth-first uses $64$ nodes and $1670$ pivots, while the
+transversal policy uses $40$ nodes and $1268$ pivots.  For the
+figure-eight collar, the baseline transversal policy exhausts its
+$10000$-pivot allowance; the peeled source finishes in $29$ nodes and
+$5016$ pivots.  Both depth-first arms remain inconclusive at their
+anchor limit.  Their returned work increases from $168$ nodes and
+$4768$ pivots to $232$ nodes and $7419$ pivots with peeling.  These
+capped observations show that peeling is not uniformly beneficial to
+this fixed search order; they give no ratio of complete running times.
+
+All six genuine diagram arms produce independently replayed verdicts:
+the circle is trivial, and the trefoil and figure-eight are knotted.
+None removes a boundary layer.  The latter two prepared exteriors have
+their boundary faces in distinct tetrahedra, and the circle terminates
+before this preprocessing can help.  Thus the supplied-source gains
+above are not evidence of a demonstrated diagram-recognition speedup.
+
+All $60$ benchmark calls complete and match the audited proof and work
+data exactly after the stated diagnostic-time normalization.  The
+following table gives medians of the three measured times in
+milliseconds, the median of the three paired baseline/peeling ratios,
+and the separate baseline/baseline control ratio.
+\begin{center}
+\begin{tabular}{lrrrr}
+Case & Baseline ms & Peeling ms & Paired ratio & Control ratio\\
+\hline
+Supplied torus, $1$ tet & $1.772$ & $1.840$ & $0.9627$ & $1.0460$\\
+Supplied torus, $4$ tets & $34.418$ & $6.565$ & $5.2473$ & $0.9991$\\
+Supplied torus, $8$ tets & $513.906$ & $20.318$ & $25.1567$ & $0.8795$\\
+Circle diagram & $14.677$ & $14.661$ & $0.9992$ & $1.0275$\\
+Trefoil diagram & $3320.034$ & $3319.873$ & $1.0000$ & $1.0166$\\
+Figure-eight diagram & $11306.056$ & $11427.199$ & $0.9898$ & $1.0328$
+\end{tabular}
+\end{center}
+The process was pinned to CPU~5, with no competing heavy jobs from this
+task.  Unrelated Lean builds remained possible on the shared host, and
+the processor was not exclusively reserved.  In particular, the
+$0.8795$ baseline control and spread in the eight-tetrahedron pairs
+show host variability; these are small finite measurements, not
+statistical or asymptotic guarantees.  The complete work reductions
+and exact output equality provide separate evidence for the supplied
+torus cases.  No meaningful improvement is observed on the genuine
+diagram controls, whose search work is unchanged.
+
+The full records are retained in \path{synthesis/data}.
+The audit is \path{boundary-unlayer-audit.json}.
+Paired timings are in \path{boundary-unlayer-benchmark.json}, with host
+observations in \path{boundary-unlayer-environment.json}.
+The separate replay checks full case coverage, finite counters,
+source-specific outputs, timeout metadata and every reported ratio.
+The publication helper \path{data/boundary_unlayer_publication.py}
+also pins the native and research sources, test logs, article and final
+PDF.  Historical publication manifests remain records of their own
+source revisions.  This update proves polynomial exposed-collar
+preprocessing and finite improvements on supplied layered inputs;
+the global quasi-polynomial recognition objective remains open.

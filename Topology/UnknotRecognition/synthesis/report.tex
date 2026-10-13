@@ -31,7 +31,7 @@
 \title{Six attempts at quasi-polynomial unknot recognition:\\
 synthesis, cross-validation, and a faster exact recognizer}
 \author{Synthesis report prepared with Claude Code}
-\date{17--18 September 2026; updated 12 October 2026}
+\date{17--18 September 2026; updated 13 October 2026}
 
 \begin{document}
 \maketitle
@@ -940,6 +940,29 @@ v4 supplied-cut audit to 83 certificates. A finite whole-cut boundary kernel
 then handles simultaneous core and annular cancellations with implicit genus
 columns, increasing that audit to 85 certificates. General complete
 cancellation search and explicit boundary-pattern transport remain tasks.
+
+The subsequent normal-crushing path gives a complete exact alternative:
+authenticate the diagram exterior, reduce vertices, search canonical Euler
+cones, and independently verify every strict crushing step or complete
+negative cover.  Section~\ref{sec:exact-polynomial-lp} resolves the local
+LP bit-complexity obligation with a bounded simplex prefix and exact
+rational ellipsoid fallback.  Sections~\ref{sec:euler-transversal} and
+\ref{sec:conflict-candidates} isolate the remaining search dependence in
+the uniform positive-ray conflict parameter $h$, with a conditional
+$O(A(3\delta)^h\operatorname{poly}(t,L))$ bound for conflict-directed
+candidate discovery.  A uniform suitable bound on $h$ remains unproved.
+
+Section~\ref{sec:boundary-unlayer} adds independently certified inverse
+boundary layering as optional polynomial preprocessing, with mixed
+source-authenticated reduction chains.  Its finite supplied-source gains
+do not extend to a demonstrated speedup on the three small diagram
+controls.  Section~\ref{sec:conflict-composition} proves $h\ge5$ for one
+authenticated two-trefoil source unchanged by that operation, using seven
+explicit root-ray conflicts.  The existing visible-factor router already
+splits that input; the finite source bound is neither a router lower bound
+nor a growing family, and the source's negative canonical cone has not
+been certified.  These results sharpen the outstanding structural problem
+without claiming general quasi-polynomial recognition.
 
 \paragraph{Obstacles that remain.}
 The six items of Section \ref{sec:missing} remain obligations for a general

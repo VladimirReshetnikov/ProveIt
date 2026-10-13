@@ -4786,6 +4786,20 @@ them. All previous search work remains charged when the smaller source starts
 fresh algebra. The default remains false and retains the original v1 chain.
 An unlayer packet by itself authenticates no knot diagram or boundary marking.
 
+The [complete research audit](boundary_unlayer_research/README.md) checks 42
+labelled inverse steps, 36 conditional supplied-source runs and six genuine
+diagram recognitions. All 208 affected tests pass. Layered supplied sources
+benefit, but none of the three diagram controls removes a layer. Every capped
+run remains inconclusive; counters from a query interrupted before return are
+explicitly incomplete. The paired timings include proof replay and serialization.
+
+The [connected-sum evidence](conflict_composition_research/README.md) proves
+`h >= 5` for one authenticated 23-tetrahedron source unchanged by this peeling
+operation. Its 35 root rays are checked directly in original STANDARD
+coordinates. This is a finite bound on a direct crushing-driver source; the
+existing recognition router already splits the visible two-trefoil diagram.
+Neither a complete negative cone nor an asymptotic lower-bound family is claimed.
+
 ### Polynomial exact LP policy
 
 `solve_nonnegative_kernel` now defaults to `policy='polynomial'`. It performs
