@@ -1,0 +1,55 @@
+{
+  "affinity": [
+    5
+  ],
+  "host_logical_cpus": 6,
+  "platform": "Linux-5.15.0-186-generic-x86_64-with-glibc2.35",
+  "python": "3.13.14 (main, Jun 23 2026, 15:18:27) [Clang 22.1.3 ]",
+  "command": [
+    "/home/codex/.local/bin/python",
+    "-B",
+    "-S",
+    "-m",
+    "boundary_unlayer_research.benchmark",
+    "--audit",
+    "../synthesis/data/boundary-unlayer-audit.json",
+    "--output",
+    "../synthesis/data/boundary-unlayer-benchmark.json"
+  ],
+  "controls": "No competing heavy jobs from this task. Unrelated repository Lean builds may remain active. CPU5 affinity is not an exclusive reservation.",
+  "before": {
+    "utc": "2026-10-13T07:18:18.550960+00:00",
+    "processes": [
+      "    PID PSR %CPU COMMAND",
+      "2381462   4 98.6 python3",
+      "2381525   5 39.2 lean",
+      "1932041   3  0.8 codex",
+      "2381062   2  0.3 python3",
+      "      1   3  0.0 systemd",
+      "      2   3  0.0 kthreadd",
+      "      3   0  0.0 rcu_gp",
+      "      4   0  0.0 rcu_par_gp",
+      "      5   0  0.0 slub_flushwq",
+      "      6   0  0.0 netns",
+      "      8   0  0.0 kworker/0:0H-events_highpri"
+    ]
+  },
+  "after": {
+    "utc": "2026-10-13T07:21:06.405927+00:00",
+    "processes": [
+      "    PID PSR %CPU COMMAND",
+      "2381948   2 86.7 python3",
+      "2381935   1 30.7 lean",
+      "1932041   3  0.8 codex",
+      "2381062   2  0.1 python3",
+      "      1   1  0.0 systemd",
+      "      2   3  0.0 kthreadd",
+      "      3   0  0.0 rcu_gp",
+      "      4   0  0.0 rcu_par_gp",
+      "      5   0  0.0 slub_flushwq",
+      "      6   0  0.0 netns",
+      "      8   0  0.0 kworker/0:0H-events_highpri"
+    ]
+  },
+  "returncode": 0
+}

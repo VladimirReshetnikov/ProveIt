@@ -86,46 +86,15 @@ theorem length_factor_inv_le {X beta : Real} (hX : (2 : Real) ^ 700 ≤ X) (hb :
       (beta / (8 * boundaryRefinementConstant (beta / 64)))⁻¹ ≤
         Real.exp (X ^ ((2 : Nat) ^ 670)) := by
   have hX2 : 2 ≤ X := le_trans (by norm_num) hX
-  have hX1 : 1 ≤ X := le_trans (by norm_num) hX
-  have hX0 : 0 ≤ X := le_trans (by norm_num) hX
-  have hC4 : 4 ≤ boundaryRefinementConstant (beta / 64) :=
-    section5LocalRefinementConstant_ge_four _ _
-  have hCpos : 0 < boundaryRefinementConstant (beta / 64) := lt_of_lt_of_le (by norm_num) hC4
-  refine ⟨by positivity, ?_, ?_⟩
-  · rw [div_le_one (by positivity)]; linarith only [hb1, hC4]
-  · rw [inv_div]
-    -- `bRC(β/64) = s5LRC 1 (πβ/16)` with `(πβ/16)⁻¹ ≤ X^(2^664 + 4)`
-    have heta : 0 < 4 * Real.pi * (beta / 64) := by positivity
-    have hpi := Real.pi_gt_three
-    have hetai : (4 * Real.pi * (beta / 64))⁻¹ ≤ X ^ ((2 : Nat) ^ 664 + 4) := by
-      rw [show (4 * Real.pi * (beta / 64))⁻¹ = 16 / Real.pi * beta⁻¹ by field_simp; ring, pow_add,
-        mul_comm (X ^ _)]
-      have h16 : 16 / Real.pi ≤ X ^ 4 :=
-        (div_le_self (by norm_num) (by linarith only [hpi])).trans
-          ((show (16 : Real) ≤ 2 ^ 4 by norm_num).trans (pow_le_pow_left₀ (by norm_num) hX2 4))
-      exact mul_le_mul h16 hbi (inv_pos.mpr hb).le (pow_nonneg hX0 _)
-    have hT1 : 1 ≤ X ^ ((2 : Nat) ^ 664 + 4) := one_le_pow_of_two_le hX2 _
-    have hscaled := section5LocalRefinementConstant_le_scaled 1 (4 * Real.pi * (beta / 64))
-      (X ^ ((2 : Nat) ^ 664 + 4)) heta hT1 hetai
-    have hK1 : polynomialPartitionConstant 1 = 16 := by
-      norm_num [polynomialPartitionConstant, Nat.factorial]
-    have hS1 : section5LocalRefinementConstant 1 1 ≤ Real.exp (X ^ 2) :=
-      (section5_degree_le_three_refinement_constant_upper (by norm_num)).trans
-        (two_pow_le_exp_of_large hX (by norm_num))
-    have hB : boundaryRefinementConstant (beta / 64) ≤ Real.exp (X ^ ((2 : Nat) ^ 669)) := by
-      unfold boundaryRefinementConstant
-      refine hscaled.trans ?_
-      rw [hK1, ← pow_mul]
-      exact (exp_mul_le (m := ((2 : Nat) ^ 664 + 4) * 16) hX2 (pow_nonneg hX0 _)
-        (hS1.trans (exp_pow_mono hX2 (by norm_num))) (le_exp_pow_of_le_pow le_rfl)).trans
-        (exp_pow_mono hX2 (by norm_num))
-    have h8B : 8 * boundaryRefinementConstant (beta / 64) ≤ Real.exp (X ^ ((2 : Nat) ^ 669 + 1)) :=
-      exp_mul_le hX2 hCpos.le ((const_le_exp_pow (j := 3) hX2 (by norm_num)).trans
-        (exp_pow_mono hX2 (by norm_num))) hB
-    rw [div_eq_mul_inv]
-    exact (exp_mul_le hX2 (inv_pos.mpr hb).le h8B
-      (le_exp_pow_of_le_pow (hbi.trans (pow_le_pow_right₀ hX1 (by norm_num))))).trans
-      (exp_pow_mono hX2 (by norm_num))
+  have hfixed : section5LocalRefinementConstant 1 1 ≤ X ^ ((2 : Nat) ^ 1082) :=
+    (section5_degree_le_three_refinement_constant_upper (by omega)).trans
+      (pow_le_pow_left₀ (by norm_num) hX2 _)
+  obtain ⟨hc0, hc1, hci⟩ := interval_length_factor_bounds_of_powers hX2 hb hb1 hbi hfixed
+  refine ⟨hc0, hc1, ?_⟩
+  have hi : (beta / (8 * boundaryRefinementConstant (beta / 64)))⁻¹ ≤ X ^ ((2 : Nat) ^ 1084) :=
+    hci.trans (pow_le_pow_right₀ (by linarith only [hX2]) (by norm_num))
+  exact (hi.trans (pow_two_pow_le_exp_pow_succ hX2 1084)).trans
+    (exp_pow_mono hX2 (by norm_num))
 
 /-- **The closed threshold of the length-six iteration is double exponential.** -/
 theorem lengthSixClosedThreshold_le {K1 p1 K2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)

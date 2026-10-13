@@ -2,6 +2,484 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`native_edge_isotropy.tex`](native_edge_isotropy.tex) derives the actual
+interior-edge equations from the maintained face-pairing and quadrilateral
+conventions. Their rational row space equals both cycle presentations, with
+constant coefficients and linear total incidence. Paired-face cancellation
+proves full-source skew isotropy. Every exactly-two-types-per-tetrahedron mask
+preserves isotropy and rank; mixed masks obey an explicit weighted defect
+formula and a rank bound. This excludes the preceding periodic-grid
+representation from native full-source kernels. It supplies no separator bound
+or general quasi-polynomial recognition theorem, and makes no native LP change.
+
+The proof-only checkpoint preserves all native code, the 408-test regression
+and the whole-call evidence below. No new finite audit result or timing claim
+is included. Its publication records are under `data/native-edge-isotropy-theory-*`.
+<!-- NATIVE_EDGE_ISOTROPY_PDF -->
+
+[`sparse_coordinate_separators.tex`](sparse_coordinate_separators.tex) strengthens
+the abstract separator obstruction to constant-coefficient, sparse, totally
+unimodular matrices. At `t = L²`, a periodic directed grid has rank `t−1`,
+zero-sum triples and full root support, yet needs at least `ceil(sqrt(t/3))`
+singleton restrictions for two-thirds coordinate-factor balance. Intact
+directed triangles protect a large feasible factor even after exact
+implicit-zero deletion. The proof is uniform over all singleton assignments;
+it supplies neither a native triangulation realization nor an Euler objective
+or recognition lower bound. This is a documentation-only extension of
+`4103fc47d`; all native code, tests and whole-call evidence below are unchanged.
+The publication at `99b1abc44` has an 850-page PDF, with Section 198 on
+pages 840–842. Three final passes settle all references without additional
+diagnostics. The new theorem and proof pages were visually checked; the
+publication records are under `data/sparse-separator-*`.
+
+[`native_lex_prefix.tex`](native_lex_prefix.tex) adopts Dantzig entering and
+full original-slack lexicographic leaving for the polynomial LP prefix.
+Lazy exact integer comparisons avoid constructing full ratio tuples;
+explicit Bland behavior, call-local state, immutable matrix preparation,
+hard caps and exact fallback are preserved. The focused run passes 32 tests;
+the complete regression passes 408 tests in 45 modules with Regina and no
+skips. All 363 pre-run native/test/fixture/command pins remain unchanged.
+The polynomial LP bound survives, with no smaller admissibility-search
+exponent or timing claim.
+
+[`coordinate_separator_obstruction.tex`](coordinate_separator_obstruction.tex)
+constructs explicit polynomial-size integer matrices whose triples sum to
+zero and whose rank and full-support properties match the proposed algebraic
+premises. Their nonnegative kernels remain coordinate-indecomposable after
+every small singleton restriction. Two-thirds balance requires exactly
+`ceil(t/2)` such restrictions, including when implicit-zero deletion is
+allowed. This proves that the algebraic premises alone cannot give the
+needed polylogarithmic separators. No native triangulation realization,
+canonical Euler function or recognition lower bound is claimed.
+
+One fresh call from the original W34 diagram certifies it as knotted using
+the current native code: 62 LP calls, 6,606 pivots, 33,094,980 tableau updates
+and no fallback. Its complete typed result, counters and source ledger equal
+the archived candidate's after independent proof verification. A separate
+discovery-disabled process rechecks the saved proof and its one historical
+comparison; all 302 execution pins remain unchanged. The fourteen earlier
+calls and 449 queries are historical evidence, not reruns of this native code.
+
+The publication at `4103fc47d` has an 848-page PDF. Section 196 spans pages 836–839
+and Section 197 pages 839–840. Three build passes complete with no unresolved
+references or additional final diagnostics; the new comparison, evidence
+and proof pages were visually checked.
+
+From this directory, the current evidence commands are:
+
+```sh
+python -B -S data/native_lex_prefix_whole_call.py run --output data/native-lex-prefix-whole-call.json
+python -B -S data/native_lex_prefix_whole_call.py check --input data/native-lex-prefix-whole-call.json --output data/native-lex-prefix-whole-call-replay.json
+python -B -S data/native_edge_isotropy_theory_publication.py
+```
+
+The whole-call helper refuses to overwrite existing records; use new output
+paths for another run or replay. The current publication helper checks the
+unchanged parent checkpoint, retained test coverage and final article/PDF
+bytes. It runs no audit, recognition, proof replay, tests, timing or PDF build.
+Earlier publication helpers, including
+`data/native_lex_prefix_publication.py` and `data/sparse_separator_publication.py`,
+bind their historical documents; their mains are not rerun against later edits.
+
+[`whole_call_prefix.tex`](whole_call_prefix.tex) compares the prepared Bland
+and Dantzig/full-slack lexicographic polynomial prefixes in fourteen fresh
+whole-diagram calls against frozen `4d1f76f06`. Each arm shares its own
+10,000-pivot allowance across the actual complete query stream. Every
+preprocessing step, query, capped result and changed conflict is retained;
+this is count-only evidence, with no timing claim; the frozen experiment
+itself made no native default change.
+The candidate certifies W34 as knotted in 6,606 pivots; Bland remains
+inconclusive at 10,000. All 449 LP queries remain in the evidence. The
+candidate makes more LP calls on every nontrivial input and more search
+nodes/conflict insertions on TT and T(2,7), despite fewer pivots and updates.
+The archive `data/whole-call-prefix-4d1f76f06.tar.gz` and portable helper
+`data/whole_call_prefix_replay.py` preserve and independently replay the
+controls, original-row LP answers, original-diagram chains and complete
+labelled source ledgers with discovery disabled.
+
+[`euler_coordinate_factors.tex`](euler_coordinate_factors.tex) proves exact
+kernel factorization, positive-search composition and additivity of the
+resolving parameter across coordinate factors. A uniform balanced
+compatibility separator of size `k(t)` would give the conditional bound
+`A t^O(k(t)) poly(t,L)`. Such a theorem remains unproved. Exact probes on six
+sources found no split in any full kernel or any of the 276 one-tetrahedron
+singleton restrictions. Combining prior matching witnesses with local
+block-ones vectors proves full feasible support there, so these are also
+indecomposable as literal coordinate products of nonnegative Q cones.
+The article also states the strict Q-support gluing
+lemma and the obstruction to an embedded annular face port on the current
+one-vertex boundaries.
+
+The complete algebra-only probes are in `data/coordinate-factor-probes.tar.gz`.
+`data/coordinate_factor_replay.py` freshly checks seven authenticated chains,
+six full matrices and all 276 restricted matrices. It binds these sources to
+prior nonnegative matching witnesses without inferring positive Euler. The
+first portable-replay preflight failed on a Git working-directory path;
+its source and outputs are retained, and only repository-root resolution
+changed before the successful replay. No native algorithm changed.
+
+The publication at `774f878ed` has an 844-page PDF. Section 194 spans pages
+829–832 and Section 195 pages 832–836. Its three final passes have no
+unresolved references or new diagnostics; new tables and proof pages were
+visually checked. That checkpoint's native code and all 361 regression
+dependencies match the historical 394-test, 44-module run. Those historical
+pins are not validation of the later native default change.
+
+From this directory, the separate archival replay commands are:
+
+```sh
+python -B -S data/whole_call_prefix_replay.py --json-out data/whole-call-prefix-replay.json --text-out data/whole-call-prefix-replay.txt
+python -B -S data/coordinate_factor_replay.py --output data/coordinate-factor-replay.json
+```
+
+Both helpers refuse to overwrite retained output; use new output paths for
+another replay. Both separately executed replays passed. The publication
+helper `data/prefix_factor_evidence_publication.py` authenticates that
+historical checkpoint's replays, tested source closure, article/PDF and final
+build logs. It launches no solver discovery, tests, timing, certificate
+replay or PDF build. Its records use `data/prefix-factor-evidence-publication`.
+General quasi-polynomial recognition remains unproved.
+
+[`prepared_euler_matrix.tex`](prepared_euler_matrix.tex) removes repeated
+LP matrix parsing and original-row selection across a mask's uncached Euler
+objectives. Preparation is lazy and local to one attempt; each objective
+retains fresh tableau and fallback state and the current shared allowances.
+This saves repeated polynomial setup, with no change to the branching bound.
+[`q_zero_pachner_transport.tex`](q_zero_pachner_transport.tex) proves exact
+transport of regional Q-zero faces through certified Pachner moves, including
+canonical Euler values, root-ray extremality and integral primitive scale.
+The theorem allows formal boundary selfattachments and incompatible outside
+coordinates. It does not yet provide an algorithmic shortcut or a bound on
+the unrestricted resolving parameter.
+At that prepared-matrix checkpoint, the combined regression passed 394 tests
+across 44 modules with Regina and no skips. All 361 files in its pre-run
+native/test/fixture closure were unchanged after the run. The command and
+complete log are retained under
+`data/prepared-euler-matrix-*`.
+The core publication at `4e152f0ef` has an 832-page [PDF](report.pdf), with
+Section 191 on pages 817–822 and Section 192 on pages 822–824. Its three build
+passes finish without unresolved references or new diagnostics. The historical
+helper
+`data/prepared_euler_matrix_publication.py` checks that checkpoint's tested
+source closure, exact test coverage, article and PDF artifacts; this helper
+runs no tests, certificate replay, discovery, timing or PDF build.
+
+The supplemental comparison executes the actual predecessor sources from
+`973c6fdee` in 492 fixed pairs (984 calls). All complete typed outputs and
+existing counters agree; all 348 raw LP pairs also have equal callback counts
+and site order after normalizing the extracted parsing helper's locations.
+Independent original-row and Euler-certificate replay validates conclusive
+answers. All capped outcomes remain. See
+`data/prepared-euler-matrix-differential.{json,txt}` and its runner. The first
+inventory attempt stopped before any query because it assumed a namespace
+package had an initializer file; its source and failure log are preserved,
+and only that path handling changed before the successful full run.
+
+[`capped_pivot_pilot.tex`](capped_pivot_pilot.tex) proves the exact full-slack
+lexicographic leaving rule and its compatibility with the bounded polynomial
+prefix. On all eight captured W34 queries, Bland/Dantzig/Dantzig-lex use
+10,000/9,187/784 pivots with 1/2/0 inconclusive outcomes. Lex regresses on the
+positive envelope (3 to 51 pivots); ordinary Dantzig hits two caps. All three
+arms and original query allowances are retained. This is a fixed-query pilot
+against frozen `973c6fdee`, with no new whole-call verdict, timing claim,
+production pivot change or general quasi-polynomial bound.
+The complete snapshot, protocol, scripts, results and logs are in
+`data/lp-pivot-pilot-973c6fdee.tar.gz`. Its isolated replay helper
+`data/lp_pivot_pilot_replay.py` disables discovery and checks all 21 controls,
+three callback arms, eight captured queries and 24 arm/query records.
+The supplemental publication at `7fa9d7ce2` has an 836-page PDF: Section 191
+spans pages 818–823, Section 192 pages 823–826, and Section 193 pages 826–829.
+Its three final passes have no unresolved references or new diagnostics.
+The historical helper `data/prepared_euler_matrix_evidence_publication.py`
+replays that checkpoint's saved differential answers, authenticates its
+separately executed isolated pilot replay, and binds its article and PDF.
+Its native code and complete test dependencies match the 394-test core;
+it runs no solver discovery, tests, timings or PDF build. Its artifact pins
+describe that historical checkpoint.
+
+[`direct_crush_positive.tex`](direct_crush_positive.tex) removes redundant
+STANDARD extraction of native LP/tree/transversal rays. It proves canonical
+Q-extreme lifting, primitive integrality and the all-vertex zero condition,
+then explains the original-support guard and independent quotient replay.
+Valid nonprimitive or nonextreme canonical points retain checked extraction;
+caller exceptions and other errors do not trigger repair. Vertex-link
+extraction remains necessary. This saves an additive algebraic pass, with no
+new LP-count, time-exponent, timing or general quasi-polynomial claim.
+At revision `973c6fdee`, the regression passes 383 tests across 43 modules with Regina and no skips,
+including nineteen new test methods. All 360 native/test/fixture dependencies
+match the pre-run snapshot. Commands and complete logs are retained under
+`data/direct-crush-positive-*`. The publication helper
+`python -B -S data/direct_crush_positive_publication.py` verifies this tested
+source closure, the exact test coverage, the article and final PDF builds;
+it runs no tests, certificate replay, discovery or timing.
+That publication's [PDF](report.pdf) has 824 pages; Section 190 spans pages 812–816.
+Three final build passes have no unresolved references or new diagnostics.
+Its source and PDF pins describe that historical checkpoint.
+
+[`geometric_descent_crushing.tex`](geometric_descent_crushing.tex) implements
+an optional direct geometric enumeration of D and UDD first descents. The
+method has conservative O(t⁵ log²(t+2)) query time, O(t⁶ log²(t+2)) repeated
+preprocessing time, and O(t log(t+2)) search working space. Version 5 chains
+independently replay all elementary formal boundary replacements. Select it
+with `reduce_pachner_descent=True, pachner_descent_method='geometric'`;
+the default method remains `cochain`, and preprocessing remains disabled by
+default. These improve upper bounds for a fixed preprocessing family; general
+quasi-polynomial recognition remains unproved.
+The core regression at `2149e2e56` passes 364 tests across 41 modules with
+Regina and no skips. Its 28 new tests cover independent source packets, complete local
+branching and genuine diagram/factorwise integration; commands and logs are
+retained under `data/geometric-descent-*`.
+
+[`conditional_type_matching.tex`](conditional_type_matching.tex) proves the
+sound conditional deletion rule and its initial linear-kernel criterion.
+All 276 types on six retained sources have independently verified nonnegative
+STANDARD matching witnesses. Thus this matching-only rule removes nothing
+there, even with complete nonnegative feasibility. The earlier cheap scan's
+W34 cap remains explicit. The portable archival replay checks both byte-exact
+experiment groups, all source chains and 12 corruption controls; its 326 fresh
+source pins are separate from historical generation pins. See
+[`conditional_type_research`](../fast/conditional_type_research/README.md).
+
+The frozen comparison protocol at `66817eceb` now has fourteen fresh
+whole-diagram audit calls and fifty complete timing calls. Both methods have
+exactly equal labelled endpoints and identical LP pivot/node totals on all
+seven audit cases. Both W34 runs remain inconclusive at 10,000 pivots. The
+predeclared five-case timing set retains every warmup, pair and A/A repeat;
+median paired cochain/geometric ratios are 0.9890, 0.9849, 1.0487, 1.0431 and
+1.0584 for circle, trefoil, figure-eight, TT and T25. The trefoil regresses in
+all three pairs; TT's A/A ratio is 1.2191. Shared-host variation and finite
+coverage prevent a universal speedup claim. The geometric article gives the
+complete tables, timing boundary, source comparisons and proof scope.
+
+The saved-evidence controls accept three valid cases and reject 27 mutations,
+including native-valid same-diagram evidence for the wrong experimental
+policy. Repeated native verifier calls use an explicitly recorded exact typed
+argument cache; all research acceptance checks rerun. At revision `3d3498207`,
+the publication helper
+`python -B -S data/geometric_descent_evidence_publication.py` freshly replays
+all audit proofs, binds all fifty full timing outputs, and checks the retained
+controls, native/test dependencies, article, PDF and three build logs. It
+runs no discovery, timing, tests or PDF build. Its outputs use the prefix
+`data/geometric-descent-evidence-publication`.
+
+The earlier 817-page geometric/conditional core publication and
+`data/geometric_descent_publication.py` describe revision `2149e2e56`.
+Their source manifest remains a historical record. The later comparison
+publication checked its native code and regression dependencies against
+that 364-test snapshot. That publication has an 820-page PDF, with empirical subsections
+on pages 806–809. Its source pins and timing measurements remain historical
+after the subsequent direct-ray optimization.
+
+[`pachner_descent_crushing.tex`](pachner_descent_crushing.tex) adds optional
+fixed one-upward Pachner preprocessing to the direct and factored crushing
+drivers. Each accepted macro has at most three elementary moves and removes
+exactly one tetrahedron. Its checker authenticates every intermediate source,
+zero cochain transport and the first strict descent. The complete search is
+polynomial for this fixed policy; no general bound on the resulting Euler
+resolving parameter follows. The default remains disabled. Version 4 chains
+count one accepted macro against the shared reduction allowance, while
+diagnostics retain search work and elementary move counts separately.
+The broader regression run passes 336 tests across 38 modules with Regina
+and no skips. A final focused seven-test replay also checks that outer
+successor corruption is rejected while its inner geometric proof remains
+valid. Commands and logs are retained under `data/pachner-descent-*`.
+The core publication at `310dd447b` built an 803-page [PDF](report.pdf),
+with Section 187 on pages 790–796, visually reviewed after three build passes
+with no new overflow warnings or unresolved references. Its helper
+`data/pachner_descent_core_publication.py` and recorded source pins describe
+that historical core publication, which contains no new timing claim.
+
+The separate fourteen-call whole-diagram audit preserves every returned proof
+or partial chain. T25 pivots fall from 7,113 to 693; T27 completes at 2,545
+where the baseline exhausts 10,000. Both weaving calls remain inconclusive,
+and the two-trefoil pivot count increases from 3,398 to 3,526. The twelve
+noncircle terminal triangulations match the independently replayed staged
+sources exactly. On these labelled sources, complete negative trees and
+original STANDARD extreme-ray checks establish resolving values 1, 0, 2, 1
+and 2 for T, F, TT, T25 and T27. The older T25 source has exact value 3;
+its reduction to 1 proves a finite improvement, without a general
+monotonicity or asymptotic claim. All 49 corruption controls reject, including
+a valid same-diagram knot proof on the wrong experimental endpoint.
+The staged twenty-call experiment, its five assembled proofs, and the fresh
+fourteen-call audit remain distinct. See
+[`pachner_descent_research`](../fast/pachner_descent_research/README.md).
+All 50 predeclared timing calls match the audited outputs. Median paired
+baseline/enabled time ratios are 0.9200 for trefoil, 1.1413 for figure-eight,
+1.0270 for TT and 1.7181 for T25, including preprocessing, proof replay and
+complete result serialization. The trefoil regression, all paired samples
+and A/A controls remain visible. The circle performs no macro search.
+At revision `55028b28a`, `data/pachner_descent_publication.py` replays
+and pins that complete evidence publication. Its source pins are historical
+after later implementation changes.
+It checks that the native code and test dependencies still match the earlier
+336-test regression; it runs neither discovery nor new timings.
+That publication's [PDF](report.pdf) has 809 pages. Section 187 spans pages 791–802;
+the new empirical pages 797–802 pass visual review after three build passes.
+The final build has no unresolved references or new overflow warnings.
+
+[`strict_pachner32.tex`](strict_pachner32.tex) proves the optional strict 3→2
+preprocessing policy. Its independent checker compares the entire formal
+bipyramid boundary, including attachments within the region itself. Each move
+preserves the finite compact manifold and removes one tetrahedron. The v3
+diagram chain shares the same global reduction allowance across normal
+crushes, inverse layers and Pachner moves, and every new source receives fresh
+normal algebra. Conservative preprocessing and accepted-chain size bounds are
+polynomial; no general resolving-parameter bound follows.
+The 267-test regression run passes across 29 modules with Regina and no skips.
+The publication at `fb597741b` rebuilt the [PDF](report.pdf) to 797 pages;
+its section spans pages
+782–790, visually reviewed after three build passes. There are no unresolved
+references or new overflow warnings. Test commands and logs are retained under
+`data/strict-pachner32-*`.
+The fresh eight-call audit independently replays every returned whole-diagram
+proof or partial chain. Trefoil pivots fall from 1,268 to 428, figure-eight
+from 5,016 to 1,917, and the whole two-trefoil call completes at 3,398 pivots
+where the baseline exhausts 10,000. A separate archival replay authenticates
+nine local moves and three negative Euler trees. On its exact two-trefoil
+sources, six moves take the earlier `h >= 5` source to one with `h <= 3`;
+this proves no general monotonicity or asymptotic family bound. Protocols,
+source pins and the distinction between fresh replay and historical Regina
+controls are in
+[`strict_pachner32_research`](../fast/strict_pachner32_research/README.md).
+The 30-call paired benchmark includes all preprocessing, proof replay and
+complete result serialization. Median paired speedups are 1.4257 for trefoil
+and 1.5841 for figure-eight; the circle performs no new scan. A/A controls and
+all paired samples retain host variation. Run `python -B -S
+data/strict_pachner32_publication.py` from this directory to check the complete
+publication, including 27 fresh evidence mutations and 29 archived packet
+mutations, at revision `fb597741b`. Its recorded source pins remain historical
+after subsequent native and article changes.
+
+[`factored_crushing.tex`](factored_crushing.tex) composes native crushing proofs
+over the existing visible interlacement factors. A separate checker reconstructs
+the exact factor PDs and verifies one knotted child or every trivial child.
+All nine search limits remain shared across attempted factors, including failed
+work. This new direct interface avoids constructing a combined exterior when
+a visible summand suffices; the high-level router already uses visible
+factorization. Hidden connected sums and the general structural bound remain
+open.
+The combined native regression run passes 238 tests with Regina and no skips,
+including genuine child proofs, 313 independent factor reconstruction cases,
+strict certificate mutations and shared-budget controls. Logs and the exact
+command are retained under `data/factored-crushing-tests.txt` and
+`data/factored-crushing-test-command.txt`.
+The factorwise publication at `fafaf68f5` rebuilt the PDF to 789 pages;
+its theory and evidence spanned pages 775–782 and were visually reviewed after
+three build passes with no unresolved references or new overflow warnings. The restricted-family
+`poly(n+1) * 2^O(s)` bound uses uncapped source-tree search with polynomial LP,
+where `s` is the largest visible crossing block. Polylogarithmic `s` gives a
+quasi-polynomial bound for that restricted family; arbitrary diagrams remain open.
+
+The source-pinned factorwise audit covers 16 raw/factored whole-diagram calls
+and four repeated-trefoil controls, all with complete returned work. Under equal
+shared 256-node and 10,000-pivot allowances, factorwise proofs certify TT, TF
+and FF where raw crushing is inconclusive. All 50 predeclared timed calls
+match their audited results. The median paired raw/factored ratios are 10.0809
+for UU and 1.2525 for UT; the single-factor circle, trefoil and figure-eight
+controls regress (0.6971, 0.8153, 0.8287). Shared-host variation and A/A controls
+are retained. This compares the direct APIs, not the existing high-level router.
+See [`factored_crushing_research`](../fast/factored_crushing_research/README.md)
+for the full protocol. `python -B -S data/factored_crushing_publication.py`
+checks the complete evidence, 19 corruption controls, source pins, tests and
+final report build at the recorded publication revision `fafaf68f5`. Its native
+source pins precede the optional 3→2 extension and are historical.
+
+[`boundary_unlayer.tex`](boundary_unlayer.tex) integrates independently
+certified inverse boundary layers into an optional diagram preprocessing
+policy. Its proof covers the oriented forward reconstruction, strict
+tetrahedron descent, polynomial bit work and the new mixed reduction-chain
+schema. This removes exposed collars without assuming that normal rays or
+their conflicts survive the move. Global resolving-set bounds remain open.
+The full audit replays 42 inverse steps across nine source families, 36
+conditional supplied-source reduction arms, and six genuine diagram proofs.
+The 208 affected regression tests pass without skips. Peeling helps the
+supplied layered sources; none of the three genuine diagram controls exposes
+a removable layer. Evidence and reproduction commands are in
+[`boundary_unlayer_research`](../fast/boundary_unlayer_research/README.md).
+
+[`conflict_composition.tex`](conflict_composition.tex) gives an authenticated
+23-tetrahedron two-trefoil source with `h >= 5`. Seven independently checked
+positive root rays suffice for a short hitting-set proof; all 35 retained
+rays and all 8,855 four-element candidates also receive exact replay.
+The optional peeling operation leaves this source unchanged. This is a finite
+lower bound for the direct crushing driver, not for the existing recognition
+router, which already splits this visible connected sum. A complete negative
+canonical-cone proof and a growing lower-bound family remain open.
+See [`conflict_composition_research`](../fast/conflict_composition_research/README.md).
+
+The boundary-peeling publication rebuilt the [PDF](report.pdf) to 781 pages. The inverse-layer section starts
+on page 767 and the connected-sum section on page 772. The new evidence pages
+770–775 were visually reviewed; three final build passes leave no unresolved
+references or new overflow warnings. Run `python -B -S
+data/boundary_unlayer_publication.py` from this directory to check the full
+publication at its recorded source revision, `c7cf20578`. It includes all 60 benchmark calls,
+the separate 37-corruption replay check, and the connected-sum audit's current
+source pins. The latter's 35 STANDARD rank checks have their own replay
+command in its package README. The benchmark JSON is losslessly compacted
+for storage; all retained values and timing observations are unchanged.
+
+[`conflict_candidates.tex`](conflict_candidates.tex) proves the optional
+conflict-directed candidate policy's `O(A*(3*delta)^h*poly(t,L))` bit bound.
+It branches on missed conflicts, partitions candidates without repetition
+within each depth pass, and safely forgets old conflicts in a fixed cache.
+The original subset policy remains the default. All 200 affected tests pass,
+including independent geometric replay, cache eviction, and shared limits.
+The fresh 352-query original STANDARD audit and six complete diagram proofs
+agree under both policies. Trefoil discovery uses 40 oracle nodes instead of
+64; figure-eight uses 29 instead of 36. Complete work counts, paired timings
+and reproduction commands are in
+[`conflict_candidate_research`](../fast/conflict_candidate_research/README.md).
+No uniform bound on the general resolving parameter `h` has been proved.
+
+[`boundary_transversal.tex`](boundary_transversal.tex) refutes two possible
+geometric shortcuts: neither boundary-face tetrahedra nor all boundary-edge
+stars always meet every positive extreme-ray conflict. An eleven-tetrahedron
+example has disjoint boundary-edge and conflict sets. Solver-free original
+STANDARD rank checks authenticate all 19 retained rays and six layerings;
+fresh Regina construction agrees with all six. Reproduction commands and
+scope are in [`boundary_transversal_research`](../fast/boundary_transversal_research/README.md).
+These examples do not prove that minimum resolving size grows.
+
+The candidate-policy publication rebuilt the report to 772 pages. Its candidate section
+spans pages 756–761 and the boundary-counterexample section pages 761–766;
+their proofs and tables were visually reviewed. Three build passes
+left no unresolved references or new overflow warnings. That historical bundle
+is checked at its recorded source revision by `python -B -S -m conflict_candidate_research.check_evidence
+--benchmark ../synthesis/data/conflict-candidate-benchmark.json --publication`
+from `fast/`; its manifest records that source snapshot and complete evidence.
+
+[`exact_polynomial_lp.tex`](exact_polynomial_lp.tex) proves the maintained
+polynomial exact LP policy: a bounded Bland prefix, rational outward-rounded
+ellipsoid feasibility, exact original-point and extreme-ray recovery, and
+original-row dual scaling. It includes a conservative finite-bit bound and
+the shared pivot, ellipsoid-update, and feasibility-call allowances used by
+Euler search and crushing. This resolves the local LP complexity obligation;
+a general quasi-polynomial bound on complete admissibility search remains
+unproved. The fresh audit checks 60 exact cone queries, 24 retained rational
+rounding updates, and genuine positive/negative geometric fallback results.
+Three paired complete-query measurements preserve identical outputs and
+report small common-path timing differences; none enters fallback, so no
+practical ellipsoid speedup is claimed. Reproduction commands and source pins
+are in [`polynomial_lp_research`](../fast/polynomial_lp_research/README.md).
+Historical evidence below retains its original source pins.
+
+[`euler_transversal.tex`](euler_transversal.tex) describes the optional
+conflict-learning search and proves its conditional bound in the minimum
+uniform transversal size. It explains the extreme-ray requirement, complete
+negative tree replay, shared operational limits, and why removing local
+uniform quadrilateral directions does not close the general complexity gap.
+The fresh audit proves exact resolving sizes 3 and 2 on the retained trefoil
+and figure-eight sources. Learning completes the bounded figure-eight query
+where DFS remains inconclusive, while its smaller trefoil proof takes slightly
+longer to discover in the paired experiment. All 160 affected tests pass.
+
+[`euler_rank_replay.tex`](euler_rank_replay.tex) proves exact original-row
+basis reduction and bounded reuse of independently checked replay arithmetic.
+Its source-pinned experiments measure a 1.711 paired trefoil query speedup
+and an 8.577 fixed-tree replay speedup, alongside the timing controls and
+146-test regression record. These finite improvements do not establish
+quasi-polynomial recognition.
+
 [`intrinsic_port_atlases.tex`](intrinsic_port_atlases.tex) reviews report 113
 and proves a polynomial reduction from the ambient common-port dimension to
 the dimension of the intersection of the local linear images. It includes the

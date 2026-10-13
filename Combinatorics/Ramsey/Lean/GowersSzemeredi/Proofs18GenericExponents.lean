@@ -21,34 +21,6 @@ namespace LeanProofs.GowersSzemeredi
 
 /-! ### The uniform count at any scale -/
 
-theorem uCount_scale_le {X V γ θ s : Real} {D μV μD μ0 c : Nat} (hX : 2 ≤ X) (hV : 1 ≤ V)
-    (hVμ : V ≤ 2 ^ (2 ^ μV)) {k : Nat} (hμ0 : max μV (fixDeg k) + 2 ≤ μ0)
-    (hg : 0 < γ) (hg1 : γ ≤ 1) (hgi : γ⁻¹ ≤ X ^ (2 ^ fixDeg k))
-    (ht : 0 < θ) (ht1 : θ ≤ 1) (hti : θ⁻¹ ≤ X ^ (2 ^ fixDeg k))
-    (hs : 0 < s) (hs1 : s ≤ 1) (hsi : s⁻¹ ≤ X ^ (2 ^ c)) (hD : D ≤ 2 ^ μD) :
-    uCount V D γ θ s ≤ X ^ (2 ^ (max μ0 c + 1 + μD)) := by
-  rw [uCount_eq hV D hg hg1 ht ht1 hs hs1]
-  have hval : uniformBase V 1 θ γ s = 4 * V * γ⁻¹ * θ⁻¹ * s⁻¹ := by
-    unfold uniformBase; field_simp; ring
-  rw [hval]
-  set m := max μV (fixDeg k)
-  have h7 : 7 ≤ m := le_trans (Nat.le_add_left 7 _) (le_max_right μV (fixDeg k))
-  have h4 : (4 : Real) ≤ X ^ (2 ^ m) := pw_const hX (by
-    have : 2 ≤ 2 ^ m := le_trans (by norm_num : 2 ≤ 2 ^ 1) (Nat.pow_le_pow_right (by norm_num) (by omega))
-    calc (4 : Real) = 2 ^ 2 := by norm_num
-      _ ≤ 2 ^ (2 ^ m) := pow_le_pow_right₀ (by norm_num) this)
-  have hV' : V ≤ X ^ (2 ^ m) := pw_mono hX (pw_const hX hVμ) (le_max_left _ _)
-  have hg' : γ⁻¹ ≤ X ^ (2 ^ m) := pw_mono hX hgi (le_max_right _ _)
-  have ht' : θ⁻¹ ≤ X ^ (2 ^ m) := pw_mono hX hti (le_max_right _ _)
-  have h1 := pw_mul hX (by norm_num) (by linarith) h4 hV'
-  have h2 := pw_mul hX (inv_pos.mpr hg).le (inv_pos.mpr ht).le hg' ht'
-  have h3 := pw_mul hX (by positivity) (by positivity) h1 h2
-  have hc0 : 4 * V * γ⁻¹ * θ⁻¹ ≤ X ^ (2 ^ μ0) := by
-    rw [show 4 * V * γ⁻¹ * θ⁻¹ = 4 * V * (γ⁻¹ * θ⁻¹) by ring]
-    exact pw_mono hX h3 (by omega)
-  have h5 := pw_mul' hX (by positivity) (inv_pos.mpr hs).le hc0 hsi
-  exact pw_pow hX (by positivity) h5 hD
-
 /-! ### The nest decreases -/
 
 theorem genC_le_self {X : Real} (hX : 1 ≤ X) {a b : Nat} (hb : 1 ≤ b) (c : Real → Real) (k : Nat)
@@ -97,25 +69,6 @@ variable {alpha : Real}
 /-- The log-degree of the width exponents. -/
 def expDeg (k μD μ0 μK : Nat) : Nat :=
   max (rhoDeg k μD μ0 + 2 * μD + 9) (max (rhoDeg k μD μ0 + μD + k + 7) (μK + 2))
-
-/-- `c(θ_S)` for the base density: the first half of `dens_step`. -/
-theorem cS_step {X : Real} (hX : 2 ≤ X) {c : Real → Real} {a0 b0 : Nat}
-    (hc : RecipPowerLB X c a0 b0) {θ : Real} {m μa μb : Nat} (hθ0 : 0 < θ) (hθ1 : θ ≤ 1)
-    (hθi : θ⁻¹ ≤ X ^ (2 ^ m)) (ha0 : a0 ≤ 2 ^ μa) (hb0 : b0 ≤ 2 ^ μb) (hμa : μa ≤ m) :
-    0 < c θ ∧ c θ ≤ 1 ∧ (c θ)⁻¹ ≤ X ^ (2 ^ (m + μb + 1)) := by
-  have hX1 : (1 : Real) ≤ X := by linarith
-  obtain ⟨hc0, hc1, hci⟩ := hc.apply_le hX1 hθ0 hθ1 hθi
-  refine ⟨hc0, hc1, hci.trans (pow_le_pow_right₀ hX1 ?_)⟩
-  have h1 : 2 ^ m * b0 ≤ 2 ^ m * 2 ^ μb := Nat.mul_le_mul_left _ hb0
-  have h2 : 2 ^ m * 2 ^ μb = 2 ^ (m + μb) := by rw [← pow_add]
-  have h3 : 2 ^ μa ≤ 2 ^ (m + μb) := Nat.pow_le_pow_right (by norm_num) (by omega)
-  have h4 : 2 ^ (m + μb + 1) = 2 * 2 ^ (m + μb) := by rw [pow_succ]; ring
-  omega
-
-/-- `(α/2)⁻¹ = X`. -/
-theorem half_inv_le (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
-    (alpha / 2)⁻¹ ≤ (2 / alpha) ^ (2 ^ fixDeg k) := by
-  rw [inv_div]; exact pw_X (two_div_ge_two ha ha2) _
 
 /-- **One level of the nested width exponent.** -/
 theorem lw_level_inv_le {V : Real} {D k μV μD μ0 ρ : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
@@ -190,23 +143,6 @@ theorem nestExp_inv_le {V : Real} {D k K p μV μD μ0 : Nat} (ha : 0 < alpha) (
   have h := genNestExp_inv_le (one_le_pw hX _) hEw hC ht0 ht1 (2 ^ k - 1) hlev
   exact h.trans (pw_pow hX (by positivity) le_rfl (Nat.sub_le _ _))
 
-/-- `⌊Q⌋ + 1 ≤ X^(2^(m+1))` for `1 ≤ Q ≤ X^(2^m)`. -/
-theorem floor_succ_le_pw {X Q : Real} {m : Nat} (hX : 2 ≤ X) (hQ1 : 1 ≤ Q) (hQ : Q ≤ X ^ (2 ^ m)) :
-    ((⌊Q⌋₊ : Nat) : Real) + 1 ≤ X ^ (2 ^ (m + 1)) := by
-  have hfl : ((⌊Q⌋₊ : Nat) : Real) ≤ Q := Nat.floor_le (le_trans zero_le_one hQ1)
-  have h2 : (2 : Real) ≤ X ^ (2 ^ m) := hX.trans (pw_X hX _)
-  have h3 := pw_mul hX (by norm_num) (le_trans zero_le_one hQ1) h2 hQ
-  have h4 : ((⌊Q⌋₊ : Nat) : Real) + 1 ≤ 2 * Q := by linarith
-  exact h4.trans h3
-
-/-- `(familyRecExp k p q / 2)⁻¹ = 4 p (q+1)^(2·2^(k+1))`. -/
-theorem half_familyRecExp_inv (k p q : Nat) :
-    (familyRecExp k p q / 2)⁻¹ = 4 * ((p : Real) * ((q : Real) + 1) ^ (2 * 2 ^ (k + 1))) := by
-  unfold familyRecExp
-  rw [inv_div, div_inv_eq_mul]
-  push_cast
-  ring
-
 /-- **`Em`, `QM` and `Bexp`.** -/
 theorem spectrum_exps_inv_le {V : Real} {D k K p μV μD μ0 μK : Nat} (ha : 0 < alpha)
     (ha2 : alpha ≤ 1 / 2) (hV : 1 ≤ V) (hVμ : V ≤ 2 ^ (2 ^ μV))
@@ -239,11 +175,8 @@ theorem spectrum_exps_inv_le {V : Real} {D k K p μV μD μ0 μK : Nat} (ha : 0 
       (2 / alpha) ^ (2 ^ (rhoDeg k μD μ0 + 1)) := by
     rw [show ((std V D k K p μ0).Rho1 alpha / 2 / 2)⁻¹ = 4 * ((std V D k K p μ0).Rho1 alpha)⁻¹ by
       field_simp; ring]
-    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ rhoDeg k μD μ0) := pw_const hX (by
-      have : 2 ≤ 2 ^ rhoDeg k μD μ0 := le_trans (by norm_num : 2 ≤ 2 ^ 1)
-        (Nat.pow_le_pow_right (by norm_num) (by omega))
-      calc (4 : Real) = 2 ^ 2 := by norm_num
-        _ ≤ 2 ^ (2 ^ rhoDeg k μD μ0) := pow_le_pow_right₀ (by norm_num) this)
+    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ rhoDeg k μD μ0) :=
+      pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
     exact pw_mul hX (by norm_num) (inv_pos.mpr hr0).le h4 hri
   have hQ := uCount_scale_le (c := rhoDeg k μD μ0 + 1) hX hV hVμ hμ0 hd0 hd1 hdi hB0 hB1 hBi
     hq0 hq1 hqi hD
@@ -268,11 +201,8 @@ theorem spectrum_exps_inv_le {V : Real} {D k K p μV μD μ0 μK : Nat} (ha : 0 
     have hk2 : 2 * 2 ^ (k + 1) ≤ 2 ^ (k + 2) := by rw [pow_succ 2 (k + 1)]; omega
     have hpow := pw_pow hX hq0' hQM' hk2
     have hp' : (p : Real) ≤ (2 / alpha) ^ (2 ^ μK) := pw_const hX (by exact_mod_cast hpμ)
-    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ (μK + 1)) := pw_const hX (by
-      have : 2 ≤ 2 ^ (μK + 1) := le_trans (by norm_num : 2 ≤ 2 ^ 1)
-        (Nat.pow_le_pow_right (by norm_num) (by omega))
-      calc (4 : Real) = 2 ^ 2 := by norm_num
-        _ ≤ 2 ^ (2 ^ (μK + 1)) := pow_le_pow_right₀ (by norm_num) this)
+    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ (μK + 1)) :=
+      pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
     have hpq0 : (0 : Real) ≤ (((std V D k K p μ0).QM alpha : Real) + 1) ^ (2 * 2 ^ (k + 1)) :=
       pow_nonneg hq0' _
     have h1 := pw_mul' hX (Nat.cast_nonneg _) hpq0 hp' hpow
@@ -370,10 +300,8 @@ theorem Eloc_inv_le {V : Real} {D k K p μV μD μ0 μK : Nat} (ha : 0 < alpha)
   have hEm' := pw_mono hX hEm (show rhoDeg k μD μ0 + μD + 2 ≤ M by omega)
   have hEth' := pw_mono hX hEth hM1
   have hEc' := pw_mono hX hEc hM1
-  have h32 : (32 : Real) ≤ (2 / alpha) ^ (2 ^ (M + 1)) := pw_const hX (by
-    have : 5 ≤ 2 ^ (M + 1) := by have := Nat.lt_two_pow_self (n := M + 1); omega
-    calc (32 : Real) = 2 ^ 5 := by norm_num
-      _ ≤ 2 ^ (2 ^ (M + 1)) := pow_le_pow_right₀ (by norm_num) this)
+  have h32 : (32 : Real) ≤ (2 / alpha) ^ (2 ^ (M + 1)) :=
+    pw_mono hX (pw_const hX (a := 3) (by norm_num)) (by omega)
   have p1 := pw_mul hX (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le hNE' hEm'
   have p2 := pw_mul hX (inv_pos.mpr hEth0).le (inv_pos.mpr hEc0).le hEth' hEc'
   have p3 := pw_mul' hX (inv_pos.mpr hBx0).le (by positivity) hBx p2

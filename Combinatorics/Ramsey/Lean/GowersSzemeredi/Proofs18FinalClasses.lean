@@ -3,7 +3,7 @@ import GowersSzemeredi.Proofs18TightClassesFejer
 import GowersSzemeredi.Proofs16UniformCoverTwoSplit
 import GowersSzemeredi.Proofs16WeylBudgetGrowth
 import GowersSzemeredi.Proofs18CoverSharperLowDegrees
-import GowersSzemeredi.Proofs18CoverSharperShortLengths
+import GowersSzemeredi.Proofs18ShortLengthsFromCubic
 import GowersSzemeredi.Proofs18EtaStepSmall
 import GowersSzemeredi.Proofs18JointSliceInverseFejer
 
@@ -50,27 +50,11 @@ theorem thetaTwo_fejer_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
       section16ThetaTwo (fejerThetaOne alpha (alpha / 2) k) ≤ 1 ∧
       (section16ThetaTwo (fejerThetaOne alpha (alpha / 2) k))⁻¹ ≤
         (2 / alpha) ^ (2 ^ ((5 * k + 14) + 6)) := by
-  have ha1 : alpha ≤ 1 := by linarith
-  obtain ⟨h0, h1⟩ := section16ThetaTwo_pos_le_with (fejer_alpha_bounds k ha ha2).1 (fejer_alpha_bounds k ha ha2).2
+  obtain ⟨h0, h1⟩ := section16ThetaTwo_pos_le_with
+    (fejer_alpha_bounds k ha ha2).1 (fejer_alpha_bounds k ha ha2).2
   obtain ⟨t0, -, ti⟩ := thetaOne_fejer_bounds k ha ha2
-  have hX := two_div_ge_two ha ha2
-  have hX0 : (0 : Real) ≤ 2 / alpha := by linarith
   refine ⟨h0, h1, ?_⟩
-  unfold section16ThetaTwo
-  have h32 : ((2 : Real) ^ (-(32 : Real)))⁻¹ ≤ (2 / alpha) ^ (2 ^ ((5 * k + 14) + 2)) := by
-    rw [Real.rpow_neg (by norm_num), inv_inv,
-      show (32 : Real) = ((32 : Nat) : Real) by norm_num, Real.rpow_natCast]
-    refine (pow_le_pow_left₀ (by norm_num) hX 32).trans (pw_natpow hX ?_)
-    calc 32 = 2 ^ 5 := by norm_num
-      _ ≤ 2 ^ ((5 * k + 14) + 2) := Nat.pow_le_pow_right (by norm_num) (by
-          omega)
-  have h8 : ((fejerThetaOne alpha (alpha / 2) k) ^ 8)⁻¹ ≤
-      (2 / alpha) ^ (2 ^ ((5 * k + 14) + 2 + 3)) := by
-    rw [← inv_pow]
-    exact pw_pow hX (inv_pos.mpr t0).le ti (by norm_num)
-  rw [mul_inv]
-  have := pw_mul hX (by positivity) (by positivity) (pw_mono hX h32 (by omega)) h8
-  exact pw_mono hX this (by omega)
+  exact (section16ThetaTwo_inv_le_pw (two_div_ge_two ha ha2) (by omega) t0 ti)
 
 theorem budget_fejer_bounds5 (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k ∧ globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k ≤ 1 ∧
@@ -114,56 +98,13 @@ theorem delta_fejer_bounds5 (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < section16Delta (fejerThetaOne alpha (alpha / 2) k) ∧
       section16Delta (fejerThetaOne alpha (alpha / 2) k) ≤ 1 ∧
       (section16Delta (fejerThetaOne alpha (alpha / 2) k))⁻¹ ≤ (2 / alpha) ^ (2 ^ (5 * k + 21)) := by
-  have ha1 : alpha ≤ 1 := by linarith
-  obtain ⟨-, -, d0, d1⟩ := section16_theta_delta_bounds_with (fejer_alpha_bounds k ha ha2).1 (fejer_alpha_bounds k ha ha2).2
-  obtain ⟨t0, t1, ti⟩ := thetaOne_fejer_bounds k ha ha2
-  have hX := two_div_ge_two ha ha2
-  refine ⟨d0, d1, ?_⟩
-  set t := fejerThetaOne alpha (alpha / 2) k with htdef
-  have hq0 : 0 < t / 4 := by positivity
-  have hq1 : t / 4 ≤ 1 := by linarith
-  -- `(t/4)^(11/2) ≥ (t/4)^6`
-  have h6 : (t / 4) ^ (6 : Nat) ≤ (t / 4) ^ ((11 : Real) / 2) := by
-    rw [← Real.rpow_natCast]
-    exact Real.rpow_le_rpow_of_exponent_ge hq0 hq1 (by norm_num)
-  unfold section16Delta
-  have h37 : ((2 : Real) ^ (-(37 : Real)))⁻¹ = 2 ^ (37 : Nat) := by
-    rw [Real.rpow_neg (by norm_num), inv_inv,
-      show (37 : Real) = ((37 : Nat) : Real) by norm_num, Real.rpow_natCast]
-  rw [mul_inv, h37]
-  have hinv6 : ((t / 4) ^ ((11 : Real) / 2))⁻¹ ≤ ((t / 4) ^ (6 : Nat))⁻¹ :=
-    inv_anti₀ (pow_pos hq0 _) h6
-  have hq : ((t / 4) ^ (6 : Nat))⁻¹ ≤ (2 / alpha) ^ (2 ^ ((5 * k + 14) + 2 + 1 + 3)) := by
-    rw [← inv_pow, inv_div]
-    have h4t : 4 / t ≤ (2 / alpha) ^ (2 ^ ((5 * k + 14) + 2 + 1)) := by
-      rw [div_eq_mul_inv]
-      have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ ((5 * k + 14) + 2)) :=
-        (show (4 : Real) ≤ 2 ^ 2 by norm_num).trans
-          ((pow_le_pow_left₀ (by norm_num) hX 2).trans (pw_natpow hX (by
-            calc 2 = 2 ^ 1 := by norm_num
-              _ ≤ 2 ^ ((5 * k + 14) + 2) := Nat.pow_le_pow_right (by norm_num) (by
-                  have := Nat.one_le_two_pow (n := k + 5); omega))))
-      exact pw_mul hX (by norm_num) (inv_pos.mpr t0).le h4 ti
-    exact pw_pow hX (by positivity) h4t (by norm_num)
-  have h2 : (2 : Real) ^ (37 : Nat) ≤ (2 / alpha) ^ (2 ^ ((5 * k + 14) + 2 + 1 + 3)) :=
-    (pow_le_pow_left₀ (by norm_num) hX 37).trans (pw_natpow hX (by
-      calc 37 ≤ 2 ^ 6 := by norm_num
-        _ ≤ 2 ^ ((5 * k + 14) + 2 + 1 + 3) := Nat.pow_le_pow_right (by norm_num) (by
-            have := Nat.one_le_two_pow (n := k + 5); omega)))
-  have := pw_mul hX (by positivity) (by positivity) h2 (hinv6.trans hq)
-  exact pw_mono hX this (by omega)
+  obtain ⟨ha0, haS⟩ := fejer_alpha_bounds k ha ha2
+  obtain ⟨t0, t1, d0, d1⟩ := section16_theta_delta_bounds_with ha0 haS
+  have hi := (section16Delta_inv_le_pw (two_div_ge_two ha ha2) (by omega) t0 t1
+    (thetaOne_fejer_bounds k ha ha2).2.2)
+  exact ⟨d0, d1, pw_mono (two_div_ge_two ha ha2) hi (by omega)⟩
 
 end Fixed
-
-end LeanProofs.GowersSzemeredi
-
-namespace LeanProofs.GowersSzemeredi
-
-/-- The family exponent of the small dimension-two seed. -/
-def splitSeedSmallA : Nat := 32
-
-/-- The parameter degree of the small dimension-two seed. -/
-def splitSeedSmallD : Nat := 2 ^ 48
 
 end LeanProofs.GowersSzemeredi
 
@@ -213,31 +154,6 @@ namespace GenParams
 
 variable {alpha : Real}
 
-/-- `8VX/B ≤ X^(2^μ₀)`, at any budget degree `b ≥ 7`. -/
-theorem slice_const_le_deg {V B : Real} {μV b μ0 : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
-    (hV : 1 ≤ V) (hVμ : V ≤ 2 ^ (2 ^ μV)) (hB : 0 < B)
-    (h7 : 7 ≤ b)
-    (hBi : B⁻¹ ≤ (2 / alpha) ^ (2 ^ b)) (hμ0 : max μV b + 2 ≤ μ0) :
-    8 * V * (2 / alpha) * B⁻¹ ≤ (2 / alpha) ^ (2 ^ μ0) := by
-  have hX := two_div_ge_two ha ha2
-  set m := max μV b
-  have hm7 : 7 ≤ m := le_trans h7 (le_max_right μV b)
-  have hV' : V ≤ (2 / alpha) ^ (2 ^ m) := pw_mono hX (pw_const hX hVμ) (le_max_left _ _)
-  have hB' : B⁻¹ ≤ (2 / alpha) ^ (2 ^ m) := pw_mono hX hBi (le_max_right _ _)
-  have hm2 : 3 ≤ 2 ^ m :=
-    le_trans (by norm_num : 3 ≤ 2 ^ 2) (Nat.pow_le_pow_right (by norm_num) (by omega))
-  have h8 : (8 : Real) ≤ (2 / alpha) ^ (2 ^ m) :=
-    pw_const hX (by
-      calc (8 : Real) = 2 ^ 3 := by norm_num
-        _ ≤ 2 ^ (2 ^ m) := pow_le_pow_right₀ (by norm_num) hm2)
-  have hXm : 2 / alpha ≤ (2 / alpha) ^ (2 ^ m) := pw_X hX m
-  have h1 := pw_mul hX (by norm_num) (by linarith) h8 hV'
-  have h2 := pw_mul hX (by positivity) (inv_pos.mpr hB).le hXm hB'
-  have h3 := pw_mul hX (by positivity) (by positivity) h1 h2
-  have e : 8 * V * (2 / alpha) * B⁻¹ = 8 * V * ((2 / alpha) * B⁻¹) := by ring
-  rw [e]
-  exact pw_mono hX h3 (by omega)
-
 /-- `(α/2)⁻¹ ≤ X^(2^b)` at any degree. -/
 theorem half_inv_le_deg (b : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     (alpha / 2)⁻¹ ≤ (2 / alpha) ^ (2 ^ b) := by
@@ -272,36 +188,8 @@ theorem baseCFW_recipPowerLB {V : Real} {D k μV μ0 : Nat} (ha : 0 < alpha)
     (ha2 : alpha ≤ 1 / 2) (hV : 1 ≤ V) (hVμ : V ≤ 2 ^ (2 ^ μV))
     (hμ0 : max μV (pDeg k) + 2 ≤ μ0) :
     RecipPowerLB (2 / alpha) (baseCF V D k alpha) (D * 2 ^ μ0 + 1) (D + 1) := by
-  have hX := two_div_ge_two ha ha2
   obtain ⟨hB0, hB1, hBi⟩ := budget_gen_bounds_fejerW k ha ha2
-  have hc := GenParams.slice_const_le_deg (V := V) (B := globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k)
-    (μV := μV) (b := pDeg k) (μ0 := μ0) ha ha2 hV hVμ hB0 (seven_le_pDeg k) hBi hμ0
-  intro s hs hs1
-  have hs2 : 0 < s / 2 := half_pos hs
-  have hs21 : s / 2 ≤ 1 := by linarith
-  have hg : 0 < alpha / 2 := half_pos ha
-  have hg1 : alpha / 2 ≤ 1 := by linarith
-  set B := globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k with hBdef
-  have hQ1 := one_le_uCount V D (alpha / 2) B (s / 2)
-  have hQ0 : 0 < uCount V D (alpha / 2) B (s / 2) := lt_of_lt_of_le zero_lt_one hQ1
-  have hQeq := uCount_eq hV D hg hg1 hB0 hB1 hs2 hs21
-  rw [GenParams.uniformBase_slice V ha hB0 hs] at hQeq
-  show 0 < s / 2 / uCount V D (alpha / 2) B (s / 2) ∧
-    s / 2 / uCount V D (alpha / 2) B (s / 2) ≤ 1 ∧
-    (s / 2 / uCount V D (alpha / 2) B (s / 2))⁻¹ ≤
-      (2 / alpha) ^ (D * 2 ^ μ0 + 1) * s⁻¹ ^ (D + 1)
-  refine ⟨div_pos hs2 hQ0, (div_le_one hQ0).mpr (by linarith), ?_⟩
-  rw [inv_div, hQeq]
-  set X := 2 / alpha with hXdef
-  have hsi : 0 ≤ s⁻¹ := (inv_pos.mpr hs).le
-  have hcs : 8 * V * X * B⁻¹ * s⁻¹ ≤ X ^ (2 ^ μ0) * s⁻¹ := mul_le_mul_of_nonneg_right hc hsi
-  have hpow := pow_le_pow_left₀ (by positivity) hcs D
-  have h2X : (2 : Real) ≤ X ^ 1 := by rw [pow_one]; exact hX
-  calc (8 * V * X * B⁻¹ * s⁻¹) ^ D / (s / 2) = 2 * (s⁻¹ * (8 * V * X * B⁻¹ * s⁻¹) ^ D) := by
-        rw [div_eq_mul_inv, inv_div]; ring
-    _ ≤ X ^ 1 * (s⁻¹ * (X ^ (2 ^ μ0) * s⁻¹) ^ D) :=
-        mul_le_mul h2X (mul_le_mul_of_nonneg_left hpow hsi) (by positivity) (by positivity)
-    _ = X ^ (D * 2 ^ μ0 + 1) * s⁻¹ ^ (D + 1) := by ring
+  exact uniform_baseC_recipPowerLB_of_budget ha ha2 hV hVμ hB0 hB1 (seven_le_pDeg k) hBi hμ0
 
 end Fixed
 
@@ -374,410 +262,6 @@ theorem split_step_gen {k a D a' D' P T e s : Nat} (ha : 1 ≤ a)
           Nat.add_le_add (Nat.mul_le_mul (Nat.mul_le_mul hA hsum) (e20 ▸ hP)) hT
       _ ≤ 8 * Z * X * Y := split_step_arith _ _ _ hX1 hY1
       _ = _ := hprod
-
-end LeanProofs.GowersSzemeredi
-
-namespace LeanProofs.GowersSzemeredi
-
-/-- The family exponent of the next split class, combined by `max`. -/
-def splitStepAMax (k a : Nat) : Nat := max (sCountN k a) (sExpN k a)
-
-/-- The parameter degree with general step inputs, combined by `max`. -/
-def splitStepDMaxWith (P T k a D : Nat) : Nat :=
-  max (max (wCountW P k a D) (wExpW P T k a D)) (wThrDeg P D)
-
-theorem splitStepAMax_le_sum (k a : Nat) : splitStepAMax k a ≤ splitStepA k a := by
-  unfold splitStepAMax splitStepA
-  exact max_le (Nat.le_add_right _ _) (Nat.le_add_left _ _)
-
-theorem splitStepDMaxWith_le_sum (P T k a D : Nat) :
-    splitStepDMaxWith P T k a D ≤ splitStepDWith P T k a D := by
-  unfold splitStepDMaxWith splitStepDWith
-  refine max_le (max_le ?_ ?_) ?_ <;> omega
-
-/-- The split recursion with the Fejér inputs, combined by `max`. -/
-def splitPairMax (seedA seedD : Nat) : Nat → Nat × Nat
-  | 0 => (seedA, seedD)
-  | k + 1 => if k < 2 then (seedA, seedD)
-      else (splitStepAMax k (splitPairMax seedA seedD k).1,
-        splitStepDMaxWith (fejerStepP k) (fejerStepT k) k
-          (splitPairMax seedA seedD k).1 (splitPairMax seedA seedD k).2)
-
-theorem splitPairMax_two (seedA seedD : Nat) : splitPairMax seedA seedD 2 = (seedA, seedD) := by
-  simp [splitPairMax]
-
-theorem splitPairMax_succ (seedA seedD : Nat) {k : Nat} (hk : 2 ≤ k) :
-    splitPairMax seedA seedD (k + 1) =
-      (splitStepAMax k (splitPairMax seedA seedD k).1,
-        splitStepDMaxWith (fejerStepP k) (fejerStepT k) k
-          (splitPairMax seedA seedD k).1 (splitPairMax seedA seedD k).2) := by
-  rw [splitPairMax, if_neg (by omega)]
-
-/-- The exact twelfth dimension fits the invariant at constant `5/2`. -/
-theorem split_pair_max_twelve_half :
-    1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD 12).1 ∧
-      1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD 12).2 ∧
-      2 ^ (12 + 6) * (splitPairMax splitSeedSmallA splitSeedSmallD 12).1 ≤ 2 ^ (5 * 2 ^ (12 - 1)) ∧
-      (splitPairMax splitSeedSmallA splitSeedSmallD 12).2 ≤
-        2 ^ (5 * 2 ^ (12 - 1) + 3 * (12 + 4) ^ 2) := by
-  refine ⟨?_, ?_, ?_, ?_⟩ <;> decide +kernel
-
-/-- **The split invariants at class constant `5/2` in every dimension `l ≥ 12`.** -/
-theorem split_pair_max_half : ∀ l, 12 ≤ l →
-    1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).1 ∧
-      1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).2 ∧
-      2 ^ (l + 6) * (splitPairMax splitSeedSmallA splitSeedSmallD l).1 ≤ 2 ^ (5 * 2 ^ (l - 1)) ∧
-      (splitPairMax splitSeedSmallA splitSeedSmallD l).2 ≤
-        2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2) := by
-  intro l hl
-  induction l, hl using Nat.le_induction with
-  | base => exact split_pair_max_twelve_half
-  | succ k hk ih =>
-    obtain ⟨ha, hDp, hAb, hDb⟩ := ih
-    rw [splitPairMax_succ _ _ (by omega)]
-    set a := (splitPairMax splitSeedSmallA splitSeedSmallD k).1
-    set D := (splitPairMax splitSeedSmallA splitSeedSmallD k).2
-    obtain ⟨h1, h2⟩ := split_step_gen ha hAb hDb ((splitStepAMax_le_sum k a).trans (splitStepA_le ha))
-      ((splitStepDMaxWith_le_sum _ _ k a D).trans (splitStepDWith_le ha hDp (fejerStepP_ge k))) (fejerStepP_le k) (fejerStepT_le k)
-    have he : 2 * (5 * 2 ^ (k - 1)) = 5 * 2 ^ (k + 1 - 1) := by
-      rw [show k + 1 - 1 = (k - 1) + 1 by omega, pow_succ]; ring
-    refine ⟨?_, ?_, he ▸ h1, h2.trans (Nat.pow_le_pow_right (by norm_num) ?_)⟩
-    · exact (show 1 ≤ sCountN k a by unfold sCountN; omega).trans (le_max_left _ _)
-    · exact (show 1 ≤ wCountW (fejerStepP k) k a D by unfold wCountW; omega).trans
-        ((le_max_left _ _).trans (le_max_left _ _))
-    · have hs : 3 * (k + 1 + 4) ^ 2 = 3 * (k + 4) ^ 2 + 6 * k + 27 := by ring
-      rw [← he, hs]
-      omega
-
-/-- **The max-split degrees beyond dimension `14`**, in closed form. -/
-theorem split_pair_max_le_closed {l : Nat} (hl : 15 ≤ l) :
-    (splitPairMax splitSeedSmallA splitSeedSmallD l).1 +
-      (splitPairMax splitSeedSmallA splitSeedSmallD l).2 + l + 1 ≤
-        2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 + 2) := by
-  obtain ⟨-, -, hA, hD⟩ := split_pair_max_half l (by omega)
-  set a := (splitPairMax splitSeedSmallA splitSeedSmallD l).1
-  set D := (splitPairMax splitSeedSmallA splitSeedSmallD l).2
-  set Y := 2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2) with hYdef
-  have ha : a ≤ Y := by
-    have h1 : a ≤ 2 ^ (5 * 2 ^ (l - 1)) :=
-      le_trans (Nat.le_mul_of_pos_left a (Nat.two_pow_pos _)) hA
-    exact h1.trans (Nat.pow_le_pow_right (by norm_num) (by omega))
-  have hl1 : l + 1 ≤ Y := by
-    have h1 : l + 1 ≤ 2 ^ (l + 1) := Nat.lt_two_pow_self.le
-    have h2 : l + 1 ≤ 5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 := by
-      have : l + 1 ≤ (l + 4) ^ 2 := by nlinarith
-      omega
-    exact h1.trans (Nat.pow_le_pow_right (by norm_num) h2)
-  have h4 : 2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 + 2) = 4 * Y := by
-    rw [hYdef, pow_add]; ring
-  rw [h4]
-  omega
-
-end LeanProofs.GowersSzemeredi
-
-namespace LeanProofs.GowersSzemeredi
-
-open BaseCase
-
-def sPbN2 (k ac ae : Nat) : Nat := ae * (sSN k ac + 1)
-
-def fsPbW2 (k ac Dc ae De : Nat) : Nat :=
-  ae * (fejerStepP k + fsSW k ac Dc + 1) + De * (fejerStepP k + 5)
-
-def sLN2 (k ac ae : Nat) : Nat := sBqN k ac + (sErN k ae + ae)
-
-def fsLW2 (k ac Dc ae De : Nat) : Nat := fsBqW k ac Dc + (fsErW k ae De + fsEbW k ae De)
-
-/-- The family exponent of the width exponent of the next two-track class. -/
-def sExpN2 (k ac ae : Nat) : Nat := 1 + sLN2 k ac ae + sPbN2 k ac ae
-
-/-- The parameter degree of the width exponent of the next two-track class. -/
-def fsExpW2 (k ac Dc ae De : Nat) : Nat :=
-  fsZW k ac Dc + fsLW2 k ac Dc ae De + fsPbW2 k ac Dc ae De + 6
-
-/-- **The width exponent of the next class from a two-track class.** -/
-theorem split_exp_inv_le_fejer2 {k ac Dc ae De : Nat} (hac : 1 ≤ ac) (hDc : 1 ≤ Dc) (hae : 1 ≤ ae)
-    (hDe : 1 ≤ De) {V V' : Real} (hV : 1 ≤ V)
-    (hVV : V ≤ V') {K p : Nat} (hK : 1 ≤ K) (hp : 0 < p) (hKV : (K : Real) ≤ V')
-    (hpV : (p : Real) ≤ V') {theta gamma rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1) (n : Nat) :
-    let M := n * classPiecesFejer gamma theta k
-    let tS := classBudgetW (fejerThetaOne theta gamma k) k
-    let gS := section16Delta (fejerThetaOne theta gamma k)
-    let e := section16CappedWidthExponent
-        (pieceLineExponent (familyWidthDivisor k p) (splitCnt V ac Dc tS gS M)
-            (splitExp V ae De tS gS M) (clsEr (splitExp V ae De) k M tS gamma) rho *
-          famPieceSliceExponent (clsQr (splitCnt V ac Dc) k M tS gamma)
-            (clsEs (splitExp V ae De) M tS gamma) M rho / 4)
-        (section16RoundedPowerThreshold
-          (pieceWidthScale (familyWidthPrefactor K) (splitCnt V ac Dc tS gS M)
-            (tightZeta (fejerThetaOne theta gamma k / 4)) rho)
-          (pieceLineExponent (familyWidthDivisor k p) (splitCnt V ac Dc tS gS M)
-            (splitExp V ae De tS gS M) (clsEr (splitExp V ae De) k M tS gamma) rho)
-          (famPieceSliceExponent (clsQr (splitCnt V ac Dc) k M tS gamma)
-            (clsEs (splitExp V ae De) M tS gamma) M rho))
-    0 < e ∧ e⁻¹ ≤ ((n : Real) + 1) ^ sExpN2 k ac ae * splitW V' theta gamma rho ^ fsExpW2 k ac Dc ae De := by
-  intro M tS gS e
-  obtain ⟨hw2, huw, hrw, hVw, hV'w⟩ := split_w_facts hV hVV hg hg1 ht ht1 hr hr1
-  obtain ⟨hM, hM1, hgd, hdd⟩ := split_step_basics_fejer (k := k) hV hVV hg hg1 ht ht1 hr hr1 n
-  obtain ⟨hfacE, -⟩ := split_Qr_le_fejer (k := k) hae hDe hV hVV hg hg1 ht ht1 hr hr1 n
-  obtain ⟨hS, hS1, -, -⟩ := split_samples_le_fejer (k := k) hac hDc hV hVV hg hg1 ht ht1 hr hr1 n
-  obtain ⟨hb, hb1⟩ := classBudgetW_pos_le k (fejerThetaOne_bounds k ht ht1 hg hg1).1 (fejerThetaOne_bounds k ht ht1 hg hg1).2
-  obtain ⟨-, -, hd', hd1'⟩ := section16_theta_delta_bounds_with (fejerThetaOne_bounds k ht ht1 hg hg1).1 (fejerThetaOne_bounds k ht ht1 hg hg1).2
-  have hd : 0 < gS := hd'
-  have hd1 : gS ≤ 1 := hd1'
-  obtain ⟨hz0, hz1, hzi⟩ := tightZeta_fejer_inv_le_gen k hg hg1 ht ht1
-  have hu0 : 0 ≤ 2 / (gamma * theta) := (div_pos two_pos (mul_pos hg ht)).le
-  have hnv := classVertexNum_succ_le k
-  set ν : Real := (n : Real) + 1 with hνdef
-  set W := splitW V' theta gamma rho with hWdef
-  set P := fejerStepP k with hPdef
-  clear_value W
-  have hν : 1 ≤ ν := by rw [hνdef]; have := Nat.cast_nonneg (α := Real) n; linarith
-  have hW1 : 1 ≤ W := by linarith
-  have hW0 : 0 ≤ W := by linarith
-  have hV0 : 0 ≤ V := by linarith
-  have hnv0 : (0 : Real) < (classVertexNum k : Real) + 1 := by
-    have := Nat.cast_nonneg (α := Real) (classVertexNum k); linarith only [this]
-  -- the count and the exponent controls at `ρ/8`
-  have hcbGen : ∀ a D : Nat, splitCnt V a D tS gS M (rho / 8) ≤ ν ^ a * W ^ fsEbW k a D := by
-    intro a D
-    unfold splitCnt
-    have hbase : splitW V tS gS (rho / 8) ≤ W ^ (P + 3 + 3) :=
-      split_level_base_le hw2 hV0 hVw hr hrw (by norm_num) (by norm_num) hd hb hdd
-    have hM10 : (0 : Real) ≤ (M : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) M; linarith
-    have hsw0 := splitW_nonneg (V := V) (t := tS) hV0 hd hb (by positivity : (0 : Real) < rho / 8)
-    have h1 := tb_pow hM10 hM1 a
-    have h2 : splitW V tS gS (rho / 8) ^ D ≤ ν ^ 0 * W ^ ((P + 3 + 3) * D) := by
-      rw [pow_zero, one_mul, pow_mul]
-      exact pow_le_pow_left₀ hsw0 hbase D
-    have h12 := tb_mul hν hW1 (pow_nonneg hM10 _) (pow_nonneg hsw0 _) h1 h2
-    exact h12.trans (tb_mono hν hW1 (by omega) (le_of_eq (by unfold fsEbW; rw [← hPdef]; ring)))
-  have hcb1Gen : ∀ a D : Nat, 1 ≤ splitCnt V a D tS gS M (rho / 8) := by
-    intro a D
-    unfold splitCnt
-    obtain ⟨h2, -, -, -⟩ := splitW_facts hV hd hd1 hb hb1 (by positivity : (0 : Real) < rho / 8)
-      (by linarith only [hr1])
-    have hM1' : (1 : Real) ≤ (M : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) M; linarith
-    exact one_le_mul_of_one_le_of_one_le (one_le_pow₀ hM1') (one_le_pow₀ (by linarith))
-  have hcb := hcbGen ac Dc
-  have hcb1 := hcb1Gen ac Dc
-  have hEb0 : 0 < splitExp V ae De tS gS M (rho / 8) := by
-    show 0 < (splitCnt V ae De tS gS M (rho / 8))⁻¹
-    exact inv_pos.mpr (lt_of_lt_of_le zero_lt_one (hcb1Gen ae De))
-  have hEbi : (splitExp V ae De tS gS M (rho / 8))⁻¹ ≤ ν ^ ae * W ^ fsEbW k ae De := by
-    show ((splitCnt V ae De tS gS M (rho / 8))⁻¹)⁻¹ ≤ _
-    rw [inv_inv]; exact hcbGen ae De
-  -- the remainder exponent at `ρ/8`, from the exponent track
-  have hfac' : splitCnt V ae De tS gamma M (rho / 8 / ((classVertexNum k : Real) + 1)) ≤
-      ν ^ ae * W ^ fsStepY k ae De := (le_max_left _ _).trans hfacE
-  have hscale : 0 < rho / 8 / ((classVertexNum k : Real) + 1) :=
-    div_pos (div_pos hr (by norm_num)) hnv0
-  have hcr1 : 1 ≤ splitCnt V ae De tS gamma M (rho / 8 / ((classVertexNum k : Real) + 1)) := by
-    unfold splitCnt
-    obtain ⟨h2, -, -, -⟩ := splitW_facts hV hg hg1 hb hb1 hscale (by
-      rw [div_le_one hnv0]; have := Nat.cast_nonneg (α := Real) (classVertexNum k)
-      linarith only [this, hr1])
-    have hM1' : (1 : Real) ≤ (M : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) M; linarith
-    exact one_le_mul_of_one_le_of_one_le (one_le_pow₀ hM1') (one_le_pow₀ (by linarith))
-  set cr := splitCnt V ae De tS gamma M (rho / 8 / ((classVertexNum k : Real) + 1)) with hcrdef
-  have hEr : clsEr (splitExp V ae De) k M tS gamma (rho / 8) =
-      (cr⁻¹ / 16) ^ (classVertexNum k + 1) := by
-    unfold clsEr
-    rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
-    rfl
-  have hEr0 : 0 < clsEr (splitExp V ae De) k M tS gamma (rho / 8) := by
-    rw [hEr]; exact pow_pos (div_pos (inv_pos.mpr (lt_of_lt_of_le zero_lt_one hcr1)) (by norm_num)) _
-  have hEri : (clsEr (splitExp V ae De) k M tS gamma (rho / 8))⁻¹ ≤ ν ^ sErN k ae * W ^ fsErW k ae De := by
-    rw [hEr, ← inv_pow, inv_div, div_inv_eq_mul]
-    have h16 : 16 * cr ≤ ν ^ ae * W ^ (4 + fsStepY k ae De) :=
-      tb_const_mul hν hw2 (by norm_num) (by norm_num) (le_trans zero_le_one hcr1) hfac'
-    have h16' : 16 * cr ≤ ν ^ ae * W ^ (fsStepY k ae De + 4) := by rw [add_comm]; exact h16
-    have hone : (1 : Real) ≤ ν ^ ae * W ^ (fsStepY k ae De + 4) := tb_one_le hν hW1
-    calc (16 * cr) ^ (classVertexNum k + 1) ≤ (ν ^ ae * W ^ (fsStepY k ae De + 4)) ^ (classVertexNum k + 1) :=
-          pow_le_pow_left₀ (by linarith) h16' _
-      _ ≤ (ν ^ ae * W ^ (fsStepY k ae De + 4)) ^ (2 ^ k) := pow_le_pow_right₀ hone hnv
-      _ = ν ^ sErN k ae * W ^ fsErW k ae De := by
-          unfold sErN fsErW; rw [mul_pow, ← pow_mul, ← pow_mul]
-  -- the divisor, from the count track
-  set q := ⌊splitCnt V ac Dc tS gS M (rho / 8)⌋₊ with hqdef
-  have hq : (q : Real) ≤ ν ^ ac * W ^ fsEbW k ac Dc :=
-    (Nat.floor_le (le_trans zero_le_one hcb1)).trans hcb
-  have hq1 : ((q + 1 : Nat) : Real) ≤ ν ^ ac * W ^ (fsEbW k ac Dc + 1) := by
-    push_cast; exact tb_add_one hν hw2 hq
-  have hBq : familyWidthDivisor k p q ≤ ν ^ sBqN k ac * W ^ fsBqW k ac Dc := by
-    unfold familyWidthDivisor
-    have hpow : (((q + 1) ^ (2 * 2 ^ (k + 1)) : Nat) : Real) ≤
-        ν ^ (ac * 2 ^ (k + 2)) * W ^ ((fsEbW k ac Dc + 1) * 2 ^ (k + 2)) := by
-      rw [Nat.cast_pow, show 2 * 2 ^ (k + 1) = 2 ^ (k + 2) by rw [pow_succ 2 (k + 1)]; ring]
-      exact tb_pow (Nat.cast_nonneg _) hq1 _
-    have hpw : ((p : Nat) : Real) ≤ ν ^ 0 * W ^ 1 := by
-      rw [pow_zero, one_mul, pow_one]; exact hpV.trans hV'w
-    have h1 := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hpw hpow
-    rw [← Nat.cast_mul] at h1
-    have h2 := tb_const_mul (c := (2 : Real)) (j := 1) hν hw2 (by norm_num) (by norm_num)
-      (Nat.cast_nonneg _) h1
-    have h3 := tb_const_mul (c := (4 : Real)) (j := 2) hν hw2 (by norm_num) (by norm_num)
-      (by positivity) h2
-    push_cast at h3 ⊢
-    refine h3.trans (tb_mono hν hW1 (by unfold sBqN; omega) ?_)
-    unfold fsBqW
-    omega
-  have hBq0 : 0 < familyWidthDivisor k p q := familyWidthDivisor_pos hp q
-  -- the line exponent
-  set L := pieceLineExponent (familyWidthDivisor k p) (splitCnt V ac Dc tS gS M)
-    (splitExp V ae De tS gS M) (clsEr (splitExp V ae De) k M tS gamma) rho with hLdef
-  have hL0 : 0 < L := by
-    rw [hLdef]; unfold pieceLineExponent
-    exact div_pos (mul_pos hEr0 hEb0) hBq0
-  have hLi : L⁻¹ ≤ ν ^ sLN2 k ac ae * W ^ fsLW2 k ac Dc ae De := by
-    rw [hLdef]; unfold pieceLineExponent
-    rw [inv_div, div_eq_mul_inv, mul_inv, ← hqdef]
-    have h1 := tb_mul hν hW1 (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le hEri hEbi
-    exact tb_mul hν hW1 hBq0.le (by positivity) hBq h1
-  -- the slice exponent: samples from the count track, slices from the exponent track
-  set S := famPieceSamples (clsQr (splitCnt V ac Dc) k M tS gamma) M rho with hSdef
-  have hPbE : splitCnt V ae De tS gamma (M * S) (rho / 4) ≤ ν ^ sPbN2 k ac ae * W ^ fsPbW2 k ac Dc ae De := by
-    have hMS : ((M * S : Nat) : Real) + 1 ≤ ν ^ (1 + sSN k ac) * W ^ (P + fsSW k ac Dc + 1) := by
-      have h := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hM hS
-      rw [← Nat.cast_mul] at h
-      exact tb_add_one hν hw2 h
-    have hbase : splitW V tS gamma (rho / 4) ≤ W ^ (P + 2 + 3) :=
-      split_level_base_le hw2 hV0 hVw hr hrw (by norm_num) (by norm_num) hg hb hgd
-    have hMS0 : (0 : Real) ≤ ((M * S : Nat) : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) (M * S); linarith
-    have hsw0 := splitW_nonneg (V := V) (t := tS) hV0 hg hb (by positivity : (0 : Real) < rho / 4)
-    unfold splitCnt
-    have h1 := tb_pow hMS0 hMS ae
-    have h2 : splitW V tS gamma (rho / 4) ^ De ≤ ν ^ 0 * W ^ ((P + 2 + 3) * De) := by
-      rw [pow_zero, one_mul, pow_mul]
-      exact pow_le_pow_left₀ hsw0 hbase De
-    have h12 := tb_mul hν hW1 (pow_nonneg hMS0 _) (pow_nonneg hsw0 _) h1 h2
-    push_cast at h12 ⊢
-    refine h12.trans (tb_mono hν hW1 (le_of_eq (by unfold sPbN2; ring))
-      (le_of_eq (by unfold fsPbW2; rw [← hPdef]; ring)))
-  have hPbE1 : 1 ≤ splitCnt V ae De tS gamma (M * S) (rho / 4) := by
-    unfold splitCnt
-    obtain ⟨h2, -, -, -⟩ := splitW_facts hV hg hg1 hb hb1
-      (by positivity : (0 : Real) < rho / 4) (by linarith only [hr1])
-    have hMS1 : (1 : Real) ≤ ((M * S : Nat) : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) (M * S); linarith
-    push_cast at hMS1 ⊢
-    exact one_le_mul_of_one_le_of_one_le (one_le_pow₀ hMS1) (one_le_pow₀ (by linarith))
-  set Sl := famPieceSliceExponent (clsQr (splitCnt V ac Dc) k M tS gamma)
-    (clsEs (splitExp V ae De) M tS gamma) M rho with hSldef
-  have hSlval : Sl = (splitCnt V ae De tS gamma (M * S) (rho / 4))⁻¹ := by
-    rw [hSldef]
-    unfold famPieceSliceExponent clsEs
-    rw [← hSdef, abs_of_pos (by positivity : (0 : Real) < rho / 4)]
-    rfl
-  have hSl0 : 0 < Sl := by rw [hSlval]; exact inv_pos.mpr (lt_of_lt_of_le zero_lt_one hPbE1)
-  have hSl1 : Sl ≤ 1 := by rw [hSlval]; exact inv_le_one_of_one_le₀ hPbE1
-  have hSli : Sl⁻¹ ≤ ν ^ sPbN2 k ac ae * W ^ fsPbW2 k ac Dc ae De := by
-    rw [hSlval, inv_inv]; exact hPbE
-  -- the width scale, from the count track
-  have hA1 : 1 ≤ familyWidthPrefactor K q := by
-    unfold familyWidthPrefactor
-    have : (1 : Real) ≤ ((K * (q + 1) : Nat) : Real) := by
-      exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))
-    linarith only [this]
-  have hA : familyWidthPrefactor K q ≤ ν ^ ac * W ^ (2 + (1 + (fsEbW k ac Dc + 1))) := by
-    unfold familyWidthPrefactor
-    have hKw : ((K : Nat) : Real) ≤ ν ^ 0 * W ^ 1 := by
-      rw [pow_zero, one_mul, pow_one]; exact hKV.trans hV'w
-    have h1 := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hKw hq1
-    rw [← Nat.cast_mul, zero_add] at h1
-    exact tb_const_mul (c := (4 : Real)) (j := 2) hν hw2 (by norm_num) (by norm_num)
-      (Nat.cast_nonneg _) h1
-  set z := pieceWidthScale (familyWidthPrefactor K) (splitCnt V ac Dc tS gS M)
-    (tightZeta (fejerThetaOne theta gamma k / 4)) rho with hzdef
-  have hzval : z = tightZeta (fejerThetaOne theta gamma k / 4) / familyWidthPrefactor K q := by rw [hzdef]; rfl
-  have hzpos : 0 < z := by rw [hzval]; exact div_pos hz0 (lt_of_lt_of_le zero_lt_one hA1)
-  have hzle : z ≤ 1 := by
-    rw [hzval, div_le_one (lt_of_lt_of_le zero_lt_one hA1)]; exact hz1.trans hA1
-  set Λ := (ac : Real) * ν + ((fsEbW k ac Dc + 4 : Nat) : Real) * W + W ^ fejerStepT k with hΛdef
-  have hΛ0 : 0 ≤ Λ := by rw [hΛdef]; positivity
-  have hzinv : z⁻¹ ≤ Real.exp Λ := by
-    rw [hzval, inv_div, div_eq_mul_inv]
-    have hAexp : familyWidthPrefactor K q ≤ Real.exp ((ac : Real) * ν + ((fsEbW k ac Dc + 4 : Nat) : Real) * W) := by
-      have h1 : ν ^ ac ≤ Real.exp ((ac : Real) * ν) := pow_le_exp_mul (by linarith) ac
-      have h2 : W ^ (fsEbW k ac Dc + 4) ≤ Real.exp (((fsEbW k ac Dc + 4 : Nat) : Real) * W) :=
-        pow_le_exp_mul (by linarith) _
-      rw [Real.exp_add]
-      refine hA.trans ?_
-      rw [show 2 + (1 + (fsEbW k ac Dc + 1)) = fsEbW k ac Dc + 4 by ring]
-      exact mul_le_mul h1 h2 (by positivity) (Real.exp_pos _).le
-    have hze : (tightZeta (fejerThetaOne theta gamma k / 4))⁻¹ ≤ Real.exp (W ^ fejerStepT k) :=
-      hzi.trans (Real.exp_le_exp.mpr (pow_le_pow_left₀ hu0 huw _))
-    rw [hΛdef, Real.exp_add]
-    exact mul_le_mul hAexp hze (inv_pos.mpr hz0).le (Real.exp_pos _).le
-  have hΛle : Λ ≤ ν * W ^ fsZW k ac Dc := by
-    rw [hΛdef]
-    have hZ : fsZW k ac Dc = fejerStepT k + ac + fsEbW k ac Dc + 7 := rfl
-    set X := W ^ (fejerStepT k + ac + fsEbW k ac Dc + 5) with hXdef
-    have hX0 : 0 ≤ X := pow_nonneg hW0 _
-    have hνX : X ≤ ν * X := le_mul_of_one_le_left hX0 hν
-    have hν0 : 0 ≤ ν := le_trans zero_le_one hν
-    have h1 : (ac : Real) * ν ≤ ν * X := by
-      have ha' := nat_le_two_pow_real ac hw2
-      have hle : W ^ ac ≤ X := pow_le_pow_right₀ hW1 (by omega)
-      calc (ac : Real) * ν ≤ W ^ ac * ν := mul_le_mul_of_nonneg_right ha' hν0
-        _ ≤ X * ν := mul_le_mul_of_nonneg_right hle hν0
-        _ = ν * X := mul_comm _ _
-    have h2 : ((fsEbW k ac Dc + 4 : Nat) : Real) * W ≤ ν * X := by
-      have hc := nat_le_two_pow_real (fsEbW k ac Dc + 4) hw2
-      have hle : W ^ (fsEbW k ac Dc + 4) * W ≤ X := by
-        rw [← pow_succ]; exact pow_le_pow_right₀ hW1 (by omega)
-      calc ((fsEbW k ac Dc + 4 : Nat) : Real) * W ≤ W ^ (fsEbW k ac Dc + 4) * W :=
-            mul_le_mul_of_nonneg_right hc hW0
-        _ ≤ X := hle
-        _ ≤ ν * X := hνX
-    have h3 : W ^ fejerStepT k ≤ ν * X := by
-      have hle : W ^ fejerStepT k ≤ X := pow_le_pow_right₀ hW1 (by omega)
-      exact hle.trans hνX
-    have h3W : (3 : Real) ≤ W ^ 2 := by nlinarith only [hw2]
-    have hpos : 0 ≤ ν * X := mul_nonneg hν0 hX0
-    rw [hZ, show fejerStepT k + ac + fsEbW k ac Dc + 7 = (fejerStepT k + ac + fsEbW k ac Dc + 5) + 2 by ring, pow_add,
-      ← hXdef]
-    calc (ac : Real) * ν + ((fsEbW k ac Dc + 4 : Nat) : Real) * W + W ^ fejerStepT k ≤ 3 * (ν * X) := by
-          linarith
-      _ ≤ W ^ 2 * (ν * X) := mul_le_mul_of_nonneg_right h3W hpos
-      _ = ν * (X * W ^ 2) := by ring
-  -- the cap
-  set R := ν ^ (sLN2 k ac ae + sPbN2 k ac ae) *
-    W ^ (fsLW2 k ac Dc ae De + fsPbW2 k ac Dc ae De + 2) with hRdef
-  have hR1 : 1 ≤ R := tb_one_le hν hW1
-  have hLR : L⁻¹ ≤ R := hLi.trans (tb_mono hν hW1 (by omega) (by omega))
-  have hLSR : (L * Sl / 4)⁻¹ ≤ R := by
-    rw [show (L * Sl / 4)⁻¹ = 4 * (L⁻¹ * Sl⁻¹) by field_simp]
-    have h := tb_mul hν hW1 (inv_pos.mpr hL0).le (inv_pos.mpr hSl0).le hLi hSli
-    have h4 := tb_const_mul (c := (4 : Real)) (j := 2) hν hw2 (by norm_num) (by norm_num)
-      (mul_nonneg (inv_pos.mpr hL0).le (inv_pos.mpr hSl0).le) h
-    exact h4.trans (tb_mono hν hW1 le_rfl (by omega))
-  have hcap := capped_rounded_inv_le_real hL0 hSl0 hSl1 hzpos hzle hΛ0 hzinv hR1 hLR hLSR
-  refine ⟨section16CappedWidthExponent_pos (div_pos (mul_pos hL0 hSl0) (by norm_num)), ?_⟩
-  refine hcap.trans ?_
-  have hW4 : (14 : Real) ≤ W ^ 4 := by
-    calc (14 : Real) ≤ 2 ^ 4 := by norm_num
-      _ ≤ W ^ 4 := pow_le_pow_left₀ (by norm_num) hw2 4
-  have hνW : 1 ≤ ν * W ^ fsZW k ac Dc := one_le_mul_of_one_le_of_one_le hν (one_le_pow₀ hW1)
-  have hfront : 2 * (6 + Λ) ≤ ν * W ^ (fsZW k ac Dc + 4) := by
-    rw [pow_add]
-    have : 2 * (6 + Λ) ≤ 14 * (ν * W ^ fsZW k ac Dc) := by linarith
-    calc 2 * (6 + Λ) ≤ 14 * (ν * W ^ fsZW k ac Dc) := this
-      _ ≤ W ^ 4 * (ν * W ^ fsZW k ac Dc) := mul_le_mul_of_nonneg_right hW4 (le_trans zero_le_one hνW)
-      _ = ν * (W ^ fsZW k ac Dc * W ^ 4) := by ring
-  have hR0 : 0 ≤ R := le_trans zero_le_one hR1
-  calc 2 * ((6 + Λ) * R) = (2 * (6 + Λ)) * R := by ring
-    _ ≤ (ν * W ^ (fsZW k ac Dc + 4)) * R := mul_le_mul_of_nonneg_right hfront hR0
-    _ = ν ^ (1 + (sLN2 k ac ae + sPbN2 k ac ae)) *
-          W ^ ((fsZW k ac Dc + 4) + (fsLW2 k ac Dc ae De + fsPbW2 k ac Dc ae De + 2)) := by
-        rw [hRdef]; ring
-    _ ≤ ν ^ sExpN2 k ac ae * W ^ fsExpW2 k ac Dc ae De :=
-        tb_mono hν hW1 (by unfold sExpN2; omega) (by unfold fsExpW2; omega)
 
 end LeanProofs.GowersSzemeredi
 
@@ -931,99 +415,10 @@ theorem uniTwoFejerCount_le_split_tight {V : Real} (hV : 1 ≤ V) {gamma theta r
     have hu0 : (0 : Real) ≤ 2 / (gamma * theta) := le_trans (by norm_num) hu2
     rw [pow_zero, one_mul]
     exact (polyPieceFaceCountW_fejer_le_tight hg hg1 ht ht1).trans (pow_le_pow_left₀ hu0 hvW _)
-  set W := splitW V theta gamma rho with hWdef
-  set ν : Real := (n : Real) + 1 with hνdef
-  set M := n * polyTwoFejerPieces gamma theta with hMdef
-  set qf := polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma with hqfdef
-  clear_value W
-  have hν : 1 ≤ ν := by rw [hνdef]; have := Nat.cast_nonneg (α := Real) n; linarith
-  have hW1 : 1 ≤ W := by linarith
-  have hW0 : 0 ≤ W := by linarith
-  have hν0 : 0 ≤ ν := by linarith
-  -- the remainder count
-  have hMq := affine_le_tb hν hW2 hM hqf
-  have hQr : ∀ t, famTwoQr M qf t ≤ ν ^ 1 * W ^ (4 + ((2 : Nat) ^ 24 + (10002 * (2 ^ 23 + 1) : Nat) + 1)) := by
-    intro t
-    unfold famTwoQr
-    have h9 : ((9 * (M * qf + 1) : Nat) : Real) ≤ ν ^ 1 * W ^ (4 + ((2 : Nat) ^ 24 + (10002 * (2 ^ 23 + 1) : Nat) + 1)) := by
-      rw [Nat.cast_mul]
-      exact tb_const_mul hν hW2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) hMq
-    apply max_le
-    · refine le_trans ?_ h9
-      exact_mod_cast Nat.mul_le_mul_right _ (by norm_num : 3 ≤ 9)
-    · simpa using h9
-  -- the samples
-  set Q := (4 : Nat) + ((2 : Nat) ^ 24 + (10002 * (2 ^ 23 + 1) : Nat) + 1) with hQdef
-  have hS : (famPieceSamples (famTwoQr M qf) M rho : Real) ≤
-      ν ^ (1 + 1) * W ^ (5 + (Q + (2 : Nat) ^ 24 + 1) + 1) := by
-    unfold famPieceSamples
-    have hQ1 : max 1 (famTwoQr M qf (rho / 8)) ≤ ν ^ 1 * W ^ Q :=
-      max_le (tb_one_le hν hW1) (hQr _)
-    have hM1 : ((max 1 M : Nat) : Real) ≤ ν ^ 1 * W ^ ((2 : Nat) ^ 24) := by
-      rw [Nat.cast_max, Nat.cast_one]; exact max_le (tb_one_le hν hW1) hM
-    have hprod := tb_mul hν hW1 (le_trans zero_le_one (le_max_left _ _)) (Nat.cast_nonneg _) hQ1 hM1
-    have hρ : rho⁻¹ ≤ ν ^ 0 * W ^ 1 := by rw [pow_zero, one_mul, pow_one]; exact hrW
-    have hprod2 := tb_mul hν hW1 (by positivity) (inv_pos.mpr hr).le hprod hρ
-    have hx0 : 0 ≤ 6 * max 1 (famTwoQr M qf (rho / 8)) * ((max 1 M : Nat) : Real) / (rho / 4) := by
-      have : (0 : Real) ≤ max 1 (famTwoQr M qf (rho / 8)) := le_trans zero_le_one (le_max_left _ _)
-      positivity
-    have hval : 6 * max 1 (famTwoQr M qf (rho / 8)) * ((max 1 M : Nat) : Real) / (rho / 4) =
-        24 * (max 1 (famTwoQr M qf (rho / 8)) * ((max 1 M : Nat) : Real) * rho⁻¹) := by
-      field_simp; ring
-    have h24 := tb_const_mul (c := (24 : Real)) (j := 5) hν hW2 (by norm_num) (by norm_num)
-      (by have : (0 : Real) ≤ max 1 (famTwoQr M qf (rho / 8)) := le_trans zero_le_one (le_max_left _ _)
-          positivity) hprod2
-    have hceil := (Nat.ceil_lt_add_one hx0).le
-    rw [hval] at hceil ⊢
-    rw [Nat.add_zero] at h24
-    exact hceil.trans (tb_add_one hν hW2 h24)
-  set S := famPieceSamples (famTwoQr M qf) M rho with hSdef
-  set SB := 5 + (Q + (2 : Nat) ^ 24 + 1) + 1 with hSBdef
-  -- the slice count
-  have hSq : ((S : Real) * qf) ≤ ν ^ 2 * W ^ (SB + (10002 * (2 ^ 23 + 1) : Nat)) := by
-    have h := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hS hqf
-    simpa using h
-  have hPb : famTwoPb M qf S (rho / 4) ≤ ν ^ 3 * W ^ (2 + ((2 : Nat) ^ 24 + (SB + (10002 * (2 ^ 23 + 1) : Nat))) + 1) := by
-    unfold famTwoPb
-    have h1 := tb_mul hν hW1 (Nat.cast_nonneg _) (by positivity) hM hSq
-    have h2 : ((M * (S * qf) + 1 : Nat) : Real) ≤ ν ^ (1 + 2) * W ^ ((2 : Nat) ^ 24 + (SB + (10002 * (2 ^ 23 + 1) : Nat)) + 1) := by
-      push_cast
-      have : (M : Real) * ((S : Real) * qf) + 1 ≤ ν ^ (1 + 2) * W ^ ((2 : Nat) ^ 24 + (SB + (10002 * (2 ^ 23 + 1) : Nat)) + 1) :=
-        tb_add_one hν hW2 h1
-      exact this
-    rw [Nat.cast_mul, show ν ^ 3 * W ^ (2 + ((2 : Nat) ^ 24 + (SB + (10002 * (2 ^ 23 + 1) : Nat))) + 1) =
-      ν ^ (1 + 2) * W ^ (2 + ((2 : Nat) ^ 24 + (SB + (10002 * (2 ^ 23 + 1) : Nat)) + 1)) by ring_nf]
-    exact tb_const_mul hν hW2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) h2
-  set PB := 2 + ((2 : Nat) ^ 24 + (SB + (10002 * (2 ^ 23 + 1) : Nat))) + 1 with hPBdef
-  have hP0 : 0 ≤ famTwoPb M qf S (rho / 4) := by unfold famTwoPb; exact Nat.cast_nonneg _
-  have hch : ((S.choose 2 : Nat) : Real) ≤ ν ^ 4 * W ^ (2 * SB) := by
-    have h1 : S.choose 2 ≤ S * S := by
-      rw [Nat.choose_two_right]
-      exact (Nat.div_le_self _ _).trans (Nat.mul_le_mul_left _ (Nat.sub_le _ _))
-    have h2 := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hS hS
-    calc ((S.choose 2 : Nat) : Real) ≤ (S : Real) * S := by exact_mod_cast h1
-      _ ≤ ν ^ (1 + 1 + (1 + 1)) * W ^ (SB + SB) := h2
-      _ = ν ^ 4 * W ^ (2 * SB) := by ring_nf
-  -- the graph bound
-  have hG : famPieceGraphBound (famTwoQr M qf) (famTwoPb M qf) M rho ≤
-      ν ^ 11 * W ^ ((2 : Nat) ^ 24 + (2 * SB + PB + PB)) := by
-    unfold famPieceGraphBound
-    have hmax : max (famTwoPb M qf S (rho / 4))
-        (((S.choose 2 : Nat) : Real) * famTwoPb M qf S (rho / 4) * famTwoPb M qf S (rho / 4)) ≤
-        ν ^ 10 * W ^ (2 * SB + PB + PB) := by
-      apply max_le
-      · exact hPb.trans (tb_mono hν hW1 (by norm_num) (by omega))
-      · have h := tb_mul hν hW1 (by positivity) hP0 (tb_mul hν hW1 (Nat.cast_nonneg _) hP0 hch hPb) hPb
-        exact h.trans (le_of_eq (by ring_nf))
-    have h := tb_mul hν hW1 (Nat.cast_nonneg _) (le_trans hP0 (le_max_left _ _)) hM hmax
-    exact h.trans (le_of_eq (by ring_nf))
+  have hν : (1 : Real) ≤ (n : Real) + 1 := by have := Nat.cast_nonneg (α := Real) n; linarith
+  have h := famTwoCount_le_two_bases hν hW2 hr hrW hM hqf
   unfold uniTwoFejerCount
-  refine max_le (hG.trans (tb_mono hν hW1 le_rfl ?_)) ?_
-  · rw [hPBdef, hSBdef, hQdef]; norm_num
-  · have h9 : ((3 ^ (1 + 1) * M : Nat) : Real) ≤ ν ^ 1 * W ^ (4 + (2 : Nat) ^ 24) := by
-      rw [Nat.cast_mul]
-      exact tb_const_mul hν hW2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) hM
-    exact h9.trans (tb_mono hν hW1 (by norm_num) (by norm_num))
+  exact h.trans (tb_mono hν (by linarith only [hW2]) (by norm_num) (by norm_num))
 
 /-- **Dimension two as a two-track class at the tight count**: count `(11, 2^39)`, exponent `(29, 2^46)`. -/
 theorem splitUniformClass2_two_tight {K1 p1 : Nat} (hK1 : 1 ≤ K1) (hp1 : 0 < p1)
@@ -1094,56 +489,73 @@ theorem splitQuad3_two : splitQuad3 2 = ((11, 2 ^ 39), (29, 2 ^ 46)) := by simp 
 theorem splitQuad3_succ {k : Nat} (hk : 2 ≤ k) : splitQuad3 (k + 1) = splitQuadStep k (splitQuad3 k) := by
   rw [splitQuad3, if_neg (by omega)]
 
-/-- **The two-track degrees stay below the `max` pairs.** -/
-theorem split_quad3_le_max : ∀ l, 2 ≤ l →
-    1 ≤ (splitQuad3 l).1.1 ∧ 1 ≤ (splitQuad3 l).1.2 ∧ 1 ≤ (splitQuad3 l).2.1 ∧ 1 ≤ (splitQuad3 l).2.2 ∧
-      (splitQuad3 l).1.1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).1 ∧
-      (splitQuad3 l).1.2 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).2 ∧
-      (splitQuad3 l).2.1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).1 ∧
-      (splitQuad3 l).2.2 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).2 := by
+/-- Every component of the two-track recursion is positive. -/
+theorem splitQuad3_pos (l : Nat) :
+    1 ≤ (splitQuad3 l).1.1 ∧ 1 ≤ (splitQuad3 l).1.2 ∧
+      1 ≤ (splitQuad3 l).2.1 ∧ 1 ≤ (splitQuad3 l).2.2 := by
+  cases l with
+  | zero => norm_num [splitQuad3]
+  | succ k =>
+    rw [splitQuad3]
+    split_ifs with hk
+    · norm_num
+    · change 1 ≤ sCountN k _ ∧ 1 ≤ max (fsCountW k _ _) (fejerStepThrDeg k _) ∧
+        1 ≤ sExpN2 k _ _ ∧ 1 ≤ fsExpW2 k _ _ _ _
+      refine ⟨?_, ?_, ?_, ?_⟩
+      · unfold sCountN; omega
+      · exact (show 1 ≤ fejerStepThrDeg k _ by unfold fejerStepThrDeg; omega).trans (le_max_right _ _)
+      · unfold sExpN2; omega
+      · unfold fsExpW2; omega
+
+/-- A two-track step is bounded by the one-step estimates at common upper bounds. -/
+theorem splitQuadStep_le {k ac Dc ae De a D : Nat}
+    (hac : ac ≤ a) (hDc : Dc ≤ D) (hae : ae ≤ a) (hDe : De ≤ D) :
+    max (sCountN k ac) (sExpN2 k ac ae) ≤ splitStepA k a ∧
+      max (max (fsCountW k ac Dc) (fejerStepThrDeg k Dc)) (fsExpW2 k ac Dc ae De) ≤
+        splitStepDWith (fejerStepP k) (fejerStepT k) k a D := by
+  have hc : sCountN k ac ≤ sCountN k a := by
+    simp only [sCountN, sSN, sQrN, sPbN]; gcongr
+  have he : sExpN2 k ac ae ≤ sExpN k a := by
+    unfold sExpN2 sExpN sLN2 sLN sPbN2 sPbN sSN sQrN sBqN sErN; gcongr
+  have hcw : fsCountW k ac Dc ≤ wCountW (fejerStepP k) k a D := by
+    simp only [fsCountW, wCountW, fsSW, fsPbW, fsQrW, fsStepY, wSW, wPbW, wStepY]; gcongr
+  have hct : fejerStepThrDeg k Dc ≤ wThrDeg (fejerStepP k) D := by
+    unfold fejerStepThrDeg wThrDeg; gcongr
+  have hew : fsExpW2 k ac Dc ae De ≤ wExpW (fejerStepP k) (fejerStepT k) k a D := by
+    unfold fsExpW2 wExpW fsZW wZW fsLW2 wLW fsBqW wBqW fsErW wErW fsEbW wEbW fsPbW2 wPbW fsSW wSW
+      fsQrW fsStepY wStepY
+    gcongr
+  unfold splitStepA splitStepDWith
+  omega
+
+/-- The actual two-track degrees satisfy the class invariant at constant `5/2`. -/
+theorem split_quad3_half : ∀ l, 12 ≤ l →
+    2 ^ (l + 6) * max (splitQuad3 l).1.1 (splitQuad3 l).2.1 ≤ 2 ^ (5 * 2 ^ (l - 1)) ∧
+      max (splitQuad3 l).1.2 (splitQuad3 l).2.2 ≤
+        2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2) := by
   intro l hl
   induction l, hl using Nat.le_induction with
-  | base =>
-    rw [splitQuad3_two, splitPairMax_two]
-    unfold splitSeedSmallA splitSeedSmallD
-    refine ⟨by norm_num, Nat.one_le_two_pow, by norm_num, Nat.one_le_two_pow, by norm_num,
-      Nat.pow_le_pow_right (by norm_num) (by norm_num), by norm_num,
-      Nat.pow_le_pow_right (by norm_num) (by norm_num)⟩
+  | base => constructor <;> decide +kernel
   | succ k hk ih =>
-    obtain ⟨h1, h2, h3, h4, hac, hDc, hae, hDe⟩ := ih
-    rw [splitQuad3_succ hk, splitPairMax_succ _ _ hk]
-    set ac := (splitQuad3 k).1.1
-    set Dc := (splitQuad3 k).1.2
-    set ae := (splitQuad3 k).2.1
-    set De := (splitQuad3 k).2.2
-    set a := (splitPairMax splitSeedSmallA splitSeedSmallD k).1
-    set D := (splitPairMax splitSeedSmallA splitSeedSmallD k).2
-    show 1 ≤ sCountN k ac ∧ 1 ≤ max (fsCountW k ac Dc) (fejerStepThrDeg k Dc) ∧
-      1 ≤ sExpN2 k ac ae ∧ 1 ≤ fsExpW2 k ac Dc ae De ∧
-      sCountN k ac ≤ splitStepAMax k a ∧
-      max (fsCountW k ac Dc) (fejerStepThrDeg k Dc) ≤
-        splitStepDMaxWith (fejerStepP k) (fejerStepT k) k a D ∧
-      sExpN2 k ac ae ≤ splitStepAMax k a ∧
-      fsExpW2 k ac Dc ae De ≤ splitStepDMaxWith (fejerStepP k) (fejerStepT k) k a D
-    have hc : sCountN k ac ≤ sCountN k a := by
-      simp only [sCountN, sSN, sQrN, sPbN]; gcongr
-    have he : sExpN2 k ac ae ≤ sExpN k a := by
-      unfold sExpN2 sExpN sLN2 sLN sPbN2 sPbN sSN sQrN sBqN sErN; gcongr
-    have hcw : fsCountW k ac Dc ≤ wCountW (fejerStepP k) k a D := by
-      simp only [fsCountW, wCountW, fsSW, fsPbW, fsQrW, fsStepY, wSW, wPbW, wStepY]; gcongr
-    have hct : fejerStepThrDeg k Dc ≤ wThrDeg (fejerStepP k) D := by
-      unfold fejerStepThrDeg wThrDeg; gcongr
-    have hew : fsExpW2 k ac Dc ae De ≤ wExpW (fejerStepP k) (fejerStepT k) k a D := by
-      unfold fsExpW2 wExpW fsZW wZW fsLW2 wLW fsBqW wBqW fsErW wErW fsEbW wEbW fsPbW2 wPbW fsSW wSW
-        fsQrW fsStepY wStepY
-      gcongr
-    refine ⟨?_, ?_, ?_, ?_, hc.trans (le_max_left _ _), max_le (hcw.trans ?_) (hct.trans (le_max_right _ _)),
-      he.trans (le_max_right _ _), hew.trans ((le_max_right _ _).trans (le_max_left _ _))⟩
-    · unfold sCountN; omega
-    · exact (show 1 ≤ fejerStepThrDeg k Dc by unfold fejerStepThrDeg; omega).trans (le_max_right _ _)
-    · unfold sExpN2; omega
-    · unfold fsExpW2; omega
-    · exact (le_max_left _ _).trans (le_max_left _ _)
+    obtain ⟨hAb, hDb⟩ := ih
+    set a := max (splitQuad3 k).1.1 (splitQuad3 k).2.1
+    set D := max (splitQuad3 k).1.2 (splitQuad3 k).2.2
+    have ha : 1 ≤ a := (splitQuad3_pos k).1.trans (le_max_left _ _)
+    have hDp : 1 ≤ D := (splitQuad3_pos k).2.1.trans (le_max_left _ _)
+    obtain ⟨hAn, hDn⟩ := splitQuadStep_le (k := k) (a := a) (D := D)
+      (ac := (splitQuad3 k).1.1) (Dc := (splitQuad3 k).1.2)
+      (ae := (splitQuad3 k).2.1) (De := (splitQuad3 k).2.2)
+      (le_max_left _ _) (le_max_left _ _) (le_max_right _ _) (le_max_right _ _)
+    obtain ⟨h1, h2⟩ := split_step_gen ha hAb hDb (hAn.trans (splitStepA_le ha))
+      (hDn.trans (splitStepDWith_le ha hDp (fejerStepP_ge k))) (fejerStepP_le k) (fejerStepT_le k)
+    have he : 2 * (5 * 2 ^ (k - 1)) = 5 * 2 ^ (k + 1 - 1) := by
+      rw [show k + 1 - 1 = (k - 1) + 1 by omega, pow_succ]; ring
+    rw [splitQuad3_succ (by omega)]
+    refine ⟨he ▸ h1, h2.trans (Nat.pow_le_pow_right (by norm_num) ?_)⟩
+    have hs : 3 * (k + 1 + 4) ^ 2 = 3 * (k + 4) ^ 2 + 6 * k + 27 := by ring
+    rw [← he, hs]
+    omega
+
 
 /-- **A two-track class in every dimension `k ≥ 2`.** -/
 theorem splitUniformClass2_all3 (Kc pc : Nat → Nat) (hK : ∀ k, 1 ≤ Kc k) (hp : ∀ k, 0 < pc k)
@@ -1162,7 +574,7 @@ theorem splitUniformClass2_all3 (Kc pc : Nat → Nat) (hK : ∀ k, 1 ≤ Kc k) (
       (hc1.2.trans le_rfl)
   | succ k hk ih =>
     obtain ⟨C⟩ := ih
-    obtain ⟨h1, h2, h3, h4, -⟩ := split_quad3_le_max k hk
+    obtain ⟨h1, h2, h3, h4⟩ := splitQuad3_pos k
     have hV1 := one_le_classV Kc pc k
     have hc := const_le_classV_succ Kc pc k
     rw [splitQuad3_succ hk]
@@ -1214,11 +626,22 @@ theorem split_quad3_le_uDegT3 {l : Nat} (hl : 2 ≤ l) :
       uDegT3 l := by
   rcases Nat.lt_or_ge l 15 with h | h
   · interval_cases l <;> decide +kernel
-  · obtain ⟨-, -, -, -, hac, hDc, hae, hDe⟩ := split_quad3_le_max l hl
-    have hM := split_pair_max_le_closed h
-    unfold uDegT3; rw [tDegT3_eq_of_ge h]
-    have h1 := max_le hac hae
-    have h2 := max_le hDc hDe
+  · obtain ⟨hA, hD⟩ := split_quad3_half l (by omega)
+    set a := max (splitQuad3 l).1.1 (splitQuad3 l).2.1
+    set Y := 2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2) with hYdef
+    have ha : a ≤ Y := by
+      have h1 : a ≤ 2 ^ (5 * 2 ^ (l - 1)) :=
+        le_trans (Nat.le_mul_of_pos_left a (Nat.two_pow_pos _)) hA
+      exact h1.trans (Nat.pow_le_pow_right (by norm_num) (by omega))
+    have hl1 : l + 1 ≤ Y := by
+      have h1 : l + 1 ≤ 2 ^ (l + 1) := Nat.lt_two_pow_self.le
+      have h2 : l + 1 ≤ 5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 := by
+        have : l + 1 ≤ (l + 4) ^ 2 := by nlinarith
+        omega
+      exact h1.trans (Nat.pow_le_pow_right (by norm_num) h2)
+    have h4 : 2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 + 2) = 4 * Y := by
+      rw [hYdef, pow_add]; ring
+    unfold uDegT3; rw [tDegT3_eq_of_ge h, h4]
     omega
 
 /-- **The class cover in dimension `l` at degree `uDegT3 l`.** -/

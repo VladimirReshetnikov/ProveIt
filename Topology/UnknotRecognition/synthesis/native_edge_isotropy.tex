@@ -1,0 +1,272 @@
+\section{Finite edge equations and the skew-form defect of a mask}
+\label{sec:native-edge-isotropy}
+
+The preceding abstract obstructions do not exhaust the structure of native
+normal equations.  This section derives an additional identity from the
+actual labelled face pairings, including the conventions needed to compare
+it with the maintained cycle matrix.  The interior-edge formulation is
+standard; see Burton's Definition~2.4 and finite-link lifting argument
+\cite{edge-burton}.  The cancellation underlying the skew identity is the
+local one in Neumann's proof that $\beta^*\beta=0$ \cite{edge-neumann}.
+We use only that local cancellation, and check the finite-boundary case
+explicitly.  No ideal-triangulation homology theorem is imported.
+
+\subsection{The exact native incidence presentation}
+
+Let $T$ be accepted by \path{normal_surface_geometry._prepare}.  It is a
+connected, orientable finite source with reciprocal face pairings, circle
+or interval edge links, sphere or disc vertex links, and one torus boundary.
+Distinct faces of one tetrahedron may be paired, and local edges and vertices
+may be identified; edge reversals and self-pairing of a single face are
+excluded.  The argument does not require a single source vertex.
+
+The native quadrilateral indices are
+\[
+ 0:\{01,23\},\qquad 1:\{02,13\},\qquad 2:\{03,12\}.
+\]
+Reconstruct tetrahedron signs $\varepsilon_\tau\in\{1,-1\}$ by choosing
+$\varepsilon_0=1$ and imposing
+$\varepsilon_\sigma=-\operatorname{sgn}(p)\varepsilon_\tau$ across a face
+pairing with vertex permutation $p$.  This is the orientation propagation
+already validated by \path{_prepare}.  Its signs are not returned in the
+prepared dictionary.  The returned \path{edge_orientations} array instead
+records edge union-find parity and cannot replace them.
+
+Let $I$ be the global edges absent from \path{boundary_incidence}.  Define
+$G_{e,3\tau+k}$ to count local edges of tetrahedron $\tau$ belonging to the
+global interior edge $e\in I$ and opposite-pair type $k$.  Count occurrences:
+if both opposite edges have the same global image, their count is two.
+Put
+\[
+ J=\begin{pmatrix}0&1&-1\\-1&0&1\\1&-1&0\end{pmatrix},\qquad
+ \Omega=\bigoplus_\tau\varepsilon_\tau J,\qquad E=G\Omega.
+\]
+For $g_k=G_{e,3\tau+k}$ the local row is
+\[
+ E_{e,\tau}=\varepsilon_\tau(g_2-g_1,\ g_0-g_2,\ g_1-g_0).
+\]
+Equivalently, one occurrence of type $0$, $1$ or $2$ contributes
+$\varepsilon_\tau(0,1,-1)$, $\varepsilon_\tau(-1,0,1)$ or
+$\varepsilon_\tau(1,-1,0)$ respectively.  Thus
+\[
+ |E_{ej}|\le2,\qquad \sum_e|E_{ej}|\le4,
+ \qquad \sum_{e,j}|E_{ej}|\le12t.
+\]
+Each Q type meets four local edges, so aggregation can only decrease these
+bounds.  Every local triple of columns sums to zero.  This is a sparse
+constant-coefficient presentation even when a cycle-forest presentation is
+dense.
+
+\begin{proposition}[Equality with the maintained matching obstruction]
+Let $C$ be the full Q-cycle matrix constructed by either the native producer
+or the independent original-STANDARD-row verifier.  Then
+\[
+ \ker E=\ker C,\qquad
+ \operatorname{row}_{\mathbb Q}E=\operatorname{row}_{\mathbb Q}C.
+\]
+The row-space equality remains true after restriction to any Q column mask.
+\end{proposition}
+\begin{proof}
+Across a paired face $(\tau,f)\to(\sigma,g)$, with $w=p(v)$, the original
+matching row is
+\[
+ x_{\tau,v}+q_{\tau,\operatorname{quad}(f,v)}
+   -x_{\sigma,w}-q_{\sigma,\operatorname{quad}(g,w)}=0.
+\]
+Its prescribed triangle-potential difference is exactly the link-dual edge
+label used by both constructors.  Around a local edge $ab$, order the other
+vertices $c,d$ so that $(a,b,c,d)$ has sign $\varepsilon_\tau$.
+The local period contributes
+$q_{\tau,\operatorname{quad}(a,c)}-q_{\tau,\operatorname{quad}(a,d)}$.
+For $01,02,03$ this gives the three rows displayed above; the opposite
+edges give the same rows.  Summing incidences gives the row of $E$.
+More explicitly, exit through face $c$.  The next oriented edge-end tuple
+is $(p(a),p(b),p(d),p(c))$, whose sign is the propagated tetrahedron sign.
+Summing the original matching rows along this walk cancels every triangle
+term and leaves precisely the displayed Q period, at either end of the
+interior edge.
+
+On a disc or sphere link, small loops around interior link vertices generate
+the rational cycle space of its dual graph.  These vertices are the ends of
+interior source edges.  Thus $Eq=0$ exactly when every prescribed period
+vanishes, equivalently when signed triangle potentials exist.  Contracting
+zero-labelled edges, taking fundamental cycles, primitive scaling and
+deduplication preserve this period span.  Active self-loops retain their
+labels, including when triangle terms cancel in an original matching row.
+This proves equal kernels and rational row spaces.  Restricting the two
+row-space transformations to any columns proves the last assertion.
+\end{proof}
+
+This is signed linear algebra; it imposes neither Q compatibility nor
+positive Euler characteristic.  Sphere/disc links are essential: ideal
+vertices can have additional homological periods.  Boundary edges have
+interval stars and do not supply the closed-loop equations used here.
+
+The equality need not be an integral unimodular row change.  If $E=UC$ and
+an alternative LP presentation produced a negative dual $y$ with
+$E^{\mathsf T}y\ge c$, the current cycle-row packet would require
+$U^{\mathsf T}y$.  Using $y$ unchanged would alter its meaning.  Rational
+elimination supplies polynomial-size row transformations, but this section
+does not replace the maintained LP matrix or certificate schema.
+
+\subsection{Full-source skew cancellation}
+
+\begin{proposition}[Native full-source isotropy]
+With the literal type grouping and orientation signs above,
+\[
+ G\Omega G^{\mathsf T}=0,\qquad
+ E\Omega E^{\mathsf T}=0,\qquad
+ C\Omega C^{\mathsf T}=0.
+\]
+\end{proposition}
+\begin{proof}
+Expand the first product over ordered local edge occurrences.  Equal or
+opposite edges have equal types and contribute zero.  Adjacent edges share
+one face.  A vertex permutation induces a permutation of the three
+opposite-edge types with the same parity, so paired-face contributions are
+opposite by
+$\varepsilon_\sigma\operatorname{sgn}(p)=-\varepsilon_\tau$.
+Unpaired boundary faces contain only boundary edges; they contribute no
+term to the interior-edge rows.  This proves the first identity by pairing
+local terms, before aggregating any repeated global identifications.
+
+Now $\Omega^{\mathsf T}=-\Omega$ and $\Omega^3=-3\Omega$, so
+\[
+ E\Omega E^{\mathsf T}
+   =-G\Omega^3G^{\mathsf T}=3G\Omega G^{\mathsf T}=0.
+\]
+Finally write $C=RE$ over $\mathbb Q$ and multiply the middle identity by
+$R$ and $R^{\mathsf T}$.  Neither a forest choice nor primitive row
+normalization affects the conclusion.
+\end{proof}
+
+The proof allows selfattachments between distinct faces and repeated edge
+occurrences.  Including boundary-edge rows would leave boundary terms and
+is not justified.  Nor can one arbitrarily regroup coordinates from
+different tetrahedra while keeping the same form $\Omega$.
+
+At a one-vertex, two-boundary-face stage, there are $t-1$ interior edges.
+The finite matching-dimension calculation in
+Section~\ref{sec:euler-transversal} gives $\operatorname{rank}E=t-1$ and
+$\dim\ker C=2t+1$.  Quotienting by the $t$ block-ones directions leaves
+dimension $t+1$, not a polylogarithmic space.  On the block-sum-zero
+representatives, $\Omega^2=-3I$.  A row covector $r$ corresponds to
+$a=\Omega r^{\mathsf T}/3$, for which $a^{\mathsf T}\Omega=r$.
+The quotient kernel is the symplectic orthogonal complement of the
+converted $(t-1)$-dimensional isotropic row space.  This conversion is
+needed: an ordinary dot annihilator is not directly the skew annihilator
+of the unconverted rows.  None of these dimensions bounds the number of
+compatible positive rays.
+
+\subsection{Two-type faces and the defect of further restriction}
+
+Write $K_\tau=C_\tau\Omega_\tau C_\tau^{\mathsf T}$.  The sum of these
+matrices is zero, but the individual summands need not vanish.  There is a
+useful exact rule for every local mask:
+\[
+ C_{\tau,M}\Omega_{\tau,M M}C_{\tau,M}^{\mathsf T}=w_\tau K_\tau,
+ \qquad
+ w_\tau=\begin{cases}
+ 1&\text{three retained types},\\
+ 1/3&\text{two retained types},\\
+ 0&\text{at most one retained type}.
+ \end{cases}
+\]
+Indeed, write $C_\tau=[a,b,c]$ with $c=-a-b$.  Direct multiplication gives
+$K_\tau=3\varepsilon_\tau(ab^{\mathsf T}-ba^{\mathsf T})$.
+Each of the three two-column principal restrictions gives exactly one
+third of this matrix, independently of the omitted type.
+
+\begin{proposition}[Every two-type face is isotropic]
+If a mask retains exactly two types in every tetrahedron, its restricted
+matrix is isotropic for the principal restricted form and has the same
+rank as the full matrix.  At a one-vertex, two-boundary-face stage its
+signed kernel has dimension $t+1$.  Restricting $s$ blocks of this mask
+further to at most one type gives defect
+\[
+ -\frac13\sum_{\tau\in S}K_\tau,
+ \qquad\text{of rank at most }2s.
+\]
+\end{proposition}
+\begin{proof}
+The full two-type product is $\frac13\sum_\tau K_\tau=0$.  Each omitted
+column is minus the sum of its two retained columns, so the column span,
+and hence the rank, is unchanged.  The stated nullity follows from
+$2t-(t-1)=t+1$.  A further singleton or empty block has zero principal
+skew product.  Subtraction gives the defect formula; every $K_\tau$ has
+rank at most two.
+\end{proof}
+
+The automatic block-minimum normalization from
+Section~\ref{sec:euler-transversal} motivates these faces, but there are
+$3^t$ choices of omitted types.  A two-type face still permits incompatible
+positive pairs.  The dimension and isotropy statements neither select
+polynomially many faces nor resolve compatibility with the canonical Euler
+objective.
+
+\begin{proposition}[Mask defect]
+Fix the full source matrix $C$ and a mask $M$.  If $b$ tetrahedral blocks
+have been changed from their full three columns to proper subsets, then
+\[
+ \operatorname{rank}\bigl(C[:,M]\Omega[M,M]C[:,M]^{\mathsf T}\bigr)\le2b.
+\]
+In particular, for a set $S$ of singleton-restricted tetrahedra with all
+other blocks full, the exact defect is
+\[
+ C[:,M]\Omega[M,M]C[:,M]^{\mathsf T}
+       =-\sum_{\tau\in S}C_\tau\Omega_\tau C_\tau^{\mathsf T}.
+\]
+It need not vanish.
+\end{proposition}
+\begin{proof}
+The exact weighted rule gives the general formula
+$-\sum_\tau(1-w_\tau)K_\tau$.  A singleton's weight is zero, giving the
+displayed special case.  For each proper subset the difference has image
+contained in the column span of $C_\tau$, of dimension at most two.
+Rank subadditivity proves the bound.
+\end{proof}
+
+For an exact algebraic counterexample to automatic inheritance, take
+\[
+ r_1=(1,-1,0\mid1,-1,0),\qquad
+ r_2=(0,1,-1\mid0,-1,1),\qquad \Omega=J\oplus J.
+\]
+The full pairing is $3-3=0$.  Retaining the first block and only one
+coordinate of the second leaves pairing $3$.  This is an abstract control,
+not a native triangulation.  Thus uniform two-type restriction preserves
+isotropy, whereas arbitrary mixtures of full, two-type and singleton
+blocks require the weighted defect formula or another invariant.
+
+\subsection{What the identity excludes and what remains open}
+
+The periodic-grid matrix of Section~\ref{sec:sparse-coordinate-separators}
+fails full-source isotropy for every choice of signs on its designated
+triples.  Choose two horizontally adjacent grid vertices whose incidence
+rows were not deleted.  They occur together in exactly one designated
+triangle, where their row pieces are $(-1,0,1)$ and $(1,-1,0)$.
+Their local skew pairing is $3$, so the full pairing is $\pm3$ with no
+other block available to cancel it.  Changing the row basis cannot turn a
+nonzero skew product into zero.  Thus this particular labelled kernel is
+not a native full Q kernel with the same triple grouping.  This assertion
+concerns the represented kernel, not every representation of an abstract
+column matroid.
+
+There is also a sparse-row exclusion for the earlier dense moment-curve
+family at one-vertex stages.  Its nonzero row functionals have support at
+least $3t-\lfloor3(t-2)/2\rfloor$: if $d$ full triples and $a$ other
+columns vanish, independence forces $2d+a\le t-2$, hence at most
+$3d+a\le\lfloor3(t-2)/2\rfloor$ zeros.  In contrast, the $t-1$ independent
+native edge rows have total support at most $12t$, so one has support at
+most $\lfloor12t/(t-1)\rfloor$.  These inequalities exclude that dense
+family for $t\ge8$.  Neither abstract obstruction had claimed a native
+realization; these additional constraints explain concretely why one
+cannot infer such a realization from their earlier algebraic properties.
+
+The useful open obligation is now sharper: obtain a search theorem from
+the actual finite-link realization, its block-skew structure and the
+canonical Euler objective, with valid control on descendant masks.
+Sparsity, isotropy or the defect estimate by themselves do not give a
+separator bound, a small resolving parameter or a general quasi-polynomial
+recognizer.  No new pivot, source simplification, LP shortcut or runtime
+claim is introduced here.
+

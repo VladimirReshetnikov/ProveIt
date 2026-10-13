@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-13",
+  "status": "passed",
+  "command": "python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.PolyCoverThreeExplicitAudit",
+  "verified_native_module_count": 701,
+  "source_inputs": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-13-count-product-historical-explicit-inputs.json",
+  "input_manifest_sha256": "bbd7b9785ec3c5a5f90efc923abb300ea507398a17735e8dc277764dc54daa2c",
+  "log_sha256": "a8351a1b0175e96acf9e61d6c7b5f1f24a83e253b7ebf34acb343f245d213344",
+  "approved_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "scope": "Native compilation and named axiom checks for the historical explicit dimension-three theorem and corollary after normalizing the small dimension arithmetic; this target also checks the five historical proof consumers outside the final-route audits.",
+  "limits": [
+    "This is a focused audit; the expanded downstream and complete facade checks are separate.",
+    "Other open original statements are not discharged by this check."
+  ],
+  "run_note": "The initial 700-module historical explicit compilation failed at the dimension-one profile specialization with a maximum-recursion-depth error. Normalizing only the named constants and small Nat addition/powers repaired elaboration without changing statements or resource limits. The subsequent 701-module audit passed and checked both historical theorem exports with only the approved axioms.",
+  "failed_log_sha256": "d0b20cb138d178d355742fe260e146626d4f16384bb491be055b01b8c5c207a9"
+}

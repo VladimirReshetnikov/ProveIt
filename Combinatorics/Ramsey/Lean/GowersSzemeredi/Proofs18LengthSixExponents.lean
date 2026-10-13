@@ -88,6 +88,37 @@ theorem cubicBaseExponent_inv_le {q : Nat} {s w : Real} {a b : Nat} (hw : 2 ≤ 
     (pow_le_pow_left₀ hq0.le hqw 4) (pow_nonneg hq0.le _)
     (mul_nonneg (pow_nonneg hw0 _) (pow_nonneg (pow_nonneg hw0 _) _))
 
+/-- The fixed density loss has a polynomial reciprocal bound. -/
+theorem section16Delta_inv_le_pw {t u : Real} {a : Nat} (hu : 2 ≤ u) (ha : 5 ≤ a)
+    (ht : 0 < t) (ht1 : t ≤ 1) (hi : t⁻¹ ≤ u ^ (2 ^ a)) :
+    (section16Delta t)⁻¹ ≤ u ^ (2 ^ (a + 3)) := by
+  have hu0 : 0 ≤ u := le_trans (by norm_num) hu
+  have hu1 : 1 ≤ u := le_trans (by norm_num) hu
+  have h32 : 32 ≤ (2 : Nat) ^ a :=
+    (by norm_num : 32 ≤ (2 : Nat) ^ 5).trans (Nat.pow_le_pow_right (by norm_num) ha)
+  have h4t : 4 / t ≤ u ^ (2 ^ a + 2) := by
+    rw [div_eq_mul_inv, pow_add, mul_comm]
+    exact mul_le_mul hi (show (4 : Real) ≤ u ^ 2 by nlinarith only [hu])
+      (by norm_num) (pow_nonneg hu0 _)
+  have h4t1 : 1 ≤ 4 / t := by rw [le_div_iff₀ ht]; linarith only [ht1]
+  have hval : (section16Delta t)⁻¹ = (2 : Real) ^ (37 : Real) * (4 / t) ^ ((11 : Real) / 2) := by
+    unfold section16Delta
+    rw [mul_inv, Real.rpow_neg (by norm_num), inv_inv,
+      ← Real.inv_rpow (div_nonneg ht.le (by norm_num)), inv_div]
+  rw [hval]
+  have h37 : (2 : Real) ^ (37 : Real) ≤ u ^ 37 := by
+    rw [show (37 : Real) = ((37 : Nat) : Real) by norm_num, Real.rpow_natCast]
+    exact pow_le_pow_left₀ (by norm_num) hu 37
+  have h6 : (4 / t) ^ ((11 : Real) / 2) ≤ (4 / t) ^ 6 := by
+    rw [show (4 / t) ^ 6 = (4 / t) ^ ((6 : Nat) : Real) by rw [Real.rpow_natCast]]
+    exact Real.rpow_le_rpow_of_exponent_le h4t1 (by norm_num)
+  calc (2 : Real) ^ (37 : Real) * (4 / t) ^ ((11 : Real) / 2)
+      ≤ u ^ 37 * (u ^ (2 ^ a + 2)) ^ 6 :=
+        mul_le_mul h37 (h6.trans (pow_le_pow_left₀ (div_pos (by norm_num) ht).le h4t 6))
+          (Real.rpow_nonneg (div_pos (by norm_num) ht).le _) (pow_nonneg hu0 _)
+    _ = u ^ (37 + (2 ^ a + 2) * 6) := by rw [← pow_mul, ← pow_add]
+    _ ≤ u ^ (2 ^ (a + 3)) := pow_le_pow_right₀ hu1 (by rw [pow_add]; norm_num; omega)
+
 /-! ### The spectrum count -/
 
 theorem section16ThetaOne_one_inv_le {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
@@ -110,36 +141,10 @@ theorem section16ThetaOne_one_inv_le {gamma theta : Real} (hg : 0 < gamma) (hg1 
 theorem section16Delta_one_inv_le {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) :
     (section16Delta (section16ThetaOne theta gamma 1))⁻¹ ≤ (2 / (gamma * theta)) ^ ((2 : Nat) ^ 68) := by
-  obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  obtain ⟨hu, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   obtain ⟨h0, h1, -, -⟩ := section16_theta_delta_bounds 1 ht ht1 hg hg1
-  have hθi := section16ThetaOne_one_inv_le hg hg1 ht ht1
-  set t := section16ThetaOne theta gamma 1
-  set u := 2 / (gamma * theta) with hu
-  clear_value u t
-  have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
-  have hu1 : 1 ≤ u := le_trans (by norm_num) hu2
-  -- `4/t ≤ u^(2^65 + 2)` and `4/t ≥ 1`
-  have h4t : 4 / t ≤ u ^ ((2 : Nat) ^ 65 + 2) := by
-    rw [div_eq_mul_inv, pow_add, mul_comm]
-    exact mul_le_mul hθi (show (4 : Real) ≤ u ^ 2 by nlinarith only [hu2]) (by norm_num)
-      (pow_nonneg hupos.le _)
-  have h4t1 : 1 ≤ 4 / t := by rw [le_div_iff₀ h0]; linarith only [h1]
-  have hval : (section16Delta t)⁻¹ = (2 : Real) ^ (37 : Real) * (4 / t) ^ ((11 : Real) / 2) := by
-    unfold section16Delta
-    rw [mul_inv, Real.rpow_neg (by norm_num), inv_inv, ← Real.inv_rpow (by positivity), inv_div]
-  rw [hval]
-  have h37 : (2 : Real) ^ (37 : Real) ≤ u ^ 37 := by
-    rw [show (37 : Real) = ((37 : Nat) : Real) by norm_num, Real.rpow_natCast]
-    exact pow_le_pow_left₀ (by norm_num) hu2 37
-  have h6 : (4 / t) ^ ((11 : Real) / 2) ≤ (4 / t) ^ 6 := by
-    rw [show (4 / t) ^ 6 = (4 / t) ^ ((6 : Nat) : Real) by rw [Real.rpow_natCast]]
-    exact Real.rpow_le_rpow_of_exponent_le h4t1 (by norm_num)
-  calc (2 : Real) ^ (37 : Real) * (4 / t) ^ ((11 : Real) / 2)
-      ≤ u ^ 37 * (u ^ ((2 : Nat) ^ 65 + 2)) ^ 6 :=
-        mul_le_mul h37 (h6.trans (pow_le_pow_left₀ (by positivity) h4t 6))
-          (Real.rpow_nonneg (by positivity) _) (pow_nonneg hupos.le _)
-    _ = u ^ (37 + ((2 : Nat) ^ 65 + 2) * 6) := by rw [← pow_mul, ← pow_add]
-    _ ≤ u ^ ((2 : Nat) ^ 68) := pow_le_pow_right₀ hu1 (by norm_num)
+  exact (section16Delta_inv_le_pw hu (by norm_num) h0 h1
+    (section16ThetaOne_one_inv_le hg hg1 ht ht1))
 
 /-- The spectrum count `polyPieceSpecCount θ γ ≤ (2/(γθ))^(2^84)`. -/
 theorem polyPieceSpecCount_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
@@ -255,48 +260,25 @@ theorem section16Zeta_one_bounds {gamma theta : Real} (hg : 0 < gamma) (ht : 0 <
           mul_le_mul_of_nonneg_right h hm0
       _ = multipleS theta gamma 1 := one_mul _
 
-/-- The family-cover exponent of `PolyCoverAt 2` is polynomial:
-`polyTwoFamExp ≥ (2/(γθρ))^(-2^130)`. -/
-theorem polyTwoFamExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
-    {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1)
-    (hr : 0 < rho) (hr1 : rho ≤ 1)
-    (hK : (K1 : Real) ≤ (2 / (gamma * theta * rho)) ^ 3)
-    (hp : (p1 : Real) ≤ (2 / (gamma * theta * rho)) ^ 3) :
-    (polyTwoFamExp (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) theta gamma rho)⁻¹ ≤
-      (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 130) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-  have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-    div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-  have hrw : rho⁻¹ ≤ 2 / (gamma * theta * rho) := by
-    rw [show 2 / (gamma * theta * rho) = 2 / (gamma * theta) * rho⁻¹ by field_simp]
-    have h2 : (1 : Real) ≤ 2 / (gamma * theta) := by rw [le_div_iff₀ hgt]; linarith
-    have := inv_pos.mpr hr
-    nlinarith
-  obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-  obtain ⟨hζ0, hζ1, hζi⟩ := section16Zeta_one_bounds hg ht
-  have hm := polyTwoPieces_le_power hg hg1 ht ht1
-  have hqs := polyPieceSpecCount_le_power hg hg1 ht ht1
-  have hqf := polyPieceFaceCount_le_power hg hg1 ht ht1
-  unfold polyTwoFamExp
+/-- A dimension-two width bound from counts, recurrence constants and a radius bound. -/
+theorem famTwoWidth_inv_le_power {K1 p1 m qs qf d t : Nat} {w rho ζ : Real}
+    (hK1 : 0 < K1) (hp1 : 0 < p1) (hw2 : 2 ≤ w) (hr : 0 < rho) (hr1 : rho ≤ 1)
+    (hrw : rho⁻¹ ≤ w)
+    (hm' : (m : Real) ≤ w ^ d) (hqs' : (qs : Real) ≤ w ^ d) (hqf' : (qf : Real) ≤ w ^ d)
+    (hK : (K1 : Real) ≤ w ^ 3) (hp : (p1 : Real) ≤ w ^ 3)
+    (hζ0 : 0 < ζ) (hζ1 : ζ ≤ 1) (hζi : ζ⁻¹ ≤ Real.exp (w ^ t)) :
+    let L := pieceLineExponent (familyWidthDivisor 1 p1) (famTwoQb m qs) (famTwoEb m qs)
+      (famTwoEr m qf) rho
+    let S := famPieceSliceExponent (famTwoQr m qf) (famTwoEs m qf) m rho
+    let z := pieceWidthScale (familyWidthPrefactor K1) (famTwoQb m qs) ζ rho
+    (section16CappedWidthExponent (L * S / 4) (section16RoundedPowerThreshold z L S))⁻¹ ≤
+      w ^ (max t (2 * d + 9) + 52 * d + 222) := by
   dsimp only
-  set ζ := section16Zeta theta gamma 1
-  set m := polyTwoPieces gamma theta
-  set qs := polyPieceSpecCount theta gamma
-  set qf := polyPieceFaceCount theta gamma
-  set v := 2 / (gamma * theta) with hv
-  set w := 2 / (gamma * theta * rho) with hw
-  clear_value v w ζ m qs qf
-  have hw2 : 2 ≤ w := hv2.trans hvw
   have hw1 : 1 ≤ w := le_trans (by norm_num) hw2
   have hw0 : 0 ≤ w := le_trans (by norm_num) hw2
-  have hv0 : 0 ≤ v := le_trans (by norm_num) hv2
-  have hm' : (m : Real) ≤ w ^ ((2 : Nat) ^ 84) :=
-    le_pow_mono hw2 (by norm_num) (hm.trans (pow_le_pow_left₀ hv0 hvw _))
-  have hqs' : (qs : Real) ≤ w ^ ((2 : Nat) ^ 84) := hqs.trans (pow_le_pow_left₀ hv0 hvw _)
-  have hqf' : (qf : Real) ≤ w ^ ((2 : Nat) ^ 84) := hqf.trans (pow_le_pow_left₀ hv0 hvw _)
-  have hζw : ζ⁻¹ ≤ Real.exp (w ^ ((2 : Nat) ^ 128)) :=
-    hζi.trans (Real.exp_le_exp.mpr (pow_le_pow_left₀ hv0 hvw _))
+  set T := max t (2 * d + 9) with hTdef
+  have hζw : ζ⁻¹ ≤ Real.exp (w ^ T) :=
+    hζi.trans (Real.exp_le_exp.mpr (pow_le_pow_right₀ hw1 (le_max_left _ _)))
   have hr8 : (rho / 8)⁻¹ ≤ w ^ 4 := by
     rw [inv_div, div_eq_mul_inv, pow_succ]
     exact mul_le_mul (const_le_pow hw2 (by norm_num)) hrw
@@ -306,27 +288,27 @@ theorem polyTwoFamExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
     exact mul_le_mul (const_le_pow hw2 (by norm_num)) hrw
       (inv_pos.mpr hr).le (pow_nonneg hw0 _)
   -- the counts `m qs + 1`, `m qf + 1` and `n = 3 (m qs + 1)`
-  have hmqs : ((m * qs + 1 : Nat) : Real) ≤ w ^ ((2 : Nat) ^ 84 + (2 : Nat) ^ 84 + 1) := by
+  have hmqs : ((m * qs + 1 : Nat) : Real) ≤ w ^ (d + d + 1) := by
     have h := nat_mul_le_pow hw2 hm' hqs'
     push_cast; push_cast at h
     exact add_le_pow_succ hw2 h (one_le_pow_of_two_le hw2 _)
-  have hmqf : ((m * qf + 1 : Nat) : Real) ≤ w ^ ((2 : Nat) ^ 84 + (2 : Nat) ^ 84 + 1) := by
+  have hmqf : ((m * qf + 1 : Nat) : Real) ≤ w ^ (d + d + 1) := by
     have h := nat_mul_le_pow hw2 hm' hqf'
     push_cast; push_cast at h
     exact add_le_pow_succ hw2 h (one_le_pow_of_two_le hw2 _)
   have hn' : ((3 * (m * qs + 1) : Nat) : Real) ≤
-      w ^ (2 + ((2 : Nat) ^ 84 + (2 : Nat) ^ 84 + 1)) := by
+      w ^ (2 + (d + d + 1)) := by
     rw [Nat.cast_mul]
     exact const_mul_le_pow hw2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) hmqs
   have hn1 : ((3 * (m * qs + 1) + 1 : Nat) : Real) ≤
-      w ^ (2 + ((2 : Nat) ^ 84 + (2 : Nat) ^ 84 + 1) + 1) := by
+      w ^ (2 + (d + d + 1) + 1) := by
     rw [Nat.cast_succ]
     exact add_le_pow_succ hw2 hn' (one_le_pow_of_two_le hw2 _)
   have hfloor : ⌊famTwoQb m qs (rho / 8)⌋₊ = 3 * (m * qs + 1) := by
     unfold famTwoQb; exact Nat.floor_natCast _
   -- the line exponent
   have hBq : familyWidthDivisor 1 p1 (3 * (m * qs + 1)) ≤
-      w ^ (3 + (3 + (2 + ((2 : Nat) ^ 84 + (2 : Nat) ^ 84 + 1) + 1) * 8)) := by
+      w ^ (3 + (3 + (2 + (d + d + 1) + 1) * 8)) := by
     have hval : familyWidthDivisor 1 p1 (3 * (m * qs + 1)) =
         8 * ((p1 : Real) * ((3 * (m * qs + 1) + 1 : Nat) : Real) ^ 8) := by
       unfold familyWidthDivisor; push_cast; ring
@@ -338,14 +320,14 @@ theorem polyTwoFamExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
   have hEb0 : 0 < famTwoEb m qs (rho / 8) :=
     cubicBaseExponent_pos (Nat.succ_pos _) (by positivity)
   have hEb : (famTwoEb m qs (rho / 8))⁻¹ ≤
-      w ^ (27 + 4 * 3 + ((2 : Nat) ^ 84 + (2 : Nat) ^ 84 + 1) * 4) := by
+      w ^ (27 + 4 * 3 + (d + d + 1) * 4) := by
     unfold famTwoEb
     exact cubicBaseExponent_inv_le hw2 (Nat.succ_pos _) hmqs (by positivity) hr8
   have hEr0 : 0 < famTwoEr m qf (rho / 8) := by
     unfold famTwoEr
     exact div_pos (cubicBaseExponent_pos (Nat.succ_pos _) (by positivity)) (by norm_num)
   have hEr : (famTwoEr m qf (rho / 8))⁻¹ ≤
-      w ^ (4 + (27 + 4 * 3 + ((2 : Nat) ^ 84 + (2 : Nat) ^ 84 + 1) * 4)) := by
+      w ^ (4 + (27 + 4 * 3 + (d + d + 1) * 4)) := by
     unfold famTwoEr
     rw [inv_div, div_eq_mul_inv, pow_add]
     exact mul_le_mul (const_le_pow hw2 (by norm_num))
@@ -358,19 +340,19 @@ theorem polyTwoFamExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
       familyWidthDivisor 1 p1 (3 * (m * qs + 1)) := by
     rw [hLdef]; unfold pieceLineExponent; rw [hfloor]
   have hL0 : 0 < L := by rw [hLval]; positivity
-  have hLi : L⁻¹ ≤ w ^ ((2 : Nat) ^ 90) := by
+  have hLi : L⁻¹ ≤ w ^ (32 * d + 128) := by
     rw [hLval, inv_div, div_eq_mul_inv, mul_inv]
     have h := mul_le_pow_add hBq0.le
       (mul_nonneg (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le) hBq
       (mul_le_pow_add (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le hEr hEb hw0) hw0
-    exact le_pow_mono hw2 (by norm_num) h
+    exact le_pow_mono hw2 (by omega) h
   -- the slice exponent
   have hQr := famTwoQr_le_power hw2 hm' hqf' (rho / 8)
   have hSamp := famPieceSamples_le_power (Qr := famTwoQr m qf) hw2 hr hrw hQr hm'
   set Sp := famPieceSamples (famTwoQr m qf) m rho
   have hqS : ((m * (Sp * qf) + 1 : Nat) : Real) ≤
-      w ^ ((2 : Nat) ^ 84 + (((2 : Nat) ^ 84 + (2 : Nat) ^ 84 + 5 + (2 : Nat) ^ 84 + 7) +
-        (2 : Nat) ^ 84) + 1) := by
+      w ^ (d + ((d + d + 5 + d + 7) +
+        d) + 1) := by
     have h := nat_mul_le_pow hw2 hm' (nat_mul_le_pow hw2 hSamp hqf')
     push_cast; push_cast at h
     exact add_le_pow_succ hw2 h (one_le_pow_of_two_le hw2 _)
@@ -381,14 +363,14 @@ theorem polyTwoFamExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
   have hS1 : S ≤ 1 := by
     rw [hSval]
     exact cubicBaseExponent_le_one (Nat.succ_pos _) (by positivity) (by linarith only [hr1])
-  have hSi : S⁻¹ ≤ w ^ ((2 : Nat) ^ 90) := by
+  have hSi : S⁻¹ ≤ w ^ (20 * d + 88) := by
     rw [hSval]
-    exact le_pow_mono hw2 (by norm_num)
+    exact le_pow_mono hw2 (by omega)
       (cubicBaseExponent_inv_le hw2 (Nat.succ_pos _) hqS (by positivity) hr4)
   -- the scale `z = ζ / A`
   set z := pieceWidthScale (familyWidthPrefactor K1) (famTwoQb m qs) ζ rho with hzdef
   have hA : familyWidthPrefactor K1 (3 * (m * qs + 1)) ≤
-      w ^ (2 + (3 + (2 + ((2 : Nat) ^ 84 + (2 : Nat) ^ 84 + 1) + 1))) := by
+      w ^ (2 + (3 + (2 + (d + d + 1) + 1))) := by
     unfold familyWidthPrefactor
     rw [Nat.cast_mul, pow_add, pow_add]
     exact mul_le_mul (const_le_pow hw2 (by norm_num))
@@ -404,19 +386,54 @@ theorem polyTwoFamExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
   have hz0 : 0 < z := by rw [hzval]; exact div_pos hζ0 (lt_of_lt_of_le zero_lt_one hA1)
   have hz1 : z ≤ 1 := by
     rw [hzval, div_le_one (lt_of_lt_of_le zero_lt_one hA1)]; exact hζ1.trans hA1
-  have hzi : z⁻¹ ≤ Real.exp (w ^ ((2 : Nat) ^ 128 + 1)) := by
+  have hzi : z⁻¹ ≤ Real.exp (w ^ (T + 1)) := by
     rw [hzval, inv_div, div_eq_mul_inv]
-    have hAe : familyWidthPrefactor K1 (3 * (m * qs + 1)) ≤ Real.exp (w ^ ((2 : Nat) ^ 128)) :=
-      le_exp_pow_of_le_pow (le_pow_mono hw2 (by norm_num) hA)
+    have hAe : familyWidthPrefactor K1 (3 * (m * qs + 1)) ≤ Real.exp (w ^ (T)) :=
+      le_exp_pow_of_le_pow (le_pow_mono hw2 (by rw [hTdef]; omega) hA)
     calc familyWidthPrefactor K1 (3 * (m * qs + 1)) * ζ⁻¹
-        ≤ Real.exp (w ^ ((2 : Nat) ^ 128)) * Real.exp (w ^ ((2 : Nat) ^ 128)) :=
+        ≤ Real.exp (w ^ (T)) * Real.exp (w ^ (T)) :=
           mul_le_mul hAe hζw (inv_pos.mpr hζ0).le (Real.exp_pos _).le
-      _ = Real.exp (w ^ ((2 : Nat) ^ 128) * 2) := by rw [← Real.exp_add]; ring_nf
-      _ ≤ Real.exp (w ^ ((2 : Nat) ^ 128 + 1)) := by
+      _ = Real.exp (w ^ (T) * 2) := by rw [← Real.exp_add]; ring_nf
+      _ ≤ Real.exp (w ^ (T + 1)) := by
           rw [pow_succ]
           exact Real.exp_le_exp.mpr (mul_le_mul_of_nonneg_left hw2 (pow_nonneg hw0 _))
-  have hcap := capped_rounded_inv_le hw2 (by norm_num) hL0 hLi hS0 hS1 hSi hz0 hz1 hzi
-  exact hcap.trans (pow_le_pow_right₀ hw1 (by norm_num))
+  have hcap := capped_rounded_inv_le hw2 (by rw [hTdef]; omega) hL0 hLi hS0 hS1 hSi hz0 hz1 hzi
+  exact hcap.trans_eq (by rw [hTdef]; congr 1; omega)
+
+/-- The family-cover exponent of `PolyCoverAt 2` is polynomial:
+`polyTwoFamExp ≥ (2/(γθρ))^(-2^130)`. -/
+theorem polyTwoFamExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
+    {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1)
+    (hr : 0 < rho) (hr1 : rho ≤ 1)
+    (hK : (K1 : Real) ≤ (2 / (gamma * theta * rho)) ^ 3)
+    (hp : (p1 : Real) ≤ (2 / (gamma * theta * rho)) ^ 3) :
+    (polyTwoFamExp (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) theta gamma rho)⁻¹ ≤
+      (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 130) := by
+  obtain ⟨hv2, hvw, hrw⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
+  obtain ⟨hζ0, hζ1, hζi⟩ := section16Zeta_one_bounds hg ht
+  have hm := polyTwoPieces_le_power hg hg1 ht ht1
+  have hqs := polyPieceSpecCount_le_power hg hg1 ht ht1
+  have hqf := polyPieceFaceCount_le_power hg hg1 ht ht1
+  unfold polyTwoFamExp
+  dsimp only
+  set ζ := section16Zeta theta gamma 1
+  set m := polyTwoPieces gamma theta
+  set qs := polyPieceSpecCount theta gamma
+  set qf := polyPieceFaceCount theta gamma
+  set v := 2 / (gamma * theta) with hv
+  set w := 2 / (gamma * theta * rho) with hw
+  clear_value v w ζ m qs qf
+  have hw2 : 2 ≤ w := hv2.trans hvw
+  have hw1 : 1 ≤ w := le_trans (by norm_num) hw2
+  have hv0 : 0 ≤ v := le_trans (by norm_num) hv2
+  have hm' : (m : Real) ≤ w ^ ((2 : Nat) ^ 84) :=
+    le_pow_mono hw2 (by norm_num) (hm.trans (pow_le_pow_left₀ hv0 hvw _))
+  have hqs' : (qs : Real) ≤ w ^ ((2 : Nat) ^ 84) := hqs.trans (pow_le_pow_left₀ hv0 hvw _)
+  have hqf' : (qf : Real) ≤ w ^ ((2 : Nat) ^ 84) := hqf.trans (pow_le_pow_left₀ hv0 hvw _)
+  have hζw : ζ⁻¹ ≤ Real.exp (w ^ ((2 : Nat) ^ 128)) :=
+    hζi.trans (Real.exp_le_exp.mpr (pow_le_pow_left₀ hv0 hvw _))
+  have h := famTwoWidth_inv_le_power hK1 hp1 hw2 hr hr1 hrw hm' hqs' hqf' hK hp hζ0 hζ1 hζw
+  exact h.trans (pow_le_pow_right₀ hw1 (by norm_num))
 
 /-- The width exponent of `PolyCoverAt 2`: `polyTwoEb ≥ (2/(γθρ))^(-2^132)`. -/
 theorem polyTwoEb_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
@@ -426,11 +443,7 @@ theorem polyTwoEb_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
     (hp : (p1 : Real) ≤ (2 / (gamma * theta * rho)) ^ 3) :
     (polyTwoEb (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) gamma theta rho)⁻¹ ≤
       (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 132) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-  have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-    div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-  obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  obtain ⟨hv2, hvw, -⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
   have hfam := polyTwoFamExp_inv_le_power hK1 hp1 hg hg1 ht ht1 hr hr1 hK hp
   have hfam0 := polyTwoFamExp_pos (A := familyWidthPrefactor K1) (Bq := familyWidthDivisor 1 p1)
     (theta := theta) (gamma := gamma) (familyWidthDivisor_pos hp1) hr
@@ -458,16 +471,7 @@ theorem sixEb_inv_le_power (l : Nat) {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
       (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 132) := by
   unfold sixEb
   split_ifs
-  · have hgt : 0 < gamma * theta := mul_pos hg ht
-    have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-    have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-      div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-    have hrw : rho⁻¹ ≤ 2 / (gamma * theta * rho) := by
-      rw [show 2 / (gamma * theta * rho) = 2 / (gamma * theta) * rho⁻¹ by field_simp]
-      have h2 : (1 : Real) ≤ 2 / (gamma * theta) := by rw [le_div_iff₀ hgt]; linarith
-      have := inv_pos.mpr hr
-      nlinarith
-    obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  · obtain ⟨hv2, hvw, hrw⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
     have hB := section16BaseFamilyBound_le_dyadic_power hg hg1 ht ht1
     have hB0 := section16BaseFamilyBound_pos gamma theta
     set v := 2 / (gamma * theta) with hv

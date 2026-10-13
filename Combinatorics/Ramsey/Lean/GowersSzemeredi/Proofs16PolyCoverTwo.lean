@@ -79,6 +79,47 @@ def PolyPieceTwoData.empty {N : Nat} [NeZero N] (Gamma : Finset (Point N 2 × ZM
       obtain ⟨x, hx, -⟩ := Finset.mem_image.mp hz
       simp [section16FinalCoordinateSection] at hx
 
+/-- Extract and pad a dimension-two family with the exact floor of the mass ratio. -/
+theorem section16_poly_piece_two_decomposition_of_extract
+    {N : Nat} [NeZero N] {theta mass cap zeta : Real} {qs qr ql : Nat}
+    (hmass : 0 < mass) (Gamma : Finset (Point N 2 × ZMod N))
+    (hsize : (Gamma.card : Real) ≤ cap * (N : Real) ^ 2)
+    (hextract : ∀ Delta ⊆ Gamma,
+      theta * (N : Real) ^ 2 ≤ (relationProjection Delta).card →
+      Nonempty (PolyPieceTwoData Delta zeta mass qs qr ql)) :
+    ∃ J : Finset (Point N 2), (1 - theta) * (N : Real) ^ 2 ≤ J.card ∧
+      ∃ P : Fin ⌊cap / mass⌋₊ →
+        PolyPieceTwoData (Finset.univ : Finset (Point N 2 × ZMod N)) zeta 0 qs qr ql,
+        restrictRelation Gamma J ⊆ Finset.univ.biUnion fun c => partialGraph (P c).D (P c).phi := by
+  classical
+  have hNpos : 0 < (N : Real) ^ 2 := by
+    have : (0 : Real) < N := by exact_mod_cast NeZero.pos N
+    positivity
+  let Good : Finset (Point N 2 × ZMod N) → Prop := fun G =>
+    ∃ P : PolyPieceTwoData Finset.univ zeta mass qs qr ql, G = partialGraph P.D P.phi
+  obtain ⟨q, G, J, hG, hq, hJ, hcov⟩ := section16_greedy_relation_decomposition Good theta
+    (mass * (N : Real) ^ 2) (mul_pos hmass hNpos) Gamma (by
+      intro Delta hDelta hproj
+      obtain ⟨P⟩ := hextract Delta hDelta hproj
+      refine ⟨partialGraph P.D P.phi, P.graph_sub, ?_, ⟨P.widen (Finset.subset_univ _), rfl⟩⟩
+      rw [partialGraph_card]
+      exact P.card_ge)
+  have hqm : q ≤ ⌊cap / mass⌋₊ := by
+    apply Nat.le_floor
+    rw [le_div_iff₀ hmass]
+    apply le_of_mul_le_mul_right (a := (N : Real) ^ 2) _ hNpos
+    simpa only [mul_assoc] using hq.trans hsize
+  choose P hPG using fun i => (hG i).2
+  let Q : Fin ⌊cap / mass⌋₊ → PolyPieceTwoData Finset.univ zeta 0 qs qr ql := fun j =>
+    if h : j.val < q then (P ⟨j.val, h⟩).toMassZero else PolyPieceTwoData.empty _ zeta qs qr ql
+  refine ⟨J, hJ, Q, ?_⟩
+  intro z hz
+  obtain ⟨i, -, hi⟩ := Finset.mem_biUnion.mp (hcov hz)
+  rw [hPG i] at hi
+  refine Finset.mem_biUnion.mpr ⟨⟨i.val, i.isLt.trans_le hqm⟩, Finset.mem_univ _, ?_⟩
+  simp only [Q, dif_pos i.isLt]
+  exact hi
+
 /-! ### Parameters -/
 
 /-- Lemma 15.6's modulus threshold at `β = θ/2`, and at least `3`. -/
@@ -183,55 +224,15 @@ theorem section16_poly_cover_two_large {A Bq : Nat → Real} (hA : ∀ q, 0 < A 
     ∃ J : Finset (Point N 2), (1 - theta) * (N : Real) ^ 2 ≤ J.card ∧
       MultiplyLinearWith (polyTwoFamCount theta gamma) (polyTwoFamExp A Bq theta gamma)
         (restrictRelation Gamma J) := by
-  classical
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le 1 ht ht1 hg hg1
-  have hθ'pos : 0 < polyPieceBudget theta gamma := by
+  have hmass : 0 < 5 * polyPieceBudget theta gamma := by
     unfold polyPieceBudget; positivity
-  set θ' := polyPieceBudget theta gamma with hθ'def
+  obtain ⟨J, hJ, P, hcov⟩ := section16_poly_piece_two_decomposition_of_extract hmass Gamma hsize
+    (fun Delta hDelta hproj =>
+      section16_poly_piece_two_of_subrelation ht ht1 hg hg1 hN hprod Delta hDelta hproj)
   obtain ⟨hz, hzHalf⟩ := section16Zeta_pos_le_half 1 ht ht1 hg hg1
-  set zeta := section16Zeta theta gamma 1 with hzetadef
-  set qs := polyPieceSpecCount theta gamma
-  set qf := polyPieceFaceCount theta gamma
-  let Good : Finset (Point N 2 × ZMod N) → Prop := fun G =>
-    ∃ P : PolyPieceTwoData Gamma zeta (5 * θ') qs qf qf, G = partialGraph P.D P.phi
-  have hmass : 0 < 5 * θ' * (N : Real) ^ 2 := by
-    have : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-    positivity
-  obtain ⟨q, G, J, hG, hq, hJ, hcov⟩ := section16_greedy_relation_decomposition Good theta
-    (5 * θ' * (N : Real) ^ 2) hmass Gamma (by
-      intro Delta hDelta hproj
-      obtain ⟨P⟩ := section16_poly_piece_two_of_subrelation ht ht1 hg hg1 hN hprod Delta
-        hDelta hproj
-      refine ⟨partialGraph P.D P.phi, P.graph_sub, ?_, ⟨P.widen hDelta, rfl⟩⟩
-      rw [partialGraph_card]
-      exact P.card_ge)
-  -- the number of pieces
-  set m := polyTwoPieces gamma theta with hmdef
-  have hqm : q ≤ m := by
-    rw [hmdef, polyTwoPieces]
-    apply Nat.le_floor
-    have hNpos : (0 : Real) < (N : Real) ^ 2 := by
-      have : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-      positivity
-    have h1 : (q : Real) * (5 * θ' * (N : Real) ^ 2) ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ 2 :=
-      hq.trans hsize
-    rw [le_div_iff₀ (by positivity)]
-    have h2 : (q : Real) * (5 * θ') * (N : Real) ^ 2 ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ 2 := by
-      linarith [h1]
-    exact le_of_mul_le_mul_right h2 hNpos
-  choose P hPG using fun i => (hG i).2
-  let Q : Fin m → PolyPieceTwoData Gamma zeta 0 qs qf qf := fun j =>
-    if h : j.val < q then (P ⟨j.val, h⟩).toMassZero else PolyPieceTwoData.empty Gamma zeta qs qf qf
-  have hfam := section16_poly_family_two_cover hA hB hlemma6 hz hzHalf Q
-  refine ⟨J, hJ, MultiplyLinearWith.subset hfam ?_⟩
-  intro z hz'
-  have hz1 := hcov hz'
-  unfold section16FinsetUnion at hz1
-  obtain ⟨i, -, hi⟩ := Finset.mem_biUnion.mp hz1
-  rw [hPG i] at hi
-  refine Finset.mem_biUnion.mpr ⟨⟨i.val, i.isLt.trans_le hqm⟩, Finset.mem_univ _, ?_⟩
-  simp only [Q, dif_pos i.isLt]
-  exact hi
+  exact ⟨J, hJ, MultiplyLinearWith.subset
+    (section16_poly_family_two_cover hA hB hlemma6 hz hzHalf P) hcov⟩
 
 
 /-! ### `PolyCoverAt 2` -/
@@ -250,20 +251,7 @@ theorem polyTwoFamExp_pos {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q)
     {theta gamma : Real} {rho : Real} (hrho : 0 < rho) :
     0 < polyTwoFamExp A Bq theta gamma rho := by
   unfold polyTwoFamExp
-  apply section16CappedWidthExponent_pos
-  have h8 : 0 < rho / 8 := by positivity
-  have h4 : 0 < rho / 4 := by positivity
-  have hEb := cubicBaseExponent_pos
-    (Nat.succ_pos (polyTwoPieces gamma theta * polyPieceSpecCount theta gamma)) h8
-  have hEr := cubicBaseExponent_pos
-    (Nat.succ_pos (polyTwoPieces gamma theta * polyPieceFaceCount theta gamma)) h8
-  have hEs := cubicBaseExponent_pos (Nat.succ_pos (polyTwoPieces gamma theta *
-    (famPieceSamples (famTwoQr (polyTwoPieces gamma theta) (polyPieceFaceCount theta gamma))
-      (polyTwoPieces gamma theta) rho * polyPieceFaceCount theta gamma))) h4
-  have hBq := hB ⌊famTwoQb (polyTwoPieces gamma theta) (polyPieceSpecCount theta gamma)
-    (rho / 8)⌋₊
-  simp only [pieceLineExponent, famPieceSliceExponent, famTwoEb, famTwoEr, famTwoEs]
-  positivity
+  exact famTwoCappedExponent_pos hB hrho
 
 /-- **`PolyCoverAt 2`**, from the family Lemma 16.6 at a power width. -/
 theorem polyCoverAt_two_of_family_lemma6 {A Bq : Nat → Real} (hA : ∀ q, 0 < A q)

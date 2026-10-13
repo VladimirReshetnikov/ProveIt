@@ -57,11 +57,8 @@ theorem spectrum_exps_inv_leF {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alp
   have hq1 : P.Rho1 alpha / 2 / 2 ≤ 1 := by linarith
   have hqi : (P.Rho1 alpha / 2 / 2)⁻¹ ≤ (2 / alpha) ^ (2 ^ (ρ + 1)) := by
     rw [show (P.Rho1 alpha / 2 / 2)⁻¹ = 4 * (P.Rho1 alpha)⁻¹ by field_simp; ring]
-    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ ρ) := pw_const hX (by
-      have : 2 ≤ 2 ^ ρ := le_trans (by norm_num : 2 ≤ 2 ^ 1)
-        (Nat.pow_le_pow_right (by norm_num) (by omega))
-      calc (4 : Real) = 2 ^ 2 := by norm_num
-        _ ≤ 2 ^ (2 ^ ρ) := pow_le_pow_right₀ (by norm_num) this)
+    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ ρ) :=
+      pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
     exact pw_mul hX (by norm_num) (inv_pos.mpr hr0).le h4 hri
   have hQ := uCount_scale_le (c := ρ + 1) (D := uDeg23 k) (μD := μD) hX H.hV H.hVμ H.hμ0 hd0 hd1 hdi
     hB0 hB1 hBi hq0 hq1 hqi le_rfl
@@ -84,11 +81,8 @@ theorem spectrum_exps_inv_leF {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alp
     have hk2 : 2 * 2 ^ (k + 1) ≤ 2 ^ (k + 2) := by rw [pow_succ 2 (k + 1)]; omega
     have hpow := pw_pow hX hq0' hQM' hk2
     have hp' : (P.p : Real) ≤ (2 / alpha) ^ (2 ^ μK) := pw_const hX (by exact_mod_cast H.hpμ)
-    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ (μK + 1)) := pw_const hX (by
-      have : 2 ≤ 2 ^ (μK + 1) := le_trans (by norm_num : 2 ≤ 2 ^ 1)
-        (Nat.pow_le_pow_right (by norm_num) (by omega))
-      calc (4 : Real) = 2 ^ 2 := by norm_num
-        _ ≤ 2 ^ (2 ^ (μK + 1)) := pow_le_pow_right₀ (by norm_num) this)
+    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ (μK + 1)) :=
+      pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
     have hpq0 : (0 : Real) ≤ ((P.QM alpha : Real) + 1) ^ (2 * 2 ^ (k + 1)) := pow_nonneg hq0' _
     have h1 := pw_mul' hX (Nat.cast_nonneg _) hpq0 hp' hpow
     have h2 := pw_mul' hX (by norm_num) (mul_nonneg (Nat.cast_nonneg _) hpq0) h4 h1
@@ -178,10 +172,8 @@ theorem Eloc_inv_leF {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha2 
   have hEm' := pw_mono hX hEm (show rhoDegF P.k P.μ0 + 23 * 2 ^ P.k + 2 ≤ M by omega)
   have hEth' := pw_mono hX hEth hM1
   have hEc' := pw_mono hX hEc hM1
-  have h32 : (32 : Real) ≤ (2 / alpha) ^ (2 ^ (M + 1)) := pw_const hX (by
-    have : 5 ≤ 2 ^ (M + 1) := by have := Nat.lt_two_pow_self (n := M + 1); omega
-    calc (32 : Real) = 2 ^ 5 := by norm_num
-      _ ≤ 2 ^ (2 ^ (M + 1)) := pow_le_pow_right₀ (by norm_num) this)
+  have h32 : (32 : Real) ≤ (2 / alpha) ^ (2 ^ (M + 1)) :=
+    pw_mono hX (pw_const hX (a := 3) (by norm_num)) (by omega)
   have p1 := pw_mul hX (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le hNE' hEm'
   have p2 := pw_mul hX (inv_pos.mpr hEth0).le (inv_pos.mpr hEc0).le hEth' hEc'
   have p3 := pw_mul' hX (inv_pos.mpr hBx0).le (by positivity) hBx p2
@@ -198,7 +190,6 @@ theorem MReq_le_expF {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha2 
     1 ≤ P.MReq alpha ∧
       P.MReq alpha ≤ Real.exp ((2 / alpha) ^ (2 ^ max (expDegF P.k P.μ0 μK + 3) (2 ^ (P.k + 6) + 4))) := by
   have hX := two_div_ge_two ha ha2
-  have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   obtain ⟨-, hQM, hBx⟩ := P.spectrum_exps_inv_leF H ha ha2
   have hri := P.rho1_inv_leF ha ha2 H.hV H.hVμ H.hμ0
   set k := P.k with hkdef
@@ -218,54 +209,39 @@ theorem MReq_le_expF {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha2 
       (familyRecThr_pos (k := k) (p := P.p) (by have := H.hK; omega) _).ne')
   -- the Bohr radius and `ρ`
   obtain ⟨hz0, hzi⟩ := zeta_gen_bounds_fejer k ha ha2
-  have hz1 : tightZeta (fejerThetaOne alpha (alpha / 2) k / 4) ≤ 1 / 2 :=
-    (tightZeta_pos_le_half (fejerThetaOne_bounds k ha (by linarith) (half_pos ha) (by linarith)).1 (by linarith [(fejerThetaOne_bounds k ha (by linarith) (half_pos ha) (by linarith)).2])).2
   have hzeq : P.Zeta alpha = tightZeta (fejerThetaOne alpha (alpha / 2) k / 4) := rfl
-  obtain ⟨ht0, ht1, -⟩ := T2_gen_bounds_fejer k ha ha2
   obtain ⟨hr0, hr1⟩ : 0 < P.Rho1 alpha ∧ P.Rho1 alpha ≤ 1 := P.rho1_pos_le ha ha2
   have hρ1 : 1 ≤ rhoDegF k P.μ0 := by have := (rhoDegC_gF k P.μ0).1; omega
-  obtain ⟨hR0, hR1, hRi⟩ := GenParams.rho_step hX hr0 hr1 hri hρ1
+  obtain ⟨hR0, -, hRi⟩ := GenParams.rho_step hX hr0 hr1 hri hρ1
   have hReq : P.Rho alpha = P.Rho1 alpha / 2 * (P.Rho1 alpha / 2 / 2) := rfl
-  rw [← hReq] at hR0 hR1 hRi
+  rw [← hReq] at hR0 hRi
   have hBpos : 0 < P.Bexp alpha := by
     have := familyRecExp_pos k P.p (P.QM alpha) H.hp
     show 0 < familyRecExp k P.p _ / 2; positivity
   set z := P.Zeta alpha with hzdef
   set R := P.Rho alpha with hRdef
   set B := P.Bexp alpha with hBdef
-  rw [← hzeq] at hz0 hzi hz1
-  have h8 : (8 : Real) ≤ Real.exp ((2 / alpha) ^ (2 ^ 2)) := ex_of_pw (pw_const hX (by norm_num))
-  have hzi' : z⁻¹ ≤ Real.exp ((2 / alpha) ^ (2 ^ Z)) := hzi
-  have h8z : 8 / z ≤ Real.exp ((2 / alpha) ^ (2 ^ (Z + 1))) := by
+  rw [← hzeq] at hz0 hzi
+  have hcz (c : Real) (hc : c ≤ 16) :
+      c / z ≤ Real.exp ((2 / alpha) ^ (2 ^ (Z + 1))) := by
     rw [div_eq_mul_inv]
-    exact ex_mono hX (ex_mul' hX (inv_pos.mpr hz0).le h8 hzi') (by omega)
-  have h16 : (16 : Real) ≤ Real.exp ((2 / alpha) ^ (2 ^ 2)) := ex_of_pw (pw_const hX (by norm_num))
-  have h16z : 16 / z ≤ Real.exp ((2 / alpha) ^ (2 ^ (Z + 1))) := by
-    rw [div_eq_mul_inv]
-    exact ex_mono hX (ex_mul' hX (inv_pos.mpr hz0).le h16 hzi') (by omega)
+    exact ex_mono hX (ex_mul' hX (inv_pos.mpr hz0).le
+      (ex_of_pw (pw_const hX (a := 2) (by norm_num; exact hc))) hzi) (by omega)
   have hR3 : (R ^ 3)⁻¹ ≤ (2 / alpha) ^ (2 ^ (rhoDegF k P.μ0 + 2 + 2)) := by
     rw [← inv_pow]; exact pw_pow hX (inv_pos.mpr hR0).le hRi (by norm_num)
   have h4zr : 4 / (z * R ^ 3) ≤
       Real.exp ((2 / alpha) ^ (2 ^ (max (Z + 1) (rhoDegF k P.μ0 + 4) + 1))) := by
     rw [div_eq_mul_inv, mul_inv, ← mul_assoc]
-    have h4z : 4 * z⁻¹ ≤ Real.exp ((2 / alpha) ^ (2 ^ (Z + 1))) := by
-      have h4 : (4 : Real) ≤ Real.exp ((2 / alpha) ^ (2 ^ 2)) := ex_of_pw (pw_const hX (by norm_num))
-      exact ex_mono hX (ex_mul' hX (inv_pos.mpr hz0).le h4 hzi') (by omega)
+    have h4z := hcz 4 (by norm_num)
+    rw [div_eq_mul_inv] at h4z
     exact ex_mul' hX (inv_pos.mpr (pow_pos hR0 3)).le h4z (ex_of_pw hR3)
-  have h8z1 : 1 ≤ 8 / z := by rw [le_div_iff₀ hz0]; linarith
-  have h16z1 : 1 ≤ 16 / z := by rw [le_div_iff₀ hz0]; linarith
-  have h4zr1 : 1 ≤ 4 / (z * R ^ 3) := by
-    rw [le_div_iff₀ (by positivity)]
-    have : R ^ 3 ≤ 1 := pow_le_one₀ hR0.le hR1
-    have : z * R ^ 3 ≤ 1 / 2 * 1 := mul_le_mul hz1 this (by positivity) (by norm_num)
-    linarith
   have hBe : 1 / B ≤ (2 / alpha) ^ (2 ^ E) := by rw [one_div]; exact hBx
   have hBe2 : 2 / B ≤ (2 / alpha) ^ (2 ^ (E + 1)) := by
     rw [div_eq_mul_inv]
     exact pw_mul hX (by norm_num) (inv_pos.mpr hBpos).le (hX.trans (pw_X hX _)) hBx
-  have e1 := ex_rpow hX h8z1 h8z (by positivity) hBe
-  have e2 := ex_rpow hX h4zr1 h4zr (by positivity) hBe
-  have e3 := ex_rpow hX h16z1 h16z (by positivity) hBe2
+  have e1 := ex_rpow_of_nonneg hX (by positivity) (hcz 8 (by norm_num)) (by positivity) hBe
+  have e2 := ex_rpow_of_nonneg hX (by positivity) h4zr (by positivity) hBe
+  have e3 := ex_rpow_of_nonneg hX (by positivity) (hcz 16 le_rfl) (by positivity) hBe2
   refine ⟨hthr1.trans (le_max_left _ _), ?_⟩
   show max (familyRecThr k P.K P.p (P.QM alpha) : Real)
     (max ((8 / z) ^ (1 / B)) (max ((4 / (z * R ^ 3)) ^ (1 / B)) ((16 / z) ^ (2 / B)))) ≤ _
@@ -338,10 +314,7 @@ theorem Tloc_le_expF {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha :
       omega
     omega
   have h3 : (3 : Real) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) :=
-    ex_of_pw (pw_const hX (by
-      calc (3 : Real) ≤ 2 ^ 2 := by norm_num
-        _ ≤ 2 ^ (2 ^ T) := pow_le_pow_right₀ (by norm_num) (by
-            have := Nat.lt_two_pow_self (n := T); omega)))
+    ex_of_pw (pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega))
   show max (max 3 (fejerProductThreshold k (alpha / 2) (alpha / 2)))
     (max (P.MThr alpha)
       (max (4 ^ (1 / P.NestExp alpha))
@@ -356,12 +329,7 @@ theorem tightHyp_of_profiles_fejer (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k
     (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) {k : Nat}
     (hk : 2 ≤ k) :
     (⟨classV Kc pc k, k, Kc k, pc k, tightMu0 k⟩ : GenParamsF).CHyp (tightMuV k) (genMuK k) := by
-  obtain ⟨hV, -, -, -, -, -, hKk, hKμ, hpk, hpμ⟩ := stdHyp_of_profiles Kc pc hK hp hconst hk
-  refine ⟨hV, classV_le_tight Kc pc hconst k, le_rfl, ?_, hKk, hKμ, hpk, hpμ⟩
-  show k ≤ 2 ^ tightMu0 k
-  calc k ≤ 2 ^ k := Nat.lt_two_pow_self.le
-    _ ≤ 2 ^ tightMu0 k := Nat.pow_le_pow_right (by norm_num) (by
-        unfold tightMu0 fixDeg; have := Nat.lt_two_pow_self (n := k + 5)
-        have := le_max_right (tightMuV k) (2 ^ (k + 5) + 7); omega)
+  obtain ⟨hV, hVμ, hμ0, hk0, hKk, hKμ, hpk, hpμ⟩ := tightHyp_of_profiles Kc pc hK hp hconst hk
+  exact ⟨hV, hVμ, hμ0, hk0, hKk, hKμ, hpk, hpμ⟩
 
 end LeanProofs.GowersSzemeredi

@@ -226,6 +226,130 @@ class EulerRelaxationVerifierTests(unittest.TestCase):
 
 
 class EulerBranchTreeVerifierTests(unittest.TestCase):
+    def test_cached_dual_products_never_cache_mask_or_objective_acceptance(self):
+        from fastunknot import normal_euler_tree_verify as verifier
+        source, proof = source_model_tree()
+        with patch.object(verifier, '_dual_image', wraps=verifier._dual_image) as image:
+            with patch.object(verifier, '_euler_objective', wraps=verifier._euler_objective) as objective:
+                self.assertTrue(verify_euler_branch_tree(source, proof))
+                self.assertEqual(image.call_count, 2)  # dual zero is shared by two children
+                self.assertEqual(objective.call_count, 1)
+        bad = deepcopy(proof)
+        bad['nodes'][3]['certificate']['multipliers'] = [[0, 1]]
+        with patch.object(verifier, '_dual_image', wraps=verifier._dual_image) as image:
+            self.assertFalse(verify_euler_branch_tree(source, bad))
+            self.assertEqual(image.call_count, 1)  # third child's cache hit still fails
+        leaf = base(source, [(0, 1), (1, 0)], 'normal-euler-relaxation-v2')
+        leaf.update(proof_kind='anchors', duals=[dict(anchors=[a],
+            multipliers=[[int(a == 2), 1]]) for a in range(7)])
+        self.assertTrue(verify_euler_relaxation_certificate(source, leaf))
+        leaf['duals'][2]['multipliers'] = [[0, 1]]
+        with patch.object(verifier, '_dual_image', wraps=verifier._dual_image) as image:
+            self.assertFalse(verify_euler_relaxation_certificate(source, leaf))
+            self.assertEqual(image.call_count, 1)  # same dual, different objective
+
+    def test_cache_keys_use_parsed_rationals_but_every_payload_is_validated(self):
+        from fastunknot import normal_euler_tree_verify as verifier
+        source, proof = source_model_tree()
+        proof['nodes'][2]['certificate']['multipliers'] = [['0x0', '0x2']]
+        with patch.object(verifier, '_dual_image', wraps=verifier._dual_image) as image:
+            self.assertTrue(verify_euler_branch_tree(source, proof))
+            self.assertEqual(image.call_count, 2)
+        for payload in ([[False, 1]], [[0.0, 1]], [[0, True]], [[0, 0]], [], [[0, 1], [0, 1]]):
+            bad = deepcopy(proof)
+            bad['nodes'][2]['certificate']['multipliers'] = payload
+            self.assertFalse(verify_euler_branch_tree(source, bad))
+        for field, value in (('extra', 0), ('source_sha256', '0'*64),
+                             ('allowed_types', [[0, 0], [1, True]])):
+            bad = deepcopy(proof); bad['nodes'][2]['certificate'][field] = value
+            self.assertFalse(verify_euler_branch_tree(source, bad))
+
+    def test_replay_caches_are_isolated_between_calls_and_labelled_sources(self):
+        from fastunknot import normal_euler_tree_verify as verifier
+        source, _ = layered_torus(2)
+        renamed = dict(tetrahedra=deepcopy(list(reversed(source['tetrahedra']))))
+        for row in renamed['tetrahedra']:
+            for face in row:
+                if face is not None:
+                    face['tetrahedron'] = 1-face['tetrahedron']
+        self.assertNotEqual(source, renamed)
+        with patch.object(verifier, '_dual_image', wraps=verifier._dual_image) as image:
+            with patch.object(verifier, '_euler_objective', wraps=verifier._euler_objective) as objective:
+                for triangulation in (source, renamed, source):
+                    # The same exact dual on empty masks still requires an
+                    # independent source model and fresh arithmetic each call.
+                    leaf = base(triangulation, [], 'normal-euler-relaxation-v2')
+                    leaf.update(proof_kind='envelope', multipliers=[[1, 1]])
+                    self.assertTrue(verify_euler_relaxation_certificate(triangulation, leaf))
+                self.assertEqual(image.call_count, 3)
+                self.assertEqual(objective.call_count, 3)
+
+    def test_dual_cache_eviction_retains_at_most_256_exact_products(self):
+        from fastunknot import normal_euler_tree_verify as verifier
+        source, _ = layered_torus(2)
+        prepared = verifier._prepare(source, lambda: None)
+        state = {}
+        leaf = base(source, [], 'normal-euler-relaxation-v2')
+        leaf.update(proof_kind='envelope', multipliers=[[0, 1]])
+        def replay(value):
+            leaf['multipliers'] = [[value, 1]]
+            return verifier._leaf(prepared, leaf['source_sha256'], leaf, lambda: None, source_model=state)
+        with patch.object(verifier, '_dual_image', wraps=verifier._dual_image) as image:
+            for value in range(300):
+                self.assertTrue(replay(value))
+                self.assertLessEqual(len(state['dual_images']), 256)
+            self.assertEqual(len(state['dual_images']), 256)
+            self.assertEqual(image.call_count, 300)
+            self.assertTrue(replay(299))
+            self.assertEqual(image.call_count, 300)
+            self.assertTrue(replay(0))
+            self.assertEqual(image.call_count, 301)
+            self.assertEqual(len(state['dual_images']), 256)
+            # An evicted-and-rebuilt zero product must still fail at column 5.
+            leaf['allowed_types'] = [[1, 2]]
+            self.assertFalse(replay(0))
+            self.assertEqual(image.call_count, 301)
+
+    def test_objective_cache_is_bounded_and_does_not_expand_anchor_products(self):
+        from fractions import Fraction
+        from fastunknot import normal_euler_tree_verify as verifier
+        # Abstract arithmetic cache control, not a synthetic accepted source:
+        # 300 distinct anchor objectives can be visited without retaining all.
+        state = {'model': (((0,),), (0,), (tuple(range(300)),),
+                           {a: (0,) for a in range(300)}, (1,))}
+        with patch.object(verifier, '_euler_objective', wraps=verifier._euler_objective) as objective:
+            for anchor in range(300):
+                self.assertTrue(verifier._source_dominates(state, (Fraction(0),),
+                                                           (anchor,), (0,), lambda: None))
+                self.assertLessEqual(len(state['objectives']), 256)
+            self.assertEqual(len(state['objectives']), 256)
+            self.assertEqual(objective.call_count, 300)
+            self.assertTrue(verifier._source_dominates(state, (Fraction(0),), (299,), (0,), lambda: None))
+            self.assertEqual(objective.call_count, 300)
+            self.assertTrue(verifier._source_dominates(state, (Fraction(0),), (0,), (0,), lambda: None))
+            self.assertEqual(objective.call_count, 301)
+            self.assertEqual(len(state['objectives']), 256)
+            self.assertEqual(len(state['dual_images']), 1)
+
+    def test_cached_and_uncached_replay_agree_on_valid_and_hostile_trees(self):
+        from fastunknot import normal_euler_tree_verify as verifier
+        cases = [one_tet_tree(), two_tet_tree(), source_model_tree()]
+        source, mixed = source_model_tree()
+        mixed['nodes'][1]['certificate'].update(schema='normal-euler-relaxation-v1', multipliers=[[1, 1]])
+        cases.append((source, mixed))
+        for source, proof in cases:
+            mutations = [proof]
+            for index, node in enumerate(proof['nodes']):
+                bad = deepcopy(proof); bad['nodes'].pop(index); mutations.append(bad)
+                if node['kind'] == 'negative':
+                    for field, value in (('allowed_types', []), ('source_sha256', 'f'*64), ('extra', 0)):
+                        bad = deepcopy(proof); bad['nodes'][index]['certificate'][field] = value
+                        mutations.append(bad)
+            for packet in mutations:
+                cached = verify_euler_branch_tree(source, packet)
+                with patch.object(verifier, '_REPLAY_CACHE_LIMIT', 0):
+                    self.assertEqual(cached, verify_euler_branch_tree(source, packet))
+
     def test_frozen_source_model_tree_reuses_duals_across_different_children(self):
         source, _ = layered_torus(2)
         proof = base(source, [(0, 1), (1, 0), (1, 1), (1, 2)],

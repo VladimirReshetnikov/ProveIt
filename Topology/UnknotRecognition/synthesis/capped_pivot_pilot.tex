@@ -1,0 +1,210 @@
+\section{Exact pivot selection within a capped polynomial prefix}
+\label{sec:capped-pivot-pilot}
+
+The fixed-source LP can spend many pivots at degenerate feasible bases.
+The polynomial controller of Section~\ref{sec:exact-polynomial-lp} already
+bounds this work by capping its simplex prefix and retaining exact fallback.
+This permits a separate question: can another exact pivot rule finish
+useful queries earlier within the same cap?  The present section proves
+the relevant invariants and records a complete fixed-query pilot.  Its
+alternate selectors were research code; at that checkpoint the polynomial
+prefix and explicit \path{policy='bland'} both used their existing Bland rule.
+Section~\ref{sec:native-lex-prefix} records the subsequent native adoption.
+
+\subsection{A fixed symbolic perturbation of the right-hand side}
+
+For $n$ Q variables and $r$ retained original equality rows, write
+\[
+ G=\begin{bmatrix}R\\-R\\\mathbf1^T\end{bmatrix},\qquad
+ b=(0,\ldots,0,1)^T,\qquad m=2r+1.
+\]
+The initial system is $Gx+s=b$ with $x,s\ge0$, augmented matrix
+$H=[G\mid I_m]$ and the slack basis.  At a later feasible basis $B$,
+the tableau is $T=B^{-1}H$ and its right-hand side is $d=B^{-1}b$.
+The block of \emph{all original slack columns} is exactly $B^{-1}$,
+even when some original slack variables have left the basis.
+
+Dantzig entering chooses a column of largest strictly positive reduced
+cost, with least column index on an exact tie.  Ordinary minimum-ratio
+leaving, with least basic-variable index on a tie, need not prevent
+cycling under this entering rule.  The pilot therefore also tests an
+exact lexicographic leaving rule.  If column $j$ enters, compare
+\[
+ \left(\frac{d_i}{T_{ij}},
+       \frac{T_{i,n}}{T_{ij}},\ldots,
+       \frac{T_{i,n+m-1}}{T_{ij}}\right)
+       \quad\text{over }i\text{ with }T_{ij}>0
+\]
+in lexicographic order.  All divisions and comparisons are rational and
+exact.  The full original slack block is required; selecting only currently
+nonbasic slacks would change the argument.
+
+\begin{proposition}[Lexicographic leaving for the degenerate kernel LP]
+\label{prop:capped-pivot-lex}
+Starting at the slack basis, the displayed leaving rule maintains
+lexicographic feasibility for the fixed formal right-hand side
+\[
+         b(\varepsilon)=b+\varepsilon e_0+
+             \varepsilon^2e_1+\cdots+\varepsilon^m e_{m-1}.
+\]
+With any entering column of strictly positive real reduced cost, it never
+repeats a basis.  Projecting each tableau to its constant term retains a
+feasible basis of the original, unperturbed LP.
+\end{proposition}
+\begin{proof}
+Order polynomials in the positive infinitesimal $\varepsilon$ by the sign
+of their first nonzero coefficient.  Initially every component of
+$b(\varepsilon)$ is strictly positive: matching rows have their assigned
+positive infinitesimal and the normalization row has constant term one.
+At basis $B$, the ordered coefficient vector of its $i$th basic value is
+\[
+                    (d_i,(B^{-1})_{i0},\ldots,(B^{-1})_{i,m-1}).
+\]
+Thus the displayed tuple is exactly its perturbed ratio for column $j$.
+Choosing the least ratio keeps every updated basic value nonnegative in
+this order.  Distinct candidate tuples cannot be equal, since equality
+would make two rows of the invertible matrix $B^{-1}$ proportional.
+The entering variable obtains a strictly positive perturbed value; all
+remaining basic values are strictly positive as well.  Inductively the
+perturbed basis remains feasible and nondegenerate.
+
+Reduced costs depend on $B,H,c$, not on the right-hand side.  A strictly
+positive reduced cost therefore gives a strict increase in the formal
+objective at every pivot.  Returning to an earlier basis would recover
+the same formal objective, a contradiction.  This also applies when a
+slack variable enters.  Finally, a lexicographically nonnegative basic
+value has a nonnegative constant term, so every original basic solution
+remains feasible, although it may be degenerate.
+\end{proof}
+
+This is a finiteness argument, not a polynomial bound on the number of
+bases.  The implementation need not store infinitesimals: the existing
+slack block and rational comparison implement their ordered coefficients.
+Early positive termination uses only the \emph{unperturbed} objective and
+point.  It still returns a feasible nonzero basic point of the normalized
+kernel cone and therefore an extreme ray.  If no reduced cost is positive,
+the existing original-row dual check remains valid.  A formal improvement
+with zero real objective is not a positive Euler witness.
+
+\subsection{The capped bit bound and unchanged fallback contract}
+
+Every tableau entry and right-hand-side entry is a ratio of minors of
+the same input augmented matrix.  Clearing rational input denominators
+and applying determinant bounds gives the polynomial bit bounds used in
+Section~\ref{sec:exact-polynomial-lp}, regardless of the entering rule.
+Dividing two such entries to form a ratio preserves polynomial bit size;
+exact comparison uses cross-products of polynomial-size integers.
+Dantzig entering scans $O(n+m)$ coefficients, and forming all complete
+lexicographic ratio tuples takes $O(m^2)$ rational operations per pivot.
+Both remain polynomial within the dense tableau cost model.
+
+Consequently any of these exact selectors can be used inside the existing
+$(n+r+1)^2$-pivot prefix without losing its polynomial bit-time guarantee.
+The hard user allowance can shorten that prefix.  Terminal checks still
+precede cap checks, so a conclusion obtained on the last allowed pivot is
+accepted.  Exhausting a user allowance returns \path{INCONCLUSIVE} without
+fallback; reaching only the internal prefix limit retains the ordinary
+exact fallback if the user has remaining allowance.  Ellipsoid iterations
+and feasibility calls keep their separate units and caps.
+
+Changing a selector does not authorize reuse of a prior objective's
+tableau, budget or radius bounds.  Independent primal and dual checks,
+original-support extremality, primitive scaling and feasible slack-basis
+replay retain their existing meanings.  More selector callback polls do
+not change exception identity or count as extra simplex pivots.  Neither
+lexicographic anti-cycling nor the polynomial LP policy bounds the number
+of admissibility masks in the complete unknot search.
+
+\subsection{All captured W34 queries, with their original allowances}
+
+The pilot freezes the native code at \texttt{973c6fdee}.  It first replays
+the saved diagram-bound geometric partial chain for the braid
+$(\sigma_1\sigma_2^{-1})^4$ and fully validates its $31$-tetrahedron,
+one-vertex, two-boundary-face endpoint.  It then makes a fresh native
+transversal/conflict search on that supplied endpoint.  This is an
+authenticated-source continuation, not a fresh whole-diagram recognition
+call.  The full source hash and archive provenance are retained in the
+protocol and capture.
+
+The capture retains all eight actual LP calls in order, including the
+last capped call.  Every matrix has $54$ original rows and $93$ columns,
+with $30$ retained rows, so its tableau is $61\times154$ and its polynomial
+prefix limit is $15376$.  The original shared user pivot allowance is
+$10000$.  The native call uses one oracle node, tests ten anchors, reuses
+three, performs no fallback and remains inconclusive.  Seven small
+controls in all three arms cover degenerate positive and dependent dual
+queries, zero width, zero/one user caps, forced fallback and capped
+fallback.  All $21$ controls and all three callback-control arms pass.
+
+Each alternative receives every captured matrix, objective and exact
+remaining allowance.  The Bland arm is the captured native execution,
+not an extra solve.  Query indices $0,\ldots,5,9$ below are the actual
+uncached anchor labels; intervening cached anchors generate no LP call.
+In the table, $P$ denotes a positive formal LP point, $N$ a nonpositive
+dual, and $I$ an inconclusive capped query.
+\begin{center}
+\begin{tabular}{lrrrr}
+\toprule
+Query & Original allowance & Bland & Dantzig & Dantzig--lex \\
+\midrule
+Envelope & $10000$ & $3\ P$ & $65\ P$ & $51\ P$\\
+Anchor $0$ & $9997$ & $2267\ N$ & $287\ N$ & $101\ N$\\
+Anchor $1$ & $7730$ & $807\ N$ & $539\ N$ & $121\ N$\\
+Anchor $2$ & $6923$ & $1095\ N$ & $358\ N$ & $100\ N$\\
+Anchor $3$ & $5828$ & $1990\ N$ & $5828\ I$ & $128\ N$\\
+Anchor $4$ & $3838$ & $1500\ N$ & $363\ N$ & $103\ N$\\
+Anchor $5$ & $2338$ & $1467\ N$ & $876\ N$ & $70\ N$\\
+Anchor $9$ & $871$ & $871\ I$ & $871\ I$ & $110\ N$\\
+\midrule
+Pivot sum & $47525$ & $10000$ & $9187$ & $784$\\
+\bottomrule
+\end{tabular}
+\end{center}
+All three arms perform zero fallbacks.  Their respective recorded tableau
+update totals are $45184980$, $46708475$ and $3943665$.  Ordinary Dantzig
+has two inconclusive queries, despite a smaller pivot sum than Bland;
+its failed anchor-$3$ query remains in the evidence.  The lexicographic
+arm resolves every captured input, but its envelope requires $51$ pivots
+where Bland needs three.  The ordinary Dantzig cap does not itself prove
+cycling: the pilot does not record a repeated-basis trace.
+
+These sums describe independent replays of fixed inputs.  Each alternative
+is allowed up to the sum $47525$ of captured residual allowances across
+its eight calls, not a freshly shared $10000$-pivot driver budget.  In an
+actual new run, changed positive rays or duals can alter subsequent
+branches, cache hits and objectives.  In particular the positive envelope
+point is only a formal relaxation witness, and the seven anchors made
+negative by the lexicographic arm do not cover every required anchor.
+This table supplies no new
+W34 recognition verdict.
+
+\subsection{Replay, preservation and the next implementation obligation}
+
+Each completed call, capped result and diagnostic is saved before the next
+call.  All $24$ arm/query records are present.  Independent rational replay
+checks every original matching row and dual inequality, primitive positive
+scaling, support nullity one, and a nonsingular original slack basis
+representing the feasible point.  Source-model reconstruction additionally
+binds each matrix and objective to its labelled endpoint, mask and
+anchor/envelope context.  A final replay disables LP discovery and accepts
+the complete controls, source capture and comparison.  The immutable
+snapshot, scripts, protocol, full results and logs are retained in
+\path{data/lp-pivot-pilot-973c6fdee.tar.gz};
+\path{data/lp_pivot_pilot_replay.py} replays them in an isolated temporary
+directory using the frozen sources.
+
+Pivot counts and tableau updates are diagnostics, not elapsed-time or
+complete bit-operation measurements.  Lexicographic comparisons themselves
+have a cost.  The baseline's uninstrumented selector fields do not mean
+its selector performs zero work.  This experiment supports testing the
+lexicographic rule in a fresh complete call, with all outcomes retained;
+it does not establish a universal speedup or a general quasi-polynomial
+recognition algorithm.
+
+Any future native adoption must port the selectors into the current
+tuple-safe, prepared-matrix implementation, preserve explicit Bland
+comparison behavior, and retain all cap and verification contracts above.
+The frozen pilot's older tableau helper must not replace the newer matrix
+ownership code.  The remaining algorithmic question is the behavior of
+the complete search under the changed witnesses, followed by the separate
+global resolving-parameter obligation.

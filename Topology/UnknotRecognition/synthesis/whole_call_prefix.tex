@@ -1,0 +1,218 @@
+\section{Fresh whole-call evidence for the lexicographic prefix}
+\label{sec:whole-call-prefix}
+
+The fixed-query comparison of Section~\ref{sec:capped-pivot-pilot} motivates
+a complete-call experiment.  A changed positive point or dual can change
+later objectives, cached answers, conflicts, candidate subsets and even
+crushing successors.  Therefore an earlier stream of LP inputs cannot
+predict the result of a fresh recognition call.  The present experiment
+starts each arm from the original diagram, uses the same shared allowances,
+and retains all fourteen outcomes.  It changes no maintained native code.
+
+\subsection{Frozen implementation, inputs and allowances}
+
+Both arms import the same isolated native package at revision
+\texttt{4d1f76f06}, containing the prepared-matrix implementation of
+Section~\ref{sec:prepared-euler-matrix}.  The baseline leaves its Bland
+prefix unchanged.  The candidate changes exactly the entering and leaving
+assignments in the current tableau helper: largest positive real reduced
+cost, with least-index ties, and the full original-slack lexicographic ratio
+of Proposition~\ref{prop:capped-pivot-lex}.  A checked syntax-tree replacement
+recovers the original helper when these two expressions are restored.  In
+particular the current tuple-safe matrix ownership, fresh tableau, original
+rows, terminal-before-cap order, pivot updates and statistics remain.
+
+A scoped wrapper selects this helper only for the polynomial policy.
+Explicit \path{policy='bland'} still delegates to the original rule, even
+inside a callback made by the candidate.  Nested public and prepared calls
+restore their caller's helper after ordinary or exceptional exits.  This
+is a single-threaded scratch implementation; it supplies no concurrency
+guarantee for monkey-patching.  The alternative selectors add cancellation
+polls inside their scans.  Callback position and count equality between
+arms is therefore neither expected nor claimed.
+
+The fixed inputs are the empty diagram, the trefoil, figure eight,
+$TT=\widehat{\sigma_1^3\sigma_2^3}$, $T(2,5)$, $T(2,7)$, and
+$W(3,4)=\widehat{(\sigma_1\sigma_2^{-1})^4}$, in that order.  Each receives
+the baseline and then candidate arm.  Literal PDs and their typed digests
+are retained.  There are no warmups, repeats, eligibility filters, elapsed
+time measurements, or wall cutoff.
+
+Both arms use source-model transversal search, conflict-directed candidate
+selection, the envelope strategy, polynomial LP policy, diversified sector
+order and quantum $64$.  Vertex reduction, boundary unlayering, strict
+$3\to2$ reduction and geometric $D/UDD$ descent are enabled.  The common
+allowances are $256$ sectors, $256$ tree nodes, and $10000$ each for bases,
+simplex pivots, anchors, hitting states, ellipsoid iterations and feasibility
+calls.  There is no separate reduction-count cap.  Every accepted reduction
+strictly decreases the tetrahedron count, so this still gives a finite run.
+The complete option dictionary is frozen in the protocol.  A default internal
+simplex prefix means $(n+r+1)^2$ pivots, where $n$ is the retained Q width
+and $r$ the number of independent equality rows, subject to the smaller remaining
+user allowance; it does not mean an unlimited prefix.
+
+Each actual \path{recognize_by_crushing} call performs its preprocessing,
+source construction and search afresh.  No supplied source, old query list,
+previous arm's chain, or resumed proof is injected.  Every full arm shares
+its own $10000$-pivot allowance across all LP queries.  This differs from
+the sum of independent captured residual allowances in the older pilot.
+
+\subsection{Controls and independent replay}
+
+Before the fourteen calls, the frozen controls retain $22$ polynomial-policy
+records, each comparing fresh and prepared entry points; $10$ explicit
+legacy Bland records; $96$ nesting records; two complete callback-position
+exception-identity sweeps on the small fixture; and eight invalid-input
+checks.  They include unreduced dependent and zero rows, rational and large
+integer coefficients, forced positive and negative fallback, zero and last
+allowed pivots, denied fallback, and both ordinary and base exceptions.
+All these controls pass.  They are correctness controls, not performance
+observations.
+
+Instrumentation retains every actual query, objective, selected original
+row, remaining allowance, result, mask and anchor context.  Identical matrix
+and labelled source bodies are stored once, with equality checked on typed
+bytes before reuse.  The complete chronological query records remain.
+Remaining allowances are recomputed from prior actual answers within each
+source search; the query sums bind that search and then the complete driver
+totals.  Every attempt and matrix preparation is recorded independently of
+the native answer.
+
+Arithmetic replay checks original-row primal equations and dual inequalities,
+normalization, primitive scaling, support nullity one, and the feasible
+original slack basis.  Source reconstruction binds matrices and objectives
+to their actual masks and anchors.  The formal STANDARD matching equations,
+canonical Euler minimum choices and conflict sets are checked independently
+for positive oracle points.  The final LP's primitive Q vector, after zero
+extension, equals the oracle Q block; canonical oracle, search and next
+normal-crushing coordinates agree literally where returned.
+A zero extraction-descent counter alone would not prove that
+the extraction routine was never invoked.
+
+Each conclusive result is replayed against its original diagram by the
+independent recognition verifier; a capped result has its full partial
+crushing chain checked.  The retained source ledger includes the initial
+triangulation, shelling, every accepted successor and terminal state.  Exact
+typed source tables, strict decreases, elementary $D/UDD$ counts and operation
+totals are checked.  Pair comparisons report the common labelled prefix,
+first divergence and endpoint equality; equality is observed rather than
+assumed from a verdict or tetrahedron count.  The final replay disables
+recognition, LP, oracle, ray and topology discovery, including loaded aliases,
+while allowing source algebra and independent certificate verification.
+
+\subsection{All paired outcomes}
+
+In each paired entry, Bland precedes Dantzig--lex.  Here U, K and I mean
+\path{UNKNOT}, \path{KNOTTED} and \path{INCONCLUSIVE}.  All $449$ actual LP
+queries are retained.  Thirteen full calls are conclusive and one is capped.
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Diagram & Status B/L & LP calls B/L & Pivots B/L\\
+\midrule
+Circle & U/U & 0/0 & 0/0\\
+Trefoil & K/K & 20/21 & 259/211\\
+Figure eight & K/K & 17/19 & 676/330\\
+$TT$ & K/K & 52/59 & 3526/1570\\
+$T(2,5)$ & K/K & 29/32 & 693/460\\
+$T(2,7)$ & K/K & 59/71 & 2545/2288\\
+$W(3,4)$ & I/K & 8/62 & 10000/6606\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Diagram & Nodes B/L & Anchors B/L & Conflicts B/L & Updates B/L\\
+\midrule
+Circle & 0/0 & 0/0 & 0/0 & 0/0\\
+Trefoil & 5/5 & 108/108 & 1/1 & 70094/64012\\
+Figure eight & 1/1 & 40/40 & 0/0 & 358050/184450\\
+$TT$ & 16/18 & 743/745 & 2/3 & 3741698/1824270\\
+$T(2,5)$ & 7/7 & 179/179 & 2/2 & 413640/313628\\
+$T(2,7)$ & 15/21 & 581/739 & 4/6 & 3451288/3387967\\
+$W(3,4)$ & 1/1 & 10/124 & 0/0 & 45184980/33094980\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The conflict count is the native learned-conflict insertion counter, not
+an independently deduplicated set cardinality.  Prepared LP-matrix constructions
+per arm equal the displayed node counts on this corpus; the terminal circle
+has none.  Every full call has zero fallbacks, ellipsoid iterations and
+feasibility calls.  These zero counts do not remove fallback from the
+algorithm or its correctness controls.
+
+The candidate uses fewer pivots and tableau updates in each of the six
+nontrivial paired calls, but needs more LP queries in all six.  On $TT$,
+nodes increase from $16$ to $18$ and learned conflicts from two to three.
+On $T(2,7)$, nodes increase from $15$ to $21$, anchors from $581$ to $739$,
+and learned conflicts from four to six.  Changed witnesses therefore have
+observable downstream costs, even when pivot totals decrease.
+
+For $W(3,4)$, Bland stops on its eighth query at the shared $10000$-pivot
+limit, retaining the explicit reason ``LP pivot allowance exhausted.''
+Dantzig--lex completes all $124$ anchor tests with $63$ reused anchor answers
+and $62$ actual LP queries including the envelope.  It proves a negative
+root with no branching and certifies the original diagram as knotted in
+$6606$ pivots.  This is a fresh complete recognition result under the stated
+allowances.  It must not be substituted into the old eight-query experiment.
+
+\paragraph{The complete geometric paths.}
+Every pair has identical literal labelled source paths and endpoints, with
+no first divergence.  All six nonterminal endpoints have one boundary
+vertex and two boundary faces.  Their complete path lengths, including
+initial and shelled states, are shown below.  The circle's terminal state
+is included.  The counts in this table agree in both arms.
+\begin{center}
+\begin{tabular}{lrrrrrrr}
+\toprule
+Diagram & Initial & Shelled & Crushes & $3\to2$ & $UDD$ & Final & Path\\
+\midrule
+Circle & 20 & 5 & 1 & 0 & 0 & terminal & 3\\
+Trefoil & 60 & 48 & 12 & 2 & 1 & 7 & 17\\
+Figure eight & 80 & 68 & 16 & 2 & 1 & 10 & 21\\
+$TT$ & 120 & 114 & 24 & 6 & 1 & 16 & 33\\
+$T(2,5)$ & 100 & 88 & 20 & 6 & 3 & 11 & 31\\
+$T(2,7)$ & 140 & 128 & 28 & 11 & 4 & 17 & 45\\
+$W(3,4)$ & 160 & 148 & 32 & 3 & 3 & 31 & 40\\
+\bottomrule
+\end{tabular}
+\end{center}
+All accepted normal crushes here occur in vertex reduction.  There are no
+boundary unlayerings.  Every accepted geometric macro is $UDD$, with one
+upward and two downward elementary moves; the separate $3\to2$ column
+counts strict preprocessing moves outside those macros.  Each nontrivial
+call has one final Euler search on its current source.  Path equality on these
+inputs neither proves equality on other inputs nor transports a resolving
+parameter between distinct sources.
+
+\subsection{What these counts justify}
+
+The native tableau-update counter measures its existing arithmetic updates.
+It excludes the entering scan, full-slack ratio comparisons, source-rank
+work and independent replay.  The reported maximum-tableau bit field is an
+end-tableau statistic, not a peak over every visited tableau.  No elapsed
+runtime or universal speedup follows from fewer pivots or updates, especially
+when one arm completes and the other remains capped.  All extra LP calls,
+search nodes and conflicts remain in the paired evidence.
+
+The complete frozen package, protocol, controls, fourteen results, source
+ledgers and logs are retained in
+\path{data/whole-call-prefix-4d1f76f06.tar.gz}.
+The maintained helper \path{data/whole_call_prefix_replay.py} checks its
+inventory and reruns discovery-disabled verification in an isolated temporary
+directory.  Its saved outputs are separate from the historical scratch
+records.  Neither replay replaces the old fixed-query archive or reinterprets
+its source pins.
+
+This evidence informs a possible native integration of the new polynomial
+prefix, with explicit legacy Bland behavior and a fresh regression run.
+The maintained native default at this experiment's checkpoint was Bland;
+Section~\ref{sec:native-lex-prefix} records the later implementation change.
+Proposition~\ref{prop:capped-pivot-lex} supplies correctness and polynomial
+bit cost for the capped prefix, not a bound on complete admissibility search.
+Controlling the number of masks across all crushing stages remains a separate
+requirement for general quasi-polynomial recognition.

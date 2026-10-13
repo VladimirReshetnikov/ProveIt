@@ -22,7 +22,6 @@ theorem quadratic_interval_parameters_inv_upper {alpha : Real}
   have huone : 1 ≤ u := by linarith
   have hτ : 0 < tau := by dsimp [tau, quadraticDiscrepancyParameter]; positivity
   have hβ : 0 < beta := by dsimp [beta]; positivity
-  have hCpos := section5LocalRefinementConstant_pos 1 1
   have hτeq : tau = beta / 2 := by
     dsimp [tau, beta, quadraticDiscrepancyParameter]
     generalize (alpha / 2) ^ (12359 : Nat) = t
@@ -57,31 +56,9 @@ theorem quadratic_interval_parameters_inv_upper {alpha : Real}
         mul_le_mul h16 (quadratic_parameters_inv_upper hα hαone).2
           (inv_nonneg.mpr hσ.le) (by positivity)
       _ = _ := by rw [← pow_add]
-  · let eta := 4 * Real.pi * (tau / 64)
-    have hη : 0 < eta := by dsimp [eta]; positivity
-    have hηlower : tau / 16 ≤ eta := by
-      have hm := mul_le_mul_of_nonneg_right (show 1 ≤ Real.pi by linarith [Real.pi_gt_three]) hτ.le
-      dsimp [eta]
-      nlinarith
-    have hηinv : eta⁻¹ ≤ u ^ (12385 : Nat) := by
-      calc
-        _ ≤ (tau / 16)⁻¹ := (inv_le_inv₀ hη (by positivity)).mpr hηlower
-        _ = 16 * tau⁻¹ := by rw [inv_div, div_eq_mul_inv]
-        _ ≤ u ^ (4 : Nat) * u ^ (12381 : Nat) :=
-          mul_le_mul h16 hτinv (inv_nonneg.mpr hτ.le) (by positivity)
-        _ = _ := by rw [← pow_add]
-    have hC := section5LocalRefinementConstant_le_scaled 1 eta (u ^ (12385 : Nat))
-      hη (one_le_pow₀ huone) hηinv
-    have hK : polynomialPartitionConstant 1 = 16 := by norm_num [polynomialPartitionConstant, Nat.factorial]
-    rw [hK, ← pow_mul] at hC
-    change (tau / (8 * section5LocalRefinementConstant 1 eta))⁻¹ ≤ _
-    calc
-      _ = (8 * section5LocalRefinementConstant 1 eta) * tau⁻¹ := by rw [inv_div, div_eq_mul_inv]
-      _ ≤ (8 * (section5LocalRefinementConstant 1 1 * u ^ (12385 * 16 : Nat))) * u ^ (12381 : Nat) :=
-        mul_le_mul (mul_le_mul_of_nonneg_left hC (by norm_num)) hτinv
-          (inv_nonneg.mpr hτ.le) (by positivity)
-      _ = _ := by
-        rw [mul_assoc 8, mul_assoc, ← pow_add, ← mul_assoc]
+  · have h := interval_length_factor_inv_le_scaled (n := 12381) hu hτ hτinv
+    norm_num only [Nat.reduceMul, Nat.reduceAdd] at h
+    exact h
 
 theorem quadratic_interval_length_factor_le_one {alpha : Real}
     (hα : 0 < alpha) (hαone : alpha ≤ 1) :

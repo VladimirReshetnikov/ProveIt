@@ -1,0 +1,129 @@
+\section{Sparse integral equations still need more than polylogarithmic separators}
+\label{sec:sparse-coordinate-separators}
+
+The explicit family of Section~\ref{sec:coordinate-separator-obstruction}
+uses dense, growing integer entries.  One might hope that a sparse equation
+presentation with bounded coefficients supplies the missing balanced-separator
+theorem.  The following family rules out that inference too.  It has a
+totally unimodular incidence presentation and a large feasible coordinate
+factor after every small singleton restriction.  This remains an abstract
+cone statement: neither a native triangulation realization nor a canonical
+Euler function is provided.
+
+\begin{proposition}[A sparse obstruction surviving implicit-zero deletion]
+For every integer $L\ge3$, put $t=L^2$.  There is a
+$(t-1)\times3t$ matrix $C$ such that:
+\begin{enumerate}
+\item Its entries lie in $\{-1,0,1\}$, each column has at most two nonzero
+entries, each row has at most six, and $C$ is totally unimodular of rank $t-1$.
+\item Its columns partition into $t$ triples summing to zero, and
+$\ker C\cap\mathbb R_{\ge0}^{3t}$ has full feasible support and one
+coordinate factor.
+\item After restricting any $s<L/\sqrt3$ triples to arbitrary
+singletons, exact implicit-zero deletion still leaves a coordinate factor
+with at least
+\[
+                         3(L^2-s^2)>2L^2
+\]
+columns.
+\end{enumerate}
+Thus a singleton separator giving two-thirds balance requires
+$s\ge\lceil\sqrt{t/3}\rceil$.  Constant coefficient size, bounded row and
+column support, total unimodularity, rank $t-1$ and the local triple relations
+do not imply the polylogarithmic separator hypothesis.
+\end{proposition}
+
+\begin{proof}
+Take vertices $(i,j)\in(\mathbb Z/L\mathbb Z)^2$.  For each such pair use the
+three directed edges
+\[
+ \begin{split}
+ H_{ij}&:(i,j)\longrightarrow(i+1,j),\\
+ D_{ij}&:(i+1,j)\longrightarrow(i,j+1),\\
+ V_{ij}&:(i,j+1)\longrightarrow(i,j).
+ \end{split}
+\]
+They form one directed triangular cycle.  For $L\ge3$ these $t$ triangles
+partition all $3t$ edges of a simple undirected triangular grid on the torus.
+Every vertex has degree six, with three incoming and three outgoing edges.
+Let $C$ be the directed vertex-edge incidence matrix with any one row removed,
+using $-1$ at a tail and $+1$ at a head.
+
+The horizontal and vertical edges connect all vertices, so the incidence
+matrix has rank $t-1$.  For completeness, every column sums to zero, and
+the columns of any spanning tree become an invertible square matrix after
+one row is removed: successive leaf elimination gives determinant $\pm1$.
+Every square submatrix of $C$ also has determinant in $\{0,1,-1\}$.
+If it has a column with at most one nonzero entry, expand along that column
+and use induction.  Otherwise each column has its two opposite entries,
+so its rows sum to zero and its determinant vanishes.  This proves total
+unimodularity.  The three incidence columns of each directed triangle sum
+to zero; summing their nonnegative cycle vectors gives the all-ones kernel
+vector.  The support and encoding assertions follow immediately.
+
+A singleton restriction deletes two edges of its triangle.  Let $I$ and $J$
+be the sets of first and second indices, respectively, of the $s$ restricted
+triangles.  Thus $|I|,|J|\le s$.  For every $j\notin J$ all edges of the
+horizontal directed cycle in row $j$ survive; for every $i\notin I$ all edges
+of the vertical directed cycle in column $i$ survive.  Call these cycles
+clean, and let $G_0$ be their union.  There are at least $L-s\ge2$ clean
+cycles in each direction: $s<L/\sqrt3$ and $L\ge3$ imply $L-s>1$.
+
+The directed graph $G_0$ is strongly connected.  Each horizontal cycle meets
+every vertical cycle, and a directed cycle permits travel between any two
+of its vertices.  Its undirected edges also form a single graphic-matroid
+component.  To see this directly, arrange the clean rows and columns in
+their cyclic orders.  The rectangular cells between consecutive clean rows
+and consecutive clean columns have simple cycle boundaries.  These cycles
+cover all edges of $G_0$, and neighboring cells share a nonempty boundary
+segment.  The cell adjacency graph is connected.  Hence their circuits join
+every edge of $G_0$ into one component.
+
+Every triangle indexed outside $I\times J$ is untouched.  If $j\notin J$,
+its $H$ edge belongs to $G_0$; if $i\notin I$, its $V$ edge belongs to $G_0$.
+Thus the triangle's three-column circuit meets the common component of
+$G_0$ in an edge and joins all three columns to it.  Its directed cycle
+indicator is also a nonnegative kernel vector positive on each of those
+three coordinates.  There are at least $L^2-|I||J|\ge L^2-s^2$ such
+triangles, and their edge sets are disjoint.  Let $E_*$ be the union of their
+edges.  Exact implicit-zero deletion cannot remove any edge of $E_*$.
+
+After that deletion, the remaining cone has full feasible support by the
+definition of its retained coordinates.  The completeness proposition in
+Section~\ref{sec:euler-coordinate-factors} identifies its finest coordinate
+products with the incidence column-matroid components.  The circuits just
+described survive the deletion, so one such component contains all of $E_*$.
+The edge-disjoint triangle count gives
+\[
+                    |E_*|\ge3(L^2-s^2)>2L^2.
+\]
+At $s=0$ this argument includes every edge and proves the single-factor
+assertion for the unrestricted cone.  Since the root has $3t=3L^2$ columns,
+the displayed bound prevents two-thirds balance after every specified
+restriction, completing the proof.
+\end{proof}
+
+The matrix can be generated directly from the modular edge formulas in
+polynomial time.  It has at most $6t$ nonzero entries and constant-size
+coefficients, with $O(t\log t)$ bits in a sparse indexed encoding.  The
+circulation witnesses used in the proof are literal directed-cycle indicator
+vectors.  No numerical experiment, determinant search or assumed genericity
+is needed.
+
+The restricted cone need not have full support on all its explicit columns;
+the proof deliberately establishes a large surviving feasible factor instead.
+It therefore covers the stronger separator mechanism that first deletes
+every coordinate certified identically zero.  The lower bound is on this
+particular singleton-and-coordinate-product mechanism, not on the running
+time of deciding a circulation LP or another representation of these cones.
+
+This narrows the prospective structural route without claiming a native
+lower bound.  Sparsity and integral linear programming alone do not provide
+the desired polylogarithmic separators.  A useful theorem must exploit
+additional restrictions of authenticated knot-exterior normal equations,
+their canonical Euler objectives, or a decomposition beyond literal
+coordinate products.  In particular the periodic grid in this construction
+is not an asserted normal-coordinate model of a knot exterior, and it says
+nothing about whether a native branch could close immediately by a
+nonpositive Euler certificate.  The current algorithm, its tested native
+sources and its proven complexity bound are unchanged by this section.

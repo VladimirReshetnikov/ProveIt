@@ -1,0 +1,55 @@
+{
+  "affinity": [
+    5
+  ],
+  "host_logical_cpus": 6,
+  "platform": "Linux-5.15.0-186-generic-x86_64-with-glibc2.35",
+  "python": "3.13.14 (main, Jun 23 2026, 15:18:27) [Clang 22.1.3 ]",
+  "command": [
+    "/home/codex/.local/bin/python",
+    "-B",
+    "-S",
+    "-m",
+    "pachner_descent_research.benchmark",
+    "--audit",
+    "../synthesis/data/pachner-descent-audit.json",
+    "--output",
+    "../synthesis/data/pachner-descent-benchmark.json"
+  ],
+  "controls": "No competing heavy jobs from this task. Unrelated repository Lean or research jobs may remain active. CPU5 affinity is not an exclusive reservation.",
+  "before": {
+    "utc": "2026-10-13T09:33:02.671249+00:00",
+    "processes": [
+      "    PID PSR %CPU COMMAND",
+      "2398507   4 73.0 lean",
+      "2398512   5  3.0 python",
+      "1932041   3  0.9 codex",
+      "2397948   3  0.1 python3",
+      "      1   3  0.0 systemd",
+      "      2   3  0.0 kthreadd",
+      "      3   0  0.0 rcu_gp",
+      "      4   0  0.0 rcu_par_gp",
+      "      5   0  0.0 slub_flushwq",
+      "      6   0  0.0 netns",
+      "      8   0  0.0 kworker/0:0H-events_highpri"
+    ]
+  },
+  "after": {
+    "utc": "2026-10-13T09:42:43.143535+00:00",
+    "processes": [
+      "    PID PSR %CPU COMMAND",
+      "1932041   3  0.9 codex",
+      "      1   3  0.0 systemd",
+      "      2   3  0.0 kthreadd",
+      "      3   0  0.0 rcu_gp",
+      "      4   0  0.0 rcu_par_gp",
+      "      5   0  0.0 slub_flushwq",
+      "      6   0  0.0 netns",
+      "      8   0  0.0 kworker/0:0H-events_highpri",
+      "     10   0  0.0 mm_percpu_wq",
+      "     11   0  0.0 rcu_tasks_rude_",
+      "     12   0  0.0 rcu_tasks_trace"
+    ]
+  },
+  "returncode": 0
+}

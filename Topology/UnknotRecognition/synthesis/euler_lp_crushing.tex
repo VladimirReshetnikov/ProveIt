@@ -15,8 +15,10 @@ ideas preserved in report~67, discussed in
 Section~\ref{sec:completion-theorems}.  Its archived files remain unchanged.
 The maintained version adds current source checks, cancellation handling,
 binary certificate transport, support extraction and diagram-level use.
-Neither the complete sector family nor the exact simplex solver currently
-has a general quasi-polynomial implementation bound.
+The complete sector family still has no general quasi-polynomial bound.
+The original unbounded-simplex obstacle is separately resolved by the
+polynomial LP policy in Section~\ref{sec:exact-polynomial-lp}; the historical
+experiments below retain their original source pins and solver policy.
 
 \subsection{Canonical Euler characteristic as finitely many linear objectives}
 
@@ -52,9 +54,12 @@ holds for every anchor tuple; choosing actual minima proves the converse.
 The producer solves the normalized problem $Cq=0$, $q\geq0$,
 $\sum q_j\leq1$, stopping at the first positive basic point.  A feasible
 slack basis for $Cq\leq0$, $-Cq\leq0$ and $\sum q_j\leq1$ avoids a separate
-phase-I solve.  Exact Bland pivots terminate, but their number has no
-polynomial bound.  All rational numerators and denominators are carried
-exactly; floating positivity tolerances are not used.
+phase-I solve.  An unbounded Bland trajectory has no polynomial pivot
+bound.  The maintained default instead caps that prefix polynomially and
+falls back to exact bounded feasibility and basic-ray recovery as proved
+in Section~\ref{sec:exact-polynomial-lp}.  The explicit Bland comparison
+retains the original trajectory.  All rational numerators and denominators
+are carried exactly; floating positivity tolerances are not used.
 
 \subsection{Independent negative certificates and an envelope shortcut}
 
@@ -107,7 +112,11 @@ altered retained masks and mismatched source digests are rejected.
 A positive Euler certificate intentionally proves a canonical vector, not
 connectedness or extremality.  This permits future exact feasibility
 methods to return a nonbasic point.  The maintained extractor supplies the
-remaining ray contract without expanding normal discs.
+remaining ray contract without expanding normal discs.  The direct path in
+Section~\ref{sec:direct-crush-positive} now skips this extraction when the
+crushing constructor itself verifies that the supplied point is already a
+primitive full-cone extreme ray.  Checked extraction remains the fallback
+for valid nonprimitive or nonextreme canonical positive points.
 
 Let $x$ be the independently validated positive canonical standard vector,
 $S=\operatorname{supp}x$, and $M$ the original matching matrix.  Prepare the
@@ -162,25 +171,31 @@ explored assignment prefix and negative certificates can still occupy
 exponential memory.  Fairness supplies no small global sector count.
 
 The Euler-LP option uses the same growing schedule with separate per-attempt
-pivot and anchor quotas.  It rebuilds its LP state on retry and charges every
-repeated pivot and anchor.  Source matching preparation remains cached in
-the enclosing job, although the LP routine reconstructs its own sector
-kernel on every attempt.  Since a quota can stop either resource, the clean
-geometric bound concerns the sum of pivot and anchor counts, rather than
-a separate constant-factor guarantee for each count.  More explicitly, if
-the unlimited deterministic job needs $P$ pivots and $A$ anchors, a failed
-quota is below $\max(P,A)$ and charges at most twice that quota.  Summing
-the failed geometric quotas and then the final successful attempt gives
-less than $5(P+A)$ charged operations when $P+A>0$; preparation and replay
-are additional.  All unbounded jobs
-are finite: anchor products are finite and exact Bland pivoting terminates.
-Both complete modes therefore retain the strict-descent completeness proof.
+pivot, anchor, ellipsoid-update, and feasibility-call quotas.  It rebuilds
+its LP state on retry and charges every repeated operation in those counts.
+Source matching preparation remains cached in the enclosing job, although
+the LP routine reconstructs its own sector kernel on every attempt.
+For an unlimited deterministic job requiring $P,A,E,D$ operations in these
+four categories, a failed quota is at most $\max(P,A,E,D)$ and charges at
+most four times that quota.  Equality can occur when the local pivot cap
+stops precisely at the polynomial prefix and prevents fallback.  Summing
+the failed geometric quotas and the final successful attempt gives less
+than $9(P+A+E+D)$ charged operations when that sum is positive; preparation
+and replay remain additional.  The explicit Bland comparison has only two
+active resources and retains the earlier $5(P+A)$ bound.  This is a bound
+on the sum of charged resource counts, not a separate constant-factor bound
+for each resource or a unit-cost claim about rational arithmetic.
+All uncapped jobs are finite: anchor products are finite, the polynomial
+LP policy terminates, and the optional unbounded Bland comparison terminates.
+Both complete modes retain the strict-descent completeness proof.
 
 The public crushing API keeps corner search as its default and exposes
 \texttt{sector\_method='lp'} with \texttt{lp\_strategy='envelope'} or
 \texttt{'anchors'}.  Global sector starts and crushing steps are shared
-across successors.  Corner bases, LP pivots and LP anchors have explicit,
-separate allowances; only the selected method's work counts are consumed.
+across successors.  Corner bases, LP pivots, LP anchors, ellipsoid updates and feasibility
+calls have explicit separate allowances; only the selected method's work
+counts are consumed.  Fallback work is shared across all anchors, retries
+and successors, rather than being reinitialized as a fresh global allowance.
 Reaching an applicable allowance returns an authenticated partial chain,
 not a negative sector proof.  Caller exceptions remain distinct from those
 local limits and propagate through nested replay unchanged.
@@ -214,12 +229,14 @@ dual, so coordinatewise dominance tests add only polynomial work per
 anchor.  An unbounded all-previous-duals scan would instead permit quadratic
 work in $A$; no such scan is needed for correctness.
 
-With a polynomial exact LP policy this would give $A\operatorname{poly}(t)$
+With operational caps disabled, the polynomial exact LP policy of
+Section~\ref{sec:exact-polynomial-lp} gives $A\operatorname{poly}(t)$
 fixed-sector discovery and replay, followed by polynomial support extraction
 and crushing.  One active vertex needs at most $\min(4t,4k+1)$ anchor LPs,
 plus at most one preliminary envelope LP;
-$g=O(\log t)$ gives a quasi-polynomial fixed-sector bound.  These are
-conditional time bounds, not bounds for the maintained Bland solver.
+$g=O(\log t)$ gives a quasi-polynomial fixed-sector bound.  These bounds
+apply to the polynomial policy; they do not bound the pivot count of its
+explicit unbounded Bland comparison.
 Moreover, the full $3^t$ compatible sector family remains even with a
 polynomial solver.  A uniform small sector/backdoor family or a suitable
 source decomposition on every crushing successor is still required for

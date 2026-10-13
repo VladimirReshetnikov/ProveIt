@@ -1,0 +1,205 @@
+\section{Exact row bases and shared arithmetic during replay}
+\label{sec:euler-rank-replay}
+
+The fixed source convention of Section~\ref{sec:euler-branch-tree} makes
+multipliers reusable, but does not require the simplex to retain redundant
+matching equations.  Likewise, an independently checked tree need not
+recompute the same exact dual image for every anchor and leaf.  The maintained
+implementation now reduces these two costs while preserving the source
+coordinates of every certificate.
+
+\subsection{Selecting original equations preserves the full cone}
+
+For a rational matching matrix $C\in\mathbb Q^{r\times n}$, scan its original
+rows in order.  Reduce a candidate against previously selected normalized
+pivot rows and retain its original index precisely when the remainder is
+nonzero.  Let $S$ be the resulting ordered index set.  Exact elimination gives
+\[
+ \operatorname{rowspan} C_S=\operatorname{rowspan} C,\qquad
+ |S|=\operatorname{rank} C\le\min(r,n).
+\]
+The simplex receives the selected \emph{original} rows, not their normalized
+elimination remainders.  Thus its normalized feasible polytope is unchanged:
+\[
+ \{x\ge0:C_Sx=0,\ \boldsymbol1^{\mathsf T}x\le1\}
+ =\{x\ge0:Cx=0,\ \boldsymbol1^{\mathsf T}x\le1\}.
+\]
+A basic feasible point of either description is a vertex of this same
+polytope.  Positivity, primitive-ray recovery and subsequent support
+extraction therefore retain their existing contracts.
+
+A negative reduced-row multiplier $z$ lifts without any rational recovery:
+\[
+ y_i=\begin{cases}z_j&i=S_j,\\0&i\notin S.\end{cases}
+ \qquad C^{\mathsf T}y=C_S^{\mathsf T}z.
+\]
+Consequently $C_S^{\mathsf T}z\ge c$ proves exactly the required full-source
+inequality $C^{\mathsf T}y\ge c$.  The producer still checks positive points
+against every original equation and checks lifted negative duals against
+every original column before returning them.  The independent Euler checker
+receives multipliers in its unchanged full-source row coordinates and needs
+no new schema or knowledge of the chosen row basis.
+
+The generic exact LP API defaults to \texttt{reduce\_rows=True}; setting it
+to false retains the earlier redundant tableau for comparison.  Returned
+\texttt{equation\_rows} records original row indices in tableau order.  Slack
+indices in a returned basis refer to these rows, their negatives, and then
+the normalization inequality.  The statistics distinguish original and
+retained equation counts.  Dual vectors always have the original row length,
+including zero entries for discarded equations.  Zero-width inputs,
+zero rows and a zero pivot allowance obey the same rules.
+
+If $k=\operatorname{rank}C$, tableau dimensions change from
+$(2r+1)\times(n+2r+1)$ to $(2k+1)\times(n+2k+1)$.  Basis selection takes
+polynomially many rational operations.  Clearing input row denominators
+first gives an integer matrix of polynomial bit length; the normalized
+elimination entries are ratios of minors, whose determinant bounds have
+polynomial bit length.  The selection therefore has polynomial bit cost.
+Only original rows enter the subsequent simplex, so row reduction does not
+inflate its input coefficients.  It can change Bland's pivot path and the
+particular valid dual found; it is not a theorem that every input uses fewer
+pivots, and it does not supply a polynomial pivot bound.
+
+\subsection{The verifier caches arithmetic, then checks each obligation}
+
+For a version~2 leaf, the checker has already reconstructed one full source
+model $(C,L,\ell,G,w)$.  A parsed exact multiplier tuple $y$ determines the
+full image $b=C^{\mathsf T}y$, independent of the current mask.  An anchor
+tuple $\alpha$ likewise determines a fixed objective $c_\alpha$; a separate
+key names the componentwise envelope.  Two source-local caches retain these
+exact arithmetic values, each with a limit of $256$ entries and least-recent
+use eviction.
+
+Every supplied multiplier is parsed afresh, including every integer and
+positive denominator.  Equivalent exact rational encodings may then share
+a cache entry, but malformed repeated payloads do not bypass parsing.
+Every leaf still has to name the exact derived mask, and every anchor list
+must contain the complete independently reconstructed family in order.
+For each supplied pair of multiplier and objective, the checker explicitly
+tests
+\[
+ b_j\ge c_{\alpha,j}\quad\text{for every currently allowed column }j.
+\]
+Thus a previously accepted multiplier on a smaller mask cannot authorize a
+larger mask, and a multiplier useful for one objective cannot authorize a
+different objective merely through its cache key.  Acceptance decisions,
+producer caches and source digests are not substituted for these checks.
+
+Caches are created inside one replay call and never cross a source boundary.
+Version~1 leaves retain their independently reconstructed mask-specific
+models and direct inequality checks.  Mixed trees preserve both conventions.
+Eviction affects repeated work only.  Callback checks occur on cache hits,
+builds and each tested column, so caller cancellation still propagates with
+its original exception identity.
+
+The retained cache has bounded entry count and polynomial bit size in the
+source and supplied exact certificate data.  Its presence changes repeated
+matrix arithmetic, not the polynomial-in-certificate-size replay guarantee.
+Neither this guarantee nor a small observed certificate bounds the size of
+all required trees on arbitrary knot exteriors.
+
+\subsection{Regression and original-standard oracle evidence}
+
+The combined regression run passes $146$ tests.  The exact LP cases compare
+$240$ degenerate random cones against an independent enumeration of normalized
+support vertices, with and without row selection.  Dedicated cases check
+zero and repeated equations, fractional coefficients, nonmonotone pivot-column
+order, original-position dual lifting, large binary coefficients, zero-width
+inputs, exact pivot caps and caller exceptions.  Cache cases exercise both
+evictions, equivalent rational encodings, malformed repeated payloads,
+source isolation and changed masks or objectives after an earlier success.
+
+The fresh audit repeats all $88$ masks and four source-model/strategy arms
+from Section~\ref{sec:euler-branch-tree}: $124$ positive queries and $228$
+negative queries agree with three fresh original-standard Regina vertex
+lists containing $35$ vectors.  Every positive ray is independently checked
+and occurs in its original vertex list.  All $153$ supplied and diagram
+crushing quotients agree with Regina, including discarded components and
+the selected successor.  The circle is an unknot, the trefoil is knotted,
+and the default bounded figure-eight query remains inconclusive.
+
+The trefoil still closes with $64$ tree nodes and $43$ negative leaves.
+With row selection it uses $118$ LP calls and $1670$ pivots, versus $123$
+and $2077$ in the prior run.  Charged tableau updates fall from $1795996$
+to $763138$.  The $1978$ anchor queries now include $1924$ exact cached-dual
+hits.  Changing the row description can change the chosen negative dual and
+therefore later cache use, even when the feasible cone is identical.
+
+The bounded figure-eight run illustrates the limit of this improvement:
+it reaches $232$ nodes and $151$ completed negative leaves, uses $7419$
+pivots, and exhausts the same $10000$-anchor allowance.  Its $16$ crushing
+steps retain an authenticated partial chain, not a completed negative
+certificate.  Smaller tableaux and cheaper replay do not force the current
+branching choices to produce a small complete tree.
+
+\subsection{Paired complete queries and fixed-certificate replay}
+
+The full-query comparison uses five randomized four-arm pairs, batches of
+one, and one A/A pair per case.  Two historical modules---the exact LP
+producer and tree verifier---are loaded byte-exactly from commit
+\texttt{1c1665d2c}; shared native dependencies and the driver use the current
+pinned sources.  The four arms use neither change, row selection alone,
+replay caching alone, or both.  This isolates the two changes without claiming
+to execute an entire historical checkout.
+
+Every recorded query is complete.  Construction, shelling, vertex
+preprocessing, tree discovery, internal recognition replay, patch setup and
+full-result serialization are inside the timer.  Imports, diagram objects,
+and separate independent warmup verification are outside.  Every timed
+result must have exactly its arm's warmup serialization hash.  Replay-only
+variants must produce the same complete output as their uncached counterpart.
+All four circle outputs are identical because they terminate during vertex
+preprocessing, before LP search or tree replay.
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{3pt}
+\input{data/euler-basis-table.tex}
+\end{center}
+
+Time entries are median milliseconds.  Ratio columns are medians of paired
+ratios, not ratios of marginal medians.  On the trefoil the combined change
+has a paired speedup of $1.711$ over the prior modules; the respective median
+complete-query times are $5.509$ and $3.206$ seconds.  The row-only and
+cache-only arms take $4.413$ and $4.373$ seconds.  The circle paired ratio is
+$1.002$, serving as an integration-overhead control.  These measurements
+support a complete-query improvement on this trefoil fixture, with no
+uniform performance or asymptotic conclusion from two inputs.
+
+A separate experiment holds the old trefoil certificate fixed, so changed
+LP discovery cannot influence its replay comparison.  Both verifiers read
+the same byte-pinned certificate from the previous audit.  Nine randomized
+pairs use batches of three, with three A/A pairs, for each of tree-only and
+full diagram-bound recognition replay.  Each call reconstructs its source
+and starts with fresh caches.  Certificate loading, imports and patch setup
+are outside this timer; no surface discovery runs.
+
+\begin{center}
+\small
+\input{data/euler-basis-replay-table.tex}
+\end{center}
+
+The replay entries are also median milliseconds with paired dimensionless
+ratios.  Tree-only replay falls from $1.183$ to $0.139$ seconds, with a
+paired ratio of $8.577$ and an A/A ratio of $1.002$.  Full recognition replay
+has a paired ratio of $3.457$, but its A/A ratio is $1.225$; this control
+shows substantial timing variation, so the full-replay ratio should not be
+treated as a precise reproducible constant.  Separate untimed
+instrumentation verifies that all $1720$ anchor
+dual payloads are still parsed.  Only $37$ full dual images are constructed,
+with $1683$ image-cache hits; $40$ objectives are constructed, with $1680$
+objective-cache hits.  The full source model is built once.  These are
+arithmetic reuse counts on a fixed $64$-node certificate, not skipped anchor
+or coverage obligations.  The observed cache sizes, $37$ and $40$, are below
+the $256$-entry limits exercised separately by eviction tests.
+
+The maintained runners are in \path{fast/euler_basis_research}.  Source-pinned
+raw samples, fresh oracle comparisons, exact replay profiles and regression
+output are retained as \path{data/euler-basis-*}.  The saved-evidence checker
+replays the proofs, checks the historical module and certificate pins,
+recomputes every ratio and output hash, and generates both tables.  The
+publication manifest also pins this article and the compiled PDF.  These
+local row-basis and replay improvements do not bound admissibility-tree
+size.  The separate polynomial LP obligation is resolved in
+Section~\ref{sec:exact-polynomial-lp}; general quasi-polynomial search
+coverage remains open.

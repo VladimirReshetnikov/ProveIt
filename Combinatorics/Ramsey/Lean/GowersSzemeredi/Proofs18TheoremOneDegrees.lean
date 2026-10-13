@@ -86,61 +86,67 @@ theorem theorem_18_1_degree_zero : Theorem181At 0 := by
     | (simp [hsum]; done)
     | (simp [hsum]; positivity)
 
+/-- A fixed power dominates both parameters of the quadratic inverse
+throughout the source's density range. This does not fix a tower offset. -/
+theorem quadratic_discrepancy_fixed_power_lower {alpha : Real}
+    (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
+    alpha ^ (49462 : Nat) ≤ quadraticDiscrepancyParameter alpha ∧
+      alpha ^ (49462 : Nat) ≤ quadraticDiscrepancyExponent alpha := by
+  have ha1 : alpha ≤ 1 := by linarith
+  have hsq : alpha * alpha ≤ alpha / 2 := by nlinarith
+  have hA : alpha ^ (24718 : Nat) ≤ (alpha / 2) ^ (12359 : Nat) := by
+    calc
+      alpha ^ (24718 : Nat) = (alpha * alpha) ^ (12359 : Nat) := by ring
+      _ ≤ (alpha / 2) ^ (12359 : Nat) := pow_le_pow_left₀ (by positivity) hsq _
+  have hB : alpha ^ (20 : Nat) ≤ (2 : Real) ^ (-(20 : Int)) := by
+    have h20 : (2 : Real) ^ (-(20 : Int)) = (1 / 2) ^ (20 : Nat) := by norm_num
+    rw [h20]
+    exact pow_le_pow_left₀ ha.le ha2 _
+  constructor
+  · have hp : alpha ^ (24740 : Nat) ≤ quadraticDiscrepancyParameter alpha := by
+      unfold quadraticDiscrepancyParameter
+      calc
+        alpha ^ (24740 : Nat) = alpha ^ (20 : Nat) * alpha ^ 2 * alpha ^ (24718 : Nat) := by ring
+        _ ≤ (2 : Real) ^ (-(20 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat) :=
+          mul_le_mul (mul_le_mul_of_nonneg_right hB (by positivity)) hA
+            (by positivity) (by positivity)
+    exact (pow_le_pow_of_le_one ha.le ha1 (by omega : 24740 ≤ 49462)).trans hp
+  · have h14 : (2 : Real) ^ (-(14 : Real)) = (1 / 2) ^ (14 : Nat) := by
+      rw [Real.rpow_neg (by norm_num), show (14 : Real) = ((14 : Nat) : Real) by norm_num,
+        Real.rpow_natCast]
+      norm_num
+    have hC : alpha ^ (14 : Nat) ≤ (1 / 2) ^ (14 : Nat) := pow_le_pow_left₀ ha.le ha2 _
+    have hD : (alpha ^ (24718 : Nat)) ^ 2 ≤ ((alpha / 2) ^ (12359 : Nat)) ^ 2 :=
+      pow_le_pow_left₀ (by positivity) hA 2
+    have hE : alpha ^ (12 : Nat) ≤ (1 / 2) ^ (12 : Nat) := pow_le_pow_left₀ ha.le ha2 _
+    unfold quadraticDiscrepancyExponent cor711Exponent
+    rw [h14]
+    calc
+      alpha ^ (49462 : Nat) = alpha ^ (14 : Nat) * (alpha ^ (24718 : Nat)) ^ 2 * alpha ^ (12 : Nat) := by ring
+      _ ≤ (1 / 2) ^ (14 : Nat) * ((alpha / 2) ^ (12359 : Nat)) ^ 2 * (1 / 2) ^ (12 : Nat) :=
+        mul_le_mul (mul_le_mul hC hD (by positivity) (by positivity)) hE
+          (by positivity) (by positivity)
+      _ = _ := by norm_num <;> ring
+
 /-- The quadratic discrepancy parameter dominates the catalogue exponent. -/
 theorem section18Exponent_two_le_quadraticDiscrepancyParameter {alpha : Real}
     (hα : 0 < alpha) (hα2 : alpha ≤ 1 / 2) :
     section18Exponent alpha 2 ≤ quadraticDiscrepancyParameter alpha := by
-  have hα1 : alpha ≤ 1 := by linarith
-  have hsq : alpha * alpha ≤ alpha / 2 := by nlinarith
-  have hA : alpha ^ (24718 : Nat) ≤ (alpha / 2) ^ (12359 : Nat) := by
-    calc alpha ^ (24718 : Nat) = (alpha * alpha) ^ (12359 : Nat) := by ring
-      _ ≤ (alpha / 2) ^ (12359 : Nat) := pow_le_pow_left₀ (by positivity) hsq _
-  have h20 : (2 : Real) ^ (-(20 : Int)) = (1 / 2) ^ (20 : Nat) := by norm_num
-  have hB : alpha ^ (20 : Nat) ≤ (2 : Real) ^ (-(20 : Int)) := by
-    rw [h20]
-    exact pow_le_pow_left₀ hα.le hα2 _
-  have hexp : (24740 : Nat) ≤ 2 ^ 2 ^ (2 + 10) :=
-    (by norm_num : (24740 : Nat) ≤ 2 ^ 15).trans
-      (Nat.pow_le_pow_right (by norm_num) (by norm_num))
-  unfold section18Exponent quadraticDiscrepancyParameter
-  calc alpha ^ 2 ^ 2 ^ (2 + 10) ≤ alpha ^ (24740 : Nat) :=
-        pow_le_pow_of_le_one hα.le hα1 hexp
-    _ = alpha ^ (20 : Nat) * alpha ^ 2 * alpha ^ (24718 : Nat) := by ring
-    _ ≤ (2 : Real) ^ (-(20 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat) :=
-        mul_le_mul (mul_le_mul_of_nonneg_right hB (by positivity)) hA
-          (by positivity) (by positivity)
+  refine le_trans ?_ (quadratic_discrepancy_fixed_power_lower hα hα2).1
+  unfold section18Exponent
+  exact pow_le_pow_of_le_one hα.le (by linarith)
+    ((by norm_num : 49462 ≤ (2 : Nat) ^ 16).trans
+      (Nat.pow_le_pow_right (by norm_num) (by norm_num)))
 
 /-- The quadratic width exponent dominates the catalogue exponent. -/
 theorem section18Exponent_two_le_quadraticDiscrepancyExponent {alpha : Real}
     (hα : 0 < alpha) (hα2 : alpha ≤ 1 / 2) :
     section18Exponent alpha 2 ≤ quadraticDiscrepancyExponent alpha := by
-  have hα1 : alpha ≤ 1 := by linarith
-  have hsq : alpha * alpha ≤ alpha / 2 := by nlinarith
-  have hA : alpha ^ (24718 : Nat) ≤ (alpha / 2) ^ (12359 : Nat) := by
-    calc alpha ^ (24718 : Nat) = (alpha * alpha) ^ (12359 : Nat) := by ring
-      _ ≤ (alpha / 2) ^ (12359 : Nat) := pow_le_pow_left₀ (by positivity) hsq _
-  have h14 : (2 : Real) ^ (-(14 : Real)) = (1 / 2) ^ (14 : Nat) := by
-    rw [Real.rpow_neg (by norm_num), show (14 : Real) = ((14 : Nat) : Real) by norm_num,
-      Real.rpow_natCast]
-    norm_num
-  have hexp : (49462 : Nat) ≤ 2 ^ 2 ^ (2 + 10) :=
-    (by norm_num : (49462 : Nat) ≤ 2 ^ 16).trans
-      (Nat.pow_le_pow_right (by norm_num) (by norm_num))
-  have hC : alpha ^ (14 : Nat) ≤ (1 / 2) ^ (14 : Nat) := pow_le_pow_left₀ hα.le hα2 _
-  have hD : (alpha ^ (24718 : Nat)) ^ 2 ≤ ((alpha / 2) ^ (12359 : Nat)) ^ 2 :=
-    pow_le_pow_left₀ (by positivity) hA 2
-  have hE : alpha ^ (12 : Nat) ≤ (1 / 2) ^ (12 : Nat) := pow_le_pow_left₀ hα.le hα2 _
-  unfold section18Exponent quadraticDiscrepancyExponent cor711Exponent
-  rw [h14]
-  calc alpha ^ 2 ^ 2 ^ (2 + 10) ≤ alpha ^ (49462 : Nat) :=
-        pow_le_pow_of_le_one hα.le hα1 hexp
-    _ = alpha ^ (14 : Nat) * (alpha ^ (24718 : Nat)) ^ 2 * alpha ^ (12 : Nat) := by ring
-    _ ≤ (1 / 2) ^ (14 : Nat) * ((alpha / 2) ^ (12359 : Nat)) ^ 2 * (1 / 2) ^ (12 : Nat) :=
-        mul_le_mul (mul_le_mul hC hD (by positivity) (by positivity)) hE
-          (by positivity) (by positivity)
-    _ = (1 / 2) ^ (14 : Nat) * ((alpha / 2) ^ (12359 : Nat)) ^ 2 * ((1 : Nat) : Real)⁻¹ /
-          4096 := by
-        first | (norm_num; done) | (norm_num; ring) | ring
+  refine le_trans ?_ (quadratic_discrepancy_fixed_power_lower hα hα2).2
+  unfold section18Exponent
+  exact pow_le_pow_of_le_one hα.le (by linarith)
+    ((by norm_num : 49462 ≤ (2 : Nat) ^ 16).trans
+      (Nat.pow_le_pow_right (by norm_num) (by norm_num)))
 
 /-- **Theorem 18.1 at degree two**, from the quadratic inverse theorem. -/
 theorem theorem_18_1_degree_two : Theorem181At 2 := by

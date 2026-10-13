@@ -1,0 +1,264 @@
+\section{Conditional matching elimination and an initial-mask obstruction}
+\label{sec:conditional-type-matching}
+
+Quadrilateral compatibility suggests a polynomial preprocessing rule: test a
+type after setting its two local competitors to zero, and delete it if matching
+alone then forces it to vanish.  The rule is sound, but the retained six-source
+experiment finds no deletion.  A local matching identity explains why a complete
+LP support test cannot improve the initial linear test.  Exact original-coordinate
+witnesses establish conditional feasibility for all $276$ initial types of these
+sources, including the suffix not completed by the earlier sufficient-closure
+experiment.  This is a theory and evidence checkpoint, with no native search
+integration or claimed recognition speedup.
+
+\subsection{A sequential rule with original-equation provenance}
+
+Fix a finite source triangulation with $t$ tetrahedra and let $M$ be its
+original STANDARD normal matching matrix, with four triangle and three
+quadrilateral columns per tetrahedron.  Write $C$ for a Q matching matrix
+obtained by eliminating triangle differences.  For a retained Q mask $J$, let
+\[
+ K_J=\{q\ge0:Cq=0,\quad q_b=0\text{ for }b\notin J\}.
+\]
+Every $q\in K_J$ has a nonnegative triangle lift: first take a real matching
+lift, then add triangle vertex links until every triangle coordinate is
+nonnegative.  The source is finite, so these are ordinary finite vectors.
+Canonical lifting subtracts the minimum triangle coordinate independently
+at each global vertex.
+
+For a type $a=(\tau,i)\in J$, define the conditional mask
+\[
+ J_a=J\setminus\{(\tau,j):j\ne i\}.
+\]
+A compatible vector with $q_a>0$ has both competing Q coordinates zero and
+therefore belongs to $K_{J_a}$.  It follows that
+\[
+ \bigl(q_a=0\text{ for every }q\in K_{J_a}\bigr)
+ \quad\Longrightarrow\quad
+ \text{deleting $a$ preserves every compatible vector in }K_J.
+\]
+This implication can be applied sequentially, starting a new conditional
+test from the current mask after each accepted deletion.  Only the tested
+type $a$ is licensed for global deletion.  A second type forced to vanish
+under the same conditional hypothesis need not vanish for compatible
+vectors using a different type at $\tau$.
+
+A sufficient zero proof can be checked directly against the original
+STANDARD rows.  Form an exact rational linear combination of those rows
+and require every triangle coefficient to cancel.  On the current
+conditional mask, require the remaining Q coefficients to be nonnegative,
+except at coordinates already proved zero earlier in this same local
+proof.  Their nonnegative weighted sum vanishes, so every coordinate
+with strictly positive coefficient also vanishes.  Coefficients outside
+the conditional mask may have either sign because those coordinates are
+zero.  The local forced set must start empty for every new conditional
+query.  These checks establish the sequential inference without trusting
+the producer's elimination or sign-closure computation.
+
+With initially at most $3t$ types, a sorted scan restarting after every
+deletion makes $O(t^2)$ queries.  The one- and two-row sufficient closure
+used in the archived probe is polynomial, but its general fixed point is
+not a complete nonnegative-feasibility certificate.  In particular, a
+capped query provides no inference about whether its tested coordinate
+can be positive.  The retained probe uses private arbitrary-mask algebra;
+its raw provenance does not broaden the compatible-only meaning of an
+existing native certificate schema.
+
+\subsection{Mask monotonicity does not change the full-source parameter}
+
+For nested masks $J'\subseteq J$, the cone $K_{J'}$ is a coordinate face
+of $K_J$.  By Lemma~\ref{lem:transversal-face-rays}, its extreme rays are
+extreme rays of $K_J$.  Zero-extension does not change the source, the
+canonical formal Euler function $F$, or a ray's complete conflict set.
+Consequently the hypergraph of incompatible positive extreme rays on
+$J'$ is a subhypergraph of the corresponding hypergraph on $J$, and
+\[
+                              h_{J'}\le h_J.
+\]
+As in Section~\ref{sec:euler-transversal}, compatible positive rays are
+excluded from this conflict hypergraph, and an empty hypergraph has
+transversal number zero.
+
+This is monotonicity of a \emph{mask parameter}.  The full-source $h(T)$
+of the unchanged triangulation has not changed.  A complete negative
+tree on the final mask, splitting only in $B$, proves $h_J\le |B|$ for
+that mask.  Composing its negative conclusion with sound conditional
+deletions can prove that the original admissible cone is nonpositive;
+it does not establish $h(T)\le |B|$ for the full formal cone.  No claim
+about transporting $h$ through a topological simplification is involved.
+
+\subsection{A local block-ones matching identity}
+
+For a tetrahedron $s$, define a signed STANDARD vector $z_s$.
+Its four triangle coefficients in $s$ are all $-1$, and its three Q
+coefficients there are all $1$; all other coordinates are zero.  On each face and
+at each normal arc type, exactly one triangle and one quadrilateral
+contribute.  Their sum is zero.  Thus $z_s$ has zero trace on every
+face separately, and
+\[
+                                  Mz_s=0.
+\]
+The argument includes identified faces and self-attachments: both
+sides of any matching equation see zero trace.  Its Q projection $r_s$
+is the vector equal to one on the three Q coordinates of $s$ and zero
+elsewhere, and hence $Cr_s=0$.
+
+The signed vector $z_s$ is not a nonnegative normal surface.  This
+matching identity alone says nothing about its Euler characteristic
+or geometric realization.  Here it is used only to repair Q signs in
+a linear matching solution.
+
+\begin{proposition}[Complete initial conditional feasibility test]
+\label{prop:conditional-initial-linear}
+Let $J$ be the full set of $3t$ Q types and $a=(\tau,i)$.  The following
+are equivalent:
+\begin{enumerate}
+\item There is a nonnegative STANDARD matching vector supported in Q
+      mask $J_a$ whose $a$ coordinate is positive.
+\item The $a$ coordinate is not identically zero on the linear Q
+      matching space supported in $J_a$.
+\end{enumerate}
+When they hold, an integral witness can be constructed using exact
+linear algebra and the vectors $r_s$, without an LP.
+\end{proposition}
+\begin{proof}
+Projection proves the first implication.  Conversely choose a rational
+linear matching vector with nonzero $a$ coordinate, dividing by that
+coordinate so that $q_a=1$.  For each $s\ne\tau$, set
+\[
+ \lambda_s=\max\{0,-\min(q_{s,0},q_{s,1},q_{s,2})\}
+ \quad\hbox{and replace }q\hbox{ by }q+\lambda_s r_s.
+\]
+Every such block retains all three Q types, so this operation stays
+within $J_a$, preserves matching, and leaves $q_a=1$ and its competitors
+zero.  After all replacements every Q coordinate is nonnegative.
+Take a rational triangle lift.  Subtracting its minimum triangle
+coordinate at each global vertex adds a triangle vertex-link matching
+vector and makes every triangle coordinate nonnegative.  Finally
+clear denominators, optionally divide the common gcd, and obtain the
+claimed nonnegative integral STANDARD witness.
+\end{proof}
+
+The proof does not require a one-vertex source or a knot-type hypothesis.
+It uses the ordinary finite matching system and its triangle vertex-link
+kernel.  The retained sources happen to be one-vertex compact torus-boundary
+sources authenticated from diagrams.
+
+If the target coordinate vanishes on every nullspace basis vector,
+its coordinate functional belongs to the matching row space.  In
+reduced row echelon form, its pivot equation has no free-variable
+terms and is precisely $q_a=0$.  The one-row forcing pass already
+detects that unit equation.  Thus a complete LP support test at the
+full initial mask cannot find a target zero missed by this linear
+criterion and its unit-row check.  This is a completeness statement
+for the \emph{initial conditional target test}, not for arbitrary
+row-sign closure on arbitrary retained masks.
+
+The construction has polynomial bit complexity.  There are $O(t)$
+original matching rows and columns with bounded integer entries;
+exact elimination coefficients are ratios of minors of these matrices.
+Determinant bounds give polynomial bit lengths.  The block repairs,
+triangle lift and vertex shifts use polynomially many rational
+operations.  Clearing the $O(t)$ denominators and reducing their gcd
+also gives a vector of polynomial bit length.  The explicit callback
+counts below are implementation-work records, not this bit-operation
+bound and not elapsed-time measurements.
+
+\subsection{Why later masks need a different argument}
+
+The block repair relies on all three types being retained in every
+tetrahedron other than $\tau$.  After a deletion, a needed $r_s$ may
+lie outside the retained mask.  The following exact algebra example
+shows why the local block identities alone do not extend
+Proposition~\ref{prop:conditional-initial-linear} to all later masks.
+
+Use two blocks $(a,b,c)$ and $(d,e,f)$ with equations
+\[
+                a-b=0,\qquad -a-b+2c+d-e=0.
+\]
+Each equation has coefficient sum zero in each block.  Both local
+block-ones vectors therefore belong to the kernel.  The initial
+single-type tests at $a$ and $b$ force them to zero by linear unit
+equations, so a sequential rule can delete both.  On the later
+conditional mask for $d$, only $c,d$ remain and the equation is
+$2c+d=0$.  The linear kernel has vectors with $d\ne0$, for example
+$c=-d/2$, but nonnegative coordinates force $d=0$.
+This is an abstract matching-algebra counterexample.  It is not
+asserted to be realizable by a triangulated manifold or to be a
+geometric fixture of the implementation.
+
+\subsection{Two retained experiments on identical authenticated sources}
+
+The archive \path{fast/conditional_type_research} preserves both
+experiments byte-for-byte, including generation scripts, all returned
+and partial data, both old replay results and both original manifests.
+The labelled sources are exactly the enabled fixed-U1 endpoints from
+Section~\ref{sec:pachner-descent-crushing}.  Their original PDs and
+mixed source chains are copied in the exact staged provenance archive.
+The labels $T,F,TT,T25,T27,W34$ denote the trefoil, figure-eight, visible
+trefoil sum, and the braid inputs $(2,[1]^5)$, $(2,[1]^7)$ and
+$(3,[1,-2]^4)$, respectively.  No primeness assertion about $W34$ is
+needed for this source experiment.
+
+\begin{center}
+\begin{tabular}{lrrrrr}
+Source & $t$ & Closure attempts/returns & Closure checks & Witnesses & Witness checks\\
+\hline
+$T$   & 7  & $21/21$ & $7\,924$       & 21 & $3\,047$\\
+$F$   & 10 & $30/30$ & $30\,890$      & 30 & $6\,242$\\
+$TT$  & 16 & $48/48$ & $212\,610$     & 48 & $16\,034$\\
+$T25$ & 11 & $33/33$ & $52\,604$      & 33 & $7\,559$\\
+$T27$ & 17 & $51/51$ & $290\,842$     & 51 & $18\,107$\\
+$W34$ & 31 & $33/32$ & $1\,000\,000$ & 93 & $60\,359$\\
+\hline
+Total &    & $216/215$ & $1\,594\,870$ & 276 & $111\,348$
+\end{tabular}
+\end{center}
+
+Each experiment allowed one million explicit callbacks per source,
+six million total, with no wall-clock cutoff.  The first probe used
+the sufficient one- and two-row closure.  Five sources completed
+their scans, while $W34$ stopped at the conditional test $(10,2)$.
+All $215$ returned queries supplied no local forcing packet; there
+were zero global deletions.  There was therefore no genuine returned
+packet with another locally forced type on which to run an
+other-forced-global-deletion corruption control.  This absence is
+retained explicitly, rather than filled with a synthetic geometry
+claim.  Its archived replay validates source binding, scan transitions
+and any claimed inference, but does not rerun closure or certify its
+recorded kernel ranks.
+
+The separate witness construction applies
+Proposition~\ref{prop:conditional-initial-linear}.  All $276$ tests
+complete, with no cap, error or zero-linear-target diagnostic.  Every
+retained vector is checked independently for literal nonnegative
+integer STANDARD coordinates, all original matching equations, a
+positive tested Q coordinate and zero competing coordinates at that
+tetrahedron.  The checker reconstructs each conditional mask and
+replays the original diagram-bound source chains.  It also rejects
+$12$ targeted corruptions, including an original matching residue,
+boolean coordinate or type substitutions, and a positive competing
+Q coordinate.
+
+This second experiment establishes all-type initial conditional
+feasibility on all six sources.  It covers the $W34$ suffix left
+untested by the first probe, without retrospectively calling that
+earlier capped scan complete.  The witnesses may have incompatible
+Q coordinates in other tetrahedra.  They provide no assertion about
+Euler sign, extremality, embedded normal surfaces or recognition
+outcomes.  In particular, no complete LP run is needed to refute
+initial matching-zero elimination on these sources, and none was
+performed in either experiment.
+
+The portable replay invokes no kernel constructor, sign closure, LP,
+ray enumeration or topology discovery.  It checks exact archived
+bytes against both stored and uncompressed hashes and records fresh
+hashes of its current native, package and article dependencies.
+Embedded generation pins remain historical.  Recorded construction
+counters receive type, range and continuity checks; their operation
+traces are not independently reproduced.  Independent replay is
+excluded from those counters, and there is no timing or speedup claim.
+These conditional-matching experiments add no native elimination rule.
+These results close this
+particular matching-only shortcut on the tested sources; they do not
+bound general $h(T)$ or establish quasi-polynomial recognition.

@@ -84,24 +84,8 @@ theorem fejer_cubic_twisted_count_power {alpha : Real} (hα : 0 < alpha) (hαone
     (hcount : (J : Real) ≤ fejerCubicLocalCountConstant alpha * N / (l : Real) ^ fejerCubicLocalCountExponent alpha) :
     (J : Real) ≤ fejerCubicTwistedCountConstant alpha *
       (N : Real) ^ (1 - fejerCubicLocalizationExponent alpha * fejerCubicLocalCountExponent alpha) := by
-  let e := fejerCubicLocalizationExponent alpha
-  let t := fejerCubicLocalCountExponent alpha
-  let D := fejerCubicLocalCountConstant alpha
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have ht : 0 < t := (fejerCubicLocalCountExponent_bounds hα hαone).1
-  have hD : 0 < D := lt_of_lt_of_le zero_lt_one (le_max_left _ _)
-  have hbase : 0 < (N : Real) ^ e / 12 := by positivity
-  have hpow := Real.rpow_le_rpow hbase.le hl ht.le
-  calc
-    (J : Real) ≤ D * N / (l : Real) ^ t := hcount
-    _ ≤ D * N / ((N : Real) ^ e / 12) ^ t :=
-      div_le_div_of_nonneg_left (by positivity) (Real.rpow_pos_of_pos hbase t) hpow
-    _ = fejerCubicTwistedCountConstant alpha * (N : Real) ^ (1 - e * t) := by
-      rw [Real.div_rpow (Real.rpow_nonneg hN.le _) (by norm_num : (0 : Real) ≤ 12),
-        ← Real.rpow_mul hN.le, Real.rpow_sub hN, Real.rpow_one]
-      change D * N / ((N : Real) ^ (e * t) / (12 : Real) ^ t) =
-        (D * (12 : Real) ^ t) * ((N : Real) / (N : Real) ^ (e * t))
-      field_simp
+  exact partition_count_power_of_length (fejerCubicLocalCountExponent_bounds hα hαone).1.le
+    (zero_le_one.trans (le_max_left _ _)) (by norm_num) hl hcount
 
 
 end LeanProofs.GowersSzemeredi

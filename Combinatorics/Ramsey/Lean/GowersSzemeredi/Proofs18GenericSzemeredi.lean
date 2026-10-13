@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18GenericEnvelopeStep
+import GowersSzemeredi.Proofs18EnvelopeBounds
 import GowersSzemeredi.Proofs18ExponentialCalculus
 import GowersSzemeredi.Proofs18DensityIterationExponentialBudget
 import GowersSzemeredi.Proofs18GeneralIteration
@@ -187,37 +187,15 @@ theorem closedThreshold_le_of_env {L μ : Nat} (hL : 1 ≤ L) {delta beta sigma 
     apply max_le (hdex _ (hLX.trans (pw_X hX _)))
     refine max_le (dex_mono hX Ti (by omega)) (max_le (hdex _ h32) (hdex _ hden))
   -- the length factor `c`
-  have hC4 : 4 ≤ boundaryRefinementConstant (beta / 64) := section5LocalRefinementConstant_ge_four _ _
-  have hCpos : 0 < boundaryRefinementConstant (beta / 64) := lt_of_lt_of_le (by norm_num) hC4
-  have hc0 : 0 < beta / (8 * boundaryRefinementConstant (beta / 64)) := by positivity
-  have hc1 : beta / (8 * boundaryRefinementConstant (beta / 64)) ≤ 1 := by
-    rw [div_le_one (by positivity)]; linarith
-  have hBRC : boundaryRefinementConstant (beta / 64) ≤ X ^ (2 ^ (μ + 6)) := by
-    have heta : 0 < 4 * Real.pi * (beta / 64) := by positivity
-    have hpi := Real.pi_gt_three
-    have hT1 : (4 * Real.pi * (beta / 64))⁻¹ ≤ X ^ (2 ^ (μ + 1)) := by
-      rw [show (4 * Real.pi * (beta / 64))⁻¹ = 16 / Real.pi * beta⁻¹ by field_simp; ring]
-      have h16 : 16 / Real.pi ≤ X ^ (2 ^ μ) :=
-        (div_le_self (by norm_num) (by linarith)).trans (hsmall 16 2 (by norm_num) hμ2)
-      exact pw_mul hX (by positivity) (inv_pos.mpr b0).le h16 bi
-    have hT11 : 1 ≤ X ^ (2 ^ (μ + 1)) := one_le_pw hX _
-    have hscaled := section5LocalRefinementConstant_le_scaled 1 (4 * Real.pi * (beta / 64))
-      (X ^ (2 ^ (μ + 1))) heta hT11 hT1
-    have hK1 : polynomialPartitionConstant 1 = 16 := by
-      norm_num [polynomialPartitionConstant, Nat.factorial]
-    have hS1 : section5LocalRefinementConstant 1 1 ≤ X ^ (2 ^ μ) :=
-      hsmall _ 42 (by simpa using (s5_one_le (d := 1) le_rfl)) hμ
-    unfold boundaryRefinementConstant
-    refine hscaled.trans ?_
-    rw [hK1]
-    have hp16 := pw_pow hX (pow_nonneg hX0 _) (le_refl (X ^ (2 ^ (μ + 1)))) (show 16 ≤ 2 ^ 4 by norm_num)
-    exact (pw_mul' hX (le_trans (by norm_num) (section5LocalRefinementConstant_ge_four _ _))
-      (pow_nonneg (pow_nonneg hX0 _) _) hS1 hp16).trans (pw_mono hX le_rfl (by omega))
+  have hS1 : section5LocalRefinementConstant 1 1 ≤ X ^ (2 ^ μ) :=
+    hsmall _ 42 (by simpa using (s5_one_le (d := 1) le_rfl)) hμ
+  obtain ⟨hc0, hc1, hci⟩ := interval_length_factor_bounds_of_powers hX b0 b1 bi hS1
   have hcinv : (beta / (8 * boundaryRefinementConstant (beta / 64)))⁻¹ ≤ X ^ (2 ^ (μ + 8)) := by
-    rw [inv_div, div_eq_mul_inv]
-    have h8 := hsmall 8 2 (by norm_num) hμ2
-    have h1 := pw_mul' hX (by norm_num) hCpos.le h8 hBRC
-    exact (pw_mul' hX (by positivity) (inv_pos.mpr b0).le h1 bi).trans (pw_mono hX le_rfl (by omega))
+    refine hci.trans (pow_le_pow_right₀ hX1 ?_)
+    have hpow : 1 ≤ 2 ^ μ := Nat.one_le_two_pow
+    rw [pow_add]
+    norm_num only [Nat.reducePow]
+    omega
   have hA : 1 + Real.log (max 1 (intervalDiscrepancyStepThreshold L delta beta T)) +
       |Real.log (beta / (8 * boundaryRefinementConstant (beta / 64)))| ≤
       Real.exp (X ^ (2 ^ (μ + 8) + 2)) := by

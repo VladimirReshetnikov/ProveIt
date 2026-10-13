@@ -157,56 +157,16 @@ theorem section16_poly_cover_two_large_fejer {A Bq : Nat → Real} (hA : ∀ q, 
     ∃ J : Finset (Point N 2), (1 - theta) * (N : Real) ^ 2 ≤ J.card ∧
       MultiplyLinearWith (polyTwoFejerFamCount theta gamma) (polyTwoFejerFamExp A Bq theta gamma)
         (restrictRelation Gamma J) := by
-  classical
   obtain ⟨hfa0, hfaS⟩ := fejerThetaOne_one_bounds ht ht1 hg hg1
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le_with hfa0 hfaS
-  have hθ'pos : 0 < polyPieceBudgetW (fejerThetaOne theta gamma 1) := by
-    unfold polyPieceBudgetW; linarith
-  set θ' := polyPieceBudgetW (fejerThetaOne theta gamma 1) with hθ'def
+  have hmass : 0 < 5 * polyPieceBudgetW (fejerThetaOne theta gamma 1) := by
+    unfold polyPieceBudgetW; positivity
+  obtain ⟨J, hJ, P, hcov⟩ := section16_poly_piece_two_decomposition_of_extract hmass Gamma hsize
+    (fun Delta hDelta hproj =>
+      section16_poly_piece_two_of_subrelation_fejer ht ht1 hg hg1 hN hprod Delta hDelta hproj)
   obtain ⟨hz, hzHalf⟩ := tightZeta_pos_le_half hfa0 (by linarith)
-  set zeta := tightZeta (fejerThetaOne theta gamma 1 / 4) with hzetadef
-  set qs := polyPieceSpecCountW (fejerThetaOne theta gamma 1)
-  set qf := polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma
-  let Good : Finset (Point N 2 × ZMod N) → Prop := fun G =>
-    ∃ P : PolyPieceTwoData Gamma zeta (5 * θ') qs qf qf, G = partialGraph P.D P.phi
-  have hmass : 0 < 5 * θ' * (N : Real) ^ 2 := by
-    have : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-    positivity
-  obtain ⟨q, G, J, hG, hq, hJ, hcov⟩ := section16_greedy_relation_decomposition Good theta
-    (5 * θ' * (N : Real) ^ 2) hmass Gamma (by
-      intro Delta hDelta hproj
-      obtain ⟨P⟩ := section16_poly_piece_two_of_subrelation_fejer ht ht1 hg hg1 hN hprod Delta
-        hDelta hproj
-      refine ⟨partialGraph P.D P.phi, P.graph_sub, ?_, ⟨P.widen hDelta, rfl⟩⟩
-      rw [partialGraph_card]
-      exact P.card_ge)
-  -- the number of pieces
-  set m := polyTwoFejerPieces gamma theta with hmdef
-  have hqm : q ≤ m := by
-    rw [hmdef, polyTwoFejerPieces]
-    apply Nat.le_floor
-    have hNpos : (0 : Real) < (N : Real) ^ 2 := by
-      have : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-      positivity
-    have h1 : (q : Real) * (5 * θ' * (N : Real) ^ 2) ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ 2 :=
-      hq.trans hsize
-    rw [le_div_iff₀ (by positivity)]
-    have h2 : (q : Real) * (5 * θ') * (N : Real) ^ 2 ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ 2 := by
-      linarith [h1]
-    exact le_of_mul_le_mul_right h2 hNpos
-  choose P hPG using fun i => (hG i).2
-  let Q : Fin m → PolyPieceTwoData Gamma zeta 0 qs qf qf := fun j =>
-    if h : j.val < q then (P ⟨j.val, h⟩).toMassZero else PolyPieceTwoData.empty Gamma zeta qs qf qf
-  have hfam := section16_poly_family_two_cover hA hB hlemma6 hz hzHalf Q
-  refine ⟨J, hJ, MultiplyLinearWith.subset hfam ?_⟩
-  intro z hz'
-  have hz1 := hcov hz'
-  unfold section16FinsetUnion at hz1
-  obtain ⟨i, -, hi⟩ := Finset.mem_biUnion.mp hz1
-  rw [hPG i] at hi
-  refine Finset.mem_biUnion.mpr ⟨⟨i.val, i.isLt.trans_le hqm⟩, Finset.mem_univ _, ?_⟩
-  simp only [Q, dif_pos i.isLt]
-  exact hi
+  exact ⟨J, hJ, MultiplyLinearWith.subset
+    (section16_poly_family_two_cover hA hB hlemma6 hz hzHalf P) hcov⟩
 
 
 /-! ### `PolyCoverAt 2` -/
@@ -225,20 +185,7 @@ theorem polyTwoFejerFamExp_pos {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q)
     {theta gamma : Real} {rho : Real} (hrho : 0 < rho) :
     0 < polyTwoFejerFamExp A Bq theta gamma rho := by
   unfold polyTwoFejerFamExp
-  apply section16CappedWidthExponent_pos
-  have h8 : 0 < rho / 8 := by positivity
-  have h4 : 0 < rho / 4 := by positivity
-  have hEb := cubicBaseExponent_pos
-    (Nat.succ_pos (polyTwoFejerPieces gamma theta * polyPieceSpecCountW (fejerThetaOne theta gamma 1))) h8
-  have hEr := cubicBaseExponent_pos
-    (Nat.succ_pos (polyTwoFejerPieces gamma theta * polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma)) h8
-  have hEs := cubicBaseExponent_pos (Nat.succ_pos (polyTwoFejerPieces gamma theta *
-    (famPieceSamples (famTwoQr (polyTwoFejerPieces gamma theta) (polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma))
-      (polyTwoFejerPieces gamma theta) rho * polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma))) h4
-  have hBq := hB ⌊famTwoQb (polyTwoFejerPieces gamma theta) (polyPieceSpecCountW (fejerThetaOne theta gamma 1))
-    (rho / 8)⌋₊
-  simp only [pieceLineExponent, famPieceSliceExponent, famTwoEb, famTwoEr, famTwoEs]
-  positivity
+  exact famTwoCappedExponent_pos hB hrho
 
 /-- **`PolyCoverAt 2`**, from the family Lemma 16.6 at a power width. -/
 theorem polyCoverAt_two_fejer_of_family_lemma6 {A Bq : Nat → Real} (hA : ∀ q, 0 < A q)

@@ -31,7 +31,7 @@
 \title{Six attempts at quasi-polynomial unknot recognition:\\
 synthesis, cross-validation, and a faster exact recognizer}
 \author{Synthesis report prepared with Claude Code}
-\date{17--18 September 2026; updated 12 October 2026}
+\date{17--18 September 2026; updated 13 October 2026}
 
 \begin{document}
 \maketitle
@@ -941,6 +941,139 @@ then handles simultaneous core and annular cancellations with implicit genus
 columns, increasing that audit to 85 certificates. General complete
 cancellation search and explicit boundary-pattern transport remain tasks.
 
+The subsequent normal-crushing path gives a complete exact alternative:
+authenticate the diagram exterior, reduce vertices, search canonical Euler
+cones, and independently verify every strict crushing step or complete
+negative cover.  Section~\ref{sec:exact-polynomial-lp} resolves the local
+LP bit-complexity obligation with a bounded simplex prefix and exact
+rational ellipsoid fallback.  Sections~\ref{sec:euler-transversal} and
+\ref{sec:conflict-candidates} isolate the remaining search dependence in
+the uniform positive-ray conflict parameter $h$, with a conditional
+$O(A(3\delta)^h\operatorname{poly}(t,L))$ bound for conflict-directed
+candidate discovery.  A uniform suitable bound on $h$ remains unproved.
+
+Section~\ref{sec:boundary-unlayer} adds independently certified inverse
+boundary layering as optional polynomial preprocessing, with mixed
+source-authenticated reduction chains.  Its finite supplied-source gains
+do not extend to a demonstrated speedup on the three small diagram
+controls.  Section~\ref{sec:conflict-composition} proves $h\ge5$ for one
+authenticated two-trefoil source unchanged by that operation, using seven
+explicit root-ray conflicts.  The existing visible-factor router already
+splits that input; the finite source bound is neither a router lower bound
+nor a growing family, and the source's negative canonical cone has not
+been certified.  These results sharpen the outstanding structural problem
+without claiming general quasi-polynomial recognition.
+
+Section~\ref{sec:factored-crushing} then composes independently checked
+child crushing proofs over visible diagram factors, sharing all search
+allowances across attempted children.  Its cost is the sum of attempted
+child work, with no assumption about how $h$ behaves under connected sum.
+For the polynomial-LP tree policy, a polylogarithmic bound on the largest
+visible factor's crossing count gives a restricted quasi-polynomial
+recognizer.  A full-size visible atom remains possible, so this does not
+resolve the general objective.
+
+Section~\ref{sec:strict-pachner32} adds optional greedy $3\to2$
+preprocessing.  Independent formal-boundary replay proves that each move
+preserves the compact manifold, including sources with identified vertices
+and boundary selfattachments.  Strict tetrahedron descent gives polynomial
+preprocessing and a new mixed-chain schema; all reductions share one global
+allowance.  Every successor gets fresh normal algebra and conflict search.
+This supplies no monotonicity theorem for $h$ or general recognition bound.
+
+Section~\ref{sec:pachner-descent-crushing} permits one temporary expansion
+inside an independently checked strict macro.  The fixed search is polynomial:
+before its first strict descent, a trace has at most one upward and two
+downward moves.  The new mixed chain charges one accepted macro per reduction
+unit and authenticates every intermediate manifold.  This enlarges the
+optional preprocessing family without supplying a uniform bound on the
+resolving parameter of its terminal sources.
+
+Section~\ref{sec:geometric-descent-crushing} implements the same fixed
+move family by directly streaming the words $D$ and $UDD$.  Its
+independent geometric packets need no cochain or cover record.  The
+conservative per-query bit bound is $O(t^5\log^2(t+2))$, compared with
+the preceding method's $O(t^6\log^2(t+2))$ bound.  A separate complete-call
+comparison retains fourteen audited calls and fifty timed calls, with
+mixed finite timing results and explicit shared-host controls.  It does
+not establish a general runtime gain.
+
+Section~\ref{sec:conditional-type-matching} investigates conditional
+matching-zero elimination.  A local block-ones identity makes the full
+initial support test equivalent to a linear-kernel test.  All $276$
+conditional types on six authenticated sources have independently
+checked nonnegative matching witnesses, so this rule removes nothing
+there.  Its sound mask monotonicity concerns $h_J$, not the unchanged
+full-source parameter $h(T)$.
+
+Section~\ref{sec:direct-crush-positive} removes redundant extraction of
+native LP and tree rays.  Canonical lifting preserves extremality and
+primitive integrality across any finite vertex set.  Original-support
+rank checks and independent quotient replay remain mandatory; classified
+nonprimitive or nonextreme points retain checked extraction.  This removes
+an additive algebraic pass, with no new per-ray exponent or global
+quasi-polynomial bound.
+
+Section~\ref{sec:q-zero-pachner-transport} proves an exact correspondence
+on regional Q-zero faces through certified Pachner moves.  Canonical
+Euler values and root-ray extremality survive, including with incompatible
+outside coordinates and formal boundary selfattachments.  This local
+theorem imposes no bound on the unrestricted resolving parameter.
+Section~\ref{sec:prepared-euler-matrix} reuses a mask's parsed LP matrix and
+selected original rows across its objectives.  Each solve retains fresh
+state and budgets; only repeated algebraic preparation is removed.
+Section~\ref{sec:capped-pivot-pilot} proves that exact lexicographic leaving
+preserves the capped polynomial-prefix contract.  On all eight LP inputs
+captured from an authenticated W34 endpoint, it uses $784$ pivots and
+resolves every query; Bland uses $10000$ with one capped query.  The
+positive-envelope regression and ordinary Dantzig failures remain in the
+table.  These are fixed-query counts, not a fresh recognition verdict or
+an adopted production pivot change.
+Section~\ref{sec:whole-call-prefix} follows this with fourteen fresh
+whole-diagram calls under identical shared allowances, retaining changed
+query streams, conflicts and all capped outcomes.  Its native adoption
+boundary remains separate from the finite experiment.
+The lexicographic arm certifies $W(3,4)$ as knotted using $6606$ pivots,
+where Bland remains inconclusive at $10000$.  The additional LP calls
+and the node/conflict regressions on other cases remain explicit; no
+elapsed-time or universal speedup claim follows.
+Section~\ref{sec:native-lex-prefix} adopts the exact lexicographic prefix
+with lazy integer comparisons and call-local dispatch.  Explicit Bland
+behavior, shared caps, immutable preparation and exact fallback remain.
+The fresh regression passes $408$ tests in $45$ modules.  The complete
+polynomial LP bound is preserved; the admissibility-search exponent is
+unchanged.
+Section~\ref{sec:euler-coordinate-factors} proves coordinate-product
+decomposition, positive-search composition and additivity of the resolving
+number across exact kernel factors.  A uniform balanced compatibility
+separator bound $k(t)$ would give conditional source search
+$A t^{O(k(t))}\operatorname{poly}(t,L)$, and hence a route to quasi-polynomial
+recognition if all stage and encoding obligations hold.  No such separator
+theorem is proved.  On six authenticated sources, all full kernels and all
+$276$ one-tetrahedron singleton restrictions remain single factors.
+Section~\ref{sec:coordinate-separator-obstruction} gives explicit
+polynomial-size integer matrices with the same triple-sum, rank and
+full-support properties but linear-size balanced singleton separators.
+This rules out deducing the needed separator theorem from those algebraic
+properties alone.  It does not realize the matrices by native triangulations
+or establish a recognition lower bound.
+Section~\ref{sec:sparse-coordinate-separators} strengthens that obstruction
+to constant-coefficient, sparse, totally unimodular matrices.  An explicit
+periodic grid forces at least $\lceil\sqrt{t/3}\rceil$ singleton restrictions
+for two-thirds coordinate balance, even after exact implicit-zero deletion.
+Thus these stronger algebraic premises still do not supply polylogarithmic
+separators.  The theorem gives no native realization or canonical Euler
+function, and makes no change to the tested implementation or its complexity.
+Section~\ref{sec:native-edge-isotropy} derives the sparse interior-edge
+presentation in the maintained Q conventions and proves equality with the
+cycle-row space.  Paired-face cancellation gives full-source block-skew
+isotropy, excluding the represented periodic-grid example.  Retaining exactly
+two types in every block preserves isotropy and rank.  Mixed restrictions
+can destroy the zero identity; changing $b$ blocks leaves a defect of rank
+at most $2b$.  This distinguishes an actual native
+constraint from its weaker descendant property, without asserting a new
+separator theorem or changing LP certificate semantics.
+
 \paragraph{Obstacles that remain.}
 The six items of Section \ref{sec:missing} remain obligations for a general
 complexity theorem. Lackenby's July 2026 paper~\cite{lackenby2026} develops
@@ -1171,6 +1304,16 @@ Parameterized and Exact Algorithms}, revised 2016.
 \bibitem{cycle-urm} Juhi Chaudhary, Ignasi Sau and Meirav Zehavi,
 \emph{A Parameterized Perspective on Uniquely Restricted Matchings}, 2025.
 \url{https://arxiv.org/abs/2508.12004}.
+
+\bibitem{edge-burton} Benjamin A. Burton,
+\emph{Quadrilateral-octagon coordinates for almost normal surfaces},
+Definition 2.4 and Section 4.
+\url{https://arxiv.org/abs/0904.3041}.
+
+\bibitem{edge-neumann} Walter D. Neumann,
+\emph{Combinatorics of Triangulations and the Chern--Simons Invariant for
+Hyperbolic 3-Manifolds}, Section 4, especially p.~259.
+\url{https://www.math.columbia.edu/department/neumann/preprints/cspaper.pdf}.
 
 \end{thebibliography}
 

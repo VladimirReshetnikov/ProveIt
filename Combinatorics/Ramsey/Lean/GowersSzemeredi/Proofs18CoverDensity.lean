@@ -1,6 +1,5 @@
 import GowersSzemeredi.Proofs18CoverModulus
-import GowersSzemeredi.Proofs18GenericDensity
-import GowersSzemeredi.Proofs18GenericExponents
+import GowersSzemeredi.Proofs18GenericEnvelopeBase
 
 /-! The density envelope of the single-piece step with the joint-cover
 remainder (Notes L.12).
@@ -20,23 +19,6 @@ No bound on `k` is needed anywhere (the graded chain needed `k + 1 ≤ 2^68`). -
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
-
-/-- A product of `≤ 2^c` factors, each at most `X^(2^a)`, is at most `X^(2^(a+c))`. -/
-theorem prod_le_pw {ι : Type*} (s : Finset ι) {X : Real} (hX : 2 ≤ X) {f : ι → Real} {a c : Nat}
-    (h0 : ∀ i ∈ s, 0 ≤ f i) (h : ∀ i ∈ s, f i ≤ X ^ (2 ^ a)) (hs : s.card ≤ 2 ^ c) :
-    ∏ i ∈ s, f i ≤ X ^ (2 ^ (a + c)) := by
-  calc ∏ i ∈ s, f i ≤ ∏ _i ∈ s, X ^ (2 ^ a) := Finset.prod_le_prod h0 h
-    _ = (X ^ (2 ^ a)) ^ s.card := Finset.prod_const _
-    _ ≤ X ^ (2 ^ (a + c)) := pw_pow hX (zero_le_one.trans (one_le_pw hX a)) le_rfl hs
-
-theorem nonTop_card_le (k : Nat) :
-    (Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true)).card ≤ 2 ^ k := by
-  rw [nonTopVertices_card]; exact Nat.sub_le _ _
-
-theorem nonTop_card_le_k {k : Nat} {e : Fin k → Bool} (he : e ≠ fun _ => true) :
-    (section16VertexDirections e).card ≤ k := by
-  have := section16VertexDirections_card_lt he
-  omega
 
 theorem k_succ_le_two_pow_fixDeg (k : Nat) : k + 1 ≤ 2 ^ fixDeg k := by
   have h1 := Nat.lt_two_pow_self (n := k + 1)
@@ -62,33 +44,6 @@ theorem coverPrec_gen_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) 
   have h2 : (2 : Real) ^ (k + 1) ≤ (2 / alpha) ^ (2 ^ fixDeg k) :=
     (pow_le_pow_left₀ (by norm_num) hX _).trans (pw_natpow hX (k_succ_le_two_pow_fixDeg k))
   exact pw_mul hX (by positivity) (inv_pos.mpr ht0).le h2 hti
-
-/-- `3^(k+1) ≤ X^(2^a)` once `k + 2 ≤ a`. -/
-theorem three_pow_le_pw {X : Real} (hX : 2 ≤ X) {k a : Nat} (hka : k + 2 ≤ a) :
-    (((3 ^ (k + 1) : Nat) : Real)) ≤ X ^ (2 ^ a) := by
-  refine pw_const hX ?_
-  have h1 : 3 ^ (k + 1) ≤ 4 ^ (k + 1) := Nat.pow_le_pow_left (by norm_num) _
-  have h2 : (4 : Nat) ^ (k + 1) = 2 ^ (2 * (k + 1)) := by
-    rw [pow_mul]; norm_num
-  have h3 : 2 * (k + 1) ≤ 2 ^ a := by
-    have := Nat.lt_two_pow_self (n := k)
-    have h4 : 2 ^ (k + 2) ≤ 2 ^ a := Nat.pow_le_pow_right (by norm_num) hka
-    have h5 : 2 ^ (k + 2) = 4 * 2 ^ k := by rw [pow_add]; ring
-    omega
-  have h6 : 3 ^ (k + 1) ≤ 2 ^ (2 ^ a) :=
-    h1.trans (h2 ▸ Nat.pow_le_pow_right (by norm_num) h3)
-  exact_mod_cast h6
-
-/-- `16^m ≤ X^(2^(k+3))` for `m ≤ k + 1`. -/
-theorem sixteen_pow_le_pw {X : Real} (hX : 2 ≤ X) {k m : Nat} (hm : m ≤ k + 1) :
-    (16 : Real) ^ m ≤ X ^ (2 ^ (k + 3)) := by
-  refine pw_const hX ?_
-  have h1 : (16 : Real) ^ m = 2 ^ (4 * m) := by rw [pow_mul]; norm_num
-  rw [h1]
-  refine pow_le_pow_right₀ (by norm_num) ?_
-  have := Nat.lt_two_pow_self (n := k)
-  have h5 : 2 ^ (k + 3) = 8 * 2 ^ k := by rw [pow_add]; ring
-  omega
 
 namespace GenParamsC
 
@@ -209,23 +164,10 @@ theorem nestExp_inv_leC {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV
   have hfk : P.k + 1 ≤ fixDeg P.k := by
     unfold fixDeg; have := Nat.lt_two_pow_self (n := P.k + 5); omega
   have hka : P.k + 3 ≤ P.μ0 + 1 + 68 * 2 ^ P.k := by omega
-  have heq : (P.NestExp alpha)⁻¹ =
-      ∏ e ∈ Finset.univ.filter (fun e : Fin P.k → Bool => e ≠ fun _ => true),
-        (16 : Real) ^ (P.k + 1 - (section16VertexDirections e).card) *
-          uCount P.V (uDeg68 (section16VertexDirections e).card) (alpha / 2)
-            (globalBudget alpha (alpha / 2) P.k) (coverPrec alpha (alpha / 2) P.k) := by
-    show (coverExp (fun l => uExp P.V (uDeg68 l)) alpha (alpha / 2) P.k)⁻¹ = _
-    unfold coverExp
+  refine pw_mono hX (a := P.μ0 + 1 + 68 * 2 ^ P.k + 1 + P.k) ?_ ?_
+  · unfold NestExp coverExp
     rw [← Finset.prod_inv_distrib]
-    refine Finset.prod_congr rfl fun e _ => ?_
-    unfold uExp
-    rw [inv_div, div_inv_eq_mul]
-  rw [heq]
-  have h : ∏ e ∈ Finset.univ.filter (fun e : Fin P.k → Bool => e ≠ fun _ => true),
-        (16 : Real) ^ (P.k + 1 - (section16VertexDirections e).card) *
-          uCount P.V (uDeg68 (section16VertexDirections e).card) (alpha / 2)
-            (globalBudget alpha (alpha / 2) P.k) (coverPrec alpha (alpha / 2) P.k) ≤
-      (2 / alpha) ^ (2 ^ (P.μ0 + 1 + 68 * 2 ^ P.k + 1 + P.k)) := by
+    simp only [uExp, inv_div, div_inv_eq_mul]
     refine prod_le_pw _ hX ?_ ?_ (nonTop_card_le P.k)
     · intro e _
       exact mul_nonneg (by positivity) (zero_le_one.trans (one_le_uCount _ _ _ _ _))
@@ -237,9 +179,8 @@ theorem nestExp_inv_leC {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV
       have hm := pw_mul' hX (by positivity) (zero_le_one.trans (one_le_uCount _ _ _ _ _)) h16 hu
       rw [max_eq_right (by omega)] at hm
       exact hm
-  refine pw_mono hX h ?_
-  have := rhoDegC_ge P.k P.μ0
-  omega
+  · have := rhoDegC_ge P.k P.μ0
+    omega
 
 /-- The log-degree of the input parameter `yIn`. -/
 def densDegC (k μ0 : Nat) : Nat := rhoDegC k μ0 + 2 * (68 * 2 ^ k) + 13
@@ -257,7 +198,7 @@ theorem yIn_boundsC {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
   set μD := 68 * 2 ^ k with hμDdef
   have hρ1 : μD + P.μ0 + 3 ≤ rhoDegC k P.μ0 := (rhoDegC_ge k P.μ0).1
   have hρ2 : fixDeg k + 1 ≤ rhoDegC k P.μ0 := (rhoDegC_ge k P.μ0).2
-  have hbase := GenParams.baseC_recipPowerLB (D := uDeg68 k) (K := P.K) (p := P.p) ha ha2 hV hVμ hμ0
+  have hbase := uniform_baseC_recipPowerLB (D := uDeg68 k) ha ha2 hV hVμ hμ0
   have hD : uDeg68 k ≤ 2 ^ μD := le_rfl
   have ha0 : uDeg68 k * 2 ^ P.μ0 + 1 ≤ 2 ^ (μD + P.μ0 + 1) := by
     have h1 : uDeg68 k * 2 ^ P.μ0 ≤ 2 ^ μD * 2 ^ P.μ0 := Nat.mul_le_mul_right _ hD

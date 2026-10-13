@@ -1,0 +1,223 @@
+\section{A finite connected-sum conflict lower bound}
+\label{sec:conflict-composition}
+
+The boundary counterexamples and the certified collar simplification leave
+open whether a useful small resolving-set theorem holds on simplified knot
+exteriors.  We next retain a diagram-authenticated connected-sum example
+whose positive root-ray conflict hypergraph needs at least five tetrahedra
+to hit.  The maintained optional inverse layering leaves this particular
+source unchanged.  This is a finite obstruction to a universal bound of
+four for these sources.  It is neither a growing family nor a lower bound
+on recognition time, and it does not settle whether a polylogarithmic
+bound holds after a stronger justified simplification.
+
+\subsection{Exact diagram and source authentication}
+
+Start with the closure of the three-strand braid
+\[
+ (\sigma_1)^3(\sigma_2)^3.
+\]
+The retained bare PD passes native diagram validation.  Its interlacement
+factor certificate gives the crossing blocks $\{0,1,2\}$ and
+$\{3,4,5\}$.  Each factor is identified with the same trefoil PD by an
+explicit bijection of edge labels that preserves crossing order and all
+four crossing slots.  No reflection or under/over exchange is used.
+Thus the experiment starts from a visible diagrammatic connected sum of
+two trefoils, rather than inferring that type from a polynomial invariant.
+
+The experiment calls \path{recognize_by_crushing} directly on this entire
+connected-sum diagram.  It does not describe the default high-level
+\path{recognize} router: that interface already applies certified visible
+interlacement factorization before its factor engines, as explained in
+\path{research_updates.tex}.  The existing router can therefore avoid
+constructing this combined cone.  Neither the source parameter bound nor
+the failed whole-source candidates below are a lower bound on that router.
+
+The native diagram exterior has $120$ tetrahedra.  The verified shelling
+prefix leaves $114$, and $24$ independently verified vertex-reduction
+crushes leave a finite, connected, orientable, one-vertex source $T$ with
+one torus boundary and $23$ tetrahedra.  Its exact labelled-source digest
+is
+\begin{quote}\small\ttfamily
+825247bfc387213d7cc965a33018a448043469eecf0a9edd3ce8d7a1b5fcb6f9.
+\end{quote}
+The retained \path{diagram-crushing-v1} certificate authenticates the
+whole sequence from the supplied PD.  It has status \path{REDUCED}; no
+recognition verdict is inferred from this partial chain.
+
+A fresh control enables inverse layering and uses conflict-directed
+transversal search, with zero tree-node, pivot and anchor allowances.
+Vertex-reduction preprocessing still runs
+before Euler search.  The resulting independently checked
+\path{diagram-crushing-v2} chain contains exactly the same $24$ normal
+crush packets, and its final labelled triangulation equals $T$ literally.
+It performs zero inverse layers and no LP calls.  The boundary faces are
+$(17,0)$ and $(20,0)$, in different tetrahedra.  Consequently there is no
+candidate for the exposed two-boundary-face operation of
+Section~\ref{sec:boundary-unlayer}.  This control proves survival through
+the currently implemented optional preprocessing.  It gives no
+invariance claim for $h$ under arbitrary triangulation moves or under
+later positive normal crushing.
+
+\subsection{Original STANDARD rank certificates for the root rays}
+
+The evidence retains $35$ distinct primitive integral Q vectors with
+canonical nonnegative formal standard lifts.  They all have positive
+formal Euler characteristic and at least one incompatible tetrahedron.
+No claim that these formal vectors are embedded surfaces is used.
+Their positive coordinates were discovered by bounded native exact LP
+queries; the fresh replay instead checks their original equations and
+ranks without invoking an LP backend or Q-cycle elimination.
+
+Let $M$ be the original standard matching matrix for $T$, and let $S$
+be the positive Q support of a retained vector.  Keep \emph{all} $92$
+triangle columns together with the $|S|$ Q columns.  Let $M_S$ be this
+restricted matrix and $M_\triangle$ its triangle block.  The replay
+checks
+\[
+ \operatorname{rank}(M_\triangle)=91,\qquad
+ \operatorname{rank}(M_S)=90+|S|.
+\]
+In particular,
+\[
+ \dim\ker M_S=2,\qquad \dim\ker M_\triangle=1.
+\]
+Projection to the Q coordinates therefore has a one-dimensional image
+on this supported matching space.  The triangle-only kernel is the
+single vertex-link direction.  Conversely every vector in that image
+has a standard matching lift; adding a sufficiently large multiple of
+the finite vertex link makes its triangle coordinates nonnegative.
+The supplied positive Q vector belongs to this image and uses every
+column of $S$.  Its nonnegative supported cone is thus exactly one ray.
+Since setting the other Q coordinates to zero defines a coordinate
+face of the full cone, this ray is a \emph{root} extreme ray by
+Lemma~\ref{lem:transversal-face-rays}.
+
+The replay additionally checks every original standard matching equation,
+nonnegative integer coordinates, Q gcd equal to one, and minimum triangle
+coordinate zero.  Because the source has one boundary vertex, this last
+condition is precisely canonical peeling of its vertex-link disc.
+Formal Euler is evaluated directly as vertices minus arcs plus normal
+pieces, using reconstructed global edge weights and face incidences.
+It is not accepted from the discovery log or deduced from a knot-type
+claim.  All $35$ vectors have $F>0$.
+
+\subsection{Seven rays force five resolving tetrahedra}
+
+The following seven retained rays already suffice.  Labels are
+zero-based indices in the immutable $35$-ray list.  The table gives their
+formal Euler value, positive Q support size, and complete conflict set.
+\begin{center}
+\begin{tabular}{rrrrl}
+Ray & $F$ & $|S|$ & $\operatorname{rank}M_S$ & $D(r)$\\
+\hline
+$5$  & $1$ & $11$ & $101$ & $\{3,4\}$\\
+$6$  & $1$ & $8$  & $98$  & $\{5\}$\\
+$7$  & $1$ & $12$ & $102$ & $\{7,12,17,21\}$\\
+$11$ & $1$ & $12$ & $102$ & $\{10,11,14\}$\\
+$17$ & $2$ & $16$ & $106$ & $\{12,14\}$\\
+$19$ & $1$ & $11$ & $101$ & $\{7,14,18,19\}$\\
+$20$ & $2$ & $17$ & $107$ & $\{11,16,19\}$
+\end{tabular}
+\end{center}
+
+\begin{proposition}[Finite authenticated lower bound]
+\label{prop:connected-sum-h-five}
+For the labelled source $T$ above, the uniform incompatible positive
+root-ray conflict parameter of Section~\ref{sec:euler-transversal}
+satisfies $h(T)\ge5$.  The same bound holds on the literally identical
+endpoint of the retained optional inverse-layer preprocessing control.
+\end{proposition}
+\begin{proof}
+Every listed ray is independently verified to be a positive incompatible
+root extreme ray.  Hence a transversal for the complete root-ray
+hypergraph must hit all seven listed conflict sets.
+
+The first two sets require two separate choices, and their union is
+disjoint from the last five sets.  Write those last five sets as
+$A,B,C,D,E$ in table order.  Suppose two choices could hit all five.
+Since $C=\{12,14\}$, one choice must be $12$ or $14$.
+If it is $12$, that choice belongs to none of $B,D,E$, so the other
+choice must lie in
+\[
+ B\cap D\cap E
+ =\{10,11,14\}\cap\{7,14,18,19\}\cap\{11,16,19\}
+ =\varnothing.
+\]
+If it is $14$, that choice belongs to neither $A$ nor $E$, so the
+other must lie in
+\[
+ A\cap E=\{7,12,17,21\}\cap\{11,16,19\}=\varnothing.
+\]
+Both cases are impossible.  The last five sets therefore require at
+least three further choices, proving $h(T)\ge2+3=5$.  The preprocessing
+claim follows from verified equality of the labelled endpoints.
+\end{proof}
+
+For an independent finite enumeration check, every one of the
+$\binom{23}{4}=8{,}855$ four-element subsets of all source tetrahedron
+labels is compared with all retained conflict sets and with the
+seven-set core.  Each misses at least one set.  Smaller subsets extend
+to four-element subsets, so none can hit all the sets either.  The
+retained set
+\[
+ B_0=\{3,5,7,11,14\}
+\]
+hits all $35$ observed conflict sets.  Thus the \emph{retained finite
+hypergraph} has transversal number exactly five.  This is not an upper
+bound of five for $h(T)$, since other positive root rays have not been
+excluded.  A separate four-ray disjoint conflict packing is retained,
+but yields only the weaker bound four.
+
+\subsection{Discovery limits, replay and the open composition theorem}
+
+The first full-source transversal query was inconclusive after its
+$5{,}000$-pivot allowance.  Two deterministic $20$-query anchor batches
+and five bounded explicit-candidate attempts supplied the retained
+rays.  Each explicit candidate was refuted by a positive root ray
+whose conflict set missed that candidate.  The last tested candidate,
+$\{3,5,7,11,12\}$, was refuted by $\{14,18,19\}$.
+No candidate attempt completed a negative cover.  In particular,
+\emph{the canonical admissible cone of this source is not certified
+negative}.  The knot type does not imply that property: a triangulation
+of a nontrivial knot exterior may still contain positive canonical
+normal spheres or boundary-parallel discs.  Such a compatible positive
+witness could justify a later strict crushing step.  The finite result
+therefore does not establish a difficult terminal source or a lower
+bound on the work needed to recognize the connected sum.
+
+The package \path{fast/conflict_composition_research} retains the exact
+PD, factor maps, all normal coordinates, both complete source chains,
+all exploratory configurations and outcomes, and the historical native
+source hashes for each generation phase.  The original JSON bytes are
+stored under deterministic gzip compression and authenticated by a
+separate provenance manifest.  Fresh replay pins cover all current
+native Python files and every immutable package input and source;
+historical hashes are not substituted for those fresh pins.  The
+solver-free audit and focused mutation controls are retained separately
+in \path{synthesis/data/conflict-composition-*}.  No elapsed discovery
+value is presented as a performance benchmark.
+
+A future growing-family construction needs more than copying these
+conflicts into several diagrams.  For a proposed gluing, let $V$ be the
+original supported standard matching space and $L$ its triangle-only
+kernel.  A sufficient rank-transport argument must control the induced
+map on $V/L$, so that each copied Q support still has dimension one.
+It must also verify the canonical Euler correction after the global
+vertex links are peeled.  Triangle-only extension across an annular
+port is constrained by the actual trace space of $L$; arbitrary
+boundary arcs do not extend with zero Q coordinates.  A weaker useful
+condition is \emph{conflict locality}: extensions may use Q coordinates
+in other blocks, provided at most one type is used in each such
+tetrahedron.  Disjoint local conflicts can then survive even when Q
+supports overlap.  None of these transport conditions is inferred
+from the connected-sum knot type.
+
+The archived composition memo spells out these rank, trace and Euler
+obligations.  It also distinguishes sources with an easy compatible
+positive witness from sources with a completely certified negative
+canonical cone.  A family that merely adds crushable sphere gadgets
+could have growing source $h$ while still being simplified quickly.
+No additive lower-bound family, componentwise upper-bound theorem,
+simplification-survival theorem, or general quasi-polynomial recognition
+bound follows from the present finite experiment.

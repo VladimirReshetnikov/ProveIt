@@ -4613,10 +4613,10 @@ within its original positive support. The crushing checker independently
 revalidates this ray. The global negative verifier supports either complete
 corner or Euler-LP evidence for each final-source assignment.
 
-The maintained simplex uses exact Bland pivots; no polynomial pivot bound is
-claimed. A small number of active vertex groups bounds the number of anchor
-LPs, conditional on a polynomial LP policy. The full compatible-sector family
-still needs a general quasi-polynomial bound. Proofs and comparisons are in
+The default exact LP policy limits a Dantzig/full-slack lexicographic prefix
+and uses a polynomial rational ellipsoid fallback, including exact witness recovery. A small number
+of active vertex groups bounds the number of anchor LPs. The full compatible-sector
+family still needs a general quasi-polynomial bound. Proofs and comparisons are in
 [Euler-LP crushing](../synthesis/euler_lp_crushing.tex).
 
 The crushing backend now defaults to `reduce_vertices=True`. Before sector
@@ -4633,8 +4633,7 @@ canonical coordinates. A torus-boundary check alone supplies no knot
 provenance; the diagram chain supplies that premise. Every extracted ray
 uses the existing independent crushing certificate. One-vertex preprocessing
 removes the Cartesian anchor-product obstruction on every search source;
-the exact simplex pivot policy and complete sector family still lack the
-requested quasi-polynomial bound. See
+the complete sector family still lacks the requested quasi-polynomial bound. See
 [the vertex-reduction proof](../synthesis/vertex_reduction.tex).
 
 
@@ -4662,8 +4661,497 @@ partial root mask proves only a restricted claim. Global knottedness requires
 a full root and authenticated diagram crushing chain, using the new
 `diagram-crushing-recognition-v2` schema. Terminal unknot chains retain v1.
 
-Tree depth is at most the tetrahedron count, but general node count and exact
-Bland pivot count still lack quasi-polynomial bounds. The default recognition
+Tree depth is at most the tetrahedron count, but the general node count still
+lacks a quasi-polynomial bound. The default recognition
 dispatcher and default crushing sector method remain unchanged. See the
 [Euler-tree theory](../synthesis/euler_branch_tree.tex) and
 [reproducible audit and comparisons](euler_tree_research/README.md).
+
+The exact LP backend now selects an independent subset of original matching
+rows before constructing its tableau. `solve_nonnegative_kernel(...,
+reduce_rows=False)` retains the previous tableau for comparison. Returned
+`equation_rows` maps tableau equalities to the original rows; negative duals
+always retain the original row dimension, with zeroes at discarded rows.
+Every positive point and lifted dual is checked against the original system.
+This polynomial preprocessing reduces tableau dimensions without proving a
+polynomial bound on simplex pivots.
+
+Version-2 Euler-tree replay now caches independently reconstructed full dual
+images and source-fixed objectives, each in a source-local 256-entry cache.
+Every supplied payload is still parsed, every required anchor is checked,
+and every currently allowed column is tested again. Cache hits cannot reuse
+an acceptance decision across masks or sources. See
+[the row-basis and replay proof](../synthesis/euler_rank_replay.tex).
+
+### Learning a uniform set of quadrilateral splits
+
+`sector_method='transversal'` reuses the full-source Euler oracle while learning
+the complete conflict sets of incompatible positive basic Q rays. It tests
+candidate sets of tetrahedra in increasing size and searches with splits
+restricted to that set. A positive ray whose conflicts miss the candidate
+refutes it; the next candidate reuses source algebra and checked dual bounds.
+A completed negative search carries the same independently replayed branch
+tree and authenticated crushing chain as `sector_method='tree'`.
+
+The low-level API is
+`normal_euler_transversal.search_euler_transversal(source, allowed_types=None)`.
+It supports both Euler strategies and requires the full-source model. At the
+diagram level, `tree_model='restricted'` is rejected for this policy.
+`max_tree_nodes`, `max_pivots`, and `max_anchors` count work across all failed
+candidates and crushing successors. The additional `max_hitting_subsets=10000`
+counts every tested subset, including subsets rejected before an LP call;
+`None` removes this limit. Exhaustion returns `INCONCLUSIVE` with no partial
+negative proof. Learning restarts on each smaller source after a crush.
+
+For a source whose incompatible positive root extreme rays have a hitting set
+of size `h`, the policy tests at most `sum(comb(t,k), k=0..h)` subsets and uses
+trees of depth at most `h`. With the default polynomial exact LP/basic-ray policy this
+gives `(3t)^O(h)` work, times the anchor-family and polynomial arithmetic
+costs. A general polylogarithmic bound on `h` remains unproved. Without a small `h`,
+restarting candidate trees can cost more than ordinary DFS; this option does
+not change the default dispatcher or crushing sector method.
+
+The fresh audit proves resolving sizes 3 and 2 for the retained authenticated
+trefoil and figure-eight sources. Their final negative proofs have 40 and 13
+nodes. Learning completes the bounded figure-eight query where DFS remains
+inconclusive; on the trefoil it is slightly slower in the paired measurement.
+See [the theory and tradeoff](../synthesis/euler_transversal.tex) and
+[the source-pinned audit and timings](euler_transversal_research/README.md).
+
+`transversal_candidate_policy='conflicts'` selects a second candidate policy
+in `recognize_by_crushing(..., sector_method='transversal')`. The source API
+uses `candidate_policy='conflicts'`; the default `'subsets'` retains the
+original comparison. The new policy deepens a search on missed conflicts.
+Every valid extension must choose a tetrahedron in the missed set. Branches
+partition those choices by their first selected element, without changing
+the root quadrilateral mask or its certificate coverage.
+
+A FIFO cache retains at most 256 conflicts. Forgetting only adds possible
+discovery work: a negative result still requires a complete independently
+checked Euler tree. If `h` is the minimum resolving size and `delta` bounds
+the sizes of positive root-ray conflict sets, the total oracle work is
+`O((3*delta)**h)`, with polynomial exact arithmetic per node after one-vertex
+preprocessing. This removes the dependence on the total tetrahedron count
+from the exponential base when conflicts are small. A uniform bound on `h`
+is still missing. See [the complete argument](../synthesis/conflict_candidates.tex).
+
+In this mode `max_hitting_subsets` charges every visited partial candidate
+state, including repeated states at new depth limits. `learned_conflicts`
+counts cache insertions, including relearning after eviction; cache peak,
+eviction count, and maximum observed conflict size are reported separately.
+All existing LP, node, fallback, and successor limits remain shared.
+
+The fresh [candidate-policy audit](conflict_candidate_research/README.md)
+checks 352 supplied-source queries against original STANDARD enumeration,
+all six complete diagram proofs, and 58 labelled crushing steps. Both knot
+endpoints retain independently proved exact resolving sizes 3 and 2.
+Trefoil discovery falls from 64 to 40 oracle nodes and 124 to 85 LP calls;
+figure-eight falls from 36 to 29 nodes and 114 to 98 LP calls. These totals
+include unsuccessful candidates. All 200 affected tests pass with Regina.
+Five paired complete-query measurements give subset/conflict ratios 1.230
+on trefoil and 1.054 on figure-eight, with A/A ratios 0.981 and 0.990.
+The circle uses preprocessing alone and remains near timing parity.
+All raw samples, finite allowances, environment limitations and replayed
+warmup proofs are retained; the subset policy remains the default.
+
+The companion [boundary-counterexample study](boundary_transversal_research/README.md)
+shows that boundary-face tetrahedra and even all boundary-edge stars need not
+cover the positive conflict hypergraph. Its smallest retained edge-star
+counterexample has eleven tetrahedra. Original STANDARD rank replay and fresh
+layering reconstruction verify these finite obstructions; they do not give a
+family with growing minimum resolving size.
+
+### Certified inverse boundary layers
+
+`recognize_by_crushing(..., unlayer_boundary=True)` tries a certified deletion
+of the exposed outer boundary layer after vertex reduction. The two triangles
+of a one-vertex torus boundary determine at most one candidate tetrahedron.
+The independent checker reconstructs the forward layering, checks its shared
+edge with orientation, verifies all unchanged face pairings and edge classes,
+and validates both compact manifolds. Identified quadrilateral sides are
+allowed by the layering theorem; embedded-tetrahedron shellings stay separate.
+
+The source-only API is `boundary_unlayer.unlayer_boundary_once`. An accepted
+step preserves the compact manifold and deletes exactly one tetrahedron.
+Repeated peeling takes polynomial bit work and reverses explicitly layered
+collars. It does not preserve the normal cone or assert that its minimum
+resolving size decreases. The [theory section](../synthesis/boundary_unlayer.tex)
+proves a conservative `O(t**3 * log(t+2)**2)` bound for the full peeling pass.
+
+Enabled diagram queries emit `diagram-crushing-v2`, mixing existing normal
+crushes with `normal-boundary-unlayer-v1` packets. Each move is independently
+replayed before the driver accepts progress. `max_crushes` counts both kinds
+of strict reduction; `crushing_steps` and `boundary_unlayerings` distinguish
+them. All previous search work remains charged when the smaller source starts
+fresh algebra. The default remains false and retains the original v1 chain.
+An unlayer packet by itself authenticates no knot diagram or boundary marking.
+
+The [complete research audit](boundary_unlayer_research/README.md) checks 42
+labelled inverse steps, 36 conditional supplied-source runs and six genuine
+diagram recognitions. All 208 affected tests pass. Layered supplied sources
+benefit, but none of the three diagram controls removes a layer. Every capped
+run remains inconclusive; counters from a query interrupted before return are
+explicitly incomplete. The paired timings include proof replay and serialization.
+
+The [connected-sum evidence](conflict_composition_research/README.md) proves
+`h >= 5` for one authenticated 23-tetrahedron source unchanged by this peeling
+operation. Its 35 root rays are checked directly in original STANDARD
+coordinates. This is a finite bound on a direct crushing-driver source; the
+existing recognition router already splits the visible two-trefoil diagram.
+Neither a complete negative cone nor an asymptotic lower-bound family is claimed.
+
+### Certified crushing of visible factors
+
+`fastunknot.factored_crushing.recognize_factored_by_crushing(diagram, **options)`
+is a separate interface that combines the existing visible interlacement
+factorization with native crushing proofs. It accepts the direct crushing
+driver's options and defaults. Factors are tried by crossing count, with their
+original component indices preserved. Each factor gets its own authenticated
+diagram exterior; the whole-input exterior is never reused for a child.
+
+One independently verified `KNOTTED` child proves the sum knotted. An `UNKNOT`
+result requires a proof for every factor. The new `diagram-factor-crushing-v1`
+certificate binds the original PD, its interlacement partition and forest,
+the exact derived factor PDs, and the required child certificates. Replay uses
+`factored_crushing_verify.verify_factored_crushing_recognition`; it reconstructs
+the children independently and invokes no factor discovery or LP producer.
+
+All nine work caps are shared across attempted children: sectors, bases,
+reductions, pivots, anchors, tree nodes, candidate states, ellipsoid iterations
+and feasibility calls. Reduction counts include optional inverse boundary
+layers and optional Pachner 3→2 moves. Failed child work stays charged, and a later child can still prove
+knottedness after an earlier inconclusive result. `factor_results` retains every
+attempt. Additive statistics sum attempted child work; peak statistics take
+the maximum. An inconclusive aggregate has no recognition certificate.
+
+This exposes proof composition for the direct crushing backend. The existing
+high-level recognition router already factors visible sums. A visible atom
+can still represent a hidden composite knot, and no bound on its search
+parameter follows from this interface. See
+[the factorwise theory](../synthesis/factored_crushing.tex).
+
+The source-pinned whole-diagram audit retains 20 completed calls, including
+four repeated-trefoil scaling controls. Under equal shared limits of 256 nodes
+and 10,000 pivots, the factored arm certifies TT, TF and FF, where whole-exterior
+crushing exhausts its pivot allowance. UU needs two normal crushes instead of
+four; UT uses 40 nodes and 1,268 pivots instead of 49 and 1,330. These are direct
+backend comparisons; no high-level-router speedup is claimed. Reproduction and
+independent proof, partial-chain and accounting replay are in
+[`factored_crushing_research`](factored_crushing_research/README.md).
+The 50-call paired benchmark includes fresh recognition, proof replay and
+complete result serialization. Median paired raw/factored ratios are 10.0809
+for UU and 1.2525 for UT; circle, trefoil and figure-eight single-factor controls
+regress (0.6971, 0.8153 and 0.8287). The retained A/A measurements and paired
+spread record shared-host variation. This remains an optional interface.
+This evidence is retained at revision `fafaf68f5`, before the optional 3→2
+policy below; its recorded source pins belong to that publication.
+
+### Optional certified Pachner 3→2 reduction
+
+Pass `reduce_pachner32=True` to either direct crushing interface to try a
+deterministic strict simplification before Euler search. After vertex reduction
+and enabled inverse boundary layering, the driver scans interior degree-three
+edges incident to three distinct tetrahedra. It accepts the first independently
+verified formal bipyramid replacement, removing exactly one tetrahedron, then
+restarts preprocessing and builds fresh normal algebra on the successor.
+
+`normal_pachner32.reduce_pachner32_once(source)` exposes the local operation.
+`REDUCED` includes a `normal-pachner-32-v1` source-bound packet; `UNCHANGED`
+means the finite candidate scan found no verified move. Neither is a knot
+verdict or a minimum-triangulation claim. The independent checker is
+`normal_pachner32_verify.verify_normal_pachner32`. It validates both finite
+torus-boundary manifolds and the complete formal boundary maps, including
+identifications between boundary facets of the selected region. Identified
+global vertices are allowed.
+
+The enabled driver emits `diagram-crushing-v3`; older v1/v2 chains retain their
+previous step types. `max_crushes` charges normal crushes, inverse layers and
+`pachner32_moves` together, including failed child work in the factored wrapper.
+`pachner32_calls` and `pachner32_candidates` retain scan work, which may occur
+before an exhausted move allowance prevents appending a candidate. Caller
+callback exceptions retain their identity. Polynomial strict preprocessing
+does not imply monotonicity of the resolving parameter or a general
+quasi-polynomial recognition bound. See
+[the relative-boundary proof](../synthesis/strict_pachner32.tex).
+
+The complete eight-call audit compares the flag off/on on circle, trefoil,
+figure-eight and the whole two-trefoil diagram under identical search caps.
+Trefoil uses 7 nodes and 428 pivots instead of 40 and 1,268; figure-eight uses
+7 and 1,917 instead of 29 and 5,016. The whole two-trefoil baseline exhausts
+10,000 pivots; six 3→2 moves enable a complete proof using 3,398 pivots.
+These are genuine direct-driver calls with all preprocessing and partial work
+retained. A separate archived replay validates nine local moves and three
+full-root negative trees, including a finite resolving-parameter decrease
+from at least 5 to at most 3 on those exact two-trefoil sources. Reproduction
+and scope are in
+[`strict_pachner32_research`](strict_pachner32_research/README.md).
+All 30 predeclared timing calls match their audited outputs. Median paired
+complete-call speedups are 1.4257 for trefoil and 1.5841 for figure-eight,
+including preprocessing, independent replay and full result serialization.
+The circle has no 3→2 scan and supplies no measured simplifier benefit.
+Paired samples and A/A variation are retained; the policy remains optional.
+These measurements and source pins describe revision `fb597741b`.
+
+### Optional fixed one-upward Pachner descent
+
+Pass `reduce_pachner_descent=True` to either direct crushing interface to try
+a complete fixed one-upward search after vertex reduction, enabled inverse
+layering and enabled strict 3→2 scans. The policy permits at most one total
+2→3 expansion per accepted macro and stops at the first strictly smaller
+source. An accepted trace is either one contraction or an expansion followed
+by two contractions; it removes exactly one tetrahedron. Preprocessing and
+normal algebra restart on the checked endpoint.
+
+`normal_pachner_descent.reduce_pachner_descent_once(source)` returns `REDUCED`
+with a `normal-pachner-descent-v1` packet, or `UNCHANGED` after complete
+exhaustion of the bounded move family. The independent checker is
+`normal_pachner_descent_verify.verify_normal_pachner_descent`. It replays every
+intermediate formal boundary replacement and zero cochain transport, rejects
+disc payloads, and checks the exact source hash and first strict descent.
+No LP or normal-disc search runs in this local operation.
+
+The optional driver emits `diagram-crushing-v4`. `max_crushes` charges one
+unit for each accepted macro, together with ordinary crushes, inverse layers
+and standalone 3→2 moves. `pachner_descent_calls`, `pachner_descent_nodes` and
+`pachner_descent_work` record searches, including a search whose candidate
+cannot be appended because the reduction budget is exhausted. The work field
+counts checkpoints in the underlying descent search; outer preparation and
+additional wrapper replay remain outside it. `pachner_descent_macros` and the
+separate upward/downward move counts describe only appended macros.
+
+The fixed search and repeated strict preprocessing have polynomial cost.
+Exhaustion proves neither a knot verdict nor global minimality, and smaller
+triangulations need not have smaller resolving parameters or faster complete
+recognition. The policy defaults to false. See
+[the theory and implementation contract](../synthesis/pachner_descent_crushing.tex).
+The regression run passes 336 tests across 38 modules, with Regina and no
+skips. A final seven-test verifier replay strengthens the independent outer
+successor mutation controls. Logs are retained in `synthesis/data/pachner-descent-*`.
+
+The fixed fourteen-call whole-diagram audit retains every complete or partial
+proof. Trefoil pivots fall from 428 to 259, figure-eight from 1,917 to 676,
+and T25 from 7,113 to 693. The two-trefoil call instead rises from 3,398 to
+3,526 pivots, despite fewer tree nodes. T27 completes at 2,545 pivots where
+the baseline exhausts 10,000; both W34 calls remain inconclusive at that cap.
+All twelve noncircle endpoints match the separate staged experiment exactly.
+Its complete negative trees and original STANDARD extreme-ray checks prove
+endpoint resolving values 1, 0, 2, 1 and 2 for T, F, TT, T25 and T27.
+In particular T25 changes from exact 3 to 1; this establishes no general
+monotonicity or family bound. See the fixed inputs, archival distinction and
+reproduction commands in
+[`pachner_descent_research`](pachner_descent_research/README.md).
+All 49 evidence corruption controls are rejected, including a native-valid
+same-diagram proof whose terminal source differs from the measured endpoint.
+The 50-call paired benchmark includes recognition, independent proof replay
+and full-result serialization. Median paired baseline/enabled time ratios are
+0.9200 for trefoil, 1.1413 for figure-eight, 1.0270 for TT and 1.7181 for T25.
+Thus the trefoil control regresses despite fewer pivots. All samples and A/A
+controls are retained; the circle performs no macro search. These finite
+shared-host measurements support no universal speedup or asymptotic bound.
+These tests, measurements and source pins describe revision `55028b28a`
+and the cochain method, which remains the default method.
+
+### Direct geometric one-upward descent
+
+Set `reduce_pachner_descent=True, pachner_descent_method='geometric'`
+to enumerate every first descent with at most one total expansion directly.
+The source API is `normal_geometric_descent.reduce_geometric_descent_once`;
+its independent checker is
+`normal_geometric_descent_verify.verify_normal_geometric_descent`.
+The search streams all D and UDD words, including every possible first
+contraction after each expansion. It keeps only the current branch and local
+candidate lists. Each returned elementary replacement is independently
+verified, including all formal boundary selfattachments.
+
+A `normal-geometric-descent-v1` packet contains one or three elementary
+proofs and their full intermediate triangulations. Version 5 crushing chains
+accept these packets and all earlier reduction kinds. Each accepted macro
+uses one shared `max_crushes` unit. A denied append still records its discovery
+work. The existing stage priority and restart on each changed source apply.
+The method selector defaults to `cochain`; the enabling flag still defaults
+to false. With the flag disabled, either valid method retains previous result
+shapes and statistics.
+
+Conservative bit bounds are O(t⁵ log²(t+2)) for one complete geometric query
+and O(t⁶ log²(t+2)) for repeated strict preprocessing. Search working storage
+is O(t log(t+2)), plus O(t² log(t+2)) if all accepted packets are retained.
+These improve the proved bounds for the cochain implementation. Geometric
+`pachner_descent_work` counts all producer
+callbacks, including preparation and final replay; its units differ from
+the cochain counter and cannot be used as a speed ratio.
+See [the full proof and interface contract](../synthesis/geometric_descent_crushing.tex).
+General quasi-polynomial recognition remains unproved.
+The core regression at `2149e2e56` passes 364 tests across 41 modules with
+Regina and no skips, including genuine diagram and factorwise proofs, shared budgets, strict
+packet replay and exact preservation of the default cochain result. Commands
+and logs are retained under `synthesis/data/geometric-descent-*`.
+
+The frozen [comparison protocol](geometric_descent_research/README.md) at
+`66817eceb` now has fourteen fresh whole-diagram calls and fifty timing calls.
+Both methods reach exactly the same labelled endpoints on all seven inputs,
+with identical LP pivot and search-node totals. Both W34 calls remain
+inconclusive at 10,000 pivots. On circle, trefoil, figure-eight, TT and T25,
+median paired cochain/geometric timing ratios are 0.9890, 0.9849, 1.0487,
+1.0431 and 1.0584. Every trefoil pair is a regression; TT has an A/A ratio of
+1.2191. The article retains every pair, warmup, full result and repeat control.
+CPU5 affinity on the shared host gives no exclusive-core guarantee. These
+measurements establish no universal speedup or general complexity bound.
+
+The external saved-evidence controls accept three valid cases and reject
+27 mutations, including a native-valid same-diagram legacy proof that violates
+the geometric experimental policy. Exact typed argument caching is confined
+to four native verifier entry points; the research acceptance checks rerun.
+The comparison and `data/geometric_descent_evidence_publication.py` belong to
+revision `3d3498207`. That helper replays the saved audit and binds all timed
+outputs and publication files at that revision. The earlier core publication
+and its 364-test manifest belong to `2149e2e56`. Later native changes do not
+reinterpret those historical source pins or timing measurements.
+
+### Conditional matching elimination
+
+The [archived matching experiments](conditional_type_research/README.md)
+test whether excluding a Q type's two local competitors forces that type
+to zero. A local block-ones identity makes the initial nonnegative support
+test equivalent to an exact linear-kernel test. All 276 initial tests on six
+authenticated sources have independently replayed nonnegative STANDARD
+matching witnesses, so the rule deletes nothing on these sources. A separate
+cheap scan remains recorded as capped on W34. Twelve corruptions are rejected.
+These witnesses need not be globally compatible or have positive Euler
+characteristic. No native conditional-elimination rule is added; the
+[theory article](../synthesis/conditional_type_matching.tex) distinguishes
+monotonicity of the retained-mask parameter from the unchanged full-source h.
+
+### Direct crushing of native positive rays
+
+LP, Euler-tree and transversal recognition now send native positive coordinates
+directly through the crushing constructor's original matching/support-rank
+checks and independent quotient replay. A canonical lift of a primitive Q
+extreme ray is already primitive and full-STANDARD extreme, even with multiple
+vertices. The old driver nevertheless rebuilt a support chart to extract that
+same ray; removing that pass saves additive algebraic work, not an LP call or
+a proved time exponent.
+
+Valid nonprimitive or nonextreme positive points still use checked extraction
+and one retry. Only dedicated pre-quotient classification errors activate that
+repair; malformed input, impossible rank, quotient failure and caller exceptions
+propagate. The shared reduction cap is checked before validating or extracting
+an unaccepted candidate. Corner enumeration and expanded-edge vertex reduction
+retain their existing paths, including necessary vertex-link extraction.
+
+See [the proof and acceptance contract](../synthesis/direct_crush_positive.tex).
+Independent crushing verifiers and packet schemas are unchanged. Historical
+geometric/cochain timings remain measurements of `3d3498207`; this change has
+no new timing claim or general quasi-polynomial recognition bound.
+The updated regression passes 383 tests across 43 modules with Regina and no
+skips. Nineteen new tests cover direct native rays, actual LP fallback,
+nonextreme/scaled-point repair, callback identity, shared limits and independent
+quotient rejection. Six configurations retain exact full-result equality to
+real extraction-first emulation. Source-only controls are distinguished from
+genuine diagram proofs. The test command, full log and pre-run 360-file snapshot
+are retained under `synthesis/data/direct-crush-positive-*`.
+
+### Reuse exact LP matrix preparation within an Euler mask
+
+Tree and transversal searches prepare a mask's exact LP matrix only on its
+first uncached objective. Subsequent objectives reuse its immutable original
+rows and selected original row indices. Every objective still has a fresh
+tableau, fallback state and current remaining allowances. Cached-only attempts
+perform no preparation, and no prepared matrix is reused across masks.
+
+This removes repeated parsing and row reduction. Certificates, mathematical
+LP queries, pivot counts and existing statistics are preserved. It supplies
+no smaller branching bound or general quasi-polynomial recognition theorem.
+See [the implementation theory](../synthesis/prepared_euler_matrix.tex).
+The separate [Q-zero transport theorem](../synthesis/q_zero_pachner_transport.tex)
+preserves protected ray faces through certified Pachner moves; the current
+driver does not introduce a transport adapter or witness cache.
+At that prepared-matrix checkpoint, the combined regression passed 394 tests
+across 44 modules with Regina and no skips, including eleven new prepared-matrix
+tests. All 361 native/test/fixture dependencies matched its pre-run snapshot.
+The command and full log are retained
+under `synthesis/data/prepared-euler-matrix-*`.
+The supplemental 492-pair comparison executes the actual `973c6fdee`
+predecessor. All complete typed outputs and counters agree, with independent
+primal/dual and Euler-certificate replay; all capped outcomes are retained.
+
+The separate [capped pivot pilot](../synthesis/capped_pivot_pilot.tex) compares
+every LP input captured from the authenticated 31-tetrahedron W34 source.
+Bland, Dantzig and Dantzig-lex use 10,000, 9,187 and 784 pivots, with one, two
+and zero inconclusive queries. The envelope regression and failed queries
+remain explicit. These fixed-input sums are not a new shared-budget driver
+run or a W34 verdict. That pilot left native pivot rules unchanged. The frozen pilot
+archive and isolated discovery-disabled replay are retained under
+`synthesis/data/lp-pivot-pilot-*`.
+
+### Native lazy lexicographic prefix
+
+The polynomial default now selects the largest positive reduced cost, with
+least-index ties, and uses full original-slack lexicographic leaving. The
+leaving selector compares exact integer cross-products lazily, stopping at
+the first unequal component. It avoids materializing ratio tuples or
+performing rational division for every candidate key. Explicit
+`policy='bland'` retains the preceding behavior.
+
+Rule selection is local to each call, including nested public/prepared solves
+from callbacks. Every objective still starts a fresh tableau; matrix
+preparation, hard user caps, terminal-before-cap ordering and exact fallback
+are unchanged. Polynomial callback counts change because selector scans poll
+for cancellation; exception identity is preserved.
+
+The new regression passes 408 tests in 45 modules with Regina and no skips.
+All 363 native/test/fixture/command dependencies match their pre-run snapshot.
+Fourteen new tests cover exact selector agreement with a literal tuple rule,
+retained Bland outputs, full-slack degeneracy, caps, fallback, reentrancy and
+independent LP/tree/crushing replay. See
+[the proof and adoption evidence](../synthesis/native_lex_prefix.tex) and
+`../synthesis/data/native-lex-prefix-*`.
+
+A fresh native call from the original W34 diagram certifies it as knotted in
+62 LP calls and 6,606 pivots, with no fallback. Its complete result and source
+ledger match the archived candidate after independent proof verification.
+A separate process replays the saved proof with discovery disabled; all 302
+execution pins remain unchanged. This is one current-code whole-call check.
+
+The earlier frozen 14-call experiment retains all 449 LP queries and all
+regressions: lex used fewer pivots but more LP calls on every nontrivial input,
+and more nodes on TT and T(2,7). It certified W34 in 6,606 pivots where Bland
+capped at 10,000. Those sources and results remain historical. The selector
+change preserves the polynomial LP bound and does not prove a general
+quasi-polynomial recognition bound or an elapsed-time speedup.
+
+### Polynomial exact LP policy
+
+`solve_nonnegative_kernel` now defaults to `policy='polynomial'`. It performs
+at most `(n + retained_rows + 1)**2` exact Dantzig/full-slack lexicographic
+pivots, then switches to
+exact rational bounded feasibility. `fast_path_pivots=0` forces the fallback
+when the initial tableau has not already decided the query; any larger
+setting can only lower the proved prefix limit. `policy='bland'` retains the
+uncapped legacy policy for comparisons. Explicit `max_pivots` remains a hard
+user allowance: exhausting it returns `INCONCLUSIVE` rather than bypassing it.
+
+The fallback uses a determinant separation gap, rational outward rounding,
+and a polynomial cut bound. It recovers an exact vertex by feasible face
+restrictions; relaxed centres are never original-system witnesses. A positive
+point descends to a primitive extreme ray, with the existing slack-basis
+contract, and negative multipliers are lifted to all original equations.
+Both alternatives undergo exact original-system checks before return.
+
+Euler source APIs and `recognize_by_crushing` expose this choice as
+`lp_policy`, with `lp_fast_path_pivots` for a shorter prefix. Separate
+`max_ellipsoid_iterations` and `max_feasibility_calls` allowances are shared
+across anchors, tree nodes, failed transversal candidates, fair sector retries,
+and crushing successors. They default to `None` in source APIs and 10000 in
+the diagram driver. Set all limits to `None` for the uncapped complexity
+statement. Unused zero fallback allowances do not block successful simplex
+prefixes. Counters distinguish pivots, cuts, feasibility decisions, and
+support descent; partial fallback work never certifies a negative result.
+
+The local LP bit bound is polynomial in encoded input size, not strongly
+polynomial, and does not bound the number of geometric search queries. See
+[the implementation and complete bit-complexity proof](../synthesis/exact_polynomial_lp.tex).
+The [fresh audit and paired comparison](polynomial_lp_research/README.md)
+check 60 exact cone queries and genuine geometric fallback certificates.
+Complete circle, trefoil, and figure-eight results match the legacy policy
+exactly. Those timing examples stay on the fast path; the measurements
+document common-path overhead and do not claim a practical fallback speedup.

@@ -1,0 +1,984 @@
+{
+  "scope": "Source-only refactoring report; not Lean elaboration, kernel verification, or original-paper fidelity certification.",
+  "baseline_commit": "9dd3766f18e00a528ecc05a0dd0b697a4df98098",
+  "observed_head_commit": "9dd3766f18e00a528ecc05a0dd0b697a4df98098",
+  "production_lines": {
+    "file_count": 5,
+    "excludes": "FinalProofSimplificationAudit.lean and all other *Audit.lean files",
+    "includes_new_modules": [],
+    "before": 2494,
+    "after": 2494,
+    "delta": 0,
+    "files": [
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverDensity.lean",
+        "before_lines": 290,
+        "after_lines": 246,
+        "delta": -44,
+        "before_sha256": "712d13713f40efe26871ad5d0115d78fcf623d6086bffa5c26ae6c8cf5cea72f",
+        "after_sha256": "5936297b1d9d129d748aef56a03a721fc345b2a4c8ca79b6c5a72363066903f3"
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverModulusFejer.lean",
+        "before_lines": 339,
+        "after_lines": 311,
+        "delta": -28,
+        "before_sha256": "1eef4f30f8c33fe6441c18ce14e22e2a6bbb78dd0989ff066d610fe221127a93",
+        "after_sha256": "ad0df3421da9153ba5e1ea5093d3356141cab1ffe8b3093f831f8281a7ce1add"
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerEnvelopeBase.lean",
+        "before_lines": 177,
+        "after_lines": 206,
+        "delta": 29,
+        "before_sha256": "1b0fa2f3f0430b36b9093ed395600937d8c941e6ed7e14829ca73c362acc13af",
+        "after_sha256": "73e60ba4cf15a4720d7cd4addcd43622f0798a48c051eb00dde977552766bc5f"
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+        "before_lines": 914,
+        "after_lines": 913,
+        "delta": -1,
+        "before_sha256": "53eeee0a62510c1662b0f55343b70056159a3957a77be602840c716241ebcb32",
+        "after_sha256": "7b1dca532172e566c539f714a1605534e0f0660c85e690385d9c03dd2504a05d"
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GenericEnvelopeBase.lean",
+        "before_lines": 774,
+        "after_lines": 818,
+        "delta": 44,
+        "before_sha256": "abb7c1b9d7283a81e66ac29844dc6c5dec4ee48f1028d57a6adaab2d01572396",
+        "after_sha256": "0c40bdb26f0419ecd88727e8c898750e09b97976ccae0ecf51c3883ea10c16b6"
+      }
+    ]
+  },
+  "declaration_header_check": {
+    "old_declarations_checked": 158,
+    "all_headers_and_variable_include_scopes_preserved": true,
+    "name_identity": "Fully qualified Lean namespace plus declaration name, keyed by origin file; named sections do not alter namespace.",
+    "files": [
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverDensity.lean",
+        "old_declaration_count": 18,
+        "current_declaration_count": 13,
+        "preserved_headers": 18,
+        "moved_out": [
+          "LeanProofs.GowersSzemeredi.prod_le_pw",
+          "LeanProofs.GowersSzemeredi.nonTop_card_le",
+          "LeanProofs.GowersSzemeredi.nonTop_card_le_k",
+          "LeanProofs.GowersSzemeredi.three_pow_le_pw",
+          "LeanProofs.GowersSzemeredi.sixteen_pow_le_pw"
+        ],
+        "declarations": [
+          "LeanProofs.GowersSzemeredi.prod_le_pw",
+          "LeanProofs.GowersSzemeredi.nonTop_card_le",
+          "LeanProofs.GowersSzemeredi.nonTop_card_le_k",
+          "LeanProofs.GowersSzemeredi.k_succ_le_two_pow_fixDeg",
+          "LeanProofs.GowersSzemeredi.coverPrec_gen_bounds",
+          "LeanProofs.GowersSzemeredi.three_pow_le_pw",
+          "LeanProofs.GowersSzemeredi.sixteen_pow_le_pw",
+          "LeanProofs.GowersSzemeredi.GenParamsC.eta",
+          "LeanProofs.GowersSzemeredi.GenParamsC.yIn",
+          "LeanProofs.GowersSzemeredi.GenParamsC.inverse_step",
+          "LeanProofs.GowersSzemeredi.GenParamsC.rho1_pos_le",
+          "LeanProofs.GowersSzemeredi.GenParamsC.vertex_uCount_le",
+          "LeanProofs.GowersSzemeredi.GenParamsC.rhoDegC",
+          "LeanProofs.GowersSzemeredi.GenParamsC.rhoDegC_ge",
+          "LeanProofs.GowersSzemeredi.GenParamsC.rho1_inv_leC",
+          "LeanProofs.GowersSzemeredi.GenParamsC.nestExp_inv_leC",
+          "LeanProofs.GowersSzemeredi.GenParamsC.densDegC",
+          "LeanProofs.GowersSzemeredi.GenParamsC.yIn_boundsC"
+        ],
+        "all_headers_and_variable_scopes_unchanged": true
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverModulusFejer.lean",
+        "old_declaration_count": 27,
+        "current_declaration_count": 25,
+        "preserved_headers": 27,
+        "moved_out": [
+          "LeanProofs.GowersSzemeredi.coverExpW_pos_le",
+          "LeanProofs.GowersSzemeredi.coverRemWidthW_powerLB"
+        ],
+        "declarations": [
+          "LeanProofs.GowersSzemeredi.coverExpW_pos_le",
+          "LeanProofs.GowersSzemeredi.coverRemWidthW_powerLB",
+          "LeanProofs.GowersSzemeredi.GenParamsF",
+          "LeanProofs.GowersSzemeredi.GenParamsF.B",
+          "LeanProofs.GowersSzemeredi.GenParamsF.Ewg",
+          "LeanProofs.GowersSzemeredi.GenParamsF.T2",
+          "LeanProofs.GowersSzemeredi.GenParamsF.Rho1",
+          "LeanProofs.GowersSzemeredi.GenParamsF.Delta",
+          "LeanProofs.GowersSzemeredi.GenParamsF.Em",
+          "LeanProofs.GowersSzemeredi.GenParamsF.NestExp",
+          "LeanProofs.GowersSzemeredi.GenParamsF.MExp",
+          "LeanProofs.GowersSzemeredi.GenParamsF.MThr",
+          "LeanProofs.GowersSzemeredi.GenParamsF.QM",
+          "LeanProofs.GowersSzemeredi.GenParamsF.Bexp",
+          "LeanProofs.GowersSzemeredi.GenParamsF.Zeta",
+          "LeanProofs.GowersSzemeredi.GenParamsF.Rho",
+          "LeanProofs.GowersSzemeredi.GenParamsF.ThS",
+          "LeanProofs.GowersSzemeredi.GenParamsF.CS",
+          "LeanProofs.GowersSzemeredi.GenParamsF.Eth",
+          "LeanProofs.GowersSzemeredi.GenParamsF.Ec",
+          "LeanProofs.GowersSzemeredi.GenParamsF.F",
+          "LeanProofs.GowersSzemeredi.GenParamsF.Eloc",
+          "LeanProofs.GowersSzemeredi.GenParamsF.MReq",
+          "LeanProofs.GowersSzemeredi.GenParamsF.Tloc",
+          "LeanProofs.GowersSzemeredi.GenParamsF.ranges",
+          "LeanProofs.GowersSzemeredi.GenParamsF.Eloc_pos_le",
+          "LeanProofs.GowersSzemeredi.GenParamsF.modulus_conditions"
+        ],
+        "all_headers_and_variable_scopes_unchanged": true
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerEnvelopeBase.lean",
+        "old_declaration_count": 14,
+        "current_declaration_count": 16,
+        "preserved_headers": 14,
+        "moved_out": [],
+        "declarations": [
+          "LeanProofs.GowersSzemeredi.fejerProductExponent_le_printed",
+          "LeanProofs.GowersSzemeredi.section16ThetaOne_le_fejer",
+          "LeanProofs.GowersSzemeredi.section16ThetaTwo_mono",
+          "LeanProofs.GowersSzemeredi.section16Delta_mono",
+          "LeanProofs.GowersSzemeredi.fejer_theta_ge_printed",
+          "LeanProofs.GowersSzemeredi.fejer_alpha_bounds",
+          "LeanProofs.GowersSzemeredi.budget_gen_bounds_fejer",
+          "LeanProofs.GowersSzemeredi.T2_gen_bounds_fejer",
+          "LeanProofs.GowersSzemeredi.delta_gen_bounds_fejer",
+          "LeanProofs.GowersSzemeredi.section16Zeta_le_tight_fejer",
+          "LeanProofs.GowersSzemeredi.zeta_gen_bounds_fejer",
+          "LeanProofs.GowersSzemeredi.lemma156_gen_le_fejer",
+          "LeanProofs.GowersSzemeredi.baseCF",
+          "LeanProofs.GowersSzemeredi.baseCF_recipPowerLB"
+        ],
+        "all_headers_and_variable_scopes_unchanged": true
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+        "old_declaration_count": 49,
+        "current_declaration_count": 49,
+        "preserved_headers": 49,
+        "moved_out": [],
+        "declarations": [
+          "LeanProofs.GowersSzemeredi.zeta_gen_bounds_fejer5",
+          "LeanProofs.GowersSzemeredi.lemma156_gen_le_fejer5",
+          "LeanProofs.GowersSzemeredi.GenParams.joint_dens_step",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.B",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Ewg",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.T2",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Rho1",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Delta",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Em",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.NestExp",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.MExp",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.MThr",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.QM",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Bexp",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Zeta",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Rho",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.ThS",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.CS",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Eth",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Ec",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.F",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Eloc",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.MReq",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Tloc",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.ranges",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Eloc_pos_le",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.modulus_conditions",
+          "LeanProofs.GowersSzemeredi.sq_le_two_tDegT3",
+          "LeanProofs.GowersSzemeredi.coverPrec_gen_bounds_fejerJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.eta",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.yIn",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.inverse_step",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.rho1_pos_le",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.vertex_uCount_le",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.rhoDegJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.rhoDegJT3_ge",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.rho1_inv_leJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.nestExp_inv_leJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.densDegJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.yIn_boundsJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.CHyp",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.expDegJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.spectrum_exps_inv_leJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.slice_exps_inv_leJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Eloc_inv_leJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.threshDegJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.MReq_le_expJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Tloc_le_expJT3"
+        ],
+        "all_headers_and_variable_scopes_unchanged": true
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GenericEnvelopeBase.lean",
+        "old_declaration_count": 50,
+        "current_declaration_count": 55,
+        "preserved_headers": 50,
+        "moved_out": [],
+        "declarations": [
+          "LeanProofs.GowersSzemeredi.one_le_pw",
+          "LeanProofs.GowersSzemeredi.pw_mono",
+          "LeanProofs.GowersSzemeredi.pw_mul",
+          "LeanProofs.GowersSzemeredi.pw_mul'",
+          "LeanProofs.GowersSzemeredi.pw_pow",
+          "LeanProofs.GowersSzemeredi.pw_const",
+          "LeanProofs.GowersSzemeredi.mul32_nat_le_pw",
+          "LeanProofs.GowersSzemeredi.pw_X",
+          "LeanProofs.GowersSzemeredi.pw_natpow",
+          "LeanProofs.GowersSzemeredi.ex_of_pw",
+          "LeanProofs.GowersSzemeredi.ex_mono",
+          "LeanProofs.GowersSzemeredi.ex_mul",
+          "LeanProofs.GowersSzemeredi.ex_mul'",
+          "LeanProofs.GowersSzemeredi.ex_rpow_of_nonneg",
+          "LeanProofs.GowersSzemeredi.ex_rpow",
+          "LeanProofs.GowersSzemeredi.two_div_ge_two",
+          "LeanProofs.GowersSzemeredi.quarter_base_inv_le",
+          "LeanProofs.GowersSzemeredi.thetaOne_gen_bounds",
+          "LeanProofs.GowersSzemeredi.thetaTwo_gen_bounds",
+          "LeanProofs.GowersSzemeredi.fixDeg",
+          "LeanProofs.GowersSzemeredi.budget_gen_bounds",
+          "LeanProofs.GowersSzemeredi.T2_gen_bounds",
+          "LeanProofs.GowersSzemeredi.delta_gen_bounds",
+          "LeanProofs.GowersSzemeredi.zeta_gen_bounds",
+          "LeanProofs.GowersSzemeredi.GenParams.uniformBase_slice",
+          "LeanProofs.GowersSzemeredi.GenParams.slice_const_le_deg",
+          "LeanProofs.GowersSzemeredi.GenParams.slice_const_le",
+          "LeanProofs.GowersSzemeredi.uniform_baseC_recipPowerLB_of_budget",
+          "LeanProofs.GowersSzemeredi.uniform_baseC_recipPowerLB",
+          "LeanProofs.GowersSzemeredi.GenParams.sq_add_three_lt",
+          "LeanProofs.GowersSzemeredi.GenParams.fixDeg_cube",
+          "LeanProofs.GowersSzemeredi.GenParams.cS_step",
+          "LeanProofs.GowersSzemeredi.GenParams.rho_step",
+          "LeanProofs.GowersSzemeredi.GenParams.thetaS_step",
+          "LeanProofs.GowersSzemeredi.GenParams.dens_step",
+          "LeanProofs.GowersSzemeredi.GenParams.eta_step_of_cube_le",
+          "LeanProofs.GowersSzemeredi.GenParams.eta_step",
+          "LeanProofs.GowersSzemeredi.GenParams.yIn_step_of_den_le",
+          "LeanProofs.GowersSzemeredi.GenParams.yIn_step",
+          "LeanProofs.GowersSzemeredi.uCount_scale_le",
+          "LeanProofs.GowersSzemeredi.GenParams.half_inv_le",
+          "LeanProofs.GowersSzemeredi.GenParams.floor_succ_le_pw",
+          "LeanProofs.GowersSzemeredi.GenParams.half_familyRecExp_inv",
+          "LeanProofs.GowersSzemeredi.ex_root",
+          "LeanProofs.GowersSzemeredi.four_le_pw_one",
+          "LeanProofs.GowersSzemeredi.inv_mul_div_four_le_pw",
+          "LeanProofs.GowersSzemeredi.familyRecThr_le_exp",
+          "LeanProofs.GowersSzemeredi.selection_degree_le",
+          "LeanProofs.GowersSzemeredi.lemma156_gen_le",
+          "LeanProofs.GowersSzemeredi.genMuK"
+        ],
+        "all_headers_and_variable_scopes_unchanged": true
+      }
+    ],
+    "old_module_exports_preserved": [
+      {
+        "module": "GowersSzemeredi.Proofs18CoverDensity",
+        "preserved_old_exports": 18
+      },
+      {
+        "module": "GowersSzemeredi.Proofs18CoverModulusFejer",
+        "preserved_old_exports": 27
+      },
+      {
+        "module": "GowersSzemeredi.Proofs18FejerEnvelopeBase",
+        "preserved_old_exports": 14
+      },
+      {
+        "module": "GowersSzemeredi.Proofs18FinalStep",
+        "preserved_old_exports": 49
+      },
+      {
+        "module": "GowersSzemeredi.Proofs18GenericEnvelopeBase",
+        "preserved_old_exports": 50
+      }
+    ]
+  },
+  "unchanged_existing_definition_names": [
+    "LeanProofs.GowersSzemeredi.GenParamsC.eta",
+    "LeanProofs.GowersSzemeredi.GenParamsC.yIn",
+    "LeanProofs.GowersSzemeredi.GenParamsC.rhoDegC",
+    "LeanProofs.GowersSzemeredi.GenParamsC.densDegC",
+    "LeanProofs.GowersSzemeredi.GenParamsF",
+    "LeanProofs.GowersSzemeredi.GenParamsF.B",
+    "LeanProofs.GowersSzemeredi.GenParamsF.Ewg",
+    "LeanProofs.GowersSzemeredi.GenParamsF.T2",
+    "LeanProofs.GowersSzemeredi.GenParamsF.Rho1",
+    "LeanProofs.GowersSzemeredi.GenParamsF.Delta",
+    "LeanProofs.GowersSzemeredi.GenParamsF.Em",
+    "LeanProofs.GowersSzemeredi.GenParamsF.NestExp",
+    "LeanProofs.GowersSzemeredi.GenParamsF.MExp",
+    "LeanProofs.GowersSzemeredi.GenParamsF.MThr",
+    "LeanProofs.GowersSzemeredi.GenParamsF.QM",
+    "LeanProofs.GowersSzemeredi.GenParamsF.Bexp",
+    "LeanProofs.GowersSzemeredi.GenParamsF.Zeta",
+    "LeanProofs.GowersSzemeredi.GenParamsF.Rho",
+    "LeanProofs.GowersSzemeredi.GenParamsF.ThS",
+    "LeanProofs.GowersSzemeredi.GenParamsF.CS",
+    "LeanProofs.GowersSzemeredi.GenParamsF.Eth",
+    "LeanProofs.GowersSzemeredi.GenParamsF.Ec",
+    "LeanProofs.GowersSzemeredi.GenParamsF.F",
+    "LeanProofs.GowersSzemeredi.GenParamsF.Eloc",
+    "LeanProofs.GowersSzemeredi.GenParamsF.MReq",
+    "LeanProofs.GowersSzemeredi.GenParamsF.Tloc",
+    "LeanProofs.GowersSzemeredi.baseCF",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.B",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Ewg",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.T2",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Rho1",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Delta",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Em",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.NestExp",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.MExp",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.MThr",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.QM",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Bexp",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Zeta",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Rho",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.ThS",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.CS",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Eth",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Ec",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.F",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Eloc",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.MReq",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Tloc",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.eta",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.yIn",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.rhoDegJT3",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.densDegJT3",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.CHyp",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.expDegJT3",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.threshDegJT3",
+    "LeanProofs.GowersSzemeredi.fixDeg",
+    "LeanProofs.GowersSzemeredi.genMuK"
+  ],
+  "production_imports": {
+    "all_changes_match_reviewed_import_cut": true,
+    "files": [
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverDensity.lean",
+        "before": [
+          "GowersSzemeredi.Proofs18CoverModulus",
+          "GowersSzemeredi.Proofs18GenericEnvelopeBase"
+        ],
+        "after": [
+          "GowersSzemeredi.Proofs18CoverModulus",
+          "GowersSzemeredi.Proofs18GenericEnvelopeBase"
+        ],
+        "unchanged": true
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverModulusFejer.lean",
+        "before": [
+          "GowersSzemeredi.Proofs18CoverModulus",
+          "GowersSzemeredi.Proofs18SinglePieceCoverInverseFejer",
+          "GowersSzemeredi.Proofs18TightClassesFejer",
+          "GowersSzemeredi.Proofs18FejerEnvelopeBase"
+        ],
+        "after": [
+          "GowersSzemeredi.Proofs18CoverModulus",
+          "GowersSzemeredi.Proofs18SinglePieceCoverInverseFejer",
+          "GowersSzemeredi.Proofs18TightClassesFejer",
+          "GowersSzemeredi.Proofs18FejerEnvelopeBase"
+        ],
+        "unchanged": true
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerEnvelopeBase.lean",
+        "before": [
+          "GowersSzemeredi.Proofs18GenericEnvelopeBase",
+          "GowersSzemeredi.Proofs16SinglePieceCoverGlobalWith",
+          "GowersSzemeredi.Proofs16ClassStepBoundsFejer",
+          "GowersSzemeredi.Proofs16RadiusComparison"
+        ],
+        "after": [
+          "GowersSzemeredi.Proofs18GenericEnvelopeBase",
+          "GowersSzemeredi.Proofs18WidthPowerBounds",
+          "GowersSzemeredi.Proofs16SinglePieceCoverGlobalWith",
+          "GowersSzemeredi.Proofs16ClassStepBoundsFejer",
+          "GowersSzemeredi.Proofs16RadiusComparison"
+        ],
+        "unchanged": false
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+        "before": [
+          "GowersSzemeredi.Proofs18FinalClasses",
+          "GowersSzemeredi.Proofs18CoverModulusFejer",
+          "GowersSzemeredi.Proofs18CoverDensity"
+        ],
+        "after": [
+          "GowersSzemeredi.Proofs18FinalClasses",
+          "GowersSzemeredi.Proofs18LengthSixScale"
+        ],
+        "unchanged": false
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GenericEnvelopeBase.lean",
+        "before": [
+          "GowersSzemeredi.Proofs18UniformCovers",
+          "GowersSzemeredi.Proofs18ExponentialCalculus"
+        ],
+        "after": [
+          "GowersSzemeredi.Proofs18UniformCovers",
+          "GowersSzemeredi.Proofs18ExponentialCalculus"
+        ],
+        "unchanged": true
+      }
+    ]
+  },
+  "moved_declarations": [
+    {
+      "name": "LeanProofs.GowersSzemeredi.prod_le_pw",
+      "from": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverDensity.lean",
+      "to": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GenericEnvelopeBase.lean",
+      "relocation_kind": "module move",
+      "baseline_line": 24,
+      "current_line": 108,
+      "header_unchanged": true,
+      "whole_declaration_unchanged": true,
+      "baseline_block_sha256": "4d9492293ccad7b3025ff7f1fbe70fca009cddb74643c31b3a2747e2f0f54da6",
+      "current_block_sha256": "4d9492293ccad7b3025ff7f1fbe70fca009cddb74643c31b3a2747e2f0f54da6"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.nonTop_card_le",
+      "from": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverDensity.lean",
+      "to": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GenericEnvelopeBase.lean",
+      "relocation_kind": "module move",
+      "baseline_line": 31,
+      "current_line": 115,
+      "header_unchanged": true,
+      "whole_declaration_unchanged": true,
+      "baseline_block_sha256": "decf9577d589f9fa3ceac24ed089a3df90c0cbf17200892f40c87fd85b97ce76",
+      "current_block_sha256": "decf9577d589f9fa3ceac24ed089a3df90c0cbf17200892f40c87fd85b97ce76"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.nonTop_card_le_k",
+      "from": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverDensity.lean",
+      "to": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GenericEnvelopeBase.lean",
+      "relocation_kind": "module move",
+      "baseline_line": 35,
+      "current_line": 119,
+      "header_unchanged": true,
+      "whole_declaration_unchanged": true,
+      "baseline_block_sha256": "74f244e78252136c8626226d782395547d0600512b1f029d3c5f94ddf9b1ce80",
+      "current_block_sha256": "74f244e78252136c8626226d782395547d0600512b1f029d3c5f94ddf9b1ce80"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.three_pow_le_pw",
+      "from": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverDensity.lean",
+      "to": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GenericEnvelopeBase.lean",
+      "relocation_kind": "module move",
+      "baseline_line": 66,
+      "current_line": 288,
+      "header_unchanged": true,
+      "whole_declaration_unchanged": true,
+      "baseline_block_sha256": "a053a75b68edd2bffe5f05e81b3b2ede0898e6be17e1f013cb0aa35e2f734361",
+      "current_block_sha256": "a053a75b68edd2bffe5f05e81b3b2ede0898e6be17e1f013cb0aa35e2f734361"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.sixteen_pow_le_pw",
+      "from": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverDensity.lean",
+      "to": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GenericEnvelopeBase.lean",
+      "relocation_kind": "module move",
+      "baseline_line": 82,
+      "current_line": 304,
+      "header_unchanged": true,
+      "whole_declaration_unchanged": true,
+      "baseline_block_sha256": "354bbd54a009e0aaaf4649ae559a17c9adb71eec5ede45f22fcbeef0869cfae7",
+      "current_block_sha256": "354bbd54a009e0aaaf4649ae559a17c9adb71eec5ede45f22fcbeef0869cfae7"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.coverExpW_pos_le",
+      "from": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverModulusFejer.lean",
+      "to": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerEnvelopeBase.lean",
+      "relocation_kind": "module move",
+      "baseline_line": 22,
+      "current_line": 31,
+      "header_unchanged": true,
+      "whole_declaration_unchanged": true,
+      "baseline_block_sha256": "ed91d59c065d33997775b215809bbf55264576cc2e2d9464c42eaa1334fdeda0",
+      "current_block_sha256": "ed91d59c065d33997775b215809bbf55264576cc2e2d9464c42eaa1334fdeda0"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.coverRemWidthW_powerLB",
+      "from": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverModulusFejer.lean",
+      "to": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerEnvelopeBase.lean",
+      "relocation_kind": "module move",
+      "baseline_line": 45,
+      "current_line": 54,
+      "header_unchanged": true,
+      "whole_declaration_unchanged": true,
+      "baseline_block_sha256": "b6eb73c4d0ad58e1ce28a40080aeb6e6b15455d866e7e24f1a53770249e1fe73",
+      "current_block_sha256": "b6eb73c4d0ad58e1ce28a40080aeb6e6b15455d866e7e24f1a53770249e1fe73"
+    }
+  ],
+  "moved_declaration_summary": {
+    "total": 7,
+    "whole_declarations_unchanged": 7
+  },
+  "new_declarations": [],
+  "changed_existing_proofs": [],
+  "proof_body_lines": {
+    "method": "Physical lines after the multiline := by delimiter, including comments and internal blank lines; excludes theorem headers and adjacent documentation.",
+    "scope": "Seven whole declarations relocate unchanged. No existing proof bodies change and no declarations are added; proof-body line delta is zero.",
+    "before": 0,
+    "after": 0,
+    "delta": 0,
+    "declarations": []
+  },
+  "bridge": {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverFejerAllDegrees.lean",
+    "unchanged_theorem_count": 25,
+    "unchanged_definition_count": 1,
+    "declarations": [
+      {
+        "name": "LeanProofs.GowersSzemeredi.explicit_family_constants_poly_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "84d9ea4eeb45de6d73e6f5bee9015133dde52c73eadb91ae57fc9e1b7c7b84bd"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.explicitFinalInputs",
+        "kind": "def",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "7551b0f2acd640aac452e991d85b949ddcd3644871700e8dba4146f60b7c810b"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_1_d4",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "e51cab3cd4d691db7152c739f01cc5dcc27404f2e7f38ac07bbbb21e651f2a2d"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_1_d3_eight_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "9cc2e8f934f181dbdd7f833214991a20b21b8dd3f4580cf79388551e3956b6cf"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_1_d2_eleven_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "bb2a96c038da176b177cece6c6db210a2b62bc25868e56a61d52148c96eb03f3"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_1_d4_implies_printed",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "7c5ba8339cf18bd3e2f36388f1d9a207a1a7553a3163875419aee32e52041c82"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_2_L3",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "7ea77903f35f8349a2b2b5237b3fc982eaa641541b46289f6f5d2281c478707c"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.corollary_18_7_L3",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "4c9ebdd38e1333195e3d1b9521a63e00b24de07dae4269b40cc51a4f6921a4ca"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_2_L3_implies_printed",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "63b545c8c6298866d668db2d48527d19efd34326c638dc61035485f578b280cd"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.corollary_18_7_L3_implies_printed",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "f55b9716699f00bfe402f9def5ad0223ea40eaee9abd065432d6bc73c9fabdeb"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.van_der_waerden_L3_all",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "de0a53ca56bead9adea301cb1c4c563c07182972fcb249cfe709e4560aad4c61"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_1_3_L3",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "9c532911fcab523322c213c42fe886b3fab6473b4bec0b460f6ae3acf532e682"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_2_L2_eight_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "0cab6415b490c4486107dca99443c8301340fd62e6c9f49facac847c7bd4a07b"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.corollary_18_7_L2_eight_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "ff26490fa76aae8991ff1f0e7623dcaddf4bb01f3f11d37533301ee75c2a5c47"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.van_der_waerden_L2_eight_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "3be51b230a33c6b655ab59e36e1dc36f4a36dec334b854065e6e816945c701c1"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_1_3_L2_eight_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "33c1b95ad2f8c513712f24dafd6eb657787eff4f50efbae05c60240220961662"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_2_L1_eleven_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "2ac14e6a5e051d15179a3575c9d6997f452a4b82bd8bbae80a3b869b2df7ab9f"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.corollary_18_7_L1_eleven_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "37b239cf1c48d06b82102e61823132deb38eab761c57c8be56a50f6730332e44"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.van_der_waerden_L1_eleven_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "cfcec509ab3cbb6828c974cbf913e6f0e5f60601ab56e3a6c980470acee3b6f1"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_1_3_L1_eleven_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "5976351c06a9a00b51c315a0500d0a3d4dbdd3317f89c7a511415c3d873c5e73"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_2_L0_thirteen_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "39228ff86ec36f48874e03f74ed98b001d0226c69f73a8be125a045fc7959f62"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.corollary_18_7_L0_thirteen_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "8feb53e18788581ae73e3de196142a59cdc93184cdb355de025b299c6f51758c"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.van_der_waerden_L0_thirteen_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "3031bbff6a192e30b47e4aab9287f6f300405b88a538d70d147227ef81503624"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_1_3_L0_thirteen_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "2ea05c4da55e7bb5b9bad4b4ee17e3130b325e954a48ee4f77f60af9ef3e8ee9"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_fejerT3",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "067274a6043fcb3044ac4fb96ae48c9d9f00ba79c38394143035b1318f9c9cc2"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerJT3",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "4edd39d62967cf7c0255ef63a32dff92644e15a275dd166f089e483e502fcc2d"
+      }
+    ]
+  },
+  "closure_measurement": {
+    "local_namespaces": [
+      "GowersSzemeredi",
+      "OAI"
+    ],
+    "excludes": "Mathlib and other external imports; counts follow the local-import rule in check_gowers.py.",
+    "targets": {
+      "GowersSzemeredi.Proofs18Final": {
+        "before": {
+          "module_count": 629,
+          "source_lines": 141319,
+          "source_manifest_sha256": "bc3a1c7f7e91e0318862049cc5713c0d779cc4fd6ad4bddb94277d995d024bcf"
+        },
+        "after": {
+          "module_count": 626,
+          "source_lines": 140424,
+          "source_manifest_sha256": "8aa0dccf74b9043b9b7a8e6edb2be878a1047df16ce7cad1031fdfc3ff049964"
+        },
+        "module_delta": -3,
+        "source_line_delta": -895,
+        "removed_modules": [
+          "GowersSzemeredi.Proofs18CoverDensity",
+          "GowersSzemeredi.Proofs18CoverModulus",
+          "GowersSzemeredi.Proofs18CoverModulusFejer"
+        ],
+        "added_modules": []
+      },
+      "GowersSzemeredi.Proofs18CoverFejerAllDegrees": {
+        "before": {
+          "module_count": 722,
+          "source_lines": 155431,
+          "source_manifest_sha256": "284881374b58ab24769c111fa93d85bf9384666c1613146918dda8ba57a8f27a"
+        },
+        "after": {
+          "module_count": 719,
+          "source_lines": 154536,
+          "source_manifest_sha256": "8600627d2f1c98ca0a81477a4111c7175114cbda7c93cd62b0fd32c6dd2a1fa8"
+        },
+        "module_delta": -3,
+        "source_line_delta": -895,
+        "removed_modules": [
+          "GowersSzemeredi.Proofs18CoverDensity",
+          "GowersSzemeredi.Proofs18CoverModulus",
+          "GowersSzemeredi.Proofs18CoverModulusFejer"
+        ],
+        "added_modules": []
+      },
+      "GowersSzemeredi.FinalProofSimplificationAudit": {
+        "before": {
+          "module_count": 783,
+          "source_lines": 169163,
+          "source_manifest_sha256": "ed5345a8c52eb6a0904d2627c2a952a2c29f1b4b0b2dd25d5e8eea9028ea2d35"
+        },
+        "after": {
+          "module_count": 783,
+          "source_lines": 169170,
+          "source_manifest_sha256": "ec56d87c0a3aa4f2e3694507949281e9a6b8793ce5d537a329d4323361df5e26"
+        },
+        "module_delta": 0,
+        "source_line_delta": 7,
+        "removed_modules": [],
+        "added_modules": []
+      },
+      "GowersSzemeredi.Final": {
+        "before": {
+          "module_count": 641,
+          "source_lines": 133278,
+          "source_manifest_sha256": "61b02f9cba87da3b0073edcc5ffddb3263f446fc866570b4ca678f8fdc2d9b29"
+        },
+        "after": {
+          "module_count": 641,
+          "source_lines": 133278,
+          "source_manifest_sha256": "dca84468dcd7a51f64cadaf6548bfdac4775bb45662583db6a925bf28ef0b458"
+        },
+        "module_delta": 0,
+        "source_line_delta": 0,
+        "removed_modules": [],
+        "added_modules": []
+      },
+      "GowersSzemeredi.FinalAudit": {
+        "before": {
+          "module_count": 642,
+          "source_lines": 133312,
+          "source_manifest_sha256": "e2fff93768c9def141705ae5f7cc04f11b5f17582225e82f5fef92f161bb223a"
+        },
+        "after": {
+          "module_count": 642,
+          "source_lines": 133312,
+          "source_manifest_sha256": "6cdfd0cb9236d20255910044d3d0cd05069099c8a3b8d6c47317178d263ca3be"
+        },
+        "module_delta": 0,
+        "source_line_delta": 0,
+        "removed_modules": [],
+        "added_modules": []
+      },
+      "GowersSzemeredi.Proofs18FinalStep": {
+        "before": {
+          "module_count": 622,
+          "source_lines": 140226,
+          "source_manifest_sha256": "fb97a51bb3e70b02de59bb5ef82fbccf8f26ef20c675523adab3b0c4ce960193"
+        },
+        "after": {
+          "module_count": 619,
+          "source_lines": 139331,
+          "source_manifest_sha256": "d7eac7018076532661c9fdf3ceb4e06d66c890bd4cf9fcf34b1058a1d3d4d1a6"
+        },
+        "module_delta": -3,
+        "source_line_delta": -895,
+        "removed_modules": [
+          "GowersSzemeredi.Proofs18CoverDensity",
+          "GowersSzemeredi.Proofs18CoverModulus",
+          "GowersSzemeredi.Proofs18CoverModulusFejer"
+        ],
+        "added_modules": []
+      },
+      "GowersSzemeredi.Proofs18FejerEnvelopeBase": {
+        "before": {
+          "module_count": 532,
+          "source_lines": 122173,
+          "source_manifest_sha256": "f25a842d9b57dee3a39da7070fe659635b43405116dde9299b41241ee3d3dfa7"
+        },
+        "after": {
+          "module_count": 532,
+          "source_lines": 122246,
+          "source_manifest_sha256": "e648d36c5b505562111afdf1e9cd166017453173ca17c6f2509d4dab6e87aba2"
+        },
+        "module_delta": 0,
+        "source_line_delta": 73,
+        "removed_modules": [],
+        "added_modules": []
+      }
+    }
+  },
+  "limitations": [
+    "Declaration comparison is lexical and namespace-aware, not a Lean parser or typechecker.",
+    "Whole declaration comparisons exclude adjacent documentation and trailing whitespace.",
+    "Closure source hashes bind this report to observed source snapshots; native audit evidence must be recorded separately."
+  ],
+  "all_source_checks_passed": true,
+  "native_verification_reports": [
+    "2026-10-12-final-step-import-cut.json",
+    "2026-10-12-final-step-import-cut-compatibility.json",
+    "2026-10-12-final-step-import-cut-stronger.json",
+    "2026-10-12-final-step-import-cut-downstream.json"
+  ],
+  "downstream_coverage": {
+    "narrowed_consumer_count": 40,
+    "narrowed_audit_consumers_outside_focused_count": 36,
+    "all_narrowed_consumers_in_target": "GowersSzemeredi.IntegerOriginalCorollaryFidelityAudit",
+    "target_native_module_count": 1098,
+    "focused_and_downstream_union_module_count": 1120,
+    "extra_modules_beyond_focused_count": 337,
+    "actual_lost_dependencies": {
+      "GowersSzemeredi.AllDensityExtractionFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.BaseIntegerFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.BoxPartitionFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.CompletionAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.ComponentTradeoffFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.FamilyLiftIntegerFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.FixedGraphBudgetFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.FourTermScopeFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.IntegerBoxesAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.IntegerFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.IntegerOriginalCorollaryFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.IntegerRepresentativesAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.IntegerSparseSquareAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.IntegerSquareFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.LocalIntegerFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.MissingIntervalHalfFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.ModulusFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.MultilinearFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.NaturalAxesFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.OpeningScopeFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.PhaseDegreeFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.PolynomialIntegerFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.PowerFiveEdgeAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.PowerFiveExtractionAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.PrintedInitialExtractionAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.PrintedSection13BoundsAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.PrintedWiderExtractionAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.Proofs18CoverFejerAllDegrees": [
+        "GowersSzemeredi.Proofs18CoverDensity",
+        "GowersSzemeredi.Proofs18CoverModulus",
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.Proofs18Final": [
+        "GowersSzemeredi.Proofs18CoverDensity",
+        "GowersSzemeredi.Proofs18CoverModulus",
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.Proofs18FinalEnvelopes": [
+        "GowersSzemeredi.Proofs18CoverDensity",
+        "GowersSzemeredi.Proofs18CoverModulus",
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.Proofs18FinalStep": [
+        "GowersSzemeredi.Proofs18CoverDensity",
+        "GowersSzemeredi.Proofs18CoverModulus",
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.PurifiedContextFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.RectangleFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.RemainderIntegerFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.RetiledIntegerFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.SelectionIterationFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.SelectionThresholdFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.SharpBohrFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.StructureIntegerFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ],
+      "GowersSzemeredi.WalshScopeFidelityAudit": [
+        "GowersSzemeredi.Proofs18CoverModulusFejer"
+      ]
+    },
+    "native_verification_report": "2026-10-12-final-step-import-cut-downstream.json",
+    "limits": "Consumer coverage is an import-graph fact, verified against the native source manifests; it does not discharge open original-paper statements."
+  }
+}

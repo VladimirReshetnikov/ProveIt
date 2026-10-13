@@ -85,6 +85,19 @@ theorem prod_scale_basic {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 
   · rw [hinv]; nlinarith
   · rw [hinv]; nlinarith
 
+/-- Extending the product scale by a radius at most one controls both previous scales. -/
+theorem prod_scale_radius_bounds {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+    (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1) :
+    2 ≤ 2 / (gamma * theta) ∧ 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) ∧
+      rho⁻¹ ≤ 2 / (gamma * theta * rho) := by
+  obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  have hgt : 0 < gamma * theta := mul_pos hg ht
+  have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
+    div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (mul_le_of_le_one_right hgt.le hr1)
+  refine ⟨hv2, hvw, ?_⟩
+  rw [show 2 / (gamma * theta * rho) = 2 / (gamma * theta) * rho⁻¹ by field_simp]
+  exact le_mul_of_one_le_left (inv_pos.mpr hr).le (one_le_two.trans hv2)
+
 /-- `(γθ/4) ≥ u⁻²` for `u = 2/(γθ) ≥ 2`. -/
 theorem quarter_prod_ge_inv_sq {gamma theta : Real} (hg : 0 < gamma) (ht : 0 < theta)
     (hu2 : 2 ≤ 2 / (gamma * theta)) :
@@ -325,28 +338,61 @@ theorem nat_max_one_le_pow {w : Real} {n a : Nat} (hw : 2 ≤ w) (hn : (n : Real
   rw [Nat.cast_max, Nat.cast_one]
   exact max_le (one_le_pow₀ (le_trans (by norm_num) hw)) hn
 
+/-- The sample count from separate family-size and parameter bases. -/
+theorem famPieceSamples_le_two_bases {ν w rho : Real} {Qr : Real → Real}
+    {n a b c d : Nat} (hν : 1 ≤ ν) (hw : 2 ≤ w) (hrho : 0 < rho) (hrw : rho⁻¹ ≤ w)
+    (hQ : Qr (rho / 8) ≤ ν ^ a * w ^ b) (hn : (n : Real) ≤ ν ^ c * w ^ d) :
+    (famPieceSamples Qr n rho : Real) ≤ ν ^ (a + c) * w ^ (b + d + 7) := by
+  have hw1 : 1 ≤ w := by linarith only [hw]
+  have hQ1 : max 1 (Qr (rho / 8)) ≤ ν ^ a * w ^ b :=
+    max_le (one_le_mul_of_one_le_of_one_le (one_le_pow₀ hν) (one_le_pow₀ hw1)) hQ
+  have hn1 : ((max 1 n : Nat) : Real) ≤ ν ^ c * w ^ d := by
+    rw [Nat.cast_max, Nat.cast_one]
+    exact max_le (one_le_mul_of_one_le_of_one_le (one_le_pow₀ hν) (one_le_pow₀ hw1)) hn
+  have hQ0 : 0 ≤ max 1 (Qr (rho / 8)) := zero_le_one.trans (le_max_left _ _)
+  set X := ν ^ (a + c) * w ^ (b + d + 1) with hXdef
+  have hX1 : 1 ≤ X := one_le_mul_of_one_le_of_one_le (one_le_pow₀ hν) (one_le_pow₀ hw1)
+  have hprod : max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) * rho⁻¹ ≤ X := by
+    have h := mul_le_mul (mul_le_mul hQ1 hn1 (Nat.cast_nonneg _) (by positivity))
+      hrw (inv_pos.mpr hrho).le (by positivity)
+    exact h.trans_eq (by rw [hXdef]; ring)
+  have h25 : (25 : Real) ≤ w ^ 6 :=
+    (by norm_num : (25 : Real) ≤ 2 ^ 6).trans (pow_le_pow_left₀ (by norm_num) hw 6)
+  unfold famPieceSamples
+  calc (⌈6 * max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) / (rho / 4)⌉₊ : Real)
+      ≤ 6 * max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) / (rho / 4) + 1 :=
+        (Nat.ceil_lt_add_one (by positivity)).le
+    _ = 24 * (max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) * rho⁻¹) + 1 := by field_simp; ring
+    _ ≤ 25 * X := by nlinarith only [hprod, hX1]
+    _ ≤ w ^ 6 * X := mul_le_mul_of_nonneg_right h25 (zero_le_one.trans hX1)
+    _ = ν ^ (a + c) * w ^ (b + d + 7) := by rw [hXdef]; ring
+
 /-- The sample count of the family piece cover. -/
 theorem famPieceSamples_le_power {w rho : Real} {Qr : Real → Real} {n a b : Nat} (hw : 2 ≤ w)
     (hrho : 0 < rho) (hrw : rho⁻¹ ≤ w) (hQ : Qr (rho / 8) ≤ w ^ a) (hn : (n : Real) ≤ w ^ b) :
     (famPieceSamples Qr n rho : Real) ≤ w ^ (a + b + 7) := by
-  have hw0 : 0 ≤ w := le_trans (by norm_num) hw
-  have hQ1 : max 1 (Qr (rho / 8)) ≤ w ^ a := max_le (one_le_pow₀ (le_trans (by norm_num) hw)) hQ
-  have hn1 := nat_max_one_le_pow hw hn
-  have hQ0 : 0 ≤ max 1 (Qr (rho / 8)) := le_trans zero_le_one (le_max_left _ _)
-  have hn0 : (0 : Real) ≤ ((max 1 n : Nat) : Real) := Nat.cast_nonneg _
-  have hprod : max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) * rho⁻¹ ≤ w ^ (a + b + 1) :=
-    mul_le_pow_add (mul_nonneg hQ0 hn0) (inv_pos.mpr hrho).le
-      (mul_le_pow_add hQ0 hn0 hQ1 hn1 hw0) (by rw [pow_one]; exact hrw) hw0
-  have hin : 6 * max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) / (rho / 4) ≤
-      w ^ (5 + (a + b + 1)) := by
-    rw [show 6 * max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) / (rho / 4) =
-      24 * (max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) * rho⁻¹) by field_simp; ring]
-    exact const_mul_le_pow hw (by norm_num) (by norm_num)
-      (mul_nonneg (mul_nonneg hQ0 hn0) (inv_pos.mpr hrho).le) hprod
-  have hin0 : 0 ≤ 6 * max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) / (rho / 4) := by
-    positivity
-  unfold famPieceSamples
-  exact le_pow_mono hw (by omega) (ceil_le_pow_succ hw hin0 hin)
+  simpa using famPieceSamples_le_two_bases (ν := 1) (a := 0) (b := a) (c := 0) (d := b)
+    (by norm_num) hw hrho hrw (by simpa using hQ) (by simpa using hn)
+
+/-- A graph-count bound from separate bounds on the family, samples and slices. -/
+theorem famPieceGraphBound_le_mul_sq {N S B rho : Real} {Qr : Real → Real}
+    {Pb : Nat → Real → Real} {n : Nat} (hS1 : 1 ≤ S) (hB1 : 1 ≤ B)
+    (hn : (n : Real) ≤ N) (hS : (famPieceSamples Qr n rho : Real) ≤ S)
+    (hP0 : 0 ≤ Pb (famPieceSamples Qr n rho) (rho / 4))
+    (hP : Pb (famPieceSamples Qr n rho) (rho / 4) ≤ B) :
+    famPieceGraphBound Qr Pb n rho ≤ N * (S ^ 2 * B ^ 2) := by
+  set s := famPieceSamples Qr n rho
+  set p := Pb s (rho / 4)
+  have hchoose : ((s.choose 2 : Nat) : Real) ≤ S ^ 2 := by
+    calc ((s.choose 2 : Nat) : Real) ≤ (s : Real) ^ 2 := by exact_mod_cast Nat.choose_le_pow s 2
+      _ ≤ S ^ 2 := pow_le_pow_left₀ (Nat.cast_nonneg _) hS 2
+  have hmax : max p (((s.choose 2 : Nat) : Real) * p * p) ≤ S ^ 2 * B ^ 2 := by
+    refine max_le (hP.trans ((le_self_pow₀ hB1 (by decide : (2 : Nat) ≠ 0)).trans
+      (le_mul_of_one_le_left (sq_nonneg B) (one_le_pow₀ hS1)))) ?_
+    rw [mul_assoc, ← sq]
+    exact mul_le_mul hchoose (pow_le_pow_left₀ hP0 hP 2) (sq_nonneg p) (sq_nonneg S)
+  unfold famPieceGraphBound
+  exact mul_le_mul hn hmax (hP0.trans (le_max_left _ _)) ((Nat.cast_nonneg n).trans hn)
 
 /-- The family graph count, from bounds on the samples, the slice count and `n`. -/
 theorem famPieceGraphBound_le_power {w rho : Real} {Qr : Real → Real} {Pb : Nat → Real → Real}
@@ -355,22 +401,9 @@ theorem famPieceGraphBound_le_power {w rho : Real} {Qr : Real → Real} {Pb : Na
     (hP0 : 0 ≤ Pb (famPieceSamples Qr n rho) (rho / 4))
     (hP : Pb (famPieceSamples Qr n rho) (rho / 4) ≤ w ^ c) :
     famPieceGraphBound Qr Pb n rho ≤ w ^ (b + (2 * s + c + c)) := by
-  have hw0 : 0 ≤ w := le_trans (by norm_num) hw
-  set S := famPieceSamples Qr n rho
-  set P := Pb S (rho / 4)
-  have hC : ((S.choose 2 : Nat) : Real) ≤ w ^ (2 * s) := by
-    have h1 : ((S.choose 2 : Nat) : Real) ≤ ((S ^ 2 : Nat) : Real) :=
-      Nat.cast_le.mpr (Nat.choose_le_pow S 2)
-    refine h1.trans ?_
-    rw [Nat.cast_pow, mul_comm, pow_mul]
-    exact pow_le_pow_left₀ (Nat.cast_nonneg _) hS 2
-  have hCPP : ((S.choose 2 : Nat) : Real) * P * P ≤ w ^ (2 * s + c + c) :=
-    mul_le_pow_add (mul_nonneg (Nat.cast_nonneg _) hP0) hP0
-      (mul_le_pow_add (Nat.cast_nonneg _) hP0 hC hP hw0) hP hw0
-  have hmax : max P (((S.choose 2 : Nat) : Real) * P * P) ≤ w ^ (2 * s + c + c) :=
-    max_le (le_pow_mono hw (by omega) hP) hCPP
-  unfold famPieceGraphBound
-  exact mul_le_pow_add (Nat.cast_nonneg _) (le_trans hP0 (le_max_left _ _)) hn hmax hw0
+  have hw1 : 1 ≤ w := by linarith only [hw]
+  have h := famPieceGraphBound_le_mul_sq (one_le_pow₀ hw1) (one_le_pow₀ hw1) hn hS hP0 hP
+  convert h using 1 <;> ring
 
 /-- `famTwoQr m q ≤ w^(a+b+5)`. -/
 theorem famTwoQr_le_power {w : Real} {m q a b : Nat} (hw : 2 ≤ w) (hm : (m : Real) ≤ w ^ a)
@@ -388,20 +421,28 @@ theorem famTwoPb_le_power {w : Real} {m q r a b s : Nat} (hw : 2 ≤ w) (hm : (m
   unfold famTwoPb
   exact nat_affine_le_pow (c := 3) (j := 2) hw (by norm_num) hm (nat_mul_le_pow hw hr hq)
 
+/-- The dimension-two family count is polynomial in its piece and face counts. -/
+theorem famTwoCount_le_power {w rho : Real} {m q a b : Nat} (hw : 2 ≤ w)
+    (hr : 0 < rho) (hrw : rho⁻¹ ≤ w) (hm : (m : Real) ≤ w ^ a) (hq : (q : Real) ≤ w ^ b) :
+    max (famPieceGraphBound (famTwoQr m q) (famTwoPb m q) m rho)
+      ((3 ^ (1 + 1) * m : Nat) : Real) ≤ w ^ (11 * a + 6 * b + 54) := by
+  have hQr := famTwoQr_le_power hw hm hq (rho / 8)
+  have hS := famPieceSamples_le_power (Qr := famTwoQr m q) hw hr hrw hQr hm
+  have hP := famTwoPb_le_power hw hm hq hS (rho / 4)
+  have hP0 : 0 ≤ famTwoPb m q (famPieceSamples (famTwoQr m q) m rho) (rho / 4) := by
+    unfold famTwoPb; exact Nat.cast_nonneg _
+  have hG := famPieceGraphBound_le_power (Pb := famTwoPb m q) hw hm hS hP0 hP
+  refine max_le (hG.trans_eq (by congr 1 <;> omega)) ?_
+  have h9 : ((3 ^ (1 + 1) * m : Nat) : Real) ≤ w ^ (4 + a) := by
+    rw [Nat.cast_mul]
+    exact const_mul_le_pow hw (Nat.cast_nonneg _) (by norm_num) (Nat.cast_nonneg _) hm
+  exact le_pow_mono hw (by omega) h9
+
 /-- The family count of `PolyCoverAt 2`: `polyTwoFamCount θ γ ρ ≤ (2/(γθρ))^(2^89)`. -/
 theorem polyTwoFamCount_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1) :
     polyTwoFamCount theta gamma rho ≤ (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 89) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-  have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-    div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-  have hrw : rho⁻¹ ≤ 2 / (gamma * theta * rho) := by
-    rw [show 2 / (gamma * theta * rho) = 2 / (gamma * theta) * rho⁻¹ by field_simp]
-    have h2 : (1 : Real) ≤ 2 / (gamma * theta) := by rw [le_div_iff₀ hgt]; linarith
-    have := inv_pos.mpr hr
-    nlinarith
-  obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  obtain ⟨hv2, hvw, hrw⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
   have hm := polyTwoPieces_le_power hg hg1 ht ht1
   have hq := polyPieceFaceCount_le_power hg hg1 ht ht1
   set v := 2 / (gamma * theta) with hv
@@ -414,21 +455,8 @@ theorem polyTwoFamCount_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 
     le_pow_mono hw2 (by norm_num) (hm.trans (pow_le_pow_left₀ hv0 hvw _))
   have hq' : (polyPieceFaceCount theta gamma : Real) ≤ w ^ ((2 : Nat) ^ 84) :=
     hq.trans (pow_le_pow_left₀ hv0 hvw _)
-  set m := polyTwoPieces gamma theta
-  set ql := polyPieceFaceCount theta gamma
-  have hQr := famTwoQr_le_power hw2 hm' hq' (rho / 8)
-  have hS := famPieceSamples_le_power (Qr := famTwoQr m ql) hw2 hr hrw hQr hm'
-  have hP := famTwoPb_le_power hw2 hm' hq' hS (rho / 4)
-  have hP0 : 0 ≤ famTwoPb m ql (famPieceSamples (famTwoQr m ql) m rho) (rho / 4) := by
-    unfold famTwoPb; exact Nat.cast_nonneg _
-  have hG := famPieceGraphBound_le_power (Pb := famTwoPb m ql) hw2 hm' hS hP0 hP
   unfold polyTwoFamCount
-  apply max_le
-  · exact le_pow_mono hw2 (by norm_num) hG
-  · have h9 : ((3 ^ (1 + 1) * m : Nat) : Real) ≤ w ^ (4 + (2 : Nat) ^ 84) := by
-      rw [Nat.cast_mul]
-      exact const_mul_le_pow hw2 (Nat.cast_nonneg _) (by norm_num) (Nat.cast_nonneg _) hm'
-    exact le_pow_mono hw2 (by norm_num) h9
+  exact le_pow_mono hw2 (by norm_num) (famTwoCount_le_power hw2 hr hrw hm' hq')
 
 /-! ### The counts of the length-six route -/
 
@@ -436,11 +464,7 @@ theorem polyTwoFamCount_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 
 theorem polyTwoQb_le_power {gamma theta rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1) :
     polyTwoQb gamma theta rho ≤ (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 90) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-  have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-    div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-  obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  obtain ⟨hv2, hvw, -⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
   have hthr3 : (3 : Real) ≤ polyTwoThreshold theta gamma := by
     unfold polyTwoThreshold; exact le_max_left _ _
   have hthr := polyTwoThreshold_le_power hg hg1 ht ht1
@@ -467,11 +491,7 @@ theorem sixQb_le_power (l : Nat) {gamma theta rho : Real} (hg : 0 < gamma) (hg1 
     sixQb l gamma theta rho ≤ (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 90) := by
   unfold sixQb
   split_ifs
-  · have hgt : 0 < gamma * theta := mul_pos hg ht
-    have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
-    have hvw : 2 / (gamma * theta) ≤ 2 / (gamma * theta * rho) :=
-      div_le_div_of_nonneg_left (by norm_num) (mul_pos hgt hr) (by nlinarith)
-    obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  · obtain ⟨hv2, hvw, -⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
     have hB := section16BaseFamilyBound_le_dyadic_power hg hg1 ht ht1
     set v := 2 / (gamma * theta) with hv
     set w := 2 / (gamma * theta * rho) with hw

@@ -1,0 +1,191 @@
+\section{Preparing a mask's exact LP matrix once}
+\label{sec:prepared-euler-matrix}
+
+An Euler mask has one matching matrix but can require several objective
+queries.  Previously every uncached envelope or anchor query parsed this
+same matrix and selected its independent original rows again.  The
+maintained mask oracle now prepares that matrix lazily, on its first
+actual LP query, and reuses the immutable preparation for the remaining
+objectives of that attempt.  This removes repeated algebraic setup without
+changing the sequence of mathematical LPs.
+
+\subsection{What is fixed within an attempt}
+
+Use the notation of Sections~\ref{sec:euler-branch-tree}
+and~\ref{sec:exact-polynomial-lp}.  For an allowed Q mask $J$, let
+\[
+                C_J x=0,\qquad x\ge0
+\]
+be its exact matching system.  In source-model mode, $C_J$ retains every
+original cycle row of the source kernel, including rows whose restriction
+to $J$ is zero.  In restricted-model mode it is the cycle matrix assembled
+for this mask.  Either matrix is fixed throughout the attempt; only the
+envelope or anchor objective $c$ changes.  The queried condition is
+\[
+                  C_Jx=0,\quad x\ge0,\quad c^Tx>0.
+\]
+The source dual cache can settle some objectives before this LP is called.
+
+The private preparation stores the number of columns, the exact original
+rows as immutable tuples of rational numbers, and the ordered indices of
+the original rows selected by the existing deterministic independence
+test.  It also records whether row reduction is enabled.  The width is
+explicit even for a matrix with no rows.  No objective, tableau, basis,
+dual, budget or mutable result is stored in this object.
+
+Let $I$ be the selected row indices and $R=C_J[I,:]$.  By construction,
+\[
+                   \ker R=\ker C_J.
+\]
+The preparation therefore serves every objective on this same matrix.
+The simplex inequalities are still
+\[
+                Rx\le0,\quad -Rx\le0,\quad \mathbf1^Tx\le1,
+\]
+with the same initial slack basis and, at this refactor's checkpoint,
+the same Bland pivot choices.  Section~\ref{sec:native-lex-prefix} later
+changes the polynomial selector while retaining this preparation contract.
+An original-row dual is still obtained by inserting zero multipliers in
+the omitted positions.  In particular, preparation does not replace the
+source equations by an unverified transformed matrix.
+
+\subsection{Exact equivalence and ownership}
+
+For a fixed matrix, objective and set of work allowances, the prepared
+entry point runs the same policy orchestration as the public fresh-matrix
+entry point.  It parses and validates every new objective and all current
+controls, then builds fresh tableau rows, right-hand sides, reduced costs,
+basis indices and statistics.  Its polynomial prefix bound remains
+$(n+|I|+1)^2$, where $n=|J|$.  A fallback receives a fresh objective-dependent
+feasibility system and budget.  Neither an earlier objective's remaining
+allowance nor its fallback state can be reused.
+
+The conclusive fast path still checks its primal or dual against all
+original rows.  Fallback support-rank, primitive-ray and slack-basis checks
+are unchanged.  A returned \path{equation_rows} is a fresh list; modifying
+a previous result cannot alter the prepared row indices or a later query.
+The private object owns a parsed copy of the matrix, so later changes to
+the caller's matrix cannot alter that object either.  This is an internal
+producer optimization, not a new certificate format or a public mechanism
+for submitting trusted prepared equations.
+
+The public solver retains its exact input-validation order and its
+fresh-matrix behavior.  The mask oracle creates a preparation only after
+an objective misses its existing dual cache.  An attempt completed entirely
+by cached bounds, or stopped by its anchor allowance before an LP query,
+does no new matrix preparation.  Each actual query computes its current
+shared residual allowances.  In particular a zero pivot allowance still
+permits an already available zero-pivot conclusion, while an exhausted
+required operation returns \path{INCONCLUSIVE} with no partial certificate.
+
+The object lives within one call of the mask oracle's \path{attempt} method.
+It is discarded before another mask is considered.  Restricting columns
+can change row dependencies and the deterministically selected original
+indices, even when the full source kernel is unchanged.  Reusing a prepared
+matrix across such masks would therefore require a different contract.
+The existing source-row dual cache is unaffected and can still be reused
+across nodes under its independently checked coordinate inequalities.
+
+Consequently, for a callback that permits the computation to finish,
+the complete mathematical outputs and existing work counters agree with
+fresh preparation on every objective.  Removing preparation removes its
+callback polls as well: cancellation timing measured by a callback count
+is not an equivalence claim.  Exceptions at every remaining poll propagate
+with their original identity; no callback exception is converted into a
+mathematical conclusion or retried as an LP failure.
+
+\subsection{The removed cost and the remaining exponent}
+
+Write $K$ for the number of actual, uncached LP calls in an attempt, $m$
+for the number of original rows, $n$ for the number of columns, and $L$
+for their coefficient bit length.  Let $P(m,n,L)$ be the parsing and
+deterministic original-row selection cost.  The change replaces its
+contribution
+\[
+                 K P(m,n,L)
+          \quad\hbox{by}\quad
+                 \mathbf1_{K>0}P(m,n,L).
+\]
+All objective parsing, tableau construction, pivots, fallback calls and
+independent certificate checks remain charged separately.  In particular
+there is no saving when $K=1$, and no added preparation when $K=0$.
+
+The existing row-selection algorithm uses
+$O(mn\min(m,n))$ rational arithmetic operations, besides parsing.  For
+$m,n=O(t)$ this is $O(t^3)$ operations per preparation; its exact coefficient
+growth is governed by the same elimination bounds as before.  Thus up to
+$K-1$ identical cubic setup passes disappear.  There are at most $A+1$
+queries, where $A$ is the number of anchor choices; for a one-vertex source,
+$A\le4t$.  Dual reuse can make $K$ much smaller.  Storage remains one
+polynomial-size matrix preparation and one active solve, rather than a
+cache of tableaux for all anchors or masks.
+
+This is a reduction of a cost summand.  It does not reduce the LP count,
+the pivot count, the resolving parameter $h$, or the number of masks in
+the complete admissibility search.  The bound
+$A(3t)^{O(h)}\operatorname{poly}(t,L)$ retains its unresolved dependence
+on $h$.  No smaller total exponent, whole-recognition timing improvement,
+or general quasi-polynomial bound follows from the reuse alone.
+
+\subsection{Regression and independent replay}
+
+Eleven focused tests cover sequential positive and nonpositive objectives,
+empty and dependent matrices, both original-row policies, rational input,
+and a $20001$-bit integer coefficient.  Complete prepared results are compared
+with fresh public solves, including their returned bases, original-row
+indices and statistics.  Tiny cases also use an independent normalized
+support oracle based on Leibniz determinants and Cramer's rule; dual answers
+are checked against every original inequality.  Forced fallback covers
+both positive-ray and nonpositive-dual recovery.
+
+Mutation controls alter caller inputs and previous returned points, bases,
+multipliers, row lists and statistics before solving again.  Separate
+controls exercise strict input types, renewed per-query allowances,
+zero-pivot conclusions and exhausted fallback budgets.  Cancellation checks
+visit every poll in small preparation and fast-path calls and every
+distinct callback site reached in complete positive and negative fallback,
+including independent replay.  Exception identity is checked for ordinary
+exceptions and direct subclasses of \path{BaseException}.
+
+Actual two-tetrahedron layered-torus searches exercise source-model trees,
+restricted-model trees and transversal restarts.  They compare complete
+outputs with a fresh-matrix solve substituted at every objective, check
+that multiple objectives share precisely one preparation per attempt,
+and that different masks have different objects.  Cache-only and denied
+attempts perform no preparation.  Negative trees undergo independent
+coverage replay; positive coordinates undergo original-support crushing
+and independent quotient replay.  These are supplied-source controls,
+not new diagram-authenticated knot verdicts or runtime measurements.
+
+The combined regression passes $394$ tests across $44$ modules with Regina
+available and no skips.  Its $361$ native, test, fixture and command files
+match the snapshot taken before execution.  The exact command, complete
+verbose output and snapshot are retained under
+\path{data/prepared-euler-matrix-*}.  This count includes the eleven new
+methods above and the preceding direct-ray, polynomial LP, Euler search,
+crushing, provenance and Pachner regressions.
+
+A separate finite differential executes the actual predecessor sources at
+revision \texttt{973c6fdee}, rather than comparing only two entry points
+that share the new policy controller.  All $297$ other native Python files
+are byte-identical; the old LP, tree and transversal modules are loaded
+separately and wired to their historical oracle.  The predeclared set has
+$348$ raw LP pairs, $96$ tree pairs and $48$ transversal pairs, for $492$
+pairs and $984$ calls.  It covers seeded small matrices, empty and dependent
+systems, exact rational and large binary inputs, both row policies, Bland
+and polynomial modes, forced fallback and finite caps, and both layered
+source fixtures under their stated masks and strategies.
+
+Every pair has recursively type-equal complete outputs, including existing
+statistics.  All $348$ raw public LP pairs also have equal callback counts
+and ordered callback-site traces after identifying the extracted parsing
+helper with its former facade locations.  Tree callback counts are allowed
+to change when redundant preparation disappears.  Per arm, the retained
+statuses are $82$ positive LP answers, $186$ nonpositive duals, $17$ positive
+Euler answers, $48$ complete negative Euler trees and $159$ inconclusive
+calls.  Capped results remain in the comparison.  Independent original-row
+primal, dual and support-rank checks, original-source positive Euler checks
+and negative-tree replay validate the conclusive outputs.  The full inputs,
+both outputs and callback records are retained in
+\path{data/prepared-euler-matrix-differential.json}.  These are exact finite
+equivalence checks, with no elapsed-time comparison or new asymptotic claim.

@@ -1,0 +1,425 @@
+\section{Learning uniform conflict transversals}
+\label{sec:euler-transversal}
+
+The smallest conflict in one returned relaxation point need not identify a
+small set of tetrahedra that resolves the whole search.  This section gives
+an exact uniform parameter for the fixed-source Q cone and an optional
+search policy that learns constraints on that parameter.  The policy can
+reuse the mask oracle and negative certificate format from
+Section~\ref{sec:euler-branch-tree}.  Its general quasi-polynomial bound
+remains conditional on a structural theorem.  The polynomial LP backend
+and basic-ray recovery needed by the parameterized argument are now supplied
+by Section~\ref{sec:exact-polynomial-lp}.
+The candidate stream analyzed here is the retained default
+\path{candidate_policy='subsets'}.  Section~\ref{sec:conflict-candidates}
+adds an optional policy that branches directly on missed conflicts and
+uses a bounded conflict cache.
+
+\subsection{Coordinate faces retain the root extreme rays}
+
+Fix a finite source triangulation with $t$ tetrahedra and its full
+quadrilateral matching cone
+\[
+ K=\{q\in\mathbb R^{3t}:q\ge0,\ Cq=0\}.
+\]
+The root may already have a partial mask; in that case replace $K$ by
+that coordinate face throughout.  For an allowed mask $J$, zero-extension
+identifies the node cone with
+\[
+ K_J=K\cap\{q_j=0:j\notin J\}.
+\]
+The fixed-source Euler function is the canonical formal extension
+\[
+ F(q)=\max_{\alpha\in\mathcal A}c_\alpha^{\mathsf T}q.
+\]
+It is convex and positively homogeneous.  The number of source anchor
+tuples is $A=|\mathcal A|$; after one-boundary-vertex preprocessing,
+$A\le4t$.  Incompatible coordinates remain formal matching vectors, not
+embedded normal surfaces.
+
+\begin{lemma}[Inheritance under coordinate restriction]
+\label{lem:transversal-face-rays}
+Every extreme ray of $K_J$ is an extreme ray of $K$.  Moreover, if
+$F(q)>0$ anywhere in $K_J$, some extreme ray of $K_J$ has positive $F$.
+\end{lemma}
+\begin{proof}
+Suppose a ray vector $r\in K_J$ decomposes as $u+v$ with $u,v\in K$.
+For $j\notin J$, nonnegativity and $u_j+v_j=r_j=0$ force
+$u_j=v_j=0$.  Thus $u,v\in K_J$, so extremality in $K_J$ forces both
+summands onto the ray of $r$.  This proves the first assertion.
+
+The nonnegative cone is pointed.  Its section $\sum_jq_j=1$ is a
+compact polytope when it is nonempty, and its vertices correspond to
+extreme rays.  Normalize a positive point into this section and express
+it as a convex combination of vertices.  Convexity of $F$ implies that
+one of those vertices has positive $F$.
+\end{proof}
+
+The source model is important here.  A node restricts columns of the same
+cone; rebuilding an equivalent eliminated representation does not create
+new geometric extreme rays.  The exact LP oracle returns a nonzero basic
+feasible point of $C_Jq=0$, $q\ge0$, $\sum q\le1$.  Its slack variables
+are uniquely determined by $q$, so that point projects to an extreme ray
+of $K_J$, and hence of the root.  Its canonical standard lift is already
+full-cone extreme.  Section~\ref{sec:direct-crush-positive} uses this fact
+to skip redundant extraction for native outputs, while independently
+checking the original STANDARD support rank and retaining extraction
+for valid nonextreme positive points.
+
+\subsection{A uniform parameter and a distinction for nonextreme points}
+
+For a nonnegative Q vector define its complete conflict set by
+\[
+ D(q)=\{\tau:\#\{i:q_{\tau,i}>0\}\ge2\}.
+\]
+Let $\mathcal R_+$ be the root extreme rays with $F>0$ that are
+incompatible.  Define the hypergraph and its transversal number by
+\[
+ \mathcal H(T)=\{D(r):r\in\mathcal R_+\},\qquad
+ h(T)=\min\{|B|:B\cap D\ne\varnothing
+                       \text{ for every }D\in\mathcal H(T)\}.
+\]
+The empty hypergraph has transversal number zero.  Compatible positive
+rays are successful witnesses and are excluded from this hypergraph.
+Every remaining edge is nonempty, so $h(T)\le t$.
+
+A $B$-assignment retains one Q type in each tetrahedron of $B$ and all
+previously allowed types elsewhere.  Its zero-Q possibility is included
+in every singleton choice.
+
+\begin{proposition}[Uniform conflict-transversal characterization]
+\label{prop:uniform-q-transversal}
+A set $B$ meets every edge of $\mathcal H(T)$ if and only if no
+$B$-assignment face contains an incompatible positive root extreme ray.
+If there is no admissible canonical positive vector, these conditions
+are also equivalent to $F\le0$ on every $B$-assignment face.
+\end{proposition}
+\begin{proof}
+If $B$ meets $D(r)$, resolving a tetrahedron in their intersection
+excludes $r$ under every singleton choice.  Conversely, if $B$ misses
+$D(r)$, at each tetrahedron of $B$ choose the sole type used by $r$,
+choosing arbitrarily when its Q coordinates vanish.  That assignment
+retains $r$.  On a negative source every positive extreme ray is
+incompatible.  Lemma~\ref{lem:transversal-face-rays} then supplies the
+last equivalence.
+\end{proof}
+
+\begin{lemma}[A nonextreme positive point still obstructs negative coverage]
+\label{lem:nonextreme-conflict-constraint}
+Let $q\in K$ have $F(q)>0$, without any extremality hypothesis.  Every
+set $B$ for which \emph{all} $B$-assignment relaxations are nonpositive
+must meet $D(q)$.
+\end{lemma}
+\begin{proof}
+If $B$ misses $D(q)$, choose the used type at each tetrahedron of $B$,
+arbitrarily where all types vanish.  The resulting assignment retains
+$q$, contradicting its claimed nonpositivity.
+\end{proof}
+
+This lemma gives a valid hitting constraint for complete negative
+coverage even from a nonextreme point.  On a negative source,
+Proposition~\ref{prop:uniform-q-transversal} identifies such covering
+sets with the root-ray transversals.  On a positive source the distinction
+matters: an incompatible sum of compatible positive rays need not give
+a necessary constraint on a transversal of \emph{incompatible extreme}
+rays.  The parameter theorem for both outcomes therefore uses the actual
+oracle's basic-ray guarantee.  The finite lower-bound witnesses described
+by the research interface are separately checked for Q-support nullity
+one; their extremality is not inferred from their formal Euler value.
+
+A bound on one observed $|D(q)|$ is not a bound on $h(T)$.  For example,
+$m$ verified positive root rays with pairwise disjoint conflict sets force
+$h(T)\ge m$, regardless of the size of any individual set.  Conversely,
+a complete negative tree that splits only in $B$ proves $h(T)\le|B|$:
+a positive ray avoiding conflicts in $B$ could follow its retained
+choices through that tree and would contradict a negative leaf.
+
+\subsection{The default subset candidate policy}
+
+The maintained \path{search_euler_transversal} interface uses the shared
+\path{_EulerMaskOracle}, with the fixed source model and the same bounded
+cache of at most $256$ source-row dual bounds.  It records the complete
+conflict set of every incompatible positive basic ray.  It then explores
+a candidate $B$ using ordinary complete mask branching, but permits
+splits only at returned conflict tetrahedra in $B$.
+
+If a returned conflict set is disjoint from $B$, it refutes that
+candidate.  The partial candidate tree is discarded; all source algebra,
+checked dual bounds, learned conflicts and charged work are retained.
+A compatible positive vector is checked against original normal matching
+and returned immediately.  A successful negative candidate emits the
+existing \path{normal-euler-branch-tree-v1} packet with source-model v2
+negative leaves.  Failed candidates never become negative evidence.
+
+Under \path{candidate_policy='subsets'}, candidates are generated by one
+stream of subsets, first by cardinality
+and then lexicographically.  Every subset is tested against the currently
+known hypergraph.  A skipped subset remains invalid because constraints
+only accumulate.  An explored candidate that fails acquires a disjoint
+conflict and also remains invalid.  Therefore continuing the stream
+still selects a minimum hitting set of the known hypergraph, without
+retesting earlier subsets.
+
+\begin{proposition}[Parameterized learning bound]
+\label{thm:transversal-learning-bound}
+Disable operational caps and select the polynomial exact LP policy of
+Section~\ref{sec:exact-polynomial-lp}, including its basic-ray recovery.
+The subset candidate policy is complete.
+Writing $h=h(T)$, it tests at most
+\[
+ \sum_{k=0}^{h}\binom tk
+\]
+subsets, and its total oracle-node count is at most
+\[
+ \sum_{k=0}^{h}\binom tk\frac{3^{k+1}-1}{2}.
+\]
+Its bit work is $A(3t)^{O(h)}\operatorname{poly}(t)$.  A supplied uniform transversal
+of size $h$ needs only $A3^{O(h)}\operatorname{poly}(t)$ work.
+\end{proposition}
+\begin{proof}
+Every learned edge is the conflict set of an incompatible positive
+root extreme ray, by Lemma~\ref{lem:transversal-face-rays}.  A true
+size-$h$ transversal therefore meets all learned edges.  No attempted
+minimum candidate can have more than $h$ elements.  The monotone stream
+tests each subset at most once.
+
+A candidate of size $k$ has a tree of depth at most $k$, with at most
+three children at each split.  Any incompatible ray that survives a
+resolved candidate gives a new disjoint conflict and rejects it.  For
+a true transversal this cannot happen: every positive basic ray in
+an assignment face is compatible.  Hence that candidate returns a
+positive witness or a complete negative tree.  The finite source has
+only finitely many subsets, and the full ambiguous set always resolves
+all conflicts, proving completeness independently of a small parameter.
+
+Each oracle node uses at most one envelope query and $A$ anchor queries,
+with polynomial source arithmetic and proof data under the stated LP
+policy.  Hypergraph membership tests, subset generation and retained
+conflicts add a polynomial in the number of charged nodes and subsets,
+which remains $(3t)^{O(h)}\operatorname{poly}(t)$.  The supplied-set statement removes
+the subset-learning factor.
+\end{proof}
+
+The native producer defaults to the polynomial LP policy, retaining an
+explicit Bland comparison.  Node, pivot, anchor, ellipsoid-update and
+feasibility-call allowances are shared across all candidate restarts.
+The polynomial policy proves a bit bound for each complete LP call, rather
+than a bound on the unrestricted Bland trajectory.  A separate \path{max_hitting_subsets} allowance,
+$10{,}000$ by default, charges every tested subset, including those rejected
+before an LP call.  All caller interruptions propagate, and any exhausted
+allowance returns \path{INCONCLUSIVE} without a partial negative packet.
+The diagram driver exposes the policy explicitly through
+\path{sector_method='transversal'} and keeps the source-bound crushing
+continuation and independent global replay.
+
+Without a small $h$ theorem, the crude sum over all candidate trees is
+$O(4^t)$ oracle nodes, compared with $O(3^t)$ for one ordinary full tree.
+This search is consequently optional.  The conflict-directed alternative
+of Section~\ref{sec:conflict-candidates} improves the parameter dependence
+when encountered conflicts are small, while preserving the full negative
+tree obligation.  A possible later default could
+alternate fresh deterministic DFS and learning attempts with geometrically
+increasing node allowances.  Summing those allowances gives constant-factor
+competitiveness in charged oracle nodes, with polynomial preparation
+repeated logarithmically many times.  This is not automatically a bound
+on elapsed time: pivot, anchor and subset-selection work must also be
+scheduled or capped so that an expensive inner operation cannot starve
+the other policy.  Such a dovetail is not part of this implementation.
+
+\subsection{Why local uniform-Q normalization does not close the gap}
+
+There is a useful local simplification, but positive Q basic rays already
+satisfy it.  Assume now the finite triangulation has exactly one boundary
+vertex with disc link $L$, so $\chi(L)=1$.  For each tetrahedron $\tau$,
+let $W_\tau$ have $+1$ in its four triangle coordinates, $-1$ in its
+three Q coordinates, and zero elsewhere.  Each face-arc expression is
+triangle plus quad, so $W_\tau$ satisfies the original matching equations.
+Its face-arc and edge-weight contributions vanish and its disc contribution
+is $4-3=1$; hence $\chi(W_\tau)=1$.
+
+These are the tetrahedral matching solutions in the Kang--Rubinstein
+basis theorem, in the finite-boundary formulation of Luo--Tillmann.\footnote{%
+Feng Luo and Stephan Tillmann, \emph{Angle structures and normal surfaces},
+\url{https://arxiv.org/pdf/math/0510537v2}, Theorem~6 and Lemma~7
+on printed page~5, and the Euler calculation on printed page~6.
+The basis theorem explicitly allows compact pseudomanifolds with boundary.}
+Let $r_\tau$ be the Q vector $(1,1,1)$ in $\tau$ and zero elsewhere.
+It is the Q projection of $-W_\tau$, so $Cr_\tau=0$.  Its canonical
+nonnegative lift is $L-W_\tau$, including when $t=1$.  Therefore
+\[
+ F(r_\tau)=0.
+\]
+For arbitrary $q\in K$, subtract
+$m_\tau=\min_iq_{\tau,i}$ copies of each $r_\tau$.  The resulting $q'$
+remains in $K$, has a zero Q coordinate in every tetrahedron, and
+\[
+ F(q)\le F(q')+\sum_\tau m_\tau F(r_\tau)=F(q')
+\]
+by subadditivity.  Admissible vectors are unchanged.  Equivalently, if
+$p$ are the canonical triangle coordinates of $q$ and
+$\mu=\min_{\tau,v}(p_{\tau,v}+m_\tau)$, its exact Euler gain is
+$\sum_\tau m_\tau-\mu\ge0$.
+
+If an extreme ray has all three types positive in $\tau$, subtraction
+of its positive minimum decomposes it into $m_\tau r_\tau$ and another
+nonnegative matching vector.  Extremality forces it onto $r_\tau$, where
+$F=0$.  Thus every genuinely positive Q extreme ray already has a zero
+Q entry in every tetrahedron.  Enforcing that condition cannot improve
+the positive-existence oracle.  Its three two-type faces are overlapping
+relaxations and do not replace the three admissible singleton choices;
+the remaining two-type conflicts still require resolution.
+
+Nor does removing these directions give a polylogarithmic linear space.
+The one-vertex boundary torus has two triangles.  Face incidence and
+$\chi(M)=0$ give $e=t+2$ global edges.  The cited basis theorem gives
+standard matching dimension $t+e=2t+2$.  The triangle-only kernel has
+dimension one, so Q matching has dimension $2t+1$.  Quotienting its
+linear space by the $t$ independent vectors $r_\tau$ leaves dimension
+$t+1$.  This is a linear-algebra statement, not a claim that $F$ descends
+to that quotient or a lower bound on every search tree.
+
+The next global obligation is therefore a bound on a uniform resolving
+parameter, or a different structured search theorem, rather than the
+already automatic minimum-Q normalization.  A polylogarithmic bound on
+$h$ at all authenticated one-vertex stages, together with the polynomial
+LP policy of Section~\ref{sec:exact-polynomial-lp}, would give
+quasi-polynomial search through the polynomially many crushing stages.
+No such universal bound on $h$ is established here.
+
+\subsection{Fresh finite audit and exact resolving numbers}
+
+The finite audit and measurements below concern the subset candidate
+policy.  They precede the optional conflict-directed policy of
+Section~\ref{sec:conflict-candidates} and do not measure that alternative.
+
+The source-pinned correctness run in
+\texttt{data/euler-transversal-audit.json} exercises the maintained native
+policy, with a separate replay in
+\texttt{data/euler-transversal-replay.txt}.  The replay command is
+\texttt{python -B -S -m euler\_transversal\_research.check\_evidence};
+it imports neither Regina nor an external optimization package and performs
+no new surface discovery or timing.  Pins cover the entire native Python
+package and the audit's research dependencies.  This experiment establishes
+finite agreement and exact certificates, not an asymptotic bound.
+
+The supplied-source audit freshly enumerates the original \emph{standard}
+normal vertex surfaces using Regina: 35 vertices over three sources.  It
+compares all $8^2=64$ Q masks of the two-tetrahedron layered torus, and twelve
+masks each of sources with an interior vertex and multiple boundary vertices.
+Both envelope-first and anchor-only learning run on all 88 masks.  The 31
+positive masks give 62 positive queries; the 57 negative masks give 114
+negative queries.  Every positive result has original matching and canonical
+Euler checked independently, then undergoes native full-standard-ray
+extraction.  Its extracted coordinates occur in the freshly enumerated
+original standard list, and its labelled crushing quotient agrees exactly
+with Regina in all 62 comparisons.  Every negative query carries a complete
+independently replayed branch tree.  The saved-list replay verifies each
+listed ray and each comparison; completeness of those lists is the evidence
+from fresh Regina enumeration, not a new enumeration by the replay checker.
+
+The same audit constructs three exteriors from their diagrams, including
+shelling, vertex reduction, all search work, and complete source-bound
+recognition proofs.  The crossing-free circle is certified \texttt{UNKNOT};
+the braid $(2;1,1,1)$ and the braid $(3;1,-2,1,-2)$ are certified
+\texttt{KNOTTED}.  The respective numbers of crushing steps are $1,12,16$,
+and all 29 labelled quotient comparisons agree.  Initial/shelled tetrahedron
+counts are $20/5$, $60/48$, and $80/68$.  The two negative final sources have
+10 and 13 tetrahedra, respectively, and one vertex each.
+
+For these \emph{exact labelled final sources}, the audit establishes
+\[
+ h(\text{retained trefoil source})=3,
+ \qquad
+ h(\text{retained figure-eight source})=2.
+\]
+The trefoil lower bound uses positive root Q extreme rays with the pairwise
+disjoint complete conflict sets
+\[
+ \{0,5\},\qquad \{1,2,3\},\qquad \{4,8\}.
+\]
+The figure-eight lower bound uses
+\[
+ \{0,1,2,3,12\},\qquad \{6,7,8,11\}.
+\]
+The complete negative certificates use only the split sets
+$B=\{0,2,8\}$ and $B=\{8,12\}$, respectively, establishing the matching upper
+bounds.  No completeness claim about enumerating positive root rays is
+needed for either lower bound.
+
+These lower witnesses originate in retained scratch discoveries, explicitly
+separate from the fresh standard-surface enumeration.  All 19 retained root
+rays are freshly replayed against the exact final source: nonnegative
+integral original standard matching, zero canonical triangle minima,
+positive formal Euler, primitive Q coordinates, and support nullity one in
+the independently derived full-source Q equations.  The last condition proves
+Q-ray extremality.  Incompatible coordinates here are formal vectors and are
+never presented as embedded normal surfaces.  Source equality is literal
+labelled equality; the checker refuses to transfer this evidence merely
+because another triangulation has the same knot type or tetrahedron count.
+
+Including unsuccessful candidates and restarted trees, the trefoil query
+uses 64 oracle nodes, 124 LP calls, 1811 pivots, and 70 tested hitting subsets;
+the figure-eight query uses 36 nodes, 114 LP calls, 5433 pivots, and 86 tested
+subsets.  They consider seven and ten candidate resolving sets and retain
+seven and eleven distinct learned conflicts.  Their anchor counts are 1644
+and 733, with 1584 and 655 reuses, respectively.  Each prepares the fixed
+source kernel once.  These operation counts are for the entire learning
+process, not merely the final successful tree.  They demonstrate completion
+within the common allowances of 256 nodes, 10000 pivots, 10000 anchors, and
+10000 tested subsets.  These measurements used the historical LP policy;
+they establish neither a polynomial pivot bound for unbounded Bland nor a
+bound on $h$ for a family of triangulations.  The later polynomial-policy
+proof is separate from this finite evidence.
+
+\subsection{Complete-query measurements and the practical tradeoff}
+
+The affected regression suite passes all $160$ tests.  This includes complete
+positive and negative diagram certificates, rejection of partial coverage,
+strict limits and cancellation, and genuine search-driven crushing chains
+that verify shared node, pivot, anchor and subset allowances across successors.
+The shared oracle refactor also passes the existing source and restricted
+DFS tests.  The default recognition dispatcher and default crushing sector
+method remain unchanged.
+
+The source-pinned paired experiment compares the current source-model DFS
+with learning on the same three diagrams.  Both arms use $256$ nodes,
+$10000$ pivots and $10000$ anchors; learning additionally permits $10000$
+tested subsets.  Five randomized pairs and one shuffled DFS/DFS A/A pair
+are recorded per case, with batches of one.  Construction, shelling, vertex
+preprocessing, all failed candidates and subset filtering, LP discovery,
+internal certificate replay, and full-result serialization are timed.
+Imports, diagram objects and separate independent warmup replay are outside
+the timer.  Every timed result has exactly its verified warmup's full output
+hash.  Thus the learning measurements include unsuccessful candidate work.
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{3pt}
+\input{data/euler-transversal-table.tex}
+\end{center}
+
+Times are marginal median milliseconds; ratios are medians of paired ratios.
+The outcome pairs are DFS/learning: U denotes \texttt{UNKNOT}, K denotes
+\texttt{KNOTTED}, and I denotes \texttt{INCONCLUSIVE}.  Circle timings are
+essentially unchanged.  On the trefoil the DFS and learning medians are
+$2.888$ and $2.969$ seconds, with paired DFS/learning ratio $0.976$ and A/A
+ratio $1.006$.  Learning gives a smaller final negative proof, $40$ nodes
+instead of $64$, but is slightly slower in this sample.  Its $1811$ pivots
+exceed DFS's $1670$, even though its anchor work is smaller.
+
+On the figure-eight, DFS exhausts its anchor allowance without a completed
+negative proof, while learning certifies knottedness with a $13$-node final
+tree.  The measured $11.103$ and $9.303$ second medians compare these different
+outcomes, so the paired ratio $1.194$ is not a speedup between two completed
+recognitions.  Moreover, its A/A ratio is $1.155$, showing substantial timing
+variation.  The stronger evidence here is finite completion under the shared
+allowances, with the entire resulting certificate independently replayed.
+
+The maintained package \path{fast/euler_transversal_research} retains the
+fresh oracle audit, fixed lower-ray witnesses, paired runner and saved-evidence
+checker.  The checker runs without Regina or discovery, validates all source
+pins and warmup proofs, reconstructs the exact finite transversal bounds, and
+recomputes the timing table.  The publication manifest also pins the article
+and rebuilt PDF.  These results motivate an optional parameter-sensitive
+search; they do not establish a uniform small resolving set or general
+quasi-polynomial recognition.

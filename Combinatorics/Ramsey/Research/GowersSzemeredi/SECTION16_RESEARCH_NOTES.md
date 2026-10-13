@@ -7642,6 +7642,1290 @@ locations without changing classifications or companion names.
 Full-facade checks and original-paper fidelity gaps remain separate.
 All final numerical bounds are unchanged; the simplification goal is active.
 
+### L.73. Remove the historical parameter implementation from final dependencies (2026-10-12)
+
+The final routes use the scalar density, exponent and threshold estimates
+from `Proofs18GenericEnvelopeBase`, independently of the historical
+`GenParams` step. `Proofs18EnvelopeBounds` supplies the common discrepancy
+envelope, cubic base and localization arithmetic. Thirty-six declarations
+move with their complete proof bodies and variable scopes unchanged.
+Their original modules continue to export them.
+
+`uniform_baseC_recipPowerLB` states the slice-density estimate using its
+explicit function. The two cover consumers apply this helper directly;
+`GenParams.baseC_recipPowerLB` remains a compatibility wrapper with its
+original statement. `tightHyp_of_profiles` derives its fields directly
+from the class and family-constant estimates. Its Fejer counterpart
+reuses those fields, avoiding the historical generic iteration.
+
+Against `3caf397c5`, all 214 existing declaration headers/scopes and 52
+definition bodies in 17 affected production files are preserved, as are all 25
+public stronger bridge proofs. There are five proof replacements and one new
+helper. The extraction adds 46 source lines for the shared module, helper
+interface and compatibility organization. The stronger bridge falls from 728
+modules / 157,301 lines to 722 / 155,624: 6 fewer modules and 1,677 fewer
+imported source lines. The original final falls from 648 / 135,137 to 641 /
+133,322, removing 7 modules and 1,815 imported source lines. See
+`verification/2026-10-12-generic-decoupling-simplification.json`.
+
+Native verification passes the original-final 642-module audit and the
+783-module focused compatibility audit, with only `propext`,
+`Classical.choice` and `Quot.sound`. The focused closure retains every
+previous module and adds the shared envelope module; its source size is
+169,419 lines. Five new named checks cover the
+independent density bound, old wrapper, changed cover consumers and direct
+hypothesis proof. See `verification/2026-10-12-final-generic-decoupling.json`
+and `verification/2026-10-12-final-generic-decoupling-compatibility.json`,
+with immutable source manifests. Inventory classifications and companion
+names are unchanged; source locations are refreshed. Full-facade checks
+and original-paper fidelity gaps remain separate. All final numerical
+bounds are unchanged, and the simplification goal remains active.
+
+### L.74. Share the reciprocal-density proof across budgets (2026-10-12)
+
+`uniform_baseC_recipPowerLB_of_budget` proves the reciprocal-power estimate
+for the slice density `s/2/uCount V D (alpha/2) B (s/2)` from the unit-range
+budget and its reciprocal-power bound. The three existing density theorems
+specialize this helper at their original budgets and degrees. Their
+conclusions keep the same exponents `D * 2^mu0 + 1` and `D + 1`.
+`GenParams.slice_const_le_deg` moves unchanged into the shared base, and
+its fixed-degree variant now specializes it. All old names and owner
+exports remain available, with no import changes.
+
+Against `a2b042b5e`, the three production files lose 64 source lines.
+The four replaced proof bodies plus the new shared proof contain 37
+lines instead of 110, a net reduction of 73 proof-body lines. The moved
+scalar theorem counts as zero deletion. All 120 old declaration headers
+and variable scopes, 23 definition bodies and all 25 public stronger
+bridge proofs remain unchanged. The stronger bridge stays at 722 modules
+and falls from 155,624 to 155,560 imported source lines. The original
+final stays at 641 modules and grows from 133,322 to 133,338 lines because
+it imports the generalized helper and its compatibility wrapper. These
+are explicit dependency-size tradeoffs, not a reduction in both routes.
+See `verification/2026-10-12-reciprocal-budget-simplification.json`.
+
+Native verification passes the original-final 642-module audit and the
+783-module focused compatibility audit, with only `propext`,
+`Classical.choice` and `Quot.sound`. Five new named checks cover the new
+budget helper, both slice-constant forms and both Fejer density wrappers;
+all earlier checks remain. The focused closure has 169,360 source lines,
+59 fewer. See `verification/2026-10-12-final-reciprocal-budget.json` and
+`verification/2026-10-12-final-reciprocal-budget-compatibility.json`, with
+immutable source manifests. Inventory classifications, companion names
+and source locations are unchanged. All final numerical bounds and
+original-paper fidelity status are unchanged. Full-facade checks remain
+separate, and the simplification goal remains active.
+
+### L.75. Share eta and input estimates across density budgets (2026-10-12)
+
+`GenParams.eta_step_of_cube_le` and `GenParams.yIn_step_of_den_le` prove
+the density-to-eta and eta-to-input bounds under their exact scalar
+absorption conditions. The fixed-degree and polynomial-budget variants
+now specialize these two shared estimates. `GenParams.cS_step` moves
+unchanged earlier in its module, outside `section Steps`, retaining its
+original variable scope. Both `dens_step` and `joint_dens_step` reuse it
+to remove repeated reciprocal-density exponent arithmetic. All original
+declaration names, signatures and owner exports remain available.
+
+Against `829627c62`, the three production files lose 75 source lines.
+The six replaced proof bodies and two new helper proofs contain 98 lines
+instead of 189, a net reduction of 91 proof-body lines. The unchanged
+scalar theorem relocation counts as zero deletion. All 99 old headers
+and variable scopes, 31 definition bodies and all 25 public stronger
+bridge proofs are preserved. There are no import or module changes.
+The stronger bridge remains at 722 modules and falls from 155,560 to
+155,485 imported source lines; the original final remains at 641 modules
+and falls from 133,338 to 133,332 lines. See
+`verification/2026-10-12-eta-density-simplification.json`.
+
+Native verification passes the 642-module original-final audit and the
+783-module focused compatibility audit, with only `propext`,
+`Classical.choice` and `Quot.sound`. Nine added named checks cover both
+helpers, the four retained eta/input variants and all three density-step
+lemmas; all prior checks remain. The focused closure has 169,294 source
+lines, 66 fewer. See `verification/2026-10-12-final-eta-density.json` and
+`verification/2026-10-12-final-eta-density-compatibility.json`, with
+immutable source manifests. The regenerated inventory is byte-identical.
+All final numerical bounds and original-paper fidelity status are
+unchanged. Full-facade checks remain separate, and the simplification
+goal remains active.
+
+### L.76. Use nonnegative bases in exponential power estimates (2026-10-12)
+
+`ex_rpow_of_nonneg` compares a real power directly with a power of an
+exponential, using `Real.rpow_le_rpow`, `Real.exp_mul` and `pw_mul'`.
+Nonnegativity of the base suffices, including at zero; the previous
+`ex_rpow` theorem remains as a one-line specialization with its original
+signature. The five modulus-requirement proofs use the new estimate to
+remove repeated lower-base bounds and the radius upper bounds needed
+only by those arguments. Within each proof, one local constant estimate
+also supplies the previously separate factors 4, 8 and 16.
+
+Against `f5320083a`, the six production files lose 72 source lines.
+The six replaced proof bodies and the new helper contain 319 lines
+instead of 396, a net reduction of 77 proof-body lines. All 127 old
+declaration headers and variable scopes, 40 definition bodies, imports,
+owner exports and all 25 public stronger bridge proofs are preserved.
+No declaration moves or module changes occur. The stronger bridge stays
+at 722 modules and falls from 155,485 to 155,474 imported source lines;
+the original final stays at 641 modules and falls from 133,332 to
+133,321 lines. Both final routes therefore lose 11 source lines. The
+other reductions shorten historical threshold variants and the focused
+audit. See `verification/2026-10-12-nonnegative-rpow-simplification.json`.
+
+Native verification passes the 642-module original-final audit and the
+783-module focused compatibility audit, with only `propext`,
+`Classical.choice` and `Quot.sound`. Seven added named checks cover the
+new helper, its retained interface and all five modulus-requirement
+theorems; all prior checks remain. The focused closure has 169,229 source
+lines, 65 fewer. See `verification/2026-10-12-final-nonnegative-rpow.json`
+and `verification/2026-10-12-final-nonnegative-rpow-compatibility.json`,
+with immutable source manifests. The regenerated inventory is
+byte-identical. Final numerical bounds and original-paper fidelity
+status are unchanged. Full-facade checks remain separate, and the
+simplification goal remains active.
+
+### L.77. Reuse fixed-degree power bounds for constants (2026-10-12)
+
+Twenty-one existing proofs now instantiate `pw_const` at a fixed small
+degree and then use `pw_mono`, replacing repeated double-power arithmetic
+for scalar constants. The fixed degrees are 1, 2, 3, 5 and 6; the largest
+closed numeral checked is `2^64`. `familyRecThr_le_exp` also uses the
+nonnegative-base power estimate from L.76 directly, removing a lower-base
+argument and a separate final exponent calculation. No helpers,
+definitions, modules or imports are added, and no declarations move.
+
+Against `5fcbcc5a0`, the eight production files lose 87 source lines, all
+inside the 22 changed proof bodies. Those bodies contain 960 lines
+instead of 1,047. All 147 old declaration headers and variable scopes,
+43 definition bodies, imports, options, section commands, documentation,
+owner exports and all 25 public stronger bridge proofs are preserved.
+Both final routes lose 43 imported source lines: the stronger bridge
+remains at 722 modules and falls from 155,474 to 155,431 lines; the
+original final remains at 641 modules and falls from 133,321 to 133,278
+lines. See `verification/2026-10-12-constant-envelope-simplification.json`.
+
+Native verification passes the 642-module original-final audit and the
+783-module focused compatibility audit, with only `propext`,
+`Classical.choice` and `Quot.sound`. Twenty-one new named axiom checks
+cover the changed proofs alongside the existing `slice_const_le_deg`
+check; all prior checks remain. The focused closure has 169,163 source
+lines, 66 fewer. See `verification/2026-10-12-final-constant-envelope.json`
+and `verification/2026-10-12-final-constant-envelope-compatibility.json`,
+with immutable source manifests. Two local arithmetic obligations use
+an explicit `Nat.one_le_two_pow` fact, as required by native elaboration.
+The regenerated inventory is byte-identical. Numerical bounds and
+original-paper fidelity status are unchanged. Full-facade checks remain
+separate, and the simplification goal remains active.
+
+### L.78. Remove historical parameter modules from the final step (2026-10-12)
+
+Seven shared estimates move unchanged into existing common modules: five
+power/product estimates from `Proofs18CoverDensity` to
+`Proofs18GenericEnvelopeBase`, and two width estimates from
+`Proofs18CoverModulusFejer` to `Proofs18FejerEnvelopeBase`. The old owners
+still export every moved name. `Proofs18FinalStep` can therefore replace
+its two historical parameter imports with `Proofs18LengthSixScale`.
+
+Against `9dd3766f1`, all 158 old declaration headers and variable scopes,
+58 definition/structure bodies, seven moved proof blocks and all 25 public stronger
+bridge proofs are preserved. No declaration or module is added and no
+proof body changes. The five production files still total 2,494 lines:
+this checkpoint reduces the final dependency closure through relocation,
+with zero net source or proof-body deletion across the production files.
+
+The stronger bridge loses `Proofs18CoverDensity`, `Proofs18CoverModulus`
+and `Proofs18CoverModulusFejer`: 722 modules / 155,431 source lines become
+719 / 154,536, a reduction of three modules and 895 imported lines.
+`Proofs18Final` similarly falls from 629 / 141,319 to 626 / 140,424.
+The original `Final` remains at 641 / 133,278, and `FinalAudit` at
+642 / 133,312. The focused compatibility closure remains at 783 modules;
+seven added named checks bring it to 169,170 lines. Counts concern local
+GowersSzemeredi/OAI source closures, not measured compilation speed.
+
+Native verification passes standalone compilation of the 719-module
+stronger bridge, the 642-module original-final audit and the 783-module
+focused compatibility audit. The latter audits use only `propext`,
+`Classical.choice` and `Quot.sound`; all prior named checks remain.
+See `verification/2026-10-12-final-step-import-cut-stronger.json`,
+`verification/2026-10-12-final-step-import-cut.json` and
+`verification/2026-10-12-final-step-import-cut-compatibility.json`,
+with their recorded source manifests.
+
+Forty downstream consumers have narrower imports. All lie under
+`IntegerOriginalCorollaryFidelityAudit`, whose 1,098-module closure includes
+337 modules outside the focused audit, including 36 audit wrappers. Its
+additional native check passes with only approved axioms; see
+`verification/2026-10-12-final-step-import-cut-downstream.json` and its
+source manifest. Together with the focused audit, these checks cover
+1,120 distinct local modules. Full-facade verification remains separate.
+
+The existing stronger van der Waerden bounds are unchanged. With r colors
+and progression length k, for r >= 2 they give
+`W(r,k) <= 2^(2^(r^(2^(2^(k+c)))))`, with c=3 for every positive k,
+c=2 for k>=8, c=1 for k>=11 and c=0 for k>=13. The exported theorems
+supply positive-step progressions in [1,N]. This relocation establishes
+no additional numerical improvement or original-paper fidelity result;
+the documented correction to Lemma 16.10 and remaining fidelity gaps
+retain their existing status. The simplification goal remains active.
+
+### L.79. Share interval-length estimates and trim the final ranges result (2026-10-12)
+
+Two estimates in `Proofs18BoundaryRefinement` now supply the common length
+factor in the generic, quadratic, Fejer and historical length-six density
+iterations. For `beta > 0`, `beta⁻¹ <= X^n` and `X >= 2`, the inverse factor is bounded by
+`(8 * section5LocalRefinementConstant 1 1) * X^(17*n+64)`. Bounding the fixed
+constant by `X^m` absorbs the prefactor into `X^(m+17*n+67)`; under
+`0 < beta <= 1`, the second helper also returns positivity and an upper
+bound of one for the factor. All four callers retain their prior bounds.
+The quadratic specialization uses explicit natural-number normalization
+of `17*12381+64=210541`, avoiding unnecessary reduction of its real terms.
+
+`GenParamsJT3.ranges` now returns the facts used by its four local callers:
+positive `Rho` and `Zeta`, and `(0,1]` bounds for `Em`, `Eth`, `Ec`,
+`NestExp` and `Bexp`. Its parameters and assumptions are unchanged, but
+its result type is intentionally narrower. The four callers adapt their
+tuple extraction. This is an intermediate interface change, not complete
+preservation of every theorem type; final statements are unchanged.
+
+Against `f0d6c2490`, six production files shrink from 1,880 to 1,790 lines
+(90 fewer). The nine changed existing proofs plus the two new helper proofs contain
+424 lines instead of the previous 527 (103 fewer, including helper overhead).
+All 78 old declaration contexts, 77 of 78 old headers, all 32 existing
+definition/structure bodies and all 25 public stronger bridge proofs are
+preserved. The sole changed old header is `GenParamsJT3.ranges`; both new
+helper signatures and contexts are checked explicitly. No declaration
+moves and no new module is added.
+
+The stronger bridge remains at 719 modules and falls from 154,536 to
+154,477 imported source lines (59 fewer). `Proofs18Final` similarly stays
+at 626 modules and falls to 140,365 lines. The original final stays at
+641 modules and falls from 133,278 to 133,248 lines (30 fewer); its audit
+is 642 / 133,282. The focused audit is 783 / 169,085, 85 fewer lines after
+five added named checks; its existing checks already cover the other
+changed proofs. The standalone boundary-refinement closure gains the
+existing scaling module, becoming 123 modules / 49,814 lines; no final
+closure gains a module. Counts follow local GowersSzemeredi/OAI imports.
+
+Native verification passes standalone compilation of the 719-module
+stronger bridge, the 642-module original-final audit, the 783-module
+focused compatibility audit and the 1,098-module
+`IntegerOriginalCorollaryFidelityAudit`. Named axiom checks allow only
+`propext`, `Classical.choice` and `Quot.sound`. See
+`verification/2026-10-12-final-ranges-length.json`,
+`verification/2026-10-12-final-ranges-length-compatibility.json`,
+`verification/2026-10-12-final-ranges-length-stronger.json` and
+`verification/2026-10-12-final-ranges-length-downstream.json`,
+with their source manifests; the source comparison is recorded separately
+in `verification/2026-10-12-final-ranges-length-simplification.json`.
+All four actual `ranges` applications are in FinalStep.
+Focused plus the additional audit cover 41 of its 44 import consumers;
+the three excluded facade-level modules do not apply or destructure
+`ranges`. The facade is import-only, Audit inspects theorem axioms
+dynamically, and PortImportAudit checks unrelated affine-recovery examples.
+This source inspection is not full-facade native verification. Nor does
+the selected audit set claim native coverage of all 260 import consumers
+of the changed boundary-refinement module.
+
+The regenerated inventory changes only two related theorem line numbers
+following the length-six proof reduction; its 120-statement count is
+unchanged. Numerical final bounds remain unchanged, including the existing
+van der Waerden offsets 3 for every positive length, 2 from length 8,
+1 from length 11 and 0 from length 13, for at least two colors. The documented
+Lemma 16.10 correction and open original-paper fidelity issues retain their
+status. The simplification goal remains active.
+
+### L.80. Remove redundant localization thresholds and witness transports (2026-10-12)
+
+`GenParamsC.Tloc` and `GenParamsJT3.Tloc` drop the branches
+`4^(1/NestExp)` and `8^(2/F)`. The retained `MThr` already enforces the
+stronger 64-root requirement used to obtain the nested-width bound; the
+8-root branch was unused by the modulus proofs. Both routes prove their
+scale conditions directly above the smaller threshold. The C route also
+uses local definitions for its two width witnesses, eliminating repeated
+transports along defining equalities.
+
+These are two intentional intermediate-definition changes. All 84 old
+declaration headers and contexts remain textually exact, but theorem types
+mentioning `Tloc` expand to its new body. This checkpoint does not claim
+preservation of every expanded theorem type. The other 52 of 54 existing
+definition/structure bodies, all 25 public stronger bridge proofs and the
+13 checked headline/degree-budget definitions remain exact. No declaration,
+module, import or helper is added or moved.
+
+Against `41d7eb94f`, three production files shrink from 1,549 to 1,498 lines
+(51 fewer). The four changed proof bodies shrink from 364 to 317 lines
+(47 fewer); the two smaller definition bodies account for the other four
+removed lines. The original final stays at 641 modules and falls from
+133,248 to 133,208 imported lines (40 fewer); its audit is 642 / 133,242.
+The stronger bridge remains at 719 modules and falls from 154,477 to
+154,466 lines (11 fewer), while `Proofs18Final` is 626 / 140,354. The
+focused audit is 783 / 169,034, 51 fewer lines, with all named checks
+retained. All import-module sets are unchanged.
+
+Native verification passes the 642-module original-final audit, the
+783-module focused compatibility audit, standalone compilation of the
+719-module stronger bridge and the 1,098-module
+`IntegerOriginalCorollaryFidelityAudit`. The named axiom checks allow only
+`propext`, `Classical.choice` and `Quot.sound`. See
+`verification/2026-10-12-final-threshold-pruning{,-compatibility,-stronger,-downstream}.json`
+and their source manifests. The source comparison is recorded in
+`verification/2026-10-12-final-threshold-pruning-simplification.json`.
+
+The selected focused, original-final and downstream audit closures cover
+69 of 72 import consumers, comprising 1,121 distinct local modules. All
+four proofs that inspect the changed maximum trees already have named
+checks in the focused audit. Every identified abstract threshold caller
+and envelope client also lies in the selected scope. The three excluded
+consumers are the facade, Audit and PortImportAudit; source inspection
+found no explicit use of either changed definition there. Full-facade
+native verification remains separate. Import counts follow the local
+GowersSzemeredi/OAI graph and are not compilation-speed measurements.
+
+The regenerated 120-statement inventory is byte-identical. Final numerical
+bounds, including the existing stronger van der Waerden bounds, remain
+unchanged. The documented Lemma 16.10 correction and open original-paper
+fidelity issues retain their status. The simplification goal remains active.
+
+### L.81. Keep only the original final route's used range conclusions (2026-10-12)
+
+`GenParamsC.ranges` now returns positivity of `Rho` and `Zeta` and the
+(0,1] bounds for `Em`, `Eth`, `Ec`, `NestExp` and `Bexp`. Its hypotheses
+are unchanged. Four callers use exactly these conclusions; the modulus
+proof supplies its trivial `1 ≤ 1` fact directly. The unused range
+conclusions and their proof computations are removed. The C route retains
+its separate `ThS/2` and `CS/2` exponent formulas.
+
+This intentionally narrows one intermediate theorem result. The other
+34 old declaration headers, all 35 scope contexts and all 25 existing
+definition/structure bodies in the two changed files are exact. No named
+declaration, helper, import or module is added, removed or moved. Final
+thresholds and numerical bounds are unchanged.
+
+Against `5ae55aa822`, the two production files shrink from 625 to 596
+lines (29 fewer), and their five changed proof bodies shrink from 246 to
+221 lines (25 fewer). The original final remains at 641 modules and
+falls from 133,208 to 133,179 imported lines; its audit is 642 / 133,213.
+The focused audit is 783 / 169,005. The stronger final and its public
+bridge have identical import closures and source bytes, remaining
+626 / 140,354 and 719 / 154,466 respectively. These are local source
+counts, not compilation-speed measurements.
+
+Native verification passes the 642-module original-final audit, the
+783-module focused compatibility audit and the 1,098-module
+`IntegerOriginalCorollaryFidelityAudit`. Their named axiom checks allow
+only `propext`, `Classical.choice` and `Quot.sound`; all current input
+hashes match their recorded manifests. See
+`verification/2026-10-12-cover-ranges{,-compatibility,-downstream}.json` and
+`verification/2026-10-12-cover-ranges-simplification.json`. The unchanged
+stronger bridge's current inputs also match the earlier standalone
+719-module pass in `2026-10-12-final-threshold-pruning-stronger.json`.
+This checkpoint does not claim a new standalone pass for that bridge.
+
+The original-final and focused audits cover 25 of 68 changed-owner import
+consumers; the downstream audit adds 40, bringing selected native coverage
+to 65 of 68 across 1,121 distinct local modules. The facade, Audit and
+PortImportAudit remain outside this native scope; source inspection found
+no use of the narrowed range result there. All four actual applications
+and the result itself have named checks in the focused audit. Import-only
+consumers are distinguished from applications of the changed theorem.
+
+The regenerated 120-statement inventory is byte-identical. Existing
+stronger van der Waerden bounds, the documented Lemma 16.10 correction and
+open original-paper fidelity issues retain their status. This checkpoint
+does not establish complete original-paper fidelity. The simplification
+goal remains active.
+
+### L.82. Prove the class invariant on the actual recursion (2026-10-13)
+
+The class-degree comparison now proves its invariant directly on the
+maxima of the count and exponent components of `splitQuad3`. It uses the
+existing scalar step bound `split_step_gen`, the same componentwise
+monotonicity estimates, and a kernel-evaluated base at dimension 12.
+Positivity follows from the actual seed and step formulas. The final
+closed-form absorption is included in `split_quad3_le_uDegT3`.
+
+This removes the auxiliary `splitPairMax` recursion and its comparison
+layer: 13 intermediate declarations are intentionally deleted. Three
+helpers, `splitQuad3_pos`, `splitQuadStep_le` and `split_quad3_half`, replace
+that route. The 47 retained declaration headers and scope contexts are
+exact, as are all 15 retained definition/structure bodies. In particular,
+`splitQuad3`, `splitQuadStep`, `tTableT3`, `tDegT3` and `uDegT3` are unchanged.
+Two retained proof bodies change: `splitUniformClass2_all3` and
+`split_quad3_le_uDegT3`. This is an intentional removal of intermediate
+APIs, not preservation of every previous declaration.
+
+Against `791d2895a`, `Proofs18FinalClasses.lean` shrinks from 1,197 to
+1,117 lines: 80 production source lines and 27 proof-body lines removed,
+including all replacement helper statements and proofs. The stronger
+final remains at 626 local modules and falls from 140,354 to 140,274
+imported source lines; its public bridge remains at 719 modules and falls
+from 154,466 to 154,386. Five new named checks in the focused audit make
+its total reduction 75 lines, giving 783 / 168,930. The original final
+and its audit are unchanged at 641 / 133,179 and 642 / 133,213. Module
+sets are unchanged; these source counts do not measure compilation speed.
+
+Native verification passes standalone compilation of the 719-module
+stronger bridge, the 783-module focused compatibility audit and the
+1,098-module `IntegerOriginalCorollaryFidelityAudit`. The focused audit
+explicitly checks all three new helpers and both changed retained proofs;
+its approved axioms are `propext`, `Classical.choice` and `Quot.sound`.
+All current inputs match the three recorded manifests. See
+`verification/2026-10-13-actual-split-invariant{-stronger,-compatibility,-downstream}.json`
+and `verification/2026-10-13-actual-split-invariant-simplification.json`.
+The unchanged original-final inputs also match the prior 642-module pass
+in `2026-10-12-cover-ranges.json`; no new original-final pass is claimed.
+
+The source scan finds no external Lean references to the 13 removed
+names. Selected native audit scope covers 42 of 45 import consumers,
+including every affected proof owner. The facade, Audit and PortImportAudit
+remain excluded; source inspection found no direct use of the deleted
+names there. This is not full-facade native validation. Three historical
+generation scripts still mention the old route; their README identifies
+the committed hand-edited modules as authoritative. These archival scripts
+are not current Lean inputs. The regenerated 120-statement inventory is
+byte-identical.
+
+Final class-cover statements, numerical thresholds and the existing
+stronger van der Waerden bounds remain unchanged. The documented
+Lemma 16.10 correction and open original-paper fidelity issues retain
+their status. This checkpoint does not establish complete original-paper
+fidelity. The simplification goal remains active.
+
+### L.83. Specialize the shared Fejér width-exponent proof (2026-10-13)
+
+`split_exp_inv_le_fejer` now follows from the existing
+`split_exp_inv_le_fejer2` by setting its count and exponent parameters
+equal (`ac = ae = a`, `Dc = De = D`). The six associated exponent formulas
+reduce to the original formulas under this specialization. The old
+227-line proof is replaced by a two-line application, with exactly the
+same theorem statement and hypotheses.
+
+The six definitions `sPbN2`, `fsPbW2`, `sLN2`, `fsLW2`, `sExpN2` and
+`fsExpW2`, together with the general theorem, move unchanged from
+`Proofs18FinalClasses` to `Proofs16SplitStepFejer`. All seven declaration
+blocks and their scope contexts are preserved. The old owner continues
+to export them through its existing imports. All 73 existing declarations
+retain their complete statements and contexts; no named declaration,
+parameter definition or import is added or removed. Only the specialized
+theorem's proof body changes. The general proof and the distinct printed
+single-track estimate remain unchanged.
+
+Against `77e92d5a7`, the two production files shrink from 1,798 to 1,567
+source lines, removing 231 source lines and 225 proof-body lines.
+The remaining six lines are an empty namespace block removed from the old
+owner; all retained declaration contexts remain exact.
+`Proofs18FinalClasses` falls from 1,117 to 811 lines, while the earlier
+owner grows from 681 to 756 lines. The stronger final remains at 626 local
+modules and falls from 140,274 to 140,043 imported source lines; its
+public bridge remains at 719 modules and falls from 154,386 to 154,155.
+The two additional named audit checks give a focused-audit total of
+783 / 168,701, a reduction of 229 lines. The selected downstream audit
+is 1,098 / 212,315, a reduction of 231. The original final and
+its audit are unchanged at 641 / 133,179 and 642 / 133,213. Module sets
+are unchanged. The standalone earlier-owner closure grows by 75 lines;
+actual final-route savings include that relocation cost. These source
+counts do not measure compilation speed.
+
+Native verification passes standalone compilation of the 719-module
+stronger bridge, the 783-module focused compatibility audit and the
+1,098-module `IntegerOriginalCorollaryFidelityAudit`. The focused audit
+adds explicit checks for both the moved general theorem and its
+specialization, allowing only `propext`, `Classical.choice` and `Quot.sound`.
+All current inputs match the recorded manifests. See
+`verification/2026-10-13-split-width-sharing{-stronger,-compatibility,-downstream}.json`
+and `verification/2026-10-13-split-width-sharing-simplification.json`.
+The unchanged original-final inputs also match the prior 642-module pass
+in `2026-10-12-cover-ranges.json`; no new original-final pass is claimed.
+
+The focused audit covers 13 of 52 affected import consumers, including
+every affected proof owner. The downstream audit adds 36, giving selected
+native coverage of 49 of 52. The facade, Audit and PortImportAudit remain
+excluded; source inspection found no direct use of the moved or
+specialized declarations there. Full-facade native validation remains
+separate. The regenerated 120-statement inventory is byte-identical.
+
+Final numerical thresholds, class-cover statements and the existing
+stronger van der Waerden bounds are unchanged. The documented Lemma 16.10
+correction and open original-paper fidelity issues retain their status.
+This checkpoint does not establish complete original-paper fidelity.
+The simplification goal remains active.
+
+### L.84. Share the scalar estimate for the capped-width factor (2026-10-13)
+
+`split_width_front_factor_le` proves the scalar estimate
+`2 * (6 + a * ν + (b + 4) * W + W^T) ≤ ν * W^(T + a + b + 11)`
+for `ν ≥ 1`, `W ≥ 2` and natural `a`, `b`, `T`. These natural parameters
+may be zero. Taking `X = ν * W^(T + 1)` bounds the four terms by a common
+scale; the left side is at most `(2 * (a + b) + 22) * X`, and the
+remaining polynomial factor is absorbed into the power of `W`.
+
+Both `split_exp_inv_le` and `split_exp_inv_le_fejer2` now apply that
+estimate directly. It replaces their separate bounds on `Λ` and the
+later factor `2 * (6 + Λ)`. The existing exponent definitions identify
+`Z + 4` with `T + a + b + 11`; every other part of the two proofs is
+unchanged. The helper belongs to their existing common owner,
+`Proofs16SplitStepBounds`, so the original route gains no Fejér dependency.
+
+All 74 pre-existing declarations retain their complete statements and
+scope contexts, and all 42 existing definition bodies are exact. One
+scalar helper is added; no declaration is removed or moved. Imports,
+options and surrounding commands are unchanged. The Fejér specialization
+from L.83 continues to use the same general theorem.
+
+Against `416a20f61`, the two production files shrink from 1,596 to 1,547
+source lines: 49 fewer. The changed proofs have 488 lines before and
+433 after accounting for the new helper (`227 + 261` versus
+`188 + 222 + 23`), removing 55 actual proof-body lines. These counts
+begin after the theorem proof delimiter, excluding statement-local
+`let` bindings. The helper costs 29 source lines including its separator;
+each caller removes 39 lines. The original final saves 10 source lines
+and 16 proof-body lines after paying for that helper.
+
+The original final remains at 641 local modules and falls from 133,179
+to 133,169 imported source lines; its audit is 642 / 133,203. The stronger
+final is 626 / 139,994 and its public bridge 719 / 154,106, each 49 lines
+smaller. Two additional named audit checks give focused 783 / 168,654,
+a reduction of 47 lines; the downstream audit is 1,098 / 212,266,
+a reduction of 49. All module sets are unchanged. These source counts
+do not measure compilation speed.
+
+Fresh native verification passes the 642-module original-final audit,
+standalone compilation of the 719-module stronger bridge, the 783-module
+focused compatibility audit and the 1,098-module
+`IntegerOriginalCorollaryFidelityAudit`. Both final routes change; no
+previous original-final pass is reused. The focused audit adds explicit
+checks for the new helper and the changed printed theorem, retaining the
+check of the changed general Fejér theorem and every earlier named check.
+The audits allow only `propext`, `Classical.choice` and `Quot.sound`.
+All current inputs match the recorded manifests. See
+`verification/2026-10-13-width-front-factor{-original,-stronger,-compatibility,-downstream}.json`
+and `verification/2026-10-13-width-front-factor-simplification.json`.
+
+The selected original, focused and downstream native audits cover 119
+of 122 affected import consumers, including every affected proof owner.
+Their individual affected-consumer counts are 18, 72 and 110; these scopes
+overlap. The facade, Audit and PortImportAudit remain excluded. Their
+sources are byte-identical to the baseline and contain no direct use of
+the changed theorem names; this is not a fresh native pass for those
+wrappers. Full-facade native validation remains separate. The regenerated
+120-statement inventory is byte-identical.
+
+Final numerical thresholds, class-cover statements and the existing
+stronger van der Waerden bounds remain unchanged. The documented
+Lemma 16.10 correction and open original-paper fidelity issues retain
+their status. This checkpoint does not establish complete original-paper
+fidelity. The simplification goal remains active.
+
+### L.85. Share the sample-and-slice count product (2026-10-13)
+
+`famPieceGraphBound_le_mul_sq` separates the combinatorial count estimate
+from its later power bounds. If the family size is at most `N`, the sample
+count is at most `S`, and the slice count lies between zero and `B`, with
+`S ≥ 1` and `B ≥ 1`, it proves
+`famPieceGraphBound Qr Pb n rho ≤ N * (S^2 * B^2)`.
+For sample count `s` and slice count `p`, the proof bounds
+`choose(s, 2) * p^2` and `p` by `S^2 * B^2`, then multiplies by the family
+size. The slice nonnegativity premise is explicit; the helper permits
+zero family or slice counts and does not restrict `rho`.
+
+The existing `famPieceGraphBound_le_power` now specializes this estimate
+to powers of one base. `split_count_le`, `split_count_le_fejer` and
+`uniTwoFejerCount_le_split` use the same estimate with their existing
+family, sample and slice bounds. Exact exponent identities recover the
+unchanged conclusions. The common owner `Proofs18LengthSixCounts` already
+belongs to both final routes, so imports and module sets are unchanged.
+
+In the four count-product files, all 110 pre-existing declarations retain their complete statements and
+scope contexts, and all 42 existing definitions remain byte-identical.
+Only four existing proof bodies change in that frozen proposal. One helper is added; no
+declaration is removed or moved. Imports, options and surrounding
+commands remain exact, and the original route gains no Fejér dependency.
+
+The frozen source baseline is `c8c00020c`; the later metadata merge
+`a5c816265` preserves those Lean inputs. The four production files shrink
+from 2,501 to 2,452 lines, removing 49 source lines. The old proof bodies
+have `16 + 48 + 48 + 95 = 207` lines; their replacements plus the helper
+have `3 + 28 + 28 + 79 + 12 = 150`, removing 57 actual proof-body lines.
+These counts start after each complete theorem statement and exclude
+statement-local `let` bindings. The helper costs 20 source lines including
+its separator. Its owner grows seven lines after the existing power
+proof shrinks; the three split callers remove 20, 20 and 16 source lines.
+The original final saves 13 source lines and 21 proof-body lines after
+helper overhead; the stronger final saves 49 and 57 respectively.
+
+The first historical explicit-target check failed at the default maximum
+recursion depth while matching the dimension-one recurrence profile in
+`Proofs16PolyCoverThreeExplicit`. A separate repair follows the existing
+`Proofs18LengthSixExplicit` precedent: `simpa only` unfolds the named
+constants and reduces the small natural additions and powers before
+matching each dimension-one or dimension-two profile. It changes one
+proof, adds two source and proof-body lines, and preserves both exported
+statements, their contexts, imports and options. No recursion limit is
+increased. The failed log remains recorded; that invocation is not a pass.
+Including this repair, five production files lose 47 source lines and
+55 actual proof-body lines. The original four-file proposal and its
+independent source review remain preserved separately.
+
+A new 19-line `PolyCoverThreeExplicitAudit` checks `theorem_16_2_three`
+and `corollary_16_11_three` against the three approved axioms. Together
+with the five new focused checks, this makes the whole checkpoint
+23 source lines smaller after audit additions. The new audit is separate
+from both final routes and their first four verification targets.
+
+The original final is 641 local modules / 133,156 imported source lines,
+and its audit is 642 / 133,190. The stronger final is 626 / 139,945 and
+its public bridge is 719 / 154,057. Five additional named checks make the
+focused audit 783 / 168,610, a reduction of 44 lines. The selected
+downstream audit is 1,098 / 212,217, a reduction of 49 lines. The
+historical explicit owner is 700 / 138,777 after the separate repair;
+its new audit is 701 / 138,796. The historical bridge is 560 / 119,190.
+The six-target union is 1,204 local modules / 227,284 source lines, with
+1,207 hashed source and tool inputs. These source counts do not measure
+compilation speed.
+
+Six fresh native checks pass: the original-final audit (642 modules),
+standalone stronger bridge (719), focused audit (783), selected downstream
+audit (1,098), historical explicit audit (701) and standalone historical
+bridge (560).
+No earlier pass is reused. The focused audit adds the new helper and all
+four changed count theorems, retaining every earlier named check. The
+new historical audit checks both dimension-three exports. These audits
+allow only `propext`, `Classical.choice` and `Quot.sound`; the standalone
+historical bridge record does not claim an axiom audit of every export.
+All current inputs match the recorded manifests. The historical explicit
+record preserves the failed invocation's log hash and explains the repair.
+See `verification/2026-10-13-count-product{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-count-product-simplification.json`.
+
+The original graph has 169 affected import consumers. The original,
+focused and downstream native audits together cover 160. The historical
+audit and bridge cover the six remaining existing proof consumers,
+giving 166 of 169, including every affected proof owner. Counting the
+new audit itself gives current scope of 167 of 170. The facade, Audit
+and PortImportAudit remain excluded, with baseline-identical sources
+and no direct use of the changed theorem names. Full-facade native
+validation remains separate. The regenerated inventory retains all 120
+statement statuses; its only change is the related theorem location for
+`corollary_16_11_three`, from line 37 to line 39.
+
+Final numerical thresholds, class-cover statements and the existing
+stronger van der Waerden bounds remain unchanged. The documented
+Lemma 16.10 correction and open original-paper fidelity issues retain
+their status. This checkpoint does not establish complete original-paper
+fidelity. The simplification goal remains active.
+
+### L.86. Share sample bounds and invert cover products directly (2026-10-13)
+
+`famPieceSamples_le_two_bases` packages the sample ceiling estimate for
+family and parameter bounds. From `Qr (rho / 8) ≤ ν^a * w^b` and
+`n ≤ ν^c * w^d`, with `ν ≥ 1`, `w ≥ 2`, `rho > 0` and `rho⁻¹ ≤ w`, it
+gives `famPieceSamples Qr n rho ≤ ν^(a+c) * w^(b+d+7)`. The proof bounds
+the ceiling by `24*X + 1 ≤ 25*X` and absorbs the factor into `w^6`.
+It permits zero natural exponents and requires no additional upper bound
+on `rho`. Five existing sample proofs specialize the shared estimate.
+
+The C, F and JT3 nested-exponent proofs now invert their finite products
+directly and use the existing factor estimates. This removes two repeated
+expanded product expressions in each proof, saving 14 lines per route.
+The inverse identities also handle zero factors and empty products.
+
+Against `243962c10`, all 185 existing full statements and scope contexts,
+and all 79 definition bodies, remain exact. Eight existing proofs change
+and one helper is added. No imports, options or surrounding commands
+change. The seven production files shrink from 3,803 to 3,676 source
+lines, a reduction of 127. Actual proof bodies shrink from 389 to 256
+lines including the 23-line helper, a reduction of 133. The sample change
+contributes 85 source / 91 proof lines and the product change contributes
+42 / 42. The helper owner grows 13 source lines; its cost is included in
+all these figures.
+
+The original final is 641 local modules / 133,126 source lines, saving
+30 source and 36 proof lines; its audit is 642 / 133,160. The stronger
+final is 626 / 139,846 and its bridge is 719 / 153,958, saving 99 source
+and 105 proof lines. Eight additional checks give focused 783 / 168,491,
+a reduction of 119 source lines. The downstream audit is 1,098 / 212,104.
+The historical explicit audit is 701 / 138,809 and the historical bridge
+is 560 / 119,203; each grows 13 source lines from the shared helper owner.
+All module sets remain unchanged. The six-target union is 1,204 local
+modules / 227,165 source lines and 1,207 hashed inputs. Source counts do
+not measure compilation speed.
+
+All six fresh native checks pass: original audit (642), stronger bridge
+(719), focused audit (783), downstream audit (1,098), historical explicit
+audit (701) and historical bridge (560), with all current manifest hashes
+verified. The focused audit adds eight names and retains the already-named
+ninth changed or new theorem and every earlier check. The historical
+explicit audit checks its two exports. These audits allow only `propext`,
+`Classical.choice` and `Quot.sound`; the standalone bridge record does not
+claim an axiom audit of every historical export. The new sample helper's
+elaboration was repaired with an explicit equality step, without changing
+its statement or proof-line count; the frozen proposal and failed core
+logs remain recorded separately. See
+`verification/2026-10-13-sample-inverse{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-sample-inverse-simplification.json`.
+
+The selected native scope covers 167 of 170 affected import consumers,
+including every affected proof owner. The facade, Audit and PortImportAudit
+remain excluded, with baseline-identical source hashes. Full-facade native
+verification remains separate. The regenerated 120-statement inventory is
+byte-identical to the checkpoint baseline.
+Final bounds, the accepted Lemma 16.10 correction and open original-paper
+fidelity issues retain their status. This checkpoint does not establish
+complete original-paper fidelity. The simplification goal remains active.
+
+### L.87. Reuse split controls and the tight count estimates (2026-10-13)
+
+`splitCnt_controls` moves earlier in its existing module, preserving its
+41-line declaration exactly. Six split proofs reuse its lower bound and
+apply multiplication and power monotonicity directly for their upper
+bounds. This removes seven repeated control calculations without adding
+any helper or changing assumptions. The tight dimension-two count proof
+also reuses `famPieceSamples_le_two_bases` and
+`famPieceGraphBound_le_mul_sq`, preserving its `ν^11 * W^(2^39)` target.
+
+The two disjoint changes preserve all 118 existing complete statements
+and scope contexts and all 51 definitions. Seven proof bodies change;
+no declaration is added or removed. Imports and options stay exact. The
+three production files shrink from 2,260 to 2,152 lines, removing 108
+source lines. The changed proofs shrink from 734 to 626 lines, also
+removing 108 actual proof-body lines. The unchanged relocated theorem
+is not counted as deleted proof or new helper overhead.
+
+The original final is 641 local modules / 133,096 source lines, saving
+30 lines; its audit is 642 / 133,130. The stronger final is 626 / 139,738
+and its bridge 719 / 153,850, each saving 108 lines. Four additional
+named checks make the focused audit 783 / 168,387, a reduction of 104
+source lines. The downstream audit is 1,098 / 211,996. Module sets are
+unchanged. These source counts do not measure compilation speed.
+
+All four fresh native checks pass: the original audit (642), standalone
+stronger bridge (719), focused audit (783) and downstream audit (1,098).
+Every current manifest hash is verified. The focused audit retains all
+249 earlier names and adds four, covering the seven changed proofs and
+the relocated control theorem. The named audits allow only `propext`,
+`Classical.choice` and `Quot.sound`; standalone bridge compilation does
+not claim an axiom audit of every export.
+
+The historical explicit audit (701 / 138,809) and standalone bridge
+(560 / 119,203) import no changed module. Their completed L.86 records
+are retained after revalidating every current input hash; they are not
+fresh runs. The historical explicit audit checks its two named exports.
+The four fresh targets cover 1,121 modules / 216,080 source lines with
+1,124 hashed inputs. Adding the two retained historical targets gives
+1,204 / 227,061 and 1,207 inputs. The old historical bridge's link to the
+L.86 focused audit remains historical metadata; this checkpoint's named
+axiom evidence is the fresh L.87 focused audit.
+
+The final core check passes 618 modules. Nine same-size elaboration
+repairs make seven power identities and two positivity steps explicit;
+statements, options and source/proof counts are unchanged. The frozen
+proposals and three failed core logs remain recorded separately. See
+`verification/2026-10-13-control-tight{-original,-stronger,-compatibility,-downstream}.json`,
+`verification/2026-10-13-sample-inverse{-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-control-tight-simplification.json`.
+
+The changed files have 122 import consumers. The four fresh targets
+cover 119, including every affected proof owner; the facade, Audit and
+PortImportAudit remain excluded with baseline-identical source hashes.
+Full-facade verification remains separate. The regenerated 120-statement
+inventory is byte-identical to the checkpoint baseline. Final numerical
+bounds, the accepted Lemma 16.10 correction
+and open original-paper fidelity issues retain their status. This
+checkpoint does not establish complete original-paper fidelity. The
+simplification goal remains active.
+
+### L.88. Share the dimension-two count formula (2026-10-13)
+
+Two estimates in `Proofs16UniformCoverTwoSplit` express the remainder
+and total family counts in separate family and face bounds. Under
+`ν ≥ 1`, `W ≥ 2`, `ρ > 0` and `ρ⁻¹ ≤ W`, family and face bounds
+`M ≤ ν^a * W^b` and `q ≤ ν^0 * W^c` give the count estimate
+`ν^(11*a) * W^(11*b + 6*c + 54)`. The loose and tight count proofs
+specialize this formula, preserving their existing `ν^11 * W^(2^41)`
+and `ν^11 * W^(2^39)` targets. The sample proof reuses the remainder
+estimate. The final numerical bounds are unchanged.
+
+All 51 existing complete statements and scope contexts and all nine
+definitions remain exact. Three existing proof bodies shrink from 137
+to 21 lines; the two helper proofs add 26, giving 47 lines in total
+and a net reduction of 90 actual proof-body lines. Including all 38
+lines of helper declarations, documentation and spacing, the two
+production files shrink from 1,185 to 1,107 lines, saving 78. No old
+declaration or import is removed; all other proofs and options stay exact.
+
+The stronger final is 626 local modules / 139,660 source lines and
+its bridge is 719 / 153,772, each saving 78 lines. Two new helper
+checks give focused 783 / 168,311, a reduction of 76 lines; all 253
+previous names are retained. The downstream audit is 1,098 / 211,918.
+The original final and all module sets are unchanged. Source counts
+do not measure compilation speed.
+
+The 618-module core check passes on its first attempt with the frozen
+proposal unchanged. Three fresh native checks pass: standalone stronger
+bridge (719), focused audit (783) and downstream audit (1,098), with all
+current manifest hashes verified. The named audits allow only `propext`,
+`Classical.choice` and `Quot.sound`. Both new helpers and all three changed
+proofs are named in the focused audit; standalone bridge compilation
+does not claim an axiom audit of every export.
+
+The original audit (642 / 133,130) and historical explicit audit
+(701 / 138,809) and bridge (560 / 119,203) have unchanged inputs. Their
+completed L.87/L.86 records are retained after rechecking every current
+own-target input hash, without new runs. The explicit audit checks its
+two named exports. The historical bridge's old focused-audit link remains
+historical metadata; current named checks use the fresh L.88 audit.
+The three fresh targets cover 1,120 modules / 215,970 source lines with
+1,123 hashed inputs; including the three retained targets gives
+1,204 / 226,985 and 1,207 inputs. See
+`verification/2026-10-13-two-count{-stronger,-compatibility,-downstream}.json`,
+`verification/2026-10-13-control-tight-original.json`,
+`verification/2026-10-13-sample-inverse{-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-two-count-simplification.json`.
+
+The selected native scope covers 43 of 46 affected import consumers,
+including every affected proof owner. The facade, Audit and PortImportAudit
+remain excluded with baseline-identical source hashes. Full-facade
+verification remains separate. The regenerated 120-statement inventory
+is byte-identical to the checkpoint baseline. The accepted Lemma 16.10
+correction and open original-paper
+fidelity issues retain their status; this checkpoint does not establish
+complete original-paper fidelity. The simplification goal remains active.
+
+### L.89. Share the dimension-two width calculation (2026-10-13)
+
+`famTwoWidth_inv_le_power` puts the common line, slice and rounded-width
+calculation in the existing length-six exponent module. Under its explicit
+family, radius and positivity hypotheses, family and face counts bounded
+by `w^d` and an inverse-radius bound `exp(w^t)` give the inverse-width
+bound `w^(max t (2*d+9) + 52*d + 222)`. Three existing width proofs
+specialize the same estimate, preserving their `w^(2^130)` and Fejer
+`w^(2^46)` targets. No final numerical bound changes.
+
+All 31 existing complete statements and scope contexts and all four
+definitions remain exact. Three proof bodies shrink from 439 to 85
+lines; the helper adds 126 proof lines, giving 211 in total and a net
+reduction of 228 actual proof-body lines. Including all 140 lines of
+helper declaration, documentation and spacing, the three production
+files shrink from 1,166 to 952 lines, saving 214. No old declaration or
+import is removed; all other proofs and options stay exact.
+
+The original final is 641 local modules / 133,000 source lines and its
+audit 642 / 133,034, saving 96 source and 110 proof lines. The stronger
+final is 626 / 139,446 and its bridge 719 / 153,558, saving 214 source
+and 228 proof lines. Four new named checks give focused 783 / 168,101,
+a source reduction of 210 lines; all 255 earlier names remain. The
+downstream audit is 1,098 / 211,704. Historical explicit audit and bridge
+are 701 / 138,713 and 560 / 119,107, each saving 96 source lines.
+Module sets are unchanged; these counts do not measure compilation speed.
+
+All six fresh native checks pass: original audit (642), stronger bridge
+(719), focused audit (783), downstream audit (1,098), historical explicit
+audit (701) and historical bridge (560). All current manifest hashes are
+verified. The named audits allow only `propext`, `Classical.choice` and
+`Quot.sound`; the focused audit explicitly checks the new helper and all
+three changed proofs. The historical explicit audit checks its two named
+exports. Standalone bridge compilation does not claim an axiom audit of
+every export; its changed-declaration link points to the fresh focused
+audit. No prior native record substitutes for a new run in this checkpoint.
+
+The four standard targets cover 158 of 168 affected import consumers;
+adding both historical targets covers 165, including every affected proof
+owner. The four-target union is 1,121 modules / 215,794 source lines with
+1,124 hashed inputs. All six cover 1,204 / 226,775 with 1,207 inputs.
+See `verification/2026-10-13-two-width{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-two-width-simplification.json`.
+
+The facade, Audit and PortImportAudit remain excluded with
+baseline-identical source hashes. Full-facade verification remains
+separate. The regenerated 120-statement inventory is byte-identical to
+the checkpoint baseline. The accepted Lemma 16.10 correction and open
+original-paper fidelity issues retain their
+status; this checkpoint does not establish complete original-paper
+fidelity. The simplification goal remains active.
+
+### L.90. Finish sharing the dimension-two width estimate (2026-10-13)
+
+`polyTwoFejerFamExp_inv_le_power` now specializes the existing
+`famTwoWidth_inv_le_power`, preserving its `w^(2^46)` bound. Eight
+unused local facts are removed across the four width wrappers. The
+shared helper remains byte-identical. No declaration is added or removed;
+assumptions, definitions, imports and options stay exact.
+
+All 37 complete statements and scope contexts and all four definitions
+remain exact. Four proof bodies shrink from 238 to 112 lines. The four
+production files shrink from 1,277 to 1,151 lines, removing 126 source
+and proof-body lines with no helper overhead. The original and historical
+routes each save four lines; the stronger and downstream routes save 126.
+One new check preserves all 259 earlier focused names and gives 783
+modules / 167,976 source lines, saving 125 lines. The stronger bridge is
+719 / 153,432 and the original audit 642 / 133,030. Module sets are unchanged.
+
+All six fresh checks pass: original audit (642), stronger bridge (719),
+focused audit (783), downstream audit (1,098), historical explicit audit
+(701) and historical bridge (560), with every current input hash verified.
+The named audits allow only `propext`, `Classical.choice` and `Quot.sound`.
+All four changed proofs are explicitly checked; the historical explicit
+audit checks its two named exports. Standalone bridge compilation does
+not claim an axiom audit of every export; its changed-declaration link
+points to the fresh focused audit. The six-target union is 1,204 modules /
+226,650 source lines with 1,207 inputs. See
+`verification/2026-10-13-width-wrappers{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-width-wrappers-simplification.json`.
+
+Selected coverage is 165 of 168 affected import consumers, including every
+affected proof owner; the standard four targets cover 158. The facade,
+Audit and PortImportAudit remain excluded with unchanged source hashes.
+The regenerated 120-statement inventory is byte-identical to the baseline.
+Final bounds, the accepted Lemma 16.10 correction and open original-paper
+fidelity issues are unchanged. This checkpoint does not establish complete original-paper
+fidelity; the simplification goal remains active.
+
+### L.91. Share count, positivity and radius estimates (2026-10-13)
+
+Three shared lemmas replace repeated dimension-two count, capped-exponent
+positivity and radius-scale arguments. The count estimate gives
+`w^(11*a + 6*b + 54)` under its explicit count and radius hypotheses;
+the radius lemma serves 14 callers. Existing assumptions and numerical
+bounds remain unchanged. A stale Fejer proof comment is also corrected.
+
+All 147 complete statements and scope contexts and all 30 definitions
+remain exact. Twenty proof bodies shrink from 558 to 353 lines; the
+three helpers add 28 proof lines, giving a net reduction of 177. Including
+all 47 lines of helper declarations, documentation and spacing, 12
+production files shrink from 3,663 to 3,505 lines, saving 158. No old
+declaration is removed and no import or option changes.
+
+Two audit files add 20 checks: focused gains 19 names, retaining all 260
+earlier names; historical explicit adds `three_base_facts`, retaining its
+two export checks. The two changed polynomial width estimates already
+have focused checks, and the changed integer caller already has a check
+in `IntegerOriginalCorollaryCoreAudit`. Together these audits explicitly
+cover all 23 changed or new declarations. The modified Lean files shrink
+by 138 lines after the audit additions. Two frozen metadata line references
+are corrected in the review; the proof sources and audit coverage agree.
+
+All six fresh checks pass: original audit (642), stronger bridge (719),
+focused audit (783), downstream audit (1,098), historical explicit audit
+(701) and historical bridge (560), with every current input hash verified.
+The named audits allow only `propext`, `Classical.choice` and `Quot.sound`.
+Affected declarations are checked in three places: 21 in focused, one in
+historical explicit and one in the existing integer core audit imported
+by downstream. Historical explicit also retains its two export checks.
+Standalone bridge compilation does not audit every export; its record
+links the three fresh audits for the distributed 23-declaration coverage.
+The stronger bridge is 719 / 153,293 source lines; focused is 783 /
+167,856, saving 120 lines after its additions. The six-target union is
+1,204 / 226,512 with 1,207 hashed inputs; module sets are unchanged.
+See `verification/2026-10-13-controls-radius{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-controls-radius-simplification.json`.
+
+Selected coverage is 180 of 183 affected import consumers; the standard
+four targets cover 172. The facade, Audit and PortImportAudit remain
+excluded with unchanged source hashes. The regenerated 120-statement
+inventory is byte-identical to the baseline. Final bounds, the accepted Lemma 16.10 correction and open
+original-paper fidelity issues are unchanged. This checkpoint does not
+establish complete original-paper fidelity; the simplification goal
+remains active.
+
+### L.92. Share dimension-two piece decomposition (2026-10-13)
+
+One helper now handles the greedy relation decomposition, the floor bound
+on the number of pieces, padding and coverage transport used by four
+printed and Fejer proofs. The two large-cover proofs apply their existing
+family-cover theorems to those pieces; the two uniform-decomposition
+proofs specialize the helper directly. Existing assumptions, piece counts
+and numerical bounds remain unchanged.
+
+All 47 complete statements and scope contexts and all 23 definitions
+remain exact. Four proof bodies shrink from 194 to 32 lines, and the
+helper adds 28 proof lines: 134 fewer in total. Including all 41 lines
+of helper declarations, documentation and spacing, four production files
+shrink from 1,031 to 910 lines, saving 121. No old declaration is removed
+and no import or option changes. Five new focused checks name the helper
+and all four changed proofs, retaining all 279 earlier names. Modified
+Lean source shrinks by 116 lines after those additions.
+
+All six fresh checks pass: original audit (642), stronger bridge (719),
+focused audit (783), downstream audit (1,098), historical explicit audit
+(701) and historical bridge (560), with every current input hash verified.
+The named audits allow only `propext`, `Classical.choice` and `Quot.sound`.
+Focused explicitly checks all five affected declarations; historical
+explicit retains its three named checks. The two standalone bridge
+records link the fresh focused audit; their compilation does not audit
+every export. The stronger bridge is 719 / 153,172 source lines; focused
+is 783 / 167,740. The original and historical routes each lose 40 source
+and 53 proof lines. The six-target union is 1,204 / 226,396 with 1,207
+hashed inputs; module sets are unchanged.
+See `verification/2026-10-13-piece-two-decomposition{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-piece-two-decomposition-simplification.json`.
+
+Selected coverage is 179 of 182 affected import consumers; the standard
+four targets cover 171. The facade, Audit and PortImportAudit remain
+excluded with unchanged source hashes. The regenerated 120-statement
+inventory is byte-identical to the baseline. Final bounds, the accepted Lemma 16.10 correction and open
+original-paper fidelity issues are unchanged. This checkpoint does not
+establish complete original-paper fidelity; the simplification goal
+remains active.
+
+### L.93. Short lengths from existing quadratic and cubic bounds (2026-10-13)
+
+The offset-three short-length theorem now uses the existing four-term
+quadratic bound for lengths 2–4 and the cubic envelope through the general
+density iteration for length 5. Lengths 0–1 follow from positive density.
+For lengths 2–4, the same positive common difference is retained when
+taking a prefix, and 21 ≤ 2^(k+3) compares the real thresholds without a
+rounding gap. For length 5, `envBound_three` supplies `EnvBound 3 62`;
+the general theorem's budget is 62 + 10 + 14 = 86 ≤ 256. All final
+numerical bounds and hypotheses remain unchanged.
+
+The canonical route no longer needs Roth's phase/density arguments or the
+separate five-term iteration. Ten old modules leave the stronger final
+closure and a 64-line module enters. The net reduction is 2,788 source
+lines and 2,052 actual tactic-body lines, with the module count falling
+from 719 to 710. This is a dependency reduction, not repository deletion:
+legacy arguments and scalar comparisons remain available and audited.
+The repository grows by 28 source lines; the one rewritten proof grows
+from 12 to 33 tactic-body lines. The focused and downstream closures each
+grow by one module and 28 source lines.
+
+All 60 old declaration statements and contexts and all 11 definitions
+are preserved. Three declarations move to the new short-length owner;
+two monotonicity blocks are byte-identical and only the short-length
+proof changes. The legacy owner imports their new module and continues
+to export the old declarations. The final class route uses the new owner,
+while the headline and van der Waerden bridges need only SharpInterfaces.
+The frozen proposal's PLAN count of 14→35 includes two non-proof lines
+on each side; the preserved erratum records the actual 12→33 count.
+The frozen dependency ledger also omitted 10 tactic lines in declarations
+with same-line attributes. Its restricted count was 2,042; the complete
+count is 2,092 removed minus 40 added, or 2,052 fewer tactic-body lines.
+Both corrections concern metadata only; the Lean source is unchanged.
+
+No audit entries are added. The focused audit retains all 284 names and
+already checks the rewritten short-length theorem. Its existing
+offset-six check uses both relocated monotonicity lemmas transitively.
+Roth's and the separate five-term route's existing audit entries remain
+in the full focused/downstream targets.
+
+The 622-module core check passes on its first attempt with the frozen
+source unchanged. Three fresh native checks pass: the stronger bridge
+(710), focused audit (784) and downstream audit (1,099), with all current
+input hashes verified. The named audits allow only `propext`,
+`Classical.choice` and `Quot.sound`; standalone bridge compilation is
+not an axiom audit of every export. The original audit (642) and
+historical explicit audit (701) and bridge (560) retain the completed
+L.92 records after every own-target input hash is revalidated; no new
+runs of those targets are claimed. The historical explicit audit checks
+its three existing names. The retained bridge's old focused-audit link
+is historical metadata; current named checks use the fresh L.93 audit. The three fresh targets cover
+1,121 modules / 215,419 source lines with 1,124 source/configuration
+inputs; all six selected targets cover 1,205 / 226,424 with 1,208 inputs.
+The original and historical closures have unchanged source bytes.
+
+The selected scope covers 51 of 54 affected import consumers, including
+all affected proof owners. The three aggregate targets GowersSzemeredi,
+Audit and PortImportAudit remain excluded with unchanged source hashes.
+The regenerated 120-statement inventory changes only the three relocated
+or shifted theorem locations and their filename-based list order; all
+statement statuses and other content remain unchanged. See
+`verification/2026-10-13-short-route{-stronger,-compatibility,-downstream}.json`,
+`verification/2026-10-13-piece-two-decomposition{-original,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-short-route-simplification.json`.
+The documented Lemma 16.10 correction remains in force; this checkpoint
+does not establish complete original-paper fidelity or full-facade
+verification. The final-proof simplification goal remains active.
+
+### L.94. Modular linear headlines from the quadratic inverse theorem (2026-10-13)
+
+The two modular degree-one headlines now follow from the existing
+quadratic inverse theorem at density parameter alpha². Lemma 3.4 sends
+degree-two uniformity at alpha² to degree-one uniformity at
+sqrt(alpha²) = alpha, so the original degree-one obstruction suffices.
+The fixed-power estimate bounds both quadratic discrepancy parameters
+below by (alpha²)^49462 = alpha^98924. Since 98924 ≤ 2^17, the existing
+printed and offset-four headline coefficients follow. The existential
+modulus threshold may increase; no quantitative restriction on that
+witness is part of these theorem statements. All final bounds and
+hypotheses remain unchanged.
+
+The same fixed-power estimate replaces four repeated quadratic coefficient
+comparisons. Its 35-line proof moves byte-identically to the common
+quadratic owner; the source cost of that relocation is fully included.
+Six proof bodies shrink from 206 to 60 actual tactic-body lines. Across
+four production files this removes 149 source lines and 146 tactic-body
+lines. All 35 old complete statements and contexts and all four definitions
+are preserved; no declaration is added or deleted.
+
+The genuinely sharper integer offset-one degree-one theorem retains its
+Fourier proof unchanged. Its owner explicitly imports the old linear
+module and continues to export every prior declaration. The stronger
+final route drops that linear module: 710→709 modules, 182 fewer source
+lines and 150 fewer tactic-body lines. This route change retains the
+legacy helpers and the sharper integer theorem. The original and selected
+historical target source closures remain unchanged.
+
+Three printed-proof checks are added to the focused audit, preserving all
+284 prior entries in order and bringing the total to 287. The three sharp
+proofs already have explicit focused checks. The relocated helper retains
+its existing IntegerFidelityAudit check. The focused closure falls by
+105 source lines including the three added audit entries; the downstream
+closure falls by 149. The six-target source union shrinks by 146 lines
+with 1,205 modules and 1,208 source/configuration inputs retained.
+
+The 719-module core check passes on its first attempt with the frozen
+source unchanged. Three fresh full native checks pass: stronger bridge
+(709), focused audit (784) and downstream audit (1,099), with every current
+input hash verified. The named audits allow only `propext`,
+`Classical.choice` and `Quot.sound`; standalone compilation does not
+claim an axiom audit of every export. Completed L.92 original audit
+(642), historical explicit audit (701) and historical bridge (560) records
+are retained after rechecking each complete own-target input manifest,
+without new runs. The explicit audit retains its three named checks;
+the old bridge's focused-audit link is historical metadata. The fresh
+scope covers 1,121 modules / 215,273 source lines with 1,124 inputs;
+including the retained targets gives 1,205 / 226,278 with 1,208 inputs.
+
+The selected native scope covers 72 of 75 affected import consumers;
+all seven modules with narrower imports are covered. The three aggregate
+targets GowersSzemeredi, Audit and PortImportAudit remain excluded.
+The regenerated inventory preserves all 120 statement statuses and all
+other content, including every duplicate short-name occurrence. Exactly
+16 line references change; filenames and list order do not. See
+`verification/2026-10-13-quadratic-linear-route{-stronger,-compatibility,-downstream}.json`,
+`verification/2026-10-13-piece-two-decomposition{-original,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-quadratic-linear-route-simplification.json`. The documented Lemma 16.10
+correction and original-paper fidelity limits remain unchanged; this
+checkpoint does not establish complete original-paper fidelity or
+full-facade verification. The final-proof simplification goal remains
+active.
+
+### L.95. Shared fixed-density inverse estimates (2026-10-13)
+
+Two shared inverse estimates replace six repeated calculations. The
+Delta estimate assumes `5 ≤ a`, uses `0 < t ≤ 1`, and bounds its inverse
+by `pw X (a + 3)`. The ThetaTwo estimate assumes only `2 ≤ a` and
+`0 < t`, bounding its inverse by `pw X (a + 4)`. Both use `2 ≤ X` and
+the given reciprocal bound `t⁻¹ ≤ pw X a`. The seed, generic and Fejér
+callers specialize these estimates and retain their previous statements.
+
+All 126 existing declaration statements and contexts, 11 definitions,
+imports and numerical bounds are preserved. The six caller bodies shrink
+from 171 to 31 tactic lines; the two helper bodies add 33, giving 107
+fewer proof lines. Including all 44 helper source lines, production
+source decreases by 96. Six new focused entries bring the audit to 293
+names, including all eight affected declarations; the checkpoint source
+delta is −90 lines. The new ThetaTwo premise was weakened from `5 ≤ a`
+to `2 ≤ a` before application; the preserved predecessor and precise
+successor document that change to the new helper only.
+
+All six fresh native checks pass: original audit (642), stronger bridge
+(709), focused audit (784), downstream audit (1,099), historical explicit
+audit (701) and historical bridge (560), with every current input hash
+verified. Named audits allow only `propext`, `Classical.choice` and
+`Quot.sound`. Focused explicitly checks all eight affected declarations;
+historical explicit retains its three named checks. Both standalone
+bridge records link the current focused audit; compilation does not
+claim an axiom audit of every export. The original route
+loses 22 source and 33 proof lines; the stronger route loses 96 and 107.
+Each historical route gains five source lines and has no proof-line
+change. The six-target union is 1,205 modules / 226,188 source lines,
+with 1,208 source/configuration inputs.
+
+Selected native scope covers 166 of 169 affected consumers; the four
+standard targets cover 159. The three broad aggregate targets remain
+excluded with unchanged source hashes. The 608-module
+core check passes on its first attempt with no source repairs. Applied
+review confirms the exact frozen drafts. The regenerated inventory is
+byte-identical, preserving all 120 statement statuses and every duplicate
+short-name occurrence. See
+`verification/2026-10-13-fixed-density-inverse{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-fixed-density-inverse-simplification.json`.
+This checkpoint does not establish complete original-paper fidelity;
+the accepted correction and previously documented limitations remain.
+
+### L.96. Direct cubic localization and shared count bounds (2026-10-13)
+
+The fixed Fejér cubic twisted-discrepancy proof now applies
+`FunctionDiscrepancyBound.localized_partition` directly to the existing
+Section 17 localized obstruction. This supplies the same quadratic
+parameter, cell-length conditions and discrepancy conclusion without
+constructing prime models and converting them back to the assembly
+interface. The earlier many-prime-model theorem remains unchanged in
+its compatibility owner and is explicitly imported and checked by the
+focused audit. Its threshold definition moves unchanged to the common
+localization owner. Three count-power proofs now specialize the existing
+`partition_count_power_of_length`, moved unchanged to BoundaryRefinement.
+
+All 53 existing declaration statements and contexts, 25 definitions and
+final bounds are preserved. The direct proof grows from 44 to 65 tactic
+lines, while the three count proofs shrink from 53 to six combined.
+The eight core production files lose 26 source and 26 proof lines.
+Seven focused entries, one compatibility import and the explicit
+definition-kind binding add nine audit lines, leaving a net checkpoint
+saving of 17 source lines before the historical import repair below.
+The audit retains its existing entries and
+explicitly checks 300 declarations (299 theorems and one definition),
+including the four changed proofs, both moved declarations and the
+unchanged model theorem.
+
+The original final route drops one module and saves 84 source and 53
+proof lines. The stronger route drops one module and saves 99 source
+and 68 proof lines. These closure savings include both unchanged moved
+blocks exactly once; they are larger than the repository reduction
+because the final routes no longer import the model construction.
+The regular six-target union retains 1,205 modules / 226,171 source
+lines. The compatibility audit retains the legacy source rather than
+claiming its proof was deleted from the repository.
+
+All six regular fresh checks pass: original audit (641), stronger bridge
+(708), focused audit (784), downstream audit (1,098), historical explicit
+audit (700) and historical bridge (559). Named audits allow only
+`propext`, `Classical.choice` and `Quot.sound`. They cover 243 of
+263 affected consumers. Ten additional existing targets are checked
+separately, covering the remaining 17 non-aggregate consumers. They add
+33 modules and 3,045 source lines to the union, yielding 1,238 modules /
+229,216 source lines and 1,241 source/configuration inputs. These extra
+targets are standalone compilation checks, with changed-declaration
+axiom evidence linked to the focused audit; they do not claim to audit
+every export. No extra imports for those ten targets enlarge the final
+or focused routes.
+
+The standalone historical Fejér comparison initially lacked the direct
+import of the original cubic parameters it compares against. Adding that
+import preserves all eight theorem statements and proofs and costs one
+source line. Its retry checks 194 modules; the extra dependencies already
+belong to the selected union. This repair changes no final route and gives
+an overall repository reduction of 25 production source lines and 26 proof
+lines, or 16 source lines including the focused audit. All 61 declaration
+statements across the nine production files remain exact. Its failed log,
+successful retry and source commit are recorded separately.
+
+The first focused audit rejected the moved threshold because its old
+validator required every listed name to be a theorem. The repaired
+validator checks that exact threshold as a definition and all other
+entries as theorems; all 300 retain the unconditional approved-axiom
+check. The successful focused retry and its initial failed log are
+preserved in a separate audit-kind repair addendum.
+
+The first core attempt exposed a definitional ratio mismatch in the
+assembled count estimate. One explicit normalization of `2 * (2 + 2)`
+to `8` was added, without changing any theorem statement. The frozen
+proposal and failed log are preserved. The repaired 235-module core and
+all 16 fresh full native checks pass, with all 1,241 current source and
+configuration hashes verified. The regenerated inventory is byte-identical
+and retains all 120 statement statuses and duplicate occurrences. See
+`verification/2026-10-13-cubic-localized-count-simplification.json` for
+the exact source, repair, scope and sixteen fresh native record links.
+
+The complete narrowed-import source scan covers 198 modules and finds
+no surviving use of the sole lost
+model-theorem export. Selected scope is 260 of 263 consumers; the three
+broad aggregate targets remain explicitly excluded. Inventory comparison
+preserves every duplicate short-name occurrence. This checkpoint does
+not establish complete original-paper fidelity; the accepted correction
+and previously documented limitations remain.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

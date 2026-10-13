@@ -21,6 +21,7 @@ from .normal_crushing_chain import verify_crushing_chain
 from .normal_sector_verify import verify_sector_exhaustion
 from .normal_euler_verify import verify_sector_euler_certificate
 from .normal_euler_tree_verify import verify_euler_branch_tree
+from .euler_lp_budget import (fallback_statistics, validate_lp_controls, merge_fallback)
 
 
 class _CallbackRaised(BaseException):
@@ -167,8 +168,14 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                           max_crushes=None, sector_order='diversified',
                           sector_quantum=64, sector_method='corners',
                           max_pivots=10000, max_anchors=10000,
-                          lp_strategy='envelope', reduce_vertices=True,
+                          lp_strategy='envelope', reduce_vertices=True, unlayer_boundary=False,
+                          reduce_pachner32=False, reduce_pachner_descent=False,
+                          pachner_descent_method='cochain',
                           max_tree_nodes=256, tree_model='source',
+                          max_hitting_subsets=10000,
+                          transversal_candidate_policy='subsets',
+                          lp_policy='polynomial', lp_fast_path_pivots=None,
+                          max_ellipsoid_iterations=10000, max_feasibility_calls=10000,
                           check=lambda: None):
     """Recognize with globally shared search caps, returning three-way status.
 
@@ -195,9 +202,18 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
     ``max_anchors`` allowances count every repeated pivot and anchor; bases are
     unused. The per-attempt quantum applies to each LP count separately.
     ``lp_strategy`` selects 'envelope' (actual-point check then anchors) or
-    'anchors'. These finite exact simplex computations have no polynomial
-    pivot bound. Negative recognition may mix independently checked Euler-LP
+    'anchors'. The default LP policy uses a polynomially capped Bland prefix
+    and exact rational ellipsoid recovery; ``lp_policy='bland'`` retains the
+    legacy comparison policy. Negative recognition may mix independently checked Euler-LP
     and corner-exhaustion packets, always on all full final-source assignments.
+
+    Native LP/tree positives already have primitive extreme Q coordinates and
+    canonical STANDARD lifts. They go directly through the crushing producer's
+    original-support extremality guard and independent quotient replay. A valid
+    nonprimitive or nonextreme positive point instead uses checked positive-ray
+    extraction before retrying; no claimed producer flag bypasses these guards.
+    An exhausted shared reduction allowance returns its partial chain before
+    this unaccepted candidate's extraction or crushing validation.
 
     ``reduce_vertices=True`` first constructs expanded-edge-link positive rays
     on each source with multiple vertices, without sector search. Their crushes
@@ -216,43 +232,125 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
     ``tree_model='source'`` retains one full-source Q model across nodes and
     rechecks cached duals on each current mask. ``'restricted'`` rebuilds the
     algebra per mask and retains separate node caches for comparison.
+
+    ``sector_method='transversal'`` learns full conflict sets from incompatible
+    positive Q rays, then searches with splits confined to a candidate hitting
+    set. Failed candidates count toward the same global node, pivot and anchor
+    caps. ``max_hitting_subsets`` counts every tested subset, including those
+    filtered without an LP, across all candidates and crushing successors.
+    Learning and dual caches restart on each new source. This policy requires
+    ``tree_model='source'`` and uses the same independently checked v2 negative
+    recognition schema. No general small-transversal bound is assumed.
+
+    ``transversal_candidate_policy='conflicts'`` selects iterative deepening
+    on missed conflict choices with a 256-edge cache. The default 'subsets'
+    retains the unique-subset comparison stream. In conflicts mode the shared
+    max_hitting_subsets limit charges every partial candidate-search state,
+    including repeat visits at larger depths, before any candidate LP work.
+
+    ``unlayer_boundary=True`` tries a certified inverse boundary layer after
+    vertex reduction and before normal search at each source. The resulting
+    diagram-crushing-v2 chain mixes normal crushes and manifold-preserving
+    layer deletions. max_crushes charges both kinds of strict reduction;
+    crushing_steps and boundary_unlayerings report them separately. The
+    default False preserves the existing v1 chain and preprocessing policy.
+
+    ``reduce_pachner32=True`` next scans interior degree-three edges for a
+    certified relative-boundary 3-2 replacement. Each accepted move removes
+    exactly one tetrahedron and restarts vertex reduction, boundary unlayering,
+    and source preparation. No old normal algebra or conflict is transported.
+    The v3 chain accepts all three reduction kinds, sharing max_crushes;
+    pachner32_moves counts these moves separately. The default is False.
+
+    ``reduce_pachner_descent=True`` then searches for a first strict Pachner
+    descent with at most one total 2-3 expansion. The complete polynomial
+    search uses no normal-disc or LP queries. The default method 'cochain'
+    uses zero cochain heights and a v4 chain. Method 'geometric' directly
+    enumerates D and UDD words, using a v5 chain and geometric certificates.
+    Either chain records each accepted macro as one max_crushes operation, even when
+    its trace contains one expansion and two contractions. Separate diagnostics
+    count search nodes/work and accepted elementary upward/downward moves.
+    Every changed source restarts preprocessing and normal algebra. Default
+    False preserves the previous chain schemas and statistics. Node/work
+    diagnostics have method-specific units: geometric work counts all producer
+    callbacks, including source preparation and final independent replay.
+
+    ``max_ellipsoid_iterations`` and ``max_feasibility_calls`` count fallback
+    work across all anchors, nodes, candidate restarts and crushing successors.
+    Both default to 10000; None removes a cap. Flat LP scheduling also applies
+    its per-attempt quantum to these counts. ``lp_fast_path_pivots`` can lower
+    the internal polynomial prefix limit, useful for fallback comparisons.
+    The user's max_pivots remains a hard simplex-work cap and prevents fallback
+    when exhausted. The Bland comparison ignores unused fallback budgets.
     """
     for name, value in (('max_sectors', max_sectors), ('max_bases', max_bases),
                         ('max_crushes', max_crushes), ('max_pivots', max_pivots),
-                        ('max_anchors', max_anchors), ('max_tree_nodes', max_tree_nodes)):
+                        ('max_anchors', max_anchors), ('max_tree_nodes', max_tree_nodes),
+                        ('max_hitting_subsets', max_hitting_subsets)):
         if value is not None and (type(value) is not int or value < 0):
             raise ValueError(name + ' must be a nonnegative integer or None')
     if sector_order not in ('diversified', 'canonical'):
         raise ValueError('sector_order must be diversified or canonical')
     if sector_quantum is not None and (type(sector_quantum) is not int or sector_quantum <= 0):
         raise ValueError('sector_quantum must be a positive integer or None')
-    if sector_method not in ('corners', 'lp', 'tree'):
-        raise ValueError('sector_method must be corners, lp or tree')
+    if sector_method not in ('corners', 'lp', 'tree', 'transversal'):
+        raise ValueError('sector_method must be corners, lp, tree or transversal')
     if lp_strategy not in ('anchors', 'envelope'):
         raise ValueError('lp_strategy must be anchors or envelope')
     if type(reduce_vertices) is not bool:
         raise ValueError('reduce_vertices must be a boolean')
     if tree_model not in ('source', 'restricted'):
         raise ValueError('tree_model must be source or restricted')
+    if sector_method == 'transversal' and tree_model != 'source':
+        raise ValueError('transversal search requires tree_model=source')
+    if (type(transversal_candidate_policy) is not str
+            or transversal_candidate_policy not in ('subsets', 'conflicts')):
+        raise ValueError('transversal_candidate_policy must be subsets or conflicts')
+    if type(unlayer_boundary) is not bool:
+        raise ValueError('unlayer_boundary must be a boolean')
+    if type(reduce_pachner32) is not bool:
+        raise ValueError('reduce_pachner32 must be a boolean')
+    if type(reduce_pachner_descent) is not bool:
+        raise ValueError('reduce_pachner_descent must be a boolean')
+    if (type(pachner_descent_method) is not str
+            or pachner_descent_method not in ('cochain', 'geometric')):
+        raise ValueError('pachner_descent_method must be cochain or geometric')
+    validate_lp_controls(lp_policy, lp_fast_path_pivots,
+                         max_ellipsoid_iterations, max_feasibility_calls)
     return _safe_call(_recognize_by_crushing, check, diagram,
                       max_sectors=max_sectors, max_bases=max_bases,
                       max_crushes=max_crushes, sector_order=sector_order,
                       sector_quantum=sector_quantum, sector_method=sector_method,
                       max_pivots=max_pivots, max_anchors=max_anchors,
                       lp_strategy=lp_strategy, reduce_vertices=reduce_vertices,
-                      max_tree_nodes=max_tree_nodes, tree_model=tree_model)
+                      unlayer_boundary=unlayer_boundary,
+                      reduce_pachner32=reduce_pachner32,
+                      reduce_pachner_descent=reduce_pachner_descent,
+                      pachner_descent_method=pachner_descent_method,
+                      max_tree_nodes=max_tree_nodes, tree_model=tree_model,
+                      max_hitting_subsets=max_hitting_subsets,
+                      transversal_candidate_policy=transversal_candidate_policy,
+                      lp_policy=lp_policy, lp_fast_path_pivots=lp_fast_path_pivots,
+                      max_ellipsoid_iterations=max_ellipsoid_iterations,
+                      max_feasibility_calls=max_feasibility_calls)
 
 
 def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                           sector_order, sector_quantum, sector_method,
-                          max_pivots, max_anchors, lp_strategy, reduce_vertices,
-                          max_tree_nodes, tree_model, check):
+                          max_pivots, max_anchors, lp_strategy, reduce_vertices, unlayer_boundary,
+                          reduce_pachner32, reduce_pachner_descent,
+                          pachner_descent_method,
+                          max_tree_nodes, tree_model, max_hitting_subsets,
+                          transversal_candidate_policy,
+                          lp_policy, lp_fast_path_pivots,
+                          max_ellipsoid_iterations, max_feasibility_calls, check):
     # Keep producer imports outside the independent verifier's import path.
     from .diagram_exterior import diagram_exterior
     from .diagram_exterior_verify import verify_diagram_exterior
     from .boundary_shellings import shell_boundary
     from .boundary_shellings_verify import verify_boundary_shellings
-    from .normal_crushing import crush_normal_ray
+    from .normal_crushing import (crush_normal_ray, _NonPrimitiveNormalPoint,
+                                  _NonExtremeNormalPoint)
     from .normal_crushing_verify import verify_normal_crushing
     from .normal_sector import build_sector_kernel, sector_rays, SearchLimit, _source_hash
     from .sector_matching_support import matching_support
@@ -261,6 +359,19 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
     from .positive_ray import extract_positive_ray
     from .normal_vertex_reduction import vertex_reduction_ray
     from .normal_euler_tree import search_euler_tree
+    from .normal_euler_transversal import search_euler_transversal
+    from .boundary_unlayer import unlayer_boundary_once
+    from .boundary_unlayer_verify import verify_boundary_unlayering
+    if reduce_pachner32:
+        from .normal_pachner32 import reduce_pachner32_once
+        from .normal_pachner32_verify import verify_normal_pachner32
+    if reduce_pachner_descent:
+        if pachner_descent_method == 'geometric':
+            from .normal_geometric_descent import reduce_geometric_descent_once as reduce_descent_once
+            from .normal_geometric_descent_verify import verify_normal_geometric_descent as verify_descent
+        else:
+            from .normal_pachner_descent import reduce_pachner_descent_once as reduce_descent_once
+            from .normal_pachner_descent_verify import verify_normal_pachner_descent as verify_descent
 
     check()
     source = Diagram.from_pd(diagram.pd)
@@ -280,20 +391,41 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                  matching_support_checks=0, matching_support_reductions=0,
                  forced_zero_types=0, sector_restarts=0,
                  sector_quantum_exhaustions=0, max_cached_sector_jobs=0)
-    if sector_method in ('lp', 'tree'):
+    if sector_method in ('lp', 'tree', 'transversal'):
         stats.update(lp_calls=0, lp_pivots=0, anchors_tested=0,
                      reused_anchors=0, envelope_calls=0, lp_tableau_updates=0,
                      maximum_tableau_bits=0, extraction_steps=0)
-    if sector_method == 'tree':
+        stats.update(fallback_statistics())
+    if sector_method in ('tree', 'transversal'):
         stats.update(nodes_attempted=0, branch_splits=0, negative_leaves=0,
                      positive_relaxations=0, incompatible_positive_points=0,
                      nonpositive_envelope_points=0, reused_envelopes=0,
                      maximum_tree_depth=0, kernel_preparations=0)
+    if sector_method == 'transversal':
+        stats.update(hitting_subsets_tested=0, transversal_candidates=0,
+                     transversal_restarts=0, learned_conflicts=0,
+                     maximum_transversal_size=0, maximum_conflict_size=0,
+                     peak_cached_conflicts=0, conflict_cache_evictions=0)
     if reduce_vertices:
         stats.update(vertex_reduction_calls=0, vertex_reduction_crushes=0)
+    if unlayer_boundary:
+        stats.update(boundary_unlayer_calls=0, boundary_unlayer_candidates=0,
+                     boundary_unlayerings=0)
+    if reduce_pachner32:
+        stats.update(pachner32_calls=0, pachner32_candidates=0, pachner32_moves=0)
+    if reduce_pachner_descent:
+        stats.update(pachner_descent_calls=0, pachner_descent_nodes=0,
+                     pachner_descent_work=0, pachner_descent_macros=0,
+                     pachner_descent_upward_moves=0, pachner_descent_downward_moves=0)
 
     def chain():
-        return dict(schema='diagram-crushing-v1', input_pd=[list(row) for row in source.pd],
+        schema = ('diagram-crushing-v5' if reduce_pachner_descent and
+                  pachner_descent_method == 'geometric' else
+                  'diagram-crushing-v4' if reduce_pachner_descent else
+                  'diagram-crushing-v3' if reduce_pachner32 else
+                  'diagram-crushing-v2' if unlayer_boundary else 'diagram-crushing-v1')
+        return dict(schema=schema,
+                    input_pd=[list(row) for row in source.pd],
                     source_triangulation=initial, shelling=shelling, steps=steps,
                     status='UNKNOT' if current is None else 'REDUCED',
                     triangulation=current)
@@ -310,10 +442,20 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
             raise ArithmeticError('independent crushing recognition replay failed')
         return dict(status=status, certificate=certificate, stats=stats)
 
-    def apply_crush(coordinates):
+    def apply_crush(coordinates, *, repair_positive=False):
         nonlocal current
         count = len(current['tetrahedra'])
-        result = crush_normal_ray(current, coordinates, check=check)
+        try:
+            result = crush_normal_ray(current, coordinates, check=check)
+        except (_NonPrimitiveNormalPoint, _NonExtremeNormalPoint):
+            if not repair_positive:
+                raise
+            # Only these pre-quotient validation outcomes license extraction.
+            # Caller exceptions remain wrapped by the outer _safe_call, so
+            # even a caller-raised classifier cannot enter this repair path.
+            extracted = extract_positive_ray(current, coordinates, check=check)
+            stats['extraction_steps'] += extracted['stats']['descent_steps']
+            result = crush_normal_ray(current, extracted['coordinates'], check=check)
         packet = result['certificate']
         if not verify_normal_crushing(current, packet, check=check):
             raise ArithmeticError('independent normal crushing replay failed')
@@ -384,7 +526,12 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                     else min(quantum, remaining))
         result = decide_sector_euler(current, job['kernel'].support,
             strategy=lp_strategy, max_pivots=allowance(max_pivots, stats['lp_pivots']),
-            max_anchors=allowance(max_anchors, stats['anchors_tested']), check=check)
+            max_anchors=allowance(max_anchors, stats['anchors_tested']),
+            lp_policy=lp_policy, lp_fast_path_pivots=lp_fast_path_pivots,
+            max_ellipsoid_iterations=allowance(max_ellipsoid_iterations, stats['lp_ellipsoid_iterations']),
+            max_feasibility_calls=allowance(max_feasibility_calls, stats['lp_feasibility_calls']),
+            check=check)
+        merge_fallback(stats, result['stats'])
         for name in ('lp_calls', 'lp_pivots', 'anchors_tested', 'reused_anchors',
                      'envelope_calls', 'lp_tableau_updates'):
             stats[name] += result['stats'][name]
@@ -402,11 +549,9 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
             raise ArithmeticError('independent Euler-LP replay failed')
         if result['status'] == 'NO_POSITIVE_EULER':
             return dict(status='NEGATIVE', certificate=proof)
-        extracted = extract_positive_ray(current, result['coordinates'], check=check)
         stats['rays_examined'] += 1
         stats['positive_euler_rays'] += 1
-        stats['extraction_steps'] += extracted['stats']['descent_steps']
-        return dict(status='POSITIVE', coordinates=extracted['coordinates'])
+        return dict(status='POSITIVE', coordinates=result['coordinates'])
 
     while current is not None:
         check()
@@ -424,15 +569,92 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                 continue
             if reduction['status'] != 'ONE_VERTEX':
                 raise ArithmeticError('unexpected vertex reduction outcome')
+        if unlayer_boundary:
+            reduction = unlayer_boundary_once(current, check=check)
+            stats['boundary_unlayer_calls'] += 1
+            stats['boundary_unlayer_candidates'] += reduction['stats']['candidate_tests']
+            if reduction['status'] == 'UNLAYERED':
+                if max_crushes is not None and len(steps) >= max_crushes:
+                    return inconclusive('shared crushing-step allowance exhausted')
+                packet = reduction['certificate']
+                if not verify_boundary_unlayering(current, packet, check=check):
+                    raise ArithmeticError('independent boundary unlayering replay failed')
+                successor = packet['successor']
+                if len(successor['tetrahedra']) != len(current['tetrahedra'])-1:
+                    raise ArithmeticError('boundary unlayering did not delete one tetrahedron')
+                steps.append(packet)
+                current = successor
+                stats['boundary_unlayerings'] += 1
+                continue
+            if reduction['status'] != 'UNCHANGED':
+                raise ArithmeticError('unexpected boundary unlayering outcome')
+        if reduce_pachner32:
+            reduction = reduce_pachner32_once(current, check=check)
+            stats['pachner32_calls'] += 1
+            stats['pachner32_candidates'] += reduction['stats']['candidate_tests']
+            if reduction['status'] == 'REDUCED':
+                if max_crushes is not None and len(steps) >= max_crushes:
+                    return inconclusive('shared crushing-step allowance exhausted')
+                packet = reduction['certificate']
+                if not verify_normal_pachner32(current, packet, check=check):
+                    raise ArithmeticError('independent Pachner 3-2 replay failed')
+                successor = packet['successor']
+                if len(successor['tetrahedra']) != len(current['tetrahedra'])-1:
+                    raise ArithmeticError('Pachner 3-2 did not delete one tetrahedron')
+                steps.append(packet)
+                current = successor
+                stats['pachner32_moves'] += 1
+                continue
+            if reduction['status'] != 'UNCHANGED':
+                raise ArithmeticError('unexpected Pachner 3-2 outcome')
+        if reduce_pachner_descent:
+            reduction = reduce_descent_once(current, check=check)
+            stats['pachner_descent_calls'] += 1
+            stats['pachner_descent_nodes'] += reduction['stats']['search_nodes']
+            stats['pachner_descent_work'] += reduction['stats']['search_work']
+            if reduction['status'] == 'REDUCED':
+                if max_crushes is not None and len(steps) >= max_crushes:
+                    return inconclusive('shared crushing-step allowance exhausted')
+                packet = reduction['certificate']
+                if not verify_descent(current, packet, check=check):
+                    raise ArithmeticError('independent Pachner descent replay failed')
+                successor = packet['successor']
+                if len(successor['tetrahedra']) != len(current['tetrahedra'])-1:
+                    raise ArithmeticError('Pachner descent did not delete one tetrahedron')
+                steps.append(packet)
+                current = successor
+                stats['pachner_descent_macros'] += 1
+                stats['pachner_descent_upward_moves'] += reduction['stats']['upward_moves']
+                stats['pachner_descent_downward_moves'] += reduction['stats']['downward_moves']
+                continue
+            if reduction['status'] != 'UNCHANGED':
+                raise ArithmeticError('unexpected Pachner descent outcome')
         count = len(current['tetrahedra'])
         digest = _source_hash(current)
-        if sector_method == 'tree':
+        if sector_method in ('tree', 'transversal'):
             def remaining(cap, field):
                 return None if cap is None else cap-stats[field]
-            result = search_euler_tree(current, strategy=lp_strategy, model=tree_model,
+            options = dict(strategy=lp_strategy,
                 max_nodes=remaining(max_tree_nodes, 'nodes_attempted'),
                 max_pivots=remaining(max_pivots, 'lp_pivots'),
-                max_anchors=remaining(max_anchors, 'anchors_tested'), check=check)
+                max_anchors=remaining(max_anchors, 'anchors_tested'),
+                lp_policy=lp_policy, lp_fast_path_pivots=lp_fast_path_pivots,
+                max_ellipsoid_iterations=remaining(max_ellipsoid_iterations, 'lp_ellipsoid_iterations'),
+                max_feasibility_calls=remaining(max_feasibility_calls, 'lp_feasibility_calls'),
+                check=check)
+            if sector_method == 'tree':
+                result = search_euler_tree(current, model=tree_model, **options)
+            else:
+                result = search_euler_transversal(current,
+                    max_hitting_subsets=remaining(max_hitting_subsets, 'hitting_subsets_tested'),
+                    candidate_policy=transversal_candidate_policy,
+                    **options)
+                for field in ('hitting_subsets_tested', 'transversal_candidates',
+                              'transversal_restarts', 'learned_conflicts', 'conflict_cache_evictions'):
+                    stats[field] += result['stats'][field]
+                for field in ('maximum_transversal_size', 'maximum_conflict_size', 'peak_cached_conflicts'):
+                    stats[field] = max(stats[field], result['stats'][field])
+            merge_fallback(stats, result['stats'])
             for field in ('nodes_attempted', 'branch_splits', 'negative_leaves', 'lp_calls',
                           'lp_pivots', 'anchors_tested', 'reused_anchors', 'envelope_calls',
                           'lp_tableau_updates', 'positive_relaxations',
@@ -449,13 +671,11 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                 return conclusive('KNOTTED', result['certificate'])
             if result['status'] != 'POSITIVE_EULER':
                 raise ArithmeticError('unexpected Euler tree outcome')
-            extracted = extract_positive_ray(current, result['coordinates'], check=check)
-            stats['extraction_steps'] += extracted['stats']['descent_steps']
             stats['rays_examined'] += 1
             stats['positive_euler_rays'] += 1
             if max_crushes is not None and len(steps) >= max_crushes:
                 return inconclusive('shared crushing-step allowance exhausted')
-            apply_crush(extracted['coordinates'])
+            apply_crush(result['coordinates'], repair_positive=True)
             continue
         exhaustion = {}
         jobs = {}
@@ -473,7 +693,13 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
             if sector_method == 'lp':
                 result = attempt_lp(jobs[assignment], quantum)
                 exhausted = ((max_pivots is not None and stats['lp_pivots'] >= max_pivots)
-                             or (max_anchors is not None and stats['anchors_tested'] >= max_anchors))
+                             or (max_anchors is not None and stats['anchors_tested'] >= max_anchors)
+                             or (max_ellipsoid_iterations is not None
+                                 and stats['lp_ellipsoid_iterations'] >= max_ellipsoid_iterations
+                                 and result.get('reason') == 'shared ellipsoid iteration allowance exhausted')
+                             or (max_feasibility_calls is not None
+                                 and stats['lp_feasibility_calls'] >= max_feasibility_calls
+                                 and result.get('reason') == 'shared feasibility decision allowance exhausted'))
             else:
                 remaining = None if max_bases is None else max_bases-stats['bases_attempted']
                 allowance = (remaining if quantum is None else quantum if remaining is None
@@ -491,7 +717,7 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                 continue
             if max_crushes is not None and len(steps) >= max_crushes:
                 return inconclusive('shared crushing-step allowance exhausted')
-            apply_crush(result['coordinates'])
+            apply_crush(result['coordinates'], repair_positive=sector_method == 'lp')
             # Every sector/exhaustion packet is relative to the old source;
             # restart all maximal assignments on the authenticated successor.
             break

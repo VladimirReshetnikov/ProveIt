@@ -96,6 +96,48 @@ class ExactKernelLPTests(unittest.TestCase):
             result = solve_nonnegative_kernel(matrix, objective)
             self.assert_replay(matrix, objective, result)
             self.assertEqual(result['status'] == 'POSITIVE', exhaustive_positive(matrix, objective))
+            unreduced = solve_nonnegative_kernel(matrix, objective, reduce_rows=False)
+            self.assert_replay(matrix, objective, unreduced)
+            self.assertEqual(result['status'], unreduced['status'])
+            self.assertLessEqual(result['stats']['retained_equations'], min(n, m))
+            self.assertEqual(unreduced['equation_rows'], list(range(m)))
+
+    def test_original_row_selection_lifts_duals_and_preserves_dependent_constraints(self):
+        matrix = [[0, 0, 0], [Q(1, 2), -1, 0], [1, -2, 0],
+                  [0, 1, -1], [Q(3, 2), -1, -2], [-2, 4, 0]]
+        for objective in ([1, 0, 0], [-1, 0, 0], [0, 1, -1]):
+            result = solve_nonnegative_kernel(matrix, objective)
+            self.assert_replay(matrix, objective, result)
+            self.assertEqual(result['equation_rows'], [1, 3])
+            self.assertEqual(result['stats']['equations'], 6)
+            self.assertEqual(result['stats']['retained_equations'], 2)
+            self.assertEqual(result['stats']['tableau_rows'], 5)
+            self.assertEqual(result['status'] == 'POSITIVE', exhaustive_positive(matrix, objective))
+            if result['status'] == 'NONPOSITIVE':
+                self.assertTrue(all(result['y'][i] == [0, 1] for i in (0, 2, 4, 5)))
+        # Pivot columns need not arrive in sorted order. The later row still
+        # has to be eliminated against every previously selected pivot.
+        permuted = [[0, 0, 1], [1, 0, 2], [2, 0, 4], [0, 1, 3], [1, 1, 5]]
+        result = solve_nonnegative_kernel(permuted, [1, 1, 1])
+        self.assertEqual(result['equation_rows'], [0, 1, 3])
+        self.assert_replay(permuted, [1, 1, 1], result)
+
+    def test_row_reduction_validation_zero_rows_and_pivot_allowance(self):
+        for bad in (None, 0, 1, 'true', [], {}):
+            with self.assertRaises(ValueError):
+                solve_nonnegative_kernel([], [1], reduce_rows=bad)
+        result = solve_nonnegative_kernel([[0, 0]]*40, [-1, 0], max_pivots=0)
+        self.assertEqual(result['status'], 'NONPOSITIVE')
+        self.assertEqual(result['equation_rows'], [])
+        self.assertEqual(result['y'], [[0, 1]]*40)
+        self.assertEqual(result['stats']['tableau_rows'], 1)
+        matrix, objective = [[0, 0], [1, -1], [2, -2]], [1, 0]
+        full = solve_nonnegative_kernel(matrix, objective)
+        capped = solve_nonnegative_kernel(matrix, objective, max_pivots=full['stats']['pivots']-1)
+        self.assertEqual(capped['status'], 'INCONCLUSIVE')
+        self.assertEqual(capped['equation_rows'], [1])
+        self.assertNotIn('x', capped)
+        self.assertNotIn('y', capped)
 
     def test_zero_width_redundancy_fractional_and_large_binary_inputs(self):
         huge = 1 << 20000

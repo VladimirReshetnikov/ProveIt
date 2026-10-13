@@ -1,5 +1,4 @@
 import GowersSzemeredi.Proofs18CoverExponents
-import GowersSzemeredi.Proofs18GenericLengths
 import GowersSzemeredi.Proofs18RefinementThresholdBounds
 
 /-! Shared class budgets and elementary estimates for the uniform cover step.
@@ -50,13 +49,22 @@ theorem tightHyp_of_profiles (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k) (hp 
     (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) {k : Nat}
     (hk : 2 ≤ k) :
     (⟨classV Kc pc k, k, Kc k, pc k, tightMu0 k⟩ : GenParamsC).CHyp (tightMuV k) (genMuK k) := by
-  obtain ⟨hV, -, -, -, -, -, hKk, hKμ, hpk, hpμ⟩ := stdHyp_of_profiles Kc pc hK hp hconst hk
-  refine ⟨hV, classV_le_tight Kc pc hconst k, le_rfl, ?_, hKk, hKμ, hpk, hpμ⟩
-  show k ≤ 2 ^ tightMu0 k
-  calc k ≤ 2 ^ k := Nat.lt_two_pow_self.le
-    _ ≤ 2 ^ tightMu0 k := Nat.pow_le_pow_right (by norm_num) (by
-        unfold tightMu0 fixDeg; have := Nat.lt_two_pow_self (n := k + 5)
-        have := le_max_right (tightMuV k) (2 ^ (k + 5) + 7); omega)
+  have hKr : (Kc k : Real) ≤ 2 ^ (2 ^ genMuK k) := by
+    have := hconst k; unfold genMuK; push_cast at this ⊢
+    linarith [Nat.cast_nonneg (α := Real) (pc k)]
+  have hpr : (pc k : Real) ≤ 2 ^ (2 ^ genMuK k) := by
+    have := hconst k; unfold genMuK; push_cast at this ⊢
+    linarith [Nat.cast_nonneg (α := Real) (Kc k)]
+  refine ⟨one_le_classV Kc pc k, classV_le_tight Kc pc hconst k, le_rfl, ?_, hK k, ?_, hp k, ?_⟩
+  · show k ≤ 2 ^ tightMu0 k
+    calc k ≤ 2 ^ k := Nat.lt_two_pow_self.le
+      _ ≤ 2 ^ tightMu0 k := Nat.pow_le_pow_right (by norm_num) (by
+          unfold tightMu0 fixDeg; have := Nat.lt_two_pow_self (n := k + 5)
+          have := le_max_right (tightMuV k) (2 ^ (k + 5) + 7); omega)
+  · have : ((Kc k : Nat) : Real) ≤ ((2 ^ 2 ^ genMuK k : Nat) : Real) := by push_cast; exact hKr
+    exact_mod_cast this
+  · have : ((pc k : Nat) : Real) ≤ ((2 ^ 2 ^ genMuK k : Nat) : Real) := by push_cast; exact hpr
+    exact_mod_cast this
 
 theorem two_pow_six_mul (k : Nat) : 2 ^ (k + 6) = 64 * 2 ^ k := by rw [pow_add]; ring
 theorem two_pow_five_mul (k : Nat) : 2 ^ (k + 5) = 32 * 2 ^ k := by rw [pow_add]; ring
