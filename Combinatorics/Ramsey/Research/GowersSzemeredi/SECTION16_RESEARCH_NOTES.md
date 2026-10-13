@@ -8092,6 +8092,65 @@ Lemma 16.10 correction and open original-paper fidelity issues retain
 their status. This checkpoint does not establish complete original-paper
 fidelity. The simplification goal remains active.
 
+### L.83. Specialize the shared Fejér width-exponent proof (2026-10-13)
+
+`split_exp_inv_le_fejer` now follows from the existing
+`split_exp_inv_le_fejer2` by setting its count and exponent parameters
+equal (`ac = ae = a`, `Dc = De = D`). The six associated exponent formulas
+reduce to the original formulas under this specialization. The old
+227-line proof is replaced by a two-line application, with exactly the
+same theorem statement and hypotheses.
+
+The six definitions `sPbN2`, `fsPbW2`, `sLN2`, `fsLW2`, `sExpN2` and
+`fsExpW2`, together with the general theorem, move unchanged from
+`Proofs18FinalClasses` to `Proofs16SplitStepFejer`. All seven declaration
+blocks and their scope contexts are preserved. The old owner continues
+to export them through its existing imports. All 73 existing declarations
+retain their complete statements and contexts; no named declaration,
+parameter definition or import is added or removed. Only the specialized
+theorem's proof body changes. The general proof and the distinct printed
+single-track estimate remain unchanged.
+
+Against `77e92d5a7`, the two production files shrink from 1,798 to 1,567
+source lines, removing 231 source lines and 225 proof-body lines.
+The remaining six lines are an empty namespace block removed from the old
+owner; all retained declaration contexts remain exact.
+`Proofs18FinalClasses` falls from 1,117 to 811 lines, while the earlier
+owner grows from 681 to 756 lines. The stronger final remains at 626 local
+modules and falls from 140,274 to 140,043 imported source lines; its
+public bridge remains at 719 modules and falls from 154,386 to 154,155.
+The two additional named audit checks give a focused-audit total of
+783 / 168,701, a reduction of 229 lines. The selected downstream audit
+is 1,098 / 212,315, a reduction of 231. The original final and
+its audit are unchanged at 641 / 133,179 and 642 / 133,213. Module sets
+are unchanged. The standalone earlier-owner closure grows by 75 lines;
+actual final-route savings include that relocation cost. These source
+counts do not measure compilation speed.
+
+Native verification passes standalone compilation of the 719-module
+stronger bridge, the 783-module focused compatibility audit and the
+1,098-module `IntegerOriginalCorollaryFidelityAudit`. The focused audit
+adds explicit checks for both the moved general theorem and its
+specialization, allowing only `propext`, `Classical.choice` and `Quot.sound`.
+All current inputs match the recorded manifests. See
+`verification/2026-10-13-split-width-sharing{-stronger,-compatibility,-downstream}.json`
+and `verification/2026-10-13-split-width-sharing-simplification.json`.
+The unchanged original-final inputs also match the prior 642-module pass
+in `2026-10-12-cover-ranges.json`; no new original-final pass is claimed.
+
+The focused audit covers 13 of 52 affected import consumers, including
+every affected proof owner. The downstream audit adds 36, giving selected
+native coverage of 49 of 52. The facade, Audit and PortImportAudit remain
+excluded; source inspection found no direct use of the moved or
+specialized declarations there. Full-facade native validation remains
+separate. The regenerated 120-statement inventory is byte-identical.
+
+Final numerical thresholds, class-cover statements and the existing
+stronger van der Waerden bounds are unchanged. The documented Lemma 16.10
+correction and open original-paper fidelity issues retain their status.
+This checkpoint does not establish complete original-paper fidelity.
+The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
