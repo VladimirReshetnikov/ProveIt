@@ -9,6 +9,25 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  Count-product checkpoint: a shared sample-and-slice estimate replaces
+  four repeated graph-count calculations, preserving their 110 existing
+  statements/contexts and 42 definitions. The frozen four-file change
+  saves 49 source and 57 proof-body lines including its helper. A
+  separate historical bridge repair adds two source/proof lines without
+  changing statements or recursion limits, giving production savings of
+  47 source and 55 proof lines. A new 19-line audit checks both historical
+  exports; with five added focused checks, the checkpoint saves 23 source
+  lines. The original final is 641 / 133,156; the stronger bridge is
+  719 / 154,057 and focused is 783 / 168,610. All six fresh native
+  642/719/783/1,098/701/560-module checks pass with current input hashes.
+  Selected scope covers 166 of 169 existing consumers, or 167 of 170
+  including the new audit, with three aggregate targets excluded.
+  Full-facade verification remains separate. All 120 inventory statuses
+  are unchanged; one related theorem location moves from line 37 to 39.
+  Final bounds and original-paper fidelity status are unchanged. See
+  Notes L.85 and count-product reports; the simplification goal remains
+  active.
+
   Width-factor checkpoint: one scalar estimate replaces the separate
   front-factor calculations in the printed and general Fejér width
   proofs. All 74 existing statements/contexts and all 42 definitions are

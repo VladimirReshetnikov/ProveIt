@@ -8217,6 +8217,104 @@ Lemma 16.10 correction and open original-paper fidelity issues retain
 their status. This checkpoint does not establish complete original-paper
 fidelity. The simplification goal remains active.
 
+### L.85. Share the sample-and-slice count product (2026-10-13)
+
+`famPieceGraphBound_le_mul_sq` separates the combinatorial count estimate
+from its later power bounds. If the family size is at most `N`, the sample
+count is at most `S`, and the slice count lies between zero and `B`, with
+`S ≥ 1` and `B ≥ 1`, it proves
+`famPieceGraphBound Qr Pb n rho ≤ N * (S^2 * B^2)`.
+For sample count `s` and slice count `p`, the proof bounds
+`choose(s, 2) * p^2` and `p` by `S^2 * B^2`, then multiplies by the family
+size. The slice nonnegativity premise is explicit; the helper permits
+zero family or slice counts and does not restrict `rho`.
+
+The existing `famPieceGraphBound_le_power` now specializes this estimate
+to powers of one base. `split_count_le`, `split_count_le_fejer` and
+`uniTwoFejerCount_le_split` use the same estimate with their existing
+family, sample and slice bounds. Exact exponent identities recover the
+unchanged conclusions. The common owner `Proofs18LengthSixCounts` already
+belongs to both final routes, so imports and module sets are unchanged.
+
+In the four count-product files, all 110 pre-existing declarations retain their complete statements and
+scope contexts, and all 42 existing definitions remain byte-identical.
+Only four existing proof bodies change in that frozen proposal. One helper is added; no
+declaration is removed or moved. Imports, options and surrounding
+commands remain exact, and the original route gains no Fejér dependency.
+
+The frozen source baseline is `c8c00020c`; the later metadata merge
+`a5c816265` preserves those Lean inputs. The four production files shrink
+from 2,501 to 2,452 lines, removing 49 source lines. The old proof bodies
+have `16 + 48 + 48 + 95 = 207` lines; their replacements plus the helper
+have `3 + 28 + 28 + 79 + 12 = 150`, removing 57 actual proof-body lines.
+These counts start after each complete theorem statement and exclude
+statement-local `let` bindings. The helper costs 20 source lines including
+its separator. Its owner grows seven lines after the existing power
+proof shrinks; the three split callers remove 20, 20 and 16 source lines.
+The original final saves 13 source lines and 21 proof-body lines after
+helper overhead; the stronger final saves 49 and 57 respectively.
+
+The first historical explicit-target check failed at the default maximum
+recursion depth while matching the dimension-one recurrence profile in
+`Proofs16PolyCoverThreeExplicit`. A separate repair follows the existing
+`Proofs18LengthSixExplicit` precedent: `simpa only` unfolds the named
+constants and reduces the small natural additions and powers before
+matching each dimension-one or dimension-two profile. It changes one
+proof, adds two source and proof-body lines, and preserves both exported
+statements, their contexts, imports and options. No recursion limit is
+increased. The failed log remains recorded; that invocation is not a pass.
+Including this repair, five production files lose 47 source lines and
+55 actual proof-body lines. The original four-file proposal and its
+independent source review remain preserved separately.
+
+A new 19-line `PolyCoverThreeExplicitAudit` checks `theorem_16_2_three`
+and `corollary_16_11_three` against the three approved axioms. Together
+with the five new focused checks, this makes the whole checkpoint
+23 source lines smaller after audit additions. The new audit is separate
+from both final routes and their first four verification targets.
+
+The original final is 641 local modules / 133,156 imported source lines,
+and its audit is 642 / 133,190. The stronger final is 626 / 139,945 and
+its public bridge is 719 / 154,057. Five additional named checks make the
+focused audit 783 / 168,610, a reduction of 44 lines. The selected
+downstream audit is 1,098 / 212,217, a reduction of 49 lines. The
+historical explicit owner is 700 / 138,777 after the separate repair;
+its new audit is 701 / 138,796. The historical bridge is 560 / 119,190.
+The six-target union is 1,204 local modules / 227,284 source lines, with
+1,207 hashed source and tool inputs. These source counts do not measure
+compilation speed.
+
+Six fresh native checks pass: the original-final audit (642 modules),
+standalone stronger bridge (719), focused audit (783), selected downstream
+audit (1,098), historical explicit audit (701) and standalone historical
+bridge (560).
+No earlier pass is reused. The focused audit adds the new helper and all
+four changed count theorems, retaining every earlier named check. The
+new historical audit checks both dimension-three exports. These audits
+allow only `propext`, `Classical.choice` and `Quot.sound`; the standalone
+historical bridge record does not claim an axiom audit of every export.
+All current inputs match the recorded manifests. The historical explicit
+record preserves the failed invocation's log hash and explains the repair.
+See `verification/2026-10-13-count-product{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-count-product-simplification.json`.
+
+The original graph has 169 affected import consumers. The original,
+focused and downstream native audits together cover 160. The historical
+audit and bridge cover the six remaining existing proof consumers,
+giving 166 of 169, including every affected proof owner. Counting the
+new audit itself gives current scope of 167 of 170. The facade, Audit
+and PortImportAudit remain excluded, with baseline-identical sources
+and no direct use of the changed theorem names. Full-facade native
+validation remains separate. The regenerated inventory retains all 120
+statement statuses; its only change is the related theorem location for
+`corollary_16_11_three`, from line 37 to line 39.
+
+Final numerical thresholds, class-cover statements and the existing
+stronger van der Waerden bounds remain unchanged. The documented
+Lemma 16.10 correction and open original-paper fidelity issues retain
+their status. This checkpoint does not establish complete original-paper
+fidelity. The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

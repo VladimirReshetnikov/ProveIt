@@ -152,27 +152,11 @@ theorem uniTwoFejerCount_le_split {V : Real} (hV : 1 ≤ V) {gamma theta rho : R
     exact tb_const_mul hν hW2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) h2
   set PB := 2 + ((2 : Nat) ^ 24 + (SB + (2 : Nat) ^ 38)) + 1 with hPBdef
   have hP0 : 0 ≤ famTwoPb M qf S (rho / 4) := by unfold famTwoPb; exact Nat.cast_nonneg _
-  have hch : ((S.choose 2 : Nat) : Real) ≤ ν ^ 4 * W ^ (2 * SB) := by
-    have h1 : S.choose 2 ≤ S * S := by
-      rw [Nat.choose_two_right]
-      exact (Nat.div_le_self _ _).trans (Nat.mul_le_mul_left _ (Nat.sub_le _ _))
-    have h2 := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hS hS
-    calc ((S.choose 2 : Nat) : Real) ≤ (S : Real) * S := by exact_mod_cast h1
-      _ ≤ ν ^ (1 + 1 + (1 + 1)) * W ^ (SB + SB) := h2
-      _ = ν ^ 4 * W ^ (2 * SB) := by ring_nf
   -- the graph bound
   have hG : famPieceGraphBound (famTwoQr M qf) (famTwoPb M qf) M rho ≤
       ν ^ 11 * W ^ ((2 : Nat) ^ 24 + (2 * SB + PB + PB)) := by
-    unfold famPieceGraphBound
-    have hmax : max (famTwoPb M qf S (rho / 4))
-        (((S.choose 2 : Nat) : Real) * famTwoPb M qf S (rho / 4) * famTwoPb M qf S (rho / 4)) ≤
-        ν ^ 10 * W ^ (2 * SB + PB + PB) := by
-      apply max_le
-      · exact hPb.trans (tb_mono hν hW1 (by norm_num) (by omega))
-      · have h := tb_mul hν hW1 (by positivity) hP0 (tb_mul hν hW1 (Nat.cast_nonneg _) hP0 hch hPb) hPb
-        exact h.trans (le_of_eq (by ring_nf))
-    have h := tb_mul hν hW1 (Nat.cast_nonneg _) (le_trans hP0 (le_max_left _ _)) hM hmax
-    exact h.trans (le_of_eq (by ring_nf))
+    have h := famPieceGraphBound_le_mul_sq (tb_one_le hν hW1) (tb_one_le hν hW1) hM hS hP0 hPb
+    convert h using 1 <;> ring
   unfold uniTwoFejerCount
   refine max_le (hG.trans (tb_mono hν hW1 le_rfl ?_)) ?_
   · rw [hPBdef, hSBdef, hQdef]; norm_num

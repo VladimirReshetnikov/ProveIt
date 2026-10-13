@@ -27,10 +27,12 @@ theorem theorem_16_2_three : Theorem162At 3 := by
   -- unfold the named constants so that the profiles match syntactically
   have h1 : Section16RecurrenceProfileWith 1 (familyRecThr 1 explicitVarietyK ((1 + 1) * explicitVarietyP))
       (familyRecExp 1 ((1 + 1) * explicitVarietyP)) := by
-    unfold explicitVarietyK explicitVarietyP; exact section16RecurrenceProfileWith_explicit 1
+    simpa only [explicitVarietyK, explicitVarietyP, Nat.reduceAdd, Nat.reducePow] using
+      section16RecurrenceProfileWith_explicit 1
   have h2 : Section16RecurrenceProfileWith 2 (familyRecThr 2 explicitLiftK explicitLiftP)
       (familyRecExp 2 explicitLiftP) := by
-    unfold explicitLiftK explicitLiftP; exact section16RecurrenceProfileWith_explicit 2
+    simpa only [explicitLiftK, explicitLiftP, Nat.reduceAdd, Nat.reducePow] using
+      section16RecurrenceProfileWith_explicit 2
   exact theorem_16_2_three_of_profiles hK1 hp1 hK2 hp2 hK1b hp1b hK2b hp2b h1 h2
 
 /-- **Corollary 16.11 in dimension three.** -/

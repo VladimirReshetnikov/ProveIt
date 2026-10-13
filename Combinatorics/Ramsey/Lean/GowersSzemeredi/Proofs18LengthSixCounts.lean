@@ -348,6 +348,26 @@ theorem famPieceSamples_le_power {w rho : Real} {Qr : Real → Real} {n a b : Na
   unfold famPieceSamples
   exact le_pow_mono hw (by omega) (ceil_le_pow_succ hw hin0 hin)
 
+/-- A graph-count bound from separate bounds on the family, samples and slices. -/
+theorem famPieceGraphBound_le_mul_sq {N S B rho : Real} {Qr : Real → Real}
+    {Pb : Nat → Real → Real} {n : Nat} (hS1 : 1 ≤ S) (hB1 : 1 ≤ B)
+    (hn : (n : Real) ≤ N) (hS : (famPieceSamples Qr n rho : Real) ≤ S)
+    (hP0 : 0 ≤ Pb (famPieceSamples Qr n rho) (rho / 4))
+    (hP : Pb (famPieceSamples Qr n rho) (rho / 4) ≤ B) :
+    famPieceGraphBound Qr Pb n rho ≤ N * (S ^ 2 * B ^ 2) := by
+  set s := famPieceSamples Qr n rho
+  set p := Pb s (rho / 4)
+  have hchoose : ((s.choose 2 : Nat) : Real) ≤ S ^ 2 := by
+    calc ((s.choose 2 : Nat) : Real) ≤ (s : Real) ^ 2 := by exact_mod_cast Nat.choose_le_pow s 2
+      _ ≤ S ^ 2 := pow_le_pow_left₀ (Nat.cast_nonneg _) hS 2
+  have hmax : max p (((s.choose 2 : Nat) : Real) * p * p) ≤ S ^ 2 * B ^ 2 := by
+    refine max_le (hP.trans ((le_self_pow₀ hB1 (by decide : (2 : Nat) ≠ 0)).trans
+      (le_mul_of_one_le_left (sq_nonneg B) (one_le_pow₀ hS1)))) ?_
+    rw [mul_assoc, ← sq]
+    exact mul_le_mul hchoose (pow_le_pow_left₀ hP0 hP 2) (sq_nonneg p) (sq_nonneg S)
+  unfold famPieceGraphBound
+  exact mul_le_mul hn hmax (hP0.trans (le_max_left _ _)) ((Nat.cast_nonneg n).trans hn)
+
 /-- The family graph count, from bounds on the samples, the slice count and `n`. -/
 theorem famPieceGraphBound_le_power {w rho : Real} {Qr : Real → Real} {Pb : Nat → Real → Real}
     {n b s c : Nat} (hw : 2 ≤ w) (hn : (n : Real) ≤ w ^ b)
@@ -355,22 +375,9 @@ theorem famPieceGraphBound_le_power {w rho : Real} {Qr : Real → Real} {Pb : Na
     (hP0 : 0 ≤ Pb (famPieceSamples Qr n rho) (rho / 4))
     (hP : Pb (famPieceSamples Qr n rho) (rho / 4) ≤ w ^ c) :
     famPieceGraphBound Qr Pb n rho ≤ w ^ (b + (2 * s + c + c)) := by
-  have hw0 : 0 ≤ w := le_trans (by norm_num) hw
-  set S := famPieceSamples Qr n rho
-  set P := Pb S (rho / 4)
-  have hC : ((S.choose 2 : Nat) : Real) ≤ w ^ (2 * s) := by
-    have h1 : ((S.choose 2 : Nat) : Real) ≤ ((S ^ 2 : Nat) : Real) :=
-      Nat.cast_le.mpr (Nat.choose_le_pow S 2)
-    refine h1.trans ?_
-    rw [Nat.cast_pow, mul_comm, pow_mul]
-    exact pow_le_pow_left₀ (Nat.cast_nonneg _) hS 2
-  have hCPP : ((S.choose 2 : Nat) : Real) * P * P ≤ w ^ (2 * s + c + c) :=
-    mul_le_pow_add (mul_nonneg (Nat.cast_nonneg _) hP0) hP0
-      (mul_le_pow_add (Nat.cast_nonneg _) hP0 hC hP hw0) hP hw0
-  have hmax : max P (((S.choose 2 : Nat) : Real) * P * P) ≤ w ^ (2 * s + c + c) :=
-    max_le (le_pow_mono hw (by omega) hP) hCPP
-  unfold famPieceGraphBound
-  exact mul_le_pow_add (Nat.cast_nonneg _) (le_trans hP0 (le_max_left _ _)) hn hmax hw0
+  have hw1 : 1 ≤ w := by linarith only [hw]
+  have h := famPieceGraphBound_le_mul_sq (one_le_pow₀ hw1) (one_le_pow₀ hw1) hn hS hP0 hP
+  convert h using 1 <;> ring
 
 /-- `famTwoQr m q ≤ w^(a+b+5)`. -/
 theorem famTwoQr_le_power {w : Real} {m q a b : Nat} (hw : 2 ≤ w) (hm : (m : Real) ≤ w ^ a)
