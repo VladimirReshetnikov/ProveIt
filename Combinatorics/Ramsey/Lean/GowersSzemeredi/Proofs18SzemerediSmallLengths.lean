@@ -60,15 +60,7 @@ theorem roth_threshold_le_szemerediThreshold (k : Nat) {delta : Real}
     have h42 : delta⁻¹ ^ (42 : Nat) = delta⁻¹ * delta⁻¹ ^ (41 : Nat) := by ring
     nlinarith [mul_le_mul_of_nonneg_left h41' hu0, hpow42, h42, hu1]
   unfold szemerediThreshold
-  apply (section18_exp_le_two_rpow (Real.exp_pos _).le).trans
-  apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-  calc
-    2 * Real.exp (1000000000000 * delta⁻¹) ≤
-        2 * (2 : Real) ^ (2 * (1000000000000 * delta⁻¹)) :=
-      mul_le_mul_of_nonneg_left (section18_exp_le_two_rpow (by positivity)) (by norm_num)
-    _ = (2 : Real) ^ (1 + 2 * (1000000000000 * delta⁻¹)) := by
-      rw [Real.rpow_add (by norm_num : (0 : Real) < 2), Real.rpow_one]
-    _ ≤ _ := Real.rpow_le_rpow_of_exponent_le (by norm_num) hinner
+  exact exp_exp_le_two_rpow_two_rpow (by positivity) hinner
 
 /-- **Theorem 18.2 for lengths at most three**, from Roth's theorem. -/
 theorem theorem_18_2_le_three {k : Nat} (hk : k ≤ 3) : Theorem182At k := by

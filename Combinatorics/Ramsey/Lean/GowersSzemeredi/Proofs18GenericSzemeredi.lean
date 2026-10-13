@@ -39,22 +39,17 @@ theorem theorem182AtSharp_nine_iff (k : Nat) : Theorem182AtSharp 9 k ↔ Theorem
 /-! ### The uniformity parameter -/
 
 theorem interval_exponent_le (L : Nat) : 1 + (4 * L + 9) * 2 ^ (L - 1) ≤ 2 ^ (2 * L + 4) := by
-  rcases Nat.eq_zero_or_pos L with h0 | hpos
-  · subst h0; norm_num
   have hL : L < 2 ^ L := Nat.lt_two_pow_self
-  have h1 : 4 * L + 9 ≤ 2 ^ (L + 4) := by
-    have : 2 ^ (L + 4) = 16 * 2 ^ L := by rw [pow_add]; ring
-    have := Nat.one_le_two_pow (n := L)
+  have hpow : 1 ≤ 2 ^ (L - 1) := Nat.one_le_two_pow
+  have hcoef : 4 * L + 10 ≤ 2 ^ (L + 4) := by
+    rw [pow_add]
+    norm_num only [Nat.reducePow]
     omega
-  have h5 : 2 ^ (L - 1) * 2 = 2 ^ L := by
-    rw [← pow_succ]; congr 1; omega
-  have h7 : 2 ^ (L + 4) * 2 ^ L = 2 ^ (2 * L + 4) := by rw [← pow_add]; ring_nf
-  have h6 : (4 * L + 9) * 2 ^ (L - 1) * 2 ≤ 2 ^ (2 * L + 4) := by
-    rw [mul_assoc, h5, ← h7]; exact Nat.mul_le_mul_right _ h1
-  have hX1 : 1 ≤ (4 * L + 9) * 2 ^ (L - 1) :=
-    Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by positivity))
-  generalize (4 * L + 9) * 2 ^ (L - 1) = X at h6 hX1 ⊢
-  omega
+  calc
+    _ ≤ (4 * L + 10) * 2 ^ (L - 1) := by nlinarith only [hpow]
+    _ ≤ 2 ^ (L + 4) * 2 ^ L :=
+      Nat.mul_le_mul hcoef (Nat.pow_le_pow_right (by norm_num) (Nat.sub_le L 1))
+    _ = _ := by rw [← pow_add]; congr 1; omega
 
 theorem intervalUniformityParameter_gen_bounds {delta : Real} {L : Nat} (hL : 1 ≤ L)
     (hδ : 0 < delta) (hδhalf : delta ≤ 1 / 2) :
@@ -210,13 +205,8 @@ theorem closedThreshold_le_of_env {L μ : Nat} (hL : 1 ≤ L) {delta beta sigma 
       (X ^ (2 ^ (μ + 1))) heta hT11 hT1
     have hK1 : polynomialPartitionConstant 1 = 16 := by
       norm_num [polynomialPartitionConstant, Nat.factorial]
-    have hS1 : section5LocalRefinementConstant 1 1 ≤ X ^ (2 ^ μ) := by
-      have h := s5_one_le (d := 1) le_rfl
-      norm_num at h
-      exact h.trans (pw_const hX (by
-        have : (2 : Real) ^ (2 ^ 42) ≤ 2 ^ (2 ^ μ) :=
-          pow_le_pow_right₀ (by norm_num) (Nat.pow_le_pow_right (by norm_num) hμ)
-        exact this) |>.trans le_rfl)
+    have hS1 : section5LocalRefinementConstant 1 1 ≤ X ^ (2 ^ μ) :=
+      hsmall _ 42 (by simpa using (s5_one_le (d := 1) le_rfl)) hμ
     unfold boundaryRefinementConstant
     refine hscaled.trans ?_
     rw [hK1]
@@ -262,7 +252,6 @@ theorem double_exp_le_szemerediThresholdAt {L μ c : Nat} (hL : 1 ≤ L) {delta 
   obtain ⟨ha0, -, -, hXu⟩ := intervalUniformityParameter_gen_bounds hL hδ hδhalf
   set u : Real := delta⁻¹ with hu'
   have hu : 2 ≤ u := by rw [hu', ← one_div, le_div_iff₀ hδ]; linarith
-  have hu1 : 1 ≤ u := le_trans (by norm_num) hu
   set q : Nat := 2 ^ (μ + 2 * L + 13) with hq
   set E : Nat := 2 ^ (2 ^ (L + c)) with hE
   have hqE : q + 2 ≤ E := by
@@ -277,23 +266,7 @@ theorem double_exp_le_szemerediThresholdAt {L μ c : Nat} (hL : 1 ≤ L) {delta 
     rw [← pow_mul, ← pow_add] at h
     rw [hq, show μ + 2 * L + 13 = 2 * L + 4 + (μ + 9) by ring]
     exact h
-  have hx1 : 1 ≤ u ^ q := one_le_pow₀ hu1
-  have hinner : 1 + 2 * u ^ q ≤ u ^ E := by
-    calc
-      _ ≤ u ^ q * 4 := by linarith only [hx1]
-      _ ≤ u ^ q * u ^ 2 :=
-          mul_le_mul_of_nonneg_left (by nlinarith only [hu] : (4 : Real) ≤ u ^ 2) (by positivity)
-      _ = u ^ (q + 2) := (pow_add u q 2).symm
-      _ ≤ _ := pow_le_pow_right₀ hu1 hqE
-  have hexp : Real.exp (Real.exp (u ^ q)) ≤ (2 : Real) ^ ((2 : Real) ^ (u ^ E)) := by
-    apply (section18_exp_le_two_rpow (Real.exp_pos _).le).trans
-    apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-    calc
-      2 * Real.exp (u ^ q) ≤ 2 * (2 : Real) ^ (2 * u ^ q) :=
-        mul_le_mul_of_nonneg_left (section18_exp_le_two_rpow (by positivity)) (by norm_num)
-      _ = (2 : Real) ^ (1 + 2 * u ^ q) := by
-        rw [Real.rpow_add (by norm_num : (0 : Real) < 2), Real.rpow_one]
-      _ ≤ _ := Real.rpow_le_rpow_of_exponent_le (by norm_num) hinner
+  have hexp := exp_exp_pow_le_two_rpow_two_rpow hu hqE
   refine (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr habsorb)).trans (hexp.trans (le_of_eq ?_))
   unfold szemerediThresholdAt
   rw [hE, ← hu']
