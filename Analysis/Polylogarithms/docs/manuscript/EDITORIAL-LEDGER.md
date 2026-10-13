@@ -1402,3 +1402,28 @@ excluded because they require a different scalar subtraction. Classical
 inputs, full proof audits and separate exact/numerical evidence are
 documented in `verification/STIELTJES-CHARACTERS-AUDIT.md`. Original
 reports remain unchanged; no global historical-priority claim is made.
+
+## Algebraic colors and finite dilation identities, October 12, 2026
+
+Continue the colored-tail problem with an exactly specified algebraic
+single-tail zero at order fifteen, away from the alternating color. The
+neighboring tails are nonzero, so this is not a consecutive-tail
+counterexample. A rational-univariate certificate and independent
+original-color reconstruction prove its existence; an additional exact
+Jacobian enclosure proves local isolation in the real parameter plane.
+The ordinary Mellin theorem gives its extra moment, and explicit
+logarithmic differentiation gives a triangular hierarchy and a vanishing
+identity connecting the next kernel order.
+
+Extend the balanced scalar transform to finite positive dilations. A
+polynomial filter cancels arbitrarily many consecutive tails uniformly
+in the positive shift. Every newly supplied moment has an explicit
+Bernoulli-polynomial/logarithm value. Prove the exact convergence
+criterion and the minimal number of scales for uniform cancellation,
+with special-shift exceptions kept outside that minimality statement.
+The principal-character completion now supplies the scalar subtraction
+excluded from the previous character section and classifies all of its
+extra integer moments. Explicit digamma and first-index Stieltjes
+examples were independently checked. Foundational Mellin scaling,
+the preserved scalar report, and classical zeta evaluations remain
+credited. See `verification/STIELTJES-MOMENT-FILTERS-AUDIT.md`.

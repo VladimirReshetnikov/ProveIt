@@ -7,10 +7,28 @@ organized as four volumes. Each has its own source and compiled PDF.
 |---|---|---|---:|
 | I | Polylogarithm identities, inverse expansions, cyclotomic coordinates, algebraic ladders and Gaussian/Eisenstein reductions | [Polylogarithm Identities and Arithmetic Reductions](volumes/volume-1-polylogarithm-identities.pdf) | 191 |
 | II | Signed kernels, angular and all-depth zero geometry, exact computation and experimental discovery; literature appendix | [Signed Kernels, Zero Geometry and Experimental Discovery](volumes/volume-2-signed-kernels.pdf) | 132 |
-| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 281 |
+| III | Hurwitz jets, Stieltjes integration/differentiation, finite parts, Gamma correlations, twists and Stieltjes zeros | [Hurwitz Jets, Stieltjes Calculus and Gamma Correlations](volumes/volume-3-hurwitz-stieltjes.pdf) | 290 |
 | IV | Gamma grids, CM lattice periods, class products and Herglotz arithmetic | [Gamma Grids, CM Periods and Herglotz Arithmetic](volumes/volume-4-cm-and-herglotz.pdf) | 88 |
 
-The four volume PDFs contain 692 pages in total.
+The four volume PDFs contain 701 pages in total.
+
+Two further sections of Volume III construct ordinary Stieltjes identities
+by algebraic tail cancellation and by finite dilations. An exactly
+certified nonalternating unit-circle color has a vanished order-fifteen
+tail, with both neighbors nonzero. It supplies one extra ordinary moment,
+an all-order logarithmic hierarchy, and a vanishing combination of kernel
+orders fifteen and sixteen. Independent rational intervals prove that
+the point is isolated among real shifts and unit-circle colors.
+
+Finite dilation polynomials provide a uniform construction at every
+Stieltjes order: any prescribed finite block of tails can be canceled,
+giving ordinary moments expressed in Bernoulli-polynomial values and
+logarithms. A three-scale digamma combination has moments `-log(2)/4`,
+`-log(2)/12`, and `-3*zeta(3)/(4*pi^2)`; a first-index Stieltjes combination
+has moments `log(2)/24` and zero. The same framework completes the
+principal-character case with its necessary scalar subtraction.
+See [the algebraic-color and dilation audit](verification/STIELTJES-MOMENT-FILTERS-AUDIT.md)
+for the exact constructions, proof review, and evidence boundaries.
 
 Volume III now gives an all-order character-valued dictionary for ordinary
 Stieltjes moments. Primitive characters yield explicit positive-order
@@ -102,7 +120,7 @@ and the shared bibliography of 167 references. The scientific text is shared
 through chapter files and [preamble.tex](preamble.tex), avoiding duplicate
 copies of proofs. See [volume sources and build instructions](volumes/README.md).
 The [combined source](polylogarithms.tex) and its
-[643-page combined snapshot](polylogarithms.pdf) remain available.
+[651-page combined snapshot](polylogarithms.pdf) remain available.
 
 The [inventory](source-inventory.json) accounts for **1,810 textual source
 files**, including overlapping articles, fragments and correction registers.

@@ -1,0 +1,239 @@
+\section{Finite dilations and arbitrarily long ordinary moment blocks}
+\label{stdil:section}
+
+The scalar transform of the balanced Stieltjes report
+\cite{stmell:balanced}, recalled in Lemma~\ref{stbil:scalar}, also permits
+deliberately chosen dilations. The shift filters in that report impose
+linear conditions on Bernoulli polynomials. Here a single shift is retained
+and a finite dilation polynomial cancels selected powers of the tail.
+This gives arbitrarily long blocks of ordinary moments, with elementary
+Bernoulli values when the zero is supplied by the dilation. It also
+completes the principal-character case left outside
+Section~\ref{stchar:section}. Mellin scaling and finite polynomial
+annihilation supply the elementary mechanism; the zeta evaluations
+used below are classical \cite{stchar:classical}.
+
+\subsection{The finite-dilation transform and its scalar subtraction}
+
+For positive scales $h_1,\ldots,h_J$, complex coefficients
+$c_1,\ldots,c_J$, and a fixed $a>0$, put
+\begin{align}
+ D(s)&=\sum_{j=1}^Jc_jh_j^{-s},\qquad
+ Z(s)=D(s)\zeta(s,a),\notag\\
+ H_q(x)&=\sum_{j=1}^J\frac{c_j}{h_j}C_q(x/h_j,a),
+ \qquad q\in\mathbb Z_{\ge0}.\label{stdil:kernel}
+\end{align}
+Every kernel is an explicit finite combination of generalized Stieltjes
+functions by \eqref{stbil:kernel}. The uncolored scalar subtraction is
+part of its definition. More precisely, if
+\[
+ F(s,x)=\sum_jc_jh_j^{-s}\zeta(s,x/h_j+a),
+\]
+then
+\begin{equation}\label{stdil:subtraction}
+ H_q(x)=\left.\partial_z^q
+       \left[x^zF(1+z,x)-\frac{D(1)}z\right]\right|_{z=0}.
+\end{equation}
+In general $D(1)\ne0$. The additional logarithmic terms inside the
+individual $C_q(x/h_j,a)$ must therefore be retained.
+
+\begin{theorem}[Dilation transform and exact convergence criterion]
+\label{stdil:criterion}
+For $0<\Re u<q+1$,
+\begin{equation}\label{stdil:mellin}
+ \int_0^\infty x^{u-1}H_q(x)\,dx
+    =\pi\csc(\pi u)Q_q(u)Z(1-u).
+\end{equation}
+For an integer $m\ge q+1$, the ordinary moment of weight $x^{m-1}$
+converges if and only if
+\begin{equation}\label{stdil:zeros}
+ D(-k)\zeta(-k,a)=0\qquad(q\le k\le m-1).
+\end{equation}
+When it converges it is absolutely convergent and equals
+\begin{equation}\label{stdil:moment}
+ \int_0^\infty x^{m-1}H_q(x)\,dx
+   =(-1)^{m+1}Q_q(m)Z'(1-m).
+\end{equation}
+These statements also allow zero coefficients and vanishing $D(1)$.
+\end{theorem}
+\begin{proof}
+Substituting $x=h_jy$ in the absolutely convergent scalar transform
+multiplies it by $c_jh_j^{u-1}$; summing proves
+\eqref{stdil:mellin}. The scalar Euler--Maclaurin expansion gives
+\begin{equation}\label{stdil:tail}
+ H_q(x)=\sum_{k=q}^{N}\frac{(-1)^kD(-k)\zeta(-k,a)}{k!}
+  \left.\partial_z^q(1+z)_k\right|_{z=0}x^{-k-1}
+  +O(x^{-N-2}).
+\end{equation}
+Here the classical identity
+$\zeta(-k,a)=-B_{k+1}(a)/(k+1)$ converts the uncolored Bernoulli
+coefficients. For $k\ge q$ the Pochhammer derivative is nonzero.
+The first surviving term with $k\le m-1$ makes the moment diverge;
+the last such power gives logarithmic divergence. For complex coefficients,
+one real component has the same nonzero leading term. Conversely,
+\eqref{stdil:zeros} makes the weighted tail $O(x^{-2})$, while the
+zero endpoint is $O(x^{m-1}(1+|\log x|^{q+1}))$.
+The convergent integral is holomorphic in a strip containing $u=m$.
+Its removable value in \eqref{stdil:mellin} is
+\eqref{stdil:moment}, since $Z(1-m)=0$ and
+$1-u=1-m-(u-m)$. Finally \eqref{stdil:subtraction} follows directly
+by multiplying the defining scalar Laurent germs by $c_j/h_j$.
+\end{proof}
+
+\subsection{A universal construction and elementary moment values}
+
+Fix $\lambda>1$, $q\ge0$, and $r\ge1$, and define
+\begin{align}
+ P_{q,r}(y)&=\prod_{\ell=q}^{q+r-1}(1-\lambda^{-\ell}y)
+            =\sum_{j=0}^rp_jy^j,\notag\\
+ H_{q,r}^{\lambda}(x,a)&=
+       \sum_{j=0}^r p_j\lambda^{-j}C_q(x/\lambda^j,a).
+       \label{stdil:geometric}
+\end{align}
+The parameters $p_j$ depend on $q,r,\lambda$ and are independent of $a$.
+
+\begin{theorem}[Arbitrarily long ordinary moment blocks]
+\label{stdil:block}
+For every $a>0$, the kernel in \eqref{stdil:geometric} is
+$O(x^{-q-r-1})$ at infinity, so its Mellin integral converges absolutely
+on $0<\Re u<q+r+1$. For every $k=q,\ldots,q+r-1$,
+\begin{align}
+ \int_0^\infty x^kH_{q,r}^{\lambda}(x,a)\,dx
+  &={(-1)^{k+1}\over k+1}Q_q(k+1)B_{k+1}(a)\log\lambda
+       \prod_{\substack{\ell=q\\\ell\ne k}}^{q+r-1}
+                  (1-\lambda^{k-\ell}).\label{stdil:explicit}
+\end{align}
+The empty product is one. If $B_{k+1}(a)=0$, the displayed ordinary
+moment is zero: the Mellin numerator has a double zero there.
+No derivative of the Hurwitz zeta function occurs in these values.
+\end{theorem}
+\begin{proof}
+In Theorem~\ref{stdil:criterion}, take
+$D(s)=P_{q,r}(\lambda^{-s})$. Then $D(-k)=0$ throughout the
+specified block. Its roots are simple because $\lambda>1$, and
+\[
+ D'(-k)=\log\lambda
+       \prod_{\substack{\ell=q\\\ell\ne k}}^{q+r-1}
+                       (1-\lambda^{k-\ell}).
+\]
+Thus $Z'(-k)=D'(-k)\zeta(-k,a)$, and
+\eqref{stdil:explicit} follows from \eqref{stdil:moment}.
+The tail estimate follows from \eqref{stdil:tail}. When $q=0$ the
+factor with $\ell=0$ is simply $1-y$; no division by $1-\lambda^0$
+is made anywhere in the argument.
+\end{proof}
+
+\begin{proposition}[Minimal number of scales for uniform cancellation]
+\label{stdil:minimal}
+Suppose coefficients and distinct positive scales, independent of $a$,
+give the decay $H_q(x)=O(x^{-q-r-1})$ for every $a$ in a nonempty
+open interval of positive shifts. A nonzero such combination requires
+at least $r+1$ scales. For the prescribed geometric scales
+$1,\lambda,\ldots,\lambda^r$, the choice
+\eqref{stdil:geometric} is unique under the normalization $c_0=1$.
+\end{proposition}
+\begin{proof}
+Each polynomial $B_{k+1}(a)$ is nonzero as a polynomial, so uniform
+cancellation forces $\sum_jc_jh_j^k=0$ for $q\le k\le q+r-1$.
+For at most $r$ scales the first corresponding square submatrix is
+a Vandermonde matrix multiplied by the nonzero factors $h_j^q$.
+Consequently all coefficients vanish. On $r+1$ prescribed scales the
+nullspace is one-dimensional. For geometric scales its coefficient
+polynomial must be a multiple of $P_{q,r}$, and the constant coefficient
+normalizes that multiple. The claim concerns uniform cancellation:
+special fixed shifts with Bernoulli zeros can need fewer scales.
+\end{proof}
+
+For $r=1$ the result is especially transparent:
+\begin{equation}\label{stdil:one}
+ \boxed{\displaystyle
+ \int_0^\infty x^q
+  \left[C_q(x,a)-\lambda^{-q-1}C_q(x/\lambda,a)\right]dx
+     ={(-1)^{q+1}B_{q+1}(a)\over q+1}\log\lambda.}
+\end{equation}
+This also has an elementary cutoff proof: if
+$f(x)=x^qC_q(x,a)$, then $f(x)=A/x+O(x^{-2})$ with
+$A=(-1)^q\zeta(-q,a)$, and the cutoff difference of integrals is
+$\int_{R/\lambda}^{R}f(x)\,dx\longrightarrow A\log\lambda$.
+The full combined integrand is absolutely integrable. This is the
+usual cancellation mechanism behind Frullani-type identities.
+
+For concrete examples put $G(x)=C_0(x,1)=\log x-\psi(x+1)$ and
+\[
+ U(x)=G(x)-\tfrac34G(x/2)+\tfrac18G(x/4).
+\]
+At $q=0,r=2,\lambda=2$, the first two moments are
+\begin{equation}\label{stdil:digamma-pair}
+ \int_0^\infty U(x)\,dx=-\frac{\log2}4,\qquad
+ \int_0^\infty xU(x)\,dx=-\frac{\log2}{12}.
+\end{equation}
+There is a third ordinary moment because $\zeta(-2)=0$:
+\begin{equation}\label{stdil:digamma-third}
+ \int_0^\infty x^2U(x)\,dx
+     =3\zeta'(-2)=-\frac{3\zeta(3)}{4\pi^2}.
+\end{equation}
+The next tail is nonzero, so the weight $x^3$ already diverges.
+As a first generalized-Stieltjes example, put
+\[
+ V(x)=C_1(x,1)-\tfrac38C_1(x/2,1)+\tfrac1{32}C_1(x/4,1),
+ \qquad C_1(x,1)=\tfrac12\log^2x-\psi(x+1)\log x-\gamma_1(x+1).
+\]
+Then
+\begin{equation}\label{stdil:first-index}
+ \int_0^\infty xV(x)\,dx=\frac{\log2}{24},\qquad
+ \int_0^\infty x^2V(x)\,dx=0.
+\end{equation}
+The second identity uses both $D(-2)=0$ and $\zeta(-2)=0$.
+
+\subsection{The principal-character completion}
+
+Let $\chi_0$ be principal modulo $d$, put
+$E_d(s)=\prod_{p\mid d}(1-p^{-s})$, and let $d_0$ be the product
+of the distinct prime divisors of $d$. Empty products at $d=1$ are one.
+The correct balanced principal kernel is
+\begin{align}
+ K_{q,\chi_0}(x)
+   &=\frac1d\sum_{\substack{1\le r\le d\\(r,d)=1}}
+           C_q(x/d,r/d)\notag\\
+   &=\sum_{h\mid d_0}\frac{\mu(h)}h C_q(x/h,1).
+      \label{stdil:principal-kernel}
+\end{align}
+Indeed inclusion--exclusion in the Hurwitz series proves equality
+of the Laurent germs. Both have scalar subtraction
+$E_d(1)/z=\varphi(d)/(dz)$, which is essential here.
+
+\begin{proposition}[All principal-character extra integer moments]
+\label{stdil:principal}
+For every $d\ge1$ and every even $q=2n\ge2$, precisely one extra
+ordinary integer moment exists, and
+\begin{equation}\label{stdil:principal-even}
+ \int_0^\infty x^{2n}K_{2n,\chi_0}(x)\,dx
+  =E_d(-2n)\frac{(-1)^n(2n)!}{2(2\pi)^{2n}}\zeta(2n+1).
+\end{equation}
+There are no extra ordinary integer moments at odd orders.
+At order zero there is no extra moment for $d=1$. For $d>1$
+there is precisely one, with value
+\begin{equation}\label{stdil:principal-zero}
+ \int_0^\infty K_{0,\chi_0}(x)\,dx
+   =-\tfrac12 E_d'(0)
+   =\begin{cases}-\tfrac12\log p,&d\text{ is a positive power of a prime }p,\\
+                  0,&d\text{ has at least two distinct prime divisors}.
+     \end{cases}
+\end{equation}
+All asserted convergent integrals are ordinary and absolutely convergent.
+\end{proposition}
+\begin{proof}
+Apply Theorem~\ref{stdil:criterion} with $D=E_d$ and $a=1$.
+For $k\ge1$ none of the Euler factors $1-p^k$ vanishes. The simple
+zeros of $\zeta$ at the negative even integers, its nonzero values
+at negative odd integers, and
+\[
+ \zeta'(-2n)=\frac{(-1)^n(2n)!}{2(2\pi)^{2n}}\zeta(2n+1)
+\]
+are the classical consequences of its functional equation
+\cite{stchar:classical}. They prove all assertions for $q\ge1$,
+including failure of the next moment. At zero $\zeta(0)=-1/2$;
+$E_d$ has a zero whose multiplicity is the number of distinct primes
+dividing $d$, while $E_d(-1)\zeta(-1)\ne0$. These facts give
+\eqref{stdil:principal-zero}, again with no longer moment block.
+\end{proof}
