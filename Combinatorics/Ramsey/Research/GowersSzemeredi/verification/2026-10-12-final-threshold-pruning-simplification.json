@@ -1,0 +1,806 @@
+{
+  "scope": "Source-only refactoring report; not Lean elaboration, kernel verification, or original-paper fidelity certification.",
+  "baseline_commit": "41d7eb94f59f7becd7d4f643e3e25e4bd5260695",
+  "observed_head_commit": "41d7eb94f59f7becd7d4f643e3e25e4bd5260695",
+  "production_lines": {
+    "file_count": 3,
+    "excludes": "FinalProofSimplificationAudit.lean and all other *Audit.lean files",
+    "includes_new_modules": [],
+    "before": 1549,
+    "after": 1498,
+    "delta": -51,
+    "files": [
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverExponents.lean",
+        "before_lines": 327,
+        "after_lines": 317,
+        "delta": -10,
+        "before_sha256": "c84298bae127a2ae8a7f6e17fac14c5ca3ff612a49cfbc2cf796c8252007a74f",
+        "after_sha256": "4f1f9726f4f111a9ef510454cbb58fbe837a5a195a155a876d6769189fca89f2"
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverModulus.lean",
+        "before_lines": 338,
+        "after_lines": 308,
+        "delta": -30,
+        "before_sha256": "fbcc7393f5d054911d031486eb6e0f3b1e95adf78ab9bba5a4d1fb62cec5a3c9",
+        "after_sha256": "68dd97dd6e9e47ddf9a51bc7d6b38dc1f5b1b9deb7d6b5279c2072dda43daf20"
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+        "before_lines": 884,
+        "after_lines": 873,
+        "delta": -11,
+        "before_sha256": "75d81b6343fda16d76646cc2fa0bc21d5d9af4a84550c225832cd96719427519",
+        "after_sha256": "900968c25b84e164124596f51537e99cc0ed6a73a34a9eb2e581f6127d11a3f2"
+      }
+    ]
+  },
+  "declaration_header_check": {
+    "old_declarations_checked": 84,
+    "all_textual_headers_and_variable_include_scopes_preserved": true,
+    "expanded_type_caveat": "The two smaller Tloc definitions change the expansion of types mentioning them; this is not complete semantic interface preservation.",
+    "name_identity": "Fully qualified Lean namespace plus declaration name, keyed by origin file; named sections do not alter namespace.",
+    "files": [
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverExponents.lean",
+        "old_declaration_count": 8,
+        "current_declaration_count": 8,
+        "preserved_headers": 8,
+        "moved_out": [],
+        "declarations": [
+          "LeanProofs.GowersSzemeredi.GenParamsC.CHyp",
+          "LeanProofs.GowersSzemeredi.GenParamsC.expDegC",
+          "LeanProofs.GowersSzemeredi.GenParamsC.spectrum_exps_inv_leC",
+          "LeanProofs.GowersSzemeredi.GenParamsC.slice_exps_inv_leC",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Eloc_inv_leC",
+          "LeanProofs.GowersSzemeredi.GenParamsC.threshDegC",
+          "LeanProofs.GowersSzemeredi.GenParamsC.MReq_le_expC",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Tloc_le_expC"
+        ],
+        "all_headers_and_variable_scopes_unchanged": true
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverModulus.lean",
+        "old_declaration_count": 27,
+        "current_declaration_count": 27,
+        "preserved_headers": 27,
+        "moved_out": [],
+        "declarations": [
+          "LeanProofs.GowersSzemeredi.coverExp_pos_le",
+          "LeanProofs.GowersSzemeredi.coverRemWidth_powerLB",
+          "LeanProofs.GowersSzemeredi.GenParamsC",
+          "LeanProofs.GowersSzemeredi.GenParamsC.B",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Ewg",
+          "LeanProofs.GowersSzemeredi.GenParamsC.T2",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Rho1",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Delta",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Em",
+          "LeanProofs.GowersSzemeredi.GenParamsC.NestExp",
+          "LeanProofs.GowersSzemeredi.GenParamsC.MExp",
+          "LeanProofs.GowersSzemeredi.GenParamsC.MThr",
+          "LeanProofs.GowersSzemeredi.GenParamsC.QM",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Bexp",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Zeta",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Rho",
+          "LeanProofs.GowersSzemeredi.GenParamsC.ThS",
+          "LeanProofs.GowersSzemeredi.GenParamsC.CS",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Eth",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Ec",
+          "LeanProofs.GowersSzemeredi.GenParamsC.F",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Eloc",
+          "LeanProofs.GowersSzemeredi.GenParamsC.MReq",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Tloc",
+          "LeanProofs.GowersSzemeredi.GenParamsC.ranges",
+          "LeanProofs.GowersSzemeredi.GenParamsC.Eloc_pos_le",
+          "LeanProofs.GowersSzemeredi.GenParamsC.modulus_conditions"
+        ],
+        "all_headers_and_variable_scopes_unchanged": true
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+        "old_declaration_count": 49,
+        "current_declaration_count": 49,
+        "preserved_headers": 49,
+        "moved_out": [],
+        "declarations": [
+          "LeanProofs.GowersSzemeredi.zeta_gen_bounds_fejer5",
+          "LeanProofs.GowersSzemeredi.lemma156_gen_le_fejer5",
+          "LeanProofs.GowersSzemeredi.GenParams.joint_dens_step",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.B",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Ewg",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.T2",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Rho1",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Delta",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Em",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.NestExp",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.MExp",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.MThr",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.QM",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Bexp",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Zeta",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Rho",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.ThS",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.CS",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Eth",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Ec",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.F",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Eloc",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.MReq",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Tloc",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.ranges",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Eloc_pos_le",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.modulus_conditions",
+          "LeanProofs.GowersSzemeredi.sq_le_two_tDegT3",
+          "LeanProofs.GowersSzemeredi.coverPrec_gen_bounds_fejerJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.eta",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.yIn",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.inverse_step",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.rho1_pos_le",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.vertex_uCount_le",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.rhoDegJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.rhoDegJT3_ge",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.rho1_inv_leJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.nestExp_inv_leJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.densDegJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.yIn_boundsJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.CHyp",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.expDegJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.spectrum_exps_inv_leJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.slice_exps_inv_leJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Eloc_inv_leJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.threshDegJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.MReq_le_expJT3",
+          "LeanProofs.GowersSzemeredi.GenParamsJT3.Tloc_le_expJT3"
+        ],
+        "all_headers_and_variable_scopes_unchanged": true
+      }
+    ],
+    "old_module_declaration_names_retained": [
+      {
+        "module": "GowersSzemeredi.Proofs18CoverExponents",
+        "retained_old_declaration_names": 8
+      },
+      {
+        "module": "GowersSzemeredi.Proofs18CoverModulus",
+        "retained_old_declaration_names": 27
+      },
+      {
+        "module": "GowersSzemeredi.Proofs18FinalStep",
+        "retained_old_declaration_names": 49
+      }
+    ]
+  },
+  "unchanged_existing_definition_names": [
+    "LeanProofs.GowersSzemeredi.GenParamsC.CHyp",
+    "LeanProofs.GowersSzemeredi.GenParamsC.expDegC",
+    "LeanProofs.GowersSzemeredi.GenParamsC.threshDegC",
+    "LeanProofs.GowersSzemeredi.GenParamsC",
+    "LeanProofs.GowersSzemeredi.GenParamsC.B",
+    "LeanProofs.GowersSzemeredi.GenParamsC.Ewg",
+    "LeanProofs.GowersSzemeredi.GenParamsC.T2",
+    "LeanProofs.GowersSzemeredi.GenParamsC.Rho1",
+    "LeanProofs.GowersSzemeredi.GenParamsC.Delta",
+    "LeanProofs.GowersSzemeredi.GenParamsC.Em",
+    "LeanProofs.GowersSzemeredi.GenParamsC.NestExp",
+    "LeanProofs.GowersSzemeredi.GenParamsC.MExp",
+    "LeanProofs.GowersSzemeredi.GenParamsC.MThr",
+    "LeanProofs.GowersSzemeredi.GenParamsC.QM",
+    "LeanProofs.GowersSzemeredi.GenParamsC.Bexp",
+    "LeanProofs.GowersSzemeredi.GenParamsC.Zeta",
+    "LeanProofs.GowersSzemeredi.GenParamsC.Rho",
+    "LeanProofs.GowersSzemeredi.GenParamsC.ThS",
+    "LeanProofs.GowersSzemeredi.GenParamsC.CS",
+    "LeanProofs.GowersSzemeredi.GenParamsC.Eth",
+    "LeanProofs.GowersSzemeredi.GenParamsC.Ec",
+    "LeanProofs.GowersSzemeredi.GenParamsC.F",
+    "LeanProofs.GowersSzemeredi.GenParamsC.Eloc",
+    "LeanProofs.GowersSzemeredi.GenParamsC.MReq",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.B",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Ewg",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.T2",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Rho1",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Delta",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Em",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.NestExp",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.MExp",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.MThr",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.QM",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Bexp",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Zeta",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Rho",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.ThS",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.CS",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Eth",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Ec",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.F",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.Eloc",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.MReq",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.eta",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.yIn",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.rhoDegJT3",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.densDegJT3",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.CHyp",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.expDegJT3",
+    "LeanProofs.GowersSzemeredi.GenParamsJT3.threshDegJT3"
+  ],
+  "intentional_definition_changes": [
+    {
+      "name": "LeanProofs.GowersSzemeredi.GenParamsC.Tloc",
+      "before_block": "def Tloc : Real :=\n  max (max 3 (lemma156ExplicitThreshold P.k (alpha / 2) (alpha / 2)))\n    (max (P.MThr alpha)\n      (max (4 ^ (1 / P.NestExp alpha))\n        (max (P.MReq alpha ^ (1 / P.MExp alpha))\n          (max (6 ^ (1 / P.Eloc alpha)) (8 ^ (2 / P.F alpha))))))",
+      "after_block": "def Tloc : Real :=\n  max (max 3 (lemma156ExplicitThreshold P.k (alpha / 2) (alpha / 2)))\n    (max (P.MThr alpha)\n      (max (P.MReq alpha ^ (1 / P.MExp alpha)) (6 ^ (1 / P.Eloc alpha))))",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverModulus.lean",
+      "header": "def Tloc : Real",
+      "ambient_scope": [
+        "variable (P : GenParamsC) (alpha : Real)"
+      ],
+      "before_sha256": "b08dc08806dc49193ac30edd727677125f612099be1c85383db58c9b80a07a43",
+      "after_sha256": "26059bf05019c460e9a935be0b7f5bca93b5f88aa53100b682b3fd785b7e99c6",
+      "definition_line_delta": -2,
+      "body_change": "Remove the 4^(1/NestExp) and 8^(2/F) maximum branches; retain all other terms.",
+      "semantic_note": "Tloc is intentionally smaller. Theorems whose types mention it retain textual headers, not identical fully expanded types."
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.GenParamsJT3.Tloc",
+      "before_block": "def Tloc : Real :=\n  max (max 3 (fejerProductThreshold P.k (alpha / 2) (alpha / 2)))\n    (max (P.MThr alpha)\n      (max (4 ^ (1 / P.NestExp alpha))\n        (max (P.MReq alpha ^ (1 / P.MExp alpha))\n          (max (6 ^ (1 / P.Eloc alpha)) (8 ^ (2 / P.F alpha))))))",
+      "after_block": "def Tloc : Real :=\n  max (max 3 (fejerProductThreshold P.k (alpha / 2) (alpha / 2)))\n    (max (P.MThr alpha)\n      (max (P.MReq alpha ^ (1 / P.MExp alpha)) (6 ^ (1 / P.Eloc alpha))))",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+      "header": "def Tloc : Real",
+      "ambient_scope": [
+        "variable (P : GenParamsJT3) (alpha : Real)"
+      ],
+      "before_sha256": "ab01a6cc5cddf8062e669895f5cd9fb55fea2b1375e10e4b41ea4702fb2e3440",
+      "after_sha256": "9fbd1b8b95127540bcb5f27c22a96594cd1b98c62d9412669a7bb5ce68736b25",
+      "definition_line_delta": -2,
+      "body_change": "Remove the 4^(1/NestExp) and 8^(2/F) maximum branches; retain all other terms.",
+      "semantic_note": "Tloc is intentionally smaller. Theorems whose types mention it retain textual headers, not identical fully expanded types."
+    }
+  ],
+  "intentional_definition_line_delta": -4,
+  "unchanged_headline_budget_declarations": [
+    {
+      "name": "LeanProofs.GowersSzemeredi.szemerediThresholdAt",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GenericSzemeredi.lean",
+      "block_sha256": "02fd30b59c6e14e64598fbce557a4af4deb97826618a9c3653ad0dc0d7a8ce15"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.Theorem182AtSharp",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GenericSzemeredi.lean",
+      "block_sha256": "6f9910eac37c740534bdc70736f0c666ab174f27fc6bcc971d79cca2a4a4d07e"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.Theorem181AtSharp",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SharpInterfaces.lean",
+      "block_sha256": "569be6492ad71d6a7c4d0b6c0adaa0fd5b998bf6cffdb5e350de294048e47003"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.Corollary187AtSharp",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SharpInterfaces.lean",
+      "block_sha256": "92591c6aaf67e804b7ffc90ce32c07998c3712852e5f1f930390f35310ca1161"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.Theorem13At",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverHeadline.lean",
+      "block_sha256": "1b910c350bb2624b932e49e5d913945df1698fb1265dbbe6a46d2dc281fc4b26"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.Theorem13AtFrom",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverHeadlineFrom.lean",
+      "block_sha256": "24a5045b9d558d30d23b91b8b2962beee2d46609ca185d2efc8afb8dc55956ea"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.tightMuV",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverBudget.lean",
+      "block_sha256": "9b00a4ff2cd4e99c69af7eaebf8371f5fd355d02983a9671de5d775801b3991c"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.tightMu0",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverBudget.lean",
+      "block_sha256": "68cc0924f7ebdfd9369ac136935f1d0ccfdf9f5dbe6dfd99b378ab00dd771824"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.tightMuW",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalClasses.lean",
+      "block_sha256": "6082c3ca88b4e9908fd642110bd0f16abefccec269a5d2808ae81339257f5844"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.tDegT3",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalClasses.lean",
+      "block_sha256": "3dda502fac904885cb49ab5d5fd5424e17e9f5c962febe6aae8ca196b968fdcb"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.tightMu0Z",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+      "block_sha256": "325fed29191842377352d7658e76bb3be9764e0350cfa707603184dfe9ff3506"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.GenParamsC.threshDegC",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverExponents.lean",
+      "block_sha256": "e1a4cd66c6caa751248d8ba2e703f516e9a5e9ba52877229a82d943976a88e94"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.GenParamsJT3.threshDegJT3",
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+      "block_sha256": "96b04bd3c2401cb03d32b6140985a106012153a151eae5d6dce5c06a45769fae"
+    }
+  ],
+  "production_imports": {
+    "all_unchanged": true,
+    "files": [
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverExponents.lean",
+        "imports": [
+          "GowersSzemeredi.Proofs18CoverDensity"
+        ],
+        "unchanged": true
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverModulus.lean",
+        "imports": [
+          "GowersSzemeredi.Proofs18LengthSixScale",
+          "GowersSzemeredi.Proofs18SinglePieceCoverInverse",
+          "GowersSzemeredi.Proofs18TightClasses"
+        ],
+        "unchanged": true
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+        "imports": [
+          "GowersSzemeredi.Proofs18FinalClasses",
+          "GowersSzemeredi.Proofs18LengthSixScale"
+        ],
+        "unchanged": true
+      }
+    ]
+  },
+  "moved_declarations": [],
+  "moved_declaration_summary": {
+    "total": 0,
+    "whole_declarations_unchanged": 0
+  },
+  "new_declarations": [],
+  "changed_existing_proofs": [
+    {
+      "name": "LeanProofs.GowersSzemeredi.GenParamsC.Tloc_le_expC",
+      "from": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverExponents.lean",
+      "to": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverExponents.lean",
+      "baseline_block_sha256": "6e8b124c0c86b3855ec9ee07394a68e1aac0e1a47e71fb33e0dddf6e1223a3f2",
+      "current_block_sha256": "ac637f0342dd5e57c800db758e854379b7c692a6beb937f0c6cbac150399c80e"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.GenParamsC.modulus_conditions",
+      "from": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverModulus.lean",
+      "to": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverModulus.lean",
+      "baseline_block_sha256": "efa58206df64e0fd4942ef18bc1caecdbfecccd9fbb08857e7c9d7229930d684",
+      "current_block_sha256": "3c0c49fea1f49cfb94cf8ad030cef5cfa5d065112d1714fb8a0588df76bdb2d7"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.GenParamsJT3.modulus_conditions",
+      "from": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+      "to": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+      "baseline_block_sha256": "f9031f6e0550cd7946b208abf936ec8e25a925b738039a3c5a0ebf3e2043a202",
+      "current_block_sha256": "31295ce870c0ff0f65e7d4145db7e80e109a168da5ac1c635df60ad4330440e0"
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.GenParamsJT3.Tloc_le_expJT3",
+      "from": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+      "to": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+      "baseline_block_sha256": "f305f24011b64f4a243538c8ac74a6cc2e6db64fa0d847578458e141bf5e6bd2",
+      "current_block_sha256": "b94867a3c601a5d06865bac41b161acd0665e9274d30bb0793acf7ed400da6fe"
+    }
+  ],
+  "proof_body_lines": {
+    "method": "Physical lines after the multiline := by delimiter, including comments and internal blank lines; excludes theorem headers and adjacent documentation.",
+    "scope": "Four existing proof bodies change. The two intentionally smaller Tloc definitions are excluded from proof-body counts and reported separately; no declarations are new or moved.",
+    "before": 364,
+    "after": 317,
+    "delta": -47,
+    "declarations": [
+      {
+        "name": "LeanProofs.GowersSzemeredi.GenParamsC.Tloc_le_expC",
+        "before_body_lines": 67,
+        "after_body_lines": 57,
+        "delta": -10,
+        "kind": "existing proof replacement"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.GenParamsC.modulus_conditions",
+        "before_body_lines": 133,
+        "after_body_lines": 105,
+        "delta": -28,
+        "kind": "existing proof replacement"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.GenParamsJT3.modulus_conditions",
+        "before_body_lines": 100,
+        "after_body_lines": 101,
+        "delta": 1,
+        "kind": "existing proof replacement"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.GenParamsJT3.Tloc_le_expJT3",
+        "before_body_lines": 64,
+        "after_body_lines": 54,
+        "delta": -10,
+        "kind": "existing proof replacement"
+      }
+    ]
+  },
+  "bridge": {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverFejerAllDegrees.lean",
+    "unchanged_theorem_count": 25,
+    "unchanged_definition_count": 1,
+    "declarations": [
+      {
+        "name": "LeanProofs.GowersSzemeredi.explicit_family_constants_poly_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "84d9ea4eeb45de6d73e6f5bee9015133dde52c73eadb91ae57fc9e1b7c7b84bd"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.explicitFinalInputs",
+        "kind": "def",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "7551b0f2acd640aac452e991d85b949ddcd3644871700e8dba4146f60b7c810b"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_1_d4",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "e51cab3cd4d691db7152c739f01cc5dcc27404f2e7f38ac07bbbb21e651f2a2d"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_1_d3_eight_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "9cc2e8f934f181dbdd7f833214991a20b21b8dd3f4580cf79388551e3956b6cf"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_1_d2_eleven_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "bb2a96c038da176b177cece6c6db210a2b62bc25868e56a61d52148c96eb03f3"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_1_d4_implies_printed",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "7c5ba8339cf18bd3e2f36388f1d9a207a1a7553a3163875419aee32e52041c82"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_2_L3",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "7ea77903f35f8349a2b2b5237b3fc982eaa641541b46289f6f5d2281c478707c"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.corollary_18_7_L3",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "4c9ebdd38e1333195e3d1b9521a63e00b24de07dae4269b40cc51a4f6921a4ca"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_2_L3_implies_printed",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "63b545c8c6298866d668db2d48527d19efd34326c638dc61035485f578b280cd"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.corollary_18_7_L3_implies_printed",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "f55b9716699f00bfe402f9def5ad0223ea40eaee9abd065432d6bc73c9fabdeb"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.van_der_waerden_L3_all",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "de0a53ca56bead9adea301cb1c4c563c07182972fcb249cfe709e4560aad4c61"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_1_3_L3",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "9c532911fcab523322c213c42fe886b3fab6473b4bec0b460f6ae3acf532e682"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_2_L2_eight_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "0cab6415b490c4486107dca99443c8301340fd62e6c9f49facac847c7bd4a07b"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.corollary_18_7_L2_eight_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "ff26490fa76aae8991ff1f0e7623dcaddf4bb01f3f11d37533301ee75c2a5c47"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.van_der_waerden_L2_eight_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "3be51b230a33c6b655ab59e36e1dc36f4a36dec334b854065e6e816945c701c1"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_1_3_L2_eight_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "33c1b95ad2f8c513712f24dafd6eb657787eff4f50efbae05c60240220961662"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_2_L1_eleven_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "2ac14e6a5e051d15179a3575c9d6997f452a4b82bd8bbae80a3b869b2df7ab9f"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.corollary_18_7_L1_eleven_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "37b239cf1c48d06b82102e61823132deb38eab761c57c8be56a50f6730332e44"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.van_der_waerden_L1_eleven_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "cfcec509ab3cbb6828c974cbf913e6f0e5f60601ab56e3a6c980470acee3b6f1"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_1_3_L1_eleven_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "5976351c06a9a00b51c315a0500d0a3d4dbdd3317f89c7a511415c3d873c5e73"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_18_2_L0_thirteen_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "39228ff86ec36f48874e03f74ed98b001d0226c69f73a8be125a045fc7959f62"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.corollary_18_7_L0_thirteen_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "8feb53e18788581ae73e3de196142a59cdc93184cdb355de025b299c6f51758c"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.van_der_waerden_L0_thirteen_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "3031bbff6a192e30b47e4aab9287f6f300405b88a538d70d147227ef81503624"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_1_3_L0_thirteen_le",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "2ea05c4da55e7bb5b9bad4b4ee17e3130b325e954a48ee4f77f60af9ef3e8ee9"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_fejerT3",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "067274a6043fcb3044ac4fb96ae48c9d9f00ba79c38394143035b1318f9c9cc2"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerJT3",
+        "kind": "theorem",
+        "whole_declaration_unchanged": true,
+        "block_sha256": "4edd39d62967cf7c0255ef63a32dff92644e15a275dd166f089e483e502fcc2d"
+      }
+    ]
+  },
+  "closure_measurement": {
+    "local_namespaces": [
+      "GowersSzemeredi",
+      "OAI"
+    ],
+    "excludes": "Mathlib and other external imports; counts follow the local-import rule in check_gowers.py.",
+    "targets": {
+      "GowersSzemeredi.Proofs18Final": {
+        "before": {
+          "module_count": 626,
+          "source_lines": 140365,
+          "source_manifest_sha256": "072df556e98ffb1643b9b52090f368357b6ac19692788a2c38977cc51ddb5636"
+        },
+        "after": {
+          "module_count": 626,
+          "source_lines": 140354,
+          "source_manifest_sha256": "4a15167311644d61092246e72f61f33c7cf5d48b22bdaa78f7f3d72f225a6d08"
+        },
+        "module_delta": 0,
+        "source_line_delta": -11,
+        "removed_modules": [],
+        "added_modules": []
+      },
+      "GowersSzemeredi.Proofs18CoverFejerAllDegrees": {
+        "before": {
+          "module_count": 719,
+          "source_lines": 154477,
+          "source_manifest_sha256": "b473a6161696ad6f81eb46a462debfad3c17083537f445f0b916d887d72d9cca"
+        },
+        "after": {
+          "module_count": 719,
+          "source_lines": 154466,
+          "source_manifest_sha256": "a35b85cb588511c1a2783064cff2a7235a61d73badcbf4e145e0562547e67aec"
+        },
+        "module_delta": 0,
+        "source_line_delta": -11,
+        "removed_modules": [],
+        "added_modules": []
+      },
+      "GowersSzemeredi.FinalProofSimplificationAudit": {
+        "before": {
+          "module_count": 783,
+          "source_lines": 169085,
+          "source_manifest_sha256": "500c76171cb2c94a6ba5105e37a3fb911014031476532aea835b3dcffd35b183"
+        },
+        "after": {
+          "module_count": 783,
+          "source_lines": 169034,
+          "source_manifest_sha256": "5a8d457c12386f9be3d1828104e43f9c31892e0426fa017cb7f729c66fbc34f1"
+        },
+        "module_delta": 0,
+        "source_line_delta": -51,
+        "removed_modules": [],
+        "added_modules": []
+      },
+      "GowersSzemeredi.Final": {
+        "before": {
+          "module_count": 641,
+          "source_lines": 133248,
+          "source_manifest_sha256": "efafc436a3b18ef50c11c26803008b98eb74cd93a060dcd19280df72c16b50b6"
+        },
+        "after": {
+          "module_count": 641,
+          "source_lines": 133208,
+          "source_manifest_sha256": "ae003ee6cd0cab98e11cfd15a43543e6a313f4c9687c19475fed8684aa6fb5a1"
+        },
+        "module_delta": 0,
+        "source_line_delta": -40,
+        "removed_modules": [],
+        "added_modules": []
+      },
+      "GowersSzemeredi.FinalAudit": {
+        "before": {
+          "module_count": 642,
+          "source_lines": 133282,
+          "source_manifest_sha256": "a1b3dac228be395fda24e15738f784552a8e9d19e2a4ae49b68d2ddd052487a0"
+        },
+        "after": {
+          "module_count": 642,
+          "source_lines": 133242,
+          "source_manifest_sha256": "4f4af3b0c67ff009685331a1f28703c7fef4758012707f609df1dfb57c89126e"
+        },
+        "module_delta": 0,
+        "source_line_delta": -40,
+        "removed_modules": [],
+        "added_modules": []
+      }
+    }
+  },
+  "limitations": [
+    "Declaration comparison is lexical and namespace-aware, not a Lean parser or typechecker.",
+    "Whole declaration comparisons exclude adjacent documentation and trailing whitespace.",
+    "Closure source hashes bind this report to observed source snapshots; native audit evidence must be recorded separately."
+  ],
+  "all_source_checks_passed": true,
+  "native_verification_reports": [
+    "2026-10-12-final-threshold-pruning.json",
+    "2026-10-12-final-threshold-pruning-compatibility.json",
+    "2026-10-12-final-threshold-pruning-stronger.json",
+    "2026-10-12-final-threshold-pruning-downstream.json"
+  ],
+  "downstream_coverage": {
+    "affected_import_consumer_count": 72,
+    "affected_import_consumers_in_selected_audits": 69,
+    "selected_audits_union_module_count": 1121,
+    "selected_audit_targets": [
+      "GowersSzemeredi.FinalAudit",
+      "GowersSzemeredi.FinalProofSimplificationAudit",
+      "GowersSzemeredi.IntegerOriginalCorollaryFidelityAudit"
+    ],
+    "excluded_full_facade_modules": [
+      "GowersSzemeredi",
+      "GowersSzemeredi.Audit",
+      "GowersSzemeredi.PortImportAudit"
+    ],
+    "excluded_facade_reference_checks": [
+      {
+        "module": "GowersSzemeredi",
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi.lean",
+        "sha256": "e5944bfc6013925b8560c036fd03fc7ce8f030dd916c32a9f2367cff64422ac9",
+        "explicit_changed_definition_uses": []
+      },
+      {
+        "module": "GowersSzemeredi.Audit",
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Audit.lean",
+        "sha256": "001078499d6c0cb025517912c9551f209a80c7d58ae1aae1e8e4495cbd968a76",
+        "explicit_changed_definition_uses": []
+      },
+      {
+        "module": "GowersSzemeredi.PortImportAudit",
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/PortImportAudit.lean",
+        "sha256": "0a4c329bcde71beca131479c91ccfee62324d6da3dcadc245ade7dca8bd8a6d6",
+        "explicit_changed_definition_uses": []
+      }
+    ],
+    "definition_shape_sensitive_proofs": [
+      {
+        "name": "LeanProofs.GowersSzemeredi.GenParamsC.modulus_conditions",
+        "owner": "GowersSzemeredi.Proofs18CoverModulus",
+        "in_focused": true,
+        "in_integer_downstream": true,
+        "in_original_audit": true,
+        "block_sha256": "3c0c49fea1f49cfb94cf8ad030cef5cfa5d065112d1714fb8a0588df76bdb2d7"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.GenParamsC.Tloc_le_expC",
+        "owner": "GowersSzemeredi.Proofs18CoverExponents",
+        "in_focused": true,
+        "in_integer_downstream": true,
+        "in_original_audit": true,
+        "block_sha256": "ac637f0342dd5e57c800db758e854379b7c692a6beb937f0c6cbac150399c80e"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.GenParamsJT3.modulus_conditions",
+        "owner": "GowersSzemeredi.Proofs18FinalStep",
+        "in_focused": true,
+        "in_integer_downstream": true,
+        "in_original_audit": false,
+        "block_sha256": "31295ce870c0ff0f65e7d4145db7e80e109a168da5ac1c635df60ad4330440e0"
+      },
+      {
+        "name": "LeanProofs.GowersSzemeredi.GenParamsJT3.Tloc_le_expJT3",
+        "owner": "GowersSzemeredi.Proofs18FinalStep",
+        "in_focused": true,
+        "in_integer_downstream": true,
+        "in_original_audit": false,
+        "block_sha256": "b94867a3c601a5d06865bac41b161acd0665e9274d30bb0793acf7ed400da6fe"
+      }
+    ],
+    "abstract_threshold_and_envelope_consumer_modules": [
+      {
+        "module": "GowersSzemeredi.Proofs18CoverDensity",
+        "in_focused": true,
+        "in_integer_downstream": true,
+        "in_original_audit": true
+      },
+      {
+        "module": "GowersSzemeredi.Proofs18FinalStep",
+        "in_focused": true,
+        "in_integer_downstream": true,
+        "in_original_audit": false
+      },
+      {
+        "module": "GowersSzemeredi.Proofs16PolynomialCorollary",
+        "in_focused": true,
+        "in_integer_downstream": true,
+        "in_original_audit": false
+      },
+      {
+        "module": "GowersSzemeredi.Proofs18FinalEnvelopes",
+        "in_focused": true,
+        "in_integer_downstream": true,
+        "in_original_audit": false
+      },
+      {
+        "module": "GowersSzemeredi.Proofs18CoverDegrees",
+        "in_focused": true,
+        "in_integer_downstream": true,
+        "in_original_audit": false
+      },
+      {
+        "module": "GowersSzemeredi.Proofs18CoverLongThresholds",
+        "in_focused": true,
+        "in_integer_downstream": true,
+        "in_original_audit": true
+      }
+    ],
+    "native_verification_report": "2026-10-12-final-threshold-pruning-downstream.json",
+    "limits": "All four identified maximum-dependent proofs and identified abstract/envelope clients are in the selected native scope. Full-facade compilation and completion of open original-paper statements are not claimed."
+  },
+  "inventory_byte_identical": true,
+  "inventory_statement_count": 120
+}

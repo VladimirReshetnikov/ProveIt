@@ -7935,6 +7935,58 @@ van der Waerden offsets 3 for every positive length, 2 from length 8,
 Lemma 16.10 correction and open original-paper fidelity issues retain their
 status. The simplification goal remains active.
 
+### L.80. Remove redundant localization thresholds and witness transports (2026-10-12)
+
+`GenParamsC.Tloc` and `GenParamsJT3.Tloc` drop the branches
+`4^(1/NestExp)` and `8^(2/F)`. The retained `MThr` already enforces the
+stronger 64-root requirement used to obtain the nested-width bound; the
+8-root branch was unused by the modulus proofs. Both routes prove their
+scale conditions directly above the smaller threshold. The C route also
+uses local definitions for its two width witnesses, eliminating repeated
+transports along defining equalities.
+
+These are two intentional intermediate-definition changes. All 84 old
+declaration headers and contexts remain textually exact, but theorem types
+mentioning `Tloc` expand to its new body. This checkpoint does not claim
+preservation of every expanded theorem type. The other 52 of 54 existing
+definition/structure bodies, all 25 public stronger bridge proofs and the
+13 checked headline/degree-budget definitions remain exact. No declaration,
+module, import or helper is added or moved.
+
+Against `41d7eb94f`, three production files shrink from 1,549 to 1,498 lines
+(51 fewer). The four changed proof bodies shrink from 364 to 317 lines
+(47 fewer); the two smaller definition bodies account for the other four
+removed lines. The original final stays at 641 modules and falls from
+133,248 to 133,208 imported lines (40 fewer); its audit is 642 / 133,242.
+The stronger bridge remains at 719 modules and falls from 154,477 to
+154,466 lines (11 fewer), while `Proofs18Final` is 626 / 140,354. The
+focused audit is 783 / 169,034, 51 fewer lines, with all named checks
+retained. All import-module sets are unchanged.
+
+Native verification passes the 642-module original-final audit, the
+783-module focused compatibility audit, standalone compilation of the
+719-module stronger bridge and the 1,098-module
+`IntegerOriginalCorollaryFidelityAudit`. The named axiom checks allow only
+`propext`, `Classical.choice` and `Quot.sound`. See
+`verification/2026-10-12-final-threshold-pruning{,-compatibility,-stronger,-downstream}.json`
+and their source manifests. The source comparison is recorded in
+`verification/2026-10-12-final-threshold-pruning-simplification.json`.
+
+The selected focused, original-final and downstream audit closures cover
+69 of 72 import consumers, comprising 1,121 distinct local modules. All
+four proofs that inspect the changed maximum trees already have named
+checks in the focused audit. Every identified abstract threshold caller
+and envelope client also lies in the selected scope. The three excluded
+consumers are the facade, Audit and PortImportAudit; source inspection
+found no explicit use of either changed definition there. Full-facade
+native verification remains separate. Import counts follow the local
+GowersSzemeredi/OAI graph and are not compilation-speed measurements.
+
+The regenerated 120-statement inventory is byte-identical. Final numerical
+bounds, including the existing stronger van der Waerden bounds, remain
+unchanged. The documented Lemma 16.10 correction and open original-paper
+fidelity issues retain their status. The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

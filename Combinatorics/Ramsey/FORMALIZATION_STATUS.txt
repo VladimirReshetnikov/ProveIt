@@ -9,6 +9,22 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  Threshold-pruning checkpoint: the C and JT3 localization thresholds
+  drop two redundant branches, and the C modulus proof uses local width
+  definitions. These are two intentional intermediate-definition changes;
+  84 textual headers/contexts are preserved, without claiming identical
+  expanded theorem types. The other 52 definition/structure bodies and
+  all 25 stronger bridge proofs are unchanged. Three production files
+  lose 51 lines, including 47 proof-body lines. The original final is
+  641 / 133,208 (40 fewer lines); the stronger bridge is 719 / 154,466
+  (11 fewer). Native standalone compilation and the 642/783/1,098-module
+  audits pass. Their selected scope covers 69 of 72 import consumers,
+  including all four maximum-dependent proofs; full-facade verification
+  remains separate. The 120-statement inventory is byte-identical.
+  Final bounds and original-paper fidelity status are unchanged. See
+  Notes L.80 and threshold-pruning verification reports; the
+  simplification goal remains active.
+
   Final ranges and interval-length checkpoint: two common estimates
   replace repeated boundary calculations in four iterations, and the
   final ranges result drops unused conclusions. This intentionally
