@@ -19,6 +19,22 @@ run_cmd do
       ``LeanProofs.GowersSzemeredi.FinalInputs.cover,
       ``LeanProofs.GowersSzemeredi.FinalInputs.covers,
       ``LeanProofs.GowersSzemeredi.FinalInputs.theorem_16_2_polynomial,
+      ``LeanProofs.GowersSzemeredi.ProgressionPhasePartition.mono,
+      ``LeanProofs.GowersSzemeredi.commonDiffPartitionOne_explicit,
+      ``LeanProofs.GowersSzemeredi.progressionPhasePartition_explicit,
+      ``LeanProofs.GowersSzemeredi.theorem_18_2_L3_le_five,
+      ``LeanProofs.GowersSzemeredi.theorem_18_2_L4_le_five,
+      ``LeanProofs.GowersSzemeredi.theorem_18_2_L5_le_five,
+      ``LeanProofs.GowersSzemeredi.theorem_18_2_L6_le_five,
+      ``LeanProofs.GowersSzemeredi.quadraticIntervalClosedThreshold_le_at_three,
+      ``LeanProofs.GowersSzemeredi.quadraticIntervalClosedThreshold_le_at_four,
+      ``LeanProofs.GowersSzemeredi.quadraticIntervalClosedThreshold_le_at_five,
+      ``LeanProofs.GowersSzemeredi.quadraticIntervalClosedThreshold_le_at_six,
+      ``LeanProofs.GowersSzemeredi.fejerFiveTermThreshold_le_at_three,
+      ``LeanProofs.GowersSzemeredi.fejerFiveTermThreshold_le_at_four,
+      ``LeanProofs.GowersSzemeredi.fejerFiveTermThreshold_le_at_five,
+      ``LeanProofs.GowersSzemeredi.fejerFiveTermThreshold_le_at_six,
+      ``LeanProofs.GowersSzemeredi.roth_exp_exp_le_two_tower,
       ``LeanProofs.GowersSzemeredi.exp_exp_le_two_rpow_two_rpow,
       ``LeanProofs.GowersSzemeredi.exp_exp_pow_le_two_rpow_two_rpow,
       ``LeanProofs.GowersSzemeredi.interval_exponent_le,
@@ -99,4 +115,4 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the shared double-exponential conversions and phase-refinement estimates, uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
+  logInfo "Checked the shared short-length proof and explicit phase input, Roth and double-exponential conversions and phase-refinement estimates, uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
