@@ -7642,6 +7642,45 @@ locations without changing classifications or companion names.
 Full-facade checks and original-paper fidelity gaps remain separate.
 All final numerical bounds are unchanged; the simplification goal is active.
 
+### L.73. Remove the historical parameter implementation from final dependencies (2026-10-12)
+
+The final routes use the scalar density, exponent and threshold estimates
+from `Proofs18GenericEnvelopeBase`, independently of the historical
+`GenParams` step. `Proofs18EnvelopeBounds` supplies the common discrepancy
+envelope, cubic base and localization arithmetic. Thirty-six declarations
+move with their complete proof bodies and variable scopes unchanged.
+Their original modules continue to export them.
+
+`uniform_baseC_recipPowerLB` states the slice-density estimate using its
+explicit function. The two cover consumers apply this helper directly;
+`GenParams.baseC_recipPowerLB` remains a compatibility wrapper with its
+original statement. `tightHyp_of_profiles` derives its fields directly
+from the class and family-constant estimates. Its Fejer counterpart
+reuses those fields, avoiding the historical generic iteration.
+
+Against `3caf397c5`, all 214 existing declaration headers/scopes and 52
+definition bodies in 17 affected production files are preserved, as are all 25
+public stronger bridge proofs. There are five proof replacements and one new
+helper. The extraction adds 46 source lines for the shared module, helper
+interface and compatibility organization. The stronger bridge falls from 728
+modules / 157,301 lines to 722 / 155,624: 6 fewer modules and 1,677 fewer
+imported source lines. The original final falls from 648 / 135,137 to 641 /
+133,322, removing 7 modules and 1,815 imported source lines. See
+`verification/2026-10-12-generic-decoupling-simplification.json`.
+
+Native verification passes the original-final 642-module audit and the
+783-module focused compatibility audit, with only `propext`,
+`Classical.choice` and `Quot.sound`. The focused closure retains every
+previous module and adds the shared envelope module; its source size is
+169,419 lines. Five new named checks cover the
+independent density bound, old wrapper, changed cover consumers and direct
+hypothesis proof. See `verification/2026-10-12-final-generic-decoupling.json`
+and `verification/2026-10-12-final-generic-decoupling-compatibility.json`,
+with immutable source manifests. Inventory classifications and companion
+names are unchanged; source locations are refreshed. Full-facade checks
+and original-paper fidelity gaps remain separate. All final numerical
+bounds are unchanged, and the simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
