@@ -41,6 +41,8 @@ run_cmd do
       ``LeanProofs.GowersSzemeredi.corollary_18_7_at_of_half_density,
       ``LeanProofs.GowersSzemeredi.Theorem182AtSharp.corollary_18_7,
       ``LeanProofs.GowersSzemeredi.Theorem182AtSharp.van_der_waerden,
+      ``LeanProofs.GowersSzemeredi.single_piece_lift_core,
+      ``LeanProofs.GowersSzemeredi.single_piece_lift_core_rem,
       ``LeanProofs.GowersSzemeredi.MultiplyLinear.on_partition,
       ``LeanProofs.GowersSzemeredi.MultiplyLinear.product_linearity_large_m,
       ``LeanProofs.GowersSzemeredi.MultiplyLinear.short_parent_cover,
