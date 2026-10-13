@@ -9,6 +9,20 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  Final ranges and interval-length checkpoint: two common estimates
+  replace repeated boundary calculations in four iterations, and the
+  final ranges result drops unused conclusions. This intentionally
+  narrows one intermediate theorem type without changing assumptions
+  or final bounds. Six production files lose 90 lines; changed/new
+  proof bodies lose 103 lines. All 78 old contexts, 77 other headers,
+  32 definitions/structures and 25 stronger bridge proofs are preserved.
+  The stronger bridge is 719 / 154,477 (59 fewer lines), and the original
+  final is 641 / 133,248 (30 fewer). Native standalone compilation and
+  the 642/783/1,098-module audits pass; full-facade validation remains
+  separate. See Notes L.79 and final-ranges-length verification reports.
+  Original-paper fidelity status is unchanged; the simplification goal
+  remains active.
+
   Final-step dependency checkpoint: seven unchanged shared estimates now
   live in existing common modules, preserving 158 headers/scopes,
   58 definitions/structures, old-owner exports and all 25 stronger bridge

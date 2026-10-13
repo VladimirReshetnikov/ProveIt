@@ -7869,6 +7869,72 @@ no additional numerical improvement or original-paper fidelity result;
 the documented correction to Lemma 16.10 and remaining fidelity gaps
 retain their existing status. The simplification goal remains active.
 
+### L.79. Share interval-length estimates and trim the final ranges result (2026-10-12)
+
+Two estimates in `Proofs18BoundaryRefinement` now supply the common length
+factor in the generic, quadratic, Fejer and historical length-six density
+iterations. For `beta > 0`, `beta⁻¹ <= X^n` and `X >= 2`, the inverse factor is bounded by
+`(8 * section5LocalRefinementConstant 1 1) * X^(17*n+64)`. Bounding the fixed
+constant by `X^m` absorbs the prefactor into `X^(m+17*n+67)`; under
+`0 < beta <= 1`, the second helper also returns positivity and an upper
+bound of one for the factor. All four callers retain their prior bounds.
+The quadratic specialization uses explicit natural-number normalization
+of `17*12381+64=210541`, avoiding unnecessary reduction of its real terms.
+
+`GenParamsJT3.ranges` now returns the facts used by its four local callers:
+positive `Rho` and `Zeta`, and `(0,1]` bounds for `Em`, `Eth`, `Ec`,
+`NestExp` and `Bexp`. Its parameters and assumptions are unchanged, but
+its result type is intentionally narrower. The four callers adapt their
+tuple extraction. This is an intermediate interface change, not complete
+preservation of every theorem type; final statements are unchanged.
+
+Against `f0d6c2490`, six production files shrink from 1,880 to 1,790 lines
+(90 fewer). The nine changed existing proofs plus the two new helper proofs contain
+424 lines instead of the previous 527 (103 fewer, including helper overhead).
+All 78 old declaration contexts, 77 of 78 old headers, all 32 existing
+definition/structure bodies and all 25 public stronger bridge proofs are
+preserved. The sole changed old header is `GenParamsJT3.ranges`; both new
+helper signatures and contexts are checked explicitly. No declaration
+moves and no new module is added.
+
+The stronger bridge remains at 719 modules and falls from 154,536 to
+154,477 imported source lines (59 fewer). `Proofs18Final` similarly stays
+at 626 modules and falls to 140,365 lines. The original final stays at
+641 modules and falls from 133,278 to 133,248 lines (30 fewer); its audit
+is 642 / 133,282. The focused audit is 783 / 169,085, 85 fewer lines after
+five added named checks; its existing checks already cover the other
+changed proofs. The standalone boundary-refinement closure gains the
+existing scaling module, becoming 123 modules / 49,814 lines; no final
+closure gains a module. Counts follow local GowersSzemeredi/OAI imports.
+
+Native verification passes standalone compilation of the 719-module
+stronger bridge, the 642-module original-final audit, the 783-module
+focused compatibility audit and the 1,098-module
+`IntegerOriginalCorollaryFidelityAudit`. Named axiom checks allow only
+`propext`, `Classical.choice` and `Quot.sound`. See
+`verification/2026-10-12-final-ranges-length.json`,
+`verification/2026-10-12-final-ranges-length-compatibility.json`,
+`verification/2026-10-12-final-ranges-length-stronger.json` and
+`verification/2026-10-12-final-ranges-length-downstream.json`,
+with their source manifests; the source comparison is recorded separately
+in `verification/2026-10-12-final-ranges-length-simplification.json`.
+All four actual `ranges` applications are in FinalStep.
+Focused plus the additional audit cover 41 of its 44 import consumers;
+the three excluded facade-level modules do not apply or destructure
+`ranges`. The facade is import-only, Audit inspects theorem axioms
+dynamically, and PortImportAudit checks unrelated affine-recovery examples.
+This source inspection is not full-facade native verification. Nor does
+the selected audit set claim native coverage of all 260 import consumers
+of the changed boundary-refinement module.
+
+The regenerated inventory changes only two related theorem line numbers
+following the length-six proof reduction; its 120-statement count is
+unchanged. Numerical final bounds remain unchanged, including the existing
+van der Waerden offsets 3 for every positive length, 2 from length 8,
+1 from length 11 and 0 from length 13, for at least two colors. The documented
+Lemma 16.10 correction and open original-paper fidelity issues retain their
+status. The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

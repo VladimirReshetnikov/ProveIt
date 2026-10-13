@@ -50,50 +50,14 @@ theorem fejer_cubic_interval_length_factor_inv_le_power {alpha : Real}
     (fejerCubicDiscrepancyParameter alpha /
       (8 * boundaryRefinementConstant (fejerCubicDiscrepancyParameter alpha / 64)))⁻¹ ≤
       (2 / alpha) ^ ((2 : Nat) ^ 1084) := by
-  let beta := fejerCubicDiscrepancyParameter alpha
-  let eta := 4 * Real.pi * (beta / 64)
-  let x := 2 / alpha
-  have hb : 0 < beta := fejerCubicDiscrepancyParameter_pos hα
-  have hx : 2 ≤ x := (le_div_iff₀ hα).mpr (by linarith only [hαone])
-  have hx0 : 0 ≤ x := by linarith only [hx]
-  have hx1 : 1 ≤ x := by linarith only [hx]
-  have hη : 0 < eta := by dsimp [eta]; positivity
-  have hηlow : beta / 16 ≤ eta := by
-    have hpi : 1 ≤ Real.pi := by have h := Real.pi_gt_three; linarith only [h]
-    have hp := mul_le_mul_of_nonneg_right hpi hb.le
-    dsimp [eta]
-    nlinarith only [hp]
-  have h16 : (16 : Real) ≤ x ^ (4 : Nat) := by
-    have h := pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 2) hx 4
-    norm_num at h
-    exact h
-  have hηI : eta⁻¹ ≤ x ^ (4 + (2 : Nat) ^ 59) := by
-    calc
-      _ ≤ (beta / 16)⁻¹ := inv_anti₀ (by positivity) hηlow
-      _ = 16 * beta⁻¹ := by rw [inv_div, div_eq_mul_inv]
-      _ ≤ x ^ (4 : Nat) * x ^ ((2 : Nat) ^ 59) :=
-        mul_le_mul h16 (fejerCubicDiscrepancyParameter_inv_le_power hα hαone) (inv_nonneg.mpr hb.le) (pow_nonneg hx0 _)
-      _ = _ := (pow_add _ _ _).symm
-  have hC := section5LocalRefinementConstant_le_scaled 1 eta (x ^ (4 + (2 : Nat) ^ 59))
-    hη (one_le_pow₀ hx1) hηI
-  have hK : polynomialPartitionConstant 1 = 16 := by norm_num [polynomialPartitionConstant]
-  rw [hK, ← pow_mul] at hC
-  have hfixed : section5LocalRefinementConstant 1 1 ≤ x ^ ((2 : Nat) ^ 1082) :=
-    (section5_degree_le_three_refinement_constant_upper (by omega)).trans (pow_le_pow_left₀ (by norm_num) hx _)
-  have h8 : (8 : Real) ≤ x ^ (3 : Nat) := by
-    have h := pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 2) hx 3
-    norm_num at h
-    exact h
-  change (beta / (8 * section5LocalRefinementConstant 1 eta))⁻¹ ≤ _
-  rw [inv_div, div_eq_mul_inv]
-  calc
-    _ ≤ (x ^ (3 : Nat) * (x ^ ((2 : Nat) ^ 1082) * x ^ ((4 + (2 : Nat) ^ 59) * 16))) * x ^ ((2 : Nat) ^ 59) := by
-      apply mul_le_mul _ (fejerCubicDiscrepancyParameter_inv_le_power hα hαone) (inv_nonneg.mpr hb.le) (by positivity)
-      exact mul_le_mul h8 (hC.trans (mul_le_mul_of_nonneg_right hfixed (pow_nonneg hx0 _)))
-        (section5LocalRefinementConstant_pos _ _).le (pow_nonneg hx0 _)
-    _ = x ^ (3 + ((2 : Nat) ^ 1082 + (4 + (2 : Nat) ^ 59) * 16) + (2 : Nat) ^ 59) := by
-      rw [← pow_add, ← pow_add, ← pow_add]
-    _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num)
+  have hx : 2 ≤ 2 / alpha := (le_div_iff₀ hα).mpr (by linarith only [hαone])
+  have hfixed : section5LocalRefinementConstant 1 1 ≤ (2 / alpha) ^ ((2 : Nat) ^ 1082) :=
+    (section5_degree_le_three_refinement_constant_upper (by omega)).trans
+      (pow_le_pow_left₀ (by norm_num) hx _)
+  have h := (interval_length_factor_bounds_of_powers hx
+    (fejerCubicDiscrepancyParameter_pos hα) (fejerCubicDiscrepancyParameter_le_one hα hαone)
+    (fejerCubicDiscrepancyParameter_inv_le_power hα hαone) hfixed).2.2
+  exact h.trans (pow_le_pow_right₀ (by linarith only [hx]) (by norm_num))
 
 theorem fejer_cubic_interval_length_factor_le_one {alpha : Real}
     (hα : 0 < alpha) (hαone : alpha ≤ 1) :
