@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18CoverSharper
+import GowersSzemeredi.Proofs18SharpInterfaces
 import GowersSzemeredi.Proofs18TheoremOneLinear
 
 /-! **Theorem 18.1 in degrees zero through three with offset four.**

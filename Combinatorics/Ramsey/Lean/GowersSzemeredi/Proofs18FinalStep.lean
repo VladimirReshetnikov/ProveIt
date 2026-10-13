@@ -226,36 +226,25 @@ theorem ranges (hV : 1 ≤ P.V) (hp : 0 < P.p) {alpha : Real} (ha : 0 < alpha)
   have hT2 : 0 < P.T2 alpha ∧ P.T2 alpha ≤ 1 := by
     unfold T2 globalTheta2W; exact ⟨by positivity, by linarith⟩
   have hEw : ∀ l s, 0 < s → s ≤ 1 → 0 < P.Ewg alpha l s ∧ P.Ewg alpha l s ≤ 1 :=
-    fun l s hs hs1 => uExp_pos hV (uDegT3 l) hg hg1 hB.1 hB.2 hs hs1
+    fun l s _ _ => uExp_pos_le P.V (uDegT3 l) (alpha / 2) (P.B alpha) s
   have hR1 : 0 < P.Rho1 alpha ∧ P.Rho1 alpha ≤ 1 :=
     coverRho1W_pos_le _ (fun l g t s _ _ => one_le_uCount P.V (uDegT3 l) g t s) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2)
       P.k hθ0 hθ1
   have hR : 0 < P.Rho alpha ∧ P.Rho alpha ≤ 1 := by
     unfold Rho spectrumPieceRho
-    refine ⟨by have := hR1.1; positivity, ?_⟩
-    have : P.Rho1 alpha / 2 * (P.Rho1 alpha / 2 / 2) ≤ 1 * 1 :=
-      mul_le_mul (by linarith [hR1.2]) (by linarith [hR1.2]) (by linarith [hR1.1]) zero_le_one
-    linarith
-  have hS : 0 < P.ThS alpha ∧ P.ThS alpha ≤ 1 := by
-    unfold ThS singlePieceTheta
-    refine ⟨by have := hR.1; positivity, ?_⟩
-    have h3 : P.Rho alpha ^ 3 ≤ 1 := pow_le_one₀ hR.1.le hR.2
-    rw [div_le_one (by positivity)]
-    norm_num
-    linarith
+    exact ⟨by have := hR1.1; positivity,
+      mul_le_one₀ (by linarith [hR1.2]) (by linarith [hR1.1]) (by linarith [hR1.2])⟩
+  have hS : 0 < P.ThS alpha ∧ P.ThS alpha ≤ 1 :=
+    ⟨singlePieceTheta_pos hR.1 (by norm_num),
+      singlePieceTheta_le_one hR.1 hR.2 (by norm_num)⟩
   have hCS : 0 < P.CS alpha ∧ P.CS alpha ≤ 1 := by
-    have hq := uCount_pos hV (uDegT3 P.k) hg hg1 hB.1 hB.2 (half_pos hS.1) (by linarith [hS.2])
-    have hq0 : 0 < uCount P.V (uDegT3 P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 2) :=
-      lt_of_lt_of_le zero_lt_one hq
-    have hs0 := hS.1
-    have hs1 := hS.2
-    show 0 < P.ThS alpha / 2 / uCount P.V (uDegT3 P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 2) ∧
-      P.ThS alpha / 2 / uCount P.V (uDegT3 P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 2) ≤ 1
-    exact ⟨div_pos (half_pos hs0) hq0, (div_le_one hq0).mpr (by linarith)⟩
+    have hq := one_le_uCount P.V (uDegT3 P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 2)
+    have hq0 := lt_of_lt_of_le zero_lt_one hq
+    exact ⟨div_pos (half_pos hS.1) hq0, (div_le_one hq0).mpr (by linarith [hS.2])⟩
   have hEm : 0 < P.Em alpha ∧ P.Em alpha ≤ 1 :=
-    uExp_pos hV (uDegT3 P.k) hd0 hd1 hB.1 hB.2 (by have := hR1.1; positivity) (by linarith [hR1.2])
+    uExp_pos_le P.V (uDegT3 P.k) (P.Delta alpha) (P.B alpha) (P.Rho1 alpha / 2 / 2)
   have hEth : 0 < P.Eth alpha ∧ P.Eth alpha ≤ 1 :=
-    uExp_pos hV (uDegT3 P.k) hg hg1 hB.1 hB.2 (by linarith [hS.1]) (by linarith [hS.1, hS.2])
+    uExp_pos_le P.V (uDegT3 P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 4)
   have hEc : 0 < P.Ec alpha ∧ P.Ec alpha ≤ 1 := hEth
   obtain ⟨n0, n1⟩ := coverExpW_pos_le (fun l => uExp P.V (uDegT3 l))
     (fun l g t s => uExp_pos_le P.V (uDegT3 l) g t s) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k
@@ -273,30 +262,10 @@ theorem Eloc_pos_le (hV : 1 ≤ P.V) (hp : 0 < P.p) {alpha : Real} (ha : 0 < alp
     (haHalf : alpha ≤ 1 / 2) :
     0 < P.Eloc alpha ∧ P.Eloc alpha ≤ 1 / 2 ∧ 0 < P.F alpha ∧ P.F alpha ≤ 1 ∧
       0 < P.MExp alpha ∧ P.MExp alpha ≤ 1 := by
-  obtain ⟨-, -, -, -, -, -, -, ⟨hEm, hEm'⟩, ⟨hEth, hEth'⟩, ⟨hEc, hEc'⟩, ⟨n0, n1, -⟩,
-    ⟨hBx, hBx'⟩, -, -⟩ := P.ranges hV hp ha haHalf
-  have hm : 0 < P.MExp alpha ∧ P.MExp alpha ≤ 1 := by
-    unfold MExp
-    refine ⟨mul_pos n0 (by positivity), ?_⟩
-    calc P.NestExp alpha * (P.Em alpha / 2) ≤ 1 * 1 :=
-          mul_le_mul n1 (by linarith) (by positivity) zero_le_one
-      _ = 1 := one_mul 1
-  have hEE : 0 < P.Eth alpha * P.Ec alpha ∧ P.Eth alpha * P.Ec alpha ≤ 1 :=
-    ⟨mul_pos hEth hEc, (mul_le_mul hEth' hEc' hEc.le zero_le_one).trans (by norm_num)⟩
-  have hin : 0 < P.Bexp alpha * (P.Eth alpha * P.Ec alpha) / 2 ∧
-      P.Bexp alpha * (P.Eth alpha * P.Ec alpha) / 2 ≤ 1 := by
-    refine ⟨div_pos (mul_pos hBx hEE.1) (by norm_num), ?_⟩
-    have : P.Bexp alpha * (P.Eth alpha * P.Ec alpha) ≤ 1 * 1 :=
-      mul_le_mul hBx' hEE.2 hEE.1.le zero_le_one
-    linarith
-  have hF : 0 < P.F alpha ∧ P.F alpha ≤ 1 := by
-    unfold F
-    refine ⟨mul_pos hm.1 hin.1, ?_⟩
-    calc P.MExp alpha * (P.Bexp alpha * (P.Eth alpha * P.Ec alpha) / 2) ≤ 1 * 1 :=
-          mul_le_mul hm.2 hin.2 hin.1.le zero_le_one
-      _ = 1 := one_mul 1
-  unfold Eloc
-  exact ⟨by linarith [hF.1], by linarith [hF.2], hF.1, hF.2, hm.1, hm.2⟩
+  obtain ⟨-, -, -, -, -, -, -, hEm, hEth, hEc, ⟨n0, n1, -⟩, hBx, -, -⟩ :=
+    P.ranges hV hp ha haHalf
+  simpa only [Eloc, F, MExp] using
+    localization_exponents_pos_le ⟨n0, n1⟩ hEm hBx hEth hEc
 
 /-- **The scale conditions of the step hold above `Tloc`.** -/
 theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alpha : Real}
@@ -370,30 +339,20 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
       have := familyRecExp_antitone (k := P.k) hp hqM
       linarith
     refine ⟨?_, heps⟩
-    have hm0 : 0 ≤ (m : Real) ^ (P.Bexp alpha / 2) := Real.rpow_nonneg (by linarith) _
     have hSCW : (m : Real) ^ (P.Bexp alpha / 2) ≤
         spectrumCellWidth (P.Zeta alpha) m (familyRecExp P.k P.p q) / 8 :=
       spectrumCellWidth_div8_ge_rpow hζ (by exact_mod_cast hm1) heps hmb16
     let L : Nat := ⌈spectrumCellWidth (P.Zeta alpha) m (familyRecExp P.k P.p q) / 8⌉₊
     have hLge : (m : Real) ^ (P.Bexp alpha / 2) ≤ L := hSCW.trans (Nat.le_ceil _)
     show (N : Real) ^ P.F alpha ≤ ((⌈(L : Real) ^ (P.Eth alpha * P.Ec alpha)⌉₊ : Nat) : Real)
-    refine le_trans ?_ (Nat.le_ceil _)
-    have hEE : 0 ≤ P.Eth alpha * P.Ec alpha := mul_nonneg hEth.le hEc.le
-    have hstep : ((m : Real) ^ (P.Bexp alpha / 2)) ^ (P.Eth alpha * P.Ec alpha) ≤
-        (L : Real) ^ (P.Eth alpha * P.Ec alpha) :=
-      Real.rpow_le_rpow hm0 hLge hEE
-    refine le_trans ?_ hstep
-    have hNm : ((N : Real) ^ P.MExp alpha) ^ (P.Bexp alpha / 2 * (P.Eth alpha * P.Ec alpha)) ≤
-        (m : Real) ^ (P.Bexp alpha / 2 * (P.Eth alpha * P.Ec alpha)) :=
-      Real.rpow_le_rpow (Real.rpow_nonneg hNpos.le _) hmpow
-        (mul_nonneg (div_nonneg hb.le (by norm_num)) hEE)
-    rw [← Real.rpow_mul (by linarith)]
-    rw [← Real.rpow_mul hNpos.le] at hNm
-    have hexp1 : P.F alpha =
-        P.MExp alpha * (P.Bexp alpha / 2 * (P.Eth alpha * P.Ec alpha)) := by
+    have hNL := rpow_le_comp hNpos.le (half_pos hb).le hmpow hLge
+    have hNY := rpow_le_comp hNpos.le (mul_nonneg hEth.le hEc.le) hNL
+      (Nat.le_ceil ((L : Real) ^ (P.Eth alpha * P.Ec alpha)))
+    have hexp : P.F alpha =
+        (P.MExp alpha * (P.Bexp alpha / 2)) * (P.Eth alpha * P.Ec alpha) := by
       unfold F; ring
-    rw [hexp1]
-    exact hNm
+    rw [hexp]
+    exact hNY
   have h6pow : (6 : Real) ≤ (N : Real) ^ P.Eloc alpha :=
     le_rpow_of_rpow_inv_le he (by norm_num) hN6
   have hFhalf : (N : Real) ^ (P.F alpha / 2) ≤ (N : Real) ^ P.F alpha :=

@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs18CoverTightBase
+import GowersSzemeredi.Proofs18CoverBudget
 
 /-! **Theorem 16.2 with polynomial controls** (Notes L.15i).
 

@@ -1,8 +1,8 @@
 import GowersSzemeredi.Proofs16PolynomialFejer
 import GowersSzemeredi.Proofs16UniformCoverTwoSplit
 import GowersSzemeredi.Proofs16WeylBudgetGrowth
-import GowersSzemeredi.Proofs18CoverFejerLowDegrees
-import GowersSzemeredi.Proofs18CoverFejerShortLengths
+import GowersSzemeredi.Proofs18CoverSharperLowDegrees
+import GowersSzemeredi.Proofs18CoverSharperShortLengths
 import GowersSzemeredi.Proofs18EtaStepSmall
 import GowersSzemeredi.Proofs18JointSliceInverseFejer
 

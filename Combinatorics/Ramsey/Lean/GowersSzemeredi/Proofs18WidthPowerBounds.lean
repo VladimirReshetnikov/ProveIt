@@ -17,6 +17,12 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
+/-- Pointwise power lower bounds compose by multiplying their exponents. -/
+theorem rpow_le_comp {x y z a b : Real} (hx : 0 ≤ x) (hb : 0 ≤ b)
+    (hxy : x ^ a ≤ y) (hyz : y ^ b ≤ z) : x ^ (a * b) ≤ z := by
+  rw [Real.rpow_mul hx]
+  exact (Real.rpow_le_rpow (Real.rpow_nonneg hx _) hxy hb).trans hyz
+
 /-- `w L ≥ L^a` for every `L ≥ L₀`. -/
 def WidthPowerLB (w : Nat → Nat) (a L0 : Real) : Prop :=
   ∀ L : Nat, L0 ≤ L → (L : Real) ^ a ≤ w L
@@ -137,9 +143,7 @@ theorem WidthPowerLB.comp {w v : Nat → Nat} {a b L0 L1 : Real}
     have h := Real.rpow_le_rpow (Real.rpow_nonneg hL1 _) hL1' ha.le
     rwa [← Real.rpow_mul hL1, show 1 / a * a = 1 by field_simp, Real.rpow_one] at h
   have hvw := hv (w L) (hLa.trans hwL)
-  calc (L : Real) ^ (a * b) = ((L : Real) ^ a) ^ b := Real.rpow_mul hLpos a b
-    _ ≤ (w L : Real) ^ b := Real.rpow_le_rpow (Real.rpow_nonneg hLpos _) hwL hb
-    _ ≤ _ := hvw
+  exact rpow_le_comp hLpos hb hwL hvw
 
 /-- One lift of a cover width. -/
 theorem liftLastW_coverWidth_powerLB {E : Real → Real} {t : Real}
