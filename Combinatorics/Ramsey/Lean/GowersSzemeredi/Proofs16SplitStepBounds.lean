@@ -224,6 +224,48 @@ def splitCnt (V : Real) (a D : Nat) : Real → Real → Nat → Real → Real :=
 def splitExp (V : Real) (a D : Nat) : Real → Real → Nat → Real → Real :=
   fun th ga n r => (((n : Real) + 1) ^ a * splitW V th ga r ^ D)⁻¹
 
+theorem splitCnt_controls {V : Real} (hV : 1 ≤ V) (a D : Nat) :
+    (∀ theta gamma n s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s → s ≤ 1 →
+      1 ≤ splitCnt V a D theta gamma n s) ∧
+    (∀ theta gamma n s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s → s ≤ 1 →
+      0 < splitExp V a D theta gamma n s ∧ splitExp V a D theta gamma n s ≤ 1) ∧
+    (∀ theta gamma s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 ≤ s →
+      Monotone fun n => splitCnt V a D theta gamma n s) ∧
+    (∀ theta gamma s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s →
+      Antitone fun n => splitExp V a D theta gamma n s) := by
+  have hcnt1 : ∀ theta gamma n s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s → s ≤ 1 →
+      1 ≤ splitCnt V a D theta gamma n s := by
+    intro theta gamma n s ht ht1 hg hg1 hs hs1
+    obtain ⟨h2, -, -, -⟩ := splitW_facts hV hg hg1 ht ht1 hs hs1
+    have hn1 : (1 : Real) ≤ (n : Real) + 1 := by
+      have := Nat.cast_nonneg (α := Real) n; linarith
+    unfold splitCnt
+    exact one_le_mul_of_one_le_of_one_le (one_le_pow₀ hn1) (one_le_pow₀ (by linarith))
+  have hmono : ∀ theta gamma s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 ≤ s →
+      Monotone fun n => splitCnt V a D theta gamma n s := by
+    intro theta gamma s ht _ hg _ hs n n' hnn
+    unfold splitCnt
+    have hsw : 0 ≤ splitW V theta gamma s := by
+      unfold splitW
+      exact mul_nonneg (by linarith) (div_nonneg (by norm_num) (by positivity))
+    have hnn' : ((n : Real) + 1) ≤ (n' : Real) + 1 := by
+      have : (n : Real) ≤ n' := by exact_mod_cast hnn
+      linarith
+    exact mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by positivity) hnn' a) (pow_nonneg hsw _)
+  refine ⟨hcnt1, ?_, hmono, ?_⟩
+  · intro theta gamma n s ht ht1 hg hg1 hs hs1
+    have h1 := hcnt1 theta gamma n s ht ht1 hg hg1 hs hs1
+    show 0 < (splitCnt V a D theta gamma n s)⁻¹ ∧ (splitCnt V a D theta gamma n s)⁻¹ ≤ 1
+    exact ⟨inv_pos.mpr (lt_of_lt_of_le zero_lt_one h1), inv_le_one_of_one_le₀ h1⟩
+  · intro theta gamma s ht ht1 hg hg1 hs n n' hnn
+    show (splitCnt V a D theta gamma n' s)⁻¹ ≤ (splitCnt V a D theta gamma n s)⁻¹
+    have hpos : 0 < splitCnt V a D theta gamma n s := by
+      unfold splitCnt splitW
+      have : (0 : Real) < (n : Real) + 1 := by positivity
+      have hV0 : (0 : Real) < V := by linarith
+      positivity
+    exact inv_anti₀ hpos (hmono theta gamma s ht ht1 hg hg1 hs.le hnn)
+
 /-- **The remainder count, in two bases.** -/
 theorem split_Qr_le {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V)
     (hVV : V ≤ V') {theta gamma rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta)
@@ -273,22 +315,16 @@ theorem split_Qr_le {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Real} (h
     have hscale : 0 < rho / 8 / ((classVertexNum k : Real) + 1) :=
       div_pos (div_pos hr (by norm_num)) hnv0
     have hsw0 := splitW_nonneg (V := V) (t := tS) hV0 hg hb hscale
-    have hM10 : (0 : Real) ≤ (M : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) M; linarith
-    have h1 := tb_pow hM10 hM1 a
-    have h2 : splitW V tS gamma (rho / 8 / ((classVertexNum k : Real) + 1)) ^ D ≤
-        ν ^ 0 * W ^ ((P + (k + 3) + 3) * D) := by
-      rw [pow_zero, one_mul, pow_mul]
-      exact pow_le_pow_left₀ hsw0 hbase D
-    have h12 := tb_mul hν hW1 (pow_nonneg hM10 _) (pow_nonneg hsw0 _) h1 h2
-    refine max_le (h12.trans (tb_mono hν hW1 (by omega)
-      (le_of_eq (by unfold sStepY; rw [← hPdef]; ring)))) ?_
-    refine h3k.trans (tb_mono hν hW1 (by omega) ?_)
-    have h1' : P + 1 ≤ a * (P + 1) := Nat.le_mul_of_pos_left _ ha
-    have h2' : P + k + 6 ≤ D * (P + k + 6) := Nat.le_mul_of_pos_left _ hD
-    unfold sStepY
-    rw [← hPdef]
-    omega
+    refine max_le ?_ ?_
+    · exact (mul_le_mul (pow_le_pow_left₀ (by positivity) hM1 a)
+        (pow_le_pow_left₀ hsw0 hbase D) (pow_nonneg hsw0 _) (by positivity)).trans_eq
+        (by simp only [sStepY, ← hPdef, mul_pow, ← pow_mul]; rw [mul_assoc, ← pow_add]; congr 2 <;> ring)
+    · refine h3k.trans (tb_mono hν hW1 (by omega) ?_)
+      have h1' : P + 1 ≤ a * (P + 1) := Nat.le_mul_of_pos_left _ ha
+      have h2' : P + k + 6 ≤ D * (P + k + 6) := Nat.le_mul_of_pos_left _ hD
+      unfold sStepY
+      rw [← hPdef]
+      omega
   refine ⟨hfac, ?_⟩
   unfold clsQr
   have hfac1 : (1 : Real) ≤ ν ^ a * W ^ sStepY k a D := tb_one_le hν hW1
@@ -337,26 +373,14 @@ theorem split_samples_le {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Rea
     exact tb_add_one hν hw2 h
   have hbase : splitW V tS gamma (rho / 4) ≤ W ^ (P + 2 + 3) :=
     split_level_base_le hw2 hV0 hVw hr hrw (by norm_num) (by norm_num) hg hb hgd
-  have hMS0 : (0 : Real) ≤ ((M * S : Nat) : Real) + 1 := by
-    have := Nat.cast_nonneg (α := Real) (M * S); linarith
   have hsw0 := splitW_nonneg (V := V) (t := tS) hV0 hg hb (by positivity : (0 : Real) < rho / 4)
   refine ⟨hS, hS1, ?_, ?_⟩
   · unfold splitCnt
-    have h1 := tb_pow hMS0 hMS a
-    have h2 : splitW V tS gamma (rho / 4) ^ D ≤ ν ^ 0 * W ^ ((P + 2 + 3) * D) := by
-      rw [pow_zero, one_mul, pow_mul]
-      exact pow_le_pow_left₀ hsw0 hbase D
-    have h12 := tb_mul hν hW1 (pow_nonneg hMS0 _) (pow_nonneg hsw0 _) h1 h2
-    push_cast at h12 ⊢
-    refine h12.trans (tb_mono hν hW1 (le_of_eq (by unfold sPbN; ring))
-      (le_of_eq (by unfold sPbW; rw [← hPdef]; ring)))
-  · unfold splitCnt
-    obtain ⟨h2, -, -, -⟩ := splitW_facts hV hg hg1 hb hb1
-      (by positivity : (0 : Real) < rho / 4) (by linarith only [hr1])
-    have hMS1 : (1 : Real) ≤ ((M * S : Nat) : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) (M * S); linarith
-    push_cast at hMS1 ⊢
-    exact one_le_mul_of_one_le_of_one_le (one_le_pow₀ hMS1) (one_le_pow₀ (by linarith))
+    exact (mul_le_mul (pow_le_pow_left₀ (by positivity) hMS a)
+      (pow_le_pow_left₀ hsw0 hbase D) (pow_nonneg hsw0 _) (by positivity)).trans_eq
+      (by simp only [sPbN, sPbW, ← hPdef, mul_pow, ← pow_mul]; rw [mul_assoc, ← pow_add]; congr 2 <;> ring)
+  · exact (splitCnt_controls hV a D).1 tS gamma (M * S) (rho / 4) hb hb1 hg hg1
+      (by positivity) (by linarith only [hr1])
 
 /-! ### The count -/
 
@@ -504,22 +528,13 @@ theorem split_exp_inv_le {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Rea
     unfold splitCnt
     have hbase : splitW V tS gS (rho / 8) ≤ W ^ (P + 3 + 3) :=
       split_level_base_le hw2 hV0 hVw hr hrw (by norm_num) (by norm_num) hd hb hdd
-    have hM10 : (0 : Real) ≤ (M : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) M; linarith
     have hsw0 := splitW_nonneg (V := V) (t := tS) hV0 hd hb (by positivity : (0 : Real) < rho / 8)
-    have h1 := tb_pow hM10 hM1 a
-    have h2 : splitW V tS gS (rho / 8) ^ D ≤ ν ^ 0 * W ^ ((P + 3 + 3) * D) := by
-      rw [pow_zero, one_mul, pow_mul]
-      exact pow_le_pow_left₀ hsw0 hbase D
-    have h12 := tb_mul hν hW1 (pow_nonneg hM10 _) (pow_nonneg hsw0 _) h1 h2
-    exact h12.trans (tb_mono hν hW1 (by omega) (le_of_eq (by unfold sEbW; rw [← hPdef]; ring)))
+    exact (mul_le_mul (pow_le_pow_left₀ (by positivity) hM1 a)
+      (pow_le_pow_left₀ hsw0 hbase D) (pow_nonneg hsw0 _) (by positivity)).trans_eq
+      (by simp only [sEbW, ← hPdef, mul_pow, ← pow_mul]; rw [mul_assoc, ← pow_add]; congr 2 <;> ring)
   have hcb1 : 1 ≤ splitCnt V a D tS gS M (rho / 8) := by
-    unfold splitCnt
-    obtain ⟨h2, -, -, -⟩ := splitW_facts hV hd hd1 hb hb1 (by positivity : (0 : Real) < rho / 8)
-      (by linarith only [hr1])
-    have hM1' : (1 : Real) ≤ (M : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) M; linarith
-    exact one_le_mul_of_one_le_of_one_le (one_le_pow₀ hM1') (one_le_pow₀ (by linarith))
+    exact (splitCnt_controls hV a D).1 tS gS M (rho / 8) hb hb1 hd hd1
+      (by positivity) (by linarith only [hr1])
   have hEb0 : 0 < splitExp V a D tS gS M (rho / 8) := by
     show 0 < (splitCnt V a D tS gS M (rho / 8))⁻¹
     exact inv_pos.mpr (lt_of_lt_of_le zero_lt_one hcb1)
@@ -532,13 +547,10 @@ theorem split_exp_inv_le {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Rea
   have hscale : 0 < rho / 8 / ((classVertexNum k : Real) + 1) :=
     div_pos (div_pos hr (by norm_num)) hnv0
   have hcr1 : 1 ≤ splitCnt V a D tS gamma M (rho / 8 / ((classVertexNum k : Real) + 1)) := by
-    unfold splitCnt
-    obtain ⟨h2, -, -, -⟩ := splitW_facts hV hg hg1 hb hb1 hscale (by
-      rw [div_le_one hnv0]; have := Nat.cast_nonneg (α := Real) (classVertexNum k)
-      linarith only [this, hr1])
-    have hM1' : (1 : Real) ≤ (M : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) M; linarith
-    exact one_le_mul_of_one_le_of_one_le (one_le_pow₀ hM1') (one_le_pow₀ (by linarith))
+    exact (splitCnt_controls hV a D).1 tS gamma M
+      (rho / 8 / ((classVertexNum k : Real) + 1)) hb hb1 hg hg1 hscale (by
+        rw [div_le_one hnv0]; have := Nat.cast_nonneg (α := Real) (classVertexNum k)
+        linarith only [this, hr1])
   set cr := splitCnt V a D tS gamma M (rho / 8 / ((classVertexNum k : Real) + 1)) with hcrdef
   have hEr : clsEr (splitExp V a D) k M tS gamma (rho / 8) =
       (cr⁻¹ / 16) ^ (classVertexNum k + 1) := by
@@ -627,7 +639,7 @@ theorem split_exp_inv_le {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Rea
   have hzle : z ≤ 1 := by
     rw [hzval, div_le_one (lt_of_lt_of_le zero_lt_one hA1)]; exact hz1.trans hA1
   set Λ := (a : Real) * ν + ((sEbW k a D + 4 : Nat) : Real) * W + W ^ stepT k with hΛdef
-  have hΛ0 : 0 ≤ Λ := by rw [hΛdef]; positivity
+  have hΛ0 : 0 ≤ Λ := by rw [hΛdef]; exact add_nonneg (add_nonneg (mul_nonneg (Nat.cast_nonneg _) (le_trans zero_le_one hν)) (mul_nonneg (Nat.cast_nonneg _) hW0)) (pow_nonneg hW0 _)
   have hzinv : z⁻¹ ≤ Real.exp Λ := by
     rw [hzval, inv_div, div_eq_mul_inv]
     have hAexp : familyWidthPrefactor K q ≤ Real.exp ((a : Real) * ν + ((sEbW k a D + 4 : Nat) : Real) * W) := by
@@ -673,48 +685,6 @@ def splitStepA (k a : Nat) : Nat := sCountN k a + sExpN k a
 
 /-- The parameter degree of the next split class. -/
 def splitStepD (k a D : Nat) : Nat := sCountW k a D + sExpW k a D + stepThrDeg k D
-
-theorem splitCnt_controls {V : Real} (hV : 1 ≤ V) (a D : Nat) :
-    (∀ theta gamma n s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s → s ≤ 1 →
-      1 ≤ splitCnt V a D theta gamma n s) ∧
-    (∀ theta gamma n s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s → s ≤ 1 →
-      0 < splitExp V a D theta gamma n s ∧ splitExp V a D theta gamma n s ≤ 1) ∧
-    (∀ theta gamma s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 ≤ s →
-      Monotone fun n => splitCnt V a D theta gamma n s) ∧
-    (∀ theta gamma s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s →
-      Antitone fun n => splitExp V a D theta gamma n s) := by
-  have hcnt1 : ∀ theta gamma n s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 < s → s ≤ 1 →
-      1 ≤ splitCnt V a D theta gamma n s := by
-    intro theta gamma n s ht ht1 hg hg1 hs hs1
-    obtain ⟨h2, -, -, -⟩ := splitW_facts hV hg hg1 ht ht1 hs hs1
-    have hn1 : (1 : Real) ≤ (n : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) n; linarith
-    unfold splitCnt
-    exact one_le_mul_of_one_le_of_one_le (one_le_pow₀ hn1) (one_le_pow₀ (by linarith))
-  have hmono : ∀ theta gamma s, 0 < theta → theta ≤ 1 → 0 < gamma → gamma ≤ 1 → 0 ≤ s →
-      Monotone fun n => splitCnt V a D theta gamma n s := by
-    intro theta gamma s ht _ hg _ hs n n' hnn
-    unfold splitCnt
-    have hsw : 0 ≤ splitW V theta gamma s := by
-      unfold splitW
-      exact mul_nonneg (by linarith) (div_nonneg (by norm_num) (by positivity))
-    have hnn' : ((n : Real) + 1) ≤ (n' : Real) + 1 := by
-      have : (n : Real) ≤ n' := by exact_mod_cast hnn
-      linarith
-    exact mul_le_mul_of_nonneg_right (pow_le_pow_left₀ (by positivity) hnn' a) (pow_nonneg hsw _)
-  refine ⟨hcnt1, ?_, hmono, ?_⟩
-  · intro theta gamma n s ht ht1 hg hg1 hs hs1
-    have h1 := hcnt1 theta gamma n s ht ht1 hg hg1 hs hs1
-    show 0 < (splitCnt V a D theta gamma n s)⁻¹ ∧ (splitCnt V a D theta gamma n s)⁻¹ ≤ 1
-    exact ⟨inv_pos.mpr (lt_of_lt_of_le zero_lt_one h1), inv_le_one_of_one_le₀ h1⟩
-  · intro theta gamma s ht ht1 hg hg1 hs n n' hnn
-    show (splitCnt V a D theta gamma n' s)⁻¹ ≤ (splitCnt V a D theta gamma n s)⁻¹
-    have hpos : 0 < splitCnt V a D theta gamma n s := by
-      unfold splitCnt splitW
-      have : (0 : Real) < (n : Real) + 1 := by positivity
-      have hV0 : (0 : Real) < V := by linarith
-      positivity
-    exact inv_anti₀ hpos (hmono theta gamma s ht ht1 hg hg1 hs.le hnn)
 
 /-- **The split step of route (II).** A split class of dimension `k ≥ 1`
 with the family Lemma 16.6 at dimension `k` gives a split class of dimension
