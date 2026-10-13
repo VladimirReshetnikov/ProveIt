@@ -9,6 +9,20 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  C-range checkpoint: GenParamsC.ranges retains exactly the conclusions
+  used by its four callers, with unchanged assumptions. This intentionally
+  narrows one intermediate result; the other 34 old headers, all 35 scope
+  contexts and all 25 definition/structure bodies remain exact. Two
+  production files lose 29 source lines, including 25 proof-body lines.
+  The original final is 641 / 133,179, and the focused audit is
+  783 / 169,005. Native 642/783/1,098-module audits pass, covering 65 of
+  68 import consumers; full-facade verification remains separate. The
+  unchanged stronger bridge's current inputs match its prior 719-module
+  standalone pass; no new standalone pass is claimed. The 120-statement
+  inventory is byte-identical. Final bounds and original-paper fidelity
+  status are unchanged. See Notes L.81 and cover-ranges verification
+  reports; the simplification goal remains active.
+
   Threshold-pruning checkpoint: the C and JT3 localization thresholds
   drop two redundant branches, and the C modulus proof uses local width
   definitions. These are two intentional intermediate-definition changes;
