@@ -8544,6 +8544,43 @@ original-paper fidelity issues retain their
 status; this checkpoint does not establish complete original-paper
 fidelity. The simplification goal remains active.
 
+### L.90. Finish sharing the dimension-two width estimate (2026-10-13)
+
+`polyTwoFejerFamExp_inv_le_power` now specializes the existing
+`famTwoWidth_inv_le_power`, preserving its `w^(2^46)` bound. Eight
+unused local facts are removed across the four width wrappers. The
+shared helper remains byte-identical. No declaration is added or removed;
+assumptions, definitions, imports and options stay exact.
+
+All 37 complete statements and scope contexts and all four definitions
+remain exact. Four proof bodies shrink from 238 to 112 lines. The four
+production files shrink from 1,277 to 1,151 lines, removing 126 source
+and proof-body lines with no helper overhead. The original and historical
+routes each save four lines; the stronger and downstream routes save 126.
+One new check preserves all 259 earlier focused names and gives 783
+modules / 167,976 source lines, saving 125 lines. The stronger bridge is
+719 / 153,432 and the original audit 642 / 133,030. Module sets are unchanged.
+
+All six fresh checks pass: original audit (642), stronger bridge (719),
+focused audit (783), downstream audit (1,098), historical explicit audit
+(701) and historical bridge (560), with every current input hash verified.
+The named audits allow only `propext`, `Classical.choice` and `Quot.sound`.
+All four changed proofs are explicitly checked; the historical explicit
+audit checks its two named exports. Standalone bridge compilation does
+not claim an axiom audit of every export; its changed-declaration link
+points to the fresh focused audit. The six-target union is 1,204 modules /
+226,650 source lines with 1,207 inputs. See
+`verification/2026-10-13-width-wrappers{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-width-wrappers-simplification.json`.
+
+Selected coverage is 165 of 168 affected import consumers, including every
+affected proof owner; the standard four targets cover 158. The facade,
+Audit and PortImportAudit remain excluded with unchanged source hashes.
+The regenerated 120-statement inventory is byte-identical to the baseline.
+Final bounds, the accepted Lemma 16.10 correction and open original-paper
+fidelity issues are unchanged. This checkpoint does not establish complete original-paper
+fidelity; the simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

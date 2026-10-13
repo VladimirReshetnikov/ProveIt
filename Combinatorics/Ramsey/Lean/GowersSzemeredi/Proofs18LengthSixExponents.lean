@@ -429,7 +429,6 @@ theorem polyTwoFamExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
   clear_value v w ζ m qs qf
   have hw2 : 2 ≤ w := hv2.trans hvw
   have hw1 : 1 ≤ w := le_trans (by norm_num) hw2
-  have hw0 : 0 ≤ w := le_trans (by norm_num) hw2
   have hv0 : 0 ≤ v := le_trans (by norm_num) hv2
   have hm' : (m : Real) ≤ w ^ ((2 : Nat) ^ 84) :=
     le_pow_mono hw2 (by norm_num) (hm.trans (pow_le_pow_left₀ hv0 hvw _))
