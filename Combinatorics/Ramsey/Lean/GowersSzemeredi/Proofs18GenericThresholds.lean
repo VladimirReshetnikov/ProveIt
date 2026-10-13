@@ -283,10 +283,7 @@ theorem Tloc_le_exp {V : Real} {D k K p μV μD μ0 μK : Nat} (H : StdHyp V D k
       omega
     omega
   have h3 : (3 : Real) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) :=
-    ex_of_pw (pw_const hX (by
-      calc (3 : Real) ≤ 2 ^ 2 := by norm_num
-        _ ≤ 2 ^ (2 ^ T) := pow_le_pow_right₀ (by norm_num) (by
-            have := Nat.lt_two_pow_self (n := T); omega)))
+    ex_of_pw (pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega))
   show max (max 3 (lemma156ExplicitThreshold k (alpha / 2) (alpha / 2)))
     (max ((std V D k K p μ0).MThr alpha)
       (max (4 ^ (1 / (std V D k K p μ0).NestExp alpha))

@@ -175,11 +175,8 @@ theorem spectrum_exps_inv_le {V : Real} {D k K p μV μD μ0 μK : Nat} (ha : 0 
       (2 / alpha) ^ (2 ^ (rhoDeg k μD μ0 + 1)) := by
     rw [show ((std V D k K p μ0).Rho1 alpha / 2 / 2)⁻¹ = 4 * ((std V D k K p μ0).Rho1 alpha)⁻¹ by
       field_simp; ring]
-    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ rhoDeg k μD μ0) := pw_const hX (by
-      have : 2 ≤ 2 ^ rhoDeg k μD μ0 := le_trans (by norm_num : 2 ≤ 2 ^ 1)
-        (Nat.pow_le_pow_right (by norm_num) (by omega))
-      calc (4 : Real) = 2 ^ 2 := by norm_num
-        _ ≤ 2 ^ (2 ^ rhoDeg k μD μ0) := pow_le_pow_right₀ (by norm_num) this)
+    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ rhoDeg k μD μ0) :=
+      pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
     exact pw_mul hX (by norm_num) (inv_pos.mpr hr0).le h4 hri
   have hQ := uCount_scale_le (c := rhoDeg k μD μ0 + 1) hX hV hVμ hμ0 hd0 hd1 hdi hB0 hB1 hBi
     hq0 hq1 hqi hD
@@ -204,11 +201,8 @@ theorem spectrum_exps_inv_le {V : Real} {D k K p μV μD μ0 μK : Nat} (ha : 0 
     have hk2 : 2 * 2 ^ (k + 1) ≤ 2 ^ (k + 2) := by rw [pow_succ 2 (k + 1)]; omega
     have hpow := pw_pow hX hq0' hQM' hk2
     have hp' : (p : Real) ≤ (2 / alpha) ^ (2 ^ μK) := pw_const hX (by exact_mod_cast hpμ)
-    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ (μK + 1)) := pw_const hX (by
-      have : 2 ≤ 2 ^ (μK + 1) := le_trans (by norm_num : 2 ≤ 2 ^ 1)
-        (Nat.pow_le_pow_right (by norm_num) (by omega))
-      calc (4 : Real) = 2 ^ 2 := by norm_num
-        _ ≤ 2 ^ (2 ^ (μK + 1)) := pow_le_pow_right₀ (by norm_num) this)
+    have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ (μK + 1)) :=
+      pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
     have hpq0 : (0 : Real) ≤ (((std V D k K p μ0).QM alpha : Real) + 1) ^ (2 * 2 ^ (k + 1)) :=
       pow_nonneg hq0' _
     have h1 := pw_mul' hX (Nat.cast_nonneg _) hpq0 hp' hpow
@@ -306,10 +300,8 @@ theorem Eloc_inv_le {V : Real} {D k K p μV μD μ0 μK : Nat} (ha : 0 < alpha)
   have hEm' := pw_mono hX hEm (show rhoDeg k μD μ0 + μD + 2 ≤ M by omega)
   have hEth' := pw_mono hX hEth hM1
   have hEc' := pw_mono hX hEc hM1
-  have h32 : (32 : Real) ≤ (2 / alpha) ^ (2 ^ (M + 1)) := pw_const hX (by
-    have : 5 ≤ 2 ^ (M + 1) := by have := Nat.lt_two_pow_self (n := M + 1); omega
-    calc (32 : Real) = 2 ^ 5 := by norm_num
-      _ ≤ 2 ^ (2 ^ (M + 1)) := pow_le_pow_right₀ (by norm_num) this)
+  have h32 : (32 : Real) ≤ (2 / alpha) ^ (2 ^ (M + 1)) :=
+    pw_mono hX (pw_const hX (a := 3) (by norm_num)) (by omega)
   have p1 := pw_mul hX (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le hNE' hEm'
   have p2 := pw_mul hX (inv_pos.mpr hEth0).le (inv_pos.mpr hEc0).le hEth' hEc'
   have p3 := pw_mul' hX (inv_pos.mpr hBx0).le (by positivity) hBx p2
