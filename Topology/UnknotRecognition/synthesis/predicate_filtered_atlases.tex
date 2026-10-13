@@ -12,6 +12,10 @@ Cartesian product of local modes.  It supplies a conditional complexity
 bound in the number of rejected witnesses; it does not supply a general
 geometric bound on that number.
 
+Burton and Ozlen use linear programming to guide a branching search
+for positive-Euler surfaces~\cite{burton-ozlen}.  The operation developed here is a
+support-filtered continuation of this repository's common-port oracle.
+
 \subsection{Why the geometric predicate remains explicit}
 
 On a connected positive-Euler normal surface, a nonempty boundary forces
@@ -118,7 +122,9 @@ stores masks instead.
 Repeatedly solve the positive query, recover a primitive source extreme
 ray by support descent, and verify its original source equations,
 incompatibilities, coordinate zeros, positivity and extremality.  Apply
-the caller's checked predicate.  Accept a successful ray; otherwise
+the caller's fixed, exactly evaluated predicate.  An inconclusive
+inspection must propagate; it cannot be recorded as a rejection.
+Accept a successful ray; otherwise
 append its support exclusion.  A completed negative query proves that
 no accepted positive source extreme ray remains, since every other
 extreme ray satisfies every exclusion.  Termination without caps follows
@@ -126,7 +132,7 @@ from finiteness of the source extreme rays and distinctness of all
 rejections.
 
 Let $P$ be atlas preparation cost, $T$ its total cached local mixture
-count, $N$ the binary source size, and $q$ the number of rejected rays
+count plus its zero-port ray count, $N$ the binary source size, and $q$ the number of rejected rays
 before acceptance or complete exhaustion.  Mask formation is polynomial
 in $q,N$ per cached choice, and transitions are bounded by $2^q T$
 per query.  Including all $q+1$ queries, source recovery and polynomial
@@ -134,7 +140,7 @@ predicate verification, the cost is bounded by
 \[
  P+(q+1)2^q\operatorname{poly}(N,q)(T+1).
 \]
-The memory for a dynamic-program layer is $2^q\operatorname{poly}(N)$,
+The memory for a dynamic-program layer is $2^q\operatorname{poly}(N,q)$,
 besides the prepared atlas and retained witnesses.  The default research
 caps are sixteen rejected supports and one million total mask
 transitions shared across the entire search.  They can be disabled;
@@ -162,3 +168,94 @@ accepted positive extreme ray in the specified sector and anchor
 face.  Turning this into a global geometric negative requires the
 appropriate vertex-disc and search-coverage theorems.  The present
 work does not establish the general quasi-polynomial recognizer.
+
+\subsection{Independent finite verification and recovered native discs}
+
+Six focused tests cover distributed clause coverage, duplicated source
+masters, zero-port rays, nonextreme assemblies followed by source
+recovery, explicit caps, and callback and predicate exceptions.
+On sixty small random matrix models, 480 support-filtered queries
+agree with independent whole-source extreme-ray enumeration, including
+arbitrary support clauses and additional coordinate zeros.  The same
+tests reject every positive extreme ray of each model and require
+exact equality of the complete rejection list with the independent
+positive-ray set: no duplicates and no omissions.
+
+The native audit repeats all 202 anchored queries from the 22-sector
+bank of Section~\ref{sec:intrinsic-port-atlases}.  The filtered atlas
+now agrees with complete standard-sector-ray inspection: sixty queries
+produce independently certified essential discs, and 142 complete
+without an accepted positive extreme ray.  All nine discs missed by
+the single-witness atlas policy are recovered.  Each query rejects at
+most one ray.  In total the filtered procedure makes 220 positive
+oracle calls, records eighteen rejections, and performs 374 mask
+transitions.  Its traces contain 78 inspected candidates, compared
+with 69 for the native enumeration policy; both count repeats across
+anchor queries.  With a per-source witness cache, the actual distinct
+geometric inspections are 28 and 25 respectively.
+
+For all 112 two-tetrahedron queries, the accepted-ray oracle is also
+rebuilt by independent exhaustive whole-source enumeration.  For the
+larger three- and five-tetrahedron fixtures, the retained complete native
+sector enumerator supplies the comparison set.  Publication replay
+reconstructs source matching equations, checks every saved source ray
+and exclusion against its original coordinates, replays every geometric
+packet, and compares every completed answer with that complete finite
+set.  It invokes no atlas discovery.  These are supplied triangulations;
+no new knot-diagram ancestry certificate is asserted.
+
+The abstract cube audit checks the rejection-count obstruction directly
+for one through seven scalar-port blocks.  Rejecting every ray gives
+exactly $2^m$ distinct rays and $2^m+1$ positive-oracle calls, with 254
+total rays across the seven cases.  The largest case takes 18,443 mask
+transitions.  A four-rejection cap completes the first two cases and
+correctly returns inconclusive on the other five.  This is an algebraic
+counterexample to inferring a small rejection count from small port
+dimension, not a family of triangulated knot exteriors.
+
+\subsection{Complete geometric-query timing and the remaining cost}
+
+The benchmark now compares the same geometric answer in each arm:
+accepted positive source extreme ray or complete absence in the stated
+sector and anchor face.  All preparation, source validation, every
+query, source recovery, native geometric inspection, independent
+certificate replay and JSON serialization are timed.  Both arms use
+their own initially empty per-source witness cache; fixture construction
+is excluded.  These timings should not be mixed with the preceding
+single-witness Euler-query benchmark, which had different output
+semantics and no shared geometric inspection cache.
+
+\begin{table}[ht]
+\centering\small
+\input{data/filtered-atlas-table.tex}
+\caption{Complete accepted-extreme query batches, with seven randomized
+paired rounds and three duplicate filtered-arm controls. Ratios are
+medians of paired ratios.}
+\label{tab:filtered-atlas-times}
+\end{table}
+
+The filtered atlas is between $3.07$ and $7.70$ times slower than the
+maintained native sector enumerator on these batches.  The duplicate
+controls range from $0.955$ to $1.003$.  Thus this change closes the
+demonstrated candidate-completeness gap and proves the conditional
+filtering bound, but provides no native speedup in this bank.  The
+research backend remains outside ordinary recognizer dispatch.
+Repeated exact kernel solves in local ray preparation, source recovery
+and extremality verification remain concrete performance targets.
+A separate instrumented profile of the five-tetrahedron batch attributes
+about $0.437$ seconds to the nineteen searches and $0.250$ seconds to
+atlas preparation; within these, source verification accounts for
+$0.218$ seconds, source recovery for $0.180$ seconds, and local zero-set
+ray enumeration for $0.170$ seconds.  These cumulative times overlap
+and include profiler overhead; they are not benchmark samples.  They
+show why optimizing only the 374 observed mask transitions across the
+entire bank would leave substantial work untouched.
+
+The directory \path{projective_port_research/} contains the
+\path{filtered*.py} scripts and independent replay in
+\path{check_filtered.py}.
+Retained evidence has prefix \path{data/filtered-atlas-}.
+The remaining global obligations still
+include a suitable native decomposition and search-coverage theorem,
+a justified bound or replacement for rejected-witness processing,
+marked geometric successor repair, and aggregate hierarchy accounting.
