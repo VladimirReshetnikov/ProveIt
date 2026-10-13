@@ -363,3 +363,160 @@ With a global allowance of one crush, the same input returns one complete
 trivial child and one independently replayable partial child, and the wrapper
 remains inconclusive.  These correctness controls establish neither a timing
 advantage nor a general bound on visible factor size or resolving parameters.
+
+\subsection{A complete audit under shared finite search allowances}
+\label{sec:factored-crushing-audit}
+
+The retained \path{data/factored-crushing-audit.json} compares the raw and
+factored interfaces on eight genuine input diagrams.  Both arms receive
+the same explicit options: source-model transversal search with the
+\path{conflicts} candidate policy, the polynomial LP policy and envelope
+strategy, vertex reduction enabled, and inverse boundary layering enabled.
+The maximum tree-node count is $256$; pivots, anchors, candidate-selection
+states, ellipsoid iterations and feasibility calls each have allowance
+$10000$.  Normal crushes and inverse layers have no numerical cap.
+The unused sector and basis allowances remain $256$ and $10000$,
+respectively; sector order is diversified, sector quantum is $64$, and
+\path{lp_fast_path_pivots=None} retains the polynomial policy's automatic
+fast-path allowance.  Each allowance applies to the whole recognition call,
+including all attempted children in the factored arm.
+
+All $16$ ordinary calls and all four additional scaling calls returned.
+There is no wall-clock cutoff and no unreturned call in this audit.
+The separate output \path{data/factored-crushing-replay.txt} records complete
+coverage, successful independent replay without discovery, and $299$
+matching source-file hashes.  These are authenticated diagram-recognition
+workloads, including retained partial chains when a configured limit
+prevents a verdict.
+
+Write $U$ for the one-crossing curl, $T$ for the displayed trefoil and $F$
+for the displayed figure-eight diagram.  Juxtaposition denotes their
+visible connected-sum presentation.  The audit retains every exact PD and
+its braid provenance; in particular, $UU$ and $UT$ are the closures of
+$(\sigma_1\sigma_2)$ and $(\sigma_1\sigma_2^3)$ on three strands.
+The following table records all outcomes.  Here $N$ is the returned
+\path{nodes_attempted} count, $P$ is \path{lp_pivots}, and $C$ is
+\path{crushing_steps}; status letters $U$, $K$ and $I$ mean \path{UNKNOT},
+\path{KNOTTED} and \path{INCONCLUSIVE}.
+
+\begin{center}\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{lrcrrrcrrr}
+\toprule
+& & \multicolumn{4}{c}{Raw crushing} & \multicolumn{4}{c}{Factored crushing}\\
+Input & $n$ & Status & $N$ & $P$ & $C$ & Status & $N$ & $P$ & $C$\\
+\midrule
+Circle & 0 & U & 0 & 0 & 1 & U & 0 & 0 & 1\\
+Trefoil & 3 & K & 40 & 1268 & 12 & K & 40 & 1268 & 12\\
+Figure-eight & 4 & K & 29 & 5016 & 16 & K & 29 & 5016 & 16\\
+$UU$ & 2 & U & 0 & 0 & 4 & U & 0 & 0 & 2\\
+$UT$ & 4 & K & 49 & 1330 & 15 & K & 40 & 1268 & 13\\
+$TT$ & 6 & I & 27 & 10000 & 24 & K & 40 & 1268 & 12\\
+$TF$ & 7 & I & 13 & 10000 & 28 & K & 40 & 1268 & 12\\
+$FF$ & 8 & I & 7 & 10000 & 32 & K & 29 & 5016 & 16\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Every call performs zero inverse boundary layers, ellipsoid iterations or
+fallback feasibility calls.  The circle, trefoil and figure-eight
+have one child and retain the raw search counts.  The factored $UU$ call
+proves both children trivial and halves the number of normal crushes.
+For $UT$, it first proves the curl trivial and then certifies the trefoil
+nontrivial, so its $13$ crushes include both attempted children.  Its
+smaller node and pivot counts do not mean that every counter falls: the
+factored arm tests $892$ anchors, compared with $873$ in the raw arm.
+
+The raw $TT$, $TF$ and $FF$ calls exhaust the $10000$-pivot allowance and
+retain verified partial chains ending at $23$, $30$ and $37$ tetrahedra,
+respectively.  Those partial chains supply no knot verdict.  Their
+factored counterparts each certify the first attempted child nontrivial
+and return a complete whole-diagram verdict.  This is a finite improvement
+in completion under the declared allowances.  Comparing a capped raw
+result with a completed factored result does not supply a recognition-time
+ratio.  Node counts in these rows describe different source cones and
+coverage, so they alone do not measure completed-recognition work.
+
+For a further finite control, the wrapper alone was run on closures of
+\[
+ \sigma_1^3\sigma_2^3\cdots\sigma_k^3
+ \quad\hbox{on }k+1\hbox{ strands},\qquad k\in\{2,4,8,16\}.
+\]
+These have $k$ visible trefoil children and $3k$ crossings.  Every call
+returns \path{KNOTTED} after attempting only canonical child index $0$:
+the first negative child suffices.  Each records $40$ nodes, $1268$ pivots,
+$12$ normal crushes, $892$ anchors and $18$ candidate-selection states.
+The recorded initial and shelled tetrahedron totals are $60$ and $48$,
+because only this child exterior is constructed.  The original PD,
+partition and all child PDs still grow with $k$ and must be constructed
+and checked.  Thus these equal search counters establish neither constant
+total work nor an asymptotic growth law.  No raw comparison was run for
+the $k=4,8,16$ scaling inputs.
+
+The evidence checker independently validates every retained complete proof
+and partial source chain, reconstructs the factor PDs, checks attempt order,
+and recomputes additive totals and peak statistics from all returned child
+records.  It also checks literal nonnegative counters and each remaining
+shared allowance.  Reduction counts and tetrahedron counts are recovered
+from the authenticated packets.  Node, pivot and candidate counters remain
+reported discovery statistics: replay checks their stated bounds and sums,
+but does not reconstruct the discovery trajectory or independently count
+each search event.  Proof replay establishes the verdicts independently of
+those diagnostic counters.  None of these finite observations bounds $h$
+on arbitrary child successors, reveals hidden factors, or establishes the
+general quasi-polynomial target.
+
+\subsection{Complete-call timings and the cost of proof composition}
+
+The separate \path{data/factored-crushing-benchmark.json} follows a
+predeclared $50$-call protocol on the circle, trefoil, figure-eight, $UU$
+and $UT$: one warmup per arm, three alternating raw/factored pairs, and
+one raw A/A pair for each input.  Every call completes with the same
+whole-diagram verdict as its audited arm.  Imports and validated input
+preparation precede the timer; fresh recognition, independent proof replay,
+canonical serialization of the entire returned result and its SHA256 hash
+are inside it.  Every result hash matches the full audit record for that
+arm.  No child result is memoized between calls.
+
+The process is pinned to CPU~5 on a shared six-logical-CPU host, with no
+other heavy job from this task during measurement.  Unrelated Lean builds
+remain active; this is not an exclusive CPU reservation.  The retained
+\path{data/factored-crushing-environment.json} records the before/after
+environment.  The following table gives each arm's median milliseconds,
+the median of the three paired raw/factored ratios, and the raw A/A ratio.
+The median of paired ratios need not equal the ratio of marginal medians.
+
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Input & Raw ms & Factored ms & Paired ratio & Raw A/A\\
+\midrule
+Circle & 11.816 & 16.983 & 0.6971 & 0.9828\\
+Trefoil & 2957.789 & 3599.874 & 0.8153 & 0.9856\\
+Figure-eight & 10314.003 & 12315.493 & 0.8287 & 1.0212\\
+$UU$ & 352.636 & 34.309 & 10.0809 & 1.2930\\
+$UT$ & 4627.935 & 3694.939 & 1.2525 & 1.0177\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The single-child controls preserve search counts but incur additional
+factor-certificate construction, composition and replay work.  Their
+ratios below one record a regression in this complete-call protocol.
+The two visible composites improve: the paired ratios range from
+$9.9351$ to $10.2825$ for $UU$, and from $1.1885$ to $1.7050$ for $UT$.
+The $UU$ A/A ratio and the spread in the $UT$ pairs also expose measurement
+variation on this shared host.  These are finite observations, not
+confidence intervals or scaling laws.  No timing ratio is supplied for
+the three audit cases whose raw calls were inconclusive, and the existing
+high-level factor router is outside this comparison.  The direct interface
+therefore remains optional.
+
+The solver-free checker replays all audit and warmup results, binds every
+paired and A/A sample to the corresponding full audited result, and
+recomputes the timing summaries.  Separate retained mutation controls
+reject $19$ altered evidence records.  The publication helper
+\path{data/factored_crushing_publication.py} checks the complete $20$-call
+audit, $50$-call benchmark, $238$-test record and final three-pass PDF logs,
+and pins the native and research sources, proof artifacts and included
+article sources.  Its general quasi-polynomial flag remains false.

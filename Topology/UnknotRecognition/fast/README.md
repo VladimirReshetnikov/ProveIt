@@ -4830,6 +4830,20 @@ can still represent a hidden composite knot, and no bound on its search
 parameter follows from this interface. See
 [the factorwise theory](../synthesis/factored_crushing.tex).
 
+The source-pinned whole-diagram audit retains 20 completed calls, including
+four repeated-trefoil scaling controls. Under equal shared limits of 256 nodes
+and 10,000 pivots, the factored arm certifies TT, TF and FF, where whole-exterior
+crushing exhausts its pivot allowance. UU needs two normal crushes instead of
+four; UT uses 40 nodes and 1,268 pivots instead of 49 and 1,330. These are direct
+backend comparisons; no high-level-router speedup is claimed. Reproduction and
+independent proof, partial-chain and accounting replay are in
+[`factored_crushing_research`](factored_crushing_research/README.md).
+The 50-call paired benchmark includes fresh recognition, proof replay and
+complete result serialization. Median paired raw/factored ratios are 10.0809
+for UU and 1.2525 for UT; circle, trefoil and figure-eight single-factor controls
+regress (0.6971, 0.8153 and 0.8287). The retained A/A measurements and paired
+spread record shared-host variation. This remains an optional interface.
+
 ### Polynomial exact LP policy
 
 `solve_nonnegative_kernel` now defaults to `policy='polynomial'`. It performs

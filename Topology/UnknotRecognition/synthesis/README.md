@@ -15,12 +15,25 @@ including genuine child proofs, 313 independent factor reconstruction cases,
 strict certificate mutations and shared-budget controls. Logs and the exact
 command are retained under `data/factored-crushing-tests.txt` and
 `data/factored-crushing-test-command.txt`.
-The current [PDF](report.pdf) has 787 pages; the factorwise theory spans
-pages 775–780 and was visually reviewed after three build passes. There are no
+The current [PDF](report.pdf) has 789 pages; the factorwise theory and evidence
+span pages 775–782 and were visually reviewed after three build passes. There are no
 unresolved references or new overflow warnings. The restricted-family
 `poly(n+1) * 2^O(s)` bound uses uncapped source-tree search with polynomial LP,
 where `s` is the largest visible crossing block. Polylogarithmic `s` gives a
 quasi-polynomial bound for that restricted family; arbitrary diagrams remain open.
+
+The source-pinned factorwise audit covers 16 raw/factored whole-diagram calls
+and four repeated-trefoil controls, all with complete returned work. Under equal
+shared 256-node and 10,000-pivot allowances, factorwise proofs certify TT, TF
+and FF where raw crushing is inconclusive. All 50 predeclared timed calls
+match their audited results. The median paired raw/factored ratios are 10.0809
+for UU and 1.2525 for UT; the single-factor circle, trefoil and figure-eight
+controls regress (0.6971, 0.8153, 0.8287). Shared-host variation and A/A controls
+are retained. This compares the direct APIs, not the existing high-level router.
+See [`factored_crushing_research`](../fast/factored_crushing_research/README.md)
+for the full protocol. `python -B -S data/factored_crushing_publication.py`
+checks the complete evidence, 19 corruption controls, source pins, tests and
+final report build at this publication's recorded revision.
 
 [`boundary_unlayer.tex`](boundary_unlayer.tex) integrates independently
 certified inverse boundary layers into an optional diagram preprocessing
