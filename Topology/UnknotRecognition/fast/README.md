@@ -4712,3 +4712,10 @@ costs. A general polylogarithmic bound on `h` remains unproved, and the current
 Bland backend still lacks a polynomial pivot bound. Without a small `h`,
 restarting candidate trees can cost more than ordinary DFS; this option does
 not change the default dispatcher or crushing sector method.
+
+The fresh audit proves resolving sizes 3 and 2 for the retained authenticated
+trefoil and figure-eight sources. Their final negative proofs have 40 and 13
+nodes. Learning completes the bounded figure-eight query where DFS remains
+inconclusive; on the trefoil it is slightly slower in the paired measurement.
+See [the theory and tradeoff](../synthesis/euler_transversal.tex) and
+[the source-pinned audit and timings](euler_transversal_research/README.md).

@@ -269,3 +269,135 @@ already automatic minimum-Q normalization.  A polylogarithmic bound on
 $h$ at all authenticated one-vertex stages, together with the polynomial
 LP hypothesis, would give quasi-polynomial search through the polynomially
 many crushing stages.  No such universal bound is established here.
+
+\subsection{Fresh finite audit and exact resolving numbers}
+
+The source-pinned correctness run in
+\texttt{data/euler-transversal-audit.json} exercises the maintained native
+policy, with a separate replay in
+\texttt{data/euler-transversal-replay.txt}.  The replay command is
+\texttt{python -B -S -m euler\_transversal\_research.check\_evidence};
+it imports neither Regina nor an external optimization package and performs
+no new surface discovery or timing.  Pins cover the entire native Python
+package and the audit's research dependencies.  This experiment establishes
+finite agreement and exact certificates, not an asymptotic bound.
+
+The supplied-source audit freshly enumerates the original \emph{standard}
+normal vertex surfaces using Regina: 35 vertices over three sources.  It
+compares all $8^2=64$ Q masks of the two-tetrahedron layered torus, and twelve
+masks each of sources with an interior vertex and multiple boundary vertices.
+Both envelope-first and anchor-only learning run on all 88 masks.  The 31
+positive masks give 62 positive queries; the 57 negative masks give 114
+negative queries.  Every positive result has original matching and canonical
+Euler checked independently, then undergoes native full-standard-ray
+extraction.  Its extracted coordinates occur in the freshly enumerated
+original standard list, and its labelled crushing quotient agrees exactly
+with Regina in all 62 comparisons.  Every negative query carries a complete
+independently replayed branch tree.  The saved-list replay verifies each
+listed ray and each comparison; completeness of those lists is the evidence
+from fresh Regina enumeration, not a new enumeration by the replay checker.
+
+The same audit constructs three exteriors from their diagrams, including
+shelling, vertex reduction, all search work, and complete source-bound
+recognition proofs.  The crossing-free circle is certified \texttt{UNKNOT};
+the braid $(2;1,1,1)$ and the braid $(3;1,-2,1,-2)$ are certified
+\texttt{KNOTTED}.  The respective numbers of crushing steps are $1,12,16$,
+and all 29 labelled quotient comparisons agree.  Initial/shelled tetrahedron
+counts are $20/5$, $60/48$, and $80/68$.  The two negative final sources have
+10 and 13 tetrahedra, respectively, and one vertex each.
+
+For these \emph{exact labelled final sources}, the audit establishes
+\[
+ h(\text{retained trefoil source})=3,
+ \qquad
+ h(\text{retained figure-eight source})=2.
+\]
+The trefoil lower bound uses positive root Q extreme rays with the pairwise
+disjoint complete conflict sets
+\[
+ \{0,5\},\qquad \{1,2,3\},\qquad \{4,8\}.
+\]
+The figure-eight lower bound uses
+\[
+ \{0,1,2,3,12\},\qquad \{6,7,8,11\}.
+\]
+The complete negative certificates use only the split sets
+$B=\{0,2,8\}$ and $B=\{8,12\}$, respectively, establishing the matching upper
+bounds.  No completeness claim about enumerating positive root rays is
+needed for either lower bound.
+
+These lower witnesses originate in retained scratch discoveries, explicitly
+separate from the fresh standard-surface enumeration.  All 19 retained root
+rays are freshly replayed against the exact final source: nonnegative
+integral original standard matching, zero canonical triangle minima,
+positive formal Euler, primitive Q coordinates, and support nullity one in
+the independently derived full-source Q equations.  The last condition proves
+Q-ray extremality.  Incompatible coordinates here are formal vectors and are
+never presented as embedded normal surfaces.  Source equality is literal
+labelled equality; the checker refuses to transfer this evidence merely
+because another triangulation has the same knot type or tetrahedron count.
+
+Including unsuccessful candidates and restarted trees, the trefoil query
+uses 64 oracle nodes, 124 LP calls, 1811 pivots, and 70 tested hitting subsets;
+the figure-eight query uses 36 nodes, 114 LP calls, 5433 pivots, and 86 tested
+subsets.  They consider seven and ten candidate resolving sets and retain
+seven and eleven distinct learned conflicts.  Their anchor counts are 1644
+and 733, with 1584 and 655 reuses, respectively.  Each prepares the fixed
+source kernel once.  These operation counts are for the entire learning
+process, not merely the final successful tree.  They demonstrate completion
+within the common allowances of 256 nodes, 10000 pivots, 10000 anchors, and
+10000 tested subsets; they establish neither a polynomial pivot bound nor a
+bound on $h$ for a family of triangulations.
+
+\subsection{Complete-query measurements and the practical tradeoff}
+
+The affected regression suite passes all $160$ tests.  This includes complete
+positive and negative diagram certificates, rejection of partial coverage,
+strict limits and cancellation, and genuine search-driven crushing chains
+that verify shared node, pivot, anchor and subset allowances across successors.
+The shared oracle refactor also passes the existing source and restricted
+DFS tests.  The default recognition dispatcher and default crushing sector
+method remain unchanged.
+
+The source-pinned paired experiment compares the current source-model DFS
+with learning on the same three diagrams.  Both arms use $256$ nodes,
+$10000$ pivots and $10000$ anchors; learning additionally permits $10000$
+tested subsets.  Five randomized pairs and one shuffled DFS/DFS A/A pair
+are recorded per case, with batches of one.  Construction, shelling, vertex
+preprocessing, all failed candidates and subset filtering, LP discovery,
+internal certificate replay, and full-result serialization are timed.
+Imports, diagram objects and separate independent warmup replay are outside
+the timer.  Every timed result has exactly its verified warmup's full output
+hash.  Thus the learning measurements include unsuccessful candidate work.
+
+\begin{center}
+\small
+\setlength{\tabcolsep}{3pt}
+\input{data/euler-transversal-table.tex}
+\end{center}
+
+Times are marginal median milliseconds; ratios are medians of paired ratios.
+The outcome pairs are DFS/learning: U denotes \texttt{UNKNOT}, K denotes
+\texttt{KNOTTED}, and I denotes \texttt{INCONCLUSIVE}.  Circle timings are
+essentially unchanged.  On the trefoil the DFS and learning medians are
+$2.888$ and $2.969$ seconds, with paired DFS/learning ratio $0.976$ and A/A
+ratio $1.006$.  Learning gives a smaller final negative proof, $40$ nodes
+instead of $64$, but is slightly slower in this sample.  Its $1811$ pivots
+exceed DFS's $1670$, even though its anchor work is smaller.
+
+On the figure-eight, DFS exhausts its anchor allowance without a completed
+negative proof, while learning certifies knottedness with a $13$-node final
+tree.  The measured $11.103$ and $9.303$ second medians compare these different
+outcomes, so the paired ratio $1.194$ is not a speedup between two completed
+recognitions.  Moreover, its A/A ratio is $1.155$, showing substantial timing
+variation.  The stronger evidence here is finite completion under the shared
+allowances, with the entire resulting certificate independently replayed.
+
+The maintained package \path{fast/euler_transversal_research} retains the
+fresh oracle audit, fixed lower-ray witnesses, paired runner and saved-evidence
+checker.  The checker runs without Regina or discovery, validates all source
+pins and warmup proofs, reconstructs the exact finite transversal bounds, and
+recomputes the timing table.  The publication manifest also pins the article
+and rebuilt PDF.  These results motivate an optional parameter-sensitive
+search; they do not establish a uniform small resolving set or general
+quasi-polynomial recognition.
