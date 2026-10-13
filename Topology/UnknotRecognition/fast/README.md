@@ -5069,6 +5069,18 @@ The combined regression passes 394 tests across 44 modules with Regina and no
 skips, including eleven new prepared-matrix tests. All 361 native/test/fixture
 dependencies match the pre-run snapshot. The command and full log are retained
 under `synthesis/data/prepared-euler-matrix-*`.
+The supplemental 492-pair comparison executes the actual `973c6fdee`
+predecessor. All complete typed outputs and counters agree, with independent
+primal/dual and Euler-certificate replay; all capped outcomes are retained.
+
+The separate [capped pivot pilot](../synthesis/capped_pivot_pilot.tex) compares
+every LP input captured from the authenticated 31-tetrahedron W34 source.
+Bland, Dantzig and Dantzig-lex use 10,000, 9,187 and 784 pivots, with one, two
+and zero inconclusive queries. The envelope regression and failed queries
+remain explicit. These fixed-input sums are not a new shared-budget driver
+run or a W34 verdict. The native pivot rules are unchanged. The frozen pilot
+archive and isolated discovery-disabled replay are retained under
+`synthesis/data/lp-pivot-pilot-*`.
 
 ### Polynomial exact LP policy
 
