@@ -4545,3 +4545,46 @@ comparison preserves all 111 positive cut certificates and all nine
 inconclusive outcomes. Eleven paired complete-query measurements, including
 small regressions, are retained in `../synthesis/data/gap-prefix-*`; the
 local mapping bound does not establish general recognition complexity.
+
+## Diagram-authenticated normal crushing
+
+The additive `normal_crushing_search.recognize_by_crushing(diagram)` backend
+searches positive canonical quadrilateral corners, crushes each found ray,
+and restarts on the strictly smaller selected knot exterior. A crush that
+leaves no torus component gives an independently checked `UNKNOT` certificate.
+Complete exhaustion requires all final-source maximal quadrilateral sectors
+and produces a separately checked `KNOTTED` certificate. The default dispatcher
+is unchanged.
+
+```python
+from fastunknot.diagram import Diagram
+from fastunknot.normal_crushing_search import (
+    recognize_by_crushing, verify_crushing_recognition,
+)
+
+diagram = Diagram.from_pd([])
+result = recognize_by_crushing(diagram, max_sectors=256, max_bases=10000)
+if result['status'] != 'INCONCLUSIVE':
+    assert verify_crushing_recognition(diagram, result['certificate'])
+```
+
+Sector, candidate and optional crushing allowances are shared across every
+successor. `None` removes an allowance; finite exhaustion returns `INCONCLUSIVE`
+with a diagram-bound partial chain. Caller cancellation propagates unchanged.
+The default `sector_order='diversified'` tries sixteen fixed-seed assignments
+before complete canonical traversal; `sector_order='canonical'` supplies an
+ablation. Negative certificates always use canonical order.
+
+`normal_crushing.crush_normal_ray(triangulation, coordinates)` and its companion
+`verify_normal_crushing` validate supplied primitive positive full-cone rays
+and their exact quotient. They require no coordinate expansion or Regina.
+Their low-level source validation alone does not establish knot-exterior
+provenance; only the diagram-bound chain may interpret loss of the torus as
+an unknot verdict. Every quotient component is checked, including discarded
+components. Source extremality uses exact elimination on the positive support.
+
+Strict descent bounds the number of crushes by the initial tetrahedron count.
+The complete sector search and its negative replay remain exponential. See
+[the crushing theory](../synthesis/normal_crushing_search.tex) and
+[the audit workflow](normal_crushing_research/README.md) for the proofs,
+independent quotient comparisons, traversal ablations and measured limitations.
