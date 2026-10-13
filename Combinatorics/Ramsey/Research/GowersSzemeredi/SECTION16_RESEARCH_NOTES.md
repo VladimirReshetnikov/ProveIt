@@ -5657,10 +5657,12 @@ keeps only the best statements (with Corollary 18.7, van der Waerden numbers,
 Theorem 1.3 and the printed consequences). Measured: 63 modules and 19,081
 lines retired, 3,501 added; the bridge 993 → 186 lines and 101 → 25
 theorems; the Fejér block of `CompletionAudit` 341 → 96 lines. No threshold
-changed. The merged production route now passes the 853-module native
-`FinalProofSimplificationAudit`, covering all 25 public bridge theorems,
-FinalInputs methods, shared induction and fit lemmas, with approved axioms.
-See L.63 and `verification/2026-10-12-final-inputs-merged-compatibility.json`.
+changed. Subsequent sharing and import cleanup leave 3,416 lines in the
+four proof modules and 182 in the bridge. The current route passes the
+776-module native `FinalProofSimplificationAudit`, covering all 25 public
+bridge theorems, FinalInputs methods, shared induction, fits and threshold
+comparisons, with approved axioms. The bridge itself imports 750 modules.
+See L.66 and `verification/2026-10-12-final-direct-stronger-bridge-compatibility.json`.
 The complete facade remains a separate check.
 
 **Van der Waerden numbers: our bounds and the literature (2026-10-12).** Gowers
@@ -5669,7 +5671,7 @@ results here keep that shape with a smaller top constant:
 `van_der_waerden_L3_all` (`k + 3`, every `k`), `van_der_waerden_L2_eight_le`
 (`k + 2`, `k ≥ 8`), `van_der_waerden_L1_eleven_le` (`k + 1`, `k ≥ 11`) and
 `van_der_waerden_L0_thirteen_le` (`W(k, r) ≤ 2^2^r^2^2^k`, `k ≥ 13`). They are
-verified by the 853-module focused native audit in L.63. They tighten Gowers's own argument; they are not new
+verified by the 776-module focused native audit in L.66. They tighten Gowers's own argument; they are not new
 mathematics. Published bounds of a different shape are much stronger in `r`
 for fixed `k`:
 * `k = 3`: Kelley–Meka (2023), sharpened by Bloom–Sisask,
@@ -7350,6 +7352,43 @@ repetition across the original and stronger routes. The expanded audit
 closure is 853 modules / 180,167 lines. The incoming main changes concern
 source-kernel work outside Gowers and preserve every recorded proof input.
 Full-facade verification and original-statement fidelity gaps remain
+separate, and the simplification goal remains active.
+
+
+### L.66. Remove historical imports from the stronger-bound bridge (2026-10-12)
+
+`Proofs18CoverFejerAllDegrees` now imports only `Proofs18Final`,
+`Proofs18PolyCubicDegreeExplicit` and `Proofs18CoverVanDerWaerden`.
+The historical length-six bridge, explicit variety decomposition,
+variety-constant bounds and all-dimensions cover bridge supplied no
+uniquely used declarations. The explicit recurrence profiles, Schmidt
+estimates, partition bounds and progression phase partition already
+come through the retained imports. The strongest length-six case uses
+the general final envelope proof.
+
+Only four import lines change in the production bridge. Every theorem
+statement and proof body is byte-identical. Its dependency closure falls
+from 831 modules / 174,516 lines to 750 / 163,368: 81 fewer modules and
+11,148 fewer imported source lines. The bridge itself is now 182 lines.
+The four consolidated proof modules contain 3,416 lines after L.65.
+See `verification/2026-10-12-direct-stronger-bridge-imports.json` for the
+excluded modules and exact source comparisons.
+
+The focused audit imports `Proofs18LengthSixSzemeredi` directly, retaining
+the changed historical length-six comparison without importing its
+explicit-constant bridge. No named theorem or axiom check is removed.
+The fresh audit passes 776 native modules with only `propext`,
+`Classical.choice` and `Quot.sound`, including all 25 public stronger-bound
+bridge results; see
+`verification/2026-10-12-final-direct-stronger-bridge-compatibility.json`
+and its immutable source manifest. The audit closure is 170,482 lines,
+77 modules and 9,685 lines fewer than L.65.
+
+The original-final closure remains 647 modules / 135,367 lines, and all
+651 input hashes of its completed 648-module L.65 audit are unchanged.
+The stronger bridge now avoids its historical length-six proof route;
+that proof remains checked independently as a compatibility interface.
+The complete facade and remaining original-statement fidelity gaps are
 separate, and the simplification goal remains active.
 
 ## F. Routes

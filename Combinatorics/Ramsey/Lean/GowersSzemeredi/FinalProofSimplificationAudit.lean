@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18CoverExplicit
 import GowersSzemeredi.Proofs18CoverFejerAllDegrees
+import GowersSzemeredi.Proofs18LengthSixSzemeredi
 import GowersSzemeredi.Proofs13ContextExtraction
 import GowersSzemeredi.Proofs13ExplicitFourierExponent
 import GowersSzemeredi.Proofs13OddFourierSquare
