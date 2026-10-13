@@ -5655,12 +5655,12 @@ original order (`fejer-generators/final_extract.py`, `assemble_final.py`):
 The bridge `Proofs18CoverFejerAllDegrees` defines `explicitFinalInputs` and
 keeps only the best statements (with Corollary 18.7, van der Waerden numbers,
 Theorem 1.3 and the printed consequences). Measured: 63 modules and 19,081
-lines retired, 3,501 added; the bridge 993 → 189 lines and 101 → 25
+lines retired, 3,501 added; the bridge 993 → 186 lines and 101 → 25
 theorems; the Fejér block of `CompletionAudit` 341 → 96 lines. No threshold
-changed. The merged production route now passes the 852-module native
-`FinalProofSimplificationAudit`, covering all 25 public bridge theorems and
-checking their axioms. See L.60 and
-`verification/2026-10-12-final-consolidated-compatibility.json`.
+changed. The merged production route now passes the 853-module native
+`FinalProofSimplificationAudit`, covering all 25 public bridge theorems,
+FinalInputs methods, shared induction and fit lemmas, with approved axioms.
+See L.63 and `verification/2026-10-12-final-inputs-merged-compatibility.json`.
 The complete facade remains a separate check.
 
 **Van der Waerden numbers: our bounds and the literature (2026-10-12).** Gowers
@@ -5669,7 +5669,7 @@ results here keep that shape with a smaller top constant:
 `van_der_waerden_L3_all` (`k + 3`, every `k`), `van_der_waerden_L2_eight_le`
 (`k + 2`, `k ≥ 8`), `van_der_waerden_L1_eleven_le` (`k + 1`, `k ≥ 11`) and
 `van_der_waerden_L0_thirteen_le` (`W(k, r) ≤ 2^2^r^2^2^k`, `k ≥ 13`). They are
-verified by the 852-module focused native audit in L.60. They tighten Gowers's own argument; they are not new
+verified by the 853-module focused native audit in L.63. They tighten Gowers's own argument; they are not new
 mathematics. Published bounds of a different shape are much stronger in `r`
 for fixed `k`:
 * `k = 3`: Kelley–Meka (2023), sharpened by Bloom–Sisask,
@@ -7246,6 +7246,37 @@ bridge theorems. It passes 853 native modules with only `propext`,
 `verification/2026-10-12-final-envelope-induction-compatibility.json`.
 Both audit reports have immutable source-input manifests. The complete
 facade and original-statement fidelity gaps remain separate, and the
+simplification goal remains active.
+
+### L.63. Merge the FinalInputs refactor with the shared induction (2026-10-12)
+
+Upstream commit `dbd20d510` moves `FinalInputs` into the final envelope module
+and derives its step parameters, hypotheses and covers once. The strongest
+envelope and polynomial corollary statements become methods of that input
+object. Two general fit lemmas replace the repeated small-range/fit pairs;
+the seven final bounds discharge their finite ranges by kernel evaluation.
+All 25 public bridge theorem statements and numerical bounds are unchanged.
+
+The merge retains that refactor and uses `envelope_induction` in
+`FinalInputs.envBound` and `FinalInputs.polyEnvBound`, alongside its seven
+earlier envelope clients. The focused audit now names the new methods,
+derived hypotheses and covers, and both general fit lemmas. No removed
+profile or fit-variant names remain referenced in the Lean sources.
+
+The merged production audit passes 853 native modules, including all 25
+bridge theorems, with only `propext`, `Classical.choice` and `Quot.sound`;
+see `verification/2026-10-12-final-inputs-merged-compatibility.json` and its
+immutable source manifest. The original-final 648-module audit from L.62
+retains exactly the same input hashes. Earlier L.62 reports remain records
+of the pre-merge intermediate interfaces.
+
+Compared with commit `7c0ca3f85` at the start of this turn, the combined
+production proof changes remove 148 lines, including the upstream refactor.
+The four consolidated modules contain 3,501 lines and the bridge 186. The
+minimal original final closure is still 647 modules / 135,365 lines; the
+expanded audit closure is 853 / 180,317. The comparison is recorded in
+`verification/2026-10-12-final-inputs-merge-review.json`. The complete facade
+and remaining original-statement fidelity gaps remain separate. The
 simplification goal remains active.
 
 ## F. Routes
