@@ -28,7 +28,7 @@ theorem hasMonochromaticAP_of_density {N r k : Nat} (hr : 0 < r)
   obtain ⟨col, hcol⟩ := exists_color_class_ge hr N color
   let A := (Finset.Icc 1 N).filter fun x => color x = col
   have hcard : (1 / (r : Real)) * N ≤ A.card := by
-    simpa only [div_eq_mul_inv, one_mul, mul_comm] using hcol
+    simpa only [div_eq_mul_inv, one_mul, mul_one, mul_comm] using hcol
   obtain ⟨a, d, hd, hmem⟩ := h A (Finset.filter_subset _ _) hcard
   exact ⟨a, d, col, hd, fun i hi => Finset.mem_filter.mp (hmem i hi)⟩
 
