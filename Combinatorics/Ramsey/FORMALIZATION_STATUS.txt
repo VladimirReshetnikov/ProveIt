@@ -9,6 +9,17 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  Shared threshold proof checkpoint: the printed threshold conversion and
+  density-iteration deduction are now specializations at offset nine of the
+  parameterized proofs. Three power comparisons use Mathlib directly.
+  This removes 50 production-source lines with all public statements and
+  bounds unchanged. FinalAudit passes 647 native modules with only approved
+  axioms; final imports 646 modules / 135,332 lines. The expanded audit
+  passes 852 modules, covering both threshold interfaces, phase refinement,
+  the original final and all 25 consolidated stronger-bound theorems.
+  The named results use only approved axioms. See Notes L.61 and the
+  final-shared-threshold / final-shared-threshold-compatibility reports.
+
   Direct-import and consolidated-route checkpoint: three aggregate
   imports are replaced by their direct inputs, with every proof body
   unchanged. FinalAudit passes 647 native modules. The expanded compatibility
