@@ -8800,6 +8800,50 @@ checkpoint does not establish complete original-paper fidelity or
 full-facade verification. The final-proof simplification goal remains
 active.
 
+### L.95. Shared fixed-density inverse estimates (2026-10-13)
+
+Two shared inverse estimates replace six repeated calculations. The
+Delta estimate assumes `5 ≤ a`, uses `0 < t ≤ 1`, and bounds its inverse
+by `pw X (a + 3)`. The ThetaTwo estimate assumes only `2 ≤ a` and
+`0 < t`, bounding its inverse by `pw X (a + 4)`. Both use `2 ≤ X` and
+the given reciprocal bound `t⁻¹ ≤ pw X a`. The seed, generic and Fejér
+callers specialize these estimates and retain their previous statements.
+
+All 126 existing declaration statements and contexts, 11 definitions,
+imports and numerical bounds are preserved. The six caller bodies shrink
+from 171 to 31 tactic lines; the two helper bodies add 33, giving 107
+fewer proof lines. Including all 44 helper source lines, production
+source decreases by 96. Six new focused entries bring the audit to 293
+names, including all eight affected declarations; the checkpoint source
+delta is −90 lines. The new ThetaTwo premise was weakened from `5 ≤ a`
+to `2 ≤ a` before application; the preserved predecessor and precise
+successor document that change to the new helper only.
+
+All six fresh native checks pass: original audit (642), stronger bridge
+(709), focused audit (784), downstream audit (1,099), historical explicit
+audit (701) and historical bridge (560), with every current input hash
+verified. Named audits allow only `propext`, `Classical.choice` and
+`Quot.sound`. Focused explicitly checks all eight affected declarations;
+historical explicit retains its three named checks. Both standalone
+bridge records link the current focused audit; compilation does not
+claim an axiom audit of every export. The original route
+loses 22 source and 33 proof lines; the stronger route loses 96 and 107.
+Each historical route gains five source lines and has no proof-line
+change. The six-target union is 1,205 modules / 226,188 source lines,
+with 1,208 source/configuration inputs.
+
+Selected native scope covers 166 of 169 affected consumers; the four
+standard targets cover 159. The three broad aggregate targets remain
+excluded with unchanged source hashes. The 608-module
+core check passes on its first attempt with no source repairs. Applied
+review confirms the exact frozen drafts. The regenerated inventory is
+byte-identical, preserving all 120 statement statuses and every duplicate
+short-name occurrence. See
+`verification/2026-10-13-fixed-density-inverse{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-fixed-density-inverse-simplification.json`.
+This checkpoint does not establish complete original-paper fidelity;
+the accepted correction and previously documented limitations remain.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

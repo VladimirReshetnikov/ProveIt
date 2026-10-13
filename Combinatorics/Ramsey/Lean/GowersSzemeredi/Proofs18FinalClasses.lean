@@ -50,27 +50,11 @@ theorem thetaTwo_fejer_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
       section16ThetaTwo (fejerThetaOne alpha (alpha / 2) k) ≤ 1 ∧
       (section16ThetaTwo (fejerThetaOne alpha (alpha / 2) k))⁻¹ ≤
         (2 / alpha) ^ (2 ^ ((5 * k + 14) + 6)) := by
-  have ha1 : alpha ≤ 1 := by linarith
-  obtain ⟨h0, h1⟩ := section16ThetaTwo_pos_le_with (fejer_alpha_bounds k ha ha2).1 (fejer_alpha_bounds k ha ha2).2
+  obtain ⟨h0, h1⟩ := section16ThetaTwo_pos_le_with
+    (fejer_alpha_bounds k ha ha2).1 (fejer_alpha_bounds k ha ha2).2
   obtain ⟨t0, -, ti⟩ := thetaOne_fejer_bounds k ha ha2
-  have hX := two_div_ge_two ha ha2
-  have hX0 : (0 : Real) ≤ 2 / alpha := by linarith
   refine ⟨h0, h1, ?_⟩
-  unfold section16ThetaTwo
-  have h32 : ((2 : Real) ^ (-(32 : Real)))⁻¹ ≤ (2 / alpha) ^ (2 ^ ((5 * k + 14) + 2)) := by
-    rw [Real.rpow_neg (by norm_num), inv_inv,
-      show (32 : Real) = ((32 : Nat) : Real) by norm_num, Real.rpow_natCast]
-    refine (pow_le_pow_left₀ (by norm_num) hX 32).trans (pw_natpow hX ?_)
-    calc 32 = 2 ^ 5 := by norm_num
-      _ ≤ 2 ^ ((5 * k + 14) + 2) := Nat.pow_le_pow_right (by norm_num) (by
-          omega)
-  have h8 : ((fejerThetaOne alpha (alpha / 2) k) ^ 8)⁻¹ ≤
-      (2 / alpha) ^ (2 ^ ((5 * k + 14) + 2 + 3)) := by
-    rw [← inv_pow]
-    exact pw_pow hX (inv_pos.mpr t0).le ti (by norm_num)
-  rw [mul_inv]
-  have := pw_mul hX (by positivity) (by positivity) (pw_mono hX h32 (by omega)) h8
-  exact pw_mono hX this (by omega)
+  exact (section16ThetaTwo_inv_le_pw (two_div_ge_two ha ha2) (by omega) t0 ti)
 
 theorem budget_fejer_bounds5 (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k ∧ globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k ≤ 1 ∧
@@ -114,44 +98,11 @@ theorem delta_fejer_bounds5 (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < section16Delta (fejerThetaOne alpha (alpha / 2) k) ∧
       section16Delta (fejerThetaOne alpha (alpha / 2) k) ≤ 1 ∧
       (section16Delta (fejerThetaOne alpha (alpha / 2) k))⁻¹ ≤ (2 / alpha) ^ (2 ^ (5 * k + 21)) := by
-  have ha1 : alpha ≤ 1 := by linarith
-  obtain ⟨-, -, d0, d1⟩ := section16_theta_delta_bounds_with (fejer_alpha_bounds k ha ha2).1 (fejer_alpha_bounds k ha ha2).2
-  obtain ⟨t0, t1, ti⟩ := thetaOne_fejer_bounds k ha ha2
-  have hX := two_div_ge_two ha ha2
-  refine ⟨d0, d1, ?_⟩
-  set t := fejerThetaOne alpha (alpha / 2) k with htdef
-  have hq0 : 0 < t / 4 := by positivity
-  have hq1 : t / 4 ≤ 1 := by linarith
-  -- `(t/4)^(11/2) ≥ (t/4)^6`
-  have h6 : (t / 4) ^ (6 : Nat) ≤ (t / 4) ^ ((11 : Real) / 2) := by
-    rw [← Real.rpow_natCast]
-    exact Real.rpow_le_rpow_of_exponent_ge hq0 hq1 (by norm_num)
-  unfold section16Delta
-  have h37 : ((2 : Real) ^ (-(37 : Real)))⁻¹ = 2 ^ (37 : Nat) := by
-    rw [Real.rpow_neg (by norm_num), inv_inv,
-      show (37 : Real) = ((37 : Nat) : Real) by norm_num, Real.rpow_natCast]
-  rw [mul_inv, h37]
-  have hinv6 : ((t / 4) ^ ((11 : Real) / 2))⁻¹ ≤ ((t / 4) ^ (6 : Nat))⁻¹ :=
-    inv_anti₀ (pow_pos hq0 _) h6
-  have hq : ((t / 4) ^ (6 : Nat))⁻¹ ≤ (2 / alpha) ^ (2 ^ ((5 * k + 14) + 2 + 1 + 3)) := by
-    rw [← inv_pow, inv_div]
-    have h4t : 4 / t ≤ (2 / alpha) ^ (2 ^ ((5 * k + 14) + 2 + 1)) := by
-      rw [div_eq_mul_inv]
-      have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ ((5 * k + 14) + 2)) :=
-        (show (4 : Real) ≤ 2 ^ 2 by norm_num).trans
-          ((pow_le_pow_left₀ (by norm_num) hX 2).trans (pw_natpow hX (by
-            calc 2 = 2 ^ 1 := by norm_num
-              _ ≤ 2 ^ ((5 * k + 14) + 2) := Nat.pow_le_pow_right (by norm_num) (by
-                  have := Nat.one_le_two_pow (n := k + 5); omega))))
-      exact pw_mul hX (by norm_num) (inv_pos.mpr t0).le h4 ti
-    exact pw_pow hX (by positivity) h4t (by norm_num)
-  have h2 : (2 : Real) ^ (37 : Nat) ≤ (2 / alpha) ^ (2 ^ ((5 * k + 14) + 2 + 1 + 3)) :=
-    (pow_le_pow_left₀ (by norm_num) hX 37).trans (pw_natpow hX (by
-      calc 37 ≤ 2 ^ 6 := by norm_num
-        _ ≤ 2 ^ ((5 * k + 14) + 2 + 1 + 3) := Nat.pow_le_pow_right (by norm_num) (by
-            have := Nat.one_le_two_pow (n := k + 5); omega)))
-  have := pw_mul hX (by positivity) (by positivity) h2 (hinv6.trans hq)
-  exact pw_mono hX this (by omega)
+  obtain ⟨ha0, haS⟩ := fejer_alpha_bounds k ha ha2
+  obtain ⟨t0, t1, d0, d1⟩ := section16_theta_delta_bounds_with ha0 haS
+  have hi := (section16Delta_inv_le_pw (two_div_ge_two ha ha2) (by omega) t0 t1
+    (thetaOne_fejer_bounds k ha ha2).2.2)
+  exact ⟨d0, d1, pw_mono (two_div_ge_two ha ha2) hi (by omega)⟩
 
 end Fixed
 

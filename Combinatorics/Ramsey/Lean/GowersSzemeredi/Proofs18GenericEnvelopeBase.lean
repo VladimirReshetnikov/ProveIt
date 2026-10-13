@@ -104,6 +104,19 @@ theorem ex_rpow (hX : 2 ≤ X) {b e : Real} {a c : Nat} (hb1 : 1 ≤ b)
 
 end Calculus
 
+/-- The eighth-power density loss adds four to the reciprocal power budget. -/
+theorem section16ThetaTwo_inv_le_pw {t X : Real} {a : Nat} (hX : 2 ≤ X) (ha : 2 ≤ a)
+    (ht : 0 < t) (hi : t⁻¹ ≤ X ^ (2 ^ a)) :
+    (section16ThetaTwo t)⁻¹ ≤ X ^ (2 ^ (a + 4)) := by
+  unfold section16ThetaTwo
+  rw [mul_inv, Real.rpow_neg (by norm_num), inv_inv, ← inv_pow,
+    show (32 : Real) = ((32 : Nat) : Real) by norm_num, Real.rpow_natCast]
+  have h32 := pw_mono hX (pw_const hX (a := 5) (by norm_num : (2 : Real) ^ 32 ≤ 2 ^ (2 ^ 5)))
+    (show 5 ≤ a + 3 by omega)
+  have h8 := pw_pow hX (inv_pos.mpr ht).le hi (by norm_num : 8 ≤ (2 : Nat) ^ 3)
+  exact pw_mul hX (pow_nonneg (by norm_num) _) (pow_nonneg (inv_pos.mpr ht).le _) h32 h8
+
+
 /-- A product of `≤ 2^c` factors, each at most `X^(2^a)`, is at most `X^(2^(a+c))`. -/
 theorem prod_le_pw {ι : Type*} (s : Finset ι) {X : Real} (hX : 2 ≤ X) {f : ι → Real} {a c : Nat}
     (h0 : ∀ i ∈ s, 0 ≤ f i) (h : ∀ i ∈ s, f i ≤ X ^ (2 ^ a)) (hs : s.card ≤ 2 ^ c) :
@@ -164,26 +177,12 @@ theorem thetaTwo_gen_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
       section16ThetaTwo (section16ThetaOne alpha (alpha / 2) k) ≤ 1 ∧
       (section16ThetaTwo (section16ThetaOne alpha (alpha / 2) k))⁻¹ ≤
         (2 / alpha) ^ (2 ^ (2 ^ (k + 5) + 6)) := by
-  have ha1 : alpha ≤ 1 := by linarith
-  obtain ⟨h0, h1⟩ := section16ThetaTwo_pos_le (gamma := alpha / 2) k ha ha1 (half_pos ha)
-    (by linarith)
+  obtain ⟨h0, h1⟩ := section16ThetaTwo_pos_le (gamma := alpha / 2) k ha
+    (by linarith) (half_pos ha) (by linarith)
   obtain ⟨t0, -, ti⟩ := thetaOne_gen_bounds k ha ha2
-  have hX := two_div_ge_two ha ha2
-  have hX0 : (0 : Real) ≤ 2 / alpha := by linarith
   refine ⟨h0, h1, ?_⟩
-  unfold section16ThetaTwo
-  have h32 : ((2 : Real) ^ (-(32 : Real)))⁻¹ ≤ (2 / alpha) ^ (2 ^ (2 ^ (k + 5) + 2)) := by
-    rw [Real.rpow_neg (by norm_num), inv_inv,
-      show (32 : Real) = ((32 : Nat) : Real) by norm_num, Real.rpow_natCast]
-    exact pw_mono hX (pw_const hX (a := 5) (by norm_num))
-      (by have := Nat.lt_two_pow_self (n := k + 5); omega)
-  have h8 : ((section16ThetaOne alpha (alpha / 2) k) ^ 8)⁻¹ ≤
-      (2 / alpha) ^ (2 ^ (2 ^ (k + 5) + 2 + 3)) := by
-    rw [← inv_pow]
-    exact pw_pow hX (inv_pos.mpr t0).le ti (by norm_num)
-  rw [mul_inv]
-  have := pw_mul hX (by positivity) (by positivity) (pw_mono hX h32 (by omega)) h8
-  exact pw_mono hX this (by omega)
+  exact (section16ThetaTwo_inv_le_pw (two_div_ge_two ha ha2)
+    (by have := Nat.lt_two_pow_self (n := k + 5); omega) t0 ti)
 
 /-- The log-degree of the fixed parameters of dimension `k`. -/
 def fixDeg (k : Nat) : Nat := 2 ^ (k + 5) + 7
@@ -231,38 +230,12 @@ theorem delta_gen_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < section16Delta (section16ThetaOne alpha (alpha / 2) k) ∧
       section16Delta (section16ThetaOne alpha (alpha / 2) k) ≤ 1 ∧
       (section16Delta (section16ThetaOne alpha (alpha / 2) k))⁻¹ ≤ (2 / alpha) ^ (2 ^ fixDeg k) := by
-  have ha1 : alpha ≤ 1 := by linarith
-  obtain ⟨-, -, d0, d1⟩ := section16_theta_delta_bounds k ha ha1 (half_pos ha) (by linarith)
-  obtain ⟨t0, t1, ti⟩ := thetaOne_gen_bounds k ha ha2
-  have hX := two_div_ge_two ha ha2
-  refine ⟨d0, d1, ?_⟩
-  set t := section16ThetaOne alpha (alpha / 2) k with htdef
-  have hq0 : 0 < t / 4 := by positivity
-  have hq1 : t / 4 ≤ 1 := by linarith
-  -- `(t/4)^(11/2) ≥ (t/4)^6`
-  have h6 : (t / 4) ^ (6 : Nat) ≤ (t / 4) ^ ((11 : Real) / 2) := by
-    rw [← Real.rpow_natCast]
-    exact Real.rpow_le_rpow_of_exponent_ge hq0 hq1 (by norm_num)
-  unfold section16Delta
-  have h37 : ((2 : Real) ^ (-(37 : Real)))⁻¹ = 2 ^ (37 : Nat) := by
-    rw [Real.rpow_neg (by norm_num), inv_inv,
-      show (37 : Real) = ((37 : Nat) : Real) by norm_num, Real.rpow_natCast]
-  rw [mul_inv, h37]
-  have hinv6 : ((t / 4) ^ ((11 : Real) / 2))⁻¹ ≤ ((t / 4) ^ (6 : Nat))⁻¹ :=
-    inv_anti₀ (pow_pos hq0 _) h6
-  have hq : ((t / 4) ^ (6 : Nat))⁻¹ ≤ (2 / alpha) ^ (2 ^ (2 ^ (k + 5) + 2 + 1 + 3)) := by
-    rw [← inv_pow, inv_div]
-    have h4t : 4 / t ≤ (2 / alpha) ^ (2 ^ (2 ^ (k + 5) + 2 + 1)) := by
-      rw [div_eq_mul_inv]
-      have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ (2 ^ (k + 5) + 2)) :=
-        pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by have := Nat.one_le_two_pow (n := k + 5); omega)
-      exact pw_mul hX (by norm_num) (inv_pos.mpr t0).le h4 ti
-    exact pw_pow hX (by positivity) h4t (by norm_num)
-  have h2 : (2 : Real) ^ (37 : Nat) ≤ (2 / alpha) ^ (2 ^ (2 ^ (k + 5) + 2 + 1 + 3)) :=
-    pw_mono hX (pw_const hX (a := 6) (by norm_num)) (by have := Nat.one_le_two_pow (n := k + 5); omega)
-  have := pw_mul hX (by positivity) (by positivity) h2 (hinv6.trans hq)
-  unfold fixDeg
-  exact pw_mono hX this (by omega)
+  obtain ⟨t0, t1, d0, d1⟩ := section16_theta_delta_bounds k ha (by linarith)
+    (half_pos ha) (by linarith)
+  have hi := (section16Delta_inv_le_pw (two_div_ge_two ha ha2)
+    (by have := Nat.lt_two_pow_self (n := k + 5); omega) t0 t1
+    (thetaOne_gen_bounds k ha ha2).2.2)
+  exact ⟨d0, d1, pw_mono (two_div_ge_two ha ha2) hi (by unfold fixDeg; omega)⟩
 
 /-- **The Bohr radius**: `ζ⁻¹ = 2^(multipleS) ≤ exp(X^(2^(2^(k+6)+1)))`. -/
 theorem zeta_gen_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
