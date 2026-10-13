@@ -1,0 +1,1462 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=0.9in,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs,longtable,array,enumitem}
+\usepackage{xcolor,xurl,hyperref,fancyhdr}
+\definecolor{ink}{HTML}{19334C}
+\hypersetup{colorlinks=true,linkcolor=ink,citecolor=ink,urlcolor=ink,
+ pdftitle={Single-Exponential Activation Kernels for Dual-Forest Selection},
+ pdfauthor={Research contribution prepared with ChatGPT for the ProveIt project}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small\sffamily Single-exponential activation kernels}
+\fancyhead[R]{\small\sffamily ProveIt research continuation}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{1.15em}
+\setlength{\emergencystretch}{2em}
+\setlist[enumerate]{itemsep=3pt,topsep=4pt}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\F}{\mathbb F}
+\newcommand{\Reach}{\operatorname{Reach}}
+\newcommand{\cl}{\operatorname{cl}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\rk}{\operatorname{rank}}
+\newcommand{\poly}{\operatorname{poly}}
+\newcommand{\Bell}{\operatorname{Bell}}
+\newcommand{\pin}{\texttt{e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39}}
+\newcommand{\Yes}{\texttt{SUCCESS}}
+\newcommand{\No}{\texttt{BLOCKED\_EXACT}}
+\newcommand{\Unk}{\texttt{UNKNOWN}}
+\begin{document}
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\vspace*{0.15in}
+{\large\sffamily\color{ink} TOPOLOGY / UNKNOT RECOGNITION\par}
+\vspace{0.35in}
+{\Huge\bfseries\color{ink} Single-Exponential\par Activation Kernels\par}
+\vspace{0.15in}
+{\LARGE\bfseries for Dual-Forest Selection\par}
+\vspace{0.27in}
+{\large Generic mandatory contraction, representative families,\par
+and deterministically checkable low-rank obstructions\par}
+\vspace{0.3in}
+{Research contribution prepared with ChatGPT\par
+for Vladimir Reshetnikov's \emph{ProveIt} project\par}
+{12 October 2026\par}
+\vspace{0.25in}
+\begin{abstract}
+The audited incoming ProveIt dual-forest selector has a deterministic
+$2^{O(b\log(b+1))}\poly(\Lambda)$ bound, where $b$ counts rows incident to
+usable higher-support columns and $\Lambda$ is the encoded local input size.
+We give a one-sided randomized $2^{O(b)}\poly(\Lambda,\lambda)$ search
+with miss probability at most $2^{-\lambda}$ on positive inputs. Every
+reported success is an independently replayable, entirely discrete certificate.
+The proof replaces exceptional-row permutations and shared-witness partitions
+by a closed activation state, at most $b$ useful additional seeds, generic
+contraction of mandatory color representatives, and exterior-algebra
+representative families. Only the dual graph is represented over a finite
+field; geometric intersection counts are never reduced modulo that field.
+
+When there are no mandatory low-column source components and the dual graphic
+rank is at most $b$, the same method is deterministic and exact. A negative
+answer has a frontier-span certificate checked from source graph minors and
+literal peeling, without trusting the optimizer. We also give a necessary
+source-chain parity condition and a polynomial criterion for parity-compatible
+lifts of saturated intersection data.
+
+The package contains 71 passing unit tests, 8,061 exhaustive/random
+matrix--graph comparisons, 300 planted positive trials, independent
+finite-field audits, comparative timings, and an opt-in record-level native
+adapter. All 3,417 positive trials were certified; 3,391 negative inputs
+had exact local certificates and 1,553 remained explicitly inconclusive.
+These results improve a specified local selection stage. They do not establish
+a general quasi-polynomial unknot recognizer or a geometric realization theorem
+for the abstract benchmark families.
+\end{abstract}
+\vfill
+{\small\textbf{Status.} Conventional proofs and executed research code; not
+externally refereed or proof-assistant formalized. The contribution is measured
+against the audited predecessor, not claimed as a historically first use of
+representative families. Two other recently incoming archives were identified
+but were not content-audited.}\par
+\end{titlepage}
+\hypersetup{pageanchor=true}\pagenumbering{roman}
+\tableofcontents
+\clearpage\pagenumbering{arabic}
+
+\section{Research position and the advance}
+\subsection{The checkpoint being continued}
+This study fixes the maintained repository at commit
+\begin{center}\small\pin.\end{center}
+The source handles, dual endpoints, preservation of bundle ports, and the
+five-row loop experiment are taken from the inspected maintained materials
+\cite{repo,dual,loop,kernel}. The immediate algorithmic predecessor is
+\emph{Matroidal Dual-Forest Selection} \cite{prior}, supplied in the incoming
+archive of 12 October 2026. Its higher-support algorithm considers exceptional
+row orders and partitions of the demands that may share a seed. The bound is
+$b!\Bell(b)\poly(\Lambda)$, hence $2^{O(b\log(b+1))}\poly(\Lambda)$.
+Its question on replacing this dependence by $2^{O(b)}$ is the concrete target
+addressed here.
+
+The distinction between choosing \emph{some} boundary-rooted dual forest and
+choosing a \emph{useful} one is genuine. In the maintained loop example, the
+default tree deletes a row that leaves a stopping set, while three alternative
+choices allow completion \cite{loop}. The prior selector already resolves
+that coverage issue. Our reconstructed loop experiment is consequently a
+performance and certificate-replay comparison, not a claim to have newly
+covered that source.
+
+The ingredients from linear matroid representative-family theory are
+classical; useful algorithmic accounts include \cite{fomin,bevern}. Our
+contribution is the precise reduction of this activation problem to a small
+representative-state search, including how mandatory source components are
+handled without retaining all their choices. Generic linear combinations are
+used only as a search device. The final tree and peeling schedule do not
+contain field elements or symbolic variables.
+
+\subsection{What changes, and what does not}
+Write $r=|V(D)|-1$ for the rank of the connected dual graph, and let $q$ be the
+number of mandatory components defined in Section~\ref{sec:activation}. After
+an optional exact mandatory-obstruction prepass, put
+\[
+ d=\min\{b,r-q\}.
+\]
+One random round has the conservative field-arithmetic bound
+\begin{equation}\label{eq:headline}
+ \poly(\Lambda)+2^b8^d\poly(\Lambda)
+ \ \leq\ 16^b\poly(\Lambda),
+\end{equation}
+with single-exponential bit complexity as well. Repeating $\lambda$ times
+makes the miss probability at most $2^{-\lambda}$ on any input that has a
+successful tree. The dependence on the number $q$ of mandatory components is
+polynomial, not exponential. When $q=0$ and $r\leq b$, the original binary
+incidence representation is already small enough: the search is deterministic
+and can certify either outcome.
+
+The input remains a fixed unsigned core matrix and a fixed dual graph, with
+the original zero/one-handle forest frozen. The method does not optimize that
+primal forest, discover a normal surface, establish admissibility, or maintain
+all boundary-pattern data through an entire hierarchy. A negative local
+certificate says that \emph{this particular tree-plus-positive-cancellation
+strategy} cannot succeed. It says nothing by itself about whether the source
+is a handlebody or whether a knot is trivial.
+
+Lackenby's announced target is $n^{O(\log n)}$ in the crossing number
+\cite{announcement}. The inspected 2026 hierarchy paper distinguishes its
+iteration accounting from the still unspecified costs of some operations in
+Section~9 \cite{lackenby}. The local quasi-polynomial regime proved below is
+therefore stated with explicit source-size, call-count, and feasibility
+hypotheses, rather than presented as a complete recognition bound.
+
+\section{The fixed cancellation problem}\label{sec:model}
+\subsection{Unsigned counts and dual edges}
+Let $E=\{0,\ldots,m-1\}$ be a row set, let $C$ be a column set, and let
+\[
+ N=(n_{eh})_{e\in E,h\in C}\in\mathbb Z_{\geq0}^{E\times C}.
+\]
+Rows model source two-handles, and columns model the one-handles remaining
+after the chosen zero/one forest contraction. Counts are unsigned geometric
+intersections when a geometric source is supplied. For the abstract selection
+problem only the categories $0$, $1$, and at least $2$ matter.
+
+Let $D=(V,E)$ be a connected multigraph with a distinguished boundary root
+$0$. The same label $e$ denotes a matrix row and a dual edge. Parallel edges
+and loops are retained; a loop is not a forest edge. Let $r=|V|-1$. A spanning
+tree $T$ first deletes its row set from $N$. Thereafter a row $e$ can be peeled
+using column $h$ exactly when
+\begin{equation}\label{eq:private}
+ n_{eh}=1,\qquad n_{fh}=0\quad\text{for every other live row }f.
+\end{equation}
+Both the row and that pivot column are then removed. A \emph{successful tree}
+is a spanning tree after whose deletion all remaining rows can be peeled.
+
+The encoded input size $\Lambda$ includes the graph, column information,
+matrix entries, and the bit lengths of the supplied counts. All graph and
+matrix objects used here are explicit. The implementation retains original
+counts for input binding, while tests of $n=0$ and $n=1$ implicitly saturate
+larger counts. Nothing is proportional to the numerical value of a large
+intersection count.
+
+\subsection{Why static peeling is the correct local target}
+The maintained cancellation theorem and the audited predecessor show that
+private-column peeling is complete for the positive unsigned update model
+\cite{peeling,prior}. We recall the stopping-set argument so that the local
+criterion is unambiguous.
+
+\begin{definition}
+A nonempty set of rows $R$ is a \emph{stopping set} if, for every column $h$,
+\[
+ S_h(R):=\sum_{e\in R}n_{eh}\quad\text{is either }0\text{ or at least }2.
+\]
+\end{definition}
+A fixed-row deletion set succeeds under peeling if and only if it meets every
+stopping set of the original matrix. Indeed, a peeling process cannot remove
+the first row of a surviving stopping set. Conversely, the nonempty terminal
+set of any stalled peeling process is a stopping set. Thus the terminal set
+is independent of the legal peeling order: it is the union of all stopping
+sets avoiding the initial deletions.
+
+For completeness with respect to the positive-fill model, an unsaturated
+unit pivot at $(e,g)$ performs
+\[
+ n'_{fh}=n_{fh}+n_{fg}n_{eh}\qquad(f\ne e,\ h\ne g).
+\]
+If $e\in R$ and $n_{eg}=1$, then
+\begin{equation}\label{eq:stopping-update}
+ S'_h(R\setminus\{e\})
+   =S_h(R)+(S_g(R)-2)n_{eh}.
+\end{equation}
+Since $S_g(R)\geq2$, no surviving stopping-set column acquires total one.
+The remaining row set is nonempty because $e$ contributes only one to column
+$g$. A pivot outside $R$ cannot use a column of total zero on $R$ to create
+an entry there, and otherwise only increases its entries. Stopping sets
+therefore persist through arbitrary positive pivots. Saturating each entry
+at two preserves precisely the distinction between a column total of zero,
+one, and at least two. This proves that a stalled private-column process
+cannot be repaired merely by choosing other positive-fill pivots.
+
+This argument does \emph{not} apply to arbitrary signed changes of attaching
+words, geometric slides outside the maintained positive model, or changes
+of the primal forest. Such moves may be useful, but are different operations.
+
+\begin{lemma}[Monotonicity and tree extension]\label{lem:monotone}
+If row deletion set $F$ permits complete peeling, so does every superset of
+$F$. Consequently, a successful graphic-independent deletion set can be
+extended to a successful spanning tree of $D$.
+\end{lemma}
+\begin{proof}
+Follow any successful peeling order, omitting rows already deleted by the
+larger set. A formerly private unit column remains private whenever its
+pivot row is still present. A column whose pivot row has already disappeared
+can simply be omitted. Equivalently, deleting more rows cannot leave an
+original stopping set intact. Finally every forest in a connected graph
+extends to a spanning tree, including in a multigraph with loops excluded
+from the forest.
+\end{proof}
+
+\subsection{The geometric interface is an additional hypothesis}
+For the inspected source charts, an extreme edge-gap two-handle has two
+authenticated dual endpoint occurrences. A source interior vertex contributes
+a three-handle; original-boundary and cut-boundary endpoints are represented
+by the root. Contracting a rooted spanning tree gives legal two/three
+cancellations and preserves the lower zero/one body and bundle port charts
+\cite{dual}. A repeated interior endpoint is two intersections, not one.
+
+Our abstract selector only proposes which such rows to delete. Its graph
+input does not prove that these endpoints came from an actual source. The
+maintained checker reconstructs endpoints independently from vertex-link
+triangles and normal-coordinate edge weights. A proposed native record must
+pass that checker, followed by the ordinary core, port, boundary-pattern,
+and whole-cut checks. The article's main theorem is complete for the stated
+fixed matrix/graph problem, not for all possible downstream geometric
+objectives.
+
+\section{Activation closure and the small seed lemma}\label{sec:activation}
+\subsection{Low-column implications}
+Call a column \emph{usable} if it has at least one entry equal to one.
+Columns without a unit entry can never be peeling pivots. Build a directed
+graph $G$ on the row set $E$ using usable columns of support at most two.
+A unit singleton is an \emph{anchor}; let $A$ be the set of anchors. For a
+column with support $\{u,v\}$, include the arc $v\to u$ when $n_{uh}=1$,
+and include $u\to v$ when $n_{vh}=1$. In particular $(1,2)$ gives a directed
+implication from the heavy row to the unit row, not an undirected edge.
+
+For $S\subseteq E$, let $\Reach(S)$ include $S$ and all vertices reachable
+from it in $G$. Low-column peeling from seed set $F$ deletes exactly
+$\Reach(A\cup F)$. The forward implication follows by reading a peeling
+step as an arc; the reverse follows by following directed paths. Once a
+column is used, all rows in its support are already deleted, so retaining
+its implication for closure purposes introduces no spurious later move.
+
+Let $\mathcal H$ be the usable columns with support at least three, and define
+\begin{equation}\label{eq:B}
+ B=\bigcup_{h\in\mathcal H}\supp(h),\qquad b=|B|.
+\end{equation}
+All support rows, including entries at least two, belong to $B$. Omitting
+heavy prerequisites is not a valid reduction. By contrast, a high-support
+column with no unit entry contributes nothing to $B$.
+
+A source strongly connected component of $G$ is \emph{mandatory} if it
+contains neither an anchor nor a row of $B$. Write these components as
+$U_1,\ldots,U_q$. They are pairwise disjoint. Define
+\begin{equation}\label{eq:R0}
+ R_0=\Reach\left(A\cup\bigcup_{i=1}^{q}U_i\right).
+\end{equation}
+The use of entire $U_i$ in this symbolic baseline does not grant their rows
+free deletions. It is justified only after a genuine seed is chosen in each
+$U_i$. Any one row of a strongly connected component reaches all of it and
+has the same low-column descendants as every other row in the component.
+
+\begin{lemma}[Mandatory representatives]\label{lem:mandatory}
+Every successful initial deletion set meets each $U_i$. If it contains one
+row of every $U_i$, then all of $R_0$ can be deleted using anchors and
+low-column implications.
+\end{lemma}
+\begin{proof}
+Consider the first row of an unseeded $U_i$ that would be peeled. It cannot
+be an anchor. A low-column predecessor outside $U_i$ would be an incoming
+arc to a source component, and a high-column pivot would put its row in $B$.
+Both are impossible. Conversely, one seed propagates through its strongly
+connected component and all its descendants.
+\end{proof}
+
+\subsection{A closure operator only on the exceptional boundary}
+For each row $e$ define its influence mask
+\[
+ H(e)=B\cap\Reach(\{e\}).
+\]
+For $S\subseteq B$, define $\cl(S)$ as the smallest subset of $B$ containing
+$S\cup(B\cap R_0)$ and closed under the following two sorts of implications:
+\begin{align}
+ x\in\cl(S)&\ \Longrightarrow\ H(x)\subseteq\cl(S)
+                  &&(x\in B),\label{eq:low-rule}\\
+ \supp(h)\setminus\{x\}\subseteq\cl(S)
+       &\ \Longrightarrow\ x\in\cl(S)
+                  &&(h\in\mathcal H,\ n_{xh}=1).\label{eq:high-rule}
+\end{align}
+Every prerequisite of \eqref{eq:high-rule} is in $B$, so this is a finite
+closure system on $b$ bits. It is extensive, monotone, and idempotent. The
+baseline $\cl(\varnothing)$ may contain high-column consequences as well
+as $B\cap R_0$. A direct saturation takes polynomial time per mask, and
+at most $2^b$ masks ever need memoization.
+
+\begin{theorem}[Exact activation reduction]\label{thm:closure}
+Let $I$ consist of one representative from each mandatory component, and let
+$X\subseteq E$ be any additional seed set. The exceptional rows deleted by
+full peeling from $I\cup X$ are exactly
+\begin{equation}\label{eq:activation}
+ \cl\left(\bigcup_{e\in X}H(e)\right).
+\end{equation}
+In particular full peeling succeeds if and only if this set is $B$.
+\end{theorem}
+\begin{proof}
+Each generating implication is a valid low-column path or a valid private
+high-column pivot. Lemma~\ref{lem:mandatory} supplies the baseline. Thus the
+right-hand side of \eqref{eq:activation} is attained by genuine peeling.
+
+For the converse, inspect a full peeling sequence. A seed in $X$ supplies
+$H(e)$, and the mandatory seeds and anchors supply $R_0$. Until a high pivot
+occurs, all newly deleted rows lie in the corresponding low reachability
+closure. The target and every prerequisite of a high pivot are in $B$;
+therefore \eqref{eq:high-rule} already accounts for it. Low propagation from
+that target is accounted for by \eqref{eq:low-rule}. Induction along the
+sequence proves equality of the exceptional projections.
+
+If all rows are deleted then certainly all of $B$ is deleted. Conversely,
+every source component of $G$ either has an anchor, is mandatory, or meets
+$B$. Once $B$ is deleted, each source component has a deleted vertex. Every
+component of the finite condensation graph lies downstream of a source.
+Low-column propagation therefore deletes all rows, including rows outside
+$B$.
+\end{proof}
+
+\begin{theorem}[At most $b$ useful additional seeds]\label{thm:few-seeds}
+A successful spanning tree exists if and only if there are a set $X$ with
+$|X|\leq b$ and representatives $u_i\in U_i$ such that
+\begin{equation}\label{eq:small-witness}
+ X\cup\{u_1,\ldots,u_q\}\text{ is a forest},\qquad
+ \cl\left(\bigcup_{e\in X}H(e)\right)=B.
+\end{equation}
+The representatives and $X$ can be chosen disjoint. Furthermore $X$ has an
+ordering in which every added seed strictly increases the closed state.
+\end{theorem}
+\begin{proof}
+Take a successful tree $T$. Choose one representative $u_i\in T\cap U_i$
+for every mandatory component, which is possible by
+Lemma~\ref{lem:mandatory}. Start at $S=\cl(\varnothing)$ and repeatedly
+choose an edge $e$ of $T$ for which $\cl(S\cup H(e))\ne S$.
+
+If this process stopped at a proper subset of $B$, every $H(e)$ for $e\in T$
+would already be contained in $S$. Idempotence would then give
+$\cl(\bigcup_{e\in T}H(e))=S$, contradicting successful peeling and
+Theorem~\ref{thm:closure}. Every chosen edge adds at least one previously
+absent bit, so at most $b$ edges are chosen. No row in a mandatory component
+can be chosen: its influence is already contained in $B\cap R_0$. Hence
+$X$ and the representatives are disjoint, and their union is a subset of
+$T$, thus a forest.
+
+Conversely, \eqref{eq:small-witness} and Theorem~\ref{thm:closure} give a
+successful forest deletion set. Lemma~\ref{lem:monotone} extends it to a
+successful tree. The greedy construction gives the claimed strict-progress
+ordering. More generally, a seed whose influence is already in the current
+closed state can be omitted permanently: closure idempotence makes it
+irrelevant to all later activation, and removing an edge cannot hurt graphic
+independence.
+\end{proof}
+
+This theorem is the point at which full exceptional-row orders disappear.
+We need neither an order of all $b$ rows nor a partition of demands sharing a
+seed. A single seed's entire influence mask is inserted at once.
+
+\section{Mandatory choices as a generic contraction}\label{sec:generic}
+\subsection{The graph representation}
+Orient the nonloop edges of $D$ arbitrarily. Let
+$V_D=(v_e)_{e\in E}$ be its reduced incidence matrix over a prime field
+$\F_p$, with the row of the boundary root removed. It has $r$ rows.
+A loop has the zero column. Over every field, the columns indexed by a set
+of edges are linearly independent if and only if that edge set is a forest.
+For a forest, repeatedly removing a nonroot leaf produces a square minor
+with determinant $1$ or $-1$. A cycle, including a loop or a two-edge
+parallel cycle, gives a column dependence. This also explains why
+characteristic two is harmless for the \emph{graph representation}.
+
+Introduce an independent indeterminate $z_{i,e}$ for each $e\in U_i$, and set
+\begin{equation}\label{eq:generic-y}
+ y_i=\sum_{e\in U_i}z_{i,e}v_e,\qquad
+ Y=[y_1\ \cdots\ y_q].
+\end{equation}
+These columns initially live over the rational function field
+$\F_p(\mathbf z)$.
+
+\begin{lemma}[Generic representative contraction]\label{lem:generic}
+For any set $X$ of $k$ edge labels, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $[Y,V_{D,X}]$ has rank $q+k$ over $\F_p(\mathbf z)$;
+\item one can choose representatives $u_i\in U_i$, distinct from one another
+and from $X$, for which $X\cup\{u_i:1\leq i\leq q\}$ is a forest.
+\end{enumerate}
+If a specialization of the $z_{i,e}$ has rank $q+k$, condition (ii) holds
+for the original graph, without any probabilistic qualification.
+\end{lemma}
+\begin{proof}
+Expand any $(q+k)$-row minor in the first $q$ columns. Its terms are indexed
+by tuples $(u_1,\ldots,u_q)$, with monomial
+$\prod_i z_{i,u_i}$ and coefficient equal to the corresponding graph-incidence
+minor with the columns $X$ appended. Different tuples give different
+monomials because the variables retain both the color and the edge label.
+Thus a minor is a nonzero polynomial precisely when at least one of these
+coefficients is nonzero.
+
+A nonzero coefficient implies a forest of $q+k$ distinct edges. Conversely,
+a forest of representatives together with $X$ has a graph minor equal to
+$\pm1$. Its monomial coefficient cannot cancel with any other tuple, and
+remains nonzero over every prime field. Finally, a polynomial that evaluates
+to a nonzero value is not the zero polynomial. Specialization may destroy
+independence but cannot create an independent set that lacks genuine
+representatives.
+\end{proof}
+
+If no independent representatives exist even for $X=\varnothing$, the local
+problem is negative. A polynomial graphic/partition matroid-intersection
+prepass detects this and can provide a Rado obstruction: a subcollection
+$J\subseteq\{1,\ldots,q\}$ with
+\begin{equation}\label{eq:rado}
+ |J|>\rk_D\left(\bigcup_{i\in J}U_i\right).
+\end{equation}
+The delivered checker verifies this inequality directly from graph
+components. This classical prepass is an optimization and an exact-negative
+route; it is not the new single-exponential argument.
+
+\subsection{Specialize, quotient, and reduce the rank}
+Choose every $z_{i,e}$ uniformly and independently in $\F_p$. If the sampled
+$Y$ has rank less than $q$, abandon this round. Contracting fewer than $q$
+independent columns would forget mandatory constraints and is not allowed.
+Otherwise compute a linear quotient map
+\[
+ Q:\F_p^r\longrightarrow\F_p^{r-q},\qquad\ker Q=\langle Y\rangle.
+\]
+Gaussian elimination constructs $Q$: reduce a vector by a normalized echelon
+basis of $Y$ and retain its free coordinates. Put
+$d=\min\{b,r-q\}$ and independently choose a uniform random matrix
+$P\in\F_p^{d\times(r-q)}$. The small representation used by the search is
+\begin{equation}\label{eq:small-rep}
+ a_e=P Q v_e\in\F_p^d.
+\end{equation}
+A set independent in this representation was independent in the quotient
+before projection, and therefore has genuine mandatory representatives by
+Lemma~\ref{lem:generic}. Rank reduction only loses potential witnesses.
+
+\begin{remark}[Do not apply the field to geometric counts]
+The field acts on $V_D$, not on $N$. For example,
+$\left(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\right)$ is a stopping
+matrix, but its reduction modulo two is a permutation matrix and peels
+completely. Replacing unsigned incidences by residues would change the
+problem. The implementation keeps all heavy prerequisites even in the
+fully deterministic characteristic-two search.
+\end{remark}
+
+\subsection{A witness can be unmixed deterministically}
+\begin{proposition}[Algebraic unmixing]\label{prop:unmix}
+Suppose sampled $Y$ and a set $X$ have $\rk[Y,V_{D,X}]=q+|X|$.
+Actual independent representatives can be recovered in polynomial time
+using only field-rank tests and the lists $U_i$.
+\end{proposition}
+\begin{proof}
+Maintain the independent list consisting of the $q$ current columns and
+$V_{D,X}$. At step $i$, its $i$th column is still the original sampled
+linear combination $y_i\in\langle v_e:e\in U_i\rangle$. Its exterior
+product with the other columns is nonzero. Multilinearity implies that
+replacing $y_i$ by at least one $v_e$, $e\in U_i$, leaves a nonzero exterior
+product. Scan the candidates with rank tests, choose such an edge, and keep
+that replacement. After $q$ steps every mandatory column is an actual edge.
+Independence guarantees that no edge was repeated or already belonged to
+$X$. The number and dimensions of the rank tests are polynomial in the
+explicit input size.
+\end{proof}
+The current producer instead invokes its already tested graphic/partition
+oracle with $X$ contracted, to recover representatives. Proposition~\ref{prop:unmix}
+is a proved alternative, not an additional executed recovery path in the
+package. It also shows that mandatory matroid intersection is not logically
+necessary for the randomized positive-search theorem: the exact rank-
+obstruction prepass may be omitted and all positive witnesses can be recovered
+by linear algebra.
+
+\section{Exterior representative families over closed states}\label{sec:dp}
+\subsection{The representative property}
+For an ordered independent $k$-tuple $X=(e_1,\ldots,e_k)$ in the small
+representation, write
+\[
+ w_X=a_{e_1}\wedge\cdots\wedge a_{e_k}
+     \in\bigwedge^k\F_p^d.
+\]
+This space has dimension $D_k=\binom dk$. The coordinates of $w_X$ are the
+$k\times k$ minors of the matrix with columns $a_{e_i}$. In particular,
+$w_X\ne0$ exactly when $X$ is independent.
+
+\begin{lemma}[A spanning subfamily preserves extensions]\label{lem:rep}
+Let $\mathcal F$ be a family of independent $k$-sets having the same closed
+activation state $S$. Choose actual members $\widehat{\mathcal F}\subseteq
+\mathcal F$ whose exterior vectors form a basis of the span of all
+$\{w_X:X\in\mathcal F\}$. Then
+$|\widehat{\mathcal F}|\leq\binom dk$. For every future edge set $Z$ with
+$|Z|\leq d-k$, if some $X\in\mathcal F$ has $X\cup Z$ independent,
+then some $\widehat X\in\widehat{\mathcal F}$ does too. Starting from
+$X$ or $\widehat X$, the future activation caused by the same $Z$ is identical.
+\end{lemma}
+\begin{proof}
+The map $w\mapsto w\wedge w_Z$ is linear. If it is nonzero on any vector
+in the span, it is nonzero on at least one vector of a spanning basis.
+A nonzero product guarantees both independence and disjointness from $Z$.
+The activation state records everything a future seed can affect:
+\[
+ \cl\left(S\cup\bigcup_{e\in Z}H(e)\right).
+\]
+It does not depend on the particular set used to reach $S$.
+\end{proof}
+This is the standard linear-matroid representative-family mechanism
+\cite{fomin}. Its application here is valid because
+Theorem~\ref{thm:closure} has separated all future activation information
+from the identity of the already selected seed edges.
+
+\subsection{The dynamic program}
+At state $(S,k)$ retain a basis of exterior vectors of actual $k$-seed
+witnesses whose closed state is $S$. Start with the empty witness and the
+scalar exterior vector $1$ at $(\cl(\varnothing),0)$. For every retained
+witness $X$ and every edge $e$, form
+\begin{equation}\label{eq:transition}
+ S'=\cl(S\cup H(e)),\qquad w'=w_X\wedge a_e.
+\end{equation}
+Ignore the transition if $S'=S$ or $w'=0$. Otherwise insert its actual
+witness $X\cup\{e\}$ into the basis at $(S',k+1)$ if its exterior vector
+is not already in that span. If $S'=B$, return the witness immediately.
+Process states by increasing $k$; only $0\leq k\leq d$ can occur.
+
+\begin{theorem}[Completeness in a supplied representation]\label{thm:dp}
+For any fixed vectors $a_e\in\F_p^d$, the dynamic program returns a witness
+if and only if some independent edge set $X$ satisfies
+$\cl(\bigcup_{e\in X}H(e))=B$.
+\end{theorem}
+\begin{proof}
+Every retained witness is actual, independent, and has its recorded closed
+state, by construction. This proves soundness.
+
+For completeness, choose a successful independent witness and remove
+redundant seeds as in Theorem~\ref{thm:few-seeds}. Its seeds can be added in
+strict-progress order. When an intermediate witness is discarded in favor
+of a basis, Lemma~\ref{lem:rep} preserves an extension by the remaining
+ordered seed set. The replacement has the same state, and the nonzero
+exterior product with all remaining seeds guarantees that every prefix of
+that extension remains independent. The next activation state is therefore
+unchanged. Induct on the number of remaining additions until the full
+boundary is reached. This argument also covers replacements of a witness
+that already arose as a previous representative replacement.
+\end{proof}
+
+\subsection{A representation invariant that matters in code}
+Gaussian elimination of a candidate exterior vector can produce a linear
+combination that is not the exterior vector of \emph{any} actual seed set.
+Consequently an eliminated basis row must not be treated as a new witness.
+The implementation stores two objects separately: normalized echelon rows
+for span tests, and each retained original decomposable vector together with
+its actual ordered edge tuple. Transitions extend only the latter. A dedicated
+regression test distinguishes the raw vector from its eliminated row.
+
+The literal-set ablation also retains actual witnesses. It removes repeated
+\emph{sets} reached through different orders, but does not apply exterior
+span compression. The measured saving is therefore not merely suppression
+of different permutations of an identical edge set.
+
+\section{The single-exponential search theorem}\label{sec:main}
+\subsection{Why only one witness has to survive randomness}
+We use the elementary polynomial zero bound: a nonzero polynomial of total
+degree at most $t$ over $\F_p$, evaluated at independent uniform field
+values, vanishes with probability at most $t/p$. For completeness, write it
+as a polynomial in its last variable, with leading coefficient of degree
+at most $t-s$ and last-variable degree $s$. The leading coefficient vanishes
+with probability at most $(t-s)/p$ by induction; otherwise there are at most
+$s$ roots in the last coordinate. This proves the bound. It is the usual
+Schwartz--Zippel argument \cite{schwartz}.
+
+\begin{lemma}[Fixed-witness survival]\label{lem:survival}
+Fix a feasible $k$-seed witness $X_*$ in
+Theorem~\ref{thm:few-seeds}. One random specialization and projection retain
+its independence with probability at least
+\begin{equation}\label{eq:miss}
+ 1-\frac{q+k}{p}.
+\end{equation}
+The witness is fixed before the random variables of this round are sampled.
+\end{lemma}
+\begin{proof}
+By Lemma~\ref{lem:generic}, some $(q+k)$-minor of
+$[Y,V_{D,X_*}]$ is a nonzero polynomial. Its degree is at most $q$, because
+only the mandatory columns are random. Thus this augmented matrix loses
+rank with probability at most $q/p$. On the complementary event $Y$ has
+rank $q$, so the round is not abandoned, and the quotient images of $X_*$
+are independent.
+
+Condition on any such specialization of $Y$. The independent quotient
+images have a $k$-dimensional span. Since $k\leq d$, there exists a linear
+map to $\F_p^d$ that preserves them. Accordingly some $k$-minor of the
+random projected columns is a nonzero polynomial of degree at most $k$ in
+the independent entries of $P$. Its failure probability is at most $k/p$.
+The conditional bound holds for every successful first-stage specialization.
+Adding the two failure probabilities proves \eqref{eq:miss}.
+\end{proof}
+
+No union bound over every feasible seed set is needed. On a positive input,
+one fixed successful witness suffices. Once the small representation retains
+that witness, Theorem~\ref{thm:dp} completes its search deterministically.
+Requiring a simultaneously faithful representation of all $m^{O(b)}$
+possible seed sets would be an unnecessary extra demand.
+
+\begin{theorem}[One-sided single-exponential selector]\label{thm:main}
+For the fixed local problem of Section~\ref{sec:model}, there is an algorithm
+with these properties:
+\begin{enumerate}[label=(\roman*)]
+\item Every reported success has a valid spanning tree and complete peeling
+certificate, checked deterministically from the original graph and matrix.
+\item If a successful tree exists, $\lambda$ uncapped independent rounds
+find one with probability at least $1-2^{-\lambda}$.
+\item Its bit running time is $2^{O(b)}\poly(\Lambda,\lambda)$.
+One round admits \eqref{eq:headline} as a conservative field-operation bound,
+with $d=\min\{b,r-q\}$ when mandatory representatives are feasible.
+\item Its field-element storage can be bounded by
+$2^b4^d\poly(\Lambda)\leq8^b\poly(\Lambda)$.
+\end{enumerate}
+On an unsuccessful search the general algorithm reports \Unk, not a
+negative topological answer. An optional exact rank-obstruction route may
+certify local infeasibility sooner.
+\end{theorem}
+\begin{proof}
+First handle the empty input and any automatically complete closure. The
+mandatory prepass either gives the verified obstruction
+\eqref{eq:rado}, or ensures $q\leq r$. Alternatively it can be omitted and
+rank-deficient mandatory samples can simply be abandoned.
+
+Choose a prime $p>2(q+b)$ with $p=O(q+b+1)$; elementary prime bounds and
+trial division suffice in polynomial time for these explicitly bounded
+parameters. The implementation takes the first prime at least
+$\max\{101,2(q+b)+1\}$. Sample $Y$, check its rank, quotient, and project
+as in Section~\ref{sec:generic}. Search by Theorem~\ref{thm:dp}.
+If $X$ is found, sampled independence implies genuine extendibility by
+Lemma~\ref{lem:generic}. Recover mandatory representatives by the
+polynomial forest oracle or Proposition~\ref{prop:unmix}; extend their
+union with $X$ to a tree. Then replay the actual matrix peeling certificate.
+All these steps are deterministic after the sample, and no field outcome
+can cause a false positive.
+
+On a positive input fix the witness furnished by
+Theorem~\ref{thm:few-seeds}, independently of the sampling. By
+Lemma~\ref{lem:survival} a round misses it with probability less than
+$1/2$. Conditional on retaining it, the dynamic program succeeds. Independent
+repetition gives the stated miss bound.
+
+For the complexity, each mask and cardinality state retains at most
+$D_k=\binom dk$ witnesses. There are at most $2^b$ masks. Therefore the
+number of candidate edge extensions is at most
+\[
+ m\,2^b\sum_{k=0}^{d}D_k=m\,2^{b+d}.
+\]
+An exterior extension costs $O(dD_k)$ arithmetic operations in a direct
+coordinate implementation. A straightforward insertion into a basis in
+dimension $D_{k+1}$ costs $O(D_{k+1}^2)$. Since
+\[
+ \sum_{k=0}^{d-1}D_kD_{k+1}^2
+ \leq \left(\sum_kD_k\right)\left(\max_kD_k\right)^2
+ \leq8^d,
+\]
+the claimed time bound follows. Echelon bases and raw witness vectors occupy
+at most a polynomial factor times
+\[
+ 2^b\sum_{k=0}^{d}\binom dk^2
+   =2^b\binom{2d}{d}\leq2^b4^d
+\]
+field elements. Influence preparation, closure saturation, graph operations,
+quotients, and certificate output are polynomial factors in $\Lambda$.
+Field elements have $O(\log(q+b+2))$ bits. Standard exact finite-field
+arithmetic gives the stated bit bound. The research implementation uses
+sparse dictionaries; even conservative dictionary overhead is absorbed in
+$2^{O(b)}\poly(\Lambda,\lambda)$, rather than being asserted to have a
+particular machine-level base of sixteen.
+\end{proof}
+
+The algorithm's probability statement assumes fresh independent uniform
+samples and enough resources to complete the claimed rounds. A fixed
+pseudorandom seed is useful for regression reproduction, not a derandomization.
+A boundary or transition cap may cause \Unk\ even on a positive input, so a
+capped call is not automatically entitled to the uncapped miss guarantee.
+
+\section{Deterministic low-rank decisions and frontier certificates}\label{sec:frontier}
+\subsection{A class with no randomness at all}
+\begin{theorem}[Faithful low-rank selection]\label{thm:faithful}
+Suppose $q=0$ and $r\leq b$. Successful dual-tree selection is decidable
+deterministically in $2^{O(b)}\poly(\Lambda)$ time. A positive answer has
+the same tree-and-peeling certificate as before. A negative answer has a
+frontier-span certificate of at most $4^b\poly(\Lambda)$ bits, verifiable
+independently in single-exponential time.
+\end{theorem}
+\begin{proof}
+Use the original reduced binary incidence columns $v_e\in\F_2^r$.
+They represent graphic independence exactly; no mandatory contraction or
+rank projection is necessary. Run the dynamic program with $d=r$. Its
+soundness and completeness follow from Theorem~\ref{thm:dp} and the small
+seed theorem. A negative answer can retain the successful basis insertions
+at every state. There are at most $2^b\sum_k\binom rk\leq2^{b+r}$
+actual witnesses, each with at most $r$ edge labels. The certificate and
+verification claims follow from the explicit construction below.
+\end{proof}
+
+\subsection{What the negative packet contains}
+A frontier packet contains an input digest and, for every retained state
+$(S,k)$, a list of actual $k$-edge seed witnesses whose exterior vectors are
+a basis for that state. It contains no alleged field-operation transcript
+and no claim that a reduced linear combination is an actual witness.
+The complete boundary state $B$ must not occur.
+
+An independent verifier performs the following checks.
+\begin{enumerate}
+\item Recompute $B$ and the mandatory components from the supplied matrix;
+verify $q=0$ and $r\leq b$. Check input binding, unique state keys, label
+ranges, and the absence of a full-boundary state.
+\item For each alleged witness $X$, recompute its exterior coordinates as
+binary determinants of graph-incidence minors. Check that the vector is
+nonzero and that literal matrix peeling from $X$ has precisely the claimed
+exceptional projection. Verify that each state's listed vectors are
+linearly independent.
+\item Check that the empty exterior vector $1$ is in the initial state's
+span. For each state witness $X$ and each edge $e$ giving strict activation
+progress, recompute $w_{X\cup\{e\}}$. If nonzero, require it to belong
+to the listed span at the appropriate next state. At $k=r$ every further
+edge extension is dependent, so there is nothing to check.
+\end{enumerate}
+The supplied implementation computes activation in this checker by literal
+peeling, not by importing the producer's Horn-closure code. It computes
+minors directly, not by importing the producer's wedge-extension routine.
+
+\begin{lemma}[Frontier coverage proves local nonexistence]\label{lem:frontier}
+If these checks pass, no successful tree exists for the supplied local input.
+\end{lemma}
+\begin{proof}
+The initial state spans the empty witness. Induct on a strict-progress seed
+sequence. Suppose the exterior vector of its current prefix is in the span
+of the listed state basis. Wedge multiplication by the next edge is linear,
+and its next activation state depends only on the current state and that
+edge. The transition checks therefore place the next prefix vector in the
+listed next-state span. If a successful independent seed set existed, choose
+a strict-progress ordering as in Theorem~\ref{thm:few-seeds}. Its final
+vector would be nonzero in a full-boundary state, contrary to the packet's
+absence of such a state. A successful tree supplies such a seed set.
+\end{proof}
+
+This is an exact local negative certificate, unlike a failed random
+projection. It must not be extended silently to $q>0$, where a specialized
+mandatory contraction can lose witnesses, or to $r>b$, where a sampled
+projection may do so. The verifier explicitly rejects those unsupported
+regimes. Nor is a valid frontier packet a certificate of knottedness.
+
+\section{Necessary parity checks for geometric source data}\label{sec:parity}
+The abstract selector deliberately allows matrices and graphs that may not
+come from a three-manifold. There is nevertheless a useful inexpensive
+source-consistency condition, separate from the selection theorem.
+
+\begin{proposition}[Dual-cycle parity]\label{prop:parity}
+Suppose $N$ gives \emph{exact} unsigned one/two-handle intersection counts,
+and $D$ gives the actual two/three-handle endpoint occurrences, in a handle
+chain complex with the stated lower forest contraction. Then
+\begin{equation}\label{eq:parity}
+ V_D (N\bmod2)=0\quad\text{over }\F_2.
+\end{equation}
+Equivalently, for each column of $N$, the dual edges on which the count is
+odd have even degree at every dual vertex.
+\end{proposition}
+\begin{proof}
+Over $\F_2$ signs disappear. In handle bases, $\partial_2$ is the transpose
+of the unsigned incidence matrix modulo two, and $\partial_3$ is the
+transpose of the reduced dual incidence matrix. The chain identity
+$\partial_2\partial_3=0$ gives \eqref{eq:parity} after transposing.
+The equation at the omitted boundary root follows from the sum of the
+other incidence rows. A loop contributes twice and therefore contributes
+zero modulo two.
+\end{proof}
+This is a specialization of the chain identity, not a new general theorem
+about chain complexes. It is relevant because it detects a class of abstract
+fixtures that must not be advertised as genuine geometric sources.
+
+The test cannot be applied directly to entries that were merely capped at
+two. An entry recorded as ``at least two'' may have either actual parity.
+There is an exact polynomial criterion for whether the \emph{saturated
+categories} admit any compatible parity lift.
+
+\begin{theorem}[Parity lifting for saturated columns]\label{thm:parity-lift}
+For one saturated column, let $U$ be its unit edges and $H$ its heavy edges.
+Let $O$ be the vertices of odd degree in the dual subgraph with edge set
+$U$. A choice of parities for the edges of $H$ makes $U$ together with the
+odd heavy edges Eulerian if and only if
+\begin{equation}\label{eq:even-demand}
+ |O\cap K|\text{ is even for every connected component }K\text{ of }D[H].
+\end{equation}
+When feasible, a spanning-forest leaf sweep constructs the lift. All heavy
+entries can be realized as either $2$ or $3$ for this parity purpose.
+\end{theorem}
+\begin{proof}
+A heavy-edge subgraph has an even number of odd-degree vertices in each
+heavy connected component, proving necessity. For sufficiency choose a
+spanning forest of $D[H]$. Root each component. Process its nonroot vertices
+from leaves toward the root; include a parent edge precisely when its child
+currently has odd demand, then toggle that demand at the parent. Only the
+root can retain demand, and \eqref{eq:even-demand} makes its final demand
+even. The chosen heavy edges have boundary $O$, so their symmetric sum with
+$U$ is Eulerian. Assign count three to chosen heavy edges and count two to
+the others. Loops need not be chosen.
+\end{proof}
+The implementation supplies both diagnostics in
+\path{integration/parity_audit.py}. Neither authenticates source charts or
+constructs a manifold. A parity-compatible lift is not permission to change
+an already authenticated exact count. The maintained five-row matrix passes
+the exact parity test. The nonlinear choice family below also passes it;
+its three-dimensional realization remains unproved.
+
+\section{The maintained loop example and the integration seam}\label{sec:native}
+For the source with one interior dual vertex, the maintained matrix on
+columns with original labels $(3,5,6,7,8)$ is \cite{loop}
+\[
+ N=\begin{pmatrix}
+ 0&0&1&0&0\\
+ 1&1&0&0&0\\
+ 0&1&0&1&1\\
+ 1&0&1&1&1\\
+ 0&1&1&1&0
+ \end{pmatrix}.
+\]
+Rows $0,1,2,3$ are parallel root-to-interior edges, while row $4$ is an
+interior loop. Deleting row $0$ leaves totals $(2,3,2,3,2)$, hence a stopping
+set. Here $b=5$, $q=0$, and $r=1$, so Theorem~\ref{thm:faithful} applies.
+The new search selects row $1$ after two candidate transitions. Its local
+peeling schedule, in normalized column labels, is
+\[
+ (3,0),\quad(2,4),\quad(4,1),\quad(0,2).
+\]
+In original column labels this is
+\[
+ (3,3),\quad(2,8),\quad(4,5),\quad(0,6).
+\]
+The source's previously recorded alternative schedule used column $7$ at
+the third step rather than column $5$. Both are legal matrix schedules.
+The new local schedule consequently leaves a different column representative;
+one must not copy stale downstream port words or a prior basis-dependent
+certificate on the assumption that the chosen tree fixes the entire proof.
+
+The delivered adapter translates only the verified tree into a native
+two/three reduction proposal. For a normalized interior identifier $37$,
+its cancellation list is the single record
+\begin{quote}\ttfamily
+\{two\_handle: 1, three\_handle: 37\}.
+\end{quote}
+It preserves the complete endpoint list, including the repeated endpoint
+of row $4$, and records surviving source row IDs $(0,2,3,4)$. Native replay
+is responsible for renumbering those survivors. The adapter checks that
+its input graph really matches the supplied endpoint records, so the local
+certificate cannot silently be applied to another graph.
+
+The maintained target is
+\path{fastunknot.core_three_handle_reduction_verify.replay_core_three_handles}.
+The required schema is \path{core-three-handle-reduction-v1}, with fields
+\path{dual_endpoints}, \path{cancellations}, and
+\path{surviving_two_handles}. Its current source checker was read at the
+pinned commit. The adapter's record normalization, source-ID mapping,
+mismatch refusals, and proposal were executed in seven tests. Full native
+geometry, Regina cuts, bundle-port replay, and end-to-end unknot recognition
+were \emph{not} executed in this environment. These remain mandatory
+integration tests, not results inferred from the local example.
+
+\section{Implementation, resource semantics, and certificates}\label{sec:implementation}
+\subsection{Modules and independent paths}
+The new package uses only the Python standard library. It was executed with
+CPython 3.13.5 on the Linux environment recorded in the result files.
+\path{model.py} validates the explicit graph and unsigned matrix;
+\path{closure.py} builds reachability and the exceptional closure;
+\path{matroid.py} implements a simple disjoint-color graphic/partition
+oracle; \path{algebra.py} performs finite-field and exterior operations;
+\path{solve.py} orchestrates the routes; and \path{verify.py} imports none
+of the producer, graph optimizer, closure, or exterior modules.
+
+The polynomial preprocessing is intentionally straightforward. Low
+reachability uses bit masks and transitive closure rather than an optimized
+SCC/condensation implementation. The matrix producer uses a dense deterministic
+peeling scan. Neither choice is claimed to improve the maintained sparse
+peeler; the research target is the exponential \emph{selection} dependence.
+The small-parameter method belongs behind a cheap incumbent attempt, as in
+the supplied default.
+
+The positive certificate consists of an input digest, a spanning-tree edge
+list, its boundary-outward dual order, and a complete peeling schedule. A
+simple independent checker verifies the tree, dual moves, private columns,
+and full coverage. No random seed, field modulus, Gaussian transcript, or
+representative-family calculation is trusted to establish the answer.
+A SHA-256 digest prevents accidental input substitution; it is not a proof
+that an input came from a triangulation.
+
+\subsection{The three statuses}
+The public interface has three meanings. \Yes\ provides a verified local
+positive certificate. \No\ provides either a verified mandatory-rank
+obstruction or a verified faithful low-rank frontier. \Unk\ means that no
+such certificate was obtained within the supported route and resources.
+In particular a failed sample, an exhausted round allowance, an exceptional
+boundary cap, or a transition cap does not become a local negative answer.
+Even \No\ is not a topological negative verdict.
+
+The default caps are $b\leq20$ and one million considered transitions across
+sampling rounds, with eight requested rounds. They are practical research
+safeguards, not the hypotheses of an unconditional guarantee for every
+positive input. Passing \texttt{None} as the corresponding API arguments
+runs the uncapped algorithm in the theorem. The callback propagates
+interruption exceptions; it does not translate them to a verdict.
+Source preparation and polynomial preprocessing are not bounded merely by
+a transition counter.
+
+The validator rejects an impossible gigantic vertex count before allocating
+vertex arrays, using $|V|\leq m+1$ for a connected explicitly listed graph.
+Empty-row input does not expand a potentially large declared count of zero
+columns. A $2^{16384}$ matrix coefficient is transported in hexadecimal and
+bound exactly by the input digest without decimal-expansion limits. The
+capability is tested, not presented as a benchmark of native normal-sheet
+multiplicity processing.
+
+\subsection{Reproduction commands}
+From the package root:
+\begin{verbatim}
+python -m unittest discover -s tests -v
+python -m experiments.validate
+python -m experiments.benchmark
+python -m activation_forest examples/repository_loop.json --no-incumbent
+python -m activation_forest examples/generic_positive.json --seed 1210
+python -m activation_forest examples/repository_loop.json \
+  --verify results/repository_loop_answer.json
+cd article && sh build.sh
+\end{verbatim}
+Fixed seeds in the archived experiments make their finite executions
+reproducible. Production use without \texttt{--seed} requests fresh system
+randomness. The old selector is vendored unchanged with its license and
+provenance solely for comparative reproduction; it is not counted as new
+implementation code.
+
+\section{Executed validation and measured tradeoffs}\label{sec:experiments}
+\subsection{A ledger that distinguishes unknowns from negatives}
+The tests and audit scripts were executed, rather than only supplied.
+\texttt{results/validation.json} contains environment details, counters,
+seeds, and the driver hash. The following table summarizes distinct audit
+loops; unit-test assertions are not silently added to the input-case count.
+
+% BEGIN VALIDATION_TABLE
+\begin{center}\small
+\begin{tabular}{lrrrr}\toprule
+Audit & Trials & Positive & Exact negative & Unknown\\\midrule
+Exhaustive $4	imes2$ & 6,561 & 2,586 & 2,555 & 1,420\\
+Random matrix/graph & 1,500 & 531 & 836 & 133\\
+Planted generic positives & 300 & 300 & 0 & 0\\
+\bottomrule\end{tabular}
+\end{center}
+\begin{center}\small\begin{tabular}{lr}\toprule
+Additional algebraic audit & Queries or samples\\\midrule
+Forced matroid extensions & 16,038\\
+Horn closure versus literal peeling & 2,369\\
+Sampled-independence soundness & 1,951\\
+Projected representative DP versus literal sets & 255\\
+Complete small-field sample spaces & 503\\
+\bottomrule\end{tabular}\end{center}
+% END VALIDATION_TABLE
+
+The exhaustive matrix audit fixes a three-vertex four-edge dual multigraph
+with a parallel edge and visits every one of the $3^8=6561$ four-by-two
+matrices with entries in $\{0,1,2\}$. The random audit varies connected
+multigraphs, including loops, and dense matrices. Both compare with literal
+enumeration of every spanning tree. All 3,117 positive inputs in these two
+sets receive positive certificates. Of their 4,944 negative inputs, 3,391
+receive exact local certificates and 1,553 remain \Unk. Those inconclusive
+outputs are not counted as negative decisions or as proofs of full local
+completeness.
+
+A further 300 planted positive trials use cycle dual graphs, $3\leq b\leq7$,
+and $1\leq q\leq6$. All succeed, requiring 318 total sampled rounds.
+These abstract families exercise the mandatory contraction and random rank
+reduction, rather than only the deterministic $q=0$ route. They are not
+asserted to be geometric source matrices.
+
+The 71 unit tests include positive and negative certificate corruption,
+producer-disabled replay, bad random samples, resource caps, interruption,
+loops and repeated endpoints, large binary counts, the record-level adapter,
+and the exact versus saturated parity distinction. The matroid-intersection
+audit compares 16,038 forced-extension queries against literal representative
+tuples. The projected-search audit compares the new dynamic program with
+literal independent-seed enumeration in exactly the same sampled
+representation; it does not confuse a sampled miss with an error in that
+representation's search.
+
+\subsection{An exact finite-field probability check}
+Take the triangle with edge vectors $v_0,v_1,v_2$, one mandatory class
+$\{0,1\}$, and the fixed additional witness $\{2\}$. Sampling
+$y=z_0v_0+z_1v_1$ and a one-dimensional quotient projection uses three field
+samples. The quotient witness survives the first stage with probability
+$1-1/p$, and the nonzero scalar projection survives with the same conditional
+probability. Thus the exact miss probability is
+\begin{equation}\label{eq:small-field}
+ 1-(1-1/p)^2=\frac{2p-1}{p^2}\leq\frac2p.
+\end{equation}
+The script enumerates all $503$ samples over $p=2,3,5,7$. The observed miss
+counts are respectively $6/8$, $15/27$, $45/125$, and $91/343$, exactly as in
+\eqref{eq:small-field}. This is a complete finite sample-space check, not a
+statistical estimate. Small fields can have substantial miss probability;
+that is why the theorem's constant-success choice is $p>2(q+b)$.
+
+\subsection{A nonlinear family with exact witness-count separation}
+For $g\geq1$, let the dual graph have root $0$ and $g$ leaves. On arm $i$
+place three parallel edges, in input order $c_i,a_i,b_i$. Add a loop $z$ at
+the root. Introduce a column with unit entries on $a_i,b_i$, and a column
+with entries $1$ on $c_i$ and $3$ on $a_i$. Finally introduce one global
+column having entry $2$ on every $a_i,b_i$ and entry $1$ on $z$. All
+unmentioned entries vanish. The use of $3$ is intentional: it has the same
+activation category as $2$, but makes this exact-count family satisfy
+Proposition~\ref{prop:parity}.
+
+There are $3g+1$ rows and $2g+1$ columns. The exceptional boundary consists
+of all $a_i,b_i$ and $z$, so $b=2g+1$, $q=0$, and $r=g$. There is no initial
+anchor. Each $a_i,b_i$ is a low strongly connected pair, and deleting either
+also deletes $c_i$. The loop $z$ can be deleted only when every good pair
+has disappeared, through the genuinely higher-support final column.
+
+\begin{proposition}[Choice-family counts]\label{prop:family}
+A spanning tree of this family succeeds exactly when it chooses $a_i$ or
+$b_i$ on each arm. There are $2^g$ successful trees out of $3^g$.
+Before the first complete state is reached, the representative search retains
+$2^g-1$ witness vectors, while deduplicated literal seed-set storage retains
+$3^g-2^g$ witnesses. In the inspected predecessor's specified input and
+partition order, the first successful exceptional-order branch is its
+$\Bell(g)$th matroid-intersection subproblem.
+\end{proposition}
+\begin{proof}
+A tree chooses exactly one of the three edges on each arm and cannot choose
+$z$. Choosing $a_i$ or $b_i$ activates the entire good pair and then $c_i$.
+Choosing only $c_i$ leaves the good pair unavailable: the global column has
+no unit there, and neither low column can delete the first good row. Hence
+every arm must have a good choice, after which the global column deletes $z$.
+This proves the tree count.
+
+For a proper subset $J$ of activated arms, there are $2^{|J|}$ distinct
+independent useful seed sets, one good edge on each arm of $J$. In the
+binary star-incidence representation all these sets have the same nonzero
+exterior vector. One representative per $J$ therefore suffices, giving
+$2^g-1$ representatives. Literal deduplicated storage gives
+$\sum_{J\subsetneq[g]}2^{|J|}=3^g-2^g$.
+
+In the predecessor's first exceptional-row ordering the first row of each
+good pair imposes a demand with candidate set $\{a_i,b_i\}$; its partner
+is automatically reached, and $z$ is reached at the end. The $g$ demand
+sets are disjoint, so any partition merging two demands has an empty block
+candidate set. Only the discrete partition succeeds, and it is last in
+the audited restricted-growth partition order. Thus $\Bell(g)$ calls are
+made. This last assertion concerns the archived implementation order, not
+an inherent lower bound for every algorithm using exceptional orders.
+\end{proof}
+
+The graph rank and closure make this a useful ablation family, not a proposed
+hard family of knot diagrams. Satisfying the parity condition does not
+establish a three-dimensional realization. A specialized recognizer of its
+arm structure could solve it faster than either general-purpose method.
+
+\subsection{Paired local-query timings}
+Each timing begins with a validated matrix/graph instance and includes
+preprocessing, selection, certificate production, and one independent
+replay. The new producer already performs its replay before returning;
+a redundant second replay is not charged. The historical producer is
+followed by its independent checker. Source geometry construction, file
+I/O, and full knot recognition are excluded. Literal positive tree searches
+are also replayed. Literal negative enumeration has no separate compressed
+negative certificate and is reported as an exact-search control, not as
+an identical proof-format workflow.
+
+The table gives median per-query milliseconds and the median of paired
+historical/new ratios. Five randomized-order pairs are retained per case.
+Submillisecond queries were batched; earlier unbatched data and earlier
+anchored-family controls are also retained and explicitly named. No case
+was removed merely because it favored the older or literal method.
+
+% BEGIN BENCHMARK_TABLE
+\begin{center}\small\setlength{\tabcolsep}{5pt}
+\begin{tabular}{lrrrr}\toprule
+Local input & Prior (ms) & New (ms) & Prior/new & Literal (ms)\\\midrule
+Parallel negative, 3 & 0.1932 & 0.0786 & 2.61 & 0.0036\\
+Parallel negative, 5 & 28.8081 & 0.1113 & 259 & 0.0068\\
+Parallel negative, 6 & 642.6735 & 0.1358 & 4.78e+03 & 0.0080\\
+Maintained loop matrix & 1.1715 & 0.0733 & 17.4 & 0.0366\\
+Nonlinear choice, 2 arms & 0.0929 & 0.0868 & 1.07 & 0.0737\\
+Nonlinear choice, 5 arms & 1.0083 & 0.6783 & 1.5 & 8.0923\\
+Generic positive & 0.0596 & 0.0913 & 0.653 & 0.0202\\
+\bottomrule\end{tabular}\end{center}
+% END BENCHMARK_TABLE
+
+The reconstructed maintained loop matrix benefits relative to the audited
+exceptional-order implementation, but literal testing of its very few trees
+is still faster. The generic positive example favors the prior implementation.
+The enormous historical/new ratio on the six-parallel-edge negative instance
+is particularly unrepresentative of generic difficulty: only six actual trees
+exist, and literal enumeration is much faster than either certificate-search
+framework. It measures avoidance of needless old order/partition branches,
+not evidence that difficult knot instances have been solved thousands of
+times faster. Odd-size members of that all-unit parallel family fail even
+the exact parity condition; the even-size member passes it, without proving
+geometric realizability.
+
+For the nonlinear choice-family ablation, both arms perform the same
+activation preparation and discrete positive replay; only the compression
+of candidate seed families differs.
+
+% BEGIN ABLATION_TABLE
+\begin{center}\small\setlength{\tabcolsep}{5pt}
+\begin{tabular}{rrrrrr}\toprule
+Arms & Literal witnesses & Representatives & Literal (ms) & New (ms) & Ratio\\\midrule
+4 & 65 & 15 & 0.455 & 0.271 & 1.672\\
+6 & 665 & 63 & 6.380 & 1.297 & 4.869\\
+8 & 6,305 & 255 & 87.074 & 6.453 & 13.494\\
+\bottomrule\end{tabular}\end{center}
+% END ABLATION_TABLE
+
+At eight arms, $6,305$ deduplicated literal witnesses are reduced to $255$
+representatives, as predicted by Proposition~\ref{prop:family}. All samples,
+operation counts, input hashes, source hashes, and same-algorithm A/A
+controls are in \path{results/benchmark.json}. These are finite Python
+measurements, not an empirical determination of an asymptotic exponent.
+
+\section{What this contributes to a quasi-polynomial recognizer}\label{sec:qp}
+\begin{corollary}[Conditional local quasi-polynomial regime]\label{cor:qp}
+Let a recognition workflow on an $n$-crossing input make at most
+$L(n)=2^{O((\log n)^2)}$ calls to this local selector. Suppose every call
+that must succeed has a successful forest, its encoded local input size is
+$2^{O((\log n)^2)}$, and its exceptional boundary satisfies
+$b=O((\log n)^2)$. Suppose all other charged work has the same
+quasi-polynomial bound. With fresh independent sampling per call and
+$\lambda=\lceil\log_2L(n)+c\log_2 n\rceil$, the total charged local
+work is $n^{O(\log n)}$, and the probability that any required positive
+call is missed is at most $n^{-c}$.
+\end{corollary}
+\begin{proof}
+Substitute the hypotheses into Theorem~\ref{thm:main} and multiply by
+$L(n)$. Both $2^{O(b)}$ and every fixed polynomial of the stated input size
+are $2^{O((\log n)^2)}$. The chosen $\lambda$ is $O((\log n)^2)$ and
+adds only a polynomial factor in the exponent's scale. Conditional on the
+history before each call, that input is fixed and its fresh random variables
+have miss probability at most $2^{-\lambda}$. The union bound is therefore
+valid even for adaptively chosen later inputs. It gives
+$L(n)2^{-\lambda}\leq n^{-c}$.
+\end{proof}
+The predecessor's $2^{O(b\log(b+1))}$ bound places the same local target,
+using only that estimate, in the smaller sufficient regime
+$b\log(b+1)=O((\log n)^2)$, for example
+$b=O((\log n)^2/\log\log n)$. The new result removes this logarithmic
+penalty in the parameter allowance, at the stated randomization cost.
+
+The corollary is \emph{not} a complete unknot-recognition theorem. In
+particular, the required feasible-forest hypothesis cannot be replaced by
+``the local program usually succeeds.'' Some actual handlebody presentations
+can stall under restricted cancellation rules \cite{repo,loop}, and some
+abstract inputs have no successful forest at all. A general \Unk\ outcome
+on such an input has probability one, not a small failure probability.
+A correct integrated recognizer must continue through another verified route.
+
+\begin{proposition}[Exact fallback accounting on positive local inputs]
+Suppose a deterministic complete local fallback costs at most $F(\Lambda,b)$,
+and $\lambda$ uncapped random rounds cost at most $\lambda K(\Lambda,b)$.
+Running those rounds first and invoking the fallback on \Unk\ is always
+correct. On a positive local input its expected work is at most
+\[
+ \lambda K(\Lambda,b)+2^{-\lambda}F(\Lambda,b).
+\]
+No corresponding small fallback probability follows for negative inputs.
+\end{proposition}
+\begin{proof}
+Every early positive is independently valid. Otherwise the deterministic
+fallback decides the local problem. On a positive input the probability of
+reaching it is bounded by Theorem~\ref{thm:main}; on a negative input the
+random positive search cannot succeed, so it may always be reached.
+\end{proof}
+Similarly, repeating random rounds until success has expected fewer than
+two rounds on a promised positive instance, but need not terminate on a
+negative one. Such a promise procedure is not a total recognition algorithm.
+The finite-round public interface avoids that ambiguity.
+
+The maintained supplied-cut representation has explicit combinatorial size
+bounds in terms of tetrahedra and ports \cite{kernel}. Translating those
+bounds into a polylogarithmic exceptional boundary across all useful
+hierarchy stages remains a geometric theorem to be proved. Source surface
+discovery, admissible regularization, passive port transport, pattern testing,
+and restart charging still require their own bounds. Neither binary
+compression nor a small local positive certificate proves those bounds.
+
+\section{Further research questions and concrete next targets}\label{sec:future}
+\subsection{Deterministic single-exponential mandatory contraction}
+Can the sampled contraction and rank reduction be replaced by a deterministic
+construction with $2^{O(b)}\poly(\Lambda)$ cost? A useful result must retain
+mandatory extendibility while reducing rank; choosing arbitrary mandatory
+representatives first can destroy a useful extra seed set. Fixing one
+pseudorandom seed is not a solution. An explicit hitting family tailored to
+the relevant graph minors, or a source-geometry restriction on their
+interaction, would be a genuine strengthening of Theorem~\ref{thm:main}.
+The unmixing proposition removes randomness from recovery, not from the
+existence-preserving search representation.
+
+\subsection{Source restrictions stronger than chain parity}
+Characterize saturated matrix/dual-graph pairs realizable by the maintained
+source charts. The parity-lift criterion is exact for its algebraic question
+but only necessary for geometry. Can intersection ordering, vertex-link
+planarity, bounded local source types, or boundary-port restrictions exclude
+the abstract hard instances used in previous work? A construction of a
+geometric realization of the nonlinear choice family would also clarify
+which of its phenomena are genuinely topological. Conversely, a rigorous
+nonrealizability proof would guide more meaningful benchmarks.
+
+\subsection{A uniform geometric bound on the activation boundary}
+The most direct route from the local theorem to the target complexity is a
+bound $b=O((\log n)^2)$ for all required positive stages, together with the
+other hypotheses of Corollary~\ref{cor:qp}. It may be more flexible to bound
+the number of attainable closed masks rather than all $2^b$ masks, and to
+exploit the smaller quotient rank $d$. Any such bound must survive the actual
+hierarchy moves and not merely hold for one supplied cut.
+
+\subsection{Joint optimization of primal and dual forests}
+The one-handle basis is frozen throughout this article. Choosing a different
+zero/one forest can change both column supports and the exceptional boundary.
+Can a coupled selector trade primal changes against a smaller $b$ while
+retaining independently replayable port charts? The graph-matroid part of
+the current proof does not automatically encode these basis changes.
+An end-to-end theorem would have to charge their effect on source occurrence
+words and on all later matrix construction.
+
+\subsection{More exact negative routes without full symbolic expansion}
+The frontier certificate is complete when the representation is known to be
+faithful. Can its coverage idea be lifted through a generic mandatory
+contraction without certifying every symbolic minor? Possible directions
+include rank-deficiency witnesses that explain all discarded mandatory
+choices at once, or a deterministic source-specific representation.
+A failed sampled frontier cannot be promoted to an original-input negative
+certificate by confidence rhetoric.
+
+\subsection{Fewer exceptional bits and stronger safe preprocessing}
+Rows used only as heavy prerequisites can dominate $b$. An alternative
+parameter based only on possible unit targets would need a compressed
+representation of their prerequisite states; simply dropping the heavy rows
+is invalid. Forced initial peeling and closure simplification may reduce the
+relevant boundary, but the original dual edges must remain available as
+forest resources even when their rows are already automatically active.
+Deleting them from the dual graph without justification can change the
+selection problem. A precise reduced interface for such preprocessing would
+be useful both theoretically and in implementation.
+
+\subsection{Weighted objectives and faster exterior computation}
+For integration, not every successful tree is equally good: subsequent port
+transport, word lengths, or proof size may matter. Weighted representative
+families preserve certain additive costs, but a genuine downstream objective
+need not be additive or determined by the current activation state. Identify
+an objective with a valid extension-compatible invariant before pruning by
+cost. Independently, implement sparse reachability, faster coordinate
+insertion, and low-rank specializations; the present general dictionary code
+is a research baseline rather than a tuned replacement for native sparse
+primitives.
+
+\subsection{Native replay, proof formalization, and adaptive sampling}
+The immediate integration experiment is to run the proposal on authenticated
+native source records, replay the source two/three certificate, and rerun
+all downstream checks without transporting a stale local basis. The next
+formalization target is the closure reduction and representative-extension
+lemma, followed by the small deterministic frontier checker. Its lack of
+dependence on producer algebra should make its trusted kernel manageable.
+If samples are reused across adaptively generated local inputs, the simple
+fixed-witness probability proof no longer applies automatically; fresh samples
+or a stronger simultaneous guarantee must be provided.
+
+\section{Conclusion}
+The main result replaces a factorial/Bell-number search description by a
+closed-state, rank-bounded representative search. Its decisive invariant is
+that a successful dual tree contains at most $b$ useful extra seeds beyond
+mandatory low-column representatives. Generic contraction handles the many
+mandatory choices, and exterior span compression preserves every relevant
+future independent extension. A fixed-witness probability argument avoids
+an unnecessary simultaneous-faithfulness demand.
+
+This yields a one-sided single-exponential local search, a deterministic
+single-exponential low-rank subcase with checkable negative frontiers, and
+explicit source-parity diagnostics. The mathematics, executable kernels,
+independent checks, benchmarks, and integration boundaries are separated so
+that the contribution can be incorporated without treating an inconclusive
+local search as a knot verdict. The remaining global work is specific:
+source-faithful geometry, bounded activation complexity over the hierarchy,
+and complete charging of every required operator and restart.
+
+\appendix
+\section{The classical mandatory-representative oracle}\label{app:mi}
+The prepass and current recovery implementation use graphic/partition
+matroid intersection, specialized to disjoint color classes $U_i$. A fixed
+forest $X$ is contracted logically: the independence oracle tests whether
+$X\cup I$ is a forest. The partition constraint allows at most one selected
+edge from each mandatory class.
+
+Starting with $I=\varnothing$, form the exchange digraph on selectable
+edges. An unselected edge is a source if it can be added to the forest
+$X\cup I$. An unselected edge is a sink if its color is unused. A selected
+edge $y$ points to an unselected $e$ when $X\cup(I-\{y\})\cup\{e\}$
+is a forest. An unselected nonsink points to the selected edge of its color.
+Toggle a shortest source-to-sink path. This is the classical common-
+independence augmentation; in the graphic specialization its exchanges can
+also be read directly from fundamental forest paths. The shortest-path
+condition prevents earlier exchange chords from invalidating the toggle.
+Iterating increases the common independent-set size until it is maximum.
+The standard matroid-intersection and Rado argument is documented in the
+audited predecessor \cite{prior}; this primitive is not asserted to be new.
+
+For the uncontracted mandatory prepass, a failed augmentation yields a
+subcollection of colors satisfying \eqref{eq:rado}. The implementation
+returns that subcollection, and the independent checker recomputes the
+mandatory components and graphic rank before accepting it. A maximum
+matching count alone would not be an accepted certificate. For recovery
+with fixed $X$, only actual representative edges are needed; their union
+with $X$ and the resulting final tree are independently checked. The
+16,038-query brute-force audit includes nonempty forced forests and empty
+or deficient color classes.
+
+\section{Source audit and contribution ledger}\label{app:audit}
+The repository inspection is pinned, rather than silently following a
+changing main branch. The maintained files inspected include the directory
+README, the synthesis README, \path{synthesis/parallelity.tex},
+\path{synthesis/bundle_boundary_kernel.tex},
+\path{synthesis/core_three_handles.tex},
+\path{synthesis/three_handles_results.tex}, and the complete current native
+three-handle replay function. The corresponding source paths and available
+Git blob identifiers are recorded in \path{SOURCE_AUDIT.json}.
+
+The predecessor archive was read from the user's accessible Library and
+materialized for programmatic comparisons. Its article and code were used
+as a baseline; the vendored package retains its original license.
+\path{ProveIt_Nonlinear_Activation_Forests_2026-10-12.zip} and
+\path{ProveIt_Exceptional_Rows_2026-10-12.zip} were listed among the new
+incoming files but their contents were not obtained. The ordered-interface
+archive was inventoried, not used as a competing selector. Thus this study
+claims a demonstrated advance relative to the inspected matroidal article,
+not an exhaustive priority comparison against every incoming archive.
+
+The ownership of the mathematical steps is also explicit. Private-column
+completeness, the dual-forest source charts, the pair-column interpretation,
+and the previous order/partition method come from the maintained and prior
+materials. Generic linear specialization, finite-field polynomial testing,
+graphic/partition intersection, and exterior representative families are
+standard tools. The proved contribution here is their closed-activation
+reduction and single-exponential combination, the faithful frontier
+certificate protocol, the application-specific parity audit, and the stated
+local quasi-polynomial consequences. The code, finite experiments, and
+limits on their interpretation are part of that contribution. Neither
+historical priority nor a completed global complexity theorem is asserted.
+
+\begin{thebibliography}{99}
+\bibitem{repo}
+V.~Reshetnikov and ProveIt contributors.
+\emph{Unknot Recognition: maintained project documentation}.
+\path{Topology/UnknotRecognition/README.md}, pinned commit \pin, inspected
+12 October 2026.
+\url{https://github.com/VladimirReshetnikov/ProveIt}.
+
+\bibitem{peeling}
+ProveIt contributors.
+\emph{Complete rectangular cancellation by sparse column peeling}.
+\path{Topology/UnknotRecognition/synthesis/column_cancellation.tex}.
+The result is also developed in the inspected preceding research article
+\cite{prior} and referred to in the maintained kernel documentation.
+
+\bibitem{dual}
+ProveIt contributors.
+\emph{Removing source core three-handles relative to the bundle ports}.
+\path{Topology/UnknotRecognition/synthesis/core_three_handles.tex},
+pinned commit \pin.
+
+\bibitem{loop}
+ProveIt contributors.
+\emph{Source tests, dual-forest dependence, and three-handle results}.
+\path{Topology/UnknotRecognition/synthesis/three_handles_results.tex},
+pinned commit \pin.
+
+\bibitem{kernel}
+ProveIt contributors.
+\emph{Parallelity geometry and the bundle-boundary cancellation kernel}.
+\path{Topology/UnknotRecognition/synthesis/parallelity.tex} and
+\path{Topology/UnknotRecognition/synthesis/bundle_boundary_kernel.tex},
+pinned commit \pin.
+
+\bibitem{prior}
+ProveIt AI-assisted research contribution.
+\emph{Matroidal Dual-Forest Selection for Unknot Recognition:
+Polynomial pair-column cancellation, exact deletion deficits, and a
+fixed-parameter higher-support kernel}.
+12 October 2026. Article and executable code in
+\path{docs/incoming/ProveIt_Matroidal_Dual_Forests_2026-10-12.zip}.
+Its maintained-source checkpoint is
+\texttt{c6d0ec8aa0b6308310ab6c081ba29d8bc363ede5}.
+
+\bibitem{announcement}
+Mathematical Institute, University of Oxford.
+\emph{Marc Lackenby announces a new unknot recognition algorithm that runs
+in quasi-polynomial time}. 2021; inspected 12 October 2026.
+\url{https://www.maths.ox.ac.uk/node/38304}.
+
+\bibitem{lackenby}
+M.~Lackenby.
+\emph{Incompressible surfaces, hierarchies and unknot recognition}.
+arXiv:2607.23350v1, 25 July 2026, especially Sections 9--10.
+\url{https://arxiv.org/abs/2607.23350}.
+
+\bibitem{fomin}
+F.~V.~Fomin, D.~Lokshtanov, F.~Panolan, and S.~Saurabh.
+\emph{Efficient Computation of Representative Sets with Applications in
+Parameterized and Exact Algorithms}.
+arXiv:1304.4626v4, 2016.
+\url{https://arxiv.org/abs/1304.4626}.
+
+\bibitem{bevern}
+R.~van Bevern, O.~Yu.~Tsidulko, and P.~Zschoche.
+\emph{Representative families for matroid intersections, with applications
+to location, packing, and covering problems}.
+Discrete Applied Mathematics \textbf{298} (2021), 110--128.
+arXiv:1806.11527v4.
+\url{https://arxiv.org/abs/1806.11527}.
+
+\bibitem{schwartz}
+J.~T.~Schwartz.
+\emph{Fast probabilistic algorithms for verification of polynomial identities}.
+Journal of the ACM \textbf{27}(4) (1980), 701--717.
+DOI: \href{https://doi.org/10.1145/322217.322225}{10.1145/322217.322225}.
+\end{thebibliography}
+\end{document}

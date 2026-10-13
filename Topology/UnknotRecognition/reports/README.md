@@ -125,6 +125,7 @@ modification times.
 | `112/` | `ProveIt_Lazy_Replay_Chamber_Graphs_2026-10-12.zip` | complete delivered article, patch, runtime snapshot and evidence | no unrestricted quasi-polynomial recognizer | lazy weighted replay and source-authenticated chamber graphs | placed only; tests not rerun and patch unapplied |
 | `113/` | `ProveIt_Projective_Port_Atlases_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | projective common-port atlases and source-bound normal-surface discovery | placed only; tests not rerun and integration unapplied |
 | `114/` | `ProveIt_Signed_Primitive_Annuli_2026-10-12.zip` | complete delivered article, patch, runtime snapshot and evidence | no unrestricted quasi-polynomial recognizer | signed primitive annuli, compressed basis certificates and native source transport | placed only; tests not rerun and patch unapplied |
+| `115/` | `ProveIt_Representative_Activation_2026-10-12.zip` | complete delivered article, research kernel, adapters and evidence | no unrestricted quasi-polynomial recognizer | representative-family activation search for fixed dual-forest selection | placed only; tests not rerun and integration unapplied |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -1009,3 +1010,30 @@ claims pending separate review. Existing attributes and ignore rules apply
 without checksum or line-ending work. Both ZIPs are retired and remain
 recoverable from their arrival commit; the incoming README is preserved.
 See the [placement record](../synthesis/data/incoming-113-114-placement.json).
+
+
+## Further arrival of 12 October 2026: report 115
+
+Manuscript 01, [Single-Exponential Activation Kernels for Dual-Forest
+Selection](115/article/article.tex), is placed as the next report with its
+single wrapper removed. It continues this programme's fixed unsigned
+cancellation-matrix and boundary-rooted dual-graph selection problem, so it
+belongs in the numbered unknot collection. Its repository pin is
+`e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39`.
+
+The manuscript proposes a one-sided randomized `2^{O(b)}` local search using
+activation closure, generic mandatory contraction and representative families,
+with independently replayed discrete positive certificates. It also describes
+a deterministic exact low-rank case, local negative frontier certificates,
+parity diagnostics and a record-level native adapter. These are delivered
+claims: full native geometry, passive-interface transport and a general
+quasi-polynomial recognition theorem are not supplied.
+
+Of 61 delivered files, eleven match earlier Git blobs: the license, a build
+script and the attributed vendored matroidal baseline. Matches were confirmed
+in historical commit trees; the manuscript itself was not previously placed.
+No tests, patch application or soundness review were performed during this
+intake. Files are staged as delivered under existing attributes and ignores,
+without checksum or line-ending work. The ZIP is retired and remains recoverable
+from arrival commit `1913e9156`; the incoming README is preserved. See the
+[placement record](../synthesis/data/incoming-115-placement.json).
