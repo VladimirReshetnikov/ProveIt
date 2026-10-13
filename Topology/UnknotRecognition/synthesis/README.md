@@ -15,11 +15,38 @@ The broader regression run passes 336 tests across 38 modules with Regina
 and no skips. A final focused seven-test replay also checks that outer
 successor corruption is rejected while its inner geometric proof remains
 valid. Commands and logs are retained under `data/pachner-descent-*`.
-The current [PDF](report.pdf) has 803 pages. Section 187 spans pages 790–796;
-these pages pass visual review after three build passes, with no new overflow
-warnings or unresolved references. Run `python -B -S
-data/pachner_descent_core_publication.py` from this directory to check and
-pin this core publication. It contains no new timing claim.
+The core publication at `310dd447b` built an 803-page [PDF](report.pdf),
+with Section 187 on pages 790–796, visually reviewed after three build passes
+with no new overflow warnings or unresolved references. Its helper
+`data/pachner_descent_core_publication.py` and recorded source pins describe
+that historical core publication, which contains no new timing claim.
+
+The separate fourteen-call whole-diagram audit preserves every returned proof
+or partial chain. T25 pivots fall from 7,113 to 693; T27 completes at 2,545
+where the baseline exhausts 10,000. Both weaving calls remain inconclusive,
+and the two-trefoil pivot count increases from 3,398 to 3,526. The twelve
+noncircle terminal triangulations match the independently replayed staged
+sources exactly. On these labelled sources, complete negative trees and
+original STANDARD extreme-ray checks establish resolving values 1, 0, 2, 1
+and 2 for T, F, TT, T25 and T27. The older T25 source has exact value 3;
+its reduction to 1 proves a finite improvement, without a general
+monotonicity or asymptotic claim. All 49 corruption controls reject, including
+a valid same-diagram knot proof on the wrong experimental endpoint.
+The staged twenty-call experiment, its five assembled proofs, and the fresh
+fourteen-call audit remain distinct. See
+[`pachner_descent_research`](../fast/pachner_descent_research/README.md).
+All 50 predeclared timing calls match the audited outputs. Median paired
+baseline/enabled time ratios are 0.9200 for trefoil, 1.1413 for figure-eight,
+1.0270 for TT and 1.7181 for T25, including preprocessing, proof replay and
+complete result serialization. The trefoil regression, all paired samples
+and A/A controls remain visible. The circle performs no macro search.
+Run `python -B -S data/pachner_descent_publication.py` from this directory
+after the final build to replay the complete evidence and pin the publication.
+It checks that the native code and test dependencies still match the earlier
+336-test regression; it runs neither discovery nor new timings.
+The current [PDF](report.pdf) has 809 pages. Section 187 spans pages 791–802;
+the new empirical pages 797–802 pass visual review after three build passes.
+The final build has no unresolved references or new overflow warnings.
 
 [`strict_pachner32.tex`](strict_pachner32.tex) proves the optional strict 3→2
 preprocessing policy. Its independent checker compares the entire formal

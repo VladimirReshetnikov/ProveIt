@@ -397,5 +397,361 @@ cheap to recognize.  Thus the policy establishes a certified polynomial
 preprocessing operation; it supplies no general quasi-polynomial bound
 for unknot recognition.
 
-% Future empirical subsection: add only archived, independently replayed
-% fresh driver evidence and completed timings with their exact source pins.
+\subsection{Archived staged experiments and exact endpoint parameters}
+\label{sec:pachner-descent-crushing-staged}
+
+The package \path{fast/pachner_descent_research} preserves two distinct
+historical evidence groups.  Its manifest records hashes and lengths of
+both stored files and their uncompressed contents; embedded native hashes
+identify the code used when an old artifact was generated.  The current
+independent checker replays those artifacts with the current pinned
+verifiers.  This is fresh proof replay, without fresh LP discovery or a
+new Regina oracle run.  Historical generation pins are not represented
+as current native source pins.
+
+The earlier group, \path{strict-descent-next-design}, includes the exact
+strict-$3\to2$-preprocessed sources for the braid closures
+\[
+ \begin{split}
+ T_{25}&=\widehat{\sigma_1^5}\quad\text{on two strands},\\
+ T_{27}&=\widehat{\sigma_1^7}\quad\text{on two strands},\\
+ W&=\widehat{(\sigma_1\sigma_2^{-1})^4}
+                         \quad\text{on three strands}.
+ \end{split}
+\]
+Their respective source sizes are $15,21,34$.  The explicit braid data
+and authenticated native exterior chains define the experiment.  On the
+15-tetrahedron $T_{25}$ source, a complete negative tree with split set
+$\{0,1,4\}$ proves $h\le3$.  Three independently checked positive
+formal root rays have pairwise disjoint conflicts
+\[
+             \{0,7\},\qquad\{1,11,12\},\qquad\{4,10,13\},
+\]
+and prove the matching lower bound.  Thus $h=3$ on that labelled source.
+On the 21-tetrahedron $T_{27}$ source, three verified rays have disjoint
+conflicts $\{0,7\}$, $\{1,10,16,17\}$ and $\{4,6\}$, proving $h\ge3$.
+Its capped full-root query is inconclusive, so there is no corresponding
+upper bound from that query.  The 34-tetrahedron weaving source also
+remains inconclusive.  Across this group, eleven distinct exposed rays
+are checked with the original STANDARD matching equations and exact
+rank; no new ray enumeration is needed for replay.
+
+That group also retains three separately capped supplied-source
+one-upward searches from the older $8$-tetrahedron trefoil,
+$12$-tetrahedron figure-eight and $17$-tetrahedron two-trefoil sources.
+They produce first-descent endpoints of sizes $7,11,16$, each by $UDD$.
+These local packets predate the new source adapter and do not by
+themselves supply complete recognition outcomes or endpoint bounds on $h$.
+
+The second group, \path{fixed-u1-staged-audit}, records exactly twenty
+completed calls: two whole-driver circle calls; twelve preprocessing-only
+whole-driver calls on six noncircle diagrams, with the new policy off
+and on; and six separate Euler queries on the enabled endpoints.
+The twelve preprocessing calls set the normal tree-node allowance to
+zero and perform zero LP calls.  Every baseline chain is literally a
+prefix of its enabled chain, with identical original exterior and
+shelling data.  The six later source queries use the conflict-based
+transversal policy, polynomial LP backend, $256$ nodes and $10{,}000$
+each of pivots, anchors, candidate subsets, ellipsoid iterations and
+feasibility calls.
+
+In the following table, $t_0$ and $t_1$ are the baseline and enabled
+preprocessing endpoint sizes; $M$ counts accepted macros.  The node and
+pivot columns belong only to the separate supplied-source Euler query.
+Here $T$ is the trefoil, $F$ the figure eight, and $TT$ is the closure
+of the three-strand braid $\sigma_1^3\sigma_2^3$.  ``Negative'' means
+a complete full-root negative normal proof, while ``capped'' records
+an inconclusive return.
+\begin{center}
+\begin{tabular}{lrrrrrlc}
+\hline
+Input & $t_0$ & $t_1$ & $M$ & Nodes & Pivots & Query & $h(T_1)$\\
+\hline
+$T$      & 8  & 7  & 1 & 5  & 259   & negative & $1$\\
+$F$      & 12 & 10 & 1 & 1  & 676   & negative & $0$\\
+$TT$     & 17 & 16 & 1 & 16 & 3526  & negative & $2$\\
+$T_{25}$ & 15 & 11 & 3 & 7  & 693   & negative & $1$\\
+$T_{27}$ & 21 & 17 & 4 & 15 & 2545  & negative & $2$\\
+$W$      & 34 & 31 & 3 & 1  & 10000 & capped   & unknown\\
+\hline
+\end{tabular}
+\end{center}
+All thirteen accepted macros in this staged group have one upward and
+two downward moves.  Strict $3\to2$ preprocessing runs again after
+each macro: in particular the figure-eight sequence goes from $12$ to
+$11$ by the macro and then to $10$ by a strict contraction.  The
+$T_{25}$ chain also has an additional strict contraction beyond its
+three accepted macros.  The other enabled preprocessing rules remain
+part of these actual chains.
+
+Each of the five negative source proofs is combined with its exact
+authenticated preprocessing chain to form an independently verified
+knottedness certificate.  These are assembled proofs, not five new
+whole-driver discovery calls.  In particular summing their separate
+source-query counters with preprocessing counters would not create a
+measurement of a fresh recognition run.  Both circle whole calls prove
+the unknot.  The weaving case retains its partial chain and capped
+source query; it supplies neither a complete negative proof nor a
+nontrivial bound on $h$.
+
+\paragraph{Why the endpoint values of $h$ are exact.}
+The five complete negative trees split only at the following sets,
+in the table's order:
+\[
+        \{2\},\qquad\varnothing,\qquad\{0,10\},\qquad
+        \{7\},\qquad\{10,14\}.
+\]
+Proposition~\ref{prop:strict-pachner32-tree-upper-bound} therefore
+gives upper bounds $1,0,2,1,2$.  Its argument applies to the entire
+positive formal root-ray family: a ray with no conflict in the split
+set could follow a compatible branch to a leaf, contradicting that
+leaf's independently checked exclusion of positive Euler vectors.
+This upper-bound argument does not use completeness of a finite
+sample of exposed rays.
+
+Matching lower bounds use already exposed rays.  The following selected
+conflicts suffice; $(c,r)$ denotes the number of retained STANDARD
+columns and their exact rank.
+\begin{center}
+\begin{tabular}{llc}
+\hline
+Labelled endpoint & Selected conflicts & $(c,r)$\\
+\hline
+$T$, $7$ tetrahedra & $\{2,6\}$ & $(35,33)$\\
+$TT$, $16$ tetrahedra & $\{0,4\}$, $\{10,14\}$
+                                      & $(73,71)$, $(77,75)$\\
+$T_{25}$, $11$ tetrahedra & $\{2,7\}$ & $(55,53)$\\
+$T_{27}$, $17$ tetrahedra & $\{2,14\}$, $\{0,10,11\}$
+                                      & $(85,83)$, $(85,83)$\\
+\hline
+\end{tabular}
+\end{center}
+Every listed ray has canonical Euler value one.  The independent
+calculation checks nonnegative integral coordinates, original matching,
+primitive quadrilateral scaling, canonical triangle normalization and
+incidence Euler.  Each source has one finite vertex and two boundary
+triangles.  All $4t$ triangle columns are retained, with rank
+$4t-1$, together with the positive quadrilateral support.  Thus the
+triangle-only kernel has dimension one and the projected quadrilateral
+support nullity is
+\[
+                             c-r-1=1.
+\]
+This verifies extremality in the unrestricted quadrilateral root cone;
+it does not mistake extremality in a discovery mask for root extremality.
+A nonempty conflict needs at least one hitting tetrahedron, and each
+displayed disjoint pair needs at least two.  These lower bounds equal
+the complete-tree upper bounds.  The checker replays all ten distinct
+exposed rays in the staged archive, including those not needed in the
+displayed witness selection.
+
+For the figure-eight endpoint, $h=0$ follows directly from the negative
+unrestricted-root leaf.  It does not follow from the absence of exposed
+rays in a sample.  The older 12-tetrahedron source had the proved upper
+bound $h\le1$; that earlier evidence did not establish $h=1$, so this
+comparison alone is not a proved strict decrease of $h$.
+
+There are nevertheless two proved strict source-specific decreases:
+$T_{25}$ changes from exact $h=3$ at $15$ tetrahedra to exact $h=1$ at
+$11$, and $T_{27}$ changes from $h\ge3$ at $21$ tetrahedra to exact
+$h=2$ at $17$.  All source identifications use full labelled arrays
+and hashes, not knot type or tetrahedron count alone.  These finite
+endpoint comparisons establish neither monotonicity at each intervening
+move nor a uniform bound after exhaustion of the fixed one-upward
+family.  Discovery counters in this archive are retained nonnegative
+counts checked against configured caps; independent replay verifies
+the mathematical packets and accepted-move totals, not an execution
+transcript of every LP operation.
+
+\subsection{Fourteen fresh complete-driver audit calls}
+\label{sec:pachner-descent-crushing-audit}
+
+The separate \path{data/pachner-descent-audit.json} contains fourteen
+fresh calls of the raw whole-diagram crushing recognizer: the circle
+and the six noncircle inputs above, each with the macro disabled and
+enabled.  The visible-factor wrapper is not invoked, including on $TT$.
+These calls actually run preprocessing, normal search and final
+recognition replay together.  They are distinct from the twenty-call
+staged protocol and its five assembled proofs.
+
+Both arms enable vertex reduction, boundary peeling and the strict
+$3\to2$ scan.  They use the source-model transversal search with
+conflict-based candidates, the envelope strategy and the polynomial
+LP policy with its default bounded fast-path prefix
+(\path{lp_fast_path_pivots=None}).  The shared limits
+are $256$ normal tree nodes and $10{,}000$ each of pivots, anchors,
+candidate hitting subsets, ellipsoid iterations and feasibility calls.
+The option map also fixes $256$ sectors, $10{,}000$ bases, diversified
+sector order and quantum $64$.  The reduction allowance is unlimited;
+strict source descent still bounds accepted outer operations.  Only
+the macro-enable flag differs between the arms.  There is no wall
+cutoff or removal of an unsuccessful case.
+
+All fourteen calls returned, with no exception or unreturned call.
+The audit independently replays every conclusive proof or partial
+chain and retains every complete returned result before replay.
+The native and research dependency map has $406$ unchanged file pins
+through the run.  The table records reported normal-search nodes $N$
+and pivots $P$, independently recoverable normal crushes $C$, strict
+$3\to2$ moves $S$, accepted macros $M$, and final tetrahedron count
+$t_f$.  Here U, K and I denote \path{UNKNOT}, \path{KNOTTED} and
+\path{INCONCLUSIVE}; a dash in the last column means the terminal
+empty crushing outcome, not an unrecorded source.
+\begin{center}\small
+\begin{tabular}{llcrrrrrr}
+\toprule
+Input & Macro & Result & $N$ & $P$ & $C$ & $S$ & $M$ & $t_f$\\
+\midrule
+Circle & off & U & 0 & 0 & 1 & 0 & 0 & ---\\
+Circle & on  & U & 0 & 0 & 1 & 0 & 0 & ---\\
+$T$ & off & K & 7 & 428 & 12 & 2 & 0 & 8\\
+$T$ & on  & K & 5 & 259 & 12 & 2 & 1 & 7\\
+$F$ & off & K & 7 & 1917 & 16 & 1 & 0 & 12\\
+$F$ & on  & K & 1 & 676 & 16 & 2 & 1 & 10\\
+$TT$ & off & K & 56 & 3398 & 24 & 6 & 0 & 17\\
+$TT$ & on  & K & 16 & 3526 & 24 & 6 & 1 & 16\\
+$T_{25}$ & off & K & 27 & 7113 & 20 & 5 & 0 & 15\\
+$T_{25}$ & on  & K & 7 & 693 & 20 & 6 & 3 & 11\\
+$T_{27}$ & off & I & 21 & 10000 & 28 & 11 & 0 & 21\\
+$T_{27}$ & on  & K & 15 & 2545 & 28 & 11 & 4 & 17\\
+$W$ & off & I & 1 & 10000 & 32 & 3 & 0 & 34\\
+$W$ & on  & I & 1 & 10000 & 32 & 3 & 3 & 31\\
+\bottomrule
+\end{tabular}
+\end{center}
+All boundary-unlayering counts and both LP fallback work counts are
+zero in these calls.  The enabled noncircle runs make the following
+macro-discovery calls, including their final unsuccessful call:
+\begin{center}\small
+\begin{tabular}{lrrr}
+\toprule
+Input & Calls & Popped macro frames & Cooperative checkpoints\\
+\midrule
+$T$ & 2 & 41 & 33259\\
+$F$ & 2 & 68 & 76728\\
+$TT$ & 2 & 129 & 215368\\
+$T_{25}$ & 4 & 125 & 160180\\
+$T_{27}$ & 5 & 168 & 310361\\
+$W$ & 4 & 202 & 628206\\
+\bottomrule
+\end{tabular}
+\end{center}
+The circle terminates through vertex-reduction crushing before any
+macro search.  Macro frames and checkpoints are separate from $N$ and
+$P$ and have the diagnostic scope described in the cost proof above.
+They retain the preprocessing effort instead of treating a smaller
+normal query as a free transformation.
+
+For $T_{27}$ the enabled policy completes a knottedness proof within
+the declared $10{,}000$-pivot limit where the baseline returns only
+a partial chain.  This is a finite improvement in completion under
+the same allowances, not an elapsed-time ratio between equal complete
+tasks.  Both weaving calls reach that pivot limit and remain
+inconclusive despite the source reduction from $34$ to $31$
+tetrahedra.  On $TT$, nodes decrease from $56$ to $16$ while pivots
+increase from $3398$ to $3526$.  Thus even these retained controls
+do not support a uniform decrease in all normal-search work measures.
+The public macro default remains disabled.
+
+\paragraph{Binding the fresh sources to the archived parameter proofs.}
+The frozen package checker verifies the whole-call proofs and archive
+proofs separately.  The additional helper
+\path{data/pachner_descent_endpoint_binding.py} checks their relationship
+explicitly.  Its retained output,
+\path{data/pachner-descent-endpoint-bindings.json}, verifies all twelve
+noncircle endpoint comparisons by exact type-sensitive equality of
+their full labelled source tables.  Each also passes the full finite
+source validator and has one vertex and two boundary triangles.
+The helper binds the input PDs, option maps, source pins and complete
+coverage; its source-equality checks supplement, rather than replace,
+the package's independent replay of every complete or partial proof.
+Consequently the staged endpoint values and bounds on $h$ apply to
+these same fresh sources.  This uses equality of sources, not a
+theorem transporting $h$ through an arbitrary homeomorphism.
+
+Separately, the retained corruption controls reject $49$ mutations
+of saved evidence, with their unmodified controls accepted.  Their
+scope includes genuine circle and macro packets, option and counter
+contracts, audit coverage, and source binding.  One control supplies
+a different labelled trefoil endpoint with a valid native recognition
+proof: ordinary native result replay accepts that proof, while the
+explicit archive-endpoint binding rejects the false equality claim.
+This distinguishes a correct knot verdict from the additional source
+identity needed to publish a particular value of $h$.  The control
+script, fixture and output are retained under
+\path{data/pachner-descent-corruption-*}.
+
+Accepted move totals and final source sizes follow from replayed
+packets.  Search statistics satisfy literal nonnegative-integer,
+configured-cap and aggregation checks, but are reported counters rather
+than an independently reconstructed LP execution history.  These
+fourteen fresh calls and exact endpoint checks establish finite
+behavior and proof provenance; they provide no asymptotic recognition
+bound or general monotonicity theorem.
+
+\subsection{Fifty paired complete-call timing controls}
+\label{sec:pachner-descent-crushing-timing}
+
+The predeclared benchmark in
+\path{data/pachner-descent-benchmark.json} completes all fifty calls
+on circle, trefoil, figure eight, $TT$ and $T_{25}$.  Each input has
+one warmup per arm, three pairs with alternating arm order, and one
+baseline A/A pair.  There is no wall cutoff.  The $T_{27}$ and weaving
+inputs remain in the fourteen-call audit above but are outside this
+predeclared timing set; their capped baseline outcomes are not used
+to form recognition-speed ratios.
+
+Each timer includes fresh whole-driver recognition, independent replay
+of its conclusive proof or partial chain, canonical serialization of
+the entire returned result and its SHA-256 hash.  Module initialization,
+prepared input PDs and reference-result serialization are outside the
+timer.  A runtime check confirms that no additional native module is
+initialized inside a measured call.  Warmup results are retained in
+full; every sample's result hash and serialized length agree with its
+complete audited arm.  All five timing cases return the same conclusive
+verdict in both arms.  All $406$ native and research source pins remain
+unchanged, and there are no failed or unreturned calls.
+
+The experiment uses CPU~5 affinity on a shared six-logical-CPU host,
+with Python~3.13.14.  No competing heavy job from this task runs during
+measurement.  Other repository jobs may remain active, so affinity is
+not an exclusive CPU reservation.  The exact command, environment,
+before/after process records and successful exit are retained in
+\path{data/pachner-descent-environment.json}.
+
+The following table gives median milliseconds for each arm, the median
+of the three paired baseline/enabled time ratios, and the baseline
+A/A ratio.  The paired ratio is computed from matched runs; it is not
+the quotient of the two marginal medians.  Values above one favor the
+enabled arm for that paired statistic.
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Input & Baseline ms & Enabled ms & Paired ratio & A/A\\
+\midrule
+Circle & 11.075 & 10.973 & 1.0125 & 1.0238\\
+Trefoil & 1964.002 & 2118.615 & 0.9200 & 0.9511\\
+Figure eight & 6477.670 & 5607.515 & 1.1413 & 1.0063\\
+$TT$ & 24118.429 & 23867.372 & 1.0270 & 0.9949\\
+$T_{25}$ & 19226.410 & 11190.667 & 1.7181 & 1.0174\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The trefoil is an observed regression: all three paired ratios are
+below one, despite fewer normal-search nodes and pivots.  The timings
+charge the geometric search and proof overhead needed to obtain that
+smaller query.  The figure-eight median favors the enabled policy, but
+one of its three individual ratios is below one.  The $TT$ difference
+is small on this host, and the $T_{25}$ control has the largest observed
+paired improvement.  These differing outcomes are retained together;
+the policy remains optional.
+
+The circle executes no macro search and serves as a protocol control;
+its small timing difference is not evidence of a geometric performance
+gain.  Three paired samples and a single A/A pair per input do not
+establish a population-level effect or an asymptotic scaling law.
+The benchmark measures these complete fixed-policy recognition calls,
+including replay and serialization.  Its ratios do not isolate the
+cost of one Pachner move, prove that lower $h$ always gives a faster
+run, or close the missing general quasi-polynomial bound.
