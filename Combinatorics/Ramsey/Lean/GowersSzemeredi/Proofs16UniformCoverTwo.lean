@@ -50,53 +50,12 @@ theorem section16_poly_piece_decomposition_two
     ∃ J : Finset (Point N 2), (1 - theta) * (N : Real) ^ 2 ≤ J.card ∧
       ∃ P : Fin (polyTwoPieces gamma theta) → PolyPieceTwo N theta gamma,
         restrictRelation Gamma J ⊆ polyPieceTwoGraphs P := by
-  classical
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le 1 ht ht1 hg hg1
-  have hθ'pos : 0 < polyPieceBudget theta gamma := by
+  have hmass : 0 < 5 * polyPieceBudget theta gamma := by
     unfold polyPieceBudget; positivity
-  set θ' := polyPieceBudget theta gamma with hθ'def
-  set zeta := section16Zeta theta gamma 1 with hzetadef
-  set qs := polyPieceSpecCount theta gamma
-  set qf := polyPieceFaceCount theta gamma
-  let Good : Finset (Point N 2 × ZMod N) → Prop := fun G =>
-    ∃ P : PolyPieceTwoData Gamma zeta (5 * θ') qs qf qf, G = partialGraph P.D P.phi
-  have hmass : 0 < 5 * θ' * (N : Real) ^ 2 := by
-    have : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-    positivity
-  obtain ⟨q, G, J, hG, hq, hJ, hcov⟩ := section16_greedy_relation_decomposition Good theta
-    (5 * θ' * (N : Real) ^ 2) hmass Gamma (by
-      intro Delta hDelta hproj
-      obtain ⟨P⟩ := section16_poly_piece_two_of_subrelation ht ht1 hg hg1 hN hprod Delta
-        hDelta hproj
-      refine ⟨partialGraph P.D P.phi, P.graph_sub, ?_, ⟨P.widen hDelta, rfl⟩⟩
-      rw [partialGraph_card]
-      exact P.card_ge)
-  set m := polyTwoPieces gamma theta with hmdef
-  have hqm : q ≤ m := by
-    rw [hmdef, polyTwoPieces]
-    apply Nat.le_floor
-    have hNpos : (0 : Real) < (N : Real) ^ 2 := by
-      have : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-      positivity
-    have h1 : (q : Real) * (5 * θ' * (N : Real) ^ 2) ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ 2 :=
-      hq.trans hsize
-    rw [le_div_iff₀ (by positivity)]
-    have h2 : (q : Real) * (5 * θ') * (N : Real) ^ 2 ≤ gamma ^ (-(2 : Int)) * (N : Real) ^ 2 := by
-      linarith [h1]
-    exact le_of_mul_le_mul_right h2 hNpos
-  choose P hPG using fun i => (hG i).2
-  let Q : Fin m → PolyPieceTwo N theta gamma := fun j =>
-    if h : j.val < q then ((P ⟨j.val, h⟩).toMassZero).widen (Finset.subset_univ _)
-    else PolyPieceTwoData.empty _ zeta qs qf qf
-  refine ⟨J, hJ, Q, ?_⟩
-  intro z hz'
-  have hz1 := hcov hz'
-  unfold section16FinsetUnion at hz1
-  obtain ⟨i, -, hi⟩ := Finset.mem_biUnion.mp hz1
-  rw [hPG i] at hi
-  refine Finset.mem_biUnion.mpr ⟨⟨i.val, i.isLt.trans_le hqm⟩, Finset.mem_univ _, ?_⟩
-  simp only [Q, dif_pos i.isLt]
-  exact hi
+  exact section16_poly_piece_two_decomposition_of_extract hmass Gamma hsize
+    (fun Delta hDelta hproj =>
+      section16_poly_piece_two_of_subrelation ht ht1 hg hg1 hN hprod Delta hDelta hproj)
 
 /-! ### The uniform family cover -/
 
