@@ -87,15 +87,20 @@ theorem ex_mul' (hX : 2 ≤ X) {x y : Real} {a b : Nat} (hy0 : 0 ≤ y)
     x * y ≤ Real.exp (X ^ (2 ^ (max a b + 1))) :=
   ex_mul hX hy0 (ex_mono hX hx (le_max_left a b)) (ex_mono hX hy (le_max_right a b))
 
+/-- A nonnegative base and exponent suffice for the exponential power bound. -/
+theorem ex_rpow_of_nonneg (hX : 2 ≤ X) {b e : Real} {a c : Nat} (hb0 : 0 ≤ b)
+    (hb : b ≤ Real.exp (X ^ (2 ^ a))) (he0 : 0 ≤ e) (he : e ≤ X ^ (2 ^ c)) :
+    b ^ e ≤ Real.exp (X ^ (2 ^ (max a c + 1))) := by
+  calc b ^ e ≤ Real.exp (X ^ (2 ^ a)) ^ e := Real.rpow_le_rpow hb0 hb he0
+    _ = Real.exp (X ^ (2 ^ a) * e) := (Real.exp_mul _ _).symm
+    _ ≤ Real.exp (X ^ (2 ^ (max a c + 1))) := Real.exp_le_exp.mpr
+      (pw_mul' hX (pow_nonneg (by linarith) _) he0 le_rfl he)
+
 /-- `b^e ≤ exp(X^(2^(max a c + 1)))` for `1 ≤ b ≤ exp(X^(2^a))` and `0 ≤ e ≤ X^(2^c)`. -/
 theorem ex_rpow (hX : 2 ≤ X) {b e : Real} {a c : Nat} (hb1 : 1 ≤ b)
     (hb : b ≤ Real.exp (X ^ (2 ^ a))) (he0 : 0 ≤ e) (he : e ≤ X ^ (2 ^ c)) :
     b ^ e ≤ Real.exp (X ^ (2 ^ (max a c + 1))) := by
-  have h := rpow_le_exp_pow hX hb1 hb he0 he
-  refine h.trans (Real.exp_le_exp.mpr (pow_le_pow_right₀ (le_trans (by norm_num) hX) ?_))
-  have h1 : 2 ^ a ≤ 2 ^ max a c := Nat.pow_le_pow_right (by norm_num) (le_max_left a c)
-  have h2 : 2 ^ c ≤ 2 ^ max a c := Nat.pow_le_pow_right (by norm_num) (le_max_right a c)
-  rw [pow_succ]; omega
+  exact ex_rpow_of_nonneg hX (zero_le_one.trans hb1) hb he0 he
 
 end Calculus
 
