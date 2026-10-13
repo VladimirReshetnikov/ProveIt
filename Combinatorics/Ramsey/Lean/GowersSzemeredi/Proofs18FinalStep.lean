@@ -22,7 +22,7 @@ theorem zeta_gen_bounds_fejer5 (k : Nat) {alpha : Real} (ha : 0 < alpha) (ha2 : 
   obtain ⟨h0, -, hi⟩ := tightZeta_fejer_inv_le_gen (gamma := alpha / 2) (theta := alpha) k
     (half_pos ha) (by linarith) ha (by linarith)
   refine ⟨h0, hi.trans (Real.exp_le_exp.mpr ?_)⟩
-  have hval : 2 / (alpha / 2 * alpha) = (2 / alpha) ^ 2 := by field_simp <;> ring
+  have hval : 2 / (alpha / 2 * alpha) = (2 / alpha) ^ 2 := by field_simp
   rw [hval, ← pow_mul]
   refine pow_le_pow_right₀ (by linarith) ?_
   have hF := fejerProductExponent_le k
@@ -45,7 +45,7 @@ theorem lemma156_gen_le_fejer5 {k : Nat} (hk : 1 ≤ k) {alpha : Real} (ha : 0 <
   have hX := two_div_ge_two ha ha2
   have h := fejerProductThreshold_le_gen (gamma := alpha / 2) (theta := alpha) hk (half_pos ha)
     (by linarith) ha ha1
-  have hu : 2 / (alpha / 2 * alpha) = (2 / alpha) ^ 2 := by field_simp <;> ring
+  have hu : 2 / (alpha / 2 * alpha) = (2 / alpha) ^ 2 := by field_simp
   rw [hu, ← pow_mul] at h
   refine h.trans (pow_le_pow_right₀ (le_trans (by norm_num) hX) ?_)
   have hP := fejerStepP_le k
@@ -187,7 +187,7 @@ def Tloc : Real :=
       (max (P.MReq alpha ^ (1 / P.MExp alpha)) (6 ^ (1 / P.Eloc alpha))))
 
 /-- The parameter ranges used by the localization and modulus estimates. -/
-theorem ranges (hV : 1 ≤ P.V) (hp : 0 < P.p) {alpha : Real} (ha : 0 < alpha)
+theorem ranges (hp : 0 < P.p) {alpha : Real} (ha : 0 < alpha)
     (haHalf : alpha ≤ 1 / 2) :
     0 < P.Rho alpha ∧ (0 < P.Em alpha ∧ P.Em alpha ≤ 1) ∧
     (0 < P.Eth alpha ∧ P.Eth alpha ≤ 1) ∧
@@ -223,7 +223,7 @@ theorem Eloc_pos_le (hV : 1 ≤ P.V) (hp : 0 < P.p) {alpha : Real} (ha : 0 < alp
     (haHalf : alpha ≤ 1 / 2) :
     0 < P.Eloc alpha ∧ P.Eloc alpha ≤ 1 / 2 ∧ 0 < P.F alpha ∧ P.F alpha ≤ 1 ∧
       0 < P.MExp alpha ∧ P.MExp alpha ≤ 1 := by
-  obtain ⟨-, hEm, hEth, hN, hBx, -⟩ := P.ranges hV hp ha haHalf
+  obtain ⟨-, hEm, hEth, hN, hBx, -⟩ := P.ranges hp ha haHalf
   simpa only [Eloc, F, MExp] using
     localization_exponents_pos_le hN hEm hBx hEth hEth
 
@@ -236,7 +236,7 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
       (P.Eloc alpha) N := by
   classical
   obtain ⟨hρ, ⟨hEm, -⟩, ⟨hEth, -⟩, ⟨haN, -⟩, ⟨hb, -⟩, hζ⟩ :=
-    P.ranges hV hp ha haHalf
+    P.ranges hp ha haHalf
   obtain ⟨he, -, hF, -, hmE, -⟩ := P.Eloc_pos_le hV hp ha haHalf
   -- the modulus is large
   have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
@@ -278,10 +278,6 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
   have hthr : (familyRecThr P.k P.K P.p (P.QM alpha) : Real) ≤ m := (le_max_left _ _).trans hmReq
   -- the final exponent
   have hρ1eq : coverRho1W (fun l => uCount P.V (uDegT3 l)) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k = P.Rho1 alpha := rfl
-  have hthSeq : singlePieceTheta (spectrumPieceRho (fun t => t / 2) (P.Rho1 alpha)) 1 =
-      P.ThS alpha := rfl
-  have hcSeq : singlePieceGlobalF (fun l => uCount P.V (uDegT3 l)) alpha (alpha / 2) P.k (P.ThS alpha) =
-      P.CS alpha := rfl
   have hBudeq : globalBudgetW (fejerThetaOne alpha (alpha / 2) P.k) P.k = P.B alpha := rfl
   have hZeq : tightZeta (fejerThetaOne alpha (alpha / 2) P.k / 4) = P.Zeta alpha := rfl
   have hDeq : section16Delta (fejerThetaOne alpha (alpha / 2) P.k) = P.Delta alpha := rfl
@@ -319,7 +315,7 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
       2 ≤ L ∧ (N : Real) ^ P.Eloc alpha ≤ ((Nat.sqrt (L - 1) - 1 : Nat) : Real) :=
     localization_width_bounds (by linarith only [hN3]) hF.le h6pow hL
   unfold SinglePieceModulusConditionsFJ SinglePieceGlobalScaleFJ singlePieceGlobalWidthFJ
-  simp only [hρ1eq, hthSeq, hcSeq, hBudeq, hZeq, hDeq]
+  simp only [hρ1eq, hBudeq, hZeq, hDeq]
   refine ⟨hodd, hN156, ?_, m, ⟨by exact_mod_cast hNW4, by exact_mod_cast hm1,
     le_rfl, ?_⟩, ?_⟩
   · -- `4 ≤ N^e`
@@ -692,7 +688,7 @@ theorem Eloc_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha
     rw [hMdef]; unfold expDegJT3; exact (le_max_left _ _).trans (le_max_right _ _)
   obtain ⟨hE0, -, -, -, -, -⟩ := P.Eloc_pos_le H.hV H.hp ha ha2
   obtain ⟨-, ⟨hEm0, -⟩, ⟨hEth0, -⟩, ⟨hN0, -⟩, ⟨hBx0, -⟩, -⟩ :=
-    P.ranges H.hV H.hp ha ha2
+    P.ranges H.hp ha ha2
   have hNE := P.nestExp_inv_leJT3 ha ha2 H.hV H.hVμ H.hμ0
   obtain ⟨hEm, -, hBx⟩ := P.spectrum_exps_inv_leJT3 H ha ha2
   have hEth := P.slice_exps_inv_leJT3 H ha ha2
@@ -798,7 +794,7 @@ theorem Tloc_le_expJT3 {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha
   obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leJT3 H ha ha2
   obtain ⟨hEm, -, -⟩ := P.spectrum_exps_inv_leJT3 H ha ha2
   have hNE := P.nestExp_inv_leJT3 ha ha2 H.hV H.hVμ H.hμ0
-  obtain ⟨-, ⟨hEm0, -⟩, -, ⟨hN0, -⟩, -, -⟩ := P.ranges H.hV H.hp ha ha2
+  obtain ⟨-, ⟨hEm0, -⟩, -, ⟨hN0, -⟩, -, -⟩ := P.ranges H.hp ha ha2
   obtain ⟨hR1, hR⟩ := P.MReq_le_expJT3 H ha ha2
   have hL := lemma156_gen_le_fejer5 hk ha ha2
   set k := P.k with hkdef

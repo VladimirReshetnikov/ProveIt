@@ -231,7 +231,7 @@ end LeanProofs.GowersSzemeredi
 namespace LeanProofs.GowersSzemeredi
 
 /-- **The split step at any exponent and slack.** -/
-theorem split_step_gen {k a D a' D' P T e s : Nat} (ha : 1 ≤ a)
+theorem split_step_gen {k a D a' D' P T e s : Nat}
     (hA : 2 ^ (k + 6) * a ≤ 2 ^ e) (hDb : D ≤ 2 ^ (e + s))
     (ha' : a' ≤ 2 ^ (k + 5) * (a * a)) (hD' : D' ≤ 2 ^ (k + 6) * (a * (a + D)) * P + T)
     (hP : P ≤ 2 ^ (5 * k + 20)) (hT : T ≤ 2 ^ (5 * k + 19)) :
@@ -546,7 +546,7 @@ theorem split_quad3_half : ∀ l, 12 ≤ l →
       (ac := (splitQuad3 k).1.1) (Dc := (splitQuad3 k).1.2)
       (ae := (splitQuad3 k).2.1) (De := (splitQuad3 k).2.2)
       (le_max_left _ _) (le_max_left _ _) (le_max_right _ _) (le_max_right _ _)
-    obtain ⟨h1, h2⟩ := split_step_gen ha hAb hDb (hAn.trans (splitStepA_le ha))
+    obtain ⟨h1, h2⟩ := split_step_gen hAb hDb (hAn.trans (splitStepA_le ha))
       (hDn.trans (splitStepDWith_le ha hDp (fejerStepP_ge k))) (fejerStepP_le k) (fejerStepT_le k)
     have he : 2 * (5 * 2 ^ (k - 1)) = 5 * 2 ^ (k + 1 - 1) := by
       rw [show k + 1 - 1 = (k - 1) + 1 by omega, pow_succ]; ring
