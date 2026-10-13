@@ -414,34 +414,14 @@ theorem split_count_le {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Real}
   have hG : famPieceGraphBound (clsQr (splitCnt V a D) k M tS gamma) (clsPb (splitCnt V a D) M tS gamma)
       M rho ≤ ν ^ (1 + (2 * sSN k a + 2 * sPbN k a)) *
         W ^ (stepP k + (2 * sSW k a D + 2 * sPbW k a D)) := by
-    unfold famPieceGraphBound
-    rw [← hSdef]
     have hPbv : clsPb (splitCnt V a D) M tS gamma S (rho / 4) =
         splitCnt V a D tS gamma (M * S) (rho / 4) := by
       unfold clsPb; rw [abs_of_pos (by positivity : (0 : Real) < rho / 4)]
-    rw [hPbv]
-    set Pb := splitCnt V a D tS gamma (M * S) (rho / 4)
-    have hPb0 : 0 ≤ Pb := le_trans zero_le_one hPb1
-    have hch : ((S.choose 2 : Nat) : Real) ≤ (S : Real) ^ 2 := by
-      have : S.choose 2 ≤ S ^ 2 := by
-        rw [Nat.choose_two_right, sq]
-        exact (Nat.div_le_self _ _).trans (Nat.mul_le_mul_left _ (Nat.sub_le _ _))
-      exact_mod_cast this
-    have hmax : max Pb (((S.choose 2 : Nat) : Real) * Pb * Pb) ≤ (S : Real) ^ 2 * Pb ^ 2 := by
-      refine max_le ?_ ?_
-      · calc Pb ≤ Pb ^ 2 := by nlinarith only [hPb1]
-          _ ≤ (S : Real) ^ 2 * Pb ^ 2 :=
-              le_mul_of_one_le_left (pow_nonneg hPb0 _) (one_le_pow₀ hS1)
-      · calc ((S.choose 2 : Nat) : Real) * Pb * Pb = ((S.choose 2 : Nat) : Real) * Pb ^ 2 := by ring
-          _ ≤ (S : Real) ^ 2 * Pb ^ 2 := mul_le_mul_of_nonneg_right hch (pow_nonneg hPb0 _)
-    have hS2 := tb_pow (by positivity) hS 2
-    have hPb2 := tb_pow hPb0 hPb 2
-    have h1 := tb_mul hν hW1 (by positivity) (by positivity) hS2 hPb2
-    have h2 := tb_mul hν hW1 (Nat.cast_nonneg _) (by positivity) hM h1
-    calc (M : Real) * max Pb (((S.choose 2 : Nat) : Real) * Pb * Pb)
-        ≤ (M : Real) * ((S : Real) ^ 2 * Pb ^ 2) :=
-          mul_le_mul_of_nonneg_left hmax (Nat.cast_nonneg _)
-      _ ≤ _ := h2.trans (tb_mono hν hW1 (by omega) (by omega))
+    have h := famPieceGraphBound_le_mul_sq (Pb := clsPb (splitCnt V a D) M tS gamma)
+      (tb_one_le hν hW1) (tb_one_le hν hW1) hM hS
+      (by rw [← hSdef, hPbv]; exact zero_le_one.trans hPb1)
+      (by rw [← hSdef, hPbv]; exact hPb)
+    convert h using 1 <;> ring
   have h3k := (le_max_right _ _).trans hfac
   refine max_le (hG.trans (tb_mono hν hW1 (by unfold sCountN; omega) (by unfold sCountW; omega))) ?_
   refine h3k.trans (tb_mono hν hW1 (by unfold sCountN sPbN; nlinarith) ?_)
