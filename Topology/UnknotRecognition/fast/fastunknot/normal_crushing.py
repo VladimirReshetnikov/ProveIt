@@ -18,6 +18,20 @@ from .port_subspace import _rref
 from .normal_crushing_verify import quotient_census
 
 
+class _NonPrimitiveNormalPoint(NormalOrbitError):
+    """Internal recovery signal: valid positive nonlink point needs scaling.
+
+    Canonicality and extremality have not been established by this signal.
+    """
+
+
+class _NonExtremeNormalPoint(NormalOrbitError):
+    """Internal recovery signal: valid primitive point has support nullity > 1.
+
+    Canonicality has not been established by this signal.
+    """
+
+
 def _component(quotient, ids, check):
     index = {old:new for new,old in enumerate(ids)}
     rows = []
@@ -96,7 +110,7 @@ def crush_normal_ray(triangulation, coordinates, *, check=lambda: None):
         check()
         divisor = gcd(divisor, x)
     if divisor != 1:
-        raise NormalOrbitError('primitive integer normal ray required')
+        raise _NonPrimitiveNormalPoint('primitive integer normal ray required')
     # Coordinate-zero restrictions are faces of the full matching cone. A
     # one-shot ray check needs only its positive support, not a reusable chart
     # on all 7t coordinates. Retain every original matching equation.
@@ -106,8 +120,10 @@ def crush_normal_ray(triangulation, coordinates, *, check=lambda: None):
         check()
         equations.append(tuple(Fraction(row.get(j,0)) for j in support))
     _,pivots = _rref(equations, len(support), check)
-    if len(pivots) != len(support)-1:
-        raise NormalOrbitError('primitive full matching-cone extreme ray required')
+    if len(pivots) > len(support)-1:
+        raise ArithmeticError('nonzero matching vector has impossible support rank')
+    if len(pivots) < len(support)-1:
+        raise _NonExtremeNormalPoint('primitive full matching-cone extreme ray required')
     quotient, kept, statistics = _trace_quotient(prepared, rows, check)
     components = quotient_census(quotient, check=check)
     torus = [i for i,c in enumerate(components) if c['boundary_euler'] == [0]]

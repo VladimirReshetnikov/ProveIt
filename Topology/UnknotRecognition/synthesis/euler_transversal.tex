@@ -60,9 +60,11 @@ cone; rebuilding an equivalent eliminated representation does not create
 new geometric extreme rays.  The exact LP oracle returns a nonzero basic
 feasible point of $C_Jq=0$, $q\ge0$, $\sum q\le1$.  Its slack variables
 are uniquely determined by $q$, so that point projects to an extreme ray
-of $K_J$, and hence of the root.  The positive canonical standard lift
-may still require the existing full-standard support extraction before
-crushing.
+of $K_J$, and hence of the root.  Its canonical standard lift is already
+full-cone extreme.  Section~\ref{sec:direct-crush-positive} uses this fact
+to skip redundant extraction for native outputs, while independently
+checking the original STANDARD support rank and retaining extraction
+for valid nonextreme positive points.
 
 \subsection{A uniform parameter and a distinction for nonextreme points}
 

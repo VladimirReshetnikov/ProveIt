@@ -207,6 +207,14 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
     legacy comparison policy. Negative recognition may mix independently checked Euler-LP
     and corner-exhaustion packets, always on all full final-source assignments.
 
+    Native LP/tree positives already have primitive extreme Q coordinates and
+    canonical STANDARD lifts. They go directly through the crushing producer's
+    original-support extremality guard and independent quotient replay. A valid
+    nonprimitive or nonextreme positive point instead uses checked positive-ray
+    extraction before retrying; no claimed producer flag bypasses these guards.
+    An exhausted shared reduction allowance returns its partial chain before
+    this unaccepted candidate's extraction or crushing validation.
+
     ``reduce_vertices=True`` first constructs expanded-edge-link positive rays
     on each source with multiple vertices, without sector search. Their crushes
     use the same independent verifier and shared ``max_crushes`` allowance.
@@ -341,7 +349,8 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
     from .diagram_exterior_verify import verify_diagram_exterior
     from .boundary_shellings import shell_boundary
     from .boundary_shellings_verify import verify_boundary_shellings
-    from .normal_crushing import crush_normal_ray
+    from .normal_crushing import (crush_normal_ray, _NonPrimitiveNormalPoint,
+                                  _NonExtremeNormalPoint)
     from .normal_crushing_verify import verify_normal_crushing
     from .normal_sector import build_sector_kernel, sector_rays, SearchLimit, _source_hash
     from .sector_matching_support import matching_support
@@ -433,10 +442,20 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
             raise ArithmeticError('independent crushing recognition replay failed')
         return dict(status=status, certificate=certificate, stats=stats)
 
-    def apply_crush(coordinates):
+    def apply_crush(coordinates, *, repair_positive=False):
         nonlocal current
         count = len(current['tetrahedra'])
-        result = crush_normal_ray(current, coordinates, check=check)
+        try:
+            result = crush_normal_ray(current, coordinates, check=check)
+        except (_NonPrimitiveNormalPoint, _NonExtremeNormalPoint):
+            if not repair_positive:
+                raise
+            # Only these pre-quotient validation outcomes license extraction.
+            # Caller exceptions remain wrapped by the outer _safe_call, so
+            # even a caller-raised classifier cannot enter this repair path.
+            extracted = extract_positive_ray(current, coordinates, check=check)
+            stats['extraction_steps'] += extracted['stats']['descent_steps']
+            result = crush_normal_ray(current, extracted['coordinates'], check=check)
         packet = result['certificate']
         if not verify_normal_crushing(current, packet, check=check):
             raise ArithmeticError('independent normal crushing replay failed')
@@ -530,11 +549,9 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
             raise ArithmeticError('independent Euler-LP replay failed')
         if result['status'] == 'NO_POSITIVE_EULER':
             return dict(status='NEGATIVE', certificate=proof)
-        extracted = extract_positive_ray(current, result['coordinates'], check=check)
         stats['rays_examined'] += 1
         stats['positive_euler_rays'] += 1
-        stats['extraction_steps'] += extracted['stats']['descent_steps']
-        return dict(status='POSITIVE', coordinates=extracted['coordinates'])
+        return dict(status='POSITIVE', coordinates=result['coordinates'])
 
     while current is not None:
         check()
@@ -654,13 +671,11 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                 return conclusive('KNOTTED', result['certificate'])
             if result['status'] != 'POSITIVE_EULER':
                 raise ArithmeticError('unexpected Euler tree outcome')
-            extracted = extract_positive_ray(current, result['coordinates'], check=check)
-            stats['extraction_steps'] += extracted['stats']['descent_steps']
             stats['rays_examined'] += 1
             stats['positive_euler_rays'] += 1
             if max_crushes is not None and len(steps) >= max_crushes:
                 return inconclusive('shared crushing-step allowance exhausted')
-            apply_crush(extracted['coordinates'])
+            apply_crush(result['coordinates'], repair_positive=True)
             continue
         exhaustion = {}
         jobs = {}
@@ -702,7 +717,7 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                 continue
             if max_crushes is not None and len(steps) >= max_crushes:
                 return inconclusive('shared crushing-step allowance exhausted')
-            apply_crush(result['coordinates'])
+            apply_crush(result['coordinates'], repair_positive=sector_method == 'lp')
             # Every sector/exhaustion packet is relative to the old source;
             # restart all maximal assignments on the authenticated successor.
             break

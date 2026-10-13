@@ -112,7 +112,11 @@ altered retained masks and mismatched source digests are rejected.
 A positive Euler certificate intentionally proves a canonical vector, not
 connectedness or extremality.  This permits future exact feasibility
 methods to return a nonbasic point.  The maintained extractor supplies the
-remaining ray contract without expanding normal discs.
+remaining ray contract without expanding normal discs.  The direct path in
+Section~\ref{sec:direct-crush-positive} now skips this extraction when the
+crushing constructor itself verifies that the supplied point is already a
+primitive full-cone extreme ray.  Checked extraction remains the fallback
+for valid nonprimitive or nonextreme canonical positive points.
 
 Let $x$ be the independently validated positive canonical standard vector,
 $S=\operatorname{supp}x$, and $M$ the original matching matrix.  Prepare the

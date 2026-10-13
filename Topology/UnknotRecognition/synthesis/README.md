@@ -2,6 +2,24 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`direct_crush_positive.tex`](direct_crush_positive.tex) removes redundant
+STANDARD extraction of native LP/tree/transversal rays. It proves canonical
+Q-extreme lifting, primitive integrality and the all-vertex zero condition,
+then explains the original-support guard and independent quotient replay.
+Valid nonprimitive or nonextreme canonical points retain checked extraction;
+caller exceptions and other errors do not trigger repair. Vertex-link
+extraction remains necessary. This saves an additive algebraic pass, with no
+new LP-count, time-exponent, timing or general quasi-polynomial claim.
+The regression passes 383 tests across 43 modules with Regina and no skips,
+including nineteen new test methods. All 360 native/test/fixture dependencies
+match the pre-run snapshot. Commands and complete logs are retained under
+`data/direct-crush-positive-*`. The publication helper
+`python -B -S data/direct_crush_positive_publication.py` verifies this tested
+source closure, the exact test coverage, the article and final PDF builds;
+it runs no tests, certificate replay, discovery or timing.
+The current [PDF](report.pdf) has 824 pages; Section 190 spans pages 812–816.
+Three final build passes have no unresolved references or new diagnostics.
+
 [`geometric_descent_crushing.tex`](geometric_descent_crushing.tex) implements
 an optional direct geometric enumeration of D and UDD first descents. The
 method has conservative O(t⁵ log²(t+2)) query time, O(t⁶ log²(t+2)) repeated
@@ -11,8 +29,8 @@ with `reduce_pachner_descent=True, pachner_descent_method='geometric'`;
 the default method remains `cochain`, and preprocessing remains disabled by
 default. These improve upper bounds for a fixed preprocessing family; general
 quasi-polynomial recognition remains unproved.
-The broader regression passes 364 tests across 41 modules with Regina and
-no skips. Its 28 new tests cover independent source packets, complete local
+The core regression at `2149e2e56` passes 364 tests across 41 modules with
+Regina and no skips. Its 28 new tests cover independent source packets, complete local
 branching and genuine diagram/factorwise integration; commands and logs are
 retained under `data/geometric-descent-*`.
 
@@ -40,7 +58,8 @@ complete tables, timing boundary, source comparisons and proof scope.
 The saved-evidence controls accept three valid cases and reject 27 mutations,
 including native-valid same-diagram evidence for the wrong experimental
 policy. Repeated native verifier calls use an explicitly recorded exact typed
-argument cache; all research acceptance checks rerun. The publication helper
+argument cache; all research acceptance checks rerun. At revision `3d3498207`,
+the publication helper
 `python -B -S data/geometric_descent_evidence_publication.py` freshly replays
 all audit proofs, binds all fifty full timing outputs, and checks the retained
 controls, native/test dependencies, article, PDF and three build logs. It
@@ -49,13 +68,11 @@ runs no discovery, timing, tests or PDF build. Its outputs use the prefix
 
 The earlier 817-page geometric/conditional core publication and
 `data/geometric_descent_publication.py` describe revision `2149e2e56`.
-Their source manifest remains a historical record; the new helper checks
-that current native code and regression dependencies still match the
-364-test snapshot. The current [PDF](report.pdf) has 820 pages. Section 188 begins on page 802;
-its new empirical subsections span pages 806–809, and Section 189 begins on
-page 809. Three final build passes have no unresolved references or new
-diagnostics. Exact PDF bytes and page count are recorded in the new
-evidence-publication manifest.
+Their source manifest remains a historical record. The later comparison
+publication checked its native code and regression dependencies against
+that 364-test snapshot. That publication has an 820-page PDF, with empirical subsections
+on pages 806–809. Its source pins and timing measurements remain historical
+after the subsequent direct-ray optimization.
 
 [`pachner_descent_crushing.tex`](pachner_descent_crushing.tex) adds optional
 fixed one-upward Pachner preprocessing to the direct and factored crushing
