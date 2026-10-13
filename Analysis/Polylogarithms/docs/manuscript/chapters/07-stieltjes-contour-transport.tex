@@ -1,0 +1,233 @@
+% Principal-cut continuation of the preceding translation identities.
+\section{Transport of Stieltjes translation integrals across the cut}
+\label{stcut:section}
+The positive-shift identities admit a contour prescription beyond the
+negative real axis. For the digamma reconstruction the prescription
+requires only Cauchy principal values and finitely many residues.
+For integrals of higher Stieltjes functions themselves, logarithmic
+cut terms must be retained as boundary distributions. This gives a
+concrete answer to the contour-transport question in
+\cite[Further research, question 2]{stmell:balanced}, within the
+translation Mellin and reconstruction families considered here.
+The classical inputs are the Hurwitz shift relations
+\cite[Eqs.~25.11.3--25.11.4]{intdist:DLMFHurwitz}, their zeroth
+Laurent coefficient (the digamma recurrence), and elementary
+Cauchy boundary values. No historical-priority claim is intended.
+
+\subsection{Complex shifts before reaching the cut}
+Let $\Omega=\mathbb C\setminus(-\infty,0]$, with the principal logarithm.
+Continue $\zeta(s,a)$ and $\gamma_n(a)$ in $a\in\Omega$ using the
+Hurwitz shift relation. Let $a_1,\ldots,a_J\in\Omega$ and
+$\sum_jc_j=0$. Define
+\[
+ f(x)=-\sum_jc_j\psi(x+a_j),\qquad d_n=\sum_jc_j\gamma_n(a_j).
+\]
+Then the digamma-only reconstruction \eqref{stmell:digamma-reconstruct}
+holds unchanged as an absolutely convergent complex integral. So does
+its Mellin generator
+\begin{equation}\label{stcut:complex-master}
+ \int_0^\infty x^{v-1}f(x)\,dx
+  =\frac{\pi}{\sin\pi v}\sum_jc_j\zeta(1-v,a_j),
+ \qquad0<\operatorname{Re}v<1.
+\end{equation}
+Here $x^{v-1}$ uses the real logarithm of positive $x$.
+Indeed the integrands depend holomorphically on every $a_j$ on
+$\Omega^J$. On compact subsets they are bounded at zero and are
+$O(x^{-1})$ at infinity after the zero-sum cancellation, with the
+same bounds for fixed parameter derivatives. The corresponding
+subtracted logarithmic integrands are also uniformly integrable.
+The identity theorem, applied successively in the shift parameters,
+extends the positive-shift formulas to $\Omega^J$.
+
+\subsection{Principal-value reconstruction on the two banks}
+Fix real $a_j\notin\{0,-1,-2,\ldots\}$ and complex weights of sum
+zero. For $\sigma\in\{+1,-1\}$, define
+\[
+ d_n^\sigma=\lim_{\eta\downarrow0}\sum_jc_j\gamma_n(a_j+\sigma i\eta).
+\]
+The limit uses the upper bank for $\sigma=+1$. Put
+\[
+ \mathcal B=\{b>0:b=-a_j-k\text{ for some }j,\ k\in\mathbb Z_{\ge0}\},
+ \qquad R_b=\sum_{\substack{1\le j\le J,\ k\in\mathbb Z_{\ge0}\\a_j+k=-b}}c_j.
+\]
+In the sum defining $R_b$, $j$ ranges over $1,\ldots,J$ and $k$ over
+nonnegative integers. Equal pole locations are combined. Thus
+$\mathcal B$ is finite and $R_b$ is exactly the residue of
+$f(x)=-\sum_jc_j\psi(x+a_j)$ at $x=b$. A zero residue removes that
+pole. The common value $d_0^+=d_0^-=f(0)$ is denoted by $d_0$.
+
+For $n\ge1$ retain the real polynomial
+\[
+ p_n(y)=\frac{(y+i\pi)^n-(y-i\pi)^n}{2i\pi}.
+\]
+Define the normalized principal value
+\begin{align}
+ \mathcal V_n(f)={}&\operatorname{PV}\int_0^1
+ p_n(\log x)\frac{f(x)-d_0}{x}\,dx
+ +\operatorname{PV}\int_1^\infty
+ p_n(\log x)\frac{f(x)}x\,dx.\label{stcut:PV}
+\end{align}
+The principal value deletes symmetric intervals $(b-\epsilon,b+\epsilon)$
+about each pole, with the cutoffs independent. No finite counterterm
+is added. There is no pole at $x=1$ under the stated exclusions.
+
+\begin{theorem}[Digamma reconstruction with explicit contour residues]
+\label{stcut:reconstruction}
+All the principal values in \eqref{stcut:PV} exist, and
+\begin{equation}\label{stcut:reconstruct}
+ \boxed{d_n^\sigma=\mathcal V_n(f)
+ +\mathbf1_{2\mid n}\frac{(-1)^{n/2}\pi^n}{n+1}d_0
+ -\sigma i\pi\sum_{b\in\mathcal B}
+                  R_b\frac{p_n(\log b)}b.}
+\end{equation}
+Consequently the exact jump is
+\begin{equation}\label{stcut:jump}
+ d_n^+-d_n^-=-2\pi i\sum_{b\in\mathcal B}R_b\frac{p_n(\log b)}b.
+\end{equation}
+The statement permits complex weights; $\mathcal V_n$ is not replaced
+by a real-part operation in that case.
+\end{theorem}
+\begin{proof}
+At every positive pole, write
+$f(x)=R_b/(x-b)+h_b(x)$ with $h_b$ holomorphic nearby.
+The elementary boundary formula is
+\[
+ \lim_{\eta\downarrow0}\frac1{x-b+\sigma i\eta}
+  =\operatorname{PV}\frac1{x-b}-\sigma i\pi\delta_b.
+\]
+For completeness, subtract the value of a smooth test function at
+$b$ in a fixed symmetric neighborhood. The subtracted integral
+converges ordinarily, while the constant term is evaluated by an
+arctangent and tends to $-\sigma i\pi$; this proves the formula
+with the displayed sign and no convention left implicit.
+
+Apply this boundary identity with the smooth local weight
+$p_n(\log x)/x$ at each $b$. Away from these finitely many points,
+compact convergence is ordinary. Near zero the subtracted numerator
+is uniformly $O(x)$, and at infinity the zero-sum digamma asymptotic
+is uniformly $O(x^{-1})$. These bounds with the fixed logarithmic
+weights justify the two noncompact limits. Taking upper or lower
+limits in the complex-shift reconstruction therefore gives
+\eqref{stcut:reconstruct}. Subtraction gives \eqref{stcut:jump}.
+
+As an independent sign check, choose integers $N_j\ge0$ such that
+$A_j=a_j+N_j>0$ and $a_j+k<0$ for $0\le k<N_j$. The Hurwitz shift
+relation gives directly
+\[
+ d_n^\sigma=\sum_jc_j\gamma_n(A_j)
+ -\sum_{b\in\mathcal B}R_b\frac{(\log b+\sigma i\pi)^n}{b}.
+\]
+Its difference between the two banks is exactly \eqref{stcut:jump}.
+This expression is not used to assume the principal-value identity;
+it also supplies independent values for verification.
+\end{proof}
+
+For example, with $a=-1/2$, $b=1/2$ and weights $1,-1$,
+$f(x)=\gamma_0(x-1/2)-\gamma_0(x+1/2)=1/(x-1/2)$.
+The formula becomes the elementary, all-index identity
+\begin{align}
+ &\operatorname{PV}\int_0^1p_n(\log x)
+     \frac{(x-1/2)^{-1}+2}{x}\,dx
+ +\operatorname{PV}\int_1^\infty
+        p_n(\log x)\frac{dx}{x(x-1/2)}\notag\\
+ &\qquad=-2\operatorname{Re}(-\log2+i\pi)^n
+   +\mathbf1_{2\mid n}\frac{2(-1)^{n/2}\pi^n}{n+1},
+ \label{stcut:half-example}
+\end{align}
+where the use of a real part is confined to this real-weight example.
+Its upper or lower Stieltjes value is
+$\gamma_n(-1/2\pm i0)-\gamma_n(1/2)
+=-2(-\log2\pm i\pi)^n$.
+
+\subsection{The Mellin master and logarithmic cuts}
+For a pole at $b>0$, define the higher logarithmic boundary kernel by
+\begin{equation}\label{stcut:log-boundary}
+ T_{n,b}^{\sigma}
+ =\frac1{n+1}\frac{d}{dx}
+      \bigl(\Log(x-b+\sigma i0)\bigr)^{n+1}.
+\end{equation}
+The expression being differentiated is locally integrable. Away from
+$b$, the resulting distribution agrees with
+$\Log^n(x-b+\sigma i0)/(x-b)$, with
+$\Log(x-b+\sigma i0)=\log(b-x)+\sigma i\pi$ for $x<b$.
+For $n=0$ this is $\operatorname{PV}(x-b)^{-1}-\sigma i\pi\delta_b$.
+For higher $n$, interpreting it as an unchanged real-axis ordinary
+integral would discard both logarithmic cuts and local finite parts.
+
+\begin{proposition}[An explicit local cut kernel]
+\label{stcut:beta}
+For $b>0$, initially $0<\operatorname{Re}v<\operatorname{Re}s<1$,
+\begin{align}
+ \int_0^\infty x^{v-1}(x-b+\sigma i0)^{-s}\,dx
+ &=b^{v-s}\left[e^{-\sigma i\pi s}B(v,1-s)
+                        +B(s-v,1-s)\right]\notag\\
+ &=e^{\sigma i\pi(v-s)}b^{v-s}
+                     \frac{\Gamma(v)\Gamma(s-v)}{\Gamma(s)}.
+ \label{stcut:beta-kernel}
+\end{align}
+The first line exhibits the cut interval $0<x<b$ explicitly. At
+$s=1$, continue the combined expression before differentiating:
+$(-1)^n\partial_s^n|_{s=1}$ is exactly the Mellin pairing with
+$T_{n,b}^{\sigma}$. Its zeroth-index boundary is
+\begin{equation}\label{stcut:pole-Mellin}
+ \operatorname{PV}\int_0^\infty\frac{x^{v-1}}{x-b}\,dx
+ -\sigma i\pi b^{v-1}
+ =-\pi b^{v-1}\cot(\pi v)-\sigma i\pi b^{v-1},
+ \quad0<\operatorname{Re}v<1.
+\end{equation}
+\end{proposition}
+\begin{proof}
+Split at $b$. In the first integral set $x=bt$; in the second set
+$x=b/(1-t)$. The two ordinary beta integrals give the first line.
+Euler reflection simplifies their sum to the second. Analytic
+continuation of $(x-b+\sigma i0)^{-s}$ through $s=1$ is obtained
+by one integration by parts against a local smooth test function;
+its derivatives give \eqref{stcut:log-boundary}. This establishes
+the continued equality and the normalization at every fixed index.
+Setting $s=1$ gives the displayed principal-value formula.
+\end{proof}
+
+\begin{theorem}[Filtered Mellin transport through the negative shifts]
+\label{stcut:Mellin}
+Suppose the real nodes and complex weights additionally satisfy
+$\sum_jc_ja_j^\ell=0$ for $0\le\ell<r$, where $r\ge1$.
+For $0<\operatorname{Re}v<r$, let $\mathcal M_n^\sigma(v)$ be the
+Mellin integral of $\sum_jc_j\gamma_n(x+a_j+\sigma i0)$, using
+\eqref{stcut:log-boundary} at its positive singularities.
+Then
+\begin{equation}\label{stcut:Mellin-eq}
+ \mathcal M_n^\sigma(v)=(-1)^n\left.\partial_u^n
+ \left\{\frac{\Gamma(v)\Gamma(1+u-v)}{\Gamma(1+u)}
+       \sum_jc_j\zeta(1+u-v,a_j+\sigma i0)\right\}\right|_{u=0}.
+\end{equation}
+Every apparent Gamma pole is removed in the combined product before
+differentiation. The positive-integer resonant formulas in
+\eqref{stmell:integer} therefore remain valid with these boundary
+values and this integral prescription.
+\end{theorem}
+\begin{proof}
+Translate every node by the same complex number $z$. All $r$
+polynomial cancellations survive, by the binomial formula.
+For sufficiently large positive $z$ the positive-shift Mellin theorem
+applies. Both sides continue holomorphically while the common shift
+avoids the finitely many negative-axis cuts, and hence agree on their
+upper and lower continuations to $z=0$.
+
+More explicitly, the Hurwitz shift relation decomposes each integrand
+into a positive-node Stieltjes function plus finitely many kernels
+\eqref{stcut:log-boundary}. Their local limits exist as just proved.
+Near zero the nodes avoid the Hurwitz singularities. At infinity the
+original polynomial cancellations give the uniform bound
+$O(x^{-r}(1+\log^n x))$, so the tails converge locally uniformly in
+$0<\operatorname{Re}v<r$. Thus the limit of the continued integrals
+is exactly the specified Mellin pairing, rather than an unchanged
+ordinary integral. The local cut kernels also make every residue and
+logarithmic contribution explicit. Finally, the Bernoulli cancellations
+used at integer Mellin values are polynomial identities in the nodes
+and are unaffected by the selected bank, so the existing resonant
+coefficient extraction applies without alteration.
+\end{proof}
+
+% Scope: this resolves principal-cut lateral transport for the finite
+% translation/Mellin families, not arbitrary winding contours, products
+% of balanced kernels, or the full general complex-shift research program.

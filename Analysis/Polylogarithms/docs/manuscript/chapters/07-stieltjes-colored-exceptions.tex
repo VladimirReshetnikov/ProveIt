@@ -1,0 +1,353 @@
+\section{Colored balancing at a fixed shift and exceptional ordinary moments}
+\label{stcol:section}
+
+The colored Lerch framework, its open-interval uniqueness theorem, its
+Mellin transform, its root-of-unity translation to generalized Stieltjes
+functions, and its first exceptional moment were established in the
+preserved report \emph{Gamma Determinants and Colored Stieltjes Moments}
+\cite{stcol:report}.  We first supply the framework and proofs needed
+here.  The additional results classify all homogeneous balances at a
+\emph{fixed} shift, determine the ordinary moments associated with an
+arbitrary consecutive block of vanished tails, and exhibit a golden-ratio
+example at the alternating color.  They answer the dimension and moment
+parts of the report's further-research question on simultaneous colored
+tail zeros.  Locating all such zeros remains a separate algebraic problem.
+
+\subsection{The colored scalar transform and its Stieltjes interpretation}
+
+Throughout this section let
+\[
+ \Omega=\mathbb C\setminus[1,\infty),\qquad
+ \omega\in\Omega,\qquad a>0,\qquad x>0.
+\]
+The branch of the Lerch function is determined by the classical integral
+\cite[Eq.~25.14.5]{tw:DLMFLerch}
+\begin{equation}\label{stcol:lerch}
+ \Phi(\omega,s,a)
+ =\frac1{\Gamma(s)}\int_0^\infty
+       \frac{t^{s-1}e^{-at}}{1-\omega e^{-t}}\,dt,
+ \qquad \Re s>0.
+\end{equation}
+For $|\omega|<1$ this agrees with
+$\sum_{n\ge0}\omega^n(n+a)^{-s}$.  Subtraction of successive Taylor
+terms of the density at zero, together with the zeros of $1/\Gamma(s)$,
+continues it to an entire function of $s$.  Set
+\begin{align}
+ C_q^\omega(x,a)
+  &:=\left.\partial_z^q\bigl[x^z\Phi(\omega,1+z,x+a)\bigr]\right|_{z=0}
+       \label{stcol:kernel}\\
+  &=\sum_{j=0}^q\binom qj(\log x)^{q-j}
+                     \partial_s^j\Phi(\omega,1,x+a),\notag\\
+ A_k(\omega,a)&:=\Phi(\omega,-k,a)
+       =(\omega\partial_\omega+a)^k\frac1{1-\omega}.
+       \label{stcol:tails}
+\end{align}
+There is no scalar order pole at $s=1$ in this color domain.  The extra
+uncolored term $\log^{q+1}x/(q+1)$ is consequently absent from
+\eqref{stcol:kernel}.
+
+\begin{lemma}[Colored tails]\label{stcol:tail-lemma}
+For every integer $K\ge q\ge0$,
+\begin{equation}\label{stcol:tail}
+ C_q^\omega(x,a)
+ =\sum_{k=q}^K\frac{(-1)^kA_k(\omega,a)}{k!}
+       \left.\partial_z^q(1+z)_k\right|_{z=0}x^{-k-1}
+       +O(x^{-K-2}).
+\end{equation}
+The expansion is locally uniform in $(\omega,a)$, and
+$C_q^\omega(x,a)=O(1+|\log x|^q)$ at zero.  For every $k\ge q$ the
+Pochhammer derivative in \eqref{stcol:tail} is strictly positive.
+\end{lemma}
+\begin{proof}
+Write $f(t)=e^{-at}/(1-\omega e^{-t})$.  Its Taylor coefficient of
+$t^k$ is $(-1)^kA_k/k!$.  Taylor expansion in
+\eqref{stcol:lerch}, followed by the Laplace integral, gives locally
+uniformly for $z$ in a small disc
+\[
+ x^z\Phi(\omega,1+z,x+a)
+   =\sum_{k=0}^K\frac{(-1)^kA_k}{k!}(1+z)_k x^{-k-1}
+     +O(x^{-K-2}).
+\]
+The density denominator is bounded away from zero for positive real
+$t$ on compact parameter sets, and its tail decays exponentially.
+Taylor remainders therefore have the stated uniform bounds.
+Cauchy differentiation on a slightly smaller disc preserves these
+bounds.  Since $(1+z)_k=\prod_{h=1}^k(h+z)$ has strictly positive
+coefficients in degrees $0,\ldots,k$, its derivatives have the required
+positivity and vanish in higher degrees.  At zero, use the finite
+sum \eqref{stcol:kernel} and analyticity at the positive shift $a$.
+\end{proof}
+
+Define $Q_q$ by the local generating identity
+\begin{equation}\label{stcol:Q}
+ \frac{\Gamma(u+z)}{\Gamma(u)\Gamma(1+z)}
+       =\sum_{q\ge0}Q_q(u)\frac{z^q}{q!}.
+\end{equation}
+In particular, for every integer $m\ge1$,
+\begin{equation}\label{stcol:Q-integer}
+ Q_q(m)=q!\,e_q(1,1/2,\ldots,1/(m-1)),
+\end{equation}
+where the empty-list convention is $e_0=1$ and $e_q=0$ for $q>0$.
+More generally $e_q$ vanishes when $q>m-1$.
+
+\begin{theorem}[Colored Mellin foundation]\label{stcol:mellin}
+For $q\ge0$ and $0<\Re u<q+1$,
+\begin{equation}\label{stcol:mellin-formula}
+ \int_0^\infty x^{u-1}C_q^\omega(x,a)\,dx
+   =\frac{\pi}{\sin\pi u}\,Q_q(u)\Phi(\omega,1-u,a).
+\end{equation}
+The integral is ordinary and absolutely convergent.  Every apparent
+pole at an integer inside this strip is removable.
+\end{theorem}
+\begin{proof}
+Initially $0<\Re u<1$ and $z$ is sufficiently close to zero.  Absolute
+Fubini applied to \eqref{stcol:lerch} gives
+\[
+ \int_0^\infty x^{u-1}x^z\Phi(\omega,1+z,x+a)\,dx
+ =\frac{\Gamma(u+z)\Gamma(1-u)}{\Gamma(1+z)}
+       \Phi(\omega,1-u,a).
+\]
+The zero and infinity bounds in Lemma~\ref{stcol:tail-lemma}
+justify locally normal differentiation in $z$.  Equation
+\eqref{stcol:Q} and Euler reflection yield
+\eqref{stcol:mellin-formula} on the initial strip.  The differentiated
+integral is holomorphic on $0<\Re u<q+1$ by the same bounds.
+Analytic continuation proves the asserted larger strip and all its
+removable integer values.
+\end{proof}
+
+For a root of unity $\omega^d=1$, $\omega\ne1$, recall the uncolored
+balanced Stieltjes kernel from \eqref{stbil:kernel}, equivalently
+\begin{equation}\label{stcol:uncolored}
+ C_q(x,b)=\frac{\log^{q+1}x}{q+1}
+       +\sum_{j=0}^q(-1)^j\binom qj
+                  \gamma_j(x+b)(\log x)^{q-j}.
+\end{equation}
+The convention is
+$\zeta(1+z,b)=z^{-1}+\sum_{j\ge0}(-1)^j\gamma_j(b)z^j/j!$.
+The residue-class formula for Lerch's function gives the exact dictionary
+\begin{equation}\label{stcol:dictionary}
+ C_q^\omega(x,a)=\frac1d\sum_{r=0}^{d-1}
+        \omega^r C_q\left(\frac xd,\frac{a+r}{d}\right).
+\end{equation}
+Indeed $\Phi(\omega,s,x+a)=d^{-s}\sum_r\omega^r
+\zeta(s,(x+a+r)/d)$, first in its convergent series region and then
+by continuation.  Because $\sum_r\omega^r=0$, both the Laurent poles
+and the extra logarithmic terms in \eqref{stcol:uncolored} cancel.
+Differentiating the resulting holomorphic identity proves
+\eqref{stcol:dictionary} for every $q$.  Thus the ordinary integrals
+below are also exact identities for finite combinations of generalized
+Stieltjes functions.
+
+\subsection{Complete homogeneous classification at one shift}
+
+Fix $(\omega,a)$ and consider constants $d_0,\ldots,d_q$ with $d_0=1$,
+allowed to depend on these fixed parameters, in
+\begin{equation}\label{stcol:ansatz}
+ D(x)=\sum_{\ell=0}^q d_\ell(\log x)^{q-\ell}
+                  \partial_s^\ell\Phi(\omega,1,x+a).
+\end{equation}
+There is a unique triangular change of coordinates
+\begin{align}
+ D(x)&=\sum_{j=0}^q\alpha_j(\log x)^{q-j}C_j^\omega(x,a),
+       \label{stcol:alpha}\\
+ d_\ell&=\sum_{j=\ell}^q\binom j\ell\alpha_j,
+ &\alpha_j&=\sum_{\ell=j}^q(-1)^{\ell-j}\binom\ell j d_\ell.
+       \label{stcol:coordinates}
+\end{align}
+In these coordinates normalization is $\sum_{j=0}^q\alpha_j=1$.
+These are inverse binomial transforms, obtained by expanding
+\eqref{stcol:kernel}; no independence claim about numerical function
+values is needed for the coordinate change.
+
+\begin{theorem}[Fixed-shift balancing space]\label{stcol:classification}
+The normalized ansatz \eqref{stcol:ansatz} satisfies the strict bound
+$D(x)=O(x^{-q-1})$ as $x\to\infty$ exactly as follows.
+If $A_q(\omega,a)\ne0$, its only coefficients are
+$\alpha_q=1$, $\alpha_j=0$ for $j<q$.
+If $A_q(\omega,a)=0$, put
+\[
+ t=\max\{k<q:A_k(\omega,a)\ne0\}.
+\]
+Then its complete coefficient set is
+\begin{equation}\label{stcol:space}
+ \alpha_0=\cdots=\alpha_t=0,
+ \qquad \sum_{j=t+1}^q\alpha_j=1.
+\end{equation}
+This is an affine space of dimension $q-t-1$.  In particular, for
+$q\ge1$ nonuniqueness occurs precisely when
+$A_{q-1}(\omega,a)=A_q(\omega,a)=0$.  Order zero is always unique.
+\end{theorem}
+\begin{proof}
+The integer $t$ exists when required, since $A_0=(1-\omega)^{-1}\ne0$.
+Put $L=\log x$ and $P_k(z)=(1+z)_k$.  The coefficient of $x^{-k-1}$
+in \eqref{stcol:alpha} is the polynomial
+\begin{equation}\label{stcol:tail-polynomial}
+ \frac{(-1)^k A_k}{k!}
+     \sum_{j=0}^{\min(k,q)}\alpha_j P_k^{(j)}(0)L^{q-j}.
+\end{equation}
+For $k<q$, every nonzero $A_k$ therefore forces
+$\alpha_0=\cdots=\alpha_k=0$: its distinct logarithmic powers cannot
+cancel, their Pochhammer coefficients are nonzero, and a term of
+order $x^{-k-1}$ cannot be absorbed by a smaller inverse power.
+At $k=q$ a nonzero $A_q$ forces precisely the positive logarithmic
+powers to disappear, so $\alpha_0=\cdots=\alpha_{q-1}=0$.
+Normalization gives the first case.  If $A_q=0$, the last nonzero
+tail below it imposes exactly the constraints through $t$.
+Conversely, if these constraints hold, all surviving kernels have
+$A_j=\cdots=A_q=0$ and hence $C_j^\omega=O(x^{-q-2})$.
+Multiplying by the finitely many logarithmic powers in
+\eqref{stcol:alpha} leaves $O(x^{-q-1})$.  This proves sufficiency,
+the dimension, and the criterion for nonuniqueness.
+\end{proof}
+
+The word ``strict'' excludes $O(x^{-q-1}\log^q x)$ from the target.
+Discarding only the powers below $x^{-q-1}$ would miss the boundary
+logarithmic constraints and produce an incorrect larger space.
+For every real $0\le\omega<1$, the series
+$A_k=\sum_{n\ge0}\omega^n(n+a)^k$ is positive.  Thus all fixed-shift
+orders are unique there.
+
+There is also an algebraic description of the nonunique locus.
+Writing
+\begin{equation}\label{stcol:numerator}
+ R_k(\omega,a)=(1-\omega)^{k+1}A_k(\omega,a),\qquad R_0=1,
+\end{equation}
+gives polynomials obeying
+\begin{equation}\label{stcol:numerator-recurrence}
+ R_{k+1}=\omega(1-\omega)\partial_\omega R_k
+           +[a+(k+1-a)\omega]R_k.
+\end{equation}
+Since $\omega=0$ has $A_k=a^k\ne0$, the pair $A_{q-1}=A_q=0$
+is equivalent in our domain to
+$R_{q-1}=\partial_\omega R_{q-1}=0$.
+Thus nonuniqueness corresponds to a repeated color root of this
+polynomial at the fixed shift.  Theorem~\ref{stcol:classification}
+determines the complete balancing space once these zeros are known;
+it does not classify all positive shifts and admissible colors on
+this algebraic locus.
+
+\subsection{Consecutive vanished tails give all extra ordinary moments}
+
+\begin{theorem}[Exceptional-moment criterion and value]
+\label{stcol:exceptional}
+Let $m\ge q+1$ be an integer.  The ordinary improper integral
+\[
+ \int_0^\infty x^{m-1}C_q^\omega(x,a)\,dx
+\]
+converges if and only if
+\begin{equation}\label{stcol:zero-block}
+ A_q(\omega,a)=A_{q+1}(\omega,a)=\cdots=A_{m-1}(\omega,a)=0.
+\end{equation}
+In that case it converges absolutely, and its exact value is
+\begin{equation}\label{stcol:exceptional-value}
+ \boxed{\displaystyle
+ \int_0^\infty x^{m-1}C_q^\omega(x,a)\,dx
+   =(-1)^{m+1}q!\,e_q(1,1/2,\ldots,1/(m-1))
+                \partial_s\Phi(\omega,1-m,a).}
+\end{equation}
+The case $q=m-1$ is the single-tail exceptional identity of
+\cite{stcol:report}; the criterion and coefficient above treat any
+consecutive block.
+\end{theorem}
+\begin{proof}
+At zero there is no difficulty because $m>0$.  Every Pochhammer
+coefficient in \eqref{stcol:tail} is nonzero for $k\ge q$.
+If the first nonzero $A_k$ between $q$ and $m-1$ occurs at $k$,
+the weighted integrand has a nonzero leading constant times
+$x^{m-k-2}$.  Its primitive diverges as a power, or logarithmically
+when $k=m-1$; the lower-order remainder cannot cancel it.  This
+proves necessity even for complex $\omega$ and ordinary conditional
+convergence.  Under \eqref{stcol:zero-block} the kernel instead is
+$O(x^{-m-1})$, proving absolute convergence and a holomorphic Mellin
+integral on $0<\Re u<m+1$.  Continue
+\eqref{stcol:mellin-formula} to a neighborhood of $u=m$ and use
+\[
+ \frac{\pi}{\sin\pi u}=\frac{(-1)^m}{u-m}+O(u-m),\qquad
+ \Phi(\omega,1-u,a)
+  =-(u-m)\partial_s\Phi(\omega,1-m,a)+O((u-m)^2).
+\]
+The latter expansion uses $A_{m-1}=0$.  Formula
+\eqref{stcol:Q-integer} now proves
+\eqref{stcol:exceptional-value}.  This is a value of an ordinary
+convergent integral, rather than a prescription for a divergent one.
+\end{proof}
+
+If desired, the first nonzero $A_k$ with $k\ge q$ determines the exact
+right boundary $\Re u=k+1$ of absolute Mellin convergence.  Such a
+$k$ must exist: otherwise the analytic density
+$e^{-at}/(1-\omega e^{-t})$ would be a polynomial near zero and hence
+along the positive real axis, contradicting its nonzero value at zero
+and its exponential decay at infinity.
+
+\subsection{A golden-shift degeneracy on the unit circle}
+
+Put $\varphi=(1+\sqrt5)/2$ and $\omega=-1$.
+The Euler generating function gives
+\[
+ \frac{e^{-at}}{1+e^{-t}}=\frac12\sum_{k\ge0}E_k(a)\frac{(-t)^k}{k!},
+ \qquad A_k(-1,a)=\frac12E_k(a).
+\]
+The exact factorizations
+\begin{align}
+ E_4(a)&=a(a-1)(a^2-a-1),\label{stcol:euler4}\\
+ E_5(a)&=\tfrac12(2a-1)(a^2-a-1)^2\label{stcol:euler5}
+\end{align}
+show that both tails vanish at the golden shift.  The neighboring
+values are
+\begin{equation}\label{stcol:golden-tails}
+ A_3(-1,\varphi)=\frac{\sqrt5}{8},\qquad
+ A_4(-1,\varphi)=A_5(-1,\varphi)=0,\qquad
+ A_6(-1,\varphi)=\frac12.
+\end{equation}
+Consequently the complete order-five balancing space is the line
+\begin{equation}\label{stcol:golden-family}
+ D_\tau(x)=(1-\tau)C_5^{-1}(x,\varphi)
+           +\tau\log x\,C_4^{-1}(x,\varphi),\qquad \tau\in\mathbb C.
+\end{equation}
+For instance $D_{-1}=2C_5^{-1}-\log x\,C_4^{-1}$ has original
+coefficients $(d_0,\ldots,d_5)=(1,6,14,16,9,2)$.
+The next terms, which establish the precise end of this cancellation,
+are
+\begin{equation}\label{stcol:golden-leading}
+ C_4^{-1}(x,\varphi)=\frac{35}{12}x^{-7}+O(x^{-8}),\qquad
+ C_5^{-1}(x,\varphi)=\frac74x^{-7}+O(x^{-8}).
+\end{equation}
+Indeed $(1+z)_6=z^6+21z^5+175z^4+735z^3+1624z^2+1764z+720$,
+and \eqref{stcol:tail} gives these constants from its fourth and fifth
+derivatives divided by $1440$.
+
+Define
+$\Delta_r=\zeta'(-r,\varphi/2)-\zeta'(-r,(\varphi+1)/2)$,
+where the prime differentiates the order.  The extra ordinary moments are
+\begin{align}
+ \int_0^\infty x^4 C_4^{-1}(x,\varphi)\,dx
+     &=16\Delta_4,\label{stcol:golden45}\\
+ \int_0^\infty x^5 C_4^{-1}(x,\varphi)\,dx
+     &=-96\Delta_5,\label{stcol:golden46}\\
+ \int_0^\infty x^5 C_5^{-1}(x,\varphi)\,dx
+     &=-32\Delta_5.\label{stcol:golden56}
+\end{align}
+Here $Q_4(5)=1$, $Q_4(6)=3$, and $Q_5(6)=1$.
+The relation
+$\Phi(-1,s,a)=2^{-s}[\zeta(s,a/2)-\zeta(s,(a+1)/2)]$
+converts \eqref{stcol:exceptional-value} into these formulas; its
+$\log2$ term vanishes at the indicated zeros.  In particular,
+\begin{equation}\label{stcol:golden-vanishing}
+ \int_0^\infty x^5
+       \bigl[C_4^{-1}(x,\varphi)-3C_5^{-1}(x,\varphi)\bigr]\,dx=0.
+\end{equation}
+Every integral here is absolutely convergent.  In explicit generalized
+Stieltjes form, its kernels are
+\begin{equation}\label{stcol:golden-stieltjes}
+ C_q^{-1}(x,\varphi)=\frac12\sum_{j=0}^q(-1)^j\binom qj
+     \left(\log\frac x2\right)^{q-j}
+     \left[\gamma_j\left(\frac{x+\varphi}{2}\right)
+            -\gamma_j\left(\frac{x+\varphi+1}{2}\right)\right].
+\end{equation}
+Thus \eqref{stcol:golden46} is a higher ordinary moment enabled by two
+consecutive cancellations, while \eqref{stcol:golden45} and
+\eqref{stcol:golden56} also specialize the earlier single-tail theorem.
+The proof resolves the exact identities independently of numerical
+quadrature; finite symbolic checks and precision-refined quadrature
+provide separate reproducible diagnostics.

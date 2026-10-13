@@ -1,0 +1,340 @@
+% ProveIt Contributors. Classical foundations are attributed below.
+\section{Bilinear moments of balanced Stieltjes kernels}\label{stbil:sec}
+
+Translation has supplied linear identities and their boundary values.
+To obtain exact product identities, combine the Stieltjes indices so that
+their common logarithmic tails cancel. The balanced kernels of the
+preserved \emph{Balanced Stieltjes Moments} report~\cite{stmell:balanced} are
+\begin{equation}\label{stbil:kernel}
+ C_p(x,a)=\left.\partial_z^p\left(x^z\zeta(1+z,x+a)-\frac1z\right)
+ \right|_{z=0},\qquad x,a>0,\quad p\in\mathbb Z_{\geq0}.
+\end{equation}
+With $\gamma_j$ denoting the generalized Stieltjes functions and
+$L=\log x$, this is the explicit combination
+\[
+ C_p(x,a)=\frac{L^{p+1}}{p+1}
+       +\sum_{j=0}^p(-1)^j\binom pj\gamma_j(x+a)L^{p-j}.
+\]
+The subtraction removes the pole normally in $z$.  We first recall and
+prove the analytic input from that report, rather than claiming it anew.
+
+\begin{lemma}[Balanced scalar transform and decay]\label{stbil:scalar}
+At zero $C_p(x,a)=O(1+|\log x|^{p+1})$, and at infinity
+$C_p(x,a)=O(x^{-p-1})$.  The scalar Mellin transform is
+\begin{align*}
+ J_p(s,a)&:=\int_0^\infty x^{s-1}C_p(x,a)\,dx
+       =\pi\csc(\pi s)\zeta(1-s,a)Q_p(s),
+       &&0<\Re s<p+1,\\
+ \sum_{p\geq0}Q_p(s)\frac{z^p}{p!}
+       &=\frac{\Gamma(s+z)}{\Gamma(s)\Gamma(1+z)}.
+\end{align*}
+Apparent singularities at interior integers are removable in the whole
+product defining $J_p$.
+\end{lemma}
+
+\begin{proof}
+The explicit finite Stieltjes combination and regularity of $\gamma_j$
+on positive compact intervals give the zero bound.  Euler--Maclaurin
+for Hurwitz zeta, expanded about $x$ with shift $a$, gives for every $K$
+\[
+ x^z\zeta(1+z,x+a)-\frac1z
+ =\sum_{k=1}^{K}\frac{(-1)^kB_k(a)}{k!}(1+z)_{k-1}x^{-k}
+        +O(x^{-K-1}).
+\]
+Here $B_k$ is the Bernoulli polynomial with $B_1(a)=a-\tfrac12$.
+Taking sufficiently many Euler--Maclaurin terms bounds the remainder
+uniformly on a slightly larger $z$-disc; Cauchy differentiation thus
+preserves its inverse-power bound.  The polynomial $(1+z)_{k-1}$ has
+degree $k-1$, so its $p$th derivative vanishes for $k\leq p$.
+This proves the claimed infinity bound and absolute convergence of $J_p$
+on $0<\Re s<p+1$.
+
+For the transform, the initially convergent beta identity is
+\[
+ \int_0^\infty x^{\alpha-1}\zeta(\beta,x+a)\,dx
+ =\frac{\Gamma(\alpha)\Gamma(\beta-\alpha)}{\Gamma(\beta)}
+       \zeta(\beta-\alpha,a),
+ \quad\Re\alpha>0,\quad\Re\beta>\Re\alpha+1.
+\]
+It follows by integrating the absolutely convergent Hurwitz series.
+Continue its left side one strip farther by the explicit cutoff
+\begin{align*}
+ &\int_0^1x^{\alpha-1}\zeta(\beta,x+a)\,dx\\
+ &\quad+\int_1^\infty x^{\alpha-1}
+       \left(\zeta(\beta,x+a)-\frac{x^{1-\beta}}{\beta-1}\right)\,dx
+       +\frac1{(\beta-1)(\beta-\alpha-1)}.
+\end{align*}
+For $\Re(\beta-1)<\Re\alpha<\Re\beta$, $\Re\alpha>0$, the last term
+equals $-\int_0^1x^{\alpha-\beta}\,dx/(\beta-1)$.  Thus the continued
+expression is the ordinary integral of the subtracted integrand over
+the whole positive axis.  Substitute $\alpha=s+z$, $\beta=1+z$ with
+$0<\Re s<1$, initially $z\ne0$ sufficiently small.  This gives
+\[
+ \int_0^\infty x^{s-1}
+       \left(x^z\zeta(1+z,x+a)-\frac1z\right)\,dx
+ =\frac{\Gamma(s+z)\Gamma(1-s)}{\Gamma(1+z)}\zeta(1-s,a).
+\]
+Both sides extend holomorphically through $z=0$.  Near zero, the removable
+term $(x^z-1)/z$ is bounded by a constant times
+$(1+|\log x|)x^{-|\Re z|}$; choose $|\Re z|<\Re s/2$.  Near infinity,
+the normally uniform expansion above applies.  Dominated parameter
+differentiation therefore gives the claimed scalar formula on
+$0<\Re s<1$, using the gamma reflection identity.
+The differentiated integral is holomorphic on $0<\Re s<p+1$ by the
+endpoint bounds.  Analytic continuation identifies it with the displayed
+meromorphic expression throughout this larger strip, forcing its interior
+poles to be removable.  No unsubtracted divergent monomial integral is
+assigned a value in this argument.
+\end{proof}
+
+In particular,
+\[
+ Q_0=1,\quad Q_1=\psi(s)+\gamma,\quad
+ Q_2=(\psi(s)+\gamma)^2+\psi'(s)-\zeta(2).
+\]
+
+\subsection{An explicit single-contour product formula}
+
+\begin{theorem}[Bilinear Mellin--Barnes coordinates]\label{stbil:barnes}
+For $a,b>0$, $p,q\geq0$, and $0<\Re v<p+q+2$, the ordinary integral
+\[
+ I_{p,q}(v;a,b)=\int_0^\infty x^{v-1}C_p(x,a)C_q(x,b)\,dx
+\]
+is absolutely convergent and holomorphic in $v$.  Choose any real $c$ with
+\[
+ \max(0,\Re v-q-1)<c<\min(p+1,\Re v).
+\]
+Then
+\begin{align*}
+ I_{p,q}(v;a,b)
+ &=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}
+       J_p(s,a)J_q(v-s,b)\,ds\\
+ &=\frac{\pi^2}{2\pi i}\int_{c-i\infty}^{c+i\infty}
+ \frac{\zeta(1-s,a)\zeta(1-v+s,b)Q_p(s)Q_q(v-s)}
+      {\sin(\pi s)\sin(\pi(v-s))}\,ds.
+\end{align*}
+The contour is absolutely and exponentially convergent.  Its value is
+independent of the permissible split $c$.
+\end{theorem}
+
+\begin{proof}
+The endpoint bounds give absolute convergence, locally uniformly in the
+stated $v$ strip; the same argument allows arbitrary fixed powers of
+$\log x$.  The interval for $c$ is nonempty precisely under the stated
+strict inequalities on $\Re v$.  Along a fixed vertical line with positive
+real part, the gamma-ratio derivatives $Q_p$ have at most powers of
+$\log(2+|\Im s|)$ as growth.  The Hurwitz zeta function with fixed positive
+shift has at most polynomial growth on every fixed vertical strip.  For
+example this follows directly by choosing the Euler--Maclaurin cutoff
+proportional to $1+|\Im s|$ and taking a fixed sufficiently long remainder.
+The sine factor therefore implies
+\[
+ J_p(c+it,a)=O\bigl(e^{-\pi|t|}(1+|t|)^A
+                         (1+\log(2+|t|))^p\bigr)
+\]
+for some $A$, and similarly for the second factor.  Any interior integer
+at finite height is interpreted through the holomorphic scalar transform.
+
+Mellin inversion of $C_p$ on this line is legitimate: in logarithmic
+coordinates its transform is the Fourier transform of the continuous
+integrable function $e^{cy}C_p(e^y,a)$, and $J_p(c+it,a)$ is integrable in
+$t$.  Substitute that absolutely convergent inversion formula into
+$I_{p,q}$.  Fubini follows from the explicit product bound
+\[
+ \int_{-\infty}^{\infty}|J_p(c+it,a)|\,dt\;
+ \int_0^\infty x^{\Re v-c-1}|C_q(x,b)|\,dx<\infty.
+\]
+The inner $x$ integral is then $J_q(v-s,b)$, giving the first equality.
+The second equality uses the already proved scalar formula.  It is an
+application of classical Mellin inversion and its Parseval formula;
+it is not obtained by multiplying two original $x$ integrals.
+\end{proof}
+
+This is a reduction to one explicit Hurwitz--gamma Barnes contour.
+It does not assert a finite reduction of every product to single Hurwitz
+values, classical polylogarithms, or multiple zeta values.  It does,
+however, supply a reproducible exponentially convergent coordinate for
+the whole ordinary product strip, including $\Re v\geq2$ when $p+q>0$.
+Differentiating in $v$ gives logarithmically weighted products, with
+normal convergence on compact substrips.
+
+For real $0<v<2p+2$ there is the positive diagonal form
+\[
+ I_{p,p}(v;a,a)=\frac1\pi\int_0^\infty
+        |J_p(v/2+it,a)|^2\,dt.
+\]
+At $p=0,a=1,v=1$ this specializes to the classical-type Parseval identity
+\[
+ \int_0^\infty(\log x-\psi(x+1))^2\,dx
+ =\pi\int_0^\infty\frac{|\zeta(\tfrac12+it)|^2}
+                              {\cosh^2(\pi t)}\,dt.
+\]
+No novelty claim is made for this scalar specialization.
+
+\subsection{Exact moments of adjacent-shift differences}
+
+Define
+\[
+ D_p(x,a)=C_p(x,a)-C_p(x,a+1).
+\]
+The Hurwitz recurrence gives the elementary identity, also recorded in
+the balanced-Stieltjes source,
+\begin{equation}\label{stbil:D}
+ D_p(x,a)=\frac{\log^p(x/(x+a))}{x+a}.
+\end{equation}
+This exposes an exactly solvable family of linear combinations of four
+balanced product moments.  These differences retain the $x^{-p-1}$
+decay and have a fixed sign $(-1)^p$.
+
+\begin{theorem}[Factorial and integer-weight bilinear identities]\label{stbil:integer-moments}
+Let $p,q\geq0$, $N=p+q$, and $a>0$.  Then
+\begin{equation}\label{stbil:factorial}
+ \int_0^\infty D_p(x,a)D_q(x,a)\,dx
+       =\frac{(-1)^N N!}{a}.
+\end{equation}
+For integers $2\leq m\leq N+1$, write
+\[
+ R_m(T)=\frac{\prod_{r=2}^{m-1}(T-r)}{(m-2)!}
+       =\sum_{j=0}^{m-2}r_{m,j}T^j
+\]
+(the empty product for $m=2$ is $1$).  Then the ordinary convergent moment is
+\begin{equation}\label{stbil:integer}
+ \int_0^\infty x^{m-1}D_p(x,a)D_q(x,a)\,dx
+ =(-1)^N N!a^{m-2}
+       \sum_{j=0}^{m-2}r_{m,j}\bigl(\zeta(N+1-j)-1\bigr).
+\end{equation}
+All zeta arguments on the right are integers at least two.
+\end{theorem}
+
+\begin{proof}
+Set $t=\log(1+a/x)$.  Reversing endpoints gives, for the entire convergence
+strip $0<\Re v<N+2$,
+\begin{equation}\label{stbil:Laplace}
+ \int_0^\infty x^{v-1}D_p(x,a)D_q(x,a)\,dx
+ =(-1)^N a^{v-2}\int_0^\infty
+          t^Ne^{-t}(e^t-1)^{1-v}\,dt.
+\end{equation}
+At $v=1$ the gamma integral proves the factorial formula.  At $v=m\geq2$,
+\[
+ e^{-t}(e^t-1)^{1-m}
+  =\sum_{\ell=m}^{\infty}\binom{\ell-2}{m-2}e^{-\ell t}.
+\]
+These terms are nonnegative.  Tonelli and the gamma integral therefore
+give
+\[
+ (-1)^N N!a^{m-2}\sum_{\ell=m}^{\infty}
+          \binom{\ell-2}{m-2}\ell^{-N-1}.
+\]
+The polynomial $R_m(\ell)$ equals the binomial coefficient here and
+vanishes at $\ell=2,\ldots,m-1$.  Thus the sum may start at $\ell=2$.
+Expanding the finite polynomial gives the claimed formula.  Its convergence
+uses $N\geq m-1$; every resulting zeta series is absolutely convergent.
+\end{proof}
+
+For example, whenever the indicated $N$ is large enough,
+\begin{align*}
+ \int_0^\infty xD_pD_q\,dx
+   &=(-1)^NN!\bigl(\zeta(N+1)-1\bigr), &&N\geq1,\\
+ \int_0^\infty x^2D_pD_q\,dx
+   &=(-1)^NN!a\bigl(\zeta(N)-2\zeta(N+1)+1\bigr), &&N\geq2,\\
+ \int_0^\infty x^3D_pD_q\,dx
+   &=\frac{(-1)^NN!a^2}{2}
+        \bigl(\zeta(N-1)-5\zeta(N)+6\zeta(N+1)-2\bigr), &&N\geq3.
+\end{align*}
+Here both factors in each integrand have the same shift $a$.
+In particular
+\[
+ \int_0^\infty x\,[C_0(x,a)-C_0(x,a+1)]
+                       [C_1(x,a)-C_1(x,a+1)]\,dx=1-\zeta(2),
+\]
+and
+\[
+ \int_0^\infty x^2[C_1(x,a)-C_1(x,a+1)]^2\,dx
+      =2a\bigl(\zeta(2)-2\zeta(3)+1\bigr).
+\]
+
+\subsection{The factorial Gram matrix and Laguerre coordinates}
+
+The Gram matrix of $D_0,\ldots,D_M$ in $L^2(0,\infty;dx)$ is
+\[
+ G_{p,q}=\frac{(-1)^{p+q}(p+q)!}{a},\qquad
+ \det G=a^{-(M+1)}\prod_{j=0}^{M}(j!)^2.
+\]
+Indeed the classical Laguerre polynomials
+$L_n(t)=\sum_{p=0}^n(-1)^p\binom np t^p/p!$ give the triangular combinations
+\[
+ \Lambda_n(x,a)=\sum_{p=0}^n\binom np\frac{D_p(x,a)}{p!}
+       =\frac{L_n(\log(1+a/x))}{x+a}.
+\]
+The same substitution as above and classical Laguerre orthogonality yield
+\[
+ \int_0^\infty\Lambda_m(x,a)\Lambda_n(x,a)\,dx
+          =\frac{\delta_{mn}}a.
+\]
+The diagonal entries of the triangular change of basis are $1/n!$;
+taking determinants proves the Gram determinant.  This use of Laguerre
+orthogonality is classical; the balanced-kernel difference supplies the
+coordinate map.
+
+\subsection{Different shifts and an explicit hypergeometric coordinate}
+
+For $a,b>0$ define, initially when $0<\Re v<2$ and $u,w$ are near zero,
+\[
+ K(v;u,w;a,b)=\int_0^\infty
+       \frac{x^{v+u+w-1}}{(x+a)^{1+u}(x+b)^{1+w}}\,dx.
+\]
+The Euler substitution $x=at/(1-t)$ gives
+\begin{equation}\label{stbil:hypergeometric}
+ K(v;u,w;a,b)=
+ \frac{a^{v+w-1}}{b^{1+w}}B(v+u+w,2-v)
+ {}_2F_1(1+w,v+u+w;2+u+w;1-a/b).
+\end{equation}
+The argument $1-a/b$ is real and less than one, so the Euler integral
+fixes the real positive branch unambiguously.  Differentiation yields
+\[
+ \int_0^\infty x^{v-1}D_p(x,a)D_q(x,b)\,dx
+       =\left.\partial_u^p\partial_w^qK(v;u,w;a,b)\right|_{u=w=0}.
+\]
+The left side is holomorphic on $0<\Re v<p+q+2$.  Consequently the whole
+parameter derivative on the right continues to this larger strip, with
+all apparent interior poles removable.  The derivative is taken first
+in the initial strip; one must not differentiate an undifferentiated
+integral at $\Re v\geq2$ where it diverges.  This supplies a finite
+hypergeometric-parameter-derivative function class for unequal shifts.
+
+At $a=b$ it simplifies to
+\[
+ \int_0^\infty x^{v-1}D_p(x,a)D_q(x,a)\,dx
+   =a^{v-2}\left.\partial_z^{p+q}B(v+z,2-v)\right|_{z=0},
+\]
+with the same continuation convention.  At $p=q=0,v=1$ and $a\ne b$,
+the unequal-shift integral is $\log(b/a)/(b-a)$, with limit $1/a$.
+
+\subsection{Attribution and evidence boundary}
+
+The scalar $J_p$ theorem, the decay of $C_p$, and its adjacent-shift
+recurrence come from the preserved
+balanced-Stieltjes report, whose further-research question 5 explicitly
+asks for a bilinear theory.  The single-contour formula is the direct
+application of classical Mellin Parseval with the full admissible split
+and the enlarged balanced convergence strip proved above.  The exact
+adjacent-shift formulas use the classical Hurwitz recurrence, beta/gamma
+integrals, and Laguerre orthogonality.  These are transparent derived
+identities in the balanced-kernel setting, not a claim that Parseval,
+Laguerre theory, or their scalar special cases are new.
+
+Relevant classical references are NIST DLMF~\cite{stbil:classical}
+\S2.5(i), especially
+equations 2.5.2--2.5.5 (Mellin inversion and Parseval), \S15.6.1 (Euler's
+hypergeometric integral), and Table 18.3.1 (Laguerre orthogonality).
+Targeted searches of the maintained chapters and the Stieltjes-correlation
+report tree found no existing balanced-product/Laguerre formulation;
+this is only a corpus-overlap check, not a proof of literature novelty.
+
+The accompanying scripts separate mathematical proofs from diagnostics.
+The Barnes checks compare direct positive-axis quadrature with independent
+vertical-contour quadrature.  Higher $C_p$ values use the preserved
+Euler--Maclaurin evaluator, and the contour is truncated at height 24.
+These are noninterval numerical diagnostics; zero printed residual does
+not mean an exact or rigorously bounded zero.  Finite Gram determinants
+and the integer-weight coefficient checks use exact rational arithmetic.
