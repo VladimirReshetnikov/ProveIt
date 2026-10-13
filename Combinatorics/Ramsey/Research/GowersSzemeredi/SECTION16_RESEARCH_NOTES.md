@@ -9084,6 +9084,43 @@ occurrences and 120 statuses. Source and native evidence are recorded in
 This checkpoint does not establish complete original-paper fidelity;
 the accepted correction and previous limits remain.
 
+### L.100. One common-base proof for Lemma 16.7 (2026-10-13)
+
+The generic common-base selection theorem now lives beside the original
+counting argument. Lemma 16.7 is its printed-parameter specialization.
+The old generic owner reexports the theorem and no longer duplicates
+fourteen private declarations. The moved proof changes only three
+references to their existing equivalents; all 17 retained statements
+and contexts, four retained definitions, imports and final bounds remain
+exact. Removed source and the retired generator are archived explicitly.
+
+Production loses 249 source lines and 161 theorem/lemma tactic lines.
+Two focused checks give a net 247-line source reduction. The stronger
+final route saves 249/161, but the original final and both historical
+routes grow by 21 source/five proof lines because the generic statement
+is now in their shared dependency. This checkpoint accepts that tradeoff;
+it does not shorten the original final route.
+
+The focused audit retains its definition-kind guard and all prior names:
+313 declarations comprise 312 theorems and one definition. Both changed
+public proofs are explicitly checked, and the existing numbered
+Lemma 16.7 pair remains exact. Standalone compilation does not claim an
+axiom audit of every export.
+
+Eighteen fresh native checks pass. Seven completed results are retained
+after their exact own-input manifests match current sources. Six regular targets cover 251
+of 287 affected consumers; the selected 25 targets cover 284, excluding
+three broad aggregate targets. Their union has 1,266 modules, 231,478
+source lines and 1,269 source/configuration inputs. No new runs of the
+seven unchanged targets are claimed.
+
+The 61-module core passes on the first attempt, with both owners
+recompiled and no source repair. All 1,269 current inputs match. The
+regenerated inventory retains all 120 rows, order and duplicate
+occurrences; only the two common-base declaration locations change.
+Evidence is in `verification/2026-10-13-common-base-sharing-simplification.json`. This checkpoint preserves the documented
+correction and prior original-paper fidelity limits.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
