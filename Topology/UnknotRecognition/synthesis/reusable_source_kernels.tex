@@ -1,0 +1,251 @@
+\section{Reusable matching kernels for atlas preparation and source replay}
+\label{sec:reusable-source-kernels}
+
+The profile in Section~\ref{sec:predicate-filtered-atlases} identifies repeated
+exact elimination in three places: local ray enumeration, recovery of a source
+extreme ray from an atlas mixture, and independent extremality replay.  This
+section replaces those repeated ambient-coordinate systems by reusable
+kernel charts.  The maintained producer is \path{fastunknot/source_kernel.py};
+the separately implemented checker is
+\path{fastunknot/source_kernel_verify.py}.  The experimental atlas adapter
+\path{projective_port_research/kernel_atlas.py} uses both and retains the
+complete predicate-filtered query contract.  The preserved report~113 and
+the preceding research backend remain unchanged, permitting direct comparison.
+
+\subsection{Kernel coordinates and extreme supports}
+
+Let $A$ be a rational matrix with $n$ columns, $h=\dim\ker A$, and let the rows
+of $K\in\mathbb Q^{h\times n}$ be a basis of its kernel.  Choose the basis as
+a free-coordinate chart: there is a list $J=(j_1,\ldots,j_h)$ with
+$K_{i,j_a}=\delta_{ia}$.  Thus every matching vector is uniquely
+$x=K^{\mathsf T}z$, and its parameters are simply $z=x_J$.  Write
+$a_j=K_{*,j}$ for the coordinate form, so that $x_j=a_j^{\mathsf T}z$.
+For $Z\subseteq\{1,\ldots,n\}$ let $E_Z$ have rows $a_j^{\mathsf T}$,
+$j\in Z$.  Zero coordinate forms may be discarded.
+
+\begin{proposition}[Extremality in a prepared source chart]
+For a nonzero $x\geq0$ with $Ax=0$, put $Z=\{j:x_j=0\}$.  Then $x$ spans
+an extreme ray of $\{u\geq0:Au=0\}$ if and only if
+\[
+ \operatorname{rank}E_Z=h-1.
+\]
+\end{proposition}
+\begin{proof}
+The injective map $K^{\mathsf T}$ identifies $\ker E_Z$ with matching vectors
+supported in $\operatorname{supp}x$.  If this space has dimension greater
+than one, choose a matching direction supported there and independent of
+$x$.  A sufficiently small displacement in either direction retains
+nonnegativity, contradicting extremality.  Conversely, in a decomposition
+$x=u+v$ with nonnegative matching vectors, both summands vanish on $Z$.
+A one-dimensional supported kernel forces them to be nonnegative multiples
+of $x$.  Since $x\ne0$ already belongs to this supported kernel, its dimension
+is one exactly at the displayed rank.
+\end{proof}
+
+Coordinate incompatibilities are checked on supports after this full-cone
+criterion.  They are not treated as linear equations or used to declare a
+nonextreme cone vector extreme.
+
+\subsection{Local enumeration with distinct coordinate hyperplanes}
+
+Normalize each nonzero $a_j$ to a primitive integer vector with a canonical
+sign, and deduplicate the resulting hyperplanes.  Let their number be $m\leq n$.
+For each $(h-1)$-subset, solve its homogeneous equations in $h$ variables.
+If the kernel is one-dimensional, reconstruct $x=K^{\mathsf T}z$, orient it
+nonnegatively if possible, make it primitive, and test incompatibilities.
+Deduplicate the resulting original-coordinate rays.  Nullity zero gives no
+rays; nullity one has just the empty candidate subset.
+
+\begin{proposition}[Complete kernel-hyperplane enumeration]
+The procedure returns exactly all admissible full-cone extreme rays.  After
+one polynomial-time kernel preparation, it solves at most
+$\binom{m}{h-1}$ candidate systems in dimension $h$, with polynomial
+reconstruction and bit complexity per candidate.
+\end{proposition}
+\begin{proof}
+At an extreme ray the preceding proposition supplies $h-1$ independent active
+coordinate forms.  Deduplication preserves their span, so one enumerated
+subset defines that ray.  Conversely, an accepted line has a nonnegative
+orientation and $h-1$ independent zero forms, hence is extreme.  Two forms
+of opposite sign define the same hyperplane but are still separate source
+inequalities: reconstruction checks every original coordinate.  Consequently
+the argument also covers cones of dimension smaller than $h$.  Rational
+elimination and reconstruction have polynomial bit bounds by the usual
+minor estimates, first for $K$ and then for the systems in its coordinates.
+\end{proof}
+
+The previous zero-set enumerator chooses from all $n$ coordinate positions
+and re-eliminates a restricted ambient matching matrix for every candidate.
+The improvement reduces both the number of distinct systems and their
+dimension; it does not assert a smaller worst-case exponent when all forms
+are distinct.  As an exact operation example, take three independent groups
+of four proportional coordinate forms.  Here $n=12$, $h=3$, and $m=3$.  Both algorithms
+prepare a $9\times12$ kernel.  The old enumeration additionally solves
+$66$ systems of size $9\times10$; the new one solves three $2\times3$
+systems, with the same three rays.  Twenty copies per group give $n=60$
+and three new candidates versus the old $\binom{60}{2}=1770$.
+
+\subsection{Incremental descent to a positive source extreme ray}
+
+Suppose an atlas query supplies a compatible matching vector $x\geq0$ with
+$c^{\mathsf T}x>0$.  Check matching membership by
+$x=K^{\mathsf T}x_J$, check the objective, prescribed zeros and conflicts,
+then normalize $\sum_jx_j=1$.  Put $s=\sum_ja_j$ and compute once a
+free-coordinate row basis $B$ for
+\[
+ \ker\begin{pmatrix}E_Z\\s^{\mathsf T}\end{pmatrix}.
+\]
+Each row of $B$ parametrizes a matching direction preserving the current
+zeros and normalization.  If $B$ is empty, the witness is already extreme.
+Otherwise choose its first row $b$, form $d=K^{\mathsf T}b$, clear its
+denominators and common divisor, and orient it so that $c^{\mathsf T}d\geq0$.
+The nonzero direction has both positive and negative coordinates, because
+$\sum_jd_j=0$.  Set
+\[
+ t=\min_{d_j<0}\frac{x_j}{-d_j},\qquad x'=x+td.
+\]
+All requested zeros, incompatibilities and support-exclusion clauses survive
+the support decrease.  The objective does not decrease, and at least one
+positive coordinate vanishes.
+
+For each newly zero coordinate $j$, compute $v_i=a_j^{\mathsf T}B_i$.
+If every $v_i$ vanishes, the new restriction is redundant.  Otherwise choose
+$p$ with $v_p\ne0$, delete row $p$ and replace every remaining row by
+\[
+ B_i\longleftarrow B_i-\frac{v_i}{v_p}B_p.
+\]
+This single elimination intersects the direction space with the new zero
+hyperplane.  Several simultaneously killed coordinates may be dependent;
+they must not be counted as separate rank increases.
+
+\begin{proposition}[Bounded incremental support descent]
+The procedure returns a primitive positive compatible source extreme ray in
+the original support.  It performs at most
+\[
+ h-1-\operatorname{rank}E_{Z_0}
+\]
+support steps, with polynomial bit complexity in the binary source, witness
+and objective sizes.
+\end{proposition}
+\begin{proof}
+The update formula is a basis of the old direction space intersected with
+the new linear equation.  Some killed coordinate has nonzero value on the
+chosen direction, so at least one update strictly reduces dimension per step.
+The row $s^{\mathsf T}$ is independent of $E_{Z_0}$: normalized feasibility
+gives $E_{Z_0}x_J=0$ and $s^{\mathsf T}x_J=1$.  Thus the initial direction
+dimension is exactly the asserted step bound.  At termination the supported
+matching kernel has dimension one.  Positivity and feasibility were preserved
+at every step, proving the claimed output.
+
+For the bit bound, initially $B$ has identity columns at its free parameter
+coordinates.  Deleting row $p$ and its identity column preserves the other
+identity columns under the displayed update.  Since $K$ is also an identity
+chart, the composed rows $B_iK$ have identity entries at surviving original
+source coordinates.  They are therefore the unique free-coordinate chart
+for the current system consisting of $A$, the all-ones row, and coordinate
+zero rows.  Their entries are ratios of minors of this fixed-coefficient
+system, so have polynomial bit length independently of the elimination
+history.  Only the emitted direction is made primitive; rescaling the chart
+rows arbitrarily would lose this direct bound.
+
+Write the current iterate using a common denominator as $x=X/D$.  If $j$
+achieves the displayed minimum and $d_j<0$, the next iterate can be written
+with denominator $D|d_j|$ and numerators
+$X_i|d_j|+X_jd_i$.  Each step therefore adds only polynomially many bits.
+There are at most $h-1$ steps, and primitive reduction cannot increase the
+encoding length.  Preparation, reconstruction and rank-one updates are all
+polynomial exact arithmetic operations.
+\end{proof}
+
+\subsection{Independent replay and the trust boundary}
+
+The certificate remains the primitive original-coordinate vector.  The
+checker snapshots the raw source and constructs its own chart with separate
+elimination code and reversed pivot order; it imports no producer algebra.
+For every witness it checks exact syntax, nonnegativity, nonzeroness,
+primitive integral scale, source membership, conflicts, requested zeros and
+positive objective.  Its own zero-coordinate forms then test rank $h-1$.
+A bounded cache can reuse this last support-rank result, since it is tied to
+one immutable source.  It never substitutes for the per-witness checks.
+
+No kernel or descent trace supplied by the producer is trusted.  Geometry
+remains a separate independently replayed predicate.  Resource caps continue
+to yield an inconclusive result, and caller callback exceptions propagate,
+including exceptions having the same class as an internal cap.  The local
+candidate cap counts candidate hyperplane subsets, not kernel preparation,
+reconstruction, output sorting or memory; it is not a total work budget.
+
+\subsection{Reproducible correctness and performance evidence}
+
+The focused run in \path{data/kernel-atlas-tests.txt} passes 42 methods:
+29 new tests and 13 existing subspace/filter regressions.  The new tests
+include 420 independent small-cone ray comparisons, ten delivered fixture
+blocks, 30 coordinate/equation transformations, 600 positive-mixture descent
+checks, and 1,200 rank-one restrictions checked against freshly computed
+constraint ranks and identity-chart invariants.  Verifier tests cover
+120 random sources, 223 independently enumerated positive rays and their
+223 rejected nonprimitive doubles, and 2,023 objective/zero-face queries.
+They also disable producer algebra before constructing and using the checker.
+The integrated atlas adds 480 independent restricted-query comparisons and
+complete positive-ray exhaustion on 60 random synchronized sources.
+Large rational coefficients, simultaneous dependent zeros, malformed inputs,
+immutable source snapshots, bounded-cache forgeries, caps and caller
+cancellation have explicit regression cases.
+
+The fresh 22-sector native audit makes the same 202 anchor queries as the
+preceding section.  All three backends agree on 60 accepted discs and 142
+completed negative sector queries.  The new backend retains all nine earlier
+recoveries, with 220 linear queries, 18 rejected-query occurrences and 374
+mask transitions.  Its 78 inspected query witnesses are replayed from the
+original matching equations and native geometric packets, without atlas
+discovery; complete comparisons use an independent whole-source enumeration
+for the 112 two-tetrahedron queries and the maintained complete sector
+enumerator for the larger fixtures.  These are supplied triangulations,
+not diagram-authenticated knot exteriors.
+
+\begin{center}
+\small
+\input{data/kernel-atlas-table.tex}
+\end{center}
+
+The table reports medians of seven seeded, randomly ordered three-arm trials;
+ratios are medians of paired ratios.  A/A is the median of three duplicate
+new-backend pairs.  Every timed arm includes source validation, all kernel
+and atlas preparation, all anchor queries, witness recovery and checking,
+native geometric inspection and its independent certificate replay, and JSON
+serialization.  Each arm starts with an empty per-source geometric witness
+cache.  Fixture construction is excluded.  Complete geometric statuses agree,
+and each arm's serialized outputs are deterministic across repetitions.
+Preparation of the checker's independent chart is included.
+
+The smallest two cases regress by factors $1.34$ and $1.07$ against the
+previous filtered backend.  The other three take $0.93$, $0.73$ and $0.52$
+times its cost, the largest case improving by approximately $1.94$ times.
+The native sector enumerator remains faster than the new atlas on every
+retained case, by factors between $3.17$ and $5.87$.  These finite timings
+justify retaining the atlas as a research alternative, while the exact
+candidate-system reduction and descent bounds describe its mathematical
+improvement.  The raw records, exact operation census, replay checker and
+publication manifest use the prefix \path{kernel-atlas-}; historical timing
+and publication records are preserved.
+
+\subsection{Scope of the asymptotic improvement}
+
+Replacing the linear algebra does not bound the source nullities, atlas
+dimensions, number of sectors, or number of rejected positive witnesses.
+The conditional bound of Section~\ref{sec:predicate-filtered-atlases} remains
+conditional.  In particular, faster independent source replay does not turn
+the retained finite native workload into a complete quasi-polynomial unknot
+recognizer.  The default recognition dispatcher is unchanged.
+
+There is a separate geometric route around accumulating rejections on a
+fixed source.  Burton--Ozlen~\cite[Lemma~5]{burton-ozlen} show that crushing
+a connected positive-Euler non-vertex-link normal surface in a classical
+knot exterior with more than one tetrahedron yields a strictly smaller
+triangulation of the same exterior if a torus-boundary component survives;
+otherwise the knot is trivial.  This can consume a rejected surface and
+restart discovery, instead of proving a small rejection count for the
+current fixed-source algorithm.  It requires authenticated knot-exterior
+provenance and a replayed crushing successor; merely validating an orientable
+manifold with torus boundary does not supply those hypotheses.  A bound on
+complete useful-surface discovery on every successor would still be needed.

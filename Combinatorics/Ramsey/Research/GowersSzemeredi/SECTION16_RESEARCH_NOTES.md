@@ -5657,12 +5657,12 @@ original order (`fejer-generators/final_extract.py`, `assemble_final.py`):
 The bridge `Proofs18CoverFejerAllDegrees` defines `explicitFinalInputs` and
 keeps only the best statements (with Corollary 18.7, van der Waerden numbers,
 Theorem 1.3 and the printed consequences). Measured: 63 modules and 19,081
-lines retired, 3,410 added; the bridge 993 → 189 lines and 101 → 25
+lines retired, 3,325 added; the bridge 993 → 186 lines and 101 → 25
 theorems; the Fejér block of `CompletionAudit` 341 → 96 lines. No threshold
-changed. The merged production route now passes the 852-module native
-`FinalProofSimplificationAudit`, covering all 25 public bridge theorems and
-checking their axioms. See L.60 and
-`verification/2026-10-12-final-consolidated-compatibility.json`.
+changed. The merged production route now passes the 853-module native
+`FinalProofSimplificationAudit`, covering all 25 public bridge theorems,
+FinalInputs methods, shared induction and fit lemmas, with approved axioms.
+See L.63 and `verification/2026-10-12-final-inputs-merged-compatibility.json`.
 The complete facade remains a separate check.
 
 **Van der Waerden numbers: our bounds and the literature (2026-10-12).** Gowers
@@ -5671,7 +5671,7 @@ results here keep that shape with a smaller top constant:
 `van_der_waerden_L3_all` (`k + 3`, every `k`), `van_der_waerden_L2_eight_le`
 (`k + 2`, `k ≥ 8`), `van_der_waerden_L1_eleven_le` (`k + 1`, `k ≥ 11`) and
 `van_der_waerden_L0_thirteen_le` (`W(k, r) ≤ 2^2^r^2^2^k`, `k ≥ 13`). They are
-verified by the 852-module focused native audit in L.60. They tighten Gowers's own argument; they are not new
+verified by the 853-module focused native audit in L.63. They tighten Gowers's own argument; they are not new
 mathematics. Published bounds of a different shape are much stronger in `r`
 for fixed `k`:
 * `k = 3`: Kelley–Meka (2023), sharpened by Bloom–Sisask,
@@ -7216,6 +7216,143 @@ comparison is recorded in
 `verification/2026-10-12-shared-threshold-simplification.json`.
 The complete facade and remaining original-statement fidelity gaps remain
 separate. The simplification goal remains active.
+
+### L.62. Share the envelope induction and cover setup (2026-10-12)
+
+The original final route, the earlier cover variants and the consolidated
+Fejer route repeated the same class-cover setup and induction from degree
+three. `Proofs18EnvelopeInduction` now supplies two shared lemmas:
+`classCovers_of_profiles` instantiates a class-cover theorem using recurrence
+profiles and raises its base to the current dimension; `envelope_induction`
+propagates a predicate along its envelope recurrence from the cubic case.
+
+Nine discrepancy/polynomial envelope proofs use the shared induction. Ten
+places, including the polynomial Corollary 16.11, use the cover setup.
+The original theorem statements and numerical bounds are unchanged.
+Putting the step hypothesis first lets Lean infer the recurrence step
+without unfolding the large envelope definitions; the predicate and budget
+are explicit at each call. The shared module is 42 lines, and the combined
+production sources shrink by 54 lines. See
+`verification/2026-10-12-envelope-induction-simplification.json` for exact
+statement comparisons and source counts.
+
+FinalAudit passes 648 native modules with only approved axioms; see
+`verification/2026-10-12-final-envelope-induction.json`. The minimal original
+final closure imports 647 modules / 135,365 lines, one module and 33 lines
+more than L.61. The change shares proof structure across the original and
+strengthened routes; it is not a reduction of that minimal import closure.
+The expanded audit names both helpers, all nine envelope theorems and the
+polynomial corollary, in addition to the original final and all 25 stronger
+bridge theorems. It passes 853 native modules with only `propext`,
+`Classical.choice` and `Quot.sound`; see
+`verification/2026-10-12-final-envelope-induction-compatibility.json`.
+Both audit reports have immutable source-input manifests. The complete
+facade and original-statement fidelity gaps remain separate, and the
+simplification goal remains active.
+
+### L.63. Merge the FinalInputs refactor with the shared induction (2026-10-12)
+
+Upstream commit `dbd20d510` moves `FinalInputs` into the final envelope module
+and derives its step parameters, hypotheses and covers once. The strongest
+envelope and polynomial corollary statements become methods of that input
+object. Two general fit lemmas replace the repeated small-range/fit pairs;
+the seven final bounds discharge their finite ranges by kernel evaluation.
+All 25 public bridge theorem statements and numerical bounds are unchanged.
+
+The merge retains that refactor and uses `envelope_induction` in
+`FinalInputs.envBound` and `FinalInputs.polyEnvBound`, alongside its seven
+earlier envelope clients. The focused audit now names the new methods,
+derived hypotheses and covers, and both general fit lemmas. No removed
+profile or fit-variant names remain referenced in the Lean sources.
+
+The merged production audit passes 853 native modules, including all 25
+bridge theorems, with only `propext`, `Classical.choice` and `Quot.sound`;
+see `verification/2026-10-12-final-inputs-merged-compatibility.json` and its
+immutable source manifest. The original-final 648-module audit from L.62
+retains exactly the same input hashes. Earlier L.62 reports remain records
+of the pre-merge intermediate interfaces.
+
+Compared with commit `7c0ca3f85` at the start of this turn, the combined
+production proof changes remove 148 lines, including the upstream refactor.
+The four consolidated modules contain 3,501 lines and the bridge 186. The
+minimal original final closure is still 647 modules / 135,365 lines; the
+expanded audit closure is 853 / 180,317. The comparison is recorded in
+`verification/2026-10-12-final-inputs-merge-review.json`. The complete facade
+and remaining original-statement fidelity gaps remain separate. The
+simplification goal remains active.
+
+
+### L.64. One envelope estimate for every long progression (2026-10-12)
+
+`genMuX_le` now proves `genMuX k <= 500 * 2^k` for every `k >= 2`,
+using kernel-checked cases at two and three and the existing induction
+from four. This strengthens the auxiliary theorem's domain; its bound
+and the other twelve theorem statements in the module are unchanged.
+The final threshold fit for lengths at least six therefore uses one
+upper bound, without separate length-six and length-seven branches.
+Its side conditions follow from the same lower envelope estimate and
+`k < 2^k`. The production module shrinks from 320 to 311 lines.
+
+The original FinalAudit passes 648 native modules. The expanded
+FinalProofSimplificationAudit passes 853, including the strengthened
+helper, the simplified threshold theorem and all 25 public stronger-bound
+bridge theorems. Only `propext`, `Classical.choice` and `Quot.sound` occur.
+See `verification/2026-10-12-final-uniform-long-envelope.json` and
+`verification/2026-10-12-final-uniform-long-envelope-compatibility.json`,
+with immutable source manifests. The source comparison is recorded in
+`verification/2026-10-12-uniform-long-envelope-simplification.json`.
+
+The minimal original final closure remains 647 modules and now contains
+135,356 lines. The expanded audit closure is 853 modules / 180,310 lines.
+All final numerical bounds remain unchanged, including the van der
+Waerden offsets three for every positive length, two from length eight,
+one from length eleven, and zero from length thirteen. Lean states these
+as the direct monochromatic-progression property for every coloring and
+at least two colors. The complete facade and remaining original-statement
+fidelity gaps are separate; the simplification goal remains active.
+
+
+### L.65. Share the tower and phase-refinement estimates (2026-10-12)
+
+Two elementary lemmas in `Proofs18DoubleExponentialBounds` convert
+`exp(exp x)` to a base-two tower: a linear-margin version assumes
+`1 + 2*x <= y`, and a power-budget version assumes `2 <= u` and
+`q + 2 <= E`. Nine threshold comparisons now use them. The generic,
+quadratic, five-term and length-six comparisons also share the argument
+that two spare powers absorb the conversion. Five Roth threshold
+comparisons use the linear-margin lemma.
+
+The phase-refinement estimates differ only in their bound for the
+polynomial partition constant. `inv_thr_le_ex_of_partition_bound` takes
+that exponent as an input; `inv_thr_le_ex` and `inv_thr_le_ex_sharp`
+are short specializations. Their exact original statements and budgets
+are preserved. The generic uniformity exponent no longer splits off
+length zero, and the closed-threshold proof uses its existing local
+constant-bound helper for the degree-one refinement constant.
+
+The twelve production modules shrink by 157 lines. All 112 existing
+public theorem statements in those modules compare byte-for-byte with
+commit `219e277be`, and all 25 stronger bridge statements are unchanged.
+The source comparison is recorded in
+`verification/2026-10-12-shared-exponential-conversions-simplification.json`.
+
+FinalAudit passes 648 native modules. The expanded compatibility audit
+passes 853, explicitly naming both new tower lemmas, the generic and
+sharper phase estimates, all nine conversion sites, and the two simplified
+generic arithmetic lemmas. It retains the original final results, all 25
+stronger bridge theorems and the older Section 13/cubic interfaces.
+Only `propext`, `Classical.choice` and `Quot.sound` occur. See
+`verification/2026-10-12-final-shared-exponential-conversions.json` and
+`verification/2026-10-12-final-shared-exponential-conversions-compatibility.json`,
+with immutable source manifests.
+
+The original-final closure remains 647 modules / 135,367 lines: the shared
+helper signatures add eleven lines to that minimal closure while removing
+repetition across the original and stronger routes. The expanded audit
+closure is 853 modules / 180,167 lines. The incoming main changes concern
+source-kernel work outside Gowers and preserve every recorded proof input.
+Full-facade verification and original-statement fidelity gaps remain
+separate, and the simplification goal remains active.
 
 ## F. Routes
 

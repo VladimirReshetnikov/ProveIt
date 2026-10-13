@@ -11,6 +11,14 @@ replacing disc search by one atlas-selected positive-Euler witness. The
 intrinsic atlas is faster than the delivered atlas but slower than the
 existing sector method. General quasi-polynomial complexity remains unproved.
 
+[`predicate_filtered_atlases.tex`](predicate_filtered_atlases.tex) closes those
+nine candidate misses using exact support exclusions and union-mask dynamic
+programming. All 202 native queries agree with complete sector-ray inspection:
+60 essential discs and 142 completed absences among positive extreme rays.
+The complexity is conditional on the rejection count; an abstract scalar-port
+cube verifies that it can be exponential. Complete geometric-query timings and
+an independent replay are retained, with no default-dispatch change.
+
 `orbit_certificates.tex` adds independent local replay for both classical and
 sharp AHT traces, and exact component-incidence histograms with shared marked
 unions and one total cycle budget. All 831 maintained tests pass with Regina;

@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18FinalStep
+import GowersSzemeredi.Proofs18EnvelopeInduction
 
 /-! **The final route, part 3: the envelopes and their fits** (Notes L.16-final).
 
@@ -111,85 +112,8 @@ theorem inv_thr_le_ex_sharp {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Re
     (hσ' : (inverseStepExponent (k + 1) e σ)⁻¹ ≤ Real.exp (X ^ (2 ^ s))) :
     inverseStepThreshold (k + 1) η β e (6 * ((k + 1 : Nat) : Real)) σ ≤
       Real.exp (Real.exp (X ^ (2 ^ (max (max (M + partDeg k + 4) (k + 16)) s + 1)))) := by
-  -- the refinement constant at `b = ηβ/2`
-  have hb : 0 < η * β / 2 := by positivity
-  have hbi : (η * β / 2)⁻¹ ≤ X ^ (2 ^ (M + 2)) := by
-    rw [show (η * β / 2)⁻¹ = 2 * (η⁻¹ * β⁻¹) by field_simp]
-    have h1 := pw_mul hX (inv_pos.mpr hη0).le (inv_pos.mpr hβ0).le hηi hβi
-    exact pw_mul' hX (by norm_num) (by positivity) (hX.trans (pw_X hX M)) h1 |>.trans
-      (pw_mono hX le_rfl (by omega))
-  have hb1 : 1 ≤ (η * β / 2)⁻¹ := by
-    rw [one_le_inv₀ hb]
-    have : η * β ≤ 1 := mul_le_one₀ hη1 hβ0.le hβ1
-    linarith
-  have hscaled := section5LocalRefinementConstant_le_scaled (k + 1 + 1) (η * β / 2)
-    (η * β / 2)⁻¹ hb hb1 le_rfl
-  have hs5 : section5LocalRefinementConstant (k + 1 + 1) 1 ≤ Real.exp (X ^ (2 ^ (k + 11))) :=
-    (s5_one_le (d := k + 1 + 1) (by omega)).trans (two_tower_le_ex hX (forty_cube_le k))
-  have hpow : ((η * β / 2)⁻¹) ^ polynomialPartitionConstant (k + 1 + 1) ≤
-      X ^ (2 ^ (M + 2 + partDeg k)) :=
-    pw_pow hX (inv_pos.mpr hb).le hbi (polyPartConst_le_sharp k)
-  have hR : section5LocalRefinementConstant (k + 1 + 1) (η * β / 2) ≤
-      Real.exp (X ^ (2 ^ (max (k + 11) (M + 2 + partDeg k) + 1))) :=
-    hscaled.trans (ex_mul' hX (pow_nonneg (inv_pos.mpr hb).le _) hs5 (ex_of_pw hpow))
-  -- the count constant
-  have hσ16 : σ / 16 ≤ 1 := by linarith
-  have hσ16' : 0 ≤ σ / 16 := by positivity
-  have hr1 : (1 : Real) ≤ 2 * ((k + 1 + 2 : Nat) : Real) := by push_cast; linarith
-  have hc1 : (1 : Real) ≤ 6 * ((k + 1 : Nat) : Real) := by push_cast; linarith
-  have hrpow : (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 - σ / 16) ≤ 2 * ((k + 1 + 2 : Nat) : Real) := by
-    calc (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 - σ / 16) ≤
-          (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 : Real) :=
-          Real.rpow_le_rpow_of_exponent_le hr1 (by linarith)
-      _ = _ := Real.rpow_one _
-  have hcpow : (6 * ((k + 1 : Nat) : Real)) ^ (σ / 16) ≤ 6 * ((k + 1 : Nat) : Real) := by
-    calc (6 * ((k + 1 : Nat) : Real)) ^ (σ / 16) ≤ (6 * ((k + 1 : Nat) : Real)) ^ (1 : Real) :=
-          Real.rpow_le_rpow_of_exponent_le hc1 hσ16
-      _ = _ := Real.rpow_one _
-  have hB0 : 0 ≤ boundaryRefinementConstant (1 / 16) := (section5LocalRefinementConstant_pos _ _).le
-  have hr : 2 * ((k + 1 + 2 : Nat) : Real) ≤ X ^ (2 ^ (k + 3)) := by
-    have := small_nat_le_pw hX (k := k) (c := 2 * (k + 1 + 2)) (by omega)
-    push_cast at this ⊢; linarith
-  have hc : 6 * ((k + 1 : Nat) : Real) ≤ X ^ (2 ^ (k + 3)) := by
-    have := small_nat_le_pw hX (k := k) (c := 6 * (k + 1)) (by omega)
-    push_cast at this ⊢; linarith
-  have hBe : boundaryRefinementConstant (1 / 16) ≤ Real.exp (X ^ (2 ^ 11)) :=
-    cubic_boundary_refinement_constant_upper.trans (two_tower_le_ex hX (by norm_num))
-  have h2e : (2 : Real) ≤ Real.exp (X ^ (2 ^ 0)) :=
-    ex_of_pw (hX.trans (pw_X hX 0))
-  have h2B : 2 * boundaryRefinementConstant (1 / 16) ≤ Real.exp (X ^ (2 ^ (max 0 11 + 1))) :=
-    ex_mul' hX hB0 h2e hBe
-  have hD : inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ ≤
-      Real.exp (X ^ (2 ^ (k + 14))) := by
-    unfold inverseStepCountConstant localInverseAssemblyConstant
-    have hmax : max 1 (2 * boundaryRefinementConstant (1 / 16) *
-        (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 - σ / 16)) ≤
-        Real.exp (X ^ (2 ^ (max (max 0 11 + 1) (k + 3) + 1))) :=
-      max_le (Real.one_le_exp (by positivity)) (ex_mul' hX (Real.rpow_nonneg (by linarith) _) h2B
-        (ex_of_pw (hrpow.trans hr)))
-    have := ex_mul' hX (Real.rpow_nonneg (by linarith) _) hmax (ex_of_pw (hcpow.trans hc))
-    exact ex_mono hX this (by omega)
-  have hD1 : 1 ≤ inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ := by
-    unfold inverseStepCountConstant localInverseAssemblyConstant
-    exact one_le_mul_of_one_le_of_one_le (le_max_left _ _) (Real.one_le_rpow hc1 hσ16')
-  have hP1 : (1 : Real) ≤ polynomialPartitionConstant (k + 1 + 1) := by
-    exact_mod_cast polyPartConst_pos (k + 1 + 1)
-  have hDp : (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ^
-      ((polynomialPartitionConstant (k + 1 + 1) : Real))⁻¹ ≤
-      inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ := by
-    calc _ ≤ (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ^ (1 : Real) :=
-          Real.rpow_le_rpow_of_exponent_le hD1 (inv_le_one_of_one_le₀ hP1)
-      _ = _ := Real.rpow_one _
-  have hPIC : phaseInverseConstant (k + 1 + 1) (η * β / 2)
-      (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ≤
-      Real.exp (X ^ (2 ^ (max (max (M + partDeg k + 4) (k + 16)) s))) := by
-    unfold phaseInverseConstant
-    have := ex_mul' hX (Real.rpow_nonneg (le_trans zero_le_one hD1) _) hR (hDp.trans hD)
-    exact ex_mono hX this (by omega)
-  unfold inverseStepThreshold
-  have hppt := positivePowerThreshold_one_le_double_exp hσ'0.le (le_exp_exp_of_le_exp hPIC) hσ'
-  refine hppt.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr ?_))
-  exact pw_add hX (pw_mono hX le_rfl le_rfl) (pw_mono hX le_rfl (le_max_right _ s))
+  exact inv_thr_le_ex_of_partition_bound hX (polyPartConst_le_sharp k)
+    hη0 hη1 hβ0 hβ1 hηi hβi hs0 hs16 hσ'0 hσ'
 
 end LeanProofs.GowersSzemeredi
 
@@ -558,28 +482,27 @@ theorem covers (k : Nat) : ∀ l, 1 ≤ l → l ≤ (I.params k).k →
 
 /-- **The Theorem 18.2 envelope** in every dimension `k ≥ 2`. -/
 theorem envBound : ∀ k, 2 ≤ k → EnvBound (k + 2) (genMuXK3 k) := by
+  have hstep : ∀ k, 2 ≤ k → ∀ μ, EnvBound (k + 1) μ →
+      EnvBound (k + 2) (envStepKTx3 k (tightMu0Z k) (genMuKZ k) μ) := by
+    intro k hk μ hlow
+    exact envBound_stepKx3 (I.params k) (I.hyp hk) (by show 1 ≤ k; omega) (I.covers k)
+      (I.profile k (by omega)) hlow
   intro k hk
-  induction k, hk using Nat.le_induction with
-  | base =>
-    exact envBound_stepKx3 (I.params 2) (I.hyp le_rfl) (by show 1 ≤ 2; omega) (I.covers 2)
-      (I.profile 2 (by norm_num)) envBound_three
-  | succ k hk ih =>
-    rw [genMuXK3_succ (by omega)]
-    exact envBound_stepKx3 (I.params (k + 1)) (I.hyp (by omega)) (by show 1 ≤ k + 1; omega)
-      (I.covers (k + 1)) (I.profile (k + 1) (by omega)) ih
+  exact envelope_induction (P := EnvBound) (budget := genMuXK3) hstep
+    envBound_three (fun _ h => genMuXK3_succ h) k (by omega)
 
 /-- **The Theorem 18.1 envelope** in every dimension `k ≥ 2`. -/
 theorem polyEnvBound : ∀ k, 2 ≤ k → PolyEnvBound (k + 2) (polyGenMuJT3 k) := by
   obtain ⟨K, p, hpp, hp, hK, hpB⟩ := I.phase
+  have hstep : ∀ k, 2 ≤ k → ∀ μ, PolyEnvBound (k + 1) μ →
+      PolyEnvBound (k + 2) (envStepJT3 k (tightMu0Z k) (genMuKZ k) μ) := by
+    intro k hk μ hlow
+    exact polyEnvBound_stepJT3 (I.params k) (I.hyp hk) (by show 1 ≤ k; omega) (I.covers k)
+      (I.profile k (by omega)) hlow
   intro k hk
-  induction k, hk using Nat.le_induction with
-  | base =>
-    exact polyEnvBound_stepJT3 (I.params 2) (I.hyp le_rfl) (by show 1 ≤ 2; omega) (I.covers 2)
-      (I.profile 2 (by norm_num)) (polyEnvBound_three_of_phase_partition hpp hp hK hpB)
-  | succ k hk ih =>
-    rw [polyGenMuJT3_succ (by omega)]
-    exact polyEnvBound_stepJT3 (I.params (k + 1)) (I.hyp (by omega)) (by show 1 ≤ k + 1; omega)
-      (I.covers (k + 1)) (I.profile (k + 1) (by omega)) ih
+  exact envelope_induction (P := PolyEnvBound) (budget := polyGenMuJT3) hstep
+    (polyEnvBound_three_of_phase_partition hpp hp hK hpB)
+    (fun _ h => polyGenMuJT3_succ h) k (by omega)
 
 /-- **Theorem 16.2 with polynomial controls** at the classes `tDegT3`, in every dimension. -/
 theorem theorem_16_2_polynomial {k : Nat} (hk : 1 ≤ k) :
