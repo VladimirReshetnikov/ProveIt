@@ -22,7 +22,10 @@ import Lean.Util.CollectAxioms
 open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for name in #[``LeanProofs.GowersSzemeredi.section16_poly_piece_two_decomposition_of_extract,
+  for name in #[``LeanProofs.GowersSzemeredi.section18Exponent_two_le_quadraticDiscrepancyParameter,
+      ``LeanProofs.GowersSzemeredi.section18Exponent_two_le_quadraticDiscrepancyExponent,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_degree_one,
+      ``LeanProofs.GowersSzemeredi.section16_poly_piece_two_decomposition_of_extract,
       ``LeanProofs.GowersSzemeredi.section16_poly_cover_two_large,
       ``LeanProofs.GowersSzemeredi.section16_poly_cover_two_large_fejer,
       ``LeanProofs.GowersSzemeredi.section16_poly_piece_decomposition_two,

@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18IntegerInverse
+import GowersSzemeredi.Proofs18TheoremOneLinear
 
 /-! The lower-degree bases for the genuine integer-progression inverse
 theorem. The linear function bound works over every nonzero modulus. -/
@@ -88,48 +89,6 @@ theorem theorem_18_1_integer_one : Theorem181IntegerAt 1 1 := by
     hb, by linarith, ?_⟩
   intro N _ _ hN f hf hnot
   exact linear_function_discrepancy_partition ha N hN f hf hnot
-
-/-- A fixed power dominates both parameters of the quadratic inverse
-throughout the source's density range. This does not fix a tower offset. -/
-theorem quadratic_discrepancy_fixed_power_lower {alpha : Real}
-    (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
-    alpha ^ (49462 : Nat) ≤ quadraticDiscrepancyParameter alpha ∧
-      alpha ^ (49462 : Nat) ≤ quadraticDiscrepancyExponent alpha := by
-  have ha1 : alpha ≤ 1 := by linarith
-  have hsq : alpha * alpha ≤ alpha / 2 := by nlinarith
-  have hA : alpha ^ (24718 : Nat) ≤ (alpha / 2) ^ (12359 : Nat) := by
-    calc
-      alpha ^ (24718 : Nat) = (alpha * alpha) ^ (12359 : Nat) := by ring
-      _ ≤ (alpha / 2) ^ (12359 : Nat) := pow_le_pow_left₀ (by positivity) hsq _
-  have hB : alpha ^ (20 : Nat) ≤ (2 : Real) ^ (-(20 : Int)) := by
-    have h20 : (2 : Real) ^ (-(20 : Int)) = (1 / 2) ^ (20 : Nat) := by norm_num
-    rw [h20]
-    exact pow_le_pow_left₀ ha.le ha2 _
-  constructor
-  · have hp : alpha ^ (24740 : Nat) ≤ quadraticDiscrepancyParameter alpha := by
-      unfold quadraticDiscrepancyParameter
-      calc
-        alpha ^ (24740 : Nat) = alpha ^ (20 : Nat) * alpha ^ 2 * alpha ^ (24718 : Nat) := by ring
-        _ ≤ (2 : Real) ^ (-(20 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat) :=
-          mul_le_mul (mul_le_mul_of_nonneg_right hB (by positivity)) hA
-            (by positivity) (by positivity)
-    exact (pow_le_pow_of_le_one ha.le ha1 (by omega : 24740 ≤ 49462)).trans hp
-  · have h14 : (2 : Real) ^ (-(14 : Real)) = (1 / 2) ^ (14 : Nat) := by
-      rw [Real.rpow_neg (by norm_num), show (14 : Real) = ((14 : Nat) : Real) by norm_num,
-        Real.rpow_natCast]
-      norm_num
-    have hC : alpha ^ (14 : Nat) ≤ (1 / 2) ^ (14 : Nat) := pow_le_pow_left₀ ha.le ha2 _
-    have hD : (alpha ^ (24718 : Nat)) ^ 2 ≤ ((alpha / 2) ^ (12359 : Nat)) ^ 2 :=
-      pow_le_pow_left₀ (by positivity) hA 2
-    have hE : alpha ^ (12 : Nat) ≤ (1 / 2) ^ (12 : Nat) := pow_le_pow_left₀ ha.le ha2 _
-    unfold quadraticDiscrepancyExponent cor711Exponent
-    rw [h14]
-    calc
-      alpha ^ (49462 : Nat) = alpha ^ (14 : Nat) * (alpha ^ (24718 : Nat)) ^ 2 * alpha ^ (12 : Nat) := by ring
-      _ ≤ (1 / 2) ^ (14 : Nat) * ((alpha / 2) ^ (12359 : Nat)) ^ 2 * (1 / 2) ^ (12 : Nat) :=
-        mul_le_mul (mul_le_mul hC hD (by positivity) (by positivity)) hE
-          (by positivity) (by positivity)
-      _ = _ := by norm_num <;> ring
 
 /-- The quadratic base admits genuine integer progressions at the much
 stronger `2+2` offset. -/
