@@ -1312,3 +1312,62 @@ The final manifest pins 297 canonical source files and 6,780 dependencies.
 All 479 receipt gates pass, checking the recorded build, mathematical,
 visual and archive evidence; these integrity checks do not rerun the
 mathematics or replace the analytic proofs.
+
+## Stieltjes contour transport, product moments and colored exceptions, October 12, 2026
+
+Continue the research request with three proved developments in Volume III,
+Sections 8.51--8.53. Extend the digamma-only reconstruction to the principal
+slit plane and both negative-real banks, retaining the normalized principal
+values, origin contact and residue sign. Derive the beta-cut kernel and
+filtered higher-Stieltjes transport with explicit boundary distributions.
+Independently compare the residue jump with the finite Hurwitz recurrence.
+
+Restore the balanced scalar transform with a self-contained subtraction
+proof, then prove an exponentially convergent Barnes product formula on
+the full balanced strip. Evaluate every convergent integer moment of
+same-shift adjacent differences in factorials and ordinary zeta values.
+Derive the factorial Gram determinant, Laguerre orthogonality and exact
+hypergeometric parameter coordinates for unequal shifts. These are
+explicit extensions of the preserved scalar calculus, using classical
+Mellin inversion, Euler integrals and orthogonal-polynomial identities.
+
+Source reconciliation found that the later colored-moment report already
+proves the colored Mellin framework and the Catalan/beta examples. Credit
+those foundations before deriving the complete fixed-shift homogeneous
+classification and the necessary-and-sufficient consecutive-zero criterion
+for extra ordinary moments. Exact Euler factorizations at the golden shift
+give two consecutive zero tails, a one-dimensional noncanonical balancing
+family, three evaluated moments and a vanishing combination. The full
+algebraic zero locus is still open. Original sources remain unchanged.
+
+Independent review confirmed the branch signs, Barnes strip and Fubini
+estimate, finite-zeta coefficients, hypergeometric scale, classification
+boundary logarithms and golden constants. New exact evidence comprises
+1,070 colored checks plus five rejected corruptions, 16 contour identities
+and exact repeated-pole coalescence, seven Gram determinants, seven
+coefficient polynomials and 28 Laguerre products. The numerical programs
+record 45 comparisons across contour, products and colored moments, with
+declared thresholds and precision/cutoff refinements. The largest of six
+70-digit colored residuals is about 1.25e-67. These diagnostics are not
+interval certificates. The complete proof/source/evidence boundary is in
+`verification/STIELTJES-EXTENSIONS-AUDIT.md`.
+
+Final PDFs have 191/132/275/88 pages (686 total), and the combined edition
+has 637 pages with 165 references. Coupled builds converge in three rounds;
+the combined edition and all four isolated volumes compile in three passes
+with clean logs. All 70 external destinations resolve. Opened and visually
+reviewed 23 changed volume pages plus three unmatched combined contents
+pages; exact body comparisons retain 663 prior volume pages and 618 prior
+combined pages, with 16 more combined pages matching fresh volume review.
+Only centered footer numbers are excluded by the audited comparison.
+
+Preserve the prior visual-review records, the 1,810-source inventory and
+the 137-archive/4,861-member/58-archive-only evidence register. Correct the
+README's stale archive totals. No incoming archive was present during this
+research milestone. ProveIt Contributors remains the author, and the
+continuing research goal stays active.
+
+The final manifests pin 308 canonical sources and 6,791 dependencies.
+All 488 receipt gates pass, covering recorded mathematical, build, visual
+and preservation evidence. Final EOF-only cleanup was followed by renewed
+source/dependency pinning; it did not change the rendered mathematics.
