@@ -7203,8 +7203,13 @@ FinalAudit passes all 647 native modules with only the approved axioms;
 see `verification/2026-10-12-final-shared-threshold.json`. The final import
 closure remains 646 modules, now 135,332 source lines. The expanded audit
 also explicitly checks both threshold conversions, both envelope deductions
-and `inv_thr_le_ex`; its native run is still pending. The source comparison
-is recorded in `verification/2026-10-12-shared-threshold-simplification.json`.
+and `inv_thr_le_ex`. It passes 852 native modules, including all 25 stronger
+bridge theorems and the older Section 13/cubic interfaces, with only
+`propext`, `Classical.choice` and `Quot.sound`; see
+`verification/2026-10-12-final-shared-threshold-compatibility.json`.
+Both audit reports include immutable source-input manifests. The source
+comparison is recorded in
+`verification/2026-10-12-shared-threshold-simplification.json`.
 The complete facade and remaining original-statement fidelity gaps remain
 separate. The simplification goal remains active.
 
