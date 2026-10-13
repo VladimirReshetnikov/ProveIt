@@ -155,6 +155,8 @@ run_cmd do
       ``LeanProofs.GowersSzemeredi.envBound_stepCx,
       ``LeanProofs.GowersSzemeredi.envBound_stepKx3,
       ``LeanProofs.GowersSzemeredi.polyEnvBound_stepJT3,
+      ``LeanProofs.GowersSzemeredi.split_width_front_factor_le,
+      ``LeanProofs.GowersSzemeredi.split_exp_inv_le,
       ``LeanProofs.GowersSzemeredi.split_exp_inv_le_fejer,
       ``LeanProofs.GowersSzemeredi.split_exp_inv_le_fejer2,
       ``LeanProofs.GowersSzemeredi.splitQuad3_pos,

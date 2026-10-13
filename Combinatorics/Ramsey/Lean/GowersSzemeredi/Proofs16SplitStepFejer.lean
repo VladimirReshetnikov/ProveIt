@@ -543,38 +543,6 @@ theorem split_exp_inv_le_fejer2 {k ac Dc ae De : Nat} (hac : 1 ≤ ac) (hDc : 1 
       hzi.trans (Real.exp_le_exp.mpr (pow_le_pow_left₀ hu0 huw _))
     rw [hΛdef, Real.exp_add]
     exact mul_le_mul hAexp hze (inv_pos.mpr hz0).le (Real.exp_pos _).le
-  have hΛle : Λ ≤ ν * W ^ fsZW k ac Dc := by
-    rw [hΛdef]
-    have hZ : fsZW k ac Dc = fejerStepT k + ac + fsEbW k ac Dc + 7 := rfl
-    set X := W ^ (fejerStepT k + ac + fsEbW k ac Dc + 5) with hXdef
-    have hX0 : 0 ≤ X := pow_nonneg hW0 _
-    have hνX : X ≤ ν * X := le_mul_of_one_le_left hX0 hν
-    have hν0 : 0 ≤ ν := le_trans zero_le_one hν
-    have h1 : (ac : Real) * ν ≤ ν * X := by
-      have ha' := nat_le_two_pow_real ac hw2
-      have hle : W ^ ac ≤ X := pow_le_pow_right₀ hW1 (by omega)
-      calc (ac : Real) * ν ≤ W ^ ac * ν := mul_le_mul_of_nonneg_right ha' hν0
-        _ ≤ X * ν := mul_le_mul_of_nonneg_right hle hν0
-        _ = ν * X := mul_comm _ _
-    have h2 : ((fsEbW k ac Dc + 4 : Nat) : Real) * W ≤ ν * X := by
-      have hc := nat_le_two_pow_real (fsEbW k ac Dc + 4) hw2
-      have hle : W ^ (fsEbW k ac Dc + 4) * W ≤ X := by
-        rw [← pow_succ]; exact pow_le_pow_right₀ hW1 (by omega)
-      calc ((fsEbW k ac Dc + 4 : Nat) : Real) * W ≤ W ^ (fsEbW k ac Dc + 4) * W :=
-            mul_le_mul_of_nonneg_right hc hW0
-        _ ≤ X := hle
-        _ ≤ ν * X := hνX
-    have h3 : W ^ fejerStepT k ≤ ν * X := by
-      have hle : W ^ fejerStepT k ≤ X := pow_le_pow_right₀ hW1 (by omega)
-      exact hle.trans hνX
-    have h3W : (3 : Real) ≤ W ^ 2 := by nlinarith only [hw2]
-    have hpos : 0 ≤ ν * X := mul_nonneg hν0 hX0
-    rw [hZ, show fejerStepT k + ac + fsEbW k ac Dc + 7 = (fejerStepT k + ac + fsEbW k ac Dc + 5) + 2 by ring, pow_add,
-      ← hXdef]
-    calc (ac : Real) * ν + ((fsEbW k ac Dc + 4 : Nat) : Real) * W + W ^ fejerStepT k ≤ 3 * (ν * X) := by
-          linarith
-      _ ≤ W ^ 2 * (ν * X) := mul_le_mul_of_nonneg_right h3W hpos
-      _ = ν * (X * W ^ 2) := by ring
   -- the cap
   set R := ν ^ (sLN2 k ac ae + sPbN2 k ac ae) *
     W ^ (fsLW2 k ac Dc ae De + fsPbW2 k ac Dc ae De + 2) with hRdef
@@ -589,16 +557,9 @@ theorem split_exp_inv_le_fejer2 {k ac Dc ae De : Nat} (hac : 1 ≤ ac) (hDc : 1 
   have hcap := capped_rounded_inv_le_real hL0 hSl0 hSl1 hzpos hzle hΛ0 hzinv hR1 hLR hLSR
   refine ⟨section16CappedWidthExponent_pos (div_pos (mul_pos hL0 hSl0) (by norm_num)), ?_⟩
   refine hcap.trans ?_
-  have hW4 : (14 : Real) ≤ W ^ 4 := by
-    calc (14 : Real) ≤ 2 ^ 4 := by norm_num
-      _ ≤ W ^ 4 := pow_le_pow_left₀ (by norm_num) hw2 4
-  have hνW : 1 ≤ ν * W ^ fsZW k ac Dc := one_le_mul_of_one_le_of_one_le hν (one_le_pow₀ hW1)
   have hfront : 2 * (6 + Λ) ≤ ν * W ^ (fsZW k ac Dc + 4) := by
-    rw [pow_add]
-    have : 2 * (6 + Λ) ≤ 14 * (ν * W ^ fsZW k ac Dc) := by linarith
-    calc 2 * (6 + Λ) ≤ 14 * (ν * W ^ fsZW k ac Dc) := this
-      _ ≤ W ^ 4 * (ν * W ^ fsZW k ac Dc) := mul_le_mul_of_nonneg_right hW4 (le_trans zero_le_one hνW)
-      _ = ν * (W ^ fsZW k ac Dc * W ^ 4) := by ring
+    simpa only [hΛdef, fsZW, Nat.add_assoc] using
+      split_width_front_factor_le hν hw2 ac (fsEbW k ac Dc) (fejerStepT k)
   have hR0 : 0 ≤ R := le_trans zero_le_one hR1
   calc 2 * ((6 + Λ) * R) = (2 * (6 + Λ)) * R := by ring
     _ ≤ (ν * W ^ (fsZW k ac Dc + 4)) * R := mul_le_mul_of_nonneg_right hfront hR0
