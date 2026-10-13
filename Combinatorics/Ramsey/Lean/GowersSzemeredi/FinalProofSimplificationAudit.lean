@@ -23,6 +23,13 @@ open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
   for name in #[``LeanProofs.GowersSzemeredi.uniform_baseC_recipPowerLB_of_budget,
+      ``LeanProofs.GowersSzemeredi.ex_rpow_of_nonneg,
+      ``LeanProofs.GowersSzemeredi.ex_rpow,
+      ``LeanProofs.GowersSzemeredi.GenParamsC.MReq_le_expC,
+      ``LeanProofs.GowersSzemeredi.GenParamsF.MReq_le_expF,
+      ``LeanProofs.GowersSzemeredi.GenParamsG.MReq_le_expG,
+      ``LeanProofs.GowersSzemeredi.GenParams.MReq_le_exp,
+      ``LeanProofs.GowersSzemeredi.GenParamsJT3.MReq_le_expJT3,
       ``LeanProofs.GowersSzemeredi.GenParams.eta_step_of_cube_le,
       ``LeanProofs.GowersSzemeredi.GenParams.yIn_step_of_den_le,
       ``LeanProofs.GowersSzemeredi.GenParams.cS_step,

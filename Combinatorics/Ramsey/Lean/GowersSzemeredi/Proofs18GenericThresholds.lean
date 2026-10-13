@@ -130,8 +130,6 @@ theorem MReq_le_exp {V : Real} {D k K p μV μD μ0 μK : Nat} (H : StdHyp V D k
       (familyRecThr_pos (k := k) (p := p) (by omega) _).ne')
   -- the Bohr radius and `ρ`
   obtain ⟨hz0, hzi⟩ := zeta_gen_bounds k ha ha2
-  have hz1 : section16Zeta alpha (alpha / 2) k ≤ 1 / 2 :=
-    (section16Zeta_pos_le_half k ha (by linarith) (half_pos ha) (by linarith)).2
   have hzeq : (std V D k K p μ0).Zeta alpha = section16Zeta alpha (alpha / 2) k := rfl
   obtain ⟨ht0, ht1, -⟩ := T2_gen_bounds k ha ha2
   have hC : ∀ u, 0 < u → u ≤ 1 →
@@ -142,10 +140,10 @@ theorem MReq_le_exp {V : Real} {D k K p μV μD μ0 μK : Nat} (H : StdHyp V D k
   have hri := rho1_inv_le (V := V) (K := K) (p := p) ha ha2 hD hkD hk0
   have hρ1 : 1 ≤ rhoDeg k μD μ0 := by
     unfold rhoDeg; have := le_max_left (μD + μ0 + 2) (fixDeg k); omega
-  obtain ⟨hR0, hR1, hRi⟩ := rho_step hX hr0 hr1 hri hρ1
+  obtain ⟨hR0, -, hRi⟩ := rho_step hX hr0 hr1 hri hρ1
   have hReq : (std V D k K p μ0).Rho alpha =
       (std V D k K p μ0).Rho1 alpha / 2 * ((std V D k K p μ0).Rho1 alpha / 2 / 2) := rfl
-  rw [← hReq] at hR0 hR1 hRi
+  rw [← hReq] at hR0 hRi
   have hBpos : 0 < (std V D k K p μ0).Bexp alpha := by
     have := familyRecExp_pos k p ((std V D k K p μ0).QM alpha) hp
     show 0 < familyRecExp k p _ / 2; positivity
@@ -153,40 +151,27 @@ theorem MReq_le_exp {V : Real} {D k K p μV μD μ0 μK : Nat} (H : StdHyp V D k
   set z := (std V D k K p μ0).Zeta alpha with hzdef
   set R := (std V D k K p μ0).Rho alpha with hRdef
   set B := (std V D k K p μ0).Bexp alpha with hBdef
-  rw [← hzeq] at hz0 hzi hz1
-  have h8 : (8 : Real) ≤ Real.exp ((2 / alpha) ^ (2 ^ 2)) := ex_of_pw (pw_const hX (by norm_num))
-  have hzi' : z⁻¹ ≤ Real.exp ((2 / alpha) ^ (2 ^ Z)) := hzi
-  have h8z : 8 / z ≤ Real.exp ((2 / alpha) ^ (2 ^ (Z + 1))) := by
+  rw [← hzeq] at hz0 hzi
+  have hcz (c : Real) (hc : c ≤ 16) :
+      c / z ≤ Real.exp ((2 / alpha) ^ (2 ^ (Z + 1))) := by
     rw [div_eq_mul_inv]
-    exact ex_mono hX (ex_mul' hX (inv_pos.mpr hz0).le h8 hzi') (by omega)
-  have h16 : (16 : Real) ≤ Real.exp ((2 / alpha) ^ (2 ^ 2)) := ex_of_pw (pw_const hX (by norm_num))
-  have h16z : 16 / z ≤ Real.exp ((2 / alpha) ^ (2 ^ (Z + 1))) := by
-    rw [div_eq_mul_inv]
-    exact ex_mono hX (ex_mul' hX (inv_pos.mpr hz0).le h16 hzi') (by omega)
+    exact ex_mono hX (ex_mul' hX (inv_pos.mpr hz0).le
+      (ex_of_pw (pw_const hX (a := 2) (by norm_num; exact hc))) hzi) (by omega)
   have hR3 : (R ^ 3)⁻¹ ≤ (2 / alpha) ^ (2 ^ (rhoDeg k μD μ0 + 2 + 2)) := by
     rw [← inv_pow]; exact pw_pow hX (inv_pos.mpr hR0).le hRi (by norm_num)
   have h4zr : 4 / (z * R ^ 3) ≤ Real.exp ((2 / alpha) ^ (2 ^ (max (Z + 1) (rhoDeg k μD μ0 + 4) + 1))) := by
     rw [div_eq_mul_inv, mul_inv, ← mul_assoc]
-    have h4z : 4 * z⁻¹ ≤ Real.exp ((2 / alpha) ^ (2 ^ (Z + 1))) := by
-      have h4 : (4 : Real) ≤ Real.exp ((2 / alpha) ^ (2 ^ 2)) := ex_of_pw (pw_const hX (by norm_num))
-      exact ex_mono hX (ex_mul' hX (inv_pos.mpr hz0).le h4 hzi') (by omega)
+    have h4z := hcz 4 (by norm_num)
+    rw [div_eq_mul_inv] at h4z
     exact ex_mul' hX (inv_pos.mpr (pow_pos hR0 3)).le h4z (ex_of_pw hR3)
-  have hz1' : 1 ≤ z⁻¹ := by rw [one_le_inv₀ hz0]; linarith
-  have h8z1 : 1 ≤ 8 / z := by rw [le_div_iff₀ hz0]; linarith
-  have h16z1 : 1 ≤ 16 / z := by rw [le_div_iff₀ hz0]; linarith
-  have h4zr1 : 1 ≤ 4 / (z * R ^ 3) := by
-    rw [le_div_iff₀ (by positivity)]
-    have : R ^ 3 ≤ 1 := pow_le_one₀ hR0.le hR1
-    have : z * R ^ 3 ≤ 1 / 2 * 1 := mul_le_mul hz1 this (by positivity) (by norm_num)
-    linarith
   have hBe : 1 / B ≤ (2 / alpha) ^ (2 ^ E) := by rw [one_div]; exact hBx
   have hBe2 : 2 / B ≤ (2 / alpha) ^ (2 ^ (E + 1)) := by
     rw [div_eq_mul_inv]
     exact pw_mul hX (by norm_num) (inv_pos.mpr hBpos).le (hX.trans (pw_X hX _)) hBx
   have hT := max (E + 3) (2 ^ (k + 6) + 4)
-  have e1 := ex_rpow hX h8z1 h8z (by positivity) hBe
-  have e2 := ex_rpow hX h4zr1 h4zr (by positivity) hBe
-  have e3 := ex_rpow hX h16z1 h16z (by positivity) hBe2
+  have e1 := ex_rpow_of_nonneg hX (by positivity) (hcz 8 (by norm_num)) (by positivity) hBe
+  have e2 := ex_rpow_of_nonneg hX (by positivity) h4zr (by positivity) hBe
+  have e3 := ex_rpow_of_nonneg hX (by positivity) (hcz 16 le_rfl) (by positivity) hBe2
   have hρE' : rhoDeg k μD μ0 + 5 ≤ E := by omega
   refine ⟨hthr1.trans (le_max_left _ _), ?_⟩
   show max (familyRecThr k K p ((std V D k K p μ0).QM alpha) : Real)
