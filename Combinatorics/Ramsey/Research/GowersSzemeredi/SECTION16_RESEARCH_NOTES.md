@@ -7554,6 +7554,49 @@ checked. Only `propext`, `Classical.choice` and `Quot.sound` occur. See
 with their immutable source manifests. Full-facade checks and original
 paper fidelity gaps remain separate. The simplification goal remains active.
 
+### L.71. Share localization arithmetic and trim stronger-route dependencies (2026-10-12)
+
+`rpow_le_comp` composes pointwise power lower bounds by multiplying their
+exponents. The six modulus proofs use it directly, as does
+`WidthPowerLB.comp`. `localization_exponents_pos_le` bounds the common
+products of exponents in `(0, 1]`; all six localization-range proofs now
+specialize it. Five parameter-range proofs use the existing unconditional
+`uExp_pos_le` and `one_le_uCount` facts and the shared single-piece bounds.
+The ordinary half-scale arguments and the final joint quarter-scale
+arguments are unchanged.
+
+Two shared modules separate elementary interfaces from the historical
+cover-envelope routes: `Proofs18SharpInterfaces` contains the parameterized
+Theorem 18.1 and coloring interfaces, while
+`Proofs18RefinementThresholdBounds` contains the common phase-refinement
+estimate. The standing Fejer hypotheses move beside the exponents that
+use them. The old owners re-export all moved declarations. Nineteen of
+the twenty moved blocks are identical; `two_color_class_half` now
+specializes `exists_color_class_ge` instead of repeating the counting
+proof. The strongest final route imports its direct low-degree and
+short-length inputs.
+
+Against `053e1844f`, twenty production files, including the two new modules,
+lose 274 lines. All 421 existing declaration headers and variable scopes,
+198 definition bodies, and all 25 stronger bridge proofs are preserved.
+The four consolidated proof files contain 2,937 lines. The stronger bridge
+closure drops from 745 modules / 160,866 lines to 737 / 159,219, saving
+eight modules and 1,647 imported lines. The original-final closure adds
+the refinement helper but falls by 114 lines, to 648 / 135,224. See
+`verification/2026-10-12-localization-composition-simplification.json`.
+
+Native verification passes the original-final 649-module audit and the
+expanded focused 782-module audit, with only `propext`, `Classical.choice`
+and `Quot.sound`. The latter adds twenty named checks and explicitly
+imports the old source owners and both legacy sharper-bound consumers.
+Its closure has 169,679 source lines, 35 fewer despite the additional
+coverage. See `verification/2026-10-12-final-localization-composition.json`
+and `verification/2026-10-12-final-localization-composition-compatibility.json`,
+with immutable source manifests. The source inventory is refreshed for
+line shifts only; every classification and companion name is unchanged.
+Full-facade checks and remaining original-paper fidelity gaps are separate.
+All numerical bounds are preserved, and the simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
