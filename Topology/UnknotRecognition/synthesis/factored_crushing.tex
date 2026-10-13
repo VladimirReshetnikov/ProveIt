@@ -193,8 +193,11 @@ passes, rather than only successful or distinct final resolving sets.
 The \path{max_crushes} row charges \path{crushing_steps} plus
 \path{boundary_unlayerings}.  With the optional extension in
 Section~\ref{sec:strict-pachner32}, it also charges \path{pachner32_moves}.
+The fixed one-upward extension in Section~\ref{sec:pachner-descent-crushing}
+adds \path{pachner_descent_macros}: one unit per accepted strict macro,
+with its elementary upward and downward moves recorded separately.
 Charging normal crushes alone would fail to enforce the shared allowance
-when either local simplifier is enabled.  Ordinary additive
+when a local simplifier is enabled.  Ordinary additive
 statistics are summed across children; declared peak statistics such as
 maximum tableau size and maximum search depth use their maximum.
 Initial-source and shelled-source tetrahedron counts are likewise summed
@@ -257,7 +260,10 @@ $\operatorname{poly}(n+1)(c(n+1))^{O(H)}$.
 Vertex reduction and the optional inverse-layer and $3\to2$ policies
 contribute polynomial work and strict tetrahedron descent.  The latter's
 polynomial bound and one-vertex preservation are proved in
-Section~\ref{sec:strict-pachner32}.  At each remaining Euler stage,
+Section~\ref{sec:strict-pachner32}.  The fixed one-upward macro of Section~\ref{sec:pachner-descent-crushing}
+can also be included: its polynomial discovery and replay costs are absorbed
+in the same fixed polynomial, and its accepted endpoint removes one tetrahedron.
+At each remaining Euler stage,
 vertex reduction guarantees a finite one-vertex source.  It has at most
 $4t_{is}$ anchor choices, and its source-derived exact linear data have
 bit length polynomial in $t_{is}$.  Proposition~\ref{prop:conflict-candidate-bound}

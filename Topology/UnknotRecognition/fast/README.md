@@ -4890,6 +4890,43 @@ complete-call speedups are 1.4257 for trefoil and 1.5841 for figure-eight,
 including preprocessing, independent replay and full result serialization.
 The circle has no 3→2 scan and supplies no measured simplifier benefit.
 Paired samples and A/A variation are retained; the policy remains optional.
+These measurements and source pins describe revision `fb597741b`.
+
+### Optional fixed one-upward Pachner descent
+
+Pass `reduce_pachner_descent=True` to either direct crushing interface to try
+a complete fixed one-upward search after vertex reduction, enabled inverse
+layering and enabled strict 3→2 scans. The policy permits at most one total
+2→3 expansion per accepted macro and stops at the first strictly smaller
+source. An accepted trace is either one contraction or an expansion followed
+by two contractions; it removes exactly one tetrahedron. Preprocessing and
+normal algebra restart on the checked endpoint.
+
+`normal_pachner_descent.reduce_pachner_descent_once(source)` returns `REDUCED`
+with a `normal-pachner-descent-v1` packet, or `UNCHANGED` after complete
+exhaustion of the bounded move family. The independent checker is
+`normal_pachner_descent_verify.verify_normal_pachner_descent`. It replays every
+intermediate formal boundary replacement and zero cochain transport, rejects
+disc payloads, and checks the exact source hash and first strict descent.
+No LP or normal-disc search runs in this local operation.
+
+The optional driver emits `diagram-crushing-v4`. `max_crushes` charges one
+unit for each accepted macro, together with ordinary crushes, inverse layers
+and standalone 3→2 moves. `pachner_descent_calls`, `pachner_descent_nodes` and
+`pachner_descent_work` record searches, including a search whose candidate
+cannot be appended because the reduction budget is exhausted. The work field
+counts checkpoints in the underlying descent search; outer preparation and
+additional wrapper replay remain outside it. `pachner_descent_macros` and the
+separate upward/downward move counts describe only appended macros.
+
+The fixed search and repeated strict preprocessing have polynomial cost.
+Exhaustion proves neither a knot verdict nor global minimality, and smaller
+triangulations need not have smaller resolving parameters or faster complete
+recognition. The policy defaults to false. See
+[the theory and implementation contract](../synthesis/pachner_descent_crushing.tex).
+The regression run passes 336 tests across 38 modules, with Regina and no
+skips. A final seven-test verifier replay strengthens the independent outer
+successor mutation controls. Logs are retained in `synthesis/data/pachner-descent-*`.
 
 ### Polynomial exact LP policy
 

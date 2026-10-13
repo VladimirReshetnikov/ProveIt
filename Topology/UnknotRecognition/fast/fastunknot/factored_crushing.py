@@ -17,7 +17,8 @@ _CHILD_SIGNATURE = signature(recognize_by_crushing)
 CAP_STATS = {
     'max_sectors': ('sectors_attempted',),
     'max_bases': ('bases_attempted',),
-    'max_crushes': ('crushing_steps', 'boundary_unlayerings', 'pachner32_moves'),
+    'max_crushes': ('crushing_steps', 'boundary_unlayerings', 'pachner32_moves',
+                    'pachner_descent_macros'),
     'max_pivots': ('lp_pivots',),
     'max_anchors': ('anchors_tested',),
     'max_tree_nodes': ('nodes_attempted',),
@@ -34,6 +35,7 @@ MAX_STATS = frozenset((
 POLICY_OPTIONS = frozenset((
     'sector_order', 'sector_quantum', 'sector_method', 'lp_strategy',
     'reduce_vertices', 'unlayer_boundary', 'reduce_pachner32', 'tree_model',
+    'reduce_pachner_descent',
     'transversal_candidate_policy', 'lp_policy', 'lp_fast_path_pivots',
 ))
 FACTOR_STATS = frozenset(('factors_total', 'factors_attempted', 'factors_unknot',
@@ -60,7 +62,8 @@ def _options(diagram, check, supplied):
         raise ValueError('sector_method must be corners, lp, tree or transversal')
     if options['lp_strategy'] not in ('anchors', 'envelope'):
         raise ValueError('lp_strategy must be anchors or envelope')
-    for name in ('reduce_vertices', 'unlayer_boundary', 'reduce_pachner32'):
+    for name in ('reduce_vertices', 'unlayer_boundary', 'reduce_pachner32',
+                 'reduce_pachner_descent'):
         if type(options[name]) is not bool:
             raise ValueError(name+' must be a boolean')
     if options['tree_model'] not in ('source', 'restricted'):
@@ -100,7 +103,8 @@ def recognize_factored_by_crushing(diagram, *, check=lambda: None, **crushing_op
 
     Options/defaults are those of recognize_by_crushing. Nine work allowances
     are shared across all attempted factors; max_crushes includes inverse
-    boundary layers and optional Pachner 3-2 moves. All attempted child results
+    boundary layers, optional Pachner 3-2 moves, and accepted one-upward
+    Pachner macros (one unit per macro). All attempted child results
     remain in factor_results.
     A verified negative child proves KNOTTED; all factors must prove UNKNOT.
     INCONCLUSIVE contains partial results and no conclusive certificate. Caller
@@ -119,6 +123,8 @@ def recognize_factored_by_crushing(diagram, *, check=lambda: None, **crushing_op
     for fields in CAP_STATS.values():
         for field in fields:
             if field == 'pachner32_moves' and not options['reduce_pachner32']:
+                continue
+            if field == 'pachner_descent_macros' and not options['reduce_pachner_descent']:
                 continue
             stats[field] = 0
     factor_results = []

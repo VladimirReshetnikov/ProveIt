@@ -2,6 +2,25 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`pachner_descent_crushing.tex`](pachner_descent_crushing.tex) adds optional
+fixed one-upward Pachner preprocessing to the direct and factored crushing
+drivers. Each accepted macro has at most three elementary moves and removes
+exactly one tetrahedron. Its checker authenticates every intermediate source,
+zero cochain transport and the first strict descent. The complete search is
+polynomial for this fixed policy; no general bound on the resulting Euler
+resolving parameter follows. The default remains disabled. Version 4 chains
+count one accepted macro against the shared reduction allowance, while
+diagnostics retain search work and elementary move counts separately.
+The broader regression run passes 336 tests across 38 modules with Regina
+and no skips. A final focused seven-test replay also checks that outer
+successor corruption is rejected while its inner geometric proof remains
+valid. Commands and logs are retained under `data/pachner-descent-*`.
+The current [PDF](report.pdf) has 803 pages. Section 187 spans pages 790–796;
+these pages pass visual review after three build passes, with no new overflow
+warnings or unresolved references. Run `python -B -S
+data/pachner_descent_core_publication.py` from this directory to check and
+pin this core publication. It contains no new timing claim.
+
 [`strict_pachner32.tex`](strict_pachner32.tex) proves the optional strict 3→2
 preprocessing policy. Its independent checker compares the entire formal
 bipyramid boundary, including attachments within the region itself. Each move
@@ -11,7 +30,8 @@ crushes, inverse layers and Pachner moves, and every new source receives fresh
 normal algebra. Conservative preprocessing and accepted-chain size bounds are
 polynomial; no general resolving-parameter bound follows.
 The 267-test regression run passes across 29 modules with Regina and no skips.
-The current [PDF](report.pdf) has 797 pages; the new section spans pages
+The publication at `fb597741b` rebuilt the [PDF](report.pdf) to 797 pages;
+its section spans pages
 782–790, visually reviewed after three build passes. There are no unresolved
 references or new overflow warnings. Test commands and logs are retained under
 `data/strict-pachner32-*`.
@@ -31,7 +51,8 @@ and 1.5841 for figure-eight; the circle performs no new scan. A/A controls and
 all paired samples retain host variation. Run `python -B -S
 data/strict_pachner32_publication.py` from this directory to check the complete
 publication, including 27 fresh evidence mutations and 29 archived packet
-mutations, at its recorded source revision.
+mutations, at revision `fb597741b`. Its recorded source pins remain historical
+after subsequent native and article changes.
 
 [`factored_crushing.tex`](factored_crushing.tex) composes native crushing proofs
 over the existing visible interlacement factors. A separate checker reconstructs
