@@ -2,6 +2,23 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`conflict_candidates.tex`](conflict_candidates.tex) proves the optional
+conflict-directed candidate policy's `O(A*(3*delta)^h*poly(t,L))` bit bound.
+It branches on missed conflicts, partitions candidates without repetition
+within each depth pass, and safely forgets old conflicts in a fixed cache.
+The original subset policy remains the default. All 200 affected tests pass,
+including independent geometric replay, cache eviction, and shared limits.
+The general resolving parameter `h` remains unbounded.
+
+[`boundary_transversal.tex`](boundary_transversal.tex) refutes two possible
+geometric shortcuts: neither boundary-face tetrahedra nor all boundary-edge
+stars always meet every positive extreme-ray conflict. An eleven-tetrahedron
+example has disjoint boundary-edge and conflict sets. Solver-free original
+STANDARD rank checks authenticate all 19 retained rays and six layerings;
+fresh Regina construction agrees with all six. Reproduction commands and
+scope are in [`boundary_transversal_research`](../fast/boundary_transversal_research/README.md).
+These examples do not prove that minimum resolving size grows.
+
 [`exact_polynomial_lp.tex`](exact_polynomial_lp.tex) proves the maintained
 polynomial exact LP policy: a bounded Bland prefix, rational outward-rounded
 ellipsoid feasibility, exact original-point and extreme-ray recovery, and
@@ -9,7 +26,13 @@ original-row dual scaling. It includes a conservative finite-bit bound and
 the shared pivot, ellipsoid-update, and feasibility-call allowances used by
 Euler search and crushing. This resolves the local LP complexity obligation;
 a general quasi-polynomial bound on complete admissibility search remains
-unproved. Historical evidence below retains its original source pins.
+unproved. The fresh audit checks 60 exact cone queries, 24 retained rational
+rounding updates, and genuine positive/negative geometric fallback results.
+Three paired complete-query measurements preserve identical outputs and
+report small common-path timing differences; none enters fallback, so no
+practical ellipsoid speedup is claimed. Reproduction commands and source pins
+are in [`polynomial_lp_research`](../fast/polynomial_lp_research/README.md).
+Historical evidence below retains its original source pins.
 
 [`euler_transversal.tex`](euler_transversal.tex) describes the optional
 conflict-learning search and proves its conditional bound in the minimum

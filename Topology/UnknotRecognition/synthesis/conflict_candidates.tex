@@ -1,0 +1,268 @@
+\section{Branching on missed conflicts to select resolving candidates}
+\label{sec:conflict-candidates}
+
+The subset stream of Section~\ref{sec:euler-transversal} can inspect many
+tetrahedra that never occur in a positive conflict.  A missed conflict itself
+gives a smaller set of choices: every uniform resolving set must select at
+least one of its tetrahedra.  The optional
+\path{candidate_policy='conflicts'} uses these choices directly.  The
+supplied-source default remains \path{candidate_policy='subsets'}; the
+diagram driver exposes the new choice through
+\path{transversal_candidate_policy='conflicts'} when
+\path{sector_method='transversal'} is selected.
+
+This change improves a parameterized search bound.  It retains the same
+source model, polynomial LP policy, positive-ray recovery, and independently
+checked negative tree format.  It establishes neither a small resolving
+set for every knot exterior nor general quasi-polynomial recognition.
+
+\subsection{The candidate oracle and the parameters}
+
+Fix a source, or a supplied root Q mask, and use its positive extreme-ray
+conflict hypergraph $\mathcal H$ from
+Section~\ref{sec:euler-transversal}.  Write $h=\tau(\mathcal H)$ and let
+$U$ be the tetrahedra with at least two allowed root Q types, with
+$u=|U|\le t$.  Every edge of $\mathcal H$ is a nonempty subset of $U$.
+Let $\delta$ be the maximum of $1$ and the sizes of all full conflict
+sets encountered during this execution.  For an input-only bound it may
+be replaced by
+\[
+ \delta(T)=\max\bigl(\{1\}\cup\{|D|:D\in\mathcal H\}\bigr).
+\]
+Thus $\delta\le\delta(T)\le\max(1,u)$.  The observed maximum is an
+execution statistic; observing small conflicts does not bound $h$.
+
+For a proposed $B\subseteq U$, the existing candidate oracle starts from
+the unchanged root mask.  It explores a complete Euler tree but splits
+only at conflict tetrahedra belonging to $B$.  It either returns a
+compatible positive vector, completes a negative tree, or encounters an
+incompatible positive root extreme ray whose full conflict set $D$ misses
+$B$.  The last outcome refutes this candidate.  A work limit produces
+\path{INCONCLUSIVE}, which is propagated rather than treated as a
+refutation.  The root-extreme-ray premise follows from coordinate-face
+inheritance and the basic-ray contract of
+Section~\ref{sec:exact-polynomial-lp}.
+
+The complete negative tree remains the mathematical exclusion certificate.
+The learned conflicts and the candidate-selection history are search
+metadata.  In particular, pruning a candidate-selection state does not
+exclude any normal surface by itself.
+
+\subsection{Iterative depth and a partition by first choice}
+
+For each allowance $k=0,1,\ldots,u$, the implementation starts a fresh
+depth-first candidate search at $(B,X)=(\varnothing,\varnothing)$.
+The chosen and excluded sets satisfy $B\cap X=\varnothing$.  Such a
+state represents possible transversals $R$ satisfying
+\[
+ B\subseteq R,\qquad R\cap X=\varnothing,\qquad |R|\le k.
+\]
+The excluded set applies only to candidate selection.  It never removes
+Q columns or modifies the candidate oracle's root mask.
+
+At a visited state, inspect the retained conflict cache.  If an edge
+$D$ misses $B$, use it.  The implementation chooses the least available
+missed edge, ordering first by $|D\setminus X|$ and then
+lexicographically.  If no retained edge misses $B$, call the candidate
+oracle once.  A positive or complete negative outcome finishes the source
+query.  On refutation, its newly inserted missed edge supplies the next
+choice at this same state; the state is not charged or queried again.
+
+Put $D\setminus X=\{a_1<\cdots<a_s\}$.  If this set is empty, or if
+$|B|=k$, prune the candidate-selection state.  Otherwise visit the children
+\[
+ \left(B\cup\{a_i\},\ X\cup\{a_1,\ldots,a_{i-1}\}\right),
+ \qquad 1\le i\le s.
+\]
+Each child adds one previously absent tetrahedron.  The candidate oracle
+uses only its chosen set $B$, not $X$.
+
+\begin{lemma}[Coverage and uniqueness of the candidate partition]
+\label{lem:conflict-candidate-partition}
+Every transversal represented at a parent is represented at exactly one
+of these children.  Within one depth allowance, distinct visited states
+have distinct chosen sets $B$.
+\end{lemma}
+\begin{proof}
+A represented transversal must meet $D$.  Since it avoids $X$ and $D$
+misses $B$, it has a first selected element $a_i$ of $D\setminus X$.
+The $i$th child retains that element and excludes precisely the earlier
+available choices.  Every other child either requires an absent earlier
+element or excludes $a_i$.  This proves the partition assertion.
+
+For uniqueness, two distinct paths first diverge at children $i<j$ of
+some state.  Every descendant of child $i$ retains $a_i$ in its chosen
+set; every descendant of child $j$ excludes $a_i$ permanently.  Their
+chosen sets cannot coincide.  Along a single path the chosen size strictly
+increases, so an ancestor and descendant cannot coincide either.  Future
+adaptive choices of missed edges do not alter these invariants.
+\end{proof}
+
+\subsection{A bounded cache may forget conflicts}
+
+The new policy retains at most $256$ conflict sets in insertion order,
+evicting the oldest when a new edge is inserted into a full cache.
+Duplicates currently in the cache are not inserted again.  This cache
+is separate from the existing bounded source-row dual cache.  The subset
+comparison policy retains its original accumulating conflict list.
+
+Eviction does not invalidate a candidate partition already made.  Its
+chosen and excluded sets still record that partition, and the edge used
+to form it remains a genuine member of $\mathcal H$.  At a later state,
+forgetting an edge can cause an additional oracle call; that call must
+either conclude with an independently replayable result or provide a
+new actual refutation.  In the maintained generator, a refuting edge is
+inserted last and the candidate oracle returns immediately.  Since the
+cache has positive capacity, that edge remains available when the
+suspended state resumes.  Consequently each visited state makes at most
+one candidate-oracle call, including when earlier edges are relearned.
+
+\begin{proposition}[Completion by the uniform transversal number]
+\label{prop:conflict-candidate-completion}
+With all operational limits removed, the conflict candidate policy
+finishes by allowance $k=h$, for both positive and negative sources.
+On a negative source its returned resolving set has minimum cardinality
+$h$.  A positive result need not identify a transversal.
+\end{proposition}
+\begin{proof}
+Fix a size-$h$ transversal $R$ of $\mathcal H$.  In the pass $k=h$,
+the root represents $R$.  At every state representing $R$, any retained
+or newly learned missed edge meets $R$ and therefore has an available
+element outside $X$.  Lemma~\ref{lem:conflict-candidate-partition}
+selects a child still representing $R$.  Such a state cannot be pruned
+for exhausted allowance: if $|B|=h$ and $B\subseteq R$, then $B=R$,
+so no edge misses it.  This argument uses only the validity of the edge
+currently selected and survives arbitrary cache eviction.
+
+The candidate tree for a true transversal cannot be refuted by an
+incompatible positive root ray.  It has depth at most $|B|$, since a
+split permanently resolves a previously unresolved member of $B$.
+It therefore returns a compatible positive witness or a complete
+negative tree.  Following the represented transversal proves termination
+by pass $h$.
+
+Conversely, a completed negative candidate tree implies that $B$ meets
+every positive incompatible root ray.  A ray whose conflict set avoided
+$B$ would retain a singleton choice at each split, follow a path through
+that complete tree, and contradict its negative leaf.  Thus a negative
+result has $h\le|B|\le k\le h$, proving minimum cardinality.
+A compatible positive witness may instead be found before pass $h$;
+its existence does not prove that the chosen set hits all incompatible
+positive root rays.
+\end{proof}
+
+With forgetting, an individual queried candidate need not be a minimum
+hitting set of the currently retained cache.  The minimum-cardinality
+statement concerns a completed negative result, not every intermediate
+proposal or an early positive result.
+
+\subsection{A conflict-size parameter in the bit bound}
+
+Let $L$ be the encoding length of the exact fixed-source linear data and
+$A$ its number of anchor tuples.  A candidate with $i$ chosen tetrahedra
+has at most
+\[
+ T_i=\frac{3^{i+1}-1}{2}
+\]
+Euler mask nodes.  Each candidate-state split has at most $\delta$
+children.  The partition also prevents repeated chosen sets in one pass.
+
+\begin{proposition}[Conflict-directed candidate bound]
+\label{prop:conflict-candidate-bound}
+Select the polynomial exact LP policy and disable operational limits.
+The number $Q$ of attempted Euler mask nodes, including all unsuccessful
+candidates and repeated depth passes, satisfies
+\[
+ Q\le
+ \sum_{i=0}^{h}(h-i+1)
+       \min\!\left\{\binom ui,\delta^i\right\}
+       \frac{3^{i+1}-1}{2}
+ <\frac{27}{8}(3\delta)^h.
+\]
+With the fixed conflict cache, total bit work is
+\[
+ O\!\left(A(3\delta)^h\operatorname{poly}(t,L)\right).
+\]
+\end{proposition}
+\begin{proof}
+In one pass, depth $i$ contains at most $\delta^i$ states because every
+edge used for branching has at most that many available choices.
+Lemma~\ref{lem:conflict-candidate-partition} also bounds this count by
+$\binom ui$.  Every state makes at most one candidate-oracle call, of
+cost at most $T_i$ mask nodes.  Passes $i,\ldots,h$ can revisit this
+depth, giving the displayed sum.
+
+For $a=3\delta\ge3$, discarding the binomial improvement gives
+\[
+ Q\le\frac32\sum_{i=0}^{h}(h-i+1)a^i
+   <\frac32\frac{a^{h+2}}{(a-1)^2}
+   \le\frac{27}{8}a^h.
+\]
+This also covers singleton conflicts and the no-conflict execution by
+our convention $\delta\ge1$.  Repeated visits at larger depth allowances
+are included, rather than assumed free.
+
+Each mask node makes at most one envelope query and $A$ anchor queries.
+Section~\ref{sec:exact-polynomial-lp} supplies their polynomial bit
+cost and positive extreme-ray recovery.  Source algebra, bounded dual
+reuse, geometry checks and certificate construction also use polynomial
+work per mask node and per anchor.  Inspecting at most $256$ conflict
+sets, sorting their available tetrahedra, and forming chosen/excluded
+children costs polynomial work per candidate state.  The number of
+states has the same upper sum with $T_i$ replaced by $1$, so this
+bookkeeping fits the stated bound as well.
+\end{proof}
+
+The fixed conflict cache matters for this sharp expression.  Scanning
+or deduplicating an unbounded learned-edge list can cost an additional
+factor equal to the number of previously learned conflicts.  That
+factor is not automatically polynomial in $t$.  The maintained bounded
+cache avoids this obligation while preserving completeness.
+
+For comparison, dropping the $\delta^i$ improvement and using $h\le u$
+gives the crude bound $O(t4^t)$ mask nodes, including repeated passes.
+The subset policy has the $O(4^t)$ crude count from
+Section~\ref{sec:euler-transversal}.  The new policy is therefore an
+optional comparison, not a universal domination claim.  When $\delta$
+is bounded, the new parameter dependence removes the factor from
+enumerating arbitrary tetrahedron subsets.  For example, bounded
+$\delta$ and $h=O(\log t)$ would give polynomial search at an
+authenticated one-vertex stage, where $A\le4t$ and $L$ is polynomial
+in $t$.  No such structural bounds are established here.
+
+\subsection{Limits, diagnostics, and independent acceptance}
+
+The shared \path{max_hitting_subsets} option has a policy-specific unit.
+For \path{subsets}, it counts each distinct subset inspected by the old
+stream.  For \path{conflicts}, it counts visited chosen/excluded states,
+including states pruned by cached edges and roots revisited at larger
+allowances.  A state is charged before inspection; resuming that same
+state after its one refuted candidate query incurs no second charge.
+Every new child visit still requires an allowance.  A limit of zero
+permits no candidate-state visit or candidate oracle query.
+
+All Euler nodes, LP pivots, anchors, ellipsoid updates and feasibility
+calls remain shared across candidate failures and depth passes.  Their
+counts include discarded partial candidate trees.  Source algebra and
+the dual cache remain shared during a supplied-source query.  A crush
+starts new source-local algebra and conflict storage, while the diagram
+driver passes the remaining global work allowances to its successor.
+Exhaustion produces \path{INCONCLUSIVE}; caller exceptions propagate
+with their original identity.
+
+The counters \path{transversal_candidates} and
+\path{transversal_restarts} distinguish actual candidate queries from
+refutations.  In the new policy, \path{learned_conflicts} counts cache
+insertions, including relearning after eviction; it is not a count of
+globally distinct edges.  \path{maximum_conflict_size} records full
+observed edge sizes, \path{peak_cached_conflicts} records the source
+cache peak, and \path{conflict_cache_evictions} counts removals.  Across
+crushes, work and eviction counts add, while sizes and peaks take maxima.
+
+Only a completed candidate Euler tree supplies a negative packet.
+Independent replay reconstructs its unchanged root mask and every child
+assignment without trusting candidate order, cache history or resolving
+metadata.  Positive results retain original normal-coordinate validation,
+support extraction and authenticated crushing continuation.  The next
+section tests a possible geometric route to small resolving sets; the
+candidate bound itself provides no general quasi-polynomial theorem.

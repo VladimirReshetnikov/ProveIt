@@ -4718,6 +4718,29 @@ inconclusive; on the trefoil it is slightly slower in the paired measurement.
 See [the theory and tradeoff](../synthesis/euler_transversal.tex) and
 [the source-pinned audit and timings](euler_transversal_research/README.md).
 
+`transversal_candidate_policy='conflicts'` selects a second candidate policy
+in `recognize_by_crushing(..., sector_method='transversal')`. The source API
+uses `candidate_policy='conflicts'`; the default `'subsets'` retains the
+original comparison. The new policy deepens a search on missed conflicts.
+Every valid extension must choose a tetrahedron in the missed set. Branches
+partition those choices by their first selected element, without changing
+the root quadrilateral mask or its certificate coverage.
+
+A FIFO cache retains at most 256 conflicts. Forgetting only adds possible
+discovery work: a negative result still requires a complete independently
+checked Euler tree. If `h` is the minimum resolving size and `delta` bounds
+the sizes of positive root-ray conflict sets, the total oracle work is
+`O((3*delta)**h)`, with polynomial exact arithmetic per node after one-vertex
+preprocessing. This removes the dependence on the total tetrahedron count
+from the exponential base when conflicts are small. A uniform bound on `h`
+is still missing. See [the complete argument](../synthesis/conflict_candidates.tex).
+
+In this mode `max_hitting_subsets` charges every visited partial candidate
+state, including repeated states at new depth limits. `learned_conflicts`
+counts cache insertions, including relearning after eviction; cache peak,
+eviction count, and maximum observed conflict size are reported separately.
+All existing LP, node, fallback, and successor limits remain shared.
+
 ### Polynomial exact LP policy
 
 `solve_nonnegative_kernel` now defaults to `policy='polynomial'`. It performs
@@ -4748,3 +4771,8 @@ support descent; partial fallback work never certifies a negative result.
 The local LP bit bound is polynomial in encoded input size, not strongly
 polynomial, and does not bound the number of geometric search queries. See
 [the implementation and complete bit-complexity proof](../synthesis/exact_polynomial_lp.tex).
+The [fresh audit and paired comparison](polynomial_lp_research/README.md)
+check 60 exact cone queries and genuine geometric fallback certificates.
+Complete circle, trefoil, and figure-eight results match the legacy policy
+exactly. Those timing examples stay on the fast path; the measurements
+document common-path overhead and do not claim a practical fallback speedup.

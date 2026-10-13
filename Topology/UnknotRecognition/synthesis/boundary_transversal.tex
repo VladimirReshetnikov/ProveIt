@@ -1,0 +1,294 @@
+\section{Boundary incidence does not resolve all positive Q conflicts}
+\label{sec:boundary-transversal}
+
+The parameter $h(T)$ of Section~\ref{sec:euler-transversal} depends on
+the complete positive root-ray conflict hypergraph, not merely on the
+boundary size.  A finite one-vertex torus triangulation has only two
+boundary triangles and three boundary edges.  This suggests two potential
+shortcuts: resolve the tetrahedra containing boundary faces, or resolve
+all tetrahedra incident to boundary edges.  Both coverage statements are
+false.  This section supplies exact counterexamples, including one with
+eleven tetrahedra, together with a solver-free replay from original normal
+matching equations.  The counterexamples establish neither a family with
+growing $h(T)$ nor a lower bound on general recognition complexity.
+
+\subsection{The two proposed coverage statements}
+
+Write $K(T)$ for the full root Q cone, $F$ for canonical formal Euler,
+and $D(q)$ for the complete set of tetrahedra supporting at least two
+positive Q types.  Define
+\[
+ B_{\mathrm{face}}(T)=\{\tau:\tau\text{ contains a boundary face}\},
+ \qquad
+ B_{\mathrm{edge}}(T)=\{\tau:\tau\text{ contains a boundary edge}\}.
+\]
+Here ``contains'' refers to an incidence in the generalized triangulation;
+the same global edge may occur several times in a tetrahedron.  Certainly
+$B_{\mathrm{face}}\subseteq B_{\mathrm{edge}}$.
+
+For a one-vertex torus boundary, $3f=2e$ and $1-e+f=0$, giving
+$f=2$ and $e=3$.  Thus $|B_{\mathrm{face}}|\le2$.  This counting
+argument places no constant bound on $|B_{\mathrm{edge}}|$, since a
+boundary edge may be incident to many tetrahedra.  More fundamentally,
+neither set necessarily intersects every $D(r)$ for incompatible root
+extreme rays $r$ with $F(r)>0$.
+
+\begin{proposition}[Failure of boundary conflict coverage]
+\label{prop:boundary-conflict-failure}
+There are finite, connected, orientable, one-vertex triangulations with
+one torus boundary for which $B_{\mathrm{face}}$ is not a transversal
+of $\mathcal H(T)$.  The same is true of $B_{\mathrm{edge}}$.
+The retained examples arise from knot-exterior sources and explicit
+boundary layerings.  No assumption concerning the absence of admissible
+canonical positive vectors is needed for these failures.
+\end{proposition}
+
+The proof consists of the exact witnesses below.  In particular, their
+extremality is checked independently; positivity of a nonextreme formal
+point alone would not suffice for this proposition on an arbitrary source.
+
+\subsection{Root-ray extremality from original STANDARD matching}
+
+Let $M$ be the original STANDARD matching matrix.  For a set $S$ of Q
+coordinates, let $M_S$ retain all $4t$ triangle columns and only the Q
+columns in $S$.  Let $M_\triangle$ retain just the triangle columns.
+These matrices are formed directly from face incidences, without the
+Q-cycle elimination used by the search oracle.
+
+\begin{lemma}[A supported Q rank certificate]
+\label{lem:boundary-original-standard-rank}
+For a finite one-vertex source, suppose a nonzero nonnegative Q vector
+$q$ with support $S$ has a STANDARD matching lift.  If
+\[
+ (4t+|S|-\operatorname{rank}M_S)
+       -(4t-\operatorname{rank}M_\triangle)=1,
+\]
+then $q$ spans an extreme ray of the full root Q cone.  In this setting
+$4t-\operatorname{rank}M_\triangle=1$.
+\end{lemma}
+\begin{proof}
+With Q coordinates zero, each face equation equates triangle values at
+the two corresponding corners.  Their equivalence classes are exactly
+the source vertices.  Consequently the triangle-only matching kernel
+is the one-dimensional vertex-link line.
+
+Project $\ker M_S$ onto its Q coordinates.  Its kernel is precisely
+this triangle-only line, so the displayed difference is the dimension
+of the projected supported space.  Any real matching lift can be made
+nonnegative in its triangle coordinates by adding a sufficiently large
+multiple of the vertex-link vector; this does not change its Q vector.
+Thus projection and restriction describe the supported face of the
+nonnegative root Q cone.  The given nonzero nonnegative vector lies in
+that face.  If the projected space has dimension one, the face is a
+single ray.  Since vanishing coordinate constraints define a face of
+a nonnegative cone, that ray is also extreme in the root cone.
+\end{proof}
+
+The replay checks $\operatorname{rank}M_\triangle$ explicitly in
+addition to using the source's one-vertex validation.  All ranks use
+exact rational elimination.  It also checks every original matching
+equation, nonnegative integer coordinates, Q-coordinate gcd one, and
+zero minimum triangle coordinate over the unique vertex class.
+The last condition identifies the canonical lift.
+
+Formal Euler is computed directly as the number of intersection vertices
+minus normal arcs plus polygon pieces.  For a local edge $ab$, its
+intersection weight is
+\[
+ x_a+x_b+\sum_{i=0}^2q_i-q_{\operatorname{quad}(a,b)}.
+\]
+The replay checks agreement among all occurrences of each global edge,
+counts each global face once, and subtracts its arc count.  Incompatible
+coordinates are used only as formal matching vectors; they do not
+describe embedded normal surfaces.
+
+\subsection{Boundary-face counterexamples at retained endpoints}
+
+Two labelled endpoint sources are copied verbatim from the previous
+transversal audit.  They have the following retained witness, indexed
+zero in each fixture.  The listed support rank is the dimension rank in
+Q coordinates, derived here through Lemma~\ref{lem:boundary-original-standard-rank}.
+\begin{center}
+\begin{tabular}{lrrrrl}
+source & $t$ & $F$ & $|S|$ & rank & $D(q)$ \\
+\hline
+trefoil endpoint & 10 & 1 & 10 & 9 & $\{0,5\}$ \\
+figure-eight endpoint & 13 & 2 & 11 & 10 & $\{3,8,12\}$
+\end{tabular}
+\end{center}
+The trefoil boundary faces are $(6,0),(9,0)$, so its conflict set misses
+$B_{\mathrm{face}}=\{6,9\}$.  The figure-eight faces are $(7,0),(9,0)$,
+and its conflict set misses $\{7,9\}$.  In fact, all eight retained
+trefoil rays and nine of the eleven retained figure-eight rays miss
+their respective boundary-face sets.  These are finite checks of
+retained discoveries, not an exhaustive enumeration of root rays.
+
+The corresponding canonical JSON source SHA256 digests are
+\begin{quote}\small\ttfamily
+trefoil:\newline
+515b94f650b5a7b0e8e09322ba31f59eb8cdb108fe33d9220994c43f148ca3fd\newline
+figure-eight:\newline
+1d03c1400d5168f3f862ddbccaa7551650a95f12d850d563fd9de653f0864c38
+\end{quote}
+These labelled equalities matter: a knot name or tetrahedron count would
+not identify the same conflict hypergraph.  At these original endpoints,
+$B_{\mathrm{edge}}$ contains all ten trefoil tetrahedra and all
+figure-eight tetrahedra except $1$ and $5$.  The original observations
+alone therefore do not establish the edge-star counterexample.
+
+\subsection{A single boundary layer gives the edge-star refutation}
+
+Start from the ten-tetrahedron trefoil source above.  Add tetrahedron
+$10$, replacing its two old boundary records by
+\[
+ (6,0)\longrightarrow(10,[3,1,2,0]),\qquad
+ (9,0)\longrightarrow(10,[2,3,0,1]).
+\]
+The bracket lists the image of local vertices $0,1,2,3$.
+New faces $0$ and $1$ are boundary; new face $2$ is paired to tetrahedron
+$9$ with permutation $[2,3,0,1]$, and new face $3$ to tetrahedron $6$
+with permutation $[3,1,2,0]$.  All other old face pairings remain unchanged.
+The edge being layered on is local edge $4$ of tetrahedron $6$, where
+the local ordering is $01,02,03,12,13,23$.
+
+The primitive witness's STANDARD rows, followed by the new row, are
+\[
+\begin{array}{c|rrrr|rrr}
+\tau&T_0&T_1&T_2&T_3&Q_0&Q_1&Q_2\\\hline
+0&4&0&2&8&0&2&2\\
+1&1&4&3&2&0&5&0\\
+2&6&4&2&10&0&0&0\\
+3&3&1&10&2&3&0&0\\
+4&3&1&2&8&3&0&0\\
+5&3&0&2&1&9&1&0\\
+6&6&2&10&2&0&0&0\\
+7&1&4&3&10&0&3&0\\
+8&3&1&2&2&11&0&0\\
+9&6&2&2&2&8&0&0\\\hline
+10&2&2&10&10&0&0&0
+\end{array}
+\]
+The new source has digest
+\begin{quote}\small\ttfamily
+f6a05037099e93211b93a865e6ebca666d033e91dc04d9cb17475544206d5daa.
+\end{quote}
+It is finite, connected, orientable, one-vertex, and has one torus boundary.
+The full boundary-edge incidence union is now
+\[
+ B_{\mathrm{edge}}=\{2,3,6,9,10\},
+ \qquad D(q)=\{0,5\},\qquad F(q)=1.
+\]
+The two sets are disjoint.  There are $44+10=54$ retained STANDARD
+columns and their matching rank is $52$.  The triangle block has rank
+$43$, giving projected support dimension $54-52-(44-43)=1$.
+This proves the second assertion of
+Proposition~\ref{prop:boundary-conflict-failure} using a genuine positive
+root extreme ray.
+
+\subsection{Why the layer preserves the compact manifold}
+
+A validity flag alone is not a homeomorphism proof.  The relevant local
+statement is Jaco--Rubinstein, \emph{Layered-triangulations of 3-manifolds},
+Section~3, printed page~9 (PDF page~8), together with the boundary-flip
+discussion in Lemma~9.2, printed pages~85--86:
+\url{https://arxiv.org/pdf/math/0603601v2}.
+Their generalized triangulations allow identified simplex boundaries.
+The local definition attaches two tetrahedron faces to two distinct
+boundary triangles consistently along their shared edge.  It explicitly
+allows identifications among the sides of the boundary quadrilateral and
+states that the resulting triangulation represents the same compact
+manifold.  Thus one must not replace this statement by an argument
+requiring an embedded attaching disk.
+
+For every retained step, the replay checks the two distinct old boundary
+triangles, the reciprocal face permutations, and agreement of the shared
+attaching edge including its oriented ends.  It checks that every other
+old pairing remains unchanged, no distinct old edge classes merge, and
+exactly the chosen old boundary edge is replaced by one new boundary
+edge.  Independent native source validation checks manifold links,
+orientability, connectedness and torus boundary.  These combinatorial
+checks identify the explicit attachment with the cited layering operation;
+the cited local theorem supplies the collar homeomorphism inference.
+
+The new layerings are not operations in the maintained crushing-chain
+certificate schema.  Accordingly, these are supplied-source
+counterexamples with checked collar maps, not a claim that the current
+diagram driver emitted the layered sources as authenticated successors.
+The initial sources agree exactly with the previously retained
+diagram-bound endpoints.  This package does not repeat their discovery
+or substitute knot type for a chain certificate.
+
+\subsection{Longer collars and the remaining structural question}
+
+The retained construction also flips each of the three original boundary
+edges once.  Trefoil uses original local representatives
+$(6,4),(9,4),(6,3)$; figure-eight uses $(7,4),(7,5),(7,3)$.
+Every step retains the old coordinates, adds at most one Q type in its
+new tetrahedron, and preserves canonical formal Euler and the complete
+conflict set.  The resulting exact checks are
+\begin{center}
+\begin{tabular}{lrrrll}
+source & $t$ & $F$ & $|S|$ & $D(q)$ & $B_{\mathrm{edge}}$\\\hline
+trefoil, three layers &13&1&12&$\{0,5\}$&$\{10,11,12\}$\\
+figure-eight, three layers &16&2&13&$\{3,8,12\}$&$\{13,14,15\}$
+\end{tabular}
+\end{center}
+Their original STANDARD restricted ranks over the three steps are
+$52,57,62$ and $65,70,75$, respectively.  Each projected Q support
+still has dimension one.  Complete maps and coordinates, including all
+intermediate sources, are retained rather than reconstructed from knot
+names.
+
+The Luo--Tillmann standard-solution basis is a linear basis with signed
+coefficients, not a positivity decomposition that forces conflicts near
+the boundary; see Theorem~6, Lemma~7 and the following Euler computation
+in \url{https://arxiv.org/pdf/math/0510537v2}.  The examples retain
+positive formal Euler and core conflicts while moving all boundary-edge
+incidences into a collar.  Therefore that basis cannot imply either
+refuted coverage statement under only the stated finite one-vertex
+torus-boundary hypotheses.
+
+Even the size of an edge star can grow with collars.  In successive
+boundary flips, keep one boundary edge and flip another.  The kept edge
+remains in the boundary and is incident to each newly layered tetrahedron.
+Its star then grows linearly with the number of layers.  This observation
+concerns incidence size, not the minimum resolving number $h(T)$;
+simplification could remove the collars.  A useful boundary-based search
+theorem would therefore need explicit extra canonicalization or
+collar-removal hypotheses and a new coverage argument.  Neither a
+uniform small-$h$ theorem nor a growing-$h$ counterfamily is proved here.
+
+\subsection{Retained inputs and fresh solver-free replay}
+
+The package \path{fast/boundary_transversal_research} contains the exact
+original endpoint fixture bytes, all layered sources and coordinates,
+and the original discovery scripts and outputs with SHA256 provenance.
+Historical generation pins are retained as historical evidence; they
+are not asserted to equal current source hashes.  The current replay
+pins all native Python files and all package sources and immutable data
+at both ends of its run.  It checks all nineteen endpoint witnesses and
+all six layerings, including first-step edge-star disjointness in the
+eleven-tetrahedron example.
+
+Run from \path{fast}:
+\begin{verbatim}
+python -B -S -m boundary_transversal_research.replay \
+  --output /tmp/boundary-transversal-audit.json
+\end{verbatim}
+The checker uses neither Regina nor LP optimization nor Q-cycle
+elimination.  A separate optional \path{generate} module performs fresh
+Regina layerings and the small local extension searches, comparing
+every labelled result with the retained fixture.  Its bounded fixture
+enumeration is not claimed to be a polynomial construction for arbitrary
+input coordinate magnitudes.  No timings are reported here.  In
+particular, neither the old retained discovery nor fresh replay closes
+the general quasi-polynomial recognition gap.
+
+The published \path{synthesis/data/boundary-transversal-audit.json}
+records all nineteen ray checks and six layer checks.  The corresponding
+\path{boundary-transversal-regeneration.json} records a fresh Regina~7.4
+construction agreeing exactly with every retained source and coordinate
+vector.  An exact saved-evidence replay and seven passing rejection
+controls are retained alongside them.  Audit, regeneration and replay
+agree on the same $306$ native/package file hashes; these are correctness
+records, with no running-time comparison.
