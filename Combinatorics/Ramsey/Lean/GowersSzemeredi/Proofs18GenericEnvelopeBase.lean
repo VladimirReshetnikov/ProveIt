@@ -104,6 +104,23 @@ theorem ex_rpow (hX : 2 ≤ X) {b e : Real} {a c : Nat} (hb1 : 1 ≤ b)
 
 end Calculus
 
+/-- A product of `≤ 2^c` factors, each at most `X^(2^a)`, is at most `X^(2^(a+c))`. -/
+theorem prod_le_pw {ι : Type*} (s : Finset ι) {X : Real} (hX : 2 ≤ X) {f : ι → Real} {a c : Nat}
+    (h0 : ∀ i ∈ s, 0 ≤ f i) (h : ∀ i ∈ s, f i ≤ X ^ (2 ^ a)) (hs : s.card ≤ 2 ^ c) :
+    ∏ i ∈ s, f i ≤ X ^ (2 ^ (a + c)) := by
+  calc ∏ i ∈ s, f i ≤ ∏ _i ∈ s, X ^ (2 ^ a) := Finset.prod_le_prod h0 h
+    _ = (X ^ (2 ^ a)) ^ s.card := Finset.prod_const _
+    _ ≤ X ^ (2 ^ (a + c)) := pw_pow hX (zero_le_one.trans (one_le_pw hX a)) le_rfl hs
+
+theorem nonTop_card_le (k : Nat) :
+    (Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true)).card ≤ 2 ^ k := by
+  rw [nonTopVertices_card]; exact Nat.sub_le _ _
+
+theorem nonTop_card_le_k {k : Nat} {e : Fin k → Bool} (he : e ≠ fun _ => true) :
+    (section16VertexDirections e).card ≤ k := by
+  have := section16VertexDirections_card_lt he
+  omega
+
 /-! ### The fixed parameters of dimension `k` -/
 
 section Fixed
@@ -266,6 +283,33 @@ theorem zeta_gen_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
   rw [hS, ← pow_mul]
   apply pow_le_pow_right₀ (le_trans (by norm_num) hX)
   exact le_of_eq (by ring)
+
+/-- `3^(k+1) ≤ X^(2^a)` once `k + 2 ≤ a`. -/
+theorem three_pow_le_pw {X : Real} (hX : 2 ≤ X) {k a : Nat} (hka : k + 2 ≤ a) :
+    (((3 ^ (k + 1) : Nat) : Real)) ≤ X ^ (2 ^ a) := by
+  refine pw_const hX ?_
+  have h1 : 3 ^ (k + 1) ≤ 4 ^ (k + 1) := Nat.pow_le_pow_left (by norm_num) _
+  have h2 : (4 : Nat) ^ (k + 1) = 2 ^ (2 * (k + 1)) := by
+    rw [pow_mul]; norm_num
+  have h3 : 2 * (k + 1) ≤ 2 ^ a := by
+    have := Nat.lt_two_pow_self (n := k)
+    have h4 : 2 ^ (k + 2) ≤ 2 ^ a := Nat.pow_le_pow_right (by norm_num) hka
+    have h5 : 2 ^ (k + 2) = 4 * 2 ^ k := by rw [pow_add]; ring
+    omega
+  have h6 : 3 ^ (k + 1) ≤ 2 ^ (2 ^ a) :=
+    h1.trans (h2 ▸ Nat.pow_le_pow_right (by norm_num) h3)
+  exact_mod_cast h6
+
+/-- `16^m ≤ X^(2^(k+3))` for `m ≤ k + 1`. -/
+theorem sixteen_pow_le_pw {X : Real} (hX : 2 ≤ X) {k m : Nat} (hm : m ≤ k + 1) :
+    (16 : Real) ^ m ≤ X ^ (2 ^ (k + 3)) := by
+  refine pw_const hX ?_
+  have h1 : (16 : Real) ^ m = 2 ^ (4 * m) := by rw [pow_mul]; norm_num
+  rw [h1]
+  refine pow_le_pow_right₀ (by norm_num) ?_
+  have := Nat.lt_two_pow_self (n := k)
+  have h5 : 2 ^ (k + 3) = 8 * 2 ^ k := by rw [pow_add]; ring
+  omega
 
 end Fixed
 

@@ -1,6 +1,5 @@
 import GowersSzemeredi.Proofs18FinalClasses
-import GowersSzemeredi.Proofs18CoverModulusFejer
-import GowersSzemeredi.Proofs18CoverDensity
+import GowersSzemeredi.Proofs18LengthSixScale
 
 /-! **The final route, part 2: the joint-slice step at `tDegT3`** (Notes L.16-final).
 

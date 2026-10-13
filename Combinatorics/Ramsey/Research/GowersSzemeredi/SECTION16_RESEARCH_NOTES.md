@@ -7818,6 +7818,57 @@ The regenerated inventory is byte-identical. Numerical bounds and
 original-paper fidelity status are unchanged. Full-facade checks remain
 separate, and the simplification goal remains active.
 
+### L.78. Remove historical parameter modules from the final step (2026-10-12)
+
+Seven shared estimates move unchanged into existing common modules: five
+power/product estimates from `Proofs18CoverDensity` to
+`Proofs18GenericEnvelopeBase`, and two width estimates from
+`Proofs18CoverModulusFejer` to `Proofs18FejerEnvelopeBase`. The old owners
+still export every moved name. `Proofs18FinalStep` can therefore replace
+its two historical parameter imports with `Proofs18LengthSixScale`.
+
+Against `9dd3766f1`, all 158 old declaration headers and variable scopes,
+58 definition/structure bodies, seven moved proof blocks and all 25 public stronger
+bridge proofs are preserved. No declaration or module is added and no
+proof body changes. The five production files still total 2,494 lines:
+this checkpoint reduces the final dependency closure through relocation,
+with zero net source or proof-body deletion across the production files.
+
+The stronger bridge loses `Proofs18CoverDensity`, `Proofs18CoverModulus`
+and `Proofs18CoverModulusFejer`: 722 modules / 155,431 source lines become
+719 / 154,536, a reduction of three modules and 895 imported lines.
+`Proofs18Final` similarly falls from 629 / 141,319 to 626 / 140,424.
+The original `Final` remains at 641 / 133,278, and `FinalAudit` at
+642 / 133,312. The focused compatibility closure remains at 783 modules;
+seven added named checks bring it to 169,170 lines. Counts concern local
+GowersSzemeredi/OAI source closures, not measured compilation speed.
+
+Native verification passes standalone compilation of the 719-module
+stronger bridge, the 642-module original-final audit and the 783-module
+focused compatibility audit. The latter audits use only `propext`,
+`Classical.choice` and `Quot.sound`; all prior named checks remain.
+See `verification/2026-10-12-final-step-import-cut-stronger.json`,
+`verification/2026-10-12-final-step-import-cut.json` and
+`verification/2026-10-12-final-step-import-cut-compatibility.json`,
+with their recorded source manifests.
+
+Forty downstream consumers have narrower imports. All lie under
+`IntegerOriginalCorollaryFidelityAudit`, whose 1,098-module closure includes
+337 modules outside the focused audit, including 36 audit wrappers. Its
+additional native check passes with only approved axioms; see
+`verification/2026-10-12-final-step-import-cut-downstream.json` and its
+source manifest. Together with the focused audit, these checks cover
+1,120 distinct local modules. Full-facade verification remains separate.
+
+The existing stronger van der Waerden bounds are unchanged. With r colors
+and progression length k, for r >= 2 they give
+`W(r,k) <= 2^(2^(r^(2^(2^(k+c)))))`, with c=3 for every positive k,
+c=2 for k>=8, c=1 for k>=11 and c=0 for k>=13. The exported theorems
+supply positive-step progressions in [1,N]. This relocation establishes
+no additional numerical improvement or original-paper fidelity result;
+the documented correction to Lemma 16.10 and remaining fidelity gaps
+retain their existing status. The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
