@@ -1,0 +1,21 @@
+fatal: pathspec 'Topology/UnknotRecognition/fast/fastunknot' did not match any files
+Traceback (most recent call last):
+  File "/home/codex/.codex/worktrees/cc5b/Proofs/Topology/UnknotRecognition/synthesis/data/coordinate_factor_replay.py", line 482, in <module>
+    main()
+    ~~~~^^
+  File "/home/codex/.codex/worktrees/cc5b/Proofs/Topology/UnknotRecognition/synthesis/data/coordinate_factor_replay.py", line 470, in main
+    result=check(phase)
+  File "/home/codex/.codex/worktrees/cc5b/Proofs/Topology/UnknotRecognition/synthesis/data/coordinate_factor_replay.py", line 352, in check
+    audit=historical_binding(full,singleton,old_replay,payloads)
+  File "/home/codex/.codex/worktrees/cc5b/Proofs/Topology/UnknotRecognition/synthesis/data/coordinate_factor_replay.py", line 162, in historical_binding
+    raw=subprocess.check_output(['git','archive','--format=tar',REVISION,
+        GIT_PREFIX+'fast/fastunknot',GIT_PREFIX+audit_name],cwd=ROOT)
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/subprocess.py", line 472, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               **kwargs).stdout
+               ^^^^^^^^^
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['git', 'archive', '--format=tar', '4d1f76f061ac961ee75c4d7d8b067b5fa0ac30f7', 'Topology/UnknotRecognition/fast/fastunknot', 'Topology/UnknotRecognition/synthesis/data/geometric-descent-audit.json']' returned non-zero exit status 128.

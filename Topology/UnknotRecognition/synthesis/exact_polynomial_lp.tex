@@ -3,14 +3,17 @@
 
 The LP interface used by the Euler searches can be made polynomial in the
 binary encoding of its rational input while preserving its two exact output
-forms.  The maintained polynomial policy keeps a bounded prefix of the existing
-Bland simplex implementation and then uses a fully rational, outward-rounded
+forms.  The initial polynomial policy kept a bounded prefix of the existing
+Bland simplex implementation and then used a fully rational, outward-rounded
 ellipsoid algorithm.  An explicit determinant gap makes feasibility decisions
 exact; a sequence of tight-row decisions recovers an original feasible point;
 and support descent recovers the extreme ray required by conflict learning.
 This removes the unbounded-simplex-pivot obligation for this interface.  It
 does not bound the number of admissibility branches or prove quasi-polynomial
 unknot recognition.
+Section~\ref{sec:native-lex-prefix} replaces that prefix's pivot selectors
+while preserving the caps, fallback and bit bounds proved here.  The
+validation and comparison records below describe their original checkpoint.
 
 The classical basis for polynomial-bit ellipsoid feasibility and exact
 primal/dual optimization is due to Khachiyan and its subsequent refinements.

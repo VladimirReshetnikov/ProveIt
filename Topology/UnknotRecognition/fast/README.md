@@ -4613,8 +4613,8 @@ within its original positive support. The crushing checker independently
 revalidates this ray. The global negative verifier supports either complete
 corner or Euler-LP evidence for each final-source assignment.
 
-The default exact LP policy now limits the Bland prefix and uses a polynomial
-rational ellipsoid fallback, including exact witness recovery. A small number
+The default exact LP policy limits a Dantzig/full-slack lexicographic prefix
+and uses a polynomial rational ellipsoid fallback, including exact witness recovery. A small number
 of active vertex groups bounds the number of anchor LPs. The full compatible-sector
 family still needs a general quasi-polynomial bound. Proofs and comparisons are in
 [Euler-LP crushing](../synthesis/euler_lp_crushing.tex).
@@ -5065,9 +5065,10 @@ See [the implementation theory](../synthesis/prepared_euler_matrix.tex).
 The separate [Q-zero transport theorem](../synthesis/q_zero_pachner_transport.tex)
 preserves protected ray faces through certified Pachner moves; the current
 driver does not introduce a transport adapter or witness cache.
-The combined regression passes 394 tests across 44 modules with Regina and no
-skips, including eleven new prepared-matrix tests. All 361 native/test/fixture
-dependencies match the pre-run snapshot. The command and full log are retained
+At that prepared-matrix checkpoint, the combined regression passed 394 tests
+across 44 modules with Regina and no skips, including eleven new prepared-matrix
+tests. All 361 native/test/fixture dependencies matched its pre-run snapshot.
+The command and full log are retained
 under `synthesis/data/prepared-euler-matrix-*`.
 The supplemental 492-pair comparison executes the actual `973c6fdee`
 predecessor. All complete typed outputs and counters agree, with independent
@@ -5078,14 +5079,51 @@ every LP input captured from the authenticated 31-tetrahedron W34 source.
 Bland, Dantzig and Dantzig-lex use 10,000, 9,187 and 784 pivots, with one, two
 and zero inconclusive queries. The envelope regression and failed queries
 remain explicit. These fixed-input sums are not a new shared-budget driver
-run or a W34 verdict. The native pivot rules are unchanged. The frozen pilot
+run or a W34 verdict. That pilot left native pivot rules unchanged. The frozen pilot
 archive and isolated discovery-disabled replay are retained under
 `synthesis/data/lp-pivot-pilot-*`.
+
+### Native lazy lexicographic prefix
+
+The polynomial default now selects the largest positive reduced cost, with
+least-index ties, and uses full original-slack lexicographic leaving. The
+leaving selector compares exact integer cross-products lazily, stopping at
+the first unequal component. It avoids materializing ratio tuples or
+performing rational division for every candidate key. Explicit
+`policy='bland'` retains the preceding behavior.
+
+Rule selection is local to each call, including nested public/prepared solves
+from callbacks. Every objective still starts a fresh tableau; matrix
+preparation, hard user caps, terminal-before-cap ordering and exact fallback
+are unchanged. Polynomial callback counts change because selector scans poll
+for cancellation; exception identity is preserved.
+
+The new regression passes 408 tests in 45 modules with Regina and no skips.
+All 363 native/test/fixture/command dependencies match their pre-run snapshot.
+Fourteen new tests cover exact selector agreement with a literal tuple rule,
+retained Bland outputs, full-slack degeneracy, caps, fallback, reentrancy and
+independent LP/tree/crushing replay. See
+[the proof and adoption evidence](../synthesis/native_lex_prefix.tex) and
+`../synthesis/data/native-lex-prefix-*`.
+
+A fresh native call from the original W34 diagram certifies it as knotted in
+62 LP calls and 6,606 pivots, with no fallback. Its complete result and source
+ledger match the archived candidate after independent proof verification.
+A separate process replays the saved proof with discovery disabled; all 302
+execution pins remain unchanged. This is one current-code whole-call check.
+
+The earlier frozen 14-call experiment retains all 449 LP queries and all
+regressions: lex used fewer pivots but more LP calls on every nontrivial input,
+and more nodes on TT and T(2,7). It certified W34 in 6,606 pivots where Bland
+capped at 10,000. Those sources and results remain historical. The selector
+change preserves the polynomial LP bound and does not prove a general
+quasi-polynomial recognition bound or an elapsed-time speedup.
 
 ### Polynomial exact LP policy
 
 `solve_nonnegative_kernel` now defaults to `policy='polynomial'`. It performs
-at most `(n + retained_rows + 1)**2` exact Bland pivots, then switches to
+at most `(n + retained_rows + 1)**2` exact Dantzig/full-slack lexicographic
+pivots, then switches to
 exact rational bounded feasibility. `fast_path_pivots=0` forces the fallback
 when the initial tableau has not already decided the query; any larger
 setting can only lower the proved prefix limit. `policy='bland'` retains the
@@ -5105,7 +5143,7 @@ Euler source APIs and `recognize_by_crushing` expose this choice as
 across anchors, tree nodes, failed transversal candidates, fair sector retries,
 and crushing successors. They default to `None` in source APIs and 10000 in
 the diagram driver. Set all limits to `None` for the uncapped complexity
-statement. Unused zero fallback allowances do not block successful Bland
+statement. Unused zero fallback allowances do not block successful simplex
 prefixes. Counters distinguish pivots, cuts, feasibility decisions, and
 support descent; partial fallback work never certifies a negative result.
 

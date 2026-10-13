@@ -2,6 +2,111 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`native_lex_prefix.tex`](native_lex_prefix.tex) adopts Dantzig entering and
+full original-slack lexicographic leaving for the polynomial LP prefix.
+Lazy exact integer comparisons avoid constructing full ratio tuples;
+explicit Bland behavior, call-local state, immutable matrix preparation,
+hard caps and exact fallback are preserved. The focused run passes 32 tests;
+the complete regression passes 408 tests in 45 modules with Regina and no
+skips. All 363 pre-run native/test/fixture/command pins remain unchanged.
+The polynomial LP bound survives, with no smaller admissibility-search
+exponent or timing claim.
+
+[`coordinate_separator_obstruction.tex`](coordinate_separator_obstruction.tex)
+constructs explicit polynomial-size integer matrices whose triples sum to
+zero and whose rank and full-support properties match the proposed algebraic
+premises. Their nonnegative kernels remain coordinate-indecomposable after
+every small singleton restriction. Two-thirds balance requires exactly
+`ceil(t/2)` such restrictions, including when implicit-zero deletion is
+allowed. This proves that the algebraic premises alone cannot give the
+needed polylogarithmic separators. No native triangulation realization,
+canonical Euler function or recognition lower bound is claimed.
+
+One fresh call from the original W34 diagram certifies it as knotted using
+the current native code: 62 LP calls, 6,606 pivots, 33,094,980 tableau updates
+and no fallback. Its complete typed result, counters and source ledger equal
+the archived candidate's after independent proof verification. A separate
+discovery-disabled process rechecks the saved proof and its one historical
+comparison; all 302 execution pins remain unchanged. The fourteen earlier
+calls and 449 queries are historical evidence, not reruns of this native code.
+
+The current [PDF](report.pdf) has 848 pages. Section 196 spans pages 836–839
+and Section 197 pages 839–840. Three build passes complete with no unresolved
+references or additional final diagnostics; the new comparison, evidence
+and proof pages were visually checked.
+
+From this directory, the current evidence commands are:
+
+```sh
+python -B -S data/native_lex_prefix_whole_call.py run --output data/native-lex-prefix-whole-call.json
+python -B -S data/native_lex_prefix_whole_call.py check --input data/native-lex-prefix-whole-call.json --output data/native-lex-prefix-whole-call-replay.json
+python -B -S data/native_lex_prefix_publication.py
+```
+
+The whole-call helper refuses to overwrite existing records; use new output
+paths for another run or replay. The publication helper authenticates the
+saved tests, separate replay, article/PDF and build records. It performs no
+recognition, LP discovery, proof replay, tests, timing or PDF build.
+
+[`whole_call_prefix.tex`](whole_call_prefix.tex) compares the prepared Bland
+and Dantzig/full-slack lexicographic polynomial prefixes in fourteen fresh
+whole-diagram calls against frozen `4d1f76f06`. Each arm shares its own
+10,000-pivot allowance across the actual complete query stream. Every
+preprocessing step, query, capped result and changed conflict is retained;
+this is count-only evidence, with no timing claim; the frozen experiment
+itself made no native default change.
+The candidate certifies W34 as knotted in 6,606 pivots; Bland remains
+inconclusive at 10,000. All 449 LP queries remain in the evidence. The
+candidate makes more LP calls on every nontrivial input and more search
+nodes/conflict insertions on TT and T(2,7), despite fewer pivots and updates.
+The archive `data/whole-call-prefix-4d1f76f06.tar.gz` and portable helper
+`data/whole_call_prefix_replay.py` preserve and independently replay the
+controls, original-row LP answers, original-diagram chains and complete
+labelled source ledgers with discovery disabled.
+
+[`euler_coordinate_factors.tex`](euler_coordinate_factors.tex) proves exact
+kernel factorization, positive-search composition and additivity of the
+resolving parameter across coordinate factors. A uniform balanced
+compatibility separator of size `k(t)` would give the conditional bound
+`A t^O(k(t)) poly(t,L)`. Such a theorem remains unproved. Exact probes on six
+sources found no split in any full kernel or any of the 276 one-tetrahedron
+singleton restrictions. Combining prior matching witnesses with local
+block-ones vectors proves full feasible support there, so these are also
+indecomposable as literal coordinate products of nonnegative Q cones.
+The article also states the strict Q-support gluing
+lemma and the obstruction to an embedded annular face port on the current
+one-vertex boundaries.
+
+The complete algebra-only probes are in `data/coordinate-factor-probes.tar.gz`.
+`data/coordinate_factor_replay.py` freshly checks seven authenticated chains,
+six full matrices and all 276 restricted matrices. It binds these sources to
+prior nonnegative matching witnesses without inferring positive Euler. The
+first portable-replay preflight failed on a Git working-directory path;
+its source and outputs are retained, and only repository-root resolution
+changed before the successful replay. No native algorithm changed.
+
+The publication at `774f878ed` has an 844-page PDF. Section 194 spans pages
+829–832 and Section 195 pages 832–836. Its three final passes have no
+unresolved references or new diagnostics; new tables and proof pages were
+visually checked. That checkpoint's native code and all 361 regression
+dependencies match the historical 394-test, 44-module run. Those historical
+pins are not validation of the later native default change.
+
+From this directory, the separate archival replay commands are:
+
+```sh
+python -B -S data/whole_call_prefix_replay.py --json-out data/whole-call-prefix-replay.json --text-out data/whole-call-prefix-replay.txt
+python -B -S data/coordinate_factor_replay.py --output data/coordinate-factor-replay.json
+```
+
+Both helpers refuse to overwrite retained output; use new output paths for
+another replay. Both separately executed replays passed. The publication
+helper `data/prefix_factor_evidence_publication.py` authenticates that
+historical checkpoint's replays, tested source closure, article/PDF and final
+build logs. It launches no solver discovery, tests, timing, certificate
+replay or PDF build. Its records use `data/prefix-factor-evidence-publication`.
+General quasi-polynomial recognition remains unproved.
+
 [`prepared_euler_matrix.tex`](prepared_euler_matrix.tex) removes repeated
 LP matrix parsing and original-row selection across a mask's uncached Euler
 objectives. Preparation is lazy and local to one attempt; each objective
@@ -13,9 +118,10 @@ canonical Euler values, root-ray extremality and integral primitive scale.
 The theorem allows formal boundary selfattachments and incompatible outside
 coordinates. It does not yet provide an algorithmic shortcut or a bound on
 the unrestricted resolving parameter.
-The combined regression passes 394 tests across 44 modules with Regina and no
-skips. All 361 files in the pre-run native/test/fixture closure are unchanged
-after the run. The command and complete log are retained under
+At that prepared-matrix checkpoint, the combined regression passed 394 tests
+across 44 modules with Regina and no skips. All 361 files in its pre-run
+native/test/fixture closure were unchanged after the run. The command and
+complete log are retained under
 `data/prepared-euler-matrix-*`.
 The core publication at `4e152f0ef` has an 832-page [PDF](report.pdf), with
 Section 191 on pages 817–822 and Section 192 on pages 822–824. Its three build
@@ -48,14 +154,15 @@ The complete snapshot, protocol, scripts, results and logs are in
 `data/lp-pivot-pilot-973c6fdee.tar.gz`. Its isolated replay helper
 `data/lp_pivot_pilot_replay.py` disables discovery and checks all 21 controls,
 three callback arms, eight captured queries and 24 arm/query records.
-The current [PDF](report.pdf) has 836 pages: Section 191 spans pages 818–823,
-Section 192 pages 823–826, and Section 193 pages 826–829. Three final passes
-have no unresolved references or new diagnostics. Run
-`python -B -S data/prepared_euler_matrix_evidence_publication.py` to freshly
-replay the saved differential answers, authenticate the separately executed
-isolated pilot replay, and bind the current article and PDF. It verifies that
-the native code and complete test dependencies still match the 394-test core;
-it runs no solver discovery, tests, timings or PDF build.
+The supplemental publication at `7fa9d7ce2` has an 836-page PDF: Section 191
+spans pages 818–823, Section 192 pages 823–826, and Section 193 pages 826–829.
+Its three final passes have no unresolved references or new diagnostics.
+The historical helper `data/prepared_euler_matrix_evidence_publication.py`
+replays that checkpoint's saved differential answers, authenticates its
+separately executed isolated pilot replay, and binds its article and PDF.
+Its native code and complete test dependencies match the 394-test core;
+it runs no solver discovery, tests, timings or PDF build. Its artifact pins
+describe that historical checkpoint.
 
 [`direct_crush_positive.tex`](direct_crush_positive.tex) removes redundant
 STANDARD extraction of native LP/tree/transversal rays. It proves canonical
