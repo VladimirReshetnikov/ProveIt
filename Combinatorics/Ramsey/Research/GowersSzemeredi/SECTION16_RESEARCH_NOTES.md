@@ -7716,6 +7716,40 @@ and source locations are unchanged. All final numerical bounds and
 original-paper fidelity status are unchanged. Full-facade checks remain
 separate, and the simplification goal remains active.
 
+### L.75. Share eta and input estimates across density budgets (2026-10-12)
+
+`GenParams.eta_step_of_cube_le` and `GenParams.yIn_step_of_den_le` prove
+the density-to-eta and eta-to-input bounds under their exact scalar
+absorption conditions. The fixed-degree and polynomial-budget variants
+now specialize these two shared estimates. `GenParams.cS_step` moves
+unchanged earlier in its module, outside `section Steps`, retaining its
+original variable scope. Both `dens_step` and `joint_dens_step` reuse it
+to remove repeated reciprocal-density exponent arithmetic. All original
+declaration names, signatures and owner exports remain available.
+
+Against `829627c62`, the three production files lose 75 source lines.
+The six replaced proof bodies and two new helper proofs contain 98 lines
+instead of 189, a net reduction of 91 proof-body lines. The unchanged
+scalar theorem relocation counts as zero deletion. All 99 old headers
+and variable scopes, 31 definition bodies and all 25 public stronger
+bridge proofs are preserved. There are no import or module changes.
+The stronger bridge remains at 722 modules and falls from 155,560 to
+155,485 imported source lines; the original final remains at 641 modules
+and falls from 133,338 to 133,332 lines. See
+`verification/2026-10-12-eta-density-simplification.json`.
+
+Native verification passes the 642-module original-final audit and the
+783-module focused compatibility audit, with only `propext`,
+`Classical.choice` and `Quot.sound`. Nine added named checks cover both
+helpers, the four retained eta/input variants and all three density-step
+lemmas; all prior checks remain. The focused closure has 169,294 source
+lines, 66 fewer. See `verification/2026-10-12-final-eta-density.json` and
+`verification/2026-10-12-final-eta-density-compatibility.json`, with
+immutable source manifests. The regenerated inventory is byte-identical.
+All final numerical bounds and original-paper fidelity status are
+unchanged. Full-facade checks remain separate, and the simplification
+goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
