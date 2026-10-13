@@ -7309,6 +7309,49 @@ as the direct monochromatic-progression property for every coloring and
 at least two colors. The complete facade and remaining original-statement
 fidelity gaps are separate; the simplification goal remains active.
 
+
+### L.65. Share the tower and phase-refinement estimates (2026-10-12)
+
+Two elementary lemmas in `Proofs18DoubleExponentialBounds` convert
+`exp(exp x)` to a base-two tower: a linear-margin version assumes
+`1 + 2*x <= y`, and a power-budget version assumes `2 <= u` and
+`q + 2 <= E`. Nine threshold comparisons now use them. The generic,
+quadratic, five-term and length-six comparisons also share the argument
+that two spare powers absorb the conversion. Five Roth threshold
+comparisons use the linear-margin lemma.
+
+The phase-refinement estimates differ only in their bound for the
+polynomial partition constant. `inv_thr_le_ex_of_partition_bound` takes
+that exponent as an input; `inv_thr_le_ex` and `inv_thr_le_ex_sharp`
+are short specializations. Their exact original statements and budgets
+are preserved. The generic uniformity exponent no longer splits off
+length zero, and the closed-threshold proof uses its existing local
+constant-bound helper for the degree-one refinement constant.
+
+The twelve production modules shrink by 157 lines. All 112 existing
+public theorem statements in those modules compare byte-for-byte with
+commit `219e277be`, and all 25 stronger bridge statements are unchanged.
+The source comparison is recorded in
+`verification/2026-10-12-shared-exponential-conversions-simplification.json`.
+
+FinalAudit passes 648 native modules. The expanded compatibility audit
+passes 853, explicitly naming both new tower lemmas, the generic and
+sharper phase estimates, all nine conversion sites, and the two simplified
+generic arithmetic lemmas. It retains the original final results, all 25
+stronger bridge theorems and the older Section 13/cubic interfaces.
+Only `propext`, `Classical.choice` and `Quot.sound` occur. See
+`verification/2026-10-12-final-shared-exponential-conversions.json` and
+`verification/2026-10-12-final-shared-exponential-conversions-compatibility.json`,
+with immutable source manifests.
+
+The original-final closure remains 647 modules / 135,367 lines: the shared
+helper signatures add eleven lines to that minimal closure while removing
+repetition across the original and stronger routes. The expanded audit
+closure is 853 modules / 180,167 lines. The incoming main changes concern
+source-kernel work outside Gowers and preserve every recorded proof input.
+Full-facade verification and original-statement fidelity gaps remain
+separate, and the simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
