@@ -124,8 +124,9 @@ modification times.
 | `111/` | `ProveIt_Euler_Group_Terminals_2026-10-12.zip` | complete delivered article, patch, source packets and evidence | no unrestricted quasi-polynomial recognizer | Euler-checked free-group whole-cut terminals | placed only; tests not rerun and patch unapplied |
 | `112/` | `ProveIt_Lazy_Replay_Chamber_Graphs_2026-10-12.zip` | complete delivered article, patch, runtime snapshot and evidence | no unrestricted quasi-polynomial recognizer | lazy weighted replay and source-authenticated chamber graphs | placed only; tests not rerun and patch unapplied |
 | `113/` | `ProveIt_Projective_Port_Atlases_2026-10-12.zip` | complete delivered article, code and evidence | no unrestricted quasi-polynomial recognizer | projective common-port atlases and source-bound normal-surface discovery | placed only; tests not rerun and integration unapplied |
-| `114/` | `ProveIt_Signed_Primitive_Annuli_2026-10-12.zip` | complete delivered article, patch, runtime snapshot and evidence | no unrestricted quasi-polynomial recognizer | signed primitive annuli, compressed basis certificates and native source transport | placed only; tests not rerun and patch unapplied |
-| `115/` | `ProveIt_Representative_Activation_2026-10-12.zip` | complete delivered article, research kernel, adapters and evidence | no unrestricted quasi-polynomial recognizer | representative-family activation search for fixed dual-forest selection | placed only; tests not rerun and integration unapplied |
+| `114/` | `ProveIt_Signed_Primitive_Annuli_2026-10-12.zip` | complete delivered article, patch, runtime snapshot and evidence | no unrestricted quasi-polynomial recognizer | signed primitive annuli, compressed basis certificates and native source transport | separately integrated: five new native positives; 25 final focused tests and broader regression evidence in synthesis |
+| `115/` | `ProveIt_Representative_Activation_2026-10-12.zip` | complete delivered article, research kernel, adapters and evidence | no unrestricted quasi-polynomial recognizer | representative-family activation search for fixed dual-forest selection | separately reviewed: 71 delivered tests, 126 authenticated native cuts; no coverage gain, kept in research tooling |
+| `116/` | `ProveIt_Cycle_Block_Kernels_2026-10-12.zip` | complete delivered article, local optimizer, adapter and evidence | no unrestricted quasi-polynomial recognizer | six-state cycle-block optimization, partial deferred forests and numerical transport | placed only; tests not rerun and integration unapplied |
 
 Archives `01/`–`06/` each contain a README, a LaTeX report with PDF under
 `docs/`, examples, recorded results, and a standard-library-only Python package.
@@ -1037,3 +1038,34 @@ intake. Files are staged as delivered under existing attributes and ignores,
 without checksum or line-ending work. The ZIP is retired and remains recoverable
 from arrival commit `1913e9156`; the incoming README is preserved. See the
 [placement record](../synthesis/data/incoming-115-placement.json).
+
+The subsequent review is recorded in
+[the maintained article](../synthesis/representative_activation.tex) and commit
+`c8ef0a801`. It reproduced the delivered tests and audited native core proposals;
+the intake statement above describes the earlier placement only.
+
+## Further arrival of 12 October 2026: report 116
+
+Manuscript 01, [Cycle-Block Kernels for Positive Handle Cancellation](116/article/article.tex),
+is placed as the next report with its single wrapper removed. It continues
+this programme's weighted partial cancellation, deferred-forest and ordered
+incidence-interface work, so it belongs in the numbered unknot collection.
+Its source pin is `d9456c5bdb94820bfa9e480e9ed73c10a769e59a`, the placement
+of report 110.
+
+The manuscript proposes an exact local optimizer with exponential dependence
+on the largest individual biconnected-block cycle rank, six-state path
+compression and binary repetition certificates. It also describes weighted
+partial deferred forests, positive numerical transport circuits, and residual
+barriers even on cactus graphs. These are delivered claims. Ordered geometric
+transport, native residual repair and a general quasi-polynomial recognizer
+are not supplied; its adapter returns `MATRIX_PLAN_NOT_GEOMETRY`.
+
+Of 44 delivered files, only the empty test-package initializer matches an
+earlier Git blob. All file blobs were searched in history and the match was
+confirmed in its historical commit tree; this manuscript was not previously
+placed. No tests, patch application or soundness review were performed during
+intake. Files are staged as delivered under existing attributes and ignores,
+without checksum or line-ending work. The ZIP is retired and remains
+recoverable from arrival commit `8eb8529b4`; the incoming README is preserved.
+See the [placement record](../synthesis/data/incoming-116-placement.json).

@@ -1,0 +1,252 @@
+\section{Representative activation and the limits of forest selection}
+\label{sec:representative-activation}
+
+Report~115 replaces exceptional-row order enumeration with a
+single-exponential representative-family search for a fixed local
+cancellation problem.  This 12 October continuation reviews that argument
+and executes its certificates against the maintained native geometry.
+The local theorem is useful, but our native experiments find no additional
+core coverage over the existing maximum-weight top forest.  More
+significantly, they give exact obstructions to resolving two outstanding
+cores by changing either forest.  We retain the selector as research
+tooling rather than add an unmeasured stage to the default recognizer.
+
+\subsection{The exact local problem}
+
+Fix the source handle structure and initially a primal zero/one forest.
+Let $E$ index its two-handles, and let $N=(n_{eh})$ be the exact
+\emph{unsigned} intersection counts on one-handles outside that forest.
+The dual graph $D$ has one boundary root and the interior three-handles
+as vertices; its edge $e$ retains the two endpoint occurrences of
+two-handle $e$.  Loops and parallel edges are permitted.  Write $m=|E|$
+and $r=|V(D)|-1$.  The source dual graph is connected to its boundary root.
+
+A spanning tree $T$ deletes the corresponding two-handles by root-outward
+two/three cancellations.  The remaining rows must then peel: row $e$ can
+be deleted on column $h$ exactly when $n_{eh}=1$ and every other live row
+has zero in that column.  Used columns may be retired.  Keeping their
+implications after use is harmless, since all their support rows have
+already disappeared.  Additional initial row deletions can only help.
+Consequently, an independent set of dual edges whose deletion permits
+complete peeling extends to a successful spanning tree.
+
+Counts are never reduced modulo a field in this criterion.  For example,
+the matrix with rows $(2,1)$ and $(1,2)$ is a stopping matrix, whereas
+its reduction modulo two peels.  Finite-field calculations below apply
+only to the incidence representation of the \emph{dual graph}.
+
+\subsection{Reducing peeling to a small activation boundary}
+
+A column is usable if it has a unit entry.  Unit singletons are anchors.
+A usable support-two column with rows $u,v$ gives the implication
+$u\longrightarrow v$ when $n_{vh}=1$, and conversely when $n_{uh}=1$.
+Let $G$ be this directed graph on rows, and write $\operatorname{Reach}$
+for its reflexive reachability relation.  Define $B$ as the union of
+\emph{all} support rows of usable columns having support at least three,
+and put $b=|B|$.  Heavy entries remain prerequisites and therefore remain
+in $B$.  Columns with no unit entry never supply a pivot.
+
+A source strongly connected component of $G$ containing neither an
+anchor nor a row in $B$ is mandatory.  Denote these disjoint components
+by $U_1,\ldots,U_q$.  Every successful initial deletion set must meet
+each $U_i$: its first deleted row cannot arise from an anchor, an incoming
+low-column implication, or a high-column pivot.  Conversely, any one
+seed in $U_i$ activates that entire component and its descendants.
+
+Set $H(e)=B\cap\operatorname{Reach}(e)$.  On subsets of $B$, let
+$\operatorname{cl}$ saturate the following rules: include the reachability
+from anchors and all mandatory components; propagate from any activated
+$x\in B$ to $H(x)$; and activate a unit target of a high column whenever
+every other support row of that column is activated.  Mandatory components
+are included symbolically only on the condition that actual independent
+representatives will be supplied.
+
+\begin{proposition}[Exact activation state]
+After choosing one representative from every mandatory component and an
+additional seed set $X$, the deleted exceptional rows are exactly
+$\operatorname{cl}(\bigcup_{e\in X}H(e))$.  All rows peel if and only
+if this set equals $B$.
+\end{proposition}
+\begin{proof}
+Each closure rule is a valid low-column path or a valid private high-column
+pivot.  Conversely, inspect a literal peeling trace: low moves give
+reachability, and a high move has its target and all prerequisites in $B$.
+Thus every move is represented by the closure.  Once all of $B$ disappears,
+each source component of $G$ contains an activated anchor, a mandatory seed,
+or an activated exceptional row.  Every component lies downstream of a
+source component, so low propagation deletes the remaining rows.
+\end{proof}
+
+Every successful tree has a witness using at most $b$ additional seeds.
+Choose its mandatory representatives first, then repeatedly take a tree
+edge whose influence increases the closed state.  If this stops before
+$B$, the entire tree cannot activate $B$, a contradiction.  Each useful
+edge adds a bit, so at most $b$ are needed.  Their union with the mandatory
+representatives remains a forest.  This replaces an order of all
+exceptional rows by an activation state and a small independent seed set.
+
+\subsection{Contraction, representatives, and the probability guarantee}
+
+Represent $D$ by reduced oriented incidence columns $v_e\in\mathbb F_p^r$.
+Independent columns are precisely forests, over every prime field; forest
+minors have determinant $\pm1$.  For each mandatory component introduce
+independent variables and the formal column
+$y_i=\sum_{e\in U_i}z_{i,e}v_e$.  A minor of $[Y,V_X]$ is a polynomial
+whose distinct representative choices have distinct monomials.
+It is nonzero exactly when $X$ extends by one representative from each
+$U_i$ to a forest.  A nonzero specialized minor therefore guarantees a
+genuine extension.  Specialization can lose witnesses but cannot invent
+one.
+
+Sample the coefficients independently in $\mathbb F_p$.  Reject a round
+if $Y$ loses rank $q$; otherwise quotient by its span and apply an
+independent random projection to dimension $d=\min(b,r-q)$.  Search these
+projected vectors.  For a fixed feasible $k$-seed witness, failure of a
+nonzero augmented minor has probability at most $q/p$.  Conditional on
+surviving, failure of a projected $k$-minor has probability at most $k/p$.
+Thus a fixed witness survives with probability at least $1-(q+k)/p$.
+Choosing $p>2(q+b)$ gives success probability greater than one half per
+complete independent round.  There is no union bound over all witnesses.
+
+At state $(S,k)$ retain actual $k$-seed sets whose exterior vectors form
+a basis of the span of all candidates at that state.  There are at most
+$\binom dk$ such representatives.  Extend the \emph{original decomposable}
+vectors, not their Gaussian-eliminated linear combinations.  For a future
+set $Z$, the map $w\mapsto w\wedge w_Z$ is linear.  If it is nonzero on
+any discarded vector, it is nonzero on some retained vector.  The future
+activation depends only on $S$ and $Z$, so that representative preserves
+the same successful extension.  This is the classical linear-matroid
+representative-family mechanism \cite{activation-fomin}; the application
+here rests on the exact activation-state proposition above.
+
+There are at most $2^b$ masks and
+$m2^b\sum_k\binom dk=m2^{b+d}$ candidate extensions.  Straightforward
+exterior multiplication and Gaussian insertion give the conservative
+field-operation bound
+\[
+  2^b8^d\operatorname{poly}(\Lambda)\leq
+  16^b\operatorname{poly}(\Lambda),
+\]
+where $\Lambda$ is the explicit encoded matrix/graph size.  Storage is
+bounded by $2^b4^d\operatorname{poly}(\Lambda)$.  The field has
+$O(\log(q+b+2))$-bit elements; all graph, closure, quotient and certificate
+work contributes polynomial factors.  With $\lambda$ complete independent
+rounds, positive miss probability is at most $2^{-\lambda}$.  Caps or
+fixed reproducibility seeds do not inherit that guarantee.
+
+When $q=0$ and $r\leq b$, the original binary graph representation already
+has suitable dimension and is faithful.  The search is then deterministic.
+A negative frontier packet lists basis witnesses at each nonterminal state.
+The independent checker reconstructs exterior coordinates by binary graph
+minors and activation by literal peeling.  It checks the initial empty
+witness and span coverage of every independent strict-progress extension.
+Absence of the terminal state then proves local infeasibility.  In the
+general sampled regime an exhausted search says UNKNOWN.
+
+\subsection{Native authentication and the all-forest obstruction}
+
+The adapter emits the established
+\path{core-three-handle-reduction-v1} schema.  Our audit first authenticates
+the full source parallelity packet, counts raw cycle flags without
+saturation, and preserves both dual endpoint occurrences.  The unchanged
+native replay derives owners from source vertex-link triangles and normal
+coordinates.  After it accepts a proposal and renumbers the surviving
+rows, we build and independently check a \emph{new} core certificate.
+No old basis-dependent port words are reused.  These experiments stop at
+the core; they do not assert additional whole-cut certificates.
+
+There is a useful stronger negative test.  Instead of deleting the columns
+of a chosen lower forest, retain all source one-handle columns and construct
+the mandatory components on this full matrix.  A successful fixed-lower
+trace would also be a trace on the full matrix: its chosen pivot columns
+and row counts are identical, and extra unused columns cannot obstruct
+a private-column move.  Hence failure for every dual tree on the full
+matrix rules out every pair of lower and upper forests for this method.
+
+\begin{proposition}[Mandatory-rank obstruction for all forest pairs]
+If a collection $J$ of mandatory source components of the full matrix
+satisfies
+\[
+ |J|>\operatorname{rank}_D\left(\bigcup_{j\in J}U_j\right),
+\]
+no choice of a dual spanning tree and a primal spanning forest gives
+complete private-column cancellation.
+\end{proposition}
+\begin{proof}
+Every successful deletion tree must meet each of the disjoint mandatory
+components.  Selecting one of its edges per component gives $|J|$
+independent edges in their union, contrary to the displayed rank inequality.
+Thus no top tree succeeds on the full matrix.  The preceding monotonicity
+argument transfers this obstruction to every contracted lower forest.
+\end{proof}
+
+This does not obstruct handle slides, changes to the source decomposition,
+the Euler/free-group terminal, or handlebody structure itself.  In particular
+it is never a knottedness certificate.  In the two measured examples even
+the elementary bound $q>r$ suffices:
+\begin{center}
+\begin{tabular}{lrrrr}
+source & rows & columns & mandatory $q$ & dual rank $r$\\
+\hline
+\path{nested_1_4_6/interior_links} &48&98&7&6\\
+\path{interior_loop/interior_links} &10&21&2&1
+\end{tabular}
+\end{center}
+Both have $b=0$.  Their exact component lists, matrix digests and independently
+replayed rank certificates are retained with the native audit.  This sharpens
+the earlier fixed-top residual observations: neither case can be repaired
+by further forest selection within this cancellation model.
+
+\subsection{Executed evidence and integration decision}
+
+On a scratch copy, all 71 delivered tests pass.  The full supplied algebra
+audit reproduces 8,061 exhaustive/random matrix-graph inputs: 3,117 positive
+answers, 3,391 exact local negatives and 1,553 UNKNOWN negatives, with no
+missed positive in that finite sample.  Another 300 planted positive inputs
+succeed in 318 rounds.  Additional comparisons cover 16,038 forced matroid
+queries, 2,369 closure queries, 1,951 sampled-independence checks, 255
+projected-search instances and all 503 assignments in four small-field
+experiments.  These remain algebraic validation, distinct from source
+realizability or a probability proof.
+
+The native audit covers 126 fully authenticated cuts: the existing 120 plus
+the six signed-annulus fixtures.  Only 28 have interior three-handles.
+For each cut it tests a fixed source lower forest, a fixed maximum-passage
+forest, and the full-column/deferred variant.  Every positive proposal and
+rebuilt core certificate independently replays.  The comparison is:
+\begin{center}
+\begin{tabular}{lrrr}
+lower policy & current positives & selector positives & exact local refusals\\
+\hline
+source &118&118&8\\
+maximum passage &124&124&2\\
+deferred &124&124&2
+\end{tabular}
+\end{center}
+Of the 378 trials, 328 succeed on the selector's ordinary incumbent tree,
+36 use the empty-input route, two use faithful activation, six produce
+faithful-frontier obstructions and six produce mandatory-rank obstructions.
+No random projection or cap exhaustion occurs.  The boundary parameter
+reaches 47, but those large-boundary trials succeed before the cap of 20.
+The transition allowance is 100,000 and the declared sampling allowance
+is eight rounds; these finite settings do not amount to an uncapped theorem
+test.  The two faithful-activation cases are the loop examples already
+resolved by the maintained maximum-weight tree.
+
+A separate deterministic search applies 30 relabellings to each of six
+sources, giving 180 relabelled cuts and 540 lower-policy trials.  All
+maximum-passage and deferred trials already succeed.  Of the fixed-source
+trials, 178 succeed and two receive exact local obstructions.  There is no
+new positive.  This search uses geometric preparation; its planned full
+source authentication for new hits is never triggered.  It is therefore
+not counted as another 180 fully authenticated source packets.
+
+No timings here establish a native speedup, and no maintained runtime path
+changes.  The original report is preserved.  Reproducible drivers are in
+\path{fast/activation_forest_research}; outputs, source hashes and local
+certificates are in \path{synthesis/data/activation-forest-*}.
+For a global quasi-polynomial consequence one would need bounds on the
+exceptional parameter, source sizes, useful-surface discovery and the
+number and repair cost of hierarchy calls, together with the required
+marked successor geometry.  The local $2^{O(b)}$ theorem and the all-forest
+obstructions supply neither those bounds nor that geometry.
