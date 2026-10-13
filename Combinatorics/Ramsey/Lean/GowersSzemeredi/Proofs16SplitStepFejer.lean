@@ -174,37 +174,8 @@ theorem split_samples_le_fejer {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V'
   have hV0 : 0 ≤ V := by linarith
   -- the samples
   have hS : (S : Real) ≤ ν ^ sSN k a * W ^ fsSW k a D := by
-    show ((famPieceSamples (clsQr (splitCnt V a D) k M tS gamma) M rho : Nat) : Real) ≤ _
-    unfold famPieceSamples
-    set Q := clsQr (splitCnt V a D) k M tS gamma
-    have hQ1 : max 1 (Q (rho / 8)) ≤ ν ^ sQrN k a * W ^ fsQrW k a D :=
-      max_le (tb_one_le hν hW1) hQr
-    have hM1' : ((max 1 M : Nat) : Real) ≤ ν ^ 1 * W ^ P := by
-      rcases le_total 1 M with h | h
-      · rw [max_eq_right h]; exact hM
-      · rw [max_eq_left h]; exact_mod_cast tb_one_le hν hW1
-    have hx0 : 0 ≤ 6 * max 1 (Q (rho / 8)) * ((max 1 M : Nat) : Real) / (rho / 4) := by
-      have : (0 : Real) ≤ max 1 (Q (rho / 8)) := le_trans zero_le_one (le_max_left _ _)
-      positivity
-    have hval : 6 * max 1 (Q (rho / 8)) * ((max 1 M : Nat) : Real) / (rho / 4) =
-        24 * (max 1 (Q (rho / 8)) * (((max 1 M : Nat) : Real) * rho⁻¹)) := by
-      field_simp; ring
-    have hinner : max 1 (Q (rho / 8)) * (((max 1 M : Nat) : Real) * rho⁻¹) ≤
-        ν ^ (sQrN k a + 1) * W ^ (fsQrW k a D + (P + 1)) := by
-      have hr' : rho⁻¹ ≤ ν ^ 0 * W ^ 1 := by rw [pow_zero, one_mul, pow_one]; exact hrw
-      have h1 := tb_mul hν hW1 (by positivity) (inv_pos.mpr hr).le hM1' hr'
-      exact tb_mul hν hW1 (le_trans zero_le_one (le_max_left _ _)) (by positivity) hQ1 h1
-    have hx : 6 * max 1 (Q (rho / 8)) * ((max 1 M : Nat) : Real) / (rho / 4) ≤
-        ν ^ (sQrN k a + 1) * W ^ (5 + (fsQrW k a D + (P + 1))) := by
-      rw [hval]
-      exact tb_const_mul hν hw2 (by norm_num) (by norm_num) (by positivity) hinner
-    have hceil := Nat.ceil_lt_add_one hx0
-    have h2 := tb_add_one hν hw2 hx
-    calc ((⌈6 * max 1 (Q (rho / 8)) * ((max 1 M : Nat) : Real) / (rho / 4)⌉₊ : Nat) : Real)
-        ≤ 6 * max 1 (Q (rho / 8)) * ((max 1 M : Nat) : Real) / (rho / 4) + 1 := hceil.le
-      _ ≤ ν ^ (sQrN k a + 1) * W ^ (5 + (fsQrW k a D + (P + 1)) + 1) := h2
-      _ ≤ ν ^ sSN k a * W ^ fsSW k a D := tb_mono hν hW1 (by unfold sSN; omega)
-          (by unfold fsSW; rw [← hPdef]; omega)
+    exact (famPieceSamples_le_two_bases hν hw2 hr hrw hQr hM).trans
+      (tb_mono hν hW1 le_rfl (by unfold fsSW; omega))
   have hS1 : (1 : Real) ≤ (S : Real) := by
     have h0 : 0 < S := famPieceSamples_pos (Qr := clsQr (splitCnt V a D) k M tS gamma) (n := M) hr
     exact Nat.one_le_cast.mpr h0

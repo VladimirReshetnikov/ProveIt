@@ -489,23 +489,10 @@ theorem nestExp_inv_leJT3 {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (
   have hfk : P.k + 1 ≤ pDeg P.k := by
     have := five_k_le_pDeg P.k; omega
   have hka : P.k + 3 ≤ P.μ0 + 1 + tDegT3 P.k := by omega
-  have heq : (P.NestExp alpha)⁻¹ =
-      ∏ e ∈ Finset.univ.filter (fun e : Fin P.k → Bool => e ≠ fun _ => true),
-        (16 : Real) ^ (P.k + 1 - (section16VertexDirections e).card) *
-          uCount P.V (uDegT3 (section16VertexDirections e).card) (alpha / 2)
-            (globalBudgetW (fejerThetaOne alpha (alpha / 2) P.k) P.k) (coverPrecW (fejerThetaOne alpha (alpha / 2) P.k) P.k) := by
-    show (coverExpW (fun l => uExp P.V (uDegT3 l)) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k)⁻¹ = _
-    unfold coverExpW
+  refine pw_mono hX (a := P.μ0 + 1 + tDegT3 P.k + 1 + P.k) ?_ ?_
+  · unfold NestExp coverExpW
     rw [← Finset.prod_inv_distrib]
-    refine Finset.prod_congr rfl fun e _ => ?_
-    unfold uExp
-    rw [inv_div, div_inv_eq_mul]
-  rw [heq]
-  have h : ∏ e ∈ Finset.univ.filter (fun e : Fin P.k → Bool => e ≠ fun _ => true),
-        (16 : Real) ^ (P.k + 1 - (section16VertexDirections e).card) *
-          uCount P.V (uDegT3 (section16VertexDirections e).card) (alpha / 2)
-            (globalBudgetW (fejerThetaOne alpha (alpha / 2) P.k) P.k) (coverPrecW (fejerThetaOne alpha (alpha / 2) P.k) P.k) ≤
-      (2 / alpha) ^ (2 ^ (P.μ0 + 1 + tDegT3 P.k + 1 + P.k)) := by
+    simp only [uExp, inv_div, div_inv_eq_mul]
     refine prod_le_pw _ hX ?_ ?_ (nonTop_card_le P.k)
     · intro e _
       exact mul_nonneg (by positivity) (zero_le_one.trans (one_le_uCount _ _ _ _ _))
@@ -517,9 +504,8 @@ theorem nestExp_inv_leJT3 {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (
       have hm := pw_mul' hX (by positivity) (zero_le_one.trans (one_le_uCount _ _ _ _ _)) h16 hu
       rw [max_eq_right (by omega)] at hm
       exact hm
-  refine pw_mono hX h ?_
-  have := rhoDegJT3_ge P.k P.μ0
-  omega
+  · have := rhoDegJT3_ge P.k P.μ0
+    omega
 
 /-- The log-degree of the input parameter `yIn`. -/
 def densDegJT3 (k μ0 : Nat) : Nat := rhoDegJT3 k μ0 + tDegT3 k + 11

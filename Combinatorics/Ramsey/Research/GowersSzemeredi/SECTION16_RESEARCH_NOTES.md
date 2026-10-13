@@ -8315,6 +8315,65 @@ Lemma 16.10 correction and open original-paper fidelity issues retain
 their status. This checkpoint does not establish complete original-paper
 fidelity. The simplification goal remains active.
 
+### L.86. Share sample bounds and invert cover products directly (2026-10-13)
+
+`famPieceSamples_le_two_bases` packages the sample ceiling estimate for
+family and parameter bounds. From `Qr (rho / 8) ≤ ν^a * w^b` and
+`n ≤ ν^c * w^d`, with `ν ≥ 1`, `w ≥ 2`, `rho > 0` and `rho⁻¹ ≤ w`, it
+gives `famPieceSamples Qr n rho ≤ ν^(a+c) * w^(b+d+7)`. The proof bounds
+the ceiling by `24*X + 1 ≤ 25*X` and absorbs the factor into `w^6`.
+It permits zero natural exponents and requires no additional upper bound
+on `rho`. Five existing sample proofs specialize the shared estimate.
+
+The C, F and JT3 nested-exponent proofs now invert their finite products
+directly and use the existing factor estimates. This removes two repeated
+expanded product expressions in each proof, saving 14 lines per route.
+The inverse identities also handle zero factors and empty products.
+
+Against `243962c10`, all 185 existing full statements and scope contexts,
+and all 79 definition bodies, remain exact. Eight existing proofs change
+and one helper is added. No imports, options or surrounding commands
+change. The seven production files shrink from 3,803 to 3,676 source
+lines, a reduction of 127. Actual proof bodies shrink from 389 to 256
+lines including the 23-line helper, a reduction of 133. The sample change
+contributes 85 source / 91 proof lines and the product change contributes
+42 / 42. The helper owner grows 13 source lines; its cost is included in
+all these figures.
+
+The original final is 641 local modules / 133,126 source lines, saving
+30 source and 36 proof lines; its audit is 642 / 133,160. The stronger
+final is 626 / 139,846 and its bridge is 719 / 153,958, saving 99 source
+and 105 proof lines. Eight additional checks give focused 783 / 168,491,
+a reduction of 119 source lines. The downstream audit is 1,098 / 212,104.
+The historical explicit audit is 701 / 138,809 and the historical bridge
+is 560 / 119,203; each grows 13 source lines from the shared helper owner.
+All module sets remain unchanged. The six-target union is 1,204 local
+modules / 227,165 source lines and 1,207 hashed inputs. Source counts do
+not measure compilation speed.
+
+All six fresh native checks pass: original audit (642), stronger bridge
+(719), focused audit (783), downstream audit (1,098), historical explicit
+audit (701) and historical bridge (560), with all current manifest hashes
+verified. The focused audit adds eight names and retains the already-named
+ninth changed or new theorem and every earlier check. The historical
+explicit audit checks its two exports. These audits allow only `propext`,
+`Classical.choice` and `Quot.sound`; the standalone bridge record does not
+claim an axiom audit of every historical export. The new sample helper's
+elaboration was repaired with an explicit equality step, without changing
+its statement or proof-line count; the frozen proposal and failed core
+logs remain recorded separately. See
+`verification/2026-10-13-sample-inverse{-original,-stronger,-compatibility,-downstream,-historical-explicit,-historical-bridge}.json`
+and `verification/2026-10-13-sample-inverse-simplification.json`.
+
+The selected native scope covers 167 of 170 affected import consumers,
+including every affected proof owner. The facade, Audit and PortImportAudit
+remain excluded, with baseline-identical source hashes. Full-facade native
+verification remains separate. The regenerated 120-statement inventory is
+byte-identical to the checkpoint baseline.
+Final bounds, the accepted Lemma 16.10 correction and open original-paper
+fidelity issues retain their status. This checkpoint does not establish
+complete original-paper fidelity. The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
