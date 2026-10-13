@@ -2,6 +2,21 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`native_edge_isotropy.tex`](native_edge_isotropy.tex) derives the actual
+interior-edge equations from the maintained face-pairing and quadrilateral
+conventions. Their rational row space equals both cycle presentations, with
+constant coefficients and linear total incidence. Paired-face cancellation
+proves full-source skew isotropy. Every exactly-two-types-per-tetrahedron mask
+preserves isotropy and rank; mixed masks obey an explicit weighted defect
+formula and a rank bound. This excludes the preceding periodic-grid
+representation from native full-source kernels. It supplies no separator bound
+or general quasi-polynomial recognition theorem, and makes no native LP change.
+
+The proof-only checkpoint preserves all native code, the 408-test regression
+and the whole-call evidence below. No new finite audit result or timing claim
+is included. Its publication records are under `data/native-edge-isotropy-theory-*`.
+<!-- NATIVE_EDGE_ISOTROPY_PDF -->
+
 [`sparse_coordinate_separators.tex`](sparse_coordinate_separators.tex) strengthens
 the abstract separator obstruction to constant-coefficient, sparse, totally
 unimodular matrices. At `t = L²`, a periodic directed grid has rank `t−1`,
@@ -12,7 +27,7 @@ implicit-zero deletion. The proof is uniform over all singleton assignments;
 it supplies neither a native triangulation realization nor an Euler objective
 or recognition lower bound. This is a documentation-only extension of
 `4103fc47d`; all native code, tests and whole-call evidence below are unchanged.
-The current [PDF](report.pdf) has 850 pages, with the new Section 198 on
+The publication at `99b1abc44` has an 850-page PDF, with Section 198 on
 pages 840–842. Three final passes settle all references without additional
 diagnostics. The new theorem and proof pages were visually checked; the
 publication records are under `data/sparse-separator-*`.
@@ -55,16 +70,16 @@ From this directory, the current evidence commands are:
 ```sh
 python -B -S data/native_lex_prefix_whole_call.py run --output data/native-lex-prefix-whole-call.json
 python -B -S data/native_lex_prefix_whole_call.py check --input data/native-lex-prefix-whole-call.json --output data/native-lex-prefix-whole-call-replay.json
-python -B -S data/sparse_separator_publication.py
+python -B -S data/native_edge_isotropy_theory_publication.py
 ```
 
 The whole-call helper refuses to overwrite existing records; use new output
-paths for another run or replay. The current publication helper authenticates
-the unchanged parent checkpoint, tested source closure, retained evidence and
-the new article/PDF and build records. It performs no recognition, LP discovery,
-proof replay, tests, timing or PDF build. The preceding native adoption helper
-`data/native_lex_prefix_publication.py` and its records bind the historical
-848-page publication; its main is not rerun against later documentary changes.
+paths for another run or replay. The current publication helper checks the
+unchanged parent checkpoint, retained test coverage and final article/PDF
+bytes. It runs no audit, recognition, proof replay, tests, timing or PDF build.
+Earlier publication helpers, including
+`data/native_lex_prefix_publication.py` and `data/sparse_separator_publication.py`,
+bind their historical documents; their mains are not rerun against later edits.
 
 [`whole_call_prefix.tex`](whole_call_prefix.tex) compares the prepared Bland
 and Dantzig/full-slack lexicographic polynomial prefixes in fourteen fresh
