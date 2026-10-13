@@ -36,13 +36,14 @@ theorem forty_cube_le (k : Nat) : 40 * (k + 1 + 1) ^ 3 + 2 ≤ 2 ^ (k + 11) := b
 
 /-- **The phase-refinement threshold, with the constants at the exponential
 level.** -/
-theorem inv_thr_le_ex {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M s : Nat}
+theorem inv_thr_le_ex_of_partition_bound {X : Real} (hX : 2 ≤ X) {k q : Nat} {η β e σ : Real} {M s : Nat}
+    (hpart : polynomialPartitionConstant (k + 1 + 1) ≤ 2 ^ q)
     (hη0 : 0 < η) (hη1 : η ≤ 1) (hβ0 : 0 < β) (hβ1 : β ≤ 1)
     (hηi : η⁻¹ ≤ X ^ (2 ^ M)) (hβi : β⁻¹ ≤ X ^ (2 ^ M)) (hs0 : 0 < σ) (hs16 : σ ≤ 16)
     (hσ'0 : 0 < inverseStepExponent (k + 1) e σ)
     (hσ' : (inverseStepExponent (k + 1) e σ)⁻¹ ≤ Real.exp (X ^ (2 ^ s))) :
     inverseStepThreshold (k + 1) η β e (6 * ((k + 1 : Nat) : Real)) σ ≤
-      Real.exp (Real.exp (X ^ (2 ^ (max (max (M + 4 * (k + 3) ^ 2 + 4) (k + 16)) s + 1)))) := by
+      Real.exp (Real.exp (X ^ (2 ^ (max (max (M + q + 4) (k + 16)) s + 1)))) := by
   -- the refinement constant at `b = ηβ/2`
   have hb : 0 < η * β / 2 := by positivity
   have hbi : (η * β / 2)⁻¹ ≤ X ^ (2 ^ (M + 2)) := by
@@ -59,11 +60,10 @@ theorem inv_thr_le_ex {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M
   have hs5 : section5LocalRefinementConstant (k + 1 + 1) 1 ≤ Real.exp (X ^ (2 ^ (k + 11))) :=
     (s5_one_le (d := k + 1 + 1) (by omega)).trans (two_tower_le_ex hX (forty_cube_le k))
   have hpow : ((η * β / 2)⁻¹) ^ polynomialPartitionConstant (k + 1 + 1) ≤
-      X ^ (2 ^ (M + 2 + 4 * (k + 1 + 1 + 1) ^ 2)) :=
-    pw_pow hX (inv_pos.mpr hb).le hbi (polyPartConst_le (k + 1 + 1))
-  rw [show k + 1 + 1 + 1 = k + 3 by ring] at hpow
+      X ^ (2 ^ (M + 2 + q)) :=
+    pw_pow hX (inv_pos.mpr hb).le hbi hpart
   have hR : section5LocalRefinementConstant (k + 1 + 1) (η * β / 2) ≤
-      Real.exp (X ^ (2 ^ (max (k + 11) (M + 2 + 4 * (k + 3) ^ 2) + 1))) :=
+      Real.exp (X ^ (2 ^ (max (k + 11) (M + 2 + q) + 1))) :=
     hscaled.trans (ex_mul' hX (pow_nonneg (inv_pos.mpr hb).le _) hs5 (ex_of_pw hpow))
   -- the count constant
   have hσ16 : σ / 16 ≤ 1 := by linarith
@@ -109,7 +109,7 @@ theorem inv_thr_le_ex {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M
     Real.rpow_le_self_of_one_le hD1 (inv_le_one_of_one_le₀ hP1)
   have hPIC : phaseInverseConstant (k + 1 + 1) (η * β / 2)
       (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ≤
-      Real.exp (X ^ (2 ^ (max (max (M + 4 * (k + 3) ^ 2 + 4) (k + 16)) s))) := by
+      Real.exp (X ^ (2 ^ (max (max (M + q + 4) (k + 16)) s))) := by
     unfold phaseInverseConstant
     have := ex_mul' hX (Real.rpow_nonneg (le_trans zero_le_one hD1) _) hR (hDp.trans hD)
     exact ex_mono hX this (by omega)
@@ -117,6 +117,18 @@ theorem inv_thr_le_ex {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M
   have hppt := positivePowerThreshold_one_le_double_exp hσ'0.le (le_exp_exp_of_le_exp hPIC) hσ'
   refine hppt.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr ?_))
   exact pw_add hX (pw_mono hX le_rfl le_rfl) (pw_mono hX le_rfl (le_max_right _ s))
+
+/-- The phase-refinement estimate with the original polynomial partition budget. -/
+theorem inv_thr_le_ex {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M s : Nat}
+    (hη0 : 0 < η) (hη1 : η ≤ 1) (hβ0 : 0 < β) (hβ1 : β ≤ 1)
+    (hηi : η⁻¹ ≤ X ^ (2 ^ M)) (hβi : β⁻¹ ≤ X ^ (2 ^ M)) (hs0 : 0 < σ) (hs16 : σ ≤ 16)
+    (hσ'0 : 0 < inverseStepExponent (k + 1) e σ)
+    (hσ' : (inverseStepExponent (k + 1) e σ)⁻¹ ≤ Real.exp (X ^ (2 ^ s))) :
+    inverseStepThreshold (k + 1) η β e (6 * ((k + 1 : Nat) : Real)) σ ≤
+      Real.exp (Real.exp (X ^ (2 ^ (max (max (M + 4 * (k + 3) ^ 2 + 4) (k + 16)) s + 1)))) := by
+  exact inv_thr_le_ex_of_partition_bound hX
+    (by simpa only [show k + 1 + 1 + 1 = k + 3 by omega] using polyPartConst_le (k + 1 + 1))
+    hη0 hη1 hβ0 hβ1 hηi hβi hs0 hs16 hσ'0 hσ'
 
 /-- The envelope after one step, with the threshold, without the cubic branch. -/
 def envStepCTx (k μ0 μK μ : Nat) : Nat :=

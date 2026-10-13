@@ -18,6 +18,20 @@ run_cmd do
       ``LeanProofs.GowersSzemeredi.FinalInputs.cover,
       ``LeanProofs.GowersSzemeredi.FinalInputs.covers,
       ``LeanProofs.GowersSzemeredi.FinalInputs.theorem_16_2_polynomial,
+      ``LeanProofs.GowersSzemeredi.exp_exp_le_two_rpow_two_rpow,
+      ``LeanProofs.GowersSzemeredi.exp_exp_pow_le_two_rpow_two_rpow,
+      ``LeanProofs.GowersSzemeredi.interval_exponent_le,
+      ``LeanProofs.GowersSzemeredi.closedThreshold_le_of_env,
+      ``LeanProofs.GowersSzemeredi.inv_thr_le_ex_of_partition_bound,
+      ``LeanProofs.GowersSzemeredi.inv_thr_le_ex_sharp,
+      ``LeanProofs.GowersSzemeredi.quadraticIntervalClosedThreshold_le_explicit_tower,
+      ``LeanProofs.GowersSzemeredi.fejerFiveTermThreshold_le_explicit_tower,
+      ``LeanProofs.GowersSzemeredi.lengthSixClosedThreshold_le_source,
+      ``LeanProofs.GowersSzemeredi.roth_threshold_le_szemerediThreshold,
+      ``LeanProofs.GowersSzemeredi.roth_threshold_le_szemerediThresholdAt_three,
+      ``LeanProofs.GowersSzemeredi.roth_threshold_le_szemerediThresholdAt_four,
+      ``LeanProofs.GowersSzemeredi.roth_threshold_le_szemerediThresholdAt_five,
+      ``LeanProofs.GowersSzemeredi.roth_threshold_le_szemerediThresholdAt_six,
       ``LeanProofs.GowersSzemeredi.genMuX_le,
       ``LeanProofs.GowersSzemeredi.theorem_18_2_L5_all_of_profiles_cover,
       ``LeanProofs.GowersSzemeredi.genMuXK3_fit,
@@ -84,4 +98,4 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
+  logInfo "Checked the shared double-exponential conversions and phase-refinement estimates, uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."

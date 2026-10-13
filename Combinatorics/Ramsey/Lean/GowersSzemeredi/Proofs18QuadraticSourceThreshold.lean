@@ -23,8 +23,6 @@ theorem quadraticIntervalClosedThreshold_le_explicit_tower {delta : Real}
     rw [← one_div]
     apply (le_div_iff₀ hδ).mpr
     linarith
-  have hu0 : 0 ≤ u := by linarith
-  have hu1 : 1 ≤ u := by linarith
   have hα := intervalQuadraticUniformityParameter_pos hδ
   have hb : 2 / intervalQuadraticUniformityParameter delta ≤ u ^ (153 : Nat) :=
     two_div_intervalQuadraticUniformityParameter_le_inv_pow hδ hδhalf
@@ -33,22 +31,7 @@ theorem quadraticIntervalClosedThreshold_le_explicit_tower {delta : Real}
       (by positivity : (0 : Real) ≤ 2 / intervalQuadraticUniformityParameter delta) hb p
     simpa only [← pow_mul] using h
   have hqE : q + 2 ≤ E := by norm_num [q, p, E]
-  have hx1 : 1 ≤ u ^ q := one_le_pow₀ hu1
-  have hinner : 1 + 2 * u ^ q ≤ u ^ E := by
-    calc
-      _ ≤ u ^ q * 4 := by linarith only [hx1]
-      _ ≤ u ^ q * u ^ 2 := mul_le_mul_of_nonneg_left (by nlinarith only [hu] : (4 : Real) ≤ u ^ 2) (by positivity)
-      _ = u ^ (q + 2) := (pow_add u q 2).symm
-      _ ≤ _ := pow_le_pow_right₀ hu1 hqE
-  have hexp : Real.exp (Real.exp (u ^ q)) ≤ (2 : Real) ^ ((2 : Real) ^ (u ^ E)) := by
-    apply (section18_exp_le_two_rpow (Real.exp_pos _).le).trans
-    apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-    calc
-      2 * Real.exp (u ^ q) ≤ 2 * (2 : Real) ^ (2 * u ^ q) :=
-        mul_le_mul_of_nonneg_left (section18_exp_le_two_rpow (by positivity)) (by norm_num)
-      _ = (2 : Real) ^ (1 + 2 * u ^ q) := by
-        rw [Real.rpow_add (by norm_num : (0 : Real) < 2), Real.rpow_one]
-      _ ≤ _ := Real.rpow_le_rpow_of_exponent_le (by norm_num) hinner
+  have hexp := exp_exp_pow_le_two_rpow_two_rpow hu hqE
   apply (quadraticIntervalClosedThreshold_le_double_exp_alpha_sharp hδ (by linarith)).trans
   exact (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr habsorb)).trans hexp
 
