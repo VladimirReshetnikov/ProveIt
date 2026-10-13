@@ -83,8 +83,6 @@ theorem uniTwoExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
     (hp : (p1 : Real) ≤ w ^ 3) :
     (uniTwoExp (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) theta gamma M rho)⁻¹ ≤
       w ^ ((2 : Nat) ^ 130) := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
-  have hgt1 : gamma * theta ≤ 1 := mul_le_one₀ hg1 ht.le ht1
   obtain ⟨hv2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   obtain ⟨hζ0, hζ1, hζi⟩ := section16Zeta_one_bounds hg ht
   have hqs := polyPieceSpecCount_le_power hg hg1 ht ht1
@@ -99,7 +97,6 @@ theorem uniTwoExp_inv_le_power {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
   clear_value v ζ m qs qf
   have hw2 : 2 ≤ w := hv2.trans hvw
   have hw1 : 1 ≤ w := le_trans (by norm_num) hw2
-  have hw0 : 0 ≤ w := le_trans (by norm_num) hw2
   have hv0 : 0 ≤ v := le_trans (by norm_num) hv2
   have hm' : (m : Real) ≤ w ^ ((2 : Nat) ^ 84) := hM
   have hqs' : (qs : Real) ≤ w ^ ((2 : Nat) ^ 84) := hqs.trans (pow_le_pow_left₀ hv0 hvw _)
