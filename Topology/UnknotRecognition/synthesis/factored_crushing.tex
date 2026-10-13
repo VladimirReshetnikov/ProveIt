@@ -1,0 +1,365 @@
+\section{Composing crushing proofs across visible diagram factors}
+\label{sec:factored-crushing}
+
+A visible connected sum can be recognized by constructing and searching
+the exteriors of its diagram factors separately.  The new optional entry
+point \path{recognize_factored_by_crushing} makes this composition available
+directly to the certified crushing backend.  It combines the established
+interlacement factorizer with the full diagram-bound recognition certificates
+of Section~\ref{sec:normal-crushing-search}, shares work allowances across
+children, and supplies an independent verifier for the resulting verdict.
+
+The high-level \path{recognize} router already uses visible factorization,
+as described in \path{research_updates.tex}.  The contribution here is the
+explicit proof composition and resource accounting at the direct crushing
+interface.  Neither that router nor the existing
+\path{recognize_by_crushing} entry point changes its defaults.  The wrapper
+does not construct a normal cone for the whole connected sum, transport
+normal rays between factors, or infer an inequality for the resolving
+parameter of such a combined source.
+
+\subsection{The diagram decomposition and independently reconstructed children}
+
+Let $D$ be a validated spherical one-component PD with $n$ crossings.
+Traverse its knot component and record the visited crossing labels.  The
+result is a cyclic double-occurrence word $W$ of length $2n$.  Two labels
+are interlaced when their two occurrences alternate.  The existing
+factorization certificate gives an ordered partition
+$C_1,\ldots,C_k$ of the crossings and a spanning forest of interlaced
+pairs, with one tree on each block.  Labels within blocks and the blocks'
+least labels are in increasing order.
+
+The new verifier validates $D$ afresh and obtains its actual traversal.
+It checks literal integer labels, the complete partition, each alternating
+forest edge, and connectivity within every claimed block.  A separate
+nesting-stack scan checks that distinct blocks do not interlace.  Thus the
+blocks are exactly the interlacement components; a forest proves their
+connectivity without requiring the possibly quadratic interlacement graph
+to be constructed or the discovery algorithm to be rerun.
+
+For clarity, the topological step can be seen directly in the projection.
+The occurrences of a component with no interlacement with another lie in
+a gap between successive occurrences of that other component.  Connectivity
+forces this choice of gap to be consistent throughout the component.
+Consequently component intervals are nested or disjoint.  An innermost
+block occupies a closed interval of the traversal: every crossing in it
+is visited twice, and only its two endpoint edges meet the rest of the
+projection.  In the projection sphere those two edges give a visible
+splitting curve.  Lifting this curve above and below the projection gives
+a sphere meeting the knot in two points.  Remove the innermost block and
+continue.  This is the visible-splitting argument used by the existing
+factorizer; it establishes
+\[
+ K(D)=K(D_1)\mathbin{\#}\cdots\mathbin{\#}K(D_k).
+\]
+It concerns these particular visible factors, which need not be prime.
+
+Authenticating the crossing blocks does not authenticate arbitrary child
+PD arrays.  The verifier reconstructs each child from the original
+traversal, independently of the factor producer.  Filter that traversal
+to the darts whose crossing belongs to $C_i$.  Put $n_i=|C_i|$, retain
+the crossings in their original increasing order, and let the $j$th
+filtered visit enter slot $s$ of one such crossing.  Assign edge label
+$j$ to this slot and $(j+1)\bmod 2n_i$ to its opposite slot
+$s+2\bmod4$.  All original cyclic crossing slots, including the
+under/over distinction, are preserved.  The reconstructed child is
+validated as a spherical one-component PD and must equal the packet's
+child PD literally.  No test based only on crossing number, writhe, or
+a knot polynomial substitutes for this equality.
+
+There are two interface conventions.  With a single interlacement block,
+the original normalized PD is retained literally, including its edge
+labels.  The crossing-free circle has no crossing blocks but is represented
+by one empty child, rather than by an empty list of recognition obligations.
+For every nonempty input,
+\[
+ n_i\ge1,\qquad \sum_{i=1}^k n_i=n,\qquad k\le n.
+\]
+The verifier never calls the factor discovery routine, the exterior
+constructor, or a normal-surface search backend.
+
+\subsection{One nontrivial child or all trivial children}
+
+The exact outer schema is \path{diagram-factor-crushing-v1}, with fields
+\path{schema}, \path{status}, \path{input_pd}, \path{factorization},
+\path{factor_pds}, and \path{proofs}.  A proof record consists of an
+original \path{factor_index} and a complete child crushing-recognition
+certificate.  Reordering discovery does not rename the factor indices.
+
+For \path{UNKNOT}, the packet must contain exactly one child proof for
+each index $0,\ldots,k-1$, in that order, and every child proof must have
+status \path{UNKNOT}.  For \path{KNOTTED}, it must contain exactly one
+in-range child index and a verified child certificate with status
+\path{KNOTTED}.  In both cases the child verifier receives the independently
+reconstructed PD at that index.  A certificate for the full input or for
+a different labelled child cannot fill this obligation.  Duplicate indices,
+missing children, and boolean values used as integer indices are rejected.
+
+\begin{proposition}[Visible-factor proof composition]
+\label{prop:factored-crushing-soundness}
+The independent factorwise verifier accepts only correct knot verdicts
+for the original PD.  Its entry point is
+\path{verify_factored_crushing_recognition}.
+An incomplete child proof cannot substitute for a required complete verdict.
+\end{proposition}
+\begin{proof}
+The checked partition and independently reconstructed children establish
+the displayed connected-sum decomposition.  Each retained child verdict
+then follows from its own source-authenticated crushing-recognition proof.
+
+For two knots separated by a decomposing sphere, their connected sum is
+trivial if and only if both factors are trivial.  One direction follows
+by joining spanning discs for the two trivial factors.  Conversely, let
+the sum bound an embedded disc and make that disc transverse to the
+decomposing sphere.  Their intersection consists of an arc joining the
+two knot intersections and some circles.  Every circle cuts off a sphere
+disc disjoint from the intersection arc; choose one innermost among these
+discs, so its interior misses the spanning disc.  Replace the subdisc it
+bounds in the spanning disc by this sphere disc, and push slightly off
+the sphere.  The replaced subdisc also misses the intersection arc, whose
+endpoints lie on the boundary of the spanning disc.  This surgery preserves
+an embedded spanning disc and removes at least one intersection circle.
+After the circles are removed, cutting the spanning disc along its single
+intersection arc gives a spanning disc for each closed factor tangle.
+Both factors are therefore trivial.  Induction proves the assertion for
+all visible factors.
+
+It follows that all verified trivial children prove \path{UNKNOT}, whereas
+one verified nontrivial child proves \path{KNOTTED}.  An inconclusive child,
+a partial \path{REDUCED} source chain, or a supplied-source Euler answer
+does not meet either required child-certificate condition.
+\end{proof}
+
+The producer retains every attempted child result separately in
+\path{factor_results}, including inconclusive results and any earlier
+successful children.  These records explain work already spent.  The
+conclusive outer proof contains only the proofs needed by the proposition:
+one nontrivial child or all trivial children.  The two roles must be kept
+distinct when counting cost: a small final certificate does not erase the
+discovery work of earlier children.
+
+\subsection{Scheduling and globally shared allowances}
+
+The wrapper obtains option defaults from the actual signature of
+\path{recognize_by_crushing}, and validates every supported option before
+factor work starts.  Children are visited in increasing order of crossing
+count, with the original factor index breaking ties.  Each is called once
+with the remaining global allowances.  An inconclusive child does not
+immediately stop the wrapper; a later child may still conclude within the
+remaining allowances.  A verified nontrivial child stops recognition at
+once.  Otherwise every factor must conclude trivial before the wrapper
+can return \path{UNKNOT}.
+
+This finite schedule makes no fairness or competitiveness claim.  An early
+expensive child can consume a shared allowance needed by a later child.
+With all operational caps disabled, completeness of each child recognizer
+and finiteness of the factor list imply completeness of the wrapper.
+With finite caps, a missing required child verdict produces
+\path{INCONCLUSIVE}, not a weaker recognition certificate.  Caller callback
+exceptions propagate with their identity; they are not converted into
+ordinary local resource exhaustion.
+
+The nine shared accounting units are as follows.  A statistic unused by a
+selected child method contributes zero.
+\begin{center}\small
+\begin{tabular}{ll}
+Allowance & Charged child statistics\\
+\hline
+\path{max_sectors} & \path{sectors_attempted}\\
+\path{max_bases} & \path{bases_attempted}\\
+\path{max_crushes} & \path{crushing_steps} plus \path{boundary_unlayerings}\\
+\path{max_pivots} & \path{lp_pivots}\\
+\path{max_anchors} & \path{anchors_tested}\\
+\path{max_tree_nodes} & \path{nodes_attempted}\\
+\path{max_hitting_subsets} & \path{hitting_subsets_tested}\\
+\path{max_ellipsoid_iterations} & \path{lp_ellipsoid_iterations}\\
+\path{max_feasibility_calls} & \path{lp_feasibility_calls}
+\end{tabular}
+\end{center}
+
+For an allowance $B_a$, let $u_{ja}$ be the corresponding charged count
+returned by the $j$th attempted child.  Before child $r$ begins, pass
+\[
+ B_a^{(r)}=B_a-\sum_{j<r}u_{ja};
+\]
+an unbounded allowance remains unbounded.  The child enforces
+$0\le u_{ra}\le B_a^{(r)}$, and the wrapper checks the updated total.
+Induction gives $\sum_{j\le r}u_{ja}\le B_a$ for every returned prefix.
+Counts from inconclusive children and restarted inner searches are included.
+For the conflict candidate policy, candidate counts retain their existing
+meaning: visited candidate-selection states, including repeated depth
+passes, rather than only successful or distinct final resolving sets.
+
+The \path{max_crushes} row includes both strict reduction operations.
+Charging normal crushes alone would fail to enforce the shared allowance
+when optional inverse boundary layering is enabled.  Ordinary additive
+statistics are summed across children; declared peak statistics such as
+maximum tableau size and maximum search depth use their maximum.
+Initial-source and shelled-source tetrahedron counts are likewise summed
+over the attempted factors, rather than reported as the size of a combined
+triangulation.  No child result is memoized or reused for another factor.
+Polynomial input preparation and proof replay retain the raw driver's existing scope
+outside its charged search allowances.  A zero search budget is therefore
+not a claim of zero total computation.
+
+\subsection{An additive cost identity and the largest child-stage parameter}
+
+Let $I$ be the indices actually attempted, and let $P\subseteq I$ be the
+indices retained in the final proof.  For an inconclusive wrapper call take
+$P=\varnothing$.  Write $W_i$ for all work in the attempted child call,
+including its inner preparation, search, retries and proof checks; let
+$V_i$ be the outer replay cost of its retained proof.  Up to fixed interface
+overhead, the work decomposes as
+\[
+ W(D)=W_{\rm factor}(D)+\sum_{i\in I}W_i
+      +W_{\rm outer\ factor\ replay}(D)+\sum_{i\in P}V_i
+      +W_{\rm accounting/output}.
+\]
+The outer factor-replay term is zero when no conclusive packet is produced.
+This is an additive decomposition of actual work.  In particular, stopping
+on one nontrivial child removes future calls, but does not replace the
+preceding sum by the cost of that child alone.  Retaining or serializing
+all attempted results likewise charges their actual combined output size.
+
+Factor discovery, child reconstruction and partition replay use
+$O(n\log(n+1))$ word operations with $O(\log(n+1))$-bit indices, and hence
+polynomial bit work.  For child $i$, its native initial exterior has
+$t_{i0}=O(n_i+1)$ tetrahedra by Section~\ref{sec:diagram-exterior}.
+Every normal crush or certified inverse layer strictly decreases this
+count.  Thus it performs at most $t_{i0}$ strict reductions and at most
+$t_{i0}+1$ Euler search stages.  Summing over the children gives $O(n+1)$
+stages, with the extra constant covering the crossing-free convention.
+
+\begin{proposition}[Parameterized additive crushing bound]
+\label{prop:factored-crushing-cost}
+Disable operational caps, enable vertex reduction, and choose the
+polynomial LP policy with conflict-directed transversal search.  Let
+$T_{is}$ be the authenticated one-vertex source at Euler stage $s$ of
+attempted child $i$.  Write $t_{is}=|T_{is}|$, $h_{is}=h(T_{is})$, and
+let $\delta_{is}$ be the conflict-size parameter of
+Section~\ref{sec:conflict-candidates}.  There is a fixed polynomial $p$
+such that discovery, proof construction and replay have bit cost at most
+\[
+ p(n+1)+\sum_{i\in I}\sum_s
+       p(n_i+1)(3\delta_{is})^{h_{is}}.
+\]
+In particular, with $H=\max(\{0\}\cup\{h_{is}\})$, this is bounded by
+\[
+ \operatorname{poly}(n+1)\,(c(n+1))^H
+\]
+for an absolute constant $c$.  The subset candidate policy has the
+corresponding bound
+$\operatorname{poly}(n+1)(c(n+1))^{O(H)}$.
+\end{proposition}
+\begin{proof}
+Vertex reduction and any optional inverse layers contribute polynomial
+work and strict tetrahedron descent.  At each remaining Euler stage,
+vertex reduction guarantees a finite one-vertex source.  It has at most
+$4t_{is}$ anchor choices, and its source-derived exact linear data have
+bit length polynomial in $t_{is}$.  Proposition~\ref{prop:conflict-candidate-bound}
+therefore gives
+$p(n_i+1)(3\delta_{is})^{h_{is}}$ work at this stage, after enlarging a
+single fixed polynomial to include source algebra, positive-ray extraction,
+crushing and independently checked proof data.  The polynomial number of
+preprocessing stages and the polynomial factor interface fit the first term
+or the polynomial factors of the sum.  Outer replay visits only retained
+child proofs and has the same additive form.
+
+Now $\delta_{is}\le\max(1,t_{is})=O(n_i+1)\le O(n+1)$ and the total
+number of stages is $O(n+1)$.  Monotonicity of a sufficiently large
+polynomial absorbs their sum, yielding the displayed bound in $H$.
+The subset-policy conclusion follows instead from
+Theorem~\ref{thm:transversal-learning-bound} at each stage.
+\end{proof}
+
+Consequently a uniform bound
+$h_{is}=O(\log^d(n+2))$ for some fixed $d$ throughout all required child
+stages would imply quasi-polynomial recognition on that class of visible
+factorizations.  This is a conditional statement: it does not supply that
+structural hypothesis.  The maximum concerns every authenticated successor,
+not just the first source of a child or one observed conflict set.
+
+\subsection{A restricted-family bound from visible factor size}
+
+The complete ternary-tree policy gives a second consequence without any
+assumption on $h$.  It is a corollary of the existing decomposition and
+tree policies, rather than a new bound for unrestricted knot diagrams.
+
+\begin{corollary}[Small visible factors]
+\label{cor:factored-crushing-small-factors}
+Use \path{sector_method='tree'}, \path{tree_model='source'},
+\path{lp_policy='polynomial'} and \path{reduce_vertices=True}, with all
+nine operational caps set to \path{None}.  Put
+$s=\max_i n_i$, with $s=0$ for the crossing-free input.  The wrapper
+recognizes the input exactly with bit work and complete proof size bounded by
+\[
+ \operatorname{poly}(n+1)\,2^{O(s)}.
+\]
+Consequently it is polynomial for fixed $s$, and also for
+$s=O(\log(n+2))$.  For every fixed $d$, it is quasi-polynomial on the
+class with $s=O(\log^d(n+2))$.
+\end{corollary}
+\begin{proof}
+The native exterior construction has exactly $20\max(1,n_i)$ tetrahedra;
+initial shellings and all later reduction operations can only decrease
+this number.  Thus $t_{i0}\le20\max(1,n_i)$, and child $i$ has at most
+$t_{i0}+1$ Euler stages.  At a stage with $t$ tetrahedra, each branch makes
+one ambiguous tetrahedron singleton.  The tree therefore has depth at
+most $t$ and at most
+\[
+ 1+3+\cdots+3^t=\frac{3^{t+1}-1}{2}
+\]
+nodes.  The one-vertex source has at most $4t$ anchor objectives per node,
+and at most one additional envelope call.  The polynomial exact LP policy
+and the source-algebra bounds of Section~\ref{sec:euler-branch-tree} give
+polynomial bit work and polynomial proof data per node.  Positive extraction,
+crushing, inverse layering if enabled, and independent replay contribute
+polynomial work per reduction or per recorded node.
+
+For one fixed polynomial $p$, enlarging it to include the polynomial number
+of child stages gives the additive bound
+\[
+ p(n+1)+\sum_i p(n_i+1)\,3^{20\max(1,n_i)}.
+\]
+Here the sum may include every child even if a negative child stops the
+actual run early.  Since $\sum_i n_i=n$ and $k\le n$ for $n>0$, this is
+at most $\operatorname{poly}(n+1)2^{O(s)}$.  The crossing-free convention
+contributes a single constant-size child.  The same bound covers the
+encoded proof bytes and all attempted result records: every normal vector,
+local rational witness and source-transition packet has polynomial length,
+and the number of recorded nodes and stages satisfies the same bounds.
+Substituting $s=O(\log^d(n+2))$ gives the stated restricted-family claim.
+\end{proof}
+
+This factor-size benefit was already available through the high-level
+factor router.  The new interface supplies composed direct-crushing proofs
+and shared budgets.  The stated corollary uses the explicit tree policy;
+it is not inferred from whichever policy the raw driver's defaults select.
+
+Neither cost statement compares $h(T)$ for an exterior built directly from
+the entire input with the parameters of the separately constructed child
+exteriors.  No such comparison is needed: the wrapper searches the latter
+sources.  An interlacement-connected diagram can still represent a composite
+knot with no visible split, and then this interface has one full-size child.
+The operation provides neither hidden prime decomposition nor a general
+quasi-polynomial unknot-recognition theorem.
+
+\subsection{Implementation checks}
+
+The retained command and output in
+\path{data/factored-crushing-test-command.txt} and
+\path{data/factored-crushing-tests.txt} record $238$ passing tests with
+Regina available and no dependency skips.  The new producer and verifier
+contribute $21$ test methods.  One reconstruction test covers $313$
+validated spherical diagrams generated from double-occurrence words with
+at most four crossings and their crossing-slot choices.  Other checks cover
+the exact positive and negative proof requirements, altered partitions and
+child PDs, shared allowances including failed work, producer-disabled
+independent replay, and callback exception identity.
+
+As a small complete accounting control, the two-curl unknot has two visible
+children.  Both are recognized by one native crush each without any LP calls.
+With a global allowance of one crush, the same input returns one complete
+trivial child and one independently replayable partial child, and the wrapper
+remains inconclusive.  These correctness controls establish neither a timing
+advantage nor a general bound on visible factor size or resolving parameters.

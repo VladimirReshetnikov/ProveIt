@@ -4800,6 +4800,36 @@ coordinates. This is a finite bound on a direct crushing-driver source; the
 existing recognition router already splits the visible two-trefoil diagram.
 Neither a complete negative cone nor an asymptotic lower-bound family is claimed.
 
+### Certified crushing of visible factors
+
+`fastunknot.factored_crushing.recognize_factored_by_crushing(diagram, **options)`
+is a separate interface that combines the existing visible interlacement
+factorization with native crushing proofs. It accepts the direct crushing
+driver's options and defaults. Factors are tried by crossing count, with their
+original component indices preserved. Each factor gets its own authenticated
+diagram exterior; the whole-input exterior is never reused for a child.
+
+One independently verified `KNOTTED` child proves the sum knotted. An `UNKNOT`
+result requires a proof for every factor. The new `diagram-factor-crushing-v1`
+certificate binds the original PD, its interlacement partition and forest,
+the exact derived factor PDs, and the required child certificates. Replay uses
+`factored_crushing_verify.verify_factored_crushing_recognition`; it reconstructs
+the children independently and invokes no factor discovery or LP producer.
+
+All nine work caps are shared across attempted children: sectors, bases,
+reductions, pivots, anchors, tree nodes, candidate states, ellipsoid iterations
+and feasibility calls. Reduction counts include optional inverse boundary
+layers. Failed child work stays charged, and a later child can still prove
+knottedness after an earlier inconclusive result. `factor_results` retains every
+attempt. Additive statistics sum attempted child work; peak statistics take
+the maximum. An inconclusive aggregate has no recognition certificate.
+
+This exposes proof composition for the direct crushing backend. The existing
+high-level recognition router already factors visible sums. A visible atom
+can still represent a hidden composite knot, and no bound on its search
+parameter follows from this interface. See
+[the factorwise theory](../synthesis/factored_crushing.tex).
+
 ### Polynomial exact LP policy
 
 `solve_nonnegative_kernel` now defaults to `policy='polynomial'`. It performs

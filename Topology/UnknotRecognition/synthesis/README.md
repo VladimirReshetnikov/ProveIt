@@ -2,6 +2,26 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`factored_crushing.tex`](factored_crushing.tex) composes native crushing proofs
+over the existing visible interlacement factors. A separate checker reconstructs
+the exact factor PDs and verifies one knotted child or every trivial child.
+All nine search limits remain shared across attempted factors, including failed
+work. This new direct interface avoids constructing a combined exterior when
+a visible summand suffices; the high-level router already uses visible
+factorization. Hidden connected sums and the general structural bound remain
+open.
+The combined native regression run passes 238 tests with Regina and no skips,
+including genuine child proofs, 313 independent factor reconstruction cases,
+strict certificate mutations and shared-budget controls. Logs and the exact
+command are retained under `data/factored-crushing-tests.txt` and
+`data/factored-crushing-test-command.txt`.
+The current [PDF](report.pdf) has 787 pages; the factorwise theory spans
+pages 775–780 and was visually reviewed after three build passes. There are no
+unresolved references or new overflow warnings. The restricted-family
+`poly(n+1) * 2^O(s)` bound uses uncapped source-tree search with polynomial LP,
+where `s` is the largest visible crossing block. Polylogarithmic `s` gives a
+quasi-polynomial bound for that restricted family; arbitrary diagrams remain open.
+
 [`boundary_unlayer.tex`](boundary_unlayer.tex) integrates independently
 certified inverse boundary layers into an optional diagram preprocessing
 policy. Its proof covers the oriented forward reconstruction, strict
@@ -25,12 +45,12 @@ router, which already splits this visible connected sum. A complete negative
 canonical-cone proof and a growing lower-bound family remain open.
 See [`conflict_composition_research`](../fast/conflict_composition_research/README.md).
 
-The current [PDF](report.pdf) has 781 pages. The inverse-layer section starts
+The boundary-peeling publication rebuilt the [PDF](report.pdf) to 781 pages. The inverse-layer section starts
 on page 767 and the connected-sum section on page 772. The new evidence pages
 770–775 were visually reviewed; three final build passes leave no unresolved
 references or new overflow warnings. Run `python -B -S
 data/boundary_unlayer_publication.py` from this directory to check the full
-publication at this source revision. It includes all 60 benchmark calls,
+publication at its recorded source revision, `c7cf20578`. It includes all 60 benchmark calls,
 the separate 37-corruption replay check, and the connected-sum audit's current
 source pins. The latter's 35 STANDARD rank checks have their own replay
 command in its package README. The benchmark JSON is losslessly compacted
