@@ -2,6 +2,36 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`native_edge_isotropy.tex`](native_edge_isotropy.tex) derives the actual
+interior-edge equations from the maintained face-pairing and quadrilateral
+conventions. Their rational row space equals both cycle presentations, with
+constant coefficients and linear total incidence. Paired-face cancellation
+proves full-source skew isotropy. Every exactly-two-types-per-tetrahedron mask
+preserves isotropy and rank; mixed masks obey an explicit weighted defect
+formula and a rank bound. This excludes the preceding periodic-grid
+representation from native full-source kernels. It supplies no separator bound
+or general quasi-polynomial recognition theorem, and makes no native LP change.
+
+The proof-only checkpoint preserves all native code, the 408-test regression
+and the whole-call evidence below. No new finite audit result or timing claim
+is included. Its publication records are under `data/native-edge-isotropy-theory-*`.
+<!-- NATIVE_EDGE_ISOTROPY_PDF -->
+
+[`sparse_coordinate_separators.tex`](sparse_coordinate_separators.tex) strengthens
+the abstract separator obstruction to constant-coefficient, sparse, totally
+unimodular matrices. At `t = L²`, a periodic directed grid has rank `t−1`,
+zero-sum triples and full root support, yet needs at least `ceil(sqrt(t/3))`
+singleton restrictions for two-thirds coordinate-factor balance. Intact
+directed triangles protect a large feasible factor even after exact
+implicit-zero deletion. The proof is uniform over all singleton assignments;
+it supplies neither a native triangulation realization nor an Euler objective
+or recognition lower bound. This is a documentation-only extension of
+`4103fc47d`; all native code, tests and whole-call evidence below are unchanged.
+The publication at `99b1abc44` has an 850-page PDF, with Section 198 on
+pages 840–842. Three final passes settle all references without additional
+diagnostics. The new theorem and proof pages were visually checked; the
+publication records are under `data/sparse-separator-*`.
+
 [`native_lex_prefix.tex`](native_lex_prefix.tex) adopts Dantzig entering and
 full original-slack lexicographic leaving for the polynomial LP prefix.
 Lazy exact integer comparisons avoid constructing full ratio tuples;
@@ -30,7 +60,7 @@ discovery-disabled process rechecks the saved proof and its one historical
 comparison; all 302 execution pins remain unchanged. The fourteen earlier
 calls and 449 queries are historical evidence, not reruns of this native code.
 
-The current [PDF](report.pdf) has 848 pages. Section 196 spans pages 836–839
+The publication at `4103fc47d` has an 848-page PDF. Section 196 spans pages 836–839
 and Section 197 pages 839–840. Three build passes complete with no unresolved
 references or additional final diagnostics; the new comparison, evidence
 and proof pages were visually checked.
@@ -40,13 +70,16 @@ From this directory, the current evidence commands are:
 ```sh
 python -B -S data/native_lex_prefix_whole_call.py run --output data/native-lex-prefix-whole-call.json
 python -B -S data/native_lex_prefix_whole_call.py check --input data/native-lex-prefix-whole-call.json --output data/native-lex-prefix-whole-call-replay.json
-python -B -S data/native_lex_prefix_publication.py
+python -B -S data/native_edge_isotropy_theory_publication.py
 ```
 
 The whole-call helper refuses to overwrite existing records; use new output
-paths for another run or replay. The publication helper authenticates the
-saved tests, separate replay, article/PDF and build records. It performs no
-recognition, LP discovery, proof replay, tests, timing or PDF build.
+paths for another run or replay. The current publication helper checks the
+unchanged parent checkpoint, retained test coverage and final article/PDF
+bytes. It runs no audit, recognition, proof replay, tests, timing or PDF build.
+Earlier publication helpers, including
+`data/native_lex_prefix_publication.py` and `data/sparse_separator_publication.py`,
+bind their historical documents; their mains are not rerun against later edits.
 
 [`whole_call_prefix.tex`](whole_call_prefix.tex) compares the prepared Bland
 and Dantzig/full-slack lexicographic polynomial prefixes in fourteen fresh
