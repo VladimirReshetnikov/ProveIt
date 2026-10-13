@@ -45,3 +45,38 @@ different chosen witnesses, not equivalent essential-disc discovery.
 See `synthesis/intrinsic_port_atlases.tex` for the proof and exponent. There is
 no universal small-intrinsic-dimension theorem, no new geometric successor,
 and no general quasi-polynomial unknot recognizer.
+
+## Complete continuation after rejected witnesses
+
+`filtered.py` adds support clauses excluding previously rejected source
+extreme rays. A union-mask dynamic program enforces all clauses jointly at
+each atlas vertex. Support incomparability preserves every other extreme
+candidate, and support descent preserves the clauses. The extra factor is
+exponential in the number of rejected witnesses, which remains an unbounded
+geometric parameter in general. Default caps return inconclusive; caller
+cancellation and inspection exceptions propagate.
+The inspection predicate must be fixed and decide each candidate exactly:
+an unsupported or capped inspection must propagate, never return a false
+acceptance flag that would permanently exclude an unresolved candidate.
+
+```sh
+python -B -m unittest projective_port_research.test_filtered -v
+python -B -m projective_port_research.filtered_native /tmp/filtered-native.json
+python -B -m projective_port_research.filtered_cubes /tmp/filtered-cubes.json
+python -B -m projective_port_research.filtered_benchmark /tmp/filtered-benchmark.json
+python -B -m projective_port_research.check_filtered
+```
+
+Six tests include 480 independent filtered-cone comparisons and exact positive
+ray exhaustion on sixty models. The filtered native search agrees with complete
+sector-ray inspection on all 202 queries: 60 certified discs, 142 completed
+absences, recovering all nine single-witness misses. It uses 220 positive-oracle
+queries and 374 mask transitions, with at most one rejection per query.
+
+Full geometric-query timings now compare equivalent answers, with an initially
+empty geometric witness cache in each arm. The filtered atlas is 3.07–7.70×
+slower than the native sector method on the five measured batches. An abstract
+scalar-port cube family verifies that rejection counts can grow as `2**m` even
+at port dimension one. Neither the algorithm nor these examples change default
+recognition or establish general quasi-polynomial complexity. See
+`synthesis/predicate_filtered_atlases.tex` for the full proof and evidence.
