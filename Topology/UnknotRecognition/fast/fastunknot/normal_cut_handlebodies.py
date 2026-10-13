@@ -2,8 +2,9 @@
 
 This conservative terminal operator combines the complete source parallelity
 decomposition, ordered core attachments, and geometric core cancellations.
-It never infers a ball from homology or a sphere boundary alone.  Unsupported annular
-attachments, closed bundle bases, or stalled core cancellations are unresolved.
+It never infers a ball from homology or a sphere boundary alone. On geometric
+refusal it can use a source-bound free-group proof and the original cut Euler
+characteristic to certify an unmarked handlebody census.
 """
 
 from collections import Counter
@@ -14,6 +15,7 @@ from .core_primitive_annuli import core_primitive_annuli
 from .core_handlebody import core_handlebody_certificate, select_core_forest
 from .core_three_handle_reduction import reduce_core_three_handles
 from .disk_bundle_absorption import absorb_disk_bundles
+from .normal_cut_groups import _group_result
 from .normal_parallelity import normal_cut_parallelity
 from .parallelity_boundary_words import normal_parallelity_boundary_words
 from .parallelity_boundary_moments import _compile as _compile_moment_boundary
@@ -223,8 +225,8 @@ def _attempt_cut(parallelity, discover_boundary, record_certificate, precheck_co
 
 def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
                            record_certificate=False, precheck_core=True, boundary_method='masks',
-                           top_forest='max_weight', lower_forest='adaptive', check=lambda: None):
-    """Classify the whole supplied cut when the disk-gluing criterion succeeds.
+                           top_forest='max_weight', lower_forest='adaptive', group_fallback=True, check=lambda: None):
+    """Classify the whole supplied cut using geometric or Euler/group criteria.
 
     A COMPLETE result is an exact binary multiplicity census of handlebodies.
     An INCONCLUSIVE result is neither a knottedness nor a non-handlebody proof.
@@ -232,7 +234,8 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     The four source queries and one or two boundary queries share the cycle
     allowance; cancellation callbacks also cover the finite core/interface work. The
     optional core precheck defaults on: a raw obstruction skips boundary
-    discovery, without claiming any negative topological conclusion. The
+    discovery for that geometric attempt. The group fallback may still need
+    the boundary packet; no refusal is a negative topological conclusion. The
     boundary_method chooses legacy endpoint masks or a single moment census.
     top_forest minimizes retained raw incidence by default; queue retains the
     earlier top-handle selector. Neither choice guarantees later cancellation.
@@ -241,6 +244,10 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
     every orbit query between attempts. Deferred lower discovery follows a
     fixed top reduction priced against the historical source lower forest;
     its completeness concerns lower choices for those retained rows only.
+    On geometric refusal, group_fallback tries a nonincreasing Tietze reduction
+    of the original disk-base cut presentation and checks the source Euler
+    characteristic. It reuses the source and boundary packets and cycle budget.
+    The resulting census is unmarked; no geometric handle slides are claimed.
     """
     check()
     if type(boundary_method) is not str or boundary_method not in ('masks', 'moments'):
@@ -249,6 +256,8 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
         raise ValueError('top_forest must be queue or max_weight')
     if type(lower_forest) is not str or lower_forest not in ('adaptive', 'source', 'max_passages', 'reverse_id', 'deferred'):
         raise ValueError('invalid lower_forest policy')
+    if type(group_fallback) is not bool:
+        raise ValueError('group_fallback must be bool')
     if type(precheck_core) is not bool:
         raise ValueError('precheck_core must be bool')
     if type(record_certificate) is not bool:
@@ -292,6 +301,25 @@ def normal_cut_handlebodies(triangulation, coordinates, *, max_cycles=None,
         attempts.append(dict(strategy=mode, status=result['status'], reason=result.get('reason')))
         if result['status'] == 'COMPLETE' or result.get('reason') == 'boundary_budget_exhausted':
             break
+    if (group_fallback and result['status'] != 'COMPLETE'
+            and result.get('reason') != 'boundary_budget_exhausted'):
+        # Reject unsupported bases before spending any boundary orbit allowance.
+        disk_bases = True
+        for profile in parallelity['summary']['base_profiles']:
+            check()
+            if (profile['euler_characteristic'], profile['boundary_components'],
+                    profile['orientable'], profile['product']) != (1, 1, True, True):
+                disk_bases = False
+                break
+        if disk_bases:
+            packet = discover_boundary()
+            if packet['status'] != 'COMPLETE':
+                result['reason'] = 'boundary_budget_exhausted'
+                result['stats']['boundary'] = packet['stats']
+            else:
+                result = _group_result(parallelity, packet, record_certificate, check)
+            attempts.append(dict(strategy='euler_free', status=result['status'],
+                                 reason=result.get('reason')))
     if len(attempts) > 1 or lower_forest not in ('source', 'adaptive'):
         result['stats']['lower_forest_attempts'] = attempts
     check()

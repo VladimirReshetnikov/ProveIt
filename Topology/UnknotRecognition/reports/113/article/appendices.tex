@@ -1,0 +1,62 @@
+\section{Executable file map and reproduction}
+The package root contains the article sources and PDF, the \code{projective_ports} package, \code{tests}, \code{experiments}, frozen \code{evidence}, and additive \code{integration} notes. No upstream font, slide PDF, native checkout or binary incoming archive is redistributed.
+
+\begin{center}\small
+\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+File & Role\\\midrule
+\code{model.py} & Validated blocks; complete support and zero-set ray producers.\\
+\code{exact.py} & Rational elimination, nullspaces, primitive scaling.\\
+\code{atlas.py} & Objective-independent atlas and compatible barycentric tables.\\
+\code{source.py} & Exact source compilers and support descent.\\
+\code{verify.py} & Independent positive and primitive-extreme source checks.\\
+\code{fixtures.py} & Algebraic counterexamples and attributed normal source fixtures.\\
+\code{experiments/oracle.py} & Independent finite global ray oracle and exact Cartesian baseline.\\
+\code{experiments/reproduce.py} & Deterministic audits and fresh paired measurements.\\
+\code{integration/source_query.py} & Example source-first adapter, not a native recognizer patch.\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+From the unpacked root, run:
+\begin{verbatim}
+python -m unittest discover -s tests -v
+python experiments/reproduce.py all --out evidence-new
+python experiments/build_tables.py
+cd article
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+pdflatex -interaction=nonstopmode -halt-on-error article.tex
+\end{verbatim}
+The default reproduction destination is \code{evidence-new}, so the delivered raw measurements are not overwritten. The table builder reads the frozen \code{evidence} directory and does not run experiments. Individual experiment modes are \code{audit}, \code{normal}, \code{descent}, \code{modes}, and \code{timing}. The frozen source-query timing used seven trials; the synchronized-mode timing used five. An explicit rerun matching those trial counts is documented in the README.
+
+The included build script performs the tests and compiles the article, but does not rerun benchmarks unless separately requested. Standard TeX Live packages suffice. All sources are UTF-8 text; binary outputs are confined to the compiled article PDF.
+
+\section{Claim ledger}
+\begin{longtable}{@{}p{.29\textwidth}p{.64\textwidth}@{}}
+\toprule
+Claim & Evidence and exact scope\\\midrule\endhead
+Two-port ray-image completeness & Theorem~\ref{thm:two}; implemented; no objective-line intersections required.\\
+All-dimension objective-independent atlas & Lemma~\ref{lem:frame} and Theorem~\ref{thm:atlas}; implemented, including lower-dimensional strata.\\
+All coordinate-zero faces & Support-respecting generation and the same arrangement; implemented and audited. Not arbitrary added linear inequalities.\\
+Complete local ray preparation & Support and nullity-sensitive zero-set producers; Proposition~\ref{prop:support} and Proposition~\ref{prop:zeros}; both implemented.\\
+Signed-port extension & Corollary~\ref{cor:signed}; proved, not a separate shipped backend.\\
+Source equivalence & Two-block and master-coordinate compiler proofs; implemented. Algebraic equivalence is not geometric ancestry.\\
+Primitive extreme recovery & Theorem~\ref{thm:descent}; implemented and independently checked on 64 actual nonextreme assemblies.\\
+Connected normal witness & Corollary~\ref{cor:connected}, conditional on authentic standard normal coordinates. No essential-disc claim without further geometry.\\
+Width-two chain hardness & Theorem~\ref{thm:chain}; abstract conic-interface result, not a knot-hardness reduction.\\
+Finite-gain chain tractability & Corollary~\ref{cor:gain-alphabet}; elementary proved comparison, not a native transfer backend.\\
+Bounded-degree master obstruction & Proposition~\ref{prop:degree}; prevents a misleading asymptotic interpretation of raw tetrahedron splitting.\\
+Measured improvement & Local exact baselines and scopes in Section~\ref{sec:evidence}; all raw samples retained, including small-case regressions.\\
+General quasi-polynomial recognition & Not claimed. The missing source-production, geometric completeness and total-cost hypotheses are explicit in Section~\ref{sec:integration}.\\
+\bottomrule
+\end{longtable}
+
+\section{Source provenance details}
+The fixture source blob was \code{246c74562195b51559ac9258e85e68af82c3ab84}; report 96's README blob was \code{62f03dd7e3f1f2aa34fcbbaff6f89c9509d64272}; its article entry-point blob was \code{bd7b2c006fc5e71deda79b0c102d25d119d94c88}. The catalogue blob was \code{73dd14219d13e2aed58c0c12b026c0c9406eb1d5}. These identify the inspected sources, not a claim that every file at the reference revision was downloaded or tested.
+
+The incoming directory's four binary archives were inventoried but not decoded. The source audit intentionally preserves this limitation instead of treating descriptive filenames as proof that no overlap exists. The delivery includes the entire mathematical argument and does not require any unread archive for its correctness.
+
+\section{Conclusion}
+The central result is an exact finite interface reduction: synchronized higher-rank pieces can optimize independently at an objective-free projective atlas, without enumerating their global compatibility histories. Two ports admit a particularly small atlas; higher ports require additional domain-intersection vertices. Coordinate-zero queries reuse the same preparation, and source descent repairs the gap between a valid primitive assembly and a genuinely extreme normal witness.
+
+The result is accompanied by complete exact code and direct source-query evidence. Its relationship to quasi-polynomial unknot recognition is both constructive and limited: it supplies a new discovery operator and explicit parameter bounds, while leaving a sharply stated geometric representation and global-accounting problem. That is the intended object for integration and further research.

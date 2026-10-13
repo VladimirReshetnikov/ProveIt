@@ -59,7 +59,10 @@ class LowerForestTests(unittest.TestCase):
         references = {r['id']:r['regina']['histogram'] for r in old['cases'] if r['id'] in NEW}
         for c in [c for c in BANK if c['id'] in NEW]:
             args = c['triangulation'],c['coordinates']
-            self.assertEqual(normal_cut_handlebodies(*args,lower_forest='source')['status'],'INCONCLUSIVE')
+            # This assertion records the original fixed-forest geometric refusal.
+            # The default signed-group fallback can now certify some such cuts.
+            self.assertEqual(normal_cut_handlebodies(*args,lower_forest='source',
+                group_fallback=False)['status'],'INCONCLUSIVE')
             for method in ('masks','moments'):
                 r = normal_cut_handlebodies(*args,boundary_method=method,record_certificate=True)
                 self.assertEqual(r['status'],'COMPLETE')

@@ -1,0 +1,97 @@
+\section{Implementation, independent audits, and measurements}
+\label{sec:evidence}
+
+\subsection{Reproducibility and test boundaries}
+The delivered implementation uses only the Python standard library. Exact values are integers or \code{fractions.Fraction}; rational strings are accepted at interfaces, while floating-point and Boolean source values are rejected. The producer uses reduced-row-echelon elimination. The independent verifier and finite global oracle use separately implemented reverse-column elimination and do not import the producer's arithmetic helpers.
+
+All recorded experiments were run in this delivery. The environment was Python 3.13.5 on Linux x86\_64; the full interpreter and platform strings, random seeds, raw timing samples and exact answers appear in the evidence JSON files. The machine did not expose a processor name through \code{platform.processor()}, which is recorded as an empty string rather than guessed. No native ProveIt test suite, Regina oracle, knot-diagram corpus or production checkout was executed.
+
+The 46 unit-test methods cover rational validation, redundant and inconsistent equations, both complete local ray enumerators, resource-limit propagation, zero-port positives and negatives, repeated port slopes, incompatible mixtures, three- and four-dimensional lower strata, coordinate-zero reuse, source compiler rejections, original-source checking, primitive-ray checking, malformed packets, face-pairing reciprocity, and explicit nonextreme assembly. The long-block test has 40 variables but nullity one; the zero-set producer obtains its single ray without enumerating $2^{40}$ supports.
+
+\subsection{Randomized exact global comparisons}
+A fixed seed, 20261012, generates 120 two-block systems with port dimensions cycling through one, two and three. Local blocks have three or four coordinates; some have a genuine matching equation, and forbidden pairs and nonnegative port entries vary independently. The finite global oracle is built from the literal original synchronization equations, not from the atlas tables.
+
+Each model receives eight objective/zero-face queries. In all 960 queries, the atlas agrees with the independent global ray oracle on strict positivity. In 814 cases where the zero-port positive shortcut does not intervene, the entire normalized optimum, including a possible negative optimum or absent nonzero-port domain, agrees exactly as a rational value. Both local ray enumerators are separately compared with the oracle on every local block, giving 480 local ray-list comparisons.
+
+There are 391 positive random queries. Each receives an independent synchronized-packet check, an independent primitive source-ray check, and a deliberately doubled-coordinate rejection test, totaling 1,173 certificate and tamper checks. The ordinary randomly generated positive assemblies happened already to be source extreme rays; this observation is not generalized into a theorem.
+
+To ensure that support recovery was actually exercised, a separate audit uses Example~\ref{ex:nonextreme} with $P_2u=(u,(2^b+1)u)$ for $1\le b\le64$. All 64 initial primitive assemblies fail the source-extremality test. Each is reduced in one support step to a primitive source extreme ray, independently checked and found in the complete finite global ray list. The evidence preserves the original vectors, exact directions, steps and final certificates.
+
+\subsection{A source-bound three-port normal fixture}
+The face-pairing fixture is adapted, with provenance, from report 96. Start with its one-tetrahedron example, whose first two faces are paired by permutations $(1,2,3,0)$ and $(3,0,1,2)$. Attach a second tetrahedron across face 2 using the permutation $(0,1,3,2)$, with the reciprocal pairing on face 3 of the new tetrahedron. All other faces are boundary faces. Coordinates are numbered from zero, seven per tetrahedron: four triangle coordinates followed by three quadrilateral coordinates.
+
+The first three source rows are local to the first tetrahedron:
+\begin{align*}
+ x_1-x_2+x_4-x_6&=0,\\
+ x_2-x_3&=0,\\
+ -x_0+x_3-x_4+x_6&=0.
+\end{align*}
+The remaining rows are the three interface equations
+\begin{align}
+ x_0+x_5&=x_7+x_{13},\nonumber\\
+ x_1+x_6&=x_8+x_{12},\label{eq:fixture-ports}\\
+ x_3+x_4&=x_9+x_{11}.\nonumber
+\end{align}
+The quadrilateral conflicts are all pairs within $\{4,5,6\}$ and within $\{11,12,13\}$. The two-block compiler reads these actual rows; no informal boundary summary is substituted.
+
+The first block has four admissible rays, the second seven. One second-block ray, $x_{10}$, has zero port. The normalized atlas has eight hyperplanes, 28 candidate pairwise intersection systems, 11 retained vertices, and 26 compatible local simplexes. An independent complete global enumeration gives 12 admissible source rays. A small ray count is not the same thing as a small number of candidate supports: the work reduction comes from two local enumerations in place of one large enumeration.
+
+The Euler objective is computed from local discs, normal arcs and equivalence classes of source edges:
+\begin{equation}
+ c=\frac1{12}(1,1,-2,4,-4,-3,-1,\ 3,4,1,12,1,4,3).
+ \label{eq:fixture-euler}
+\end{equation}
+Interior arc occurrences contribute one half to the edge count, boundary arc occurrences contribute one, and a disc corner contributes the reciprocal degree of its source edge. The compiler validates reciprocal face pairings, but does not independently validate all manifold links or knot-diagram ancestry.
+
+\subsection{Removing a trivial benchmark shortcut}
+The zero-port ray $x_{10}$ has Euler characteristic one. Without excluding it, many queries would terminate before using the interface atlas. The measured workload therefore consists of the eight zero sets
+\[
+ Z=\{10,j\},\qquad j\in\{0,1,2,3,7,8,9,11\}.
+\]
+The first two queries are negative with maximum zero. The other six are positive with normalized maximum $1/3$. Every one of these queries uses the atlas path; none uses a positive zero-port shortcut.
+
+For $Z=\{10,2\}$, a recovered primitive source witness is
+\[
+ r=(1,1,0,0,0,0,1,\ 1,2,0,0,0,0,0).
+\]
+It satisfies the six source equations, the quadrilateral restrictions, both forced zeros, $c^Tr=1$, and one-dimensional source support nullity. The evidence records all six positive packets. Under an independently authenticated normal-triangulation interpretation, Corollary~\ref{cor:connected} supplies connectedness. The delivery does not convert this packet into a knot-diagram-level unknot certificate.
+
+The normal audit also tests 96 random linear objectives and zero sets on the same source. Together with the eight Euler queries, all 104 answers match the independent global oracle; 94 positive source-ray certificates pass independent checks. Three master-coordinate compilations are additionally tested on all eight Euler queries, giving 24 original-source oracle comparisons.
+
+\subsection{Paired source-query timings}
+The unsplit baseline and the proposed split workload both construct matching and Euler coefficients from the fixture. The baseline enumerates all admissible source rays with the same delivered support enumerator, then answers the eight queries. The split workload compiles \eqref{eq:fixture-ports}, prepares its local rays and atlas, answers the same queries, reconstructs source witnesses, and applies support recovery when needed. Both sides independently check their positive source rays and serialize their answer packets.
+
+Seven trials alternate the order of the two workloads. Their medians are
+\[
+ \text{unsplit: }\NormalBase\text{ ms},\qquad
+ \text{split: }\NormalSplit\text{ ms},\qquad
+ \text{ratio: }\NormalRatio\times.
+\]
+The raw unsplit samples range from about 392 to 453 ms, while the split samples range from about 18.2 to 24.2 ms. These observations support a concrete improvement in this complete source-query kernel. The baseline is \emph{not} the repository's most optimized native sector-search implementation. No production-recognition speedup should be inferred from this ratio.
+
+\subsection{Avoiding a Cartesian product of compatibility modes}
+For a separate algebraic scaling test, each of $m$ blocks has four coordinate rays with integer port columns
+\[
+ (3,0)^T,\ (1,2)^T,\ (2,1)^T,\ (0,3)^T.
+\]
+Only rays from the same one of the two pairs $\{0,1\}$ and $\{2,3\}$ may be mixed. Their normalized mode domains are $[0,2/3]$ and $[1/3,1]$, respectively. The atlas has the same four slopes $0,1/3,2/3,1$ for every $m$. The number of local admissible rays is $4m$; the number of compatible local simplexes is $6m$.
+
+The comparison baseline enumerates every one of the $2^m$ global binary mode histories. For each history, it intersects its closed intervals and maximizes the resulting affine sum at the interval endpoints. Thus it is exact and reasonably specialized, not a generic nonlinear solver. Both methods compute the same exact optimum. The deterministic source objective coefficient for block $i$ and coordinate $j$, with zero-based indices, is
+\[
+ c_{ij}=\bigl(7(i+2)(j+3)+3j\bmod19\bigr)-9.
+\]
+
+Five paired trials alternate method order. Table~\ref{tab:modes} reports milliseconds, comparing the Cartesian baseline with both complete atlas preparation plus one query and a query reusing its prepared tables.
+
+\begin{table}[ht]
+\centering\small
+\input{mode_table.tex}
+\caption{Exact synchronized sleeve benchmark, medians of five trials in milliseconds. ``Total ratio'' is Cartesian time divided by atlas preparation-plus-query time; ratios below one are regressions. No row is a knot-recognition benchmark.}
+\label{tab:modes}
+\end{table}
+
+At 16 blocks, 65,536 mode histories are replaced by four port tests over 96 local simplexes. Complete atlas preparation and query is about \ModeRatio\ times faster than the exact Cartesian baseline in this run. The reused query is still cheaper, but the headline comparison includes preparation.
+
+Small cases lose. With one or two blocks, the specialized Cartesian solver is roughly 26 times faster than preparing a general atlas; even at eight blocks, preparation plus one query is slower. At four blocks, the reused atlas query is also slightly slower. These are retained results, not discarded warm-up cases. A production dispatcher should distinguish a one-shot small problem from a large product or repeated-objective workload.
+
+The measured exponential baseline does not imply that every other algorithm must enumerate those histories. The theorem supplies an explicit alternative. Nor does a finite timing table prove its asymptotic bound: the bound follows from the proofs, and the table checks that the delivered implementation exhibits the expected local behavior.

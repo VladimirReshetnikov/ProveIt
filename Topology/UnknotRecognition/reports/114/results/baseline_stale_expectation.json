@@ -1,0 +1,57 @@
+{
+  "source_revision": "e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39",
+  "module_sha256": "8294cc66ec3c698c30441c3916e192fa7751686893fa6fd1cdd060894c62c3a6",
+  "method": "Loaded pinned original module via git show into a distinct in-memory module; dependencies unchanged",
+  "case": "pilot/fibonacci_lst_06/0",
+  "checks": [
+    {
+      "forest": "adaptive",
+      "status": "COMPLETE",
+      "reason": null,
+      "histogram": [
+        {
+          "genus": 1,
+          "multiplicity": 1
+        },
+        {
+          "genus": 2,
+          "multiplicity": 1
+        }
+      ]
+    },
+    {
+      "forest": "source",
+      "status": "INCONCLUSIVE",
+      "reason": "raw_cancellation_stalled",
+      "histogram": null
+    }
+  ],
+  "correction": "Pin lower_forest=source in the historical refusal assertion; default adaptive behavior unchanged",
+  "additional_case": {
+    "id": "pilot/fibonacci_lst_04/0",
+    "results": [
+      {
+        "lower_forest": "adaptive",
+        "status": "COMPLETE",
+        "reason": null,
+        "histogram": [
+          {
+            "genus": 1,
+            "multiplicity": 1
+          },
+          {
+            "genus": 2,
+            "multiplicity": 1
+          }
+        ]
+      },
+      {
+        "lower_forest": "source",
+        "status": "INCONCLUSIVE",
+        "reason": "raw_cancellation_stalled",
+        "histogram": null
+      }
+    ],
+    "test_correction": "Explicit lower_forest=source in the historical refusal assertion in test_disk_bundle_absorption.py."
+  }
+}

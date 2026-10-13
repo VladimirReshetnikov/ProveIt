@@ -1,0 +1,31 @@
+\section{Research position and the improvement pursued}
+\label{sec:position}
+
+\subsection{Discovery rather than another supplied-surface observer}
+The inspected ProveIt material distinguishes a complete exact recognizer from its many compressed geometric and algebraic operators. Its README explicitly does not assert a general quasi-polynomial bound. The recent catalogue contains work on raw normal cuts, normal-coordinate sectors, source-certified interfaces, cancellation, and hierarchy bookkeeping. Report 96 addresses a different but equally necessary task: discovering a positive-objective admissible vector without multiplying all local compatibility searches \cite{repo,scalar}.
+
+This article continues that discovery direction. Its input is not a supplied normal surface; it is a finite source system whose useful surface is to be found. The output is a positive matching vector, or a complete negative answer to the specified algebraic query. For a positive answer, we can additionally produce and independently check an extreme source ray. The normal-surface interpretation is invoked only after the source equations have been authenticated.
+
+The mathematical opportunity is that many independent local choices may meet the \emph{same} small interface. A direct implementation would select a compatibility mode in each piece and solve every global combination. We instead choose a finite set of interface values at which the local pieces can be optimized independently. The central issue is completeness: the set must not omit boundary strata, introduce incompatible mixtures, or depend on a particular Euler objective.
+
+\subsection{Relation to the announced target}
+Lackenby's 2021 slides state an $n^{O(\log n)}$ unknot-recognition bound. The July 2026 preprint develops a hierarchy algorithm, while its Section 9 deliberately separates iteration counting from the insufficiently specified cost of several operations. Its displayed iteration estimate is $L(g+1)^L$, in terms of hierarchy length and pattern complexity \cite{slides,lack2026}. A faster local search is therefore useful without being an end-to-end complexity theorem.
+
+Our most general implemented bound has logarithm
+\begin{equation}
+ O\bigl(d^2(k+\log(m+d+2))\bigr)+O(\log\Lambda),
+ \label{eq:headline-log}
+\end{equation}
+under the definitions below. Logarithmic $d$ and $k$, with polynomially bounded source size, give $2^{O((\log n)^3)}$. Obtaining the stronger $n^{O(\log n)}$ target through this kernel requires the expression in \eqref{eq:headline-log} to be $O((\log n)^2)$, together with compatible bounds for all other operations. These exponents are not interchangeable.
+
+\subsection{What is new in the present development}
+We do not claim novelty for normal matching cones, extreme-ray support tests, linear-programming bases, polyhedral arrangements, or parametric linear programming. These are established tools; normal-surface complexity and branching algorithms are discussed in \cite{bo,bps}, and parametric LP in \cite{parametric}. Nor do we claim an exhaustive literature-priority search.
+
+The proposed additions are a \emph{single objective-independent atlas} for a synchronized family of locally incompatible cones; its particularly small two-port form; uniform reuse under all coordinate-zero restrictions; a higher-dimensional construction that handles lower-dimensional feasible domains explicitly; and a source-safe recovery contract that does not extend the scalar no-new-rays assertion without proof. The implementation and the measured source-query workload follow those exact theorems.
+
+Report 96 summarizes arbitrary signed scalar subtrees by a few one-dimensional continuation data. Our hypothesis is different: higher-dimensional pieces share one master port, rather than recursively transporting distinct higher-dimensional ports along a tree. Neither result subsumes the other. In particular, this article does not claim to solve the general two-coordinate continuation problem left open by that report.
+
+\subsection{Scope of the repository audit}
+The reference revision is \pin. The source review was targeted: the main README, the synthesis introduction, the report catalogue through report 105, report 96's article entry point and README, and its complete fixture module were read through the GitHub connector. Some initial reads used the moving main branch; the returned blob identifiers are recorded in \code{SOURCE_AUDIT.md} rather than being silently treated as a verified full checkout.
+
+Four ZIP archives were visible in \code{docs/incoming}: exceptional rows, matroidal dual forests, nonlinear activation forests, and ordered interface kernels. Their directory records were inspected, but the available binary-fetch routes did not provide their contents. We consequently make no claim of exhaustive overlap review of those deliveries. No upstream default, incoming archive, or numbered report was modified. The current package is an additive proposed continuation.

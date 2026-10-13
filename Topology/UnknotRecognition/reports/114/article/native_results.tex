@@ -1,0 +1,50 @@
+The extended report-57 scan contains 1,374 standard vertex surfaces,
+excluding its Fibonacci and connected-sum records. The baseline completes
+1,205 and refuses 169. The recorded baseline refusal reasons are 52 raw
+cancellation stalls, 101 boundary-kernel stalls, five raw ball-cancellation
+obstructions, and eleven annular attachments. Inspecting the refused cases
+under the tested source, maximum-passage, and reverse-ID forests finds 52
+with a complete augmented core and pending annuli. Exactly five of those
+families pass the signed common-basis test. All five now pass the complete
+source-authenticated wrapper with its production forest policy.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+Case & $t$ & $W$ & Source letters & Word nodes & Moves & Regina cut $t$\\
+\midrule
+E71 & 10 & 30 & 45 & 16 & 4 & 297\\
+I134 & 13 & 37 & 56 & 24 & 2 & 377\\
+I136 & 13 & 37 & 59 & 18 & 3 & 386\\
+I205 & 13 & 38 & 57 & 19 & 3 & 398\\
+I290 & 13 & 38 & 57 & 21 & 2 & 398\\
+\bottomrule
+\end{tabular}
+\caption{Five new native gains. E denotes \texttt{finite\_figureEight}; I
+denotes \texttt{finite\_figureEight\_interior}; numbers are the frozen
+standard-vertex indices. Every result is two genus-two handlebodies, with
+independent whole-cut replay and Regina 7.4 agreement.}
+\label{tab:native}
+\end{table}
+
+E71 uses the ordinary signed schema. I134, I136, I205, and I290 first use
+the established top 2--3 reduction and the second signed schema. The five
+complete certificate files have canonical sizes 144,704; 199,262; 160,239;
+198,738; and 198,726 bytes respectively. Most evidence is the existing
+source geometry, rather than the short Nielsen move list.
+
+In one recorded run, whole-cut production took between 0.053 and 0.105
+seconds on these five cases, and full independent replay between 0.075 and
+0.118 seconds. These are single-run observations on a shared execution
+host, not an isolated timing comparison or a claimed multiplicative speed-up.
+The baseline timings measure refusals; the new timings measure completed
+certificates. Source encodings and exact operation counts are the more
+reproducible performance evidence.
+
+Two other exploratory banks produced no new opportunities: all 660 tested
+Fibonacci vertex/scaled cuts and all 1,700 deterministic seed relabelings
+were already completed by the baseline. The broader 1,374-case discovery
+search took 562.07 seconds and included a separate literal Whitehead search
+used to investigate refused states. That exploration time is not the cost
+of the new compressed production algorithm.

@@ -1,0 +1,37 @@
+Separate integration review after immutable report-114 intake (12 October 2026).
+
+Exact pinned base e0b2f802f336fcb51e9ec5f29174cfe28dfb9d39; git archive fast,
+git apply --check and apply integration.patch in an isolated scratch checkout.
+The 18 named delivered unittest tests passed in 4.880 seconds under Python
+3.13.14 / installed Regina 7.4. These are delivery tests, not maintained tests.
+
+Read all six new producer/verifier modules, the wrapper patch and the theorem
+fragment. The topology uses a common automorphism for all pending curves,
+Gordon's every-subset criterion, and avoidance only of disk attachment regions.
+The rank-two test uses Out(F_2)=GL_2(Z), compressed Euclidean Nielsen lifts,
+and subgroup inheritance of conjugate primitive families. Support blocks larger
+than two remain unsupported. Native source transport requires a complete
+geometric row-leaf or column-private cancellation proof. The Euler/group
+terminal alone cannot substitute for that geometric core proof.
+
+Primary sources checked independently:
+https://www.sciencedirect.com/science/article/pii/0166864187900939
+  Gordon's abstract states the equivalence with all subsets of 2-handle attachments.
+https://arxiv.org/html/2607.21499v1
+  Kapovich, Compressed primitivity problem in free groups, 23 July 2026;
+  abstract and introduction: fixed-rank compressed primitivity in NP,
+  deterministic polynomial rank-two decision. Strict Whitehead descent does
+  not supply a polynomial compressed-input bound. This primary result does
+  not itself give a general hierarchy or unknot-recognition bound.
+
+Integration issue found by inspection: signed_annulus_source_verify catches
+ValueError/TypeError/ArithmeticError raised by callbacks inside _verify;
+signed_annulus_basis_verify wraps source and WordArena callbacks in another
+broad value-error handler; cyclic_basis_verify similarly catches callback
+ValueError. Preserve callback exceptions explicitly in any maintained adapter,
+and add late/falsey callback tests rather than relying on initial checks.
+
+Do not apply the old wrapper wholesale: it predates deferred forests, current
+gap-prefix replay, and the newly maintained Euler/group terminal. Retain the
+existing 112 positive packets and shared source/boundary budget contract.
+No report-114 code has yet been installed into the maintained runtime.
