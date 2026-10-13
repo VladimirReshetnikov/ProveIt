@@ -159,16 +159,6 @@ end LeanProofs.GowersSzemeredi
 
 namespace LeanProofs.GowersSzemeredi
 
-/-- The family exponent of the small dimension-two seed. -/
-def splitSeedSmallA : Nat := 32
-
-/-- The parameter degree of the small dimension-two seed. -/
-def splitSeedSmallD : Nat := 2 ^ 48
-
-end LeanProofs.GowersSzemeredi
-
-namespace LeanProofs.GowersSzemeredi
-
 /-- The polynomial base-budget degree of the Fejér fixed parameters. -/
 def pDeg (k : Nat) : Nat := 5 * k + 21
 
@@ -321,104 +311,6 @@ theorem split_step_gen {k a D a' D' P T e s : Nat} (ha : 1 ≤ a)
           Nat.add_le_add (Nat.mul_le_mul (Nat.mul_le_mul hA hsum) (e20 ▸ hP)) hT
       _ ≤ 8 * Z * X * Y := split_step_arith _ _ _ hX1 hY1
       _ = _ := hprod
-
-end LeanProofs.GowersSzemeredi
-
-namespace LeanProofs.GowersSzemeredi
-
-/-- The family exponent of the next split class, combined by `max`. -/
-def splitStepAMax (k a : Nat) : Nat := max (sCountN k a) (sExpN k a)
-
-/-- The parameter degree with general step inputs, combined by `max`. -/
-def splitStepDMaxWith (P T k a D : Nat) : Nat :=
-  max (max (wCountW P k a D) (wExpW P T k a D)) (wThrDeg P D)
-
-theorem splitStepAMax_le_sum (k a : Nat) : splitStepAMax k a ≤ splitStepA k a := by
-  unfold splitStepAMax splitStepA
-  exact max_le (Nat.le_add_right _ _) (Nat.le_add_left _ _)
-
-theorem splitStepDMaxWith_le_sum (P T k a D : Nat) :
-    splitStepDMaxWith P T k a D ≤ splitStepDWith P T k a D := by
-  unfold splitStepDMaxWith splitStepDWith
-  refine max_le (max_le ?_ ?_) ?_ <;> omega
-
-/-- The split recursion with the Fejér inputs, combined by `max`. -/
-def splitPairMax (seedA seedD : Nat) : Nat → Nat × Nat
-  | 0 => (seedA, seedD)
-  | k + 1 => if k < 2 then (seedA, seedD)
-      else (splitStepAMax k (splitPairMax seedA seedD k).1,
-        splitStepDMaxWith (fejerStepP k) (fejerStepT k) k
-          (splitPairMax seedA seedD k).1 (splitPairMax seedA seedD k).2)
-
-theorem splitPairMax_two (seedA seedD : Nat) : splitPairMax seedA seedD 2 = (seedA, seedD) := by
-  simp [splitPairMax]
-
-theorem splitPairMax_succ (seedA seedD : Nat) {k : Nat} (hk : 2 ≤ k) :
-    splitPairMax seedA seedD (k + 1) =
-      (splitStepAMax k (splitPairMax seedA seedD k).1,
-        splitStepDMaxWith (fejerStepP k) (fejerStepT k) k
-          (splitPairMax seedA seedD k).1 (splitPairMax seedA seedD k).2) := by
-  rw [splitPairMax, if_neg (by omega)]
-
-/-- The exact twelfth dimension fits the invariant at constant `5/2`. -/
-theorem split_pair_max_twelve_half :
-    1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD 12).1 ∧
-      1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD 12).2 ∧
-      2 ^ (12 + 6) * (splitPairMax splitSeedSmallA splitSeedSmallD 12).1 ≤ 2 ^ (5 * 2 ^ (12 - 1)) ∧
-      (splitPairMax splitSeedSmallA splitSeedSmallD 12).2 ≤
-        2 ^ (5 * 2 ^ (12 - 1) + 3 * (12 + 4) ^ 2) := by
-  refine ⟨?_, ?_, ?_, ?_⟩ <;> decide +kernel
-
-/-- **The split invariants at class constant `5/2` in every dimension `l ≥ 12`.** -/
-theorem split_pair_max_half : ∀ l, 12 ≤ l →
-    1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).1 ∧
-      1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).2 ∧
-      2 ^ (l + 6) * (splitPairMax splitSeedSmallA splitSeedSmallD l).1 ≤ 2 ^ (5 * 2 ^ (l - 1)) ∧
-      (splitPairMax splitSeedSmallA splitSeedSmallD l).2 ≤
-        2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2) := by
-  intro l hl
-  induction l, hl using Nat.le_induction with
-  | base => exact split_pair_max_twelve_half
-  | succ k hk ih =>
-    obtain ⟨ha, hDp, hAb, hDb⟩ := ih
-    rw [splitPairMax_succ _ _ (by omega)]
-    set a := (splitPairMax splitSeedSmallA splitSeedSmallD k).1
-    set D := (splitPairMax splitSeedSmallA splitSeedSmallD k).2
-    obtain ⟨h1, h2⟩ := split_step_gen ha hAb hDb ((splitStepAMax_le_sum k a).trans (splitStepA_le ha))
-      ((splitStepDMaxWith_le_sum _ _ k a D).trans (splitStepDWith_le ha hDp (fejerStepP_ge k))) (fejerStepP_le k) (fejerStepT_le k)
-    have he : 2 * (5 * 2 ^ (k - 1)) = 5 * 2 ^ (k + 1 - 1) := by
-      rw [show k + 1 - 1 = (k - 1) + 1 by omega, pow_succ]; ring
-    refine ⟨?_, ?_, he ▸ h1, h2.trans (Nat.pow_le_pow_right (by norm_num) ?_)⟩
-    · exact (show 1 ≤ sCountN k a by unfold sCountN; omega).trans (le_max_left _ _)
-    · exact (show 1 ≤ wCountW (fejerStepP k) k a D by unfold wCountW; omega).trans
-        ((le_max_left _ _).trans (le_max_left _ _))
-    · have hs : 3 * (k + 1 + 4) ^ 2 = 3 * (k + 4) ^ 2 + 6 * k + 27 := by ring
-      rw [← he, hs]
-      omega
-
-/-- **The max-split degrees beyond dimension `14`**, in closed form. -/
-theorem split_pair_max_le_closed {l : Nat} (hl : 15 ≤ l) :
-    (splitPairMax splitSeedSmallA splitSeedSmallD l).1 +
-      (splitPairMax splitSeedSmallA splitSeedSmallD l).2 + l + 1 ≤
-        2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 + 2) := by
-  obtain ⟨-, -, hA, hD⟩ := split_pair_max_half l (by omega)
-  set a := (splitPairMax splitSeedSmallA splitSeedSmallD l).1
-  set D := (splitPairMax splitSeedSmallA splitSeedSmallD l).2
-  set Y := 2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2) with hYdef
-  have ha : a ≤ Y := by
-    have h1 : a ≤ 2 ^ (5 * 2 ^ (l - 1)) :=
-      le_trans (Nat.le_mul_of_pos_left a (Nat.two_pow_pos _)) hA
-    exact h1.trans (Nat.pow_le_pow_right (by norm_num) (by omega))
-  have hl1 : l + 1 ≤ Y := by
-    have h1 : l + 1 ≤ 2 ^ (l + 1) := Nat.lt_two_pow_self.le
-    have h2 : l + 1 ≤ 5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 := by
-      have : l + 1 ≤ (l + 4) ^ 2 := by nlinarith
-      omega
-    exact h1.trans (Nat.pow_le_pow_right (by norm_num) h2)
-  have h4 : 2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 + 2) = 4 * Y := by
-    rw [hYdef, pow_add]; ring
-  rw [h4]
-  omega
 
 end LeanProofs.GowersSzemeredi
 
@@ -1041,56 +933,73 @@ theorem splitQuad3_two : splitQuad3 2 = ((11, 2 ^ 39), (29, 2 ^ 46)) := by simp 
 theorem splitQuad3_succ {k : Nat} (hk : 2 ≤ k) : splitQuad3 (k + 1) = splitQuadStep k (splitQuad3 k) := by
   rw [splitQuad3, if_neg (by omega)]
 
-/-- **The two-track degrees stay below the `max` pairs.** -/
-theorem split_quad3_le_max : ∀ l, 2 ≤ l →
-    1 ≤ (splitQuad3 l).1.1 ∧ 1 ≤ (splitQuad3 l).1.2 ∧ 1 ≤ (splitQuad3 l).2.1 ∧ 1 ≤ (splitQuad3 l).2.2 ∧
-      (splitQuad3 l).1.1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).1 ∧
-      (splitQuad3 l).1.2 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).2 ∧
-      (splitQuad3 l).2.1 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).1 ∧
-      (splitQuad3 l).2.2 ≤ (splitPairMax splitSeedSmallA splitSeedSmallD l).2 := by
+/-- Every component of the two-track recursion is positive. -/
+theorem splitQuad3_pos (l : Nat) :
+    1 ≤ (splitQuad3 l).1.1 ∧ 1 ≤ (splitQuad3 l).1.2 ∧
+      1 ≤ (splitQuad3 l).2.1 ∧ 1 ≤ (splitQuad3 l).2.2 := by
+  cases l with
+  | zero => norm_num [splitQuad3]
+  | succ k =>
+    rw [splitQuad3]
+    split_ifs with hk
+    · norm_num
+    · change 1 ≤ sCountN k _ ∧ 1 ≤ max (fsCountW k _ _) (fejerStepThrDeg k _) ∧
+        1 ≤ sExpN2 k _ _ ∧ 1 ≤ fsExpW2 k _ _ _ _
+      refine ⟨?_, ?_, ?_, ?_⟩
+      · unfold sCountN; omega
+      · exact (show 1 ≤ fejerStepThrDeg k _ by unfold fejerStepThrDeg; omega).trans (le_max_right _ _)
+      · unfold sExpN2; omega
+      · unfold fsExpW2; omega
+
+/-- A two-track step is bounded by the one-step estimates at common upper bounds. -/
+theorem splitQuadStep_le {k ac Dc ae De a D : Nat}
+    (hac : ac ≤ a) (hDc : Dc ≤ D) (hae : ae ≤ a) (hDe : De ≤ D) :
+    max (sCountN k ac) (sExpN2 k ac ae) ≤ splitStepA k a ∧
+      max (max (fsCountW k ac Dc) (fejerStepThrDeg k Dc)) (fsExpW2 k ac Dc ae De) ≤
+        splitStepDWith (fejerStepP k) (fejerStepT k) k a D := by
+  have hc : sCountN k ac ≤ sCountN k a := by
+    simp only [sCountN, sSN, sQrN, sPbN]; gcongr
+  have he : sExpN2 k ac ae ≤ sExpN k a := by
+    unfold sExpN2 sExpN sLN2 sLN sPbN2 sPbN sSN sQrN sBqN sErN; gcongr
+  have hcw : fsCountW k ac Dc ≤ wCountW (fejerStepP k) k a D := by
+    simp only [fsCountW, wCountW, fsSW, fsPbW, fsQrW, fsStepY, wSW, wPbW, wStepY]; gcongr
+  have hct : fejerStepThrDeg k Dc ≤ wThrDeg (fejerStepP k) D := by
+    unfold fejerStepThrDeg wThrDeg; gcongr
+  have hew : fsExpW2 k ac Dc ae De ≤ wExpW (fejerStepP k) (fejerStepT k) k a D := by
+    unfold fsExpW2 wExpW fsZW wZW fsLW2 wLW fsBqW wBqW fsErW wErW fsEbW wEbW fsPbW2 wPbW fsSW wSW
+      fsQrW fsStepY wStepY
+    gcongr
+  unfold splitStepA splitStepDWith
+  omega
+
+/-- The actual two-track degrees satisfy the class invariant at constant `5/2`. -/
+theorem split_quad3_half : ∀ l, 12 ≤ l →
+    2 ^ (l + 6) * max (splitQuad3 l).1.1 (splitQuad3 l).2.1 ≤ 2 ^ (5 * 2 ^ (l - 1)) ∧
+      max (splitQuad3 l).1.2 (splitQuad3 l).2.2 ≤
+        2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2) := by
   intro l hl
   induction l, hl using Nat.le_induction with
-  | base =>
-    rw [splitQuad3_two, splitPairMax_two]
-    unfold splitSeedSmallA splitSeedSmallD
-    refine ⟨by norm_num, Nat.one_le_two_pow, by norm_num, Nat.one_le_two_pow, by norm_num,
-      Nat.pow_le_pow_right (by norm_num) (by norm_num), by norm_num,
-      Nat.pow_le_pow_right (by norm_num) (by norm_num)⟩
+  | base => constructor <;> decide +kernel
   | succ k hk ih =>
-    obtain ⟨h1, h2, h3, h4, hac, hDc, hae, hDe⟩ := ih
-    rw [splitQuad3_succ hk, splitPairMax_succ _ _ hk]
-    set ac := (splitQuad3 k).1.1
-    set Dc := (splitQuad3 k).1.2
-    set ae := (splitQuad3 k).2.1
-    set De := (splitQuad3 k).2.2
-    set a := (splitPairMax splitSeedSmallA splitSeedSmallD k).1
-    set D := (splitPairMax splitSeedSmallA splitSeedSmallD k).2
-    show 1 ≤ sCountN k ac ∧ 1 ≤ max (fsCountW k ac Dc) (fejerStepThrDeg k Dc) ∧
-      1 ≤ sExpN2 k ac ae ∧ 1 ≤ fsExpW2 k ac Dc ae De ∧
-      sCountN k ac ≤ splitStepAMax k a ∧
-      max (fsCountW k ac Dc) (fejerStepThrDeg k Dc) ≤
-        splitStepDMaxWith (fejerStepP k) (fejerStepT k) k a D ∧
-      sExpN2 k ac ae ≤ splitStepAMax k a ∧
-      fsExpW2 k ac Dc ae De ≤ splitStepDMaxWith (fejerStepP k) (fejerStepT k) k a D
-    have hc : sCountN k ac ≤ sCountN k a := by
-      simp only [sCountN, sSN, sQrN, sPbN]; gcongr
-    have he : sExpN2 k ac ae ≤ sExpN k a := by
-      unfold sExpN2 sExpN sLN2 sLN sPbN2 sPbN sSN sQrN sBqN sErN; gcongr
-    have hcw : fsCountW k ac Dc ≤ wCountW (fejerStepP k) k a D := by
-      simp only [fsCountW, wCountW, fsSW, fsPbW, fsQrW, fsStepY, wSW, wPbW, wStepY]; gcongr
-    have hct : fejerStepThrDeg k Dc ≤ wThrDeg (fejerStepP k) D := by
-      unfold fejerStepThrDeg wThrDeg; gcongr
-    have hew : fsExpW2 k ac Dc ae De ≤ wExpW (fejerStepP k) (fejerStepT k) k a D := by
-      unfold fsExpW2 wExpW fsZW wZW fsLW2 wLW fsBqW wBqW fsErW wErW fsEbW wEbW fsPbW2 wPbW fsSW wSW
-        fsQrW fsStepY wStepY
-      gcongr
-    refine ⟨?_, ?_, ?_, ?_, hc.trans (le_max_left _ _), max_le (hcw.trans ?_) (hct.trans (le_max_right _ _)),
-      he.trans (le_max_right _ _), hew.trans ((le_max_right _ _).trans (le_max_left _ _))⟩
-    · unfold sCountN; omega
-    · exact (show 1 ≤ fejerStepThrDeg k Dc by unfold fejerStepThrDeg; omega).trans (le_max_right _ _)
-    · unfold sExpN2; omega
-    · unfold fsExpW2; omega
-    · exact (le_max_left _ _).trans (le_max_left _ _)
+    obtain ⟨hAb, hDb⟩ := ih
+    set a := max (splitQuad3 k).1.1 (splitQuad3 k).2.1
+    set D := max (splitQuad3 k).1.2 (splitQuad3 k).2.2
+    have ha : 1 ≤ a := (splitQuad3_pos k).1.trans (le_max_left _ _)
+    have hDp : 1 ≤ D := (splitQuad3_pos k).2.1.trans (le_max_left _ _)
+    obtain ⟨hAn, hDn⟩ := splitQuadStep_le (k := k) (a := a) (D := D)
+      (ac := (splitQuad3 k).1.1) (Dc := (splitQuad3 k).1.2)
+      (ae := (splitQuad3 k).2.1) (De := (splitQuad3 k).2.2)
+      (le_max_left _ _) (le_max_left _ _) (le_max_right _ _) (le_max_right _ _)
+    obtain ⟨h1, h2⟩ := split_step_gen ha hAb hDb (hAn.trans (splitStepA_le ha))
+      (hDn.trans (splitStepDWith_le ha hDp (fejerStepP_ge k))) (fejerStepP_le k) (fejerStepT_le k)
+    have he : 2 * (5 * 2 ^ (k - 1)) = 5 * 2 ^ (k + 1 - 1) := by
+      rw [show k + 1 - 1 = (k - 1) + 1 by omega, pow_succ]; ring
+    rw [splitQuad3_succ (by omega)]
+    refine ⟨he ▸ h1, h2.trans (Nat.pow_le_pow_right (by norm_num) ?_)⟩
+    have hs : 3 * (k + 1 + 4) ^ 2 = 3 * (k + 4) ^ 2 + 6 * k + 27 := by ring
+    rw [← he, hs]
+    omega
+
 
 /-- **A two-track class in every dimension `k ≥ 2`.** -/
 theorem splitUniformClass2_all3 (Kc pc : Nat → Nat) (hK : ∀ k, 1 ≤ Kc k) (hp : ∀ k, 0 < pc k)
@@ -1109,7 +1018,7 @@ theorem splitUniformClass2_all3 (Kc pc : Nat → Nat) (hK : ∀ k, 1 ≤ Kc k) (
       (hc1.2.trans le_rfl)
   | succ k hk ih =>
     obtain ⟨C⟩ := ih
-    obtain ⟨h1, h2, h3, h4, -⟩ := split_quad3_le_max k hk
+    obtain ⟨h1, h2, h3, h4⟩ := splitQuad3_pos k
     have hV1 := one_le_classV Kc pc k
     have hc := const_le_classV_succ Kc pc k
     rw [splitQuad3_succ hk]
@@ -1161,11 +1070,22 @@ theorem split_quad3_le_uDegT3 {l : Nat} (hl : 2 ≤ l) :
       uDegT3 l := by
   rcases Nat.lt_or_ge l 15 with h | h
   · interval_cases l <;> decide +kernel
-  · obtain ⟨-, -, -, -, hac, hDc, hae, hDe⟩ := split_quad3_le_max l hl
-    have hM := split_pair_max_le_closed h
-    unfold uDegT3; rw [tDegT3_eq_of_ge h]
-    have h1 := max_le hac hae
-    have h2 := max_le hDc hDe
+  · obtain ⟨hA, hD⟩ := split_quad3_half l (by omega)
+    set a := max (splitQuad3 l).1.1 (splitQuad3 l).2.1
+    set Y := 2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2) with hYdef
+    have ha : a ≤ Y := by
+      have h1 : a ≤ 2 ^ (5 * 2 ^ (l - 1)) :=
+        le_trans (Nat.le_mul_of_pos_left a (Nat.two_pow_pos _)) hA
+      exact h1.trans (Nat.pow_le_pow_right (by norm_num) (by omega))
+    have hl1 : l + 1 ≤ Y := by
+      have h1 : l + 1 ≤ 2 ^ (l + 1) := Nat.lt_two_pow_self.le
+      have h2 : l + 1 ≤ 5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 := by
+        have : l + 1 ≤ (l + 4) ^ 2 := by nlinarith
+        omega
+      exact h1.trans (Nat.pow_le_pow_right (by norm_num) h2)
+    have h4 : 2 ^ (5 * 2 ^ (l - 1) + 3 * (l + 4) ^ 2 + 2) = 4 * Y := by
+      rw [hYdef, pow_add]; ring
+    unfold uDegT3; rw [tDegT3_eq_of_ge h, h4]
     omega
 
 /-- **The class cover in dimension `l` at degree `uDegT3 l`.** -/
