@@ -1,0 +1,1541 @@
+{
+  "passed": true,
+  "source_sha256": {
+    "fast/fastunknot/normal_crushing.py": "5d7f368980fb7465fae0947f813a70003f263c07bf8dfeb0d6e4f35e893c9d31",
+    "fast/fastunknot/normal_crushing_verify.py": "df6f361e6c1ad990655050298e27f8f8414bf930e5cb186055a6075cf2e26c45",
+    "fast/fastunknot/normal_crushing_chain.py": "db573f93ccc4f9602689ef2dac0e36ca17ba14f5b4fe1094fec4354c70a8f8f0",
+    "fast/fastunknot/normal_crushing_search.py": "2292da7fe9fe161ce0c605257ba4b960d3d4d5d54ae544d3b5c8fe177bda869b",
+    "fast/fastunknot/normal_sector.py": "68fcdff4b8cc3b3bd0033f66c3328cfbd42bbbbad36de855d3f77d430138fac5",
+    "fast/fastunknot/normal_sector_verify.py": "ccbd0aa252bbf161f03e0a18aa634b0bf6ba4c3b1c24445707191953d552bc4f",
+    "fast/fastunknot/normal_disk_kernel.py": "d5bb1c102616496b8f3d48f715d1c53c083c6751cee9fccd94289ba723710e44",
+    "fast/fastunknot/normal_surface_geometry.py": "3c7e818428ea60d2a331e9eb3a457dc1baefdb135fe18bf5af3c1b2868839281",
+    "fast/fastunknot/source_kernel.py": "2275402c3c17fe5455dfbf74979806bc7eae8d2d29468ae7235cc12f9c0dcaa8",
+    "fast/fastunknot/source_kernel_verify.py": "140aae7261aa60d1dbe7c2f74bd334e0c4c0c3855cc425fbfb652254b46edb2f",
+    "fast/fastunknot/diagram_exterior.py": "43fd690cf157916de6c68c333cb148f2e0e5bcca26d112662c7b2e1fa1f89365",
+    "fast/fastunknot/diagram_exterior_verify.py": "a200499bac549d094ce17e784c2bd3a7267cce874518a6c9974c5c900ef4123d",
+    "fast/fastunknot/boundary_shellings.py": "f9c6b0e4c5e879504cfe89e56906891e1fe88915022c2bcd5448b1d7375f9381",
+    "fast/fastunknot/boundary_shellings_verify.py": "acc5b77c4c5029cb725e46122276f039ba743d5119156bcdc29be17aadb25151",
+    "fast/normal_crushing_research/audit.py": "5728b6482b2c6574c546ba7d8375e79875d85a390c428a92be1e8f46ffef5b43",
+    "fast/normal_crushing_research/benchmark.py": "af47603d7e7e032442f928cb45c2b9c7703f410bdd028e93e7e9ccc3802bfcbd",
+    "fast/normal_crushing_research/check_evidence.py": "4b43a7f20d397ab9480c930dffaea16e11fa7330c0b5040cc9eeb842de8614bd",
+    "fast/normal_crushing_research/fixtures.py": "16354448db35445e981c564e34808b7de23b6e07ca824ff3d7f295bbaa2e7e25",
+    "fast/normal_crushing_research/oracle.py": "cd7be23d51dfe4b01a19e02a44dc5011add724171985e7d82aa9f548e8260650",
+    "fast/normal_crushing_research/probe.py": "60263f9b5e520f27d5f8353eeb93d49311d8d9bfacb24cb5626b077b527998ae"
+  },
+  "pairs": 9,
+  "aa": 3,
+  "batch": 3,
+  "seed": 11720261012,
+  "python": "3.13.14 (main, Jun 23 2026, 15:18:27) [Clang 22.1.3 ]",
+  "platform": "Linux-5.15.0-186-generic-x86_64-with-glibc2.35",
+  "scope": "two positive complete queries including construction, shelling, replay and serialization; adaptive is principal baseline; direct standard is an ablation",
+  "records": [
+    {
+      "id": "circle",
+      "input_pd": [],
+      "samples": [
+        {
+          "order": [
+            "standard_ablation",
+            "crushing_canonical",
+            "adaptive",
+            "crushing"
+          ],
+          "results": {
+            "standard_ablation": {
+              "ns": 9042213.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "3e017192869cbe958d37c7f20682236bb082af4138b0611b6d13d17391c78232"
+            },
+            "crushing_canonical": {
+              "ns": 8513173.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4830,
+              "output_sha256": "65f7f2a1a854bf4e32b7557ebe44933a298cca384d5822009919e9bf24977bb0"
+            },
+            "adaptive": {
+              "ns": 7842464.666666667,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            },
+            "crushing": {
+              "ns": 12592024.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5789,
+              "output_sha256": "52d814d491ec33f4c9f4da26a388575dc321a3fe69d621fea2931e1431b2dcbc"
+            }
+          }
+        },
+        {
+          "order": [
+            "crushing",
+            "crushing_canonical",
+            "adaptive",
+            "standard_ablation"
+          ],
+          "results": {
+            "crushing": {
+              "ns": 12534523.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5789,
+              "output_sha256": "52d814d491ec33f4c9f4da26a388575dc321a3fe69d621fea2931e1431b2dcbc"
+            },
+            "crushing_canonical": {
+              "ns": 8581774.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4830,
+              "output_sha256": "65f7f2a1a854bf4e32b7557ebe44933a298cca384d5822009919e9bf24977bb0"
+            },
+            "adaptive": {
+              "ns": 7883532.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            },
+            "standard_ablation": {
+              "ns": 8907744.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "3e017192869cbe958d37c7f20682236bb082af4138b0611b6d13d17391c78232"
+            }
+          }
+        },
+        {
+          "order": [
+            "adaptive",
+            "standard_ablation",
+            "crushing",
+            "crushing_canonical"
+          ],
+          "results": {
+            "adaptive": {
+              "ns": 7829431.333333333,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            },
+            "standard_ablation": {
+              "ns": 13424101.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "3e017192869cbe958d37c7f20682236bb082af4138b0611b6d13d17391c78232"
+            },
+            "crushing": {
+              "ns": 12554090.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5789,
+              "output_sha256": "52d814d491ec33f4c9f4da26a388575dc321a3fe69d621fea2931e1431b2dcbc"
+            },
+            "crushing_canonical": {
+              "ns": 9186781.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4830,
+              "output_sha256": "65f7f2a1a854bf4e32b7557ebe44933a298cca384d5822009919e9bf24977bb0"
+            }
+          }
+        },
+        {
+          "order": [
+            "crushing",
+            "adaptive",
+            "standard_ablation",
+            "crushing_canonical"
+          ],
+          "results": {
+            "crushing": {
+              "ns": 12674925.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5789,
+              "output_sha256": "52d814d491ec33f4c9f4da26a388575dc321a3fe69d621fea2931e1431b2dcbc"
+            },
+            "adaptive": {
+              "ns": 7868565.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            },
+            "standard_ablation": {
+              "ns": 9295816.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "3e017192869cbe958d37c7f20682236bb082af4138b0611b6d13d17391c78232"
+            },
+            "crushing_canonical": {
+              "ns": 8515873.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4830,
+              "output_sha256": "65f7f2a1a854bf4e32b7557ebe44933a298cca384d5822009919e9bf24977bb0"
+            }
+          }
+        },
+        {
+          "order": [
+            "crushing",
+            "standard_ablation",
+            "adaptive",
+            "crushing_canonical"
+          ],
+          "results": {
+            "crushing": {
+              "ns": 12258653.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5789,
+              "output_sha256": "52d814d491ec33f4c9f4da26a388575dc321a3fe69d621fea2931e1431b2dcbc"
+            },
+            "standard_ablation": {
+              "ns": 8732509.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "3e017192869cbe958d37c7f20682236bb082af4138b0611b6d13d17391c78232"
+            },
+            "adaptive": {
+              "ns": 7959599.666666667,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            },
+            "crushing_canonical": {
+              "ns": 8445705.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4830,
+              "output_sha256": "65f7f2a1a854bf4e32b7557ebe44933a298cca384d5822009919e9bf24977bb0"
+            }
+          }
+        },
+        {
+          "order": [
+            "crushing",
+            "standard_ablation",
+            "adaptive",
+            "crushing_canonical"
+          ],
+          "results": {
+            "crushing": {
+              "ns": 12291020.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5789,
+              "output_sha256": "52d814d491ec33f4c9f4da26a388575dc321a3fe69d621fea2931e1431b2dcbc"
+            },
+            "standard_ablation": {
+              "ns": 8963345.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "3e017192869cbe958d37c7f20682236bb082af4138b0611b6d13d17391c78232"
+            },
+            "adaptive": {
+              "ns": 7854531.666666667,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            },
+            "crushing_canonical": {
+              "ns": 8421438.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4830,
+              "output_sha256": "65f7f2a1a854bf4e32b7557ebe44933a298cca384d5822009919e9bf24977bb0"
+            }
+          }
+        },
+        {
+          "order": [
+            "adaptive",
+            "standard_ablation",
+            "crushing",
+            "crushing_canonical"
+          ],
+          "results": {
+            "adaptive": {
+              "ns": 7907799.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            },
+            "standard_ablation": {
+              "ns": 8930478.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "3e017192869cbe958d37c7f20682236bb082af4138b0611b6d13d17391c78232"
+            },
+            "crushing": {
+              "ns": 12322587.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5789,
+              "output_sha256": "52d814d491ec33f4c9f4da26a388575dc321a3fe69d621fea2931e1431b2dcbc"
+            },
+            "crushing_canonical": {
+              "ns": 8537406.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4830,
+              "output_sha256": "65f7f2a1a854bf4e32b7557ebe44933a298cca384d5822009919e9bf24977bb0"
+            }
+          }
+        },
+        {
+          "order": [
+            "crushing",
+            "standard_ablation",
+            "adaptive",
+            "crushing_canonical"
+          ],
+          "results": {
+            "crushing": {
+              "ns": 12450022.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5789,
+              "output_sha256": "52d814d491ec33f4c9f4da26a388575dc321a3fe69d621fea2931e1431b2dcbc"
+            },
+            "standard_ablation": {
+              "ns": 9023912.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "3e017192869cbe958d37c7f20682236bb082af4138b0611b6d13d17391c78232"
+            },
+            "adaptive": {
+              "ns": 7863231.666666667,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            },
+            "crushing_canonical": {
+              "ns": 8486139.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4830,
+              "output_sha256": "65f7f2a1a854bf4e32b7557ebe44933a298cca384d5822009919e9bf24977bb0"
+            }
+          }
+        },
+        {
+          "order": [
+            "crushing",
+            "standard_ablation",
+            "adaptive",
+            "crushing_canonical"
+          ],
+          "results": {
+            "crushing": {
+              "ns": 12189785.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5789,
+              "output_sha256": "52d814d491ec33f4c9f4da26a388575dc321a3fe69d621fea2931e1431b2dcbc"
+            },
+            "standard_ablation": {
+              "ns": 8965812.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "3e017192869cbe958d37c7f20682236bb082af4138b0611b6d13d17391c78232"
+            },
+            "adaptive": {
+              "ns": 7840598.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            },
+            "crushing_canonical": {
+              "ns": 8937978.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4830,
+              "output_sha256": "65f7f2a1a854bf4e32b7557ebe44933a298cca384d5822009919e9bf24977bb0"
+            }
+          }
+        }
+      ],
+      "aa_samples": [
+        {
+          "order": [
+            "A",
+            "B"
+          ],
+          "results": {
+            "A": {
+              "ns": 8327971.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            },
+            "B": {
+              "ns": 7923965.666666667,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            }
+          }
+        },
+        {
+          "order": [
+            "B",
+            "A"
+          ],
+          "results": {
+            "B": {
+              "ns": 7961299.666666667,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            },
+            "A": {
+              "ns": 7879665.333333333,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            }
+          }
+        },
+        {
+          "order": [
+            "A",
+            "B"
+          ],
+          "results": {
+            "A": {
+              "ns": 7866831.666666667,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            },
+            "B": {
+              "ns": 7972899.666666667,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4982,
+              "output_sha256": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347"
+            }
+          }
+        }
+      ],
+      "warmup_sha256": {
+        "adaptive": "6a60808739b04f15512a6bdf6b7bcd6b9a5a089106101c6da60261658965d347",
+        "standard_ablation": "3e017192869cbe958d37c7f20682236bb082af4138b0611b6d13d17391c78232",
+        "crushing": "52d814d491ec33f4c9f4da26a388575dc321a3fe69d621fea2931e1431b2dcbc",
+        "crushing_canonical": "65f7f2a1a854bf4e32b7557ebe44933a298cca384d5822009919e9bf24977bb0"
+      },
+      "median_ns": {
+        "adaptive": 7863231.666666667,
+        "standard_ablation": 8965812.333333334,
+        "crushing": 12450022.333333334,
+        "crushing_canonical": 8515873.0
+      },
+      "paired_adaptive_over_crushing": 0.6315837398631707,
+      "paired_ablation_over_crushing": 0.7248109621864934,
+      "paired_canonical_over_crushing": 0.6851700215504213,
+      "aa_ratio": 0.9897461046875135
+    },
+    {
+      "id": "negative_curl",
+      "input_pd": [
+        [
+          0,
+          0,
+          1,
+          1
+        ]
+      ],
+      "samples": [
+        {
+          "order": [
+            "crushing",
+            "crushing_canonical",
+            "adaptive",
+            "standard_ablation"
+          ],
+          "results": {
+            "crushing": {
+              "ns": 12447889.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5798,
+              "output_sha256": "252030c6294662e6c80a7811cdb8e99ef6336d8be124b656c259c8d262aa13bb"
+            },
+            "crushing_canonical": {
+              "ns": 12052784.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4839,
+              "output_sha256": "82fe5cd5a3d585095f5cc8b1238b4271756cc67fa10bc5b6288b93414668b88a"
+            },
+            "adaptive": {
+              "ns": 9101347.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            },
+            "standard_ablation": {
+              "ns": 13355300.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "79591736fc6f2db970ef2fdfe8af95763a6baab6295309fee39372d38826bcd6"
+            }
+          }
+        },
+        {
+          "order": [
+            "adaptive",
+            "standard_ablation",
+            "crushing",
+            "crushing_canonical"
+          ],
+          "results": {
+            "adaptive": {
+              "ns": 8275803.333333333,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            },
+            "standard_ablation": {
+              "ns": 8900011.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "79591736fc6f2db970ef2fdfe8af95763a6baab6295309fee39372d38826bcd6"
+            },
+            "crushing": {
+              "ns": 12496123.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5798,
+              "output_sha256": "252030c6294662e6c80a7811cdb8e99ef6336d8be124b656c259c8d262aa13bb"
+            },
+            "crushing_canonical": {
+              "ns": 8445105.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4839,
+              "output_sha256": "82fe5cd5a3d585095f5cc8b1238b4271756cc67fa10bc5b6288b93414668b88a"
+            }
+          }
+        },
+        {
+          "order": [
+            "adaptive",
+            "standard_ablation",
+            "crushing",
+            "crushing_canonical"
+          ],
+          "results": {
+            "adaptive": {
+              "ns": 11644912.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            },
+            "standard_ablation": {
+              "ns": 12930661.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "79591736fc6f2db970ef2fdfe8af95763a6baab6295309fee39372d38826bcd6"
+            },
+            "crushing": {
+              "ns": 12354821.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5798,
+              "output_sha256": "252030c6294662e6c80a7811cdb8e99ef6336d8be124b656c259c8d262aa13bb"
+            },
+            "crushing_canonical": {
+              "ns": 8397771.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4839,
+              "output_sha256": "82fe5cd5a3d585095f5cc8b1238b4271756cc67fa10bc5b6288b93414668b88a"
+            }
+          }
+        },
+        {
+          "order": [
+            "adaptive",
+            "crushing",
+            "crushing_canonical",
+            "standard_ablation"
+          ],
+          "results": {
+            "adaptive": {
+              "ns": 7863131.666666667,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            },
+            "crushing": {
+              "ns": 12272620.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5798,
+              "output_sha256": "252030c6294662e6c80a7811cdb8e99ef6336d8be124b656c259c8d262aa13bb"
+            },
+            "crushing_canonical": {
+              "ns": 8425972.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4839,
+              "output_sha256": "82fe5cd5a3d585095f5cc8b1238b4271756cc67fa10bc5b6288b93414668b88a"
+            },
+            "standard_ablation": {
+              "ns": 8942212.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "79591736fc6f2db970ef2fdfe8af95763a6baab6295309fee39372d38826bcd6"
+            }
+          }
+        },
+        {
+          "order": [
+            "crushing",
+            "standard_ablation",
+            "adaptive",
+            "crushing_canonical"
+          ],
+          "results": {
+            "crushing": {
+              "ns": 12492989.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5798,
+              "output_sha256": "252030c6294662e6c80a7811cdb8e99ef6336d8be124b656c259c8d262aa13bb"
+            },
+            "standard_ablation": {
+              "ns": 9419517.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "79591736fc6f2db970ef2fdfe8af95763a6baab6295309fee39372d38826bcd6"
+            },
+            "adaptive": {
+              "ns": 7970499.666666667,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            },
+            "crushing_canonical": {
+              "ns": 8820743.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4839,
+              "output_sha256": "82fe5cd5a3d585095f5cc8b1238b4271756cc67fa10bc5b6288b93414668b88a"
+            }
+          }
+        },
+        {
+          "order": [
+            "adaptive",
+            "standard_ablation",
+            "crushing",
+            "crushing_canonical"
+          ],
+          "results": {
+            "adaptive": {
+              "ns": 8093201.333333333,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            },
+            "standard_ablation": {
+              "ns": 8964778.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "79591736fc6f2db970ef2fdfe8af95763a6baab6295309fee39372d38826bcd6"
+            },
+            "crushing": {
+              "ns": 12230653.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5798,
+              "output_sha256": "252030c6294662e6c80a7811cdb8e99ef6336d8be124b656c259c8d262aa13bb"
+            },
+            "crushing_canonical": {
+              "ns": 8498473.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4839,
+              "output_sha256": "82fe5cd5a3d585095f5cc8b1238b4271756cc67fa10bc5b6288b93414668b88a"
+            }
+          }
+        },
+        {
+          "order": [
+            "standard_ablation",
+            "crushing",
+            "adaptive",
+            "crushing_canonical"
+          ],
+          "results": {
+            "standard_ablation": {
+              "ns": 8968912.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "79591736fc6f2db970ef2fdfe8af95763a6baab6295309fee39372d38826bcd6"
+            },
+            "crushing": {
+              "ns": 12320620.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5798,
+              "output_sha256": "252030c6294662e6c80a7811cdb8e99ef6336d8be124b656c259c8d262aa13bb"
+            },
+            "adaptive": {
+              "ns": 8009133.666666667,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            },
+            "crushing_canonical": {
+              "ns": 8451039.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4839,
+              "output_sha256": "82fe5cd5a3d585095f5cc8b1238b4271756cc67fa10bc5b6288b93414668b88a"
+            }
+          }
+        },
+        {
+          "order": [
+            "standard_ablation",
+            "crushing_canonical",
+            "adaptive",
+            "crushing"
+          ],
+          "results": {
+            "standard_ablation": {
+              "ns": 8981845.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "79591736fc6f2db970ef2fdfe8af95763a6baab6295309fee39372d38826bcd6"
+            },
+            "crushing_canonical": {
+              "ns": 8824143.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4839,
+              "output_sha256": "82fe5cd5a3d585095f5cc8b1238b4271756cc67fa10bc5b6288b93414668b88a"
+            },
+            "adaptive": {
+              "ns": 8036534.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            },
+            "crushing": {
+              "ns": 12413355.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5798,
+              "output_sha256": "252030c6294662e6c80a7811cdb8e99ef6336d8be124b656c259c8d262aa13bb"
+            }
+          }
+        },
+        {
+          "order": [
+            "crushing",
+            "crushing_canonical",
+            "standard_ablation",
+            "adaptive"
+          ],
+          "results": {
+            "crushing": {
+              "ns": 12275820.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 2,
+                "bases_attempted": 2,
+                "rays_examined": 2,
+                "positive_euler_rays": 2,
+                "crushing_steps": 2,
+                "stages": 2,
+                "matching_support_checks": 2,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 5798,
+              "output_sha256": "252030c6294662e6c80a7811cdb8e99ef6336d8be124b656c259c8d262aa13bb"
+            },
+            "crushing_canonical": {
+              "ns": 8437939.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "rays_examined": 1,
+                "positive_euler_rays": 1,
+                "crushing_steps": 1,
+                "stages": 1,
+                "matching_support_checks": 1,
+                "matching_support_reductions": 0,
+                "forced_zero_types": 0
+              },
+              "result_bytes": 4839,
+              "output_sha256": "82fe5cd5a3d585095f5cc8b1238b4271756cc67fa10bc5b6288b93414668b88a"
+            },
+            "standard_ablation": {
+              "ns": 9333050.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 9,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "79591736fc6f2db970ef2fdfe8af95763a6baab6295309fee39372d38826bcd6"
+            },
+            "adaptive": {
+              "ns": 12879694.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            }
+          }
+        }
+      ],
+      "aa_samples": [
+        {
+          "order": [
+            "B",
+            "A"
+          ],
+          "results": {
+            "B": {
+              "ns": 8095534.666666667,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            },
+            "A": {
+              "ns": 11398009.333333334,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            }
+          }
+        },
+        {
+          "order": [
+            "A",
+            "B"
+          ],
+          "results": {
+            "A": {
+              "ns": 8006033.333333333,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            },
+            "B": {
+              "ns": 7873631.666666667,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            }
+          }
+        },
+        {
+          "order": [
+            "A",
+            "B"
+          ],
+          "results": {
+            "A": {
+              "ns": 11649979.0,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            },
+            "B": {
+              "ns": 11381575.666666666,
+              "stats": {
+                "initial_tetrahedra": 20,
+                "shelled_tetrahedra": 5,
+                "sectors_attempted": 1,
+                "bases_attempted": 1,
+                "positive_euler_rays": 1
+              },
+              "result_bytes": 4980,
+              "output_sha256": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944"
+            }
+          }
+        }
+      ],
+      "warmup_sha256": {
+        "adaptive": "b7b79551622cdb530de677b5ef5a756ce030373be9e1b05d8171d841d7384944",
+        "standard_ablation": "79591736fc6f2db970ef2fdfe8af95763a6baab6295309fee39372d38826bcd6",
+        "crushing": "252030c6294662e6c80a7811cdb8e99ef6336d8be124b656c259c8d262aa13bb",
+        "crushing_canonical": "82fe5cd5a3d585095f5cc8b1238b4271756cc67fa10bc5b6288b93414668b88a"
+      },
+      "median_ns": {
+        "adaptive": 8093201.333333333,
+        "standard_ablation": 8981845.666666666,
+        "crushing": 12354821.333333334,
+        "crushing_canonical": 8451039.0
+      },
+      "paired_adaptive_over_crushing": 0.6617145734846155,
+      "paired_ablation_over_crushing": 0.732976290527306,
+      "paired_canonical_over_crushing": 0.6873625550065088,
+      "aa_ratio": 1.023582264986333
+    }
+  ]
+}

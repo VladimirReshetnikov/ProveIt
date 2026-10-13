@@ -236,6 +236,109 @@ time or memory budgets.  Caller cancellation remains distinct from the
 backend's own limits.  This complete backend is additive; the default
 recognizer's dispatch policy is unchanged.
 
+\subsection{Independent quotient evidence and complete-query measurements}
+
+The retained Regina~7.4 audit compares the exact numbered face-pairing
+quotient, every component census, the torus selection and the renumbered
+successor.  It does not settle for matching an isomorphism signature.
+Eighteen distinct surfaces come from the preceding filtered-search evidence:
+nine rejected essential-disc candidates and nine accepted discs.  Every
+rejected candidate now gives a strict nonterminal crush.  Of the accepted
+discs, six give an empty quotient and three a nonempty quotient.
+
+Additional vertex and edge-link enumeration on sources with eight to twelve
+tetrahedra supplies 175 connected positive surfaces.  Exactly 171 satisfy
+the strict ray interface; two vertex-link discs and two vertex-link spheres
+are rejected because they have no quadrilateral.  The external oracle uses
+Regina's original standard matching matrix and exact support rank, not the
+native prepared kernel.  A non-vertex sphere separately exercises an erased
+six-face cycle, and one-tetrahedron meridian and vertex-link controls cover
+the terminal boundary case.  Three more step packets form two independently
+authenticated chains from the crossing-free diagram: one is terminal after
+a single crush, and the other passes through a one-tetrahedron solid torus
+before terminating.  In total, 194 eligible step packets match their exact
+external quotient and five controls are rejected.
+
+One example records why crushing must not be identified with cutting only
+along the chosen surface.  The canonical twenty-tetrahedron exterior shells
+to a five-tetrahedron solid torus with isomorphism signature
+\texttt{fbfaHaeo}.  Its supplied disc has coordinates
+\[
+\begin{pmatrix}
+0&0&0&0&1&0&0\\
+0&0&1&1&0&0&0\\
+0&0&0&0&1&0&0\\
+0&0&0&0&1&0&0\\
+0&0&0&0&1&0&0
+\end{pmatrix}.
+\]
+The native unit-ray and full weighted-orbit methods independently certify
+zero essential-disc components; Regina also identifies its boundary as
+trivial.  Literal cutting leaves a solid torus and a ball, with 55 and 58
+tetrahedra respectively.  Crushing instead leaves only a one-tetrahedron
+ball.  This is an allowed additional-disc-cut effect of flattening in
+Observation~4, not an essentiality-check failure.  The complete audit saves
+both constructions and their component classifications.
+
+Forty focused tests pass: 34 new crushing, chain and recognition tests and
+six existing matching-support tests.  They include 160 random face-pairing
+census comparisons against Regina, independent replay with producer
+routines disabled, relabelled gluings, invalid discarded components,
+malformed and nonprimitive coordinates, positive nonextreme vectors,
+hostile negative coverage, shared caps and nested cancellation.  A saved
+eight-tetrahedron ray has support size 15 and exact rank 14; floating
+elimination would incorrectly give rank 15.  This regression guards the
+exact rational arithmetic needed by the one-shot support check.
+
+\begin{center}
+\small
+\input{data/normal-crushing-table.tex}
+\end{center}
+
+The table gives whole-query milliseconds.  ``Adaptive'' is the existing
+native essential-disc search with its Q-corner and matching-support
+preludes; ``Standard'' disables those preludes and is an ablation, not the
+principal baseline.  ``Crush C'' and ``Crush D'' use canonical and diversified
+sector orders.  All four arms construct the canonical exterior, perform
+and replay boundary shellings, search, independently replay the positive
+certificate with its source provenance, and serialize the result.  Only
+the diagram objects are constructed outside the timer.  Both fixtures
+start with 20 tetrahedra and shell to five; both finish with a verified
+\texttt{UNKNOT} verdict.  Nine seeded randomly ordered four-arm repetitions,
+each averaging three fresh queries, supply the medians.  Three additional
+adaptive A/A pairs measure repeat variation.  Per-arm serialized output
+hashes agree throughout.
+
+Adaptive search and canonical crushing each use one sector and one Q
+candidate.  The standard ablation uses nine candidates, while diversified
+crushing uses two sectors, two candidates and two crushes.  The median
+paired adaptive/diversified time ratios are $0.632$ and $0.662$; the new
+diversified route is approximately $1.58$ and $1.51$ times slower on these
+small positive queries.  Canonical/diversified ratios are $0.685$ and
+$0.687$.  The smaller candidate family is therefore not a measured speedup
+over the existing adaptive baseline here, and the default recognizer is
+unchanged.
+
+A separate bounded trefoil probe starts with 60 tetrahedra and shells to
+48.  Canonical order spends its entire 10,000-candidate allowance in the
+first sector without a positive ray.  With diversified order, the first
+sector's matching proof forces 40 of its 48 allowed Q coordinates to zero;
+one candidate then gives a verified $48\to46$ crush.  With the same global
+10,000-candidate allowance, diversified search visits four sectors and
+performs two verified reductions, $48\to46\to44$, before returning
+\texttt{INCONCLUSIVE}.  The saved single exploration times are 16.00
+seconds for canonical order and 6.71 seconds for the larger diversified
+probe; the one-candidate checkpoint takes 0.69 seconds.  These are timings
+of incomplete, differently progressing searches, not repeated measurements
+of complete recognition or evidence of a general asymptotic improvement.
+Every returned partial chain is independently replayed.
+
+The records under \path{synthesis/data/} use the prefix
+\path{normal-crushing-}.  The research runner \path{check_evidence.py}
+replays saved packets
+without discovery or Regina, validates source pins and timing arithmetic,
+and records the final article and PDF in a publication manifest.
+
 \subsection{Asymptotic accounting and the remaining target}
 
 In a sector with Q nullity $d\geq1$ and at most $t$ allowed types, both native
