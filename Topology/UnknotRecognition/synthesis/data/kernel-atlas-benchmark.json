@@ -1,0 +1,2806 @@
+{
+  "passed": true,
+  "source_sha256": {
+    "fast/fastunknot/port_subspace.py": "1cc411ef5f7243c2d5aaf59a767c06be6a5b9d1c49d1597a1fd1f299113e05bc",
+    "reports/113/projective_ports/__init__.py": "33b5a680848e1a81aaf3b21fd3fdf2c6a193c99b4081dd00cb8bc2d9dbfda85b",
+    "reports/113/projective_ports/atlas.py": "2f0bce8df9d71e11bb1162a4dd4ef849e016d8b2951c84fa4693fbfcb5b31c1c",
+    "reports/113/projective_ports/exact.py": "7f8f9753be4d53903f46f46dbddaa056542e04995a4412df3e5a9d52b726e99f",
+    "reports/113/projective_ports/fixtures.py": "cb1227664b416de3b3ff18210db50c343f71375d0fdc0bc6025ce9042a6e6db9",
+    "reports/113/projective_ports/model.py": "6102fc5a492976b2a15990b0e810d6dd256a295c947ded144dc4d0d08510ce01",
+    "reports/113/projective_ports/source.py": "1190fcceb17e495ad2aefd80891b4d96e38727af7c32fbbab76a50ba7366955d",
+    "reports/113/projective_ports/verify.py": "8c5a6de870e02f065a08b55e2e54ae5c4bf178bf48277274615bb2b0bed1465a",
+    "reports/113/experiments/build_tables.py": "adc4c87b74744ff9f8be279a5243df5a8dff7395849b132d12ebbb84df8258b8",
+    "reports/113/experiments/inline_article.py": "2c9ec77a88f4c2d6283b98feaffea80630af14f75bfd584515bc3fbad68173ca",
+    "reports/113/experiments/oracle.py": "3a922c872d527e4062611914f0178594b6505a81c681065c701cb5341d767b84",
+    "reports/113/experiments/reproduce.py": "a72de73727b15a489643a3266748e293a0c3d3c57ab0e7bed1771cd6d0d111ad",
+    "fast/projective_port_research/audit.py": "6e063bfc5f3551462c69c5cf7f85d9a031dd57d593e0bb9f2ae0058e256d1536",
+    "fast/projective_port_research/benchmark.py": "19654970cae83b6b7f3d01212a493df7ae100912b99cc8722a893a23c148ca68",
+    "fast/projective_port_research/check_evidence.py": "ffaf7b46533b17d0a5a8673b5c4d4ff69889f59df2d4fbf22fb7c48a51893f73",
+    "fast/projective_port_research/check_filtered.py": "88f45c5687ccd3b6e95281d5949839d538fb34d300f0b6fd9f508300034257be",
+    "fast/projective_port_research/check_kernel.py": "6ff3317e497b82d8e6c2162f772967e7c4abb1280e004b469ffeda4a85b6fa82",
+    "fast/projective_port_research/common.py": "ba8367cdb4e47ea1732f0e302779efed30f54ae00c26ea841ed700305e41f98e",
+    "fast/projective_port_research/filtered.py": "d30df3a956e9834c7f5a3178b6489d895e1727417287b97836745bb1a326273f",
+    "fast/projective_port_research/filtered_benchmark.py": "33ea437b521110034cd1a8555ea070c5c0e89327b56fb8c6732996f3354d7f27",
+    "fast/projective_port_research/filtered_cubes.py": "fc0eee5cd7857d407a49b15e61c742be925ff608daa3f45105f6d4cede4d1534",
+    "fast/projective_port_research/filtered_native.py": "9c4597e6ce37cc36f99b44c26c51dc0a3ae11089af69c3676233efc51484a878",
+    "fast/projective_port_research/kernel_atlas.py": "ae416f0e0b06b050d7dd4ecb6333732dca977915d187d06c355e7ce0b15d56c1",
+    "fast/projective_port_research/kernel_benchmark.py": "08dadd05cf149941d77d3576390dcacdfa0a3eaa0b3622ddc92090d8d03db741",
+    "fast/projective_port_research/kernel_native.py": "dbcd1e8df8e1a660c6b3d202d12b54248334ac2faf68e0201f65e0b697c22a41",
+    "fast/projective_port_research/kernel_rays.py": "2facfeceae5436aad5fca7c236073b03baea958e481e817b6ae35373c81a9869",
+    "fast/projective_port_research/native.py": "19c95dfcc657193c2c329267c24fbdc4c37a6745e2eb602c6148822f9b0567f7",
+    "fast/projective_port_research/test_filtered.py": "db43d70bc722cef2dab99806acc4500786dcfb17322e6914e844e69d582d4606",
+    "fast/projective_port_research/test_kernel_atlas.py": "2b304cba165658e9db6312955fba66bde70ede86732589a01208b81ab3ff8eb3",
+    "fast/projective_port_research/test_kernel_rays.py": "8a3fb5109120cfc2db35e3518ac0e98500f4d2d4775cf0193b2a20c7f1bd010d",
+    "fast/fastunknot/source_kernel.py": "2275402c3c17fe5455dfbf74979806bc7eae8d2d29468ae7235cc12f9c0dcaa8",
+    "fast/fastunknot/source_kernel_verify.py": "140aae7261aa60d1dbe7c2f74bd334e0c4c0c3855cc425fbfb652254b46edb2f"
+  },
+  "python": "3.13.14 (main, Jun 23 2026, 15:18:27) [Clang 22.1.3 ]",
+  "platform": "Linux-5.15.0-186-generic-x86_64-with-glibc2.35",
+  "records": [
+    {
+      "id": "two_tet_0",
+      "warmup": {
+        "native": {
+          "ms": 2.537039,
+          "output_sha256": "3cd72e530ff3fcb0198776279b01f463ab9daea6d8e477961c038c8be81b9af1",
+          "bytes": 757,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME"
+          ],
+          "inspections": 0,
+          "queries": 0
+        },
+        "filtered": {
+          "ms": 8.200026,
+          "output_sha256": "2ebe86e38008d3c55c3d347209f83bf532f4bb59e4468c64b088f1154e3bf154",
+          "bytes": 1095,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME"
+          ],
+          "inspections": 0,
+          "queries": 7
+        },
+        "kernel": {
+          "ms": 11.257973,
+          "output_sha256": "daa89848b2bd685911846b1c54cb8b444fb472542dcce0950c3d6e5b9e91445a",
+          "bytes": 1794,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME"
+          ],
+          "inspections": 0,
+          "queries": 7
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "native",
+            "filtered",
+            "kernel"
+          ],
+          "arms": {
+            "native": {
+              "ms": 1.828128,
+              "output_sha256": "3cd72e530ff3fcb0198776279b01f463ab9daea6d8e477961c038c8be81b9af1",
+              "bytes": 757,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 0
+            },
+            "filtered": {
+              "ms": 7.730919,
+              "output_sha256": "2ebe86e38008d3c55c3d347209f83bf532f4bb59e4468c64b088f1154e3bf154",
+              "bytes": 1095,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            },
+            "kernel": {
+              "ms": 10.736065,
+              "output_sha256": "daa89848b2bd685911846b1c54cb8b444fb472542dcce0950c3d6e5b9e91445a",
+              "bytes": 1794,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            }
+          }
+        },
+        {
+          "order": [
+            "filtered",
+            "kernel",
+            "native"
+          ],
+          "arms": {
+            "filtered": {
+              "ms": 7.042409,
+              "output_sha256": "2ebe86e38008d3c55c3d347209f83bf532f4bb59e4468c64b088f1154e3bf154",
+              "bytes": 1095,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            },
+            "kernel": {
+              "ms": 8.623033,
+              "output_sha256": "daa89848b2bd685911846b1c54cb8b444fb472542dcce0950c3d6e5b9e91445a",
+              "bytes": 1794,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            },
+            "native": {
+              "ms": 1.241919,
+              "output_sha256": "3cd72e530ff3fcb0198776279b01f463ab9daea6d8e477961c038c8be81b9af1",
+              "bytes": 757,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 0
+            }
+          }
+        },
+        {
+          "order": [
+            "filtered",
+            "native",
+            "kernel"
+          ],
+          "arms": {
+            "filtered": {
+              "ms": 6.844405,
+              "output_sha256": "2ebe86e38008d3c55c3d347209f83bf532f4bb59e4468c64b088f1154e3bf154",
+              "bytes": 1095,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            },
+            "native": {
+              "ms": 1.475023,
+              "output_sha256": "3cd72e530ff3fcb0198776279b01f463ab9daea6d8e477961c038c8be81b9af1",
+              "bytes": 757,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 0
+            },
+            "kernel": {
+              "ms": 8.44883,
+              "output_sha256": "daa89848b2bd685911846b1c54cb8b444fb472542dcce0950c3d6e5b9e91445a",
+              "bytes": 1794,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            }
+          }
+        },
+        {
+          "order": [
+            "native",
+            "kernel",
+            "filtered"
+          ],
+          "arms": {
+            "native": {
+              "ms": 1.770127,
+              "output_sha256": "3cd72e530ff3fcb0198776279b01f463ab9daea6d8e477961c038c8be81b9af1",
+              "bytes": 757,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 0
+            },
+            "kernel": {
+              "ms": 6.991907,
+              "output_sha256": "daa89848b2bd685911846b1c54cb8b444fb472542dcce0950c3d6e5b9e91445a",
+              "bytes": 1794,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            },
+            "filtered": {
+              "ms": 7.639517,
+              "output_sha256": "2ebe86e38008d3c55c3d347209f83bf532f4bb59e4468c64b088f1154e3bf154",
+              "bytes": 1095,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            }
+          }
+        },
+        {
+          "order": [
+            "kernel",
+            "native",
+            "filtered"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 10.848166,
+              "output_sha256": "daa89848b2bd685911846b1c54cb8b444fb472542dcce0950c3d6e5b9e91445a",
+              "bytes": 1794,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            },
+            "native": {
+              "ms": 2.124733,
+              "output_sha256": "3cd72e530ff3fcb0198776279b01f463ab9daea6d8e477961c038c8be81b9af1",
+              "bytes": 757,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 0
+            },
+            "filtered": {
+              "ms": 7.750419,
+              "output_sha256": "2ebe86e38008d3c55c3d347209f83bf532f4bb59e4468c64b088f1154e3bf154",
+              "bytes": 1095,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            }
+          }
+        },
+        {
+          "order": [
+            "native",
+            "kernel",
+            "filtered"
+          ],
+          "arms": {
+            "native": {
+              "ms": 1.761427,
+              "output_sha256": "3cd72e530ff3fcb0198776279b01f463ab9daea6d8e477961c038c8be81b9af1",
+              "bytes": 757,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 0
+            },
+            "kernel": {
+              "ms": 10.847367,
+              "output_sha256": "daa89848b2bd685911846b1c54cb8b444fb472542dcce0950c3d6e5b9e91445a",
+              "bytes": 1794,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            },
+            "filtered": {
+              "ms": 7.362513,
+              "output_sha256": "2ebe86e38008d3c55c3d347209f83bf532f4bb59e4468c64b088f1154e3bf154",
+              "bytes": 1095,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            }
+          }
+        },
+        {
+          "order": [
+            "kernel",
+            "filtered",
+            "native"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 10.701465,
+              "output_sha256": "daa89848b2bd685911846b1c54cb8b444fb472542dcce0950c3d6e5b9e91445a",
+              "bytes": 1794,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            },
+            "filtered": {
+              "ms": 8.006723,
+              "output_sha256": "2ebe86e38008d3c55c3d347209f83bf532f4bb59e4468c64b088f1154e3bf154",
+              "bytes": 1095,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 7
+            },
+            "native": {
+              "ms": 1.748627,
+              "output_sha256": "3cd72e530ff3fcb0198776279b01f463ab9daea6d8e477961c038c8be81b9af1",
+              "bytes": 757,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 0,
+              "queries": 0
+            }
+          }
+        }
+      ],
+      "duplicate_samples": [
+        {
+          "a_ms": 10.709165,
+          "b_ms": 10.553962
+        },
+        {
+          "a_ms": 10.501161,
+          "b_ms": 10.166256
+        },
+        {
+          "a_ms": 10.35196,
+          "b_ms": 10.479961
+        }
+      ],
+      "median_ms": {
+        "native": 1.761427,
+        "filtered": 7.639517,
+        "kernel": 10.701465
+      },
+      "paired_kernel_over_filtered": 1.336559913462724,
+      "paired_kernel_over_native": 5.872709678972151,
+      "duplicate_median_ratio": 1.0147056621958654
+    },
+    {
+      "id": "two_tet_7",
+      "warmup": {
+        "native": {
+          "ms": 7.301012,
+          "output_sha256": "ab77a1ec0485ccc1800272d4e716504409baed675803112eb494b8db599e7b8c",
+          "bytes": 1915,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME"
+          ],
+          "inspections": 1,
+          "queries": 0
+        },
+        "filtered": {
+          "ms": 18.890691,
+          "output_sha256": "8f76cb8bebe86f91da8a0af8363f827f9e8f117cdd2238c3ba5055905f01fc0f",
+          "bytes": 2075,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME"
+          ],
+          "inspections": 1,
+          "queries": 8
+        },
+        "kernel": {
+          "ms": 18.918391,
+          "output_sha256": "d975f13e02e2836d3e3ff87255edf239a06b436bcf7890aa4f1c42e7574286f1",
+          "bytes": 2777,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME"
+          ],
+          "inspections": 1,
+          "queries": 8
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "native",
+            "filtered",
+            "kernel"
+          ],
+          "arms": {
+            "native": {
+              "ms": 5.943591,
+              "output_sha256": "ab77a1ec0485ccc1800272d4e716504409baed675803112eb494b8db599e7b8c",
+              "bytes": 1915,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 0
+            },
+            "filtered": {
+              "ms": 18.644687,
+              "output_sha256": "8f76cb8bebe86f91da8a0af8363f827f9e8f117cdd2238c3ba5055905f01fc0f",
+              "bytes": 2075,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            },
+            "kernel": {
+              "ms": 19.583001,
+              "output_sha256": "d975f13e02e2836d3e3ff87255edf239a06b436bcf7890aa4f1c42e7574286f1",
+              "bytes": 2777,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            }
+          }
+        },
+        {
+          "order": [
+            "filtered",
+            "native",
+            "kernel"
+          ],
+          "arms": {
+            "filtered": {
+              "ms": 18.485384,
+              "output_sha256": "8f76cb8bebe86f91da8a0af8363f827f9e8f117cdd2238c3ba5055905f01fc0f",
+              "bytes": 2075,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            },
+            "native": {
+              "ms": 5.87929,
+              "output_sha256": "ab77a1ec0485ccc1800272d4e716504409baed675803112eb494b8db599e7b8c",
+              "bytes": 1915,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 0
+            },
+            "kernel": {
+              "ms": 19.948207,
+              "output_sha256": "d975f13e02e2836d3e3ff87255edf239a06b436bcf7890aa4f1c42e7574286f1",
+              "bytes": 2777,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            }
+          }
+        },
+        {
+          "order": [
+            "native",
+            "kernel",
+            "filtered"
+          ],
+          "arms": {
+            "native": {
+              "ms": 5.972192,
+              "output_sha256": "ab77a1ec0485ccc1800272d4e716504409baed675803112eb494b8db599e7b8c",
+              "bytes": 1915,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 0
+            },
+            "kernel": {
+              "ms": 19.615301,
+              "output_sha256": "d975f13e02e2836d3e3ff87255edf239a06b436bcf7890aa4f1c42e7574286f1",
+              "bytes": 2777,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            },
+            "filtered": {
+              "ms": 18.22038,
+              "output_sha256": "8f76cb8bebe86f91da8a0af8363f827f9e8f117cdd2238c3ba5055905f01fc0f",
+              "bytes": 2075,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            }
+          }
+        },
+        {
+          "order": [
+            "kernel",
+            "native",
+            "filtered"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 20.414313,
+              "output_sha256": "d975f13e02e2836d3e3ff87255edf239a06b436bcf7890aa4f1c42e7574286f1",
+              "bytes": 2777,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            },
+            "native": {
+              "ms": 6.064293,
+              "output_sha256": "ab77a1ec0485ccc1800272d4e716504409baed675803112eb494b8db599e7b8c",
+              "bytes": 1915,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 0
+            },
+            "filtered": {
+              "ms": 18.90639,
+              "output_sha256": "8f76cb8bebe86f91da8a0af8363f827f9e8f117cdd2238c3ba5055905f01fc0f",
+              "bytes": 2075,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            }
+          }
+        },
+        {
+          "order": [
+            "kernel",
+            "native",
+            "filtered"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 20.268812,
+              "output_sha256": "d975f13e02e2836d3e3ff87255edf239a06b436bcf7890aa4f1c42e7574286f1",
+              "bytes": 2777,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            },
+            "native": {
+              "ms": 5.996592,
+              "output_sha256": "ab77a1ec0485ccc1800272d4e716504409baed675803112eb494b8db599e7b8c",
+              "bytes": 1915,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 0
+            },
+            "filtered": {
+              "ms": 18.86989,
+              "output_sha256": "8f76cb8bebe86f91da8a0af8363f827f9e8f117cdd2238c3ba5055905f01fc0f",
+              "bytes": 2075,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            }
+          }
+        },
+        {
+          "order": [
+            "native",
+            "kernel",
+            "filtered"
+          ],
+          "arms": {
+            "native": {
+              "ms": 6.155094,
+              "output_sha256": "ab77a1ec0485ccc1800272d4e716504409baed675803112eb494b8db599e7b8c",
+              "bytes": 1915,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 0
+            },
+            "kernel": {
+              "ms": 20.17811,
+              "output_sha256": "d975f13e02e2836d3e3ff87255edf239a06b436bcf7890aa4f1c42e7574286f1",
+              "bytes": 2777,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            },
+            "filtered": {
+              "ms": 18.898991,
+              "output_sha256": "8f76cb8bebe86f91da8a0af8363f827f9e8f117cdd2238c3ba5055905f01fc0f",
+              "bytes": 2075,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            }
+          }
+        },
+        {
+          "order": [
+            "filtered",
+            "kernel",
+            "native"
+          ],
+          "arms": {
+            "filtered": {
+              "ms": 18.803089,
+              "output_sha256": "8f76cb8bebe86f91da8a0af8363f827f9e8f117cdd2238c3ba5055905f01fc0f",
+              "bytes": 2075,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            },
+            "kernel": {
+              "ms": 20.057708,
+              "output_sha256": "d975f13e02e2836d3e3ff87255edf239a06b436bcf7890aa4f1c42e7574286f1",
+              "bytes": 2777,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 8
+            },
+            "native": {
+              "ms": 6.106494,
+              "output_sha256": "ab77a1ec0485ccc1800272d4e716504409baed675803112eb494b8db599e7b8c",
+              "bytes": 1915,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME"
+              ],
+              "inspections": 1,
+              "queries": 0
+            }
+          }
+        }
+      ],
+      "duplicate_samples": [
+        {
+          "a_ms": 19.892706,
+          "b_ms": 20.11901
+        },
+        {
+          "a_ms": 20.064509,
+          "b_ms": 20.117609
+        },
+        {
+          "a_ms": 19.905606,
+          "b_ms": 20.026208
+        }
+      ],
+      "median_ms": {
+        "native": 5.996592,
+        "filtered": 18.803089,
+        "kernel": 20.057708
+      },
+      "paired_kernel_over_filtered": 1.074135143342118,
+      "paired_kernel_over_native": 3.2948096529522304,
+      "duplicate_median_ratio": 0.9939777915020157
+    },
+    {
+      "id": "two_tet_15",
+      "warmup": {
+        "native": {
+          "ms": 8.984538,
+          "output_sha256": "d84c345751a2ed49569665582306a920cb3303caa7021d7878afebba5cfa5519",
+          "bytes": 4633,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME"
+          ],
+          "inspections": 2,
+          "queries": 0
+        },
+        "filtered": {
+          "ms": 29.440952,
+          "output_sha256": "01b53a6c00ab0fbc2513fa86dda92b6713d1319e467a99b505231ce92b947a55",
+          "bytes": 6053,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME"
+          ],
+          "inspections": 2,
+          "queries": 8
+        },
+        "kernel": {
+          "ms": 25.9928,
+          "output_sha256": "359a60f89ef46fcc019598ee4ad79161efef9aef9e658198187e2b0950125d69",
+          "bytes": 6756,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME"
+          ],
+          "inspections": 2,
+          "queries": 8
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "filtered",
+            "native",
+            "kernel"
+          ],
+          "arms": {
+            "filtered": {
+              "ms": 29.500853,
+              "output_sha256": "01b53a6c00ab0fbc2513fa86dda92b6713d1319e467a99b505231ce92b947a55",
+              "bytes": 6053,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            },
+            "native": {
+              "ms": 8.726834,
+              "output_sha256": "d84c345751a2ed49569665582306a920cb3303caa7021d7878afebba5cfa5519",
+              "bytes": 4633,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            },
+            "kernel": {
+              "ms": 27.482322,
+              "output_sha256": "359a60f89ef46fcc019598ee4ad79161efef9aef9e658198187e2b0950125d69",
+              "bytes": 6756,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            }
+          }
+        },
+        {
+          "order": [
+            "native",
+            "kernel",
+            "filtered"
+          ],
+          "arms": {
+            "native": {
+              "ms": 8.678834,
+              "output_sha256": "d84c345751a2ed49569665582306a920cb3303caa7021d7878afebba5cfa5519",
+              "bytes": 4633,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            },
+            "kernel": {
+              "ms": 27.469722,
+              "output_sha256": "359a60f89ef46fcc019598ee4ad79161efef9aef9e658198187e2b0950125d69",
+              "bytes": 6756,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            },
+            "filtered": {
+              "ms": 30.027661,
+              "output_sha256": "01b53a6c00ab0fbc2513fa86dda92b6713d1319e467a99b505231ce92b947a55",
+              "bytes": 6053,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            }
+          }
+        },
+        {
+          "order": [
+            "filtered",
+            "kernel",
+            "native"
+          ],
+          "arms": {
+            "filtered": {
+              "ms": 29.767858,
+              "output_sha256": "01b53a6c00ab0fbc2513fa86dda92b6713d1319e467a99b505231ce92b947a55",
+              "bytes": 6053,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            },
+            "kernel": {
+              "ms": 27.825227,
+              "output_sha256": "359a60f89ef46fcc019598ee4ad79161efef9aef9e658198187e2b0950125d69",
+              "bytes": 6756,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            },
+            "native": {
+              "ms": 8.785935,
+              "output_sha256": "d84c345751a2ed49569665582306a920cb3303caa7021d7878afebba5cfa5519",
+              "bytes": 4633,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            }
+          }
+        },
+        {
+          "order": [
+            "kernel",
+            "filtered",
+            "native"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 28.705141,
+              "output_sha256": "359a60f89ef46fcc019598ee4ad79161efef9aef9e658198187e2b0950125d69",
+              "bytes": 6756,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            },
+            "filtered": {
+              "ms": 29.820859,
+              "output_sha256": "01b53a6c00ab0fbc2513fa86dda92b6713d1319e467a99b505231ce92b947a55",
+              "bytes": 6053,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            },
+            "native": {
+              "ms": 8.794836,
+              "output_sha256": "d84c345751a2ed49569665582306a920cb3303caa7021d7878afebba5cfa5519",
+              "bytes": 4633,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            }
+          }
+        },
+        {
+          "order": [
+            "kernel",
+            "native",
+            "filtered"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 25.850798,
+              "output_sha256": "359a60f89ef46fcc019598ee4ad79161efef9aef9e658198187e2b0950125d69",
+              "bytes": 6756,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            },
+            "native": {
+              "ms": 6.045193,
+              "output_sha256": "d84c345751a2ed49569665582306a920cb3303caa7021d7878afebba5cfa5519",
+              "bytes": 4633,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            },
+            "filtered": {
+              "ms": 26.102601,
+              "output_sha256": "01b53a6c00ab0fbc2513fa86dda92b6713d1319e467a99b505231ce92b947a55",
+              "bytes": 6053,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            }
+          }
+        },
+        {
+          "order": [
+            "native",
+            "filtered",
+            "kernel"
+          ],
+          "arms": {
+            "native": {
+              "ms": 8.48023,
+              "output_sha256": "d84c345751a2ed49569665582306a920cb3303caa7021d7878afebba5cfa5519",
+              "bytes": 4633,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            },
+            "filtered": {
+              "ms": 28.68204,
+              "output_sha256": "01b53a6c00ab0fbc2513fa86dda92b6713d1319e467a99b505231ce92b947a55",
+              "bytes": 6053,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            },
+            "kernel": {
+              "ms": 27.736827,
+              "output_sha256": "359a60f89ef46fcc019598ee4ad79161efef9aef9e658198187e2b0950125d69",
+              "bytes": 6756,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            }
+          }
+        },
+        {
+          "order": [
+            "kernel",
+            "filtered",
+            "native"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 27.206118,
+              "output_sha256": "359a60f89ef46fcc019598ee4ad79161efef9aef9e658198187e2b0950125d69",
+              "bytes": 6756,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            },
+            "filtered": {
+              "ms": 29.24065,
+              "output_sha256": "01b53a6c00ab0fbc2513fa86dda92b6713d1319e467a99b505231ce92b947a55",
+              "bytes": 6053,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 8
+            },
+            "native": {
+              "ms": 9.020339,
+              "output_sha256": "d84c345751a2ed49569665582306a920cb3303caa7021d7878afebba5cfa5519",
+              "bytes": 4633,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            }
+          }
+        }
+      ],
+      "duplicate_samples": [
+        {
+          "a_ms": 27.732226,
+          "b_ms": 26.786412
+        },
+        {
+          "a_ms": 27.423922,
+          "b_ms": 27.433621
+        },
+        {
+          "a_ms": 27.843328,
+          "b_ms": 27.667725
+        }
+      ],
+      "median_ms": {
+        "native": 8.726834,
+        "filtered": 29.500853,
+        "kernel": 27.482322
+      },
+      "paired_kernel_over_filtered": 0.9347406521490395,
+      "paired_kernel_over_native": 3.167019446422037,
+      "duplicate_median_ratio": 1.006346853599275
+    },
+    {
+      "id": "capped_2_1",
+      "warmup": {
+        "native": {
+          "ms": 18.035777,
+          "output_sha256": "e0a0d04accc98dfbe488906383207c4eef70878cf435a041d38f5b152d78f2d1",
+          "bytes": 7448,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME"
+          ],
+          "inspections": 2,
+          "queries": 0
+        },
+        "filtered": {
+          "ms": 80.08333,
+          "output_sha256": "fb03c09cc67c3e90e34cc56227646b5b1b79a56cb7e298be233c124651e8e0cf",
+          "bytes": 9464,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME"
+          ],
+          "inspections": 2,
+          "queries": 12
+        },
+        "kernel": {
+          "ms": 58.383397,
+          "output_sha256": "15e1ed61856edcccaa9f63d782f18af35a76b29b5dea4fa9c8996d8c0697477a",
+          "bytes": 10169,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME"
+          ],
+          "inspections": 2,
+          "queries": 12
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "kernel",
+            "filtered",
+            "native"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 58.264695,
+              "output_sha256": "15e1ed61856edcccaa9f63d782f18af35a76b29b5dea4fa9c8996d8c0697477a",
+              "bytes": 10169,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            },
+            "filtered": {
+              "ms": 79.589623,
+              "output_sha256": "fb03c09cc67c3e90e34cc56227646b5b1b79a56cb7e298be233c124651e8e0cf",
+              "bytes": 9464,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            },
+            "native": {
+              "ms": 17.912975,
+              "output_sha256": "e0a0d04accc98dfbe488906383207c4eef70878cf435a041d38f5b152d78f2d1",
+              "bytes": 7448,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            }
+          }
+        },
+        {
+          "order": [
+            "kernel",
+            "native",
+            "filtered"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 58.653701,
+              "output_sha256": "15e1ed61856edcccaa9f63d782f18af35a76b29b5dea4fa9c8996d8c0697477a",
+              "bytes": 10169,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            },
+            "native": {
+              "ms": 17.778873,
+              "output_sha256": "e0a0d04accc98dfbe488906383207c4eef70878cf435a041d38f5b152d78f2d1",
+              "bytes": 7448,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            },
+            "filtered": {
+              "ms": 79.624724,
+              "output_sha256": "fb03c09cc67c3e90e34cc56227646b5b1b79a56cb7e298be233c124651e8e0cf",
+              "bytes": 9464,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            }
+          }
+        },
+        {
+          "order": [
+            "filtered",
+            "kernel",
+            "native"
+          ],
+          "arms": {
+            "filtered": {
+              "ms": 81.674655,
+              "output_sha256": "fb03c09cc67c3e90e34cc56227646b5b1b79a56cb7e298be233c124651e8e0cf",
+              "bytes": 9464,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            },
+            "kernel": {
+              "ms": 59.428213,
+              "output_sha256": "15e1ed61856edcccaa9f63d782f18af35a76b29b5dea4fa9c8996d8c0697477a",
+              "bytes": 10169,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            },
+            "native": {
+              "ms": 13.992515,
+              "output_sha256": "e0a0d04accc98dfbe488906383207c4eef70878cf435a041d38f5b152d78f2d1",
+              "bytes": 7448,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            }
+          }
+        },
+        {
+          "order": [
+            "filtered",
+            "native",
+            "kernel"
+          ],
+          "arms": {
+            "filtered": {
+              "ms": 39.688109,
+              "output_sha256": "fb03c09cc67c3e90e34cc56227646b5b1b79a56cb7e298be233c124651e8e0cf",
+              "bytes": 9464,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            },
+            "native": {
+              "ms": 14.563224,
+              "output_sha256": "e0a0d04accc98dfbe488906383207c4eef70878cf435a041d38f5b152d78f2d1",
+              "bytes": 7448,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            },
+            "kernel": {
+              "ms": 51.699594,
+              "output_sha256": "15e1ed61856edcccaa9f63d782f18af35a76b29b5dea4fa9c8996d8c0697477a",
+              "bytes": 10169,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            }
+          }
+        },
+        {
+          "order": [
+            "kernel",
+            "filtered",
+            "native"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 55.99796,
+              "output_sha256": "15e1ed61856edcccaa9f63d782f18af35a76b29b5dea4fa9c8996d8c0697477a",
+              "bytes": 10169,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            },
+            "filtered": {
+              "ms": 76.601876,
+              "output_sha256": "fb03c09cc67c3e90e34cc56227646b5b1b79a56cb7e298be233c124651e8e0cf",
+              "bytes": 9464,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            },
+            "native": {
+              "ms": 16.502554,
+              "output_sha256": "e0a0d04accc98dfbe488906383207c4eef70878cf435a041d38f5b152d78f2d1",
+              "bytes": 7448,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            }
+          }
+        },
+        {
+          "order": [
+            "kernel",
+            "filtered",
+            "native"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 56.865374,
+              "output_sha256": "15e1ed61856edcccaa9f63d782f18af35a76b29b5dea4fa9c8996d8c0697477a",
+              "bytes": 10169,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            },
+            "filtered": {
+              "ms": 77.445289,
+              "output_sha256": "fb03c09cc67c3e90e34cc56227646b5b1b79a56cb7e298be233c124651e8e0cf",
+              "bytes": 9464,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            },
+            "native": {
+              "ms": 17.389167,
+              "output_sha256": "e0a0d04accc98dfbe488906383207c4eef70878cf435a041d38f5b152d78f2d1",
+              "bytes": 7448,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            }
+          }
+        },
+        {
+          "order": [
+            "filtered",
+            "kernel",
+            "native"
+          ],
+          "arms": {
+            "filtered": {
+              "ms": 78.1271,
+              "output_sha256": "fb03c09cc67c3e90e34cc56227646b5b1b79a56cb7e298be233c124651e8e0cf",
+              "bytes": 9464,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            },
+            "kernel": {
+              "ms": 57.056976,
+              "output_sha256": "15e1ed61856edcccaa9f63d782f18af35a76b29b5dea4fa9c8996d8c0697477a",
+              "bytes": 10169,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 12
+            },
+            "native": {
+              "ms": 17.088063,
+              "output_sha256": "e0a0d04accc98dfbe488906383207c4eef70878cf435a041d38f5b152d78f2d1",
+              "bytes": 7448,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            }
+          }
+        }
+      ],
+      "duplicate_samples": [
+        {
+          "a_ms": 56.712871,
+          "b_ms": 56.473568
+        },
+        {
+          "a_ms": 56.893774,
+          "b_ms": 56.63197
+        },
+        {
+          "a_ms": 56.881074,
+          "b_ms": 57.039177
+        }
+      ],
+      "median_ms": {
+        "native": 17.088063,
+        "filtered": 78.1271,
+        "kernel": 57.056976
+      },
+      "paired_kernel_over_filtered": 0.7320639651729473,
+      "paired_kernel_over_native": 3.3389961167629125,
+      "duplicate_median_ratio": 1.0042374336964153
+    },
+    {
+      "id": "capped_4_1",
+      "warmup": {
+        "native": {
+          "ms": 43.955775,
+          "output_sha256": "abd2205431de379b3233832e4273d378c3c911db6c2299876408aed866668eef",
+          "bytes": 14338,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME"
+          ],
+          "inspections": 2,
+          "queries": 0
+        },
+        "filtered": {
+          "ms": 286.184995,
+          "output_sha256": "32ba1126cb98977e5da123358c6aea92cfcd68274740f6c43caf6240d49cf398",
+          "bytes": 17818,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME"
+          ],
+          "inspections": 2,
+          "queries": 20
+        },
+        "kernel": {
+          "ms": 123.198492,
+          "output_sha256": "2ad0f44c533818afbbabe3367e4995d88e0684e57bdf9e83eec63966041caece",
+          "bytes": 18524,
+          "answers": [
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME",
+            "NO_ACCEPTED_EXTREME",
+            "ACCEPTED_EXTREME"
+          ],
+          "inspections": 2,
+          "queries": 20
+        }
+      },
+      "samples": [
+        {
+          "order": [
+            "kernel",
+            "native",
+            "filtered"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 95.472166,
+              "output_sha256": "2ad0f44c533818afbbabe3367e4995d88e0684e57bdf9e83eec63966041caece",
+              "bytes": 18524,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            },
+            "native": {
+              "ms": 22.124739,
+              "output_sha256": "abd2205431de379b3233832e4273d378c3c911db6c2299876408aed866668eef",
+              "bytes": 14338,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            },
+            "filtered": {
+              "ms": 203.77753,
+              "output_sha256": "32ba1126cb98977e5da123358c6aea92cfcd68274740f6c43caf6240d49cf398",
+              "bytes": 17818,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            }
+          }
+        },
+        {
+          "order": [
+            "kernel",
+            "native",
+            "filtered"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 167.902378,
+              "output_sha256": "2ad0f44c533818afbbabe3367e4995d88e0684e57bdf9e83eec63966041caece",
+              "bytes": 18524,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            },
+            "native": {
+              "ms": 36.068454,
+              "output_sha256": "abd2205431de379b3233832e4273d378c3c911db6c2299876408aed866668eef",
+              "bytes": 14338,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            },
+            "filtered": {
+              "ms": 184.92684,
+              "output_sha256": "32ba1126cb98977e5da123358c6aea92cfcd68274740f6c43caf6240d49cf398",
+              "bytes": 17818,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            }
+          }
+        },
+        {
+          "order": [
+            "kernel",
+            "native",
+            "filtered"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 91.081598,
+              "output_sha256": "2ad0f44c533818afbbabe3367e4995d88e0684e57bdf9e83eec63966041caece",
+              "bytes": 18524,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            },
+            "native": {
+              "ms": 21.872036,
+              "output_sha256": "abd2205431de379b3233832e4273d378c3c911db6c2299876408aed866668eef",
+              "bytes": 14338,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            },
+            "filtered": {
+              "ms": 181.942694,
+              "output_sha256": "32ba1126cb98977e5da123358c6aea92cfcd68274740f6c43caf6240d49cf398",
+              "bytes": 17818,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            }
+          }
+        },
+        {
+          "order": [
+            "kernel",
+            "native",
+            "filtered"
+          ],
+          "arms": {
+            "kernel": {
+              "ms": 87.841649,
+              "output_sha256": "2ad0f44c533818afbbabe3367e4995d88e0684e57bdf9e83eec63966041caece",
+              "bytes": 18524,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            },
+            "native": {
+              "ms": 22.286342,
+              "output_sha256": "abd2205431de379b3233832e4273d378c3c911db6c2299876408aed866668eef",
+              "bytes": 14338,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            },
+            "filtered": {
+              "ms": 164.702629,
+              "output_sha256": "32ba1126cb98977e5da123358c6aea92cfcd68274740f6c43caf6240d49cf398",
+              "bytes": 17818,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            }
+          }
+        },
+        {
+          "order": [
+            "filtered",
+            "kernel",
+            "native"
+          ],
+          "arms": {
+            "filtered": {
+              "ms": 163.291907,
+              "output_sha256": "32ba1126cb98977e5da123358c6aea92cfcd68274740f6c43caf6240d49cf398",
+              "bytes": 17818,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            },
+            "kernel": {
+              "ms": 84.245894,
+              "output_sha256": "2ad0f44c533818afbbabe3367e4995d88e0684e57bdf9e83eec63966041caece",
+              "bytes": 18524,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            },
+            "native": {
+              "ms": 21.278127,
+              "output_sha256": "abd2205431de379b3233832e4273d378c3c911db6c2299876408aed866668eef",
+              "bytes": 14338,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            }
+          }
+        },
+        {
+          "order": [
+            "filtered",
+            "native",
+            "kernel"
+          ],
+          "arms": {
+            "filtered": {
+              "ms": 187.394476,
+              "output_sha256": "32ba1126cb98977e5da123358c6aea92cfcd68274740f6c43caf6240d49cf398",
+              "bytes": 17818,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            },
+            "native": {
+              "ms": 22.350643,
+              "output_sha256": "abd2205431de379b3233832e4273d378c3c911db6c2299876408aed866668eef",
+              "bytes": 14338,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            },
+            "kernel": {
+              "ms": 91.85621,
+              "output_sha256": "2ad0f44c533818afbbabe3367e4995d88e0684e57bdf9e83eec63966041caece",
+              "bytes": 18524,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            }
+          }
+        },
+        {
+          "order": [
+            "filtered",
+            "kernel",
+            "native"
+          ],
+          "arms": {
+            "filtered": {
+              "ms": 165.660843,
+              "output_sha256": "32ba1126cb98977e5da123358c6aea92cfcd68274740f6c43caf6240d49cf398",
+              "bytes": 17818,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            },
+            "kernel": {
+              "ms": 92.282617,
+              "output_sha256": "2ad0f44c533818afbbabe3367e4995d88e0684e57bdf9e83eec63966041caece",
+              "bytes": 18524,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 20
+            },
+            "native": {
+              "ms": 21.48393,
+              "output_sha256": "abd2205431de379b3233832e4273d378c3c911db6c2299876408aed866668eef",
+              "bytes": 14338,
+              "answers": [
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME",
+                "NO_ACCEPTED_EXTREME",
+                "ACCEPTED_EXTREME"
+              ],
+              "inspections": 2,
+              "queries": 0
+            }
+          }
+        }
+      ],
+      "duplicate_samples": [
+        {
+          "a_ms": 85.439111,
+          "b_ms": 85.651415
+        },
+        {
+          "a_ms": 87.713046,
+          "b_ms": 85.541913
+        },
+        {
+          "a_ms": 87.93785,
+          "b_ms": 89.25667
+        }
+      ],
+      "median_ms": {
+        "native": 22.124739,
+        "filtered": 181.942694,
+        "kernel": 91.85621
+      },
+      "paired_kernel_over_filtered": 0.5159220413783274,
+      "paired_kernel_over_native": 4.164294444284931,
+      "duplicate_median_ratio": 0.9975213018955962
+    }
+  ],
+  "scope": "all preparation, independent source-kernel construction, anchor queries, source recovery and checking, native geometry and its independent replay, JSON; per-arm per-source empty witness cache; fixture construction excluded; equivalent complete geometric status, trajectories may differ"
+}
