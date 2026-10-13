@@ -228,17 +228,24 @@ private lemma lemma167_value_of_good {N k : Nat} [NeZero N]
   unfold AxisCube.vertex
   rw [hbase, hside]
 
-/-- **Gowers, Lemma 16.7.** -/
-theorem lemma_16_7_holds : lemma_16_7 := by
+/-- The common-base argument with independent density and radius parameters. -/
+theorem lemma_16_7_with {N k : Nat} [NeZero N] (t1 zeta : Real) (ht1 : 0 ≤ t1)
+    (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
+    (H1 : Finset (Point N k)) (Y : (h : Point N k) → Finset (Section16CubeElement B h))
+    (phiPrime : Point N k → ZMod N → ZMod N)
+    (hH : t1 / 8 * (N : Real) ^ k ≤ H1.card)
+    (hX : ∀ h, h ∈ H1 → t1 / 4 * (N : Real) ^ (k + 1) ≤ (section16CubeDomain B h).card)
+    (hY : ∀ h, h ∈ H1 →
+      (2 : Real) ^ (-(27 : Real)) * t1 ^ 6 * (section16CubeDomain B h).card ≤ (Y h).card)
+    (hselection : Section16InducedSelection B phi H1 Y
+      (fun h => section16LargeSpectrum B h (section16Delta t1)) zeta phiPrime) :
+    ∃ x0 : Point N k,
+      section16ThetaTwo t1 * (N : Real) ^ (k + 1) ≤ section16GoodInducedPairCount B H1 Y x0 ∧
+      ∀ z, Section16GoodInducedPair B H1 Y x0 z →
+        phiPrime z.1 z.2 = section16CubeValueAtBase phi x0 z.1 z.2 := by
   classical
-  unfold lemma_16_7
-  intro N k _ theta gamma B phi H1 Y phiPrime
-  dsimp only
-  intro hH hX hY hselection
-  let theta1 := section16ThetaOne theta gamma k
-  have htheta1 : 0 ≤ theta1 := by
-    dsimp only [theta1, section16ThetaOne]
-    exact (Nat.even_pow.mpr ⟨even_two, by positivity⟩).pow_nonneg _
+  let theta1 := t1
+  have htheta1 : 0 ≤ theta1 := ht1
   have htotal := lemma167_sum_good_lower theta1 B H1 Y hH hX hY htheta1
   have hcard :
       (Fintype.card (Point N k) : Real) *
@@ -280,5 +287,19 @@ theorem lemma_16_7_holds : lemma_16_7 := by
   · intro z hz
     exact lemma167_value_of_good B phi H1 Y phiPrime
       hselection.1 x0 z hz
+
+/-- **Gowers, Lemma 16.7.** -/
+theorem lemma_16_7_holds : lemma_16_7 := by
+  classical
+  unfold lemma_16_7
+  intro N k _ theta gamma B phi H1 Y phiPrime
+  dsimp only
+  intro hH hX hY hselection
+  let theta1 := section16ThetaOne theta gamma k
+  have htheta1 : 0 ≤ theta1 := by
+    dsimp only [theta1, section16ThetaOne]
+    exact (Nat.even_pow.mpr ⟨even_two, by positivity⟩).pow_nonneg _
+  exact lemma_16_7_with theta1 (section16Zeta theta gamma k) htheta1
+    B phi H1 Y phiPrime hH hX hY hselection
 
 end LeanProofs.GowersSzemeredi
