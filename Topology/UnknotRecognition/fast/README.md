@@ -4800,6 +4800,50 @@ coordinates. This is a finite bound on a direct crushing-driver source; the
 existing recognition router already splits the visible two-trefoil diagram.
 Neither a complete negative cone nor an asymptotic lower-bound family is claimed.
 
+### Certified crushing of visible factors
+
+`fastunknot.factored_crushing.recognize_factored_by_crushing(diagram, **options)`
+is a separate interface that combines the existing visible interlacement
+factorization with native crushing proofs. It accepts the direct crushing
+driver's options and defaults. Factors are tried by crossing count, with their
+original component indices preserved. Each factor gets its own authenticated
+diagram exterior; the whole-input exterior is never reused for a child.
+
+One independently verified `KNOTTED` child proves the sum knotted. An `UNKNOT`
+result requires a proof for every factor. The new `diagram-factor-crushing-v1`
+certificate binds the original PD, its interlacement partition and forest,
+the exact derived factor PDs, and the required child certificates. Replay uses
+`factored_crushing_verify.verify_factored_crushing_recognition`; it reconstructs
+the children independently and invokes no factor discovery or LP producer.
+
+All nine work caps are shared across attempted children: sectors, bases,
+reductions, pivots, anchors, tree nodes, candidate states, ellipsoid iterations
+and feasibility calls. Reduction counts include optional inverse boundary
+layers. Failed child work stays charged, and a later child can still prove
+knottedness after an earlier inconclusive result. `factor_results` retains every
+attempt. Additive statistics sum attempted child work; peak statistics take
+the maximum. An inconclusive aggregate has no recognition certificate.
+
+This exposes proof composition for the direct crushing backend. The existing
+high-level recognition router already factors visible sums. A visible atom
+can still represent a hidden composite knot, and no bound on its search
+parameter follows from this interface. See
+[the factorwise theory](../synthesis/factored_crushing.tex).
+
+The source-pinned whole-diagram audit retains 20 completed calls, including
+four repeated-trefoil scaling controls. Under equal shared limits of 256 nodes
+and 10,000 pivots, the factored arm certifies TT, TF and FF, where whole-exterior
+crushing exhausts its pivot allowance. UU needs two normal crushes instead of
+four; UT uses 40 nodes and 1,268 pivots instead of 49 and 1,330. These are direct
+backend comparisons; no high-level-router speedup is claimed. Reproduction and
+independent proof, partial-chain and accounting replay are in
+[`factored_crushing_research`](factored_crushing_research/README.md).
+The 50-call paired benchmark includes fresh recognition, proof replay and
+complete result serialization. Median paired raw/factored ratios are 10.0809
+for UU and 1.2525 for UT; circle, trefoil and figure-eight single-factor controls
+regress (0.6971, 0.8153 and 0.8287). The retained A/A measurements and paired
+spread record shared-host variation. This remains an optional interface.
+
 ### Polynomial exact LP policy
 
 `solve_nonnegative_kernel` now defaults to `policy='polynomial'`. It performs
