@@ -43,6 +43,7 @@ def verify_crushing_chain(diagram, certificate, *, check=lambda: None):
     Version 3 also accepts source-bound relative-boundary Pachner 3-2 moves.
     Version 4 additionally accepts a fixed one-upward Pachner macro whose
     independently replayed endpoint has exactly one fewer tetrahedron.
+    Version 5 also accepts direct geometric D/UDD first-descent packets.
 
     A true UNKNOT certificate proves triviality. A true REDUCED certificate
     authenticates only the supplied smaller exterior. It must not be consumed
@@ -60,7 +61,8 @@ def _verify_crushing_chain(diagram, certificate, *, check):
                   'steps', 'status', 'triangulation'}
         if (type(certificate) is not dict or set(certificate) != fields or
                 certificate['schema'] not in ('diagram-crushing-v1', 'diagram-crushing-v2',
-                                              'diagram-crushing-v3', 'diagram-crushing-v4') or
+                                              'diagram-crushing-v3', 'diagram-crushing-v4',
+                                              'diagram-crushing-v5') or
                 certificate['status'] not in ('REDUCED', 'UNKNOT') or
                 type(certificate['steps']) is not list or
                 not certificate_equal(certificate['input_pd'], [list(r) for r in source.pd])):
@@ -87,13 +89,19 @@ def _verify_crushing_chain(diagram, certificate, *, check):
                     return False
                 verifier = verify_boundary_unlayering
             elif operation == 'normal-pachner-32-v1':
-                if certificate['schema'] not in ('diagram-crushing-v3', 'diagram-crushing-v4'):
+                if certificate['schema'] not in ('diagram-crushing-v3', 'diagram-crushing-v4',
+                                                'diagram-crushing-v5'):
                     return False
                 verifier = verify_normal_pachner32
             elif operation == 'normal-pachner-descent-v1':
-                if certificate['schema'] != 'diagram-crushing-v4':
+                if certificate['schema'] not in ('diagram-crushing-v4', 'diagram-crushing-v5'):
                     return False
                 verifier = verify_normal_pachner_descent
+            elif operation == 'normal-geometric-descent-v1':
+                if certificate['schema'] != 'diagram-crushing-v5':
+                    return False
+                from .normal_geometric_descent_verify import verify_normal_geometric_descent
+                verifier = verify_normal_geometric_descent
             else:
                 verifier = verify_normal_crushing
             if not verifier(current, step, check=check):
