@@ -5659,12 +5659,12 @@ keeps only the best statements (with Corollary 18.7, van der Waerden numbers,
 Theorem 1.3 and the printed consequences). Measured: 63 modules and 19,081
 lines retired, 3,501 added; the bridge 993 → 186 lines and 101 → 25
 theorems; the Fejér block of `CompletionAudit` 341 → 96 lines. No threshold
-changed. Subsequent sharing and import cleanup leave 3,331 lines in the
+changed. Subsequent sharing and import cleanup leave 3,240 lines in the
 four proof modules and 182 in the bridge. The current route passes the
 778-module native `FinalProofSimplificationAudit`, covering all 25 public
 bridge theorems, FinalInputs methods, shared induction, fits and threshold
 comparisons, with approved axioms. The bridge itself imports 745 modules.
-See L.67 and `verification/2026-10-12-final-shared-short-phase-compatibility.json`.
+See L.68 and `verification/2026-10-12-final-merged-short-phase-compatibility.json`.
 The complete facade remains a separate check.
 
 **Van der Waerden numbers: our bounds and the literature (2026-10-12).** Gowers
@@ -5673,7 +5673,7 @@ results here keep that shape with a smaller top constant:
 `van_der_waerden_L3_all` (`k + 3`, every `k`), `van_der_waerden_L2_eight_le`
 (`k + 2`, `k ≥ 8`), `van_der_waerden_L1_eleven_le` (`k + 1`, `k ≥ 11`) and
 `van_der_waerden_L0_thirteen_le` (`W(k, r) ≤ 2^2^r^2^2^k`, `k ≥ 13`). They are
-verified by the 778-module focused native audit in L.67. They tighten the
+verified by the 778-module focused native audit in L.68. They tighten the
 constants in Gowers's argument. Published bounds of a different shape are
 much stronger in `r` for fixed `k`:
 * `k = 3`: Kelley–Meka (2023), sharpened by Bloom–Sisask,
@@ -7440,6 +7440,34 @@ Its 648-module checker succeeds with up-to-date dependencies, and all 651
 input hashes of the completed L.65 audit remain identical. The complete
 facade and remaining original-statement fidelity gaps are separate; the
 simplification goal remains active.
+
+### L.68. Verify the merged closed-form class bound (2026-10-12)
+
+Before publication, `origin/main` supplied a further simplification in
+`Proofs18FinalClasses` (`9cfd595aa`). Beyond dimension 14 the two-track
+bound uses the max-pair recursion directly in closed form. The auxiliary
+max-pair table and its offset-four invariant induction disappear. The
+finite dimension-twelve base now kernel-checks positivity along with its
+two bounds, so the subsequent induction no longer needs that older
+invariant. Eight unused intermediate declarations are removed, one
+closed-form bound is added, and the base theorem gains two positivity
+conjuncts. No remaining module uses a deleted declaration.
+
+This removes another 91 production lines. The class table `tTableT3`,
+its degree definitions, final cover statements and all 25 stronger bridge
+theorems retain their statements and numerical bounds. Combined with
+L.67, production sources shrink by 291 lines; the four consolidated
+proof modules now contain 3,240 lines. The stronger bridge closure is
+745 modules / 161,352 lines; the focused audit is 778 / 170,207.
+The merged native audit passes with only the three approved axioms; see
+`verification/2026-10-12-final-merged-short-phase-compatibility.json`
+and its immutable input manifest. The source comparison is recorded in
+`verification/2026-10-12-merged-short-phase-review.json`.
+
+The original-final audit still has all 651 input hashes unchanged. The
+prior L.67 report remains an immutable record of the pre-merge proofs.
+Full-facade checks and original-statement fidelity gaps remain separate,
+and the simplification goal remains active.
 
 ## F. Routes
 

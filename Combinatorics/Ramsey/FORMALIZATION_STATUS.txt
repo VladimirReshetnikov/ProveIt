@@ -9,6 +9,17 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  Merged class-bound checkpoint: the upstream two-track simplification
+  removes the auxiliary max-pair table and its offset-four induction.
+  Its dimension-twelve base directly checks positivity and both bounds;
+  large dimensions use a closed-form max-pair estimate. This removes 91
+  further lines, for 291 production lines saved with the previous changes.
+  Final bounds and all 25 public stronger-bridge statements are unchanged.
+  The combined 778-module native audit passes with only approved axioms;
+  the stronger bridge is 745 modules / 161,352 lines. The original-final
+  audit retains all 651 source hashes. See Notes L.68 and the
+  final-merged-short-phase-compatibility report. The goal remains active.
+
   Shared short-length and phase-input checkpoint: offset-three proofs now
   supply the weaker short-length theorems and comparisons by monotonicity;
   one Roth-to-tower estimate supplies the printed and stronger routes.
