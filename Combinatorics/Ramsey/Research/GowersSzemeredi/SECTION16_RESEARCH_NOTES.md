@@ -8151,6 +8151,72 @@ correction and open original-paper fidelity issues retain their status.
 This checkpoint does not establish complete original-paper fidelity.
 The simplification goal remains active.
 
+### L.84. Share the scalar estimate for the capped-width factor (2026-10-13)
+
+`split_width_front_factor_le` proves the scalar estimate
+`2 * (6 + a * ν + (b + 4) * W + W^T) ≤ ν * W^(T + a + b + 11)`
+for `ν ≥ 1`, `W ≥ 2` and natural `a`, `b`, `T`. These natural parameters
+may be zero. Taking `X = ν * W^(T + 1)` bounds the four terms by a common
+scale; the left side is at most `(2 * (a + b) + 22) * X`, and the
+remaining polynomial factor is absorbed into the power of `W`.
+
+Both `split_exp_inv_le` and `split_exp_inv_le_fejer2` now apply that
+estimate directly. It replaces their separate bounds on `Λ` and the
+later factor `2 * (6 + Λ)`. The existing exponent definitions identify
+`Z + 4` with `T + a + b + 11`; every other part of the two proofs is
+unchanged. The helper belongs to their existing common owner,
+`Proofs16SplitStepBounds`, so the original route gains no Fejér dependency.
+
+All 74 pre-existing declarations retain their complete statements and
+scope contexts, and all 42 existing definition bodies are exact. One
+scalar helper is added; no declaration is removed or moved. Imports,
+options and surrounding commands are unchanged. The Fejér specialization
+from L.83 continues to use the same general theorem.
+
+Against `416a20f61`, the two production files shrink from 1,596 to 1,547
+source lines: 49 fewer. The changed proofs have 488 lines before and
+433 after accounting for the new helper (`227 + 261` versus
+`188 + 222 + 23`), removing 55 actual proof-body lines. These counts
+begin after the theorem proof delimiter, excluding statement-local
+`let` bindings. The helper costs 29 source lines including its separator;
+each caller removes 39 lines. The original final saves 10 source lines
+and 16 proof-body lines after paying for that helper.
+
+The original final remains at 641 local modules and falls from 133,179
+to 133,169 imported source lines; its audit is 642 / 133,203. The stronger
+final is 626 / 139,994 and its public bridge 719 / 154,106, each 49 lines
+smaller. Two additional named audit checks give focused 783 / 168,654,
+a reduction of 47 lines; the downstream audit is 1,098 / 212,266,
+a reduction of 49. All module sets are unchanged. These source counts
+do not measure compilation speed.
+
+Fresh native verification passes the 642-module original-final audit,
+standalone compilation of the 719-module stronger bridge, the 783-module
+focused compatibility audit and the 1,098-module
+`IntegerOriginalCorollaryFidelityAudit`. Both final routes change; no
+previous original-final pass is reused. The focused audit adds explicit
+checks for the new helper and the changed printed theorem, retaining the
+check of the changed general Fejér theorem and every earlier named check.
+The audits allow only `propext`, `Classical.choice` and `Quot.sound`.
+All current inputs match the recorded manifests. See
+`verification/2026-10-13-width-front-factor{-original,-stronger,-compatibility,-downstream}.json`
+and `verification/2026-10-13-width-front-factor-simplification.json`.
+
+The selected original, focused and downstream native audits cover 119
+of 122 affected import consumers, including every affected proof owner.
+Their individual affected-consumer counts are 18, 72 and 110; these scopes
+overlap. The facade, Audit and PortImportAudit remain excluded. Their
+sources are byte-identical to the baseline and contain no direct use of
+the changed theorem names; this is not a fresh native pass for those
+wrappers. Full-facade native validation remains separate. The regenerated
+120-statement inventory is byte-identical.
+
+Final numerical thresholds, class-cover statements and the existing
+stronger van der Waerden bounds remain unchanged. The documented
+Lemma 16.10 correction and open original-paper fidelity issues retain
+their status. This checkpoint does not establish complete original-paper
+fidelity. The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

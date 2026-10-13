@@ -9,6 +9,22 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  Width-factor checkpoint: one scalar estimate replaces the separate
+  front-factor calculations in the printed and general Fejér width
+  proofs. All 74 existing statements/contexts and all 42 definitions are
+  exact; one helper is added without changing imports. Two production
+  files lose 49 source lines and 55 actual proof-body lines, including
+  helper overhead. The original final is 641 / 133,169; the stronger
+  bridge is 719 / 154,106, and two added audit checks give focused
+  783 / 168,654. Fresh native 642/719/783/1,098-module checks pass with
+  all current manifest hashes verified; no original-final pass is reused.
+  Selected native scope covers 119 of 122 import consumers, with the
+  three aggregate targets excluded and full-facade verification separate.
+  The 120-statement inventory is byte-identical. Final bounds and
+  original-paper fidelity status are unchanged. See Notes L.84 and
+  width-front-factor verification reports; the simplification goal
+  remains active.
+
   Shared Fejér exponent checkpoint: the single-track width-exponent lemma
   is a diagonal specialization of the existing two-track theorem. Seven
   unchanged declarations move to the earlier owner and remain exported

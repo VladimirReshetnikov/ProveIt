@@ -476,6 +476,35 @@ theorem nat_le_two_pow_real (m : Nat) {W : Real} (hW : 2 ≤ W) : (m : Real) ≤
   have h : (m : Real) ≤ 2 ^ m := by exact_mod_cast (Nat.lt_two_pow_self (n := m)).le
   exact h.trans (pow_le_pow_left₀ (by norm_num) hW m)
 
+/-- Absorb the logarithmic width budget and its fixed cap factor in the parameter base. -/
+theorem split_width_front_factor_le {ν W : Real} (hν : 1 ≤ ν) (hW : 2 ≤ W)
+    (a b T : Nat) :
+    2 * (6 + ((a : Real) * ν + ((b + 4 : Nat) : Real) * W + W ^ T)) ≤
+      ν * W ^ (T + a + b + 11) := by
+  have hW1 : 1 ≤ W := by linarith only [hW]
+  set X := ν * W ^ (T + 1) with hXdef
+  have hνX : ν ≤ X := le_mul_of_one_le_right (le_trans zero_le_one hν) (one_le_pow₀ hW1)
+  have hWX : W ≤ X := (le_self_pow₀ hW1 (by omega : T + 1 ≠ 0)).trans
+    (le_mul_of_one_le_left (by positivity) hν)
+  have hTX : W ^ T ≤ X := (pow_le_pow_right₀ hW1 (by omega : T ≤ T + 1)).trans
+    (le_mul_of_one_le_left (by positivity) hν)
+  have hX1 : 1 ≤ X := hν.trans hνX
+  have hsum : 2 * (6 + ((a : Real) * ν + ((b + 4 : Nat) : Real) * W + W ^ T)) ≤
+      (2 * ((a + b : Nat) : Real) + 22) * X := by
+    push_cast
+    nlinarith [mul_le_mul_of_nonneg_left hνX (Nat.cast_nonneg a),
+      mul_le_mul_of_nonneg_left hWX (by positivity : (0 : Real) ≤ (b : Real) + 4)]
+  have hm := nat_le_two_pow_real (a + b) hW
+  have hp : (1 : Real) ≤ W ^ (a + b) := one_le_pow₀ hW1
+  have h24 : (24 : Real) ≤ W ^ 10 := (by norm_num : (24 : Real) ≤ 2 ^ 10).trans
+    (pow_le_pow_left₀ (by norm_num) hW 10)
+  have hc : 2 * ((a + b : Nat) : Real) + 22 ≤ W ^ (a + b + 10) := by
+    rw [pow_add]
+    nlinarith [mul_le_mul_of_nonneg_right h24 (pow_nonneg (le_trans zero_le_one hW1) (a + b))]
+  calc _ ≤ (2 * ((a + b : Nat) : Real) + 22) * X := hsum
+    _ ≤ W ^ (a + b + 10) * X := mul_le_mul_of_nonneg_right hc (le_trans zero_le_one hX1)
+    _ = ν * W ^ (T + a + b + 11) := by rw [hXdef]; simp only [pow_add]; ring
+
 /-- **The width exponent of the next class, in two bases.** -/
 theorem split_exp_inv_le {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V)
     (hVV : V ≤ V') {K p : Nat} (hK : 1 ≤ K) (hp : 0 < p) (hKV : (K : Real) ≤ V')
@@ -662,38 +691,6 @@ theorem split_exp_inv_le {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Rea
       hzi.trans (Real.exp_le_exp.mpr (pow_le_pow_left₀ hu0 huw _))
     rw [hΛdef, Real.exp_add]
     exact mul_le_mul hAexp hze (inv_pos.mpr hz0).le (Real.exp_pos _).le
-  have hΛle : Λ ≤ ν * W ^ sZW k a D := by
-    rw [hΛdef]
-    have hZ : sZW k a D = stepT k + a + sEbW k a D + 7 := rfl
-    set X := W ^ (stepT k + a + sEbW k a D + 5) with hXdef
-    have hX0 : 0 ≤ X := pow_nonneg hW0 _
-    have hνX : X ≤ ν * X := le_mul_of_one_le_left hX0 hν
-    have hν0 : 0 ≤ ν := le_trans zero_le_one hν
-    have h1 : (a : Real) * ν ≤ ν * X := by
-      have ha' := nat_le_two_pow_real a hw2
-      have hle : W ^ a ≤ X := pow_le_pow_right₀ hW1 (by omega)
-      calc (a : Real) * ν ≤ W ^ a * ν := mul_le_mul_of_nonneg_right ha' hν0
-        _ ≤ X * ν := mul_le_mul_of_nonneg_right hle hν0
-        _ = ν * X := mul_comm _ _
-    have h2 : ((sEbW k a D + 4 : Nat) : Real) * W ≤ ν * X := by
-      have hc := nat_le_two_pow_real (sEbW k a D + 4) hw2
-      have hle : W ^ (sEbW k a D + 4) * W ≤ X := by
-        rw [← pow_succ]; exact pow_le_pow_right₀ hW1 (by omega)
-      calc ((sEbW k a D + 4 : Nat) : Real) * W ≤ W ^ (sEbW k a D + 4) * W :=
-            mul_le_mul_of_nonneg_right hc hW0
-        _ ≤ X := hle
-        _ ≤ ν * X := hνX
-    have h3 : W ^ stepT k ≤ ν * X := by
-      have hle : W ^ stepT k ≤ X := pow_le_pow_right₀ hW1 (by omega)
-      exact hle.trans hνX
-    have h3W : (3 : Real) ≤ W ^ 2 := by nlinarith only [hw2]
-    have hpos : 0 ≤ ν * X := mul_nonneg hν0 hX0
-    rw [hZ, show stepT k + a + sEbW k a D + 7 = (stepT k + a + sEbW k a D + 5) + 2 by ring, pow_add,
-      ← hXdef]
-    calc (a : Real) * ν + ((sEbW k a D + 4 : Nat) : Real) * W + W ^ stepT k ≤ 3 * (ν * X) := by
-          linarith
-      _ ≤ W ^ 2 * (ν * X) := mul_le_mul_of_nonneg_right h3W hpos
-      _ = ν * (X * W ^ 2) := by ring
   -- the cap
   set R := ν ^ (sLN k a + sPbN k a) * W ^ (sLW k a D + sPbW k a D + 2) with hRdef
   have hR1 : 1 ≤ R := tb_one_le hν hW1
@@ -707,16 +704,9 @@ theorem split_exp_inv_le {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Rea
   have hcap := capped_rounded_inv_le_real hL0 hSl0 hSl1 hzpos hzle hΛ0 hzinv hR1 hLR hLSR
   refine ⟨section16CappedWidthExponent_pos (div_pos (mul_pos hL0 hSl0) (by norm_num)), ?_⟩
   refine hcap.trans ?_
-  have hW4 : (14 : Real) ≤ W ^ 4 := by
-    calc (14 : Real) ≤ 2 ^ 4 := by norm_num
-      _ ≤ W ^ 4 := pow_le_pow_left₀ (by norm_num) hw2 4
-  have hνW : 1 ≤ ν * W ^ sZW k a D := one_le_mul_of_one_le_of_one_le hν (one_le_pow₀ hW1)
   have hfront : 2 * (6 + Λ) ≤ ν * W ^ (sZW k a D + 4) := by
-    rw [pow_add]
-    have : 2 * (6 + Λ) ≤ 14 * (ν * W ^ sZW k a D) := by linarith
-    calc 2 * (6 + Λ) ≤ 14 * (ν * W ^ sZW k a D) := this
-      _ ≤ W ^ 4 * (ν * W ^ sZW k a D) := mul_le_mul_of_nonneg_right hW4 (le_trans zero_le_one hνW)
-      _ = ν * (W ^ sZW k a D * W ^ 4) := by ring
+    simpa only [hΛdef, sZW, Nat.add_assoc] using
+      split_width_front_factor_le hν hw2 a (sEbW k a D) (stepT k)
   have hR0 : 0 ≤ R := le_trans zero_le_one hR1
   calc 2 * ((6 + Λ) * R) = (2 * (6 + Λ)) * R := by ring
     _ ≤ (ν * W ^ (sZW k a D + 4)) * R := mul_le_mul_of_nonneg_right hfront hR0
