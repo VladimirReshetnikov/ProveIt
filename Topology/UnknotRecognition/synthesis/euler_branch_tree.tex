@@ -264,6 +264,11 @@ tree is independently checkable in time polynomial in the source size and
 the encoded certificate size.  Version~2 avoids reconstructing a model at
 every leaf, but still records all required anchor multipliers; the cache is
 a discovery optimization, not an implicit certificate-coverage rule.
+Within one node, the maintained oracle also prepares its restricted LP
+matrix only once, lazily on the first uncached objective.  Original rows
+and their selected indices are reused; every solve retains fresh state
+and residual budgets.  Section~\ref{sec:prepared-euler-matrix} accounts
+for the removed repeated row-selection cost separately from the LP work.
 
 Each split makes one previously ambiguous tetrahedron singleton, so depth
 is at most $t$.  The general node bound is still

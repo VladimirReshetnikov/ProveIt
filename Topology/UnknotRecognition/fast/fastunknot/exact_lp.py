@@ -6,6 +6,7 @@ The explicit policy='bland' comparison mode retains legacy pivot behavior.
 All returned rational numbers use JSON pairs [numerator, denominator].
 """
 
+from dataclasses import dataclass
 from fractions import Fraction
 from math import gcd, lcm
 
@@ -68,6 +69,46 @@ def _independent_rows(matrix, check):
 F = Fraction
 
 
+@dataclass(frozen=True, slots=True)
+class _PreparedKernelMatrix:
+    """Private immutable input shared by objectives of one kernel problem.
+
+    These are the parsed original rows, not their row-reduced replacements.
+    The public solver accepts raw matrices only; callers inside this package
+    obtain this context through _prepare_kernel_matrix.
+    """
+    width: int
+    source: tuple
+    selected: tuple
+    reduce_rows: bool
+
+
+def _parse_kernel_matrix(matrix, width, reduce_rows, check):
+    """Parse rows after the caller's entry checks, preserving their order."""
+    source = []
+    for row in matrix:
+        check()
+        if type(row) not in (list, tuple) or len(row) != width:
+            raise ValueError('matrix rows must have the objective width')
+        source.append(tuple(_fraction(value) for value in row))
+    selected = _independent_rows(source, check) if reduce_rows else list(range(len(source)))
+    return _PreparedKernelMatrix(width, tuple(source), tuple(selected), reduce_rows)
+
+
+def _prepare_kernel_matrix(matrix, width, *, reduce_rows=True, check=lambda: None):
+    """Validate and select original rows once, without solving an objective."""
+    if type(width) is not int or width < 0:
+        raise ValueError('matrix width must be a nonnegative integer')
+    if type(reduce_rows) is not bool:
+        raise ValueError('reduce_rows must be a boolean')
+    if not callable(check):
+        raise ValueError('check must be callable')
+    if type(matrix) not in (list, tuple):
+        raise ValueError('matrix must be a list or tuple')
+    check()
+    return _parse_kernel_matrix(matrix, width, reduce_rows, check)
+
+
 def _solve_prepared_kernel(source, c, selected, *, max_pivots, check):
     """Run the audited exact Bland tableau on already validated source data."""
     n = len(c)
@@ -79,7 +120,7 @@ def _solve_prepared_kernel(source, c, selected, *, max_pivots, check):
     tableau = []
     for i, row in enumerate(inequalities):
         check()
-        tableau.append(row + [Fraction(int(i == j)) for j in range(m)])
+        tableau.append([*row, *(Fraction(int(i == j)) for j in range(m))])
     rhs = [Fraction(0)] * (m - 1) + [Fraction(1)]
     basis = list(range(n, width))
     reduced = c + [Fraction(0)] * m
@@ -340,6 +381,85 @@ def _ellipsoid_kernel(source, cost, selected, stats, *, reduce_rows,
     return finish(dict(status='NONPOSITIVE', y=[_pair(a) for a in y]))
 
 
+def _validate_kernel_controls(*, max_pivots, reduce_rows, policy,
+                              fast_path_pivots, max_ellipsoid_iterations,
+                              max_feasibility_calls, check):
+    for name, value in (('max_pivots', max_pivots),
+                        ('fast_path_pivots', fast_path_pivots),
+                        ('max_ellipsoid_iterations', max_ellipsoid_iterations),
+                        ('max_feasibility_calls', max_feasibility_calls)):
+        _cap(name, value)
+    if type(reduce_rows) is not bool:
+        raise ValueError('reduce_rows must be a boolean')
+    if type(policy) is not str or policy not in ('polynomial', 'bland'):
+        raise ValueError('policy must be polynomial or bland')
+    if not callable(check):
+        raise ValueError('check must be callable')
+    if policy == 'bland' and any(value is not None for value in (
+            fast_path_pivots, max_ellipsoid_iterations, max_feasibility_calls)):
+        raise ValueError('fallback controls require polynomial policy')
+
+
+def _run_kernel_policy(prepared, cost, *, max_pivots, policy,
+                       fast_path_pivots, max_ellipsoid_iterations,
+                       max_feasibility_calls, check):
+    """Run one fresh tableau/fallback; only immutable matrix data are shared."""
+    source, n = prepared.source, prepared.width
+    # Returned equation_rows must be a fresh literal list, never context data.
+    selected = list(prepared.selected)
+    if policy == 'bland':
+        return _solve_prepared_kernel(source, cost, selected,
+                                     max_pivots=max_pivots, check=check)
+    polynomial_limit = (n+len(selected)+1)**2
+    fast_limit = polynomial_limit
+    if fast_path_pivots is not None:
+        fast_limit = min(fast_limit, fast_path_pivots)
+    actual_limit = fast_limit if max_pivots is None else min(fast_limit, max_pivots)
+    answer = _solve_prepared_kernel(source, cost, selected,
+                                   max_pivots=actual_limit, check=check)
+    stats = answer['stats']
+    stats.update(polynomial_pivot_limit=polynomial_limit,
+                 fast_path_pivot_limit=fast_limit, fallback_used=0,
+                 ellipsoid_iterations=0, feasibility_calls=0,
+                 maximum_ellipsoid_precision=0, maximum_ellipsoid_dimension=0,
+                 maximum_planned_ellipsoid_iterations=0, support_descent_steps=0)
+    if answer['status'] != 'INCONCLUSIVE':
+        return answer
+    if max_pivots is not None and stats['pivots'] >= max_pivots:
+        return answer
+    return _ellipsoid_kernel(source, cost, selected, stats, reduce_rows=prepared.reduce_rows,
+                             max_ellipsoid_iterations=max_ellipsoid_iterations,
+                             max_feasibility_calls=max_feasibility_calls, check=check)
+
+
+def _solve_prepared_nonnegative_kernel(prepared, objective, *, max_pivots=None,
+                                       policy='polynomial', fast_path_pivots=None,
+                                       max_ellipsoid_iterations=None,
+                                       max_feasibility_calls=None, check=lambda: None):
+    """Private objective solve against one previously validated matrix.
+
+    Controls, objective coefficients, tableau, budgets and result data are
+    fresh for every call. No row selection or mutable solver state is reused
+    across a different prepared matrix.
+    """
+    if type(prepared) is not _PreparedKernelMatrix:
+        raise ValueError('expected a prepared kernel matrix')
+    _validate_kernel_controls(max_pivots=max_pivots, reduce_rows=prepared.reduce_rows,
+        policy=policy, fast_path_pivots=fast_path_pivots,
+        max_ellipsoid_iterations=max_ellipsoid_iterations,
+        max_feasibility_calls=max_feasibility_calls, check=check)
+    if type(objective) not in (list, tuple):
+        raise ValueError('objective must be a list or tuple')
+    check()
+    cost = [_fraction(value) for value in objective]
+    if len(cost) != prepared.width:
+        raise ValueError('objective must have the prepared matrix width')
+    return _run_kernel_policy(prepared, cost, max_pivots=max_pivots, policy=policy,
+        fast_path_pivots=fast_path_pivots,
+        max_ellipsoid_iterations=max_ellipsoid_iterations,
+        max_feasibility_calls=max_feasibility_calls, check=check)
+
+
 def solve_nonnegative_kernel(matrix, objective, *, max_pivots=None,
                              reduce_rows=True, policy='polynomial',
                              fast_path_pivots=None,
@@ -365,52 +485,16 @@ def solve_nonnegative_kernel(matrix, objective, *, max_pivots=None,
     checks. Only fallback results perform additional support-rank/basis
     replay. Caller callback exceptions propagate unchanged.
     """
-    for name, value in (('max_pivots', max_pivots),
-                        ('fast_path_pivots', fast_path_pivots),
-                        ('max_ellipsoid_iterations', max_ellipsoid_iterations),
-                        ('max_feasibility_calls', max_feasibility_calls)):
-        _cap(name, value)
-    if type(reduce_rows) is not bool:
-        raise ValueError('reduce_rows must be a boolean')
-    if type(policy) is not str or policy not in ('polynomial', 'bland'):
-        raise ValueError('policy must be polynomial or bland')
-    if not callable(check):
-        raise ValueError('check must be callable')
-    if policy == 'bland' and any(value is not None for value in (
-            fast_path_pivots, max_ellipsoid_iterations, max_feasibility_calls)):
-        raise ValueError('fallback controls require polynomial policy')
+    _validate_kernel_controls(max_pivots=max_pivots, reduce_rows=reduce_rows,
+        policy=policy, fast_path_pivots=fast_path_pivots,
+        max_ellipsoid_iterations=max_ellipsoid_iterations,
+        max_feasibility_calls=max_feasibility_calls, check=check)
     if type(matrix) not in (list, tuple) or type(objective) not in (list, tuple):
         raise ValueError('matrix and objective must be lists or tuples')
     check()
     cost = [_fraction(value) for value in objective]
-    n = len(cost)
-    source = []
-    for row in matrix:
-        check()
-        if type(row) not in (list, tuple) or len(row) != n:
-            raise ValueError('matrix rows must have the objective width')
-        source.append([_fraction(value) for value in row])
-    selected = _independent_rows(source, check) if reduce_rows else list(range(len(source)))
-    if policy == 'bland':
-        return _solve_prepared_kernel(source, cost, selected,
-                                     max_pivots=max_pivots, check=check)
-    polynomial_limit = (n+len(selected)+1)**2
-    fast_limit = polynomial_limit
-    if fast_path_pivots is not None:
-        fast_limit = min(fast_limit, fast_path_pivots)
-    actual_limit = fast_limit if max_pivots is None else min(fast_limit, max_pivots)
-    answer = _solve_prepared_kernel(source, cost, selected,
-                                   max_pivots=actual_limit, check=check)
-    stats = answer['stats']
-    stats.update(polynomial_pivot_limit=polynomial_limit,
-                 fast_path_pivot_limit=fast_limit, fallback_used=0,
-                 ellipsoid_iterations=0, feasibility_calls=0,
-                 maximum_ellipsoid_precision=0, maximum_ellipsoid_dimension=0,
-                 maximum_planned_ellipsoid_iterations=0, support_descent_steps=0)
-    if answer['status'] != 'INCONCLUSIVE':
-        return answer
-    if max_pivots is not None and stats['pivots'] >= max_pivots:
-        return answer
-    return _ellipsoid_kernel(source, cost, selected, stats, reduce_rows=reduce_rows,
-                             max_ellipsoid_iterations=max_ellipsoid_iterations,
-                             max_feasibility_calls=max_feasibility_calls, check=check)
+    prepared = _parse_kernel_matrix(matrix, len(cost), reduce_rows, check)
+    return _run_kernel_policy(prepared, cost, max_pivots=max_pivots, policy=policy,
+        fast_path_pivots=fast_path_pivots,
+        max_ellipsoid_iterations=max_ellipsoid_iterations,
+        max_feasibility_calls=max_feasibility_calls, check=check)

@@ -2,6 +2,28 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`prepared_euler_matrix.tex`](prepared_euler_matrix.tex) removes repeated
+LP matrix parsing and original-row selection across a mask's uncached Euler
+objectives. Preparation is lazy and local to one attempt; each objective
+retains fresh tableau and fallback state and the current shared allowances.
+This saves repeated polynomial setup, with no change to the branching bound.
+[`q_zero_pachner_transport.tex`](q_zero_pachner_transport.tex) proves exact
+transport of regional Q-zero faces through certified Pachner moves, including
+canonical Euler values, root-ray extremality and integral primitive scale.
+The theorem allows formal boundary selfattachments and incompatible outside
+coordinates. It does not yet provide an algorithmic shortcut or a bound on
+the unrestricted resolving parameter.
+The combined regression passes 394 tests across 44 modules with Regina and no
+skips. All 361 files in the pre-run native/test/fixture closure are unchanged
+after the run. The command and complete log are retained under
+`data/prepared-euler-matrix-*`.
+The current [PDF](report.pdf) has 832 pages. Section 191 spans pages 817–822
+and Section 192 pages 822–824. Three build passes finish without unresolved
+references or new diagnostics. Run
+`python -B -S data/prepared_euler_matrix_publication.py` to check the tested
+source closure, exact test coverage, article and PDF artifacts; this helper
+runs no tests, certificate replay, discovery, timing or PDF build.
+
 [`direct_crush_positive.tex`](direct_crush_positive.tex) removes redundant
 STANDARD extraction of native LP/tree/transversal rays. It proves canonical
 Q-extreme lifting, primitive integrality and the all-vertex zero condition,
@@ -10,15 +32,16 @@ Valid nonprimitive or nonextreme canonical points retain checked extraction;
 caller exceptions and other errors do not trigger repair. Vertex-link
 extraction remains necessary. This saves an additive algebraic pass, with no
 new LP-count, time-exponent, timing or general quasi-polynomial claim.
-The regression passes 383 tests across 43 modules with Regina and no skips,
+At revision `973c6fdee`, the regression passes 383 tests across 43 modules with Regina and no skips,
 including nineteen new test methods. All 360 native/test/fixture dependencies
 match the pre-run snapshot. Commands and complete logs are retained under
 `data/direct-crush-positive-*`. The publication helper
 `python -B -S data/direct_crush_positive_publication.py` verifies this tested
 source closure, the exact test coverage, the article and final PDF builds;
 it runs no tests, certificate replay, discovery or timing.
-The current [PDF](report.pdf) has 824 pages; Section 190 spans pages 812–816.
+That publication's [PDF](report.pdf) has 824 pages; Section 190 spans pages 812–816.
 Three final build passes have no unresolved references or new diagnostics.
+Its source and PDF pins describe that historical checkpoint.
 
 [`geometric_descent_crushing.tex`](geometric_descent_crushing.tex) implements
 an optional direct geometric enumeration of D and UDD first descents. The

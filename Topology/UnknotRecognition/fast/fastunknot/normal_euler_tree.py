@@ -14,7 +14,8 @@ Finite allowances return no negative certificate.
 from fractions import Fraction
 from itertools import product
 
-from .exact_lp import solve_nonnegative_kernel
+from .exact_lp import (_prepare_kernel_matrix,
+                       _solve_prepared_nonnegative_kernel)
 from .euler_lp_budget import (fallback_statistics, validate_lp_controls,
                               lp_options, record_fallback)
 from .integer_codec import json_safe
@@ -144,6 +145,7 @@ class _EulerMaskOracle:
         # a returned multiplier then has the same source-row interpretation at
         # every node. Only its required coordinate inequalities change.
         matrix = tuple(tuple(row[j] for j in active) for row in kernel.cycle_rows)
+        prepared_lp = None
         duals = []
 
         def cached(objective):
@@ -162,7 +164,11 @@ class _EulerMaskOracle:
                 del cache[1]
 
         def solve(objective):
-            result = solve_nonnegative_kernel(matrix, [objective[j] for j in active],
+            nonlocal prepared_lp
+            if prepared_lp is None:
+                prepared_lp = _prepare_kernel_matrix(matrix, len(active), check=check)
+            result = _solve_prepared_nonnegative_kernel(
+                prepared_lp, [objective[j] for j in active],
                 **lp_options(stats, policy=self.lp_policy,
                     fast_path_pivots=self.lp_fast_path_pivots, max_pivots=max_pivots,
                     max_ellipsoid_iterations=self.max_ellipsoid_iterations,
