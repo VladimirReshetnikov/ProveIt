@@ -28,30 +28,6 @@ namespace LeanProofs.GowersSzemeredi
 
 open BaseCase
 
-/-- Multiple multilinearity with arbitrary graph-count and width-exponent
-control functions of the requested loss. -/
-def MultiplyLinearWith {N k : Nat} [NeZero N] (Qb Eb : Real → Real)
-    (Gamma : Finset (Point N k × ZMod N)) : Prop :=
-  ∀ theta : Real, 0 < theta → theta ≤ 1 → ∀ P : Box N k, P.IsProper →
-    ∃ M q : Nat, ∃ H : Finset (Point N k), ∃ Q : Fin M → Box N k,
-      ∃ mu : Fin M → Fin q → Point N k → ZMod N,
-        H ⊆ P.carrier ∧ (1 - theta) * P.carrier.card ≤ H.card ∧
-        IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
-        (q : Real) ≤ Qb theta ∧
-        (∀ j, (P.width : Real) ^ (Eb theta) ≤ (Q j).width) ∧
-        (∀ j i, IsMultilinear (mu j i)) ∧
-        ∀ j x, x ∈ (Q j).carrier → x ∈ H → ∀ y,
-          (x, y) ∈ Gamma → ∃ i, y = mu j i x
-
-/-- The source's multiple multilinearity is the instance with its own
-control functions. -/
-theorem multiplyLinear_iff_with {N k : Nat} [NeZero N] (gamma r : Real)
-    (Gamma : Finset (Point N k × ZMod N)) :
-    MultiplyLinear gamma r Gamma ↔
-      MultiplyLinearWith (fun theta => (multipleQ (r⁻¹ * theta) gamma k) ^ r)
-        (fun theta => (multipleC (r⁻¹ * theta) gamma k) ^ r) Gamma :=
-  Iff.rfl
-
 /-- The Corollary 7.11 exponent with deletion density `sigma/q` and `q` graphs. -/
 def polyBaseCorExponent (q : Nat) (sigma : Real) : Real :=
   (2 : Real) ^ (-(14 : Real)) * (sigma / q) ^ 2 * (q : Real)⁻¹

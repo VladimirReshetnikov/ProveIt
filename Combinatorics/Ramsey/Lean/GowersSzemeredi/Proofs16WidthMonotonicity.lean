@@ -34,6 +34,20 @@ theorem section16Lemma6Width_mono {m n q k : Nat} {sigma delta theta1 zeta : Rea
   exact Real.rpow_le_rpow (Nat.cast_nonneg _) (by exact_mod_cast hmn)
     (mul_nonneg ha (section16RecurrenceExponent_pos_le_one k q).1.le)
 
+theorem lemma6WidthWith_antitone_count {m p q k : Nat} {a zeta : Real}
+    (hpq : p ≤ q) (hz : 0 ≤ zeta) (ha : 0 < a) :
+    lemma6WidthWith m q k a zeta ≤ lemma6WidthWith m p k a zeta := by
+  unfold lemma6WidthWith
+  apply mul_le_mul_of_nonneg_left _ (by positivity)
+  apply Real.sqrt_le_sqrt
+  rcases Nat.eq_zero_or_pos m with hm0 | hm0
+  · subst hm0
+    have h1 := mul_pos ha ((section16RecurrenceExponent_pos_le_one k q).1)
+    have h2 := mul_pos ha ((section16RecurrenceExponent_pos_le_one k p).1)
+    simp [Real.zero_rpow h1.ne', Real.zero_rpow h2.ne']
+  · apply Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hm0)
+    exact mul_le_mul_of_nonneg_left (section16RecurrenceExponent_antitone k hpq) ha.le
+
 /-- Padding local delta-side counts to one common count is width-safe,
 including the zero initial-width case. -/
 theorem section16Lemma6Width_antitone_count {m p q k : Nat} {sigma delta theta1 zeta : Real}
@@ -43,15 +57,7 @@ theorem section16Lemma6Width_antitone_count {m p q k : Nat} {sigma delta theta1 
     section16Lemma6Width m q k sigma delta theta1 zeta ≤
       section16Lemma6Width m p k sigma delta theta1 zeta := by
   rw [section16Lemma6Width_eq_sqrt, section16Lemma6Width_eq_sqrt]
-  by_cases hm : m = 0
-  · subst m
-    simp only [Nat.cast_zero, Real.zero_rpow (mul_pos ha (section16RecurrenceExponent_pos_le_one k q).1).ne',
-      Real.zero_rpow (mul_pos ha (section16RecurrenceExponent_pos_le_one k p).1).ne', le_refl]
-  · have hm1 : (1 : Real) ≤ m := by exact_mod_cast (show 1 ≤ m by omega)
-    apply mul_le_mul_of_nonneg_left _ (by positivity)
-    apply Real.sqrt_le_sqrt
-    exact Real.rpow_le_rpow_of_exponent_le hm1
-      (mul_le_mul_of_nonneg_left (section16RecurrenceExponent_antitone k hpq) ha.le)
+  exact lemma6WidthWith_antitone_count hpq hz ha
 
 /-- Taking the Lemma 16.6 width on a cell of the gamma-side partition
 produces exactly the composite exponent displayed in Lemma 16.9. -/

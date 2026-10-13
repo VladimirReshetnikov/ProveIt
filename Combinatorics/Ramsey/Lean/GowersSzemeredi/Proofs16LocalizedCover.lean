@@ -12,6 +12,30 @@ noncomputable section
 open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
 
+/-- Multiple multilinearity with arbitrary graph-count and width-exponent
+control functions of the requested loss. -/
+def MultiplyLinearWith {N k : Nat} [NeZero N] (Qb Eb : Real → Real)
+    (Gamma : Finset (Point N k × ZMod N)) : Prop :=
+  ∀ theta : Real, 0 < theta → theta ≤ 1 → ∀ P : Box N k, P.IsProper →
+    ∃ M q : Nat, ∃ H : Finset (Point N k), ∃ Q : Fin M → Box N k,
+      ∃ mu : Fin M → Fin q → Point N k → ZMod N,
+        H ⊆ P.carrier ∧ (1 - theta) * P.carrier.card ≤ H.card ∧
+        IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
+        (q : Real) ≤ Qb theta ∧
+        (∀ j, (P.width : Real) ^ (Eb theta) ≤ (Q j).width) ∧
+        (∀ j i, IsMultilinear (mu j i)) ∧
+        ∀ j x, x ∈ (Q j).carrier → x ∈ H → ∀ y,
+          (x, y) ∈ Gamma → ∃ i, y = mu j i x
+
+/-- The source's multiple multilinearity is the instance with its own
+control functions. -/
+theorem multiplyLinear_iff_with {N k : Nat} [NeZero N] (gamma r : Real)
+    (Gamma : Finset (Point N k × ZMod N)) :
+    MultiplyLinear gamma r Gamma ↔
+      MultiplyLinearWith (fun theta => (multipleQ (r⁻¹ * theta) gamma k) ^ r)
+        (fun theta => (multipleC (r⁻¹ * theta) gamma k) ^ r) Gamma :=
+  Iff.rfl
+
 /-- Good subsets of disjoint cells retain their common density after union. -/
 theorem IsPartition.good_union {X : Type*} [DecidableEq X] {M : Nat}
     {P : Fin M → Finset X} {S : Finset X} (hpart : IsPartition P S)
@@ -75,6 +99,67 @@ theorem padMultilinearFamily_covers {N k p q : Nat}
   refine ⟨⟨i, i.isLt.trans_le hpq⟩, ?_⟩
   simpa only [padMultilinearFamily, dif_pos i.isLt] using hi
 
+theorem MultiplyLinearWith.on_partition {N k J : Nat} [NeZero N]
+    {Qb Eb : Real → Real} {Gamma : Finset (Point N k × ZMod N)}
+    (hML : MultiplyLinearWith Qb Eb Gamma) (sigma : Real)
+    (hs : 0 < sigma) (hs1 : sigma ≤ 1) (hQ : 0 ≤ Qb sigma) (P : Box N k)
+    (B : Fin J → Box N k) (hBpart : IsBoxPartition B P) (hBproper : ∀ j, (B j).IsProper) :
+    ∃ q : Nat, ∃ G : Finset (Point N k), ∃ M : Fin J → Nat,
+      ∃ R : (j : Fin J) → Fin (M j) → Box N k,
+      ∃ mu : (j : Fin J) → Fin (M j) → Fin q → Point N k → ZMod N,
+      (q : Real) ≤ Qb sigma ∧
+      G ⊆ P.carrier ∧ (1 - sigma) * (P.carrier.card : Real) ≤ G.card ∧
+      (∀ j, IsBoxPartition (R j) (B j)) ∧
+      (∀ j a, (R j a).IsProper) ∧
+      (∀ j a, ((B j).width : Real) ^ (Eb sigma) ≤ (R j a).width) ∧
+      (∀ j a i, IsMultilinear (mu j a i)) ∧
+      ∀ j a x, x ∈ (R j a).carrier → x ∈ G → ∀ y,
+        (x, y) ∈ Gamma → ∃ i, y = mu j a i x := by
+  classical
+  choose M p H R nu hHsub hHmass hRpart hRproper hp hRwidth hnu hcover using
+    fun j => hML sigma hs hs1 (B j) (hBproper j)
+  let q := Nat.floor (Qb sigma)
+  have hpq (j : Fin J) : p j ≤ q := Nat.le_floor (hp j)
+  let G := Finset.univ.biUnion H
+  have hG := IsPartition.good_union hBpart H sigma hHsub hHmass
+  refine ⟨q, G, M, R, fun j a => padMultilinearFamily (nu j a) q,
+    Nat.floor_le hQ, hG.1, hG.2, hRpart, hRproper, hRwidth, ?_, ?_⟩
+  · intro j a i
+    exact padMultilinearFamily_isMultilinear (nu j a) (hnu j a) i
+  · intro j a x hx hxG y hxy
+    have hxB := IsPartition.cell_subset (hRpart j) a hx
+    have hxH := (IsPartition.good_union_mem_iff hBpart H hHsub j hxB).mp hxG
+    exact padMultilinearFamily_covers (nu j a) (hpq j) x y (hcover j a x hx hxH y hxy)
+
+theorem MultiplyLinearWith.short_parent_cover {N k m : Nat} [NeZero N]
+    {Qb Eb : Real → Real} {Gamma : Finset (Point N k × ZMod N)}
+    (hML : MultiplyLinearWith Qb Eb Gamma) (sigma : Real)
+    (hs : 0 < sigma) (hs1 : sigma ≤ 1) (hQ : 0 ≤ Qb sigma) (hE : 0 ≤ Eb sigma)
+    (P : Box N k) (I : ModAP N) (hP : P.IsProper) (hI : I.IsProper)
+    (hk : 0 < k) (hm : 4 ≤ m) (hmP : m ≤ P.width) (hmI : m ≤ I.length) :
+    ∃ q : Nat, ∃ G : Finset (Point N k), ∃ J : Nat, ∃ B : Fin J → Box N k,
+      ∃ M : Fin J → Nat, ∃ R : (j : Fin J) → Fin (M j) → Box N k,
+      ∃ mu : (j : Fin J) → Fin (M j) → Fin q → Point N k → ZMod N,
+      (q : Real) ≤ Qb sigma ∧
+      G ⊆ P.carrier ∧ (1 - sigma) * (P.carrier.card : Real) ≤ G.card ∧
+      IsBoxPartition B P ∧ (∀ j, (B j).IsProper) ∧
+      (∀ j i, 0 < ((B j).axis i).length ∧
+        2 * ((B j).axis i).length ≤ N ∧ ((B j).axis i).length ≤ I.length) ∧
+      (∀ j, (B j).commonDiff = P.commonDiff) ∧
+      (∀ j, IsBoxPartition (R j) (B j)) ∧ (∀ j a, (R j a).IsProper) ∧
+      (∀ j a, ((m : Real) / 8) ^ (Eb sigma) ≤ (R j a).width) ∧
+      (∀ j a i, IsMultilinear (mu j a i)) ∧
+      ∀ j a x, x ∈ (R j a).carrier → x ∈ G → ∀ y,
+        (x, y) ∈ Gamma → ∃ i, y = mu j a i x := by
+  obtain ⟨J, B, hBpart, hBproper, hBaxes, hBstep⟩ :=
+    P.short_parent_partition I hP hI hk hm hmP hmI
+  obtain ⟨q, G, M, R, mu, hq, hGsub, hGmass, hRpart, hRproper, hRwidth, hmu, hcover⟩ :=
+    hML.on_partition sigma hs hs1 hQ P B hBpart (fun j => (hBproper j).1)
+  refine ⟨q, G, J, B, M, R, mu, hq, hGsub, hGmass, hBpart,
+    (fun j => (hBproper j).1), hBaxes, hBstep, hRpart, hRproper, ?_, hmu, hcover⟩
+  intro j a
+  exact (Real.rpow_le_rpow (by positivity) (hBproper j).2 hE).trans (hRwidth j a)
+
 /-- Multiple multilinearity can be applied on every preliminary cell with
 one graph count and one good set for the entire original box. Parent labels
 are retained so subsequent retile arguments can use their short axes. -/
@@ -94,25 +179,10 @@ theorem MultiplyLinear.on_partition {N k J : Nat} [NeZero N]
       (∀ j a i, IsMultilinear (mu j a i)) ∧
       ∀ j a x, x ∈ (R j a).carrier → x ∈ G → ∀ y,
         (x, y) ∈ Gamma → ∃ i, y = mu j a i x := by
-  classical
-  choose M p H R nu hHsub hHmass hRpart hRproper hp hRwidth hnu hcover using
-    fun j => hML sigma hs hs1 (B j) (hBproper j)
-  let bound := (multipleQ (t⁻¹ * sigma) gamma k) ^ t
   have hc : 0 ≤ multipleC (t⁻¹ * sigma) gamma k :=
     (even_two.pow_of_ne_zero (by positivity : (2 : Nat) ^ (k + 8) ≠ 0)).pow_nonneg _
-  have hb : 0 ≤ bound := Real.rpow_nonneg (inv_nonneg.mpr hc) _
-  let q := Nat.floor bound
-  have hpq (j : Fin J) : p j ≤ q := Nat.le_floor (hp j)
-  let G := Finset.univ.biUnion H
-  have hG := IsPartition.good_union hBpart H sigma hHsub hHmass
-  refine ⟨q, G, M, R, fun j a => padMultilinearFamily (nu j a) q,
-    Nat.floor_le hb, hG.1, hG.2, hRpart, hRproper, hRwidth, ?_, ?_⟩
-  · intro j a i
-    exact padMultilinearFamily_isMultilinear (nu j a) (hnu j a) i
-  · intro j a x hx hxG y hxy
-    have hxB := IsPartition.cell_subset (hRpart j) a hx
-    have hxH := (IsPartition.good_union_mem_iff hBpart H hHsub j hxB).mp hxG
-    exact padMultilinearFamily_covers (nu j a) (hpq j) x y (hcover j a x hx hxH y hxy)
+  exact MultiplyLinearWith.on_partition ((multiplyLinear_iff_with gamma t Gamma).mp hML)
+    sigma hs hs1 (Real.rpow_nonneg (inv_nonneg.mpr hc) _) P B hBpart hBproper
 
 /-- The preliminary short-parent partition, uniform graph count, and global
 good set are obtained directly from multiple multilinearity. Every refined
@@ -137,16 +207,10 @@ theorem MultiplyLinear.short_parent_cover {N k m : Nat} [NeZero N]
       (∀ j a i, IsMultilinear (mu j a i)) ∧
       ∀ j a x, x ∈ (R j a).carrier → x ∈ G → ∀ y,
         (x, y) ∈ Gamma → ∃ i, y = mu j a i x := by
-  obtain ⟨J, B, hBpart, hBproper, hBaxes, hBstep⟩ :=
-    P.short_parent_partition I hP hI hk hm hmP hmI
-  obtain ⟨q, G, M, R, mu, hq, hGsub, hGmass, hRpart, hRproper, hRwidth, hmu, hcover⟩ :=
-    hML.on_partition sigma hs hs1 P B hBpart (fun j => (hBproper j).1)
   have hc : 0 ≤ multipleC (t⁻¹ * sigma) gamma k :=
     (even_two.pow_of_ne_zero (by positivity : (2 : Nat) ^ (k + 8) ≠ 0)).pow_nonneg _
-  have ha : 0 ≤ (multipleC (t⁻¹ * sigma) gamma k) ^ t := Real.rpow_nonneg hc _
-  refine ⟨q, G, J, B, M, R, mu, hq, hGsub, hGmass, hBpart,
-    (fun j => (hBproper j).1), hBaxes, hBstep, hRpart, hRproper, ?_, hmu, hcover⟩
-  intro j a
-  exact (Real.rpow_le_rpow (by positivity) (hBproper j).2 ha).trans (hRwidth j a)
+  exact MultiplyLinearWith.short_parent_cover ((multiplyLinear_iff_with gamma t Gamma).mp hML)
+    sigma hs hs1 (Real.rpow_nonneg (inv_nonneg.mpr hc) _) (Real.rpow_nonneg hc _)
+    P I hP hI hk hm hmP hmI
 
 end LeanProofs.GowersSzemeredi

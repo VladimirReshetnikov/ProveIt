@@ -244,49 +244,24 @@ theorem lemma_16_7_with {N k : Nat} [NeZero N] (t1 zeta : Real) (ht1 : 0 ≤ t1)
       ∀ z, Section16GoodInducedPair B H1 Y x0 z →
         phiPrime z.1 z.2 = section16CubeValueAtBase phi x0 z.1 z.2 := by
   classical
-  let theta1 := t1
-  have htheta1 : 0 ≤ theta1 := ht1
-  have htotal := lemma167_sum_good_lower theta1 B H1 Y hH hX hY htheta1
+  have htotal := lemma167_sum_good_lower t1 B H1 Y hH hX hY ht1
   have hcard :
       (Fintype.card (Point N k) : Real) *
-          (section16ThetaTwo theta1 * (N : Real) ^ (k + 1)) ≤
+          (section16ThetaTwo t1 * (N : Real) ^ (k + 1)) ≤
         ∑ x0 : Point N k,
           (section16GoodInducedPairCount B H1 Y x0 : Real) := by
-    rw [lemma167_point_card]
-    have hNpow :
-        (N : Real) ^ (2 * k + 1) =
-          (N : Real) ^ k * (N : Real) ^ (k + 1) := by
-      rw [← pow_add]
-      congr 1
-      omega
-    calc
-      ((N ^ k : Nat) : Real) *
-          (section16ThetaTwo theta1 * (N : Real) ^ (k + 1)) =
-          section16ThetaTwo theta1 * (N : Real) ^ (2 * k + 1) := by
-            push_cast
-            rw [hNpow]
-            ring
-      _ ≤ _ := htotal
-  obtain ⟨x0, hx0⟩ :=
-    Fintype.exists_le_sum_fiber_of_nsmul_le_sum
-      (β := Point N k) (f := fun x : Point N k => x)
-      (w := fun x => (section16GoodInducedPairCount B H1 Y x : Real))
-      (b := section16ThetaTwo theta1 * (N : Real) ^ (k + 1)) (by
-        simpa only [nsmul_eq_mul] using hcard)
-  refine ⟨x0, ?_, ?_⟩
-  · have hsingle :
-        (∑ x : Point N k with x = x0,
-          (section16GoodInducedPairCount B H1 Y x : Real)) =
-            section16GoodInducedPairCount B H1 Y x0 := by
-      apply Finset.sum_eq_single x0
-      · intro x hx hne
-        exact (hne (Finset.mem_filter.mp hx).2).elim
-      · simp
-    rw [hsingle] at hx0
-    simpa only [theta1] using hx0
-  · intro z hz
-    exact lemma167_value_of_good B phi H1 Y phiPrime
-      hselection.1 x0 z hz
+    convert htotal using 1
+    rw [lemma167_point_card, Nat.cast_pow,
+      show 2 * k + 1 = k + (k + 1) by omega, pow_add]
+    ring
+  obtain ⟨x0, _, hx0⟩ := Finset.exists_le_of_sum_le
+    (f := fun _ : Point N k => section16ThetaTwo t1 * (N : Real) ^ (k + 1))
+    (g := fun x : Point N k => (section16GoodInducedPairCount B H1 Y x : Real))
+    Finset.univ_nonempty (by
+      simpa only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul] using hcard)
+  refine ⟨x0, hx0, ?_⟩
+  intro z hz
+  exact lemma167_value_of_good B phi H1 Y phiPrime hselection.1 x0 z hz
 
 /-- **Gowers, Lemma 16.7.** -/
 theorem lemma_16_7_holds : lemma_16_7 := by

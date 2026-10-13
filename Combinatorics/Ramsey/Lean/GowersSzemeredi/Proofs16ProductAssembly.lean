@@ -11,17 +11,12 @@ noncomputable section
 open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
 
-/-- Assemble the complete product partition at initial scales at least four.
-The exponent range and the short-Bohr-progression linearity input are explicit
-here so that the geometric construction can be reused with Section 16's
-actual parameters. -/
-theorem MultiplyLinear.product_linearity_large_m {N k m : Nat} [NeZero N]
-    {delta t : Real} {Gamma : Finset (Point N k × ZMod N)}
-    (hML : MultiplyLinear delta t Gamma) (sigma theta gamma : Real)
+theorem MultiplyLinearWith.product_linearity_large_m {N k m : Nat} [NeZero N]
+    {Qb Eb : Real → Real} {Gamma : Finset (Point N k × ZMod N)}
+    (hML : MultiplyLinearWith Qb Eb Gamma) (sigma theta gamma : Real)
     (hs : 0 < sigma) (hs1 : sigma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    (ha : 0 < (multipleC (t⁻¹ * sigma) delta k) ^ t)
-    (ha1 : (multipleC (t⁻¹ * sigma) delta k) ^ t ≤ 1)
+    (hQ : 0 ≤ Qb sigma) (ha : 0 < Eb sigma) (ha1 : Eb sigma ≤ 1)
     (P : Box N k) (I : ModAP N) (u : (ZMod N)ˣ)
     (hP : P.IsProper) (hI : I.IsProper) (hstep : I.step = P.commonDiff)
     (hu : I.step = (↑u : ZMod N)) (hk : 1 ≤ k)
@@ -34,20 +29,19 @@ theorem MultiplyLinear.product_linearity_large_m {N k m : Nat} [NeZero N]
       LinearOn (J.carrier ∩ A x) (f x)) :
     ∃ q : Nat, ∃ G : Finset (Point N k), ∃ M : Nat,
       ∃ S : Fin M → Box N (k + 1), ∃ T : Fin M → Box N k, ∃ J : Fin M → ModAP N,
-      (q : Real) ≤ (multipleQ (t⁻¹ * sigma) delta k) ^ t ∧
+      (q : Real) ≤ Qb sigma ∧
       G ⊆ P.carrier ∧ (1 - sigma) * (P.carrier.card : Real) ≤ G.card ∧
       IsPartition (fun j => (S j).carrier) (lastProductSet P.carrier I.carrier) ∧
       (∀ j, (S j).IsProper ∧ (section16Zeta theta gamma k / 2) *
-        Real.sqrt ((m : Real) ^ ((multipleC (t⁻¹ * sigma) delta k) ^ t *
-          section16RecurrenceExponent k q)) ≤ (S j).width) ∧
+        Real.sqrt ((m : Real) ^ (Eb sigma * section16RecurrenceExponent k q)) ≤ (S j).width) ∧
       (∀ j, IsLastCoordinateBoxProduct (S j) (T j) (J j)) ∧
       ∀ j x, x ∈ G → x ∈ H → x ∈ (T j).carrier →
         LinearOn ((J j).carrier ∩ A x) (f x) := by
   classical
   obtain ⟨q, G, b, B, n, R, mu, hq, hGsub, hGmass, hBpart, hBproper,
       hBaxes, hBstep, hRpart, hRproper, hRwidth, hmu, hcover⟩ :=
-    hML.short_parent_cover sigma hs hs1 P I hP hI (by omega) hm hmP hmI
-  let a := (multipleC (t⁻¹ * sigma) delta k) ^ t
+    hML.short_parent_cover sigma hs hs1 hQ ha.le P I hP hI (by omega) hm hmP hmI
+  let a := Eb sigma
   let l := (section16Zeta theta gamma k / 2) *
     Real.sqrt ((m : Real) ^ (a * section16RecurrenceExponent k q))
   by_cases hl : l ≤ 1
@@ -115,5 +109,44 @@ theorem MultiplyLinear.product_linearity_large_m {N k m : Nat} [NeZero N]
       exact hSproduct _ _
     · intro j x hxG hxH hxT
       exact hSlin _ _ x hxT (Finset.mem_inter.mpr ⟨hxG, hxH⟩)
+
+/-- Assemble the complete product partition at initial scales at least four.
+The exponent range and the short-Bohr-progression linearity input are explicit
+here so that the geometric construction can be reused with Section 16's
+actual parameters. -/
+theorem MultiplyLinear.product_linearity_large_m {N k m : Nat} [NeZero N]
+    {delta t : Real} {Gamma : Finset (Point N k × ZMod N)}
+    (hML : MultiplyLinear delta t Gamma) (sigma theta gamma : Real)
+    (hs : 0 < sigma) (hs1 : sigma ≤ 1)
+    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+    (ha : 0 < (multipleC (t⁻¹ * sigma) delta k) ^ t)
+    (ha1 : (multipleC (t⁻¹ * sigma) delta k) ^ t ≤ 1)
+    (P : Box N k) (I : ModAP N) (u : (ZMod N)ˣ)
+    (hP : P.IsProper) (hI : I.IsProper) (hstep : I.step = P.commonDiff)
+    (hu : I.step = (↑u : ZMod N)) (hk : 1 ≤ k)
+    (hm : 4 ≤ m) (hmP : m ≤ P.width) (hmI : m ≤ I.length)
+    (H : Finset (Point N k)) (K : Point N k → Finset (ZMod N))
+    (A : Point N k → Finset (ZMod N)) (f : Point N k → ZMod N → ZMod N)
+    (hK : ∀ x ∈ H, ∀ r ∈ K x, (x, r) ∈ Gamma)
+    (hlinear : ∀ x ∈ H, ∀ v : Nat, 0 < v → ∀ J : ModAP N, J.length ≤ v →
+      J.step ∈ bohr (K x) (section16Zeta theta gamma k / v) →
+      LinearOn (J.carrier ∩ A x) (f x)) :
+    ∃ q : Nat, ∃ G : Finset (Point N k), ∃ M : Nat,
+      ∃ S : Fin M → Box N (k + 1), ∃ T : Fin M → Box N k, ∃ J : Fin M → ModAP N,
+      (q : Real) ≤ (multipleQ (t⁻¹ * sigma) delta k) ^ t ∧
+      G ⊆ P.carrier ∧ (1 - sigma) * (P.carrier.card : Real) ≤ G.card ∧
+      IsPartition (fun j => (S j).carrier) (lastProductSet P.carrier I.carrier) ∧
+      (∀ j, (S j).IsProper ∧ (section16Zeta theta gamma k / 2) *
+        Real.sqrt ((m : Real) ^ ((multipleC (t⁻¹ * sigma) delta k) ^ t *
+          section16RecurrenceExponent k q)) ≤ (S j).width) ∧
+      (∀ j, IsLastCoordinateBoxProduct (S j) (T j) (J j)) ∧
+      ∀ j x, x ∈ G → x ∈ H → x ∈ (T j).carrier →
+        LinearOn ((J j).carrier ∩ A x) (f x) := by
+  have hc : 0 ≤ multipleC (t⁻¹ * sigma) delta k :=
+    (even_two.pow_of_ne_zero (by positivity : (2 : Nat) ^ (k + 8) ≠ 0)).pow_nonneg _
+  exact MultiplyLinearWith.product_linearity_large_m
+    ((multiplyLinear_iff_with delta t Gamma).mp hML) sigma theta gamma hs hs1 ht ht1 hg hg1
+    (Real.rpow_nonneg (inv_nonneg.mpr hc) _) ha ha1 P I u hP hI hstep hu hk
+    hm hmP hmI H K A f hK hlinear
 
 end LeanProofs.GowersSzemeredi

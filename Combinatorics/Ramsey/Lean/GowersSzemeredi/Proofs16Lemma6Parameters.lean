@@ -77,6 +77,42 @@ theorem section16Lemma6Width_eq_sqrt (m q k : Nat) (sigma delta theta1 zeta : Re
   rw [mul_comm sigma (section16T delta theta1 k)⁻¹]
   ring
 
+/-- The Lemma 16.6 width for a spectrum cover with graph count `q` and width
+exponent `a`, in the square-root form of `section16Lemma6Width_eq_sqrt`. -/
+def lemma6WidthWith (m q k : Nat) (a zeta : Real) : Real :=
+  (zeta / 2) * Real.sqrt ((m : Real) ^ (a * section16RecurrenceExponent k q))
+
+theorem lemma6WidthWith_small {m q k : Nat} {a theta gamma : Real}
+    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+    (ha : 0 ≤ a) (ha1 : a ≤ 1) (hm : m < 4) :
+    lemma6WidthWith m q k a (section16Zeta theta gamma k) ≤ 1 := by
+  obtain ⟨hz, hzh⟩ := section16Zeta_pos_le_half k ht ht1 hg hg1
+  have he := (section16RecurrenceExponent_pos_le_one k q).1
+  have he1 := (section16RecurrenceExponent_pos_le_one k q).2
+  have hx0 : 0 ≤ a * section16RecurrenceExponent k q := mul_nonneg ha he.le
+  have hx1 : a * section16RecurrenceExponent k q ≤ 1 := by nlinarith
+  have hm3 : (m : Real) ≤ 3 := by exact_mod_cast (by omega : m ≤ 3)
+  have hpow : (m : Real) ^ (a * section16RecurrenceExponent k q) ≤ 3 := by
+    rcases Nat.eq_zero_or_pos m with hm0 | hm0
+    · subst hm0
+      rcases eq_or_lt_of_le hx0 with h | h
+      · rw [← h]; norm_num
+      · rw [Nat.cast_zero, Real.zero_rpow h.ne']; norm_num
+    · have hm1 : (1 : Real) ≤ m := by exact_mod_cast hm0
+      calc (m : Real) ^ (a * section16RecurrenceExponent k q)
+          ≤ (m : Real) ^ (1 : Real) := Real.rpow_le_rpow_of_exponent_le hm1 hx1
+        _ = m := Real.rpow_one _
+        _ ≤ 3 := hm3
+  have hsqrt : Real.sqrt ((m : Real) ^ (a * section16RecurrenceExponent k q)) ≤ 2 := by
+    rw [Real.sqrt_le_left (by norm_num)]
+    linarith
+  unfold lemma6WidthWith
+  calc section16Zeta theta gamma k / 2 *
+        Real.sqrt ((m : Real) ^ (a * section16RecurrenceExponent k q))
+      ≤ (1 / 2) / 2 * 2 := by
+        apply mul_le_mul (by linarith) hsqrt (Real.sqrt_nonneg _) (by norm_num)
+    _ ≤ 1 := by norm_num
+
 /-- Initial widths below four have target at most one, so the singleton
 construction handles them without any recurrence or properness assumptions. -/
 theorem section16Lemma6Width_small {theta gamma sigma : Real} {m k q : Nat}
@@ -85,26 +121,7 @@ theorem section16Lemma6Width_small {theta gamma sigma : Real} {m k q : Nat}
     section16Lemma6Width m q k sigma (section16Delta (section16ThetaOne theta gamma k))
       (section16ThetaOne theta gamma k) (section16Zeta theta gamma k) ≤ 1 := by
   obtain ⟨ha, ha1⟩ := section16_lemma6_exponent_bounds k ht ht1 hg hg1 hs hs1
-  obtain ⟨he, he1⟩ := section16RecurrenceExponent_pos_le_one k q
-  obtain ⟨hz, hz32⟩ := section16Zeta_pos_le_one_div_32 k ht ht1 hg hg1
   rw [section16Lemma6Width_eq_sqrt]
-  let a := (multipleC ((section16T (section16Delta (section16ThetaOne theta gamma k))
-    (section16ThetaOne theta gamma k) k)⁻¹ * sigma)
-    (section16Delta (section16ThetaOne theta gamma k)) k) ^
-    section16T (section16Delta (section16ThetaOne theta gamma k)) (section16ThetaOne theta gamma k) k
-  change (section16Zeta theta gamma k / 2) * Real.sqrt ((m : Real) ^ (a * section16RecurrenceExponent k q)) ≤ 1
-  have hae : 0 < a * section16RecurrenceExponent k q := mul_pos ha he
-  have hae1 : a * section16RecurrenceExponent k q ≤ 1 := mul_le_one₀ ha1 he.le he1
-  by_cases hm0 : m = 0
-  · subst m
-    simp [Real.zero_rpow hae.ne']
-  · have hm1 : (1 : Real) ≤ m := by exact_mod_cast (show 1 ≤ m by omega)
-    have hpow : (m : Real) ^ (a * section16RecurrenceExponent k q) ≤ m := by
-      simpa using Real.rpow_le_rpow_of_exponent_le hm1 hae1
-    have hm4 : (m : Real) < 4 := by exact_mod_cast hm
-    have hr := Real.sqrt_nonneg ((m : Real) ^ (a * section16RecurrenceExponent k q))
-    have hrsq := Real.sq_sqrt (Real.rpow_nonneg (Nat.cast_nonneg m) (a * section16RecurrenceExponent k q))
-    have hr2 : Real.sqrt ((m : Real) ^ (a * section16RecurrenceExponent k q)) ≤ 2 := by nlinarith
-    nlinarith
+  exact lemma6WidthWith_small ht ht1 hg hg1 ha.le ha1 hm
 
 end LeanProofs.GowersSzemeredi
