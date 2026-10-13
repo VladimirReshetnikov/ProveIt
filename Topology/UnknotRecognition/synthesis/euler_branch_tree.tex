@@ -1,0 +1,252 @@
+\section{Negative Euler certificates on partial quadrilateral masks}
+\label{sec:euler-branch-tree}
+
+One-vertex preprocessing removes the Cartesian anchor-product obstruction,
+but a flat negative transcript still names all $3^t$ maximal compatible
+sectors.  The branch-tree interface permits one checked relaxation to
+exclude many such sectors simultaneously.  A negative certificate can stop
+at a partial quadrilateral assignment; it need not expand every remaining
+choice merely to satisfy the global verifier.
+
+This is an implementation of established relaxation and branching ideas,
+not a new general branching theorem.  The preserved standard-coordinate
+trees, mandatory propagation and deciding-set bounds of report~67 are
+discussed in Section~\ref{sec:completion-theorems}; report~73 additionally
+studies active-support certificates and conflict-rank branching in
+Section~\ref{sec:incoming-contexts}.  The interface here
+uses the maintained Q-potential model and its envelope certificates, with
+one independently reconstructed source and an explicitly checked coverage
+tree.  The distinction between formal relaxation points and admissible
+normal surfaces is essential throughout.
+
+\subsection{A negative statement remains sound without quad compatibility}
+
+Let $J_t\subseteq\{0,1,2\}$ be the allowed types in tetrahedron $t$.
+An empty set forces all its quadrilateral coordinates to zero; a singleton
+is an ordinary compatible sector restriction.  A larger set permits
+incompatible coordinates in the relaxation.  Write $J$ for the sorted list
+of all allowed pairs and $k=|J|\le3t$.
+
+Triangle matching and vertex-link peeling remain linear constructions
+before compatibility is imposed.  The source-derived cycle equations give
+\[
+ Q_J=\{q\in\mathbb R^k:q\ge0,\ C_Jq=0\}.
+\]
+For every $q\in Q_J$, triangle potentials and subtraction of their minimum
+at each global vertex give a nonnegative canonical matching vector.  This
+vector represents an embedded normal surface only when its quad coordinates
+are compatible.  Nevertheless, the ordinary source Euler coefficients
+define a linear functional on all matching vectors.  Evaluating that
+functional on the canonical lift gives the formal extension
+\[
+ F_J(q)=L_J(q)-\sum_v w_v\min_{c\in G_v}\ell_{vc}(q)
+       =\max_{\alpha\in\prod_vG_v}c_\alpha^{\mathsf T}q,
+ \qquad w_v\in\{1,2\}.
+\]
+The identity uses only matching and the vertex-link coefficients.  No
+quadrilateral compatibility hypothesis enters its algebraic derivation.
+
+\begin{proposition}[Relaxation exclusion]
+If $F_J(q)\le0$ for every $q\in Q_J$, no admissible canonical positive-Euler
+normal surface has all its positive quadrilateral types in $J$.
+\end{proposition}
+\begin{proof}
+Every such surface projects to a point of $Q_J$.  Its canonical triangle
+coordinates agree with the source-derived canonical lift, and on this
+admissible vector the formal Euler functional equals the surface's Euler
+characteristic.  A positive characteristic would contradict the assumed
+nonpositivity.  Thus a proof on the larger incompatible relaxation excludes
+every compatible sub-sector it contains.
+\end{proof}
+
+The same homogeneous Farkas checks from
+Section~\ref{sec:euler-lp-crushing} suffice.  For every anchor objective one
+may supply $y_\alpha$ with
+$C_J^{\mathsf T}y_\alpha\ge c_\alpha$.  Alternatively a single multiplier
+may dominate the componentwise envelope of all those objectives.  The
+checker reconstructs the matching model from the original face pairing.
+Allowing several distinct types per tetrahedron changes the support parser,
+not the negative inequality proof.
+
+The dedicated \texttt{normal-euler-relaxation-v1} schema is negative-only.
+It names the source digest and the sorted, distinct allowed pairs, then
+contains either the envelope multipliers or the complete anchor-dual list.
+Literal integer indices, exact rational arithmetic and complete anchor
+coverage remain required.  The existing compatible-sector positive schema
+retains its original restrictions.
+
+\subsection{A fixed source model permits checked reuse of dual bounds}
+
+Reconstructing and contracting the Q model separately at every mask is
+unnecessary.  Let $U$ contain all $3t$ quadrilateral types, and construct once
+from the source its cycle matrix $C$, Euler row $L$, triangle potentials
+$\ell_{vc}$ and corner groups $G_v$.  For $J\subseteq U$, let $\iota_J$ insert
+zeroes in the omitted coordinates.  Then
+\[
+ C\iota_Jq=C[:,J]q,\qquad
+ F(\iota_Jq)=\max_{\alpha\in\prod_vG_v}c_\alpha[J]^{\mathsf T}q.
+\]
+Thus a node can restrict columns of one fixed matrix and one fixed family
+of objectives.  It keeps every source cycle row, including rows whose
+restriction becomes zero.  This preserves the interpretation of a dual
+multiplier at every node.
+
+For completeness, this fixed model describes the same canonical vectors
+as a freshly reconstructed restricted model.  A full-model Q vector
+supported on $J$ has a triangle lift precisely when its zero expansion
+satisfies the source cycle equations.  Both constructions solve the same
+original triangle matching equations with the same quadrilateral values.
+Their triangle solutions differ only by vertex-link constants, so
+subtracting the minimum at each global vertex gives identical canonical
+coordinates and Euler value.  Some fixed potentials can coincide after
+restriction; retaining all their original anchor choices merely repeats
+equal objectives.  It does not introduce a new positivity obligation.
+In particular, on a one-vertex source the full fixed family has at most
+$4t$ choices, regardless of how many further identifications a node-specific
+construction could discover.
+
+Suppose a solved negative query gives a rational dual $y$.  Compute and
+retain its full image $b=C^{\mathsf T}y$.  For any later mask $J$ and
+objective $d$, this same multiplier proves nonpositivity whenever
+\[
+ b_j\ge d_j\quad\hbox{for every }j\in J.
+\]
+Indeed, for every nonnegative $q$ with $C[:,J]q=0$,
+$d[J]^{\mathsf T}q\le b[J]^{\mathsf T}q
+=y^{\mathsf T}C[:,J]q=0$.
+No inequality outside $J$ is required.  If the objective is unchanged and
+the mask shrinks, the inequalities are inherited.  Reuse from a different
+branch, or for a different anchor objective, is equally sound only after
+the current retained-column inequalities have been checked again.  A
+previously successful query is not itself evidence for these new
+inequalities.
+
+The componentwise envelope is also fixed at the source:
+\[
+ e_j=L_j-\sum_v w_v\min_{c\in G_v}\ell_{vc,j}.
+\]
+It dominates every $c_{\alpha,j}$, so the same cache lookup can discharge an
+envelope query by testing $b[J]\ge e[J]$.  Conversely an envelope dual may
+later dominate an individual anchor.  The zero multiplier is a useful
+permanent cache entry: it immediately handles any objective nonpositive on
+the retained columns.  The implementation retains at most $256$ entries,
+including this zero entry, across the search on one source.  Bounded
+retention makes each lookup a bounded number of polynomial-size exact
+comparisons rather than an ever-growing scan over the search history.
+Eviction can change discovery work, but cannot change correctness.  A
+crushing successor begins a new source model and a new cache; source rows
+and multipliers cannot be transferred merely because their dimensions agree.
+
+The \texttt{normal-euler-relaxation-v2} leaf format has the same fields as
+version~1, but defines its multiplier coordinates and anchor enumeration
+using the full source model.  Its independent checker reconstructs that
+model at most once per tree, verifies the complete fixed anchor family
+when required, and tests inequalities only on the leaf's allowed columns.
+Version~1 retains its original mask-specific reconstruction for comparison.
+The versions cannot be interchanged without checking their different row
+and anchor conventions.  Both carry actual exact multipliers: the verifier
+does not trust cache identifiers, cache history or a producer's claim that
+a dual was reused successfully.  Consequently a tree may contain either
+version without altering its coverage argument.
+
+\subsection{Positive formal points guide discovery, not topology}
+
+A point with $F_J(q)>0$ need not describe a surface: two positive quad types
+in one tetrahedron already violate embeddedness.  Such a point may guide
+the next branching choice, but it cannot be passed to crushing as a normal
+witness.  The source coordinate validator and positive support extractor
+remain the gate to that operation.  A compatible positive canonical point
+can use their existing contracts; an incompatible point must be resolved
+by further restriction.
+
+If tetrahedron $a$ currently permits at least two types, split it into one
+child for each $q\in J_a$, replacing $J_a$ by $\{q\}$ and retaining every
+other mask entry.  Every admissible surface in the parent belongs to a
+child: its positive quad type determines a child, or, if all three quad
+coordinates there are zero, it belongs to every child.  Consequently a
+separate zero-quad child is unnecessary.  The children may overlap on such
+zero-coordinate faces; disjointness is not needed to prove exclusion.
+
+A positive envelope objective alone need not even give positive $F_J$.
+The actual formal canonical value must be checked as in the maintained
+Euler producer; otherwise an unsuccessful relaxation merely leaves the
+negative obligation unresolved.  A local pivot or node limit likewise
+leaves an unfinished search, rather than producing a negative leaf.
+
+\subsection{Implicit contexts make coverage independently checkable}
+
+The independent checker is
+\path{fast/fastunknot/normal_euler_tree_verify.py}.
+The \texttt{normal-euler-branch-tree-v1} packet names its source and root
+allowed pairs and stores a flat preorder sequence of nodes.  A split node
+contains only its kind and the tetrahedron index.  Its children are implicit:
+the verifier derives the singleton masks from the current context in
+ascending allowed-type order.  A negative node contains one independently
+checked relaxation certificate, whose source and allowed mask must equal
+that context exactly.  This tree schema has no positive leaves or nested
+matching-reduction wrappers.
+
+An iterative stack initially contains the root context.  Each node consumes
+the next pending context.  A legal split replaces it by the derived child
+contexts in preorder; a negative leaf discharges it.  Verification succeeds
+only if the node list and pending contexts are both exhausted together.
+Missing children, extra nodes, a split at an already singleton mask,
+reordered child masks, and proofs for a foreign source or smaller mask
+therefore fail structurally.  Leaf inequalities are still checked separately;
+correct tree syntax cannot replace them.
+
+\begin{proposition}[Sound negative tree]
+A verified tree excludes every admissible canonical positive-Euler normal
+surface in its root mask.
+\end{proposition}
+\begin{proof}
+A negative leaf has this property by relaxation exclusion.  If all children
+of a split exclude their masks, admissible coverage by the singleton
+children gives the same conclusion for the parent.  Induction from the
+leaves to the root proves the assertion.  The preorder stack check ensures
+that every required child participates in this induction exactly where its
+derived context requires it.
+\end{proof}
+
+For global recognition the root must allow all three types in every
+tetrahedron of the final authenticated source.  A valid tree on a partial
+root mask is only a restricted statement.  The diagram-bound verifier must
+check this full root and the preceding crushing chain before using the
+absence of positive canonical surfaces to conclude knottedness.  The normal
+disc existence theorem and the source correspondence remain those of
+Section~\ref{sec:normal-crushing-search}; tree compression changes the
+coverage evidence, not those topological premises.
+
+\subsection{Complexity of compression and its remaining limit}
+
+On each one-vertex source supplied by
+Section~\ref{sec:vertex-reduction}, there is at most one active triangle
+group.  Even for an incompatible mask, its number of corner classes is at
+most $4t$.  Thus a complete node has at most $4t$ anchor objectives, or one
+empty objective when there is no active group, with at most one additional
+envelope call.  The number of allowed Q coordinates is at most $3t$.
+The fixed source model is prepared once.  Forming each column restriction,
+checking its bounded dual cache and checking each rational inequality take
+polynomial bit work in the source and rational data involved.  A complete
+tree is independently checkable in time polynomial in the source size and
+the encoded certificate size.  Version~2 avoids reconstructing a model at
+every leaf, but still records all required anchor multipliers; the cache is
+a discovery optimization, not an implicit certificate-coverage rule.
+
+Each split makes one previously ambiguous tetrahedron singleton, so depth
+is at most $t$.  The general node bound is still
+\[
+ N\le 1+3+\cdots+3^t=\frac{3^{t+1}-1}{2}.
+\]
+With a polynomial exact LP policy, this would give
+$N\operatorname{poly}(t)$ discovery on a one-vertex source.  The maintained
+Bland implementation has no polynomial pivot bound, and no theorem here
+bounds $N$ quasi-polynomially for all authenticated successors.
+
+A negative leaf near the root can replace exponentially many explicit
+sector packets.  That is a genuine certificate-size opportunity, and small
+observed trees can be measured as such.  It is not a uniform tree-size
+bound.  The preserved positive-relaxation and ambiguity obstructions also
+remain relevant: one-vertex reduction removes their multi-vertex premise
+where applicable, but does not force every remaining formal relaxation to
+be nonpositive or every incompatible point to have a small deciding set.

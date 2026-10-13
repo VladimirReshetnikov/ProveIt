@@ -7,8 +7,9 @@ crush strictly decreases the tetrahedron count. Canonical Euler characteristic
 is convex on the normalized Q cone, so Q corners suffice for positive discovery.
 No rejected-surface list or geometric rejection allowance is needed.
 
-With allowances removed the algorithm terminates, but maximal-sector search
-and independent dense exhaustion replay remain exponential. This module does
+An optional exact Euler tree closes whole partial-sector masks with checked
+Farkas duals. With allowances removed the algorithm terminates, but the
+worst-case search and complete negative certificate can remain exponential. This module does
 not change the default recognition dispatcher or claim quasi-polynomial time.
 """
 from itertools import product
@@ -19,6 +20,7 @@ from .integer_codec import json_safe
 from .normal_crushing_chain import verify_crushing_chain
 from .normal_sector_verify import verify_sector_exhaustion
 from .normal_euler_verify import verify_sector_euler_certificate
+from .normal_euler_tree_verify import verify_euler_branch_tree
 
 
 class _CallbackRaised(BaseException):
@@ -93,8 +95,9 @@ def verify_crushing_recognition(diagram, certificate, *, check=lambda: None):
 
     The verifier imports no source constructor, sheller, ray enumerator or
     crushing producer. UNKNOT requires a terminal authenticated chain. KNOTTED
-    requires a reduced chain and all 3**t maximal sectors, in canonical product
-    order, independently exhausted with no positive Euler Q corner. Missing sectors,
+    requires a reduced chain and complete final-source coverage, either all
+    3**t maximal sectors in canonical product order (v1) or an independently
+    checked Euler relaxation branch tree covering their union (v2). Missing sectors,
     partial discovery, and finite search allowances never certify knottedness.
     Malformed packets return False; all caller exceptions propagate unchanged.
     """
@@ -106,9 +109,15 @@ def _verify_crushing_recognition(diagram, certificate, *, check):
     try:
         if (type(certificate) is not dict or
                 set(certificate) != {'schema', 'status', 'chain', 'exhaustion'} or
-                certificate['schema'] != 'diagram-crushing-recognition-v1' or
-                certificate['status'] not in ('UNKNOT', 'KNOTTED') or
-                type(certificate['exhaustion']) is not list):
+                certificate['schema'] not in ('diagram-crushing-recognition-v1',
+                                              'diagram-crushing-recognition-v2') or
+                certificate['status'] not in ('UNKNOT', 'KNOTTED')):
+            return False
+        tree_proof = certificate['schema'] == 'diagram-crushing-recognition-v2'
+        if tree_proof:
+            if certificate['status'] != 'KNOTTED' or type(certificate['exhaustion']) is not dict:
+                return False
+        elif type(certificate['exhaustion']) is not list:
             return False
         chain = certificate['chain']
         if not verify_crushing_chain(diagram, chain, check=check):
@@ -120,6 +129,10 @@ def _verify_crushing_recognition(diagram, certificate, *, check):
         triangulation = chain['triangulation']
         count = len(triangulation['tetrahedra'])
         packets = certificate['exhaustion']
+        if tree_proof:
+            allowed = [[t, q] for t in range(count) for q in range(3)]
+            return (packets.get('allowed_types') == allowed and
+                    verify_euler_branch_tree(triangulation, packets, check=check))
         if len(packets) != 3**count:
             return False
         fields = {'schema', 'source_sha256', 'allowed_types', 'phase', 'status', 'rays'}
@@ -155,6 +168,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                           sector_quantum=64, sector_method='corners',
                           max_pivots=10000, max_anchors=10000,
                           lp_strategy='envelope', reduce_vertices=True,
+                          max_tree_nodes=256, tree_model='source',
                           check=lambda: None):
     """Recognize with globally shared search caps, returning three-way status.
 
@@ -191,33 +205,48 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
     Strict tetrahedron descent reaches a one-vertex source or a terminal unknot
     chain in polynomially many such steps. This does not bound the remaining
     sector family. ``False`` retains the search-only policy for comparisons.
+
+    ``sector_method='tree'`` replaces the flat assignment loop with a verified
+    tree of possibly incompatible Q masks. Negative relaxation certificates
+    close whole subfamilies; an incompatible positive point selects a complete
+    quadrilateral split. ``max_tree_nodes`` counts all begun nodes across
+    successors, while pivots and anchors retain their shared global limits.
+    Sector and corner allowances are unused in this mode. Complete negative
+    trees use the v2 recognition schema; terminal positive chains keep v1.
+    ``tree_model='source'`` retains one full-source Q model across nodes and
+    rechecks cached duals on each current mask. ``'restricted'`` rebuilds the
+    algebra per mask and retains separate node caches for comparison.
     """
     for name, value in (('max_sectors', max_sectors), ('max_bases', max_bases),
                         ('max_crushes', max_crushes), ('max_pivots', max_pivots),
-                        ('max_anchors', max_anchors)):
+                        ('max_anchors', max_anchors), ('max_tree_nodes', max_tree_nodes)):
         if value is not None and (type(value) is not int or value < 0):
             raise ValueError(name + ' must be a nonnegative integer or None')
     if sector_order not in ('diversified', 'canonical'):
         raise ValueError('sector_order must be diversified or canonical')
     if sector_quantum is not None and (type(sector_quantum) is not int or sector_quantum <= 0):
         raise ValueError('sector_quantum must be a positive integer or None')
-    if sector_method not in ('corners', 'lp'):
-        raise ValueError('sector_method must be corners or lp')
+    if sector_method not in ('corners', 'lp', 'tree'):
+        raise ValueError('sector_method must be corners, lp or tree')
     if lp_strategy not in ('anchors', 'envelope'):
         raise ValueError('lp_strategy must be anchors or envelope')
     if type(reduce_vertices) is not bool:
         raise ValueError('reduce_vertices must be a boolean')
+    if tree_model not in ('source', 'restricted'):
+        raise ValueError('tree_model must be source or restricted')
     return _safe_call(_recognize_by_crushing, check, diagram,
                       max_sectors=max_sectors, max_bases=max_bases,
                       max_crushes=max_crushes, sector_order=sector_order,
                       sector_quantum=sector_quantum, sector_method=sector_method,
                       max_pivots=max_pivots, max_anchors=max_anchors,
-                      lp_strategy=lp_strategy, reduce_vertices=reduce_vertices)
+                      lp_strategy=lp_strategy, reduce_vertices=reduce_vertices,
+                      max_tree_nodes=max_tree_nodes, tree_model=tree_model)
 
 
 def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                           sector_order, sector_quantum, sector_method,
-                          max_pivots, max_anchors, lp_strategy, reduce_vertices, check):
+                          max_pivots, max_anchors, lp_strategy, reduce_vertices,
+                          max_tree_nodes, tree_model, check):
     # Keep producer imports outside the independent verifier's import path.
     from .diagram_exterior import diagram_exterior
     from .diagram_exterior_verify import verify_diagram_exterior
@@ -231,6 +260,7 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
     from .normal_euler import decide_sector_euler
     from .positive_ray import extract_positive_ray
     from .normal_vertex_reduction import vertex_reduction_ray
+    from .normal_euler_tree import search_euler_tree
 
     check()
     source = Diagram.from_pd(diagram.pd)
@@ -250,10 +280,15 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                  matching_support_checks=0, matching_support_reductions=0,
                  forced_zero_types=0, sector_restarts=0,
                  sector_quantum_exhaustions=0, max_cached_sector_jobs=0)
-    if sector_method == 'lp':
+    if sector_method in ('lp', 'tree'):
         stats.update(lp_calls=0, lp_pivots=0, anchors_tested=0,
                      reused_anchors=0, envelope_calls=0, lp_tableau_updates=0,
                      maximum_tableau_bits=0, extraction_steps=0)
+    if sector_method == 'tree':
+        stats.update(nodes_attempted=0, branch_splits=0, negative_leaves=0,
+                     positive_relaxations=0, incompatible_positive_points=0,
+                     nonpositive_envelope_points=0, reused_envelopes=0,
+                     maximum_tree_depth=0, kernel_preparations=0)
     if reduce_vertices:
         stats.update(vertex_reduction_calls=0, vertex_reduction_crushes=0)
 
@@ -267,7 +302,9 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
         return dict(status='INCONCLUSIVE', reason=reason, stats=stats, partial_chain=chain())
 
     def conclusive(status, exhaustion):
-        certificate = dict(schema='diagram-crushing-recognition-v1', status=status,
+        schema = ('diagram-crushing-recognition-v2' if type(exhaustion) is dict
+                  else 'diagram-crushing-recognition-v1')
+        certificate = dict(schema=schema, status=status,
                            chain=chain(), exhaustion=exhaustion)
         if not verify_crushing_recognition(source, certificate, check=check):
             raise ArithmeticError('independent crushing recognition replay failed')
@@ -389,6 +426,37 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                 raise ArithmeticError('unexpected vertex reduction outcome')
         count = len(current['tetrahedra'])
         digest = _source_hash(current)
+        if sector_method == 'tree':
+            def remaining(cap, field):
+                return None if cap is None else cap-stats[field]
+            result = search_euler_tree(current, strategy=lp_strategy, model=tree_model,
+                max_nodes=remaining(max_tree_nodes, 'nodes_attempted'),
+                max_pivots=remaining(max_pivots, 'lp_pivots'),
+                max_anchors=remaining(max_anchors, 'anchors_tested'), check=check)
+            for field in ('nodes_attempted', 'branch_splits', 'negative_leaves', 'lp_calls',
+                          'lp_pivots', 'anchors_tested', 'reused_anchors', 'envelope_calls',
+                          'lp_tableau_updates', 'positive_relaxations',
+                          'incompatible_positive_points', 'nonpositive_envelope_points',
+                          'reused_envelopes', 'kernel_preparations'):
+                stats[field] += result['stats'][field]
+            stats['maximum_tree_depth'] = max(stats['maximum_tree_depth'],
+                                              result['stats']['maximum_depth'])
+            stats['maximum_tableau_bits'] = max(stats['maximum_tableau_bits'],
+                                               result['stats']['maximum_tableau_bits'])
+            if result['status'] == 'INCONCLUSIVE':
+                return inconclusive(result['reason'])
+            if result['status'] == 'NO_POSITIVE_EULER':
+                return conclusive('KNOTTED', result['certificate'])
+            if result['status'] != 'POSITIVE_EULER':
+                raise ArithmeticError('unexpected Euler tree outcome')
+            extracted = extract_positive_ray(current, result['coordinates'], check=check)
+            stats['extraction_steps'] += extracted['stats']['descent_steps']
+            stats['rays_examined'] += 1
+            stats['positive_euler_rays'] += 1
+            if max_crushes is not None and len(steps) >= max_crushes:
+                return inconclusive('shared crushing-step allowance exhausted')
+            apply_crush(extracted['coordinates'])
+            continue
         exhaustion = {}
         jobs = {}
         for assignment, quantum in _sector_schedule(count, sector_order, sector_quantum,
