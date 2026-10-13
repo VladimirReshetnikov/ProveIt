@@ -1,0 +1,401 @@
+\section{Fixed one-upward Pachner descent before normal search}
+\label{sec:pachner-descent-crushing}
+
+A triangulation with no accepted strict $3\to2$ move can still admit a
+short simplification that first inserts one tetrahedron.  The optional
+policy in this section searches completely for a first strict descent
+with at most one total $2\to3$ move, accepts an independently replayed
+geometric macro, and restarts normal search on its smaller endpoint.
+The intermediate size can increase, but each accepted macro decreases
+the source size by exactly one.  This gives polynomial preprocessing
+without a monotonicity assumption about the normal-surface cones.
+
+The source entry point is \path{reduce_pachner_descent_once}; the direct
+and factored crushing interfaces expose it through
+\path{reduce_pachner_descent=True}, with default false.  The underlying
+bounded-descent and cover primitives are those of
+Sections~\ref{sec:pachner-native} and~\ref{sec:cover-oracle}.
+Unlike the transported-disc epoch policy of
+Section~\ref{sec:pachner-epochs}, this adapter uses only zero heights
+and does not query for a normal disc.  Its accepted evidence certifies
+a change of triangulation of the same compact manifold.
+
+\subsection{A first descent has one or three elementary moves}
+
+Write $U$ for a $2\to3$ expansion and $D$ for a $3\to2$ contraction.
+Here the allowance is one \emph{total} expansion in one call, rather
+than a bound on the maximum excess of tetrahedra.  Starting with $t$
+tetrahedra, a prefix with $u$ expansions and $d$ contractions has
+$t+u-d$ tetrahedra.  Before a first strict decrease,
+\[
+                         d\le u\le1.
+\]
+Consequently the only possible nonterminal words are the empty word,
+$U$, and $UD$.  A completed first strict descent is either $D$ or $UDD$.
+Its endpoint has $t-1$ tetrahedra and all its intermediate sources have
+at most $t+1$ tetrahedra.  A packet with an earlier strict decrease
+followed by further moves is outside this fixed macro policy, even if
+its eventual endpoint is smaller and every individual move is valid.
+
+The search calls \path{find_pachner_descent} with upward allowance one,
+the sleep-set method, the exact oracle cover backend, and all node,
+region, cooperative-work and oracle-state caps removed.  The default
+connected original-cover radius is
+\[
+                              R=\min(t,6).
+\]
+The first-descent locality theorem recalled in
+Section~\ref{sec:pachner-native} supplies this sufficient radius:
+if a formal descent using at most one expansion exists, a connected
+first-descent witness consumes at most six original tetrahedra.
+This statement concerns existence of an appropriate witness; it does
+not assert that the original consumption of every trace is connected.
+The cover oracle admits a footprint precisely when some such connected
+cover contains it.  Its current witness does not restrict future
+eligibility; later queries use the consumed footprint itself.
+
+The endpoint predicate stops at the first visited smaller source.
+Complete exhaustion returns \path{UNCHANGED}; success returns
+\path{REDUCED} and a proof packet.  There is no finite internal search
+allowance that can be mistaken for exhaustion in this adapter.
+A caller interruption propagates instead of returning either outcome.
+An unchanged result concerns this bounded formal move family only.
+It proves neither a minimum triangulation nor a knot verdict; in
+particular it is not a separately replayable negative normal proof.
+
+\subsection{Relative-boundary topology and the zero cochain}
+
+Both elementary moves exchange the two formal triangulations of the
+triangular bipyramid used in
+Proposition~\ref{prop:strict-pachner32-relative}.  Their common six
+formal boundary triangles carry the same complete attachment maps.
+The homeomorphism fixing this formal boundary descends through all
+those relations, including attachments between two boundary facets of
+the same region.  The inverse replacement satisfies the same argument.
+Thus a composition of independently verified elementary moves preserves
+the underlying compact manifold and its boundary, even when the formal
+region has identified boundary vertices, edges or facets in the quotient.
+
+Each original, intermediate and final source is separately checked as
+a finite connected orientable compact triangulated manifold with exactly
+one torus boundary.  The accepted region tetrahedra are distinct and
+the internal facet maps, survivor records and formal boundary maps are
+checked, not inferred from matching source sizes or homology.  The
+source API permits any number of global vertices.  Since neither
+formal triangulation introduces an interior vertex of the bipyramid,
+these replacements preserve the ambient vertex equivalence classes.
+In particular a one-vertex source remains one-vertex.
+
+For the existing transport machinery, give each tetrahedron the height
+row $(0,0,0,0)$.  All signed edge differences vanish, so these rows
+define a consistent integral cochain.  On a formal move region, its
+connected edge graph forces all five aligned bipyramid heights to be
+equal.  Normalization at the first formal vertex makes all five zero.
+The replacement rows, being restrictions of these values, are again
+zero; surviving rows stay zero as well.  Induction proves this for
+every intermediate source.  The associated seven local normal
+coordinates vanish in every tetrahedron, as do the Euler and normal-disc
+jumps.  No coordinate size growth occurs.
+
+This zero cochain carries the empty normal surface.  It supplies a
+uniform way to reuse exact geometric transport and replay, but provides
+no positive Euler ray, essential disc, peripheral generator or normal
+surface identification between the old and new cones.  The adapter
+does not choose a cocycle seed, run an LP, or invoke disc discovery.
+The proof explicitly requires the endpoint's disc payload to be absent.
+
+\subsection{Source binding and independent strict acceptance}
+
+The new outer packet has exactly four fields:
+\path{schema}, \path{source_sha256}, \path{certificate}, and
+\path{successor}.  The schema value is
+\path{normal-pachner-descent-v1}.  The digest is SHA-256 of the complete
+labelled source encoded as canonical JSON with sorted keys and compact
+separators.  The successor is its full labelled face table, and the
+nested certificate uses the existing
+\path{pachner-cochain-endpoint-v1} schema.
+
+The independent entry point \path{verify_normal_pachner_descent}
+receives the original source explicitly.  It reconstructs its zero
+height rows, checks the digest and exact field sets, and independently
+replays every geometry and transport record through the existing
+endpoint and cover inspectors.  This establishes each relative-boundary
+replacement, every intermediate finite source, and a connected original
+cover of size at most $\min(t,6)$ containing all consumed original cells.
+The digest identifies the labelled source; actual replay from that
+source establishes the mathematical claim.
+
+The new verifier also enforces conditions beyond the legacy endpoint
+inspector's eventual strict decrease:
+\begin{enumerate}
+\item The advertised upward allowance is the literal integer one; the
+      trace has between one and three moves and at most one actual
+      expansion.
+\item Every proper prefix has at least $t$ tetrahedra, and the nonempty
+      final source has exactly $t-1$ tetrahedra.  Independent move replay
+      checks the one-tetrahedron change at each step.
+\item Every recorded height row, seven-coordinate row, five-entry
+      formal bipyramid height row and both jumps consists of literal
+      integer zeros; the final coordinate rows are zero and the
+      \path{disc_certificate} value is \path{None}.
+\item The declared successor agrees with the independently replayed
+      endpoint by type-sensitive recursive equality.  Boolean or
+      floating-point replacements for integer labels are not accepted
+      as equal source data.
+\end{enumerate}
+The resulting accepted traces are exactly of the shapes $D$ or $UDD$.
+The independent checker imports replay code, not the descent producer;
+it needs no successful rerun of discovery.
+
+Both source adapter and checker guard the caller's cancellation callback
+across nested legacy interfaces.  An internal carrier preserves the
+original exception object and prevents a caller-raised malformed-input
+exception or search-limit exception from becoming an ordinary rejection
+or exhaustion.  Malformed evidence is rejected; an interrupted accepted
+packet is not silently appended to the outer chain.  Complexity bounds
+below count the implementation's bookkeeping and charge arbitrary work
+performed by a caller-supplied callback separately.
+
+\subsection{Polynomial cost of the actual fixed search}
+
+The finite upward allowance already gives a direct bound for this
+particular implementation.  The argument includes exact marked keys,
+cover caches and lazy transition construction, rather than treating
+either the cover oracle or associative lookup as a free operation.
+Let $L=\log(t+2)$ and let $P(s)$ bound the local work at size $s$:
+complete source preparation, legal-event enumeration, one elementary
+construction and zero transport, exact serialization and independent
+local replay.  As in Section~\ref{sec:strict-pachner32}, the conservative
+choice
+\[
+                           P(s)=O(s^2\log^2(s+2))
+\]
+covers these operations on explicit dense sources.  It permits linear
+scans for local associative lookups.  It does \emph{not} yet include
+lookups in the global caches accumulated over the whole search.
+
+\begin{proposition}[Fixed-policy search and proof bounds]
+\label{prop:pachner-descent-crushing-cost}
+For a validated $t$-tetrahedron source, one completed call to the fixed
+zero-height adapter has the conservative bit bounds
+\[
+ \text{discovery time }O(t^6L^2),\qquad
+ \text{working space }O(t^3L).
+\]
+An accepted macro packet has $O(tL)$ bits and can be independently
+replayed in $O(t^2L^2)$ bit operations.  These bounds require no
+average-case hash-table assumption.
+\end{proposition}
+\begin{proof}
+At a live source with $s\le t+1$ tetrahedra there are $O(t)$ eligible
+events.  Upward events arise from paired facets between distinct
+tetrahedra; there are at most $2s$ such pairs.  Downward events arise
+from degree-three global edge classes using three distinct tetrahedra;
+there are $O(s)$ classes among the $6s$ local edge incidences.
+Preparing the full table and checking the formal regions is covered by
+$P(s)$; this event count does not declare every combinatorial edge
+eligible without checking its actual region.
+
+Before success, only the empty, $U$ and $UD$ prefixes can be expanded.
+Thus there are
+\[
+                  N=O(t^2)\quad\hbox{visited frames},\qquad
+                  Q=O(t^3)\quad\hbox{candidate attempts},
+\]
+with at most one additional selected terminal frame.  The code
+materializes a queued move through \path{_advance} only when that frame
+is popped.  Each visited nonterminal frame generates its event list
+through \path{_events}; it need not materialize all candidate children.
+Sleep pruning and failed cover queries can only remove these paths.
+Duplicate marked endpoints do not prune their continuation frames, so
+the bound includes such frames as well.
+
+The smaller-source predicate is queried before generating children at
+the first occurrence of each exact marked endpoint.  Its key contains
+one record per live tetrahedron.  Consequently a smaller source cannot
+be concealed by a key of a nonsmaller source; the first visit to any
+smaller key stops the entire query.  Deduplication therefore cannot
+create longer uncounted paths below the first-descent threshold.
+
+The cover graph has maximum degree four and $R\le6$.  Each footprint
+query asks for a rooted completion inside a set of size at most six.
+At any stage its frontier has size at most $24$, and extension depth
+is at most six.  Exhaustive canonical-parent completion therefore has
+an absolute constant number of local extension possibilities, with
+$O(L)$-bit original labels.  Oversized footprints are rejected directly.
+A queried footprint contains at most eight originals along these
+three-event traces, so its cache key also has constant cardinality.
+The selected cover witness is a constant-size record, not an ambient
+index over all covers.
+
+Across the query, the number of interned incarnation identifiers is
+$O(t+N)$, since each materialized move creates at most three.  Their
+bit lengths are $O(L)$.  Interning keys contain an event's fixed-arity
+integer incarnation ports and a birth slot; they do not recursively
+expand the entire ancestry history.  A marked endpoint key has $O(t)$
+face and height records and thus $O(tL)$ bits.  There are at most $N$
+such keys and at most $Q$ completed footprint-cache records.  These
+require $O(NtL+QL)=O(t^3L)$ bits.  The depth-three DFS stack, event lists,
+sleep payloads and constant-length full-source traces fit the same
+bound; even retaining a full source with every visited frame would fit
+it.  Unvisited siblings are stored as parent/event records.  Temporary
+certificate copies and final replay do not increase this order.
+
+For a deterministic worst-case time bound, charge a full scan of the
+global associative table for every lookup.  The $Q$ cover-cache
+lookups cost at most $O(Q^2L)$, since their keys have constant
+cardinality.  Marked-key membership costs at most $O(N^2tL)$.
+Fixed-arity incarnation interning is no larger.  Comparing sleep
+obligations across all candidate events costs at most $O(Nt^2L)$.
+All materialized geometry and local preparation cost $O(NP(t+1))$.
+In particular the sum
+\[
+ O\bigl(NP(t+1)+Q^2L+N^2tL+Nt^2L\bigr)
+                \subseteq O(t^6L^2)
+\]
+covers global collision scans separately from the local bound $P$.
+Source hashing, proof construction and the adapter's independent final
+replay fit this conservative estimate.
+
+Finally, an accepted proof has at most three full labelled successor
+snapshots.  Each has $O(tL)$ bits; its zero height and coordinate rows
+have $O(t)$ entries, and its formal move and cover records have
+$O(L)$ bits.  Repeating the final source in the outer successor field
+changes only a constant factor.  Constantly many source checks,
+transport replays and literal comparisons cost $O(P(t+1))$, proving
+the packet and replay bounds.
+\end{proof}
+
+The callback counter \path{search_work} is the legacy descent call's
+\path{aggregate_work}; it counts cooperative checkpoints through that
+call's preparation, search and legacy positive replay.  It is not a
+bit-operation counter or a timing measurement.  It does not include
+all outer-adapter hashing, source checks or subsequent driver replay.
+Likewise \path{search_nodes} counts popped search frames, rather than
+candidate events, normal-search nodes or cover completions.  The
+asymptotic proof charges those additional operations explicitly.
+
+Restarting this preprocessing alone accepts fewer than $t$ macros.
+Its full discovery cost is at most $O(t^7L^2)$, peak working space is
+$O(t^3L)$ when completed query caches are released, and the retained
+accepted packet chain uses $O(t^2L)$ bits.  It contains at most
+$3(t-1)$ elementary moves and has intermediate size at most $t+1$.
+Replaying this whole accepted chain costs at most $O(t^3L^2)$.
+These are conservative bounds for fixed geometric preprocessing,
+separate from all subsequent Euler decisions and normal-ray extraction.
+
+\subsection{Mixed-chain scheduling, budgets and source resets}
+
+At each current source the crushing driver first attempts enabled
+vertex reduction, then inverse boundary layering, then the strict
+$3\to2$ scan, and finally this one-upward macro.  A successful
+preprocessor restarts the loop immediately.  Only after these enabled
+operations return unchanged does normal Euler search prepare its model.
+After a macro, incidence tables, source digests, matching equations,
+LP models, dual certificates and learned conflicts belong to the new
+source and are reconstructed.  No old normal-search cache is transported
+by the zero-height geometric certificate.
+
+The mixed chain uses \path{diagram-crushing-v4} whenever this option
+is enabled.  It retains the same exact outer fields as the earlier
+chain versions and accepts normal crushes, inverse boundary layers,
+strict $3\to2$ packets and the new macro packets.  Versions one, two
+and three retain their earlier accepted step kinds and reject the new
+macro.  The independent chain checker authenticates the diagram
+exterior and any initial shellings before replaying every step from
+its actual predecessor.  It requires strict size decrease between
+outer steps.  The intermediate expansion is inside one verified macro,
+whose endpoint satisfies this same decreasing measure.
+
+The shared \path{max_crushes} allowance counts accepted outer steps:
+\[
+ \text{normal crushes}+\text{inverse layers}
+ +\text{strict }3\to2\text{ moves}+\text{one-upward macros}.
+\]
+A $UDD$ macro uses one unit, while its one upward and two downward
+elementary moves are recorded separately.  Under the common
+\path{pachner_descent_} field prefix, \path{calls}, \path{nodes} and
+\path{work} accumulate completed discovery calls.  The suffixes
+\path{macros}, \path{upward_moves} and \path{downward_moves} instead
+record accepted progress.
+Discovery counters are accumulated before testing whether a discovered
+macro may be accepted under the shared allowance.  Thus a successful
+search denied acceptance still contributes its reported discovery work,
+while the current source and accepted-move counters remain unchanged.
+The reduction budget does not bound this polynomial discovery work.
+An exception during an outstanding call propagates and yields no
+completed-call statistics to claim as complete work.
+
+The source producer independently verifies a successful packet, and
+the driver replays it again before appending it.  If the allowance is
+exhausted, the driver returns inconclusive with its earlier authenticated
+partial chain.  A nonempty geometric successor alone proves neither
+triviality nor nontriviality.  Recognition still requires the usual
+terminal normal crushing proof or complete negative normal certificate.
+The existing outer recognition schemas use the new chain through the
+same independent chain verifier.
+
+The factored interface passes this policy to each attempted visible
+factor and charges accepted macros once against the same global
+reduction allowance shared with the other step kinds.  Additive search
+statistics include every attempted child.  Its proof quorum remains
+one verified knotted child or verified unknot proofs for every child;
+a geometric macro does not itself satisfy either quorum.
+
+\subsection{Native validation scope}
+
+The retained regression run passes $336$ tests across $38$ modules with
+Regina available and no skipped tests.  It covers the exact LP and normal
+crushing paths, legacy cover and cochain interfaces, and the new producer,
+independent checker and mixed-chain integration.  Controls include both
+single contractions and three-move first descents, several global vertices,
+formal-region selfattachments, caller cancellation through nested replay,
+and shared budgets across incomplete factor attempts.  A genuine complete
+trefoil call and its factorwise composition verify through the new chain.
+
+A final focused seven-test verifier rerun strengthens the outer successor
+control: its corrupted boolean or floating-point label is rejected while
+the unchanged inner geometric proof still independently passes.  A
+geometrically valid $DUD$ trace also passes the legacy eventual-descent
+inspector but is rejected by the new first-descent policy.  These controls
+check the stricter interface contract, rather than treating geometric
+reachability alone as proof of the fixed-policy bound.  Native code stayed
+unchanged between the broad and focused runs.  The commands and logs are
+retained under \path{data/pachner-descent-*}; the core publication helper
+pins the implementation, fixture dependencies and rebuilt article.
+These tests establish finite regression evidence, not a scaling theorem
+or a measurement of recognition speed.
+
+\subsection{What this gives toward the complexity objective}
+
+Every accepted outer step strictly decreases tetrahedron count, so
+interleaving this policy with the other strict reductions still permits
+only $O(t)$ source stages and hence $O(t)$ fixed-macro queries.  The
+polynomial preprocessing bound is therefore compatible with the
+factorwise cost accounting of Section~\ref{sec:factored-crushing}.
+It also preserves the restricted visible-factor-size corollary there:
+the explicit complete tree policy has exponential work in the largest
+child's linear-size source, and this added polynomial term does not
+change that bound.
+
+There is no proved inequality $h(T')\le h(T)$ for a returned macro,
+nor a proved transport of the positive formal root rays or their
+conflict sets.  Even the primitive negative-source resolving parameter
+is defined using the current matching cone and canonical Euler data,
+which are changed by retriangulation.  The relative-boundary
+homeomorphism and the transported empty surface do not identify these
+objects.  An increase is not ruled out by this proof, and no concrete
+increase witness is asserted here.  Fewer tetrahedra alone therefore
+does not certify fewer LP nodes or a faster complete recognition run.
+
+Conditional bounds involving a polylogarithmic resolving parameter
+must still control that parameter on \emph{every} authenticated source
+at which normal search actually runs, including the new macro endpoints.
+The fixed search supplies no such uniform control.  A source stationary
+under this total-one-upward family need not be globally minimal or
+cheap to recognize.  Thus the policy establishes a certified polynomial
+preprocessing operation; it supplies no general quasi-polynomial bound
+for unknot recognition.
+
+% Future empirical subsection: add only archived, independently replayed
+% fresh driver evidence and completed timings with their exact source pins.

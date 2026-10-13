@@ -169,7 +169,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                           sector_quantum=64, sector_method='corners',
                           max_pivots=10000, max_anchors=10000,
                           lp_strategy='envelope', reduce_vertices=True, unlayer_boundary=False,
-                          reduce_pachner32=False,
+                          reduce_pachner32=False, reduce_pachner_descent=False,
                           max_tree_nodes=256, tree_model='source',
                           max_hitting_subsets=10000,
                           transversal_candidate_policy='subsets',
@@ -253,6 +253,15 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
     The v3 chain accepts all three reduction kinds, sharing max_crushes;
     pachner32_moves counts these moves separately. The default is False.
 
+    ``reduce_pachner_descent=True`` then searches for a first strict Pachner
+    descent with at most one total 2-3 expansion. The complete polynomial
+    search uses zero cochain heights and no normal-disc or LP queries. A v4
+    chain records each accepted macro as one max_crushes operation, even when
+    its trace contains one expansion and two contractions. Separate diagnostics
+    count search nodes/work and accepted elementary upward/downward moves.
+    Every changed source restarts preprocessing and normal algebra. Default
+    False preserves the previous chain schemas and statistics.
+
     ``max_ellipsoid_iterations`` and ``max_feasibility_calls`` count fallback
     work across all anchors, nodes, candidate restarts and crushing successors.
     Both default to 10000; None removes a cap. Flat LP scheduling also applies
@@ -288,6 +297,8 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
         raise ValueError('unlayer_boundary must be a boolean')
     if type(reduce_pachner32) is not bool:
         raise ValueError('reduce_pachner32 must be a boolean')
+    if type(reduce_pachner_descent) is not bool:
+        raise ValueError('reduce_pachner_descent must be a boolean')
     validate_lp_controls(lp_policy, lp_fast_path_pivots,
                          max_ellipsoid_iterations, max_feasibility_calls)
     return _safe_call(_recognize_by_crushing, check, diagram,
@@ -298,6 +309,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                       lp_strategy=lp_strategy, reduce_vertices=reduce_vertices,
                       unlayer_boundary=unlayer_boundary,
                       reduce_pachner32=reduce_pachner32,
+                      reduce_pachner_descent=reduce_pachner_descent,
                       max_tree_nodes=max_tree_nodes, tree_model=tree_model,
                       max_hitting_subsets=max_hitting_subsets,
                       transversal_candidate_policy=transversal_candidate_policy,
@@ -309,7 +321,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
 def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                           sector_order, sector_quantum, sector_method,
                           max_pivots, max_anchors, lp_strategy, reduce_vertices, unlayer_boundary,
-                          reduce_pachner32,
+                          reduce_pachner32, reduce_pachner_descent,
                           max_tree_nodes, tree_model, max_hitting_subsets,
                           transversal_candidate_policy,
                           lp_policy, lp_fast_path_pivots,
@@ -334,6 +346,9 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
     if reduce_pachner32:
         from .normal_pachner32 import reduce_pachner32_once
         from .normal_pachner32_verify import verify_normal_pachner32
+    if reduce_pachner_descent:
+        from .normal_pachner_descent import reduce_pachner_descent_once
+        from .normal_pachner_descent_verify import verify_normal_pachner_descent
 
     check()
     source = Diagram.from_pd(diagram.pd)
@@ -375,9 +390,14 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                      boundary_unlayerings=0)
     if reduce_pachner32:
         stats.update(pachner32_calls=0, pachner32_candidates=0, pachner32_moves=0)
+    if reduce_pachner_descent:
+        stats.update(pachner_descent_calls=0, pachner_descent_nodes=0,
+                     pachner_descent_work=0, pachner_descent_macros=0,
+                     pachner_descent_upward_moves=0, pachner_descent_downward_moves=0)
 
     def chain():
-        schema = ('diagram-crushing-v3' if reduce_pachner32 else
+        schema = ('diagram-crushing-v4' if reduce_pachner_descent else
+                  'diagram-crushing-v3' if reduce_pachner32 else
                   'diagram-crushing-v2' if unlayer_boundary else 'diagram-crushing-v1')
         return dict(schema=schema,
                     input_pd=[list(row) for row in source.pd],
@@ -554,6 +574,28 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                 continue
             if reduction['status'] != 'UNCHANGED':
                 raise ArithmeticError('unexpected Pachner 3-2 outcome')
+        if reduce_pachner_descent:
+            reduction = reduce_pachner_descent_once(current, check=check)
+            stats['pachner_descent_calls'] += 1
+            stats['pachner_descent_nodes'] += reduction['stats']['search_nodes']
+            stats['pachner_descent_work'] += reduction['stats']['search_work']
+            if reduction['status'] == 'REDUCED':
+                if max_crushes is not None and len(steps) >= max_crushes:
+                    return inconclusive('shared crushing-step allowance exhausted')
+                packet = reduction['certificate']
+                if not verify_normal_pachner_descent(current, packet, check=check):
+                    raise ArithmeticError('independent Pachner descent replay failed')
+                successor = packet['successor']
+                if len(successor['tetrahedra']) != len(current['tetrahedra'])-1:
+                    raise ArithmeticError('Pachner descent did not delete one tetrahedron')
+                steps.append(packet)
+                current = successor
+                stats['pachner_descent_macros'] += 1
+                stats['pachner_descent_upward_moves'] += reduction['stats']['upward_moves']
+                stats['pachner_descent_downward_moves'] += reduction['stats']['downward_moves']
+                continue
+            if reduction['status'] != 'UNCHANGED':
+                raise ArithmeticError('unexpected Pachner descent outcome')
         count = len(current['tetrahedra'])
         digest = _source_hash(current)
         if sector_method in ('tree', 'transversal'):
