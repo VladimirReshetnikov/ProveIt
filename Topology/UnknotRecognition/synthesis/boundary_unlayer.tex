@@ -1,0 +1,215 @@
+\section{Certified removal of visible boundary layers}
+\label{sec:boundary-unlayer}
+
+The collar construction in Section~\ref{sec:boundary-transversal}
+suggests a concrete preprocessing operation: remove an exposed outer
+layer before building the Euler search model.  The maintained optional
+\path{unlayer_boundary=True} performs this operation with an independent
+certificate.  It preserves the compact manifold and decreases the
+tetrahedron count.  It neither preserves the labelled normal solution
+cone nor supplies a bound on its resolving number $h$.
+
+The operation is restricted to finite, connected, orientable,
+one-vertex sources with one torus boundary.  These are the sources
+produced by the vertex reduction of Section~\ref{sec:vertex-reduction}
+unless an unknot proof has already terminated the chain.  Sources with
+more vertices are left unchanged by this optional operation.  All
+normal search methods can use the resulting smaller source; the default
+\path{unlayer_boundary=False} retains the previous preprocessing policy.
+
+\subsection{The unique visible candidate and its labelled deletion}
+
+A one-vertex triangulation of the torus has two boundary triangles.
+If they belong to different tetrahedra, there is no exposed layer of
+the supported kind.  Otherwise their common tetrahedron $d$ is the only
+candidate.  It has two boundary faces and two attached faces.  Both
+attached faces must lead to surviving tetrahedra, and their target
+face records must be distinct.  The two targets may lie in the same
+surviving tetrahedron.  Self-pairings involving $d$ and deletion of the
+only tetrahedron are excluded.
+
+Let $T$ be the supplied source and $S$ the proposed successor.  Delete
+$d$, expose its two reciprocal attachment faces, and keep every other
+face pairing.  Surviving tetrahedra retain their order in the original
+label list and are compacted to consecutive labels; all local vertex
+labels remain unchanged.  Thus $S$ is uniquely determined by $T$ and
+$d$.  The checker compares every supplied successor face record with
+this literal deletion.  It separately validates both sources as compact
+orientable manifolds with one vertex and one torus boundary.  The two
+boundary faces of $S$ must be exactly the exposed attachment targets.
+
+These conditions allow identifications among the tetrahedron's vertices
+and edges.  In particular, requiring four distinct global vertices would
+exclude every intended one-vertex example.  The earlier embedded
+boundary-shelling checker has that requirement and remains unchanged.
+The present operation uses the generalized boundary-layering theorem
+instead.
+
+\subsection{Reconstructing the forward layering independently}
+
+Write $f_0,f_1$ for the attached face indices in $d$, and put
+\[
+ \{a,b\}=\{0,1,2,3\}\setminus\{f_0,f_1\},\qquad a<b.
+\]
+The attached faces share the local edge $ab$.  Map this ordered edge
+through each attachment permutation into $S$.  The two occurrences
+must represent the same global boundary edge $e$, with the same
+oriented ends.  Equality of the unique global vertex alone would not
+check this condition: a loop edge still has two distinguished oriented
+ends.  The checker reconstructs edge roots and orientation parities
+from the original face pairings of $S$ to compare the two maps.
+
+Next map every surviving local edge incidence of $S$ back into $T$.
+All occurrences of a global edge must give the same target edge and
+the same relative orientation.  Distinct edge classes of $S$ must have
+distinct images.  Hence adding $d$ does not merge existing edge classes
+or reverse their end identifications.  There must be exactly one extra
+edge in $T$, namely the opposite local edge $f_0f_1$ of $d$, denoted
+$e'$.  If $\iota$ is the verified map on old edge classes, the boundary
+edge sets must satisfy the exact equality
+\[
+ E_\partial(T)
+   =\bigl(\iota(E_\partial(S))\setminus\{\iota(e)\}\bigr)
+       \cup\{e'\}.
+\]
+The total edge count and the set of all surviving edge images are also
+checked.  The four side edges of the attaching quadrilateral need not
+be distinct; the comparisons use their reconstructed global classes.
+
+\begin{proposition}[Soundness of a certified inverse layer]
+\label{prop:boundary-unlayer-sound}
+An accepted inverse-layer packet identifies a labelled triangulation
+$S$ with one fewer tetrahedron than $T$, representing the same compact
+manifold.  Its successor is nonempty.  In particular, if $T$ is an
+authenticated classical knot exterior, then $S$ is an authenticated
+exterior of the same knot.
+\end{proposition}
+\begin{proof}
+The literal deletion comparison reconstructs $T$ by adding the fresh
+tetrahedron $d$ to $S$ along two distinct boundary triangles.  The
+shared-edge comparison proves that both face permutations extend the
+same oriented identification of their joining edge.  This is the
+layering operation of Jaco--Rubinstein, \emph{Layered-triangulations of
+3-manifolds}, Section~3, printed page~9; see also Lemma~9.2, printed
+pages~85--86, in
+\url{https://arxiv.org/pdf/math/0603601v2}.
+Their statement allows identifications among the quadrilateral's sides
+and produces a triangulation of the same compact manifold.  It applies
+without assuming an embedded attaching disc.  The independent manifold
+and edge-incidence checks exclude the unsupported degeneracies above.
+The source reconstruction removes exactly one tetrahedron and explicitly
+requires a nonempty successor, proving the remaining assertions.
+\end{proof}
+
+The packet records an unmarked compact-manifold move.  Recognition here
+uses the authenticated knot-exterior type.  A future consumer requiring
+a specified boundary slope or cocycle would also have to transport that
+data through the checked diagonal flip; unchanged local labels alone
+are not a peripheral-coordinate map.
+
+\subsection{A small certificate and polynomial preprocessing}
+
+The public source-only constructor is
+\path{boundary_unlayer.unlayer_boundary_once}.  It returns either
+\path{UNLAYERED} with a packet, or \path{UNCHANGED}.  The independent
+entry point is \path{boundary_unlayer_verify.verify_boundary_unlayering}.
+It imports the source-incidence validator and no producer, search
+backend, LP solver, external topology engine, or research module.
+The packet has exactly four fields:
+\begin{center}
+\begin{tabular}{ll}
+\path{schema} & \path{normal-boundary-unlayer-v1} \\
+\path{source_sha256} & canonical JSON digest of the complete labelled $T$ \\
+\path{tetrahedron} & literal integer label of $d$ in $T$ \\
+\path{successor} & the complete densely labelled $S$
+\end{tabular}
+\end{center}
+The source digest uses sorted-key JSON with fixed compact separators.
+The topology check still uses the entire supplied source.  Boolean
+tetrahedron labels and nonintegral pairing entries are rejected.
+Malformed packets return false; caller exceptions propagate with their
+original identity, including exceptions raised during either source
+validation.
+
+\begin{proposition}[Polynomial visible-collar removal]
+\label{prop:boundary-unlayer-polynomial}
+Starting with $t$ tetrahedra, repeated accepted inverse layers perform
+at most $t-1$ removals.  Candidate discovery, certificate construction
+and independent replay use polynomial combinatorial bit work and
+polynomial certificate length.
+\end{proposition}
+\begin{proof}
+Each accepted step strictly decreases the positive tetrahedron count.
+There is at most one candidate at each stage, determined by the two
+boundary face incidences, so no exponential family of candidate
+subsets is inspected.
+
+At size $s$, the face-record encoding has $O(s\log(s+2))$ bits: each
+face has one tetrahedron label and a permutation of four vertices.
+The shared source validator processes $O(s)$ face, edge and vertex
+incidences.  Union by size bounds any union--find parent path by
+$O(\log(s+2))$.  All indices and incidence counters have
+$O(\log(s+2))$ bits; the sparse matching rows it constructs have
+constant-size coefficients.  Connectivity, link and boundary checks
+process only polynomially many such data.  The unlayer checker adds
+literal face comparisons, one source digest and maps on $O(s)$ edge
+incidences.  Even allowing linear scans for each associative lookup,
+\[
+ P(s)=O\bigl(s^2\log^2(s+2)\bigr)
+\]
+is a conservative bit bound for a source check and a complete candidate
+attempt.  The sum of these bounds over at most $t$ stages is
+$O(t^3\log^2(t+2))$.  This deliberately loose bound needs no average
+hash-table assumption.  Storing every labelled successor explicitly
+uses $O(t^2\log(t+2))$ bits.  Repeating the independent checks during
+chain replay changes these polynomial bounds only by a constant factor.
+\end{proof}
+
+Successive removals can reverse a collar built by explicit forward
+layerings, working from its exposed outermost tetrahedron inward.
+This does not establish a unique simplified triangulation or recognize
+every possible collar presentation.  Further legal removals from the
+earlier source are also allowed; every accepted move has its own
+homeomorphism justification.
+
+\subsection{Versioned chains, shared limits and fresh source algebra}
+
+The original \path{diagram-crushing-v1} chain retains its strict
+normal-crush-only interpretation.  The additive
+\path{diagram-crushing-v2} chain permits both unchanged
+\path{normal-ray-crushing-v1} packets and the new inverse-layer packets.
+Verification authenticates the diagram exterior and optional original
+shelling prefix, then dispatches each step to its independent checker.
+Every nonterminal step strictly decreases the tetrahedron count.
+An inverse layer always has a nonempty successor; only a verified
+terminal normal crush can end an unknot chain.
+
+When enabled, the driver tries the unique inverse-layer candidate after
+vertex reduction and before building the next Euler search model.
+An accepted step restarts the source loop.  All Q models, coordinates,
+dual caches, learned conflicts and final-source exclusion packets belong
+to the preceding labelled source and are rebuilt when needed.  No claim
+that a normal ray or its conflict set survives the move is used.
+Knottedness still requires complete independently checked Euler coverage
+on the final source, after authentication of the mixed chain.  A partial
+chain remains a \path{REDUCED} source certificate, not a recognition
+verdict.
+
+With this option enabled, \path{max_crushes} charges both kinds of
+strict reduction.  Its unit is the number of mixed-chain steps; the
+statistics \path{crushing_steps} and \path{boundary_unlayerings}
+separately count normal crushes and inverse layers.  The default false
+option preserves the previous unit and result schema.  All LP pivots,
+anchors, candidate work, tree nodes, ellipsoid updates and feasibility
+calls already spent remain charged across these source changes.
+Limit exhaustion produces \path{INCONCLUSIVE} with its partial chain.
+Candidate validation itself is polynomial preprocessing outside the
+search allowances.
+
+Visible-collar removal directly addresses the construction that moves
+boundary incidences away from a fixed core in the preceding section.
+The normal cone after removal may change, and neither $h$ nor $\delta$
+is asserted to be invariant or monotone.  Sources with their two
+boundary faces in different tetrahedra may still have difficult conflict
+hypergraphs.  A uniform small-parameter theorem remains a separate
+requirement for general quasi-polynomial recognition.

@@ -168,7 +168,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                           max_crushes=None, sector_order='diversified',
                           sector_quantum=64, sector_method='corners',
                           max_pivots=10000, max_anchors=10000,
-                          lp_strategy='envelope', reduce_vertices=True,
+                          lp_strategy='envelope', reduce_vertices=True, unlayer_boundary=False,
                           max_tree_nodes=256, tree_model='source',
                           max_hitting_subsets=10000,
                           transversal_candidate_policy='subsets',
@@ -238,6 +238,13 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
     max_hitting_subsets limit charges every partial candidate-search state,
     including repeat visits at larger depths, before any candidate LP work.
 
+    ``unlayer_boundary=True`` tries a certified inverse boundary layer after
+    vertex reduction and before normal search at each source. The resulting
+    diagram-crushing-v2 chain mixes normal crushes and manifold-preserving
+    layer deletions. max_crushes charges both kinds of strict reduction;
+    crushing_steps and boundary_unlayerings report them separately. The
+    default False preserves the existing v1 chain and preprocessing policy.
+
     ``max_ellipsoid_iterations`` and ``max_feasibility_calls`` count fallback
     work across all anchors, nodes, candidate restarts and crushing successors.
     Both default to 10000; None removes a cap. Flat LP scheduling also applies
@@ -269,6 +276,8 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
     if (type(transversal_candidate_policy) is not str
             or transversal_candidate_policy not in ('subsets', 'conflicts')):
         raise ValueError('transversal_candidate_policy must be subsets or conflicts')
+    if type(unlayer_boundary) is not bool:
+        raise ValueError('unlayer_boundary must be a boolean')
     validate_lp_controls(lp_policy, lp_fast_path_pivots,
                          max_ellipsoid_iterations, max_feasibility_calls)
     return _safe_call(_recognize_by_crushing, check, diagram,
@@ -277,6 +286,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                       sector_quantum=sector_quantum, sector_method=sector_method,
                       max_pivots=max_pivots, max_anchors=max_anchors,
                       lp_strategy=lp_strategy, reduce_vertices=reduce_vertices,
+                      unlayer_boundary=unlayer_boundary,
                       max_tree_nodes=max_tree_nodes, tree_model=tree_model,
                       max_hitting_subsets=max_hitting_subsets,
                       transversal_candidate_policy=transversal_candidate_policy,
@@ -287,7 +297,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
 
 def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                           sector_order, sector_quantum, sector_method,
-                          max_pivots, max_anchors, lp_strategy, reduce_vertices,
+                          max_pivots, max_anchors, lp_strategy, reduce_vertices, unlayer_boundary,
                           max_tree_nodes, tree_model, max_hitting_subsets,
                           transversal_candidate_policy,
                           lp_policy, lp_fast_path_pivots,
@@ -307,6 +317,8 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
     from .normal_vertex_reduction import vertex_reduction_ray
     from .normal_euler_tree import search_euler_tree
     from .normal_euler_transversal import search_euler_transversal
+    from .boundary_unlayer import unlayer_boundary_once
+    from .boundary_unlayer_verify import verify_boundary_unlayering
 
     check()
     source = Diagram.from_pd(diagram.pd)
@@ -343,9 +355,13 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                      peak_cached_conflicts=0, conflict_cache_evictions=0)
     if reduce_vertices:
         stats.update(vertex_reduction_calls=0, vertex_reduction_crushes=0)
+    if unlayer_boundary:
+        stats.update(boundary_unlayer_calls=0, boundary_unlayer_candidates=0,
+                     boundary_unlayerings=0)
 
     def chain():
-        return dict(schema='diagram-crushing-v1', input_pd=[list(row) for row in source.pd],
+        return dict(schema='diagram-crushing-v2' if unlayer_boundary else 'diagram-crushing-v1',
+                    input_pd=[list(row) for row in source.pd],
                     source_triangulation=initial, shelling=shelling, steps=steps,
                     status='UNKNOT' if current is None else 'REDUCED',
                     triangulation=current)
@@ -481,6 +497,25 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                 continue
             if reduction['status'] != 'ONE_VERTEX':
                 raise ArithmeticError('unexpected vertex reduction outcome')
+        if unlayer_boundary:
+            reduction = unlayer_boundary_once(current, check=check)
+            stats['boundary_unlayer_calls'] += 1
+            stats['boundary_unlayer_candidates'] += reduction['stats']['candidate_tests']
+            if reduction['status'] == 'UNLAYERED':
+                if max_crushes is not None and len(steps) >= max_crushes:
+                    return inconclusive('shared crushing-step allowance exhausted')
+                packet = reduction['certificate']
+                if not verify_boundary_unlayering(current, packet, check=check):
+                    raise ArithmeticError('independent boundary unlayering replay failed')
+                successor = packet['successor']
+                if len(successor['tetrahedra']) != len(current['tetrahedra'])-1:
+                    raise ArithmeticError('boundary unlayering did not delete one tetrahedron')
+                steps.append(packet)
+                current = successor
+                stats['boundary_unlayerings'] += 1
+                continue
+            if reduction['status'] != 'UNCHANGED':
+                raise ArithmeticError('unexpected boundary unlayering outcome')
         count = len(current['tetrahedra'])
         digest = _source_hash(current)
         if sector_method in ('tree', 'transversal'):

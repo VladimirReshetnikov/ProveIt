@@ -11,6 +11,7 @@ from .diagram_exterior_verify import verify_diagram_exterior
 from .boundary_shellings_verify import verify_boundary_shellings
 from .integer_codec import certificate_equal
 from .normal_crushing_verify import verify_normal_crushing
+from .boundary_unlayer_verify import verify_boundary_unlayering
 
 
 class _CallbackRaised(BaseException):
@@ -34,6 +35,10 @@ def _safe_call(function, check, *args, **kwargs):
 def verify_crushing_chain(diagram, certificate, *, check=lambda: None):
     """Verify the original diagram, optional shellings, and every shrinking step.
 
+    Version 1 accepts normal crushes only. Version 2 additionally accepts
+    independently checked inverse boundary layers, which preserve the compact
+    manifold and always have a nonempty, strictly smaller successor.
+
     A true UNKNOT certificate proves triviality. A true REDUCED certificate
     authenticates only the supplied smaller exterior. It must not be consumed
     as either an unknot or a knottedness verdict. Malformed packets return False;
@@ -49,7 +54,7 @@ def _verify_crushing_chain(diagram, certificate, *, check):
         fields = {'schema', 'input_pd', 'source_triangulation', 'shelling',
                   'steps', 'status', 'triangulation'}
         if (type(certificate) is not dict or set(certificate) != fields or
-                certificate['schema'] != 'diagram-crushing-v1' or
+                certificate['schema'] not in ('diagram-crushing-v1', 'diagram-crushing-v2') or
                 certificate['status'] not in ('REDUCED', 'UNKNOT') or
                 type(certificate['steps']) is not list or
                 not certificate_equal(certificate['input_pd'], [list(r) for r in source.pd])):
@@ -68,7 +73,13 @@ def _verify_crushing_chain(diagram, certificate, *, check):
             return False
         for step in certificate['steps']:
             check()
-            if current is None or not verify_normal_crushing(current, step, check=check):
+            if current is None or type(step) is not dict:
+                return False
+            unlayer = step.get('schema') == 'normal-boundary-unlayer-v1'
+            if unlayer and certificate['schema'] != 'diagram-crushing-v2':
+                return False
+            verifier = verify_boundary_unlayering if unlayer else verify_normal_crushing
+            if not verifier(current, step, check=check):
                 return False
             successor = step['successor']
             if successor is not None and len(successor['tetrahedra']) >= len(current['tetrahedra']):
