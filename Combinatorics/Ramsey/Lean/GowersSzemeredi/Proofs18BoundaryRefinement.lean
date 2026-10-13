@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs05VariablePhaseRefinement
+import GowersSzemeredi.Proofs05RefinementConstantBounds
 import GowersSzemeredi.Proofs18ExceptionalCellSelection
 
 /-! Refining a progression partition into cells of small modular diameter,
@@ -11,6 +12,56 @@ namespace LeanProofs.GowersSzemeredi
 /-- Count constant for a modular-diameter tolerance epsilon*N. -/
 def boundaryRefinementConstant (epsilon : Real) : Real :=
   section5LocalRefinementConstant 1 (4 * Real.pi * epsilon)
+
+/-- Keep the fixed refinement constant as a prefactor; the density exponent
+is seventeen times the inverse-gain exponent, plus the fixed scale reserve. -/
+theorem interval_length_factor_inv_le_scaled {X beta : Real} {n : Nat}
+    (hX : 2 ≤ X) (hb : 0 < beta) (hbi : beta⁻¹ ≤ X ^ n) :
+    (beta / (8 * boundaryRefinementConstant (beta / 64)))⁻¹ ≤
+      (8 * section5LocalRefinementConstant 1 1) * X ^ (17 * n + 64) := by
+  have hX1 : 1 ≤ X := by linarith only [hX]
+  have hX0 : 0 ≤ X := zero_le_one.trans hX1
+  have heta : 0 < 4 * Real.pi * (beta / 64) := by positivity
+  have hetai : (4 * Real.pi * (beta / 64))⁻¹ ≤ X ^ (4 + n) := by
+    rw [show (4 * Real.pi * (beta / 64))⁻¹ = 16 / Real.pi * beta⁻¹ by field_simp; ring, pow_add]
+    have h16 : 16 / Real.pi ≤ X ^ 4 :=
+      (div_le_self (by norm_num) (by linarith [Real.pi_gt_three])).trans
+        ((show (16 : Real) ≤ 2 ^ 4 by norm_num).trans (pow_le_pow_left₀ (by norm_num) hX 4))
+    exact mul_le_mul h16 hbi (inv_pos.mpr hb).le (pow_nonneg hX0 _)
+  have hscaled := section5LocalRefinementConstant_le_scaled 1 (4 * Real.pi * (beta / 64))
+    (X ^ (4 + n)) heta (one_le_pow₀ hX1) hetai
+  have hK : polynomialPartitionConstant 1 = 16 := by norm_num [polynomialPartitionConstant]
+  rw [hK, ← pow_mul] at hscaled
+  rw [inv_div, div_eq_mul_inv]
+  calc
+    _ ≤ (8 * (section5LocalRefinementConstant 1 1 * X ^ ((4 + n) * 16))) * X ^ n :=
+      mul_le_mul (mul_le_mul_of_nonneg_left hscaled (by norm_num)) hbi
+        (inv_pos.mpr hb).le (by have := section5LocalRefinementConstant_pos 1 1; positivity)
+    _ = (8 * section5LocalRefinementConstant 1 1) * X ^ (17 * n + 64) := by
+      rw [mul_assoc 8, mul_assoc, ← pow_add, ← mul_assoc]
+      congr 2
+      omega
+
+/-- Absorb the fixed refinement constant as well, and retain the positive
+unit range of the interval-length coefficient. -/
+theorem interval_length_factor_bounds_of_powers {X beta : Real} {m n : Nat}
+    (hX : 2 ≤ X) (hb : 0 < beta) (hb1 : beta ≤ 1)
+    (hbi : beta⁻¹ ≤ X ^ n) (hfixed : section5LocalRefinementConstant 1 1 ≤ X ^ m) :
+    0 < beta / (8 * boundaryRefinementConstant (beta / 64)) ∧
+      beta / (8 * boundaryRefinementConstant (beta / 64)) ≤ 1 ∧
+      (beta / (8 * boundaryRefinementConstant (beta / 64)))⁻¹ ≤ X ^ (m + 17 * n + 67) := by
+  have hC4 : 4 ≤ boundaryRefinementConstant (beta / 64) :=
+    section5LocalRefinementConstant_ge_four _ _
+  have hCpos : 0 < boundaryRefinementConstant (beta / 64) := lt_of_lt_of_le (by norm_num) hC4
+  refine ⟨by positivity, ?_, (interval_length_factor_inv_le_scaled hX hb hbi).trans ?_⟩
+  · rw [div_le_one (by positivity)]; linarith only [hb1, hC4]
+  · have h8 : (8 : Real) ≤ X ^ 3 :=
+      (show (8 : Real) ≤ 2 ^ 3 by norm_num).trans (pow_le_pow_left₀ (by norm_num) hX 3)
+    calc
+      _ ≤ (X ^ 3 * X ^ m) * X ^ (17 * n + 64) :=
+        mul_le_mul_of_nonneg_right
+          (mul_le_mul h8 hfixed (section5LocalRefinementConstant_pos _ _).le (by positivity)) (by positivity)
+      _ = X ^ (m + 17 * n + 67) := by rw [← pow_add, ← pow_add]; congr 1; omega
 
 /-- A proper progression has a small-diameter refinement with a sublinear
 cell count, including the short-progression and empty cases. -/
