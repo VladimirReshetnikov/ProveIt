@@ -9029,6 +9029,61 @@ occurrence and all 120 statuses. Its sole location change moves
 This checkpoint does not establish complete original-paper fidelity;
 the accepted correction and previous limitations remain.
 
+### L.99. Shared small-modulus covers and uniform controls (2026-10-13)
+
+The small-modulus cases share the same geometric argument: a fiber of
+`Gamma` injects into `ZMod N`, and a proper box has width at most `N`.
+When `N < T`, the large-box case is impossible, so the existing covering
+construction supplies the coarse count and capped width. The
+dimension-two, Fejer dimension-two, dimension-three and modular
+uniform-class proofs now reuse that argument. The integer route retains
+its integer construction and shares the fiber estimate and numerical bounds.
+
+A second shared argument bounds the coarse count and capped inverse
+width by the same uniform power. It uses the existing cap inverse
+estimate instead of repeating logarithm calculations. The numerical
+helper allows zero dimension/exponent parameters when its budget holds;
+the geometric helper still requires positive dimension. All 55 retained
+statements/contexts, 28 definitions and final numerical bounds remain
+unchanged, with no import or module changes.
+
+The five old proof bodies shrink from 358 to 155 tactic lines. The three
+helpers cost 41 proof and 65 source lines, included in the net saving of
+138 production source and 162 proof lines. Six focused entries and one
+historical entry add seven audit lines, giving a total source reduction
+of 131. The original final closure saves 32 source/56 proof lines; the
+stronger closure saves 51/75. The focused closure saves 45 source lines
+including its six additions, and the downstream closure saves 119/143.
+
+All eight new or changed declarations have explicit approved-axiom
+checks: six in the focused audit, one in the historical explicit audit,
+and the integer theorem's existing check in the downstream audit.
+The focused audit retains its one-definition kind guard and every old
+entry: 311 declarations comprise 310 theorems and one definition.
+The historical explicit audit checks four named theorems. These checks
+do not assert that every export of a standalone target is axiom-audited.
+
+Six fresh native targets pass (642/708/784/1,098/701/560 modules).
+Ten completed cubic-target compilation results, five from L.98 and five
+from L.96, are retained after their complete own-target input
+manifests match current bytes. Their old focused-audit links remain
+historical metadata; no new runs of those ten targets are claimed.
+The six fresh targets cover 180 of 183 affected consumers, excluding
+three broad aggregate targets. Their union has 1,205 modules and 225,859
+source lines. Including retained targets gives 1,238 modules, 228,904
+lines and 1,241 source/configuration inputs.
+
+The first core attempt left a reflexivity obligation after inverse
+simplification. One explicit reflexive proof resolves it without changing
+statements or line counts; the frozen draft and failed log are preserved.
+The 649-module core passes on retry.
+All 1,241 current input hashes are verified. The regenerated inventory
+is byte-identical, preserving all complete rows, order, duplicate
+occurrences and 120 statuses. Source and native evidence are recorded in
+`verification/2026-10-13-small-modulus-sharing-simplification.json`.
+This checkpoint does not establish complete original-paper fidelity;
+the accepted correction and previous limits remain.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
