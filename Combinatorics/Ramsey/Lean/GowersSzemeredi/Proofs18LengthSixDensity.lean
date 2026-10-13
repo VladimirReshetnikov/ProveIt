@@ -346,6 +346,19 @@ theorem singlePieceEta_two_inv {alpha D : Real} (ha : 0 < alpha) (hD : 0 < D)
   field_simp
   ring
 
+/-- The scalar localization factor cannot increase a nonnegative density. -/
+theorem singlePieceEta_scalar_le {D alpha : Real} {k : Nat}
+    (hD : 0 ≤ D) (ha : 0 ≤ alpha) (ha1 : alpha ≤ 1) :
+    (2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) *
+      (D / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4) ≤ D := by
+  have hfactor : (2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) ≤ 1 :=
+    zpow_le_one_of_nonpos₀ (by norm_num) (neg_nonpos.mpr (by positivity))
+  calc _ ≤ D / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4 :=
+        mul_le_of_le_one_left (by positivity) hfactor
+    _ ≤ D / (2 : Real) ^ (k + 1) * alpha ^ 2 := div_le_self (by positivity) (by norm_num)
+    _ ≤ D / (2 : Real) ^ (k + 1) := mul_le_of_le_one_right (by positivity) (pow_le_one₀ ha ha1)
+    _ ≤ D := div_le_self hD (one_le_pow₀ (by norm_num))
+
 theorem lsEta_bounds {alpha : Real} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < singlePieceEta sixQb (sixC sixQb alpha) alpha 2 ∧
       singlePieceEta sixQb (sixC sixQb alpha) alpha 2 ≤ 1 ∧
@@ -359,24 +372,10 @@ theorem lsEta_bounds {alpha : Real} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
   obtain ⟨d0, d1, di⟩ := lsDensity_bounds ha ha2
   set D := singlePieceGlobalDensity sixQb (sixC sixQb alpha) alpha (alpha / 2) 2 with hDdef
   have hinv := singlePieceEta_two_inv ha d0 hDdef.symm
-  have hpos : 0 < singlePieceEta sixQb (sixC sixQb alpha) alpha 2 := by
-    have := inv_pos.mpr (show 0 < (2 : Real) ^ 133 * D⁻¹ * (alpha⁻¹) ^ 2 by positivity)
-    rw [← hinv, inv_inv] at this
-    exact this
-  have hle : singlePieceEta sixQb (sixC sixQb alpha) alpha 2 ≤ 1 := by
-    unfold singlePieceEta
-    rw [← hDdef]
-    have h1 : (2 : Real) ^ (-(2 * (((2 : Nat) + 1 : Int) + 1) ^ 3) : Int) ≤ 1 :=
-      zpow_le_one_of_nonpos₀ (by norm_num) (by norm_num)
-    have h2 : D / 2 ^ (2 + 1) * alpha ^ 2 / 4 ≤ 1 := by
-      have : alpha ^ 2 ≤ 1 := pow_le_one₀ ha.le ha1
-      have : D * alpha ^ 2 ≤ 1 := by nlinarith only [this, d0, d1, ha]
-      rw [div_le_one (by norm_num)]
-      have h8 : D / 2 ^ (2 + 1) * alpha ^ 2 = D * alpha ^ 2 / 8 := by ring
-      rw [h8]
-      linarith only [this]
-    calc _ ≤ 1 * 1 := mul_le_mul h1 h2 (by positivity) zero_le_one
-      _ = 1 := one_mul 1
+  have hpos : 0 < singlePieceEta sixQb (sixC sixQb alpha) alpha 2 :=
+    inv_pos.mp (by rw [hinv]; positivity)
+  have hle : singlePieceEta sixQb (sixC sixQb alpha) alpha 2 ≤ 1 :=
+    (singlePieceEta_scalar_le (k := 2) d0.le ha.le ha1).trans d1
   refine ⟨hpos, hle, ?_⟩
   rw [hinv]
   set X := 2 / alpha with hX

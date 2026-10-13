@@ -245,24 +245,7 @@ namespace LeanProofs.GowersSzemeredi
 theorem singlePieceEtaFJ_le_density {Qb : Nat → Real → Real → Real → Real} {alpha : Real}
     {k : Nat} (ha : 0 < alpha) (ha1 : alpha ≤ 1) (hD : 0 ≤ singlePieceGlobalDensityFJ Qb alpha (alpha / 2) k) :
     singlePieceEtaFJ Qb alpha k ≤ singlePieceGlobalDensityFJ Qb alpha (alpha / 2) k := by
-  unfold singlePieceEtaFJ
-  set D := singlePieceGlobalDensityFJ Qb alpha (alpha / 2) k
-  have h1 : (2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) ≤ 1 :=
-    zpow_le_one_of_nonpos₀ (by norm_num) (neg_nonpos.mpr (by positivity))
-  have h1' : (0 : Real) ≤ (2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) := by positivity
-  have h2 : (1 : Real) ≤ (2 : Real) ^ (k + 1) := one_le_pow₀ (by norm_num)
-  have h3 : alpha ^ 2 / 4 ≤ 1 := by nlinarith
-  have h4 : D / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4 ≤ D := by
-    have h5 : D / (2 : Real) ^ (k + 1) ≤ D := div_le_self hD h2
-    have h6 : 0 ≤ D / (2 : Real) ^ (k + 1) := by positivity
-    calc D / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4 = D / (2 : Real) ^ (k + 1) * (alpha ^ 2 / 4) := by
-          ring
-      _ ≤ D / (2 : Real) ^ (k + 1) * 1 := mul_le_mul_of_nonneg_left h3 h6
-      _ ≤ D := by rw [mul_one]; exact h5
-  have h7 : 0 ≤ D / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4 := by positivity
-  calc (2 : Real) ^ (-(2 * ((k + 1) + 1) ^ 3 : Int)) * (D / (2 : Real) ^ (k + 1) * alpha ^ 2 / 4)
-      ≤ 1 * D := mul_le_mul h1 h4 h7 (by norm_num)
-    _ = D := one_mul D
+  exact singlePieceEta_scalar_le hD ha.le ha1
 
 end LeanProofs.GowersSzemeredi
 
