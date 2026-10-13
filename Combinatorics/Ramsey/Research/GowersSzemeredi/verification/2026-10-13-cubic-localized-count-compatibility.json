@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-13",
+  "status": "passed",
+  "command": "python3 Combinatorics/Ramsey/scripts/check_gowers.py GowersSzemeredi.FinalProofSimplificationAudit",
+  "verified_native_module_count": 784,
+  "source_inputs": "Combinatorics/Ramsey/Research/GowersSzemeredi/verification/2026-10-13-cubic-localized-count-compatibility-inputs.json",
+  "input_manifest_sha256": "3a7ca62e1526dd0b51ca6e063a701b17af1083488db23b61c482ab61d6cbcf69",
+  "log_sha256": "4ea7ebb748e3913bd04361e669c5337eb254f9c17ecc5abc788718f6d4eaefc4",
+  "approved_axioms": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "scope": "All 300 named declarations (299 theorems and one explicitly checked definition), original final statements, all 25 stronger-bound theorems and retained compatibility interfaces. Seven new entries explicitly check all four changed proofs, both moved declarations and the unchanged legacy many-model theorem. Only approved axioms are allowed.",
+  "limits": [
+    "This is a focused audit; the expanded downstream and complete facade checks are separate.",
+    "Other open original statements are not discharged by this check."
+  ],
+  "run_note": "The first focused audit attempt failed because the moved threshold is a definition, while the old validator required every listed declaration to be a theorem. The repaired validator requires this exact declaration to be a definition and every other entry to be a theorem; all 300 entries retain the unconditional approved-axiom check. The fresh retry passed. This is an audit-validator repair, not a production theorem change.",
+  "failed_log_sha256": "0ac5277f5e66c19eb6dfdef283220271b8c6d0d314422e59a18098ee89b0f055",
+  "named_declaration_count": 300,
+  "named_theorem_count": 299,
+  "named_definition_count": 1,
+  "named_definition": "LeanProofs.GowersSzemeredi.fejerCubicPrimeModelThreshold",
+  "audit_repair_source_commit": "d6e25f3743f7664877d12079319722dfe0950198"
+}

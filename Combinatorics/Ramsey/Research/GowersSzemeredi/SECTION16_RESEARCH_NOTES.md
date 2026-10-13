@@ -8844,6 +8844,88 @@ and `verification/2026-10-13-fixed-density-inverse-simplification.json`.
 This checkpoint does not establish complete original-paper fidelity;
 the accepted correction and previously documented limitations remain.
 
+### L.96. Direct cubic localization and shared count bounds (2026-10-13)
+
+The fixed Fejér cubic twisted-discrepancy proof now applies
+`FunctionDiscrepancyBound.localized_partition` directly to the existing
+Section 17 localized obstruction. This supplies the same quadratic
+parameter, cell-length conditions and discrepancy conclusion without
+constructing prime models and converting them back to the assembly
+interface. The earlier many-prime-model theorem remains unchanged in
+its compatibility owner and is explicitly imported and checked by the
+focused audit. Its threshold definition moves unchanged to the common
+localization owner. Three count-power proofs now specialize the existing
+`partition_count_power_of_length`, moved unchanged to BoundaryRefinement.
+
+All 53 existing declaration statements and contexts, 25 definitions and
+final bounds are preserved. The direct proof grows from 44 to 65 tactic
+lines, while the three count proofs shrink from 53 to six combined.
+The eight core production files lose 26 source and 26 proof lines.
+Seven focused entries, one compatibility import and the explicit
+definition-kind binding add nine audit lines, leaving a net checkpoint
+saving of 17 source lines before the historical import repair below.
+The audit retains its existing entries and
+explicitly checks 300 declarations (299 theorems and one definition),
+including the four changed proofs, both moved declarations and the
+unchanged model theorem.
+
+The original final route drops one module and saves 84 source and 53
+proof lines. The stronger route drops one module and saves 99 source
+and 68 proof lines. These closure savings include both unchanged moved
+blocks exactly once; they are larger than the repository reduction
+because the final routes no longer import the model construction.
+The regular six-target union retains 1,205 modules / 226,171 source
+lines. The compatibility audit retains the legacy source rather than
+claiming its proof was deleted from the repository.
+
+All six regular fresh checks pass: original audit (641), stronger bridge
+(708), focused audit (784), downstream audit (1,098), historical explicit
+audit (700) and historical bridge (559). Named audits allow only
+`propext`, `Classical.choice` and `Quot.sound`. They cover 243 of
+263 affected consumers. Ten additional existing targets are checked
+separately, covering the remaining 17 non-aggregate consumers. They add
+33 modules and 3,045 source lines to the union, yielding 1,238 modules /
+229,216 source lines and 1,241 source/configuration inputs. These extra
+targets are standalone compilation checks, with changed-declaration
+axiom evidence linked to the focused audit; they do not claim to audit
+every export. No extra imports for those ten targets enlarge the final
+or focused routes.
+
+The standalone historical Fejér comparison initially lacked the direct
+import of the original cubic parameters it compares against. Adding that
+import preserves all eight theorem statements and proofs and costs one
+source line. Its retry checks 194 modules; the extra dependencies already
+belong to the selected union. This repair changes no final route and gives
+an overall repository reduction of 25 production source lines and 26 proof
+lines, or 16 source lines including the focused audit. All 61 declaration
+statements across the nine production files remain exact. Its failed log,
+successful retry and source commit are recorded separately.
+
+The first focused audit rejected the moved threshold because its old
+validator required every listed name to be a theorem. The repaired
+validator checks that exact threshold as a definition and all other
+entries as theorems; all 300 retain the unconditional approved-axiom
+check. The successful focused retry and its initial failed log are
+preserved in a separate audit-kind repair addendum.
+
+The first core attempt exposed a definitional ratio mismatch in the
+assembled count estimate. One explicit normalization of `2 * (2 + 2)`
+to `8` was added, without changing any theorem statement. The frozen
+proposal and failed log are preserved. The repaired 235-module core and
+all 16 fresh full native checks pass, with all 1,241 current source and
+configuration hashes verified. The regenerated inventory is byte-identical
+and retains all 120 statement statuses and duplicate occurrences. See
+`verification/2026-10-13-cubic-localized-count-simplification.json` for
+the exact source, repair, scope and sixteen fresh native record links.
+
+The complete narrowed-import source scan covers 198 modules and finds
+no surviving use of the sole lost
+model-theorem export. Selected scope is 260 of 263 consumers; the three
+broad aggregate targets remain explicitly excluded. Inventory comparison
+preserves every duplicate short-name occurrence. This checkpoint does
+not establish complete original-paper fidelity; the accepted correction
+and previously documented limitations remain.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
