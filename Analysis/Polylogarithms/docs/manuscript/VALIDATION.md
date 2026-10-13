@@ -1,3 +1,78 @@
+# Absolute Stieltjes reconstruction, logarithmic moments and differential limits
+
+13 October 2026 (Pacific). Volume III, Sections 8.56, 8.58 and 8.59 add
+three proved families. A symmetric mixed-scale digamma kernel reconstructs
+every absolute generalized Stieltjes coefficient through an ordinary,
+absolutely convergent logarithmic integral. Explicit Bernoulli coefficients
+invert the moment germ. One dilation difference suffices for the colored
+endpoint. Repeated roots of the dilation polynomial give arbitrary
+logarithmic moment blocks, with a sharp minimal-support theorem for the
+prescribed roots. Principal characters give centered logarithmic identities
+whose normalized cubic coefficient is independent of their prime divisors.
+
+Weighted Mellin L1 confluence turns finite dilations into a polynomial
+in the Euler differential operator. An explicit first-Stieltjes kernel W
+satisfies integral xW=1/12, integral x^2 W=0, and
+integral x^2 log(x/c) W=-3*zeta(3)/(8*pi^2), for every c>0.
+A positive completely monotone digamma kernel has ordinary moments
+1/2, 1/12 and zeta(3)/(2*pi^2), together with evaluated logarithmic moments.
+Its Laplace-density positivity uses the credited classical Lazarevic
+inequality. The signed W density includes the essential additive constant
+whose transformed contribution vanishes; its endpoint bounds justify the
+independent quadrature and the stated Mellin strip.
+
+The consecutive-tail argument proves exclusion at every order on
+0<a<=7 for nonalternating unit-circle colors. A quantitative criterion
+also proves eventual exclusion at each fixed positive shift and an explicit
+linear region in the order. For 0<a<=2 the conclusion extends to all nonreal
+colors. The unrestricted conjecture remains open. The previously certified
+order-15 single-tail zero has nonzero neighbors and is consistent with
+these results. The earlier finite classification is replayed only for the
+finite bridge; no infinite-order conclusion is inferred from a sweep.
+
+The evidence comprises 912 new exact diagnostics and 17 wrong-formula
+controls, plus 41 separately counted replays of the prior bounded
+unit-circle certificate. All exact suites pass under Python optimization.
+The independent mathematical reviews cover endpoint domination, coefficient
+signs, root multiplicities, the angular exclusion argument, weighted
+confluence and the signed-density correction. Numerical evidence adds
+112 comparisons across paired precisions, plus twelve recorded confluence
+refinement errors. Maximum absolute residuals are 3.12e-60/7.91e-73 for
+absolute/colored reconstruction, 2.14e-49/3.63e-70 for principal logs, and
+1.50e-43/1.83e-65 for Euler filters. These are noninterval diagnostics,
+not Lean formalizations or interval proofs. The Euler harness also verifies
+that an intentionally failed check replaces stale PASS evidence with FAIL.
+See `verification/STIELTJES-ABSOLUTE-AUDIT.md` for full proofs, attribution,
+reproduction commands, settings and precise evidence boundaries.
+
+Final PDFs contain 191/132/303/88 pages (714 total); the combined edition
+has 665 pages and 169 references. The combined edition compiles in three
+serial passes, and the coupled volumes converge in three complete rounds.
+Every volume also compiles independently in three serial passes. All final
+logs pass the unresolved-reference, missing-character, overfull-box and
+convergence gates; all 70 external PDF destinations resolve. Two long new
+displays were split before the final successful builds. All PDFs retain
+ProveIt Contributors as author.
+
+Visual review opened all 24 changed volume pages and the four unmatched
+combined contents pages. Exact scientific-body raster comparisons retain
+690 prior volume pages and 642 prior combined pages; nineteen further
+combined pages match freshly reviewed volume pages. Only centered footer
+page numbers are excluded, with all other text/image/drawing bounds checked.
+The prior visual evidence is frozen in the
+`stieltjes-moment-filters-*visual-review.json` files.
+
+The 1,810-source inventory and the 137-archive/4,861-original-member/
+58-archive-only evidence register remain unchanged. No incoming archive
+was present. This is a publication milestone in the continuing research
+program. Receipt integrity, source proof, numerical diagnostics, PDF review
+and remote publication have distinct evidence scopes.
+
+The final manifests pin 336 canonical sources and 6,827 dependencies.
+All 529 receipt gates pass with no changed source or dependency digest.
+These gates audit recorded evidence and do not rerun the mathematics.
+
+
 # Algebraic colors and finite-dilation Stieltjes identities
 
 12 October 2026 (Pacific). Volume III, Sections 8.55--8.56 establish

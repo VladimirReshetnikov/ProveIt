@@ -1,0 +1,264 @@
+\section{Confluent dilations and Euler differential filters}
+\label{stce:section}
+
+The finite-dilation construction has a differential limit that retains
+the whole ordinary moment block.  The key point is convergence of the
+combined kernels in weighted $L^1$, including arbitrary fixed logarithmic
+weights.  Thus the limit is valid at the newly convergent integer moments,
+where the individual unfiltered terms need not be integrable.
+We use the balanced kernels $C_q$ and scalar Mellin functions $Q_q$ from
+Lemma~\ref{stbil:scalar}; these analytic foundations and their shift
+derivatives are already in the preserved balanced-Stieltjes report.
+
+\subsection{An exact cube average and weighted confluence}
+
+Let $\mathcal E=x\partial_x$.  For integers $q\ge0$, $r\ge1$ define
+\begin{equation}\label{stce:operator}
+ \mathcal F_{q,r}(x,a)
+ =\prod_{\ell=q}^{q+r-1}(\mathcal E+\ell+1)C_q(x,a)
+ =x^{-q}\partial_x^r\bigl[x^{q+r}C_q(x,a)\bigr].
+\end{equation}
+In particular this is an explicit finite Stieltjes differential expression:
+\begin{equation}\label{stce:leibniz}
+ \mathcal F_{q,r}
+ =\sum_{j=0}^r\binom rj(q+j+1)_{r-j}x^j\partial_x^j C_q.
+\end{equation}
+Here the finite Stieltjes combination defining $C_q$ is given in
+\eqref{stbil:kernel} and its following display.
+Only derivatives of generalized Stieltjes functions at the same positive
+argument occur.
+
+\begin{theorem}[Confluence in logarithmically weighted Mellin norms]
+\label{stce:confluence}
+Put $\varepsilon=\log\lambda>0$ and let $H_{q,r}^{\lambda}$ be the
+finite-dilation kernel in \eqref{stdil:geometric}.  For every $a>0$,
+$M\in\mathbb Z_{\ge0}$ and $0<\sigma<q+r+1$,
+\begin{equation}\label{stce:L1}
+ \lim_{\varepsilon\downarrow0}\int_0^\infty x^{\sigma-1}
+       (1+|\log x|^M)
+ \left|\varepsilon^{-r}H_{q,r}^{e^\varepsilon}(x,a)
+                  -\mathcal F_{q,r}(x,a)\right|dx=0.
+\end{equation}
+The same convergence holds locally uniformly in positive shifts $a$.
+An exact formula, valid before taking the limit, is
+\begin{equation}\label{stce:cube}
+ \varepsilon^{-r}H_{q,r}^{e^\varepsilon}(x,a)
+ =\int_{[0,1]^r}
+       \exp\!\left[-\varepsilon\sum_{j=0}^{r-1}(q+j+1)v_j\right]
+       \mathcal F_{q,r}\!\left(xe^{-\varepsilon\sum_jv_j},a\right)
+       \,d\mathbf v.
+\end{equation}
+Moreover $\mathcal F_{q,r}=O(1+|\log x|^{q+1})$ at zero and
+$\mathcal F_{q,r}=O(x^{-q-r-1})$ at infinity.
+\end{theorem}
+\begin{proof}
+The defining Stieltjes expression shows that every fixed Euler derivative
+has the stated logarithmic bound at zero.  At infinity the normally
+uniform Euler--Maclaurin expansion of $C_q$ may be differentiated any
+fixed number of times with respect to $x$: take extra terms, extend to a
+fixed closed sector in $\Re x>0$, and use Cauchy's formula on discs of
+radius proportional to $x$.  In particular an Euler derivative preserves
+the inverse-power order of the remainder.  The scalar tail is
+\[
+ C_q(x,a)=\sum_{k=q}^N
+   \frac{(-1)^k\zeta(-k,a)}{k!}
+   \left.\partial_z^q(1+z)_k\right|_{z=0}x^{-k-1}
+   +O(x^{-N-2}).
+\]
+Each factor $\mathcal E+\ell+1$ kills the term $x^{-\ell-1}$;
+this proves the infinity bound, uniformly on compact positive shift sets.
+The second equality in \eqref{stce:operator} follows by the ordinary
+Leibniz rule and also proves \eqref{stce:leibniz}.
+
+For a smooth function $f$, the fundamental theorem of calculus gives
+\[
+ \frac{f(x)-e^{-(\ell+1)\varepsilon}f(e^{-\varepsilon}x)}{\varepsilon}
+ =\int_0^1e^{-(\ell+1)\varepsilon v}
+   (\mathcal E+\ell+1)f(e^{-\varepsilon v}x)\,dv.
+\]
+The $r$ factors commute.  Multiplying these identities proves
+\eqref{stce:cube}, including every normalization factor.  The integrand
+converges to $\mathcal F_{q,r}(x,a)$ uniformly in the cube for fixed $x$.
+For $0<\varepsilon\le\varepsilon_0$, its dilated argument lies between
+$e^{-r\varepsilon_0}x$ and $x$.  The two endpoint bounds therefore give a
+common majorant, of logarithmic type at zero and $O(x^{-q-r-1})$ at
+infinity.  Multiplication by $x^{\sigma-1}(1+|\log x|^M)$ makes it
+integrable precisely on the asserted open strip.  Dominated convergence
+proves \eqref{stce:L1}; the uniform versions of the same estimates prove
+the local uniformity in $a$.
+\end{proof}
+
+\subsection{Ordinary moments and their first logarithmic derivatives}
+
+Set
+\[
+ A_{q,r}(u)=\prod_{\ell=q}^{q+r-1}(\ell+1-u).
+\]
+Taking the confluent limit in the finite-dilation Mellin formula gives
+\begin{equation}\label{stce:mellin}
+ \int_0^\infty x^{u-1}\mathcal F_{q,r}(x,a)\,dx
+ =A_{q,r}(u)\,\pi\csc(\pi u)Q_q(u)\zeta(1-u,a),
+ \qquad 0<\Re u<q+r+1.
+\end{equation}
+Equivalently, integration by parts proves the formula first on
+$0<\Re u<q+1$, where all boundary terms vanish, and continuation then
+uses the improved decay.  Apparent poles inside the larger strip are
+removable in the whole product.
+
+For $k=q+j$, $0\le j\le r-1$, put $d=r-1-j$ and
+$S=H_d-H_j$, with $H_0=0$.  Then
+\begin{align}
+ \int_0^\infty x^k\mathcal F_{q,r}(x,a)\,dx
+ &=(-1)^{q+1}j!d!\,
+      Q_q(k+1)\frac{B_{k+1}(a)}{k+1}.\label{stce:moment}
+\end{align}
+\begin{align}
+ &\int_0^\infty x^k\log(x/c)\mathcal F_{q,r}(x,a)\,dx\notag\\
+ &\quad=(-1)^qj!d!\Bigl[
+     \{Q'_q(k+1)-(S+\log c)Q_q(k+1)\}\zeta(-k,a)
+       -Q_q(k+1)\zeta'(-k,a)\Bigr],\label{stce:logmoment}
+\end{align}
+Here $c>0$, $Q'_q$ differentiates its argument, and $\zeta'$ differentiates its
+order.  Both integrals are ordinary and absolutely convergent.
+For the sign and harmonic coefficient, write $u=k+1+h$ and observe
+\[
+ A_{q,r}(k+1+h)
+ =(-1)^{j+1}j!d!\,h\{1-Sh+O(h^2)\}.
+\]
+Together with $\pi\csc(\pi(k+1+h))=(-1)^{k+1}/h+O(h)$, this gives
+both formulas.  All higher logarithmic identities follow by further
+ordinary Mellin differentiation, justified by \eqref{stce:L1} and the
+same endpoint bounds.
+
+\subsection{An explicit first-Stieltjes differential identity}
+
+Let $L=\log x$ and evaluate all special functions in the next display at
+$x+1$.  Define
+\begin{align}\label{stce:gamma1-explicit}
+ W(x)={}&3L^2+5L+1-(6L+5)\psi(x+1)\notag\\
+ &-(6L+2)x\psi'(x+1)-Lx^2\psi''(x+1)\notag\\
+ &-6\gamma_1(x+1)-6x\gamma'_1(x+1)-x^2\gamma''_1(x+1).
+\end{align}
+Primes on $\gamma_1$ here differentiate its argument.  Direct Leibniz
+expansion shows
+\[
+ W=(\mathcal E+2)(\mathcal E+3)C_1(x,1)
+   =x^2\partial_x^2 C_1+6x\partial_x C_1+6C_1.
+\]
+The moment and logarithmic formulas give the exact triple
+\begin{align}
+ \int_0^\infty xW(x)\,dx&=\frac1{12},\qquad
+ \int_0^\infty x^2W(x)\,dx=0,\notag\\
+ \int_0^\infty x^2\log(x/c)W(x)\,dx
+       &=-\frac{3\zeta(3)}{8\pi^2}\quad(c>0).
+       \label{stce:gamma1-triple}
+\end{align}
+Indeed $Q_1(2)=1$, $Q_1(3)=3/2$, $\zeta(-2)=0$, and
+$\zeta'(-2)=-\zeta(3)/(4\pi^2)$.  The independence of $c$ in the
+last identity follows also from the vanishing middle moment.
+The tail is $W(x)=-11/(360x^4)+O(x^{-6})$, so weight $x^3$ already
+gives logarithmic divergence.  For numerical evaluation one may use
+the exact argument-derivative conversions
+\[
+ \gamma'_1(v)=\zeta'(2,v)+\zeta(2,v),\qquad
+ \gamma''_1(v)=-2\zeta'(3,v)-3\zeta(3,v),
+\]
+which follow by differentiating the Hurwitz Laurent expansion.
+
+There is also an independent signed Laplace representation.  Put
+\[
+ \nu(t)=1+\frac{2e^{-t}}{1-e^{-t}}
+ +\frac{2te^{-t}}{(1-e^{-t})^2}
+ +\frac{t^2e^{-t}(1+e^{-t})}{(1-e^{-t})^3}-\frac6t.
+\]
+Then
+\begin{equation}\label{stce:W-Laplace}
+ W(x)=\int_0^\infty e^{-xt}\nu(t)\{\log(xt)+\gamma\}\,dt.
+\end{equation}
+Indeed, with $g(t)=(e^t-1)^{-1}-t^{-1}$ the balanced germ is
+$x^z\Gamma(1+z)^{-1}\int_0^\infty t^ze^{-xt}g(t)\,dt$,
+normally holomorphic near $z=0$.  Integration by parts sends
+$\mathcal E+\ell+1$ to $\ell-t\partial_t$ on $g$, even before
+differentiating in $z$.  The two factors therefore give
+$2g-2tg'+t^2g''=\nu-1$.  The constant can be discarded because
+$\int_0^\infty e^{-xt}\{\log(xt)+\gamma\}\,dt=0$.
+Now $\nu(t)=-t^3/360+O(t^5)$ at zero and
+$\nu(t)=1-6/t+O(t^2e^{-t})$ at infinity.  Thus Fubini is absolute for
+$1<\Re u<4$, and
+\[
+ \int_0^\infty x^{u-1}W(x)\,dx
+ =\Gamma(u)\{\psi(u)+\gamma\}\int_0^\infty t^{-u}\nu(t)\,dt.
+\]
+This gives a separate quadrature for each identity in
+\eqref{stce:gamma1-triple}, without evaluating large cancellations among
+Stieltjes functions at large $x$.
+
+\subsection{A positive digamma kernel with elementary and zeta moments}
+
+Define
+\begin{equation}\label{stce:positive-K}
+ K(x)=2\psi(x+1)+4x\psi'(x+1)+x^2\psi''(x+1)-2\log x-3.
+\end{equation}
+Then $K=-\mathcal F_{0,2}(x,1)$, and
+\begin{equation}\label{stce:K-Laplace}
+ K(x)=\int_0^\infty e^{-xt}\mu(t)\,dt,\qquad
+ \mu(t)=\frac2t-\frac{t^2e^{-t}(1+e^{-t})}{(1-e^{-t})^3}>0.
+\end{equation}
+Thus $K$ is strictly completely monotone on $(0,\infty)$.
+Its first three ordinary moments and two logarithmic moments are
+\begin{align}
+ \int_0^\infty K(x)\,dx&=\frac12,\qquad
+ \int_0^\infty xK(x)\,dx=\frac1{12},\notag\\
+ \int_0^\infty x^2K(x)\,dx&=\frac{\zeta(3)}{2\pi^2}.
+       \label{stce:K-moments}
+\end{align}
+\begin{align}
+ \int_0^\infty\log(x/c)K(x)\,dx
+     &=-\frac{1+\log(2\pi c)}2,\label{stce:K-log0}\\
+ \int_0^\infty x\log(x/c)K(x)\,dx
+     &=\zeta'(-1)+\frac{1-\log c}{12},\qquad c>0.
+       \label{stce:K-log1}
+\end{align}
+All are absolutely convergent.  In particular $2K(x)\,dx$ is a
+probability measure with mean $1/6$ and second moment $\zeta(3)/\pi^2$.
+
+\begin{proof}
+Put $g(t)=(e^t-1)^{-1}-t^{-1}$.  The standard subtracted digamma
+integral is $C_0(x,1)=\int_0^\infty e^{-xt}g(t)\,dt$.
+Integration by parts sends $\mathcal E+\ell+1$ to
+$\ell-t\partial_t$ on the density; all boundary terms vanish.
+Consequently $\mathcal F_{0,2}=\int e^{-xt}t^2g''(t)\,dt$,
+which proves the displayed formula for $\mu=-t^2g''$.
+
+Its positivity is exactly the classical Lazarevi\'c inequality
+$\sinh^3u>u^3\cosh u$ at $u=t/2$.  A short proof makes this input
+self-contained.  Since $4\sinh^3u=\sinh3u-3\sinh u$, the coefficients
+of $u^3,u^5$ in the difference vanish, while those of $u^{2n+1}$
+for $n\ge3$ are positive because
+\[
+ 3^{2n+1}-3>4(2n+1)(2n)(2n-1).
+\]
+At $n=2$ equality holds.  Increasing $n$ multiplies the right side
+by $(2n+3)(2n+2)/((2n)(2n-1))<9$, while the left side becomes
+nine times its predecessor plus $24$.  This proves the strict
+inequality for every $n\ge3$ and hence for every $u>0$.
+Also $\mu(t)=t^3/120+O(t^5)$ at zero and $\mu(t)\sim2/t$ at infinity.
+Differentiating its Laplace integral proves strict complete monotonicity.
+
+The first two moments and the logarithmic formulas follow from
+\eqref{stce:moment}--\eqref{stce:logmoment}.  The scalar coefficient at
+$x^{-3}$ vanishes because $\zeta(-2)=0$, so $K(x)=1/(20x^4)+O(x^{-6})$.
+Its Mellin transform therefore extends to $0<\Re u<4$ and is
+\[
+ -(1-u)(2-u)\pi\csc(\pi u)\zeta(1-u).
+\]
+At $u=3$ its removable value is $-2\zeta'(-2)=\zeta(3)/(2\pi^2)$.
+The nonzero $x^{-4}$ tail makes the next integer moment diverge.
+\end{proof}
+
+The hyperbolic inequality used in the positivity argument is classical;
+see Yang~\cite{stce:Lazarevic}, equation~(1.1).
+No literature-priority claim is made for the Euler operator, its Mellin
+action, or that inequality. The additions here are the balanced-kernel
+weighted confluence, the resulting explicit ordinary identities, and
+their integration with the finite-dilation construction.
