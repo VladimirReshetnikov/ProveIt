@@ -227,8 +227,8 @@ verdict.
 
 The public whole-cut API keeps its source, maximum-passage and deferred
 geometric attempts in their existing order.  Only after all applicable
-attempts refuse does its default \code{group\_fallback=True} try the
-signed-group terminal.  Setting the option to false retains the earlier
+attempts refuse does the default group fallback try the signed-group
+terminal (\path{group_fallback=True}).  Setting the option to false retains the earlier
 geometric-only policy.  Existing geometric successes return immediately,
 without altering their certificates.
 
@@ -292,8 +292,49 @@ recognition-coverage gain, not a before/after speed comparison for the old
 inconclusive case.  The corrected saved-packet run independently verifies
 all 76 unchanged delivered certificates with producer helpers disabled.
 
-Broad-suite and controlled timing results are appended when those runs
-finish.  None of these finite experiments proves a general
+The broad run executed 1774 tests in 685.763 seconds under Python 3.13.14
+with Regina available: 1772 passed, and two historical assertions failed
+because they expected the old fixed-forest geometric policy to refuse.
+Both tests now explicitly set \path{group_fallback=False} for those
+historical comparisons.  Their default-policy positive checks and
+independent replay assertions remain intact.  The two corrected tests
+pass in the targeted rerun.  There were no skips or dependency errors.
+All 1774 tests are therefore covered across the broad run and the two-test
+correction run; this is not reported as a clean single full-suite run.
+The original failures and both the first one-test and final two-test
+rerun logs are retained.
+
+The source hash recorded by the corpus audit precedes three docstring-only
+clarifications in the wrapper.  The publication check retains that exact
+tested wrapper, checks its hash against the audit, and compares executable
+ASTs with docstrings removed against the maintained wrapper.  All other
+runtime hashes match exactly.  The timing evidence binds the final runtime
+hashes.  This documentation-only difference is not hidden by rewriting the
+original audit results.
+
+\subsection{Controlled latency and the cost of added coverage}
+
+The retained benchmark uses separate warm worker processes, seven alternating
+before/after pairs and three baseline/baseline control pairs per case.
+There is no concurrent validation during timing.  The timed region includes
+production and independent replay of every positive certificate; startup,
+case loading, certificate hashing and JSON transport are outside it.
+The baseline package was checked byte for byte against the Python files
+in commit \code{02f95a64a}.  Medians are shown below.  ``Paired ratio'' is
+the median of the seven per-pair before/after ratios, not the quotient of
+the separately displayed medians.
+
+\input{data/euler-group-table.tex}
+
+The four common positive tasks preserve their certificate bytes.  Their
+ratios are near one; the A/A controls include a substantial fluctuation
+on the Fibonacci 8 pilot.  These measurements support no speedup claim
+for those unchanged paths.  The added figure-eight task takes about
+102\,ms including independent replay, whereas the old method refuses in
+about 36\,ms.  Its table ratio is deliberately omitted because the
+outcomes differ.  This is the measured cost of obtaining a new
+source-certified conclusion.  Every raw pair and control is retained;
+no favorable-only sample selection is used.  None of these finite experiments proves a general
 recognition bound.  The established polynomial theorem for a single
 AHT orbit schedule remains available; the unresolved global work is the
 coverage and discovery of useful surfaces, controlled marked geometric
