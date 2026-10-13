@@ -7785,6 +7785,39 @@ byte-identical. Final numerical bounds and original-paper fidelity
 status are unchanged. Full-facade checks remain separate, and the
 simplification goal remains active.
 
+### L.77. Reuse fixed-degree power bounds for constants (2026-10-12)
+
+Twenty-one existing proofs now instantiate `pw_const` at a fixed small
+degree and then use `pw_mono`, replacing repeated double-power arithmetic
+for scalar constants. The fixed degrees are 1, 2, 3, 5 and 6; the largest
+closed numeral checked is `2^64`. `familyRecThr_le_exp` also uses the
+nonnegative-base power estimate from L.76 directly, removing a lower-base
+argument and a separate final exponent calculation. No helpers,
+definitions, modules or imports are added, and no declarations move.
+
+Against `5fcbcc5a0`, the eight production files lose 87 source lines, all
+inside the 22 changed proof bodies. Those bodies contain 960 lines
+instead of 1,047. All 147 old declaration headers and variable scopes,
+43 definition bodies, imports, options, section commands, documentation,
+owner exports and all 25 public stronger bridge proofs are preserved.
+Both final routes lose 43 imported source lines: the stronger bridge
+remains at 722 modules and falls from 155,474 to 155,431 lines; the
+original final remains at 641 modules and falls from 133,321 to 133,278
+lines. See `verification/2026-10-12-constant-envelope-simplification.json`.
+
+Native verification passes the 642-module original-final audit and the
+783-module focused compatibility audit, with only `propext`,
+`Classical.choice` and `Quot.sound`. Twenty-one new named axiom checks
+cover the changed proofs alongside the existing `slice_const_le_deg`
+check; all prior checks remain. The focused closure has 169,163 source
+lines, 66 fewer. See `verification/2026-10-12-final-constant-envelope.json`
+and `verification/2026-10-12-final-constant-envelope-compatibility.json`,
+with immutable source manifests. Two local arithmetic obligations use
+an explicit `Nat.one_le_two_pow` fact, as required by native elaboration.
+The regenerated inventory is byte-identical. Numerical bounds and
+original-paper fidelity status are unchanged. Full-facade checks remain
+separate, and the simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

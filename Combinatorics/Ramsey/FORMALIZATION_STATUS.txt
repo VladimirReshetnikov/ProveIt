@@ -9,6 +9,17 @@ Scope
   bounds, characteristic ranges and some geometry/bound combinations remain
   open in verification/2026-10-12-source-fidelity-review.json.
 
+  Fixed-constant checkpoint: existing power bounds replace repeated
+  scalar calculations in 21 proofs, and the family recurrence threshold
+  now uses the nonnegative-power estimate directly. These changes remove
+  87 source/proof-body lines across 22 proofs, preserving all 147 old
+  headers/scopes, 43 definitions, imports, exports and 25 stronger bridge
+  proofs. Both final routes lose 43 lines: the stronger bridge is 722
+  modules / 155,431 lines; the original final is 641 / 133,278. Native
+  audits pass 642 and 783 modules with only approved axioms. See Notes
+  L.77 and constant-envelope verification reports. Numerical bounds and
+  fidelity status are unchanged; the simplification goal remains active.
+
   Nonnegative-power checkpoint: a direct power comparison removes
   redundant lower-base estimates in five modulus-requirement proofs.
   The previous power interface is retained. These changes remove 77
