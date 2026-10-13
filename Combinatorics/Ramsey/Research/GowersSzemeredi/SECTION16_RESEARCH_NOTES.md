@@ -7987,6 +7987,111 @@ bounds, including the existing stronger van der Waerden bounds, remain
 unchanged. The documented Lemma 16.10 correction and open original-paper
 fidelity issues retain their status. The simplification goal remains active.
 
+### L.81. Keep only the original final route's used range conclusions (2026-10-12)
+
+`GenParamsC.ranges` now returns positivity of `Rho` and `Zeta` and the
+(0,1] bounds for `Em`, `Eth`, `Ec`, `NestExp` and `Bexp`. Its hypotheses
+are unchanged. Four callers use exactly these conclusions; the modulus
+proof supplies its trivial `1 ≤ 1` fact directly. The unused range
+conclusions and their proof computations are removed. The C route retains
+its separate `ThS/2` and `CS/2` exponent formulas.
+
+This intentionally narrows one intermediate theorem result. The other
+34 old declaration headers, all 35 scope contexts and all 25 existing
+definition/structure bodies in the two changed files are exact. No named
+declaration, helper, import or module is added, removed or moved. Final
+thresholds and numerical bounds are unchanged.
+
+Against `5ae55aa822`, the two production files shrink from 625 to 596
+lines (29 fewer), and their five changed proof bodies shrink from 246 to
+221 lines (25 fewer). The original final remains at 641 modules and
+falls from 133,208 to 133,179 imported lines; its audit is 642 / 133,213.
+The focused audit is 783 / 169,005. The stronger final and its public
+bridge have identical import closures and source bytes, remaining
+626 / 140,354 and 719 / 154,466 respectively. These are local source
+counts, not compilation-speed measurements.
+
+Native verification passes the 642-module original-final audit, the
+783-module focused compatibility audit and the 1,098-module
+`IntegerOriginalCorollaryFidelityAudit`. Their named axiom checks allow
+only `propext`, `Classical.choice` and `Quot.sound`; all current input
+hashes match their recorded manifests. See
+`verification/2026-10-12-cover-ranges{,-compatibility,-downstream}.json` and
+`verification/2026-10-12-cover-ranges-simplification.json`. The unchanged
+stronger bridge's current inputs also match the earlier standalone
+719-module pass in `2026-10-12-final-threshold-pruning-stronger.json`.
+This checkpoint does not claim a new standalone pass for that bridge.
+
+The original-final and focused audits cover 25 of 68 changed-owner import
+consumers; the downstream audit adds 40, bringing selected native coverage
+to 65 of 68 across 1,121 distinct local modules. The facade, Audit and
+PortImportAudit remain outside this native scope; source inspection found
+no use of the narrowed range result there. All four actual applications
+and the result itself have named checks in the focused audit. Import-only
+consumers are distinguished from applications of the changed theorem.
+
+The regenerated 120-statement inventory is byte-identical. Existing
+stronger van der Waerden bounds, the documented Lemma 16.10 correction and
+open original-paper fidelity issues retain their status. This checkpoint
+does not establish complete original-paper fidelity. The simplification
+goal remains active.
+
+### L.82. Prove the class invariant on the actual recursion (2026-10-13)
+
+The class-degree comparison now proves its invariant directly on the
+maxima of the count and exponent components of `splitQuad3`. It uses the
+existing scalar step bound `split_step_gen`, the same componentwise
+monotonicity estimates, and a kernel-evaluated base at dimension 12.
+Positivity follows from the actual seed and step formulas. The final
+closed-form absorption is included in `split_quad3_le_uDegT3`.
+
+This removes the auxiliary `splitPairMax` recursion and its comparison
+layer: 13 intermediate declarations are intentionally deleted. Three
+helpers, `splitQuad3_pos`, `splitQuadStep_le` and `split_quad3_half`, replace
+that route. The 47 retained declaration headers and scope contexts are
+exact, as are all 15 retained definition/structure bodies. In particular,
+`splitQuad3`, `splitQuadStep`, `tTableT3`, `tDegT3` and `uDegT3` are unchanged.
+Two retained proof bodies change: `splitUniformClass2_all3` and
+`split_quad3_le_uDegT3`. This is an intentional removal of intermediate
+APIs, not preservation of every previous declaration.
+
+Against `791d2895a`, `Proofs18FinalClasses.lean` shrinks from 1,197 to
+1,117 lines: 80 production source lines and 27 proof-body lines removed,
+including all replacement helper statements and proofs. The stronger
+final remains at 626 local modules and falls from 140,354 to 140,274
+imported source lines; its public bridge remains at 719 modules and falls
+from 154,466 to 154,386. Five new named checks in the focused audit make
+its total reduction 75 lines, giving 783 / 168,930. The original final
+and its audit are unchanged at 641 / 133,179 and 642 / 133,213. Module
+sets are unchanged; these source counts do not measure compilation speed.
+
+Native verification passes standalone compilation of the 719-module
+stronger bridge, the 783-module focused compatibility audit and the
+1,098-module `IntegerOriginalCorollaryFidelityAudit`. The focused audit
+explicitly checks all three new helpers and both changed retained proofs;
+its approved axioms are `propext`, `Classical.choice` and `Quot.sound`.
+All current inputs match the three recorded manifests. See
+`verification/2026-10-13-actual-split-invariant{-stronger,-compatibility,-downstream}.json`
+and `verification/2026-10-13-actual-split-invariant-simplification.json`.
+The unchanged original-final inputs also match the prior 642-module pass
+in `2026-10-12-cover-ranges.json`; no new original-final pass is claimed.
+
+The source scan finds no external Lean references to the 13 removed
+names. Selected native audit scope covers 42 of 45 import consumers,
+including every affected proof owner. The facade, Audit and PortImportAudit
+remain excluded; source inspection found no direct use of the deleted
+names there. This is not full-facade native validation. Three historical
+generation scripts still mention the old route; their README identifies
+the committed hand-edited modules as authoritative. These archival scripts
+are not current Lean inputs. The regenerated 120-statement inventory is
+byte-identical.
+
+Final class-cover statements, numerical thresholds and the existing
+stronger van der Waerden bounds remain unchanged. The documented
+Lemma 16.10 correction and open original-paper fidelity issues retain
+their status. This checkpoint does not establish complete original-paper
+fidelity. The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
