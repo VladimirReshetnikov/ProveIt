@@ -483,40 +483,39 @@ $1/\alpha$, so its reciprocal is exponential in a polynomial of $1/\alpha$.
 With the Fej\'er classes of \S\ref{sec:fejer} both exponents shrink:
 \begin{itemize}
 \item the graph count becomes
-  $\max(1,(4V/\gamma\theta\rho)^{2^{23\cdot2^k}})$\\
-  (\lean{theorem\_16\_2\_polynomial\_fejer});
-\item the corollary has $e^{-1}\le(2/\alpha)^{2^{101\cdot2^k+k+24}}$\\
-  (\lean{corollary\_16\_11\_polynomial\_fejer}).
+  $\max(1,(4V/\gamma\theta\rho)^{2^{23\cdot2^k}})$;
+\item the corollary has $e^{-1}\le(2/\alpha)^{2^{101\cdot2^k+k+24}}$.
 \end{itemize}
 With the dimension-two family exponent $32$ (Theorem~\ref{thm:fejer4}) they
 shrink further:
 \begin{itemize}
 \item the graph count becomes
-  $\max(1,(4V/\gamma\theta\rho)^{2^{4\cdot2^k+3(k+4)^2+32}})$\\
-  (\lean{theorem\_16\_2\_polynomial\_fejerS});
-\item the corollary has $e^{-1}\le(2/\alpha)^{2^{32\cdot2^k+9(k+4)^2+k+120}}$\\
-  (\lean{corollary\_16\_11\_polynomial\_fejerS}).
+  $\max(1,(4V/\gamma\theta\rho)^{2^{4\cdot2^k+3(k+4)^2+32}})$;
+\item the corollary has $e^{-1}\le(2/\alpha)^{2^{32\cdot2^k+9(k+4)^2+k+120}}$.
 \end{itemize}
 With the class constant $5/2$ and the polynomial base budget
 (Theorem~\ref{thm:fejer2d}) they shrink further, with $V=2^{2^{4k+13}}$:
 \begin{itemize}
 \item the graph count has exponent $2^{t_k}$, where
   $t_k=\tfrac52\,2^{k}+3(k+4)^2+2$ for $k\ge13$ and below that is the exact
-  table\\ (\lean{theorem\_16\_2\_polynomial\_fejerX});
+  table;
 \item the corollary has $e^{-1}\le(2/\alpha)^{2^{3t_k+6k+38}}$, that is
-  $7.5\cdot2^k+O(k^2)$\\ (\lean{corollary\_16\_11\_polynomial\_fejerX}).
+  $7.5\cdot2^k+O(k^2)$.
 \end{itemize}
 With the exact class table to dimension $14$, and with joint slices in the
 frequency box of the step, the frequency box costs one class degree less:
 \begin{itemize}
 \item the graph count has exponent $2^{t_k}$ with the exact table up to
-  $k=14$\\ (\lean{theorem\_16\_2\_polynomial\_fejerZ});
+  $k=14$;
 \item the corollary has $e^{-1}\le(2/\alpha)^{2^{2t_k+7k+38}}$, that is
-  $5\cdot2^k+O(k^2)$\\ (\lean{corollary\_16\_11\_polynomial\_fejerJ}).
+  $5\cdot2^k+O(k^2)$.
 \end{itemize}
 {\sloppy At the two-track classes from the tight dimension-two count, the table $t_k$
 is a further 6--22\% lower in dimensions $3$ to $14$
-(\lean{theorem\_16\_2\_polynomial\_fejerT3}, \lean{corollary\_16\_11\_polynomial\_fejerJT3}).\par}
+(\lean{theorem\_16\_2\_polynomial\_fejerT3}, \lean{corollary\_16\_11\_polynomial\_fejerJT3}).
+These are the bounds kept in Lean; the earlier, weaker exponents above
+were proved there too, and retired when the route was consolidated
+(\S\ref{sec:lean}).\par}
 
 \section{Further questions}
 
@@ -576,41 +575,18 @@ Fej\'er envelope & \lean{Proofs18TightClassesFejer}, \lean{Proofs18FejerEnvelope
 \toprule
 Statement (continued) & Lean\\
 \midrule
-Theorem~\ref{thm:fejer} &\lean{theorem\_18\_1\_d6}, \lean{theorem\_18\_2\_L4}, \lean{corollary\_18\_7\_L4},\\
-& \lean{van\_der\_waerden\_L4}, \lean{theorem\_1\_3\_L4} (\lean{Proofs18CoverFejerAllDegrees})\\
-Theorem~\ref{thm:fejer5} & \lean{theorem\_18\_1\_d5\_twelve\_le}, \lean{theorem\_18\_2\_L3\_fourteen\_le},\\
-& \lean{Proofs18TightClassesFejerQ}, \lean{Proofs18CoverFejerHeadlineQ}\\
-Theorem~\ref{thm:fejer4} & \lean{theorem\_18\_1\_d4\_thirteen\_le}, \lean{theorem\_18\_1\_d5\_nine\_le},\\
-& \lean{theorem\_18\_2\_L3\_eleven\_le}, \lean{theorem\_1\_3\_L3\_eleven\_le},\\
-& \lean{Proofs16UniformCoverTwoSplit}, \lean{Proofs18TightClassesFejerS},\\
-& \lean{Proofs18EtaStepSmall}, \lean{Proofs18CoverFejerHeadlineS}\\
-Theorem~\ref{thm:fejer5all} & \lean{theorem\_18\_1\_d5}, \lean{theorem\_18\_1\_d4\_eleven\_le}, \lean{theorem\_18\_2\_L3},\\
-& \lean{corollary\_18\_7\_L3}, \lean{van\_der\_waerden\_L3\_all}, \lean{theorem\_1\_3\_L3},\\
-& \lean{Proofs18TightClassesFejerT}, \lean{Proofs18CoverFejerHeadlineT},\\
-& \lean{Proofs18CoverFejerLowDegrees5}, \lean{Proofs18CoverFejerShortLengths3}\\
-Theorem~\ref{thm:fejer2} & \lean{theorem\_18\_2\_L2\_thirteen\_le}, \lean{corollary\_18\_7\_L2\_thirteen\_le},\\
-& \lean{van\_der\_waerden\_L2}, \lean{theorem\_1\_3\_L2\_thirteen\_le},\\
-& \lean{zeta\_gen\_bounds\_fejer5} (\lean{Proofs18CoverFejerHeadlineU})\\
-Theorem~\ref{thm:fejer3} & \lean{theorem\_18\_1\_d3\_eleven\_le}, \lean{theorem\_18\_2\_L1\_thirteen\_le},\\
-& \lean{theorem\_18\_1\_d4\_eight\_le}, \lean{theorem\_18\_2\_L2\_ten\_le},\\
-& \lean{explicit\_family\_constants\_poly\_le}, \lean{Proofs18FejerEnvelopeBaseW},\\
-& \lean{Proofs18CoverFejerHeadlineW}\\
-Theorem~\ref{thm:fejer2d} & \lean{theorem\_18\_1\_d2\_seventeen\_le}, \lean{theorem\_18\_2\_L0\_nineteen\_le},\\
-& \lean{corollary\_18\_7\_L0\_nineteen\_le}, \lean{van\_der\_waerden\_L0},\\
-& \lean{theorem\_1\_3\_L0\_nineteen\_le}, \lean{Proofs18TightClassesFejerX},\\
-& \lean{Proofs18CoverFejerHeadlineX}\\
-joint slices & \lean{theorem\_18\_1\_d4}, \lean{theorem\_18\_1\_d3\_nine\_le}, \lean{theorem\_18\_1\_d2\_twelve\_le},\\
-& \lean{theorem\_18\_2\_L0\_fifteen\_le}, \lean{theorem\_18\_2\_L1\_twelve\_le}, \lean{theorem\_18\_2\_L2\_nine\_le},\\
-& \lean{Proofs16JointSliceCell}, \lean{Proofs18JointSliceInverseFejer},\\
-& \lean{Proofs18CoverFejerHeadlineJ}, \lean{Proofs18CoverFejerLowDegrees4}\\
-sharp partition constant & \lean{theorem\_18\_2\_L0\_fourteen\_le}, \lean{theorem\_18\_2\_L1\_eleven\_le},\\
-& \lean{theorem\_18\_2\_L2\_eight\_le}, \lean{polyPartConst\_le\_sharp} (\lean{Proofs18CoverFejerHeadlineK})\\
-split step by $\max$ & \lean{theorem\_18\_1\_d2\_eleven\_le} (\lean{Proofs18TightClassesFejerM}, \lean{…HeadlineJM})\\
-two-track classes & \lean{theorem\_18\_1\_d3\_eight\_le} (\lean{Proofs16SplitTwoTrackClasses}, \lean{…HeadlineJT})\\
-tight dimension two & \lean{theorem\_18\_2\_L0\_thirteen\_le}, \lean{theorem\_1\_3\_L0\_thirteen\_le} (\lean{…HeadlineK3})\\
-16.2 at $t_k$, 16.11 joint & \lean{theorem\_16\_2\_polynomial\_fejerZ}, \lean{corollary\_16\_11\_polynomial\_fejerJ}\\
-Fej\'er polynomial 16.2, 16.11 & \lean{Proofs16PolynomialFejer}, \lean{theorem\_16\_2\_polynomial\_fejer},\\
-& \lean{corollary\_16\_11\_polynomial\_fejer}\\
+final bounds & \lean{theorem\_18\_1\_d4}, \lean{theorem\_18\_1\_d3\_eight\_le}, \lean{theorem\_18\_1\_d2\_eleven\_le},\\
+& \lean{theorem\_18\_2\_L3}, \lean{theorem\_18\_2\_L2\_eight\_le}, \lean{theorem\_18\_2\_L1\_eleven\_le},\\
+& \lean{theorem\_18\_2\_L0\_thirteen\_le}, with \lean{corollary\_18\_7\_\ldots}, \lean{van\_der\_waerden\_\ldots},\\
+& \lean{theorem\_1\_3\_\ldots} and \lean{\ldots\_implies\_printed} (\lean{Proofs18CoverFejerAllDegrees})\\
+inputs, fits & \lean{FinalInputs}, \lean{FinalInputs.theorem\_18\_1\_of\_fit},\\
+& \lean{FinalInputs.theorem\_18\_2\_of\_fit} (\lean{Proofs18Final})\\
+envelopes & \lean{polyGenMuJT3}, \lean{genMuXK3}, \lean{polyPartConst\_le\_sharp} (\lean{Proofs18FinalEnvelopes})\\
+joint-slice step & \lean{GenParamsJT3} (\lean{Proofs18FinalStep}), \lean{Proofs16JointSliceCell},\\
+& \lean{Proofs18JointSliceInverseFejer}\\
+classes $t_k$ & \lean{tDegT3}, \lean{polyCoverAt\_classT3}, \lean{splitStepAMax} (\lean{Proofs18FinalClasses})\\
+16.2, 16.11 at $t_k$ & \lean{theorem\_16\_2\_polynomial\_fejerT3}, \lean{corollary\_16\_11\_polynomial\_fejerJT3}\\
+Fej\'er polynomial 16.2, 16.11 & \lean{Proofs16PolynomialFejer}\\
 polynomial Theorem 16.2 & \lean{Proofs16PolynomialStructure}, \lean{theorem\_16\_2\_polynomial}\\
 polynomial Cor.~16.11 & \lean{Proofs16PolynomialCorollary}, \lean{corollary\_16\_11\_polynomial}\\
 \bottomrule
@@ -633,12 +609,18 @@ audit's record is
 \lean{Research/GowersSzemeredi/verification/}\\
 \lean{2026-10-11-numbered-and-bounds.json}.
 \end{center}
-The Fej\'er column (\S\ref{sec:fejer}, 2026-10-12) is newer still. Its light
-modules are kernel-checked locally with the standard axioms only. Its bridge
-\lean{Proofs18CoverFejerAllDegrees} is checked against a faithful stub whose
-axioms are exactly those of the $c=7$/$c=5$ bridge, namely the corpus theorems
-that the audit verified. It is not yet in \lean{CompletionAudit.lean}.
-The research notes
-(\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.16e) record the development.
+The Fej\'er column (\S\ref{sec:fejer}, 2026-10-12) is newer still. It was
+reached through a sequence of class tables, each with its own copy of the
+step; the final route keeps one table, $t_k$ of the two-track classes, which
+carries every bound of that section, and only the declarations those bounds
+use (four light modules, \lean{Proofs18FinalClasses} to \lean{Proofs18Final}).
+The earlier Fej\'er theorems follow from the final ones and are no longer
+separate Lean results. The light modules are kernel-checked locally with the
+standard axioms only. The bridge \lean{Proofs18CoverFejerAllDegrees} and its
+block in \lean{CompletionAudit.lean} are checked against a faithful stub
+whose axioms are exactly those of the $c=7$/$c=5$ bridge, namely the corpus
+theorems that the audit verified; the production run is pending. The
+research notes (\lean{SECTION16\_RESEARCH\_NOTES.md}, \S\S L.11--L.16-final)
+record the development.
 
 \end{document}

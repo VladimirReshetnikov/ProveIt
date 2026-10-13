@@ -5626,6 +5626,38 @@ spectrum cell), and covering all anchors jointly costs `Q^|J|` with `|J| ~ N`.
 Reordering the covers (slices first) compounds the same way, since the vertex
 covers are also `k`-dimensional (`nonTop_card_le_k` is exact).
 
+**L.16-final: the final route, consolidated (2026-10-12).** The thresholds of
+L.16z were reached through fourteen generations of copy-generated chains
+(Q, S, T, U, W, X, Z, Y, J, JM, JT, JT3, K, K3), each re-deriving the step
+for one class table and importing its predecessors. A single table carries
+every best bound: on `tDegT3` the Theorem 18.1 envelope
+(`envStep = max(dens + μ + k + 19, exp + 6)`, base 74) fits `16·2^k`, `32·2^k`,
+`64·2^k` from `k = 9, 6, 2`, and the Theorem 18.2 envelope (sharp partition
+constant, base 62) fits `16·2^k`, `32·2^k`, `64·2^k`, `128·2^k` from
+`k = 9, 7, 4, 2`. These are exactly `d + 2` (`d ≥ 11`), `d + 3` (`d ≥ 8`),
+`d + 4` (`d ≥ 4`), and `L + 0` (`L ≥ 13`), `L + 1` (`L ≥ 11`), `L + 2` (`L ≥ 8`),
+`L + 3` (`L ≥ 6`). The tables `tDegT2`, `tDegM`, `tDegZ` give nothing more.
+So the route now consists of the declarations those bounds use, found by a
+constant-level closure from the final statements and extracted in their
+original order (`fejer-generators/final_extract.py`, `assemble_final.py`):
+* `Proofs18FinalClasses`: the classes `tDegT3` and `polyCoverAt_classT3`, with
+  the envelope-base bounds they need;
+* `Proofs18FinalStep`: the joint-slice step `GenParamsJT3`;
+* `Proofs18FinalEnvelopes`: `polyGenMuJT3` and `genMuXK3`, their closed forms
+  beyond dimension 14, the kernel-evaluated ranges, the fits, and the
+  polynomial Theorem 16.2 / Corollary 16.11;
+* `Proofs18Final`: a structure `FinalInputs` bundling the corpus inputs (the
+  recurrence profiles, family constants at most `2^(2^(4k+16))`, a phase
+  partition), two generic lemmas `theorem_18_1_of_fit` and
+  `theorem_18_2_of_fit`, and the seven bounds, each one line.
+The bridge `Proofs18CoverFejerAllDegrees` defines `explicitFinalInputs` and
+keeps only the best statements (with Corollary 18.7, van der Waerden numbers,
+Theorem 1.3 and the printed consequences). Measured: 63 modules and 19,081
+lines retired, 3,619 added; the bridge 993 → 189 lines and 101 → 25
+theorems; the Fejér block of `CompletionAudit` 341 → 96 lines. No threshold
+changed. Each new module builds locally; the bridge and audit block pass
+the stub check.
+
 **Van der Waerden numbers: our bounds and the literature (2026-10-12).** Gowers
 proves `W(k, r) ≤ 2^2^r^2^2^(k+9)`; this is the form Wikipedia cites. The Lean
 results here keep that shape with a smaller top constant:
