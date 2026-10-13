@@ -35,10 +35,11 @@ class FactorAccountingTests(TestCase):
                       maximum_tableau_bits=3, peak_cached_conflicts=6,
                       maximum_ellipsoid_dimension=2)
         caps = {cap: 3 for cap in producer.CAP_STATS}
-        caps['max_crushes'] = 4
+        caps['max_crushes'] = 7
         result, calls = self.synthetic([
             dict(status='INCONCLUSIVE', stats=first, partial_chain={'test':'first'}),
-            dict(status='KNOTTED', stats=second, certificate={'test':'second'})], **caps)
+            dict(status='KNOTTED', stats=second, certificate={'test':'second'})],
+            reduce_pachner32=True, **caps)
         self.assertEqual(result['status'], 'KNOTTED')
         self.assertEqual(len(result['factor_results']), 2)
         self.assertEqual(result['stats']['factors_inconclusive'], 1)
@@ -94,6 +95,7 @@ class FactorAccountingTests(TestCase):
         cases = [{cap: value} for cap in producer.CAP_STATS for value in (True, -1, 1.0)]
         cases += [dict(sector_quantum=0), dict(sector_method='bad'),
                   dict(reduce_vertices=1), dict(unlayer_boundary=0),
+                  dict(reduce_pachner32=1),
                   dict(transversal_candidate_policy='bad'),
                   dict(sector_method='transversal', tree_model='restricted'),
                   dict(lp_policy='bland', lp_fast_path_pivots=0)]

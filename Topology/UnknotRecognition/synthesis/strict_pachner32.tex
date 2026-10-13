@@ -1,0 +1,610 @@
+\section{Strict relative-boundary \texorpdfstring{$3\to2$}{3-to-2} preprocessing}
+\label{sec:strict-pachner32}
+
+A strict $3\to2$ replacement removes one tetrahedron without changing the
+underlying compact manifold.  The optional preprocessing policy repeatedly
+scans the current source for this particular move and accepts the first
+independently checked replacement.  Its termination measure is the number
+of tetrahedra.  Its topological justification is equality of two formal
+boundary attachment problems, which is stronger than agreement of homology,
+boundary genus, or tetrahedron counts.
+
+The source adapter \path{reduce_pachner32_once} combines the maintained
+local constructor \path{pachner_32} with source binding and independent
+relative-boundary replay.  The optional flag \path{reduce_pachner32=True}
+exposes this policy in the direct and factored crushing interfaces.  Its
+default is false.  The new mixed chain authenticates every accepted move
+before normal search resumes.  This section proves the local topology,
+the preprocessing bound, and the scope of that integration.
+
+\subsection{Two triangulations of one formal ball}
+
+Choose five distinct formal labels $0,1,2,3,4$.  Realize $0,1,2$ as the
+vertices of a planar triangle and $3,4$ on opposite sides of its plane,
+with the segment $34$ crossing the interior of the triangle.  The convex
+triangular bipyramid has the following two triangulations:
+\[
+\begin{split}
+ B_- &: [3,4,0,1],\ [3,4,1,2],\ [3,4,2,0],\\
+ B_+ &: [0,1,2,3],\ [0,1,2,4].
+\end{split}
+\]
+Within each triangulation, equal formal triangular facets are identified
+by their label-preserving maps.  The three internal facets of $B_-$ are
+$[3,4,i]$ for $i=0,1,2$; the single internal facet of $B_+$ is $[0,1,2]$.
+Both have exactly the same six boundary facets:
+\[
+ [3,0,1],\ [3,1,2],\ [3,2,0],\quad
+ [4,0,1],\ [4,1,2],\ [4,2,0].
+\]
+The displayed simplices fill the same geometric ball with disjoint
+interiors.  The identity of that ball induces a PL homeomorphism
+$f:B_-\longrightarrow B_+$ that fixes the entire formal boundary.
+A common subdivision of the two triangulations makes the identity
+simplicial if an explicit common triangulation is desired.
+
+The five formal labels need not represent five distinct vertices of the
+ambient triangulation.  Distinctness here concerns the vertices of the
+abstract ball before its six boundary facets are attached.  In particular,
+the argument permits all five labels to become a single global vertex.
+
+\begin{proposition}[Descent through arbitrary checked boundary attachments]
+\label{prop:strict-pachner32-relative}
+Let a finite face-pairing source contain three distinct tetrahedra whose
+labelled internal face maps are exactly those of $B_-$.  Replace them by
+$B_+$, preserve every surviving tetrahedron and its local vertex labels,
+and preserve all six formal boundary attachment maps.  Then the original
+and resulting quotient spaces are PL homeomorphic.  This remains true
+when some formal boundary facets are attached to other formal boundary
+facets of the same region.
+\end{proposition}
+\begin{proof}
+Let $X$ be the disjoint union of the surviving abstract tetrahedra,
+retaining their mutual face-pairing relations.  After the prescribed
+internal gluing of the selected region, the old source is a quotient of
+$B_-\sqcup X$.  Its remaining generating relations consist of
+survivor-to-survivor identifications, attachments from a formal boundary
+facet to a survivor face, and attachments between two formal boundary
+facets.  An unpaired formal facet contributes no identification.  Every
+relation involving the region lies on its formal boundary: all other
+region facets have already been used in the prescribed internal gluing.
+
+The map $f\sqcup\operatorname{id}_X$ is a homeomorphism before these
+remaining quotients are taken.  It preserves each generator of the
+equivalence relation, because $f$ fixes every point of each labelled
+boundary triangle and the complete attachment maps are unchanged.
+Its inverse has the same property.  The universal property of the quotient
+therefore gives continuous inverse maps on the two quotient spaces.
+The maps are PL after compatible subdivision of the finitely many
+identified facets.  This proves the claimed PL homeomorphism.
+
+This proof never requires the image of the closed formal ball in the old
+quotient to be embedded.  In particular, identifying two points of its
+boundary, two boundary edges, or two boundary facets imposes the same
+relation before and after the replacement.  Selfattachments cause no
+additional topological hypothesis once those full relations are checked.
+\end{proof}
+
+All vertices of both formal balls lie on their common boundary.  Hence
+the replacement also preserves the quotient's vertex equivalence classes:
+no vertex is introduced into or removed from the formal interior.
+It follows that a one-vertex source remains one-vertex.  The natural
+homeomorphism fixes the ambient boundary under the corresponding labelled
+facet identifications.  A software consumer carrying a peripheral basis
+or cochain must nevertheless provide and check its representation under
+the new cell labels; the unmarked source packet does not contain
+such additional data.
+
+\subsection{What independent local replay establishes}
+
+The local certificate \path{pachner-32-v1} contains exactly a schema tag
+and three region records.  Each record gives a source tetrahedron index
+and its four formal vertex labels.  The existing verifier checks literal
+integer indices, three distinct tetrahedra, distinct labels within each
+record, and precisely the three formal vertex sets defining $B_-$.  The
+two new tetrahedra have fixed final positions and formal label rows
+$(0,1,2,3)$ and $(0,1,2,4)$.  Surviving tetrahedra retain their original
+order under dense relabelling.
+
+For every formal facet, the boundary-signature checker counts its
+occurrences.  A facet appearing twice must have exactly the indicated
+internal pairing and its full label-preserving vertex map.  A facet
+appearing once contributes one of three records:
+\begin{enumerate}
+\item an unpaired boundary facet;
+\item a surviving tetrahedron, its face, and the complete map from formal
+      labels to surviving local vertex labels;
+\item another formal region facet and the complete map of formal labels
+      between the two facets.
+\end{enumerate}
+The old and new signature dictionaries must be equal and contain six
+facets.  In addition, the verifier compares every survivor boundary face
+and every survivor-to-survivor face pairing literally after relabelling.
+Reciprocity of the complete source tables checks the other sides of the
+survivor-to-region attachments.  These tests establish exactly the
+generating relations used in the proposition, including the case with
+no surviving tetrahedra.
+
+Both complete sources are independently passed to the finite-manifold
+validator.  It checks the dense literal face records, permutations and
+reciprocal maps, excludes a face paired with itself and edge reversal,
+and checks connectedness and orientability.  Edge links are circles or
+intervals; vertex links are spheres or discs.  The finite boundary is
+connected and has Euler characteristic zero, and hence is a torus.
+These checks establish the supported input and output manifold class.
+They do not establish diagram provenance, and two valid sources of the
+same size and boundary genus would not suffice for the replacement theorem.
+The independent boundary-signature comparison supplies that theorem's
+additional hypothesis.
+
+A degree-three edge count is consequently a discovery filter, not an
+acceptance certificate.  The constructor propagates formal labels around
+the selected edge, but a returned construction must still pass independent
+replay and output-source validation before being accepted or exposed as
+partial progress.
+
+\subsection{A complete finite greedy scan and its bit bound}
+
+At a current source with $s$ tetrahedra, reconstruct the equivalence
+classes of its $6s$ local edge incidences.  Mark an edge as boundary if
+one of its incidences lies in an unpaired triangular face.  Eligible
+classes are interior classes with exactly three local incidences, in
+three distinct tetrahedra.  List them in the order of their least local
+triple $(\text{tetrahedron},\text{endpoint},\text{endpoint})$, with local
+endpoints increasing.  Try the corresponding formal replacements in
+that order, and accept the first independently verified result.  If
+accepted, discard the incidence table and restart on the successor.
+If all eligible candidates fail, return that this scan is unchanged.
+
+There are at most $6s$ global edge classes and at most $2s$ eligible
+classes, since eligible classes each use three of the $6s$ local
+incidences.  This bounds the complete candidate list without assuming
+that every eligible edge yields an accepted move.  Exhausting the list
+means only that this strict local rule found no accepted replacement.
+It proves neither minimum tetrahedron count nor absence of simplification
+by other moves, and it is not a knot verdict.
+
+\begin{proposition}[Polynomial strict descent]
+\label{prop:strict-pachner32-cost}
+For a validated source with $t$ tetrahedra, the preceding greedy policy
+makes fewer than $t$ accepted moves.  If $P(s)$ bounds one complete
+source check and candidate construction with independent replay at size
+$s$, then a conservative bound for discovery is
+\[
+ O\!\left(\sum_{s=1}^{t}sP(s)\right)
+ \subseteq O\bigl(t^2P(t)\bigr)
+\]
+for a nondecreasing bound $P$.  With explicit labelled successors, the
+accepted packet chain occupies $O(t^2\log(t+2))$ bits.
+\end{proposition}
+\begin{proof}
+Every accepted move removes three tetrahedra and inserts two, so its
+successor has exactly one fewer tetrahedron and remains nonempty.
+Thus fewer than $t$ moves can be accepted.  At each visited size $s$,
+there is one complete incidence reconstruction and at most $2s$
+candidate attempts.  Reconstructing and sorting the incidence records
+is polynomial and can be absorbed in $O(sP(s))$.  Including the terminal
+unsuccessful scan gives the displayed sum.
+
+A validated dense face table of size $s$ has $O(s\log(s+2))$ bits:
+tetrahedron indices use $O(\log(s+2))$ bits, and local vertex
+permutations have constant size.  The formal region proof adds three
+tetrahedron indices and a constant number of labels, hence only
+$O(\log(s+2))$ bits.  A fixed-length source digest and the full labelled
+successor dominate the outer packet size by
+$O(s\log(s+2))$.  Summing over all accepted sizes proves the storage
+bound.  Retaining every source as well changes it by only a constant
+factor.  It does not require storing failed candidates or a full
+execution transcript in each accepted packet.
+\end{proof}
+
+For a fully explicit conservative bit estimate, take
+\[
+ P(s)=O\bigl(s^2\log^2(s+2)\bigr).
+\]
+The source validator processes $O(s)$ local faces, edges, vertices and
+sparse matching rows.  Union by size bounds parent-path length by
+$O(\log(s+2))$; all indices and incidence counters have logarithmic bit
+length and matching coefficients have constant size.  Connectivity,
+link and boundary checks add polynomial work on these same records.
+The constructor and verifier copy or compare $O(s)$ face records and
+handle a constant-size formal region.  Even replacing associative
+lookups by linear scans fits this deliberately loose estimate, without
+assuming average-case hash-table performance.  Source hashing and dense
+relabelled output construction fit the same bound.  Therefore the full
+greedy discovery policy has bit bound
+\[
+ O\bigl(t^4\log^2(t+2)\bigr).
+\]
+Replaying only the accepted packet chain costs at most
+$O(\sum_{s\le t}P(s))=O(t^3\log^2(t+2))$ under the same conservative
+accounting.  The stronger discovery bound also covers replay.  These are
+bounds for the preprocessing policy, not for subsequent normal search.
+
+\subsection{The source packet and independent acceptance}
+
+The source-only API \path{reduce_pachner32_once(source, check=...)} wraps
+the local proof in a four-field packet.  Its \path{schema} value is
+\path{normal-pachner-32-v1}.  The other fields are \path{source_sha256},
+\path{certificate}, and \path{successor}.  The nested certificate is the existing exact
+\path{pachner-32-v1} formal-region proof; the successor is the complete
+labelled face table.  The digest is SHA-256 of the complete source's
+canonical JSON, with sorted keys and compact separators.
+
+The independent entry point \path{verify_normal_pachner32} checks this
+field set and digest against its supplied source.  It requires at least
+three source tetrahedra and a successor with exactly one fewer tetrahedron.
+It then invokes the independent relative-boundary verifier, which checks
+the nested schema, the two complete finite sources, and the formal
+replacement.  Neither source is restricted to one vertex.  The source
+digest identifies the current labelled input; the checked relative-boundary
+replacement proves the homeomorphism.
+
+The source adapter returns \path{REDUCED} with exactly the result fields
+\path{status}, \path{certificate}, and \path{stats}.  Its statistics
+contain \path{initial_tetrahedra}, \path{remaining_tetrahedra},
+\path{candidate_tests}, \path{moves}, and \path{scan_complete}.
+An accepted result has one move, one fewer remaining tetrahedron, and
+\path{scan_complete=False}: discovery stops at the first independently
+verified replacement.  A completed unsuccessful scan returns
+\path{UNCHANGED} with fields \path{status}, \path{reason}, and
+\path{stats}, no packet, zero moves, unchanged tetrahedron count, and
+\path{scan_complete=True}.  There is no work cap on this polynomial
+scan; invalid sources raise the native validation error.
+
+Neither local status asserts unknot recognition.  A $3\to2$ step always
+has a nonempty successor and cannot supply a terminal unknot certificate.
+The scan-completion flag describes candidate exhaustion, not minimum
+triangulation size or recognition completeness.
+
+The public adapter and checker guard callbacks with a private exception
+carrier, including callbacks inside the legacy constructor and verifier.
+This ensures that caller exceptions retain their identity even when their
+class is also used for malformed-source errors.  In particular, the
+legacy verifier's catch of \path{NormalOrbitError} cannot swallow a
+guarded caller exception.  Invalid packets return false, while interrupted
+discovery does not masquerade as completed candidate exhaustion.
+
+\subsection{Versioned mixed chains, priority and shared work}
+
+With \path{reduce_pachner32=True}, the driver emits
+\path{diagram-crushing-v3}.  Its field set remains exactly
+\path{schema}, \path{input_pd}, \path{source_triangulation},
+\path{shelling}, \path{steps}, \path{status}, and \path{triangulation}.
+The independently checked original exterior and any initial shellings
+establish the first source.  Each ordered step is then checked against
+the immediately preceding source under these version rules:
+\begin{center}\small
+\begin{tabular}{ll}
+Chain version & Permitted step schemas\\
+\hline
+\path{diagram-crushing-v1} & \path{normal-ray-crushing-v1}\\
+\path{diagram-crushing-v2} & The v1 step and \path{normal-boundary-unlayer-v1}\\
+\path{diagram-crushing-v3} & The v2 steps and \path{normal-pachner-32-v1}
+\end{tabular}
+\end{center}
+The chain checker dispatches every permitted step to its independent
+verifier and rejects any nonempty successor that fails to shrink strictly.
+No step may follow a terminal successor.  Its final status must be
+\path{UNKNOT} precisely when the successor is absent, and otherwise
+\path{REDUCED} with the exact final labelled source.  A $3\to2$ step
+cannot cause the absent-successor case.  Old chain versions retain their
+previous permitted step classes and reject the new local packet.
+
+The outer recognition schemas keep their existing meanings: version~1
+contains a terminal chain or sector proofs, and version~2 contains a
+complete negative Euler tree.  This distinction concerns final exhaustion
+data, not which local
+reductions appear inside the authenticated chain.  A negative verdict
+still needs complete coverage of the final source.  A partial
+\path{REDUCED} chain authenticates progress and supplies no knot verdict.
+The factored proof schema likewise continues to compose the required
+complete child verdicts using their independently checked chains.
+
+At each current source, the driver first attempts enabled vertex reduction,
+then enabled inverse boundary layering, then the enabled strict $3\to2$
+scan.  Only when none reduces does it start normal search.  Each accepted
+reduction is independently replayed before append, sets the new current
+source, and restarts this priority order.  In particular, a $3\to2$ move
+can expose an inverse layer that is considered on the next iteration.
+Every successful branch strictly decreases tetrahedron count, so their
+combined successful preprocessing iterations remain linearly bounded by
+the starting count.  There are no upward $2\to3$ or neutral moves in
+this policy.
+
+The driver enables the new flag only for literal booleans and defaults
+it to false.  With the flag false, it selects the previous v1/v2 chain
+schema according to the unlayer option.  With the flag true, v3 is used
+even if no $3\to2$ move is ultimately accepted.  The enabled option adds
+the diagnostics \path{pachner32_calls}, \path{pachner32_candidates}, and
+\path{pachner32_moves}; their meanings are source scans returned,
+candidate tests, and appended $3\to2$ reductions, respectively.
+
+The shared \path{max_crushes} allowance now charges
+\[
+ \texttt{crushing\_steps}
+ +\texttt{boundary\_unlayerings}
+ +\texttt{pachner32\_moves}.
+\]
+The raw driver enforces it by the current chain length before appending
+a move, including a terminal normal crush.  The factored wrapper subtracts
+all three counters before each child call, including work from children
+that remain inconclusive.  Disabled-option counters contribute zero.
+All prior node, pivot, anchor and other search expenditures remain
+charged across source restarts and child calls.
+
+This allowance bounds committed reductions.  The source scan may already
+have constructed and verified a candidate before the driver discovers
+that no move allowance remains; its call and candidate diagnostics are
+still retained.  Full-source validation, failed candidate attempts and
+independent replay are polynomial preprocessing outside this move count.
+A zero move allowance therefore does not assert zero preprocessing work.
+
+\subsection{Fresh normal algebra and the remaining complexity limit}
+
+After a replacement, subsequent normal search constructs its models from
+the new current source.  Matching and cycle matrices, triangle potentials,
+anchor objectives, ray coordinates, dual caches, learned conflicts and
+candidate search states are not transported from the previous source.
+Flat sector jobs and exhaustion data also restart for the new source.
+The cumulative work counters survive; the source-specific search data do
+not.  The relative-boundary homeomorphism concerns the compact manifold
+and supplies no coordinate-cone identification.  No monotonicity is
+proved for the canonical Euler functional, the resolving parameter $h$,
+the conflict-size parameter, or the effort of the next LP search.
+An old negative proof cannot be reused on the successor merely because
+the manifolds are homeomorphic.
+
+If the incoming source is authenticated as the relevant knot exterior by
+a diagram chain, the local theorem preserves that premise for the unmarked
+successor.  A standalone finite torus-boundary source does not gain such
+provenance from a Pachner packet.  This integration proves polynomial
+strict preprocessing with independently checked progress.  A uniform
+quasi-polynomial bound for all subsequent recognition work remains open.
+
+\subsection{Implementation controls}
+
+The retained \path{data/strict-pachner32-tests.txt} records $267$ passing
+tests across $29$ modules, with Regina available and no dependency skips.
+The exact command is retained in
+\path{data/strict-pachner32-test-command.txt}.  The new producer, source
+verifier and driver integration contribute $25$ test methods.  They
+cover genuine circle, trefoil, figure-eight and two-trefoil recognition,
+source-bound proof replay with discovery disabled, rejection by older
+chain versions, malformed sources and formal-region packets, and callback
+identity inside legacy validation.  A six-vertex source is also accepted,
+so the local checker does not impose an unnecessary one-vertex restriction.
+
+An explicit three-tetrahedron control consists entirely of the formal
+region.  Its six formal boundary facets have two attachment pairs within
+the region and two unpaired ambient boundary triangles.  Its $3\to2$
+packet is independently accepted.  The successor exposes an inverse
+boundary layer, after which a terminal normal crush completes a supplied
+solid-torus reduction.  A scheduling harness retains all three real
+operations and checks move allowances $0,1,2,3$ exactly.  Only its
+diagram-to-source premise is stubbed, so this harness is an accounting
+control, not an additional genuine diagram-recognition experiment.
+
+For a genuine two-trefoil input, a shared allowance of $13$ reductions
+permits $12$ normal crushes and one $3\to2$ step in the first child.
+The second child receives no remaining move allowance; both partial
+chains replay and the factored result remains inconclusive.  A separate
+complete call supplies the required nontrivial child verdict.  These
+checks establish proof composition and accounting, not a timing gain
+or a uniform bound for the remaining search.
+
+\subsection{A complete eight-call diagram audit}
+\label{sec:strict-pachner32-audit}
+
+The retained \path{data/strict-pachner32-audit.json} compares the raw
+crushing interface with the new option disabled and enabled on the circle,
+trefoil, figure-eight and visible two-trefoil sum $TT$.  This comparison
+uses whole-diagram exteriors in both arms; visible-factor recognition is
+not invoked.  The two option maps differ only in
+\path{reduce_pachner32}.  Both enable vertex reduction and inverse
+boundary layering, and use source-model transversal search with the
+\path{conflicts} candidate policy, the polynomial LP policy and envelope
+strategy.  Tree nodes have allowance $256$; pivots, anchors, candidate
+states, ellipsoid iterations and feasibility calls each have allowance
+$10000$.  The shared reduction allowance is unbounded.  The unused
+sector and basis allowances are $256$ and $10000$, sector order is
+diversified, sector quantum is $64$, and the LP fast-path setting is
+\path{None}.  All search allowances apply cumulatively across source
+restarts.
+
+Every one of the eight predeclared calls returned, with no wall-clock
+cutoff and no unreturned call.  The separate
+\path{data/strict-pachner32-replay.txt} records full independent replay
+without discovery under $320$ current source-file pins.  In the table,
+$U$, $K$ and $I$ mean \path{UNKNOT}, \path{KNOTTED} and
+\path{INCONCLUSIVE}; $N$ and $P$ are returned node and pivot counts,
+$C$ counts normal crushes, and $M$ counts accepted $3\to2$ moves.
+A dash in the last column means a terminal absent successor, not a
+zero-tetrahedron finite source.
+
+\begin{center}\small
+\begin{tabular}{llcrrrrr}
+\toprule
+Input & Option & Status & $N$ & $P$ & $C$ & $M$ & Final $t$\\
+\midrule
+Circle & Disabled & U & 0 & 0 & 1 & 0 & ---\\
+Circle & Enabled & U & 0 & 0 & 1 & 0 & ---\\
+Trefoil & Disabled & K & 40 & 1268 & 12 & 0 & 10\\
+Trefoil & Enabled & K & 7 & 428 & 12 & 2 & 8\\
+Figure-eight & Disabled & K & 29 & 5016 & 16 & 0 & 13\\
+Figure-eight & Enabled & K & 7 & 1917 & 16 & 1 & 12\\
+$TT$ & Disabled & I & 27 & 10000 & 24 & 0 & 23\\
+$TT$ & Enabled & K & 56 & 3398 & 24 & 6 & 17\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+All eight calls perform zero inverse boundary layers, ellipsoid iterations
+and fallback feasibility calls.  The circle terminates during vertex
+reduction before any $3\to2$ scan.  The trefoil uses two moves, reducing
+the searched source from $10$ to $8$ tetrahedra; the reported search
+counts change from $40$ to $7$ nodes and from $1268$ to $428$ pivots.
+The figure-eight uses one move, from $13$ to $12$ tetrahedra, and its
+counts change from $29$ to $7$ nodes and from $5016$ to $1917$ pivots.
+The enabled calls perform three and two scans, respectively, including
+the final unsuccessful scan.
+
+For $TT$, the disabled arm reaches the $10000$-pivot limit and returns
+only an independently verified partial chain.  The enabled arm makes
+six moves and completes a negative proof using $3398$ pivots.  Its seven
+source scans test six candidates; each accepted candidate contributes
+one of the six recorded moves.  The $56$ enabled nodes cover a complete
+search on a different source, whereas the $27$ baseline nodes are only
+a capped prefix.  The completed verdict under the same declared
+allowances is a finite improvement in completion.  These unequal outcomes
+do not supply a recognition-speed ratio, and the table alone makes no
+elapsed-time claim.
+
+\subsection{Archived sources and certified resolving-set upper bounds}
+\label{sec:strict-pachner32-resolving-bounds}
+
+The research package separately retains the historical generation files
+under \path{fast/strict_pachner32_research/data/generation}.  Current
+independent replay checks three original diagram chains, nine local
+relative-boundary moves, and three complete negative Euler trees on their
+terminal sources.  The preserved source traces and split sets are:
+\begin{center}\small
+\begin{tabular}{llll}
+\toprule
+Source & Tetrahedron trace & Split set $S$ & Certified upper bound\\
+\midrule
+Trefoil & $10,9,8$ & $\{3\}$ & $h\le1$\\
+Figure-eight & $13,12$ & $\{6\}$ & $h\le1$\\
+$TT$ & $23,22,21,20,19,18,17$ & $\{0,7,14\}$ & $h\le3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Each root mask contains all three quadrilateral types in every
+tetrahedron.  The retained trees have $4$, $4$ and $40$ proof nodes,
+respectively.  These proof-node counts describe the retained negative
+trees, whereas the eight-call table counts all visited discovery nodes,
+including failed candidates.  The recorded labelled-source digests for
+both endpoints match those of the corresponding fresh driver arms.
+
+\begin{proposition}[A negative tree gives a conflict transversal]
+\label{prop:strict-pachner32-tree-upper-bound}
+For a fixed finite one-vertex source $T$, suppose an independently verified full-root
+negative Euler tree splits only tetrahedra in a set $S$.  Then $S$
+meets the conflict set of every incompatible positive root Q extreme
+ray.  In particular, $h(T)\le |S|$.
+\end{proposition}
+\begin{proof}
+Let $q$ be such a ray and suppose its conflict set misses $S$.  Thus at
+each tetrahedron in $S$, $q$ has at most one positive quadrilateral type.
+Start at the full root mask.  Whenever the tree splits a tetrahedron,
+follow the child permitting that positive type; if all three entries
+of $q$ there are zero, choose any child.  The support of $q$ remains
+allowed at every chosen node.  The finite path reaches a negative leaf.
+Its independently checked relaxation certificate excludes every positive
+canonical-Euler vector in that mask, including incompatible vectors;
+positive rescaling gives the LP normalization without changing support.
+This contradicts the assumed positivity of $q$.  Therefore every
+such conflict meets $S$, which proves the claimed transversal bound.
+\end{proof}
+
+Section~\ref{sec:conflict-composition} proved $h\ge5$ for the exact
+labelled $23$-tetrahedron $TT$ source.  The archived initial source here
+has the same digest
+\begin{center}\scriptsize
+\path{825247bfc387213d7cc965a33018a448043469eecf0a9edd3ce8d7a1b5fcb6f9}.
+\end{center}
+After six checked $3\to2$ moves, the exact $17$-tetrahedron successor
+has the upper bound $h\le3$ just proved.  Thus these particular
+homeomorphic sources exhibit a certified strict decrease in the resolving
+parameter between their endpoints.  The argument does not compare each
+successive intermediate value, prove monotonicity under a chosen move,
+or give a bound for arbitrary sources of the same knot type.
+The trefoil and figure-eight conclusions are upper bounds on their
+specific $8$- and $12$-tetrahedron sources.  Without a separately verified
+positive incompatible root-ray witness there, the displayed $h\le1$
+does not assert the exact value $h=1$.
+
+The archive's original native hashes remain generation-time metadata;
+they are not treated as current-source pin assertions.  Its stored and
+decompressed file hashes are checked, while the proofs are freshly
+replayed using the current pinned native verifiers.  The nine retained
+Regina comparisons record historically accepted moves and combinatorial
+isomorphisms.  No fresh Regina invocation occurs in the solver-free
+archive replay, and these oracle records are corroboration rather than
+the topological acceptance condition.  The archived supplied-source
+queries remain a separate evidence set from the eight genuine integrated
+driver calls above.
+
+The replay also rechecks the all-region selfattachment packet and $29$
+archived malformed-source or packet controls.  Separately,
+\path{data/strict-pachner32-corruption-controls.json} records $27$
+rejected mutations of genuine retained circle results, with both unmodified
+arms accepted.  The script and fixture are retained and hashed.  These
+new controls cover proof corruption, option binding, and malformed or
+inconsistent discovery counters; they are distinct from the $29$ archived
+local controls.
+
+Reduction counts and source sizes are independently recovered from the
+authenticated packets.  Other node, pivot, anchor and candidate counts
+are reported discovery statistics: replay checks their literal types,
+nonnegativity, cap inequalities and recorded accounting relations, but
+does not reconstruct the LP execution trace or independently recount
+every search event.  Verdict proofs and the split-set upper bounds above
+do not rely on the accuracy of those diagnostic counters.  The completed
+finite cases and archived parameter decrease establish no general
+monotonicity or quasi-polynomial recognition bound.
+
+\subsection{Paired complete-call timing controls}
+
+The separate \path{data/strict-pachner32-benchmark.json} retains the
+predeclared $30$-call comparison on circle, trefoil and figure-eight.
+Each input receives one warmup per arm, three alternating-order pairs,
+and one disabled-option A/A pair.  All calls return the same conclusive
+verdict as their audited arm.  Each timer includes fresh recognition,
+independent proof replay, canonical serialization of the complete result
+and its SHA256 hash.  Imports and prepared input PDs precede the timer;
+all result hashes match the complete audit outputs.  No certificate or
+discovery result is reused between calls.
+
+Measurement uses CPU~5 affinity on a shared six-logical-CPU host.  No
+other heavy job from this task runs during the experiment; unrelated
+repository jobs may run, and the retained before/after process record
+includes a Lean build.  Affinity is not an exclusive reservation.
+The environment and exact command are retained in
+\path{data/strict-pachner32-environment.json}.
+
+The table gives each arm's median milliseconds, the median of the
+three paired disabled/enabled ratios, and the disabled-option A/A ratio.
+The paired ratio is not computed by dividing the two marginal medians.
+\begin{center}\small
+\begin{tabular}{lrrrr}
+\toprule
+Input & Disabled ms & Enabled ms & Paired ratio & A/A\\
+\midrule
+Circle & 11.274 & 11.107 & 1.0150 & 0.8743\\
+Trefoil & 2908.772 & 2040.256 & 1.4257 & 1.1534\\
+Figure-eight & 10103.027 & 6387.541 & 1.5841 & 0.9394\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The trefoil's three paired ratios range from $1.3365$ to $1.4864$;
+the figure-eight's range from $1.5712$ to $1.6426$.  Both retain a
+finite complete-call improvement after paying for all simplification
+and proof work.  The circle performs no $3\to2$ scan, so its small
+ratio above one supplies no evidence of a simplifier speedup.  The
+A/A controls retain observable shared-host variation.  No confidence
+interval, scaling law or universal performance claim is inferred from
+these three pairs per input.  The $TT$ case belongs to the separate
+eight-call audit and has no timing comparison, since its baseline
+does not complete recognition under the selected allowances.
+
+Independent replay verifies all audit and warmup proofs, binds each
+paired and A/A sample to its exact full audited result, checks call
+coverage and order, and recomputes the summaries.  The helper
+\path{data/strict_pachner32_publication.py} checks these $8$ audit and
+$30$ benchmark calls together with the archived proofs, both mutation
+control sets, the $267$-test record and final PDF build.  Its source
+manifest includes the native and research code, retained data, static
+test dependencies and every included TeX source.  The preprocessing
+polynomial flag is true; the general quasi-polynomial flag is false.

@@ -169,6 +169,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                           sector_quantum=64, sector_method='corners',
                           max_pivots=10000, max_anchors=10000,
                           lp_strategy='envelope', reduce_vertices=True, unlayer_boundary=False,
+                          reduce_pachner32=False,
                           max_tree_nodes=256, tree_model='source',
                           max_hitting_subsets=10000,
                           transversal_candidate_policy='subsets',
@@ -245,6 +246,13 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
     crushing_steps and boundary_unlayerings report them separately. The
     default False preserves the existing v1 chain and preprocessing policy.
 
+    ``reduce_pachner32=True`` next scans interior degree-three edges for a
+    certified relative-boundary 3-2 replacement. Each accepted move removes
+    exactly one tetrahedron and restarts vertex reduction, boundary unlayering,
+    and source preparation. No old normal algebra or conflict is transported.
+    The v3 chain accepts all three reduction kinds, sharing max_crushes;
+    pachner32_moves counts these moves separately. The default is False.
+
     ``max_ellipsoid_iterations`` and ``max_feasibility_calls`` count fallback
     work across all anchors, nodes, candidate restarts and crushing successors.
     Both default to 10000; None removes a cap. Flat LP scheduling also applies
@@ -278,6 +286,8 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
         raise ValueError('transversal_candidate_policy must be subsets or conflicts')
     if type(unlayer_boundary) is not bool:
         raise ValueError('unlayer_boundary must be a boolean')
+    if type(reduce_pachner32) is not bool:
+        raise ValueError('reduce_pachner32 must be a boolean')
     validate_lp_controls(lp_policy, lp_fast_path_pivots,
                          max_ellipsoid_iterations, max_feasibility_calls)
     return _safe_call(_recognize_by_crushing, check, diagram,
@@ -287,6 +297,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
                       max_pivots=max_pivots, max_anchors=max_anchors,
                       lp_strategy=lp_strategy, reduce_vertices=reduce_vertices,
                       unlayer_boundary=unlayer_boundary,
+                      reduce_pachner32=reduce_pachner32,
                       max_tree_nodes=max_tree_nodes, tree_model=tree_model,
                       max_hitting_subsets=max_hitting_subsets,
                       transversal_candidate_policy=transversal_candidate_policy,
@@ -298,6 +309,7 @@ def recognize_by_crushing(diagram, *, max_sectors=256, max_bases=10000,
 def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                           sector_order, sector_quantum, sector_method,
                           max_pivots, max_anchors, lp_strategy, reduce_vertices, unlayer_boundary,
+                          reduce_pachner32,
                           max_tree_nodes, tree_model, max_hitting_subsets,
                           transversal_candidate_policy,
                           lp_policy, lp_fast_path_pivots,
@@ -319,6 +331,9 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
     from .normal_euler_transversal import search_euler_transversal
     from .boundary_unlayer import unlayer_boundary_once
     from .boundary_unlayer_verify import verify_boundary_unlayering
+    if reduce_pachner32:
+        from .normal_pachner32 import reduce_pachner32_once
+        from .normal_pachner32_verify import verify_normal_pachner32
 
     check()
     source = Diagram.from_pd(diagram.pd)
@@ -358,9 +373,13 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
     if unlayer_boundary:
         stats.update(boundary_unlayer_calls=0, boundary_unlayer_candidates=0,
                      boundary_unlayerings=0)
+    if reduce_pachner32:
+        stats.update(pachner32_calls=0, pachner32_candidates=0, pachner32_moves=0)
 
     def chain():
-        return dict(schema='diagram-crushing-v2' if unlayer_boundary else 'diagram-crushing-v1',
+        schema = ('diagram-crushing-v3' if reduce_pachner32 else
+                  'diagram-crushing-v2' if unlayer_boundary else 'diagram-crushing-v1')
+        return dict(schema=schema,
                     input_pd=[list(row) for row in source.pd],
                     source_triangulation=initial, shelling=shelling, steps=steps,
                     status='UNKNOT' if current is None else 'REDUCED',
@@ -516,6 +535,25 @@ def _recognize_by_crushing(diagram, *, max_sectors, max_bases, max_crushes,
                 continue
             if reduction['status'] != 'UNCHANGED':
                 raise ArithmeticError('unexpected boundary unlayering outcome')
+        if reduce_pachner32:
+            reduction = reduce_pachner32_once(current, check=check)
+            stats['pachner32_calls'] += 1
+            stats['pachner32_candidates'] += reduction['stats']['candidate_tests']
+            if reduction['status'] == 'REDUCED':
+                if max_crushes is not None and len(steps) >= max_crushes:
+                    return inconclusive('shared crushing-step allowance exhausted')
+                packet = reduction['certificate']
+                if not verify_normal_pachner32(current, packet, check=check):
+                    raise ArithmeticError('independent Pachner 3-2 replay failed')
+                successor = packet['successor']
+                if len(successor['tetrahedra']) != len(current['tetrahedra'])-1:
+                    raise ArithmeticError('Pachner 3-2 did not delete one tetrahedron')
+                steps.append(packet)
+                current = successor
+                stats['pachner32_moves'] += 1
+                continue
+            if reduction['status'] != 'UNCHANGED':
+                raise ArithmeticError('unexpected Pachner 3-2 outcome')
         count = len(current['tetrahedra'])
         digest = _source_hash(current)
         if sector_method in ('tree', 'transversal'):

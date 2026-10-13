@@ -167,7 +167,7 @@ Allowance & Charged child statistics\\
 \hline
 \path{max_sectors} & \path{sectors_attempted}\\
 \path{max_bases} & \path{bases_attempted}\\
-\path{max_crushes} & \path{crushing_steps} plus \path{boundary_unlayerings}\\
+\path{max_crushes} & All strict reductions, as specified below\\
 \path{max_pivots} & \path{lp_pivots}\\
 \path{max_anchors} & \path{anchors_tested}\\
 \path{max_tree_nodes} & \path{nodes_attempted}\\
@@ -190,9 +190,11 @@ For the conflict candidate policy, candidate counts retain their existing
 meaning: visited candidate-selection states, including repeated depth
 passes, rather than only successful or distinct final resolving sets.
 
-The \path{max_crushes} row includes both strict reduction operations.
+The \path{max_crushes} row charges \path{crushing_steps} plus
+\path{boundary_unlayerings}.  With the optional extension in
+Section~\ref{sec:strict-pachner32}, it also charges \path{pachner32_moves}.
 Charging normal crushes alone would fail to enforce the shared allowance
-when optional inverse boundary layering is enabled.  Ordinary additive
+when either local simplifier is enabled.  Ordinary additive
 statistics are summed across children; declared peak statistics such as
 maximum tableau size and maximum search depth use their maximum.
 Initial-source and shelled-source tetrahedron counts are likewise summed
@@ -225,8 +227,8 @@ Factor discovery, child reconstruction and partition replay use
 $O(n\log(n+1))$ word operations with $O(\log(n+1))$-bit indices, and hence
 polynomial bit work.  For child $i$, its native initial exterior has
 $t_{i0}=O(n_i+1)$ tetrahedra by Section~\ref{sec:diagram-exterior}.
-Every normal crush or certified inverse layer strictly decreases this
-count.  Thus it performs at most $t_{i0}$ strict reductions and at most
+Every normal crush, certified inverse layer or optional $3\to2$ move
+strictly decreases this count.  Thus it performs at most $t_{i0}$ strict reductions and at most
 $t_{i0}+1$ Euler search stages.  Summing over the children gives $O(n+1)$
 stages, with the extra constant covering the crossing-free convention.
 
@@ -252,8 +254,10 @@ corresponding bound
 $\operatorname{poly}(n+1)(c(n+1))^{O(H)}$.
 \end{proposition}
 \begin{proof}
-Vertex reduction and any optional inverse layers contribute polynomial
-work and strict tetrahedron descent.  At each remaining Euler stage,
+Vertex reduction and the optional inverse-layer and $3\to2$ policies
+contribute polynomial work and strict tetrahedron descent.  The latter's
+polynomial bound and one-vertex preservation are proved in
+Section~\ref{sec:strict-pachner32}.  At each remaining Euler stage,
 vertex reduction guarantees a finite one-vertex source.  It has at most
 $4t_{is}$ anchor choices, and its source-derived exact linear data have
 bit length polynomial in $t_{is}$.  Proposition~\ref{prop:conflict-candidate-bound}
@@ -313,7 +317,7 @@ nodes.  The one-vertex source has at most $4t$ anchor objectives per node,
 and at most one additional envelope call.  The polynomial exact LP policy
 and the source-algebra bounds of Section~\ref{sec:euler-branch-tree} give
 polynomial bit work and polynomial proof data per node.  Positive extraction,
-crushing, inverse layering if enabled, and independent replay contribute
+crushing, enabled inverse-layer and $3\to2$ scans, and independent replay contribute
 polynomial work per reduction or per recorded node.
 
 For one fixed polynomial $p$, enlarging it to include the polynomial number
@@ -380,6 +384,8 @@ respectively; sector order is diversified, sector quantum is $64$, and
 \path{lp_fast_path_pivots=None} retains the polynomial policy's automatic
 fast-path allowance.  Each allowance applies to the whole recognition call,
 including all attempted children in the factored arm.
+This publication is retained at source revision \texttt{fafaf68f5}, before
+the optional $3\to2$ policy was added; it is not a measurement of that policy.
 
 All $16$ ordinary calls and all four additional scaling calls returned.
 There is no wall-clock cutoff and no unreturned call in this audit.
