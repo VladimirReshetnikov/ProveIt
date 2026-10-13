@@ -48,15 +48,19 @@ With $R$ enumerated local rays, the inherited bound after enumeration is
 \[
  \operatorname{poly}(\Lambda,d)(R+d+1)^{d^2-d+1},
 \]
-where $\Lambda$ includes the binary source and query encoding.  Complete
-support enumeration costs $2^{n_i}\operatorname{poly}(\Lambda)$ per block;
+where $\Lambda$ includes the binary source and query encoding.  Local
+simplex enumeration has degree at most $d$ in $R$; there are at most
+$(R+d+1)^{d-1}$ arrangement hyperplanes and degree $d-1$ in that
+number of intersection candidates.  Their product gives
+$(d-1)^2+d=d^2-d+1$.  Determinant bounds control rational bit lengths.
+Complete support enumeration costs $2^{n_i}\operatorname{poly}(\Lambda)$ per block;
 the alternative zero-set enumeration examines
 $\binom{n_i}{h_i-1}$ candidates when $h_i=\dim\ker A_i>0$.
 These are actual enumeration costs, not unit-cost oracles.
 
 \subsection{A polynomial intrinsic-dimension reduction}
 
-\begin{theorem}[Common-image restriction]
+\begin{proposition}[Common-image restriction]
 \label{thm:intrinsic-common-port}
 Let $W_i=P_i\ker A_i\subseteq\mathbb Q^d$ and
 $W=\bigcap_i W_i$, of dimension $r$.  In polynomial bit time one can
@@ -66,7 +70,7 @@ exactly the original ones.  Coordinates, incompatibilities, and all
 coordinate-zero restrictions are preserved.  Every linear objective
 transforms exactly.  For $r=0$, one dummy identically zero port row
 suffices.
-\end{theorem}
+\end{proposition}
 
 \begin{proof}
 Compute bases of $\ker A_i$, their images under $P_i$, and their
@@ -164,7 +168,7 @@ discovery problems possess suitable small blocks or small intrinsic
 common-port dimension.  In particular, a constant dimension on each
 seam of an arbitrary chain is insufficient; the report encodes a
 binary-gain product-choice problem in such chains.  Likewise deleting
-$s$ vertices from a connected degree-$\Delta$ tetrahedral adjacency
+$s>0$ vertices from a connected degree-$\Delta$ tetrahedral adjacency
 graph leaves at most $\Delta s$ private components.  If their sizes are
 at most $b$, then $t\leq s+\Delta sb$, obstructing simultaneous
 logarithmic raw separator and raw component sizes for large $t$.
@@ -172,3 +176,108 @@ Algebraic compression must be proved, not inferred from a drawing of
 small separators.  Useful-surface discovery, marked successor repair,
 and aggregate hierarchy costs remain open obligations for the general
 quasi-polynomial recognizer.
+
+\subsection{Independent review and native candidate counterexamples}
+
+The preserved delivery was tested on a scratch copy: all 46 tests pass.
+Its 120-model audit checks 960 queries, 480 independent local-ray
+comparisons and 814 normalized optima; 1,173 positive-certificate and
+tamper checks pass.  Its normal-coordinate fixture audit checks 104
+queries with 94 positive certificates and 24 variable-separator queries.
+The separate descent audit turns 64 explicitly nonextreme primitive
+assemblies into independently verified source extreme rays.  None of
+these delivered files was edited during the review.
+
+The new preprocessor has seven maintained tests, including exhaustive
+comparison of 72,900 pairs of small nonnegative integer vectors across
+100 matrix models, signed lifting coefficients, rational row changes,
+new rays created by restriction, zero-dimensional intersections, and
+callback exception propagation.  A separate 180-model randomized audit
+uses independent whole-source support enumeration: all 2,160 queries
+agree with both atlas variants, and all 768 positive answers pass
+independent synchronized-vector and primitive extreme-ray checks.
+Among these models the intrinsic dimension is strictly smaller in
+81 cases.  These finite checks support the implementation; the
+equivalence theorem supplies completeness beyond them.
+
+For native comparison we use capped layered solid tori, with supplied
+face pairings validated by the maintained manifold checker.  We exhaust
+all 16 compatible sectors of the two-tetrahedron fixture and add six
+specified sectors on three- and five-tetrahedron fixtures.  Anchors
+choose one triangle coordinate at every vertex, excluding every pure
+vertex link.  This yields 202 Euler-positivity queries: 112 on the
+two-tetrahedron source are also checked against an independent complete
+global-ray oracle.  Every source matching row agrees, up to nonzero
+scale, with the independently reconstructed native system.  All three
+methods---native sector enumeration, delivered atlas, and intrinsic
+atlas---agree on the 69 positive queries.  Their positive coordinates
+pass source extremality checks and independent native disc replay.
+The ambient port dimension is three; the intrinsic dimension is one
+in four cases and two in eighteen.  This sector-restricted result does
+not contradict the unrestricted two-tetrahedron control, whose common
+image has dimension three.
+
+\paragraph{Positivity is not sufficient discovery.}
+On these 202 queries the first positive native sector candidate is an
+essential disc in 60 cases, while each atlas policy selects an essential
+disc in 51.  In nine queries the native candidate is essential and the
+atlas candidate is not; there is no opposite discrepancy in this bank.
+All selected vectors are valid positive-Euler extreme rays.  Thus even
+connectedness, positive Euler characteristic and exclusion of pure
+vertex links do not make the selected disc's boundary essential.
+The native recognizer's sector search continues after a nonessential
+candidate; the atlas's single optimal witness cannot replace that
+policy.  These are supplied solid-torus examples, not authenticated
+knot-diagram exteriors, and do not claim a false knot verdict.
+
+The first benchmark intentionally demanded equal disc outcomes as well
+as equal Euler positivity.  That assertion failed on
+\texttt{two\_tet\_15}; its exact script, partial measurements and failure
+log are retained as \path{data/port-subspace-initial-benchmark.*}.
+The final benchmark explicitly compares the Euler-query contract and
+records, without equating, the different disc properties of the chosen
+witnesses.  It is not a complete essential-disc-search comparison.
+
+\subsection{Complete query costs and integration decision}
+
+Table~\ref{tab:intrinsic-port-times} records seven paired rounds in
+seeded random arm order, after a warm-up, and three intrinsic/intrinsic
+duplicate controls per cohort.  Each timed batch includes source
+validation, source compilation or sector-kernel construction, all ray
+and atlas preparation, all anchored queries, source recovery, independent
+native disc checking for each positive candidate, and JSON serialization.
+Fixture construction is excluded.  The two-, three-, and five-tetrahedron
+batches have seven, eleven, and nineteen anchor queries respectively.
+The native arm uses the maintained standard-sector enumeration policy,
+followed by selection of its first positive ray satisfying each anchor;
+it is not a timing of the recognizer's entire disc search.
+
+\begin{table}[ht]
+\centering\small
+\input{data/port-subspace-table.tex}
+\caption{Complete supplied-sector Euler-query batches in milliseconds.
+Ratios are medians of paired ratios, not ratios of displayed medians.
+The final column is the duplicate intrinsic-arm control.}
+\label{tab:intrinsic-port-times}
+\end{table}
+
+The intrinsic atlas improves on the delivered atlas by paired factors
+between $1.31$ and $1.99$.  It still takes between about $1.60$ and
+$4.15$ times the native sector arm's time.  The duplicate controls
+range from $0.998$ to $1.010$.  For the five-tetrahedron cap-type-one
+case, the delivered atlas has eleven vertices and fourteen compatible
+simplices; restriction and compression produce three vertices and
+eleven simplices.  The native minimum-envelope method emits only three
+standard rays.  These measurements justify the intrinsic preprocessor
+as an improvement to the common-port backend, but do not justify
+replacing the existing native low-nullity discovery policy.
+
+Raw evidence is retained under \path{data/port-subspace-*} and
+\path{data/port-atlas-delivered-*}.  The independent publication replay
+reconstructs source matching rows, repeats the small global-ray oracle
+comparisons, verifies all saved positive source and disc certificates,
+checks recorded code hashes and paired statistics, and regenerates the
+table without calling atlas discovery.  The additive maintained API is
+the polynomial preprocessor only.  Automatic geometric decomposition,
+the complete port atlas, and any essential-disc search using its
+witnesses remain research work.
