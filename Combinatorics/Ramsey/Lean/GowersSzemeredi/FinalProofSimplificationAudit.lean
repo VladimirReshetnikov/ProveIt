@@ -15,7 +15,44 @@ import Lean.Util.CollectAxioms
 open Lean Elab Command in
 run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
-  for name in #[``LeanProofs.GowersSzemeredi.FinalInputs.hyp,
+  for name in #[``LeanProofs.GowersSzemeredi.section18ExponentAt_antitone,
+      ``LeanProofs.GowersSzemeredi.Theorem181AtSharp.mono,
+      ``LeanProofs.GowersSzemeredi.mul32_nat_le_pw,
+      ``LeanProofs.GowersSzemeredi.polyPartConst_mul32_le_pw,
+      ``LeanProofs.GowersSzemeredi.inv_mul_div_four_le_pw,
+      ``LeanProofs.GowersSzemeredi.GenParamsJT3.ranges,
+      ``LeanProofs.GowersSzemeredi.GenParamsJT3.modulus_conditions,
+      ``LeanProofs.GowersSzemeredi.GenParamsJT3.slice_exps_inv_leJT3,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d4_degree_zero,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d4_degree_one,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d4_degree_two,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d4_three_of_phase_partition,
+      ``LeanProofs.GowersSzemeredi.section18ExponentAt4_two_le_quadraticDiscrepancyParameter,
+      ``LeanProofs.GowersSzemeredi.section18ExponentAt4_two_le_quadraticDiscrepancyExponent,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d6_degree_zero,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d6_degree_one,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d6_degree_two,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d6_three_of_phase_partition,
+      ``LeanProofs.GowersSzemeredi.section18ExponentAt6_two_le_quadraticDiscrepancyParameter,
+      ``LeanProofs.GowersSzemeredi.section18ExponentAt6_two_le_quadraticDiscrepancyExponent,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d7_degree_zero,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d7_degree_one,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d7_degree_two,
+      ``LeanProofs.GowersSzemeredi.theorem_18_1_d7_three_of_phase_partition,
+      ``LeanProofs.GowersSzemeredi.section18ExponentAt7_two_le_quadraticDiscrepancyParameter,
+      ``LeanProofs.GowersSzemeredi.section18ExponentAt7_two_le_quadraticDiscrepancyExponent,
+      ``LeanProofs.GowersSzemeredi.envBound_step,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_step,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_stepC,
+      ``LeanProofs.GowersSzemeredi.envBound_stepC,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_stepG,
+      ``LeanProofs.GowersSzemeredi.envBound_stepG,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_stepF,
+      ``LeanProofs.GowersSzemeredi.envBound_stepFx,
+      ``LeanProofs.GowersSzemeredi.envBound_stepCx,
+      ``LeanProofs.GowersSzemeredi.envBound_stepKx3,
+      ``LeanProofs.GowersSzemeredi.polyEnvBound_stepJT3,
+      ``LeanProofs.GowersSzemeredi.FinalInputs.hyp,
       ``LeanProofs.GowersSzemeredi.FinalInputs.cover,
       ``LeanProofs.GowersSzemeredi.FinalInputs.covers,
       ``LeanProofs.GowersSzemeredi.FinalInputs.theorem_16_2_polynomial,
@@ -115,4 +152,4 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the shared short-length proof and explicit phase input, Roth and double-exponential conversions and phase-refinement estimates, uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
+  logInfo "Checked shared low-degree proofs, partition and density estimates, modulus conditions, the shared short-length proof and explicit phase input, Roth and double-exponential conversions and phase-refinement estimates, uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
