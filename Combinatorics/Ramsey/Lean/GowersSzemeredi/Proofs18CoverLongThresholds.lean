@@ -261,22 +261,25 @@ theorem genMuX_small : genMuX 2 + 2 * 6 + 14 ≤ 2 ^ (6 + 5) ∧
     genMuX 3 + 2 * 7 + 14 ≤ 2 ^ (7 + 5) ∧ genMuX 4 ≤ 500 * 2 ^ 4 := by
   decide
 
-/-- **The Theorem 18.2 envelope without the cubic branch is `≤ 500·2^k`**, `k ≥ 4`. -/
-theorem genMuX_le : ∀ k, 4 ≤ k → genMuX k ≤ 500 * 2 ^ k := by
+/-- **The Theorem 18.2 envelope without the cubic branch is `≤ 500·2^k`**, `k ≥ 2`. -/
+theorem genMuX_le : ∀ k, 2 ≤ k → genMuX k ≤ 500 * 2 ^ k := by
   intro k hk
-  induction k, hk using Nat.le_induction with
-  | base => exact genMuX_small.2.2
-  | succ k hk ih =>
-    rw [genMuX_succ (by omega)]
-    have h1 := envStepCTx_le_tight (k + 1) (genMuX k)
-    have h2 := sq_le_two_pow_four k hk
-    have h3 : 16 ≤ 2 ^ k := le_trans (by norm_num : 16 ≤ 2 ^ 4) (Nat.pow_le_pow_right (by norm_num) hk)
-    have h4 := Nat.lt_two_pow_self (n := k)
-    rw [show k + 1 + 3 = k + 4 by ring] at h1
-    rw [pow_succ] at h1 ⊢
-    generalize (k + 4) ^ 2 = s at *
-    generalize 2 ^ k = x at *
-    omega
+  rcases Nat.lt_or_ge k 4 with hsmall | hk4
+  · interval_cases k <;> decide
+  · clear hk
+    induction k, hk4 using Nat.le_induction with
+    | base => exact genMuX_small.2.2
+    | succ k hk ih =>
+      rw [genMuX_succ (by omega)]
+      have h1 := envStepCTx_le_tight (k + 1) (genMuX k)
+      have h2 := sq_le_two_pow_four k hk
+      have h3 : 16 ≤ 2 ^ k := le_trans (by norm_num : 16 ≤ 2 ^ 4) (Nat.pow_le_pow_right (by norm_num) hk)
+      have h4 := Nat.lt_two_pow_self (n := k)
+      rw [show k + 1 + 3 = k + 4 by ring] at h1
+      rw [pow_succ] at h1 ⊢
+      generalize (k + 4) ^ 2 = s at *
+      generalize 2 ^ k = x at *
+      omega
 
 theorem genMuX_ge : ∀ k, 2 ≤ k → 236 * 2 ^ k ≤ genMuX k := by
   intro k hk
@@ -297,24 +300,12 @@ theorem theorem_18_2_L5_all_of_profiles_cover (Kc pc : Nat → Nat) (hK : ∀ k,
   rw [show L - 4 + 2 = L - 2 by omega] at henv
   have hge := genMuX_ge (L - 4) (by omega)
   have hk := Nat.lt_two_pow_self (n := L - 4)
-  have h4 : 4 ≤ 2 ^ (L - 4) :=
-    le_trans (by norm_num : 4 ≤ 2 ^ 2) (Nat.pow_le_pow_right (by norm_num) (by omega))
-  have h42 : 42 ≤ genMuX (L - 4) := by omega
-  have hLμ : 4 * L + 20 ≤ 2 ^ genMuX (L - 4) := by
-    have := Nat.lt_two_pow_self (n := genMuX (L - 4))
-    omega
-  refine theorem182AtSharp_of_envBound (by omega) henv h42 hLμ ?_
-  rcases Nat.lt_or_ge L 8 with hL | hL
-  · obtain ⟨h6, h7, -⟩ := genMuX_small
-    interval_cases L
-    · exact h6
-    · exact h7
-  · have hle := genMuX_le (L - 4) (by omega)
-    have h16 : 16 ≤ 2 ^ (L - 4) :=
-      le_trans (by norm_num : 16 ≤ 2 ^ 4) (Nat.pow_le_pow_right (by norm_num) (by omega))
-    have h2 : 2 ^ (L + 5) = 512 * 2 ^ (L - 4) := by
-      rw [show L + 5 = (L - 4) + 9 by omega, pow_add]; ring
-    rw [h2]
-    omega
+  have hpow := Nat.lt_two_pow_self (n := genMuX (L - 4))
+  have hle := genMuX_le (L - 4) (by omega)
+  refine theorem182AtSharp_of_envBound (by omega) henv (by omega) (by omega) ?_
+  have h2 : 2 ^ (L + 5) = 512 * 2 ^ (L - 4) := by
+    rw [show L + 5 = (L - 4) + 9 by omega, pow_add]; ring
+  rw [h2]
+  omega
 
 end LeanProofs.GowersSzemeredi

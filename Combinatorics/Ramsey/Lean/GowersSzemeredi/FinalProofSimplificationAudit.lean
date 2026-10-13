@@ -18,6 +18,8 @@ run_cmd do
       ``LeanProofs.GowersSzemeredi.FinalInputs.cover,
       ``LeanProofs.GowersSzemeredi.FinalInputs.covers,
       ``LeanProofs.GowersSzemeredi.FinalInputs.theorem_16_2_polynomial,
+      ``LeanProofs.GowersSzemeredi.genMuX_le,
+      ``LeanProofs.GowersSzemeredi.theorem_18_2_L5_all_of_profiles_cover,
       ``LeanProofs.GowersSzemeredi.genMuXK3_fit,
       ``LeanProofs.GowersSzemeredi.polyGenMuJT3_fit,
       ``LeanProofs.GowersSzemeredi.classCovers_of_profiles,
@@ -82,4 +84,4 @@ run_cmd do
     for axiomName in (← collectAxioms name) do
       unless allowed.contains axiomName do
         throwError "{name} depends on unapproved axiom {axiomName}"
-  logInfo "Checked the shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
+  logInfo "Checked the uniform long-progression envelope bound, shared envelope induction and cover setup, threshold conversion, recurrence inputs, original final quantitative theorem, all 25 consolidated stronger-bound theorems and Section 13 compatibility theorems with only approved axioms."
