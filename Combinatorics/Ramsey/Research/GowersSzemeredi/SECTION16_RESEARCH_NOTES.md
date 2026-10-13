@@ -7279,6 +7279,36 @@ expanded audit closure is 853 / 180,317. The comparison is recorded in
 and remaining original-statement fidelity gaps remain separate. The
 simplification goal remains active.
 
+
+### L.64. One envelope estimate for every long progression (2026-10-12)
+
+`genMuX_le` now proves `genMuX k <= 500 * 2^k` for every `k >= 2`,
+using kernel-checked cases at two and three and the existing induction
+from four. This strengthens the auxiliary theorem's domain; its bound
+and the other twelve theorem statements in the module are unchanged.
+The final threshold fit for lengths at least six therefore uses one
+upper bound, without separate length-six and length-seven branches.
+Its side conditions follow from the same lower envelope estimate and
+`k < 2^k`. The production module shrinks from 320 to 311 lines.
+
+The original FinalAudit passes 648 native modules. The expanded
+FinalProofSimplificationAudit passes 853, including the strengthened
+helper, the simplified threshold theorem and all 25 public stronger-bound
+bridge theorems. Only `propext`, `Classical.choice` and `Quot.sound` occur.
+See `verification/2026-10-12-final-uniform-long-envelope.json` and
+`verification/2026-10-12-final-uniform-long-envelope-compatibility.json`,
+with immutable source manifests. The source comparison is recorded in
+`verification/2026-10-12-uniform-long-envelope-simplification.json`.
+
+The minimal original final closure remains 647 modules and now contains
+135,356 lines. The expanded audit closure is 853 modules / 180,310 lines.
+All final numerical bounds remain unchanged, including the van der
+Waerden offsets three for every positive length, two from length eight,
+one from length eleven, and zero from length thirteen. Lean states these
+as the direct monochromatic-progression property for every coloring and
+at least two colors. The complete facade and remaining original-statement
+fidelity gaps are separate; the simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
