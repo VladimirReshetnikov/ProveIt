@@ -5655,8 +5655,11 @@ keeps only the best statements (with Corollary 18.7, van der Waerden numbers,
 Theorem 1.3 and the printed consequences). Measured: 63 modules and 19,081
 lines retired, 3,619 added; the bridge 993 → 189 lines and 101 → 25
 theorems; the Fejér block of `CompletionAudit` 341 → 96 lines. No threshold
-changed. Each new module builds locally; the bridge and audit block pass
-the stub check.
+changed. The merged production route now passes the 852-module native
+`FinalProofSimplificationAudit`, covering all 25 public bridge theorems and
+checking their axioms. See L.60 and
+`verification/2026-10-12-final-consolidated-compatibility.json`.
+The complete facade remains a separate check.
 
 **Van der Waerden numbers: our bounds and the literature (2026-10-12).** Gowers
 proves `W(k, r) ≤ 2^2^r^2^2^(k+9)`; this is the form Wikipedia cites. The Lean
@@ -5664,8 +5667,7 @@ results here keep that shape with a smaller top constant:
 `van_der_waerden_L3_all` (`k + 3`, every `k`), `van_der_waerden_L2_eight_le`
 (`k + 2`, `k ≥ 8`), `van_der_waerden_L1_eleven_le` (`k + 1`, `k ≥ 11`) and
 `van_der_waerden_L0_thirteen_le` (`W(k, r) ≤ 2^2^r^2^2^k`, `k ≥ 13`). They are
-locally verified: per-module builds and the stub-checked bridge, with the
-production run pending. They tighten Gowers's own argument; they are not new
+verified by the 852-module focused native audit in L.60. They tighten Gowers's own argument; they are not new
 mathematics. Published bounds of a different shape are much stronger in `r`
 for fixed `k`:
 * `k = 3`: Kelley–Meka (2023), sharpened by Bloom–Sisask,
@@ -7142,7 +7144,7 @@ These are import-closure counts, not repository-wide deletions. The final
 statements and numerical bounds are unchanged. The complete facade and
 original-paper fidelity remain separate. The simplification goal remains active.
 
-### L.60. Remove three unused aggregate imports and audit the consolidated route (2026-10-12)
+### L.60. Replace three aggregate imports and audit the consolidated route (2026-10-12)
 
 `Proofs17LocalizedPhaseRemoval` no longer imports `Proofs17FinitePatterns`.
 `Proofs05PolynomialPartition` imports its Fourier-interval facts and the
@@ -7174,9 +7176,13 @@ replaces the generated variant chains with `Proofs18FinalClasses`,
 `FinalProofSimplificationAudit` now checks every one of the bridge's 25 public
 theorems, alongside the original final and older Section 13/cubic interfaces.
 The consolidated bridge imports 830 local modules / 174,880 lines; the
-expanded audit imports 852 / 180,492. Its full production audit follows the
-original-final audit and is still pending. The complete facade and remaining
-original-statement fidelity gaps remain separate. The goal remains active.
+expanded audit imports 852 / 180,492. Its production native audit passes
+852 modules, with only `propext`, `Classical.choice` and `Quot.sound` in
+the named proofs; see
+`verification/2026-10-12-final-consolidated-compatibility.json`.
+Both reports include immutable source-input manifests. The complete facade
+and remaining original-statement fidelity gaps remain separate. The goal
+remains active.
 
 ## F. Routes
 
