@@ -7165,7 +7165,8 @@ proof inputs from the six excluded aggregate modules.
 The original final import closure now contains 646 local modules / 135,382
 lines, down by four modules / 2,909 lines from L.59 and twelve modules /
 7,309 lines from L.58. These are import-closure measurements, not deletions.
-The native original-final audit is running against these edits.
+The original-final native audit passes 647 modules with only the approved
+axioms; see `verification/2026-10-12-final-direct-imports.json`.
 
 The merged origin/main consolidation (L.16-final, commit `2a36bd714`)
 replaces the generated variant chains with `Proofs18FinalClasses`,
