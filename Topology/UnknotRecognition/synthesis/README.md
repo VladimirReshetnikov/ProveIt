@@ -2,6 +2,23 @@
 
 The synthesized report on the six archives and on the new recognizer.
 
+[`euler_transversal.tex`](euler_transversal.tex) describes the optional
+conflict-learning search and proves its conditional bound in the minimum
+uniform transversal size. It explains the extreme-ray requirement, complete
+negative tree replay, shared operational limits, and why removing local
+uniform quadrilateral directions does not close the general complexity gap.
+The fresh audit proves exact resolving sizes 3 and 2 on the retained trefoil
+and figure-eight sources. Learning completes the bounded figure-eight query
+where DFS remains inconclusive, while its smaller trefoil proof takes slightly
+longer to discover in the paired experiment. All 160 affected tests pass.
+
+[`euler_rank_replay.tex`](euler_rank_replay.tex) proves exact original-row
+basis reduction and bounded reuse of independently checked replay arithmetic.
+Its source-pinned experiments measure a 1.711 paired trefoil query speedup
+and an 8.577 fixed-tree replay speedup, alongside the timing controls and
+146-test regression record. These finite improvements do not establish
+quasi-polynomial recognition.
+
 [`intrinsic_port_atlases.tex`](intrinsic_port_atlases.tex) reviews report 113
 and proves a polynomial reduction from the ambient common-port dimension to
 the dimension of the intersection of the local linear images. It includes the
