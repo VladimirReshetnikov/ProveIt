@@ -1439,3 +1439,78 @@ The final manifests pin 314 canonical sources and 6,799 dependencies.
 All 496 receipt gates pass with no changed source or dependency digest.
 The gates audit recorded evidence; they do not rerun the mathematics or
 replace the independent proofs and visual review.
+
+
+# Algebraic colors and finite-dilation Stieltjes identities
+
+12 October 2026 (Pacific). Volume III, Sections 8.55--8.56 establish
+new ordinary Stieltjes moment identities with written proofs and separate
+exact and numerical evidence. A finite dilation polynomial cancels any
+prescribed consecutive block of scalar tails, uniformly for every positive
+shift. The resulting moments are explicit Bernoulli-polynomial multiples
+of log(lambda). A Vandermonde argument proves that r+1 distinct scales
+are minimal for uniform cancellation of r tails. This does not assert
+minimality at exceptional fixed shifts. Explicit digamma and first-index
+Stieltjes examples include a vanishing ordinary second moment.
+
+The principal-character completion retains the essential scalar Laurent
+subtraction phi(d)/(d*z). It classifies every extra ordinary integer
+moment, including the order-zero distinction between prime powers and
+moduli with at least two distinct prime divisors. All integrals described
+as convergent in these results are absolutely convergent ordinary integrals.
+
+A degree-42 polynomial and a rational lift certify a nonalternating
+unit-circle color at a positive real shift where the order-15 Lerch tail
+vanishes. Exact rational interval arithmetic proves both neighboring tails
+nonzero, so precisely one extra ordinary moment exists. A separate exact
+Jacobian certificate proves local isolation in the real shift/color plane.
+The point and its conjugate are certified; no global order-15 classification,
+minimal algebraic degree, or counterexample to consecutive-tail exclusion
+is claimed. At any vanished tail, a triangular hierarchy gives all
+logarithmic moments of the next kernel from those of the current kernel.
+Its first coefficient has both a finite zeta formula and a positive integral.
+
+The root researcher replayed 35 exact order-15 checks and 20 corruption
+controls, 66 exact consequences checks, and 980 finite-dilation checks
+with four wrong-formula controls, all under Python optimization. Fresh
+subresultant generation independently reproduced the complete canonical
+algebraic certificate. The canonical manuscript proofs were also reviewed
+independently; the exact checks support the specified algebraic and finite
+claims rather than replacing the general analytic arguments.
+
+Eleven dilation moments were evaluated at both 60 and 75 digits, with
+independent kernel/tail evaluation and changed truncation parameters.
+The maximum residual improves from 8.59348880991e-62 to 2.76357393763e-75.
+Eight low-order logarithmic integrals at 50 and 65 digits have maximum
+residuals 6.69e-52 and 5.94e-67; six comparisons test the logarithmic
+coefficient at orders 1, 4 and 15. All four logarithmic negative controls
+are rejected. These floating-point results are noninterval diagnostics.
+There is no direct order-15 kernel quadrature or Lean formalization claim.
+The full proof, source and reproduction audit is
+`verification/STIELTJES-MOMENT-FILTERS-AUDIT.md`.
+
+Final PDFs have 191/132/290/88 pages (701 total); the combined edition
+has 651 pages with 167 references. The coupled volumes converge in three
+complete rounds. Each isolated volume and the combined edition compile
+in three serial passes with clean final logs. All 70 external PDF
+destinations resolve. The initial long coordinate display was split into
+two lines before the final clean builds. All PDFs retain ProveIt Contributors
+as author.
+
+Visual review opened all 15 changed volume pages and the three unmatched
+combined contents pages. Exact scientific-body comparisons retain 686
+prior volume pages and 638 prior combined pages; ten further combined
+pages match freshly reviewed volume pages. Only centered footer page
+numbers are excluded, with all other text/image/drawing bounds checked.
+The prior visual evidence is preserved in the
+`stieltjes-characters-*visual-review.json` files.
+
+The 1,810-source inventory and the 137-archive/4,861-original-member/
+58-archive-only evidence register remain unchanged. No incoming archive
+was present. The research goal remains active beyond this publication
+milestone. Receipt integrity and Git publication have separate scope from
+mathematical proof, numerical diagnostics and rendered PDF review.
+
+The final manifests pin 324 canonical sources and 6,812 dependencies.
+All 508 receipt gates pass with no changed source or dependency digest.
+These gates audit recorded evidence and do not rerun the mathematics.
