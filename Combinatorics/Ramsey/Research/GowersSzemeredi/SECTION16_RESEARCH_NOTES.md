@@ -9121,6 +9121,44 @@ occurrences; only the two common-base declaration locations change.
 Evidence is in `verification/2026-10-13-common-base-sharing-simplification.json`. This checkpoint preserves the documented
 correction and prior original-paper fidelity limits.
 
+### L.101. Shared Lemma 16.6 and direct common-base averaging (2026-10-13)
+
+The printed Lemma 16.6 construction now specializes the existing generic
+construction. Nine declarations, including two definitions, move unchanged
+to earlier owners; the old owner retains its imports and reexports them.
+Its empty namespace scaffold is removed. Seven proofs shrink from 247 to
+55 tactic lines, including a direct averaging argument for generic
+Lemma 16.7. All 55 retained statements and contexts, ten definitions,
+imports and final numerical bounds remain exact.
+
+Production loses 208 source lines and 192 theorem/lemma tactic lines.
+Thirteen added focused checks give a net 195-line source reduction.
+Both final routes save 208/192. Some earlier standalone owners grow
+because they now contain generic results previously imported later:
+for example, the Lemma 16.6 owner grows by 156 source/21 proof lines in
+its full closure. These costs are included in the route ledger.
+
+The focused audit retains its definition-kind guard and all 313 old
+names: 326 declarations comprise 325 theorems and one definition.
+It explicitly checks all seven changed and seven moved theorems.
+The two moved definitions are preserved byte-for-byte; no additional
+explicit theorem checks are claimed for them. Standalone compilation
+does not imply an axiom audit of every export.
+
+Forty-two fresh native checks pass. Six completed results are retained
+after their exact own-input manifests match current sources. The six regular targets cover
+434 of 872 affected consumers; all 48 selected targets cover 869,
+excluding three broad aggregate targets. Their union has 1,889 modules,
+282,796 source lines and 1,892 source/configuration inputs. The six
+retained results are not described as new runs.
+
+The 115-module core passes on the first attempt with all eight owners
+recompiled and no source repair. All 1,892 current inputs match. The
+regenerated inventory retains all 120 rows, order and duplicate
+occurrences; only the two projected companion line locations change.
+Evidence is in `verification/2026-10-13-lemma6-common-base-sharing-simplification.json`. This checkpoint preserves the documented
+correction and prior original-paper fidelity limits.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
