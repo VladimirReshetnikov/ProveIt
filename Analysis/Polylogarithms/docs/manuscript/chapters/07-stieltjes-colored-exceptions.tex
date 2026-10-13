@@ -351,3 +351,143 @@ consecutive cancellations, while \eqref{stcol:golden45} and
 The proof resolves the exact identities independently of numerical
 quadrature; finite symbolic checks and precision-refined quadrature
 provide separate reproducible diagnostics.
+
+\subsection{The alternating classification and a finite unit-circle theorem}
+
+The golden example has an all-order uniqueness interpretation.  The
+classical theorem of Brillhart states that $E_5$ is the only Euler
+polynomial with multiple zeros \cite{stcol:Brillhart}.  We use that
+theorem as an external mathematical input; the finite certificates below
+provide a separate, self-contained check through order eight.
+
+\begin{corollary}[Complete alternating classification]
+\label{stcol:alternating-all}
+For every integer $q\ge1$ and positive real $a$,
+\[
+ A_{q-1}(-1,a)=A_q(-1,a)=0
+ \quad\Longleftrightarrow\quad q=5,\quad a=\varphi.
+\]
+Consequently \eqref{stcol:golden-family} is the only nonunique
+fixed-shift homogeneous balancing space at the alternating color.
+Among all alternating kernels $C_q^{-1}(x,a)$, the only one with
+two extra ordinary integer Mellin moments is $C_4^{-1}(x,\varphi)$;
+these are its moments at $m=5,6$ in
+\eqref{stcol:golden45}--\eqref{stcol:golden46}.  No such kernel has
+three extra integer moments beyond the general strip $0<\Re u<q+1$.
+Every other kernel has one extra moment exactly when $E_q(a)=0$,
+and otherwise has none.
+\end{corollary}
+\begin{proof}
+The generating function gives $E_q'=qE_{q-1}$, so a common zero
+is a multiple zero of $E_q$.  Brillhart's theorem and
+\eqref{stcol:euler5} leave only $q=5$ and the two roots of
+$a^2-a-1$; precisely one of these is positive.  The nonzero
+neighbors in \eqref{stcol:golden-tails} show that this zero block
+has length exactly two.  The balancing and moment statements
+now follow from Theorems~\ref{stcol:classification}
+and~\ref{stcol:exceptional}.
+\end{proof}
+
+\begin{theorem}[Unit-circle classification through order eight]
+\label{stcol:circle-eight}
+For $1\le q\le8$, $a>0$, $|\omega|=1$, and $\omega\ne1$,
+\begin{equation}\label{stcol:circle-locus}
+ A_{q-1}(\omega,a)=A_q(\omega,a)=0
+ \quad\Longleftrightarrow\quad
+ (q,\omega,a)=(5,-1,\varphi).
+\end{equation}
+The nonalternating part of this statement is certified by sixteen
+explicit rational polynomial identities.  It makes no assertion about
+nonalternating colors at orders greater than eight.
+\end{theorem}
+\begin{proof}
+Every permitted color has a unique representation
+\[
+ \omega=\frac{it-1}{it+1},\qquad t\in\mathbb R.
+\]
+Put $b=a-\tfrac12$ and $B_k=(1-\omega)A_k$.  The tail recurrence
+\eqref{stcol:tails} becomes
+\begin{equation}\label{stcol:circle-recurrence}
+ B_0=1,\qquad
+ B_{k+1}=(b+it/2)B_k+\frac{i(1+t^2)}2\partial_tB_k.
+\end{equation}
+For example, the coefficient of $\partial_t$ follows from
+$\omega/(d\omega/dt)=i(1+t^2)/2$; differentiating the factor
+$(1-\omega)^{-1}$ supplies the additional $it/2-1/2$.
+With $X=b^2$, $Y=t^2$, this recurrence gives rational polynomials
+$U_k,V_k$ such that
+\begin{equation}\label{stcol:circle-parity}
+ B_{2r}=U_{2r}(X,Y)+ibtV_{2r}(X,Y),\qquad
+ B_{2r+1}=bU_{2r+1}(X,Y)+itV_{2r+1}(X,Y).
+\end{equation}
+Their coefficients and the certificates are supplied in
+\texttt{verification/stieltjes-unit-circle-certificates.json}.
+
+If $bt\ne0$, vanishing of both tails forces
+$U_{q-1}=V_{q-1}=U_q=V_q=0$.  For every $1\le q\le8$ the
+certificate gives four polynomials $h_0,h_1,h_2,h_3\in\mathbb Q[X,Y]$
+whose exact identity is
+\begin{equation}\label{stcol:circle-bezout}
+ h_0U_{q-1}+h_1V_{q-1}+h_2U_q+h_3V_q=1.
+\end{equation}
+For illustration, at $q=5$ they are
+\[
+ (h_0,h_1,h_2,h_3)
+   =\left(-\frac52,\frac{5(4X-8Y-3)}8,-\frac54,-\frac12\right).
+\]
+The sum in \eqref{stcol:circle-bezout} is verified by expanding
+the polynomials, with no root-location approximations.
+If $b=0$, $t\ne0$, the surviving component of $B_k$ is
+$U_k(0,Y)$ for even $k$ and $itV_k(0,Y)$ for odd $k$.
+For each consecutive pair a two-polynomial identity with sum $1$
+excludes a common zero in this case as well.  The following table
+records the maximum total degrees of the supplied multipliers.
+\[
+\begin{array}{c|rrrrrrrr}
+ q&1&2&3&4&5&6&7&8\\\hline
+ bt\ne0&0&0&0&0&1&1&2&2\\
+ b=0,\ t\ne0&0&0&0&1&1&2&2&3
+\end{array}
+\]
+Finally $t=0$ means $\omega=-1$.  The supplied univariate Bezout
+identities and divisibilities give
+\[
+ \gcd(E_{q-1},E_q)=
+ \begin{cases}a^2-a-1,&q=5,\\1,&q=1,2,3,4,6,7,8.\end{cases}
+\]
+This proves the bounded theorem independently of Brillhart's result.
+The verifier reconstructs every $B_k$ directly from the original
+numerators \eqref{stcol:numerator-recurrence}, then expands the
+identities and checks the divisibilities.  Thus the certificate checks
+also verify the change of variables used in the proof.
+\end{proof}
+
+There is also a self-contained all-order conclusion at the central shift.
+Set $a=1/2$, so $b=0$ in \eqref{stcol:circle-recurrence}.  Then
+\begin{equation}\label{stcol:central-polynomials}
+ B_k=\left(\frac i2\right)^k P_k(t),\qquad
+ P_0=1,\qquad P_{k+1}=tP_k+(1+t^2)P_k'.
+\end{equation}
+This identity follows immediately by induction in the same recurrence.
+It also identifies $P_k$ as the classical secant derivative polynomials:
+if $t=\tan v$, then
+$\partial_v^k\sec v=\sec v\,P_k(t)$.
+Induction shows that $P_{2j}$ has strictly positive coefficients at every
+even power from zero to $2j$, and $P_{2j+1}$ at every odd power from one
+to $2j+1$.  Hence no central-shift tail vanishes for real $t\ne0$,
+at any order.  Equivalently, at $a=1/2$ every nonalternating unit-circle
+color has unique fixed-shift balances and no extra ordinary integer
+moments.  At $t=0$, precisely the odd-order tails vanish; no consecutive
+pair does.  This all-order central result does not extend the bounded
+noncentral assertion of Theorem~\ref{stcol:circle-eight}.
+
+For any admissible color, the further identity
+$\partial_aA_q=qA_{q-1}$ shows that the nonunique locus is also the
+repeated-shift-root locus of $A_q$.  It follows first from the defining
+series in $|\omega|<1$ and then from the rational tail formulas.
+Together with the repeated-color-root description following
+\eqref{stcol:numerator-recurrence}, this gives two algebraic approaches
+to the remaining unrestricted classification.  The alternating
+classification is classical; the finite unit-circle exclusion and the
+Stieltjes balancing and ordinary-moment consequences are the additions
+established here.

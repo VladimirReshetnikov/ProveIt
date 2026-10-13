@@ -1378,3 +1378,27 @@ combination. These are extensions of explicitly credited preserved reports,
 with self-contained proofs and independent exact/numerical diagnostics.
 See `verification/STIELTJES-EXTENSIONS-AUDIT.md` for assumptions, source
 reconciliation, proof review and the remaining open boundaries.
+
+## Character-valued moments and colored-tail classification, October 12, 2026
+
+Continue the gamma-normalizations-colored-moments report's two open
+questions. Brillhart's classical Euler-polynomial theorem supplies the
+complete alternating-color classification, with the all-order Stieltjes
+balancing and extra-moment consequences derived here. A direct positive-
+coefficient secant recurrence excludes central-shift nonalternating tails
+at every order. Independent rational Bezout certificates classify the
+entire unit circle through order eight; the unrestricted noncentral
+classification remains open.
+
+The new character section derives the scalar Mellin transform and exact
+ordinary-moment criterion for every nonprincipal Dirichlet character.
+The primitive functional equation evaluates the permitted moments with
+Gauss sums and positive-order L-values. Imprimitive Euler factors give
+an exact dilation identity and the complete exceptional order-zero
+classification. Induction from the character modulo three to moduli 21
+and 273 gives explicit digamma integrals, including a zero integral and
+an order-zero/order-one vanishing combination. Principal characters are
+excluded because they require a different scalar subtraction. Classical
+inputs, full proof audits and separate exact/numerical evidence are
+documented in `verification/STIELTJES-CHARACTERS-AUDIT.md`. Original
+reports remain unchanged; no global historical-priority claim is made.
