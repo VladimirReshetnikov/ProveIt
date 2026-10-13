@@ -7184,6 +7184,30 @@ Both reports include immutable source-input manifests. The complete facade
 and remaining original-statement fidelity gaps remain separate. The goal
 remains active.
 
+### L.61. Share the printed and variable-offset threshold proof (2026-10-12)
+
+The final density iteration's conversion from natural exponentials to the
+base-two tower was duplicated in `Proofs18GenericSzemeredi` (printed offset
+nine) and `Proofs18ThresholdAt` (arbitrary offset). The deduction of Theorem
+18.2 from the discrepancy envelope was duplicated there as well.
+
+Both parameterized proofs and their threshold definitions now live in
+`Proofs18GenericSzemeredi`. The two printed theorems retain exactly their
+statements and each specializes the shared proof at `c = 9` in one line.
+`Proofs18ThresholdAt` re-exports all of its public declarations. Three power
+comparisons in `inv_thr_le_ex` also use `Real.rpow_le_self_of_one_le` directly.
+The combined threshold modules shrink from 380 to 336 lines, and the long
+threshold module from 335 to 329: 50 production-source lines removed.
+
+FinalAudit passes all 647 native modules with only the approved axioms;
+see `verification/2026-10-12-final-shared-threshold.json`. The final import
+closure remains 646 modules, now 135,332 source lines. The expanded audit
+also explicitly checks both threshold conversions, both envelope deductions
+and `inv_thr_le_ex`; its native run is still pending. The source comparison
+is recorded in `verification/2026-10-12-shared-threshold-simplification.json`.
+The complete facade and remaining original-statement fidelity gaps remain
+separate. The simplification goal remains active.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

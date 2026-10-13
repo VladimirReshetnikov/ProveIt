@@ -18,6 +18,24 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
+/-! ### Parameterized thresholds -/
+
+/-- The Theorem 18.2 threshold with `k + c` in place of the printed `k + 9`. -/
+def szemerediThresholdAt (c : Nat) (delta : Real) (k : Nat) : Real :=
+  (2 : Real) ^
+    ((2 : Real) ^
+      (delta⁻¹ ^ ((2 : Real) ^ ((2 : Real) ^ (k + c : Nat)))))
+
+/-- Theorem 18.2 at length `k` with the threshold `szemerediThresholdAt c`. -/
+def Theorem182AtSharp (c k : Nat) : Prop :=
+  ∀ (delta : Real) (N : Nat), 0 < delta → delta ≤ 1 / 2 →
+    szemerediThresholdAt c delta k ≤ N →
+    ∀ A : Finset Nat, A ⊆ Finset.Icc 1 N → delta * N ≤ A.card → HasNatAP A k
+
+/-- At `c = 9` it is the catalogue's Theorem 18.2 at length `k`. -/
+theorem theorem182AtSharp_nine_iff (k : Nat) : Theorem182AtSharp 9 k ↔ Theorem182At k :=
+  Iff.rfl
+
 /-! ### The uniformity parameter -/
 
 theorem interval_exponent_le (L : Nat) : 1 + (4 * L + 9) * 2 ^ (L - 1) ≤ 2 ^ (2 * L + 4) := by
@@ -237,16 +255,16 @@ theorem closedThreshold_le_of_env {L μ : Nat} (hL : 1 ≤ L) {delta beta sigma 
 
 /-! ### The comparison with the source -/
 
-theorem double_exp_le_szemerediThreshold {L μ : Nat} (hL : 1 ≤ L) {delta : Real}
-    (hδ : 0 < delta) (hδhalf : delta ≤ 1 / 2) (hfit : μ + 2 * L + 14 ≤ 2 ^ (L + 9)) :
+theorem double_exp_le_szemerediThresholdAt {L μ c : Nat} (hL : 1 ≤ L) {delta : Real}
+    (hδ : 0 < delta) (hδhalf : delta ≤ 1 / 2) (hfit : μ + 2 * L + 14 ≤ 2 ^ (L + c)) :
     Real.exp (Real.exp ((2 / intervalUniformityParameter delta L) ^ (2 ^ (μ + 9)))) ≤
-      szemerediThreshold delta L := by
+      szemerediThresholdAt c delta L := by
   obtain ⟨ha0, -, -, hXu⟩ := intervalUniformityParameter_gen_bounds hL hδ hδhalf
   set u : Real := delta⁻¹ with hu'
   have hu : 2 ≤ u := by rw [hu', ← one_div, le_div_iff₀ hδ]; linarith
   have hu1 : 1 ≤ u := le_trans (by norm_num) hu
   set q : Nat := 2 ^ (μ + 2 * L + 13) with hq
-  set E : Nat := 2 ^ (2 ^ (L + 9)) with hE
+  set E : Nat := 2 ^ (2 ^ (L + c)) with hE
   have hqE : q + 2 ≤ E := by
     have h2 : 2 ^ (μ + 2 * L + 14) = 2 * 2 ^ (μ + 2 * L + 13) := by
       rw [show μ + 2 * L + 14 = (μ + 2 * L + 13) + 1 by ring, pow_succ]; ring
@@ -277,23 +295,34 @@ theorem double_exp_le_szemerediThreshold {L μ : Nat} (hL : 1 ≤ L) {delta : Re
         rw [Real.rpow_add (by norm_num : (0 : Real) < 2), Real.rpow_one]
       _ ≤ _ := Real.rpow_le_rpow_of_exponent_le (by norm_num) hinner
   refine (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr habsorb)).trans (hexp.trans (le_of_eq ?_))
-  unfold szemerediThreshold
+  unfold szemerediThresholdAt
   rw [hE, ← hu']
   simp only [← Real.rpow_natCast, Nat.cast_pow, Nat.cast_ofNat]
 
-/-! ### Theorem 18.2 -/
-
-/-- **Theorem 18.2 at length `L` from a degree-`(L−2)` envelope.** -/
-theorem theorem182At_of_envBound {L μ : Nat} (hL : 3 ≤ L) (henv : EnvBound (L - 2) μ)
-    (hμ : 42 ≤ μ) (hLμ : 4 * L + 20 ≤ 2 ^ μ) (hfit : μ + 2 * L + 14 ≤ 2 ^ (L + 9)) :
-    Theorem182At L := by
+theorem theorem182AtSharp_of_envBound {L μ c : Nat} (hL : 3 ≤ L) (henv : EnvBound (L - 2) μ)
+    (hμ : 42 ≤ μ) (hLμ : 4 * L + 20 ≤ 2 ^ μ) (hfit : μ + 2 * L + 14 ≤ 2 ^ (L + c)) :
+    Theorem182AtSharp c L := by
   intro delta N hδ hδhalf hN A hA hcard
   obtain ⟨ha0, haδ, -, -⟩ := intervalUniformityParameter_gen_bounds (by omega : 1 ≤ L) hδ hδhalf
   have ha2 : intervalUniformityParameter delta L ≤ 1 / 2 := haδ.trans hδhalf
   obtain ⟨beta, sigma, T, hB, b0, b1, s0, -, bi, si, Ti⟩ := henv _ ha0 ha2
   have hclosed := closedThreshold_le_of_env (by omega : 1 ≤ L) hδ hδhalf hμ hLμ b0 b1 s0 bi si Ti
-  have hsrc := double_exp_le_szemerediThreshold (by omega : 1 ≤ L) hδ hδhalf hfit
+  have hsrc := double_exp_le_szemerediThresholdAt (by omega : 1 ≤ L) hδ hδhalf hfit
   exact FunctionDiscrepancyBound.natural_szemeredi_closed (k := L) (by omega) hδ b0 s0 hB N
     ((hclosed.trans hsrc).trans hN) A hA hcard
+
+/-! ### The printed threshold as the offset-nine specialization -/
+
+theorem double_exp_le_szemerediThreshold {L μ : Nat} (hL : 1 ≤ L) {delta : Real}
+    (hδ : 0 < delta) (hδhalf : delta ≤ 1 / 2) (hfit : μ + 2 * L + 14 ≤ 2 ^ (L + 9)) :
+    Real.exp (Real.exp ((2 / intervalUniformityParameter delta L) ^ (2 ^ (μ + 9)))) ≤
+      szemerediThreshold delta L :=
+  double_exp_le_szemerediThresholdAt (c := 9) hL hδ hδhalf hfit
+
+/-- **Theorem 18.2 at length `L` from a degree-`(L−2)` envelope.** -/
+theorem theorem182At_of_envBound {L μ : Nat} (hL : 3 ≤ L) (henv : EnvBound (L - 2) μ)
+    (hμ : 42 ≤ μ) (hLμ : 4 * L + 20 ≤ 2 ^ μ) (hfit : μ + 2 * L + 14 ≤ 2 ^ (L + 9)) :
+    Theorem182At L :=
+  theorem182AtSharp_of_envBound (c := 9) hL henv hμ hLμ hfit
 
 end LeanProofs.GowersSzemeredi
