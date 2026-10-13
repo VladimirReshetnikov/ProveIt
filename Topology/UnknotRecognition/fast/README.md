@@ -5050,6 +5050,26 @@ real extraction-first emulation. Source-only controls are distinguished from
 genuine diagram proofs. The test command, full log and pre-run 360-file snapshot
 are retained under `synthesis/data/direct-crush-positive-*`.
 
+### Reuse exact LP matrix preparation within an Euler mask
+
+Tree and transversal searches prepare a mask's exact LP matrix only on its
+first uncached objective. Subsequent objectives reuse its immutable original
+rows and selected original row indices. Every objective still has a fresh
+tableau, fallback state and current remaining allowances. Cached-only attempts
+perform no preparation, and no prepared matrix is reused across masks.
+
+This removes repeated parsing and row reduction. Certificates, mathematical
+LP queries, pivot counts and existing statistics are preserved. It supplies
+no smaller branching bound or general quasi-polynomial recognition theorem.
+See [the implementation theory](../synthesis/prepared_euler_matrix.tex).
+The separate [Q-zero transport theorem](../synthesis/q_zero_pachner_transport.tex)
+preserves protected ray faces through certified Pachner moves; the current
+driver does not introduce a transport adapter or witness cache.
+The combined regression passes 394 tests across 44 modules with Regina and no
+skips, including eleven new prepared-matrix tests. All 361 native/test/fixture
+dependencies match the pre-run snapshot. The command and full log are retained
+under `synthesis/data/prepared-euler-matrix-*`.
+
 ### Polynomial exact LP policy
 
 `solve_nonnegative_kernel` now defaults to `policy='polynomial'`. It performs

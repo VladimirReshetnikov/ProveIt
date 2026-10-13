@@ -1,0 +1,371 @@
+\section{Transport of Q-zero faces through certified Pachner moves}
+\label{sec:q-zero-pachner-transport}
+
+A certified Pachner replacement preserves more than the underlying manifold
+on a particular coordinate face of the normal matching cone.  If every
+quadrilateral coordinate in the replaced region is zero, its triangle
+coordinates are determined by five formal vertex weights.  Copying those
+weights gives an exact correspondence that preserves canonical lifting,
+formal Euler characteristic and root-ray extremality.  The argument allows
+arbitrary quadrilateral coordinates outside the region, including
+incompatible ones.  It therefore applies to the formal cones used by the
+Euler search, rather than only to embedded normal surfaces.
+
+The relative-boundary premises are those established in
+Section~\ref{sec:strict-pachner32}.  The result applies to each elementary
+move in the geometric descent of
+Section~\ref{sec:geometric-descent-crushing}, provided its own regional
+Q-zero condition holds.  It is a local transport theorem.  It does not
+compare the full resolving parameters of arbitrary retriangulations.
+
+\subsection{The checked formal region and its complete attachments}
+
+Let $T_2$ and $T_3$ be validated finite connected orientable triangulations
+with one torus boundary component, related by an accepted elementary
+$2\leftrightarrow3$ certificate.  No one-vertex or knot-exterior hypothesis
+is imposed.  Write their formal regions as
+\[
+\begin{aligned}
+ R_2&:\quad [0,1,2,3],\ [0,1,2,4],\\
+ R_3&:\quad [3,4,0,1],\ [3,4,1,2],\ [3,4,2,0].
+\end{aligned}
+\]
+The five labels are distinct before attachment.  Equal formal internal
+faces are paired by the maps preserving their vertex labels.  The internal
+face of $R_2$ is $[0,1,2]$; those of $R_3$ are $[3,4,i]$ for $i=0,1,2$.
+Both regions have the same six formal boundary faces
+\[
+ [3,0,1],\ [3,1,2],\ [3,2,0],\qquad
+ [4,0,1],\ [4,1,2],\ [4,2,0].
+\]
+
+Let $O$ denote the corresponding outside tetrahedra.  Their local vertex
+labels and mutual face maps are unchanged under the certified survivor
+renumbering.  Every formal boundary face retains its complete attachment
+record: it is unpaired, attached to a specified outside face by a specified
+corner map, or attached to another formal boundary face by a specified
+corner map.  Equality of face names alone would not suffice.  These full
+records are exactly the data compared by the independent elementary
+checkers described in Section~\ref{sec:strict-pachner32}.
+
+The formal boundary may have selfattachments.  Different formal vertices
+may represent the same global vertex, and different formal boundary edges
+may represent the same global edge.  The proof does not require the image
+of the closed bipyramid to be embedded in the quotient.  The outside set
+$O$ may be empty.
+
+For $i=2,3$, let $M_i$ be the original STANDARD matching matrix of $T_i$,
+with four triangle and three Q coordinates per tetrahedron.  Define
+\[
+ \mathcal V_i^0=\{u:M_i u=0,\ q|_{R_i}=0\},\qquad
+ \mathcal N_i^0=\mathcal V_i^0\cap\{u\ge0\}.
+\]
+Here $q|_{R_i}=0$ requires all three Q coordinates to vanish in every
+tetrahedron of the indicated region.  The spaces $\mathcal V_i^0$ allow
+signed real coordinates.  Neither definition imposes quadrilateral
+compatibility in the outside tetrahedra.
+
+\begin{proposition}[Exact transport on the regional Q-zero face]
+\label{prop:q-zero-pachner-transport}
+There is a linear isomorphism
+$\Phi:\mathcal V_2^0\longrightarrow\mathcal V_3^0$ that copies every
+outside STANDARD coordinate and replaces the regional triangles by the
+same five formal vertex weights.  It has the following properties.
+\begin{enumerate}
+\item It identifies the nonnegative cones and the integral matching
+      lattices.  The gcd of an integral vector is unchanged.
+\item Global vertex classes correspond, their triangle-link vectors
+      correspond, and $\Phi$ commutes with canonicalization at every
+      global vertex.
+\item The signed formal STANDARD Euler functional is preserved,
+      including when outside Q coordinates are incompatible.
+\item After identifying outside Q coordinates, the two regional Q-zero
+      faces of the full Q cones are identical.  Nonzero root Q extreme
+      rays in these faces correspond, with unchanged canonical formal
+      Euler value, primitive Q scale and conflict sets under survivor
+      relabelling.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+In a Q-zero tetrahedron, the arc on a face cutting off a local vertex
+has weight equal to that vertex's triangle coordinate.  Internal face
+matching in $R_2$ equates the two occurrences of each of $0,1,2$; vertices
+$3,4$ occur once each.  Internal matching in $R_3$ equates the two
+occurrences of each of $0,1,2$ and connects the three occurrences of each
+of $3,4$.  Thus either regional matching space is exactly a five-weight
+space with coordinates $a_0,a_1,a_2,a_3,a_4$.
+
+In the displayed local corner orders, the map is
+\[
+\begin{array}{c|c}
+ R_2 & R_3\\ \hline
+ (a_0,a_1,a_2,a_3;0,0,0)&(a_3,a_4,a_0,a_1;0,0,0)\\
+ (a_0,a_1,a_2,a_4;0,0,0)&(a_3,a_4,a_1,a_2;0,0,0)\\
+                         &(a_3,a_4,a_2,a_0;0,0,0).
+\end{array}
+\]
+The certified formal label maps convert this display to actual local
+corner order.  Each $a_j$ can be read from any of its occurrences;
+internal matching ensures they agree.  Copy the outside rows using the
+survivor correspondence.  Reading the same five weights in the reverse
+direction defines the inverse map.
+
+On every formal boundary face, the arc at formal corner $j$ has weight
+$a_j$ on both sides.  If the face is attached to an outside face $(u,g)$
+and sends $j$ to local corner $v$, its matching equation on either side is
+\[
+ a_j=\tau_{u,v}+q_{u,\operatorname{quad}(g,v)},
+\]
+where $\tau_{u,v}$ denotes the outside triangle coordinate and
+$\operatorname{quad}(g,v)$ is the type disjoint from edge $\{g,v\}$.
+Both terms on the right and the corner map are unchanged.  Other Q
+coordinates of that outside tetrahedron may be nonzero.  A boundary
+selfattachment sending $j$ to $k$ instead gives $a_j=a_k$ on both sides.
+Unpaired faces impose no matching equation.  Hence all remaining matching
+equations are identical, establishing the linear isomorphism.
+
+Every formal weight occurs on both sides, and every outside coordinate
+is copied.  A vector is therefore nonnegative on one side exactly when
+its image is nonnegative on the other.  The set of coordinate values is
+unchanged, although their repetitions can change.  Integral coordinates
+remain integral in both directions, and their gcd is unchanged.
+
+To compare global vertices, start with the five formal labels and all
+outside local corners.  The internal region maps identify only occurrences
+of the same formal label.  All five labels occur on the formal boundary.
+The remaining equivalence relation is generated by the identical boundary
+attachments and outside face maps.  Thus global vertex classes correspond.
+The new interior edge $[3,4]$ does not itself identify its endpoints as
+vertices.  Such an identification, if present, already belongs to the
+common attachment relation.
+
+For a corresponding global vertex $v$, the set of triangle values at its
+corners consists of its unchanged outside values together with
+\[
+                  \{a_j:j\text{ represents }v\}.
+\]
+Every such $a_j$ occurs on both sides.  Consequently the minimum $m_v$
+is unchanged.  Write $L_v$ for the triangle-link vector equal to one at
+every corner of $v$ and zero elsewhere.  Then $\Phi(L_v)=L'_v$, and
+\[
+ \Phi\left(u-\sum_v m_v L_v\right)
+       =\Phi(u)-\sum_v m_v L'_v.
+\]
+This proves commutation with canonicalization.  It applies to signed
+lifts as well as nonnegative ones, and includes interior vertices.
+It requires the minimum at every global vertex, rather than a single
+minimum over all corners.
+
+The Euler calculation can be made in the signed matching space.  The
+formal functional is
+\[
+ \chi(u)=\sum_{\text{global edges }e} w_e(u)
+       -\sum_{\text{global faces }f} b_f(u)
+       +\sum_{\text{tetrahedra }t} d_t(u),
+\]
+where $w_e$ is the edge-intersection weight, $b_f$ is the total face-arc
+weight, and $d_t$ is the sum of the seven disc coordinates.  A paired face
+is counted once, and an unpaired face is also counted once.  Edge weights
+are well defined even for signed or incompatible coordinates: on a face,
+the intersection weight at an edge is the sum of the two arc types at
+its endpoints.  The original arc-matching equations therefore equate
+edge weights under every face map.
+
+Put $s=a_3+a_4$.  The regional disc counts before and after are
+\[
+ 2(a_0+a_1+a_2)+s,\qquad 2(a_0+a_1+a_2)+3s,
+\]
+so the increase in disc count is $2s$.  The old internal face has arc
+count $a_0+a_1+a_2$; the three new internal faces have total arc count
+$a_0+a_1+a_2+3s$.  Thus the increase in internal arc count is $3s$.
+The formal boundary traces, their quotient face pairings and the outside
+face contributions are unchanged.
+
+The nine formal boundary edges likewise have identical weights
+$a_j+a_k$ and identical boundary attachment relations on both sides.
+Their regional occurrences are identified by the internal maps to
+precisely these same nine formal edges.  Applying the unchanged attachment
+relations therefore gives corresponding old global edge classes with
+unchanged weights.  The sole extra edge is $[3,4]$, of weight $s$.
+Its three regional occurrences are paired only to one another by the
+internal faces.  No formal boundary face contains this edge, so its
+orbit cannot reach an outside or formal boundary edge.  This remains
+true when $3$ and $4$ represent the same global vertex.  The change in
+global edge-intersection weight is exactly $s$.  It follows that
+\[
+                   \chi(\Phi(u))-\chi(u)=s-3s+2s=0.
+\]
+This is an identity of linear functionals on signed matching vectors;
+it uses no embedded-surface interpretation for the outside coordinates.
+
+It remains to pass to Q coordinates.  Let $K_i$ be the full nonnegative
+Q matching cone of $T_i$, and put
+\[
+                 P_i=\{q\in K_i:q|_{R_i}=0\}.
+\]
+Triangle-only matching solutions are exactly the span of the global
+vertex-link vectors.  Every signed matching lift of a nonnegative Q
+vector becomes nonnegative after adding sufficient multiples of these
+links, or after canonicalization.  Hence $K_i$ is also the projection
+of the nonnegative STANDARD matching cone.  The maps $\Phi$ and
+$\Phi^{-1}$ supply lifts in both directions and copy every outside Q
+coordinate.  After deleting regional zeros, $P_2$ and $P_3$ are therefore
+the same subset of $\mathbb R^{3|O|}$.
+
+Both $P_i$ are coordinate faces of their full cones.  If a nonnegative
+vector with the required zeros decomposes in $K_i$, both summands have
+the same zeros.  Thus a nonzero vector is extreme in $P_i$ exactly when
+it is extreme in $K_i$, as in Lemma~\ref{lem:transversal-face-rays}.
+The face identity proves the asserted root-ray correspondence.
+Commutation with canonicalization and preservation of $\chi$ give equal
+canonical formal Euler values.  Outside Q entries are copied and all
+regional entries are zero, so Q gcd and conflicts are unchanged.  This
+also proves preservation of compatibility or incompatibility.
+\end{proof}
+
+Formal vertex aliasing must not be replaced by equality of triangle
+weights in this proof.  If two formal vertices represent the same global
+vertex, an outside corner path can change triangle potentials through
+nonzero Q terms.  Only actual matching equations impose equalities among
+the $a_j$.  Canonicalization uses their unchanged set of values within
+each global vertex class, without requiring those values to be equal.
+
+\subsection{Original-matrix rank and primitive canonical lifts}
+
+The cone statement has a rank formulation using the original STANDARD
+rows, without trusting a particular triangle elimination.  This is the
+same source-equation perspective used for the independent kernel checks
+of Section~\ref{sec:reusable-source-kernels}.
+
+\begin{corollary}[Supported Q nullity and the four-column rank change]
+\label{cor:q-zero-pachner-rank}
+Fix a set $S$ of outside Q coordinates.  On each side retain all triangle
+columns and precisely the Q columns in $S$ in the original matching
+matrix; call the resulting matrix $A_i(S)$.  Then
+\[
+ \dim\ker A_2(S)=\dim\ker A_3(S),\qquad
+ \operatorname{rank}A_3(S)=\operatorname{rank}A_2(S)+4.
+\]
+The corresponding all-triangle ranks also differ by four, and the
+supported projected Q nullities are equal.  In particular a nonzero Q
+vector positive on exactly $S$ passes the original-matrix root-ray
+nullity-one test on one side exactly when it does on the other.
+\end{corollary}
+\begin{proof}
+Restricting $\Phi$ to zero outside Q coordinates off $S$ identifies the
+two signed kernels.  A $2\to3$ move adds four triangle columns and no
+retained Q columns.  Equal nullities therefore give the rank difference
+four.  The same argument with $S=\varnothing$ gives the all-triangle
+claim.  Projection to supported Q coordinates has as kernel the span
+of the global vertex links, which correspond under $\Phi$.  Quotienting
+the two isomorphic signed kernels by these subspaces proves equality
+of projected Q nullities.  At a Q vector positive on its entire support,
+nullity one is precisely the extreme-ray condition: a higher-dimensional
+kernel permits sufficiently small nonproportional perturbations in both
+directions while preserving nonnegativity.
+\end{proof}
+
+The rank formula retains \emph{all triangle columns}.  It does not state
+that the number or rank of positive STANDARD support columns of a
+particular canonical vector changes by four.  Those support columns can
+change according to which formal weights vanish.
+
+For an integral Q vector, the canonical STANDARD lift is integral.
+Indeed each triangle matching equation is a triangle difference plus an
+integral combination of Q coordinates.  Propagating potentials from a
+zero root along a corner spanning forest gives integral triangle values;
+Q matching supplies consistency around the remaining cycles.  Subtracting
+an integral minimum at each global vertex preserves integrality.  Since
+the Q coordinates themselves are copied into the lift, primitive integral
+Q gives a primitive STANDARD lift.  This is the integral lifting argument
+of Section~\ref{sec:direct-crush-positive}; the transport additionally
+preserves the full STANDARD gcd by copying the same set of values.
+
+\subsection{Sequences, protected conflicts and the boundary of the theorem}
+
+For a certified sequence, apply
+Proposition~\ref{prop:q-zero-pachner-transport} at each intermediate
+source.  In particular a geometric $UDD$ descent requires regional
+Q zeros for its expansion and for each of its two contractions, using
+the vector already transported to that step.  The two contraction
+regions can differ from the expansion region.  Checking only the
+initial or final source is insufficient.
+
+The condition concerns complete Q support.  Having at most one positive
+Q type in a moved tetrahedron, having no conflict there, or having
+disjoint conflict sets for several rays does not establish regional
+Q zeros.  If there are no outside tetrahedra, the protected Q face is
+the zero cone; the signed matching and vertex-link statements remain
+valid, but there is no protected nonzero Q ray.
+
+A family of positive incompatible root rays satisfying the condition
+at every step transports with the same conflict hypergraph after
+relabeling its surviving tetrahedra.  Any proved transversal lower
+bound for that family therefore persists.  This does not identify
+the unrestricted cones or constrain their other rays.  It gives no
+equality, monotonicity, or additive bound for the full-source resolving
+numbers $h(T)$ of Section~\ref{sec:euler-transversal}.  A negative proof
+on a protected coordinate face does not certify the unrestricted
+successor cone, and old LP dual multipliers cannot simply be copied
+between different source matrices and gauges.  Transport through a
+normal crush requires a separate correspondence theorem.
+
+To obtain a growing resolving-parameter obstruction from this local
+result, one would still need an actual family of the intended
+knot-exterior sources, sufficiently many positive root rays with
+provably large conflict transversal number, protection through every
+chosen move, and stationarity under the complete preprocessing policy.
+Unbounded growth would exclude a constant bound; excluding a
+polylogarithmic bound requires correspondingly stronger growth relative
+to source size.  None of those global construction obligations follows
+from the local theorem.
+
+\subsection{Implementation premises and prospective reuse}
+
+The proof's local maps agree with the maintained independent
+\path{verify_pachner_23} and \path{verify_pachner_32} checkers: full formal
+boundary signatures include region-to-region corner maps, and both
+sources undergo finite manifold validation.  Its canonicalization is
+the per-global-vertex minimum used by the source kernel.  Its signed
+Euler calculation is the linear extension of the original edge, face
+and disc census used by the independent Euler model.  These code
+premises were reviewed separately from the theorem's algebra; they
+supply no additional empirical or performance claim.
+
+A future transport adapter could authenticate the old witness and
+elementary move, compare the five formal weights, copy outside rows,
+and fill the new region.  For $b$-bit integral coordinates, the copying
+and comparisons require $O(t(b+\log t))$ bit work, including label
+bookkeeping but apart from source and packet
+validation.  A conservative first adapter could still replay matching,
+canonical Euler and root rank independently on the successor.  Avoiding
+that repeated rank computation would require a dedicated checked
+transport contract.  Such an adapter must bind both labelled sources,
+respect the exact survivor and corner maps, and shield caller callback
+exceptions across the legacy checker calls.
+
+No native transport adapter or persistent witness cache is introduced
+here.  The current driver completes its polynomial preprocessing before
+Euler discovery, and a normal crush separates later searches.  It
+therefore usually has no witness from before a Pachner move to reuse.
+Persistent source-bound witnesses or a changed interleaving policy
+would be needed to exploit the theorem in those runs.  Preserving
+incompatible rays can also preserve search obstructions, so reuse or
+move ordering has no automatic performance benefit.  This section
+proves the local correspondence and leaves those algorithmic uses and
+the general quasi-polynomial recognition bound open.
+
+There is also no immediate reduction of the current branch LP dimension.
+Starting with the full mask, both search policies retain at least one
+Q type in every tetrahedron: a split retains a singleton and includes
+the zero-Q possibility within that singleton cone.  A zero regional
+support in one returned point does not impose zeros on its whole node.
+Even on a supplied mask that does impose regional zeros, the theorem
+identifies the same outside Q variables and the same linear matching
+space.  Restricted triangle assembly already contracts zero-labelled
+triangle equations, and original-row selection removes redundant Q
+equations.  The rank-reduced LP therefore has the same intrinsic equality
+rank before and after transport.  Repeated matrix preparation across
+different objectives of that LP is a separate algebraic cost, addressed
+in Section~\ref{sec:prepared-euler-matrix}.
