@@ -229,7 +229,6 @@ theorem single_piece_lift_global_cover_with_joint {k : Nat} (hk : 1 ≤ k) {t1 z
     (theta := globalTheta2W t1) (lt_of_le_of_lt hsum (half_lt_self hθ₂'pos)) P0 B1' hP0
     (by rw [hP0carrier]; exact Finset.subset_univ _) hB1V (by rw [hP0card]; exact hB1'card) hP0ne
   rw [hP0width] at hR1w
-  beta_reduce at hR1c hR1w
   rw [← hEdef] at hR1c hR1w
   have hcc : coverCountW Qb t1 gamma k = ∏ e ∈ E,
       max (Qb (section16VertexDirections e).card gamma θ' (coverPrecW t1 k))
