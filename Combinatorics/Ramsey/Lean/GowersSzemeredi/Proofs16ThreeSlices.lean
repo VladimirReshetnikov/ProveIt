@@ -26,52 +26,6 @@ open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
 open BaseCase
 
-/-- The translated points of a slice-pruned set that miss it are sparse, in
-every dimension. -/
-theorem card_translated_slice_bad_le_succ {N k : Nat} [NeZero N] {theta : Real}
-    (B : Finset (Point N (k + 1))) (C : ZMod N → Finset (Point N k))
-    (hC : ∀ t, C t ⊆ section16FinalCoordinateSection B t)
-    (hcard : ∀ t, ((section16FinalCoordinateSection B t).card : Real) - theta * (N : Real) ^ k ≤
-      (C t).card)
-    (x0 : Point N k) :
-    (((Finset.univ : Finset (Point N (k + 1))).filter fun z =>
-        appendCoordinate (section16Init z + x0) (section16Last z) ∈ B ∧
-          section16Init z + x0 ∉ C (section16Last z)).card : Real) ≤
-      theta * (N : Real) ^ (k + 1) := by
-  classical
-  set X := (Finset.univ : Finset (Point N (k + 1))).filter fun z =>
-    appendCoordinate (section16Init z + x0) (section16Last z) ∈ B ∧
-      section16Init z + x0 ∉ C (section16Last z) with hX
-  rw [Finset.card_eq_sum_card_fiberwise (f := section16Last) (t := Finset.univ)
-    (fun _ _ => Finset.mem_univ _)]
-  push_cast
-  have hfib : ∀ t : ZMod N, ((X.filter fun z => section16Last z = t).card : Real) ≤
-      theta * (N : Real) ^ k := by
-    intro t
-    have h1 : (X.filter fun z => section16Last z = t).card ≤
-        (section16FinalCoordinateSection B t \ C t).card := by
-      refine Finset.card_le_card_of_injOn (fun z => section16Init z + x0) (fun z hz => ?_) ?_
-      · obtain ⟨hz1, hz2⟩ := Finset.mem_filter.mp hz
-        obtain ⟨-, hzB, hzC⟩ := Finset.mem_filter.mp hz1
-        rw [hz2] at hzB hzC
-        exact Finset.mem_sdiff.mpr ⟨Finset.mem_filter.mpr ⟨Finset.mem_univ _, hzB⟩, hzC⟩
-      · intro z hz z' hz' hzz
-        apply initLast_injective
-        simp only [Prod.mk.injEq]
-        refine ⟨add_right_cancel hzz, ?_⟩
-        exact ((Finset.mem_filter.mp hz).2).trans ((Finset.mem_filter.mp hz').2).symm
-    have h2 : ((section16FinalCoordinateSection B t \ C t).card : Real) ≤ theta * (N : Real) ^ k := by
-      have hsum : ((section16FinalCoordinateSection B t \ C t).card : Real) + (C t).card =
-          (section16FinalCoordinateSection B t).card := by
-        exact_mod_cast Finset.card_sdiff_add_card_eq_card (hC t)
-      linarith [hcard t]
-    exact (by exact_mod_cast h1 : ((X.filter fun z => section16Last z = t).card : Real) ≤
-      ((section16FinalCoordinateSection B t \ C t).card : Real)).trans h2
-  calc ∑ t : ZMod N, ((X.filter fun z => section16Last z = t).card : Real)
-      ≤ ∑ _t : ZMod N, theta * (N : Real) ^ k := Finset.sum_le_sum fun t _ => hfib t
-    _ = theta * (N : Real) ^ (k + 1) := by
-        rw [Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul, pow_succ]; ring
-
 /-- A final-coordinate section inherits the product property, in every dimension. -/
 theorem HasProductProperty.final_section {N k : Nat} [NeZero N] {gamma : Real}
     {B : Finset (Point N (k + 1))} {phi : Point N (k + 1) → ZMod N}
@@ -289,7 +243,6 @@ theorem threeSlice_ranges {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤
       positivity
     exact inv_anti₀ (pow_pos hpos _)
       (pow_le_pow_left₀ hpos.le (threeSliceBase_mono theta gamma ht hg K1 p1 eps hrr) _)
-
 
 /-- The uniform cover of `r` slices, at the envelope controls. -/
 theorem section16_slices_envelope_cover {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
