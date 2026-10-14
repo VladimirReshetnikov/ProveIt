@@ -74,12 +74,9 @@ theorem GenParams.joint_dens_step {X : Real} (hX : 2 ≤ X) {c : Real → Real} 
   obtain ⟨hc0, -, hci⟩ := GenParams.cS_step hX hc h20 h21 h2i ha0 hb0 (by omega)
   have hq := hQ1 (θ / 4) (by linarith) (by linarith)
   have hqq : 1 ≤ Q (θ / 4) * Q (θ / 4) := by nlinarith
-  have hf0 : 0 ≤ (θ - (θ / 4 + θ / 4)) / (Q (θ / 4) * Q (θ / 4)) :=
-    div_nonneg (by linarith) (by linarith)
   have hf1 : (θ - (θ / 4 + θ / 4)) / (Q (θ / 4) * Q (θ / 4)) ≤ 1 := by
     rw [div_le_one (by linarith)]; linarith
   have hle : θ * ((θ - (θ / 4 + θ / 4)) / (Q (θ / 4) * Q (θ / 4))) ≤ 1 := by nlinarith
-  have hQ0 : Q (θ / 4) ≠ 0 := (show (0 : Real) < Q (θ / 4) by linarith).ne'
   have hval : θ * ((θ - (θ / 4 + θ / 4)) / (Q (θ / 4) * Q (θ / 4))) =
       8 * (c (θ / 2) * c (θ / 2)) := by
     rw [hcQ (θ / 2), show θ / 2 / 2 = θ / 4 by ring]
@@ -91,7 +88,6 @@ theorem GenParams.joint_dens_step {X : Real} (hX : 2 ≤ X) {c : Real → Real} 
   have hsq := pw_mul hX (inv_pos.mpr hc0).le (inv_pos.mpr hc0).le hci hci
   have hinv : (8 * (c (θ / 2) * c (θ / 2)))⁻¹ ≤ (c (θ / 2))⁻¹ * (c (θ / 2))⁻¹ := by
     rw [mul_inv, mul_inv]
-    have h0 : 0 ≤ (c (θ / 2))⁻¹ * (c (θ / 2))⁻¹ := by positivity
     nlinarith
   exact pw_mono hX (hinv.trans hsq) (by omega)
 
@@ -419,7 +415,6 @@ theorem vertex_uCount_le {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (h
   have h := uCount_scale_le_deg (c := pDeg P.k + 1) hX hV hVμ (seven_le_pDeg _) hμ0 (half_pos ha) (by linarith)
     (GenParams.half_inv_le_deg (pDeg P.k) ha ha2) hB0 hB1 hBi hs0 hs1 hsi hD
   have hm : max P.μ0 (pDeg P.k + 1) = P.μ0 := by
-    have := le_max_right μV (pDeg P.k)
     exact max_eq_left (by omega)
   rw [hm] at h
   exact h
@@ -430,8 +425,6 @@ def rhoDegJT3 (k μ0 : Nat) : Nat := max (tDegT3 k + μ0 + 3) (pDeg k + 1) + k
 theorem rhoDegJT3_ge (k μ0 : Nat) :
     tDegT3 k + μ0 + 3 ≤ rhoDegJT3 k μ0 ∧ pDeg k + 1 ≤ rhoDegJT3 k μ0 := by
   unfold rhoDegJT3
-  have h1 := le_max_left (tDegT3 k + μ0 + 3) (pDeg k + 1)
-  have h2 := le_max_right (tDegT3 k + μ0 + 3) (pDeg k + 1)
   omega
 
 /-- **The joint-cover density**: `ρ₁⁻¹ ≤ X^(2^rhoDegJT3)`, in every dimension. -/
@@ -440,7 +433,6 @@ theorem rho1_inv_leJT3 {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV 
     (P.Rho1 alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ rhoDegJT3 P.k P.μ0) := by
   have hX := two_div_ge_two ha ha2
   obtain ⟨ht0, -, hti⟩ := T2_gen_bounds_fejerW P.k ha ha2
-  have hf := le_max_right μV (pDeg P.k)
   have hfk : P.k + 1 ≤ pDeg P.k := by
     have := five_k_le_pDeg P.k; omega
   have hka : P.k + 2 ≤ P.μ0 + 1 + tDegT3 P.k := by omega
@@ -463,12 +455,10 @@ theorem rho1_inv_leJT3 {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV 
     pw_mul hX (by norm_num) (inv_pos.mpr ht0).le (hX.trans (pw_X hX _)) hti
   have h := pw_mul' hX (by positivity) hcc0.le h2 hcc
   refine pw_mono hX h ?_
-  have h1 := rhoDegJT3_ge P.k P.μ0
   have hm : max (pDeg P.k + 1) (P.μ0 + 1 + tDegT3 P.k + P.k) =
       P.μ0 + 1 + tDegT3 P.k + P.k := max_eq_right (by omega)
   rw [hm]
   unfold rhoDegJT3
-  have := le_max_left (tDegT3 P.k + P.μ0 + 3) (pDeg P.k + 1)
   omega
 
 /-- **The joint-cover width exponent.** -/
@@ -477,10 +467,8 @@ theorem nestExp_inv_leJT3 {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (
     (P.NestExp alpha)⁻¹ ≤
       (2 / alpha) ^ (2 ^ (rhoDegJT3 P.k P.μ0 + tDegT3 P.k + 3 + P.k)) := by
   have hX := two_div_ge_two ha ha2
-  have hf := le_max_right μV (pDeg P.k)
   have hfk : P.k + 1 ≤ pDeg P.k := by
     have := five_k_le_pDeg P.k; omega
-  have hka : P.k + 3 ≤ P.μ0 + 1 + tDegT3 P.k := by omega
   refine pw_mono hX (a := P.μ0 + 1 + tDegT3 P.k + 1 + P.k) ?_ ?_
   · unfold NestExp coverExpW
     rw [← Finset.prod_inv_distrib]
@@ -514,7 +502,6 @@ theorem yIn_boundsJT3 {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
   set k := P.k with hkdef
   set μD := tDegT3 k with hμDdef
   have hρ1 : μD + P.μ0 + 3 ≤ rhoDegJT3 k P.μ0 := (rhoDegJT3_ge k P.μ0).1
-  have hρ2 : pDeg k + 1 ≤ rhoDegJT3 k P.μ0 := (rhoDegJT3_ge k P.μ0).2
   have hbase := baseCFW_recipPowerLB (D := uDegT3 k) (k := k) ha ha2 hV hVμ hμ0
   have hD : uDegT3 k ≤ 2 ^ μD := le_rfl
   have ha0 : uDegT3 k * 2 ^ P.μ0 + 1 ≤ 2 ^ (μD + P.μ0 + 1) := by
@@ -523,7 +510,6 @@ theorem yIn_boundsJT3 {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
     have h3 : 1 ≤ 2 ^ μD * 2 ^ P.μ0 := Nat.one_le_iff_ne_zero.mpr (by positivity)
     omega
   have hb0 : uDegT3 k + 1 ≤ 2 ^ (μD + 1) := by
-    have : 2 ^ (μD + 1) = 2 * 2 ^ μD := by rw [pow_succ]; ring
     have := Nat.one_le_two_pow (n := μD)
     omega
   -- `ρ₁`
@@ -540,8 +526,6 @@ theorem yIn_boundsJT3 {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
     have h1 := sq_le_two_tDegT3 k
     have h6 : tDegT3 k + P.μ0 + 3 + k ≤ rhoDegJT3 k P.μ0 := by
       unfold rhoDegJT3; have := le_max_left (tDegT3 k + P.μ0 + 3) (pDeg k + 1); omega
-    have h2 := le_max_right μV (pDeg k)
-    have h3 : μD = tDegT3 k := hμDdef
     have h5 : pDeg k = 5 * k + 21 := rfl
     omega
   obtain ⟨he0, he8, hei⟩ := GenParams.eta_step_small (k := k) ha ha2 hd0 hd1 hdi hm
@@ -586,7 +570,6 @@ theorem spectrum_exps_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < a
       (P.QM alpha : Real) + 1 ≤ (2 / alpha) ^ (2 ^ (rhoDegJT3 P.k P.μ0 + tDegT3 P.k + 3)) ∧
       (P.Bexp alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ expDegJT3 P.k P.μ0 μK) := by
   have hX := two_div_ge_two ha ha2
-  have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   have hri := P.rho1_inv_leJT3 ha ha2 H.hV H.hVμ H.hμ0
   set k := P.k with hkdef
   set ρ := rhoDegJT3 k P.μ0 with hρdef
@@ -634,7 +617,6 @@ theorem spectrum_exps_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < a
     have h1 := pw_mul' hX (Nat.cast_nonneg _) hpq0 hp' hpow
     have h2 := pw_mul' hX (by norm_num) (mul_nonneg (Nat.cast_nonneg _) hpq0) h4 h1
     refine pw_mono hX h2 ?_
-    have : max μK (ρ + μD + 3 + (k + 2)) + 1 ≤ expDegJT3 k P.μ0 μK - 1 := by omega
     omega
 
 /-- **The slice exponent `Eth`**. -/
@@ -730,7 +712,6 @@ theorem MReq_le_expJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha
   set k := P.k with hkdef
   set E := expDegJT3 k P.μ0 μK with hEdef
   set Z := 5 * k + 21 with hZdef
-  have hZ2 : 2 ≤ Z := by rw [hZdef]; omega
   have hρE : rhoDegJT3 k P.μ0 + tDegT3 k + k + 7 ≤ E := by
     rw [hEdef]; unfold expDegJT3; exact (le_max_left _ _).trans (le_max_right _ _)
   have hKE : μK + 2 ≤ E := by
@@ -790,7 +771,6 @@ theorem Tloc_le_expJT3 {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha
     (ha2 : alpha ≤ 1 / 2) :
     P.Tloc alpha ≤ Real.exp ((2 / alpha) ^ (2 ^ threshDegJT3 P.k P.μ0 μK)) := by
   have hX := two_div_ge_two ha ha2
-  have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leJT3 H ha ha2
   obtain ⟨hEm, -, -⟩ := P.spectrum_exps_inv_leJT3 H ha ha2
   have hNE := P.nestExp_inv_leJT3 ha ha2 H.hV H.hVμ H.hμ0
@@ -827,7 +807,6 @@ theorem Tloc_le_expJT3 {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha
   have hMR : P.MReq alpha ^ (1 / P.MExp alpha) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) := by
     rw [one_div]
     refine ex_mono hX (ex_rpow hX hR1 hR (inv_pos.mpr hMx0).le hMx) ?_
-    have := hET; have := hZT; have := Nat.two_pow_pos (k + 4)
     simp only [max_def]; split_ifs <;> omega
   have hMT : P.MThr alpha ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) :=
     max_le (Real.one_le_exp (pow_nonneg (by linarith) _)) h64
@@ -835,7 +814,6 @@ theorem Tloc_le_expJT3 {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha
   have hL' : fejerProductThreshold k (alpha / 2) (alpha / 2) ≤
       Real.exp ((2 / alpha) ^ (2 ^ T)) := by
     refine ex_of_pw (pw_mono hX hL ?_)
-    have : 5 * k + 21 ≤ 5 * k + 30 := by omega
     omega
   have h3 : (3 : Real) ≤ Real.exp ((2 / alpha) ^ (2 ^ T)) :=
     ex_of_pw (pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega))
