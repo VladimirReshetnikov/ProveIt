@@ -7,10 +7,14 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-theorem section13_fejer_purification_uniform
+def fejerPurificationThreshold (delta rho eta : Real) : Nat :=
+  let M := Nat.ceil ((2 : Real) ^ 34 / (rho * eta))
+  max (2 * M) (Nat.ceil ((2 : Real) ^ 131 * (M : Real) ^ 63 / (rho * eta * delta ^ 15)))
+
+theorem section13_fejer_purification_explicit
     (delta rho eta : Real) (hdelta : 0 < delta)
     (hrho : 0 < rho) (hrho1 : rho ≤ 1) (heta : 0 < eta) (heta1 : eta ≤ 1) :
-    ∃ N₀ : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →
+    ∀ (N : Nat) [NeZero N] [Fact N.Prime], fejerPurificationThreshold delta rho eta ≤ N →
       ∀ (U : Finset (Pair N)) (phi : Pair N → ZMod N) (beta : Real), delta ≤ beta →
       (U.card : Real) = beta * (N : Real) ^ 2 →
       rho * beta ^ 15 * (N : Real) ^ 32 ≤ respectedArrangementCount 8 U phi →
@@ -37,7 +41,6 @@ theorem section13_fejer_purification_uniform
     have ht := (div_le_iff₀ hp).mp hMlo
     nlinarith only [ht]
   let T : Real := (2 : Real) ^ 131 * (M : Real) ^ 63 / (rho * eta * delta ^ 15)
-  refine ⟨max (2 * M) (Nat.ceil T), ?_⟩
   intro N _ _ hN U phi beta hdb hcard habundance
   have hbeta : 0 < beta := hdelta.trans_le hdb
   have hn : (0 : Real) < N := by exact_mod_cast NeZero.pos N
@@ -67,5 +70,19 @@ theorem section13_fejer_purification_uniform
   refine ⟨S, hS, ?_, hratio⟩
   exact (mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right hcoef (by positivity))
     (by positivity)).trans hmass
+
+theorem section13_fejer_purification_uniform
+    (delta rho eta : Real) (hdelta : 0 < delta)
+    (hrho : 0 < rho) (hrho1 : rho ≤ 1) (heta : 0 < eta) (heta1 : eta ≤ 1) :
+    ∃ N₀ : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →
+      ∀ (U : Finset (Pair N)) (phi : Pair N → ZMod N) (beta : Real), delta ≤ beta →
+      (U.card : Real) = beta * (N : Real) ^ 2 →
+      rho * beta ^ 15 * (N : Real) ^ 32 ≤ respectedArrangementCount 8 U phi →
+      ∃ S ⊆ U,
+        ((2 : Real) ^ 1150)⁻¹ * rho ^ 32 * eta ^ 31 * beta ^ 15 * (N : Real) ^ 32 ≤
+          (respectedArrangementCount 8 S phi : Real) ∧
+        (arrangementCount 8 S : Real) ≤ (1 + eta) * (respectedArrangementCount 8 S phi : Real) := by
+  exact ⟨fejerPurificationThreshold delta rho eta,
+    section13_fejer_purification_explicit delta rho eta hdelta hrho hrho1 heta heta1⟩
 
 end LeanProofs.GowersSzemeredi

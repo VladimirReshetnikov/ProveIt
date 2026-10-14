@@ -67,6 +67,25 @@ theorem pw_X (hX : 2 ≤ X) (a : Nat) : X ≤ X ^ (2 ^ a) := by
 theorem pw_natpow (hX : 2 ≤ X) {n a : Nat} (hn : n ≤ 2 ^ a) : X ^ n ≤ X ^ (2 ^ a) :=
   pow_le_pow_right₀ (le_trans (by norm_num) hX) hn
 
+/-- Dividing a density by a controlled factor adds one reciprocal power degree. -/
+theorem density_div_bounds_pw {X t d : Real} {a : Nat} (hX : 2 ≤ X)
+    (ht : 0 < t ∧ t ≤ 1 ∧ t⁻¹ ≤ X ^ (2 ^ a)) (hd : 1 ≤ d)
+    (hdi : d ≤ X ^ (2 ^ a)) :
+    0 < t / d ∧ t / d ≤ 1 ∧ (t / d)⁻¹ ≤ X ^ (2 ^ (a + 1)) := by
+  refine ⟨div_pos ht.1 (zero_lt_one.trans_le hd),
+    (div_le_self ht.1.le hd).trans ht.2.1, ?_⟩
+  rw [inv_div, div_eq_mul_inv]
+  exact pw_mul hX (zero_le_one.trans hd) (inv_pos.mpr ht.1).le hdi ht.2.2
+
+/-- The face-budget denominator fits the same power slot when `k + 2 ≤ a`. -/
+theorem budget_denominator_le_pw {X : Real} {k a : Nat} (hX : 2 ≤ X)
+    (hka : k + 2 ≤ a) : 2 * ((2 : Real) ^ k + 1) ≤ X ^ (2 ^ a) := by
+  calc 2 * ((2 : Real) ^ k + 1) ≤ (2 : Real) ^ (k + 2) := by
+        have : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
+        rw [pow_add]; norm_num; linarith
+    _ ≤ X ^ (k + 2) := pow_le_pow_left₀ (by norm_num) hX _
+    _ ≤ X ^ (2 ^ a) := pw_natpow hX (hka.trans (Nat.lt_two_pow_self.le))
+
 theorem ex_of_pw {x : Real} {a : Nat} (h : x ≤ X ^ (2 ^ a)) : x ≤ Real.exp (X ^ (2 ^ a)) :=
   le_exp_pow_of_le_pow h
 
@@ -190,41 +209,17 @@ def fixDeg (k : Nat) : Nat := 2 ^ (k + 5) + 7
 theorem budget_gen_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < globalBudget alpha (alpha / 2) k ∧ globalBudget alpha (alpha / 2) k ≤ 1 ∧
       (globalBudget alpha (alpha / 2) k)⁻¹ ≤ (2 / alpha) ^ (2 ^ fixDeg k) := by
-  obtain ⟨h0, h1, hi⟩ := thetaTwo_gen_bounds k ha ha2
-  have hX := two_div_ge_two ha ha2
-  have hden : (1 : Real) ≤ 2 * (2 ^ k + 1) := by
-    have : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
-    linarith
-  unfold globalBudget
-  refine ⟨by positivity, ?_, ?_⟩
-  · rw [div_le_one (by positivity)]; linarith
-  · rw [inv_div, div_eq_mul_inv]
-    have hc : 2 * ((2 : Real) ^ k + 1) ≤ (2 / alpha) ^ (2 ^ (2 ^ (k + 5) + 6)) := by
-      have h1 : 2 * ((2 : Real) ^ k + 1) ≤ 2 ^ (k + 2) := by
-        have : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
-        rw [pow_add]; norm_num; linarith
-      refine h1.trans ((pow_le_pow_left₀ (by norm_num) hX _).trans (pw_natpow hX ?_))
-      calc k + 2 ≤ 2 ^ (k + 2) := Nat.lt_two_pow_self.le
-        _ ≤ 2 ^ (2 ^ (k + 5) + 6) := Nat.pow_le_pow_right (by norm_num) (by
-            have : k + 2 ≤ 2 ^ (k + 5) := by
-              have := Nat.lt_two_pow_self (n := k + 5); omega
-            omega)
-    have := pw_mul hX (by positivity) (inv_pos.mpr h0).le hc hi
-    unfold fixDeg; exact this
+  have hk : k + 2 ≤ 2 ^ (k + 5) + 6 := by
+    have := Nat.lt_two_pow_self (n := k + 5); omega
+  exact density_div_bounds_pw (two_div_ge_two ha ha2) (thetaTwo_gen_bounds k ha ha2)
+    (by have : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num); linarith)
+    (budget_denominator_le_pw (two_div_ge_two ha ha2) hk)
 
 theorem T2_gen_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < globalTheta2 alpha (alpha / 2) k ∧ globalTheta2 alpha (alpha / 2) k ≤ 1 ∧
       (globalTheta2 alpha (alpha / 2) k)⁻¹ ≤ (2 / alpha) ^ (2 ^ fixDeg k) := by
-  obtain ⟨h0, h1, hi⟩ := thetaTwo_gen_bounds k ha ha2
-  have hX := two_div_ge_two ha ha2
-  unfold globalTheta2
-  refine ⟨by positivity, by linarith, ?_⟩
-  rw [inv_div, div_eq_mul_inv]
-  have h2 : (2 : Real) ≤ (2 / alpha) ^ (2 ^ (2 ^ (k + 5) + 6)) :=
-    hX.trans (pw_X hX _)
-  have := pw_mul hX (by norm_num) (inv_pos.mpr h0).le h2 hi
-  unfold fixDeg
-  exact pw_mono hX this (by omega)
+  exact density_div_bounds_pw (two_div_ge_two ha ha2) (thetaTwo_gen_bounds k ha ha2)
+    (by norm_num) ((two_div_ge_two ha ha2).trans (pw_X (two_div_ge_two ha ha2) _))
 
 theorem delta_gen_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < section16Delta (section16ThetaOne alpha (alpha / 2) k) ∧

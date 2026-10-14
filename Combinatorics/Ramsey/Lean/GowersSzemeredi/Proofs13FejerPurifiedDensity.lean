@@ -42,6 +42,25 @@ theorem section13_fejer_density_from_mass {N : Nat} [NeZero N]
     (mul_le_mul_iff_left₀ (by positivity : (0 : Real) < (N : Real) ^ 2)).mp hpow
   exact le_of_pow_le_pow_left₀ (by decide : (15 : Nat) ≠ 0) (Nat.cast_nonneg _) hp
 
+theorem section13_fejer_density_explicit
+    (delta rho eta : Real) (hdelta : 0 < delta)
+    (hrho : 0 < rho) (hrho1 : rho ≤ 1) (heta : 0 < eta) (heta1 : eta ≤ 1) :
+    ∀ (N : Nat) [NeZero N] [Fact N.Prime], fejerPurificationThreshold delta rho eta ≤ N →
+      ∀ (U : Finset (Pair N)) (phi : Pair N → ZMod N) (beta : Real), delta ≤ beta →
+      (U.card : Real) = beta * (N : Real) ^ 2 →
+      rho * beta ^ 15 * (N : Real) ^ 32 ≤ respectedArrangementCount 8 U phi →
+      ∃ S ⊆ U,
+        ((2 : Real) ^ 77)⁻¹ * rho ^ 3 * eta ^ 3 * beta * (N : Real) ^ 2 ≤ (S.card : Real) ∧
+        (1 - eta) * (arrangementCount 8 S : Real) ≤ (respectedArrangementCount 8 S phi : Real) := by
+  intro N _ _ hN U phi beta hdb hcard habundance
+  obtain ⟨S, hS, hmass, hratio⟩ := section13_fejer_purification_explicit delta rho eta hdelta hrho hrho1 heta heta1 N hN U phi beta hdb hcard habundance
+  refine ⟨S, hS, section13_fejer_density_from_mass S phi beta rho eta
+    (hdelta.trans_le hdb).le hrho.le hrho1 heta.le heta1 hmass, ?_⟩
+  have hg : (0 : Real) ≤ respectedArrangementCount 8 S phi := Nat.cast_nonneg _
+  have hmul := mul_le_mul_of_nonneg_left hratio (sub_nonneg.mpr heta1)
+  have herror : 0 ≤ eta ^ 2 * (respectedArrangementCount 8 S phi : Real) := mul_nonneg (sq_nonneg _) hg
+  nlinarith only [hmul, herror]
+
 theorem section13_fejer_density_uniform
     (delta rho eta : Real) (hdelta : 0 < delta)
     (hrho : 0 < rho) (hrho1 : rho ≤ 1) (heta : 0 < eta) (heta1 : eta ≤ 1) :
@@ -52,15 +71,7 @@ theorem section13_fejer_density_uniform
       ∃ S ⊆ U,
         ((2 : Real) ^ 77)⁻¹ * rho ^ 3 * eta ^ 3 * beta * (N : Real) ^ 2 ≤ (S.card : Real) ∧
         (1 - eta) * (arrangementCount 8 S : Real) ≤ (respectedArrangementCount 8 S phi : Real) := by
-  obtain ⟨N₀, hN₀⟩ := section13_fejer_purification_uniform delta rho eta hdelta hrho hrho1 heta heta1
-  refine ⟨N₀, ?_⟩
-  intro N _ _ hN U phi beta hdb hcard habundance
-  obtain ⟨S, hS, hmass, hratio⟩ := hN₀ N hN U phi beta hdb hcard habundance
-  refine ⟨S, hS, section13_fejer_density_from_mass S phi beta rho eta
-    (hdelta.trans_le hdb).le hrho.le hrho1 heta.le heta1 hmass, ?_⟩
-  have hg : (0 : Real) ≤ respectedArrangementCount 8 S phi := Nat.cast_nonneg _
-  have hmul := mul_le_mul_of_nonneg_left hratio (sub_nonneg.mpr heta1)
-  have herror : 0 ≤ eta ^ 2 * (respectedArrangementCount 8 S phi : Real) := mul_nonneg (sq_nonneg _) hg
-  nlinarith only [hmul, herror]
+  exact ⟨fejerPurificationThreshold delta rho eta,
+    section13_fejer_density_explicit delta rho eta hdelta hrho hrho1 heta heta1⟩
 
 end LeanProofs.GowersSzemeredi

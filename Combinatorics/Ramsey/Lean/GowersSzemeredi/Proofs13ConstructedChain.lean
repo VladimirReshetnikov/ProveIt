@@ -1,3 +1,4 @@
+import GowersSzemeredi.Proofs13BilinearRestriction
 import GowersSzemeredi.Proofs13ConstructedSquare
 import GowersSzemeredi.Proofs13AllScalesStepSpan
 

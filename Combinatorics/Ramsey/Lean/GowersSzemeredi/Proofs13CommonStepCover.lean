@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs13BilinearRestriction
+import GowersSzemeredi.Proofs13QuadraticRecurrence
 import GowersSzemeredi.Proofs05Downstream
 
 /-! Equal-length common-step covers. Allowing the last cell to extend past

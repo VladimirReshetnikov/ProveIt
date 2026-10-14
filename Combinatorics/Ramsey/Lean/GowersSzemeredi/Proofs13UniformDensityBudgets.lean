@@ -16,12 +16,17 @@ theorem section10Zeta_pos {a : Real} (ha : 0 < a) : 0 < section10Zeta a := by
   exact div_pos (mul_pos (Real.rpow_pos_of_pos (by norm_num) _) (pow_pos ha _))
     (by exact_mod_cast hk)
 
-/-- Fixed-q integer budgets, with a threshold uniform in every actual density
-above delta. The target still uses the actual density, so no mass or length
-parameter is silently replaced. -/
-theorem section13_eventually_density_integer_budgets {delta : Real}
+def section13IntegerBudgetThreshold (delta : Real) (q : Nat) : Real :=
+  let theta := section10Lambda (delta ^ 32 / 16)
+  let d₀ := section13ThetaOne theta / (64 * Real.pi)
+  max (uniformRoundedPowerThreshold (section13Zeta delta / 2) (min 1 (d₀ / 2))
+    (section10Zeta (delta ^ 32 / 16)) ((1 : Real) / (2 : Real) ^ (13 * section13Q delta)))
+    (positivePowerThreshold 4 d₀ (section13ThetaOne theta ^ 2 / (16 * (q : Real))))
+
+/-- The old eventual integer budgets hold above an explicit finite bound. -/
+theorem section13_density_integer_budgets_explicit {delta : Real}
     (hδ : 0 < delta) {q : Nat} (hq : 0 < q) :
-    ∀ᶠ N : Nat in atTop, ∀ alpha : Real, delta ≤ alpha → alpha ≤ 1 →
+    ∀ (N : Nat), section13IntegerBudgetThreshold delta q ≤ N → ∀ alpha : Real, delta ≤ alpha → alpha ≤ 1 →
       (q : Real) ≤ section13QBound (section10Lambda (alpha ^ 32 / 16)) → ∀ p L Q : Nat,
       IsNatFloor (section13ThetaOne (section10Lambda (alpha ^ 32 / 16)) /
         (64 * Real.pi) * (N : Real) ^
@@ -33,6 +38,7 @@ theorem section13_eventually_density_integer_budgets {delta : Real}
           (N : Real) ^ ((1 : Real) / (2 : Real) ^ (13 * section13Q alpha)) ≤ m ∧
         (L : Real) ^ (-((1 : Real) / (2 : Real) ^ (11 * q))) ≤
           section10Zeta (alpha ^ 32 / 16) / m := by
+  intro N hthreshold
   let theta := section10Lambda (delta ^ 32 / 16)
   let d₀ := section13ThetaOne theta / (64 * Real.pi)
   let d := min 1 (d₀ / 2)
@@ -48,9 +54,12 @@ theorem section13_eventually_density_integer_budgets {delta : Real}
   have hc₀ : 0 < c₀ := by dsimp [c₀, section13Zeta]; positivity
   have he₀ : 0 < e₀ := by dsimp [e₀]; positivity
   have hz₀ : 0 < z₀ := section10Zeta_pos (by positivity)
-  obtain ⟨N₀, hN₀⟩ := uniform_rounded_power_budgets hc₀ hd (min_le_left _ _) hz₀ he₀
-  filter_upwards [eventually_ge_atTop N₀, eventually_ge_atTop (1 : Nat),
-    eventually_nat_mul_rpow_le (C := 4) hu₀ hd₀] with N hN hNpos hfloor
+  have hround : uniformRoundedPowerThreshold c₀ d z₀ e₀ ≤ (N : Real) :=
+    (le_max_left _ _).trans hthreshold
+  have hfloor := positivePowerThreshold_spec hd₀ hu₀
+    ((le_max_right _ _).trans hthreshold : positivePowerThreshold 4 d₀ u₀ ≤ (N : Real))
+  have hNpos : 1 ≤ N := by
+    exact_mod_cast (positivePowerThreshold_one_le 1 c₀ e₀).trans ((le_max_left _ _).trans hround)
   intro alpha hδα hαone hqB p L Q hp hL hQlen
   have hα : 0 < alpha := hδ.trans_le hδα
   have hNreal : (1 : Real) ≤ N := by exact_mod_cast hNpos
@@ -115,10 +124,61 @@ theorem section13_eventually_density_integer_budgets {delta : Real}
     exact pow_le_pow_right₀ (by norm_num) (by omega : 11 * q ≤ 12 * q)
   have hbohr : 2 * e ≤ u * w := hrec.le.trans
     (mul_le_mul_of_nonneg_left hvw (hu₀.le.trans hule))
-  obtain ⟨m, hm, hmsq, hmQ, hmlower, hmbohr⟩ := hN₀ N hN
+  obtain ⟨m, hm, hmsq, hmQ, hmlower, hmbohr⟩ := uniform_rounded_power_budgets_explicit hc₀ hd (min_le_left _ _) hz₀ he₀ N hround
     (section13Zeta alpha / 2) e u v w (section10Zeta (alpha ^ 32 / 16)) L Q
     hcc hcmax hee hemax hv hvone hw hwone hz hrec.le hbohr hPlower hQlen
   exact ⟨m, hm, by simpa only [pow_two] using hmsq, by exact_mod_cast hmQ, hmlower, hmbohr⟩
+
+/-- Fixed-q integer budgets, with a threshold uniform in every actual density
+above delta. The target still uses the actual density, so no mass or length
+parameter is silently replaced. -/
+theorem section13_eventually_density_integer_budgets {delta : Real}
+    (hδ : 0 < delta) {q : Nat} (hq : 0 < q) :
+    ∀ᶠ N : Nat in atTop, ∀ alpha : Real, delta ≤ alpha → alpha ≤ 1 →
+      (q : Real) ≤ section13QBound (section10Lambda (alpha ^ 32 / 16)) → ∀ p L Q : Nat,
+      IsNatFloor (section13ThetaOne (section10Lambda (alpha ^ 32 / 16)) /
+        (64 * Real.pi) * (N : Real) ^
+          (section13ThetaOne (section10Lambda (alpha ^ 32 / 16)) ^ 2 / (16 * (q : Real)))) p →
+      (L = p ∨ L + 1 = p) →
+      (L : Real) ^ ((1 : Real) / (2 : Real) ^ (12 * q)) / 2 ≤ Q →
+      ∃ m : Nat, 0 < m ∧ m * m ≤ N ∧ m + 1 ≤ Q ∧
+        section13Zeta alpha / 2 *
+          (N : Real) ^ ((1 : Real) / (2 : Real) ^ (13 * section13Q alpha)) ≤ m ∧
+        (L : Real) ^ (-((1 : Real) / (2 : Real) ^ (11 * q))) ≤
+          section10Zeta (alpha ^ 32 / 16) / m := by
+  filter_upwards [eventually_ge_atTop (Nat.ceil (section13IntegerBudgetThreshold delta q))]
+    with N hN
+  exact section13_density_integer_budgets_explicit hδ hq N
+    ((Nat.le_ceil _).trans (by exact_mod_cast hN))
+
+/-- A finite maximum handles every admissible spectrum size. -/
+def section13DensityIntegerThreshold (delta : Real) : Nat :=
+  (Finset.range (Nat.floor (section13QBound (section10Lambda (delta ^ 32 / 16))) + 1)).sup
+    (fun q => Nat.ceil (section13IntegerBudgetThreshold delta q))
+
+theorem section13_uniform_density_integer_budgets_explicit {delta : Real} (hδ : 0 < delta)
+    (N : Nat) (hN : section13DensityIntegerThreshold delta ≤ N)
+    (alpha : Real) (hδα : delta ≤ alpha) (hαone : alpha ≤ 1) (q p L Q : Nat)
+    (hq : 0 < q) (hqB : (q : Real) ≤ section13QBound (section10Lambda (alpha ^ 32 / 16)))
+    (hp : IsNatFloor (section13ThetaOne (section10Lambda (alpha ^ 32 / 16)) /
+      (64 * Real.pi) * (N : Real) ^
+        (section13ThetaOne (section10Lambda (alpha ^ 32 / 16)) ^ 2 / (16 * (q : Real)))) p)
+    (hL : L = p ∨ L + 1 = p)
+    (hQlen : (L : Real) ^ ((1 : Real) / (2 : Real) ^ (12 * q)) / 2 ≤ Q) :
+    ∃ m : Nat, 0 < m ∧ m * m ≤ N ∧ m + 1 ≤ Q ∧
+      section13Zeta alpha / 2 *
+        (N : Real) ^ ((1 : Real) / (2 : Real) ^ (13 * section13Q alpha)) ≤ m ∧
+      (L : Real) ^ (-((1 : Real) / (2 : Real) ^ (11 * q))) ≤
+        section10Zeta (alpha ^ 32 / 16) / m := by
+  have hθ : 0 < section10Lambda (delta ^ 32 / 16) := by unfold section10Lambda; positivity
+  have hqfloor : q ≤ Nat.floor (section13QBound (section10Lambda (delta ^ 32 / 16))) :=
+    Nat.le_floor (hqB.trans (section13QBound_antitone hθ (section13_cutoff_mono hδ hδα)))
+  have hqmem : q ∈ Finset.range (Nat.floor (section13QBound (section10Lambda (delta ^ 32 / 16))) + 1) :=
+    Finset.mem_range.mpr (by omega)
+  have hceil : Nat.ceil (section13IntegerBudgetThreshold delta q) ≤ N :=
+    (Finset.le_sup hqmem).trans hN
+  exact section13_density_integer_budgets_explicit hδ hq N
+    ((Nat.le_ceil _).trans (by exact_mod_cast hceil)) alpha hδα hαone hqB p L Q hp hL hQlen
 
 /-- One threshold supplies the Bohr integer budgets simultaneously for every
 actual density in [delta,1], every permitted spectrum size, and all floor data. -/
@@ -136,32 +196,24 @@ theorem section13_uniform_density_integer_budgets {delta : Real} (hδ : 0 < delt
           (N : Real) ^ ((1 : Real) / (2 : Real) ^ (13 * section13Q alpha)) ≤ m ∧
         (L : Real) ^ (-((1 : Real) / (2 : Real) ^ (11 * q))) ≤
           section10Zeta (alpha ^ 32 / 16) / m := by
-  let B := section13QBound (section10Lambda (delta ^ 32 / 16))
-  have hall : ∀ᶠ N : Nat in atTop, ∀ q ∈ Finset.range (Nat.floor B + 1),
-      0 < q → ∀ alpha : Real, delta ≤ alpha → alpha ≤ 1 →
-      (q : Real) ≤ section13QBound (section10Lambda (alpha ^ 32 / 16)) → ∀ p L Q : Nat,
-      IsNatFloor (section13ThetaOne (section10Lambda (alpha ^ 32 / 16)) /
-        (64 * Real.pi) * (N : Real) ^
-          (section13ThetaOne (section10Lambda (alpha ^ 32 / 16)) ^ 2 / (16 * (q : Real)))) p →
-      (L = p ∨ L + 1 = p) →
-      (L : Real) ^ ((1 : Real) / (2 : Real) ^ (12 * q)) / 2 ≤ Q →
-      ∃ m : Nat, 0 < m ∧ m * m ≤ N ∧ m + 1 ≤ Q ∧
-        section13Zeta alpha / 2 *
-          (N : Real) ^ ((1 : Real) / (2 : Real) ^ (13 * section13Q alpha)) ≤ m ∧
-        (L : Real) ^ (-((1 : Real) / (2 : Real) ^ (11 * q))) ≤
-          section10Zeta (alpha ^ 32 / 16) / m := by
-    apply (eventually_all_finset _).mpr
-    intro q _
-    by_cases hq : 0 < q
-    · filter_upwards [section13_eventually_density_integer_budgets hδ hq] with N hN
-      exact fun _ => hN
-    · exact Eventually.of_forall (fun _ h => (hq h).elim)
-  obtain ⟨N₀, hN₀⟩ := eventually_atTop.mp hall
-  refine ⟨N₀, fun N hN alpha hδα hαone q p L Q hq hqB => ?_⟩
-  have hθ : 0 < section10Lambda (delta ^ 32 / 16) := by unfold section10Lambda; positivity
-  have hqfloor : q ≤ Nat.floor B := Nat.le_floor (hqB.trans
-    (section13QBound_antitone hθ (section13_cutoff_mono hδ hδα)))
-  exact hN₀ N hN q (Finset.mem_range.mpr (by omega)) hq alpha hδα hαone hqB p L Q
+  refine ⟨section13DensityIntegerThreshold delta, ?_⟩
+  intro N hN alpha hδα hαone q p L Q hq hqB hp hL hQlen
+  exact section13_uniform_density_integer_budgets_explicit hδ N hN alpha hδα hαone q p L Q
+    hq hqB hp hL hQlen
+
+/-- Stage 13.6 above a closed modulus threshold depending only on the
+positive lower density. Every actual-density conclusion is retained. -/
+theorem lemma_13_6_uniform_density_explicit {delta : Real} (hδ : 0 < delta)
+    (N : Nat) [Fact N.Prime] (S : Section13Context N) (D : Stage134Data N) (E : Stage135Data N)
+    (hS : delta ≤ S.alpha) (hN : section13DensityIntegerThreshold delta ≤ N)
+    (h134 : IsStage134Data S (section10Lambda (S.alpha ^ 32 / 16)) D)
+    (h135 : IsStage135Data S D E) :
+    ∃ F : Stage136Data N, IsStage136Data S D E F ∧ F.R.length ≤ E.Q.length := by
+  obtain ⟨m, hm, hsize, hupper, hlower, hbudget⟩ :=
+    section13_uniform_density_integer_budgets_explicit hδ N hN S.alpha hS S.alpha_at_most_one
+      D.q D.m D.P.length E.Q.length h134.1 h134.2.2.2.2.1 h134.2.2.2.2.2.1
+      h134.2.2.2.2.2.2.1 h135.2.2.2.1
+  exact lemma_13_6_from_initial_stages_all_densities S D E m h134 h135 hm hsize hupper hlower hbudget
 
 /-- Stage 13.6 with a threshold depending only on the density lower bound;
 the constructed progression retains the actual-density length estimate. -/
@@ -172,12 +224,8 @@ theorem lemma_13_6_uniform_density {delta : Real} (hδ : 0 < delta) :
       IsStage134Data S (section10Lambda (S.alpha ^ 32 / 16)) D →
       IsStage135Data S D E →
       ∃ F : Stage136Data N, IsStage136Data S D E F ∧ F.R.length ≤ E.Q.length := by
-  obtain ⟨N₀, hN₀⟩ := section13_uniform_density_integer_budgets hδ
-  refine ⟨N₀, fun N _ S D E hS hN h134 h135 => ?_⟩
-  obtain ⟨m, hm, hsize, hupper, hlower, hbudget⟩ :=
-    hN₀ N hN S.alpha hS S.alpha_at_most_one D.q D.m D.P.length E.Q.length
-      h134.1 h134.2.2.2.2.1 h134.2.2.2.2.2.1 h134.2.2.2.2.2.2.1 h135.2.2.2.1
-  exact lemma_13_6_from_initial_stages_all_densities S D E m
-    h134 h135 hm hsize hupper hlower hbudget
+  exact ⟨section13DensityIntegerThreshold delta,
+    fun N _ S D E hS hN h134 h135 =>
+      lemma_13_6_uniform_density_explicit hδ N S D E hS hN h134 h135⟩
 
 end LeanProofs.GowersSzemeredi

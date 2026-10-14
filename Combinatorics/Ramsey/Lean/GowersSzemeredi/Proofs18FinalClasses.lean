@@ -59,40 +59,15 @@ theorem thetaTwo_fejer_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
 theorem budget_fejer_bounds5 (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k ∧ globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k ≤ 1 ∧
       (globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k)⁻¹ ≤ (2 / alpha) ^ (2 ^ (5 * k + 21)) := by
-  obtain ⟨h0, h1, hi⟩ := thetaTwo_fejer_bounds k ha ha2
-  have hX := two_div_ge_two ha ha2
-  have hden : (1 : Real) ≤ 2 * (2 ^ k + 1) := by
-    have : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
-    linarith
-  unfold globalBudgetW
-  refine ⟨by positivity, ?_, ?_⟩
-  · rw [div_le_one (by positivity)]; linarith
-  · rw [inv_div, div_eq_mul_inv]
-    have hc : 2 * ((2 : Real) ^ k + 1) ≤ (2 / alpha) ^ (2 ^ ((5 * k + 14) + 6)) := by
-      have h1 : 2 * ((2 : Real) ^ k + 1) ≤ 2 ^ (k + 2) := by
-        have : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
-        rw [pow_add]; norm_num; linarith
-      refine h1.trans ((pow_le_pow_left₀ (by norm_num) hX _).trans (pw_natpow hX ?_))
-      calc k + 2 ≤ 2 ^ (k + 2) := Nat.lt_two_pow_self.le
-        _ ≤ 2 ^ ((5 * k + 14) + 6) := Nat.pow_le_pow_right (by norm_num) (by
-            have : k + 2 ≤ (5 * k + 14) := by
-              have := Nat.lt_two_pow_self (n := k + 5); omega
-            omega)
-    have := pw_mul hX (by positivity) (inv_pos.mpr h0).le hc hi
-    exact this
+  exact density_div_bounds_pw (two_div_ge_two ha ha2) (thetaTwo_fejer_bounds k ha ha2)
+    (by have : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num); linarith)
+    (budget_denominator_le_pw (two_div_ge_two ha ha2) (by omega))
 
 theorem T2_fejer_bounds5 (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < globalTheta2W (fejerThetaOne alpha (alpha / 2) k) ∧ globalTheta2W (fejerThetaOne alpha (alpha / 2) k) ≤ 1 ∧
       (globalTheta2W (fejerThetaOne alpha (alpha / 2) k))⁻¹ ≤ (2 / alpha) ^ (2 ^ (5 * k + 21)) := by
-  obtain ⟨h0, h1, hi⟩ := thetaTwo_fejer_bounds k ha ha2
-  have hX := two_div_ge_two ha ha2
-  unfold globalTheta2W
-  refine ⟨by positivity, by linarith, ?_⟩
-  rw [inv_div, div_eq_mul_inv]
-  have h2 : (2 : Real) ≤ (2 / alpha) ^ (2 ^ ((5 * k + 14) + 6)) :=
-    hX.trans (pw_X hX _)
-  have := pw_mul hX (by norm_num) (inv_pos.mpr h0).le h2 hi
-  exact pw_mono hX this (by omega)
+  exact density_div_bounds_pw (two_div_ge_two ha ha2) (thetaTwo_fejer_bounds k ha ha2)
+    (by norm_num) ((two_div_ge_two ha ha2).trans (pw_X (two_div_ge_two ha ha2) _))
 
 theorem delta_fejer_bounds5 (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < section16Delta (fejerThetaOne alpha (alpha / 2) k) ∧

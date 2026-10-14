@@ -9217,6 +9217,93 @@ fidelity gaps or establish a further numerical improvement.
 
 Evidence: `verification/2026-10-13-successor-batch-simplification.json`.
 
+### L.103. Share estimates and narrow the final proof routes
+
+Nine source stages reuse the retained-domain cardinality estimate, the fixed
+classDelta inverse bound, explicit Section 13 budgets, and sharp Section 15
+selection witnesses; share the Section 13.4 budget construction, explicit Fejer
+producers and localization-density scalar calculation; narrow a compatibility
+import; and share the final division-envelope estimates. Exact public statements,
+assumptions and final bounds are preserved. Four helpers are included in the
+costs. Nine unused private declarations, including one definition, are archived.
+
+The 21 production owners lose 1,104 source lines and 1,062 proof lines. Thirty-four
+focused checks leave a net reduction of 1,070 source lines. The original Final
+closure loses 1,208 source lines and 1,045 proof lines; the stronger all-degrees
+closure loses 1,361 and 1,198. Each final closure loses one imported module.
+The 290-source-line, 170-proof-line BilinearRestriction file remains in the
+repository; ConstructedChain keeps its support theorem through a direct import.
+This narrows incidental public reexports. Known repository consumers are covered;
+unknown external uses of those reexports are not claimed unchanged. Three earlier
+Fejer closures gain 17, 28 and 41 source lines respectively, and one proof line
+each, as their explicit producers move upstream.
+
+The complete source review preserves 473 headers and contexts, 112 non-theorem
+blocks and 12 exact cross-owner moves. It checks 22 rewritten bodies, four helpers
+and the private removals. The scoped counter handles the exact factorial equation
+body and the statement-local let without claiming to parse arbitrary Lean.
+Ordinary tactic lines are 6,517 to 5,455; 17 equation-body lines and 24 separate
+term-proof lines are unchanged, giving total proof counts of 6,558 to 5,496.
+The older restricted ledgers remain archived.
+
+The 632-module combined production core and 36 fresh target checks pass. The
+accepted source/inventory and 21 retained own-input records are verified.
+The 57 selected closures cover 605 of 608 affected consumers; the three aggregate
+facades remain excluded. Five fresh targets perform named axiom checks and 31
+perform standalone compilation. Retention requires each old target's completed
+record and complete current input manifest; it does not create a new native run.
+The focused audit has 388 names (387 theorems and one definition), the historical
+explicit audit has five, and PrintedExtractionCoreAudit has 20. The selected union
+has 1,903 local modules and 1,906 source/configuration inputs. All 120 inventory rows,
+order and duplicate occurrences are retained, with exactly 14 location leaves
+changed. The accepted Lemma 16.10 correction and limits on fidelity to the full
+original paper remain explicit; no audit of every export is claimed.
+
+Evidence: `verification/2026-10-13-nine-stage-simplification.json`.
+
+### L.104. Shared explicit constructions, counts and phase identities
+
+The reviewed incoming final-estimate cleanup and five local source stages remove
+343 production source lines and 359 proof lines. The 31 named audit additions
+leave a net reduction of 312 source lines. The original Final route loses 333 source
+lines and 353 proof lines; the stronger route loses 343 source lines and 359 proof
+lines. Their module counts remain 637 and 702. The complete route ledger also
+records growth in some earlier providers.
+
+The first core attempt exposed a missing simplification between progressionCount
+at length four and fourTermCount. A one-line unfolding repair preserves the theorem
+statement, all line counts, imports and inventory locations. The failed core receipt
+and log are retained alongside the repair and subsequent validation evidence.
+
+The eleven-owner stages preserve 50 complete interfaces, 10 definitions and 20 moved
+blocks. Phase sharing preserves 165 interfaces and 40 non-theorem blocks and adds
+three one-line public bridges. Together, 215 interfaces and 50 non-theorem blocks
+remain exact. Three incoming intermediate theorem signatures intentionally change;
+the duplicate Ec definition is removed and F uses the identical Eth expression
+twice. These incoming changes are tracked separately from exact preservation.
+Final numerical bounds and ordinary positive-step AP conclusions remain unchanged.
+
+The focused audit contains 419 entries: 418 theorems and one definition. The
+historical and printed-extraction audits retain their 5 and 20 named declarations.
+The full ordered inventory preserves all 120 rows and duplicate occurrences, with
+19 cumulative location leaves, including five since ff1974. Any raw-generator
+ordering normalization requires reviewed evidence of an exact object permutation.
+The accepted Lemma 16.10 correction and existing source-fidelity limits remain;
+this checkpoint does not claim complete fidelity to every original-paper statement.
+
+The 602-module core passes. The accepted source and inventory are verified. One
+shared 22-root command passes with a 1,249-module union; 35 historical own-input
+records are verified and retained.
+The validated 57-root scope has 22 fresh command members: five named audits and
+17 standalone compilations. The 35 retained historical records comprise
+21 from L102 and 14 from L103. The shared command has one observed exit, log and
+footer. Each root's module count describes its verified input and artifact closure;
+it is not a separately observed subprocess result. The complete selected union
+contains 1,903 local modules and 1,906 inputs. It covers 362 of 365 affected
+consumers; three aggregate facades remain excluded.
+
+Evidence: `verification/2026-10-13-combined419-simplification.json`.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
