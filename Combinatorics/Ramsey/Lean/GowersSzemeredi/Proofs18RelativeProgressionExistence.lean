@@ -14,43 +14,11 @@ def fourTermCount {N : Nat} [NeZero N] (A : Finset (ZMod N)) : Nat :=
 theorem fourTermCount_eq_progressionAverage {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) :
     (fourTermCount A : Complex) = progressionAverage (fun _ : Fin 4 => indicator A) := by
-  classical
-  have hcount {T : Type} [Fintype T] (P : T → Prop) [DecidablePred P] :
-      (countWhere P : Complex) = ∑ x : T, if P x then 1 else 0 := by
-    unfold countWhere
-    rw [Finset.filter_congr_decidable]
-    simp
-  unfold fourTermCount progressionAverage
-  rw [hcount, Fintype.sum_prod_type]
-  apply Finset.sum_congr rfl
-  intro r _
-  apply Finset.sum_congr rfl
-  intro s _
-  simp only [indicator, Finset.prod_boole]
-  simp
+  exact progressionCount_eq_progressionAverage (k := 4) A
 
 theorem fourTermCount_le_modulus_of_no_ap {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (hno : ¬ HasModAP A 4) : fourTermCount A ≤ N := by
-  classical
-  unfold fourTermCount countWhere
-  rw [Finset.filter_congr_decidable]
-  calc
-    _ ≤ (Finset.univ.filter fun p : ZMod N × ZMod N => p.1 = 0).card := by
-      apply Finset.card_le_card
-      intro p hp
-      simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hp ⊢
-      by_contra hr
-      apply hno
-      refine ⟨p.2, -p.1, bne_iff_ne.mpr (neg_ne_zero.mpr hr), ?_⟩
-      intro i hi
-      simpa only [mul_neg, sub_eq_add_neg] using hp ⟨i, hi⟩
-    _ = N := by
-      rw [show (Finset.univ.filter fun p : ZMod N × ZMod N => p.1 = 0) =
-          ({0} : Finset (ZMod N)) ×ˢ Finset.univ by
-        ext p
-        simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_product,
-          Finset.mem_singleton, and_true]]
-      simp [ZMod.card]
+  exact progressionCount_le_modulus_of_no_ap A hno
 
 /-- A real lower bound for the actual integer count. -/
 theorem relative_fourTermCount_lower {N : Nat} [NeZero N] [Fact N.Prime]
