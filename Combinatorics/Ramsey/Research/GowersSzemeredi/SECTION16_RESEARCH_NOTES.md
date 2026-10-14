@@ -9341,6 +9341,28 @@ sharing them means stating the base lemmas over an abstract class table and
 degree (as `Proofs18EnvelopeInduction` did for the inductions), not deleting
 copies. That is the remaining lever on the final route's length.
 
+Addendum (2026-10-14). The scan above compared against the whole corpus; a
+declaration only lengthens the final proof if the final theorems use it. Restricted
+to declarations both used by the 25 bridge theorems, the only in-route pair was
+`polyPieceFaceCountW_fejer_le_tight` / `_power`; the tight bound now lives in
+`Proofs18FejerSeedCounts` and the 2^38 bound is its two-line corollary
+(`65fd57670`, 18 lines). The four final-route modules are 2,056 lines.
+Among all used declarations of at least 12 lines (1,147), ten pairs with both
+sides used reach similarity 0.93-0.97:
+`relative_fourFactor_counting_bound` / `relative_progression_counting_bound`
+(25 lines), `Theorem181At` / `theorem_18_1` (definitions),
+`section16_synchronize_base_cover` / `…_family` (37), `card_translated_slice_bad_le`
+/ `…_succ` (42), `IsLastCoordinateBoxProduct.init_carrier` / `last_carrier` (14),
+`Section16RetiledLinearityBound` / `…FamilyBound` (definitions),
+`corollary_5_6_strong_diameter` / `corollary_5_6` (15), `section5Transport_carrier` /
+`stage135Transport_carrier` (16), `unused_coordinate_cover` /
+`relation_unused_coordinate_cover` (74; the graph version is the relation version
+at `Λ = partialGraph B φ`, but the relation version sits downstream in
+`Proofs16RelationLift`), and `section13_good_height_bohr_model` /
+`…_model_with_cap` (32). All lie in corpus modules with 97 to 1,416 dependents,
+18 to 484 of them heavy, so each needs the native full build to verify; none is
+changed here.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
