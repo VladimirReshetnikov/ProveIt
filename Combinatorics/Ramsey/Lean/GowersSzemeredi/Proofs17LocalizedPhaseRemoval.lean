@@ -903,38 +903,10 @@ private lemma prop177_norm_cubeDifference_product {N d : Nat}
     (f : ZMod N → Complex) (x : Point N d) (s : ZMod N) :
     ‖cubeDifference f x s‖ =
       ∏ e : Fin d → Bool, ‖f (cubeArgument s x e)‖ := by
-  induction d generalizing s with
-  | zero =>
-      simp [cubeDifference, iteratedDifference, cubeArgument]
-  | succ n ih =>
-      let r : ZMod N := x 0
-      let a : Point N n := Fin.tail x
-      have hx : x = Fin.cons r a := by
-        funext i
-        refine Fin.cases ?_ (fun j => ?_) i <;> rfl
-      rw [hx, cubeDifference_cons]
-      simp only [difference, norm_mul, norm_star, ih]
-      let T : (Fin (n + 1) → Bool) → Real := fun e =>
-        ‖f (cubeArgument s (Fin.cons r a) e)‖
-      calc
-        (∏ e : Fin n → Bool, ‖f (cubeArgument s a e)‖) *
-            ∏ e : Fin n → Bool, ‖f (cubeArgument (s - r) a e)‖ =
-            (∏ e : Fin n → Bool, T (Fin.cons false e)) *
-              ∏ e : Fin n → Bool, T (Fin.cons true e) := by
-          congr 1
-          · apply Finset.prod_congr rfl
-            intro e _
-            simp only [T, prop177_cubeArgument_cons, Bool.false_eq_true, if_false,
-              sub_zero]
-            rfl
-          · apply Finset.prod_congr rfl
-            intro e _
-            simp only [T, prop177_cubeArgument_cons, if_true]
-            rfl
-        _ = ∏ p : Bool × (Fin n → Bool), T (Fin.cons p.1 p.2) := by
-          rw [Fintype.prod_prod_type, Fintype.prod_bool, mul_comm]
-        _ = ∏ e : Fin (n + 1) → Bool, T e := by
-          exact (Fin.consEquiv (fun _ : Fin (n + 1) => Bool)).prod_comp T
+  rw [cubeDifference_eq_parity_product, norm_prod]
+  apply Finset.prod_congr rfl
+  intro e _
+  by_cases h : Even (boolWeight e) <;> simp [parityConj, h]
 
 private lemma prop177_cube_norm_sq_le_moment {N k : Nat}
     (f : ZMod N → Complex) (x : Point N k) (s : ZMod N) :
@@ -1352,83 +1324,13 @@ private lemma prop177_fourier_sq {N : Nat} [NeZero N]
     ((‖fourier g r‖ ^ 2 : Real) : Complex) =
       ∑ y : ZMod N, ∑ s : ZMod N,
         difference g y s * exponential (-(y * r)) := by
-  simp only [fourier, ZMod.dft_apply, smul_eq_mul]
-  calc
-    ((‖∑ s : ZMod N, exponential (-(s * r)) * g s‖ ^ 2 : Real) : Complex) =
-        (∑ s : ZMod N, exponential (-(s * r)) * g s) *
-          star (∑ t : ZMod N, exponential (-(t * r)) * g t) := by
-      rw [Complex.star_def, Complex.mul_conj', ← Complex.ofReal_pow]
-    _ = ∑ s : ZMod N, ∑ t : ZMod N,
-        (exponential (-(s * r)) * g s) *
-          (star (g t) * exponential (t * r)) := by
-      simp only [star_sum, star_mul, prop177_star_exponential, neg_neg]
-      simp_rw [Finset.sum_mul, Finset.mul_sum]
-    _ = ∑ s : ZMod N, ∑ y : ZMod N,
-        (exponential (-(s * r)) * g s) *
-          (star (g (s - y)) * exponential ((s - y) * r)) := by
-      apply Finset.sum_congr rfl
-      intro s _
-      rw [← (Equiv.subLeft s).sum_comp]
-      rfl
-    _ = ∑ y : ZMod N, ∑ s : ZMod N,
-        difference g y s * exponential (-(y * r)) := by
-      rw [Finset.sum_comm]
-      apply Finset.sum_congr rfl
-      intro y _
-      apply Finset.sum_congr rfl
-      intro s _
-      have hphase :
-          exponential (-(s * r)) * exponential ((s - y) * r) =
-            exponential (-(y * r)) := by
-        rw [← prop177_exponential_add]
-        congr 1
-        ring
-      rw [← hphase]
-      unfold difference
-      ring
+  exact fourier_norm_sq_eq_difference_sum g r
 
 private lemma prop177_cubeDifference_product {N d : Nat}
     (f : ZMod N → Complex) (x : Point N d) (s : ZMod N) :
     cubeDifference f x s =
       ∏ e : Fin d → Bool, parityConj e (f (cubeArgument s x e)) := by
-  induction d generalizing s with
-  | zero =>
-      simp [cubeDifference, iteratedDifference, parityConj, boolWeight,
-        cubeArgument, countWhere]
-  | succ n ih =>
-      let r : ZMod N := x 0
-      let a : Point N n := Fin.tail x
-      have hx : x = Fin.cons r a := by
-        funext i
-        refine Fin.cases ?_ (fun j => ?_) i <;> rfl
-      rw [hx, cubeDifference_cons]
-      simp only [difference, ih]
-      let T : (Fin (n + 1) → Bool) → Complex := fun e =>
-        parityConj e (f (cubeArgument s (Fin.cons r a) e))
-      calc
-        (∏ e : Fin n → Bool, parityConj e (f (cubeArgument s a e))) *
-            star (∏ e : Fin n → Bool,
-              parityConj e (f (cubeArgument (s - r) a e))) =
-            (∏ e : Fin n → Bool, T (Fin.cons false e)) *
-              ∏ e : Fin n → Bool, T (Fin.cons true e) := by
-          rw [star_prod]
-          congr 1
-          · apply Finset.prod_congr rfl
-            intro e _
-            simp only [T]
-            rw [prop177_parityConj_cons_false, prop177_cubeArgument_cons]
-            simp only [Bool.false_eq_true, if_false, sub_zero]
-            rfl
-          · apply Finset.prod_congr rfl
-            intro e _
-            simp only [T]
-            rw [prop177_parityConj_cons_true, prop177_cubeArgument_cons]
-            simp only [if_true]
-            rfl
-        _ = ∏ p : Bool × (Fin n → Bool), T (Fin.cons p.1 p.2) := by
-          rw [Fintype.prod_prod_type, Fintype.prod_bool, mul_comm]
-        _ = ∏ e : Fin (n + 1) → Bool, T e := by
-          exact (Fin.consEquiv (fun _ : Fin (n + 1) => Bool)).prod_comp T
+  exact cubeDifference_eq_parity_product f x s
 
 private def prop177PhasedFamily {N d : Nat} [NeZero N]
     (H : (Fin d → Bool) → ZMod N → Complex)
@@ -1610,38 +1512,7 @@ private lemma prop177_multilinear_cons {N k : Nat}
     (sigma : Point N k → ZMod N) (hsigma : IsMultilinear sigma) :
     IsMultilinear (fun z : Point N (k + 1) =>
       z 0 * sigma (Fin.tail z)) := by
-  classical
-  obtain ⟨c, hc⟩ := hsigma
-  let c' : (Fin (k + 1) → Bool) → ZMod N := fun e =>
-    if e 0 then c (Fin.tail e) else 0
-  refine ⟨c', fun z => ?_⟩
-  let T : (Fin (k + 1) → Bool) → ZMod N := fun e =>
-    c' e * prop177Monomial e z
-  have htrue (e : Fin k → Bool) :
-      T (Fin.cons true e) =
-        z 0 * (c e * prop177Monomial e (Fin.tail z)) := by
-    simp [T, c', prop177Monomial_cons]
-    ring
-  have hfalse (e : Fin k → Bool) : T (Fin.cons false e) = 0 := by
-    simp [T, c']
-  change z 0 * sigma (Fin.tail z) = ∑ e, T e
-  calc
-    z 0 * sigma (Fin.tail z) =
-        z 0 * ∑ e : Fin k → Bool,
-          c e * prop177Monomial e (Fin.tail z) := by
-      rw [hc]
-      rfl
-    _ = ∑ e : Fin k → Bool, T (Fin.cons true e) := by
-      rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro e _
-      rw [htrue]
-    _ = ∑ e : Fin k → Bool, T (Fin.cons true e) +
-        ∑ e : Fin k → Bool, T (Fin.cons false e) := by simp [hfalse]
-    _ = ∑ p : Bool × (Fin k → Bool), T (Fin.cons p.1 p.2) := by
-      rw [Fintype.sum_prod_type, Fintype.sum_bool]
-    _ = ∑ e : Fin (k + 1) → Bool, T e := by
-      exact (Fin.consEquiv (fun _ : Fin (k + 1) => Bool)).sum_comp T
+  exact isMultilinear_mul_first_coordinate sigma hsigma
 
 private def prop177TailOffset {N k : Nat} (r : Point N k)
     (E : Fin (k + 1) → Bool) : ZMod N :=

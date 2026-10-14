@@ -454,4 +454,25 @@ theorem proposition_17_2_holds : proposition_17_2 := by
       rw [show prop172PhasedFamily f Phi e = phaseTwist f (Phi e) by rfl] at hterm
       exact hterm
 
+/-- Fourier energy as a sum of differences, available to localized phase removal. -/
+theorem fourier_norm_sq_eq_difference_sum {N : Nat} [NeZero N]
+    (g : ZMod N → Complex) (r : ZMod N) :
+    ((‖fourier g r‖ ^ 2 : Real) : Complex) =
+      ∑ y : ZMod N, ∑ s : ZMod N,
+        difference g y s * exponential (-(y * r)) := by
+  exact prop172_fourier_sq g r
+
+/-- A cube difference is the product of its parity-conjugated vertices. -/
+theorem cubeDifference_eq_parity_product {N d : Nat}
+    (f : ZMod N → Complex) (x : Point N d) (s : ZMod N) :
+    cubeDifference f x s =
+      ∏ e : Fin d → Bool, parityConj e (f (cubeArgument s x e)) := by
+  exact prop172_cubeDifference_product f x s
+
+/-- Multiplication by a fresh first coordinate preserves multilinearity. -/
+theorem isMultilinear_mul_first_coordinate {N k : Nat}
+    (sigma : Point N k → ZMod N) (hsigma : IsMultilinear sigma) :
+    IsMultilinear (fun z : Point N (k + 1) => z 0 * sigma (Fin.tail z)) := by
+  exact prop172_multilinear_cons sigma hsigma
+
 end LeanProofs.GowersSzemeredi

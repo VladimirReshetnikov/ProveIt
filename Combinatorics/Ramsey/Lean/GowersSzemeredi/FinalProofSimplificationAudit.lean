@@ -25,6 +25,11 @@ run_cmd do
   let allowed : Array Name := #[``propext, ``Classical.choice, ``Quot.sound]
   let definitionName := ``LeanProofs.GowersSzemeredi.fejerCubicPrimeModelThreshold
   for name in #[definitionName,
+    ``LeanProofs.GowersSzemeredi.fourier_norm_sq_eq_difference_sum,
+    ``LeanProofs.GowersSzemeredi.cubeDifference_eq_parity_product,
+    ``LeanProofs.GowersSzemeredi.isMultilinear_mul_first_coordinate,
+    ``LeanProofs.GowersSzemeredi.proposition_17_7_with_upper,
+    ``LeanProofs.GowersSzemeredi.proposition_17_7_holds,
     ``LeanProofs.GowersSzemeredi.split_step_gen,
     ``LeanProofs.GowersSzemeredi.zeta_gen_bounds_fejer5,
     ``LeanProofs.GowersSzemeredi.lemma156_gen_le_fejer5,
