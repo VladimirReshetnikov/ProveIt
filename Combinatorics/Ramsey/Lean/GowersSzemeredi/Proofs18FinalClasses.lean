@@ -108,7 +108,6 @@ theorem uCount_scale_le_deg {X V γ θ s : Real} {D μV μD μ0 c : Nat} (hX : 2
     unfold uniformBase; field_simp; ring
   rw [hval]
   set m := max μV b
-  have h7m : 7 ≤ m := le_trans h7 (le_max_right μV b)
   have h4 : (4 : Real) ≤ X ^ (2 ^ m) := pw_const hX (by
     have : 2 ≤ 2 ^ m := le_trans (by norm_num : 2 ≤ 2 ^ 1) (Nat.pow_le_pow_right (by norm_num) (by omega))
     calc (4 : Real) = 2 ^ 2 := by norm_num
@@ -274,13 +273,11 @@ def SplitUniformClass2.toSplit {k : Nat} {V : Real} {ac Dc ae De : Nat}
       exact tb_mono hν (by linarith) (le_max_left _ _) (le_max_left _ _)
     · intro rho hr hr1
       obtain ⟨hw2, -, -, -⟩ := splitW_facts hV hg hg1 ht ht1 hr hr1
-      have : (0 : Real) < splitW V theta gamma rho := by linarith
       positivity
     · intro rho hr hr1
       obtain ⟨hw2, -, -, -⟩ := splitW_facts hV hg hg1 ht ht1 hr hr1
       have hν : (1 : Real) ≤ (n : Real) + 1 := by
         have := Nat.cast_nonneg (α := Real) n; linarith
-      have hW0 : (0 : Real) < splitW V theta gamma rho := by linarith
       refine inv_anti₀ (by positivity) ?_
       exact tb_mono hν (by linarith) (le_max_right _ _) (le_max_right _ _)
 
@@ -335,8 +332,6 @@ theorem splitUniformClass2_succ_fejer {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 
       obtain ⟨he0, hei⟩ := split_exp_inv_le_fejer2 (k := k) hac hDc hae hDe hV hVV hK hp hKV hpV
         hg hg1 ht ht1 hr hr1 n
       obtain ⟨hw2, -, -, -, -⟩ := split_w_facts hV hVV hg hg1 ht ht1 hr hr1
-      have hν : (1 : Real) ≤ (n : Real) + 1 := by
-        have := Nat.cast_nonneg (α := Real) n; linarith
       have h2 := inv_anti₀ (inv_pos.mpr he0) hei
       rw [inv_inv] at h2
       exact h2
@@ -364,7 +359,6 @@ theorem polyPieceFaceCountW_fejer_le_tight {gamma theta : Real} (hg : 0 < gamma)
   set b := polyPieceBudgetW (fejerThetaOne theta gamma 1)
   set u := 2 / (gamma * theta) with hu
   clear_value u b
-  have hu1 : 1 ≤ u := le_trans (by norm_num) hu2
   have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
   have hbase : 2 / (gamma * b) ≤ u ^ ((2 : Nat) ^ 23 + 1) := by
     rw [show 2 / (gamma * b) = 2 / gamma * b⁻¹ by field_simp]
@@ -431,14 +425,11 @@ theorem splitUniformClass2_two_tight {K1 p1 : Nat} (hK1 : 1 ≤ K1) (hp1 : 0 < p
     have hsub : Finset.univ.biUnion Gamma ⊆
         Finset.univ.biUnion fun i => restrictRelation (Gamma i) Finset.univ := by
       simp only [restrictRelation_univ]; exact le_rfl
-    have hν : (1 : Real) ≤ (n : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) n; linarith only [this]
     refine (hcov.subset hsub).weaken ?_ ?_ ?_
     · intro rho hr hr1
       exact uniTwoFejerCount_le_split_tight hV hg hg1 ht ht1 hr hr1 n
     · intro rho hr hr1
       obtain ⟨hW2, -, -, -⟩ := splitW_facts hV hg hg1 ht ht1 hr hr1
-      have : (0 : Real) < splitW V theta gamma rho := by linarith only [hW2]
       positivity
     · intro rho hr hr1
       have h := uniTwoFejerExp_inv_le_split hV (by omega : 0 < K1) hp1 hKV hpV hg hg1 ht ht1 hr hr1 n

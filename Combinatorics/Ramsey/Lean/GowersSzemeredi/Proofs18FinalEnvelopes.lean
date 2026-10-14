@@ -147,7 +147,6 @@ theorem envBound_stepKx3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp μV �
   set dd := GenParamsJT3.densDegJT3 k P.μ0 with hdddef
   set M1 := dd + 1 + μ with hM1def
   have hETh : E + 4 ≤ Th := by rw [hThdef]; unfold GenParamsJT3.threshDegJT3; exact le_max_left _ _
-  have hk3 : k + 2 ≤ (k + 2) ^ 3 := Nat.le_self_pow (by norm_num) _
   obtain ⟨-, hYμ⟩ := input_scale_le (μ := μ) ha ha2 hy0 hyi
   have bi' : β⁻¹ ≤ (2 / alpha) ^ (2 ^ M1) := bi.trans hYμ
   have si' : σ⁻¹ ≤ Real.exp ((2 / alpha) ^ (2 ^ M1)) := si.trans (Real.exp_le_exp.mpr hYμ)
@@ -201,7 +200,6 @@ theorem envStepKTx3_le_tight {k : Nat} (hk : 15 ≤ k) (μ : Nat) :
   unfold envStepKTx3 GenParamsJT3.densDegJT3 GenParamsJT3.threshDegJT3 GenParamsJT3.expDegJT3
     GenParamsJT3.rhoDegJT3 tightMu0Z tightMuW genMuKZ pDeg
   rw [tDegT3_eq_of_ge hk]
-  have := Nat.lt_two_pow_self (n := k - 1)
   have hkq : k ≤ partDeg k := by unfold partDeg; nlinarith
   generalize partDeg k = q at hkq ⊢
   generalize (k + 4) ^ 2 = s
@@ -333,7 +331,6 @@ theorem envStepJT3_le_tight {k : Nat} (hk : 15 ≤ k) (μ : Nat) :
   unfold envStepJT3 GenParamsJT3.densDegJT3 GenParamsJT3.expDegJT3 GenParamsJT3.rhoDegJT3 tightMu0Z tightMuW
     genMuKZ pDeg
   rw [tDegT3_eq_of_ge hk]
-  have := Nat.lt_two_pow_self (n := k - 1)
   generalize (k + 4) ^ 2 = s
   generalize 2 ^ (k - 1) = y at *
   omega
@@ -489,8 +486,6 @@ theorem corollary_16_11_polynomial {k : Nat} (hk : 2 ≤ k) :
     show GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + 10 ≤
       GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3
     unfold GenParamsJT3.expDegJT3
-    have := le_max_left (GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + 9)
-      (max (GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + k + 7) (genMuKZ k + 2))
     omega
   refine ⟨min (P.Eloc alpha) D, lt_min hEl0 hD0, ?_, ⌈P.Tloc alpha⌉₊, ?_⟩
   · rcases min_choice (P.Eloc alpha) D with h | h
