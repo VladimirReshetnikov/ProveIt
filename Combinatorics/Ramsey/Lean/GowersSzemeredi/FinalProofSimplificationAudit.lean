@@ -28,6 +28,8 @@ run_cmd do
     ``LeanProofs.GowersSzemeredi.split_step_gen,
     ``LeanProofs.GowersSzemeredi.zeta_gen_bounds_fejer5,
     ``LeanProofs.GowersSzemeredi.lemma156_gen_le_fejer5,
+    ``LeanProofs.GowersSzemeredi.section13_complete_square_extraction_uniform_density,
+    ``LeanProofs.GowersSzemeredi.section13_complete_square_extraction_explicit,
     ``LeanProofs.GowersSzemeredi.eventually_square_scales,
     ``LeanProofs.GowersSzemeredi.square_scales_above_power_lower_bound,
     ``LeanProofs.GowersSzemeredi.eventually_square_power_lower,
