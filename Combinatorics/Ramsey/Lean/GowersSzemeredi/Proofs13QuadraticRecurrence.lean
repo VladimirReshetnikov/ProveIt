@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs13InitialProgression
 import GowersSzemeredi.Section05
+import GowersSzemeredi.Proofs05Downstream
 
 /-!
 # Quadratic-recurrence infrastructure for Gowers's Lemma 13.5
@@ -45,93 +46,17 @@ theorem lemma135_small_cutoff_lt_lemma59_threshold :
 
 /-! ### Transporting a progression of indices -/
 
-/-- The point of `P` with natural index `t`. -/
-def stage135IndexPoint {N : Nat} (P : ModAP N) (t : Nat) : ZMod N :=
-  P.start + (t : ZMod N) * P.step
-
-/-- Transport a natural-number progression through the parametrization of a
-modular progression. -/
-def stage135Transport {N : Nat} (P : ModAP N) (R : NatAP) : ModAP N where
-  start := stage135IndexPoint P R.start
-  step := (R.step : ZMod N) * P.step
-  length := R.length
-
-theorem stage135Transport_length {N : Nat} (P : ModAP N) (R : NatAP) :
-    (stage135Transport P R).length = R.length :=
-  rfl
-
-theorem stage135Transport_carrier {N : Nat} (P : ModAP N) (R : NatAP) :
-    (stage135Transport P R).carrier =
-      R.carrier.image (stage135IndexPoint P) := by
-  classical
-  ext x
-  simp only [ModAP.carrier, NatAP.carrier, stage135Transport,
-    stage135IndexPoint, Finset.mem_image, Finset.mem_univ, true_and]
-  constructor
-  · rintro ⟨i, rfl⟩
-    refine ⟨R.start + (i : Nat) * R.step, ?_, ?_⟩
-    · exact ⟨i, rfl⟩
-    · push_cast
-      ring
-  · rintro ⟨t, ⟨i, rfl⟩, rfl⟩
-    refine ⟨i, ?_⟩
-    push_cast
-    ring
-
-theorem stage135Transport_subset {N : Nat} (P : ModAP N) (R : NatAP)
-    (hR : R.carrier ⊆ Finset.range P.length) :
-    (stage135Transport P R).carrier ⊆ P.carrier := by
-  classical
-  rw [stage135Transport_carrier]
-  intro x hx
-  obtain ⟨t, htR, rfl⟩ := Finset.mem_image.mp hx
-  have ht : t < P.length := Finset.mem_range.mp (hR htR)
-  rw [ModAP.carrier]
-  exact Finset.mem_image.mpr ⟨⟨t, ht⟩, Finset.mem_univ _, rfl⟩
-
-private lemma stage135IndexPoint_injective_on_range {N : Nat} [NeZero N]
-    (P : ModAP N) (hP : P.IsProper) :
-    Set.InjOn (stage135IndexPoint P) (Finset.range P.length : Set Nat) := by
-  classical
-  rw [ModAP.IsProper, ModAP.carrier] at hP
-  have hcard :
-      (Finset.univ.image fun i : Fin P.length =>
-        P.start + (i : Nat) * P.step).card =
-        (Finset.univ : Finset (Fin P.length)).card := by
-    simpa using hP
-  have hinj := Finset.card_image_iff.mp hcard
-  intro x hx y hy hxy
-  let ix : Fin P.length := ⟨x, Finset.mem_range.mp hx⟩
-  let iy : Fin P.length := ⟨y, Finset.mem_range.mp hy⟩
-  have hixy : ix = iy := hinj (Finset.mem_univ ix) (Finset.mem_univ iy) (by
-    simpa only [ix, iy, stage135IndexPoint] using hxy)
-  exact congrArg Fin.val hixy
-
-theorem stage135Transport_isProper {N : Nat} [NeZero N]
-    (P : ModAP N) (R : NatAP) (hP : P.IsProper) (hR : R.IsProper)
-    (hsub : R.carrier ⊆ Finset.range P.length) :
-    (stage135Transport P R).IsProper := by
-  classical
-  rw [ModAP.IsProper, stage135Transport_carrier,
-    Finset.card_image_iff.mpr]
-  · exact hR.2
-  · intro x hx y hy hxy
-    apply stage135IndexPoint_injective_on_range P hP
-    · exact hsub hx
-    · exact hsub hy
-    · exact hxy
-
 theorem stage135Transport_step_ne_zero {N : Nat} [NeZero N]
     (P : ModAP N) (R : NatAP) (hP : P.IsProper)
     (hR : R.IsProper) (hRtwo : 2 ≤ R.length)
     (hsub : R.carrier ⊆ Finset.range P.length) :
-    (stage135Transport P R).step != 0 := by
+    (section5Transport P R).step != 0 := by
   apply bne_iff_ne.mpr
   intro hzero
-  have hproper := stage135Transport_isProper P R hP hR hsub
-  have hcard : (stage135Transport P R).carrier.card = R.length := by
-    simpa only [ModAP.IsProper, stage135Transport_length] using hproper
-  have hcollapse : (stage135Transport P R).carrier.card ≤ 1 := by
+  have hproper := section5Transport_isProper P R hP hR hsub
+  have hcard : (section5Transport P R).carrier.card = R.length := by
+    simpa only [ModAP.IsProper, section5Transport_length] using hproper
+  have hcollapse : (section5Transport P R).carrier.card ≤ 1 := by
     rw [ModAP.carrier]
     apply Finset.card_le_one_iff.mpr
     intro x y hx hy
