@@ -403,7 +403,7 @@ theorem section16_retained_domain_card {N k : Nat} [NeZero N]
           exact ⟨hzz, ((Finset.mem_filter.mp hz).2).trans ((Finset.mem_filter.mp hz').2).symm⟩
       have h2 := card_filter_selected_not_mem_le (n := k) (l := k)
         (Function.Embedding.refl (Fin k)) x0 (Js x) (hJs x) le_rfl
-      simp only [Function.Embedding.refl_apply, pow_zero] at h2
+      simp only [Function.Embedding.refl_apply] at h2
       have h1' : (((Finset.univ.filter fun z : Point N (k + 1) =>
           section16Init z + x0 ∉ Js (section16Last z)).filter fun z =>
             section16Last z = x).card : Real) ≤

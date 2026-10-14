@@ -96,7 +96,7 @@ theorem polyPartConst_le_sharp (k : Nat) :
   unfold polynomialPartitionConstant partDeg
   have h := factorial_sq_mul_two_pow_le (k + 1 + 1)
   have e : 2 ^ ((k + 1 + 1) * (k + 1 + 1)) = 2 ^ ((k + 2) * (k + 1)) * 2 ^ (k + 1 + 1) := by
-    rw [← pow_add]; congr 1 <;> ring
+    rw [← pow_add]; congr 1
   rw [e] at h
   have h' : (k + 1 + 1).factorial ^ 2 ≤ 2 ^ ((k + 2) * (k + 1)) :=
     Nat.le_of_mul_le_mul_right h (by positivity)

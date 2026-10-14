@@ -160,7 +160,7 @@ theorem MultiplyLinearWith.fin_union {N k : Nat} [NeZero N] {Q E : Real → Real
     intro Gamma hGamma
     have h0 : section16FinsetUnion Gamma = Gamma 0 := by
       ext z
-      simp [section16FinsetUnion, Fin.exists_fin_one]
+      simp [section16FinsetUnion]
     rw [h0]
     refine (hGamma 0).congr_controls ?_ ?_
     · intro s _ _

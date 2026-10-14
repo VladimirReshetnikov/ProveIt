@@ -80,11 +80,9 @@ theorem theorem_18_1_degree_zero : Theorem181At 0 := by
   show ∑ a : Point N 0, ‖∑ s : ZMod N, cubeDifference (balanced A) a s‖ ^ 2 ≤
     alpha * (N : Real) ^ (0 + 2)
   have hα0 : 0 ≤ alpha * (N : Real) ^ (0 + 2) := by positivity
-  first
-    | (simp only [hsum, norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true,
-        zero_pow, Finset.sum_const_zero]; exact hα0)
-    | (simp [hsum]; done)
-    | (simp [hsum]; positivity)
+  simp only [hsum, norm_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true,
+    zero_pow, Finset.sum_const_zero]
+  exact hα0
 
 /-- A fixed power dominates both parameters of the quadratic inverse
 throughout the source's density range. This does not fix a tower offset. -/

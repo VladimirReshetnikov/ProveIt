@@ -223,7 +223,7 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
     rw [hLval, inv_div, div_eq_mul_inv, mul_inv]
     have h := tb_mul hν hW1 hBq0.le (mul_nonneg (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le) hBq
       (tb_mul hν hW1 (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le hEr hEb)
-    exact h.trans (le_of_eq (by rw [hLBdef] <;> ring_nf))
+    exact h.trans (le_of_eq (by rw [hLBdef]))
   -- the slice exponent
   have hSamp := twoSamples_le_split hν hW2 hr hrW hM hqf
   set Sp := famPieceSamples (famTwoQr M qf) M rho

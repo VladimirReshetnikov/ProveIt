@@ -143,7 +143,6 @@ private lemma norm_sum_linear_phase_le (x c : Real) (n : Nat) :
     apply Finset.sum_congr rfl
     intro s _
     rw [← realExponential_nat_mul]
-    push_cast
     rw [realExponential_add]
     ring_nf
   rw [hfactor, norm_mul, realExponential_norm, one_mul]
@@ -285,7 +284,7 @@ private lemma norm_sum_sq_le_sum_norm_correlation
   have hcorr := sum_mul_star_sum_eq_sum_correlation s d f hd
   change ‖S‖ ^ 2 ≤ _
   calc
-    ‖S‖ ^ 2 = ‖S * star S‖ := by simp [norm_mul, pow_two]
+    ‖S‖ ^ 2 = ‖S * star S‖ := by simp [pow_two]
     _ = ‖∑ h ∈ d, finiteCorrelation s f h‖ := by rw [hcorr]
     _ ≤ ∑ h ∈ d, ‖finiteCorrelation s f h‖ := norm_sum_le _ _
 
@@ -337,7 +336,7 @@ private lemma finiteCorrelation_realExponential_interval
   apply Finset.sum_congr rfl
   intro x _
   rw [star_realExponential, ← realExponential_add]
-  congr 1 <;> ring
+  congr 1
 
 private lemma finiteCorrelation_finiteDifferenceSum
     (phi : Int → Real) (a b h : Int) (hs : List Int) :
@@ -634,7 +633,7 @@ private lemma iteratedRealDifference_pow_length (hs : List Int) (x : Int) :
         rw [iteratedRealDifference_smul]
         rw [iteratedRealDifference_pow_eq_zero_of_lt hs (mem_range.mp hi), mul_zero]
       rw [hzero, zero_add, iteratedRealDifference_smul, ih]
-      simp only [Nat.choose_succ_self_right, Nat.cast_succ, Nat.cast_ofNat,
+      simp only [Nat.choose_succ_self_right, Nat.cast_succ,
         Nat.add_sub_cancel_left, pow_one, Nat.factorial_succ]
       rw [realShiftProduct_append_singleton]
       push_cast
@@ -658,8 +657,7 @@ private lemma iteratedMonomialDifference_sub {alpha : Real} {k : Nat}
     exact Nat.sub_add_cancel hk
   have hfull := iteratedRealDifference_scaled_full alpha ((x - y) :: hs) y
   rw [hlen] at hfull
-  simp only [iteratedRealDifference, realShiftProduct, List.map_cons,
-    List.prod_cons] at hfull
+  simp only [iteratedRealDifference, realShiftProduct] at hfull
   have hyx : y + (x - y) = x := by omega
   rw [hyx] at hfull
   change
@@ -1028,7 +1026,7 @@ private def listConsEmbedding (α : Type*) : α × List α ↪ List α where
     | mk pHead pTail =>
       cases q with
       | mk qHead qTail =>
-        simp only [Prod.fst, Prod.snd] at hpq
+        simp only at hpq
         simpa using hpq
 
 private def listsIn {α : Type*} [DecidableEq α] (s : Finset α) :
@@ -1353,7 +1351,7 @@ private lemma positiveProductMajorantSum_grouped
       change (∑ l ∈ boundedFactorizationLists r n t,
         geometricSumMajorant t
           (alpha * (Nat.factorial k : Real) * l.prod)) = _
-      simp only [boundedFactorizationLists, mem_filter]
+      simp only [boundedFactorizationLists]
       calc
         (∑ l ∈ boundedFactorizationLists r n t,
             geometricSumMajorant t
@@ -1500,7 +1498,6 @@ private lemma geometricSumMajorant_le_radialBin {Q Y : Nat} (hQ : 1 ≤ Q)
         (inv_nonneg.mpr (mul_nonneg (by norm_num) (abs_nonneg _)))
     _ = Q := by
       field_simp [ne_of_gt hrepPos]
-      <;> ring
 
 private lemma separated_geometricSumMajorant_sum_le {Q Y : Nat} (hQ : 1 ≤ Q)
     {I : Type*} [DecidableEq I] (s : Finset I) (phase : I → Real)
@@ -1586,7 +1583,6 @@ private lemma separated_geometricSumMajorant_sum_le {Q Y : Nat} (hQ : 1 ≤ Q)
           have hmOne : 1 ≤ m := (mem_Icc.mp hm).1
           exact_mod_cast (show m ≠ 0 by omega)
         field_simp [hm0]
-        <;> ring
       _ ≤ 2 * Q * (1 + Real.log Q) := by
         gcongr
         simpa only [harmonic_eq_sum_Icc, Rat.cast_sum, Rat.cast_inv,
@@ -1622,7 +1618,6 @@ private lemma rational_circle_norm_lower {a q d : Int}
     dsimp only [z, r]
     push_cast
     field_simp [ne_of_gt hqReal]
-    <;> ring
   change |z - (r : Real)| < ((q : Real))⁻¹ at hsmall
   rw [hrewrite, abs_div, abs_of_pos hqReal, inv_eq_one_div,
     div_lt_div_iff_of_pos_right hqReal] at hsmall
@@ -1976,11 +1971,9 @@ private lemma rational_geometric_sum_le (X Y : Nat)
                 (2 * Y + 2 * Q * W)) * Q =
               (3 * X + Q) * (2 * Y + 2 * Q * W) := by
               field_simp [ne_of_gt hQReal]
-              <;> ring
             have hright : (64 * ((X : Real) * Y / Q + X + Q) * W) * Q =
                 64 * (X * Y + X * Q + Q ^ 2) * W := by
               field_simp [ne_of_gt hQReal]
-              <;> ring
             apply (mul_le_mul_iff_left₀ hQReal).mp
             rw [hleft, hright]
             have hXYW : (X : Real) * Y ≤ X * Y * W :=
@@ -2132,7 +2125,6 @@ private lemma weyl_divisor_exponent_le {k : Nat} (hk : 1 ≤ k) :
         ((8 * k ^ 3 : Nat) : Real) := by
       push_cast
       field_simp [ne_of_gt hkPos]
-      <;> ring
 
 def weylRaisedCoefficientAt (k m : Nat) : Real :=
   let K := weylDifferencingPower k
@@ -2161,7 +2153,6 @@ private lemma divisorMultiplicityLoss_eq {m r t : Nat}
         congr 1
         push_cast
         field_simp [ne_of_gt hmReal]
-        <;> ring
       _ = (m : Real) ^ (r * 2 ^ m) := Real.rpow_natCast _ _
   · calc
       (((t : Real) ^ r) ^ ((r : Real) / m)) =
@@ -2201,7 +2192,7 @@ private lemma finiteDifferenceSum_nil_eq_weylSum (alpha : Real) (k t : Nat) :
   · intro z hz
     have hzOne : (1 : Int) ≤ z := (mem_Icc.mp hz).1
     have hzNonneg : 0 ≤ z := by omega
-    simpa only [Int.toNat_of_nonneg hzNonneg]
+    simp only [Int.toNat_of_nonneg hzNonneg]
   · intro n hn
     push_cast <;> rfl
 
@@ -2816,7 +2807,7 @@ private lemma weyl_degree_one_bound (t : Nat) (a q : Int) (alpha : Real)
     have hsep := nearby_rational_phase_separated hq haq halpha
       (show (1 : Nat) ≠ 0 by omega)
       (show |((1 : Nat) : Int) - 0| ≤ q / 2 by
-        simp only [Nat.cast_one, Nat.cast_zero, sub_zero, abs_one]
+        simp only [Nat.cast_one, sub_zero, abs_one]
         exact Int.le_ediv_iff_mul_le (by norm_num) |>.2 (by omega))
     have hrep0 : nearestIntegerRepresentative (alpha * (0 : Nat)) = 0 := by
       simp [nearestIntegerRepresentative]
@@ -2951,7 +2942,7 @@ private theorem weyl_all_epsilon_bound (k : Nat) (hk : 1 ≤ k)
       positivity
     have hKnat : K = 2 ^ (k - 1) := rfl
     have hrootExp : ((K : Real))⁻¹ = ((2 : Real) ^ (k - 1))⁻¹ := by
-      simpa only [hKnat, Nat.cast_pow, Nat.cast_ofNat]
+      simp only [hKnat, Nat.cast_pow, Nat.cast_ofNat]
     by_cases htLarge : T ≤ t
     · have htTwo : 2 ≤ t := (le_max_left 2 k).trans htLarge
       have hkt : k ≤ t := (le_max_right 2 k).trans htLarge
@@ -3511,7 +3502,6 @@ private theorem weyl_explicit_bound_repaired (k : Nat) (hk : 1 ≤ k)
           (4 * (k : Real))⁻¹ := by
         rw [hpow]
         field_simp [ne_of_gt hkReal]
-        <;> ring
       rw [mul_add, mul_one, hbonus]
       calc
         (2 : Real) ^ (k - 1) + eta + (8 * (k : Real))⁻¹ ≤

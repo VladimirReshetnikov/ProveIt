@@ -496,7 +496,7 @@ private lemma higher_condition_vi_imp_iii_succ {N n : Nat} [NeZero N]
         mul_le_mul_of_nonneg_right hc (by positivity)
   · intro a
     by_cases ha : UniformOfDegree (cubeDifference g a) c2 1
-    · simpa [alpha, ha] using ha
+    · simp [alpha, ha]
     · simpa [alpha, ha] using
         (discValued_uniform_one (d := 1) (cubeDifference_discValued hg a))
 

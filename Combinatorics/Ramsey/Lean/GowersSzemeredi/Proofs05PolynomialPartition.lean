@@ -1030,7 +1030,6 @@ private lemma lemma55_threshold_weyl_gap {k t : Nat} (hk : 2 ≤ k)
     push_cast
     rw [hpow]
     field_simp [ne_of_gt hkReal]
-    <;> ring
   calc
     (48000 : Real) < (2 : Real) ^ 16 := by norm_num
     _ ≤ (t : Real) ^ ((D : Real)⁻¹) := hroot
@@ -1177,7 +1176,6 @@ private lemma lemma55_exponent_budget {k : Nat} (hk : 2 ≤ k) :
     rw [← hsubCast]
     exact_mod_cast hpowNat
   have hpowPos : (0 : Real) < (2 : Real) ^ (k + 1) := by positivity
-  push_cast
   field_simp [ne_of_gt hkReal, ne_of_gt hpowPos]
   nlinarith
 
@@ -1205,7 +1203,6 @@ private lemma lemma55_sqrt_exponent_budget {k : Nat} (hk : 2 ≤ k) :
     rw [← hsubCast]
     exact_mod_cast hpowNat
   have hpowPos : (0 : Real) < (2 : Real) ^ (k + 1) := by positivity
-  push_cast
   field_simp [ne_of_gt hkReal, ne_of_gt hpowPos]
   nlinarith
 
@@ -1306,7 +1303,7 @@ private lemma lemma55_dirichlet_denominator_le {k t q : Nat}
                 (t : Real) ^ (-(k : Real)) := by rw [Real.rpow_one]
           _ = (t : Real) ^ ((1 : Real) + -(k : Real)) := by
             rw [Real.rpow_add htPos]
-          _ = (t : Real) ^ (1 - (k : Real)) := by congr 1 <;> ring
+          _ = (t : Real) ^ (1 - (k : Real)) := by congr 1
       _ ≤ X := by
         dsimp only [X]
         exact Real.rpow_le_rpow_of_exponent_le htOne hexponent
@@ -1341,7 +1338,6 @@ private lemma lemma55_dirichlet_denominator_le {k t q : Nat}
     dsimp only [gamma]
     rw [hpow]
     field_simp [ne_of_gt hkReal, ne_of_gt hKPos]
-    <;> ring
   have hupper' :
       ‖weylSum alpha k t‖ ≤
         3000 * (t : Real) ^ (1 - 3 * gamma) := by
@@ -1464,7 +1460,7 @@ private lemma lemma55_sqrt_dirichlet_denominator_le {k u q : Nat}
                 (u : Real) ^ (-(k : Real)) := by rw [Real.rpow_one]
           _ = (u : Real) ^ ((1 : Real) + -(k : Real)) := by
             rw [Real.rpow_add huPos]
-          _ = (u : Real) ^ (1 - (k : Real)) := by congr 1 <;> ring
+          _ = (u : Real) ^ (1 - (k : Real)) := by congr 1
       _ ≤ X := by
         dsimp only [X]
         exact Real.rpow_le_rpow_of_exponent_le huOne hexponent
@@ -1499,7 +1495,6 @@ private lemma lemma55_sqrt_dirichlet_denominator_le {k u q : Nat}
     dsimp only [gamma]
     rw [hpow]
     field_simp [ne_of_gt hkReal, ne_of_gt hKPos]
-    <;> ring
   have hupper' :
       ‖weylSum alpha k u‖ ≤
         3000 * (u : Real) ^ (1 - 3 * gamma) := by
@@ -1759,7 +1754,6 @@ theorem lemma_5_5_holds : lemma_5_5 := by
     dsimp only [alpha, e₀]
     push_cast
     field_simp [ne_of_gt hNPos, ne_of_gt hqPos]
-    <;> ring
   have happrox' :
       |(e₀ : Real)| / ((N : Real) * (q : Real)) ≤
         ((q : Real) * t)⁻¹ := by
@@ -1780,7 +1774,6 @@ theorem lemma_5_5_holds : lemma_5_5 := by
         (div_le_iff₀ (mul_pos hNPos hqPos)).1 happrox'
       _ = (N : Real) / t := by
         field_simp [ne_of_gt hqPos, ne_of_gt htPos]
-        <;> ring
   have hEabsCast : (E.natAbs : Real) = |(E : Real)| := by
     have hInt : (E.natAbs : Int) = |E| := by
       rw [Int.abs_eq_natAbs]
@@ -1870,7 +1863,6 @@ theorem lemma_5_5_holds : lemma_5_5 := by
         rw [show 1 - gamma = -gamma + 1 by ring,
           Real.rpow_add htPos, Real.rpow_one]
         field_simp [ne_of_gt htPos]
-        <;> ring
   exact (not_lt_of_ge hfinal) (hno p hpOne hpLeT)
 
 /-- The square-root-size strengthening needed by the degree induction.  It
@@ -2101,7 +2093,6 @@ theorem lemma_5_5_square_root_auxiliary_holds :
     dsimp only [alpha, e₀]
     push_cast
     field_simp [ne_of_gt hNPos, ne_of_gt hqPos]
-    <;> ring
   have happrox' :
       |(e₀ : Real)| / ((N : Real) * (q : Real)) ≤
         ((q : Real) * u)⁻¹ := by
@@ -2122,7 +2113,6 @@ theorem lemma_5_5_square_root_auxiliary_holds :
         (div_le_iff₀ (mul_pos hNPos hqPos)).1 happrox'
       _ = (N : Real) / u := by
         field_simp [ne_of_gt hqPos, ne_of_gt huPos]
-        <;> ring
   have hEabsCast : (E.natAbs : Real) = |(E : Real)| := by
     have hInt : (E.natAbs : Int) = |E| := by
       rw [Int.abs_eq_natAbs]
@@ -2216,7 +2206,6 @@ theorem lemma_5_5_square_root_auxiliary_holds :
         _ = (u : Real) * (u : Real) ^ (-2 * gamma) := by rw [Real.rpow_one]
     rw [hpow]
     field_simp [ne_of_gt huPos]
-    <;> ring
   have hfinal :
       (centeredAbs (((p : ZMod N) ^ k) * a) : Real) ≤
         (t : Real) ^ (-gamma) * N := by
