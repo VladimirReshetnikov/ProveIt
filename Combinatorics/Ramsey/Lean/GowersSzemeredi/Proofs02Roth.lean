@@ -306,20 +306,6 @@ private lemma rothError_fourier {p : Nat} [NeZero p]
     (A : Finset (ZMod p)) : fourier (balanced A) 0 = 0 := by
   simp [fourier, ZMod.dft_apply]
 
-private lemma roth_fourier_balanced_eq_indicator {p : Nat} [NeZero p]
-    (A : Finset (ZMod p)) (u : ZMod p) (hu : u ≠ 0) :
-    fourier (balanced A) u = fourier (indicator A) u := by
-  rw [fourier, fourier, ZMod.dft_apply, ZMod.dft_apply]
-  simp only [balanced, smul_eq_mul, mul_sub, Finset.sum_sub_distrib]
-  have hchar :
-      (∑ x : ZMod p, exponential (-(x * u))) = 0 := by
-    simpa [exponential, mul_comm, hu] using
-      AddChar.sum_mulShift (-u) (ZMod.isPrimitive_stdAddChar p)
-  have hconst :
-      (∑ x : ZMod p, exponential (-(x * u)) * (density A : Complex)) = 0 := by
-    rw [← Finset.sum_mul, hchar, zero_mul]
-  simpa only [exponential] using sub_eq_self.mpr hconst
-
 private lemma roth_indicator_parseval {p : Nat} [NeZero p]
     (B : Finset (ZMod p)) :
     ∑ u : ZMod p, ‖fourier (indicator B) u‖ ^ 2 =
@@ -371,7 +357,7 @@ private lemma rothError_bound {p : Nat} [NeZero p] [Fact p.Prime]
     · subst u
       rw [roth_fourier_balanced_zero, norm_zero]
       exact mul_nonneg halpha hp.le
-    · rw [roth_fourier_balanced_eq_indicator A u hu]
+    · rw [cor25_fourier_balanced_eq_indicator_of_ne_zero A u hu]
       exact hsmall u hu
   have hCS :
       (∑ u : ZMod p,

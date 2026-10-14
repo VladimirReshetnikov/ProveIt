@@ -97,7 +97,7 @@ private lemma degreeOneEnergy_eq_correlation {N : Nat} [NeZero N]
     ‖∑ s : ZMod N, difference g r s‖ ^ 2
   simpa [e, cubeDifference_one] using h
 
-private lemma fourthMoment_eq_degreeOneEnergy {N : Nat} [NeZero N]
+lemma fourthMoment_eq_degreeOneEnergy {N : Nat} [NeZero N]
     (g : ZMod N → Complex) :
     ∑ r : ZMod N, ‖fourier g r‖ ^ 4 =
       (N : Real) * ∑ a : Point N 1,
@@ -106,7 +106,7 @@ private lemma fourthMoment_eq_degreeOneEnergy {N : Nat} [NeZero N]
   rw [degreeOneEnergy_eq_correlation]
   simpa only [difference, ← pow_add] using h
 
-private lemma degreeOne_uniform_iff_condition2i {N : Nat} [NeZero N]
+lemma degreeOne_uniform_iff_condition2i {N : Nat} [NeZero N]
     (g : ZMod N → Complex) (c : Real) :
     UniformOfDegree g c 1 ↔ uniformCondition2i g c := by
   unfold UniformOfDegree uniformCondition2i

@@ -148,7 +148,7 @@ private lemma cor25_fourier_indicator_norm_le_complement_card
     _ = ((Finset.univ : Finset (ZMod N)) \ A).card := by
       simp [exponential]
 
-private lemma cor25_fourier_balanced_eq_indicator_of_ne_zero
+lemma cor25_fourier_balanced_eq_indicator_of_ne_zero
     {N : Nat} [NeZero N] (A : Finset (ZMod N)) (r : ZMod N) (hr : r ≠ 0) :
     fourier (balanced A) r = fourier (indicator A) r := by
   rw [fourier, fourier, ZMod.dft_apply, ZMod.dft_apply]
