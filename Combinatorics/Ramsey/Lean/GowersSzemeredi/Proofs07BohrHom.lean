@@ -59,21 +59,6 @@ private lemma lemma78_fourier_indicator_norm_le_card {N : Nat} [NeZero N]
       by_cases hx : x ∈ A <;> simp [indicator, hx]
     _ = A.card := by simp
 
-private lemma lemma78_fourier_indicator_energy {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) :
-    (∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 2) =
-      (N : Real) * A.card := by
-  rw [identity_2_3_holds]
-  congr 1
-  classical
-  calc
-    (∑ x : ZMod N, ‖indicator A x‖ ^ 2) =
-        ∑ x : ZMod N, if x ∈ A then 1 else 0 := by
-      apply Finset.sum_congr rfl
-      intro x _
-      by_cases hx : x ∈ A <;> simp [indicator, hx]
-    _ = A.card := by simp
-
 private lemma lemma78_spectrum_card_bound {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (alpha : Real) (halpha : 0 < alpha)
     (hcard : (A.card : Real) = alpha * N) :
@@ -794,7 +779,6 @@ theorem lemma_7_8_holds : lemma_7_8 := by
       lemma78_induced_freiman A phi alpha halpha hcard hphi, ?_⟩
     intro x hx y hy hxy
     exact lemma78_induced_agrees A phi alpha halpha hcard hphi x hx y hy hxy
-
 
 private lemma lemma78_fourth_moment_lower {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) :

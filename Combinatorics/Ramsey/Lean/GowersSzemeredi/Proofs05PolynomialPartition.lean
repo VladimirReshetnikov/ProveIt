@@ -145,21 +145,6 @@ private lemma fourier_natWeight_norm_le_mass {N : Nat} [NeZero N]
   classical
   simp [fourier, ZMod.dft_apply, indicator]
 
-private lemma polynomialPartition_fourier_indicator_energy {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) :
-    (∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 2) =
-      (N : Real) * A.card := by
-  rw [identity_2_3_holds]
-  congr 1
-  classical
-  calc
-    (∑ x : ZMod N, ‖indicator A x‖ ^ 2) =
-        ∑ x : ZMod N, if x ∈ A then (1 : Real) else 0 := by
-      apply Finset.sum_congr rfl
-      intro x _
-      by_cases hx : x ∈ A <;> simp [indicator, hx]
-    _ = A.card := by simp
-
 private lemma weighted_centeredInterval_sub_mem {N L : Nat} [NeZero N]
     {x y : ZMod N} (hx : x ∈ centeredInterval N L)
     (hy : y ∈ centeredInterval N L) :
@@ -406,7 +391,7 @@ theorem weighted_missing_interval_fourier
         exact Finset.sum_le_sum_of_subset_of_nonneg (by simp)
           (fun _ _ _ => sq_nonneg _)
       _ = (t : Real) * (L + L : Nat) ^ 2 / 4 := by
-        rw [polynomialPartition_fourier_indicator_energy, hIcard]
+        rw [lemma78_fourier_indicator_energy, hIcard]
         field_simp [NeZero.ne N]
   have hhigh_eq :
       high = Finset.univ.filter (fun r : ZMod N => K < centeredAbs r) := by

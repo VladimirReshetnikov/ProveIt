@@ -127,27 +127,6 @@ private lemma rangeDeg_card_le_of_fiber_le {A B : Type*}
       Finset.sum_le_sum fun b _ => h b
     _ = Fintype.card B * m := by simp
 
-private lemma rangeDeg_sum_mul_sub_eq_one {N : Nat} {I : Type*}
-    [Fintype I] [DecidableEq I] (a x y : I → ZMod N) (i : I)
-    (hoff : ∀ t, t ≠ i → x t = y t) :
-    (∑ t, a t * x t) - (∑ t, a t * y t) =
-      a i * (x i - y i) := by
-  classical
-  rw [← Finset.sum_sub_distrib]
-  calc
-    (∑ t, (a t * x t - a t * y t)) =
-        ∑ t, a t * (x t - y t) := by
-      apply Finset.sum_congr rfl
-      intro t _
-      ring
-    _ = ∑ t ∈ ({i} : Finset I), a t * (x t - y t) := by
-      symm
-      apply Finset.sum_subset (by simp)
-      intro t _ ht
-      have hti : t ≠ i := by simpa using ht
-      rw [hoff t hti, sub_self, mul_zero]
-    _ = a i * (x i - y i) := by simp
-
 private lemma rangeDeg_sum_mul_sub_eq_two {N : Nat} {I : Type*}
     [Fintype I] [DecidableEq I] (a x y : I → ZMod N) (i j : I)
     (hij : i ≠ j) (hoff : ∀ t, t ≠ i → t ≠ j → x t = y t) :

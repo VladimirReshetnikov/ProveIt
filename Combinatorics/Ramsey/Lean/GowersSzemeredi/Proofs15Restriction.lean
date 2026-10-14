@@ -458,25 +458,6 @@ private lemma selection_additive_iff {N : Nat} (x : Fin 16 → ZMod N) :
   rw [hsum, sub_eq_zero]
   rfl
 
-private lemma selection_sum_mul_sub_eq_one {N : Nat} {I : Type*}
-    [Fintype I] [DecidableEq I] (a x y : I → ZMod N) (i : I)
-    (hoff : ∀ t, t ≠ i → x t = y t) :
-    (∑ t, a t * x t) - (∑ t, a t * y t) = a i * (x i - y i) := by
-  classical
-  rw [← Finset.sum_sub_distrib]
-  calc
-    (∑ t, (a t * x t - a t * y t)) = ∑ t, a t * (x t - y t) := by
-      apply Finset.sum_congr rfl
-      intro t _
-      ring
-    _ = ∑ t ∈ ({i} : Finset I), a t * (x t - y t) := by
-      symm
-      apply Finset.sum_subset (by simp)
-      intro t _ ht
-      have hti : t ≠ i := by simpa using ht
-      rw [hoff t hti, sub_self, mul_zero]
-    _ = a i * (x i - y i) := by simp
-
 private abbrev SelectionArrangementCode {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) :=
   (Fin 15 → {z : Point N (k + 1) // z ∈ B}) × Point N k × Point N k
@@ -517,7 +498,7 @@ private lemma selection_arrangement_count_le_card_pow {N k : Nat} [NeZero N]
     have hcrossLast : R.1.crossSection (Fin.last 15) =
         S.1.crossSection (Fin.last 15) := by
       let a : Fin 16 → ZMod N := selectionIndexSign
-      have hdiff := selection_sum_mul_sub_eq_one a R.1.crossSection
+      have hdiff := rangeDeg_sum_mul_sub_eq_one a R.1.crossSection
         S.1.crossSection (Fin.last 15) hcrossTail
       have hRadd := (selection_additive_iff R.1.crossSection).mp R.2.1
       have hSadd := (selection_additive_iff S.1.crossSection).mp S.2.1
@@ -3203,8 +3184,6 @@ theorem selection_scale_estimate_zero_explicit
         selectionDegenerate_real_small_zero_explicit scale delta hscale hdelta N hN3 hratio)
     N ((selectionSharpExplicitThreshold_le 0 alpha eta scale _
       halpha heta heta_lt hscale (by positivity)).trans hN) trivial B phi hu hl
-
-
 
 set_option maxHeartbeats 1000000 in
 /-- The height-zero specialization of the random restriction.  Unlike the

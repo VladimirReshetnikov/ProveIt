@@ -953,4 +953,19 @@ theorem lemma_9_1_holds : lemma_9_1 := by
   ring_nf at h
   exact h
 
+lemma lemma78_fourier_indicator_energy {N : Nat} [NeZero N]
+    (A : Finset (ZMod N)) :
+    (∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 2) =
+      (N : Real) * A.card := by
+  rw [identity_2_3_holds]
+  congr 1
+  classical
+  calc
+    (∑ x : ZMod N, ‖indicator A x‖ ^ 2) =
+        ∑ x : ZMod N, if x ∈ A then (1 : Real) else 0 := by
+      apply Finset.sum_congr rfl
+      intro x _
+      by_cases hx : x ∈ A <;> simp [indicator, hx]
+    _ = A.card := by simp
+
 end LeanProofs.GowersSzemeredi
