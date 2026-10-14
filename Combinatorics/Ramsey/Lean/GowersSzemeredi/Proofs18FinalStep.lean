@@ -499,8 +499,8 @@ theorem yIn_boundsJT3 {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
       (P.yIn alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ densDegJT3 P.k P.μ0) := by
   have hX := two_div_ge_two ha ha2
   have hri := P.rho1_inv_leJT3 ha ha2 hV hVμ hμ0
-  set k := P.k with hkdef
-  set μD := tDegT3 k with hμDdef
+  set k := P.k
+  set μD := tDegT3 k
   have hρ1 : μD + P.μ0 + 3 ≤ rhoDegJT3 k P.μ0 := (rhoDegJT3_ge k P.μ0).1
   have hbase := baseCFW_recipPowerLB (D := uDegT3 k) (k := k) ha ha2 hV hVμ hμ0
   have hD : uDegT3 k ≤ 2 ^ μD := le_rfl
@@ -571,9 +571,9 @@ theorem spectrum_exps_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < a
       (P.Bexp alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ expDegJT3 P.k P.μ0 μK) := by
   have hX := two_div_ge_two ha ha2
   have hri := P.rho1_inv_leJT3 ha ha2 H.hV H.hVμ H.hμ0
-  set k := P.k with hkdef
-  set ρ := rhoDegJT3 k P.μ0 with hρdef
-  set μD := tDegT3 k with hμDdef
+  set k := P.k
+  set ρ := rhoDegJT3 k P.μ0
+  set μD := tDegT3 k
   have hρ1 : μD + P.μ0 + 3 ≤ ρ := (rhoDegJT3_ge k P.μ0).1
   have hM2 : ρ + μD + k + 7 ≤ expDegJT3 k P.μ0 μK := by
     unfold expDegJT3; exact (le_max_left _ _).trans (le_max_right _ _)
@@ -625,9 +625,9 @@ theorem slice_exps_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alph
     (P.Eth alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ (rhoDegJT3 P.k P.μ0 + tDegT3 P.k + 9)) := by
   have hX := two_div_ge_two ha ha2
   have hri := P.rho1_inv_leJT3 ha ha2 H.hV H.hVμ H.hμ0
-  set k := P.k with hkdef
-  set ρ := rhoDegJT3 k P.μ0 with hρdef
-  set μD := tDegT3 k with hμDdef
+  set k := P.k
+  set ρ := rhoDegJT3 k P.μ0
+  set μD := tDegT3 k
   have hρ1 : μD + P.μ0 + 3 ≤ ρ := (rhoDegJT3_ge k P.μ0).1
   obtain ⟨hB0, hB1, hBi⟩ := budget_gen_bounds_fejerW k ha ha2
   obtain ⟨hr0, hr1⟩ : 0 < P.Rho1 alpha ∧ P.Rho1 alpha ≤ 1 := P.rho1_pos_le ha ha2
@@ -709,7 +709,7 @@ theorem MReq_le_expJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha
   have hX := two_div_ge_two ha ha2
   obtain ⟨-, hQM, hBx⟩ := P.spectrum_exps_inv_leJT3 H ha ha2
   have hri := P.rho1_inv_leJT3 ha ha2 H.hV H.hVμ H.hμ0
-  set k := P.k with hkdef
+  set k := P.k
   set E := expDegJT3 k P.μ0 μK with hEdef
   set Z := 5 * k + 21 with hZdef
   have hρE : rhoDegJT3 k P.μ0 + tDegT3 k + k + 7 ≤ E := by
@@ -777,10 +777,10 @@ theorem Tloc_le_expJT3 {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha
   obtain ⟨-, ⟨hEm0, -⟩, -, ⟨hN0, -⟩, -, -⟩ := P.ranges H.hp ha ha2
   obtain ⟨hR1, hR⟩ := P.MReq_le_expJT3 H ha ha2
   have hL := lemma156_gen_le_fejer5 hk ha ha2
-  set k := P.k with hkdef
+  set k := P.k
   set E := expDegJT3 k P.μ0 μK with hEdef
   set T := threshDegJT3 k P.μ0 μK with hTdef
-  set μD := tDegT3 k with hμDdef
+  set μD := tDegT3 k
   have hET : E + 4 ≤ T := by rw [hTdef]; unfold threshDegJT3; exact le_max_left _ _
   have hZT : 5 * k + 30 ≤ T := by rw [hTdef]; unfold threshDegJT3; exact le_max_right _ _
   have hρE : rhoDegJT3 k P.μ0 + μD + k + 7 ≤ E := by

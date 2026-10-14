@@ -197,7 +197,6 @@ theorem lsShortThreshold_le {K1 p1 K2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1) (h
   set Tl := lsTloc (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) K2 p2 alpha
   set X := 2 / alpha with hX
   clear_value E T3 Tl X
-  have hZ0 : 0 ≤ X ^ ((2 : Nat) ^ 665) := pow_nonneg (le_trans (by norm_num) hX2) _
   have hT3' : T3 ≤ Real.exp (Real.exp (X ^ ((2 : Nat) ^ 665))) :=
     hT3.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr hYp))
   have hsmall : ∀ c : Real, c ≤ 2 ^ 5 → c ≤ Real.exp (Real.exp (X ^ ((2 : Nat) ^ 665))) := by

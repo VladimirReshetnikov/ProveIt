@@ -132,7 +132,6 @@ theorem rho1_inv_leF {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV : 
     pw_mul hX (inv_pos.mpr ht0).le (hX.trans (pw_X hX _)) hti
   have h := pw_mul' hX (by positivity) hcc0.le h2 hcc
   refine pw_mono hX h ?_
-  have h1 := rhoDegC_gF P.k P.μ0
   have hm : max (fixDeg P.k + 1) (P.μ0 + 1 + 23 * 2 ^ P.k + P.k) =
       P.μ0 + 1 + 23 * 2 ^ P.k + P.k := max_eq_right (by omega)
   rw [hm]
@@ -180,8 +179,8 @@ theorem yIn_boundsF {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
       (P.yIn alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ densDegF P.k P.μ0) := by
   have hX := two_div_ge_two ha ha2
   have hri := P.rho1_inv_leF ha ha2 hV hVμ hμ0
-  set k := P.k with hkdef
-  set μD := 23 * 2 ^ k with hμDdef
+  set k := P.k
+  set μD := 23 * 2 ^ k
   have hρ1 : μD + P.μ0 + 3 ≤ rhoDegF k P.μ0 := (rhoDegC_gF k P.μ0).1
   have hρ2 : fixDeg k + 1 ≤ rhoDegF k P.μ0 := (rhoDegC_gF k P.μ0).2
   have hbase := baseCF_recipPowerLB (D := uDeg23 k) (k := k) ha ha2 hV hVμ hμ0

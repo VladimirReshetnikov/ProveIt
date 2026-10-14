@@ -23,7 +23,6 @@ theorem exp_three_ge_sixteen : (16 : Real) ≤ Real.exp 3 := by
   have he : Real.exp 3 = Real.exp 1 ^ 3 := by rw [← Real.exp_nat_mul]; norm_num
   rw [he]
   have h1 : (2.7182818283 : Real) ^ 3 ≤ Real.exp 1 ^ 3 := pow_le_pow_left₀ (by norm_num) h.le 3
-  have h2 : (16 : Real) ≤ (2.7182818283 : Real) ^ 3 := by norm_num
   linarith
 
 theorem exp_five_ge_sixtyfour : (64 : Real) ≤ Real.exp 5 := by
@@ -31,7 +30,6 @@ theorem exp_five_ge_sixtyfour : (64 : Real) ≤ Real.exp 5 := by
   have he : Real.exp 5 = Real.exp 1 ^ 5 := by rw [← Real.exp_nat_mul]; norm_num
   rw [he]
   have h1 : (2.7182818283 : Real) ^ 5 ≤ Real.exp 1 ^ 5 := pow_le_pow_left₀ (by norm_num) h.le 5
-  have h2 : (64 : Real) ≤ (2.7182818283 : Real) ^ 5 := by norm_num
   linarith
 
 /-- **The capped rounded exponent, from real bounds.** -/
@@ -76,9 +74,7 @@ theorem capped_rounded_inv_le_real {L S z Λ R : Real} (hL : 0 < L) (hS : 0 < S)
   -- the cap
   have hlog2 : (1 : Real) / 2 ≤ Real.log 2 := by
     have := Real.log_two_gt_d9; linarith only [this]
-  have hl21 : Real.log 2 ≤ 1 := by
-    have := Real.log_two_lt_d9; linarith only [this]
-  set Tr := section16RoundedPowerThreshold z L S with hTr
+  set Tr := section16RoundedPowerThreshold z L S
   have hprod0 : 0 ≤ (5 + Λ) * R := mul_nonneg (by linarith) hR0
   have hlogT : Real.log (max 2 Tr) ≤ Real.log 2 + (5 + Λ) * R := by
     rcases le_total 2 Tr with h | h
@@ -262,7 +258,6 @@ theorem splitCnt_controls {V : Real} (hV : 1 ≤ V) (a D : Nat) :
     have hpos : 0 < splitCnt V a D theta gamma n s := by
       unfold splitCnt splitW
       have : (0 : Real) < (n : Real) + 1 := by positivity
-      have hV0 : (0 : Real) < V := by linarith
       positivity
     exact inv_anti₀ hpos (hmono theta gamma s ht ht1 hg hg1 hs.le hnn)
 
@@ -551,7 +546,7 @@ theorem split_exp_inv_le {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Rea
       (rho / 8 / ((classVertexNum k : Real) + 1)) hb hb1 hg hg1 hscale (by
         rw [div_le_one hnv0]; have := Nat.cast_nonneg (α := Real) (classVertexNum k)
         linarith only [this, hr1])
-  set cr := splitCnt V a D tS gamma M (rho / 8 / ((classVertexNum k : Real) + 1)) with hcrdef
+  set cr := splitCnt V a D tS gamma M (rho / 8 / ((classVertexNum k : Real) + 1))
   have hEr : clsEr (splitExp V a D) k M tS gamma (rho / 8) =
       (cr⁻¹ / 16) ^ (classVertexNum k + 1) := by
     unfold clsEr

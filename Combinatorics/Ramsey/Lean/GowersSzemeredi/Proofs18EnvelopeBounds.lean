@@ -197,7 +197,6 @@ theorem short_thr_le {X : Real} (hX : 2 ≤ X) {d : Nat} {e c T Tl : Real} {m a 
     shortLocalizationThreshold d e c T Tl ≤
       Real.exp (Real.exp (X ^ (2 ^ (max (max m j) (max a t) + 2)))) := by
   set M := max (max m j) (max a t)
-  have hX0 : (0 : Real) ≤ X := by linarith
   have hcE : c ≤ Real.exp (Real.exp (X ^ (2 ^ max m j))) :=
     le_exp_exp_of_le_exp (ex_of_pw (pw_mono hX (pw_const hX hc) (le_max_right _ _)))
   have hTE : T ≤ Real.exp (Real.exp (X ^ (2 ^ max m j))) := dex_mono hX hT (le_max_left _ _)

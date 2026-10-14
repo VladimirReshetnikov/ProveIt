@@ -249,7 +249,6 @@ theorem section16_ascending_freiman_family_poly_cover {N q : Nat} [NeZero N] [Fa
   refine ⟨M, q, H, Q, mu, hHsub, hHmass, indexCells_partition P hP S hSpart, hQasc,
     ?_, ?_, ?_, ?_⟩
   · show (q : Real) ≤ ((3 ^ 1 * q : Nat) : Real)
-    have hq0 : (0 : Real) ≤ q := Nat.cast_nonneg _
     push_cast
     linarith
   · intro j

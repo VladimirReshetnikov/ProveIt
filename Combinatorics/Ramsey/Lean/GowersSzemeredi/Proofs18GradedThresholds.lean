@@ -102,7 +102,7 @@ theorem MReq_le_expG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alpha) (ha2 
   have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   obtain ⟨-, hQM, hBx⟩ := P.spectrum_exps_inv_leG H ha ha2
   have hri := P.rho1_inv_leG ha ha2 H.hk0 H.hk68
-  set k := P.k with hkdef
+  set k := P.k
   set E := expDegG k P.μ0 μK with hEdef
   set Z := 2 ^ (k + 6) + 1 with hZdef
   have hZ2 : 2 ≤ Z := by rw [hZdef]; have := Nat.one_le_two_pow (n := k + 6); omega
@@ -177,10 +177,10 @@ theorem Tloc_le_expG {μV μK : Nat} (H : GHyp P μV μK) (hk : 1 ≤ P.k) (ha :
   have hri := P.rho1_inv_leG ha ha2 H.hk0 H.hk68
   obtain ⟨hR1, hR⟩ := P.MReq_le_expG H ha ha2
   have hL := lemma156_gen_le hk ha ha2
-  set k := P.k with hkdef
+  set k := P.k
   set E := expDegG k P.μ0 μK with hEdef
   set T := threshDegG k P.μ0 μK with hTdef
-  set μD := 68 * 2 ^ k with hμDdef
+  set μD := 68 * 2 ^ k
   have hET : E + 4 ≤ T := by rw [hTdef]; unfold threshDegG; exact le_max_left _ _
   have hZT : 2 ^ (k + 6) + 5 ≤ T := by rw [hTdef]; unfold threshDegG; exact le_max_right _ _
   have hρE : rhoDegG k P.μ0 + μD + k + 7 ≤ E := by

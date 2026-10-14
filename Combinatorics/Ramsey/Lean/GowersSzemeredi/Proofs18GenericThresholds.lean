@@ -168,7 +168,6 @@ theorem MReq_le_exp {V : Real} {D k K p μV μD μ0 μK : Nat} (H : StdHyp V D k
   have hBe2 : 2 / B ≤ (2 / alpha) ^ (2 ^ (E + 1)) := by
     rw [div_eq_mul_inv]
     exact pw_mul hX (inv_pos.mpr hBpos).le (hX.trans (pw_X hX _)) hBx
-  have hT := max (E + 3) (2 ^ (k + 6) + 4)
   have e1 := ex_rpow_of_nonneg hX (by positivity) (hcz 8 (by norm_num)) (by positivity) hBe
   have e2 := ex_rpow_of_nonneg hX (by positivity) h4zr (by positivity) hBe
   have e3 := ex_rpow_of_nonneg hX (by positivity) (hcz 16 le_rfl) (by positivity) hBe2

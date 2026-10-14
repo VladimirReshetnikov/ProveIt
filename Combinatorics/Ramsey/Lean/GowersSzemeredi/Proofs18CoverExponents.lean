@@ -39,11 +39,10 @@ theorem spectrum_exps_inv_leC {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alp
       (P.QM alpha : Real) + 1 ≤ (2 / alpha) ^ (2 ^ (rhoDegC P.k P.μ0 + 68 * 2 ^ P.k + 3)) ∧
       (P.Bexp alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ expDegC P.k P.μ0 μK) := by
   have hX := two_div_ge_two ha ha2
-  have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   have hri := P.rho1_inv_leC ha ha2 H.hV H.hVμ H.hμ0
-  set k := P.k with hkdef
-  set ρ := rhoDegC k P.μ0 with hρdef
-  set μD := 68 * 2 ^ k with hμDdef
+  set k := P.k
+  set ρ := rhoDegC k P.μ0
+  set μD := 68 * 2 ^ k
   have hρ1 : μD + P.μ0 + 3 ≤ ρ := (rhoDegC_ge k P.μ0).1
   have hM2 : ρ + μD + k + 7 ≤ expDegC k P.μ0 μK := by
     unfold expDegC; exact (le_max_left _ _).trans (le_max_right _ _)
@@ -96,11 +95,10 @@ theorem slice_exps_inv_leC {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha)
     (P.Eth alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ (rhoDegC P.k P.μ0 + 2 * (68 * 2 ^ P.k) + 9)) ∧
       (P.Ec alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ (rhoDegC P.k P.μ0 + 2 * (68 * 2 ^ P.k) + 9)) := by
   have hX := two_div_ge_two ha ha2
-  have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   have hri := P.rho1_inv_leC ha ha2 H.hV H.hVμ H.hμ0
-  set k := P.k with hkdef
-  set ρ := rhoDegC k P.μ0 with hρdef
-  set μD := 68 * 2 ^ k with hμDdef
+  set k := P.k
+  set ρ := rhoDegC k P.μ0
+  set μD := 68 * 2 ^ k
   have hρ1 : μD + P.μ0 + 3 ≤ ρ := (rhoDegC_ge k P.μ0).1
   obtain ⟨hB0, hB1, hBi⟩ := budget_gen_bounds k ha ha2
   obtain ⟨ht0, ht1, -⟩ := T2_gen_bounds k ha ha2
@@ -192,7 +190,7 @@ theorem MReq_le_expC {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha2 
   have hX := two_div_ge_two ha ha2
   obtain ⟨-, hQM, hBx⟩ := P.spectrum_exps_inv_leC H ha ha2
   have hri := P.rho1_inv_leC ha ha2 H.hV H.hVμ H.hμ0
-  set k := P.k with hkdef
+  set k := P.k
   set E := expDegC k P.μ0 μK with hEdef
   set Z := 2 ^ (k + 6) + 1 with hZdef
   have hZ2 : 2 ≤ Z := by rw [hZdef]; have := Nat.one_le_two_pow (n := k + 6); omega
@@ -255,17 +253,16 @@ theorem Tloc_le_expC {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha :
     (ha2 : alpha ≤ 1 / 2) :
     P.Tloc alpha ≤ Real.exp ((2 / alpha) ^ (2 ^ threshDegC P.k P.μ0 μK)) := by
   have hX := two_div_ge_two ha ha2
-  have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leC H ha ha2
   obtain ⟨hEm, -, -⟩ := P.spectrum_exps_inv_leC H ha ha2
   have hNE := P.nestExp_inv_leC ha ha2 H.hV H.hVμ H.hμ0
   obtain ⟨-, ⟨hEm0, -⟩, -, -, ⟨hN0, -⟩, -, -⟩ := P.ranges H.hV H.hp ha ha2
   obtain ⟨hR1, hR⟩ := P.MReq_le_expC H ha ha2
   have hL := lemma156_gen_le hk ha ha2
-  set k := P.k with hkdef
+  set k := P.k
   set E := expDegC k P.μ0 μK with hEdef
   set T := threshDegC k P.μ0 μK with hTdef
-  set μD := 68 * 2 ^ k with hμDdef
+  set μD := 68 * 2 ^ k
   have hET : E + 4 ≤ T := by rw [hTdef]; unfold threshDegC; exact le_max_left _ _
   have hZT : 2 ^ (k + 6) + 5 ≤ T := by rw [hTdef]; unfold threshDegC; exact le_max_right _ _
   have hρE : rhoDegC k P.μ0 + μD + k + 7 ≤ E := by

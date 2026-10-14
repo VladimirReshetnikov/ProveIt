@@ -333,7 +333,7 @@ theorem split_exp_inv_le_fejer2 {k ac Dc ae De : Nat} (hac : 1 ≤ ac) (hDc : 1 
       (rho / 8 / ((classVertexNum k : Real) + 1)) hb hb1 hg hg1 hscale (by
         rw [div_le_one hnv0]; have := Nat.cast_nonneg (α := Real) (classVertexNum k)
         linarith only [this, hr1])
-  set cr := splitCnt V ae De tS gamma M (rho / 8 / ((classVertexNum k : Real) + 1)) with hcrdef
+  set cr := splitCnt V ae De tS gamma M (rho / 8 / ((classVertexNum k : Real) + 1))
   have hEr : clsEr (splitExp V ae De) k M tS gamma (rho / 8) =
       (cr⁻¹ / 16) ^ (classVertexNum k + 1) := by
     unfold clsEr

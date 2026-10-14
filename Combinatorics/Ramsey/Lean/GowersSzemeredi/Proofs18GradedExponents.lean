@@ -105,7 +105,7 @@ theorem nestExp_inv_leG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alpha) (h
   have hDk : ∀ j, j ≤ P.k → uDeg68 j ≤ 2 ^ (68 * 2 ^ P.k) := fun j hj =>
     Nat.pow_le_pow_right (by norm_num)
       (Nat.mul_le_mul_left _ (Nat.pow_le_pow_right (by norm_num) hj))
-  set M := (2 / alpha) ^ (2 ^ (rhoDegG P.k P.μ0 + 68 * 2 ^ P.k + 3)) with hMdef
+  set M := (2 / alpha) ^ (2 ^ (rhoDegG P.k P.μ0 + 68 * 2 ^ P.k + 3))
   have hfac : ∀ j i, i < vertexFaceCounts P.k j →
       (lwE (P.Ewg alpha j) P.k (nestC (fun _ => P.Cg alpha j) i
         (gradedNestC (fun l => P.Cg alpha l) (vertexFaceCounts P.k) j (P.T2 alpha))))⁻¹ ≤ M := by
@@ -151,9 +151,9 @@ theorem spectrum_exps_inv_leG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alp
   have hX := two_div_ge_two ha ha2
   have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   have hri := P.rho1_inv_leG ha ha2 H.hk0 H.hk68
-  set k := P.k with hkdef
-  set ρ := rhoDegG k P.μ0 with hρdef
-  set μD := 68 * 2 ^ k with hμDdef
+  set k := P.k
+  set ρ := rhoDegG k P.μ0
+  set μD := 68 * 2 ^ k
   have hρ1 : μD + P.μ0 + 3 ≤ ρ := (rhoDegG_ge k P.μ0).1
   have hM2 : ρ + μD + k + 7 ≤ expDegG k P.μ0 μK := by
     unfold expDegG; exact (le_max_left _ _).trans (le_max_right _ _)
@@ -210,9 +210,9 @@ theorem slice_exps_inv_leG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alpha)
   have hX := two_div_ge_two ha ha2
   have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   have hri := P.rho1_inv_leG ha ha2 H.hk0 H.hk68
-  set k := P.k with hkdef
-  set ρ := rhoDegG k P.μ0 with hρdef
-  set μD := 68 * 2 ^ k with hμDdef
+  set k := P.k
+  set ρ := rhoDegG k P.μ0
+  set μD := 68 * 2 ^ k
   have hρ1 : μD + P.μ0 + 3 ≤ ρ := (rhoDegG_ge k P.μ0).1
   obtain ⟨hB0, hB1, hBi⟩ := budget_gen_bounds k ha ha2
   obtain ⟨ht0, ht1, -⟩ := T2_gen_bounds k ha ha2
