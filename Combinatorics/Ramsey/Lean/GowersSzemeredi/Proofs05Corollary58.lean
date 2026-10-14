@@ -61,14 +61,6 @@ private def cor58BalancedReal {N : Nat} (A : Finset (ZMod N))
     (delta : Real) (x : ZMod N) : Real :=
   (if x ∈ A then 1 else 0) - delta
 
-private lemma cor58_density_eq {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) (delta : Real)
-    (hcard : (A.card : Real) = delta * N) : density A = delta := by
-  have hN : (N : Real) ≠ 0 := by exact_mod_cast NeZero.ne N
-  unfold density
-  rw [hcard]
-  field_simp
-
 private lemma cor58_balanced_eq_real {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (delta : Real)
     (hcard : (A.card : Real) = delta * N) (x : ZMod N) :
@@ -94,23 +86,6 @@ private lemma cor58_balanced_discValued {N : Nat} [NeZero N]
     norm_cast
     rw [Real.norm_eq_abs, abs_neg, abs_of_nonneg hd0]
     exact hd1
-
-private lemma cor58_sum_partition {X R : Type*} [DecidableEq X]
-    {m : Nat} [AddCommMonoid R] (P : Fin m → Finset X) (S : Finset X)
-    (hpartition : IsPartition P S) (g : X → R) :
-    ∑ j, ∑ x ∈ P j, g x = ∑ x ∈ S, g x := by
-  classical
-  have hpair :
-      ((Finset.univ : Finset (Fin m)) : Set (Fin m)).PairwiseDisjoint P := by
-    intro i _hi j _hj hij
-    exact hpartition.2 i j (bne_iff_ne.mpr hij)
-  have hunion : (Finset.univ : Finset (Fin m)).biUnion P = S := by
-    ext x
-    simp only [Finset.mem_biUnion, Finset.mem_univ, true_and]
-    exact (hpartition.1 x).symm
-  rw [show (∑ j, ∑ x ∈ P j, g x) =
-      ∑ j ∈ (Finset.univ : Finset (Fin m)), ∑ x ∈ P j, g x by simp]
-  rw [← Finset.sum_biUnion hpair, hunion]
 
 private lemma cor58_sum_abs_positive {I : Type*} [Fintype I]
     (g : I → Real) (hsigned : 0 ≤ ∑ z, g z)

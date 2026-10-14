@@ -1,5 +1,6 @@
 import GowersSzemeredi.Section10
 import GowersSzemeredi.ProofInfrastructure
+import GowersSzemeredi.Proofs00Basics
 
 /-!
 # Extracting a local difference model in Section 10
@@ -131,14 +132,6 @@ private lemma audit_sum_index (f : ZMod 8 → Nat) :
   intro s _
   simp
 
-private lemma audit_countWhere_eq_sum_ite {T : Type*} [Fintype T]
-    (P : T → Prop) [DecidablePred P] :
-    countWhere P = ∑ x : T, if P x then 1 else 0 := by
-  classical
-  unfold countWhere
-  rw [Finset.filter_congr_decidable]
-  simp
-
 private lemma audit_differenceWeight_eq_sum_fibre (y : AuditX) :
     domainDifferenceWeight auditDomain auditX0 y =
       ∑ z : AuditX,
@@ -146,7 +139,7 @@ private lemma audit_differenceWeight_eq_sum_fibre (y : AuditX) :
           (z.1 + (y.1 - auditX0.1))).card := by
   classical
   unfold domainDifferenceWeight
-  rw [audit_countWhere_eq_sum_ite]
+  rw [countWhere_eq_sum_ite]
   rw [Fintype.sum_prod_type]
   apply Finset.sum_congr rfl
   intro z _
@@ -312,7 +305,7 @@ private lemma audit_countWhere_all_mem {Y : Type*}
 private lemma audit_coordinate_exception_count (i : Fin 4) :
     (∑ q : Fin 4 → AuditX, if (q i).1 = 5 then 1 else 0) =
       auditH * auditCard ^ 3 := by
-  rw [← audit_countWhere_eq_sum_ite]
+  rw [← countWhere_eq_sum_ite]
   calc
     countWhere (fun q : Fin 4 → AuditX => (q i).1 = 5) =
         countWhere (fun q : Fin 4 → AuditX =>
@@ -328,7 +321,7 @@ private lemma audit_coordinate_exception_count (i : Fin 4) :
 private lemma audit_hits_exception_count_le :
     countWhere (fun q : Fin 4 → AuditX => ∃ i, (q i).1 = 5) ≤
       4 * auditH * auditCard ^ 3 := by
-  rw [audit_countWhere_eq_sum_ite]
+  rw [countWhere_eq_sum_ite]
   calc
     (∑ q : Fin 4 → AuditX, if ∃ i, (q i).1 = 5 then 1 else 0) ≤
         ∑ q : Fin 4 → AuditX, ∑ i : Fin 4,
@@ -1221,12 +1214,12 @@ private lemma extraction_restrictedWeight_eq_sum {N : Nat} {X : Type*}
         (D.fibre (D.index w + d)).card := by
   classical
   unfold domainRestrictedDifferenceWeight
-  rw [audit_countWhere_eq_sum_ite]
+  rw [countWhere_eq_sum_ite]
   simp_rw [extraction_restricted_ite_eq_sum D B x w]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro d hd
-  rw [← audit_countWhere_eq_sum_ite]
+  rw [← countWhere_eq_sum_ite]
   unfold countWhere
   rw [Finset.filter_congr_decidable]
   rw [show (Finset.univ.filter fun uv : X × X =>
@@ -1244,12 +1237,12 @@ private lemma extraction_errorCount_eq_sum {N : Nat} {X : Type*}
       ∑ d ∈ B, (extractionBadPairs D phi x w d).card := by
   classical
   unfold domainDifferenceErrorCount
-  rw [audit_countWhere_eq_sum_ite]
+  rw [countWhere_eq_sum_ite]
   simp_rw [extraction_error_ite_eq_sum D phi B x w]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
   intro d hd
-  rw [← audit_countWhere_eq_sum_ite]
+  rw [← countWhere_eq_sum_ite]
   unfold countWhere extractionBadPairs
   rw [Finset.filter_congr_decidable]
   congr 1

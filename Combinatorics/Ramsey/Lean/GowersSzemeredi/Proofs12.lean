@@ -19,14 +19,9 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-@[simp] private lemma prop121_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma prop121_star_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : star (exponential x) = exponential (-x) := by
-  simpa only [exponential, starRingEnd_apply] using
-    (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
+attribute [simp] star_exponential
 
 private lemma prop121_coeff_sq_expansion {N : Nat} [NeZero N]
     (f : ZMod N → Complex) (k r : ZMod N) :
@@ -46,7 +41,7 @@ private lemma prop121_coeff_sq_expansion {N : Nat} [NeZero N]
     _ = ∑ s : ZMod N, ∑ t : ZMod N,
           (exponential (-(s * r)) * (f s * star (f (s - k)))) *
             ((f (t - k) * star (f t)) * exponential (t * r)) := by
-              simp only [star_sum, star_mul, star_star, prop121_star_exponential, neg_neg]
+              simp only [star_sum, star_mul, star_star, star_exponential, neg_neg]
               simp_rw [sum_mul, mul_sum]
     _ = ∑ s : ZMod N, ∑ u : ZMod N,
           (exponential (-(s * r)) * (f s * star (f (s - k)))) *
@@ -66,7 +61,7 @@ private lemma prop121_coeff_sq_expansion {N : Nat} [NeZero N]
               have hphase :
                   exponential (-(s * r)) * exponential ((s - u) * r) =
                     exponential (-(r * u)) := by
-                rw [← prop121_exponential_add]
+                rw [← exponential_add]
                 congr 1
                 ring
               rw [← hphase]
@@ -268,7 +263,7 @@ private lemma prop121_correlation_eq {N p : Nat} [NeZero N]
   simp only [correlation, prop121A, prop121B, prop121InnerTerm]
   rw [← (Equiv.subRight s).sum_comp]
   simp only [Equiv.subRight_apply, sub_neg_eq_add, sub_add_cancel, star_mul,
-    star_prod, Complex.star_def, Complex.conj_ofReal, prop121_star_exponential]
+    star_prod, Complex.star_def, Complex.conj_ofReal, star_exponential]
   apply Finset.sum_congr rfl
   intro k _
   calc
@@ -429,38 +424,7 @@ private lemma prop121_global_cauchy {N p : Nat} [NeZero N]
     (fun z => ‖fourier (prop121B lambda phi z.1.1) z.2‖ ^ 2)
   simpa only [Finset.sum_product, ← pow_mul] using h
 
-lemma prop121_sum_exponential_mul {N : Nat} [NeZero N] (x : ZMod N) :
-    ∑ u : ZMod N, exponential (x * u) = if x = 0 then (N : Complex) else 0 := by
-  simpa [exponential, mul_comm] using
-    AddChar.sum_mulShift x (ZMod.isPrimitive_stdAddChar N)
-
-private lemma prop121_vector_orthogonality {N p : Nat} [NeZero N]
-    (x : Fin p → ZMod N) :
-    (∑ u : Fin p → ZMod N, ∏ i, exponential (x i * u i)) =
-      if ∀ i, x i = 0 then ((N : Nat) ^ p : Complex) else 0 := by
-  calc
-    (∑ u : Fin p → ZMod N, ∏ i, exponential (x i * u i)) =
-        ∏ i : Fin p, ∑ a : ZMod N, exponential (x i * a) := by
-          exact (Fintype.prod_sum (fun i (a : ZMod N) => exponential (x i * a))).symm
-    _ = ∏ i : Fin p, if x i = 0 then (N : Complex) else 0 := by
-          apply Finset.prod_congr rfl
-          intro i _
-          rw [prop121_sum_exponential_mul]
-    _ = if ∀ i, x i = 0 then ((N : Nat) ^ p : Complex) else 0 := by
-          by_cases h : ∀ i, x i = 0
-          · rw [if_pos h]
-            simp only [h, if_true, Finset.prod_const, Finset.card_univ]
-            rw [Fintype.card_fin]
-          · rw [if_neg h, Finset.prod_eq_zero_iff]
-            push Not at h
-            obtain ⟨i, hi⟩ := h
-            exact ⟨i, Finset.mem_univ i, if_neg hi⟩
-
-private lemma prop121_prod_four {p : Nat} (a b c d : Fin p → Complex) :
-    (∏ i, a i) * (∏ i, b i) * (∏ i, c i) * (∏ i, d i) =
-      ∏ i, a i * b i * c i * d i := by
-  symm
-  simp only [Finset.prod_mul_distrib]
+alias prop121_sum_exponential_mul := fejer_sum_exponential_mul
 
 private lemma prop121_b_product {N p : Nat} [NeZero N]
     (lambda : ZMod N → Real) (phi : Fin p → ZMod N → ZMod N)
@@ -472,7 +436,7 @@ private lemma prop121_b_product {N p : Nat} [NeZero N]
         ∏ i, exponential
           ((phi i (q 0) - phi i (q 1) - phi i (q 2) + phi i (q 3)) * u i) := by
   simp only [prop121B, star_mul, star_prod, Complex.star_def, Complex.conj_ofReal,
-    prop121_star_exponential]
+    star_exponential]
   push_cast
   have hphase :
       (∏ i : Fin p, exponential (phi i (q 0) * u i)) *
@@ -481,11 +445,11 @@ private lemma prop121_b_product {N p : Nat} [NeZero N]
           (∏ i : Fin p, exponential (phi i (q 3) * u i)) =
         ∏ i : Fin p, exponential
           ((phi i (q 0) - phi i (q 1) - phi i (q 2) + phi i (q 3)) * u i) := by
-    rw [prop121_prod_four]
+    rw [prop141_prod_four]
     apply Finset.prod_congr rfl
     intro i _
-    rw [← prop121_exponential_add, ← prop121_exponential_add,
-      ← prop121_exponential_add]
+    rw [← exponential_add, ← exponential_add,
+      ← exponential_add]
     congr 1
     ring
   calc

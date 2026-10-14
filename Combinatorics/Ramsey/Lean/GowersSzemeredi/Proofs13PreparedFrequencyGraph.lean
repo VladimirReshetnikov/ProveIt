@@ -29,29 +29,6 @@ private lemma context_cubeDifference_eq {N : Nat}
   rw [cubeDifference_cons, cubeDifference_cons]
   simp only [cubeDifference, List.ofFn_zero, iteratedDifference, secondDifference]
 
-private lemma context_countWhere_eq_sum_ite {X : Type*} [Fintype X]
-    (P : X → Prop) :
-    countWhere P = ∑ x : X,
-      @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
-  classical
-  unfold countWhere
-  simp
-
-private lemma context_countWhere_equiv {X Y : Type*} [Fintype X] [Fintype Y]
-    (e : X ≃ Y) (P : Y → Prop) :
-    countWhere P = countWhere (fun x ↦ P (e x)) := by
-  classical
-  simp_rw [context_countWhere_eq_sum_ite]
-  exact (e.sum_comp (fun y ↦ if P y then 1 else 0)).symm
-
-private lemma context_countWhere_prod {X Y : Type*} [Fintype X] [Fintype Y]
-    (P : X → Y → Prop) :
-    countWhere (fun z : X × Y ↦ P z.1 z.2) =
-      ∑ x : X, countWhere (P x) := by
-  classical
-  simp_rw [context_countWhere_eq_sum_ite]
-  rw [Fintype.sum_prod_type]
-
 private lemma context_density_moment_identity (K R n : Real) (hn : n ≠ 0) :
     K * (R / n) ^ 1165 * n ^ 2 =
       (K * n) * (R ^ 1165 / n ^ 1164) := by
@@ -89,7 +66,7 @@ private lemma context_sum_horizontal_card {N : Nat} [NeZero N]
       simp
     _ = ∑ x : ZMod N,
         countWhere (fun y : ZMod N ↦ (x, y) ∈ B) := by
-      simp_rw [context_countWhere_eq_sum_ite]
+      simp_rw [gcs_countWhere_eq_sum_ite]
       rw [Finset.sum_comm]
     _ = ∑ x : ZMod N, (verticalSection B x).card := by
       apply Fintype.sum_congr
@@ -262,7 +239,7 @@ private lemma context_horizontal_join_card {N : Nat} [NeZero N]
       ext z
       simp
     _ = countWhere (fun z : ZMod N × ZMod N ↦ z.2 ∈ T z.1) := by
-      simpa [Prod.swap] using context_countWhere_equiv
+      simpa [Prod.swap] using feature_countWhere_equiv
         (Equiv.prodComm (ZMod N) (ZMod N))
         (fun z : ZMod N × ZMod N ↦ z.1 ∈ T z.2)
     _ = ∑ y : ZMod N, countWhere (fun x : ZMod N ↦ x ∈ T y) :=
@@ -524,7 +501,7 @@ theorem section13_prepared_frequency_graph {N : Nat} [NeZero N] [Fact N.Prime]
   have hcountEq : countWhere P = A0.card := by
     calc
       countWhere P = countWhere (fun z : Pair N ↦ P (contextSwapEquiv N z)) :=
-        context_countWhere_equiv (contextSwapEquiv N) P
+        feature_countWhere_equiv (contextSwapEquiv N) P
       _ = A0.card := by
         unfold A0 countWhere
         apply congrArg Finset.card

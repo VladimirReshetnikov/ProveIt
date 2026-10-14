@@ -117,44 +117,6 @@ private lemma rangeDeg_additive_iff {N d : Nat} (x : Fin (2 * d) → ZMod N) :
   rw [hsum, sub_eq_zero]
   rfl
 
-private lemma rangeDeg_card_le_of_fiber_le {A B : Type*}
-    [Fintype A] [Fintype B] [DecidableEq B] (f : A → B) (m : Nat)
-    (h : ∀ b, Fintype.card {a : A // f a = b} ≤ m) :
-    Fintype.card A ≤ Fintype.card B * m := by
-  rw [← Fintype.card_congr (Equiv.sigmaFiberEquiv f), Fintype.card_sigma]
-  calc
-    (∑ b : B, Fintype.card {a : A // f a = b}) ≤ ∑ _ : B, m :=
-      Finset.sum_le_sum fun b _ => h b
-    _ = Fintype.card B * m := by simp
-
-private lemma rangeDeg_sum_mul_sub_eq_two {N : Nat} {I : Type*}
-    [Fintype I] [DecidableEq I] (a x y : I → ZMod N) (i j : I)
-    (hij : i ≠ j) (hoff : ∀ t, t ≠ i → t ≠ j → x t = y t) :
-    (∑ t, a t * x t) - (∑ t, a t * y t) =
-      a i * (x i - y i) + a j * (x j - y j) := by
-  classical
-  rw [← Finset.sum_sub_distrib]
-  calc
-    (∑ t, (a t * x t - a t * y t)) =
-        ∑ t, a t * (x t - y t) := by
-      apply Finset.sum_congr rfl
-      intro t _
-      ring
-    _ = ∑ t ∈ ({i, j} : Finset I), a t * (x t - y t) := by
-      symm
-      apply Finset.sum_subset (by simp)
-      intro t _ ht
-      have hti : t ≠ i := by
-        intro h
-        subst t
-        exact ht (by simp)
-      have htj : t ≠ j := by
-        intro h
-        subst t
-        exact ht (by simp)
-      rw [hoff t hti htj, sub_self, mul_zero]
-    _ = a i * (x i - y i) + a j * (x j - y j) := by simp [hij]
-
 private abbrev RangeDegLinearSolutions {N : Nat} {I : Type*}
     [Fintype I] (a : I → ZMod N) :=
   {x : I → ZMod N // ∑ t, a t * x t = 0}
@@ -236,8 +198,8 @@ private lemma rangeDeg_double_linear_solutions_card_le {N : Nat} [NeZero N]
     have hoff : ∀ s, s ≠ i → s ≠ j → x.1 s = y.1 s := by
       intro s hsi hsj
       exact congrFun hxy ⟨s, hsi, hsj⟩
-    have haDiff := rangeDeg_sum_mul_sub_eq_two a x.1 y.1 i j hij hoff
-    have hbDiff := rangeDeg_sum_mul_sub_eq_two b x.1 y.1 i j hij hoff
+    have haDiff := lemma154_sum_mul_sub_eq_two a x.1 y.1 i j hij hoff
+    have hbDiff := lemma154_sum_mul_sub_eq_two b x.1 y.1 i j hij hoff
     rw [x.2.1, y.2.1, sub_self] at haDiff
     rw [x.2.2, y.2.2, sub_self] at hbDiff
     have ha : a i * (x.1 i - y.1 i) + a j * (x.1 j - y.1 j) = 0 :=
@@ -557,15 +519,6 @@ private lemma rangeDeg_case_one_key_card_le {N k d : Nat}
     _ ≤ N ^ k * N ^ (2 * d - 1) * N ^ ((2 * d - 1) * k) := by
       exact Nat.mul_le_mul_right _ (Nat.mul_le_mul_left _ hcross)
 
-private lemma rangeDeg_level_subtype_card {N k : Nat} [NeZero N]
-    (mu : Point N k → ZMod N) (a : ZMod N) :
-    Fintype.card {y : Point N k // mu y = a} =
-      countWhere fun y : Point N k => mu y = a := by
-  classical
-  unfold countWhere
-  rw [Finset.filter_congr_decidable]
-  exact Fintype.card_subtype (fun y : Point N k => mu y = a)
-
 private lemma rangeDeg_case_one_card_le {N k d : Nat} [NeZero N]
     (hprime : N.Prime) (hodd : Odd N) (hk : 1 ≤ k) (hd : 1 ≤ d)
     (c : RangeDegCoefficient m k d) (j : Fin (2 * d))
@@ -673,13 +626,13 @@ private lemma rangeDeg_case_one_card_le {N k d : Nat} [NeZero N]
             Fintype.card {v : Point N k // mu v = mu (R₀.1.1.base j)} :=
           Fintype.card_le_of_injective enc henc
         _ = countWhere (fun v : Point N k => mu v = mu (R₀.1.1.base j)) :=
-          rangeDeg_level_subtype_card mu _
+          lemma154_level_subtype_card mu _
         _ ≤ k * N ^ (k - 1) := hlevelNat
     · haveI : IsEmpty
           {R : RangeDegCoefficientSolutions N k d c // proj R = b} :=
         ⟨fun R => hex ⟨R⟩⟩
       simp
-  have htotal := rangeDeg_card_le_of_fiber_le proj (k * N ^ (k - 1)) hfiber
+  have htotal := lemma154_card_le_of_fiber_le proj (k * N ^ (k - 1)) hfiber
   have hkey := rangeDeg_case_one_key_card_le (N := N) (k := k) hd j
   calc
     Fintype.card (RangeDegCoefficientSolutions N k d c) ≤
@@ -768,26 +721,6 @@ private lemma rangeDeg_vertex_product_univ {N k d : Nat}
       (∏ i : Fin k, (R.base j i + if e i then R.side i else 0)) *
         R.crossSection j := by
   exact rangeDeg_append_product _ _
-
-private lemma rangeDeg_exists_det_pair {N : Nat} [NeZero N] [Fact N.Prime]
-    {I : Type*} [Fintype I] [DecidableEq I] [Nonempty I]
-    (a b : I → ZMod N) (ha : ∀ i, a i ≠ 0)
-    (hnot : ¬ ∃ q, ∀ i, b i = q * a i) :
-    ∃ i j, i ≠ j ∧ a i * b j - a j * b i ≠ 0 := by
-  classical
-  by_contra h
-  push Not at h
-  let i0 : I := Classical.choice inferInstance
-  apply hnot
-  refine ⟨b i0 / a i0, ?_⟩
-  intro j
-  have hdet : a i0 * b j - a j * b i0 = 0 := by
-    by_cases hij : i0 = j
-    · subst j
-      ring
-    · exact h i0 j hij
-  field_simp [ha i0]
-  simpa [mul_comm] using sub_eq_zero.mp hdet
 
 private lemma rangeDeg_full_moment_eq {N k d : Nat} [NeZero N]
     (R : GeneralArrangement N k d)

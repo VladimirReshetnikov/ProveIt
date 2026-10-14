@@ -203,10 +203,6 @@ private lemma rothTripleCount_split {p : Nat} [NeZero p]
       simp only [sum_indicator]
       ring
 
-private lemma roth_exponential_add {p : Nat} [NeZero p] (x y : ZMod p) :
-    exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := p)) x y
-
 private lemma rothError_fourier {p : Nat} [NeZero p]
     (A B : Finset (ZMod p)) :
     (∑ r : ZMod p, ∑ s : ZMod p,
@@ -296,7 +292,7 @@ private lemma rothError_fourier {p : Nat} [NeZero p]
       intro y _
       have hphase : exponential (u * (2 * s - y)) =
           exponential (-(y * u)) * exponential (-(s * (-2 * u))) := by
-        rw [← roth_exponential_add]
+        rw [← exponential_add]
         congr 1
         ring
       rw [hphase]

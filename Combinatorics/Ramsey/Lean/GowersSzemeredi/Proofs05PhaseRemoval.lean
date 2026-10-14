@@ -18,30 +18,11 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-@[simp] private lemma cor57_norm_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : ‖exponential x‖ = 1 := by
-  exact AddChar.norm_apply (ZMod.stdAddChar (N := N)) x
+attribute [simp] cor57_norm_exponential
 
-@[simp] private lemma cor57_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) :
-    exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-lemma cor57_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    exponential x =
-      Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-  calc
-    exponential x = ZMod.stdAddChar ((x.valMinAbs : Int) : ZMod N) := by
-      simp [exponential]
-    _ = Complex.exp (2 * Real.pi * Complex.I * (x.valMinAbs : Int) / N) :=
-      ZMod.stdAddChar_coe x.valMinAbs
-    _ = Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-      congr 1
-      push_cast
-      ring
+alias cor57_exponential_eq_exp_valMinAbs := cor24_exponential_eq_exp_valMinAbs
 
 lemma cor57_norm_exponential_sub_one_le {N : Nat} [NeZero N]
     (x : ZMod N) :
@@ -82,7 +63,7 @@ lemma cor57_phase_close_of_mem_interval {N d : Nat} [NeZero N]
         ‖exponential (-a) * (exponential (-(i : ZMod N)) - 1)‖ := by
       congr 1
       rw [show -(a + (i : ZMod N)) = -a + -(i : ZMod N) by ring]
-      rw [cor57_exponential_add]
+      rw [exponential_add]
       ring
     _ = ‖exponential (-(i : ZMod N)) - 1‖ := by
       rw [norm_mul, cor57_norm_exponential, one_mul]

@@ -26,10 +26,6 @@ open BaseCase
 theorem one_le_pow_of_two_le {w : Real} (hw : 2 ≤ w) (n : Nat) : 1 ≤ w ^ n :=
   one_le_pow₀ (le_trans (by norm_num) hw)
 
-/-- A constant `c ≤ 2^n` is at most `w^n` for `w ≥ 2`. -/
-theorem const_le_pow {w c : Real} {n : Nat} (hw : 2 ≤ w) (hc : c ≤ 2 ^ n) : c ≤ w ^ n :=
-  hc.trans (pow_le_pow_left₀ (by norm_num) hw n)
-
 theorem le_exp_pow_of_le_pow {w x : Real} {n : Nat} (hx : x ≤ w ^ n) : x ≤ Real.exp (w ^ n) :=
   hx.trans ((Real.add_one_le_exp _).trans' (by linarith only))
 
@@ -173,7 +169,6 @@ theorem polyPieceSpecCount_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 :
         pow_le_pow_left₀ (div_pos (by norm_num) (mul_pos hd0 hb)).le hbase _
     _ = u ^ ((1 + ((2 : Nat) ^ 68 + (2 : Nat) ^ 69)) * (2 : Nat) ^ 14) := (pow_mul _ _ _).symm
     _ ≤ u ^ ((2 : Nat) ^ 84) := pow_le_pow_right₀ hu1 (by norm_num)
-
 
 /-! ### The capped family exponent -/
 

@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs13FejerKernel
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Algebra.BigOperators.Expect
+import GowersSzemeredi.Proofs00Basics
 
 /-! Exact finite Fourier expansion of products of Fejer weights. The mean
 over two scalar seeds counts the simultaneous feature and phase relations. -/
@@ -12,19 +13,6 @@ namespace LeanProofs.GowersSzemeredi
 def fejerPairRelation {N L : Nat} {I : Type*} [Fintype I] [DecidableEq I]
     (v : I → Fin L × Fin L) (w : I → ZMod N) : ZMod N :=
   ∑ i, ((v i).1 - (v i).2 : ZMod N) * w i
-
-private theorem fejer_prod_exponential {N : Nat} [NeZero N]
-    {I : Type*} [Fintype I] (f : I → ZMod N) :
-    ∏ i, exponential (f i) = exponential (∑ i, f i) := by
-  classical
-  symm
-  induction (Finset.univ : Finset I) using Finset.induction_on with
-  | empty => simp [exponential]
-  | @insert i s hi ih =>
-      rw [Finset.sum_insert hi, Finset.prod_insert hi]
-      rw [show exponential (f i + ∑ x ∈ s, f x) =
-        exponential (f i) * exponential (∑ x ∈ s, f x) from
-        AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) _ _, ih]
 
 theorem finiteFejerKernel_product_expansion {N L : Nat} [NeZero N]
     {I : Type*} [Fintype I] [DecidableEq I] (phi feature : I → ZMod N) (a b : ZMod N) :
@@ -48,13 +36,6 @@ theorem finiteFejerKernel_product_expansion {N L : Nat} [NeZero N]
   apply Finset.sum_congr rfl
   intro i _
   ring
-
-theorem fejer_expect_exponential_mul {N : Nat} [NeZero N] (x : ZMod N) :
-    (𝔼 u : ZMod N, exponential (x * u)) = if x = 0 then 1 else 0 := by
-  have hs : (∑ u : ZMod N, exponential (x * u)) = if x = 0 then (N : Complex) else 0 := by
-    simpa [exponential, mul_comm] using AddChar.sum_mulShift x (ZMod.isPrimitive_stdAddChar N)
-  rw [Finset.expect_eq_sum_div_card, Finset.card_univ, ZMod.card, hs]
-  split_ifs <;> simp [NeZero.ne N]
 
 theorem fejer_seed_orthogonality {N : Nat} [NeZero N] (x y : ZMod N) :
     (𝔼 c : ZMod N × ZMod N, exponential (c.1 * x + c.2 * y)) =

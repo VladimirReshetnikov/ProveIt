@@ -20,18 +20,11 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-@[simp] private lemma prop172_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma prop172_star_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : star (exponential x) = exponential (-x) := by
-  simpa only [exponential, starRingEnd_apply] using
-    (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
+attribute [simp] star_exponential
 
-@[simp] private lemma prop172_norm_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : ‖exponential x‖ = 1 := by
-  exact (ZMod.stdAddChar (N := N)).norm_apply x
+attribute [simp] cor57_norm_exponential
 
 /-- Squaring a Fourier coefficient introduces one more difference variable. -/
 lemma prop172_fourier_sq {N : Nat} [NeZero N]
@@ -48,7 +41,7 @@ lemma prop172_fourier_sq {N : Nat} [NeZero N]
     _ = ∑ s : ZMod N, ∑ t : ZMod N,
         (exponential (-(s * r)) * g s) *
           (star (g t) * exponential (t * r)) := by
-      simp only [star_sum, star_mul, prop172_star_exponential, neg_neg]
+      simp only [star_sum, star_mul, star_exponential, neg_neg]
       simp_rw [Finset.sum_mul, Finset.mul_sum]
     _ = ∑ s : ZMod N, ∑ y : ZMod N,
         (exponential (-(s * r)) * g s) *
@@ -67,7 +60,7 @@ lemma prop172_fourier_sq {N : Nat} [NeZero N]
       have hphase :
           exponential (-(s * r)) * exponential ((s - y) * r) =
             exponential (-(y * r)) := by
-        rw [← prop172_exponential_add]
+        rw [← exponential_add]
         congr 1
         ring
       rw [← hphase]
@@ -349,7 +342,7 @@ private lemma prop172_phased_discValued {N d : Nat} [NeZero N]
     (phi : (Fin d → Bool) → ZMod N → ZMod N) (e : Fin d → Bool) :
     DiscValued (prop172PhasedFamily f phi e) := by
   intro s
-  rw [prop172PhasedFamily, norm_mul, prop172_norm_exponential, mul_one]
+  rw [prop172PhasedFamily, norm_mul, cor57_norm_exponential, mul_one]
   exact hf s
 
 private lemma prop172_constantCubeForm_norm {N k : Nat} [NeZero N]

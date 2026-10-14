@@ -19,14 +19,9 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-@[simp] private lemma prop131_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma prop131_star_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : star (exponential x) = exponential (-x) := by
-  simpa only [exponential, starRingEnd_apply] using
-    (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
+attribute [simp] star_exponential
 
 private def prop131Outer {N : Nat} (f : Pair N → Complex)
     (u x y y' : ZMod N) : Complex :=
@@ -57,7 +52,7 @@ private lemma prop131_coeff_sq_expansion {N : Nat} [NeZero N]
     _ = ∑ x : ZMod N, ∑ y : ZMod N, ∑ t : ZMod N, ∑ z : ZMod N,
         (exponential (-(x * r)) * (f (x, y + h) * star (f (x, y)))) *
           ((f (t, z) * star (f (t, z + h))) * exponential (t * r)) := by
-            simp only [star_sum, star_mul, star_star, prop131_star_exponential,
+            simp only [star_sum, star_mul, star_star, star_exponential,
               neg_neg]
             simp_rw [mul_sum, sum_mul]
             simp_rw [mul_sum]
@@ -90,7 +85,7 @@ private lemma prop131_coeff_sq_expansion {N : Nat} [NeZero N]
               have hphase :
                   exponential (-(x * r)) * exponential ((x - u) * r) =
                     exponential (-(u * r)) := by
-                rw [← prop131_exponential_add]
+                rw [← exponential_add]
                 congr 1
                 ring
               rw [prop131Outer, ← hphase]
@@ -241,12 +236,7 @@ private def prop131G {N : Nat} [NeZero N] (B : Finset (ZMod N))
     (sigma : ZMod N → ZMod N) (u h : ZMod N) : Complex :=
   indicator B h * exponential (sigma h * u)
 
-@[simp] private lemma prop131_star_indicator {N : Nat}
-    (B : Finset (ZMod N)) (h : ZMod N) :
-    star (indicator B h) = indicator B h := by
-  classical
-  simp only [indicator]
-  split_ifs <;> simp
+attribute [simp] lemma78_indicator_star
 
 private def prop131AddRightEquiv {N : Nat} (y : ZMod N) : ZMod N ≃ ZMod N where
   toFun h := h + y
@@ -270,7 +260,7 @@ private lemma prop131_correlation_eq {N : Nat} [NeZero N]
   rw [← (prop131AddRightEquiv y).sum_comp]
   simp only [prop131AddRightEquiv_apply, add_sub_cancel_right]
   unfold prop131A prop131G prop131InnerTerm
-  simp only [star_mul, prop131_star_indicator, prop131_star_exponential]
+  simp only [star_mul, lemma78_indicator_star, star_exponential]
   simp only [indicator, mul_ite, mul_one, mul_zero]
   rw [← Finset.sum_filter]
   rw [show (Finset.univ.filter fun h : ZMod N => h ∈ B) = B by
@@ -452,23 +442,16 @@ private lemma prop131_g_product {N : Nat} [NeZero N]
   all_goals simp only [h0, h1, h2, h3, if_true, if_false, one_mul, zero_mul,
     mul_zero, star_zero, star_one, prop131QuadMem, and_self, and_true]
   all_goals try {rfl}
-  rw [prop131_star_exponential, prop131_star_exponential]
+  rw [star_exponential, star_exponential]
   calc
     _ = exponential (sigma (q 0) * u +
         (-(sigma (q 2) * u) + (-(sigma (q 1) * u) + sigma (q 3) * u))) := by
-          rw [prop131_exponential_add, prop131_exponential_add,
-            prop131_exponential_add]
+          rw [exponential_add, exponential_add,
+            exponential_add]
           ring
     _ = _ := by
       congr 1
       ring
-
-private lemma prop131_sum_exponential_mul {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    ∑ u : ZMod N, exponential (x * u) =
-      if x = 0 then (N : Complex) else 0 := by
-  simpa [exponential, mul_comm] using
-    AddChar.sum_mulShift x (ZMod.isPrimitive_stdAddChar N)
 
 private lemma prop131_sum_g_product {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (sigma : ZMod N → ZMod N)
@@ -483,7 +466,7 @@ private lemma prop131_sum_g_product {N : Nat} [NeZero N]
   simp_rw [prop131_g_product]
   by_cases hmem : prop131QuadMem B q
   · simp_rw [if_pos hmem]
-    rw [prop131_sum_exponential_mul]
+    rw [fejer_sum_exponential_mul]
     by_cases hsigma :
         sigma (q 0) - sigma (q 1) = sigma (q 2) - sigma (q 3)
     · have hcond : prop131QuadMem B q ∧

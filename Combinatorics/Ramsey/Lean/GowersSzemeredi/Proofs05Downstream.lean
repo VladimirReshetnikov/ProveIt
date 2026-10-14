@@ -304,14 +304,9 @@ theorem polynomialOn_section5ModIndexPoint {N k : Nat} [NeZero N]
 
 /-! ### A uniform additive-error version of phase removal -/
 
-@[simp] private lemma downstream_norm_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : ‖exponential x‖ = 1 := by
-  exact AddChar.norm_apply (ZMod.stdAddChar (N := N)) x
+attribute [simp] cor57_norm_exponential
 
-@[simp] private lemma downstream_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) :
-    exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
 alias downstream_norm_exponential_sub_one_le := cor57_norm_exponential_sub_one_le
 
@@ -790,7 +785,7 @@ theorem section5_efficient_local_phase_refinement_of_corollary_5_6
         rfl
       obtain ⟨x, hx⟩ := Finset.card_eq_one.mp hcard
       rw [hx]
-      simp only [Finset.sum_singleton, norm_mul, downstream_norm_exponential, mul_one]
+      simp only [Finset.sum_singleton, norm_mul, cor57_norm_exponential, mul_one]
     calc
       ‖∑ s ∈ P.carrier, f s * exponential (-(phi s))‖ =
           ‖∑ j, ∑ s ∈ (R j).carrier,

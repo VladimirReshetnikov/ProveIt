@@ -461,18 +461,11 @@ private lemma oneStageRestrictionWeight_le_one {N : Nat} [NeZero N]
   unfold oneStageRestrictionWeight
   linarith
 
-@[simp] private lemma restriction_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma restriction_star_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : star (exponential x) = exponential (-x) := by
-  simpa only [exponential, starRingEnd_apply] using
-    (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
+attribute [simp] star_exponential
 
-@[simp] private lemma restriction_exponential_zero {N : Nat} [NeZero N] :
-    exponential (0 : ZMod N) = 1 := by
-  exact AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
+attribute [simp] exponential_zero
 
 private lemma oneStageRestrictionWeight_complex {N : Nat} [NeZero N]
     (c : restrictionPhaseTriple N) (phi : Pair N → ZMod N)
@@ -499,22 +492,11 @@ private lemma oneStageRestrictionWeight_complex {N : Nat} [NeZero N]
   have hu : star u * u = 1 := by
     change star (exponential (restrictionPhaseValue c phi z)) *
       exponential (restrictionPhaseValue c phi z) = 1
-    rw [restriction_star_exponential, ← restriction_exponential_add]
+    rw [star_exponential, ← exponential_add]
     simp
   calc
     (1 + star u) * (1 + u) = 1 + u + star u + star u * u := by ring
     _ = 2 + u + star u := by rw [hu]; ring
-
-private lemma restriction_prod_exponential {N : Nat} [NeZero N]
-    {I : Type*} [Fintype I] (f : I → ZMod N) :
-    ∏ i, exponential (f i) = exponential (∑ i, f i) := by
-  classical
-  symm
-  induction (Finset.univ : Finset I) using Finset.induction_on with
-  | empty => simp
-  | @insert i s hi ih =>
-      rw [Finset.sum_insert hi, restriction_exponential_add,
-        Finset.prod_insert hi, ih]
 
 private lemma restriction_phase_relation {N : Nat}
     (c : restrictionPhaseTriple N) (phi : Pair N → ZMod N)
@@ -553,26 +535,9 @@ private lemma restriction_product_complex {N : Nat} [NeZero N]
   congr 1
   apply Finset.sum_congr rfl
   intro eps heps
-  rw [restriction_prod_exponential]
+  rw [fejer_prod_exponential]
   congr 1
   exact restriction_phase_relation c phi R eps
-
-private lemma restriction_expect_exponential_mul {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    (𝔼 u : ZMod N, exponential (x * u)) = if x = 0 then 1 else 0 := by
-  have hN : N ≠ 0 := NeZero.ne N
-  by_cases hx : x = 0
-  · rw [if_pos hx]
-    have h := Fintype.card_mul_expect
-      (fun u : ZMod N ↦ exponential (x * u))
-    rw [ZMod.card, prop121_sum_exponential_mul, if_pos hx] at h
-    exact (mul_left_cancel₀ (Nat.cast_ne_zero.mpr hN) (by simpa using h))
-  · rw [if_neg hx]
-    have h := Fintype.card_mul_expect
-      (fun u : ZMod N ↦ exponential (x * u))
-    rw [ZMod.card, prop121_sum_exponential_mul, if_neg hx] at h
-    exact (mul_eq_zero.mp (by simpa using h)).resolve_left
-      (Nat.cast_ne_zero.mpr hN)
 
 private lemma restriction_expect_phase {N : Nat} [NeZero N]
     (a b d : ZMod N) :
@@ -581,7 +546,7 @@ private lemma restriction_expect_phase {N : Nat} [NeZero N]
         if a = 0 ∧ b = 0 ∧ d = 0 then 1 else 0 := by
   rw [← Finset.univ_product_univ, Finset.expect_product]
   simp_rw [← Finset.univ_product_univ, Finset.expect_product]
-  simp_rw [restriction_exponential_add]
+  simp_rw [exponential_add]
   calc
     (𝔼 r : ZMod N,
       𝔼 s : ZMod N,
@@ -613,13 +578,13 @@ private lemma restriction_expect_phase {N : Nat} [NeZero N]
         (if d = 0 then 1 else 0) := by
       rw [show (𝔼 r : ZMod N, exponential (r * a)) =
           if a = 0 then 1 else 0 by
-            simpa [mul_comm] using restriction_expect_exponential_mul a,
+            simpa [mul_comm] using fejer_expect_exponential_mul a,
         show (𝔼 s : ZMod N, exponential (s * b)) =
           if b = 0 then 1 else 0 by
-            simpa [mul_comm] using restriction_expect_exponential_mul b,
+            simpa [mul_comm] using fejer_expect_exponential_mul b,
         show (𝔼 t : ZMod N, exponential (t * d)) =
           if d = 0 then 1 else 0 by
-            simpa [mul_comm] using restriction_expect_exponential_mul d]
+            simpa [mul_comm] using fejer_expect_exponential_mul d]
     _ = if a = 0 ∧ b = 0 ∧ d = 0 then 1 else 0 := by
       by_cases ha : a = 0 <;> by_cases hb : b = 0 <;> by_cases hd : d = 0 <;>
         simp [ha, hb, hd]
@@ -1134,58 +1099,6 @@ private lemma restriction_sum_gcd_le (n : Nat) (hn : n ≠ 0) :
     _ ≤ 2 * (n.sqrt + 1) * n :=
       Nat.mul_le_mul_right n (restriction_card_divisors_le n)
 
-private lemma restriction_mulLeft_range {N : Nat} [NeZero N] (h : ZMod N) :
-    (AddMonoidHom.mulLeft h).range = AddSubgroup.zmultiples h := by
-  ext z
-  constructor
-  · rintro ⟨x, rfl⟩
-    rw [show x = (x.val : ZMod N) by
-      exact (ZMod.natCast_zmod_val x).symm]
-    simpa [mul_comm] using
-      (AddSubgroup.intCast_mul_mem_zmultiples h (Int.ofNat x.val))
-  · intro hz
-    rw [AddSubgroup.mem_zmultiples_iff] at hz
-    rcases hz with ⟨k, rfl⟩
-    refine ⟨(k : ZMod N), ?_⟩
-    change h * (k : ZMod N) = k • h
-    rw [zsmul_eq_mul]
-    exact mul_comm _ _
-
-private lemma restriction_mul_kernel_card {N : Nat} [NeZero N]
-    (h : ZMod N) :
-    Fintype.card {x : ZMod N // h * x = 0} = N.gcd h.val := by
-  let f : ZMod N →+ ZMod N := AddMonoidHom.mulLeft h
-  have hrange : Nat.card f.range = addOrderOf h := by
-    rw [restriction_mulLeft_range h, Nat.card_zmultiples]
-  have hcard : Nat.card f.ker * Nat.card f.range = Nat.card (ZMod N) := by
-    rw [← AddSubgroup.index_ker f]
-    exact f.ker.card_mul_index
-  have hord : addOrderOf h = N / N.gcd h.val := by
-    calc
-      addOrderOf h = addOrderOf (h.val : ZMod N) := by
-        rw [ZMod.natCast_zmod_val]
-      _ = N / N.gcd h.val := ZMod.addOrderOf_coe h.val (NeZero.ne N)
-  have hprod : Nat.card f.ker * (N / N.gcd h.val) = N := by
-    rw [← hord, ← hrange]
-    simpa using hcard
-  have hgpos : 0 < N.gcd h.val :=
-    Nat.gcd_pos_of_pos_left _ (Nat.pos_of_ne_zero (NeZero.ne N))
-  have hdiv : N.gcd h.val ∣ N := Nat.gcd_dvd_left _ _
-  have hquotpos : 0 < N / N.gcd h.val :=
-    Nat.div_pos (Nat.le_of_dvd (Nat.pos_of_ne_zero (NeZero.ne N)) hdiv)
-      hgpos
-  have heq : N.gcd h.val * (N / N.gcd h.val) = N :=
-    Nat.mul_div_cancel' hdiv
-  have hker : Nat.card f.ker = N.gcd h.val := by
-    exact Nat.eq_of_mul_eq_mul_right hquotpos (hprod.trans heq.symm)
-  let e : {x : ZMod N // h * x = 0} ≃ f.ker :=
-    Equiv.subtypeEquiv (Equiv.refl _) (fun x ↦ by rfl)
-  calc
-    Fintype.card {x : ZMod N // h * x = 0} = Fintype.card f.ker :=
-      Fintype.card_congr e
-    _ = N.gcd h.val := by
-      simpa [Nat.card_eq_fintype_card] using hker
-
 private lemma restriction_mul_fiber_card_le {N : Nat} [NeZero N]
     (a b : ZMod N) :
     Fintype.card {x : ZMod N // a * x = b} ≤ N.gcd a.val := by
@@ -1222,16 +1135,6 @@ private lemma restriction_sum_zmod_gcd {N : Nat} [NeZero N] :
         _ = ∑ k ∈ Finset.range (n + 1), (n + 1).gcd k := by
           simpa using (Fin.sum_univ_eq_sum_range
             (fun k : Nat ↦ (n + 1).gcd k) (n + 1))
-
-private lemma restriction_card_le_of_fiber_le {A B : Type*}
-    [Fintype A] [Fintype B] [DecidableEq B] (f : A → B) (k : Nat)
-    (h : ∀ b, Fintype.card {a : A // f a = b} ≤ k) :
-    Fintype.card A ≤ Fintype.card B * k := by
-  rw [← Fintype.card_congr (Equiv.sigmaFiberEquiv f), Fintype.card_sigma]
-  calc
-    (∑ b : B, Fintype.card {a : A // f a = b}) ≤ ∑ _ : B, k :=
-      Finset.sum_le_sum fun b hb ↦ h b
-    _ = Fintype.card B * k := by simp
 
 /-! ## Coefficient patterns and exceptional arrangements -/
 
@@ -1733,7 +1636,7 @@ private lemma restrictionPairRelationSolutions_card_le {N : Nat} [NeZero N]
           {R : restrictionPairRelationSolutions (N := N) eps // proj R = b} :=
         ⟨fun R ↦ hex ⟨R⟩⟩
       simp
-  have htotal := restriction_card_le_of_fiber_le proj 2 hfiber
+  have htotal := lemma154_card_le_of_fiber_le proj 2 hfiber
   have hbase : Fintype.card (restrictionPairRelationBase N i) ≤ N ^ 31 := by
     calc
       Fintype.card (restrictionPairRelationBase N i) =
@@ -2060,7 +1963,7 @@ private lemma restrictionDetRelationAtHeight_card_le {N : Nat} [NeZero N]
           {R : restrictionDetRelationAtHeight eps h // proj R = b} :=
         ⟨fun R ↦ hex ⟨R⟩⟩
       simp
-  have htotal := restriction_card_le_of_fiber_le proj (2 * N.gcd h.val) hfiber
+  have htotal := lemma154_card_le_of_fiber_le proj (2 * N.gcd h.val) hfiber
   have hbase : Fintype.card (restrictionDetRelationBase N i j) = N ^ 30 := by
     simp only [restrictionDetRelationBase, Fintype.card_prod,
       Fintype.card_fun, Fintype.card_fin, ZMod.card,

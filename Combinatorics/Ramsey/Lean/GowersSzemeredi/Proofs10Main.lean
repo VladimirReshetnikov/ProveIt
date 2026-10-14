@@ -454,28 +454,9 @@ theorem theorem10_13_zeta_bound (alpha : Real) (halpha : 0 < alpha) :
       (2 : Real) ^ (-((k : Real) + 4)) * epsilon ^ k / k :=
   theorem10_13_zeta_le_parameterRadius alpha halpha
 
-@[simp] private lemma theorem1013_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma theorem1013_norm_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : ‖exponential x‖ = 1 := by
-  exact (ZMod.stdAddChar (N := N)).norm_apply x
-
-private lemma theorem1013_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    exponential x =
-      Complex.exp (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-  calc
-    exponential x = ZMod.stdAddChar ((x.valMinAbs : Int) : ZMod N) := by
-      simp [exponential]
-    _ = Complex.exp (2 * Real.pi * Complex.I * (x.valMinAbs : Int) / N) :=
-      ZMod.stdAddChar_coe x.valMinAbs
-    _ = Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-      congr 1
-      push_cast
-      ring
+attribute [simp] cor57_norm_exponential
 
 private lemma theorem1013_norm_exponential_sub_one_le {N : Nat} [NeZero N]
     (x : ZMod N) :
@@ -484,7 +465,7 @@ private lemma theorem1013_norm_exponential_sub_one_le {N : Nat} [NeZero N]
   have habsval : |(x.valMinAbs : Real)| = (centeredAbs x : Real) := by
     rw [centeredAbs, ← Int.cast_abs, Int.abs_eq_natAbs]
     rfl
-  rw [theorem1013_exponential_eq_exp_valMinAbs]
+  rw [cor24_exponential_eq_exp_valMinAbs]
   calc
     ‖Complex.exp
         (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) - 1‖ ≤
@@ -514,7 +495,7 @@ private lemma theorem1013_norm_exponential_sub_one_le_two {N : Nat} [NeZero N]
     (x : ZMod N) : ‖exponential x - 1‖ ≤ 2 := by
   calc
     ‖exponential x - 1‖ ≤ ‖exponential x‖ + ‖(1 : Complex)‖ := norm_sub_le _ _
-    _ = 2 := by norm_num [theorem1013_norm_exponential]
+    _ = 2 := by norm_num [cor57_norm_exponential]
 
 private lemma theorem1013_fourier_norm_le_card {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -743,7 +724,7 @@ private lemma theorem1013_quad_shift_fourier {N : Nat} [NeZero N]
   rw [theorem1013_quad_fourier]
   have hexp : exponential (r * (s + d)) =
       exponential (r * s) * exponential (r * d) := by
-    rw [show r * (s + d) = r * s + r * d by ring, theorem1013_exponential_add]
+    rw [show r * (s + d) = r * s + r * d by ring, exponential_add]
   rw [hexp]
   ring
 
@@ -789,7 +770,7 @@ private lemma theorem1013_quad_shift_bound {N M : Nat} [NeZero N]
         congr 1
         apply Finset.sum_congr rfl
         intro r _
-        rw [norm_mul, norm_mul, theorem1013_norm_exponential,
+        rw [norm_mul, norm_mul, cor57_norm_exponential,
           Complex.norm_real, Real.norm_eq_abs,
           abs_of_nonneg (by positivity)]
         ring

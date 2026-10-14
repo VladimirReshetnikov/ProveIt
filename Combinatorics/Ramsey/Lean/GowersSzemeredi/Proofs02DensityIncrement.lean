@@ -44,21 +44,6 @@ private lemma cor25_balanced_eq_real {N : Nat} [NeZero N]
   classical
   by_cases hx : x ∈ A <;> simp [balanced, indicator, cor25BalancedReal, hx]
 
-private lemma cor25_density_bounds {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) : 0 ≤ density A ∧ density A ≤ 1 := by
-  have hcard : A.card ≤ N := by
-    calc
-      A.card ≤ (Finset.univ : Finset (ZMod N)).card :=
-        Finset.card_le_card (Finset.subset_univ A)
-      _ = N := by simp
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  constructor
-  · unfold density
-    positivity
-  · unfold density
-    rw [div_le_one hN]
-    exact_mod_cast hcard
-
 private lemma cor25_balancedReal_abs_le_one {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (x : ZMod N) :
     |cor25BalancedReal A x| ≤ 1 := by
@@ -97,16 +82,6 @@ private lemma cor25_fourier_indicator_eq_sum {N : Nat} [NeZero N]
   simp_rw [mul_ite, mul_one, mul_zero]
   rw [Finset.sum_ite]
   simp [exponential]
-
-private lemma cor25_fourier_indicator_norm_le_card {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) (r : ZMod N) :
-    ‖fourier (indicator A) r‖ ≤ A.card := by
-  classical
-  rw [cor25_fourier_indicator_eq_sum]
-  calc
-    ‖∑ x ∈ A, exponential (-(x * r))‖ ≤
-        ∑ x ∈ A, ‖exponential (-(x * r))‖ := norm_sum_le _ _
-    _ = A.card := by simp [exponential]
 
 private lemma cor25_sum_exponential_mul_zero {N : Nat} [NeZero N]
     (r : ZMod N) (hr : r ≠ 0) :
@@ -192,7 +167,7 @@ private lemma cor25_alpha_bounds {N : Nat} [NeZero N]
       A.card ≤ (Finset.univ : Finset (ZMod N)).card :=
         Finset.card_le_card (Finset.subset_univ A)
       _ = N := by simp
-  have hA := cor25_fourier_indicator_norm_le_card A r
+  have hA := fourier_indicator_norm_le_card' A r
   have hC := cor25_fourier_indicator_norm_le_complement_card A r hr
   constructor
   · unfold density
@@ -229,22 +204,6 @@ private lemma cor25SingletonAP_proper (x : Nat) :
   · simp [cor25SingletonAP]
   · rw [cor25SingletonAP_carrier]
     simp [cor25SingletonAP]
-
-private lemma cor25_sum_partition {X R : Type*} [DecidableEq X] {m : Nat}
-    [AddCommMonoid R] (P : Fin m → Finset X) (S : Finset X)
-    (hpartition : IsPartition P S) (g : X → R) :
-    ∑ j, ∑ x ∈ P j, g x = ∑ x ∈ S, g x := by
-  classical
-  have hpair : ((Finset.univ : Finset (Fin m)) : Set (Fin m)).PairwiseDisjoint P := by
-    intro i _ j _ hij
-    exact hpartition.2 i j (bne_iff_ne.mpr hij)
-  have hunion : (Finset.univ : Finset (Fin m)).biUnion P = S := by
-    ext x
-    simp only [Finset.mem_biUnion, Finset.mem_univ, true_and]
-    exact (hpartition.1 x).symm
-  rw [show (∑ j, ∑ x ∈ P j, g x) =
-      ∑ j ∈ (Finset.univ : Finset (Fin m)), ∑ x ∈ P j, g x by simp]
-  rw [← Finset.sum_biUnion hpair, hunion]
 
 private lemma cor25_balancedReal_sum_eq_inter_card {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (S : Finset Nat) (hS : S ⊆ Finset.range N) :
@@ -334,7 +293,7 @@ private lemma cor25_small_scale {N : Nat} [NeZero N]
   have halphaOne : alpha ≤ 1 := halphaDensity.trans hdensityOne
   have hcardPosReal : (0 : Real) < A.card := by
     exact (mul_pos halpha hN).trans_le
-      (hlarge.trans (cor25_fourier_indicator_norm_le_card A r))
+      (hlarge.trans (fourier_indicator_norm_le_card' A r))
   have hcardPos : 0 < A.card := by exact_mod_cast hcardPosReal
   obtain ⟨a, ha⟩ := Finset.card_pos.mp hcardPos
   let P := cor25SingletonAP a.val
@@ -417,7 +376,7 @@ private lemma cor25_large_scale {N : Nat} [NeZero N]
     calc
       ∑ j, g j = ∑ x ∈ Finset.range N,
           cor25BalancedReal A (x : ZMod N) := by
-        exact cor25_sum_partition (fun j => (P j).carrier) (Finset.range N)
+        exact cor58_sum_partition (fun j => (P j).carrier) (Finset.range N)
           hpartition (fun x => cor25BalancedReal A (x : ZMod N))
       _ = ∑ z : ZMod N, cor25BalancedReal A z :=
         cor25_sum_range_zmod (cor25BalancedReal A)

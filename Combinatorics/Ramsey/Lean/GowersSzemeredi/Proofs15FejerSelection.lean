@@ -594,53 +594,11 @@ private def fejerPhaseValue {N k : Nat} [NeZero N]
     (z : Point N (k + 1)) : ZMod N :=
   ∑ F, C F * fejerFeatureValue phi F z
 
-@[simp] private lemma fejer_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma fejer_star_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : star (exponential x) = exponential (-x) := by
-  simpa only [exponential, starRingEnd_apply] using
-    (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
+attribute [simp] star_exponential
 
-@[simp] private lemma fejer_exponential_zero {N : Nat} [NeZero N] :
-    exponential (0 : ZMod N) = 1 := by
-  exact AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
-
-private lemma fejer_prod_exponential {N : Nat} [NeZero N]
-    {I : Type*} [Fintype I] (f : I → ZMod N) :
-    ∏ i, exponential (f i) = exponential (∑ i, f i) := by
-  classical
-  symm
-  induction (Finset.univ : Finset I) using Finset.induction_on with
-  | empty => simp
-  | @insert i s hi ih =>
-      rw [Finset.sum_insert hi, fejer_exponential_add,
-        Finset.prod_insert hi, ih]
-
-private lemma fejer_sum_exponential_mul {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    ∑ u : ZMod N, exponential (x * u) =
-      if x = 0 then (N : Complex) else 0 := by
-  simpa [exponential, mul_comm] using
-    AddChar.sum_mulShift x (ZMod.isPrimitive_stdAddChar N)
-
-private lemma fejer_expect_exponential_mul {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    (𝔼 u : ZMod N, exponential (x * u)) = if x = 0 then 1 else 0 := by
-  have hN : N ≠ 0 := NeZero.ne N
-  by_cases hx : x = 0
-  · rw [if_pos hx]
-    have h := Fintype.card_mul_expect
-      (fun u : ZMod N ↦ exponential (x * u))
-    rw [ZMod.card, fejer_sum_exponential_mul, if_pos hx] at h
-    exact (mul_left_cancel₀ (Nat.cast_ne_zero.mpr hN) (by simpa using h))
-  · rw [if_neg hx]
-    have h := Fintype.card_mul_expect
-      (fun u : ZMod N ↦ exponential (x * u))
-    rw [ZMod.card, fejer_sum_exponential_mul, if_neg hx] at h
-    exact (mul_eq_zero.mp (by simpa using h)).resolve_left
-      (Nat.cast_ne_zero.mpr hN)
+attribute [simp] exponential_zero
 
 private lemma fejer_expect_pi_prod {I C : Type*} [Fintype I]
     [DecidableEq I]
@@ -1043,7 +1001,7 @@ private lemma fejerKernelWeight_complex {N k : Nat} [NeZero N] (m : Nat)
     intro a _
     apply Finset.sum_congr rfl
     intro b _
-    rw [fejer_star_exponential, ← fejer_exponential_add]
+    rw [star_exponential, ← exponential_add]
     congr 1
     simp only [fejerDigitInt]
     push_cast

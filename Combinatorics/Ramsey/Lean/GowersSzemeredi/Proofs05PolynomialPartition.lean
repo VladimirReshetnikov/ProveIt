@@ -139,11 +139,7 @@ private lemma fourier_natWeight_norm_le_mass {N : Nat} [NeZero N]
     fourier (fun x => (w x : Complex)) 0 = ((∑ x, w x : Nat) : Complex) := by
   simp [fourier, ZMod.dft_apply]
 
-@[simp] private lemma polynomialPartition_fourier_indicator_zero
-    {N : Nat} [NeZero N] (A : Finset (ZMod N)) :
-    fourier (indicator A) 0 = (A.card : Complex) := by
-  classical
-  simp [fourier, ZMod.dft_apply, indicator]
+attribute [simp] fourier_indicator_zero
 
 private lemma weighted_centeredInterval_sub_mem {N L : Nat} [NeZero N]
     {x y : ZMod N} (hx : x ∈ centeredInterval N L)
@@ -281,7 +277,7 @@ theorem weighted_missing_interval_fourier
     have hnorm : ‖(((L + L : Nat) : Complex))‖ = ((L + L : Nat) : Real) := by
       rw [Complex.norm_natCast]
     simp only [term, fourier_natWeight_zero,
-      polynomialPartition_fourier_indicator_zero, hmass, hIcard]
+      fourier_indicator_zero, hmass, hIcard]
     rw [hnorm]
     push_cast
     ring
@@ -1239,27 +1235,7 @@ lemma lemma55_centeredAbs_natCast_le {N i : Nat} [NeZero N] :
   rw [centeredAbs, ZMod.valMinAbs_natAbs_eq_min, ZMod.val_natCast]
   exact (Nat.min_le_left _ _).trans (Nat.mod_le i N)
 
-lemma lemma55_centeredAbs_intCast_le {N : Nat} [NeZero N] (i : Int) :
-    centeredAbs (i : ZMod N) ≤ i.natAbs := by
-  cases i with
-  | ofNat n =>
-      simpa using lemma55_centeredAbs_natCast_le (N := N) (i := n)
-  | negSucc n =>
-      have hcast : ((Int.negSucc n : Int) : ZMod N) =
-          -((n + 1 : Nat) : ZMod N) := by
-        push_cast
-        ring
-      rw [hcast, lemma55_centeredAbs_neg]
-      simpa using lemma55_centeredAbs_natCast_le (N := N) (i := n + 1)
-
-lemma lemma55_natCast_centeredAbs_eq_or_neg {N : Nat} [NeZero N]
-    (r : ZMod N) : (centeredAbs r : ZMod N) = r ∨
-      (centeredAbs r : ZMod N) = -r := by
-  have hcast := ZMod.natCast_natAbs_valMinAbs r
-  unfold centeredAbs
-  split at hcast
-  · exact Or.inl hcast
-  · exact Or.inr hcast
+alias lemma55_natCast_centeredAbs_eq_or_neg := natCast_centeredAbs_eq_or_neg
 
 private lemma lemma55_dirichlet_denominator_le {k t q : Nat}
     (hk : 2 ≤ k) (ht : weylThreshold k ≤ t) (hq : 1 ≤ q)
@@ -2317,12 +2293,6 @@ private lemma cor56Counter_scale_lt_one {Q : Nat} (hQ : 2 < Q) :
   have hqpos : (0 : Real) < Q := by positivity
   have hqreal : (2 : Real) < Q := by exact_mod_cast hQ
   simpa [div_eq_mul_inv, mul_comm] using (div_lt_one hqpos).2 hqreal
-
-private lemma modInterval_one_carrier {N : Nat} (a : ZMod N) :
-    (modInterval N a 1).carrier = {a} := by
-  classical
-  ext x
-  simp [modInterval, ModAP.carrier]
 
 private lemma diameterAtMostReal_subsingleton_of_lt_one {N : Nat}
     {A : Finset (ZMod N)} {s : Real} (hA : diameterAtMostReal A s) (hs : s < 1)

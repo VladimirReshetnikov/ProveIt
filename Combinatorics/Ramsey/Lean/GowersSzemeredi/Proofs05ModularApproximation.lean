@@ -1,4 +1,5 @@
 import GowersSzemeredi.Section05
+import GowersSzemeredi.Proofs00Basics
 
 /-! Transfer a rational approximation of a Fourier frequency back to a
 small modular monomial. This isolates the integer representative and sign
@@ -7,19 +8,7 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-theorem recurrence_centeredAbs_intCast_le {N : Nat} [NeZero N] (i : Int) :
-    centeredAbs (i : ZMod N) ≤ i.natAbs := by
-  have hnat (n : Nat) : centeredAbs (n : ZMod N) ≤ n := by
-    rw [centeredAbs, ZMod.valMinAbs_natAbs_eq_min, ZMod.val_natCast]
-    exact (Nat.min_le_left _ _).trans (Nat.mod_le n N)
-  cases i with
-  | ofNat n => simpa using hnat n
-  | negSucc n =>
-      have heq : ((Int.negSucc n : Int) : ZMod N) = -((n + 1 : Nat) : ZMod N) := by
-        push_cast
-        ring
-      rw [heq, centeredAbs, ZMod.natAbs_valMinAbs_neg]
-      exact hnat (n + 1)
+alias recurrence_centeredAbs_intCast_le := lemma55_centeredAbs_intCast_le
 
 theorem modular_monomial_of_rational_approximation {N k q : Nat} [NeZero N]
     (a r : ZMod N) (b : Int) (hk : 1 ≤ k) (hq : 0 < q) {T : Real} (hT : 0 < T)

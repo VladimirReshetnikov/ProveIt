@@ -85,16 +85,6 @@ private lemma lemma154_additive_iff {N d : Nat} (x : Fin (2 * d) → ZMod N) :
   rw [hsum, sub_eq_zero]
   rfl
 
-lemma lemma154_card_le_of_fiber_le {A B : Type*}
-    [Fintype A] [Fintype B] [DecidableEq B] (f : A → B) (m : Nat)
-    (h : ∀ b, Fintype.card {a : A // f a = b} ≤ m) :
-    Fintype.card A ≤ Fintype.card B * m := by
-  rw [← Fintype.card_congr (Equiv.sigmaFiberEquiv f), Fintype.card_sigma]
-  calc
-    (∑ b : B, Fintype.card {a : A // f a = b}) ≤ ∑ _ : B, m :=
-      Finset.sum_le_sum fun b _ => h b
-    _ = Fintype.card B * m := by simp
-
 private lemma lemma154_sum_mul_sub_eq_one {N : Nat} {I : Type*}
     [Fintype I] [DecidableEq I] (a x y : I → ZMod N) (i : I)
     (hoff : ∀ t, t ≠ i → x t = y t) :
@@ -115,34 +105,6 @@ private lemma lemma154_sum_mul_sub_eq_one {N : Nat} {I : Type*}
       have hti : t ≠ i := by simpa using ht
       rw [hoff t hti, sub_self, mul_zero]
     _ = a i * (x i - y i) := by simp
-
-private lemma lemma154_sum_mul_sub_eq_two {N : Nat} {I : Type*}
-    [Fintype I] [DecidableEq I] (a x y : I → ZMod N) (i j : I)
-    (hij : i ≠ j) (hoff : ∀ t, t ≠ i → t ≠ j → x t = y t) :
-    (∑ t, a t * x t) - (∑ t, a t * y t) =
-      a i * (x i - y i) + a j * (x j - y j) := by
-  classical
-  rw [← Finset.sum_sub_distrib]
-  calc
-    (∑ t, (a t * x t - a t * y t)) =
-        ∑ t, a t * (x t - y t) := by
-      apply Finset.sum_congr rfl
-      intro t _
-      ring
-    _ = ∑ t ∈ ({i, j} : Finset I), a t * (x t - y t) := by
-      symm
-      apply Finset.sum_subset (by simp)
-      intro t _ ht
-      have hti : t ≠ i := by
-        intro h
-        subst t
-        exact ht (by simp)
-      have htj : t ≠ j := by
-        intro h
-        subst t
-        exact ht (by simp)
-      rw [hoff t hti htj, sub_self, mul_zero]
-    _ = a i * (x i - y i) + a j * (x j - y j) := by simp [hij]
 
 private abbrev Lemma154LinearSolutions {N : Nat} {I : Type*}
     [Fintype I] (a : I → ZMod N) :=
@@ -546,15 +508,6 @@ private lemma lemma154_case_one_key_card_le {N k d : Nat}
     _ ≤ N ^ k * N ^ (2 * d - 1) * N ^ ((2 * d - 1) * k) := by
       exact Nat.mul_le_mul_right _ (Nat.mul_le_mul_left _ hcross)
 
-private lemma lemma154_level_subtype_card {N k : Nat} [NeZero N]
-    (mu : Point N k → ZMod N) (a : ZMod N) :
-    Fintype.card {y : Point N k // mu y = a} =
-      countWhere fun y : Point N k => mu y = a := by
-  classical
-  unfold countWhere
-  rw [Finset.filter_congr_decidable]
-  exact Fintype.card_subtype (fun y : Point N k => mu y = a)
-
 private lemma lemma154_case_one_card_le {N k d : Nat} [NeZero N]
     (hprime : N.Prime) (hodd : Odd N) (hk : 1 ≤ k) (hd : 1 ≤ d)
     (c : Lemma154Coefficient k d) (j : Fin (2 * d))
@@ -759,26 +712,6 @@ private lemma lemma154_vertex_product_univ {N k d : Nat}
         R.crossSection j := by
   exact lemma154_append_product _ _
 
-private lemma lemma154_exists_det_pair {N : Nat} [NeZero N] [Fact N.Prime]
-    {I : Type*} [Fintype I] [DecidableEq I] [Nonempty I]
-    (a b : I → ZMod N) (ha : ∀ i, a i ≠ 0)
-    (hnot : ¬ ∃ q, ∀ i, b i = q * a i) :
-    ∃ i j, i ≠ j ∧ a i * b j - a j * b i ≠ 0 := by
-  classical
-  by_contra h
-  push Not at h
-  let i0 : I := Classical.choice inferInstance
-  apply hnot
-  refine ⟨b i0 / a i0, ?_⟩
-  intro j
-  have hdet : a i0 * b j - a j * b i0 = 0 := by
-    by_cases hij : i0 = j
-    · subst j
-      ring
-    · exact h i0 j hij
-  field_simp [ha i0]
-  simpa [mul_comm] using sub_eq_zero.mp hdet
-
 private lemma lemma154_full_moment_eq {N k d : Nat} [NeZero N]
     (R : GeneralArrangement N k d)
     (eta : (Fin k → Bool) → Fin (2 * d) → Int)
@@ -881,7 +814,7 @@ private lemma lemma154_case_two_card_le {N k d : Nat} [NeZero N]
     rw [hs j e, hq j]
     by_cases hj : (j : Nat) < d <;>
       simp [a, lemma154IndexSign, arrangementParityCoefficient, hj]
-  obtain ⟨i, j, hij, hdet⟩ := lemma154_exists_det_pair a s ha hnotprop
+  obtain ⟨i, j, hij, hdet⟩ := rangeDeg_exists_det_pair a s ha hnotprop
   let proj : Lemma154CoefficientSolutions N k d c →
       Lemma154CaseTwoKey (N := N) (k := k) a s := fun R ↦ by
     have hadd : ∑ t, a t * R.1.crossSection t = 0 :=

@@ -1,4 +1,5 @@
 import GowersSzemeredi.Sections01_03
+import GowersSzemeredi.Proofs00Basics
 
 /-!
 # Proofs for Gowers (2001), Sections 1--3
@@ -20,18 +21,11 @@ private lemma sum_exponential_mul {N : Nat} [NeZero N] (x : ZMod N) :
   simpa [exponential, mul_comm] using
     AddChar.sum_mulShift x (ZMod.isPrimitive_stdAddChar N)
 
-@[simp] private lemma exponential_add {N : Nat} [NeZero N] (x y : ZMod N) :
-    exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma exponential_zero {N : Nat} [NeZero N] :
-    exponential (0 : ZMod N) = 1 := by
-  exact AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
+attribute [simp] exponential_zero
 
-@[simp] private lemma star_exponential {N : Nat} [NeZero N] (x : ZMod N) :
-    star (exponential x) = exponential (-x) := by
-  simpa only [exponential, starRingEnd_apply] using
-    (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
+attribute [simp] star_exponential
 
 private def finFourEquiv (X : Type*) : (Fin 4 → X) ≃ X × X × X × X where
   toFun q := (q 0, q 1, q 2, q 3)

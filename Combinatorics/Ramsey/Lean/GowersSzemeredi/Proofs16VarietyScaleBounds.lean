@@ -33,9 +33,7 @@ theorem theta_inv_le (ht : 0 < theta) (hg : 0 < gamma) (hg1 : gamma ≤ 1) :
   rw [inv_eq_one_div, div_le_div_iff₀ ht (by positivity)]
   nlinarith
 
-/-- `c ≤ x^k` from `c ≤ 2^k`. -/
-theorem le_pow_of_two_le {x c : Real} {k : Nat} (hx : 2 ≤ x) (hc : c ≤ 2 ^ k) : c ≤ x ^ k :=
-  hc.trans (pow_le_pow_left₀ (by norm_num) hx k)
+alias le_pow_of_two_le := const_le_pow
 
 /-- **The variety family at `(γ, θ/4/2)` is at most `x^(2^26)`.** -/
 theorem variety_family_le (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1) :

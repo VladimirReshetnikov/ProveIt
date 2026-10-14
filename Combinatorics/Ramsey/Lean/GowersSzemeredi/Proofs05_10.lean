@@ -25,14 +25,9 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-@[simp] private lemma prop61_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma prop61_star_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : star (exponential x) = exponential (-x) := by
-  simpa only [exponential, starRingEnd_apply] using
-    (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
+attribute [simp] star_exponential
 
 /-- Expansion and change of variables at the start of Proposition 6.1. -/
 private lemma prop61_energy_expansion {N : Nat} [NeZero N]
@@ -61,7 +56,7 @@ private lemma prop61_energy_expansion {N : Nat} [NeZero N]
             ((f (t - k) * star (f t)) * exponential (t * phi k)) := by
               apply Finset.sum_congr rfl
               intro k _
-              simp only [star_sum, star_mul, star_star, prop61_star_exponential, neg_neg]
+              simp only [star_sum, star_mul, star_star, star_exponential, neg_neg]
               simp_rw [sum_mul, mul_sum]
     _ = ∑ s : ZMod N, ∑ t : ZMod N, ∑ k ∈ B,
           (exponential (-(s * phi k)) * (f s * star (f (s - k)))) *
@@ -92,7 +87,7 @@ private lemma prop61_energy_expansion {N : Nat} [NeZero N]
               have hphase :
                   exponential (-(s * phi k)) * exponential ((s - u) * phi k) =
                     exponential (-(phi k * u)) := by
-                rw [← prop61_exponential_add]
+                rw [← exponential_add]
                 congr 1
                 ring
               rw [← hphase]
@@ -276,20 +271,15 @@ private lemma prop61_g_product {N : Nat} [NeZero N]
   all_goals simp only [h0, h1, h2, h3, if_true, if_false, one_mul, zero_mul, mul_zero,
     star_zero, star_one, prop61QuadMem, and_self, and_true]
   all_goals try {rfl}
-  rw [prop61_star_exponential, prop61_star_exponential]
+  rw [star_exponential, star_exponential]
   calc
     _ = exponential (phi (q 0) * u +
         (-(phi (q 2) * u) + (-(phi (q 1) * u) + phi (q 3) * u))) := by
-          rw [prop61_exponential_add, prop61_exponential_add, prop61_exponential_add]
+          rw [exponential_add, exponential_add, exponential_add]
           ring
     _ = _ := by
       congr 1
       ring
-
-private lemma prop61_sum_exponential_mul {N : Nat} [NeZero N] (x : ZMod N) :
-    ∑ u : ZMod N, exponential (x * u) = if x = 0 then (N : Complex) else 0 := by
-  simpa [exponential, mul_comm] using
-    AddChar.sum_mulShift x (ZMod.isPrimitive_stdAddChar N)
 
 private lemma prop61_sum_g_product {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (phi : ZMod N → ZMod N) (q : Fin 4 → ZMod N) :
@@ -303,7 +293,7 @@ private lemma prop61_sum_g_product {N : Nat} [NeZero N]
   simp_rw [prop61_g_product]
   by_cases hmem : prop61QuadMem B q
   · simp_rw [if_pos hmem]
-    rw [prop61_sum_exponential_mul]
+    rw [fejer_sum_exponential_mul]
     by_cases hphi : phi (q 0) - phi (q 1) = phi (q 2) - phi (q 3)
     · have hcond : prop61QuadMem B q ∧
           phi (q 0) - phi (q 1) = phi (q 2) - phi (q 3) := ⟨hmem, hphi⟩

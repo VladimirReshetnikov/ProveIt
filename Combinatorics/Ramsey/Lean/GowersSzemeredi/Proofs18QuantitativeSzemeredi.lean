@@ -86,19 +86,7 @@ lemma section18_balanced_eq_real {N : Nat} [NeZero N]
   by_cases hx : x ∈ A <;>
     simp [balanced, indicator, section18BalancedReal, hx]
 
-lemma section18_density_bounds {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) : 0 ≤ density A ∧ density A ≤ 1 := by
-  have hcard : A.card ≤ N := by
-    calc
-      A.card ≤ (Finset.univ : Finset (ZMod N)).card := A.card_le_univ
-      _ = N := by simp
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  constructor
-  · unfold density
-    positivity
-  · unfold density
-    rw [div_le_one hN]
-    exact_mod_cast hcard
+alias section18_density_bounds := cor25_density_bounds
 
 lemma section18_balancedReal_abs_le_one {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (x : ZMod N) :

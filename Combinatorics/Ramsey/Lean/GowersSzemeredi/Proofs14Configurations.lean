@@ -318,20 +318,9 @@ private lemma prop144_product_lower {N n : Nat} [NeZero N]
     Finset.sum_const, nsmul_eq_mul, one_mul, mul_one, Nat.cast_pow,
     Nat.cast_ofNat] using h
 
-lemma prop144_countWhere_prod {X Y : Type*} [Fintype X] [Fintype Y]
-    (P : X → Y → Prop) :
-    countWhere (fun z : X × Y => P z.1 z.2) =
-      ∑ x : X, countWhere (P x) := by
-  classical
-  simp_rw [prop14_countWhere_eq_sum_ite]
-  rw [Fintype.sum_prod_type]
+alias prop144_countWhere_prod := context_countWhere_prod
 
-lemma prop144_countWhere_equiv {X Y : Type*} [Fintype X] [Fintype Y]
-    (e : X ≃ Y) (P : Y → Prop) :
-    countWhere P = countWhere (fun x => P (e x)) := by
-  classical
-  simp_rw [prop14_countWhere_eq_sum_ite]
-  exact (e.sum_comp (fun y => if P y then 1 else 0)).symm
+alias prop144_countWhere_equiv := feature_countWhere_equiv
 
 private lemma prop144_sum_section_card {N n : Nat} [NeZero N]
     (B : Finset (Point N (n + 1))) :

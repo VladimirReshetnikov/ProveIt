@@ -99,26 +99,7 @@ private lemma centered_reciprocal_sq_tail {N K : Nat} [NeZero N]
     simp only [H, hH, Finset.sum_empty]
     positivity
 
-private lemma fourier_indicator_norm_le_card' {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) (r : ZMod N) :
-    ‖fourier (indicator A) r‖ ≤ A.card := by
-  classical
-  rw [fourier, ZMod.dft_apply]
-  calc
-    ‖∑ x : ZMod N, ZMod.stdAddChar (-(x * r)) • indicator A x‖ ≤
-        ∑ x : ZMod N, ‖ZMod.stdAddChar (-(x * r)) • indicator A x‖ :=
-      norm_sum_le _ _
-    _ = ∑ x : ZMod N, if x ∈ A then (1 : Real) else 0 := by
-      apply Finset.sum_congr rfl
-      intro x _
-      by_cases hx : x ∈ A <;> simp [indicator, hx, ZMod.stdAddChar_apply]
-    _ = A.card := by simp
-
-@[simp] private lemma fourier_indicator_zero {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) :
-    fourier (indicator A) 0 = (A.card : Complex) := by
-  classical
-  simp [fourier, ZMod.dft_apply, indicator]
+attribute [simp] fourier_indicator_zero
 
 private lemma fourier_indicator_energy {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) :

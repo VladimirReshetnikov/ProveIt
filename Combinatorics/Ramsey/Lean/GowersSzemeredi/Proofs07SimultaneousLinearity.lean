@@ -874,15 +874,6 @@ private lemma centeredAbs_pos_of_ne_zero {p : Nat} [NeZero p]
   have hd0 : d = 0 := by simpa using (ZMod.valMinAbs_spec d 0).1 hvalMin |>.1
   exact (bne_iff_ne.mp hd) hd0
 
-private lemma natCast_centeredAbs_eq_or_neg {p : Nat} [NeZero p]
-    (d : ZMod p) : (centeredAbs d : ZMod p) = d ∨
-      (centeredAbs d : ZMod p) = -d := by
-  have hcast := ZMod.natCast_natAbs_valMinAbs d
-  unfold centeredAbs
-  split at hcast
-  · exact Or.inl hcast
-  · exact Or.inr hcast
-
 private def cor711Density (p : Nat) (R : IntAP) (A : Finset Int) : Real :=
   (modularCoordinateSet p R A).card / (p : Real)
 
