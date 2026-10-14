@@ -347,30 +347,6 @@ namespace LeanProofs.GowersSzemeredi
 
 open BaseCase
 
-theorem polyPieceFaceCountW_fejer_le_tight {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    (ht : 0 < theta) (ht1 : theta ≤ 1) :
-    (polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma : Real) ≤
-      (2 / (gamma * theta)) ^ (10002 * (2 ^ 23 + 1) : Nat) := by
-  obtain ⟨hu2, -, h2g, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-  obtain ⟨hb, hb1⟩ := polyPieceBudgetW_fejer_pos_le hg hg1 ht ht1
-  have hbinv := polyPieceBudgetW_fejer_inv_le_power hg hg1 ht ht1
-  have hBF := section16BaseFamilyBound_le_power hg hg1 hb hb1
-  unfold polyPieceFaceCountW
-  set b := polyPieceBudgetW (fejerThetaOne theta gamma 1)
-  set u := 2 / (gamma * theta) with hu
-  clear_value u b
-  have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
-  have hbase : 2 / (gamma * b) ≤ u ^ ((2 : Nat) ^ 23 + 1) := by
-    rw [show 2 / (gamma * b) = 2 / gamma * b⁻¹ by field_simp]
-    rw [pow_succ, mul_comm (u ^ _) u]
-    exact mul_le_mul h2g hbinv (inv_pos.mpr hb).le hupos.le
-  refine hBF.trans ?_
-  calc (2 / (gamma * b)) ^ (10002 : Nat)
-      ≤ (u ^ ((2 : Nat) ^ 23 + 1)) ^ (10002 : Nat) :=
-        pow_le_pow_left₀ (div_pos (by norm_num) (mul_pos hg hb)).le hbase _
-    _ = u ^ ((2 ^ 23 + 1) * 10002) := (pow_mul _ _ _).symm
-    _ = u ^ (10002 * (2 ^ 23 + 1) : Nat) := by rw [mul_comm]
-
 theorem uniTwoFejerCount_le_split_tight {V : Real} (hV : 1 ≤ V) {gamma theta rho : Real} (hg : 0 < gamma)
     (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) (hr : 0 < rho) (hr1 : rho ≤ 1) (n : Nat) :
     uniTwoFejerCount theta gamma (n * polyTwoFejerPieces gamma theta) rho ≤
