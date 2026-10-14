@@ -207,38 +207,6 @@ private lemma prop61_mixed_eq_l2 {N : Nat} [NeZero N]
           intro s _
           rw [prop61_correlation_eq]
 
-private lemma prop61_fourth_moment_le {N : Nat} [NeZero N]
-    (h : ZMod N → Complex) (hh : DiscValued h) :
-    ∑ r : ZMod N, ‖fourier h r‖ ^ 4 ≤ (N : ℝ) ^ 4 := by
-  have hcorr (t : ZMod N) : ‖correlation h h t‖ ≤ (N : ℝ) := by
-    calc
-      ‖correlation h h t‖ ≤ ∑ s : ZMod N, ‖h s * star (h (s - t))‖ := by
-        exact norm_sum_le _ _
-      _ ≤ ∑ _s : ZMod N, (1 : ℝ) := by
-        apply Finset.sum_le_sum
-        intro s _
-        rw [norm_mul, norm_star]
-        calc
-          ‖h s‖ * ‖h (s - t)‖ ≤ 1 * 1 := by gcongr <;> apply hh
-          _ = 1 := one_mul 1
-      _ = (N : ℝ) := by simp
-  have hid :
-      (∑ r : ZMod N, ‖fourier h r‖ ^ 4) =
-        (N : ℝ) * ∑ t : ZMod N, ‖correlation h h t‖ ^ 2 := by
-    calc
-      _ = ∑ r : ZMod N, ‖fourier h r‖ ^ 2 * ‖fourier h r‖ ^ 2 := by
-        apply Finset.sum_congr rfl
-        intro r _
-        ring
-      _ = _ := by simpa [correlation] using lemma_2_1_holds N h h
-  rw [hid]
-  calc
-    (N : ℝ) * ∑ t : ZMod N, ‖correlation h h t‖ ^ 2 ≤
-        (N : ℝ) * ∑ _t : ZMod N, (N : ℝ) ^ 2 := by
-          gcongr with t
-          exact hcorr t
-    _ = (N : ℝ) ^ 4 := by simp; ring
-
 private lemma prop61F_disc {N : Nat} (f : ZMod N → Complex) (hf : DiscValued f)
     (u : ZMod N) : DiscValued (prop61F f u) := by
   intro x
@@ -551,7 +519,7 @@ theorem proposition_6_1_holds : proposition_6_1 := by
           ∑ _u : ZMod N, (N : ℝ) ^ 4 := by
             apply Finset.sum_le_sum
             intro u _
-            exact prop61_fourth_moment_le (prop61F f u) (prop61F_disc f hf u)
+            exact fourier_fourth_moment_le (prop61F f u) (prop61F_disc f hf u)
       _ = (N : ℝ) ^ 5 := by simp; ring
   have hmixed_nonneg : 0 ≤ mixed := by
     dsimp only [mixed]

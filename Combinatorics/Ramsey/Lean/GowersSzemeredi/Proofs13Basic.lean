@@ -365,38 +365,6 @@ private lemma prop131_mixed_eq_l2 {N : Nat} [NeZero N]
                 intro x _
                 exact Finset.sum_comm
 
-private lemma prop131_fourth_moment_le {N : Nat} [NeZero N]
-    (g : ZMod N → Complex) (hg : DiscValued g) :
-    ∑ r : ZMod N, ‖fourier g r‖ ^ 4 ≤ (N : Real) ^ 4 := by
-  have hcorr (t : ZMod N) : ‖correlation g g t‖ ≤ (N : Real) := by
-    calc
-      ‖correlation g g t‖ ≤ ∑ s : ZMod N, ‖g s * star (g (s - t))‖ :=
-        norm_sum_le _ _
-      _ ≤ ∑ _s : ZMod N, (1 : Real) := by
-        apply Finset.sum_le_sum
-        intro s _
-        rw [norm_mul, norm_star]
-        calc
-          ‖g s‖ * ‖g (s - t)‖ ≤ 1 * 1 := by gcongr <;> apply hg
-          _ = 1 := one_mul 1
-      _ = (N : Real) := by simp
-  have hid :
-      (∑ r : ZMod N, ‖fourier g r‖ ^ 4) =
-        (N : Real) * ∑ t : ZMod N, ‖correlation g g t‖ ^ 2 := by
-    calc
-      _ = ∑ r : ZMod N, ‖fourier g r‖ ^ 2 * ‖fourier g r‖ ^ 2 := by
-        apply Finset.sum_congr rfl
-        intro r _
-        ring
-      _ = _ := by simpa [correlation] using lemma_2_1_holds N g g
-  rw [hid]
-  calc
-    (N : Real) * ∑ t : ZMod N, ‖correlation g g t‖ ^ 2 ≤
-        (N : Real) * ∑ _t : ZMod N, (N : Real) ^ 2 := by
-          gcongr with t
-          exact hcorr t
-    _ = (N : Real) ^ 4 := by simp; ring
-
 private lemma prop131A_disc {N : Nat} (f : Pair N → Complex)
     (hf : DiscValued f) (u x w : ZMod N) : DiscValued (prop131A f u x w) := by
   intro h
@@ -418,7 +386,7 @@ private lemma prop131_fourthA_le {N : Nat} [NeZero N]
           intro x _
           apply Finset.sum_le_sum
           intro w _
-          exact prop131_fourth_moment_le (prop131A f u x w)
+          exact fourier_fourth_moment_le (prop131A f u x w)
             (prop131A_disc f hf u x w)
     _ = (N : Real) ^ 7 := by simp; ring
 

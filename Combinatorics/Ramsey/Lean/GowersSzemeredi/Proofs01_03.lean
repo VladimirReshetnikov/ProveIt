@@ -163,6 +163,40 @@ theorem lemma_2_1_holds : lemma_2_1 := by
   have h := identity_2_3_holds N (correlation f g)
   simpa [fourier_correlation, correlation, norm_mul, mul_pow] using h
 
+/-- **The fourth moment of the Fourier transform of a function bounded by 1**:
+`∑_r |ĥ(r)|⁴ ≤ N⁴` (Lemma 2.1 and the trivial correlation bound). -/
+theorem fourier_fourth_moment_le {N : Nat} [NeZero N]
+    (h : ZMod N → Complex) (hh : DiscValued h) :
+    ∑ r : ZMod N, ‖fourier h r‖ ^ 4 ≤ (N : Real) ^ 4 := by
+  have hcorr (t : ZMod N) : ‖correlation h h t‖ ≤ (N : Real) := by
+    calc
+      ‖correlation h h t‖ ≤ ∑ s : ZMod N, ‖h s * star (h (s - t))‖ :=
+        norm_sum_le _ _
+      _ ≤ ∑ _s : ZMod N, (1 : Real) := by
+        apply Finset.sum_le_sum
+        intro s _
+        rw [norm_mul, norm_star]
+        calc
+          ‖h s‖ * ‖h (s - t)‖ ≤ 1 * 1 := by gcongr <;> apply hh
+          _ = 1 := one_mul 1
+      _ = (N : Real) := by simp
+  have hid :
+      (∑ r : ZMod N, ‖fourier h r‖ ^ 4) =
+        (N : Real) * ∑ t : ZMod N, ‖correlation h h t‖ ^ 2 := by
+    calc
+      _ = ∑ r : ZMod N, ‖fourier h r‖ ^ 2 * ‖fourier h r‖ ^ 2 := by
+        apply Finset.sum_congr rfl
+        intro r _
+        ring
+      _ = _ := by simpa [correlation] using lemma_2_1_holds N h h
+  rw [hid]
+  calc
+    (N : Real) * ∑ t : ZMod N, ‖correlation h h t‖ ^ 2 ≤
+        (N : Real) * ∑ _t : ZMod N, (N : Real) ^ 2 := by
+          gcongr with t
+          exact hcorr t
+    _ = (N : Real) ^ 4 := by simp; ring
+
 private lemma correlation_energy_eq_quadruples {N : Nat} [NeZero N]
     (f : ZMod N → Complex) :
     ((∑ t : ZMod N,
