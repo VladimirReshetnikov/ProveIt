@@ -41,7 +41,7 @@ theorem lemma_13_7_with_step_span {N : Nat} [Fact N.Prime]
         (pow_le_one₀ hα.le S.alpha_at_most_one) (by positivity)
       _ ≤ 1 := by norm_num
   obtain ⟨q, P, hP, hcell, t, ht, hspan⟩ := corollary_7_11_universal_modular_with_step_span
-    N F.R A delta hF.2.2.1 hRlen hδ hδone (Finset.filter_subset _ _) hdense
+    N F.R A delta hF.2.2.1 hRlen hδ (Finset.filter_subset _ _) hdense
     (by simpa only [delta, stage137_partition_exponent] using hlarge)
   obtain ⟨i, hi₁, hi₂⟩ := exists_stage137_partition_cell_two_bounds
     F.R.carrier (criticalHeights S D E) (fun i ↦ (P i).carrier) F.Y y hR hP

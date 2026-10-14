@@ -16,7 +16,7 @@ PACKAGES = Path(r'C:\ProveIt\.lake\packages')
 OUTPUT = ROOT / '.lake/build/lib/lean'
 OPTS = ['-DautoImplicit=false', '-Dlinter.unusedVariables=true', '-Dlinter.unusedSimpArgs=true',
         '-Dlinter.unnecessarySimpa=true', '-Dlinter.unreachableTactic=true',
-        '-Dweak.linter.unusedTactic=true']
+        '-Dweak.linter.unusedTactic=true', '-Dlinter.unusedVariables.analyzeTactics=true']
 
 
 def other_lean_running():

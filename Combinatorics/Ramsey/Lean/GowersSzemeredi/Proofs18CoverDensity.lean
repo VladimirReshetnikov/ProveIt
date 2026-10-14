@@ -43,7 +43,7 @@ theorem coverPrec_gen_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) 
   rw [heq]
   have h2 : (2 : Real) ^ (k + 1) ≤ (2 / alpha) ^ (2 ^ fixDeg k) :=
     (pow_le_pow_left₀ (by norm_num) hX _).trans (pw_natpow hX (k_succ_le_two_pow_fixDeg k))
-  exact pw_mul hX (by positivity) (inv_pos.mpr ht0).le h2 hti
+  exact pw_mul hX (inv_pos.mpr ht0).le h2 hti
 
 namespace GenParamsC
 
@@ -143,7 +143,7 @@ theorem rho1_inv_leC {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV : 
     field_simp
   rw [heq]
   have h2 : 2 * (globalTheta2 alpha (alpha / 2) P.k)⁻¹ ≤ (2 / alpha) ^ (2 ^ (fixDeg P.k + 1)) :=
-    pw_mul hX (by norm_num) (inv_pos.mpr ht0).le (hX.trans (pw_X hX _)) hti
+    pw_mul hX (inv_pos.mpr ht0).le (hX.trans (pw_X hX _)) hti
   have h := pw_mul' hX (by positivity) hcc0.le h2 hcc
   refine pw_mono hX h ?_
   have h1 := rhoDegC_ge P.k P.μ0

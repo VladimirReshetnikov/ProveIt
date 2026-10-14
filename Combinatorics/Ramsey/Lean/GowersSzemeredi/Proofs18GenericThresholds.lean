@@ -167,7 +167,7 @@ theorem MReq_le_exp {V : Real} {D k K p μV μD μ0 μK : Nat} (H : StdHyp V D k
   have hBe : 1 / B ≤ (2 / alpha) ^ (2 ^ E) := by rw [one_div]; exact hBx
   have hBe2 : 2 / B ≤ (2 / alpha) ^ (2 ^ (E + 1)) := by
     rw [div_eq_mul_inv]
-    exact pw_mul hX (by norm_num) (inv_pos.mpr hBpos).le (hX.trans (pw_X hX _)) hBx
+    exact pw_mul hX (inv_pos.mpr hBpos).le (hX.trans (pw_X hX _)) hBx
   have hT := max (E + 3) (2 ^ (k + 6) + 4)
   have e1 := ex_rpow_of_nonneg hX (by positivity) (hcz 8 (by norm_num)) (by positivity) hBe
   have e2 := ex_rpow_of_nonneg hX (by positivity) h4zr (by positivity) hBe
@@ -215,8 +215,8 @@ theorem Tloc_le_exp {V : Real} {D k K p μV μD μ0 μK : Nat} (H : StdHyp V D k
     rw [show ((std V D k K p μ0).NestExp alpha * ((std V D k K p μ0).Em alpha / 2))⁻¹ =
       2 * (((std V D k K p μ0).NestExp alpha)⁻¹ * ((std V D k K p μ0).Em alpha)⁻¹) by
         field_simp]
-    have p1 := pw_mul hX (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le hNE' hEm'
-    exact pw_mul hX (by norm_num) (by positivity) (hX.trans (pw_X hX _)) p1
+    have p1 := pw_mul hX (inv_pos.mpr hEm0).le hNE' hEm'
+    exact pw_mul hX (by positivity) (hX.trans (pw_X hX _)) p1
   have hMx0 : 0 < (std V D k K p μ0).MExp alpha := by
     show 0 < (std V D k K p μ0).NestExp alpha * ((std V D k K p μ0).Em alpha / 2)
     positivity

@@ -28,7 +28,7 @@ theorem pow_mono_exp {x : Real} (hx : 1 ≤ x) {a b : Nat} (hab : a ≤ b) : x ^
   pow_le_pow_right₀ hx hab
 
 /-- `y ≤ x^a`, `z ≤ x^b` give `y z ≤ x^(a+b)`. -/
-theorem mul_le_pow_add {x y z : Real} {a b : Nat} (hy0 : 0 ≤ y) (hz0 : 0 ≤ z)
+theorem mul_le_pow_add {x y z : Real} {a b : Nat} (hz0 : 0 ≤ z)
     (hy : y ≤ x ^ a) (hz : z ≤ x ^ b) (hx : 0 ≤ x) : y * z ≤ x ^ (a + b) := by
   rw [pow_add]
   exact mul_le_mul hy hz hz0 (pow_nonneg hx _)
@@ -327,7 +327,7 @@ theorem const_mul_le_pow {w c y : Real} {a j : Nat} (hw : 2 ≤ w) (_hc0 : 0 ≤
 theorem nat_mul_le_pow {w : Real} {m n : Nat} {a b : Nat} (hw : 2 ≤ w) (hm : (m : Real) ≤ w ^ a)
     (hn : (n : Real) ≤ w ^ b) : ((m * n : Nat) : Real) ≤ w ^ (a + b) := by
   push_cast
-  exact mul_le_pow_add (Nat.cast_nonneg _) (Nat.cast_nonneg _) hm hn (le_trans (by norm_num) hw)
+  exact mul_le_pow_add (Nat.cast_nonneg _) hm hn (le_trans (by norm_num) hw)
 
 /-- `c (m n + 1)` for a constant `c ≤ 2^j`. -/
 theorem nat_affine_le_pow {w : Real} {c m n : Nat} {a b j : Nat} (hw : 2 ≤ w) (hc : (c : Real) ≤ 2 ^ j)

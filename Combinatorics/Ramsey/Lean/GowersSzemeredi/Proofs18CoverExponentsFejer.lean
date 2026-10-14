@@ -59,7 +59,7 @@ theorem spectrum_exps_inv_leF {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alp
     rw [show (P.Rho1 alpha / 2 / 2)⁻¹ = 4 * (P.Rho1 alpha)⁻¹ by field_simp; ring]
     have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ ρ) :=
       pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
-    exact pw_mul hX (by norm_num) (inv_pos.mpr hr0).le h4 hri
+    exact pw_mul hX (inv_pos.mpr hr0).le h4 hri
   have hQ := uCount_scale_le (c := ρ + 1) (D := uDeg23 k) (μD := μD) hX H.hV H.hVμ H.hμ0 hd0 hd1 hdi
     hB0 hB1 hBi hq0 hq1 hqi le_rfl
   rw [max_eq_right (show P.μ0 ≤ ρ + 1 by omega)] at hQ
@@ -133,7 +133,7 @@ theorem slice_exps_inv_leF {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha)
     have hs20 : 0 < s / 2 := half_pos hs0
     have hs2i : (s / 2)⁻¹ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := by
       rw [inv_div, div_eq_mul_inv]
-      exact pw_mul hX (by norm_num) (inv_pos.mpr hs0).le (hX.trans (pw_X hX _)) hsi
+      exact pw_mul hX (inv_pos.mpr hs0).le (hX.trans (pw_X hX _)) hsi
     have h := uCount_scale_le (c := m + 1) (D := uDeg23 k) (μD := μD) hX H.hV H.hVμ H.hμ0
       (half_pos ha) (by linarith) (GenParams.half_inv_le k ha ha2) hB0 hB1 hBi hs20 (by linarith)
       hs2i le_rfl
@@ -174,10 +174,10 @@ theorem Eloc_inv_leF {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha2 
   have hEc' := pw_mono hX hEc hM1
   have h32 : (32 : Real) ≤ (2 / alpha) ^ (2 ^ (M + 1)) :=
     pw_mono hX (pw_const hX (a := 3) (by norm_num)) (by omega)
-  have p1 := pw_mul hX (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le hNE' hEm'
-  have p2 := pw_mul hX (inv_pos.mpr hEth0).le (inv_pos.mpr hEc0).le hEth' hEc'
+  have p1 := pw_mul hX (inv_pos.mpr hEm0).le hNE' hEm'
+  have p2 := pw_mul hX (inv_pos.mpr hEc0).le hEth' hEc'
   have p3 := pw_mul' hX (inv_pos.mpr hBx0).le (by positivity) hBx p2
-  have p4 := pw_mul hX (by norm_num) (by positivity) h32 p1
+  have p4 := pw_mul hX (by positivity) h32 p1
   have p5 := pw_mul' hX (by positivity) (by positivity) p4 p3
   exact pw_mono hX p5 (by omega)
 
@@ -238,7 +238,7 @@ theorem MReq_le_expF {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha2 
   have hBe : 1 / B ≤ (2 / alpha) ^ (2 ^ E) := by rw [one_div]; exact hBx
   have hBe2 : 2 / B ≤ (2 / alpha) ^ (2 ^ (E + 1)) := by
     rw [div_eq_mul_inv]
-    exact pw_mul hX (by norm_num) (inv_pos.mpr hBpos).le (hX.trans (pw_X hX _)) hBx
+    exact pw_mul hX (inv_pos.mpr hBpos).le (hX.trans (pw_X hX _)) hBx
   have e1 := ex_rpow_of_nonneg hX (by positivity) (hcz 8 (by norm_num)) (by positivity) hBe
   have e2 := ex_rpow_of_nonneg hX (by positivity) h4zr (by positivity) hBe
   have e3 := ex_rpow_of_nonneg hX (by positivity) (hcz 16 le_rfl) (by positivity) hBe2
@@ -278,8 +278,8 @@ theorem Tloc_le_expF {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha :
     show (P.NestExp alpha * (P.Em alpha / 2))⁻¹ ≤ _
     rw [show (P.NestExp alpha * (P.Em alpha / 2))⁻¹ =
       2 * ((P.NestExp alpha)⁻¹ * (P.Em alpha)⁻¹) by field_simp]
-    have p1 := pw_mul hX (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le hNE' hEm'
-    exact pw_mul hX (by norm_num) (by positivity) (hX.trans (pw_X hX _)) p1
+    have p1 := pw_mul hX (inv_pos.mpr hEm0).le hNE' hEm'
+    exact pw_mul hX (by positivity) (hX.trans (pw_X hX _)) p1
   have hMx0 : 0 < P.MExp alpha := by
     show 0 < P.NestExp alpha * (P.Em alpha / 2)
     positivity

@@ -34,7 +34,7 @@ theorem extract_bilinear_cell_with_step_span {N : Nat} [Fact N.Prime]
     apply le_of_mul_le_mul_left (a := (S.card : Real)) _ hSpos
     nlinarith only [hmass, hcardReal]
   obtain ⟨M, P, hP, hcell, t, ht, hspan⟩ := corollary_7_11_universal_modular_with_step_span
-    N T J delta hT hlen hδ hδone hJ hJdense hlarge
+    N T J delta hT hlen hδ hJ hJdense hlarge
   have hTcard : T.carrier.card = T.length := hT
   have hTne : T.carrier.Nonempty := Finset.card_pos.mp (by simpa only [hTcard] using hlen)
   obtain ⟨j, hj⟩ := exists_coordinate_filter_cell C T.carrier (fun z ↦ z.2 - y)

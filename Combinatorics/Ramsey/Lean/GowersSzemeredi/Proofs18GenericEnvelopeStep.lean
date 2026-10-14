@@ -34,7 +34,7 @@ theorem inv_thr_le {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M s 
   have hb : 0 < η * β / 2 := by positivity
   have hbi : (η * β / 2)⁻¹ ≤ X ^ (2 ^ (M + 2)) := by
     rw [show (η * β / 2)⁻¹ = 2 * (η⁻¹ * β⁻¹) by field_simp]
-    have h1 := pw_mul hX (inv_pos.mpr hη0).le (inv_pos.mpr hβ0).le hηi hβi
+    have h1 := pw_mul hX (inv_pos.mpr hβ0).le hηi hβi
     exact pw_mul' hX (by norm_num) (by positivity) (hX.trans (pw_X hX M)) h1 |>.trans
       (pw_mono hX le_rfl (by omega))
   have hb1 : 1 ≤ (η * β / 2)⁻¹ := by
@@ -80,7 +80,7 @@ theorem inv_thr_le {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M s 
     have := small_nat_le_pw hX (k := k) (c := 6 * (k + 1)) (by omega)
     push_cast at this ⊢; linarith
   have h2B : 2 * boundaryRefinementConstant (1 / 16) ≤ X ^ (2 ^ (1083 + 1)) :=
-    pw_mul hX (by norm_num) hB0 (hX.trans (pw_X hX _)) (pw_const hX cubic_boundary_refinement_constant_upper)
+    pw_mul hX hB0 (hX.trans (pw_X hX _)) (pw_const hX cubic_boundary_refinement_constant_upper)
   have hD : inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ ≤
       X ^ (2 ^ (max (1083 + 1) (k + 3) + 1 + 1 + 1)) := by
     unfold inverseStepCountConstant localInverseAssemblyConstant

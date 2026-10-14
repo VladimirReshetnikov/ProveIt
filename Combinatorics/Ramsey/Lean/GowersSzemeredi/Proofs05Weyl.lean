@@ -1143,7 +1143,7 @@ private lemma nat_succ_le_mul_two_pow_div (e m : Nat) (hm : 1 ≤ m) :
     _ ≤ m * 2 ^ (e / m) := Nat.mul_le_mul_left m hquot
 
 private lemma divisor_factor_power_bound (p e m : Nat)
-    (hp : 2 ≤ p) (he : 1 ≤ e) (hm : 1 ≤ m) :
+    (hp : 2 ≤ p) (hm : 1 ≤ m) :
     (e + 1) ^ m ≤
       (if p < 2 ^ m then m ^ m else 1) * p ^ e := by
   by_cases hsmall : p < 2 ^ m
@@ -1196,8 +1196,6 @@ private lemma card_divisors_pow_le (n m : Nat) (hn : n ≠ 0) (hm : 1 ≤ m) :
       · intro p hp
         apply divisor_factor_power_bound
         · exact (Nat.prime_of_mem_primeFactors hp).two_le
-        · apply Nat.one_le_iff_ne_zero.mpr
-          exact Finsupp.mem_support_iff.mp (by simpa using hp)
         · exact hm
     _ = (m ^ m) ^ (smallPrimeFactors n m).card * n := by
       have hsmallProd :

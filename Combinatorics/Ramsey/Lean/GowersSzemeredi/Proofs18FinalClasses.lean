@@ -115,9 +115,9 @@ theorem uCount_scale_le_deg {X V γ θ s : Real} {D μV μD μ0 c : Nat} (hX : 2
   have hV' : V ≤ X ^ (2 ^ m) := pw_mono hX (pw_const hX hVμ) (le_max_left _ _)
   have hg' : γ⁻¹ ≤ X ^ (2 ^ m) := pw_mono hX hgi (le_max_right _ _)
   have ht' : θ⁻¹ ≤ X ^ (2 ^ m) := pw_mono hX hti (le_max_right _ _)
-  have h1 := pw_mul hX (by norm_num) (by linarith) h4 hV'
-  have h2 := pw_mul hX (inv_pos.mpr hg).le (inv_pos.mpr ht).le hg' ht'
-  have h3 := pw_mul hX (by positivity) (by positivity) h1 h2
+  have h1 := pw_mul hX (by linarith) h4 hV'
+  have h2 := pw_mul hX (inv_pos.mpr ht).le hg' ht'
+  have h3 := pw_mul hX (by positivity) h1 h2
   have hc0 : 4 * V * γ⁻¹ * θ⁻¹ ≤ X ^ (2 ^ μ0) := by
     rw [show 4 * V * γ⁻¹ * θ⁻¹ = 4 * V * (γ⁻¹ * θ⁻¹) by ring]
     exact pw_mono hX h3 (by omega)

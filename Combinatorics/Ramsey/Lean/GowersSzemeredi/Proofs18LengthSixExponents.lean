@@ -337,9 +337,9 @@ theorem famTwoWidth_inv_le_power {K1 p1 m qs qf d t : Nat} {w rho ζ : Real}
   have hL0 : 0 < L := by rw [hLval]; positivity
   have hLi : L⁻¹ ≤ w ^ (32 * d + 128) := by
     rw [hLval, inv_div, div_eq_mul_inv, mul_inv]
-    have h := mul_le_pow_add hBq0.le
+    have h := mul_le_pow_add
       (mul_nonneg (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le) hBq
-      (mul_le_pow_add (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le hEr hEb hw0) hw0
+      (mul_le_pow_add (inv_pos.mpr hEb0).le hEr hEb hw0) hw0
     exact le_pow_mono hw2 (by omega) h
   -- the slice exponent
   have hQr := famTwoQr_le_power hw2 hm' hqf' (rho / 8)

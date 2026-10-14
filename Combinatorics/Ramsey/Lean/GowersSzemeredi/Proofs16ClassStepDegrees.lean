@@ -421,8 +421,8 @@ theorem step_exp_inv_le {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V) 
     rw [hLdef]; unfold pieceLineExponent
     rw [inv_div, div_eq_mul_inv, mul_inv]
     rw [← hqdef]
-    exact mul_le_pow_add hBq0.le (mul_nonneg (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le)
-      hBq (mul_le_pow_add (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le hEri hEbi hw0) hw0
+    exact mul_le_pow_add (mul_nonneg (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le)
+      hBq (mul_le_pow_add (inv_pos.mpr hEb0).le hEri hEbi hw0) hw0
   -- the slice exponent
   have hQr : classQr V D k (n * m) tS gamma (rho / 8) ≤ w ^ stepQrDeg k D := by
     unfold classQr

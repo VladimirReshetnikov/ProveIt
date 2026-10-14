@@ -49,7 +49,7 @@ theorem polyBase_loss_pos (hq : 0 < q) (hs : 0 < sigma) : 0 < sigma / (q : Real)
   have : (0 : Real) < q := by exact_mod_cast hq
   positivity
 
-theorem polyBase_loss_le_one (hq : 0 < q) (hs1 : sigma ≤ 1) (hs : 0 < sigma) :
+theorem polyBase_loss_le_one (hq : 0 < q) (hs1 : sigma ≤ 1) :
     sigma / (q : Real) ≤ 1 := by
   have hq1 : (1 : Real) ≤ q := by exact_mod_cast hq
   rw [div_le_one (by linarith)]
@@ -65,7 +65,7 @@ theorem polyBaseCorExponent_pos (hq : 0 < q) (hs : 0 < sigma) :
 theorem polyBaseThreshold_ge_four (hq : 0 < q) (hs : 0 < sigma) (hs1 : sigma ≤ 1) :
     4 ≤ polyBaseThreshold q sigma := by
   have hη := polyBase_loss_pos hq hs
-  have hη1 := polyBase_loss_le_one hq hs1 hs
+  have hη1 := polyBase_loss_le_one hq hs1
   have hpi := Real.pi_gt_three
   unfold polyBaseThreshold
   rw [le_div_iff₀ hη]
@@ -156,7 +156,7 @@ theorem section16_freiman_family_poly_cover {N q : Nat} [NeZero N] [Fact N.Prime
   set W : Real := (P.width : Real) with hW_def
   have hW0 : 0 ≤ W := Nat.cast_nonneg _
   have hη := polyBase_loss_pos hq hs
-  have hη1 := polyBase_loss_le_one hq hs1 hs
+  have hη1 := polyBase_loss_le_one hq hs1
   have ha := polyBaseCorExponent_pos hq hs
   have hΛ := polyBaseThreshold_ge_four hq hs hs1
   have hE := polyBaseExponent_pos hq hs hs1

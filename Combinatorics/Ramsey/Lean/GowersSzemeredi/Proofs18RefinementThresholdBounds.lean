@@ -69,7 +69,7 @@ theorem inv_thr_le_ex_of_partition_bound {X : Real} (hX : 2 ≤ X) {k q : Nat} {
   have hb : 0 < η * β / 2 := by positivity
   have hbi : (η * β / 2)⁻¹ ≤ X ^ (2 ^ (M + 2)) := by
     rw [show (η * β / 2)⁻¹ = 2 * (η⁻¹ * β⁻¹) by field_simp]
-    have h1 := pw_mul hX (inv_pos.mpr hη0).le (inv_pos.mpr hβ0).le hηi hβi
+    have h1 := pw_mul hX (inv_pos.mpr hβ0).le hηi hβi
     exact pw_mul' hX (by norm_num) (by positivity) (hX.trans (pw_X hX M)) h1 |>.trans
       (pw_mono hX le_rfl (by omega))
   have hb1 : 1 ≤ (η * β / 2)⁻¹ := by

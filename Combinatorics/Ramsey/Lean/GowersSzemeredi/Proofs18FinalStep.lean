@@ -70,7 +70,7 @@ theorem GenParams.joint_dens_step {X : Real} (hX : 2 ≤ X) {c : Real → Real} 
   have h21 : θ / 2 ≤ 1 := by linarith
   have h2i : (θ / 2)⁻¹ ≤ X ^ (2 ^ (m + 1)) := by
     rw [inv_div, div_eq_mul_inv]
-    exact pw_mul hX (by norm_num) (inv_pos.mpr hθ0).le (hX.trans (pw_X hX _)) hθi
+    exact pw_mul hX (inv_pos.mpr hθ0).le (hX.trans (pw_X hX _)) hθi
   obtain ⟨hc0, -, hci⟩ := GenParams.cS_step hX hc h20 h21 h2i ha0 hb0 (by omega)
   have hq := hQ1 (θ / 4) (by linarith) (by linarith)
   have hqq : 1 ≤ Q (θ / 4) * Q (θ / 4) := by nlinarith
@@ -85,7 +85,7 @@ theorem GenParams.joint_dens_step {X : Real} (hX : 2 ≤ X) {c : Real → Real} 
   rw [hval] at hle ⊢
   have hcc := mul_pos hc0 hc0
   refine ⟨by linarith, hle, ?_⟩
-  have hsq := pw_mul hX (inv_pos.mpr hc0).le (inv_pos.mpr hc0).le hci hci
+  have hsq := pw_mul hX (inv_pos.mpr hc0).le hci hci
   have hinv : (8 * (c (θ / 2) * c (θ / 2)))⁻¹ ≤ (c (θ / 2))⁻¹ * (c (θ / 2))⁻¹ := by
     rw [mul_inv, mul_inv]
     nlinarith
@@ -357,7 +357,7 @@ theorem coverPrec_gen_bounds_fejerJT3 (k : Nat) (ha : 0 < alpha) (ha2 : alpha �
   rw [heq]
   have h2 : (2 : Real) ^ (k + 1) ≤ (2 / alpha) ^ (2 ^ pDeg k) :=
     (pow_le_pow_left₀ (by norm_num) hX _).trans (pw_natpow hX (k_succ_le_two_pow_pDeg k))
-  exact pw_mul hX (by positivity) (inv_pos.mpr ht0).le h2 hti
+  exact pw_mul hX (inv_pos.mpr ht0).le h2 hti
 
 namespace GenParamsJT3
 
@@ -452,7 +452,7 @@ theorem rho1_inv_leJT3 {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV 
     field_simp
   rw [heq]
   have h2 : 2 * (globalTheta2W (fejerThetaOne alpha (alpha / 2) P.k))⁻¹ ≤ (2 / alpha) ^ (2 ^ (pDeg P.k + 1)) :=
-    pw_mul hX (by norm_num) (inv_pos.mpr ht0).le (hX.trans (pw_X hX _)) hti
+    pw_mul hX (inv_pos.mpr ht0).le (hX.trans (pw_X hX _)) hti
   have h := pw_mul' hX (by positivity) hcc0.le h2 hcc
   refine pw_mono hX h ?_
   have hm : max (pDeg P.k + 1) (P.μ0 + 1 + tDegT3 P.k + P.k) =
@@ -589,7 +589,7 @@ theorem spectrum_exps_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < a
     rw [show (P.Rho1 alpha / 2 / 2)⁻¹ = 4 * (P.Rho1 alpha)⁻¹ by field_simp; ring]
     have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ ρ) :=
       pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
-    exact pw_mul hX (by norm_num) (inv_pos.mpr hr0).le h4 hri
+    exact pw_mul hX (inv_pos.mpr hr0).le h4 hri
   have hQ := uCount_scale_le_deg (c := ρ + 1) (D := uDegT3 k) (μD := μD) hX H.hV H.hVμ (seven_le_pDeg _) H.hμ0 hd0 hd1 hdi
     hB0 hB1 hBi hq0 hq1 hqi le_rfl
   rw [max_eq_right (show P.μ0 ≤ ρ + 1 by omega)] at hQ
@@ -643,7 +643,7 @@ theorem slice_exps_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alph
     have hs20 : 0 < s / 2 := half_pos hs0
     have hs2i : (s / 2)⁻¹ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := by
       rw [inv_div, div_eq_mul_inv]
-      exact pw_mul hX (by norm_num) (inv_pos.mpr hs0).le (hX.trans (pw_X hX _)) hsi
+      exact pw_mul hX (inv_pos.mpr hs0).le (hX.trans (pw_X hX _)) hsi
     have h := uCount_scale_le_deg (c := m + 1) (D := uDegT3 k) (μD := μD) hX H.hV H.hVμ (seven_le_pDeg _) H.hμ0
       (half_pos ha) (by linarith) (GenParams.half_inv_le_deg (pDeg k) ha ha2) hB0 hB1 hBi hs20 (by linarith)
       hs2i le_rfl
@@ -654,7 +654,7 @@ theorem slice_exps_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alph
   have hS21 : P.ThS alpha / 2 ≤ 1 := by linarith
   have hS2i : (P.ThS alpha / 2)⁻¹ ≤ (2 / alpha) ^ (2 ^ (ρ + 2 + 3 + 1)) := by
     rw [inv_div, div_eq_mul_inv]
-    exact pw_mul hX (by norm_num) (inv_pos.mpr hS0).le (hX.trans (pw_X hX _)) hSi
+    exact pw_mul hX (inv_pos.mpr hS0).le (hX.trans (pw_X hX _)) hSi
   have hE := hslice hS2 hS21 hS2i (by omega)
   rw [show P.ThS alpha / 2 / 2 = P.ThS alpha / 4 by ring] at hE
   exact pw_mono hX hE (by omega)
@@ -688,14 +688,14 @@ theorem Eloc_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha
   have hEth' := pw_mono hX hEth hM1
   have h32 : (32 : Real) ≤ (2 / alpha) ^ (2 ^ (M + 1)) :=
     pw_mono hX (pw_const hX (a := 3) (by norm_num)) (by omega)
-  have p1 := pw_mul hX (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le hNE' hEm'
-  have p2 := pw_mul hX (inv_pos.mpr hEth0).le (inv_pos.mpr hEth0).le hEth' hEth'
+  have p1 := pw_mul hX (inv_pos.mpr hEm0).le hNE' hEm'
+  have p2 := pw_mul hX (inv_pos.mpr hEth0).le hEth' hEth'
   have hEE0 : 0 ≤ (P.Eth alpha)⁻¹ * (P.Eth alpha)⁻¹ :=
     mul_nonneg (inv_pos.mpr hEth0).le (inv_pos.mpr hEth0).le
   have hNE0 : 0 ≤ (P.NestExp alpha)⁻¹ * (P.Em alpha)⁻¹ :=
     mul_nonneg (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le
   have p3 := pw_mul' hX (inv_pos.mpr hBx0).le hEE0 hBx p2
-  have p4 := pw_mul hX (by norm_num) hNE0 h32 p1
+  have p4 := pw_mul hX hNE0 h32 p1
   have p5 := pw_mul' hX (mul_nonneg (by norm_num) hNE0) (mul_nonneg (inv_pos.mpr hBx0).le hEE0) p4 p3
   exact pw_mono hX p5 (by omega)
 
@@ -754,7 +754,7 @@ theorem MReq_le_expJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha
   have hBe : 1 / B ≤ (2 / alpha) ^ (2 ^ E) := by rw [one_div]; exact hBx
   have hBe2 : 2 / B ≤ (2 / alpha) ^ (2 ^ (E + 1)) := by
     rw [div_eq_mul_inv]
-    exact pw_mul hX (by norm_num) (inv_pos.mpr hBpos).le (hX.trans (pw_X hX _)) hBx
+    exact pw_mul hX (inv_pos.mpr hBpos).le (hX.trans (pw_X hX _)) hBx
   have e1 := ex_rpow_of_nonneg hX (by positivity) (hcz 8 (by norm_num)) (div_nonneg zero_le_one hBpos.le) hBe
   have e2 := ex_rpow_of_nonneg hX (by positivity) h4zr (div_nonneg zero_le_one hBpos.le) hBe
   have e3 := ex_rpow_of_nonneg hX (by positivity) (hcz 16 le_rfl) (div_nonneg zero_le_two hBpos.le) hBe2
@@ -792,8 +792,8 @@ theorem Tloc_le_expJT3 {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha
     show (P.NestExp alpha * (P.Em alpha / 2))⁻¹ ≤ _
     rw [show (P.NestExp alpha * (P.Em alpha / 2))⁻¹ =
       2 * ((P.NestExp alpha)⁻¹ * (P.Em alpha)⁻¹) by field_simp]
-    have p1 := pw_mul hX (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le hNE' hEm'
-    exact pw_mul hX (by norm_num) (mul_nonneg (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le)
+    have p1 := pw_mul hX (inv_pos.mpr hEm0).le hNE' hEm'
+    exact pw_mul hX (mul_nonneg (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le)
       (hX.trans (pw_X hX _)) p1
   have hMx0 : 0 < P.MExp alpha := by
     show 0 < P.NestExp alpha * (P.Em alpha / 2)

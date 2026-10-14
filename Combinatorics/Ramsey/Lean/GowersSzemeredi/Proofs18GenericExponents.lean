@@ -89,7 +89,7 @@ theorem lw_level_inv_le {V : Real} {D k μV μD μ0 ρ : Nat} (ha : 0 < alpha) (
     rw [inv_div, div_eq_mul_inv]
     have h2k : (2 : Real) ^ (k + 1) ≤ (2 / alpha) ^ (2 ^ ρ) :=
       (pow_le_pow_left₀ (by norm_num) hX _).trans (pw_natpow hX hkρ)
-    exact pw_mul hX (by positivity) (inv_pos.mpr hu0).le h2k hui
+    exact pw_mul hX (inv_pos.mpr hu0).le h2k hui
   have hcount := uCount_scale_le (c := ρ + 1) hX hV hVμ hμ0 (half_pos ha) (by linarith)
     (half_inv_le k ha ha2) hB0 hB1 hBi hs0 hs1 hsi hD
   have hmax : max μ0 (ρ + 1) = ρ + 1 := max_eq_right (by omega)
@@ -104,7 +104,7 @@ theorem lw_level_inv_le {V : Real} {D k μV μD μ0 ρ : Nat} (ha : 0 < alpha) (
     exact h1.trans (Nat.pow_le_pow_right (by norm_num) (by omega))
   show ((uCount V D (alpha / 2) (globalBudget alpha (alpha / 2) k) (u / 2 ^ (k + 1)))⁻¹ / 4 ^ k)⁻¹ ≤ _
   rw [inv_div, div_inv_eq_mul]
-  have := pw_mul hX (by positivity) (le_trans zero_le_one (one_le_uCount _ _ _ _ _)) h4k hcount
+  have := pw_mul hX (le_trans zero_le_one (one_le_uCount _ _ _ _ _)) h4k hcount
   exact pw_mono hX this (by omega)
 
 /-- **The nested width exponent.** -/
@@ -177,7 +177,7 @@ theorem spectrum_exps_inv_le {V : Real} {D k K p μV μD μ0 μK : Nat} (ha : 0 
       field_simp; ring]
     have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ rhoDeg k μD μ0) :=
       pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
-    exact pw_mul hX (by norm_num) (inv_pos.mpr hr0).le h4 hri
+    exact pw_mul hX (inv_pos.mpr hr0).le h4 hri
   have hQ := uCount_scale_le (c := rhoDeg k μD μ0 + 1) hX hV hVμ hμ0 hd0 hd1 hdi hB0 hB1 hBi
     hq0 hq1 hqi hD
   rw [max_eq_right (show μ0 ≤ rhoDeg k μD μ0 + 1 by omega)] at hQ
@@ -257,7 +257,7 @@ theorem slice_exps_inv_le {V : Real} {D k K p μV μD μ0 : Nat} (ha : 0 < alpha
     have hs20 : 0 < s / 2 := half_pos hs0
     have hs2i : (s / 2)⁻¹ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := by
       rw [inv_div, div_eq_mul_inv]
-      exact pw_mul hX (by norm_num) (inv_pos.mpr hs0).le (hX.trans (pw_X hX _)) hsi
+      exact pw_mul hX (inv_pos.mpr hs0).le (hX.trans (pw_X hX _)) hsi
     have h := uCount_scale_le (c := m + 1) hX hV hVμ hμ0 (half_pos ha) (by linarith)
       (half_inv_le k ha ha2) hB0 hB1 hBi hs20 (by linarith) hs2i hD
     rw [max_eq_right hm] at h
@@ -302,10 +302,10 @@ theorem Eloc_inv_le {V : Real} {D k K p μV μD μ0 μK : Nat} (ha : 0 < alpha)
   have hEc' := pw_mono hX hEc hM1
   have h32 : (32 : Real) ≤ (2 / alpha) ^ (2 ^ (M + 1)) :=
     pw_mono hX (pw_const hX (a := 3) (by norm_num)) (by omega)
-  have p1 := pw_mul hX (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le hNE' hEm'
-  have p2 := pw_mul hX (inv_pos.mpr hEth0).le (inv_pos.mpr hEc0).le hEth' hEc'
+  have p1 := pw_mul hX (inv_pos.mpr hEm0).le hNE' hEm'
+  have p2 := pw_mul hX (inv_pos.mpr hEc0).le hEth' hEc'
   have p3 := pw_mul' hX (inv_pos.mpr hBx0).le (by positivity) hBx p2
-  have p4 := pw_mul hX (by norm_num) (by positivity) h32 p1
+  have p4 := pw_mul hX (by positivity) h32 p1
   have p5 := pw_mul' hX (by positivity) (by positivity) p4 p3
   exact pw_mono hX p5 (by omega)
 

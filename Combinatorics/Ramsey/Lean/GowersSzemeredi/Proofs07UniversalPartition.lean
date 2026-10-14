@@ -21,7 +21,7 @@ theorem corollary_7_11_universal_modular (N : Nat) [Fact N.Prime]
         ∀ phi : ZMod N → ZMod N, FreimanHom 8 A phi →
           LinearOn ((Q j).carrier.filter fun x ↦ x ∈ A) phi) := by
   obtain ⟨M, Q, hpart, hcell, _⟩ := corollary_7_11_universal_modular_with_step_span
-    N R A alpha hR hl hα hαone hA hdensity hlarge
+    N R A alpha hR hl hα hA hdensity hlarge
   exact ⟨M, Q, hpart, hcell⟩
 
 /-- A short-cell partition works for every Freiman map on the same domain. -/

@@ -120,7 +120,7 @@ theorem two_div_three_params_le {gamma theta g' : Real} (hg : 0 < gamma) (hg1 : 
   have hu0 : 0 ≤ u := le_trans (by norm_num) hu2
   rw [show 2 / (g' * threeBudget theta gamma) = 2 * (g'⁻¹ * (threeBudget theta gamma)⁻¹) by
     field_simp]
-  have h := mul_le_pow_add (inv_pos.mpr hg').le (inv_pos.mpr b0).le hg'i bi hu0
+  have h := mul_le_pow_add (inv_pos.mpr b0).le hg'i bi hu0
   have h2 : 2 * (g'⁻¹ * (threeBudget theta gamma)⁻¹) ≤ u ^ (1 + ((2 : Nat) ^ 133 + (2 : Nat) ^ 133)) := by
     rw [pow_add, pow_one]
     exact mul_le_mul hu2 h (by positivity) hu0
@@ -362,7 +362,7 @@ theorem polyThreeQb_le_power {K1 p1 : Nat} {gamma theta rho W0 : Real} (hg : 0 <
       le_max_of_le_right (Nat.cast_nonneg _)
     have h00 : 0 ≤ max (max ((3 * (m * q3 + 1) : Nat) : Real) ((3 ^ (1 + 1) * (m * q3 + 1) : Nat) : Real))
         ((3 ^ (2 + 1) * (m * q3 + 1) : Nat) : Real) := le_max_of_le_right (Nat.cast_nonneg _)
-    have h := mul_le_pow_add (mul_nonneg h0 h0) h00 (mul_le_pow_add h0 h0 hmax1 hmax1 hB0) hmax3 hB0
+    have h := mul_le_pow_add h00 (mul_le_pow_add h0 hmax1 hmax1 hB0) hmax3 hB0
     exact h.trans (pow_le_pow_right₀ hB1 (by norm_num))
   -- samples, slice counts and the graph bound
   have hS := famPieceSamples_le_power (Qr := famThreeQr tF gamma q3 m) hB2 hr hrB hQr hm'
@@ -390,8 +390,8 @@ theorem polyThreeQb_le_power {K1 p1 : Nat} {gamma theta rho W0 : Real} (hg : 0 <
     have hpos1 : (0 : Real) ≤ ((m * Sp : Nat) : Real) + 1 := by positivity
     have hpos2 : (0 : Real) ≤ (mf : Real) + 1 := by positivity
     have hpos3 : (0 : Real) ≤ (K1 : Real) + p1 + 1 := by positivity
-    have h := mul_le_pow_add (mul_nonneg (mul_nonneg hpos1 hpos2) hpos3) (by positivity)
-      (mul_le_pow_add (mul_nonneg hpos1 hpos2) hpos3 (mul_le_pow_add hpos1 hpos2 hmS hmf1 hB0) hKp hB0)
+    have h := mul_le_pow_add (by positivity)
+      (mul_le_pow_add hpos3 (mul_le_pow_add hpos2 hmS hmf1 hB0) hKp hB0)
       hrho hB0
     push_cast at h ⊢
     exact h.trans (pow_le_pow_right₀ hB1 (by norm_num))
@@ -543,8 +543,8 @@ theorem polyThreeEb_inv_le_power {K1 p1 C2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p
       (rho / 8))⁻¹ ≤ B ^ ((2 : Nat) ^ 268) := by
     rw [hErval, show (E / 16 * (E / 16) * (c / 16 / 16))⁻¹ = 16 ^ 4 * (E⁻¹ * (E⁻¹ * c⁻¹)) by
       field_simp]
-    have h := mul_le_pow_add (inv_pos.mpr hE10).le (mul_nonneg (inv_pos.mpr hE10).le
-      (inv_pos.mpr hcub0).le) hE1 (mul_le_pow_add (inv_pos.mpr hE10).le (inv_pos.mpr hcub0).le
+    have h := mul_le_pow_add (mul_nonneg (inv_pos.mpr hE10).le
+      (inv_pos.mpr hcub0).le) hE1 (mul_le_pow_add (inv_pos.mpr hcub0).le
         hE1 hcub hB0) hB0
     have h2 := const_mul_le_pow (c := (16 : Real) ^ 4) (j := 16) hB2 (by norm_num) (by norm_num)
       (mul_nonneg (inv_pos.mpr hE10).le (mul_nonneg (inv_pos.mpr hE10).le (inv_pos.mpr hcub0).le)) h
@@ -562,7 +562,7 @@ theorem polyThreeEb_inv_le_power {K1 p1 C2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p
     have h16 : ((⌊famThreeQb tF δ m (rho / 8)⌋₊ + 1 : Nat) : Real) ^ 16 ≤
         B ^ (((2 : Nat) ^ 225 + 1) * 16) := by
       rw [pow_mul]; exact pow_le_pow_left₀ (Nat.cast_nonneg _) hfl1 16
-    have h := mul_le_pow_add (Nat.cast_nonneg _) (pow_nonneg (Nat.cast_nonneg _) _)
+    have h := mul_le_pow_add (pow_nonneg (Nat.cast_nonneg _) _)
       (show (p2 : Real) ≤ B ^ 1 by rw [pow_one]; exact hq.trans hWB) h16 hB0
     exact (const_mul_le_pow (j := 3) hB2 (by norm_num) (by norm_num) (by positivity) h).trans
       (pow_le_pow_right₀ hB1 (by norm_num))
@@ -575,8 +575,8 @@ theorem polyThreeEb_inv_le_power {K1 p1 C2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p
   have hLi : L⁻¹ ≤ B ^ ((2 : Nat) ^ 269) := by
     rw [hLdef]; unfold pieceLineExponent
     rw [inv_div, div_eq_mul_inv, mul_inv]
-    have h := mul_le_pow_add (hB2' _).le (mul_nonneg (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le)
-      hBq (mul_le_pow_add (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le hEr hEb hB0) hB0
+    have h := mul_le_pow_add (mul_nonneg (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le)
+      hBq (mul_le_pow_add (inv_pos.mpr hEb0).le hEr hEb hB0) hB0
     exact h.trans (pow_le_pow_right₀ hB1 (by norm_num))
   -- the slice exponent
   have hQr : famThreeQr tF gamma q3 m (rho / 8) ≤ B ^ ((2 : Nat) ^ 227) := by
@@ -606,7 +606,7 @@ theorem polyThreeEb_inv_le_power {K1 p1 C2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p
       le_max_of_le_right (Nat.cast_nonneg _)
     have h00 : 0 ≤ max (max ((3 * (m * q3 + 1) : Nat) : Real) ((3 ^ (1 + 1) * (m * q3 + 1) : Nat) : Real))
         ((3 ^ (2 + 1) * (m * q3 + 1) : Nat) : Real) := le_max_of_le_right (Nat.cast_nonneg _)
-    have h := mul_le_pow_add (mul_nonneg h0 h0) h00 (mul_le_pow_add h0 h0 hmax1 hmax1 hB0) hmax3 hB0
+    have h := mul_le_pow_add h00 (mul_le_pow_add h0 hmax1 hmax1 hB0) hmax3 hB0
     exact h.trans (pow_le_pow_right₀ hB1 (by norm_num))
   have hS := famPieceSamples_le_power (Qr := famThreeQr tF gamma q3 m) hB2 hr hrB hQr hm'
   set Sp := famPieceSamples (famThreeQr tF gamma q3 m) m rho
@@ -634,8 +634,8 @@ theorem polyThreeEb_inv_le_power {K1 p1 C2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p
     have hpos1 : (0 : Real) ≤ ((m * Sp : Nat) : Real) + 1 := by positivity
     have hpos2 : (0 : Real) ≤ (mf : Real) + 1 := by positivity
     have hpos3 : (0 : Real) ≤ (K1 : Real) + p1 + 1 := by positivity
-    have h := mul_le_pow_add (mul_nonneg (mul_nonneg hpos1 hpos2) hpos3) (by positivity)
-      (mul_le_pow_add (mul_nonneg hpos1 hpos2) hpos3 (mul_le_pow_add hpos1 hpos2 hmS hmf1 hB0) hKp hB0)
+    have h := mul_le_pow_add (by positivity)
+      (mul_le_pow_add hpos3 (mul_le_pow_add hpos2 hmS hmf1 hB0) hKp hB0)
       hrho hB0
     push_cast at h ⊢
     exact h.trans (pow_le_pow_right₀ hB1 (by norm_num))
@@ -657,7 +657,7 @@ theorem polyThreeEb_inv_le_power {K1 p1 C2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p
   have hA : familyWidthPrefactor C2 ⌊famThreeQb tF δ m (rho / 8)⌋₊ ≤ B ^ ((2 : Nat) ^ 226) := by
     unfold familyWidthPrefactor
     rw [Nat.cast_mul]
-    have h := mul_le_pow_add (Nat.cast_nonneg _) (Nat.cast_nonneg _)
+    have h := mul_le_pow_add (Nat.cast_nonneg _)
       (show (C2 : Real) ≤ B ^ 1 by rw [pow_one]; exact hC.trans hWB) hfl1 hB0
     exact (const_mul_le_pow (j := 2) hB2 (by norm_num) (by norm_num) (by positivity) h).trans
       (pow_le_pow_right₀ hB1 (by norm_num))
