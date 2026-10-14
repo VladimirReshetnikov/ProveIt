@@ -86,7 +86,7 @@ theorem finiteInterval_fourTermCount_lower {N L : Nat} [NeZero N]
     (hL : L ≤ N) (hLfour : 4 ≤ L) :
     (L : Real) ^ 2 / 64 ≤
       (fourTermCount (finiteIntervalImage N (Finset.univ : Finset (Fin L))) : Real) := by
-  simpa only [Nat.cast_ofNat, show (4 : Real) * 4 ^ 2 = 64 by norm_num] using
+  simpa only [progressionCount, fourTermCount, Nat.cast_ofNat, show (4 : Real) * 4 ^ 2 = 64 by norm_num] using
     (finiteInterval_progressionCount_lower (k := 4) hL (by norm_num) hLfour)
 
 /-- No-wrap transfer for the zero-based interval convention used by Fin L. -/
