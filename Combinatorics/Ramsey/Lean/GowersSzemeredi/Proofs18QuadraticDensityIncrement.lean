@@ -8,12 +8,7 @@ noncomputable section
 open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
 
-/-- Balanced indicator functions take values in the complex unit disc. -/
-theorem balanced_discValued {N : Nat} [NeZero N] (A : Finset (ZMod N)) :
-    DiscValued (balanced A) := by
-  intro x
-  rw [section18_balanced_eq_real, Complex.norm_real, Real.norm_eq_abs]
-  exact section18_balancedReal_abs_le_one A x
+alias balanced_discValued := cor33_balanced_discValued
 
 /-- A proper discrepancy partition gives a density increment proportional
 to its total discrepancy on a cell proportional to its average size. -/

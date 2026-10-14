@@ -1270,13 +1270,6 @@ private theorem prop177_small_branch {N k m : Nat} [NeZero N]
   simpa only [exponential, starRingEnd_apply] using
     (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
 
-private lemma prop177_fourier_sq {N : Nat} [NeZero N]
-    (g : ZMod N → Complex) (r : ZMod N) :
-    ((‖fourier g r‖ ^ 2 : Real) : Complex) =
-      ∑ y : ZMod N, ∑ s : ZMod N,
-        difference g y s * exponential (-(y * r)) := by
-  exact fourier_norm_sq_eq_difference_sum g r
-
 private def prop177PhasedFamily {N d : Nat} [NeZero N]
     (H : (Fin d → Bool) → ZMod N → Complex)
     (phi : (Fin d → Bool) → ZMod N → ZMod N) :
@@ -1294,14 +1287,6 @@ private lemma prop177_parity_phased {N d : Nat} [NeZero N]
   · simp [prop177PhasedFamily, parityConj, h]
   · simp [prop177PhasedFamily, parityConj, h, star_mul]
     ring
-
-private lemma prop177_exponential_sum {N : Nat} [NeZero N]
-    {I : Type*} (S : Finset I) (a : I → ZMod N) :
-    exponential (∑ i ∈ S, a i) = ∏ i ∈ S, exponential (a i) := by
-  classical
-  induction S using Finset.induction_on with
-  | empty => simp
-  | @insert x S hx ih => simp [hx, ih]
 
 private lemma prop177_phasedCubeProduct {N d : Nat} [NeZero N]
     (H : (Fin d → Bool) → ZMod N → Complex)
@@ -1331,7 +1316,7 @@ private lemma prop177_phasedCubeProduct {N d : Nat} [NeZero N]
       rw [Finset.prod_mul_distrib]
     _ = _ := by
       congr 1
-      rw [← prop177_exponential_sum Finset.univ]
+      rw [← prop172_exponential_sum Finset.univ]
       congr 1
       unfold signedCubeSum
       rw [Finset.sum_neg_distrib]
@@ -1418,7 +1403,7 @@ private lemma prop177_mixedEnergy_expansion {N k : Nat} [NeZero N]
           exponential (-(y * tau a)) := by
       apply Finset.sum_congr rfl
       intro a _
-      exact prop177_fourier_sq
+      exact prop172_fourier_sq
         (fun t => ∏ e : Fin k → Bool,
           parityConj e (H e (cubeArgument t a e))) (tau a)
     _ = ∑ y : ZMod N, ∑ a : Point N k, ∑ s : ZMod N,
@@ -1452,12 +1437,6 @@ private lemma prop177Monomial_cons {N k : Nat} (b : Bool)
     prop177Monomial (Fin.cons b e) z =
       (if b then z 0 else 1) * prop177Monomial e (Fin.tail z) := by
   simp [prop177Monomial, Fin.prod_univ_succ, Fin.tail]
-
-private lemma prop177_multilinear_cons {N k : Nat}
-    (sigma : Point N k → ZMod N) (hsigma : IsMultilinear sigma) :
-    IsMultilinear (fun z : Point N (k + 1) =>
-      z 0 * sigma (Fin.tail z)) := by
-  exact isMultilinear_mul_first_coordinate sigma hsigma
 
 private def prop177TailOffset {N k : Nat} (r : Point N k)
     (E : Fin (k + 1) → Bool) : ZMod N :=
@@ -2655,7 +2634,7 @@ private theorem prop177_large_branch
       _ ≤ (L : Real) ^ 2 * (M : Real) * T := by gcongr
   let rho : Point N (k + 1) → ZMod N := fun z =>
     z 0 * sigma (Fin.tail z)
-  have hrho : IsMultilinear rho := prop177_multilinear_cons sigma hsigma
+  have hrho : IsMultilinear rho := prop172_multilinear_cons sigma hsigma
   obtain ⟨Phi, hPhiPoly, hPhi⟩ :=
     lemma_17_1_holds N (k + 1) hkN hkfac rho hrho
   obtain ⟨E, hVertex⟩ := prop177_select_local_vertex hMpos f hf

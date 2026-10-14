@@ -67,12 +67,7 @@ theorem ModAP.residue_partition {N : Nat} [NeZero N]
     change ((R j).step : ZMod N) * P.step = _
     rw [hRstep]
 
-/-- The centered absolute step always represents either orientation. -/
-theorem centeredAbs_cast_eq_or_neg {N : Nat} [NeZero N] (d : ZMod N) :
-    (centeredAbs d : ZMod N) = d ∨ (centeredAbs d : ZMod N) = -d := by
-  unfold centeredAbs
-  rw [ZMod.natCast_natAbs_valMinAbs]
-  split_ifs <;> simp
+alias centeredAbs_cast_eq_or_neg := lemma55_natCast_centeredAbs_eq_or_neg
 
 /-- Use a prescribed modular multiplier, reversing the output cells when
 its centered representative is negative. -/

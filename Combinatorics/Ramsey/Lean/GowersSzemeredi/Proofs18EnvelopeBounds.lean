@@ -169,8 +169,7 @@ theorem input_scale_le {alpha y : Real} {dd μ : Nat} (ha : 0 < alpha) (ha2 : al
     exact pw_mul hX (by norm_num) (inv_pos.mpr hy0).le (hX.trans (pw_X hX _)) hyi
   exact ⟨h2, pw_pow hX (by positivity) h2 le_rfl⟩
 
-theorem polyPartConst_pos (d : Nat) : 0 < polynomialPartitionConstant d := by
-  unfold polynomialPartitionConstant; positivity
+alias polyPartConst_pos := cor57_partition_constant_pos
 
 /-- The new exponent `σ′ = e·(σ/16)/(2P)`. -/
 theorem sigma_step {d : Nat} {e s : Real} (he0 : 0 < e) (he : e ≤ 1 / 2) (hs0 : 0 < s)

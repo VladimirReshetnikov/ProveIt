@@ -493,7 +493,7 @@ theorem IsMultilinear.finset_sum {N n : Nat} {ι : Type*} (s : Finset ι)
     IsMultilinear (fun x => ∑ i ∈ s, f i x) := by
   classical
   induction s using Finset.induction_on with
-  | empty => simpa using (isMultilinear_constant (N := N) (d := n) 0)
+  | empty => simpa using (isMultilinear_constant (N := N) (k := n) 0)
   | insert a s ha ih =>
     simp only [Finset.sum_insert ha]
     exact (hf a (Finset.mem_insert_self a s)).add

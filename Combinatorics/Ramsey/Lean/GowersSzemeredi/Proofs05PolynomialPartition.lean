@@ -1234,7 +1234,7 @@ private lemma lemma55_sqrt_p_exponent_budget {k : Nat} (hk : 2 ≤ k) :
   unfold centeredAbs
   exact ZMod.natAbs_valMinAbs_neg x
 
-private lemma lemma55_centeredAbs_natCast_le {N i : Nat} [NeZero N] :
+lemma lemma55_centeredAbs_natCast_le {N i : Nat} [NeZero N] :
     centeredAbs (i : ZMod N) ≤ i := by
   rw [centeredAbs, ZMod.valMinAbs_natAbs_eq_min, ZMod.val_natCast]
   exact (Nat.min_le_left _ _).trans (Nat.mod_le i N)
@@ -1252,7 +1252,7 @@ lemma lemma55_centeredAbs_intCast_le {N : Nat} [NeZero N] (i : Int) :
       rw [hcast, lemma55_centeredAbs_neg]
       simpa using lemma55_centeredAbs_natCast_le (N := N) (i := n + 1)
 
-private lemma lemma55_natCast_centeredAbs_eq_or_neg {N : Nat} [NeZero N]
+lemma lemma55_natCast_centeredAbs_eq_or_neg {N : Nat} [NeZero N]
     (r : ZMod N) : (centeredAbs r : ZMod N) = r ∨
       (centeredAbs r : ZMod N) = -r := by
   have hcast := ZMod.natCast_natAbs_valMinAbs r

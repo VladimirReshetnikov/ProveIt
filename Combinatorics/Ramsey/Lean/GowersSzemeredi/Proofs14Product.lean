@@ -86,10 +86,6 @@ private def prop14QuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X) where
   left_inv q := by funext i; fin_cases i <;> rfl
   right_inv q := by funext i; fin_cases i <;> rfl
 
-private lemma prop14_prod_fin_four (a : Fin 4 → Real) :
-    (∏ i, a i) = a 0 * a 1 * a 2 * a 3 := by
-  rw [Fin.prod_univ_four]
-
 private lemma prop14_restricted_weight_eq_energy {N p : Nat} [NeZero N]
     (E : Finset (ZMod N)) (theta : ZMod N → Real)
     (sigma : Fin p → ZMod N → ZMod N) :
@@ -123,7 +119,7 @@ private lemma prop14_restricted_weight_eq_energy {N p : Nat} [NeZero N]
   by_cases h0 : q 0 ∈ E <;> by_cases h1 : q 1 ∈ E <;>
     by_cases h2 : q 2 ∈ E <;> by_cases h3 : q 3 ∈ E <;>
     simp [prop14RestrictedWeight, h0, h1, h2, h3, hadd, hsigma, hmem,
-      prop14_prod_fin_four]
+      prop141_prod_fin_four]
   ring_nf
 
 /-- Lemma 14.2, uniformly for every coordinate direction. -/

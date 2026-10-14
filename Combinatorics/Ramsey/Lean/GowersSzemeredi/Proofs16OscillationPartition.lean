@@ -134,11 +134,7 @@ theorem linearForms_right {N : Nat} (Γ : Finset (ZMod N)) {Ψ : Finset (ZMod N)
     linearForms Γ Ψ (Fin.natAdd Γ.card (Ψ.equivFin ⟨ψ, hψ⟩)) x = ψ * x 1 := by
   simp [linearForms]
 
-/-- A box partitions itself. -/
-theorem isBoxPartition_self {N k : Nat} [NeZero N] (C : Box N k) :
-    IsBoxPartition (fun _ : Fin 1 => C) C := by
-  refine ⟨fun x => ⟨fun hx => ⟨0, hx⟩, fun ⟨_, hx⟩ => hx⟩, fun i j hij => ?_⟩
-  exact absurd (Subsingleton.elim i j) (bne_iff_ne.mp hij)
+alias isBoxPartition_self := BaseCase.singleton_box_partition
 
 /-- Diameter bounds give centered-difference bounds. -/
 theorem image_diam_sub_le {N : Nat} [NeZero N] {A : Finset (Point N 2)} {g : Point N 2 → ZMod N}

@@ -842,7 +842,7 @@ private def prop141QuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X) where
     funext i
     fin_cases i <;> rfl
 
-private lemma prop141_prod_fin_four (a : Fin 4 → Real) :
+lemma prop141_prod_fin_four (a : Fin 4 → Real) :
     (∏ i, a i) = a 0 * a 1 * a 2 * a 3 := by
   rw [Fin.prod_univ_four]
 

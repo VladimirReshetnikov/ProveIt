@@ -85,7 +85,7 @@ private lemma lemma154_additive_iff {N d : Nat} (x : Fin (2 * d) → ZMod N) :
   rw [hsum, sub_eq_zero]
   rfl
 
-private lemma lemma154_card_le_of_fiber_le {A B : Type*}
+lemma lemma154_card_le_of_fiber_le {A B : Type*}
     [Fintype A] [Fintype B] [DecidableEq B] (f : A → B) (m : Nat)
     (h : ∀ b, Fintype.card {a : A // f a = b} ≤ m) :
     Fintype.card A ≤ Fintype.card B * m := by
@@ -701,24 +701,13 @@ private lemma lemma154_case_one_card_le {N k d : Nat} [NeZero N]
           rw [hsubmul]
           omega
 
-private lemma lemma154_parity_eq_prod {N k : Nat} (e : Fin k → Bool) :
-    parityCharacter (N := N) e =
-      ∏ i : Fin k, if e i then (-1 : ZMod N) else 1 := by
-  classical
-  simp only [parityCharacter, boolWeight, countWhere]
-  rw [← Finset.prod_const]
-  rw [Finset.prod_filter]
-  apply Finset.prod_congr rfl
-  intro i _
-  by_cases h : e i = true <;> simp [h]
-
 private lemma lemma154_parity_cube_sum {N k : Nat} [NeZero N]
     (h y : Point N k) :
     (∑ e : Fin k → Bool, parityCharacter (N := N) e *
       ∏ i : Fin k, (y i + if e i then h i else 0)) =
         (-1 : ZMod N) ^ k * ∏ i, h i := by
   classical
-  simp_rw [lemma154_parity_eq_prod, ← Finset.prod_mul_distrib]
+  simp_rw [parityCharacter_eq_prod, ← Finset.prod_mul_distrib]
   calc
     (∑ e : Fin k → Bool,
         ∏ i : Fin k,

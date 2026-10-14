@@ -9,10 +9,7 @@ namespace LeanProofs.GowersSzemeredi
 @[simp] theorem centeredAbs_neg {N : Nat} [NeZero N] (x : ZMod N) :
     centeredAbs (-x) = centeredAbs x := ZMod.natAbs_valMinAbs_neg x
 
-theorem centeredAbs_natCast_le {N i : Nat} [NeZero N] :
-    centeredAbs (i : ZMod N) ≤ i := by
-  rw [centeredAbs, ZMod.valMinAbs_natAbs_eq_min, ZMod.val_natCast]
-  exact (Nat.min_le_left _ _).trans (Nat.mod_le i N)
+alias centeredAbs_natCast_le := lemma55_centeredAbs_natCast_le
 
 alias centeredAbs_intCast_le := lemma55_centeredAbs_intCast_le
 

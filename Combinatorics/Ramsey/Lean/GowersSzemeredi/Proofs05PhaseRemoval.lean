@@ -27,7 +27,7 @@ namespace LeanProofs.GowersSzemeredi
     exponential (x + y) = exponential x * exponential y := by
   exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
 
-private lemma cor57_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
+lemma cor57_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
     (x : ZMod N) :
     exponential x =
       Complex.exp
@@ -43,7 +43,7 @@ private lemma cor57_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
       push_cast
       ring
 
-private lemma cor57_norm_exponential_sub_one_le {N : Nat} [NeZero N]
+lemma cor57_norm_exponential_sub_one_le {N : Nat} [NeZero N]
     (x : ZMod N) :
     ‖exponential x - 1‖ ≤ 2 * Real.pi * centeredAbs x / N := by
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
@@ -61,17 +61,12 @@ private lemma cor57_norm_exponential_sub_one_le {N : Nat} [NeZero N]
         abs_of_nonneg (by norm_num : (0 : Real) ≤ 2),
         abs_of_pos Real.pi_pos, habsval, abs_of_pos hN]
 
-private lemma cor57_centeredAbs_natCast_le {N i : Nat} [NeZero N] :
-    centeredAbs (i : ZMod N) ≤ i := by
-  rw [centeredAbs, ZMod.valMinAbs_natAbs_eq_min, ZMod.val_natCast]
-  exact (Nat.min_le_left _ _).trans (Nat.mod_le i N)
-
-private lemma cor57_centeredAbs_neg_natCast_le {N i : Nat} [NeZero N] :
+lemma cor57_centeredAbs_neg_natCast_le {N i : Nat} [NeZero N] :
     centeredAbs (-(i : ZMod N)) ≤ i := by
   rw [centeredAbs, ZMod.natAbs_valMinAbs_neg]
-  exact cor57_centeredAbs_natCast_le
+  exact lemma55_centeredAbs_natCast_le
 
-private lemma cor57_phase_close_of_mem_interval {N d : Nat} [NeZero N]
+lemma cor57_phase_close_of_mem_interval {N d : Nat} [NeZero N]
     (a y : ZMod N) (hy : y ∈ (modInterval N a (d + 1)).carrier) :
     ‖exponential (-y) - exponential (-a)‖ ≤
       2 * Real.pi * d / N := by
@@ -149,7 +144,7 @@ private lemma cor57_alpha_le_one {N r : Nat} [NeZero N]
   have hrReal : (0 : Real) < r := by exact_mod_cast hr
   nlinarith
 
-private lemma cor57_partition_constant_pos (k : Nat) :
+lemma cor57_partition_constant_pos (k : Nat) :
     0 < polynomialPartitionConstant k := by
   unfold polynomialPartitionConstant
   positivity
@@ -180,7 +175,7 @@ private lemma cor57_scale_lt {k r : Nat} (alpha : Real)
     field_simp
   simpa only [K, hright] using hinv
 
-private lemma cor57_cell_norm_le {N : Nat} [NeZero N]
+lemma cor57_cell_norm_le {N : Nat} [NeZero N]
     (S : Finset Nat) (f : ZMod N → Complex) (phi : ZMod N → ZMod N)
     (alpha scale : Real) (hf : DiscValued f)
     (hdiam : diameterAtMostReal (S.image fun x : Nat => phi (x : ZMod N)) scale)

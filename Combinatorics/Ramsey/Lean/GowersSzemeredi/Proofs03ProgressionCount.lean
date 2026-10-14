@@ -59,7 +59,7 @@ private lemma cor33_indicator_eq_balanced_add {N : Nat} [NeZero N]
   rw [balanced, cor33_density_eq A delta hcard]
   ring
 
-private lemma cor33_balanced_discValued {N : Nat} [NeZero N]
+lemma cor33_balanced_discValued {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) : DiscValued (balanced A) := by
   intro x
   classical

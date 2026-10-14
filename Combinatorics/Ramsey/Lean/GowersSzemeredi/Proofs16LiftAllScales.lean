@@ -29,17 +29,7 @@ theorem section16_slice_control_ranges {r k : Nat} {s gamma ε : ℝ}
   exact ⟨Real.rpow_pos_of_pos hc _, Real.rpow_le_one hc.le hc1 ht0.le,
     Real.one_le_rpow hQ ht0.le⟩
 
-theorem isMultilinear_constant {N d : Nat} (c : ZMod N) :
-    IsMultilinear (fun _ : Point N d => c) := by
-  classical
-  let e0 : Fin d → Bool := fun _ => false
-  refine ⟨fun e => if e = e0 then c else 0, ?_⟩
-  intro x
-  rw [Finset.sum_eq_single e0]
-  · simp [e0]
-  · intro e _ hne
-    simp [hne]
-  · simp
+alias isMultilinear_constant := BaseCase.isMultilinear_const
 
 /-- The local cover now holds for every natural input scale m. The small
 target branch uses genuine singleton boxes and one graph per cell. -/

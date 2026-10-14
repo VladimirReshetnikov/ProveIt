@@ -557,13 +557,6 @@ private lemma restriction_product_complex {N : Nat} [NeZero N]
   congr 1
   exact restriction_phase_relation c phi R eps
 
-private lemma restriction_sum_exponential_mul {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    ∑ u : ZMod N, exponential (x * u) =
-      if x = 0 then (N : Complex) else 0 := by
-  simpa [exponential, mul_comm] using
-    AddChar.sum_mulShift x (ZMod.isPrimitive_stdAddChar N)
-
 private lemma restriction_expect_exponential_mul {N : Nat} [NeZero N]
     (x : ZMod N) :
     (𝔼 u : ZMod N, exponential (x * u)) = if x = 0 then 1 else 0 := by
@@ -572,12 +565,12 @@ private lemma restriction_expect_exponential_mul {N : Nat} [NeZero N]
   · rw [if_pos hx]
     have h := Fintype.card_mul_expect
       (fun u : ZMod N ↦ exponential (x * u))
-    rw [ZMod.card, restriction_sum_exponential_mul, if_pos hx] at h
+    rw [ZMod.card, prop121_sum_exponential_mul, if_pos hx] at h
     exact (mul_left_cancel₀ (Nat.cast_ne_zero.mpr hN) (by simpa using h))
   · rw [if_neg hx]
     have h := Fintype.card_mul_expect
       (fun u : ZMod N ↦ exponential (x * u))
-    rw [ZMod.card, restriction_sum_exponential_mul, if_neg hx] at h
+    rw [ZMod.card, prop121_sum_exponential_mul, if_neg hx] at h
     exact (mul_eq_zero.mp (by simpa using h)).resolve_left
       (Nat.cast_ne_zero.mpr hN)
 

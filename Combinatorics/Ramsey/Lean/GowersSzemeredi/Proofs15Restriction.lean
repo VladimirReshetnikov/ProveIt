@@ -1021,16 +1021,6 @@ private lemma selection_valid_classification_of_nondegenerate
   rw [← selectionRelation_some]
   exact hvalid (some A)
 
-private lemma selection_parity_eq_prod {N k : Nat} (e : Fin k → Bool) :
-    parityCharacter (N := N) e =
-      ∏ i : Fin k, if e i then (-1 : ZMod N) else 1 := by
-  classical
-  simp only [parityCharacter, boolWeight, countWhere]
-  rw [← Finset.prod_const, Finset.prod_filter]
-  apply Finset.prod_congr rfl
-  intro i _
-  by_cases h : e i = true <;> simp [h]
-
 private lemma selection_parity_cube_sum_subset {N k : Nat} [NeZero N]
     (h y : Point N k) (A : Finset (Fin k)) :
     (∑ e : Fin k → Bool, parityCharacter (N := N) e *
@@ -1043,7 +1033,7 @@ private lemma selection_parity_cube_sum_subset {N k : Nat} [NeZero N]
           if i ∈ A then (y i + if e i then h i else 0) else 1 := by
     rw [← Finset.prod_filter]
     simp
-  simp_rw [selection_parity_eq_prod, hprod, ← Finset.prod_mul_distrib]
+  simp_rw [parityCharacter_eq_prod, hprod, ← Finset.prod_mul_distrib]
   calc
     (∑ e : Fin k → Bool,
         ∏ i : Fin k, (if e i then (-1 : ZMod N) else 1) *
@@ -2287,16 +2277,6 @@ private def selectionZeroRelationProjection {N : Nat} [NeZero N]
       SelectionZeroRelationBase N j :=
   fun R q ↦ R.1.crossSection q
 
-private lemma selectionZero_card_le_of_fiber_le {A B : Type*}
-    [Fintype A] [Fintype B] [DecidableEq B] (f : A → B) (m : Nat)
-    (h : ∀ b, Fintype.card {a : A // f a = b} ≤ m) :
-    Fintype.card A ≤ Fintype.card B * m := by
-  rw [← Fintype.card_congr (Equiv.sigmaFiberEquiv f), Fintype.card_sigma]
-  calc
-    (∑ b : B, Fintype.card {a : A // f a = b}) ≤ ∑ _ : B, m :=
-      Finset.sum_le_sum fun b _ ↦ h b
-    _ = Fintype.card B * m := by simp
-
 private lemma selectionZeroRelationSolutions_card_le {N : Nat} [NeZero N]
     (hN : 3 ≤ N) (eps : selectionIndex 0 → Fin 4)
     (hnoncanonical : selectionZeroNoncanonical (N := N) eps) :
@@ -2404,7 +2384,7 @@ private lemma selectionZeroRelationSolutions_card_le {N : Nat} [NeZero N]
           {R : SelectionZeroRelationSolutions (N := N) eps // proj R = b} :=
         ⟨fun R ↦ hex ⟨R⟩⟩
       simp
-  have htotal := selectionZero_card_le_of_fiber_le proj 2 hfiber
+  have htotal := lemma154_card_le_of_fiber_le proj 2 hfiber
   have hbase : Fintype.card (SelectionZeroRelationBase N j) = N ^ 14 := by
     simp only [SelectionZeroRelationBase, Fintype.card_fun, ZMod.card]
     rw [selectionZero_doubleExcept_card 0 j hj0.symm]

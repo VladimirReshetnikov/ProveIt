@@ -34,7 +34,7 @@ namespace LeanProofs.GowersSzemeredi
   exact (ZMod.stdAddChar (N := N)).norm_apply x
 
 /-- Squaring a Fourier coefficient introduces one more difference variable. -/
-private lemma prop172_fourier_sq {N : Nat} [NeZero N]
+lemma prop172_fourier_sq {N : Nat} [NeZero N]
     (g : ZMod N → Complex) (r : ZMod N) :
     ((‖fourier g r‖ ^ 2 : Real) : Complex) =
       ∑ y : ZMod N, ∑ s : ZMod N,
@@ -85,7 +85,7 @@ private lemma prop172Monomial_cons {N k : Nat} (b : Bool) (e : Fin k → Bool)
 
 /-- Multiplying a multiaffine function by a new first coordinate remains
 multiaffine. -/
-private lemma prop172_multilinear_cons {N k : Nat}
+lemma prop172_multilinear_cons {N k : Nat}
     (sigma : Point N k → ZMod N) (hsigma : IsMultilinear sigma) :
     IsMultilinear (fun z : Point N (k + 1) => z 0 * sigma (Fin.tail z)) := by
   classical
@@ -226,7 +226,7 @@ private lemma prop172_parity_phased {N d : Nat} [NeZero N]
   · simp [prop172PhasedFamily, parityConj, h, star_mul]
     ring
 
-private lemma prop172_exponential_sum {N : Nat} [NeZero N]
+lemma prop172_exponential_sum {N : Nat} [NeZero N]
     {I : Type*} (S : Finset I) (a : I → ZMod N) :
     exponential (∑ i ∈ S, a i) = ∏ i ∈ S, exponential (a i) := by
   classical

@@ -46,7 +46,7 @@ theorem finalCoordinateSections_of_last_function {N k : Nat} [NeZero N]
   intro x
   change MultiplyLinearFunction gamma r (section16FinalCoordinateSection B x)
     (fun h => f (section16Last (appendCoordinate h x)))
-  have hc := (isMultilinear_constant (N := N) (d := k) (f x)).multiplyLinearFunction
+  have hc := (isMultilinear_constant (N := N) (k := k) (f x)).multiplyLinearFunction
     (section16FinalCoordinateSection B x) hg hg1 hr
   simpa only [section16FinalCoordinateRestriction, section16Last, appendCoordinate_eq_snoc, Fin.snoc_last] using hc
 

@@ -35,10 +35,7 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-theorem succ_le_two_pow (d : Nat) : d + 1 ≤ 2 ^ d := by
-  induction d with
-  | zero => simp
-  | succ n ih => rw [pow_succ]; omega
+alias succ_le_two_pow := nat_succ_le_two_pow
 
 theorem columnEightDensity_le_half {alpha : Real} (ha : 0 < alpha) (ha1 : alpha ≤ 1) :
     columnEightDensity alpha ≤ alpha / 2 := by

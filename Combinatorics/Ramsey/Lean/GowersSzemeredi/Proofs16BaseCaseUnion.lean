@@ -19,7 +19,7 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi.BaseCase
 
-private lemma isMultilinear_const {N k : Nat} (c : ZMod N) :
+lemma isMultilinear_const {N k : Nat} (c : ZMod N) :
     IsMultilinear (fun _ : Point N k => c) := by
   classical
   let e0 : Fin k -> Bool := fun _ => false
@@ -31,7 +31,7 @@ private lemma isMultilinear_const {N k : Nat} (c : ZMod N) :
     simp [hne]
   · simp
 
-private lemma singleton_box_partition {N k : Nat} [NeZero N]
+lemma singleton_box_partition {N k : Nat} [NeZero N]
     (P : Box N k) : IsBoxPartition (fun _ : Fin 1 => P) P := by
   constructor
   · intro x

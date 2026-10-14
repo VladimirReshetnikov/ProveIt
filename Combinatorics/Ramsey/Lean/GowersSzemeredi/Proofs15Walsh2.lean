@@ -13,7 +13,7 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private theorem parityCharacter_eq_prod {N k : Nat}
+theorem parityCharacter_eq_prod {N k : Nat}
     (e : Fin k → Bool) :
     parityCharacter (N := N) e =
       ∏ i : Fin k,
@@ -26,7 +26,7 @@ private theorem parityCharacter_eq_prod {N k : Nat}
   intro i hi
   by_cases h : e i = true <;> simp [h]
 
-private theorem walshProduct_eq_parity {N k : Nat}
+theorem walshProduct_eq_parity {N k : Nat}
     (e : Fin k → Bool) :
     (∏ i : Fin k, walshSign (N := N) (e i)) =
       (-1 : ZMod N) ^ k * parityCharacter (N := N) e := by

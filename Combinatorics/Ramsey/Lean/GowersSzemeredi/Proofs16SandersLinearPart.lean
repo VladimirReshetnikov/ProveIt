@@ -26,20 +26,7 @@ namespace LeanProofs.GowersSzemeredi
 open Classical
 open scoped Pointwise
 
-/-- The phase bound `‖e(x) − 1‖ ≤ 2π|x|/N`. -/
-theorem phase_norm_le_two_pi_centeredAbs {N : Nat} [NeZero N] (x : ZMod N) :
-    ‖exponential x - 1‖ ≤ 2 * Real.pi * centeredAbs x / N := by
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have habsval : |(x.valMinAbs : Real)| = (centeredAbs x : Real) := by
-    rw [centeredAbs, ← Int.cast_abs, Int.abs_eq_natAbs]
-    rfl
-  rw [exponential_eq_exp_valMinAbs]
-  calc ‖Complex.exp (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) - 1‖
-      ≤ ‖2 * Real.pi * (x.valMinAbs : Real) / N‖ := Real.norm_exp_I_mul_ofReal_sub_one_le
-    _ = 2 * Real.pi * centeredAbs x / N := by
-      rw [Real.norm_eq_abs, abs_div, abs_mul, abs_mul,
-        abs_of_nonneg (by norm_num : (0 : Real) ≤ 2), abs_of_pos Real.pi_pos, habsval,
-        abs_of_pos hN]
+alias phase_norm_le_two_pi_centeredAbs := cor57_norm_exponential_sub_one_le
 
 /-- A corpus Bohr set at radius `ρ/(2π)` lies inside the OAI chord-radius set. -/
 theorem bohr_subset_oai_carrier {N : Nat} [NeZero N] (R : OAI.Erdos3.CyclicBohr.Set N) :

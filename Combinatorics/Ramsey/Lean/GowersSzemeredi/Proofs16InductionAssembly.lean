@@ -13,7 +13,7 @@ namespace LeanProofs.GowersSzemeredi
 theorem multiplyLinear_empty {N k : Nat} [NeZero N] {gamma r : Real}
     (hg : 0 < gamma) (hg1 : gamma ≤ 1) (hr : 1 ≤ r) :
     MultiplyLinear gamma r (∅ : Finset (Point N k × ZMod N)) := by
-  have h := (isMultilinear_constant (N := N) (d := k) 0).multiplyLinearFunction
+  have h := (isMultilinear_constant (N := N) (k := k) 0).multiplyLinearFunction
     ∅ hg hg1 hr
   simpa [MultiplyLinearFunction, partialGraph] using h
 

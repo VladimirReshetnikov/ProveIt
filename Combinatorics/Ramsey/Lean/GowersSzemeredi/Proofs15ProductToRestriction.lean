@@ -19,7 +19,7 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma lemma156_nat_le_two_pow (k : Nat) : k ≤ 2 ^ k := by
+lemma lemma156_nat_le_two_pow (k : Nat) : k ≤ 2 ^ k := by
   induction k with
   | zero => simp
   | succ k ih =>
@@ -54,7 +54,7 @@ private lemma lemma156_scale_ratio_bound (k : Nat) :
   rw [← hdouble]
   omega
 
-private lemma lemma156_beta_base_exponent (k : Nat) (hk : 1 ≤ k) :
+lemma lemma156_beta_base_exponent (k : Nat) (hk : 1 ≤ k) :
     7 * 4 ^ (k + 1) + 15 ≤ 2 ^ (3 * k + 7) := by
   have hfour : 4 ^ (k + 1) = 2 ^ (2 * (k + 1)) := by
     rw [show 4 = 2 ^ 2 by norm_num, pow_mul]
@@ -85,7 +85,7 @@ private lemma lemma156_beta_base_exponent (k : Nat) (hk : 1 ≤ k) :
           _ = 2 ^ (2 * k + 6) := by congr 1
   exact hsum.trans (Nat.pow_le_pow_right (by norm_num) (by omega))
 
-private lemma lemma156_gamma_base_exponent (k : Nat) :
+lemma lemma156_gamma_base_exponent (k : Nat) :
     21 * k * 4 ^ (k + 1) ≤ 2 ^ (3 * k + 7) := by
   have hkpow : k ≤ 2 ^ k := lemma156_nat_le_two_pow k
   have hfour : 4 ^ (k + 1) = 2 ^ (2 * (k + 1)) := by
@@ -100,7 +100,7 @@ private lemma lemma156_gamma_base_exponent (k : Nat) :
       congr 1
       omega
 
-private lemma lemma156_constant_base_exponent (k : Nat) :
+lemma lemma156_constant_base_exponent (k : Nat) :
     46 ≤ 2 ^ (3 * k + 7) := by
   calc
     46 ≤ 2 ^ 7 := by norm_num

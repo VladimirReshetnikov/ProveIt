@@ -143,7 +143,7 @@ private lemma cubeCount_succ_eq_sum_norm_sq {N d : Nat} [NeZero N]
   rw [sum_cubeDifference_indicator_eq_cubeCount] at h
   simpa only [Complex.natCast_re, Complex.ofReal_re] using h
 
-private lemma cubeCount_zero {N : Nat} [NeZero N] (A : Finset (ZMod N)) :
+lemma cubeCount_zero {N : Nat} [NeZero N] (A : Finset (ZMod N)) :
     cubeCount (d := 0) A = A.card := by
   have h := congrArg Complex.re
     (sum_cubeDifference_indicator_eq_cubeCount (d := 0) A)

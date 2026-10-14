@@ -55,7 +55,7 @@ private lemma lemma122_cubeDifference_eq {N : Nat}
   rw [cubeDifference_cons, cubeDifference_cons]
   simp only [cubeDifference, List.ofFn_zero, iteratedDifference, secondDifference]
 
-private lemma lemma122_fourier_norm_le {N : Nat} [NeZero N]
+lemma lemma122_fourier_norm_le {N : Nat} [NeZero N]
     (g : ZMod N → Complex) (hg : DiscValued g) (r : ZMod N) :
     ‖fourier g r‖ ≤ (N : Real) := by
   calc
