@@ -9426,6 +9426,51 @@ host.
      million-line development. Asking upstream for an explicit-constant
      headline is the realistic form of this route.
 
+**Addendum (2026-10-14, later): sharing re-proved lemmas across the corpus.**
+Commits 8bccd40, fbf520f, 6a8acba, 9261e22 and a1227e9 replaced re-proved
+copies by one shared lemma. Overall: about 120 copies in 110 families;
+the new module `Proofs00Basics` (imports only `Definitions`) holds the
+32 families with no proof-module common ancestor; 2c218e5 is a fix.
+
+- *Statement identity.* Copies are compared on the text before the
+  proof's `:=` (bracket depth 0, with each `let`/`have` inside the
+  statement paired with its own `:=`), with only the signature's leading
+  binder groups renamed. Two earlier shortcuts merged different lemmas:
+  1. cutting at the first `:=` stops at a `let x :=` inside the
+     statement;
+  2. treating every `(… :` as a binder also renames type ascriptions
+     such as `(selectionEtaZero e j : ZMod N)`.
+
+  A green build does not catch merges whose statements differ only up
+  to definitional unfolding. One such alias, `theorem10_13_zeta_bound`
+  (an inlined `let epsilon`), had been pushed; 2c218e5 restores its
+  exact statement. Every batch is now audited statement-by-statement
+  against its parent commit (`audit_shared.py`, `audit_basics.py`),
+  and all audits are clean.
+- *Attributes.* `@[simp] private lemma` is a global simp lemma that
+  reaches every importer. A deleted simp copy is therefore replaced by
+  `attribute [simp] host` (not `local`), which leaves downstream simp
+  sets unchanged, including in modules that cannot be built locally.
+- *Named arguments* depend on binder names. Three `(d := _)` call sites
+  of `isMultilinear_constant` were renamed to `(k := _)`.
+- *New imports* (a1227e9) are added only when they create no cycle and
+  the newly visible modules carry no global-effect declarations and no
+  clashing public names. One candidate was dropped because it would
+  have pulled `Proofs16SimultaneousRecurrence` and the OAI Erdős modules
+  into the stub-checked final route. The import closure of
+  `Proofs18Final` is 610 modules, one more than before (`Proofs00Basics`).
+- *What is left.* About 870 duplicate lines in 59 families, all blocked:
+  - every other copy sits in a module without a local olean;
+  - or hosting would need an import whose new modules carry simp lemmas
+    or instances that would reach unbuildable descendants;
+  - or the copies talk about each module's own private definitions.
+- *Dead modules in the final route.* 135 of the 609 modules in the
+  closure of `Proofs18Final` (14.9k lines) contain no declaration used
+  by the final theorems. A minimal-import computation over constant-level
+  needs (`ModuleNeeds.lean`) shows that none of them can be dropped by
+  editing imports: each is needed by a side result in a module the final
+  route does use. Removing them would mean splitting those modules.
+
 ### Polynomial width through multilinear extraction
 
 `Proofs16PolynomialMultilinearCover.exists_all_scale_polynomial_multilinear_cover`

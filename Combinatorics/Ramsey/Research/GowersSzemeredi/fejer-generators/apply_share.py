@@ -34,14 +34,14 @@ for g in groups:
     host, hname = g['host'], g['name']
     t = text(host)
     if g['host_private']:
-        t2 = re.sub(r'^private ((?:theorem|lemma) ' + re.escape(hname) + r'\b)', r'\1', t, count=1, flags=re.M)
+        t2 = re.sub(r'^private ((?:theorem|lemma) ' + re.escape(hname) + r"(?![\w']))", r'\1', t, count=1, flags=re.M)
         assert t2 != t, (host, hname)
         cache[host] = t2
         touched.add(host)
     for o in g['others']:
         m, n = o['mod'], o['name']
         t = text(m)
-        a, b = block(t, r'^(?:private )?(?:theorem|lemma) ' + re.escape(n) + r'\b')
+        a, b = block(t, r'^(?:private )?(?:theorem|lemma) ' + re.escape(n) + r"(?![\w'])")
         if o['private'] or n == hname:
             t = t[:a] + t[b:]
             if n != hname:
