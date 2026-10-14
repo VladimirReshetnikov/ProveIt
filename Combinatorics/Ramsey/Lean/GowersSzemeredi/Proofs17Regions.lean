@@ -424,116 +424,46 @@ private lemma stronglyShatters_regionFamily_of_card_le {k m : Nat}
         _ < 1 := hfrac
     simpa [abs_mul, abs_of_pos hepsPos] using hprod
   let x : Fin k → Real := x0 + eps • w
-  have hxFormula (i : Fin m) :
-      realDot (H i).normal x - (H i).offset =
-        gap i + eps * realDot (H i).normal w := by
-    rw [show x = x0 + eps • w by rfl, realDot_add_smul]
-    dsimp only [gap]
-    ring
-  have hxLeft (i : Fin m) :
-      realDot (H i).normal x < (H i).offset ↔ i ∈ u ∪ t := by
+  have hside (i : Fin m) :
+      if i ∈ u ∪ t then realDot (H i).normal x < (H i).offset
+      else (H i).offset < realDot (H i).normal x := by
+    have hxFormula : realDot (H i).normal x =
+        realDot (H i).normal x0 + eps * realDot (H i).normal w :=
+      realDot_add_smul _ _ _ _
     by_cases his : i ∈ s
-    · have hiTarget := hw ⟨i, his⟩
-      have hside : i ∈ t ↔
-          realDot (H i).normal x < (H i).offset := by
-        by_cases hit : i ∈ t
-        · have htarget : target ⟨i, his⟩ = -1 := by simp [target, hit]
-          rw [show realDot (H i).normal x =
-            realDot (H i).normal x0 + eps * realDot (H i).normal w by
-              exact realDot_add_smul _ _ _ _]
-          rw [hx0S i his, hiTarget, htarget]
-          simp [hit, hepsPos]
-        · have htarget : target ⟨i, his⟩ = 1 := by simp [target, hit]
-          constructor
-          · exact fun h => (hit h).elim
-          · intro hleft
-            rw [show realDot (H i).normal x =
-              realDot (H i).normal x0 + eps * realDot (H i).normal w by
-                exact realDot_add_smul _ _ _ _] at hleft
-            rw [hx0S i his, hiTarget, htarget] at hleft
-            linarith
-      have hiNotU : i ∉ u := by
+    · have hiNotU : i ∉ u := by
         intro hiu
         exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hiu).1).2 his
+      have hiTarget := hw ⟨i, his⟩
       simp only [Finset.mem_union, hiNotU, false_or]
-      exact hside.symm
+      rw [hxFormula, hx0S i his, hiTarget]
+      by_cases hit : i ∈ t <;> simp [target, hit] <;> linarith
     · have hiout : i ∈ outside := by simp [outside, his]
-      have hgapNe := hgapne i hiout
-      have hpert := abs_lt.mp (hperturb i hiout)
       have hiNotT : i ∉ t := fun hit => his (hts hit)
-      simp only [Finset.mem_union, hiNotT, or_false]
-      rw [Finset.mem_filter]
-      simp only [hiout, true_and]
-      constructor
-      · intro hnew
-        by_contra hleft
-        have hgapPos : 0 < gap i := by
-          have hx0ne := hx0Outside i his
-          dsimp only [gap]
-          have : (H i).offset < realDot (H i).normal x0 :=
-            lt_of_le_of_ne (le_of_not_gt hleft) hx0ne.symm
-          linarith
-        have herr : -gap i < eps * realDot (H i).normal w := by
-          simpa [abs_of_pos hgapPos] using hpert.1
-        have hformula := hxFormula i
+      have hiu : i ∈ u ↔ gap i < 0 := by
+        simp [u, hiout, gap, sub_lt_zero]
+      simp only [Finset.mem_union, hiNotT, or_false, hiu]
+      rcases lt_or_gt_of_ne (hgapne i hiout) with hneg | hpos
+      · rw [if_pos hneg]
+        have herr := (abs_lt.mp (hperturb i hiout)).2
+        rw [abs_of_neg hneg] at herr
+        dsimp only [gap] at herr
         linarith
-      · intro hleft
-        have hgapNeg : gap i < 0 := by
-          dsimp only [gap]
-          linarith
-        have herr : eps * realDot (H i).normal w < -gap i := by
-          simpa [abs_of_neg hgapNeg] using hpert.2
-        have hformula := hxFormula i
-        linarith
-  have hxNe (i : Fin m) :
-      realDot (H i).normal x ≠ (H i).offset := by
-    by_cases his : i ∈ s
-    · have hiTarget := hw ⟨i, his⟩
-      by_cases hit : i ∈ t
-      · exact ne_of_lt ((hxLeft i).mpr (Finset.mem_union_right u hit))
-      · have htarget : target ⟨i, his⟩ = 1 := by simp [target, hit]
-        intro heq
-        have hformula := realDot_add_smul (H i).normal x0 w eps
-        rw [hx0S i his, hiTarget, htarget] at hformula
-        linarith
-    · have hiout : i ∈ outside := by simp [outside, his]
-      by_cases hiu : i ∈ u
-      · exact ne_of_lt ((hxLeft i).mpr (Finset.mem_union_left t hiu))
-      · have hnotleft : ¬ realDot (H i).normal x0 < (H i).offset := by
-          intro hleft
-          apply hiu
-          exact Finset.mem_filter.mpr ⟨hiout, hleft⟩
-        have hgapPos : 0 < gap i := by
-          have hx0ne := hx0Outside i his
-          dsimp only [gap]
-          have : (H i).offset < realDot (H i).normal x0 :=
-            lt_of_le_of_ne (le_of_not_gt hnotleft) hx0ne.symm
-          linarith
-        have herr : -gap i < eps * realDot (H i).normal w := by
-          simpa [abs_of_pos hgapPos] using
-            (abs_lt.mp (hperturb i hiout)).1
-        intro heq
-        have hformula := hxFormula i
-        rw [heq] at hformula
+      · rw [if_neg (not_lt_of_ge hpos.le)]
+        have herr := (abs_lt.mp (hperturb i hiout)).1
+        rw [abs_of_pos hpos] at herr
+        dsimp only [gap] at herr
         linarith
   let p : Fin m → Bool := fun i => decide (i ∈ u ∪ t)
   have hpReal : RealizesRegion H p := by
     refine ⟨x, fun i => ?_⟩
-    by_cases hmem : i ∈ u ∪ t
-    · have hleft := (hxLeft i).mpr hmem
-      have hnright : ¬ (H i).offset < realDot (H i).normal x :=
-        not_lt_of_ge hleft.le
-      rcases Finset.mem_union.mp hmem with hiu | hit
-      · simp [p, hiu, hleft, hnright]
-      · simp [p, hit, hleft, hnright]
-    · have hnleft : ¬ realDot (H i).normal x < (H i).offset := by
-        intro hleft
-        exact hmem ((hxLeft i).mp hleft)
-      have hright : (H i).offset < realDot (H i).normal x :=
-        lt_of_le_of_ne (le_of_not_gt hnleft) (hxNe i).symm
-      have hnu : i ∉ u := fun hiu => hmem (Finset.mem_union_left _ hiu)
-      have hnt : i ∉ t := fun hit => hmem (Finset.mem_union_right _ hit)
-      simp [p, hnu, hnt, hnleft, hright]
+    by_cases hi : i ∈ u ∪ t
+    · have hleft : realDot (H i).normal x < (H i).offset := by
+        simpa only [if_pos hi] using hside i
+      simp [p, hi, hleft, not_lt_of_ge hleft.le]
+    · have hright : (H i).offset < realDot (H i).normal x := by
+        simpa only [if_neg hi] using hside i
+      simp [p, hi, hright, not_lt_of_ge hright.le]
   rw [regionFamily, Finset.mem_image]
   refine ⟨p, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hpReal⟩, ?_⟩
   ext i

@@ -4,6 +4,7 @@ import Mathlib.Analysis.MeanInequalities
 import Mathlib.Algebra.Order.Chebyshev
 import Mathlib.Data.Int.Interval
 import Mathlib.Data.Nat.Choose.Bounds
+import Mathlib.Data.Finset.DenselyOrdered
 
 /-!
 # Localized polynomial phase removal
@@ -83,47 +84,22 @@ private lemma prop177_exists_small_positive
     {I : Type*} [Fintype I] (y b : I → Real) :
     ∃ delta : Real, 0 < delta ∧ ∀ i, y i < b i → y i + delta < b i := by
   classical
-  have haux : ∀ S : Finset I, ∃ delta : Real, 0 < delta ∧
-      ∀ i, i ∈ S → y i < b i → y i + delta < b i := by
-    intro S
-    induction S using Finset.induction_on with
-    | empty =>
-        exact ⟨1, by norm_num, by simp⟩
-    | @insert i S hi ih =>
-        obtain ⟨delta, hdelta, hdeltaS⟩ := ih
-        by_cases hib : y i < b i
-        · let eps : Real := (b i - y i) / 2
-          have heps : 0 < eps := by dsimp only [eps]; linarith
-          refine ⟨min delta eps, lt_min hdelta heps, ?_⟩
-          intro j hj hyj
-          rw [Finset.mem_insert] at hj
-          rcases hj with hji | hj
-          · subst j
-            have hmin := min_le_right delta eps
-            dsimp only [eps] at hmin ⊢
-            linarith
-          · have hprev := hdeltaS j hj hyj
-            have hmin := min_le_left delta eps
-            linarith
-        · refine ⟨delta, hdelta, ?_⟩
-          intro j hj hyj
-          rw [Finset.mem_insert] at hj
-          rcases hj with rfl | hj
-          · exact (hib hyj).elim
-          · exact hdeltaS j hj hyj
-  obtain ⟨delta, hdelta, hall⟩ := haux Finset.univ
-  exact ⟨delta, hdelta, fun i => hall i (Finset.mem_univ i)⟩
+  let S := Finset.univ.filter fun i => y i < b i
+  obtain ⟨delta, hzero, hbound⟩ := Finset.exists_between' ({0} : Finset Real)
+    (S.image fun i => b i - y i) (by
+      intro a ha c hc
+      obtain rfl := Finset.mem_singleton.mp ha
+      obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp hc
+      exact sub_pos.mpr (Finset.mem_filter.mp hi).2)
+  refine ⟨delta, hzero 0 (Finset.mem_singleton_self _), ?_⟩
+  intro i hi
+  have h := hbound (b i - y i)
+    (Finset.mem_image.mpr ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_univ i, hi⟩, rfl⟩)
+  linarith
 
 private lemma prop177_floor_sub_floor_eq_fract (a s : Real) :
     ⌊a + s⌋ - ⌊a⌋ = ⌊Int.fract a + s⌋ := by
-  have hfloor : ⌊a + s⌋ = ⌊a⌋ + ⌊Int.fract a + s⌋ := by
-    calc
-      ⌊a + s⌋ = ⌊((⌊a⌋ : Int) : Real) + Int.fract a + s⌋ := by
-        congr 1
-        rw [Int.floor_add_fract]
-      _ = ⌊a⌋ + ⌊Int.fract a + s⌋ := by
-        rw [add_assoc, Int.floor_intCast_add]
-  omega
+  rw [Int.fract, sub_add_eq_add_sub, Int.floor_sub_intCast]
 
 private lemma prop177_normalizedFloor_zero {k : Nat} (a0 : Real)
     (a : Fin k → Real) :

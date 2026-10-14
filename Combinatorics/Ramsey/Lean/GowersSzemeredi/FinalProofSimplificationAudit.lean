@@ -442,7 +442,12 @@ run_cmd do
       ``LeanProofs.GowersSzemeredi.corollary_18_7_L0_thirteen_le,
       ``LeanProofs.GowersSzemeredi.theorem_1_3_L0_thirteen_le,
       ``LeanProofs.GowersSzemeredi.theorem_16_2_polynomial_fejerT3,
-      ``LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerJT3] do
+      ``LeanProofs.GowersSzemeredi.corollary_16_11_polynomial_fejerJT3,
+      ``LeanProofs.GowersSzemeredi.theorem_13_12_fejer_extraction_explicit,
+      ``LeanProofs.GowersSzemeredi.theorem_13_12_fejer_explicit_threshold,
+      ``LeanProofs.GowersSzemeredi.theorem_13_12_with_fejer_extraction_exponent,
+      ``LeanProofs.GowersSzemeredi.theorem_13_12_with_fejer_explicit_bound,
+      ``LeanProofs.GowersSzemeredi.lemma_17_4_holds] do
     let info ← getConstInfo name
     unless (if name == definitionName then info.isDefinition else info.isTheorem) do
       throwError "{name} has an unexpected declaration kind"
