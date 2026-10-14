@@ -361,7 +361,7 @@ private lemma selectionGoodArrangements_card {N k : Nat} [NeZero N]
   ext R
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
 
-private lemma selection_respected_le_arrangement {N k : Nat} [NeZero N]
+lemma selection_respected_le_arrangement {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1)))
     (phi : Point N (k + 1) → ZMod N) :
     respectedGeneralArrangementCount 8 B phi ≤ generalArrangementCount 8 B := by
@@ -462,7 +462,7 @@ private abbrev SelectionArrangementCode {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) :=
   (Fin 15 → {z : Point N (k + 1) // z ∈ B}) × Point N k × Point N k
 
-private lemma selection_arrangement_count_le_card_pow {N k : Nat} [NeZero N]
+lemma selection_arrangement_count_le_card_pow {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) :
     generalArrangementCount 8 B ≤ B.card ^ 15 * N ^ (2 * k) := by
   classical
@@ -707,7 +707,7 @@ private lemma selection_product_complex {N k : Nat} [NeZero N]
   congr 1
   exact selection_phase_relation C phi R eps
 
-private lemma selection_expect_pi_prod {I C : Type*} [Fintype I]
+lemma selection_expect_pi_prod {I C : Type*} [Fintype I]
     [DecidableEq I]
     [Fintype C] [Nonempty C] (f : I → C → Complex) :
     (𝔼 g : I → C, ∏ i : I, f i (g i)) =
@@ -979,7 +979,7 @@ private lemma selection_valid_classification_of_nondegenerate
   rw [← selectionRelation_some]
   exact hvalid (some A)
 
-private lemma selection_parity_cube_sum_subset {N k : Nat} [NeZero N]
+lemma selection_parity_cube_sum_subset {N k : Nat} [NeZero N]
     (h y : Point N k) (A : Finset (Fin k)) :
     (∑ e : Fin k → Bool, parityCharacter (N := N) e *
       ∏ i ∈ A, (y i + if e i then h i else 0)) =
@@ -1008,7 +1008,7 @@ private lemma selection_parity_cube_sum_subset {N k : Nat} [NeZero N]
       rw [Fintype.sum_bool]
       by_cases hi : i ∈ A <;> simp [hi]
 
-private lemma selection_vertex_product_split {N k : Nat}
+lemma selection_vertex_product_split {N k : Nat}
     (R : GeneralArrangement N k 8) (e : Fin k → Bool) (j : Fin 16)
     (A : Finset (Fin (k + 1))) :
     (∏ i ∈ A, R.vertex e j i) =

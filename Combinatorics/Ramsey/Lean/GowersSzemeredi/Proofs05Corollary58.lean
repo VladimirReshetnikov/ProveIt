@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs05Lemma14
+import GowersSzemeredi.Proofs03ProgressionCount
 
 /-!
 # The scale issue in Corollary 5.8
@@ -70,22 +71,6 @@ private lemma cor58_balanced_eq_real {N : Nat} [NeZero N]
   rw [show density A = delta from cor58_density_eq A delta hcard]
   by_cases hx : x ∈ A <;>
     simp [indicator, cor58BalancedReal, hx]
-
-private lemma cor58_balanced_discValued {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) : DiscValued (balanced A) := by
-  intro x
-  classical
-  have hd0 : 0 ≤ density A := density_nonneg A
-  have hd1 : density A ≤ 1 := density_le_one A
-  by_cases hx : x ∈ A
-  · simp only [balanced, indicator, hx, if_true]
-    norm_cast
-    rw [Real.norm_eq_abs, abs_of_nonneg (sub_nonneg.mpr hd1)]
-    linarith
-  · simp only [balanced, indicator, hx, if_false, zero_sub]
-    norm_cast
-    rw [Real.norm_eq_abs, abs_neg, abs_of_nonneg hd0]
-    exact hd1
 
 private lemma cor58_sum_abs_positive {I : Type*} [Fintype I]
     (g : I → Real) (hsigned : 0 ≤ ∑ z, g z)
@@ -199,7 +184,7 @@ theorem corollary_5_8_with_scale_holds_of_corollary_5_6
         intro i _hi
         exact (cor58_sum_partition (fun j ↦ (R i j).carrier)
           (P i).carrier (hRpart i) (cor58BalancedReal A delta)).symm
-  have hdisc : DiscValued (balanced A) := cor58_balanced_discValued A
+  have hdisc : DiscValued (balanced A) := cor33_balanced_discValued A
   have hlocalError (i : Fin M) :
       ‖∑ s ∈ (P i).carrier,
           balanced A s * exponential (-(phi i s))‖ ≤
