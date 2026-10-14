@@ -9304,6 +9304,43 @@ consumers; three aggregate facades remain excluded.
 
 Evidence: `verification/2026-10-13-combined419-simplification.json`.
 
+
+### L.105. Dead code in the final route, and what is left to share (2026-10-14)
+
+Four passes over `Proofs18Final*`, each change verified by a local rebuild,
+the stub check of the bridge and the duplicate gate:
+* `GenParamsJT3.Ec` was the same term as `Eth`; dropped with its duplicate
+  range conjunct and slice-exponent conjunct (`564790fd2`).
+* Linter findings: unused binders (`ranges`'s `hV`, `split_step_gen`'s
+  `ha`), no-op `ring` after `field_simp`, unused simp arguments
+  (`456f541e5`).
+* A delta-debugging pass (`fejer-generators/prune_haves.py`) removed every
+  `have` the module still elaborates without: 21 of 218 in `FinalStep`, 4 of
+  77 in `FinalEnvelopes`, 7 of 113 in `FinalClasses`, mostly arithmetic side
+  facts that `omega`/`linarith` never needed (`9dcfdfe6c`, `1993dafa2`).
+  The unused-variable linter cannot see these, since those tactics read the
+  whole context.
+* Replacing multi-line `have` proofs by one of `positivity`, `linarith`,
+  `nlinarith`, `omega`, `norm_num` (`shorten_haves.py`): none of 35 closes.
+The four modules are 2,080 lines.
+
+What remains is structural. A similarity scan of every final-route
+declaration of at least 12 lines against the rest of the corpus (normalized
+identifiers, `difflib` ratio) finds the step lemmas to be near-copies of the
+cover-route (`…C`) and Fejér-route (`…F`) versions over other parameter
+structures: `inverse_step` (1.00, `Proofs18CoverDensity`),
+`coverPrec_gen_bounds_fejerJT3` (1.00, `…Fejer`, with `pDeg` for `fixDeg`),
+`polyCoverAt_classT3` (0.98, `polyCoverAt_class68`), `spectrum_exps_inv_leJT3`
+(0.97, `spectrum_exps_inv_leC`), `envBound_stepKx3` (0.96, `envBound_stepCx`),
+`MReq_le_expJT3` (0.96, `MReq_le_expF`), `polyEnvBound_stepJT3` (0.95),
+`rho1_inv_leJT3` (0.94), `vertex_uCount_le`, `classV_le_poly`,
+`nestExp_inv_leJT3` (0.93), `splitUniformClass2_all3`, `modulus_conditions`,
+`Tloc_le_expJT3` (0.92), `uCount_scale_le_deg`, `Eloc_inv_leJT3`, `ranges`
+(0.90-0.91). They differ in the class functions and the degree constants, so
+sharing them means stating the base lemmas over an abstract class table and
+degree (as `Proofs18EnvelopeInduction` did for the inductions), not deleting
+copies. That is the remaining lever on the final route's length.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
