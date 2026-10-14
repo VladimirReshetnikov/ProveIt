@@ -447,7 +447,12 @@ theorem theorem10_13_spectrum_bound {N M : Nat} [NeZero N]
       norm_num [Real.rpow_natCast]
       field_simp [ne_of_gt halpha]
 
-alias theorem10_13_zeta_bound := theorem10_13_zeta_le_parameterRadius
+theorem theorem10_13_zeta_bound (alpha : Real) (halpha : 0 < alpha) :
+    let k := section10SpectrumParameter alpha
+    let epsilon := section10BohrRadius alpha
+    section10Zeta alpha ≤
+      (2 : Real) ^ (-((k : Real) + 4)) * epsilon ^ k / k :=
+  theorem10_13_zeta_le_parameterRadius alpha halpha
 
 @[simp] private lemma theorem1013_exponential_add {N : Nat} [NeZero N]
     (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
