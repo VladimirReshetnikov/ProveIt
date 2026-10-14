@@ -20,13 +20,13 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma cor75_mem_functionGraph {N : Nat} [NeZero N]
+lemma cor75_mem_functionGraph {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (phi : ZMod N → ZMod N) (p : ZMod N × ZMod N) :
     p ∈ functionGraph B phi ↔ p.1 ∈ B ∧ p.2 = phi p.1 := by
   classical
   simp [functionGraph, Prod.ext_iff, eq_comm]
 
-private lemma cor75_card_functionGraph {N : Nat} [NeZero N]
+lemma cor75_card_functionGraph {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (phi : ZMod N → ZMod N) :
     (functionGraph B phi).card = B.card := by
   classical

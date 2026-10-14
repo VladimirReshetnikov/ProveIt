@@ -326,7 +326,7 @@ private lemma prop144_countWhere_eq_sum_ite {X : Type*} [Fintype X]
   unfold countWhere
   simp
 
-private lemma prop144_countWhere_prod {X Y : Type*} [Fintype X] [Fintype Y]
+lemma prop144_countWhere_prod {X Y : Type*} [Fintype X] [Fintype Y]
     (P : X → Y → Prop) :
     countWhere (fun z : X × Y => P z.1 z.2) =
       ∑ x : X, countWhere (P x) := by

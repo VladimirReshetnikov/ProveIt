@@ -474,7 +474,7 @@ private def weylCauchyExponent : Nat → Nat
   | 0 => 0
   | j + 1 => 2 * weylCauchyExponent j + j
 
-private lemma nat_succ_le_two_pow (e : Nat) : e + 1 ≤ 2 ^ e := by
+lemma nat_succ_le_two_pow (e : Nat) : e + 1 ≤ 2 ^ e := by
   induction e with
   | zero => simp
   | succ e ih =>
@@ -3107,7 +3107,7 @@ private lemma weylRaisedCoefficient_eq_natCast (k : Nat) :
   unfold weylRaisedCoefficient weylRaisedCoefficientAt weylRaisedCoefficientNat
   push_cast <;> rfl
 
-private lemma nat_le_cube {k : Nat} (hk : 1 ≤ k) : k ≤ k ^ 3 := by
+lemma nat_le_cube {k : Nat} (hk : 1 ≤ k) : k ≤ k ^ 3 := by
   calc
     k = k * 1 := by simp
     _ ≤ k * k ^ 2 := Nat.mul_le_mul_left k (one_le_pow₀ hk)

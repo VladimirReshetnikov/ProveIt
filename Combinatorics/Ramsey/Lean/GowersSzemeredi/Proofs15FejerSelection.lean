@@ -607,7 +607,6 @@ private def fejerPhaseValue {N k : Nat} [NeZero N]
     exponential (0 : ZMod N) = 1 := by
   exact AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
 
-
 private lemma fejer_prod_exponential {N : Nat} [NeZero N]
     {I : Type*} [Fintype I] (f : I → ZMod N) :
     ∏ i, exponential (f i) = exponential (∑ i, f i) := by
@@ -618,7 +617,6 @@ private lemma fejer_prod_exponential {N : Nat} [NeZero N]
   | @insert i s hi ih =>
       rw [Finset.sum_insert hi, fejer_exponential_add,
         Finset.prod_insert hi, ih]
-
 
 private lemma fejer_sum_exponential_mul {N : Nat} [NeZero N]
     (x : ZMod N) :
@@ -703,17 +701,6 @@ private lemma fejerEtaZero_cases {k : Nat} (e : Fin k → Bool)
       (Nat.not_even_iff_odd.mp he).neg_one_pow
     by_cases hj : (j : Nat) < 8 <;> simp [fejerEtaZero, hp, hj]
 
-
-private lemma fejer_parity_eq_prod {N k : Nat} (e : Fin k → Bool) :
-    parityCharacter (N := N) e =
-      ∏ i : Fin k, if e i then (-1 : ZMod N) else 1 := by
-  classical
-  simp only [parityCharacter, boolWeight, countWhere]
-  rw [← Finset.prod_const, Finset.prod_filter]
-  apply Finset.prod_congr rfl
-  intro i _
-  by_cases h : e i = true <;> simp [h]
-
 private lemma fejer_parity_cube_sum_subset {N k : Nat} [NeZero N]
     (h y : Point N k) (A : Finset (Fin k)) :
     (∑ e : Fin k → Bool, parityCharacter (N := N) e *
@@ -726,7 +713,7 @@ private lemma fejer_parity_cube_sum_subset {N k : Nat} [NeZero N]
           if i ∈ A then (y i + if e i then h i else 0) else 1 := by
     rw [← Finset.prod_filter]
     simp
-  simp_rw [fejer_parity_eq_prod, hprod, ← Finset.prod_mul_distrib]
+  simp_rw [parityCharacter_eq_prod_general, hprod, ← Finset.prod_mul_distrib]
   calc
     (∑ e : Fin k → Bool,
         ∏ i : Fin k, (if e i then (-1 : ZMod N) else 1) *
@@ -978,7 +965,6 @@ private lemma fejerCarrier_prod_of_nondegenerate {N k : Nat} [NeZero N]
   unfold fejerCarrier
   rw [Finset.prod_image
     (fejer_injective_of_nondegenerate hN R hnondegenerate).injOn]
-
 
 /-! ## Fejér weights of order `m` -/
 

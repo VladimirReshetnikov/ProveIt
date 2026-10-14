@@ -181,47 +181,7 @@ private lemma stage135_zero_mem_left : (0 : Fin 16) ∈ stage135Left := by
 private lemma stage135_zero_notMem_right : (0 : Fin 16) ∉ stage135Right := by
   simp [stage135Right]
 
-/-- An additive sixteen-tuple is determined by its last fifteen coordinates. -/
-lemma stage135_additive_ext {N : Nat}
-    {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)
-    (hy : IsAdditiveTuple (k := 8) y)
-    (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y := by
-  have hoff : ∀ i : Fin 16, i ≠ 0 → x i = y i := by
-    intro i hi
-    rcases i with ⟨(_ | i), hiBound⟩
-    · exact (hi rfl).elim
-    · exact htail ⟨i, by omega⟩
-  unfold IsAdditiveTuple at hx hy
-  change (∑ i ∈ stage135Left, x i) = ∑ i ∈ stage135Right, x i at hx
-  change (∑ i ∈ stage135Left, y i) = ∑ i ∈ stage135Right, y i at hy
-  have hleft :
-      (∑ i ∈ stage135Left.erase 0, x i) =
-        ∑ i ∈ stage135Left.erase 0, y i := by
-    apply Finset.sum_congr rfl
-    intro i hi
-    exact hoff i (Finset.ne_of_mem_erase hi)
-  have hright :
-      (∑ i ∈ stage135Right, x i) = ∑ i ∈ stage135Right, y i := by
-    apply Finset.sum_congr rfl
-    intro i hi
-    apply hoff i
-    intro hzero
-    subst i
-    exact stage135_zero_notMem_right hi
-  funext i
-  refine Fin.cases ?_ (fun j => htail j) i
-  apply add_left_cancel (a := ∑ i ∈ stage135Left.erase 0, x i)
-  calc
-    (∑ i ∈ stage135Left.erase 0, x i) + x 0 =
-        ∑ i ∈ stage135Left, x i :=
-      Finset.sum_erase_add _ _ stage135_zero_mem_left
-    _ = ∑ i ∈ stage135Right, x i := hx
-    _ = ∑ i ∈ stage135Right, y i := hright
-    _ = ∑ i ∈ stage135Left, y i := hy.symm
-    _ = (∑ i ∈ stage135Left.erase 0, y i) + y 0 := by
-      symm
-      exact Finset.sum_erase_add _ _ stage135_zero_mem_left
-    _ = (∑ i ∈ stage135Left.erase 0, x i) + y 0 := by rw [hleft]
+alias stage135_additive_ext := lemma134_additive_ext
 
 private lemma stage135EncodeAtHeight_injective {N : Nat} [NeZero N]
     (A : Finset (Pair N)) (h : ZMod N) :
@@ -237,22 +197,7 @@ private lemma stage135EncodeAtHeight_injective {N : Nat} [NeZero N]
   have hh : R.1.height = T.1.height := R.2.2.trans T.2.2.symm
   exact Prod.ext hx (Prod.ext hy hh)
 
-theorem stage135_sectionC_upper {N : Nat} [NeZero N]
-    (S : Section13Context N) (h : ZMod N) :
-    section13C S h ≤ N ^ 31 := by
-  classical
-  unfold section13C arrangementCountAtHeight countWhere
-  rw [Finset.filter_congr_decidable]
-  rw [← Fintype.card_subtype]
-  calc
-    Fintype.card {R : DArrangement N 8 //
-        R.IsIn S.A ∧ R.height = h} ≤
-        Fintype.card (stage135AtHeightCode N) :=
-      Fintype.card_le_of_injective (stage135EncodeAtHeight S.A h)
-        (stage135EncodeAtHeight_injective S.A h)
-    _ = N ^ 31 := by
-      simp [stage135AtHeightCode]
-      ring
+alias stage135_sectionC_upper := lemma134_sectionC_upper
 
 /-- Weighted height mass supplies the stronger pre-trimming density 1/16. -/
 theorem stage135_critical_count_of_weight {N : Nat} [NeZero N]

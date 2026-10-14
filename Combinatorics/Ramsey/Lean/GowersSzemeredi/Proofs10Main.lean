@@ -147,19 +147,6 @@ private def theorem1013ArrayEquiv (X : Type*) :
     funext i
     fin_cases i <;> rfl
 
-private lemma theorem1013_hasEqualHalfSums_two {G : Type*} [AddCommMonoid G]
-    (f : Fin (2 * 2) → G) :
-    HasEqualHalfSums f ↔ f 0 + f 1 = f 2 + f 3 := by
-  have hleft :
-      (Finset.univ.filter (fun i : Fin (2 * 2) ↦ (i : Nat) < 2)) = {0, 1} := by
-    decide
-  have hright :
-      (Finset.univ.filter (fun i : Fin (2 * 2) ↦ 2 ≤ (i : Nat))) = {2, 3} := by
-    decide
-  unfold HasEqualHalfSums
-  rw [hleft, hright]
-  simp
-
 private lemma theorem1013_hasEqualHalfSums_eight {G : Type*} [AddCommMonoid G]
     (f : Fin (2 * 8) → G) :
     HasEqualHalfSums f ↔
@@ -182,7 +169,7 @@ private lemma theorem1013_array_relation {G X : Type*} [AddCommGroup G]
     HasEqualHalfSums (k := 2) (fun i ↦
         f (q i 0) - f (q i 1) - f (q i 2) + f (q i 3)) ↔
       HasEqualHalfSums (k := 8) (fun i ↦ f (theorem1013ArrayEquiv X q i)) := by
-  rw [theorem1013_hasEqualHalfSums_two, theorem1013_hasEqualHalfSums_eight]
+  rw [hasEqualHalfSums_two, theorem1013_hasEqualHalfSums_eight]
   dsimp [theorem1013ArrayEquiv]
   constructor <;> intro h
   · apply sub_eq_zero.mp
@@ -354,14 +341,6 @@ private lemma theorem1013_quad_fourier {N : Nat} [NeZero N]
   rw [norm_star]
   ring
 
-private lemma theorem1013_sum_fibre_cards {N : Nat} [NeZero N]
-    {X : Type*} [Fintype X] [DecidableEq X]
-    (D : MultifunctionDomain N X) :
-    (∑ s : ZMod N, (D.fibre s).card) = Fintype.card X := by
-  rw [Fintype.card]
-  exact (Finset.card_eq_sum_card_fiberwise (s := Finset.univ)
-    (t := Finset.univ) (f := D.index) (by simp)).symm
-
 private lemma theorem1013_fourier_energy {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
     (D : MultifunctionDomain N X) :
@@ -390,7 +369,7 @@ private lemma theorem1013_fibre_square_sum_le {N M : Nat} [NeZero N]
       exact (Finset.mul_sum Finset.univ
         (fun s : ZMod N => ((D.fibre s).card : Real)) (M : Real)).symm
     _ = (M : Real) * Fintype.card X := by
-      rw [← Nat.cast_sum, theorem1013_sum_fibre_cards]
+      rw [← Nat.cast_sum, theorem1013Parameters_sum_fibre_cards]
 
 /-- Parseval and the uniform fibre cap give the large-spectrum estimate in
 Theorem 10.13. -/
@@ -468,116 +447,7 @@ theorem theorem10_13_spectrum_bound {N M : Nat} [NeZero N]
       norm_num [Real.rpow_natCast]
       field_simp [ne_of_gt halpha]
 
-private lemma theorem1013_bohr_radius_eq (alpha : Real) (halpha : 0 < alpha) :
-    section10BohrRadius alpha =
-      (2 : Real) ^ (-(148 : Real)) * alpha ^ (18 : Nat) / Real.pi := by
-  have htwo :
-      ((2 : Real) ^ (-(37 : Real))) ^ (4 : Nat) =
-        (2 : Real) ^ (-(148 : Real)) := by
-    rw [← Real.rpow_natCast, ← Real.rpow_mul (show (0 : Real) ≤ 2 by norm_num)]
-    norm_num
-  have halphaFour :
-      (alpha ^ ((11 : Real) / 2)) ^ (4 : Nat) = alpha ^ (22 : Nat) := by
-    rw [← Real.rpow_natCast, ← Real.rpow_mul halpha.le]
-    norm_num [Real.rpow_natCast]
-  have halphaCombine :
-      alpha ^ (-(4 : Real)) * alpha ^ (22 : Nat) = alpha ^ (18 : Nat) := by
-    rw [← Real.rpow_natCast, ← Real.rpow_add halpha]
-    norm_num [Real.rpow_natCast]
-  unfold section10BohrRadius section10Lambda
-  rw [mul_pow, htwo, halphaFour]
-  calc
-    alpha ^ (-(4 : Real)) *
-          ((2 : Real) ^ (-(148 : Real)) * alpha ^ (22 : Nat)) / Real.pi =
-        (2 : Real) ^ (-(148 : Real)) *
-          (alpha ^ (-(4 : Real)) * alpha ^ (22 : Nat)) / Real.pi := by ring
-    _ = (2 : Real) ^ (-(148 : Real)) * alpha ^ (18 : Nat) / Real.pi := by
-      rw [halphaCombine]
-
-private lemma theorem1013_bohr_radius_lower (alpha : Real) (halpha : 0 < alpha) :
-    (2 : Real) ^ (-(150 : Real)) * alpha ^ (18 : Nat) ≤
-      section10BohrRadius alpha := by
-  rw [theorem1013_bohr_radius_eq alpha halpha]
-  have hpow : 0 ≤ alpha ^ (18 : Nat) := by positivity
-  have hpi : (0 : Real) < Real.pi := Real.pi_pos
-  have hrecip : (1 : Real) / 4 ≤ 1 / Real.pi :=
-    one_div_le_one_div_of_le hpi Real.pi_le_four
-  have hcoeff :
-      (2 : Real) ^ (-(150 : Real)) ≤
-        (2 : Real) ^ (-(148 : Real)) / Real.pi := by
-    calc
-      (2 : Real) ^ (-(150 : Real)) =
-          (2 : Real) ^ (-(148 : Real)) * (1 / 4) := by
-        rw [show (1 / 4 : Real) = (2 : Real) ^ (-(2 : Real)) by
-          norm_num [Real.rpow_neg, Real.rpow_two]]
-        rw [← Real.rpow_add (show (0 : Real) < 2 by norm_num)]
-        norm_num
-      _ ≤ (2 : Real) ^ (-(148 : Real)) * (1 / Real.pi) := by gcongr
-      _ = (2 : Real) ^ (-(148 : Real)) / Real.pi := by ring
-  calc
-    (2 : Real) ^ (-(150 : Real)) * alpha ^ (18 : Nat) ≤
-        ((2 : Real) ^ (-(148 : Real)) / Real.pi) * alpha ^ (18 : Nat) := by
-      gcongr
-    _ = (2 : Real) ^ (-(148 : Real)) * alpha ^ (18 : Nat) / Real.pi := by ring
-
-/-- The corrected radius in Theorem 10.13 is small enough for the induced
-Bohr homomorphism lemma. -/
-theorem theorem10_13_zeta_bound (alpha : Real) (halpha : 0 < alpha) :
-    let k := section10SpectrumParameter alpha
-    let epsilon := section10BohrRadius alpha
-    section10Zeta alpha ≤
-      (2 : Real) ^ (-((k : Real) + 4)) * epsilon ^ k / k := by
-  dsimp only
-  let k := section10SpectrumParameter alpha
-  let a : Real := (2 : Real) ^ (-(150 : Real)) * alpha ^ (18 : Nat)
-  have hboundPos : 0 < section10SpectrumBound alpha := by
-    unfold section10SpectrumBound
-    positivity
-  have hk : 0 < k := by
-    dsimp [k, section10SpectrumParameter]
-    exact Nat.ceil_pos.mpr hboundPos
-  have hkReal : (1 : Real) ≤ k := by exact_mod_cast hk
-  have haPos : 0 < a := by
-    dsimp [a]
-    positivity
-  have hae : a ≤ section10BohrRadius alpha := by
-    exact theorem1013_bohr_radius_lower alpha halpha
-  have hcoeff :
-      (2 : Real) ^ (-(155 : Real) * (k : Real)) ≤
-        (2 : Real) ^ (-((k : Real) + 4)) *
-          ((2 : Real) ^ (-(150 : Real))) ^ k := by
-    rw [← Real.rpow_natCast,
-      ← Real.rpow_mul (show (0 : Real) ≤ 2 by norm_num),
-      ← Real.rpow_add (show (0 : Real) < 2 by norm_num)]
-    apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-    nlinarith
-  have halphaPow :
-      (alpha ^ (18 : Nat)) ^ k = alpha ^ (18 * k) := by
-    rw [pow_mul]
-  have hcoarse :
-      (2 : Real) ^ (-(155 : Real) * (k : Real)) * alpha ^ (18 * k) ≤
-        (2 : Real) ^ (-((k : Real) + 4)) * a ^ k := by
-    calc
-      (2 : Real) ^ (-(155 : Real) * (k : Real)) * alpha ^ (18 * k) ≤
-          ((2 : Real) ^ (-((k : Real) + 4)) *
-            ((2 : Real) ^ (-(150 : Real))) ^ k) * alpha ^ (18 * k) := by
-        gcongr
-      _ = (2 : Real) ^ (-((k : Real) + 4)) * a ^ k := by
-        dsimp [a]
-        rw [mul_pow, halphaPow]
-        ring
-  have hpow : a ^ k ≤ section10BohrRadius alpha ^ k :=
-    pow_le_pow_left₀ haPos.le hae k
-  unfold section10Zeta
-  dsimp only [section10SpectrumParameter] at k ⊢
-  change
-    (2 : Real) ^ (-(155 : Real) * (k : Real)) * alpha ^ (18 * k) / k ≤
-      (2 : Real) ^ (-((k : Real) + 4)) * section10BohrRadius alpha ^ k / k
-  calc
-    (2 : Real) ^ (-(155 : Real) * (k : Real)) * alpha ^ (18 * k) / k ≤
-        ((2 : Real) ^ (-((k : Real) + 4)) * a ^ k) / k := by gcongr
-    _ ≤ (2 : Real) ^ (-((k : Real) + 4)) *
-        section10BohrRadius alpha ^ k / k := by gcongr
+alias theorem10_13_zeta_bound := theorem10_13_zeta_le_parameterRadius
 
 @[simp] private lemma theorem1013_exponential_add {N : Nat} [NeZero N]
     (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
@@ -657,7 +527,7 @@ private lemma theorem1013_fourier_norm_le_card {N : Nat} [NeZero N]
       intro s _
       simp [domainFibreCountFunction]
     _ = Fintype.card X := by
-      rw [← Nat.cast_sum, theorem1013_sum_fibre_cards]
+      rw [← Nat.cast_sum, theorem1013Parameters_sum_fibre_cards]
 
 private lemma theorem1013_fourier_energy_upper {N M : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]

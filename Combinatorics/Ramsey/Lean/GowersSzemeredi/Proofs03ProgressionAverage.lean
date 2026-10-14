@@ -207,7 +207,7 @@ private lemma progression_cauchy_step {N n : Nat} [NeZero N]
       exact mul_le_mul_of_nonneg_left
         (by simpa only [B] using progressionTail_energy f) (by positivity)
 
-private lemma sum_rpow_le_rpow_average {N : Nat} [NeZero N]
+lemma sum_rpow_le_rpow_average {N : Nat} [NeZero N]
     (beta : ZMod N → Real) (alpha p : Real)
     (hbeta : ∀ u, 0 ≤ beta u) (hsum : (∑ u, beta u) = alpha * N)
     (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
@@ -231,7 +231,7 @@ private lemma sum_rpow_le_rpow_average {N : Nat} [NeZero N]
     _ ≤ (N : Real) * alpha ^ p := mul_le_mul_of_nonneg_left hscaled hN.le
     _ = alpha ^ p * N := by ring
 
-private lemma le_rpow_mul_of_sq_le {alpha p x C : Real}
+lemma le_rpow_mul_of_sq_le {alpha p x C : Real}
     (ha0 : 0 ≤ alpha) (_hp0 : 0 ≤ p) (hx0 : 0 ≤ x) (hC0 : 0 ≤ C)
     (h : x ^ 2 ≤ alpha ^ p * C ^ 2) :
     x ≤ alpha ^ (p / 2) * C := by

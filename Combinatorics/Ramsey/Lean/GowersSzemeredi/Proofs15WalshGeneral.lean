@@ -215,7 +215,7 @@ theorem signedWalsh_multiple_of_invariant {N k : Nat} [NeZero N]
   rw [hsign]
   ring
 
-private theorem parityCharacter_eq_prod_general {N k : Nat}
+theorem parityCharacter_eq_prod_general {N k : Nat}
     (e : Fin k → Bool) :
     parityCharacter (N := N) e =
       ∏ i : Fin k,

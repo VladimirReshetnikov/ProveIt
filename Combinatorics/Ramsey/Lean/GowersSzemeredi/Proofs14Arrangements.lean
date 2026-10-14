@@ -68,14 +68,6 @@ private lemma cor146_countWhere_eq_sum_ite {X : Type*} [Fintype X]
   unfold countWhere
   simp
 
-private lemma cor146_countWhere_prod {X Y : Type*} [Fintype X] [Fintype Y]
-    (P : X → Y → Prop) :
-    countWhere (fun z : X × Y => P z.1 z.2) =
-      ∑ x : X, countWhere (P x) := by
-  classical
-  simp_rw [cor146_countWhere_eq_sum_ite]
-  rw [Fintype.sum_prod_type]
-
 private lemma cor146_countWhere_equiv {X Y : Type*} [Fintype X] [Fintype Y]
     (e : X ≃ Y) (P : Y → Prop) :
     countWhere P = countWhere (fun x => P (e x)) := by
@@ -105,7 +97,7 @@ private lemma cor146_sum_section_card {N k : Nat} [NeZero N]
       rw [show (∑ r : ZMod N,
           countWhere (fun x : Point N k => cor146Embed x r ∈ B)) =
         countWhere (fun z : ZMod N × Point N k =>
-          cor146Embed z.2 z.1 ∈ B) from (cor146_countWhere_prod _).symm]
+          cor146Embed z.2 z.1 ∈ B) from (prop144_countWhere_prod _).symm]
     _ = countWhere (fun z : Point N k × ZMod N =>
         cor146Embed z.1 z.2 ∈ B) := by
       simpa using (cor146_countWhere_equiv
@@ -164,7 +156,7 @@ private lemma cor146_pair_count_eq_sum {N k : Nat} [NeZero N]
       cor146GoodPair B phi z.1 r z.2) =
       ∑ K : AxisCube N k, countWhere (fun K' : AxisCube N k =>
         cor146GoodPair B phi K r K') from
-    cor146_countWhere_prod (fun K K' => cor146GoodPair B phi K r K')]
+    prop144_countWhere_prod (fun K K' => cor146GoodPair B phi K r K')]
   apply Fintype.sum_congr
   intro K
   unfold cor146GoodSet countWhere cor146GoodPair
@@ -414,7 +406,7 @@ private lemma cor146_energy_eq_fiber_count {N k : Nat} [NeZero N]
               ∀ i, IsAdditiveQuadruple
                 (fun t => cor146Sigma phi K i (q t))) ∧
             ∀ t, f t ∈ cor146GoodSet B phi K (q t)) from
-    cor146_countWhere_prod
+    prop144_countWhere_prod
       (X := Fin 4 → ZMod N) (Y := Fin 4 → AxisCube N k)
       (fun q f =>
         ((∀ t, q t ∈ cor146ReferenceSection B K) ∧
@@ -692,7 +684,7 @@ private lemma cor146_source_count_le {N k : Nat} [NeZero N]
   classical
   rw [← show countWhere (cor146SourceGood B phi) =
       ∑ K : AxisCube N k, countWhere (cor146FiberGood B phi K) from
-    cor146_countWhere_prod
+    prop144_countWhere_prod
       (X := AxisCube N k)
       (Y := (Fin 4 → ZMod N) × (Fin 4 → AxisCube N k))
       (fun K z => cor146FiberGood B phi K z)]

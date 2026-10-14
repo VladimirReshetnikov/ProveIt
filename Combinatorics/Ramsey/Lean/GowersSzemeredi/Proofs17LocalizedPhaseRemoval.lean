@@ -890,15 +890,6 @@ private lemma prop177_support_decomposition {N M k : Nat} [NeZero N]
 
 /-! ### The small-scale singleton branch -/
 
-private lemma prop177_cubeArgument_cons {N n : Nat}
-    (s r : ZMod N) (a : Point N n) (b : Bool) (e : Fin n → Bool) :
-    cubeArgument s (Fin.cons r a) (Fin.cons b e) =
-      s - (if b then r else 0) - ∑ i, if e i then a i else 0 := by
-  unfold cubeArgument
-  rw [Fin.sum_univ_succ]
-  simp
-  abel
-
 private lemma prop177_norm_cubeDifference_product {N d : Nat}
     (f : ZMod N → Complex) (x : Point N d) (s : ZMod N) :
     ‖cubeDifference f x s‖ =
@@ -1057,38 +1048,6 @@ private lemma prop177_countWhere_eq_sum_ite {X : Type*} [Fintype X]
   unfold countWhere
   simp
 
-private lemma prop177_boolWeight_cons {n : Nat}
-    (b : Bool) (e : Fin n → Bool) :
-    boolWeight (Fin.cons b e) = (if b then 1 else 0) + boolWeight e := by
-  classical
-  unfold boolWeight
-  simp_rw [prop177_countWhere_eq_sum_ite]
-  rw [Fin.sum_univ_succ]
-  cases b <;> simp
-  all_goals
-    convert (@Finset.sum_boole (Fin n) Nat inferInstance
-      (fun i : Fin n => e i = true)
-      (fun i => Classical.propDecidable (e i = true))
-      (Finset.univ : Finset (Fin n))).symm using 1
-    all_goals simp only [Nat.cast_id]
-  all_goals congr
-
-private lemma prop177_parityConj_cons_false {n : Nat}
-    (e : Fin n → Bool) (z : Complex) :
-    parityConj (Fin.cons false e) z = parityConj e z := by
-  unfold parityConj
-  rw [prop177_boolWeight_cons]
-  simp
-
-private lemma prop177_parityConj_cons_true {n : Nat}
-    (e : Fin n → Bool) (z : Complex) :
-    parityConj (Fin.cons true e) z = star (parityConj e z) := by
-  unfold parityConj
-  rw [prop177_boolWeight_cons]
-  have heven : Even (1 + boolWeight e) ↔ ¬Even (boolWeight e) := by
-    rw [add_comm, Nat.even_add_one]
-  by_cases h : Even (boolWeight e) <;> simp [heven, h]
-
 private lemma prop177_parity_product_succ (n : Nat) (z : Complex) :
     (∏ e : Fin (n + 1) → Bool, parityConj e z) =
       (∏ e : Fin n → Bool, parityConj e z) *
@@ -1107,10 +1066,10 @@ private lemma prop177_parity_product_succ (n : Nat) (z : Complex) :
       congr 1
       · apply Finset.prod_congr rfl
         intro e _
-        exact prop177_parityConj_cons_false e z
+        exact prop172_parityConj_cons_false e z
       · apply Finset.prod_congr rfl
         intro e _
-        exact prop177_parityConj_cons_true e z
+        exact prop172_parityConj_cons_true e z
 
 private lemma prop177_parity_product_closed (n : Nat) (z : Complex) :
     (∏ e : Fin (n + 1) → Bool, parityConj e z) =
@@ -1326,12 +1285,6 @@ private lemma prop177_fourier_sq {N : Nat} [NeZero N]
         difference g y s * exponential (-(y * r)) := by
   exact fourier_norm_sq_eq_difference_sum g r
 
-private lemma prop177_cubeDifference_product {N d : Nat}
-    (f : ZMod N → Complex) (x : Point N d) (s : ZMod N) :
-    cubeDifference f x s =
-      ∏ e : Fin d → Bool, parityConj e (f (cubeArgument s x e)) := by
-  exact cubeDifference_eq_parity_product f x s
-
 private def prop177PhasedFamily {N d : Nat} [NeZero N]
     (H : (Fin d → Bool) → ZMod N → Complex)
     (phi : (Fin d → Bool) → ZMod N → ZMod N) :
@@ -1434,13 +1387,13 @@ private lemma prop177_difference_mixedProduct {N k : Nat}
       · apply Finset.prod_congr rfl
         intro e _
         simp only [T, Fin.tail_cons]
-        rw [prop177_parityConj_cons_false, prop177_cubeArgument_cons]
+        rw [prop172_parityConj_cons_false, prop172_cubeArgument_cons]
         simp only [Bool.false_eq_true, if_false, sub_zero]
         rfl
       · apply Finset.prod_congr rfl
         intro e _
         simp only [T, Fin.tail_cons]
-        rw [prop177_parityConj_cons_true, prop177_cubeArgument_cons]
+        rw [prop172_parityConj_cons_true, prop172_cubeArgument_cons]
         simp only [if_true]
         rfl
     _ = ∏ p : Bool × (Fin k → Bool), T (Fin.cons p.1 p.2) := by
@@ -1733,7 +1686,7 @@ private lemma prop177_fourier_boxPoint {N k m h : Nat} [NeZero N]
   rw [← (Equiv.mulLeft₀ d (bne_iff_ne.mp hd)).sum_comp]
   apply Finset.sum_congr rfl
   intro t _
-  rw [prop177_cubeDifference_product]
+  rw [prop172_cubeDifference_product]
   change exponential (-((d * t) * sigma (prop177BoxPoint P u))) *
       (∏ e : Fin k → Bool,
         parityConj e
@@ -2802,9 +2755,6 @@ theorem proposition_17_7_with_upper :
     obtain ⟨h, rfl⟩ := hm
     exact prop177_large_branch f P sigma alpha halpha hk hlarge haxes hd
       hmsqrt hf hsigma henergy
-
-
-
 
 /-- **Gowers, Proposition 17.7.** The catalogue conclusion follows from
  the stronger construction, retaining its original statement. -/

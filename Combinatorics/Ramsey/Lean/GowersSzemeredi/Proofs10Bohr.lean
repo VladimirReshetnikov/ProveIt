@@ -341,14 +341,14 @@ theorem lemma_10_10_holds : lemma_10_10 := by
   change (1 - c) * B.card ≤ (B ∩ section10Translate B d).card
   nlinarith
 
-private lemma section10Translate_card {N : Nat}
+lemma section10Translate_card {N : Nat}
     (A : Finset (ZMod N)) (d : ZMod N) :
     (section10Translate A d).card = A.card := by
   classical
   unfold section10Translate
   exact Finset.card_image_of_injective A (add_left_injective d)
 
-private lemma section10Translate_mono {N : Nat}
+lemma section10Translate_mono {N : Nat}
     {A A' : Finset (ZMod N)} (hAA' : A ⊆ A') (d : ZMod N) :
     section10Translate A d ⊆ section10Translate A' d := by
   classical
@@ -377,7 +377,7 @@ private lemma section10Translate_add {N : Nat}
     abel
 
 /-- Inclusion-exclusion inside a common finite ambient set. -/
-private lemma inter_card_lower_of_subsets {X : Type*} [DecidableEq X]
+lemma inter_card_lower_of_subsets {X : Type*} [DecidableEq X]
     (S T U : Finset X) (hSU : S ⊆ U) (hTU : T ⊆ U) :
     (S.card : Real) + T.card - U.card ≤ (S ∩ T).card := by
   have hunion : S ∪ T ⊆ U := Finset.union_subset hSU hTU
@@ -389,7 +389,7 @@ private lemma inter_card_lower_of_subsets {X : Type*} [DecidableEq X]
     exact_mod_cast hcardIdentity
   linarith
 
-private lemma bohr_zero_mem {N : Nat} [NeZero N]
+lemma bohr_zero_mem {N : Nat} [NeZero N]
     (K : Finset (ZMod N)) (delta : Real) (hdelta : 0 ≤ delta) :
     (0 : ZMod N) ∈ bohr K delta := by
   classical
@@ -535,7 +535,7 @@ private lemma exists_dense_bohr_chain {N : Nat}
   convert hx'.1.2 using 1
   abel
 
-private lemma corollary_10_11_overlap {N : Nat} [NeZero N]
+lemma corollary_10_11_overlap {N : Nat} [NeZero N]
     (K : Finset (ZMod N)) (delta : Real) (hK : K.Nonempty)
     (hdelta : 0 < delta) (hdeltaOne : delta ≤ 1) :
     let k := K.card

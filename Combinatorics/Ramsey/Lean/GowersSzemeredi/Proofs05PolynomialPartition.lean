@@ -985,19 +985,6 @@ private theorem polynomial_weyl_sqrt_witness
 
 /-! ### Quantitative polynomial recurrence -/
 
-private lemma lemma55_nat_succ_le_two_pow (e : Nat) : e + 1 ≤ 2 ^ e := by
-  induction e with
-  | zero => simp
-  | succ e ih =>
-      rw [pow_succ]
-      omega
-
-private lemma lemma55_nat_le_cube {k : Nat} (hk : 1 ≤ k) : k ≤ k ^ 3 := by
-  calc
-    k = k * 1 := by simp
-    _ ≤ k * k ^ 2 := Nat.mul_le_mul_left k (one_le_pow₀ hk)
-    _ = k ^ 3 := by ring
-
 /-- A small, reusable consequence of the repaired double-exponential
 threshold.  Keeping `D` and `E` abstract lets the two constant absorptions in
 Lemma 5.5 share the same non-evaluating tower argument. -/
@@ -1031,8 +1018,8 @@ private lemma lemma55_threshold_weyl_gap {k t : Nat} (hk : 2 ≤ k)
       (2 * (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) := by
   let D := k * 2 ^ k
   have hkpow : k ≤ 2 ^ k :=
-    (Nat.le_succ k).trans (lemma55_nat_succ_le_two_pow k)
-  have hkCube : k ≤ k ^ 3 := lemma55_nat_le_cube (by omega)
+    (Nat.le_succ k).trans (nat_succ_le_two_pow k)
+  have hkCube : k ≤ k ^ 3 := nat_le_cube (by omega)
   have hexponent : 2 * k + 4 ≤ 40 * k ^ 3 := by
     calc
       2 * k + 4 ≤ 4 * k := by omega
@@ -1087,7 +1074,7 @@ private lemma lemma55_threshold_constant {k t : Nat} (hk : 2 ≤ k)
       _ ≤ 40 * k ^ 3 := Nat.mul_le_mul_right (k ^ 3) (by norm_num)
   have hDE : D * E ≤ 2 ^ (40 * k ^ 3) :=
     hpoly.trans <| (Nat.le_succ (40 * k ^ 3)).trans
-      (lemma55_nat_succ_le_two_pow (40 * k ^ 3))
+      (nat_succ_le_two_pow (40 * k ^ 3))
   have hroot := lemma55_threshold_root hD hDE ht
   have hbase : (16 : Real) ^ (k - 1) = (2 : Real) ^ E := by
     dsimp only [E]
@@ -1106,8 +1093,8 @@ private lemma lemma55_sqrt_threshold_gamma_gap {k u : Nat} (hk : 2 ≤ k)
       (((k : Real) * (2 : Real) ^ (k + 1))⁻¹) := by
   let D := k * 2 ^ (k + 1)
   have hkpow : k ≤ 2 ^ k :=
-    (Nat.le_succ k).trans (lemma55_nat_succ_le_two_pow k)
-  have hkCube : k ≤ k ^ 3 := lemma55_nat_le_cube (by omega)
+    (Nat.le_succ k).trans (nat_succ_le_two_pow k)
+  have hkCube : k ≤ k ^ 3 := nat_le_cube (by omega)
   have hexponent : 2 * k + 6 ≤ 40 * k ^ 3 := by
     calc
       2 * k + 6 ≤ 5 * k := by omega
@@ -1160,7 +1147,7 @@ private lemma lemma55_sqrt_threshold_transport_constant {k u : Nat}
       _ ≤ 40 * k ^ 3 := Nat.mul_le_mul_right (k ^ 3) (by norm_num)
   have hDE : D * E ≤ 2 ^ (40 * k ^ 3) :=
     hpoly.trans <| (Nat.le_succ (40 * k ^ 3)).trans
-      (lemma55_nat_succ_le_two_pow (40 * k ^ 3))
+      (nat_succ_le_two_pow (40 * k ^ 3))
   have hroot := lemma55_threshold_root hD hDE ht
   have hbase : (4 : Real) * 64 ^ (k - 1) = (2 : Real) ^ E := by
     dsimp only [E]
@@ -1184,7 +1171,7 @@ private lemma lemma55_exponent_budget {k : Nat} (hk : 2 ≤ k) :
       1 - (((k : Real) * (2 : Real) ^ (k + 1))⁻¹) := by
   have hkReal : (0 : Real) < k := by positivity
   have hkpow : k ≤ 2 ^ (k - 1) := by
-    have h := lemma55_nat_succ_le_two_pow (k - 1)
+    have h := nat_succ_le_two_pow (k - 1)
     rwa [Nat.sub_add_cancel (by omega : 1 ≤ k)] at h
   have htwok : 2 * k ≤ 2 ^ k := by
     calc

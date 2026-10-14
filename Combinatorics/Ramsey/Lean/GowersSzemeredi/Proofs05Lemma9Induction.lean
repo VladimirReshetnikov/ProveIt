@@ -224,7 +224,7 @@ noncomputable def section5NatFlatten {M : Nat} (L : Fin M -> Nat)
   let z := (section5NatFlattenEquiv L).symm j
   R z.1 z.2
 
-private theorem section5Nat_sigma_partition {X : Type*} [DecidableEq X]
+theorem section5Nat_sigma_partition {X : Type*} [DecidableEq X]
     {M : Nat} (L : Fin M -> Nat) (A : Fin M -> Finset X) (S : Finset X)
     (B : (i : Fin M) -> Fin (L i) -> Finset X)
     (hA : IsPartition A S) (hB : forall i, IsPartition (B i) (A i)) :

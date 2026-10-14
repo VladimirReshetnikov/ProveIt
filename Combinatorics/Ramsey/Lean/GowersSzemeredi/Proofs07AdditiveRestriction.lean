@@ -17,21 +17,6 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma cor76_mem_functionGraph {N : Nat} [NeZero N]
-    (B : Finset (ZMod N)) (phi : ZMod N → ZMod N) (p : ZMod N × ZMod N) :
-    p ∈ functionGraph B phi ↔ p.1 ∈ B ∧ p.2 = phi p.1 := by
-  classical
-  simp [functionGraph, Prod.ext_iff, eq_comm]
-
-private lemma cor76_card_functionGraph {N : Nat} [NeZero N]
-    (B : Finset (ZMod N)) (phi : ZMod N → ZMod N) :
-    (functionGraph B phi).card = B.card := by
-  classical
-  unfold functionGraph
-  rw [Finset.card_image_iff.mpr]
-  intro x _ y _ h
-  exact congrArg Prod.fst h
-
 private lemma cor76_count_le_graph_energy {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (phi : ZMod N → ZMod N) :
     phiAdditiveCount B phi ≤
@@ -72,16 +57,16 @@ private lemma cor76_extract_subgraph {N : Nat} [NeZero N]
   have hB1sub : B1 ⊆ B0 := by
     intro x hx
     obtain ⟨p, hp, hpx⟩ := Finset.mem_image.mp hx
-    have hpgraph := (cor76_mem_functionGraph B0 phi p).1 (hsub hp)
+    have hpgraph := (cor75_mem_functionGraph B0 phi p).1 (hsub hp)
     rw [← hpx]
     exact hpgraph.1
   have hgraph : functionGraph B1 phi = Gamma1 := by
     ext p
     constructor
     · intro hp
-      have hp' := (cor76_mem_functionGraph B1 phi p).1 hp
+      have hp' := (cor75_mem_functionGraph B1 phi p).1 hp
       obtain ⟨q, hq, hqp⟩ := Finset.mem_image.mp hp'.1
-      have hq' := (cor76_mem_functionGraph B0 phi q).1 (hsub hq)
+      have hq' := (cor75_mem_functionGraph B0 phi q).1 (hsub hq)
       have hpq : p = q := by
         apply Prod.ext
         · exact hqp.symm
@@ -91,18 +76,18 @@ private lemma cor76_extract_subgraph {N : Nat} [NeZero N]
             _ = q.2 := hq'.2.symm
       simpa [hpq] using hq
     · intro hp
-      have hp' := (cor76_mem_functionGraph B0 phi p).1 (hsub hp)
-      exact (cor76_mem_functionGraph B1 phi p).2
+      have hp' := (cor75_mem_functionGraph B0 phi p).1 (hsub hp)
+      exact (cor75_mem_functionGraph B1 phi p).2
         ⟨Finset.mem_image.2 ⟨p, hp, rfl⟩, hp'.2⟩
   refine ⟨hB1sub, hgraph, ?_⟩
-  rw [← cor76_card_functionGraph B1 phi, hgraph]
+  rw [← cor75_card_functionGraph B1 phi, hgraph]
 
 theorem corollary_7_6_holds : corollary_7_6 := by
   intro N _ B0 phi alpha gamma hprime halpha hgamma hB0card hadd
   classical
   let Gamma0 := functionGraph B0 phi
   have hGamma0cardNat : Gamma0.card = B0.card := by
-    exact cor76_card_functionGraph B0 phi
+    exact cor75_card_functionGraph B0 phi
   have hGamma0card : (Gamma0.card : Real) = alpha * N := by
     rw [hGamma0cardNat, hB0card]
   have hcountEnergyNat := cor76_count_le_graph_energy B0 phi

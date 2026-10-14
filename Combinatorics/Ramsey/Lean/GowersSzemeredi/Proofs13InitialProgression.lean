@@ -893,7 +893,7 @@ private lemma lemma134_zero_mem_left : (0 : Fin 16) ∈ lemma134Left := by
 private lemma lemma134_zero_notMem_right : (0 : Fin 16) ∉ lemma134Right := by
   simp [lemma134Right]
 
-private lemma lemma134_additive_ext {N : Nat}
+lemma lemma134_additive_ext {N : Nat}
     {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)
     (hy : IsAdditiveTuple (k := 8) y)
     (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y := by
@@ -957,7 +957,7 @@ private lemma lemma134EncodeAtHeight_injective {N : Nat} [NeZero N]
   have hh : R.1.height = T.1.height := R.2.2.trans T.2.2.symm
   exact Prod.ext hx (Prod.ext hy hh)
 
-private lemma lemma134_sectionC_upper {N : Nat} [NeZero N]
+lemma lemma134_sectionC_upper {N : Nat} [NeZero N]
     (S : Section13Context N) (h : ZMod N) :
     section13C S h ≤ N ^ 31 := by
   classical

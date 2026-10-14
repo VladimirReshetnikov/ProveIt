@@ -55,17 +55,6 @@ def ModAP.toBoxOne {N : Nat} (P : ModAP N) : Box N 1 where
   commonDiff := P.step
   axis_step _ := rfl
 
-/-- An affine map is multilinear in dimension one. -/
-theorem isMultilinear_affine_one {N : Nat} (a b : ZMod N) :
-    IsMultilinear (fun x : Point N 1 => a * x 0 + b) := by
-  classical
-  refine ⟨fun e => if e 0 then a else b, fun x => ?_⟩
-  rw [Fintype.sum_equiv (Equiv.funUnique (Fin 1) Bool) _
-    (fun t : Bool => (if t then a else b) * (if t then x 0 else 1))
-    (fun e => by simp only [Fin.prod_univ_one, Equiv.funUnique_apply, Fin.default_eq_zero])]
-  rw [Fintype.sum_bool]
-  simp
-
 /-- **The phase partition of progressions** from the dimension-one
 common-difference partition. -/
 theorem progressionPhasePartition_of_commonDiffOne {K : Real} {p : Nat}
@@ -75,7 +64,7 @@ theorem progressionPhasePartition_of_commonDiffOne {K : Real} {p : Nat}
   let B : Box N 1 := P.toBoxOne
   have hB : B.IsProper := fun _ => hP
   let mu : Fin q → Point N 1 → ZMod N := fun i x => a i * x 0 + b i
-  have hmu : ∀ i, IsMultilinear (mu i) := fun i => isMultilinear_affine_one (a i) (b i)
+  have hmu : ∀ i, IsMultilinear (mu i) := fun i => BaseCase.isMultilinear_affine_one (a i) (b i)
   have hBwidth : B.width = P.length := Box.width_one B
   have hsize' : H ^ (p * (q + 1) ^ (2 * (2 ^ (1 + 1)))) ≤ B.width := by
     rw [hBwidth]

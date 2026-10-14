@@ -130,7 +130,7 @@ private lemma prop172_countWhere_eq_sum_ite {X : Type*} [Fintype X]
   unfold countWhere
   simp
 
-private lemma prop172_boolWeight_cons {n : Nat}
+lemma prop172_boolWeight_cons {n : Nat}
     (b : Bool) (e : Fin n → Bool) :
     boolWeight (Fin.cons b e) = (if b then 1 else 0) + boolWeight e := by
   classical
@@ -146,14 +146,14 @@ private lemma prop172_boolWeight_cons {n : Nat}
     all_goals simp only [Nat.cast_id]
   all_goals congr
 
-private lemma prop172_parityConj_cons_false {n : Nat}
+lemma prop172_parityConj_cons_false {n : Nat}
     (e : Fin n → Bool) (z : Complex) :
     parityConj (Fin.cons false e) z = parityConj e z := by
   unfold parityConj
   rw [prop172_boolWeight_cons]
   simp
 
-private lemma prop172_parityConj_cons_true {n : Nat}
+lemma prop172_parityConj_cons_true {n : Nat}
     (e : Fin n → Bool) (z : Complex) :
     parityConj (Fin.cons true e) z = star (parityConj e z) := by
   unfold parityConj
@@ -162,7 +162,7 @@ private lemma prop172_parityConj_cons_true {n : Nat}
     rw [add_comm, Nat.even_add_one]
   by_cases h : Even (boolWeight e) <;> simp [heven, h]
 
-private lemma prop172_cubeArgument_cons {N n : Nat}
+lemma prop172_cubeArgument_cons {N n : Nat}
     (s r : ZMod N) (a : Point N n) (b : Bool) (e : Fin n → Bool) :
     cubeArgument s (Fin.cons r a) (Fin.cons b e) =
       s - (if b then r else 0) - ∑ i, if e i then a i else 0 := by
@@ -172,7 +172,7 @@ private lemma prop172_cubeArgument_cons {N n : Nat}
   abel
 
 /-- Closed cube-product formula for an iterated difference. -/
-private lemma prop172_cubeDifference_product {N d : Nat}
+lemma prop172_cubeDifference_product {N d : Nat}
     (f : ZMod N → Complex) (x : Point N d) (s : ZMod N) :
     cubeDifference f x s =
       ∏ e : Fin d → Bool, parityConj e (f (cubeArgument s x e)) := by
