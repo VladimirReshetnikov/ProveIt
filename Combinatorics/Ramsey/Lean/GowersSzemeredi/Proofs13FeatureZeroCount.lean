@@ -14,7 +14,7 @@ private theorem feature_countWhere_sum {T : Type*} [Fintype T] (P : T → Prop) 
   classical
   simp [countWhere]
 
-private theorem feature_countWhere_equiv {X Y : Type*} [Fintype X] [Fintype Y]
+theorem feature_countWhere_equiv {X Y : Type*} [Fintype X] [Fintype Y]
     (e : X ≃ Y) (P : Y → Prop) :
     countWhere P = countWhere (fun x => P (e x)) := by
   classical

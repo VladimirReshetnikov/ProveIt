@@ -122,20 +122,12 @@ private lemma prop172_multilinear_cons {N k : Nat}
     _ = ∑ e : Fin (k + 1) → Bool, T e := by
       exact (Fin.consEquiv (fun _ : Fin (k + 1) => Bool)).sum_comp T
 
-private lemma prop172_countWhere_eq_sum_ite {X : Type*} [Fintype X]
-    (P : X → Prop) :
-    countWhere P = ∑ x : X,
-      @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
-  classical
-  unfold countWhere
-  simp
-
 lemma prop172_boolWeight_cons {n : Nat}
     (b : Bool) (e : Fin n → Bool) :
     boolWeight (Fin.cons b e) = (if b then 1 else 0) + boolWeight e := by
   classical
   unfold boolWeight
-  simp_rw [prop172_countWhere_eq_sum_ite]
+  simp_rw [gcs_countWhere_eq_sum_ite]
   rw [Fin.sum_univ_succ]
   cases b <;> simp
   all_goals

@@ -229,7 +229,7 @@ theorem lemma_14_2_holds : lemma_14_2 := by
                 ring
           _ ≤ weightedSimultaneousAdditiveEnergy E theta sigma := hresult
 
-private lemma prop14_countWhere_eq_sum_ite {X : Type*} [Fintype X]
+lemma prop14_countWhere_eq_sum_ite {X : Type*} [Fintype X]
     (P : X → Prop) :
     countWhere P = ∑ x : X,
       @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
@@ -238,7 +238,7 @@ private lemma prop14_countWhere_eq_sum_ite {X : Type*} [Fintype X]
   simpa using
     (Finset.sum_boole (R := Nat) P (Finset.univ : Finset X)).symm
 
-private lemma prop143_boolWeight_insertNth {n : Nat}
+lemma prop143_boolWeight_insertNth {n : Nat}
     (j : Fin (n + 1)) (b : Bool) (e : Fin n → Bool) :
     boolWeight (j.insertNth b e) = (if b then 1 else 0) + boolWeight e := by
   classical

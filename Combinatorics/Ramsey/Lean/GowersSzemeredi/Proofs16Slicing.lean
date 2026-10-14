@@ -14,15 +14,7 @@ theorem centeredAbs_natCast_le {N i : Nat} [NeZero N] :
   rw [centeredAbs, ZMod.valMinAbs_natAbs_eq_min, ZMod.val_natCast]
   exact (Nat.min_le_left _ _).trans (Nat.mod_le i N)
 
-theorem centeredAbs_intCast_le {N : Nat} [NeZero N] (i : Int) :
-    centeredAbs (i : ZMod N) ≤ i.natAbs := by
-  cases i with
-  | ofNat n => simpa using centeredAbs_natCast_le (N := N) (i := n)
-  | negSucc n =>
-    have hcast : ((Int.negSucc n : Int) : ZMod N) = -((n + 1 : Nat) : ZMod N) := by
-      push_cast; ring
-    rw [hcast, centeredAbs_neg]
-    simpa using centeredAbs_natCast_le (N := N) (i := n + 1)
+alias centeredAbs_intCast_le := lemma55_centeredAbs_intCast_le
 
 /-- An interval diameter bounds the centered distance between any two members. -/
 theorem diameterAtMost.centeredAbs_sub_le {N d : Nat} [NeZero N]

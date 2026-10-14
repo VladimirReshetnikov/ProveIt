@@ -318,27 +318,19 @@ private lemma prop144_product_lower {N n : Nat} [NeZero N]
     Finset.sum_const, nsmul_eq_mul, one_mul, mul_one, Nat.cast_pow,
     Nat.cast_ofNat] using h
 
-private lemma prop144_countWhere_eq_sum_ite {X : Type*} [Fintype X]
-    (P : X → Prop) :
-    countWhere P = ∑ x : X,
-      @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
-  classical
-  unfold countWhere
-  simp
-
 lemma prop144_countWhere_prod {X Y : Type*} [Fintype X] [Fintype Y]
     (P : X → Y → Prop) :
     countWhere (fun z : X × Y => P z.1 z.2) =
       ∑ x : X, countWhere (P x) := by
   classical
-  simp_rw [prop144_countWhere_eq_sum_ite]
+  simp_rw [prop14_countWhere_eq_sum_ite]
   rw [Fintype.sum_prod_type]
 
-private lemma prop144_countWhere_equiv {X Y : Type*} [Fintype X] [Fintype Y]
+lemma prop144_countWhere_equiv {X Y : Type*} [Fintype X] [Fintype Y]
     (e : X ≃ Y) (P : Y → Prop) :
     countWhere P = countWhere (fun x => P (e x)) := by
   classical
-  simp_rw [prop144_countWhere_eq_sum_ite]
+  simp_rw [prop14_countWhere_eq_sum_ite]
   exact (e.sum_comp (fun y => if P y then 1 else 0)).symm
 
 private lemma prop144_sum_section_card {N n : Nat} [NeZero N]
@@ -376,11 +368,11 @@ private lemma prop144_sum_goodset_card {N n : Nat} [NeZero N]
     intro L
     unfold prop144GoodSet countWhere
     rfl]
-  simp_rw [prop144_countWhere_eq_sum_ite]
+  simp_rw [prop14_countWhere_eq_sum_ite]
   rw [Finset.sum_comm]
   apply Fintype.sum_congr
   intro r
-  rw [← prop144_countWhere_eq_sum_ite]
+  rw [← prop14_countWhere_eq_sum_ite]
   rfl
 
 private lemma prop144_sum_goodquad_le {N n : Nat} [NeZero N]
@@ -699,49 +691,6 @@ theorem lemma_14_4_holds : lemma_14_4 := by
   intro N k _ beta gamma B phi _ hbeta hgamma _ hcard hproduct
   exact prop144_all_dimensions k N beta gamma B phi hbeta hgamma hcard hproduct
 
-private lemma prop145_boolWeight_insertNth {n : Nat}
-    (j : Fin (n + 1)) (b : Bool) (e : Fin n → Bool) :
-    boolWeight (j.insertNth b e) = (if b then 1 else 0) + boolWeight e := by
-  classical
-  unfold boolWeight
-  rw [prop144_countWhere_eq_sum_ite, prop144_countWhere_eq_sum_ite]
-  let ind : Bool → Nat := fun c => if c then 1 else 0
-  have hind (c : Bool) :
-      @ite Nat (c = true) (Classical.propDecidable (c = true)) 1 0 = ind c := by
-    cases c <;> simp [ind]
-  have hfun :
-      (fun i : Fin (n + 1) =>
-        ind ((j.insertNth b e : Fin (n + 1) → Bool) i)) =
-        j.insertNth (ind b) (fun i : Fin n => ind (e i)) := by
-    rw [Fin.eq_insertNth_iff]
-    constructor
-    · simp
-    · funext i
-      simp [Fin.removeNth_apply]
-  calc
-    (∑ i : Fin (n + 1),
-        @ite Nat ((j.insertNth b e : Fin (n + 1) → Bool) i = true)
-          (Classical.propDecidable _) 1 0) =
-        ∑ i : Fin (n + 1),
-          ind ((j.insertNth b e : Fin (n + 1) → Bool) i) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      exact hind _
-    _ = ∑ i : Fin (n + 1),
-        (j.insertNth (ind b) (fun i : Fin n => ind (e i))) i := by
-      apply Finset.sum_congr rfl
-      intro i _
-      exact congrFun hfun i
-    _ = ind b + ∑ i : Fin n, ind (e i) := Fin.sum_insertNth j _ _
-    _ = (if b then 1 else 0) + ∑ i : Fin n, ind (e i) := by congr 1
-    _ = (if b then 1 else 0) +
-        ∑ i : Fin n,
-          @ite Nat (e i = true) (Classical.propDecidable _) 1 0 := by
-      congr 1
-      apply Finset.sum_congr rfl
-      intro i _
-      exact (hind _).symm
-
 private lemma prop145_alternating_sum_eq_of_faces {N n : Nat} [NeZero N]
     (F₀ F₁ : (Fin (n + 1) → Bool) → ZMod N) (j : Fin (n + 1))
     (hface : ∀ u,
@@ -771,11 +720,11 @@ private lemma prop145_alternating_sum_eq_of_faces {N n : Nat} [NeZero N]
       rw [Fintype.sum_bool, Fintype.sum_bool]
       have hfalse : (-1 : ZMod N) ^ boolWeight (j.insertNth false e) =
           (-1 : ZMod N) ^ boolWeight e := by
-        rw [prop145_boolWeight_insertNth]
+        rw [prop143_boolWeight_insertNth]
         simp
       have htrue : (-1 : ZMod N) ^ boolWeight (j.insertNth true e) =
           -((-1 : ZMod N) ^ boolWeight e) := by
-        rw [prop145_boolWeight_insertNth]
+        rw [prop143_boolWeight_insertNth]
         simp only [if_true]
         rw [show 1 + boolWeight e = boolWeight e + 1 by omega, pow_succ]
         ring

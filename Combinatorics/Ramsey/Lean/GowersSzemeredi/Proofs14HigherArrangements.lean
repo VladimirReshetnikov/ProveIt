@@ -332,13 +332,6 @@ private lemma cor147_good_count_eq {N k d : Nat} [NeZero N]
       rw [Finset.sum_insert hi, Finset.prod_insert hi,
         cor147_exponential_add, ih]
 
-private lemma cor147_sum_exponential_mul {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    ∑ u : ZMod N, exponential (x * u) =
-      if x = 0 then (N : Complex) else 0 := by
-  simpa [exponential, mul_comm] using
-    AddChar.sum_mulShift x (ZMod.isPrimitive_stdAddChar N)
-
 private noncomputable def cor147FourierTerm {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
     (h : Point N k) (u r : ZMod N) (z : cor147Atom N k) : Complex := by
@@ -409,7 +402,7 @@ private lemma cor147_pair_orthogonality {N k d : Nat} [NeZero N]
               simp_rw [← Finset.mul_sum]
               rw [← Finset.sum_mul]
       _ = if cor147Good B phi h (a, b) then (N : Complex) ^ 2 else 0 := by
-        rw [cor147_sum_exponential_mul, cor147_sum_exponential_mul]
+        rw [prop141_sum_exponential_mul, prop141_sum_exponential_mul]
         by_cases hx : (∑ i, (a i).2) = ∑ i, (b i).2
         · by_cases hv :
               (∑ i, cor147CubeValue phi h (a i)) =

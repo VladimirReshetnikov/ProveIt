@@ -1040,14 +1040,6 @@ private lemma prop177_energy_implies_moment {N k m : Nat} [NeZero N]
     nlinarith [hchain]
   exact le_of_mul_le_mul_left hscaled hfac
 
-private lemma prop177_countWhere_eq_sum_ite {X : Type*} [Fintype X]
-    (P : X → Prop) :
-    countWhere P = ∑ x : X,
-      @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
-  classical
-  unfold countWhere
-  simp
-
 private lemma prop177_parity_product_succ (n : Nat) (z : Complex) :
     (∏ e : Fin (n + 1) → Bool, parityConj e z) =
       (∏ e : Fin n → Bool, parityConj e z) *

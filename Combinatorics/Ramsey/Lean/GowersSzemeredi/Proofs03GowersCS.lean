@@ -19,7 +19,7 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma gcs_countWhere_eq_sum_ite {X : Type*} [Fintype X]
+lemma gcs_countWhere_eq_sum_ite {X : Type*} [Fintype X]
     (P : X → Prop) :
     countWhere P = ∑ x : X,
       @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by

@@ -1239,7 +1239,7 @@ private lemma lemma55_centeredAbs_natCast_le {N i : Nat} [NeZero N] :
   rw [centeredAbs, ZMod.valMinAbs_natAbs_eq_min, ZMod.val_natCast]
   exact (Nat.min_le_left _ _).trans (Nat.mod_le i N)
 
-private lemma lemma55_centeredAbs_intCast_le {N : Nat} [NeZero N] (i : Int) :
+lemma lemma55_centeredAbs_intCast_le {N : Nat} [NeZero N] (i : Int) :
     centeredAbs (i : ZMod N) ≤ i.natAbs := by
   cases i with
   | ofNat n =>

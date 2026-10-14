@@ -60,21 +60,6 @@ private lemma cor146_section_product_property {N k : Nat} [NeZero N]
   rw [cor146_replace_embed]
   simpa [cor146Section] using hmem i x hx
 
-private lemma cor146_countWhere_eq_sum_ite {X : Type*} [Fintype X]
-    (P : X → Prop) :
-    countWhere P = ∑ x : X,
-      @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
-  classical
-  unfold countWhere
-  simp
-
-private lemma cor146_countWhere_equiv {X Y : Type*} [Fintype X] [Fintype Y]
-    (e : X ≃ Y) (P : Y → Prop) :
-    countWhere P = countWhere (fun x => P (e x)) := by
-  classical
-  simp_rw [cor146_countWhere_eq_sum_ite]
-  exact (e.sum_comp (fun y => if P y then 1 else 0)).symm
-
 private lemma cor146_sum_section_card {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) :
     ∑ r : ZMod N, (cor146Section B r).card = B.card := by
@@ -100,13 +85,13 @@ private lemma cor146_sum_section_card {N k : Nat} [NeZero N]
           cor146Embed z.2 z.1 ∈ B) from (prop144_countWhere_prod _).symm]
     _ = countWhere (fun z : Point N k × ZMod N =>
         cor146Embed z.1 z.2 ∈ B) := by
-      simpa using (cor146_countWhere_equiv
+      simpa using (prop144_countWhere_equiv
         (Equiv.prodComm (ZMod N) (Point N k))
         (fun z : Point N k × ZMod N => cor146Embed z.1 z.2 ∈ B)).symm
     _ = countWhere (fun x : Point N (k + 1) => x ∈ B) := by
       symm
       simpa [e, cor146Embed, Fin.snocEquiv] using
-        cor146_countWhere_equiv e (fun x : Point N (k + 1) => x ∈ B)
+        prop144_countWhere_equiv e (fun x : Point N (k + 1) => x ∈ B)
     _ = B.card := by simp [countWhere]
 
 private lemma cor146_sum_section_density {N k : Nat} [NeZero N]

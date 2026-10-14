@@ -613,7 +613,7 @@ private lemma prop141_global_cauchy {N p : Nat} [NeZero N]
     (fun z => ‖fourier (prop141B lambda sigma z.1.2.1) z.2‖ ^ 2)
   simpa only [Finset.sum_product, ← pow_mul] using h
 
-private lemma prop141_sum_exponential_mul {N : Nat} [NeZero N]
+lemma prop141_sum_exponential_mul {N : Nat} [NeZero N]
     (x : ZMod N) :
     ∑ u : ZMod N, exponential (x * u) =
       if x = 0 then (N : Complex) else 0 := by
