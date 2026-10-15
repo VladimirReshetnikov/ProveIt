@@ -25,7 +25,7 @@ theorem genWThr_le_exp {X : Real} (hX : 2 ≤ X) {E : Real → Real} {k : Nat} {
   unfold genWThr
   have h4 : 4 / lwE E k u ≤ X ^ (2 ^ (max 1 m + 1)) := by
     rw [div_eq_mul_inv]
-    exact pw_mul' hX (by norm_num) (inv_pos.mpr hl0).le (four_le_pw_one hX) hli
+    exact pw_mul' hX (inv_pos.mpr hl0).le (four_le_pw_one hX) hli
   have h6 : (6 : Real) ^ (4 / lwE E k u) ≤ Real.exp (X ^ (2 ^ (max 2 (max 1 m + 1) + 1))) :=
     ex_rpow hX (by norm_num) (ex_of_pw (pw_const hX (by norm_num))) (by positivity) h4
   have h16 : (16 : Real) ^ k ≤ Real.exp (X ^ (2 ^ (m + 2))) := by

@@ -130,7 +130,7 @@ theorem rho1_inv_leF {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV : 
   rw [heq]
   have h2 : 2 * (globalTheta2W (fejerThetaOne alpha (alpha / 2) P.k))⁻¹ ≤ (2 / alpha) ^ (2 ^ (fixDeg P.k + 1)) :=
     pw_mul hX (inv_pos.mpr ht0).le (hX.trans (pw_X hX _)) hti
-  have h := pw_mul' hX (by positivity) hcc0.le h2 hcc
+  have h := pw_mul' hX hcc0.le h2 hcc
   refine pw_mono hX h ?_
   have hm : max (fixDeg P.k + 1) (P.μ0 + 1 + 23 * 2 ^ P.k + P.k) =
       P.μ0 + 1 + 23 * 2 ^ P.k + P.k := max_eq_right (by omega)
@@ -161,7 +161,7 @@ theorem nestExp_inv_leF {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV
       have h16 := sixteen_pow_le_pw hX (k := P.k)
         (m := P.k + 1 - (section16VertexDirections e).card) (Nat.sub_le _ _)
       have hu := P.vertex_uCount_le ha ha2 hV hVμ hμ0 hl
-      have hm := pw_mul' hX (by positivity) (zero_le_one.trans (one_le_uCount _ _ _ _ _)) h16 hu
+      have hm := pw_mul' hX (zero_le_one.trans (one_le_uCount _ _ _ _ _)) h16 hu
       rw [max_eq_right (by omega)] at hm
       exact hm
   · have := rhoDegC_gF P.k P.μ0

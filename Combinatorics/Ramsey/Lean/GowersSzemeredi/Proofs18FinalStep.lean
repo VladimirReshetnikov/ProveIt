@@ -453,7 +453,7 @@ theorem rho1_inv_leJT3 {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV 
   rw [heq]
   have h2 : 2 * (globalTheta2W (fejerThetaOne alpha (alpha / 2) P.k))⁻¹ ≤ (2 / alpha) ^ (2 ^ (pDeg P.k + 1)) :=
     pw_mul hX (inv_pos.mpr ht0).le (hX.trans (pw_X hX _)) hti
-  have h := pw_mul' hX (by positivity) hcc0.le h2 hcc
+  have h := pw_mul' hX hcc0.le h2 hcc
   refine pw_mono hX h ?_
   have hm : max (pDeg P.k + 1) (P.μ0 + 1 + tDegT3 P.k + P.k) =
       P.μ0 + 1 + tDegT3 P.k + P.k := max_eq_right (by omega)
@@ -481,7 +481,7 @@ theorem nestExp_inv_leJT3 {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (
       have h16 := sixteen_pow_le_pw hX (k := P.k)
         (m := P.k + 1 - (section16VertexDirections e).card) (Nat.sub_le _ _)
       have hu := P.vertex_uCount_le ha ha2 hV hVμ hμ0 hl
-      have hm := pw_mul' hX (by positivity) (zero_le_one.trans (one_le_uCount _ _ _ _ _)) h16 hu
+      have hm := pw_mul' hX (zero_le_one.trans (one_le_uCount _ _ _ _ _)) h16 hu
       rw [max_eq_right (by omega)] at hm
       exact hm
   · have := rhoDegJT3_ge P.k P.μ0
@@ -614,8 +614,8 @@ theorem spectrum_exps_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < a
     have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ (μK + 1)) :=
       pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
     have hpq0 : (0 : Real) ≤ ((P.QM alpha : Real) + 1) ^ (2 * 2 ^ (k + 1)) := pow_nonneg hq0' _
-    have h1 := pw_mul' hX (Nat.cast_nonneg _) hpq0 hp' hpow
-    have h2 := pw_mul' hX (by norm_num) (mul_nonneg (Nat.cast_nonneg _) hpq0) h4 h1
+    have h1 := pw_mul' hX hpq0 hp' hpow
+    have h2 := pw_mul' hX (mul_nonneg (Nat.cast_nonneg _) hpq0) h4 h1
     refine pw_mono hX h2 ?_
     omega
 
@@ -694,9 +694,9 @@ theorem Eloc_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha
     mul_nonneg (inv_pos.mpr hEth0).le (inv_pos.mpr hEth0).le
   have hNE0 : 0 ≤ (P.NestExp alpha)⁻¹ * (P.Em alpha)⁻¹ :=
     mul_nonneg (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le
-  have p3 := pw_mul' hX (inv_pos.mpr hBx0).le hEE0 hBx p2
+  have p3 := pw_mul' hX hEE0 hBx p2
   have p4 := pw_mul hX hNE0 h32 p1
-  have p5 := pw_mul' hX (mul_nonneg (by norm_num) hNE0) (mul_nonneg (inv_pos.mpr hBx0).le hEE0) p4 p3
+  have p5 := pw_mul' hX (mul_nonneg (inv_pos.mpr hBx0).le hEE0) p4 p3
   exact pw_mono hX p5 (by omega)
 
 /-- The threshold degree of the step. -/

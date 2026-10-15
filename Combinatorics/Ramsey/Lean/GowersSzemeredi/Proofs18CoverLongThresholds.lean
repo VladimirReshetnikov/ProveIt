@@ -56,7 +56,7 @@ theorem envBound_stepCx (P : GenParamsC) {μV μK μ : Nat} (H : P.CHyp μV μK)
   have hσ' : (inverseStepExponent (k + 1) (P.Eloc alpha) σ)⁻¹ ≤
       Real.exp ((2 / alpha) ^ (2 ^ S)) := by
     rw [σeq]
-    have h1 := pw_mul' hX (mul_nonneg (by norm_num) (Nat.cast_nonneg _)) (inv_pos.mpr hEl0).le
+    have h1 := pw_mul' hX (inv_pos.mpr hEl0).le
       h32P hEli
     exact ex_mul' hX (inv_pos.mpr s0).le (ex_of_pw h1) si'
   -- the thresholds

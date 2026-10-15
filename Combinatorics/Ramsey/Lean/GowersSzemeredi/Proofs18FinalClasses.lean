@@ -121,7 +121,7 @@ theorem uCount_scale_le_deg {X V γ θ s : Real} {D μV μD μ0 c : Nat} (hX : 2
   have hc0 : 4 * V * γ⁻¹ * θ⁻¹ ≤ X ^ (2 ^ μ0) := by
     rw [show 4 * V * γ⁻¹ * θ⁻¹ = 4 * V * (γ⁻¹ * θ⁻¹) by ring]
     exact pw_mono hX h3 (by omega)
-  have h5 := pw_mul' hX (by positivity) (inv_pos.mpr hs).le hc0 hsi
+  have h5 := pw_mul' hX (inv_pos.mpr hs).le hc0 hsi
   exact pw_pow hX (by positivity) h5 hD
 
 namespace GenParams

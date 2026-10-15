@@ -205,8 +205,8 @@ theorem spectrum_exps_inv_le {V : Real} {D k K p μV μD μ0 μK : Nat} (ha : 0 
       pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
     have hpq0 : (0 : Real) ≤ (((std V D k K p μ0).QM alpha : Real) + 1) ^ (2 * 2 ^ (k + 1)) :=
       pow_nonneg hq0' _
-    have h1 := pw_mul' hX (Nat.cast_nonneg _) hpq0 hp' hpow
-    have h2 := pw_mul' hX (by norm_num) (mul_nonneg (Nat.cast_nonneg _) hpq0) h4 h1
+    have h1 := pw_mul' hX hpq0 hp' hpow
+    have h2 := pw_mul' hX (mul_nonneg (Nat.cast_nonneg _) hpq0) h4 h1
     refine pw_mono hX h2 ?_
     have : max μK (rhoDeg k μD μ0 + μD + 3 + (k + 2)) + 1 ≤ expDeg k μD μ0 μK - 1 := by omega
     omega
@@ -304,9 +304,9 @@ theorem Eloc_inv_le {V : Real} {D k K p μV μD μ0 μK : Nat} (ha : 0 < alpha)
     pw_mono hX (pw_const hX (a := 3) (by norm_num)) (by omega)
   have p1 := pw_mul hX (inv_pos.mpr hEm0).le hNE' hEm'
   have p2 := pw_mul hX (inv_pos.mpr hEc0).le hEth' hEc'
-  have p3 := pw_mul' hX (inv_pos.mpr hBx0).le (by positivity) hBx p2
+  have p3 := pw_mul' hX (by positivity) hBx p2
   have p4 := pw_mul hX (by positivity) h32 p1
-  have p5 := pw_mul' hX (by positivity) (by positivity) p4 p3
+  have p5 := pw_mul' hX (by positivity) p4 p3
   exact pw_mono hX p5 (by omega)
 
 end GenParams

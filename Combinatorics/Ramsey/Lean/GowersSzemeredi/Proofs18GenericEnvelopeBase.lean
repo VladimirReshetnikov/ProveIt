@@ -36,7 +36,7 @@ theorem pw_mul (hX : 2 ≤ X) {x y : Real} {a : Nat} (hy0 : 0 ≤ y)
   calc x * y ≤ X ^ (2 ^ a) * X ^ (2 ^ a) := mul_le_mul hx hy hy0 (pow_nonneg hX0 _)
     _ = X ^ (2 ^ (a + 1)) := by rw [← pow_add, pow_succ, mul_two]
 
-theorem pw_mul' (hX : 2 ≤ X) {x y : Real} {a b : Nat} (hx0 : 0 ≤ x) (hy0 : 0 ≤ y)
+theorem pw_mul' (hX : 2 ≤ X) {x y : Real} {a b : Nat} (hy0 : 0 ≤ y)
     (hx : x ≤ X ^ (2 ^ a)) (hy : y ≤ X ^ (2 ^ b)) : x * y ≤ X ^ (2 ^ (max a b + 1)) :=
   pw_mul hX hy0 (pw_mono hX hx (le_max_left a b)) (pw_mono hX hy (le_max_right a b))
 
@@ -113,7 +113,7 @@ theorem ex_rpow_of_nonneg (hX : 2 ≤ X) {b e : Real} {a c : Nat} (hb0 : 0 ≤ b
   calc b ^ e ≤ Real.exp (X ^ (2 ^ a)) ^ e := Real.rpow_le_rpow hb0 hb he0
     _ = Real.exp (X ^ (2 ^ a) * e) := (Real.exp_mul _ _).symm
     _ ≤ Real.exp (X ^ (2 ^ (max a c + 1))) := Real.exp_le_exp.mpr
-      (pw_mul' hX (pow_nonneg (by linarith) _) he0 le_rfl he)
+      (pw_mul' hX he0 le_rfl he)
 
 /-- `b^e ≤ exp(X^(2^(max a c + 1)))` for `1 ≤ b ≤ exp(X^(2^a))` and `0 ≤ e ≤ X^(2^c)`. -/
 theorem ex_rpow (hX : 2 ≤ X) {b e : Real} {a c : Nat} (hb1 : 1 ≤ b)
@@ -467,7 +467,7 @@ theorem dens_step (hX : 2 ≤ X) {c : Real → Real} {a0 b0 : Nat} (hc : RecipPo
   obtain ⟨hd0, hd1, hdi⟩ := cS_step hX hc hc0 hc1 hci ha0 hb0 (by omega)
   refine ⟨mul_pos hθ0 hd0, (mul_le_mul hθ1 hd1 hd0.le zero_le_one).trans (by norm_num), ?_⟩
   rw [mul_inv]
-  have := pw_mul' hX (inv_pos.mpr hθ0).le (inv_pos.mpr hd0).le hθi hdi
+  have := pw_mul' hX (inv_pos.mpr hd0).le hθi hdi
   exact pw_mono hX this (by omega)
 
 end Steps
@@ -588,7 +588,7 @@ theorem uCount_scale_le {X V γ θ s : Real} {D μV μD μ0 c : Nat} (hX : 2 ≤
   have hc0 : 4 * V * γ⁻¹ * θ⁻¹ ≤ X ^ (2 ^ μ0) := by
     rw [show 4 * V * γ⁻¹ * θ⁻¹ = 4 * V * (γ⁻¹ * θ⁻¹) by ring]
     exact pw_mono hX h3 (by omega)
-  have h5 := pw_mul' hX (by positivity) (inv_pos.mpr hs).le hc0 hsi
+  have h5 := pw_mul' hX (inv_pos.mpr hs).le hc0 hsi
   exact pw_pow hX (by positivity) h5 hD
 
 namespace GenParams
@@ -654,10 +654,10 @@ theorem familyRecThr_le_exp {X : Real} (hX : 2 ≤ X) {k K p q μK c : Nat} (hK 
   have hp' : (p : Real) ≤ X ^ (2 ^ μK) := pw_const hX (by exact_mod_cast hpμ)
   have hbase : ((K * (q + 1) : Nat) : Real) ≤ X ^ (2 ^ (max μK c + 1)) := by
     push_cast
-    exact pw_mul' hX (Nat.cast_nonneg _) hq0 hK' hq
+    exact pw_mul' hX hq0 hK' hq
   have hk2 : 2 * 2 ^ (k + 1) ≤ 2 ^ (k + 2) := by rw [pow_succ 2 (k + 1)]; omega
   have hpow := pw_pow hX hq0 hq hk2
-  have hn1 := pw_mul' hX (Nat.cast_nonneg _) (pow_nonneg hq0 _) hp' hpow
+  have hn1 := pw_mul' hX (pow_nonneg hq0 _) hp' hpow
   have h2 : (2 : Real) ≤ X ^ (2 ^ (max μK (c + (k + 2)) + 1)) := hX.trans (pw_X hX _)
   have hn : ((2 * (p * (q + 1) ^ (2 * 2 ^ (k + 1))) : Nat) : Real) ≤
       X ^ (2 ^ (max μK (c + (k + 2)) + 1 + 1)) := by

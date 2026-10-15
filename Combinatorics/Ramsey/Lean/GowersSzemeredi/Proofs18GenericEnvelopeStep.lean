@@ -35,7 +35,7 @@ theorem inv_thr_le {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M s 
   have hbi : (η * β / 2)⁻¹ ≤ X ^ (2 ^ (M + 2)) := by
     rw [show (η * β / 2)⁻¹ = 2 * (η⁻¹ * β⁻¹) by field_simp]
     have h1 := pw_mul hX (inv_pos.mpr hβ0).le hηi hβi
-    exact pw_mul' hX (by norm_num) (by positivity) (hX.trans (pw_X hX M)) h1 |>.trans
+    exact pw_mul' hX (by positivity) (hX.trans (pw_X hX M)) h1 |>.trans
       (pw_mono hX le_rfl (by omega))
   have hb1 : 1 ≤ (η * β / 2)⁻¹ := by
     rw [one_le_inv₀ hb]
@@ -50,7 +50,7 @@ theorem inv_thr_le {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M s 
     pw_pow hX (inv_pos.mpr hb).le hbi (polyPartConst_le (k + 1 + 1))
   have hR : section5LocalRefinementConstant (k + 1 + 1) (η * β / 2) ≤ X ^ (2 ^ (Q - 1)) := by
     refine hscaled.trans ?_
-    have := pw_mul' hX (le_trans (by norm_num) (section5LocalRefinementConstant_ge_four _ _))
+    have := pw_mul' hX
       (pow_nonneg (inv_pos.mpr hb).le _) hs5 hpow
     refine this.trans (pw_natpow hX (Nat.pow_le_pow_right (by norm_num) ?_))
     have e1 : k + 1 + 1 = k + 2 := by ring
@@ -87,9 +87,9 @@ theorem inv_thr_le {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M s 
     have hmax : max 1 (2 * boundaryRefinementConstant (1 / 16) *
         (2 * ((k + 1 + 2 : Nat) : Real)) ^ (1 - σ / 16)) ≤
         X ^ (2 ^ (max (1083 + 1) (k + 3) + 1)) :=
-      max_le (one_le_pw hX _) (pw_mul' hX (mul_nonneg (by norm_num) hB0)
+      max_le (one_le_pw hX _) (pw_mul' hX
         (Real.rpow_nonneg (by linarith) _) h2B (hrpow.trans hr))
-    have := pw_mul' hX (le_trans zero_le_one (le_max_left _ _)) (Real.rpow_nonneg (by linarith) _) hmax
+    have := pw_mul' hX (Real.rpow_nonneg (by linarith) _) hmax
       (hcpow.trans hc)
     exact this.trans (pw_mono hX le_rfl (by omega))
   have hD1 : 1 ≤ inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ := by
@@ -106,8 +106,7 @@ theorem inv_thr_le {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M s 
   have hPIC : phaseInverseConstant (k + 1 + 1) (η * β / 2)
       (inverseStepCountConstant (k + 1) (6 * ((k + 1 : Nat) : Real)) σ) ≤ X ^ (2 ^ Q) := by
     unfold phaseInverseConstant
-    have := pw_mul' hX (le_trans zero_le_one (section5LocalRefinementConstant_ge_four _ _ |>.trans'
-      (by norm_num))) (Real.rpow_nonneg (le_trans zero_le_one hD1) _) hR (hDp.trans hD)
+    have := pw_mul' hX (Real.rpow_nonneg (le_trans zero_le_one hD1) _) hR (hDp.trans hD)
     refine this.trans (pw_mono hX le_rfl ?_)
     have hk3 : k + 2 ≤ (k + 2) ^ 3 := Nat.le_self_pow (by norm_num) _
     rw [hQdef]; omega
@@ -163,7 +162,7 @@ theorem envBound_step {V : Real} {D k K p μV μD μ0 μK μ : Nat}
   have hσ' : (inverseStepExponent (k + 1) ((GenParams.std V D k K p μ0).Eloc alpha) σ)⁻¹ ≤
       Real.exp ((2 / alpha) ^ (2 ^ S)) := by
     rw [σeq]
-    have h1 := pw_mul' hX (mul_nonneg (by norm_num) (Nat.cast_nonneg _)) (inv_pos.mpr hEl0).le h32P hEli
+    have h1 := pw_mul' hX (inv_pos.mpr hEl0).le h32P hEli
     exact ex_mul' hX (inv_pos.mpr s0).le (ex_of_pw h1) si'
   -- the thresholds
   have hTl := GenParams.Tloc_le_exp ⟨hV, hVμ, hμ0, hD, hkD, hk0, hK, hKμ, hp, hpμ⟩ hk ha ha2

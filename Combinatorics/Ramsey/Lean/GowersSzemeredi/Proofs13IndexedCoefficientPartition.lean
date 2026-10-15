@@ -14,7 +14,7 @@ theorem extract_bilinear_cell_with_step_span {N : Nat} [Fact N.Prime]
     (T : ModAP N) (S J : Finset (ZMod N)) (C : Finset (Pair N))
     (y : ZMod N) (phi : Pair N → ZMod N) (a c : ZMod N → ZMod N) (delta : Real)
     (hT : T.IsProper) (hlen : 0 < T.length)
-    (hS : S.Nonempty) (hδ : 0 < delta) (hδone : delta ≤ 1)
+    (hS : S.Nonempty) (hδ : 0 < delta)
     (hJ : J ⊆ T.carrier)
     (hsupport : ∀ z ∈ C, z.1 ∈ S ∧ z.2 - y ∈ J)
     (hmass : delta * S.card * T.length ≤ C.card)
@@ -74,7 +74,7 @@ theorem bilinear_square_from_short_parent {N : Nat} [Fact N.Prime]
   have hScard : S.carrier.card = S.length := hS
   obtain ⟨U, t, hUs, hU, hUsub, hUl, hmassU, hbilinear, ht, hstepU, hspan⟩ :=
     extract_bilinear_cell_with_step_span T S.carrier J C y phi a c delta hT hTpos
-      (Finset.card_pos.mp (by simpa only [hScard] using hSpos)) hδ hδone hJ hsupport
+      (Finset.card_pos.mp (by simpa only [hScard] using hSpos)) hδ hJ hsupport
       (by simpa only [hScard] using hmass) hrow ha hc hlarge
   have hUtwo : 2 ≤ U.length := by
     have : (8 : Real) ≤ U.length := hlarge.trans hUl

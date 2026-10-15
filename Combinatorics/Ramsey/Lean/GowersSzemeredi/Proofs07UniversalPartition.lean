@@ -11,7 +11,7 @@ namespace LeanProofs.GowersSzemeredi
 /-- The constant-radius partition can be chosen before any map is specified. -/
 theorem corollary_7_11_universal_modular (N : Nat) [Fact N.Prime]
     (R : ModAP N) (A : Finset (ZMod N)) (alpha : Real)
-    (hR : R.IsProper) (hl : 0 < R.length) (hα : 0 < alpha) (hαone : alpha ≤ 1)
+    (hR : R.IsProper) (hl : 0 < R.length) (hα : 0 < alpha)
     (hA : A ⊆ R.carrier) (hdensity : alpha * R.length ≤ A.card)
     (hlarge : 8 ≤ (R.length : Real) ^ cor711Exponent alpha 1) :
     ∃ M : Nat, ∃ Q : Fin M → ModAP N,
@@ -73,7 +73,7 @@ theorem corollary_7_11_all_scales_universal (N : Nat) [Fact N.Prime]
   classical
   have he := cor711_single_exponent_bounds hα hαone
   by_cases hlarge : 8 ≤ (R.length : Real) ^ cor711Exponent alpha 1
-  · exact corollary_7_11_universal_modular N R A alpha hR hl hα hαone hA hdensity hlarge
+  · exact corollary_7_11_universal_modular N R A alpha hR hl hα hA hdensity hlarge
   by_cases hlen : 64 ≤ R.length
   · exact short_universal_modular_partition R A 8 hR hstep (by norm_num) (by norm_num)
       hlen (le_of_not_ge hlarge)
