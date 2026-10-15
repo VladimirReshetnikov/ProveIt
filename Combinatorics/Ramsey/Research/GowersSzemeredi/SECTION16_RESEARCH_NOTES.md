@@ -9470,6 +9470,38 @@ the new module `Proofs00Basics` (imports only `Definitions`) holds the
   needs (`ModuleNeeds.lean`) shows that none of them can be dropped by
   editing imports: each is needed by a side result in a module the final
   route does use. Removing them would mean splitting those modules.
+  Splitting only the cheapest regions would take 2,557 lines off the
+  route, and would cost 38 re-routed imports, compensating imports in
+  outside modules and about ten relocated declarations. Not done.
+
+**Addendum (2026-10-15): linting the whole final route.** All 609
+modules in the closure of `Proofs18Final` were elaborated with the
+unused-simp-argument, unnecessary-`simpa`, unused-tactic,
+unreachable-tactic and unused-variable linters, the last with
+`linter.unusedVariables.analyzeTactics`, which is off by default and
+needed for names inside tactic proofs (`lint_pass.py`).
+
+- *Dead tactics and simp arguments* (`apply_lint.py`): no-op `ring`,
+  `push_cast` and `beta_reduce` steps; `<;> ring` after a `field_simp`
+  that already closes every goal; unused simp arguments; two
+  `first | … | … | …` blocks whose later branches never run.
+- *Unused hypotheses* (`drop_hyp.py`): 15 lemmas lose explicit
+  hypotheses they never used, together with the matching argument at
+  every call site, e.g. `pw_mul`, `pw_mul'`, `tb_mul`, `tb_const_mul`,
+  `mul_le_pow_add` and three Corollary 7.11 variants. Statements only
+  get stronger.
+- *Dead `have`s* (`apply_dead_haves.py`): 307 tactic `have` steps and
+  86 `set … with h` names that are never referenced. Each module is
+  elaborated with all its deletions and bisected on failure; all 393
+  compiled.
+- Net: about −560 lines in the closure, in ~200 modules; no statement
+  of the final theorems changes.
+- *Staleness.* `build_trust` only checks that an olean exists, and an
+  olean freezes its module's imports, so peer commits merged by
+  `publish.sh` had left 87 stale oleans: 54 in the final route and 33
+  outside it. A stale dependency fails with a *type mismatch*, which
+  looks like a peer breaking `main`. Rebuild stale oleans in import
+  order before trusting a stub check.
 
 ### Polynomial width through multilinear extraction
 
