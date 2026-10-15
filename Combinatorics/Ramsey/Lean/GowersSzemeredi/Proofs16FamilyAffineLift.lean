@@ -23,44 +23,6 @@ noncomputable section
 open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
 
-/-- **Synchronized retiling for a family.** The tiling depends only on the
-base cells, so it serves every member. -/
-theorem section16_synchronize_base_cover_family {N k M v : Nat} [NeZero N] {C ι : Type*}
-    (T : Box N k) (I : ModAP N) (hI : I.IsProper)
-    (R : Fin M → Box N k) (hRpart : IsBoxPartition R T) (hR : ∀ j, (R j).IsProper)
-    (B : Fin M → ModAP N) (axis : Fin k) (u : Fin M → (ZMod N)ˣ)
-    (hBstep : ∀ j, (B j).step = (↑(u j) : ZMod N))
-    (hIstep : ∀ j, I.step = (B j).step)
-    (hsub : ∀ j, ((R j).axis axis).carrier ⊆ (B j).carrier)
-    (hshort : ∀ j, 2 * (B j).length ≤ N) (hL : ∀ j, (B j).length ≤ I.length)
-    (hv : 1 ≤ v) (hfit : ∀ j, v ^ 2 ≤ (R j).width - 1)
-    (D G : ι → Finset (Point N (k + 1))) (phi : ι → Point N (k + 1) → ZMod N)
-    (mu : Fin M → C → Point N (k + 1) → ZMod N)
-    (hmu : ∀ j c, IsMultilinear (mu j c))
-    (hcover : ∀ a j z, section16Init z ∈ (R j).carrier → z ∈ D a → z ∈ G a →
-      ∃ c, phi a z = mu j c z) :
-    ∃ (L : Nat) (S : Fin L → Box N (k + 1))
-      (nu : Fin L → C → Point N (k + 1) → ZMod N),
-      IsPartition (fun j => (S j).carrier) (lastProductSet T.carrier I.carrier) ∧
-      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
-      (∀ j c, IsMultilinear (nu j c)) ∧
-      ∀ a j z, z ∈ (S j).carrier → z ∈ D a → z ∈ G a → ∃ c, phi a z = nu j c z := by
-  classical
-  choose L S J hSpart hSproper hSproduct hJlength using fun j =>
-    box_product_tiling_of_contained_axis (R j) (B j) I axis (u j)
-      (hR j) hI (hBstep j) (hIstep j) (hsub j) (hshort j) (hL j) hv (hfit j)
-  let e := section5NatFlattenEquiv L
-  refine ⟨∑ j, L j, boxFlatten L S, fun j => mu (e.symm j).1,
-    finsetPartition_flatten L (fun j => lastProductSet (R j).carrier I.carrier)
-      (lastProductSet T.carrier I.carrier) (fun j a => (S j a).carrier)
-      (lastProductSet_partition _ _ _ hRpart) hSpart,
-    fun j => hSproper _ _, fun j c => hmu _ c, ?_⟩
-  intro a j z hz hD hG
-  have hp := (hSproduct (e.symm j).1 (e.symm j).2).1
-  change z ∈ (S (e.symm j).1 (e.symm j).2).carrier at hz
-  rw [hp] at hz
-  exact hcover a _ z (Finset.mem_filter.mp hz).2.1 hD hG
-
 /-- **Synchronized compressed cover for a family.** One cover of a relation
 containing all members' sampled slices; each member interpolates its own
 candidates; one common good set `F′` inside every member's recovered set. -/
@@ -161,7 +123,6 @@ theorem section16_synchronized_compressed_cover_family
   exact ⟨p, G, L, S, nu', hp, Finset.inter_subset_left, hGmass, hSpart, hSproper, hnu',
     fun a j z hz hzD hzG => hc' a j z hz hzD hzG⟩
 
-
 /-- Finitely many good sets inside one set lose at most the sum of their
 losses. -/
 theorem good_finite_intersection_mass {α : Type*} [DecidableEq α] {ι : Type} [Fintype ι]
@@ -170,7 +131,7 @@ theorem good_finite_intersection_mass {α : Type*} [DecidableEq α] {ι : Type} 
     (P.filter fun z => ∀ a, z ∈ F a) ⊆ P ∧
       (1 - Fintype.card ι * t) * (P.card : Real) ≤ (P.filter fun z => ∀ a, z ∈ F a).card := by
   classical
-  set X := P.filter fun z => ∀ a, z ∈ F a with hX
+  set X := P.filter fun z => ∀ a, z ∈ F a
   have hXP : X ⊆ P := Finset.filter_subset _ _
   refine ⟨hXP, ?_⟩
   have hsd : P \ X ⊆ Finset.univ.biUnion (fun a => P \ F a) := by
@@ -237,7 +198,7 @@ theorem section16_local_affine_lift_family {N k q r m v : Nat} [Fact N.Prime]
   have hcarrier : P.carrier = lastProductSet T.carrier I.carrier := hprod.1
   obtain ⟨u, hu⟩ := I.step_isUnit_of_prime hI (by omega)
   have hstep : I.step = T.commonDiff := P.axis_step (Fin.last k)
-  set Mι : Nat := max 1 (Fintype.card ι) with hMι
+  set Mι : Nat := max 1 (Fintype.card ι)
   have hMpos : (0 : ℝ) < Mι := by
     have : 0 < Mι := lt_of_lt_of_le Nat.zero_lt_one (le_max_left _ _)
     exact_mod_cast this
@@ -271,7 +232,7 @@ theorem section16_local_affine_lift_family {N k q r m v : Nat} [Fact N.Prime]
           exact (hprod.mem_snoc h x).mpr ⟨hh, hx⟩) hz) τ' hq hτ' hτ'1 hr'
   choose sample F _ hF hFm ha using hrec
   obtain ⟨hF'sub, hF'm⟩ := good_finite_intersection_mass P.carrier F (2 * τ') hF hFm
-  set F' := P.carrier.filter fun z => ∀ a, z ∈ F a with hF'def
+  set F' := P.carrier.filter fun z => ∀ a, z ∈ F a
   have hF'c : ∀ a, F' ⊆ F a := fun a z hz => (Finset.mem_filter.mp hz).2 a
   have hloss : (Fintype.card ι : ℝ) * (2 * τ') ≤ 2 * τ := by
     rw [hτ'def]
@@ -281,7 +242,6 @@ theorem section16_local_affine_lift_family {N k q r m v : Nat} [Fact N.Prime]
     have h2 : (Fintype.card ι : ℝ) / Mι ≤ 1 := (div_le_one hMpos).mpr hcardM
     nlinarith
   have hF'm2 : (1 - 2 * τ) * (P.carrier.card : ℝ) ≤ F'.card := by
-    have hc : (0 : ℝ) ≤ P.carrier.card := Nat.cast_nonneg _
     nlinarith
   obtain ⟨p, G, L, S, nu, hp, hG, hGm, hSpart, hSproper, hnu, hc⟩ :=
     section16_synchronized_compressed_cover_family ha (hslice sample) (hGs sample) hrpos

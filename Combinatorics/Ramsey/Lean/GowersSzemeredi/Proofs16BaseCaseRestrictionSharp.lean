@@ -133,21 +133,6 @@ lemma section16_product_restriction_sharp {N : Nat} [NeZero N]
   rw [hdomain]
   exact hAfreiman
 
-
-/-- The printed restriction follows from the sharp one. -/
-lemma section16_product_restriction_of_sharp {N : Nat} [NeZero N]
-    (gamma theta : Real) (hgamma : 0 < gamma) (hgammaOne : gamma ≤ 1)
-    (htheta : 0 < theta) (hthetaOne : theta ≤ 1)
-    (hprime : N.Prime) (Gamma : Finset (Point N 1 × ZMod N))
-    (hrelation : RelationProductProperty gamma Gamma)
-    (B : Finset (Point N 1)) (phi : Point N 1 → ZMod N)
-    (hBlarge : theta * N ≤ B.card)
-    (hgraph : GraphContained B phi Gamma) :
-    ∃ C : BaseCandidate N, IsBaseCandidate Gamma (lemma163Alpha gamma theta) C := by
-  obtain ⟨C, hC, hrest⟩ := section16_product_restriction_sharp gamma theta hgamma hgammaOne htheta
-    hthetaOne hprime Gamma hrelation B phi hBlarge hgraph
-  refine ⟨C, le_trans ?_ hC, hrest⟩
-  exact mul_le_mul_of_nonneg_right
-    (lemma163Alpha_le_sharp hgamma.le hgammaOne htheta.le hthetaOne) (Nat.cast_nonneg _)
+alias section16_product_restriction_of_sharp := section16_product_restriction
 
 end LeanProofs.GowersSzemeredi.BaseCase

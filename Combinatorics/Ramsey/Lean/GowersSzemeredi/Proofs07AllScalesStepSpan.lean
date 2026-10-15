@@ -68,7 +68,7 @@ theorem corollary_7_11_all_scales_universal_with_step_span (N : Nat) [Fact N.Pri
   classical
   have he := cor711_single_exponent_bounds hα hαone
   by_cases hlarge : 8 ≤ (R.length : Real) ^ cor711Exponent alpha 1
-  · exact corollary_7_11_universal_modular_with_step_span N R A alpha hR hl hα hαone hA hdensity hlarge
+  · exact corollary_7_11_universal_modular_with_step_span N R A alpha hR hl hα hA hdensity hlarge
   by_cases hlen : 64 ≤ R.length
   · exact short_universal_modular_partition_with_step_span R A 8 hR hstep (by norm_num) (by norm_num)
       hlen (le_of_not_ge hlarge)

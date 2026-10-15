@@ -1,5 +1,6 @@
 import GowersSzemeredi.Section16
 import Mathlib.Combinatorics.Pigeonhole
+import GowersSzemeredi.Proofs00Basics
 
 /-!
 # A common cube base in Gowers's Section 16
@@ -96,14 +97,6 @@ private lemma lemma167_witness_le_good {N k : Nat} [NeZero N]
       simpa [lemma167GoodTriples] using lemma167Target_good B H Y w hw)
     (lemma167Target_injOn B H Y)
 
-private lemma lemma167_countWhere_eq_sum_ite {X : Type*} [Fintype X]
-    (P : X → Prop) :
-    countWhere P = ∑ x : X,
-      @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
-  classical
-  unfold countWhere
-  simp
-
 private lemma lemma167_good_card {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (H : Finset (Point N k))
     (Y : (h : Point N k) → Finset (Section16CubeElement B h)) :
@@ -114,8 +107,8 @@ private lemma lemma167_good_card {N k : Nat} [NeZero N]
       Section16GoodInducedPair B H Y q.1 q.2) =
     ∑ x0 : Point N k,
       countWhere (Section16GoodInducedPair B H Y x0)
-  rw [lemma167_countWhere_eq_sum_ite]
-  simp_rw [lemma167_countWhere_eq_sum_ite]
+  rw [gcs_countWhere_eq_sum_ite]
+  simp_rw [gcs_countWhere_eq_sum_ite]
   rw [Fintype.sum_prod_type]
 
 private lemma lemma167_sum_good_lower {N k : Nat} [NeZero N]

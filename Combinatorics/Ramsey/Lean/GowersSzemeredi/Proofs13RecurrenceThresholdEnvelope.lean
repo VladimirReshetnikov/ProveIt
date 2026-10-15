@@ -112,7 +112,6 @@ theorem section13DensityRecurrenceThreshold_le_double_exp {delta : Real}
     (section13DensityRecurrenceThreshold delta : Real) ≤ Real.exp (Real.exp (22 * section13Q delta)) := by
   let Q := section13Q delta
   have hQ : 512 ≤ Q := section13Q_ge_512 hδ hδone
-  have hQ0 : 0 ≤ Q := by linarith only [hQ]
   have hb : 0 ≤ section13QBound (section10Lambda (delta ^ 32 / 16)) := by
     unfold section13QBound section10Lambda
     positivity

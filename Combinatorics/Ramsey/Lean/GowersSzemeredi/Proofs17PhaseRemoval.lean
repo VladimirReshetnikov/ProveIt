@@ -20,21 +20,14 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-@[simp] private lemma prop172_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma prop172_star_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : star (exponential x) = exponential (-x) := by
-  simpa only [exponential, starRingEnd_apply] using
-    (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
+attribute [simp] star_exponential
 
-@[simp] private lemma prop172_norm_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : ‖exponential x‖ = 1 := by
-  exact (ZMod.stdAddChar (N := N)).norm_apply x
+attribute [simp] cor57_norm_exponential
 
 /-- Squaring a Fourier coefficient introduces one more difference variable. -/
-private lemma prop172_fourier_sq {N : Nat} [NeZero N]
+lemma prop172_fourier_sq {N : Nat} [NeZero N]
     (g : ZMod N → Complex) (r : ZMod N) :
     ((‖fourier g r‖ ^ 2 : Real) : Complex) =
       ∑ y : ZMod N, ∑ s : ZMod N,
@@ -48,7 +41,7 @@ private lemma prop172_fourier_sq {N : Nat} [NeZero N]
     _ = ∑ s : ZMod N, ∑ t : ZMod N,
         (exponential (-(s * r)) * g s) *
           (star (g t) * exponential (t * r)) := by
-      simp only [star_sum, star_mul, prop172_star_exponential, neg_neg]
+      simp only [star_sum, star_mul, star_exponential, neg_neg]
       simp_rw [Finset.sum_mul, Finset.mul_sum]
     _ = ∑ s : ZMod N, ∑ y : ZMod N,
         (exponential (-(s * r)) * g s) *
@@ -67,7 +60,7 @@ private lemma prop172_fourier_sq {N : Nat} [NeZero N]
       have hphase :
           exponential (-(s * r)) * exponential ((s - y) * r) =
             exponential (-(y * r)) := by
-        rw [← prop172_exponential_add]
+        rw [← exponential_add]
         congr 1
         ring
       rw [← hphase]
@@ -85,7 +78,7 @@ private lemma prop172Monomial_cons {N k : Nat} (b : Bool) (e : Fin k → Bool)
 
 /-- Multiplying a multiaffine function by a new first coordinate remains
 multiaffine. -/
-private lemma prop172_multilinear_cons {N k : Nat}
+lemma prop172_multilinear_cons {N k : Nat}
     (sigma : Point N k → ZMod N) (hsigma : IsMultilinear sigma) :
     IsMultilinear (fun z : Point N (k + 1) => z 0 * sigma (Fin.tail z)) := by
   classical
@@ -122,20 +115,12 @@ private lemma prop172_multilinear_cons {N k : Nat}
     _ = ∑ e : Fin (k + 1) → Bool, T e := by
       exact (Fin.consEquiv (fun _ : Fin (k + 1) => Bool)).sum_comp T
 
-private lemma prop172_countWhere_eq_sum_ite {X : Type*} [Fintype X]
-    (P : X → Prop) :
-    countWhere P = ∑ x : X,
-      @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
-  classical
-  unfold countWhere
-  simp
-
-private lemma prop172_boolWeight_cons {n : Nat}
+lemma prop172_boolWeight_cons {n : Nat}
     (b : Bool) (e : Fin n → Bool) :
     boolWeight (Fin.cons b e) = (if b then 1 else 0) + boolWeight e := by
   classical
   unfold boolWeight
-  simp_rw [prop172_countWhere_eq_sum_ite]
+  simp_rw [gcs_countWhere_eq_sum_ite]
   rw [Fin.sum_univ_succ]
   cases b <;> simp
   all_goals
@@ -146,14 +131,14 @@ private lemma prop172_boolWeight_cons {n : Nat}
     all_goals simp only [Nat.cast_id]
   all_goals congr
 
-private lemma prop172_parityConj_cons_false {n : Nat}
+lemma prop172_parityConj_cons_false {n : Nat}
     (e : Fin n → Bool) (z : Complex) :
     parityConj (Fin.cons false e) z = parityConj e z := by
   unfold parityConj
   rw [prop172_boolWeight_cons]
   simp
 
-private lemma prop172_parityConj_cons_true {n : Nat}
+lemma prop172_parityConj_cons_true {n : Nat}
     (e : Fin n → Bool) (z : Complex) :
     parityConj (Fin.cons true e) z = star (parityConj e z) := by
   unfold parityConj
@@ -162,7 +147,7 @@ private lemma prop172_parityConj_cons_true {n : Nat}
     rw [add_comm, Nat.even_add_one]
   by_cases h : Even (boolWeight e) <;> simp [heven, h]
 
-private lemma prop172_cubeArgument_cons {N n : Nat}
+lemma prop172_cubeArgument_cons {N n : Nat}
     (s r : ZMod N) (a : Point N n) (b : Bool) (e : Fin n → Bool) :
     cubeArgument s (Fin.cons r a) (Fin.cons b e) =
       s - (if b then r else 0) - ∑ i, if e i then a i else 0 := by
@@ -172,7 +157,7 @@ private lemma prop172_cubeArgument_cons {N n : Nat}
   abel
 
 /-- Closed cube-product formula for an iterated difference. -/
-private lemma prop172_cubeDifference_product {N d : Nat}
+lemma prop172_cubeDifference_product {N d : Nat}
     (f : ZMod N → Complex) (x : Point N d) (s : ZMod N) :
     cubeDifference f x s =
       ∏ e : Fin d → Bool, parityConj e (f (cubeArgument s x e)) := by
@@ -234,7 +219,7 @@ private lemma prop172_parity_phased {N d : Nat} [NeZero N]
   · simp [prop172PhasedFamily, parityConj, h, star_mul]
     ring
 
-private lemma prop172_exponential_sum {N : Nat} [NeZero N]
+lemma prop172_exponential_sum {N : Nat} [NeZero N]
     {I : Type*} (S : Finset I) (a : I → ZMod N) :
     exponential (∑ i ∈ S, a i) = ∏ i ∈ S, exponential (a i) := by
   classical
@@ -357,7 +342,7 @@ private lemma prop172_phased_discValued {N d : Nat} [NeZero N]
     (phi : (Fin d → Bool) → ZMod N → ZMod N) (e : Fin d → Bool) :
     DiscValued (prop172PhasedFamily f phi e) := by
   intro s
-  rw [prop172PhasedFamily, norm_mul, prop172_norm_exponential, mul_one]
+  rw [prop172PhasedFamily, norm_mul, cor57_norm_exponential, mul_one]
   exact hf s
 
 private lemma prop172_constantCubeForm_norm {N k : Nat} [NeZero N]

@@ -18,32 +18,13 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-@[simp] private lemma cor57_norm_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : ‖exponential x‖ = 1 := by
-  exact AddChar.norm_apply (ZMod.stdAddChar (N := N)) x
+attribute [simp] cor57_norm_exponential
 
-@[simp] private lemma cor57_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) :
-    exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-private lemma cor57_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    exponential x =
-      Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-  calc
-    exponential x = ZMod.stdAddChar ((x.valMinAbs : Int) : ZMod N) := by
-      simp [exponential]
-    _ = Complex.exp (2 * Real.pi * Complex.I * (x.valMinAbs : Int) / N) :=
-      ZMod.stdAddChar_coe x.valMinAbs
-    _ = Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-      congr 1
-      push_cast
-      ring
+alias cor57_exponential_eq_exp_valMinAbs := cor24_exponential_eq_exp_valMinAbs
 
-private lemma cor57_norm_exponential_sub_one_le {N : Nat} [NeZero N]
+lemma cor57_norm_exponential_sub_one_le {N : Nat} [NeZero N]
     (x : ZMod N) :
     ‖exponential x - 1‖ ≤ 2 * Real.pi * centeredAbs x / N := by
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
@@ -61,17 +42,12 @@ private lemma cor57_norm_exponential_sub_one_le {N : Nat} [NeZero N]
         abs_of_nonneg (by norm_num : (0 : Real) ≤ 2),
         abs_of_pos Real.pi_pos, habsval, abs_of_pos hN]
 
-private lemma cor57_centeredAbs_natCast_le {N i : Nat} [NeZero N] :
-    centeredAbs (i : ZMod N) ≤ i := by
-  rw [centeredAbs, ZMod.valMinAbs_natAbs_eq_min, ZMod.val_natCast]
-  exact (Nat.min_le_left _ _).trans (Nat.mod_le i N)
-
-private lemma cor57_centeredAbs_neg_natCast_le {N i : Nat} [NeZero N] :
+lemma cor57_centeredAbs_neg_natCast_le {N i : Nat} [NeZero N] :
     centeredAbs (-(i : ZMod N)) ≤ i := by
   rw [centeredAbs, ZMod.natAbs_valMinAbs_neg]
-  exact cor57_centeredAbs_natCast_le
+  exact lemma55_centeredAbs_natCast_le
 
-private lemma cor57_phase_close_of_mem_interval {N d : Nat} [NeZero N]
+lemma cor57_phase_close_of_mem_interval {N d : Nat} [NeZero N]
     (a y : ZMod N) (hy : y ∈ (modInterval N a (d + 1)).carrier) :
     ‖exponential (-y) - exponential (-a)‖ ≤
       2 * Real.pi * d / N := by
@@ -87,7 +63,7 @@ private lemma cor57_phase_close_of_mem_interval {N d : Nat} [NeZero N]
         ‖exponential (-a) * (exponential (-(i : ZMod N)) - 1)‖ := by
       congr 1
       rw [show -(a + (i : ZMod N)) = -a + -(i : ZMod N) by ring]
-      rw [cor57_exponential_add]
+      rw [exponential_add]
       ring
     _ = ‖exponential (-(i : ZMod N)) - 1‖ := by
       rw [norm_mul, cor57_norm_exponential, one_mul]
@@ -149,7 +125,7 @@ private lemma cor57_alpha_le_one {N r : Nat} [NeZero N]
   have hrReal : (0 : Real) < r := by exact_mod_cast hr
   nlinarith
 
-private lemma cor57_partition_constant_pos (k : Nat) :
+lemma cor57_partition_constant_pos (k : Nat) :
     0 < polynomialPartitionConstant k := by
   unfold polynomialPartitionConstant
   positivity
@@ -180,7 +156,7 @@ private lemma cor57_scale_lt {k r : Nat} (alpha : Real)
     field_simp
   simpa only [K, hright] using hinv
 
-private lemma cor57_cell_norm_le {N : Nat} [NeZero N]
+lemma cor57_cell_norm_le {N : Nat} [NeZero N]
     (S : Finset Nat) (f : ZMod N → Complex) (phi : ZMod N → ZMod N)
     (alpha scale : Real) (hf : DiscValued f)
     (hdiam : diameterAtMostReal (S.image fun x : Nat => phi (x : ZMod N)) scale)
@@ -251,11 +227,6 @@ theorem corollary_5_7_holds_of_corollary_5_6
     (h56 : corollary_5_6) : corollary_5_7 := by
   classical
   intro N k r v _ phi alpha hk hphi halpha hlarge hrN hv hvupper
-  have hr : 0 < r := by
-    have hthreshold : (0 : Real) ≤ polynomialPartitionThreshold k := by positivity
-    have : (0 : Real) < r := hthreshold.trans_lt (lt_of_le_of_lt
-      (le_max_left _ _) hlarge)
-    exact_mod_cast this
   have hthreshold : polynomialPartitionThreshold k < r := by
     exact_mod_cast (lt_of_le_of_lt (le_max_left _ _) hlarge)
   obtain ⟨M, P, hM, hpartition, hproper, hdiameter⟩ :=

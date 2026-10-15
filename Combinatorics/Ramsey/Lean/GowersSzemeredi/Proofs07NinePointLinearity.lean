@@ -177,7 +177,7 @@ theorem corollary_7_11_all_scales_modular (N : Nat) [Fact N.Prime]
         LinearOn ((Q j).carrier.filter fun x ↦ x ∈ A) phi) := by
   have he := cor711_single_exponent_bounds hα hαone
   by_cases hlarge : 8 ≤ (R.length : Real) ^ cor711Exponent alpha 1
-  · exact corollary_7_11_constant_modular N R A phi alpha hR hl hα hαone hA hdensity
+  · exact corollary_7_11_constant_modular N R A phi alpha hR hl hα hA hdensity
       hfreiman hlarge
   by_cases hlen : 64 ≤ R.length
   · exact eight_modular_affine_partition R A phi hR hstep hlen hfreiman (le_of_not_ge hlarge)

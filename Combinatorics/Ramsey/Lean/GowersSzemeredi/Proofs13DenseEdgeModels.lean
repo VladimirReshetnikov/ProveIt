@@ -7,46 +7,12 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-/-- The good-height model with any valid fibre cap, rather than just N. -/
-theorem section13_good_height_model_with_cap {N : Nat} [NeZero N]
-    (S : Section13Context N) (h : ZMod N) (hh : IsGoodHeight S h)
-    (M : Nat) (hNM : N ≤ M) (beta : Real)
-    (hβ : 0 < beta) (hβsixth : beta ≤ 1 / 6)
-    (hcard : ((verticalEdgeDomain S.A h).card : Real) = beta * M * N) :
-    let K := domainLargeSpectrum (section13VerticalDomain S.A h)
-      (section10Lambda beta * M * N)
-    ∃ Y : Finset (Pair N), ∃ psi : ZMod N → ZMod N,
-      Y ⊆ verticalEdgeDomain S.A h ∧
-      beta ^ 6 * (verticalEdgeDomain S.A h).card / 20000 ≤ Y.card ∧
-      HasBohrDifferenceModel (section13EdgeIndexDomain N) (verticalPhiDifference S.phi h)
-        K (section10Zeta beta) Y psi := by
-  classical
-  have hcard' : (Fintype.card (Section13Edges S.A h) : Real) = beta * M * N := by
-    simpa only [Fintype.card_coe] using hcard
-  have hmain := theorem_10_13_holds N M (Section13Edges S.A h)
-    (section13VerticalDomain S.A h) (fun z ↦ verticalPhiDifference S.phi h z.val) beta
-    hβ hβsixth ((NeZero.pos N).trans_le hNM)
-    (fun s => (section13_vertical_fibre_cap S.A h s).trans hNM) hcard'
-    (section13_good_height_approx S h hh)
-  obtain ⟨Y, psi, hY, hmodel⟩ := hmain.2.2
-  let e : Section13Edges S.A h ↪ Pair N := ⟨Subtype.val, Subtype.val_injective⟩
-  refine ⟨Y.map e, psi, ?_, ?_, hmodel.1, ?_⟩
-  · intro z hz
-    obtain ⟨v, hv, rfl⟩ := Finset.mem_map.mp hz
-    exact v.property
-  · simpa only [Finset.card_map, Fintype.card_coe] using hY
-  · intro z hz w hw hzw
-    obtain ⟨v, hv, rfl⟩ := Finset.mem_map.mp hz
-    obtain ⟨u, hu, rfl⟩ := Finset.mem_map.mp hw
-    exact hmodel.2 v hv u hu hzw
-
 /-- Above density 1/6, the adaptive integer cap keeps the normalized density
 between 1/12 and 1/6. -/
 theorem section13_dense_normalization {beta : Real} (hβ : 1 / 6 < beta) :
     let k := Nat.ceil (6 * beta)
     0 < k ∧ (1 : Real) / 12 ≤ beta / k ∧ beta / k ≤ 1 / 6 := by
   dsimp only
-  have hβpos : 0 < beta := by linarith only [hβ]
   have hk : 0 < Nat.ceil (6 * beta) := Nat.ceil_pos.mpr (by positivity)
   have hkreal : (0 : Real) < Nat.ceil (6 * beta) := by exact_mod_cast hk
   have hlower := Nat.le_ceil (6 * beta)
@@ -128,7 +94,6 @@ theorem section13_uniform_height_model_all_densities {N : Nat} [NeZero N]
     let b := beta / k
     obtain ⟨hk, hbmin, hbmax⟩ := section13_dense_normalization hdense
     have hkR : (0 : Real) < k := by exact_mod_cast hk
-    have hkone : (1 : Real) ≤ k := by exact_mod_cast hk
     have hb : 0 < b := div_pos hβ hkR
     have hab : a ≤ b := by
       have hpow := pow_le_one₀ S.alpha_pos.le S.alpha_at_most_one (n := 32)

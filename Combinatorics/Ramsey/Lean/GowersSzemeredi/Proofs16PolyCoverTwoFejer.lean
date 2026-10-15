@@ -50,7 +50,6 @@ theorem tightZeta_pos_le_half {a : Real} (ha : 0 < a) (ha1 : a ≤ 1) :
     unfold tightRadiusExponent
     rw [le_div_iff₀ (pow_pos ha 11)]
     have h1 : a ^ 11 ≤ 1 := pow_le_one₀ ha.le ha1
-    have h2 : (1 : Real) ≤ 2 ^ (83 : Nat) := one_le_pow₀ (by norm_num)
     nlinarith
   calc (2 : Real) ^ (-tightRadiusExponent a) ≤ (2 : Real) ^ (-(1 : Real)) :=
         Real.rpow_le_rpow_of_exponent_le (by norm_num) (by linarith)
@@ -121,7 +120,6 @@ theorem section16_poly_piece_two_of_subrelation_fejer
     norm_num at hN3)
   have hβ : theta / 2 * (N : Real) ^ (1 + 1) ≤ (relationProjection Delta).card := by
     have : (0 : Real) ≤ (N : Real) ^ 2 := by positivity
-    have h := hproj
     rw [show (1 + 1 : Nat) = 2 from rfl]
     nlinarith
   obtain ⟨B', hB'sub, harr1, harr2⟩ := fejer_product_of_density_lower_explicit 1 (theta / 2) gamma

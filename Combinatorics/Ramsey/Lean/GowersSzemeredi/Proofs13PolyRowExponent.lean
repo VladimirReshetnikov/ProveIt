@@ -151,7 +151,6 @@ theorem two_mul_polyRowExponent_le {alpha : Real} (hα : 0 < alpha) (hαone : al
   have hQB : B ≤ Q / 2 := by rw [hBdef, hQdef, hθdef]; exact section13_qBound_le_half_Q hα hαone
   have hQ512 : (512 : Real) ≤ Q := by rw [hQdef]; exact section13Q_ge_512 hα hαone
   have hQpos : 0 < Q := by linarith only [hQ512]
-  have hqReal : (0 : Real) < q := by exact_mod_cast hq
   have hqQ : (q : Real) ≤ Q / 2 := hqBound.trans hQB
   have hprod : t1 * B = theta ^ (-(2 : Int)) := by
     rw [ht1def, hBdef]
@@ -175,7 +174,6 @@ theorem two_mul_polyRowExponent_le {alpha : Real} (hα : 0 < alpha) (hαone : al
     nlinarith only [hp3]
   have hu : 1 / (2 * Q ^ 3) ≤ t1 ^ 2 / (16 * (q : Real)) :=
     (one_div_le_one_div_of_le hB3 hden).trans huB
-  have hpR : (0 : Real) < p := by exact_mod_cast hp
   have hc : (((2 * p * (q + 1) ^ 8 : Nat)) : Real) ≤ 2 * p * (Q + 1) ^ 8 := by
     push_cast
     apply mul_le_mul_of_nonneg_left _ (by positivity)

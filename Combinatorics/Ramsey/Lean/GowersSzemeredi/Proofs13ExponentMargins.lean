@@ -151,7 +151,6 @@ theorem section13_recurrence_exponent_margin {alpha : Real} (hα : 0 < alpha)
           (Real.one_le_rpow_of_pos_of_le_one_of_nonpos hα hαone (neg_nonpos.mpr (by positivity)))
           (by norm_num) (by positivity)
   have hQpos : 0 < Q := zero_lt_one.trans_le hQ
-  have hqReal : (0 : Real) < q := by exact_mod_cast hq
   have hθlower : 1 / B ≤ section13ThetaOne theta := by
     apply (div_le_iff₀ hB).mpr
     rw [section13_thetaOne_qBound_product hθ]
@@ -175,7 +174,6 @@ theorem section13_recurrence_exponent_margin {alpha : Real} (hα : 0 < alpha)
     rw [← Real.rpow_natCast]
     apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
     push_cast
-    have hqQ : (q : Real) ≤ Q / 2 := hqBound.trans hQB
     linarith
   calc
     _ = (1 / (2 : Real) ^ (7 * Q)) * (1 / (2 : Real) ^ (6 * Q)) := by

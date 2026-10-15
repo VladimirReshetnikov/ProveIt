@@ -80,11 +80,6 @@ theorem section5_strong_partition_degree_step {k : Nat} (hk : 1 ≤ k)
     lemma_5_5_square_root_auxiliary_holds (k + 1) r N (by omega)
       hthreshold.le hrN a
   have hpu : p * u ^ 2 ≤ r := by
-    have hsquare : (p * u ^ 2) ^ 2 ≤ r ^ 2 := by
-      calc
-        (p * u ^ 2) ^ 2 = p ^ 2 * u ^ 4 := by ring
-        _ ≤ r * r := Nat.mul_le_mul hp2 hu4
-        _ = r ^ 2 := by ring
     nlinarith
   obtain ⟨m, Q, hm, hQpart, hQcells, hQstep⟩ :=
     section5_residue_target_partition r p u (by omega) hu hpu

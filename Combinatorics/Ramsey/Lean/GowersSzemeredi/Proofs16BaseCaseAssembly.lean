@@ -77,11 +77,6 @@ lemma properMultiplyLinear_empty_base {N : Nat} [NeZero N]
     have ha : lemma163CorollaryExponent eta / 2 ≤ 1 := by
       unfold lemma163CorollaryExponent
       have hetaSq : eta ^ (2 : Nat) ≤ 1 := pow_le_one₀ heta.le hetaOne
-      have hp : (2 : Real) ^ (-(14 : Real)) ≤ 1 := by
-        calc
-          (2 : Real) ^ (-(14 : Real)) ≤ (2 : Real) ^ (0 : Real) :=
-            Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)
-          _ = 1 := by simp
       nlinarith
     exact h.trans ha
   have hwidth : (P.width : Real) ^ lemma163LocalExponent gamma theta eta 1 ≤

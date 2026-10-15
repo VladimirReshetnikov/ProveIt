@@ -45,69 +45,6 @@ def FejerProductRestriction : Prop :=
           (1 - (2 : Real)⁻¹ ^ 44) * generalArrangementCount 8 B' ≤
             respectedGeneralArrangementCount 8 B' phi
 
-private lemma fejer156_nat_le_two_pow (k : Nat) : k ≤ 2 ^ k := by
-  induction k with
-  | zero => simp
-  | succ k ih =>
-      rw [pow_succ]
-      have hpow : 1 ≤ 2 ^ k := Nat.one_le_pow _ 2 (by norm_num)
-      omega
-
-
-private lemma fejer156_beta_base_exponent (k : Nat) (hk : 1 ≤ k) :
-    7 * 4 ^ (k + 1) + 15 ≤ 2 ^ (3 * k + 7) := by
-  have hfour : 4 ^ (k + 1) = 2 ^ (2 * (k + 1)) := by
-    rw [show 4 = 2 ^ 2 by norm_num, pow_mul]
-  have hA : 7 * 4 ^ (k + 1) ≤ 2 ^ (2 * k + 5) := by
-    calc
-      7 * 4 ^ (k + 1) = 7 * 2 ^ (2 * (k + 1)) := by rw [hfour]
-      _ ≤ 2 ^ 3 * 2 ^ (2 * (k + 1)) :=
-        Nat.mul_le_mul_right _ (by norm_num : 7 ≤ 2 ^ 3)
-      _ = 2 ^ (2 * k + 5) := by
-        rw [← pow_add]
-        congr 1
-        omega
-  have h15 : 15 ≤ 2 ^ (2 * k + 5) := by
-    calc
-      15 ≤ 2 ^ 7 := by norm_num
-      _ ≤ 2 ^ (2 * k + 5) :=
-        Nat.pow_le_pow_right (by norm_num) (by omega)
-  have hsum : 7 * 4 ^ (k + 1) + 15 ≤ 2 ^ (2 * k + 6) := by
-    calc
-      7 * 4 ^ (k + 1) + 15 ≤
-          2 ^ (2 * k + 5) + 2 ^ (2 * k + 5) := Nat.add_le_add hA h15
-      _ = 2 ^ (2 * k + 6) := by
-        calc
-          2 ^ (2 * k + 5) + 2 ^ (2 * k + 5) =
-              2 ^ (2 * k + 5) * 2 := by omega
-          _ = 2 ^ ((2 * k + 5) + 1) :=
-            (pow_succ 2 (2 * k + 5)).symm
-          _ = 2 ^ (2 * k + 6) := by congr 1
-  exact hsum.trans (Nat.pow_le_pow_right (by norm_num) (by omega))
-
-private lemma fejer156_gamma_base_exponent (k : Nat) :
-    21 * k * 4 ^ (k + 1) ≤ 2 ^ (3 * k + 7) := by
-  have hkpow : k ≤ 2 ^ k := fejer156_nat_le_two_pow k
-  have hfour : 4 ^ (k + 1) = 2 ^ (2 * (k + 1)) := by
-    rw [show 4 = 2 ^ 2 by norm_num, pow_mul]
-  calc
-    21 * k * 4 ^ (k + 1) ≤ 2 ^ 5 * 2 ^ k * 2 ^ (2 * (k + 1)) := by
-      rw [← hfour]
-      exact Nat.mul_le_mul
-        (Nat.mul_le_mul (by norm_num : 21 ≤ 2 ^ 5) hkpow) le_rfl
-    _ = 2 ^ (3 * k + 7) := by
-      rw [← pow_add, ← pow_add]
-      congr 1
-      omega
-
-private lemma fejer156_constant_base_exponent (k : Nat) :
-    46 ≤ 2 ^ (3 * k + 7) := by
-  calc
-    46 ≤ 2 ^ 7 := by norm_num
-    _ ≤ 2 ^ (3 * k + 7) :=
-      Nat.pow_le_pow_right (by norm_num) (by omega)
-
-
 theorem fejer_product_restriction : FejerProductRestriction := by
   unfold FejerProductRestriction
   intro k beta gamma hk hbeta hbeta_one hgamma hgamma_one
@@ -156,12 +93,12 @@ theorem fejer_product_restriction : FejerProductRestriction := by
       dsimp only [S, fejerSelectionExponent]
       exact Nat.one_le_iff_ne_zero.mpr (by positivity)
     calc A * S + 15 ≤ (A + 15) * S := by nlinarith
-      _ ≤ 2 ^ (3 * k + 7) * S := Nat.mul_le_mul_right S (fejer156_beta_base_exponent k hk)
+      _ ≤ 2 ^ (3 * k + 7) * S := Nat.mul_le_mul_right S (lemma156_beta_base_exponent k hk)
       _ = T := rfl
   have hgammaExponent : G * S ≤ T := by
-    exact Nat.mul_le_mul_right S (fejer156_gamma_base_exponent k)
+    exact Nat.mul_le_mul_right S (lemma156_gamma_base_exponent k)
   have hconstantExponent : 46 * S ≤ T := by
-    exact Nat.mul_le_mul_right S (fejer156_constant_base_exponent k)
+    exact Nat.mul_le_mul_right S (lemma156_constant_base_exponent k)
   have hbetaPow : beta ^ T ≤ beta ^ (A * S + 15) :=
     pow_le_pow_of_le_one hbeta.le hbeta_one hbetaExponent
   have hgammaPow : gamma ^ T ≤ gamma ^ (G * S) :=
@@ -263,10 +200,10 @@ theorem fejer_coefficient_without_density_factor (k : Nat) (hk : 1 ≤ k)
   let S := fejerSelectionExponent k
   let T := fejerProductExponent k
   have hbeta : A * S ≤ T := by
-    have h := fejer156_beta_base_exponent k hk
+    have h := lemma156_beta_base_exponent k hk
     exact Nat.mul_le_mul_right S (by omega)
-  have hgamma : G * S ≤ T := Nat.mul_le_mul_right S (fejer156_gamma_base_exponent k)
-  have hconstant : 46 * S ≤ T := Nat.mul_le_mul_right S (fejer156_constant_base_exponent k)
+  have hgamma : G * S ≤ T := Nat.mul_le_mul_right S (lemma156_gamma_base_exponent k)
+  have hconstant : 46 * S ≤ T := Nat.mul_le_mul_right S (lemma156_constant_base_exponent k)
   have hbp : beta ^ T ≤ beta ^ (A * S) := pow_le_pow_of_le_one hb.le hb1 hbeta
   have hgp : gamma ^ T ≤ gamma ^ (G * S) := pow_le_pow_of_le_one hg.le hg1 hgamma
   have hcp : ((2 : Real)⁻¹) ^ T ≤ ((2 : Real)⁻¹) ^ (46 * S) :=

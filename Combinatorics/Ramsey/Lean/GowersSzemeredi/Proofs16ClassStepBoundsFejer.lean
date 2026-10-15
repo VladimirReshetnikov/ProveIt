@@ -37,7 +37,6 @@ theorem fejerThetaOne_inv_le_gen {gamma theta : Real} (k : Nat) (hg : 0 < gamma)
     (fejerThetaOne theta gamma k)⁻¹ ≤ (2 / (gamma * theta)) ^ (2 * fejerProductExponent k) := by
   obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   have hq := quarter_prod_ge_inv_sq hg ht hu2
-  have hq0 : 0 < theta * gamma / 4 := by positivity
   set u := 2 / (gamma * theta) with hu
   clear_value u
   have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2

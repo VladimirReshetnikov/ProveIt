@@ -26,10 +26,6 @@ open BaseCase
 theorem one_le_pow_of_two_le {w : Real} (hw : 2 ≤ w) (n : Nat) : 1 ≤ w ^ n :=
   one_le_pow₀ (le_trans (by norm_num) hw)
 
-/-- A constant `c ≤ 2^n` is at most `w^n` for `w ≥ 2`. -/
-theorem const_le_pow {w c : Real} {n : Nat} (hw : 2 ≤ w) (hc : c ≤ 2 ^ n) : c ≤ w ^ n :=
-  hc.trans (pow_le_pow_left₀ (by norm_num) hw n)
-
 theorem le_exp_pow_of_le_pow {w x : Real} {n : Nat} (hx : x ≤ w ^ n) : x ≤ Real.exp (w ^ n) :=
   hx.trans ((Real.add_one_le_exp _).trans' (by linarith only))
 
@@ -174,7 +170,6 @@ theorem polyPieceSpecCount_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 :
     _ = u ^ ((1 + ((2 : Nat) ^ 68 + (2 : Nat) ^ 69)) * (2 : Nat) ^ 14) := (pow_mul _ _ _).symm
     _ ≤ u ^ ((2 : Nat) ^ 84) := pow_le_pow_right₀ hu1 (by norm_num)
 
-
 /-! ### The capped family exponent -/
 
 /-- The rounded power threshold and its cap, from bounds on the line exponent
@@ -190,7 +185,6 @@ theorem capped_rounded_inv_le {w L S z : Real} {nL nS nz : Nat} (hw : 2 ≤ w) (
     refine le_exp_pow_of_le_pow ?_
     exact (show (64 : Real) ≤ 2 ^ 6 by norm_num).trans
       ((pow_le_pow_left₀ (by norm_num) hw 6).trans (pow_le_pow_right₀ hw1 hnz))
-  have h1e : (1 : Real) ≤ Real.exp (w ^ nz) := le_trans (by norm_num) h64
   have h16 : (16 : Real) ≤ Real.exp (w ^ nz) := le_trans (by norm_num) h64
   -- the exponent `L S / 4`
   have hLS : (L * S / 4)⁻¹ ≤ w ^ (2 + nL + nS) := by
@@ -342,9 +336,9 @@ theorem famTwoWidth_inv_le_power {K1 p1 m qs qf d t : Nat} {w rho ζ : Real}
   have hL0 : 0 < L := by rw [hLval]; positivity
   have hLi : L⁻¹ ≤ w ^ (32 * d + 128) := by
     rw [hLval, inv_div, div_eq_mul_inv, mul_inv]
-    have h := mul_le_pow_add hBq0.le
+    have h := mul_le_pow_add
       (mul_nonneg (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le) hBq
-      (mul_le_pow_add (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le hEr hEb hw0) hw0
+      (mul_le_pow_add (inv_pos.mpr hEb0).le hEr hEb hw0) hw0
     exact le_pow_mono hw2 (by omega) h
   -- the slice exponent
   have hQr := famTwoQr_le_power hw2 hm' hqf' (rho / 8)
@@ -478,7 +472,6 @@ theorem sixEb_inv_le_power (l : Nat) {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
     set w := 2 / (gamma * theta * rho) with hw
     clear_value v w
     have hw2 : 2 ≤ w := hv2.trans hvw
-    have hw1 : 1 ≤ w := le_trans (by norm_num) hw2
     have hv0 : 0 ≤ v := le_trans (by norm_num) hv2
     have hB' : (section16BaseFamilyBound gamma theta : Real) ≤ w ^ ((2 : Nat) ^ 14) :=
       hB.trans (pow_le_pow_left₀ hv0 hvw _)

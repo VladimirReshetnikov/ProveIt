@@ -19,9 +19,7 @@ theorem quadratic_interval_parameters_inv_upper {alpha : Real}
   let tau := quadraticDiscrepancyParameter alpha
   let beta := (2 : Real) ^ (-(19 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat)
   have hu : 2 ≤ u := (le_div_iff₀ hα).mpr (by linarith)
-  have huone : 1 ≤ u := by linarith
   have hτ : 0 < tau := by dsimp [tau, quadraticDiscrepancyParameter]; positivity
-  have hβ : 0 < beta := by dsimp [beta]; positivity
   have hτeq : tau = beta / 2 := by
     dsimp [tau, beta, quadraticDiscrepancyParameter]
     generalize (alpha / 2) ^ (12359 : Nat) = t

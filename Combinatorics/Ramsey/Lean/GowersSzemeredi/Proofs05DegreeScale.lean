@@ -35,7 +35,6 @@ theorem polynomial_degree_scale_real (K D d T r v : Nat) (x gamma : Real)
   let y := x ^ (2 * K)
   have hxy : x ≤ y := by
     simpa only [pow_one] using pow_le_pow_right₀ hx1 (show 1 ≤ 2 * K by omega)
-  have hy4 : 4 ≤ y := hx.trans hxy
   have hy0 : 0 ≤ y := by positivity
   let u := Nat.floor y
   have huupper : (u : Real) ≤ y := Nat.floor_le hy0

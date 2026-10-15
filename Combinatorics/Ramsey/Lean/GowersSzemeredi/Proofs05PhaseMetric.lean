@@ -7,14 +7,7 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-theorem exponential_eq_exp_valMinAbs {N : Nat} [NeZero N] (x : ZMod N) :
-    exponential x = Complex.exp
-      (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-  calc
-    exponential x = ZMod.stdAddChar ((x.valMinAbs : Int) : ZMod N) := by simp [exponential]
-    _ = Complex.exp (2 * Real.pi * Complex.I * (x.valMinAbs : Int) / N) :=
-      ZMod.stdAddChar_coe x.valMinAbs
-    _ = _ := by congr 1; push_cast; ring
+alias exponential_eq_exp_valMinAbs := cor57_exponential_eq_exp_valMinAbs
 
 theorem four_centeredAbs_div_le_phase_norm {N : Nat} [NeZero N] (x : ZMod N) :
     4 * (centeredAbs x : Real) / N ≤ ‖exponential x - 1‖ := by

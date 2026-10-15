@@ -18,7 +18,7 @@ open BaseCase
 theorem polyBaseExponent_le_one {q : Nat} {sigma : Real} (hq : 0 < q)
     (hs : 0 < sigma) (hs1 : sigma ≤ 1) : polyBaseExponent q sigma ≤ 1 := by
   have hη0 := polyBase_loss_pos hq hs
-  have hη1 := polyBase_loss_le_one hq hs1 hs
+  have hη1 := polyBase_loss_le_one hq hs1
   have hq1 : (1 : Real) ≤ q := by exact_mod_cast hq
   have hinv : (q : Real)⁻¹ ≤ 1 := inv_le_one_of_one_le₀ hq1
   have hpow : (sigma / q) ^ 2 ≤ (1 : Real) := by nlinarith

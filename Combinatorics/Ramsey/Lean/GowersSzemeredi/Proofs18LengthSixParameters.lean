@@ -162,8 +162,8 @@ theorem lsNestExp_bounds {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1) {alpha : Re
   rw [mul_inv, mul_inv]
   set X := 2 / alpha with hX
   clear_value X
-  have h := mul_le_pow_add (mul_nonneg (inv_pos.mpr a0).le (inv_pos.mpr b0).le)
-    (inv_pos.mpr c0).le (mul_le_pow_add (inv_pos.mpr a0).le (inv_pos.mpr b0).le ai bi hX0) ci hX0
+  have h := mul_le_pow_add
+    (inv_pos.mpr c0).le (mul_le_pow_add (inv_pos.mpr b0).le ai bi hX0) ci hX0
   exact h.trans (pow_le_pow_right₀ hX1 (by norm_num))
 
 /-! ### The spectrum scale -/
@@ -302,7 +302,7 @@ theorem lsMExp_bounds {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1) {alpha : Real}
       X ^ (1 + (2 : Nat) ^ 546) := by
     rw [pow_add, pow_one]
     exact mul_le_mul hX2 ei (inv_pos.mpr e0).le hX0
-  exact (mul_le_pow_add (inv_pos.mpr n0).le (by positivity) ni h2 hX0).trans
+  exact (mul_le_pow_add (by positivity) ni h2 hX0).trans
     (pow_le_pow_right₀ hX1 (by norm_num))
 
 
@@ -348,7 +348,7 @@ theorem lsB_bounds {p2 : Nat} (hp2 : 0 < p2) {alpha : Real} (ha : 0 < alpha) (ha
   have hq1 : ((lsQM alpha + 1 : Nat) : Real) ≤ X ^ ((2 : Nat) ^ 504 + 1) := by
     rw [Nat.cast_succ]
     exact add_le_pow_succ hX2 hq (one_le_pow_of_two_le hX2 _)
-  have h := mul_le_pow_add (Nat.cast_nonneg _) (pow_nonneg (Nat.cast_nonneg _) _) hp
+  have h := mul_le_pow_add (pow_nonneg (Nat.cast_nonneg _) _) hp
     (show ((lsQM alpha + 1 : Nat) : Real) ^ 16 ≤ X ^ (((2 : Nat) ^ 504 + 1) * 16) by
       rw [pow_mul]; exact pow_le_pow_left₀ (Nat.cast_nonneg _) hq1 16) hX0
   have h4 := const_mul_le_pow (c := 4) (j := 2) hX2 (by norm_num) (by norm_num) (by positivity) h
@@ -428,12 +428,12 @@ theorem lsF_bounds {K1 p1 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1) (hp2 : 0 < p2)
   clear_value M B T C X
   refine ⟨by positivity, ?_⟩
   rw [show (M * (B * (T * C) / 2))⁻¹ = M⁻¹ * (2 * (B⁻¹ * (T⁻¹ * C⁻¹))) by field_simp]
-  have hTC := mul_le_pow_add (inv_pos.mpr t0).le (inv_pos.mpr c0).le ti ci hX0
-  have hBTC := mul_le_pow_add (inv_pos.mpr b0).le (by positivity) bi hTC hX0
+  have hTC := mul_le_pow_add (inv_pos.mpr c0).le ti ci hX0
+  have hBTC := mul_le_pow_add (by positivity) bi hTC hX0
   have h2 : 2 * (B⁻¹ * (T⁻¹ * C⁻¹)) ≤ X ^ (1 + ((2 : Nat) ^ 509 + ((2 : Nat) ^ 549 + (2 : Nat) ^ 641))) := by
     rw [pow_add, pow_one]
     exact mul_le_mul hX2 hBTC (by positivity) hX0
-  exact (mul_le_pow_add (inv_pos.mpr m0).le (by positivity) mi h2 hX0).trans
+  exact (mul_le_pow_add (by positivity) mi h2 hX0).trans
     (pow_le_pow_right₀ hX1 (by norm_num))
 
 /-- **The localization exponent is polynomial**: `lsE⁻¹ ≤ (2/α)^(2^643)`. -/

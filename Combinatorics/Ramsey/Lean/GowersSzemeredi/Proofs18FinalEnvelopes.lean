@@ -96,7 +96,7 @@ theorem polyPartConst_le_sharp (k : Nat) :
   unfold polynomialPartitionConstant partDeg
   have h := factorial_sq_mul_two_pow_le (k + 1 + 1)
   have e : 2 ^ ((k + 1 + 1) * (k + 1 + 1)) = 2 ^ ((k + 2) * (k + 1)) * 2 ^ (k + 1 + 1) := by
-    rw [← pow_add]; congr 1 <;> ring
+    rw [← pow_add]; congr 1
   rw [e] at h
   have h' : (k + 1 + 1).factorial ^ 2 ≤ 2 ^ ((k + 2) * (k + 1)) :=
     Nat.le_of_mul_le_mul_right h (by positivity)
@@ -141,13 +141,12 @@ theorem envBound_stepKx3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp μV �
   obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leJT3 H ha ha2
   obtain ⟨-, hEl2, -⟩ := P.Eloc_pos_le H.hV H.hp ha ha2
   have hTl := P.Tloc_le_expJT3 H hk ha ha2
-  set k := P.k with hkdef
-  set E := GenParamsJT3.expDegJT3 k P.μ0 μK with hEdef
+  set k := P.k
+  set E := GenParamsJT3.expDegJT3 k P.μ0 μK
   set Th := GenParamsJT3.threshDegJT3 k P.μ0 μK with hThdef
   set dd := GenParamsJT3.densDegJT3 k P.μ0 with hdddef
   set M1 := dd + 1 + μ with hM1def
   have hETh : E + 4 ≤ Th := by rw [hThdef]; unfold GenParamsJT3.threshDegJT3; exact le_max_left _ _
-  have hk3 : k + 2 ≤ (k + 2) ^ 3 := Nat.le_self_pow (by norm_num) _
   obtain ⟨-, hYμ⟩ := input_scale_le (μ := μ) ha ha2 hy0 hyi
   have bi' : β⁻¹ ≤ (2 / alpha) ^ (2 ^ M1) := bi.trans hYμ
   have si' : σ⁻¹ ≤ Real.exp ((2 / alpha) ^ (2 ^ M1)) := si.trans (Real.exp_le_exp.mpr hYμ)
@@ -162,11 +161,11 @@ theorem envBound_stepKx3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp μV �
       (2 / alpha) ^ (2 ^ (partDeg k + 4)) :=
     mul32_nat_le_pw hX (polyPartConst_le_sharp k)
       (Nat.lt_two_pow_self (n := partDeg k + 4))
-  set S := max (max (partDeg k + 4) (E + 3) + 1) M1 + 1 with hSdef
+  set S := max (max (partDeg k + 4) (E + 3) + 1) M1 + 1
   have hσ' : (inverseStepExponent (k + 1) (P.Eloc alpha) σ)⁻¹ ≤
       Real.exp ((2 / alpha) ^ (2 ^ S)) := by
     rw [σeq]
-    have h1 := pw_mul' hX (mul_nonneg (by norm_num) (Nat.cast_nonneg _)) (inv_pos.mpr hEl0).le
+    have h1 := pw_mul' hX (inv_pos.mpr hEl0).le
       h32P hEli
     exact ex_mul' hX (inv_pos.mpr s0).le (ex_of_pw h1) si'
   -- the thresholds
@@ -201,7 +200,6 @@ theorem envStepKTx3_le_tight {k : Nat} (hk : 15 ≤ k) (μ : Nat) :
   unfold envStepKTx3 GenParamsJT3.densDegJT3 GenParamsJT3.threshDegJT3 GenParamsJT3.expDegJT3
     GenParamsJT3.rhoDegJT3 tightMu0Z tightMuW genMuKZ pDeg
   rw [tDegT3_eq_of_ge hk]
-  have := Nat.lt_two_pow_self (n := k - 1)
   have hkq : k ≤ partDeg k := by unfold partDeg; nlinarith
   generalize partDeg k = q at hkq ⊢
   generalize (k + 4) ^ 2 = s
@@ -281,7 +279,7 @@ theorem polyEnvBound_stepJT3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp �
   have hstep := P.inverse_step H.hV H.hK H.hp hk hcov hrec ha ha2 hB b0 s0 s16
   obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leJT3 H ha ha2
   obtain ⟨-, hEl2, -⟩ := P.Eloc_pos_le H.hV H.hp ha ha2
-  set k := P.k with hkdef
+  set k := P.k
   set E := GenParamsJT3.expDegJT3 k P.μ0 μK with hEdef
   set dd := GenParamsJT3.densDegJT3 k P.μ0 with hdddef
   set M1 := dd + 1 + μ with hM1def
@@ -297,14 +295,14 @@ theorem polyEnvBound_stepJT3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp �
     mul32_nat_le_pw hX
       (by simpa only [show k + 1 + 1 + 1 = k + 3 by omega]
         using polyPartConst_le (k + 1 + 1)) (four_sq_add_five_le k)
-  set S := max (max (k + 9) (E + 3) + 1) M1 + 1 with hSdef
+  set S := max (max (k + 9) (E + 3) + 1) M1 + 1
   have hσ' : (inverseStepExponent (k + 1) (P.Eloc alpha) σ)⁻¹ ≤ (2 / alpha) ^ (2 ^ S) := by
     rw [σeq]
     have hx0 : 0 ≤ 32 * (polynomialPartitionConstant (k + 1 + 1) : Real) * (P.Eloc alpha)⁻¹ :=
       mul_nonneg (mul_nonneg (by norm_num) (Nat.cast_nonneg _)) (inv_pos.mpr hEl0).le
-    have h1 := pw_mul' hX (mul_nonneg (by norm_num) (Nat.cast_nonneg _)) (inv_pos.mpr hEl0).le
+    have h1 := pw_mul' hX (inv_pos.mpr hEl0).le
       h32P hEli
-    exact pw_mul' hX hx0 (inv_pos.mpr s0).le h1 si'
+    exact pw_mul' hX (inv_pos.mpr s0).le h1 si'
   -- assemble
   refine ⟨P.eta alpha * β / 4, _, _, hstep, div_pos (mul_pos he0 b0) (by norm_num), ?_, σ0', σ16',
     ?_, pw_mono hX hσ' ?_⟩
@@ -333,7 +331,6 @@ theorem envStepJT3_le_tight {k : Nat} (hk : 15 ≤ k) (μ : Nat) :
   unfold envStepJT3 GenParamsJT3.densDegJT3 GenParamsJT3.expDegJT3 GenParamsJT3.rhoDegJT3 tightMu0Z tightMuW
     genMuKZ pDeg
   rw [tDegT3_eq_of_ge hk]
-  have := Nat.lt_two_pow_self (n := k - 1)
   generalize (k + 4) ^ 2 = s
   generalize 2 ^ (k - 1) = y at *
   omega
@@ -479,7 +476,7 @@ theorem corollary_16_11_polynomial {k : Nat} (hk : 2 ≤ k) :
   -- the two exponents
   obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leJT3 H ha ha2
   obtain ⟨-, -, hei, -, -, -⟩ := P.yIn_boundsJT3 ha ha2 H.hV H.hVμ H.hμ0
-  set D := singlePieceGlobalDensityFJ (fun l => uCount P.V (uDegT3 l)) alpha (alpha / 2) P.k with hDdef
+  set D := singlePieceGlobalDensityFJ (fun l => uCount P.V (uDegT3 l)) alpha (alpha / 2) P.k
   have hD0 : 0 < D := singlePieceGlobalDensityFJ_pos ha (by linarith) hQb
   have heta0 : 0 < P.eta alpha := by
     exact singlePieceEtaFJ_pos ha (by linarith) hQb
@@ -489,8 +486,6 @@ theorem corollary_16_11_polynomial {k : Nat} (hk : 2 ≤ k) :
     show GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + 10 ≤
       GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3
     unfold GenParamsJT3.expDegJT3
-    have := le_max_left (GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + 9)
-      (max (GenParamsJT3.rhoDegJT3 k (tightMu0Z k) + tDegT3 k + k + 7) (genMuKZ k + 2))
     omega
   refine ⟨min (P.Eloc alpha) D, lt_min hEl0 hD0, ?_, ⌈P.Tloc alpha⌉₊, ?_⟩
   · rcases min_choice (P.Eloc alpha) D with h | h

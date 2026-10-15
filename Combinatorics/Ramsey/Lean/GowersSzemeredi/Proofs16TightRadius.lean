@@ -38,13 +38,11 @@ theorem fejer_tightRadiusExponent_eq {theta gamma : Real} (k : Nat)
     (ht : 0 < theta) (hg : 0 < gamma) :
     tightRadiusExponent (fejerThetaOne theta gamma k / 4) =
       (2 : Real) ^ (105 : Nat) * (4 / (theta * gamma)) ^ (11 * fejerProductExponent k) := by
-  have hp : 0 < theta * gamma := mul_pos ht hg
   have hinv : (4 / (theta * gamma)) ^ (11 * fejerProductExponent k) *
       (theta * gamma / 4) ^ (11 * fejerProductExponent k) = 1 := by
     rw [← mul_pow]
     have : 4 / (theta * gamma) * (theta * gamma / 4) = 1 := by field_simp
     rw [this, one_pow]
-  have hpos : 0 < (theta * gamma / 4) ^ (11 * fejerProductExponent k) := by positivity
   unfold tightRadiusExponent fejerThetaOne
   rw [div_pow, ← pow_mul, mul_comm (fejerProductExponent k) 11]
   rw [div_eq_iff (by positivity)]

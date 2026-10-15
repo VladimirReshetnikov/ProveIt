@@ -19,22 +19,6 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma cor36_balanced_discValued {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) : DiscValued (balanced A) := by
-  intro x
-  classical
-  have hd0 : 0 ≤ density A := density_nonneg A
-  have hd1 : density A ≤ 1 := density_le_one A
-  by_cases hx : x ∈ A
-  · simp only [balanced, indicator, hx, if_true]
-    norm_cast
-    rw [Real.norm_eq_abs, abs_of_nonneg (sub_nonneg.mpr hd1)]
-    linarith
-  · simp only [balanced, indicator, hx, if_false, zero_sub]
-    norm_cast
-    rw [Real.norm_eq_abs, abs_neg, abs_of_nonneg hd0]
-    exact hd1
-
 private lemma cor36_rpow_half_pow_two (eta : Real) (heta : 0 ≤ eta) (n : Nat) :
     (eta ^ (2 ^ (n + 1) : Nat)) ^ ((1 : Real) / 2) =
       eta ^ (2 ^ n : Nat) := by
@@ -54,7 +38,7 @@ private lemma cor36_uniform_descend_steps {N : Nat} [NeZero N]
       apply ih
       have hstep := lemma_3_4_holds N (d + t + 1) (balanced A)
         (eta ^ (2 ^ (d + t + 2) : Nat)) (by omega)
-        (cor36_balanced_discValued A) hU
+        (cor33_balanced_discValued A) hU
       change UniformOfDegree (balanced A)
         ((eta ^ (2 ^ (d + t + 2) : Nat)) ^ ((1 : Real) / 2))
         (d + t + 1 - 1) at hstep

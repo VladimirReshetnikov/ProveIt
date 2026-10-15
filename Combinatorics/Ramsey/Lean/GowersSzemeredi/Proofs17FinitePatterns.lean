@@ -5,6 +5,7 @@ import Mathlib.Data.Nat.Choose.Bounds
 import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.LinearAlgebra.Dimension.Finite
+import GowersSzemeredi.Proofs00Basics
 
 /-!
 # Finite floor patterns in Section 17
@@ -115,21 +116,6 @@ private lemma linearSignFamily_vcDim_le {d : Nat} {ι : Type*}
   apply Finset.sup_le
   intro s hs
   exact linearSignFamily_shattered_card_le v s (Finset.mem_shatterer.mp hs)
-
-private lemma sum_range_pow_le_two_mul_pow (n d : Nat) (hn : 2 ≤ n) :
-    (∑ j ∈ Finset.range (d + 1), n ^ j) ≤ 2 * n ^ d := by
-  induction d with
-  | zero => simp
-  | succ d ih =>
-      rw [Finset.sum_range_succ]
-      have hstep : 2 * n ^ d ≤ n ^ (d + 1) := by
-        rw [pow_succ]
-        nlinarith [Nat.zero_le (n ^ d)]
-      calc
-        (∑ j ∈ Finset.range (d + 1), n ^ j) + n ^ (d + 1) ≤
-            2 * n ^ d + n ^ (d + 1) := Nat.add_le_add_right ih _
-        _ ≤ n ^ (d + 1) + n ^ (d + 1) := Nat.add_le_add_right hstep _
-        _ = 2 * n ^ (d + 1) := by omega
 
 /-- Coarse Sauer--Shelah bound sufficient for the published exponent. -/
 private lemma linearSignFamily_card_le {d : Nat} {ι : Type*}

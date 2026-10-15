@@ -86,10 +86,6 @@ private def prop14QuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X) where
   left_inv q := by funext i; fin_cases i <;> rfl
   right_inv q := by funext i; fin_cases i <;> rfl
 
-private lemma prop14_prod_fin_four (a : Fin 4 → Real) :
-    (∏ i, a i) = a 0 * a 1 * a 2 * a 3 := by
-  rw [Fin.prod_univ_four]
-
 private lemma prop14_restricted_weight_eq_energy {N p : Nat} [NeZero N]
     (E : Finset (ZMod N)) (theta : ZMod N → Real)
     (sigma : Fin p → ZMod N → ZMod N) :
@@ -123,7 +119,7 @@ private lemma prop14_restricted_weight_eq_energy {N p : Nat} [NeZero N]
   by_cases h0 : q 0 ∈ E <;> by_cases h1 : q 1 ∈ E <;>
     by_cases h2 : q 2 ∈ E <;> by_cases h3 : q 3 ∈ E <;>
     simp [prop14RestrictedWeight, h0, h1, h2, h3, hadd, hsigma, hmem,
-      prop14_prod_fin_four]
+      prop141_prod_fin_four]
   ring_nf
 
 /-- Lemma 14.2, uniformly for every coordinate direction. -/
@@ -229,59 +225,9 @@ theorem lemma_14_2_holds : lemma_14_2 := by
                 ring
           _ ≤ weightedSimultaneousAdditiveEnergy E theta sigma := hresult
 
-private lemma prop14_countWhere_eq_sum_ite {X : Type*} [Fintype X]
-    (P : X → Prop) :
-    countWhere P = ∑ x : X,
-      @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
-  classical
-  unfold countWhere
-  simpa using
-    (Finset.sum_boole (R := Nat) P (Finset.univ : Finset X)).symm
+alias prop14_countWhere_eq_sum_ite := gcs_countWhere_eq_sum_ite
 
-private lemma prop143_boolWeight_insertNth {n : Nat}
-    (j : Fin (n + 1)) (b : Bool) (e : Fin n → Bool) :
-    boolWeight (j.insertNth b e) = (if b then 1 else 0) + boolWeight e := by
-  classical
-  unfold boolWeight
-  rw [prop14_countWhere_eq_sum_ite, prop14_countWhere_eq_sum_ite]
-  let ind : Bool → Nat := fun c => if c then 1 else 0
-  have hind (c : Bool) :
-      @ite Nat (c = true) (Classical.propDecidable (c = true)) 1 0 = ind c := by
-    cases c <;> simp [ind]
-  have hfun :
-      (fun i : Fin (n + 1) =>
-        ind ((j.insertNth b e : Fin (n + 1) → Bool) i)) =
-        j.insertNth (ind b) (fun i : Fin n => ind (e i)) := by
-    rw [Fin.eq_insertNth_iff]
-    constructor
-    · simp
-    · funext i
-      simp [Fin.removeNth_apply]
-  calc
-    (∑ i : Fin (n + 1),
-        @ite Nat ((j.insertNth b e : Fin (n + 1) → Bool) i = true)
-          (Classical.propDecidable _) 1 0) =
-        ∑ i : Fin (n + 1),
-          ind ((j.insertNth b e : Fin (n + 1) → Bool) i) := by
-          apply Finset.sum_congr rfl
-          intro i _
-          exact hind _
-    _ =
-        ∑ i : Fin (n + 1),
-          (j.insertNth (ind b) (fun i : Fin n => ind (e i))) i := by
-              apply Finset.sum_congr rfl
-              intro i _
-              exact congrFun hfun i
-    _ = ind b + ∑ i : Fin n, ind (e i) := Fin.sum_insertNth j _ _
-    _ = (if b then 1 else 0) + ∑ i : Fin n, ind (e i) := by
-          congr 1
-    _ = (if b then 1 else 0) +
-        ∑ i : Fin n,
-          @ite Nat (e i = true) (Classical.propDecidable _) 1 0 := by
-          congr 1
-          apply Finset.sum_congr rfl
-          intro i _
-          exact (hind _).symm
+alias prop143_boolWeight_insertNth := gcs_boolWeight_insertNth
 
 private def prop143Component {N n : Nat}
     (f : Point N (n + 2) → Complex) (z : Point N (n + 1))

@@ -18,7 +18,7 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma countWhere_cast_eq_sum_ite {T : Type*} [Fintype T]
+lemma countWhere_cast_eq_sum_ite {T : Type*} [Fintype T]
     (P : T → Prop) [DecidablePred P] :
     (countWhere P : Real) = ∑ x : T, if P x then 1 else 0 := by
   classical

@@ -67,7 +67,7 @@ theorem class_piece_data_with {k : Nat} {Thr : Real → Real → Real}
   set θ' := classBudgetW t1 k with hθ'def
   have hθ₂eq : section16ThetaTwo (t1) = 2 ^ (k + 2) * θ' := by
     rw [hθ'def, classBudgetW]; field_simp
-  set δ := section16Delta t1 with hδdef
+  set δ := section16Delta t1
   have hN1 : Thr θ' δ ≤ (N : Real) := (le_max_left _ _).trans hN
   have hN2 : Thr θ' gamma ≤ (N : Real) := (le_max_right _ _).trans hN
   -- 1. Lemmas 16.5 and 16.7
@@ -201,7 +201,7 @@ theorem class_piece_data_with {k : Nat} {Thr : Real → Real → Real}
     have h2k : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
     nlinarith
   -- 6. the original frame
-  set D' := D.image (shiftPt x0) with hD'def
+  set D' := D.image (shiftPt x0)
   have hD'card : D'.card = D.card := Finset.card_image_of_injective _ (shiftPt_injective x0)
   have hDmem : ∀ z ∈ D, z ∈ B1 ∧ section16Init (shiftPt x0 z) ∈ JT ∧
       (∀ e ∈ otherVertices k, dropAt (vertexDrop e) (shiftPt x0 z) ∈ JF e) ∧

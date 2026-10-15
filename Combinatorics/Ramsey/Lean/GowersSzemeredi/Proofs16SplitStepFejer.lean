@@ -117,7 +117,7 @@ theorem split_Qr_le_fejer {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Re
       rw [h2]; linarith only [h1]
     have hbase : splitW V tS gamma (rho / (8 * ((classVertexNum k : Real) + 1))) ≤
         W ^ (P + (k + 3) + 3) :=
-      split_level_base_le hw2 hV0 hVw hr hrw (mul_pos (by norm_num) hnv0) hc hg hb hgd
+      split_level_base_le hw2 hVw hr hrw (mul_pos (by norm_num) hnv0) hc hg hb hgd
     rw [← div_div] at hbase
     have hscale : 0 < rho / 8 / ((classVertexNum k : Real) + 1) :=
       div_pos (div_pos hr (by norm_num)) hnv0
@@ -175,11 +175,11 @@ theorem split_samples_le_fejer {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V'
     exact Nat.one_le_cast.mpr h0
   -- the slice count
   have hMS : ((M * S : Nat) : Real) + 1 ≤ ν ^ (1 + sSN k a) * W ^ (P + fsSW k a D + 1) := by
-    have h := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hM hS
+    have h := tb_mul hν hW1 (Nat.cast_nonneg _) hM hS
     rw [← Nat.cast_mul] at h
     exact tb_add_one hν hw2 h
   have hbase : splitW V tS gamma (rho / 4) ≤ W ^ (P + 2 + 3) :=
-    split_level_base_le hw2 hV0 hVw hr hrw (by norm_num) (by norm_num) hg hb hgd
+    split_level_base_le hw2 hVw hr hrw (by norm_num) (by norm_num) hg hb hgd
   have hsw0 := splitW_nonneg (V := V) (t := tS) hV0 hg hb (by positivity : (0 : Real) < rho / 4)
   refine ⟨hS, hS1, ?_, ?_⟩
   · unfold splitCnt
@@ -306,7 +306,7 @@ theorem split_exp_inv_le_fejer2 {k ac Dc ae De : Nat} (hac : 1 ≤ ac) (hDc : 1 
     intro a D
     unfold splitCnt
     have hbase : splitW V tS gS (rho / 8) ≤ W ^ (P + 3 + 3) :=
-      split_level_base_le hw2 hV0 hVw hr hrw (by norm_num) (by norm_num) hd hb hdd
+      split_level_base_le hw2 hVw hr hrw (by norm_num) (by norm_num) hd hb hdd
     have hsw0 := splitW_nonneg (V := V) (t := tS) hV0 hd hb (by positivity : (0 : Real) < rho / 8)
     exact (mul_le_mul (pow_le_pow_left₀ (by positivity) hM1 a)
       (pow_le_pow_left₀ hsw0 hbase D) (pow_nonneg hsw0 _) (by positivity)).trans_eq
@@ -333,7 +333,7 @@ theorem split_exp_inv_le_fejer2 {k ac Dc ae De : Nat} (hac : 1 ≤ ac) (hDc : 1 
       (rho / 8 / ((classVertexNum k : Real) + 1)) hb hb1 hg hg1 hscale (by
         rw [div_le_one hnv0]; have := Nat.cast_nonneg (α := Real) (classVertexNum k)
         linarith only [this, hr1])
-  set cr := splitCnt V ae De tS gamma M (rho / 8 / ((classVertexNum k : Real) + 1)) with hcrdef
+  set cr := splitCnt V ae De tS gamma M (rho / 8 / ((classVertexNum k : Real) + 1))
   have hEr : clsEr (splitExp V ae De) k M tS gamma (rho / 8) =
       (cr⁻¹ / 16) ^ (classVertexNum k + 1) := by
     unfold clsEr
@@ -344,7 +344,7 @@ theorem split_exp_inv_le_fejer2 {k ac Dc ae De : Nat} (hac : 1 ≤ ac) (hDc : 1 
   have hEri : (clsEr (splitExp V ae De) k M tS gamma (rho / 8))⁻¹ ≤ ν ^ sErN k ae * W ^ fsErW k ae De := by
     rw [hEr, ← inv_pow, inv_div, div_inv_eq_mul]
     have h16 : 16 * cr ≤ ν ^ ae * W ^ (4 + fsStepY k ae De) :=
-      tb_const_mul hν hw2 (by norm_num) (by norm_num) (le_trans zero_le_one hcr1) hfac'
+      tb_const_mul hw2 (by norm_num) (le_trans zero_le_one hcr1) hfac'
     have h16' : 16 * cr ≤ ν ^ ae * W ^ (fsStepY k ae De + 4) := by rw [add_comm]; exact h16
     have hone : (1 : Real) ≤ ν ^ ae * W ^ (fsStepY k ae De + 4) := tb_one_le hν hW1
     calc (16 * cr) ^ (classVertexNum k + 1) ≤ (ν ^ ae * W ^ (fsStepY k ae De + 4)) ^ (classVertexNum k + 1) :=
@@ -366,11 +366,11 @@ theorem split_exp_inv_le_fejer2 {k ac Dc ae De : Nat} (hac : 1 ≤ ac) (hDc : 1 
       exact tb_pow (Nat.cast_nonneg _) hq1 _
     have hpw : ((p : Nat) : Real) ≤ ν ^ 0 * W ^ 1 := by
       rw [pow_zero, one_mul, pow_one]; exact hpV.trans hV'w
-    have h1 := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hpw hpow
+    have h1 := tb_mul hν hW1 (Nat.cast_nonneg _) hpw hpow
     rw [← Nat.cast_mul] at h1
-    have h2 := tb_const_mul (c := (2 : Real)) (j := 1) hν hw2 (by norm_num) (by norm_num)
+    have h2 := tb_const_mul (c := (2 : Real)) (j := 1) hw2 (by norm_num)
       (Nat.cast_nonneg _) h1
-    have h3 := tb_const_mul (c := (4 : Real)) (j := 2) hν hw2 (by norm_num) (by norm_num)
+    have h3 := tb_const_mul (c := (4 : Real)) (j := 2) hw2 (by norm_num)
       (by positivity) h2
     push_cast at h3 ⊢
     refine h3.trans (tb_mono hν hW1 (by unfold sBqN; omega) ?_)
@@ -386,17 +386,17 @@ theorem split_exp_inv_le_fejer2 {k ac Dc ae De : Nat} (hac : 1 ≤ ac) (hDc : 1 
   have hLi : L⁻¹ ≤ ν ^ sLN2 k ac ae * W ^ fsLW2 k ac Dc ae De := by
     rw [hLdef]; unfold pieceLineExponent
     rw [inv_div, div_eq_mul_inv, mul_inv, ← hqdef]
-    have h1 := tb_mul hν hW1 (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le hEri hEbi
-    exact tb_mul hν hW1 hBq0.le (by positivity) hBq h1
+    have h1 := tb_mul hν hW1 (inv_pos.mpr hEb0).le hEri hEbi
+    exact tb_mul hν hW1 (by positivity) hBq h1
   -- the slice exponent: samples from the count track, slices from the exponent track
   set S := famPieceSamples (clsQr (splitCnt V ac Dc) k M tS gamma) M rho with hSdef
   have hPbE : splitCnt V ae De tS gamma (M * S) (rho / 4) ≤ ν ^ sPbN2 k ac ae * W ^ fsPbW2 k ac Dc ae De := by
     have hMS : ((M * S : Nat) : Real) + 1 ≤ ν ^ (1 + sSN k ac) * W ^ (P + fsSW k ac Dc + 1) := by
-      have h := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hM hS
+      have h := tb_mul hν hW1 (Nat.cast_nonneg _) hM hS
       rw [← Nat.cast_mul] at h
       exact tb_add_one hν hw2 h
     have hbase : splitW V tS gamma (rho / 4) ≤ W ^ (P + 2 + 3) :=
-      split_level_base_le hw2 hV0 hVw hr hrw (by norm_num) (by norm_num) hg hb hgd
+      split_level_base_le hw2 hVw hr hrw (by norm_num) (by norm_num) hg hb hgd
     have hsw0 := splitW_nonneg (V := V) (t := tS) hV0 hg hb (by positivity : (0 : Real) < rho / 4)
     unfold splitCnt
     exact (mul_le_mul (pow_le_pow_left₀ (by positivity) hMS ae)
@@ -426,9 +426,9 @@ theorem split_exp_inv_le_fejer2 {k ac Dc ae De : Nat} (hac : 1 ≤ ac) (hDc : 1 
     unfold familyWidthPrefactor
     have hKw : ((K : Nat) : Real) ≤ ν ^ 0 * W ^ 1 := by
       rw [pow_zero, one_mul, pow_one]; exact hKV.trans hV'w
-    have h1 := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hKw hq1
+    have h1 := tb_mul hν hW1 (Nat.cast_nonneg _) hKw hq1
     rw [← Nat.cast_mul, zero_add] at h1
-    exact tb_const_mul (c := (4 : Real)) (j := 2) hν hw2 (by norm_num) (by norm_num)
+    exact tb_const_mul (c := (4 : Real)) (j := 2) hw2 (by norm_num)
       (Nat.cast_nonneg _) h1
   set z := pieceWidthScale (familyWidthPrefactor K) (splitCnt V ac Dc tS gS M)
     (tightZeta (fejerThetaOne theta gamma k / 4)) rho with hzdef
@@ -459,8 +459,8 @@ theorem split_exp_inv_le_fejer2 {k ac Dc ae De : Nat} (hac : 1 ≤ ac) (hDc : 1 
   have hLR : L⁻¹ ≤ R := hLi.trans (tb_mono hν hW1 (by omega) (by omega))
   have hLSR : (L * Sl / 4)⁻¹ ≤ R := by
     rw [show (L * Sl / 4)⁻¹ = 4 * (L⁻¹ * Sl⁻¹) by field_simp]
-    have h := tb_mul hν hW1 (inv_pos.mpr hL0).le (inv_pos.mpr hSl0).le hLi hSli
-    have h4 := tb_const_mul (c := (4 : Real)) (j := 2) hν hw2 (by norm_num) (by norm_num)
+    have h := tb_mul hν hW1 (inv_pos.mpr hSl0).le hLi hSli
+    have h4 := tb_const_mul (c := (4 : Real)) (j := 2) hw2 (by norm_num)
       (mul_nonneg (inv_pos.mpr hL0).le (inv_pos.mpr hSl0).le) h
     exact h4.trans (tb_mono hν hW1 le_rfl (by omega))
   have hcap := capped_rounded_inv_le_real hL0 hSl0 hSl1 hzpos hzle hΛ0 hzinv hR1 hLR hLSR

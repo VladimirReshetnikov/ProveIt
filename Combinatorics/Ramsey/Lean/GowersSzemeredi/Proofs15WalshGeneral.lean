@@ -215,32 +215,7 @@ theorem signedWalsh_multiple_of_invariant {N k : Nat} [NeZero N]
   rw [hsign]
   ring
 
-private theorem parityCharacter_eq_prod_general {N k : Nat}
-    (e : Fin k → Bool) :
-    parityCharacter (N := N) e =
-      ∏ i : Fin k,
-        if e i then (-1 : ZMod N) else 1 := by
-  classical
-  simp only [parityCharacter, boolWeight, countWhere]
-  rw [← Finset.prod_const]
-  rw [Finset.prod_filter]
-  apply Finset.prod_congr rfl
-  intro i hi
-  by_cases h : e i = true <;> simp [h]
-
-private theorem walshProduct_eq_parity_general {N k : Nat}
-    (e : Fin k → Bool) :
-    (∏ i : Fin k, walshSign (N := N) (e i)) =
-      (-1 : ZMod N) ^ k * parityCharacter (N := N) e := by
-  classical
-  rw [parityCharacter_eq_prod_general]
-  have hconst :
-      (-1 : ZMod N) ^ k =
-        ∏ _i : Fin k, (-1 : ZMod N) := by simp
-  rw [hconst, ← Finset.prod_mul_distrib]
-  apply Finset.prod_congr rfl
-  intro i hi
-  cases e i <;> simp [walshSign]
+alias parityCharacter_eq_prod_general := parityCharacter_eq_prod
 
 /-- **Corollary 15.2 without the ternary hypothesis.** Constancy of all
 polynomial moments on the Boolean cube forces any integer coefficient
@@ -307,12 +282,9 @@ theorem booleanWalsh_multiple_of_invariant {N k : Nat} [NeZero N]
     c * (∏ i : Fin k, walshSign (N := N) (e i)) =
       c * (-1 : ZMod N) ^ k *
         parityCharacter (N := N) e
-  rw [walshProduct_eq_parity_general]
+  rw [walshProduct_eq_parity]
   ring
 
-/-- The printed Corollary 15.2 is the ternary special case. -/
-theorem corollary_15_2_of_general : corollary_15_2 := by
-  intro N k _ hprime hodd h eta hh _ hinvariant
-  exact booleanWalsh_multiple_of_invariant hprime hodd h eta hh hinvariant
+alias corollary_15_2_of_general := corollary_15_2_holds
 
 end LeanProofs.GowersSzemeredi

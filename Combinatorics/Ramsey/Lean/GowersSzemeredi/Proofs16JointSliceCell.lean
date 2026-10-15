@@ -173,7 +173,7 @@ theorem single_piece_on_line_cell_of_joint_slices {k q : Nat} (hk : 0 < k)
     R2.carrier_nonempty_of_axis_pos fun j => lt_of_lt_of_le (by omega) (R2.width_le_axis_length j)
   have hsub : (R2.axis i).carrier ⊆ (T.axis i).carrier :=
     R2.axis_carrier_subset_of_carrier_subset T hR2ne hR2T i
-  set v := Nat.sqrt (R2.width - 1) with hvdef
+  set v := Nat.sqrt (R2.width - 1)
   have hv : 1 ≤ v := Nat.le_sqrt.mpr (by omega)
   have hfit : v ^ 2 ≤ R2.width - 1 := Nat.sqrt_le' _
   obtain ⟨M, S, I, hSpart, hSprop, hSprod, -⟩ :=

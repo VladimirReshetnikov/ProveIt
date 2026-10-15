@@ -13,7 +13,6 @@ theorem section16UniformSampleCount_le_seven {sigma theta gamma : Real} {k : Nat
     (hQ : 1 ≤ section16Lemma9QBound sigma theta gamma k) :
     (section16UniformSampleCount sigma theta gamma k : Real) ≤
       7 * section16Lemma9QBound sigma theta gamma k / sigma := by
-  have hQ0 := zero_lt_one.trans_le hQ
   have hceil := (Nat.ceil_lt_add_one
     (by positivity : 0 ≤ 6 * section16Lemma9QBound sigma theta gamma k / sigma)).le
   have hone : 1 ≤ section16Lemma9QBound sigma theta gamma k / sigma :=
@@ -46,8 +45,6 @@ theorem section16CubicSliceExponent_ge_explicit {q k : Nat} {sigma theta gamma :
       cubicBaseExponent (section16UniformSampleCount sigma theta gamma k * q) sigma := by
   have hR := section16UniformSampleCount_le_seven hs hs1 hQ
   have hRpos := section16UniformSampleCount_pos (theta := theta) (gamma := gamma) k hs
-  have hqreal : (0 : Real) < q := by exact_mod_cast hq
-  have hRreal : (0 : Real) < section16UniformSampleCount sigma theta gamma k := by exact_mod_cast hRpos
   unfold cubicBaseExponent
   rw [Nat.cast_mul]
   apply div_le_div_of_nonneg_left (by positivity) (by positivity)

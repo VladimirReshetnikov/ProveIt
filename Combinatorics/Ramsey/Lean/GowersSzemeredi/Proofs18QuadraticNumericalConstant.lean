@@ -51,8 +51,6 @@ theorem quadraticIterationLogBudgetConstant_upper :
     dsimp [W] at hW ⊢
     linarith
   have hexp : (2 : Nat) ^ 321 + 4 ≤ 2 ^ 322 := by
-    have hh : 4 ≤ (2 : Nat) ^ 321 :=
-      (by norm_num : 4 ≤ 2 ^ 2).trans (Nat.pow_le_pow_right (by norm_num) (by omega))
     rw [show (322 : Nat) = 321 + 1 by omega, pow_succ]
     omega
   calc

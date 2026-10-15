@@ -25,15 +25,6 @@ private noncomputable def cor133LargePairs {N : Nat} [NeZero N]
     theta * (N : Real) ^ 2 ≤
       ‖fourier (verticalEdgeFiberFunction A z.1) z.2‖
 
-private lemma cor133_card_functionGraph {N : Nat} [NeZero N]
-    (B : Finset (ZMod N)) (sigma : ZMod N → ZMod N) :
-    (functionGraph B sigma).card = B.card := by
-  classical
-  unfold functionGraph
-  rw [Finset.card_image_iff.mpr]
-  intro x _ y _ h
-  exact congrArg Prod.fst h
-
 private structure Cor133CoverData (N : Nat) [NeZero N]
     (theta : Real) (Gamma : Finset (Pair N)) where
   q : Nat
@@ -297,7 +288,6 @@ private noncomputable def cor133_build_cover {N : Nat} [NeZero N]
     have hFreiman0 := hextractSpec.2.1
     have hB0size := hextractSpec.2.2
     let P := functionGraph B0 sigma0
-    have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
     have hscalePos :
         0 < (2 : Real) ^ (-(1882 : Int)) * theta ^ 10477 * N := by
       exact mul_pos
@@ -338,7 +328,7 @@ private noncomputable def cor133_build_cover {N : Nat} [NeZero N]
       refine Fin.cases ?_ (fun j => ?_) i
       · exact hB0size
       · exact tail.piece_large j
-    · have hPcard : P.card = B0.card := cor133_card_functionGraph B0 sigma0
+    · have hPcard : P.card = B0.card := cor75_card_functionGraph B0 sigma0
       have hcards : (Gamma \ P).card + P.card = Gamma.card := by
         rw [Finset.card_sdiff_add_card]
         rw [Finset.union_eq_left.mpr hPsub]

@@ -23,7 +23,6 @@ theorem intAP_step_span_in_interval (R : IntAP) (L : Nat) (hl : 0 < R.length)
   obtain ⟨j, _, hj⟩ := Finset.mem_image.mp (hsub hlast)
   have hi' : (i.val : Int) = R.start := by simpa using hi
   have hj' : (j.val : Int) = R.start + (((R.length - 1) * R.step : Nat) : Int) := by simpa using hj
-  have hstart : 0 ≤ R.start := hi' ▸ Int.natCast_nonneg i.val
   have hjL : (j.val : Int) < L := by exact_mod_cast j.isLt
   have hspan : (((R.length - 1) * R.step : Nat) : Int) < L := by omega
   have hspanNat : (R.length - 1) * R.step < L := by exact_mod_cast hspan
@@ -33,7 +32,7 @@ theorem intAP_step_span_in_interval (R : IntAP) (L : Nat) (hl : 0 < R.length)
 the full span bound inside the parent index interval. -/
 theorem corollary_7_11_universal_modular_with_step_span (N : Nat) [Fact N.Prime]
     (R : ModAP N) (A : Finset (ZMod N)) (alpha : Real)
-    (hR : R.IsProper) (hl : 0 < R.length) (hα : 0 < alpha) (hαone : alpha ≤ 1)
+    (hR : R.IsProper) (hl : 0 < R.length) (hα : 0 < alpha)
     (hA : A ⊆ R.carrier) (hdensity : alpha * R.length ≤ A.card)
     (hlarge : 8 ≤ (R.length : Real) ^ cor711Exponent alpha 1) :
     ∃ M : Nat, ∃ Q : Fin M → ModAP N,

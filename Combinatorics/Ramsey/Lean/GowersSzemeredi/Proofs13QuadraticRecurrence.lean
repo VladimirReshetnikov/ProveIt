@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs13InitialProgression
 import GowersSzemeredi.Section05
+import GowersSzemeredi.Proofs05Downstream
 
 /-!
 # Quadratic-recurrence infrastructure for Gowers's Lemma 13.5
@@ -45,93 +46,17 @@ theorem lemma135_small_cutoff_lt_lemma59_threshold :
 
 /-! ### Transporting a progression of indices -/
 
-/-- The point of `P` with natural index `t`. -/
-def stage135IndexPoint {N : Nat} (P : ModAP N) (t : Nat) : ZMod N :=
-  P.start + (t : ZMod N) * P.step
-
-/-- Transport a natural-number progression through the parametrization of a
-modular progression. -/
-def stage135Transport {N : Nat} (P : ModAP N) (R : NatAP) : ModAP N where
-  start := stage135IndexPoint P R.start
-  step := (R.step : ZMod N) * P.step
-  length := R.length
-
-theorem stage135Transport_length {N : Nat} (P : ModAP N) (R : NatAP) :
-    (stage135Transport P R).length = R.length :=
-  rfl
-
-theorem stage135Transport_carrier {N : Nat} (P : ModAP N) (R : NatAP) :
-    (stage135Transport P R).carrier =
-      R.carrier.image (stage135IndexPoint P) := by
-  classical
-  ext x
-  simp only [ModAP.carrier, NatAP.carrier, stage135Transport,
-    stage135IndexPoint, Finset.mem_image, Finset.mem_univ, true_and]
-  constructor
-  · rintro ⟨i, rfl⟩
-    refine ⟨R.start + (i : Nat) * R.step, ?_, ?_⟩
-    · exact ⟨i, rfl⟩
-    · push_cast
-      ring
-  · rintro ⟨t, ⟨i, rfl⟩, rfl⟩
-    refine ⟨i, ?_⟩
-    push_cast
-    ring
-
-theorem stage135Transport_subset {N : Nat} (P : ModAP N) (R : NatAP)
-    (hR : R.carrier ⊆ Finset.range P.length) :
-    (stage135Transport P R).carrier ⊆ P.carrier := by
-  classical
-  rw [stage135Transport_carrier]
-  intro x hx
-  obtain ⟨t, htR, rfl⟩ := Finset.mem_image.mp hx
-  have ht : t < P.length := Finset.mem_range.mp (hR htR)
-  rw [ModAP.carrier]
-  exact Finset.mem_image.mpr ⟨⟨t, ht⟩, Finset.mem_univ _, rfl⟩
-
-private lemma stage135IndexPoint_injective_on_range {N : Nat} [NeZero N]
-    (P : ModAP N) (hP : P.IsProper) :
-    Set.InjOn (stage135IndexPoint P) (Finset.range P.length : Set Nat) := by
-  classical
-  rw [ModAP.IsProper, ModAP.carrier] at hP
-  have hcard :
-      (Finset.univ.image fun i : Fin P.length =>
-        P.start + (i : Nat) * P.step).card =
-        (Finset.univ : Finset (Fin P.length)).card := by
-    simpa using hP
-  have hinj := Finset.card_image_iff.mp hcard
-  intro x hx y hy hxy
-  let ix : Fin P.length := ⟨x, Finset.mem_range.mp hx⟩
-  let iy : Fin P.length := ⟨y, Finset.mem_range.mp hy⟩
-  have hixy : ix = iy := hinj (Finset.mem_univ ix) (Finset.mem_univ iy) (by
-    simpa only [ix, iy, stage135IndexPoint] using hxy)
-  exact congrArg Fin.val hixy
-
-theorem stage135Transport_isProper {N : Nat} [NeZero N]
-    (P : ModAP N) (R : NatAP) (hP : P.IsProper) (hR : R.IsProper)
-    (hsub : R.carrier ⊆ Finset.range P.length) :
-    (stage135Transport P R).IsProper := by
-  classical
-  rw [ModAP.IsProper, stage135Transport_carrier,
-    Finset.card_image_iff.mpr]
-  · exact hR.2
-  · intro x hx y hy hxy
-    apply stage135IndexPoint_injective_on_range P hP
-    · exact hsub hx
-    · exact hsub hy
-    · exact hxy
-
 theorem stage135Transport_step_ne_zero {N : Nat} [NeZero N]
     (P : ModAP N) (R : NatAP) (hP : P.IsProper)
     (hR : R.IsProper) (hRtwo : 2 ≤ R.length)
     (hsub : R.carrier ⊆ Finset.range P.length) :
-    (stage135Transport P R).step != 0 := by
+    (section5Transport P R).step != 0 := by
   apply bne_iff_ne.mpr
   intro hzero
-  have hproper := stage135Transport_isProper P R hP hR hsub
-  have hcard : (stage135Transport P R).carrier.card = R.length := by
-    simpa only [ModAP.IsProper, stage135Transport_length] using hproper
-  have hcollapse : (stage135Transport P R).carrier.card ≤ 1 := by
+  have hproper := section5Transport_isProper P R hP hR hsub
+  have hcard : (section5Transport P R).carrier.card = R.length := by
+    simpa only [ModAP.IsProper, section5Transport_length] using hproper
+  have hcollapse : (section5Transport P R).carrier.card ≤ 1 := by
     rw [ModAP.carrier]
     apply Finset.card_le_one_iff.mpr
     intro x y hx hy
@@ -256,47 +181,7 @@ private lemma stage135_zero_mem_left : (0 : Fin 16) ∈ stage135Left := by
 private lemma stage135_zero_notMem_right : (0 : Fin 16) ∉ stage135Right := by
   simp [stage135Right]
 
-/-- An additive sixteen-tuple is determined by its last fifteen coordinates. -/
-lemma stage135_additive_ext {N : Nat}
-    {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)
-    (hy : IsAdditiveTuple (k := 8) y)
-    (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y := by
-  have hoff : ∀ i : Fin 16, i ≠ 0 → x i = y i := by
-    intro i hi
-    rcases i with ⟨(_ | i), hiBound⟩
-    · exact (hi rfl).elim
-    · exact htail ⟨i, by omega⟩
-  unfold IsAdditiveTuple at hx hy
-  change (∑ i ∈ stage135Left, x i) = ∑ i ∈ stage135Right, x i at hx
-  change (∑ i ∈ stage135Left, y i) = ∑ i ∈ stage135Right, y i at hy
-  have hleft :
-      (∑ i ∈ stage135Left.erase 0, x i) =
-        ∑ i ∈ stage135Left.erase 0, y i := by
-    apply Finset.sum_congr rfl
-    intro i hi
-    exact hoff i (Finset.ne_of_mem_erase hi)
-  have hright :
-      (∑ i ∈ stage135Right, x i) = ∑ i ∈ stage135Right, y i := by
-    apply Finset.sum_congr rfl
-    intro i hi
-    apply hoff i
-    intro hzero
-    subst i
-    exact stage135_zero_notMem_right hi
-  funext i
-  refine Fin.cases ?_ (fun j => htail j) i
-  apply add_left_cancel (a := ∑ i ∈ stage135Left.erase 0, x i)
-  calc
-    (∑ i ∈ stage135Left.erase 0, x i) + x 0 =
-        ∑ i ∈ stage135Left, x i :=
-      Finset.sum_erase_add _ _ stage135_zero_mem_left
-    _ = ∑ i ∈ stage135Right, x i := hx
-    _ = ∑ i ∈ stage135Right, y i := hright
-    _ = ∑ i ∈ stage135Left, y i := hy.symm
-    _ = (∑ i ∈ stage135Left.erase 0, y i) + y 0 := by
-      symm
-      exact Finset.sum_erase_add _ _ stage135_zero_mem_left
-    _ = (∑ i ∈ stage135Left.erase 0, x i) + y 0 := by rw [hleft]
+alias stage135_additive_ext := lemma134_additive_ext
 
 private lemma stage135EncodeAtHeight_injective {N : Nat} [NeZero N]
     (A : Finset (Pair N)) (h : ZMod N) :
@@ -312,22 +197,7 @@ private lemma stage135EncodeAtHeight_injective {N : Nat} [NeZero N]
   have hh : R.1.height = T.1.height := R.2.2.trans T.2.2.symm
   exact Prod.ext hx (Prod.ext hy hh)
 
-theorem stage135_sectionC_upper {N : Nat} [NeZero N]
-    (S : Section13Context N) (h : ZMod N) :
-    section13C S h ≤ N ^ 31 := by
-  classical
-  unfold section13C arrangementCountAtHeight countWhere
-  rw [Finset.filter_congr_decidable]
-  rw [← Fintype.card_subtype]
-  calc
-    Fintype.card {R : DArrangement N 8 //
-        R.IsIn S.A ∧ R.height = h} ≤
-        Fintype.card (stage135AtHeightCode N) :=
-      Fintype.card_le_of_injective (stage135EncodeAtHeight S.A h)
-        (stage135EncodeAtHeight_injective S.A h)
-    _ = N ^ 31 := by
-      simp [stage135AtHeightCode]
-      ring
+alias stage135_sectionC_upper := lemma134_sectionC_upper
 
 /-- Weighted height mass supplies the stronger pre-trimming density 1/16. -/
 theorem stage135_critical_count_of_weight {N : Nat} [NeZero N]
@@ -345,7 +215,6 @@ theorem stage135_critical_count_of_weight {N : Nat} [NeZero N]
     S.alpha ^ 32 * (N : Real) ^ 31 / 16 ≤ section13C S h
   have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hNpow : (0 : Real) < (N : Real) ^ 31 := pow_pos hNpos 31
-  have halphaNonneg : 0 ≤ S.alpha ^ 32 := by positivity
   have hthresholdNonneg :
       0 ≤ S.alpha ^ 32 * (N : Real) ^ 31 / 16 := by positivity
   have hsumUpper : (goodHeightWeight S (Q.carrier ∩ D.H) : Real) ≤
@@ -406,7 +275,6 @@ theorem stage135_critical_count_of_weight {N : Nat} [NeZero N]
             gcongr
           _ = _ := by ring
   have hKlower : S.alpha ^ 32 * Q.length / 16 ≤ (K.card : Real) := by
-    have hmain := hweight.trans hsumUpper
     have hmul :
         (S.alpha ^ 32 * Q.length / 16) * (N : Real) ^ 31 ≤
           (K.card : Real) * (N : Real) ^ 31 := by

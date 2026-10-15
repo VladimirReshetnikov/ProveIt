@@ -45,18 +45,11 @@ private noncomputable def cor147Phase {N k : Nat} [NeZero N]
       exponential (cor147CubeValue phi h (y, x) * u)
     else 0
 
-@[simp] private lemma cor147_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma cor147_star_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : star (exponential x) = exponential (-x) := by
-  simpa only [exponential, starRingEnd_apply] using
-    (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
+attribute [simp] star_exponential
 
-@[simp] private lemma cor147_norm_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : ‖exponential x‖ = 1 := by
-  exact (ZMod.stdAddChar (N := N)).norm_apply x
+attribute [simp] cor57_norm_exponential
 
 private lemma cor147_ofReal_norm_even_pow (z : Complex) (d : Nat) :
     (((‖z‖ ^ (2 * d) : Real)) : Complex) = z ^ d * star z ^ d := by
@@ -122,8 +115,6 @@ private lemma cor147_leftIndex_surj (d : Nat) (j : Fin (2 * d))
 private lemma cor147_rightIndex_surj (d : Nat) (j : Fin (2 * d))
     (hj : d ≤ (j : Nat)) :
     ∃ i : Fin d, cor147RightIndex d i = j := by
-  have hjlt : (j : Nat) < d + d := by
-    simpa [Nat.two_mul] using j.isLt
   refine ⟨⟨(j : Nat) - d, by omega⟩, ?_⟩
   apply Fin.ext
   simp [cor147RightIndex]
@@ -330,14 +321,7 @@ private lemma cor147_good_count_eq {N k d : Nat} [NeZero N]
   | empty => simp [exponential]
   | @insert i s hi ih =>
       rw [Finset.sum_insert hi, Finset.prod_insert hi,
-        cor147_exponential_add, ih]
-
-private lemma cor147_sum_exponential_mul {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    ∑ u : ZMod N, exponential (x * u) =
-      if x = 0 then (N : Complex) else 0 := by
-  simpa [exponential, mul_comm] using
-    AddChar.sum_mulShift x (ZMod.isPrimitive_stdAddChar N)
+        exponential_add, ih]
 
 private noncomputable def cor147FourierTerm {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
@@ -361,7 +345,7 @@ private lemma cor147_prod_fourierTerm {N k d : Nat} [NeZero N]
   by_cases ha : ∀ i, cor147CubeIn B h (a i)
   · rw [if_pos ha]
     simp only [cor147FourierTerm, if_pos (ha _)]
-    simp_rw [← cor147_exponential_add]
+    simp_rw [← exponential_add]
     rw [cor147_prod_exponential]
     congr 1
     rw [Finset.sum_add_distrib, Finset.sum_neg_distrib,
@@ -383,7 +367,7 @@ private lemma cor147_pair_orthogonality {N k d : Nat} [NeZero N]
   by_cases ha : ∀ i, cor147CubeIn B h (a i) <;>
     by_cases hb : ∀ i, cor147CubeIn B h (b i)
   · simp_rw [cor147_prod_fourierTerm, if_pos ha, if_pos hb,
-      cor147_star_exponential, ← cor147_exponential_add]
+      star_exponential, ← exponential_add]
     have hphase (u r : ZMod N) :
         (-((∑ i, (a i).2) * r) +
               (∑ i, cor147CubeValue phi h (a i)) * u) +
@@ -393,7 +377,7 @@ private lemma cor147_pair_orthogonality {N k d : Nat} [NeZero N]
               ∑ i, cor147CubeValue phi h (b i)) * u +
             ((∑ i, (b i).2) - ∑ i, (a i).2) * r := by
       ring
-    simp_rw [hphase, cor147_exponential_add]
+    simp_rw [hphase, exponential_add]
     calc
       (∑ u : ZMod N, ∑ r : ZMod N,
           exponential
@@ -409,7 +393,7 @@ private lemma cor147_pair_orthogonality {N k d : Nat} [NeZero N]
               simp_rw [← Finset.mul_sum]
               rw [← Finset.sum_mul]
       _ = if cor147Good B phi h (a, b) then (N : Complex) ^ 2 else 0 := by
-        rw [cor147_sum_exponential_mul, cor147_sum_exponential_mul]
+        rw [prop141_sum_exponential_mul, prop141_sum_exponential_mul]
         by_cases hx : (∑ i, (a i).2) = ∑ i, (b i).2
         · by_cases hv :
               (∑ i, cor147CubeValue phi h (a i)) =
@@ -591,7 +575,7 @@ private lemma cor147_phase_norm_le {N k : Nat} [NeZero N]
       apply Finset.sum_le_sum
       intro y _
       by_cases hy : cor147CubeIn B h (y, x) <;>
-        simp [hy, cor147_norm_exponential]
+        simp [hy, cor57_norm_exponential]
     _ = (N : Real) ^ k := by simp [Point]
 
 private lemma cor147_phase_norm_sq_sum_le {N k : Nat} [NeZero N]

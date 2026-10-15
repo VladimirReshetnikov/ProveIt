@@ -25,14 +25,9 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-@[simp] private lemma prop61_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma prop61_star_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : star (exponential x) = exponential (-x) := by
-  simpa only [exponential, starRingEnd_apply] using
-    (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
+attribute [simp] star_exponential
 
 /-- Expansion and change of variables at the start of Proposition 6.1. -/
 private lemma prop61_energy_expansion {N : Nat} [NeZero N]
@@ -61,7 +56,7 @@ private lemma prop61_energy_expansion {N : Nat} [NeZero N]
             ((f (t - k) * star (f t)) * exponential (t * phi k)) := by
               apply Finset.sum_congr rfl
               intro k _
-              simp only [star_sum, star_mul, star_star, prop61_star_exponential, neg_neg]
+              simp only [star_sum, star_mul, star_star, star_exponential, neg_neg]
               simp_rw [sum_mul, mul_sum]
     _ = ∑ s : ZMod N, ∑ t : ZMod N, ∑ k ∈ B,
           (exponential (-(s * phi k)) * (f s * star (f (s - k)))) *
@@ -92,7 +87,7 @@ private lemma prop61_energy_expansion {N : Nat} [NeZero N]
               have hphase :
                   exponential (-(s * phi k)) * exponential ((s - u) * phi k) =
                     exponential (-(phi k * u)) := by
-                rw [← prop61_exponential_add]
+                rw [← exponential_add]
                 congr 1
                 ring
               rw [← hphase]
@@ -207,38 +202,6 @@ private lemma prop61_mixed_eq_l2 {N : Nat} [NeZero N]
           intro s _
           rw [prop61_correlation_eq]
 
-private lemma prop61_fourth_moment_le {N : Nat} [NeZero N]
-    (h : ZMod N → Complex) (hh : DiscValued h) :
-    ∑ r : ZMod N, ‖fourier h r‖ ^ 4 ≤ (N : ℝ) ^ 4 := by
-  have hcorr (t : ZMod N) : ‖correlation h h t‖ ≤ (N : ℝ) := by
-    calc
-      ‖correlation h h t‖ ≤ ∑ s : ZMod N, ‖h s * star (h (s - t))‖ := by
-        exact norm_sum_le _ _
-      _ ≤ ∑ _s : ZMod N, (1 : ℝ) := by
-        apply Finset.sum_le_sum
-        intro s _
-        rw [norm_mul, norm_star]
-        calc
-          ‖h s‖ * ‖h (s - t)‖ ≤ 1 * 1 := by gcongr <;> apply hh
-          _ = 1 := one_mul 1
-      _ = (N : ℝ) := by simp
-  have hid :
-      (∑ r : ZMod N, ‖fourier h r‖ ^ 4) =
-        (N : ℝ) * ∑ t : ZMod N, ‖correlation h h t‖ ^ 2 := by
-    calc
-      _ = ∑ r : ZMod N, ‖fourier h r‖ ^ 2 * ‖fourier h r‖ ^ 2 := by
-        apply Finset.sum_congr rfl
-        intro r _
-        ring
-      _ = _ := by simpa [correlation] using lemma_2_1_holds N h h
-  rw [hid]
-  calc
-    (N : ℝ) * ∑ t : ZMod N, ‖correlation h h t‖ ^ 2 ≤
-        (N : ℝ) * ∑ _t : ZMod N, (N : ℝ) ^ 2 := by
-          gcongr with t
-          exact hcorr t
-    _ = (N : ℝ) ^ 4 := by simp; ring
-
 private lemma prop61F_disc {N : Nat} (f : ZMod N → Complex) (hf : DiscValued f)
     (u : ZMod N) : DiscValued (prop61F f u) := by
   intro x
@@ -308,20 +271,15 @@ private lemma prop61_g_product {N : Nat} [NeZero N]
   all_goals simp only [h0, h1, h2, h3, if_true, if_false, one_mul, zero_mul, mul_zero,
     star_zero, star_one, prop61QuadMem, and_self, and_true]
   all_goals try {rfl}
-  rw [prop61_star_exponential, prop61_star_exponential]
+  rw [star_exponential, star_exponential]
   calc
     _ = exponential (phi (q 0) * u +
         (-(phi (q 2) * u) + (-(phi (q 1) * u) + phi (q 3) * u))) := by
-          rw [prop61_exponential_add, prop61_exponential_add, prop61_exponential_add]
+          rw [exponential_add, exponential_add, exponential_add]
           ring
     _ = _ := by
       congr 1
       ring
-
-private lemma prop61_sum_exponential_mul {N : Nat} [NeZero N] (x : ZMod N) :
-    ∑ u : ZMod N, exponential (x * u) = if x = 0 then (N : Complex) else 0 := by
-  simpa [exponential, mul_comm] using
-    AddChar.sum_mulShift x (ZMod.isPrimitive_stdAddChar N)
 
 private lemma prop61_sum_g_product {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (phi : ZMod N → ZMod N) (q : Fin 4 → ZMod N) :
@@ -335,7 +293,7 @@ private lemma prop61_sum_g_product {N : Nat} [NeZero N]
   simp_rw [prop61_g_product]
   by_cases hmem : prop61QuadMem B q
   · simp_rw [if_pos hmem]
-    rw [prop61_sum_exponential_mul]
+    rw [fejer_sum_exponential_mul]
     by_cases hphi : phi (q 0) - phi (q 1) = phi (q 2) - phi (q 3)
     · have hcond : prop61QuadMem B q ∧
           phi (q 0) - phi (q 1) = phi (q 2) - phi (q 3) := ⟨hmem, hphi⟩
@@ -439,7 +397,6 @@ private lemma lemma77_centeredAbs_sub_le {N m : Nat} [NeZero N]
     (hbin : x.val * m / N = y.val * m / N) :
     (centeredAbs (x - y) : ℝ) ≤ delta * N := by
   have hNnat : 0 < N := NeZero.pos N
-  have hNreal : (0 : ℝ) < N := by exact_mod_cast hNnat
   have hmreal : (0 : ℝ) < m := by exact_mod_cast hm
   have hdelta_m : 1 ≤ delta * (m : ℝ) := by
     calc
@@ -551,7 +508,7 @@ theorem proposition_6_1_holds : proposition_6_1 := by
           ∑ _u : ZMod N, (N : ℝ) ^ 4 := by
             apply Finset.sum_le_sum
             intro u _
-            exact prop61_fourth_moment_le (prop61F f u) (prop61F_disc f hf u)
+            exact fourier_fourth_moment_le (prop61F f u) (prop61F_disc f hf u)
       _ = (N : ℝ) ^ 5 := by simp; ring
   have hmixed_nonneg : 0 ≤ mixed := by
     dsimp only [mixed]
@@ -883,7 +840,6 @@ private theorem almostEvery_swap_of_nonneg {X Y : Type*}
     rw [hGU, ht_zero]
     simp
   have ht_pos : 0 < t := lt_of_le_of_ne (by dsimp [t]; positivity) (Ne.symm ht_zero)
-  have ht_lt_one : t < 1 := lt_of_not_ge ht_large
   have htheta_sq : t ^ 2 = theta := by
     dsimp [t]
     exact Real.sq_sqrt htheta
@@ -891,8 +847,6 @@ private theorem almostEvery_swap_of_nonneg {X Y : Type*}
   · subst V
     have hGU : G = U := by simp [G, good, row]
     rw [hGU]
-    have ht_nonneg : 0 ≤ t := by dsimp [t]; positivity
-    have hU_nonneg : (0 : ℝ) ≤ U.card := Nat.cast_nonneg U.card
     nlinarith
   have hVposNat : 0 < V.card := Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hV)
   have hVpos : (0 : ℝ) < V.card := by exact_mod_cast hVposNat
@@ -934,10 +888,6 @@ private theorem almostEvery_swap_of_nonneg {X Y : Type*}
               exact le_of_lt (lt_of_not_ge (Finset.mem_filter.mp hx).2)
       _ = (G.card : ℝ) * V.card + H.card * ((1 - t) * V.card) := by
         simp [G, H]
-  have hbound :
-      (1 - theta) * U.card * V.card ≤
-        (G.card : ℝ) * V.card + H.card * ((1 - t) * V.card) := by
-    exact hlower.trans (hdouble.le.trans hupper)
   have hpositive :
       0 < (((1 - t) * (U.card : ℝ) - G.card) * t * V.card) := by
     exact mul_pos (mul_pos (sub_pos.mpr hGlt) ht_pos) hVpos
@@ -984,5 +934,20 @@ theorem lemma_9_1_holds : lemma_9_1 := by
   norm_num [Real.rpow_natCast] at h
   ring_nf at h
   exact h
+
+lemma lemma78_fourier_indicator_energy {N : Nat} [NeZero N]
+    (A : Finset (ZMod N)) :
+    (∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 2) =
+      (N : Real) * A.card := by
+  rw [identity_2_3_holds]
+  congr 1
+  classical
+  calc
+    (∑ x : ZMod N, ‖indicator A x‖ ^ 2) =
+        ∑ x : ZMod N, if x ∈ A then (1 : Real) else 0 := by
+      apply Finset.sum_congr rfl
+      intro x _
+      by_cases hx : x ∈ A <;> simp [indicator, hx]
+    _ = A.card := by simp
 
 end LeanProofs.GowersSzemeredi

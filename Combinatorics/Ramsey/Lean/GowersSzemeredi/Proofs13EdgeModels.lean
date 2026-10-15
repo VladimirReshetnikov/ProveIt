@@ -137,6 +137,39 @@ theorem section13_vertical_spectrum {N : Nat} [NeZero N]
   unfold domainLargeSpectrum
   rw [section13_vertical_fibre_function]
 
+/-- The good-height model with any valid fibre cap, rather than just N. -/
+theorem section13_good_height_model_with_cap {N : Nat} [NeZero N]
+    (S : Section13Context N) (h : ZMod N) (hh : IsGoodHeight S h)
+    (M : Nat) (hNM : N ≤ M) (beta : Real)
+    (hβ : 0 < beta) (hβsixth : beta ≤ 1 / 6)
+    (hcard : ((verticalEdgeDomain S.A h).card : Real) = beta * M * N) :
+    let K := domainLargeSpectrum (section13VerticalDomain S.A h)
+      (section10Lambda beta * M * N)
+    ∃ Y : Finset (Pair N), ∃ psi : ZMod N → ZMod N,
+      Y ⊆ verticalEdgeDomain S.A h ∧
+      beta ^ 6 * (verticalEdgeDomain S.A h).card / 20000 ≤ Y.card ∧
+      HasBohrDifferenceModel (section13EdgeIndexDomain N) (verticalPhiDifference S.phi h)
+        K (section10Zeta beta) Y psi := by
+  classical
+  have hcard' : (Fintype.card (Section13Edges S.A h) : Real) = beta * M * N := by
+    simpa only [Fintype.card_coe] using hcard
+  have hmain := theorem_10_13_holds N M (Section13Edges S.A h)
+    (section13VerticalDomain S.A h) (fun z ↦ verticalPhiDifference S.phi h z.val) beta
+    hβ hβsixth ((NeZero.pos N).trans_le hNM)
+    (fun s => (section13_vertical_fibre_cap S.A h s).trans hNM) hcard'
+    (section13_good_height_approx S h hh)
+  obtain ⟨Y, psi, hY, hmodel⟩ := hmain.2.2
+  let e : Section13Edges S.A h ↪ Pair N := ⟨Subtype.val, Subtype.val_injective⟩
+  refine ⟨Y.map e, psi, ?_, ?_, hmodel.1, ?_⟩
+  · intro z hz
+    obtain ⟨v, hv, rfl⟩ := Finset.mem_map.mp hz
+    exact v.property
+  · simpa only [Finset.card_map, Fintype.card_coe] using hY
+  · intro z hz w hw hzw
+    obtain ⟨v, hv, rfl⟩ := Finset.mem_map.mp hz
+    obtain ⟨u, hu, rfl⟩ := Finset.mem_map.mp hw
+    exact hmodel.2 v hv u hu hzw
+
 /-- Apply Theorem 10.13 to a good height at its actual normalized edge
 density. The selected set is transported back to lower-endpoint pairs without
 losing cardinality or changing the Fourier spectrum and Bohr radius. -/
@@ -151,24 +184,7 @@ theorem section13_good_height_bohr_model {N : Nat} [NeZero N]
       beta ^ 6 * (verticalEdgeDomain S.A h).card / 20000 ≤ Y.card ∧
       HasBohrDifferenceModel (section13EdgeIndexDomain N) (verticalPhiDifference S.phi h)
         K (section10Zeta beta) Y psi := by
-  classical
-  have hcard' : (Fintype.card (Section13Edges S.A h) : Real) = beta * N * N := by
-    rw [Fintype.card_coe, hcard]
-    ring
-  have hmain := theorem_10_13_holds N N (Section13Edges S.A h)
-    (section13VerticalDomain S.A h) (fun z ↦ verticalPhiDifference S.phi h z.val) beta
-    hβ hβsixth (NeZero.pos N) (section13_vertical_fibre_cap S.A h) hcard'
-    (section13_good_height_approx S h hh)
-  obtain ⟨Y, psi, hY, hmodel⟩ := hmain.2.2
-  let e : Section13Edges S.A h ↪ Pair N := ⟨Subtype.val, Subtype.val_injective⟩
-  refine ⟨Y.map e, psi, ?_, ?_, hmodel.1, ?_⟩
-  · intro z hz
-    obtain ⟨v, hv, rfl⟩ := Finset.mem_map.mp hz
-    exact v.property
-  · simpa only [Finset.card_map, Fintype.card_coe] using hY
-  · intro z hz w hw hzw
-    obtain ⟨v, hv, rfl⟩ := Finset.mem_map.mp hz
-    obtain ⟨u, hu, rfl⟩ := Finset.mem_map.mp hw
-    exact hmodel.2 v hv u hu hzw
+  have hcard' : ((verticalEdgeDomain S.A h).card : Real) = beta * N * N := by rw [hcard]; ring
+  exact section13_good_height_model_with_cap S h hh N le_rfl beta hβ hβsixth hcard'
 
 end LeanProofs.GowersSzemeredi

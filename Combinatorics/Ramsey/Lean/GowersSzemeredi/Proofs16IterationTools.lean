@@ -46,19 +46,7 @@ theorem exists_good_of_potential {σ : Type*} (Inv Good : σ → Prop) (Φ : σ 
       obtain ⟨t, ht, hgt, hΦt⟩ := ih s' hs' (by omega)
       exact ⟨t, ht, hgt, by omega⟩
 
-theorem centeredAbs_intCast_le_natAbs {N : Nat} [NeZero N] (i : Int) :
-    centeredAbs (i : ZMod N) ≤ i.natAbs := by
-  have hnat (n : Nat) : centeredAbs (n : ZMod N) ≤ n := by
-    rw [centeredAbs, ZMod.valMinAbs_natAbs_eq_min, ZMod.val_natCast]
-    exact (Nat.min_le_left _ _).trans (Nat.mod_le n N)
-  cases i with
-  | ofNat n => simpa using hnat n
-  | negSucc n =>
-      have heq : ((Int.negSucc n : Int) : ZMod N) = -((n + 1 : Nat) : ZMod N) := by
-        push_cast
-        ring
-      rw [heq, centeredAbs, ZMod.natAbs_valMinAbs_neg]
-      exact hnat (n + 1)
+alias centeredAbs_intCast_le_natAbs := lemma55_centeredAbs_intCast_le
 
 /-- **Span balls of a subset lie in the bounded span of the whole set.** -/
 theorem spanBall_subset_boundedFrequencySpan {N : Nat} [NeZero N] {V W : Finset (ZMod N)}

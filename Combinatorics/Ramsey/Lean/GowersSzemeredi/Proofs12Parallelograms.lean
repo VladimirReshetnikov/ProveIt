@@ -55,7 +55,7 @@ private lemma lemma122_cubeDifference_eq {N : Nat}
   rw [cubeDifference_cons, cubeDifference_cons]
   simp only [cubeDifference, List.ofFn_zero, iteratedDifference, secondDifference]
 
-private lemma lemma122_fourier_norm_le {N : Nat} [NeZero N]
+lemma lemma122_fourier_norm_le {N : Nat} [NeZero N]
     (g : ZMod N → Complex) (hg : DiscValued g) (r : ZMod N) :
     ‖fourier g r‖ ≤ (N : Real) := by
   calc
@@ -209,7 +209,7 @@ private lemma lemma122_toPair_injective {N : Nat} :
     exact hside0
   exact Prod.ext hside (Prod.ext hbase hcross)
 
-private lemma lemma122_additiveTuple_two_iff {N : Nat}
+lemma lemma122_additiveTuple_two_iff {N : Nat}
     (q : Fin 4 → ZMod N) :
     IsAdditiveTuple (k := 2) q ↔ q 0 + q 1 = q 2 + q 3 := by
   unfold IsAdditiveTuple

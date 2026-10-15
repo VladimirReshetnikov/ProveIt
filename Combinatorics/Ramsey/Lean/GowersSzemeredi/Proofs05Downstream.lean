@@ -304,151 +304,13 @@ theorem polynomialOn_section5ModIndexPoint {N k : Nat} [NeZero N]
 
 /-! ### A uniform additive-error version of phase removal -/
 
-@[simp] private lemma downstream_norm_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : ‖exponential x‖ = 1 := by
-  exact AddChar.norm_apply (ZMod.stdAddChar (N := N)) x
+attribute [simp] cor57_norm_exponential
 
-@[simp] private lemma downstream_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) :
-    exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-private lemma downstream_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    exponential x =
-      Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-  calc
-    exponential x = ZMod.stdAddChar ((x.valMinAbs : Int) : ZMod N) := by
-      simp [exponential]
-    _ = Complex.exp (2 * Real.pi * Complex.I * (x.valMinAbs : Int) / N) :=
-      ZMod.stdAddChar_coe x.valMinAbs
-    _ = Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-      congr 1
-      push_cast
-      ring
+alias downstream_norm_exponential_sub_one_le := cor57_norm_exponential_sub_one_le
 
-lemma downstream_norm_exponential_sub_one_le {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    ‖exponential x - 1‖ ≤ 2 * Real.pi * centeredAbs x / N := by
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have habsval : |(x.valMinAbs : Real)| = (centeredAbs x : Real) := by
-    rw [centeredAbs, ← Int.cast_abs, Int.abs_eq_natAbs]
-    rfl
-  rw [downstream_exponential_eq_exp_valMinAbs]
-  calc
-    ‖Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) - 1‖ ≤
-        ‖2 * Real.pi * (x.valMinAbs : Real) / N‖ :=
-      Real.norm_exp_I_mul_ofReal_sub_one_le
-    _ = 2 * Real.pi * centeredAbs x / N := by
-      rw [Real.norm_eq_abs, abs_div, abs_mul, abs_mul,
-        abs_of_nonneg (by norm_num : (0 : Real) ≤ 2),
-        abs_of_pos Real.pi_pos, habsval, abs_of_pos hN]
-
-private lemma downstream_centeredAbs_natCast_le {N i : Nat} [NeZero N] :
-    centeredAbs (i : ZMod N) ≤ i := by
-  rw [centeredAbs, ZMod.valMinAbs_natAbs_eq_min, ZMod.val_natCast]
-  exact (Nat.min_le_left _ _).trans (Nat.mod_le i N)
-
-private lemma downstream_centeredAbs_neg_natCast_le {N i : Nat} [NeZero N] :
-    centeredAbs (-(i : ZMod N)) ≤ i := by
-  rw [centeredAbs, ZMod.natAbs_valMinAbs_neg]
-  exact downstream_centeredAbs_natCast_le
-
-lemma downstream_phase_close_of_mem_interval {N d : Nat} [NeZero N]
-    (a y : ZMod N) (hy : y ∈ (modInterval N a (d + 1)).carrier) :
-    ‖exponential (-y) - exponential (-a)‖ ≤
-      2 * Real.pi * d / N := by
-  classical
-  unfold ModAP.carrier modInterval at hy
-  simp only [Finset.mem_image, Finset.mem_univ, true_and] at hy
-  obtain ⟨i, rfl⟩ := hy
-  have hi : (i : Nat) ≤ d := by omega
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  simp only [mul_one]
-  calc
-    ‖exponential (-(a + (i : ZMod N))) - exponential (-a)‖ =
-        ‖exponential (-a) * (exponential (-(i : ZMod N)) - 1)‖ := by
-      congr 1
-      rw [show -(a + (i : ZMod N)) = -a + -(i : ZMod N) by ring]
-      rw [downstream_exponential_add]
-      ring
-    _ = ‖exponential (-(i : ZMod N)) - 1‖ := by
-      rw [norm_mul, downstream_norm_exponential, one_mul]
-    _ ≤ 2 * Real.pi * centeredAbs (-(i : ZMod N)) / N :=
-      downstream_norm_exponential_sub_one_le _
-    _ ≤ 2 * Real.pi * d / N := by
-      apply div_le_div_of_nonneg_right _ hN.le
-      gcongr
-      exact_mod_cast
-        (downstream_centeredAbs_neg_natCast_le (N := N) (i := (i : Nat))).trans hi
-
-private lemma downstream_cell_norm_le {N : Nat} [NeZero N]
-    (S : Finset Nat) (f : ZMod N → Complex) (phi : ZMod N → ZMod N)
-    (eta scale : Real) (hf : DiscValued f)
-    (hdiam : diameterAtMostReal
-      (S.image fun x : Nat => phi (x : ZMod N)) scale)
-    (hscale : scale ≤ eta * N / (4 * Real.pi)) :
-    ‖∑ s ∈ S, f (s : ZMod N) * exponential (-(phi (s : ZMod N)))‖ ≤
-      ‖∑ s ∈ S, f (s : ZMod N)‖ + eta / 2 * S.card := by
-  classical
-  obtain ⟨d, ⟨a, hsubset⟩, hdscale⟩ := hdiam
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hphase (s : Nat) (hs : s ∈ S) :
-      ‖exponential (-(phi (s : ZMod N))) - exponential (-a)‖ ≤ eta / 2 := by
-    have himage : phi (s : ZMod N) ∈
-        S.image (fun x : Nat => phi (x : ZMod N)) :=
-      Finset.mem_image.mpr ⟨s, hs, rfl⟩
-    calc
-      _ ≤ 2 * Real.pi * d / N :=
-        downstream_phase_close_of_mem_interval a _ (hsubset himage)
-      _ ≤ 2 * Real.pi * scale / N := by gcongr
-      _ ≤ eta / 2 := by
-        have hpi : (0 : Real) < 4 * Real.pi := by positivity
-        have hscaled : scale * (4 * Real.pi) ≤ eta * N :=
-          (le_div_iff₀ hpi).1 hscale
-        apply (div_le_iff₀ hN).2
-        nlinarith [Real.pi_pos]
-  let twisted := ∑ s ∈ S,
-    f (s : ZMod N) * exponential (-(phi (s : ZMod N)))
-  let plain := ∑ s ∈ S, f (s : ZMod N)
-  let err := ∑ s ∈ S,
-    f (s : ZMod N) *
-      (exponential (-(phi (s : ZMod N))) - exponential (-a))
-  have hdecomp : twisted = exponential (-a) * plain + err := by
-    dsimp only [twisted, plain, err]
-    rw [Finset.mul_sum, ← Finset.sum_add_distrib]
-    apply Finset.sum_congr rfl
-    intro s _hs
-    ring
-  have herr : ‖err‖ ≤ eta / 2 * S.card := by
-    dsimp only [err]
-    calc
-      _ ≤ ∑ s ∈ S,
-          ‖f (s : ZMod N) *
-            (exponential (-(phi (s : ZMod N))) - exponential (-a))‖ :=
-        norm_sum_le _ _
-      _ ≤ ∑ _s ∈ S, eta / 2 := by
-        apply Finset.sum_le_sum
-        intro s hs
-        rw [norm_mul]
-        calc
-          ‖f (s : ZMod N)‖ *
-              ‖exponential (-(phi (s : ZMod N))) - exponential (-a)‖ ≤
-              1 * (eta / 2) :=
-            mul_le_mul (hf _) (hphase s hs) (norm_nonneg _) (by norm_num)
-          _ = eta / 2 := one_mul _
-      _ = eta / 2 * S.card := by simp [mul_comm]
-  change ‖twisted‖ ≤ ‖plain‖ + eta / 2 * S.card
-  rw [hdecomp]
-  calc
-    ‖exponential (-a) * plain + err‖ ≤
-        ‖exponential (-a) * plain‖ + ‖err‖ := norm_add_le _ _
-    _ ≤ ‖plain‖ + eta / 2 * S.card := by
-      rw [norm_mul, downstream_norm_exponential, one_mul]
-      gcongr
+alias downstream_phase_close_of_mem_interval := cor57_phase_close_of_mem_interval
 
 private lemma downstream_sum_partition {X R : Type*} [DecidableEq X]
     [AddCommMonoid R] {m : Nat} (P : Fin m → Finset X) (S : Finset X)
@@ -572,7 +434,7 @@ theorem section5_local_phase_refinement_of_corollary_5_6
           pulledF (s : ZMod N) * exponential (-(pulledPhi (s : ZMod N)))‖ ≤
         ‖∑ s ∈ (S j).carrier, pulledF (s : ZMod N)‖ +
           eta / 2 * (S j).carrier.card :=
-    downstream_cell_norm_le (S j).carrier pulledF pulledPhi eta
+    cor57_cell_norm_le (S j).carrier pulledF pulledPhi eta
       ((P.length : Real) ^
         (-(polynomialPartitionConstant k : Real)⁻¹) * N)
       hpulledF (hdiam j) hscale
@@ -923,7 +785,7 @@ theorem section5_efficient_local_phase_refinement_of_corollary_5_6
         rfl
       obtain ⟨x, hx⟩ := Finset.card_eq_one.mp hcard
       rw [hx]
-      simp only [Finset.sum_singleton, norm_mul, downstream_norm_exponential, mul_one]
+      simp only [Finset.sum_singleton, norm_mul, cor57_norm_exponential, mul_one]
     calc
       ‖∑ s ∈ P.carrier, f s * exponential (-(phi s))‖ =
           ‖∑ j, ∑ s ∈ (R j).carrier,

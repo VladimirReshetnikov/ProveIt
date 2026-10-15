@@ -107,25 +107,27 @@ theorem Section16FinalFreimanFamilies.of_translate {N q : Nat} [NeZero N]
   apply Finset.mem_image.mpr
   refine ⟨y + x0, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hb⟩, by simp⟩
 
-/-- The translated points of a slice-pruned set that miss it are sparse. -/
-theorem card_translated_slice_bad_le {N : Nat} [NeZero N] {theta : Real}
-    (B : Finset (Point N 2)) (C : ZMod N → Finset (Point N 1))
+/-- The translated points of a slice-pruned set that miss it are sparse, in
+every dimension. -/
+theorem card_translated_slice_bad_le_succ {N k : Nat} [NeZero N] {theta : Real}
+    (B : Finset (Point N (k + 1))) (C : ZMod N → Finset (Point N k))
     (hC : ∀ t, C t ⊆ section16FinalCoordinateSection B t)
-    (hcard : ∀ t, ((section16FinalCoordinateSection B t).card : Real) - theta * N ≤ (C t).card)
-    (x0 : Point N 1) :
-    (((Finset.univ : Finset (Point N 2)).filter fun z =>
+    (hcard : ∀ t, ((section16FinalCoordinateSection B t).card : Real) - theta * (N : Real) ^ k ≤
+      (C t).card)
+    (x0 : Point N k) :
+    (((Finset.univ : Finset (Point N (k + 1))).filter fun z =>
         appendCoordinate (section16Init z + x0) (section16Last z) ∈ B ∧
           section16Init z + x0 ∉ C (section16Last z)).card : Real) ≤
-      theta * (N : Real) ^ 2 := by
+      theta * (N : Real) ^ (k + 1) := by
   classical
-  set X := (Finset.univ : Finset (Point N 2)).filter fun z =>
+  set X := (Finset.univ : Finset (Point N (k + 1))).filter fun z =>
     appendCoordinate (section16Init z + x0) (section16Last z) ∈ B ∧
       section16Init z + x0 ∉ C (section16Last z) with hX
   rw [Finset.card_eq_sum_card_fiberwise (f := section16Last) (t := Finset.univ)
     (fun _ _ => Finset.mem_univ _)]
   push_cast
   have hfib : ∀ t : ZMod N, ((X.filter fun z => section16Last z = t).card : Real) ≤
-      theta * (N : Real) := by
+      theta * (N : Real) ^ k := by
     intro t
     have h1 : (X.filter fun z => section16Last z = t).card ≤
         (section16FinalCoordinateSection B t \ C t).card := by
@@ -139,7 +141,7 @@ theorem card_translated_slice_bad_le {N : Nat} [NeZero N] {theta : Real}
         simp only [Prod.mk.injEq]
         refine ⟨add_right_cancel hzz, ?_⟩
         exact ((Finset.mem_filter.mp hz).2).trans ((Finset.mem_filter.mp hz').2).symm
-    have h2 : ((section16FinalCoordinateSection B t \ C t).card : Real) ≤ theta * N := by
+    have h2 : ((section16FinalCoordinateSection B t \ C t).card : Real) ≤ theta * (N : Real) ^ k := by
       have hsum : ((section16FinalCoordinateSection B t \ C t).card : Real) + (C t).card =
           (section16FinalCoordinateSection B t).card := by
         exact_mod_cast Finset.card_sdiff_add_card_eq_card (hC t)
@@ -147,9 +149,22 @@ theorem card_translated_slice_bad_le {N : Nat} [NeZero N] {theta : Real}
     exact (by exact_mod_cast h1 : ((X.filter fun z => section16Last z = t).card : Real) ≤
       ((section16FinalCoordinateSection B t \ C t).card : Real)).trans h2
   calc ∑ t : ZMod N, ((X.filter fun z => section16Last z = t).card : Real)
-      ≤ ∑ _t : ZMod N, theta * (N : Real) := Finset.sum_le_sum fun t _ => hfib t
-    _ = theta * (N : Real) ^ 2 := by
-        rw [Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul]; ring
+      ≤ ∑ _t : ZMod N, theta * (N : Real) ^ k := Finset.sum_le_sum fun t _ => hfib t
+    _ = theta * (N : Real) ^ (k + 1) := by
+        rw [Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul, pow_succ]; ring
+
+/-- The translated points of a slice-pruned set that miss it are sparse. -/
+theorem card_translated_slice_bad_le {N : Nat} [NeZero N] {theta : Real}
+    (B : Finset (Point N 2)) (C : ZMod N → Finset (Point N 1))
+    (hC : ∀ t, C t ⊆ section16FinalCoordinateSection B t)
+    (hcard : ∀ t, ((section16FinalCoordinateSection B t).card : Real) - theta * N ≤ (C t).card)
+    (x0 : Point N 1) :
+    (((Finset.univ : Finset (Point N 2)).filter fun z =>
+        appendCoordinate (section16Init z + x0) (section16Last z) ∈ B ∧
+          section16Init z + x0 ∉ C (section16Last z)).card : Real) ≤
+      theta * (N : Real) ^ 2 := by
+  have h := card_translated_slice_bad_le_succ (k := 1) B C hC (fun t => by simpa using hcard t) x0
+  simpa using h
 
 theorem cubicSlice_count_monotone (q : Nat) :
     Monotone (fun r : Nat => ((3 * (max 1 r * q) : Nat) : Real)) := by
@@ -162,7 +177,6 @@ theorem cubicSlice_exponent_antitone {q : Nat} (hq : 0 < q) {eps : Real} (heps :
   intro r r' hrr
   dsimp only
   unfold cubicBaseExponent
-  have h1 : 0 < max 1 r * q := Nat.mul_pos (by omega) hq
   have hle : ((max 1 r * q : Nat) : Real) ≤ ((max 1 r' * q : Nat) : Real) := by
     exact_mod_cast Nat.mul_le_mul_right q (max_le_max le_rfl hrr)
   apply div_le_div_of_nonneg_left (by positivity) (by positivity)

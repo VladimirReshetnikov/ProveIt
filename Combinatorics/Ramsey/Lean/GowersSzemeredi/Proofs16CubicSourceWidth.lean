@@ -19,7 +19,6 @@ theorem section16_cubic_source_width {theta gamma rho : Real}
   let A : Real := ((2 : Nat)^((2 : Nat)^(2 + 8)) : Nat)
   let t := gamma * sigma / (2 * R)
   have hU16 : 16 ≤ U := multipleS_one_ge_sixteen ht ht1 hg hg1
-  have hU : 0 < U := by linarith
   have hR1 : 1 ≤ R := by
     have hh := (section16_face_parameter_lift_reserve 1
       (by positivity : 0 < theta / 2) (by linarith : theta / 2 ≤ 1) hg hg1).1

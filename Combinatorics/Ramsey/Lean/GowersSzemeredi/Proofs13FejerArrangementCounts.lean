@@ -31,12 +31,6 @@ private theorem fejer_countWhere_sum {X : Type*} [Fintype X] (P : X → Prop) :
   classical
   simp [countWhere]
 
-private theorem fejer_countWhere_equiv {X Y : Type*} [Fintype X] [Fintype Y]
-    (e : X ≃ Y) (P : Y → Prop) : countWhere P = countWhere (fun x => P (e x)) := by
-  classical
-  simp_rw [fejer_countWhere_sum]
-  exact (e.sum_comp (fun x => if P x then 1 else 0)).symm
-
 def fejerArrangementEdges {N : Nat} [NeZero N] (U : Finset (Pair N))
     (P : DArrangement N 8 → Prop) : Finset (FejerBalancedArrangement N) := by
   classical
@@ -102,7 +96,7 @@ theorem fejerExceptionalArrangements_card {N L : Nat} [NeZero N] [Fact N.Prime] 
     (fejerExceptionalArrangements (N := N) (L := L)).card ≤ (2 * L) ^ 32 * (2 * N ^ 31) := by
   change countWhere (fun R : FejerBalancedArrangement N =>
     fejerFeatureExceptional (L := L) fejerArrangementFreeSign (fejerArrangementEncode R.1)) ≤ _
-  rw [fejer_countWhere_equiv fejerArrangementParametersEquiv]
+  rw [feature_countWhere_equiv fejerArrangementParametersEquiv]
   change countWhere (fun z : FejerArrangementParameters N =>
     fejerFeatureExceptional (L := L) fejerArrangementFreeSign
       (fejerArrangementEncode (fejerArrangementDecode z))) ≤ _

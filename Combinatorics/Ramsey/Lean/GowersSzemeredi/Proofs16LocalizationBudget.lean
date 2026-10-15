@@ -14,7 +14,6 @@ namespace LeanProofs.GowersSzemeredi
 theorem floor_half_lower {x : Real} (hx : 2 ≤ x) :
     0 < Nat.floor x ∧ x ≤ 2 * (Nat.floor x : Real) := by
   have hpos : 0 < Nat.floor x := Nat.floor_pos.mpr (by linarith)
-  have hpos' : (1 : Real) ≤ Nat.floor x := by exact_mod_cast hpos
   have hlt := Nat.lt_floor_add_one x
   exact ⟨hpos, by linarith⟩
 
@@ -76,7 +75,6 @@ theorem section16_localized_short_scale (s b zeta : Real)
   have hlr : l ≤ Real.sqrt s / 64 := by
     dsimp [l]
     nlinarith [mul_nonneg (by linarith : 0 ≤ 1 / 32 - zeta) hr]
-  have hr64 : 64 < Real.sqrt s := by linarith
   have hvsqrt : (v : Real) ≤ 3 * Real.sqrt s / 64 := by linarith
   have hvSq : (v : Real) ^ 2 + 1 ≤ b := by
     have hv2 := pow_le_pow_left₀ hvr.le hvsqrt 2
@@ -104,7 +102,6 @@ theorem localization_inputs_of_large_target {m a e zeta : Real}
   have hlr : (zeta / 2) * Real.sqrt (m ^ (a * e)) ≤
       Real.sqrt (m ^ (a * e)) / 64 := by
     nlinarith [mul_nonneg (by linarith : 0 ≤ 1 / 32 - zeta) hr]
-  have hr64 : 64 < Real.sqrt (m ^ (a * e)) := by linarith
   have hbig : 4096 < m ^ (a * e) := by nlinarith
   have hae : a * e ≤ a := by nlinarith
   have hpow : m ^ (a * e) ≤ m ^ a := Real.rpow_le_rpow_of_exponent_le hm hae

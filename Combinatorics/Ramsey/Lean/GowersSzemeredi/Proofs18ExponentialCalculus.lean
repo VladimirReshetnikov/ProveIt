@@ -31,7 +31,6 @@ theorem rpow_le_exp_pow {X b e : Real} {m k : Nat} (hX : 2 ≤ X) (hb1 : 1 ≤ b
   have hX0 : 0 ≤ X := le_trans (by norm_num) hX
   rw [Real.rpow_def_of_pos (lt_of_lt_of_le zero_lt_one hb1)]
   apply Real.exp_le_exp.mpr
-  have hl0 : 0 ≤ Real.log b := Real.log_nonneg hb1
   have hl : Real.log b ≤ X ^ m :=
     (Real.log_le_iff_le_exp (lt_of_lt_of_le zero_lt_one hb1)).mpr hb
   rw [pow_add]

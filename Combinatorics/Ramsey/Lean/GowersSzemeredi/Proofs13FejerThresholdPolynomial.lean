@@ -74,7 +74,6 @@ theorem section13FrequencyGraphThreshold_le_power {alpha : Real}
     (section13FrequencyGraphThreshold alpha : Real) ≤ (2 / alpha) ^ ((2 : Nat) ^ 37) := by
   let a := alpha / 2
   let x := 2 / alpha
-  have ha : 0 < a := by dsimp [a]; positivity
   have hx : 2 ≤ x := (le_div_iff₀ hα).mpr (by linarith only [hαone])
   have hainv : a⁻¹ = x := by dsimp [a, x]; field_simp
   have hd : (a ^ (14409429 : Nat))⁻¹ ≤ x ^ (14409429 : Nat) := by rw [← inv_pow, hainv]

@@ -197,7 +197,6 @@ theorem lsShortThreshold_le {K1 p1 K2 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1) (h
   set Tl := lsTloc (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) K2 p2 alpha
   set X := 2 / alpha with hX
   clear_value E T3 Tl X
-  have hZ0 : 0 ≤ X ^ ((2 : Nat) ^ 665) := pow_nonneg (le_trans (by norm_num) hX2) _
   have hT3' : T3 ≤ Real.exp (Real.exp (X ^ ((2 : Nat) ^ 665))) :=
     hT3.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr hYp))
   have hsmall : ∀ c : Real, c ≤ 2 ^ 5 → c ≤ Real.exp (Real.exp (X ^ ((2 : Nat) ^ 665))) := by
@@ -279,7 +278,7 @@ theorem lsInverseThreshold_le {K1 p1 p2 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1) (hp
       have h8 : b3⁻¹ ≤ (b3 / 8)⁻¹ := inv_anti₀ (by positivity) (by linarith only [hb0])
       exact h8.trans (hbi.trans hYp)
     rw [show (eta * b3 / 2)⁻¹ = 2 * (eta⁻¹ * b3⁻¹) by field_simp]
-    have h := mul_le_pow_add (inv_pos.mpr n0).le (inv_pos.mpr hb0).le ni hb3i hX0
+    have h := mul_le_pow_add (inv_pos.mpr hb0).le ni hb3i hX0
     have h2 : 2 * (eta⁻¹ * b3⁻¹) ≤ X ^ (1 + ((2 : Nat) ^ 602 + (2 : Nat) ^ 663)) := by
       rw [pow_add, pow_one]; exact mul_le_mul hX2 h (by positivity) hX0
     exact h2.trans (pow_le_pow_right₀ hX1 (by norm_num))

@@ -30,15 +30,15 @@ theorem pw_mono (hX : 2 ≤ X) {x : Real} {a b : Nat} (h : x ≤ X ^ (2 ^ a)) (h
     x ≤ X ^ (2 ^ b) :=
   h.trans (pow_le_pow_right₀ (le_trans (by norm_num) hX) (Nat.pow_le_pow_right (by norm_num) hab))
 
-theorem pw_mul (hX : 2 ≤ X) {x y : Real} {a : Nat} (hx0 : 0 ≤ x) (hy0 : 0 ≤ y)
+theorem pw_mul (hX : 2 ≤ X) {x y : Real} {a : Nat} (hy0 : 0 ≤ y)
     (hx : x ≤ X ^ (2 ^ a)) (hy : y ≤ X ^ (2 ^ a)) : x * y ≤ X ^ (2 ^ (a + 1)) := by
   have hX0 : 0 ≤ X := le_trans (by norm_num) hX
   calc x * y ≤ X ^ (2 ^ a) * X ^ (2 ^ a) := mul_le_mul hx hy hy0 (pow_nonneg hX0 _)
     _ = X ^ (2 ^ (a + 1)) := by rw [← pow_add, pow_succ, mul_two]
 
-theorem pw_mul' (hX : 2 ≤ X) {x y : Real} {a b : Nat} (hx0 : 0 ≤ x) (hy0 : 0 ≤ y)
+theorem pw_mul' (hX : 2 ≤ X) {x y : Real} {a b : Nat} (hy0 : 0 ≤ y)
     (hx : x ≤ X ^ (2 ^ a)) (hy : y ≤ X ^ (2 ^ b)) : x * y ≤ X ^ (2 ^ (max a b + 1)) :=
-  pw_mul hX hx0 hy0 (pw_mono hX hx (le_max_left a b)) (pw_mono hX hy (le_max_right a b))
+  pw_mul hX hy0 (pw_mono hX hx (le_max_left a b)) (pw_mono hX hy (le_max_right a b))
 
 theorem pw_pow (hX : 2 ≤ X) {x : Real} {a c n : Nat} (hx0 : 0 ≤ x) (hx : x ≤ X ^ (2 ^ a))
     (hn : n ≤ 2 ^ c) : x ^ n ≤ X ^ (2 ^ (a + c)) := by
@@ -75,7 +75,7 @@ theorem density_div_bounds_pw {X t d : Real} {a : Nat} (hX : 2 ≤ X)
   refine ⟨div_pos ht.1 (zero_lt_one.trans_le hd),
     (div_le_self ht.1.le hd).trans ht.2.1, ?_⟩
   rw [inv_div, div_eq_mul_inv]
-  exact pw_mul hX (zero_le_one.trans hd) (inv_pos.mpr ht.1).le hdi ht.2.2
+  exact pw_mul hX (inv_pos.mpr ht.1).le hdi ht.2.2
 
 /-- The face-budget denominator fits the same power slot when `k + 2 ≤ a`. -/
 theorem budget_denominator_le_pw {X : Real} {k a : Nat} (hX : 2 ≤ X)
@@ -113,7 +113,7 @@ theorem ex_rpow_of_nonneg (hX : 2 ≤ X) {b e : Real} {a c : Nat} (hb0 : 0 ≤ b
   calc b ^ e ≤ Real.exp (X ^ (2 ^ a)) ^ e := Real.rpow_le_rpow hb0 hb he0
     _ = Real.exp (X ^ (2 ^ a) * e) := (Real.exp_mul _ _).symm
     _ ≤ Real.exp (X ^ (2 ^ (max a c + 1))) := Real.exp_le_exp.mpr
-      (pw_mul' hX (pow_nonneg (by linarith) _) he0 le_rfl he)
+      (pw_mul' hX he0 le_rfl he)
 
 /-- `b^e ≤ exp(X^(2^(max a c + 1)))` for `1 ≤ b ≤ exp(X^(2^a))` and `0 ≤ e ≤ X^(2^c)`. -/
 theorem ex_rpow (hX : 2 ≤ X) {b e : Real} {a c : Nat} (hb1 : 1 ≤ b)
@@ -133,7 +133,7 @@ theorem section16ThetaTwo_inv_le_pw {t X : Real} {a : Nat} (hX : 2 ≤ X) (ha : 
   have h32 := pw_mono hX (pw_const hX (a := 5) (by norm_num : (2 : Real) ^ 32 ≤ 2 ^ (2 ^ 5)))
     (show 5 ≤ a + 3 by omega)
   have h8 := pw_pow hX (inv_pos.mpr ht).le hi (by norm_num : 8 ≤ (2 : Nat) ^ 3)
-  exact pw_mul hX (pow_nonneg (by norm_num) _) (pow_nonneg (inv_pos.mpr ht).le _) h32 h8
+  exact pw_mul hX (pow_nonneg (inv_pos.mpr ht).le _) h32 h8
 
 
 /-- A product of `≤ 2^c` factors, each at most `X^(2^a)`, is at most `X^(2^(a+c))`. -/
@@ -308,9 +308,9 @@ theorem slice_const_le_deg {V B : Real} {μV b μ0 : Nat} (ha : 0 < alpha) (ha2 
   have h8 : (8 : Real) ≤ (2 / alpha) ^ (2 ^ m) :=
     pw_mono hX (pw_const hX (a := 2) (by norm_num)) (by omega)
   have hXm : 2 / alpha ≤ (2 / alpha) ^ (2 ^ m) := pw_X hX m
-  have h1 := pw_mul hX (by norm_num) (by linarith) h8 hV'
-  have h2 := pw_mul hX (by positivity) (inv_pos.mpr hB).le hXm hB'
-  have h3 := pw_mul hX (by positivity) (by positivity) h1 h2
+  have h1 := pw_mul hX (by linarith) h8 hV'
+  have h2 := pw_mul hX (inv_pos.mpr hB).le hXm hB'
+  have h3 := pw_mul hX (by positivity) h1 h2
   have e : 8 * V * (2 / alpha) * B⁻¹ = 8 * V * ((2 / alpha) * B⁻¹) := by ring
   rw [e]
   exact pw_mono hX h3 (by omega)
@@ -350,7 +350,7 @@ theorem uniform_baseC_recipPowerLB_of_budget {alpha V B : Real} {D μV b μ0 : N
       (2 / alpha) ^ (D * 2 ^ μ0 + 1) * s⁻¹ ^ (D + 1)
   refine ⟨div_pos hs2 hQ0, (div_le_one hQ0).mpr (by linarith), ?_⟩
   rw [inv_div, hQeq]
-  set X := 2 / alpha with hXdef
+  set X := 2 / alpha
   have hsi : 0 ≤ s⁻¹ := (inv_pos.mpr hs).le
   have hcs : 8 * V * X * B⁻¹ * s⁻¹ ≤ X ^ (2 ^ μ0) * s⁻¹ := mul_le_mul_of_nonneg_right hc hsi
   have hpow := pow_le_pow_left₀ (by positivity) hcs D
@@ -390,7 +390,6 @@ theorem fixDeg_cube (k : Nat) : 2 * (k + 2) ^ 3 + k + 3 ≤ 2 ^ fixDeg k ∧
   have hk3 : 2 * (k + 3) ≤ 2 ^ (k + 3) := by
     have := Nat.lt_two_pow_self (n := k + 2); rw [pow_succ]; omega
   have hexp : 3 * k + 9 ≤ 2 ^ (k + 5) := by
-    have h := Nat.lt_two_pow_self (n := k + 2)
     have : 2 ^ (k + 5) = 8 * 2 ^ (k + 2) := by rw [show k + 5 = (k + 2) + 3 by ring, pow_add]; ring
     omega
   have hsq := sq_add_three_lt k
@@ -422,7 +421,6 @@ theorem cS_step {X : Real} (hX : 2 ≤ X) {c : Real → Real} {a0 b0 : Nat}
   have h1 : 2 ^ m * b0 ≤ 2 ^ m * 2 ^ μb := Nat.mul_le_mul_left _ hb0
   have h2 : 2 ^ m * 2 ^ μb = 2 ^ (m + μb) := by rw [← pow_add]
   have h3 : 2 ^ μa ≤ 2 ^ (m + μb) := Nat.pow_le_pow_right (by norm_num) (by omega)
-  have h4 : 2 ^ (m + μb + 1) = 2 * 2 ^ (m + μb) := by rw [pow_succ]; ring
   omega
 
 section Steps
@@ -439,10 +437,10 @@ theorem rho_step (hX : 2 ≤ X) {r : Real} {m : Nat} (hr0 : 0 < r) (hr1 : r ≤ 
       mul_le_mul (by linarith) (by linarith) (by positivity) zero_le_one
     linarith
   · rw [show (r / 2 * (r / 2 / 2))⁻¹ = 8 * (r⁻¹ * r⁻¹) by field_simp; ring]
-    have hsq := pw_mul hX (inv_pos.mpr hr0).le (inv_pos.mpr hr0).le hri hri
+    have hsq := pw_mul hX (inv_pos.mpr hr0).le hri hri
     have h8 : (8 : Real) ≤ X ^ (2 ^ (m + 1)) :=
       pw_mono hX (pw_const hX (a := 2) (by norm_num)) (by omega)
-    exact pw_mul hX (by norm_num) (by positivity) h8 hsq
+    exact pw_mul hX (by positivity) h8 hsq
 
 /-- `θ_S = ρ³/4`. -/
 theorem thetaS_step (hX : 2 ≤ X) {R : Real} {m : Nat} (hR0 : 0 < R) (hR1 : R ≤ 1)
@@ -458,7 +456,7 @@ theorem thetaS_step (hX : 2 ≤ X) {R : Real} {m : Nat} (hR0 : 0 < R) (hR1 : R �
     have h3 := pw_pow hX (inv_pos.mpr hR0).le hRi (show 3 ≤ 2 ^ 2 by norm_num)
     have h4 : (4 : Real) ≤ X ^ (2 ^ (m + 2)) :=
       pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
-    exact pw_mul hX (by norm_num) (by positivity) h4 h3
+    exact pw_mul hX (by positivity) h4 h3
 
 /-- The single-piece density `θ·c(c(θ))` for a reciprocal-power `c`. -/
 theorem dens_step (hX : 2 ≤ X) {c : Real → Real} {a0 b0 : Nat} (hc : RecipPowerLB X c a0 b0)
@@ -469,7 +467,7 @@ theorem dens_step (hX : 2 ≤ X) {c : Real → Real} {a0 b0 : Nat} (hc : RecipPo
   obtain ⟨hd0, hd1, hdi⟩ := cS_step hX hc hc0 hc1 hci ha0 hb0 (by omega)
   refine ⟨mul_pos hθ0 hd0, (mul_le_mul hθ1 hd1 hd0.le zero_le_one).trans (by norm_num), ?_⟩
   rw [mul_inv]
-  have := pw_mul' hX (inv_pos.mpr hθ0).le (inv_pos.mpr hd0).le hθi hdi
+  have := pw_mul' hX (inv_pos.mpr hd0).le hθi hdi
   exact pw_mono hX this (by omega)
 
 end Steps
@@ -520,7 +518,7 @@ theorem eta_step_of_cube_le {alpha d : Real} {k m : Nat} (ha : 0 < alpha) (ha2 :
         _ ≤ (2 / alpha) ^ (2 ^ m) := pow_le_pow_right₀ hX1 hcube
     calc (2 : Real) ^ (2 * (k + 2) ^ 3) * ((2 : Real) ^ (k + 1) * (2 / alpha) ^ 2 * d⁻¹)
         = (2 : Real) ^ (2 * (k + 2) ^ 3) * ((2 : Real) ^ (k + 1) * (2 / alpha) ^ 2) * d⁻¹ := by ring
-      _ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := pw_mul hX (by positivity) (inv_pos.mpr hd0).le hc hdi
+      _ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := pw_mul hX (inv_pos.mpr hd0).le hc hdi
 
 /-- `η` from the single-piece density. -/
 theorem eta_step {alpha d : Real} {k m : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
@@ -553,7 +551,7 @@ theorem yIn_step_of_den_le {alpha e : Real} {k m : Nat} (ha : 0 < alpha) (ha2 : 
     calc (2 * (k + 1 + 2 : Nat) : Real) ^ (k + 1 + 2) / (e / 2)
         = 2 * (2 * (k + 1 + 2 : Nat) : Real) ^ (k + 1 + 2) * e⁻¹ := by
           rw [div_eq_mul_inv, inv_div]; ring
-      _ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := pw_mul hX (by positivity) (inv_pos.mpr he0).le hc hei
+      _ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := pw_mul hX (inv_pos.mpr he0).le hc hei
 
 /-- `yIn` from `η`. -/
 theorem yIn_step {alpha e : Real} {k m : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
@@ -584,13 +582,13 @@ theorem uCount_scale_le {X V γ θ s : Real} {D μV μD μ0 c : Nat} (hX : 2 ≤
   have hV' : V ≤ X ^ (2 ^ m) := pw_mono hX (pw_const hX hVμ) (le_max_left _ _)
   have hg' : γ⁻¹ ≤ X ^ (2 ^ m) := pw_mono hX hgi (le_max_right _ _)
   have ht' : θ⁻¹ ≤ X ^ (2 ^ m) := pw_mono hX hti (le_max_right _ _)
-  have h1 := pw_mul hX (by norm_num) (by linarith) h4 hV'
-  have h2 := pw_mul hX (inv_pos.mpr hg).le (inv_pos.mpr ht).le hg' ht'
-  have h3 := pw_mul hX (by positivity) (by positivity) h1 h2
+  have h1 := pw_mul hX (by linarith) h4 hV'
+  have h2 := pw_mul hX (inv_pos.mpr ht).le hg' ht'
+  have h3 := pw_mul hX (by positivity) h1 h2
   have hc0 : 4 * V * γ⁻¹ * θ⁻¹ ≤ X ^ (2 ^ μ0) := by
     rw [show 4 * V * γ⁻¹ * θ⁻¹ = 4 * V * (γ⁻¹ * θ⁻¹) by ring]
     exact pw_mono hX h3 (by omega)
-  have h5 := pw_mul' hX (by positivity) (inv_pos.mpr hs).le hc0 hsi
+  have h5 := pw_mul' hX (inv_pos.mpr hs).le hc0 hsi
   exact pw_pow hX (by positivity) h5 hD
 
 namespace GenParams
@@ -607,7 +605,7 @@ theorem floor_succ_le_pw {X Q : Real} {m : Nat} (hX : 2 ≤ X) (hQ1 : 1 ≤ Q) (
     ((⌊Q⌋₊ : Nat) : Real) + 1 ≤ X ^ (2 ^ (m + 1)) := by
   have hfl : ((⌊Q⌋₊ : Nat) : Real) ≤ Q := Nat.floor_le (le_trans zero_le_one hQ1)
   have h2 : (2 : Real) ≤ X ^ (2 ^ m) := hX.trans (pw_X hX _)
-  have h3 := pw_mul hX (by norm_num) (le_trans zero_le_one hQ1) h2 hQ
+  have h3 := pw_mul hX (le_trans zero_le_one hQ1) h2 hQ
   have h4 : ((⌊Q⌋₊ : Nat) : Real) + 1 ≤ 2 * Q := by linarith
   exact h4.trans h3
 
@@ -640,10 +638,10 @@ theorem inv_mul_div_four_le_pw (hX : 2 ≤ X) {x y : Real} {a : Nat}
     (hx : 0 < x) (hy : 0 < y) (hxi : x⁻¹ ≤ X ^ (2 ^ a)) (hyi : y⁻¹ ≤ X ^ (2 ^ a)) :
     (x * y / 4)⁻¹ ≤ X ^ (2 ^ (a + 2)) := by
   rw [show (x * y / 4)⁻¹ = 4 * (x⁻¹ * y⁻¹) by field_simp]
-  have hxy := pw_mul hX (inv_pos.mpr hx).le (inv_pos.mpr hy).le hxi hyi
+  have hxy := pw_mul hX (inv_pos.mpr hy).le hxi hyi
   have h4 : (4 : Real) ≤ X ^ (2 ^ (a + 1)) :=
     (four_le_pw_one hX).trans (pw_mono hX le_rfl (by omega))
-  exact pw_mul hX (by norm_num)
+  exact pw_mul hX
     (mul_nonneg (inv_pos.mpr hx).le (inv_pos.mpr hy).le) h4 hxy
 
 end Calc
@@ -656,15 +654,15 @@ theorem familyRecThr_le_exp {X : Real} (hX : 2 ≤ X) {k K p q μK c : Nat} (hK 
   have hp' : (p : Real) ≤ X ^ (2 ^ μK) := pw_const hX (by exact_mod_cast hpμ)
   have hbase : ((K * (q + 1) : Nat) : Real) ≤ X ^ (2 ^ (max μK c + 1)) := by
     push_cast
-    exact pw_mul' hX (Nat.cast_nonneg _) hq0 hK' hq
+    exact pw_mul' hX hq0 hK' hq
   have hk2 : 2 * 2 ^ (k + 1) ≤ 2 ^ (k + 2) := by rw [pow_succ 2 (k + 1)]; omega
   have hpow := pw_pow hX hq0 hq hk2
-  have hn1 := pw_mul' hX (Nat.cast_nonneg _) (pow_nonneg hq0 _) hp' hpow
+  have hn1 := pw_mul' hX (pow_nonneg hq0 _) hp' hpow
   have h2 : (2 : Real) ≤ X ^ (2 ^ (max μK (c + (k + 2)) + 1)) := hX.trans (pw_X hX _)
   have hn : ((2 * (p * (q + 1) ^ (2 * 2 ^ (k + 1))) : Nat) : Real) ≤
       X ^ (2 ^ (max μK (c + (k + 2)) + 1 + 1)) := by
     push_cast
-    exact pw_mul hX (by norm_num) (by positivity) h2 hn1
+    exact pw_mul hX (by positivity) h2 hn1
   unfold familyRecThr
   rw [Nat.cast_pow, ← Real.rpow_natCast]
   exact ex_mono hX (ex_rpow_of_nonneg hX (Nat.cast_nonneg _) (ex_of_pw hbase)
@@ -702,10 +700,10 @@ theorem lemma156_gen_le {alpha : Real} {k : Nat} (hk : 1 ≤ k) (ha : 0 < alpha)
       (2 / alpha) ^ (2 ^ (2 ^ (k + 4) + 4 * k + 13)) := by
   have hX := two_div_ge_two ha ha2
   have hXa : (alpha / 2)⁻¹ = 2 / alpha := inv_div _ _
-  set u := 2 / alpha with hu
+  set u := 2 / alpha
   have hinv : u⁻¹ = alpha / 2 := by rw [← hXa, inv_inv]
-  set N1 := 7 * 4 ^ (k + 1) + 21 * k * 4 ^ (k + 1) with hN1
-  set E := arrangementSelectionExponent k with hE
+  set N1 := 7 * 4 ^ (k + 1) + 21 * k * 4 ^ (k + 1)
+  set E := arrangementSelectionExponent k
   have hdeg := selection_degree_le k
   -- the selection base `a = (α/2)^N1 = u^(-N1)`
   have hbase : (u ^ N1)⁻¹ = (alpha / 2) ^ (7 * 4 ^ (k + 1)) * (alpha / 2) ^ (21 * k * 4 ^ (k + 1)) := by

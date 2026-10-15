@@ -68,7 +68,7 @@ theorem printed_controls_of_le {k : Nat} {gamma theta rho W0 : Real} (hg : 0 < g
           (gamma ^ (-(2 : Int)) * multipleS theta gamma k) ≤
         ((W0 * (2 / (gamma * theta * rho))) ^ D)⁻¹ := by
   have hrW := printed_parameter_ge (k := k) hg hg1 ht ht1 hW0'
-  set r := gamma ^ (-(2 : Int)) * multipleS theta gamma k with hrdef
+  set r := gamma ^ (-(2 : Int)) * multipleS theta gamma k
   have hg2 : (1 : Real) ≤ gamma ^ (-(2 : Int)) := by
     rw [zpow_neg, zpow_ofNat]
     exact (one_le_inv₀ (pow_pos hg 2)).mpr (pow_le_one₀ hg.le hg1)
@@ -79,7 +79,6 @@ theorem printed_controls_of_le {k : Nat} {gamma theta rho W0 : Real} (hg : 0 < g
   set M := (2 : Nat) ^ ((2 : Nat) ^ (k + 8)) with hM
   set c := gamma * (r⁻¹ * rho) with hc
   have hc0 : 0 < c := by positivity
-  have hW : 0 < W0 * (2 / (gamma * theta * rho)) := by positivity
   -- `c ≤ W⁻¹`
   have hcW : c ≤ (W0 * (2 / (gamma * theta * rho)))⁻¹ := by
     have hval : (W0 * (2 / (gamma * theta * rho)))⁻¹ = gamma * theta * rho / (2 * W0) := by
@@ -205,7 +204,6 @@ theorem theorem162At_of_polyCover {k : Nat} {Qb Eb : Real → Real → Real → 
   · intro rho hr _
     have hs : 0 < gamma ^ (-(2 : Int)) * multipleS theta gamma k := by
       have := one_le_multipleS k ht ht1 hg hg1
-      have hg2 : (0 : Real) < gamma ^ (-(2 : Int)) := zpow_pos hg _
       positivity
     exact Real.rpow_pos_of_pos (multipleC_pos k (by positivity) hg) _
   · intro rho hr hr1
@@ -238,7 +236,6 @@ theorem theorem162At_of_polyCover_tower {k : Nat} {Qb Eb : Real → Real → Rea
   · intro rho hr _
     have hs : 0 < gamma ^ (-(2 : Int)) * multipleS theta gamma k := by
       have := one_le_multipleS k ht ht1 hg hg1
-      have hg2 : (0 : Real) < gamma ^ (-(2 : Int)) := zpow_pos hg _
       positivity
     exact Real.rpow_pos_of_pos (multipleC_pos k (by positivity) hg) _
   · intro rho hr hr1

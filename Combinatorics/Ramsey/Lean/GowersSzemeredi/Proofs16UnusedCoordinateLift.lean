@@ -31,7 +31,6 @@ theorem MultiplyLinearFunction.lift_last {N k : Nat} [NeZero N] [Fact N.Prime]
   have hQcoarse : ((3 ^ (k + 1) : Nat) : Real) ≤
       (multipleQ (s⁻¹ * theta) gamma (k + 1)) ^ s := hgraphs.trans hQ
   have hmass : (1 - theta) * (P.carrier.card : Real) ≤ P.carrier.card := by
-    have hnonneg : (0 : Real) ≤ P.carrier.card := by positivity
     nlinarith
   have hgraph : ∀ z y, (z, y) ∈ partialGraph (lastProductSet B Finset.univ)
       (fun z => phi (section16Init z)) → y = phi (section16Init z) ∧ section16Init z ∈ B := by

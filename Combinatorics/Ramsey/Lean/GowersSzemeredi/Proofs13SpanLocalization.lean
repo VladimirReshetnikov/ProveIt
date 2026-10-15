@@ -86,7 +86,6 @@ theorem section13_parent_partition_of_span {N : Nat} [NeZero N]
       hm.trans_le (hcell j).2.1, (hcell j).2.1, ?_, ?_⟩⟩
   · change (P j).length ≤ S.length
     have hlen := (hcell j).2.2.1
-    have hdiv := Nat.div_mul_le_self S.length 2
     omega
   · change ((P j).step : ZMod N) * Q.step = S.step
     rw [(hcell j).2.2.2]

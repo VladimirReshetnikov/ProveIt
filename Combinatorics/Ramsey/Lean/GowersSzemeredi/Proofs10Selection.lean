@@ -16,40 +16,6 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma countWhere_cast_eq_sum_ite {T : Type*} [Fintype T]
-    (P : T → Prop) [DecidablePred P] :
-    (countWhere P : Real) = ∑ x : T, if P x then 1 else 0 := by
-  classical
-  unfold countWhere
-  rw [Finset.filter_congr_decidable]
-  simp
-
-private lemma fibre_card_cast_eq_sum_ite {N : Nat} {X : Type*}
-    [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) (s : ZMod N) :
-    ((D.fibre s).card : Real) =
-      ∑ x : X, if D.index x = s then 1 else 0 := by
-  classical
-  unfold MultifunctionDomain.fibre
-  rw [Finset.filter_congr_decidable]
-  simp
-
-private lemma sum_comp_index_eq_sum_mul_fibre {N : Nat} [NeZero N]
-    {X : Type*} [Fintype X] [DecidableEq X]
-    (D : MultifunctionDomain N X) (f : ZMod N → Real) :
-    (∑ x : X, f (D.index x)) =
-      ∑ s : ZMod N, f s * (D.fibre s).card := by
-  classical
-  simp_rw [fibre_card_cast_eq_sum_ite, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro x _
-  rw [Finset.sum_eq_single (D.index x)]
-  · simp
-  · intro s _ hs
-    rw [if_neg (Ne.symm hs)]
-    simp
-  · simp
-
 /-- The points lying in fibres smaller than the threshold used in Lemma 10.3
 occupy at most half of `alpha ^ 2 * M * N` points. -/
 private lemma small_anchor_fibre_card_bound {N : Nat} [NeZero N]
@@ -122,15 +88,11 @@ theorem lemma_10_3_holds : lemma_10_3 := by
   let QT : Real := ∑ x : X, Q x
   let QS : Real := ∑ x ∈ S, Q x
   let ES : Real := ∑ x ∈ S, E x
-  have hQnonneg (x : X) : 0 ≤ Q x := by
-    dsimp only [Q]
-    positivity
   have hEnonneg (x : X) : 0 ≤ E x := by
     exact weightedError_nonneg D phi B x
   have hApos : 0 < A := by
     dsimp only [A]
     have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-    have hM' : (0 : Real) < M := by exact_mod_cast hM
     positivity
   have hCnonneg : 0 ≤ C := by
     dsimp only [C]

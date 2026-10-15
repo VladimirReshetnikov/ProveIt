@@ -20,7 +20,7 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma theorem1013Parameters_sum_fibre_cards {N : Nat} [NeZero N]
+lemma theorem1013Parameters_sum_fibre_cards {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
     (D : MultifunctionDomain N X) :
     (∑ s : ZMod N, (D.fibre s).card) = Fintype.card X := by
@@ -71,7 +71,7 @@ theorem theorem10_13_largeSpectrum_nonempty {N M : Nat} [NeZero N]
     _ = (Fintype.card X : Real) := hcard.symm
     _ = ‖(Fintype.card X : Complex)‖ := by simp
 
-private lemma theorem1013Parameters_bohr_radius_eq (alpha : Real)
+lemma theorem1013Parameters_bohr_radius_eq (alpha : Real)
     (halpha : 0 < alpha) :
     section10BohrRadius alpha =
       (2 : Real) ^ (-(148 : Real)) * alpha ^ (18 : Nat) / Real.pi := by
@@ -121,7 +121,7 @@ theorem theorem10_13_bohrRadius_le_one (alpha : Real)
   have hpiOne : (1 : Real) ≤ Real.pi := by linarith [Real.two_le_pi]
   exact (div_le_self (by positivity) hpiOne).trans hnumerator
 
-private lemma theorem1013Parameters_bohr_radius_lower (alpha : Real)
+lemma theorem1013Parameters_bohr_radius_lower (alpha : Real)
     (halpha : 0 < alpha) :
     (2 : Real) ^ (-(150 : Real)) * alpha ^ (18 : Nat) ≤
       section10BohrRadius alpha := by

@@ -74,7 +74,7 @@ theorem section16_ascending_freiman_family_poly_cover {N q : Nat} [NeZero N] [Fa
   set W : Real := (P.width : Real) with hW_def
   have hW0 : 0 ≤ W := Nat.cast_nonneg _
   have hη := polyBase_loss_pos hq hs
-  have hη1 := polyBase_loss_le_one hq hs1 hs
+  have hη1 := polyBase_loss_le_one hq hs1
   have ha := polyBaseCorExponent_pos hq hs
   have hΛ := polyBaseThreshold_ge_four hq hs hs1
   have hE := polyBaseExponent_pos hq hs hs1
@@ -249,7 +249,6 @@ theorem section16_ascending_freiman_family_poly_cover {N q : Nat} [NeZero N] [Fa
   refine ⟨M, q, H, Q, mu, hHsub, hHmass, indexCells_partition P hP S hSpart, hQasc,
     ?_, ?_, ?_, ?_⟩
   · show (q : Real) ≤ ((3 ^ 1 * q : Nat) : Real)
-    have hq0 : (0 : Real) ≤ q := Nat.cast_nonneg _
     push_cast
     linarith
   · intro j

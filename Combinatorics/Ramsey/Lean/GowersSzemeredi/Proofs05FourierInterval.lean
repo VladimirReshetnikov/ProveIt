@@ -1,5 +1,6 @@
 import GowersSzemeredi.Section05
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+import GowersSzemeredi.Proofs00Basics
 
 /-!
 # Fourier decay of a centered interval
@@ -45,24 +46,6 @@ private lemma centeredInterval_card (N M : Nat) [NeZero N]
     simp
     omega
   · exact centeredInterval_cast_injective N M hMN
-
-private lemma fourier_indicator_norm_le_card {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) (r : ZMod N) :
-    ‖fourier (indicator A) r‖ <= A.card := by
-  classical
-  rw [fourier, ZMod.dft_apply]
-  calc
-    ‖∑ j : ZMod N, ZMod.stdAddChar (-(j * r)) • indicator A j‖ <=
-        ∑ j : ZMod N, ‖ZMod.stdAddChar (-(j * r)) • indicator A j‖ :=
-      norm_sum_le _ _
-    _ = ∑ j : ZMod N, if j ∈ A then (1 : Real) else 0 := by
-      apply Finset.sum_congr rfl
-      intro j _
-      simp only [indicator]
-      split_ifs with hj
-      · simp [ZMod.stdAddChar_apply]
-      · simp
-    _ = A.card := by simp
 
 private lemma fourier_centeredInterval_eq_int_sum (N M : Nat) [NeZero N]
     (hMN : 2 * M <= N) (r : ZMod N) :

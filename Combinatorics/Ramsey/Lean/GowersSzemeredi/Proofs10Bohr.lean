@@ -322,17 +322,7 @@ theorem lemma_10_10_holds : lemma_10_10 := by
         field_simp [hpowTwo.ne']
       _ = 2 * K.card * zeta * N := by rw [hcancel]; ring
   have hscaled := mul_le_mul_of_nonneg_left hBLower hcNonneg
-  have hlossScale : 2 * K.card * zeta * N ≤ c * B.card := by
-    rw [← hidentity]
-    exact hscaled
   have hlost := bohr_sdiff_translate_card_le K delta zeta d hd
-  have hlost' :
-      ((B \ section10Translate B d).card : Real) ≤ c * B.card := by
-    have hlostB :
-        ((B \ section10Translate B d).card : Real) ≤
-          2 * K.card * zeta * N := by
-      simpa only [B] using hlost
-    exact hlostB.trans hlossScale
   have hpartitionNat := Finset.card_sdiff_add_card_inter B (section10Translate B d)
   have hpartition :
       ((B \ section10Translate B d).card : Real) +
@@ -341,14 +331,14 @@ theorem lemma_10_10_holds : lemma_10_10 := by
   change (1 - c) * B.card ≤ (B ∩ section10Translate B d).card
   nlinarith
 
-private lemma section10Translate_card {N : Nat}
+lemma section10Translate_card {N : Nat}
     (A : Finset (ZMod N)) (d : ZMod N) :
     (section10Translate A d).card = A.card := by
   classical
   unfold section10Translate
   exact Finset.card_image_of_injective A (add_left_injective d)
 
-private lemma section10Translate_mono {N : Nat}
+lemma section10Translate_mono {N : Nat}
     {A A' : Finset (ZMod N)} (hAA' : A ⊆ A') (d : ZMod N) :
     section10Translate A d ⊆ section10Translate A' d := by
   classical
@@ -377,7 +367,7 @@ private lemma section10Translate_add {N : Nat}
     abel
 
 /-- Inclusion-exclusion inside a common finite ambient set. -/
-private lemma inter_card_lower_of_subsets {X : Type*} [DecidableEq X]
+lemma inter_card_lower_of_subsets {X : Type*} [DecidableEq X]
     (S T U : Finset X) (hSU : S ⊆ U) (hTU : T ⊆ U) :
     (S.card : Real) + T.card - U.card ≤ (S ∩ T).card := by
   have hunion : S ∪ T ⊆ U := Finset.union_subset hSU hTU
@@ -389,7 +379,7 @@ private lemma inter_card_lower_of_subsets {X : Type*} [DecidableEq X]
     exact_mod_cast hcardIdentity
   linarith
 
-private lemma bohr_zero_mem {N : Nat} [NeZero N]
+lemma bohr_zero_mem {N : Nat} [NeZero N]
     (K : Finset (ZMod N)) (delta : Real) (hdelta : 0 ≤ delta) :
     (0 : ZMod N) ∈ bohr K delta := by
   classical
@@ -523,7 +513,6 @@ private lemma exists_dense_bohr_chain {N : Nat}
     nlinarith
   have hpartition : ((U \ U').card : Real) + U'.card = U.card := by
     exact_mod_cast Finset.card_sdiff_add_card_eq_card hU'sub
-  have hU'lower : (1 / 8 : Real) * B.card ≤ U'.card := by nlinarith
   have hBcardPos : (0 : Real) < B.card := by
     exact_mod_cast Finset.card_pos.mpr hBne
   have hU'pos : (0 : Real) < U'.card := by nlinarith
@@ -535,7 +524,7 @@ private lemma exists_dense_bohr_chain {N : Nat}
   convert hx'.1.2 using 1
   abel
 
-private lemma corollary_10_11_overlap {N : Nat} [NeZero N]
+lemma corollary_10_11_overlap {N : Nat} [NeZero N]
     (K : Finset (ZMod N)) (delta : Real) (hK : K.Nonempty)
     (hdelta : 0 < delta) (hdeltaOne : delta ≤ 1) :
     let k := K.card
@@ -551,8 +540,6 @@ private lemma corollary_10_11_overlap {N : Nat} [NeZero N]
   let zeta : Real := (2 : Real) ^ (-((k : Real) + 4)) * delta ^ k / k
   have hk : 0 < k := Finset.card_pos.mpr hK
   have hkReal : (0 : Real) < k := by exact_mod_cast hk
-  have hfactorNonneg : 0 ≤ (2 : Real) ^ (-((k : Real) + 4)) :=
-    Real.rpow_nonneg (by norm_num) _
   have hfactorLeOne : (2 : Real) ^ (-((k : Real) + 4)) ≤ 1 := by
     exact Real.rpow_le_one_of_one_le_of_nonpos (by norm_num) (by
       have : (0 : Real) ≤ k + 4 := by positivity
@@ -615,8 +602,6 @@ theorem corollary_10_11_holds : corollary_10_11 := by
   let C : Finset (ZMod N) := bohr K zeta
   change C ⊆ B' - B' ∧ ∃ psi1 : ZMod N → ZMod N,
     FreimanHom 2 C psi1 ∧ InducesDifferenceMap B' C psi psi1
-  have hk : 0 < k := Finset.card_pos.mpr hK
-  have hkReal : (0 : Real) < k := by exact_mod_cast hk
   have hzetaPos : 0 < zeta := by
     dsimp only [zeta]
     positivity

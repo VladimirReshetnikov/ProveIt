@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs15WalshGeneral
 import GowersSzemeredi.Proofs15LevelSets
+import GowersSzemeredi.Proofs15DegenerateArrangements
 
 /-!
 # Degenerate arrangements for coefficients in `[−m, m]` (Notes L.16)
@@ -117,65 +118,6 @@ private lemma rangeDeg_additive_iff {N d : Nat} (x : Fin (2 * d) → ZMod N) :
   rw [hsum, sub_eq_zero]
   rfl
 
-private lemma rangeDeg_card_le_of_fiber_le {A B : Type*}
-    [Fintype A] [Fintype B] [DecidableEq B] (f : A → B) (m : Nat)
-    (h : ∀ b, Fintype.card {a : A // f a = b} ≤ m) :
-    Fintype.card A ≤ Fintype.card B * m := by
-  rw [← Fintype.card_congr (Equiv.sigmaFiberEquiv f), Fintype.card_sigma]
-  calc
-    (∑ b : B, Fintype.card {a : A // f a = b}) ≤ ∑ _ : B, m :=
-      Finset.sum_le_sum fun b _ => h b
-    _ = Fintype.card B * m := by simp
-
-private lemma rangeDeg_sum_mul_sub_eq_one {N : Nat} {I : Type*}
-    [Fintype I] [DecidableEq I] (a x y : I → ZMod N) (i : I)
-    (hoff : ∀ t, t ≠ i → x t = y t) :
-    (∑ t, a t * x t) - (∑ t, a t * y t) =
-      a i * (x i - y i) := by
-  classical
-  rw [← Finset.sum_sub_distrib]
-  calc
-    (∑ t, (a t * x t - a t * y t)) =
-        ∑ t, a t * (x t - y t) := by
-      apply Finset.sum_congr rfl
-      intro t _
-      ring
-    _ = ∑ t ∈ ({i} : Finset I), a t * (x t - y t) := by
-      symm
-      apply Finset.sum_subset (by simp)
-      intro t _ ht
-      have hti : t ≠ i := by simpa using ht
-      rw [hoff t hti, sub_self, mul_zero]
-    _ = a i * (x i - y i) := by simp
-
-private lemma rangeDeg_sum_mul_sub_eq_two {N : Nat} {I : Type*}
-    [Fintype I] [DecidableEq I] (a x y : I → ZMod N) (i j : I)
-    (hij : i ≠ j) (hoff : ∀ t, t ≠ i → t ≠ j → x t = y t) :
-    (∑ t, a t * x t) - (∑ t, a t * y t) =
-      a i * (x i - y i) + a j * (x j - y j) := by
-  classical
-  rw [← Finset.sum_sub_distrib]
-  calc
-    (∑ t, (a t * x t - a t * y t)) =
-        ∑ t, a t * (x t - y t) := by
-      apply Finset.sum_congr rfl
-      intro t _
-      ring
-    _ = ∑ t ∈ ({i, j} : Finset I), a t * (x t - y t) := by
-      symm
-      apply Finset.sum_subset (by simp)
-      intro t _ ht
-      have hti : t ≠ i := by
-        intro h
-        subst t
-        exact ht (by simp)
-      have htj : t ≠ j := by
-        intro h
-        subst t
-        exact ht (by simp)
-      rw [hoff t hti htj, sub_self, mul_zero]
-    _ = a i * (x i - y i) + a j * (x j - y j) := by simp [hij]
-
 private abbrev RangeDegLinearSolutions {N : Nat} {I : Type*}
     [Fintype I] (a : I → ZMod N) :=
   {x : I → ZMod N // ∑ t, a t * x t = 0}
@@ -228,14 +170,6 @@ private def rangeDegDoubleExceptEquiv {I : Type*} [DecidableEq I]
   left_inv _ := rfl
   right_inv _ := rfl
 
-private lemma rangeDeg_double_except_card {I : Type*} [Fintype I]
-    [DecidableEq I] (i j : I) (hij : i ≠ j) :
-    Fintype.card {t : I // t ≠ i ∧ t ≠ j} = Fintype.card I - 2 := by
-  rw [Fintype.card_congr (rangeDegDoubleExceptEquiv i j hij)]
-  rw [Fintype.card_subtype_compl, Fintype.card_subtype_compl]
-  simp only [Fintype.card_subtype_eq]
-  omega
-
 private abbrev RangeDegDoubleLinearSolutions {N : Nat} {I : Type*}
     [Fintype I] (a b : I → ZMod N) :=
   {x : I → ZMod N //
@@ -257,8 +191,8 @@ private lemma rangeDeg_double_linear_solutions_card_le {N : Nat} [NeZero N]
     have hoff : ∀ s, s ≠ i → s ≠ j → x.1 s = y.1 s := by
       intro s hsi hsj
       exact congrFun hxy ⟨s, hsi, hsj⟩
-    have haDiff := rangeDeg_sum_mul_sub_eq_two a x.1 y.1 i j hij hoff
-    have hbDiff := rangeDeg_sum_mul_sub_eq_two b x.1 y.1 i j hij hoff
+    have haDiff := lemma154_sum_mul_sub_eq_two a x.1 y.1 i j hij hoff
+    have hbDiff := lemma154_sum_mul_sub_eq_two b x.1 y.1 i j hij hoff
     rw [x.2.1, y.2.1, sub_self] at haDiff
     rw [x.2.2, y.2.2, sub_self] at hbDiff
     have ha : a i * (x.1 i - y.1 i) + a j * (x.1 j - y.1 j) = 0 :=
@@ -285,7 +219,7 @@ private lemma rangeDeg_double_linear_solutions_card_le {N : Nat} [NeZero N]
         Fintype.card ({t : I // t ≠ i ∧ t ≠ j} → ZMod N) :=
       Fintype.card_le_of_injective proj hinj
     _ = N ^ (Fintype.card I - 2) := by
-      rw [Fintype.card_fun, ZMod.card, rangeDeg_double_except_card i j hij]
+      rw [Fintype.card_fun, ZMod.card, lemma154_double_except_card i j hij]
 
 private abbrev RangeDegAdditiveCrossSections (N d : Nat) :=
   {r : Fin (2 * d) → ZMod N // IsAdditiveTuple r}
@@ -412,20 +346,6 @@ private noncomputable def rangeDegLiftFinset {k : Nat}
     (A : Finset (Fin k)) : Finset (Fin (k + 1)) :=
   A.map Fin.castSuccEmb
 
-private lemma rangeDeg_vertex_castSucc {N k d : Nat}
-    (R : GeneralArrangement N k d) (e : Fin k → Bool)
-    (j : Fin (2 * d)) (i : Fin k) :
-    R.vertex e j i.castSucc =
-      R.base j i + if e i then R.side i else 0 := by
-  simp [GeneralArrangement.vertex, GeneralArrangement.cube, AxisCube.vertex,
-    AxisCube.base, AxisCube.side, appendCoordinate]
-
-private lemma rangeDeg_vertex_last {N k d : Nat}
-    (R : GeneralArrangement N k d) (e : Fin k → Bool)
-    (j : Fin (2 * d)) :
-    R.vertex e j (Fin.last k) = R.crossSection j := by
-  simp [GeneralArrangement.vertex, appendCoordinate]
-
 private lemma rangeDeg_vertex_product_lift {N k d : Nat}
     (R : GeneralArrangement N k d) (e : Fin k → Bool)
     (j : Fin (2 * d)) (A : Finset (Fin k)) :
@@ -436,7 +356,7 @@ private lemma rangeDeg_vertex_product_lift {N k d : Nat}
   rw [Finset.prod_map]
   apply Finset.prod_congr rfl
   intro i hi
-  exact rangeDeg_vertex_castSucc R e j i
+  exact lemma154_vertex_castSucc R e j i
 
 private lemma rangeDeg_arrangementMoment_lift {N k d : Nat} [NeZero N]
     (R : GeneralArrangement N k d)
@@ -462,76 +382,6 @@ private def rangeDegBooleanCoefficient {N k : Nat}
       if i ∈ A then
         if u i then 1 else if e i then h i else 0
       else if u i then 0 else 1
-
-private lemma rangeDeg_booleanWalshMoment_multilinear {N k : Nat} [NeZero N]
-    (eta : (Fin k → Bool) → Int) (h : Point N k)
-    (A : Finset (Fin k)) :
-    IsMultilinear (fun y => booleanWalshMoment eta h y A) := by
-  classical
-  refine ⟨rangeDegBooleanCoefficient eta h A, ?_⟩
-  intro y
-  unfold booleanWalshMoment rangeDegBooleanCoefficient
-  calc
-    (∑ e : Fin k → Bool, (eta e : ZMod N) *
-        ∏ i ∈ A, (y i + if e i then h i else 0)) =
-        ∑ e : Fin k → Bool, (eta e : ZMod N) *
-          ∏ i : Fin k,
-            ∑ b : Bool,
-              (if i ∈ A then
-                  if b then 1 else if e i then h i else 0
-                else if b then 0 else 1) *
-                (if b then y i else 1) := by
-      apply Finset.sum_congr rfl
-      intro e _
-      congr 1
-      simp only [Fintype.sum_bool, Bool.false_eq_true, if_false, if_true,
-        ite_mul, mul_ite, one_mul, zero_mul, mul_one]
-      symm
-      calc
-        (∏ x, ((if x ∈ A then y x else 0) +
-            if x ∈ A then (if e x then h x else 0) else 1)) =
-            ∏ x, if x ∈ A then y x + (if e x then h x else 0) else 1 := by
-          apply Finset.prod_congr rfl
-          intro x _
-          by_cases hx : x ∈ A <;> simp [hx]
-        _ = ∏ x ∈ A, (y x + if e x then h x else 0) := by
-          rw [Finset.prod_ite]
-          simp
-    _ = ∑ e : Fin k → Bool, (eta e : ZMod N) *
-          ∑ u : Fin k → Bool,
-            ∏ i : Fin k,
-              (if i ∈ A then
-                  if u i then 1 else if e i then h i else 0
-                else if u i then 0 else 1) *
-                (if u i then y i else 1) := by
-      apply Finset.sum_congr rfl
-      intro e _
-      rw [Fintype.prod_sum]
-    _ = ∑ e : Fin k → Bool, ∑ u : Fin k → Bool,
-          (eta e : ZMod N) *
-            ∏ i : Fin k,
-              (if i ∈ A then
-                  if u i then 1 else if e i then h i else 0
-                else if u i then 0 else 1) *
-                (if u i then y i else 1) := by
-      apply Finset.sum_congr rfl
-      intro e _
-      rw [Finset.mul_sum]
-    _ = ∑ u : Fin k → Bool,
-          (∑ e : Fin k → Bool, (eta e : ZMod N) *
-            ∏ i : Fin k,
-              if i ∈ A then
-                if u i then 1 else if e i then h i else 0
-              else if u i then 0 else 1) *
-            ∏ i : Fin k, if u i then y i else 1 := by
-      rw [Finset.sum_comm]
-      apply Finset.sum_congr rfl
-      intro u _
-      rw [Finset.sum_mul]
-      apply Finset.sum_congr rfl
-      intro e _
-      rw [Finset.prod_mul_distrib]
-      ring
 
 private abbrev rangeDegEta {k d : Nat} (c : RangeDegCoefficient m k d) :=
   fun e j => rangeDegCoefficientValue c e j
@@ -578,15 +428,6 @@ private lemma rangeDeg_case_one_key_card_le {N k d : Nat}
     _ ≤ N ^ k * N ^ (2 * d - 1) * N ^ ((2 * d - 1) * k) := by
       exact Nat.mul_le_mul_right _ (Nat.mul_le_mul_left _ hcross)
 
-private lemma rangeDeg_level_subtype_card {N k : Nat} [NeZero N]
-    (mu : Point N k → ZMod N) (a : ZMod N) :
-    Fintype.card {y : Point N k // mu y = a} =
-      countWhere fun y : Point N k => mu y = a := by
-  classical
-  unfold countWhere
-  rw [Finset.filter_congr_decidable]
-  exact Fintype.card_subtype (fun y : Point N k => mu y = a)
-
 private lemma rangeDeg_case_one_card_le {N k d : Nat} [NeZero N]
     (hprime : N.Prime) (hodd : Odd N) (hk : 1 ≤ k) (hd : 1 ≤ d)
     (c : RangeDegCoefficient m k d) (j : Fin (2 * d))
@@ -624,7 +465,7 @@ private lemma rangeDeg_case_one_card_le {N k d : Nat} [NeZero N]
       let mu : Point N k → ZMod N := fun v =>
         booleanWalshMoment (fun e => rangeDegEta c e j) b.1 v A
       have hmuMultilinear : IsMultilinear mu :=
-        rangeDeg_booleanWalshMoment_multilinear _ _ _
+        lemma154_booleanWalshMoment_multilinear _ _ _
       have hmuNonconstant : ¬ ∃ a, ∀ v, mu v = a := by
         rintro ⟨a, ha⟩
         exact hyz ((ha y).trans (ha z).symm)
@@ -694,13 +535,13 @@ private lemma rangeDeg_case_one_card_le {N k d : Nat} [NeZero N]
             Fintype.card {v : Point N k // mu v = mu (R₀.1.1.base j)} :=
           Fintype.card_le_of_injective enc henc
         _ = countWhere (fun v : Point N k => mu v = mu (R₀.1.1.base j)) :=
-          rangeDeg_level_subtype_card mu _
+          lemma154_level_subtype_card mu _
         _ ≤ k * N ^ (k - 1) := hlevelNat
     · haveI : IsEmpty
           {R : RangeDegCoefficientSolutions N k d c // proj R = b} :=
         ⟨fun R => hex ⟨R⟩⟩
       simp
-  have htotal := rangeDeg_card_le_of_fiber_le proj (k * N ^ (k - 1)) hfiber
+  have htotal := lemma154_card_le_of_fiber_le proj (k * N ^ (k - 1)) hfiber
   have hkey := rangeDeg_case_one_key_card_le (N := N) (k := k) hd j
   calc
     Fintype.card (RangeDegCoefficientSolutions N k d c) ≤
@@ -731,136 +572,6 @@ private lemma rangeDeg_case_one_card_le {N k d : Nat} [NeZero N]
           rw [hmul]
           rw [hsubmul]
           omega
-
-private lemma rangeDeg_parity_eq_prod {N k : Nat} (e : Fin k → Bool) :
-    parityCharacter (N := N) e =
-      ∏ i : Fin k, if e i then (-1 : ZMod N) else 1 := by
-  classical
-  simp only [parityCharacter, boolWeight, countWhere]
-  rw [← Finset.prod_const]
-  rw [Finset.prod_filter]
-  apply Finset.prod_congr rfl
-  intro i _
-  by_cases h : e i = true <;> simp [h]
-
-private lemma rangeDeg_parity_cube_sum {N k : Nat} [NeZero N]
-    (h y : Point N k) :
-    (∑ e : Fin k → Bool, parityCharacter (N := N) e *
-      ∏ i : Fin k, (y i + if e i then h i else 0)) =
-        (-1 : ZMod N) ^ k * ∏ i, h i := by
-  classical
-  simp_rw [rangeDeg_parity_eq_prod, ← Finset.prod_mul_distrib]
-  calc
-    (∑ e : Fin k → Bool,
-        ∏ i : Fin k,
-          (if e i then (-1 : ZMod N) else 1) *
-            (y i + if e i then h i else 0)) =
-        ∏ i : Fin k, ∑ b : Bool,
-          (if b then (-1 : ZMod N) else 1) *
-            (y i + if b then h i else 0) := by
-      exact (Fintype.prod_sum (fun i (b : Bool) =>
-        (if b then (-1 : ZMod N) else 1) *
-          (y i + if b then h i else 0))).symm
-    _ = ∏ i : Fin k, (-h i) := by
-      apply Finset.prod_congr rfl
-      intro i _
-      rw [Fintype.sum_bool]
-      simp
-    _ = (-1 : ZMod N) ^ k * ∏ i, h i := by
-      have hconst : (-1 : ZMod N) ^ k = ∏ _i : Fin k, (-1 : ZMod N) := by
-        simp
-      rw [hconst, ← Finset.prod_mul_distrib]
-      apply Finset.prod_congr rfl
-      intro i _
-      ring
-
-private lemma rangeDeg_append_product {N k : Nat} (x : Point N k) (r : ZMod N) :
-    (∏ i : Fin (k + 1), appendCoordinate x r i) = (∏ i, x i) * r := by
-  induction k with
-  | zero =>
-      simp [appendCoordinate]
-  | succ k ih =>
-      rw [Fin.prod_univ_succ]
-      have hzero : appendCoordinate x r 0 = x 0 := by
-        simp [appendCoordinate]
-      have htail :
-          (fun i : Fin (k + 1) => appendCoordinate x r i.succ) =
-            appendCoordinate (Fin.tail x) r := by
-        funext i
-        simp [appendCoordinate, Fin.tail]
-      rw [hzero, htail, ih]
-      rw [Fin.prod_univ_succ]
-      simp only [Fin.tail]
-      ring
-
-private lemma rangeDeg_vertex_product_univ {N k d : Nat}
-    (R : GeneralArrangement N k d) (e : Fin k → Bool)
-    (j : Fin (2 * d)) :
-    (∏ i : Fin (k + 1), R.vertex e j i) =
-      (∏ i : Fin k, (R.base j i + if e i then R.side i else 0)) *
-        R.crossSection j := by
-  exact rangeDeg_append_product _ _
-
-private lemma rangeDeg_exists_det_pair {N : Nat} [NeZero N] [Fact N.Prime]
-    {I : Type*} [Fintype I] [DecidableEq I] [Nonempty I]
-    (a b : I → ZMod N) (ha : ∀ i, a i ≠ 0)
-    (hnot : ¬ ∃ q, ∀ i, b i = q * a i) :
-    ∃ i j, i ≠ j ∧ a i * b j - a j * b i ≠ 0 := by
-  classical
-  by_contra h
-  push Not at h
-  let i0 : I := Classical.choice inferInstance
-  apply hnot
-  refine ⟨b i0 / a i0, ?_⟩
-  intro j
-  have hdet : a i0 * b j - a j * b i0 = 0 := by
-    by_cases hij : i0 = j
-    · subst j
-      ring
-    · exact h i0 j hij
-  field_simp [ha i0]
-  simpa [mul_comm] using sub_eq_zero.mp hdet
-
-private lemma rangeDeg_full_moment_eq {N k d : Nat} [NeZero N]
-    (R : GeneralArrangement N k d)
-    (eta : (Fin k → Bool) → Fin (2 * d) → Int)
-    (s : Fin (2 * d) → ZMod N)
-    (hs : ∀ j e, (eta e j : ZMod N) = s j * parityCharacter (N := N) e) :
-    arrangementMoment R eta Finset.univ =
-      ((-1 : ZMod N) ^ k * ∏ i, R.side i) *
-        ∑ j, s j * R.crossSection j := by
-  classical
-  unfold arrangementMoment
-  rw [Finset.sum_comm]
-  calc
-    (∑ j : Fin (2 * d), ∑ e : Fin k → Bool,
-        (eta e j : ZMod N) * ∏ i ∈ Finset.univ, R.vertex e j i) =
-        ∑ j : Fin (2 * d), ∑ e : Fin k → Bool,
-          (s j * parityCharacter (N := N) e) *
-            ((∏ i : Fin k,
-              (R.base j i + if e i then R.side i else 0)) *
-                R.crossSection j) := by
-      apply Finset.sum_congr rfl
-      intro j _
-      apply Finset.sum_congr rfl
-      intro e _
-      rw [hs j e, rangeDeg_vertex_product_univ]
-    _ = ∑ j : Fin (2 * d),
-          (s j * R.crossSection j) *
-            ((-1 : ZMod N) ^ k * ∏ i, R.side i) := by
-      apply Finset.sum_congr rfl
-      intro j _
-      rw [← rangeDeg_parity_cube_sum R.side (R.base j)]
-      rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro e _
-      ring
-    _ = ((-1 : ZMod N) ^ k * ∏ i, R.side i) *
-          ∑ j, s j * R.crossSection j := by
-      rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro j _
-      ring
 
 private abbrev RangeDegCaseTwoKey {N k d : Nat} [NeZero N]
     (a s : Fin (2 * d) → ZMod N) :=
@@ -929,7 +640,7 @@ private lemma rangeDeg_case_two_card_le {N k d : Nat} [NeZero N]
     have hadd : ∑ t, a t * R.1.crossSection t = 0 :=
       (rangeDeg_additive_iff R.1.crossSection).mp R.2.2.1
     have hmoment := R.2.2.2 Finset.univ
-    rw [rangeDeg_full_moment_eq R.1 (rangeDegEta c) s hs] at hmoment
+    rw [lemma154_full_moment_eq R.1 (rangeDegEta c) s hs] at hmoment
     have hfactor : ((-1 : ZMod N) ^ k * ∏ t, R.1.side t) ≠ 0 := by
       apply mul_ne_zero
       · exact pow_ne_zero _ (neg_ne_zero.mpr one_ne_zero)

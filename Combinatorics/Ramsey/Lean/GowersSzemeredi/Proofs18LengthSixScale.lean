@@ -74,7 +74,6 @@ theorem lsNestExp_le_one {Eb : Nat → Real → Real → Real → Real} {C : Rea
     lsNestExp Eb C alpha t ≤ 1 := by
   obtain ⟨hc1, hc1'⟩ := hC t ht ht1
   obtain ⟨hc2, hc2'⟩ := hC (C t) hc1 hc1'
-  have a1 := sixWExp_pos (alpha := alpha) hE ht ht1
   have a2 := sixWExp_pos (alpha := alpha) hE hc1 hc1'
   have a3 := sixWExp_pos (alpha := alpha) hE hc2 hc2'
   have b1 := sixWExp_le_one (alpha := alpha) hE ht ht1
@@ -276,7 +275,6 @@ theorem ls_modulus_conditions {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {K2 p
   obtain ⟨hc1, hc1'⟩ := hC _ ht2 ht21
   obtain ⟨hc2, hc2'⟩ := hC _ hc1 hc1'
   obtain ⟨hr1, hr1'⟩ := hC _ hc2 hc2'
-  have hρ1 : 0 < lsRho1 alpha := hr1
   have hρ1' : lsRho1 alpha ≤ 1 := hr1'
   have hρ : 0 < lsRho alpha := by unfold lsRho spectrumPieceRho; positivity
   have hρ' : lsRho alpha ≤ 1 := by
@@ -308,7 +306,6 @@ theorem ls_modulus_conditions {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {K2 p
   obtain ⟨hEc, hEc'⟩ := hE 2 (alpha / 2) (lsBudget alpha) (lsCS alpha / 2)
     (by linarith [hcS.1]) (by linarith [hcS.2])
   have haN := lsNestExp_pos (alpha := alpha) hE hC ht2 ht21
-  have haN' := lsNestExp_le_one (alpha := alpha) hE hC ht2 ht21
   have hmE : 0 < lsMExp A Bq alpha := by
     unfold lsMExp; exact mul_pos haN (div_pos (show 0 < lsEm A Bq alpha from hEm) two_pos)
   have hF : 0 < lsF A Bq p2 alpha := by
@@ -472,7 +469,6 @@ theorem lsE_pos_le {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {p2 : Nat} (hp2 
   obtain ⟨hc1, hc1'⟩ := hC _ ht2 ht21
   obtain ⟨hc2, hc2'⟩ := hC _ hc1 hc1'
   obtain ⟨hr1, hr1'⟩ := hC _ hc2 hc2'
-  have hρ1 : 0 < lsRho1 alpha := hr1
   have hρ1' : lsRho1 alpha ≤ 1 := hr1'
   have hρ : 0 < lsRho alpha := by unfold lsRho spectrumPieceRho; positivity
   have hρ' : lsRho alpha ≤ 1 := by

@@ -9304,6 +9304,65 @@ consumers; three aggregate facades remain excluded.
 
 Evidence: `verification/2026-10-13-combined419-simplification.json`.
 
+
+### L.105. Dead code in the final route, and what is left to share (2026-10-14)
+
+Four passes over `Proofs18Final*`, each change verified by a local rebuild,
+the stub check of the bridge and the duplicate gate:
+* `GenParamsJT3.Ec` was the same term as `Eth`; dropped with its duplicate
+  range conjunct and slice-exponent conjunct (`564790fd2`).
+* Linter findings: unused binders (`ranges`'s `hV`, `split_step_gen`'s
+  `ha`), no-op `ring` after `field_simp`, unused simp arguments
+  (`456f541e5`).
+* A delta-debugging pass (`fejer-generators/prune_haves.py`) removed every
+  `have` the module still elaborates without: 21 of 218 in `FinalStep`, 4 of
+  77 in `FinalEnvelopes`, 7 of 113 in `FinalClasses`, mostly arithmetic side
+  facts that `omega`/`linarith` never needed (`9dcfdfe6c`, `1993dafa2`).
+  The unused-variable linter cannot see these, since those tactics read the
+  whole context.
+* Replacing multi-line `have` proofs by one of `positivity`, `linarith`,
+  `nlinarith`, `omega`, `norm_num` (`shorten_haves.py`): none of 35 closes.
+The four modules are 2,080 lines.
+
+What remains is structural. A similarity scan of every final-route
+declaration of at least 12 lines against the rest of the corpus (normalized
+identifiers, `difflib` ratio) finds the step lemmas to be near-copies of the
+cover-route (`…C`) and Fejér-route (`…F`) versions over other parameter
+structures: `inverse_step` (1.00, `Proofs18CoverDensity`),
+`coverPrec_gen_bounds_fejerJT3` (1.00, `…Fejer`, with `pDeg` for `fixDeg`),
+`polyCoverAt_classT3` (0.98, `polyCoverAt_class68`), `spectrum_exps_inv_leJT3`
+(0.97, `spectrum_exps_inv_leC`), `envBound_stepKx3` (0.96, `envBound_stepCx`),
+`MReq_le_expJT3` (0.96, `MReq_le_expF`), `polyEnvBound_stepJT3` (0.95),
+`rho1_inv_leJT3` (0.94), `vertex_uCount_le`, `classV_le_poly`,
+`nestExp_inv_leJT3` (0.93), `splitUniformClass2_all3`, `modulus_conditions`,
+`Tloc_le_expJT3` (0.92), `uCount_scale_le_deg`, `Eloc_inv_leJT3`, `ranges`
+(0.90-0.91). They differ in the class functions and the degree constants, so
+sharing them means stating the base lemmas over an abstract class table and
+degree (as `Proofs18EnvelopeInduction` did for the inductions), not deleting
+copies. That is the remaining lever on the final route's length.
+
+Addendum (2026-10-14). The scan above compared against the whole corpus; a
+declaration only lengthens the final proof if the final theorems use it. Restricted
+to declarations both used by the 25 bridge theorems, the only in-route pair was
+`polyPieceFaceCountW_fejer_le_tight` / `_power`; the tight bound now lives in
+`Proofs18FejerSeedCounts` and the 2^38 bound is its two-line corollary
+(`65fd57670`, 18 lines). The four final-route modules are 2,056 lines.
+Among all used declarations of at least 12 lines (1,147), ten pairs with both
+sides used reach similarity 0.93-0.97:
+`relative_fourFactor_counting_bound` / `relative_progression_counting_bound`
+(25 lines), `Theorem181At` / `theorem_18_1` (definitions),
+`section16_synchronize_base_cover` / `…_family` (37), `card_translated_slice_bad_le`
+/ `…_succ` (42), `IsLastCoordinateBoxProduct.init_carrier` / `last_carrier` (14),
+`Section16RetiledLinearityBound` / `…FamilyBound` (definitions),
+`corollary_5_6_strong_diameter` / `corollary_5_6` (15), `section5Transport_carrier` /
+`stage135Transport_carrier` (16), `unused_coordinate_cover` /
+`relation_unused_coordinate_cover` (74; the graph version is the relation version
+at `Λ = partialGraph B φ`, but the relation version sits downstream in
+`Proofs16RelationLift`), and `section13_good_height_bohr_model` /
+`…_model_with_cap` (32). All lie in corpus modules with 97 to 1,416 dependents,
+18 to 484 of them heavy, so each needs the native full build to verify; none is
+changed here.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
@@ -9366,6 +9425,83 @@ host.
      Making the constants explicit would mean re-proving much of a
      million-line development. Asking upstream for an explicit-constant
      headline is the realistic form of this route.
+
+**Addendum (2026-10-14, later): sharing re-proved lemmas across the corpus.**
+Commits 8bccd40, fbf520f, 6a8acba, 9261e22 and a1227e9 replaced re-proved
+copies by one shared lemma. Overall: about 120 copies in 110 families;
+the new module `Proofs00Basics` (imports only `Definitions`) holds the
+32 families with no proof-module common ancestor; 2c218e5 is a fix.
+
+- *Statement identity.* Copies are compared on the text before the
+  proof's `:=` (bracket depth 0, with each `let`/`have` inside the
+  statement paired with its own `:=`), with only the signature's leading
+  binder groups renamed. Two earlier shortcuts merged different lemmas:
+  1. cutting at the first `:=` stops at a `let x :=` inside the
+     statement;
+  2. treating every `(… :` as a binder also renames type ascriptions
+     such as `(selectionEtaZero e j : ZMod N)`.
+
+  A green build does not catch merges whose statements differ only up
+  to definitional unfolding. One such alias, `theorem10_13_zeta_bound`
+  (an inlined `let epsilon`), had been pushed; 2c218e5 restores its
+  exact statement. Every batch is now audited statement-by-statement
+  against its parent commit (`audit_shared.py`, `audit_basics.py`),
+  and all audits are clean.
+- *Attributes.* `@[simp] private lemma` is a global simp lemma that
+  reaches every importer. A deleted simp copy is therefore replaced by
+  `attribute [simp] host` (not `local`), which leaves downstream simp
+  sets unchanged, including in modules that cannot be built locally.
+- *Named arguments* depend on binder names. Three `(d := _)` call sites
+  of `isMultilinear_constant` were renamed to `(k := _)`.
+- *New imports* (a1227e9) are added only when they create no cycle and
+  the newly visible modules carry no global-effect declarations and no
+  clashing public names. One candidate was dropped because it would
+  have pulled `Proofs16SimultaneousRecurrence` and the OAI Erdős modules
+  into the stub-checked final route. The import closure of
+  `Proofs18Final` is 610 modules, one more than before (`Proofs00Basics`).
+- *What is left.* About 870 duplicate lines in 59 families, all blocked:
+  - every other copy sits in a module without a local olean;
+  - or hosting would need an import whose new modules carry simp lemmas
+    or instances that would reach unbuildable descendants;
+  - or the copies talk about each module's own private definitions.
+- *Dead modules in the final route.* 135 of the 609 modules in the
+  closure of `Proofs18Final` (14.9k lines) contain no declaration used
+  by the final theorems. A minimal-import computation over constant-level
+  needs (`ModuleNeeds.lean`) shows that none of them can be dropped by
+  editing imports: each is needed by a side result in a module the final
+  route does use. Removing them would mean splitting those modules.
+  Splitting only the cheapest regions would take 2,557 lines off the
+  route, and would cost 38 re-routed imports, compensating imports in
+  outside modules and about ten relocated declarations. Not done.
+
+**Addendum (2026-10-15): linting the whole final route.** All 609
+modules in the closure of `Proofs18Final` were elaborated with the
+unused-simp-argument, unnecessary-`simpa`, unused-tactic,
+unreachable-tactic and unused-variable linters, the last with
+`linter.unusedVariables.analyzeTactics`, which is off by default and
+needed for names inside tactic proofs (`lint_pass.py`).
+
+- *Dead tactics and simp arguments* (`apply_lint.py`): no-op `ring`,
+  `push_cast` and `beta_reduce` steps; `<;> ring` after a `field_simp`
+  that already closes every goal; unused simp arguments; two
+  `first | … | … | …` blocks whose later branches never run.
+- *Unused hypotheses* (`drop_hyp.py`): 15 lemmas lose explicit
+  hypotheses they never used, together with the matching argument at
+  every call site, e.g. `pw_mul`, `pw_mul'`, `tb_mul`, `tb_const_mul`,
+  `mul_le_pow_add` and three Corollary 7.11 variants. Statements only
+  get stronger.
+- *Dead `have`s* (`apply_dead_haves.py`): 307 tactic `have` steps and
+  86 `set … with h` names that are never referenced. Each module is
+  elaborated with all its deletions and bisected on failure; all 393
+  compiled.
+- Net: about −560 lines in the closure, in ~200 modules; no statement
+  of the final theorems changes.
+- *Staleness.* `build_trust` only checks that an olean exists, and an
+  olean freezes its module's imports, so peer commits merged by
+  `publish.sh` had left 87 stale oleans: 54 in the final route and 33
+  outside it. A stale dependency fails with a *type mismatch*, which
+  looks like a peer breaking `main`. Rebuild stale oleans in import
+  order before trusting a stub check.
 
 ### Polynomial width through multilinear extraction
 

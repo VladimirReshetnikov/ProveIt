@@ -13,7 +13,6 @@ theorem section16_face_error_range (k : Nat) {theta : Real}
       (2 : Real) ^ (-(k + 2 : Real)) * theta ≤ 1 := by
   have hf : (2 : Real) ^ (-(k + 2 : Real)) ≤ 1 := by
     apply Real.rpow_le_one_of_one_le_of_nonpos (by norm_num)
-    have hk : (0 : Real) ≤ k := Nat.cast_nonneg k
     linarith
   exact ⟨mul_pos (Real.rpow_pos_of_pos (by norm_num) _) ht,
     (mul_le_of_le_one_left ht.le hf).trans ht1⟩

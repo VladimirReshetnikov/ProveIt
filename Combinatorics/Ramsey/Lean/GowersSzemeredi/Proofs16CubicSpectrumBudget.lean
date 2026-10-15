@@ -42,7 +42,6 @@ theorem section16CubicSpectrumCount_le_iteration {theta gamma : Real}
   let d := section16Delta a
   let S := multipleS theta gamma 0
   have ha' : 0 < a := ha
-  have hd' : 0 < d := hd
   have hS : 2 ≤ S := multipleS_two_le 0 ht ht1 hg hg1
   have hS0 : 0 ≤ S := by linarith
   have hinv : a⁻¹ ≤ S^2 := section16ThetaOne_one_inverse_le_square ht ht1 hg hg1

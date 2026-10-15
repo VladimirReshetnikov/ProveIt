@@ -58,8 +58,6 @@ theorem section16_product_recovered_good_set {N k q r : Nat} [Fact N.Prime]
       by_contra hnr
       have hnr' : (r : ℝ) ≤ J.card := by exact_mod_cast (by omega : r ≤ J.card)
       have hq' : (0 : ℝ) < q := by exact_mod_cast hq
-      have hτsq : τ ^ 2 ≤ τ := by nlinarith
-      have hmul := mul_le_mul_of_nonneg_left hτsq (Nat.cast_nonneg r : (0 : ℝ) ≤ r)
       have hmul' := mul_le_mul_of_nonneg_right hnr' hτ.le
       nlinarith [not_le.mp hlong]
     obtain ⟨sample, hsurj⟩ := finite_sample_surjective (α := J) r (by simpa using hnr)

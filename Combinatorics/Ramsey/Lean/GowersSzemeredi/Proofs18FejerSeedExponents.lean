@@ -37,7 +37,7 @@ theorem tightZeta_fejer_one_bounds {gamma theta : Real} (hg : 0 < gamma) (hg1 : 
   have hs := fejer_tightRadiusExponent_le 1 ht ht1 hg hg1
   rw [mul_comm theta gamma] at hs
   set s := tightRadiusExponent (fejerThetaOne theta gamma 1 / 4) with hsdef
-  set u := 2 / (gamma * theta) with hu
+  set u := 2 / (gamma * theta)
   have hu1 : 1 ≤ u := le_trans (by norm_num) hu2
   have hs0 : 0 ≤ s := by
     rw [hsdef]; unfold tightRadiusExponent

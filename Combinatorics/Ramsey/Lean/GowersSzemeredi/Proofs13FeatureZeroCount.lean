@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs13FeaturePolynomial
 import Mathlib.Algebra.MvPolynomial.SchwartzZippel
+import GowersSzemeredi.Proofs00Basics
 
 /-! Quantitative exceptional-set control for individual unintended
 feature relations, obtained from the quadratic Schwartz-Zippel bound. -/
@@ -13,13 +14,6 @@ private theorem feature_countWhere_sum {T : Type*} [Fintype T] (P : T → Prop) 
     countWhere P = ∑ t : T, @ite Nat (P t) (Classical.propDecidable _) 1 0 := by
   classical
   simp [countWhere]
-
-private theorem feature_countWhere_equiv {X Y : Type*} [Fintype X] [Fintype Y]
-    (e : X ≃ Y) (P : Y → Prop) :
-    countWhere P = countWhere (fun x => P (e x)) := by
-  classical
-  simp_rw [feature_countWhere_sum]
-  exact (e.sum_comp (fun y => if P y then 1 else 0)).symm
 
 theorem polynomial_zero_count_fin {R : Type*} [Field R] [Fintype R]
     {n : Nat} (p : MvPolynomial (Fin (n + 1)) R) (hp : p ≠ 0) :

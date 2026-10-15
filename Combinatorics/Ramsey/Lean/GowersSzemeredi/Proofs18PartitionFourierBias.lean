@@ -38,18 +38,6 @@ theorem norm_fourier_restrictToCell_le {N : Nat} [NeZero N]
       simpa only [norm_mul, he, mul_one] using hf x
     _ = _ := by simp
 
-/-- Exact fourth-moment identity in the cube-coordinate convention. -/
-theorem fourthMoment_eq_degreeOneEnergy {N : Nat} [NeZero N]
-    (f : ZMod N → Complex) :
-    ∑ r : ZMod N, ‖fourier f r‖ ^ 4 =
-      (N : Real) * ∑ a : Point N 1, ‖∑ s : ZMod N, cubeDifference f a s‖ ^ 2 := by
-  have hs := (pointOneEquiv N).sum_comp
-    (fun a : Point N 1 ↦ ‖∑ s : ZMod N, cubeDifference f a s‖ ^ 2)
-  simp only [cubeDifference_pointOne] at hs
-  rw [← hs]
-  have h := lemma_2_1_holds N f f
-  simpa only [difference, ← pow_add] using h
-
 /-- Support-sensitive energy bound by a maximizing Fourier coefficient.
 This retains a single power of that coefficient, useful when summing cells. -/
 theorem exists_fourier_restrict_energy_bound {N : Nat} [NeZero N]

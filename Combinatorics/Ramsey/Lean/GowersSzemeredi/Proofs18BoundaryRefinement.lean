@@ -70,7 +70,6 @@ theorem interval_length_factor_bounds_of_powers {X beta : Real} {m n : Nat}
       (beta / (8 * boundaryRefinementConstant (beta / 64)))⁻¹ ≤ X ^ (m + 17 * n + 67) := by
   have hC4 : 4 ≤ boundaryRefinementConstant (beta / 64) :=
     section5LocalRefinementConstant_ge_four _ _
-  have hCpos : 0 < boundaryRefinementConstant (beta / 64) := lt_of_lt_of_le (by norm_num) hC4
   refine ⟨by positivity, ?_, (interval_length_factor_inv_le_scaled hX hb hbi).trans ?_⟩
   · rw [div_le_one (by positivity)]; linarith only [hb1, hC4]
   · have h8 : (8 : Real) ≤ X ^ 3 :=

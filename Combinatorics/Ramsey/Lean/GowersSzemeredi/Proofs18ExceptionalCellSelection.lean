@@ -20,7 +20,6 @@ theorem exists_positive_large_cell_outside_exception {M : Nat}
     ∃ i, i ∉ B ∧ beta / 8 * w i ≤ v i ∧ beta * n / (8 * M) ≤ w i := by
   classical
   let T := beta * n / (8 * M)
-  have hMr : (0 : Real) < M := by exact_mod_cast hM
   have hT : 0 < T := by dsimp [T]; positivity
   have habs (i : Fin M) : |v i| = 2 * max (v i) 0 - v i := by
     rcases le_total 0 (v i) with hi | hi

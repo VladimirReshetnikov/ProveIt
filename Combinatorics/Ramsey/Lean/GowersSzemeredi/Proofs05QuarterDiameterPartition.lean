@@ -30,8 +30,6 @@ theorem lemma_5_9_quarter_diameter (N k q r v : Nat) [NeZero N]
   have hfunctionsNonempty : functions ≠ [] := by
     intro hnil
     have hzero : functions.length = 0 := by simp [hnil]
-    have hlengthQ : functions.length = q := by
-      simp only [functions, List.length_ofFn]
     omega
   have hfunctionsPolynomial :
       forall psi, psi ∈ functions -> PolynomialOn k Finset.univ psi := by

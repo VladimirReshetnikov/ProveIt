@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16ColumnWordIdentity
 import GowersSzemeredi.Proofs16GlobalColumnWordRepresentations
+import GowersSzemeredi.Proofs16ColumnZeroLadder
 
 /-! Explicit parameters for identities of words of a fixed length. -/
 set_option autoImplicit false
@@ -7,13 +8,7 @@ noncomputable section
 namespace LeanProofs.GowersSzemeredi
 open Classical
 
-theorem refinementKernelRadius_le_rho (d e : Nat) {rho r : Real}
-    (hrho : 0 < rho) (hr : 0 < r) : refinementKernelRadius d e rho r ≤ rho := by
-  have hK : (1 : Real) ≤ refinementKernelCap d e rho r := by
-    exact_mod_cast refinementKernelCap_pos d e hrho hr
-  unfold refinementKernelRadius
-  apply (div_le_iff₀ (by linarith : (0 : Real) < refinementKernelCap d e rho r)).mpr
-  nlinarith
+alias refinementKernelRadius_le_rho := refinementKernelRadius_le_base
 
 def globalColumnWordIdentityRadius (alpha : Real) (k : Nat) : Real :=
   let d := columnSpectrumCap (columnEightDensity alpha)

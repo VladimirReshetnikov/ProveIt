@@ -14,8 +14,6 @@ theorem quadraticFamilyBudget_root_bound {r : Real} (hr : 0 ≤ r)
   let W := r ^ ((2048 : Real) ^ q)⁻¹
   have hW : 1 ≤ W := by dsimp [W]; linarith only [hroot]
   have hfour : 4 * (U : Real) ≤ W ^ 2 := by
-    have hu : (U : Real) ≤ W := hU
-    have hw : 4 ≤ W := hroot
     nlinarith [sq_nonneg (W - 4)]
   have htwo : 2 ≤ (2 : Nat) ^ q := by
     exact (show (2 : Nat) ^ 1 = 2 by norm_num) ▸
@@ -66,7 +64,6 @@ theorem quadratic_family_floor_scale {r : Real} (hr : 1 ≤ r) {q : Nat} (hq : 1
     exact hWfour.le
   have hUle : (U : Real) ≤ W := Nat.floor_le (by positivity)
   have hround : W < (U : Real) + 1 := Nat.lt_floor_add_one W
-  have hUpos : (0 : Real) < U := by exact_mod_cast (by omega : 0 < U)
   have hhalf : W ≤ 2 * (U : Real) := by
     have hu4 : (4 : Real) ≤ U := by exact_mod_cast hUfour
     linarith only [hround, hu4]

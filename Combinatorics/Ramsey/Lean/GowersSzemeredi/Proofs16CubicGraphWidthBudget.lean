@@ -11,8 +11,6 @@ theorem section16_cubic_scalar_graph_width {M q V sigma e : Real}
     (hs : 0 ≤ sigma) (hs1 : sigma ≤ 1) (he1 : e ≤ 1) :
     (9 * M^4 * q^2) * ((e * ((2 : Real)^(-(27 : Real)) * sigma^3 / (M*q)^4) / 4) /
       (10 * V)) ≤ 1 := by
-  have hq0 : 0 < q := zero_lt_one.trans_le hq
-  have hV0 : 0 < V := zero_lt_one.trans_le hV
   have hc : (2 : Real)^(-(27 : Real)) ≤ 1 := by norm_num [Real.rpow_neg, Real.rpow_ofNat]
   have hc0 : 0 ≤ (2 : Real)^(-(27 : Real)) := by positivity
   have hs3 : sigma^3 ≤ 1 := pow_le_one₀ hs hs1
@@ -42,7 +40,6 @@ theorem section16_cubic_graph_width_budget {theta gamma rho : Real} {q : Nat}
   have hspec := section16CubicSpectrumCount_pos theta gamma
   have hEd : 0 < Ed (rho / 4 / 2) := cubicBaseExponent_pos hspec (by positivity)
   have hEd1 : Ed (rho / 4 / 2) ≤ 1 := cubicBaseExponent_le_one hspec (by positivity) (by linarith)
-  have he : 0 < e := lemma9WidthWithExponent_pos (by decide) (by positivity) ht hg hEd _
   have hR : 1 ≤ section16Lemma9R theta gamma 1 := by
     have hh := (section16_face_parameter_lift_reserve 1 ht ht1 hg hg1).1
     norm_num [section16Lemma9R] at hh ⊢

@@ -60,29 +60,6 @@ private lemma cor146_section_product_property {N k : Nat} [NeZero N]
   rw [cor146_replace_embed]
   simpa [cor146Section] using hmem i x hx
 
-private lemma cor146_countWhere_eq_sum_ite {X : Type*} [Fintype X]
-    (P : X → Prop) :
-    countWhere P = ∑ x : X,
-      @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
-  classical
-  unfold countWhere
-  simp
-
-private lemma cor146_countWhere_prod {X Y : Type*} [Fintype X] [Fintype Y]
-    (P : X → Y → Prop) :
-    countWhere (fun z : X × Y => P z.1 z.2) =
-      ∑ x : X, countWhere (P x) := by
-  classical
-  simp_rw [cor146_countWhere_eq_sum_ite]
-  rw [Fintype.sum_prod_type]
-
-private lemma cor146_countWhere_equiv {X Y : Type*} [Fintype X] [Fintype Y]
-    (e : X ≃ Y) (P : Y → Prop) :
-    countWhere P = countWhere (fun x => P (e x)) := by
-  classical
-  simp_rw [cor146_countWhere_eq_sum_ite]
-  exact (e.sum_comp (fun y => if P y then 1 else 0)).symm
-
 private lemma cor146_sum_section_card {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) :
     ∑ r : ZMod N, (cor146Section B r).card = B.card := by
@@ -105,16 +82,16 @@ private lemma cor146_sum_section_card {N k : Nat} [NeZero N]
       rw [show (∑ r : ZMod N,
           countWhere (fun x : Point N k => cor146Embed x r ∈ B)) =
         countWhere (fun z : ZMod N × Point N k =>
-          cor146Embed z.2 z.1 ∈ B) from (cor146_countWhere_prod _).symm]
+          cor146Embed z.2 z.1 ∈ B) from (prop144_countWhere_prod _).symm]
     _ = countWhere (fun z : Point N k × ZMod N =>
         cor146Embed z.1 z.2 ∈ B) := by
-      simpa using (cor146_countWhere_equiv
+      simpa using (prop144_countWhere_equiv
         (Equiv.prodComm (ZMod N) (Point N k))
         (fun z : Point N k × ZMod N => cor146Embed z.1 z.2 ∈ B)).symm
     _ = countWhere (fun x : Point N (k + 1) => x ∈ B) := by
       symm
       simpa [e, cor146Embed, Fin.snocEquiv] using
-        cor146_countWhere_equiv e (fun x : Point N (k + 1) => x ∈ B)
+        prop144_countWhere_equiv e (fun x : Point N (k + 1) => x ∈ B)
     _ = B.card := by simp [countWhere]
 
 private lemma cor146_sum_section_density {N k : Nat} [NeZero N]
@@ -164,7 +141,7 @@ private lemma cor146_pair_count_eq_sum {N k : Nat} [NeZero N]
       cor146GoodPair B phi z.1 r z.2) =
       ∑ K : AxisCube N k, countWhere (fun K' : AxisCube N k =>
         cor146GoodPair B phi K r K') from
-    cor146_countWhere_prod (fun K K' => cor146GoodPair B phi K r K')]
+    prop144_countWhere_prod (fun K K' => cor146GoodPair B phi K r K')]
   apply Fintype.sum_congr
   intro K
   unfold cor146GoodSet countWhere cor146GoodPair
@@ -307,9 +284,6 @@ private lemma cor146_average_fourth_moment {N k : Nat} [NeZero N]
     (s := (Finset.univ : Finset (AxisCube N k))) (f := x)
     (fun K _ => hx_nonneg K) 3
   simp only [Finset.card_univ, cor146_axis_cube_card, Nat.cast_pow] at hmean
-  have hleft : 0 ≤ A * (N : Real) ^ (3 * k) := by
-    dsimp only [A]
-    positivity
   have hpow : (A * (N : Real) ^ (3 * k)) ^ 4 ≤
       (∑ K : AxisCube N k, x K) ^ 4 := by
     gcongr
@@ -319,7 +293,6 @@ private lemma cor146_average_fourth_moment {N k : Nat} [NeZero N]
       (A * (N : Real) ^ (3 * k)) ^ 4 /
         ((N : Real) ^ (2 * k)) ^ 3 := by
       dsimp only [A]
-      have hNne : (N : Real) ≠ 0 := hN.ne'
       field_simp
       rw [← pow_mul, ← pow_mul, ← pow_add]
       congr 1
@@ -414,7 +387,7 @@ private lemma cor146_energy_eq_fiber_count {N k : Nat} [NeZero N]
               ∀ i, IsAdditiveQuadruple
                 (fun t => cor146Sigma phi K i (q t))) ∧
             ∀ t, f t ∈ cor146GoodSet B phi K (q t)) from
-    cor146_countWhere_prod
+    prop144_countWhere_prod
       (X := Fin 4 → ZMod N) (Y := Fin 4 → AxisCube N k)
       (fun q f =>
         ((∀ t, q t ∈ cor146ReferenceSection B K) ∧
@@ -692,7 +665,7 @@ private lemma cor146_source_count_le {N k : Nat} [NeZero N]
   classical
   rw [← show countWhere (cor146SourceGood B phi) =
       ∑ K : AxisCube N k, countWhere (cor146FiberGood B phi K) from
-    cor146_countWhere_prod
+    prop144_countWhere_prod
       (X := AxisCube N k)
       (Y := (Fin 4 → ZMod N) × (Fin 4 → AxisCube N k))
       (fun K z => cor146FiberGood B phi K z)]

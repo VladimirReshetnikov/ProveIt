@@ -19,7 +19,7 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi.BaseCase
 
-private lemma isMultilinear_const {N k : Nat} (c : ZMod N) :
+lemma isMultilinear_const {N k : Nat} (c : ZMod N) :
     IsMultilinear (fun _ : Point N k => c) := by
   classical
   let e0 : Fin k -> Bool := fun _ => false
@@ -31,7 +31,7 @@ private lemma isMultilinear_const {N k : Nat} (c : ZMod N) :
     simp [hne]
   · simp
 
-private lemma singleton_box_partition {N k : Nat} [NeZero N]
+lemma singleton_box_partition {N k : Nat} [NeZero N]
     (P : Box N k) : IsBoxPartition (fun _ : Fin 1 => P) P := by
   constructor
   · intro x
@@ -467,7 +467,6 @@ private lemma gamma_ne_zero_of_nonempty {N d : Nat} [NeZero N]
   obtain ⟨j, hxQ⟩ := (hpartition.1 z.1).mp (by simp)
   obtain ⟨i, hi⟩ := hcover j z.1 hxQ hxH z.2 hz
   have hqPos : 0 < q := by have := i.isLt; omega
-  have hqOne : (1 : Real) ≤ q := by exact_mod_cast hqPos
   simp [multipleQ, multipleC, hs.ne'] at hq
   linarith
 
@@ -490,7 +489,6 @@ private lemma final_graph_count_bounds {d r q0 : Nat}
     field_simp
   rw [← harg]
   let E : Nat := (2 : Nat) ^ ((2 : Nat) ^ (d + 8))
-  have hEpos : 0 < E := by positivity
   have hEtwo : 2 ≤ E := by
     dsimp only [E]
     exact Nat.le_pow (by positivity)
@@ -672,7 +670,6 @@ theorem properMultiplyLinear_finsetUnion {N d r : Nat} [NeZero N]
       Finset.empty_subset _, ?_, D.partition, D.proper,
       (by simpa using htargetBoundNonneg), hDwidth, ?_, ?_⟩
     · simp only [Finset.card_empty, Nat.cast_zero]
-      have hPnonneg : (0 : Real) ≤ P.carrier.card := by positivity
       nlinarith
     · intro j i
       exact Fin.elim0 i
@@ -823,7 +820,6 @@ theorem properMultiplyLinear_fin_sum {N d r : Nat} [NeZero N]
       Finset.empty_subset _, ?_, D.partition, D.proper,
       (by simpa using htargetBoundNonneg), hDwidth, ?_, ?_⟩
     · simp only [Finset.card_empty, Nat.cast_zero]
-      have hPnonneg : (0 : Real) ≤ P.carrier.card := by positivity
       nlinarith
     · intro j i
       exact Fin.elim0 i

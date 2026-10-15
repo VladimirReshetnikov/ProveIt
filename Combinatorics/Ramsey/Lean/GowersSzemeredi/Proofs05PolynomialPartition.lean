@@ -139,26 +139,7 @@ private lemma fourier_natWeight_norm_le_mass {N : Nat} [NeZero N]
     fourier (fun x => (w x : Complex)) 0 = ((∑ x, w x : Nat) : Complex) := by
   simp [fourier, ZMod.dft_apply]
 
-@[simp] private lemma polynomialPartition_fourier_indicator_zero
-    {N : Nat} [NeZero N] (A : Finset (ZMod N)) :
-    fourier (indicator A) 0 = (A.card : Complex) := by
-  classical
-  simp [fourier, ZMod.dft_apply, indicator]
-
-private lemma polynomialPartition_fourier_indicator_energy {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) :
-    (∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 2) =
-      (N : Real) * A.card := by
-  rw [identity_2_3_holds]
-  congr 1
-  classical
-  calc
-    (∑ x : ZMod N, ‖indicator A x‖ ^ 2) =
-        ∑ x : ZMod N, if x ∈ A then (1 : Real) else 0 := by
-      apply Finset.sum_congr rfl
-      intro x _
-      by_cases hx : x ∈ A <;> simp [indicator, hx]
-    _ = A.card := by simp
+attribute [simp] fourier_indicator_zero
 
 private lemma weighted_centeredInterval_sub_mem {N L : Nat} [NeZero N]
     {x y : ZMod N} (hx : x ∈ centeredInterval N L)
@@ -296,7 +277,7 @@ theorem weighted_missing_interval_fourier
     have hnorm : ‖(((L + L : Nat) : Complex))‖ = ((L + L : Nat) : Real) := by
       rw [Complex.norm_natCast]
     simp only [term, fourier_natWeight_zero,
-      polynomialPartition_fourier_indicator_zero, hmass, hIcard]
+      fourier_indicator_zero, hmass, hIcard]
     rw [hnorm]
     push_cast
     ring
@@ -406,7 +387,7 @@ theorem weighted_missing_interval_fourier
         exact Finset.sum_le_sum_of_subset_of_nonneg (by simp)
           (fun _ _ _ => sq_nonneg _)
       _ = (t : Real) * (L + L : Nat) ^ 2 / 4 := by
-        rw [polynomialPartition_fourier_indicator_energy, hIcard]
+        rw [lemma78_fourier_indicator_energy, hIcard]
         field_simp [NeZero.ne N]
   have hhigh_eq :
       high = Finset.univ.filter (fun r : ZMod N => K < centeredAbs r) := by
@@ -528,11 +509,9 @@ private lemma centeredAbs_le_of_mem_centeredInterval {N M : Nat} [NeZero N]
     exact (ZMod.natAbs_valMinAbs_le (z : ZMod N)).trans hhalf
   · have hlower : -(N : Int) < z * 2 := by
       have : -(N : Int) ≤ z * 2 := by
-        have hcast : (2 * (M : Nat) : Int) ≤ N := by exact_mod_cast hMN
         linarith
       exact lt_of_le_of_ne this (Ne.symm hboundary)
     have hupper : z * 2 ≤ (N : Int) := by
-      have hcast : (2 * (M : Nat) : Int) ≤ N := by exact_mod_cast hMN
       linarith
     have hval : ((z : ZMod N).valMinAbs) = z :=
       (ZMod.valMinAbs_spec (z : ZMod N) z).2
@@ -810,15 +789,9 @@ private theorem polynomial_weyl_witness
   obtain ⟨r, hr0, hrsize, hrlarge⟩ :=
     polynomial_missing_interval_witness a gamma htTwo htN hMpos hMeven hMN
       hMscale (by simpa only [gamma] using hno)
-  have htOne : 1 ≤ t :=
-    (show 1 ≤ 64 by norm_num).trans ((weylThreshold_sixtyFour_le hk).trans ht)
   have htPos : (0 : Real) < t := by exact_mod_cast (show 0 < t by omega)
   have hNPos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hMPosReal : (0 : Real) < M := by exact_mod_cast hMpos
-  have hposPow : (0 : Real) < (t : Real) ^ gamma :=
-    Real.rpow_pos_of_pos htPos gamma
-  have hnegPow : (0 : Real) < (t : Real) ^ (-gamma) :=
-    Real.rpow_pos_of_pos htPos (-gamma)
   have hpowersCancel : (t : Real) ^ gamma * (t : Real) ^ (-gamma) = 1 := by
     rw [← Real.rpow_add htPos]
     simp
@@ -926,8 +899,6 @@ private theorem polynomial_weyl_sqrt_witness
   have htPos : (0 : Real) < t := by exact_mod_cast (show 0 < t by omega)
   have hNPos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hMPosReal : (0 : Real) < M := by exact_mod_cast hMpos
-  have hposPow : (0 : Real) < (t : Real) ^ gamma :=
-    Real.rpow_pos_of_pos htPos gamma
   have hpowersCancel : (t : Real) ^ gamma * (t : Real) ^ (-gamma) = 1 := by
     rw [← Real.rpow_add htPos]
     simp
@@ -985,19 +956,6 @@ private theorem polynomial_weyl_sqrt_witness
 
 /-! ### Quantitative polynomial recurrence -/
 
-private lemma lemma55_nat_succ_le_two_pow (e : Nat) : e + 1 ≤ 2 ^ e := by
-  induction e with
-  | zero => simp
-  | succ e ih =>
-      rw [pow_succ]
-      omega
-
-private lemma lemma55_nat_le_cube {k : Nat} (hk : 1 ≤ k) : k ≤ k ^ 3 := by
-  calc
-    k = k * 1 := by simp
-    _ ≤ k * k ^ 2 := Nat.mul_le_mul_left k (one_le_pow₀ hk)
-    _ = k ^ 3 := by ring
-
 /-- A small, reusable consequence of the repaired double-exponential
 threshold.  Keeping `D` and `E` abstract lets the two constant absorptions in
 Lemma 5.5 share the same non-evaluating tower argument. -/
@@ -1031,8 +989,8 @@ private lemma lemma55_threshold_weyl_gap {k t : Nat} (hk : 2 ≤ k)
       (2 * (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) := by
   let D := k * 2 ^ k
   have hkpow : k ≤ 2 ^ k :=
-    (Nat.le_succ k).trans (lemma55_nat_succ_le_two_pow k)
-  have hkCube : k ≤ k ^ 3 := lemma55_nat_le_cube (by omega)
+    (Nat.le_succ k).trans (nat_succ_le_two_pow k)
+  have hkCube : k ≤ k ^ 3 := nat_le_cube (by omega)
   have hexponent : 2 * k + 4 ≤ 40 * k ^ 3 := by
     calc
       2 * k + 4 ≤ 4 * k := by omega
@@ -1062,7 +1020,6 @@ private lemma lemma55_threshold_weyl_gap {k t : Nat} (hk : 2 ≤ k)
     push_cast
     rw [hpow]
     field_simp [ne_of_gt hkReal]
-    <;> ring
   calc
     (48000 : Real) < (2 : Real) ^ 16 := by norm_num
     _ ≤ (t : Real) ^ ((D : Real)⁻¹) := hroot
@@ -1087,7 +1044,7 @@ private lemma lemma55_threshold_constant {k t : Nat} (hk : 2 ≤ k)
       _ ≤ 40 * k ^ 3 := Nat.mul_le_mul_right (k ^ 3) (by norm_num)
   have hDE : D * E ≤ 2 ^ (40 * k ^ 3) :=
     hpoly.trans <| (Nat.le_succ (40 * k ^ 3)).trans
-      (lemma55_nat_succ_le_two_pow (40 * k ^ 3))
+      (nat_succ_le_two_pow (40 * k ^ 3))
   have hroot := lemma55_threshold_root hD hDE ht
   have hbase : (16 : Real) ^ (k - 1) = (2 : Real) ^ E := by
     dsimp only [E]
@@ -1106,8 +1063,8 @@ private lemma lemma55_sqrt_threshold_gamma_gap {k u : Nat} (hk : 2 ≤ k)
       (((k : Real) * (2 : Real) ^ (k + 1))⁻¹) := by
   let D := k * 2 ^ (k + 1)
   have hkpow : k ≤ 2 ^ k :=
-    (Nat.le_succ k).trans (lemma55_nat_succ_le_two_pow k)
-  have hkCube : k ≤ k ^ 3 := lemma55_nat_le_cube (by omega)
+    (Nat.le_succ k).trans (nat_succ_le_two_pow k)
+  have hkCube : k ≤ k ^ 3 := nat_le_cube (by omega)
   have hexponent : 2 * k + 6 ≤ 40 * k ^ 3 := by
     calc
       2 * k + 6 ≤ 5 * k := by omega
@@ -1160,7 +1117,7 @@ private lemma lemma55_sqrt_threshold_transport_constant {k u : Nat}
       _ ≤ 40 * k ^ 3 := Nat.mul_le_mul_right (k ^ 3) (by norm_num)
   have hDE : D * E ≤ 2 ^ (40 * k ^ 3) :=
     hpoly.trans <| (Nat.le_succ (40 * k ^ 3)).trans
-      (lemma55_nat_succ_le_two_pow (40 * k ^ 3))
+      (nat_succ_le_two_pow (40 * k ^ 3))
   have hroot := lemma55_threshold_root hD hDE ht
   have hbase : (4 : Real) * 64 ^ (k - 1) = (2 : Real) ^ E := by
     dsimp only [E]
@@ -1184,7 +1141,7 @@ private lemma lemma55_exponent_budget {k : Nat} (hk : 2 ≤ k) :
       1 - (((k : Real) * (2 : Real) ^ (k + 1))⁻¹) := by
   have hkReal : (0 : Real) < k := by positivity
   have hkpow : k ≤ 2 ^ (k - 1) := by
-    have h := lemma55_nat_succ_le_two_pow (k - 1)
+    have h := nat_succ_le_two_pow (k - 1)
     rwa [Nat.sub_add_cancel (by omega : 1 ≤ k)] at h
   have htwok : 2 * k ≤ 2 ^ k := by
     calc
@@ -1209,7 +1166,6 @@ private lemma lemma55_exponent_budget {k : Nat} (hk : 2 ≤ k) :
     rw [← hsubCast]
     exact_mod_cast hpowNat
   have hpowPos : (0 : Real) < (2 : Real) ^ (k + 1) := by positivity
-  push_cast
   field_simp [ne_of_gt hkReal, ne_of_gt hpowPos]
   nlinarith
 
@@ -1237,7 +1193,6 @@ private lemma lemma55_sqrt_exponent_budget {k : Nat} (hk : 2 ≤ k) :
     rw [← hsubCast]
     exact_mod_cast hpowNat
   have hpowPos : (0 : Real) < (2 : Real) ^ (k + 1) := by positivity
-  push_cast
   field_simp [ne_of_gt hkReal, ne_of_gt hpowPos]
   nlinarith
 
@@ -1262,32 +1217,12 @@ private lemma lemma55_sqrt_p_exponent_budget {k : Nat} (hk : 2 ≤ k) :
   unfold centeredAbs
   exact ZMod.natAbs_valMinAbs_neg x
 
-private lemma lemma55_centeredAbs_natCast_le {N i : Nat} [NeZero N] :
+lemma lemma55_centeredAbs_natCast_le {N i : Nat} [NeZero N] :
     centeredAbs (i : ZMod N) ≤ i := by
   rw [centeredAbs, ZMod.valMinAbs_natAbs_eq_min, ZMod.val_natCast]
   exact (Nat.min_le_left _ _).trans (Nat.mod_le i N)
 
-private lemma lemma55_centeredAbs_intCast_le {N : Nat} [NeZero N] (i : Int) :
-    centeredAbs (i : ZMod N) ≤ i.natAbs := by
-  cases i with
-  | ofNat n =>
-      simpa using lemma55_centeredAbs_natCast_le (N := N) (i := n)
-  | negSucc n =>
-      have hcast : ((Int.negSucc n : Int) : ZMod N) =
-          -((n + 1 : Nat) : ZMod N) := by
-        push_cast
-        ring
-      rw [hcast, lemma55_centeredAbs_neg]
-      simpa using lemma55_centeredAbs_natCast_le (N := N) (i := n + 1)
-
-private lemma lemma55_natCast_centeredAbs_eq_or_neg {N : Nat} [NeZero N]
-    (r : ZMod N) : (centeredAbs r : ZMod N) = r ∨
-      (centeredAbs r : ZMod N) = -r := by
-  have hcast := ZMod.natCast_natAbs_valMinAbs r
-  unfold centeredAbs
-  split at hcast
-  · exact Or.inl hcast
-  · exact Or.inr hcast
+alias lemma55_natCast_centeredAbs_eq_or_neg := natCast_centeredAbs_eq_or_neg
 
 private lemma lemma55_dirichlet_denominator_le {k t q : Nat}
     (hk : 2 ≤ k) (ht : weylThreshold k ≤ t) (hq : 1 ≤ q)
@@ -1358,7 +1293,7 @@ private lemma lemma55_dirichlet_denominator_le {k t q : Nat}
                 (t : Real) ^ (-(k : Real)) := by rw [Real.rpow_one]
           _ = (t : Real) ^ ((1 : Real) + -(k : Real)) := by
             rw [Real.rpow_add htPos]
-          _ = (t : Real) ^ (1 - (k : Real)) := by congr 1 <;> ring
+          _ = (t : Real) ^ (1 - (k : Real)) := by congr 1
       _ ≤ X := by
         dsimp only [X]
         exact Real.rpow_le_rpow_of_exponent_le htOne hexponent
@@ -1393,7 +1328,6 @@ private lemma lemma55_dirichlet_denominator_le {k t q : Nat}
     dsimp only [gamma]
     rw [hpow]
     field_simp [ne_of_gt hkReal, ne_of_gt hKPos]
-    <;> ring
   have hupper' :
       ‖weylSum alpha k t‖ ≤
         3000 * (t : Real) ^ (1 - 3 * gamma) := by
@@ -1516,7 +1450,7 @@ private lemma lemma55_sqrt_dirichlet_denominator_le {k u q : Nat}
                 (u : Real) ^ (-(k : Real)) := by rw [Real.rpow_one]
           _ = (u : Real) ^ ((1 : Real) + -(k : Real)) := by
             rw [Real.rpow_add huPos]
-          _ = (u : Real) ^ (1 - (k : Real)) := by congr 1 <;> ring
+          _ = (u : Real) ^ (1 - (k : Real)) := by congr 1
       _ ≤ X := by
         dsimp only [X]
         exact Real.rpow_le_rpow_of_exponent_le huOne hexponent
@@ -1551,7 +1485,6 @@ private lemma lemma55_sqrt_dirichlet_denominator_le {k u q : Nat}
     dsimp only [gamma]
     rw [hpow]
     field_simp [ne_of_gt hkReal, ne_of_gt hKPos]
-    <;> ring
   have hupper' :
       ‖weylSum alpha k u‖ ≤
         3000 * (u : Real) ^ (1 - 3 * gamma) := by
@@ -1811,7 +1744,6 @@ theorem lemma_5_5_holds : lemma_5_5 := by
     dsimp only [alpha, e₀]
     push_cast
     field_simp [ne_of_gt hNPos, ne_of_gt hqPos]
-    <;> ring
   have happrox' :
       |(e₀ : Real)| / ((N : Real) * (q : Real)) ≤
         ((q : Real) * t)⁻¹ := by
@@ -1832,7 +1764,6 @@ theorem lemma_5_5_holds : lemma_5_5 := by
         (div_le_iff₀ (mul_pos hNPos hqPos)).1 happrox'
       _ = (N : Real) / t := by
         field_simp [ne_of_gt hqPos, ne_of_gt htPos]
-        <;> ring
   have hEabsCast : (E.natAbs : Real) = |(E : Real)| := by
     have hInt : (E.natAbs : Int) = |E| := by
       rw [Int.abs_eq_natAbs]
@@ -1922,7 +1853,6 @@ theorem lemma_5_5_holds : lemma_5_5 := by
         rw [show 1 - gamma = -gamma + 1 by ring,
           Real.rpow_add htPos, Real.rpow_one]
         field_simp [ne_of_gt htPos]
-        <;> ring
   exact (not_lt_of_ge hfinal) (hno p hpOne hpLeT)
 
 /-- The square-root-size strengthening needed by the degree induction.  It
@@ -1943,7 +1873,6 @@ theorem lemma_5_5_square_root_auxiliary_holds :
   have huT : u ≤ t := by
     dsimp only [u]
     exact Nat.sqrt_le_self t
-  have huN : u ≤ N := huT.trans htN
   have htOne : 1 ≤ t := huOne.trans huT
   have huSqT : u ^ 2 ≤ t := by
     simpa only [u] using Nat.sqrt_le' t
@@ -1970,9 +1899,7 @@ theorem lemma_5_5_square_root_auxiliary_holds :
     polynomial_weyl_sqrt_witness a hk hWu huTwo huT htN (by
       simpa only [gamma] using hno)
   have huPos : (0 : Real) < u := by exact_mod_cast (show 0 < u by omega)
-  have htPos : (0 : Real) < t := by exact_mod_cast (show 0 < t by omega)
   have hNPos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hgammaNonneg : 0 ≤ gamma := by dsimp only [gamma]; positivity
   have hgammaHalf : gamma ≤ 1 / 2 := by
     simpa only [gamma] using recurrenceExponent_le_half hk
   have htwoGamma : 2 * gamma ≤ 1 := by linarith
@@ -2153,7 +2080,6 @@ theorem lemma_5_5_square_root_auxiliary_holds :
     dsimp only [alpha, e₀]
     push_cast
     field_simp [ne_of_gt hNPos, ne_of_gt hqPos]
-    <;> ring
   have happrox' :
       |(e₀ : Real)| / ((N : Real) * (q : Real)) ≤
         ((q : Real) * u)⁻¹ := by
@@ -2174,7 +2100,6 @@ theorem lemma_5_5_square_root_auxiliary_holds :
         (div_le_iff₀ (mul_pos hNPos hqPos)).1 happrox'
       _ = (N : Real) / u := by
         field_simp [ne_of_gt hqPos, ne_of_gt huPos]
-        <;> ring
   have hEabsCast : (E.natAbs : Real) = |(E : Real)| := by
     have hInt : (E.natAbs : Int) = |E| := by
       rw [Int.abs_eq_natAbs]
@@ -2268,7 +2193,6 @@ theorem lemma_5_5_square_root_auxiliary_holds :
         _ = (u : Real) * (u : Real) ^ (-2 * gamma) := by rw [Real.rpow_one]
     rw [hpow]
     field_simp [ne_of_gt huPos]
-    <;> ring
   have hfinal :
       (centeredAbs (((p : ZMod N) ^ k) * a) : Real) ≤
         (t : Real) ^ (-gamma) * N := by
@@ -2345,12 +2269,6 @@ private lemma cor56Counter_scale_lt_one {Q : Nat} (hQ : 2 < Q) :
   have hqpos : (0 : Real) < Q := by positivity
   have hqreal : (2 : Real) < Q := by exact_mod_cast hQ
   simpa [div_eq_mul_inv, mul_comm] using (div_lt_one hqpos).2 hqreal
-
-private lemma modInterval_one_carrier {N : Nat} (a : ZMod N) :
-    (modInterval N a 1).carrier = {a} := by
-  classical
-  ext x
-  simp [modInterval, ModAP.carrier]
 
 private lemma diameterAtMostReal_subsingleton_of_lt_one {N : Nat}
     {A : Finset (ZMod N)} {s : Real} (hA : diameterAtMostReal A s) (hs : s < 1)

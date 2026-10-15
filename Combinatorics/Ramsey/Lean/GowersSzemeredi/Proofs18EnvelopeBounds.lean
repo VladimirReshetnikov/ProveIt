@@ -141,8 +141,8 @@ theorem one_add_pw_add_pw_le (hX : 2 ≤ X) (a b : Nat) :
   have hb := pw_mono hX (le_refl (X ^ (2 ^ b))) (le_max_right a b)
   have hY : 2 ≤ X ^ (2 ^ max a b) := hX.trans (pw_X hX _)
   have hY0 : 0 ≤ X ^ (2 ^ max a b) := by linarith
-  have h1 := pw_mul hX hY0 hY0 (le_refl (X ^ (2 ^ max a b))) (le_refl _)
-  have h2 := pw_mul hX (mul_nonneg hY0 hY0) (mul_nonneg hY0 hY0) h1 h1
+  have h1 := pw_mul hX hY0 (le_refl (X ^ (2 ^ max a b))) (le_refl _)
+  have h2 := pw_mul hX (mul_nonneg hY0 hY0) h1 h1
   have h3 : 1 + X ^ (2 ^ a) + X ^ (2 ^ b) ≤
       (X ^ (2 ^ max a b) * X ^ (2 ^ max a b)) * (X ^ (2 ^ max a b) * X ^ (2 ^ max a b)) := by
     have key : ∀ Y : Real, 2 ≤ Y → 1 + Y + Y ≤ Y * Y * (Y * Y) := by
@@ -166,11 +166,10 @@ theorem input_scale_le {alpha y : Real} {dd μ : Nat} (ha : 0 < alpha) (ha2 : al
   have hX := two_div_ge_two ha ha2
   have h2 : 2 / y ≤ (2 / alpha) ^ (2 ^ (dd + 1)) := by
     rw [div_eq_mul_inv]
-    exact pw_mul hX (by norm_num) (inv_pos.mpr hy0).le (hX.trans (pw_X hX _)) hyi
+    exact pw_mul hX (inv_pos.mpr hy0).le (hX.trans (pw_X hX _)) hyi
   exact ⟨h2, pw_pow hX (by positivity) h2 le_rfl⟩
 
-theorem polyPartConst_pos (d : Nat) : 0 < polynomialPartitionConstant d := by
-  unfold polynomialPartitionConstant; positivity
+alias polyPartConst_pos := cor57_partition_constant_pos
 
 /-- The new exponent `σ′ = e·(σ/16)/(2P)`. -/
 theorem sigma_step {d : Nat} {e s : Real} (he0 : 0 < e) (he : e ≤ 1 / 2) (hs0 : 0 < s)
@@ -192,13 +191,12 @@ theorem sigma_step {d : Nat} {e s : Real} (he0 : 0 < e) (he : e ≤ 1 / 2) (hs0 
 
 /-- **The short-localization threshold.** -/
 theorem short_thr_le {X : Real} (hX : 2 ≤ X) {d : Nat} {e c T Tl : Real} {m a t j : Nat}
-    (he0 : 0 < e) (heI : e⁻¹ ≤ X ^ (2 ^ a)) (hc0 : 0 ≤ c) (hc : c ≤ 2 ^ (2 ^ j))
+    (he0 : 0 < e) (heI : e⁻¹ ≤ X ^ (2 ^ a)) (hc : c ≤ 2 ^ (2 ^ j))
     (hT : T ≤ Real.exp (Real.exp (X ^ (2 ^ m)))) (hTl : Tl ≤ Real.exp (X ^ (2 ^ t)))
     (hd : (((d + 2 : Nat) : Real) ^ (2 : Nat)) ≤ 2 ^ (2 ^ j)) :
     shortLocalizationThreshold d e c T Tl ≤
       Real.exp (Real.exp (X ^ (2 ^ (max (max m j) (max a t) + 2)))) := by
   set M := max (max m j) (max a t)
-  have hX0 : (0 : Real) ≤ X := by linarith
   have hcE : c ≤ Real.exp (Real.exp (X ^ (2 ^ max m j))) :=
     le_exp_exp_of_le_exp (ex_of_pw (pw_mono hX (pw_const hX hc) (le_max_right _ _)))
   have hTE : T ≤ Real.exp (Real.exp (X ^ (2 ^ max m j))) := dex_mono hX hT (le_max_left _ _)
@@ -226,7 +224,7 @@ theorem short_thr_le {X : Real} (hX : 2 ≤ X) {d : Nat} {e c T Tl : Real} {m a 
 theorem pw_add {X : Real} (hX : 2 ≤ X) {a b : Real} {m : Nat} (ha : a ≤ X ^ (2 ^ m))
     (hb : b ≤ X ^ (2 ^ m)) : a + b ≤ X ^ (2 ^ (m + 1)) := by
   have hY : 2 ≤ X ^ (2 ^ m) := hX.trans (pw_X hX _)
-  have h := pw_mul hX (by linarith) (by linarith) (le_refl (X ^ (2 ^ m))) (le_refl (X ^ (2 ^ m)))
+  have h := pw_mul hX (by linarith) (le_refl (X ^ (2 ^ m))) (le_refl (X ^ (2 ^ m)))
   nlinarith
 
 /-- A small natural number `c ≤ 6(k+3)` is below `X^(2^(k+3))`. -/
@@ -263,6 +261,6 @@ theorem short_thr_step_le {X : Real} (hX : 2 ≤ X) {k : Nat} {e T Tl : Real} {m
         _ = 2 ^ (2 * (k + 3)) := by rw [← pow_mul]; ring_nf
         _ ≤ 2 ^ (2 ^ (k + 3)) := Nat.pow_le_pow_right (by norm_num) h2
     exact_mod_cast hnat
-  exact short_thr_le hX (d := k + 1) (j := k + 3) he0 heI (by positivity) hc hT hTl hd
+  exact short_thr_le hX (d := k + 1) (j := k + 3) he0 heI hc hT hTl hd
 
 end LeanProofs.GowersSzemeredi

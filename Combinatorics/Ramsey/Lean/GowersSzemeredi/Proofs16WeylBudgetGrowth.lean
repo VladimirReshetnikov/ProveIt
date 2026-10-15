@@ -183,8 +183,6 @@ theorem schmidt_base_formula_le_gen (C e c : Nat) (hC : (C : Real) ≤ 2 ^ c) :
     have hc2 : (2 : Real) ^ e ≤ X := by
       rw [hXdef]; exact pow_le_pow_right₀ (by norm_num) (by omega)
     linarith
-  have hC0 : (0 : Real) ≤ C := Nat.cast_nonneg C
-  have hpi0 : 0 ≤ Real.exp Real.pi := (Real.exp_pos _).le
   have hinner : 1 + 2 * Real.exp Real.pi * (C : Real) * (8 : Real) ^ e ≤ 256 * X := by
     have : 2 * Real.exp Real.pi * (C : Real) * (8 : Real) ^ e ≤ 162 * X := by
       calc 2 * Real.exp Real.pi * (C : Real) * (8 : Real) ^ e
@@ -198,9 +196,6 @@ theorem schmidt_base_formula_le_gen (C e c : Nat) (hC : (C : Real) ≤ 2 ^ c) :
   have hprod : (10 + 8 * Real.exp (4 * Real.pi + 1)) *
       (1 + 2 * Real.exp Real.pi * (C : Real) * (8 : Real) ^ e) ≤ 2 ^ 26 * (256 * X) :=
     mul_le_mul houter hinner (by positivity) (by positivity)
-  have h121 : 2 + 121 * Real.exp 10 ≤ 2 ^ 23 := by
-    have : (2 : Real) + 121 * 3 ^ 10 ≤ 2 ^ 23 := by norm_num
-    linarith
   have hgoal : (2 : Real) ^ (c + 3 * e + 35) = X * 2 ^ 35 := by rw [hXdef, pow_add]
   rw [hgoal]
   nlinarith
@@ -284,7 +279,6 @@ theorem uniform_base_le (k E : Nat) :
   have hE1 : (1 : Real) ≤ 2 ^ E := one_le_pow₀ (by norm_num)
   have hsplit : (2 : Real) ^ (E + k + 2) = 2 ^ E * 2 ^ k * 4 := by rw [pow_add, pow_add]; norm_num
   rw [hsplit]
-  have hk1 : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
   constructor <;> nlinarith
 
 /-- **The family-lemma constants are at most `2^(2^(4k+16))`**, given the
@@ -295,7 +289,7 @@ theorem family_constants_poly_le (k : Nat) {MK : Real} {MP Pu : Nat}
     (hMP : MP ≤ (2 * (k + 1 + 1) * Pu + 4) ^ (2 ^ (k + 1))) :
     ((⌈MK⌉₊ : Nat) : Real) + (((k + 1) * MP : Nat) : Real) ≤
       2 ^ ((2 : Nat) ^ (4 * k + 16)) := by
-  set E := schmidtKExp k with hEdef
+  set E := schmidtKExp k
   have hE := schmidtKExp_le k
   have hPB := schmidtPBnd_le k
   have hkA : k + 1 ≤ 2 ^ k := Nat.lt_two_pow_self

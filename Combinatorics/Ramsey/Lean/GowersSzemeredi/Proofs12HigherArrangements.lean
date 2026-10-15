@@ -164,16 +164,6 @@ private lemma lemma123_arrangement_count_eq {N d : Nat} [NeZero N]
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
   rw [lemma123_arrangement_isIn_iff, lemma123_arrangement_isRespected_iff]
 
-private lemma lemma123_additiveTuple_two_iff {N : Nat}
-    (q : Fin 4 → ZMod N) :
-    IsAdditiveTuple (k := 2) q ↔ q 0 + q 1 = q 2 + q 3 := by
-  unfold IsAdditiveTuple
-  rw [show (Finset.univ.filter (fun i : Fin 4 ↦ (i : Nat) < 2)) =
-      {0, 1} by decide]
-  rw [show (Finset.univ.filter (fun i : Fin 4 ↦ 2 ≤ (i : Nat))) =
-      {2, 3} by decide]
-  simp
-
 private def lemma123PairToArrangement {N : Nat}
     (P : VerticalParallelogram N × VerticalParallelogram N) :
     DArrangement N 2 :=
@@ -282,7 +272,7 @@ private lemma lemma123_pairToArrangement_good {N : Nat} [NeZero N]
   constructor
   · unfold DArrangement.IsIn
     constructor
-    · apply (lemma123_additiveTuple_two_iff _).mpr
+    · apply (lemma122_additiveTuple_two_iff _).mpr
       change P.1.x + (P.2.x + P.2.width) =
         (P.1.x + P.1.width) + P.2.x
       rw [hwidth]
@@ -300,7 +290,7 @@ private lemma lemma123_pairToArrangement_good {N : Nat} [NeZero N]
         simpa [lemma123PairToArrangement, DArrangement.x,
           DArrangement.y, DArrangement.height] using And.intro h20 h21
   · unfold DArrangement.IsRespected
-    apply (lemma123_additiveTuple_two_iff _).mpr
+    apply (lemma122_additiveTuple_two_iff _).mpr
     change
       (phi (P.1.x, P.1.y + P.1.height) - phi (P.1.x, P.1.y)) +
           (phi (P.2.x + P.2.width, P.2.y' + P.1.height) -

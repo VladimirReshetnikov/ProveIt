@@ -85,65 +85,6 @@ private lemma lemma154_additive_iff {N d : Nat} (x : Fin (2 * d) → ZMod N) :
   rw [hsum, sub_eq_zero]
   rfl
 
-private lemma lemma154_card_le_of_fiber_le {A B : Type*}
-    [Fintype A] [Fintype B] [DecidableEq B] (f : A → B) (m : Nat)
-    (h : ∀ b, Fintype.card {a : A // f a = b} ≤ m) :
-    Fintype.card A ≤ Fintype.card B * m := by
-  rw [← Fintype.card_congr (Equiv.sigmaFiberEquiv f), Fintype.card_sigma]
-  calc
-    (∑ b : B, Fintype.card {a : A // f a = b}) ≤ ∑ _ : B, m :=
-      Finset.sum_le_sum fun b _ => h b
-    _ = Fintype.card B * m := by simp
-
-private lemma lemma154_sum_mul_sub_eq_one {N : Nat} {I : Type*}
-    [Fintype I] [DecidableEq I] (a x y : I → ZMod N) (i : I)
-    (hoff : ∀ t, t ≠ i → x t = y t) :
-    (∑ t, a t * x t) - (∑ t, a t * y t) =
-      a i * (x i - y i) := by
-  classical
-  rw [← Finset.sum_sub_distrib]
-  calc
-    (∑ t, (a t * x t - a t * y t)) =
-        ∑ t, a t * (x t - y t) := by
-      apply Finset.sum_congr rfl
-      intro t _
-      ring
-    _ = ∑ t ∈ ({i} : Finset I), a t * (x t - y t) := by
-      symm
-      apply Finset.sum_subset (by simp)
-      intro t _ ht
-      have hti : t ≠ i := by simpa using ht
-      rw [hoff t hti, sub_self, mul_zero]
-    _ = a i * (x i - y i) := by simp
-
-private lemma lemma154_sum_mul_sub_eq_two {N : Nat} {I : Type*}
-    [Fintype I] [DecidableEq I] (a x y : I → ZMod N) (i j : I)
-    (hij : i ≠ j) (hoff : ∀ t, t ≠ i → t ≠ j → x t = y t) :
-    (∑ t, a t * x t) - (∑ t, a t * y t) =
-      a i * (x i - y i) + a j * (x j - y j) := by
-  classical
-  rw [← Finset.sum_sub_distrib]
-  calc
-    (∑ t, (a t * x t - a t * y t)) =
-        ∑ t, a t * (x t - y t) := by
-      apply Finset.sum_congr rfl
-      intro t _
-      ring
-    _ = ∑ t ∈ ({i, j} : Finset I), a t * (x t - y t) := by
-      symm
-      apply Finset.sum_subset (by simp)
-      intro t _ ht
-      have hti : t ≠ i := by
-        intro h
-        subst t
-        exact ht (by simp)
-      have htj : t ≠ j := by
-        intro h
-        subst t
-        exact ht (by simp)
-      rw [hoff t hti htj, sub_self, mul_zero]
-    _ = a i * (x i - y i) + a j * (x j - y j) := by simp [hij]
-
 private abbrev Lemma154LinearSolutions {N : Nat} {I : Type*}
     [Fintype I] (a : I → ZMod N) :=
   {x : I → ZMod N // ∑ t, a t * x t = 0}
@@ -165,7 +106,7 @@ private lemma lemma154_linear_solutions_card_le {N : Nat} [NeZero N]
       have hoff : ∀ s, s ≠ i → x.1 s = y.1 s := by
         intro s hsi
         exact congrFun hxy ⟨s, hsi⟩
-      have hdiff := lemma154_sum_mul_sub_eq_one a x.1 y.1 i hoff
+      have hdiff := rangeDeg_sum_mul_sub_eq_one a x.1 y.1 i hoff
       rw [x.2, y.2, sub_self] at hdiff
       have hz : x.1 i - y.1 i = 0 :=
         (mul_eq_zero.mp hdiff.symm).resolve_left hai
@@ -196,7 +137,7 @@ private def lemma154DoubleExceptEquiv {I : Type*} [DecidableEq I]
   left_inv _ := rfl
   right_inv _ := rfl
 
-private lemma lemma154_double_except_card {I : Type*} [Fintype I]
+lemma lemma154_double_except_card {I : Type*} [Fintype I]
     [DecidableEq I] (i j : I) (hij : i ≠ j) :
     Fintype.card {t : I // t ≠ i ∧ t ≠ j} = Fintype.card I - 2 := by
   rw [Fintype.card_congr (lemma154DoubleExceptEquiv i j hij)]
@@ -380,7 +321,7 @@ private noncomputable def lemma154LiftFinset {k : Nat}
     (A : Finset (Fin k)) : Finset (Fin (k + 1)) :=
   A.map Fin.castSuccEmb
 
-private lemma lemma154_vertex_castSucc {N k d : Nat}
+lemma lemma154_vertex_castSucc {N k d : Nat}
     (R : GeneralArrangement N k d) (e : Fin k → Bool)
     (j : Fin (2 * d)) (i : Fin k) :
     R.vertex e j i.castSucc =
@@ -388,7 +329,7 @@ private lemma lemma154_vertex_castSucc {N k d : Nat}
   simp [GeneralArrangement.vertex, GeneralArrangement.cube, AxisCube.vertex,
     AxisCube.base, AxisCube.side, appendCoordinate]
 
-private lemma lemma154_vertex_last {N k d : Nat}
+lemma lemma154_vertex_last {N k d : Nat}
     (R : GeneralArrangement N k d) (e : Fin k → Bool)
     (j : Fin (2 * d)) :
     R.vertex e j (Fin.last k) = R.crossSection j := by
@@ -431,7 +372,7 @@ private def lemma154BooleanCoefficient {N k : Nat}
         if u i then 1 else if e i then h i else 0
       else if u i then 0 else 1
 
-private lemma lemma154_booleanWalshMoment_multilinear {N k : Nat} [NeZero N]
+lemma lemma154_booleanWalshMoment_multilinear {N k : Nat} [NeZero N]
     (eta : (Fin k → Bool) → Int) (h : Point N k)
     (A : Finset (Fin k)) :
     IsMultilinear (fun y => booleanWalshMoment eta h y A) := by
@@ -546,15 +487,6 @@ private lemma lemma154_case_one_key_card_le {N k d : Nat}
     _ ≤ N ^ k * N ^ (2 * d - 1) * N ^ ((2 * d - 1) * k) := by
       exact Nat.mul_le_mul_right _ (Nat.mul_le_mul_left _ hcross)
 
-private lemma lemma154_level_subtype_card {N k : Nat} [NeZero N]
-    (mu : Point N k → ZMod N) (a : ZMod N) :
-    Fintype.card {y : Point N k // mu y = a} =
-      countWhere fun y : Point N k => mu y = a := by
-  classical
-  unfold countWhere
-  rw [Finset.filter_congr_decidable]
-  exact Fintype.card_subtype (fun y : Point N k => mu y = a)
-
 private lemma lemma154_case_one_card_le {N k d : Nat} [NeZero N]
     (hprime : N.Prime) (hodd : Odd N) (hk : 1 ≤ k) (hd : 1 ≤ d)
     (c : Lemma154Coefficient k d) (j : Fin (2 * d))
@@ -615,7 +547,7 @@ private lemma lemma154_case_one_card_le {N k d : Nat} [NeZero N]
           have htbase := congrFun htail
             (⟨t, ht⟩ : {q : Fin (2 * d) // q ≠ j})
           rw [hsideEq, htbase]
-        have hdiff := lemma154_sum_mul_sub_eq_one
+        have hdiff := rangeDeg_sum_mul_sub_eq_one
           (fun _ : Fin (2 * d) => (1 : ZMod N))
           (fun t => booleanWalshMoment (fun e => lemma154Eta c e t)
             R.1.1.side (R.1.1.base t) A)
@@ -701,24 +633,13 @@ private lemma lemma154_case_one_card_le {N k d : Nat} [NeZero N]
           rw [hsubmul]
           omega
 
-private lemma lemma154_parity_eq_prod {N k : Nat} (e : Fin k → Bool) :
-    parityCharacter (N := N) e =
-      ∏ i : Fin k, if e i then (-1 : ZMod N) else 1 := by
-  classical
-  simp only [parityCharacter, boolWeight, countWhere]
-  rw [← Finset.prod_const]
-  rw [Finset.prod_filter]
-  apply Finset.prod_congr rfl
-  intro i _
-  by_cases h : e i = true <;> simp [h]
-
-private lemma lemma154_parity_cube_sum {N k : Nat} [NeZero N]
+lemma lemma154_parity_cube_sum {N k : Nat} [NeZero N]
     (h y : Point N k) :
     (∑ e : Fin k → Bool, parityCharacter (N := N) e *
       ∏ i : Fin k, (y i + if e i then h i else 0)) =
         (-1 : ZMod N) ^ k * ∏ i, h i := by
   classical
-  simp_rw [lemma154_parity_eq_prod, ← Finset.prod_mul_distrib]
+  simp_rw [parityCharacter_eq_prod, ← Finset.prod_mul_distrib]
   calc
     (∑ e : Fin k → Bool,
         ∏ i : Fin k,
@@ -743,7 +664,7 @@ private lemma lemma154_parity_cube_sum {N k : Nat} [NeZero N]
       intro i _
       ring
 
-private lemma lemma154_append_product {N k : Nat} (x : Point N k) (r : ZMod N) :
+lemma lemma154_append_product {N k : Nat} (x : Point N k) (r : ZMod N) :
     (∏ i : Fin (k + 1), appendCoordinate x r i) = (∏ i, x i) * r := by
   induction k with
   | zero =>
@@ -762,7 +683,7 @@ private lemma lemma154_append_product {N k : Nat} (x : Point N k) (r : ZMod N) :
       simp only [Fin.tail]
       ring
 
-private lemma lemma154_vertex_product_univ {N k d : Nat}
+lemma lemma154_vertex_product_univ {N k d : Nat}
     (R : GeneralArrangement N k d) (e : Fin k → Bool)
     (j : Fin (2 * d)) :
     (∏ i : Fin (k + 1), R.vertex e j i) =
@@ -770,27 +691,7 @@ private lemma lemma154_vertex_product_univ {N k d : Nat}
         R.crossSection j := by
   exact lemma154_append_product _ _
 
-private lemma lemma154_exists_det_pair {N : Nat} [NeZero N] [Fact N.Prime]
-    {I : Type*} [Fintype I] [DecidableEq I] [Nonempty I]
-    (a b : I → ZMod N) (ha : ∀ i, a i ≠ 0)
-    (hnot : ¬ ∃ q, ∀ i, b i = q * a i) :
-    ∃ i j, i ≠ j ∧ a i * b j - a j * b i ≠ 0 := by
-  classical
-  by_contra h
-  push Not at h
-  let i0 : I := Classical.choice inferInstance
-  apply hnot
-  refine ⟨b i0 / a i0, ?_⟩
-  intro j
-  have hdet : a i0 * b j - a j * b i0 = 0 := by
-    by_cases hij : i0 = j
-    · subst j
-      ring
-    · exact h i0 j hij
-  field_simp [ha i0]
-  simpa [mul_comm] using sub_eq_zero.mp hdet
-
-private lemma lemma154_full_moment_eq {N k d : Nat} [NeZero N]
+lemma lemma154_full_moment_eq {N k d : Nat} [NeZero N]
     (R : GeneralArrangement N k d)
     (eta : (Fin k → Bool) → Fin (2 * d) → Int)
     (s : Fin (2 * d) → ZMod N)
@@ -892,7 +793,7 @@ private lemma lemma154_case_two_card_le {N k d : Nat} [NeZero N]
     rw [hs j e, hq j]
     by_cases hj : (j : Nat) < d <;>
       simp [a, lemma154IndexSign, arrangementParityCoefficient, hj]
-  obtain ⟨i, j, hij, hdet⟩ := lemma154_exists_det_pair a s ha hnotprop
+  obtain ⟨i, j, hij, hdet⟩ := rangeDeg_exists_det_pair a s ha hnotprop
   let proj : Lemma154CoefficientSolutions N k d c →
       Lemma154CaseTwoKey (N := N) (k := k) a s := fun R ↦ by
     have hadd : ∑ t, a t * R.1.crossSection t = 0 :=

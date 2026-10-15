@@ -25,7 +25,7 @@ namespace LeanProofs.GowersSzemeredi
 open BaseCase
 
 /-- `(cubicBaseExponent q s)⁻¹ = 2^27·s⁻³·q⁴`, in two bases. -/
-theorem cubicBaseExponent_inv_le_tb {q : Nat} {s ν W : Real} {a b c : Nat} (hν : 1 ≤ ν) (hW : 2 ≤ W)
+theorem cubicBaseExponent_inv_le_tb {q : Nat} {s ν W : Real} {a b c : Nat} (hW : 2 ≤ W)
     (hq : 0 < q) (hqw : (q : Real) ≤ ν ^ a * W ^ b) (hs : 0 < s) (hsw : s⁻¹ ≤ W ^ c) :
     (cubicBaseExponent q s)⁻¹ ≤ ν ^ (a * 4) * W ^ (27 + c * 3 + b * 4) := by
   have hW0 : 0 ≤ W := le_trans (by norm_num) hW
@@ -75,7 +75,7 @@ theorem two_split_basics {V : Real} (hV : 1 ≤ V) {theta gamma rho : Real} (hg 
 theorem affine_le_tb {ν W : Real} {M q : Nat} {a b c : Nat} (hν : 1 ≤ ν) (hW : 2 ≤ W)
     (hM : (M : Real) ≤ ν ^ a * W ^ b) (hq : (q : Real) ≤ ν ^ 0 * W ^ c) :
     ((M * q + 1 : Nat) : Real) ≤ ν ^ a * W ^ (b + c + 1) := by
-  have h := tb_mul hν (by linarith) (Nat.cast_nonneg _) (Nat.cast_nonneg _) hM hq
+  have h := tb_mul hν (by linarith) (Nat.cast_nonneg _) hM hq
   rw [Nat.add_zero] at h
   push_cast
   exact tb_add_one hν hW h
@@ -86,7 +86,7 @@ theorem famTwoQr_le_two_bases {ν W : Real} {M q a b c : Nat} (hν : 1 ≤ ν) (
     famTwoQr M q t ≤ ν ^ a * W ^ (4 + (b + c + 1)) := by
   unfold famTwoQr
   apply max_le <;> rw [Nat.cast_mul] <;>
-    exact tb_const_mul hν hW (by norm_num) (by norm_num) (Nat.cast_nonneg _) (affine_le_tb hν hW hM hq)
+    exact tb_const_mul hW (by norm_num) (Nat.cast_nonneg _) (affine_le_tb hν hW hM hq)
 
 /-- The dimension-two family count is polynomial in its family and face bounds. -/
 theorem famTwoCount_le_two_bases {ν W rho : Real} {M q a b c : Nat} (hν : 1 ≤ ν) (hW : 2 ≤ W)
@@ -100,22 +100,22 @@ theorem famTwoCount_le_two_bases {ν W rho : Real} {M q a b c : Nat} (hν : 1 �
       ν ^ (2 * a) * W ^ (2 * b + c + 12) := by
     exact (famPieceSamples_le_two_bases hν hW hr hrW hQr hM).trans_eq (by congr 2 <;> ring)
   set S := famPieceSamples (famTwoQr M q) M rho
-  have hSq := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hS hq
-  have hprod := tb_mul hν hW1 (Nat.cast_nonneg _) (by positivity) hM hSq
+  have hSq := tb_mul hν hW1 (Nat.cast_nonneg _) hS hq
+  have hprod := tb_mul hν hW1 (by positivity) hM hSq
   have hplus : ((M * (S * q) + 1 : Nat) : Real) ≤ ν ^ (3 * a) * W ^ (3 * b + 2 * c + 13) := by
     rw [Nat.cast_add, Nat.cast_mul, Nat.cast_mul, Nat.cast_one]
     exact (tb_add_one hν hW hprod).trans_eq (by congr 2 <;> ring)
   have hPb : famTwoPb M q S (rho / 4) ≤ ν ^ (3 * a) * W ^ (3 * b + 2 * c + 15) := by
     unfold famTwoPb
     rw [Nat.cast_mul]
-    exact (tb_const_mul (c := (3 : Real)) (j := 2) hν hW (by norm_num) (by norm_num)
+    exact (tb_const_mul (c := (3 : Real)) (j := 2) hW (by norm_num)
       (Nat.cast_nonneg _) hplus).trans_eq (by congr 2 <;> ring)
   have hP0 : 0 ≤ famTwoPb M q S (rho / 4) := by unfold famTwoPb; exact Nat.cast_nonneg _
   have hG := famPieceGraphBound_le_mul_sq (tb_one_le hν hW1) (tb_one_le hν hW1) hM hS hP0 hPb
   refine max_le (hG.trans_eq (by ring)) ?_
   have h9 : ((3 ^ (1 + 1) * M : Nat) : Real) ≤ ν ^ a * W ^ (4 + b) := by
     rw [Nat.cast_mul]
-    exact tb_const_mul hν hW (by norm_num) (by norm_num) (Nat.cast_nonneg _) hM
+    exact tb_const_mul hW (by norm_num) (Nat.cast_nonneg _) hM
   exact h9.trans (tb_mono hν hW1 (by omega) (by omega))
 
 /-- **The dimension-two count, in two bases**: `≤ ν^11·W^(2^41)`. -/
@@ -163,7 +163,6 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
   clear_value ζ M qs qf W
   have hν : 1 ≤ ν := by
     rw [hνdef]; have := Nat.cast_nonneg (α := Real) n; linarith only [this]
-  have hν0 : 0 ≤ ν := by linarith only [hν]
   have hW1 : 1 ≤ W := by linarith only [hW2]
   have hW0 : 0 ≤ W := by linarith only [hW2]
   have hu0 : (0 : Real) ≤ 2 / (gamma * theta) := le_trans (by norm_num) hu2
@@ -177,7 +176,7 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
   have hMqs : ((M * qs + 1 : Nat) : Real) ≤ ν ^ 1 * W ^ B := affine_le_tb hν hW2 hM hqs
   have hMqf : ((M * qf + 1 : Nat) : Real) ≤ ν ^ 1 * W ^ B := affine_le_tb hν hW2 hM hqf
   have hn1 : ((3 * (M * qs + 1) + 1 : Nat) : Real) ≤ ν ^ 1 * W ^ (2 + B + 1) := by
-    have h := tb_const_mul (c := (3 : Real)) (j := 2) hν hW2 (by norm_num) (by norm_num)
+    have h := tb_const_mul (c := (3 : Real)) (j := 2) hW2 (by norm_num)
       (Nat.cast_nonneg _) hMqs
     rw [Nat.cast_succ, Nat.cast_mul]
     push_cast at h ⊢
@@ -192,23 +191,23 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
       unfold familyWidthDivisor; push_cast; ring
     rw [hval]
     have h8 := tb_pow (Nat.cast_nonneg _) hn1 8
-    have h := tb_mul hν hW1 (Nat.cast_nonneg _) (by positivity) hpW h8
+    have h := tb_mul hν hW1 (by positivity) hpW h8
     rw [show (0 + 1 * 8) = 8 by norm_num] at h
-    exact tb_const_mul hν hW2 (by norm_num) (by norm_num) (by positivity) h
+    exact tb_const_mul hW2 (by norm_num) (by positivity) h
   have hBq0 : 0 < familyWidthDivisor 1 p1 (3 * (M * qs + 1)) := familyWidthDivisor_pos hp1 _
   -- the two base exponents
   have hEb0 : 0 < famTwoEb M qs (rho / 8) := cubicBaseExponent_pos (Nat.succ_pos _) (by positivity)
   have hEb : (famTwoEb M qs (rho / 8))⁻¹ ≤ ν ^ (1 * 4) * W ^ (27 + (3 + 1) * 3 + B * 4) := by
     unfold famTwoEb
-    exact cubicBaseExponent_inv_le_tb hν hW2 (Nat.succ_pos _) hMqs (by positivity) hr8
+    exact cubicBaseExponent_inv_le_tb hW2 (Nat.succ_pos _) hMqs (by positivity) hr8
   have hEr0 : 0 < famTwoEr M qf (rho / 8) := by
     unfold famTwoEr
     exact div_pos (cubicBaseExponent_pos (Nat.succ_pos _) (by positivity)) (by norm_num)
   have hEr : (famTwoEr M qf (rho / 8))⁻¹ ≤ ν ^ (1 * 4) * W ^ (4 + (27 + (3 + 1) * 3 + B * 4)) := by
     unfold famTwoEr
     rw [inv_div, div_eq_mul_inv]
-    have h := cubicBaseExponent_inv_le_tb hν hW2 (Nat.succ_pos _) hMqf (by positivity) hr8
-    exact tb_const_mul hν hW2 (by norm_num) (by norm_num)
+    have h := cubicBaseExponent_inv_le_tb hW2 (Nat.succ_pos _) hMqf (by positivity) hr8
+    exact tb_const_mul hW2 (by norm_num)
       (inv_pos.mpr (cubicBaseExponent_pos (Nat.succ_pos _) (by positivity))).le h
   -- the line exponent
   set L := pieceLineExponent (familyWidthDivisor 1 p1) (famTwoQb M qs) (famTwoEb M qs)
@@ -221,18 +220,18 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
     with hLBdef
   have hLi : L⁻¹ ≤ ν ^ 16 * W ^ LB := by
     rw [hLval, inv_div, div_eq_mul_inv, mul_inv]
-    have h := tb_mul hν hW1 hBq0.le (mul_nonneg (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le) hBq
-      (tb_mul hν hW1 (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le hEr hEb)
-    exact h.trans (le_of_eq (by rw [hLBdef] <;> ring_nf))
+    have h := tb_mul hν hW1 (mul_nonneg (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le) hBq
+      (tb_mul hν hW1 (inv_pos.mpr hEb0).le hEr hEb)
+    exact h.trans (le_of_eq (by rw [hLBdef]))
   -- the slice exponent
   have hSamp := twoSamples_le_split hν hW2 hr hrW hM hqf
   set Sp := famPieceSamples (famTwoQr M qf) M rho
   set SB := 5 + (4 + ((2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1) + (2 : Nat) ^ 24 + 1) + 1 with hSBdef
   have hSq : ((Sp : Real) * qf) ≤ ν ^ 2 * W ^ (SB + (2 : Nat) ^ 38) := by
-    have h := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hSamp hqf
+    have h := tb_mul hν hW1 (Nat.cast_nonneg _) hSamp hqf
     simpa using h
   have hqS : ((M * (Sp * qf) + 1 : Nat) : Real) ≤ ν ^ 3 * W ^ ((2 : Nat) ^ 24 + (SB + (2 : Nat) ^ 38) + 1) := by
-    have h1 := tb_mul hν hW1 (Nat.cast_nonneg _) (by positivity) hM hSq
+    have h1 := tb_mul hν hW1 (by positivity) hM hSq
     push_cast
     have := tb_add_one hν hW2 h1
     simpa using this
@@ -245,7 +244,7 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
   set SS := 27 + (2 + 1) * 3 + ((2 : Nat) ^ 24 + (SB + (2 : Nat) ^ 38) + 1) * 4 with hSSdef
   have hSi : S⁻¹ ≤ ν ^ 12 * W ^ SS := by
     rw [hSval]
-    have h := cubicBaseExponent_inv_le_tb hν hW2 (Nat.succ_pos _) hqS (by positivity) hr4
+    have h := cubicBaseExponent_inv_le_tb hW2 (Nat.succ_pos _) hqS (by positivity) hr4
     exact h
   -- the bound `R`
   set RB := 2 + (LB + SS) with hRBdef
@@ -255,8 +254,8 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
   have hLSR : (L * S / 4)⁻¹ ≤ R := by
     have hval : (L * S / 4)⁻¹ = 4 * (L⁻¹ * S⁻¹) := by field_simp
     rw [hval]
-    have h := tb_mul hν hW1 (inv_pos.mpr hL0).le (inv_pos.mpr hS0).le hLi hSi
-    exact (tb_const_mul (j := 2) hν hW2 (by norm_num) (by norm_num) (by positivity) h).trans
+    have h := tb_mul hν hW1 (inv_pos.mpr hS0).le hLi hSi
+    exact (tb_const_mul (j := 2) hW2 (by norm_num) (by positivity) h).trans
       (le_of_eq (by rw [hRdef, hRBdef]))
   -- the scale `z = ζ / A`
   set z := pieceWidthScale (familyWidthPrefactor K1) (famTwoQb M qs) ζ rho with hzdef
@@ -265,9 +264,9 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
   have hA : familyWidthPrefactor K1 (3 * (M * qs + 1)) ≤ ν ^ 1 * W ^ AB := by
     unfold familyWidthPrefactor
     rw [Nat.cast_mul]
-    have h := tb_mul hν hW1 (Nat.cast_nonneg _) (Nat.cast_nonneg _) hKW hn1
+    have h := tb_mul hν hW1 (Nat.cast_nonneg _) hKW hn1
     rw [Nat.zero_add] at h
-    exact tb_const_mul hν hW2 (by norm_num) (by norm_num) (by positivity) h
+    exact tb_const_mul hW2 (by norm_num) (by positivity) h
   have hA1 : 1 ≤ familyWidthPrefactor K1 (3 * (M * qs + 1)) := by
     unfold familyWidthPrefactor
     have : (1 : Real) ≤ ((K1 * (3 * (M * qs + 1) + 1) : Nat) : Real) := by
@@ -278,7 +277,7 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
   have hz0 : 0 < z := by rw [hzval]; exact div_pos hζ0 (lt_of_lt_of_le zero_lt_one hA1)
   have hz1 : z ≤ 1 := by
     rw [hzval, div_le_one (lt_of_lt_of_le zero_lt_one hA1)]; exact hζ1.trans hA1
-  set A := familyWidthPrefactor K1 (3 * (M * qs + 1)) with hAdef
+  set A := familyWidthPrefactor K1 (3 * (M * qs + 1))
   set Λ := A + W ^ ((2 : Nat) ^ 40) with hΛdef
   -- no `linarith` may see `W ^ 2 ^ 40`: its parser evaluates powers, and Lean's `Nat.pow`
   -- panics on exponents above `2 ^ 24`
@@ -314,7 +313,7 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
       _ ≤ W ^ 2 * (ν ^ 1 * W ^ X) := mul_le_mul_of_nonneg_right h3 hpos
       _ = ν ^ 1 * W ^ (X + 2) := by rw [pow_add]; ring
   have hfin : 2 * ((6 + Λ) * R) ≤ ν ^ 29 * W ^ (1 + (X + 2 + RB)) := by
-    have h := tb_mul hν hW1 (by positivity) (by positivity) h6Λ (le_refl R)
+    have h := tb_mul hν hW1 (by positivity) h6Λ (le_refl R)
     rw [hRdef] at h ⊢
     have h2 : (2 : Real) ≤ W ^ 1 := by rw [pow_one]; exact hW2
     calc 2 * ((6 + Λ) * (ν ^ 28 * W ^ RB)) ≤ W ^ 1 * (ν ^ (1 + 28) * W ^ (X + 2 + RB)) :=

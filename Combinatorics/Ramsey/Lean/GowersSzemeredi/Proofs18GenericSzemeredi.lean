@@ -122,14 +122,13 @@ theorem closedThreshold_le_of_env {L μ : Nat} (hL : 1 ≤ L) {delta beta sigma 
     intervalDiscrepancyClosedThreshold L delta beta sigma T ≤
       Real.exp (Real.exp ((2 / intervalUniformityParameter delta L) ^ (2 ^ (μ + 9)))) := by
   obtain ⟨ha0, haδ, h2L, -⟩ := intervalUniformityParameter_gen_bounds hL hδ hδhalf
-  set alpha := intervalUniformityParameter delta L with halpha
+  set alpha := intervalUniformityParameter delta L
   set X := 2 / alpha with hXdef
   have hX : 2 ≤ X := by
     have : (2 : Real) ≤ 2 ^ L := by
       calc (2 : Real) = 2 ^ 1 := by norm_num
         _ ≤ 2 ^ L := pow_le_pow_right₀ (by norm_num) hL
     linarith
-  have hX0 : (0 : Real) ≤ X := by linarith
   have hX1 : (1 : Real) ≤ X := by linarith
   have hδi : delta⁻¹ ≤ X := by
     rw [hXdef, div_eq_mul_inv]
@@ -145,7 +144,7 @@ theorem closedThreshold_le_of_env {L μ : Nat} (hL : 1 ≤ L) {delta beta sigma 
   have hgain : (beta / 8)⁻¹ ≤ X ^ (2 ^ (μ + 2)) := by
     rw [show (beta / 8)⁻¹ = 8 * beta⁻¹ by field_simp]
     have h8 := hsmall 8 2 (by norm_num) hμ2
-    exact (pw_mul hX (by norm_num) (inv_pos.mpr b0).le h8 bi).trans (pw_mono hX le_rfl (by omega))
+    exact (pw_mul hX (inv_pos.mpr b0).le h8 bi).trans (pw_mono hX le_rfl (by omega))
   -- the base `2 max 1 (σ/16)⁻¹`
   have hbase : 2 * max 1 (sigma / 16)⁻¹ ≤ Real.exp (X ^ (2 ^ (μ + 2))) := by
     have h16 : (sigma / 16)⁻¹ ≤ Real.exp (X ^ (2 ^ (μ + 1))) := by
@@ -162,7 +161,7 @@ theorem closedThreshold_le_of_env {L μ : Nat} (hL : 1 ≤ L) {delta beta sigma 
       fun x hx => le_exp_exp_of_le_exp (ex_of_pw hx)
     have h32 : 32 / beta ≤ X ^ (2 ^ (μ + 2)) := by
       rw [div_eq_mul_inv]
-      exact (pw_mul hX (by norm_num) (inv_pos.mpr b0).le (hsmall 32 3 (by norm_num) (by omega)) bi).trans
+      exact (pw_mul hX (inv_pos.mpr b0).le (hsmall 32 3 (by norm_num) (by omega)) bi).trans
         (pw_mono hX le_rfl (by omega))
     have hden : (512 * (L : Real) ^ 2 + 1) / delta ^ L ≤ X ^ (2 ^ (μ + 2)) := by
       rw [div_eq_mul_inv, ← inv_pow]
@@ -181,7 +180,7 @@ theorem closedThreshold_le_of_env {L μ : Nat} (hL : 1 ≤ L) {delta beta sigma 
           norm_num at this ⊢; omega)
       have hu : delta⁻¹ ^ L ≤ X ^ (2 ^ μ) :=
         (pow_le_pow_left₀ (inv_pos.mpr hδ).le hδi L).trans (pw_natpow hX (by omega))
-      exact (pw_mul hX (by positivity) (by positivity) hc hu).trans (pw_mono hX le_rfl (by omega))
+      exact (pw_mul hX (by positivity) hc hu).trans (pw_mono hX le_rfl (by omega))
     unfold intervalDiscrepancyStepThreshold
     apply max_le (Real.one_le_exp (by positivity))
     apply max_le (hdex _ (hLX.trans (pw_X hX _)))

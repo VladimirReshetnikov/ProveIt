@@ -110,7 +110,7 @@ theorem indexCell_scalar_linear {N : Nat} [Fact N.Prime]
 real-power lower length bound and explicit rounding-safe threshold. -/
 theorem corollary_7_11_constant_modular (N : Nat) [Fact N.Prime]
     (R : ModAP N) (A : Finset (ZMod N)) (phi : ZMod N → ZMod N) (alpha : Real)
-    (hR : R.IsProper) (hl : 0 < R.length) (hα : 0 < alpha) (hαone : alpha ≤ 1)
+    (hR : R.IsProper) (hl : 0 < R.length) (hα : 0 < alpha)
     (hA : A ⊆ R.carrier) (hdensity : alpha * R.length ≤ A.card)
     (hfreiman : FreimanHom 8 A phi)
     (hlarge : 8 ≤ (R.length : Real) ^ cor711Exponent alpha 1) :
@@ -189,7 +189,7 @@ theorem corollary_7_11_modular (N : Nat) [Fact N.Prime]
       (∀ j, (Q j).step != 0 ∧ (Q j).IsProper ∧
         (R.length : Real) ^ cor711Exponent alpha 1 ≤ (Q j).length ∧
         LinearOn ((Q j).carrier.filter fun x ↦ x ∈ A) phi) := by
-  apply corollary_7_11_constant_modular N R A phi alpha hR hl hα hαone hA hdensity hfreiman
+  apply corollary_7_11_constant_modular N R A phi alpha hR hl hα hA hdensity hfreiman
   have hC : 8 ≤ 4096 * Real.pi / alpha := by
     apply (le_div_iff₀ hα).mpr
     have := Real.pi_gt_three

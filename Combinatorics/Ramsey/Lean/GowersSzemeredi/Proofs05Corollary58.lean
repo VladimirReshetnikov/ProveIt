@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs05Lemma14
+import GowersSzemeredi.Proofs03ProgressionCount
 
 /-!
 # The scale issue in Corollary 5.8
@@ -61,14 +62,6 @@ private def cor58BalancedReal {N : Nat} (A : Finset (ZMod N))
     (delta : Real) (x : ZMod N) : Real :=
   (if x ∈ A then 1 else 0) - delta
 
-private lemma cor58_density_eq {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) (delta : Real)
-    (hcard : (A.card : Real) = delta * N) : density A = delta := by
-  have hN : (N : Real) ≠ 0 := by exact_mod_cast NeZero.ne N
-  unfold density
-  rw [hcard]
-  field_simp
-
 private lemma cor58_balanced_eq_real {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (delta : Real)
     (hcard : (A.card : Real) = delta * N) (x : ZMod N) :
@@ -78,39 +71,6 @@ private lemma cor58_balanced_eq_real {N : Nat} [NeZero N]
   rw [show density A = delta from cor58_density_eq A delta hcard]
   by_cases hx : x ∈ A <;>
     simp [indicator, cor58BalancedReal, hx]
-
-private lemma cor58_balanced_discValued {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) : DiscValued (balanced A) := by
-  intro x
-  classical
-  have hd0 : 0 ≤ density A := density_nonneg A
-  have hd1 : density A ≤ 1 := density_le_one A
-  by_cases hx : x ∈ A
-  · simp only [balanced, indicator, hx, if_true]
-    norm_cast
-    rw [Real.norm_eq_abs, abs_of_nonneg (sub_nonneg.mpr hd1)]
-    linarith
-  · simp only [balanced, indicator, hx, if_false, zero_sub]
-    norm_cast
-    rw [Real.norm_eq_abs, abs_neg, abs_of_nonneg hd0]
-    exact hd1
-
-private lemma cor58_sum_partition {X R : Type*} [DecidableEq X]
-    {m : Nat} [AddCommMonoid R] (P : Fin m → Finset X) (S : Finset X)
-    (hpartition : IsPartition P S) (g : X → R) :
-    ∑ j, ∑ x ∈ P j, g x = ∑ x ∈ S, g x := by
-  classical
-  have hpair :
-      ((Finset.univ : Finset (Fin m)) : Set (Fin m)).PairwiseDisjoint P := by
-    intro i _hi j _hj hij
-    exact hpartition.2 i j (bne_iff_ne.mpr hij)
-  have hunion : (Finset.univ : Finset (Fin m)).biUnion P = S := by
-    ext x
-    simp only [Finset.mem_biUnion, Finset.mem_univ, true_and]
-    exact (hpartition.1 x).symm
-  rw [show (∑ j, ∑ x ∈ P j, g x) =
-      ∑ j ∈ (Finset.univ : Finset (Fin m)), ∑ x ∈ P j, g x by simp]
-  rw [← Finset.sum_biUnion hpair, hunion]
 
 private lemma cor58_sum_abs_positive {I : Type*} [Fintype I]
     (g : I → Real) (hsigned : 0 ≤ ∑ z, g z)
@@ -194,7 +154,6 @@ theorem corollary_5_8_with_scale_holds_of_corollary_5_6
     exact Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, hi⟩
   have hdelta : 0 ≤ delta := by
     have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-    have hcardNonneg : (0 : Real) ≤ A.card := by positivity
     nlinarith
   have hsignedU :
       0 ≤ ∑ s ∈ U, cor58BalancedReal A delta s := by
@@ -224,7 +183,7 @@ theorem corollary_5_8_with_scale_holds_of_corollary_5_6
         intro i _hi
         exact (cor58_sum_partition (fun j ↦ (R i j).carrier)
           (P i).carrier (hRpart i) (cor58BalancedReal A delta)).symm
-  have hdisc : DiscValued (balanced A) := cor58_balanced_discValued A
+  have hdisc : DiscValued (balanced A) := cor33_balanced_discValued A
   have hlocalError (i : Fin M) :
       ‖∑ s ∈ (P i).carrier,
           balanced A s * exponential (-(phi i s))‖ ≤
@@ -330,7 +289,6 @@ theorem corollary_5_8_with_scale_holds_of_corollary_5_6
         0 < ((N : Real) / M) ^
           (polynomialPartitionConstant k : Real)⁻¹ / 8 := by
       have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-      have hMpos : (0 : Real) < M := by exact_mod_cast hM
       positivity
     exact hscalePos.trans_le hcellLower
   have hthresholdPos : 0 < (alpha / 16) * card z := by positivity

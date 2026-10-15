@@ -76,7 +76,6 @@ theorem polyPieceBudgetW_fejer_ge_power {gamma theta : Real} (hg : 0 < gamma) (h
     apply inv_anti₀ (pow_pos hupos _)
     apply pow_le_pow_right₀ hu1
     norm_num
-  have hθ0 : 0 ≤ fejerThetaOne theta gamma 1 := by unfold fejerThetaOne; positivity
   unfold polyPieceBudgetW section16ThetaTwo
   calc (u ^ ((2 : Nat) ^ 23))⁻¹ ≤ (u ^ 35 * u ^ ((2 : Nat) ^ 22))⁻¹ := by
         apply inv_anti₀ (mul_pos (pow_pos hupos _) (pow_pos hupos _))
@@ -146,31 +145,37 @@ theorem polyPieceSpecCountW_fejer_le_power {gamma theta : Real} (hg : 0 < gamma)
     _ = u ^ ((1 + ((2 : Nat) ^ 22 + (2 : Nat) ^ 23)) * (2 : Nat) ^ 14) := (pow_mul _ _ _).symm
     _ ≤ u ^ ((2 : Nat) ^ 38) := pow_le_pow_right₀ hu1 (by norm_num)
 
-/-- The face and slice count `≤ u^(2^38)`. -/
-theorem polyPieceFaceCountW_fejer_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+theorem polyPieceFaceCountW_fejer_le_tight {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) :
     (polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma : Real) ≤
-      (2 / (gamma * theta)) ^ ((2 : Nat) ^ 38) := by
+      (2 / (gamma * theta)) ^ (10002 * (2 ^ 23 + 1) : Nat) := by
   obtain ⟨hu2, -, h2g, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   obtain ⟨hb, hb1⟩ := polyPieceBudgetW_fejer_pos_le hg hg1 ht ht1
   have hbinv := polyPieceBudgetW_fejer_inv_le_power hg hg1 ht ht1
-  have hBF := section16BaseFamilyBound_le_dyadic_power hg hg1 hb hb1
+  have hBF := section16BaseFamilyBound_le_power hg hg1 hb hb1
   unfold polyPieceFaceCountW
   set b := polyPieceBudgetW (fejerThetaOne theta gamma 1)
   set u := 2 / (gamma * theta) with hu
   clear_value u b
-  have hu1 : 1 ≤ u := le_trans (by norm_num) hu2
   have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
   have hbase : 2 / (gamma * b) ≤ u ^ ((2 : Nat) ^ 23 + 1) := by
     rw [show 2 / (gamma * b) = 2 / gamma * b⁻¹ by field_simp]
     rw [pow_succ, mul_comm (u ^ _) u]
     exact mul_le_mul h2g hbinv (inv_pos.mpr hb).le hupos.le
   refine hBF.trans ?_
-  calc (2 / (gamma * b)) ^ ((2 : Nat) ^ 14)
-      ≤ (u ^ ((2 : Nat) ^ 23 + 1)) ^ ((2 : Nat) ^ 14) :=
+  calc (2 / (gamma * b)) ^ (10002 : Nat)
+      ≤ (u ^ ((2 : Nat) ^ 23 + 1)) ^ (10002 : Nat) :=
         pow_le_pow_left₀ (div_pos (by norm_num) (mul_pos hg hb)).le hbase _
-    _ = u ^ (((2 : Nat) ^ 23 + 1) * (2 : Nat) ^ 14) := (pow_mul _ _ _).symm
-    _ ≤ u ^ ((2 : Nat) ^ 38) := pow_le_pow_right₀ hu1 (by norm_num)
+    _ = u ^ ((2 ^ 23 + 1) * 10002) := (pow_mul _ _ _).symm
+    _ = u ^ (10002 * (2 ^ 23 + 1) : Nat) := by rw [mul_comm]
+
+/-- The face and slice count `≤ u^(2^38)`. -/
+theorem polyPieceFaceCountW_fejer_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+    (ht : 0 < theta) (ht1 : theta ≤ 1) :
+    (polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma : Real) ≤
+      (2 / (gamma * theta)) ^ ((2 : Nat) ^ 38) :=
+  (polyPieceFaceCountW_fejer_le_tight hg hg1 ht ht1).trans (pow_le_pow_right₀
+    (le_trans (by norm_num) (prod_scale_basic hg hg1 ht ht1).1) (by norm_num))
 
 /-- The number of pieces `⌊γ⁻²/(5θ′)⌋ ≤ u^(2^24)`. -/
 theorem polyTwoFejerPieces_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)

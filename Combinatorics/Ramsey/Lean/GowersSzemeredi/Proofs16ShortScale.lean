@@ -33,7 +33,6 @@ theorem section16_short_scale_margin (s zeta : Real) (hs : 0 < s)
   have hlr : l ≤ Real.sqrt s / 4 := by
     dsimp [l]
     nlinarith [mul_nonneg (by linarith : 0 ≤ 1 / 2 - zeta) hr]
-  have hr4 : 4 < Real.sqrt s := by linarith
   have hvsqrt : (v : Real) ≤ 3 * Real.sqrt s / 4 := by linarith
   have hvSq : (v : Real) ^ 2 + 1 ≤ s := by
     have hv2 := pow_le_pow_left₀ hvr.le hvsqrt 2

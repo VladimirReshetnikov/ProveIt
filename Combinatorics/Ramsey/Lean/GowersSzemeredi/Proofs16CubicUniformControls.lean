@@ -13,7 +13,6 @@ namespace LeanProofs.GowersSzemeredi
 theorem cubicBaseExponent_antitone_count {q Q : Nat} {sigma : Real}
     (hq : 0 < q) (hqQ : q ≤ Q) (hs : 0 ≤ sigma) :
     cubicBaseExponent Q sigma ≤ cubicBaseExponent q sigma := by
-  have hq0 : (0 : Real) < q := by exact_mod_cast hq
   unfold cubicBaseExponent
   apply div_le_div_of_nonneg_left (by positivity) (by positivity)
   exact_mod_cast Nat.pow_le_pow_left hqQ 4

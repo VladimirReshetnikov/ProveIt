@@ -236,24 +236,14 @@ theorem single_piece_quartic_inverse_global {alpha : Real}
   have hin : 0 < singlePieceCubicInput Qb C alpha := by
     unfold singlePieceCubicInput; positivity
   have hin1 : singlePieceCubicInput Qb C alpha ≤ 1 := by
-    have hρ0 := singlePieceGlobalDensity_pos (k := 2) ha ha1 hQb hC
     unfold singlePieceCubicInput singlePieceEta
-    have h2 : (2 : Real) ^ (-(2 * ((2 + 1) + 1) ^ 3 : Int)) ≤ 1 :=
-      zpow_le_one_of_nonpos₀ (by norm_num) (by norm_num)
     have hα2 : alpha ^ 2 ≤ 1 := pow_le_one₀ ha.le ha1
     have hinner : singlePieceGlobalDensity Qb C alpha (alpha / 2) 2 / (2 : Real) ^ (2 + 1) *
         alpha ^ 2 / 4 ≤ 1 := by
       have : singlePieceGlobalDensity Qb C alpha (alpha / 2) 2 / (2 : Real) ^ (2 + 1) ≤ 1 := by
         rw [div_le_one (by positivity)]; linarith
       nlinarith
-    have hη1 : (2 : Real) ^ (-(2 * ((2 + 1) + 1) ^ 3 : Int)) *
-        (singlePieceGlobalDensity Qb C alpha (alpha / 2) 2 / (2 : Real) ^ (2 + 1) *
-          alpha ^ 2 / 4) ≤ 1 := by
-      calc _ ≤ 1 * 1 := mul_le_mul h2 hinner (by positivity) zero_le_one
-        _ = 1 := one_mul 1
     rw [div_le_one (by positivity)]
-    have hpow : (1 : Real) ≤ (2 * (2 + 1 + 2 : Nat) : Real) ^ (2 + 1 + 2) := by
-      exact one_le_pow₀ (by norm_num)
     linarith
   have hbase := fejer_cubic_function_discrepancy_bound hin hin1
   have hbound := hbase.mono le_rfl le_rfl (min_le_left _ 16) le_rfl

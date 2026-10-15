@@ -93,7 +93,7 @@ variable {X : Real}
 theorem inv_mul_le_pw (hX : 2 ≤ X) {x y : Real} (hx : 0 < x) (hy : 0 < y) {a b : Nat}
     (h1 : x⁻¹ ≤ X ^ (2 ^ a)) (h2 : y⁻¹ ≤ X ^ (2 ^ b)) : (x * y)⁻¹ ≤ X ^ (2 ^ (max a b + 1)) := by
   rw [mul_inv]
-  exact pw_mul' hX (inv_nonneg.mpr hx.le) (inv_nonneg.mpr hy.le) h1 h2
+  exact pw_mul' hX (inv_nonneg.mpr hy.le) h1 h2
 
 /-- `section13Q δ ≤ X^(2^54)` once `δ⁻¹ ≤ X^(2^32)`. -/
 theorem section13Q_le_pw (hX : 2 ≤ X) {delta : Real} (hδ : 0 < delta)
@@ -106,7 +106,7 @@ theorem section13Q_le_pw (hX : 2 ≤ X) {delta : Real} (hδ : 0 < delta)
   have h1 : (2 : Real) ^ ((2 : Nat) ^ 20) ≤ X ^ (2 ^ 20) := pw_const hX le_rfl
   have h2 : (delta⁻¹) ^ (2 ^ 21 : Nat) ≤ X ^ (2 ^ (32 + 21)) :=
     pw_pow hX (inv_nonneg.mpr hδ.le) hδinv le_rfl
-  exact pw_mono hX (pw_mul' hX (by positivity) (pow_nonneg (inv_nonneg.mpr hδ.le) _) h1 h2)
+  exact pw_mono hX (pw_mul' hX (pow_nonneg (inv_nonneg.mpr hδ.le) _) h1 h2)
     (by norm_num)
 
 /-- `(polyRowExponent p δ)⁻¹ ≤ X^(2^69)` once `δ⁻¹ ≤ X^(2^32)` and `p ≤ 2^(2^64)`. -/
@@ -121,26 +121,26 @@ theorem polyRowExponent_inv_le_pw (hX : 2 ≤ X) {delta : Real} (hδ : 0 < delta
   have hQ10 : 0 ≤ Q + 1 := by linarith only [hQ512]
   have h2 : (2 : Real) ≤ X ^ (2 ^ 0) := pw_const hX (by norm_num)
   have hQ1 : Q + 1 ≤ X ^ (2 ^ 55) := by
-    have h := pw_mul' hX (by norm_num) hQ0 h2 hQ
+    have h := pw_mul' hX hQ0 h2 hQ
     exact (by linarith only [hQ512] : Q + 1 ≤ 2 * Q).trans (pw_mono hX h (by norm_num))
   have hQ8 : (Q + 1) ^ 8 ≤ X ^ (2 ^ (55 + 3)) := pw_pow hX hQ10 hQ1 (by norm_num)
   have hp : (p : Real) ≤ X ^ (2 ^ 64) := pw_const hX hpB
   have h2p0 : 0 ≤ 2 * (p : Real) := mul_nonneg (by norm_num) (Nat.cast_nonneg p)
   have h2p : 2 * (p : Real) ≤ X ^ (2 ^ 65) :=
-    pw_mono hX (pw_mul' hX (by norm_num) (Nat.cast_nonneg p) h2 hp) (by norm_num)
+    pw_mono hX (pw_mul' hX (Nat.cast_nonneg p) h2 hp) (by norm_num)
   have hc0 : 0 ≤ 2 * (p : Real) * (Q + 1) ^ 8 := mul_nonneg h2p0 (pow_nonneg hQ10 8)
   have hc : 2 * (p : Real) * (Q + 1) ^ 8 ≤ X ^ (2 ^ 66) :=
-    pw_mono hX (pw_mul' hX h2p0 (pow_nonneg hQ10 8) h2p hQ8) (by norm_num)
+    pw_mono hX (pw_mul' hX (pow_nonneg hQ10 8) h2p hQ8) (by norm_num)
   have hc4 : (2 * (p : Real) * (Q + 1) ^ 8) ^ 4 ≤ X ^ (2 ^ (66 + 2)) :=
     pw_pow hX hc0 hc (by norm_num)
   have hQ3 : Q ^ 3 ≤ X ^ (2 ^ (54 + 2)) := pw_pow hX hQ0 hQ (by norm_num)
   have h4 : (4 : Real) ≤ X ^ (2 ^ 1) := pw_const hX (by norm_num)
   have h4Q0 : 0 ≤ 4 * Q ^ 3 := mul_nonneg (by norm_num) (pow_nonneg hQ0 3)
   have h4Q : 4 * Q ^ 3 ≤ X ^ (2 ^ 57) :=
-    pw_mono hX (pw_mul' hX (by norm_num) (pow_nonneg hQ0 3) h4 hQ3) (by norm_num)
+    pw_mono hX (pw_mul' hX (pow_nonneg hQ0 3) h4 hQ3) (by norm_num)
   unfold polyRowExponent
   rw [inv_inv, ← hQdef]
-  exact pw_mono hX (pw_mul' hX h4Q0 (pow_nonneg hc0 4) h4Q hc4) (by norm_num)
+  exact pw_mono hX (pw_mul' hX (pow_nonneg hc0 4) h4Q hc4) (by norm_num)
 
 theorem section13PolySquareFactorF_inv_le (hX : 2 ≤ X) {delta : Real} (hδ : 0 < delta)
     (hδinv : delta⁻¹ ≤ X ^ (2 ^ 32)) :

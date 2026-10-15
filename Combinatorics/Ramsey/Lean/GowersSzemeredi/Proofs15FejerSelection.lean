@@ -382,14 +382,6 @@ private lemma fejerGoodArrangements_card {N k : Nat} [NeZero N]
   ext R
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
 
-private lemma fejer_respected_le_arrangement {N k : Nat} [NeZero N]
-    (B : Finset (Point N (k + 1)))
-    (phi : Point N (k + 1) → ZMod N) :
-    respectedGeneralArrangementCount 8 B phi ≤ generalArrangementCount 8 B := by
-  classical
-  rw [← fejerGoodArrangements_card, ← fejerArrangements_card]
-  exact Finset.card_le_card (Finset.filter_subset _ _)
-
 private lemma fejer_good_restrict_card {N k : Nat} [NeZero N]
     (B B' : Finset (Point N (k + 1)))
     (phi : Point N (k + 1) → ZMod N) (hB'B : B' ⊆ B) :
@@ -479,96 +471,9 @@ private lemma fejer_additive_iff {N : Nat} (x : Fin 16 → ZMod N) :
   rw [hsum, sub_eq_zero]
   rfl
 
-private lemma fejer_sum_mul_sub_eq_one {N : Nat} {I : Type*}
-    [Fintype I] [DecidableEq I] (a x y : I → ZMod N) (i : I)
-    (hoff : ∀ t, t ≠ i → x t = y t) :
-    (∑ t, a t * x t) - (∑ t, a t * y t) = a i * (x i - y i) := by
-  classical
-  rw [← Finset.sum_sub_distrib]
-  calc
-    (∑ t, (a t * x t - a t * y t)) = ∑ t, a t * (x t - y t) := by
-      apply Finset.sum_congr rfl
-      intro t _
-      ring
-    _ = ∑ t ∈ ({i} : Finset I), a t * (x t - y t) := by
-      symm
-      apply Finset.sum_subset (by simp)
-      intro t _ ht
-      have hti : t ≠ i := by simpa using ht
-      rw [hoff t hti, sub_self, mul_zero]
-    _ = a i * (x i - y i) := by simp
-
 private abbrev FejerArrangementCode {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) :=
   (Fin 15 → {z : Point N (k + 1) // z ∈ B}) × Point N k × Point N k
-
-private lemma fejer_arrangement_count_le_card_pow {N k : Nat} [NeZero N]
-    (B : Finset (Point N (k + 1))) :
-    generalArrangementCount 8 B ≤ B.card ^ 15 * N ^ (2 * k) := by
-  classical
-  let source := {R : GeneralArrangement N k 8 // R.IsIn B}
-  let efalse : Fin k → Bool := fun _ ↦ false
-  let enc : source → FejerArrangementCode B := fun R ↦
-    ⟨fun j ↦ ⟨R.1.vertex efalse j.castSucc, R.2.2 efalse j.castSucc⟩,
-      R.1.side, R.1.base (Fin.last 15)⟩
-  have hinj : Function.Injective enc := by
-    intro R S hRS
-    apply Subtype.ext
-    have hverts := congrArg (fun z ↦ z.1) hRS
-    have hside := congrArg (fun z ↦ z.2.1) hRS
-    have hlast := congrArg (fun z ↦ z.2.2) hRS
-    dsimp only [enc] at hverts hside hlast
-    change R.1.side = S.1.side at hside
-    change R.1.base (Fin.last 15) = S.1.base (Fin.last 15) at hlast
-    have hbase : R.1.base = S.1.base := by
-      funext j
-      refine Fin.lastCases hlast (fun t ↦ ?_) j
-      have hv := congrArg Subtype.val (congrFun hverts t)
-      funext i
-      have hii := congrFun hv i.castSucc
-      simpa [efalse, GeneralArrangement.vertex, GeneralArrangement.cube,
-        AxisCube.vertex, AxisCube.base, AxisCube.side, appendCoordinate] using hii
-    have hcrossTail : ∀ j, j ≠ Fin.last 15 →
-        R.1.crossSection j = S.1.crossSection j := by
-      intro j hj
-      obtain ⟨t, rfl⟩ := Fin.exists_castSucc_eq.mpr hj
-      have hv := congrArg Subtype.val (congrFun hverts t)
-      have hc := congrFun hv (Fin.last k)
-      simpa [efalse, GeneralArrangement.vertex, appendCoordinate] using hc
-    have hcrossLast : R.1.crossSection (Fin.last 15) =
-        S.1.crossSection (Fin.last 15) := by
-      let a : Fin 16 → ZMod N := fejerIndexSign
-      have hdiff := fejer_sum_mul_sub_eq_one a R.1.crossSection
-        S.1.crossSection (Fin.last 15) hcrossTail
-      have hRadd := (fejer_additive_iff R.1.crossSection).mp R.2.1
-      have hSadd := (fejer_additive_iff S.1.crossSection).mp S.2.1
-      change (∑ j, a j * R.1.crossSection j) = 0 at hRadd
-      change (∑ j, a j * S.1.crossSection j) = 0 at hSadd
-      rw [hRadd, hSadd, sub_self] at hdiff
-      have ha : a (Fin.last 15) = -1 := by
-        simp [a, fejerIndexSign]
-      rw [ha, neg_one_mul] at hdiff
-      exact sub_eq_zero.mp (neg_eq_zero.mp hdiff.symm)
-    have hcross : R.1.crossSection = S.1.crossSection := by
-      funext j
-      by_cases hj : j = Fin.last 15
-      · subst j
-        exact hcrossLast
-      · exact hcrossTail j hj
-    exact Prod.ext hside (Prod.ext hbase hcross)
-  have hsourceCard : Fintype.card source = generalArrangementCount 8 B := by
-    unfold source generalArrangementCount countWhere
-    rw [Finset.filter_congr_decidable]
-    exact Fintype.card_subtype _
-  rw [← hsourceCard]
-  calc
-    Fintype.card source ≤ Fintype.card (FejerArrangementCode B) :=
-      Fintype.card_le_of_injective enc hinj
-    _ = B.card ^ 15 * N ^ (2 * k) := by
-      simp only [FejerArrangementCode, Fintype.card_prod, Fintype.card_fun,
-        Fintype.card_fin, Fintype.card_coe, Point, ZMod.card]
-      rw [← pow_add]
-      ring_nf
 
 private abbrev FejerFeature (k : Nat) :=
   Option (Finset (Fin (k + 1)))
@@ -594,68 +499,11 @@ private def fejerPhaseValue {N k : Nat} [NeZero N]
     (z : Point N (k + 1)) : ZMod N :=
   ∑ F, C F * fejerFeatureValue phi F z
 
-@[simp] private lemma fejer_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma fejer_star_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : star (exponential x) = exponential (-x) := by
-  simpa only [exponential, starRingEnd_apply] using
-    (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
+attribute [simp] star_exponential
 
-@[simp] private lemma fejer_exponential_zero {N : Nat} [NeZero N] :
-    exponential (0 : ZMod N) = 1 := by
-  exact AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
-
-
-private lemma fejer_prod_exponential {N : Nat} [NeZero N]
-    {I : Type*} [Fintype I] (f : I → ZMod N) :
-    ∏ i, exponential (f i) = exponential (∑ i, f i) := by
-  classical
-  symm
-  induction (Finset.univ : Finset I) using Finset.induction_on with
-  | empty => simp
-  | @insert i s hi ih =>
-      rw [Finset.sum_insert hi, fejer_exponential_add,
-        Finset.prod_insert hi, ih]
-
-
-private lemma fejer_sum_exponential_mul {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    ∑ u : ZMod N, exponential (x * u) =
-      if x = 0 then (N : Complex) else 0 := by
-  simpa [exponential, mul_comm] using
-    AddChar.sum_mulShift x (ZMod.isPrimitive_stdAddChar N)
-
-private lemma fejer_expect_exponential_mul {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    (𝔼 u : ZMod N, exponential (x * u)) = if x = 0 then 1 else 0 := by
-  have hN : N ≠ 0 := NeZero.ne N
-  by_cases hx : x = 0
-  · rw [if_pos hx]
-    have h := Fintype.card_mul_expect
-      (fun u : ZMod N ↦ exponential (x * u))
-    rw [ZMod.card, fejer_sum_exponential_mul, if_pos hx] at h
-    exact (mul_left_cancel₀ (Nat.cast_ne_zero.mpr hN) (by simpa using h))
-  · rw [if_neg hx]
-    have h := Fintype.card_mul_expect
-      (fun u : ZMod N ↦ exponential (x * u))
-    rw [ZMod.card, fejer_sum_exponential_mul, if_neg hx] at h
-    exact (mul_eq_zero.mp (by simpa using h)).resolve_left
-      (Nat.cast_ne_zero.mpr hN)
-
-private lemma fejer_expect_pi_prod {I C : Type*} [Fintype I]
-    [DecidableEq I]
-    [Fintype C] [Nonempty C] (f : I → C → Complex) :
-    (𝔼 g : I → C, ∏ i : I, f i (g i)) =
-      ∏ i : I, 𝔼 c : C, f i c := by
-  classical
-  simp only [Finset.expect_univ, Fintype.card_fun]
-  rw [← Fintype.prod_sum]
-  simp only [NNRat.smul_def, NNRat.cast_inv, NNRat.cast_natCast,
-    Nat.cast_pow]
-  rw [Finset.prod_mul_distrib, Finset.prod_const]
-  simp [inv_pow]
+attribute [simp] exponential_zero
 
 private lemma fejer_expect_phase {N k : Nat} [NeZero N]
     (rel : FejerFeature k → ZMod N) :
@@ -668,7 +516,7 @@ private lemma fejer_expect_phase {N k : Nat} [NeZero N]
         ∏ F, exponential (C F * rel F) := by
     exact (fejer_prod_exponential (fun F ↦ C F * rel F)).symm
   simp_rw [hexp]
-  rw [fejer_expect_pi_prod
+  rw [selection_expect_pi_prod
     (I := FejerFeature k) (C := ZMod N)
     (f := fun F c ↦ exponential (c * rel F))]
   have hfactor (F : FejerFeature k) :
@@ -703,70 +551,6 @@ private lemma fejerEtaZero_cases {k : Nat} (e : Fin k → Bool)
       (Nat.not_even_iff_odd.mp he).neg_one_pow
     by_cases hj : (j : Nat) < 8 <;> simp [fejerEtaZero, hp, hj]
 
-
-private lemma fejer_parity_eq_prod {N k : Nat} (e : Fin k → Bool) :
-    parityCharacter (N := N) e =
-      ∏ i : Fin k, if e i then (-1 : ZMod N) else 1 := by
-  classical
-  simp only [parityCharacter, boolWeight, countWhere]
-  rw [← Finset.prod_const, Finset.prod_filter]
-  apply Finset.prod_congr rfl
-  intro i _
-  by_cases h : e i = true <;> simp [h]
-
-private lemma fejer_parity_cube_sum_subset {N k : Nat} [NeZero N]
-    (h y : Point N k) (A : Finset (Fin k)) :
-    (∑ e : Fin k → Bool, parityCharacter (N := N) e *
-      ∏ i ∈ A, (y i + if e i then h i else 0)) =
-      ∏ i : Fin k, if i ∈ A then -h i else 0 := by
-  classical
-  have hprod (e : Fin k → Bool) :
-      (∏ i ∈ A, (y i + if e i then h i else 0)) =
-        ∏ i : Fin k,
-          if i ∈ A then (y i + if e i then h i else 0) else 1 := by
-    rw [← Finset.prod_filter]
-    simp
-  simp_rw [fejer_parity_eq_prod, hprod, ← Finset.prod_mul_distrib]
-  calc
-    (∑ e : Fin k → Bool,
-        ∏ i : Fin k, (if e i then (-1 : ZMod N) else 1) *
-          (if i ∈ A then (y i + if e i then h i else 0) else 1)) =
-        ∏ i : Fin k, ∑ b : Bool,
-          (if b then (-1 : ZMod N) else 1) *
-            (if i ∈ A then (y i + if b then h i else 0) else 1) := by
-      exact (Fintype.prod_sum (fun i (b : Bool) ↦
-        (if b then (-1 : ZMod N) else 1) *
-          (if i ∈ A then (y i + if b then h i else 0) else 1))).symm
-    _ = ∏ i : Fin k, if i ∈ A then -h i else 0 := by
-      apply Finset.prod_congr rfl
-      intro i _
-      rw [Fintype.sum_bool]
-      by_cases hi : i ∈ A <;> simp [hi]
-
-private lemma fejer_vertex_product_split {N k : Nat}
-    (R : GeneralArrangement N k 8) (e : Fin k → Bool) (j : Fin 16)
-    (A : Finset (Fin (k + 1))) :
-    (∏ i ∈ A, R.vertex e j i) =
-      (∏ i : Fin k, if i.castSucc ∈ A then
-        (R.base j i + if e i then R.side i else 0) else 1) *
-      (if Fin.last k ∈ A then R.crossSection j else 1) := by
-  classical
-  calc
-    (∏ i ∈ A, R.vertex e j i) =
-        ∏ i : Fin (k + 1), if i ∈ A then R.vertex e j i else 1 := by
-      rw [← Finset.prod_filter]
-      simp
-    _ = (∏ i : Fin k, if i.castSucc ∈ A then
-          (R.base j i + if e i then R.side i else 0) else 1) *
-        (if Fin.last k ∈ A then R.crossSection j else 1) := by
-      rw [Fin.prod_univ_castSucc]
-      congr 1
-      · apply Finset.prod_congr rfl
-        intro i _
-        simp [GeneralArrangement.vertex, GeneralArrangement.cube,
-          AxisCube.vertex, AxisCube.base, AxisCube.side, appendCoordinate]
-      · simp [GeneralArrangement.vertex, appendCoordinate]
-
 private lemma fejerEtaZero_moment {N k : Nat} [NeZero N]
     (R : GeneralArrangement N k 8) (hadd : IsAdditiveTuple R.crossSection)
     (A : Finset (Fin (k + 1))) :
@@ -795,7 +579,7 @@ private lemma fejerEtaZero_moment {N k : Nat} [NeZero N]
         intro e _
         congr 1
         rw [← Finset.prod_filter]
-      _ = P := fejer_parity_cube_sum_subset R.side (R.base j) A₀
+      _ = P := selection_parity_cube_sum_subset R.side (R.base j) A₀
   unfold arrangementMoment
   rw [Finset.sum_comm]
   calc
@@ -805,7 +589,7 @@ private lemma fejerEtaZero_moment {N k : Nat} [NeZero N]
           (P * (if Fin.last k ∈ A then R.crossSection j else 1)) := by
       apply Finset.sum_congr rfl
       intro j _
-      simp_rw [heta, fejer_vertex_product_split]
+      simp_rw [heta, selection_vertex_product_split]
       calc
         (∑ e : Fin k → Bool,
             (fejerIndexSign (N := N) j * parityCharacter (N := N) e) *
@@ -874,18 +658,6 @@ private lemma fejer_third_index {k : Nat}
   let z₀ : fejerIndex k := (e₀, (0 : Fin 16))
   let z₁ : fejerIndex k := (e₀, (1 : Fin 16))
   let z₂ : fejerIndex k := (e₀, (2 : Fin 16))
-  have h₀₁ : z₀ ≠ z₁ := by
-    intro h
-    have := congrArg (fun z : fejerIndex k ↦ (z.2 : Nat)) h
-    norm_num [z₀, z₁] at this
-  have h₀₂ : z₀ ≠ z₂ := by
-    intro h
-    have := congrArg (fun z : fejerIndex k ↦ (z.2 : Nat)) h
-    norm_num [z₀, z₂] at this
-  have h₁₂ : z₁ ≠ z₂ := by
-    intro h
-    have := congrArg (fun z : fejerIndex k ↦ (z.2 : Nat)) h
-    norm_num [z₁, z₂] at this
   by_cases h₀ : z₀ ≠ u ∧ z₀ ≠ v
   · exact ⟨z₀, h₀⟩
   by_cases h₁ : z₁ ≠ u ∧ z₁ ≠ v
@@ -979,7 +751,6 @@ private lemma fejerCarrier_prod_of_nondegenerate {N k : Nat} [NeZero N]
   rw [Finset.prod_image
     (fejer_injective_of_nondegenerate hN R hnondegenerate).injOn]
 
-
 /-! ## Fejér weights of order `m` -/
 
 /-- A Fejér digit: a pair `(a, b)`, whose value is `a − b`. The Riesz digits
@@ -1057,7 +828,7 @@ private lemma fejerKernelWeight_complex {N k : Nat} [NeZero N] (m : Nat)
     intro a _
     apply Finset.sum_congr rfl
     intro b _
-    rw [fejer_star_exponential, ← fejer_exponential_add]
+    rw [star_exponential, ← exponential_add]
     congr 1
     simp only [fejerDigitInt]
     push_cast
@@ -1221,7 +992,6 @@ private lemma fejer_digit_count_pos (m j : Nat) (hj : j ≤ m) :
     constructor
     · intro hp
       unfold fejerDigitInt at hp
-      have h1 := p.1.isLt
       refine ⟨⟨(p.2 : Nat), by omega⟩, Prod.ext (Fin.ext ?_) (Fin.ext rfl)⟩
       simp only
       omega
@@ -1434,7 +1204,6 @@ private lemma fejer_bad_average_upper {N k : Nat} [NeZero N] [Fact N.Prime]
       (fejerValidRelations_subset_diagonal m hmN phi R hnondeg hbad)
     rw [fejer_diagonal_card] at h
     exact_mod_cast h
-  have hm : (0 : Real) < (m : Real) + 1 := by positivity
   calc ((((m : Real) + 1) ^ 2)⁻¹) ^ (2 ^ (k + 4)) * (fejerValidRelations m phi R).card
       ≤ ((((m : Real) + 1) ^ 2)⁻¹) ^ (2 ^ (k + 4)) * ((m : Real) + 1) ^ (2 ^ (k + 4)) :=
         mul_le_mul_of_nonneg_left hcard (by positivity)
@@ -1727,14 +1496,11 @@ private lemma fejer_loss_lower (k : Nat) (a : Real) (ha : 0 < a) (ha1 : a ≤ 1)
     (a / 4) ^ fejerSelectionExponent k ≤
       (((2 ^ (k + 4) * ⌈6 / a⌉₊ : Nat) : Real)⁻¹) ^ (2 ^ (k + 4)) := by
   set M : Nat := 2 ^ (k + 4) with hM
-  set T : Nat := ⌈6 / a⌉₊ with hTdef
+  set T : Nat := ⌈6 / a⌉₊
   have hT : (T : Real) ≤ 7 / a := by
     have h1 : (T : Real) < 6 / a + 1 := Nat.ceil_lt_add_one (by positivity)
     have h2 : (1 : Real) ≤ 1 / a := by rw [le_div_iff₀ ha]; linarith
     linarith [show 6 / a + 1 ≤ 6 / a + 1 / a by linarith, show (6 : Real) / a + 1 / a = 7 / a by ring]
-  have hTpos : (0 : Real) < T := by
-    have : (0 : Real) < 6 / a := by positivity
-    exact lt_of_lt_of_le this (Nat.le_ceil _)
   have hMR : ((M : Nat) : Real) = 2 ^ (k + 4) := by rw [hM]; push_cast; ring
   have hMT : (((M * T : Nat) : Real)) ≤ 2 ^ (k + 7) / a := by
     push_cast
@@ -1860,7 +1626,7 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
     hu
   have hrespLe : (respectedGeneralArrangementCount 8 B phi : Real) ≤
       generalArrangementCount 8 B := by
-    exact_mod_cast fejer_respected_le_arrangement B phi
+    exact_mod_cast selection_respected_le_arrangement B phi
   have halpha1 : alpha ≤ 1 := by
     by_contra hlt
     push Not at hlt
@@ -1883,7 +1649,6 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
     calc D ≤ _ := h
       _ = c0 * (N : Real) ^ (17 * k + 14) := by rw [hc0]
   have hDsmall : 2 * D ≤ t * G := by
-    have hc0' : 0 ≤ c0 := by positivity
     have h1 : 2 * c0 ≤ scale * t * N := by
       have := (div_le_iff₀ (by positivity : (0 : Real) < scale * t)).mp hNbig
       linarith
@@ -1983,9 +1748,6 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
         _ ≤ 1 := h3
     have hmain : eta * t * G + D ≤
         eta * (alpha * G - D) * (t * (((T : Real) + 1) / 2)) - G * t := by
-      have e1 : eta * (alpha * G - D) * (t * (((T : Real) + 1) / 2)) =
-          (eta * alpha * (((T : Real) + 1) / 2)) * (t * G) -
-            eta * D * (t * (((T : Real) + 1) / 2)) := by ring
       have e2 : eta * D * (t * (((T : Real) + 1) / 2)) ≤ D := by
         calc eta * D * (t * (((T : Real) + 1) / 2)) ≤ 1 * D * 1 :=
               mul_le_mul (mul_le_mul_of_nonneg_right heta_one hD0) htT (by positivity)
@@ -2050,7 +1812,6 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
       _ = _ := hgen.symm
   · rw [hgen]
     have hpos : 0 ≤ eta * t * G := by positivity
-    have hbg : b ≤ eta * g := by linarith
     have hetab : 0 ≤ eta * b := mul_nonneg heta.le hb0
     linarith
 
@@ -2092,7 +1853,7 @@ theorem lemma_15_5_of_fejer_restriction (h : FejerArrangementRestriction) : lemm
   have hgeneral := selection_arrangement_real_upper beta B hBcard
   have hrespLe : (respectedGeneralArrangementCount 8 B phi : Real) ≤
       generalArrangementCount 8 B := by
-    exact_mod_cast fejer_respected_le_arrangement B phi
+    exact_mod_cast selection_respected_le_arrangement B phi
   rcases eq_or_lt_of_le hG with hG0 | hGpos
   · rw [mul_assoc, mul_assoc, ← hG0, mul_zero, mul_zero]
   have halpha1 : alpha ≤ 1 := by

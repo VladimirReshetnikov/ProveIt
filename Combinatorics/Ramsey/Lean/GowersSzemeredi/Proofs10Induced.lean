@@ -31,117 +31,6 @@ namespace LeanProofs.GowersSzemeredi
     refine Finset.mem_image.mpr ⟨x - d, hx, ?_⟩
     abel
 
-private lemma inducedTranslate_card {N : Nat}
-    (A : Finset (ZMod N)) (d : ZMod N) :
-    (section10Translate A d).card = A.card := by
-  classical
-  unfold section10Translate
-  exact Finset.card_image_of_injective A (add_left_injective d)
-
-private lemma inducedTranslate_mono {N : Nat}
-    {A A' : Finset (ZMod N)} (hAA' : A ⊆ A') (d : ZMod N) :
-    section10Translate A d ⊆ section10Translate A' d := by
-  intro x hx
-  rw [mem_inducedTranslate_iff] at hx ⊢
-  exact hAA' hx
-
-/-- Inclusion-exclusion inside a common finite ambient set. -/
-private lemma inter_card_lower_of_subsets {X : Type*} [DecidableEq X]
-    (S T U : Finset X) (hSU : S ⊆ U) (hTU : T ⊆ U) :
-    (S.card : Real) + T.card - U.card ≤ (S ∩ T).card := by
-  have hunion : S ∪ T ⊆ U := Finset.union_subset hSU hTU
-  have hcardUnion : (S ∪ T).card ≤ U.card := Finset.card_le_card hunion
-  have hcardIdentity := Finset.card_union_add_card_inter S T
-  have hcardUnionReal : ((S ∪ T).card : Real) ≤ U.card := by
-    exact_mod_cast hcardUnion
-  have hcardIdentityReal :
-      ((S ∪ T).card : Real) + (S ∩ T).card = S.card + T.card := by
-    exact_mod_cast hcardIdentity
-  linarith
-
-private lemma induced_bohr_zero_mem {N : Nat} [NeZero N]
-    (K : Finset (ZMod N)) (delta : Real) (hdelta : 0 ≤ delta) :
-    (0 : ZMod N) ∈ bohr K delta := by
-  classical
-  unfold bohr
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and, mul_zero,
-    centeredAbs, ZMod.valMinAbs_zero, Int.natAbs_zero, Nat.cast_zero]
-  intro r hr
-  positivity
-
-/-- The `7/8` Bohr-overlap estimate at the radius used in Corollary 10.11. -/
-private lemma induced_bohr_overlap {N : Nat} [NeZero N]
-    (K : Finset (ZMod N)) (delta : Real) (hK : K.Nonempty)
-    (hdelta : 0 < delta) (hdeltaOne : delta ≤ 1) :
-    let k := K.card
-    let B := bohr K delta
-    let zeta := (2 : Real) ^ (-((k : Real) + 4)) * delta ^ k / k
-    let C := bohr K zeta
-    ∀ d, d ∈ C →
-      (7 / 8 : Real) * B.card ≤
-        (B ∩ section10Translate B d).card := by
-  classical
-  dsimp only
-  intro d hd
-  let k : Nat := K.card
-  let zeta : Real := (2 : Real) ^ (-((k : Real) + 4)) * delta ^ k / k
-  have hk : 0 < k := Finset.card_pos.mpr hK
-  have hkReal : (0 : Real) < k := by exact_mod_cast hk
-  have hfactorNonneg : 0 ≤ (2 : Real) ^ (-((k : Real) + 4)) :=
-    Real.rpow_nonneg (by norm_num) _
-  have hfactorLeOne : (2 : Real) ^ (-((k : Real) + 4)) ≤ 1 := by
-    exact Real.rpow_le_one_of_one_le_of_nonpos (by norm_num) (by
-      have : (0 : Real) ≤ k + 4 := by positivity
-      linarith)
-  have hdeltaPowNonneg : 0 ≤ delta ^ k := pow_nonneg hdelta.le _
-  have hdeltaPowLe : delta ^ k ≤ delta := by
-    simpa only [pow_one] using
-      pow_le_pow_of_le_one hdelta.le hdeltaOne
-        (Nat.one_le_iff_ne_zero.mpr hk.ne')
-  have hzetaPos : 0 < zeta := by
-    dsimp only [zeta]
-    positivity
-  have hzetaLe : zeta ≤ delta := by
-    calc
-      zeta ≤ 1 * delta ^ k / k := by
-        dsimp only [zeta]
-        exact div_le_div_of_nonneg_right
-          (mul_le_mul_of_nonneg_right hfactorLeOne hdeltaPowNonneg) hkReal.le
-      _ ≤ delta ^ k := by
-        simpa only [one_mul] using
-          div_le_self hdeltaPowNonneg (by exact_mod_cast hk)
-      _ ≤ delta := hdeltaPowLe
-  have htwoCancel :
-      (2 : Real) ^ (k + 1) * (2 : Real) ^ (-((k : Real) + 4)) = 1 / 8 := by
-    rw [← Real.rpow_natCast]
-    rw [← Real.rpow_add (by norm_num : (0 : Real) < 2)]
-    rw [show ((k + 1 : Nat) : Real) + (-((k : Real) + 4)) = -3 by
-      norm_num
-      ring]
-    norm_num [Real.rpow_neg (by norm_num : (0 : Real) ≤ 2)]
-  have hdeltaCancel : delta ^ (-(k : Real)) * delta ^ k = 1 := by
-    rw [← Real.rpow_natCast]
-    rw [← Real.rpow_add hdelta]
-    norm_num
-  have hcoeff :
-      (2 : Real) ^ (k + 1) * delta ^ (-(k : Real)) * k * zeta = 1 / 8 := by
-    dsimp only [zeta]
-    calc
-      (2 : Real) ^ (k + 1) * delta ^ (-(k : Real)) * k *
-          ((2 : Real) ^ (-((k : Real) + 4)) * delta ^ k / k) =
-          ((2 : Real) ^ (k + 1) * (2 : Real) ^ (-((k : Real) + 4))) *
-            (delta ^ (-(k : Real)) * delta ^ k) := by
-        field_simp [hkReal.ne']
-      _ = 1 / 8 := by rw [htwoCancel, hdeltaCancel]; norm_num
-  have hraw := lemma_10_10_holds N k K delta zeta rfl hdelta hdeltaOne
-    hzetaPos.le hzetaLe d hd
-  change (1 - (2 : Real) ^ (k + 1) * delta ^ (-(k : Real)) * k * zeta) *
-      (bohr K delta).card ≤
-        (bohr K delta ∩ section10Translate (bohr K delta) d).card at hraw
-  rw [hcoeff] at hraw
-  norm_num at hraw ⊢
-  exact hraw
-
 theorem lemma_10_12_holds : lemma_10_12 := by
   classical
   intro N _ X _ _ D phi K delta theta W B' psi psi1
@@ -160,7 +49,7 @@ theorem lemma_10_12_holds : lemma_10_12 := by
   change phi w1 - phi w2 = psi1 c
 
   have hBne : B.Nonempty := by
-    exact ⟨0, induced_bohr_zero_mem K delta hdelta.le⟩
+    exact ⟨0, bohr_zero_mem K delta hdelta.le⟩
   have hBcardPos : (0 : Real) < B.card := by
     exact_mod_cast Finset.card_pos.mpr hBne
   have hB'cardLeNat : B'.card ≤ B.card :=
@@ -193,7 +82,6 @@ theorem lemma_10_12_holds : lemma_10_12 := by
   let G1 : Finset (ZMod N) := B'.filter (Good w1)
   let G2 : Finset (ZMod N) := B'.filter (Good w2)
   have hw1W : w1 ∈ W := hw1.1
-  have hw2W : w2 ∈ W := hw2.1
   have hw1Good : AlmostEvery (1 - Real.sqrt theta) B' (Good w1) := by
     simpa only [Good] using hw1.2
   have hw2Good : AlmostEvery (1 - Real.sqrt theta) B' (Good w2) := by
@@ -206,12 +94,12 @@ theorem lemma_10_12_holds : lemma_10_12 := by
   have hoverlap : (7 / 8 : Real) * B.card ≤
       (B ∩ section10Translate B c).card := by
     simpa only [k, B, zeta, C] using
-      induced_bohr_overlap K delta hK hdelta hdeltaOne c hc
+      corollary_10_11_overlap K delta hK hdelta hdeltaOne c hc
   let T : Finset (ZMod N) := section10Translate B c
   let T' : Finset (ZMod N) := section10Translate B' c
   let U : Finset (ZMod N) := B ∩ T
   let U' : Finset (ZMod N) := B' ∩ T'
-  have hT'sub : T' ⊆ T := inducedTranslate_mono hlocal.1 c
+  have hT'sub : T' ⊆ T := section10Translate_mono hlocal.1 c
   have hU'sub : U' ⊆ U := by
     intro x hx
     change x ∈ B' ∩ T' at hx
@@ -231,8 +119,8 @@ theorem lemma_10_12_holds : lemma_10_12 := by
     have hpartNat := Finset.card_sdiff_add_card_eq_card hT'sub
     have hpartReal : ((T \ T').card : Real) + T'.card = T.card := by
       exact_mod_cast hpartNat
-    rw [show T.card = B.card by exact inducedTranslate_card B c,
-      show T'.card = B'.card by exact inducedTranslate_card B' c] at hpartReal
+    rw [show T.card = B.card by exact section10Translate_card B c,
+      show T'.card = B'.card by exact section10Translate_card B' c] at hpartReal
     dsimp only [Ec]
     nlinarith [hlocal.2.1]
   have hdiffUsub : U \ U' ⊆ E0 ∪ Ec := by
@@ -267,13 +155,7 @@ theorem lemma_10_12_holds : lemma_10_12 := by
   let H : Finset (ZMod N) := (U' ∩ G2) ∩ TG1
   have hG1sub : G1 ⊆ B' := Finset.filter_subset _ _
   have hG2sub : G2 ⊆ B' := Finset.filter_subset _ _
-  have hTG1sub : TG1 ⊆ T' := inducedTranslate_mono hG1sub c
-  have hG1def : ((B' \ G1).card : Real) ≤
-      Real.sqrt theta * B'.card := by
-    have hpartNat := Finset.card_sdiff_add_card_eq_card hG1sub
-    have hpartReal : ((B' \ G1).card : Real) + G1.card = B'.card := by
-      exact_mod_cast hpartNat
-    nlinarith
+  have hTG1sub : TG1 ⊆ T' := section10Translate_mono hG1sub c
   have hG2def : ((B' \ G2).card : Real) ≤
       Real.sqrt theta * B'.card := by
     have hpartNat := Finset.card_sdiff_add_card_eq_card hG2sub
@@ -285,8 +167,8 @@ theorem lemma_10_12_holds : lemma_10_12 := by
     have hpartNat := Finset.card_sdiff_add_card_eq_card hTG1sub
     have hpartReal : ((T' \ TG1).card : Real) + TG1.card = T'.card := by
       exact_mod_cast hpartNat
-    rw [show T'.card = B'.card by exact inducedTranslate_card B' c,
-      show TG1.card = G1.card by exact inducedTranslate_card G1 c] at hpartReal
+    rw [show T'.card = B'.card by exact section10Translate_card B' c,
+      show TG1.card = G1.card by exact section10Translate_card G1 c] at hpartReal
     nlinarith
   have hHsub : H ⊆ U' := by
     intro x hx

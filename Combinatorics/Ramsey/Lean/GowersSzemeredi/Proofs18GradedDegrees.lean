@@ -53,9 +53,9 @@ theorem polyEnvBound_stepG (P : GenParamsG) {μV μK μ : Nat} (H : P.GHyp μV �
     rw [σeq]
     have hx0 : 0 ≤ 32 * (polynomialPartitionConstant (k + 1 + 1) : Real) * (P.Eloc alpha)⁻¹ :=
       mul_nonneg (mul_nonneg (by norm_num) (Nat.cast_nonneg _)) (inv_pos.mpr hEl0).le
-    have h1 := pw_mul' hX (mul_nonneg (by norm_num) (Nat.cast_nonneg _)) (inv_pos.mpr hEl0).le
+    have h1 := pw_mul' hX (inv_pos.mpr hEl0).le
       h32P hEli
-    exact pw_mul' hX hx0 (inv_pos.mpr s0).le h1 si'
+    exact pw_mul' hX (inv_pos.mpr s0).le h1 si'
   -- assemble
   refine ⟨P.eta alpha * β / 4, _, _, hstep, div_pos (mul_pos he0 b0) (by norm_num), ?_, σ0', σ16',
     ?_, pw_mono hX hσ' ?_⟩

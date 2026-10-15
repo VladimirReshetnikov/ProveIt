@@ -76,11 +76,11 @@ theorem single_piece_lift_core_rem_joint {k : Nat} (hk : 1 ≤ k) {delta zeta : 
   -- 2. a short-parent dense cell
   obtain ⟨Q, hQ, -, hQw, hshort, hQI, hQstep, hQd, hQc⟩ :=
     exists_short_parent_dense_cell hk0 R1 hR1 hR1w4 E1 hE1R1 hE1ne hR1c
-  set I := R1.axis (Fin.last k) with hIdef
+  set I := R1.axis (Fin.last k)
   have hI : I.IsProper := hR1 (Fin.last k)
   have hIlen : R1.width ≤ I.length := R1.width_le_axis_length (Fin.last k)
-  set E2 := E1.filter fun z => z ∈ lastProductSet Q.carrier I.carrier with hE2def
-  set E := E2.image fun z => (section16Init z, section16Last z) with hEdef
+  set E2 := E1.filter fun z => z ∈ lastProductSet Q.carrier I.carrier
+  set E := E2.image fun z => (section16Init z, section16Last z)
   have hEcard : E.card = E2.card := Finset.card_image_of_injective _ initLast_injective
   have hEmem : ∀ p ∈ E, appendCoordinate p.1 p.2 ∈ E2 := by
     intro p hp

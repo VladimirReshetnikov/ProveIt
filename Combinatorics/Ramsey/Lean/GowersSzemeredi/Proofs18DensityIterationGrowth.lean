@@ -16,7 +16,6 @@ theorem densityIterationThreshold_le_exp {T c rho A q : Real}
   have hlogM : 0 ≤ Real.log (max 1 T) := Real.log_nonneg (le_max_left _ _)
   have hApos : 0 < A := by linarith [abs_nonneg (Real.log c)]
   have hlogMA : Real.log (max 1 T) ≤ A := by linarith [abs_nonneg (Real.log c)]
-  have habs : |Real.log c| ≤ A := by linarith
   have hbase : 1 ≤ 2 * q := by linarith
   have hMexp : max 1 T ≤ Real.exp A := (Real.log_le_iff_le_exp hM).mp hlogMA
   induction n with

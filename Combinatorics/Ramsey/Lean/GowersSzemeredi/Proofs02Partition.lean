@@ -36,7 +36,6 @@ private def residueClassLength (r u a : Nat) : Nat :=
 private lemma quotient_lt_residueClassLength {r u a q : Nat}
     (hu : 0 < u) (hau : a < u) (hur : u ≤ r) :
     q < residueClassLength r u a ↔ a + q * u < r := by
-  have har : a ≤ r - 1 := by omega
   rw [residueClassLength, Nat.lt_succ_iff, Nat.le_div_iff_mul_le hu]
   omega
 
@@ -414,8 +413,6 @@ private def approximationRatio (N r s : Nat) : Real :=
 
 private lemma ratio_product {N r s : Nat} (hN : 0 < N) (hs : 0 < s) :
     partitionRatio N r s * approximationRatio N r s = r := by
-  have hNreal : (0 : Real) < N := by exact_mod_cast hN
-  have hsreal : (0 : Real) < s := by exact_mod_cast hs
   have hA : 0 ≤ (r : Real) * s / N := by positivity
   rw [partitionRatio, approximationRatio, ← Real.sqrt_mul hA]
   have hprod : ((r : Real) * s / N) * ((r : Real) * N / s) = (r : Real) ^ 2 := by
@@ -598,7 +595,6 @@ theorem lemma_2_3_holds : lemma_2_3 := by
     let L := Nat.floor (q / 2)
     have hxpos : 0 < x := approximationRatio_pos hN hr hs
     have hqx : q ≤ x := partitionRatio_le_approximationRatio hN hs hsN
-    have hxfour : (4 : Real) ≤ x := hqfour.trans hqx
     have hxt : x ≤ (t : Real) := by
       simpa only [t] using Nat.le_ceil x
     have htlt : (t : Real) < x + 1 := by

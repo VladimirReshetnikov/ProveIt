@@ -224,7 +224,7 @@ noncomputable def section5NatFlatten {M : Nat} (L : Fin M -> Nat)
   let z := (section5NatFlattenEquiv L).symm j
   R z.1 z.2
 
-private theorem section5Nat_sigma_partition {X : Type*} [DecidableEq X]
+theorem section5Nat_sigma_partition {X : Type*} [DecidableEq X]
     {M : Nat} (L : Fin M -> Nat) (A : Fin M -> Finset X) (S : Finset X)
     (B : (i : Fin M) -> Fin (L i) -> Finset X)
     (hA : IsPartition A S) (hB : forall i, IsPartition (B i) (A i)) :
@@ -459,8 +459,6 @@ theorem section5_iterated_strong_nat_refinement
             let F : Fin (∑ i, M i) -> NatAP := section5NatFlatten M Q
             have hFpartition : IsNatAPPartition F P.carrier :=
               section5NatFlatten_partition R P.carrier M Q hRpartition hQpartition
-            have hFproper : forall j, (F j).IsProper :=
-              section5NatFlatten_isProper M Q (fun i j => (hQcells i j).1)
             have hFsubset : forall j, (F j).carrier ⊆ P.carrier := by
               apply section5NatFlatten_subset P M Q
               intro i j
@@ -658,8 +656,6 @@ theorem lemma_5_9_holds_of_strong_diameter_and_scale_schedule
   have hfunctionsNonempty : functions ≠ [] := by
     intro hnil
     have hzero : functions.length = 0 := by simp [hnil]
-    have hlengthQ : functions.length = q := by
-      simp only [functions, List.length_ofFn]
     omega
   have hfunctionsPolynomial :
       forall psi, psi ∈ functions -> PolynomialOn k Finset.univ psi := by

@@ -84,7 +84,7 @@ theorem graded_vertex_blocks {N k : Nat} [NeZero N] [Fact N.Prime]
     exact hHc
   | succ J ih =>
     obtain ⟨R, nu, hR, hRP, hRw, hnu, hRc⟩ := ih
-    set n : Nat → Nat := fun j => (vertexBlock k g j).card with hndef
+    set n : Nat → Nat := fun j => (vertexBlock k g j).card
     set Hs := H.filter fun x => x ∈ R.carrier ∧ ∀ e, e ≠ (fun _ => true) → g e < J →
       section16TranslatedVertex phi x0 e x = nu e x with hHsdef
     obtain ⟨hρ0, hρ1⟩ := gradedNestC_pos_le hC n J theta hθ hθ1

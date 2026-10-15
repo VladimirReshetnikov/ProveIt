@@ -21,58 +21,13 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-@[simp] private lemma lemma78_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) : exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma lemma78_star_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : star (exponential x) = exponential (-x) := by
-  simpa only [exponential, starRingEnd_apply] using
-    (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
+attribute [simp] star_exponential
 
-@[simp] private lemma lemma78_norm_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : ‖exponential x‖ = 1 := by
-  exact (ZMod.stdAddChar (N := N)).norm_apply x
+attribute [simp] cor57_norm_exponential
 
-@[simp] private lemma lemma78_indicator_star {N : Nat}
-    (A : Finset (ZMod N)) (x : ZMod N) : star (indicator A x) = indicator A x := by
-  classical
-  by_cases hx : x ∈ A <;> simp [indicator, hx]
-
-private lemma lemma78_fourier_indicator_zero {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) : fourier (indicator A) 0 = (A.card : Complex) := by
-  classical
-  simp [fourier, ZMod.dft_apply, indicator]
-
-private lemma lemma78_fourier_indicator_norm_le_card {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) (r : ZMod N) :
-    ‖fourier (indicator A) r‖ <= A.card := by
-  classical
-  rw [fourier, ZMod.dft_apply]
-  calc
-    ‖∑ x : ZMod N, ZMod.stdAddChar (-(x * r)) • indicator A x‖ <=
-        ∑ x : ZMod N, ‖ZMod.stdAddChar (-(x * r)) • indicator A x‖ :=
-      norm_sum_le _ _
-    _ = ∑ x : ZMod N, if x ∈ A then 1 else 0 := by
-      apply Finset.sum_congr rfl
-      intro x _
-      by_cases hx : x ∈ A <;> simp [indicator, hx]
-    _ = A.card := by simp
-
-private lemma lemma78_fourier_indicator_energy {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) :
-    (∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 2) =
-      (N : Real) * A.card := by
-  rw [identity_2_3_holds]
-  congr 1
-  classical
-  calc
-    (∑ x : ZMod N, ‖indicator A x‖ ^ 2) =
-        ∑ x : ZMod N, if x ∈ A then 1 else 0 := by
-      apply Finset.sum_congr rfl
-      intro x _
-      by_cases hx : x ∈ A <;> simp [indicator, hx]
-    _ = A.card := by simp
+attribute [simp] lemma78_indicator_star
 
 private lemma lemma78_spectrum_card_bound {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (alpha : Real) (halpha : 0 < alpha)
@@ -169,21 +124,6 @@ private lemma lemma78_fourCorrelation_inversion {N : Nat} [NeZero N]
   intro r _
   rw [lemma78_fourier_fourCorrelation]
 
-private lemma lemma78_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    exponential x =
-      Complex.exp (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-  calc
-    exponential x = ZMod.stdAddChar ((x.valMinAbs : Int) : ZMod N) := by
-      simp [exponential]
-    _ = Complex.exp (2 * Real.pi * Complex.I * (x.valMinAbs : Int) / N) :=
-      ZMod.stdAddChar_coe x.valMinAbs
-    _ = Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-      congr 1
-      push_cast
-      ring
-
 private lemma lemma78_norm_exponential_sub_one_le {N : Nat} [NeZero N]
     (x : ZMod N) :
     ‖exponential x - 1‖ <= 2 * Real.pi * centeredAbs x / N := by
@@ -191,7 +131,7 @@ private lemma lemma78_norm_exponential_sub_one_le {N : Nat} [NeZero N]
   have habsval : |(x.valMinAbs : Real)| = (centeredAbs x : Real) := by
     rw [centeredAbs, ← Int.cast_abs, Int.abs_eq_natAbs]
     rfl
-  rw [lemma78_exponential_eq_exp_valMinAbs]
+  rw [cor24_exponential_eq_exp_valMinAbs]
   calc
     ‖Complex.exp
         (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) - 1‖ <=
@@ -210,7 +150,6 @@ private lemma lemma78_bohr_phase_bound {N : Nat} [NeZero N]
   rw [bohr, Finset.mem_filter] at hd
   have hcenter := hd.2 r hr
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hpi : (0 : Real) < Real.pi := Real.pi_pos
   calc
     ‖exponential (r * d) - 1‖ <=
         2 * Real.pi * centeredAbs (r * d) / N :=
@@ -227,7 +166,7 @@ private lemma lemma78_norm_exponential_sub_one_le_two {N : Nat} [NeZero N]
     (x : ZMod N) : ‖exponential x - 1‖ <= 2 := by
   calc
     ‖exponential x - 1‖ <= ‖exponential x‖ + ‖(1 : Complex)‖ := norm_sub_le _ _
-    _ = 2 := by norm_num [lemma78_norm_exponential]
+    _ = 2 := by norm_num [cor57_norm_exponential]
 
 private lemma lemma78_alpha_le_one {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (alpha : Real)
@@ -258,7 +197,7 @@ private lemma lemma78_fourth_moment_upper {N : Nat} [NeZero N]
       _ <= ∑ r : ZMod N,
           (A.card : Real) ^ 2 * ‖fourier (indicator A) r‖ ^ 2 := by
         gcongr with r
-        exact lemma78_fourier_indicator_norm_le_card A r
+        exact fourier_indicator_norm_le_card A r
       _ = (A.card : Real) ^ 2 *
           ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 2 := by
         rw [Finset.mul_sum]
@@ -470,7 +409,7 @@ private lemma lemma78_fourCorrelation_zero_lower {N : Nat} [NeZero N]
     have hsingle := Finset.single_le_sum
       (fun r (_hr : r ∈ (Finset.univ : Finset (ZMod N))) =>
         pow_nonneg (norm_nonneg (fourier (indicator A) r)) 4) hmem
-    simpa [lemma78_fourier_indicator_zero] using hsingle
+    simpa [fourier_indicator_zero] using hsingle
   rw [lemma78_fourCorrelation_inversion A 0]
   have hzero : exponential (0 : ZMod N) = 1 :=
     AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
@@ -795,14 +734,13 @@ theorem lemma_7_8_holds : lemma_7_8 := by
     intro x hx y hy hxy
     exact lemma78_induced_agrees A phi alpha halpha hcard hphi x hx y hy hxy
 
-
 private lemma lemma78_fourth_moment_lower {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) :
     (A.card : Real) ^ 4 ≤ ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4 := by
   have h := Finset.single_le_sum
     (fun r (_ : r ∈ (Finset.univ : Finset (ZMod N))) ↦
       pow_nonneg (norm_nonneg (fourier (indicator A) r)) 4) (Finset.mem_univ 0)
-  simpa [lemma78_fourier_indicator_zero] using h
+  simpa [fourier_indicator_zero] using h
 
 private lemma lemma78_constant_phase_bound {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (alpha : Real) (d : ZMod N)
@@ -860,10 +798,6 @@ private lemma lemma78_constant_weighted_phase {N : Nat} [NeZero N]
   rw [lemma78_lambda_sq alpha lambda hα rfl] at htail
   have hzero := lemma78_fourth_moment_lower A
   rw [hcard] at hzero
-  have htailRelative : (∑ r ∈ Finset.univ.filter (fun r ↦ r ∉ K), F r) ≤
-      (1 / 16 : Real) * ∑ r, F r := by
-    dsimp only [F, K]
-    nlinarith [htail, hzero]
   have hsplit := Finset.sum_filter_add_sum_filter_not (Finset.univ : Finset (ZMod N))
     (fun r ↦ r ∈ K) w
   change (∑ r, w r) ≤ (3 / 8 : Real) * ∑ r, F r

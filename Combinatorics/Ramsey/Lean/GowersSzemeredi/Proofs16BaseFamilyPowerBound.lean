@@ -26,8 +26,6 @@ density product; its constant is absorbed by the factor two in the base. -/
 theorem lemma163Alpha_inverse_le_power {gamma theta : Real}
     (hg : 0 < gamma) (ht : 0 < theta) :
     (lemma163Alpha gamma theta)⁻¹ ≤ (2 / (gamma * theta))^(10000 : Nat) := by
-  have hp : 0 < gamma * theta := mul_pos hg ht
-  have hα := lemma163Alpha_pos hg ht
   have htwo : (2 : Real)^(-(10000 : Real)) ≤ (2 : Real)^(-(2000 : Real)) :=
     Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)
   have hlower : (gamma * theta / 2)^(10000 : Nat) ≤ lemma163Alpha gamma theta := by

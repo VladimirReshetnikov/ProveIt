@@ -13,7 +13,7 @@ namespace LeanProofs.GowersSzemeredi
 theorem multiplyLinear_empty {N k : Nat} [NeZero N] {gamma r : Real}
     (hg : 0 < gamma) (hg1 : gamma ≤ 1) (hr : 1 ≤ r) :
     MultiplyLinear gamma r (∅ : Finset (Point N k × ZMod N)) := by
-  have h := (isMultilinear_constant (N := N) (d := k) 0).multiplyLinearFunction
+  have h := (isMultilinear_constant (N := N) (k := k) 0).multiplyLinearFunction
     ∅ hg hg1 hr
   simpa [MultiplyLinearFunction, partialGraph] using h
 
@@ -69,7 +69,6 @@ theorem theorem_16_2_of_large_piece {k : Nat} (hpiece : Section16LargePieceAt k)
   obtain ⟨N0, hN0⟩ := hpiece gamma theta hg hg1 ht ht1
   refine ⟨N0, fun N _ _ hN Gamma hcard hprod => ?_⟩
   have hs := one_le_multipleS k ht ht1 hg hg1
-  have hs0 : 0 < multipleS theta gamma k := zero_lt_one.trans_le hs
   have hginv : 1 ≤ gamma ^ (-(2 : Int)) := by
     rw [zpow_neg, zpow_ofNat]
     exact (one_le_inv₀ (pow_pos hg 2)).mpr (pow_le_one₀ hg.le hg1)

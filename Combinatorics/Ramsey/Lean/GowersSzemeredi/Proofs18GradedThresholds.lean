@@ -102,7 +102,7 @@ theorem MReq_le_expG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alpha) (ha2 
   have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   obtain ⟨-, hQM, hBx⟩ := P.spectrum_exps_inv_leG H ha ha2
   have hri := P.rho1_inv_leG ha ha2 H.hk0 H.hk68
-  set k := P.k with hkdef
+  set k := P.k
   set E := expDegG k P.μ0 μK with hEdef
   set Z := 2 ^ (k + 6) + 1 with hZdef
   have hZ2 : 2 ≤ Z := by rw [hZdef]; have := Nat.one_le_two_pow (n := k + 6); omega
@@ -151,7 +151,7 @@ theorem MReq_le_expG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alpha) (ha2 
   have hBe : 1 / B ≤ (2 / alpha) ^ (2 ^ E) := by rw [one_div]; exact hBx
   have hBe2 : 2 / B ≤ (2 / alpha) ^ (2 ^ (E + 1)) := by
     rw [div_eq_mul_inv]
-    exact pw_mul hX (by norm_num) (inv_pos.mpr hBpos).le (hX.trans (pw_X hX _)) hBx
+    exact pw_mul hX (inv_pos.mpr hBpos).le (hX.trans (pw_X hX _)) hBx
   have e1 := ex_rpow_of_nonneg hX (by positivity) (hcz 8 (by norm_num)) (by positivity) hBe
   have e2 := ex_rpow_of_nonneg hX (by positivity) h4zr (by positivity) hBe
   have e3 := ex_rpow_of_nonneg hX (by positivity) (hcz 16 le_rfl) (by positivity) hBe2
@@ -177,10 +177,10 @@ theorem Tloc_le_expG {μV μK : Nat} (H : GHyp P μV μK) (hk : 1 ≤ P.k) (ha :
   have hri := P.rho1_inv_leG ha ha2 H.hk0 H.hk68
   obtain ⟨hR1, hR⟩ := P.MReq_le_expG H ha ha2
   have hL := lemma156_gen_le hk ha ha2
-  set k := P.k with hkdef
+  set k := P.k
   set E := expDegG k P.μ0 μK with hEdef
   set T := threshDegG k P.μ0 μK with hTdef
-  set μD := 68 * 2 ^ k with hμDdef
+  set μD := 68 * 2 ^ k
   have hET : E + 4 ≤ T := by rw [hTdef]; unfold threshDegG; exact le_max_left _ _
   have hZT : 2 ^ (k + 6) + 5 ≤ T := by rw [hTdef]; unfold threshDegG; exact le_max_right _ _
   have hρE : rhoDegG k P.μ0 + μD + k + 7 ≤ E := by
@@ -192,8 +192,8 @@ theorem Tloc_le_expG {μV μK : Nat} (H : GHyp P μV μK) (hk : 1 ≤ P.k) (ha :
     show (P.NestExp alpha * (P.Em alpha / 2))⁻¹ ≤ _
     rw [show (P.NestExp alpha * (P.Em alpha / 2))⁻¹ =
       2 * ((P.NestExp alpha)⁻¹ * (P.Em alpha)⁻¹) by field_simp]
-    have p1 := pw_mul hX (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le hNE' hEm'
-    exact pw_mul hX (by norm_num) (by positivity) (hX.trans (pw_X hX _)) p1
+    have p1 := pw_mul hX (inv_pos.mpr hEm0).le hNE' hEm'
+    exact pw_mul hX (by positivity) (hX.trans (pw_X hX _)) p1
   have hMx0 : 0 < P.MExp alpha := by
     show 0 < P.NestExp alpha * (P.Em alpha / 2)
     positivity

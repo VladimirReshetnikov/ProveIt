@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs02Partition
 import GowersSzemeredi.ProofInfrastructure
 import Mathlib.Analysis.Real.Pi.Bounds
+import GowersSzemeredi.Proofs00Basics
 
 /-!
 # Phase-removing progression partitions in Gowers's Section 2
@@ -17,29 +18,9 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-@[simp] private lemma cor24_norm_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : ‖exponential x‖ = 1 := by
-  exact AddChar.norm_apply (ZMod.stdAddChar (N := N)) x
+attribute [simp] cor57_norm_exponential
 
-@[simp] private lemma cor24_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) :
-    exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
-
-private lemma cor24_exponential_eq_exp_valMinAbs {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    exponential x =
-      Complex.exp (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-  calc
-    exponential x = ZMod.stdAddChar ((x.valMinAbs : Int) : ZMod N) := by
-      simp [exponential]
-    _ = Complex.exp (2 * Real.pi * Complex.I * (x.valMinAbs : Int) / N) :=
-      ZMod.stdAddChar_coe x.valMinAbs
-    _ = Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) := by
-      congr 1
-      push_cast
-      ring
+attribute [simp] exponential_add
 
 private lemma cor24_norm_exponential_sub_one_le {N : Nat} [NeZero N]
     (x : ZMod N) :
@@ -85,10 +66,10 @@ private lemma cor24_phase_close_of_mem_interval {N s : Nat} [NeZero N]
         ‖exponential (-a) * (exponential (-(i : ZMod N)) - 1)‖ := by
       congr 1
       rw [show -(a + (i : ZMod N)) = -a + -(i : ZMod N) by ring]
-      rw [cor24_exponential_add]
+      rw [exponential_add]
       ring
     _ = ‖exponential (-(i : ZMod N)) - 1‖ := by
-      rw [norm_mul, cor24_norm_exponential, one_mul]
+      rw [norm_mul, cor57_norm_exponential, one_mul]
     _ <= 2 * Real.pi * centeredAbs (-(i : ZMod N)) / N :=
       cor24_norm_exponential_sub_one_le _
     _ <= 2 * Real.pi * s / N := by
@@ -155,7 +136,7 @@ private lemma cor24_alpha_le_one {N r : Nat} [NeZero N]
       _ <= ∑ _x ∈ Finset.range r, (1 : Real) := by
         apply Finset.sum_le_sum
         intro x hx
-        rw [norm_mul, cor24_norm_exponential, mul_one]
+        rw [norm_mul, cor57_norm_exponential, mul_one]
         exact hf x (Finset.mem_range.mp hx)
       _ = r := by simp
   have hrReal : (0 : Real) < r := by exact_mod_cast hr
@@ -322,7 +303,7 @@ theorem corollary_2_4_holds : corollary_2_4 := by
         _ = ∑ x ∈ Finset.range r, ‖f x‖ := by
           apply Finset.sum_congr rfl
           intro x _
-          rw [norm_mul, cor24_norm_exponential, mul_one]
+          rw [norm_mul, cor57_norm_exponential, mul_one]
     have hsum :
         (alpha / 2) * r <= ∑ j : Fin r,
           ‖∑ x ∈ (cor24Singleton j).carrier, f x‖ := by
@@ -477,7 +458,7 @@ theorem corollary_2_4_holds : corollary_2_4 := by
       _ <= ‖U‖ + (alpha / 2) * (P j).carrier.card := by
         have hC : ‖C‖ = ‖U‖ := by
           dsimp only [C]
-          rw [norm_mul, cor24_norm_exponential, one_mul]
+          rw [norm_mul, cor57_norm_exponential, one_mul]
         rw [hC]
         simpa only [add_comm] using add_le_add_left herror' ‖U‖
       _ = ‖∑ x ∈ (P j).carrier, f x‖ +

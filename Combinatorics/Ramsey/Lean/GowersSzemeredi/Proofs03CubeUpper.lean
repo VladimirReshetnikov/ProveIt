@@ -71,12 +71,6 @@ private lemma gowersNorm_succ_pow {N n : Nat} [NeZero N]
   rw [Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg]
   exact Finset.sum_nonneg fun _ _ => sq_nonneg _
 
-private lemma cubeCount_zero' {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) : cubeCount (d := 0) A = A.card := by
-  have h := congrArg Complex.re
-    (sum_cubeDifference_indicator_eq_cubeCount (d := 0) A)
-  simpa [cubeDifference, iteratedDifference] using h.symm
-
 /-- **Gowers, Lemma 3.10.** A set uniform in degree `d - 1` has at most
 the stated number of `d`-dimensional additive cubes. -/
 theorem lemma_3_10_holds : lemma_3_10 := by
@@ -96,7 +90,7 @@ theorem lemma_3_10_holds : lemma_3_10 := by
     nonneg_of_mul_nonneg_left halphaMul (pow_pos hN _)
   cases d with
   | zero =>
-      rw [cubeCount_zero']
+      rw [cubeCount_zero]
       norm_num [Real.rpow_one]
       calc
         (A.card : Real) = delta * N := hcard

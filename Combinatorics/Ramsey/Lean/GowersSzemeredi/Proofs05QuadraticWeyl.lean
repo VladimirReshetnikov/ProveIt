@@ -14,7 +14,6 @@ theorem quadratic_weyl_normalized {t q : Nat} (ht : 2 ≤ t) (hq : 0 < q)
     ‖weylSum alpha 2 t‖ ^ 2 / (t : Real) ^ 2 ≤
       2 ^ (25 : Nat) * Real.sqrt t * ((q : Real)⁻¹ + 2 / t) * (1 + Real.log t) := by
   have ht0 : (0 : Real) < t := by exact_mod_cast (show 0 < t by omega)
-  have hq0 : (0 : Real) < q := by exact_mod_cast hq
   have hqtR : (q : Real) ≤ t := by exact_mod_cast hqt
   have happrox' : |alpha - (a : Real) / (q : Real)| ≤ ((q : Real) ^ 2)⁻¹ := by
     apply happrox.trans
@@ -37,9 +36,6 @@ theorem quadratic_weyl_normalized {t q : Nat} (ht : 2 ≤ t) (hq : 0 < q)
     rw [← heq]
     simpa only [div_eq_mul_inv, add_assoc, add_comm, add_left_comm] using
       add_le_add_left hterm ((q : Real)⁻¹ + (t : Real)⁻¹)
-  have hlog : 0 ≤ 1 + Real.log (t : Real) := by
-    have ht1 : (1 : Real) ≤ t := by exact_mod_cast (show 1 ≤ t by omega)
-    linarith [Real.log_nonneg ht1]
   have hpow : (t : Real) ^ ((2 : Real) + 1 / 2) = (t : Real) ^ 2 * Real.sqrt t := by
     rw [Real.rpow_add ht0, Real.rpow_two, Real.sqrt_eq_rpow]
   have hbase : ‖weylSum alpha 2 t‖ ^ 2 ≤

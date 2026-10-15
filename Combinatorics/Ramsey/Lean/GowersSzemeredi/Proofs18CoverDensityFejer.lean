@@ -29,7 +29,7 @@ theorem coverPrec_gen_bounds_fejer (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1
   rw [heq]
   have h2 : (2 : Real) ^ (k + 1) ≤ (2 / alpha) ^ (2 ^ fixDeg k) :=
     (pow_le_pow_left₀ (by norm_num) hX _).trans (pw_natpow hX (k_succ_le_two_pow_fixDeg k))
-  exact pw_mul hX (by positivity) (inv_pos.mpr ht0).le h2 hti
+  exact pw_mul hX (inv_pos.mpr ht0).le h2 hti
 
 namespace GenParamsF
 
@@ -129,10 +129,9 @@ theorem rho1_inv_leF {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV : 
     field_simp
   rw [heq]
   have h2 : 2 * (globalTheta2W (fejerThetaOne alpha (alpha / 2) P.k))⁻¹ ≤ (2 / alpha) ^ (2 ^ (fixDeg P.k + 1)) :=
-    pw_mul hX (by norm_num) (inv_pos.mpr ht0).le (hX.trans (pw_X hX _)) hti
-  have h := pw_mul' hX (by positivity) hcc0.le h2 hcc
+    pw_mul hX (inv_pos.mpr ht0).le (hX.trans (pw_X hX _)) hti
+  have h := pw_mul' hX hcc0.le h2 hcc
   refine pw_mono hX h ?_
-  have h1 := rhoDegC_gF P.k P.μ0
   have hm : max (fixDeg P.k + 1) (P.μ0 + 1 + 23 * 2 ^ P.k + P.k) =
       P.μ0 + 1 + 23 * 2 ^ P.k + P.k := max_eq_right (by omega)
   rw [hm]
@@ -162,7 +161,7 @@ theorem nestExp_inv_leF {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (hV
       have h16 := sixteen_pow_le_pw hX (k := P.k)
         (m := P.k + 1 - (section16VertexDirections e).card) (Nat.sub_le _ _)
       have hu := P.vertex_uCount_le ha ha2 hV hVμ hμ0 hl
-      have hm := pw_mul' hX (by positivity) (zero_le_one.trans (one_le_uCount _ _ _ _ _)) h16 hu
+      have hm := pw_mul' hX (zero_le_one.trans (one_le_uCount _ _ _ _ _)) h16 hu
       rw [max_eq_right (by omega)] at hm
       exact hm
   · have := rhoDegC_gF P.k P.μ0
@@ -180,8 +179,8 @@ theorem yIn_boundsF {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
       (P.yIn alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ densDegF P.k P.μ0) := by
   have hX := two_div_ge_two ha ha2
   have hri := P.rho1_inv_leF ha ha2 hV hVμ hμ0
-  set k := P.k with hkdef
-  set μD := 23 * 2 ^ k with hμDdef
+  set k := P.k
+  set μD := 23 * 2 ^ k
   have hρ1 : μD + P.μ0 + 3 ≤ rhoDegF k P.μ0 := (rhoDegC_gF k P.μ0).1
   have hρ2 : fixDeg k + 1 ≤ rhoDegF k P.μ0 := (rhoDegC_gF k P.μ0).2
   have hbase := baseCF_recipPowerLB (D := uDeg23 k) (k := k) ha ha2 hV hVμ hμ0

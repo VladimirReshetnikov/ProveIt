@@ -96,7 +96,6 @@ theorem corollary58At_of_threshold_free_localization (k : Nat) (hk : 1 ≤ k)
     let Q : ModAP N := ⟨a, 0, 1⟩
     have hQ : Q.carrier = {a} := by simp [Q, ModAP.carrier]
     have hbound := (cover_correlation_density_bounds A U B w hpart hAU hw hcor).1
-    have hd0 := density_nonneg A
     have hd1 := density_le_one A
     have hgain : density A + alpha / 16 ≤ 1 := by
       nlinarith [mul_nonneg (sub_nonneg.mpr hd1) (sub_nonneg.mpr hd1)]

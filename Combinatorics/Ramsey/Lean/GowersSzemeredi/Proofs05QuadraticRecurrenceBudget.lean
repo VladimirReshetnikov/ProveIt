@@ -50,7 +50,6 @@ theorem quadraticRecurrence_error_bound {R : Real} (hR : 2 ≤ R) :
     2 ^ (26 : Nat) * quadraticRecurrenceRoot R *
         (1 + Real.log (quadraticRecurrenceSample R)) / quadraticRecurrenceSample R ≤
       1 / (128 * R ^ 2) := by
-  have hR0 : 0 < R := by linarith
   have hD : 0 < quadraticRecurrenceRoot R := by unfold quadraticRecurrenceRoot; positivity
   have hp : R ^ 3 ≤ R ^ 8 := pow_le_pow_right₀ (by linarith) (by omega)
   have hbudget : (128 * R ^ 2) * (2 ^ (26 : Nat) * (145 * R)) ≤ quadraticRecurrenceRoot R := by
@@ -112,7 +111,6 @@ theorem quadraticRecurrence_witness_budget {R h q : Real} (hR : 2 ≤ R)
     (hhR : h ≤ 4 * R ^ 2) (hq : 0 ≤ q)
     (hqR : q ≤ 2 ^ (40 : Nat) * quadraticRecurrenceRoot R * R ^ 3) :
     h * q < quadraticRecurrenceSample R / R ^ 2 := by
-  have hR0 : 0 < R := by linarith
   have hD : 0 < quadraticRecurrenceRoot R := by unfold quadraticRecurrenceRoot; positivity
   have hsmall : (2 : Real) ^ (42 : Nat) * R ^ 7 < quadraticRecurrenceRoot R := by
     calc

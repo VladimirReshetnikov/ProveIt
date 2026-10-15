@@ -117,7 +117,7 @@ theorem lsMThr_le_exp {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1) {alpha : Real}
   · -- `W(C(C t))^(1/(a_t a_{C t}))`
     rw [one_div, mul_inv]
     exact (rpow_le_exp_pow hX2 (hW1 _) hWv (by positivity)
-      (mul_le_pow_add (inv_pos.mpr a0).le (inv_pos.mpr b0).le ai bi (by linarith only [hX2]))).trans
+      (mul_le_pow_add (inv_pos.mpr b0).le ai bi (by linarith only [hX2]))).trans
       (exp_pow_mono hX2 (by norm_num))
   · rw [one_div]
     exact (rpow_le_exp_pow (m := 6) hX2 (by norm_num) (const_le_exp_pow hX2 (by norm_num))
@@ -175,7 +175,7 @@ theorem lsMReq_le_exp {K2 p2 : Nat} (hK2 : 0 < K2) (hp2 : 0 < p2) {alpha : Real}
   have hq1 : ((q + 1 : Nat) : Real) ≤ X ^ ((2 : Nat) ^ 504 + 1) := by
     rw [Nat.cast_succ]; exact add_le_pow_succ hX2 hq (one_le_pow_of_two_le hX2 _)
   have hbase : ((K2 * (q + 1) : Nat) : Real) ≤ X ^ (3 + ((2 : Nat) ^ 504 + 1)) := by
-    rw [Nat.cast_mul]; exact mul_le_pow_add (Nat.cast_nonneg _) (Nat.cast_nonneg _) hK hq1 hX0
+    rw [Nat.cast_mul]; exact mul_le_pow_add (Nat.cast_nonneg _) hK hq1 hX0
   have hexpo : ((2 * (p2 * (q + 1) ^ (2 * 2 ^ (2 + 1))) : Nat) : Real) ≤
       X ^ (1 + (3 + ((2 : Nat) ^ 504 + 1) * 16)) := by
     have h16 : ((q + 1 : Nat) : Real) ^ 16 ≤ X ^ (((2 : Nat) ^ 504 + 1) * 16) := by
@@ -183,7 +183,7 @@ theorem lsMReq_le_exp {K2 p2 : Nat} (hK2 : 0 < K2) (hp2 : 0 < p2) {alpha : Real}
     have : ((2 * (p2 * (q + 1) ^ (2 * 2 ^ (2 + 1))) : Nat) : Real) =
         2 * ((p2 : Real) * ((q + 1 : Nat) : Real) ^ 16) := by push_cast; ring
     rw [this, pow_add, pow_one]
-    exact mul_le_mul hX2 (mul_le_pow_add (Nat.cast_nonneg _) (by positivity) hp h16 hX0)
+    exact mul_le_mul hX2 (mul_le_pow_add (by positivity) hp h16 hX0)
       (by positivity) hX0
   have hb1 : (1 : Real) ≤ ((K2 * (q + 1) : Nat) : Real) := by
     exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))

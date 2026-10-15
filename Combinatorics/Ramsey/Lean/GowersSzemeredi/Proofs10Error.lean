@@ -15,14 +15,6 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma countWhere_cast_eq_sum_ite {T : Type*} [Fintype T]
-    (P : T → Prop) [DecidablePred P] :
-    (countWhere P : Real) = ∑ x : T, if P x then 1 else 0 := by
-  classical
-  unfold countWhere
-  rw [Finset.filter_congr_decidable]
-  simp
-
 private lemma countWhere_eq_card_filter {T : Type*} [Fintype T]
     (P : T → Prop) [DecidablePred P] :
     countWhere P = (Finset.univ.filter P).card := by
@@ -54,7 +46,7 @@ private def altQuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X) where
     funext i
     fin_cases i <;> rfl
 
-private lemma hasEqualHalfSums_two {G : Type*} [AddCommMonoid G]
+lemma hasEqualHalfSums_two {G : Type*} [AddCommMonoid G]
     (f : Fin (2 * 2) → G) :
     HasEqualHalfSums f ↔ f 0 + f 1 = f 2 + f 3 := by
   have hleft :
@@ -242,7 +234,7 @@ private lemma weightedTerm_eq_sextuple_sum {N : Nat} {X : Type*}
             RestrictedError D phi B x y uv => hq h.1), if_neg hq, if_neg he]
           norm_num
 
-private lemma fibre_card_cast_eq_sum_ite {N : Nat} {X : Type*}
+lemma fibre_card_cast_eq_sum_ite {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) (s : ZMod N) :
     ((D.fibre s).card : Real) =
       ∑ x : X, if D.index x = s then 1 else 0 := by
@@ -833,7 +825,7 @@ private lemma proportionateError_le_one {N : Nat} {X : Type*}
   · rw [div_le_one (by exact_mod_cast Nat.zero_lt_of_ne_zero hb)]
     exact_mod_cast heb
 
-private lemma sum_comp_index_eq_sum_mul_fibre {N : Nat} [NeZero N]
+lemma sum_comp_index_eq_sum_mul_fibre {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
     (D : MultifunctionDomain N X) (f : ZMod N → Real) :
     (∑ x : X, f (D.index x)) =

@@ -105,7 +105,7 @@ theorem nestExp_inv_leG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alpha) (h
   have hDk : ∀ j, j ≤ P.k → uDeg68 j ≤ 2 ^ (68 * 2 ^ P.k) := fun j hj =>
     Nat.pow_le_pow_right (by norm_num)
       (Nat.mul_le_mul_left _ (Nat.pow_le_pow_right (by norm_num) hj))
-  set M := (2 / alpha) ^ (2 ^ (rhoDegG P.k P.μ0 + 68 * 2 ^ P.k + 3)) with hMdef
+  set M := (2 / alpha) ^ (2 ^ (rhoDegG P.k P.μ0 + 68 * 2 ^ P.k + 3))
   have hfac : ∀ j i, i < vertexFaceCounts P.k j →
       (lwE (P.Ewg alpha j) P.k (nestC (fun _ => P.Cg alpha j) i
         (gradedNestC (fun l => P.Cg alpha l) (vertexFaceCounts P.k) j (P.T2 alpha))))⁻¹ ≤ M := by
@@ -151,9 +151,9 @@ theorem spectrum_exps_inv_leG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alp
   have hX := two_div_ge_two ha ha2
   have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   have hri := P.rho1_inv_leG ha ha2 H.hk0 H.hk68
-  set k := P.k with hkdef
-  set ρ := rhoDegG k P.μ0 with hρdef
-  set μD := 68 * 2 ^ k with hμDdef
+  set k := P.k
+  set ρ := rhoDegG k P.μ0
+  set μD := 68 * 2 ^ k
   have hρ1 : μD + P.μ0 + 3 ≤ ρ := (rhoDegG_ge k P.μ0).1
   have hM2 : ρ + μD + k + 7 ≤ expDegG k P.μ0 μK := by
     unfold expDegG; exact (le_max_left _ _).trans (le_max_right _ _)
@@ -171,7 +171,7 @@ theorem spectrum_exps_inv_leG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alp
     rw [show (P.Rho1 alpha / 2 / 2)⁻¹ = 4 * (P.Rho1 alpha)⁻¹ by field_simp; ring]
     have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ ρ) :=
       pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
-    exact pw_mul hX (by norm_num) (inv_pos.mpr hr0).le h4 hri
+    exact pw_mul hX (inv_pos.mpr hr0).le h4 hri
   have hQ := uCount_scale_le (c := ρ + 1) (D := uDeg68 k) (μD := μD) hX H.hV H.hVμ H.hμ0 hd0 hd1 hdi
     hB0 hB1 hBi hq0 hq1 hqi le_rfl
   rw [max_eq_right (show P.μ0 ≤ ρ + 1 by omega)] at hQ
@@ -196,8 +196,8 @@ theorem spectrum_exps_inv_leG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alp
     have h4 : (4 : Real) ≤ (2 / alpha) ^ (2 ^ (μK + 1)) :=
       pw_mono hX (pw_const hX (a := 1) (by norm_num)) (by omega)
     have hpq0 : (0 : Real) ≤ ((P.QM alpha : Real) + 1) ^ (2 * 2 ^ (k + 1)) := pow_nonneg hq0' _
-    have h1 := pw_mul' hX (Nat.cast_nonneg _) hpq0 hp' hpow
-    have h2 := pw_mul' hX (by norm_num) (mul_nonneg (Nat.cast_nonneg _) hpq0) h4 h1
+    have h1 := pw_mul' hX hpq0 hp' hpow
+    have h2 := pw_mul' hX (mul_nonneg (Nat.cast_nonneg _) hpq0) h4 h1
     refine pw_mono hX h2 ?_
     have : max μK (ρ + μD + 3 + (k + 2)) + 1 ≤ expDegG k P.μ0 μK - 1 := by omega
     omega
@@ -210,9 +210,9 @@ theorem slice_exps_inv_leG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alpha)
   have hX := two_div_ge_two ha ha2
   have hX1 : (1 : Real) ≤ 2 / alpha := by linarith
   have hri := P.rho1_inv_leG ha ha2 H.hk0 H.hk68
-  set k := P.k with hkdef
-  set ρ := rhoDegG k P.μ0 with hρdef
-  set μD := 68 * 2 ^ k with hμDdef
+  set k := P.k
+  set ρ := rhoDegG k P.μ0
+  set μD := 68 * 2 ^ k
   have hρ1 : μD + P.μ0 + 3 ≤ ρ := (rhoDegG_ge k P.μ0).1
   obtain ⟨hB0, hB1, hBi⟩ := budget_gen_bounds k ha ha2
   obtain ⟨ht0, ht1, -⟩ := T2_gen_bounds k ha ha2
@@ -247,7 +247,7 @@ theorem slice_exps_inv_leG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alpha)
     have hs20 : 0 < s / 2 := half_pos hs0
     have hs2i : (s / 2)⁻¹ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := by
       rw [inv_div, div_eq_mul_inv]
-      exact pw_mul hX (by norm_num) (inv_pos.mpr hs0).le (hX.trans (pw_X hX _)) hsi
+      exact pw_mul hX (inv_pos.mpr hs0).le (hX.trans (pw_X hX _)) hsi
     have h := uCount_scale_le (c := m + 1) (D := uDeg68 k) (μD := μD) hX H.hV H.hVμ H.hμ0
       (half_pos ha) (by linarith) (GenParams.half_inv_le k ha ha2) hB0 hB1 hBi hs20 (by linarith)
       hs2i le_rfl
@@ -288,11 +288,11 @@ theorem Eloc_inv_leG {μV μK : Nat} (H : GHyp P μV μK) (ha : 0 < alpha) (ha2 
   have hEc' := pw_mono hX hEc hM1
   have h32 : (32 : Real) ≤ (2 / alpha) ^ (2 ^ (M + 1)) :=
     pw_mono hX (pw_const hX (a := 3) (by norm_num)) (by omega)
-  have p1 := pw_mul hX (inv_pos.mpr hN0).le (inv_pos.mpr hEm0).le hNE' hEm'
-  have p2 := pw_mul hX (inv_pos.mpr hEth0).le (inv_pos.mpr hEc0).le hEth' hEc'
-  have p3 := pw_mul' hX (inv_pos.mpr hBx0).le (by positivity) hBx p2
-  have p4 := pw_mul hX (by norm_num) (by positivity) h32 p1
-  have p5 := pw_mul' hX (by positivity) (by positivity) p4 p3
+  have p1 := pw_mul hX (inv_pos.mpr hEm0).le hNE' hEm'
+  have p2 := pw_mul hX (inv_pos.mpr hEc0).le hEth' hEc'
+  have p3 := pw_mul' hX (by positivity) hBx p2
+  have p4 := pw_mul hX (by positivity) h32 p1
+  have p5 := pw_mul' hX (by positivity) p4 p3
   exact pw_mono hX p5 (by omega)
 
 end GenParamsG

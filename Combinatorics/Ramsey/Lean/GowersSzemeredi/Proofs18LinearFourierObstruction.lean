@@ -8,17 +8,6 @@ noncomputable section
 open scoped BigOperators ZMod
 namespace LeanProofs.GowersSzemeredi
 
-/-- Relate the cube-coordinate and correlation formulations in degree one. -/
-theorem uniform_degree_one_iff_condition2i {N : Nat} [NeZero N]
-    (f : ZMod N → Complex) (alpha : Real) :
-    UniformOfDegree f alpha 1 ↔ uniformCondition2i f alpha := by
-  have hs := (pointOneEquiv N).sum_comp
-    (fun x : Point N 1 ↦ ‖∑ s : ZMod N, cubeDifference f x s‖ ^ 2)
-  simp only [cubeDifference_pointOne] at hs
-  unfold UniformOfDegree uniformCondition2i
-  rw [← hs]
-  rfl
-
 /-- Parseval and the fourth moment force a coefficient larger than
 sqrt(alpha)*N when degree-one uniformity fails for a disc-valued function. -/
 theorem linear_nonuniformity_large_fourier {N : Nat} [NeZero N]
@@ -31,7 +20,7 @@ theorem linear_nonuniformity_large_fourier {N : Nat} [NeZero N]
   obtain ⟨_, hi_iii, _, hiv_iii, _, _⟩ :=
     lemma_2_2_holds N f hf alpha (Real.sqrt alpha) 0
   have hi := hi_iii.mpr (hiv_iii (Real.sq_sqrt hα).le h)
-  exact hnot ((uniform_degree_one_iff_condition2i f alpha).mpr hi)
+  exact hnot ((degreeOne_uniform_iff_condition2i f alpha).mpr hi)
 
 /-- The interval index set is equivalent to its supported points in a
 larger cyclic group. -/

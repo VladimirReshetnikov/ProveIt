@@ -20,39 +20,19 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma isMultilinear_const {N k : Nat} (c : ZMod N) :
-    IsMultilinear (fun _ : Point N k => c) := by
-  classical
-  let e0 : Fin k -> Bool := fun _ => false
-  refine ⟨fun e => if e = e0 then c else 0, ?_⟩
-  intro x
-  rw [Finset.sum_eq_single e0]
-  · simp [e0]
-  · intro e _he hne
-    simp [hne]
-  · simp
-
-private lemma singleton_box_partition {N k : Nat} [NeZero N]
-    (P : Box N k) : IsBoxPartition (fun _ : Fin 1 => P) P := by
-  constructor
-  · intro x
-    simp
-  · intro i j hij
-    exact ((bne_iff_ne.mp hij) (Subsingleton.elim i j)).elim
-
 private lemma multiplyLinear_const_zero {N k : Nat} [NeZero N]
     (gamma : Real) (c : ZMod N) :
     MultiplyLinear gamma 0
       (partialGraph (Finset.univ : Finset (Point N k)) (fun _ => c)) := by
   intro theta htheta hthetaOne P hP
   refine ⟨1, 1, P.carrier, (fun _ : Fin 1 => P),
-    (fun _ _ _ => c), Finset.Subset.rfl, ?_, singleton_box_partition P, (fun _ => hP), ?_, ?_, ?_, ?_⟩
+    (fun _ _ _ => c), Finset.Subset.rfl, ?_, BaseCase.singleton_box_partition P, (fun _ => hP), ?_, ?_, ?_, ?_⟩
   · have hcard : (0 : Real) <= P.carrier.card := by positivity
     nlinarith
   · simp
   · simp
   · intro j i
-    exact isMultilinear_const c
+    exact BaseCase.isMultilinear_const c
   · intro j x hxQ hxH y hxy
     have hy : y = c := by
       rw [partialGraph, Finset.mem_image] at hxy
@@ -124,7 +104,7 @@ private lemma multiplyLinear_empty_zero {N d : Nat} [NeZero N]
   intro theta htheta hthetaOne P hP
   refine ⟨1, 0, P.carrier, (fun _ : Fin 1 => P),
     (fun _ i => Fin.elim0 i), Finset.Subset.rfl, ?_,
-    singleton_box_partition P, (fun _ => hP), ?_, ?_, ?_, ?_⟩
+    BaseCase.singleton_box_partition P, (fun _ => hP), ?_, ?_, ?_, ?_⟩
   · have hcard : (0 : Real) ≤ P.carrier.card := by positivity
     nlinarith
   · simp [multipleQ, multipleC]
@@ -139,14 +119,14 @@ private lemma multiplyLinearFunction_zero_zero {N d : Nat} [NeZero N]
     MultiplyLinearFunction gamma 0 B (fun _ => 0) := by
   intro theta htheta hthetaOne P hP
   refine ⟨1, 1, P.carrier, (fun _ : Fin 1 => P),
-    (fun _ _ _ => 0), Finset.Subset.rfl, ?_, singleton_box_partition P, (fun _ => hP),
+    (fun _ _ _ => 0), Finset.Subset.rfl, ?_, BaseCase.singleton_box_partition P, (fun _ => hP),
     ?_, ?_, ?_, ?_⟩
   · have hcard : (0 : Real) ≤ P.carrier.card := by positivity
     nlinarith
   · simp [multipleQ, multipleC]
   · simp [multipleC]
   · intro j i
-    exact isMultilinear_const 0
+    exact BaseCase.isMultilinear_const 0
   · intro j x hxQ hxH y hxy
     have hy : y = 0 := by
       obtain ⟨z, _, hz⟩ := Finset.mem_image.mp hxy

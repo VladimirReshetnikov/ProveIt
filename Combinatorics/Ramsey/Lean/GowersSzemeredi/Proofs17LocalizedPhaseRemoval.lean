@@ -284,21 +284,6 @@ private lemma prop177_thresholdCount_eq (k R : Nat) :
   rw [Fintype.card_coe, Int.card_Icc]
   omega
 
-private lemma prop177_sum_range_pow_le_two_mul_pow (n d : Nat) (hn : 2 ≤ n) :
-    (∑ j ∈ Finset.range (d + 1), n ^ j) ≤ 2 * n ^ d := by
-  induction d with
-  | zero => simp
-  | succ d ih =>
-      rw [Finset.sum_range_succ]
-      have hstep : 2 * n ^ d ≤ n ^ (d + 1) := by
-        rw [pow_succ]
-        simpa only [mul_comm] using Nat.mul_le_mul_right (n ^ d) hn
-      calc
-        (∑ j ∈ Finset.range (d + 1), n ^ j) + n ^ (d + 1) ≤
-            2 * n ^ d + n ^ (d + 1) := Nat.add_le_add_right ih _
-        _ ≤ n ^ (d + 1) + n ^ (d + 1) := Nat.add_le_add_right hstep _
-        _ = 2 * n ^ (d + 1) := by omega
-
 private lemma prop177_two_mul_k_succ_le_pow (k : Nat) :
     2 * k * (k + 1) ≤ 2 ^ (2 * k + 2) := by
   have hk : k ≤ 2 ^ k := Nat.le_of_lt k.lt_two_pow_self
@@ -350,7 +335,7 @@ private lemma prop177_region_sum_bound (k : Nat) (hk : 0 < k) :
         exact Finset.sum_le_sum fun j _ => Nat.choose_le_pow _ _
       _ ≤ 2 * n ^ (k + 2) := by
         simpa only [Nat.add_assoc] using
-          prop177_sum_range_pow_le_two_mul_pow n (k + 2) hn2
+          sum_range_pow_le_two_mul_pow n (k + 2) hn2
       _ ≤ 2 * (2 ^ (3 * k + 2)) ^ (k + 2) := by
         exact Nat.mul_le_mul_left 2 (Nat.pow_le_pow_left hn _)
       _ = 2 ^ 1 * 2 ^ ((3 * k + 2) * (k + 2)) := by
@@ -643,7 +628,6 @@ private lemma prop177_boundary_increment {N M q : Nat}
   let w := prop177CellWidth N M
   have hw0 : 0 ≤ w := (prop177_width_pos hN hM).le
   have hiw0 : 0 ≤ (i : Real) * w := mul_nonneg (by positivity) hw0
-  have hmono := prop177_boundary_mono hN hM (Nat.le_succ i)
   have hlower : prop177Boundary N M i + q ≤ prop177Boundary N M (i + 1) := by
     rw [prop177Boundary, prop177Boundary]
     rw [← Nat.ceil_add_natCast hiw0]
@@ -677,7 +661,6 @@ private lemma prop177_cellIndex_intCast {N M : Nat} [NeZero N]
       (z : Real) / prop177CellWidth N M =
         ((z % (N : Int) : Int) : Real) / prop177CellWidth N M +
           (((M : Int) * (z / (N : Int)) : Int) : Real) := by
-    have hMreal : (M : Real) ≠ 0 := by exact_mod_cast hM.ne'
     have hNreal : (N : Real) ≠ 0 := by exact_mod_cast hN.ne'
     have hz := Int.emod_add_mul_ediv z (N : Int)
     have hzR : (z : Real) =
@@ -866,15 +849,6 @@ private lemma prop177_support_decomposition {N M k : Nat} [NeZero N]
 
 /-! ### The small-scale singleton branch -/
 
-private lemma prop177_cubeArgument_cons {N n : Nat}
-    (s r : ZMod N) (a : Point N n) (b : Bool) (e : Fin n → Bool) :
-    cubeArgument s (Fin.cons r a) (Fin.cons b e) =
-      s - (if b then r else 0) - ∑ i, if e i then a i else 0 := by
-  unfold cubeArgument
-  rw [Fin.sum_univ_succ]
-  simp
-  abel
-
 private lemma prop177_norm_cubeDifference_product {N d : Nat}
     (f : ZMod N → Complex) (x : Point N d) (s : ZMod N) :
     ‖cubeDifference f x s‖ =
@@ -1025,46 +999,6 @@ private lemma prop177_energy_implies_moment {N k m : Nat} [NeZero N]
     nlinarith [hchain]
   exact le_of_mul_le_mul_left hscaled hfac
 
-private lemma prop177_countWhere_eq_sum_ite {X : Type*} [Fintype X]
-    (P : X → Prop) :
-    countWhere P = ∑ x : X,
-      @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
-  classical
-  unfold countWhere
-  simp
-
-private lemma prop177_boolWeight_cons {n : Nat}
-    (b : Bool) (e : Fin n → Bool) :
-    boolWeight (Fin.cons b e) = (if b then 1 else 0) + boolWeight e := by
-  classical
-  unfold boolWeight
-  simp_rw [prop177_countWhere_eq_sum_ite]
-  rw [Fin.sum_univ_succ]
-  cases b <;> simp
-  all_goals
-    convert (@Finset.sum_boole (Fin n) Nat inferInstance
-      (fun i : Fin n => e i = true)
-      (fun i => Classical.propDecidable (e i = true))
-      (Finset.univ : Finset (Fin n))).symm using 1
-    all_goals simp only [Nat.cast_id]
-  all_goals congr
-
-private lemma prop177_parityConj_cons_false {n : Nat}
-    (e : Fin n → Bool) (z : Complex) :
-    parityConj (Fin.cons false e) z = parityConj e z := by
-  unfold parityConj
-  rw [prop177_boolWeight_cons]
-  simp
-
-private lemma prop177_parityConj_cons_true {n : Nat}
-    (e : Fin n → Bool) (z : Complex) :
-    parityConj (Fin.cons true e) z = star (parityConj e z) := by
-  unfold parityConj
-  rw [prop177_boolWeight_cons]
-  have heven : Even (1 + boolWeight e) ↔ ¬Even (boolWeight e) := by
-    rw [add_comm, Nat.even_add_one]
-  by_cases h : Even (boolWeight e) <;> simp [heven, h]
-
 private lemma prop177_parity_product_succ (n : Nat) (z : Complex) :
     (∏ e : Fin (n + 1) → Bool, parityConj e z) =
       (∏ e : Fin n → Bool, parityConj e z) *
@@ -1083,10 +1017,10 @@ private lemma prop177_parity_product_succ (n : Nat) (z : Complex) :
       congr 1
       · apply Finset.prod_congr rfl
         intro e _
-        exact prop177_parityConj_cons_false e z
+        exact prop172_parityConj_cons_false e z
       · apply Finset.prod_congr rfl
         intro e _
-        exact prop177_parityConj_cons_true e z
+        exact prop172_parityConj_cons_true e z
 
 private lemma prop177_parity_product_closed (n : Nat) (z : Complex) :
     (∏ e : Fin (n + 1) → Bool, parityConj e z) =
@@ -1101,12 +1035,6 @@ private lemma prop177_parity_product_closed (n : Nat) (z : Complex) :
       push_cast
       rw [pow_succ]
       ring
-
-private lemma prop177_singleton_carrier {N : Nat} (t : ZMod N) :
-    (modInterval N t 1).carrier = {t} := by
-  classical
-  ext x
-  simp [modInterval, ModAP.carrier]
 
 private lemma prop177_singleton_cube_sum {N n : Nat} [NeZero N]
     (f : ZMod N → Complex) (t : ZMod N) :
@@ -1175,13 +1103,13 @@ private lemma prop177_singleton_partition (N : Nat) [NeZero N] :
     simp only [Finset.mem_univ, true_iff]
     let i : Fin N := (prop177FinZModEquiv N).symm x
     refine ⟨i, ?_⟩
-    rw [prop177SingletonCells, prop177_singleton_carrier]
+    rw [prop177SingletonCells, modInterval_one_carrier]
     rw [Finset.mem_singleton]
     exact (prop177FinZModEquiv N).apply_symm_apply x |>.symm
   · intro i j hij
     change Disjoint (modInterval N (i : ZMod N) 1).carrier
       (modInterval N (j : ZMod N) 1).carrier
-    rw [prop177_singleton_carrier, prop177_singleton_carrier]
+    rw [modInterval_one_carrier, modInterval_one_carrier]
     apply Finset.disjoint_singleton.mpr
     intro h
     apply bne_iff_ne.mp hij
@@ -1191,7 +1119,7 @@ private lemma prop177_singleton_proper (N : Nat) [NeZero N] (i : Fin N) :
     (prop177SingletonCells N i).IsProper := by
   unfold ModAP.IsProper
   change (modInterval N (i : ZMod N) 1).carrier.card = 1
-  rw [prop177_singleton_carrier]
+  rw [modInterval_one_carrier]
   simp
 
 private lemma prop177_singleton_uniform_sum {N k : Nat} [NeZero N]
@@ -1204,16 +1132,14 @@ private lemma prop177_singleton_uniform_sum {N k : Nat} [NeZero N]
     _ = ∑ i : Fin N, ‖f ((prop177FinZModEquiv N) i)‖ ^ ((2 : Nat) ^ (k + 1)) := by
       apply Finset.sum_congr rfl
       intro i _
-      rw [prop177SingletonCells, prop177_singleton_carrier,
+      rw [prop177SingletonCells, modInterval_one_carrier,
         prop177_singleton_cube_sum]
       simp only [prop177FinZModEquiv, Equiv.coe_fn_mk]
       rw [Complex.ofReal_re]
     _ = _ := (prop177FinZModEquiv N).sum_comp
       (fun t => ‖f t‖ ^ ((2 : Nat) ^ (k + 1)))
 
-@[simp] private lemma prop177_exponential_zero {N : Nat} [NeZero N] :
-    exponential (0 : ZMod N) = 1 := by
-  exact AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
+attribute [simp] exponential_zero
 
 private lemma prop177_small_coefficient_lt_one (k : Nat) (hk : 0 < k) :
     (2 : Real) ^ (-(2 * (k + 1) ^ 3 : Int)) *
@@ -1285,28 +1211,9 @@ private theorem prop177_small_branch {N k m : Nat} [NeZero N]
 
 /-! ### Mixed cube forms and affine phase removal -/
 
-@[simp] private lemma prop177_exponential_add {N : Nat} [NeZero N]
-    (x y : ZMod N) :
-    exponential (x + y) = exponential x * exponential y := by
-  exact AddChar.map_add_eq_mul (ZMod.stdAddChar (N := N)) x y
+attribute [simp] exponential_add
 
-@[simp] private lemma prop177_star_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : star (exponential x) = exponential (-x) := by
-  simpa only [exponential, starRingEnd_apply] using
-    (AddChar.map_neg_eq_conj (ZMod.stdAddChar (N := N)) x).symm
-
-private lemma prop177_fourier_sq {N : Nat} [NeZero N]
-    (g : ZMod N → Complex) (r : ZMod N) :
-    ((‖fourier g r‖ ^ 2 : Real) : Complex) =
-      ∑ y : ZMod N, ∑ s : ZMod N,
-        difference g y s * exponential (-(y * r)) := by
-  exact fourier_norm_sq_eq_difference_sum g r
-
-private lemma prop177_cubeDifference_product {N d : Nat}
-    (f : ZMod N → Complex) (x : Point N d) (s : ZMod N) :
-    cubeDifference f x s =
-      ∏ e : Fin d → Bool, parityConj e (f (cubeArgument s x e)) := by
-  exact cubeDifference_eq_parity_product f x s
+attribute [simp] star_exponential
 
 private def prop177PhasedFamily {N d : Nat} [NeZero N]
     (H : (Fin d → Bool) → ZMod N → Complex)
@@ -1325,14 +1232,6 @@ private lemma prop177_parity_phased {N d : Nat} [NeZero N]
   · simp [prop177PhasedFamily, parityConj, h]
   · simp [prop177PhasedFamily, parityConj, h, star_mul]
     ring
-
-private lemma prop177_exponential_sum {N : Nat} [NeZero N]
-    {I : Type*} (S : Finset I) (a : I → ZMod N) :
-    exponential (∑ i ∈ S, a i) = ∏ i ∈ S, exponential (a i) := by
-  classical
-  induction S using Finset.induction_on with
-  | empty => simp
-  | @insert x S hx ih => simp [hx, ih]
 
 private lemma prop177_phasedCubeProduct {N d : Nat} [NeZero N]
     (H : (Fin d → Bool) → ZMod N → Complex)
@@ -1362,7 +1261,7 @@ private lemma prop177_phasedCubeProduct {N d : Nat} [NeZero N]
       rw [Finset.prod_mul_distrib]
     _ = _ := by
       congr 1
-      rw [← prop177_exponential_sum Finset.univ]
+      rw [← prop172_exponential_sum Finset.univ]
       congr 1
       unfold signedCubeSum
       rw [Finset.sum_neg_distrib]
@@ -1410,13 +1309,13 @@ private lemma prop177_difference_mixedProduct {N k : Nat}
       · apply Finset.prod_congr rfl
         intro e _
         simp only [T, Fin.tail_cons]
-        rw [prop177_parityConj_cons_false, prop177_cubeArgument_cons]
+        rw [prop172_parityConj_cons_false, prop172_cubeArgument_cons]
         simp only [Bool.false_eq_true, if_false, sub_zero]
         rfl
       · apply Finset.prod_congr rfl
         intro e _
         simp only [T, Fin.tail_cons]
-        rw [prop177_parityConj_cons_true, prop177_cubeArgument_cons]
+        rw [prop172_parityConj_cons_true, prop172_cubeArgument_cons]
         simp only [if_true]
         rfl
     _ = ∏ p : Bool × (Fin k → Bool), T (Fin.cons p.1 p.2) := by
@@ -1449,7 +1348,7 @@ private lemma prop177_mixedEnergy_expansion {N k : Nat} [NeZero N]
           exponential (-(y * tau a)) := by
       apply Finset.sum_congr rfl
       intro a _
-      exact prop177_fourier_sq
+      exact prop172_fourier_sq
         (fun t => ∏ e : Fin k → Bool,
           parityConj e (H e (cubeArgument t a e))) (tau a)
     _ = ∑ y : ZMod N, ∑ a : Point N k, ∑ s : ZMod N,
@@ -1483,12 +1382,6 @@ private lemma prop177Monomial_cons {N k : Nat} (b : Bool)
     prop177Monomial (Fin.cons b e) z =
       (if b then z 0 else 1) * prop177Monomial e (Fin.tail z) := by
   simp [prop177Monomial, Fin.prod_univ_succ, Fin.tail]
-
-private lemma prop177_multilinear_cons {N k : Nat}
-    (sigma : Point N k → ZMod N) (hsigma : IsMultilinear sigma) :
-    IsMultilinear (fun z : Point N (k + 1) =>
-      z 0 * sigma (Fin.tail z)) := by
-  exact isMultilinear_mul_first_coordinate sigma hsigma
 
 private def prop177TailOffset {N k : Nat} (r : Point N k)
     (E : Fin (k + 1) → Bool) : ZMod N :=
@@ -1709,7 +1602,7 @@ private lemma prop177_fourier_boxPoint {N k m h : Nat} [NeZero N]
   rw [← (Equiv.mulLeft₀ d (bne_iff_ne.mp hd)).sum_comp]
   apply Finset.sum_congr rfl
   intro t _
-  rw [prop177_cubeDifference_product]
+  rw [prop172_cubeDifference_product]
   change exponential (-((d * t) * sigma (prop177BoxPoint P u))) *
       (∏ e : Fin k → Bool,
         parityConj e
@@ -1946,9 +1839,7 @@ private lemma prop177_local_energy_eq_cubeForm_norm
   rw [hform, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg]
   exact Finset.sum_nonneg fun _ _ => sq_nonneg _
 
-@[simp] private lemma prop177_norm_exponential {N : Nat} [NeZero N]
-    (x : ZMod N) : ‖exponential x‖ = 1 := by
-  exact (ZMod.stdAddChar (N := N)).norm_apply x
+attribute [simp] cor57_norm_exponential
 
 private lemma prop177_local_phased_discValued
     {N M k : Nat} [NeZero N] [NeZero M]
@@ -1962,7 +1853,7 @@ private lemma prop177_local_phased_discValued
       (prop177AffinePhase d r Phi) E) := by
   intro s
   unfold prop177PhasedFamily prop177ExtendedLocalFamily
-  rw [norm_mul, prop177_norm_exponential, mul_one]
+  rw [norm_mul, cor57_norm_exponential, mul_one]
   unfold restrictToCell prop177ShiftedVertex
   split_ifs
   · exact hf _
@@ -2504,8 +2395,6 @@ private lemma prop177_quantitative_strict
   let c : Real := (2 : Real) ^ (-(2 * (k + 1) ^ 3 : Int))
   have hcoeff : L ^ 2 * c < 1 / 4 := by
     exact prop177_pattern_coefficient_lt_quarter k hk
-  have hqR : (0 : Real) < q := by exact_mod_cast hq
-  have hMR : (0 : Real) < M := by exact_mod_cast hM
   have hqhalf : (((q + 1 : Nat) : Real)) ≤ 2 * (q : Real) := by
     exact_mod_cast (show q + 1 ≤ 2 * q by omega)
   have hqSquare :
@@ -2678,15 +2567,13 @@ private theorem prop177_large_branch
       _ ≤ _ := by gcongr
   let L : Nat := 2 ^ (k * (k + 1) ^ 2)
   have hFcardR : (F.card : Real) ≤ (L : Real) := by exact_mod_cast hFcard
-  have hTnonneg : 0 ≤ T := by
-    exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
   have hSelectedL : A ≤ (L : Real) ^ 2 * (M : Real) * T := by
     calc
       A ≤ (F.card : Real) ^ 2 * (M : Real) * T := hSelected
       _ ≤ (L : Real) ^ 2 * (M : Real) * T := by gcongr
   let rho : Point N (k + 1) → ZMod N := fun z =>
     z 0 * sigma (Fin.tail z)
-  have hrho : IsMultilinear rho := prop177_multilinear_cons sigma hsigma
+  have hrho : IsMultilinear rho := prop172_multilinear_cons sigma hsigma
   obtain ⟨Phi, hPhiPoly, hPhi⟩ :=
     lemma_17_1_holds N (k + 1) hkN hkfac rho hrho
   obtain ⟨E, hVertex⟩ := prop177_select_local_vertex hMpos f hf
@@ -2778,9 +2665,6 @@ theorem proposition_17_7_with_upper :
     obtain ⟨h, rfl⟩ := hm
     exact prop177_large_branch f P sigma alpha halpha hk hlarge haxes hd
       hmsqrt hf hsigma henergy
-
-
-
 
 /-- **Gowers, Proposition 17.7.** The catalogue conclusion follows from
  the stronger construction, retaining its original statement. -/

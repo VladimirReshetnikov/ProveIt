@@ -35,7 +35,6 @@ def cubicBaseExponent (q : Nat) (sigma : Real) : Real :=
 
 theorem cubicBaseExponent_pos {q : Nat} {sigma : Real} (hq : 0 < q)
     (hs : 0 < sigma) : 0 < cubicBaseExponent q sigma := by
-  have hq0 : (0 : Real) < q := by exact_mod_cast hq
   unfold cubicBaseExponent
   positivity
 

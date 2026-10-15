@@ -19,57 +19,6 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma gcs_countWhere_eq_sum_ite {X : Type*} [Fintype X]
-    (P : X → Prop) :
-    countWhere P = ∑ x : X,
-      @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
-  classical
-  unfold countWhere
-  simp
-
-private lemma gcs_boolWeight_insertNth {n : Nat}
-    (j : Fin (n + 1)) (b : Bool) (e : Fin n → Bool) :
-    boolWeight (j.insertNth b e) = (if b then 1 else 0) + boolWeight e := by
-  classical
-  unfold boolWeight
-  rw [gcs_countWhere_eq_sum_ite, gcs_countWhere_eq_sum_ite]
-  let ind : Bool → Nat := fun c => if c then 1 else 0
-  have hind (c : Bool) :
-      @ite Nat (c = true) (Classical.propDecidable (c = true)) 1 0 = ind c := by
-    cases c <;> simp [ind]
-  have hfun :
-      (fun i : Fin (n + 1) =>
-        ind ((j.insertNth b e : Fin (n + 1) → Bool) i)) =
-        j.insertNth (ind b) (fun i : Fin n => ind (e i)) := by
-    rw [Fin.eq_insertNth_iff]
-    constructor
-    · simp
-    · funext i
-      simp [Fin.removeNth_apply]
-  calc
-    (∑ i : Fin (n + 1),
-        @ite Nat ((j.insertNth b e : Fin (n + 1) → Bool) i = true)
-          (Classical.propDecidable _) 1 0) =
-        ∑ i : Fin (n + 1),
-          ind ((j.insertNth b e : Fin (n + 1) → Bool) i) := by
-      apply Finset.sum_congr rfl
-      intro i _
-      exact hind _
-    _ = ∑ i : Fin (n + 1),
-          (j.insertNth (ind b) (fun i : Fin n => ind (e i))) i := by
-      apply Finset.sum_congr rfl
-      intro i _
-      exact congrFun hfun i
-    _ = ind b + ∑ i : Fin n, ind (e i) := Fin.sum_insertNth j _ _
-    _ = (if b then 1 else 0) + ∑ i : Fin n, ind (e i) := by rfl
-    _ = (if b then 1 else 0) +
-        ∑ i : Fin n,
-          @ite Nat (e i = true) (Classical.propDecidable _) 1 0 := by
-      congr 1
-      apply Finset.sum_congr rfl
-      intro i _
-      exact (hind _).symm
-
 private lemma gcs_parityConj_insert_false {n : Nat}
     (j : Fin (n + 1)) (e : Fin n → Bool) (z : Complex) :
     parityConj (j.insertNth false e) z = parityConj e z := by

@@ -1215,6 +1215,7 @@ import GowersSzemeredi.Proofs18FinalClasses
 import GowersSzemeredi.Proofs18FinalStep
 import GowersSzemeredi.Proofs18FinalEnvelopes
 import GowersSzemeredi.Proofs18Final
+import GowersSzemeredi.Proofs00Basics
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

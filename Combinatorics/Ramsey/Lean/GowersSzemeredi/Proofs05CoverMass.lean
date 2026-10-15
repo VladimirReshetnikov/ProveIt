@@ -113,7 +113,6 @@ theorem cover_correlation_density_strict {N m : Nat} [NeZero N]
     0 < density A ∧ density A < 1 := by
   have hb := (cover_correlation_density_bounds A U P z hP hAU hz ha).1
   have hd := density_nonneg A
-  have hd1 := density_le_one A
   constructor <;> nlinarith
 
 theorem comparable_partition_card_bound {X : Type*} [DecidableEq X] {m : Nat}

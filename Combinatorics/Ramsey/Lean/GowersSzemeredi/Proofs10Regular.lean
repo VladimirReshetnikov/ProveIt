@@ -249,40 +249,6 @@ private noncomputable def regularBoundary {N : Nat} {X : Type*}
     p ∈ normalizedBoundarySet rho sigma
       (normalizedQ D x alpha M y) (normalizedR D M y)
 
-private lemma countWhere_cast_eq_sum_ite {T : Type*} [Fintype T]
-    (P : T → Prop) [DecidablePred P] :
-    (countWhere P : Real) = ∑ x : T, if P x then 1 else 0 := by
-  classical
-  unfold countWhere
-  rw [Finset.filter_congr_decidable]
-  simp
-
-private lemma fibre_card_cast_eq_sum_ite {N : Nat} {X : Type*}
-    [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) (s : ZMod N) :
-    ((D.fibre s).card : Real) =
-      ∑ x : X, if D.index x = s then 1 else 0 := by
-  classical
-  unfold MultifunctionDomain.fibre
-  rw [Finset.filter_congr_decidable]
-  simp
-
-private lemma sum_comp_index_eq_sum_mul_fibre {N : Nat} [NeZero N]
-    {X : Type*} [Fintype X] [DecidableEq X]
-    (D : MultifunctionDomain N X) (f : ZMod N → Real) :
-    (∑ x : X, f (D.index x)) =
-      ∑ s : ZMod N, f s * (D.fibre s).card := by
-  classical
-  simp_rw [fibre_card_cast_eq_sum_ite, Finset.mul_sum]
-  rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro x _
-  rw [Finset.sum_eq_single (D.index x)]
-  · simp
-  · intro s _ hs
-    rw [if_neg (Ne.symm hs)]
-    simp
-  · simp
-
 private lemma small_eighth_fibre_card_bound {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
     (D : MultifunctionDomain N X) (alpha : Real) (M : Nat) :
@@ -718,13 +684,6 @@ private lemma exists_regular_parameters {X : Type*} [Fintype X]
     nlinarith only [hm]
   obtain ⟨p, hp⟩ := MeasureTheory.exists_integral_le hFInt
   have hpBase : rho ^ 2 * S / 4 ≤ F p := hProbBase.trans (hAvgBase.trans hp)
-  have hSpr0 (p : Real × Real) : 0 ≤ Spr p := by
-    dsimp only [Spr, windowedSum]
-    apply Finset.sum_nonneg
-    intro y _
-    by_cases hy : p ∈ normalizedWindowSet rho (a y) (b y)
-    · simp [Set.indicator_of_mem hy, hq y]
-    · simp [Set.indicator_of_notMem hy]
   have hEw0 (p : Real × Real) : 0 ≤ Ew p := by
     dsimp only [Ew, windowedSum]
     apply Finset.sum_nonneg
@@ -800,7 +759,6 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
     linarith
   have hetaPos : 0 < eta := lt_of_le_of_ne heta (Ne.symm hetaNe)
   have hL : 1 + 2 * rho ≤ 2 := by
-    have hrhoSmall : rho ≤ 1 / 192 := hrhoAlpha.trans (by nlinarith [halphaOne])
     linarith
   let K : Real := qScale alpha M N
   let T : Real := alpha * M * N
@@ -1103,8 +1061,6 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
     linarith
   have hRlower : alpha ^ 2 / 16 ≤ p.2 - rho := by
     linarith only [hRcenter, hrhoAlphaSq]
-  have hRlowerPos : 0 < p.2 - rho :=
-    lt_of_lt_of_le (by positivity) hRlower
   have hRVar : VariesByFactorAtMostTwo W D.fibreSize := by
     intro y hy z hz
     have hby : b y ≤ p.2 + rho := by linarith only [(hWbounds y hy).2.1]

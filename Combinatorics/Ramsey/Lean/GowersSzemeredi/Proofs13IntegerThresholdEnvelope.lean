@@ -85,7 +85,6 @@ theorem section13DensityIntegerThreshold_le_double_exp {delta : Real}
     (section13DensityIntegerThreshold delta : Real) ≤ Real.exp (Real.exp (19 * section13Q delta)) := by
   let Q := section13Q delta
   have hQ := section13Q_ge_512 hδ hδone
-  have hQ0 : 0 ≤ Q := by dsimp [Q]; linarith only [hQ]
   have hb : 0 ≤ section13QBound (section10Lambda (delta ^ 32 / 16)) := by
     unfold section13QBound section10Lambda
     positivity

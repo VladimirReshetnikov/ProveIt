@@ -158,7 +158,7 @@ theorem class_step_decomp_fejer (C : UniformClassWith k Thr Cnt Exp) (hk : 1 ≤
         restrictRelation Gamma J ⊆ stepPieceFejerGraphs C P := by
   classical
   obtain ⟨hθ'pos, hθ'le⟩ := classBudgetW_pos_le k (fejerThetaOne_bounds k ht ht1 hg hg1).1 (fejerThetaOne_bounds k ht ht1 hg hg1).2
-  set θ' := classBudgetW (fejerThetaOne theta gamma k) k with hθ'def
+  set θ' := classBudgetW (fejerThetaOne theta gamma k) k
   let Good : Finset (Point N (k + 1) × ZMod N) → Prop := fun G =>
     ∃ P : ClassPiece C Gamma (tightZeta (fejerThetaOne theta gamma k / 4)) θ' θ' (section16Delta (fejerThetaOne theta gamma k)) θ'
       gamma, G = partialGraph P.D P.phi

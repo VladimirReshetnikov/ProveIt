@@ -28,7 +28,7 @@ theorem pow_mono_exp {x : Real} (hx : 1 ≤ x) {a b : Nat} (hab : a ≤ b) : x ^
   pow_le_pow_right₀ hx hab
 
 /-- `y ≤ x^a`, `z ≤ x^b` give `y z ≤ x^(a+b)`. -/
-theorem mul_le_pow_add {x y z : Real} {a b : Nat} (hy0 : 0 ≤ y) (hz0 : 0 ≤ z)
+theorem mul_le_pow_add {x y z : Real} {a b : Nat} (hz0 : 0 ≤ z)
     (hy : y ≤ x ^ a) (hz : z ≤ x ^ b) (hx : 0 ≤ x) : y * z ≤ x ^ (a + b) := by
   rw [pow_add]
   exact mul_le_mul hy hz hz0 (pow_nonneg hx _)
@@ -102,7 +102,6 @@ theorem prod_scale_radius_bounds {gamma theta rho : Real} (hg : 0 < gamma) (hg1 
 theorem quarter_prod_ge_inv_sq {gamma theta : Real} (hg : 0 < gamma) (ht : 0 < theta)
     (hu2 : 2 ≤ 2 / (gamma * theta)) :
     ((2 / (gamma * theta)) ^ 2)⁻¹ ≤ theta * gamma / 4 := by
-  have hgt : 0 < gamma * theta := mul_pos hg ht
   have heq : theta * gamma / 4 = (2 * (2 / (gamma * theta)))⁻¹ := by
     field_simp; ring
   rw [heq]
@@ -249,7 +248,7 @@ theorem lemma156ExplicitThreshold_le_power_of_selection_base
       exact hk2.trans (pow_le_pow_left₀ (by norm_num) hu k)
     rw [pow_add]
     exact mul_le_mul h3 hkk (Nat.cast_nonneg _) (pow_nonneg hupos.le _)
-  set a := beta ^ (7 * 4 ^ (k + 1)) * gamma ^ (21 * k * 4 ^ (k + 1)) with ha
+  set a := beta ^ (7 * 4 ^ (k + 1)) * gamma ^ (21 * k * 4 ^ (k + 1))
   have hapos : 0 < a := lt_of_lt_of_le (by positivity) hbase
   have hb : (u ^ (c + 46))⁻¹ ≤ a * (2 : Real)⁻¹ ^ 44 / 4 := by
     calc (u ^ (c + 46))⁻¹ = (u ^ c)⁻¹ * (u ^ 46)⁻¹ := by rw [← mul_inv, ← pow_add]
@@ -327,7 +326,7 @@ theorem const_mul_le_pow {w c y : Real} {a j : Nat} (hw : 2 ≤ w) (_hc0 : 0 ≤
 theorem nat_mul_le_pow {w : Real} {m n : Nat} {a b : Nat} (hw : 2 ≤ w) (hm : (m : Real) ≤ w ^ a)
     (hn : (n : Real) ≤ w ^ b) : ((m * n : Nat) : Real) ≤ w ^ (a + b) := by
   push_cast
-  exact mul_le_pow_add (Nat.cast_nonneg _) (Nat.cast_nonneg _) hm hn (le_trans (by norm_num) hw)
+  exact mul_le_pow_add (Nat.cast_nonneg _) hm hn (le_trans (by norm_num) hw)
 
 /-- `c (m n + 1)` for a constant `c ≤ 2^j`. -/
 theorem nat_affine_le_pow {w : Real} {c m n : Nat} {a b j : Nat} (hw : 2 ≤ w) (hc : (c : Real) ≤ 2 ^ j)
@@ -358,7 +357,6 @@ theorem famPieceSamples_le_two_bases {ν w rho : Real} {Qr : Real → Real}
   have hn1 : ((max 1 n : Nat) : Real) ≤ ν ^ c * w ^ d := by
     rw [Nat.cast_max, Nat.cast_one]
     exact max_le (one_le_mul_of_one_le_of_one_le (one_le_pow₀ hν) (one_le_pow₀ hw1)) hn
-  have hQ0 : 0 ≤ max 1 (Qr (rho / 8)) := zero_le_one.trans (le_max_left _ _)
   set X := ν ^ (a + c) * w ^ (b + d + 1) with hXdef
   have hX1 : 1 ≤ X := one_le_mul_of_one_le_of_one_le (one_le_pow₀ hν) (one_le_pow₀ hw1)
   have hprod : max 1 (Qr (rho / 8)) * ((max 1 n : Nat) : Real) * rho⁻¹ ≤ X := by

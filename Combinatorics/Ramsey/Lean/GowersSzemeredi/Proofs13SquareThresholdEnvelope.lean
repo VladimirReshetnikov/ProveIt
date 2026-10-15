@@ -55,7 +55,6 @@ theorem squareScaleThreshold_le_double_exp {c e f g W A : Real}
     (hcI : c⁻¹ ≤ Real.exp A) (heI : e⁻¹ ≤ Real.exp A)
     (hfI : f⁻¹ ≤ Real.exp A) (hgI : g⁻¹ ≤ Real.exp A) (hW : W ≤ Real.exp A) :
     squareScaleThreshold c e f g W ≤ Real.exp (Real.exp (6 * A)) := by
-  have hA0 : 0 ≤ A := by linarith only [hA]
   have hlength := squareLengthThreshold_le_double_exp hf hg hg1 hA hfI hgI hW
   have h := positivePowerThreshold_le_exp hc he.le
     (show 0 ≤ Real.exp (4 * A) + A by positivity) hlength hcI heI

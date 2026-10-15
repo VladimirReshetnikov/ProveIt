@@ -62,7 +62,6 @@ theorem single_piece_lift_global_cover_with_joint {k : Nat} (hk : 1 ≤ k) {t1 z
               (coverRho1W Qb t1 gamma k)) 1 *
             S.carrier.card ≤
           (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card := by
-  have hk0 : 0 < k := hk
   obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds_with ha0 haS
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le_with ha0 haS
   set θ₂ := section16ThetaTwo (t1) with hθ₂def
@@ -72,7 +71,7 @@ theorem single_piece_lift_global_cover_with_joint {k : Nat} (hk : 1 ≤ k) {t1 z
     rw [hθ'def, globalBudgetW, div_le_one (by positivity)]
     have : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
     nlinarith
-  set δ := section16Delta (t1) with hδdef
+  set δ := section16Delta (t1)
   -- 1. Lemmas 16.5 (without condition (i)) and 16.7
   obtain ⟨H, Y, phiPrime, hH, hcube, hselected, hselection⟩ :=
     section16_dense_induced_selection_with (k := k) (Fact.out : N.Prime) t1 zeta B phi
@@ -88,7 +87,7 @@ theorem single_piece_lift_global_cover_with_joint {k : Nat} (hk : 1 ≤ k) {t1 z
   set B1 := section16GoodDomain B H Y x0 with hB1def
   have hB1card : θ₂ * (N : Real) ^ (k + 1) ≤ B1.card := by
     rw [hB1def, section16GoodDomain_card]; exact hgood
-  set t := appendCoordinate x0 0 with htdef
+  set t := appendCoordinate x0 0
   -- 2. the spectrum cover
   obtain ⟨JΔ, hJΔ, hMLΔ⟩ := hcov k hk le_rfl N δ θ' hδpos hδle hθ'pos hθ'le
     (section16SpectrumRelation B δ) (section16_spectrum_relation_card B hδpos)
@@ -197,17 +196,10 @@ theorem single_piece_lift_global_cover_with_joint {k : Nat} (hk : 1 ≤ k) {t1 z
     exact h
   have hcR : ∀ s : Real, 0 < s → s ≤ 1 → 0 < s / 2 ∧ s / 2 ≤ 1 := fun s hs hs1 =>
     ⟨by positivity, by linarith⟩
-  have hc : ∀ s : Real, 0 < s → s ≤ 1 → 0 < s / 2 / Qb k gamma θ' (s / 2) ∧
-      s / 2 / Qb k gamma θ' (s / 2) ≤ 1 := by
-    intro s hs hs1
-    have hq := hQb k gamma θ' (s / 2) (by positivity) (by linarith)
-    refine ⟨by positivity, ?_⟩
-    rw [div_le_one (by linarith)]
-    linarith
   obtain ⟨hθ₂'pos, hθ₂'le⟩ : 0 < globalTheta2W t1 ∧ globalTheta2W t1 ≤ 1 :=
     ⟨by rw [globalTheta2W]; positivity, by rw [globalTheta2W]; linarith⟩
   -- 6. the remainder piece from the joint cover, on the full box
-  set P0 := fullSpaceBox N (k + 1) with hP0def
+  set P0 := fullSpaceBox N (k + 1)
   have hP0 : P0.IsProper := fullSpaceBox_isProper N (k + 1)
   have hP0carrier : P0.carrier = Finset.univ := fullSpaceBox_carrier N (k + 1)
   have hP0width : P0.width = N := fullSpaceBox_width N (k + 1) (Nat.succ_pos k)
@@ -229,7 +221,6 @@ theorem single_piece_lift_global_cover_with_joint {k : Nat} (hk : 1 ≤ k) {t1 z
     (theta := globalTheta2W t1) (lt_of_le_of_lt hsum (half_lt_self hθ₂'pos)) P0 B1' hP0
     (by rw [hP0carrier]; exact Finset.subset_univ _) hB1V (by rw [hP0card]; exact hB1'card) hP0ne
   rw [hP0width] at hR1w
-  beta_reduce at hR1c hR1w
   rw [← hEdef] at hR1c hR1w
   have hcc : coverCountW Qb t1 gamma k = ∏ e ∈ E,
       max (Qb (section16VertexDirections e).card gamma θ' (coverPrecW t1 k))

@@ -55,7 +55,6 @@ private lemma cor1014_small_bohr_nonnegative {N : Nat} [NeZero N]
   have hzetaNeg : zeta < 0 := lt_of_not_ge hzeta
   have hrhs : zeta / (m : Real) * N < 0 :=
     mul_neg_of_neg_of_pos (div_neg_of_neg_of_pos hzetaNeg hmReal) hNReal
-  have hlhs : (0 : Real) ≤ centeredAbs (r * d) := by positivity
   linarith
 
 private lemma cor1014_symmetric_multiples_subset {N : Nat} [NeZero N]
@@ -72,7 +71,6 @@ private lemma cor1014_symmetric_multiples_subset {N : Nat} [NeZero N]
   intro r hr
   rw [bohr, Finset.mem_filter] at hd
   have hdr := hd.2 r hr
-  have hmReal : (0 : Real) < m := by exact_mod_cast hm
   have hbase : 0 ≤ zeta / (m : Real) * N := by positivity
   have hcollapse :
       (m : Real) * (zeta / (m : Real) * N) = zeta * N := by

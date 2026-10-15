@@ -34,7 +34,6 @@ theorem hasNatAP_of_short_modular_sequence {N n k : Nat}
       intro i hi
       have hi0 : i = 0 := by omega
       simpa [hi0] using (hf 0 (by omega)).1
-  have hk2 : 2 ≤ k := by omega
   have h0 := hf 0 (by omega)
   have h1 := hf 1 (by omega)
   have hne : f 0 ≠ f 1 := by

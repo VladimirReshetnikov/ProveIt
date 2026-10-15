@@ -1,6 +1,7 @@
 import GowersSzemeredi.Sections14_15
 import Mathlib.Algebra.Order.Ring.Abs
 import Mathlib.Data.Fin.Tuple.Finset
+import GowersSzemeredi.Proofs00Basics
 
 /-!
 # Multiaffine level sets in Gowers's Section 15
@@ -55,14 +56,6 @@ private lemma multiaffineEval_succ {R : Type*} [CommSemiring R] {k : Nat}
       rw [Finset.mul_sum]
       rw [add_comm]
       congr 1 <;> simp only [one_mul, mul_assoc, mul_comm]
-
-private lemma countWhere_eq_sum_ite {T : Type*} [Fintype T]
-    (P : T → Prop) [DecidablePred P] :
-    countWhere P = ∑ x : T, if P x then 1 else 0 := by
-  classical
-  unfold countWhere
-  rw [Finset.filter_congr_decidable]
-  simp
 
 private lemma countWhere_pi_succ {R : Type*} [Fintype R] {k : Nat}
     (P : (Fin (k + 1) → R) → Prop) [DecidablePred P] :

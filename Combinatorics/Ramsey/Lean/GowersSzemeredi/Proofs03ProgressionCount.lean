@@ -46,20 +46,14 @@ private lemma cor33_translated_count_eq_indicator {N k : Nat} [NeZero N]
     rw [Finset.prod_boole]
     simpa using h
 
-private lemma cor33_density_eq {N : Nat} [NeZero N]
-    (A : Finset (ZMod N)) (delta : Real)
-    (hcard : (A.card : Real) = delta * N) : density A = delta := by
-  rw [density, hcard]
-  exact mul_div_cancel_right₀ delta (by exact_mod_cast NeZero.ne N)
-
 private lemma cor33_indicator_eq_balanced_add {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (delta : Real)
     (hcard : (A.card : Real) = delta * N) (x : ZMod N) :
     indicator A x = balanced A x + delta := by
-  rw [balanced, cor33_density_eq A delta hcard]
+  rw [balanced, cor58_density_eq A delta hcard]
   ring
 
-private lemma cor33_balanced_discValued {N : Nat} [NeZero N]
+lemma cor33_balanced_discValued {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) : DiscValued (balanced A) := by
   intro x
   classical
@@ -377,10 +371,10 @@ theorem corollary_3_3_holds : corollary_3_3 := by
           ∑ B ∈ (Finset.univ : Finset (Finset (Fin k))).erase ∅, T B
         exact (sub_eq_iff_eq_add).2 herase.symm
   have hdelta0 (i : Fin k) : 0 ≤ delta i := by
-    rw [← cor33_density_eq (A i) (delta i) (hcard i)]
+    rw [← cor58_density_eq (A i) (delta i) (hcard i)]
     exact density_nonneg (A i)
   have hdelta1 (i : Fin k) : delta i ≤ 1 := by
-    rw [← cor33_density_eq (A i) (delta i) (hcard i)]
+    rw [← cor58_density_eq (A i) (delta i) (hcard i)]
     exact density_le_one (A i)
   have hcoeff (B : Finset (Fin k)) :
       ‖(cor33Coefficient delta B : Complex)‖ ≤ 1 := by

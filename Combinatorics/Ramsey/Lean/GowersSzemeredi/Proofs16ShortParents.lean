@@ -14,8 +14,6 @@ namespace LeanProofs.GowersSzemeredi
 theorem quarter_scale_width {m : Nat} (hm : 4 ≤ m) :
     0 < m / 4 ∧ m ≤ 8 * (m / 4) ∧ 4 * (m / 4) ≤ m := by
   have hpos : 0 < m / 4 := Nat.div_pos hm (by norm_num)
-  have hmod := Nat.mod_lt m (by norm_num : 0 < 4)
-  have hdiv := Nat.div_add_mod m 4
   omega
 
 /-- Preliminary localization provides the short containing progressions

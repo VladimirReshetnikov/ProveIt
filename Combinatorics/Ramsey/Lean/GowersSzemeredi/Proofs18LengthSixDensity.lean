@@ -47,8 +47,6 @@ theorem RecipPowerLB.liftLastC {X : Real} {c : Real → Real} {a b : Nat} (hX : 
   obtain ⟨h0, h1, h2⟩ := h (s / 2) hs2 hs21
   have hinv2 : (s / 2)⁻¹ = 2 * s⁻¹ := by rw [inv_div, div_eq_mul_inv]
   rw [hinv2] at h2
-  have hsi : 0 ≤ s⁻¹ := (inv_pos.mpr hs).le
-  have hX0 : 0 ≤ X := by linarith only [hX]
   unfold LeanProofs.GowersSzemeredi.liftLastC
   refine ⟨mul_pos hs2 h0, ?_, ?_⟩
   · calc s / 2 * c (s / 2) ≤ 1 * 1 := mul_le_mul hs21 h1 h0.le zero_le_one
@@ -112,7 +110,6 @@ theorem lsThetaTwo_bounds {alpha : Real} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2
   refine ⟨h0, h1, ?_⟩
   set X := 2 / alpha with hX
   clear_value X
-  have hX1 : 1 ≤ X := by linarith only [hX2]
   have hXpos : 0 < X := by linarith only [hX2]
   have h1inv : (section16ThetaOne alpha (alpha / 2) 2)⁻¹ ≤ X ^ (3 * (2 : Nat) ^ 128) := by
     unfold section16ThetaOne

@@ -98,7 +98,7 @@ theorem split_step_arith (X Y Z : Nat) (hX : 1 ≤ X) (hY : 1 ≤ Y) :
 
 /-- **The invariants propagate** when `P ≤ 2^(5k+20)` and `T ≤ 2^(5k+19)`:
 `2^(k+6)·a ≤ 2^(c·2^k)` and `D ≤ 2^((c+8)·2^k)`, for any `c`. -/
-theorem fejer_split_step (c : Nat) {k a D a' D' P T : Nat} (hk : 2 ≤ k) (ha : 1 ≤ a)
+theorem fejer_split_step (c : Nat) {k a D a' D' P T : Nat} (hk : 2 ≤ k)
     (hA : 2 ^ (k + 6) * a ≤ 2 ^ (c * 2 ^ k)) (hDb : D ≤ 2 ^ ((c + 8) * 2 ^ k))
     (ha' : a' ≤ 2 ^ (k + 5) * (a * a)) (hD' : D' ≤ 2 ^ (k + 6) * (a * (a + D)) * P + T)
     (hP : P ≤ 2 ^ (5 * k + 20)) (hT : T ≤ 2 ^ (5 * k + 19)) :
@@ -207,7 +207,7 @@ theorem split_pair_with_bounds (c : Nat) {seedA seedD : Nat} (hA1 : 1 ≤ seedA)
     rw [splitPairWith_succ _ _ hk]
     set a := (splitPairWith seedA seedD k).1
     set D := (splitPairWith seedA seedD k).2
-    obtain ⟨h1, h2⟩ := fejer_split_step c hk ha hAb hDb (splitStepA_le ha)
+    obtain ⟨h1, h2⟩ := fejer_split_step c hk hAb hDb (splitStepA_le ha)
       (splitStepDWith_le ha hDp (fejerStepP_ge k)) (fejerStepP_le k) (fejerStepT_le k)
     refine ⟨?_, ?_, h1, h2⟩
     · unfold splitStepA sCountN; omega

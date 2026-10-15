@@ -172,7 +172,7 @@ theorem section16_poly_family_three_cover
   have hA1 : ∀ q, 0 < familyWidthPrefactor K1 q := familyWidthPrefactor_pos (by omega)
   have hB1 : ∀ q, 0 < familyWidthDivisor 1 p1 q := familyWidthDivisor_pos hp1
   -- spectra
-  set Gspec := Finset.univ.biUnion fun c : Fin m => specRelTwo (P c).H1 (P c).K with hGspec
+  set Gspec := Finset.univ.biUnion fun c : Fin m => specRelTwo (P c).H1 (P c).K
   have hMLspec : MultiplyLinearWith (famThreeQb thS gS m)
       (famThreeEb (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) thS gS m) Gspec := by
     refine MultiplyLinearWith.subset (section16_poly_piece_two_family_cover hA1 hB1 hlemma6'

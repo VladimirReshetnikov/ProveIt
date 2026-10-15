@@ -53,7 +53,6 @@ theorem section16_lemma6_exponent_bounds {theta gamma sigma : Real} (k : Nat)
   have htbound : 1 ≤ t := section16T_one_le k hd hd1 hth hth1
   have htpos : 0 < t := by linarith
   have hinv : t⁻¹ ≤ 1 := inv_le_one_of_one_le₀ htbound
-  have hinvpos : 0 < t⁻¹ := inv_pos.mpr htpos
   have hb : 0 < delta * (t⁻¹ * sigma) := by positivity
   have hb1 : delta * (t⁻¹ * sigma) ≤ 1 := by
     have h : t⁻¹ * sigma ≤ 1 := mul_le_one₀ hinv hs.le hs1

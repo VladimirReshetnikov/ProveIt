@@ -36,7 +36,6 @@ lemma cubeDifference_discValued {N d : Nat} {g : ZMod N → Complex}
 
 lemma discValued_uniform_one {N d : Nat} [NeZero N] {g : ZMod N → Complex}
     (hg : DiscValued g) : UniformOfDegree g 1 d := by
-  have hN : (0 : Real) ≤ N := by positivity
   have hterm (a : Point N d) :
       ‖∑ s : ZMod N, cubeDifference g a s‖ ^ 2 ≤ (N : Real) ^ 2 := by
     apply pow_le_pow_left₀ (norm_nonneg _) _ 2
@@ -97,7 +96,7 @@ private lemma degreeOneEnergy_eq_correlation {N : Nat} [NeZero N]
     ‖∑ s : ZMod N, difference g r s‖ ^ 2
   simpa [e, cubeDifference_one] using h
 
-private lemma fourthMoment_eq_degreeOneEnergy {N : Nat} [NeZero N]
+lemma fourthMoment_eq_degreeOneEnergy {N : Nat} [NeZero N]
     (g : ZMod N → Complex) :
     ∑ r : ZMod N, ‖fourier g r‖ ^ 4 =
       (N : Real) * ∑ a : Point N 1,
@@ -106,7 +105,7 @@ private lemma fourthMoment_eq_degreeOneEnergy {N : Nat} [NeZero N]
   rw [degreeOneEnergy_eq_correlation]
   simpa only [difference, ← pow_add] using h
 
-private lemma degreeOne_uniform_iff_condition2i {N : Nat} [NeZero N]
+lemma degreeOne_uniform_iff_condition2i {N : Nat} [NeZero N]
     (g : ZMod N → Complex) (c : Real) :
     UniformOfDegree g c 1 ↔ uniformCondition2i g c := by
   unfold UniformOfDegree uniformCondition2i
@@ -280,7 +279,6 @@ private lemma exists_bounded_extension_sum {N : Nat} [NeZero N]
       ∀ r, beta r ≤ alpha r := by
   let S := ∑ r, beta r
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hS0 : 0 ≤ S := Finset.sum_nonneg fun r _ => (hbeta r).1
   have hSN : S ≤ (N : Real) := by
     calc
       S ≤ ∑ _r : ZMod N, (1 : Real) :=
@@ -496,7 +494,7 @@ private lemma higher_condition_vi_imp_iii_succ {N n : Nat} [NeZero N]
         mul_le_mul_of_nonneg_right hc (by positivity)
   · intro a
     by_cases ha : UniformOfDegree (cubeDifference g a) c2 1
-    · simpa [alpha, ha] using ha
+    · simp [alpha, ha]
     · simpa [alpha, ha] using
         (discValued_uniform_one (d := 1) (cubeDifference_discValued hg a))
 

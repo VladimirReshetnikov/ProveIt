@@ -16,7 +16,6 @@ theorem polynomialPartitionConstant_double_le_exp {d : Nat} (hd : 1 ≤ d) :
       _ = 2 ^ (d * d) := (pow_mul _ _ _).symm
   have hd2 : d ≤ d ^ 2 := le_self_pow₀ hd (by norm_num)
   have hd3 : d ^ 2 ≤ d ^ 3 := pow_le_pow_right₀ hd (by norm_num)
-  have hd31 : 1 ≤ d ^ 3 := one_le_pow₀ hd
   calc
     2 * polynomialPartitionConstant d ≤ 2 * ((2 ^ (d * d)) ^ 2 * 2 ^ ((d + 1) ^ 2)) :=
       Nat.mul_le_mul_left 2 (Nat.mul_le_mul_right _ (Nat.pow_le_pow_left hf 2))

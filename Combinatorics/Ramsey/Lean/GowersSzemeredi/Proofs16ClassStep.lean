@@ -176,7 +176,7 @@ theorem class_step_decomp (C : UniformClassWith k Thr Cnt Exp) (hk : 1 ≤ k)
         restrictRelation Gamma J ⊆ stepPieceGraphs C P := by
   classical
   obtain ⟨hθ'pos, hθ'le⟩ := classBudget_pos_le k ht ht1 hg hg1
-  set θ' := classBudget theta gamma k with hθ'def
+  set θ' := classBudget theta gamma k
   let Good : Finset (Point N (k + 1) × ZMod N) → Prop := fun G =>
     ∃ P : ClassPiece C Gamma (section16Zeta theta gamma k) θ' θ' (classDelta theta gamma k) θ'
       gamma, G = partialGraph P.D P.phi

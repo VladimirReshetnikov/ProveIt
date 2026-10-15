@@ -17,7 +17,6 @@ theorem exists_good_progression_sample {N L : Nat} [NeZero N]
       density A + (1 - density A) / (2 * L) ≤ progressionSampleDensity A L a d := by
   classical
   have hL0 : 0 < L := by omega
-  have hLr : (0 : Real) < L := by exact_mod_cast hL0
   have hNr : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   let t : Real := (1 - density A) * density A * N
   let g : Real := t / (2 * L)
