@@ -460,10 +460,10 @@ private lemma stronglyShatters_regionFamily_of_card_le {k m : Nat}
     by_cases hi : i ∈ u ∪ t
     · have hleft : realDot (H i).normal x < (H i).offset := by
         simpa only [if_pos hi] using hside i
-      simp [p, hi, hleft, not_lt_of_ge hleft.le]
+      simp only [p, hi, decide_true]; simp [hleft, not_lt_of_ge hleft.le]
     · have hright : (H i).offset < realDot (H i).normal x := by
         simpa only [if_neg hi] using hside i
-      simp [p, hi, hright, not_lt_of_ge hright.le]
+      simp only [p, hi, decide_false]; simp [hright, not_lt_of_ge hright.le]
   rw [regionFamily, Finset.mem_image]
   refine ⟨p, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hpReal⟩, ?_⟩
   ext i
