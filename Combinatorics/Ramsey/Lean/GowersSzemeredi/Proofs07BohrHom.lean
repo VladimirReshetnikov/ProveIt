@@ -150,7 +150,6 @@ private lemma lemma78_bohr_phase_bound {N : Nat} [NeZero N]
   rw [bohr, Finset.mem_filter] at hd
   have hcenter := hd.2 r hr
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hpi : (0 : Real) < Real.pi := Real.pi_pos
   calc
     ‖exponential (r * d) - 1‖ <=
         2 * Real.pi * centeredAbs (r * d) / N :=
@@ -799,10 +798,6 @@ private lemma lemma78_constant_weighted_phase {N : Nat} [NeZero N]
   rw [lemma78_lambda_sq alpha lambda hα rfl] at htail
   have hzero := lemma78_fourth_moment_lower A
   rw [hcard] at hzero
-  have htailRelative : (∑ r ∈ Finset.univ.filter (fun r ↦ r ∉ K), F r) ≤
-      (1 / 16 : Real) * ∑ r, F r := by
-    dsimp only [F, K]
-    nlinarith [htail, hzero]
   have hsplit := Finset.sum_filter_add_sum_filter_not (Finset.univ : Finset (ZMod N))
     (fun r ↦ r ∈ K) w
   change (∑ r, w r) ≤ (3 / 8 : Real) * ∑ r, F r

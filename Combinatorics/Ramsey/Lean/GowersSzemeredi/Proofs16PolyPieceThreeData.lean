@@ -214,7 +214,7 @@ theorem section16_poly_piece_three_data
     norm_num at hB1card
     nlinarith
   -- 6. the original frame
-  set D' := D.image (origPt x0) with hD'def
+  set D' := D.image (origPt x0)
   have hD'card : D'.card = D.card := Finset.card_image_of_injective _ (origPt_injective x0)
   have hDmem : ∀ z ∈ D, z ∈ B1 ∧ section16Init (origPt x0 z) ∈ JT ∧ dropMid (origPt x0 z) ∈ J1 ∧
       dropFirst (origPt x0 z) ∈ J2 ∧ lastPt3 (origPt x0 z) ∈ J3 ∧

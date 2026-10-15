@@ -61,7 +61,7 @@ theorem coverWidth_powerLB (E : Real → Real) (t : Real) (hE : 0 ≤ E (t / 2))
 /-- The key estimate: `√(n − 1) − 1 ≥ x` when `n ≥ x⁴/8` and `x ≥ 6`. -/
 theorem nat_sqrt_pred_pred_ge {n : Nat} {x : Real} (hx : 6 ≤ x)
     (hn : x ^ 4 / 8 ≤ n) : x ≤ ((Nat.sqrt (n - 1) - 1 : Nat) : Real) := by
-  set k := ⌈x⌉₊ with hk
+  set k := ⌈x⌉₊
   have hxk : x ≤ k := Nat.le_ceil x
   have hk2 : (k : Real) ≤ x + 1 := (Nat.ceil_lt_add_one (by linarith)).le
   have hx2 : 36 ≤ x ^ 2 := by nlinarith
@@ -91,7 +91,6 @@ theorem localization_width_bounds {x f : Real} {L : Nat} (hx : 1 ≤ x) (hf : 0 
     2 ≤ L ∧ x ^ (f / 8) ≤ ((Nat.sqrt (L - 1) - 1 : Nat) : Real) := by
   have hfull : x ^ (f / 8) ≤ x ^ f :=
     Real.rpow_le_rpow_of_exponent_le hx (by linarith)
-  have hL6 : (6 : Real) ≤ L := (h6.trans hfull).trans hL
   refine ⟨by exact_mod_cast (show (2 : Real) ≤ L by linarith), ?_⟩
   apply nat_sqrt_pred_pred_ge h6
   have hpow4 : (x ^ (f / 8)) ^ 4 = x ^ (f / 2) := by
@@ -117,7 +116,7 @@ theorem liftLastW_powerLB {w : Real → Nat → Nat} {t a L0 : Real} (ha : 0 < a
   unfold liftLastW
   rw [if_pos hL4]
   -- the inner width
-  set L' := ⌈(L : Real) / 8⌉₊ with hL'
+  set L' := ⌈(L : Real) / 8⌉₊
   have hL'ge : (L : Real) / 8 ≤ L' := Nat.le_ceil _
   have hL'0 : L0 ≤ (L' : Real) := by linarith
   have hw := h L' hL'0

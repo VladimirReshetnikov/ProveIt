@@ -158,10 +158,8 @@ theorem lemma_13_6_of_short_difference_rules_with_length {N : Nat} [Fact N.Prime
       (N : Real) ^ ((1 : Real) / (2 : Real) ^ (13 * section13Q S.alpha)) ≤ R.length :=
     hlower.trans (by exact_mod_cast hmR)
   let F : Stage136Data N := ⟨R, Y⟩
-  have hα : 0 ≤ S.alpha := S.alpha_pos.le
   have hI := h135.2.2.2.2.2
   have hIweak : S.alpha ^ 32 * E.Q.length / 32 ≤ (criticalHeights S D E).card := by
-    have hnonneg : 0 ≤ S.alpha ^ 32 * E.Q.length := by positivity
     linarith
   refine ⟨F, ⟨hs, ?_, hp, hRlower, ?_, hmass, ?_⟩, hmR, hRupper⟩
   · change R.step != 0

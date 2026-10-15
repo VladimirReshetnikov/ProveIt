@@ -177,7 +177,6 @@ theorem cubicSlice_exponent_antitone {q : Nat} (hq : 0 < q) {eps : Real} (heps :
   intro r r' hrr
   dsimp only
   unfold cubicBaseExponent
-  have h1 : 0 < max 1 r * q := Nat.mul_pos (by omega) hq
   have hle : ((max 1 r * q : Nat) : Real) ≤ ((max 1 r' * q : Nat) : Real) := by
     exact_mod_cast Nat.mul_le_mul_right q (max_le_max le_rfl hrr)
   apply div_le_div_of_nonneg_left (by positivity) (by positivity)

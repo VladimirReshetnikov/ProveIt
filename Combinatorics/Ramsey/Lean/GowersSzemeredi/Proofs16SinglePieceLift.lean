@@ -69,7 +69,7 @@ theorem LocalMultilinearPieceAt.slice_localPieceFor {N k : Nat} [NeZero N] [Fact
     (hB : HasProductProperty B phi gamma) (x0 : Point N k) (x : ZMod N) :
     LocalPieceFor c w (Finset.univ.filter fun h => appendCoordinate (h + x0) x ∈ B)
       (fun h => phi (appendCoordinate (h + x0) x)) := by
-  set F := lastSliceFace k x with hFdef
+  set F := lastSliceFace k x
   have h1 : LocalPieceFor c w (F.domain B) (F.pullback phi) :=
     hprov.localPieceFor fun B' hB' => (hB.coordinateFace F).mono hB'
   refine (h1.translate x0).congr ?_ (fun h => rfl)
@@ -128,7 +128,7 @@ theorem exists_short_parent_dense_cell {N k : Nat} [NeZero N] [Fact N.Prime] (hk
       Q.commonDiff = R.commonDiff ∧ Q.commonDiff ≠ 0 ∧
       ρ * (lastProductSet Q.carrier (R.axis (Fin.last k)).carrier).card ≤
         (E.filter fun z => z ∈ lastProductSet Q.carrier (R.axis (Fin.last k)).carrier).card := by
-  set I := R.axis (Fin.last k) with hIdef
+  set I := R.axis (Fin.last k)
   have hI : I.IsProper := hR (Fin.last k)
   have hIlen : R.width ≤ I.length := R.width_le_axis_length (Fin.last k)
   obtain ⟨L, Q, hQpart, hQprop, hQaxes, hQstep⟩ :=
@@ -237,7 +237,7 @@ theorem single_piece_lift {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
           mul_le_mul h2 h8 (by positivity) zero_le_one
       _ = 1 := one_mul 1
   -- 2. the remainder piece on the full box
-  set P0 := fullSpaceBox N (k + 1) with hP0def
+  set P0 := fullSpaceBox N (k + 1)
   have hP0 : P0.IsProper := fullSpaceBox_isProper N (k + 1)
   have hP0carrier : P0.carrier = Finset.univ := fullSpaceBox_carrier N (k + 1)
   have hP0width : P0.width = N := fullSpaceBox_width N (k + 1) (Nat.succ_pos k)
@@ -254,7 +254,7 @@ theorem single_piece_lift {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
       exact section16GoodDomain_vertex_mem B H Y x0 hz e)
     hB1card
   rw [hP0width] at hR1w
-  set ρ1 := liftRemainderRho C theta gamma k with hρ1def
+  set ρ1 := liftRemainderRho C theta gamma k
   have hρ1 : 0 < ρ1 ∧ ρ1 ≤ 1 := nestC_pos_le (c := fun _ => C) (fun _ => hC) _ θ₂ hθ₂pos hθ₂le
   set E1 := B1.filter fun x => x ∈ R1.carrier ∧ section16PhiRemainder phi x0 x = Mrem x
     with hE1def
@@ -269,11 +269,11 @@ theorem single_piece_lift {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
   -- 3. a short-parent dense cell
   obtain ⟨Q, hQ, -, hQw, hshort, hQI, hQstep, hQd, hQc⟩ :=
     exists_short_parent_dense_cell hk0 R1 hR1 hR1w4 E1 hE1R1 hE1ne hR1c
-  set I := R1.axis (Fin.last k) with hIdef
+  set I := R1.axis (Fin.last k)
   have hI : I.IsProper := hR1 (Fin.last k)
   have hIlen : R1.width ≤ I.length := R1.width_le_axis_length (Fin.last k)
-  set E2 := E1.filter fun z => z ∈ lastProductSet Q.carrier I.carrier with hE2def
-  set E := E2.image fun z => (section16Init z, section16Last z) with hEdef
+  set E2 := E1.filter fun z => z ∈ lastProductSet Q.carrier I.carrier
+  set E := E2.image fun z => (section16Init z, section16Last z)
   have hEcard : E.card = E2.card := Finset.card_image_of_injective _ initLast_injective
   have hEmem : ∀ p ∈ E, appendCoordinate p.1 p.2 ∈ E2 := by
     intro p hp
@@ -409,7 +409,7 @@ theorem vertex_providers_of_low {N k : Nat} [NeZero N] [Fact N.Prime] {gamma : R
     ∀ (x0 : Point N k) (e : Fin k → Bool), e ≠ (fun _ => true) →
       LocalPieceFor C W (vertexDomain B x0 e) (section16TranslatedVertex phi x0 e) := by
   intro x0 e he
-  set l := (section16VertexDirections e).card with hldef
+  set l := (section16VertexDirections e).card
   have hl1 : 1 ≤ l := Finset.card_pos.mpr ⟨_, section16VertexDirections_last e⟩
   have hlk : l ≤ k := by
     have := section16VertexDirections_card_lt he

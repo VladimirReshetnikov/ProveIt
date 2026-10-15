@@ -146,7 +146,6 @@ theorem with_lift_width_budget {a : Real} (ha : 0 < a) (ha1 : a ≤ 1) (m : Nat)
     have : 0 < m := by exact_mod_cast hm0
     exact_mod_cast this
   set X := (m : Real) ^ (a / 16) with hXdef
-  have hX0 : 0 ≤ X := by positivity
   have hma : (m : Real) ^ a = X ^ 16 := by
     rw [hXdef, ← Real.rpow_natCast, ← Real.rpow_mul hm0.le]
     congr 1
@@ -179,7 +178,6 @@ theorem with_lift_width_budget {a : Real} (ha : 0 < a) (ha1 : a ≤ 1) (m : Nat)
     have hsq : (X * 4) ^ 2 = 16 * X ^ 2 := by ring
     rw [hsq]
     have h16 : 16 * X ^ 2 ≤ X ^ 16 / 8 := by
-      have hX2sq : 0 ≤ X ^ 2 := by positivity
       have : X ^ 16 = X ^ 14 * X ^ 2 := by ring
       rw [this]
       nlinarith
@@ -198,7 +196,6 @@ theorem MultiplyLinearWith.lift_last {N k : Nat} [NeZero N] [Fact N.Prime]
   obtain ⟨ha, ha1⟩ := hE theta ht ht1
   have hA : 0 < Eb theta / 16 := by positivity
   have hmass : (1 - theta) * (P.carrier.card : Real) ≤ P.carrier.card := by
-    have hnonneg : (0 : Real) ≤ P.carrier.card := by positivity
     nlinarith
   have hgraph : ∀ z y, (z, y) ∈ partialGraph (lastProductSet B Finset.univ)
       (fun z => phi (section16Init z)) → y = phi (section16Init z) ∧ section16Init z ∈ B := by

@@ -84,7 +84,6 @@ theorem two_mul_stage135PolyExponent_le {p q : Nat} (hp : 0 < p) :
     calc 2 * q ≤ 2 * (p * (q + 1) ^ 8) := by omega
       _ = 2 * p * (q + 1) ^ 8 := by ring
   have h2 : 2 * p * (q + 1) ^ 8 ≤ (2 * p * (q + 1) ^ 8) ^ 2 := Nat.le_self_pow (by norm_num) _
-  have hc : (0 : Nat) < 2 * p * (q + 1) ^ 8 := by positivity
   unfold stage135PolyExponent
   rw [mul_inv_le_iff₀ (by positivity), one_mul]
   exact_mod_cast h1.trans h2

@@ -350,7 +350,7 @@ theorem uniform_baseC_recipPowerLB_of_budget {alpha V B : Real} {D μV b μ0 : N
       (2 / alpha) ^ (D * 2 ^ μ0 + 1) * s⁻¹ ^ (D + 1)
   refine ⟨div_pos hs2 hQ0, (div_le_one hQ0).mpr (by linarith), ?_⟩
   rw [inv_div, hQeq]
-  set X := 2 / alpha with hXdef
+  set X := 2 / alpha
   have hsi : 0 ≤ s⁻¹ := (inv_pos.mpr hs).le
   have hcs : 8 * V * X * B⁻¹ * s⁻¹ ≤ X ^ (2 ^ μ0) * s⁻¹ := mul_le_mul_of_nonneg_right hc hsi
   have hpow := pow_le_pow_left₀ (by positivity) hcs D
@@ -390,7 +390,6 @@ theorem fixDeg_cube (k : Nat) : 2 * (k + 2) ^ 3 + k + 3 ≤ 2 ^ fixDeg k ∧
   have hk3 : 2 * (k + 3) ≤ 2 ^ (k + 3) := by
     have := Nat.lt_two_pow_self (n := k + 2); rw [pow_succ]; omega
   have hexp : 3 * k + 9 ≤ 2 ^ (k + 5) := by
-    have h := Nat.lt_two_pow_self (n := k + 2)
     have : 2 ^ (k + 5) = 8 * 2 ^ (k + 2) := by rw [show k + 5 = (k + 2) + 3 by ring, pow_add]; ring
     omega
   have hsq := sq_add_three_lt k
@@ -422,7 +421,6 @@ theorem cS_step {X : Real} (hX : 2 ≤ X) {c : Real → Real} {a0 b0 : Nat}
   have h1 : 2 ^ m * b0 ≤ 2 ^ m * 2 ^ μb := Nat.mul_le_mul_left _ hb0
   have h2 : 2 ^ m * 2 ^ μb = 2 ^ (m + μb) := by rw [← pow_add]
   have h3 : 2 ^ μa ≤ 2 ^ (m + μb) := Nat.pow_le_pow_right (by norm_num) (by omega)
-  have h4 : 2 ^ (m + μb + 1) = 2 * 2 ^ (m + μb) := by rw [pow_succ]; ring
   omega
 
 section Steps
@@ -702,10 +700,10 @@ theorem lemma156_gen_le {alpha : Real} {k : Nat} (hk : 1 ≤ k) (ha : 0 < alpha)
       (2 / alpha) ^ (2 ^ (2 ^ (k + 4) + 4 * k + 13)) := by
   have hX := two_div_ge_two ha ha2
   have hXa : (alpha / 2)⁻¹ = 2 / alpha := inv_div _ _
-  set u := 2 / alpha with hu
+  set u := 2 / alpha
   have hinv : u⁻¹ = alpha / 2 := by rw [← hXa, inv_inv]
-  set N1 := 7 * 4 ^ (k + 1) + 21 * k * 4 ^ (k + 1) with hN1
-  set E := arrangementSelectionExponent k with hE
+  set N1 := 7 * 4 ^ (k + 1) + 21 * k * 4 ^ (k + 1)
+  set E := arrangementSelectionExponent k
   have hdeg := selection_degree_le k
   -- the selection base `a = (α/2)^N1 = u^(-N1)`
   have hbase : (u ^ N1)⁻¹ = (alpha / 2) ^ (7 * 4 ^ (k + 1)) * (alpha / 2) ^ (21 * k * 4 ^ (k + 1)) := by

@@ -88,15 +88,11 @@ theorem lemma_10_3_holds : lemma_10_3 := by
   let QT : Real := ∑ x : X, Q x
   let QS : Real := ∑ x ∈ S, Q x
   let ES : Real := ∑ x ∈ S, E x
-  have hQnonneg (x : X) : 0 ≤ Q x := by
-    dsimp only [Q]
-    positivity
   have hEnonneg (x : X) : 0 ≤ E x := by
     exact weightedError_nonneg D phi B x
   have hApos : 0 < A := by
     dsimp only [A]
     have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-    have hM' : (0 : Real) < M := by exact_mod_cast hM
     positivity
   have hCnonneg : 0 ≤ C := by
     dsimp only [C]

@@ -57,7 +57,7 @@ theorem anchor_pairs_card (D : Finset (A × ZMod N)) (cls : A × ZMod N → Fin 
     ((J ×ˢ J).filter fun ab => ab.1 ≠ ab.2 ∧ (p.1, ab.1) ∈ anchorClass D cls p ∧
         (p.1, ab.2) ∈ anchorClass D cls p).card =
       (anchorClass D cls p).card * (anchorClass D cls p).card - (anchorClass D cls p).card := by
-  set C := anchorClass D cls p with hC
+  set C := anchorClass D cls p
   let X := C.image fun p' => p'.2
   have hXcard : X.card = C.card := by
     apply Finset.card_image_of_injOn

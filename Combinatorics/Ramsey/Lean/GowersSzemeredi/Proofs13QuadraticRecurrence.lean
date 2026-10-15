@@ -215,7 +215,6 @@ theorem stage135_critical_count_of_weight {N : Nat} [NeZero N]
     S.alpha ^ 32 * (N : Real) ^ 31 / 16 ≤ section13C S h
   have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hNpow : (0 : Real) < (N : Real) ^ 31 := pow_pos hNpos 31
-  have halphaNonneg : 0 ≤ S.alpha ^ 32 := by positivity
   have hthresholdNonneg :
       0 ≤ S.alpha ^ 32 * (N : Real) ^ 31 / 16 := by positivity
   have hsumUpper : (goodHeightWeight S (Q.carrier ∩ D.H) : Real) ≤
@@ -276,7 +275,6 @@ theorem stage135_critical_count_of_weight {N : Nat} [NeZero N]
             gcongr
           _ = _ := by ring
   have hKlower : S.alpha ^ 32 * Q.length / 16 ≤ (K.card : Real) := by
-    have hmain := hweight.trans hsumUpper
     have hmul :
         (S.alpha ^ 32 * Q.length / 16) * (N : Real) ^ 31 ≤
           (K.card : Real) * (N : Real) ^ 31 := by

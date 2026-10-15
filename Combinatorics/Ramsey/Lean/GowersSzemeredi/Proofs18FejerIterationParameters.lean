@@ -66,7 +66,6 @@ theorem fejer_cubic_interval_length_factor_le_one {alpha : Real}
   have hb := fejerCubicDiscrepancyParameter_le_one hα hαone
   have hC := section5LocalRefinementConstant_ge_four 1
     (4 * Real.pi * (fejerCubicDiscrepancyParameter alpha / 64))
-  have hCp : 0 < boundaryRefinementConstant (fejerCubicDiscrepancyParameter alpha / 64) := section5LocalRefinementConstant_pos _ _
   apply (div_le_one (by positivity : 0 < 8 * boundaryRefinementConstant (fejerCubicDiscrepancyParameter alpha / 64))).mpr
   change 4 ≤ boundaryRefinementConstant (fejerCubicDiscrepancyParameter alpha / 64) at hC
   linarith only [hb, hC]

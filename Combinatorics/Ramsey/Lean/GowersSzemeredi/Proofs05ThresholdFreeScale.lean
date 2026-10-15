@@ -39,7 +39,6 @@ theorem threshold_free_target_scale {S : Real} {K : Nat}
     rw [← hpow]
     exact pow_lt_pow_left₀ hroot (by positivity) (by omega)
   refine ⟨hscale, lt_of_le_of_lt ?_ hscale⟩
-  have hLr : (1 : Real) ≤ L := by exact_mod_cast hL
   calc
     (L : Real) ^ 3 ≤ (4 * (L : Real)) ^ 3 := pow_le_pow_left₀ (by positivity) (by linarith) _
     _ ≤ (4 * (L : Real)) ^ K := pow_le_pow_right₀ (by linarith) (by omega)
@@ -66,7 +65,6 @@ theorem threshold_free_parent_large {K L M N r : Nat}
     (hparent : 3 * (N : Real) < 8 * L * M * r) :
     (2 * L) ^ (K / 2) < r := by
   have hMr : (0 : Real) < M := by exact_mod_cast hM
-  have hLr : (0 : Real) < L := by exact_mod_cast (show 0 < L by omega)
   have hNr : (0 : Real) < N := by exact_mod_cast hN
   have hscale' := (lt_div_iff₀ hMr).mp hscale
   have hbudget := mul_le_mul_of_nonneg_right (threshold_free_localization_budget hK hL) hMr.le

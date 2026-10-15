@@ -74,8 +74,8 @@ theorem joint_cover_on {N d : Nat} [NeZero N] {ι : Type*} [DecidableEq ι]
     obtain ⟨q', G', M', R, mu', hq', hG'P, hG'm, hRpart, hRprop, hRw, hmu', hcov'⟩ :=
       (hML a (Finset.mem_insert_self a E)).on_partition (θ a) hθa hθa1
         (hQ a (Finset.mem_insert_self a E)) P Q hQpart hQprop
-    set eqv := section5NatFlattenEquiv M' with heqv
-    set fp : Fin q × Fin q' ≃ Fin (q * q') := finProdFinEquiv with hfp
+    set eqv := section5NatFlattenEquiv M'
+    set fp : Fin q × Fin q' ≃ Fin (q * q') := finProdFinEquiv
     refine ⟨∑ j, M' j, q * q', G ∩ G', boxFlatten M' R,
       fun J i e => if e = a then mu' (eqv.symm J).1 (eqv.symm J).2 (fp.symm i).2
         else mu (eqv.symm J).1 (fp.symm i).1 e,

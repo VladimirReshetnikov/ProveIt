@@ -227,11 +227,6 @@ theorem corollary_5_7_holds_of_corollary_5_6
     (h56 : corollary_5_6) : corollary_5_7 := by
   classical
   intro N k r v _ phi alpha hk hphi halpha hlarge hrN hv hvupper
-  have hr : 0 < r := by
-    have hthreshold : (0 : Real) ≤ polynomialPartitionThreshold k := by positivity
-    have : (0 : Real) < r := hthreshold.trans_lt (lt_of_le_of_lt
-      (le_max_left _ _) hlarge)
-    exact_mod_cast this
   have hthreshold : polynomialPartitionThreshold k < r := by
     exact_mod_cast (lt_of_le_of_lt (le_max_left _ _) hlarge)
   obtain ⟨M, P, hM, hpartition, hproper, hdiameter⟩ :=

@@ -19,7 +19,6 @@ theorem section10Zeta_lower_budget {a alpha : Real}
     (ha : 0 < a) (haAlpha : a ≤ alpha) (hAlpha : alpha ≤ 1 / 6) :
     (2 : Real) ^ (-((2 : Real) ^ (83 : Nat) / a ^ 11)) ≤ section10Zeta alpha := by
   have hAlpha0 : 0 < alpha := ha.trans_le haAlpha
-  have haOne : a ≤ 1 := by linarith
   have hAlphaOne : alpha ≤ 1 := by linarith
   let K := section10SpectrumParameter alpha
   have hspec : (1 : Real) ≤ section10SpectrumBound alpha := by

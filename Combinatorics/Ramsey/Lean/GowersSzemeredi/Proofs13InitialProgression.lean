@@ -66,9 +66,6 @@ private def lemma134FullContext (N : Nat) [NeZero N] : Section13Context N where
     unfold MostlyRespectsEight
     rw [hcount]
     have heta : 0 ≤ (2 : Real) ^ (-(44 : Int)) := by positivity
-    have hcountNonneg : 0 ≤
-        (arrangementCount 8 (Finset.univ : Finset (Pair N)) : Real) := by
-      positivity
     nlinarith
 
 private lemma lemma134_theta_two_q_bound :
@@ -1023,8 +1020,6 @@ private lemma lemma134_good_univ_lower {N : Nat} [NeZero N]
       exact_mod_cast lemma134_sectionG_total S
     rw [hCtotal, hGtotal]
     exact S.mostly_respected
-  have hdeficit : 2 * S.eta * Cbad ≤ S.eta * C := by
-    linarith
   have htwice : 2 * Cbad ≤ C := by
     apply le_of_mul_le_mul_left (a := S.eta)
     · nlinarith
@@ -1092,10 +1087,6 @@ private lemma lemma134_good_exceptional_lower {N : Nat} [NeZero N]
         (Finset.filter_subset _ _) hdisj
   have huniv := lemma134_good_univ_lower S
   have htotal := lemma134_arrangement_count_lower S
-  have hunivAlpha :
-      S.alpha ^ 32 * (N : Real) ^ 32 / 2 ≤
-        goodHeightWeight S Finset.univ := by
-    exact (div_le_div_of_nonneg_right htotal (by norm_num)).trans huniv
   have hthetaLoss : theta * (N : Real) ^ 32 ≤
       S.alpha ^ 32 * (N : Real) ^ 32 / 4 := by
     nlinarith [mul_le_mul_of_nonneg_right hthetaBound
@@ -1116,13 +1107,9 @@ private lemma lemma134_scale_le_modulus {N q : Nat} [NeZero N]
   let exponent : Real := theta₁ ^ 2 / (16 * (q : Real))
   have htheta₁ : 0 < theta₁ := lemma134_thetaOne_pos theta htheta
   have hthetaSq : theta₁ ^ 2 ≤ 1 := by
-    have htheta₁One' : theta₁ ≤ 1 := htheta₁One
     nlinarith [sq_nonneg (theta₁ - 1)]
   have hqOne : (1 : Real) ≤ q := by exact_mod_cast hq
   have hden : (0 : Real) < 16 * (q : Real) := by positivity
-  have hexponentNonneg : 0 ≤ exponent := by
-    unfold exponent
-    positivity
   have hexponentOne : exponent ≤ 1 := by
     unfold exponent
     apply (div_le_one₀ hden).2
@@ -1135,7 +1122,6 @@ private lemma lemma134_scale_le_modulus {N q : Nat} [NeZero N]
       _ = N := by rw [Real.rpow_one]
   have hcoefficient : theta₁ / (64 * Real.pi) ≤ 1 := by
     apply (div_le_one₀ (by positivity : (0 : Real) < 64 * Real.pi)).2
-    have htheta₁One' : theta₁ ≤ 1 := htheta₁One
     nlinarith [Real.pi_gt_three]
   unfold lemma134Scale
   change theta₁ / (64 * Real.pi) * (N : Real) ^ exponent ≤ N
@@ -1316,8 +1302,6 @@ private lemma lemma134_exists_common_step
   let exponent : Real := theta₁ ^ 2 / (16 * (q : Real))
   let delta : Real := theta₁ / (32 * Real.pi * (l : Real))
   have htheta₁ : 0 < theta₁ := lemma134_thetaOne_pos theta htheta
-  have hqR : (0 : Real) < q := by exact_mod_cast hq
-  have hlR : (0 : Real) < l := by exact_mod_cast hl
   have hdelta : 0 < delta := by
     unfold delta
     positivity
@@ -1444,7 +1428,6 @@ private theorem lemma134_at_graph_budget
   have htheta₁One : section13ThetaOne theta ≤ 1 :=
     lemma134_thetaOne_le_one S theta htheta hthetaBound
   let Qbound : Real := budget q
-  have hqR : (0 : Real) < q := by exact_mod_cast hq
   have hqQ : (q : Real) ≤ Qbound := hbudget q hq hqBound
   let scale : Real := section13ThetaOne theta / (64 * Real.pi) *
     (N : Real) ^ (section13ThetaOne theta ^ 2 / (16 * Qbound))

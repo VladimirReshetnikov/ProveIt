@@ -64,7 +64,6 @@ theorem quadraticLocalization_chunk_budget {L : Nat} (hL : 2 ≤ L) :
 theorem quadraticLocalization_leading_error {L : Nat} (hL : 2 ≤ L) :
     2 * Real.pi * (2 * (quadraticLocalizationChunk L : Real)) ^ 2 /
         quadraticLocalizationPrecision L ≤ 1 / (8 * L) := by
-  have hL0 : (0 : Real) < L := by exact_mod_cast (show 0 < L by omega)
   have hH : (0 : Real) < quadraticLocalizationChunk L := by
     unfold quadraticLocalizationChunk
     positivity

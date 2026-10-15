@@ -45,10 +45,6 @@ theorem famPieceSamples_pos {Qr : Real → Real} {n : Nat} {rho : Real} (hrho : 
     0 < famPieceSamples Qr n rho := by
   unfold famPieceSamples
   apply Nat.ceil_pos.mpr
-  have h1 : (0 : Real) < max 1 (Qr (rho / 8)) := lt_of_lt_of_le one_pos (le_max_left _ _)
-  have h2 : (0 : Real) < ((max 1 n : Nat) : Real) := by
-    have : 0 < max 1 n := lt_of_lt_of_le Nat.zero_lt_one (le_max_left _ _)
-    exact_mod_cast this
   positivity
 
 /-- A union of `|ι|` partial graphs has at most `|ι|` values over each point. -/
@@ -147,10 +143,6 @@ theorem section16_family_piece_large_box_profile {k : Nat} (hk : 1 ≤ k)
   have hrpos : 0 < r := by
     rw [hr]
     apply Nat.ceil_pos.mpr
-    have h1 : (0 : Real) < max 1 (qGamma : Real) := lt_of_lt_of_le one_pos (le_max_left _ _)
-    have h2 : (0 : Real) < ((max 1 (Fintype.card ι) : Nat) : Real) := by
-      have : 0 < max 1 (Fintype.card ι) := lt_of_lt_of_le Nat.zero_lt_one (le_max_left _ _)
-      exact_mod_cast this
     positivity
   have hPbr1 := (hranges r sigma hrpos hs hs1).1
   have he : 0 < pieceLineExponent Bq Qb Eb Er rho := by

@@ -131,7 +131,7 @@ theorem good_finite_intersection_mass {α : Type*} [DecidableEq α] {ι : Type} 
     (P.filter fun z => ∀ a, z ∈ F a) ⊆ P ∧
       (1 - Fintype.card ι * t) * (P.card : Real) ≤ (P.filter fun z => ∀ a, z ∈ F a).card := by
   classical
-  set X := P.filter fun z => ∀ a, z ∈ F a with hX
+  set X := P.filter fun z => ∀ a, z ∈ F a
   have hXP : X ⊆ P := Finset.filter_subset _ _
   refine ⟨hXP, ?_⟩
   have hsd : P \ X ⊆ Finset.univ.biUnion (fun a => P \ F a) := by
@@ -198,7 +198,7 @@ theorem section16_local_affine_lift_family {N k q r m v : Nat} [Fact N.Prime]
   have hcarrier : P.carrier = lastProductSet T.carrier I.carrier := hprod.1
   obtain ⟨u, hu⟩ := I.step_isUnit_of_prime hI (by omega)
   have hstep : I.step = T.commonDiff := P.axis_step (Fin.last k)
-  set Mι : Nat := max 1 (Fintype.card ι) with hMι
+  set Mι : Nat := max 1 (Fintype.card ι)
   have hMpos : (0 : ℝ) < Mι := by
     have : 0 < Mι := lt_of_lt_of_le Nat.zero_lt_one (le_max_left _ _)
     exact_mod_cast this
@@ -232,7 +232,7 @@ theorem section16_local_affine_lift_family {N k q r m v : Nat} [Fact N.Prime]
           exact (hprod.mem_snoc h x).mpr ⟨hh, hx⟩) hz) τ' hq hτ' hτ'1 hr'
   choose sample F _ hF hFm ha using hrec
   obtain ⟨hF'sub, hF'm⟩ := good_finite_intersection_mass P.carrier F (2 * τ') hF hFm
-  set F' := P.carrier.filter fun z => ∀ a, z ∈ F a with hF'def
+  set F' := P.carrier.filter fun z => ∀ a, z ∈ F a
   have hF'c : ∀ a, F' ⊆ F a := fun a z hz => (Finset.mem_filter.mp hz).2 a
   have hloss : (Fintype.card ι : ℝ) * (2 * τ') ≤ 2 * τ := by
     rw [hτ'def]
@@ -242,7 +242,6 @@ theorem section16_local_affine_lift_family {N k q r m v : Nat} [Fact N.Prime]
     have h2 : (Fintype.card ι : ℝ) / Mι ≤ 1 := (div_le_one hMpos).mpr hcardM
     nlinarith
   have hF'm2 : (1 - 2 * τ) * (P.carrier.card : ℝ) ≤ F'.card := by
-    have hc : (0 : ℝ) ≤ P.carrier.card := Nat.cast_nonneg _
     nlinarith
   obtain ⟨p, G, L, S, nu, hp, hG, hGm, hSpart, hSproper, hnu, hc⟩ :=
     section16_synchronized_compressed_cover_family ha (hslice sample) (hGs sample) hrpos

@@ -66,7 +66,6 @@ theorem MultiplyLinearWith.relation_lift_last {N k : Nat} [NeZero N] [Fact N.Pri
   obtain ⟨ha, ha1⟩ := hE theta ht ht1
   have hA : 0 < Eb theta / 16 := by positivity
   have hmass : (1 - theta) * (P.carrier.card : Real) ≤ P.carrier.card := by
-    have hnonneg : (0 : Real) ≤ P.carrier.card := by positivity
     nlinarith
   by_cases hsmall : (P.width : Real) ^ (Eb theta / 16) ≤ 2
   · obtain ⟨L, R, mu, hpart, hproper, hw, hmu, hcov⟩ :=

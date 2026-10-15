@@ -175,7 +175,6 @@ theorem MultiplyLinearWith.fin_union {N k : Nat} [NeZero N] {Q E : Real → Real
       simp [section16FinsetUnion, Fin.exists_fin_succ]
     have htail := ih (fun i => Gamma i.succ) (fun i => hGamma i.succ)
     have hpos : (0 : Real) < (m : Real) + 1 := by positivity
-    have hm0 : (0 : Real) ≤ m := Nat.cast_nonneg m
     have harg : ∀ s : Real, 0 < s → s ≤ 1 →
         0 < s / ((m : Real) + 1) ∧ s / ((m : Real) + 1) ≤ 1 := by
       intro s hs hs1

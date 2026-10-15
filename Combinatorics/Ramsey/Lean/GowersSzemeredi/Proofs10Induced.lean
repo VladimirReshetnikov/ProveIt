@@ -82,7 +82,6 @@ theorem lemma_10_12_holds : lemma_10_12 := by
   let G1 : Finset (ZMod N) := B'.filter (Good w1)
   let G2 : Finset (ZMod N) := B'.filter (Good w2)
   have hw1W : w1 ∈ W := hw1.1
-  have hw2W : w2 ∈ W := hw2.1
   have hw1Good : AlmostEvery (1 - Real.sqrt theta) B' (Good w1) := by
     simpa only [Good] using hw1.2
   have hw2Good : AlmostEvery (1 - Real.sqrt theta) B' (Good w2) := by
@@ -157,12 +156,6 @@ theorem lemma_10_12_holds : lemma_10_12 := by
   have hG1sub : G1 ⊆ B' := Finset.filter_subset _ _
   have hG2sub : G2 ⊆ B' := Finset.filter_subset _ _
   have hTG1sub : TG1 ⊆ T' := section10Translate_mono hG1sub c
-  have hG1def : ((B' \ G1).card : Real) ≤
-      Real.sqrt theta * B'.card := by
-    have hpartNat := Finset.card_sdiff_add_card_eq_card hG1sub
-    have hpartReal : ((B' \ G1).card : Real) + G1.card = B'.card := by
-      exact_mod_cast hpartNat
-    nlinarith
   have hG2def : ((B' \ G2).card : Real) ≤
       Real.sqrt theta * B'.card := by
     have hpartNat := Finset.card_sdiff_add_card_eq_card hG2sub

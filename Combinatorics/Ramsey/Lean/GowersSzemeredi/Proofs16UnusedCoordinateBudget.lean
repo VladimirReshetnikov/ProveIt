@@ -18,7 +18,6 @@ theorem section16_dimension_exponent_gap (k : Nat) {gamma theta s : Real}
   let E : Nat := 2 ^ (2 ^ (k + 8))
   let c := multipleC (s⁻¹ * theta) gamma k
   let a := c ^ s
-  have hs0 : 0 < s := by linarith
   have hb : 0 < b := by dsimp [b]; positivity
   have hbhalf : b ≤ 1 / 2 := by
     have hi : s⁻¹ ≤ (2 : Real)⁻¹ := inv_anti₀ (by norm_num) hs
@@ -65,7 +64,6 @@ theorem section16_unused_coordinate_width_budget {m a A : Real}
     4 ≤ m ∧ 16 ≤ (m / 8) ^ a ∧ m ^ A ≤ Real.sqrt ((m / 8) ^ a) / 4 := by
   let x := m ^ A
   have hx : 2 < x := hlarge
-  have hx0 : 0 < x := by linarith
   have hpow : x ^ 16 ≤ m ^ a := by
     rw [show x ^ 16 = m ^ (A * 16) by
       dsimp [x]

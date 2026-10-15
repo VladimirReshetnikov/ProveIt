@@ -76,7 +76,6 @@ theorem function_inverse_step_of_dimension_induction {k : Nat} (hk : 1 ≤ k)
       (dimensionLocalizationParameter alpha k * beta / 4)
       (inverseStepExponent k (section16ShortBoxExponent alpha k) sigma) Tnext := by
   obtain ⟨N0, hN0⟩ := polynomial_localization_of_dimension_induction hk hth alpha hα hαhalf
-  have hk0 : (0 : Real) < k := by exact_mod_cast (show 0 < k by omega)
   refine ⟨_, hbound.of_short_polynomial_localization (Tloc := (N0 : Real))
     (dimensionLocalizationParameter_pos hα k) hβ hσ hσ16
     (section16ShortBoxExponent_pos hα k) (by positivity : (0 : Real) < 6 * k) ?_⟩

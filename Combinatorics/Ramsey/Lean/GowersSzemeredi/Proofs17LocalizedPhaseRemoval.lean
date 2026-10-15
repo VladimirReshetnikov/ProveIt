@@ -652,7 +652,6 @@ private lemma prop177_boundary_increment {N M q : Nat}
   let w := prop177CellWidth N M
   have hw0 : 0 ≤ w := (prop177_width_pos hN hM).le
   have hiw0 : 0 ≤ (i : Real) * w := mul_nonneg (by positivity) hw0
-  have hmono := prop177_boundary_mono hN hM (Nat.le_succ i)
   have hlower : prop177Boundary N M i + q ≤ prop177Boundary N M (i + 1) := by
     rw [prop177Boundary, prop177Boundary]
     rw [← Nat.ceil_add_natCast hiw0]
@@ -686,7 +685,6 @@ private lemma prop177_cellIndex_intCast {N M : Nat} [NeZero N]
       (z : Real) / prop177CellWidth N M =
         ((z % (N : Int) : Int) : Real) / prop177CellWidth N M +
           (((M : Int) * (z / (N : Int)) : Int) : Real) := by
-    have hMreal : (M : Real) ≠ 0 := by exact_mod_cast hM.ne'
     have hNreal : (N : Real) ≠ 0 := by exact_mod_cast hN.ne'
     have hz := Int.emod_add_mul_ediv z (N : Int)
     have hzR : (z : Real) =
@@ -2421,8 +2419,6 @@ private lemma prop177_quantitative_strict
   let c : Real := (2 : Real) ^ (-(2 * (k + 1) ^ 3 : Int))
   have hcoeff : L ^ 2 * c < 1 / 4 := by
     exact prop177_pattern_coefficient_lt_quarter k hk
-  have hqR : (0 : Real) < q := by exact_mod_cast hq
-  have hMR : (0 : Real) < M := by exact_mod_cast hM
   have hqhalf : (((q + 1 : Nat) : Real)) ≤ 2 * (q : Real) := by
     exact_mod_cast (show q + 1 ≤ 2 * q by omega)
   have hqSquare :
@@ -2595,8 +2591,6 @@ private theorem prop177_large_branch
       _ ≤ _ := by gcongr
   let L : Nat := 2 ^ (k * (k + 1) ^ 2)
   have hFcardR : (F.card : Real) ≤ (L : Real) := by exact_mod_cast hFcard
-  have hTnonneg : 0 ≤ T := by
-    exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
   have hSelectedL : A ≤ (L : Real) ^ 2 * (M : Real) * T := by
     calc
       A ≤ (F.card : Real) ^ 2 * (M : Real) * T := hSelected

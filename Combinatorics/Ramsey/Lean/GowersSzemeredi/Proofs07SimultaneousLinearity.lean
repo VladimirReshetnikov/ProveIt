@@ -30,7 +30,6 @@ private def residueClassLength (r d a : Nat) : Nat :=
 private lemma quotient_lt_residueClassLength {r d a t : Nat}
     (hd : 0 < d) (had : a < d) (hdr : d <= r) :
     t < residueClassLength r d a ↔ a + t * d < r := by
-  have har : a <= r - 1 := by omega
   rw [residueClassLength, Nat.lt_succ_iff, Nat.le_div_iff_mul_le hd]
   omega
 
@@ -175,9 +174,6 @@ private lemma balancedChunk_index_unique {c m t : Nat}
           balancedChunk_end _ _ _
         _ <= balancedChunkStart m (c % m) j' :=
           balancedChunkStart_mono (Nat.succ_le_iff.mpr hjj')
-    have hge : balancedChunkStart m (c % m) j' <= t := by
-      rw [ht']
-      omega
     omega
   · have hlt : t < balancedChunkStart m (c % m) j := by
       calc
@@ -188,9 +184,6 @@ private lemma balancedChunk_index_unique {c m t : Nat}
           balancedChunk_end _ _ _
         _ <= balancedChunkStart m (c % m) j :=
           balancedChunkStart_mono (Nat.succ_le_iff.mpr hj'j)
-    have hge : balancedChunkStart m (c % m) j <= t := by
-      rw [ht]
-      omega
     omega
 
 private abbrev BalancedResidueChunkIndex (r d m : Nat) :=
@@ -816,7 +809,6 @@ private lemma bohr_symmetric_multiples_subset {p : Nat} [NeZero p]
   intro r hr
   rw [bohr, Finset.mem_filter] at hd
   have hdr := hd.2 r hr
-  have hmReal : (0 : Real) < m := by exact_mod_cast hm
   have hbase : 0 <= rho / (m : Real) * p := by positivity
   have hcollapse : (m : Real) * (rho / (m : Real) * p) = rho * p := by
     field_simp
@@ -927,7 +919,6 @@ private lemma cor711_density_lower {p q : Nat} [NeZero p]
       16 * (((modularCoordinateSet p R (A i)).card : Real) / p) by ring]
   rw [le_div_iff₀ hpReal]
   have hmulP := mul_le_mul_of_nonneg_left hpUpperReal halpha.le
-  have hmulCard := mul_le_mul_of_nonneg_left hcardLower (by norm_num : (0 : Real) <= 16)
   nlinarith
 
 private lemma rpow_neg_two_le_scaled {a b : Real}
@@ -1082,7 +1073,6 @@ private lemma cor711_scaled_exponent_lt_inv_card {q : Nat}
     (hKpos : 0 < Kcard)
     (hKcard : Kcard <= 4097 * q * alpha ^ (-(2 : Real))) :
     (23 / 6) * cor711Exponent alpha q < 1 / Kcard := by
-  have hqReal : (0 : Real) < q := by exact_mod_cast hq
   apply (lt_div_iff₀ hKpos).2
   have hepos : 0 < (23 / 6) * cor711Exponent alpha q :=
     mul_pos (by norm_num) (cor711Exponent_pos hq halpha)
@@ -1145,7 +1135,6 @@ private lemma cor711_centered_step_small {p m l : Nat} [NeZero p]
   rw [bohr, Finset.mem_filter] at hd
   have hdOne := hd.2 1 hone
   simp only [one_mul] at hdOne
-  have hmReal : (0 : Real) < m := by exact_mod_cast hm
   have hpUpperReal : (p : Real) <= 16 * l := by exact_mod_cast hpUpper
   have hDmul : (centeredAbs d : Real) * (m : Real) ^ 2 <= (p : Real) / 17 := by
     calc
@@ -1247,7 +1236,6 @@ theorem corollary_7_11_universal_budget (N q m : Nat) [NeZero N] (R : IntAP)
     apply (div_le_one₀ (by positivity : (0 : Real) <
       17 * (m : Real) ^ 2)).2
     have hmReal : (2 : Real) <= m := by exact_mod_cast hmTwo
-    have hpi := Real.pi_gt_three
     nlinarith
   have hthreshold :
       2 * (p : Real) ^ (-(1 / (L.card : Real))) < delta := by

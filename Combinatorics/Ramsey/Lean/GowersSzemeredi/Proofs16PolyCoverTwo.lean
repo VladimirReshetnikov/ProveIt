@@ -216,7 +216,6 @@ theorem section16_poly_piece_two_of_subrelation
     norm_num at hN3)
   have hβ : theta / 2 * (N : Real) ^ (1 + 1) ≤ (relationProjection Delta).card := by
     have : (0 : Real) ≤ (N : Real) ^ 2 := by positivity
-    have h := hproj
     rw [show (1 + 1 : Nat) = 2 from rfl]
     nlinarith
   obtain ⟨B', hB'sub, harr1, harr2⟩ := lemma_15_6_of_density_lower_explicit 1 (theta / 2) gamma

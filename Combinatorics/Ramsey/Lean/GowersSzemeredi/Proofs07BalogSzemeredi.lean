@@ -906,7 +906,6 @@ theorem proposition_7_3_group_holds {G : Type*} [DecidableEq G]
       (2 : Real) ^ (-(20 : Real)) * c ^ 12 * A.card ≤ A''.card := by
     apply (show (2 : Real) ^ (-(20 : Real)) * c ^ 12 * A.card ≤
       ((2 : Real) ^ (-(1 : Real) / 2) * delta ^ 6 * A.card) / 2 by
-      have hbase : 0 ≤ delta ^ 6 * (A.card : Real) / 2 := by positivity
       calc
         (2 : Real) ^ (-(20 : Real)) * c ^ 12 * A.card =
             ((1 / 2 : Real) * delta ^ 6 * A.card) / 2 := by
@@ -952,7 +951,6 @@ theorem proposition_7_3_group_holds {G : Type*} [DecidableEq G]
       (2 : Real) ^ (-(38 : Real)) * c ^ 24 * (A.card : Real) ^ 7 ≤
         repLower := by
     dsimp only [repLower, delta, bsgDelta]
-    have hhalf' := hhalf
     rw [Real.rpow_neg (by norm_num)]
     norm_num
     nlinarith

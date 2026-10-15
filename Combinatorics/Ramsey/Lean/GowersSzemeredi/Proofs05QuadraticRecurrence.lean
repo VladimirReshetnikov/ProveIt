@@ -17,8 +17,6 @@ theorem quadratic_recurrence {N R : Nat} [NeZero N] (a : ZMod N)
   let t := 2 ^ 256 * R ^ 16
   have htlarge : 4 * R ≤ t := quadraticRecurrenceSample_nat_large hR
   have ht : 2 ≤ t := by omega
-  have htR : (0 : Real) < t := by exact_mod_cast (show 0 < t by omega)
-  have hRr : (0 : Real) < R := by exact_mod_cast (show 0 < R by omega)
   have htcast : (t : Real) = quadraticRecurrenceSample R := quadraticRecurrenceSample_natCast R
   by_contra hfail
   have hno : ∀ p : Nat, 1 ≤ p → p ≤ t →

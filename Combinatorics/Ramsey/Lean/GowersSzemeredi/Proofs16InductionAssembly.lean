@@ -69,7 +69,6 @@ theorem theorem_16_2_of_large_piece {k : Nat} (hpiece : Section16LargePieceAt k)
   obtain ⟨N0, hN0⟩ := hpiece gamma theta hg hg1 ht ht1
   refine ⟨N0, fun N _ _ hN Gamma hcard hprod => ?_⟩
   have hs := one_le_multipleS k ht ht1 hg hg1
-  have hs0 : 0 < multipleS theta gamma k := zero_lt_one.trans_le hs
   have hginv : 1 ≤ gamma ^ (-(2 : Int)) := by
     rw [zpow_neg, zpow_ofNat]
     exact (one_le_inv₀ (pow_pos hg 2)).mpr (pow_le_one₀ hg.le hg1)

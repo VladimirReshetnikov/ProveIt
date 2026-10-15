@@ -141,8 +141,8 @@ theorem envBound_stepKx3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp μV �
   obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leJT3 H ha ha2
   obtain ⟨-, hEl2, -⟩ := P.Eloc_pos_le H.hV H.hp ha ha2
   have hTl := P.Tloc_le_expJT3 H hk ha ha2
-  set k := P.k with hkdef
-  set E := GenParamsJT3.expDegJT3 k P.μ0 μK with hEdef
+  set k := P.k
+  set E := GenParamsJT3.expDegJT3 k P.μ0 μK
   set Th := GenParamsJT3.threshDegJT3 k P.μ0 μK with hThdef
   set dd := GenParamsJT3.densDegJT3 k P.μ0 with hdddef
   set M1 := dd + 1 + μ with hM1def
@@ -161,7 +161,7 @@ theorem envBound_stepKx3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp μV �
       (2 / alpha) ^ (2 ^ (partDeg k + 4)) :=
     mul32_nat_le_pw hX (polyPartConst_le_sharp k)
       (Nat.lt_two_pow_self (n := partDeg k + 4))
-  set S := max (max (partDeg k + 4) (E + 3) + 1) M1 + 1 with hSdef
+  set S := max (max (partDeg k + 4) (E + 3) + 1) M1 + 1
   have hσ' : (inverseStepExponent (k + 1) (P.Eloc alpha) σ)⁻¹ ≤
       Real.exp ((2 / alpha) ^ (2 ^ S)) := by
     rw [σeq]
@@ -279,7 +279,7 @@ theorem polyEnvBound_stepJT3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp �
   have hstep := P.inverse_step H.hV H.hK H.hp hk hcov hrec ha ha2 hB b0 s0 s16
   obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leJT3 H ha ha2
   obtain ⟨-, hEl2, -⟩ := P.Eloc_pos_le H.hV H.hp ha ha2
-  set k := P.k with hkdef
+  set k := P.k
   set E := GenParamsJT3.expDegJT3 k P.μ0 μK with hEdef
   set dd := GenParamsJT3.densDegJT3 k P.μ0 with hdddef
   set M1 := dd + 1 + μ with hM1def
@@ -295,7 +295,7 @@ theorem polyEnvBound_stepJT3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp �
     mul32_nat_le_pw hX
       (by simpa only [show k + 1 + 1 + 1 = k + 3 by omega]
         using polyPartConst_le (k + 1 + 1)) (four_sq_add_five_le k)
-  set S := max (max (k + 9) (E + 3) + 1) M1 + 1 with hSdef
+  set S := max (max (k + 9) (E + 3) + 1) M1 + 1
   have hσ' : (inverseStepExponent (k + 1) (P.Eloc alpha) σ)⁻¹ ≤ (2 / alpha) ^ (2 ^ S) := by
     rw [σeq]
     have hx0 : 0 ≤ 32 * (polynomialPartitionConstant (k + 1 + 1) : Real) * (P.Eloc alpha)⁻¹ :=
@@ -476,7 +476,7 @@ theorem corollary_16_11_polynomial {k : Nat} (hk : 2 ≤ k) :
   -- the two exponents
   obtain ⟨hEl0, hEli⟩ := P.Eloc_inv_leJT3 H ha ha2
   obtain ⟨-, -, hei, -, -, -⟩ := P.yIn_boundsJT3 ha ha2 H.hV H.hVμ H.hμ0
-  set D := singlePieceGlobalDensityFJ (fun l => uCount P.V (uDegT3 l)) alpha (alpha / 2) P.k with hDdef
+  set D := singlePieceGlobalDensityFJ (fun l => uCount P.V (uDegT3 l)) alpha (alpha / 2) P.k
   have hD0 : 0 < D := singlePieceGlobalDensityFJ_pos ha (by linarith) hQb
   have heta0 : 0 < P.eta alpha := by
     exact singlePieceEtaFJ_pos ha (by linarith) hQb

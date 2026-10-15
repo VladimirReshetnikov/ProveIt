@@ -38,8 +38,6 @@ theorem recurrence_fourier_interval_scale {N R : Nat} (hR : 2 ≤ R) (hN : 4 * R
 theorem recurrence_fourier_frequency_bound {N R M : Nat}
     (hR : 0 < R) (hM : 0 < M) (hscale : (N : Real) / (2 * R) ≤ M) :
     (N : Real) ^ 2 / (M : Real) ^ 2 ≤ 4 * (R : Real) ^ 2 := by
-  have hRr : (0 : Real) < R := by exact_mod_cast hR
-  have hMr : (0 : Real) < M := by exact_mod_cast hM
   have h := (div_le_iff₀ (show (0 : Real) < 2 * R by positivity)).mp hscale
   have hp := pow_le_pow_left₀ (show (0 : Real) ≤ N by positivity) h 2
   apply (div_le_iff₀ (by positivity)).mpr
@@ -48,8 +46,6 @@ theorem recurrence_fourier_frequency_bound {N R M : Nat}
 theorem recurrence_fourier_norm_lower {N R M t : Nat}
     (hN : 0 < N) (hR : 0 < R) (hscale : (N : Real) / (2 * R) ≤ M) :
     (t : Real) / (8 * R) ≤ (t : Real) * M / (4 * N) := by
-  have hNr : (0 : Real) < N := by exact_mod_cast hN
-  have hRr : (0 : Real) < R := by exact_mod_cast hR
   calc
     _ = (t : Real) * ((N : Real) / (2 * R)) / (4 * N) := by field_simp; ring
     _ ≤ _ := by gcongr

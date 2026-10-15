@@ -115,8 +115,6 @@ private lemma cor147_leftIndex_surj (d : Nat) (j : Fin (2 * d))
 private lemma cor147_rightIndex_surj (d : Nat) (j : Fin (2 * d))
     (hj : d ≤ (j : Nat)) :
     ∃ i : Fin d, cor147RightIndex d i = j := by
-  have hjlt : (j : Nat) < d + d := by
-    simpa [Nat.two_mul] using j.isLt
   refine ⟨⟨(j : Nat) - d, by omega⟩, ?_⟩
   apply Fin.ext
   simp [cor147RightIndex]

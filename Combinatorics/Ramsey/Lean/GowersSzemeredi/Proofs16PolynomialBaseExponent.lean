@@ -13,7 +13,6 @@ theorem polyBaseExponent_ge_cubic {q : Nat} {sigma : Real}
     (hq : 0 < q) (hs : 0 < sigma) (hs1 : sigma ≤ 1) :
     (2 : Real) ^ (-(27 : Real)) * sigma ^ 3 / (q : Real) ^ 4 ≤
       polyBaseExponent q sigma := by
-  have hq0 : (0 : Real) < q := by exact_mod_cast hq
   have hη := polyBase_loss_pos hq hs
   have hT := polyBaseThreshold_ge_four hq hs hs1
   have hTpos : 0 < polyBaseThreshold q sigma := by linarith

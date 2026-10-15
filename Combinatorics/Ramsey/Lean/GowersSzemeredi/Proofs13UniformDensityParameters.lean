@@ -94,7 +94,6 @@ theorem section13_double_recurrence_exponent_margin {alpha : Real} (hα : 0 < al
     have hqQ : (q : Real) ≤ Q / 2 := hqBound.trans hQB
     linarith only [hqone, hqQ]
   have hQpos : 0 < Q := (by linarith only [hQ] : 0 < Q)
-  have hqReal : (0 : Real) < q := by exact_mod_cast hq
   have hθlower : 1 / B ≤ section13ThetaOne theta := by
     apply (div_le_iff₀ hB).mpr
     rw [section13_thetaOne_qBound_product hθ]
@@ -122,7 +121,6 @@ theorem section13_double_recurrence_exponent_margin {alpha : Real} (hα : 0 < al
     rw [← Real.rpow_natCast]
     apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
     push_cast
-    have hqQ : (q : Real) ≤ Q / 2 := hqBound.trans hQB
     linarith
   have hexp : (2 : Real) ^ (13 * Q) = (2 : Real) ^ (7 * Q) * (2 : Real) ^ (6 * Q) := by
     rw [← Real.rpow_add (by norm_num)]

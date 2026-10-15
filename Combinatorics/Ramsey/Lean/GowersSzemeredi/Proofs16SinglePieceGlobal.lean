@@ -85,11 +85,11 @@ theorem single_piece_lift_core_rem {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
   -- 2. a short-parent dense cell
   obtain ⟨Q, hQ, -, hQw, hshort, hQI, hQstep, hQd, hQc⟩ :=
     exists_short_parent_dense_cell hk0 R1 hR1 hR1w4 E1 hE1R1 hE1ne hR1c
-  set I := R1.axis (Fin.last k) with hIdef
+  set I := R1.axis (Fin.last k)
   have hI : I.IsProper := hR1 (Fin.last k)
   have hIlen : R1.width ≤ I.length := R1.width_le_axis_length (Fin.last k)
-  set E2 := E1.filter fun z => z ∈ lastProductSet Q.carrier I.carrier with hE2def
-  set E := E2.image fun z => (section16Init z, section16Last z) with hEdef
+  set E2 := E1.filter fun z => z ∈ lastProductSet Q.carrier I.carrier
+  set E := E2.image fun z => (section16Init z, section16Last z)
   have hEcard : E.card = E2.card := Finset.card_image_of_injective _ initLast_injective
   have hEmem : ∀ p ∈ E, appendCoordinate p.1 p.2 ∈ E2 := by
     intro p hp
@@ -263,7 +263,7 @@ theorem single_piece_lift_core {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
             S.carrier.card ≤
           (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card := by
   -- 1. the remainder piece on the full box
-  set P0 := fullSpaceBox N (k + 1) with hP0def
+  set P0 := fullSpaceBox N (k + 1)
   have hP0 : P0.IsProper := fullSpaceBox_isProper N (k + 1)
   have hP0carrier : P0.carrier = Finset.univ := fullSpaceBox_carrier N (k + 1)
   have hP0width : P0.width = N := fullSpaceBox_width N (k + 1) (Nat.succ_pos k)
@@ -274,7 +274,7 @@ theorem single_piece_lift_core {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
     hθ₂pos hθ₂le P0 B1 hP0 (by rw [hP0carrier]; exact Finset.subset_univ _) hB1V
     (by rw [hP0card]; exact hB1card)
   rw [hP0width] at hR1w
-  set ρ1 := nestC (fun _ => C) (2 ^ k - 1) theta2 with hρ1def
+  set ρ1 := nestC (fun _ => C) (2 ^ k - 1) theta2
   have hρ1 : 0 < ρ1 ∧ ρ1 ≤ 1 :=
     nestC_pos_le (c := fun _ => C) (fun _ => hC) _ theta2 hθ₂pos hθ₂le
   exact single_piece_lift_core_rem hk hz hz2 hcR hwR hc hw eps thr hretile
@@ -441,7 +441,7 @@ theorem section16_retained_domain_card {N k : Nat} [NeZero N]
           (Finset.mem_biUnion.mpr ⟨e, he, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hbad⟩⟩))
     · exact Finset.mem_union_left _ (Finset.mem_union_left _ (Finset.mem_union_right _
         (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h1⟩)))
-  set X1 := Finset.univ.filter fun z : Point N (k + 1) => section16Init z ∉ JΔ with hX1
+  set X1 := Finset.univ.filter fun z : Point N (k + 1) => section16Init z ∉ JΔ
   set X2 := E.biUnion fun e => Finset.univ.filter fun z : Point N (k + 1) =>
       selectedCoordinates (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∉
         Jv e with hX2
@@ -536,7 +536,6 @@ theorem single_piece_lift_global {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
               (nestC (fun _ => C) (2 ^ k - 1) (globalTheta2 theta gamma k))) 1 *
             S.carrier.card ≤
           (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card := by
-  have hk0 : 0 < k := hk
   obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
   obtain ⟨hζpos, hζle⟩ := section16Zeta_pos_le_one_div_32 k ht ht1 hg hg1
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le k ht ht1 hg hg1
@@ -547,7 +546,7 @@ theorem single_piece_lift_global {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
     rw [hθ'def, globalBudget, div_le_one (by positivity)]
     have : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
     nlinarith
-  set δ := section16Delta (section16ThetaOne theta gamma k) with hδdef
+  set δ := section16Delta (section16ThetaOne theta gamma k)
   -- 1. Lemmas 16.5 (without condition (i)) and 16.7
   obtain ⟨H, Y, phiPrime, hH, hcube, hselected, hselection⟩ :=
     section16_dense_induced_selection_of_arrangements (Fact.out : N.Prime) theta gamma B phi
@@ -563,7 +562,7 @@ theorem single_piece_lift_global {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
   set B1 := section16GoodDomain B H Y x0 with hB1def
   have hB1card : θ₂ * (N : Real) ^ (k + 1) ≤ B1.card := by
     rw [hB1def, section16GoodDomain_card]; exact hgood
-  set t := appendCoordinate x0 0 with htdef
+  set t := appendCoordinate x0 0
   -- 2. the spectrum cover
   obtain ⟨JΔ, hJΔ, hMLΔ⟩ := hcov k hk le_rfl N δ θ' hδpos hδle hθ'pos hθ'le
     (section16SpectrumRelation B δ) (section16_spectrum_relation_card B hδpos)
@@ -629,7 +628,7 @@ theorem single_piece_lift_global {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
       (coverWidth (Eb k gamma θ')) (DomS x) (fun h => phi (appendCoordinate (h + x0) x)) :=
     fun x => ((hMLs x).localPieceFor (hQb k gamma θ') (hEb k gamma θ')).translate x0
   -- 5. the retained good domain
-  set E := Finset.univ.filter fun e : Fin k → Bool => e ≠ fun _ => true with hEdef
+  set E := Finset.univ.filter fun e : Fin k → Bool => e ≠ fun _ => true
   set B1' := B1.filter fun z => section16Init z ∈ JΔ ∧
       (∀ e ∈ E, selectedCoordinates
         (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈ Jv e) ∧

@@ -98,7 +98,6 @@ theorem capture_density {θ q t j d w : Real} (hθ : 0 < θ) (hq : 1 ≤ q) (ht 
     (hj : 0 < j) (hd : θ * t * j ≤ d) (hdle : d ≤ t * j)
     (hcap : d ^ 3 ≤ (q * t) ^ 2 * (j ^ 2 * w + j * d)) (hjq : 2 * q ^ 2 ≤ θ ^ 3 * j) :
     θ ^ 3 / (2 * q ^ 2) * t * j ≤ w := by
-  have hd0 : 0 ≤ d := le_trans (by positivity) hd
   have key : θ ^ 3 * t * j ≤ q ^ 2 * (w + t) := by
     have h : (t ^ 2 * j ^ 2) * (θ ^ 3 * t * j) ≤ (t ^ 2 * j ^ 2) * (q ^ 2 * (w + t)) := by
       calc (t ^ 2 * j ^ 2) * (θ ^ 3 * t * j) = (θ * t * j) ^ 3 := by ring
@@ -153,8 +152,6 @@ theorem popular_fibres (T : Finset A) (J : Finset (ZMod N)) (W : Finset (A × ZM
       _ = _ := by rw [Finset.sum_const, nsmul_eq_mul]
   have hJR : (0 : Real) < J.card := by exact_mod_cast hJ
   have hmain : t * T.card * J.card ≤ H.card * J.card := by
-    have hW' : (W.card : Real) = (∑ h ∈ H, f h) +
-        ∑ h ∈ T.filter (fun h => ¬ t * J.card ≤ f h), f h := hsum.trans hsplit.symm
     nlinarith
   exact le_of_mul_le_mul_right hmain hJR
 
@@ -286,7 +283,7 @@ theorem single_piece_on_line_cell_of_slices {k q : Nat} (hk : 0 < k)
     R2.carrier_nonempty_of_axis_pos fun j => lt_of_lt_of_le (by omega) (R2.width_le_axis_length j)
   have hsub : (R2.axis i).carrier ⊆ (T.axis i).carrier :=
     R2.axis_carrier_subset_of_carrier_subset T hR2ne (hR2R1.trans hR1T) i
-  set v := Nat.sqrt (R2.width - 1) with hvdef
+  set v := Nat.sqrt (R2.width - 1)
   have hv : 1 ≤ v := Nat.le_sqrt.mpr (by omega)
   have hfit : v ^ 2 ≤ R2.width - 1 := Nat.sqrt_le' _
   obtain ⟨M, S, I, hSpart, hSprop, hSprod, -⟩ :=

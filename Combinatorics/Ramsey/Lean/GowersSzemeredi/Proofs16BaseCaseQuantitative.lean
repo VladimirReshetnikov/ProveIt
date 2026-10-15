@@ -63,9 +63,6 @@ lemma lemma163_stage_large {gamma theta : Real} {q : Nat}
         apply mul_le_mul_of_nonneg_left _ (by unfold multipleS; positivity)
         exact (le_div_iff₀ hqReal).2 (by simpa [mul_comm] using hqBound)
       _ = (gamma ^ (-(2 : Int)) / q) * multipleS theta gamma 1 := by ring
-  have hT : 10000 ≤ T := by
-    dsimp only [T]
-    norm_num
   have hbase : (1 : Real) ≤ 2 / a := by
     have : a ≤ 2 := haOne.trans (by norm_num)
     exact (le_div_iff₀ ha).2 (by simpa using this)

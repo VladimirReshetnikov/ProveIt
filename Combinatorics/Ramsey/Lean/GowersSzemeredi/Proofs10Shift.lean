@@ -141,7 +141,6 @@ private lemma almostEvery_weaken_error {X : Type*} [DecidableEq X]
   classical
   unfold AlmostEvery at hP ⊢
   rw [Finset.filter_congr_decidable] at hP ⊢
-  have hcard : (0 : Real) ≤ U.card := by positivity
   nlinarith
 
 private lemma almostEvery_and {X : Type*} [DecidableEq X]
@@ -805,9 +804,6 @@ theorem lemma_10_9_holds : lemma_10_9 := by
     have hrhoNonneg : 0 ≤ rho := hrhoPos.le
     have hrhoSquare : (Real.sqrt rho) ^ 2 = rho := Real.sq_sqrt hrhoNonneg
     have hsqrtRhoNonneg : 0 ≤ Real.sqrt rho := Real.sqrt_nonneg _
-    have hrhoLeFourTheta : rho ≤ 4 * theta := by
-      dsimp only [rho]
-      nlinarith [hetaLeThetaTenth]
     have hsqrtRhoLe : Real.sqrt rho ≤ 2 * Real.sqrt theta := by
       nlinarith [hrhoSquare, hsquare]
     have houter : theta + (Real.sqrt rho + eta) ≤ 3 * Real.sqrt theta := by

@@ -86,7 +86,6 @@ theorem MultiplyLinearWith.localRelationCoverFor {N k : Nat} [NeZero N]
     have hP0 : (P.carrier.card : Real) = 0 := by
       have hnn := Nat.cast_nonneg (α := Real) P.carrier.card
       by_contra hne0
-      have hpos : (0 : Real) < P.carrier.card := lt_of_le_of_ne hnn (Ne.symm hne0)
       have : (0 : Real) < theta / 2 * P.carrier.card := by positivity
       linarith
     have hPe : P.carrier = ∅ := Finset.card_eq_zero.mp (by exact_mod_cast hP0)

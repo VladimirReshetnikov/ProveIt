@@ -13,7 +13,6 @@ theorem section13_dense_normalization {beta : Real} (hβ : 1 / 6 < beta) :
     let k := Nat.ceil (6 * beta)
     0 < k ∧ (1 : Real) / 12 ≤ beta / k ∧ beta / k ≤ 1 / 6 := by
   dsimp only
-  have hβpos : 0 < beta := by linarith only [hβ]
   have hk : 0 < Nat.ceil (6 * beta) := Nat.ceil_pos.mpr (by positivity)
   have hkreal : (0 : Real) < Nat.ceil (6 * beta) := by exact_mod_cast hk
   have hlower := Nat.le_ceil (6 * beta)
@@ -95,7 +94,6 @@ theorem section13_uniform_height_model_all_densities {N : Nat} [NeZero N]
     let b := beta / k
     obtain ⟨hk, hbmin, hbmax⟩ := section13_dense_normalization hdense
     have hkR : (0 : Real) < k := by exact_mod_cast hk
-    have hkone : (1 : Real) ≤ k := by exact_mod_cast hk
     have hb : 0 < b := div_pos hβ hkR
     have hab : a ≤ b := by
       have hpow := pow_le_one₀ S.alpha_pos.le S.alpha_at_most_one (n := 32)

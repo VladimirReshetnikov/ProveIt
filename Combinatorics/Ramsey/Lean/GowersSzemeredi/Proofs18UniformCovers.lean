@@ -203,7 +203,6 @@ theorem split_pair_le_uDeg {l : Nat} (hl : 2 ≤ l) :
     have h2 : l + 1 ≤ 75 * 2 ^ l := by
       have := Nat.lt_two_pow_self (n := l); omega
     exact h1.trans (Nat.pow_le_pow_right (by norm_num) h2)
-  have hE : 1 ≤ 2 ^ l := Nat.one_le_two_pow
   unfold uDeg
   have h76 : 2 ^ (76 * 2 ^ l) = 2 ^ (75 * 2 ^ l) * 2 ^ (2 ^ l) := by
     rw [← pow_add]; congr 1; ring

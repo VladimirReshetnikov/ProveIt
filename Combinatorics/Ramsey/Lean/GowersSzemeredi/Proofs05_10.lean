@@ -397,7 +397,6 @@ private lemma lemma77_centeredAbs_sub_le {N m : Nat} [NeZero N]
     (hbin : x.val * m / N = y.val * m / N) :
     (centeredAbs (x - y) : ℝ) ≤ delta * N := by
   have hNnat : 0 < N := NeZero.pos N
-  have hNreal : (0 : ℝ) < N := by exact_mod_cast hNnat
   have hmreal : (0 : ℝ) < m := by exact_mod_cast hm
   have hdelta_m : 1 ≤ delta * (m : ℝ) := by
     calc
@@ -841,7 +840,6 @@ private theorem almostEvery_swap_of_nonneg {X Y : Type*}
     rw [hGU, ht_zero]
     simp
   have ht_pos : 0 < t := lt_of_le_of_ne (by dsimp [t]; positivity) (Ne.symm ht_zero)
-  have ht_lt_one : t < 1 := lt_of_not_ge ht_large
   have htheta_sq : t ^ 2 = theta := by
     dsimp [t]
     exact Real.sq_sqrt htheta
@@ -849,8 +847,6 @@ private theorem almostEvery_swap_of_nonneg {X Y : Type*}
   · subst V
     have hGU : G = U := by simp [G, good, row]
     rw [hGU]
-    have ht_nonneg : 0 ≤ t := by dsimp [t]; positivity
-    have hU_nonneg : (0 : ℝ) ≤ U.card := Nat.cast_nonneg U.card
     nlinarith
   have hVposNat : 0 < V.card := Finset.card_pos.mpr (Finset.nonempty_iff_ne_empty.mpr hV)
   have hVpos : (0 : ℝ) < V.card := by exact_mod_cast hVposNat
@@ -892,10 +888,6 @@ private theorem almostEvery_swap_of_nonneg {X Y : Type*}
               exact le_of_lt (lt_of_not_ge (Finset.mem_filter.mp hx).2)
       _ = (G.card : ℝ) * V.card + H.card * ((1 - t) * V.card) := by
         simp [G, H]
-  have hbound :
-      (1 - theta) * U.card * V.card ≤
-        (G.card : ℝ) * V.card + H.card * ((1 - t) * V.card) := by
-    exact hlower.trans (hdouble.le.trans hupper)
   have hpositive :
       0 < (((1 - t) * (U.card : ℝ) - G.card) * t * V.card) := by
     exact mul_pos (mul_pos (sub_pos.mpr hGlt) ht_pos) hVpos

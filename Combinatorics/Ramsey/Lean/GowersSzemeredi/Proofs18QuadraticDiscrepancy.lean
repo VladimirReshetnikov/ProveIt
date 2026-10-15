@@ -61,10 +61,8 @@ theorem quadratic_nonuniformity_discrepancy_partition_of_power_bounds :
   let beta := (2 : Real) ^ (-(19 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat)
   let q : Real := 1 / 2048
   let C := section5LocalRefinementConstant 2 beta * (6 : Real) ^ q
-  have he : 0 < e := (quadratic_frequency_exponent_bounds hα hαone).1
   have hβ : 0 < beta := by dsimp [beta]; positivity
   have hq : 0 < q := by norm_num [q]
-  have hC : 0 < C := mul_pos (section5LocalRefinementConstant_pos 2 beta) (by positivity)
   have hK : (polynomialPartitionConstant 2 : Real)⁻¹ = q := by
     norm_num [polynomialPartitionConstant, q, Nat.factorial]
   obtain ⟨phi, M, l, Q, hpoly, hpart, hproper, hlength, _, hfail⟩ :=

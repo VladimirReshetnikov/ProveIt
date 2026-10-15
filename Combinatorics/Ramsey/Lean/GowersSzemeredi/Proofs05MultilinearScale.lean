@@ -20,7 +20,6 @@ theorem multilinear_height_rounding (K k h T r : Nat) (x gamma : Real)
         (2 : Real) ^ (-(k : Real)) * (r : Real) ^ (-((K : Real) ^ (h + 1))⁻¹) := by
   have hx0 : 0 < x := by linarith
   have hx1 : 1 ≤ x := by linarith
-  have hK0 : (0 : Real) < K := by exact_mod_cast (show 0 < K by omega)
   have hr0 : (0 : Real) < r := by rw [hr]; positivity
   let L := Nat.ceil x
   let u := L + 1

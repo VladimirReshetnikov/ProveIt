@@ -405,8 +405,6 @@ private lemma stronglyShatters_regionFamily_of_card_le {k m : Nat}
       |eps * realDot (H i).normal w| < |gap i| := by
     intro i hiout
     have hgapPos : 0 < |gap i| := abs_pos.mpr (hgapne i hiout)
-    have hratioNonneg :
-        0 ≤ |realDot (H i).normal w| / |gap i| := by positivity
     have hratioLe : |realDot (H i).normal w| / |gap i| ≤ total := by
       dsimp only [total]
       exact Finset.single_le_sum
@@ -458,7 +456,6 @@ private lemma stronglyShatters_regionFamily_of_card_le {k m : Nat}
       simp only [Finset.mem_union, hiNotU, false_or]
       exact hside.symm
     · have hiout : i ∈ outside := by simp [outside, his]
-      have hgapNe := hgapne i hiout
       have hpert := abs_lt.mp (hperturb i hiout)
       have hiNotT : i ∉ t := fun hit => his (hts hit)
       simp only [Finset.mem_union, hiNotT, or_false]

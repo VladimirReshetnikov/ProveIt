@@ -79,7 +79,6 @@ theorem section16_slice_decomposition_three
         gamma ^ (-(2 : Int)) * (N : Real) ^ 2 := by
       rw [partialGraph_card]
       have h := card_point_two_le N (section16FinalCoordinateSection B t)
-      have hN0 : (0 : Real) ≤ (N : Real) ^ 2 := by positivity
       nlinarith
     exact section16_poly_piece_decomposition_two ht ht1 hg hg1 hN _ hsize
       (partialGraph_relationProductProperty (hprod.final_section t))

@@ -509,11 +509,9 @@ private lemma centeredAbs_le_of_mem_centeredInterval {N M : Nat} [NeZero N]
     exact (ZMod.natAbs_valMinAbs_le (z : ZMod N)).trans hhalf
   · have hlower : -(N : Int) < z * 2 := by
       have : -(N : Int) ≤ z * 2 := by
-        have hcast : (2 * (M : Nat) : Int) ≤ N := by exact_mod_cast hMN
         linarith
       exact lt_of_le_of_ne this (Ne.symm hboundary)
     have hupper : z * 2 ≤ (N : Int) := by
-      have hcast : (2 * (M : Nat) : Int) ≤ N := by exact_mod_cast hMN
       linarith
     have hval : ((z : ZMod N).valMinAbs) = z :=
       (ZMod.valMinAbs_spec (z : ZMod N) z).2
@@ -791,15 +789,9 @@ private theorem polynomial_weyl_witness
   obtain ⟨r, hr0, hrsize, hrlarge⟩ :=
     polynomial_missing_interval_witness a gamma htTwo htN hMpos hMeven hMN
       hMscale (by simpa only [gamma] using hno)
-  have htOne : 1 ≤ t :=
-    (show 1 ≤ 64 by norm_num).trans ((weylThreshold_sixtyFour_le hk).trans ht)
   have htPos : (0 : Real) < t := by exact_mod_cast (show 0 < t by omega)
   have hNPos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hMPosReal : (0 : Real) < M := by exact_mod_cast hMpos
-  have hposPow : (0 : Real) < (t : Real) ^ gamma :=
-    Real.rpow_pos_of_pos htPos gamma
-  have hnegPow : (0 : Real) < (t : Real) ^ (-gamma) :=
-    Real.rpow_pos_of_pos htPos (-gamma)
   have hpowersCancel : (t : Real) ^ gamma * (t : Real) ^ (-gamma) = 1 := by
     rw [← Real.rpow_add htPos]
     simp
@@ -907,8 +899,6 @@ private theorem polynomial_weyl_sqrt_witness
   have htPos : (0 : Real) < t := by exact_mod_cast (show 0 < t by omega)
   have hNPos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hMPosReal : (0 : Real) < M := by exact_mod_cast hMpos
-  have hposPow : (0 : Real) < (t : Real) ^ gamma :=
-    Real.rpow_pos_of_pos htPos gamma
   have hpowersCancel : (t : Real) ^ gamma * (t : Real) ^ (-gamma) = 1 := by
     rw [← Real.rpow_add htPos]
     simp
@@ -1883,7 +1873,6 @@ theorem lemma_5_5_square_root_auxiliary_holds :
   have huT : u ≤ t := by
     dsimp only [u]
     exact Nat.sqrt_le_self t
-  have huN : u ≤ N := huT.trans htN
   have htOne : 1 ≤ t := huOne.trans huT
   have huSqT : u ^ 2 ≤ t := by
     simpa only [u] using Nat.sqrt_le' t
@@ -1910,9 +1899,7 @@ theorem lemma_5_5_square_root_auxiliary_holds :
     polynomial_weyl_sqrt_witness a hk hWu huTwo huT htN (by
       simpa only [gamma] using hno)
   have huPos : (0 : Real) < u := by exact_mod_cast (show 0 < u by omega)
-  have htPos : (0 : Real) < t := by exact_mod_cast (show 0 < t by omega)
   have hNPos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hgammaNonneg : 0 ≤ gamma := by dsimp only [gamma]; positivity
   have hgammaHalf : gamma ≤ 1 / 2 := by
     simpa only [gamma] using recurrenceExponent_le_half hk
   have htwoGamma : 2 * gamma ≤ 1 := by linarith

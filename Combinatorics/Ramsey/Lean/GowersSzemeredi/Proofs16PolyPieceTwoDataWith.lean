@@ -97,7 +97,7 @@ theorem section16_poly_piece_two_data_with
   set θ' := polyPieceBudgetW t1 with hθ'def
   have hθ₂eq : section16ThetaTwo (t1) = 8 * θ' := by
     rw [hθ'def, polyPieceBudgetW]; ring
-  set δ := section16Delta (t1) with hδdef
+  set δ := section16Delta (t1)
   -- 1. Lemmas 16.5 and 16.7
   obtain ⟨H, Y, phiPrime, hH, hcube, hselected, hselection⟩ :=
     section16_dense_induced_selection_with (Fact.out : N.Prime) t1 zeta B phi
@@ -219,7 +219,7 @@ theorem section16_poly_piece_two_data_with
     norm_num at hB1card
     nlinarith
   -- 7. the original frame
-  set D' := D.image fun z => z + t with hD'def
+  set D' := D.image fun z => z + t
   have hD'card : D'.card = D.card := Finset.card_image_of_injective _ (add_left_injective t)
   have hshift : ∀ z : Point N 2,
       appendCoordinate (section16Init z + x0) (section16Last z) = z + t := fun z => by

@@ -36,7 +36,6 @@ lemma cubeDifference_discValued {N d : Nat} {g : ZMod N → Complex}
 
 lemma discValued_uniform_one {N d : Nat} [NeZero N] {g : ZMod N → Complex}
     (hg : DiscValued g) : UniformOfDegree g 1 d := by
-  have hN : (0 : Real) ≤ N := by positivity
   have hterm (a : Point N d) :
       ‖∑ s : ZMod N, cubeDifference g a s‖ ^ 2 ≤ (N : Real) ^ 2 := by
     apply pow_le_pow_left₀ (norm_nonneg _) _ 2
@@ -280,7 +279,6 @@ private lemma exists_bounded_extension_sum {N : Nat} [NeZero N]
       ∀ r, beta r ≤ alpha r := by
   let S := ∑ r, beta r
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hS0 : 0 ≤ S := Finset.sum_nonneg fun r _ => (hbeta r).1
   have hSN : S ≤ (N : Real) := by
     calc
       S ≤ ∑ _r : ZMod N, (1 : Real) :=

@@ -25,7 +25,6 @@ def residueNatAP (r p : Nat) (a : Fin p) : NatAP where
 
 theorem residueNatAP_index_lt {r p : Nat} (hp : 0 < p) (hpr : p ≤ r)
     (a : Fin p) (i : Nat) : i < (residueNatAP r p a).length ↔ a + i * p < r := by
-  have har : (a : Nat) ≤ r - 1 := by omega
   change i < (r - 1 - a) / p + 1 ↔ _
   rw [Nat.lt_succ_iff, Nat.le_div_iff_mul_le hp]
   omega

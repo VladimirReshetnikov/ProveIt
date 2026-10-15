@@ -163,8 +163,6 @@ theorem FejerOddSquareAt.functionDiscrepancyBound {alpha e T₀ : Real}
     change 0 < beta / 2 at h2
     linarith only [h2]
   have hD : 0 < D := by
-    have h1 := lt_of_lt_of_le zero_lt_one (le_max_left (1 : Real)
-      (2 * boundaryRefinementConstant (1 / 16) * (8 : Real) ^ (1 - fejerCubicLocalCountExponent alpha)))
     dsimp [D, fejerCubicTwistedCountConstant, fejerCubicLocalCountConstant]
     positivity
   intro N _ _ hN f hf hnot

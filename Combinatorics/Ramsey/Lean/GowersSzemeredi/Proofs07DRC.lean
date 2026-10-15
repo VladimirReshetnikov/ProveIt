@@ -275,7 +275,6 @@ private lemma intersection_fifth_moment_lower {X : Type*} [DecidableEq X]
   by_cases hn : n = 0
   · subst n
     simp
-  have hnR : (0 : Real) < n := by exact_mod_cast Nat.pos_of_ne_zero hn
   let P : Finset (Fin n × Fin n) := Finset.univ ×ˢ Finset.univ
   let f : Fin n × Fin n -> Real := fun ij =>
     (((A ij.1 ∩ A ij.2).card : Nat) : Real)
@@ -385,8 +384,6 @@ private lemma exists_drc_sample {X : Type*} [DecidableEq X] {n m : Nat}
     simp_rw [drcScore]
     rw [Finset.sum_sub_distrib]
     simp_rw [← Finset.mul_sum]
-    have hD : 0 <= delta ^ 10 * (m : Real) ^ 5 * (n : Real) ^ 2 := by
-      positivity
     nlinarith
   have hsamples : (drcSamples V).Nonempty := by
     rw [← Finset.card_pos, drcSamples_card, hV]
@@ -440,7 +437,6 @@ private lemma hasDenseIntersectionCore_of_score {X : Type*} [DecidableEq X]
         rw [mul_pow, mul_pow, ha_sq]
         ring
       _ <= (11 : Real) / 16 * delta ^ 10 * (n : Real) ^ 2 := by
-        have hz : 0 <= delta ^ 10 * (n : Real) ^ 2 := by positivity
         nlinarith
       _ <= q ^ 2 := hq_sq
   have hsize : d <= q := (sq_le_sq₀ hd hq).mp hd_sq
@@ -451,10 +447,6 @@ private lemma hasDenseIntersectionCore_of_score {X : Type*} [DecidableEq X]
   refine ⟨K, ?_, ?_⟩
   · simpa [d, q] using hsize
   · dsimp [q, b] at hbad_le
-    have hpartitionR :
-        (largeIntersectionPairCount A K (delta ^ 2 * m / 2) : Real) +
-          (drcBadPairCount A K m delta : Real) = (K.card : Real) ^ 2 :=
-      hpartition
     nlinarith
 
 private lemma intersection_sum_lower_of_card_lower {X : Type*} [DecidableEq X]
@@ -513,7 +505,6 @@ private lemma hasDenseIntersectionCore_zero {X : Type*} [DecidableEq X]
   refine ⟨Finset.univ, ?_, ?_⟩
   · have ha : (2 : Real) ^ (-(1 : Real) / 2) <= 1 :=
       le_of_lt (Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (by norm_num))
-    have ha0 : 0 <= (2 : Real) ^ (-(1 : Real) / 2) := by positivity
     have hd5 : delta ^ 5 <= 1 := pow_le_one₀ (le_of_lt hdelta) hdelta_one
     have hd50 : 0 <= delta ^ 5 := by positivity
     have hcoeff : (2 : Real) ^ (-(1 : Real) / 2) * delta ^ 5 <= 1 := by
@@ -529,7 +520,6 @@ private lemma hasDenseIntersectionCore_zero {X : Type*} [DecidableEq X]
     rw [Finset.filter_eq_self.2 (fun _ _ => by positivity)]
     simp only [Finset.card_product, Finset.card_univ, Fintype.card_fin,
       Nat.cast_mul, pow_two]
-    have hn0 : 0 <= (n : Real) ^ 2 := sq_nonneg _
     nlinarith
 
 /-- The dependent-random-choice argument of Gowers's Lemma 7.4. -/

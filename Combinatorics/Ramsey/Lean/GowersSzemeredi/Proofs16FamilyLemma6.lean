@@ -93,7 +93,6 @@ theorem section16_rounded_recurrence_scale {m b E : Nat} {a zeta : Real}
   have hmR : (1 : Real) ≤ m := by exact_mod_cast hm
   have hmpos : (0 : Real) < m := zero_lt_one.trans_le hmR
   have hbR : (2 : Real) ≤ b := by exact_mod_cast hb
-  have hER : (0 : Real) < E := by exact_mod_cast hE
   have hEone : (1 : Real) ≤ E := by exact_mod_cast hE
   let x : Real := (m : Real) ^ (a / (4 * E))
   have hxpos : 0 < x := Real.rpow_pos_of_pos hmpos _
@@ -104,7 +103,6 @@ theorem section16_rounded_recurrence_scale {m b E : Nat} {a zeta : Real}
     have heq : (zeta / (4 * (b : Real)) * x) * (4 * b) = zeta * x := by field_simp
     simpa only [one_mul, heq] using h
   have hzx : zeta * x ≤ (1 / 2) * x := mul_le_mul_of_nonneg_right hzHalf hxpos.le
-  have hx16 : 16 < x := by nlinarith
   have hbx : (b : Real) ≤ x := by nlinarith
   let H : Nat := Nat.ceil x
   have hxH : x ≤ (H : Real) := Nat.le_ceil x

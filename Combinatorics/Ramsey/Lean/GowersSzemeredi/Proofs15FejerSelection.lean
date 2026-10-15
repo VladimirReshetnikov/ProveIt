@@ -658,18 +658,6 @@ private lemma fejer_third_index {k : Nat}
   let z₀ : fejerIndex k := (e₀, (0 : Fin 16))
   let z₁ : fejerIndex k := (e₀, (1 : Fin 16))
   let z₂ : fejerIndex k := (e₀, (2 : Fin 16))
-  have h₀₁ : z₀ ≠ z₁ := by
-    intro h
-    have := congrArg (fun z : fejerIndex k ↦ (z.2 : Nat)) h
-    norm_num [z₀, z₁] at this
-  have h₀₂ : z₀ ≠ z₂ := by
-    intro h
-    have := congrArg (fun z : fejerIndex k ↦ (z.2 : Nat)) h
-    norm_num [z₀, z₂] at this
-  have h₁₂ : z₁ ≠ z₂ := by
-    intro h
-    have := congrArg (fun z : fejerIndex k ↦ (z.2 : Nat)) h
-    norm_num [z₁, z₂] at this
   by_cases h₀ : z₀ ≠ u ∧ z₀ ≠ v
   · exact ⟨z₀, h₀⟩
   by_cases h₁ : z₁ ≠ u ∧ z₁ ≠ v
@@ -1004,7 +992,6 @@ private lemma fejer_digit_count_pos (m j : Nat) (hj : j ≤ m) :
     constructor
     · intro hp
       unfold fejerDigitInt at hp
-      have h1 := p.1.isLt
       refine ⟨⟨(p.2 : Nat), by omega⟩, Prod.ext (Fin.ext ?_) (Fin.ext rfl)⟩
       simp only
       omega
@@ -1217,7 +1204,6 @@ private lemma fejer_bad_average_upper {N k : Nat} [NeZero N] [Fact N.Prime]
       (fejerValidRelations_subset_diagonal m hmN phi R hnondeg hbad)
     rw [fejer_diagonal_card] at h
     exact_mod_cast h
-  have hm : (0 : Real) < (m : Real) + 1 := by positivity
   calc ((((m : Real) + 1) ^ 2)⁻¹) ^ (2 ^ (k + 4)) * (fejerValidRelations m phi R).card
       ≤ ((((m : Real) + 1) ^ 2)⁻¹) ^ (2 ^ (k + 4)) * ((m : Real) + 1) ^ (2 ^ (k + 4)) :=
         mul_le_mul_of_nonneg_left hcard (by positivity)
@@ -1510,14 +1496,11 @@ private lemma fejer_loss_lower (k : Nat) (a : Real) (ha : 0 < a) (ha1 : a ≤ 1)
     (a / 4) ^ fejerSelectionExponent k ≤
       (((2 ^ (k + 4) * ⌈6 / a⌉₊ : Nat) : Real)⁻¹) ^ (2 ^ (k + 4)) := by
   set M : Nat := 2 ^ (k + 4) with hM
-  set T : Nat := ⌈6 / a⌉₊ with hTdef
+  set T : Nat := ⌈6 / a⌉₊
   have hT : (T : Real) ≤ 7 / a := by
     have h1 : (T : Real) < 6 / a + 1 := Nat.ceil_lt_add_one (by positivity)
     have h2 : (1 : Real) ≤ 1 / a := by rw [le_div_iff₀ ha]; linarith
     linarith [show 6 / a + 1 ≤ 6 / a + 1 / a by linarith, show (6 : Real) / a + 1 / a = 7 / a by ring]
-  have hTpos : (0 : Real) < T := by
-    have : (0 : Real) < 6 / a := by positivity
-    exact lt_of_lt_of_le this (Nat.le_ceil _)
   have hMR : ((M : Nat) : Real) = 2 ^ (k + 4) := by rw [hM]; push_cast; ring
   have hMT : (((M * T : Nat) : Real)) ≤ 2 ^ (k + 7) / a := by
     push_cast
@@ -1666,7 +1649,6 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
     calc D ≤ _ := h
       _ = c0 * (N : Real) ^ (17 * k + 14) := by rw [hc0]
   have hDsmall : 2 * D ≤ t * G := by
-    have hc0' : 0 ≤ c0 := by positivity
     have h1 : 2 * c0 ≤ scale * t * N := by
       have := (div_le_iff₀ (by positivity : (0 : Real) < scale * t)).mp hNbig
       linarith
@@ -1766,9 +1748,6 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
         _ ≤ 1 := h3
     have hmain : eta * t * G + D ≤
         eta * (alpha * G - D) * (t * (((T : Real) + 1) / 2)) - G * t := by
-      have e1 : eta * (alpha * G - D) * (t * (((T : Real) + 1) / 2)) =
-          (eta * alpha * (((T : Real) + 1) / 2)) * (t * G) -
-            eta * D * (t * (((T : Real) + 1) / 2)) := by ring
       have e2 : eta * D * (t * (((T : Real) + 1) / 2)) ≤ D := by
         calc eta * D * (t * (((T : Real) + 1) / 2)) ≤ 1 * D * 1 :=
               mul_le_mul (mul_le_mul_of_nonneg_right heta_one hD0) htT (by positivity)
@@ -1833,7 +1812,6 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
       _ = _ := hgen.symm
   · rw [hgen]
     have hpos : 0 ≤ eta * t * G := by positivity
-    have hbg : b ≤ eta * g := by linarith
     have hetab : 0 ≤ eta * b := mul_nonneg heta.le hb0
     linarith
 

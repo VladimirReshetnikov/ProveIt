@@ -17,7 +17,6 @@ theorem finiteFejerKernel_nonneg {N L : Nat} [NeZero N] (x : ZMod N) :
 
 theorem finiteFejerKernel_le_one {N L : Nat} [NeZero N] (hL : 0 < L) (x : ZMod N) :
     finiteFejerKernel L x ≤ 1 := by
-  have hLr : (0 : Real) < L := by exact_mod_cast hL
   have hnorm : ‖∑ i : Fin L, exponential ((i : ZMod N) * x)‖ ≤ L := by
     calc
       _ ≤ ∑ i : Fin L, ‖exponential ((i : ZMod N) * x)‖ := norm_sum_le _ _

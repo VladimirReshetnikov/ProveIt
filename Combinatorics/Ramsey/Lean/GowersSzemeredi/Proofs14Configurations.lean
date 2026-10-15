@@ -564,8 +564,6 @@ private lemma prop144_fourth_moment {N n : Nat} [NeZero N]
     (s := (Finset.univ : Finset (CubeConfiguration N n)))
     (f := m) (fun L _ => hm_nonneg L) 3
   simp only [Finset.card_univ, prop144_configuration_card, Nat.cast_pow] at hmean
-  have hleft : 0 ≤ beta ^ (4 ^ n) * gamma ^ (2 * n * 4 ^ n) *
-      (N : Real) ^ (3 * n + 1) := by positivity
   have hpow :
       (beta ^ (4 ^ n) * gamma ^ (2 * n * 4 ^ n) *
           (N : Real) ^ (3 * n + 1)) ^ 4 ≤

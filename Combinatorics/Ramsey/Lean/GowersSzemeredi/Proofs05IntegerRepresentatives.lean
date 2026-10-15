@@ -127,7 +127,6 @@ theorem wrappingThreeTermAP_noIntegerRepresentatives :
     rw [hval] at hvals
     change Q.start + i * Q.step ∈ ({0, 1, 6} : Finset Nat) at hvals
     exact ⟨hlt, by simpa only [Finset.mem_insert, Finset.mem_singleton] using hvals⟩
-  have h0 := hterm 0 (by omega)
   have h1 := hterm 1 (by omega)
   have h2 := hterm 2 (by omega)
   have hstep := hQ.1

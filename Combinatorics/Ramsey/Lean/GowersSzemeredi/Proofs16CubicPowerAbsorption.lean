@@ -33,8 +33,6 @@ theorem section16_cubic_power_absorption_of_bounds {U A R p t sigma : Real}
     p ^ (A * U^8) ≤ t ^ (5 * A * R) * sigma^(10 : Nat) *
       (2 : Real)^(-(84 * U^2 + 75)) / U^(14 : Nat) := by
   have ht0 : 0 ≤ t := hp.le.trans hpt
-  have hs0 : 0 ≤ sigma := hp.le.trans hps
-  have hA0 : 0 < A := by linarith
   have hreserve := section16_cubic_exponent_reserve hU hA hRU
   have hfirst : p ^ (5 * A * R) ≤ t ^ (5 * A * R) :=
     Real.rpow_le_rpow hp.le hpt (by positivity)

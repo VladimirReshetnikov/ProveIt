@@ -163,7 +163,6 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
   clear_value ζ M qs qf W
   have hν : 1 ≤ ν := by
     rw [hνdef]; have := Nat.cast_nonneg (α := Real) n; linarith only [this]
-  have hν0 : 0 ≤ ν := by linarith only [hν]
   have hW1 : 1 ≤ W := by linarith only [hW2]
   have hW0 : 0 ≤ W := by linarith only [hW2]
   have hu0 : (0 : Real) ≤ 2 / (gamma * theta) := le_trans (by norm_num) hu2
@@ -278,7 +277,7 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
   have hz0 : 0 < z := by rw [hzval]; exact div_pos hζ0 (lt_of_lt_of_le zero_lt_one hA1)
   have hz1 : z ≤ 1 := by
     rw [hzval, div_le_one (lt_of_lt_of_le zero_lt_one hA1)]; exact hζ1.trans hA1
-  set A := familyWidthPrefactor K1 (3 * (M * qs + 1)) with hAdef
+  set A := familyWidthPrefactor K1 (3 * (M * qs + 1))
   set Λ := A + W ^ ((2 : Nat) ^ 40) with hΛdef
   -- no `linarith` may see `W ^ 2 ^ 40`: its parser evaluates powers, and Lean's `Nat.pow`
   -- panics on exponents above `2 ^ 24`

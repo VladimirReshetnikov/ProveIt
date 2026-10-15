@@ -52,7 +52,7 @@ theorem LocalMultilinearPieceAt.mask_localPieceFor {N d : Nat} [NeZero N] [Fact 
       (Finset.univ.filter fun z : Point N d =>
         (fun j => if j ∈ s then (z + t : Point N d) j else a j) ∈ B)
       (fun z : Point N d => phi (fun j => if j ∈ s then (z + t : Point N d) j else a j)) := by
-  set F := coordinateSubsetFace s a with hFdef
+  set F := coordinateSubsetFace s a
   have h1 : LocalPieceFor c w (F.domain B) (F.pullback phi) :=
     hprov.localPieceFor fun B' hB' => (hB.coordinateFace F).mono hB'
   have h2 := (h1.lift_embedding hs hc hw F.free).translate t
@@ -115,7 +115,7 @@ theorem LocalPieceFor.simultaneous_finset {N n : Nat} [NeZero N] {ι : Type*}
   | insert a s ha ih =>
     obtain ⟨R, mu, hR, hRP, hRw, hmu, hRc⟩ := ih (fun i hi => h i (Finset.mem_insert_of_mem hi))
       (fun i hi => hHD i (Finset.mem_insert_of_mem hi))
-    set Hs := H.filter fun x => x ∈ R.carrier ∧ ∀ i ∈ s, g i x = mu i x with hHsdef
+    set Hs := H.filter fun x => x ∈ R.carrier ∧ ∀ i ∈ s, g i x = mu i x
     obtain ⟨hcpos, hcle⟩ := nestC_pos_le (c := fun _ => C) (fun _ => hC) s.card theta hθ hθ1
     obtain ⟨R2, nu, hR2, hR2R, hR2w, hnu, hR2c⟩ := h a (Finset.mem_insert_self a s)
       (nestC (fun _ => C) s.card theta) hcpos hcle R Hs hR
@@ -234,9 +234,9 @@ theorem vertex_localPieceFor_of_face {N k : Nat} [NeZero N] [Fact N.Prime]
         (coordinateSubsetFace (section16VertexDirections e) (appendCoordinate x0 0)).free
           (z + appendCoordinate x0 0) ∈ DomF)
       (section16TranslatedVertex phi x0 e) := by
-  set S := section16VertexDirections e with hSdef
-  set t := appendCoordinate x0 0 with htdef
-  set F := coordinateSubsetFace S t with hFdef
+  set S := section16VertexDirections e
+  set t := appendCoordinate x0 0
+  set F := coordinateSubsetFace S t
   have hs : 0 < S.card := Finset.card_pos.mpr ⟨_, section16VertexDirections_last e⟩
   have h2 := (hF.lift_embedding hs hc hw F.free).translate t
   have heq : ∀ z : Point N (k + 1), F.map (selectedCoordinates F.free (z + t)) =

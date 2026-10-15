@@ -464,7 +464,7 @@ theorem class_piece_data {k : Nat} {Thr : Real → Real → Real}
     have h2k : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
     nlinarith
   -- 6. the original frame
-  set D' := D.image (shiftPt x0) with hD'def
+  set D' := D.image (shiftPt x0)
   have hD'card : D'.card = D.card := Finset.card_image_of_injective _ (shiftPt_injective x0)
   have hDmem : ∀ z ∈ D, z ∈ B1 ∧ section16Init (shiftPt x0 z) ∈ JT ∧
       (∀ e ∈ otherVertices k, dropAt (vertexDrop e) (shiftPt x0 z) ∈ JF e) ∧

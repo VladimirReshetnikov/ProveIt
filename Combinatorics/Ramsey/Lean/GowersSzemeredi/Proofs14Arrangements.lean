@@ -284,9 +284,6 @@ private lemma cor146_average_fourth_moment {N k : Nat} [NeZero N]
     (s := (Finset.univ : Finset (AxisCube N k))) (f := x)
     (fun K _ => hx_nonneg K) 3
   simp only [Finset.card_univ, cor146_axis_cube_card, Nat.cast_pow] at hmean
-  have hleft : 0 ≤ A * (N : Real) ^ (3 * k) := by
-    dsimp only [A]
-    positivity
   have hpow : (A * (N : Real) ^ (3 * k)) ^ 4 ≤
       (∑ K : AxisCube N k, x K) ^ 4 := by
     gcongr
@@ -296,7 +293,6 @@ private lemma cor146_average_fourth_moment {N k : Nat} [NeZero N]
       (A * (N : Real) ^ (3 * k)) ^ 4 /
         ((N : Real) ^ (2 * k)) ^ 3 := by
       dsimp only [A]
-      have hNne : (N : Real) ≠ 0 := hN.ne'
       field_simp
       rw [← pow_mul, ← pow_mul, ← pow_add]
       congr 1

@@ -20,7 +20,6 @@ theorem high_correlation_parent_scale {N M L : Nat} [NeZero N]
   have hd := cover_correlation_density_strict A U P w hP hAU hw ha0 hcor
   have hb : 0 < 1 - density A := sub_pos.mpr hd.2
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hLr : (0 : Real) < L := by exact_mod_cast hL
   have hsize : (U.card : Real) ≤ 2 * M * (P j).card := by
     exact_mod_cast comparable_partition_card_bound P U hP hcomp j
   have hmass := (cover_correlation_density_bounds A U P w hP hAU hw hcor).2

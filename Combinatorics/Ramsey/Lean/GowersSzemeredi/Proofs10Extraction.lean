@@ -753,7 +753,6 @@ private lemma audit_error_almostEvery :
   unfold AlmostEvery
   rw [Finset.filter_eq_self.2]
   · have hroot : 0 ≤ auditEta ^ ((1 : Real) / 5) := by positivity
-    have hcard : 0 ≤ (auditW.card : Real) := by positivity
     nlinarith
   · intro y hy
     rw [audit_proportionateError_zero]
@@ -855,7 +854,6 @@ private lemma audit_overlap :
   subst d
   rw [audit_shift_four, Finset.inter_self]
   have heta : 0 ≤ auditEta := by positivity
-  have hcard : 0 ≤ (auditW.card : Real) := by positivity
   nlinarith
 
 private lemma audit_regular :
@@ -1259,8 +1257,6 @@ private lemma extraction_sigma_le_alpha_sq_div_64 {N : Nat} {X : Type*}
     sigma ≤ alpha ^ 2 / 64 := by
   rcases hsetup with ⟨⟨halpha, halphaOne, _hM, _hcard, _hfibre⟩,
     hsigmaPos, heta, hetaOne, _hsym, _hinv, _happrox⟩
-  have hpositive : 0 < eta * rho * alpha ^ 2 / 16 :=
-    hsigmaPos.trans_le hsigma
   have hmulPositive : 0 < eta * rho * alpha ^ 2 := by linarith
   have hetaRhoPositive : 0 < eta * rho := by
     rcases (mul_pos_iff.mp hmulPositive) with h | h
@@ -1710,8 +1706,6 @@ private lemma extraction_select_directions {Y Z : Type*}
     · intro z hz
       simp
   have hUnonempty : U.Nonempty := Finset.nonempty_iff_ne_empty.mpr hUempty
-  have hUcardPos : (0 : Real) < U.card := by
-    exact_mod_cast Finset.card_pos.mpr hUnonempty
   let BadPair : Finset (Y × Z) :=
     (U.product V).filter fun yz => ¬ Q yz.1 yz.2
   let H : Finset Z := V.filter fun z =>
@@ -1850,7 +1844,6 @@ theorem lemma_10_6_holds : lemma_10_6 := by
   · refine ⟨∅, fun _ => 0, ?_⟩
     refine ⟨Finset.empty_subset _, ?_, ?_⟩
     · simp only [Finset.card_empty, Nat.cast_zero]
-      have hBcard : (0 : Real) ≤ B.card := by positivity
       dsimp only [t] at htLarge
       nlinarith
     · intro d hd
@@ -1892,7 +1885,6 @@ theorem lemma_10_6_holds : lemma_10_6 := by
     change (1 - 7 * t) * B.card ≤ (B'.card : Real) at hselected
     exact hselected
   have hB'largeTen : (1 - 10 * t) * B.card ≤ (B'.card : Real) := by
-    have hBcard : (0 : Real) ≤ B.card := by positivity
     nlinarith
   have hxQuarter := extraction_sigmaM_le_anchor_quarter D phi B alpha rho M
     sigma eta x hsetup hanchor hrho hsigma

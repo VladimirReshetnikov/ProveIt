@@ -110,7 +110,7 @@ theorem section16_poly_piece_two
   set θ' := polyPieceBudget theta gamma with hθ'def
   have hθ₂eq : section16ThetaTwo (section16ThetaOne theta gamma 1) = 8 * θ' := by
     rw [hθ'def, polyPieceBudget]; ring
-  set δ := section16Delta (section16ThetaOne theta gamma 1) with hδdef
+  set δ := section16Delta (section16ThetaOne theta gamma 1)
   have hq0 : 0 < polyPieceSpecCount theta gamma := section16BaseFamilyBound_pos _ _
   have hqg : 0 < polyPieceFaceCount theta gamma := section16BaseFamilyBound_pos _ _
   -- 1. Lemmas 16.5 and 16.7

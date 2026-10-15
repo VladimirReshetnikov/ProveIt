@@ -157,7 +157,6 @@ theorem single_piece_lift_global_cover {k : Nat} (hk : 1 ≤ k) {theta gamma : R
               (coverRho1 Qb theta gamma k)) 1 *
             S.carrier.card ≤
           (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card := by
-  have hk0 : 0 < k := hk
   obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
   obtain ⟨hζpos, hζle⟩ := section16Zeta_pos_le_one_div_32 k ht ht1 hg hg1
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le k ht ht1 hg hg1
@@ -168,7 +167,7 @@ theorem single_piece_lift_global_cover {k : Nat} (hk : 1 ≤ k) {theta gamma : R
     rw [hθ'def, globalBudget, div_le_one (by positivity)]
     have : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)
     nlinarith
-  set δ := section16Delta (section16ThetaOne theta gamma k) with hδdef
+  set δ := section16Delta (section16ThetaOne theta gamma k)
   -- 1. Lemmas 16.5 (without condition (i)) and 16.7
   obtain ⟨H, Y, phiPrime, hH, hcube, hselected, hselection⟩ :=
     section16_dense_induced_selection_of_arrangements (Fact.out : N.Prime) theta gamma B phi
@@ -184,7 +183,7 @@ theorem single_piece_lift_global_cover {k : Nat} (hk : 1 ≤ k) {theta gamma : R
   set B1 := section16GoodDomain B H Y x0 with hB1def
   have hB1card : θ₂ * (N : Real) ^ (k + 1) ≤ B1.card := by
     rw [hB1def, section16GoodDomain_card]; exact hgood
-  set t := appendCoordinate x0 0 with htdef
+  set t := appendCoordinate x0 0
   -- 2. the spectrum cover
   obtain ⟨JΔ, hJΔ, hMLΔ⟩ := hcov k hk le_rfl N δ θ' hδpos hδle hθ'pos hθ'le
     (section16SpectrumRelation B δ) (section16_spectrum_relation_card B hδpos)
@@ -300,7 +299,7 @@ theorem single_piece_lift_global_cover {k : Nat} (hk : 1 ≤ k) {theta gamma : R
   obtain ⟨hθ₂'pos, hθ₂'le⟩ : 0 < globalTheta2 theta gamma k ∧ globalTheta2 theta gamma k ≤ 1 :=
     ⟨by rw [globalTheta2]; positivity, by rw [globalTheta2]; linarith⟩
   -- 6. the remainder piece from the joint cover, on the full box
-  set P0 := fullSpaceBox N (k + 1) with hP0def
+  set P0 := fullSpaceBox N (k + 1)
   have hP0 : P0.IsProper := fullSpaceBox_isProper N (k + 1)
   have hP0carrier : P0.carrier = Finset.univ := fullSpaceBox_carrier N (k + 1)
   have hP0width : P0.width = N := fullSpaceBox_width N (k + 1) (Nat.succ_pos k)

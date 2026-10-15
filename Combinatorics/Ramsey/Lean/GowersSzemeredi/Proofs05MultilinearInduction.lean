@@ -97,11 +97,6 @@ theorem multilinearHeightAt_holds (k : Nat) (hk : 2 ≤ k) (h : Nat) :
         multilinear_height_scale_exists hk hm
       have hpu : p * u ^ 2 ≤ P.width := by
         apply le_trans (b := m) _ hmP
-        have hsquare : (p * u ^ 2) ^ 2 ≤ m ^ 2 := by
-          calc
-            _ = p ^ 2 * u ^ 4 := by ring
-            _ ≤ m * m := Nat.mul_le_mul hp2 hu4
-            _ = m ^ 2 := by ring
         nlinarith
       let W := (m : Real) ^ multilinearHeightExponent k (h + 1)
       let D := multilinearHeightCoefficient k h * (m : Real) ^ (-multilinearHeightExponent k (h + 1)) * N

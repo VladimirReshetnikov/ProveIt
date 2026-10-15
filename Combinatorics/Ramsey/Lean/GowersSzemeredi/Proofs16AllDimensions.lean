@@ -83,7 +83,6 @@ theorem step_degree_closed (k : Nat) :
       _ ≤ 2 ^ (k + 5) := Nat.pow_le_pow_right (by norm_num) (by omega)
   have hak : k + 5 ≤ a := two_pow_k5_ge k
   have hB2a : 2 * a ≤ B := two_pow_ge_double (by omega)
-  have hBa : a < B := Nat.lt_two_pow_self
   have hsq : 2 ^ (k + 1 + 5) = 2 * a := by rw [ha, show k + 1 + 5 = (k + 5) + 1 by omega, pow_succ]; ring
   have hBB : 2 ^ (2 ^ (k + 1 + 5)) = B * B := by rw [hsq, hB, ← pow_add]; ring_nf
   rw [hBB]
@@ -138,8 +137,6 @@ theorem const_le_classV_succ (Kc pc : Nat → Nat) (k : Nat) :
     (Kc k : Real) ≤ classV Kc pc (k + 1) ∧ (pc k : Real) ≤ classV Kc pc (k + 1) := by
   rw [classV_succ]
   have h1 := one_le_classV Kc pc k
-  have h2 : (0 : Real) ≤ Kc k := Nat.cast_nonneg _
-  have h3 : (0 : Real) ≤ pc k := Nat.cast_nonneg _
   constructor <;> linarith
 
 /-! ### Every dimension -/
@@ -155,7 +152,6 @@ theorem powerUniformClass_all (Kc pc : Nat → Nat) (hK : ∀ k, 1 ≤ Kc k) (hp
   | base =>
     have hV1 := one_le_classV Kc pc 2
     have hc1 := const_le_classV_succ Kc pc 1
-    have hmono := classV_le_succ Kc pc 1
     obtain ⟨C⟩ := powerUniformClass_two (hK 1) (hp 1) (hlem 1 le_rfl) hV1
       (hc1.1.trans le_rfl) (hc1.2.trans le_rfl)
     have hdeg : ∀ d : Nat, d ≤ 2 ^ 130 → d ≤ classDeg 2 := by
@@ -177,7 +173,7 @@ theorem classV_bound (Kc pc : Nat → Nat)
     (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) {k : Nat}
     (hk : 2 ≤ k) :
     2 * classV Kc pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6)) - 1) := by
-  set E := (2 : Nat) ^ ((2 : Nat) ^ (k + 4)) with hE
+  set E := (2 : Nat) ^ ((2 : Nat) ^ (k + 4))
   have hterm : ∀ j ∈ Finset.range k, (Kc j : Real) + pc j ≤ 2 ^ E := by
     intro j hj
     have hjk : j + 5 ≤ k + 4 := by have := Finset.mem_range.mp hj; omega
@@ -195,7 +191,6 @@ theorem classV_bound (Kc pc : Nat → Nat)
   have hstep : 2 * classV Kc pc k ≤ 2 ^ (E + k + 2) := by
     unfold classV
     rw [show E + k + 2 = E + (k + 2) by ring, pow_add]
-    have hk0 : (0 : Real) ≤ k := Nat.cast_nonneg _
     nlinarith
   refine hstep.trans (pow_le_pow_right₀ (by norm_num) ?_)
   have hEk : E + k + 3 ≤ (2 : Nat) ^ ((2 : Nat) ^ (k + 6)) := by

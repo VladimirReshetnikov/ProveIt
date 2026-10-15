@@ -62,7 +62,6 @@ theorem twoDiv_budget_le_fejer {gamma theta g : Real} (k : Nat) (hg : 0 < gamma)
   have hbi := classBudgetW_fejer_inv_le k hg hg1 ht ht1
   set u := 2 / (gamma * theta) with hu
   clear_value u
-  have hu1 : 1 ≤ u := le_trans (by norm_num) hu2
   have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
   rw [show 2 / (g * classBudgetW (fejerThetaOne theta gamma k) k) = 2 / g * (classBudgetW (fejerThetaOne theta gamma k) k)⁻¹ by
     field_simp]
@@ -119,7 +118,6 @@ theorem step_count_le_fejer {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤
   set m := classPiecesFejer gamma theta k
   set tS := classBudgetW (fejerThetaOne theta gamma k) k
   clear_value w u
-  have hw0 : 0 ≤ w := by linarith
   have hw1 : 1 ≤ w := by linarith
   have hV0 : 0 ≤ V := by linarith
   have liftu : ∀ (x : Real) (j : Nat), x ≤ u ^ j → x ≤ w ^ j := fun x j h =>
@@ -176,7 +174,7 @@ theorem step_count_le_fejer {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤
     rw [← pow_mul, mul_comm]
   -- the samples and the slice count
   have hS := famPieceSamples_le_power hw2 hr hrw hQr hM
-  set S := famPieceSamples (classQr V D k (n * m) tS gamma) (n * m) rho with hSdef
+  set S := famPieceSamples (classQr V D k (n * m) tS gamma) (n * m) rho
   have hMS : ((n * m * S : Nat) : Real) + 1 ≤ w ^ ((fejerStepP k + 2) + fejerStepSDeg k D + 1) :=
     add_le_pow_succ hw2 (nat_mul_le_pow hw2 hM hS) (one_le_pow_of_two_le hw2 _)
   have hr4 : (rho / 4)⁻¹ ≤ w ^ (2 + 1) := inv_scale_le hw2 hr hrw (by norm_num) (by norm_num)
@@ -252,8 +250,6 @@ theorem step_exp_inv_le_fejer {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 �
     le_pow_mono hw2 (by omega) (nat_mul_le_pow hw2 hnw1 hmw)
   have hM1 : ((n * m : Nat) : Real) + 1 ≤ w ^ (fejerStepP k + 2 + 1) :=
     add_le_pow_succ hw2 hM (one_le_pow_of_two_le hw2 _)
-  have hbaseNN : ∀ (M' : Nat) (g s : Real), 0 < g → 0 ≤ s → 0 ≤ uniformBase V M' tS g s :=
-    fun M' g s hg' hs => uniformBase_nonneg hV M' hb hg' hs
   -- the spectrum controls at `ρ/8`
   have hr8 : (rho / 8)⁻¹ ≤ w ^ (3 + 1) := inv_scale_le hw2 hr hrw (by norm_num) (by norm_num)
   have hSbase := level_base_le hw2 hV0 hVw hM1 (by positivity) hr8 hd hb hddw
@@ -302,7 +298,7 @@ theorem step_exp_inv_le_fejer {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 �
   have hEri : (classEr V D k (n * m) tS gamma (rho / 8))⁻¹ ≤ w ^ fejerStepErDeg k D := by
     unfold classEr
     rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← inv_pow]
-    set b := uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1)) with hbdef
+    set b := uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1))
     have hc' : ((b ^ D)⁻¹ / 16)⁻¹ ≤ w ^ (4 + D * fejerStepY1 k) := by
       rw [inv_div, div_inv_eq_mul]
       exact hfac

@@ -38,7 +38,6 @@ theorem gen_exp_fact1 (k : Nat) : k + 34 + 2 ^ (2 ^ (k + 5) + 4) ≤ 2 ^ (2 ^ (k
 theorem gen_exp_fact2 (k : Nat) : 37 + (2 ^ (2 ^ (k + 5) + 1) + 2) * 6 ≤ 2 ^ (2 ^ (k + 5) + 5) := by
   have h1 := two_pow_k5_ge k
   have h2 := two_pow_X_ge k
-  have h3 : 2 ^ (2 ^ (k + 5) + 1) = 2 ^ (2 ^ (k + 5)) * 2 := by rw [pow_add]; norm_num
   have h4 : 2 ^ (2 ^ (k + 5) + 5) = 2 ^ (2 ^ (k + 5)) * 32 := by rw [pow_add]; norm_num
   omega
 
@@ -56,7 +55,6 @@ theorem thetaOne_inv_le_gen {gamma theta : Real} (k : Nat) (hg : 0 < gamma) (hg1
     (section16ThetaOne theta gamma k)⁻¹ ≤ (2 / (gamma * theta)) ^ (2 ^ (2 ^ (k + 5) + 1)) := by
   obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   have hq := quarter_prod_ge_inv_sq hg ht hu2
-  have hq0 : 0 < theta * gamma / 4 := by positivity
   set u := 2 / (gamma * theta) with hu
   clear_value u
   have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
@@ -199,7 +197,6 @@ theorem gen_exp_fact4 (k : Nat) :
   have hfin : 2 ^ (2 ^ (k + 4) + 4 * k + 12) ≤ 2 ^ (2 ^ (k + 5) + 6) := by
     apply Nat.pow_le_pow_right (by norm_num)
     have h1 : 2 ^ (k + 4) = 2 ^ k * 16 := by rw [pow_add]; norm_num
-    have h2 : 2 ^ (k + 5) = 2 ^ k * 32 := by rw [pow_add]; norm_num
     omega
   have h12 : 2 ^ (2 ^ (k + 4) + 4 * k + 12) = 2 ^ (2 ^ (k + 4) + 4 * k + 11) * 2 := by
     rw [pow_succ]

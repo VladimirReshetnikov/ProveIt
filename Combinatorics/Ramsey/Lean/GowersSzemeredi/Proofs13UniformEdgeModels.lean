@@ -22,10 +22,6 @@ rounded spectrum parameter and its denominator. -/
 theorem section10Zeta_mono {a b : Real} (ha : 0 < a) (hab : a ≤ b) (hb : b ≤ 1) :
     section10Zeta a ≤ section10Zeta b := by
   have hbpos : 0 < b := ha.trans_le hab
-  have hka : 0 < section10SpectrumParameter a := by
-    apply Nat.ceil_pos.mpr
-    unfold section10SpectrumBound
-    positivity
   have hkb : 0 < section10SpectrumParameter b := by
     apply Nat.ceil_pos.mpr
     unfold section10SpectrumBound

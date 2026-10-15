@@ -288,7 +288,6 @@ private noncomputable def cor133_build_cover {N : Nat} [NeZero N]
     have hFreiman0 := hextractSpec.2.1
     have hB0size := hextractSpec.2.2
     let P := functionGraph B0 sigma0
-    have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
     have hscalePos :
         0 < (2 : Real) ^ (-(1882 : Int)) * theta ^ 10477 * N := by
       exact mul_pos

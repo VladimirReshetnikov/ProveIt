@@ -33,10 +33,6 @@ private lemma lemma156_linear_le_vertex (k : Nat) :
   | zero => norm_num
   | succ k ih =>
       rw [show k + 1 + 4 = (k + 4) + 1 by omega, pow_succ]
-      have hpow : 4 ≤ 2 ^ (k + 4) := by
-        calc
-          4 = 2 ^ 2 := by norm_num
-          _ ≤ 2 ^ (k + 4) := Nat.pow_le_pow_right (by norm_num) (by omega)
       omega
 
 private lemma lemma156_scale_ratio_bound (k : Nat) :

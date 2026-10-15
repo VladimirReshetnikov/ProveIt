@@ -1417,18 +1417,6 @@ private lemma selection_third_index {k : Nat}
   let z₀ : selectionIndex k := (e₀, (0 : Fin 16))
   let z₁ : selectionIndex k := (e₀, (1 : Fin 16))
   let z₂ : selectionIndex k := (e₀, (2 : Fin 16))
-  have h₀₁ : z₀ ≠ z₁ := by
-    intro h
-    have := congrArg (fun z : selectionIndex k ↦ (z.2 : Nat)) h
-    norm_num [z₀, z₁] at this
-  have h₀₂ : z₀ ≠ z₂ := by
-    intro h
-    have := congrArg (fun z : selectionIndex k ↦ (z.2 : Nat)) h
-    norm_num [z₀, z₂] at this
-  have h₁₂ : z₁ ≠ z₂ := by
-    intro h
-    have := congrArg (fun z : selectionIndex k ↦ (z.2 : Nat)) h
-    norm_num [z₁, z₂] at this
   by_cases h₀ : z₀ ≠ u ∧ z₀ ≠ v
   · exact ⟨z₀, h₀⟩
   by_cases h₁ : z₁ ≠ u ∧ z₁ ≠ v
@@ -1677,8 +1665,6 @@ private lemma selection_phase_score_average {N k r : Nat} [NeZero N]
         rw [selection_multiStage_indexed_average]
         have hR' := Finset.mem_filter.mp hR
         have hbadMem := Finset.mem_sdiff.mp hR'.1
-        have hIsIn : R.IsIn B := by
-          simpa [selectionArrangements] using hbadMem.1
         have hbad : ¬ R.IsRespected phi := by
           intro hrespect
           apply hbadMem.2
@@ -1974,10 +1960,6 @@ private lemma selection_exists_stage_margin_lower (k : Nat) (alpha eta : Real)
     have hmul := mul_lt_mul_of_pos_right hqupper
       (pow_pos (by norm_num : (0 : Real) < 2) m)
     rw [hqmul] at hmul
-    nlinarith
-  have hfactor : 1 < a * amp ^ (K * m) - 1 := by
-    have hamp_a : a * (2 : Real) ^ m ≤ a * amp ^ (K * m) :=
-      mul_le_mul_of_nonneg_left hamp_pow ha.le
     nlinarith
   have hME : M * K = E := by
     exact selection_vertex_times_amplification k
@@ -2674,8 +2656,6 @@ private theorem selection_scale_estimate_of_exceptional_bound_explicit
     let M : Real := scale * (N : Real) ^ (17 * k + 15)
     let exceptional : Real :=
       degenerateGeneralArrangementCount (N := N) (k := k) 8
-    have hNpos : 0 < (N : Real) := by
-      exact_mod_cast Nat.pos_of_ne_zero (NeZero.ne N)
     have hMpos : 0 < M := by
       dsimp [M]
       positivity
@@ -2884,7 +2864,6 @@ private theorem selection_scale_estimate_of_exceptional_bound_explicit
       have hbad_le : (badCount : Real) ≤ eta * goodCount :=
         sub_nonneg.mp (hpositive.trans hscore)
       have hbad0 : 0 ≤ (badCount : Real) := Nat.cast_nonneg _
-      have honeeta0 : 0 ≤ 1 - eta := sub_nonneg.mpr heta_one
       have honeeta1 : 1 - eta ≤ 1 := by linarith only [heta]
       have hbadScaled : (1 - eta) * (badCount : Real) ≤ badCount := by
         calc
@@ -2918,7 +2897,6 @@ private theorem selection_scale_estimate_of_exceptional_bound_explicit
         (respectedGeneralArrangementCount 8 B phi : Real) ≤
           generalArrangementCount 8 B := by
       exact_mod_cast hrespectedUpperNat
-    have halpha_gt : 1 < alpha := lt_of_not_ge halpha_one
     nlinarith
 
 /-- Selection with the sharp exceptional-set threshold, including `eta = 1`. -/

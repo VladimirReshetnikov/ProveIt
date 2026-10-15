@@ -177,12 +177,10 @@ theorem lemma_13_7_of_empty_heights {N : Nat} [NeZero N]
   have hR := stage136_progression_nonempty S D E F hF
   have hcard : F.R.carrier.card = F.R.length := hF.2.2.1
   have hn : 0 < F.R.length := by simpa only [hcard] using hR.card_pos
-  have hnR : (0 : Real) < F.R.length := by exact_mod_cast hn
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hα := S.alpha_pos
   have hQ : E.Q.length = 0 := by
     by_contra hQ
-    have hQpos : (0 : Real) < E.Q.length := by exact_mod_cast Nat.pos_of_ne_zero hQ
     have hb := hF.2.2.2.2.2.2
     rw [hI] at hb
     have hp : 0 < (2 : Real) ^ (-(48 : Int)) * S.alpha ^ 256 *

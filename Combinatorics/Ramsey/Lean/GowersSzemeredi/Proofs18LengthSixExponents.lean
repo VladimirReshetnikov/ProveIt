@@ -185,7 +185,6 @@ theorem capped_rounded_inv_le {w L S z : Real} {nL nS nz : Nat} (hw : 2 ≤ w) (
     refine le_exp_pow_of_le_pow ?_
     exact (show (64 : Real) ≤ 2 ^ 6 by norm_num).trans
       ((pow_le_pow_left₀ (by norm_num) hw 6).trans (pow_le_pow_right₀ hw1 hnz))
-  have h1e : (1 : Real) ≤ Real.exp (w ^ nz) := le_trans (by norm_num) h64
   have h16 : (16 : Real) ≤ Real.exp (w ^ nz) := le_trans (by norm_num) h64
   -- the exponent `L S / 4`
   have hLS : (L * S / 4)⁻¹ ≤ w ^ (2 + nL + nS) := by
@@ -473,7 +472,6 @@ theorem sixEb_inv_le_power (l : Nat) {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p1)
     set w := 2 / (gamma * theta * rho) with hw
     clear_value v w
     have hw2 : 2 ≤ w := hv2.trans hvw
-    have hw1 : 1 ≤ w := le_trans (by norm_num) hw2
     have hv0 : 0 ≤ v := le_trans (by norm_num) hv2
     have hB' : (section16BaseFamilyBound gamma theta : Real) ≤ w ^ ((2 : Nat) ^ 14) :=
       hB.trans (pow_le_pow_left₀ hv0 hvw _)

@@ -19,7 +19,6 @@ theorem interval_relative_uniform_hasNatAP {N L k : Nat} [NeZero N] [Fact N.Prim
     (hu : UniformOfDegree (intervalExtension N (finiteIntervalBalance B delta)) alpha (k - 2)) :
     HasNatAP (B.image Fin.val) k := by
   have hLN : L ≤ N := by omega
-  have hkR : (0 : Real) < k := by exact_mod_cast (show 0 < k by omega)
   let S := finiteIntervalImage N (Finset.univ : Finset (Fin L))
   have hcount : (N : Real) ^ 2 / (256 * (k : Real) ^ 2) ≤ (progressionCount S k : Real) := by
     have hnlr : (N : Real) ≤ 8 * L := by exact_mod_cast hNL
@@ -68,7 +67,6 @@ theorem intervalUniformityParameter_count_error {delta : Real} {k : Nat}
     (hδ : 0 ≤ delta) (hk : 0 < k) :
     k * intervalUniformityParameter delta k ^ (1 / (2 : Real) ^ (k - 1)) =
       delta ^ k / (512 * (k : Real) ^ 2) := by
-  have hkR : (0 : Real) < k := by exact_mod_cast hk
   have hroot : intervalUniformityParameter delta k ^ (1 / (2 : Real) ^ (k - 1)) =
       delta ^ k / (512 * (k : Real) ^ 3) := by
     simpa only [intervalUniformityParameter, one_div, Nat.cast_pow, Nat.cast_ofNat] using

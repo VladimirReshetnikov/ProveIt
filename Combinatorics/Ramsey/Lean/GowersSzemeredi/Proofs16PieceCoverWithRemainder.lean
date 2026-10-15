@@ -63,7 +63,6 @@ theorem pieceSamples_pos {Qr : Real → Real} {rho : Real} (hrho : 0 < rho) :
     0 < pieceSamples Qr rho := by
   unfold pieceSamples
   apply Nat.ceil_pos.mpr
-  have h1 : (0 : Real) < max 1 (Qr (rho / 8)) := lt_of_lt_of_le one_pos (le_max_left _ _)
   positivity
 
 /-- **The large-box profile of one piece.** -/
@@ -139,7 +138,6 @@ theorem section16_piece_large_box_profile {k : Nat} (hk : 1 ≤ k)
   have hrpos : 0 < r := by
     rw [hr]
     apply Nat.ceil_pos.mpr
-    have h1 : (0 : Real) < max 1 (qGamma : Real) := lt_of_lt_of_le one_pos (le_max_left _ _)
     positivity
   have hPbr1 := (hranges r sigma hrpos hs hs1).1
   have he : 0 < pieceLineExponent Bq Qb Eb Er rho := by
@@ -160,7 +158,6 @@ theorem section16_piece_large_box_profile {k : Nat} (hk : 1 ≤ k)
     have hch : ((r.choose 2 : Nat) : Real) ≤ ((S.choose 2 : Nat) : Real) := by
       exact_mod_cast Nat.choose_le_choose 2 hrS
     have h0 : (0 : Real) ≤ Pb r sigma := zero_le_one.trans hPbr1
-    have hc0 : (0 : Real) ≤ ((r.choose 2 : Nat) : Real) := Nat.cast_nonneg _
     calc ((r.choose 2 : Nat) : Real) * Pb r sigma * Pb r sigma
         ≤ ((S.choose 2 : Nat) : Real) * Pb S sigma * Pb S sigma := by
           apply mul_le_mul (mul_le_mul hch hPbr h0 (Nat.cast_nonneg _)) hPbr h0

@@ -67,9 +67,9 @@ theorem vertex_multiplyLinearWith_of_face {N k : Nat} [NeZero N] [Fact N.Prime]
             (z + appendCoordinate x0 0) ∈ DomF)
         (section16TranslatedVertex phi x0 e)) := by
   classical
-  set S := section16VertexDirections e with hSdef
-  set t := appendCoordinate x0 0 with htdef
-  set F := coordinateSubsetFace S t with hFdef
+  set S := section16VertexDirections e
+  set t := appendCoordinate x0 0
+  set F := coordinateSubsetFace S t
   have hs : 0 < S.card := Finset.card_pos.mpr ⟨_, section16VertexDirections_last e⟩
   have h2 := (hF.lift_embedding hE hs F.free).translate_graph t
   have heq : ∀ z : Point N (k + 1), F.map (selectedCoordinates F.free (z + t)) =

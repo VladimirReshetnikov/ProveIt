@@ -76,7 +76,6 @@ theorem polyPieceBudgetW_fejer_ge_power {gamma theta : Real} (hg : 0 < gamma) (h
     apply inv_anti₀ (pow_pos hupos _)
     apply pow_le_pow_right₀ hu1
     norm_num
-  have hθ0 : 0 ≤ fejerThetaOne theta gamma 1 := by unfold fejerThetaOne; positivity
   unfold polyPieceBudgetW section16ThetaTwo
   calc (u ^ ((2 : Nat) ^ 23))⁻¹ ≤ (u ^ 35 * u ^ ((2 : Nat) ^ 22))⁻¹ := by
         apply inv_anti₀ (mul_pos (pow_pos hupos _) (pow_pos hupos _))

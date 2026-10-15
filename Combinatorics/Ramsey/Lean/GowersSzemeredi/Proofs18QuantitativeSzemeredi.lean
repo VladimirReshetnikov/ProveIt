@@ -208,7 +208,6 @@ theorem section18_cyclic_density_increment_holds_of_theorem_18_1
   have hsizeScale :
       epsilon / 4 * (N : Real) ^ epsilon ≤
         epsilon * N / (4 * M) := by
-    have hMreal : (0 : Real) < M := by exact_mod_cast hM
     calc
       epsilon / 4 * (N : Real) ^ epsilon ≤
           epsilon / 4 *

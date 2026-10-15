@@ -293,7 +293,6 @@ theorem lemma_7_5_holds : lemma_7_5 := by
     simp only [K, Finset.mem_filter, Finset.mem_univ, true_and]
     exact hzero
   have hKposR : (0 : Real) < K.card := by exact_mod_cast hK.card_pos
-  have hDpos : 0 < C ^ (4 * k) := pow_pos hC _
   let L := N / (4 * k * K.card)
   have hdenomPos : 0 < 4 * k * K.card := by positivity
   have hsize : 4 * k * K.card * L ≤ N := by
@@ -361,7 +360,6 @@ theorem lemma_7_5_holds : lemma_7_5 := by
     exact (Nat.div_lt_iff_lt_mul hdenomPos).mp (by simp [L])
   have hscale : (N : Real) ≤ (L + 1) * (8 * (k : Real) * C ^ (4 * k)) := by
     have hfloorR : (N : Real) < (L + 1) * (4 * k * K.card) := by exact_mod_cast hfloor
-    have hLK : (0 : Real) ≤ L + 1 := by positivity
     nlinarith
   have hsizeB : (B.card : Real) / (8 * (k : Real) * C ^ (4 * k)) ≤ B'.card := by
     rw [hB'card]

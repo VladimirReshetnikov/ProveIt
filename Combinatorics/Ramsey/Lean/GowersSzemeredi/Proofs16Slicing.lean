@@ -53,7 +53,6 @@ theorem ModAP.adjacent_mem {N : Nat} (P : ModAP N) (hP : 2 ≤ P.length)
     dsimp
     push_cast; ring
   · right
-    have hi0 : 0 < i.val := by have := i.isLt; omega
     apply Finset.mem_image.mpr
     refine ⟨⟨i.val - 1, by have := i.isLt; omega⟩, Finset.mem_univ _, ?_⟩
     dsimp

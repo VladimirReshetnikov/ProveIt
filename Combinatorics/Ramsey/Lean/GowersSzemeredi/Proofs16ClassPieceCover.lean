@@ -81,7 +81,6 @@ theorem uniformBase_nonneg {V : Real} (hV : 1 ≤ V) (n : Nat) {theta gamma rho 
     (ht : 0 < theta) (hg : 0 < gamma) (hr : 0 ≤ rho) : 0 ≤ uniformBase V n theta gamma rho := by
   unfold uniformBase
   have : (0 : Real) ≤ (n : Real) + 1 := by positivity
-  have hV0 : (0 : Real) ≤ V := by linarith
   have : 0 ≤ 2 / (gamma * theta * rho) := div_nonneg (by norm_num) (by positivity)
   positivity
 
@@ -168,12 +167,12 @@ theorem class_piece_family_cover_gen {k : Nat} (hk : 1 ≤ k) {Thr : Real → Re
       (Finset.univ.biUnion fun c => partialGraph (P c).D (P c).phi) := by
   classical
   have hk0 : 0 < k := hk
-  set nv := classVertexNum k with hnv
+  set nv := classVertexNum k
   have hnvc : nv + 1 = (otherVertices k).card := classVertexNum_succ hk
   let ev : Fin (nv + 1) ≃ {e // e ∈ otherVertices k} :=
     ((otherVertices k).equivFinOfCardEq hnvc.symm).symm
   -- 1. the spectra
-  set Gs0 := Finset.univ.biUnion fun c => pieceSpecRel (P c).H1 (P c).K with hGs0
+  set Gs0 := Finset.univ.biUnion fun c => pieceSpecRel (P c).H1 (P c).K
   have hML : MultiplyLinearWith (Cnt thS gS n) (Exp thS gS n) Gs0 :=
     C.cover thS gS htS htS1 hgS hgS1 N n _ fun c => (P c).spec_U
   have hQb : ∀ s, 0 < s → s ≤ 1 →
@@ -212,8 +211,6 @@ theorem class_piece_family_cover_gen {k : Nat} (hk : 1 ≤ k) {Thr : Real → Re
     · intro t ht ht1
       exact hExp _ _ _ _ htF htF1 hgF hgF1 ht ht1
   have hrem : MultiplyLinearWith (clsQr Cnt k n thF gF) (clsEr Exp k n thF gF) Gr := by
-    have hnv1 : (0 : Real) < (nv : Real) + 1 := by
-      have := Nat.cast_nonneg (α := Real) nv; linarith
     have h := MultiplyLinearWith.relSumFin nv (Gamma := fun s =>
       relationScale (sgn s) (cylAt (vertexDrop (ev s).1) (face s)))
       (Q := fun _ rho => max (Cnt thF gF n rho) ((3 ^ (k + 1) * n : Nat) : Real))
@@ -341,7 +338,6 @@ theorem class_piece_family_cover {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 1 ≤
     have h0 : 0 < uniformBase V n theta gamma s := by
       unfold uniformBase
       have : (0 : Real) < (n : Real) + 1 := by positivity
-      have hV0 : (0 : Real) < V := by linarith
       positivity
     exact inv_anti₀ (pow_pos h0 _) (pow_le_pow_left₀ h0.le
       (uniformBase_mono_n hV ht hg hs.le hnn) dE)

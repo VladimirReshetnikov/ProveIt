@@ -684,13 +684,6 @@ private lemma exists_regular_parameters {X : Type*} [Fintype X]
     nlinarith only [hm]
   obtain ⟨p, hp⟩ := MeasureTheory.exists_integral_le hFInt
   have hpBase : rho ^ 2 * S / 4 ≤ F p := hProbBase.trans (hAvgBase.trans hp)
-  have hSpr0 (p : Real × Real) : 0 ≤ Spr p := by
-    dsimp only [Spr, windowedSum]
-    apply Finset.sum_nonneg
-    intro y _
-    by_cases hy : p ∈ normalizedWindowSet rho (a y) (b y)
-    · simp [Set.indicator_of_mem hy, hq y]
-    · simp [Set.indicator_of_notMem hy]
   have hEw0 (p : Real × Real) : 0 ≤ Ew p := by
     dsimp only [Ew, windowedSum]
     apply Finset.sum_nonneg
@@ -766,7 +759,6 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
     linarith
   have hetaPos : 0 < eta := lt_of_le_of_ne heta (Ne.symm hetaNe)
   have hL : 1 + 2 * rho ≤ 2 := by
-    have hrhoSmall : rho ≤ 1 / 192 := hrhoAlpha.trans (by nlinarith [halphaOne])
     linarith
   let K : Real := qScale alpha M N
   let T : Real := alpha * M * N
@@ -1069,8 +1061,6 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
     linarith
   have hRlower : alpha ^ 2 / 16 ≤ p.2 - rho := by
     linarith only [hRcenter, hrhoAlphaSq]
-  have hRlowerPos : 0 < p.2 - rho :=
-    lt_of_lt_of_le (by positivity) hRlower
   have hRVar : VariesByFactorAtMostTwo W D.fibreSize := by
     intro y hy z hz
     have hby : b y ≤ p.2 + rho := by linarith only [(hWbounds y hy).2.1]

@@ -117,7 +117,6 @@ theorem multilinear_coefficient_recurrence {N k d m : Nat} [NeZero N]
     apply hrec.trans
     have hm0 : (0 : Real) < m := by exact_mod_cast (show 0 < m by omega)
     have hm1 : (1 : Real) ≤ m := by exact_mod_cast (show 1 ≤ m by omega)
-    have hk0 : (0 : Real) < k := by exact_mod_cast (show 0 < k by omega)
     have hpow : (1 : Real) ≤ (2 : Real) ^ (k + 1) := one_le_pow₀ (by norm_num)
     have hden : (2 : Real) ≤ (k : Real) * (2 : Real) ^ (k + 1) := by
       have hk2 : (2 : Real) ≤ k := by exact_mod_cast hk
@@ -146,7 +145,6 @@ theorem multilinear_coefficient_recurrence {N k d m : Nat} [NeZero N]
     have hm1 : (1 : Real) ≤ m := by
       have hp1 : 1 ≤ p ^ 2 := one_le_pow₀ hp
       exact_mod_cast hp1.trans hp2
-    have hd0 : (0 : Real) < d := by exact_mod_cast (show 0 < d by omega)
     have hden : (d : Real) * (2 : Real) ^ (d + 1) ≤ (k : Real) * (2 : Real) ^ (k + 1) := by
       gcongr
       norm_num

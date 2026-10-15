@@ -151,7 +151,6 @@ theorem section16_power_loss_le {W C delta theta e b : Real}
     have h := mul_le_mul_of_nonneg_right heb hlogW.le
     nlinarith
   set kappa := delta * Real.log 2 / b with hkappa
-  have hlog2pos : 0 < Real.log 2 := Real.log_pos (by norm_num)
   have hkpos : 0 < kappa := by positivity
   have hlt : kappa / theta < delta * Real.log W := by
     rw [hkappa, div_div, div_lt_iff₀ (mul_pos hb ht)]
@@ -211,8 +210,8 @@ theorem multiplyLinear_of_powerLossCover {N k : Nat} [NeZero N] (hk : 0 < k)
     MultiplyLinear gamma r Gamma := by
   intro theta ht ht1 P hP
   have hr0 : 0 < r := by linarith
-  set b := (multipleC r⁻¹ gamma k) ^ r with hb_def
-  set e := (multipleC (r⁻¹ * theta) gamma k) ^ r with he_def
+  set b := (multipleC r⁻¹ gamma k) ^ r
+  set e := (multipleC (r⁻¹ * theta) gamma k) ^ r
   have hb : 0 < b := Real.rpow_pos_of_pos (multipleC_pos k (inv_pos.mpr hr0) hg) r
   have he : 0 < e :=
     Real.rpow_pos_of_pos (multipleC_pos k (mul_pos (inv_pos.mpr hr0) ht) hg) r

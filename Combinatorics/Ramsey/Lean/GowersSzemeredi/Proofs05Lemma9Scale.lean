@@ -196,9 +196,6 @@ private theorem section5QuarterRoot_le_floorRoot_sub_one
     rw [Real.div_rpow hx (by norm_num)]
     exact div_le_div_of_nonneg_left (Real.rpow_nonneg hx _)
       hfourRootPos (section5Four_root_le_two K hK)
-  have hcurrentRootHalf :
-      x ^ (K : Real)⁻¹ / 2 <= t ^ (K : Real)⁻¹ :=
-    hrootHalf.trans hrootMono
   have hcurrentRootFour : (4 : Real) <= t ^ (K : Real)⁻¹ := by
     nlinarith
   have hfloorHalf := section5Half_le_floor_sub_one hcurrentRootFour
@@ -489,7 +486,6 @@ theorem lemma_5_9_maximal_target_bounds_holds :
       exact_mod_cast (show 16 <= 2 * T by omega)
     exact hbase.trans hfinalRootStrict.le
   have hlower : (r : Real) / 4 <= r := by
-    have hrNonneg : (0 : Real) <= r := by positivity
     nlinarith
   apply section5MaximalTargets_schedule_aux k hk false q r v (r : Real) hq
     (by positivity)
@@ -543,7 +539,6 @@ theorem lemma_5_9_quarter_scale_schedule (k q r v : Nat)
       exact_mod_cast (show 16 <= 2 * T by omega)
     exact hbase.trans hfinalRootStrict.le
   have hlower : (r : Real) / 4 <= r := by
-    have hrNonneg : (0 : Real) <= r := by positivity
     nlinarith
   apply section5MaximalTargets_schedule_aux k hk true q r v (r : Real) hq
     (by positivity)

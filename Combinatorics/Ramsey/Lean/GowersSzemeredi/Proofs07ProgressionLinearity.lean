@@ -54,7 +54,6 @@ private lemma bohr_symmetric_multiples_subset {N : Nat} [NeZero N]
   intro r hr
   rw [bohr, Finset.mem_filter] at hd
   have hdr := hd.2 r hr
-  have hmReal : (0 : Real) < m := by exact_mod_cast hm
   have hbase : 0 ≤ alpha / (32 * Real.pi * (m : Real)) * N := by positivity
   have hcollapse :
       (m : Real) * (alpha / (32 * Real.pi * (m : Real)) * N) =

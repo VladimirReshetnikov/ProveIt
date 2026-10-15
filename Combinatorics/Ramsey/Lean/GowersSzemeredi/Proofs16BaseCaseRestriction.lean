@@ -186,7 +186,6 @@ lemma section16_product_restriction {N : Nat} [NeZero N]
         unfold lemma163Alpha
         have hgammaNonneg : 0 ≤ gamma := hgamma.le
         have hthetaNonneg : 0 ≤ theta := htheta.le
-        have hbetaNonneg : 0 ≤ beta := hbeta.le
         have htwo : (2 : Real) ^ (-(2000 : Real)) ≤
             (2 : Real) ^ (-(1882 : Real)) := by
           exact Real.rpow_le_rpow_of_exponent_le (by norm_num) (by norm_num)

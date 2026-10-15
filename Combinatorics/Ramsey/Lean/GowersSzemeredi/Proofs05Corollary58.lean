@@ -154,7 +154,6 @@ theorem corollary_5_8_with_scale_holds_of_corollary_5_6
     exact Finset.mem_biUnion.mpr ⟨i, Finset.mem_univ _, hi⟩
   have hdelta : 0 ≤ delta := by
     have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-    have hcardNonneg : (0 : Real) ≤ A.card := by positivity
     nlinarith
   have hsignedU :
       0 ≤ ∑ s ∈ U, cor58BalancedReal A delta s := by
@@ -290,7 +289,6 @@ theorem corollary_5_8_with_scale_holds_of_corollary_5_6
         0 < ((N : Real) / M) ^
           (polynomialPartitionConstant k : Real)⁻¹ / 8 := by
       have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-      have hMpos : (0 : Real) < M := by exact_mod_cast hM
       positivity
     exact hscalePos.trans_le hcellLower
   have hthresholdPos : 0 < (alpha / 16) * card z := by positivity

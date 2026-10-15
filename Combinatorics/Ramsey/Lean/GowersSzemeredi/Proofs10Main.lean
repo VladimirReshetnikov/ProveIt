@@ -118,7 +118,6 @@ private lemma theorem1013_quad_domain_bounds {N M : Nat} [NeZero N]
     Section10DomainBounds (theorem1013QuadDomain D) alpha
       (M * Fintype.card X ^ 3) := by
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hMReal : (0 : Real) < M := by exact_mod_cast hM
   have hXReal : (0 : Real) < Fintype.card X := by
     rw [hcard]
     positivity
@@ -387,7 +386,6 @@ theorem theorem10_13_spectrum_bound {N M : Nat} [NeZero N]
     dsimp [lambda, section10Lambda]
     positivity
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hMreal : (0 : Real) < M := by exact_mod_cast hM
   have hlarge (r : ZMod N) (hr : r ∈ K) :
       lambda * M * N ≤ ‖fourier (domainFibreCountFunction D) r‖ := by
     simpa [K, domainLargeSpectrum] using hr
@@ -878,8 +876,6 @@ private lemma theorem1013_theta_small :
   have heta : 0 < theorem1013Eta := by
     unfold theorem1013Eta
     positivity
-  have ht : 0 < theorem1013Eta ^ ((1 : Real) / 5) :=
-    Real.rpow_pos_of_pos heta _
   have hpow :
       (theorem1013Eta ^ ((1 : Real) / 5)) ^ (5 : Nat) = theorem1013Eta := by
     have h := Real.rpow_mul_natCast heta.le ((1 : Real) / 5) 5
@@ -1297,7 +1293,6 @@ theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
   have hXcardPosReal : (0 : Real) < Fintype.card X := by
     rw [hcard]
     have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-    have hMReal : (0 : Real) < M := by exact_mod_cast hM
     positivity
   have hXcardPos : 0 < Fintype.card X := by exact_mod_cast hXcardPosReal
   letI : Nonempty X := Fintype.card_pos_iff.mp hXcardPos

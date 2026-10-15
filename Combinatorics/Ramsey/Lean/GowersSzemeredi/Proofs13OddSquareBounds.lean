@@ -14,7 +14,6 @@ theorem exists_odd_nat_between_half {x : Real} (hx : 4 ≤ x) :
   have hn : 4 ≤ n := Nat.le_floor hx
   let m := 2 * ((n - 1) / 2) + 1
   have hmod := Nat.mod_lt (n - 1) (by omega : 0 < 2)
-  have hdiv := Nat.div_add_mod (n - 1) 2
   have hmn : m ≤ n := by dsimp [m]; omega
   have hnm : n ≤ m + 1 := by dsimp [m]; omega
   have hnmR : (n : Real) ≤ (m : Real) + 1 := by exact_mod_cast hnm

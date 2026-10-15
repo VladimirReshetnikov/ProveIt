@@ -65,9 +65,6 @@ lemma lemma163_width_le_coarse {gamma theta eta : Real} {q : Nat}
       lemma163CoarseCellLength eta := by
   have hw := lemma163_exponent_le_corollary_half hgamma hgammaOne htheta
     hthetaOne heta hetaOne hq hqBound
-  have hExpNonneg : 0 ≤ lemma163LocalExponent gamma theta eta q :=
-    (lemma163_local_bounds hgamma hgammaOne htheta hthetaOne
-      heta hetaOne hq hqBound).1.le
   have hbase : (1 : Real) ≤ L := by exact_mod_cast hL
   have hpow :
       (L : Real) ^ lemma163LocalExponent gamma theta eta q ≤
