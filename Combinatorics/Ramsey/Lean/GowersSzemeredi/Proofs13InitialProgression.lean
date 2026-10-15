@@ -319,16 +319,6 @@ private noncomputable def lemma134CollisionSet {X Y : Type*}
   classical
   exact Finset.univ.filter fun p => f p.1 = f p.2
 
-private def lemma134_fiberEquiv {X Y : Type*} (f : X → Y) :
-    X ≃ Σ y, lemma134Fiber f y where
-  toFun x := ⟨f x, x, rfl⟩
-  invFun z := z.2.1
-  left_inv _ := rfl
-  right_inv z := by
-    rcases z with ⟨y, ⟨x, hx⟩⟩
-    subst y
-    rfl
-
 private def lemma134_collisionEquiv {X Y : Type*} (f : X → Y) :
     lemma134Collision f ≃
       Σ y, lemma134Fiber f y × lemma134Fiber f y where
@@ -352,7 +342,7 @@ private lemma lemma134_collision_lower {X Y : Type*}
   classical
   let c : Y → Real := fun y => Fintype.card (lemma134Fiber f y)
   have hsource : (Fintype.card X : Real) = ∑ y : Y, c y := by
-    have hcard := Fintype.card_congr (lemma134_fiberEquiv f)
+    have hcard := Fintype.card_congr (Equiv.sigmaFiberEquiv f).symm
     rw [Fintype.card_sigma] at hcard
     rw [hcard]
     simp only [c, Nat.cast_sum]

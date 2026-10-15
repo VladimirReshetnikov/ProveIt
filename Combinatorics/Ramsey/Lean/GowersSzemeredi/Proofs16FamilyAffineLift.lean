@@ -14,114 +14,14 @@ covers to multilinear covers is done for all members at once:
 * every member's candidate maps are interpolated on the same cells, and
   the candidate family of a cell is indexed by `ι × (candidates)`.
 
-The constructions are copies of `section16_synchronize_base_cover` and
-`Section16SampledOrAnchoredOn.synchronized_compressed_cover_with` through
-`Section16LineCover.global_affine_lift_rounded_with`, with every per-point
-statement made per member. -/
+The synchronized retiling and compressed-cover producers are reexported
+from their earlier shared owners. Single-function covers specialize those
+family producers; this module assembles the local, all-scale and global
+lifts with every per-point statement made per member. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
-
-/-- **Synchronized compressed cover for a family.** One cover of a relation
-containing all members' sampled slices; each member interpolates its own
-candidates; one common good set `F′` inside every member's recovered set. -/
-theorem section16_synchronized_compressed_cover_family
-    {N k r m v : Nat} [Fact N.Prime] {ι : Type}
-    {D F : ι → Finset (Point N (k + 1))}
-    {phi : ι → Point N (k + 1) → ZMod N} {sample : ι → Fin r → ZMod N}
-    {Pb Eb : Real → Real} {Gs : Finset (Point N k × ZMod N)}
-    (ha : ∀ a, Section16SampledOrAnchoredOn (D a) (phi a) (sample a) (F a))
-    (hslice : MultiplyLinearWith Pb Eb Gs)
-    (hGs : ∀ a h i, appendCoordinate h (sample a i) ∈ D a →
-      (h, phi a (appendCoordinate h (sample a i))) ∈ Gs)
-    (hr : 0 < r) (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)
-    (hPb : 0 ≤ Pb ε) (hEb : 0 ≤ Eb ε)
-    (T : Box N k) (I : ModAP N) (hT : T.IsProper) (hI : I.IsProper)
-    (hstep : I.step = T.commonDiff) (u : (ZMod N)ˣ) (hu : I.step = (↑u : ZMod N))
-    (hk : 0 < k) (hm : 4 ≤ m) (hmT : m ≤ T.width) (hmI : m ≤ I.length)
-    (hv : 1 ≤ v)
-    (hvscale : (v : ℝ) ^ 2 + 1 ≤ ((m : ℝ) / 8) ^ (Eb ε))
-    (η : ℝ) (F' : Finset (Point N (k + 1))) (hF'c : ∀ a, F' ⊆ F a)
-    (hF : F' ⊆ lastProductSet T.carrier I.carrier)
-    (hFm : (1 - η) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ F'.card) :
-    ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))
-      (nu : Fin L → ι × Fin (section16CompressedCandidateCount r p) →
-        Point N (k + 1) → ZMod N),
-      (p : ℝ) ≤ Pb ε ∧
-      G ⊆ F' ∧ (1 - η - ε) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ G.card ∧
-      IsPartition (fun j => (S j).carrier) (lastProductSet T.carrier I.carrier) ∧
-      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
-      (∀ j c, IsMultilinear (nu j c)) ∧
-      ∀ a j z, z ∈ (S j).carrier → z ∈ D a → z ∈ G → ∃ c, phi a z = nu j c z := by
-  classical
-  obtain ⟨p, H, b, P, n, R, mu, hp, hH, hHm, hPpart, hPproper,
-      hPaxes, hPstep, hRpart, hRproper, hRwidth, hmu, hc⟩ :=
-    hslice.short_parent_cover ε hε hε1 hPb hEb T I hT hI hk hm hmT hmI
-  let e := section5NatFlattenEquiv n
-  let R' := boxFlatten n R
-  have hR'part : IsBoxPartition R' T := boxFlatten_partition T P n R hPpart hRpart
-  have hfit (j : Fin (∑ a, n a)) : v ^ 2 ≤ (R' j).width - 1 := by
-    have h := hvscale.trans (hRwidth (e.symm j).1 (e.symm j).2)
-    have h' : v ^ 2 + 1 ≤ (R' j).width := by exact_mod_cast h
-    omega
-  have hne (j : Fin (∑ a, n a)) : (R' j).carrier.Nonempty := by
-    apply Box.carrier_nonempty_of_axis_pos
-    intro a
-    have hw := (R' j).width_le_axis_length a
-    have hf := hfit j
-    have hv2 : 1 ≤ v ^ 2 := by nlinarith
-    omega
-  let axis : Fin k := ⟨0, hk⟩
-  let parent := fun j : Fin (∑ a, n a) => (P (e.symm j).1).axis axis
-  have hsub (j : Fin (∑ a, n a)) : ((R' j).axis axis).carrier ⊆ (parent j).carrier :=
-    (R' j).axis_carrier_subset_of_carrier_subset (P (e.symm j).1) (hne j)
-      (IsPartition.cell_subset (hRpart (e.symm j).1) (e.symm j).2) axis
-  have hparentstep (j : Fin (∑ a, n a)) : (parent j).step = (↑u : ZMod N) := by
-    dsimp only [parent]
-    rw [(P _).axis_step, hPstep, ← hstep, hu]
-  have hparallel (j : Fin (∑ a, n a)) : I.step = (parent j).step := by
-    rw [hparentstep, hu]
-  have hlift : ∀ (a : ι) (j : Fin (∑ a, n a)),
-      ∃ nu : Fin (section16CompressedCandidateCount r p) → Point N (k + 1) → ZMod N,
-        (∀ ij, IsMultilinear (nu ij)) ∧
-        ∀ h ∈ H ∩ (R' j).carrier, ∀ x, appendCoordinate h x ∈ D a →
-          appendCoordinate h x ∈ F a →
-            ∃ ij, phi a (appendCoordinate h x) = nu ij (appendCoordinate h x) := by
-    intro a j
-    apply (ha a).compressed_multilinear_cover hr (H ∩ (R' j).carrier)
-      (fun _ => mu (e.symm j).1 (e.symm j).2) (fun _ => hmu _ _)
-    intro h hh i hi _
-    obtain ⟨hhH, hhR⟩ := Finset.mem_inter.mp hh
-    exact hc (e.symm j).1 (e.symm j).2 h hhR hhH (phi a (appendCoordinate h (sample a i)))
-      (hGs a h i hi)
-  choose nu hnu hcov using hlift
-  let G := F' ∩ lastProductSet H I.carrier
-  have hprod := lastProductSet_good_mass T.carrier H I.carrier ε hH hHm
-  have hGmass := good_intersection_mass (lastProductSet T.carrier I.carrier) F'
-    (lastProductSet H I.carrier) η ε hF hprod.1 hFm hprod.2
-  let nuAll : Fin (∑ a, n a) → ι × Fin (section16CompressedCandidateCount r p) →
-      Point N (k + 1) → ZMod N := fun j c => nu c.1 j c.2
-  have hcover : ∀ a j z, section16Init z ∈ (R' j).carrier → z ∈ D a →
-      z ∈ (fun _ : ι => G) a → ∃ c, phi a z = nuAll j c z := by
-    intro a j z hzR hzD hzG
-    obtain ⟨hzF, hzH⟩ := Finset.mem_inter.mp hzG
-    have hhH := (Finset.mem_filter.mp hzH).2.1
-    have hd : appendCoordinate (section16Init z) (section16Last z) ∈ D a := by
-      simpa only [appendCoordinate_init_last] using hzD
-    have hf : appendCoordinate (section16Init z) (section16Last z) ∈ F a := by
-      simpa only [appendCoordinate_init_last] using hF'c a hzF
-    obtain ⟨ij, hij⟩ := hcov a j (section16Init z)
-      (Finset.mem_inter.mpr ⟨hhH, hzR⟩) (section16Last z) hd hf
-    refine ⟨(a, ij), ?_⟩
-    simpa only [appendCoordinate_init_last] using hij
-  obtain ⟨L, S, nu', hSpart, hSproper, hnu', hc'⟩ := section16_synchronize_base_cover_family
-    T I hI R' hR'part (fun j => hRproper _ _) parent axis (fun _ => u)
-    hparentstep hparallel hsub (fun j => (hPaxes (e.symm j).1 axis).2.1)
-    (fun j => (hPaxes (e.symm j).1 axis).2.2) hv hfit D (fun _ => G) phi nuAll
-    (fun j c => hnu c.1 j c.2) hcover
-  exact ⟨p, G, L, S, nu', hp, Finset.inter_subset_left, hGmass, hSpart, hSproper, hnu',
-    fun a j z hz hzD hzG => hc' a j z hz hzD hzG⟩
 
 /-- Finitely many good sets inside one set lose at most the sum of their
 losses. -/

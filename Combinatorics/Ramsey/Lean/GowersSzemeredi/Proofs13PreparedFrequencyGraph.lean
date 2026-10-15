@@ -38,44 +38,17 @@ private lemma context_sum_vertical_card {N : Nat} [NeZero N]
     (B : Finset (Pair N)) :
     ∑ x : ZMod N, (verticalSection B x).card = B.card := by
   classical
-  calc
-    ∑ x : ZMod N, (verticalSection B x).card =
-        ∑ x : ZMod N, countWhere (fun y : ZMod N ↦ (x, y) ∈ B) := by
-      apply Fintype.sum_congr
-      intro x
-      unfold verticalSection countWhere
-      apply congrArg Finset.card
-      ext y
-      simp
-    _ = countWhere (fun z : Pair N ↦ z ∈ B) :=
-      (context_countWhere_prod _).symm
-    _ = B.card := by simp [countWhere]
+  simpa [verticalSection, countWhere] using
+    (context_countWhere_prod (fun x y : ZMod N => (x, y) ∈ B)).symm
 
 private lemma context_sum_horizontal_card {N : Nat} [NeZero N]
     (B : Finset (Pair N)) :
     ∑ y : ZMod N, (horizontalSection B y).card = B.card := by
   classical
-  calc
-    ∑ y : ZMod N, (horizontalSection B y).card =
-        ∑ y : ZMod N, countWhere (fun x : ZMod N ↦ (x, y) ∈ B) := by
-      apply Fintype.sum_congr
-      intro y
-      unfold horizontalSection countWhere
-      apply congrArg Finset.card
-      ext x
-      simp
-    _ = ∑ x : ZMod N,
-        countWhere (fun y : ZMod N ↦ (x, y) ∈ B) := by
-      simp_rw [gcs_countWhere_eq_sum_ite]
-      rw [Finset.sum_comm]
-    _ = ∑ x : ZMod N, (verticalSection B x).card := by
-      apply Fintype.sum_congr
-      intro x
-      unfold verticalSection countWhere
-      apply congrArg Finset.card
-      ext y
-      simp
-    _ = B.card := context_sum_vertical_card B
+  simpa [horizontalSection, countWhere] using
+    ((context_countWhere_prod (fun y x : ZMod N => (x, y) ∈ B)).symm.trans
+      (feature_countWhere_equiv (Equiv.prodComm (ZMod N) (ZMod N))
+        (fun z : Pair N => z ∈ B)).symm)
 
 private lemma context_restrict_fibres {N : Nat} [NeZero N]
     (hprime : Nat.Prime N) (a : Real) (ha : 0 < a)
@@ -215,37 +188,15 @@ private lemma context_vertical_join_card {N : Nat} [NeZero N]
     (T : ZMod N → Finset (ZMod N)) :
     (contextVerticalJoin T).card = ∑ x : ZMod N, (T x).card := by
   classical
-  calc
-    (contextVerticalJoin T).card =
-        countWhere (fun z : Pair N ↦ z.2 ∈ T z.1) := by
-      unfold contextVerticalJoin countWhere
-      apply congrArg Finset.card
-      ext z
-      simp
-    _ = ∑ x : ZMod N, countWhere (fun y : ZMod N ↦ y ∈ T x) :=
-      context_countWhere_prod (X := ZMod N) (Y := ZMod N)
-        (fun x y ↦ y ∈ T x)
-    _ = ∑ x : ZMod N, (T x).card := by simp [countWhere]
+  simpa only [context_vertical_join_section] using
+    (context_sum_vertical_card (contextVerticalJoin T)).symm
 
 private lemma context_horizontal_join_card {N : Nat} [NeZero N]
     (T : ZMod N → Finset (ZMod N)) :
     (contextHorizontalJoin T).card = ∑ y : ZMod N, (T y).card := by
   classical
-  calc
-    (contextHorizontalJoin T).card =
-        countWhere (fun z : ZMod N × ZMod N ↦ z.1 ∈ T z.2) := by
-      unfold contextHorizontalJoin countWhere
-      apply congrArg Finset.card
-      ext z
-      simp
-    _ = countWhere (fun z : ZMod N × ZMod N ↦ z.2 ∈ T z.1) := by
-      simpa [Prod.swap] using feature_countWhere_equiv
-        (Equiv.prodComm (ZMod N) (ZMod N))
-        (fun z : ZMod N × ZMod N ↦ z.1 ∈ T z.2)
-    _ = ∑ y : ZMod N, countWhere (fun x : ZMod N ↦ x ∈ T y) :=
-      context_countWhere_prod (X := ZMod N) (Y := ZMod N)
-        (fun y x ↦ x ∈ T y)
-    _ = ∑ y : ZMod N, (T y).card := by simp [countWhere]
+  simpa only [context_horizontal_join_section] using
+    (context_sum_horizontal_card (contextHorizontalJoin T)).symm
 
 private lemma context_vertical_restriction {N : Nat} [NeZero N]
     (hprime : Nat.Prime N) (a : Real) (ha : 0 < a)

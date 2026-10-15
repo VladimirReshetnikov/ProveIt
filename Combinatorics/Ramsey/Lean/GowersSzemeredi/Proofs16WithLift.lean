@@ -54,12 +54,18 @@ theorem section16StackedSlices_mem {N k r : Nat} [NeZero N]
   apply Finset.mem_image.mpr
   exact ⟨h, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hB⟩, rfl⟩
 
-theorem Section16SampledOrAnchoredOn.synchronized_compressed_cover_with
-    {N k r m v : Nat} [Fact N.Prime]
-    {B D F : Finset (Point N (k + 1))}
-    {phi : Point N (k + 1) → ZMod N} {sample : Fin r → ZMod N} {Pb Eb : Real → Real}
-    (ha : Section16SampledOrAnchoredOn D phi sample F) (hD : D ⊆ B)
-    (hslice : MultiplyLinearWith Pb Eb (section16StackedSlices B phi sample))
+/-- **Synchronized compressed cover for a family.** One cover of a relation
+containing all members' sampled slices; each member interpolates its own
+candidates; one common good set `F′` inside every member's recovered set. -/
+theorem section16_synchronized_compressed_cover_family
+    {N k r m v : Nat} [Fact N.Prime] {ι : Type}
+    {D F : ι → Finset (Point N (k + 1))}
+    {phi : ι → Point N (k + 1) → ZMod N} {sample : ι → Fin r → ZMod N}
+    {Pb Eb : Real → Real} {Gs : Finset (Point N k × ZMod N)}
+    (ha : ∀ a, Section16SampledOrAnchoredOn (D a) (phi a) (sample a) (F a))
+    (hslice : MultiplyLinearWith Pb Eb Gs)
+    (hGs : ∀ a h i, appendCoordinate h (sample a i) ∈ D a →
+      (h, phi a (appendCoordinate h (sample a i))) ∈ Gs)
     (hr : 0 < r) (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)
     (hPb : 0 ≤ Pb ε) (hEb : 0 ≤ Eb ε)
     (T : Box N k) (I : ModAP N) (hT : T.IsProper) (hI : I.IsProper)
@@ -67,17 +73,18 @@ theorem Section16SampledOrAnchoredOn.synchronized_compressed_cover_with
     (hk : 0 < k) (hm : 4 ≤ m) (hmT : m ≤ T.width) (hmI : m ≤ I.length)
     (hv : 1 ≤ v)
     (hvscale : (v : ℝ) ^ 2 + 1 ≤ ((m : ℝ) / 8) ^ (Eb ε))
-    (η : ℝ) (hF : F ⊆ lastProductSet T.carrier I.carrier)
-    (hFm : (1 - η) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ F.card) :
+    (η : ℝ) (F' : Finset (Point N (k + 1))) (hF'c : ∀ a, F' ⊆ F a)
+    (hF : F' ⊆ lastProductSet T.carrier I.carrier)
+    (hFm : (1 - η) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ F'.card) :
     ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))
-      (nu : Fin L → Fin (section16CompressedCandidateCount r p) →
+      (nu : Fin L → ι × Fin (section16CompressedCandidateCount r p) →
         Point N (k + 1) → ZMod N),
       (p : ℝ) ≤ Pb ε ∧
-      G ⊆ F ∧ (1 - η - ε) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ G.card ∧
+      G ⊆ F' ∧ (1 - η - ε) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ G.card ∧
       IsPartition (fun j => (S j).carrier) (lastProductSet T.carrier I.carrier) ∧
       (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
-      (∀ j ij, IsMultilinear (nu j ij)) ∧
-      ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z := by
+      (∀ j c, IsMultilinear (nu j c)) ∧
+      ∀ a j z, z ∈ (S j).carrier → z ∈ D a → z ∈ G → ∃ c, phi a z = nu j c z := by
   classical
   obtain ⟨p, H, b, P, n, R, mu, hp, hH, hHm, hPpart, hPproper,
       hPaxes, hPstep, hRpart, hRproper, hRwidth, hmu, hc⟩ :=
@@ -106,39 +113,83 @@ theorem Section16SampledOrAnchoredOn.synchronized_compressed_cover_with
     rw [(P _).axis_step, hPstep, ← hstep, hu]
   have hparallel (j : Fin (∑ a, n a)) : I.step = (parent j).step := by
     rw [hparentstep, hu]
-  have hlift : ∀ j : Fin (∑ a, n a),
+  have hlift : ∀ (a : ι) (j : Fin (∑ a, n a)),
       ∃ nu : Fin (section16CompressedCandidateCount r p) → Point N (k + 1) → ZMod N,
         (∀ ij, IsMultilinear (nu ij)) ∧
-        ∀ h ∈ H ∩ (R' j).carrier, ∀ x, appendCoordinate h x ∈ D →
-          appendCoordinate h x ∈ F → ∃ ij, phi (appendCoordinate h x) = nu ij (appendCoordinate h x) := by
-    intro j
-    apply ha.compressed_multilinear_cover hr (H ∩ (R' j).carrier)
+        ∀ h ∈ H ∩ (R' j).carrier, ∀ x, appendCoordinate h x ∈ D a →
+          appendCoordinate h x ∈ F a →
+            ∃ ij, phi a (appendCoordinate h x) = nu ij (appendCoordinate h x) := by
+    intro a j
+    apply (ha a).compressed_multilinear_cover hr (H ∩ (R' j).carrier)
       (fun _ => mu (e.symm j).1 (e.symm j).2) (fun _ => hmu _ _)
     intro h hh i hi _
     obtain ⟨hhH, hhR⟩ := Finset.mem_inter.mp hh
-    exact hc (e.symm j).1 (e.symm j).2 h hhR hhH (phi (appendCoordinate h (sample i)))
-      (section16StackedSlices_mem h i (hD hi))
+    exact hc (e.symm j).1 (e.symm j).2 h hhR hhH (phi a (appendCoordinate h (sample a i)))
+      (hGs a h i hi)
   choose nu hnu hcov using hlift
-  let G := F ∩ lastProductSet H I.carrier
+  let G := F' ∩ lastProductSet H I.carrier
   have hprod := lastProductSet_good_mass T.carrier H I.carrier ε hH hHm
-  have hGmass := good_intersection_mass (lastProductSet T.carrier I.carrier) F
+  have hGmass := good_intersection_mass (lastProductSet T.carrier I.carrier) F'
     (lastProductSet H I.carrier) η ε hF hprod.1 hFm hprod.2
-  have hcover : ∀ j z, section16Init z ∈ (R' j).carrier → z ∈ D → z ∈ G →
-      ∃ ij, phi z = nu j ij z := by
-    intro j z hzR hzD hzG
+  let nuAll : Fin (∑ a, n a) → ι × Fin (section16CompressedCandidateCount r p) →
+      Point N (k + 1) → ZMod N := fun j c => nu c.1 j c.2
+  have hcover : ∀ a j z, section16Init z ∈ (R' j).carrier → z ∈ D a →
+      z ∈ (fun _ : ι => G) a → ∃ c, phi a z = nuAll j c z := by
+    intro a j z hzR hzD hzG
     obtain ⟨hzF, hzH⟩ := Finset.mem_inter.mp hzG
     have hhH := (Finset.mem_filter.mp hzH).2.1
-    have hd : appendCoordinate (section16Init z) (section16Last z) ∈ D := by
+    have hd : appendCoordinate (section16Init z) (section16Last z) ∈ D a := by
       simpa only [appendCoordinate_init_last] using hzD
-    have hf : appendCoordinate (section16Init z) (section16Last z) ∈ F := by
-      simpa only [appendCoordinate_init_last] using hzF
-    simpa only [appendCoordinate_init_last] using hcov j (section16Init z)
+    have hf : appendCoordinate (section16Init z) (section16Last z) ∈ F a := by
+      simpa only [appendCoordinate_init_last] using hF'c a hzF
+    obtain ⟨ij, hij⟩ := hcov a j (section16Init z)
       (Finset.mem_inter.mpr ⟨hhH, hzR⟩) (section16Last z) hd hf
-  obtain ⟨L, S, nu', hSpart, hSproper, hnu', hc'⟩ := section16_synchronize_base_cover
+    refine ⟨(a, ij), ?_⟩
+    simpa only [appendCoordinate_init_last] using hij
+  obtain ⟨L, S, nu', hSpart, hSproper, hnu', hc'⟩ := section16_synchronize_base_cover_family
     T I hI R' hR'part (fun j => hRproper _ _) parent axis (fun _ => u)
     hparentstep hparallel hsub (fun j => (hPaxes (e.symm j).1 axis).2.1)
-    (fun j => (hPaxes (e.symm j).1 axis).2.2) hv hfit D G phi nu hnu hcover
-  exact ⟨p, G, L, S, nu', hp, Finset.inter_subset_left, hGmass, hSpart, hSproper, hnu', hc'⟩
+    (fun j => (hPaxes (e.symm j).1 axis).2.2) hv hfit D (fun _ => G) phi nuAll
+    (fun j c => hnu c.1 j c.2) hcover
+  exact ⟨p, G, L, S, nu', hp, Finset.inter_subset_left, hGmass, hSpart, hSproper, hnu',
+    fun a j z hz hzD hzG => hc' a j z hz hzD hzG⟩
+
+theorem Section16SampledOrAnchoredOn.synchronized_compressed_cover_with
+    {N k r m v : Nat} [Fact N.Prime]
+    {B D F : Finset (Point N (k + 1))}
+    {phi : Point N (k + 1) → ZMod N} {sample : Fin r → ZMod N} {Pb Eb : Real → Real}
+    (ha : Section16SampledOrAnchoredOn D phi sample F) (hD : D ⊆ B)
+    (hslice : MultiplyLinearWith Pb Eb (section16StackedSlices B phi sample))
+    (hr : 0 < r) (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)
+    (hPb : 0 ≤ Pb ε) (hEb : 0 ≤ Eb ε)
+    (T : Box N k) (I : ModAP N) (hT : T.IsProper) (hI : I.IsProper)
+    (hstep : I.step = T.commonDiff) (u : (ZMod N)ˣ) (hu : I.step = (↑u : ZMod N))
+    (hk : 0 < k) (hm : 4 ≤ m) (hmT : m ≤ T.width) (hmI : m ≤ I.length)
+    (hv : 1 ≤ v)
+    (hvscale : (v : ℝ) ^ 2 + 1 ≤ ((m : ℝ) / 8) ^ (Eb ε))
+    (η : ℝ) (hF : F ⊆ lastProductSet T.carrier I.carrier)
+    (hFm : (1 - η) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ F.card) :
+    ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))
+      (nu : Fin L → Fin (section16CompressedCandidateCount r p) →
+        Point N (k + 1) → ZMod N),
+      (p : ℝ) ≤ Pb ε ∧
+      G ⊆ F ∧ (1 - η - ε) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ G.card ∧
+      IsPartition (fun j => (S j).carrier) (lastProductSet T.carrier I.carrier) ∧
+      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
+      (∀ j ij, IsMultilinear (nu j ij)) ∧
+      ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z := by
+  classical
+  obtain ⟨p, G, L, S, nu, hp, hGF, hGmass, hpart, hproper, hnu, hcover⟩ :=
+    section16_synchronized_compressed_cover_family (ι := Unit)
+      (D := fun _ => D) (F := fun _ => F) (phi := fun _ => phi) (sample := fun _ => sample)
+      (fun _ => ha) hslice (fun _ h i hi => section16StackedSlices_mem h i (hD hi))
+      hr ε hε hε1 hPb hEb T I hT hI hstep u hu hk hm hmT hmI hv hvscale
+      η F (fun _ => Finset.Subset.refl _) hF hFm
+  refine ⟨p, G, L, S, fun j i => nu j ((), i), hp, hGF, hGmass, hpart, hproper,
+    fun j i => hnu j ((), i), ?_⟩
+  intro j z hz hzD hzG
+  obtain ⟨⟨⟨⟩, i⟩, hi⟩ := hcover () j z hz hzD hzG
+  exact ⟨i, hi⟩
 
 theorem section16_local_affine_lift_with {N k q r m v : Nat} [Fact N.Prime]
     (P : Box N (k + 1)) (hP : P.IsProper) (hk : 0 < k)

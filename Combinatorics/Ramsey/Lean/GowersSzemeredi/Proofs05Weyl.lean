@@ -2637,25 +2637,8 @@ theorem weyl_raised_estimate {alpha : Real} {k t m : Nat}
                 (fun z => alpha * (z : Real) ^ k) t r [] ≤
               (2 : Real) ^ r * positiveProductMajorantSum alpha k t r 1 := by
           simpa only [natAbsShiftProduct, List.map_nil, List.prod_nil] using hnz
-        have hadd :
-            weylZeroContribution t r +
-                iteratedNonzeroDifferenceNormSum
-                  (fun z => alpha * (z : Real) ^ k) t r [] ≤
-              weylZeroContribution t r +
-                (2 : Real) ^ r * positiveProductMajorantSum alpha k t r 1 := by
-          calc
-            weylZeroContribution t r +
-                  iteratedNonzeroDifferenceNormSum
-                    (fun z => alpha * (z : Real) ^ k) t r [] =
-                iteratedNonzeroDifferenceNormSum
-                    (fun z => alpha * (z : Real) ^ k) t r [] +
-                  weylZeroContribution t r := by ring
-            _ ≤ (2 : Real) ^ r * positiveProductMajorantSum alpha k t r 1 +
-                weylZeroContribution t r := add_le_add_left hnz' _
-            _ = weylZeroContribution t r +
-                (2 : Real) ^ r * positiveProductMajorantSum alpha k t r 1 := by ring
         exact mul_le_mul_of_nonneg_left
-          hadd (pow_nonneg hD0 E)
+          (add_le_add le_rfl hnz') (pow_nonneg hD0 E)
       _ = D ^ E * weylZeroContribution t r +
           D ^ E * 2 ^ r * positiveProductMajorantSum alpha k t r 1 := by ring
       _ ≤ (2 : Real) ^ K * k *

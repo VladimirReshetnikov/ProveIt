@@ -3010,15 +3010,10 @@ theorem selection_scale_estimate_explicit
             generalArrangementCount 8 B' ∧
           (1 - eta) * generalArrangementCount 8 B' ≤
             respectedGeneralArrangementCount 8 B' phi := by
-  intro N _ hN hprime hodd
-  exact selection_scale_estimate_of_exceptional_bound_explicit
-    (fun N ↦ N.Prime ∧ Odd N) k alpha scale eta halpha hscale heta heta_lt.le
-    ((3 : Real) ^ (16 * 2 ^ k) * k) (by positivity)
-    (fun delta hdelta N _ _ hratio hvalid ↦
-      selectionDegenerate_real_small_explicit k scale delta hk hscale hdelta N hratio
-        hvalid.1 hvalid.2)
-    N ((selectionSharpExplicitThreshold_le k alpha eta scale _
-      halpha heta heta_lt hscale (by positivity)).trans hN) ⟨hprime, hodd⟩
+  intro N _ hN
+  exact selection_scale_estimate_sharp_explicit k alpha scale eta hk halpha hscale heta
+    heta_lt.le N ((selectionSharpExplicitThreshold_le k alpha eta scale _
+      halpha heta heta_lt hscale (by positivity)).trans hN)
 
 /-- `selection_scale_estimate_zero` with its modulus threshold written out. -/
 theorem selection_scale_estimate_zero_explicit
@@ -3033,15 +3028,10 @@ theorem selection_scale_estimate_zero_explicit
             generalArrangementCount 8 B' ∧
           (1 - eta) * generalArrangementCount 8 B' ≤
             respectedGeneralArrangementCount 8 B' phi := by
-  intro N _ hN B phi hu hl
-  exact selection_scale_estimate_of_exceptional_bound_explicit
-    (fun _ => True) 0 alpha scale eta halpha hscale heta heta_lt.le
-    (2 * 4 ^ 16) (by positivity)
-    (fun delta hdelta N _ hN3 hratio _ => by
-      simpa only [Nat.mul_zero, zero_add] using
-        selectionDegenerate_real_small_zero_explicit scale delta hscale hdelta N hN3 hratio)
-    N ((selectionSharpExplicitThreshold_le 0 alpha eta scale _
-      halpha heta heta_lt hscale (by positivity)).trans hN) trivial B phi hu hl
+  intro N _ hN
+  exact selection_scale_estimate_zero_sharp_explicit alpha scale eta halpha hscale heta
+    heta_lt.le N ((selectionSharpExplicitThreshold_le 0 alpha eta scale _
+      halpha heta heta_lt hscale (by positivity)).trans hN)
 
 set_option maxHeartbeats 1000000 in
 /-- The height-zero specialization of the random restriction.  Unlike the
