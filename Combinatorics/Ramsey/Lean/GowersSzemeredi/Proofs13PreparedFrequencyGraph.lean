@@ -38,17 +38,17 @@ private lemma context_sum_vertical_card {N : Nat} [NeZero N]
     (B : Finset (Pair N)) :
     ∑ x : ZMod N, (verticalSection B x).card = B.card := by
   classical
-  simpa [verticalSection, countWhere] using
-    (context_countWhere_prod (fun x y : ZMod N => (x, y) ∈ B)).symm
+  convert (context_countWhere_prod (fun x y : ZMod N => (x, y) ∈ B)).symm using 1 <;>
+    simp [verticalSection, countWhere] <;> congr!
 
 private lemma context_sum_horizontal_card {N : Nat} [NeZero N]
     (B : Finset (Pair N)) :
     ∑ y : ZMod N, (horizontalSection B y).card = B.card := by
   classical
-  simpa [horizontalSection, countWhere] using
-    ((context_countWhere_prod (fun y x : ZMod N => (x, y) ∈ B)).symm.trans
+  convert ((context_countWhere_prod (fun y x : ZMod N => (x, y) ∈ B)).symm.trans
       (feature_countWhere_equiv (Equiv.prodComm (ZMod N) (ZMod N))
-        (fun z : Pair N => z ∈ B)).symm)
+        (fun z : Pair N => z ∈ B)).symm) using 1 <;>
+    simp [horizontalSection, countWhere] <;> congr!
 
 private lemma context_restrict_fibres {N : Nat} [NeZero N]
     (hprime : Nat.Prime N) (a : Real) (ha : 0 < a)
