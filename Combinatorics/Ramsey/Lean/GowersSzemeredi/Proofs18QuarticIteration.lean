@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16DimensionTwo
 import GowersSzemeredi.Proofs18JointInverseInduction
 import GowersSzemeredi.Proofs18GeneralIteration
+import GowersSzemeredi.Proofs03FourFactorSymmetry
 
 /-! The proved two-dimensional structural theorem discharges the quartic
 inverse input and the six-term density iteration. The inverse threshold

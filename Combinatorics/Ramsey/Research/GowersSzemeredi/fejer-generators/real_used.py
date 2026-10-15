@@ -13,7 +13,7 @@ own = {}
 for l in open(sys.argv[2], encoding='utf8'):
     m, n = l.split(' | ')[0].split(' ', 1)
     own.setdefault(m, set()).add(n)
-EQ = re.compile(r'\.(eq_\d+|eq_def|eq_unfold|eq_1)$')
+EQ = re.compile(r'\.(eq_\d+|eq_def|eq_unfold|eq_1|congr_simp)$')
 kept = dropped = 0
 with open('used_ranges_real.txt', 'w', encoding='utf8') as out:
     for l in open(sys.argv[1], encoding='utf8'):

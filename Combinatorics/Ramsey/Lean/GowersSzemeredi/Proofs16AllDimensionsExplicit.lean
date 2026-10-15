@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs16AllDimensions
 import GowersSzemeredi.Proofs16ExplicitRecurrenceProfiles
+import GowersSzemeredi.Proofs03FourFactorSymmetry
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! **Theorem 16.2 and Corollary 16.11, unconditionally, in every dimension.**
 

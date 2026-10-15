@@ -1,6 +1,5 @@
 import GowersSzemeredi.Proofs16JointSliceSpectrum
 import GowersSzemeredi.Proofs16VertexWithCovers
-import GowersSzemeredi.Proofs16SinglePieceGradedGlobal
 
 /-! **Joint slices in the core of the single-piece lift** (Notes L.16q).
 

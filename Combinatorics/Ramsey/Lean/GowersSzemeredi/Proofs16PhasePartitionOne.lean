@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs13PolyRecurrence
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! The phase partition of progressions from the dimension-one common-difference
 partition (Notes L.7c, P11a).

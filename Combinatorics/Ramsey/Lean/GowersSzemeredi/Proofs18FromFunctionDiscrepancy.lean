@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs18GeneralIteration
 import GowersSzemeredi.Sections17_18
+import GowersSzemeredi.Proofs03FourFactorSymmetry
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! The exact quantitative theorem follows from an explicit function
 inverse theorem whose constants fit the proved iteration threshold.

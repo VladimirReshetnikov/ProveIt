@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs13UniformDensityParameters
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! Explicit coefficient reserves for the finite row-scale construction. -/
 set_option autoImplicit false

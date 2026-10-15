@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16IntegerBoxFactors
 import GowersSzemeredi.Proofs18NaturalIntervalIncrement
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! The uncapped loss quantifier is impossible even for genuine integer
 boxes. This refutation is separate from the corrected cover statements. -/

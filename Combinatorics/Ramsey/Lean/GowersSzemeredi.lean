@@ -1216,6 +1216,8 @@ import GowersSzemeredi.Proofs18FinalStep
 import GowersSzemeredi.Proofs18FinalEnvelopes
 import GowersSzemeredi.Proofs18Final
 import GowersSzemeredi.Proofs00Basics
+import GowersSzemeredi.Proofs05FullPartitionScale
+import GowersSzemeredi.Proofs05ThresholdFreeCorollary58
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

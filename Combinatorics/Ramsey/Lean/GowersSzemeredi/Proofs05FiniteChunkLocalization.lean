@@ -1,6 +1,9 @@
 import GowersSzemeredi.Proofs05AffineLocalization
 import GowersSzemeredi.Proofs05FiniteLocalizationPhaseError
 import GowersSzemeredi.Proofs05ModularPartitionTransport
+import GowersSzemeredi.Proofs05HighCorrelationAssembly
+import GowersSzemeredi.Proofs05HighCorrelationScale
+import GowersSzemeredi.Proofs05ThresholdFreeScale
 
 /-! Refine a short proper progression using localization in the previous
 degree and a small leading monomial. Each error uses half the budget. -/

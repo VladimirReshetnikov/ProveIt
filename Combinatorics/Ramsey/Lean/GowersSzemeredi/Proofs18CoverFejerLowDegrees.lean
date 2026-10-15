@@ -1,4 +1,9 @@
 import GowersSzemeredi.Proofs18CoverSharperLowDegrees
+import GowersSzemeredi.Proofs03FourFactorSymmetry
+import GowersSzemeredi.Proofs05Corollary58
+import GowersSzemeredi.Proofs05HighCorrelationAssembly
+import GowersSzemeredi.Proofs05HighCorrelationScale
+import GowersSzemeredi.Proofs05ThresholdFreeScale
 
 /-! **Theorem 18.1 with offset six in degrees zero through three.**
 

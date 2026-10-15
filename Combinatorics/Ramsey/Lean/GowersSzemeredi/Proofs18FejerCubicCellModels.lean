@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs18FejerCubicParameters
 import GowersSzemeredi.Proofs18PartitionPrimeModels
 import GowersSzemeredi.Proofs17FejerCubicLocalization
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! Explicit old-modulus threshold forcing every selected local prime above
 any prescribed bound while retaining the positive-mass cubic localization. -/
