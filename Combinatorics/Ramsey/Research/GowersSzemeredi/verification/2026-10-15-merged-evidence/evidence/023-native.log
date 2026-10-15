@@ -1,0 +1,122 @@
+Checking GowersSzemeredi.Proofs17Regions
+/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs17Regions.lean:461:4: error: unsolved goals
+case pos
+k m : ℕ
+H : Fin m → AffineHyperplane k
+hgp : HyperplanesInGeneralPosition H
+s : Finset (Fin m)
+hsk : #s ≤ k
+x0 : Fin k → ℝ
+hx0S : ∀ i ∈ s, realDot (H i).normal x0 = (H i).offset
+hx0Outside : ∀ i ∉ s, realDot (H i).normal x0 ≠ (H i).offset
+outside : Finset (Fin m) := univ \ s
+u : Finset (Fin m) := {i ∈ outside | realDot (H i).normal x0 < (H i).offset}
+hus : Disjoint u s
+t : Finset (Fin m)
+hts : t ⊆ s
+hliS : LinearIndependent ℝ fun i => (H ↑i).normal
+target : ↥s → ℝ := fun i => if ↑i ∈ t then -1 else 1
+w : Fin k → ℝ
+hw : ∀ (i : ↥s), realDot (H ↑i).normal w = target i
+gap : Fin m → ℝ := fun i => realDot (H i).normal x0 - (H i).offset
+total : ℝ := ∑ i ∈ outside, |realDot (H i).normal w| / |gap i|
+eps : ℝ := 1 / (1 + total)
+hgapne : ∀ i ∈ outside, gap i ≠ 0
+htotalNonneg : 0 ≤ total
+hepsPos : 0 < eps
+hepsDen : eps * (1 + total) = 1
+hepsTotal : eps * total < 1
+hperturb : ∀ i ∈ outside, |eps * realDot (H i).normal w| < |gap i|
+x : Fin k → ℝ := x0 + eps • w
+hside :
+  ∀ (i : Fin m), if i ∈ u ∪ t then realDot (H i).normal x < (H i).offset else (H i).offset < realDot (H i).normal x
+p : Fin m → Bool := fun i => decide (i ∈ u ∪ t)
+i : Fin m
+hi : i ∈ u ∪ t
+hleft : realDot (H i).normal x < (H i).offset
+⊢ (i ∈ u ∨ i ∈ t) ∧ (i ∉ u → i ∈ t)
+/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs17Regions.lean:464:4: error: unsolved goals
+case neg
+k m : ℕ
+H : Fin m → AffineHyperplane k
+hgp : HyperplanesInGeneralPosition H
+s : Finset (Fin m)
+hsk : #s ≤ k
+x0 : Fin k → ℝ
+hx0S : ∀ i ∈ s, realDot (H i).normal x0 = (H i).offset
+hx0Outside : ∀ i ∉ s, realDot (H i).normal x0 ≠ (H i).offset
+outside : Finset (Fin m) := univ \ s
+u : Finset (Fin m) := {i ∈ outside | realDot (H i).normal x0 < (H i).offset}
+hus : Disjoint u s
+t : Finset (Fin m)
+hts : t ⊆ s
+hliS : LinearIndependent ℝ fun i => (H ↑i).normal
+target : ↥s → ℝ := fun i => if ↑i ∈ t then -1 else 1
+w : Fin k → ℝ
+hw : ∀ (i : ↥s), realDot (H ↑i).normal w = target i
+gap : Fin m → ℝ := fun i => realDot (H i).normal x0 - (H i).offset
+total : ℝ := ∑ i ∈ outside, |realDot (H i).normal w| / |gap i|
+eps : ℝ := 1 / (1 + total)
+hgapne : ∀ i ∈ outside, gap i ≠ 0
+htotalNonneg : 0 ≤ total
+hepsPos : 0 < eps
+hepsDen : eps * (1 + total) = 1
+hepsTotal : eps * total < 1
+hperturb : ∀ i ∈ outside, |eps * realDot (H i).normal w| < |gap i|
+x : Fin k → ℝ := x0 + eps • w
+hside :
+  ∀ (i : Fin m), if i ∈ u ∪ t then realDot (H i).normal x < (H i).offset else (H i).offset < realDot (H i).normal x
+p : Fin m → Bool := fun i => decide (i ∈ u ∪ t)
+i : Fin m
+hi : i ∉ u ∪ t
+hright : (H i).offset < realDot (H i).normal x
+⊢ i ∉ u ∧ i ∉ t
+/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs17Regions.lean:444:29: warning: This simp argument is unused:
+  sub_lt_zero
+
+Hint: Omit it from the simp argument list.
+  simp [u, hiout, gap,̵ ̵s̵u̵b̵_̵l̵t̵_̵z̵e̵r̵o̵]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs17Regions.lean:463:15: warning: This simp argument is unused:
+  hi
+
+Hint: Omit it from the simp argument list.
+  simp [p, hi̵,̵ ̵h̵left, not_lt_of_ge hleft.le]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs17Regions.lean:466:15: warning: This simp argument is unused:
+  hi
+
+Hint: Omit it from the simp argument list.
+  simp [p, hi̵,̵ ̵h̵right, not_lt_of_ge hright.le]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+Traceback (most recent call last):
+  File "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/scripts/check_gowers.py", line 61, in <module>
+    main()
+    ~~~~^^
+  File "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/scripts/check_gowers.py", line 56, in main
+    build(module)
+    ~~~~~^^^^^^^^
+  File "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/scripts/check_gowers.py", line 41, in build
+    build(dependency)
+    ~~~~~^^^^^^^^^^^^
+  File "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/scripts/check_gowers.py", line 41, in build
+    build(dependency)
+    ~~~~~^^^^^^^^^^^^
+  File "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/scripts/check_gowers.py", line 41, in build
+    build(dependency)
+    ~~~~~^^^^^^^^^^^^
+  [Previous line repeated 22 more times]
+  File "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/scripts/check_gowers.py", line 50, in build
+    subprocess.run(['lean', '-DautoImplicit=false', '-R', str(source_root),
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    '-o', str(target), str(source)],
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   cwd=ROOT, env=env, check=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['lean', '-DautoImplicit=false', '-R', '/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean', '-o', '/home/codex/.codex/worktrees/9c9b/Proofs/.lake/build/lib/lean/GowersSzemeredi/Proofs17Regions.olean', '/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs17Regions.lean']' returned non-zero exit status 1.
