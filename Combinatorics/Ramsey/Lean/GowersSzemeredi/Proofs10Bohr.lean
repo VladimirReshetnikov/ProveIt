@@ -322,9 +322,6 @@ theorem lemma_10_10_holds : lemma_10_10 := by
         field_simp [hpowTwo.ne']
       _ = 2 * K.card * zeta * N := by rw [hcancel]; ring
   have hscaled := mul_le_mul_of_nonneg_left hBLower hcNonneg
-  have hlossScale : 2 * K.card * zeta * N ≤ c * B.card := by
-    rw [← hidentity]
-    exact hscaled
   have hlost := bohr_sdiff_translate_card_le K delta zeta d hd
   have hpartitionNat := Finset.card_sdiff_add_card_inter B (section10Translate B d)
   have hpartition :
@@ -605,7 +602,6 @@ theorem corollary_10_11_holds : corollary_10_11 := by
   let C : Finset (ZMod N) := bohr K zeta
   change C ⊆ B' - B' ∧ ∃ psi1 : ZMod N → ZMod N,
     FreimanHom 2 C psi1 ∧ InducesDifferenceMap B' C psi psi1
-  have hk : 0 < k := Finset.card_pos.mpr hK
   have hzetaPos : 0 < zeta := by
     dsimp only [zeta]
     positivity

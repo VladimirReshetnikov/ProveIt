@@ -1956,11 +1956,6 @@ private lemma selection_exists_stage_margin_lower (k : Nat) (alpha eta : Real)
     dsimp [q]
     rw [← mul_pow]
     norm_num
-  have htwo : 2 < a * (2 : Real) ^ m := by
-    have hmul := mul_lt_mul_of_pos_right hqupper
-      (pow_pos (by norm_num : (0 : Real) < 2) m)
-    rw [hqmul] at hmul
-    nlinarith
   have hME : M * K = E := by
     exact selection_vertex_times_amplification k
   have hpower :

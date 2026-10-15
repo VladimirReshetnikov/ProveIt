@@ -84,7 +84,6 @@ theorem MultiplyLinearWith.localRelationCoverFor {N k : Nat} [NeZero N]
   · -- an empty dense part forces an empty box of width zero
     rw [h0, Finset.card_empty, Nat.cast_zero] at hHG
     have hP0 : (P.carrier.card : Real) = 0 := by
-      have hnn := Nat.cast_nonneg (α := Real) P.carrier.card
       by_contra hne0
       have : (0 : Real) < theta / 2 * P.carrier.card := by positivity
       linarith
