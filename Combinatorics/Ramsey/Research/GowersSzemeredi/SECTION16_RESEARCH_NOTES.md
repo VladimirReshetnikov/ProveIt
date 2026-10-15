@@ -9363,6 +9363,56 @@ at `Λ = partialGraph B φ`, but the relation version sits downstream in
 18 to 484 of them heavy, so each needs the native full build to verify; none is
 changed here.
 
+### L.106. Reusing explicit Fourier thresholds and region sign proofs (2026-10-15)
+
+The ordinary merge `466b09dd2e66b624e0cbd6e3cccf6cfe33a4b959` incorporates incoming
+main `f3397ebd1b004c50a8ec91bb07bd04cc3b4cb2df`. Relative to that incoming main,
+five production owners lose 132 source lines, and five added audit lines leave
+a net reduction of 127 lines. These counts exclude the upstream cleanup in
+L.105 and the subsequent inventory-tool and evidence changes.
+
+The three Section 13 owners reuse the explicit Fourier extraction producers and
+`section13FourierThreshold`; the existential wrappers choose its natural ceiling.
+`Proofs17LocalizedPhaseRemoval` uses `Finset.exists_between'` and
+`Int.floor_sub_intCast`, while `Proofs17Regions` shares one strict-side statement
+between region membership and opposite-side exclusion. The local changes preserve
+the final statements, numerical bounds and positive-step progression conclusions.
+
+The original core attempt on `f9d543779f510cbb9d4a697728c99d05534001c7` failed in
+region-realization simplification. The two-line repair at
+`0e6ee101489a2133392a0a12abda3f41999320c8` evaluates the membership decision before
+simplifying the inequalities. The original failed receipt and log remain preserved.
+
+All three fresh native commands on merged source `466b09dd` passed with exit zero:
+the `Proofs18FinalStep` core checked 603 modules; the single 57-root shared command
+checked a union of 1,904 modules; and the separate 25-root supplemental command
+checked 437 modules. The supplemental scope adds 58 modules, giving 1,962 distinct
+validated native artifacts. Source/evidence and artifact stability checks passed.
+No historical native outcomes were retained. Per-root closure counts describe the
+inputs to the shared command; they are not separate observed command outcomes.
+The three aggregate facades remain source protected and excluded from compilation;
+this does not audit every export.
+
+The recorder produced 57 member records, 57 input maps and one common index, with
+the five named audit scopes containing 6/424/9/5/20 declarations. The
+[shared index](verification/2026-10-15-merged424-index.json) records the actual
+command outcome. The [evidence map](verification/2026-10-15-merged-evidence/evidence-map.json)
+locates the supporting receipts, logs, supplemental check and inventory comparison.
+
+The inventory scanner omitted `corollary_15_2_of_general` after it became an alias
+of `corollary_15_2_holds`, whose signature is exactly `corollary_15_2`. Simple
+companion aliases now inherit their target's source-level classification. Missing
+or ambiguous targets and unresolved cycles stop generation. The corrected generator
+completed successfully. Strict comparison preserved all 120 catalogue rows and
+544 companion occurrences, including statuses, scope, ordering and duplicates.
+Three companion arrays were restored to baseline order by permuting whole objects;
+the remaining changes are 127 location fields: two file paths and 125 line numbers.
+This is source-inventory accounting, not a kernel audit or a paper-fidelity check.
+
+The accepted Lemma 16.10 correction and the documented limits on fidelity to
+individual original-paper statements remain explicit. This checkpoint makes no
+new claim of complete original-paper fidelity or an improved numerical bound.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

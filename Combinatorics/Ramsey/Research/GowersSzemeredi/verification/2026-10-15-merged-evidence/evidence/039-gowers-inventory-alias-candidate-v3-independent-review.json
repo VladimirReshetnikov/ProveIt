@@ -1,0 +1,154 @@
+{
+  "status": "PASS: narrow static review of alias-aware generator v3 for current corpus and supported simple grammar",
+  "findings": [],
+  "generator_path": "/tmp/gowers-inventory-alias-candidate-v3/gowers_status.py",
+  "generator_sha256": "c03e1a7df0bb38de346a03f5cc2075bb0f97a739447479e06f7753c42ce4b47d",
+  "patch_path": "/tmp/gowers-inventory-alias-candidate-v3/changes.patch",
+  "patch_sha256": "a82e2e8a83d1451b16917e828727f2e01d1b3ab57c42eef37864a59e89004352",
+  "original_generator_sha256": "700dd07f230493eaec72a4ec460cf6d1d7e08a9333afab5165eb79dafd475cd1",
+  "observed_repository_generator_matches_v3": true,
+  "previous_reviews_preserved": [
+    "/tmp/gowers-inventory-alias-candidate-independent-review-v1.json",
+    "/tmp/gowers-inventory-alias-candidate-v2-independent-review.json"
+  ],
+  "resolved_findings": [
+    "Multiple same-classification targets no longer collapse to one set element.",
+    "Occurrence counts include pending alias names before resolution, eliminating scan-order-dependent ambiguity."
+  ],
+  "algorithm_review": {
+    "classification": "A supported alias inherits exactly its uniquely recognized target classification, exact or related.",
+    "termination": "Each successful pass strictly reduces pending aliases; a no-progress pass raises. Finite chains terminate, cycles reject.",
+    "ambiguity": "Every referenced target must occur exactly once across original theorem entries and all scanned aliases, regardless of resolution order.",
+    "duplicates": "Unreferenced duplicate inventory names remain separate occurrences; any attempt to reference such a name as a target rejects rather than guessing namespace resolution.",
+    "unchanged_original_logic": "All original theorem scanning, row sorting, status/count generation and scope text remain unchanged outside the additive alias block and docstring."
+  },
+  "isolated_fixtures": [
+    {
+      "case": "exact",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "related",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "forward_chain",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "reverse_chain",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "cross_file_forward_chain",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "empty_aliases",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    },
+    {
+      "case": "self_cycle",
+      "accepted": false,
+      "expected": false,
+      "error": "Unresolved companion aliases"
+    },
+    {
+      "case": "two_cycle",
+      "accepted": false,
+      "expected": false,
+      "error": "Unresolved companion aliases"
+    },
+    {
+      "case": "cycle_with_independent_progress",
+      "accepted": false,
+      "expected": false,
+      "error": "Unresolved companion aliases"
+    },
+    {
+      "case": "missing_target",
+      "accepted": false,
+      "expected": false,
+      "error": "Missing or ambiguous companion alias target"
+    },
+    {
+      "case": "duplicate_same_kind_target",
+      "accepted": false,
+      "expected": false,
+      "error": "Missing or ambiguous companion alias target"
+    },
+    {
+      "case": "duplicate_mixed_kind_target",
+      "accepted": false,
+      "expected": false,
+      "error": "Missing or ambiguous companion alias target"
+    },
+    {
+      "case": "late_alias_target_duplicate",
+      "accepted": false,
+      "expected": false,
+      "error": "Missing or ambiguous companion alias target"
+    },
+    {
+      "case": "reversed_late_alias_duplicate",
+      "accepted": false,
+      "expected": false,
+      "error": "Missing or ambiguous companion alias target"
+    },
+    {
+      "case": "two_alias_occurrences_as_target",
+      "accepted": false,
+      "expected": false,
+      "error": "Missing or ambiguous companion alias target"
+    },
+    {
+      "case": "duplicate_unreferenced_alias_names",
+      "accepted": true,
+      "expected": true,
+      "error": null
+    }
+  ],
+  "current_corpus": {
+    "recognized_numbered_aliases": [
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15WalshGeneral.lean",
+        "line": 288,
+        "name": "corollary_15_2_of_general",
+        "target": "corollary_15_2_holds"
+      }
+    ],
+    "unique_target_name": "corollary_15_2_holds",
+    "inherits_exact_classification": true,
+    "alias_and_target_namespace_import_type_evidence": "/tmp/gowers-merged-inventory-alias-transition-independent-review.json",
+    "evidence_sha256": "9ef2cb32f1db3dbdb4724fc408633f7f4db7385a35d5cec78b71a2ad35dd8a44",
+    "predicted_row95_matches_baseline_except_alias_line314_to288": true,
+    "all_other_raw_rows_unaffected": true,
+    "predicted_total_companion_and_related_occurrences": 544,
+    "raw_path": "/tmp/gowers-merged-inventory-generation-attempt1/raw.json",
+    "raw_sha256": "f4903d3fdf5500d1c9d545108cc5d5afacd4b1b01a434f897ba6c2091cf306e1",
+    "baseline_path": "/tmp/gowers-merged-inventory-normalization-tools/baseline.json",
+    "baseline_sha256": "1d47298922976ab28977cdf338d37d2b3c202ebb6b9dc4b9df3972435635c8d9"
+  },
+  "limits": [
+    "Source-level regex inventory only; no claim of general Lean elaboration or namespace resolution.",
+    "Support is limited to the explicit simple unqualified alias/target grammar. Qualified targets, modifiers and arbitrary alias syntax are outside this support.",
+    "Inherited comment/namespace scanner limitations remain. The sole current alias, direct provider import and shared namespace/type are separately verified.",
+    "Root must run the actual revised generator and verify actual output with the successor comparator; isolated fixtures do not substitute for that receipt."
+  ],
+  "generator_entrypoint_invoked_by_reviewer": false,
+  "only_isolated_AST_and_read_only_source_checks": true,
+  "repository_git_cache_native_mutations_by_reviewer": false,
+  "checked_at": "2026-10-15T22:07:17.650251+00:00"
+}

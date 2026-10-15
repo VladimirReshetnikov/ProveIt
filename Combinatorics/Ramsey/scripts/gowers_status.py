@@ -2,7 +2,8 @@
 """Emit a source-level ledger of numbered Gowers catalogue statements.
 
 This is an inventory, not a kernel audit. Exact companion theorem signatures
-are distinguished from conditional implications and auxiliary results.
+are distinguished from conditional implications and auxiliary results. Simple
+companion aliases inherit their target signature classification.
 """
 from pathlib import Path
 from collections import Counter
@@ -35,6 +36,33 @@ for source, text in texts.items():
                     exact.append(entry)
                 else:
                     related.append(entry)
+        # Simple aliases retain their target's signature classification. Resolve
+        # after scanning theorem headers so file order and alias chains are harmless.
+        aliases = []
+        for p, content in texts.items():
+            for alias in re.finditer(r'^alias (' + re.escape(name) +
+                                     r'_\w+)\s*:=\s*(\w+)\s*$', content, re.M):
+                entry = {'name': alias[1], 'file': p.relative_to(ROOT).as_posix(),
+                         'line': content.count('\n', 0, alias.start()) + 1}
+                aliases.append((entry, alias[2]))
+        occurrences = Counter(entry['name'] for entry in exact + related)
+        occurrences.update(entry['name'] for entry, _ in aliases)
+        while aliases:
+            pending = []
+            for entry, target in aliases:
+                if occurrences[target] != 1:
+                    raise ValueError(f"Missing or ambiguous companion alias target: {target}")
+                kinds = [kind for kind, entries in ((True, exact), (False, related))
+                         for candidate in entries if candidate['name'] == target]
+                if not kinds:
+                    pending.append((entry, target))
+                elif len(kinds) != 1:
+                    raise ValueError(f"Ambiguous companion alias target: {target}")
+                else:
+                    (exact if kinds[0] else related).append(entry)
+            if len(pending) == len(aliases):
+                raise ValueError(f"Unresolved companion aliases: {pending}")
+            aliases = pending
         rows.append({'statement': name, 'file': source.relative_to(ROOT).as_posix(),
                      'line': text.count('\n', 0, match.start()) + 1,
                      'paper_heading_lines': headings.get(name, []),

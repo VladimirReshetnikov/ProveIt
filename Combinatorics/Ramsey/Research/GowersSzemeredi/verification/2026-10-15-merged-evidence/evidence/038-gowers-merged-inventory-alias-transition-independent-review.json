@@ -1,0 +1,93 @@
+{
+  "status": "PASS: narrow source-inventory transition evidence; not a blanket normalization or kernel audit approval",
+  "findings": [],
+  "baseline_inventory_path": "/tmp/gowers-merged-inventory-normalization-tools/baseline.json",
+  "baseline_inventory_sha256": "1d47298922976ab28977cdf338d37d2b3c202ebb6b9dc4b9df3972435635c8d9",
+  "raw_inventory_path": "/tmp/gowers-merged-inventory-generation-attempt1/raw.json",
+  "raw_inventory_sha256": "f4903d3fdf5500d1c9d545108cc5d5afacd4b1b01a434f897ba6c2091cf306e1",
+  "current_source_anchor": "466b09dd2e66b624e0cbd6e3cccf6cfe33a4b959",
+  "prior_published_source_commit": "43e48f9415f3eab9ee7186a2cabb9a96b941c857",
+  "reviewed_incoming_main": "f3397ebd1b004c50a8ec91bb07bd04cc3b4cb2df",
+  "upstream_change_commit": "6a8acbaf18ea65f5eb9d5d26e8e2977453d20e8b",
+  "exact_occurrence_transition": {
+    "row_index_zero_based": 95,
+    "statement": "corollary_15_2",
+    "collection": "exact_companions",
+    "old_index": 1,
+    "removed_generator_occurrence": {
+      "name": "corollary_15_2_of_general",
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15WalshGeneral.lean",
+      "line": 314
+    },
+    "current_alias_location": {
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15WalshGeneral.lean",
+      "line": 288,
+      "syntax": "alias corollary_15_2_of_general := corollary_15_2_holds"
+    },
+    "retained_exact_companion": {
+      "name": "corollary_15_2_holds",
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15Walsh2.lean",
+      "line": 45
+    }
+  },
+  "reason": "Upstream replaced a separately written theorem proof of corollary_15_2 with an alias of the already retained corollary_15_2_holds. The generator scans only lines beginning theorem, so it omits the alias occurrence. The Lean name itself remains declared by alias.",
+  "source_evidence": {
+    "old_exact_declaration": "theorem corollary_15_2_of_general : corollary_15_2 := by\n  intro N k _ hprime hodd h eta hh _ hinvariant\n  exact booleanWalsh_multiple_of_invariant hprime hodd h eta hh hinvariant",
+    "new_alias": "alias corollary_15_2_of_general := corollary_15_2_holds",
+    "incoming_and_merged_owner_bytes_identical": true,
+    "current_owner_matches_merged": true,
+    "old_owner_sha256": "cf4eaa73af280a9696770e979eb09b2f2413d5d65127060ff3795465c25d8b86",
+    "current_owner_sha256": "d2f429b8303f56a864952113145a37039b9b233ad02a3d101f8b56612c42d48e",
+    "retained_companion_header": "theorem corollary_15_2_holds : corollary_15_2",
+    "retained_companion_complete_proof_context_exact_from_old_published_commit": true,
+    "retained_companion_block_sha256": "045303c57a68fc374c9d51bff704b6fa2a3a0fe751123882bf376c0d3a655e37",
+    "retained_owner_sha256": "bec23fe6a7fa7f675fe2a22d02e50e0e4e6b6bc02a450b9f819f03144446d94e",
+    "catalogue_statement_complete_file_unchanged": true,
+    "catalogue_statement_header": "def corollary_15_2 : Prop",
+    "catalogue_statement_block_sha256": "6909418312dedfe6f59a9823fa868c907ba86aa8f38b97c4c7a49ade8b6c6639",
+    "stronger_general_result_full_header_unchanged": "theorem booleanWalsh_multiple_of_invariant {N k : Nat} [NeZero N]\n    (hprime : N.Prime) (hodd : Odd N) (h : Point N k)\n    (eta : (Fin k \u2192 Bool) \u2192 Int) (hh : \u2200 i, h i \u2260 0)\n    (hinvariant : \u2200 (A : Finset (Fin k)) (y z : Point N k),\n      booleanWalshMoment eta h y A = booleanWalshMoment eta h z A) :\n    IsModularMultiple eta (parityCharacter (N := N))",
+    "general_result_still_omits_ternary_hypothesis": true,
+    "direct_alias_provider_import": true,
+    "alias_elaborator_path": "/home/codex/.codex/worktrees/9c9b/Proofs/.lake/packages/batteries/Batteries/Tactic/Alias.lean",
+    "alias_elaborator_sha256": "d811d7f5ac763e5c2a5dab9ae76575d072980eac476fcd502caf7b6add4f7f10",
+    "alias_elaborator_evidence": "For theorem targets, the command constructs a theorem declaration with the original constant type and levels, a new name, and the target theorem as value."
+  },
+  "generator_evidence": {
+    "path": "Combinatorics/Ramsey/scripts/gowers_status.py",
+    "sha256": "700dd07f230493eaec72a4ec460cf6d1d7e08a9333afab5165eb79dafd475cd1",
+    "recognition_line": 30,
+    "recognized_syntax": "^theorem (numbered_statement_suffix)",
+    "aliases_not_recognized": true,
+    "generator_not_rerun": true
+  },
+  "bounded_inventory_checks": {
+    "ordered_statement_rows": 120,
+    "top_level_keys_scope_paper_counts_exact": true,
+    "all_statement_order_status_and_nonlocation_metadata_exact": true,
+    "all_other_companion_and_related_name_occurrence_multiplicities_preserved": true,
+    "sole_name_occurrence_delta": [
+      {
+        "row": 95,
+        "statement": "corollary_15_2",
+        "collection": "exact_companions",
+        "removed": {
+          "corollary_15_2_of_general": 1
+        },
+        "added": {}
+      }
+    ],
+    "entries_before": 544,
+    "entries_after": 543,
+    "target_row_other_fields_exact": true
+  },
+  "safe_transition_boundary": [
+    "A separate exact-hash transition may omit only the one baseline row95 exact-companion object above before applying the existing strict location/permutation comparator.",
+    "Preserve original baseline, raw generator bytes, native evidence and all other occurrence multiplicities. The strict comparator rejection was correct for its original no-occurrence-loss contract.",
+    "Describe this as a theorem-syntax-to-alias representation change omitted by the source scanner, not as deletion of the Lean theorem name or loss of the mathematical statement.",
+    "This review does not approve arbitrary missing entries or all remaining file/line changes/permutations. Those require the separately pinned actual comparison.",
+    "The source inventory is not kernel or full-paper-fidelity evidence. Actual native outcomes remain separate root-owned evidence."
+  ],
+  "native_or_generator_entrypoints_invoked": false,
+  "repository_git_cache_mutations": false,
+  "checked_at": "2026-10-15T21:57:45.457088+00:00"
+}
