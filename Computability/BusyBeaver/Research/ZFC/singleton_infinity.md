@@ -1,7 +1,8 @@
 `SingletonInfinity.lean` proves the first checkpoint toward ordinary Infinity
 from the actual quotient's singleton-closed container. It constructs an
 empty-root index with singleton closure and induction over represented sets
-and actual formulas. It does **not yet prove ordinary `Inf_form`**.
+and actual formulas. Ordinary `Inf_form` is proved in the subsequent
+[finite-attempt module](inductive_attempts.md), using this index.
 
 The base interface contains only actual Extensionality, Pairing and
 formula-indexed Separation. It contains neither Infinity nor Separation for
@@ -67,8 +68,8 @@ the proposed ordinary-Infinity bridge uses three particular Separation
 matrices and one Replacement matrix. Its finite graphs use only finite
 pairs and unions. Upstream additionally cuts out the least inductive omega;
 our `Inf_form` only asks for an inductive set, so that final cut can be
-omitted. The attempt-graph stage and this final bridge are a mathematical
-plan, not theorems in the current module.
+omitted. The attempt-graph stage and this final bridge are now checked in the separate
+`InductiveAttempts.lean` module; the present module supplies their index.
 
 The existing `ZF.Zf.ClosureFO_of_ZF`, `omega_ind`, `Approx_exists` and
 `BoundedZFCConsistency.omega_recursion` require `ZFAxioms`, including `.inf`.

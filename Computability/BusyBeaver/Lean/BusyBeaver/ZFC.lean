@@ -54,5 +54,14 @@ import BusyBeaver.ZFC.QuotientBasic
 import BusyBeaver.ZFC.SingletonInfinity
 import BusyBeaver.ZFC.BreakSite253
 
+import BusyBeaver.ZFC.FiniteSets
+import BusyBeaver.ZFC.InductiveAttempts
+import BusyBeaver.ZFC.QuotientZF0
+import BusyBeaver.ZFC.RMDag
+import BusyBeaver.ZFC.Dag254
+import BusyBeaver.ZFC.L2Lib254
+import BusyBeaver.ZFC.L2Macros254
+import BusyBeaver.ZFC.L2Control254
+
 /-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC
 consistency theorem or state-count improvement is claimed by these imports. -/

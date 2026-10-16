@@ -1,0 +1,541 @@
+{
+  "arbitrary_semantic_predicate_separation": false,
+  "audit": {
+    "LEAN_PATH": "/tmp/zfc-inductive-attempts-bwz5n4pu",
+    "audit_names": [
+      "agree_of_separator",
+      "base_attempt",
+      "extend_attempt",
+      "attempts_exist_of_separator",
+      "closure_of_instances",
+      "sat_attemptForm",
+      "sat_agreeForm",
+      "sat_hasAttemptForm",
+      "sat_valueForm",
+      "agreement_separator",
+      "existence_separator",
+      "value_image",
+      "closure_of_forms",
+      "point_graph",
+      "extend_graph",
+      "successor_closure",
+      "ordinary_infinity_of_container",
+      "quotientFiniteBase",
+      "quotient_infinity",
+      "quotient_inf_form"
+    ],
+    "caller_examples": 3,
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "/tmp/zfc-inductive-attempts-bwz5n4pu/InductiveAttemptsAudit.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 0.6350540975108743,
+    "stdout": "'SetTheory.BusyBeaver.ZFC.InductiveAttempts.agree_of_separator' depends on axioms: [Classical.choice]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.base_attempt' depends on axioms: [Classical.choice]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.extend_attempt' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.attempts_exist_of_separator' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.closure_of_instances' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.sat_attemptForm' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.sat_agreeForm' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.sat_hasAttemptForm' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.sat_valueForm' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.agreement_separator' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.existence_separator' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.value_image' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.closure_of_forms' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.point_graph' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.extend_graph' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.successor_closure' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.ordinary_infinity_of_container' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.quotientFiniteBase' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.quotient_infinity' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.quotient_inf_form' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"
+  },
+  "audit_source": "import BusyBeaver.ZFC.InductiveAttempts\nimport BusyBeaver.ZFC.Code254GIC\n\nopen SetTheory SetTheory.BusyBeaver.ZFC\n\n#print axioms InductiveAttempts.agree_of_separator\n#print axioms InductiveAttempts.base_attempt\n#print axioms InductiveAttempts.extend_attempt\n#print axioms InductiveAttempts.attempts_exist_of_separator\n#print axioms InductiveAttempts.closure_of_instances\n#print axioms InductiveAttempts.sat_attemptForm\n#print axioms InductiveAttempts.sat_agreeForm\n#print axioms InductiveAttempts.sat_hasAttemptForm\n#print axioms InductiveAttempts.sat_valueForm\n#print axioms InductiveAttempts.agreement_separator\n#print axioms InductiveAttempts.existence_separator\n#print axioms InductiveAttempts.value_image\n#print axioms InductiveAttempts.closure_of_forms\n#print axioms InductiveAttempts.point_graph\n#print axioms InductiveAttempts.extend_graph\n#print axioms InductiveAttempts.successor_closure\n#print axioms InductiveAttempts.ordinary_infinity_of_container\n#print axioms InductiveAttempts.quotientFiniteBase\n#print axioms InductiveAttempts.quotient_infinity\n#print axioms InductiveAttempts.quotient_inf_form\n\nexample {V : Type} (mem : V → V → Prop) (witness : V)\n    (h : ProfileModel.ModelsCPGIC mem) :\n    ∃ I, (∃ e0, QuotientModel.quotientMember mem witness h e0 I ∧\n        ∀ z, ¬ QuotientModel.quotientMember mem witness h z e0) ∧\n      ∀ x, QuotientModel.quotientMember mem witness h x I →\n        ∃ sx, QuotientModel.quotientMember mem witness h sx I ∧\n          ∀ t, QuotientModel.quotientMember mem witness h t sx ↔\n            QuotientModel.quotientMember mem witness h t x ∨ t = x :=\n  InductiveAttempts.quotient_infinity mem witness h\n\nexample {V : Type} (mem : V → V → Prop) (witness : V)\n    (h : ProfileModel.ModelsCPGIC mem) :\n    ∀ env, Sat (QuotientModel.quotientMember mem witness h) env (sealF Inf_form) :=\n  seal_valid Inf_form |>.mpr (InductiveAttempts.quotient_inf_form mem witness h)\n\nexample {V : Type} (mem : V → V → Prop) (hirr : ∀ x, ¬ mem x x) (witness : V)\n    (hB : ∀ f, Code254.EncBundle f → ∀ e : Nat → V, Tarski.Sat mem e f) :\n    let h := Code254GIC.modelsCPGIC_of_encBundle mem hirr (fun _ => witness) hB\n    ∀ env, Sat (QuotientModel.quotientMember mem witness h) env Inf_form :=\n  InductiveAttempts.quotient_inf_form mem witness\n    (Code254GIC.modelsCPGIC_of_encBundle mem hirr (fun _ => witness) hB)\n",
+  "build": {
+    "LEAN_PATH": "/tmp/zfc-inductive-attempts-bwz5n4pu",
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "-o",
+      "/tmp/zfc-inductive-attempts-bwz5n4pu/BusyBeaver/ZFC/InductiveAttempts.olean",
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean"
+    ],
+    "exit_code": 0,
+    "seconds": 0.5171684194356203,
+    "stdout": ""
+  },
+  "cache": {
+    "overlay": "/tmp/zfc-inductive-attempts-bwz5n4pu",
+    "parent_modules": [
+      {
+        "module": "BusyBeaver/Core.olean",
+        "olean_sha256": "2c18d0fc971038cdd3cf5998857f56a88ea1cf33cd11f90f6794866fcc2e1148"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Base3Encoding.olean",
+        "olean_sha256": "a1648aeebabce45d8debee27e3d397614a9256d8b5e58f3a49d05a3ffc302567"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Base3Syntax.olean",
+        "olean_sha256": "6cec4ab821386909eb29f3168afccb579f589eed45424478b72a627c5a0622cd"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Boot253.olean",
+        "olean_sha256": "fb08ef6e1c9536fd000b248ccc65cdb2f9e027b4f3f148bb908d8948e3e7e16f"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Bootstrap.olean",
+        "olean_sha256": "5c55e248395ee71a78bf5ac9dae5d40da55f24013081023efb2b32a06ff44e31"
+      },
+      {
+        "module": "BusyBeaver/ZFC/BootstrapFrame253.olean",
+        "olean_sha256": "fa686769de1f5ae9bd5142f95fdfbdd89d8ba50351efd9f4298020cb23a217a9"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Bottom3Syntax.olean",
+        "olean_sha256": "e986f0903a97e77e5ca3755ce9ed73dd6a52e4447efce330df73aba41b9c299c"
+      },
+      {
+        "module": "BusyBeaver/ZFC/BreakSite253.olean",
+        "olean_sha256": "7b069eff09e07028dff160d55604489a769e0d66673950d6961ef500433d389b"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Code254.olean",
+        "olean_sha256": "f030585bad7e2281cddc172dbc3169614a74d30a59cbff9dbd92c8626a9285b3"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Code254Containers.olean",
+        "olean_sha256": "a8ad70369e053049373b3906535ce2643a41ae1c44e6bce0dd27b818e10af89d"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Code254GIC.olean",
+        "olean_sha256": "9cb9cf0115c8c2be25e9ffebd9ab1a97c91b0b640f8cb7ee58d845b7a9166223"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Code254Models.olean",
+        "olean_sha256": "7ff2eb568540c1fa9f879dbc07cc4eaa6befa9ff37991e275dedbfc3cb4b77be"
+      },
+      {
+        "module": "BusyBeaver/ZFC/CompositionModel.olean",
+        "olean_sha256": "6f7ffed9a007a242db3b970daff48da92b807f3f677fb2414aba7e582c0dc453"
+      },
+      {
+        "module": "BusyBeaver/ZFC/DeepPositiveClosure.olean",
+        "olean_sha256": "d14f8df432840d608b22ab5cee46cd5541bddc590a2aea997713dae630befcbe"
+      },
+      {
+        "module": "BusyBeaver/ZFC/DefinableClosure.olean",
+        "olean_sha256": "38b14e905fbfcd6ff9c32b764dcc475f9735101587c4c877b262ac8e67c6ff6f"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Enum254.olean",
+        "olean_sha256": "00bb59fd5c34bd566dc220662f7b856a96d22e33f4d8f4ac8c59b9512e5fcd87"
+      },
+      {
+        "module": "BusyBeaver/ZFC/FiniteSets.olean",
+        "olean_sha256": "7692a2c615922c8a87afdc98dde96afffd2c2071a4c275f1cef9045787b54439"
+      },
+      {
+        "module": "BusyBeaver/ZFC/FiniteZipper.olean",
+        "olean_sha256": "bfbfb31d4cd560b52a65a832777d64f544dc6a1bbbb080829cc1465881d44101"
+      },
+      {
+        "module": "BusyBeaver/ZFC/FormulaRPN.olean",
+        "olean_sha256": "663676ffa7a6c46770c82fdb58d7c66934dff238781bc41fc75ed4ff694e06d6"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Kalmar.olean",
+        "olean_sha256": "277a27cc6131e906b88aa0aac5e604877f8aa4f8466ca49652072167e2d4b364"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Lukasiewicz.olean",
+        "olean_sha256": "4e1913275587f652e4a5c412501c9a138465f63be0b779d0e4b9790542032b87"
+      },
+      {
+        "module": "BusyBeaver/ZFC/NamedNumeric254.olean",
+        "olean_sha256": "7c3c574d4bae61348c9cb534da0c2d97d7e688771b279212d4b11c704fa83648"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Numeric254.olean",
+        "olean_sha256": "ff498db21768534c56cbf739f1cd39747b589a7e026d143ab765b559f8606f5c"
+      },
+      {
+        "module": "BusyBeaver/ZFC/NumericCode254.olean",
+        "olean_sha256": "17c8ae64915dd3a6270e8fd5577aa871d5c4704fc2918769593f35785e287dd3"
+      },
+      {
+        "module": "BusyBeaver/ZFC/OutgoingProfile.olean",
+        "olean_sha256": "48b83b1b36c75606ce438e9690e65bd12b1a7535ecfd1b34f4e20d4aad98f211"
+      },
+      {
+        "module": "BusyBeaver/ZFC/PSCCalibration.olean",
+        "olean_sha256": "27fd09533ce8e67c1198d1e1d8ef539f833a6ee7d9980409f3b0c91d0d401b09"
+      },
+      {
+        "module": "BusyBeaver/ZFC/PSCSaturation.olean",
+        "olean_sha256": "37e089d0f9aeb4af5eabe51007d55449cdd53a5cd642f0761e3510d82544efd4"
+      },
+      {
+        "module": "BusyBeaver/ZFC/PartialTotalization.olean",
+        "olean_sha256": "b452b93b5d36c5d07f5d470f1fd88a82420f8e542034166a053785ca9a82fa85"
+      },
+      {
+        "module": "BusyBeaver/ZFC/PositiveClosure.olean",
+        "olean_sha256": "1ebf41190db1f89c1e6f689f2b055132909cc8c7d498b3a18aedf7808bc611b5"
+      },
+      {
+        "module": "BusyBeaver/ZFC/PowerSyntax.olean",
+        "olean_sha256": "bb8138c0332d24d4f65afafd0109b430a7f0194a9a452f011eec2a3e9c0543aa"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Prefix330.olean",
+        "olean_sha256": "57ae16925b6668409df1e0635ef75f9cf10b47c1e97441b8b491697221f7914c"
+      },
+      {
+        "module": "BusyBeaver/ZFC/ProfileAxioms.olean",
+        "olean_sha256": "615caab699578d49e616bba346d537b46036f8ae56d41a7485399d229c0d0387"
+      },
+      {
+        "module": "BusyBeaver/ZFC/ProfileCollection.olean",
+        "olean_sha256": "632b6e04e687dcf5b5350263eb1a3f6e1a1065e4d92c35ca3d5502c650aa7ba7"
+      },
+      {
+        "module": "BusyBeaver/ZFC/ProfileComposition.olean",
+        "olean_sha256": "c1b783f7edbcd2391a1c8c4e1f652c6dcbbd1eef2f360da59065190cd726ed8c"
+      },
+      {
+        "module": "BusyBeaver/ZFC/ProfileCongruence.olean",
+        "olean_sha256": "8cdb73af0797dfc4fe0e711378bbb972c8c2695d91c80f4d8aef806a02db7210"
+      },
+      {
+        "module": "BusyBeaver/ZFC/ProfileModel.olean",
+        "olean_sha256": "1d3987ae97cdfdb7d5f63531b3f53aa50019dfb100354cef64872c5a3d8e93cf"
+      },
+      {
+        "module": "BusyBeaver/ZFC/ProfilePairs.olean",
+        "olean_sha256": "108fad02bc8df5354841e543410b68ab148383031b17312c285b66e7901554c2"
+      },
+      {
+        "module": "BusyBeaver/ZFC/ProfileSyntax.olean",
+        "olean_sha256": "f8e03f2857788765021bba1ff55b5dd35d2156f22a6ee984c48df2f704480380"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Prog254.olean",
+        "olean_sha256": "3c1e41215bbe83bc2669fa72e890e1f363beed274b8baffecf1c6a3f65d20175"
+      },
+      {
+        "module": "BusyBeaver/ZFC/QuotientBasic.olean",
+        "olean_sha256": "8177ede2f4f10f7ba6017fec8dd20c1284dad2cb84f1b68bdbfecf339f2b5fc1"
+      },
+      {
+        "module": "BusyBeaver/ZFC/QuotientModel.olean",
+        "olean_sha256": "caffe19840700efc458b6de5024e6894c28dff82380b8cdb3bfcdde09985ad50"
+      },
+      {
+        "module": "BusyBeaver/ZFC/QuotientPower.olean",
+        "olean_sha256": "0a052e1174f743f9c2265f11cefc4d855aeabc0e1dbf074a74da2d26bae05fd7"
+      },
+      {
+        "module": "BusyBeaver/ZFC/QuotientReplacement.olean",
+        "olean_sha256": "d9b4e60fac6bf65beb88be007335b4c2dd4520a911d093f0457c329b34f78440"
+      },
+      {
+        "module": "BusyBeaver/ZFC/QuotientSeparation.olean",
+        "olean_sha256": "1af4119fbf5dc7b3432dd0f604d320d3fd591d05b40c6c66bff5c80dc21558c3"
+      },
+      {
+        "module": "BusyBeaver/ZFC/RawPSCModel.olean",
+        "olean_sha256": "6f9732828e87d984b0a587c8eacd820e23123ca221649d9418c2d3dff31817e3"
+      },
+      {
+        "module": "BusyBeaver/ZFC/RawPSCProfile.olean",
+        "olean_sha256": "fe43bb21a24ebe21b0d7d3eeb1eb546b80266eb13540eb9a714c1bb9e854bc33"
+      },
+      {
+        "module": "BusyBeaver/ZFC/RegisterBisimulation.olean",
+        "olean_sha256": "8270bd9d96775bdbcc14f1c27596368ce021a88fdcce44b720e3613e7069fa89"
+      },
+      {
+        "module": "BusyBeaver/ZFC/RegisterBoxes253.olean",
+        "olean_sha256": "e08ec6fc4478520e1acccc71c7f2e35abd2644a813e8a569cad20a9481f91ced"
+      },
+      {
+        "module": "BusyBeaver/ZFC/RegisterDecrement253.olean",
+        "olean_sha256": "522d28b56bb56a7cec2b315308800e8eb804b73fce3d6abdae82c56649f00a12"
+      },
+      {
+        "module": "BusyBeaver/ZFC/RegisterIncrement253.olean",
+        "olean_sha256": "9705d5b8809dbf7b884226042dd42a58d1a28c9b5cc76f6e9c1021d3c45a2130"
+      },
+      {
+        "module": "BusyBeaver/ZFC/RegisterMark253.olean",
+        "olean_sha256": "12ee7ef20242e32e33f5ee41a0664bdeb1127b696cac054b584a767d08c71ba6"
+      },
+      {
+        "module": "BusyBeaver/ZFC/RegisterPath.olean",
+        "olean_sha256": "629b3a81651ae48578195e5d0fd4f2eee02d4633544ab08686331a4ef0c392b7"
+      },
+      {
+        "module": "BusyBeaver/ZFC/SingletonInfinity.olean",
+        "olean_sha256": "8b2316869f7c30dffb90ccc4b5ea430a950a4691c0c8e58cd18ddad6b28ffe16"
+      },
+      {
+        "module": "BusyBeaver/ZFC/StateReduction.olean",
+        "olean_sha256": "84c7d0bd5262cbc1a516217464229e4ac376627632230c72bcd2f2abddd0c907"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Table248.olean",
+        "olean_sha256": "a01b33b75f72ff3d7d7a8a785966d0f7e9b65809c394e7320847587e98853281"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Table252.olean",
+        "olean_sha256": "33522e64d82a9c3f7fb7a430f6782d04eb50cba9179a9691b92a92c676e7eb5b"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Table253.olean",
+        "olean_sha256": "d75e2c32164212f49d61bd7bf910133523deb158f879f8b7d3c81973e47a038c"
+      },
+      {
+        "module": "BusyBeaver/ZFC/Table254.olean",
+        "olean_sha256": "a0d1e932f3a80bbc38845c478fe8814eb2a16dc6b31d7f70100f891c6eda1502"
+      },
+      {
+        "module": "BusyBeaver/ZFC/TarskiCalculus.olean",
+        "olean_sha256": "4337484639134ff2f884823522973cf95bfb26ddb8a7866ba3ebeba35f553b9b"
+      },
+      {
+        "module": "BusyBeaver/ZFC/TarskiClean.olean",
+        "olean_sha256": "6a2e227d9d9342d7ce0f2746165c8a617d8a3fed6b1819f5e27264032ed96108"
+      },
+      {
+        "module": "BusyBeaver/ZFC/TarskiComplete.olean",
+        "olean_sha256": "61e26005a642944bdf77066a76ae7d18ade7c2efbbaf6db9dcd907101d635c75"
+      },
+      {
+        "module": "BusyBeaver/ZFC/TarskiDerived.olean",
+        "olean_sha256": "63fde11f53d33aff7ffae883f719bdd89c6277a1681ab9480337c378547feb18"
+      },
+      {
+        "module": "BusyBeaver/ZFC/TarskiFalsity.olean",
+        "olean_sha256": "787b1daf1f46b2dc121be9c1ffb783b010f74e8a1fe93f23edd215b9473381c2"
+      },
+      {
+        "module": "BusyBeaver/ZFC/TarskiLeibniz.olean",
+        "olean_sha256": "1851669b6797dd1769d7b5f7b7e7050376283bb0a8cf8e376bcbfa934a685787"
+      },
+      {
+        "module": "BusyBeaver/ZFC/WadeMachine.olean",
+        "olean_sha256": "d5f6b2ec101c4ad5a6bd02a103ee8ea95e8b42e3eab69204ab0e4decfb1dba0e"
+      },
+      {
+        "module": "BusyBeaver/ZFC/ZipperRuns.olean",
+        "olean_sha256": "f6280bb230bb5f816c27fcd7789aa16a3890d5a0ac3c0d74bd4ac9a19006e8b6"
+      },
+      {
+        "module": "BusyBeaver/ZFC.olean",
+        "olean_sha256": "7d32034d8bdd111210fe88be55c17f91c339427eb34458bdd44d0c0465aa7363"
+      },
+      {
+        "module": "FirstOrder/Calculus.olean",
+        "olean_sha256": "d289ef7f399deaf59e7f210725dc38c10e8c2a2139ddcc481f6d9f3632668e99"
+      },
+      {
+        "module": "FirstOrder/Completeness.olean",
+        "olean_sha256": "9e22648a91c134c3fc440abb01ad56e0694b1a89b6560d9738a75b56ceca9ca4"
+      },
+      {
+        "module": "FirstOrder/Fol.olean",
+        "olean_sha256": "cacf1698575083566f959bedba34fefe15997d0d835de989f38d463433376fe4"
+      },
+      {
+        "module": "ZF/Zf.olean",
+        "olean_sha256": "54f68e842c612c79f73feeeae6c2d61bb2a4552deb4c09948043e29808b63783"
+      }
+    ],
+    "source_verified_parent": "/tmp/zfc-singleton-break-integration-0y_lh19q"
+  },
+  "compiler": {
+    "executable": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+    "version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)"
+  },
+  "custom_axioms": false,
+  "date": "2026-10-16",
+  "development_attempts": [
+    {
+      "LEAN_PATH": "/tmp/zfc-inductive-attempts-bwz5n4pu:/tmp/zfc-singleton-break-integration-0y_lh19q",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-inductive-attempts-bwz5n4pu/BusyBeaver/ZFC/InductiveAttempts.olean",
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean"
+      ],
+      "exit_code": 1,
+      "seconds": 0.1172021683305502,
+      "stdout": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:1:0: error: object file '/tmp/zfc-inductive-attempts-bwz5n4pu/BusyBeaver/ZFC/SingletonInfinity.olean' of module BusyBeaver.ZFC.SingletonInfinity does not exist\n"
+    },
+    {
+      "LEAN_PATH": "/tmp/zfc-inductive-attempts-bwz5n4pu",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-inductive-attempts-bwz5n4pu/BusyBeaver/ZFC/InductiveAttempts.olean",
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean"
+      ],
+      "exit_code": 1,
+      "seconds": 0.797595870681107,
+      "stdout": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:203:19: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:206:46: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:207:17: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:207:42: error(lean.unknownIdentifier): Unknown identifier `hStep`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:211:19: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:215:31: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:217:17: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:217:43: error(lean.unknownIdentifier): Unknown identifier `hStep`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:225:18: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:225:41: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:227:18: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:227:41: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:236:50: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:236:55: error(lean.unknownIdentifier): Unknown identifier `hStep`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:237:10: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:239:50: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:239:55: error(lean.unknownIdentifier): Unknown identifier `hStep`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:240:10: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:250:54: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:250:59: error(lean.unknownIdentifier): Unknown identifier `hStep`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:251:7: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:253:54: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:253:59: error(lean.unknownIdentifier): Unknown identifier `hStep`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:254:7: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:258:20: error(lean.unknownIdentifier): Unknown identifier `B.sep`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:258:9: error: Tactic `rcases` failed: `x✝ : ?m.15` is not an inductive datatype\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:264:42: error(lean.unknownIdentifier): Unknown identifier `appF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:264:47: error(lean.unknownIdentifier): Unknown identifier `stepF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:267:32: error(lean.unknownIdentifier): Unknown identifier `appF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:267:37: error(lean.unknownIdentifier): Unknown identifier `stepF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:267:43: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:267:48: error(lean.unknownIdentifier): Unknown identifier `hStep`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:277:43: error(lean.unknownIdentifier): Unknown identifier `appF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:277:48: error(lean.unknownIdentifier): Unknown identifier `stepF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:279:26: error(lean.unknownIdentifier): Unknown identifier `appF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:279:31: error(lean.unknownIdentifier): Unknown identifier `stepF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:279:37: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:279:42: error(lean.unknownIdentifier): Unknown identifier `hStep`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:280:45: error(lean.unknownIdentifier): Unknown identifier `appF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:280:50: error(lean.unknownIdentifier): Unknown identifier `stepF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:283:37: error(lean.unknownIdentifier): Unknown identifier `appF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:283:42: error(lean.unknownIdentifier): Unknown identifier `stepF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:299:30: error: Application type mismatch: The argument\n  B\nhas type\n  Base mem\nof sort `Prop` but is expected to have type\n  ?m.52 → ?m.52 → ?m.52 → Prop\nof sort `Type ?u.110` in the application\n  agreement_separator B\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:299:36: error(lean.unknownIdentifier): Unknown identifier `appF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:299:41: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:300:38: error(lean.unknownIdentifier): Unknown identifier `appF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:300:43: error(lean.unknownIdentifier): Unknown identifier `stepF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:300:49: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:301:30: error(lean.unknownIdentifier): Unknown identifier `appF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:301:35: error(lean.unknownIdentifier): Unknown identifier `stepF`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:301:41: error(lean.unknownIdentifier): Unknown identifier `hApp`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:301:46: error(lean.unknownIdentifier): Unknown identifier `hStep`\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:315:6: error: Invalid rewrite argument: The pattern to be substituted is a metavariable (`?m.35 ?z\n  (SingletonInfinity.singleton ?B ?a)`) in this equality\n  ?m.35 ?z (SingletonInfinity.singleton ?B ?a) = (?z = ?a)\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:327:6: error: Invalid rewrite argument: The pattern to be substituted is a metavariable (`?m.36 ?z\n  (FiniteSets.insert ?B ?f ?p)`) in this equality\n  ?m.36 ?z (FiniteSets.insert ?B ?f ?p) = (?m.36 ?z ?f ∨ ?z = ?p)\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:343:4: error: Application type mismatch: The argument\n  FiniteSets.appForm\nhas type\n  Nat → Nat → Nat → Form\nof sort `Type` but is expected to have type\n  ∀ (phi : Form) (env : Nat → V),\n    Functional (relOf mem phi env) → ∀ (A : V), ∃ Y, ∀ (v : V), mem v Y ↔ ∃ z, mem z A ∧ relOf mem phi env v z\nof sort `Prop` in the application\n  @closure_of_forms V mem B.toBase (FiniteSets.succ B) (GraphApp B) FiniteSets.appForm\n"
+    },
+    {
+      "LEAN_PATH": "/tmp/zfc-inductive-attempts-bwz5n4pu",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-inductive-attempts-bwz5n4pu/BusyBeaver/ZFC/InductiveAttempts.olean",
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean"
+      ],
+      "exit_code": 1,
+      "seconds": 0.49721255246549845,
+      "stdout": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:216:8: error: Type mismatch: After simplification, term\n  (hApp (scons v (scons s (scons z env))) (f + 3) 1 0).mp hAppV\n has type\n  app (scons v (scons (SingletonInfinity.singleton B z) (scons z env)) (f + 3))\n    (scons v (scons (SingletonInfinity.singleton B z) (scons z env)) 1)\n    (scons v (scons (SingletonInfinity.singleton B z) (scons z env)) 0)\nbut is expected to have type\n  app (env f) (SingletonInfinity.singleton B z) v\nComputability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean:295:68: error: unexpected token 'include'; expected '#guard_msgs', 'abbrev', 'add_decl_doc', 'axiom', 'binder_predicate', 'builtin_cbv_simproc', 'builtin_cbv_simproc_decl', 'builtin_dsimproc', 'builtin_dsimproc_decl', 'builtin_grind_propagator', 'builtin_initialize', 'builtin_simproc', 'builtin_simproc_decl', 'cbv_simproc', 'cbv_simproc_decl', 'class', 'coinductive', 'declare_simp_like_tactic', 'declare_syntax_cat', 'def', 'dsimproc', 'dsimproc_decl', 'elab', 'elab_rules', 'example', 'grind_propagator', 'inductive', 'infix', 'infixl', 'infixr', 'initialize', 'instance', 'macro', 'macro_rules', 'notation', 'opaque', 'postfix', 'prefix', 'recommended_spelling', 'register_error_explanation', 'register_tactic_tag', 'register_try?_tactic', 'simproc', 'simproc_decl', 'structure', 'syntax', 'tactic_extension', 'theorem' or 'unif_hint'\n"
+    }
+  ],
+  "direct_imports": [
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinity.lean",
+      "sha256": "aa6b90970f9a63eb5b4d7b878522f02f8531a82c44e398902df8892f2b042974"
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteSets.lean",
+      "sha256": "a7598510348f597412e269d1df9ac8da5110f96e699d58aaa0eec081a2960702"
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientReplacement.lean",
+      "sha256": "456a06ccda2fc6193b2f0173f1715a70d73e0d81a4a36a2ebd6577bb3755a14d"
+    }
+  ],
+  "infinity_in_generic_base": false,
+  "native_decide": false,
+  "nonclaims": [
+    "No full quotient ZFAxioms bundle is constructed in this module.",
+    "No Foundation, object-level Choice, or interpretation of all ZFC axioms is asserted here.",
+    "No induction over arbitrary external predicates or standardness of the index is asserted.",
+    "No enumeration/RM/binary-runtime or Con(ZFC) machine equivalence is proved here.",
+    "No full closure rebuild: the checked parent cache is reused."
+  ],
+  "object_level_choice_assumed": false,
+  "object_level_foundation_assumed": false,
+  "ordinary_Infinity_conclusion": true,
+  "proved": [
+    "Backwards finite attempts agree on every represented singleton index.",
+    "A one-point graph and graph-point adjunction give an attempt at every index.",
+    "The actual guarded Value formula is partial-functional and its Replacement image contains its seed and is G-closed.",
+    "Finite Kuratowski graphs and literal app/successor atoms instantiate all required resources.",
+    "An empty-root singleton container gives ordinary Infinity using only Extensionality, Pairing, Union, actual formula Separation and Replacement.",
+    "Actual ModelsCPGIC+witness give the semantic ZFAxioms.inf interface and actual Inf_form under every quotient valuation."
+  ],
+  "scope": "Actual ModelsCPGIC plus a domain witness imply ordinary Infinity in the bisimulation quotient, via explicit finite-attempt formulas and no prior internal omega.",
+  "scratch_directory": "/tmp/zfc-inductive-attempts-bwz5n4pu",
+  "sorryAx": false,
+  "source": {
+    "bytes": 18624,
+    "lines": 397,
+    "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean",
+    "sha256": "b84f21e85367cecc74a7c3b52a83930099f5bb07a95f1dd10089c08d36a7f74f"
+  },
+  "specific_formula_resources": {
+    "parametric_atoms": [
+      "FiniteSets.appForm",
+      "FiniteSets.succForm"
+    ],
+    "replacement": [
+      "valueForm"
+    ],
+    "separation": [
+      "SingletonInfinity.zMemForm",
+      "agreeForm",
+      "hasAttemptForm"
+    ],
+    "value_relation_guard": "mem z N; partial functionality holds globally, not only on inputs in N."
+  },
+  "standard_axioms_only": true,
+  "status": "pass",
+  "theorem_axioms": {
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.agree_of_separator": [
+      "Classical.choice"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.agreement_separator": [],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.attempts_exist_of_separator": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.base_attempt": [
+      "Classical.choice"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.closure_of_forms": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.closure_of_instances": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.existence_separator": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.extend_attempt": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.extend_graph": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.ordinary_infinity_of_container": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.point_graph": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.quotientFiniteBase": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.quotient_inf_form": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.quotient_infinity": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.sat_agreeForm": [],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.sat_attemptForm": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.sat_hasAttemptForm": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.sat_valueForm": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.successor_closure": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ],
+    "SetTheory.BusyBeaver.ZFC.InductiveAttempts.value_image": [
+      "propext",
+      "Classical.choice",
+      "Quot.sound"
+    ]
+  },
+  "upstream_primary_sources": {
+    "attempt_predicates": "ZF/stdzf/coq/Std_setrec.v:41-50",
+    "attempt_proofs": "ZF/stdzf/coq/Std_setrec.v:181-298",
+    "commit": "297ab8df7e5de329605c3875b4934643b371a5e3",
+    "singleton_to_inductive": "ZF/stdzf/coq/Std_setinf.v:83-120",
+    "specific_instances": "ZF/stdzf/coq/Std_setrec.v:72-74"
+  },
+  "warnings_final": 0
+}
