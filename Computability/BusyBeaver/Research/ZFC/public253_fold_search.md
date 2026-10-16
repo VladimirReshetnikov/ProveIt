@@ -138,3 +138,23 @@ still excludes old5/84. Thus it does not contradict this experiment's known
 5→64 runtime survivor. Source24 separately gives a complete finite exact-step
 quotient obstruction for literal253, not a blank-equivalence lower bound.
 See the host's `intake-151-source-25-machine.md` and `intake-151-source-24.md`.
+
+
+## Batch 152 independent extensions
+
+The host's sources 26–34 (arrival `da6dabcd89`) reproduce larger bounded
+families of direct folds, mixed fusions, incoming-edge rewrites, row mutations,
+grammar rotations and initializer reuse. Their different 53/55 protected-row
+interfaces and finite-fuel contracts are retained in their dossiers. A runtime
+survivor is not a blank-start certificate; fuel and abstraction failures remain
+unresolved. The searches do not establish global minimality.
+
+Source 27 supplies a four-row 253-state variant with the same complete
+bootstrap tape at 312,935 steps instead of 312,975. Its ordinary same-halting
+argument and independent 2,981-pair register certificate are useful controls,
+but do not remove a state or supply a new Lean runtime theorem. Source 34's
+shared-initializer quotients save states on larger clean layouts, with best
+309 among its listed controls; their differences cannot be subtracted from
+public253. A full replay of source 33's broader final protected-basis search
+finds 268, matching the prior complete-word control. The table and recipe are
+preserved separately as `data/intake-152-source-33-protected268-*` in the host.

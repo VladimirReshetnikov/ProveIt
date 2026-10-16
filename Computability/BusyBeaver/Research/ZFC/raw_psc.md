@@ -310,3 +310,26 @@ global leastness requires an additional intersection resource. Connecting them
 to `RawPSCModel.separation_of_model` needs actual fresh formula builders and
 an EPSC/PSC adapter. The exact-hull control costs 271 states versus its 270-state
 EPSC comparison; the new normal form supplies no measured saving.
+
+
+## Batch 152 theory continuations
+
+The closure-kernels host's sources 26, 29, 30, 33 and 34 (arrival `da6dabcd89`,
+placement `b123527ff4`) add ordinary theory results that bear on this route.
+Source 26 proves EPSC1 plus fixed adjunction deductively equivalent to full
+EPSC, and exact represented hulls at positive parameter arity. EPSC1 alone
+remains open. Source 29 uses ground epsilon terms to name parameters in its
+term model; this does not prove ordinary parameter-free EPSC sufficient.
+Source 30's regular-ordinal model refutes deleting output support, even with
+the listed container axioms; it is not a countermodel to supported PSC.
+
+Source 33's inhabited subworld schema SR₂⁺ uses a shared world constant and
+native equality. Its arbitrary-transitive-cover bisimulation argument avoids
+assuming all raw objects are well founded. Source 34's finite assignment/class
+FAK12 uses an expanded language and an external definable-class enumeration.
+Neither is a finite membership-language axiomatization of ZFC. The full
+dossiers are in `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/`.
+These are ordinary calibrations, separate from current actual CP/GIC quotient
+ZF0, its one-way enumerator consistency implication and the remaining effective
+Foundation/Choice reductions. Their literal proof compilers and full internal
+machine endpoint remain open.

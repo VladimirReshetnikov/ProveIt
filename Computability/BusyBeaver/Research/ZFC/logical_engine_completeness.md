@@ -340,3 +340,22 @@ counterexample against the primary paper: omitting reflexivity allows constant
 true box/false diamond. The original quantifier and equational presentations
 exclude that valuation; their main interpretation theorem is unaffected.
 Neither reference is the numerical algorithm of the measured machine controls.
+
+
+## Batch 152 frontend comparisons
+
+Sources 28, 29, 31 and 33 of the closure-kernels host (arrival `da6dabcd89`)
+offer complete ordinary reference algorithms with different implementation
+costs: signed names with explicit contraction; ground epsilon plus finite
+Boolean unsatisfiability; default-last four-slot EPSC2 and dense positive-scope
+quantified-NAND coding; and the SR₂⁺ finite-pool tableau with one shared world
+witness. None has a newly compiled complete binary frontend. Local finite
+transducer counts and syntax-bit comparisons are not whole-machine state costs.
+
+The incoming description of code 0 as syntactically closed is corrected in
+host remark 152.1: `Rel 0 0 → Rel 0 0` has free variable 0 but is semantically
+true, and the stated `c+2` freshness offset survives. Historical claims that
+the concrete Lukasiewicz basis, named completeness or nonempty-model repair
+are missing now overlap checked project declarations. Archived Lean adapters
+were independently rebuilt without installing their old patches. The complete
+numeric theory calibration and binary endpoint are still separate tasks.
