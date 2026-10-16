@@ -1,0 +1,75 @@
+{
+  "status": "PASS \u2014 static review; no native execution by reviewer",
+  "findings": [],
+  "approved_modes": [
+    "core",
+    "shared",
+    "supplemental"
+  ],
+  "source_commit": "32d8bdc31de67c00de2122635690d5d880e23d24",
+  "snapshot_path": "/tmp/gowers-reuse135-source-snapshot.json",
+  "snapshot_sha256": "9fd140e676d596cfe6522a94e4e594735504b838ef9cf21556f6b16fba59bf61",
+  "freeze_path": "/tmp/gowers-reuse135-native-tools/freeze.json",
+  "freeze_sha256": "7724e280b0a12aaec71cbe8bfe63a23f128fcc642b3bc570160fba1d7fa780f5",
+  "plan_path": "/tmp/gowers-reuse135-native-tools/plan.json",
+  "plan_sha256": "e6bf76b989f0c10cd04367f5fb6f080ee2f704c127369ab29e4c36404a839d98",
+  "common_path": "/tmp/gowers-reuse135-native-tools/common.py",
+  "common_sha256": "4c71aedd3ec630046fd5dd5d205e250893c93bb0b1f1d2b0faf69bfe89e07328",
+  "capture_path": "/tmp/gowers-reuse135-native-tools/capture.py",
+  "capture_sha256": "8463cc8e288255e12fd9ad777f8a2fe7f0a75aa6cbf888f423129a112f6cecd2",
+  "runner_path": "/tmp/gowers-reuse135-native-tools/run.py",
+  "runner_sha256": "bf1aa169ed14fc098fd20c57a93a8c9904718bfc2b2648997384a3effd61e83a",
+  "review_script_path": "/tmp/gowers_review_reuse135_native.py",
+  "review_script_sha256": "3a797f63d85d1e0da06ae78bdb1e22cafbe40e19ef5125eb4d9af9b1c52c83ba",
+  "independently_recomputed_scopes": {
+    "core": {
+      "root_count": 1,
+      "module_count": 603,
+      "input_count": 606,
+      "source_lines": 128222
+    },
+    "shared": {
+      "root_count": 57,
+      "module_count": 1904,
+      "input_count": 1907,
+      "source_lines": 278482
+    },
+    "supplemental": {
+      "root_count": 18,
+      "module_count": 351,
+      "input_count": 354,
+      "source_lines": 64801
+    }
+  },
+  "combined_module_count": 1953,
+  "protected_path_count": 1960,
+  "all_current_snapshot_hashes_verified": true,
+  "isolated_receipt_valid_cases": 1,
+  "isolated_receipt_rejections": [
+    "boolean_exit",
+    "false_zero_stability",
+    "empty_guards",
+    "changed_started",
+    "boolean_pid",
+    "wrong_mode",
+    "wrong_source",
+    "wrong_count",
+    "terminal_event_disagreement",
+    "reverse_chronology",
+    "changed_artifact"
+  ],
+  "isolated_footer_cases": 3,
+  "reviewed_behavior": [
+    "Fresh capture binds committed source, checker, configuration, inventory, facades and precise closure graph.",
+    "One actual checker command per mode; no per-root execution result is inferred.",
+    "Serial chain requires same snapshot and immediate prior actual receipt, typed events/log/footer, source guard and current cumulative artifact freshness/stability.",
+    "Artifact mtimes follow the unchanged checker contract: unchanged dependencies may be cache hits; no claim all modules were recompiled.",
+    "New-only attempt files and one workspace lock; process checks recognize generic runner parents.",
+    "All source/native tools remain unchanged; current snapshot was captured by root."
+  ],
+  "limitations": [
+    "Static review does not claim any new native result.",
+    "Artifact evidence is mtime/size/freshness under the checker contract, not cryptographic olean-content attestation.",
+    "Only isolated receipt helpers were evaluated; artifacts were synthetic. No candidate entrypoint, source guard, process inspection, cache read or Git/repository mutation was performed."
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "status": "PASS \u2014 exact source repair; actual narrow20 check passed; full603 rerun pending",
+  "findings": [],
+  "reviewed_at": "2026-10-15T22:46:38.488311+00:00",
+  "baseline_source_commit": "32d8bdc31de67c00de2122635690d5d880e23d24",
+  "source_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.lean",
+  "before_sha256": "67faa07bd5285aa7ee3a51b53f271dd50d05a74e5f41d3827b17b75faccdc543",
+  "after_sha256": "8f10d0a85df036a59c0ca107db8d56cecef6a10fa44d4b07bd6f1c2d70ae5db8",
+  "repair_scope": "Two private theorem bodies only; generic count equality retained, converted to the target before simplification, then extensional congruence reconciles the decidable predicates.",
+  "changed_declarations": [
+    {
+      "name": "LeanProofs.GowersSzemeredi.context_sum_vertical_card",
+      "header": "private lemma context_sum_vertical_card {N : Nat} [NeZero N]\n    (B : Finset (Pair N)) :\n    \u2211 x : ZMod N, (verticalSection B x).card = B.card",
+      "context": [],
+      "old_block_sha256": "eb37cddcf14717cd3c85efe3aa4758833219729e7c62d3a9813537118e34d148",
+      "new_block_sha256": "eb66afb4f19ee4c439806ef4a5deee1358d28364c4d823626ee17e0b9f17ce04",
+      "proof_lines_before": 3,
+      "proof_lines_after": 3
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.context_sum_horizontal_card",
+      "header": "private lemma context_sum_horizontal_card {N : Nat} [NeZero N]\n    (B : Finset (Pair N)) :\n    \u2211 y : ZMod N, (horizontalSection B y).card = B.card",
+      "context": [],
+      "old_block_sha256": "2ebb79d8737b349c700ef51fcb6721332975a5a46bab2424d726c0724b0dbe6b",
+      "new_block_sha256": "009de276ee2efbff2603c961282a81c2a53df756a07c689d5f8f905fa17db5f6",
+      "proof_lines_before": 5,
+      "proof_lines_after": 5
+    }
+  ],
+  "preservation": {
+    "complete_headers_contexts": 26,
+    "definitions_exact": 6,
+    "other_declaration_blocks_exact": 24,
+    "imports_exact": true,
+    "source_lines_before": 500,
+    "source_lines_after": 500,
+    "theorem_proof_lines_before": 344,
+    "theorem_proof_lines_after": 344,
+    "source_delta": 0,
+    "proof_delta": 0,
+    "original_reuse_batch_source_delta": -135,
+    "new_helpers_or_assumptions": 0
+  },
+  "mathematics": [
+    "Vertical and horizontal sections retain their exact definitions and statements. Both quantities are natural cardinalities.",
+    "The vertical proof uses the symmetric existing product-count identity; the horizontal proof additionally uses the same product-commutation equivalence and orientation as the frozen proof.",
+    "The observed expanded diagnostic identified Classical.propDecidable versus Finset.decidableMem inside filters, rather than a Nat/Real cast or a changed finite type. The repair uses convert and congr! to prove the resulting extensional equality; no numerical estimate or assumption changes.",
+    "The new proofs introduce no axiom, sorry, additional import, helper or public interface change."
+  ],
+  "actual_narrow_validation": {
+    "runner": "root-invoked unchanged check_gowers.py",
+    "session": 45507,
+    "observed_chunk": "4d262c",
+    "terminal_exit": 0,
+    "terminal_exit_provenance": "Parent observed the actual terminal result; this independent reviewer read and hashed the resulting log, without executing native tools.",
+    "log_path": "/tmp/gowers-reuse135-card-ext-congruence-repair.log",
+    "log_sha256": "e0866a0c84cd7016042ea491484ff6b88d199cda6649bedc47938f1005396d99",
+    "terminal_module_count": 20,
+    "explicitly_checked_owner": "GowersSzemeredi.Proofs13PreparedFrequencyGraph",
+    "warnings": 2,
+    "warning_kind": "linter.unnecessarySeqFocus",
+    "error_diagnostics": 0,
+    "qualification": "20-module dependency closure, including up-to-date dependencies; not an all-modules rebuild, final-root audit, or successful full603 core result."
+  },
+  "preserved_failed_core": {
+    "path": "/tmp/gowers-reuse135-core-attempt1/native.log",
+    "sha256": "ed5a06dbd522de77d2c7f6454f3a104e7bbdf0b94c492485a2957db7950bac0e",
+    "status": "Failed original603 attempt preserved; this review does not supersede its outcome."
+  },
+  "parser_path": "/tmp/gowers-equation-aware-scoped-parser/parsers.py",
+  "parser_sha256": "b6cf12b8af1a45120d13349714bb922962059aee06d09dd7208f3a91e97e0592",
+  "limits": [
+    "Reviewer performed read-only source/Git/log inspection and pure parsing only. No native/candidate entrypoint, repository/Git/cache mutation.",
+    "The root must pin the repaired commit in a fresh snapshot and complete the original required full validation. No oldsource result is relabeled as repairedsource evidence."
+  ]
+}

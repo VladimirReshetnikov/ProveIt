@@ -1,0 +1,42 @@
+{
+  "status": "PASS: root source-bound runner review and actual capture/preflight; no native result",
+  "findings": [],
+  "source_commit": "32d8bdc31de67c00de2122635690d5d880e23d24",
+  "snapshot": {
+    "path": "/tmp/gowers-reuse135-source-snapshot.json",
+    "sha256": "9fd140e676d596cfe6522a94e4e594735504b838ef9cf21556f6b16fba59bf61"
+  },
+  "tool_freeze": {
+    "path": "/tmp/gowers-reuse135-native-tools/freeze.json",
+    "sha256": "7724e280b0a12aaec71cbe8bfe63a23f128fcc642b3bc570160fba1d7fa780f5"
+  },
+  "reviewed_files": {
+    "README.txt": "3661ba9e4304b54a32e28a3c32ba7cb9e47d8031b9e633a016767e8fcd80da54",
+    "capture.py": "8463cc8e288255e12fd9ad777f8a2fe7f0a75aa6cbf888f423129a112f6cecd2",
+    "common.py": "4c71aedd3ec630046fd5dd5d205e250893c93bb0b1f1d2b0faf69bfe89e07328",
+    "plan.json": "e6bf76b989f0c10cd04367f5fb6f080ee2f704c127369ab29e4c36404a839d98",
+    "run.py": "bf1aa169ed14fc098fd20c57a93a8c9904718bfc2b2648997384a3effd61e83a"
+  },
+  "root_selection": {
+    "path": "/tmp/gowers-reuse135-root-selection.json",
+    "sha256": "8c487574f3ac8372b3cd35005e28b237d5ccea719ede21a0a3fc1fa31c02ea61"
+  },
+  "observed_capture_exit": 0,
+  "observed_core_preflight_exit": 0,
+  "mode_counts": {
+    "core": 603,
+    "shared": 1904,
+    "supplemental": 351
+  },
+  "protected_paths": 1960,
+  "notes": [
+    "Every command invokes unchanged check_gowers.py with the exact ordered selected roots.",
+    "Source guard recomputes closures/counts and compares current and committed source hashes; stamps protect inputs throughout execution.",
+    "Actual started/launched/terminal/log and typed zero exit plus exact footer are required for a pass.",
+    "Cumulative post-artifact freshness mirrors the unchanged checker; prior artifacts must remain stable.",
+    "One-worker guard recognizes this generic runner and direct checker/Lean children.",
+    "Separate commands have separate outcomes; own-root counts do not imply separate command exits.",
+    "Kernel audit conclusions require inspecting the actual forthcoming native results."
+  ],
+  "checked_at": "2026-10-15T22:20:01.194394+00:00"
+}

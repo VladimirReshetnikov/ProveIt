@@ -9413,6 +9413,59 @@ The accepted Lemma 16.10 correction and the documented limits on fidelity to
 individual original-paper statements remain explicit. This checkpoint makes no
 new claim of complete original-paper fidelity or an improved numerical bound.
 
+### L.107. Reusing family covers and counting identities
+
+The six-owner simplification at source `703b85dbbc3a2b897d9f77e854b89eefed6efb8f`,
+based on published checkpoint `ff0b354`, removes 135 production source lines:
+125 theorem proof lines and a ten-line private equivalence definition. All 427
+retained headers and contexts and 123 retained non-theorem blocks are preserved.
+No helper, import or module is added.
+
+The unchanged family compressed-cover producer moves into `Proofs16WithLift`;
+the single-function proof specializes it to `Unit`. Restriction wrappers reuse
+sharper explicit estimates, initial-progression indexing uses `sigmaFiberEquiv`,
+Weyl uses additive monotonicity, and four frequency-graph cardinality proofs use
+existing product, coordinate-swap and section identities.
+
+The first core attempt failed at two private cardinality proofs because filtered
+sets carried different predicate decision procedures. The repair uses extensional
+congruence, preserving statements and proof lengths. The repaired owner's narrow
+20-module check passed; the original failed core and diagnostic logs remain
+separate evidence.
+
+Three actual repaired-source checker commands have now passed with exit zero:
+the 603-module core; one command for 57 shared roots, with a 1,904-module footer;
+and one command for 18 supplemental roots, with a 351-module footer. Their union
+contains 1,953 modules. The 76 own-root rows describe individual closures; they
+are not 76 independently observed command outcomes. Source and artifact stability
+checks passed for all three commands.
+
+The separate retention verification passed for seven unchanged supplemental
+scopes. Their historical source inputs and current artifacts were checked; nine
+modules lie outside the fresh command union. Coverage is therefore 1,953 freshly
+validated modules plus nine historically validated modules, 1,962 in total.
+The retained outcomes remain attributed to their original historical command.
+
+The regenerated inventory preserves all 120 ordered catalogue rows and 544
+companion occurrences, including qualifications and duplicates. Three companion
+arrays were restored to baseline order by permuting whole objects. The only
+remaining differences are six line references. This comparison accounts for
+source locations; it does not certify paper fidelity.
+
+The [archive index](verification/2026-10-16-reuse135-evidence/index.json) and
+[evidence map](verification/2026-10-16-reuse135-evidence/evidence-map.json) bind the
+actual receipts, exact logs, source and tool pins, failed attempt, repair evidence,
+[independent chain review](verification/2026-10-16-reuse135-evidence/extra/actual_chain_report_json/report.json),
+[historical retention check](verification/2026-10-16-reuse135-evidence/extra/historical_retention_actual/gowers-reuse135-repaired703b-retention-actual.json),
+and [inventory comparison](verification/2026-10-16-reuse135-evidence/extra/actual_inventory_comparison/comparison.json).
+The archive contains 77 evidence files plus its index and map.
+
+Final statements, numerical bounds and positive-step progression conclusions
+are unchanged. The documented Lemma 16.10 correction and original-paper fidelity
+limits remain. This checkpoint introduces no new numerical-bound claim and covers
+source `703b85db` only. The separate 297-line simplification requires validation
+on its integrated source.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
