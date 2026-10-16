@@ -1,0 +1,11 @@
+Report06 intake review — completed on separate copy, originals untouched.
+
+Full paper (1589 TeX lines, PDF25pages) and all notes reviewed. No mathematical flaw found in subset-only point-seeded BIC bootstrap, arbitrary-state tail padding, equality-vacuity countermodel, CPprime pseudo-hereditary model, or two-sided equality elimination within their stated hypotheses. Theory overlap with01/05 should be reconciled; Ext remains part of the inherited seeded calibration. No internal arithmetic proof export or newkernelproof is supplied.
+
+All advertised standalone suites reproduced. Integrated verification --no-integrity passed40.106s. Literal regeneration52.760s reproduced all4tablebytes and all11sequential folds, rechecking8391casesand exactboot after each. Threeblanktables boot264982steps,state96,head-8,gap62,exactentiretape;prepared252hasexplicitseed. New256finaltable512rows,halt254(nonconsecutivestate labels). Protected55rows preserve oldboxoraclecontracts; newPythonauditsarenewexecutableevidence,notkernel-instantiateduniversalTMsimulation.
+
+Independent source recovery matches203node baselineexactly to pinnedProg254; machine202DAGmatchescertifiedcandidate. Wrongsite,wrongbranch,wrongregisternnegativecertificates rejected.100000rotationiterations reproduce candidatebytes exactly in105.839s.57375directedfoldsearch matches zero survivors in36.879s(500affinefuel). FourC++bootstrapmodes and256bootfolds reproduce exactpublished steps/casecounts; no successfulinitializer. Detailedruntime+logs inJSON. PDF rebuild passed2.611s withnooverfull/undefinedwarnings. No manifestintegrity/line-endingchecking,LeanorCoqbuild.
+
+Currentgap: report's254record language freezes297ab and predates the already-reviewed publicPR20head0d544f2a...253stateinitializer-sharing result. Reconciliation should credit existing253priorwork, distinguish its312975step/gap40boot from thisreport264982/gap62, and preserve remaining internalZFC/Lean endpointgap. The report'sMira prepared252isdistinctfromourpublicWade252researchtable.201node/zero8candidateandcertificatearenotbundled; its3092pair/38TMfailuremetadata werenotreplayed.
+
+Detailedmachinecounts,hashes,mathscope,sourcechecks andcommands: review.json.
