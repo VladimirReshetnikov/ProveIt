@@ -855,7 +855,7 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
     rw [windowedSum_eq_filter]
   have hCwEq : windowedSum rho a b (fun _ => 1) Finset.univ p = W.card := by
     rw [windowedSum_eq_filter]
-    simp only [Finset.sum_const, nsmul_eq_mul, mul_one]
+    simp only [W, Finset.sum_const, nsmul_eq_mul, mul_one]
   have hCvEq : boundaryCount rho sigma a b p = V.card := by
     rw [boundaryCount_eq_card_filter]
   rw [hSprEq] at hSpr hEw hCw hCv
