@@ -1,0 +1,434 @@
+{
+  "date_utc": "2026-10-16T21:52:55.601453+00:00",
+  "head_at_verification": "99ed9fa6449b54651187c179a6666e4c3b4acb7e",
+  "sources": [
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Numeric254.lean",
+      "sha256": "2671949ba3720083bf9909b935e3d7258402d614451c2cbc08d40bea7d7ca15b",
+      "git_blob": "f37e9d1e4aa66aeb1044d09fdf9279c3809d14e7"
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedNumeric254.lean",
+      "sha256": "097e814e92fde59144f7dc3fdefa2988954de31645b1295caa2f71073c8c60be",
+      "git_blob": "675551f7f73e1803c3e2c4cbf4505627fb5b6f81"
+    }
+  ],
+  "upstream": {
+    "baseline_pin": "297ab8df7e5de329605c3875b4934643b371a5e3",
+    "public253_pin": "0d544f2a2e3c18f12278441a74b7879f31cbe856",
+    "attribution": "Mira-Cult designed the original machine; Jeff supplied the verification; mira-emmy supplied the attributed public253 reduction.",
+    "same_logic_and_settheory_files_at_both_pins": 25,
+    "definition_source_blobs": [
+      {
+        "path": "ZF/m254/coq/logic/Codes254.v",
+        "blob": "fd6f94345cfb65be33f427c03ba09fe003b2fbbb",
+        "same_in_254_and_253_pins": true,
+        "matches_vendored_source": true
+      },
+      {
+        "path": "ZF/m254/coq/logic/Enum254.v",
+        "blob": "637e790c7f8055e10de35cf87f0f038037a855a0",
+        "same_in_254_and_253_pins": true,
+        "matches_vendored_source": true
+      },
+      {
+        "path": "ZF/m254/coq/logic/Thm254.v",
+        "blob": "207262643ee248032ee3db4e69b3cc41bfdddbf8",
+        "same_in_254_and_253_pins": true,
+        "matches_vendored_source": true
+      }
+    ]
+  },
+  "compiler": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+  "dependency_cache": "/tmp/zfc-rm330-integrated-oy8n35kp",
+  "scratch": "/tmp/zfc-numeric254-check-cu5sp1ud",
+  "scratch_cache_method": "Symlinked48 previously verified oleans; new modules compiled into this fresh cache. No existing dependency or Boot253 was rebuilt.",
+  "builds": [
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Numeric254.lean",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-numeric254-check-cu5sp1ud/BusyBeaver/ZFC/Numeric254.olean",
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Numeric254.lean"
+      ],
+      "compiler_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+      "returncode": 0,
+      "seconds": 0.41328177601099014,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedNumeric254.lean",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-numeric254-check-cu5sp1ud/BusyBeaver/ZFC/NamedNumeric254.olean",
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedNumeric254.lean"
+      ],
+      "compiler_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+      "returncode": 0,
+      "seconds": 0.3275450561195612,
+      "output": ""
+    },
+    {
+      "source": "/tmp/zfc-numeric254-check-cu5sp1ud/Audit.lean",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "/tmp/zfc-numeric254-check-cu5sp1ud/Audit.lean"
+      ],
+      "compiler_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+      "returncode": 0,
+      "seconds": 0.28133639972656965,
+      "output": "SetTheory.BusyBeaver.ZFC.Numeric254.NumThm : Nat → Prop\nSetTheory.BusyBeaver.ZFC.Numeric254.classical : Kalmar.Classical Numeric254.wim Numeric254.F Numeric254.NumThm\nSetTheory.BusyBeaver.ZFC.Numeric254.vacuity_rel (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b) :\n  Numeric254.NumThm (Numeric254.wim (Numeric254.wel a b) (Numeric254.wal c (Numeric254.wel a b)))\nSetTheory.BusyBeaver.ZFC.Numeric254.vacuity_eq (a b c : Nat) (hca : c ≠ a) (hcb : c ≠ b) :\n  Numeric254.NumThm (Numeric254.wim (Numeric254.weq a b) (Numeric254.wal c (Numeric254.weq a b)))\nSetTheory.BusyBeaver.ZFC.NamedNumeric254.transport {Ax : Tarski.NF → Prop}\n  (hAx : ∀ (f : Tarski.NF), Ax f → Numeric254.NumThm (NamedNumeric254.encode f)) {f : Tarski.NF} (h : Tarski.Thm Ax f) :\n  Numeric254.NumThm (NamedNumeric254.encode f)\nSetTheory.BusyBeaver.ZFC.NamedNumeric254.Q (f : Tarski.NF) : Prop\nSetTheory.BusyBeaver.ZFC.NamedNumeric254.refutation_iff :\n  Tarski.Thm NamedNumeric254.Q Tarski.NF.bot ↔ Numeric254.NumThm 1\nSetTheory.BusyBeaver.ZFC.NamedNumeric254.ir_code : NamedNumeric254.encode NamedNumeric254.ir = 610\nSetTheory.BusyBeaver.ZFC.NamedNumeric254.ir_in_Q : NamedNumeric254.Q NamedNumeric254.ir\n'SetTheory.BusyBeaver.ZFC.Numeric254.truth_alias' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Numeric254.relative_falsity_atom' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Numeric254.k' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Numeric254.s' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Numeric254.peirce' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Numeric254.ex_falso' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Numeric254.classical' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Numeric254.self_imp' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Numeric254.and_left' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Numeric254.and_right' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Numeric254.vacuity_rel' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Numeric254.vacuity_eq' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Numeric254.gate_thm' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NamedNumeric254.encode_neg' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.NamedNumeric254.encode_ex' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.NamedNumeric254.falsity_collision' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.NamedNumeric254.named_truth_code' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.NamedNumeric254.transport' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.NamedNumeric254.transport_Q' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.NamedNumeric254.refutation_iff' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.NamedNumeric254.ir_code' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.NamedNumeric254.ir_in_Q' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.NamedNumeric254.named_ir' does not depend on any axioms\n"
+    }
+  ],
+  "audit": {
+    "source_text": "import BusyBeaver.ZFC.NamedNumeric254\nopen SetTheory.BusyBeaver.ZFC\n#check Numeric254.NumThm\n#check Numeric254.classical\n#check Numeric254.vacuity_rel\n#check Numeric254.vacuity_eq\n#check NamedNumeric254.transport\n#check NamedNumeric254.Q\n#check NamedNumeric254.refutation_iff\n#check NamedNumeric254.ir_code\n#check NamedNumeric254.ir_in_Q\n#print axioms Numeric254.truth_alias\n#print axioms Numeric254.relative_falsity_atom\n#print axioms Numeric254.k\n#print axioms Numeric254.s\n#print axioms Numeric254.peirce\n#print axioms Numeric254.ex_falso\n#print axioms Numeric254.classical\n#print axioms Numeric254.self_imp\n#print axioms Numeric254.and_left\n#print axioms Numeric254.and_right\n#print axioms Numeric254.vacuity_rel\n#print axioms Numeric254.vacuity_eq\n#print axioms Numeric254.gate_thm\n#print axioms NamedNumeric254.encode_neg\n#print axioms NamedNumeric254.encode_ex\n#print axioms NamedNumeric254.falsity_collision\n#print axioms NamedNumeric254.named_truth_code\n#print axioms NamedNumeric254.transport\n#print axioms NamedNumeric254.transport_Q\n#print axioms NamedNumeric254.refutation_iff\n#print axioms NamedNumeric254.ir_code\n#print axioms NamedNumeric254.ir_in_Q\n#print axioms NamedNumeric254.named_ir\n\nexample (h : Tarski.Thm NamedNumeric254.Q Tarski.NF.bot) : Numeric254.NumThm 1 :=\n  NamedNumeric254.refutation_iff.mp h\nexample (h : Numeric254.NumThm 1) : Tarski.Thm NamedNumeric254.Q Tarski.NF.bot :=\n  NamedNumeric254.refutation_iff.mpr h\n",
+    "theorems_audited": 23,
+    "axioms": {
+      "SetTheory.BusyBeaver.ZFC.Numeric254.truth_alias": [],
+      "SetTheory.BusyBeaver.ZFC.Numeric254.relative_falsity_atom": [],
+      "SetTheory.BusyBeaver.ZFC.Numeric254.k": [],
+      "SetTheory.BusyBeaver.ZFC.Numeric254.s": [],
+      "SetTheory.BusyBeaver.ZFC.Numeric254.peirce": [],
+      "SetTheory.BusyBeaver.ZFC.Numeric254.ex_falso": [],
+      "SetTheory.BusyBeaver.ZFC.Numeric254.classical": [],
+      "SetTheory.BusyBeaver.ZFC.Numeric254.self_imp": [],
+      "SetTheory.BusyBeaver.ZFC.Numeric254.and_left": [
+        "propext"
+      ],
+      "SetTheory.BusyBeaver.ZFC.Numeric254.and_right": [
+        "propext"
+      ],
+      "SetTheory.BusyBeaver.ZFC.Numeric254.vacuity_rel": [
+        "propext"
+      ],
+      "SetTheory.BusyBeaver.ZFC.Numeric254.vacuity_eq": [
+        "propext"
+      ],
+      "SetTheory.BusyBeaver.ZFC.Numeric254.gate_thm": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "SetTheory.BusyBeaver.ZFC.NamedNumeric254.encode_neg": [],
+      "SetTheory.BusyBeaver.ZFC.NamedNumeric254.encode_ex": [],
+      "SetTheory.BusyBeaver.ZFC.NamedNumeric254.falsity_collision": [],
+      "SetTheory.BusyBeaver.ZFC.NamedNumeric254.named_truth_code": [],
+      "SetTheory.BusyBeaver.ZFC.NamedNumeric254.transport": [
+        "propext"
+      ],
+      "SetTheory.BusyBeaver.ZFC.NamedNumeric254.transport_Q": [
+        "propext"
+      ],
+      "SetTheory.BusyBeaver.ZFC.NamedNumeric254.refutation_iff": [
+        "propext"
+      ],
+      "SetTheory.BusyBeaver.ZFC.NamedNumeric254.ir_code": [],
+      "SetTheory.BusyBeaver.ZFC.NamedNumeric254.ir_in_Q": [],
+      "SetTheory.BusyBeaver.ZFC.NamedNumeric254.named_ir": []
+    },
+    "caller_both_directions_without_extra_parameters": "passed",
+    "no_sorryAx_or_custom_axioms": true
+  },
+  "source_contract": {
+    "command": [
+      "uv",
+      "run",
+      "--no-project",
+      "python",
+      "/tmp/zfc-numeric254-check-cu5sp1ud/check_source_contract.py"
+    ],
+    "returncode": 0,
+    "nonrecursive_numeric_definitions_matched": 20,
+    "triangle_recursion_matched": true,
+    "constructor_signatures_matched": 12,
+    "gate_comparison_matched": true,
+    "normalized_signatures": [
+      {
+        "name": "truth",
+        "parameters": 0,
+        "signature": [
+          [
+            "N",
+            "0"
+          ]
+        ]
+      },
+      {
+        "name": "mp",
+        "parameters": 2,
+        "signature": [
+          [
+            "N",
+            "v0"
+          ],
+          [
+            "N",
+            [
+              "app",
+              [
+                "app",
+                "wim",
+                "v0"
+              ],
+              "v1"
+            ]
+          ],
+          [
+            "N",
+            "v1"
+          ]
+        ]
+      },
+      {
+        "name": "gen",
+        "parameters": 2,
+        "signature": [
+          [
+            "N",
+            "v1"
+          ],
+          [
+            "N",
+            [
+              "app",
+              [
+                "app",
+                "wal",
+                "v0"
+              ],
+              "v1"
+            ]
+          ]
+        ]
+      },
+      {
+        "name": "rho1",
+        "parameters": 2,
+        "signature": [
+          [
+            "N",
+            [
+              "app",
+              [
+                "app",
+                "rho1",
+                "v0"
+              ],
+              "v1"
+            ]
+          ]
+        ]
+      },
+      {
+        "name": "rho2",
+        "parameters": 3,
+        "signature": [
+          [
+            "N",
+            [
+              "app",
+              [
+                "app",
+                [
+                  "app",
+                  "rho2",
+                  "v0"
+                ],
+                "v1"
+              ],
+              "v2"
+            ]
+          ]
+        ]
+      },
+      {
+        "name": "rho3",
+        "parameters": 3,
+        "signature": [
+          [
+            "N",
+            [
+              "app",
+              [
+                "app",
+                [
+                  "app",
+                  "rho3",
+                  "v0"
+                ],
+                "v1"
+              ],
+              "v2"
+            ]
+          ]
+        ]
+      },
+      {
+        "name": "rho4",
+        "parameters": 3,
+        "signature": [
+          [
+            "N",
+            [
+              "app",
+              [
+                "app",
+                [
+                  "app",
+                  "rho4",
+                  "v0"
+                ],
+                "v1"
+              ],
+              "v2"
+            ]
+          ]
+        ]
+      },
+      {
+        "name": "rho5",
+        "parameters": 3,
+        "signature": [
+          [
+            "N",
+            [
+              "app",
+              [
+                "app",
+                [
+                  "app",
+                  "rho5",
+                  "v0"
+                ],
+                "v1"
+              ],
+              "v2"
+            ]
+          ]
+        ]
+      },
+      {
+        "name": "rho6",
+        "parameters": 2,
+        "signature": [
+          [
+            "N",
+            [
+              "app",
+              [
+                "app",
+                "rho6",
+                "v0"
+              ],
+              "v1"
+            ]
+          ]
+        ]
+      },
+      {
+        "name": "rho7",
+        "parameters": 3,
+        "signature": [
+          [
+            "N",
+            [
+              "app",
+              [
+                "app",
+                [
+                  "app",
+                  "rho7",
+                  "v0"
+                ],
+                "v1"
+              ],
+              "v2"
+            ]
+          ]
+        ]
+      },
+      {
+        "name": "rho8",
+        "parameters": 4,
+        "signature": [
+          [
+            "N",
+            [
+              "app",
+              [
+                "app",
+                [
+                  "app",
+                  [
+                    "app",
+                    "rho8",
+                    "v0"
+                  ],
+                  "v1"
+                ],
+                "v2"
+              ],
+              "v3"
+            ]
+          ]
+        ]
+      },
+      {
+        "name": "bundle",
+        "parameters": 3,
+        "signature": [
+          [
+            "ne",
+            "v2",
+            "v0"
+          ],
+          [
+            "ne",
+            "v2",
+            "v1"
+          ],
+          [
+            "N",
+            [
+              "app",
+              [
+                "app",
+                [
+                  "app",
+                  "bundle",
+                  "v0"
+                ],
+                "v1"
+              ],
+              "v2"
+            ]
+          ]
+        ]
+      }
+    ],
+    "checker_source_text": "\"\"\"Compare finite constructor terms/inductive signatures; not a proof of an endpoint.\"\"\"\nimport re,json\nfrom pathlib import Path\nROOT=Path.cwd()\nCOQ=ROOT/'lib/jeff-busy-beaver-zfc254/ZF/m254/coq/logic'\nLEAN=ROOT/'Computability/BusyBeaver/Lean/BusyBeaver/ZFC'\n\ndef tokens(s):\n    parts=re.findall(r'[A-Za-z_][A-Za-z_0-9]*|[0-9]+|[()+*]',s)\n    assert re.sub(r'\\s+','',''.join(parts))==re.sub(r'\\s+','',s),s\n    return parts\nclass Parse:\n    def __init__(self,s,params):self.ts=tokens(s);self.i=0;self.ps={v:f'v{i}' for i,v in enumerate(params)}\n    def atom(self):\n        x=self.ts[self.i];self.i+=1\n        if x=='(':\n            a=self.add();assert self.ts[self.i]==')';self.i+=1;return a\n        assert x not in [')','+','*'];return self.ps.get(x,x)\n    def app(self):\n        a=self.atom()\n        while self.i<len(self.ts) and self.ts[self.i] not in [')','+','*']:a=['app',a,self.atom()]\n        return a\n    def mul(self):\n        a=self.app()\n        while self.i<len(self.ts) and self.ts[self.i]=='*':self.i+=1;a=['*',a,self.app()]\n        return a\n    def add(self):\n        a=self.mul()\n        while self.i<len(self.ts) and self.ts[self.i]=='+':self.i+=1;a=['+',a,self.mul()]\n        return a\n    def finish(self):\n        a=self.add();assert self.i==len(self.ts),(self.ts,self.i);return a\n\ndef args(s):return re.findall(r'\\b[A-Za-z_][A-Za-z_0-9]*\\b',re.sub(r'\\b(?:nat|Nat)\\b','',s))\ndef body(s,name,coq):\n    if coq:\n        p=rf'\\bDefinition {name}\\b(.*?): nat :=\\s*(.*?)\\.'\n        m=re.search(p,s,re.S);assert m,name\n    else:\n        p=rf'^def {name}\\b([^\\n]*?): Nat :=\\s*(.*?)(?=\\n(?:def |/--|--|inductive |theorem |end )|\\Z)'\n        m=re.search(p,s,re.M|re.S);assert m,name\n    return args(m[1]),m[2].strip()\ndef constructor_types(s,coq):\n    if coq:s=s.split('Inductive thm254 : nat -> Prop :=',1)[1].split('.',1)[0]\n    else:s=s.split('inductive NumThm : Nat → Prop',1)[1].split('\\ntheorem ',1)[0]\n    out=[]\n    for line in s.split('|')[1:]:\n        header,typ=line.rsplit(':',1)\n        header=header.strip(); name=header.split()[0]\n        params=args(header[len(name):]);kind={'T_true':'truth','T_mp':'mp','T_gen':'gen','T_bundle':'bundle'}.get(name,re.sub(r'^T_r','rho',name))\n        pieces=[]\n        for p in typ.strip().replace('->','→').replace('<>','≠').split('→'):\n            p=p.strip()\n            if p.startswith('thm254 '):pieces.append(['N',Parse(p[len('thm254 '):],params).finish()])\n            elif p.startswith('NumThm '):pieces.append(['N',Parse(p[len('NumThm '):],params).finish()])\n            else:\n                a,b=p.split('≠');pieces.append(['ne',Parse(a.strip(),params).finish(),Parse(b.strip(),params).finish()])\n        out.append({'name':kind,'parameters':len(params),'signature':pieces})\n    return out\n\ndef main():\n    if not __debug__:raise RuntimeError('assertions required')\n    c=(COQ/'Codes254.v').read_text();l=(LEAN/'Numeric254.lean').read_text()\n    c=re.sub(r'\\(\\*.*?\\*\\)','',c,flags=re.S)\n    names=['P','wim','wel','wal','weq','F','wn','wa','wex']+[f'rho{i}' for i in range(1,9)]+['bundleC','bundleG','bundle']\n    terms=[]\n    for n in names:\n        ca,cb=body(c,n,True);la,lb=body(l,n,False)\n        assert len(ca)==len(la),(n,ca,la)\n        cc=Parse(cb,ca).finish();lc=Parse(lb,la).finish();assert cc==lc,n\n        terms.append({'name':n,'parameters':len(ca),'normalized_term':cc})\n    assert 'match n with 0 => 0 | S m => S m + tri m end' in c\n    assert 'def tri : Nat → Nat\\n  | 0 => 0\\n  | n + 1 => n + 1 + tri n' in l\n    cs=constructor_types((COQ/'Thm254.v').read_text(),True);ls=constructor_types(l,False)\n    assert len(cs)==len(ls)==12\n    assert cs==ls,(cs,ls)\n    enum=(COQ/'Enum254.v').read_text()\n    assert 'if Nat.eqb c a || Nat.eqb c b then 0 else bundle a b c' in enum\n    assert 'if c == a || c == b then 0 else bundle a b c' in l\n    result={'all_twenty_nonrecursive_numeric_definitions_match':True,'terms':terms,'triangle_recursion_matches':True,'all_twelve_constructor_signatures_match':True,'constructors':cs,'gate_uses_same_two_Nat_equality_tests_and_zero_failure_value':True,'scope':'Syntactic finite-definition comparison, modulo binder alpha-renaming and standard Nat equality-test notation. No endpoint or semantic calibration is proved.'}\n    p=Path(__file__).with_name('source-contract.json');p.write_text(json.dumps(result,indent=2)+'\\n')\n    print(json.dumps({k:v for k,v in result.items() if k not in ['terms','constructors']}))\nif __name__=='__main__':main()\n",
+    "scope": "Syntactic finite-definition comparison, modulo binder alpha-renaming and standard Nat equality-test notation. No endpoint or semantic calibration is proved."
+  },
+  "scope": {
+    "proved": [
+      "The exact original12-constructor numerical calculus has a derived classical implicational basis for all natural parameters.",
+      "Both gated vacuity families are projected from its complete original bundle.",
+      "All13 named Thm constructors transport given explicitly translated theory axioms.",
+      "For Qf=NumThm(encodef), ThmQbot iff NumThm1, with no additional hypotheses.",
+      "IR belongs to Q and has encoded numeral610; its named Q theorem follows."
+    ],
+    "not_proved": [
+      "A decoder or arbitrary-code syntax round trip.",
+      "Any semantic interpretation of runtime code1 without IR.",
+      "Equiconsistency of Q with SIR, ZFC or a closure theory.",
+      "Enumerator completeness/soundness, program/RM/binary simulation or a new state bound."
+    ],
+    "native_decide_used": false,
+    "Lean_or_Coq_axioms_added": false,
+    "Coq_builds_run": false,
+    "umbrella_or_shared_checker_changed": false,
+    "committed": false
+  }
+}

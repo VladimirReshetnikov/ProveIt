@@ -1,0 +1,198 @@
+{
+  "status": "PASS",
+  "scratch": "/tmp/zfc-bootstrap-frame253-9e620tg4",
+  "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BootstrapFrame253.lean",
+  "source_sha256": "2033c42557fc8f6e70aee0c9b5021cd07bef04cbf010ec8973a33af540cde5a5",
+  "source_git_blob": "e61388fc6fc6f1670f42462da0538086de90428a",
+  "command": [
+    "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+    "-o",
+    "/tmp/zfc-bootstrap-frame253-9e620tg4/BusyBeaver/ZFC/BootstrapFrame253.olean",
+    "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BootstrapFrame253.lean"
+  ],
+  "working_directory": "/home/codex/.codex/worktrees/ec20/Proofs",
+  "lean_path": "/tmp/zfc-bootstrap-frame253-9e620tg4",
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "returncode": 0,
+  "seconds": 2.944,
+  "initial_harness_attempt": {
+    "returncode": 1,
+    "reason": "Partial first LEAN_PATH root hid complete BusyBeaver namespace; merged symlinks into one root before compiling.",
+    "source_error": false
+  },
+  "audit": {
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "/tmp/zfc-bootstrap-frame253-9e620tg4/Audit.lean"
+    ],
+    "working_directory": "/tmp/zfc-bootstrap-frame253-9e620tg4",
+    "compiler_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "source": "import BusyBeaver.ZFC.BootstrapFrame253\nopen SetTheory.BusyBeaver SetTheory.BusyBeaver.ZFC\nset_option maxRecDepth 8192\nopen RegisterPath FiniteZipper BootstrapFrame253\n#print axioms spares158_length\n#print axioms spares158_nonzero_indices\n#print axioms target_primary_values\n#print axioms target_zip\n#print axioms boot_exact_dispatch_zip\n#print axioms boot_dispatch_frame\n#print axioms boot_marker\n#print axioms boot_header\n#print axioms bootstrap_matches_rm330\nexample : RegisterPath.run Prog254.program 330 Prog254.initial =\n    some (RegisterPath.decode Prefix330.finiteTarget) := bootstrap_matches_rm330.1\nexample : DispatchFrame dispatch253 (machine253.run 312975)\n    (decode Prefix330.finiteTarget) 37 spares158 := bootstrap_matches_rm330.2\nexample : ZipRep (machine253.run 312975)\n    (dispatchZip dispatch253 (-17) 10 1 (decode Prefix330.finiteTarget) 37 spares158) :=\n  boot_exact_dispatch_zip\nexample : Tape.read (machine253.run 312975).tape (-18) = true := boot_marker\nexample : Tape.read (machine253.run 312975).tape 23 = true := boot_header\n",
+    "returncode": 0,
+    "seconds": 0.655,
+    "output": "'SetTheory.BusyBeaver.ZFC.BootstrapFrame253.spares158_length' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.BootstrapFrame253.spares158_nonzero_indices' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.BootstrapFrame253.target_primary_values' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.BootstrapFrame253.target_zip' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.BootstrapFrame253.boot_exact_dispatch_zip' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BootstrapFrame253.boot_dispatch_frame' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BootstrapFrame253.boot_marker' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BootstrapFrame253.boot_header' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.BootstrapFrame253.bootstrap_matches_rm330' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+    "axiom_audits": 9
+  },
+  "verified_dependencies": [
+    {
+      "module": "BusyBeaver.Core",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/Core.lean",
+      "sha256": "436336133fa107c62eb00322333ec9451a0705964bd2b62fce3f44ce848672a6",
+      "matches_source_verified_cache": true,
+      "olean": "/tmp/zfc-lean-check-h9rvzdmj/BusyBeaver/Core.olean",
+      "olean_version": "4.32.0",
+      "olean_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35"
+    },
+    {
+      "module": "BusyBeaver.ZFC.FiniteZipper",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteZipper.lean",
+      "sha256": "f7b41631975f0c243bcb6e48a6c566adde0866fb93f7105571e310c18db45066",
+      "matches_source_verified_cache": true,
+      "olean": "/tmp/zfc-lean-check-h9rvzdmj/BusyBeaver/ZFC/FiniteZipper.olean",
+      "olean_version": "4.32.0",
+      "olean_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Table253",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Table253.lean",
+      "sha256": "c92520ae03c56dded064aa6a9d348a78e9f7f11973cd002a72e0bfd4a5503c08",
+      "matches_source_verified_cache": true,
+      "olean": "/tmp/zfc-lean-check-h9rvzdmj/BusyBeaver/ZFC/Table253.olean",
+      "olean_version": "4.32.0",
+      "olean_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Boot253",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Boot253.lean",
+      "sha256": "a09eba1ebe2eed271cd90c3b91e4225724d13e78f7509d62a3e63e88ff22cd39",
+      "matches_source_verified_cache": true,
+      "olean": "/tmp/zfc-lean-check-h9rvzdmj/BusyBeaver/ZFC/Boot253.olean",
+      "olean_version": "4.32.0",
+      "olean_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35"
+    },
+    {
+      "module": "BusyBeaver.ZFC.RegisterPath",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean",
+      "sha256": "a1457f32034eb4da50c8755610a366805260aac711424bba8b516ccab4e5b879",
+      "matches_source_verified_cache": true,
+      "olean": "/tmp/zfc-rm330-pinned-nl7mvm6a/build/BusyBeaver/ZFC/RegisterPath.olean",
+      "olean_version": "4.32.0",
+      "olean_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Prog254",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prog254.lean",
+      "sha256": "6e564bd1ba179b2d39fccc3b8c86a681ec0dd6529df9cfa2522500eef140cfde",
+      "matches_source_verified_cache": true,
+      "olean": "/tmp/zfc-rm330-pinned-nl7mvm6a/build/BusyBeaver/ZFC/Prog254.olean",
+      "olean_version": "4.32.0",
+      "olean_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35"
+    },
+    {
+      "module": "BusyBeaver.ZFC.Prefix330",
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prefix330.lean",
+      "sha256": "a1a66b4933250f354f14f01c9d747dd7318cf5fa9f4caee62cbd6fe88590f290",
+      "matches_source_verified_cache": true,
+      "olean": "/tmp/zfc-rm330-pinned-nl7mvm6a/build/BusyBeaver/ZFC/Prefix330.olean",
+      "olean_version": "4.32.0",
+      "olean_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35"
+    }
+  ],
+  "emitted_olean_header": {
+    "version": "4.32.0",
+    "commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35"
+  },
+  "date_utc": "2026-10-16T21:56:39.792460+00:00",
+  "head_at_verification": "8761c52c0c1b05c637584150008d21ed78a6ebf4",
+  "source_unchanged": true,
+  "claims": {
+    "binary_blank_steps": 312975,
+    "RM_prefix_steps": 330,
+    "whole_Core_tape_represented": true,
+    "exact_target_zip_equality": true,
+    "first_arrival": false,
+    "general_runtime_preservation": false,
+    "consistency_equivalence": false,
+    "bootstrap_rerun": false,
+    "native_decide": false,
+    "admissions_or_custom_axioms": false
+  },
+  "frame": {
+    "head": -17,
+    "state": 33,
+    "source_old_state_label": 96,
+    "path": [
+      false,
+      false,
+      false
+    ],
+    "gap": 37,
+    "PC_plus_gap_length": 40,
+    "marker": -18,
+    "header": 23,
+    "first_register_separator": 24,
+    "left_exterior_padding": 10,
+    "right_exterior_padding": 1,
+    "logical_values_first9": [
+      5,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    "logical_registers_ge9_zero": true,
+    "physical_order": [
+      2,
+      4,
+      3,
+      7,
+      6,
+      8,
+      0,
+      1,
+      5
+    ],
+    "primary_values": [
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      5,
+      0,
+      0
+    ],
+    "spares": 158,
+    "spare_nonzero_indices": [
+      2,
+      8
+    ],
+    "spare_nonzero_values": [
+      1,
+      1
+    ]
+  },
+  "source_frame_dossier": "/tmp/zfc-frame253-audit-dcxs29_n",
+  "attribution": {
+    "original": "Mira-Cult machine, Jeff verification, Wade TMBuilder framework",
+    "public253": "mira-emmy PR20 head0d544f2a2e3c18f12278441a74b7879f31cbe856",
+    "source_paths": [
+      "ZF/m254/coq/tm/Sim.v:81\u201385",
+      "ZF/m253/coq/tm/Sim.v:81\u201385",
+      "ZF/m253/coq/tm/Boot253.v:145\u2013183",
+      "ZF/m253/coq/tm/Check253.v:12\u201314"
+    ],
+    "upstream_builds": false
+  },
+  "independent_read_only_review": {
+    "reviewer": "/root/review_fibers",
+    "result": "clean; exact layout, independent spare suffix, logical tail, all-cell ZipRep, paired endpoints and limited scope reviewed",
+    "builds_or_edits": false
+  },
+  "build_grant_released": true
+}

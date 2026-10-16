@@ -168,6 +168,8 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `Prog254.lean` | All 6,459 original decoder rows, with a verified balanced lookup equal to flat lookup for every index; no replacement by the different structured DAG. |
 | `Prefix330.lean` | Exact 330-step public register prefix from the original initial vector to path 000 and logical registers [5,0,0,0,2,0,0,0,0], with the entire remaining register tail zero. |
 | `TarskiFalsity.lean` | The machines' relative falsity `F = Rel(0,0)`: the literal row set `ThmG (rel 0 0)` is sound for irreflexive models and complete for ⊥-free theories and targets; the comparison axiom IR is a generalized identity, not a row. |
+| `Numeric254.lean`, `NamedNumeric254.lean` | Exact original four-tag numerical rules and gated C/G/vacuity bundle; named proof transport and refutation equivalence for the explicitly defined encoded-numerical-theorem theory Q. Q/ZFC calibration remains open. |
+| `BootstrapFrame253.lean` | The actual 312,975-step binary bootstrap realizes the actual 330-step register endpoint, with all nine permuted registers, 158 spare blocks and exterior blanks retained. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
@@ -200,8 +202,8 @@ Rebuild the entire small dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 49 source units: the first-order logic, calculus and completeness
-modules, `ZF.Zf`, `BusyBeaver.Core`, 43 research modules and the umbrella into a
+This compiles 52 source units: the first-order logic, calculus and completeness
+modules, `ZF.Zf`, `BusyBeaver.Core`, 46 research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the prior 38-unit fresh source check and axiom outputs. The seven
@@ -211,6 +213,11 @@ the expensive finite bootstrap was reused in those checks. The pinned Lean toolc
 be installed. Source SHA-256 pins are included for each checked module.
 The three RM-prefix modules also passed a separate fresh source closure;
 `results/rm330-verification.json` records their exact data audit and checks.
+The [numerical adapter](numeric254_lean.md) and
+[bootstrap-frame bridge](bootstrap_frame253.md) have separate scoped
+Lean 4.32.0 checks and axiom audits in their linked evidence files.
+`results/integration-151-verification.json` checks the newly merged relative-falsity
+module and the complete updated umbrella against those source-verified caches.
 The standalone BusyBeaver Lake package declares its FirstOrder and ZF path
 dependencies; the ZFC umbrella is opt-in.
 
