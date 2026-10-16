@@ -262,6 +262,13 @@ uv run --no-project python Computability/BusyBeaver/Research/ZFC/audit_tm.py --s
 Regeneration of `kernel_metrics.json` and `stream_encoding.json` is explicit
 by running their respective generators. Delivered intake files stay unchanged.
 
+[The complete-frontend grammar experiment](full_grammar_experiment.md) applies
+source16's overlap-safe counting to both original full-word tokenizations.
+Across 32,000 paired DAG evaluations it still reaches 269 states, matching
+rather than improving the prior control. The fixed winner regenerates and its
+operation certificate passes independent checks and six mutations. The full
+equality/theory frontend is retained; binary simulation remains open.
+
 ## Next proof and compiler work
 
 1. Complete the equality-free interpretation and its Foundation/Choice
