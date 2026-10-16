@@ -163,10 +163,15 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `WadeMachine.lean` | Actual literal-table INC execution from state 13 through its return to state 55, for a nonempty preceding-register prefix and gap of at least two zeros; selected unary register increments and every other tape cell is preserved. |
 | `Kalmar.lean` | Generic classical implication calculus and its deduction, consistency and maximal-theory tools. |
 | `TarskiCalculus.lean`, `TarskiDerived.lean`, `TarskiLeibniz.lean`, `TarskiClean.lean`, `TarskiComplete.lean` | Soundness and conditional completeness of the full named-variable calculus, with primitive Bottom, genuine equality, all eight logical rows and both gated atomic vacuity families; capture-safe specialization and clean-form model construction. |
+<<<<<<< HEAD
 | `Lukasiewicz.lean` | Attributed port of 107 upstream implication certificates; derives K/S/Peirce and rho6-based ex falso, constructs `Tarski.classical`, and proves `Tarski.complete` without the conditional theorem's extra basis hypotheses. |
 | `RegisterPath.lean` | Exact upstream RM path semantics including truncate/zero-extend, break/continue and infinite registers; finite-list execution proves the same runs. |
 | `Prog254.lean` | All 6,459 original decoder rows, with a verified balanced lookup equal to flat lookup for every index; no replacement by the different structured DAG. |
 | `Prefix330.lean` | Exact 330-step public register prefix from the original initial vector to path 000 and logical registers [5,0,0,0,2,0,0,0,0], with the entire remaining register tail zero. |
+=======
+| `Lukasiewicz.lean` | Attributed port of 107 upstream implication certificates; derives K/S/Peirce and rho6-based ex falso, constructs `Tarski.classical`, and proves `Tarski.complete` without the conditional theorem's extra basis hypotheses. An independent condensed-detachment search regenerates exactly the same 106 derived formulas ([tarski_logic_layer.md](tarski_logic_layer.md)). |
+| `TarskiFalsity.lean` | The machines' relative falsity `F = Rel(0,0)`: the literal row set `ThmG (rel 0 0)` is sound for irreflexive models and complete for ⊥-free theories and targets; the comparison axiom IR is a generalized identity, not a row. |
+>>>>>>> origin/main
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
