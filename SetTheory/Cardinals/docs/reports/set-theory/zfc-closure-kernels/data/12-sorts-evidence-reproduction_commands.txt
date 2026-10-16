@@ -1,0 +1,18 @@
+Run from the extracted report directory, with assertion-enabled Python.
+
+Quick packaged checks:
+  python3 verify.py
+
+Full diagnostic search plus seven latest PSC recipes/core checks:
+  python3 verify.py --full
+
+All original pinned theory-backend recipes and constructor checks:
+  python3 vendor/proveit/Computability/BusyBeaver/Research/ZFC/theory_backend_experiment.py --scratch /tmp/zfc-theory-reproduction --output-evidence /tmp/zfc-theory-results.json
+
+Compile PDF:
+  make pdf
+
+Check final package checksums:
+  sha256sum -c SHA256SUMS
+
+No Lean or Coq build is claimed or performed by these commands.

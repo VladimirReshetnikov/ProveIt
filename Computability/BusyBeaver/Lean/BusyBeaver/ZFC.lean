@@ -9,6 +9,8 @@ import BusyBeaver.ZFC.QuotientModel
 import BusyBeaver.ZFC.ProfileAxioms
 import BusyBeaver.ZFC.PowerSyntax
 import BusyBeaver.ZFC.PSCSaturation
+import BusyBeaver.ZFC.RawPSCProfile
+import BusyBeaver.ZFC.RawPSCModel
 import BusyBeaver.ZFC.PositiveClosure
 import BusyBeaver.ZFC.Bootstrap
 import BusyBeaver.ZFC.DeepPositiveClosure
@@ -17,11 +19,36 @@ import BusyBeaver.ZFC.PSCCalibration
 import BusyBeaver.ZFC.StateReduction
 import BusyBeaver.ZFC.Table254
 import BusyBeaver.ZFC.Table252
+import BusyBeaver.ZFC.Table253
+import BusyBeaver.ZFC.FiniteZipper
+import BusyBeaver.ZFC.Boot253
+import BusyBeaver.ZFC.Table248
+import BusyBeaver.ZFC.RegisterBisimulation
 import BusyBeaver.ZFC.FormulaRPN
 import BusyBeaver.ZFC.Base3Encoding
 import BusyBeaver.ZFC.Base3Syntax
+import BusyBeaver.ZFC.Bottom3Syntax
 import BusyBeaver.ZFC.PartialTotalization
 import BusyBeaver.ZFC.WadeMachine
+import BusyBeaver.ZFC.Lukasiewicz
+import BusyBeaver.ZFC.Prefix330
+import BusyBeaver.ZFC.TarskiFalsity
+import BusyBeaver.ZFC.OutgoingProfile
+import BusyBeaver.ZFC.Code254
+import BusyBeaver.ZFC.Enum254
+import BusyBeaver.ZFC.NamedNumeric254
+import BusyBeaver.ZFC.BootstrapFrame253
+import BusyBeaver.ZFC.Code254Containers
+import BusyBeaver.ZFC.RegisterBoxes253
+import BusyBeaver.ZFC.Code254GIC
+import BusyBeaver.ZFC.Code254Models
+import BusyBeaver.ZFC.NumericCode254
+import BusyBeaver.ZFC.RegisterMark253
+import BusyBeaver.ZFC.RegisterIncrement253
+import BusyBeaver.ZFC.QuotientSeparation
+import BusyBeaver.ZFC.QuotientPower
+import BusyBeaver.ZFC.QuotientReplacement
+import BusyBeaver.ZFC.RegisterDecrement253
 
 /-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC
 consistency theorem or state-count improvement is claimed by these imports. -/

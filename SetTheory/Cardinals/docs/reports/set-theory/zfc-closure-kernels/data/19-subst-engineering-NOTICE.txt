@@ -1,0 +1,89 @@
+ATTRIBUTION, SOURCE PINS, AND LICENSE BOUNDARIES
+Prepared 2026-10-16 for the accompanying ProveIt research report.
+
+1. PROVEIT RESEARCH HELPERS
+
+Repository: https://github.com/VladimirReshetnikov/ProveIt
+Reviewed pin: 47f3a3602946dfe48803a91a910c646e74637ac8
+Paths retained under vendor/proveit/:
+  Computability/BusyBeaver/Research/ZFC/recover_wade_dag.py
+  Computability/BusyBeaver/Research/ZFC/theory_backend_experiment.py
+  Computability/BusyBeaver/Research/ZFC/pairing_backend_experiment.py
+  Computability/BusyBeaver/Research/ZFC/audit_raw_candidate.py
+  Computability/BusyBeaver/Research/ZFC/psc_backend_experiment.py
+  Computability/BusyBeaver/Research/ZFC/psc_adapter_checks.py
+
+These files are unmodified. ProveIt's original MIT No Attribution license is
+retained as vendor/proveit/LICENSE. Its blanket grant does not cover the
+separately attributed upstream snapshot below.
+
+2. WADE BACKEND
+
+Upstream repository: https://github.com/jeff87654/busy-beaver
+Exact upstream pin: 297ab8df7e5de329605c3875b4934643b371a5e3
+The unmodified TMBuilder.py, tm.py and tmdb.py reside at their original paths
+below vendor/proveit/lib/jeff-busy-beaver-zfc254/ZF/generator/.
+
+Copyright 2025 Andrew James Wade. The explicit MIT No Attribution grant is
+retained, unmodified, as LICENSE.wade beside these three files. The upstream
+generator README is also retained for provenance.
+
+3. UPSTREAM LOGICAL SPECIFICATION AND FINITE PROGRAM DATA
+
+The same pinned snapshot supplies:
+  ZF/m254/coq/prog/Dag254.v
+  ZF/m254/tools/logic/spec.py
+
+Mira-Cult designed the original machine, compact calculus, nonextensional
+theory, and source program. Jeff (jeff87654) published the Coq verification
+and the 219-node numeric DAG used here.
+
+Dag254.v is parsed only as a finite data table. It is not compiled. The
+ProveIt helper reads spec.py as Python AST and selects only its pure formula
+definitions; that file's import statement, numeric implementation and proof
+enumerator are not executed. Consequently bignum.py is not a dependency.
+
+LICENSE STATUS FLAG: no upstream-wide license grant is declared in the
+pinned busy-beaver tree. In particular, no separate license for Dag254.v or
+spec.py was found in the supplied snapshots. They are retained here from
+the user's supplied repository/research inputs for exact reproducibility,
+with their original bytes and origins. They are not represented as covered
+by Wade's MIT-0 grant or by ProveIt's blanket license. No relicensing is
+asserted. The original README.proveit.md explicitly documenting this boundary
+is retained under vendor/proveit/lib/jeff-busy-beaver-zfc254/.
+
+4. PRIOR REBRACKETING AND INDEPENDENT CERTIFICATE ENGINE
+
+Original archive: docs/incoming/zfc_one_schema_research.zip
+Introducing ProveIt commit: 39409c8c921cccdbd6162c8767c84cfb7df65df1
+Source URL:
+https://github.com/VladimirReshetnikov/ProveIt/blob/39409c8c921cccdbd6162c8767c84cfb7df65df1/docs/incoming/zfc_one_schema_research.zip
+
+Unmodified original members are in vendor/one_schema_machine/:
+  rebracket_axioms.py
+  verify_rm_certificate.py
+
+Their original archive NOTICE.txt is retained as ORIGINAL_NOTICE.txt. The
+full original notice from the newer minimal vendor package is also retained
+as vendor/PRIOR_VENDOR_NOTICE.txt; it describes a larger historical package,
+not the present subset. Neither notice is modified or treated as a new
+license grant. A standalone explicit license for the helper pair was not
+located in the supplied archive material, so no additional grant is asserted.
+
+The unchanged verify_schema_rm_certificate.py wrapper comes from the supplied
+zfc_small_machines_20261016 research archive. It uses the prior independent
+path engine and does not import the compiler or grammar generator.
+
+5. PRESENT ENGINEERING WORK
+
+The full logical-row-preserving conjunction search, selected 268 table and
+certificates, full-logic PSC cost controls, and the simplified PSC identity
+regression were prepared for this research task. Re-Pair and the finite
+certificate architecture are prior work. The latest supplied report already
+proved the broader finite-sort obstruction; the simpler identity regression
+does not claim that consequence as new.
+
+This packaging adds offline defaults, reproduce.py, verify.py, source and
+artifact hash manifests, and delivery instructions. It does not change any
+vendor file or claim a new end-to-end ZFC-consistency theorem. All original
+attribution and license boundaries above remain in force.

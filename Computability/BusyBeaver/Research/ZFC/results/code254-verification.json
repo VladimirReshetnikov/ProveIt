@@ -1,0 +1,75 @@
+{
+  "reviewed_remote_commit": "d74c63b0c8",
+  "scope": "Independent full464-line read and precise definition/signature audit, followed by authorized minimal no-model-premise repair. No theory calibration or machine endpoint.",
+  "modifications": [
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean",
+    "Computability/BusyBeaver/Research/ZFC/tarski_logic_layer.md"
+  ],
+  "source_build": {
+    "compiler": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+    "actual_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "source": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean",
+    "cache": "/tmp/zfc-integration-151-so_29dzd",
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "-o",
+      "/tmp/zfc-code254-correction-5v5espaj/BusyBeaver/ZFC/Code254.olean",
+      "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean"
+    ],
+    "returncode": 0,
+    "seconds": 2.8813812788575888,
+    "log": "/tmp/zfc-code254-correction-5v5espaj/compile.log",
+    "merged_cache": "/tmp/zfc-code254-correction-5v5espaj"
+  },
+  "audit_build": {
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "/tmp/zfc-code254-correction-5v5espaj/Audit.lean"
+    ],
+    "version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "returncode": 0,
+    "seconds": 0.3384611960500479,
+    "log": "/tmp/zfc-code254-correction-5v5espaj/Audit.log"
+  },
+  "definition_audit": {
+    "nineteen_nonpair_definition_ASTs_match_modulo_binder_alpha": [
+      "wim",
+      "wel",
+      "wal",
+      "weq",
+      "F",
+      "wn",
+      "wa",
+      "wex",
+      "rho1",
+      "rho2",
+      "rho3",
+      "rho4",
+      "rho5",
+      "rho6",
+      "rho7",
+      "rho8",
+      "bundleC",
+      "bundleG",
+      "bundle"
+    ],
+    "all_twelve_constructor_signatures_match": true,
+    "pairing_relation": "Code254.P x y = Cantor.toNat(x,y) = y + Cantor.tri(x+y). Numeric254.P x y = Numeric254.tri(x+y)+y. Triangle recurrences differ only by associativity/commutativity; equality follows by induction, but no cross-module Lean theorem is supplied.",
+    "no_custom_axiom_or_admission_token": true,
+    "compile": "Not run: read-only audit, no grant.",
+    "pairing_relation_Lean_checked_in_scratch": true
+  },
+  "axiom_audit_count": 10,
+  "empty_domain_counterexample_axioms": [],
+  "other_axioms_union": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "no_sorryAx_or_custom_axioms_in_successful_audit": true,
+  "historical_defect": "Original c254_complete.hnone omitted valuation/nonempty domain and is refuted by Empty with the empty relation; original theorem was valid but vacuous.",
+  "repair": "Explicit (Nat \u2192 D) argument to hnone, supplied with the valuation available in alias_complete. Historical impossible premise retained as empty_domain_counterexample.",
+  "remaining_models": "Soundness uses all decoded gated bundles; completeness uses literal BotFree EncBundle. No equivalence between these model classes proved. Either normalize/compare them, or prove separate suitable calibration obligations.",
+  "extra_doc_correction": "Extensionality alone does not make outgoing inclusion equality; the two-point relation {(0,1)} is extensional and satisfies U(1,0). Set models with singleton resources suffice.",
+  "no_builds_after_grant_release": true
+}

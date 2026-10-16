@@ -1,0 +1,56 @@
+{
+  "compiler": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+  "dependency_source_cache": "/tmp/zfc-integration-151-so_29dzd",
+  "overlay_cache": "/tmp/zfc-outgoing-profile-151/cache",
+  "dependency_rebuilds": false,
+  "Bootstrap253_rebuilt": false,
+  "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OutgoingProfile.lean",
+  "source_sha256": "483b6675009e2578401b974b8bc0474a580c4323cb28bc48d6012db3830558ce",
+  "checks": [
+    {
+      "check": "module",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-outgoing-profile-151/cache/BusyBeaver/ZFC/OutgoingProfile.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OutgoingProfile.lean"
+      ],
+      "compiler_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+      "returncode": 0,
+      "elapsed_seconds": 0.4060443760827184,
+      "log": "/tmp/zfc-outgoing-profile-151/module.log",
+      "warnings": false
+    },
+    {
+      "check": "caller",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "/tmp/zfc-outgoing-profile-151/Audit.lean"
+      ],
+      "compiler_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+      "returncode": 0,
+      "elapsed_seconds": 0.2739168554544449,
+      "log": "/tmp/zfc-outgoing-profile-151/caller.log",
+      "warnings": false
+    }
+  ],
+  "status": "PASS",
+  "scope": "Explicit twin-singleton profile collapse, actualForm-indexed rawPSC corollaries and reserved-zero named semantic translation. No EPSC schema adapter, literal raw identity, proof/numeric translation or consistency/machine endpoint.",
+  "audit_output": "SetTheory.BusyBeaver.ZFC.OutgoingProfile.outgoing_iff_full.{u} {V : Type u} (mem : V \u2192 V \u2192 Prop)\n  (hTwins : RawPSCProfile.TwinSingletons mem) (a b : V) : Outgoing mem a b \u2194 RawPSCProfile.Full mem a b\nSetTheory.BusyBeaver.ZFC.OutgoingProfile.outgoing_mem_congr.{u} {V : Type u} (mem : V \u2192 V \u2192 Prop)\n  (hTwins : RawPSCProfile.TwinSingletons mem) {a a' b b' : V} (ha : Outgoing mem a a') (hb : Outgoing mem b b') :\n  mem a b \u2194 mem a' b'\nSetTheory.BusyBeaver.ZFC.OutgoingProfile.outgoingForm_four_nodes (i j : Nat) : formNodes (outgoingForm i j) = 4\nSetTheory.BusyBeaver.ZFC.OutgoingProfile.outgoing_iff_full_of_model.{u} {V : Type u} (mem : V \u2192 V \u2192 Prop) (witness : V)\n  (hModel : RawPSCModel.ModelsRawPSC mem) (a b : V) : Outgoing mem a b \u2194 RawPSCProfile.Full mem a b\nSetTheory.BusyBeaver.ZFC.OutgoingProfile.sat_translate.{u} {V : Type u} (mem : V \u2192 V \u2192 Prop)\n  (hTwins : RawPSCProfile.TwinSingletons mem) (e : V) (hFalse : \u00acmem e e) (f : Tarski.NF) (env : Nat \u2192 V) :\n  Tarski.Sat mem (pointed e env) (translate f) \u2194 FullSat mem env f\nSetTheory.BusyBeaver.ZFC.OutgoingProfile.translation_of_model.{u} {V : Type u} (mem : V \u2192 V \u2192 Prop) (witness : V)\n  (hModel : RawPSCModel.ModelsRawPSC mem) :\n  \u2203 e,\n    (\u2200 (z : V), \u00acmem z e) \u2227\n      \u2200 (f : Tarski.NF) (env : Nat \u2192 V), Tarski.Sat mem (pointed e env) (translate f) \u2194 FullSat mem env f\n'SetTheory.BusyBeaver.ZFC.OutgoingProfile.outgoing_iff_full' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.OutgoingProfile.outgoing_mem_congr' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.OutgoingProfile.sat_outgoingForm' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.OutgoingProfile.equalityFree_outgoingForm' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.OutgoingProfile.outgoingForm_four_nodes' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.OutgoingProfile.outgoing_iff_full_of_model' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.OutgoingProfile.sat_outgoingForm_full_of_model' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.OutgoingProfile.pointed_update' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.OutgoingProfile.sat_namedOutgoing' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.OutgoingProfile.translate_membershipOnly' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.OutgoingProfile.sat_translate' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.OutgoingProfile.translation_of_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+  "manuscript_attribution": {
+    "batch": 151,
+    "local_source": 24,
+    "archive": "zfc_consistency_proposal.zip",
+    "wrapper": "zfc_minimal_theory",
+    "inspected_repository_pin": "2178c3885423f923021d4aaf1dbf52b4e2060837"
+  },
+  "independent_readonly_review": {
+    "reviewer": "/root/review_bic/mira_backend_route",
+    "status": "clean",
+    "findings": "Correct outgoing direction, no rawidentity/Same collapse, correctly shifted DeBruijn and named binders, localzero equality scope, Full-valuedsourceequality and localfalsepoint; noEPSC/numeric/calibration claim."
+  },
+  "development_import_failure": {
+    "log": "/tmp/zfc-outgoing-profile-151/caller-incomplete-cache.log",
+    "reason": "Two LEAN_PATH roots shared a BusyBeaver prefix and the initial caller did not find RawPSCModel in the first root. A scratch symlink overlay resolves all imports; no dependency rebuilt."
+  }
+}

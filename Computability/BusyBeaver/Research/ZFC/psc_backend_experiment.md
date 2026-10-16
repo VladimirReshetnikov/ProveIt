@@ -9,6 +9,13 @@ all its emitted axioms while invalidating ordinary quantifier specialization.
 It is therefore **not a calibrated ZFC-consistency machine**. No halting theorem
 for the binary table is claimed.
 
+The later [finite-sort obstruction](typed_countermodel.md) also validates this
+entire PSC row and same-variable specialization, with target false. A finite
+global range in the fresh hull sort supplies every output. It establishes
+abstract nonrefutation beyond the simpler algebra below, and also satisfies
+the earlier C/G bundle. Cross-variable substitution remains necessary; the
+literal-machine consequence still requires a simulation theorem.
+
 The mathematical input is batch144 source08, the one-schema manuscript accepted
 in placement `ac4287e5b`, whose ordinary hereditary-saturation interpretation
 removes profile congruence from equality-free PSC. This experiment tests the

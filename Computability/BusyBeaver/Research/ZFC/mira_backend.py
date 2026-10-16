@@ -175,12 +175,15 @@ class MiraMachine:
 def compile_dag(nodes: dict[int, tuple[str, str]], names: dict[int, str] | None = None,
                 *, initial_registers=None, gap: int | None = None,
                 dispatcher_threshold: int | None = None,
-                generic_decrement: bool = True) -> MiraMachine:
+                generic_decrement: bool = True,
+                initializer: str = "direct") -> MiraMachine:
     """Compile RM edges to a total binary table with start0 and halt=N.
 
     Defaults start all nine logical registers at zero. Pass [2,0,...,0] to
     match the published post-boot register vector instead. No old boot is used.
     Names are metadata only. Unreachable source nodes are discarded.
+    initializer='compact' uses source21's counted counter/stride construction;
+    gap then specifies a minimum and may round up to the chosen exact gap.
     """
     sites = instruction_sites(nodes)
     depth = max(len(p) for p, _ in sites)
@@ -192,6 +195,13 @@ def compile_dag(nodes: dict[int, tuple[str, str]], names: dict[int, str] | None 
         raise ValueError("gap and dispatcher threshold must be integers")
     if gap < depth + 6:
         raise ValueError("gap must leave at least six cells after the deepest leaf")
+    if initializer not in ("direct", "compact"):
+        raise ValueError("initializer must be direct or compact")
+    minimum_gap = gap
+    if initializer == "compact":
+        from compact_initializer import choose_parameters, make_initializer
+        counters, stride = choose_parameters(gap)
+        gap = counters * (stride + 2) + 2
     if threshold < max(9, zero_run + 2):
         raise ValueError("dispatcher threshold does not cover path/phase zero runs")
     if not generic_decrement and any(e.startswith("EDecnz") and not p.endswith("0")
@@ -278,13 +288,21 @@ def compile_dag(nodes: dict[int, tuple[str, str]], names: dict[int, str] | None 
         for b, edge in enumerate(nodes[q]):
             put(f"d:{q}", b, b, "R", leaf_label(edge))
 
-    physical_initial = [initial[i] for i in PHYS_ORDER]
-    wire = list(reversed(seps(physical_initial))) + [1] + [0] * gap + [1]
-    for i, bit in enumerate(wire):
-        last = i+1 == len(wire)
-        for b in (0, 1):
-            put(f"i:{i}", b, bit, "R" if last else "L",
-                "d:0" if last else f"i:{i+1}")
+    compact_contract = None
+    if initializer == "compact":
+        initial_rows, compact_contract = make_initializer(initial, counters, stride, "d:0")
+        for (label, bit), (write, direction, target) in initial_rows.items():
+            put(label, bit, write, direction, target)
+        initializer_steps = compact_contract["blank_steps"]
+    else:
+        physical_initial = [initial[i] for i in PHYS_ORDER]
+        wire = list(reversed(seps(physical_initial))) + [1] + [0] * gap + [1]
+        for i, bit in enumerate(wire):
+            last = i+1 == len(wire)
+            for b in (0, 1):
+                put(f"i:{i}", b, bit, "R" if last else "L",
+                    "d:0" if last else f"i:{i+1}")
+        initializer_steps = len(wire)
 
     # Syntactic reachability charges both rows, including invariant-unused rows.
     live = set()
@@ -311,6 +329,8 @@ def compile_dag(nodes: dict[int, tuple[str, str]], names: dict[int, str] | None 
                 "gap": gap, "dispatcher_threshold": threshold,
                 "generic_decrement_patch": generic_decrement,
                 "initial_logical_registers": list(initial),
+                "initializer_kind": initializer, "initializer_steps": initializer_steps,
+                "requested_minimum_gap": minimum_gap,
                 "working_states": len(order), "transition_rows": len(table),
                 "states_by_role": {"initializer": categories["i"],
                                    "decoder": categories["d"], "literal_engine": categories["e"],
@@ -325,6 +345,8 @@ def compile_dag(nodes: dict[int, tuple[str, str]], names: dict[int, str] | None 
                 "input_DAG_sha256": hashlib.sha256(json.dumps(
                     {str(q): list(nodes[q]) for q in sorted(nodes)}, sort_keys=True).encode()).hexdigest(),
                 "root_name": (names or {}).get(0)}
+    if compact_contract is not None:
+        evidence["compact_initializer_contract"] = compact_contract
     machine = MiraMachine(table, labels, sites, evidence, gap, initial)
     evidence["machine_sha256"] = hashlib.sha256(machine.encoded()).hexdigest()
     return machine
@@ -508,16 +530,20 @@ def concrete_step(machine, state, tape, head):
 
 def initial_configuration_check(machine: MiraMachine) -> dict:
     q, head, tape, steps = 0, 0, {}, 0
+    expected_steps = machine.evidence.get(
+        "initializer_steps", machine.evidence["states_by_role"]["initializer"])
     while q != machine.root:
         q, head = concrete_step(machine, q, tape, head)
         steps += 1
-        if steps > machine.halt:
+        if steps > expected_steps:
             raise ValueError("initializer did not reach dispatch")
     bits = [1] + [0] * machine.gap + [1] + seps([machine.initial_registers[i] for i in PHYS_ORDER])
     expected = {head-1+i: 1 for i, b in enumerate(bits) if b}
-    if tape != expected or steps != machine.evidence["states_by_role"]["initializer"]:
+    expected_head = -(18 + sum(machine.initial_registers) + machine.gap)
+    if tape != expected or steps != expected_steps or head != expected_head:
         raise ValueError("fresh initializer configuration differs")
     return {"passed": True, "concrete_steps": steps,
+            "head": head, "nonzero_cells": len(tape),
             "register_blocks": 9, "spare_zero_blocks": 0}
 
 
@@ -689,6 +715,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--scratch", type=Path, required=True)
     parser.add_argument("--output-evidence", type=Path)
+    parser.add_argument("--initializer", choices=("direct", "compact"), default="direct")
     args = parser.parse_args()
     scratch = args.scratch.resolve()
     if scratch == ROOT or ROOT in scratch.parents or scratch == Path("/"):
@@ -698,7 +725,8 @@ def main():
     nodes, names = parse_dag(source.decode())
     results = []
     for initial, stem in (([0] * 9, "dag219-zero"), ([2] + [0] * 8, "dag219-nextproof2")):
-        machine = compile_dag(nodes, names, initial_registers=initial)
+        machine = compile_dag(nodes, names, initial_registers=initial,
+                              initializer=args.initializer)
         machine.evidence["initializer_check"] = initial_configuration_check(machine)
         machine.check_sites()
         if not results:

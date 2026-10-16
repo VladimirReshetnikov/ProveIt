@@ -1,0 +1,212 @@
+{
+  "scope": "Generic signed-root diagnostic examples only. None is an EPSC refutation or enters public accepts().",
+  "examples": [
+    {
+      "name": "cross_variable_universal_instantiation",
+      "meaning": "forall x R(x,b), not R(a,b), with a=1 and b=0",
+      "arena": [
+        [
+          0,
+          0,
+          1
+        ],
+        [
+          0,
+          1,
+          2
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          2,
+          2
+        ]
+      ],
+      "roots": [
+        {
+          "positive": true,
+          "formula": 3,
+          "environment": [
+            0
+          ]
+        },
+        {
+          "positive": false,
+          "formula": 0,
+          "environment": [
+            1,
+            0
+          ]
+        }
+      ],
+      "actions": [
+        0,
+        1,
+        2,
+        3,
+        1,
+        2,
+        3,
+        1
+      ],
+      "result": {
+        "valid": true,
+        "actions": 5,
+        "operands": 8,
+        "closed_branches": 2,
+        "maximum_branch_entries": 5,
+        "maximum_parameters": 3
+      }
+    },
+    {
+      "name": "two_slots_identified",
+      "meaning": "forall x,y R(x,y), not R(z,z); both instantiations use parameter0",
+      "arena": [
+        [
+          0,
+          1,
+          0
+        ],
+        [
+          0,
+          2,
+          1
+        ],
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          2,
+          2
+        ],
+        [
+          0,
+          3,
+          1
+        ],
+        [
+          1,
+          4,
+          4
+        ],
+        [
+          1,
+          5,
+          5
+        ],
+        [
+          1,
+          6,
+          6
+        ],
+        [
+          1,
+          7,
+          7
+        ],
+        [
+          0,
+          0,
+          0
+        ]
+      ],
+      "roots": [
+        {
+          "positive": true,
+          "formula": 8,
+          "environment": []
+        },
+        {
+          "positive": false,
+          "formula": 9,
+          "environment": [
+            0
+          ]
+        }
+      ],
+      "actions": [
+        0,
+        0,
+        2,
+        3,
+        0,
+        5,
+        6,
+        1,
+        5,
+        6,
+        1,
+        2,
+        3,
+        0,
+        5,
+        6,
+        1,
+        5,
+        6,
+        1
+      ],
+      "result": {
+        "valid": true,
+        "actions": 13,
+        "operands": 20,
+        "closed_branches": 4,
+        "maximum_branch_entries": 8,
+        "maximum_parameters": 3
+      }
+    },
+    {
+      "name": "reject_old_name_as_existential_witness",
+      "meaning": "exists x R(x,x), not R(0,0), satisfiable by domain{0,1} and R={(1,1)}",
+      "arena": [
+        [
+          0,
+          0,
+          0
+        ],
+        [
+          1,
+          0,
+          0
+        ],
+        [
+          1,
+          1,
+          1
+        ]
+      ],
+      "roots": [
+        {
+          "positive": true,
+          "formula": 2,
+          "environment": []
+        },
+        {
+          "positive": false,
+          "formula": 0,
+          "environment": [
+            0
+          ]
+        }
+      ],
+      "actions": [
+        0,
+        0,
+        2,
+        3,
+        1
+      ],
+      "result": {
+        "valid": false,
+        "reason": "atoms are not opposite evaluated ordered pairs"
+      }
+    }
+  ]
+}

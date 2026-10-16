@@ -14,8 +14,8 @@ PDFs remain recoverable from the committed arrival archives.
 numbers all two hundred and ninety reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
-AI-assisted drafts; none is refereed or machine-checked, and the manifest
-records what each report claims rather than verifying it.
+AI-assisted drafts; none is refereed or fully machine-checked. The manifest
+records their claims and identifies the limited scope of checked components.
 
 | Category | Reports |
 |---|---:|
@@ -2254,9 +2254,86 @@ subset-PSC results have their own narrower scope; no new internally
 ZFC-certified sub-254 endpoint is supplied. Placement `ac4287e5b` and
 reconciliation `6d8bc7f1b` preserve all sources and independent reviews.
 
+Batches 145 and 146 add six manuscripts to the same host, then fifteen
+sources in one report. Batch 145 (`9c98495586`, `96836f9eea`) contributes
+ordinary two-sided equality erasure and exact 250/248-state compiler artifacts
+(placement `3cc6ba5b1`, reconciliation `5ae03164f`). Batch 146 (`47f3a36029`,
+`af518abcf8`) contributes the full finite-sort obstruction, an alternative
+incoming-profile PSC bootstrap and complete tableau reference, empty-input
+EPSC equivalent to seeded PSC, and historical 249/250 grammar comparisons
+(placement `f31ba244b`). Its obstruction rules out the unchanged reduced
+abstract calculus as a consistency search; literal-table consequences still
+require a compiler simulation. The 248-state tables remain compiler benchmarks,
+and the complete-equality EPSC control measures 270 states. Ordinary theory
+calibrations and current Lean partial results remain valid with their stated
+hypotheses. No new internal ZFC endpoint is claimed; the collection total stays
+290, with one set-theory report.
+
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
-own theorems are not formalized.
+own claims remain unformalized unless an independently checked component is
+explicitly identified.
+
+Batches 147 and 148 add sources 16 and 17, bringing this host to seventeen
+manuscripts while the collection remains 290 reports. Arrival `9439d775aa`
+(placement `520bcb2a1`, write `c2d9eba53`) gives a genuine-Bottom ternary codec,
+a complete Hilbert reference and distinct 250/251/252 compiler controls.
+The finite-sort model also excludes those unchanged reduced frontends.
+Arrival `5e5603303d` (placement `30e6d1fd1`, write `90be76d59`) gives an ordinary
+PA strengthening, a general fresh-hull obstruction, a complete ground-clause
+reference and a local tagged Capture repair. Its complete original-word
+270-state comparison does not improve the prior 269. All advertised suites,
+searches and independent certificates replay on copies. The new ternary
+codec has subsequent Lean round-trip, freshness and semantic-preservation
+proofs (`830647031`); the whole reference frontend and machine endpoint remain
+unformalized. The base article is unchanged; detailed reconciliation and
+runnable recovery helpers are in the host.
+
+Batch 149 adds sources 18 and 19 from `de047657e` and `be9e617d2`
+(placement `a9a313b79`, write `81bcbe6a7`), bringing the same host to nineteen manuscripts;
+the collection remains 290 reports. Explicit open/close/plug witnesses and
+a strict binary Hilbert format provide one complete reference frontend.
+A shared PSC template with dynamic parameter maps provides another complete
+tableau frontend, including identification of existing variables. The new
+diagonal obstruction shows why fresh and signed-atomic instantiation alone
+do not suffice. Two standalone delivered Lean files independently compile:
+their twelve audited roots prove finite-syntax binding and a specified
+PSC/modal derivation invariant, not Python or binary-machine correctness.
+The full-original-logic 268-state control improves the prior 269 control;
+it is not a compilation of either new checker or a new consistency endpoint.
+Fixed tables and register certificates reproduce. All 1,024 costs in source
+18's PSC histogram reproduce exactly using nodes plus 55 plus dispatch depth,
+including its five 283-state minimizers and exact winning table. The initial
+16 October review's six-minimizer discrepancy was an accounting error;
+the [host correction](set-theory/zfc-closure-kernels/README.md) records its
+refutation. Unbundled historical sweeps retain their reproduction limits. Detailed dossiers and
+`code/reproduce_149.py` preserve these boundaries without changing deliveries.
+
+Batch 150 adds four manuscripts from `47e887108` (placement `a6823de93`,
+write `ad685a601`), local sources 20–23 of the same host. The collection remains
+290 reports; the host now reconciles twenty-three sources. All 150 ancillary
+files are preserved; 50 article, section, PDF and delivery-README files remain
+recoverable from the arrivals. No source supersedes another.
+
+The ordinary mathematical additions are a captured EPSC tableau and genuine
+Bottom low-code calibration, a two-parameter EPSC2 interpretation, a protected
+closure rule with a complete de Bruijn Hilbert reference, and a complete
+quantified-NAND EPSC tableau. These are distinct from their machine controls:
+271-state EPSC and 255-state decoder comparisons, separate 341/343-state clean
+initializers, and a 269-state original-word grammar control. All finite suites
+and fixed artifacts reproduce. The decoder's 606,702-step blank prefix and
+57,150 fold trials are Python evidence. Independently pricing all 6,720 distinct
+quantified-NAND report recipes by decision nodes plus 55 plus dispatcher depth
+confirms a minimum of 269 within that sample; the new checker has no binary table.
+
+Current-source reconciliation preserves the newer 268-state retained-logic
+comparison, the Lean 312,975-step literal bootstrap, and unconditional named-variable
+Tarski completeness for primitive Bottom (`ebbc0a660`). Its numerical and
+runtime adapters remain open. The four
+scratch PDFs, 30/31/31/32 pages, pass layout review. Ordinary proofs, component
+tables and finite certificates supply no new internal ZFC machine endpoint.
+The host dossiers and `code/reproduce_150.py` retain these scopes; the helper's
+validation covers all four selected finite replays after its scoped smoke checks.
 
 ## Rebuilding the manifest
 
@@ -2266,8 +2343,8 @@ latexmk -pdf manifest.tex && latexmk -c manifest.tex
 
 ## Merged reports
 
-Batches 143/144's [closure kernels](set-theory/zfc-closure-kernels) are a
-complementary merge and six additions with a reconciliation README: the
+Batches 143–150's [closure kernels](set-theory/zfc-closure-kernels) are a
+complementary merge and twenty additions with a reconciliation README: the
 seeded base, BIC control, exact-fiber alternative and later saturation/engineering
 work retain their distinct hypotheses,
 metrics and verification evidence. The member articles remain recoverable
@@ -2449,3 +2526,29 @@ original archive names with every entry.
 No package ships a checksum manifest: re-running a verification suite or
 rebuilding a PDF changes file hashes, so a stored manifest goes stale on the
 first rebuild.
+
+
+Batch 151 adds two manuscripts from `121a0de1bb` (placement `65c776f4be`,
+reconciliation `9c8242c78f`), local sources 24–25 of `set-theory/zfc-closure-kernels`.
+The collection still has 290 reports and the host now has twenty-five sources.
+All 171 ancillary files are preserved; 22 article/section/supplementary TeX,
+PDF and top-level delivery-README files remain in the committed arrival archives.
+Source 24 derives four-node outgoing observational equality, a reserved-zero
+falsity translation and explicit large SK carrier terms. Its strict EPSC control
+has 288 states; all 264 compiled recipes reproduce. Intake refutes the generic
+compiler claim for every accepted input with a negative start-label example;
+the supplied start-zero 253 payload remains valid at its stated finite scope.
+Source 25 derives EFPC from full EPSC using Separation, with a universally closed
+single-instance counterexample. Its two standalone Lean files pass 13 empty-axiom
+audits. All 20,480 compiled recipes and 148,368 bounded fusion records reproduce;
+EFPC271 does not improve its EPSC270 comparison. Fuel/abstraction failures remain
+unresolved. No new consistency machine or global minimum follows.
+
+Both full reviews, exact replay records, primary modal-source correction and
+offline recovery helper are in the host. The 28/27-page scratch PDFs were rebuilt
+and visually checked; one readable underfull paragraph remains in source 25.
+Subsequent project Lean proves the outgoing-equality resource lemma and
+reserved-zero semantics, the original named-to-numerical proof adapter and the
+full binary/register bootstrap relation. The numerical completeness premise's
+empty-domain defect is corrected and preserved as a counterexample. Full
+set-theory calibration, enumeration and binary runtime remain separate tasks.

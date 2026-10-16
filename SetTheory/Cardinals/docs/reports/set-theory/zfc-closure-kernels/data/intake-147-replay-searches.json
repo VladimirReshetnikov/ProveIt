@@ -1,0 +1,108 @@
+[
+  {
+    "check": "checker",
+    "command": [
+      "-m",
+      "unittest",
+      "-v",
+      "test_psc_hilbert.py"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-q20a647k/checker.log"
+  },
+  {
+    "check": "identity",
+    "command": [
+      "reference_checker/psc_hilbert.py",
+      "reference_checker/identity.json"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-q20a647k/identity.log"
+  },
+  {
+    "check": "codec",
+    "command": [
+      "code/bottom3_codec.py",
+      "--output",
+      "/tmp/zfc-batch147-reproduce-q20a647k/codec.json"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-q20a647k/codec.log"
+  },
+  {
+    "check": "obstruction",
+    "command": [
+      "code/fixed_slot_obstruction.py",
+      "--emitter",
+      "machine/proveit_snapshot/Computability/BusyBeaver/Research/ZFC/psc_backend_experiment.py",
+      "--output",
+      "/tmp/zfc-batch147-reproduce-q20a647k/obstruction.json"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-q20a647k/obstruction.log"
+  },
+  {
+    "check": "checker-semantics",
+    "command": [
+      "code/review_psc_checker.py"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-q20a647k/checker-semantics.log"
+  },
+  {
+    "check": "machines",
+    "command": [
+      "-c",
+      "from pathlib import Path; import sys; p=Path('reproduce.py').resolve(); source=p.read_text(); old='pins=json.loads((root/\"snapshot-sha256.json\").read_text())'; assert source.count(old)==1; sys.argv=['reproduce.py','--output',sys.argv[1]]; exec(compile(source.replace(old,'pins={}'),str(p),'exec'),{'__file__':str(p),'__name__':'__main__'})",
+      "/tmp/zfc-batch147-reproduce-q20a647k/machines"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-q20a647k/machines.log"
+  },
+  {
+    "check": "old-rho6-0",
+    "command": [
+      "old_rho6_grammar_search.py",
+      "--repo",
+      "proveit_snapshot",
+      "--seeds",
+      "200",
+      "--start-seed",
+      "0",
+      "--output",
+      "/tmp/zfc-batch147-reproduce-q20a647k/search-old-0"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-q20a647k/old-rho6-0.log"
+  },
+  {
+    "check": "old-rho6-200",
+    "command": [
+      "old_rho6_grammar_search.py",
+      "--repo",
+      "proveit_snapshot",
+      "--seeds",
+      "2000",
+      "--start-seed",
+      "200",
+      "--output",
+      "/tmp/zfc-batch147-reproduce-q20a647k/search-old-200"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-q20a647k/old-rho6-200.log"
+  },
+  {
+    "check": "bottom3-search",
+    "command": [
+      "bottom3_measurement.py",
+      "--repo",
+      "proveit_snapshot",
+      "--seeds",
+      "200",
+      "--output",
+      "/tmp/zfc-batch147-reproduce-q20a647k/search-bottom3"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-q20a647k/bottom3-search.log"
+  }
+]

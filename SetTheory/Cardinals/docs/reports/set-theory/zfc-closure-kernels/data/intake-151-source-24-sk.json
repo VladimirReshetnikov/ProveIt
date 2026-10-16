@@ -1,0 +1,186 @@
+{
+  "verdict": "Accept exact frozen253 carrier artifact and ordinary mathematical argument, with generic parser-accepted-input claim qualified by negative-start validation defect.",
+  "scratch_copy": "/tmp/zfc-batch151-machines-ld5qdq5b/source01-sk",
+  "original_untouched": "/tmp/zfc-intake-151-gkntyfry/zfc_consistency_proposal/zfc_minimal_theory/experiments/sk_carrier",
+  "files_read": [
+    "README.md",
+    "proof_sketch.tex",
+    "build_carrier.py",
+    "test_carrier.py",
+    "metrics.json",
+    "validation.json"
+  ],
+  "tests": {
+    "command": "python -B test_carrier.py",
+    "returncode": 0,
+    "results": {
+      "eta_distinction_regression": "passed",
+      "complete_halting_machine_runs": 101,
+      "halting_run_SK_contractions": 147298,
+      "exhaustive_local_boundary_cases": 72,
+      "random_cyclic_configuration_steps": 200,
+      "literal253_exact_steps": 300,
+      "literal253_transition_core_contractions": 373148,
+      "literal253_after_trace": {
+        "state": 10,
+        "left_nearest_first": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "scanned_bit": 1,
+        "right_nearest_first": [
+          0,
+          1,
+          0
+        ]
+      },
+      "one_constant_transport_terms_exhaustive": 550,
+      "one_constant_transport_reduction_edges": 360,
+      "full_payload_roundtrips": [
+        "BCL",
+        "one-constant -> BCL"
+      ],
+      "packed_payload_roundtrips": "both passed, including zero padding",
+      "scope": "Finite executable checks, not a proof-assistant verification and not a consistency or infinite-run proof."
+    },
+    "supplied_results_exact": true
+  },
+  "regeneration": {
+    "P253.bcl": {
+      "byte_identical": true,
+      "bytes": 192272
+    },
+    "P253.bcl.bin": {
+      "byte_identical": true,
+      "bytes": 24034
+    },
+    "P253.one.btree": {
+      "byte_identical": true,
+      "bytes": 302419
+    },
+    "P253.one.btree.bin": {
+      "byte_identical": true,
+      "bytes": 37803
+    },
+    "metrics.json": {
+      "byte_identical": true,
+      "bytes": 1922
+    },
+    "validation_json_exact": true
+  },
+  "metrics": {
+    "input_sha256": "84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95",
+    "start": 0,
+    "defined_states": 253,
+    "transitions": 506,
+    "state_path_bits": 8,
+    "K_leaves": 41063,
+    "S_leaves": 23028,
+    "application_nodes": 64090,
+    "tree_nodes": 128181,
+    "compilation": "basic SK bracket abstraction, no eta optimization",
+    "successful_result": "literal K with no pending arguments",
+    "bcl_convention": "K=00; S=01; application=1",
+    "one_constant_convention": "o=0; application=1; K->(o o); S->(o (o o))",
+    "components": {
+      "F": {
+        "K": 503,
+        "S": 459,
+        "bcl_bits": 2885
+      },
+      "run": {
+        "K": 527,
+        "S": 479,
+        "bcl_bits": 3017
+      },
+      "config": {
+        "K": 50,
+        "S": 45,
+        "bcl_bits": 284
+      },
+      "fix": {
+        "K": 20,
+        "S": 17,
+        "bcl_bits": 110
+      },
+      "lookup": {
+        "K": 62,
+        "S": 54,
+        "bcl_bits": 347
+      },
+      "cons": {
+        "K": 20,
+        "S": 16,
+        "bcl_bits": 107
+      },
+      "table": {
+        "K": 40470,
+        "S": 22514,
+        "bcl_bits": 188951
+      }
+    },
+    "P253.bcl": {
+      "bits": 192272,
+      "ascii_bytes": 192272,
+      "packed_bytes_ceiling": 24034,
+      "sha256_ascii_no_newline": "2b6e1095d28badbc09ddd6fcbfb2db08f011be22072114c78ce5061634b47369",
+      "packed_file": "P253.bcl.bin",
+      "packed_bit_order": "most significant bit first; zero pad final byte",
+      "sha256_packed": "62ca546bef8ad0407d81f0f24e9a71cf7012b8f154001a9a71c45eabe7a28fed"
+    },
+    "P253.one.btree": {
+      "bits": 302419,
+      "ascii_bytes": 302419,
+      "packed_bytes_ceiling": 37803,
+      "sha256_ascii_no_newline": "38b9f72881d79ac60fb76d5dbc095021119521213f5218b73dc0551838d118ef",
+      "packed_file": "P253.one.btree.bin",
+      "packed_bit_order": "most significant bit first; zero pad final byte",
+      "sha256_packed": "a9b7eebcdbf2dd7fed791c6ee780bbe6355c197c2c6fdaaa9a14bb819cd4085e"
+    },
+    "serialized_bcl_roundtrip": true
+  },
+  "negative_start": {
+    "parsed_start": -1,
+    "native_first_step": null,
+    "compiled_first_step": [
+      1,
+      [
+        0
+      ],
+      0,
+      []
+    ],
+    "cause": "Python negative list index states[-1] selects encoded state1 instead of named state-1",
+    "scope": "Generic accepted-input domain defect; actual frozen253 input has start0 and is unaffected"
+  },
+  "reproducer": "/tmp/zfc-batch151-machines-ld5qdq5b/negative_start_repro.py",
+  "input_byteidentical_host_public253": true,
+  "current_host_retraction_needed": false,
+  "current_host_reason": "No prior concrete SK parser/compiler exists in searched BusyBeaver research/report collection; source13 is an abstract carrier specification with explicit missing payload/compiler.",
+  "hash_enforcement": "None in these two scripts; metadata digests generated only, no hash-manifest enforcement run.",
+  "proof_assistant_builds": false,
+  "hosted_edits": false,
+  "original_edits": false,
+  "new_state_bound_claimed": false
+}

@@ -1,0 +1,297 @@
+{
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "explicit_compiler": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+  "scratch": "/tmp/zfc-rm330-pinned-nl7mvm6a",
+  "source_modules": [
+    {
+      "module": "RegisterPath",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-rm330-pinned-nl7mvm6a/build/BusyBeaver/ZFC/RegisterPath.olean",
+        "/tmp/zfc-rm330-pinned-nl7mvm6a/source/RegisterPath.lean"
+      ],
+      "cwd": "/tmp/zfc-rm330-pinned-nl7mvm6a",
+      "sha256": "a1457f32034eb4da50c8755610a366805260aac711424bba8b516ccab4e5b879",
+      "returncode": 0,
+      "seconds": 0.9825018905103207,
+      "output": ""
+    },
+    {
+      "module": "Prog254",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-rm330-pinned-nl7mvm6a/build/BusyBeaver/ZFC/Prog254.olean",
+        "/tmp/zfc-rm330-pinned-nl7mvm6a/source/Prog254.lean"
+      ],
+      "cwd": "/tmp/zfc-rm330-pinned-nl7mvm6a",
+      "sha256": "6e564bd1ba179b2d39fccc3b8c86a681ec0dd6529df9cfa2522500eef140cfde",
+      "returncode": 0,
+      "seconds": 23.916592178866267,
+      "output": ""
+    },
+    {
+      "module": "Prefix330",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-rm330-pinned-nl7mvm6a/build/BusyBeaver/ZFC/Prefix330.olean",
+        "/tmp/zfc-rm330-pinned-nl7mvm6a/source/Prefix330.lean"
+      ],
+      "cwd": "/tmp/zfc-rm330-pinned-nl7mvm6a",
+      "sha256": "a1a66b4933250f354f14f01c9d747dd7318cf5fa9f4caee62cbd6fe88590f290",
+      "returncode": 0,
+      "seconds": 4.518020875751972,
+      "output": ""
+    }
+  ],
+  "audit": {
+    "source_text": "import BusyBeaver.ZFC.Prefix330\nopen SetTheory.BusyBeaver.ZFC\n#print axioms RegisterPath.read_writeRegisters\n#print axioms RegisterPath.finiteStep_sound\n#print axioms RegisterPath.finiteRun_sound\n#print axioms Prog254.lookup_eq_flatten\n#print axioms Prog254.literalTree_valid\n#print axioms Prog254.nodes_eq_literal\n#print axioms Prog254.literalRows_length\n#print axioms Prog254.all_node_targets_bounded\n#print axioms Prog254.all_register_operands_bounded\n#print axioms Prog254.literal_halt_count\n#print axioms Prefix330.decode_initial\n#print axioms Prefix330.finite_prefix330\n#print axioms Prefix330.prefix330\n#print axioms Prefix330.prefix330_registers\n#print axioms Prefix330.prefix330_registers_tail\n#print axioms Prefix330.target_walk\n#print axioms Prefix330.target_physical_registers\nexample : RegisterPath.run Prog254.program 330 Prog254.initial =\n    some \u27e8[false,false,false], RegisterPath.readRegisters [5,0,0,0,2,0,0,0,0]\u27e9 :=\n  Prefix330.prefix330\nexample (i : Nat) :\n    (RegisterPath.decode Prefix330.finiteTarget).registers (9+i) = 0 :=\n  Prefix330.prefix330_registers_tail i\nexample (n : Nat) : Prog254.program.nodes n = Prog254.rowAt Prog254.literalRows n :=\n  Prog254.nodes_eq_literal n\n",
+    "returncode": 0,
+    "output": "'SetTheory.BusyBeaver.ZFC.RegisterPath.read_writeRegisters' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.RegisterPath.finiteStep_sound' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.RegisterPath.finiteRun_sound' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Prog254.lookup_eq_flatten' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Prog254.literalTree_valid' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Prog254.nodes_eq_literal' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Prog254.literalRows_length' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Prog254.all_node_targets_bounded' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Prog254.all_register_operands_bounded' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Prog254.literal_halt_count' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Prefix330.decode_initial' depends on axioms: [Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Prefix330.finite_prefix330' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Prefix330.prefix330' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Prefix330.prefix330_registers' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Prefix330.prefix330_registers_tail' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Prefix330.target_walk' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Prefix330.target_physical_registers' does not depend on any axioms\n"
+  },
+  "total_seconds": 29.41711494512856,
+  "status": "PASS pinned Lean4.32 fresh3-source closure, axiom audit, caller and integratedumbrella",
+  "umbrella_integration": {
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "-o",
+      "/tmp/zfc-rm330-integrated-oy8n35kp/BusyBeaver/ZFC.olean",
+      "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean"
+    ],
+    "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+    "source_sha256": "4a1581627382684f6219b1e285fb208fd493d91e5dc9dad002d5f5fb7f7821e1",
+    "returncode": 0,
+    "output": "",
+    "serialized_source_units": 48,
+    "prior_header_error": "Initial cache merge exposed4.31freshcache; preserved and corrected in toolchain record; new4.32freshcache substituted."
+  },
+  "literal_source_audit": {
+    "upstream_commit": "297ab8df7e5de329605c3875b4934643b371a5e3",
+    "also_used_unchanged_by_PR20": "0d544f2a2e3c18f12278441a74b7879f31cbe856",
+    "source": "lib/jeff-busy-beaver-zfc254/ZF/m254/coq/tm/Prog254.v",
+    "sha256": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746",
+    "rows_exact": 6459,
+    "all_original_indices_exact": true,
+    "all_101_block_references_in_source_order": true,
+    "outside_table_default": [
+      "halt",
+      "halt"
+    ],
+    "replay_python": "from pathlib import Path\nimport hashlib,re\nsource=Path('lib/jeff-busy-beaver-zfc254/ZF/m254/coq/tm/Prog254.v')\nassert hashlib.sha256(source.read_bytes()).hexdigest()=='1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746'\nsection=source.read_text().split('Definition p254_tab : list (cedge * cedge) := [',1)[1].split('].',1)[0]\npattern=r'\\((CN \\d+|CI \\d+|CD \\d+|CB \\d+|CC \\d+|CH), (CN \\d+|CI \\d+|CD \\d+|CB \\d+|CC \\d+|CH)\\)'\nassert not re.sub(pattern,'',section).replace(';','').strip()\ndef edge(token):\n    tag,*value=token.split()\n    return {'CN':'node','CI':'inc','CD':'decnz','CB':'brk','CC':'cont','CH':'halt'}[tag], int(value[0]) if value else None\nrows=[tuple(map(edge,pair)) for pair in re.findall(pattern,section)]\nlean=Path('Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prog254.lean').read_text()\nemitted=re.findall(r'\\(\\.(node|inc|decnz|brk|cont|halt)(?: (\\d+))?, \\.(node|inc|decnz|brk|cont|halt)(?: (\\d+))?\\), -- (\\d+)',lean)\nassert len(rows)==len(emitted)==6459\nfor i,(a,b,c,d,index) in enumerate(emitted):\n    assert int(index)==i and rows[i]==((a,int(b) if b else None),(c,int(d) if d else None))\nrefs=re.findall(r'\\.leaf block(\\d+)',lean.split('def literalTree : RowTree :=',1)[1].split('/-- The 6459 original',1)[0])\nassert list(map(int,refs))==list(range(101))\nblocks=re.findall(r'private def block(\\d+) : List Row := \\[(.*?)\\n\\]',lean,re.S)\nassert len(blocks)==101\nassert [len(re.findall(r' -- \\d+',body)) for _,body in blocks]==[64]*100+[59]\nprint('PASS: all 6459 literal rows, source indices, block sizes and tree block order')\n",
+    "all_101_block_sizes_exact": {
+      "full_blocks": 100,
+      "full_block_size": 64,
+      "last_block_size": 59
+    }
+  },
+  "historical_4_31": {
+    "scratch": "/tmp/zfc-rm330-fresh-_fx9p3d3",
+    "source_modules": [
+      {
+        "module": "BusyBeaver.ZFC.RegisterPath",
+        "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean",
+        "sha256": "a1457f32034eb4da50c8755610a366805260aac711424bba8b516ccab4e5b879",
+        "git_blob": "ee8b60a3c3971472004755fb08e6e264550b5bc8",
+        "bytes": 7073,
+        "returncode": 0,
+        "seconds": 15.85,
+        "log": "/tmp/zfc-rm330-fresh-_fx9p3d3/RegisterPath.log",
+        "time_metrics": "15.84 480984"
+      },
+      {
+        "module": "BusyBeaver.ZFC.Prog254",
+        "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prog254.lean",
+        "sha256": "6e564bd1ba179b2d39fccc3b8c86a681ec0dd6529df9cfa2522500eef140cfde",
+        "git_blob": "8f3102db1625f630ca67e4986bd7f9450f95809b",
+        "bytes": 224257,
+        "returncode": 0,
+        "seconds": 24.787,
+        "log": "/tmp/zfc-rm330-fresh-_fx9p3d3/Prog254.log",
+        "time_metrics": "24.78 1565476"
+      },
+      {
+        "module": "BusyBeaver.ZFC.Prefix330",
+        "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prefix330.lean",
+        "sha256": "a1a66b4933250f354f14f01c9d747dd7318cf5fa9f4caee62cbd6fe88590f290",
+        "git_blob": "31a1cb6f3ca4facfd77c3a72a35eeee385af1ee5",
+        "bytes": 2768,
+        "returncode": 0,
+        "seconds": 4.644,
+        "log": "/tmp/zfc-rm330-fresh-_fx9p3d3/Prefix330.log",
+        "time_metrics": "4.64 697204"
+      }
+    ],
+    "commands": [
+      [
+        "lean",
+        "-o",
+        "/tmp/zfc-rm330-fresh-_fx9p3d3/build/BusyBeaver/ZFC/RegisterPath.olean",
+        "/tmp/zfc-rm330-fresh-_fx9p3d3/source/BusyBeaver/ZFC/RegisterPath.lean"
+      ],
+      [
+        "lean",
+        "-o",
+        "/tmp/zfc-rm330-fresh-_fx9p3d3/build/BusyBeaver/ZFC/Prog254.olean",
+        "/tmp/zfc-rm330-fresh-_fx9p3d3/source/BusyBeaver/ZFC/Prog254.lean"
+      ],
+      [
+        "lean",
+        "-o",
+        "/tmp/zfc-rm330-fresh-_fx9p3d3/build/BusyBeaver/ZFC/Prefix330.olean",
+        "/tmp/zfc-rm330-fresh-_fx9p3d3/source/BusyBeaver/ZFC/Prefix330.lean"
+      ],
+      [
+        "lean",
+        "/tmp/zfc-rm330-fresh-_fx9p3d3/Audit.lean"
+      ]
+    ],
+    "claims": {
+      "finite_RM_prefix_steps": 330,
+      "binary_simulation": false,
+      "first_dispatch_arrival": false,
+      "consistency_equivalence": false,
+      "native_decide": false,
+      "admissions_or_custom_axioms": false
+    },
+    "audit": {
+      "returncode": 0,
+      "output": "'SetTheory.BusyBeaver.ZFC.RegisterPath.read_writeRegisters' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.RegisterPath.finiteStep_sound' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.RegisterPath.finiteRun_sound' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Prog254.lookup_eq_flatten' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Prog254.literalTree_valid' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Prog254.nodes_eq_literal' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Prog254.literalRows_length' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Prog254.all_node_targets_bounded' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Prog254.all_register_operands_bounded' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Prog254.literal_halt_count' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Prefix330.decode_initial' depends on axioms: [Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Prefix330.finite_prefix330' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Prefix330.prefix330' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Prefix330.prefix330_registers' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Prefix330.prefix330_registers_tail' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Prefix330.target_walk' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Prefix330.target_physical_registers' does not depend on any axioms\n",
+      "source": "import BusyBeaver.ZFC.Prefix330\nopen SetTheory.BusyBeaver.ZFC\n#print axioms RegisterPath.read_writeRegisters\n#print axioms RegisterPath.finiteStep_sound\n#print axioms RegisterPath.finiteRun_sound\n#print axioms Prog254.lookup_eq_flatten\n#print axioms Prog254.literalTree_valid\n#print axioms Prog254.nodes_eq_literal\n#print axioms Prog254.literalRows_length\n#print axioms Prog254.all_node_targets_bounded\n#print axioms Prog254.all_register_operands_bounded\n#print axioms Prog254.literal_halt_count\n#print axioms Prefix330.decode_initial\n#print axioms Prefix330.finite_prefix330\n#print axioms Prefix330.prefix330\n#print axioms Prefix330.prefix330_registers\n#print axioms Prefix330.prefix330_registers_tail\n#print axioms Prefix330.target_walk\n#print axioms Prefix330.target_physical_registers\nexample : RegisterPath.run Prog254.program 330 Prog254.initial =\n    some \u27e8[false,false,false], RegisterPath.readRegisters [5,0,0,0,2,0,0,0,0]\u27e9 :=\n  Prefix330.prefix330\nexample (i : Nat) :\n    (RegisterPath.decode Prefix330.finiteTarget).registers (9+i) = 0 :=\n  Prefix330.prefix330_registers_tail i\nexample (n : Nat) : Prog254.program.nodes n = Prog254.rowAt Prog254.literalRows n :=\n  Prog254.nodes_eq_literal n\n",
+      "checked_theorems": 17
+    },
+    "literal_source_audit": {
+      "upstream_commit": "297ab8df7e5de329605c3875b4934643b371a5e3",
+      "also_used_unchanged_by_PR20": "0d544f2a2e3c18f12278441a74b7879f31cbe856",
+      "source": "lib/jeff-busy-beaver-zfc254/ZF/m254/coq/tm/Prog254.v",
+      "sha256": "1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746",
+      "rows_exact": 6459,
+      "all_original_indices_exact": true,
+      "all_101_block_references_in_source_order": true,
+      "outside_table_default": [
+        "halt",
+        "halt"
+      ],
+      "replay_python": "from pathlib import Path\nimport hashlib,re\nsource=Path('lib/jeff-busy-beaver-zfc254/ZF/m254/coq/tm/Prog254.v')\nassert hashlib.sha256(source.read_bytes()).hexdigest()=='1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746'\nsection=source.read_text().split('Definition p254_tab : list (cedge * cedge) := [',1)[1].split('].',1)[0]\npattern=r'\\((CN \\d+|CI \\d+|CD \\d+|CB \\d+|CC \\d+|CH), (CN \\d+|CI \\d+|CD \\d+|CB \\d+|CC \\d+|CH)\\)'\nassert not re.sub(pattern,'',section).replace(';','').strip()\ndef edge(token):\n    tag,*value=token.split()\n    return {'CN':'node','CI':'inc','CD':'decnz','CB':'brk','CC':'cont','CH':'halt'}[tag], int(value[0]) if value else None\nrows=[tuple(map(edge,pair)) for pair in re.findall(pattern,section)]\nlean=Path('Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prog254.lean').read_text()\nemitted=re.findall(r'\\(\\.(node|inc|decnz|brk|cont|halt)(?: (\\d+))?, \\.(node|inc|decnz|brk|cont|halt)(?: (\\d+))?\\), -- (\\d+)',lean)\nassert len(rows)==len(emitted)==6459\nfor i,(a,b,c,d,index) in enumerate(emitted):\n    assert int(index)==i and rows[i]==((a,int(b) if b else None),(c,int(d) if d else None))\nrefs=re.findall(r'\\.leaf block(\\d+)',lean.split('def literalTree : RowTree :=',1)[1].split('/-- The 6459 original',1)[0])\nassert list(map(int,refs))==list(range(101))\nblocks=re.findall(r'private def block(\\d+) : List Row := \\[(.*?)\\n\\]',lean,re.S)\nassert len(blocks)==101\nassert [len(re.findall(r' -- \\d+',body)) for _,body in blocks]==[64]*100+[59]\nprint('PASS: all 6459 literal rows, source indices, block sizes and tree block order')\n",
+      "all_101_block_sizes_exact": {
+        "full_blocks": 100,
+        "full_block_size": 64,
+        "last_block_size": 59
+      }
+    },
+    "sources_unchanged_after_build": true,
+    "seconds": 45.644,
+    "date_utc": "2026-10-16T21:44:10.549424+00:00",
+    "head_at_verification": "3a1463d25283e59618dda9de1d5ddc4de94a445c",
+    "working_directory_for_recorded_commands": "/tmp/zfc-rm330-fresh-_fx9p3d3",
+    "semantics_source": {
+      "source": "lib/jeff-busy-beaver-zfc254/ZF/m254/coq/tm/RM.v",
+      "lines": "16\u2013110",
+      "sha256": "214a6016420e48f4432565ce97f1a27d07ac42642f8ed170d5d0ee02c5994ee8",
+      "scope": "Path small-step semantics only; structured big-step RMEquiv.v not ported."
+    },
+    "attribution": "Wade supplied TMBuilder; Mira-Cult designed the original machine; Jeff supplied the original verification; mira-emmy supplied public PR20 253-state reduction and its finite330 prefix. No upstream relicensing or Coq build.",
+    "endpoint": {
+      "path": [
+        false,
+        false,
+        false
+      ],
+      "logical_registers_first9": [
+        5,
+        0,
+        0,
+        0,
+        2,
+        0,
+        0,
+        0,
+        0
+      ],
+      "all_logical_registers_ge9_zero": true,
+      "next_leaf": {
+        "instruction": "decnz",
+        "register": 8,
+        "depth": 3
+      },
+      "physical_order": [
+        2,
+        4,
+        3,
+        7,
+        6,
+        8,
+        0,
+        1,
+        5
+      ],
+      "physical_primary_values": [
+        0,
+        2,
+        0,
+        0,
+        0,
+        0,
+        5,
+        0,
+        0
+      ]
+    },
+    "finite_facts": {
+      "literal_rows": 6459,
+      "maximum_node_target_exclusive": 6459,
+      "maximum_register_operand_exclusive": 9,
+      "literal_halt_leaves": 1,
+      "balanced_lookup_proved_equal_flat_nth_for_every_Nat": true,
+      "out_of_range_default": [
+        "halt",
+        "halt"
+      ]
+    },
+    "independent_read_only_review": {
+      "reviewer": "/root/review_fibers",
+      "result": "clean",
+      "all_6459_rows_independently_compared": true,
+      "all_block_references_order_and_sizes_independently_compared": true,
+      "exact_RM_semantics_and_unbounded_register_soundness_reviewed": true,
+      "no_builds_or_edits_by_reviewer": true
+    },
+    "build_grant_released": true,
+    "unrelated_prior_cache_used": false,
+    "initial_harness_attempt": {
+      "scratch": "/tmp/zfc-rm330-fresh-u_o2naoq",
+      "returncode": 1,
+      "source_error": false,
+      "reason": "Lean input file lay outside current working root; corrected working directory before fresh successful replay."
+    },
+    "lean_version_captured_in_repository_cwd": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "lean_version": "Lean 4.31.0, commit 68218e876d2a38b1985b8590fff244a83c321783 (verified from all three emitted olean headers)",
+    "toolchain_version_recording_correction": {
+      "cause": "Runner queried elan lean --version in repository cwd (4.32.0), then built/audited with cwd in scratch, where elan selected default4.31.0. Original reported4.32 label was incorrect; the actual4.31 proof check remains valid.",
+      "corrected": true,
+      "Lean4_32_fresh_check": "PASS; see top-level pinned fresh replay"
+    },
+    "actual_olean_headers": [
+      {
+        "module": "BusyBeaver.ZFC.RegisterPath",
+        "version": "4.31.0",
+        "commit": "68218e876d2a38b1985b8590fff244a83c321783",
+        "file": "/tmp/zfc-rm330-fresh-_fx9p3d3/build/BusyBeaver/ZFC/RegisterPath.olean"
+      },
+      {
+        "module": "BusyBeaver.ZFC.Prog254",
+        "version": "4.31.0",
+        "commit": "68218e876d2a38b1985b8590fff244a83c321783",
+        "file": "/tmp/zfc-rm330-fresh-_fx9p3d3/build/BusyBeaver/ZFC/Prog254.olean"
+      },
+      {
+        "module": "BusyBeaver.ZFC.Prefix330",
+        "version": "4.31.0",
+        "commit": "68218e876d2a38b1985b8590fff244a83c321783",
+        "file": "/tmp/zfc-rm330-fresh-_fx9p3d3/build/BusyBeaver/ZFC/Prefix330.olean"
+      }
+    ],
+    "status": "Historical4.31check valid; original4.32label corrected"
+  }
+}

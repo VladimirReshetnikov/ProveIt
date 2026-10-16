@@ -1,0 +1,140 @@
+{
+  "batch": 149,
+  "source": "01",
+  "arrival": "de047657e",
+  "pin": "96836f9eea3540e96322c3d28c7127a582aae223",
+  "dossier": "/tmp/zfc-batch149-theory-review-fw5hc93s/source01-review.md",
+  "review_copy": "/tmp/zfc-batch149-theory-review-fw5hc93s/01",
+  "originals_untouched": true,
+  "manifests_checked": false,
+  "repo_edited": false,
+  "lean_build": {
+    "compiler": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "pinned_toolchain": "leanprover/lean4:v4.32.0",
+    "checks": [
+      {
+        "module": "PSCIdentityObstruction",
+        "command": [
+          "lean",
+          "-o",
+          "/tmp/zfc-batch149-theory-review-fw5hc93s/lean-check/PSCIdentityObstruction.olean",
+          "/tmp/zfc-batch149-theory-review-fw5hc93s/01/formal/PSCIdentityObstruction.lean"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.8886724142357707,
+        "stdout": "'PSCIdentityObstruction.eval_psc' depends on axioms: [propext]\n'PSCIdentityObstruction.derivation_sound' depends on axioms: [propext]\n'PSCIdentityObstruction.bottom_calculus_consistent' depends on axioms: [propext]\n'PSCIdentityObstruction.relative_calculus_consistent' depends on axioms: [propext]\n'PSCIdentityObstruction.properUISample_underivable' depends on axioms: [propext]\n",
+        "stderr": ""
+      },
+      {
+        "module": "BinderSyntax",
+        "command": [
+          "lean",
+          "-o",
+          "/tmp/zfc-batch149-theory-review-fw5hc93s/lean-check/BinderSyntax.olean",
+          "/tmp/zfc-batch149-theory-review-fw5hc93s/01/formal/BinderSyntax.lean"
+        ],
+        "exit_code": 0,
+        "elapsed_seconds": 0.7618366992101073,
+        "stdout": "'BinderSyntax.Form.openAt_closeAt_self' depends on axioms: [propext]\n'BinderSyntax.Form.openAt_closeAt' depends on axioms: [propext]\n'BinderSyntax.Form.closeAt_scoped' depends on axioms: [propext]\n'BinderSyntax.Form.openAt_scoped' depends on axioms: [propext]\n'BinderSyntax.Form.closeAt_openAt' depends on axioms: [propext]\n'BinderSyntax.Form.closeAt_eq_self_iff' depends on axioms: [propext]\n'BinderSyntax.Form.plugAt_scoped' depends on axioms: [propext]\n",
+        "stderr": ""
+      }
+    ],
+    "all_passed": true,
+    "source_copy": "/tmp/zfc-batch149-theory-review-fw5hc93s/01/formal",
+    "repo_edited": false
+  },
+  "suite_results": [
+    {
+      "name": "01-kernel",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "code/test_binder_kernel.py",
+        "--output",
+        "/tmp/zfc-batch149-theory-review-fw5hc93s/01-kernel.json"
+      ],
+      "cwd": "/tmp/zfc-batch149-theory-review-fw5hc93s/01",
+      "exit_code": 0,
+      "elapsed_seconds": 3.1190229076892138
+    },
+    {
+      "name": "01-wire",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "code/test_binder_wire.py",
+        "--output",
+        "/tmp/zfc-batch149-theory-review-fw5hc93s/01-wire.json"
+      ],
+      "cwd": "/tmp/zfc-batch149-theory-review-fw5hc93s/01",
+      "exit_code": 0,
+      "elapsed_seconds": 1.2682759026065469
+    },
+    {
+      "name": "01-audit",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "audit_artifacts/binder_independent_audit.py",
+        "--output",
+        "/tmp/zfc-batch149-theory-review-fw5hc93s/01-audit.json"
+      ],
+      "cwd": "/tmp/zfc-batch149-theory-review-fw5hc93s/01",
+      "exit_code": 0,
+      "elapsed_seconds": 1.069088900461793
+    },
+    {
+      "name": "01-example",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "code/binder_wire.py",
+        "examples/binding-proof.bits"
+      ],
+      "cwd": "/tmp/zfc-batch149-theory-review-fw5hc93s/01",
+      "exit_code": 0,
+      "elapsed_seconds": 0.06519138347357512
+    },
+    {
+      "name": "01-actual-obstruction",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "code/psc_identity_obstruction_check.py",
+        "--repo",
+        "/tmp/zfc-batch149-theory-review-fw5hc93s/pin96836",
+        "--limit",
+        "100000",
+        "--output",
+        "/tmp/zfc-batch149-theory-review-fw5hc93s/01-actual-obstruction.json"
+      ],
+      "cwd": "/tmp/zfc-batch149-theory-review-fw5hc93s/01",
+      "exit_code": 0,
+      "elapsed_seconds": 1.6199702508747578
+    },
+    {
+      "name": "01-parameter-acquisition",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "compiler/check_parameter_acquisition.py",
+        "--repo",
+        "/tmp/zfc-batch149-theory-review-fw5hc93s/pin96836",
+        "--output",
+        "/tmp/zfc-batch149-theory-review-fw5hc93s/01-parameter-acquisition.json"
+      ],
+      "cwd": "/tmp/zfc-batch149-theory-review-fw5hc93s/01",
+      "exit_code": 0,
+      "elapsed_seconds": 0.09157514106482267
+    }
+  ],
+  "mathematical_or_acceptance_defects_found": [],
+  "placement": "continuation of zfc-closure-kernels",
+  "reconciliation": [
+    "C/G open calibration question superseded by CM12/source17",
+    "later actual RawPSCModel bootstrap/formula adapters already exist"
+  ],
+  "source11_permutation_safe": true,
+  "formal_scope": "finite-syntax PSC+modal derivation invariant and binding syntax identities; no Python/wire/numeric runtime theorem",
+  "lean_build_grant_released": true
+}

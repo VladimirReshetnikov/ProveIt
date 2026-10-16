@@ -1,0 +1,20 @@
+{
+  "reviewed_component": "lazy_psc.py",
+  "verdict": "No mathematical soundness defect found in check() for finite JSON certificates.",
+  "findings": [
+    "The fixed template is SB(phi) implies seed/hull closure plus unrestricted image support.",
+    "Template calls reset the matrix-local binder stack and pass only input/output slot values across the call boundary.",
+    "Matrix parameter assignments persist through all shared calls.",
+    "Every hidden parameter-map value is allocated before use; negative-universal witnesses remain fresh in all active closure environments.",
+    "Implication and quantifier rules have the standard classical signed-tableau signs.",
+    "Every branch must close on opposite evaluated relation atoms or positive primitive Bottom.",
+    "Dynamic AX maps allow schema parameters to use witnesses introduced after the matrix pool was chosen.",
+    "Existing positive universals remain available for later gamma instantiations."
+  ],
+  "soundness_invariant": "Before each instruction, every ID in active bound stacks, slot pairs, and root parameter-map values is less than counter.",
+  "completeness_obligation": "Give the usual finite-tableau translation, including removal of gratuitous gamma constants and dynamic universal-schema instantiation.",
+  "scope": "This review covers the shared-template certificate checker. It does not establish fairness of an enumerator, internal ZFC formalization, or correctness and state count of a compiled binary blank-tape TM.",
+  "minor_issue_at_review": "An explicit --theorem file containing JSON null selected the default refutation interface. This could not create a false accepted refutation; parent indicated it would be fixed.",
+  "reproducible_evidence": "independent-review.json",
+  "reproduction_script": "independent_review.py"
+}
