@@ -175,12 +175,67 @@ theorem fibre_sum_ge (W : Finset (A × ZMod N)) (H : Finset A) {s : Real}
         · rintro ⟨hp, he⟩; exact ⟨⟨hp, he ▸ hh⟩, he⟩
       rw [he]; exact hH h hh
 
-/-- **One multilinear piece on a line-covered cell**, from providers for the
-cross-sections `φ(·, x)`. -/
-theorem single_piece_on_line_cell_of_slices {k q : Nat} (hk : 0 < k)
-    {c : Real → Real} {w : Real → Nat → Nat}
-    (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t))
-    {N : Nat} [NeZero N] [Fact N.Prime]
+/-! ### Slice schemes
+
+The line-cell argument uses the cross-sections `φ(·, x)` in one step only: on
+a dense set `H` of a box `T` whose sections at two anchors satisfy the slice
+condition, it needs a sub-box on which a fixed fraction of `H` agrees with a
+multilinear function at both anchors (Notes L.16q). A slice scheme packages
+that step together with its width and density. `localPieceScheme` uses local
+piece providers, one section after the other; `jointSliceScheme`
+(`Proofs16JointSliceCell`) covers both sections at once. -/
+
+/-- A slice condition with the width and the density of its two-section step. -/
+structure SliceScheme (N k : Nat) [NeZero N] where
+  /-- The condition on a cross-section `g` with domain `D`. -/
+  SL : Finset (Point N k) → (Point N k → ZMod N) → Prop
+  /-- The width of the two-section box at density `θ`, from the width `L` of the box. -/
+  wid : Real → Nat → Nat
+  /-- The fraction of the dense set that agrees at both sections. -/
+  dens : Real → Real
+  wid_mono : ∀ θ : Real, 0 < θ → θ ≤ 1 → Monotone (wid θ)
+  dens_pos : ∀ θ : Real, 0 < θ → θ ≤ 1 → 0 < dens θ
+  step : ∀ θ : Real, 0 < θ → θ ≤ 1 → ∀ (T : Box N k) (H Da Db : Finset (Point N k))
+    (ga gb : Point N k → ZMod N), T.IsProper → T.carrier.Nonempty → H ⊆ T.carrier → H ⊆ Da →
+    H ⊆ Db → θ * T.carrier.card ≤ H.card → SL Da ga → SL Db gb →
+    ∃ (R : Box N k) (ma mb : Point N k → ZMod N), R.IsProper ∧ R.carrier ⊆ T.carrier ∧
+      wid θ T.width ≤ R.width ∧ IsMultilinear ma ∧ IsMultilinear mb ∧
+      dens θ * R.carrier.card ≤
+        (H.filter fun x => x ∈ R.carrier ∧ ga x = ma x ∧ gb x = mb x).card
+
+theorem SliceScheme.congr {N k : Nat} [NeZero N] (Sc : SliceScheme N k)
+    {D : Finset (Point N k)} {g g' : Point N k → ZMod N} (h : Sc.SL D g)
+    (hg : ∀ x, g' x = g x) : Sc.SL D g' := by
+  obtain rfl : g' = g := funext hg
+  exact h
+
+/-- Local piece providers, applied to the first section and then, inside its
+agreement set, to the second: width `w (c θ) (w θ L)`, density `c (c θ)`. -/
+def localPieceScheme {N k : Nat} [NeZero N] (c : Real → Real) (w : Real → Nat → Nat)
+    (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t)) :
+    SliceScheme N k where
+  SL := LocalPieceFor c w
+  wid θ L := w (c θ) (w θ L)
+  dens θ := c (c θ)
+  wid_mono θ _ _ := (hw _).comp (hw θ)
+  dens_pos θ hθ hθ1 := (hc _ (hc θ hθ hθ1).1 (hc θ hθ hθ1).2).1
+  step θ hθ hθ1 T H Da Db ga gb hT _ hHT hHa hHb hHc ha hb := by
+    obtain ⟨R1, mua, hR1, hR1T, hR1w, hmua, hR1c⟩ := ha θ hθ hθ1 T H hT hHT hHa hHc
+    obtain ⟨hcpos, hcle⟩ := hc θ hθ hθ1
+    obtain ⟨R2, mub, hR2, hR2R1, hR2w, hmub, hR2c⟩ := hb (c θ) hcpos hcle R1
+      (H.filter fun x => x ∈ R1.carrier ∧ ga x = mua x) hR1
+      (fun x hx => (Finset.mem_filter.mp hx).2.1)
+      (fun x hx => hHb (Finset.filter_subset _ _ hx)) hR1c
+    refine ⟨R2, mua, mub, hR2, hR2R1.trans hR1T, (hw _ hR1w).trans hR2w, hmua, hmub,
+      hR2c.trans ?_⟩
+    exact_mod_cast Finset.card_le_card fun x hx => by
+      simp only [Finset.mem_filter] at hx ⊢
+      exact ⟨hx.1.1, hx.2.1, hx.1.2.2, hx.2.2⟩
+
+/-- **One multilinear piece on a line-covered cell**, for cross-sections
+`φ(·, x)` satisfying the slice condition of a scheme. -/
+theorem single_piece_on_line_cell_of_scheme {k q : Nat} (hk : 0 < k)
+    {N : Nat} [NeZero N] [Fact N.Prime] (Sc : SliceScheme N k)
     (T : Box N k) (J : ModAP N) (hT : T.IsProper) (hJ : J.IsProper) (hTne : T.carrier.Nonempty)
     (hTd : T.commonDiff ≠ 0) (hJstep : J.step = T.commonDiff)
     (hshort : 2 * (T.axis ⟨0, hk⟩).length ≤ N) (hTJ : (T.axis ⟨0, hk⟩).length ≤ J.length)
@@ -192,16 +247,15 @@ theorem single_piece_on_line_cell_of_slices {k q : Nat} (hk : 0 < k)
     (ell : Point N k → Fin q → ZMod N → ZMod N) (hell : ∀ h i, LinearOn Finset.univ (ell h i))
     (hphi : ∀ p ∈ D, phi p = ell p.1 (cls p) p.2)
     (Dom : ZMod N → Finset (Point N k))
-    (hsl : ∀ x ∈ J.carrier, LocalPieceFor c w (Dom x) (fun h => phi (h, x)))
+    (hsl : ∀ x ∈ J.carrier, Sc.SL (Dom x) (fun h => phi (h, x)))
     (hDom : ∀ p ∈ D, p.1 ∈ Dom p.2)
-    (hwidth : 2 ≤ w (c (singlePieceTheta theta q)) (w (singlePieceTheta theta q) T.width)) :
+    (hwidth : 2 ≤ Sc.wid (singlePieceTheta theta q) T.width) :
     ∃ (S : Box N (k + 1)) (R : Box N k) (I : ModAP N) (mu : Point N (k + 1) → ZMod N),
       S.IsProper ∧ IsLastCoordinateBoxProduct S R I ∧ R.carrier ⊆ T.carrier ∧
       S.carrier ⊆ lastProductSet T.carrier J.carrier ∧
-      Nat.sqrt (w (c (singlePieceTheta theta q)) (w (singlePieceTheta theta q) T.width) - 1) - 1
-        ≤ S.width ∧
+      Nat.sqrt (Sc.wid (singlePieceTheta theta q) T.width - 1) - 1 ≤ S.width ∧
       IsMultilinear mu ∧
-      singlePieceDensity c theta q * S.carrier.card ≤
+      singlePieceTheta theta q * Sc.dens (singlePieceTheta theta q) * S.carrier.card ≤
         (D.filter fun p => appendCoordinate p.1 p.2 ∈ S.carrier ∧
           phi p = mu (appendCoordinate p.1 p.2)).card := by
   set θ1 := singlePieceTheta theta q with hθ1def
@@ -246,16 +300,14 @@ theorem single_piece_on_line_cell_of_slices {k q : Nat} (hk : 0 < k)
     obtain ⟨hpW, rfl⟩ := Finset.mem_filter.mp hp
     obtain ⟨-, -, hpa, hpb⟩ := Finset.mem_filter.mp hpW
     exact ⟨(Finset.mem_filter.mp hpa).1, (Finset.mem_filter.mp hpb).1⟩
-  -- 3. the cross-section at `a`, then at `b`
-  obtain ⟨R1, mua, hR1, hR1T, hR1w, hmua, hR1c⟩ := hsl a ha θ1 hθ1pos hθ1le T H1 hT
-    (Finset.filter_subset _ _) (fun h hh => hDom _ (hslice h hh).1) hH1
-  set H2 := H1.filter fun x => x ∈ R1.carrier ∧ phi (x, a) = mua x with hH2def
-  obtain ⟨hcpos, hcle⟩ := hc θ1 hθ1pos hθ1le
-  obtain ⟨R2, mub, hR2, hR2R1, hR2w, hmub, hR2c⟩ := hsl b hb (c θ1) hcpos hcle R1 H2 hR1
-    (fun x hx => (Finset.mem_filter.mp hx).2.1)
-    (fun h hh => hDom _ (hslice h (Finset.filter_subset _ _ hh)).2) hR1c
-  set H3 := H2.filter fun x => x ∈ R2.carrier ∧ phi (x, b) = mub x with hH3def
-  have hR2width : w (c θ1) (w θ1 T.width) ≤ R2.width := (hw _ hR1w).trans hR2w
+  -- 3. both cross-sections, by the scheme
+  obtain ⟨R2, mua, mub, hR2, hR2T, hR2width, hmua, hmub, hR2c⟩ :=
+    Sc.step θ1 hθ1pos hθ1le T H1 (Dom a) (Dom b) _ _ hT hTne (Finset.filter_subset _ _)
+      (fun h hh => hDom _ (hslice h hh).1) (fun h hh => hDom _ (hslice h hh).2) hH1
+      (hsl a ha) (hsl b hb)
+  set H3 := H1.filter fun x => x ∈ R2.carrier ∧ phi (x, a) = mua x ∧ phi (x, b) = mub x
+    with hH3def
+  have hR2c : Sc.dens θ1 * R2.carrier.card ≤ H3.card := hR2c
   have hR2two : 2 ≤ R2.width := hwidth.trans hR2width
   -- 4. reconstruction on the doubly agreeing fibres
   set mu := section16TwoAnchorLift a b mua mub with hmudef
@@ -264,8 +316,7 @@ theorem single_piece_on_line_cell_of_slices {k q : Nat} (hk : 0 < k)
   have hGagree : ∀ p ∈ G, phi p = mu (appendCoordinate p.1 p.2) := by
     intro p hp
     obtain ⟨hpW, hpH3⟩ := Finset.mem_filter.mp hp
-    obtain ⟨hpH2, -, hb'⟩ := Finset.mem_filter.mp hpH3
-    obtain ⟨-, -, ha'⟩ := Finset.mem_filter.mp hpH2
+    obtain ⟨-, -, ha', hb'⟩ := Finset.mem_filter.mp hpH3
     have hne : a ≠ b := (Finset.mem_filter.mp hpW).2.1
     rw [anchor_reconstruction D cls phi ell hell hphi hpW, ha', hb']
     simp only [hmudef, section16TwoAnchorLift, appendCoordinate_eq_snoc, Fin.init_snoc,
@@ -273,16 +324,16 @@ theorem single_piece_on_line_cell_of_slices {k q : Nat} (hk : 0 < k)
     have : a - b ≠ 0 := sub_ne_zero.mpr hne
     field_simp
     ring
-  have hGcard : c (c θ1) * R2.carrier.card * (θ1 * J.carrier.card) ≤ G.card := by
+  have hGcard : Sc.dens θ1 * R2.carrier.card * (θ1 * J.carrier.card) ≤ G.card := by
     have h := fibre_sum_ge W H3 (s := θ1 * J.carrier.card) fun h hh =>
-      (Finset.mem_filter.mp (Finset.filter_subset _ _ (Finset.filter_subset _ _ hh))).2
+      (Finset.mem_filter.mp (Finset.filter_subset _ _ hh)).2
     exact (mul_le_mul_of_nonneg_right hR2c (by positivity)).trans h
   -- 5. synchronized retiling of `R2 × J`
   set i : Fin k := ⟨0, hk⟩
   have hR2ne : R2.carrier.Nonempty :=
     R2.carrier_nonempty_of_axis_pos fun j => lt_of_lt_of_le (by omega) (R2.width_le_axis_length j)
   have hsub : (R2.axis i).carrier ⊆ (T.axis i).carrier :=
-    R2.axis_carrier_subset_of_carrier_subset T hR2ne (hR2R1.trans hR1T) i
+    R2.axis_carrier_subset_of_carrier_subset T hR2ne hR2T i
   set v := Nat.sqrt (R2.width - 1)
   have hv : 1 ≤ v := Nat.le_sqrt.mpr (by omega)
   have hfit : v ^ 2 ≤ R2.width - 1 := Nat.sqrt_le' _
@@ -317,7 +368,7 @@ theorem single_piece_on_line_cell_of_slices {k q : Nat} (hk : 0 < k)
     exact_mod_cast h
   have hMne : (Finset.univ : Finset (Fin M)).Nonempty := by
     have hRpos : (0 : Real) < R2.carrier.card := by exact_mod_cast hR2ne.card_pos
-    have hc2pos := (hc (c θ1) hcpos hcle).1
+    have hc2pos := Sc.dens_pos θ1 hθ1pos hθ1le
     have hGpos : 0 < G.card := by
       have : (0 : Real) < G.card :=
         lt_of_lt_of_le (mul_pos (mul_pos hc2pos hRpos) (mul_pos hθ1pos hJpos)) hGcard
@@ -325,20 +376,19 @@ theorem single_piece_on_line_cell_of_slices {k q : Nat} (hk : 0 < k)
     obtain ⟨p, hp⟩ := Finset.card_pos.mp hGpos
     obtain ⟨j, -⟩ := (hSpart.1 _).mp (hGin p hp)
     exact ⟨j, Finset.mem_univ j⟩
-  have hle : ∑ j, singlePieceDensity c theta q * (S j).carrier.card ≤ ∑ j, ((Gj j).card : Real) := by
+  have hle : ∑ j, θ1 * Sc.dens θ1 * (S j).carrier.card ≤ ∑ j, ((Gj j).card : Real) := by
     rw [← Finset.mul_sum, hSsum, hGsum]
-    calc singlePieceDensity c theta q * (R2.carrier.card * J.carrier.card) =
-        c (c θ1) * R2.carrier.card * (θ1 * J.carrier.card) := by
-          rw [singlePieceDensity, ← hθ1def]; ring
+    calc θ1 * Sc.dens θ1 * (R2.carrier.card * J.carrier.card) =
+        Sc.dens θ1 * R2.carrier.card * (θ1 * J.carrier.card) := by ring
       _ ≤ _ := hGcard
   obtain ⟨j, -, hj⟩ := Finset.exists_le_of_sum_le hMne hle
-  refine ⟨S j, R2, I j, mu, (hSprop j).1, hSprod j, hR2R1.trans hR1T, ?_, ?_, hmu, ?_⟩
+  refine ⟨S j, R2, I j, mu, (hSprop j).1, hSprod j, hR2T, ?_, ?_, hmu, ?_⟩
   · intro x hx
     have hx' := IsPartition.cell_subset hSpart j hx
     simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx'
     simp only [lastProductSet, Finset.mem_filter, Finset.mem_univ, true_and]
-    exact ⟨hR1T (hR2R1 hx'.1), hx'.2⟩
-  · have hsq : Nat.sqrt (w (c θ1) (w θ1 T.width) - 1) ≤ v :=
+    exact ⟨hR2T hx'.1, hx'.2⟩
+  · have hsq : Nat.sqrt (Sc.wid θ1 T.width - 1) ≤ v :=
       Nat.sqrt_le_sqrt (Nat.sub_le_sub_right hR2width 1)
     have := (hSprop j).2
     omega
@@ -347,6 +397,37 @@ theorem single_piece_on_line_cell_of_slices {k q : Nat} (hk : 0 < k)
       obtain ⟨hpG, hpS⟩ := Finset.mem_filter.mp hp
       exact Finset.mem_filter.mpr ⟨hWD (Finset.mem_filter.mp hpG).1, hpS, hGagree p hpG⟩
 
+/-- **One multilinear piece on a line-covered cell**, from providers for the
+cross-sections `φ(·, x)`. -/
+theorem single_piece_on_line_cell_of_slices {k q : Nat} (hk : 0 < k)
+    {c : Real → Real} {w : Real → Nat → Nat}
+    (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t))
+    {N : Nat} [NeZero N] [Fact N.Prime]
+    (T : Box N k) (J : ModAP N) (hT : T.IsProper) (hJ : J.IsProper) (hTne : T.carrier.Nonempty)
+    (hTd : T.commonDiff ≠ 0) (hJstep : J.step = T.commonDiff)
+    (hshort : 2 * (T.axis ⟨0, hk⟩).length ≤ N) (hTJ : (T.axis ⟨0, hk⟩).length ≤ J.length)
+    (D : Finset (Point N k × ZMod N)) (hD : D ⊆ T.carrier ×ˢ J.carrier)
+    {theta : Real} (hθ : 0 < theta) (hθ1 : theta ≤ 1) (hq : 0 < q)
+    (hDc : theta * T.carrier.card * J.carrier.card ≤ D.card)
+    (hJq : 2 * (q : Real) ^ 2 ≤ theta ^ 3 * J.length)
+    (cls : Point N k × ZMod N → Fin q) (phi : Point N k × ZMod N → ZMod N)
+    (ell : Point N k → Fin q → ZMod N → ZMod N) (hell : ∀ h i, LinearOn Finset.univ (ell h i))
+    (hphi : ∀ p ∈ D, phi p = ell p.1 (cls p) p.2)
+    (Dom : ZMod N → Finset (Point N k))
+    (hsl : ∀ x ∈ J.carrier, LocalPieceFor c w (Dom x) (fun h => phi (h, x)))
+    (hDom : ∀ p ∈ D, p.1 ∈ Dom p.2)
+    (hwidth : 2 ≤ w (c (singlePieceTheta theta q)) (w (singlePieceTheta theta q) T.width)) :
+    ∃ (S : Box N (k + 1)) (R : Box N k) (I : ModAP N) (mu : Point N (k + 1) → ZMod N),
+      S.IsProper ∧ IsLastCoordinateBoxProduct S R I ∧ R.carrier ⊆ T.carrier ∧
+      S.carrier ⊆ lastProductSet T.carrier J.carrier ∧
+      Nat.sqrt (w (c (singlePieceTheta theta q)) (w (singlePieceTheta theta q) T.width) - 1) - 1
+        ≤ S.width ∧
+      IsMultilinear mu ∧
+      singlePieceDensity c theta q * S.carrier.card ≤
+        (D.filter fun p => appendCoordinate p.1 p.2 ∈ S.carrier ∧
+          phi p = mu (appendCoordinate p.1 p.2)).card :=
+  single_piece_on_line_cell_of_scheme hk (localPieceScheme c w hc hw) T J hT hJ hTne hTd hJstep
+    hshort hTJ D hD hθ hθ1 hq hDc hJq cls phi ell hell hphi Dom hsl hDom hwidth
 
 /-- **One multilinear piece on a line-covered cell**, from the dimension-`k`
 input and the product property of the cross-sections. -/

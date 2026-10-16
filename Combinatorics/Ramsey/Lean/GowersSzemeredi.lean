@@ -1185,8 +1185,6 @@ import GowersSzemeredi.Proofs18CoverHeadlineFrom
 import GowersSzemeredi.Proofs16UniformCoverTwoSplit
 import GowersSzemeredi.Proofs18EtaStepSmall
 import GowersSzemeredi.Proofs16JointSliceCell
-import GowersSzemeredi.Proofs16JointSliceSpectrum
-import GowersSzemeredi.Proofs16JointSliceCore
 import GowersSzemeredi.Proofs16JointSliceGlobal
 import GowersSzemeredi.Proofs18JointSliceInverseFejer
 import GowersSzemeredi.Proofs14MomentEndpoints

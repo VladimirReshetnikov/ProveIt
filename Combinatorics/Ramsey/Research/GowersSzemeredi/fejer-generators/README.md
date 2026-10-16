@@ -84,6 +84,14 @@ and short-length variants) no longer exist; their scripts document how the
 route was reached. The unsuffixed base modules and the joint-slice modules
 remain.
 
+Folded copies (2026-10-16, notes L.105): the outputs of `assemble_l5with.py`,
+`assemble_dswith.py`, `assemble_pptwith.py`, `assemble_cpwith.py` and
+`assemble_spcgw.py` were folded into their originals as parametric theorems.
+The joint-slice copies (`assemble_jslice.py`, `assemble_jspec.py`,
+`assemble_jcore.py`, `assemble_jglob.py`) are instances of the slice-scheme
+lemmas (`SliceScheme`, `Proofs16SinglePieceSections`). These scripts no longer
+run against the current sources; they record the substitutions.
+
 Caveats:
 * The scripts hard-code the worktree path where they ran, and some outputs
   were edited by hand after generation (compile fixes). The committed

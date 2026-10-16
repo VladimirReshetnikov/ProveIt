@@ -159,6 +159,37 @@ theorem exists_dense_cell {X Y : Type*} [DecidableEq X] {M : Nat}
   obtain ⟨j, -, hj⟩ := Finset.exists_le_of_sum_le hne hle
   exact ⟨j, hj⟩
 
+/-- **Step 2 with affine fibres** (one class, `q = 1`), for a slice scheme. -/
+theorem single_piece_on_affine_cell_of_scheme {k : Nat} (hk : 0 < k)
+    {N : Nat} [NeZero N] [Fact N.Prime] (Sc : SliceScheme N k)
+    (T : Box N k) (J : ModAP N) (hT : T.IsProper) (hJ : J.IsProper) (hTne : T.carrier.Nonempty)
+    (hTd : T.commonDiff ≠ 0) (hJstep : J.step = T.commonDiff)
+    (hshort : 2 * (T.axis ⟨0, hk⟩).length ≤ N) (hTJ : (T.axis ⟨0, hk⟩).length ≤ J.length)
+    (D : Finset (Point N k × ZMod N)) (hD : D ⊆ T.carrier ×ˢ J.carrier)
+    {theta : Real} (hθ : 0 < theta) (hθ1 : theta ≤ 1)
+    (hDc : theta * T.carrier.card * J.carrier.card ≤ D.card)
+    (hJq : 2 ≤ theta ^ 3 * J.length)
+    (phi : Point N k × ZMod N → ZMod N)
+    (haff : ∀ h, ∃ a b : ZMod N, ∀ x, (h, x) ∈ D → phi (h, x) = a * x + b)
+    (Dom : ZMod N → Finset (Point N k))
+    (hsl : ∀ x ∈ J.carrier, Sc.SL (Dom x) (fun h => phi (h, x)))
+    (hDom : ∀ p ∈ D, p.1 ∈ Dom p.2)
+    (hwidth : 2 ≤ Sc.wid (singlePieceTheta theta 1) T.width) :
+    ∃ (S : Box N (k + 1)) (R : Box N k) (I : ModAP N) (mu : Point N (k + 1) → ZMod N),
+      S.IsProper ∧ IsLastCoordinateBoxProduct S R I ∧ R.carrier ⊆ T.carrier ∧
+      S.carrier ⊆ lastProductSet T.carrier J.carrier ∧
+      Nat.sqrt (Sc.wid (singlePieceTheta theta 1) T.width - 1) - 1 ≤ S.width ∧
+      IsMultilinear mu ∧
+      singlePieceTheta theta 1 * Sc.dens (singlePieceTheta theta 1) * S.carrier.card ≤
+        (D.filter fun p => appendCoordinate p.1 p.2 ∈ S.carrier ∧
+          phi p = mu (appendCoordinate p.1 p.2)).card := by
+  choose a b hab using haff
+  refine single_piece_on_line_cell_of_scheme hk Sc T J hT hJ hTne hTd hJstep hshort hTJ D hD
+    hθ hθ1 one_pos hDc (by simpa using hJq) (fun _ => (0 : Fin 1)) phi
+    (fun h _ x => a h * x + b h) (fun h _ => ⟨a h, b h, fun _ _ => rfl⟩) ?_ Dom hsl hDom hwidth
+  rintro ⟨h, x⟩ hp
+  exact hab h x hp
+
 /-- **Step 2 with affine fibres** (one class, `q = 1`). -/
 theorem single_piece_on_affine_cell {k : Nat} (hk : 0 < k)
     {c : Real → Real} {w : Real → Nat → Nat}
@@ -185,13 +216,9 @@ theorem single_piece_on_affine_cell {k : Nat} (hk : 0 < k)
       IsMultilinear mu ∧
       singlePieceDensity c theta 1 * S.carrier.card ≤
         (D.filter fun p => appendCoordinate p.1 p.2 ∈ S.carrier ∧
-          phi p = mu (appendCoordinate p.1 p.2)).card := by
-  choose a b hab using haff
-  refine single_piece_on_line_cell_of_slices hk hc hw T J hT hJ hTne hTd hJstep hshort hTJ D hD
-    hθ hθ1 one_pos hDc (by simpa using hJq) (fun _ => (0 : Fin 1)) phi
-    (fun h _ x => a h * x + b h) (fun h _ => ⟨a h, b h, fun _ _ => rfl⟩) ?_ Dom hsl hDom hwidth
-  rintro ⟨h, x⟩ hp
-  exact hab h x hp
+          phi p = mu (appendCoordinate p.1 p.2)).card :=
+  single_piece_on_affine_cell_of_scheme hk (localPieceScheme c w hc hw) T J hT hJ hTne hTd hJstep
+    hshort hTJ D hD hθ hθ1 hDc hJq phi haff Dom hsl hDom hwidth
 
 /-- The density after the spectrum cover: `ρ = (θ/2)·c_R(θ/2)`. -/
 def spectrumPieceRho (cR : Real → Real) (theta : Real) : Real :=
@@ -205,15 +232,14 @@ def spectrumCellWidth (zeta : Real) (m : Nat) (e : Real) : Real :=
 spectrum relation `Γ` needs a local cover provider on a domain `DomG`
 containing the base points of `E`; no product property or fibre bound
 of `Γ` is used here. -/
-theorem single_piece_of_spectrum_cover_for {k : Nat} (hk : 0 < k)
+theorem single_piece_of_spectrum_cover_for_scheme {k : Nat} (hk : 0 < k)
     {zeta : Real} {Qc : Real → Real} {cR : Real → Real}
-    {wR : Real → Nat → Nat} {c : Real → Real} {w : Real → Nat → Nat}
+    {wR : Real → Nat → Nat}
     (hcR : ∀ t, 0 < t → t ≤ 1 → 0 < cR t ∧ cR t ≤ 1)
-    (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t))
     (eps : Nat → Real) (thr : Nat → Nat)
     (hretile : ∀ q, Section16RetiledLinearityBound k q (eps q) (thr q))
     (hz : 0 < zeta) (hz2 : zeta ≤ 1 / 2)
-    {N : Nat} [NeZero N] [Fact N.Prime]
+    {N : Nat} [NeZero N] [Fact N.Prime] (Sc : SliceScheme N k)
     (T0 : Box N k) (J0 : ModAP N) (hT0 : T0.IsProper) (hJ0 : J0.IsProper)
     (hT0d : T0.commonDiff ≠ 0) (hJ0step : J0.step = T0.commonDiff)
     (hshort : 2 * (T0.axis ⟨0, hk⟩).length ≤ N) (hT0J0 : (T0.axis ⟨0, hk⟩).length ≤ J0.length)
@@ -232,23 +258,22 @@ theorem single_piece_of_spectrum_cover_for {k : Nat} (hk : 0 < k)
     (hlinear : ∀ h x, (h, x) ∈ E → ∀ v : Nat, 0 < v → ∀ J : ModAP N, J.length ≤ v →
       J.step ∈ bohr (K h) (zeta / v) → LinearOn (J.carrier ∩ A h) (f h))
     (Dom : ZMod N → Finset (Point N k))
-    (hsl : ∀ x ∈ J0.carrier, LocalPieceFor c w (Dom x) (fun h => phi (h, x)))
+    (hsl : ∀ x ∈ J0.carrier, Sc.SL (Dom x) (fun h => phi (h, x)))
     (hDom : ∀ p ∈ E, p.1 ∈ Dom p.2)
     (m : Nat) (hm1 : 1 ≤ m) (hm : m ≤ wR (theta / 2) T0.width)
     (hpar : ∀ q : Nat, (q : Real) ≤ Qc (theta / 2) →
       thr q ≤ m ∧ 4 ≤ spectrumCellWidth zeta m (eps q) ∧
       2 ≤ spectrumPieceRho cR theta ^ 3 * spectrumCellWidth zeta m (eps q) ∧
-      2 ≤ w (c (singlePieceTheta (spectrumPieceRho cR theta) 1))
-        (w (singlePieceTheta (spectrumPieceRho cR theta) 1)
-          ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊)) :
+      2 ≤ Sc.wid (singlePieceTheta (spectrumPieceRho cR theta) 1)
+        ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊) :
     ∃ q : Nat, (q : Real) ≤ Qc (theta / 2) ∧
       ∃ (S : Box N (k + 1)) (mu : Point N (k + 1) → ZMod N),
         S.IsProper ∧ S.carrier ⊆ lastProductSet T0.carrier J0.carrier ∧
-        Nat.sqrt (w (c (singlePieceTheta (spectrumPieceRho cR theta) 1))
-          (w (singlePieceTheta (spectrumPieceRho cR theta) 1)
-            ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊) - 1) - 1 ≤ S.width ∧
+        Nat.sqrt (Sc.wid (singlePieceTheta (spectrumPieceRho cR theta) 1)
+          ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊ - 1) - 1 ≤ S.width ∧
         IsMultilinear mu ∧
-        singlePieceDensity c (spectrumPieceRho cR theta) 1 * S.carrier.card ≤
+        singlePieceTheta (spectrumPieceRho cR theta) 1 *
+            Sc.dens (singlePieceTheta (spectrumPieceRho cR theta) 1) * S.carrier.card ≤
           (E.filter fun p => appendCoordinate p.1 p.2 ∈ S.carrier ∧
             phi p = mu (appendCoordinate p.1 p.2)).card := by
   set ρ := spectrumPieceRho cR theta with hρdef
@@ -448,10 +473,12 @@ theorem single_piece_of_spectrum_cover_for {k : Nat} (hk : 0 < k)
     apply Nat.ceil_le.mpr
     have h8 : ((S j).width : Real) / 8 ≤ (Q l).width := (hQprop l).2
     exact le_trans (div_le_div_of_nonneg_right hSw (by norm_num)) h8
-  have hwidth : 2 ≤ w (c (singlePieceTheta ρ 1)) (w (singlePieceTheta ρ 1) (Q l).width) :=
-    hcellw.trans (hw _ (hw _ hQw))
+  have hθ₁ := singlePieceTheta_pos hρpos one_pos
+  have hθ₁1 := singlePieceTheta_le_one hρpos hρle one_pos
+  have hwidth : 2 ≤ Sc.wid (singlePieceTheta ρ 1) (Q l).width :=
+    hcellw.trans (Sc.wid_mono _ hθ₁ hθ₁1 hQw)
   obtain ⟨S', R', I', mu', hS'prop, -, -, hS'sub, hS'w, hmu', hcount⟩ :=
-    single_piece_on_affine_cell hk hc hw (Q l) I (hQprop l).1 hI ⟨_, (hDmem _
+    single_piece_on_affine_cell_of_scheme hk Sc (Q l) I (hQprop l).1 hI ⟨_, (hDmem _
       hDne.choose_spec).2.2.2.1⟩ hQd (by rw [hQstep l]; exact (S j).axis_step _)
       ((hQaxes l i).2.1) ((hQaxes l i).2.2) D hDsub hρpos hρle hDc
       (by
@@ -472,12 +499,66 @@ theorem single_piece_of_spectrum_cover_for {k : Nat} (hk : 0 < k)
       section16Init_snoc] at this
     exact ⟨hRT this.1, by simpa [section16Last] using this.2⟩
   · have hsq := Nat.sqrt_le_sqrt (Nat.sub_le_sub_right
-      (hw (c (singlePieceTheta ρ 1)) (hw (singlePieceTheta ρ 1) hQw)) 1)
+      (Sc.wid_mono _ hθ₁ hθ₁1 hQw) 1)
     omega
   · refine hcount.trans ?_
     exact_mod_cast Finset.card_le_card fun p hp => by
       obtain ⟨hpD, hpS⟩ := Finset.mem_filter.mp hp
       exact Finset.mem_filter.mpr ⟨(hDmem p hpD).1, hpS⟩
+
+/-- **One multilinear piece from a local spectrum cover provider.** The
+spectrum relation `Γ` needs a local cover provider on a domain `DomG`
+containing the base points of `E`; no product property or fibre bound
+of `Γ` is used here. -/
+theorem single_piece_of_spectrum_cover_for {k : Nat} (hk : 0 < k)
+    {zeta : Real} {Qc : Real → Real} {cR : Real → Real}
+    {wR : Real → Nat → Nat} {c : Real → Real} {w : Real → Nat → Nat}
+    (hcR : ∀ t, 0 < t → t ≤ 1 → 0 < cR t ∧ cR t ≤ 1)
+    (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t))
+    (eps : Nat → Real) (thr : Nat → Nat)
+    (hretile : ∀ q, Section16RetiledLinearityBound k q (eps q) (thr q))
+    (hz : 0 < zeta) (hz2 : zeta ≤ 1 / 2)
+    {N : Nat} [NeZero N] [Fact N.Prime]
+    (T0 : Box N k) (J0 : ModAP N) (hT0 : T0.IsProper) (hJ0 : J0.IsProper)
+    (hT0d : T0.commonDiff ≠ 0) (hJ0step : J0.step = T0.commonDiff)
+    (hshort : 2 * (T0.axis ⟨0, hk⟩).length ≤ N) (hT0J0 : (T0.axis ⟨0, hk⟩).length ≤ J0.length)
+    (hJ0pos : 0 < J0.length)
+    (E : Finset (Point N k × ZMod N)) (hE : E ⊆ T0.carrier ×ˢ J0.carrier)
+    {theta : Real} (hθ : 0 < theta) (hθ1 : theta ≤ 1)
+    (hEc : theta * T0.carrier.card * J0.carrier.card ≤ E.card)
+    (phi : Point N k × ZMod N → ZMod N) (f : Point N k → ZMod N → ZMod N) (s : ZMod N)
+    (Mrem : Point N (k + 1) → ZMod N) (hMrem : IsMultilinear Mrem)
+    (hident : ∀ p ∈ E, phi p = s * f p.1 p.2 + Mrem (appendCoordinate p.1 p.2))
+    (Gamma : Finset (Point N k × ZMod N)) (DomG : Finset (Point N k))
+    (hcover : LocalRelationCoverFor cR Qc wR DomG Gamma) (hEG : ∀ p ∈ E, p.1 ∈ DomG)
+    (K : Point N k → Finset (ZMod N))
+    (hK : ∀ h x, (h, x) ∈ E → ∀ r ∈ K h, (h, r) ∈ Gamma)
+    (A : Point N k → Finset (ZMod N)) (hA : ∀ p ∈ E, p.2 ∈ A p.1)
+    (hlinear : ∀ h x, (h, x) ∈ E → ∀ v : Nat, 0 < v → ∀ J : ModAP N, J.length ≤ v →
+      J.step ∈ bohr (K h) (zeta / v) → LinearOn (J.carrier ∩ A h) (f h))
+    (Dom : ZMod N → Finset (Point N k))
+    (hsl : ∀ x ∈ J0.carrier, LocalPieceFor c w (Dom x) (fun h => phi (h, x)))
+    (hDom : ∀ p ∈ E, p.1 ∈ Dom p.2)
+    (m : Nat) (hm1 : 1 ≤ m) (hm : m ≤ wR (theta / 2) T0.width)
+    (hpar : ∀ q : Nat, (q : Real) ≤ Qc (theta / 2) →
+      thr q ≤ m ∧ 4 ≤ spectrumCellWidth zeta m (eps q) ∧
+      2 ≤ spectrumPieceRho cR theta ^ 3 * spectrumCellWidth zeta m (eps q) ∧
+      2 ≤ w (c (singlePieceTheta (spectrumPieceRho cR theta) 1))
+        (w (singlePieceTheta (spectrumPieceRho cR theta) 1)
+          ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊)) :
+    ∃ q : Nat, (q : Real) ≤ Qc (theta / 2) ∧
+      ∃ (S : Box N (k + 1)) (mu : Point N (k + 1) → ZMod N),
+        S.IsProper ∧ S.carrier ⊆ lastProductSet T0.carrier J0.carrier ∧
+        Nat.sqrt (w (c (singlePieceTheta (spectrumPieceRho cR theta) 1))
+          (w (singlePieceTheta (spectrumPieceRho cR theta) 1)
+            ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊) - 1) - 1 ≤ S.width ∧
+        IsMultilinear mu ∧
+        singlePieceDensity c (spectrumPieceRho cR theta) 1 * S.carrier.card ≤
+          (E.filter fun p => appendCoordinate p.1 p.2 ∈ S.carrier ∧
+            phi p = mu (appendCoordinate p.1 p.2)).card :=
+  single_piece_of_spectrum_cover_for_scheme hk hcR eps thr hretile hz hz2 (localPieceScheme c w hc hw)
+    T0 J0 hT0 hJ0 hT0d hJ0step hshort hT0J0 hJ0pos E hE hθ hθ1 hEc phi f s Mrem hMrem hident Gamma
+    DomG hcover hEG K hK A hA hlinear Dom hsl hDom m hm1 hm hpar
 
 /-- **One multilinear piece from a local spectrum cover.** Its input
 `LocalRelationCoverAt` is false for growing widths (Notes L.2), so this
