@@ -168,7 +168,8 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `Prog254.lean` | All 6,459 original decoder rows, with a verified balanced lookup equal to flat lookup for every index; no replacement by the different structured DAG. |
 | `Prefix330.lean` | Exact 330-step public register prefix from the original initial vector to path 000 and logical registers [5,0,0,0,2,0,0,0,0], with the entire remaining register tail zero. |
 | `TarskiFalsity.lean` | The machines' relative falsity `F = Rel(0,0)`: the literal row set `ThmG (rel 0 0)` is sound for irreflexive models and complete for ⊥-free theories and targets; the comparison axiom IR is a generalized identity, not a row. |
-| `Code254.lean` | The base-4 dual-Cantor code calculus `C254` (truth 0, MP, GEN, eight coded rows, gated bundle) shared by the calibrated 254-state machine and the 279-state full-logic control: every derivable code decodes to a formula valid in every irreflexive model of the decoded bundles (`c254_sound`), and if the encodable bundles have no irreflexive model then code 1 is derivable (`c254_complete`). The `Imp(0,0) = 0` alias is harmless; atomic vacuity is projected from the bundle under the same gate. |
+| `Code254.lean` | All-natural base-four decoder and original numerical calculus; soundness for decoded bundles, completeness under no nonempty model of literal encodable bundles. The corrected statement explicitly requires a valuation; comparing the two bundle theories remains open. |
+| `OutgoingProfile.lean` | Four-node outgoing equality from exact full-profile singletons, actual raw-PSC model corollaries and reserved-zero named semantic translation at one false point. Source equality denotes full observational classes. |
 | `Numeric254.lean`, `NamedNumeric254.lean` | Exact original four-tag numerical rules and gated C/G/vacuity bundle; named proof transport and refutation equivalence for the explicitly defined encoded-numerical-theorem theory Q. Q/ZFC calibration remains open. |
 | `BootstrapFrame253.lean` | The actual 312,975-step binary bootstrap realizes the actual 330-step register endpoint, with all nine permuted registers, 158 spare blocks and exterior blanks retained. |
 
@@ -203,8 +204,8 @@ Rebuild the entire small dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 52 source units: the first-order logic, calculus and completeness
-modules, `ZF.Zf`, `BusyBeaver.Core`, 46 research modules and the umbrella into a
+This compiles 54 source units: the first-order logic, calculus and completeness
+modules, `ZF.Zf`, `BusyBeaver.Core`, 48 research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the prior 38-unit fresh source check and axiom outputs. The seven
@@ -219,6 +220,11 @@ The [numerical adapter](numeric254_lean.md) and
 Lean 4.32.0 checks and axiom audits in their linked evidence files.
 `results/integration-151-verification.json` checks the newly merged relative-falsity
 module and the complete updated umbrella against those source-verified caches.
+The subsequent [code-calculus review](code254_review.md) and
+[outgoing equality development](outgoing_profile.md) are integrated into the
+54-unit runner. Their separate source and axiom checks are linked in those
+notes; `results/code-outgoing-integration-verification.json` records the
+corrected numerical module and updated umbrella check with reused dependencies.
 The standalone BusyBeaver Lake package declares its FirstOrder and ZF path
 dependencies; the ZFC umbrella is opt-in.
 
