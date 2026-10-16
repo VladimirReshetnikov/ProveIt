@@ -144,3 +144,15 @@ not yet connect numerical codes (`Base3Syntax`, `Bottom3Syntax`, the
 upstream dual-Cantor base-4 codec) to `NF`, the gated theory bundle to a
 set-theory schema, the enumerator, the compiler, or any literal table. They
 supply the logical half of each such calibration in Lean.
+
+## Next: the numerical code bridge (in progress)
+
+The base-4 dual-Cantor codec (`code = 4·P(x,y) + tag`, `P(x,y) = tri(x+y) + y`,
+tags Imp 0 / Rel 1 / All 2 / Eq 3, truth alias `0 = Imp(0,0)`, falsity
+`1 = Rel(0,0)`) is shared by the calibrated 254-state machine and the
+279-state full-logic PSC control. A Lean module connecting that code calculus
+(truth, MP, GEN, the eight coded rows and the gated bundle) to `ThmG (rel 0 0)`
+in both directions is being written in this lane, so that the logical half of
+those calibrations needs no further assumption. Coordination note for parallel
+sessions: please avoid duplicating `BusyBeaver/ZFC/Code254*.lean`.
+
