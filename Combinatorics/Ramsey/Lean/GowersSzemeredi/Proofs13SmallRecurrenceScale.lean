@@ -54,7 +54,7 @@ theorem lemma_13_5_small_recurrence_scale {N : Nat} [NeZero N]
     exact Finset.singleton_subset_iff.mpr hhP
   · simp only [Q, Nat.cast_one]
     linarith only [htarget]
-  · intro i x hx
+  · intro i x _
     exact (centeredAbs_le_half_modulus _).trans (by
       have hb := mul_le_mul_of_nonneg_right htolerance (Nat.cast_nonneg N)
       simpa only [one_div_mul_eq_div] using hb)

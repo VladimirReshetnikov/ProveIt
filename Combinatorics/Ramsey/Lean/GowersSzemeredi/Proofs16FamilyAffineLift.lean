@@ -55,7 +55,7 @@ theorem section16_synchronized_compressed_cover_family
       (∀ j c, IsMultilinear (nu j c)) ∧
       ∀ a j z, z ∈ (S j).carrier → z ∈ D a → z ∈ G → ∃ c, phi a z = nu j c z := by
   classical
-  obtain ⟨p, H, b, P, n, R, mu, hp, hH, hHm, hPpart, hPproper,
+  obtain ⟨p, H, b, P, n, R, mu, hp, hH, hHm, hPpart, _,
       hPaxes, hPstep, hRpart, hRproper, hRwidth, hmu, hc⟩ :=
     hslice.short_parent_cover ε hε hε1 hPb hEb T I hT hI hk hm hmT hmI
   let e := section5NatFlattenEquiv n
@@ -305,7 +305,7 @@ theorem section16_local_affine_lift_all_scales_family {N k q r m : Nat} [Fact N.
     refine ⟨1, P.carrier, L, fun j => pointSingletonBox (x j),
       fun j c _ => phi c.1 (x j), by simpa using hPb, Finset.Subset.rfl, ?_, hpart, ?_,
       fun j _ => isMultilinear_constant _, ?_⟩
-    · have hn : (0 : ℝ) ≤ P.carrier.card := Nat.cast_nonneg _
+    · have _ : (0 : ℝ) ≤ P.carrier.card := Nat.cast_nonneg _
       nlinarith
     · intro j
       refine ⟨pointSingletonBox_isProper _, ?_⟩

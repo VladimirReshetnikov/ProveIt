@@ -48,7 +48,7 @@ private lemma cor133_fiber_norm_le {N : Nat} [NeZero N]
   let F := (verticalEdgeDomain A h).filter fun z => z.1 = x
   have hmaps : Set.MapsTo (fun p : Pair N => p.2) (↑F)
       (↑(Finset.univ : Finset (ZMod N))) := by
-    intro p hp
+    intro p _
     simp
   have hinj : Set.InjOn (fun p : Pair N => p.2) (↑F) := by
     intro p hp q hq hsnd
@@ -76,7 +76,7 @@ private lemma cor133_fourier_mass_le {N : Nat} [NeZero N]
       exact identity_2_3_holds N (verticalEdgeFiberFunction A h)
     _ ≤ ∑ _h : ZMod N, (N : Real) *
           ∑ _x : ZMod N, (N : Real) ^ 2 := by
-      gcongr with h x
+      gcongr with h _
       exact cor133_fiber_norm_le A h x
     _ = (N : Real) ^ 5 := by
       simp [ZMod.card]

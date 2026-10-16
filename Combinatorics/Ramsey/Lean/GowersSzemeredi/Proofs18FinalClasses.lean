@@ -331,7 +331,7 @@ theorem splitUniformClass2_succ_fejer {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 
     · intro rho hr hr1
       obtain ⟨he0, hei⟩ := split_exp_inv_le_fejer2 (k := k) hac hDc hae hDe hV hVV hK hp hKV hpV
         hg hg1 ht ht1 hr hr1 n
-      obtain ⟨hw2, -, -, -, -⟩ := split_w_facts hV hVV hg hg1 ht ht1 hr hr1
+      obtain ⟨_, -, -, -, -⟩ := split_w_facts hV hVV hg hg1 ht ht1 hr hr1
       have h2 := inv_anti₀ (inv_pos.mpr he0) hei
       rw [inv_inv] at h2
       exact h2

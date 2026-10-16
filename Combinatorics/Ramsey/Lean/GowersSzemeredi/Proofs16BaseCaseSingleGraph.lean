@@ -99,7 +99,7 @@ lemma section16_freiman_graph_multiplyLinear {N : Nat} [NeZero N]
       simpa only [Nat.cast_zero, lemma163LocalGraphBound] using hnonneg
     · intro j i
       exact Fin.elim0 i
-    · intro j x hxQ hxH y hxy
+    · intro j x _ hxH y hxy
       have hxB := (mem_partialGraph_one B phi x y).1 hxy |>.1
       exact (Finset.mem_sdiff.mp hxH).2 hxB |>.elim
 

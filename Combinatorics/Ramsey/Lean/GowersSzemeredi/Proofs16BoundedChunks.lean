@@ -153,7 +153,7 @@ theorem Box.bounded_partition {N k : Nat} [NeZero N] (P : Box N k)
       (∀ j i, r ≤ ((Q j).axis i).length ∧ ((Q j).axis i).length < 2 * r) ∧
       ∀ j, (Q j).commonDiff = P.commonDiff := by
   classical
-  choose m R hm hpart hprop hstep using fun i =>
+  choose m R _ hpart hprop hstep using fun i =>
     (P.axis i).bounded_partition (hP i) r hr (hsize.trans (P.width_le_axis_length i))
   have hstep' (i : Fin k) (j : Fin (m i)) : (R i j).step = P.commonDiff := by
     rw [hstep, P.axis_step]

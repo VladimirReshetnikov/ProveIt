@@ -107,14 +107,14 @@ theorem section16_poly_family_two_cover
   classical
   -- spectra
   set Gspec := Finset.univ.biUnion fun c : Fin m =>
-    ((P c).H1 ×ˢ (Finset.univ : Finset (ZMod N))).filter fun z => z.2 ∈ (P c).K z.1 with hGspec
+    ((P c).H1 ×ˢ (Finset.univ : Finset (ZMod N))).filter fun z => z.2 ∈ (P c).K z.1 with _
   have hspec : RelFreimanCover (m * qs + 1) Gspec :=
     (relFreimanCover_union _ (fun c => (P c).spec)).pad (Nat.le_succ _)
   have hMLspec : MultiplyLinearWith (famTwoQb m qs) (famTwoEb m qs) Gspec :=
     hspec.cubic_cover (Nat.succ_pos _)
   -- remainders
   set Λ := Finset.univ.biUnion fun c : Fin m =>
-    (P c).D.image fun w => (lastPt w, (P c).rem w) with hΛ
+    (P c).D.image fun w => (lastPt w, (P c).rem w) with _
   have hrem1 : RelFreimanCover (m * qr + 1) Λ :=
     (relFreimanCover_union _ (fun c => (P c).remc)).pad (Nat.le_succ _)
   have hMLrem := (hrem1.cubic_cover (Nat.succ_pos _)).last_cylinder (m * qr + 1)

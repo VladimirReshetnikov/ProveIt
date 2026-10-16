@@ -1769,7 +1769,7 @@ private lemma prop177_select_double_sum
             (Fintype.card C : Real) * ∑ c : C, ‖V g c u‖ ^ 2 := by
         apply Finset.sum_le_sum
         intro u _
-        gcongr with g hg
+        gcongr with g _
         exact hinner g u
       _ = (F.card : Real) * Fintype.card C * ∑ g ∈ F, E g := by
         unfold E
@@ -2500,7 +2500,7 @@ private theorem prop177_large_branch
   obtain ⟨hqpos, hqSucc, hqSq, hlower⟩ :=
     prop177_scale_bounds (N := N) hk hlarge hmSq
   let M := N / q
-  obtain ⟨hMpos, hqM, hqWidth, hWidthUpper⟩ :=
+  obtain ⟨hMpos, _, hqWidth, hWidthUpper⟩ :=
     prop177_quotient_width_bounds (N := N) (q := q) hqpos hqSq
   letI : NeZero M := ⟨hMpos.ne'⟩
   have hqLower : (h : Real) / k ≤ (q : Real) := by
@@ -2539,7 +2539,7 @@ private theorem prop177_large_branch
         intro i
         exact prop177_centered_coefficient_bound hk hMpos hqpos
           hqLower hqWidth u i
-  obtain ⟨g, hgF, hgSelect⟩ := prop177_select_double_sum
+  obtain ⟨g, _, hgSelect⟩ := prop177_select_double_sum
     F hFnonempty
       (fun g c u =>
         prop177LocalInner hMpos f P.commonDiff (prop177BoxCenter P h)

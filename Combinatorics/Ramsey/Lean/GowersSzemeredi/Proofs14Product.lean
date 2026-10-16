@@ -23,7 +23,7 @@ private lemma prop14_iteratedDifference_perm {N : Nat}
     iteratedDifference f a = iteratedDifference f b := by
   induction h with
   | nil => rfl
-  | cons x h ih =>
+  | cons x _ ih =>
       simp only [iteratedDifference]
       rw [ih]
   | swap x y l =>
@@ -149,7 +149,7 @@ theorem lemma_14_2_holds : lemma_14_2 := by
         split_ifs
         · exact Finset.prod_nonneg fun t _ => htheta (q t)
         · exact le_rfl
-      · have hT : 0 < T := lt_of_le_of_ne hTnonneg (Ne.symm hTzero)
+      · have _ : 0 < T := lt_of_le_of_ne hTnonneg (Ne.symm hTzero)
         let alpha : Real := gamma ^ (2 * p) * (N : Real)⁻¹ * T
         have halpha : 0 < alpha := by
           dsimp only [alpha]
@@ -471,7 +471,7 @@ theorem lemma_14_3_holds : lemma_14_3 := by
         split_ifs
         · exact Finset.prod_nonneg fun t _ => htheta (q t)
         · exact le_rfl
-      · have hT : 0 < T := lt_of_le_of_ne hTnonneg (Ne.symm hTzero)
+      · have _ : 0 < T := lt_of_le_of_ne hTnonneg (Ne.symm hTzero)
         have hcomponentSum (i : Fin p) (x : ZMod N) (hx : x ∈ E) :
             gamma ^ 2 * (N : Real) ^ (n + 4) ≤
               ∑ u : U,
@@ -585,7 +585,7 @@ theorem lemma_14_3_holds : lemma_14_3 := by
         have hVnonempty : (Finset.univ : Finset V).Nonempty :=
           ⟨default, Finset.mem_univ _⟩
         have haverage' :
-            (∑ v ∈ (Finset.univ : Finset V), threshold) ≤
+            (∑ _ ∈ (Finset.univ : Finset V), threshold) ≤
               ∑ v ∈ (Finset.univ : Finset V), S v := by
           simpa only [Finset.sum_filter, Finset.filter_true_of_mem] using haverage
         obtain ⟨v, _, hv⟩ :=

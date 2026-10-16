@@ -1085,7 +1085,7 @@ private lemma theorem1013_exists_large_tail_fibre {X : Type*}
     simp only [Finset.sum_const, nsmul_eq_mul]
     field_simp [ne_of_gt hTcardPos]
     rfl
-  obtain ⟨p, hpT, hp⟩ := Finset.exists_le_of_sum_le hT havg
+  obtain ⟨p, _, hp⟩ := Finset.exists_le_of_sum_le hT havg
   refine ⟨p, ?_⟩
   have hp' : (W.card : Real) ≤ (T.card : Real) * (F p).card :=
     by simpa only [mul_comm] using (div_le_iff₀ hTcardPos).mp hp
@@ -1235,7 +1235,7 @@ theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
     nlinarith
   have hcor := corollary_10_11_holds N K epsilon hK hepsilon hepsilonOne
     B' psi hlocal.1 hBdense hpsi
-  rcases hcor with ⟨hCsub, psi₁, hpsi₁, hinduced⟩
+  rcases hcor with ⟨_, psi₁, hpsi₁, hinduced⟩
   have hsqrtRelaxed : Real.sqrt theta < 5 / 16 := by
     change Real.sqrt theorem1013Theta < 5 / 16
     linarith [theorem1013_theta_small]
@@ -1338,7 +1338,7 @@ theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
     apply hpsi₁.subset
     · intro c hc
       exact hCsubFinal hc
-    · intro c hc
+    · intro c _
       exact Set.mem_univ _
   refine ⟨Y, psi₁, hYlarge, hpsiFinal, ?_⟩
   intro y hy z hz hyz

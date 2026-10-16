@@ -410,10 +410,10 @@ theorem section5_iterated_strong_nat_refinement
   intro functions
   induction functions with
   | nil =>
-      intro targets hlength hnonempty
+      intro targets _ hnonempty
       exact (hnonempty rfl).elim
   | cons phi functions ih =>
-      intro targets hlength _hnonempty P hP hPpos hPN hpolys hschedule v hlast
+      intro targets hlength _hnonempty P hP _ hPN hpolys hschedule v hlast
       cases targets with
       | nil => simp at hlength
       | cons u targets =>
@@ -664,7 +664,7 @@ theorem lemma_5_9_holds_of_strong_diameter_and_scale_schedule
     rw [List.mem_ofFn'] at hpsi
     obtain ⟨i, rfl⟩ := hpsi
     exact hphi i
-  obtain ⟨M, P, hM, hpartition, hcells, hsubset, hdiameter⟩ :=
+  obtain ⟨M, P, hM, hpartition, hcells, _, hdiameter⟩ :=
     section5_iterated_strong_nat_refinement hstrong hk
       ((r : Real) ^ (-((polynomialPartitionConstant k : Real) ^ q)⁻¹))
       functions targets hfunctionsLength hfunctionsNonempty

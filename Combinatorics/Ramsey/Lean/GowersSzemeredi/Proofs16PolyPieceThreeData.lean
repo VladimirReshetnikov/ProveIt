@@ -91,7 +91,7 @@ theorem section16_poly_piece_three_data
       (3 * threeBudget theta gamma) (threeBudget theta gamma) (threeDelta theta gamma)
       (threeBudget theta gamma) gamma (threeFaceCount theta gamma)) := by
   classical
-  obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds 2 ht ht1 hg hg1
+  obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds 2 ht ht1 hg hg1
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le 2 ht ht1 hg hg1
   have hθ'pos : 0 < threeBudget theta gamma := by unfold threeBudget; positivity
   have hθ'le : threeBudget theta gamma ≤ 1 := by unfold threeBudget; linarith
@@ -299,7 +299,7 @@ theorem section16_poly_piece_three_data
     obtain ⟨hp1, hp2⟩ := Finset.mem_filter.mp hp
     obtain ⟨hx, -⟩ := Finset.mem_product.mp hp1
     obtain ⟨h, hh, hx'⟩ := Finset.mem_image.mp hx
-    obtain ⟨hhH, hhT⟩ := Finset.mem_filter.mp hh
+    obtain ⟨_, hhT⟩ := Finset.mem_filter.mp hh
     unfold restrictRelation
     refine Finset.mem_filter.mpr ⟨Finset.mem_image.mpr ⟨(h, p.2), ?_, ?_⟩, ?_⟩
     · have hr : p.2 ∈ section16LargeSpectrum B h δ := by

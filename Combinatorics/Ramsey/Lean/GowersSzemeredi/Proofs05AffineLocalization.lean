@@ -31,7 +31,7 @@ theorem affine_phase_localization {N L : Nat} [NeZero N]
   have hlin : NatToZModLinear P.length (fun x => phi (section5IndexPoint P x)) := by
     obtain ⟨c, hc⟩ := polynomialOn_section5ModIndexPoint P phi hphi
     refine ⟨c 1, c 0, ?_⟩
-    intro x hx
+    intro x _
     simpa [Fin.sum_univ_two, section5_modIndexPoint_natCast, add_comm] using
       hc (x : ZMod N) (Finset.mem_univ _)
   obtain ⟨m, Q, hQpart, hQcells⟩ := lemma_2_3_holds N P.length s (NeZero.pos N)

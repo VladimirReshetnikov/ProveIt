@@ -216,7 +216,7 @@ private lemma lemma167_value_of_good {N k : Nat} [NeZero N]
   have hside : C.1.1.side = z.1 := lemma167_cube_side C
   simp only [section16InducedCubeMap, section16CubeValueAtBase]
   apply Finset.sum_congr rfl
-  intro e he
+  intro e _
   congr 2
   unfold AxisCube.vertex
   rw [hbase, hside]

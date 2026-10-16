@@ -196,7 +196,7 @@ theorem polyTwoPieces_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamm
     (ht : 0 < theta) (ht1 : theta ≤ 1) :
     (polyTwoPieces gamma theta : Real) ≤ (2 / (gamma * theta)) ^ ((2 : Nat) ^ 70) := by
   obtain ⟨hu2, hginv, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-  obtain ⟨hb, hb1⟩ := polyPieceBudget_pos_le hg hg1 ht ht1
+  obtain ⟨hb, _⟩ := polyPieceBudget_pos_le hg hg1 ht ht1
   have hb5 : (5 * polyPieceBudget theta gamma)⁻¹ ≤ (polyPieceBudget theta gamma)⁻¹ :=
     inv_anti₀ hb (by linarith)
   have hbinv := polyPieceBudget_inv_le_power hg hg1 ht ht1

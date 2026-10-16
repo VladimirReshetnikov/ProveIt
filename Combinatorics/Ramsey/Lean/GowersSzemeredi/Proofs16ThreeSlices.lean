@@ -268,7 +268,7 @@ theorem section16_slices_envelope_cover {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < 
     exact Finset.mem_filter.mpr ⟨hi, Finset.mem_univ _⟩
   refine MultiplyLinearWith.subset (MultiplyLinearWith.weaken hcov ?_ ?_ ?_) hsub
   · intro eps he he1
-    obtain ⟨hv, hr, hM, hKw, hpw⟩ := threeSliceBase_facts ht ht1 hg hg1 K1 p1 r he he1
+    obtain ⟨hv, hr, hM, _, _⟩ := threeSliceBase_facts ht ht1 hg hg1 K1 p1 r he he1
     have hW2 := threeSliceBase_two_le ht ht1 hg hg1 K1 p1 r he he1
     have hW1 : 1 ≤ threeSliceBase theta gamma K1 p1 r eps := le_trans (by norm_num) hW2
     exact uniTwoCount_le_power hg hg1 ht ht1 he he1 hv hr

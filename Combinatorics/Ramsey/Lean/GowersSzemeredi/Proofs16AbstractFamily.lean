@@ -72,7 +72,7 @@ theorem abstractFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0
       (fun j => (pointSingletonBox (x j)).axis (Fin.last k)), Finset.Subset.refl _, ?_, hpart,
       fun j => pointSingletonBox_isProper _,
       (fun j => boxInit_last_product (pointSingletonBox (x j))), ?_, ?_⟩
-    · have hcard : (0 : Real) ≤ Q.carrier.card := Nat.cast_nonneg _
+    · have _ : (0 : Real) ≤ Q.carrier.card := Nat.cast_nonneg _
       nlinarith
     · intro j
       simpa only [pointSingletonBox_width (by omega : 0 < k + 1), Nat.cast_one] using hl
@@ -103,7 +103,7 @@ theorem abstractFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0
     obtain ⟨u, hu⟩ := I'.step_isUnit_of_prime hI' (by omega)
     have hu' : I'.step = (↑u : ZMod N) := hu.symm
     have hstep : I'.step = Q'.commonDiff := P.axis_step (Fin.last k)
-    obtain ⟨q', G, bb, Bp, cnt, R, mu, hq', hGsub, hGmass, hBpart, hBproper,
+    obtain ⟨q', G, bb, Bp, cnt, R, mu, hq', hGsub, hGmass, hBpart, _,
         hBaxes, hBstep, hRpart, hRproper, hRwidth, hmu, hcover⟩ :=
       hML.short_parent_cover sigma hs hs1 hQ ha.le Q' I' hQ' hI' (by omega) hm4 hmQ' hmI'
     have hq'q : q' ≤ q := Nat.le_floor hq'
@@ -354,7 +354,7 @@ theorem abstract_family_piece_large_box_profile {k : Nat} (hk : 1 ≤ k)
     apply mul_le_mul_of_nonneg_left _ (by norm_num)
     exact max_le_max le_rfl hqGamma
   have hSpos : 0 < S := famPieceSamples_pos hrho
-  obtain ⟨hPbS, hEsS, hEsS1⟩ := hranges S sigma hSpos hs hs1
+  obtain ⟨hPbS, hEsS, _⟩ := hranges S sigma hSpos hs hs1
   have hPbr : Pb r sigma ≤ Pb S sigma := hPb sigma hrS
   have hEsr : Es S sigma ≤ Es r sigma := hEs sigma hs hrS
   have hrpos : 0 < r := by

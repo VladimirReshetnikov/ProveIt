@@ -30,7 +30,7 @@ theorem polynomial_localization_of_dense_frequency_box {N d : Nat} [Fact N.Prime
     congr 1
     ext x
     simp [B]
-  obtain ⟨m, S, C, hm, hmpos, hmlower, hmsqrt, _, hstep, hp, hw, haxes, hCB, hCS, hCm⟩ :=
+  obtain ⟨m, S, C, hm, _, hmlower, hmsqrt, _, hstep, _, hw, haxes, hCB, hCS, hCm⟩ :=
     P.dense_odd_short_box hP hd B hδ.le he hwidth hlarge (Finset.filter_subset _ _)
       (by rwa [hBcard])
   have henergy := multilinear_box_fourier_energy S C f mu hα.le hCS hCm
@@ -39,7 +39,7 @@ theorem polynomial_localization_of_dense_frequency_box {N d : Nat} [Fact N.Prime
   obtain ⟨phi, K, l, Q, hpoly, hpart, hproper, hlength, hupper, hfail⟩ :=
     proposition_17_7_with_upper N d m f S mu _ hrho hd hm hw haxes hstep hmsqrt hf hmu henergy
   refine ⟨phi, K, l, Q, hpoly, hpart, hproper, ?_, ?_, hfail⟩
-  · have hd0 : (0 : Real) < d := by exact_mod_cast hd
+  · have _ : (0 : Real) < d := by exact_mod_cast hd
     calc
       _ = ((N : Real) ^ e / 2) / (3 * d) := by field_simp; ring
       _ ≤ (m : Real) / (3 * d) := div_le_div_of_nonneg_right hmlower (by positivity)

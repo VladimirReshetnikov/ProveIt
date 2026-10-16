@@ -344,7 +344,7 @@ private lemma lemma154_vertex_product_lift {N k d : Nat}
   unfold lemma154LiftFinset
   rw [Finset.prod_map]
   apply Finset.prod_congr rfl
-  intro i hi
+  intro i _
   exact lemma154_vertex_castSucc R e j i
 
 private lemma lemma154_arrangementMoment_lift {N k d : Nat} [NeZero N]

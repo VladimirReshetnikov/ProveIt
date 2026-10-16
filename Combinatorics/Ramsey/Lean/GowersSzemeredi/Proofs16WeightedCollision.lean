@@ -26,12 +26,12 @@ theorem weightedCollisionEnergy_eq_sum_sq {X Y : Type*} [DecidableEq Y]
   intro a ha
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
-  intro b hb
+  intro b _
   by_cases hab : f a = f b
   · simp [← hab, hmap a ha]
   · rw [if_neg hab]
     apply Finset.sum_eq_zero
-    intro y hy
+    intro y _
     split_ifs with ha' hb' hb'
     · exact (hab (ha'.trans hb'.symm)).elim
     all_goals simp

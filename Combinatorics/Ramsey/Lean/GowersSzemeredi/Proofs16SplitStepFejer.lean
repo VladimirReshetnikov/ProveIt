@@ -55,7 +55,7 @@ theorem split_step_basics_fejer {k : Nat} {V V' : Real} (hV : 1 ≤ V) (hVV : V 
       (2 / (gamma * classBudgetW (fejerThetaOne theta gamma k) k) ≤ W ^ (fejerStepP k + 1)) ∧
       (2 / (section16Delta (fejerThetaOne theta gamma k) * classBudgetW (fejerThetaOne theta gamma k) k) ≤ W ^ (fejerStepP k + 1)) := by
   intro ν W
-  obtain ⟨hw2, huw, hrw, hVw, hV'w⟩ := split_w_facts hV hVV hg hg1 ht ht1 hr hr1
+  obtain ⟨hw2, huw, _, _, _⟩ := split_w_facts hV hVV hg hg1 ht ht1 hr hr1
   obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   have hm := classPiecesFejer_le_gen k hg hg1 ht ht1
   have hgd := twoDiv_gamma_le_fejer k hg hg1 ht ht1

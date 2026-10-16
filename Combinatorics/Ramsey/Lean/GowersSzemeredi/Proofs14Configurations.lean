@@ -310,7 +310,7 @@ private lemma prop144_product_lower {N n : Nat} [NeZero N]
   have hsigma :
       (fun i => coordinateRestriction phi (y i) 0) = prop144Sigma phi L := by
     funext i x
-    let eu := prop144IndexEquiv n i
+    let _ := prop144IndexEquiv n i
     simp only [coordinateRestriction, y, replaceCoordinate,
       prop144_update_cons_zero, prop144Sigma]
   rw [hsigma, prop144_energy_eq_count] at h

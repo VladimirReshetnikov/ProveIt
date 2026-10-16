@@ -157,7 +157,7 @@ theorem single_piece_lift_global_cover {k : Nat} (hk : 1 ≤ k) {theta gamma : R
               (coverRho1 Qb theta gamma k)) 1 *
             S.carrier.card ≤
           (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card := by
-  obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
+  obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
   obtain ⟨hζpos, hζle⟩ := section16Zeta_pos_le_one_div_32 k ht ht1 hg hg1
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le k ht ht1 hg hg1
   set θ₂ := section16ThetaTwo (section16ThetaOne theta gamma k) with hθ₂def
@@ -243,7 +243,7 @@ theorem single_piece_lift_global_cover {k : Nat} (hk : 1 ≤ k) {theta gamma : R
   set B1' := B1.filter fun z => section16Init z ∈ JΔ ∧
       (∀ e ∈ E, selectedCoordinates
         (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈ Jv e) ∧
-      section16Init z + x0 ∈ Js (section16Last z) with hB1'def
+      section16Init z + x0 ∈ Js (section16Last z) with _
   have hE : (E.card : Real) = 2 ^ k - 1 := by
     rw [hEdef, nonTopVertices_card]
     have : 1 ≤ 2 ^ k := Nat.one_le_two_pow
@@ -308,7 +308,7 @@ theorem single_piece_lift_global_cover {k : Nat} (hk : 1 ≤ k) {theta gamma : R
     simp [Point, ZMod.card]
   have hP0ne : P0.carrier.Nonempty := by rw [hP0carrier]; exact Finset.univ_nonempty
   obtain ⟨hpr0, hpr1⟩ := coverPrec_pos_le theta gamma k ht ht1 hg hg1
-  have hsum : ∑ e ∈ E, coverPrec theta gamma k ≤ globalTheta2 theta gamma k / 2 := by
+  have hsum : ∑ _ ∈ E, coverPrec theta gamma k ≤ globalTheta2 theta gamma k / 2 := by
     rw [Finset.sum_const, nsmul_eq_mul, hE]
     exact nonTop_coverPrec_sum_le theta gamma k ht ht1 hg hg1
   obtain ⟨R1, Mrem, hR1, -, hR1w, hMrem, hR1c⟩ := remainder_piece_of_vertex_covers DomV

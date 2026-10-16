@@ -116,7 +116,7 @@ private lemma selectionWeight_event {X : Type*} [DecidableEq X]
         have hfalse (S : Finset X) (hS : S ∈ U.powerset) : ¬ C ⊆ S := by
           intro hCS
           exact ha (Finset.mem_powerset.mp hS (hCS haC))
-        have hins (S : Finset X) (hS : S ∈ U.powerset) :
+        have hins (S : Finset X) (_ : S ∈ U.powerset) :
             (C ⊆ insert a S) ↔ C₀ ⊆ S := by
           rw [hCeq, Finset.insert_subset_iff]
           constructor
@@ -156,7 +156,7 @@ private lemma selectionWeight_event {X : Type*} [DecidableEq X]
           · subst x
             exact (haC hx).elim
           · exact hxU
-        have hevent (S : Finset X) (hS : S ∈ U.powerset) :
+        have hevent (S : Finset X) (_ : S ∈ U.powerset) :
             (C ⊆ insert a S) ↔ C ⊆ S := by
           constructor
           · intro hsub x hx
@@ -242,7 +242,7 @@ private lemma exists_subset_count_score {X E : Type*} [DecidableEq X]
         rw [Finset.mul_sum]
         rw [← Finset.sum_sub_distrib]
         apply Finset.sum_congr rfl
-        intro S hS
+        intro S _
         ring
   by_contra hno
   push Not at hno
@@ -1533,7 +1533,7 @@ private lemma multiStageSelectionWeight_nonneg {N k r : Nat} [NeZero N]
     (C : Fin r → SelectionPhase N k)
     (phi : Point N (k + 1) → ZMod N) (z : Point N (k + 1)) :
     0 ≤ multiStageSelectionWeight C phi z := by
-  exact Finset.prod_nonneg fun i hi ↦
+  exact Finset.prod_nonneg fun i _ ↦
     oneStageSelectionWeight_nonneg (C i) phi z
 
 private lemma multiStageSelectionWeight_le_one {N k r : Nat} [NeZero N]
@@ -1561,7 +1561,7 @@ private lemma selection_multiStage_indexed_average {N k r : Nat} [NeZero N]
           ∏ i : Fin r, ∏ z : selectionIndex k,
             oneStageSelectionWeight (C i) phi (selectionVertex R z) := by
       apply Finset.expect_congr rfl
-      intro C hC
+      intro C _
       simp only [multiStageSelectionWeight]
       rw [Finset.prod_comm]
     _ = ∏ _i : Fin r,
@@ -1575,7 +1575,7 @@ private lemma selection_multiStage_indexed_average {N k r : Nat} [NeZero N]
           (((4 : Real)⁻¹) ^ (2 ^ (k + 4)) *
             (selectionValidRelations phi R).card) := by
       apply Finset.prod_congr rfl
-      intro i hi
+      intro i _
       exact selection_oneStage_average phi R
     _ = (((4 : Real)⁻¹) ^ (2 ^ (k + 4)) *
           (selectionValidRelations phi R).card) ^ r := by simp
@@ -1792,8 +1792,8 @@ private lemma selection_carrier_score_lower {N k r : Nat} [NeZero N]
           ∏ z ∈ selectionCarrier R,
             multiStageSelectionWeight C phi z := by
         apply Finset.sum_le_sum_of_subset_of_nonneg hgoodSub
-        intro R hR hnot
-        exact Finset.prod_nonneg fun z hz ↦ hp0 z
+        intro R _ _
+        exact Finset.prod_nonneg fun z _ ↦ hp0 z
   have hbadSplit :
       (∑ R ∈ selectionBadArrangements B phi,
           ∏ z ∈ selectionCarrier R,
@@ -1830,8 +1830,8 @@ private lemma selection_carrier_score_lower {N k r : Nat} [NeZero N]
               multiStageSelectionWeight C phi z) ≤
           ∑ _R ∈ badDeg, (1 : Real) := by
       apply Finset.sum_le_sum
-      intro R hR
-      exact Finset.prod_le_one (fun z hz ↦ hp0 z) (fun z hz ↦ hp1 z)
+      intro R _
+      exact Finset.prod_le_one (fun z _ ↦ hp0 z) (fun z _ ↦ hp1 z)
     have hsub : badDeg ⊆ selectionDegenerateFinset N k := by
       intro R hR
       have hR' := Finset.mem_filter.mp hR
@@ -2773,7 +2773,7 @@ private theorem selection_scale_estimate_of_exceptional_bound_explicit
                   (selectionVertex R z)) := by
       rw [selection_phase_score_average hN3]
       exact htargetToAverage
-    obtain ⟨C, hCmem, hC⟩ := Finset.exists_le_of_le_expect
+    obtain ⟨C, _, hC⟩ := Finset.exists_le_of_le_expect
       (Finset.univ_nonempty : (Finset.univ :
         Finset (Fin r → SelectionPhase N k)).Nonempty) hphaseExpected
     have hcarrierLower :=
@@ -2803,8 +2803,8 @@ private theorem selection_scale_estimate_of_exceptional_bound_explicit
       exact selectionCarrier_subset B R hIsIn
     obtain ⟨B', hB'B, hscore⟩ := exists_subset_count_score
       B (multiStageSelectionWeight C phi)
-      (fun z hz ↦ multiStageSelectionWeight_nonneg C phi z)
-      (fun z hz ↦ multiStageSelectionWeight_le_one C phi z)
+      (fun z _ ↦ multiStageSelectionWeight_nonneg C phi z)
+      (fun z _ ↦ multiStageSelectionWeight_le_one C phi z)
       (selectionGoodArrangements B phi)
       (selectionBadArrangements B phi) selectionCarrier
       hgoodCarrier hbadCarrier eta (eta * target * M) hcarrierAverage
@@ -2879,7 +2879,7 @@ private theorem selection_scale_estimate_of_exceptional_bound_explicit
     rw [← selectionTarget_eq]
     dsimp only [target, M] at harrangementLower
     simpa only [mul_assoc] using harrangementLower
-  · intro N _ hN hvalid B phi harrangementUpper hrespected
+  · intro N _ _ _ B phi harrangementUpper hrespected
     exfalso
     let M : Real := scale * (N : Real) ^ (17 * k + 15)
     have hNpos : 0 < (N : Real) := by

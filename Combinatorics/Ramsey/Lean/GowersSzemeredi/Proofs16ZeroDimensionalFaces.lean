@@ -35,7 +35,7 @@ theorem multiplyLinearFunction_dimension_zero {N : Nat} [NeZero N]
   refine ⟨1, 1, P.carrier, fun _ => P, fun _ _ => phi,
     Finset.Subset.rfl, ?_, ?_, fun _ => hP, ?_, ?_,
     fun _ _ => isMultilinear_dimension_zero phi, ?_⟩
-  · have hcard : (0 : Real) ≤ P.carrier.card := by positivity
+  · have _ : (0 : Real) ≤ P.carrier.card := by positivity
     nlinarith
   · constructor
     · intro x
@@ -47,8 +47,8 @@ theorem multiplyLinearFunction_dimension_zero {N : Nat} [NeZero N]
   · intro j
     have hw : P.width = 0 := by simp [Box.width]
     simp only [hw, Nat.cast_zero, Real.zero_rpow ha.ne', le_refl]
-  · intro j x hxQ hxH y hxy
-    obtain ⟨z, hz, heq⟩ := Finset.mem_image.mp hxy
+  · intro j x _ _ y hxy
+    obtain ⟨z, _, heq⟩ := Finset.mem_image.mp hxy
     have hzx : z = x := congrArg Prod.fst heq
     have hzy : phi z = y := congrArg Prod.snd heq
     exact ⟨0, hzx ▸ hzy.symm⟩

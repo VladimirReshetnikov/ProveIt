@@ -68,7 +68,7 @@ theorem multilinearHeightAt_holds (k : Nat) (hk : 2 ≤ k) (h : Nat) :
     MultilinearHeightAt k h := by
   induction h with
   | zero =>
-    intro N _ F hF hcard c P hP m hm hmP
+    intro N _ F _ hcard c P hP m hm hmP
     have hFempty : F = ∅ := Finset.card_eq_zero.mp hcard
     apply height_constant_partition hk P hP hm hmP (multiaffineEval F c) 0
     intro x

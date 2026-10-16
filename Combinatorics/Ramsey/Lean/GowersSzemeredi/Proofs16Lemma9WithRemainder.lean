@@ -150,7 +150,7 @@ theorem allScaleLemma169SubdomainAt_of (k : Nat) {W : Nat → Nat → Real → R
   intro hH1 hML hselection hidentity D hD hrem P hP hmP
   classical
   let zeta := section16Zeta theta gamma k
-  let B1 := section16GoodDomain B H1 Y x0
+  let _ := section16GoodDomain B H1 Y x0
   have hsHalf : 0 < sigma / 2 := by positivity
   have hsHalf1 : sigma / 2 ≤ 1 := by linarith
   obtain ⟨M, qGamma, F, R, mu, hFsub, hFmass, hRpart, hRproper, hqGamma,

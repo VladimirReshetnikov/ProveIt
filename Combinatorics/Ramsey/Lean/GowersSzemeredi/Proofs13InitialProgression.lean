@@ -297,7 +297,7 @@ private lemma lemma134_exists_progression_average {N l : Nat} [NeZero N]
   have hU : (Finset.univ : Finset (ZMod N)).Nonempty :=
     Finset.univ_nonempty
   have haverage :
-      ∑ s : ZMod N, ((l : Real) * goodHeightWeight S G) ≤
+      ∑ _ : ZMod N, ((l : Real) * goodHeightWeight S G) ≤
         ∑ s : ZMod N, (N : Real) * W s := by
     simp only [Finset.sum_const, Finset.card_univ, ZMod.card, nsmul_eq_mul]
     rw [← Finset.mul_sum, hsum]
@@ -633,7 +633,7 @@ private lemma lemma134EdgeSixteenGet_height {N : Nat} [NeZero N]
     have hij : i = Fin.castAdd 8 j := by apply Fin.ext; rfl
     rw [hij]
     rw [lemma134EdgeSixteenGet_castAdd, p.1.1.get_height]
-  · have hi8 : 8 ≤ (i : Nat) := by omega
+  · have _ : 8 ≤ (i : Nat) := by omega
     let j : Fin 8 := ⟨(i : Nat) - 8, by omega⟩
     have hij : i = Fin.natAdd 8 j := by
       apply Fin.ext
@@ -1006,7 +1006,7 @@ private lemma lemma134_good_univ_lower {N : Nat} [NeZero N]
       _ ≤ ∑ h : ZMod N,
           ((section13C S h : Real) - section13G S h) := by
         apply Finset.sum_le_sum_of_subset_of_nonneg (by simp [bad])
-        intro h _ hh
+        intro h _ _
         exact sub_nonneg.mpr (hGC h)
       _ = C - G := by
         simp [C, G, Finset.sum_sub_distrib]
@@ -1457,7 +1457,7 @@ private theorem lemma134_at_graph_budget
       omega
     · simp [goodHeightWeight, D, P, lemma134EmptyProgression]
     · simp [D]
-  · have hmLarge : 2 ≤ m := by omega
+  · have _ : 2 ≤ m := by omega
     let l := m - 1
     have hl : 0 < l := by dsimp [l]; omega
     have hlm : l < m := by dsimp [l]; omega

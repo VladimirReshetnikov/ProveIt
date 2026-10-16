@@ -45,7 +45,7 @@ theorem stage137UpperEndpoints_sum {N : Nat} [NeZero N]
   simp_rw [stage137UpperEndpoints_card]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
-  intro h hh
+  intro h _
   let E := (Y h).filter fun z ↦ z.1 ∈ R
   have hrow : ∀ y, (R.filter fun x ↦ (x, y) ∈ Y h) = translatedRow R E 0 y := by
     intro y
@@ -63,7 +63,7 @@ theorem exists_stage137_base_row {N : Nat} [NeZero N]
     (hb : b * N ≤ ∑ h ∈ I, (((Y h).filter fun z ↦ z.1 ∈ R).card : Real)) :
     ∃ y : ZMod N, b ≤ (stage137UpperEndpoints R I Y y).card := by
   classical
-  have hsum : (∑ y : ZMod N, b) ≤
+  have hsum : (∑ _ : ZMod N, b) ≤
       ∑ y : ZMod N, ((stage137UpperEndpoints R I Y y).card : Real) := by
     rw [← Nat.cast_sum, stage137UpperEndpoints_sum]
     simpa [mul_comm] using hb

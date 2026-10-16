@@ -410,7 +410,7 @@ private lemma stronglyShatters_regionFamily_of_card_le {k m : Nat}
       exact Finset.single_le_sum
         (s := outside) (f := fun j =>
           |realDot (H j).normal w| / |gap j|)
-        (fun j hj => by positivity) hiout
+        (fun j _ => by positivity) hiout
     have hfrac : eps *
         (|realDot (H i).normal w| / |gap i|) < 1 :=
       (mul_le_mul_of_nonneg_left hratioLe hepsPos.le).trans_lt hepsTotal

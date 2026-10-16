@@ -118,7 +118,7 @@ def coarseChildBox {N : Nat} (P : Box N 1) (m : Nat)
       step := (P.axis 0).step
       length := coarseChunkLength m (P.width % m) j }
   commonDiff := P.commonDiff
-  axis_step := by intro i; simpa using P.axis_step 0
+  axis_step := by intro _; simpa using P.axis_step 0
 
 @[simp] lemma coarseChildBox_width {N : Nat} (P : Box N 1)
     (m : Nat) (j : Fin (P.width / m)) :

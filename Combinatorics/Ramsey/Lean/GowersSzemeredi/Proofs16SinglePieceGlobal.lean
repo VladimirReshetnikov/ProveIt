@@ -73,7 +73,7 @@ theorem single_piece_lift_core_rem {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
   have hk0 : 0 < k := hk
   obtain ⟨R1, Mrem, hR1, hR1w, hMrem, hR1c⟩ := hrem
   set E1 := B1.filter fun x => x ∈ R1.carrier ∧ section16PhiRemainder phi x0 x = Mrem x
-    with hE1def
+    with _
   have hR1w4 : 4 ≤ R1.width := hL4.trans hR1w
   have hR1ne : R1.carrier.Nonempty :=
     R1.carrier_nonempty_of_axis_pos fun z => lt_of_lt_of_le (by omega) (R1.width_le_axis_length z)
@@ -353,7 +353,7 @@ theorem section16_retained_domain_card {N k : Nat} [NeZero N]
   set B1' := B1.filter fun z => section16Init z ∈ JΔ ∧
       (∀ e ∈ E, selectedCoordinates
         (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈ Jv e) ∧
-      section16Init z + x0 ∈ Js (section16Last z) with hB1'def
+      section16Init z + x0 ∈ Js (section16Last z) with _
   change theta2 / 2 * (N : Real) ^ (k + 1) ≤ B1'.card
   -- the three bad sets are sparse
   have hbadΔ : ((Finset.univ.filter fun z : Point N (k + 1) =>
@@ -444,9 +444,9 @@ theorem section16_retained_domain_card {N k : Nat} [NeZero N]
   set X1 := Finset.univ.filter fun z : Point N (k + 1) => section16Init z ∉ JΔ
   set X2 := E.biUnion fun e => Finset.univ.filter fun z : Point N (k + 1) =>
       selectedCoordinates (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∉
-        Jv e with hX2
+        Jv e with _
   set X3 := Finset.univ.filter fun z : Point N (k + 1) =>
-      section16Init z + x0 ∉ Js (section16Last z) with hX3
+      section16Init z + x0 ∉ Js (section16Last z) with _
   have hc := Finset.card_le_card hcover
   have hu1 := Finset.card_union_le (B1' ∪ X1 ∪ X2) X3
   have hu2 := Finset.card_union_le (B1' ∪ X1) X2
@@ -536,7 +536,7 @@ theorem single_piece_lift_global {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
               (nestC (fun _ => C) (2 ^ k - 1) (globalTheta2 theta gamma k))) 1 *
             S.carrier.card ≤
           (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card := by
-  obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
+  obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
   obtain ⟨hζpos, hζle⟩ := section16Zeta_pos_le_one_div_32 k ht ht1 hg hg1
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le k ht ht1 hg hg1
   set θ₂ := section16ThetaTwo (section16ThetaOne theta gamma k) with hθ₂def
@@ -632,7 +632,7 @@ theorem single_piece_lift_global {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
   set B1' := B1.filter fun z => section16Init z ∈ JΔ ∧
       (∀ e ∈ E, selectedCoordinates
         (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈ Jv e) ∧
-      section16Init z + x0 ∈ Js (section16Last z) with hB1'def
+      section16Init z + x0 ∈ Js (section16Last z) with _
   have hB1'card : globalTheta2 theta gamma k * (N : Real) ^ (k + 1) ≤ B1'.card := by
     have hbudget : θ' * (2 ^ k + 1) = θ₂ / 2 := by
       rw [hθ'def, globalBudget, ← hθ₂def]

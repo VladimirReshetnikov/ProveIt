@@ -40,7 +40,7 @@ theorem Section16SampledOrAnchoredOn.synchronized_cover {N k r m v : Nat} [NeZer
     (section16FinalCoordinateRestriction phi (sample i))
   have hGamma : ∀ i, ProperMultiplyLinear gamma s (Gamma i) := fun i => hsections (sample i)
   have hML := BaseCase.properMultiplyLinear_finsetUnion gamma s hs Gamma hr hGamma
-  obtain ⟨p, H, b, P, n, R, mu, hp, hH, hHm, hPpart, hPproper,
+  obtain ⟨p, H, b, P, n, R, mu, hp, hH, hHm, hPpart, _,
       hPaxes, hPstep, hRpart, hRproper, hRwidth, hmu, hc⟩ :=
     hML.short_parent_cover ε hε hε1 T I hT hI hk hm hmT hmI
   let e := section5NatFlattenEquiv n

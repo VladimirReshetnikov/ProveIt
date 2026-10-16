@@ -183,7 +183,7 @@ private lemma section5_carrier_eq_order_range_of_le {N : Nat} [NeZero N]
   apply Finset.Subset.antisymm
   · intro x hx
     rw [Finset.mem_image] at hx ⊢
-    obtain ⟨i, hi, rfl⟩ := hx
+    obtain ⟨i, _, rfl⟩ := hx
     refine ⟨i % addOrderOf P.step, ?_, section5IndexPoint_mod_order P i⟩
     exact Finset.mem_range.mpr (Nat.mod_lt _ (addOrderOf_pos P.step))
   · intro x hx
@@ -396,7 +396,7 @@ theorem section5_local_phase_refinement_of_corollary_5_6
     fun x => phi (section5ModIndexPoint P x)
   have hpulled : PolynomialOn k Finset.univ pulledPhi :=
     polynomialOn_section5ModIndexPoint P phi hphi
-  obtain ⟨L, S, hL, hpartition, hproper, hdiam⟩ :=
+  obtain ⟨L, S, _, hpartition, hproper, hdiam⟩ :=
     h56 N k P.length v pulledPhi hk hpulled hthreshold hrN hv hvupper
   let R : Fin L → ModAP N := fun j => section5Transport P (S j)
   have hrefine : IsPartition (fun j => (R j).carrier) P.carrier := by
@@ -771,7 +771,7 @@ theorem section5_efficient_local_phase_refinement_of_corollary_5_6
               (1 - (polynomialPartitionConstant k : Real)⁻¹) := by
           simpa only [K] using mul_le_mul_of_nonneg_right hcutoffConstant hrootPos.le
     refine ⟨P.length, R, hrefine, hproper, hcount, ?_⟩
-    intro f hf
+    intro f _
     have hphasePartition :
         (∑ j, ∑ s ∈ (R j).carrier,
           f s * exponential (-(phi s))) =
@@ -860,7 +860,7 @@ theorem section5_local_diameter_refinement_of_corollary_5_6
     fun x => phi (section5ModIndexPoint P x)
   have hpulled : PolynomialOn k Finset.univ pulledPhi :=
     polynomialOn_section5ModIndexPoint P phi hphi
-  obtain ⟨L, S, hL, hpartition, hproper, hdiam⟩ :=
+  obtain ⟨L, S, _, hpartition, hproper, hdiam⟩ :=
     h56 N k P.length v pulledPhi hk hpulled hthreshold hrN hv hvupper
   let R : Fin L → ModAP N := fun j => section5Transport P (S j)
   have hrefine : IsPartition (fun j => (R j).carrier) P.carrier := by

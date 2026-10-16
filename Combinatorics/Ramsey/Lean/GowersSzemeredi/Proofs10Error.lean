@@ -262,7 +262,7 @@ private lemma restrictedPair_ite_eq_sum {N : Nat} {X : Type*}
         dsimp only [d0]
         linear_combination hrel.1.symm
       simp [hu, hv]
-    · intro d hd hdne
+    · intro d _ hdne
       rw [if_neg]
       intro huv
       apply hdne

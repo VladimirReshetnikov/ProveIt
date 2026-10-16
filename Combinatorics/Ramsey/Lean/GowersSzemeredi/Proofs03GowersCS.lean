@@ -300,7 +300,7 @@ private lemma overwritePrefix_succ {d n : Nat} (hn : n < d)
   · have hi' : i.val < n + 1 := by omega
     simp [overwritePrefix, hi, hi', Fin.snoc]
   · by_cases hin : i.val = n
-    · have hi' : i.val < n + 1 := by omega
+    · have _ : i.val < n + 1 := by omega
       have hij : i = (⟨n, hn⟩ : Fin d) := Fin.ext hin
       simp [overwritePrefix, hij, Fin.snoc]
     · have hi' : ¬i.val < n + 1 := by omega

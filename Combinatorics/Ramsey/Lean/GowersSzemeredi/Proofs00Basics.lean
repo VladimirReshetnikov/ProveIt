@@ -346,7 +346,7 @@ lemma lemma154_card_le_of_fiber_le {A B : Type*}
   rw [← Fintype.card_congr (Equiv.sigmaFiberEquiv f), Fintype.card_sigma]
   calc
     (∑ b : B, Fintype.card {a : A // f a = b}) ≤ ∑ _ : B, k :=
-      Finset.sum_le_sum fun b hb ↦ h b
+      Finset.sum_le_sum fun b _ ↦ h b
     _ = Fintype.card B * k := by simp
 
 end

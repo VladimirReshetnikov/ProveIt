@@ -71,7 +71,7 @@ theorem multiplyLinearWith_of_large_box_covers {N k : Nat} [NeZero N]
           ((min 2 P.width : Nat) : Real) := by
         rcases Nat.lt_or_ge P.width 2 with hlt | hge
         · rw [min_eq_right hlt.le]
-          interval_cases h : P.width
+          interval_cases _ : P.width
           · simp [Real.zero_rpow hc.ne']
           · simp
         · rw [min_eq_left hge]

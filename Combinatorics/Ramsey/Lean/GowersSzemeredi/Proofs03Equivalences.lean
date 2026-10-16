@@ -393,7 +393,7 @@ private lemma higher_condition_iii_imp_vi_succ {N n : Nat} [NeZero N]
   simp only [Nat.add_sub_cancel]
   rw [Finset.filter_congr_decidable]
   set B := (Finset.univ : Finset (Point N n)).filter (fun a =>
-    ¬ UniformOfDegree (cubeDifference g a) c2 1) with hB
+    ¬ UniformOfDegree (cubeDifference g a) c2 1) with _
   change (B.card : Real) ≤ c2 * (N : Real) ^ n
   by_cases hc20 : c2 = 0
   · have hsum0 : (∑ a, alpha a) = 0 := by
@@ -451,7 +451,7 @@ private lemma higher_condition_vi_imp_iii_succ {N n : Nat} [NeZero N]
   simp only [Nat.add_sub_cancel] at hvi
   rw [Finset.filter_congr_decidable] at hvi
   set B := (Finset.univ : Finset (Point N n)).filter (fun a ↦
-    ¬ UniformOfDegree (cubeDifference g a) c2 1) with hB
+    ¬ UniformOfDegree (cubeDifference g a) c2 1) with _
   change (B.card : Real) ≤ c2 * (N : Real) ^ n at hvi
   unfold higherUniformConditioniii
   rw [show n + 1 - 1 = n by omega]

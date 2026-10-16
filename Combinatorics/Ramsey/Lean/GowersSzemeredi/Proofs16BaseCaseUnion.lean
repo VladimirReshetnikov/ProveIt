@@ -229,13 +229,13 @@ private def initialProperUnionRefinement {N d r : Nat} [NeZero N]
   partition := singleton_box_partition P
   proper := fun _ => hP
   width := by
-    intro j
+    intro _
     simp
   multilinear := by
-    intro j i
+    intro _ i
     exact Fin.elim0 i
   cover := by
-    intro j x hxQ hxH i
+    intro _ x _ _ i
     exact Fin.elim0 i
 
 private noncomputable def extendProperUnionRefinement {N d r t q0 : Nat} [NeZero N]
@@ -434,7 +434,7 @@ private lemma abs_gamma_le_iteration_of_nonempty {N d : Nat} [NeZero N]
     simpa only [properPointSingletonBox_carrier, Finset.mem_singleton] using hxP
   subst x
   obtain ⟨j, hxQ⟩ := (hpartition.1 z.1).mp (by simp)
-  obtain ⟨i, hi⟩ := hcover j z.1 hxQ hxH z.2 hz
+  obtain ⟨i, _⟩ := hcover j z.1 hxQ hxH z.2 hz
   have hqPos : 0 < q := by
     have := i.isLt
     omega
@@ -465,7 +465,7 @@ private lemma gamma_ne_zero_of_nonempty {N d : Nat} [NeZero N]
     simpa only [properPointSingletonBox_carrier, Finset.mem_singleton] using hxP
   subst x
   obtain ⟨j, hxQ⟩ := (hpartition.1 z.1).mp (by simp)
-  obtain ⟨i, hi⟩ := hcover j z.1 hxQ hxH z.2 hz
+  obtain ⟨i, _⟩ := hcover j z.1 hxQ hxH z.2 hz
   have hqPos : 0 < q := by have := i.isLt; omega
   simp [multipleQ, multipleC, hs.ne'] at hq
   linarith
@@ -664,7 +664,7 @@ theorem properMultiplyLinear_finsetUnion {N d r : Nat} [NeZero N]
         (by simpa using htargetBoundNonneg), hDwidth, ?_, ?_⟩
       · intro j i
         exact Fin.elim0 i
-      · intro j x hxQ hxH y hxy
+      · intro j x _ _ y hxy
         exact (hUnionNe ⟨(x, y), hxy⟩).elim
   · refine ⟨D.M, 0, ∅, D.Q, (fun _ i => Fin.elim0 i),
       Finset.empty_subset _, ?_, D.partition, D.proper,
@@ -673,7 +673,7 @@ theorem properMultiplyLinear_finsetUnion {N d r : Nat} [NeZero N]
       nlinarith
     · intro j i
       exact Fin.elim0 i
-    · intro j x hxQ hxH
+    · intro j x _ hxH
       simp at hxH
 
 /-- The repaired finite-union closure used by the one-dimensional base-case
@@ -813,7 +813,7 @@ theorem properMultiplyLinear_fin_sum {N d r : Nat} [NeZero N]
         hDwidth, ?_, ?_⟩
       · intro j i
         exact Fin.elim0 i
-      · intro j x hxQ hxH y hxy
+      · intro j x _ _ y hxy
         have hxB := (mem_partialGraph_iff B (fun x => ∑ i, phi i x) x y).1 hxy |>.1
         exact (hBNe ⟨x, hxB⟩).elim
   · refine ⟨D.M, 0, ∅, D.Q, (fun _ i => Fin.elim0 i),
@@ -823,7 +823,7 @@ theorem properMultiplyLinear_fin_sum {N d r : Nat} [NeZero N]
       nlinarith
     · intro j i
       exact Fin.elim0 i
-    · intro j x hxQ hxH
+    · intro j x _ hxH
       simp at hxH
 
 end LeanProofs.GowersSzemeredi.BaseCase

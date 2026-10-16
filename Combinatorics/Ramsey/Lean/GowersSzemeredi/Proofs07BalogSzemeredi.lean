@@ -76,7 +76,7 @@ private lemma energy_le_card_cube {G : Type*} [DecidableEq G]
     ∑ x ∈ A + A, sumRep A x ^ 2 ≤
         ∑ x ∈ A + A, A.card * sumRep A x := by
       apply Finset.sum_le_sum
-      intro x hx
+      intro x _
       rw [pow_two]
       exact Nat.mul_le_mul_right _ (sumRep_le_card A x)
     _ = A.card * ∑ x ∈ A + A, sumRep A x := by
@@ -108,7 +108,7 @@ private lemma popularSums_card_lower {G : Type*} [DecidableEq G]
     calc
       _ ≤ ∑ _x ∈ D, (A.card : Real) ^ 2 := by
         apply Finset.sum_le_sum
-        intro x hx
+        intro x _
         gcongr
         exact_mod_cast sumRep_le_card A x
       _ = _ := by simp [mul_comm]
@@ -252,7 +252,7 @@ private lemma highDegreeCenters_card_lower {G : Type*} [DecidableEq G]
     calc
       _ ≤ ∑ _a ∈ V, (A.card : Real) := by
         apply Finset.sum_le_sum
-        intro a ha
+        intro a _
         exact hdegMax a
       _ = _ := by simp [mul_comm]
   have hupperOut :
@@ -379,7 +379,7 @@ private lemma highGoodDegree_card_lower {X I : Type*} [DecidableEq X]
     calc
       _ ≤ ∑ _i ∈ L, (K.card : Real) := by
         apply Finset.sum_le_sum
-        intro i hi
+        intro i _
         exact hdegMax i
       _ = _ := by simp [mul_comm]
   have hupperOut :
@@ -576,7 +576,7 @@ private lemma quadWitnesses_card_lower {G : Type*} [DecidableEq G]
       exact mul_le_mul hru hrv (by positivity) (by positivity)
     _ = _ := by
       apply Finset.sum_congr rfl
-      intro b hb
+      intro b _
       rw [Finset.card_product]
       norm_cast
 
@@ -775,7 +775,7 @@ private lemma octWitnesses_card_lower {G : Type*} [DecidableEq G]
       exact mul_le_mul hqi hqj (by positivity) (by positivity)
     _ = _ := by
       apply Finset.sum_congr rfl
-      intro t ht
+      intro t _
       rw [Finset.card_product]
       norm_cast
 
@@ -886,7 +886,7 @@ theorem proposition_7_3_group_holds {G : Type*} [DecidableEq G]
     exact (centerAt_injective V).injOn
   have hAsub : A'' ⊆ A := by
     intro a ha
-    obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp ha
+    obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp ha
     have hiV := centerAt_mem V i
     exact (Finset.mem_filter.mp hiV).1
   have hcoreCard :

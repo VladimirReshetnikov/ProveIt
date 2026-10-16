@@ -42,7 +42,7 @@ theorem quadratic_phase_localization {N L : Nat} [NeZero N]
   have hf : PolynomialOn 2 Finset.univ f := polynomialOn_section5ModIndexPoint P phi hphi
   obtain ⟨a, ha⟩ := polynomialOn_affine_degree_drop f hf
   obtain ⟨p, hp, hpT, hrec⟩ := quadratic_recurrence a hR (hT.trans hPN)
-  obtain ⟨M, Q, hM, hQpart, hQcells, hQstep⟩ := section5_residue_target_partition
+  obtain ⟨M, Q, _, hQpart, hQcells, hQstep⟩ := section5_residue_target_partition
     P.length p (H + 1) (by omega) (by omega)
     ((Nat.mul_le_mul_right ((H + 1) ^ 2) hpT).trans hbudget)
   let C : Fin M → ModAP N := fun i => section5Transport P (Q i)

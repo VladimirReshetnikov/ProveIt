@@ -39,7 +39,7 @@ theorem Box.width_le_modulus {N k : Nat} [NeZero N] (P : Box N k)
 private def binaryFullBox : Box 2 1 where
   axis := fun _ => { start := 0, step := 1, length := 2 }
   commonDiff := 1
-  axis_step := by intro i; rfl
+  axis_step := by intro _; rfl
 
 /-- Even the width-only part of multiple linearity is impossible if its
 loss parameter is allowed to be arbitrarily large. -/

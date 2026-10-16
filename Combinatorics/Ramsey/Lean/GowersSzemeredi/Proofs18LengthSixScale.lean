@@ -295,15 +295,15 @@ theorem ls_modulus_conditions {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {K2 p
     refine ⟨by positivity, ?_⟩
     rw [div_le_one (by linarith)]
     linarith
-  obtain ⟨hz, hzHalf⟩ := section16Zeta_pos_le_half 2 ha ha1 (by positivity : 0 < alpha / 2)
+  obtain ⟨hz, _⟩ := section16Zeta_pos_le_half 2 ha ha1 (by positivity : 0 < alpha / 2)
     (by linarith : alpha / 2 ≤ 1)
   have hζ : 0 < lsZeta alpha := hz
   have hb : 0 < lsB p2 alpha := by unfold lsB; exact div_pos (familyRecExp_pos 2 p2 _ hp2) two_pos
-  obtain ⟨hEm, hEm'⟩ := hE 2 (lsDelta alpha) (lsBudget alpha) (lsRho1 alpha / 2 / 2)
+  obtain ⟨hEm, _⟩ := hE 2 (lsDelta alpha) (lsBudget alpha) (lsRho1 alpha / 2 / 2)
     (by positivity) (by linarith)
-  obtain ⟨hEth, hEth'⟩ := hE 2 (alpha / 2) (lsBudget alpha) (lsThS alpha / 2)
+  obtain ⟨hEth, _⟩ := hE 2 (alpha / 2) (lsBudget alpha) (lsThS alpha / 2)
     (by positivity) (by linarith)
-  obtain ⟨hEc, hEc'⟩ := hE 2 (alpha / 2) (lsBudget alpha) (lsCS alpha / 2)
+  obtain ⟨hEc, _⟩ := hE 2 (alpha / 2) (lsBudget alpha) (lsCS alpha / 2)
     (by linarith [hcS.1]) (by linarith [hcS.2])
   have haN := lsNestExp_pos (alpha := alpha) hE hC ht2 ht21
   have hmE : 0 < lsMExp A Bq alpha := by

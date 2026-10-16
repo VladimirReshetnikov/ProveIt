@@ -30,7 +30,7 @@ private noncomputable def intervalProbability (rho : Real) : Measure Real :=
 private lemma intervalProbability_isProbability {rho : Real} (hrho : 0 < rho) :
     IsProbabilityMeasure (intervalProbability rho) := by
   apply ProbabilityTheory.cond_isProbabilityMeasure_of_finite
-  · have hlen : 0 < 1 + 2 * rho := by linarith
+  · have _ : 0 < 1 + 2 * rho := by linarith
     have hlen' : 0 < 1 + rho + rho := by linarith
     simpa [Real.volume_Icc, ENNReal.ofReal_eq_zero] using hlen'
   · exact measure_Icc_lt_top.ne
@@ -746,7 +746,7 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
   rcases hsetup with
     ⟨hbounds, hsigmaPos, heta, hetaOne, hsymmetric, hinvariant, happrox⟩
   rcases hbounds with ⟨halpha, halphaOne, hM, hcard, hfibre⟩
-  rcases hanchor with ⟨hRanchor, hSanchor, hEanchor⟩
+  rcases hanchor with ⟨_, hSanchor, hEanchor⟩
   have hsetup' : Section10Setup D phi B alpha M sigma eta :=
     ⟨⟨halpha, halphaOne, hM, hcard, hfibre⟩, hsigmaPos, heta, hetaOne,
       hsymmetric, hinvariant, happrox⟩

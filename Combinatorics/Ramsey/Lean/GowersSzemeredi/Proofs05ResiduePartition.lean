@@ -65,8 +65,8 @@ theorem residueNatAP_partition {r p : Nat} (hp : 0 < p) (hpr : p ≤ r) :
   · intro a b hne
     rw [Finset.disjoint_left]
     intro x hx hx'
-    obtain ⟨i, hi, hix⟩ := (residueNatAP_mem r p a x).mp hx
-    obtain ⟨j, hj, hjx⟩ := (residueNatAP_mem r p b x).mp hx'
+    obtain ⟨i, _, hix⟩ := (residueNatAP_mem r p a x).mp hx
+    obtain ⟨j, _, hjx⟩ := (residueNatAP_mem r p b x).mp hx'
     have hmod := congrArg (fun x : Nat => x % p) (hix.trans hjx.symm)
     have hab : a = b := by
       apply Fin.ext

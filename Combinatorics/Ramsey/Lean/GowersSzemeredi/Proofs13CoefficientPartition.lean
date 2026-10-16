@@ -59,7 +59,7 @@ theorem translated_row_card_le {N : Nat} (C : Finset (Pair N))
   apply Finset.card_le_card_of_injOn (fun z : Pair N ↦ (z.1, z.2 - y))
   · intro z hz
     exact Finset.mem_product.mpr (hsupport z hz)
-  · intro z hz w hw hzw
+  · intro z _ w _ hzw
     change (z.1, z.2 - y) = (w.1, w.2 - y) at hzw
     obtain ⟨hx, hy⟩ := Prod.mk.inj hzw
     exact Prod.ext hx (by simpa using congrArg (fun t : ZMod N ↦ t + y) hy)
@@ -151,7 +151,7 @@ theorem lemma_13_9_of_length_comparison {N : Nat} [Fact N.Prime]
   have hRne := stage136_progression_nonempty S D E F h136
   have hRcard : F.R.carrier.card = F.R.length := h136.2.2.1
   have hRlen : 0 < F.R.length := by simpa only [hRcard] using hRne.card_pos
-  rcases h137.1 with ⟨hSstep, hSproper, hSsub, hSlower, hBsupport, hBmass, hBmass', hBlinear⟩
+  rcases h137.1 with ⟨hSstep, hSproper, _, hSlower, hBsupport, _, _, _⟩
   have hSlenReal : (0 : Real) < G.S.length :=
     (Real.rpow_pos_of_pos (by exact_mod_cast hRlen) _).trans_le hSlower
   have hSlen : 0 < G.S.length := by exact_mod_cast hSlenReal

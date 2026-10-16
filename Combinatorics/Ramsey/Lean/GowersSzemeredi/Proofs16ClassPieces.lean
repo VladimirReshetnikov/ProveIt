@@ -323,7 +323,7 @@ theorem class_piece_data {k : Nat} {Thr : Real → Real → Real}
     Nonempty (ClassPiece C Gamma (section16Zeta theta gamma k) (classBudget theta gamma k)
       (classBudget theta gamma k) (classDelta theta gamma k) (classBudget theta gamma k) gamma) := by
   classical
-  obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
+  obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
   obtain ⟨hθ'pos, hθ'le⟩ := classBudget_pos_le k ht ht1 hg hg1
   set θ' := classBudget theta gamma k with hθ'def
   have hθ₂eq : section16ThetaTwo (section16ThetaOne theta gamma k) = 2 ^ (k + 2) * θ' := by
@@ -541,7 +541,7 @@ theorem class_piece_data {k : Nat} {Thr : Real → Real → Real}
     obtain ⟨hp1, hp2⟩ := Finset.mem_filter.mp hp
     obtain ⟨hx, -⟩ := Finset.mem_product.mp hp1
     obtain ⟨h, hh, hx'⟩ := Finset.mem_image.mp hx
-    obtain ⟨hhH, hhT⟩ := Finset.mem_filter.mp hh
+    obtain ⟨_, hhT⟩ := Finset.mem_filter.mp hh
     unfold restrictRelation
     refine Finset.mem_filter.mpr ⟨Finset.mem_image.mpr ⟨(h, p.2), ?_, ?_⟩, ?_⟩
     · have hr : p.2 ∈ section16LargeSpectrum B h δ := by

@@ -38,7 +38,7 @@ theorem lemma_5_9_quarter_diameter (N k q r v : Nat) [NeZero N]
     rw [List.mem_ofFn'] at hpsi
     obtain ⟨i, rfl⟩ := hpsi
     exact hphi i
-  obtain ⟨M, P, hM, hpartition, hcells, hsubset, hdiameter⟩ :=
+  obtain ⟨M, P, hM, hpartition, hcells, _, hdiameter⟩ :=
     section5_iterated_strong_nat_refinement corollary_5_6_strong_diameter_holds hk
       ((r : Real) ^ (-((polynomialPartitionConstant k : Real) ^ q)⁻¹) / 4)
       functions targets hfunctionsLength hfunctionsNonempty

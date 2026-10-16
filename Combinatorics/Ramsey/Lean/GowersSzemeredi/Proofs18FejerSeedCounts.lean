@@ -182,7 +182,7 @@ theorem polyTwoFejerPieces_le_power {gamma theta : Real} (hg : 0 < gamma) (hg1 :
     (ht : 0 < theta) (ht1 : theta ≤ 1) :
     (polyTwoFejerPieces gamma theta : Real) ≤ (2 / (gamma * theta)) ^ ((2 : Nat) ^ 24) := by
   obtain ⟨hu2, hginv, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-  obtain ⟨hb, hb1⟩ := polyPieceBudgetW_fejer_pos_le hg hg1 ht ht1
+  obtain ⟨hb, _⟩ := polyPieceBudgetW_fejer_pos_le hg hg1 ht ht1
   have hb5 : (5 * polyPieceBudgetW (fejerThetaOne theta gamma 1))⁻¹ ≤
       (polyPieceBudgetW (fejerThetaOne theta gamma 1))⁻¹ :=
     inv_anti₀ hb (by linarith)

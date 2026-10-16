@@ -104,7 +104,7 @@ theorem lemma_15_1_holds : lemma_15_1 := by
     have hK : K ≠ 0 := by
       unfold K
       apply Finset.prod_ne_zero_iff.mpr
-      intro i hi
+      intro i _
       exact mul_ne_zero
         (mul_ne_zero htwo
           (by cases e i <;> simp [walshSign]))
@@ -145,7 +145,7 @@ theorem lemma_15_1_holds : lemma_15_1 := by
   let uOf : Finset (Fin k) → (Fin k → Bool) := fun s i =>
     if i ∈ s then false else true
   have hu_insert (s : Finset (Fin k)) (j : Fin k)
-      (hjs : j ∉ s) :
+      (_ : j ∉ s) :
       uOf (insert j s) =
         Function.update (uOf s) j false := by
     funext i
@@ -186,7 +186,7 @@ theorem lemma_15_1_holds : lemma_15_1 := by
           ∏ i : Fin k,
             if i ∈ s then (-1 : ZMod N) else 1 := by
         apply Finset.prod_congr rfl
-        intro i hi
+        intro i _
         by_cases his : i ∈ s <;>
           simp [uOf, his, walshSign]
       _ = ∏ i ∈ s, (-1 : ZMod N) := by

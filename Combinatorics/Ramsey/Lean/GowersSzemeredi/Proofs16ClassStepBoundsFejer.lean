@@ -135,7 +135,7 @@ theorem classPiecesFejer_le_gen {gamma theta : Real} (k : Nat) (hg : 0 < gamma) 
     (classPiecesFejer gamma theta k : Real) ≤ (2 / (gamma * theta)) ^ fejerStepP k := by
   obtain ⟨hu2, hginv, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   obtain ⟨ha0, haS⟩ := fejerThetaOne_bounds k ht ht1 hg hg1
-  obtain ⟨hb, hb1⟩ := classBudgetW_pos_le k ha0 haS
+  obtain ⟨hb, _⟩ := classBudgetW_pos_le k ha0 haS
   have hbi := classBudgetW_fejer_inv_le k hg hg1 ht ht1
   have hF := fejerProductExponent_ge k
   have hstep : 2 + 32 * fejerProductExponent k ≤ fejerStepP k := by

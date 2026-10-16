@@ -554,11 +554,11 @@ private lemma twoStep_localDifference {N : Nat} [NeZero N]
       (3 * Real.sqrt tau) W (fun w => Q₁ w ∧ S w) hround hboth
   apply almostEvery_mono (1 - 3 * Real.sqrt tau) W (fun w => Q₁ w ∧ S w)
   · exact hboth'
-  · intro w hwW hw
+  · intro w _ hw
     rcases hw with ⟨hQ₁, hwEligible, hQ₂⟩
     have hwEligible' : w ∈ W ∩ D.shift W (-d₁) := by
       simpa only [shiftEligible] using hwEligible
-    obtain ⟨u, huW, huindex⟩ := exists_shifted_representative D d₁ hwEligible'
+    obtain ⟨u, _, huindex⟩ := exists_shifted_representative D d₁ hwEligible'
     have huFibre : u ∈ D.fibre (D.index w + d₁) :=
       (mem_fibre_iff D _ _).mpr huindex
     obtain ⟨w', hw'Fibre, hrel₁, hQ₂w'⟩ :=
@@ -628,11 +628,11 @@ private lemma twoStep_localDifference_nonempty {N : Nat} [NeZero N]
       (3 * Real.sqrt theta) W (fun w => Q₁ w ∧ S w) houter hboth
   apply almostEvery_mono (1 - 3 * Real.sqrt theta) W (fun w => Q₁ w ∧ S w)
   · exact hboth'
-  · intro w hwW hw
+  · intro w _ hw
     rcases hw with ⟨hQ₁, hwEligible, hR₂⟩
     have hwEligible' : w ∈ W ∩ D.shift W (-d₁) := by
       simpa only [shiftEligible] using hwEligible
-    obtain ⟨u, huW, huindex⟩ := exists_shifted_representative D d₁ hwEligible'
+    obtain ⟨u, _, huindex⟩ := exists_shifted_representative D d₁ hwEligible'
     have huFibre : u ∈ D.fibre (D.index w + d₁) :=
       (mem_fibre_iff D _ _).mpr huindex
     obtain ⟨w', hw'Fibre, hrel₁, hQ₂w', hw'Eligible⟩ :=
@@ -644,7 +644,7 @@ private lemma twoStep_localDifference_nonempty {N : Nat} [NeZero N]
       (mem_fibre_iff D _ _).mp hw'Fibre
     have hw'Eligible' : w' ∈ W ∩ D.shift W (-d₂) := by
       simpa only [R₂, E₂, shiftEligible] using hw'Eligible
-    obtain ⟨z₀, hz₀W, hz₀index⟩ :=
+    obtain ⟨z₀, _, hz₀index⟩ :=
       exists_shifted_representative D d₂ hw'Eligible'
     have hz₀Fibre : z₀ ∈ D.fibre (D.index w + d₁ + d₂) := by
       apply (mem_fibre_iff D _ _).mpr
@@ -696,7 +696,7 @@ private lemma twoStep_localDifference_exact {N : Nat} [NeZero N]
   have hw'Eligible : w' ∈ W ∩ D.shift W (-d₂) := by
     simpa only [E₂, shiftEligible] using
       of_almostEvery_one W E₂ hE₂ hw'W
-  obtain ⟨z₀, hz₀W, hz₀index⟩ :=
+  obtain ⟨z₀, _, hz₀index⟩ :=
     exists_shifted_representative D d₂ hw'Eligible
   have hz₀Fibre : z₀ ∈ D.fibre (D.index w + d₁ + d₂) := by
     apply (mem_fibre_iff D _ _).mpr
@@ -828,7 +828,7 @@ theorem lemma_10_9_holds : lemma_10_9 := by
       simpa only [P₃₄] using hpair₃₄
     have houterIntersect : 3 * Real.sqrt theta + 3 * Real.sqrt theta < 1 := by
       nlinarith
-    obtain ⟨w, hwW, hw₁₂, hw₃₄⟩ :=
+    obtain ⟨w, _, hw₁₂, hw₃₄⟩ :=
       exists_and_of_almostEvery (3 * Real.sqrt theta) (3 * Real.sqrt theta)
         W P₁₂ P₃₄ hWne houterIntersect hpair₁₂' hpair₃₄'
     rcases hw₁₂ with ⟨hfinalNonempty, hinner₁₂⟩
@@ -842,7 +842,7 @@ theorem lemma_10_9_holds : lemma_10_9 := by
       exact hinner₃₄
     have hinnerIntersect : theta + theta < 1 := by
       nlinarith [hthetaLtSqrtDivSix, hsmall]
-    obtain ⟨z, hz, hz₁₂, hz₃₄⟩ :=
+    obtain ⟨z, _, hz₁₂, hz₃₄⟩ :=
       exists_and_of_almostEvery theta theta
         (D.fibre (D.index w + d₁ + d₂))
         (fun z => phi z - phi w = psi d₁ + psi d₂)

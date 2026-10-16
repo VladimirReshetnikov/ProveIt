@@ -141,7 +141,7 @@ lemma section16_cor711_graph_cover {N : Nat} [NeZero N]
       simpa only [m] using Nat.lt_floor_add_one X
     linarith
   refine ⟨M, 1, P.carrier, Q, mu, Finset.Subset.rfl, ?_, ?_, hQproper, ?_, ?_, ?_, ?_⟩
-  · have hc : (0 : Real) ≤ P.carrier.card := by positivity
+  · have _ : (0 : Real) ≤ P.carrier.card := by positivity
     nlinarith
   · exact indexCells_partition P hP S hSpart
   · have hg := (lemma163_local_bounds hgamma hgammaOne htheta hthetaOne
@@ -162,7 +162,7 @@ lemma section16_cor711_graph_cover {N : Nat} [NeZero N]
     have hmj : m ≤ (S j).length := by
       rcases (hSproper j).2 with h | h <;> omega
     exact hwidthM.trans (by exact_mod_cast hmj)
-  · intro j i
+  · intro j _
     exact indexCellAffine_multilinear P (S j) (c j) (d j)
   · intro j x hxQ hxH y hxy
     have hy := (mem_partialGraph_one B phi x y).1 hxy

@@ -136,7 +136,7 @@ lemma section16_coarse_graph_cover {N : Nat} [NeZero N]
         (le_rfl : (0 : Real) ≤ 0)
     · intro j i
       exact Fin.elim0 i
-    · intro j x hxQ hxH
+    · intro j x _ hxH
       simp at hxH
   have hL : 1 ≤ P.width := Nat.one_le_iff_ne_zero.mpr hLzero
   let m := lemma163CoarseCellLength eta
@@ -167,11 +167,11 @@ lemma section16_coarse_graph_cover {N : Nat} [NeZero N]
     let Q : Fin M → Box N 1 := fun j => coarseChildBox P m j
     let n := 2 * m
     let mu : Fin M → Fin n → Point N 1 → ZMod N := fun j a _ =>
-      if ha : (a : Nat) < coarseChunkLength m (P.width % m) j then
+      if _ : (a : Nat) < coarseChunkLength m (P.width % m) j then
         phi (boxOnePoint P (coarseChunkStart m (P.width % m) j + a))
       else 0
     refine ⟨M, n, P.carrier, Q, mu, Finset.Subset.rfl, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
-    · have hc : (0 : Real) ≤ P.carrier.card := by positivity
+    · have _ : (0 : Real) ≤ P.carrier.card := by positivity
       nlinarith
     · exact coarseChildBox_partition P hP m hm hLm
     · intro j
@@ -204,7 +204,7 @@ lemma section16_coarse_graph_cover {N : Nat} [NeZero N]
       fun _ i _ => phi (boxOnePoint P i)
     refine ⟨1, n, P.carrier, (fun _ : Fin 1 => P), mu,
       Finset.Subset.rfl, ?_, ?_, (by simpa using hP), ?_, ?_, ?_, ?_⟩
-    · have hc : (0 : Real) ≤ P.carrier.card := by positivity
+    · have _ : (0 : Real) ≤ P.carrier.card := by positivity
       nlinarith
     · constructor
       · intro x
@@ -220,9 +220,9 @@ lemma section16_coarse_graph_cover {N : Nat} [NeZero N]
         _ ≤ lemma163LocalGraphBound gamma theta eta q :=
           lemma163_coarse_square_le_graphBound hgamma hgammaOne htheta
             hthetaOne heta hetaOne hq hqBound
-    · intro j
+    · intro _
       exact hwidthSelf
-    · intro j i
+    · intro _ i
       exact isMultilinear_const_one _
     · intro j x hxQ hxH y hxy
       have hy := (mem_partialGraph_one B phi x y).1 hxy |>.2

@@ -107,7 +107,7 @@ theorem proper_multilinear_simultaneous (k : Nat) (hk : 2 ≤ k) (q : Nat) :
             (2 * (m : Real) ^ (-multilinearPartitionExponent k q) * N) := by
   induction q with
   | zero =>
-    intro N m _ P hP mu hm hmP hmu
+    intro N m _ P hP mu _ hmP _
     refine ⟨1, fun _ => P, ?_, fun _ => hP, ?_, ?_⟩
     · constructor
       · intro x; simp

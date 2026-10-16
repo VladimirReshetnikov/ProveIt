@@ -25,7 +25,7 @@ theorem lemma_13_8_with_domain {N : Nat} [Fact N.Prime]
     (hsize : (2 : Real) ^ 135 * S.alpha ^ (-(704 : Int)) ≤ G.S.length) :
     ∃ H : Stage138Data N, IsStage138Data S D E G H := by
   classical
-  rcases hG with ⟨hstep, hproper, hsub, hlower, hB, hrel, habs, hlinear⟩
+  rcases hG with ⟨_, hproper, _, _, hB, hrel, habs, hlinear⟩
   have hcard : G.S.carrier.card = G.S.length := hproper
   let I := criticalHeights S D E
   let δ : Real := (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224

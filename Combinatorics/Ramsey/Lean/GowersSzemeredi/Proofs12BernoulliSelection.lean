@@ -106,7 +106,7 @@ private lemma restrictionWeight_event {X : Type*} [DecidableEq X]
         have hfalse (S : Finset X) (hS : S ∈ U.powerset) : ¬ C ⊆ S := by
           intro hCS
           exact ha (Finset.mem_powerset.mp hS (hCS haC))
-        have hins (S : Finset X) (hS : S ∈ U.powerset) :
+        have hins (S : Finset X) (_ : S ∈ U.powerset) :
             (C ⊆ insert a S) ↔ C₀ ⊆ S := by
           rw [hCeq, Finset.insert_subset_iff]
           constructor
@@ -149,7 +149,7 @@ private lemma restrictionWeight_event {X : Type*} [DecidableEq X]
           · subst x
             exact (haC hx).elim
           · exact hxU
-        have hevent (S : Finset X) (hS : S ∈ U.powerset) :
+        have hevent (S : Finset X) (_ : S ∈ U.powerset) :
             (C ⊆ insert a S) ↔ C ⊆ S := by
           constructor
           · intro hsub x hx
@@ -266,7 +266,7 @@ theorem exists_subset_count_score {X E : Type*} [DecidableEq X]
       simp only [F]
       rw [Finset.mul_sum, ← Finset.sum_sub_distrib]
       apply Finset.sum_congr rfl
-      intro S hS
+      intro S _
       ring
 
 /-- Average over finite seeds before selecting one actual subset. -/

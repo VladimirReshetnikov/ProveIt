@@ -63,7 +63,7 @@ theorem section16_product_recovered_good_set {N k q r : Nat} [Fact N.Prime]
     obtain ⟨sample, hsurj⟩ := finite_sample_surjective (α := J) r (by simpa using hnr)
     refine ⟨fun i => (sample i).val, lastProductSet A J, fun i => (sample i).property,
       Finset.Subset.rfl, ?_, ∅, Finset.empty_subset _, ?_, ?_⟩
-    · have hn : (0 : ℝ) ≤ (lastProductSet A J).card := Nat.cast_nonneg _
+    · have _ : (0 : ℝ) ≤ (lastProductSet A J).card := Nat.cast_nonneg _
       nlinarith
     · intro h x _ hx
       exact False.elim (Finset.notMem_empty _ hx)

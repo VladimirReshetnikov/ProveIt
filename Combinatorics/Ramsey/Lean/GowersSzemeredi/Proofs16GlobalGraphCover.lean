@@ -20,7 +20,7 @@ theorem IsMultilinear.multiplyLinearFunction {N k : Nat} [NeZero N]
   simp only [Nat.cast_one, one_mul] at ha ha1 hq
   refine ⟨1, 1, P.carrier, fun _ => P, fun _ _ => phi,
     Finset.Subset.rfl, ?_, ?_, fun _ => hP, ?_, ?_, fun _ _ => hphi, ?_⟩
-  · have hnonneg : (0 : Real) ≤ P.carrier.card := by positivity
+  · have _ : (0 : Real) ≤ P.carrier.card := by positivity
     nlinarith
   · constructor
     · intro x
@@ -33,7 +33,7 @@ theorem IsMultilinear.multiplyLinearFunction {N k : Nat} [NeZero N]
     · simp only [hw, Nat.cast_zero, Real.zero_rpow ha.ne', le_refl]
     · have hw1 : (1 : Real) ≤ P.width := by exact_mod_cast (show 1 ≤ P.width by omega)
       simpa only [Real.rpow_one] using Real.rpow_le_rpow_of_exponent_le hw1 ha1
-  · intro j x hxQ hxH y hxy
+  · intro j x _ _ y hxy
     obtain ⟨z, hz, hzx⟩ := Finset.mem_image.mp hxy
     have hxy' : z = x := congrArg Prod.fst hzx
     subst z

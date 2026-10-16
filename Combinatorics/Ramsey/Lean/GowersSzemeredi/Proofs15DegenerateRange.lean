@@ -355,7 +355,7 @@ private lemma rangeDeg_vertex_product_lift {N k d : Nat}
   unfold rangeDegLiftFinset
   rw [Finset.prod_map]
   apply Finset.prod_congr rfl
-  intro i hi
+  intro i _
   exact lemma154_vertex_castSucc R e j i
 
 private lemma rangeDeg_arrangementMoment_lift {N k d : Nat} [NeZero N]

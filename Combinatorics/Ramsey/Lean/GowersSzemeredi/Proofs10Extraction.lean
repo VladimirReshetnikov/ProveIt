@@ -105,7 +105,7 @@ private def auditFibreEquiv (s : ZMod 8) :
     have hts : t = s := hts'
     subst t
     rfl
-  right_inv y := rfl
+  right_inv _ := rfl
 
 @[simp] private lemma audit_fibre_card (s : ZMod 8) :
     (auditDomain.fibre s).card = auditProfile s := by
@@ -754,7 +754,7 @@ private lemma audit_error_almostEvery :
   rw [Finset.filter_eq_self.2]
   · have hroot : 0 ≤ auditEta ^ ((1 : Real) / 5) := by positivity
     nlinarith
-  · intro y hy
+  · intro y _
     rw [audit_proportionateError_zero]
     positivity
 
@@ -1166,7 +1166,7 @@ private lemma extraction_restricted_ite_eq_sum {N : Nat} {X : Type*}
         dsimp only [d₀]
         linear_combination hrel.1.symm
       simp [hu, hv]
-    · intro d hd hdne
+    · intro d _ hdne
       rw [if_neg]
       intro huv
       apply hdne
@@ -1216,7 +1216,7 @@ private lemma extraction_restrictedWeight_eq_sum {N : Nat} {X : Type*}
   simp_rw [extraction_restricted_ite_eq_sum D B x w]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
-  intro d hd
+  intro d _
   rw [← countWhere_eq_sum_ite]
   unfold countWhere
   rw [Finset.filter_congr_decidable]
@@ -1239,7 +1239,7 @@ private lemma extraction_errorCount_eq_sum {N : Nat} {X : Type*}
   simp_rw [extraction_error_ite_eq_sum D phi B x w]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
-  intro d hd
+  intro d _
   rw [← countWhere_eq_sum_ite]
   unfold countWhere extractionBadPairs
   rw [Finset.filter_congr_decidable]
@@ -1581,7 +1581,7 @@ private lemma extraction_directionGood_gives_mode {N : Nat} [NeZero N]
           (fun y => phi y - phi x) (fun z => phi z - phi w)
       _ ≤ ∑ _z ∈ C, Am.card := by
         apply Finset.sum_le_sum
-        intro z hz
+        intro z _
         dsimp only [Am, m, A]
         exact extractionMode_max D phi x d (phi z - phi w)
       _ = Am.card * C.card := by simp [mul_comm]
@@ -1701,9 +1701,9 @@ private lemma extraction_select_directions {Y Z : Type*}
   · subst U
     unfold AlmostEvery
     rw [Finset.filter_eq_self.2]
-    · have hVcard : (0 : Real) ≤ V.card := by positivity
+    · have _ : (0 : Real) ≤ V.card := by positivity
       nlinarith
-    · intro z hz
+    · intro z _
       simp
   have hUnonempty : U.Nonempty := Finset.nonempty_iff_ne_empty.mpr hUempty
   let BadPair : Finset (Y × Z) :=
@@ -1919,7 +1919,7 @@ theorem lemma_10_6_holds : lemma_10_6 := by
         (fun w => extractionDirectionGood D phi x w d t)
         (fun w => AlmostEvery (1 - 10 * t) (D.fibre (D.index w + d))
           (fun z => phi z - phi w = psi d)) hdirW
-      intro w hwW hwDirection
+      intro w _ hwDirection
       simpa only [psi] using extraction_directionGood_gives_mode D phi x w d t
         ht htUpper hxdPos hwDirection
     simpa only [t] using hlocalT

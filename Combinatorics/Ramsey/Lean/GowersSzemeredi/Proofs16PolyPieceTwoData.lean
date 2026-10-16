@@ -140,7 +140,7 @@ theorem section16_poly_piece_two_data
       (5 * polyPieceBudget theta gamma) (polyPieceSpecCount theta gamma)
       (polyPieceFaceCount theta gamma) (polyPieceFaceCount theta gamma)) := by
   classical
-  obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds 1 ht ht1 hg hg1
+  obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds 1 ht ht1 hg hg1
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le 1 ht ht1 hg hg1
   have hθ'pos : 0 < polyPieceBudget theta gamma := by
     unfold polyPieceBudget; positivity

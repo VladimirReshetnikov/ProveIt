@@ -29,7 +29,7 @@ theorem MultiplyLinearFunction.unused_coordinate_cover {N k m v : Nat} [NeZero N
       ∀ j z, z ∈ (S j).carrier → section16Init z ∈ B → z ∈ G →
         ∃ i, phi (section16Init z) = mu j i z := by
   classical
-  obtain ⟨q, H, b, P, n, R, mu, hq, hH, hHm, hPpart, hPproper,
+  obtain ⟨q, H, b, P, n, R, mu, hq, hH, hHm, hPpart, _,
       hPaxes, hPstep, hRpart, hRproper, hRwidth, hmu, hc⟩ :=
     hML.short_parent_cover epsilon he he1 T I hT hI hk hm hmT hmI
   let e := section5NatFlattenEquiv n

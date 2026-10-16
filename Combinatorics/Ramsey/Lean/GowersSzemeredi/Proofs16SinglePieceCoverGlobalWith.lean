@@ -174,7 +174,7 @@ theorem single_piece_lift_global_cover_with {k : Nat} (hk : 1 ≤ k) {t1 zeta ga
               (coverRho1W Qb t1 gamma k)) 1 *
             S.carrier.card ≤
           (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card := by
-  obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds_with ha0 haS
+  obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds_with ha0 haS
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le_with ha0 haS
   set θ₂ := section16ThetaTwo (t1) with hθ₂def
   set θ' := globalBudgetW t1 k with hθ'def
@@ -259,7 +259,7 @@ theorem single_piece_lift_global_cover_with {k : Nat} (hk : 1 ≤ k) {t1 zeta ga
   set B1' := B1.filter fun z => section16Init z ∈ JΔ ∧
       (∀ e ∈ E, selectedCoordinates
         (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈ Jv e) ∧
-      section16Init z + x0 ∈ Js (section16Last z) with hB1'def
+      section16Init z + x0 ∈ Js (section16Last z) with _
   have hE : (E.card : Real) = 2 ^ k - 1 := by
     rw [hEdef, nonTopVertices_card]
     have : 1 ≤ 2 ^ k := Nat.one_le_two_pow
@@ -324,7 +324,7 @@ theorem single_piece_lift_global_cover_with {k : Nat} (hk : 1 ≤ k) {t1 zeta ga
     simp [Point, ZMod.card]
   have hP0ne : P0.carrier.Nonempty := by rw [hP0carrier]; exact Finset.univ_nonempty
   obtain ⟨hpr0, hpr1⟩ := coverPrecW_pos_le t1 k ha0 haS
-  have hsum : ∑ e ∈ E, coverPrecW t1 k ≤ globalTheta2W t1 / 2 := by
+  have hsum : ∑ _ ∈ E, coverPrecW t1 k ≤ globalTheta2W t1 / 2 := by
     rw [Finset.sum_const, nsmul_eq_mul, hE]
     exact nonTop_coverPrecW_sum_le t1 k ha0 haS
   obtain ⟨R1, Mrem, hR1, -, hR1w, hMrem, hR1c⟩ := remainder_piece_of_vertex_covers DomV

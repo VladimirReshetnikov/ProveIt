@@ -315,7 +315,7 @@ private lemma prop141_l1_cauchy {N p : Nat} [NeZero N]
               (f := fun x => ∑ u : U, ∑ w : U, F y x u w))
     _ ≤ (N : Real) ^ p * ∑ y : U, (N : Real) ^ p * ∑ x : U,
         (N : Real) ^ p * ∑ u : U, (∑ w : U, F y x u w) ^ 2 := by
-          gcongr with y x
+          gcongr with y _
           simpa only [Finset.card_univ, hcard, Nat.cast_pow] using
             (sq_sum_le_card_mul_sum_sq
               (s := (Finset.univ : Finset U))

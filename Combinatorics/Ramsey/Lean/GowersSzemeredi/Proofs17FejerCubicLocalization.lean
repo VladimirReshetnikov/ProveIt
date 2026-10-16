@@ -27,7 +27,7 @@ theorem FejerOddSquareAt.localized {alpha e T : Real} (h : FejerOddSquareAt alph
         ¬ UniformOnPartition (phaseTwist f phi) 2
           ((2 : Real) ^ (-(58 : Int)) * alpha ^ 2 * (alpha / 2) ^ ((2 : Nat) ^ 42)) Q (l + 1) := by
   intro N _ _ hN f hf hnot
-  obtain ⟨m, P, R, B, psi, hmodd, hmpos, hmsqrt, hsize, hPs, hPR, hP, hR,
+  obtain ⟨m, P, R, B, psi, hmodd, _, hmsqrt, hsize, hPs, hPR, _, _,
     hPl, hRl, hB, hmass, hbil, hfourier⟩ := h N hN f hf hnot
   obtain ⟨mu, hmu, hagree⟩ := hbil
   let delta := (alpha / 2) ^ ((2 : Nat) ^ 42) / 4

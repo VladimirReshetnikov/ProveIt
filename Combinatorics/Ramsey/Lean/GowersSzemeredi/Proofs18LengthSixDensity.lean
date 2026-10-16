@@ -64,7 +64,7 @@ theorem RecipPowerLB.inf {X : Real} {c1 c2 : Real → Real} {a b : Nat}
     RecipPowerLB X (fun t => min (c1 t) (c2 t)) a b := by
   intro s hs hs1
   obtain ⟨p1, q1, r1⟩ := h1 s hs hs1
-  obtain ⟨p2, q2, r2⟩ := h2 s hs hs1
+  obtain ⟨p2, _, r2⟩ := h2 s hs hs1
   show 0 < min (c1 s) (c2 s) ∧ min (c1 s) (c2 s) ≤ 1 ∧
     (min (c1 s) (c2 s))⁻¹ ≤ X ^ a * s⁻¹ ^ b
   refine ⟨lt_min p1 p2, (min_le_left _ _).trans q1, ?_⟩

@@ -22,7 +22,7 @@ theorem section16_lift_width_rounding {w : ℝ} (hw : 16 ≤ w) :
     linarith
   obtain ⟨_, hlower⟩ := floor_half_lower (show 2 ≤ Real.sqrt w / 2 by linarith)
   refine ⟨v, by dsimp [v]; omega, ?_, ?_⟩
-  · have hv0 : (0 : ℝ) ≤ v := Nat.cast_nonneg _
+  · have _ : (0 : ℝ) ≤ v := Nat.cast_nonneg _
     have hsquare : (v : ℝ) ^ 2 ≤ (Real.sqrt w / 2 + 1) ^ 2 := by nlinarith
     nlinarith
   · simp only [v, Nat.add_sub_cancel]

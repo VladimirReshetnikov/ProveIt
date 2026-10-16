@@ -194,7 +194,7 @@ theorem split_step_basics {k : Nat} {V V' : Real} (hV : 1 ≤ V) (hVV : V ≤ V'
       (2 / (gamma * classBudget theta gamma k) ≤ W ^ (stepP k + 1)) ∧
       (2 / (classDelta theta gamma k * classBudget theta gamma k) ≤ W ^ (stepP k + 1)) := by
   intro ν W
-  obtain ⟨hw2, huw, hrw, hVw, hV'w⟩ := split_w_facts hV hVV hg hg1 ht ht1 hr hr1
+  obtain ⟨hw2, huw, _, _, _⟩ := split_w_facts hV hVV hg hg1 ht ht1 hr hr1
   obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   have hm := classPieces_le_stepP k hg hg1 ht ht1
   have hgd := twoDiv_gamma_le k hg hg1 ht ht1

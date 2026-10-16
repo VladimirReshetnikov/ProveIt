@@ -16,7 +16,7 @@ theorem section16GoodDomain_card {N k : Nat} [NeZero N]
   apply Finset.card_bij (fun z _ => (section16Init z, section16Last z))
   · intro z hz
     simpa only [Finset.mem_filter, Finset.mem_univ, true_and] using hz
-  · intro z hz w hw heq
+  · intro z _ w _ heq
     have hi := congrArg Prod.fst heq
     have hl := congrArg Prod.snd heq
     dsimp only at hi hl

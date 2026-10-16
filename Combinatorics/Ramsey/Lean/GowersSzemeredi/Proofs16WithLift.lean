@@ -79,7 +79,7 @@ theorem Section16SampledOrAnchoredOn.synchronized_compressed_cover_with
       (∀ j ij, IsMultilinear (nu j ij)) ∧
       ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z := by
   classical
-  obtain ⟨p, H, b, P, n, R, mu, hp, hH, hHm, hPpart, hPproper,
+  obtain ⟨p, H, b, P, n, R, mu, hp, hH, hHm, hPpart, _,
       hPaxes, hPstep, hRpart, hRproper, hRwidth, hmu, hc⟩ :=
     hslice.short_parent_cover ε hε hε1 hPb hEb T I hT hI hk hm hmT hmI
   let e := section5NatFlattenEquiv n
@@ -247,7 +247,7 @@ theorem section16_local_affine_lift_all_scales_with {N k q r m : Nat} [Fact N.Pr
     refine ⟨1, P.carrier, L, fun j => pointSingletonBox (x j),
       fun j _ _ => phi (x j), by simpa using hPb, Finset.Subset.rfl, ?_, hpart, ?_,
       fun j _ => isMultilinear_constant _, ?_⟩
-    · have hn : (0 : ℝ) ≤ P.carrier.card := Nat.cast_nonneg _
+    · have _ : (0 : ℝ) ≤ P.carrier.card := Nat.cast_nonneg _
       nlinarith
     · intro j
       refine ⟨pointSingletonBox_isProper _, ?_⟩
@@ -391,7 +391,7 @@ theorem Section16AllBoxLineCoversWith.explicit_multilinear_cover_with {N k : Nat
   have hσ1 : sigma ≤ 1 := by dsimp [sigma]; linarith
   obtain ⟨qGamma, qDelta, hqG, hqD, hcover⟩ := hline sigma hσ hσ1 m P hP hm
   refine ⟨qGamma, qDelta, hqG, hqD, ?_⟩
-  intro l r
+  intro l _
   have hl : 0 ≤ l := by
     have hz := (section16Zeta_pos_le_half k ht ht1 hg hg1).1
     dsimp only [l]

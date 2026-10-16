@@ -137,7 +137,7 @@ private lemma fejerWeight_event {X : Type*} [DecidableEq X]
         have hfalse (S : Finset X) (hS : S ∈ U.powerset) : ¬ C ⊆ S := by
           intro hCS
           exact ha (Finset.mem_powerset.mp hS (hCS haC))
-        have hins (S : Finset X) (hS : S ∈ U.powerset) :
+        have hins (S : Finset X) (_ : S ∈ U.powerset) :
             (C ⊆ insert a S) ↔ C₀ ⊆ S := by
           rw [hCeq, Finset.insert_subset_iff]
           constructor
@@ -177,7 +177,7 @@ private lemma fejerWeight_event {X : Type*} [DecidableEq X]
           · subst x
             exact (haC hx).elim
           · exact hxU
-        have hevent (S : Finset X) (hS : S ∈ U.powerset) :
+        have hevent (S : Finset X) (_ : S ∈ U.powerset) :
             (C ⊆ insert a S) ↔ C ⊆ S := by
           constructor
           · intro hsub x hx
@@ -263,7 +263,7 @@ private lemma exists_subset_count_score {X E : Type*} [DecidableEq X]
         rw [Finset.mul_sum]
         rw [← Finset.sum_sub_distrib]
         apply Finset.sum_congr rfl
-        intro S hS
+        intro S _
         ring
   by_contra hno
   push Not at hno
@@ -1372,8 +1372,8 @@ private lemma fejer_carrier_score_lower {N k : Nat} [NeZero N]
       _ ≤ ∑ R ∈ fejerGoodArrangements B phi,
           ∏ z ∈ fejerCarrier R, fejerKernelWeight m C phi z := by
         apply Finset.sum_le_sum_of_subset_of_nonneg hgoodSub
-        intro R hR hnot
-        exact Finset.prod_nonneg fun z hz ↦ hp0 z
+        intro R _ _
+        exact Finset.prod_nonneg fun z _ ↦ hp0 z
   have hbadSplit :
       (∑ R ∈ fejerBadArrangements B phi,
           ∏ z ∈ fejerCarrier R, fejerKernelWeight m C phi z) =
@@ -1398,8 +1398,8 @@ private lemma fejer_carrier_score_lower {N k : Nat} [NeZero N]
         (∑ R ∈ badDeg, ∏ z ∈ fejerCarrier R, fejerKernelWeight m C phi z) ≤
           ∑ _R ∈ badDeg, (1 : Real) := by
       apply Finset.sum_le_sum
-      intro R hR
-      exact Finset.prod_le_one (fun z hz ↦ hp0 z) (fun z hz ↦ hp1 z)
+      intro R _
+      exact Finset.prod_le_one (fun z _ ↦ hp0 z) (fun z _ ↦ hp1 z)
     have hsub : badDeg ⊆ fejerDegenerateFinset N k m := by
       intro R hR
       have hR' := Finset.mem_filter.mp hR

@@ -36,7 +36,7 @@ theorem section16_uniform_lift_controls {q k : Nat} {sigma theta gamma s : Real}
     (one_le_mul_of_one_le_of_one_le hr1 hs) hparam
   refine ⟨ha, ?_⟩
   let b := (multipleQ (((r : Real) * s)⁻¹ * sigma) gamma k) ^ ((r : Real) * s)
-  let B := (multipleQ (((R : Real) * s)⁻¹ * sigma) gamma k) ^ ((R : Real) * s)
+  let _ := (multipleQ (((R : Real) * s)⁻¹ * sigma) gamma k) ^ ((R : Real) * s)
   have hb0 : 0 ≤ b := (zero_le_one.trans
     (section16_slice_control_ranges (k := k) hr hs hg hg1 hσ hσ1).2.2)
   exact section16_compressed_budget_mono hrR hb0 hb

@@ -181,7 +181,7 @@ theorem corollary_3_6_holds : corollary_3_6 := by
     have := hdesc htop'
     simpa only [show (i : Nat) - 1 + 1 = (i : Nat) by omega] using this
   have hcor := corollary_3_3_holds N k hkN (fun _ : Fin k ↦ A)
-    (fun _ : Fin k ↦ delta) eta heta0 (by intro i; exact hcard) hUniformEach
+    (fun _ : Fin k ↦ delta) eta heta0 (by intro _; exact hcard) hUniformEach
   have hprod : (∏ _i : Fin k, delta) = delta ^ k := by simp
   rw [hprod] at hcor
   have herror : (2 : Real) ^ k * eta ≤ delta ^ k / 2 :=

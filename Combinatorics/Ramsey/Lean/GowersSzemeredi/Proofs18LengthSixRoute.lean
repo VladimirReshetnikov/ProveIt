@@ -94,7 +94,7 @@ theorem sixC_pos_le {Qb : Nat → Real → Real → Real → Real}
     ∀ t, 0 < t → t ≤ 1 → 0 < sixC Qb alpha t ∧ sixC Qb alpha t ≤ 1 := by
   intro t ht ht1
   obtain ⟨a1, a2⟩ := liftLastC_iterate_pos_le (sixBaseC_pos_le hQb alpha 1) 2 t ht ht1
-  obtain ⟨b1, b2⟩ := liftLastC_iterate_pos_le (sixBaseC_pos_le hQb alpha 2) 1 t ht ht1
+  obtain ⟨b1, _⟩ := liftLastC_iterate_pos_le (sixBaseC_pos_le hQb alpha 2) 1 t ht ht1
   exact ⟨lt_min a1 b1, (min_le_left _ _).trans a2⟩
 
 theorem sixW_mono (Eb : Nat → Real → Real → Real → Real) (alpha : Real) :

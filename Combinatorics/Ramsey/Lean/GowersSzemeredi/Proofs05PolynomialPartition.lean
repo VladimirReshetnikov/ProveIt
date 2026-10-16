@@ -503,7 +503,7 @@ private lemma centeredAbs_le_of_mem_centeredInterval {N M : Nat} [NeZero N]
   obtain ⟨z, hz, rfl⟩ := hx
   simp only [Finset.mem_Ico] at hz
   by_cases hboundary : z * 2 = -(N : Int)
-  · have hNM : N ≤ 2 * M := by
+  · have _ : N ≤ 2 * M := by
       exact_mod_cast (show (N : Int) ≤ 2 * M by linarith)
     have hhalf : N / 2 ≤ M := by omega
     exact (ZMod.natAbs_valMinAbs_le (z : ZMod N)).trans hhalf

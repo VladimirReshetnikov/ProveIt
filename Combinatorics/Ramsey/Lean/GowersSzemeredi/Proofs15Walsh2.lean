@@ -23,7 +23,7 @@ theorem parityCharacter_eq_prod {N k : Nat}
   rw [← Finset.prod_const]
   rw [Finset.prod_filter]
   apply Finset.prod_congr rfl
-  intro i hi
+  intro i _
   by_cases h : e i = true <;> simp [h]
 
 theorem walshProduct_eq_parity {N k : Nat}
@@ -37,7 +37,7 @@ theorem walshProduct_eq_parity {N k : Nat}
         ∏ _i : Fin k, (-1 : ZMod N) := by simp
   rw [hconst, ← Finset.prod_mul_distrib]
   apply Finset.prod_congr rfl
-  intro i hi
+  intro i _
   cases e i <;> simp [walshSign]
 
 /-- **Corollary 15.2.** Translate the Boolean cube to the sign cube and
@@ -80,10 +80,10 @@ theorem corollary_15_2_holds : corollary_15_2 := by
     intro A y
     unfold signedWalshMoment booleanWalshMoment
     apply Finset.sum_congr rfl
-    intro e he
+    intro e _
     congr 1
     apply Finset.prod_congr rfl
-    intro i hi
+    intro i _
     exact hcoord y i (e i)
   have hsigned :
       ∀ (A : Finset (Fin k)) (y z : Point N k),
