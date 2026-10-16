@@ -31,7 +31,7 @@ def main() -> None:
            for name in ("ProfileCongruence", "PositiveClosure", "Bootstrap", "DeepPositiveClosure",
                         "DefinableClosure", "ProfilePairs", "ProfileCollection", "ProfileSyntax",
                         "ProfileModel", "ProfileComposition", "CompositionModel", "QuotientModel",
-                        "ProfileAxioms", "PowerSyntax",
+                        "ProfileAxioms", "PowerSyntax", "PSCSaturation",
                         "StateReduction", "Table254", "Table252", "FormulaRPN", "Base3Encoding",
                         "Base3Syntax", "PartialTotalization", "WadeMachine",
                         "PSCCalibration") ),

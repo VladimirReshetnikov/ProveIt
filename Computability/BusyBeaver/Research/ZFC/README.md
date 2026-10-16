@@ -74,6 +74,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `QuotientModel.lean` | Actual quotient domain and membership congruence; computable equality-free formula translation, its satisfaction bridge and quotient Extensionality. |
 | `ProfileAxioms.lean` | Interpreted Empty, Pairing, Union, Separation, Power and partial Replacement under explicit instances/invariance hypotheses; singleton-closed containers, with ordinary Infinity still separate. |
 | `PowerSyntax.lean` | Fixed equality-free SubD/Power-filter matrices obtained from actual Form-indexed CP/GIC, including the bound for copies outside a transitive container. |
+| `PSCSaturation.lean` | Hereditary incoming-profile saturation, the purity cut and guarded PSC hull transfer under explicit per-instance semantic resources; no full first-order interpretation theorem yet. |
 | `PositiveClosure.lean` | Exact constant fibers, singletons, Power Set, gated decoder root coverage, Separation and Union, under explicit per-relation semantic closure instances. |
 | `Bootstrap.lean` | Pairing, Russell-root partial Replacement and Infinity under explicit per-relation instances and the earlier set constructions; Infinity needs no Extensionality. |
 | `DeepPositiveClosure.lean` | Actual `SetTheory.Form` wrapper with checked binder renamings, preserving equality-freeness; satisfaction equals the intended definable closure instance. |
@@ -111,7 +112,7 @@ uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
 This compiles the first-order logic, calculus and completeness modules,
-`ZF.Zf`, `BusyBeaver.Core`, the twenty-three research modules and the umbrella into a
+`ZF.Zf`, `BusyBeaver.Core`, the twenty-four research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the source check and axiom outputs. The pinned Lean toolchain must
@@ -183,11 +184,14 @@ first-order matrix adapters for those steps. The remaining set-existence lemmas
 are checked under explicit semantic instances. Their complete first-order
 adapters, the ordinary Infinity bridge and the ZFC consistency reduction remain.
 
-[raw_psc.md](raw_psc.md) records a further candidate without Extensionality:
-the settled consequences include exact images of locally subset-bounded
-fibers and power-bounding transitive containers. Its ZFC consistency
-calibration remains open. [bootstrap.md](bootstrap.md) details the checked
-forward existence arguments.
+[raw_psc.md](raw_psc.md) reconciles the earlier saturation proposal with
+[batch 144 source 08](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-144-source-08.md).
+That report supplies an accepted ordinary mathematical ZFC consistency
+calibration for equality-free subset PSC alone. `PSCSaturation.lean` checks
+its hereditary saturation and hull-transfer core under explicit resources;
+the equality-free bootstrap, full Form adapters and whole-theory/proof-code
+calibration remain to be connected in Lean. [bootstrap.md](bootstrap.md)
+details the earlier checked forward existence arguments.
 
 Run the Python regressions with:
 
