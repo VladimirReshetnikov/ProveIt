@@ -800,9 +800,9 @@ private lemma lemma134_sectionC_total {N : Nat} [NeZero N]
     ∑ h : ZMod N, section13C S h = arrangementCount 8 S.A := by
   classical
   unfold section13C arrangementCountAtHeight arrangementCount
-  simp_rw [gcs_countWhere_eq_sum_ite, ite_and]
-  rw [Finset.sum_comm]
-  simp
+  simp_rw [gcs_countWhere_eq_sum_ite]
+  rw [Finset.sum_comm]; apply Finset.sum_congr rfl; intro R _
+  by_cases hA : R.IsIn S.A <;> simp [hA]
 
 private lemma lemma134_sectionG_total {N : Nat} [NeZero N]
     (S : Section13Context N) :
@@ -810,9 +810,9 @@ private lemma lemma134_sectionG_total {N : Nat} [NeZero N]
       respectedArrangementCount 8 S.A S.phi := by
   classical
   unfold section13G respectedArrangementCountAtHeight respectedArrangementCount
-  simp_rw [gcs_countWhere_eq_sum_ite, ite_and]
-  rw [Finset.sum_comm]
-  simp
+  simp_rw [gcs_countWhere_eq_sum_ite]
+  rw [Finset.sum_comm]; apply Finset.sum_congr rfl; intro R _
+  by_cases hA : R.IsIn S.A <;> by_cases hR : R.IsRespected S.phi <;> simp [hA, hR]
 
 private lemma lemma134_sectionG_le_C {N : Nat} [NeZero N]
     (S : Section13Context N) (h : ZMod N) :
