@@ -362,3 +362,10 @@ without a new state bound or binary simulation theorem.
    complete binary interpreter.
 4. Establish the required ZFC-provable nonhalting/consistency equivalence before
    claiming the numerical candidate as an improvement on the benchmark.
+
+The [public 253-state fold complement](public253_fold_search.md) tests all 504
+folds of the two additional old states 5 and 84 while preserving every protected
+register-box row. Only the known 5→64 runtime fold survives all 8,391 affine
+cases; it does not reach the exact bootstrap frame within 2,000,000 steps.
+Fuel exhaustion remains unresolved. This bounded experiment supplies no new
+blank-start consistency machine or general minimality result.
