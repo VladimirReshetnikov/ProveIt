@@ -1,0 +1,100 @@
+INDEPENDENT AUDIT OF closure_tableau.py
+16 October 2026
+
+Inspected path:
+/workspace/scratch/04b8ac085b07/zfc_completion_proposal/code/closure_tableau.py
+
+Verdict: no logical soundness, completeness, freshness, or finite-code
+termination bug identified in the reviewed implementation. This is an
+ordinary independent code/mathematical audit, not a proof-assistant result.
+
+1. The private EPSC template correctly expresses the fixed-empty-input
+schema with local subset bounds, forward closure, and unrestricted support.
+Currying the two antecedents in its forward clause is valid; the y binder
+does not bind any occurrence in the empty-input/active-input condition.
+
+2. A template entry has a private role environment for labels 0..4 and a
+separately captured matrix-parameter map. Resolving HOLE discards the role
+namespace, preserves matrix parameters >=2, and overwrites only matrix
+roles 0 and 1 with the private current input/output values. The resulting
+ordinary matrix entry has no further hole interpretation. Therefore a
+matrix parameter named 2,3,4 does not collide with the private bound, hull,
+or dummy role. Bound variables inside the matrix shadow correctly through
+ordinary environment updates, including bindings of labels 0 or 1.
+
+3. The on-demand axiom action adds only actual EPSC instances. Its arbitrary
+finite matrix-parameter map can mention eigenparameters introduced earlier
+on that branch. This supplies the universal parameter instances needed for
+completeness and avoids the incompleteness of a fixed eager root list.
+
+4. Partial parameter maps with default value 0 lose no instances. Every
+matrix has finitely many free labels >=2. Any valuation is represented by
+the finite map on exactly those labels. All finite valid maps occur in the
+numeric list coding; lists with duplicate or reserved keys simply reject.
+
+5. The initial parameter 0 witnesses the intended nonempty first-order
+domain. It does not assert that its denotation differs from any later
+parameter. Eigenparameter freshness is syntactic, and the semantic model
+may assign distinct parameter names the same element.
+
+6. Freshness bookkeeping includes initial environment values, captured
+matrix-parameter values, the initial default 0, every positive universal's
+chosen parameter, and every negative universal's fresh parameter. Even
+unused explicit parameter values are tracked. The choice max(used)+1 for
+a negative universal is therefore safe. Positive universals may be
+instantiated repeatedly at arbitrary parameters; all quantifiers range
+over one common semantic domain.
+
+7. Positive implication has the two usual branches -antecedent and
++consequent. Negative implication adds +antecedent and -consequent to one
+branch. Complementary atoms must agree in both interpreted parameter IDs.
+Only +Bottom and -Truth close by the constant rule. Public check_refutation
+always fixes the initial root to -Bottom. The separate theorem demonstration
+interface is not called by the search.
+
+8. The exceptional-code formula codec is total. Codes 0 and 1 are Truth
+and Bottom; positive relation-residue quotients are shifted by one. Each
+recursive formula child is smaller than its parent. The sole formula
+normalization is I(Truth,Truth)=Truth, together with its recursive closure;
+it is logically harmless and needs to be stated when claiming injectivity
+on canonical formulas. encode(decode(n))=n is the intended numeric identity.
+
+9. Every proof-code child is strictly smaller than its parent. The current
+proof_decode revision uses an explicit work stack and memoized completed
+children, like the formula decoder. Shared completed subtrees cannot form
+cycles and are never mutated by the checker. Numeric-list tails strictly
+decrease. Formula decoding, proof decoding, and the acceptance checker are
+iterative; recursive encode/parse/demo helpers lie outside the numeric
+search. Physical memory exhaustion is an error, not rejection or a proof.
+
+10. Completeness has the standard fair-tableau proof. Schedule every
+positive universal at every parameter; expand every negative universal;
+add every matrix code under every finite parameter valuation; and expand
+every signed implication. Only positive implication branches. If no finite
+closed tableau exists, finite branching and fairness give an open Hintikka
+branch. Take the natural parameter names as a nonempty domain and interpret
+membership from positive atoms (otherwise false). The truth lemma follows
+by formula induction, using all instances for positive universals and the
+chosen witness for negative universals. Captured environments give the same
+lemma for schema entries. The fair axiom schedule makes the resulting model
+satisfy every EPSC instance and its universal parameter closure. Therefore
+inconsistency implies a finite accepted certificate. Every finite certificate
+tree has a numeric code, and enumeration eventually reaches it.
+
+11. Acceptance is primitive recursive in the abstract unbounded-integer/list
+model: finite proof unfolding is bounded by recursion on a strictly smaller
+numeric child; all matrix formulas and the fixed template are finite; each
+action adds finitely many entries; and eigenparameter values are bounded by
+the largest explicit parameter plus the number of proof actions. No search
+for a semantic witness occurs inside acceptance. The infinite enumerator
+is a separate partial recursive procedure.
+
+Independent execution:
+* All 12 provided ReferenceTests passed.
+* 768 additional direct-versus-lazy semantic comparisons passed over all
+  two-element membership relations, all valuations of free matrix parameters
+  2,3,4, and six matrices specifically chosen to collide with private roles
+  and to bind/shadow labels 0,1,2,3,4.
+
+These executions support the transcription and scope of the argument;
+they establish neither EPSC consistency nor a binary-machine state bound.

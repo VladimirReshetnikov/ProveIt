@@ -1,0 +1,49 @@
+{
+  "status": "FAILED context-reuse experiment; no certified optimized EPSC binary state count",
+  "input_dag": {
+    "artifact": "data/epsc271_dag.json",
+    "sha256": "a9fc1ea5eda5a9142ff183a6c0a1a94f429324cd1eebfd16dddd41d8afd0dc9f",
+    "nodes": 209,
+    "unfolded_instruction_sites": 5207,
+    "max_path_depth": 97,
+    "max_zero_run": 7,
+    "packaged_bytes_sha256": "a9fc1ea5eda5a9142ff183a6c0a1a94f429324cd1eebfd16dddd41d8afd0dc9f",
+    "identical_parsed_json": true
+  },
+  "source09_contract": {
+    "prepared_min_gap": 41,
+    "max_path_depth": 35,
+    "protected_register_box_rows": 55,
+    "emitter_kind": "Reuses modal old instruction entries and exact old decoder-subtree entries as a heuristic; full affine cases justify contextual reuse, not a generic compiler theorem."
+  },
+  "experiment": {
+    "gap_used": 103,
+    "reused_decoder_subtrees": 38,
+    "new_decoder_entries": 171,
+    "fresh_continue_scans": 3,
+    "protected_box_rows_unchanged": true,
+    "affine_fuel_per_case": 20000
+  },
+  "failures": [
+    {
+      "path": "010100",
+      "operation": "3.prooflist.inc",
+      "branch": "-",
+      "error": "Fail('fuel')"
+    },
+    {
+      "path": "11101001001011111111111111111111111111111111111111111111111111111111111111111111111111010",
+      "operation": "3.param2.inc",
+      "branch": "-",
+      "error": "Fail('fuel')"
+    },
+    {
+      "path": "11101001001011111111111111111111111111111111111111111111111111111111111111111111111111011",
+      "operation": "_continue.2",
+      "branch": "-",
+      "error": "Fail('fuel')"
+    }
+  ],
+  "meaning": "The direct contextual reuse fails its instruction semantics certificate. No emitted table from this failed attempt is delivered and no optimized binary state count is claimed. A different decoder shape and instruction interface, together with a compatible initialized gap, must be certified. Prior Wade-node or baseline-machine savings cannot be subtracted from a new program by arithmetic.",
+  "separate_diagnostics": "A later direct generic interface can be certified but uses different emission and explicit initialization; it is not evidence that this optimized reuse succeeds."
+}
