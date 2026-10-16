@@ -1,0 +1,35 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18UniformCovers.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18UniformCovers.lean
+index 5dcc24b1e..4d8b47edf 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18UniformCovers.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18UniformCovers.lean
+@@ -70,10 +70,6 @@ theorem uCount_mono {V V' : Real} (hV : 1 ≤ V) (hVV : V ≤ V') {D D' : Nat} (
+ theorem one_le_uCount (V : Real) (D : Nat) (gamma theta rho : Real) :
+     1 ≤ uCount V D gamma theta rho := le_max_left _ _
+ 
+-theorem uCount_pos {V : Real} (_hV : 1 ≤ V) (D : Nat) {gamma theta rho : Real}
+-    (_hg : 0 < gamma) (_hg1 : gamma ≤ 1) (_ht : 0 < theta) (_ht1 : theta ≤ 1) (_hr : 0 < rho)
+-    (_hr1 : rho ≤ 1) : 1 ≤ uCount V D gamma theta rho := one_le_uCount V D gamma theta rho
+-
+ theorem uExp_pos_le (V : Real) (D : Nat) (gamma theta rho : Real) :
+     0 < uExp V D gamma theta rho ∧ uExp V D gamma theta rho ≤ 1 := by
+   have h1 := one_le_uCount V D gamma theta rho
+@@ -187,9 +183,6 @@ theorem classV_mono (Kc pc : Nat → Nat) {j k : Nat} (h : j ≤ k) :
+ /-- The uniform degree in dimension `k`. -/
+ def uDeg (k : Nat) : Nat := 2 ^ (76 * 2 ^ k)
+ 
+-theorem uDeg_mono : Monotone uDeg := fun j k h =>
+-  Nat.pow_le_pow_right (by norm_num) (Nat.mul_le_mul_left _ (Nat.pow_le_pow_right (by norm_num) h))
+-
+ /-- The split degrees fit the uniform degree. -/
+ theorem split_pair_le_uDeg {l : Nat} (hl : 2 ≤ l) :
+     (splitPair l).1 + (splitPair l).2 + l + 1 ≤ uDeg l := by
+@@ -246,6 +239,8 @@ theorem uniformCovers_of_classes (Kc pc : Nat → Nat) (hK : ∀ k, 1 ≤ Kc k)
+       · intro g t s hg hg1 ht ht1 hs hs1
+         show (uCount _ _ g t s)⁻¹ ≤ _
+         rw [uCount_eq hVl _ hg hg1 ht ht1 hs hs1]
+-    exact P.uniform_mono hVl (classV_mono Kc pc hlk) (uDeg_mono hlk)
++    exact P.uniform_mono hVl (classV_mono Kc pc hlk)
++      (Nat.pow_le_pow_right (by norm_num)
++        (Nat.mul_le_mul_left _ (Nat.pow_le_pow_right (by norm_num) hlk)))
+ 
+ end LeanProofs.GowersSzemeredi

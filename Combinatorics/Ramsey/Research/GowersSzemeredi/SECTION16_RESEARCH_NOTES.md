@@ -9627,6 +9627,46 @@ conclusions are unchanged. The documented Lemma 16.10 correction and original-pa
 fidelity qualifications remain; catalogue coverage is not a fidelity certificate.
 Unapplied source-only proposals contribute no savings or validation claims to
 this checkpoint.
+### L.111. Removing unused helpers and inlining single-use proofs
+
+Merged source `aca2a610c9b3722e66e8cf415bca374e9f28cb1a` incorporates incoming
+`04fd0fb36e46ff05373664236758eff99665bded` after checkpoint `cb7319ce`.
+The 70 changed production owners contain 1,386 fewer source lines. The core
+and stronger-final closures each lose 1,386 lines; the original `Final` closure
+loses 1,320. Imports and module counts are unchanged. The merge preserves the
+local shared additive proof instead of restoring an obsolete private helper
+chain, and corrects two comments that referred to deleted helpers.
+
+The source review verifies 1,253 retained declaration headers and contexts.
+It records 129 removed intermediate names, including 76 public names with no
+remaining repository callers; external callers of those names may need changes.
+Eight final-facing source files, including the strengthened bounds, progression
+definitions and axiom audit, are byte-identical to the passed a879 checkpoint.
+
+All three commands passed on the merged source with exit 0: the 572-module core,
+the shared command with 65 roots and a 1,915-module footer, and the supplemental
+command with 18 roots and a 351-module footer. Their sequential receipts record
+source and artifact stability across 1,964 distinct modules and 1,971 protected
+inputs. These checks include up-to-date dependencies. The 84 own-root closure
+rows are metadata, not separate command outcomes. The selected scope covers
+1,628 of 1,631 affected consumers; only the three protected aggregate facades
+are excluded. Prior a879 outcomes remain separate historical evidence.
+
+The inventory comparison preserves 120 ordered rows and 544 companion
+occurrences. Only 27 line-location fields change; four arrays are restored by
+whole-object permutations, preserving names, duplicates and qualifications.
+The [archive index](verification/2026-10-16-merge04fd-evidence/index.json) and
+[evidence map](verification/2026-10-16-merge04fd-evidence/evidence-map.json)
+bind 177 copied evidence files, plus the index and map, to the actual commands,
+committed source, merge review and inventory evidence. The archive helper
+completed its evidence and stability checks; artifact checks use freshness,
+mtime and size rather than artifact-content hashes.
+
+Final bounds and ordinary positive-step progression conclusions are unchanged.
+The accepted Lemma 16.10 correction and original-paper fidelity qualifications
+remain; catalogue coverage is not a fidelity certificate. Unapplied future
+proposals contribute no source savings or validation claims to this checkpoint.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

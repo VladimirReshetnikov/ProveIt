@@ -1,0 +1,23 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13CompleteSquareExtraction.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13CompleteSquareExtraction.lean
+index 9e461b7be..0409bfc11 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13CompleteSquareExtraction.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13CompleteSquareExtraction.lean
+@@ -89,18 +89,4 @@ theorem section13_complete_square_extraction_all_densities {alpha : Real}
+     linarith only [hNpower, hpower, hsize']
+   · simpa only [hS] using hmass
+ 
+-/-- The earlier small-density API remains a specialization of the full
+-range theorem, with identical quantitative output. -/
+-theorem section13_complete_square_extraction {alpha : Real}
+-    (hα : 0 < alpha) (hαsixth : alpha ≤ 1 / 6) :
+-    ∃ N₀ : Nat, ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N),
+-      S.alpha = alpha → N₀ ≤ N →
+-      ∃ V W : ModAP N, ∃ B : Finset (Pair N),
+-        V.step != 0 ∧ V.step = W.step ∧ V.IsProper ∧ W.IsProper ∧ V.length = W.length ∧
+-        (N : Real) ^ section13SquareExponent alpha ≤ V.length ∧
+-        B ⊆ S.A ∧ B ⊆ V.carrier.product W.carrier ∧
+-        (2 : Real) ^ (-(137 : Int)) * alpha ^ 704 * V.length * W.length ≤ B.card ∧
+-        BilinearOn B S.phi := by
+-  exact section13_complete_square_extraction_all_densities hα (hαsixth.trans (by norm_num))
+-
+ end LeanProofs.GowersSzemeredi

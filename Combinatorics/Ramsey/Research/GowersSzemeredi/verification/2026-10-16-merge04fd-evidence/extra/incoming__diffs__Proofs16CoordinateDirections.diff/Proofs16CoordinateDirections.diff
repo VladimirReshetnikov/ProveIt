@@ -1,0 +1,19 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16CoordinateDirections.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16CoordinateDirections.lean
+index c4569772a..f301ce170 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16CoordinateDirections.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16CoordinateDirections.lean
+@@ -14,14 +14,6 @@ def coordinateDirectionSplit {d : Nat} (s : Finset (Fin d)) :
+       ((Equiv.subtypeEquivRight (fun i => (Finset.mem_compl (s := s) (a := i)).symm)).trans
+         (sᶜ.equivFinOfCardEq rfl)))
+ 
+-theorem coordinateDirectionSplit_symm_inl {d : Nat} (s : Finset (Fin d))
+-    (i : Fin s.card) :
+-    (coordinateDirectionSplit s).symm (Sum.inl i) = (s.equivFinOfCardEq rfl).symm i := rfl
+-
+-theorem coordinateDirectionSplit_symm_inr {d : Nat} (s : Finset (Fin d))
+-    (i : Fin sᶜ.card) :
+-    (coordinateDirectionSplit s).symm (Sum.inr i) = (sᶜ.equivFinOfCardEq rfl).symm i := rfl
+-
+ def CoordinateFace.direction {N d l : Nat} (F : CoordinateFace N d l) : Finset (Fin d) :=
+   Finset.univ.image F.free
+ 

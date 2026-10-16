@@ -1,0 +1,24 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AffineClasses.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AffineClasses.lean
+index 14abde3fd..3b1afdde5 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AffineClasses.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AffineClasses.lean
+@@ -37,19 +37,6 @@ theorem finite_graph_cover_partition {X Y : Type*} [DecidableEq X]
+       exact (hcover x hxB).choose_spec
+     simpa only [hlabel] using hchosen
+ 
+-/-- Every fibrewise affine graph cover can be partitioned into affine
+-classes without increasing the number of graphs. -/
+-theorem affine_graph_cover_partition {N q : Nat} [NeZero N]
+-    (hq : 0 < q) (B : Finset (ZMod N)) (f : ZMod N → ZMod N)
+-    (ell : Fin q → ZMod N → ZMod N) (hell : ∀ i, LinearOn Finset.univ (ell i))
+-    (hcover : ∀ x ∈ B, ∃ i, f x = ell i x) :
+-    ∃ C : Fin q → Finset (ZMod N), IsPartition C B ∧ ∀ i, LinearOn (C i) f := by
+-  obtain ⟨C, hpart, hC⟩ := finite_graph_cover_partition hq B f ell hcover
+-  refine ⟨C, hpart, ?_⟩
+-  intro i
+-  obtain ⟨a, b, hab⟩ := hell i
+-  exact ⟨a, b, fun x hx => (hC i x hx).trans (hab x (Finset.mem_univ _))⟩
+-
+ /-- The same construction works on a finite column space embedded in the
+ field, as required for a progression J smaller than the full modulus. -/
+ theorem affine_column_cover_partition {N q : Nat} [NeZero N]

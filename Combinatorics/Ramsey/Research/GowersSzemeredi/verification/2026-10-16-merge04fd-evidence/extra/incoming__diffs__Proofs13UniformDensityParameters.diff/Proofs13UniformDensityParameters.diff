@@ -1,0 +1,21 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13UniformDensityParameters.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13UniformDensityParameters.lean
+index 75bd2576a..db7d86c16 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13UniformDensityParameters.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13UniformDensityParameters.lean
+@@ -31,16 +31,6 @@ theorem section13Zeta_mono {a b : Real} (ha : 0 < a) (hab : a ≤ b) (hb : b ≤
+       _ ≤ _ := Real.rpow_le_rpow_of_exponent_ge hbpos hb (by linarith only [hK])
+   exact mul_le_mul htwo hp (Real.rpow_nonneg ha.le _) (Real.rpow_nonneg (by norm_num) _)
+ 
+-/-- The concrete square exponent increases with the density. -/
+-theorem section13SquareExponent_mono {a b : Real} (ha : 0 < a) (hab : a ≤ b) :
+-    section13SquareExponent a ≤ section13SquareExponent b := by
+-  rw [section13SquareExponent_formula, section13SquareExponent_formula]
+-  have hb : 0 < b := ha.trans_le hab
+-  apply div_le_div₀ (mul_nonneg (zpow_nonneg (by norm_num) _) (pow_nonneg hb.le _))
+-    (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ ha.le hab 1856) (by positivity)) (by positivity)
+-  exact Real.rpow_le_rpow_of_exponent_le (by norm_num)
+-    (mul_le_mul_of_nonneg_left (section13Q_antitone ha hab) (by norm_num))
+-
+ /-- Twice the exponential margin used earlier, available because Q>=2. -/
+ theorem four_mul_cube_lt_two_rpow_seven {Q : Real} (hQ : 2 ≤ Q) :
+     4 * Q ^ 3 < (2 : Real) ^ (7 * Q) := by

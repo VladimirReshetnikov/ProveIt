@@ -1,0 +1,13 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16UniformLiftParameters.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16UniformLiftParameters.lean
+index e5eee82f4..28e361244 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16UniformLiftParameters.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16UniformLiftParameters.lean
+@@ -105,8 +105,4 @@ theorem section16UniformLiftExponent_pos {k : Nat} (hk : 0 < k)
+   div_pos (mul_pos (section16LineWidthExponent_pos hk hσ ht ht1 hg hg1 _)
+     (section16UniformSliceExponent_pos k hσ hg hs)) (by norm_num)
+ 
+-theorem section16UniformLiftThreshold_one_le (sigma theta gamma s : Real) (k : Nat) :
+-    1 ≤ section16UniformLiftThreshold sigma theta gamma s k :=
+-  (positivePowerThreshold_one_le _ _ _).trans (le_max_left _ _)
+-
+ end LeanProofs.GowersSzemeredi

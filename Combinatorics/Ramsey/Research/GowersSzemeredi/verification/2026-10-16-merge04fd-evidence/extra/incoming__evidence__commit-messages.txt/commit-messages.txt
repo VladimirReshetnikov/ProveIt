@@ -1,0 +1,152 @@
+commit 04fd0fb36e46ff05373664236758eff99665bded
+Author:     Vladimir Reshetnikov <v.reshetnikov@gmail.com>
+AuthorDate: Fri Oct 16 02:01:06 2026 -0700
+Commit:     Vladimir Reshetnikov <v.reshetnikov@gmail.com>
+CommitDate: Fri Oct 16 02:01:06 2026 -0700
+
+    Inline 29 short single-use lemmas as local have blocks
+    
+    A single-use lemma with a proof of up to six lines is inlined
+    (inline_have.py) when its only use is a whole line of the form
+    `have h := L args`, `have h : T := L args` or `exact L args`. The use
+    becomes the idiomatic
+    
+        have h : T := by        -- T: the caller's own annotation if it had
+          <lemma tactics>       --    one, else the lemma's statement
+    
+    or, for `exact`, the lemma's tactics spliced in place. Parameters are
+    replaced by the arguments, and the lemma is deleted. Each rewrite was
+    elaborated and kept only if the module compiled.
+    
+    Examples: residueChunkFamily_isProper and the residue-chunk length
+    bounds (Proofs02Partition), the BSG constant bounds bsg_c_le_one and
+    bsg_delta_le_one, fourthMoment_eq_correlationEnergy, the Fejer
+    selection helpers, and sq_le_two_tDegT3 in Proofs18FinalStep.
+    
+    Not inlined:
+    - nine whose uses do not elaborate after substitution, for example where
+      a hypothesis name is used as a `rw ... at` location;
+    - four whose substituted statements would contain applied lambdas or
+      run past 100 columns: extraction_product_filter_card_first/second,
+      iteratedRealDifference_scaled_full, fejerArrangementVertex_decode;
+    - every lemma used inside an expression or a tactic list, and every
+      proof longer than six lines.
+    
+    Long `have` headers were wrapped after the colon; no file gains a line
+    over 100 columns.
+    
+    19 files, +133 / -268 lines.
+    
+    Verification: the 19 modules rebuilt (heal_build: SUCCESS); no olean
+    older than its source; 0 duplicated names; final-route stub check
+    passes with only approved axioms.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit e81621153a02e3e3aa4fa31cadfc225220eb8d0f
+Author:     Vladimir Reshetnikov <v.reshetnikov@gmail.com>
+AuthorDate: Fri Oct 16 01:10:50 2026 -0700
+Commit:     Vladimir Reshetnikov <v.reshetnikov@gmail.com>
+CommitDate: Fri Oct 16 01:10:50 2026 -0700
+
+    Inline 14 single-use lemmas whose proof is one or two lines
+    
+    Among the 1,306 single-use declarations on the final route, a lemma
+    whose proof has at most two lines costs more in docstring, signature
+    and spacing than in proof. inline_short.py replaces its single
+    application by the proof itself, with the arguments substituted. Where
+    the proof needs its type to elaborate, it uses `show STATEMENT by
+    TACTICS`. `by exact t` becomes `t`, and a surrounding pair of
+    parentheses is reused instead of nested.
+    
+    Inlined: chunkCount_pos, recurrenceExponent_nonneg,
+    audit_profile_shift_four, audit_card_cube_le, audit_anchor,
+    audit_regular_card_bound, audit_eta_eq_pow, self_mem_fibre,
+    context_zero_notMem_right, tower_power_identity,
+    section16_remainder_vertices_two, threeSliceBase_nonneg,
+    restrictToCell_uniformEnergy_le, uDeg_mono. At its one use, uDeg_mono's
+    `(show Monotone uDeg from fun j k h => ...) hlk` is beta-reduced to the
+    body applied to `hlk`. Lines the inlining made longer than 100
+    characters were rewrapped; no file gains an over-long line.
+    
+    Kept: polynomialPartitionThreshold_sixteen_pow and extractionMode_max
+    (no inlined form elaborates), and the 669 single-use lemmas with proofs
+    of five lines or more. Splicing those into their users would bury
+    separately checked, documented steps and risks per-declaration
+    heartbeat limits.
+    
+    10 files, +25 / -79 lines.
+    
+    Verification: the 10 modules rebuilt (heal_build: SUCCESS); no olean
+    older than its source; 0 duplicated names; final-route stub check
+    passes with only approved axioms.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit 9d5ca068b41bcb159aa9666038f69fe14c2f990c
+Author:     Vladimir Reshetnikov <v.reshetnikov@gmail.com>
+AuthorDate: Fri Oct 16 00:42:08 2026 -0700
+Commit:     Vladimir Reshetnikov <v.reshetnikov@gmail.com>
+CommitDate: Fri Oct 16 00:42:08 2026 -0700
+
+    Record the inlining and dead-code passes, correcting a miscount
+    
+    SECTION16_RESEARCH_NOTES.md, L.105: an addendum on inlining single-use
+    declarations (8 wrappers in d44616a, 13 definitions in 68ad8d3, and why
+    the remaining 1,300 single-use lemmas and the statement-level
+    definitions stay) and on dead-code removal. cc482c5 deleted 87
+    declarations, not the 89 its title states (the diff has 87 removed
+    declaration headers); the 18 standalone results kept are listed.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+
+commit cc482c540e5c067314da2b938fd4f339b2d03036
+Author:     Vladimir Reshetnikov <v.reshetnikov@gmail.com>
+AuthorDate: Fri Oct 16 00:41:16 2026 -0700
+Commit:     Vladimir Reshetnikov <v.reshetnikov@gmail.com>
+CommitDate: Fri Oct 16 00:41:16 2026 -0700
+
+    Delete 89 dead declarations from final-route modules
+    
+    A declaration counts as dead when (dead_decls.py):
+    - no declaration of the Proofs18Final environment uses it, with
+      auxiliary constants folded into their owners;
+    - its name occurs nowhere else in any .lean file, including modules
+      outside the final route, modules without a local olean, and audits;
+    - it is not mentioned in any non-Lean file (notes, status files,
+      verification records);
+    - it is not paper-named, and carries no attribute.
+    
+    The first scan found 77 such declarations. Git history separated them:
+    - 28 orphans: the name once appeared in another module, so a later
+      refactor removed its last user (or it is private);
+    - 49 standalone declarations, never used outside their own module.
+    
+    Deleted: the orphans and private declarations, plus the 31 standalone
+    helpers of at most 16 lines (monotonicity, positivity and symmetry
+    facts, small cardinality and threshold identities). Then repeated
+    rescans deleted what those deletions orphaned in turn, six rounds to a
+    fixpoint (e.g. the stage-13.5 encodings, the large-class pruning
+    helpers, proper_short_product_recurrence and
+    proper_product_multilinear_recurrence).
+    
+    Kept on purpose: 18 standalone results of 18 lines or more that were
+    written as results in their own right. Examples: the interval and
+    explicit cyclic quadratic dichotomies, the Lemma 13.5 mod-four
+    counterexample, the Section 18 cyclic consequence of Theorem 18.1, and
+    several Section 16 cover and slice-provider theorems. They are unused
+    but are not leftovers.
+    
+    delete_decls.py removes a declaration with its docstring and any
+    `set_option ... in` / `open ... in` prefix, and keeps a module's
+    deletions only if the module still compiles. No modifier was left
+    attached to a different declaration.
+    
+    53 files, -1201 lines. Public-theorem counts in inventories built from
+    the source go down accordingly.
+    
+    Verification: every changed module rebuilt (heal_build: SUCCESS); no
+    olean older than its source; 0 duplicated names; final-route stub check
+    passes with only approved axioms.
+    
+    Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>

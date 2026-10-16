@@ -1,0 +1,143 @@
+{
+  "status": "PASS_WITH_NONBLOCKING_DOCUMENTATION_FINDINGS",
+  "review_kind": "Independent incoming source/API review only; no native execution or merged-source acceptance",
+  "baseline": "68ad8d39173bf0494fa46154869ccea9b1a3c623",
+  "incoming": "04fd0fb36e46ff05373664236758eff99665bded",
+  "bare_repository": "/tmp/gowers-origin04fd-source-review.git",
+  "current_worktree_anchor": "a87906dc3960604bc3a0b423868d392b43ba85c0",
+  "summary": {
+    "changed_files": 75,
+    "lean_files": 70,
+    "errors": [],
+    "retained": 1253,
+    "removed": 130,
+    "removed_kinds": {
+      "lemma": 45,
+      "theorem": 75,
+      "def": 8,
+      "abbrev": 2
+    },
+    "removed_private": 54,
+    "retained_changed_headers": [],
+    "retained_changed_blocks": 37,
+    "added": 0,
+    "import_changes": [],
+    "ambient_command_changes": [
+      "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerPrimeThresholdEnvelope.lean"
+    ],
+    "source_delta": -1390,
+    "commit_counts": {
+      "cc482c540": {
+        "owners": 53,
+        "removed": 87,
+        "private": 22,
+        "source_line_delta": -1201
+      },
+      "e81621153": {
+        "owners": 10,
+        "removed": 14,
+        "private": 10,
+        "source_line_delta": -54
+      },
+      "04fd0fb36e46ff05373664236758eff99665bded": {
+        "owners": 19,
+        "removed": 29,
+        "private": 22,
+        "source_line_delta": -135
+      }
+    }
+  },
+  "retained_statement_checks": {
+    "retained_normal_declarations": 1253,
+    "unchanged_complete_blocks": 1216,
+    "rewritten_existing_blocks": {
+      "lemma": 19,
+      "theorem": 16,
+      "def": 2
+    },
+    "header_and_binder_context_changes": [],
+    "new_declarations": [],
+    "aliases_unchanged": [
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05PolynomialPartition.lean",
+        "aliases": [
+          "\nalias lemma55_natCast_centeredAbs_eq_or_neg := natCast_centeredAbs_eq_or_neg"
+        ]
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13QuadraticRecurrence.lean",
+        "aliases": [
+          "\nalias stage135_additive_ext := lemma134_additive_ext",
+          "\nalias stage135_sectionC_upper := lemma134_sectionC_upper"
+        ]
+      },
+      {
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticDensityIncrement.lean",
+        "aliases": [
+          "\nalias balanced_discValued := cor33_balanced_discValued"
+        ]
+      }
+    ],
+    "parser_scope": "Known multiline Lean command scanner; retained byte-identical complete blocks establish preservation even for nontrivial header syntax. All 37 changed blocks were read directly, with complete header/body boundaries and inline substitution checked. No generic Lean-parser claim."
+  },
+  "imports_and_registration": {
+    "all_70_import_lists_exact": true,
+    "no_Lean_modules_added_or_removed": true,
+    "import_graph_unchanged": true,
+    "removed_instances": 0,
+    "removed_attached_attributes": 0,
+    "surviving_attribute_and_alias_commands_exact": true,
+    "only_removed_nondeclaration_command": "set_option exponentiation.threshold 512 in, attached solely to the removed final theorem fejerCubicTwistedThreshold_le_double_exp; no subsequent declaration inherits it."
+  },
+  "mathematical_review": {
+    "finding": null,
+    "scope": "All 43 single-use substitutions inspected through the 37 changed retained declaration bodies. They preserve original statements and instantiate the same proof terms/tactics; no new hypotheses, numerical constants, axioms, sorry or native_decide introduced. Both modified definitions change only embedded proof fields. Finite/empty cases and positivity/NeZero/prime hypotheses remain as in retained headers.",
+    "limits": "Larger ambient tactic contexts, typeclass elaboration and declaration heartbeat behavior still require actual merged-source native checking. No concrete source-level mismatch was found."
+  },
+  "public_API": {
+    "removed_total": 130,
+    "removed_private": 54,
+    "removed_public": 76,
+    "dead_phase_public_removals": 65,
+    "inlined_phase_public_removals": 11,
+    "qualification": "This is intentionally not export-preserving for all intermediate names. Current tracked repo code and named axiom audits have no remaining references, but external callers of the 76 public names will need changes."
+  },
+  "references": "remaining-references.json",
+  "final_facing_inputs": "final-facing-inputs.json",
+  "catalogue": "catalogue-impact.json",
+  "catalogue_summary": {
+    "rows": 120,
+    "companion_occurrences": 544,
+    "removed_names": 0,
+    "occurrences_with_source_line_shift": 27,
+    "needs_actual_postmerge_regeneration": true
+  },
+  "documentation_findings": [
+    {
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FaceLifts.lean",
+      "incoming_line": 18,
+      "old_text": "* `vertexFace` and `translatedVertex_eq_face`: when `e i = false`, the vertex\n  map is a function of `dropAt (castSucc i) z`.",
+      "suggested_text": "* `exists_false_of_ne_one`: every vertex other than the all-ones vertex\n  has a coordinate `i` with `e i = false`.",
+      "reason": "The named face definition/theorem are deleted; the replacement describes the surviving final theorem of this owner. Deleting this obsolete bullet is an even smaller alternative."
+    },
+    {
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuantitativeSzemeredi.lean",
+      "incoming_line": 30,
+      "old_text": "density increment: `ModAP.density_cyclic_pullback` records the ambient-density\nloss when the progression indices are embedded in a larger cyclic group.",
+      "suggested_text": "density increment: `ModAP.card_cyclic_pullback` preserves cardinality when\nthe progression indices are embedded in a larger cyclic group; ambient\ndensity still uses the new modulus.",
+      "reason": "The density wrapper is deleted; the surviving cardinality theorem in Proofs18AffineTransfer (line 71) does not itself assert a normalized-density identity."
+    }
+  ],
+  "author_build_claim": {
+    "claimed": "Each modified module rebuilt with heal_build SUCCESS, no stale olean, zero duplicate names, and a Proofs18Final-route stub axiom check. Per-candidate scripts require a successful scratch Lean elaboration against existing built dependencies.",
+    "verified_here": "Exact commit prose and script source only. The four generator scripts and inherited prune_haves.py were read as data, never imported or executed.",
+    "limits": "No independently bound command receipt/log or source/artifact manifest for that author run was provided by these four commits. Windows-specific paths, cache-dependent scratch checks, and a final-route stub are not substitutes for the actual merged-source core/shared/supplemental chain, full selected roots, artifact freshness and named audits. Current a879 native result cannot validate future 04fd merged sources."
+  },
+  "merge_context": {
+    "root_preview_path": "/tmp/gowers-origin04fd-merge-tree-preview.txt",
+    "root_preview_sha256": "b47693f2626eef91211d1094eb8dcccfea469e302a19441f6426f9a6cbffbd24",
+    "attribution": "Root-authored preview only; no merge or composition performed by this review.",
+    "known_conflict": "PreparedFrequencyGraph: preserve local deletion of obsolete contextRestrictionLeft/Right and context_additive_ext; incoming merely inlines a helper within that already removed block. Other current-source overlaps are disjoint body edits per root preview and direct comparison."
+  },
+  "actions": "Read-only Git object and source inspection; wrote only this new /tmp evidence package. No repository/Git refs/cache/native or generator changes."
+}

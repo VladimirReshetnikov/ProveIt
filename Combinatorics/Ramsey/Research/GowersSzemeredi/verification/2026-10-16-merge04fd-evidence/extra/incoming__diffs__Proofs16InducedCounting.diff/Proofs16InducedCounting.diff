@@ -1,0 +1,32 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16InducedCounting.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16InducedCounting.lean
+index fe342f2bd..1595983ad 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16InducedCounting.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16InducedCounting.lean
+@@ -27,15 +27,6 @@ private lemma section16CubeElement_side {N k : Nat} [NeZero N]
+     true_and] at hC
+   exact hC.1
+ 
+-private lemma section16CubeElement_vertex_mem {N k : Nat} [NeZero N]
+-    {B : Finset (Point N (k + 1))} {h : Point N k}
+-    (C : Section16CubeElement B h) (e : Fin k → Bool) :
+-    appendCoordinate (C.1.1.vertex e) C.1.2 ∈ B := by
+-  have hC := C.property
+-  simp only [section16CubeDomain, Finset.mem_filter, Finset.mem_univ,
+-    true_and] at hC
+-  exact hC.2 e
+-
+ @[simp] theorem section16CubeElement_card {N k : Nat} [NeZero N]
+     (B : Finset (Point N (k + 1))) (h : Point N k) :
+     Fintype.card (Section16CubeElement B h) =
+@@ -167,7 +158,10 @@ private def section16AdditiveTupleArrangementEquiv
+         HasEqualHalfSums, IsAdditiveTuple] using x.property
+     · intro e j
+       rw [section16TupleArrangement_vertex]
+-      exact section16CubeElement_vertex_mem (x.1 j) e
++      have hC := (x.1 j).property
++      simp only [section16CubeDomain, Finset.mem_filter, Finset.mem_univ,
++        true_and] at hC
++      exact hC.2 e
+   invFun R := by
+     refine ⟨fun j ↦
+       section16ArrangementCubeElement B h R.1 R.property.1.2
