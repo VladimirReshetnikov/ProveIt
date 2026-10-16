@@ -135,7 +135,9 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `Table248.lean` | Attributed original-rho6 source-11 experimental table: all 496 actions, 248 working states, both halt edges and actual first 1,024 blank steps checked by kernel reduction; no calculus or full simulation theorem. |
 | `RegisterBisimulation.lean` | Actual increment/decrement/halt semantics: matching instruction/index/both-exit bisimulation preserves finite halting from every common register vector, including exact counts of attempted steps; no submitted certificate instance yet. |
 | `RawPSCModel.lean` | Raw PSC model indexed by `EqualityFreeForm`: named definable instances supply cover/Separation/Union, semantic saturation and purity-cut resources; guarded hull transfer retains explicit local-bound and invariance hypotheses. |
-| `Table253.lean` | Attributed literal mira-emmy 253-state table and actual first 1,024 blank-tape steps, checked by kernel reduction; the complete 312,975-step boot and runtime bridge remain open. |
+| `Table253.lean` | Attributed literal mira-emmy 253-state table and actual first 1,024 blank-tape steps, checked by kernel reduction. |
+| `FiniteZipper.lean` | Generic zero-exterior tape representation; one-step and balanced-block simulation to the existing Core semantics, every integer tape read and earlier activity from an active endpoint. |
+| `Boot253.lean` | Full312,975-step actual blank bootstrap of the attributed253 table, state33/head−17 and complete tape frame including158 spare blocks; arbitrary runtime and consistency bridge remain open. |
 | `Table252.lean` | Literal experimental table, 252-state/504-row bounds, both halt edges and the normalized row, checked by kernel `decide`. |
 | `FormulaRPN.lean` | Three-constructor NAND formula syntax; exact prefix-token parsing in both directions; De Bruijn scope check and a closed semantic contradiction. |
 | `Base3Encoding.lean` | Finite named membership/implication/forall code tags and label freshness; excludes cyclic truth code 0. |
@@ -246,7 +248,11 @@ compiles raw PSC to 279 states with fixed grammar sharing; it retains the
 complete logical frontend specification, with its changed theory/enumerator
 and binary simulation still unproved. Its exact baseline and controls reproduce.
 [The finite 253-state Lean layer](finite253_lean.md) records the attributed
-table and initial 1,024 actual steps, with no end-to-end endpoint claim.
+table and its complete312,975-step actual blank bootstrap. All83 computation
+blocks use kernel `decide`, through a faster transition lookup proved equal
+to all506 literal actions. The theorem specifies every integer tape position
+and activity throughout the prefix. The fresh38-module checked closure passes;
+no first-dispatch-arrival, arbitrary runtime or consistency endpoint is claimed.
 
 [The PSC-only compiler control](psc_backend_experiment.md) tests the new
 schema with original rho6, a fresh `code+2` binder and genuine bottom. Exact

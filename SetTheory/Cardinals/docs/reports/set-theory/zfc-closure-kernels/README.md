@@ -1273,3 +1273,15 @@ repeated. All eight default helper jobs pass on a fresh recovery.
 repeats source19's full grid and PSC controls. Those optional helper branches
 were not themselves rerun; their underlying recipes were independently tested. No complete Python, binary-backend or ZFC consistency proof follows
 from these finite tests or the two narrow delivered Lean developments.
+
+Subsequent local Lean work now verifies the full312,975-step blank bootstrap
+of the attributed public253 table: `Boot253.fullBootstrap253`, its all-integer
+`tape` consequence and `active_through` consequence specify state33/head−17
+and every tape cell, including all158 spare blocks. The generic `FiniteZipper`
+bridge relates each computed block to actual Core semantics. All506 actions
+of the fast lookup equal the literal table;83 blocks use kernel `decide`.
+The38-module fresh source closure passes with only standard Lean axioms;
+the full-boot roots use `propext`/`Quot.sound`. This advances the finite253
+baseline independently of either new checker. First dispatch arrival, the330
+register prefix, arbitrary runtime, compiler and internal consistency endpoint
+remain open. See `Computability/BusyBeaver/Research/ZFC/finite253_lean.md`.

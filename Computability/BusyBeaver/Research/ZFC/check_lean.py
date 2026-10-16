@@ -33,6 +33,7 @@ def main() -> None:
                         "ProfileModel", "ProfileComposition", "CompositionModel", "QuotientModel",
                         "ProfileAxioms", "PowerSyntax", "PSCSaturation", "RawPSCProfile", "RawPSCModel",
                         "StateReduction", "Table254", "Table252", "Table253", "Table248",
+                        "FiniteZipper", "Boot253",
                         "RegisterBisimulation", "FormulaRPN", "Base3Encoding",
                         "Base3Syntax", "Bottom3Syntax", "PartialTotalization", "WadeMachine",
                         "PSCCalibration") ),

@@ -20,6 +20,8 @@ import BusyBeaver.ZFC.StateReduction
 import BusyBeaver.ZFC.Table254
 import BusyBeaver.ZFC.Table252
 import BusyBeaver.ZFC.Table253
+import BusyBeaver.ZFC.FiniteZipper
+import BusyBeaver.ZFC.Boot253
 import BusyBeaver.ZFC.Table248
 import BusyBeaver.ZFC.RegisterBisimulation
 import BusyBeaver.ZFC.FormulaRPN
