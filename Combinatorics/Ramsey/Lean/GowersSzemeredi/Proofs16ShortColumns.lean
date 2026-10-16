@@ -121,8 +121,4 @@ theorem Section16SampledOrAnchoredOn.multilinear_cover {N k r p : Nat} [NeZero N
       refine ⟨Sum.inl (i, j), ?_⟩
       simpa [appendCoordinate_eq_snoc] using hj
 
-theorem section16_recovered_candidate_count (r p : Nat) :
-    Fintype.card ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) =
-      r * p + r * r * p * p := by simp [mul_assoc]
-
 end LeanProofs.GowersSzemeredi

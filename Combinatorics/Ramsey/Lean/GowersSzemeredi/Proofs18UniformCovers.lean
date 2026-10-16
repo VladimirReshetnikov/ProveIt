@@ -70,10 +70,6 @@ theorem uCount_mono {V V' : Real} (hV : 1 ≤ V) (hVV : V ≤ V') {D D' : Nat} (
 theorem one_le_uCount (V : Real) (D : Nat) (gamma theta rho : Real) :
     1 ≤ uCount V D gamma theta rho := le_max_left _ _
 
-theorem uCount_pos {V : Real} (_hV : 1 ≤ V) (D : Nat) {gamma theta rho : Real}
-    (_hg : 0 < gamma) (_hg1 : gamma ≤ 1) (_ht : 0 < theta) (_ht1 : theta ≤ 1) (_hr : 0 < rho)
-    (_hr1 : rho ≤ 1) : 1 ≤ uCount V D gamma theta rho := one_le_uCount V D gamma theta rho
-
 theorem uExp_pos_le (V : Real) (D : Nat) (gamma theta rho : Real) :
     0 < uExp V D gamma theta rho ∧ uExp V D gamma theta rho ≤ 1 := by
   have h1 := one_le_uCount V D gamma theta rho

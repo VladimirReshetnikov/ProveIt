@@ -63,9 +63,4 @@ theorem balancedFeatureVertex_polynomial {I R : Type*} [Fintype I] [CommRing R]
         (balancedFeaturePolynomial sign u₀ u₁) := by
   rw [balancedFeatureVertex_relation, balancedFeaturePolynomial_eval]
 
-theorem balancedHorizontal_balance {I R : Type*} [Fintype I] [CommRing R]
-    (sign x : I → R) :
-    (∑ i, sign i * balancedHorizontal sign x (some i)) - balancedHorizontal sign x none = 0 := by
-  simp [balancedHorizontal]
-
 end LeanProofs.GowersSzemeredi

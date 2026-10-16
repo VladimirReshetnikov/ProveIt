@@ -597,15 +597,6 @@ private lemma bad_left_or_bad_right {N : Nat} {X : Type*}
     have hadd := sub_eq_sub_iff_add_eq_add.mp hvuPhi
     simpa only [add_comm] using hadd.symm
 
-private lemma bad_count_eq_xy_pair_sum {N : Nat} {X : Type*}
-    [Fintype X] (D : MultifunctionDomain N X) (phi : X → ZMod N) :
-    (countWhere (AltPhiBad D phi) : Real) =
-      ∑ x : X, ∑ y : X, ∑ zw : X × X,
-        if AltPhiBad D phi ![x, y, zw.1, zw.2] then 1 else 0 := by
-  classical
-  rw [countWhere_cast_eq_sum_ite, sum_fin_four]
-  simp_rw [Fintype.sum_prod_type]
-
 private lemma bad_count_eq_pair_pair_sum {N : Nat} {X : Type*}
     [Fintype X] (D : MultifunctionDomain N X) (phi : X → ZMod N) :
     (countWhere (AltPhiBad D phi) : Real) =
@@ -797,13 +788,6 @@ private lemma large_weighted_sum_le_five_bad {N : Nat} [NeZero N]
           hsymmetric hinvariant hsigma)
     _ = 5 * countWhere (AltPhiBad D phi) := by
       nlinarith only
-
-private lemma proportionateError_nonneg {N : Nat} {X : Type*}
-    [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
-    (phi : X → ZMod N) (B : Finset (ZMod N)) (x y : X) :
-    0 ≤ domainProportionateError D phi B x y := by
-  unfold domainProportionateError
-  positivity
 
 private lemma proportionateError_le_one {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)

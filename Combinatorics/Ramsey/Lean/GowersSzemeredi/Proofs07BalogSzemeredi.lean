@@ -148,18 +148,6 @@ private lemma popularSums_card_lower {G : Type*} [DecidableEq G]
   dsimp only [D] at hcombined ⊢
   nlinarith [sq_pos_of_pos hm]
 
-private lemma popularSums_mem_comm {G : Type*} [DecidableEq G]
-    [AddCommGroup G] (A : Finset G) (c : Real) (a b : G) :
-    a + b ∈ popularSums A c ↔ b + a ∈ popularSums A c := by
-  rw [add_comm]
-
-private lemma popularNeighbors_symm {G : Type*} [DecidableEq G]
-    [AddCommGroup G] (A : Finset G) (c : Real) {a b : G}
-    (ha : a ∈ A) (hb : b ∈ A) :
-    b ∈ popularNeighbors A c a ↔ a ∈ popularNeighbors A c b := by
-  simp only [popularNeighbors, Finset.mem_filter, ha, hb, true_and]
-  exact popularSums_mem_comm A c a b
-
 private lemma sum_popularNeighbors_card {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) :
     ∑ a ∈ A, (popularNeighbors A c a).card =
@@ -606,12 +594,6 @@ private noncomputable def goodIndexNeighbors {X I : Type*} [DecidableEq X]
     (threshold : Real) (i : I) :
     (goodIndexNeighbors A K threshold i).card = goodDegree A K threshold i := by
   rfl
-
-private lemma goodIntersection_symm {X I : Type*} [DecidableEq X]
-    (A : I → Finset X) (threshold : Real) (i j : I) :
-    goodIntersection A threshold i j ↔ goodIntersection A threshold j i := by
-  unfold goodIntersection
-  rw [Finset.inter_comm]
 
 private lemma common_goodIndexNeighbors_card_lower {X I : Type*}
     [DecidableEq X] [DecidableEq I] (A : I → Finset X)

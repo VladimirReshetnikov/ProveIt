@@ -91,10 +91,4 @@ def fejerArrangementParametersEquiv {N : Nat} :
   left_inv := fejerArrangementEncode_decode
   right_inv R := Subtype.ext (fejerArrangementDecode_encode R.1 R.2)
 
-theorem fejerBalancedArrangement_card {N : Nat} [NeZero N] :
-    Fintype.card (FejerBalancedArrangement N) = N ^ 32 := by
-  rw [← Fintype.card_congr (fejerArrangementParametersEquiv (N := N))]
-  simp only [FejerArrangementParameters, Fintype.card_fun, ZMod.card, balancedFeatureVariable_card,
-    Fintype.card_fin]
-
 end LeanProofs.GowersSzemeredi

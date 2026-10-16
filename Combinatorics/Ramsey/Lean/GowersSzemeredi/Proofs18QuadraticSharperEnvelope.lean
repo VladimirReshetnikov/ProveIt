@@ -68,20 +68,6 @@ theorem quadraticIntervalClosedThreshold_le_double_exp_alpha_sharp {delta : Real
   exact densityIterationClosedThreshold_le_double_exp_of_exp_budget _ _ _ _ _
     12384 16 12401 (intervalQuadratic_constants_pos hδ).1 hx hA hg hb (by norm_num)
 
-/-- An explicit double-exponential envelope in the initial density, with
-no unspecified fixed prefactor. -/
-theorem quadraticIntervalClosedThreshold_le_double_exp_sharp {delta : Real}
-    (hδ : 0 < delta) (hδone : delta ≤ 1) :
-    quadraticIntervalClosedThreshold delta ≤
-      Real.exp (Real.exp ((2 / delta) ^ (1500642 : Nat))) := by
-  have hα := intervalQuadraticUniformityParameter_pos hδ
-  apply (quadraticIntervalClosedThreshold_le_double_exp_alpha_sharp hδ hδone).trans
-  apply Real.exp_le_exp.mpr (Real.exp_le_exp.mpr _)
-  have h := pow_le_pow_left₀
-    (by positivity : 0 ≤ 2 / intervalQuadraticUniformityParameter delta)
-    (intervalQuadraticUniformityParameter_inv_upper hδ hδone).2 (12402 : Nat)
-  simpa only [← pow_mul] using h
-
 /-- In the half-density range, absorb the fixed factor 2^121 directly
 into the reciprocal density instead of squaring the coarser 2/delta bound. -/
 theorem two_div_intervalQuadraticUniformityParameter_le_inv_pow {delta : Real}

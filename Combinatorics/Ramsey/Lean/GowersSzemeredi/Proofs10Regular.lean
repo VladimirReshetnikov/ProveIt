@@ -35,17 +35,6 @@ private lemma intervalProbability_isProbability {rho : Real} (hrho : 0 < rho) :
     simpa [Real.volume_Icc, ENNReal.ofReal_eq_zero] using hlen'
   · exact measure_Icc_lt_top.ne
 
-private lemma integral_indicator_Icc_one {a b : Real} (hab : a ≤ b) :
-    (∫ x : Real, if x ∈ Set.Icc a b then (1 : Real) else 0) = b - a := by
-  have hind :
-      (fun x : Real => if x ∈ Set.Icc a b then (1 : Real) else 0) =
-        (Set.Icc a b).indicator (fun _ => (1 : Real)) := by
-    funext x
-    simp only [Set.indicator]
-  rw [hind]
-  rw [MeasureTheory.integral_indicator measurableSet_Icc]
-  simp [hab]
-
 private lemma intervalProbability_apply_Icc {rho a b : Real}
     (hrho : 0 < rho) (ha : -rho ≤ a) (hb : b ≤ 1 + rho) :
     intervalProbability rho (Set.Icc a b) =

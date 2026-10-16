@@ -18,7 +18,6 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-
 private def singletonNatAP (x : Nat) : NatAP where
   start := x
   step := 1
@@ -50,11 +49,6 @@ private def residueChunkAP (r u L : Nat) (z : ResidueChunkIndex r u L) : NatAP w
   step := u
   length := residueChunkLength (residueClassLength r u z.1) L
     (residueClassLength r u z.1 / L) z.2
-
-private lemma residueChunkLength_pos {c L n j : Nat} (hL : 0 < L) :
-    0 < residueChunkLength c L n j := by
-  unfold residueChunkLength
-  split_ifs <;> omega
 
 private lemma residueChunkLength_ge {c L n j : Nat} :
     L ≤ residueChunkLength c L n j := by

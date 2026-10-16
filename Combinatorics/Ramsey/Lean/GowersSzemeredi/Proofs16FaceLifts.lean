@@ -43,26 +43,6 @@ theorem mem_cylAt {N k : Nat} [NeZero N] {j : Fin (k + 1)} {Λ : Finset (Point N
   classical
   simp [cylAt]
 
-theorem cylAt_mono {N k : Nat} [NeZero N] (j : Fin (k + 1)) {Λ Λ' : Finset (Point N k × ZMod N)}
-    (h : Λ ⊆ Λ') : cylAt j Λ ⊆ cylAt j Λ' := fun _ hz => mem_cylAt.mpr (h (mem_cylAt.mp hz))
-
-/-- A cylinder has the fibres of its base. -/
-theorem cylAt_fiber_le {N k : Nat} [NeZero N] (j : Fin (k + 1)) (Λ : Finset (Point N k × ZMod N))
-    {M : Nat} (hfib : ∀ x : Point N k, (Λ.filter fun z => z.1 = x).card ≤ M)
-    (w : Point N (k + 1)) : ((cylAt j Λ).filter fun z => z.1 = w).card ≤ M := by
-  classical
-  refine le_trans ?_ (hfib (dropAt j w))
-  refine Finset.card_le_card_of_injOn (fun z => (dropAt j z.1, z.2)) (fun z hz => ?_) ?_
-  · obtain ⟨hz1, hz2⟩ := Finset.mem_filter.mp hz
-    refine Finset.mem_filter.mpr ⟨mem_cylAt.mp hz1, ?_⟩
-    show dropAt j z.1 = dropAt j w
-    rw [hz2]
-  · intro z hz z' hz' hzz
-    have h1 := (Finset.mem_filter.mp hz).2
-    have h2 := (Finset.mem_filter.mp hz').2
-    have h3 : z.2 = z'.2 := by simpa using congrArg Prod.snd hzz
-    exact Prod.ext (h1.trans h2.symm) h3
-
 /-- The permutation sending `last ↦ j` and `castSucc i ↦ j.succAbove i`. -/
 def liftPerm {k : Nat} (j : Fin (k + 1)) : Fin (k + 1) ≃ Fin (k + 1) :=
   finSuccEquivLast.trans (finSuccEquiv' j).symm
@@ -176,28 +156,6 @@ theorem MultiplyLinearWith.relSumFin {N k : Nat} [NeZero N] :
     exact hsum
 
 /-! ### Vertex maps as functions of a face -/
-
-/-- The vertex map `φ_e` as a function of the coordinates other than `i`. -/
-def vertexFace {N k : Nat} (phi : Point N (k + 1) → ZMod N) (x0 : Point N k) (e : Fin k → Bool)
-    (i : Fin k) (y : Point N k) : ZMod N :=
-  section16TranslatedVertex phi x0 e (Fin.insertNth i.castSucc 0 y)
-
-/-- **When `e i = false`, the vertex map factors through `dropAt (castSucc i)`.** -/
-theorem translatedVertex_eq_face {N k : Nat} (phi : Point N (k + 1) → ZMod N) (x0 : Point N k)
-    {e : Fin k → Bool} {i : Fin k} (hi : e i = false) (z : Point N (k + 1)) :
-    section16TranslatedVertex phi x0 e z = vertexFace phi x0 e i (dropAt i.castSucc z) := by
-  unfold vertexFace dropAt
-  rw [Fin.insertNth_removeNth]
-  unfold section16TranslatedVertex
-  congr 2
-  · funext j
-    by_cases hj : j = i
-    · subst hj
-      simp [hi]
-    · have hne : j.castSucc ≠ i.castSucc := fun h => hj (Fin.castSucc_injective _ h)
-      simp [section16Init, Function.update_of_ne hne]
-  · have hne : Fin.last k ≠ i.castSucc := (Fin.castSucc_lt_last i).ne'
-    simp [section16Last, Function.update_of_ne hne]
 
 /-- Every vertex other than the all-ones one has an unused coordinate. -/
 theorem exists_false_of_ne_one {k : Nat} {e : Fin k → Bool} (he : e ≠ fun _ => true) :

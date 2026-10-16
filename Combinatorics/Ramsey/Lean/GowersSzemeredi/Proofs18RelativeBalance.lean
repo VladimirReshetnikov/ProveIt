@@ -67,13 +67,6 @@ theorem relativeBalancedReal_sum_zero {N : Nat} [NeZero N] (A S : Finset (ZMod N
     ∑ x : ZMod N, relativeBalancedReal A S delta x = 0 := by
   simpa only [Finset.inter_univ, hcard, sub_self] using relativeBalancedReal_sum A S Finset.univ delta
 
-/-- The usual cyclic balance is the special case of full support. -/
-theorem relativeBalanced_univ {N : Nat} [NeZero N] (A : Finset (ZMod N)) :
-    relativeBalanced A Finset.univ (density A) = balanced A := by
-  funext x
-  rw [relativeBalanced_eq_indicators]
-  simp [indicator, balanced]
-
 /-- A discrepancy partition yields an increment relative to the original
 support, on its intersection with one cell. The intersection need not be an
 arithmetic progression. Its mass retains a second factor of the increment. -/

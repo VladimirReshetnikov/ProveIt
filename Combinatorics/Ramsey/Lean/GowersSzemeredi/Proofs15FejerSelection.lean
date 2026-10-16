@@ -471,10 +471,6 @@ private lemma fejer_additive_iff {N : Nat} (x : Fin 16 → ZMod N) :
   rw [hsum, sub_eq_zero]
   rfl
 
-private abbrev FejerArrangementCode {N k : Nat} [NeZero N]
-    (B : Finset (Point N (k + 1))) :=
-  (Fin 15 → {z : Point N (k + 1) // z ∈ B}) × Point N k × Point N k
-
 private abbrev FejerFeature (k : Nat) :=
   Option (Finset (Fin (k + 1)))
 

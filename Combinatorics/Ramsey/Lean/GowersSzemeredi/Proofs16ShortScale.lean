@@ -44,16 +44,6 @@ theorem section16_short_scale_margin (s zeta : Real) (hs : 0 < s)
     nlinarith
   exact ⟨v, hvNat, hceil, hvSq, (div_le_div_iff₀ hs hvr).mpr hbudget⟩
 
-/-- Above the singleton scale, the ceiling target fits both the quadratic
-partition budget and the Bohr-frequency budget. -/
-theorem section16_short_scale (s zeta : Real) (hs : 0 < s)
-    (hz : 0 < zeta) (hzHalf : zeta ≤ 1 / 2)
-    (hl : 1 < (zeta / 2) * Real.sqrt s) :
-    ∃ v : Nat, 2 ≤ v ∧ (zeta / 2) * Real.sqrt s ≤ (v - 1 : Nat) ∧
-      (v : Real) ^ 2 ≤ s ∧ 2 / s ≤ zeta / v := by
-  obtain ⟨v, hv, hwidth, hmargin, hbudget⟩ := section16_short_scale_margin s zeta hs hz hzHalf hl
-  exact ⟨v, hv, hwidth, by linarith, hbudget⟩
-
 /-- The Section 16 radius is at most one half, uniformly over its stated
 parameter range. -/
 theorem section16Zeta_pos_le_half {theta gamma : Real} (k : Nat)

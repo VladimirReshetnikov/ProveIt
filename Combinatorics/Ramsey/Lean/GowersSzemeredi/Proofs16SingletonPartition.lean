@@ -86,41 +86,4 @@ theorem section16_local_linearity_singletons {N k : Nat} [NeZero N]
     intro y hy
     simpa only [pointSingletonBox_axis_carrier] using (Finset.mem_filter.mp hy).1
 
-/-- The local product result holds at every scale in positive base
-dimension, using singletons when the requested width is at most one. -/
-theorem section16_local_linearity {N k q m : Nat} [NeZero N]
-    (hk : 1 ≤ k) (theta gamma : Real)
-    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    (P : Box N (k + 1)) (hP : P.IsProper) (hmP : m ≤ P.width)
-    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))
-    (K : Point N k → Finset (ZMod N)) (G : Finset (Point N k))
-    (A : Point N k → Finset (ZMod N)) (f : Point N k → ZMod N → ZMod N)
-    (hcover : ∀ x ∈ (boxInit P).carrier, x ∈ G → ∀ r ∈ K x, ∃ i, r = mu i x)
-    (hlinear : ∀ x ∈ G, ∀ v : Nat, 0 < v → ∀ I : ModAP N, I.length ≤ v →
-      I.step ∈ bohr (K x) (section16Zeta theta gamma k / v) →
-      LinearOn (I.carrier ∩ A x) (f x)) :
-    ∃ M : Nat, ∃ Q : Fin M → Box N (k + 1),
-      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
-      (∀ j, (section16Zeta theta gamma k / 2) *
-        Real.sqrt ((m : Real) ^ section16RecurrenceExponent k q) ≤ (Q j).width) ∧
-      ∀ j x, x ∈ (boxInit (Q j)).carrier → x ∈ G →
-        LinearOn (((Q j).axis (Fin.last k)).carrier.filter fun y => y ∈ A x) (f x) := by
-  classical
-  by_cases hl : (section16Zeta theta gamma k / 2) *
-      Real.sqrt ((m : Real) ^ section16RecurrenceExponent k q) ≤ 1
-  · obtain ⟨M, Q, hpart, hproper, hwidth, hlin⟩ := section16_local_linearity_singletons P _ hl A f
-    exact ⟨M, Q, hpart, hproper, hwidth, fun j x _ _ => hlin j x⟩
-  · have hm : 0 < m := by
-      by_contra hm
-      have hm0 : m = 0 := by omega
-      have he : 0 < section16RecurrenceExponent k q := by
-        rw [section16RecurrenceExponent_eq_multilinear]
-        have hK := multilinearPartitionConstant_eight_le (by omega : 2 ≤ k + 1)
-        unfold multilinearPartitionExponent
-        positivity
-      subst m
-      simp [Real.zero_rpow he.ne'] at hl
-    exact section16_local_linearity_above_one hk hm theta gamma ht ht1 hg hg1 P hP hmP
-      mu hmu K G A f hcover hlinear (lt_of_not_ge hl)
-
 end LeanProofs.GowersSzemeredi

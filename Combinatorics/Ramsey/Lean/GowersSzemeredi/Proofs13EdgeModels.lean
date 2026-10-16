@@ -127,16 +127,6 @@ theorem section13_vertical_fibre_cap {N : Nat} [NeZero N]
     apply Subtype.ext
     exact Prod.ext (hxz.trans hxw.symm) hzw
 
-/-- The edge-domain spectrum is exactly the spectrum of the original
-vertical-edge counting function, with the same numerical threshold. -/
-theorem section13_vertical_spectrum {N : Nat} [NeZero N]
-    (A : Finset (Pair N)) (h : ZMod N) (t : Real) :
-    domainLargeSpectrum (section13VerticalDomain A h) t =
-      Finset.univ.filter (fun r ↦ t ≤ ‖fourier (verticalEdgeFiberFunction A h) r‖) := by
-  classical
-  unfold domainLargeSpectrum
-  rw [section13_vertical_fibre_function]
-
 /-- The good-height model with any valid fibre cap, rather than just N. -/
 theorem section13_good_height_model_with_cap {N : Nat} [NeZero N]
     (S : Section13Context N) (h : ZMod N) (hh : IsGoodHeight S h)

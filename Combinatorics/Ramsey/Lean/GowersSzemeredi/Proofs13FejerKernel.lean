@@ -27,11 +27,6 @@ theorem finiteFejerKernel_le_one {N L : Nat} [NeZero N] (hL : 0 < L) (x : ZMod N
   apply (div_le_one (by positivity)).mpr
   exact pow_le_pow_left₀ (norm_nonneg _) hnorm 2
 
-theorem finiteFejerKernel_zero {N L : Nat} [NeZero N] (hL : 0 < L) :
-    finiteFejerKernel (N := N) L 0 = 1 := by
-  have hLr : (L : Real) ≠ 0 := by exact_mod_cast (Nat.ne_of_gt hL)
-  simp [finiteFejerKernel, exponential, hLr]
-
 theorem finiteFejerKernel_expansion {N L : Nat} [NeZero N] (x : ZMod N) :
     (finiteFejerKernel L x : Complex) =
       ((L : Complex) ^ 2)⁻¹ *

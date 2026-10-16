@@ -102,40 +102,4 @@ theorem section16_threshold_of_large_width {theta gamma : Real} {k q m : Nat}
   exact section16WidthThreshold_of_root hk hm
     ((section16_polynomial_threshold_le_radius k ht ht1 hg hg1).trans hsq)
 
-/-- The non-singleton part of the local Lemma 16.6 construction, with
-its threshold and rounded short-cell budgets discharged. -/
-theorem section16_local_linearity_above_one {N k q m : Nat} [NeZero N]
-    (hk : 1 ≤ k) (hm : 0 < m) (theta gamma : Real)
-    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    (P : Box N (k + 1)) (hP : P.IsProper) (hmP : m ≤ P.width)
-    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))
-    (K : Point N k → Finset (ZMod N)) (G : Finset (Point N k))
-    (A : Point N k → Finset (ZMod N)) (f : Point N k → ZMod N → ZMod N)
-    (hcover : ∀ x ∈ (boxInit P).carrier, x ∈ G → ∀ r ∈ K x, ∃ i, r = mu i x)
-    (hlinear : ∀ x ∈ G, ∀ v : Nat, 0 < v → ∀ I : ModAP N, I.length ≤ v →
-      I.step ∈ bohr (K x) (section16Zeta theta gamma k / v) →
-      LinearOn (I.carrier ∩ A x) (f x))
-    (hlarge : 1 < (section16Zeta theta gamma k / 2) *
-      Real.sqrt ((m : Real) ^ section16RecurrenceExponent k q)) :
-    ∃ M : Nat, ∃ Q : Fin M → Box N (k + 1),
-      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
-      (∀ j, (section16Zeta theta gamma k / 2) *
-        Real.sqrt ((m : Real) ^ section16RecurrenceExponent k q) ≤ (Q j).width) ∧
-      ∀ j x, x ∈ (boxInit (Q j)).carrier → x ∈ G →
-        LinearOn (((Q j).axis (Fin.last k)).carrier.filter fun y => y ∈ A x) (f x) := by
-  have hmr : (0 : Real) < m := by exact_mod_cast hm
-  obtain ⟨hz, hzHalf⟩ := section16Zeta_pos_le_half k ht ht1 hg hg1
-  obtain ⟨v, hv, hvwidth, hvscale, hvbudget⟩ := section16_short_scale
-    ((m : Real) ^ section16RecurrenceExponent k q) (section16Zeta theta gamma k)
-    (Real.rpow_pos_of_pos hmr _) hz hzHalf hlarge
-  have hthreshold := section16_threshold_of_large_width hk hm ht ht1 hg hg1 hlarge
-  have hbudget : 2 * (m : Real) ^ (-section16RecurrenceExponent k q) ≤ section16Zeta theta gamma k / v := by
-    simpa only [Real.rpow_neg hmr.le, div_eq_mul_inv] using hvbudget
-  obtain ⟨M, Q, hpart, hproper, hwidth, hlin⟩ := proper_short_product_linearity
-    hk P hP mu hmu hthreshold hmP hv hvscale K (section16Zeta theta gamma k) G A f
-    hcover (fun x hx I hI hd => hlinear x hx v (by omega) I hI hd) hbudget
-  refine ⟨M, Q, hpart, hproper, ?_, hlin⟩
-  intro j
-  exact hvwidth.trans (by exact_mod_cast hwidth j)
-
 end LeanProofs.GowersSzemeredi

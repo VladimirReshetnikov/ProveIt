@@ -130,8 +130,4 @@ theorem section16_sampled_slice_cover {N k r s q : Nat} [Fact N.Prime]
     exact ⟨(i, j, u, v), fun x hx =>
       section16TwoAnchorLift_eq (haffine h hh t) hi hj hx hij h _ _ hu hv⟩
 
-theorem section16_sampled_slice_candidate_count (r q : Nat) :
-    Fintype.card (Fin r × Fin r × Fin q × Fin q) = r * r * q * q := by
-  simp [mul_assoc]
-
 end LeanProofs.GowersSzemeredi

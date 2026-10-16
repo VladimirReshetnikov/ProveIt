@@ -540,10 +540,6 @@ private lemma audit_approx_hom :
     (countWhere (fun q => auditAdditive q ∧ auditPhiRelation q) : Real)
   linarith
 
-private lemma audit_L_pos : 0 < auditL := by
-  unfold auditL
-  exact Nat.mul_pos (Nat.mul_pos (by omega) audit_Q_pos) audit_H_pos
-
 private lemma audit_card_pos : 0 < auditCard := by
   unfold auditCard
   omega
@@ -1117,13 +1113,6 @@ private lemma extraction_almostEvery_of_bad_card_le {Y : Type*}
   unfold AlmostEvery
   rw [Finset.filter_congr_decidable]
   linarith
-
-private lemma extraction_almostEvery_of_nonpos {Y : Type*}
-    [DecidableEq Y] (p : Real) (U : Finset Y) (P : Y → Prop)
-    (hp : p ≤ 0) : AlmostEvery p U P := by
-  classical
-  unfold AlmostEvery
-  exact (mul_nonpos_of_nonpos_of_nonneg hp (by positivity)).trans (by positivity)
 
 private noncomputable def extractionBadPairs {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)

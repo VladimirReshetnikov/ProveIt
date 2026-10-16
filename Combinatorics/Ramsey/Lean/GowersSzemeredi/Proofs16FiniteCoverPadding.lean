@@ -25,17 +25,4 @@ theorem padFiniteMultilinearFamily_covers {N k q : Nat} {C : Type*} [Fintype C]
   obtain ⟨c, hc⟩ := hy
   exact ⟨(Fintype.equivFin C) c, by simpa using hc⟩
 
-theorem section16_recovered_candidate_mono {r p q : Nat} (hpq : p ≤ q) :
-    Fintype.card ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) ≤
-      r * q + r * r * q * q := by
-  rw [section16_recovered_candidate_count]
-  gcongr
-
-theorem section16_recovered_candidate_bound {r p : Nat} {b : ℝ} (hp : (p : ℝ) ≤ b) :
-    ((r * p + r * r * p * p : Nat) : ℝ) ≤
-      (r : ℝ) * b + (r : ℝ) * r * b * b := by
-  have hb : 0 ≤ b := (Nat.cast_nonneg p).trans hp
-  push_cast
-  gcongr
-
 end LeanProofs.GowersSzemeredi

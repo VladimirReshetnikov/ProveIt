@@ -72,12 +72,6 @@ private def IndexedPartition {X ι : Type*} [DecidableEq X] [Fintype ι]
   (forall x, x ∈ S ↔ exists i, x ∈ A i) ∧
     forall i j, i ≠ j → Disjoint (A i) (A j)
 
-private lemma indexedPartition_cell_subset {X ι : Type*} [DecidableEq X]
-    [Fintype ι] {A : ι → Finset X} {S : Finset X}
-    (hA : IndexedPartition A S) (i : ι) : A i ⊆ S := by
-  intro x hx
-  exact (hA.1 x).2 ⟨i, hx⟩
-
 private lemma indexedPartition_sum_card {X ι : Type*} [DecidableEq X]
     [Fintype ι] {A : ι → Finset X} {S : Finset X}
     (hA : IndexedPartition A S) : ∑ i, (A i).card = S.card := by

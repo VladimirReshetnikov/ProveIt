@@ -155,10 +155,6 @@ def classPieceThreshold (V : Real) (dT : Nat) (theta gamma : Real) (k : Nat) : R
   max ((V * (2 / (classDelta theta gamma k * classBudget theta gamma k))) ^ dT)
     ((V * (2 / (gamma * classBudget theta gamma k))) ^ dT)
 
-theorem classPieceThreshold_eq (V : Real) (dT : Nat) (theta gamma : Real) (k : Nat) :
-    classPieceThreshold V dT theta gamma k =
-      classPieceThr (fun theta gamma => (V * (2 / (gamma * theta))) ^ dT) theta gamma k := rfl
-
 theorem classBudget_pos_le {theta gamma : Real} (k : Nat) (ht : 0 < theta) (ht1 : theta ≤ 1)
     (hg : 0 < gamma) (hg1 : gamma ≤ 1) :
     0 < classBudget theta gamma k ∧ classBudget theta gamma k ≤ 1 := by
@@ -286,7 +282,6 @@ theorem class_slice_decomposition {k : Nat} {Thr : Real → Real → Real}
     obtain ⟨hhS, hhJ⟩ := Finset.mem_filter.mp hh
     unfold restrictRelation
     exact Finset.mem_filter.mpr ⟨Finset.mem_image.mpr ⟨h, hhS, rfl⟩, hhJ⟩
-
 
 /-! ### One piece -/
 

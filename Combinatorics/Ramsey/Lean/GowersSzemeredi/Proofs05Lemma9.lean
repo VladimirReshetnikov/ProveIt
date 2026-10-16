@@ -143,59 +143,6 @@ theorem lemma_5_9_one_polynomial_holds_of_corollary_5_6
 
 /-! ## Diameter slack in the degree-induction calculation -/
 
-/-- The denominator of the stronger exponent produced inside the printed
-degree induction for Corollary 5.6. -/
-def polynomialPartitionInductionDenominator (k : Nat) : Nat :=
-  (Nat.factorial k) ^ 2 * 2 ^ (k ^ 2 + k + 2)
-
-/-- The advertised polynomial-partition constant differs from the induction
-denominator by the factor `2^(k-1)`. -/
-theorem polynomialPartitionConstant_eq_inductionDenominator_mul
-    {k : Nat} (hk : 1 <= k) :
-    polynomialPartitionConstant k =
-      polynomialPartitionInductionDenominator k * 2 ^ (k - 1) := by
-  unfold polynomialPartitionConstant polynomialPartitionInductionDenominator
-  rw [mul_assoc, ← pow_add]
-  congr 2
-  calc
-    (k + 1) ^ 2 = k ^ 2 + 2 * k + 1 := by ring
-    _ = k ^ 2 + k + 2 + (k - 1) := by omega
-
-/-- Real-valued form of the stronger induction exponent. -/
-theorem polynomialPartition_induction_exponent_eq
-    {k : Nat} (hk : 1 <= k) :
-    (polynomialPartitionInductionDenominator k : Real)⁻¹ =
-      (2 ^ (k - 1) : Nat) *
-        (polynomialPartitionConstant k : Real)⁻¹ := by
-  have hD : (0 : Real) < polynomialPartitionInductionDenominator k := by
-    unfold polynomialPartitionInductionDenominator
-    positivity
-  have hF : (0 : Real) < (2 ^ (k - 1) : Nat) := by positivity
-  have hfactor := polynomialPartitionConstant_eq_inductionDenominator_mul hk
-  rw [hfactor]
-  push_cast
-  field_simp [ne_of_gt hD, ne_of_gt hF]
-
-/-- From degree two onward, the induction exponent is at least twice the
-advertised exponent. -/
-theorem polynomialPartition_two_mul_inverse_le_induction_exponent
-    {k : Nat} (hk : 2 <= k) :
-    2 * (polynomialPartitionConstant k : Real)⁻¹ <=
-      (polynomialPartitionInductionDenominator k : Real)⁻¹ := by
-  rw [polynomialPartition_induction_exponent_eq (by omega)]
-  have hfactor : (2 : Real) <= (2 ^ (k - 1) : Nat) := by
-    exact_mod_cast pow_le_pow_right₀ (by norm_num : 1 <= (2 : Nat))
-      (by omega : 1 <= k - 1)
-  exact mul_le_mul_of_nonneg_right hfactor (by positivity)
-
-/-- In degree one the two exponents coincide, so there is no rounding slack
-from the degree-induction calculation. -/
-theorem polynomialPartition_linear_induction_exponent :
-    (polynomialPartitionInductionDenominator 1 : Real)⁻¹ =
-      (polynomialPartitionConstant 1 : Real)⁻¹ := by
-  rw [polynomialPartition_induction_exponent_eq (by norm_num)]
-  norm_num
-
 /-! ## The threshold-rounding budget -/
 
 private theorem pow_add_exponent_le_add_one_pow (T K : Nat) (hT : 1 <= T) :
