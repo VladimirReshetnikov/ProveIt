@@ -974,49 +974,6 @@ private lemma lemma55_threshold_root {k t D E : Nat}
       · simpa only [Nat.cast_pow, Nat.cast_ofNat] using hbase
       · positivity
 
-private lemma lemma55_threshold_weyl_gap {k t : Nat} (hk : 2 ≤ k)
-    (ht : weylThreshold k ≤ t) :
-    (48000 : Real) < (t : Real) ^
-      (2 * (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) := by
-  let D := k * 2 ^ k
-  have hkpow : k ≤ 2 ^ k :=
-    (Nat.le_succ k).trans (nat_succ_le_two_pow k)
-  have hkCube : k ≤ k ^ 3 := nat_le_cube (by omega)
-  have hexponent : 2 * k + 4 ≤ 40 * k ^ 3 := by
-    calc
-      2 * k + 4 ≤ 4 * k := by omega
-      _ ≤ 4 * k ^ 3 := Nat.mul_le_mul_left 4 hkCube
-      _ ≤ 40 * k ^ 3 := Nat.mul_le_mul_right (k ^ 3) (by norm_num)
-  have hD : 0 < D := by dsimp only [D]; positivity
-  have hD16 : D * 16 ≤ 2 ^ (40 * k ^ 3) := by
-    calc
-      D * 16 = k * 2 ^ k * 16 := rfl
-      _ ≤ 2 ^ k * 2 ^ k * 16 :=
-        Nat.mul_le_mul_right 16 (Nat.mul_le_mul_right (2 ^ k) hkpow)
-      _ = 2 ^ (2 * k + 4) := by
-        rw [show 16 = 2 ^ 4 by norm_num, ← pow_add, ← pow_add]
-        congr 1
-        omega
-      _ ≤ 2 ^ (40 * k ^ 3) :=
-        Nat.pow_le_pow_right (by norm_num) hexponent
-  have hroot := lemma55_threshold_root hD hD16 ht
-  have hkReal : (0 : Real) < k := by positivity
-  have hpow : (2 : Real) ^ (k + 1) = 2 * (2 : Real) ^ k := by
-    rw [pow_succ]
-    ring
-  have hgamma :
-      ((D : Real)⁻¹) =
-        2 * (((k : Real) * (2 : Real) ^ (k + 1))⁻¹) := by
-    dsimp only [D]
-    push_cast
-    rw [hpow]
-    field_simp [ne_of_gt hkReal]
-  calc
-    (48000 : Real) < (2 : Real) ^ 16 := by norm_num
-    _ ≤ (t : Real) ^ ((D : Real)⁻¹) := hroot
-    _ = (t : Real) ^
-        (2 * (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) := by rw [hgamma]
-
 private lemma lemma55_threshold_constant {k t : Nat} (hk : 2 ≤ k)
     (ht : weylThreshold k ≤ t) :
     (16 : Real) ^ (k - 1) ≤
@@ -1215,163 +1172,6 @@ lemma lemma55_centeredAbs_natCast_le {N i : Nat} [NeZero N] :
 
 alias lemma55_natCast_centeredAbs_eq_or_neg := natCast_centeredAbs_eq_or_neg
 
-private lemma lemma55_dirichlet_denominator_le {k t q : Nat}
-    (hk : 2 ≤ k) (ht : weylThreshold k ≤ t) (hq : 1 ≤ q)
-    (hqt : q ≤ t) (alpha : Real)
-    (hlower :
-      (t : Real) ^
-          (1 - (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) / 16 ≤
-        ‖weylSum alpha k t‖)
-    (hupper :
-      ‖weylSum alpha k t‖ ≤
-        1000 * (t : Real) ^
-            (1 + (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) *
-          (((q : Real)⁻¹ + (t : Real)⁻¹ +
-            (q : Real) * (t : Real) ^ (-(k : Real))) ^
-              ((2 : Real) ^ (k - 1))⁻¹)) :
-    (q : Real) ≤ (t : Real) ^ ((k : Real)⁻¹) := by
-  let gamma : Real := ((k : Real) * (2 : Real) ^ (k + 1))⁻¹
-  let K : Real := (2 : Real) ^ (k - 1)
-  let X : Real := (t : Real) ^ (-(k : Real)⁻¹)
-  let B : Real := (q : Real)⁻¹ + (t : Real)⁻¹ +
-    (q : Real) * (t : Real) ^ (-(k : Real))
-  have htOneNat : 1 ≤ t := (show 1 ≤ q by exact hq).trans hqt
-  have htOne : (1 : Real) ≤ t := by exact_mod_cast htOneNat
-  have htPos : (0 : Real) < t := by positivity
-  have hqPos : (0 : Real) < q := by exact_mod_cast (show 0 < q by omega)
-  have hkReal : (0 : Real) < k := by positivity
-  have hKOne : (1 : Real) ≤ K := by
-    dsimp only [K]
-    exact one_le_pow₀ (by norm_num)
-  have hKPos : (0 : Real) < K := lt_of_lt_of_le zero_lt_one hKOne
-  have hKInvNonneg : (0 : Real) ≤ K⁻¹ := by positivity
-  have hBNonneg : 0 ≤ B := by dsimp only [B]; positivity
-  by_contra hqBound
-  have hqLarge : (t : Real) ^ ((k : Real)⁻¹) < q :=
-    lt_of_not_ge hqBound
-  have hrootPos : (0 : Real) < (t : Real) ^ ((k : Real)⁻¹) :=
-    Real.rpow_pos_of_pos htPos _
-  have hqInv : (q : Real)⁻¹ ≤ X := by
-    dsimp only [X]
-    rw [Real.rpow_neg htPos.le]
-    exact (inv_le_inv₀ hqPos hrootPos).2 hqLarge.le
-  have hkInvLeOne : (k : Real)⁻¹ ≤ 1 :=
-    (inv_le_one₀ hkReal).2 (by exact_mod_cast (show 1 ≤ k by omega))
-  have htInv : (t : Real)⁻¹ ≤ X := by
-    dsimp only [X]
-    calc
-      (t : Real)⁻¹ = (t : Real) ^ (-1 : Real) :=
-        (Real.rpow_neg_one _).symm
-      _ ≤ (t : Real) ^ (-(k : Real)⁻¹) :=
-        Real.rpow_le_rpow_of_exponent_le htOne (by linarith)
-  have hexponent : (1 : Real) - k ≤ -(k : Real)⁻¹ := by
-    rw [show -(k : Real)⁻¹ = (-1 : Real) / (k : Real) by
-      simp [div_eq_mul_inv]]
-    apply (le_div_iff₀ hkReal).2
-    have hkTwo : (2 : Real) ≤ k := by exact_mod_cast hk
-    nlinarith [sq_nonneg ((k : Real) - 1)]
-  have hqTerm :
-      (q : Real) * (t : Real) ^ (-(k : Real)) ≤ X := by
-    have hqtReal : (q : Real) ≤ t := by exact_mod_cast hqt
-    calc
-      (q : Real) * (t : Real) ^ (-(k : Real)) ≤
-          (t : Real) * (t : Real) ^ (-(k : Real)) := by
-        gcongr
-      _ = (t : Real) ^ (1 - (k : Real)) := by
-        calc
-          (t : Real) * (t : Real) ^ (-(k : Real)) =
-              (t : Real) ^ (1 : Real) *
-                (t : Real) ^ (-(k : Real)) := by rw [Real.rpow_one]
-          _ = (t : Real) ^ ((1 : Real) + -(k : Real)) := by
-            rw [Real.rpow_add htPos]
-          _ = (t : Real) ^ (1 - (k : Real)) := by congr 1
-      _ ≤ X := by
-        dsimp only [X]
-        exact Real.rpow_le_rpow_of_exponent_le htOne hexponent
-  have hB : B ≤ 3 * X := by
-    dsimp only [B]
-    linarith
-  have hKInvLeOne : K⁻¹ ≤ 1 := (inv_le_one₀ hKPos).2 hKOne
-  have hthree : (3 : Real) ^ K⁻¹ ≤ 3 := by
-    calc
-      (3 : Real) ^ K⁻¹ ≤ (3 : Real) ^ (1 : Real) :=
-        Real.rpow_le_rpow_of_exponent_le (by norm_num) hKInvLeOne
-      _ = 3 := Real.rpow_one 3
-  have hBroot :
-      B ^ K⁻¹ ≤ 3 *
-        (t : Real) ^ ((-(k : Real)⁻¹) * K⁻¹) := by
-    calc
-      B ^ K⁻¹ ≤ (3 * X) ^ K⁻¹ :=
-        Real.rpow_le_rpow hBNonneg hB hKInvNonneg
-      _ = (3 : Real) ^ K⁻¹ * X ^ K⁻¹ := by
-        rw [Real.mul_rpow (by norm_num) (by positivity)]
-      _ ≤ 3 * X ^ K⁻¹ := by gcongr
-      _ = 3 * (t : Real) ^ ((-(k : Real)⁻¹) * K⁻¹) := by
-        dsimp only [X]
-        rw [← Real.rpow_mul htPos.le]
-  have hpow : (2 : Real) ^ (k + 1) = 4 * K := by
-    dsimp only [K]
-    rw [show k + 1 = (k - 1) + 2 by omega, pow_add]
-    norm_num
-    <;> ring
-  have hrootExponent :
-      (-(k : Real)⁻¹) * K⁻¹ = -4 * gamma := by
-    dsimp only [gamma]
-    rw [hpow]
-    field_simp [ne_of_gt hkReal, ne_of_gt hKPos]
-  have hupper' :
-      ‖weylSum alpha k t‖ ≤
-        3000 * (t : Real) ^ (1 - 3 * gamma) := by
-    calc
-      ‖weylSum alpha k t‖ ≤
-          1000 * (t : Real) ^ (1 + gamma) * B ^ K⁻¹ := by
-        simpa only [gamma, K, B] using hupper
-      _ ≤ 1000 * (t : Real) ^ (1 + gamma) *
-          (3 * (t : Real) ^ ((-(k : Real)⁻¹) * K⁻¹)) := by
-        exact mul_le_mul_of_nonneg_left hBroot (by positivity)
-      _ = 3000 * (t : Real) ^ (1 - 3 * gamma) := by
-        rw [hrootExponent]
-        have hcombine :
-            (t : Real) ^ (1 + gamma) * (t : Real) ^ (-4 * gamma) =
-              (t : Real) ^ (1 - 3 * gamma) := by
-          rw [← Real.rpow_add htPos]
-          congr 1
-          ring
-        calc
-          1000 * (t : Real) ^ (1 + gamma) *
-              (3 * (t : Real) ^ (-4 * gamma)) =
-              3000 * ((t : Real) ^ (1 + gamma) *
-                (t : Real) ^ (-4 * gamma)) := by ring
-          _ = 3000 * (t : Real) ^ (1 - 3 * gamma) := by rw [hcombine]
-  have hcombined :
-      (t : Real) ^ (1 - gamma) / 16 ≤
-        3000 * (t : Real) ^ (1 - 3 * gamma) := by
-    have hlower' :
-        (t : Real) ^ (1 - gamma) / 16 ≤ ‖weylSum alpha k t‖ := by
-      simpa only [gamma] using hlower
-    exact hlower'.trans hupper'
-  have hfactor :
-      (t : Real) ^ (1 - gamma) =
-        (t : Real) ^ (1 - 3 * gamma) * (t : Real) ^ (2 * gamma) := by
-    rw [← Real.rpow_add htPos]
-    congr 1
-    ring
-  have hproduct :
-      (t : Real) ^ (1 - 3 * gamma) * (t : Real) ^ (2 * gamma) ≤
-        (t : Real) ^ (1 - 3 * gamma) * 48000 := by
-    calc
-      (t : Real) ^ (1 - 3 * gamma) * (t : Real) ^ (2 * gamma) =
-          (t : Real) ^ (1 - gamma) := hfactor.symm
-      _ ≤ (3000 * (t : Real) ^ (1 - 3 * gamma)) * 16 :=
-        (div_le_iff₀ (by norm_num : (0 : Real) < 16)).1 hcombined
-      _ = (t : Real) ^ (1 - 3 * gamma) * 48000 := by ring
-  have hgapUpper : (t : Real) ^ (2 * gamma) ≤ 48000 :=
-    le_of_mul_le_mul_left hproduct
-      (Real.rpow_pos_of_pos htPos (1 - 3 * gamma))
-  have hgapLower : (48000 : Real) < (t : Real) ^ (2 * gamma) := by
-    simpa only [gamma] using lemma55_threshold_weyl_gap hk ht
-  exact (not_le_of_gt hgapLower) hgapUpper
-
 private lemma lemma55_sqrt_dirichlet_denominator_le {k u q : Nat}
     (hk : 2 ≤ k) (ht : weylThreshold k ≤ u) (hq : 1 ≤ q)
     (hqu : q ≤ u) (alpha : Real)
@@ -1528,6 +1328,35 @@ private lemma lemma55_sqrt_dirichlet_denominator_le {k u q : Nat}
   have hgapLower : (192000 : Real) < (u : Real) ^ gamma := by
     simpa only [gamma] using lemma55_sqrt_threshold_gamma_gap hk ht
   exact (not_le_of_gt hgapLower) hgapUpper
+
+private lemma lemma55_dirichlet_denominator_le {k t q : Nat}
+    (hk : 2 ≤ k) (ht : weylThreshold k ≤ t) (hq : 1 ≤ q)
+    (hqt : q ≤ t) (alpha : Real)
+    (hlower :
+      (t : Real) ^
+          (1 - (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) / 16 ≤
+        ‖weylSum alpha k t‖)
+    (hupper :
+      ‖weylSum alpha k t‖ ≤
+        1000 * (t : Real) ^
+            (1 + (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) *
+          (((q : Real)⁻¹ + (t : Real)⁻¹ +
+            (q : Real) * (t : Real) ^ (-(k : Real))) ^
+              ((2 : Real) ^ (k - 1))⁻¹)) :
+    (q : Real) ≤ (t : Real) ^ ((k : Real)⁻¹) := by
+  apply lemma55_sqrt_dirichlet_denominator_le hk ht hq hqt alpha ?_ hupper
+  apply le_trans ?_ hlower
+  have htOne : (1 : Real) ≤ t := by exact_mod_cast hq.trans hqt
+  have hgamma : 0 ≤ (((k : Real) * (2 : Real) ^ (k + 1))⁻¹) := by
+    positivity
+  have hpower :
+      (t : Real) ^ (1 - 2 * (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) ≤
+        (t : Real) ^ (1 - (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) :=
+    Real.rpow_le_rpow_of_exponent_le htOne (by linarith only [hgamma])
+  have hnonneg :
+      0 ≤ (t : Real) ^ (1 - (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) := by
+    positivity
+  linarith only [hpower, hnonneg]
 
 private lemma lemma55_sqrt_scale_compare {k t u : Nat} (hk : 2 ≤ k)
     (ht : 1 ≤ t) (hu : 1 ≤ u)

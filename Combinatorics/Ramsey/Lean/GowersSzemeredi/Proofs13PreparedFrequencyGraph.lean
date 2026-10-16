@@ -318,46 +318,25 @@ private lemma contextEncodeArrangement_injective {N : Nat} [NeZero N]
     Function.Injective (contextEncodeArrangement B) := by
   intro R S hcode
   apply Subtype.ext
-  have hfun :
-      (fun i : Fin 15 ↦
-        (⟨(R.1.x i.succ, R.1.y i.succ), (R.2.2 i.succ).1⟩ : ↑B)) =
-        fun i : Fin 15 ↦
-          ⟨(S.1.x i.succ, S.1.y i.succ), (S.2.2 i.succ).1⟩ :=
-    congrArg Prod.fst hcode
-  have hxTail : ∀ i : Fin 15, R.1.x i.succ = S.1.x i.succ := by
-    intro i
-    exact congrArg (fun q ↦ (q i : Pair N).1) hfun
-  have hyTail : ∀ i : Fin 15, R.1.y i.succ = S.1.y i.succ := by
-    intro i
-    exact congrArg (fun q ↦ (q i : Pair N).2) hfun
-  have hx : R.1.x = S.1.x :=
-    lemma134_additive_ext R.2.1 S.2.1 hxTail
-  have hy0 : R.1.y 0 = S.1.y 0 :=
-    congrArg (fun c ↦ c.2.1) hcode
-  have hy : R.1.y = S.1.y := by
-    funext i
-    refine Fin.cases hy0 (fun j ↦ hyTail j) i
-  have hh : R.1.height = S.1.height :=
-    congrArg (fun c ↦ c.2.2) hcode
-  exact Prod.ext hx (Prod.ext hy hh)
+  refine Prod.ext (lemma134_additive_ext R.2.1 S.2.1 ?_) (Prod.ext ?_ ?_)
+  · intro i
+    exact congrArg (fun q : contextTailCode B ↦ (q.1 i : Pair N).1) hcode
+  · funext i
+    refine Fin.cases ?_ (fun j ↦ ?_) i
+    · exact congrArg (fun q : contextTailCode B ↦ q.2.1) hcode
+    · exact congrArg (fun q : contextTailCode B ↦ (q.1 j : Pair N).2) hcode
+  · exact congrArg (fun q : contextTailCode B ↦ q.2.2) hcode
 
 theorem context_arrangementCount_le_card_pow {N : Nat} [NeZero N]
     (B : Finset (Pair N)) :
     arrangementCount 8 B ≤ B.card ^ 15 * N ^ 2 := by
   classical
   unfold arrangementCount countWhere
-  calc
-    (Finset.univ.filter fun R : DArrangement N 8 ↦ R.IsIn B).card =
-        Fintype.card {R : DArrangement N 8 // R.IsIn B} := by
-      rw [Finset.filter_congr_decidable]
-      exact (Fintype.card_subtype _).symm
-    _ ≤ Fintype.card (contextTailCode B) :=
+  rw [Finset.filter_congr_decidable, ← Fintype.card_subtype]
+  simpa only [contextTailCode, Fintype.card_prod, Fintype.card_fun,
+    Fintype.card_fin, Fintype.card_coe, ZMod.card, pow_two] using
       Fintype.card_le_of_injective (contextEncodeArrangement B)
         (contextEncodeArrangement_injective B)
-    _ = B.card ^ 15 * N ^ 2 := by
-      simp only [contextTailCode, Fintype.card_prod, Fintype.card_fun,
-        Fintype.card_fin, Fintype.card_coe, ZMod.card]
-      ring
 
 /-- Before purification, retain the exact two-fibre exponent rather than
 rounding it to `2^24`. The prime threshold is unnecessary for this preparation. -/

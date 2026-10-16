@@ -42,6 +42,52 @@ theorem section16_sidelength_card_of_mass {N k : Nat} [NeZero N]
         a * (N : Real) ^ (17 * k + 15) := by ring
     _ ≤ _ := hm.trans hu
 
+theorem section16_dense_induced_selection_with {N k : Nat} [NeZero N]
+    (hprime : N.Prime) (t1 zeta : Real) (B : Finset (Point N (k + 1)))
+    (phi : Point N (k + 1) → ZMod N)
+    (ha0 : 0 < t1 / 4) (haS : t1 / 4 ≤ 1 / 36)
+    (hzeta : ∀ alpha : Real, t1 / 4 ≤ alpha → alpha ≤ 1 / 6 → zeta ≤ section10Zeta alpha)
+    (hz0 : 0 < zeta)
+    (hB : t1 * (N : Real) ^ (17 * k + 15) ≤
+        generalArrangementCount 8 B ∧
+      (1 - (2 : Real) ^ (-(44 : Real))) * generalArrangementCount 8 B ≤
+        respectedGeneralArrangementCount 8 B phi) :
+    ∃ H : Finset (Point N k),
+      ∃ Y : (h : Point N k) → Finset (Section16CubeElement B h),
+        ∃ phiPrime : Point N k → ZMod N → ZMod N,
+          t1 / 4 * (N : Real) ^ k ≤ H.card ∧
+          (∀ h ∈ H, t1 / 4 * (N : Real) ^ (k + 1) ≤
+            (section16CubeDomain B h).card) ∧
+          (∀ h ∈ H, (2 : Real) ^ (-(27 : Real)) * (t1) ^ 6 *
+            (section16CubeDomain B h).card ≤ (Y h).card) ∧
+          Section16InducedSelection B phi H Y
+            (fun h => section16LargeSpectrum B h (section16Delta (t1)))
+            (zeta) phiPrime := by
+  classical
+  obtain ⟨H, hmass, hgood⟩ :=
+    section16_good_sidelengths_with t1 B phi (by linarith) hB
+  have hex : ∀ h : Point N k,
+      ∃ Y : Finset (Section16CubeElement B h), ∃ psi : ZMod N → ZMod N,
+        h ∈ H →
+          (2 : Real) ^ (-(27 : Real)) * (t1) ^ 6 *
+            (section16CubeDomain B h).card ≤ Y.card ∧
+          HasBohrDifferenceModel (section16CubeMultifunctionDomain B h)
+            (section16InducedCubeMap B h phi)
+            (section16LargeSpectrum B h (section16Delta (t1)))
+            (zeta) Y psi := by
+    intro h
+    by_cases hh : h ∈ H
+    · obtain ⟨Y, psi, hY⟩ := section16_selected_side_model_with t1 zeta B phi h ha0 haS hzeta
+        (hgood h hh).1 (hgood h hh).2
+      exact ⟨Y, psi, fun _ => hY⟩
+    · exact ⟨∅, fun _ => 0, fun hh' => (hh hh').elim⟩
+  choose Y psi hY using hex
+  obtain ⟨phiPrime, hselection⟩ := section16_inducedSelection_exists B phi H Y _ _ psi hprime
+    hz0.le (fun h hh => (hY h hh).2)
+  exact ⟨H, Y, phiPrime, section16_sidelength_card_of_mass B H _ hmass,
+    fun h hh => section16_cube_card_lower B h _ (hgood h hh).1,
+    fun h hh => (hY h hh).1, hselection⟩
+
 /-- One family of actual Bohr-model selections simultaneously retains the
 sidelength density, every cube-domain density, and the induced map. Only the
 arrangement conditions (ii) and (iii) of Lemma 16.4 are used. -/
@@ -64,30 +110,10 @@ theorem section16_dense_induced_selection_of_arrangements {N k : Nat} [NeZero N]
           Section16InducedSelection B phi H Y
             (fun h => section16LargeSpectrum B h (section16Delta (section16ThetaOne theta gamma k)))
             (section16Zeta theta gamma k) phiPrime := by
-  classical
-  obtain ⟨H, hmass, hgood⟩ :=
-    section16_good_sidelengths_of_arrangements theta gamma B phi ht hg hB
-  have hex : ∀ h : Point N k,
-      ∃ Y : Finset (Section16CubeElement B h), ∃ psi : ZMod N → ZMod N,
-        h ∈ H →
-          (2 : Real) ^ (-(27 : Real)) * (section16ThetaOne theta gamma k) ^ 6 *
-            (section16CubeDomain B h).card ≤ Y.card ∧
-          HasBohrDifferenceModel (section16CubeMultifunctionDomain B h)
-            (section16InducedCubeMap B h phi)
-            (section16LargeSpectrum B h (section16Delta (section16ThetaOne theta gamma k)))
-            (section16Zeta theta gamma k) Y psi := by
-    intro h
-    by_cases hh : h ∈ H
-    · obtain ⟨Y, psi, hY⟩ := section16_selected_side_model theta gamma B phi h ht ht1 hg hg1
-        (hgood h hh).1 (hgood h hh).2
-      exact ⟨Y, psi, fun _ => hY⟩
-    · exact ⟨∅, fun _ => 0, fun hh' => (hh hh').elim⟩
-  choose Y psi hY using hex
-  obtain ⟨phiPrime, hselection⟩ := section16_inducedSelection_exists B phi H Y _ _ psi hprime
-    (by unfold section16Zeta; positivity) (fun h hh => (hY h hh).2)
-  exact ⟨H, Y, phiPrime, section16_sidelength_card_of_mass B H _ hmass,
-    fun h hh => section16_cube_card_lower B h _ (hgood h hh).1,
-    fun h hh => (hY h hh).1, hselection⟩
+  obtain ⟨ha0, haS, hzeta⟩ := lemma_16_5_with_printed_hyps k ht ht1 hg hg1
+  exact section16_dense_induced_selection_with hprime (section16ThetaOne theta gamma k)
+    (section16Zeta theta gamma k) B phi ha0 haS hzeta
+    (by unfold section16Zeta; positivity) hB
 
 /-- One family of actual Bohr-model selections for a structured pair. -/
 theorem section16_dense_induced_selection {N k : Nat} [NeZero N]

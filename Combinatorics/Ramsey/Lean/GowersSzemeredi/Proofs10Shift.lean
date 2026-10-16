@@ -24,12 +24,6 @@ namespace LeanProofs.GowersSzemeredi
   classical
   simp [MultifunctionDomain.fibre]
 
-private lemma fibreSize_eq_of_index_eq {N : Nat} [NeZero N]
-    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
-    {x y : X} (hxy : D.index x = D.index y) :
-    D.fibreSize x = D.fibreSize y := by
-  simp only [MultifunctionDomain.fibreSize, hxy]
-
 private lemma fibre_subset_of_saturated {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     {W : Finset X} (hW : D.FibreSaturated W) {x : X} (hx : x ∈ W) :

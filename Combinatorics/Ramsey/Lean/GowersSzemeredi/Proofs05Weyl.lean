@@ -1033,43 +1033,16 @@ private lemma mem_listsIn_iff {α : Type*} [DecidableEq α]
     (s : Finset α) (r : Nat) (l : List α) :
     l ∈ listsIn s r ↔ l.length = r ∧ ∀ x ∈ l, x ∈ s := by
   induction r generalizing l with
-  | zero =>
-      constructor
-      · intro hl
-        have hlNil : l = [] := by simpa [listsIn] using hl
-        subst l
-        simp
-      · rintro ⟨hlen, hall⟩
-        have hlNil : l = [] := List.length_eq_zero_iff.mp hlen
-        subst l
-        simp [listsIn]
+  | zero => cases l <;> simp [listsIn]
   | succ r ih =>
-      constructor
-      · intro hl
-        rw [listsIn, mem_map] at hl
-        obtain ⟨p, hp, hpl⟩ := hl
-        change p.1 :: p.2 = l at hpl
-        subst l
-        obtain ⟨hpHead, hpTail⟩ := mem_product.mp hp
-        have htail := (ih p.2).mp hpTail
-        refine ⟨by simp [htail.1], ?_⟩
-        intro x hx
-        rw [List.mem_cons] at hx
-        rcases hx with rfl | hx
-        · exact hpHead
-        · exact htail.2 x hx
-      · rintro ⟨hlen, hall⟩
-        cases l with
-        | nil => simp at hlen
-        | cons h l =>
-          rw [listsIn, mem_map]
-          refine ⟨(h, l), mem_product.mpr ⟨hall h (by simp), ?_⟩, ?_⟩
-          · apply (ih l).mpr
-            constructor
-            · simpa using hlen
-            · intro x hx
-              exact hall x (by simp [hx])
-          · rfl
+      cases l with
+      | nil => simp [listsIn, listConsEmbedding]
+      | cons h l =>
+          change (listConsEmbedding α) (h, l) ∈
+            (s ×ˢ listsIn s r).map (listConsEmbedding α) ↔ _
+          rw [Finset.mem_map', Finset.mem_product, ih]
+          simp only [List.length_cons, Nat.add_right_cancel_iff,
+            List.forall_mem_cons, and_left_comm]
 
 private lemma card_listsIn {α : Type*} [DecidableEq α]
     (s : Finset α) (r : Nat) :
@@ -1097,25 +1070,12 @@ private lemma positiveProductMajorantSum_eq_sum_lists
       apply Finset.sum_congr rfl
       intro l _
       apply congrArg (geometricSumMajorant t)
-      have hprod : (listConsEmbedding Nat (h, l)).prod = h * l.prod := by
-        rfl
-      rw [hprod]
-      have hcastHN : ((h * n : Nat) : Real) =
-          (h : Real) * (n : Real) := Nat.cast_mul h n
-      have hcastProd : ((h * l.prod : Nat) : Real) =
-          (h : Real) * (l.prod : Real) := Nat.cast_mul h l.prod
-      calc
+      change alpha * (Nat.factorial k : Real) *
+          (((h * n : Nat) : Real) * (l.prod : Real)) =
         alpha * (Nat.factorial k : Real) *
-              (((h * n : Nat) : Real) * (l.prod : Real)) =
-            alpha * (Nat.factorial k : Real) *
-              (((h : Real) * (n : Real)) * (l.prod : Real)) := by
-          rw [hcastHN]
-        _ = alpha * (Nat.factorial k : Real) *
-              ((n : Real) * ((h : Real) * (l.prod : Real))) := by
-          ring
-        _ = alpha * (Nat.factorial k : Real) *
-              ((n : Real) * ((h * l.prod : Nat) : Real)) := by
-          rw [hcastProd]
+          ((n : Real) * ((h * l.prod : Nat) : Real))
+      push_cast
+      ring
 
 /-! ## A fully explicit subpower divisor bound
 

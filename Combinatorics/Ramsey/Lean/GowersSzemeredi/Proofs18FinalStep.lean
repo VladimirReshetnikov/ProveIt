@@ -115,12 +115,6 @@ variable (P : GenParamsJT3) (alpha : Real)
 /-- The budget `globalBudgetW θ₁′ k`. -/
 def B : Real := globalBudgetW (fejerThetaOne alpha (alpha / 2) P.k) P.k
 
-/-- The width exponent of the base cover in face dimension `l`. -/
-def Ewg (l : Nat) : Real → Real := uExp P.V (uDegT3 l) (alpha / 2) (P.B alpha)
-
-/-- `θ₂/2`. -/
-def T2 : Real := globalTheta2W (fejerThetaOne alpha (alpha / 2) P.k)
-
 /-- The joint-cover remainder density `ρ₁`. -/
 def Rho1 : Real := coverRho1W (fun l => uCount P.V (uDegT3 l)) (fejerThetaOne alpha (alpha / 2) P.k) (alpha / 2) P.k
 
@@ -155,10 +149,6 @@ def Rho : Real := spectrumPieceRho (fun t => t / 2) (P.Rho1 alpha)
 
 /-- The slice density. -/
 def ThS : Real := singlePieceTheta (P.Rho alpha) 1
-
-/-- The slice control. -/
-def CS : Real :=
-  singlePieceGlobalF (fun l => uCount P.V (uDegT3 l)) alpha (alpha / 2) P.k (P.ThS alpha)
 
 /-- The slice exponent `E(θ_S/4)`; the joint-slice width has exponent `Eth²`. -/
 def Eth : Real := uExp P.V (uDegT3 P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 4)

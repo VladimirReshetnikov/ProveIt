@@ -1113,41 +1113,11 @@ private lemma extraction_restricted_ite_eq_sum {N : Nat} {X : Type*}
       ∑ d ∈ B, if D.index uv.1 = D.index x + d ∧
         D.index uv.2 = D.index w + d then 1 else 0 := by
   classical
-  by_cases hrel : D.index uv.1 - D.index x =
-      D.index uv.2 - D.index w ∧ D.index uv.1 - D.index x ∈ B
-  · rw [if_pos hrel]
-    let d₀ : ZMod N := D.index uv.1 - D.index x
-    have hd₀ : d₀ ∈ B := hrel.2
-    rw [Finset.sum_eq_single d₀]
-    · have hu : D.index uv.1 = D.index x + d₀ := by
-        dsimp only [d₀]
-        abel
-      have hv : D.index uv.2 = D.index w + d₀ := by
-        dsimp only [d₀]
-        linear_combination hrel.1.symm
-      simp [hu, hv]
-    · intro d _ hdne
-      rw [if_neg]
-      intro huv
-      apply hdne
-      dsimp only [d₀]
-      linear_combination huv.1.symm
-    · exact fun hd₀not => (hd₀not hd₀).elim
-  · rw [if_neg hrel]
-    symm
-    apply Finset.sum_eq_zero
-    intro d hd
-    rw [if_neg]
-    intro huv
-    apply hrel
-    constructor
-    · rw [huv.1, huv.2]
-      abel
-    · have hu : D.index uv.1 - D.index x = d := by
-        rw [huv.1]
-        abel
-      rw [hu]
-      exact hd
+  simp_rw [← sub_eq_iff_eq_add' (a := D.index uv.1) (b := D.index x),
+    ← sub_eq_iff_eq_add' (a := D.index uv.2) (b := D.index w), ite_and]
+  rw [Finset.sum_ite_eq]
+  by_cases hmem : D.index uv.1 - D.index x ∈ B <;>
+    simp [hmem, eq_comm]
 
 private lemma extraction_error_ite_eq_sum {N : Nat} {X : Type*}
     (D : MultifunctionDomain N X) (phi : X → ZMod N)

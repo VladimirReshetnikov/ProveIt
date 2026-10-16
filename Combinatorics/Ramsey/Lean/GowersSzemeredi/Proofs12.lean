@@ -292,22 +292,11 @@ private lemma prop121_shift_sum {N p : Nat} [NeZero N]
     (F : (Fin p → ZMod N) → Real) :
     (∑ s : ZMod N, ∑ v : Fin p → ZMod N, F (fun i => s - v i)) =
       (N : Real) * ∑ x : Fin p → ZMod N, F x := by
-  calc
-    (∑ s : ZMod N, ∑ v : Fin p → ZMod N, F (fun i => s - v i)) =
-        ∑ _s : ZMod N, ∑ x : Fin p → ZMod N, F x := by
-          apply Finset.sum_congr rfl
-          intro s _
-          exact Fintype.sum_equiv
-              ({ toFun v := fun i => s - v i
-                 invFun v := fun i => s - v i
-                 left_inv v := by
-                   funext i
-                   ring
-                 right_inv v := by
-                   funext i
-                   ring } : (Fin p → ZMod N) ≃ (Fin p → ZMod N))
-            (fun v => F (fun i => s - v i)) F (fun _ => rfl)
-    _ = (N : Real) * ∑ x : Fin p → ZMod N, F x := by simp
+  have hshift (s : ZMod N) :
+      (∑ v : Fin p → ZMod N, F (fun i => s - v i)) = ∑ x : Fin p → ZMod N, F x :=
+    (Equiv.subLeft (fun _ : Fin p => s)).sum_comp F
+  simp_rw [hshift]
+  simp
 
 private lemma prop121_mixed_eq_l2 {N p : Nat} [NeZero N]
     (lambda : ZMod N → Real) (f : Fin p → ZMod N → Complex)

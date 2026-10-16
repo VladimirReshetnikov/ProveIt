@@ -349,15 +349,6 @@ private def prop141B {N p : Nat} [NeZero N] (lambda : ZMod N → Real)
     (u : Fin p → ZMod N) (h : ZMod N) : Complex :=
   (lambda h : Complex) * ∏ i, exponential (sigma i h * u i)
 
-private def prop141AddRightEquiv {N : Nat} (s : ZMod N) : ZMod N ≃ ZMod N where
-  toFun h := h + s
-  invFun t := t - s
-  left_inv h := by ring
-  right_inv t := by ring
-
-@[simp] private lemma prop141AddRightEquiv_apply {N : Nat} (s h : ZMod N) :
-    prop141AddRightEquiv s h = h + s := rfl
-
 private lemma prop141_correlation_eq {N p : Nat} [NeZero N]
     (lambda : ZMod N → Real) (f : Fin p → Pair N → Complex)
     (sigma : Fin p → ZMod N → ZMod N)
@@ -367,8 +358,8 @@ private lemma prop141_correlation_eq {N p : Nat} [NeZero N]
         (fun i => s + x i) u (fun i => s + w i) h := by
   classical
   simp only [correlation]
-  rw [← (prop141AddRightEquiv s).sum_comp]
-  simp only [prop141AddRightEquiv_apply, add_sub_cancel_right]
+  rw [← (Equiv.addRight s).sum_comp]
+  simp only [Equiv.coe_addRight, add_sub_cancel_right]
   apply Finset.sum_congr rfl
   intro h _
   simp only [prop141A, prop141B, prop141InnerTerm, star_mul, star_prod,
@@ -399,17 +390,6 @@ private lemma prop141_correlation_eq {N p : Nat} [NeZero N]
             have hw : h + s + w i = s + w i + h := by ring
             rw [hx, hw]
 
-private def prop141VectorShiftEquiv {N p : Nat} (s : ZMod N) :
-    (Fin p → ZMod N) ≃ (Fin p → ZMod N) where
-  toFun x := fun i => s + x i
-  invFun x := fun i => x i - s
-  left_inv x := by
-    funext i
-    ring
-  right_inv x := by
-    funext i
-    ring
-
 private lemma prop141_double_shift_sum {N p : Nat} [NeZero N]
     (F : (Fin p → ZMod N) → (Fin p → ZMod N) → Real) :
     (∑ s : ZMod N, ∑ x : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
@@ -419,23 +399,12 @@ private lemma prop141_double_shift_sum {N p : Nat} [NeZero N]
   calc
     _ = ∑ _s : ZMod N, ∑ x : Fin p → ZMod N,
         ∑ w : Fin p → ZMod N, F x w := by
-          apply Finset.sum_congr rfl
-          intro s _
-          calc
-            (∑ x : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
-                F (fun i => s + x i) (fun i => s + w i)) =
-                ∑ x : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
-                  F x (fun i => s + w i) := by
-                    exact Fintype.sum_equiv (prop141VectorShiftEquiv (p := p) s)
-                      (fun x => ∑ w : Fin p → ZMod N,
-                        F (fun i => s + x i) (fun i => s + w i))
-                      (fun x => ∑ w : Fin p → ZMod N,
-                        F x (fun i => s + w i)) (fun _ => rfl)
-            _ = _ := by
-              apply Finset.sum_congr rfl
-              intro x _
-              exact Fintype.sum_equiv (prop141VectorShiftEquiv (p := p) s)
-                (fun w => F x (fun i => s + w i)) (F x) (fun _ => rfl)
+      apply Finset.sum_congr rfl
+      intro s _
+      let e := Equiv.addLeft (fun _ : Fin p => s)
+      change (∑ x, ∑ w, F (e x) (e w)) = _
+      rw [e.sum_comp (fun x => ∑ w, F x (e w))]
+      exact Finset.sum_congr rfl fun x _ => e.sum_comp (F x)
     _ = _ := by simp
 
 private lemma prop141_mixed_eq_l2 {N p : Nat} [NeZero N]

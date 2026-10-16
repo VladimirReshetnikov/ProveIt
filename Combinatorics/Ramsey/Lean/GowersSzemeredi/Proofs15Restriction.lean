@@ -931,28 +931,11 @@ private noncomputable def selectionZeroRelations (N k : Nat) :
   exact Finset.univ.filter fun eps ↦
     ∀ z, selectionDigit (N := N) (eps z) = 0
 
-private def selectionZeroDigitEquiv (N : Nat) [Fact (1 < N)] :
-    {d : Fin 4 // selectionDigit (N := N) d = 0} ≃ Bool where
-  toFun d := d.1 = 1
-  invFun b := if b then ⟨1, by simp [selectionDigit, selectionDigitInt]⟩
-    else ⟨0, by simp [selectionDigit, selectionDigitInt]⟩
-  left_inv d := by
-    have hdlt : (d.1 : Nat) < 2 := by
-      exact (selectionDigit_eq_zero_iff N d.1).mp d.2
-    apply Subtype.ext
-    by_cases hd : (d.1 : Nat) = 1
-    · have hdfin : d.1 = (1 : Fin 4) := Fin.ext hd
-      simp [hdfin]
-    · have hdval : (d.1 : Nat) = 0 := by omega
-      have hdfin : d.1 = (0 : Fin 4) := Fin.ext hdval
-      simp [hdfin]
-  right_inv b := by cases b <;> simp
-
 private lemma selection_zeroDigit_card (N : Nat) (hN : 3 ≤ N) :
     Fintype.card {d : Fin 4 // selectionDigit (N := N) d = 0} = 2 := by
   letI : Fact (1 < N) := ⟨by omega⟩
-  rw [Fintype.card_congr (selectionZeroDigitEquiv N)]
-  decide
+  exact (Fintype.card_congr (Equiv.subtypeEquivRight (selectionDigit_eq_zero_iff N))).trans
+    (Fintype.card_fin_lt_of_le (by decide : 2 ≤ 4))
 
 private lemma selectionZeroRelations_card (N k : Nat) (hN : 3 ≤ N) :
     (selectionZeroRelations N k).card = 2 ^ (2 ^ (k + 4)) := by
@@ -1828,25 +1811,9 @@ private lemma selectionZero_smallCoefficient_kernel_card_le_two {N : Nat}
     rw [restriction_mul_kernel_card, hval]
     exact Nat.gcd_le_right N (by norm_num)
 
-private def selectionZeroDoubleExceptEquiv (i j : Fin 16) (hij : i ≠ j) :
-    {q : Fin 16 // q ≠ i ∧ q ≠ j} ≃
-      {q : {q : Fin 16 // q ≠ i} // q ≠ ⟨j, hij.symm⟩} where
-  toFun q := ⟨⟨q, q.2.1⟩, by
-    intro h
-    exact q.2.2 (congrArg Subtype.val h)⟩
-  invFun q := ⟨q.1.1, q.1.2, by
-    intro h
-    apply q.2
-    apply Subtype.ext
-    exact h⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 private lemma selectionZero_doubleExcept_card (i j : Fin 16) (hij : i ≠ j) :
     Fintype.card {q : Fin 16 // q ≠ i ∧ q ≠ j} = 14 := by
-  rw [Fintype.card_congr (selectionZeroDoubleExceptEquiv i j hij)]
-  rw [Fintype.card_subtype_compl]
-  simp
+  simpa using lemma154_double_except_card i j hij
 
 private lemma selectionZero_sum_mul_sub_eq_two {N : Nat}
     (f x y : Fin 16 → ZMod N) (i j : Fin 16) (hij : i ≠ j)

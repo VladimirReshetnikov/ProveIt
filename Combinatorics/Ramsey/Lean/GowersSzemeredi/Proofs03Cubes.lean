@@ -153,31 +153,11 @@ private lemma cubeCount_sq_le_card_mul_succ {N d : Nat} [NeZero N]
     (A : Finset (ZMod N)) :
     (cubeCount (d := d) A : Real) ^ 2 ≤
       (N : Real) ^ d * (cubeCount (d := d + 1) A : Real) := by
-  let X : Point N d → Complex := fun a ↦
-    ∑ s : ZMod N, cubeDifference (indicator A) a s
-  have htotal : ∑ a : Point N d, X a =
-      (cubeCount (d := d) A : Complex) :=
-    sum_cubeDifference_indicator_eq_cubeCount A
-  have hnorm : ‖∑ a : Point N d, X a‖ = (cubeCount (d := d) A : Real) := by
-    rw [htotal]
-    simp
-  have htriangle : ‖∑ a : Point N d, X a‖ ≤
-      ∑ a : Point N d, ‖X a‖ := by
-    simpa using norm_sum_le (Finset.univ : Finset (Point N d)) X
-  have hcauchy : (∑ a : Point N d, ‖X a‖) ^ 2 ≤
-      (Fintype.card (Point N d) : Real) * ∑ a : Point N d, ‖X a‖ ^ 2 := by
-    simpa using (sq_sum_le_card_mul_sum_sq
-      (s := (Finset.univ : Finset (Point N d))) (f := fun a ↦ ‖X a‖))
-  calc
-    (cubeCount (d := d) A : Real) ^ 2 =
-        ‖∑ a : Point N d, X a‖ ^ 2 := by rw [hnorm]
-    _ ≤ (∑ a : Point N d, ‖X a‖) ^ 2 :=
-      pow_le_pow_left₀ (norm_nonneg _) htriangle 2
-    _ ≤ (Fintype.card (Point N d) : Real) *
-        ∑ a : Point N d, ‖X a‖ ^ 2 := hcauchy
-    _ = (N : Real) ^ d * (cubeCount (d := d + 1) A : Real) := by
-      rw [← cubeCount_succ_eq_sum_norm_sq]
-      simp [Point, ZMod.card]
+  have h := gowers_norm_sum_sq_le_card_mul_sum_norm_sq
+    (fun a : Point N d => ∑ s : ZMod N, cubeDifference (indicator A) a s)
+  rw [sum_cubeDifference_indicator_eq_cubeCount] at h
+  simpa only [Complex.norm_natCast, ← cubeCount_succ_eq_sum_norm_sq, Point,
+    Fintype.card_fun, Fintype.card_fin, ZMod.card, Nat.cast_pow] using h
 
 /-- **Gowers, Lemma 3.7.** Every set has at least the random-density number
 of additive cubes in every dimension. -/

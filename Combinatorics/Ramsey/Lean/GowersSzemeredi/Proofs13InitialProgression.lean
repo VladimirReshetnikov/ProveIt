@@ -799,63 +799,20 @@ private lemma lemma134_sectionC_total {N : Nat} [NeZero N]
     (S : Section13Context N) :
     ∑ h : ZMod N, section13C S h = arrangementCount 8 S.A := by
   classical
-  let T : Finset (DArrangement N 8) :=
-    Finset.univ.filter fun R => R.IsIn S.A
-  have hmap : Set.MapsTo DArrangement.height (T : Set (DArrangement N 8))
-      (Finset.univ : Finset (ZMod N)) := by
-    intro R _
-    simp
-  have hfiber := Finset.card_eq_sum_card_fiberwise hmap
-  have hheight (h : ZMod N) : section13C S h =
-      (T.filter fun R => R.height = h).card := by
-    unfold section13C arrangementCountAtHeight countWhere
-    rw [Finset.filter_congr_decidable]
-    apply congrArg Finset.card
-    ext R
-    simp [T]
-  have htotal : T.card = arrangementCount 8 S.A := by
-    unfold arrangementCount countWhere
-    rw [Finset.filter_congr_decidable]
-  calc
-    (∑ h : ZMod N, section13C S h) =
-        ∑ h : ZMod N, (T.filter fun R => R.height = h).card := by
-      apply Finset.sum_congr rfl
-      intro h _
-      exact hheight h
-    _ = T.card := by simpa using hfiber.symm
-    _ = arrangementCount 8 S.A := htotal
+  unfold section13C arrangementCountAtHeight arrangementCount
+  simp_rw [gcs_countWhere_eq_sum_ite, ite_and]
+  rw [Finset.sum_comm]
+  simp
 
 private lemma lemma134_sectionG_total {N : Nat} [NeZero N]
     (S : Section13Context N) :
     ∑ h : ZMod N, section13G S h =
       respectedArrangementCount 8 S.A S.phi := by
   classical
-  let T : Finset (DArrangement N 8) :=
-    Finset.univ.filter fun R => R.IsIn S.A ∧ R.IsRespected S.phi
-  have hmap : Set.MapsTo DArrangement.height (T : Set (DArrangement N 8))
-      (Finset.univ : Finset (ZMod N)) := by
-    intro R _
-    simp
-  have hfiber := Finset.card_eq_sum_card_fiberwise hmap
-  have hheight (h : ZMod N) : section13G S h =
-      (T.filter fun R => R.height = h).card := by
-    unfold section13G respectedArrangementCountAtHeight countWhere
-    rw [Finset.filter_congr_decidable]
-    apply congrArg Finset.card
-    ext R
-    simp [T]
-    tauto
-  have htotal : T.card = respectedArrangementCount 8 S.A S.phi := by
-    unfold respectedArrangementCount countWhere
-    rw [Finset.filter_congr_decidable]
-  calc
-    (∑ h : ZMod N, section13G S h) =
-        ∑ h : ZMod N, (T.filter fun R => R.height = h).card := by
-      apply Finset.sum_congr rfl
-      intro h _
-      exact hheight h
-    _ = T.card := by simpa using hfiber.symm
-    _ = respectedArrangementCount 8 S.A S.phi := htotal
+  unfold section13G respectedArrangementCountAtHeight respectedArrangementCount
+  simp_rw [gcs_countWhere_eq_sum_ite, ite_and]
+  rw [Finset.sum_comm]
+  simp
 
 private lemma lemma134_sectionG_le_C {N : Nat} [NeZero N]
     (S : Section13Context N) (h : ZMod N) :

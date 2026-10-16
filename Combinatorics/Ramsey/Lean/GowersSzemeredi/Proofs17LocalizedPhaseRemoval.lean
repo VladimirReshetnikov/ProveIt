@@ -231,48 +231,27 @@ private lemma prop177_thresholdCode_injective {k R : Nat} (_hR : 0 < R)
     (hg0 : (g (prop177ZeroVertex k)).1 = 0)
     (hh0 : (h (prop177ZeroVertex k)).1 = 0)
     (hcode : prop177ThresholdCode g = prop177ThresholdCode h) : g = h := by
+  have hle (a b : Prop177BoundedPattern k R)
+      (hab : prop177ThresholdCode a = prop177ThresholdCode b)
+      (e : Fin k → Bool) (he : e ≠ prop177ZeroVertex k) :
+      (a e).1 ≤ (b e).1 := by
+    by_contra hnot
+    have hlt : (b e).1 < (a e).1 := lt_of_not_ge hnot
+    have ha := (Finset.mem_Icc.mp (a e).2).2
+    have hb := (Finset.mem_Icc.mp (b e).2).1
+    let q : Prop177Threshold k R :=
+      ⟨⟨e, he⟩, ⟨(a e).1, Finset.mem_Icc.mpr
+        ⟨Int.add_one_le_iff.mpr (hb.trans_lt hlt), ha⟩⟩⟩
+    have hc := congrFun hab ((prop177ThresholdEquiv k R).symm q)
+    simp only [prop177ThresholdCode, Equiv.apply_symm_apply, q,
+      decide_eq_decide] at hc
+    simp [hlt] at hc
   funext e
   apply Subtype.ext
   by_cases he0 : e = prop177ZeroVertex k
   · subst e
     exact hg0.trans hh0.symm
-  · apply le_antisymm
-    · by_contra hle
-      have hlt : h e < g e := lt_of_not_ge hle
-      have hltInt : (h e).1 < (g e).1 := by exact_mod_cast hlt
-      let j : Int := (g e).1
-      have hj : j ∈ Finset.Icc (-(R : Int) + 1) (R : Int) := by
-        have hg : -(R : Int) ≤ (g e).1 ∧ (g e).1 ≤ (R : Int) := by
-          simpa only [Prop177BoundedInt, Finset.mem_Icc] using (g e).2
-        have hh : -(R : Int) ≤ (h e).1 ∧ (h e).1 ≤ (R : Int) := by
-          simpa only [Prop177BoundedInt, Finset.mem_Icc] using (h e).2
-        simp only [Finset.mem_Icc]
-        exact ⟨Int.add_one_le_iff.mpr (hh.1.trans_lt hltInt), hg.2⟩
-      let q : Prop177Threshold k R := ⟨⟨e, he0⟩, ⟨j, hj⟩⟩
-      let i : Fin (prop177ThresholdCount k R) :=
-        (prop177ThresholdEquiv k R).symm q
-      have hiq : prop177ThresholdEquiv k R i = q := by simp [i]
-      have hc := congrFun hcode i
-      simp only [prop177ThresholdCode, hiq, q, j, decide_eq_decide] at hc
-      simp [hltInt] at hc
-    · by_contra hle
-      have hlt : g e < h e := lt_of_not_ge hle
-      have hltInt : (g e).1 < (h e).1 := by exact_mod_cast hlt
-      let j : Int := (h e).1
-      have hj : j ∈ Finset.Icc (-(R : Int) + 1) (R : Int) := by
-        have hh : -(R : Int) ≤ (h e).1 ∧ (h e).1 ≤ (R : Int) := by
-          simpa only [Prop177BoundedInt, Finset.mem_Icc] using (h e).2
-        have hg : -(R : Int) ≤ (g e).1 ∧ (g e).1 ≤ (R : Int) := by
-          simpa only [Prop177BoundedInt, Finset.mem_Icc] using (g e).2
-        simp only [Finset.mem_Icc]
-        exact ⟨Int.add_one_le_iff.mpr (hg.1.trans_lt hltInt), hh.2⟩
-      let q : Prop177Threshold k R := ⟨⟨e, he0⟩, ⟨j, hj⟩⟩
-      let i : Fin (prop177ThresholdCount k R) :=
-        (prop177ThresholdEquiv k R).symm q
-      have hiq : prop177ThresholdEquiv k R i = q := by simp [i]
-      have hc := congrFun hcode i
-      simp only [prop177ThresholdCode, hiq, q, j, decide_eq_decide] at hc
-      simp [hltInt] at hc
+  · exact le_antisymm (hle g h hcode e he0) (hle h g hcode.symm e he0)
 
 private lemma prop177_thresholdCount_eq (k R : Nat) :
     prop177ThresholdCount k R = (2 ^ k - 1) * (2 * R) := by

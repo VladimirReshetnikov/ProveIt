@@ -775,8 +775,7 @@ theorem properMultiplyLinear_fin_sum {N d r : Nat} [NeZero N]
       have hgamma := abs_gamma_le_iteration_of_nonempty hsPos (hGamma i0) hGiNe
       have hcounts := final_graph_count_bounds (d := d) hr htheta hthetaOne hs
         hgammaPos hgamma (by simpa only [stageQ, eta] using hq0Floor)
-      let ef := ((Fintype.equivFin (Fin r → Fin q0)).trans
-           (finCongr (by simp)) : (Fin r → Fin q0) ≃ Fin (q0 ^ r))
+      let ef := finFunctionFinEquiv (m := q0) (n := r)
       let mu : Fin D.M → Fin (q0 ^ r) → Point N d → ZMod N :=
         fun j a x => ∑ i, D.mu j i (ef.symm a i) x
       refine ⟨D.M, q0 ^ r, D.H, D.Q, mu, D.H_subset, hDcard,

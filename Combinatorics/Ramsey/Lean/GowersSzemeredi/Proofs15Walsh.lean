@@ -13,11 +13,12 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-/-- **Lemma 15.1 (Walsh basis).** Constancy of all polynomial moments
-forces the coefficient function to be a scalar multiple of parity. -/
-theorem lemma_15_1_holds : lemma_15_1 := by
-  unfold lemma_15_1
-  intro N k _ hprime hodd h eta hh _heta hinvariant
+theorem signedWalsh_multiple_of_invariant {N k : Nat} [NeZero N]
+    (hprime : N.Prime) (hodd : Odd N) (h : Point N k)
+    (eta : (Fin k → Bool) → Int) (hh : ∀ i, h i ≠ 0)
+    (hinvariant : ∀ (A : Finset (Fin k)) (y z : Point N k),
+      signedWalshMoment eta h y A = signedWalshMoment eta h z A) :
+    IsModularMultiple eta (fun e => ∏ i, walshSign (N := N) (e i)) := by
   letI : Fact (Nat.Prime N) := ⟨hprime⟩
   have hNgt : 2 < N := by
     have hle := hprime.two_le
@@ -204,5 +205,12 @@ theorem lemma_15_1_holds : lemma_15_1 := by
         ∏ i : Fin k, walshSign (N := N) (uOf s i)
   rw [hsign]
   ring
+
+/-- **Lemma 15.1 (Walsh basis).** Constancy of all polynomial moments
+forces the coefficient function to be a scalar multiple of parity. -/
+theorem lemma_15_1_holds : lemma_15_1 := by
+  unfold lemma_15_1
+  intro N k _ hprime hodd h eta hh _heta hinvariant
+  exact signedWalsh_multiple_of_invariant hprime hodd h eta hh hinvariant
 
 end LeanProofs.GowersSzemeredi

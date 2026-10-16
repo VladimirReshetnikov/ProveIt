@@ -840,21 +840,8 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
   obtain ⟨p, hSpr, hEw, hCw, hCv⟩ :=
     exists_regular_parameters rho sigma eta S T a b q e X' hrho hL
       hsigmaPos hetaPos hS hT ha hb hq he hU hEsum hTcard
-  let W : Finset X := (by
-       classical
-       exact Finset.univ.filter fun y =>
-         p ∈ normalizedWindowSet rho (normalizedQ D x alpha M y) (normalizedR D M y) : Finset X)
-  let V : Finset X := (by
-       classical
-       exact Finset.univ.filter fun y =>
-         p ∈ normalizedBoundarySet rho sigma
-           (normalizedQ D x alpha M y) (normalizedR D M y) : Finset X)
-  have hWfilter : windowFilter rho a b Finset.univ p = W := by
-    ext y
-    simp [windowFilter, W, a, b]
-  have hVfilter : boundaryFilter rho sigma a b p = V := by
-    ext y
-    simp [boundaryFilter, V, a, b]
+  let W : Finset X := windowFilter rho a b Finset.univ p
+  let V : Finset X := boundaryFilter rho sigma a b p
   have hSprFilter : windowFilter rho a b X' p =
       X'.filter (fun y => y ∈ W) := by
     ext y
@@ -866,24 +853,21 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
   have hEwEq : windowedSum rho a b e Finset.univ p =
       ∑ y ∈ W, e y := by
     rw [windowedSum_eq_filter]
-    rw [hWfilter]
   have hCwEq : windowedSum rho a b (fun _ => 1) Finset.univ p = W.card := by
     rw [windowedSum_eq_filter]
-    rw [hWfilter]
     simp only [Finset.sum_const, nsmul_eq_mul, mul_one]
   have hCvEq : boundaryCount rho sigma a b p = V.card := by
     rw [boundaryCount_eq_card_filter]
-    rw [hVfilter]
   rw [hSprEq] at hSpr hEw hCw hCv
   rw [hEwEq] at hEw
   rw [hCwEq] at hCw
   rw [hCvEq] at hCv
   have hmemW (y : X) : y ∈ W ↔
       p ∈ normalizedWindowSet rho (a y) (b y) := by
-    simp [W, a, b]
+    simp [W, windowFilter, a, b]
   have hmemV (y : X) : y ∈ V ↔
       p ∈ normalizedBoundarySet rho sigma (a y) (b y) := by
-    simp [V, a, b]
+    simp [V, boundaryFilter, a, b]
   have hWbounds (y : X) (hy : y ∈ W) :
       (a y - rho ≤ p.1 ∧ p.1 ≤ a y + rho) ∧
       (b y - rho ≤ p.2 ∧ p.2 ≤ b y + rho) := by

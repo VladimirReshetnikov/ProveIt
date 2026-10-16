@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16PolyCoverTwo
 import GowersSzemeredi.Proofs16PolyPieceTwoDataWith
+import GowersSzemeredi.Proofs16Lemma5With
 
 /-! **`PolyCoverAt 2` with the Fejér θ₁ and the tight Bohr radius**
 (Notes L.16d).
@@ -14,7 +15,7 @@ split-class recursion. Here it is built with:
 
 Everything else (the greedy peeling, the padding to
 `polyTwoFejerPieces = ⌊γ⁻²/(5θ′)⌋`, the simultaneous family cover, and the
-coarse cover below the threshold) is the corpus proof, copied by a script.
+coarse cover below the threshold) follows the original assembly of the cover.
 The family Lemma 16.6 input is the generic `AbstractFamilyLemma166At 1`,
 unchanged. -/
 set_option autoImplicit false

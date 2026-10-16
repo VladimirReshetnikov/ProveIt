@@ -635,7 +635,7 @@ private lemma cor147_second_moment_le {N k : Nat} [NeZero N]
       simpa only [pow_one] using hcombine
 
 private lemma cor147_interpolation {X : Type*} [Fintype X]
-    (a : X → Real) (_ha : ∀ i, 0 ≤ a i) :
+    (a : X → Real) :
     (∑ i, a i ^ 4) ^ 7 ≤
       (∑ i, a i ^ 2) ^ 6 * (∑ i, a i ^ 16) := by
   have h := Real.inner_le_weight_mul_Lp_of_nonneg
@@ -665,23 +665,6 @@ private lemma cor147_interpolation {X : Type*} [Fintype X]
         ← Real.rpow_mul_natCast hsixteen]
       norm_num [Real.rpow_natCast]
 
-private def cor147Spectrum {N k : Nat} [NeZero N]
-    (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
-    (z : Point N k × (ZMod N × ZMod N)) : Real :=
-  ‖fourier (cor147Phase B phi z.1 z.2.1) z.2.2‖
-
-private lemma cor147_spectrum_sum_pow {N k m : Nat} [NeZero N]
-    (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N) :
-    (∑ z : Point N k × (ZMod N × ZMod N),
-      cor147Spectrum B phi z ^ m) =
-      ∑ h : Point N k, ∑ u : ZMod N, ∑ r : ZMod N,
-        ‖fourier (cor147Phase B phi h u) r‖ ^ m := by
-  rw [cor147_sum_pair]
-  apply Finset.sum_congr rfl
-  intro h _
-  rw [cor147_sum_pair]
-  rfl
-
 private lemma cor147_moment_interpolation {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N) :
     (∑ h : Point N k, ∑ u : ZMod N, ∑ r : ZMod N,
@@ -690,8 +673,9 @@ private lemma cor147_moment_interpolation {N k : Nat} [NeZero N]
         ‖fourier (cor147Phase B phi h u) r‖ ^ 2) ^ 6 *
       (∑ h : Point N k, ∑ u : ZMod N, ∑ r : ZMod N,
         ‖fourier (cor147Phase B phi h u) r‖ ^ 16) := by
-  have h := cor147_interpolation (cor147Spectrum B phi) fun z ↦ norm_nonneg _
-  simpa only [cor147_spectrum_sum_pow] using h
+  simpa only [cor147_sum_pair] using cor147_interpolation
+    (fun z : Point N k × (ZMod N × ZMod N) =>
+      ‖fourier (cor147Phase B phi z.1 z.2.1) z.2.2‖)
 
 theorem lemma_14_7_holds : lemma_14_7 := by
   intro N k _ theta B phi htheta hpairs

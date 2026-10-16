@@ -360,73 +360,17 @@ private lemma cor146_energy_eq_fiber_count {N k : Nat} [NeZero N]
         (cor146Theta B phi K) (cor146Sigma phi K) =
       (countWhere (cor146FiberGood B phi K) : Nat) := by
   classical
-  unfold weightedSimultaneousAdditiveEnergy
-  simp only [cor146Theta]
-  rw [show countWhere (cor146FiberGood B phi K) =
-      countWhere (fun z : (Fin 4 → ZMod N) ×
-        (Fin 4 → AxisCube N k) =>
-        ((∀ t, z.1 t ∈ cor146ReferenceSection B K) ∧
-            IsAdditiveQuadruple z.1 ∧
-            ∀ i, IsAdditiveQuadruple
-              (fun t => cor146Sigma phi K i (z.1 t))) ∧
-          ∀ t, z.2 t ∈ cor146GoodSet B phi K (z.1 t)) by
-    apply countWhere_congr
-    intro z
-    rfl]
-  rw [show countWhere (fun z : (Fin 4 → ZMod N) ×
-      (Fin 4 → AxisCube N k) =>
-      ((∀ t, z.1 t ∈ cor146ReferenceSection B K) ∧
-          IsAdditiveQuadruple z.1 ∧
-          ∀ i, IsAdditiveQuadruple
-            (fun t => cor146Sigma phi K i (z.1 t))) ∧
-        ∀ t, z.2 t ∈ cor146GoodSet B phi K (z.1 t)) =
-      ∑ q : Fin 4 → ZMod N,
-        countWhere (fun f : Fin 4 → AxisCube N k =>
-          ((∀ t, q t ∈ cor146ReferenceSection B K) ∧
-              IsAdditiveQuadruple q ∧
-              ∀ i, IsAdditiveQuadruple
-                (fun t => cor146Sigma phi K i (q t))) ∧
-            ∀ t, f t ∈ cor146GoodSet B phi K (q t)) from
-    prop144_countWhere_prod
-      (X := Fin 4 → ZMod N) (Y := Fin 4 → AxisCube N k)
-      (fun q f =>
-        ((∀ t, q t ∈ cor146ReferenceSection B K) ∧
-            IsAdditiveQuadruple q ∧
-            ∀ i, IsAdditiveQuadruple
-              (fun t => cor146Sigma phi K i (q t))) ∧
-          ∀ t, f t ∈ cor146GoodSet B phi K (q t))]
-  simp only [Nat.cast_sum]
+  unfold weightedSimultaneousAdditiveEnergy cor146Theta cor146FiberGood cor146EnergyCondition
+  rw [prop144_countWhere_prod, Nat.cast_sum]
   apply Fintype.sum_congr
   intro q
   by_cases hq : (∀ t, q t ∈ cor146ReferenceSection B K) ∧
       IsAdditiveQuadruple q ∧
       ∀ i, IsAdditiveQuadruple (fun t => cor146Sigma phi K i (q t))
-  · rw [if_pos hq]
-    have hcount : countWhere (fun f : Fin 4 → AxisCube N k =>
-        ((∀ t, q t ∈ cor146ReferenceSection B K) ∧
-            IsAdditiveQuadruple q ∧
-            ∀ i, IsAdditiveQuadruple
-              (fun t => cor146Sigma phi K i (q t))) ∧
-          ∀ t, f t ∈ cor146GoodSet B phi K (q t)) =
-        countWhere (fun f : Fin 4 → AxisCube N k =>
-          ∀ t, f t ∈ cor146GoodSet B phi K (q t)) := by
-      apply countWhere_congr
-      intro f
-      exact and_iff_right hq
-    rw [hcount, cor146_count_choices]
+  · simp only [hq, if_true, true_and]
+    rw [cor146_count_choices]
     norm_cast
-  · rw [if_neg hq]
-    have hfalse : countWhere (fun f : Fin 4 → AxisCube N k =>
-        ((∀ t, q t ∈ cor146ReferenceSection B K) ∧
-            IsAdditiveQuadruple q ∧
-            ∀ i, IsAdditiveQuadruple
-              (fun t => cor146Sigma phi K i (q t))) ∧
-          ∀ t, f t ∈ cor146GoodSet B phi K (q t)) = 0 := by
-      unfold countWhere
-      rw [Finset.filter_congr_decidable]
-      simp [hq]
-    rw [hfalse]
-    norm_num
+  · simp [hq, countWhere]
 
 private lemma cor146_theta_eq_zero_of_not_reference {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)

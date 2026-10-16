@@ -802,54 +802,34 @@ private lemma bohr_symmetric_multiples_subset {p : Nat} [NeZero p]
   intro r hr
   rw [bohr, Finset.mem_filter] at hd
   have hdr := hd.2 r hr
-  have hbase : 0 <= rho / (m : Real) * p := by positivity
   have hcollapse : (m : Real) * (rho / (m : Real) * p) = rho * p := by
     field_simp
   have hjBounds : -(m : Int) <= j ∧ j <= (m : Int) := Finset.mem_Icc.mp hj
+  have hnatural (n : Nat) (hn : n <= m) :
+      (centeredAbs (r * ((n : ZMod p) * d)) : Real) <= rho * p := by
+    have hmul : r * ((n : ZMod p) * d) = n • (r * d) := by
+      simp [nsmul_eq_mul]
+      ring
+    calc
+      (centeredAbs (r * ((n : ZMod p) * d)) : Real) <=
+          n * centeredAbs (r * d) := by
+        rw [hmul]
+        exact_mod_cast centeredAbs_nsmul_le n (r * d)
+      _ <= m * (rho / (m : Real) * p) :=
+        mul_le_mul (by exact_mod_cast hn) hdr (by positivity) (by positivity)
+      _ = rho * p := hcollapse
   cases j with
   | ofNat n =>
       have hcastNat : ((Int.ofNat n : Int) : ZMod p) = (n : ZMod p) := by norm_num
       rw [hcastNat]
-      have hn : n <= m := by
-        apply Int.ofNat_le.mp
-        simpa only [Int.ofNat_eq_natCast] using hjBounds.2
-      have hcenter : centeredAbs (r * ((n : ZMod p) * d)) <=
-          n * centeredAbs (r * d) := by
-        have hmul : r * ((n : ZMod p) * d) = n • (r * d) := by
-          simp [nsmul_eq_mul]
-          ring
-        rw [hmul]
-        exact centeredAbs_nsmul_le n (r * d)
-      calc
-        (centeredAbs (r * ((n : ZMod p) * d)) : Real) <=
-            n * centeredAbs (r * d) := by exact_mod_cast hcenter
-        _ <= n * (rho / (m : Real) * p) := by gcongr
-        _ <= m * (rho / (m : Real) * p) := by gcongr
-        _ = rho * p := hcollapse
+      exact hnatural n (by have := hjBounds.2; omega)
   | negSucc n =>
-      have hn : n + 1 <= m := by
-        have := hjBounds.1
-        omega
       have hcast : ((Int.negSucc n : Int) : ZMod p) * d =
           -(((n + 1 : Nat) : ZMod p) * d) := by
         push_cast
         ring_nf
       rw [hcast, mul_neg, centeredAbs_neg]
-      have hcenter : centeredAbs (r * (((n + 1 : Nat) : ZMod p) * d)) <=
-          (n + 1) * centeredAbs (r * d) := by
-        have hmul : r * (((n + 1 : Nat) : ZMod p) * d) =
-            (n + 1) • (r * d) := by
-          simp [nsmul_eq_mul]
-          ring
-        rw [hmul]
-        exact centeredAbs_nsmul_le (n + 1) (r * d)
-      calc
-        (centeredAbs (r * (((n + 1 : Nat) : ZMod p) * d)) : Real) <=
-            (n + 1) * centeredAbs (r * d) := by exact_mod_cast hcenter
-        _ <= (n + 1) * (rho / (m : Real) * p) := by gcongr
-        _ <= m * (rho / (m : Real) * p) := by
-          exact mul_le_mul_of_nonneg_right (by exact_mod_cast hn) hbase
-        _ = rho * p := hcollapse
+      exact hnatural (n + 1) (by have := hjBounds.1; omega)
 
 private def cor711Density (p : Nat) (R : IntAP) (A : Finset Int) : Real :=
   (modularCoordinateSet p R A).card / (p : Real)

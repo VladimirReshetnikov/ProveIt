@@ -68,10 +68,6 @@ variable (P : GenParamsC) (alpha : Real)
 
 /-- The budget `globalBudget α (α/2) k`. -/
 def B : Real := globalBudget alpha (alpha / 2) P.k
-/-- The width exponent of the base cover in face dimension `l`. -/
-def Ewg (l : Nat) : Real → Real := uExp P.V (uDeg68 l) (alpha / 2) (P.B alpha)
-/-- `θ₂/2`. -/
-def T2 : Real := globalTheta2 alpha (alpha / 2) P.k
 /-- The joint-cover remainder density `ρ₁`. -/
 def Rho1 : Real := coverRho1 (fun l => uCount P.V (uDeg68 l)) alpha (alpha / 2) P.k
 /-- `δ(θ₁)`. -/

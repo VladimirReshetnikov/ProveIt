@@ -26,23 +26,6 @@ open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
 open BaseCase
 
-/-- A final-coordinate section inherits the product property, in every dimension. -/
-theorem HasProductProperty.final_section {N k : Nat} [NeZero N] {gamma : Real}
-    {B : Finset (Point N (k + 1))} {phi : Point N (k + 1) → ZMod N}
-    (hprod : HasProductProperty B phi gamma) (t : ZMod N) :
-    HasProductProperty (section16FinalCoordinateSection B t)
-      (section16FinalCoordinateRestriction phi t) gamma := by
-  classical
-  have h := hprod.coordinateFace (lastSliceFace k t)
-  have hdom : (lastSliceFace k t).domain B = section16FinalCoordinateSection B t := by
-    ext x
-    simp [CoordinateFace.domain, section16FinalCoordinateSection, lastSliceFace]
-  have hfun : (lastSliceFace k t).pullback phi = section16FinalCoordinateRestriction phi t := by
-    funext x
-    rfl
-  rw [hdom, hfun] at h
-  exact h
-
 /-! ### The slice decomposition -/
 
 /-- **Every section decomposes into pieces of the uniform class.** -/

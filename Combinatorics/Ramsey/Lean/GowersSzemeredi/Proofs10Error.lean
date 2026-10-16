@@ -250,40 +250,12 @@ private lemma restrictedPair_ite_eq_sum {N : Nat} {X : Type*}
         if D.index u = D.index x + d ∧ D.index v = D.index y + d
         then 1 else 0 := by
   classical
-  by_cases hrel : RestrictedPair D B x y (u, v)
-  · rw [if_pos hrel]
-    let d0 : ZMod N := D.index u - D.index x
-    have hd0 : d0 ∈ B := hrel.2
-    rw [Finset.sum_eq_single d0]
-    · have hu : D.index u = D.index x + d0 := by
-        dsimp only [d0]
-        abel
-      have hv : D.index v = D.index y + d0 := by
-        dsimp only [d0]
-        linear_combination hrel.1.symm
-      simp [hu, hv]
-    · intro d _ hdne
-      rw [if_neg]
-      intro huv
-      apply hdne
-      dsimp only [d0]
-      linear_combination huv.1.symm
-    · exact fun hd0not => (hd0not hd0).elim
-  · rw [if_neg hrel]
-    symm
-    apply Finset.sum_eq_zero
-    intro d hd
-    rw [if_neg]
-    intro huv
-    apply hrel
-    constructor
-    · rw [huv.1, huv.2]
-      abel
-    · have hu : D.index u - D.index x = d := by
-        rw [huv.1]
-        abel
-      rw [hu]
-      exact hd
+  unfold RestrictedPair
+  simp_rw [← sub_eq_iff_eq_add' (a := D.index u) (b := D.index x),
+    ← sub_eq_iff_eq_add' (a := D.index v) (b := D.index y), ite_and]
+  rw [Finset.sum_ite_eq]
+  by_cases hmem : D.index u - D.index x ∈ B <;>
+    simp [hmem, eq_comm]
 
 private lemma restrictedWeight_eq_sum_fibre {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)

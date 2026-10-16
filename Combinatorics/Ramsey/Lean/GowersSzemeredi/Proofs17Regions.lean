@@ -51,6 +51,25 @@ private lemma hyperplaneRegionCount_eq_card_regionFamily {k m : Nat}
   rw [Finset.filter_congr_decidable]
   exact (Finset.card_image_iff.mpr regionTrueSet_injective.injOn).symm
 
+private def dotLinear {k : Nat} (a : Fin k → Real) :
+    (Fin k → Real) →ₗ[Real] Real where
+  toFun := realDot a
+  map_add' := by
+    intro x y
+    simp only [realDot, Pi.add_apply, mul_add, Finset.sum_add_distrib]
+  map_smul' := by
+    intro c x
+    simp only [realDot, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
+    calc
+      (∑ i, a i * (c * x i)) = ∑ i, c * (a i * x i) := by
+        apply Finset.sum_congr rfl
+        intro i _
+        ring
+      _ = c * ∑ i, a i * x i := (Finset.mul_sum _ _ _).symm
+
+private lemma dotLinear_apply {k : Nat} (a x : Fin k → Real) :
+    dotLinear a x = realDot a x := rfl
+
 private lemma regionFamily_shattered_card_le {k m : Nat}
     (H : Fin m -> AffineHyperplane k) (s : Finset (Fin m))
     (hs : (regionFamily H).Shatters s) : s.card <= k := by
@@ -133,23 +152,9 @@ private lemma regionFamily_shattered_card_le {k m : Nat}
       Finset.sum_lt_sum (s := Finset.univ) (fun i _ => hterm i)
         ⟨i0, Finset.mem_univ _, hstrict i0 hi0ne⟩
   have hdotZero : ∑ i : s, c i * realDot (H i.1).normal x = 0 := by
-    unfold realDot
-    calc
-      (∑ i : s, c i * ∑ j, (H i.1).normal j * x j) =
-          ∑ j, (∑ i : s, c i * (H i.1).normal j) * x j := by
-        simp_rw [Finset.mul_sum, ← mul_assoc]
-        rw [Finset.sum_comm]
-        apply Finset.sum_congr rfl
-        intro j _
-        rw [Finset.sum_mul]
-      _ = 0 := by
-        have hcj (j : Fin k) : ∑ i : s, c i * (H i.1).normal j = 0 := by
-          have := congrFun hcNormal j
-          simpa only [Finset.sum_apply, Pi.smul_apply, smul_eq_mul,
-            Pi.zero_apply] using this
-        apply Finset.sum_eq_zero
-        intro j _
-        rw [hcj j, zero_mul]
+    have h := congrArg (dotLinear x) hcNormal
+    simp only [map_sum, LinearMap.map_smul, map_zero] at h
+    simpa only [dotLinear_apply, smul_eq_mul, realDot, mul_comm] using h
   have hsumNonneg :
       0 <= ∑ i : s, c i *
         (realDot (H i.1).normal x - (H i.1).offset) := by
@@ -187,34 +192,10 @@ private lemma hyperplaneRegionCount_le {k m : Nat}
       rw [hIicRange]
       simp only [Fintype.card_fin]
 
-private def dotLinear {k : Nat} (a : Fin k → Real) :
-    (Fin k → Real) →ₗ[Real] Real where
-  toFun := realDot a
-  map_add' := by
-    intro x y
-    simp only [realDot, Pi.add_apply, mul_add, Finset.sum_add_distrib]
-  map_smul' := by
-    intro c x
-    simp only [realDot, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
-    calc
-      (∑ i, a i * (c * x i)) = ∑ i, c * (a i * x i) := by
-        apply Finset.sum_congr rfl
-        intro i _
-        ring
-      _ = c * ∑ i, a i * x i := (Finset.mul_sum _ _ _).symm
-
-private lemma dotLinear_apply {k : Nat} (a x : Fin k → Real) :
-    dotLinear a x = realDot a x := rfl
-
 private lemma realDot_add_smul {k : Nat} (a x v : Fin k → Real) (t : Real) :
     realDot a (x + t • v) = realDot a x + t * realDot a v := by
-  simp only [realDot, Pi.add_apply, Pi.smul_apply, smul_eq_mul]
-  simp_rw [mul_add]
-  rw [Finset.sum_add_distrib, Finset.mul_sum]
-  apply congrArg₂ (.+.) rfl
-  apply Finset.sum_congr rfl
-  intro i _
-  ring
+  change dotLinear a (x + t • v) = dotLinear a x + t * dotLinear a v
+  rw [map_add, LinearMap.map_smul, smul_eq_mul]
 
 private lemma exists_dot_values {k : Nat} {I : Type*} [Fintype I]
     (v : I → Fin k → Real) (hli : LinearIndependent Real v) (b : I → Real) :

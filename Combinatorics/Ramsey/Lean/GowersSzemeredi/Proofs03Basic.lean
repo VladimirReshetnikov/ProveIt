@@ -82,37 +82,23 @@ lemma sum_cube_succ_eq_sum_norm_sq {N n : Nat} [NeZero N]
           Complex) := by
       rw [Complex.ofReal_sum]
 
+lemma gowers_norm_sum_sq_le_card_mul_sum_norm_sq {ι E : Type*} [Fintype ι]
+    [SeminormedAddCommGroup E] (f : ι → E) :
+    ‖∑ i, f i‖ ^ 2 ≤ (Fintype.card ι : Real) * ∑ i, ‖f i‖ ^ 2 := by
+  exact (pow_le_pow_left₀ (norm_nonneg _) (norm_sum_le Finset.univ f) 2).trans
+    (by simpa using (sq_sum_le_card_mul_sum_sq
+      (s := (Finset.univ : Finset ι)) (f := fun i => ‖f i‖)))
+
 lemma previousUniformEnergy_sq_le {N n : Nat} [NeZero N]
     (f : ZMod N → Complex) :
     (∑ a : Point N n, ‖∑ s : ZMod N, cubeDifference f a s‖ ^ 2) ^ 2 ≤
       (N : Real) ^ (n + 1) *
         ∑ b : Point N (n + 1), ‖∑ s : ZMod N, cubeDifference f b s‖ ^ 2 := by
-  let D := ∑ a : Point N n, ‖∑ s : ZMod N, cubeDifference f a s‖ ^ 2
-  let X : Point N (n + 1) → Complex :=
-    fun b => ∑ s : ZMod N, cubeDifference f b s
-  have hD : 0 ≤ D := Finset.sum_nonneg fun a _ => sq_nonneg _
-  have htotal : ∑ b : Point N (n + 1), X b = (D : Complex) := by
-    exact sum_cube_succ_eq_sum_norm_sq f
-  have hnorm : ‖∑ b : Point N (n + 1), X b‖ = D := by
-    rw [htotal, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hD]
-  have htriangle : ‖∑ b : Point N (n + 1), X b‖ ≤
-      ∑ b : Point N (n + 1), ‖X b‖ := by
-    simpa using norm_sum_le (Finset.univ : Finset (Point N (n + 1))) X
-  have hcauchy : (∑ b : Point N (n + 1), ‖X b‖) ^ 2 ≤
-      (Fintype.card (Point N (n + 1)) : Real) *
-        ∑ b : Point N (n + 1), ‖X b‖ ^ 2 := by
-    simpa using (sq_sum_le_card_mul_sum_sq
-      (s := (Finset.univ : Finset (Point N (n + 1))))
-      (f := fun b => ‖X b‖))
-  change D ^ 2 ≤ (N : Real) ^ (n + 1) * ∑ b, ‖X b‖ ^ 2
-  calc
-    D ^ 2 = ‖∑ b : Point N (n + 1), X b‖ ^ 2 := by rw [hnorm]
-    _ ≤ (∑ b : Point N (n + 1), ‖X b‖) ^ 2 :=
-      pow_le_pow_left₀ (norm_nonneg _) htriangle 2
-    _ ≤ (Fintype.card (Point N (n + 1)) : Real) *
-        ∑ b : Point N (n + 1), ‖X b‖ ^ 2 := hcauchy
-    _ = (N : Real) ^ (n + 1) * ∑ b : Point N (n + 1), ‖X b‖ ^ 2 := by
-      simp [Point, ZMod.card]
+  have h := gowers_norm_sum_sq_le_card_mul_sum_norm_sq
+    (fun b : Point N (n + 1) => ∑ s : ZMod N, cubeDifference f b s)
+  rw [sum_cube_succ_eq_sum_norm_sq] at h
+  simpa only [Complex.norm_real, Real.norm_eq_abs, sq_abs, Point,
+    Fintype.card_fun, Fintype.card_fin, ZMod.card, Nat.cast_pow] using h
 
 /-- **Gowers, Lemma 3.4.** Higher-degree uniformity is monotone, with the
 square-root loss obtained from finite Cauchy--Schwarz. -/

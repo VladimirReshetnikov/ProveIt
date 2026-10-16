@@ -40,11 +40,12 @@ theorem walshProduct_eq_parity {N k : Nat}
   intro i _
   cases e i <;> simp [walshSign]
 
-/-- **Corollary 15.2.** Translate the Boolean cube to the sign cube and
-apply Lemma 15.1 with half-sidelengths. -/
-theorem corollary_15_2_holds : corollary_15_2 := by
-  unfold corollary_15_2
-  intro N k _ hprime hodd h eta hh heta hinvariant
+theorem booleanWalsh_multiple_of_invariant {N k : Nat} [NeZero N]
+    (hprime : N.Prime) (hodd : Odd N) (h : Point N k)
+    (eta : (Fin k → Bool) → Int) (hh : ∀ i, h i ≠ 0)
+    (hinvariant : ∀ (A : Finset (Fin k)) (y z : Point N k),
+      booleanWalshMoment eta h y A = booleanWalshMoment eta h z A) :
+    IsModularMultiple eta (parityCharacter (N := N)) := by
   letI : Fact (Nat.Prime N) := ⟨hprime⟩
   have hNgt : 2 < N := by
     have hle := hprime.two_le
@@ -93,8 +94,7 @@ theorem corollary_15_2_holds : corollary_15_2 := by
     rw [hmom A y, hmom A z]
     exact hinvariant A _ _
   obtain ⟨c, hc⟩ :=
-    lemma_15_1_holds N k hprime hodd hhalf eta
-      hhalf_ne heta hsigned
+    signedWalsh_multiple_of_invariant hprime hodd hhalf eta hhalf_ne hsigned
   refine ⟨c * (-1 : ZMod N) ^ k, ?_⟩
   intro e
   rw [hc e]
@@ -104,6 +104,13 @@ theorem corollary_15_2_holds : corollary_15_2 := by
         parityCharacter (N := N) e
   rw [walshProduct_eq_parity]
   ring
+
+/-- **Corollary 15.2.** Translate the Boolean cube to the sign cube and
+apply Lemma 15.1 with half-sidelengths. -/
+theorem corollary_15_2_holds : corollary_15_2 := by
+  unfold corollary_15_2
+  intro N k _ hprime hodd h eta hh _heta hinvariant
+  exact booleanWalsh_multiple_of_invariant hprime hodd h eta hh hinvariant
 
 lemma rangeDeg_sum_mul_sub_eq_one {N : Nat} {I : Type*}
     [Fintype I] [DecidableEq I] (a x y : I → ZMod N) (i : I)

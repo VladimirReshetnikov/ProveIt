@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs03ProgressionAverage
+import GowersSzemeredi.Proofs03Equivalences
 
 /-! Cauchy--Schwarz reduction for arbitrary distinct progression coefficients.
 This permits a uniform factor in any position in the relative counting step. -/

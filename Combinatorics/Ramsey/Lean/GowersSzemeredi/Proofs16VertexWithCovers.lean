@@ -1,5 +1,4 @@
 import GowersSzemeredi.Proofs16WithCoordinateLifts
-import GowersSzemeredi.Proofs16CubicStructuredCover
 import GowersSzemeredi.Proofs16SinglePieceGlobal
 import GowersSzemeredi.Proofs16WithUnion
 

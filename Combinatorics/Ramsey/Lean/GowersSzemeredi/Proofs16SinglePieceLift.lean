@@ -60,6 +60,23 @@ def lastSliceFace {N : Nat} (k : Nat) (x : ZMod N) : CoordinateFace N (k + 1) k 
     · exact ((hj i) rfl).elim
     · simp [appendCoordinate_eq_snoc]
 
+/-- A final-coordinate section inherits the product property, in every dimension. -/
+theorem HasProductProperty.final_section {N k : Nat} [NeZero N] {gamma : Real}
+    {B : Finset (Point N (k + 1))} {phi : Point N (k + 1) → ZMod N}
+    (hprod : HasProductProperty B phi gamma) (t : ZMod N) :
+    HasProductProperty (section16FinalCoordinateSection B t)
+      (section16FinalCoordinateRestriction phi t) gamma := by
+  classical
+  have h := hprod.coordinateFace (lastSliceFace k t)
+  have hdom : (lastSliceFace k t).domain B = section16FinalCoordinateSection B t := by
+    ext x
+    simp [CoordinateFace.domain, section16FinalCoordinateSection, lastSliceFace]
+  have hfun : (lastSliceFace k t).pullback phi = section16FinalCoordinateRestriction phi t := by
+    funext x
+    rfl
+  rw [hdom, hfun] at h
+  exact h
+
 /-- **Slice providers.** The translated cross-section `h ↦ φ(x₀ + h, x)`
 has a provider from the dimension-`k` input. -/
 theorem LocalMultilinearPieceAt.slice_localPieceFor {N k : Nat} [NeZero N] [Fact N.Prime]

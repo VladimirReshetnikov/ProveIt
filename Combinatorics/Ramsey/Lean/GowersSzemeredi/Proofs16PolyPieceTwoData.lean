@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16RelationLift
 import GowersSzemeredi.Proofs16RelFreimanCover
 import GowersSzemeredi.Proofs16PolyPieceTwo
 import GowersSzemeredi.Proofs16AbstractFamily
+import GowersSzemeredi.Proofs16DenseSelectionWith
 
 /-! Dimension-two pieces in the original frame, with their Freiman data.
 
@@ -25,7 +26,21 @@ set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
+section BaseCaseHelpers
 open BaseCase
+
+theorem card_point_le_pow {N : Nat} [NeZero N] (k : Nat) (S : Finset (Point N k)) :
+    (S.card : Real) ≤ (N : Real) ^ k := by
+  have h := Finset.card_le_univ S
+  have hc : Fintype.card (Point N k) = N ^ k := by
+    simp [Point, ZMod.card]
+  rw [hc] at h
+  exact_mod_cast h
+
+theorem one_le_gamma_inv_sq {gamma : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) :
+    (1 : Real) ≤ gamma ^ (-(2 : Int)) := by
+  rw [zpow_neg, zpow_ofNat]
+  exact (one_le_inv₀ (pow_pos hg 2)).mpr (pow_le_one₀ hg.le hg1)
 
 /-- The last coordinate as a one-dimensional point. -/
 def lastPt {N : Nat} (w : Point N 2) : Point N 1 := fun _ => section16Last w
@@ -125,45 +140,97 @@ structure PolyPieceTwoData {N : Nat} [NeZero N] (Gamma : Finset (Point N 2 × ZM
   remc : RelFreimanCover qr (D.image fun w => (lastPt w, rem w))
   slices : Section16FinalFreimanFamilies ql D phi
 
+end BaseCaseHelpers
+
+/-- The deletion budget `θ₂(t1)/8` of a dimension-two piece. -/
+def polyPieceBudgetW (t1 : Real) : Real := section16ThetaTwo t1 / 8
+
+/-- The Freiman-family count of the spectrum relation, at density `t1`. -/
+def polyPieceSpecCountW (t1 : Real) : Nat :=
+  section16BaseFamilyBound (section16Delta t1) (polyPieceBudgetW t1)
+
+/-- The Freiman-family count of the faces and slices, at density `t1`. -/
+def polyPieceFaceCountW (t1 gamma : Real) : Nat :=
+  section16BaseFamilyBound gamma (polyPieceBudgetW t1)
+
+theorem polyPieceBudgetW_printed (theta gamma : Real) :
+    polyPieceBudgetW (section16ThetaOne theta gamma 1) = polyPieceBudget theta gamma := rfl
+
+theorem polyPieceSpecCountW_printed (theta gamma : Real) :
+    polyPieceSpecCountW (section16ThetaOne theta gamma 1) = polyPieceSpecCount theta gamma := rfl
+
+theorem polyPieceFaceCountW_printed (theta gamma : Real) :
+    polyPieceFaceCountW (section16ThetaOne theta gamma 1) gamma =
+      polyPieceFaceCount theta gamma := rfl
+
+theorem section16_theta_delta_bounds_with {t1 : Real} (ha0 : 0 < t1 / 4) (haS : t1 / 4 ≤ 1 / 36) :
+    0 < t1 ∧ t1 ≤ 1 ∧ 0 < section16Delta t1 ∧ section16Delta t1 ≤ 1 := by
+  refine ⟨by linarith, by linarith, ?_, ?_⟩
+  · unfold section16Delta
+    exact mul_pos (by positivity) (Real.rpow_pos_of_pos ha0 _)
+  · unfold section16Delta
+    have h1 : (t1 / 4) ^ ((11 : Real) / 2) ≤ 1 :=
+      Real.rpow_le_one ha0.le (by linarith) (by norm_num)
+    have h2 : (2 : Real) ^ (-(37 : Real)) ≤ 1 :=
+      Real.rpow_le_one_of_one_le_of_nonpos (by norm_num) (by norm_num)
+    calc (2 : Real) ^ (-(37 : Real)) * (t1 / 4) ^ ((11 : Real) / 2) ≤ 1 * 1 :=
+          mul_le_mul h2 h1 (Real.rpow_nonneg ha0.le _) (by norm_num)
+      _ = 1 := by norm_num
+
+theorem section16ThetaTwo_pos_le_with {t1 : Real} (ha0 : 0 < t1 / 4) (haS : t1 / 4 ≤ 1 / 36) :
+    0 < section16ThetaTwo t1 ∧ section16ThetaTwo t1 ≤ 1 := by
+  have ht : 0 < t1 := by linarith
+  have ht1 : t1 ≤ 1 := by linarith
+  unfold section16ThetaTwo
+  refine ⟨mul_pos (by positivity) (pow_pos ht 8), ?_⟩
+  have h1 : t1 ^ 8 ≤ 1 := pow_le_one₀ ht.le ht1
+  have h2 : (2 : Real) ^ (-(32 : Real)) ≤ 1 :=
+    Real.rpow_le_one_of_one_le_of_nonpos (by norm_num) (by norm_num)
+  calc (2 : Real) ^ (-(32 : Real)) * t1 ^ 8 ≤ 1 * 1 :=
+        mul_le_mul h2 h1 (pow_nonneg ht.le 8) (by norm_num)
+    _ = 1 := by norm_num
+
 /-- **A dimension-two piece with its Freiman data, in the original frame.** -/
-theorem section16_poly_piece_two_data
-    {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+theorem section16_poly_piece_two_data_with
+    {t1 zeta gamma : Real} (ha0 : 0 < t1 / 4) (haS : t1 / 4 ≤ 1 / 36)
+    (hzeta : ∀ alpha : Real, t1 / 4 ≤ alpha → alpha ≤ 1 / 6 → zeta ≤ section10Zeta alpha)
+    (hz0 : 0 < zeta) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     {N : Nat} [NeZero N] [Fact N.Prime] (Gamma : Finset (Point N 2 × ZMod N))
     (B : Finset (Point N 2)) (phi : Point N 2 → ZMod N)
     (hBG : partialGraph B phi ⊆ Gamma)
-    (hBarr : section16ThetaOne theta gamma 1 * (N : Real) ^ (17 * 1 + 15) ≤
+    (hBarr : t1 * (N : Real) ^ (17 * 1 + 15) ≤
         generalArrangementCount 8 B ∧
       (1 - (2 : Real) ^ (-(44 : Real))) * generalArrangementCount 8 B ≤
         respectedGeneralArrangementCount 8 B phi)
     (hprodB : HasProductProperty B phi gamma) :
-    Nonempty (PolyPieceTwoData Gamma (section16Zeta theta gamma 1)
-      (5 * polyPieceBudget theta gamma) (polyPieceSpecCount theta gamma)
-      (polyPieceFaceCount theta gamma) (polyPieceFaceCount theta gamma)) := by
+    Nonempty (PolyPieceTwoData Gamma (zeta)
+      (5 * polyPieceBudgetW t1) (polyPieceSpecCountW t1)
+      (polyPieceFaceCountW t1 gamma) (polyPieceFaceCountW t1 gamma)) := by
   classical
-  obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds 1 ht ht1 hg hg1
-  obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le 1 ht ht1 hg hg1
-  have hθ'pos : 0 < polyPieceBudget theta gamma := by
-    unfold polyPieceBudget; positivity
-  have hθ'le : polyPieceBudget theta gamma ≤ 1 := by
-    unfold polyPieceBudget; linarith
-  set θ' := polyPieceBudget theta gamma with hθ'def
-  have hθ₂eq : section16ThetaTwo (section16ThetaOne theta gamma 1) = 8 * θ' := by
-    rw [hθ'def, polyPieceBudget]; ring
-  set δ := section16Delta (section16ThetaOne theta gamma 1)
+  obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds_with ha0 haS
+  obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le_with ha0 haS
+  have hθ'pos : 0 < polyPieceBudgetW t1 := by
+    unfold polyPieceBudgetW; linarith
+  have hθ'le : polyPieceBudgetW t1 ≤ 1 := by
+    unfold polyPieceBudgetW; linarith
+  set θ' := polyPieceBudgetW t1 with hθ'def
+  have hθ₂eq : section16ThetaTwo (t1) = 8 * θ' := by
+    rw [hθ'def, polyPieceBudgetW]; ring
+  set δ := section16Delta (t1)
   -- 1. Lemmas 16.5 and 16.7
   obtain ⟨H, Y, phiPrime, hH, hcube, hselected, hselection⟩ :=
-    section16_dense_induced_selection_of_arrangements (Fact.out : N.Prime) theta gamma B phi
-      ht ht1 hg hg1 hBarr
-  have hmass : section16ThetaOne theta gamma 1 / 8 * (N : Real) ^ 1 ≤ H.card := by
+    section16_dense_induced_selection_with (Fact.out : N.Prime) t1 zeta B phi
+      ha0 haS hzeta hz0 hBarr
+  have hmass : t1 / 8 * (N : Real) ^ 1 ≤ H.card := by
     refine le_trans ?_ hH
     have : (0 : Real) ≤ (N : Real) ^ 1 := by positivity
     nlinarith
-  obtain ⟨x0, hgood, hidentity⟩ := lemma_16_7_holds N 1 theta gamma B phi H Y phiPrime
+  obtain ⟨x0, hgood, hidentity⟩ := lemma_16_7_with t1 zeta hθ₁pos.le B phi H Y phiPrime
     hmass hcube hselected hselection
   have hid : Section16PhiOneIdentity (section16GoodDomain B H Y x0) phi x0 phiPrime :=
     section16_phi_one_identity_of_common_base B phi H Y x0 phiPrime hidentity
   set B1 := section16GoodDomain B H Y x0 with hB1def
-  have hB1card : section16ThetaTwo (section16ThetaOne theta gamma 1) * (N : Real) ^ (1 + 1) ≤
+  have hB1card : section16ThetaTwo (t1) * (N : Real) ^ (1 + 1) ≤
       B1.card := by
     rw [hB1def, section16GoodDomain_card]; exact hgood
   -- 2. the spectrum families
@@ -322,7 +389,7 @@ theorem section16_poly_piece_two_data
     intro x hx v hv J hJ hd
     obtain ⟨h, hh, rfl⟩ := Finset.mem_image.mp hx
     have hsh : h + x0 - x0 = h := add_sub_cancel_right h x0
-    have hd' : J.step ∈ bohr (section16LargeSpectrum B h δ) (section16Zeta theta gamma 1 / v) := by
+    have hd' : J.step ∈ bohr (section16LargeSpectrum B h δ) (zeta / v) := by
       simpa only [K', hsh] using hd
     have hlin := hselection.2 h (hHsub hh) v hv J.step hd' J rfl hJ
     simpa only [A', f', hsh, Finset.inter_filter, Finset.inter_univ] using hlin
@@ -356,7 +423,7 @@ theorem section16_poly_piece_two_data
     simp only [f', rem', hinit, hlast, add_sub_cancel_right]
     exact hidz
   · -- the spectrum cover
-    have hR : RelFreimanCover (polyPieceSpecCount theta gamma)
+    have hR : RelFreimanCover (polyPieceSpecCountW t1)
         (restrictRelation (section16SpectrumRelation B δ) JΔ) := ⟨Dsp, fsp, hfsp, hcsp⟩
     refine (hR.translate x0).mono ?_
     intro z hz
@@ -370,7 +437,7 @@ theorem section16_poly_piece_two_data
         Finset.mem_univ, true_and] using And.intro hr (Finset.mem_inter.mp hh).2
     · rw [hx']
   · -- the remainder cover
-    have hR : RelFreimanCover (polyPieceFaceCount theta gamma)
+    have hR : RelFreimanCover (polyPieceFaceCountW t1 gamma)
         (restrictRelation (partialGraph Fdom g) Jr) := ⟨Dr, fr, hfr, hcr⟩
     refine hR.mono ?_
     intro p hp
@@ -391,4 +458,26 @@ theorem section16_poly_piece_two_data
     intro w hw
     obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hw
     exact (hDmem z hz).2.2
+
+open BaseCase
+
+/-- **A dimension-two piece with its Freiman data, in the original frame.** -/
+theorem section16_poly_piece_two_data
+    {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+    {N : Nat} [NeZero N] [Fact N.Prime] (Gamma : Finset (Point N 2 × ZMod N))
+    (B : Finset (Point N 2)) (phi : Point N 2 → ZMod N)
+    (hBG : partialGraph B phi ⊆ Gamma)
+    (hBarr : section16ThetaOne theta gamma 1 * (N : Real) ^ (17 * 1 + 15) ≤
+        generalArrangementCount 8 B ∧
+      (1 - (2 : Real) ^ (-(44 : Real))) * generalArrangementCount 8 B ≤
+        respectedGeneralArrangementCount 8 B phi)
+    (hprodB : HasProductProperty B phi gamma) :
+    Nonempty (PolyPieceTwoData Gamma (section16Zeta theta gamma 1)
+      (5 * polyPieceBudget theta gamma) (polyPieceSpecCount theta gamma)
+      (polyPieceFaceCount theta gamma) (polyPieceFaceCount theta gamma)) := by
+  obtain ⟨ha0, haS, hzeta⟩ := lemma_16_5_with_printed_hyps 1 ht ht1 hg hg1
+  simpa only [polyPieceBudgetW_printed, polyPieceSpecCountW_printed,
+    polyPieceFaceCountW_printed] using
+    section16_poly_piece_two_data_with ha0 haS hzeta
+      (section16Zeta_pos_le_half 1 ht ht1 hg hg1).1 hg hg1 Gamma B phi hBG hBarr hprodB
 end LeanProofs.GowersSzemeredi

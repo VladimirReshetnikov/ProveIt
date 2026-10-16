@@ -102,29 +102,6 @@ private lemma cor57_card_partition {X : Type*} [DecidableEq X] {m : Nat}
       cor57_sum_partition P S hpartition _
     _ = (S.card : Complex) := by simp
 
-private lemma cor57_alpha_le_one {N r : Nat} [NeZero N]
-    (f : ZMod N → Complex) (phi : ZMod N → ZMod N) (alpha : Real)
-    (hr : 0 < r) (hf : DiscValued f)
-    (hpremise : alpha * r ≤
-      ‖∑ x ∈ Finset.range r,
-        f (x : ZMod N) * exponential (-(phi (x : ZMod N)))‖) :
-    alpha ≤ 1 := by
-  have hnorm :
-      ‖∑ x ∈ Finset.range r,
-        f (x : ZMod N) * exponential (-(phi (x : ZMod N)))‖ ≤ r := by
-    calc
-      _ ≤ ∑ x ∈ Finset.range r,
-          ‖f (x : ZMod N) * exponential (-(phi (x : ZMod N)))‖ :=
-        norm_sum_le _ _
-      _ ≤ ∑ _x ∈ Finset.range r, (1 : Real) := by
-        apply Finset.sum_le_sum
-        intro x _
-        rw [norm_mul, cor57_norm_exponential, mul_one]
-        exact hf _
-      _ = r := by simp
-  have hrReal : (0 : Real) < r := by exact_mod_cast hr
-  nlinarith
-
 lemma cor57_partition_constant_pos (k : Nat) :
     0 < polynomialPartitionConstant k := by
   unfold polynomialPartitionConstant

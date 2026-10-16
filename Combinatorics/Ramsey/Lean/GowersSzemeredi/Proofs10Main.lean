@@ -366,6 +366,42 @@ private lemma theorem1013_fibre_square_sum_le {N M : Nat} [NeZero N]
     _ = (M : Real) * Fintype.card X := by
       rw [← Nat.cast_sum, theorem1013Parameters_sum_fibre_cards]
 
+private lemma theorem1013_fourier_energy_upper {N M : Nat} [NeZero N]
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (D : MultifunctionDomain N X) (alpha : Real)
+    (hfibre : ∀ s, (D.fibre s).card ≤ M)
+    (hcard : (Fintype.card X : Real) = alpha * M * N) :
+    (∑ r : ZMod N, ‖fourier (domainFibreCountFunction D) r‖ ^ 2) ≤
+      alpha * (M : Real) ^ 2 * (N : Real) ^ 2 := by
+  rw [theorem1013_fourier_energy]
+  calc
+    (N : Real) * ∑ s : ZMod N, ((D.fibre s).card : Real) ^ 2 ≤
+        (N : Real) * ((M : Real) * Fintype.card X) := by
+      exact mul_le_mul_of_nonneg_left
+        (theorem1013_fibre_square_sum_le D hfibre) (by positivity)
+    _ = alpha * (M : Real) ^ 2 * (N : Real) ^ 2 := by rw [hcard]; ring
+
+private lemma theorem1013_lambda_sq (alpha : Real) (halpha : 0 < alpha) :
+    section10Lambda alpha ^ 2 =
+      (2 : Real) ^ (-(74 : Real)) * alpha ^ (11 : Nat) := by
+  unfold section10Lambda
+  rw [mul_pow]
+  have hpow : (alpha ^ ((11 : Real) / 2)) ^ (2 : Nat) = alpha ^ (11 : Nat) := by
+    rw [← Real.rpow_natCast, ← Real.rpow_mul halpha.le]
+    norm_num [Real.rpow_natCast]
+  rw [hpow, ← Real.rpow_natCast,
+    ← Real.rpow_mul (show (0 : Real) ≤ 2 by norm_num)]
+  norm_num
+
+private lemma theorem1013_spectrum_bound_eq (alpha : Real) (halpha : 0 < alpha) :
+    section10SpectrumBound alpha =
+      alpha / section10Lambda alpha ^ 2 := by
+  rw [theorem1013_lambda_sq alpha halpha]
+  unfold section10SpectrumBound
+  rw [Real.rpow_neg halpha.le, Real.rpow_neg (show (0 : Real) ≤ 2 by norm_num)]
+  norm_num [Real.rpow_natCast]
+  field_simp [ne_of_gt halpha]
+
 /-- Parseval and the uniform fibre cap give the large-spectrum estimate in
 Theorem 10.13. -/
 theorem theorem10_13_spectrum_bound {N M : Nat} [NeZero N]
@@ -397,16 +433,10 @@ theorem theorem10_13_spectrum_bound {N M : Nat} [NeZero N]
       _ ≤ ∑ r : ZMod N, ‖fourier (domainFibreCountFunction D) r‖ ^ 2 := by
         exact Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
           (fun _ _ _ => sq_nonneg _)
-  rw [theorem1013_fourier_energy] at hlower
-  have hupper := theorem1013_fibre_square_sum_le D hfibre
   have henergy :
       (K.card : Real) * (lambda * M * N) ^ 2 ≤
-        alpha * (M : Real) ^ 2 * (N : Real) ^ 2 := by
-    calc
-      (K.card : Real) * (lambda * M * N) ^ 2 ≤
-          (N : Real) * ∑ s : ZMod N, ((D.fibre s).card : Real) ^ 2 := hlower
-      _ ≤ (N : Real) * ((M : Real) * Fintype.card X) := by gcongr
-      _ = alpha * (M : Real) ^ 2 * (N : Real) ^ 2 := by rw [hcard]; ring
+        alpha * (M : Real) ^ 2 * (N : Real) ^ 2 :=
+    hlower.trans (theorem1013_fourier_energy_upper D alpha hfibre hcard)
   have hcancel : (K.card : Real) * lambda ^ 2 ≤ alpha := by
     have hpositive : 0 < ((M : Real) ^ 2 * (N : Real) ^ 2) := by positivity
     have hscaled :
@@ -418,28 +448,9 @@ theorem theorem10_13_spectrum_bound {N M : Nat} [NeZero N]
         _ ≤ alpha * (M : Real) ^ 2 * (N : Real) ^ 2 := henergy
         _ = alpha * ((M : Real) ^ 2 * (N : Real) ^ 2) := by ring
     exact le_of_mul_le_mul_right hscaled hpositive
-  have hlambda_sq : lambda ^ 2 = (2 : Real) ^ (-(74 : Real)) * alpha ^ 11 := by
-    dsimp [lambda, section10Lambda]
-    rw [mul_pow]
-    have hpow : (alpha ^ ((11 : Real) / 2)) ^ (2 : Nat) = alpha ^ 11 := by
-      rw [← Real.rpow_natCast, ← Real.rpow_mul halpha.le]
-      norm_num
-    rw [hpow]
-    rw [← Real.rpow_natCast]
-    rw [← Real.rpow_mul (show (0 : Real) ≤ 2 by norm_num)]
-    norm_num
-  have hraw : (K.card : Real) ≤ alpha / lambda ^ 2 :=
-    (le_div_iff₀ (sq_pos_of_pos hlambda)).2 hcancel
   change (K.card : Real) ≤ section10SpectrumBound alpha
-  calc
-    (K.card : Real) ≤ alpha / lambda ^ 2 := hraw
-    _ = section10SpectrumBound alpha := by
-      rw [hlambda_sq]
-      unfold section10SpectrumBound
-      rw [Real.rpow_neg (show (0 : Real) ≤ 2 by norm_num),
-        Real.rpow_neg halpha.le]
-      norm_num [Real.rpow_natCast]
-      field_simp [ne_of_gt halpha]
+  rw [theorem1013_spectrum_bound_eq alpha halpha]
+  exact (le_div_iff₀ (sq_pos_of_pos hlambda)).2 hcancel
 
 theorem theorem10_13_zeta_bound (alpha : Real) (halpha : 0 < alpha) :
     let k := section10SpectrumParameter alpha
@@ -501,21 +512,6 @@ private lemma theorem1013_fourier_norm_le_card {N : Nat} [NeZero N]
       norm_sum_le Finset.univ
         (fun s : ZMod N => ZMod.stdAddChar (-(s * r)) • domainFibreCountFunction D s)
 
-private lemma theorem1013_fourier_energy_upper {N M : Nat} [NeZero N]
-    {X : Type*} [Fintype X] [DecidableEq X]
-    (D : MultifunctionDomain N X) (alpha : Real)
-    (hfibre : ∀ s, (D.fibre s).card ≤ M)
-    (hcard : (Fintype.card X : Real) = alpha * M * N) :
-    (∑ r : ZMod N, ‖fourier (domainFibreCountFunction D) r‖ ^ 2) ≤
-      alpha * (M : Real) ^ 2 * (N : Real) ^ 2 := by
-  rw [theorem1013_fourier_energy]
-  calc
-    (N : Real) * ∑ s : ZMod N, ((D.fibre s).card : Real) ^ 2 ≤
-        (N : Real) * ((M : Real) * Fintype.card X) := by
-      exact mul_le_mul_of_nonneg_left
-        (theorem1013_fibre_square_sum_le D hfibre) (by positivity)
-    _ = alpha * (M : Real) ^ 2 * (N : Real) ^ 2 := by rw [hcard]; ring
-
 private lemma theorem1013_small_spectrum_tail {N M : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
     (D : MultifunctionDomain N X) (alpha : Real)
@@ -566,27 +562,6 @@ private lemma theorem1013_small_spectrum_tail {N M : Nat} [NeZero N]
       gcongr
       exact theorem1013_fourier_energy_upper D alpha hfibre hcard
     _ = alpha * lambda ^ 2 * (M : Real) ^ 4 * (N : Real) ^ 4 := by ring
-
-private lemma theorem1013_lambda_sq (alpha : Real) (halpha : 0 < alpha) :
-    section10Lambda alpha ^ 2 =
-      (2 : Real) ^ (-(74 : Real)) * alpha ^ (11 : Nat) := by
-  unfold section10Lambda
-  rw [mul_pow]
-  have hpow : (alpha ^ ((11 : Real) / 2)) ^ (2 : Nat) = alpha ^ (11 : Nat) := by
-    rw [← Real.rpow_natCast, ← Real.rpow_mul halpha.le]
-    norm_num [Real.rpow_natCast]
-  rw [hpow, ← Real.rpow_natCast,
-    ← Real.rpow_mul (show (0 : Real) ≤ 2 by norm_num)]
-  norm_num
-
-private lemma theorem1013_spectrum_bound_eq (alpha : Real) (halpha : 0 < alpha) :
-    section10SpectrumBound alpha =
-      alpha / section10Lambda alpha ^ 2 := by
-  rw [theorem1013_lambda_sq alpha halpha]
-  unfold section10SpectrumBound
-  rw [Real.rpow_neg halpha.le, Real.rpow_neg (show (0 : Real) ≤ 2 by norm_num)]
-  norm_num [Real.rpow_natCast]
-  field_simp [ne_of_gt halpha]
 
 private lemma theorem1013_weighted_phase_sum {N M : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]

@@ -282,43 +282,19 @@ private lemma lemma122_toPair_good {N : Nat} [NeZero N]
       (R.crossSection 1 - R.crossSection 3) = R.crossSection 1 := by
     abel
   have hfirstIn : (lemma122FirstParallelogram R).IsIn B := by
-    intro z hz
-    simp only [VerticalParallelogram.carrier, Finset.mem_insert,
-      Finset.mem_singleton] at hz
-    rcases hz with hz | hz | hz | hz
-    · subst z
-      simpa [lemma122FirstParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y] using hfalse 0
-    · subst z
-      simpa [lemma122FirstParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y, VerticalParallelogram.height] using htrue 0
-    · subst z
-      simpa [lemma122FirstParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y', VerticalParallelogram.width, hx02] using
-        hfalse 2
-    · subst z
-      simpa [lemma122FirstParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y', VerticalParallelogram.width,
-        VerticalParallelogram.height, hx02] using htrue 2
+    simpa [VerticalParallelogram.IsIn, VerticalParallelogram.carrier,
+      Finset.insert_subset_iff, Finset.singleton_subset_iff,
+      lemma122FirstParallelogram, VerticalParallelogram.x,
+      VerticalParallelogram.y, VerticalParallelogram.y',
+      VerticalParallelogram.width, VerticalParallelogram.height, hx02] using
+      And.intro (hfalse 0) (And.intro (htrue 0) (And.intro (hfalse 2) (htrue 2)))
   have hsecondIn : (lemma122SecondParallelogram R).IsIn B := by
-    intro z hz
-    simp only [VerticalParallelogram.carrier, Finset.mem_insert,
-      Finset.mem_singleton] at hz
-    rcases hz with hz | hz | hz | hz
-    · subst z
-      simpa [lemma122SecondParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y] using hfalse 3
-    · subst z
-      simpa [lemma122SecondParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y, VerticalParallelogram.height] using htrue 3
-    · subst z
-      simpa [lemma122SecondParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y', VerticalParallelogram.width, hx31] using
-        hfalse 1
-    · subst z
-      simpa [lemma122SecondParallelogram, VerticalParallelogram.x,
-        VerticalParallelogram.y', VerticalParallelogram.width,
-        VerticalParallelogram.height, hx31] using htrue 1
+    simpa [VerticalParallelogram.IsIn, VerticalParallelogram.carrier,
+      Finset.insert_subset_iff, Finset.singleton_subset_iff,
+      lemma122SecondParallelogram, VerticalParallelogram.x,
+      VerticalParallelogram.y, VerticalParallelogram.y',
+      VerticalParallelogram.width, VerticalParallelogram.height, hx31] using
+      And.intro (hfalse 3) (And.intro (htrue 3) (And.intro (hfalse 1) (htrue 1)))
   have hwidth : (lemma122FirstParallelogram R).width =
       (lemma122SecondParallelogram R).width := by
     have hadd := (lemma122_additiveTuple_two_iff R.crossSection).mp hcross

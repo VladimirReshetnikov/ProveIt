@@ -18,6 +18,7 @@ step closed forms in `(V, D, k)`. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
+section BaseCaseControls
 open BaseCase
 
 /-- The uniform count control `(4V/(γθρ))^D`, at least `1` everywhere. -/
@@ -128,49 +129,66 @@ theorem UniformCovers.mono {k k' : Nat} {V V' : Real} {D D' : Nat} (hV : 1 ≤ V
 
 /-! ### Dimension one -/
 
-/-- **Dimension one with the uniform control**, at any `D ≥ 2^132`. -/
-theorem polyCoverAt_one_uniform {V : Real} (hV : 1 ≤ V) {D : Nat} (hD : 2 ^ 132 ≤ D) :
+end BaseCaseControls
+
+/-- **The dimension-one cover at any degree `D ≥ 2^17`.** -/
+theorem polyCoverAt_one_uniform_low {V : Real} (hV : 1 ≤ V) {D : Nat} (hD : 2 ^ 17 ≤ D) :
     PolyCoverAt 1 (uCount V D) (uExp V D) := by
-  have hw2 : ∀ gamma theta rho : Real, 0 < gamma → gamma ≤ 1 → 0 < theta → theta ≤ 1 →
-      0 < rho → rho ≤ 1 → (2 : Real) ≤ 2 / (gamma * theta * rho) := by
+  have hbase : ∀ gamma theta rho : Real, 0 < gamma → gamma ≤ 1 → 0 < theta → theta ≤ 1 →
+      0 < rho → rho ≤ 1 →
+      (2 : Real) ≤ 2 / (gamma * theta * rho) ∧ rho⁻¹ ≤ (2 / (gamma * theta * rho)) ^ 1 ∧
+      (section16BaseFamilyBound gamma theta : Real) ≤
+        (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 14) := by
     intro gamma theta rho hg hg1 ht ht1 hr hr1
-    obtain ⟨hv2, hvw, -⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
-    exact hv2.trans hvw
+    obtain ⟨hv2, hvw, hrw⟩ := prod_scale_radius_bounds hg hg1 ht ht1 hr hr1
+    have hB := section16BaseFamilyBound_le_dyadic_power hg hg1 ht ht1
+    exact ⟨hv2.trans hvw, by simpa only [pow_one] using hrw,
+      hB.trans (pow_le_pow_left₀ (le_trans (by norm_num) hv2) hvw _)⟩
   refine polyCoverAt_one.weaken ?_ ?_ ?_
   · intro gamma theta rho hg hg1 ht ht1 hr hr1
+    obtain ⟨hw2', -, hB'⟩ := hbase gamma theta rho hg hg1 ht ht1 hr hr1
     have hw := two_div_le_uniformBase hV hg ht hr
-    have hw2' := hw2 gamma theta rho hg hg1 ht ht1 hr hr1
     have hw0 : (0 : Real) ≤ 2 / (gamma * theta * rho) := le_trans zero_le_two hw2'
     have hu1 : (1 : Real) ≤ uniformBase V 1 theta gamma rho :=
       le_trans one_le_two (hw2'.trans hw)
-    have hmono : (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 90) ≤ uCount V D gamma theta rho := by
+    have hmono : (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 15) ≤ uCount V D gamma theta rho := by
       unfold uCount
       exact le_max_of_le_right ((pow_le_pow_left₀ hw0 hw _).trans
-        (pow_le_pow_right₀ hu1 ((show (2 : Nat) ^ 90 ≤ 2 ^ 132 by norm_num).trans hD)))
-    have h := sixQb_le_power 1 hg hg1 ht ht1 hr hr1
-    rw [sixQb, if_pos rfl] at h
+        (pow_le_pow_right₀ hu1 ((show (2 : Nat) ^ 15 ≤ 2 ^ 17 by norm_num).trans hD)))
+    have h : ((3 * section16BaseFamilyBound gamma theta : Nat) : Real) ≤
+        (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 15) := by
+      rw [Nat.cast_mul]
+      exact le_pow_mono hw2' (by norm_num)
+        (const_mul_le_pow (j := 2) hw2' (Nat.cast_nonneg _) (by norm_num) (Nat.cast_nonneg _) hB')
     exact h.trans hmono
   · intro gamma theta rho hg hg1 ht ht1 hr hr1
     exact (uExp_pos hV D hg hg1 ht ht1 hr hr1).1
   · intro gamma theta rho hg hg1 ht ht1 hr hr1
+    obtain ⟨hw2', hri, hB'⟩ := hbase gamma theta rho hg hg1 ht ht1 hr hr1
     have hw := two_div_le_uniformBase hV hg ht hr
-    have hw2' := hw2 gamma theta rho hg hg1 ht ht1 hr hr1
     have hw0 : (0 : Real) ≤ 2 / (gamma * theta * rho) := le_trans zero_le_two hw2'
     have hu1 : (1 : Real) ≤ uniformBase V 1 theta gamma rho :=
       le_trans one_le_two (hw2'.trans hw)
-    have hK : ((1 : Nat) : Real) ≤ (2 / (gamma * theta * rho)) ^ 3 := by
-      rw [Nat.cast_one]; exact one_le_pow₀ (le_trans one_le_two hw2')
     have hpos : 0 < cubicBaseExponent (section16BaseFamilyBound gamma theta) rho :=
       cubicBaseExponent_pos (section16BaseFamilyBound_pos gamma theta) hr
-    have hmono : (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 132) ≤ uCount V D gamma theta rho := by
+    have hmono : (2 / (gamma * theta * rho)) ^ ((2 : Nat) ^ 17) ≤ uCount V D gamma theta rho := by
       unfold uCount
       exact le_max_of_le_right ((pow_le_pow_left₀ hw0 hw _).trans (pow_le_pow_right₀ hu1 hD))
-    have h := sixEb_inv_le_power 1 (K1 := 1) (p1 := 1) one_pos one_pos hg hg1 ht ht1 hr hr1 hK hK
-    rw [sixEb, if_pos rfl] at h
-    have hB := h.trans hmono
+    have h := cubicBaseExponent_inv_le hw2' (section16BaseFamilyBound_pos gamma theta) hB' hr hri
+    have h' := h.trans (pow_le_pow_right₀ (le_trans one_le_two hw2')
+      (show 27 + 1 * 3 + (2 : Nat) ^ 14 * 4 ≤ (2 : Nat) ^ 17 by norm_num))
+    have hB := h'.trans hmono
     have := inv_anti₀ (inv_pos.mpr hpos) hB
     rw [inv_inv] at this
     exact this
+
+section BaseCaseControls
+open BaseCase
+
+/-- **Dimension one with the uniform control**, at any `D ≥ 2^132`. -/
+theorem polyCoverAt_one_uniform {V : Real} (hV : 1 ≤ V) {D : Nat} (hD : 2 ^ 132 ≤ D) :
+    PolyCoverAt 1 (uCount V D) (uExp V D) := by
+  exact polyCoverAt_one_uniform_low hV ((by norm_num : (2 : Nat) ^ 17 ≤ 2 ^ 132).trans hD)
 
 /-! ### Every dimension up to `k` -/
 
@@ -243,4 +261,5 @@ theorem uniformCovers_of_classes (Kc pc : Nat → Nat) (hK : ∀ k, 1 ≤ Kc k) 
       (Nat.pow_le_pow_right (by norm_num)
         (Nat.mul_le_mul_left _ (Nat.pow_le_pow_right (by norm_num) hlk)))
 
+end BaseCaseControls
 end LeanProofs.GowersSzemeredi

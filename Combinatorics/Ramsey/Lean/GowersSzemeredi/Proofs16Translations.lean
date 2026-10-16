@@ -91,10 +91,10 @@ theorem IsBoxPartition.translate {N k m : Nat} [NeZero N]
     exact Finset.disjoint_left.mp (h.2 i j hij)
       ((Box.translate_mem_carrier _ _ _).mp hx) ((Box.translate_mem_carrier _ _ _).mp hy)
 
-theorem MultiplyLinear.translate {N k : Nat} [NeZero N] [Fact N.Prime]
-    {gamma r : Real} {Gamma : Finset (Point N k × ZMod N)}
-    (h : MultiplyLinear gamma r Gamma) (t : Point N k) :
-    MultiplyLinear gamma r (Gamma.image (fun z => (z.1 + t, z.2))) := by
+theorem MultiplyLinearWith.translate {N k : Nat} [NeZero N] [Fact N.Prime]
+    {Qb Eb : Real → Real} {Gamma : Finset (Point N k × ZMod N)}
+    (h : MultiplyLinearWith Qb Eb Gamma) (t : Point N k) :
+    MultiplyLinearWith Qb Eb (Gamma.image (fun z => (z.1 + t, z.2))) := by
   classical
   intro theta ht ht1 P hP
   obtain ⟨M, q, H, Q, mu, hH, hHcard, hpart, hproper, hq, hw, hmu, hcover⟩ :=
@@ -118,6 +118,13 @@ theorem MultiplyLinear.translate {N k : Nat} [NeZero N] [Fact N.Prime]
     have haH := (add_left_injective t).mem_finset_image.mp hh
     obtain ⟨i, hi⟩ := hcover j a haQ haH b hab
     exact ⟨i, by simpa using hi⟩
+
+theorem MultiplyLinear.translate {N k : Nat} [NeZero N] [Fact N.Prime]
+    {gamma r : Real} {Gamma : Finset (Point N k × ZMod N)}
+    (h : MultiplyLinear gamma r Gamma) (t : Point N k) :
+    MultiplyLinear gamma r (Gamma.image (fun z => (z.1 + t, z.2))) := by
+  exact (multiplyLinear_iff_with gamma r _).mpr
+    (MultiplyLinearWith.translate ((multiplyLinear_iff_with gamma r Gamma).mp h) t)
 
 theorem MultiplyLinearFunction.translate {N k : Nat} [NeZero N] [Fact N.Prime]
     {gamma r : Real} {B : Finset (Point N k)} {phi : Point N k → ZMod N}

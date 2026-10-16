@@ -62,19 +62,6 @@ theorem phiOne_eq_origPt {N : Nat} (phi : Point N 3 → ZMod N) (x0 : Point N 2)
   funext i
   simp [add_comm]
 
-theorem card_point_le_pow {N : Nat} [NeZero N] (k : Nat) (S : Finset (Point N k)) :
-    (S.card : Real) ≤ (N : Real) ^ k := by
-  have h := Finset.card_le_univ S
-  have hc : Fintype.card (Point N k) = N ^ k := by
-    simp [Point, ZMod.card]
-  rw [hc] at h
-  exact_mod_cast h
-
-theorem one_le_gamma_inv_sq {gamma : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) :
-    (1 : Real) ≤ gamma ^ (-(2 : Int)) := by
-  rw [zpow_neg, zpow_ofNat]
-  exact (one_le_inv₀ (pow_pos hg 2)).mpr (pow_le_one₀ hg.le hg1)
-
 /-- **A three-dimensional piece with its data, in the original frame.** -/
 theorem section16_poly_piece_three_data
     {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)

@@ -215,22 +215,9 @@ theorem section16_domainAdditiveTupleCount_eq_arrangementCountAtSide
     domainAdditiveTupleCount (section16CubeMultifunctionDomain B h) d =
       section16ArrangementCountAtSide d B h := by
   classical
-  calc
-    domainAdditiveTupleCount (section16CubeMultifunctionDomain B h) d =
-        Fintype.card {x : Fin (2 * d) → Section16CubeElement B h //
-          section16IndexAdditive B h x} := by
-      unfold domainAdditiveTupleCount
-      exact section16_countWhere_eq_card_subtype
-        (fun x : Fin (2 * d) → Section16CubeElement B h ↦
-          section16IndexAdditive B h x)
-    _ = Fintype.card {R : GeneralArrangement N k d //
-          section16ArrangementAtSide B h R} :=
-      Fintype.card_congr (section16AdditiveTupleArrangementEquiv B h)
-    _ = section16ArrangementCountAtSide d B h := by
-      unfold section16ArrangementCountAtSide
-      exact (section16_countWhere_eq_card_subtype
-        (fun R : GeneralArrangement N k d ↦
-          section16ArrangementAtSide B h R)).symm
+  unfold domainAdditiveTupleCount section16ArrangementCountAtSide
+  rw [section16_countWhere_eq_card_subtype, section16_countWhere_eq_card_subtype]
+  exact Fintype.card_congr (section16AdditiveTupleArrangementEquiv (d := d) B h)
 
 theorem section16_domainPhiAdditiveTupleCount_eq_respectedArrangementCountAtSide
     {N k d : Nat} [NeZero N]
@@ -240,54 +227,27 @@ theorem section16_domainPhiAdditiveTupleCount_eq_respectedArrangementCountAtSide
         (section16InducedCubeMap B h phi) d =
       section16RespectedArrangementCountAtSide d B phi h := by
   classical
-  calc
-    domainPhiAdditiveTupleCount (section16CubeMultifunctionDomain B h)
-        (section16InducedCubeMap B h phi) d =
-        Fintype.card {x : Fin (2 * d) → Section16CubeElement B h //
-          section16IndexAdditive B h x ∧
-            section16ValueAdditive B h phi x} := by
-      unfold domainPhiAdditiveTupleCount
-      exact section16_countWhere_eq_card_subtype
-        (fun x : Fin (2 * d) → Section16CubeElement B h ↦
-          section16IndexAdditive B h x ∧
-            section16ValueAdditive B h phi x)
-    _ = Fintype.card {R : GeneralArrangement N k d //
-          R.IsIn B ∧ R.side = h ∧ R.IsRespected phi} :=
-      Fintype.card_congr ((by
-           let e₁ := (Equiv.subtypeSubtypeEquivSubtypeInter
-             (section16IndexAdditive (d := d) B h)
-             (section16ValueAdditive (d := d) B h phi)).symm
-           let e₂ :
-               {x : {x : Fin (2 * d) → Section16CubeElement B h //
-                 section16IndexAdditive B h x} //
-                   section16ValueAdditive B h phi x.1} ≃
-               {R : {R : GeneralArrangement N k d //
-                 section16ArrangementAtSide B h R} // R.1.IsRespected phi} :=
-             (section16AdditiveTupleArrangementEquiv (d := d) B h).subtypeEquiv
-               (section16ValueAdditive_iff_respected (d := d) B h phi)
-           let e₃ := Equiv.subtypeSubtypeEquivSubtypeInter
-             (section16ArrangementAtSide (d := d) B h)
-             (fun R : GeneralArrangement N k d ↦ R.IsRespected phi)
-           let e₄ :
-               {R : GeneralArrangement N k d //
-                 section16ArrangementAtSide B h R ∧ R.IsRespected phi} ≃
-               {R : GeneralArrangement N k d //
-                 R.IsIn B ∧ R.side = h ∧ R.IsRespected phi} :=
-             Equiv.subtypeEquivRight fun R ↦ by
-               constructor
-               · rintro ⟨⟨hR, hside⟩, hrespected⟩
-                 exact ⟨hR, hside, hrespected⟩
-               · rintro ⟨hR, hside, hrespected⟩
-                 exact ⟨⟨hR, hside⟩, hrespected⟩
-           exact e₁.trans (e₂.trans (e₃.trans e₄)) : {x : Fin (2 * d) → Section16CubeElement B h //
-      section16IndexAdditive B h x ∧ section16ValueAdditive B h phi x} ≃
-    {R : GeneralArrangement N k d //
-      R.IsIn B ∧ R.side = h ∧ R.IsRespected phi}))
-    _ = section16RespectedArrangementCountAtSide d B phi h := by
-      unfold section16RespectedArrangementCountAtSide
-      exact (section16_countWhere_eq_card_subtype
-        (fun R : GeneralArrangement N k d ↦
-          R.IsIn B ∧ R.side = h ∧ R.IsRespected phi)).symm
+  unfold domainPhiAdditiveTupleCount section16RespectedArrangementCountAtSide
+  rw [section16_countWhere_eq_card_subtype, section16_countWhere_eq_card_subtype]
+  let e₁ := (Equiv.subtypeSubtypeEquivSubtypeInter
+    (section16IndexAdditive (d := d) B h)
+    (section16ValueAdditive (d := d) B h phi)).symm
+  let e₂ :
+      {x : {x : Fin (2 * d) → Section16CubeElement B h //
+        section16IndexAdditive B h x} // section16ValueAdditive B h phi x.1} ≃
+      {R : {R : GeneralArrangement N k d //
+        section16ArrangementAtSide B h R} // R.1.IsRespected phi} :=
+    (section16AdditiveTupleArrangementEquiv (d := d) B h).subtypeEquiv
+      (section16ValueAdditive_iff_respected (d := d) B h phi)
+  let e₃ := Equiv.subtypeSubtypeEquivSubtypeInter
+    (section16ArrangementAtSide (d := d) B h)
+    (fun R : GeneralArrangement N k d ↦ R.IsRespected phi)
+  let e₄ :
+      {R : GeneralArrangement N k d //
+        section16ArrangementAtSide B h R ∧ R.IsRespected phi} ≃
+      {R : GeneralArrangement N k d // R.IsIn B ∧ R.side = h ∧ R.IsRespected phi} :=
+    Equiv.subtypeEquivRight fun R ↦ and_assoc
+  exact Fintype.card_congr (e₁.trans (e₂.trans (e₃.trans e₄)))
 
 theorem section16_domainApproxHomOfOrder_iff_arrangementCounts
     {N k d : Nat} [NeZero N]
