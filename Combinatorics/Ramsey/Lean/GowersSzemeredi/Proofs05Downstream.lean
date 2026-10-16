@@ -338,12 +338,8 @@ private lemma downstream_scale_le {k r : Nat} (eta : Real)
     field_simp
   simpa only [K, hright, mul_one] using hinv.le
 
-/-!
-The strengthened local form used in the proof of Lemma 5.14.  Unlike
-Corollary 5.7, it retains the additive error estimate before a lower bound on
-the original correlation is substituted.
--/
-theorem section5_local_phase_refinement_of_corollary_5_6
+/-- Retain the diameter information in the local polynomial partition. -/
+theorem section5_local_diameter_refinement_of_corollary_5_6
     (h56 : corollary_5_6) {N k v : Nat} [NeZero N]
     (P : ModAP N) (phi : ZMod N → ZMod N) (eta : Real)
     (hP : P.IsProper) (hk : 1 ≤ k)
@@ -357,10 +353,7 @@ theorem section5_local_phase_refinement_of_corollary_5_6
       IsPartition (fun j => (R j).carrier) P.carrier ∧
       (∀ j, (R j).IsProper ∧ 0 < (R j).length ∧
         ((R j).length = v - 1 ∨ (R j).length = v)) ∧
-      ∀ f : ZMod N → Complex, DiscValued f →
-        ‖∑ s ∈ P.carrier, f s * exponential (-(phi s))‖ ≤
-          (∑ j, ‖∑ s ∈ (R j).carrier, f s‖) +
-            eta / 2 * P.carrier.card := by
+      ∀ j, diameterAtMostReal ((R j).carrier.image phi) (eta * N / (4 * Real.pi)) := by
   have hrPos : 0 < P.length := by
     have hzero : (0 : Real) ≤ polynomialPartitionThreshold k := by positivity
     have : (0 : Real) < P.length := hzero.trans_lt
@@ -388,11 +381,6 @@ theorem section5_local_phase_refinement_of_corollary_5_6
     refine ⟨section5Transport_isProper P (S j) hP (hproper j).1 hsub, ?_, ?_⟩
     · simpa only [R, section5Transport_length] using (hproper j).2.1
     · simpa only [R, section5Transport_length] using (hproper j).2.2
-  refine ⟨L, R, hrefine, hRproper, ?_⟩
-  intro f hf
-  let pulledF : ZMod N → Complex :=
-    fun x => f (section5ModIndexPoint P x)
-  have hpulledF : DiscValued pulledF := fun x => hf _
   have hscale :
       (P.length : Real) ^
           (-(polynomialPartitionConstant k : Real)⁻¹) * N ≤
@@ -409,65 +397,72 @@ theorem section5_local_phase_refinement_of_corollary_5_6
       _ ≤ (eta / (4 * Real.pi)) * N :=
         mul_le_mul_of_nonneg_right hbase hN
       _ = eta * N / (4 * Real.pi) := by ring
-  have hcell (j : Fin L) :
-      ‖∑ s ∈ (S j).carrier,
-          pulledF (s : ZMod N) * exponential (-(pulledPhi (s : ZMod N)))‖ ≤
-        ‖∑ s ∈ (S j).carrier, pulledF (s : ZMod N)‖ +
-          eta / 2 * (S j).carrier.card :=
-    cor57_cell_norm_le (S j).carrier pulledF pulledPhi eta
-      ((P.length : Real) ^
-        (-(polynomialPartitionConstant k : Real)⁻¹) * N)
-      hpulledF (hdiam j) hscale
-  have htwisted (j : Fin L) :
-      (∑ s ∈ (R j).carrier, f s * exponential (-(phi s))) =
-        ∑ t ∈ (S j).carrier,
-          pulledF (t : ZMod N) * exponential (-(pulledPhi (t : ZMod N))) := by
-    rw [section5Transport_sum P (S j) hP
-      (IsPartition.cell_subset hpartition j)]
-    apply Finset.sum_congr rfl
-    intro t _ht
+  refine ⟨L, R, hrefine, hRproper, fun j ↦ ?_⟩
+  have himage : (R j).carrier.image phi =
+      (S j).carrier.image (fun t : Nat ↦ pulledPhi (t : ZMod N)) := by
+    change (section5Transport P (S j)).carrier.image phi = _
+    rw [section5Transport_carrier, Finset.image_image]
     rfl
-  have hplain (j : Fin L) :
-      (∑ s ∈ (R j).carrier, f s) =
-        ∑ t ∈ (S j).carrier, pulledF (t : ZMod N) := by
-    rw [section5Transport_sum P (S j) hP
-      (IsPartition.cell_subset hpartition j)]
-    apply Finset.sum_congr rfl
-    intro t _ht
-    rfl
-  have hphasePartition :
-      (∑ j, ∑ s ∈ (R j).carrier, f s * exponential (-(phi s))) =
-        ∑ s ∈ P.carrier, f s * exponential (-(phi s)) :=
-    downstream_sum_partition (fun j => (R j).carrier) P.carrier hrefine _
-  have hcardsNat : ∑ j, (S j).carrier.card = P.length := by
-    simpa only [Finset.card_range] using IsPartition.sum_card hpartition
-  have hcards : ∑ j, ((S j).carrier.card : Real) = P.carrier.card := by
-    have hPcard : P.carrier.card = P.length := hP
-    exact_mod_cast hcardsNat.trans hPcard.symm
+  rw [himage]
+  obtain ⟨d, hd, hdscale⟩ := hdiam j
+  exact ⟨d, hd, hdscale.trans hscale⟩
+
+/-- A partition of `P` into cells whose `phi`-images have diameter at most
+`η·N/(4π)` changes a disc-valued sum by at most `η/2·|P|` under the phase
+`exponential (-phi)`. -/
+private lemma section5_phase_error_of_diameter {N L : Nat} [NeZero N]
+    (P : Finset (ZMod N)) (R : Fin L → Finset (ZMod N)) (phi : ZMod N → ZMod N) (eta : Real)
+    (hrefine : IsPartition R P)
+    (hdiam : ∀ j, diameterAtMostReal ((R j).image phi) (eta * N / (4 * Real.pi)))
+    (f : ZMod N → Complex) (hf : DiscValued f) :
+    ‖∑ s ∈ P, f s * exponential (-(phi s))‖ ≤
+      (∑ j, ‖∑ s ∈ R j, f s‖) + eta / 2 * P.card := by
+  have hcell (j : Fin L) : ‖∑ s ∈ R j, f s * exponential (-(phi s))‖ ≤
+      ‖∑ s ∈ R j, f s‖ + eta / 2 * (R j).card := by
+    have hinj := (ZMod.val_injective N).injOn (s := ((R j : Finset (ZMod N)) : Set (ZMod N)))
+    have key := cor57_cell_norm_le ((R j).image ZMod.val) f phi eta (eta * N / (4 * Real.pi)) hf
+      (by simpa only [Finset.image_image, Function.comp_def, ZMod.natCast_zmod_val] using hdiam j)
+      le_rfl
+    simpa only [Finset.sum_image hinj, Finset.card_image_of_injective _ (ZMod.val_injective N),
+      ZMod.natCast_zmod_val] using key
   calc
-    ‖∑ s ∈ P.carrier, f s * exponential (-(phi s))‖ =
-        ‖∑ j, ∑ s ∈ (R j).carrier,
-          f s * exponential (-(phi s))‖ := by rw [hphasePartition]
-    _ ≤ ∑ j, ‖∑ s ∈ (R j).carrier,
-          f s * exponential (-(phi s))‖ := norm_sum_le _ _
-    _ = ∑ j, ‖∑ t ∈ (S j).carrier,
-          pulledF (t : ZMod N) *
-            exponential (-(pulledPhi (t : ZMod N)))‖ := by
-      apply Finset.sum_congr rfl
-      intro j _hj
-      rw [htwisted]
-    _ ≤ ∑ j, (‖∑ t ∈ (S j).carrier, pulledF (t : ZMod N)‖ +
-          eta / 2 * (S j).carrier.card) := by
-      apply Finset.sum_le_sum
-      intro j _hj
-      exact hcell j
-    _ = (∑ j, ‖∑ s ∈ (R j).carrier, f s‖) +
-          eta / 2 * P.carrier.card := by
-      rw [Finset.sum_add_distrib, ← Finset.mul_sum, hcards]
-      congr 1
-      apply Finset.sum_congr rfl
-      intro j _hj
-      rw [hplain]
+    ‖∑ s ∈ P, f s * exponential (-(phi s))‖ =
+        ‖∑ j, ∑ s ∈ R j, f s * exponential (-(phi s))‖ := by
+      rw [downstream_sum_partition R P hrefine]
+    _ ≤ ∑ j, ‖∑ s ∈ R j, f s * exponential (-(phi s))‖ := norm_sum_le _ _
+    _ ≤ ∑ j, (‖∑ s ∈ R j, f s‖ + eta / 2 * (R j).card) :=
+      Finset.sum_le_sum fun j _ => hcell j
+    _ = (∑ j, ‖∑ s ∈ R j, f s‖) + eta / 2 * P.card := by
+      rw [Finset.sum_add_distrib, ← Finset.mul_sum, ← Nat.cast_sum, IsPartition.sum_card hrefine]
+
+/-!
+The strengthened local form used in the proof of Lemma 5.14.  Unlike
+Corollary 5.7, it retains the additive error estimate before a lower bound on
+the original correlation is substituted.
+-/
+theorem section5_local_phase_refinement_of_corollary_5_6
+    (h56 : corollary_5_6) {N k v : Nat} [NeZero N]
+    (P : ModAP N) (phi : ZMod N → ZMod N) (eta : Real)
+    (hP : P.IsProper) (hk : 1 ≤ k)
+    (hphi : PolynomialOn k Finset.univ phi) (heta : 0 < eta)
+    (hlarge : max (polynomialPartitionThreshold k : Real)
+        ((4 * Real.pi / eta) ^ polynomialPartitionConstant k) < P.length)
+    (hv : 1 ≤ v)
+    (hvupper : (v : Real) ≤
+      (P.length : Real) ^ (polynomialPartitionConstant k : Real)⁻¹) :
+    ∃ L : Nat, ∃ R : Fin L → ModAP N,
+      IsPartition (fun j => (R j).carrier) P.carrier ∧
+      (∀ j, (R j).IsProper ∧ 0 < (R j).length ∧
+        ((R j).length = v - 1 ∨ (R j).length = v)) ∧
+      ∀ f : ZMod N → Complex, DiscValued f →
+        ‖∑ s ∈ P.carrier, f s * exponential (-(phi s))‖ ≤
+          (∑ j, ‖∑ s ∈ (R j).carrier, f s‖) +
+            eta / 2 * P.carrier.card := by
+  obtain ⟨L, R, hrefine, hRproper, hdiam⟩ :=
+    section5_local_diameter_refinement_of_corollary_5_6 h56 P phi eta hP hk hphi heta hlarge hv
+      hvupper
+  exact ⟨L, R, hrefine, hRproper,
+    section5_phase_error_of_diameter P.carrier _ phi eta hrefine hdiam⟩
 
 /-! ### An efficient local refinement with a uniform constant -/
 
@@ -598,280 +593,6 @@ private lemma section5_large_partition_count
       rw [Real.rpow_sub (by exact_mod_cast hr : (0 : Real) < r),
         Real.rpow_one]
       ring
-
-/-!
-Every proper modular progression admits a phase-removing refinement with a
-cell-count constant depending only on `k` and the uniform error tolerance.
-This is the local quantitative engine of Lemma 5.14.
--/
-theorem section5_efficient_local_phase_refinement_of_corollary_5_6
-    (h56 : corollary_5_6) {N k : Nat} [NeZero N]
-    (P : ModAP N) (phi : ZMod N → ZMod N) (eta : Real)
-    (hP : P.IsProper) (hk : 1 ≤ k)
-    (hphi : PolynomialOn k Finset.univ phi) (heta : 0 < eta) :
-    ∃ L : Nat, ∃ R : Fin L → ModAP N,
-      IsPartition (fun j => (R j).carrier) P.carrier ∧
-      (∀ j, (R j).IsProper) ∧
-      (L : Real) ≤ section5LocalRefinementConstant k eta *
-        (P.carrier.card : Real) ^
-          (1 - (polynomialPartitionConstant k : Real)⁻¹) ∧
-      ∀ f : ZMod N → Complex, DiscValued f →
-        ‖∑ s ∈ P.carrier, f s * exponential (-(phi s))‖ ≤
-          (∑ j, ‖∑ s ∈ (R j).carrier, f s‖) +
-            eta / 2 * P.carrier.card := by
-  let K := polynomialPartitionConstant k
-  let cutoff : Real := max
-    (max (polynomialPartitionThreshold k : Real)
-      ((4 * Real.pi / eta) ^ K)) ((4 : Real) ^ K)
-  by_cases hPempty : P.carrier = ∅
-  · refine ⟨0, Fin.elim0, ?_, ?_, ?_, ?_⟩
-    · constructor
-      · intro x
-        simp [hPempty]
-      · intro i
-        exact Fin.elim0 i
-    · intro j
-      exact Fin.elim0 j
-    · simpa only [Nat.cast_zero] using
-        mul_nonneg (section5LocalRefinementConstant_pos k eta).le
-          (Real.rpow_nonneg
-            (show (0 : Real) ≤ (P.carrier.card : Real) by exact_mod_cast
-              (Nat.zero_le P.carrier.card))
-            (1 - (polynomialPartitionConstant k : Real)⁻¹))
-    · intro f _hf
-      simp [hPempty]
-  have hr : 0 < P.length := by
-    have hPcard : P.carrier.card = P.length := hP
-    have hnonempty : P.carrier.Nonempty :=
-      Finset.nonempty_iff_ne_empty.mpr hPempty
-    have hcardPos : 0 < P.carrier.card := Finset.card_pos.mpr hnonempty
-    omega
-  by_cases hlarge : cutoff < P.length
-  · have hroot4strict :
-        4 < (P.length : Real) ^ (K : Real)⁻¹ := by
-      exact section5_rpow_root_ge_four (lt_of_le_of_lt (le_max_right _ _) hlarge)
-    obtain ⟨v, hvTwo, hvupper, hvhalf⟩ :=
-      section5_floor_target
-        ((P.length : Real) ^ (K : Real)⁻¹) hroot4strict.le
-    have hmainLarge : max (polynomialPartitionThreshold k : Real)
-        ((4 * Real.pi / eta) ^ polynomialPartitionConstant k) < P.length := by
-      exact lt_of_le_of_lt (le_max_left _ _) hlarge
-    obtain ⟨L, R, hrefine, hproper, herror⟩ :=
-      section5_local_phase_refinement_of_corollary_5_6 (v := v)
-        h56 P phi eta hP hk hphi
-        heta hmainLarge (by omega) (by simpa only [K] using hvupper)
-    have hlower (j : Fin L) : v - 1 ≤ (R j).length := by
-      rcases (hproper j).2.2 with h | h <;> omega
-    have hsumLengths : ∑ j, (R j).length = P.carrier.card := by
-      calc
-        ∑ j, (R j).length = ∑ j, (R j).carrier.card := by
-          apply Finset.sum_congr rfl
-          intro j _hj
-          exact (hproper j).1.symm
-        _ = P.carrier.card := IsPartition.sum_card hrefine
-    have hsumLower : ∑ _j : Fin L, (v - 1 : Nat) ≤ P.length := by
-      have : ∑ _j : Fin L, (v - 1 : Nat) ≤ ∑ j, (R j).length :=
-        Finset.sum_le_sum fun j _hj => hlower j
-      rw [hsumLengths, hP] at this
-      exact this
-    have hcount0 : (L : Real) ≤ 4 * (P.length : Real) ^
-        (1 - (K : Real)⁻¹) := by
-      exact section5_large_partition_count hr (by simpa only [K] using hvhalf)
-        (by simpa only [K] using hroot4strict.le) hsumLower
-    have hconstant : (4 : Real) ≤ section5LocalRefinementConstant k eta :=
-      section5LocalRefinementConstant_ge_four k eta
-    refine ⟨L, R, hrefine, fun j => (hproper j).1, ?_, herror⟩
-    rw [hP]
-    calc
-      (L : Real) ≤ 4 * (P.length : Real) ^
-          (1 - (K : Real)⁻¹) := hcount0
-      _ ≤ section5LocalRefinementConstant k eta *
-          (P.length : Real) ^
-            (1 - (polynomialPartitionConstant k : Real)⁻¹) := by
-        simpa only [K] using mul_le_mul_of_nonneg_right hconstant (by positivity)
-  · have hsmall : (P.length : Real) ≤ cutoff := le_of_not_gt hlarge
-    let S : Fin P.length → NatAP :=
-      fun i => section5SingletonNatAP i
-    let R : Fin P.length → ModAP N :=
-      fun i => section5Transport P (S i)
-    have hpartition : IsNatAPPartition S (Finset.range P.length) :=
-      section5SingletonNatAP_partition P.length
-    have hrefine : IsPartition (fun j => (R j).carrier) P.carrier :=
-      section5Transport_partition P S hP hpartition
-    have hproper (j : Fin P.length) : (R j).IsProper := by
-      exact section5Transport_isProper P (S j) hP
-        (section5SingletonNatAP_isProper j)
-        (IsPartition.cell_subset hpartition j)
-    have hrootPos : 0 < (P.length : Real) ^
-        (1 - (K : Real)⁻¹) := Real.rpow_pos_of_pos (by exact_mod_cast hr) _
-    have hK : (0 : Real) < K := by
-      dsimp only [K]
-      unfold polynomialPartitionConstant
-      positivity
-    have hKNat : 0 < K := by exact_mod_cast hK
-    have hfactor : (P.length : Real) ^ (K : Real)⁻¹ ≤ cutoff := by
-      calc
-        (P.length : Real) ^ (K : Real)⁻¹ ≤ (P.length : Real) := by
-          simpa only [Real.rpow_one] using
-            Real.rpow_le_rpow_of_exponent_le
-              (by exact_mod_cast hr : (1 : Real) ≤ P.length)
-              ((inv_le_one₀ hK).2 (by exact_mod_cast
-                (show 1 ≤ K by omega)))
-        _ ≤ cutoff := hsmall
-    have hdecomp : (P.length : Real) =
-        (P.length : Real) ^ (1 - (K : Real)⁻¹) *
-          (P.length : Real) ^ (K : Real)⁻¹ := by
-      rw [← Real.rpow_add (by exact_mod_cast hr : (0 : Real) < P.length)]
-      ring_nf
-      rw [Real.rpow_one]
-    have hcount0 : (P.length : Real) ≤ cutoff *
-        (P.length : Real) ^ (1 - (K : Real)⁻¹) := by
-      calc
-        (P.length : Real) = (P.length : Real) ^ (1 - (K : Real)⁻¹) *
-            (P.length : Real) ^ (K : Real)⁻¹ := hdecomp
-        _ ≤ (P.length : Real) ^ (1 - (K : Real)⁻¹) * cutoff :=
-          mul_le_mul_of_nonneg_left hfactor hrootPos.le
-        _ = cutoff * (P.length : Real) ^ (1 - (K : Real)⁻¹) := mul_comm _ _
-    have hcutoffConstant : cutoff ≤ section5LocalRefinementConstant k eta := by
-      unfold cutoff section5LocalRefinementConstant
-      linarith
-    have hcount : (P.length : Real) ≤ section5LocalRefinementConstant k eta *
-        (P.carrier.card : Real) ^
-          (1 - (polynomialPartitionConstant k : Real)⁻¹) := by
-      rw [hP]
-      calc
-        (P.length : Real) ≤ cutoff * (P.length : Real) ^
-            (1 - (K : Real)⁻¹) := hcount0
-        _ ≤ section5LocalRefinementConstant k eta *
-            (P.length : Real) ^
-              (1 - (polynomialPartitionConstant k : Real)⁻¹) := by
-          simpa only [K] using mul_le_mul_of_nonneg_right hcutoffConstant hrootPos.le
-    refine ⟨P.length, R, hrefine, hproper, hcount, ?_⟩
-    intro f _
-    have hphasePartition :
-        (∑ j, ∑ s ∈ (R j).carrier,
-          f s * exponential (-(phi s))) =
-          ∑ s ∈ P.carrier, f s * exponential (-(phi s)) :=
-      downstream_sum_partition (fun j => (R j).carrier) P.carrier hrefine _
-    have hsingleton (j : Fin P.length) :
-        ‖∑ s ∈ (R j).carrier, f s * exponential (-(phi s))‖ =
-          ‖∑ s ∈ (R j).carrier, f s‖ := by
-      have hcard : (R j).carrier.card = 1 := by
-        rw [hproper j]
-        rfl
-      obtain ⟨x, hx⟩ := Finset.card_eq_one.mp hcard
-      rw [hx]
-      simp only [Finset.sum_singleton, norm_mul, cor57_norm_exponential, mul_one]
-    calc
-      ‖∑ s ∈ P.carrier, f s * exponential (-(phi s))‖ =
-          ‖∑ j, ∑ s ∈ (R j).carrier,
-            f s * exponential (-(phi s))‖ := by rw [hphasePartition]
-      _ ≤ ∑ j, ‖∑ s ∈ (R j).carrier,
-          f s * exponential (-(phi s))‖ := norm_sum_le _ _
-      _ = ∑ j, ‖∑ s ∈ (R j).carrier, f s‖ := by
-        apply Finset.sum_congr rfl
-        intro j _hj
-        exact hsingleton j
-      _ ≤ (∑ j, ‖∑ s ∈ (R j).carrier, f s‖) +
-          eta / 2 * P.carrier.card := by
-        exact le_add_of_nonneg_right
-          (mul_nonneg (div_nonneg heta.le (by norm_num))
-            (show (0 : Real) ≤ (P.carrier.card : Real) by exact_mod_cast
-              (Nat.zero_le P.carrier.card)))
-
-/-- The efficient local refinement for an arbitrary (possibly wrapping or
-repeating) input progression, obtained by carrier-preserving normalization. -/
-theorem section5_efficient_local_phase_refinement_arbitrary_of_corollary_5_6
-    (h56 : corollary_5_6) {N k : Nat} [NeZero N]
-    (P : ModAP N) (phi : ZMod N → ZMod N) (eta : Real)
-    (hk : 1 ≤ k) (hphi : PolynomialOn k Finset.univ phi) (heta : 0 < eta) :
-    ∃ L : Nat, ∃ R : Fin L → ModAP N,
-      IsPartition (fun j => (R j).carrier) P.carrier ∧
-      (∀ j, (R j).IsProper) ∧
-      (L : Real) ≤ section5LocalRefinementConstant k eta *
-        (P.carrier.card : Real) ^
-          (1 - (polynomialPartitionConstant k : Real)⁻¹) ∧
-      ∀ f : ZMod N → Complex, DiscValued f →
-        ‖∑ s ∈ P.carrier, f s * exponential (-(phi s))‖ ≤
-          (∑ j, ‖∑ s ∈ (R j).carrier, f s‖) +
-            eta / 2 * P.carrier.card := by
-  obtain ⟨L, R, hrefine, hproper, hcount, herror⟩ :=
-    section5_efficient_local_phase_refinement_of_corollary_5_6 h56
-      (section5Normalize P) phi eta (section5Normalize_isProper P)
-      hk hphi heta
-  refine ⟨L, R, ?_, hproper, ?_, ?_⟩
-  · simpa only [section5Normalize_carrier] using hrefine
-  · simpa only [section5Normalize_carrier] using hcount
-  · simpa only [section5Normalize_carrier] using herror
-
-/-- Retain the diameter information in the local polynomial partition. -/
-theorem section5_local_diameter_refinement_of_corollary_5_6
-    (h56 : corollary_5_6) {N k v : Nat} [NeZero N]
-    (P : ModAP N) (phi : ZMod N → ZMod N) (eta : Real)
-    (hP : P.IsProper) (hk : 1 ≤ k)
-    (hphi : PolynomialOn k Finset.univ phi) (heta : 0 < eta)
-    (hlarge : max (polynomialPartitionThreshold k : Real)
-        ((4 * Real.pi / eta) ^ polynomialPartitionConstant k) < P.length)
-    (hv : 1 ≤ v)
-    (hvupper : (v : Real) ≤
-      (P.length : Real) ^ (polynomialPartitionConstant k : Real)⁻¹) :
-    ∃ L : Nat, ∃ R : Fin L → ModAP N,
-      IsPartition (fun j => (R j).carrier) P.carrier ∧
-      (∀ j, (R j).IsProper ∧ 0 < (R j).length ∧
-        ((R j).length = v - 1 ∨ (R j).length = v)) ∧
-      ∀ j, diameterAtMostReal ((R j).carrier.image phi) (eta * N / (4 * Real.pi)) := by
-  have hrPos : 0 < P.length := by
-    have hzero : (0 : Real) ≤ polynomialPartitionThreshold k := by positivity
-    have : (0 : Real) < P.length := hzero.trans_lt
-      (lt_of_le_of_lt (le_max_left _ _) hlarge)
-    exact_mod_cast this
-  have hrN : P.length ≤ N := by
-    rw [ModAP.IsProper] at hP
-    rw [← hP]
-    simpa only [ZMod.card] using P.carrier.card_le_univ
-  have hthreshold : polynomialPartitionThreshold k < P.length := by
-    exact_mod_cast (lt_of_le_of_lt (le_max_left _ _) hlarge)
-  let pulledPhi : ZMod N → ZMod N :=
-    fun x => phi (section5ModIndexPoint P x)
-  have hpulled : PolynomialOn k Finset.univ pulledPhi :=
-    polynomialOn_section5ModIndexPoint P phi hphi
-  obtain ⟨L, S, _, hpartition, hproper, hdiam⟩ :=
-    h56 N k P.length v pulledPhi hk hpulled hthreshold hrN hv hvupper
-  let R : Fin L → ModAP N := fun j => section5Transport P (S j)
-  have hrefine : IsPartition (fun j => (R j).carrier) P.carrier :=
-    section5Transport_partition P S hP hpartition
-  have hRproper (j : Fin L) :
-      (R j).IsProper ∧ 0 < (R j).length ∧
-        ((R j).length = v - 1 ∨ (R j).length = v) := by
-    have hsub := IsPartition.cell_subset hpartition j
-    refine ⟨section5Transport_isProper P (S j) hP (hproper j).1 hsub, ?_, ?_⟩
-    · simpa only [R, section5Transport_length] using (hproper j).2.1
-    · simpa only [R, section5Transport_length] using (hproper j).2.2
-  have hscale :
-      (P.length : Real) ^
-          (-(polynomialPartitionConstant k : Real)⁻¹) * N ≤
-        eta * N / (4 * Real.pi) := by
-    have hpolyLarge :
-        (4 * Real.pi / eta) ^ polynomialPartitionConstant k <
-          (P.length : Real) :=
-      lt_of_le_of_lt (le_max_right _ _) hlarge
-    have hbase := downstream_scale_le eta heta hpolyLarge
-    have hN : (0 : Real) ≤ N := by positivity
-    calc
-      _ = ((P.length : Real) ^
-          (-(polynomialPartitionConstant k : Real)⁻¹) * 1) * N := by ring
-      _ ≤ (eta / (4 * Real.pi)) * N :=
-        mul_le_mul_of_nonneg_right hbase hN
-      _ = eta * N / (4 * Real.pi) := by ring
-  refine ⟨L, R, hrefine, hRproper, fun j ↦ ?_⟩
-  have himage : (R j).carrier.image phi =
-      (S j).carrier.image (fun t : Nat ↦ pulledPhi (t : ZMod N)) := by
-    change (section5Transport P (S j)).carrier.image phi = _
-    rw [section5Transport_carrier, Finset.image_image]
-    rfl
-  rw [himage]
-  obtain ⟨d, hd, hdscale⟩ := hdiam j
-  exact ⟨d, hd, hdscale.trans hscale⟩
 
 /-- Efficient geometric refinement, retaining the same count constant as phase removal. -/
 theorem section5_efficient_diameter_refinement_of_corollary_5_6
@@ -1024,5 +745,55 @@ theorem section5_efficient_diameter_refinement_of_corollary_5_6
     · simp [modInterval, ModAP.carrier]
     · simp only [Nat.cast_zero]
       positivity
+
+/-!
+Every proper modular progression admits a phase-removing refinement with a
+cell-count constant depending only on `k` and the uniform error tolerance.
+This is the local quantitative engine of Lemma 5.14.
+-/
+theorem section5_efficient_local_phase_refinement_of_corollary_5_6
+    (h56 : corollary_5_6) {N k : Nat} [NeZero N]
+    (P : ModAP N) (phi : ZMod N → ZMod N) (eta : Real)
+    (hP : P.IsProper) (hk : 1 ≤ k)
+    (hphi : PolynomialOn k Finset.univ phi) (heta : 0 < eta) :
+    ∃ L : Nat, ∃ R : Fin L → ModAP N,
+      IsPartition (fun j => (R j).carrier) P.carrier ∧
+      (∀ j, (R j).IsProper) ∧
+      (L : Real) ≤ section5LocalRefinementConstant k eta *
+        (P.carrier.card : Real) ^
+          (1 - (polynomialPartitionConstant k : Real)⁻¹) ∧
+      ∀ f : ZMod N → Complex, DiscValued f →
+        ‖∑ s ∈ P.carrier, f s * exponential (-(phi s))‖ ≤
+          (∑ j, ‖∑ s ∈ (R j).carrier, f s‖) +
+            eta / 2 * P.carrier.card := by
+  obtain ⟨L, R, hrefine, hproper, hcount, hdiam⟩ :=
+    section5_efficient_diameter_refinement_of_corollary_5_6 h56 P phi eta hP hk hphi heta
+  exact ⟨L, R, hrefine, hproper, hcount,
+    section5_phase_error_of_diameter P.carrier _ phi eta hrefine hdiam⟩
+
+/-- The efficient local refinement for an arbitrary (possibly wrapping or
+repeating) input progression, obtained by carrier-preserving normalization. -/
+theorem section5_efficient_local_phase_refinement_arbitrary_of_corollary_5_6
+    (h56 : corollary_5_6) {N k : Nat} [NeZero N]
+    (P : ModAP N) (phi : ZMod N → ZMod N) (eta : Real)
+    (hk : 1 ≤ k) (hphi : PolynomialOn k Finset.univ phi) (heta : 0 < eta) :
+    ∃ L : Nat, ∃ R : Fin L → ModAP N,
+      IsPartition (fun j => (R j).carrier) P.carrier ∧
+      (∀ j, (R j).IsProper) ∧
+      (L : Real) ≤ section5LocalRefinementConstant k eta *
+        (P.carrier.card : Real) ^
+          (1 - (polynomialPartitionConstant k : Real)⁻¹) ∧
+      ∀ f : ZMod N → Complex, DiscValued f →
+        ‖∑ s ∈ P.carrier, f s * exponential (-(phi s))‖ ≤
+          (∑ j, ‖∑ s ∈ (R j).carrier, f s‖) +
+            eta / 2 * P.carrier.card := by
+  obtain ⟨L, R, hrefine, hproper, hcount, herror⟩ :=
+    section5_efficient_local_phase_refinement_of_corollary_5_6 h56
+      (section5Normalize P) phi eta (section5Normalize_isProper P)
+      hk hphi heta
+  refine ⟨L, R, ?_, hproper, ?_, ?_⟩
+  · simpa only [section5Normalize_carrier] using hrefine
+  · simpa only [section5Normalize_carrier] using hcount
+  · simpa only [section5Normalize_carrier] using herror
 
 end LeanProofs.GowersSzemeredi
