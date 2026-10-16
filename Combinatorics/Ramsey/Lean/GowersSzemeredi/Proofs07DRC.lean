@@ -303,45 +303,6 @@ private lemma intersection_fifth_moment_lower {X : Type*} [DecidableEq X]
       _ <= _ := hcombined
   exact le_of_mul_le_mul_left hmul (by positivity)
 
-private lemma bad_fifth_moment_upper {X : Type*} [DecidableEq X]
-    {n m : Nat} (A : Fin n -> Finset X) (delta : Real)
-    (hdelta : 0 < delta) :
-    (∑ i : Fin n, ∑ j : Fin n,
-        if ((((A i ∩ A j).card : Nat) : Real) < delta ^ 2 * m / 2)
-          then (((A i ∩ A j).card : Nat) : Real) ^ 5 else 0) <=
-      delta ^ 10 * (m : Real) ^ 5 * (n : Real) ^ 2 / 32 := by
-  calc
-    _ <= ∑ _i : Fin n, ∑ _j : Fin n,
-        (delta ^ 2 * (m : Real) / 2) ^ 5 := by
-      apply Finset.sum_le_sum
-      intro i _
-      apply Finset.sum_le_sum
-      intro j _
-      by_cases hbad :
-          ((((A i ∩ A j).card : Nat) : Real) < delta ^ 2 * m / 2)
-      · rw [if_pos hbad]
-        exact pow_le_pow_left₀ (by positivity) (le_of_lt hbad) 5
-      · rw [if_neg hbad]
-        positivity
-    _ = _ := by
-      simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin,
-        nsmul_eq_mul]
-      ring
-
-private lemma large_add_bad_eq_sq {X : Type*} [DecidableEq X] {n : Nat}
-    (A : Fin n -> Finset X) (K : Finset (Fin n)) (m : Nat)
-    (delta : Real) :
-    (largeIntersectionPairCount A K (delta ^ 2 * m / 2) : Real) +
-        (drcBadPairCount A K m delta : Real) = (K.card : Real) ^ 2 := by
-  let p : Fin n × Fin n -> Prop := fun ij =>
-    delta ^ 2 * (m : Real) / 2 <=
-      (((A ij.1 ∩ A ij.2).card : Nat) : Real)
-  have h := Finset.card_filter_add_card_filter_not
-    (s := K ×ˢ K) p
-  have hR := congrArg (fun q : Nat => (q : Real)) h
-  simpa [largeIntersectionPairCount, drcBadPairCount, p, not_le,
-    Finset.card_product, pow_two] using hR
-
 private lemma exists_drc_sample {X : Type*} [DecidableEq X] {n m : Nat}
     (V : Finset X) (A : Fin n -> Finset X) (hV : V.card = m)
     (hA : forall i, A i ⊆ V) (delta : Real) (hdelta : 0 < delta)
@@ -362,7 +323,23 @@ private lemma exists_drc_sample {X : Type*} [DecidableEq X] {n m : Nat}
           (drcBadPairCount A (drcCore A t) m delta : Real)) <=
         delta ^ 10 * (m : Real) ^ 5 * (n : Real) ^ 2 / 32 := by
     rw [sum_drcBadPairCount V A hA m delta]
-    exact bad_fifth_moment_upper A delta hdelta
+    calc
+      _ <= ∑ _i : Fin n, ∑ _j : Fin n,
+          (delta ^ 2 * (m : Real) / 2) ^ 5 := by
+        apply Finset.sum_le_sum
+        intro i _
+        apply Finset.sum_le_sum
+        intro j _
+        by_cases hbad :
+            ((((A i ∩ A j).card : Nat) : Real) < delta ^ 2 * m / 2)
+        · rw [if_pos hbad]
+          exact pow_le_pow_left₀ (by positivity) (le_of_lt hbad) 5
+        · rw [if_neg hbad]
+          positivity
+      _ = _ := by
+        simp only [Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+          nsmul_eq_mul]
+        ring
   have hscore :
       (11 : Real) / 16 * delta ^ 10 * (m : Real) ^ 5 * (n : Real) ^ 2 <=
         ∑ t ∈ drcSamples V, drcScore A t m delta := by
@@ -426,7 +403,16 @@ private lemma hasDenseIntersectionCore_of_score {X : Type*} [DecidableEq X]
   have hbad_le : 10 * b <= q ^ 2 := by
     dsimp [drcScore, K, q, b] at hscore ⊢
     nlinarith
-  have hpartition := large_add_bad_eq_sq A K m delta
+  have hpartition : (largeIntersectionPairCount A K (delta ^ 2 * m / 2) : Real) +
+              (drcBadPairCount A K m delta : Real) = (K.card : Real) ^ 2 := by
+    let p : Fin n × Fin n -> Prop := fun ij =>
+      delta ^ 2 * (m : Real) / 2 <=
+        (((A ij.1 ∩ A ij.2).card : Nat) : Real)
+    have h := Finset.card_filter_add_card_filter_not
+      (s := K ×ˢ K) p
+    have hR := congrArg (fun q : Nat => (q : Real)) h
+    simpa [largeIntersectionPairCount, drcBadPairCount, p, not_le,
+      Finset.card_product, pow_two] using hR
   refine ⟨K, ?_, ?_⟩
   · simpa [d, q] using hsize
   · dsimp [q, b] at hbad_le

@@ -215,29 +215,6 @@ private def polarizationPhase {N k : Nat}
   ∑ U ∈ (Finset.univ : Finset (Fin k)).powerset,
     if E ⊆ U then polarizationCoefficient c U * t ^ U.card else 0
 
-private lemma polarizationPhase_polynomialOn {N k : Nat} [NeZero N]
-    (c : (Fin k → Bool) → ZMod N) (E : Finset (Fin k)) :
-    PolynomialOn k Finset.univ (polarizationPhase c E) := by
-  let q : Fin (k + 1) → ZMod N := fun j =>
-    ∑ U ∈ (Finset.univ : Finset (Fin k)).powersetCard (j : Nat),
-      if E ⊆ U then polarizationCoefficient c U else 0
-  refine ⟨q, ?_⟩
-  intro t _
-  rw [polarizationPhase, Finset.sum_powerset]
-  simp only [Finset.card_univ, Fintype.card_fin]
-  rw [Finset.sum_fin_eq_sum_range]
-  apply Finset.sum_congr rfl
-  intro j hj
-  have hjlt : j < k + 1 := mem_range.mp hj
-  simp only [q, dif_pos hjlt]
-  rw [Finset.sum_mul]
-  apply Finset.sum_congr rfl
-  intro U hU
-  have hcard : U.card = j := (mem_powersetCard.mp hU).2
-  split_ifs with hEU
-  · rw [hcard]
-  · simp
-
 private lemma sum_if_subset_powerset {R ι : Type*} [AddCommMonoid R]
     [DecidableEq ι] (F U : Finset ι) (hUF : U ⊆ F) (g : Finset ι → R) :
     (∑ E ∈ F.powerset, if E ⊆ U then g E else 0) =
@@ -263,32 +240,6 @@ private lemma polarizationCoefficient_mul_factorial {N k : Nat} [NeZero N]
   have hunit : IsUnit ((U.card.factorial : Nat) : ZMod N) :=
     hkfac.natCast_factorial_of_le hcard
   rw [polarizationCoefficient, mul_assoc, inv_mul_cancel₀ hunit.ne_zero, mul_one]
-
-private lemma polarization_inner_sum {N k : Nat} [NeZero N] [Fact N.Prime]
-    (c : (Fin k → Bool) → ZMod N)
-    (hkfac : IsUnit ((Nat.factorial k : Nat) : ZMod N))
-    (U : Finset (Fin k)) (s : ZMod N) (x : Point N k) :
-    (∑ E ∈ U.powerset,
-        (-1 : ZMod N) ^ E.card * polarizationCoefficient c U *
-          (s - ∑ i ∈ E, x i) ^ U.card) =
-      c ((boolFinsetEquiv k).symm U) * ∏ i ∈ U, x i := by
-  calc
-    (∑ E ∈ U.powerset,
-        (-1 : ZMod N) ^ E.card * polarizationCoefficient c U *
-          (s - ∑ i ∈ E, x i) ^ U.card) =
-        polarizationCoefficient c U *
-          (∑ E ∈ U.powerset,
-            (-1 : ZMod N) ^ E.card *
-              (s - ∑ i ∈ E, x i) ^ U.card) := by
-      rw [Finset.mul_sum]
-      apply Finset.sum_congr rfl
-      intro E _
-      ring
-    _ = polarizationCoefficient c U *
-        (((U.card.factorial : Nat) : ZMod N) * ∏ i ∈ U, x i) := by
-      rw [powersetDifference_pow]
-    _ = c ((boolFinsetEquiv k).symm U) * ∏ i ∈ U, x i := by
-      rw [← mul_assoc, polarizationCoefficient_mul_factorial c hkfac U]
 
 private lemma signedCubeSum_polarization {N k : Nat} [NeZero N] [Fact N.Prime]
     (c : (Fin k → Bool) → ZMod N)
@@ -346,7 +297,23 @@ private lemma signedCubeSum_polarization {N k : Nat} [NeZero N] [Fact N.Prime]
           c ((boolFinsetEquiv k).symm U) * ∏ i ∈ U, x i := by
       apply Finset.sum_congr rfl
       intro U _
-      exact polarization_inner_sum c hkfac U s x
+      calc
+        (∑ E ∈ U.powerset,
+            (-1 : ZMod N) ^ E.card * polarizationCoefficient c U *
+              (s - ∑ i ∈ E, x i) ^ U.card) =
+            polarizationCoefficient c U *
+              (∑ E ∈ U.powerset,
+                (-1 : ZMod N) ^ E.card *
+                  (s - ∑ i ∈ E, x i) ^ U.card) := by
+          rw [Finset.mul_sum]
+          apply Finset.sum_congr rfl
+          intro E _
+          ring
+        _ = polarizationCoefficient c U *
+            (((U.card.factorial : Nat) : ZMod N) * ∏ i ∈ U, x i) := by
+          rw [powersetDifference_pow]
+        _ = c ((boolFinsetEquiv k).symm U) * ∏ i ∈ U, x i := by
+          rw [← mul_assoc, polarizationCoefficient_mul_factorial c hkfac U]
     _ = ∑ e : Fin k → Bool, c e * ∏ i, if e i then x i else 1 := by
       rw [show F.powerset = Finset.univ by simp [F]]
       calc
@@ -368,7 +335,26 @@ theorem lemma_17_1_holds : lemma_17_1 := by
   obtain ⟨c, hc⟩ := hsigma
   refine ⟨fun e => polarizationPhase c (boolSupport e), ?_, ?_⟩
   · intro e
-    exact polarizationPhase_polynomialOn c (boolSupport e)
+    exact show PolynomialOn k Finset.univ (polarizationPhase c (boolSupport e)) by
+      let q : Fin (k + 1) → ZMod N := fun j =>
+        ∑ U ∈ (Finset.univ : Finset (Fin k)).powersetCard (j : Nat),
+          if (boolSupport e) ⊆ U then polarizationCoefficient c U else 0
+      refine ⟨q, ?_⟩
+      intro t _
+      rw [polarizationPhase, Finset.sum_powerset]
+      simp only [Finset.card_univ, Fintype.card_fin]
+      rw [Finset.sum_fin_eq_sum_range]
+      apply Finset.sum_congr rfl
+      intro j hj
+      have hjlt : j < k + 1 := mem_range.mp hj
+      simp only [q, dif_pos hjlt]
+      rw [Finset.sum_mul]
+      apply Finset.sum_congr rfl
+      intro U hU
+      have hcard : U.card = j := (mem_powersetCard.mp hU).2
+      split_ifs with hEU
+      · rw [hcard]
+      · simp
   · intro s x
     exact (hc x).trans (signedCubeSum_polarization c hkfac s x).symm
 

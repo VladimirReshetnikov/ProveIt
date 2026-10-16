@@ -72,45 +72,6 @@ private def gcsHalf {N n : Nat}
     parityConj e
       (f (j.insertNth b e) (s - ∑ i, if e i then a i else 0))
 
-private lemma gcs_cubeProduct_split {N n : Nat}
-    (f : (Fin (n + 1) → Bool) → ZMod N → Complex)
-    (j : Fin (n + 1)) (r : ZMod N) (a : Point N n) (s : ZMod N) :
-    (∏ e : Fin (n + 1) → Bool,
-      parityConj e (f e (cubeArgument s (j.insertNth r a) e))) =
-      gcsHalf f j false a s * star (gcsHalf f j true a (s - r)) := by
-  let T : (Fin (n + 1) → Bool) → Complex := fun e =>
-    parityConj e (f e (cubeArgument s (j.insertNth r a) e))
-  calc
-    (∏ e : Fin (n + 1) → Bool,
-      parityConj e (f e (cubeArgument s (j.insertNth r a) e))) =
-        ∏ be : Bool × (Fin n → Bool), T (j.insertNth be.1 be.2) := by
-      exact Fintype.prod_equiv
-        (Fin.insertNthEquiv (fun _ : Fin (n + 1) => Bool) j).symm
-        T (fun be => T (j.insertNth be.1 be.2)) (fun e =>
-          congrArg T
-            ((Fin.insertNthEquiv (fun _ : Fin (n + 1) => Bool) j).apply_symm_apply e).symm)
-    _ = (∏ e : Fin n → Bool, T (j.insertNth true e)) *
-        ∏ e : Fin n → Bool, T (j.insertNth false e) := by
-      rw [Fintype.prod_prod_type, Fintype.prod_bool]
-    _ = star (gcsHalf f j true a (s - r)) * gcsHalf f j false a s := by
-      congr 1
-      · rw [gcsHalf, star_prod]
-        apply Finset.prod_congr rfl
-        intro e _
-        simp only [T]
-        rw [gcs_cubeArgument_insertNth]
-        simp only [if_true]
-        rw [gcs_parityConj_insert_true]
-      · rw [gcsHalf]
-        apply Finset.prod_congr rfl
-        intro e _
-        simp only [T]
-        rw [gcs_cubeArgument_insertNth]
-        simp only [Bool.false_eq_true, if_false, sub_zero]
-        rw [gcs_parityConj_insert_false]
-    _ = gcsHalf f j false a s * star (gcsHalf f j true a (s - r)) :=
-      mul_comm _ _
-
 private lemma gcs_mixedCorrelation {N : Nat} [NeZero N]
     (F G : ZMod N → Complex) :
     (∑ r : ZMod N, ∑ s : ZMod N, F s * star (G (s - r))) =
@@ -162,7 +123,38 @@ private lemma cubeForm_eq_halfInner {N n : Nat} [NeZero N]
       intro r _
       apply Finset.sum_congr rfl
       intro s _
-      exact gcs_cubeProduct_split f j r a s
+      let T : (Fin (n + 1) → Bool) → Complex := fun e =>
+        parityConj e (f e (cubeArgument s (j.insertNth r a) e))
+      calc
+        (∏ e : Fin (n + 1) → Bool,
+          parityConj e (f e (cubeArgument s (j.insertNth r a) e))) =
+            ∏ be : Bool × (Fin n → Bool), T (j.insertNth be.1 be.2) := by
+          exact Fintype.prod_equiv
+            (Fin.insertNthEquiv (fun _ : Fin (n + 1) => Bool) j).symm
+            T (fun be => T (j.insertNth be.1 be.2)) (fun e =>
+              congrArg T
+                ((Fin.insertNthEquiv (fun _ : Fin (n + 1) => Bool) j).apply_symm_apply e).symm)
+        _ = (∏ e : Fin n → Bool, T (j.insertNth true e)) *
+            ∏ e : Fin n → Bool, T (j.insertNth false e) := by
+          rw [Fintype.prod_prod_type, Fintype.prod_bool]
+        _ = star (gcsHalf f j true a (s - r)) * gcsHalf f j false a s := by
+          congr 1
+          · rw [gcsHalf, star_prod]
+            apply Finset.prod_congr rfl
+            intro e _
+            simp only [T]
+            rw [gcs_cubeArgument_insertNth]
+            simp only [if_true]
+            rw [gcs_parityConj_insert_true]
+          · rw [gcsHalf]
+            apply Finset.prod_congr rfl
+            intro e _
+            simp only [T]
+            rw [gcs_cubeArgument_insertNth]
+            simp only [Bool.false_eq_true, if_false, sub_zero]
+            rw [gcs_parityConj_insert_false]
+        _ = gcsHalf f j false a s * star (gcsHalf f j true a (s - r)) :=
+          mul_comm _ _
     _ = ∑ a : Point N n,
         (∑ s : ZMod N, gcsHalf f j false a s) *
           star (∑ t : ZMod N, gcsHalf f j true a t) := by
@@ -221,43 +213,6 @@ private lemma norm_cubeForm_duplicateCoordinate {N n : Nat} [NeZero N]
     abs_of_nonneg]
   exact Finset.sum_nonneg fun _ _ => sq_nonneg _
 
-/-- One coordinate of the Gowers--Cauchy--Schwarz iteration. -/
-private lemma cubeForm_oneCoordinate_sq_le {N n : Nat} [NeZero N]
-    (f : (Fin (n + 1) → Bool) → ZMod N → Complex)
-    (j : Fin (n + 1)) :
-    ‖cubeForm f‖ ^ 2 ≤
-      ‖cubeForm (duplicateCoordinate f j false)‖ *
-        ‖cubeForm (duplicateCoordinate f j true)‖ := by
-  let A : Point N n → Complex := fun a =>
-    ∑ s : ZMod N, gcsHalf f j false a s
-  let B : Point N n → Complex := fun a =>
-    ∑ s : ZMod N, gcsHalf f j true a s
-  have hform : cubeForm f = ∑ a : Point N n, A a * star (B a) := by
-    simpa [A, B] using cubeForm_eq_halfInner f j
-  have htriangle : ‖cubeForm f‖ ≤ ∑ a : Point N n, ‖A a‖ * ‖B a‖ := by
-    rw [hform]
-    calc
-      ‖∑ a : Point N n, A a * star (B a)‖ ≤
-          ∑ a : Point N n, ‖A a * star (B a)‖ := norm_sum_le _ _
-      _ = ∑ a : Point N n, ‖A a‖ * ‖B a‖ := by
-        apply Finset.sum_congr rfl
-        intro a _
-        rw [norm_mul, norm_star]
-  have hcs : (∑ a : Point N n, ‖A a‖ * ‖B a‖) ^ 2 ≤
-      (∑ a : Point N n, ‖A a‖ ^ 2) *
-        ∑ a : Point N n, ‖B a‖ ^ 2 := by
-    simpa using sum_mul_sq_le_sq_mul_sq
-      (Finset.univ : Finset (Point N n)) (fun a => ‖A a‖) (fun a => ‖B a‖)
-  calc
-    ‖cubeForm f‖ ^ 2 ≤ (∑ a : Point N n, ‖A a‖ * ‖B a‖) ^ 2 :=
-      pow_le_pow_left₀ (norm_nonneg _) htriangle 2
-    _ ≤ (∑ a : Point N n, ‖A a‖ ^ 2) *
-        ∑ a : Point N n, ‖B a‖ ^ 2 := hcs
-    _ = ‖cubeForm (duplicateCoordinate f j false)‖ *
-        ‖cubeForm (duplicateCoordinate f j true)‖ := by
-      rw [norm_cubeForm_duplicateCoordinate, norm_cubeForm_duplicateCoordinate]
-      simp only [A, B, gcsFaceEnergy]
-
 /-- Duplicate a face along an arbitrary coordinate. -/
 private def duplicateAt {N d : Nat}
     (f : (Fin d → Bool) → ZMod N → Complex) (j : Fin d) (b : Bool) :
@@ -277,7 +232,36 @@ private lemma cubeForm_oneCoordinate_sq_le' {N d : Nat} [NeZero N]
         funext e s
         simp only [duplicateAt, duplicateCoordinate, Fin.insertNth_removeNth]
       rw [hdup false, hdup true]
-      exact cubeForm_oneCoordinate_sq_le f j
+      -- One coordinate of the Gowers--Cauchy--Schwarz iteration.
+      let A : Point N n → Complex := fun a =>
+        ∑ s : ZMod N, gcsHalf f j false a s
+      let B : Point N n → Complex := fun a =>
+        ∑ s : ZMod N, gcsHalf f j true a s
+      have hform : cubeForm f = ∑ a : Point N n, A a * star (B a) := by
+        simpa [A, B] using cubeForm_eq_halfInner f j
+      have htriangle : ‖cubeForm f‖ ≤ ∑ a : Point N n, ‖A a‖ * ‖B a‖ := by
+        rw [hform]
+        calc
+          ‖∑ a : Point N n, A a * star (B a)‖ ≤
+              ∑ a : Point N n, ‖A a * star (B a)‖ := norm_sum_le _ _
+          _ = ∑ a : Point N n, ‖A a‖ * ‖B a‖ := by
+            apply Finset.sum_congr rfl
+            intro a _
+            rw [norm_mul, norm_star]
+      have hcs : (∑ a : Point N n, ‖A a‖ * ‖B a‖) ^ 2 ≤
+          (∑ a : Point N n, ‖A a‖ ^ 2) *
+            ∑ a : Point N n, ‖B a‖ ^ 2 := by
+        simpa using sum_mul_sq_le_sq_mul_sq
+          (Finset.univ : Finset (Point N n)) (fun a => ‖A a‖) (fun a => ‖B a‖)
+      calc
+        ‖cubeForm f‖ ^ 2 ≤ (∑ a : Point N n, ‖A a‖ * ‖B a‖) ^ 2 :=
+          pow_le_pow_left₀ (norm_nonneg _) htriangle 2
+        _ ≤ (∑ a : Point N n, ‖A a‖ ^ 2) *
+            ∑ a : Point N n, ‖B a‖ ^ 2 := hcs
+        _ = ‖cubeForm (duplicateCoordinate f j false)‖ *
+            ‖cubeForm (duplicateCoordinate f j true)‖ := by
+          rw [norm_cubeForm_duplicateCoordinate, norm_cubeForm_duplicateCoordinate]
+          simp only [A, B, gcsFaceEnergy]
 
 /-- Overwrite the first `n` coordinates of a Boolean cube vertex. -/
 private def overwritePrefix {d : Nat} (n : Nat) (q : Fin n → Bool)

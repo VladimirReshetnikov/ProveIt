@@ -211,35 +211,31 @@ private lemma frequencyBoundary_card_le {N : Nat} [NeZero N]
   · intro hx
     exact ⟨x - d, hx, by abel⟩
 
-private lemma bohr_sdiff_translate_subset_boundaries {N : Nat} [NeZero N]
-    (K : Finset (ZMod N)) (delta : Real) (d : ZMod N) :
-    bohr K delta \ section10Translate (bohr K delta) d ⊆
-      K.biUnion fun r => frequencyBoundary r d (delta * N) := by
-  intro x hx
-  have hxB := (Finset.mem_sdiff.mp hx).1
-  have hxdNot : x - d ∉ bohr K delta := by
-    simpa only [mem_section10Translate_iff] using (Finset.mem_sdiff.mp hx).2
-  unfold bohr at hxB hxdNot
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hxB hxdNot
-  push Not at hxdNot
-  obtain ⟨r, hrK, hrxd⟩ := hxdNot
-  rw [Finset.mem_biUnion]
-  refine ⟨r, hrK, ?_⟩
-  unfold frequencyBoundary
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-  have htriangleNat := centeredAbs_sub_le (r * x) (r * d)
-  have htriangle : (centeredAbs (r * (x - d)) : Real) ≤
-      centeredAbs (r * x) + centeredAbs (r * d) := by
-    rw [mul_sub]
-    exact_mod_cast htriangleNat
-  exact ⟨by nlinarith, hxB r hrK⟩
-
 private lemma bohr_sdiff_translate_card_le {N : Nat} [NeZero N]
     (K : Finset (ZMod N)) (delta zeta : Real) (d : ZMod N)
     (hd : d ∈ bohr K zeta) :
     ((bohr K delta \ section10Translate (bohr K delta) d).card : Real) ≤
       2 * K.card * zeta * N := by
-  have hsubset := bohr_sdiff_translate_subset_boundaries K delta d
+  have hsubset : bohr K delta \ section10Translate (bohr K delta) d ⊆
+            K.biUnion fun r => frequencyBoundary r d (delta * N) := by
+    intro x hx
+    have hxB := (Finset.mem_sdiff.mp hx).1
+    have hxdNot : x - d ∉ bohr K delta := by
+      simpa only [mem_section10Translate_iff] using (Finset.mem_sdiff.mp hx).2
+    unfold bohr at hxB hxdNot
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hxB hxdNot
+    push Not at hxdNot
+    obtain ⟨r, hrK, hrxd⟩ := hxdNot
+    rw [Finset.mem_biUnion]
+    refine ⟨r, hrK, ?_⟩
+    unfold frequencyBoundary
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+    have htriangleNat := centeredAbs_sub_le (r * x) (r * d)
+    have htriangle : (centeredAbs (r * (x - d)) : Real) ≤
+        centeredAbs (r * x) + centeredAbs (r * d) := by
+      rw [mul_sub]
+      exact_mod_cast htriangleNat
+    exact ⟨by nlinarith, hxB r hrK⟩
   have hcardNat :
       (bohr K delta \ section10Translate (bohr K delta) d).card ≤
         ∑ r ∈ K, 2 * centeredAbs (r * d) := by

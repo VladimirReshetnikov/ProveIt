@@ -182,27 +182,6 @@ private lemma section5_carrier_eq_order_range_of_le {N : Nat} [NeZero N]
     obtain ⟨i, hi, rfl⟩ := hx
     exact ⟨i, Finset.range_mono horder hi, rfl⟩
 
-private lemma section5_carrier_card {N : Nat} [NeZero N] (P : ModAP N) :
-    P.carrier.card = min P.length (addOrderOf P.step) := by
-  by_cases hlength : P.length ≤ addOrderOf P.step
-  · have hinj : Set.InjOn (section5IndexPoint P)
-        (Finset.range P.length : Set Nat) := by
-      intro i hi j hj hij
-      exact section5IndexPoint_injOn_order P
-        (lt_of_lt_of_le (Finset.mem_range.mp hi) hlength)
-        (lt_of_lt_of_le (Finset.mem_range.mp hj) hlength) hij
-    rw [min_eq_left hlength, section5_carrier_eq_image_range,
-      Finset.card_image_iff.mpr hinj, Finset.card_range]
-  · have horder : addOrderOf P.step ≤ P.length :=
-      Nat.le_of_lt (Nat.lt_of_not_ge hlength)
-    have hinj : Set.InjOn (section5IndexPoint P)
-        (Finset.range (addOrderOf P.step) : Set Nat) := by
-      intro i hi j hj hij
-      exact section5IndexPoint_injOn_order P
-        (Finset.mem_range.mp hi) (Finset.mem_range.mp hj) hij
-    rw [min_eq_right horder, section5_carrier_eq_order_range_of_le P horder,
-      Finset.card_image_iff.mpr hinj, Finset.card_range]
-
 /-- Shorten an arbitrary modular progression to one traversal of its carrier. -/
 def section5Normalize {N : Nat} (P : ModAP N) : ModAP N :=
   { P with length := P.carrier.card }
@@ -210,7 +189,25 @@ def section5Normalize {N : Nat} (P : ModAP N) : ModAP N :=
 theorem section5Normalize_carrier {N : Nat} [NeZero N] (P : ModAP N) :
     (section5Normalize P).carrier = P.carrier := by
   let t := addOrderOf P.step
-  have hcard := section5_carrier_card P
+  have hcard : P.carrier.card = min P.length (addOrderOf P.step) := by
+    by_cases hlength : P.length ≤ addOrderOf P.step
+    · have hinj : Set.InjOn (section5IndexPoint P)
+          (Finset.range P.length : Set Nat) := by
+        intro i hi j hj hij
+        exact section5IndexPoint_injOn_order P
+          (lt_of_lt_of_le (Finset.mem_range.mp hi) hlength)
+          (lt_of_lt_of_le (Finset.mem_range.mp hj) hlength) hij
+      rw [min_eq_left hlength, section5_carrier_eq_image_range,
+        Finset.card_image_iff.mpr hinj, Finset.card_range]
+    · have horder : addOrderOf P.step ≤ P.length :=
+        Nat.le_of_lt (Nat.lt_of_not_ge hlength)
+      have hinj : Set.InjOn (section5IndexPoint P)
+          (Finset.range (addOrderOf P.step) : Set Nat) := by
+        intro i hi j hj hij
+        exact section5IndexPoint_injOn_order P
+          (Finset.mem_range.mp hi) (Finset.mem_range.mp hj) hij
+      rw [min_eq_right horder, section5_carrier_eq_order_range_of_le P horder,
+        Finset.card_image_iff.mpr hinj, Finset.card_range]
   by_cases hlength : P.length ≤ t
   · have heq : P.carrier.card = P.length := by
       simpa only [t, min_eq_left hlength] using hcard

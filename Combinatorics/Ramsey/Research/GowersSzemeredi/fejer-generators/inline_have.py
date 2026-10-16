@@ -129,9 +129,25 @@ def rewrites(s, x, maxlines):
             st_lines = stmt.split('\n')
         outs.extend(build(mh, me, ind, st_lines, is_tac, tac_lines if is_tac else None,
                           None if is_tac else term_lines))
+    # keep the lemma's documentation: its docstring becomes `--` comments above the inlined proof
+    doc = ''
+    dm = re.match(r'\s*/--(.*?)-/\s*$', s[a:hd.start()], re.S)
+    if dm:
+        words = ' '.join(dm.group(1).split())
+        if words:
+            width = 100 - ind - 3
+            out_lines, cur = [], ''
+            for w in words.split(' '):
+                if cur and len(cur) + 1 + len(w) > width:
+                    out_lines.append(cur)
+                    cur = w
+                else:
+                    cur = f'{cur} {w}' if cur else w
+            out_lines.append(cur)
+            doc = ''.join(' ' * ind + '-- ' + l + '\n' for l in out_lines)
     res = []
     for o in outs:
-        new = s[:ls] + o + s[le:]
+        new = s[:ls] + doc + o + s[le:]
         new = new[:a] + new[cut_end:]
         res.append(re.sub(r'\n{3,}', '\n\n', new))
     return res

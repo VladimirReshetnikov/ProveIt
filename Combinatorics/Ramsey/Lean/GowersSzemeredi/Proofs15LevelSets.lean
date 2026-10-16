@@ -207,23 +207,6 @@ private lemma multiaffineEval_shifted {R : Type*} [CommRing R] {k : Nat}
   congr 1
   simp
 
-private lemma levelSet_complement_count {N k : Nat} [NeZero N]
-    (mu : Point N k → ZMod N) (a : ZMod N) :
-    countWhere (fun y : Point N k => mu y = a) +
-        countWhere (fun y : Point N k => mu y ≠ a) = N ^ k := by
-  simp_rw [countWhere_eq_sum_ite]
-  calc
-    (∑ y : Point N k, if mu y = a then 1 else 0) +
-          (∑ y : Point N k, if mu y ≠ a then 1 else 0) =
-        ∑ y : Point N k,
-          ((if mu y = a then 1 else 0) + (if mu y ≠ a then 1 else 0)) := by
-            rw [Finset.sum_add_distrib]
-    _ = ∑ _y : Point N k, 1 := by
-      apply Finset.sum_congr rfl
-      intro y _
-      by_cases hy : mu y = a <;> simp [hy]
-    _ = N ^ k := by simp [Point, ZMod.card]
-
 private lemma real_pow_sub_pred_pow_le (N k : Nat) (hN : 1 ≤ N) :
     (N : Real) ^ k - (N - 1 : Nat) ^ k ≤ k * (N : Real) ^ (k - 1) := by
   let x : Real := N
@@ -275,7 +258,20 @@ theorem lemma_15_3_holds : lemma_15_3 := by
         apply congrArg Finset.card
         ext x
         simp only [Finset.mem_filter, Finset.mem_univ, true_and, heval, sub_ne_zero]
-  have hpartition := levelSet_complement_count mu a
+  have hpartition : countWhere (fun y : Point N k => mu y = a) +
+              countWhere (fun y : Point N k => mu y ≠ a) = N ^ k := by
+    simp_rw [countWhere_eq_sum_ite]
+    calc
+      (∑ y : Point N k, if mu y = a then 1 else 0) +
+            (∑ y : Point N k, if mu y ≠ a then 1 else 0) =
+          ∑ y : Point N k,
+            ((if mu y = a then 1 else 0) + (if mu y ≠ a then 1 else 0)) := by
+              rw [Finset.sum_add_distrib]
+      _ = ∑ _y : Point N k, 1 := by
+        apply Finset.sum_congr rfl
+        intro y _
+        by_cases hy : mu y = a <;> simp [hy]
+      _ = N ^ k := by simp [Point, ZMod.card]
   have hlevelNat :
       countWhere (fun x : Point N k => mu x = a) ≤ N ^ k - (N - 1) ^ k := by
     omega
