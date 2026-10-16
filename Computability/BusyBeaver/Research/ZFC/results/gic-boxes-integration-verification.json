@@ -1,0 +1,98 @@
+{
+  "scope": "Scoped source and umbrella integration; existing 57-unit dependency cache reused. No complete source closure or expensive bootstrap rebuild.",
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "scratch": "/tmp/zfc-gic-boxes-integration-1e89yz70",
+  "dependency_cache": "/tmp/zfc-containers-boxes-integration-zka2ls4m",
+  "default_source_units": 62,
+  "research_modules": 56,
+  "dependency_order_checked": true,
+  "modules": [
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254GIC.lean",
+      "source_sha256": "73532a1e8d516606453b7f29c66466b87e35d09c587e68b879c50faae1d81dab",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-gic-boxes-integration-1e89yz70/BusyBeaver/ZFC/Code254GIC.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254GIC.lean"
+      ],
+      "seconds": 1.003,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Models.lean",
+      "source_sha256": "c07eacc95775e7c5a5b2291008dbb4517718a6c187a5659dd9a35056196eb9ef",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-gic-boxes-integration-1e89yz70/BusyBeaver/ZFC/Code254Models.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Models.lean"
+      ],
+      "seconds": 0.373,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NumericCode254.lean",
+      "source_sha256": "5f52a7f000d985843cb8f71c23b92993cd567e9d5af02bf9f9a9172b6faf4885",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-gic-boxes-integration-1e89yz70/BusyBeaver/ZFC/NumericCode254.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NumericCode254.lean"
+      ],
+      "seconds": 0.431,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterMark253.lean",
+      "source_sha256": "f5cd066af3127608a2ca08e146a6a82967f1a431b8408f328a554d50a31c0f41",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-gic-boxes-integration-1e89yz70/BusyBeaver/ZFC/RegisterMark253.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterMark253.lean"
+      ],
+      "seconds": 1.107,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterIncrement253.lean",
+      "source_sha256": "b67184c1ed66c2d7f08502695f8f35cc6f04137fea695c231a7316035dfc52d3",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-gic-boxes-integration-1e89yz70/BusyBeaver/ZFC/RegisterIncrement253.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterIncrement253.lean"
+      ],
+      "seconds": 0.972,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean",
+      "source_sha256": "47216794daca064287a4dddd3ae498cc6576c4999259c60b199a577f41ac6e29",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-gic-boxes-integration-1e89yz70/BusyBeaver/ZFC.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean"
+      ],
+      "seconds": 0.495,
+      "returncode": 0,
+      "output": ""
+    }
+  ],
+  "audit": {
+    "source": "import BusyBeaver.ZFC\nopen SetTheory.BusyBeaver.ZFC\n#print axioms Code254GIC.modelsCPGIC_of_encBundle\n#print axioms Code254Models.sat_encode_decode\n#print axioms Code254Models.encodable_of_decoded\n#print axioms Code254Models.no_refutation_of_decoded\n#print axioms Code254Models.modelsCPGIC_of_decoded\n#print axioms NumericCode254.numThm_iff_c254\n#print axioms RegisterMark253.mark\n#print axioms RegisterIncrement253.increment\nexample {V : Type} (mem : V \u2192 V \u2192 Prop) (hirr : \u2200 x, \u00ac mem x x)\n    (v : V) (h : Code254Models.ModelsDecoded mem) : ProfileModel.ModelsCPGIC mem :=\n  Code254Models.modelsCPGIC_of_decoded mem hirr h (fun _ => v)\nexample {V : Type} (mem : V \u2192 V \u2192 Prop) (hirr : \u2200 x, \u00ac mem x x)\n    (e : Nat \u2192 V) : \u00ac Tarski.Sat mem e (Code254.dec (Code254.enc Tarski.NF.bot)) :=\n  (Code254Models.sat_encode_decode mem hirr Tarski.NF.bot e).mp\n",
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "/tmp/zfc-gic-boxes-integration-1e89yz70/Audit.lean"
+    ],
+    "returncode": 0,
+    "output": "'SetTheory.BusyBeaver.ZFC.Code254GIC.modelsCPGIC_of_encBundle' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254Models.sat_encode_decode' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254Models.encodable_of_decoded' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254Models.no_refutation_of_decoded' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254Models.modelsCPGIC_of_decoded' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NumericCode254.numThm_iff_c254' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.RegisterMark253.mark' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.RegisterIncrement253.increment' depends on axioms: [propext, Quot.sound]\n"
+  }
+}

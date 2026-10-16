@@ -13,3 +13,10 @@ The accompanying note now records this historical correction and narrows the pro
 Only `Code254.lean` and `tarski_logic_layer.md` were edited; no README, checker, umbrella, delivered report or commit was touched. The corrected source compiled with the explicit absolute Lean4.32.0 executable in 2.88s. Ten successful axiom audits took0.34s: the historical counterexample uses no axioms, all other audited results use at most propext/Classical.choice/Quot.sound, and none uses sorryAx or custom axioms. Source and scratch audit imports use the root's source-verified cache with only local olean symlinks; no Boot build occurred. Earlier cache-path and scratch namespace/triangle tactic errors are preserved separately as failed development attempts, not counted as passing proofs. The sole Lean grant was released after the successful audit.
 
 Evidence: `build.json`, `audit-build.json`, `Audit.lean`, `Audit.log`, `verification.json`; source contract audit embedded in verification.json. All final compiler invocations record their actual version.
+
+The subsequent [numeric bridge](numeric_code254.md) now identifies the two
+pairings, encoders and twelve-constructor derivability relations for all
+codes. [Code254GIC](code254_gic.md) connects literal encoded bundles to the
+existing CP/GIC model interface, while the
+[semantic round trip](code254_models.md) proves the decoded-to-encodable model
+implication. The reverse model implication and full ZFC endpoint remain open.

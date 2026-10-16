@@ -39,6 +39,11 @@ import BusyBeaver.ZFC.NamedNumeric254
 import BusyBeaver.ZFC.BootstrapFrame253
 import BusyBeaver.ZFC.Code254Containers
 import BusyBeaver.ZFC.RegisterBoxes253
+import BusyBeaver.ZFC.Code254GIC
+import BusyBeaver.ZFC.Code254Models
+import BusyBeaver.ZFC.NumericCode254
+import BusyBeaver.ZFC.RegisterMark253
+import BusyBeaver.ZFC.RegisterIncrement253
 
 /-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC
 consistency theorem or state-count improvement is claimed by these imports. -/
