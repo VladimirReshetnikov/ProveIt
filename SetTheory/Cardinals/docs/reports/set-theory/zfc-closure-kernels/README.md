@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 16 October 2026. This report now reconciles nine manuscripts.
+Intake findings, 16 October 2026. This report now reconciles eleven manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -11,8 +11,9 @@ results and their exact scope are listed below.
 
 The user's current machine target is an equivalence **provable in ZFC** between
 blank-tape non-halting and Con(ZFC), with fewer than 254 nonhalting states on a
-binary, two-way infinite, single tape. The sources discuss the stronger PA
-metatheory. Their missing proof compilers remain missing; changing our target
+binary, two-way infinite, single tape. The initial sources discuss the stronger
+PA metatheory; later deliveries also address the ZFC target. Their missing
+proof compilers remain missing; changing our target
 does not turn their experiments into a formal equivalence proof.
 
 ## Sources, overlap and base
@@ -385,3 +386,173 @@ and `--rebuild-variants` for source 09's regeneration and eleven folds.
 Manifest-only checks are excluded; source 08's components run directly
 because its aggregate driver always checks a checksum manifest. To rebuild
 a delivered PDF, run its recovered build command in that scratch package.
+
+## Batch 145: equality erasure and smaller compiler artifacts
+
+Two further additions arrived in `9c98495586c2a3b49e76ccb0d4e29cebc824903b`
+and `96836f9eea3540e96322c3d28c7127a582aae223`, respectively. Placement
+`3cc6ba5b1` retains their ancillary material under the next local prefixes.
+Both continue the existing source-theory, numeric-calculus and complete-machine
+questions. The base article is unchanged; this section reconciles the new
+material without building a merged article or PDF.
+
+| Local source | Archive | Contribution retained |
+|---|---|---|
+| 10, twins | `zfc_small_machine_research.zip` | Two-sided equality erasure for CP/GIC; standalone Lean semantic lemmas; canonical base-three codec; cross-variable instantiation diagnostic; 250-state conjunction-reordering experiment and a 348-state translated-equality control. |
+| 11, grammar | `zfc_small_machines_20261016.zip` | Reconstruction of PSC-alone and raw CP/GIC calibrations; exact implicational-schema parameter permutation; original-row and dual-row 248-state grammar-compression experiments, each with an independent 3,394-pair register-operation certificate. |
+
+Both use executable ProveIt baseline
+`17d0f2eaa650901cda59764dfcc4661c199e49c8`. They inspect the four requested
+earlier pins and the later `fa6fcaf09`/`29efd22e` developments; source 11
+extends its source audit through `83dec60c249ca0f9e1b2e5ee3cf18fd1ce58c373`.
+Their inherited benchmark inputs still use upstream `297ab8df7e5de329605c3875b4934643b371a5e3`,
+with the separate attributed 253-state PR head `0d544f2a2e3c18f12278441a74b7879f31cbe856`.
+These are provenance cutoffs, not descriptions of today's remaining formal gaps.
+
+### Mathematical and formal reconciliation
+
+Source 10 interprets equality by agreement of **both** incoming and outgoing
+membership profiles. This relation is an equivalence and membership congruence
+in pure logic. Formula induction and capture-safe equality replacement give an
+ordinary conservative interpretation for equality-free conclusions of the
+raw CP/GIC theory. Source 09 already records this source-theory bridge; source
+10 makes the proof transport and its proposed PA formalizability more explicit.
+It does not identify that profile relation with actual identity on raw objects,
+incoming-profile equivalence, or the bisimulation equality of another model.
+Neither erasure nor its PA formalizability is a delivered proof-code translator.
+
+Its unchanged `formal/AtomicEquality.lean` independently compiled with Lean
+4.32.0. All seven printed theorem roots have no axiom dependencies:
+`indiscernible_refl`, `indiscernible_symm`, `indiscernible_trans`,
+`membership_congr`, `satisfaction_invariant`, `equalityFormula_correct` and
+`equality_erasure_correct`. The last three check arbitrary-formula semantic
+invariance and the de Bruijn equality erasure in the file's own syntax.
+They prove no derivation translation, CP/GIC calibration, quotient construction
+or machine theorem. The existing `RawPSCProfile.full_mem_congr` already checks
+the basic full-profile congruence in the research library; an explicit syntax
+adapter is still needed to reuse the delivery's additional semantic results.
+
+Both papers' canonical base-three account handles code 0 as Truth and excludes
+the `Imp(Truth,Truth)` collision. This confirms the existing
+`Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Base3Syntax.lean` results:
+`encode_decode`, canonical `decode_encode`, smart implication compatibility
+and label freshness, including code 0. Their historical suggestion that only
+positive finite syntax has a Lean treatment is superseded by that module.
+Codec coverage alone supplies no numeric-calculus completeness theorem.
+
+The papers correctly separate that issue. Identity quantifiers validate the
+retained logical rows and same-name instantiation while independent membership
+atoms can falsify cross-variable instantiation. This is a logical-fragment
+countermodel, not a model of the entire CP/GIC theory or a proof of unconditional
+machine nonhalting. Source 11 also reconstructs the original/dual-row distinction
+and an arbitrary-added-theory refutation counterexample. It does not settle
+refutation equivalence over the actual C/G bundle. Retaining the original row
+avoids the additional dual-row change but does not repair the missing equality
+rules' instantiation and renaming consequences.
+
+Source 11's PSC-alone and equality-free CP/GIC arguments are ordinary
+mathematical reconstructions of the source-08 and source-09 spines, respectively.
+Its abstract enumerator theorem is likewise an ordinary proof about its stated
+commands and register-boundary invariants. No delivery formally connects that
+enumerator, the exact numeric calculus and the binary interpreter. The inherited
+PSC reference checker is a separate prototype, not the program executed by either
+248-state table. Its bounded census finding no refutation proves no consistency
+statement.
+
+### What the state reductions establish
+
+Source 10 commutes internal relative conjunctions and reassociates the outer
+C/G/vacuity bundle. Since `And_F(A,B) = F ∨ (A ∧ B)`, these changes preserve
+ordinary semantics even when `F = Rel(0,0)` is true, without moving binders.
+The full 9,216-choice search reproduces both 250-state minimizers. The selected
+table has 188 decision states plus 62 unchanged framework states, 500 rows,
+start 0 and terminal target 250. Its normalized table SHA-256 is
+`d7af3920268db1c95bf71dc06b77e53c8266086a13043b2fc91f9319c520aff1`.
+The rewrite does not resolve the inherited dual-row or full-calculus gaps.
+The separate 348-state control retains GEN and all eight original logical rows,
+replacing Eq by two-sided profiles; its measured cost is not a lower bound or
+a certified endpoint.
+
+Source 11 first permutes the four independent parameters of the implicational
+schema. Its two displayed inverse permutations give **literal identical
+instance sets**, without a relative-falsity assumption. Weighted Re-Pair,
+attributed to source 08, then preserves the expanded 138-macro word while
+changing its binary grammar. The fixed original-row seed 122/exponent 2 and
+dual-row seed 39/exponent 2 each produce 186 decision plus 62 framework states.
+Both complete blank-start tables have 496 rows, start 0, terminal target 248:
+
+| 248-state table | SHA-256 |
+|---|---|
+| Original quantifier row, recommended | `e9cf9241e0012c56ecf4dc55f969d4c01e988a5c3839c9e4a49b5fae33591d45` |
+| Dual quantifier row, comparison | `70d141e1a2872a3080b525a4061b48882131e636c41444f09bc065647a7e4a6c` |
+
+Each independent certificate checks 3,394 related operation sites: 1,902
+increment pairs, 1,491 decrement pairs and one halt pair. Register indices and
+both decrement exits match, and contracted control paths terminate without
+changing registers. This supports the stated ordinary register-program halting
+equivalence from **any common register vector**, not just an observed blank run.
+The independent checker and eight rejected certificate mutations were replayed.
+No finite certificate was checked inside Lean, and no binary compiler theorem
+is supplied. The later research `RegisterBisimulation.halts_from_any_registers`
+checks the generic exposed-operation theorem only, conditional on instruction
+matching; it does not instantiate either certificate or justify control-path
+contraction.
+
+All 248 and 250 working states are graph-reachable. Exact step bisimulation and
+the radius-4/64-step conservative audit found no safe merge. All three million-step
+prefixes end at state 24, head 248, with 223 one-cells; the 250 prefix never enters
+the edited AX routine. These are finite diagnostics, not nonhalting proofs or
+minimality bounds. The sole missing named backend row is explicitly totalized
+by a final move into the terminal state; halting is preserved under that
+convention, although the final head may move.
+
+Thus the 248 original-row artifact is the preferred new **compiler experiment**.
+Neither it nor the 250/dual-248 alternatives is a proved sub-254 ZFC-consistency
+machine. The attributed upstream 253 endpoint remains separate prior work;
+no new Coq build or exported internal ZFC/PA proof was performed in this intake.
+
+### Placement, verification and recovery
+
+The exact 90-file map is `data/placement-map-145.json`, with `10-twins-` and
+`11-grammar-` prefixes. All 98 extracted blobs (95 distinct) were searched in
+history, and all 25 hit records were checked in the relevant commit trees.
+They are borrowed project, backend, checker or benchmark files, not previously
+placed whole archives; see `data/history-findings-145.json`. No checksum-manifest
+or line-ending work was done. Both archives were retired in placement, while
+their complete articles, section sources, READMEs and PDFs remain recoverable
+from their arrival commits. The unchanged base article still belongs to source 02.
+
+Checks ran only on separate copies. Source 10 passed its logic diagnostic,
+100,000-code audit, both complete bounded searches, all eight older backend
+measurements, 250-table regeneration/normalization, full-tape named/numeric
+lockstep, and 348-control regeneration with 16,384 binder cases. Its standalone
+Lean file compiled independently; its scratch PDF has 22 pages. Source 11 passed
+11,000 codec cases, 5,712 macro contracts over four AX profiles, both independent
+certificates, regeneration of all twelve fixed artifacts, the inherited 12-test
+PSC suite and its 131,071-word census, both conservative audits, and all eight
+certificate mutations. Its scratch PDF has 27 pages and no reported warnings.
+Authored review dossiers and replay records use the `intake-145-` prefix here
+and in `data/`; delivered records were not replaced by regenerated outputs.
+
+Recover and replay the Python checks from the repository root:
+
+```sh
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_145.py
+```
+
+The helper uses committed archives and the source-10 pinned Git objects, with
+no network or checkout writes. Use `--prepare-only` to recover the full articles,
+`--sources 1` or `--sources 2` to select a batch manuscript, and `--searches` to
+repeat source 10's 288- and 9,216-choice searches. The source-11 release-manifest
+function is bypassed in memory; its mathematical, table, certificate and fixed
+regeneration checks run unchanged. PDF and Lean builds are separate commands
+on recovered copies, not part of this Python helper. Prefixed delivered scripts
+retain their original imports, layout assumptions and provenance paths; run the
+recovered packages rather than those flattened copies.
+
+Source 11's retained `11-grammar-provenance-REBRACKETING_248.md` also names
+`TM_ENGINEERING.md`, which is not shipped in that package. This delivery-time
+reference is preserved, with no substitute file invented. Since placement,
+`Table248.lean` checks the original-row literal table and its actual first
+1,024 blank steps; `RawPSCModel.lean` supplies named instances from the actual
+equality-free PSC model. Neither adds the missing whole-machine endpoint.

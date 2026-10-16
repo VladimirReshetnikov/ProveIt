@@ -1,0 +1,96 @@
+{
+  "scope": "Authored batch145 recovery helper replay; scratch-only Python checks, no release manifests, no PDF or Lean build, no optional searches repeated. Full searches are recorded in source10 machine review.",
+  "command": "uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_145.py",
+  "scratch": "/tmp/zfc-batch145-reproduce-kmny23s9",
+  "all_checks_passed": true,
+  "runs": [
+    {
+      "source": 1,
+      "command": [
+        "code/logical_kernel_diagnostic.py",
+        "--output",
+        "/tmp/zfc-batch145-reproduce-kmny23s9/source10-logical.json"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-batch145-reproduce-kmny23s9/01-01.log"
+    },
+    {
+      "source": 1,
+      "command": [
+        "code/base3_codec.py"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-batch145-reproduce-kmny23s9/01-02.log"
+    },
+    {
+      "source": 1,
+      "command": [
+        "reproduce.py",
+        "--offline"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-batch145-reproduce-kmny23s9/01-03.log"
+    },
+    {
+      "source": 1,
+      "command": [
+        "translation_comparator.py"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-batch145-reproduce-kmny23s9/01-04.log"
+    },
+    {
+      "source": 2,
+      "command": [
+        "-c",
+        "import runpy,sys; ns=runpy.run_path('reproduce.py',run_name='intake_reproduce_145'); main=ns['main']; main.__globals__['manifest_check']=lambda:0; sys.argv=['reproduce.py','--output',sys.argv[1]]; raise SystemExit(main())",
+        "/tmp/zfc-batch145-reproduce-kmny23s9/source11-reproduction.json"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-batch145-reproduce-kmny23s9/02-05.log"
+    },
+    {
+      "source": 2,
+      "command": [
+        "/tmp/zfc-batch145-reproduce-kmny23s9/02/zfc_small_machines_20261016/vendor/ProveIt/Computability/BusyBeaver/Research/ZFC/audit_tm.py",
+        "machines/raw-candidate-old_rho6-248.tm",
+        "--expected-states",
+        "248",
+        "--expected-halt",
+        "248",
+        "--window-radius",
+        "4",
+        "--macro-steps",
+        "64",
+        "--trace-steps",
+        "1000000",
+        "--self-test",
+        "--output",
+        "/tmp/zfc-batch145-reproduce-kmny23s9/source11-old_rho6-audit.json"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-batch145-reproduce-kmny23s9/02-06.log"
+    },
+    {
+      "source": 2,
+      "command": [
+        "/tmp/zfc-batch145-reproduce-kmny23s9/02/zfc_small_machines_20261016/vendor/ProveIt/Computability/BusyBeaver/Research/ZFC/audit_tm.py",
+        "machines/raw-candidate-dual_rho6-248.tm",
+        "--expected-states",
+        "248",
+        "--expected-halt",
+        "248",
+        "--window-radius",
+        "4",
+        "--macro-steps",
+        "64",
+        "--trace-steps",
+        "1000000",
+        "--output",
+        "/tmp/zfc-batch145-reproduce-kmny23s9/source11-dual_rho6-audit.json"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-batch145-reproduce-kmny23s9/02-07.log"
+    }
+  ]
+}
