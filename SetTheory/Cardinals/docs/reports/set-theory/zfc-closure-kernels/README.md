@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 16 October 2026. This report now reconciles sixteen manuscripts.
+Intake findings, 16 October 2026. This report now reconciles seventeen manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -16,7 +16,7 @@ PA metatheory; later deliveries also address the ZFC target. Their missing
 proof compilers remain missing; changing our target
 does not turn their experiments into a formal equivalence proof.
 
-The latest batch 146 below supplies a countermodel to the entire intended raw
+Batch 146 below supplies a countermodel to the entire intended raw
 C/G code calculus, including the variants behind the earlier 252/250/248
 experiments. Those artifacts remain compiler benchmarks. The ordinary
 first-order closure-theory calibrations remain separate accepted arguments.
@@ -921,3 +921,136 @@ only the delivered source-manifest audit in memory, reporting zero such
 verified files; exact functional and generated-table contracts remain. The
 base article and all delivered files remain unchanged. The complete internal
 ZFC equivalence and binary compiler endpoint remain open.
+
+## Batch 148: PA obstruction and complete ground-clause search
+
+Source **17**, `zfc_consistency_machine_report_20261016.zip`, arrived in
+`5e5603303d` and was placed in `30e6d1fd1`. Its audit cutoff is
+`47f3a3602946dfe48803a91a910c646e74637ac8`. The PSC interpretation, sorted
+countermodel and schema constructor are credited to sources08/12/13;
+the full-word grammar tools descend from source08, with ProveIt helper pin
+`17d0f2eaa` and upstream Mira-Cult/Jeff/Wade pin `297ab8df7e`. The attributed
+public253 proof is a prior benchmark, not a new result of this manuscript.
+No Coq build was repeated at intake.
+
+The report strengthens the ordinary finite-sort obstruction to **PA**.
+It encodes assignments in mixed radix with A(n)=product(i<n,d_i), computes
+truth tables for all codes k≤n, and bounds their concatenation below
+`2^((n+1)A(n))`. Primitive-recursive coordinate updates, table construction
+and ambient projection coherence yield one uniform validity predicate Val(k).
+All C/G witnesses are bounded arithmetic sums/tests. Induction proves the
+validity of every finite proof and every current/cache/stack entry of the
+abstract enumerator, while target1 is false. The argument is accepted as an
+ordinary proof of PA provability; neither a PA derivation nor a Lean theorem
+is delivered. Entry/read counts are not bit-operation runtime bounds. The
+literal-table nonhalting conclusion remains conditional on simulation.
+
+A general fresh-hull theorem isolates the obstruction: for distinct input
+and output labels i,j, a hull label k with j<k and k≠i, and a matrix omitting
+k, sort k represents its entire finite output range. This validates guarded
+closure and support for **any** additional guard and boundedness antecedent.
+The argument also works when the guard mentions the hull. Merely changing
+that guard, adding same-variable UI or using primitive Bottom cannot restore
+a common-domain first-order calculus.
+
+The new complete reference instead compiles finitely many actual PSC instances
+to signed Skolem clauses, then checks a ground clausal trace. Universal names
+are standardized apart; every existential occurrence receives a fresh symbol
+with all active universal dependencies. A dummy constant provides a nonempty
+common term domain. Ground substitutions check exact arities and permit
+identification of different variables. Two instructions extend by a ground
+clause or close the newest literal against a complementary ancestor; every
+pending sibling must close. Empty clauses, empty conjunctions, shadowing,
+trailing instructions and malformed references have their stated treatment.
+
+The ordinary proof combines equisatisfiable clausification, Herbrand's theorem,
+propositional branching completeness and fair enumeration of finite matrix
+lists, terms and traces with strictly decreasing child codes. Closing at the
+first complementary pair justifies the newest-literal restriction. The actual
+PSC entry point reconstructs every axiom from its matrix and admits no generic
+extra-theory input. Its ideal unbounded algorithm has the intended refutation
+contract and ordinary ZFC calibration. Host resource exhaustion is an error,
+not a refutation; the Python runtime, whole compiler and binary state cost
+remain unverified. Its generic inconsistent example and specialization
+certificates are **not PSC refutations**. This is a complete reference frontend
+and a concrete replacement to measure, not the algorithm compiled by its
+separate 270-state control.
+
+That control retains **all original equality, logical and theory rows**.
+It preserves a 186-token expansion of the original AX word, with seventeen
+used closed macros, and transforms 219 decision nodes to208. The public
+framework contributes62, so the actual output has **270 named working states,
+539 partial rows**, start `0.boot.A`, and only `1.inc/read1` undefined. No total
+numbered table is delivered. The 4,000-choice search (1,000 seeds at each
+exponent1/2/4/8) reproduces every histogram and all six output artifacts.
+The selected recipe is exponent4/seed287, with26 productions and78 residual
+tokens. Its independent register certificate verifies4,533 operation pairs
+(2,601 increments,1,931 decrements,one halt), both decrement exits, all related
+sites and entry, and finite contracted control paths. Both unfolded programs
+have6,460 sites. Six certificate mutations are rejected. This is an ordinary
+register correspondence, not a binary simulation or an instance of the Lean
+register theorem. The prior source08 recipe was also reproduced at269 states:
+its coarser185-token word expands to the same186-token word. The new control
+is therefore a comparison, not a new state record or lower bound.
+
+The article retains finite predicative class theory (with set Choice), its
+possible15-axiom presentation and proof-elimination obligations, and the
+artificial SK carrier route. Neither provides a free small interpreter or
+expanded fixed payload. A primitive-recursive external proof transformer
+alone is not a PA proof of its correctness. Equality/nontriviality, full
+initialization, term coding and program-writing costs remain part of every
+proposed machine. The six-interface roadmap and further questions remain open
+where they require full translation, enumeration, runtime or consistency proofs.
+
+One local external inference is corrected. We inspected the primary
+[Friedman manuscript](https://bpb-us-w2.wpmucdn.com/u.osu.edu/dist/1/1952/files/2020/09/NBGAxioms091520.pdf),
+Theorem3.21, printed page19. Let A={0,2}, with witnesses (0,1) and (2,3).
+The family containing only `{0,{0,1}}=A` covers A by union, although input2
+is covered through another input's second component; its double union omits
+witness3. Thus the displayed untagged extraction does not follow from Capture.
+This refutes that step, not Capture or the theorem's global NBG equivalence.
+The supplied repair tags inputs `<0,x>` and outputs `<1,y>`. The tagged input
+set is bounded in a double power set, without Replacement; disjoint tags force
+correct extraction, and triple Union bounds the witnesses. Extensionality,
+Pairing, Union, Power Set, limited comprehension, subclass-of-set and distinct
+tags are explicit assumptions. No Choice, Collection, Foundation or Infinity
+is used beyond those resources. No current repository assertion of the faulty
+step needed a pre-placement retraction.
+
+Independent finite checks reproduce159 formulas /2,862 finite
+structure-Skolem comparisons, all20,854 relevant three-atom clause families
+and4,613 refutations,15 invalid traces,200 actual PSC matrices (2,167 clauses,
+1,326 Skolem symbols, maximum arity5),5,000 round trips for each of three
+codecs, and both cross-variable/diagonal specialization examples. The inherited
+countermodel suite and the Capture counterexample/tagged regression pass.
+A1,000-candidate search prefix rejects every candidate and proves no consistency
+statement. The scratch PDF rebuild has25 pages,18 embedded fonts and zero
+warnings or cross-reference defects; all-page contact sheet and five enlarged
+pages were inspected, as was the primary external page.
+
+Historical roadmap gaps have been checked against the current tree:
+`RawPSCModel` already supplies actual formula-level decoder and purity-cut
+resources; `CompositionModel`/`QuotientModel` already supply their stated
+CP/GIC model steps; `Bottom3Syntax` now supplies the new ternary codec layer.
+The arbitrary-formula hereditary translation, all local-bound/invariance
+obligations, proof-predicate calibration and full machine endpoint remain.
+These partial advances do not certify the new Python frontend or table.
+
+Placement preserves46 ancillary files under `17-clause-`; four main/experimental
+TeX, PDF and delivery-README files remain archive-only. All50 files/49 distinct
+Git blobs were searched in history;16 borrowed blobs do not constitute a prior
+placement of this manuscript. The placement map and fresh-extraction/own-tree
+check are `data/intake-148-placement{,-check}.json`, with maximum Windows path
+length141. Borrowed notices retain larger historical-package references;
+flattened imports and paths are intentionally unchanged. No manifests or
+line endings were audited. Full independent reviews are
+`intake-148-source-17{,-article,-machine}.md`, with `data/intake-148-*.json`
+evidence. Recover and reproduce all six finite jobs, including the full grammar
+search and independent certificate check, with:
+
+```sh
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_148.py
+```
+
+The helper passes from a fresh scratch recovery; `--prepare-only` restores the
+original layout. The base article and every delivered file remain unchanged.
