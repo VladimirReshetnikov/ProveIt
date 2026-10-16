@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs18IntervalQuadraticDichotomy
-import GowersSzemeredi.Proofs18NaturalReindex
+import GowersSzemeredi.Proofs18GeneralIterationStep
 import Mathlib.NumberTheory.Bertrand
 
 /-! A prime-free density increment with constants fixed by the initial
@@ -49,54 +49,19 @@ theorem interval_quadratic_iteration_step
         intervalQuadraticLengthFactor delta * (L : Real) ^ intervalQuadraticLengthExponent delta ≤ l ∧
         (d + intervalQuadraticGain delta) * l ≤ B'.card ∧
         (HasNatAP (B'.image Fin.val) 4 → HasNatAP (B.image Fin.val) 4) := by
-  classical
-  let alpha := intervalQuadraticUniformityParameter delta
-  let tau := quadraticDiscrepancyParameter alpha
-  have hα : 0 < alpha := intervalQuadraticUniformityParameter_pos hδ
-  have hαone : alpha ≤ 1 := intervalQuadraticUniformityParameter_le_one hδ.le hδone
-  have hτ : 0 < tau := by dsimp [tau, quadraticDiscrepancyParameter]; positivity
-  obtain ⟨hfour, hexp, hscale, hlarge⟩ : (4 : Real) ≤ L ∧
-      quadraticExponentialThreshold alpha ≤ L ∧ 32 / tau ≤ L ∧ 8193 / delta ^ 4 ≤ L := by
-    simpa only [intervalQuadraticStepThreshold, max_le_iff, alpha, tau] using hL
-  have hLfour : 4 ≤ L := by exact_mod_cast hfour
-  have hLpos : (0 : Real) < L := by positivity
-  obtain ⟨N, hNprime, hNlower, hNupper⟩ := Nat.exists_prime_lt_and_le_two_mul (2 * L) (by omega)
-  letI : NeZero N := ⟨hNprime.ne_zero⟩
-  letI : Fact N.Prime := ⟨hNprime⟩
-  have hLN : (L : Real) ≤ N := by exact_mod_cast (by omega : L ≤ N)
-  let D : Real := B.card / (L : Real)
-  have hDcard : (B.card : Real) = D * L := by dsimp [D]; field_simp
-  have hdD : d ≤ D := (le_div_iff₀ hLpos).mpr hcard
-  have hδD : delta ≤ D := hd.trans hdD
-  have hDone : D ≤ 1 := by
-    apply (div_le_one hLpos).mpr
-    exact_mod_cast (show B.card ≤ L by simpa using Finset.card_le_univ B)
-  have hDfour : delta ^ 4 ≤ D ^ 4 := pow_le_pow_left₀ hδ.le hδD 4
-  by_cases hu : UniformOfDegree (intervalExtension N (finiteIntervalBalance B D)) alpha 2
-  · left
-    apply interval_relative_uniform_hasNatAP_four hNlower hLfour (by omega) B D alpha
-      (hδ.le.trans hδD) hDone hα.le
-    · exact (intervalQuadraticUniformityParameter_count_error delta).trans
-        (div_le_div_of_nonneg_right hDfour (by norm_num))
-    · have hb := (div_le_iff₀ (pow_pos hδ 4)).mp hlarge
-      have hm := mul_le_mul hDfour hLN (Nat.cast_nonneg _) (pow_nonneg (hδ.le.trans hδD) 4)
-      nlinarith
-    · exact hu
-  · right
-    have hscaleN : 32 ≤ tau * N := by
-      have hs := (div_le_iff₀ hτ).mp hscale
-      have hm := mul_le_mul_of_nonneg_left hLN hτ.le
-      nlinarith
-    obtain ⟨Q, hQ, _, hsize, hinc⟩ := natural_interval_quadratic_density_increment
-      alpha hα hαone N L hNlower (hexp.trans hLN) hscaleN B D
-      (hδ.le.trans hδD) hDone hDcard hu
-    refine ⟨Q.length, Q.pullback (B.image Fin.val), ?_, ?_, Q.hasNatAP_of_pullback hQ _⟩
-    · apply le_trans _ hsize
-      exact mul_le_mul_of_nonneg_left
-        (Real.rpow_le_rpow (Nat.cast_nonneg _) hLN (intervalQuadratic_constants_pos hδ).2.1.le)
-        (intervalQuadratic_constants_pos hδ).2.2.le
-    · rw [Q.card_pullback hQ]
-      apply le_trans _ hinc
-      exact mul_le_mul_of_nonneg_right (by change d + intervalQuadraticGain delta ≤ D + intervalQuadraticGain delta; linarith) (Nat.cast_nonneg _)
+  have hα := intervalQuadraticUniformityParameter_pos hδ
+  have hαone := intervalQuadraticUniformityParameter_le_one hδ.le hδone
+  have hαeq : intervalUniformityParameter delta 4 =
+      intervalQuadraticUniformityParameter delta := by
+    norm_num [intervalUniformityParameter, intervalQuadraticUniformityParameter]
+  have hbound := quadratic_function_discrepancy_bound hα hαone
+  rw [← hαeq] at hα hbound
+  have hstep := hbound.interval_density_step (by norm_num : 2 ≤ 4) hδ
+    (by unfold quadraticDiscrepancyParameter; positivity)
+    (by unfold quadraticDiscrepancyExponent cor711Exponent; positivity)
+  rw [hαeq] at hstep
+  apply hstep L ?_ B d hd hcard
+  simpa only [intervalDiscrepancyStepThreshold, intervalQuadraticStepThreshold,
+    Nat.cast_ofNat, show (512 : Real) * 4 ^ (2 : Nat) + 1 = 8193 by norm_num] using hL
 
 end LeanProofs.GowersSzemeredi

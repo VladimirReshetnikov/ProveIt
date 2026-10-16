@@ -1,0 +1,16 @@
+--- /tmp/gowers-reuse135-inventory-comparison-tools/compare_inventory.py
++++ /tmp/gowers-reuse135-inventory-comparison-tools-repaired703b/compare_inventory.py
+@@ -4,11 +4,11 @@
+ import argparse, copy, datetime, hashlib, json, re, sys
+ sys.dont_write_bytecode = True
+ if sys.flags.optimize: raise RuntimeError('Assertions must remain enabled')
+-BASE = Path('/tmp/gowers-reuse135-inventory-comparison-tools')
++BASE = Path('/tmp/gowers-reuse135-inventory-comparison-tools-repaired703b')
+ ROOT = Path('/home/codex/.codex/worktrees/9c9b/Proofs')
+ SOURCE = ROOT / 'Combinatorics/Ramsey/Lean/GowersSzemeredi'
+ GENERATOR = ROOT / 'Combinatorics/Ramsey/scripts/gowers_status.py'
+-SOURCE_COMMIT = '32d8bdc31de67c00de2122635690d5d880e23d24'
++SOURCE_COMMIT = '703b85dbbc3a2b897d9f77e854b89eefed6efb8f'
+ BASELINE_SHA = '156ea4af118dc17ae2a0900b02bc840371caa471b78ef96196b124970f2467e9'
+ GENERATOR_SHA = 'c03e1a7df0bb38de346a03f5cc2075bb0f97a739447479e06f7753c42ce4b47d'
+ sha = lambda p: hashlib.sha256(Path(p).read_bytes()).hexdigest()

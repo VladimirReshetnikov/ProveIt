@@ -1,5 +1,4 @@
 import GowersSzemeredi.Proofs05SimultaneousMultiaffinePartition
-import GowersSzemeredi.Proofs16OscillationPartition
 
 /-! The Schmidt recurrence and the multilinear partition with named constants.
 

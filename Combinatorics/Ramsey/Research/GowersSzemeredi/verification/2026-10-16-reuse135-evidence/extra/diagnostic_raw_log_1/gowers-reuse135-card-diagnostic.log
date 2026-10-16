@@ -1,0 +1,202 @@
+Checking GowersSzemeredi.Proofs13PreparedFrequencyGraph
+/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.lean:42:2: error: Type mismatch: After simplification, term
+  @Eq.symm.{1} Nat
+    (@LeanProofs.GowersSzemeredi.countWhere.{0} (Prod.{0, 0} (ZMod N) (ZMod N))
+      (@instFintypeProd.{0, 0} (ZMod N) (ZMod N) (@ZMod.fintype N inst✝) (@ZMod.fintype N inst✝))
+      fun (z : Prod.{0, 0} (ZMod N) (ZMod N)) =>
+      @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N)) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+        (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+          (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+        B
+        (@Prod.mk.{0, 0} (ZMod N) (ZMod N) (@Prod.fst.{0, 0} (ZMod N) (ZMod N) z)
+          (@Prod.snd.{0, 0} (ZMod N) (ZMod N) z)))
+    (@Finset.sum.{0, 0} (ZMod N) Nat Nat.instAddCommMonoid (@Finset.univ.{0} (ZMod N) (@ZMod.fintype N inst✝))
+      fun (x : ZMod N) =>
+      @LeanProofs.GowersSzemeredi.countWhere.{0} (ZMod N) (@ZMod.fintype N inst✝) fun (y : ZMod N) =>
+        @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N)) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+          (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+            (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+          B (@Prod.mk.{0, 0} (ZMod N) (ZMod N) x y))
+    (@LeanProofs.GowersSzemeredi.context_countWhere_prod.{0, 0} (ZMod N) (ZMod N) (@ZMod.fintype N inst✝)
+      (@ZMod.fintype N inst✝) fun (x y : ZMod N) =>
+      @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N)) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+        (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+          (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+        B (@Prod.mk.{0, 0} (ZMod N) (ZMod N) x y))
+ has type
+  @Eq.{1} Nat
+    (@Finset.sum.{0, 0} (ZMod N) Nat Nat.instAddCommMonoid (@Finset.univ.{0} (ZMod N) (@ZMod.fintype N inst✝))
+      fun (x : ZMod N) =>
+      @Finset.card.{0} (ZMod N)
+        (@Finset.filter.{0} (ZMod N)
+          (fun (y : ZMod N) =>
+            @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N)) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+              (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+                (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+              B (@Prod.mk.{0, 0} (ZMod N) (ZMod N) x y))
+          (fun (a : ZMod N) =>
+            Classical.propDecidable
+              ((fun (y : ZMod N) =>
+                  @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N))
+                    (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+                    (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+                      (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+                    B (@Prod.mk.{0, 0} (ZMod N) (ZMod N) x y))
+                a))
+          (@Finset.univ.{0} (ZMod N) (@ZMod.fintype N inst✝))))
+    (@Finset.card.{0} (Prod.{0, 0} (ZMod N) (ZMod N)) B)
+but is expected to have type
+  @Eq.{1} Nat
+    (@Finset.sum.{0, 0} (ZMod N) Nat Nat.instAddCommMonoid (@Finset.univ.{0} (ZMod N) (@ZMod.fintype N inst✝))
+      fun (x : ZMod N) =>
+      @Finset.card.{0} (ZMod N)
+        (@Finset.filter.{0} (ZMod N)
+          (fun (y : ZMod N) =>
+            @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N)) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+              (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+                (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+              B (@Prod.mk.{0, 0} (ZMod N) (ZMod N) x y))
+          (fun (a : ZMod N) =>
+            @Finset.decidableMem.{0} (LeanProofs.GowersSzemeredi.Pair N)
+              (fun (a b : LeanProofs.GowersSzemeredi.Pair N) =>
+                @instDecidableEqProd.{0, 0} (ZMod N) (ZMod N) (ZMod.decidableEq N) (ZMod.decidableEq N) a b)
+              (@Prod.mk.{0, 0} (ZMod N) (ZMod N) x a) B)
+          (@Finset.univ.{0} (ZMod N) (@ZMod.fintype N inst✝))))
+    (@Finset.card.{0} (LeanProofs.GowersSzemeredi.Pair N) B)
+/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.lean:49:2: error: Type mismatch: After simplification, term
+  @Eq.trans.{1} Nat
+    (@Finset.sum.{0, 0} (ZMod N) Nat Nat.instAddCommMonoid (@Finset.univ.{0} (ZMod N) (@ZMod.fintype N inst✝))
+      fun (x : ZMod N) =>
+      @LeanProofs.GowersSzemeredi.countWhere.{0} (ZMod N) (@ZMod.fintype N inst✝) fun (x_1 : ZMod N) =>
+        @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N)) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+          (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+            (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+          B (@Prod.mk.{0, 0} (ZMod N) (ZMod N) x_1 x))
+    (@LeanProofs.GowersSzemeredi.countWhere.{0} (Prod.{0, 0} (ZMod N) (ZMod N))
+      (@instFintypeProd.{0, 0} (ZMod N) (ZMod N) (@ZMod.fintype N inst✝) (@ZMod.fintype N inst✝))
+      fun (z : Prod.{0, 0} (ZMod N) (ZMod N)) =>
+      @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N)) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+        (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+          (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+        B
+        (@Prod.mk.{0, 0} (ZMod N) (ZMod N) (@Prod.snd.{0, 0} (ZMod N) (ZMod N) z)
+          (@Prod.fst.{0, 0} (ZMod N) (ZMod N) z)))
+    (@LeanProofs.GowersSzemeredi.countWhere.{0} (Prod.{0, 0} (ZMod N) (ZMod N))
+      (@instFintypeProd.{0, 0} (ZMod N) (ZMod N) (@ZMod.fintype N inst✝) (@ZMod.fintype N inst✝))
+      fun (z : LeanProofs.GowersSzemeredi.Pair N) =>
+      @Membership.mem.{0, 0} (LeanProofs.GowersSzemeredi.Pair N) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+        (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+          (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+        B z)
+    (@Eq.symm.{1} Nat
+      (@LeanProofs.GowersSzemeredi.countWhere.{0} (Prod.{0, 0} (ZMod N) (ZMod N))
+        (@instFintypeProd.{0, 0} (ZMod N) (ZMod N) (@ZMod.fintype N inst✝) (@ZMod.fintype N inst✝))
+        fun (z : Prod.{0, 0} (ZMod N) (ZMod N)) =>
+        @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N)) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+          (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+            (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+          B
+          (@Prod.mk.{0, 0} (ZMod N) (ZMod N) (@Prod.snd.{0, 0} (ZMod N) (ZMod N) z)
+            (@Prod.fst.{0, 0} (ZMod N) (ZMod N) z)))
+      (@Finset.sum.{0, 0} (ZMod N) Nat Nat.instAddCommMonoid (@Finset.univ.{0} (ZMod N) (@ZMod.fintype N inst✝))
+        fun (x : ZMod N) =>
+        @LeanProofs.GowersSzemeredi.countWhere.{0} (ZMod N) (@ZMod.fintype N inst✝) fun (x_1 : ZMod N) =>
+          @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N)) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+            (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+              (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+            B (@Prod.mk.{0, 0} (ZMod N) (ZMod N) x_1 x))
+      (@LeanProofs.GowersSzemeredi.context_countWhere_prod.{0, 0} (ZMod N) (ZMod N) (@ZMod.fintype N inst✝)
+        (@ZMod.fintype N inst✝) fun (y x : ZMod N) =>
+        @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N)) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+          (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+            (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+          B (@Prod.mk.{0, 0} (ZMod N) (ZMod N) x y)))
+    (@Eq.symm.{1} Nat
+      (@LeanProofs.GowersSzemeredi.countWhere.{0} (Prod.{0, 0} (ZMod N) (ZMod N))
+        (@instFintypeProd.{0, 0} (ZMod N) (ZMod N) (@ZMod.fintype N inst✝) (@ZMod.fintype N inst✝))
+        fun (z : LeanProofs.GowersSzemeredi.Pair N) =>
+        @Membership.mem.{0, 0} (LeanProofs.GowersSzemeredi.Pair N) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+          (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+            (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+          B z)
+      (@LeanProofs.GowersSzemeredi.countWhere.{0} (Prod.{0, 0} (ZMod N) (ZMod N))
+        (@instFintypeProd.{0, 0} (ZMod N) (ZMod N) (@ZMod.fintype N inst✝) (@ZMod.fintype N inst✝))
+        fun (x : Prod.{0, 0} (ZMod N) (ZMod N)) =>
+        @Membership.mem.{0, 0} (LeanProofs.GowersSzemeredi.Pair N) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+          (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+            (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+          B
+          (@DFunLike.coe.{1, 1, 1} (Equiv.{1, 1} (Prod.{0, 0} (ZMod N) (ZMod N)) (Prod.{0, 0} (ZMod N) (ZMod N)))
+            (Prod.{0, 0} (ZMod N) (ZMod N)) (fun (x : Prod.{0, 0} (ZMod N) (ZMod N)) => Prod.{0, 0} (ZMod N) (ZMod N))
+            (@EquivLike.toFunLike.{1, 1, 1}
+              (Equiv.{1, 1} (Prod.{0, 0} (ZMod N) (ZMod N)) (Prod.{0, 0} (ZMod N) (ZMod N)))
+              (Prod.{0, 0} (ZMod N) (ZMod N)) (Prod.{0, 0} (ZMod N) (ZMod N))
+              (@Equiv.instEquivLike.{1, 1} (Prod.{0, 0} (ZMod N) (ZMod N)) (Prod.{0, 0} (ZMod N) (ZMod N))))
+            (Equiv.prodComm.{0, 0} (ZMod N) (ZMod N)) x))
+      (@LeanProofs.GowersSzemeredi.feature_countWhere_equiv.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N))
+        (Prod.{0, 0} (ZMod N) (ZMod N))
+        (@instFintypeProd.{0, 0} (ZMod N) (ZMod N) (@ZMod.fintype N inst✝) (@ZMod.fintype N inst✝))
+        (@instFintypeProd.{0, 0} (ZMod N) (ZMod N) (@ZMod.fintype N inst✝) (@ZMod.fintype N inst✝))
+        (Equiv.prodComm.{0, 0} (ZMod N) (ZMod N)) fun (z : LeanProofs.GowersSzemeredi.Pair N) =>
+        @Membership.mem.{0, 0} (LeanProofs.GowersSzemeredi.Pair N) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+          (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+            (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+          B z))
+ has type
+  @Eq.{1} Nat
+    (@Finset.sum.{0, 0} (ZMod N) Nat Nat.instAddCommMonoid (@Finset.univ.{0} (ZMod N) (@ZMod.fintype N inst✝))
+      fun (x : ZMod N) =>
+      @Finset.card.{0} (ZMod N)
+        (@Finset.filter.{0} (ZMod N)
+          (fun (x_1 : ZMod N) =>
+            @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N)) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+              (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+                (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+              B (@Prod.mk.{0, 0} (ZMod N) (ZMod N) x_1 x))
+          (fun (a : ZMod N) =>
+            Classical.propDecidable
+              ((fun (x_1 : ZMod N) =>
+                  @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N))
+                    (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+                    (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+                      (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+                    B (@Prod.mk.{0, 0} (ZMod N) (ZMod N) x_1 x))
+                a))
+          (@Finset.univ.{0} (ZMod N) (@ZMod.fintype N inst✝))))
+    (@Finset.card.{0} (Prod.{0, 0} (ZMod N) (ZMod N)) B)
+but is expected to have type
+  @Eq.{1} Nat
+    (@Finset.sum.{0, 0} (ZMod N) Nat Nat.instAddCommMonoid (@Finset.univ.{0} (ZMod N) (@ZMod.fintype N inst✝))
+      fun (x : ZMod N) =>
+      @Finset.card.{0} (ZMod N)
+        (@Finset.filter.{0} (ZMod N)
+          (fun (x_1 : ZMod N) =>
+            @Membership.mem.{0, 0} (Prod.{0, 0} (ZMod N) (ZMod N)) (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+              (@SetLike.instMembership.{0, 0} (Finset.{0} (LeanProofs.GowersSzemeredi.Pair N))
+                (LeanProofs.GowersSzemeredi.Pair N) (@Finset.instSetLike.{0} (LeanProofs.GowersSzemeredi.Pair N)))
+              B (@Prod.mk.{0, 0} (ZMod N) (ZMod N) x_1 x))
+          (fun (a : ZMod N) =>
+            @Finset.decidableMem.{0} (LeanProofs.GowersSzemeredi.Pair N)
+              (fun (a b : LeanProofs.GowersSzemeredi.Pair N) =>
+                @instDecidableEqProd.{0, 0} (ZMod N) (ZMod N) (ZMod.decidableEq N) (ZMod.decidableEq N) a b)
+              (@Prod.mk.{0, 0} (ZMod N) (ZMod N) a x) B)
+          (@Finset.univ.{0} (ZMod N) (@ZMod.fintype N inst✝))))
+    (@Finset.card.{0} (LeanProofs.GowersSzemeredi.Pair N) B)
+Traceback (most recent call last):
+  File "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/scripts/check_gowers.py", line 61, in <module>
+    main()
+    ~~~~^^
+  File "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/scripts/check_gowers.py", line 56, in main
+    build(module)
+    ~~~~~^^^^^^^^
+  File "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/scripts/check_gowers.py", line 50, in build
+    subprocess.run(['lean', '-DautoImplicit=false', '-R', str(source_root),
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    '-o', str(target), str(source)],
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   cwd=ROOT, env=env, check=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['lean', '-DautoImplicit=false', '-R', '/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean', '-o', '/home/codex/.codex/worktrees/9c9b/Proofs/.lake/build/lib/lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.olean', '/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.lean']' returned non-zero exit status 1.

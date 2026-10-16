@@ -16,6 +16,18 @@ open scoped BigOperators
 open Finset
 namespace LeanProofs.GowersSzemeredi
 
+/-- The dimension-two multilinear partition theorem, as a hypothesis. This
+is the body of `exists_simultaneous_multilinear_partition_bound 2`. -/
+def MultilinearDiameterPartition (K : Real) (p : Nat) : Prop :=
+  ∀ (N : Nat) [NeZero N] (q : Nat) (P : Box N 2), P.IsProper →
+    ∀ mu : Fin q → Point N 2 → ZMod N, (∀ i, MultilinearOn P.carrier (mu i)) →
+    ∀ H : Nat, 0 < H → K * ((q : Real) + 1) ≤ H →
+      H ^ (p * (q + 1) ^ (2 * (2 ^ 2))) ≤ P.width →
+      ∃ M : Nat, ∃ Q : Fin M → Box N 2,
+        IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
+        (∀ j, (H : Real) ≤ (Q j).width) ∧
+        ∀ i j, diameterAtMostReal ((Q j).carrier.image (mu i)) ((2 ^ 2 : Real) / H * N)
+
 /-- A uniform lower bound on axis lengths is a lower bound on width. -/
 theorem Box.le_width_of_le_axis {N k v : Nat} (P : Box N k) (hk : 0 < k)
     (h : ∀ i, v ≤ (P.axis i).length) : v ≤ P.width := by

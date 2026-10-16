@@ -1,0 +1,31 @@
+Checking GowersSzemeredi.Proofs13PreparedFrequencyGraph
+/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.lean:39:57: error: unsolved goals
+case e'_2.e_f
+N : ℕ
+inst✝ : NeZero N
+B : Finset (Pair N)
+⊢ (fun x => #{y | (x, y) ∈ B}) = fun x => #{y | (x, y) ∈ B}
+/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.lean:46:59: error: unsolved goals
+case e'_2.e_f
+N : ℕ
+inst✝ : NeZero N
+B : Finset (Pair N)
+⊢ (fun x => #{x_1 | (x_1, x) ∈ B}) = fun x => #{x_1 | (x_1, x) ∈ B}
+Traceback (most recent call last):
+  File "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/scripts/check_gowers.py", line 61, in <module>
+    main()
+    ~~~~^^
+  File "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/scripts/check_gowers.py", line 56, in main
+    build(module)
+    ~~~~~^^^^^^^^
+  File "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/scripts/check_gowers.py", line 50, in build
+    subprocess.run(['lean', '-DautoImplicit=false', '-R', str(source_root),
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                    '-o', str(target), str(source)],
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   cwd=ROOT, env=env, check=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/codex/.local/share/uv/python/cpython-3.13.14-linux-x86_64-gnu/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['lean', '-DautoImplicit=false', '-R', '/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean', '-o', '/home/codex/.codex/worktrees/9c9b/Proofs/.lake/build/lib/lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.olean', '/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.lean']' returned non-zero exit status 1.

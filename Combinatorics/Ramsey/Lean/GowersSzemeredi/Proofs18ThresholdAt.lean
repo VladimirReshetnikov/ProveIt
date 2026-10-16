@@ -1,6 +1,4 @@
 import GowersSzemeredi.Proofs18GenericSzemeredi
-import GowersSzemeredi.Proofs03FourFactorSymmetry
-import GowersSzemeredi.Proofs05Corollary58
 
 /-! Compatibility import for parameterized final thresholds.
 

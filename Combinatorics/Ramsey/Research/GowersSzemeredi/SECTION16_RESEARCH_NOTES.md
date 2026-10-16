@@ -9413,6 +9413,121 @@ The accepted Lemma 16.10 correction and the documented limits on fidelity to
 individual original-paper statements remain explicit. This checkpoint makes no
 new claim of complete original-paper fidelity or an improved numerical bound.
 
+### L.107. Reusing family covers and counting identities
+
+The six-owner simplification at source `703b85dbbc3a2b897d9f77e854b89eefed6efb8f`,
+based on published checkpoint `ff0b354`, removes 135 production source lines:
+125 theorem proof lines and a ten-line private equivalence definition. All 427
+retained headers and contexts and 123 retained non-theorem blocks are preserved.
+No helper, import or module is added.
+
+The unchanged family compressed-cover producer moves into `Proofs16WithLift`;
+the single-function proof specializes it to `Unit`. Restriction wrappers reuse
+sharper explicit estimates, initial-progression indexing uses `sigmaFiberEquiv`,
+Weyl uses additive monotonicity, and four frequency-graph cardinality proofs use
+existing product, coordinate-swap and section identities.
+
+The first core attempt failed at two private cardinality proofs because filtered
+sets carried different predicate decision procedures. The repair uses extensional
+congruence, preserving statements and proof lengths. The repaired owner's narrow
+20-module check passed; the original failed core and diagnostic logs remain
+separate evidence.
+
+Three actual repaired-source checker commands have now passed with exit zero:
+the 603-module core; one command for 57 shared roots, with a 1,904-module footer;
+and one command for 18 supplemental roots, with a 351-module footer. Their union
+contains 1,953 modules. The 76 own-root rows describe individual closures; they
+are not 76 independently observed command outcomes. Source and artifact stability
+checks passed for all three commands.
+
+The separate retention verification passed for seven unchanged supplemental
+scopes. Their historical source inputs and current artifacts were checked; nine
+modules lie outside the fresh command union. Coverage is therefore 1,953 freshly
+validated modules plus nine historically validated modules, 1,962 in total.
+The retained outcomes remain attributed to their original historical command.
+
+The regenerated inventory preserves all 120 ordered catalogue rows and 544
+companion occurrences, including qualifications and duplicates. Three companion
+arrays were restored to baseline order by permuting whole objects. The only
+remaining differences are six line references. This comparison accounts for
+source locations; it does not certify paper fidelity.
+
+The [archive index](verification/2026-10-16-reuse135-evidence/index.json) and
+[evidence map](verification/2026-10-16-reuse135-evidence/evidence-map.json) bind the
+actual receipts, exact logs, source and tool pins, failed attempt, repair evidence,
+[independent chain review](verification/2026-10-16-reuse135-evidence/extra/actual_chain_report_json/report.json),
+[historical retention check](verification/2026-10-16-reuse135-evidence/extra/historical_retention_actual/gowers-reuse135-repaired703b-retention-actual.json),
+and [inventory comparison](verification/2026-10-16-reuse135-evidence/extra/actual_inventory_comparison/comparison.json).
+The archive contains 77 evidence files plus its index and map.
+
+Final statements, numerical bounds and positive-step progression conclusions
+are unchanged. The documented Lemma 16.10 correction and original-paper fidelity
+limits remain. This checkpoint introduces no new numerical-bound claim and covers
+source `703b85db` only. The separate 297-line simplification requires validation
+on its integrated source.
+
+### L.108. Reusing general proofs and narrowing final dependencies
+
+Repaired source `6a753d0702d1691c25a21bdbdb58e29412931be5` integrates incoming
+main `ac888b78348fbf161a076c7281f301b59c3e2853` and the reviewed simplification at
+`447bce14e88aae63585e5b1d0edc1f0b81aafad4`, with one subsequent proof-line repair.
+Relative to the incoming merged baseline, the 19-owner change removes
+297 source lines and 285 theorem proof-body lines. It preserves 177 complete
+headers and contexts and 43 non-theorem blocks, moves ten existing declarations
+unchanged, and rewrites eleven proofs using existing results. No declaration,
+helper or module is added by the simplification.
+
+The change specializes existing family, restriction, counting and threshold
+results and narrows imports to the required providers. Eleven removed import
+lines contribute no proof-body reduction themselves. The direct source savings
+are distinct from the larger reduction in imported source: the original `Final`
+closure falls from 638 modules / 128,265 lines to 601 / 123,958, and the stronger
+`Proofs18CoverFejerAllDegrees` closure falls from 703 / 143,198 to 657 / 137,999.
+These comparisons use the incoming merged baseline, separating its cleanup from
+this checkpoint's simplification. Some earlier consumers grow when existing
+producers move upstream; validation must cover the complete affected scope.
+
+The first integrated core run at `9dce5ce3` failed in `Proofs18GeneralIteration`
+because `decide` received an unreduced unit-step goal containing the free length
+parameter. The repair exposes the definitionally equal closed goal `0 < (1 : Nat)`
+before `decide`. It changes no statement, assumption, import, line count or
+inventory location. A targeted check of `Proofs18GeneralIteration` passed with
+147 modules; the failed core receipt and log remain preserved. This targeted
+pass is separate from the fresh full validation chain.
+
+Three actual native checker commands passed with exit zero: the 573-module core;
+one command for 58 shared roots with a 1,906-module footer; and one command for
+18 supplemental roots with a 351-module footer. Their union is 1,955 modules.
+Source and artifact stability checks passed for all three commands. The 77
+own-root rows describe closure metadata, not 77 observed command outcomes.
+
+The committed inventory has passed its independent source-location and ordering
+review: all 120 ordered rows and 544 companion occurrences are preserved, with
+37 location-field changes (31 incoming and six from this simplification). Four
+companion arrays are restored by whole-object permutations, preserving objects,
+duplicate occurrences and qualifications. This inventory review is separate from
+native proof validation.
+
+The historical retention check passed for seven unchanged scopes covering 125
+modules. Nine lie outside the fresh command union, giving 1,964 combined
+modules. The retained source inputs and current artifacts were checked against
+their historical evidence, and those outcomes remain attributed to the original
+historical command.
+
+The [archive index](verification/2026-10-16-reuse297-evidence/index.json) and
+[evidence map](verification/2026-10-16-reuse297-evidence/evidence-map.json) bind
+86 evidence files: actual receipts and logs, source and tool pins, the failed
+core attempt, repair and inventory reviews, and the
+[retention result](verification/2026-10-16-reuse297-evidence/extra/actual_retention_report/gowers-next297-repaired6a75-retention-actual.json).
+The index and map are additional files. This evidence covers repaired source
+`6a753d07`; subsequent simplifications require their own native validation.
+
+Final statements, numerical bounds and positive-step progression conclusions
+are unchanged. The documented Lemma 16.10 correction and original-paper fidelity
+qualifications remain; the 120-row catalogue does not certify literal fidelity
+of every original statement. This is a proof/dependency simplification, with no
+new numerical-bound claim.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
