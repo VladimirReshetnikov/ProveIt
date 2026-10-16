@@ -44,3 +44,9 @@ coarse hyperdegrees) are a second Lean library of the Turing-degree project,
 [`TuringDegrees/Lean/CoarseDegrees/`](TuringDegrees/Lean/CoarseDegrees/README.md).
 Unlike the rest of this topic it admits eight published results with `admit`;
 its README lists them.
+
+[ZFC machine minimization](BusyBeaver/Research/ZFC/README.md) adds Lean
+closure and codec lemmas, the literal 254-state baseline, and a certified
+obstruction to exact state quotients, with executable coding/compiler
+experiments. A smaller verified machine and its end-to-end ZFC theorem
+remain open. The new proofs are an opt-in `BusyBeaver.ZFC` surface.

@@ -151,3 +151,17 @@ PDF, run its recovered `build.py` there with a suitable TeX installation.
 
 No external machine table, Coq end-to-end development, proof-producing theory
 translator, enumerator correctness theorem, or ZFC endpoint was rebuilt here.
+
+
+## Subsequent minimization research
+
+After intake, [the ZFC machine project](../../../../../../Computability/BusyBeaver/Research/ZFC/README.md)
+answered source 02's membership-arm deletion question at the mathematical
+level by combining its positive hull with the gated singleton decoder.
+`BusyBeaver/ZFC/PositiveClosure.lean` checks the key bootstrap lemmas;
+`DeepPositiveClosure.lean` defines the actual equality-free first-order
+wrapper and proves its semantic specification. `ProfileCongruence.lean`
+checks that the symmetric congruence conclusion can be replaced by one
+implication. These are partial formal results, not a completed deductive
+calibration or a new small-machine theorem. The delivered source 02
+article remains unchanged, including the question it left open.
