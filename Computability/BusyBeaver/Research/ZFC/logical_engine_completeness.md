@@ -230,3 +230,50 @@ capture-avoiding substitution. The source's finite Horn encoding of any fixed
 machine similarly gives an ordinary consistency/nonhalting equivalence, but
 its clauses contain the original computation; interpreter and clause-printer
 costs must be counted before it can save states.
+
+## Batch149: composite collisions and two complete references
+
+Source19 strengthens the diagnostic boundary: fresh instantiation, injective
+renaming and **both signed atomic** instantiation schemas still do not imply
+instantiation of a composite formula at an already occurring variable. Its
+two-bit interpretation uses `R(i,j) = (i != j and s(i)=s(j))`. For distinct
+x,y,z the matrix `((Rxy<->Rxz)<->Ryz)` is universally true in x, whereas replacing
+x by y makes it false on every assignment. This is a logical counterinterpretation;
+it is not asserted to validate PSC. The finite-sort result remains the
+separate theory-specific obstruction.
+
+Two new complete ordinary reference interfaces handle the missing collision:
+
+- Source18's locally nameless Hilbert checker verifies explicit open/close/plug
+  witnesses, permits opening to an existing free name, and checks the freshness
+  side condition as a close-to-self identity. Its strict binary proof format
+  has a fair shortlex search. The delivered Lean binding theorems cover finite
+  syntax/scope identities, not the Python verifier or its semantics.
+- Source19's signed tableau checker uses one shared PSC template with three
+  matrix calls. It compares atoms after evaluating environments, permits equal
+  parameter values, and can insert schema instances after fresh witnesses are
+  allocated. Freshness covers hidden map values as well as visible stacks.
+  The ordinary soundness/completeness argument includes fair revisiting of old
+  universals and late parameterized AX instances. The codec is total and the
+  refutation entry has a fixed Bottom target.
+
+Their finite tests pass; neither has a compiled state cost. Their illustrative
+accepted logical theorems are not PSC contradictions. Theory calibration,
+proof-language correctness and actual binary simulation remain distinct steps.
+The source18 destructive-read audit also shows why an abstract schema
+permutation is insufficient as a compiler contract:12 of24 rho8 permutations
+read the fourth stream parameter more than once. Source11's retained permutation
+has the safe single-read invariant.
+
+Source19 separately reaches **268 working states** while retaining all original
+logical/equality rows. It changes only conjunction layout in the theory bundle,
+then compresses that revised exact word. Relative conjunction commutation and
+association are provable for arbitrary falsity alias F; GEN/QI and implication
+congruence lift both directions through unchanged contexts. This is a valid
+ordinary source bridge, still lacking a checked proof-code certificate.
+The4,533-pair operation certificate covers revised217→206 decision nodes, plus
+62 framework states. All53,760 grammar/layout choices and8,192 PSC control
+choices reproduce. The full-equality PSC controls reach278 without explicit
+IR and282 with IR; these improve the fixed measurements above without giving
+new binary/calibration proofs. See the complete
+[intake149 reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch-149-binding-certificates-and-shared-substitution).

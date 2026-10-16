@@ -81,3 +81,19 @@ this witness validates both guarded closure and unrestricted support for
 primitive Bottom therefore leave this obstruction intact. A replacement
 frontend must enforce common-domain variable instantiation; the complete
 ground-clause route in [clausal_reference.md](clausal_reference.md) does so.
+
+Batch149 source18 independently formalizes a different, narrower PSC-only
+obstruction in its delivered `PSCIdentityObstruction.lean`: identity quantifiers,
+R(i,j) iff i>=2 and j=0, arbitrary matrices and hull labels k>=2. Its specified
+modal/same-name repairs and MP/GEN preserve validity while both primitive Bottom
+and R00 remain false. Five principal Lean4.32 audits use only `propext`.
+This formal result has no numeric-code or literal-machine adapter, and its
+negative C/G control is false. It does not replace the ordinary PA finite-sort
+argument above. Source18's older open C/G-calibration question is now historical.
+
+Source19 further shows that even fresh/injective renaming and signed atomic UI
+miss **composite colliding** UI. That separate counterinterpretation is not a
+PSC model. Its new complete shared-template checker and source18's complete
+binding-witness checker both permit the required identifications. Their full
+binary implementations and consistency endpoints remain open; see
+[the logical-engine continuation](logical_engine_completeness.md#batch149-composite-collisions-and-two-complete-references).

@@ -89,3 +89,15 @@ The public backend and original program come from the immutable imported
 upstream `297ab8df7e5de329605c3875b4934643b371a5e3`. Andrew James Wade's
 backend license and Mira-Cult/Jeff attribution are retained. No new vendor
 snapshot, Lean build or claimed ZFC endpoint accompanies this experiment.
+
+Batch149 source19 subsequently supplies a **268-state** complete-logic control
+by changing the theory's conjunction layout before grammar search. This does
+not change the negative result above, which fixes the original word. Its
+independently reproduced53,760-choice grid retains all eight logical rows,
+both atomic vacuity components and the62-state framework. Its separate ordinary
+source bridge uses relative conjunction commutation/association and context
+lifting, without assuming F=false. The operation certificate compares the
+revised217-node reference with206 nodes, not the original219-node reference.
+The next comparison applies overlap-safe counting to that revised word;
+[intake149](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch-149-binding-certificates-and-shared-substitution)
+records its artifacts, attribution and remaining proof obligations.

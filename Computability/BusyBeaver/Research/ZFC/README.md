@@ -68,6 +68,20 @@ countermodel. A separate 270-state complete-original-word comparison is
 reproducible but does not improve the prior 269. These reference algorithms
 still need complete binary implementations and the requested internal proof.
 
+Batch149 adds sources18/19 (placement `a9a313b79`, reconciliation
+`81bcbe6a7`): complete binding-witness and shared-template PSC references,
+a formal fixed-slot obstruction and a stronger composite-instantiation
+diagnostic. Both delivered standalone Lean modules compile; their claims
+cover the specified weak calculus and syntax identities, not either Python
+checker. The source19 **268-state control** retains all original logical rows
+and uses a separately justified conjunction rewrite. Its full53,760-choice
+grid and8,192 PSC controls reproduce. Source18's fixed269/283 tables reproduce,
+but its reconstructed1,024-choice search has six winners against five recorded;
+three larger historical sweeps lack full drivers. The
+[logical-engine continuation](logical_engine_completeness.md#batch149-composite-collisions-and-two-complete-references)
+records the practical interface requirements. No new literal-machine consistency
+endpoint follows from these controls or finite checks.
+
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
 A positive singleton-decoder hull covers the root's members without
