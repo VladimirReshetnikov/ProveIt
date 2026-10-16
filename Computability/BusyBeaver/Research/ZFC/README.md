@@ -94,10 +94,21 @@ or improves public 253. The 269 grammar control survives full-cost repricing.
 [Raw PSC notes](raw_psc.md#batch-150-two-slots-and-native-rules),
 [logical interfaces](logical_engine_completeness.md#batch-150-three-further-complete-interfaces)
 and [initializer controls](mira_backend.md#batch-150-initializer-controls)
-record their actionable consequences. The host now reconciles 23 sources.
+record their actionable consequences. The host had 23 sources after that batch.
 The reviewed compact initializer is also integrated into the clean assembler:
 `compile_dag(..., initializer="compact")` reproduces the exact 341/343 tables
 with all runtime rows preserved; `--initializer compact` selects it on the CLI.
+
+Batch 151 adds sources 24–25 (placement `65c776f4be`, reconciliation
+`9c8242c78f`), bringing the host to 25 sources. Outgoing equality and reserved-zero
+falsity receive ordinary proofs and a new [Lean semantic component](outgoing_profile.md).
+An explicit SK carrier preserves the entire large input term; intake records a
+negative-start parser counterexample while accepting the frozen start-zero payload.
+Exact-hull EFPC is equivalent to full EPSC, with a single-instance obstruction
+and separately checked local Lean resources. All 264/20,480 compiler recipes
+and 148,368 fusion records reproduce. The 288/271 controls supply no state
+improvement; fusion fuel/abstraction outcomes remain unresolved. See the host's
+full dossiers and offline `code/reproduce_151.py` helper.
 
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.

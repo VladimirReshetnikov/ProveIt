@@ -2526,3 +2526,29 @@ original archive names with every entry.
 No package ships a checksum manifest: re-running a verification suite or
 rebuilding a PDF changes file hashes, so a stored manifest goes stale on the
 first rebuild.
+
+
+Batch 151 adds two manuscripts from `121a0de1bb` (placement `65c776f4be`,
+reconciliation `9c8242c78f`), local sources 24–25 of `set-theory/zfc-closure-kernels`.
+The collection still has 290 reports and the host now has twenty-five sources.
+All 171 ancillary files are preserved; 22 article/section/supplementary TeX,
+PDF and top-level delivery-README files remain in the committed arrival archives.
+Source 24 derives four-node outgoing observational equality, a reserved-zero
+falsity translation and explicit large SK carrier terms. Its strict EPSC control
+has 288 states; all 264 compiled recipes reproduce. Intake refutes the generic
+compiler claim for every accepted input with a negative start-label example;
+the supplied start-zero 253 payload remains valid at its stated finite scope.
+Source 25 derives EFPC from full EPSC using Separation, with a universally closed
+single-instance counterexample. Its two standalone Lean files pass 13 empty-axiom
+audits. All 20,480 compiled recipes and 148,368 bounded fusion records reproduce;
+EFPC271 does not improve its EPSC270 comparison. Fuel/abstraction failures remain
+unresolved. No new consistency machine or global minimum follows.
+
+Both full reviews, exact replay records, primary modal-source correction and
+offline recovery helper are in the host. The 28/27-page scratch PDFs were rebuilt
+and visually checked; one readable underfull paragraph remains in source 25.
+Subsequent project Lean proves the outgoing-equality resource lemma and
+reserved-zero semantics, the original named-to-numerical proof adapter and the
+full binary/register bootstrap relation. The numerical completeness premise's
+empty-domain defect is corrected and preserved as a counterexample. Full
+set-theory calibration, enumeration and binary runtime remain separate tasks.

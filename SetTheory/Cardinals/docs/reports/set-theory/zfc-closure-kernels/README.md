@@ -1733,3 +1733,20 @@ page was visually inspected, with one enlarged detail per source. No delivered
 file was edited and no checksum or line-ending work was performed. Open
 questions, failed experiments and the negative-start counterexample remain
 part of the record.
+
+
+Subsequent project update (`74504fe010`): `OutgoingProfile.lean` now proves
+outgoing inclusion equivalent to full observational equality under the existing
+exact twin-singleton resource, its four-node formula semantics, actual raw-PSC
+model corollaries and reserved-zero named semantics for all formulas. Source
+equality is full observational equivalence; an EPSC adapter and numerical proof
+transport for this frontend remain separate. See
+`Computability/BusyBeaver/Research/ZFC/outgoing_profile.md`.
+
+The independently merged original base-four decoder/calculus also has model
+soundness and a corrected completeness implication in `Code254.lean`. Commit
+`0dbeff14b7` repairs its impossible no-model premise by requiring a valuation,
+and preserves the empty-domain counterexample as an axiom-free theorem.
+Decoded bundles and literal encodable bundles remain distinct model theories;
+calibrating them with ZFC is still open. This later project correction is
+separate from the two incoming manuscripts' claims and their review cutoffs.
