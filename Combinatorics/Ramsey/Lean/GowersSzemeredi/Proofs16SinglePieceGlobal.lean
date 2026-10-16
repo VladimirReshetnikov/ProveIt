@@ -20,15 +20,13 @@ namespace LeanProofs.GowersSzemeredi
 open Classical
 
 /-- **The single-piece lift from a remainder piece** of density `ρ1` and width `ω1`. -/
-theorem single_piece_lift_core_rem {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
+theorem single_piece_lift_core_rem_scheme {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
     (hz : 0 < zeta) (hz2 : zeta ≤ 1 / 2)
     {Qc : Real → Real} {cR : Real → Real} {wR : Real → Nat → Nat}
-    {c : Real → Real} {w : Real → Nat → Nat}
     (hcR : ∀ t, 0 < t → t ≤ 1 → 0 < cR t ∧ cR t ≤ 1) (hwR : ∀ t, Monotone (wR t))
-    (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t))
     (eps : Nat → Real) (thr : Nat → Nat)
     (hretile : ∀ q, Section16RetiledLinearityBound k q (eps q) (thr q))
-    {N : Nat} [NeZero N] [Fact N.Prime]
+    {N : Nat} [NeZero N] [Fact N.Prime] (Sc : SliceScheme N k)
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
     (H : Finset (Point N k)) (Y : (h : Point N k) → Finset (Section16CubeElement B h))
     (phiPrime : Point N k → ZMod N → ZMod N) (x0 : Point N k)
@@ -47,7 +45,7 @@ theorem single_piece_lift_core_rem {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
     (hcovG : LocalRelationCoverFor cR Qc wR DomG (section16SpectrumRelation B delta))
     (hB1G : ∀ z ∈ B1, section16Init z ∈ DomG)
     (DomS : ZMod N → Finset (Point N k))
-    (hsl : ∀ x, LocalPieceFor c w (DomS x) (fun h => phi (appendCoordinate (h + x0) x)))
+    (hsl : ∀ x, Sc.SL (DomS x) (fun h => phi (appendCoordinate (h + x0) x)))
     (hB1S : ∀ z ∈ B1, section16Init z ∈ DomS (section16Last z))
     (hL4 : 4 ≤ ω1)
     (m : Nat) (hm1 : 1 ≤ m)
@@ -57,18 +55,15 @@ theorem single_piece_lift_core_rem {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
       thr q ≤ m ∧ 4 ≤ spectrumCellWidth zeta m (eps q) ∧
       2 ≤ spectrumPieceRho cR (ρ1) ^ 3 *
         spectrumCellWidth zeta m (eps q) ∧
-      2 ≤ w (c (singlePieceTheta (spectrumPieceRho cR (ρ1)) 1))
-        (w (singlePieceTheta (spectrumPieceRho cR (ρ1)) 1)
-          ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊)) :
+      2 ≤ Sc.wid (singlePieceTheta (spectrumPieceRho cR (ρ1)) 1)
+        ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊) :
     ∃ q : Nat, (q : Real) ≤ Qc (ρ1 / 2) ∧
       ∃ (S : Box N (k + 1)) (mu : Point N (k + 1) → ZMod N),
         S.IsProper ∧ IsMultilinear mu ∧
-        Nat.sqrt (w (c (singlePieceTheta
-            (spectrumPieceRho cR (ρ1)) 1))
-          (w (singlePieceTheta (spectrumPieceRho cR (ρ1)) 1)
-            ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊) - 1) - 1 ≤ S.width ∧
-        singlePieceDensity c (spectrumPieceRho cR (ρ1)) 1 *
-            S.carrier.card ≤
+        Nat.sqrt (Sc.wid (singlePieceTheta (spectrumPieceRho cR (ρ1)) 1)
+          ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊ - 1) - 1 ≤ S.width ∧
+        singlePieceTheta (spectrumPieceRho cR (ρ1)) 1 *
+            Sc.dens (singlePieceTheta (spectrumPieceRho cR (ρ1)) 1) * S.carrier.card ≤
           (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card := by
   have hk0 : 0 < k := hk
   obtain ⟨R1, Mrem, hR1, hR1w, hMrem, hR1c⟩ := hrem
@@ -156,9 +151,9 @@ theorem single_piece_lift_core_rem {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
     have hhH : h ∈ H := (hgoodpair (h, x) hx).1
     have hlin := hselection.2 h hhH v hv J.step hd J rfl hJ
     simpa only [Finset.inter_filter, Finset.inter_univ] using hlin
-  have hsl' : ∀ x ∈ I.carrier, LocalPieceFor c w (DomS x) (fun h => phi1 (h, x)) := by
+  have hsl' : ∀ x ∈ I.carrier, Sc.SL (DomS x) (fun h => phi1 (h, x)) := by
     intro x _
-    refine (hsl x).congr rfl (fun h => ?_)
+    refine Sc.congr (hsl x) (fun h => ?_)
     rw [hphi1def]
     simp only [section16PhiOne, section16Init_appendCoordinate, section16Last_appendCoordinate]
     congr 2
@@ -177,7 +172,7 @@ theorem single_piece_lift_core_rem {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
     apply Nat.ceil_le.mpr
     exact le_trans (div_le_div_of_nonneg_right (by exact_mod_cast hR1w) (by norm_num)) hQw
   obtain ⟨q, hq, S, mu, hS, -, hSw, hmu, hcount⟩ :=
-    single_piece_of_spectrum_cover_for hk0 hcR hc hw eps thr hretile hz hz2
+    single_piece_of_spectrum_cover_for_scheme hk0 hcR eps thr hretile hz hz2 Sc
       Q I hQ hI hQd (by rw [hQstep]; exact R1.axis_step _) hshort hQI
       (by omega) E hEsub hρ1.1 hρ1.2 hEc phi1 phiPrime ((-1 : ZMod N) ^ k) Mrem hMrem hident
       (section16SpectrumRelation B delta) DomG hcovG hEG
@@ -209,6 +204,61 @@ theorem single_piece_lift_core_rem {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
           funext i
           simp [add_comm])
       (fun p _ p' _ h => appendCoordinate_pair_injective (add_right_cancel h))
+
+/-- **The single-piece lift from a remainder piece** of density `ρ1` and width `ω1`. -/
+theorem single_piece_lift_core_rem {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
+    (hz : 0 < zeta) (hz2 : zeta ≤ 1 / 2)
+    {Qc : Real → Real} {cR : Real → Real} {wR : Real → Nat → Nat}
+    {c : Real → Real} {w : Real → Nat → Nat}
+    (hcR : ∀ t, 0 < t → t ≤ 1 → 0 < cR t ∧ cR t ≤ 1) (hwR : ∀ t, Monotone (wR t))
+    (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t))
+    (eps : Nat → Real) (thr : Nat → Nat)
+    (hretile : ∀ q, Section16RetiledLinearityBound k q (eps q) (thr q))
+    {N : Nat} [NeZero N] [Fact N.Prime]
+    (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
+    (H : Finset (Point N k)) (Y : (h : Point N k) → Finset (Section16CubeElement B h))
+    (phiPrime : Point N k → ZMod N → ZMod N) (x0 : Point N k)
+    (hselection : Section16InducedSelection B phi H Y
+      (fun h => section16LargeSpectrum B h delta) zeta phiPrime)
+    (hid : Section16PhiOneIdentity (section16GoodDomain B H Y x0) phi x0 phiPrime)
+    (B1 : Finset (Point N (k + 1))) (hB1 : B1 ⊆ section16GoodDomain B H Y x0)
+    {theta2 : Real} (hθ₂pos : 0 < theta2) (hθ₂le : theta2 ≤ 1)
+    (hB1card : theta2 * (N : Real) ^ (k + 1) ≤ B1.card)
+    (ρ1 : Real) (hρ1 : 0 < ρ1 ∧ ρ1 ≤ 1) (ω1 : Nat)
+    (hrem : ∃ (R1 : Box N (k + 1)) (Mrem : Point N (k + 1) → ZMod N),
+      R1.IsProper ∧ ω1 ≤ R1.width ∧ IsMultilinear Mrem ∧
+      ρ1 * R1.carrier.card ≤
+        (B1.filter fun x => x ∈ R1.carrier ∧ section16PhiRemainder phi x0 x = Mrem x).card)
+    (DomG : Finset (Point N k))
+    (hcovG : LocalRelationCoverFor cR Qc wR DomG (section16SpectrumRelation B delta))
+    (hB1G : ∀ z ∈ B1, section16Init z ∈ DomG)
+    (DomS : ZMod N → Finset (Point N k))
+    (hsl : ∀ x, LocalPieceFor c w (DomS x) (fun h => phi (appendCoordinate (h + x0) x)))
+    (hB1S : ∀ z ∈ B1, section16Init z ∈ DomS (section16Last z))
+    (hL4 : 4 ≤ ω1)
+    (m : Nat) (hm1 : 1 ≤ m)
+    (hm : m ≤ wR (ρ1 / 2)
+      ⌈(ω1 : Real) / 8⌉₊)
+    (hpar : ∀ q : Nat, (q : Real) ≤ Qc (ρ1 / 2) →
+      thr q ≤ m ∧ 4 ≤ spectrumCellWidth zeta m (eps q) ∧
+      2 ≤ spectrumPieceRho cR (ρ1) ^ 3 *
+        spectrumCellWidth zeta m (eps q) ∧
+      2 ≤ w (c (singlePieceTheta (spectrumPieceRho cR (ρ1)) 1))
+        (w (singlePieceTheta (spectrumPieceRho cR (ρ1)) 1)
+          ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊)) :
+    ∃ q : Nat, (q : Real) ≤ Qc (ρ1 / 2) ∧
+      ∃ (S : Box N (k + 1)) (mu : Point N (k + 1) → ZMod N),
+        S.IsProper ∧ IsMultilinear mu ∧
+        Nat.sqrt (w (c (singlePieceTheta
+            (spectrumPieceRho cR (ρ1)) 1))
+          (w (singlePieceTheta (spectrumPieceRho cR (ρ1)) 1)
+            ⌈spectrumCellWidth zeta m (eps q) / 8⌉₊) - 1) - 1 ≤ S.width ∧
+        singlePieceDensity c (spectrumPieceRho cR (ρ1)) 1 *
+            S.carrier.card ≤
+          (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card :=
+  single_piece_lift_core_rem_scheme hk hz hz2 hcR hwR eps thr hretile (localPieceScheme c w hc hw) B
+    phi H Y phiPrime x0 hselection hid B1 hB1 hθ₂pos hθ₂le hB1card ρ1 hρ1 ω1 hrem DomG hcovG hB1G
+    DomS hsl hB1S hL4 m hm1 hm hpar
 
 /-- **The single-piece lift from providers on good domains.** -/
 theorem single_piece_lift_core {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
@@ -281,7 +331,6 @@ theorem single_piece_lift_core {k : Nat} (hk : 1 ≤ k) {delta zeta : Real}
     ρ1 hρ1 (nestW (fun _ => C) (fun _ => W) (2 ^ k - 1) theta2 N)
     ⟨R1, Mrem, hR1, hR1w, hMrem, hR1c⟩
     DomG hcovG hB1G DomS hsl hB1S hL4 m hm1 hm hpar
-
 
 /-- The deletion budget of each good set: `θ₂/(2(2^k+1))`. -/
 def globalBudget (theta gamma : Real) (k : Nat) : Real :=
