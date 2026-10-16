@@ -45,7 +45,7 @@ def main() -> None:
                         "Enum254", "QuotientSeparation", "QuotientPower", "QuotientReplacement",
                         "RegisterDecrement253", "QuotientBasic", "SingletonInfinity", "BreakSite253", "FiniteSets", "InductiveAttempts", "QuotientZF0",
                         "RMDag", "Dag254", "L2Lib254", "L2Macros254", "L2Control254", "L2Axioms254", "DecodeFresh254", "NamedForm254",
-                        "DuplicateProfiles", "WritingRuns") ),
+                        "DuplicateProfiles", "WritingRuns", "ZeroSite253", "EqualityGIC") ),
         ("Computability/BusyBeaver/Lean", "BusyBeaver/ZFC.lean"),
     ]
     if args.include_no_quotient:

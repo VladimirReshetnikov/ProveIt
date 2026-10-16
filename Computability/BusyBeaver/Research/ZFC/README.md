@@ -202,6 +202,8 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `DuplicateProfiles.lean` | A conditional duplicate-model obstruction: equality-free CP/GIC and IR can hold while the actual native-equality numerical bundle fails. No starting-model existence is asserted. |
 | `WritingRuns.lean` | Exact arbitrary-length scans that overwrite the read bit, with whole-tape Core corollaries and explicit actual-transition premises. |
 | `L2Axioms254.lean` | Generated composition of the actual axioms subtree into its symbolic state transformer; identification with the abstract AX command is separate. |
+| `ZeroSite253.lean` | Complete actual000 zero branch preserves the full dispatch frame; the checked blank run extends to313429 binary steps and matches RM331, with all158spares retained. |
+| `EqualityGIC.lean` | Explicit outgoing-profile faithfulness, supplied for example by native Pairing, permits equality erasure and extends equality-free GIC to all actual Form matrices. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
@@ -234,8 +236,8 @@ Rebuild the entire small dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 83 source units: the first-order logic, calculus and completeness
-modules, `ZF.Zf`, `BusyBeaver.Core`, 77 research modules and the umbrella into a
+This compiles 85 source units: the first-order logic, calculus and completeness
+modules, `ZF.Zf`, `BusyBeaver.Core`, 79 research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the prior 38-unit fresh source check and axiom outputs. The seven
@@ -294,6 +296,12 @@ checks, umbrella, fourteen axiom audits and three callers are recorded in
 `results/decoder-duplicate-integration-verification.json`, with the earlier
 dependencies reused. This record also checks the duplicate module's final
 comment-only clarification after its separate source audit.
+The [000 zero branch and RM331 endpoint](zero_site253.md) bring the runner to84 units;
+`results/zero331-integration-verification.json` reuses its matching checked olean
+and rebuilds the umbrella with three axiom audits and an endpoint caller.
+The [conditional equality-schema adapter](equality_gic.md) brings it to85;
+`results/equality85-integration-verification.json` checks its source and the
+final umbrella. Neither integration recomputes the finite bootstrap.
 The standalone BusyBeaver Lake package declares its FirstOrder and ZF path
 dependencies; the ZFC umbrella is opt-in.
 
