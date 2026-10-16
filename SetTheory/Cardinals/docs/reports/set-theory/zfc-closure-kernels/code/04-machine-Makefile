@@ -1,0 +1,12 @@
+.PHONY: pdf check clean
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+check:
+	python3 code/verify_benchmarks.py --out results/benchmark_verification.json
+	python3 code/kernel_reduction.py --out results/kernel_reduction.json
+	python3 engineering/blank_start_certificate.py --sources machines --output engineering/blank_start_certificate.json
+
+clean:
+	latexmk -c report.tex
