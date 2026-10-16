@@ -23,17 +23,6 @@ private theorem cube_ite_sub {N : Nat} (b : Bool) (x y : ZMod N) :
     (if b then x - y else 0) = (if b then x else 0) - (if b then y else 0) := by
   cases b <;> simp
 
-/-- The affine relation determining every vertex from the origin and its
-coordinate neighbors, expressed using only nonnegative sums. -/
-theorem cubeArgument_anchor_relation {N d : Nat} (s : ZMod N) (a : Point N d)
-    (e : Fin d → Bool) :
-    cubeArgument s a e + (∑ i, if e i then s else 0) =
-      s + ∑ i, if e i then cubeArgument s a (cubeUnit i) else 0 := by
-  simp_rw [cubeArgument_unit, cube_ite_sub]
-  unfold cubeArgument
-  rw [Finset.sum_sub_distrib]
-  abel
-
 /-- A cube with every vertex represented by an index below L. The equations
 are ordinary natural-number equalities and therefore independent of modulus. -/
 def IsIntervalCube {L d : Nat} (v : (Fin d → Bool) → Fin L) : Prop :=
@@ -69,7 +58,10 @@ def SupportedIntervalCube.toInterval {N L d : Nat} [NeZero N]
       (((v (cubeZero d) : Nat) + (∑ i, if e i then (v (cubeUnit i) : Nat) else 0) : Nat) : ZMod N) := by
     push_cast
     simp_rw [hcast, cubeArgument_zero]
-    exact cubeArgument_anchor_relation p.1.2 p.1.1 e
+    simp_rw [cubeArgument_unit, cube_ite_sub]
+    unfold cubeArgument
+    rw [Finset.sum_sub_distrib]
+    abel
   have hl := (interval_cube_sum_lt (v e) (fun _ => v (cubeZero d)) e).trans_le hsize
   have hr := (interval_cube_sum_lt (v (cubeZero d)) (fun i => v (cubeUnit i)) e).trans_le hsize
   have hmod := (ZMod.natCast_eq_natCast_iff' _ _ N).mp heq

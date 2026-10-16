@@ -257,14 +257,6 @@ private lemma audit_totalWeight_formula :
   simpa only using audit_sum_index (fun t =>
     ∑ s : ZMod 8, auditProfile s * auditProfile (s + (t - 0)))
 
-private lemma audit_totalWeight_lower :
-    4 * auditL ^ 3 ≤ domainTotalWeight auditDomain auditX0 := by
-  rw [audit_totalWeight_formula]
-  have huniv : (Finset.univ : Finset (ZMod 8)) = {0, 1, 2, 3, 4, 5, 6, 7} := by
-    decide
-  rw [huniv]
-  decide
-
 private lemma audit_countWhere_coordinate_mem {Y : Type*}
     [Fintype Y] [DecidableEq Y] (A : Finset Y) (i : Fin 4) :
     countWhere (fun q : Fin 4 → Y => q i ∈ A) =
@@ -692,7 +684,12 @@ private lemma audit_fiveL_cube_div_le :
 
 private lemma audit_totalWeight_lower_real :
     (4 * auditL ^ 3 : Real) ≤ domainTotalWeight auditDomain auditX0 := by
-  have h := audit_totalWeight_lower
+  have h : 4 * auditL ^ 3 ≤ domainTotalWeight auditDomain auditX0 := by
+    rw [audit_totalWeight_formula]
+    have huniv : (Finset.univ : Finset (ZMod 8)) = {0, 1, 2, 3, 4, 5, 6, 7} := by
+      decide
+    rw [huniv]
+    decide
   exact_mod_cast h
 
 private lemma audit_anchor_weight_bound :

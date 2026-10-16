@@ -24,12 +24,6 @@ namespace LeanProofs.GowersSzemeredi
   classical
   simp [MultifunctionDomain.fibre]
 
-private lemma fibreSize_pos {N : Nat} [NeZero N]
-    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
-    (x : X) : 0 < D.fibreSize x := by
-  unfold MultifunctionDomain.fibreSize
-  exact Finset.card_pos.mpr ⟨x, (by simp)⟩
-
 private lemma fibreSize_eq_of_index_eq {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     {x y : X} (hxy : D.index x = D.index y) :
@@ -327,7 +321,8 @@ private lemma shiftExceptional_card_le {N : Nat} [NeZero N]
   have hxmin_eq : D.fibreSize xmin = m := hxmin
   have hmpos : 0 < m := by
     rw [← hxmin_eq]
-    exact fibreSize_pos D xmin
+    unfold MultifunctionDomain.fibreSize
+    exact Finset.card_pos.mpr ⟨xmin, (by simp)⟩
   have hupper (w : X) (hw : w ∈ W) : D.fibreSize w ≤ 2 * m := by
     simpa only [← hxmin_eq] using hvar w hw xmin hxminW
   have hspos : 0 < Real.sqrt theta := Real.sqrt_pos.2 htheta

@@ -29,10 +29,6 @@ theorem two_pow_natDegree_le_eval_two (P : Polynomial ℕ) (hP : P ≠ 0) :
       Finset.single_le_sum (f := fun i => P.coeff i * 2 ^ i) (fun _ _ => Nat.zero_le _)
         (Finset.self_mem_range_succ _)
 
-theorem weylBudget_one_lt (j : Nat) (hj : j ≤ 2) : OAI.Erdos3.weylBudget j 1 < 2 ^ 192 := by
-  interval_cases j <;>
-    simp only [OAI.Erdos3.weylBudget, OAI.Erdos3.weylNextBudget] <;> norm_num
-
 theorem weylBudget_two_lt (j : Nat) (hj : j ≤ 2) :
     OAI.Erdos3.weylBudget j 2 < 2 ^ 128 * 2 ^ 128 := by
   interval_cases j <;>
@@ -42,7 +38,8 @@ theorem weylBudget_two_lt (j : Nat) (hj : j ≤ 2) :
 theorem weylBudgetPolynomial_eval_one_lt (j : Nat) (hj : j ≤ 2) :
     (OAI.Erdos3.weylBudgetPolynomial j).eval 1 < 2 ^ 192 := by
   rw [OAI.Erdos3.weylBudgetPolynomial_eval]
-  exact weylBudget_one_lt j hj
+  interval_cases j <;>
+    simp only [OAI.Erdos3.weylBudget, OAI.Erdos3.weylNextBudget] <;> norm_num
 
 /-- **The Weyl budget polynomial has degree below `256` in degrees one to three.** -/
 theorem weylBudgetPolynomial_natDegree_lt (j : Nat) (hj : j ≤ 2) :

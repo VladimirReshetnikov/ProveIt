@@ -3076,11 +3076,6 @@ lemma nat_le_cube {k : Nat} (hk : 1 ≤ k) : k ≤ k ^ 3 := by
     _ ≤ k * k ^ 2 := Nat.mul_le_mul_left k (one_le_pow₀ hk)
     _ = k ^ 3 := by ring
 
-private lemma eight_le_cube {k : Nat} (hk : 2 ≤ k) : 8 ≤ k ^ 3 := by
-  have hpow := Nat.pow_le_pow_left hk 3
-  norm_num at hpow
-  exact hpow
-
 private lemma thirty_two_mul_le_twenty_mul_cube {k : Nat} (hk : 2 ≤ k) :
     32 * k ≤ 20 * k ^ 3 := by
   have hsq : 4 ≤ k ^ 2 := by
@@ -3125,7 +3120,10 @@ private lemma weylRaisedCoefficientNat_le {k : Nat} (hk : 2 ≤ k) :
   have hm : m = 8 * k ^ 3 := rfl
   have hkOne : 1 ≤ k := hk.trans' (by norm_num)
   have hkCube : k ≤ k ^ 3 := nat_le_cube hkOne
-  have hcubeEight : 8 ≤ k ^ 3 := eight_le_cube hk
+  have hcubeEight : 8 ≤ k ^ 3 := by
+    have hpow := Nat.pow_le_pow_left hk 3
+    norm_num at hpow
+    exact hpow
   have hpoly : m * (k - 1) ≤ 2 ^ m := by
     rw [hm]
     have hcore : k ^ 3 * (k - 1) ≤ k ^ 4 := by

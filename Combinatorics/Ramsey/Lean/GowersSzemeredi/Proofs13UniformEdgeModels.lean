@@ -8,15 +8,6 @@ set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 
-/-- The rounded spectrum parameter decreases as density increases. -/
-theorem section10SpectrumParameter_antitone {a b : Real}
-    (ha : 0 < a) (hab : a ≤ b) :
-    section10SpectrumParameter b ≤ section10SpectrumParameter a := by
-  apply Nat.ceil_mono
-  unfold section10SpectrumBound
-  exact mul_le_mul_of_nonneg_left
-    (Real.rpow_le_rpow_of_nonpos ha hab (by norm_num)) (by positivity)
-
 /-- The corrected Bohr radius increases with the density, including the
 rounded spectrum parameter and its denominator. -/
 theorem section10Zeta_mono {a b : Real} (ha : 0 < a) (hab : a ≤ b) (hb : b ≤ 1) :
@@ -26,7 +17,11 @@ theorem section10Zeta_mono {a b : Real} (ha : 0 < a) (hab : a ≤ b) (hb : b ≤
     apply Nat.ceil_pos.mpr
     unfold section10SpectrumBound
     positivity
-  have hk := section10SpectrumParameter_antitone ha hab
+  have hk : section10SpectrumParameter b ≤ section10SpectrumParameter a := by
+    apply Nat.ceil_mono
+    unfold section10SpectrumBound
+    exact mul_le_mul_of_nonneg_left
+      (Real.rpow_le_rpow_of_nonpos ha hab (by norm_num)) (by positivity)
   have hkReal : (section10SpectrumParameter b : Real) ≤ section10SpectrumParameter a :=
     by exact_mod_cast hk
   have hp : a ^ (18 * section10SpectrumParameter a) ≤

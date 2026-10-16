@@ -16,11 +16,6 @@ theorem polynomialPartitionConstant_succ (k : Nat) :
   rw [hexp, pow_add, pow_add]
   ring
 
-private theorem partitionConstant_pos (k : Nat) : 1 ≤ polynomialPartitionConstant k := by
-  unfold polynomialPartitionConstant
-  have := Nat.factorial_pos k
-  exact Nat.one_le_iff_ne_zero.mpr (by positivity)
-
 /-- The polynomial partition constants fit inside a single exponential. -/
 theorem polynomialPartitionConstant_le_exp {d : Nat} (hd : 1 ≤ d) :
     polynomialPartitionConstant d ≤ 2 ^ (40 * d ^ 3) := by
@@ -100,7 +95,10 @@ theorem polynomialPartitionConstant_degree_budgets {k : Nat} (hk : 1 ≤ k) :
         (((k + 1 : Nat) : Real) * (2 : Real) ^ (k + 1 + 1))⁻¹ := by
   let K := polynomialPartitionConstant k
   let d := k + 1
-  have hK : 1 ≤ K := partitionConstant_pos k
+  have hK : 1 ≤ polynomialPartitionConstant k := by
+    unfold polynomialPartitionConstant
+    have := Nat.factorial_pos k
+    exact Nat.one_le_iff_ne_zero.mpr (by positivity)
   have hd : 2 ≤ d := by dsimp [d]; omega
   have hp : 4 ≤ 2 ^ d := by
     simpa using Nat.pow_le_pow_right (n := 2) (by norm_num) hd

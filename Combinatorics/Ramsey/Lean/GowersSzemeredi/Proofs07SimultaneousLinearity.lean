@@ -779,13 +779,6 @@ private lemma centeredAbs_nsmul_le {p : Nat} [NeZero p]
       rw [succ_nsmul, Nat.succ_mul]
       exact le_trans (centeredAbs_add_le (n • x) x) (Nat.add_le_add_right ih _)
 
-private lemma bohr_neg_mem {p : Nat} [NeZero p] {K : Finset (ZMod p)}
-    {rho : Real} {d : ZMod p} (hd : d ∈ bohr K rho) : -d ∈ bohr K rho := by
-  rw [bohr, Finset.mem_filter] at hd ⊢
-  refine ⟨Finset.mem_univ _, ?_⟩
-  intro r hr
-  simpa only [mul_neg, centeredAbs_neg] using hd.2 r hr
-
 private lemma bohr_mono {p : Nat} [NeZero p]
     {K L : Finset (ZMod p)} {rho sigma : Real}
     (hKL : K ⊆ L) (hrs : rho <= sigma) : bohr L rho ⊆ bohr K sigma := by
@@ -857,14 +850,6 @@ private lemma bohr_symmetric_multiples_subset {p : Nat} [NeZero p]
         _ <= m * (rho / (m : Real) * p) := by
           exact mul_le_mul_of_nonneg_right (by exact_mod_cast hn) hbase
         _ = rho * p := hcollapse
-
-private lemma centeredAbs_pos_of_ne_zero {p : Nat} [NeZero p]
-    {d : ZMod p} (hd : d != 0) : 0 < centeredAbs d := by
-  apply Nat.pos_of_ne_zero
-  intro hzero
-  have hvalMin : d.valMinAbs = 0 := Int.natAbs_eq_zero.mp hzero
-  have hd0 : d = 0 := by simpa using (ZMod.valMinAbs_spec d 0).1 hvalMin |>.1
-  exact (bne_iff_ne.mp hd) hd0
 
 private def cor711Density (p : Nat) (R : IntAP) (A : Finset Int) : Real :=
   (modularCoordinateSet p R A).card / (p : Real)
@@ -1247,7 +1232,12 @@ theorem corollary_7_11_universal_budget (N q m : Nat) [NeZero N] (R : IntAP)
     lemma_7_7_holds p L delta hpTwo hdelta hdeltaOne
   obtain ⟨d, hdBohr, hdne⟩ := hnonzero hLne hthreshold
   let D := centeredAbs d
-  have hDpos : 0 < D := centeredAbs_pos_of_ne_zero hdne
+  have hDpos : 0 < D := by
+    apply Nat.pos_of_ne_zero
+    intro hzero
+    have hvalMin : d.valMinAbs = 0 := Int.natAbs_eq_zero.mp hzero
+    have hd0 : d = 0 := by simpa using (ZMod.valMinAbs_spec d 0).1 hvalMin |>.1
+    exact (bne_iff_ne.mp hdne) hd0
   have hDsmall : D * (m * m) < R.length := by
     dsimp only [D]
     exact cor711_centered_step_small hm hpUpper'
@@ -1273,7 +1263,10 @@ theorem corollary_7_11_universal_budget (N q m : Nat) [NeZero N] (R : IntAP)
     rcases natCast_centeredAbs_eq_or_neg d with hdCast | hdCast
     · simpa only [D, hdCast] using hdBohr
     · rw [hdCast]
-      exact bohr_neg_mem hdBohr
+      rw [bohr, Finset.mem_filter] at hdBohr ⊢
+      refine ⟨Finset.mem_univ _, ?_⟩
+      intro r hr
+      simpa only [mul_neg, centeredAbs_neg] using hdBohr.2 r hr
   have hradius : delta <= (1 / (8 * Real.pi)) / (m : Real) := by
     have hmReal : (2 : Real) <= m := by exact_mod_cast hmTwo
     unfold delta
