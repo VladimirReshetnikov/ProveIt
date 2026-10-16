@@ -1,7 +1,10 @@
 # Editable AX and theory/backend experiments
 
-An uncalibrated equality-free C/G proof-search candidate now has **252 working
-states**. Its equivalence to ZFC consistency remains unproved. The fixed-binder
+The frozen equality-free C/G compiler benchmark has **252 working
+states**. The reviewed [finite-sort obstruction](typed_countermodel.md) rules
+out the intended reduced abstract calculus as a consistency-search target;
+the literal-table consequence remains conditional on its missing simulation.
+The fixed-binder
 PSC experiment costs 317 states; the unchanged public Wade backend reconstructs
 the published program in 281 states. These measurements are not new verified
 consistency-machine bounds.

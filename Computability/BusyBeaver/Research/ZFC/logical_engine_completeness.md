@@ -197,3 +197,11 @@ uv run --no-project python Computability/BusyBeaver/Research/ZFC/full_logic_psc_
 The committed evidence is `logical-engine-controls.json` and
 `full-logic-psc-control.json`. Generated tables and unchanged licensed Wade
 backend copies remain in outside scratch. No sub254 endpoint is claimed.
+
+The subsequent [finite-sort model](typed_countermodel.md), delivered in
+`47f3a36029`, settles a stronger question: every emitted reduced C/G bundle
+is valid with target false, using either quantifier row. It also models the
+offset PSC wrapper and same-variable specialization. The original complete
+equality engine and the controls retaining it are outside that argument.
+Ordinary equality-free PSC/CP/GIC calibration survives; a complete replacement
+frontend or the original engine is needed to implement it.

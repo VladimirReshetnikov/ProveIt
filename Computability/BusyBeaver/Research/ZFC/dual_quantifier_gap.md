@@ -140,3 +140,11 @@ public backend's undefined `1.inc/read1` row; they are not presented here as
 new total standard machines. The frozen252 table and its audits remain
 unchanged. No calculus/equiconsistency or end-to-end machine theorem is
 claimed by these search results.
+
+Later intake provides a [finite-sort model](typed_countermodel.md) of the
+actual reduced C/G bundle with **both** quantifier rows and target false.
+Thus both unchanged abstract variants fail as consistency searches, independent
+of this generic replacement counterexample. Their literal-table consequence
+remains conditional on compilation correctness. Repair lanes that add further
+axioms must be assessed separately; eliminating this model alone would not
+establish their completeness.
