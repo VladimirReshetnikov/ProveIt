@@ -18,6 +18,12 @@ The exact four-module scratch development passed before integration. Its full 83
 
 This is an endpoint certificate, with no claim that 312,975 is the first dispatch arrival. The public argument's separate 330-step register prefix, arbitrary runtime invariant/site checker, instruction/compiler simulation, proof enumeration and arithmetic consistency export remain outside this Lean result. It supplies no new machine, state reduction or internal ZFC/PA consistency equivalence. It concerns the attributed public 253-state table, independently of the retired C/G compiler benchmarks.
 
+Subsequent work now proves the separate [330-step register prefix](rm330_lean.md)
+in Lean, using the exact 6,459-row public program and infinite-register path
+semantics. Its primary register values match this boot frame. A representation
+and arbitrary instruction-simulation theorem must still connect the two;
+the extra spare tape blocks are not extra logical registers.
+
 Rebuild its complete source closure, including the full finite startup computation, with:
 
 ```sh
