@@ -31,9 +31,10 @@ Results:
   calculus emits only inside the gated bundle, is projected out of it with
   the same gate, and the propositional steps use the Lukasiewicz basis.
 
-Together with `TarskiFalsity` this is the complete logical bridge of the
-calibration: what remains is the set theory of the bundle, the enumerator
-and the machine.
+The soundness model class uses all decoded bundles; the completeness
+implication uses literal encodable bundles. Their comparison is not proved
+here. The set-theoretic calibration must establish the stated model
+obligations, followed separately by the enumerator and machine bridges.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.Code254
@@ -446,16 +447,29 @@ theorem c254_of_thmG {Ax : NF → Prop} (hAx : ∀ f, Ax f → C254 (enc f)) {f 
 def EncBundle (f : NF) : Prop :=
   BotFree f ∧ ∃ a b c, c ≠ a ∧ c ≠ b ∧ enc f = bundle a b c
 
-/-- Completeness: if the encodable bundles have no irreflexive model, the
-falsity code is derivable. -/
+/-- Historical correction: without a valuation or a nonempty-domain premise,
+the former no-model hypothesis was impossible, since the empty structure
+satisfies every universally quantified bundle vacuously. This theorem
+preserves that counterexample; it is not a consistency claim. -/
+theorem empty_domain_counterexample :
+    ¬ (∀ (D : Type) (mem : D → D → Prop), (∀ x, ¬ mem x x) →
+      (∀ f, EncBundle f → ∀ e : Nat → D, Tarski.Sat mem e f) → False) := by
+  intro h
+  exact h Empty (fun _ _ => False) (fun x => Empty.elim x)
+    (fun _ _ e => Empty.elim (e 0))
+
+/-- Completeness: if the encodable bundles have no irreflexive model with
+a valuation (equivalently, with a nonempty domain), falsity is derivable.
+This does not identify encodable bundles with all decoded bundles. -/
 theorem c254_complete
     (hnone : ∀ (D : Type) (mem : D → D → Prop), (∀ x, ¬ mem x x) →
-      (∀ f, EncBundle f → ∀ e : Nat → D, Tarski.Sat mem e f) → False) :
+      (∀ f, EncBundle f → ∀ e : Nat → D, Tarski.Sat mem e f) →
+      (Nat → D) → False) :
     C254 F := by
   have hT : ThmG (rel 0 0) EncBundle (rel 0 0) := by
     apply alias_complete (f := rel 0 0) (fun f hf => hf.1) trivial
     intro D mem hirr hAx e
-    exact (hnone D mem hirr hAx).elim
+    exact (hnone D mem hirr hAx e).elim
   have := c254_of_thmG (fun f hf => by
     obtain ⟨_, a, b, c, h1, h2, he⟩ := hf
     rw [he]; exact C254.bundle a b c h1 h2) hT

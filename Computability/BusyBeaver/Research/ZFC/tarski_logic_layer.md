@@ -114,17 +114,19 @@ Two consequences for compiler experiments:
 
 ## A calibrated equality-free *language* (design analysis, unmeasured)
 
-Soundness of a row is only needed in one extensional model of the theory
-(V, or L), not in every structure. In an extensional model the formula
+Soundness of a row can be established in a model of ZFC, with its singleton
+sets. In such a model the formula
 `U(x,y) := ∀z (x ∈ z → y ∈ z)` defines equality. Replacing every equality
 atom of the rows by `U` therefore gives rows that are true in V, while the
 same translation argument as `thm_tau` transports every derivation of the
 primitive-equality calculus. For an equality-free theory true in V this is a
 **calibrated, complete** engine whose formulas contain no equality atoms, so
-the three-tag codec applies. Being complete, it cannot have an unconditional
-nonrefutation model of the kind that sinks the reduced equality-free calculi.
+the three-tag codec applies. This argument relies on the singleton resources
+of the chosen set-theory model. Extensionality alone does not suffice:
+on the two-element structure whose only membership edge is `0 in 1`,
+Extensionality holds but `U(1,0)` is true and `1 != 0`.
 The bound label of `U(i,j)` must avoid `i` and `j` (for example `i + j + 1`);
-each translated row is then true in every extensional model: `U(c,a) → (c ∈ b
+each translated row is then true in such a set-theory model: `U(c,a) → (c ∈ b
 → a ∈ b)` is even logically valid, and the others hold because `U` is
 identity there (take `z = {x}`).
 
@@ -159,14 +161,33 @@ calculus in independent Lean.
   to a formula true in every irreflexive model of all decoded bundles. The
   alias `Imp(0,0) = 0` is harmless because both readings are true.
 * `c254_complete`: if the bundles that are literal encodings of named
-  formulas (`EncBundle`) have no irreflexive model, then code 1 is derivable.
+  formulas (`EncBundle`) have no irreflexive model with a valuation
+  (equivalently, a nonempty domain), then code 1 is derivable.
   Atomic vacuity, which the calculus emits only inside the gated bundle, is
   projected out with the same gate `c ≠ a, b`; conjunction elimination is a
   tautology instance through Kalmár's theorem over codes.
 
-The remaining calibration obligations are therefore purely set-theoretic and
-operational: (i) Con(ZFC) gives an irreflexive model of all decoded bundles
+**Correction, 16 October 2026.** The first version of `c254_complete` omitted
+both a valuation and a nonempty-domain premise from its no-model hypothesis.
+That premise was impossible for every theory: the empty domain satisfies
+irreflexivity and every globally quantified axiom vacuously. The corrected
+theorem explicitly passes a valuation to the no-model hypothesis, and
+`empty_domain_counterexample` preserves the historical counterexample in Lean.
+This was a vacuous hypothesis, not an inconsistent axiom or an unsound kernel
+derivation.
+
+The two theorems use different model theories: soundness assumes all decoded
+bundles, whereas completeness assumes that literal encodable bundles have no
+nonempty model. No theorem here equates these theories. In particular, the
+ordinary named encoder never returns code 0, although the decoder handles
+its truth alias. One can either prove the necessary normalization and
+model-class comparison, or calibrate the two stated model obligations
+separately; this distinction must survive the set-theory bridge.
+
+The remaining calibration obligations include: (i) Con(ZFC) gives an
+irreflexive model of all decoded bundles
 (upstream: `SoundBW254.v`, via L); (ii) a refutation of ZF gives a refutation
 of `EncBundle` (the bisimulation-quotient interpretation, upstream
 `S_quot.v`/`S_ax.v`, partly mirrored by the equality-free CP/GIC modules
-here); (iii) the enumerator, program and literal table.
+here), with explicit encodability and binder-freshness checks for the chosen
+instances; (iii) the enumerator, program and literal table.
