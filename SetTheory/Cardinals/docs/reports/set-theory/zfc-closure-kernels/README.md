@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 16 October 2026. This report now reconciles eleven manuscripts.
+Intake findings, 16 October 2026. This report now reconciles fifteen manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -15,6 +15,11 @@ binary, two-way infinite, single tape. The initial sources discuss the stronger
 PA metatheory; later deliveries also address the ZFC target. Their missing
 proof compilers remain missing; changing our target
 does not turn their experiments into a formal equivalence proof.
+
+The latest batch 146 below supplies a countermodel to the entire intended raw
+C/G code calculus, including the variants behind the earlier 252/250/248
+experiments. Those artifacts remain compiler benchmarks. The ordinary
+first-order closure-theory calibrations remain separate accepted arguments.
 
 ## Sources, overlap and base
 
@@ -556,3 +561,235 @@ reference is preserved, with no substitute file invented. Since placement,
 `Table248.lean` checks the original-row literal table and its actual first
 1,024 blank steps; `RawPSCModel.lean` supplies named instances from the actual
 equality-free PSC model. Neither adds the missing whole-machine endpoint.
+
+## Batch 146: a full-calculus obstruction and complete-logic alternatives
+
+Four further manuscripts arrived in `47f3a3602946dfe48803a91a910c646e74637ac8`
+and `af518abcf8ca2a7c1b795c07973885041aee0d25`. Placement `f31ba244b`
+retains their ancillary material under the following local prefixes. The
+base article and all delivered claims remain unchanged; the findings here
+update their historical research recommendations.
+
+| Local source | Archive | Contribution retained |
+|---|---|---|
+| 12, sorts | `zfc_consistency_machine_research.zip` | Explicit finite-sort semantics for every raw C/G code axiom and rule; abstract-enumerator nonhalting; conditional literal consequence; 259/264-state diagnostic controls and a separate PSC supplement. |
+| 13, tableau | `zfc_consistency_proposal.zip` | Alternative PSC-only bootstrap using incoming-profile fragments and a nonempty monochromatic decoder; ordinary Infinity; complete environment-tableau reference and ten full-original-logic compiler controls. |
+| 14, empty | `zfc_empty_seed_research.zip` | Empty-input EPSC deductively equivalent to subset-seeded PSC; reduced-calculus obstructions; a complete-logic reference checker and full-equality 270-state compiler control. |
+| 15, modal | `zfc_small_machine_proposal.zip` | Full ordinary equality-free CP/GIC interpretation and designated-theoremhood calibration; exact-word 250/249-state grammar experiments and a bounded nonreflexive-quantifier diagnostic. |
+
+Source 12 freezes compiler inputs at
+`83dec60c249ca0f9e1b2e5ee3cf18fd1ce58c373`; its later PSC-only supplement is
+separately pinned to `e7c4cadf9b180e4b1801755b09777a7572412360`. Source 13 uses
+the numerical pin `17d0f2eaa650901cda59764dfcc4661c199e49c8` and reviews research
+through `bda2b4860e6b3664d8ae84978bd7683572f55f49`. Source 14 uses the 83dec60
+baseline. Source 15 uses 17d0f2e for numerical replay and e7c4cad for its research
+cutoff. Their inherited backend/254 pin is still
+`297ab8df7e5de329605c3875b4934643b371a5e3`; the separately attributed public
+253-state reference is still PR20 head
+`0d544f2a2e3c18f12278441a74b7879f31cbe856`. These provenance statements do not
+claim a new remote-status check or proof-assistant rebuild.
+
+### What the finite-sort countermodel changes
+
+Source 12 supplies the previously missing obstruction for the **entire emitted
+raw C/G calculus**, beyond the earlier isolated logical-fragment models.
+Its finite sorts have sizes `d₀ = 2`, `dᵢ₊₁ = dᵢ + 2^dᵢ`. Diagonal membership
+is false; every sort has empty and universal incoming objects for other sorts;
+a larger sort represents every subset of a smaller sort. Quantification changes
+one coordinate over its own sort. This validates the retained propositional,
+distribution, commutation, original and dual quantifier rows, gated membership
+vacuity, MP and generalization, while target code 1 is always false.
+
+The numerical support bound applies to **every natural code**, with code 0 as
+closed truth and `Imp(0,0) = 0` respected. Matrix code c is independent of labels
+c and above. That locality is essential to G when its output label b exceeds c;
+when b is smaller, the larger output sort represents the exact finite range.
+The proof also covers a=b, the failed c=a/b gates, repeated-binder shadowing,
+and matrix codes 0/1. Independent comparison confirmed the exact current C/G
+constructor trees, including collisions, and all eight functional compiler
+inputs agree with the report's immutable pin and the current tree.
+
+Validity of current formula, old cache and every theorem-stack entry is
+preserved by the exact abstract MP/DROP/NIP/AX operations. GEN reads the old
+cache; failed MP and failed gates write truth; the zero stack tail is valid.
+Thus ZFC proves this exact-arithmetic abstract enumerator never reaches its
+incoming-cache-1 halt test. The argument uses no assumption of Con(ZFC).
+
+The obstruction transfers to source 10's 250-state conjunction rewrite and source 11's
+original-row/permuted-rho8 248 program: the former only commutes conjunctions
+and reorders valid rows, and the latter permutes a propositional schema's
+parameters and preserves its macro word. It also covers source 15's two
+exact-word raw C/G rewrites and source 12's inspected fresh-label PSC-only
+supplement, including primitive Bottom and optional irreflexivity or same-name
+specialization. Restoring the original quantifier row alone does not repair it.
+
+This is an ordinary mathematical theorem about the intended numeric calculus
+and abstract enumerator, **not a literal-table nonhalting proof**. If its
+literal-halting-to-abstract-halting simulation is proved in ZFC, literal
+nonhalting follows in ZFC; assuming Con(ZFC), that same machine cannot then
+have the requested ZFC-provable equivalence with Con(ZFC). The finite table
+facts and source compression certificates do not supply that simulation.
+
+The batch 145 description of the original-row 248 artifact as the preferred
+compiler experiment is retained as historical context. Its state savings and
+the later 249/250 savings remain reproducible compiler benchmarks. The raw
+calculus now needs a complete logical frontend rather than an unproved
+calibration of its existing rows. This does **not** retract the ordinary
+one-sorted PSC/EPSC or CP/GIC source theories, their mathematical interpretations,
+or the full-equality public 253/254 benchmark. The 282-state profile control and
+new 259/264-state U/P diagnostics reject this model; rejecting one model proves neither
+logical completeness nor a consistency endpoint.
+
+### Ordinary theory results and reference proof engines
+
+Source 13 credits source 08's PSC-only calibration and purity cut. Its
+alternative bootstrap uses exact incoming-profile fragments and explicitly
+nonempty monochromatic fibers, avoiding global outgoing-profile congruence.
+The Russell-root image argument gates its root outside the source set;
+unique exact fibers justify the converse without selecting arbitrary local
+bounds. Its hereditary interpretation includes a direct ordinary Infinity
+construction. The complete six-rule signed tableau uses environments for
+bound variables, arbitrary universal instances and fresh existential witnesses.
+Its fair certificate search accepts only an actual refutation of logical
+Bottom; the supplied valid theorem demonstrations are not refutations.
+These are reviewed ordinary arguments and Python references, with no checked
+tableau-to-register or binary compiler.
+
+Source 14's new EPSC theorem removes PSC's arbitrary seed parameter: closure
+starts from the class of **all raw empty objects**, not a distinguished empty
+constant. EPSC and subset-seeded PSC are deductively equivalent through uniform
+finite-instance transformations in the same equality-free language. With the
+credited source-08 interpretation this gives the same ordinary ZFC-provable
+consistency calibration. Its grafted decoder, common subset bounds and support
+filter need no separately imposed Extensionality, congruence or irreflexivity.
+The theorem remains about an infinite schema with arbitrary matrices and
+finite parameters. Its fixed-slot, arbitrary-label and fixed-offset Boolean
+interpretations reject the reduced PSC/EPSC proof engines, including the
+irreflexive variant. Those particular models are not C/G models; source 12
+supplies the stronger C/G result. Its reference checker restores genuine
+Bottom and capture-avoiding universal instantiation in a complete ordinary
+first-order calculus, with the disclosed Python recursion limits.
+
+Source 15 independently reconstructs the ordinary CP/GIC theory interpretation:
+bounded profile-pair codes, exact represented composition, bisimulation equality
+and membership congruence, interpreted Power Set, ordinary Infinity and
+Replacement unique up to that equality. It calibrates the theory with or
+without irreflexivity. Its complete-first-order auxiliary theories S_B/S_D
+calibrate **theoremhood of target F** against inconsistency; S_D itself always
+has a model and is not an equiconsistent theory. None of that theorem replaces
+the restricted logic in the small tables. Its recommendation to settle the
+actual C/G target is superseded by source 12's finite-sort result. The bounded
+modal search rejects every tested frame already at C; finding no model in
+that family gives no evidence of logical completeness.
+
+### Compiler evidence and current Lean boundaries
+
+Source 12 reproduces the frozen raw 252-state table and the 259/264-state U/P
+diagnostics.
+Its 288-control search comprises 120 bundle layouts per control and 24 logical
+orders for each first best layout, not a full Cartesian search or lower bound.
+The supplemental PSC 252-state artifact is a different table and calculus
+from the frozen C/G 252-state experiment.
+Seven fixed PSC recipes were replayed; its historical 144-layout/200-seed
+searches were not repeated in this intake.
+
+Source 13's ten base-four controls retain all eight original logical schemas
+and separate vacuity gates. All ten regenerate exactly; the smallest measured
+point/subset controls have 276/280 states. Dropping the extra theory gate uses
+its explicitly checked low-code comparison, not removal of the logical gates.
+The optional `optimize_psc_orders.py` referenced in its notes is absent from
+the delivery. Its recorded 2,229-order optimization is therefore source evidence,
+not a bundled replayable suite; no replacement script was invented.
+
+Source 14's full-equality EPSC control has 208 decision plus 62 framework states,
+540 total rows and SHA-256
+`54d631fa31f36b02dd41634de8cadeb2cc8fcfae4bc75fea8812af0794b2a136`.
+Its independent operation certificate has 3,620 pairs and checks 5,162 successor
+pairs. The source is a 266-node plain right-comb EPSC program, **not** the old
+C/G program or the best 277-state experiment's DAG; the compressed DAG has
+208 nodes. All 2,048 selected grammar choices were rerun, but 2,045 were
+heuristically screened and only three emitted. No minimum or end-to-end
+calibration follows. Its changed theory, enumerator, binary compiler and
+initializer still need proofs.
+Its rejected reduced 248-state EPSC and 250-state PSC artifacts are distinct
+from the earlier C/G tables with the same state counts. The grammar helper
+and operation-verifier adaptations retain their source-08 attribution.
+
+Source 15's original-row 250-state and dual-row 249-state tables have 500/498 rows
+and hashes
+`2bc151a7ba41fab11a2ebf15c7c9913acf46241843ec12e4bec48417153d8cd0` and
+`711d6edf4a523db3d8861387636dbc8fc028eb74a7f4d3f174060a128d04a3a9`.
+They preserve their respective 138-call AX words and unchanged program context;
+all 19 macros have only normal finite control exits. This establishes the
+stated source reassociation property, not arithmetic termination or binary
+simulation. Both tables regenerate exactly, have graph-reachable working states
+and singleton exact step-bisimulation classes, and match their recorded
+million-step prefixes. Their experimental original-row 254-state source is distinct
+from Mira-Cult's calibrated 254-state machine.
+
+The present Lean modules already close some historical roadmap items. The
+source comments state the remaining scope precisely:
+
+- `Base3Syntax.lean`: “This is a numerical syntax theorem, not a calculus,
+  semantic interpretation, compiler simulation or ZFC equiconsistency proof.”
+  Total decoding, truth normalization and numerical freshness are checked.
+- `CompositionModel.lean`: “This is an interpretation layer, not a coded proof
+  compiler or TM endpoint.” Actual equality-free GIC matrices supply composition
+  and matching resources; this is more than an assumed semantic composition
+  hypothesis, but less than a full interpreted-theory endpoint.
+- `RawPSCModel.lean`: “These results do not yet prove the complete hereditary
+  interpretation, deductive/consistency calibration or any compiler or machine
+  endpoint.” Named represented matrices now supply cover/Separation/Union,
+  saturation and purity-cut resources; guarded hull transfer still assumes the
+  supplied relation's definability, local bounds and invariance.
+
+All three paths are under `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/`.
+The current 35-module dependency closure passed a fresh serial Lean check;
+the delivered countermodel, complete theory interpretations, reference checkers
+and new operation certificates have no new kernel calibration. Existing
+Table248/Table252/Table253 literal facts and the 248/253 short prefixes retain
+their finite scope. No new sub-254 consistency-machine endpoint is claimed.
+
+### Placement, checks and recovery
+
+`data/placement-map-146.json` records 170 retained ancillary files and 48
+archive-only manuscript/PDF/section/delivery-README paths. All 218 extracted
+files, representing 201 distinct blobs, were searched throughout Git history;
+20 borrowed blobs occur among 37 relevant commits, with own/parent tree
+occurrences recorded in `data/history-findings-146.json`. They are inherited
+sources and artifacts, not previously placed copies of the four full reports.
+All archives were retired in placement. Complete packages remain recoverable
+from their arrival commits, with their original nested names and layout.
+
+Checks ran on separate copies. Source 12 passed all finite model regressions,
+seven table checks, exact 253/raw252 regeneration, all 288 diagnostic controls
+and seven fixed PSC recipes; independent AST and source comparisons also passed.
+Source 13 passed its tableau/search suites, all 66,066 small decoder graphs,
+276 exceptional-row cases, the full 312,975-step literal 253 bootstrap and all ten
+compiler controls. Source 14 passed its 11 checker tests/9,216 substitution cases,
+coding/logic/model suites, both 192-choice rejected reduced searches, the 192
+full-equality arrangements, the 2,048-choice screened grammar search, exact 270-state
+regeneration and independent certificate/mutation checks. Source 15 passed its
+codec/logic/table suites, both exact fixed grammar replays and bounded modal
+diagnostic: all 68 tested relations fail C, with 1,760 C and 512 G evaluator
+crosschecks and zero surviving all-matrix G checks. The four scratch PDFs have
+34/32/35/41 pages. These are finite evidence and ordinary proof reviews; no
+Coq or Lean build was performed as part of these delivered-package suites.
+
+Authored dossiers and replay records use `intake-146-` names; generated outputs
+do not replace delivered records. No checksum-manifest or line-ending work was
+performed. Recover and replay from the repository root:
+
+```sh
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_146.py
+```
+
+The helper recovers committed archives and local pinned Git dependencies
+without network or checkout writes. `--sources 1` through `--sources 4` select
+the batch manuscripts corresponding to local 12 through 15; `--prepare-only`
+recovers without execution. `--searches` adds source 12's extended 288-control
+and fixed-PSC checks and source 14's bounded search families. Broad manifest
+audits are bypassed in memory; table identity and functional compiler pin
+contracts remain. PDF and proof-assistant builds are separate. Flattened
+retained code keeps its original imports and nested provenance names; execute
+the recovered packages rather than renaming paths inside delivered scripts.
