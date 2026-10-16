@@ -27,9 +27,9 @@ With `m + 1 = M·⌈6/(αη)⌉` Bernoulli's inequality gives a gain of
 `fejerSelectionExponent k = 2^(k+4)·(k+6)`, and it implies the printed one
 (`lemma_15_5_of_fejer_restriction`).
 
-The finite Bernoulli averaging, the hyperedge bookkeeping, the parity moment
-and the vertex injectivity are copied from `Proofs15Restriction` (private
-there). -/
+The finite Bernoulli averaging uses `Proofs12BernoulliSelection`. The hyperedge
+bookkeeping, parity moment and vertex injectivity are copied from
+`Proofs15Restriction` (private there). -/
 
 set_option autoImplicit false
 set_option maxRecDepth 10000
@@ -40,266 +40,6 @@ open scoped BigOperators Pointwise ZMod
 open Finset
 
 namespace LeanProofs.GowersSzemeredi
-
-/-! ## Finite Bernoulli averaging -/
-
-private def fejerWeight {X : Type*} [DecidableEq X]
-    (U : Finset X) (p : X → Real) (S : Finset X) : Real :=
-  (∏ x ∈ S, p x) * ∏ x ∈ U \ S, (1 - p x)
-
-private lemma fejerWeight_nonneg {X : Type*} [DecidableEq X]
-    (U : Finset X) (p : X → Real) (hp0 : ∀ x ∈ U, 0 ≤ p x)
-    (hp1 : ∀ x ∈ U, p x ≤ 1) (S : Finset X) (hS : S ⊆ U) :
-    0 ≤ fejerWeight U p S := by
-  apply mul_nonneg
-  · exact Finset.prod_nonneg fun x hx ↦ hp0 x (hS hx)
-  · exact Finset.prod_nonneg fun x hx ↦
-      sub_nonneg.mpr (hp1 x (Finset.mem_sdiff.mp hx).1)
-
-private lemma fejerWeight_insert {X : Type*} [DecidableEq X]
-    (U : Finset X) (p : X → Real) (a : X) (ha : a ∉ U) (S : Finset X)
-    (hS : S ⊆ U) :
-    fejerWeight (insert a U) p (insert a S) =
-      p a * fejerWeight U p S := by
-  simp only [fejerWeight]
-  rw [Finset.prod_insert (notMem_mono hS ha)]
-  have hdiff : insert a U \ insert a S = U \ S := by
-    ext x
-    simp only [mem_sdiff, mem_insert]
-    aesop
-  rw [hdiff]
-  ring
-
-private lemma fejerWeight_not_insert {X : Type*} [DecidableEq X]
-    (U : Finset X) (p : X → Real) (a : X) (ha : a ∉ U) (S : Finset X)
-    (hS : S ⊆ U) :
-    fejerWeight (insert a U) p S =
-      (1 - p a) * fejerWeight U p S := by
-  simp only [fejerWeight]
-  have haS : a ∉ S := fun h ↦ ha (hS h)
-  have hdiff : insert a U \ S = insert a (U \ S) := by
-    ext x
-    simp only [mem_sdiff, mem_insert]
-    aesop
-  rw [hdiff, Finset.prod_insert]
-  · ring
-  · simp [ha]
-
-private lemma fejerWeight_sum {X : Type*} [DecidableEq X]
-    (U : Finset X) (p : X → Real) :
-    ∑ S ∈ U.powerset, fejerWeight U p S = 1 := by
-  induction U using Finset.induction_on with
-  | empty => simp [fejerWeight]
-  | @insert a U ha ih =>
-      rw [Finset.sum_powerset_insert ha]
-      have hleft :
-          (∑ S ∈ U.powerset, fejerWeight (insert a U) p S) =
-            (1 - p a) * ∑ S ∈ U.powerset, fejerWeight U p S := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro S hS
-        rw [fejerWeight_not_insert U p a ha S
-          (Finset.mem_powerset.mp hS)]
-      have hright :
-          (∑ S ∈ U.powerset, fejerWeight (insert a U) p (insert a S)) =
-            p a * ∑ S ∈ U.powerset, fejerWeight U p S := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro S hS
-        rw [fejerWeight_insert U p a ha S
-          (Finset.mem_powerset.mp hS)]
-      rw [hleft, hright, ih]
-      ring
-
-private lemma fejerWeight_event {X : Type*} [DecidableEq X]
-    (U C : Finset X) (p : X → Real) (hC : C ⊆ U) :
-    ∑ S ∈ U.powerset, fejerWeight U p S * (if C ⊆ S then 1 else 0) =
-      ∏ x ∈ C, p x := by
-  induction U using Finset.induction_on generalizing C with
-  | empty =>
-      have hC0 : C = ∅ := Finset.eq_empty_iff_forall_notMem.mpr fun x hx ↦
-        (Finset.notMem_empty x) (hC hx)
-      subst C
-      simp [fejerWeight]
-  | @insert a U ha ih =>
-      rw [Finset.sum_powerset_insert ha]
-      by_cases haC : a ∈ C
-      · let C₀ := C.erase a
-        have hCeq : C = insert a C₀ := (Finset.insert_erase haC).symm
-        have hC₀ : C₀ ⊆ U := by
-          intro x hx
-          have hxC : x ∈ C := Finset.mem_of_mem_erase hx
-          rcases Finset.mem_insert.mp (hC hxC) with hxa | hxU
-          · subst x
-            exact (Finset.notMem_erase a C hx).elim
-          · exact hxU
-        have haC₀ : a ∉ C₀ := Finset.notMem_erase _ _
-        have hfalse (S : Finset X) (hS : S ∈ U.powerset) : ¬ C ⊆ S := by
-          intro hCS
-          exact ha (Finset.mem_powerset.mp hS (hCS haC))
-        have hins (S : Finset X) (_ : S ∈ U.powerset) :
-            (C ⊆ insert a S) ↔ C₀ ⊆ S := by
-          rw [hCeq, Finset.insert_subset_iff]
-          constructor
-          · rintro ⟨-, hsub⟩ x hx
-            rcases Finset.mem_insert.mp (hsub hx) with hxa | hxS
-            · subst x
-              exact (haC₀ hx).elim
-            · exact hxS
-          · intro hsub
-            exact ⟨Finset.mem_insert_self _ _, fun x hx ↦
-              Finset.mem_insert_of_mem (hsub hx)⟩
-        have hleft :
-            (∑ S ∈ U.powerset,
-              fejerWeight (insert a U) p S *
-                (if C ⊆ S then 1 else 0)) = 0 := by
-          apply Finset.sum_eq_zero
-          intro S hS
-          rw [if_neg (hfalse S hS), mul_zero]
-        have hright :
-            (∑ S ∈ U.powerset,
-              fejerWeight (insert a U) p (insert a S) *
-                (if C ⊆ insert a S then 1 else 0)) =
-              p a * ∑ S ∈ U.powerset,
-                fejerWeight U p S * (if C₀ ⊆ S then 1 else 0) := by
-          rw [Finset.mul_sum]
-          apply Finset.sum_congr rfl
-          intro S hS
-          rw [fejerWeight_insert U p a ha S
-            (Finset.mem_powerset.mp hS)]
-          simp only [hins S hS]
-          ring
-        rw [hleft, zero_add, hright, ih C₀ hC₀, hCeq,
-          Finset.prod_insert haC₀]
-      · have hCU : C ⊆ U := by
-          intro x hx
-          rcases Finset.mem_insert.mp (hC hx) with hxa | hxU
-          · subst x
-            exact (haC hx).elim
-          · exact hxU
-        have hevent (S : Finset X) (_ : S ∈ U.powerset) :
-            (C ⊆ insert a S) ↔ C ⊆ S := by
-          constructor
-          · intro hsub x hx
-            rcases Finset.mem_insert.mp (hsub hx) with hxa | hxS
-            · subst x
-              exact (haC hx).elim
-            · exact hxS
-          · exact fun hsub ↦ hsub.trans (Finset.subset_insert _ _)
-        have hleft :
-            (∑ S ∈ U.powerset,
-              fejerWeight (insert a U) p S *
-                (if C ⊆ S then 1 else 0)) =
-              (1 - p a) * ∑ S ∈ U.powerset,
-                fejerWeight U p S * (if C ⊆ S then 1 else 0) := by
-          rw [Finset.mul_sum]
-          apply Finset.sum_congr rfl
-          intro S hS
-          rw [fejerWeight_not_insert U p a ha S
-            (Finset.mem_powerset.mp hS)]
-          ring
-        have hright :
-            (∑ S ∈ U.powerset,
-              fejerWeight (insert a U) p (insert a S) *
-                (if C ⊆ insert a S then 1 else 0)) =
-              p a * ∑ S ∈ U.powerset,
-                fejerWeight U p S * (if C ⊆ S then 1 else 0) := by
-          rw [Finset.mul_sum]
-          apply Finset.sum_congr rfl
-          intro S hS
-          rw [fejerWeight_insert U p a ha S
-            (Finset.mem_powerset.mp hS)]
-          simp only [hevent S hS]
-          ring
-        rw [hleft, hright, ih C hCU]
-        ring
-
-private lemma fejerWeight_count {X E : Type*} [DecidableEq X]
-    [DecidableEq E] (U : Finset X) (p : X → Real) (edges : Finset E)
-    (carrier : E → Finset X) (hcarrier : ∀ e ∈ edges, carrier e ⊆ U) :
-    (∑ S ∈ U.powerset, fejerWeight U p S *
-        ((edges.filter fun e ↦ carrier e ⊆ S).card : Real)) =
-      ∑ e ∈ edges, ∏ x ∈ carrier e, p x := by
-  simp_rw [Finset.cast_card, Finset.sum_filter]
-  simp_rw [Finset.mul_sum]
-  rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro e he
-  rw [← fejerWeight_event U (carrier e) p (hcarrier e he)]
-
-private lemma exists_subset_count_score {X E : Type*} [DecidableEq X]
-    [DecidableEq E] (U : Finset X) (p : X → Real)
-    (hp0 : ∀ x ∈ U, 0 ≤ p x) (hp1 : ∀ x ∈ U, p x ≤ 1)
-    (good bad : Finset E) (carrier : E → Finset X)
-    (hgood : ∀ e ∈ good, carrier e ⊆ U)
-    (hbad : ∀ e ∈ bad, carrier e ⊆ U) (eta A : Real)
-    (haverage : A ≤
-      eta * (∑ e ∈ good, ∏ x ∈ carrier e, p x) -
-        ∑ e ∈ bad, ∏ x ∈ carrier e, p x) :
-    ∃ S ⊆ U, A ≤
-      eta * ((good.filter fun e ↦ carrier e ⊆ S).card : Real) -
-        ((bad.filter fun e ↦ carrier e ⊆ S).card : Real) := by
-  let F : Finset X → Real := fun S ↦
-    eta * ((good.filter fun e ↦ carrier e ⊆ S).card : Real) -
-      ((bad.filter fun e ↦ carrier e ⊆ S).card : Real)
-  have hmean : A ≤
-      ∑ S ∈ U.powerset, fejerWeight U p S * F S := by
-    have hgoodMean := fejerWeight_count U p good carrier hgood
-    have hbadMean := fejerWeight_count U p bad carrier hbad
-    dsimp only [F]
-    calc
-      A ≤ eta * (∑ e ∈ good, ∏ x ∈ carrier e, p x) -
-          ∑ e ∈ bad, ∏ x ∈ carrier e, p x := haverage
-      _ = eta *
-            (∑ S ∈ U.powerset, fejerWeight U p S *
-              ((good.filter fun e ↦ carrier e ⊆ S).card : Real)) -
-          (∑ S ∈ U.powerset, fejerWeight U p S *
-              ((bad.filter fun e ↦ carrier e ⊆ S).card : Real)) := by
-        rw [hgoodMean, hbadMean]
-      _ = ∑ S ∈ U.powerset, fejerWeight U p S *
-          (eta * ((good.filter fun e ↦ carrier e ⊆ S).card : Real) -
-            ((bad.filter fun e ↦ carrier e ⊆ S).card : Real)) := by
-        rw [Finset.mul_sum, ← Finset.sum_sub_distrib]
-        apply Finset.sum_congr rfl
-        intro S _
-        ring
-  by_contra hno
-  push Not at hno
-  have hstrict :
-      (∑ S ∈ U.powerset, fejerWeight U p S * F S) < A := by
-    have hle : ∀ S ∈ U.powerset,
-        fejerWeight U p S * F S ≤ fejerWeight U p S * A := by
-      intro S hS
-      exact mul_le_mul_of_nonneg_left
-        (le_of_lt (hno S (Finset.mem_powerset.mp hS)))
-        (fejerWeight_nonneg U p hp0 hp1 S
-          (Finset.mem_powerset.mp hS))
-    have hex : ∃ T ∈ U.powerset, 0 < fejerWeight U p T := by
-      by_contra hz
-      push Not at hz
-      have hall : ∀ T ∈ U.powerset, fejerWeight U p T = 0 := by
-        intro T hT
-        exact le_antisymm (hz T hT)
-          (fejerWeight_nonneg U p hp0 hp1 T
-            (Finset.mem_powerset.mp hT))
-      have hsum := fejerWeight_sum U p
-      have : (∑ T ∈ U.powerset, fejerWeight U p T) = 0 := by
-        exact Finset.sum_eq_zero fun T hT ↦ hall T hT
-      rw [this] at hsum
-      norm_num at hsum
-    have hsumlt :
-        (∑ S ∈ U.powerset, fejerWeight U p S * F S) <
-          ∑ S ∈ U.powerset, fejerWeight U p S * A := by
-      apply Finset.sum_lt_sum hle
-      obtain ⟨T, hT, hTpos⟩ := hex
-      exact ⟨T, hT, mul_lt_mul_of_pos_left
-        (hno T (Finset.mem_powerset.mp hT)) hTpos⟩
-    have hright :
-        (∑ S ∈ U.powerset, fejerWeight U p S * A) = A := by
-      rw [← Finset.sum_mul, fejerWeight_sum]
-      simp
-    simpa only [hright] using hsumlt
-  exact (hmean.trans_lt hstrict).false
 
 /-! ## Arrangements as finite hyperedges -/
 
@@ -318,6 +58,7 @@ private noncomputable def fejerCarrier {N k : Nat}
 private lemma fejerCarrier_subset {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (R : GeneralArrangement N k 8)
     (hR : R.IsIn B) : fejerCarrier R ⊆ B := by
+  classical
   intro z hz
   rw [fejerCarrier, Finset.mem_image] at hz
   obtain ⟨i, -, rfl⟩ := hz
@@ -451,6 +192,7 @@ private def fejerIndexSign {N : Nat} (j : Fin 16) : ZMod N :=
 private lemma fejer_additive_iff {N : Nat} (x : Fin 16 → ZMod N) :
     IsAdditiveTuple (k := 8) x ↔
       ∑ j, fejerIndexSign (N := N) j * x j = 0 := by
+  classical
   let L := Finset.univ.filter fun j : Fin 16 ↦ (j : Nat) < 8
   let U := Finset.univ.filter fun j : Fin 16 ↦ 8 ≤ (j : Nat)
   have hcomp :
@@ -502,6 +244,7 @@ private lemma fejer_expect_phase {N k : Nat} [NeZero N]
     (𝔼 C : FejerPhase N k,
       exponential (∑ F, C F * rel F)) =
       if ∀ F, rel F = 0 then 1 else 0 := by
+  classical
   have hexp (C : FejerPhase N k) :
       exponential (∑ F, C F * rel F) =
         ∏ F, exponential (C F * rel F) := by
@@ -546,6 +289,7 @@ private lemma fejerEtaZero_moment {N k : Nat} [NeZero N]
     (R : GeneralArrangement N k 8) (hadd : IsAdditiveTuple R.crossSection)
     (A : Finset (Fin (k + 1))) :
     arrangementMoment R fejerEtaZero A = 0 := by
+  classical
   let A₀ : Finset (Fin k) :=
     Finset.univ.filter fun i ↦ i.castSucc ∈ A
   let P : ZMod N := ∏ i : Fin k, if i ∈ A₀ then -R.side i else 0
@@ -643,6 +387,7 @@ private lemma fejerEtaZero_moment {N k : Nat} [NeZero N]
 private lemma fejer_third_index {k : Nat}
     (u v : fejerIndex k) :
     ∃ w : fejerIndex k, w ≠ u ∧ w ≠ v := by
+  classical
   let e₀ : Fin k → Bool := fun _ ↦ false
   let z₀ : fejerIndex k := (e₀, (0 : Fin 16))
   let z₁ : fejerIndex k := (e₀, (1 : Fin 16))
@@ -658,6 +403,7 @@ private lemma fejer_injective_of_nondegenerate {N k : Nat} [NeZero N]
     (hN : 2 ≤ N) (R : GeneralArrangement N k 8)
     (hnondegenerate : ¬ R.IsDegenerate) :
     Function.Injective (fejerVertex R) := by
+  classical
   letI : Fact (1 < N) := ⟨by omega⟩
   intro u v huvVertex
   by_contra huv
@@ -734,6 +480,7 @@ private lemma fejerCarrier_prod_of_nondegenerate {N k : Nat} [NeZero N]
     (p : Point N (k + 1) → Real) :
     (∏ z ∈ fejerCarrier R, p z) =
       ∏ i : fejerIndex k, p (fejerVertex R i) := by
+  classical
   unfold fejerCarrier
   rw [Finset.prod_image
     (fejer_injective_of_nondegenerate hN R hnondegenerate).injOn]
@@ -923,6 +670,7 @@ private lemma fejerRelationInt_some {N k : Nat} [NeZero N]
     (phi : Point N (k + 1) → ZMod N) (R : GeneralArrangement N k 8) :
     fejerRelationInt eta (some A) phi R =
       arrangementMoment R (fun e j => eta (e, j)) A := by
+  classical
   unfold fejerRelationInt arrangementMoment fejerFeatureValue
   rw [Fintype.sum_prod_type]
   rfl
@@ -931,6 +679,7 @@ private lemma fejerRelationInt_etaZero_none {N k : Nat} [NeZero N]
     (phi : Point N (k + 1) → ZMod N) (R : GeneralArrangement N k 8) :
     fejerRelationInt fejerEtaZeroIdx none phi R =
       ∑ j : Fin 16, fejerIndexSign (N := N) j * R.cubeValue phi j := by
+  classical
   unfold fejerRelationInt fejerFeatureValue GeneralArrangement.cubeValue
   rw [Fintype.sum_prod_type, Finset.sum_comm]
   apply Finset.sum_congr rfl
@@ -960,6 +709,7 @@ private noncomputable def fejerMultiplePatterns {k : Nat} (m j : Nat) :
 private lemma fejer_digit_count_pos (m j : Nat) (hj : j ≤ m) :
     (Finset.univ.filter fun p : FejerDigit m => fejerDigitInt p = (j : Int)).card =
       m + 1 - j := by
+  classical
   have himg : (Finset.univ.filter fun p : FejerDigit m => fejerDigitInt p = (j : Int)) =
       (Finset.univ : Finset (Fin (m + 1 - j))).image
         (fun a : Fin (m + 1 - j) => ((⟨(a : Nat) + j, by have := a.isLt; omega⟩ : Fin (m + 1)),
@@ -985,6 +735,7 @@ private lemma fejer_digit_count (m j : Nat) (hj : j ≤ m) (s : Int)
     (hs : s = 1 ∨ s = -1) :
     (Finset.univ.filter fun p : FejerDigit m => fejerDigitInt p = (j : Int) * s).card =
       m + 1 - j := by
+  classical
   rcases hs with rfl | rfl
   · simpa using fejer_digit_count_pos m j hj
   · have himg : (Finset.univ.filter fun p : FejerDigit m =>
@@ -1008,6 +759,7 @@ private lemma fejer_digit_count (m j : Nat) (hj : j ≤ m) (s : Int)
 
 private lemma fejerMultiplePatterns_card {k : Nat} (m j : Nat) (hj : j ≤ m) :
     (fejerMultiplePatterns (k := k) m j).card = (m + 1 - j) ^ (2 ^ (k + 4)) := by
+  classical
   unfold fejerMultiplePatterns
   rw [Fintype.card_piFinset]
   rw [Finset.prod_congr rfl (fun z _ => fejer_digit_count m j hj (fejerEtaZeroIdx z)
@@ -1018,6 +770,7 @@ private lemma fejerMultiplePatterns_valid {N k : Nat} [NeZero N] (m j : Nat)
     (phi : Point N (k + 1) → ZMod N) (R : GeneralArrangement N k 8)
     (hadd : IsAdditiveTuple R.crossSection) (hres : R.IsRespected phi) :
     fejerMultiplePatterns (k := k) m j ⊆ fejerValidRelations m phi R := by
+  classical
   intro eps heps
   have hval : (fun z => fejerDigitInt (eps z)) = fun z => (j : Int) * fejerEtaZeroIdx z := by
     funext z
@@ -1038,6 +791,7 @@ private lemma fejerMultiplePatterns_valid {N k : Nat} [NeZero N] (m j : Nat)
 private lemma fejerMultiplePatterns_disjoint {k : Nat} (m : Nat) {j j' : Nat}
     (hjj : j ≠ j') :
     Disjoint (fejerMultiplePatterns (k := k) m j) (fejerMultiplePatterns (k := k) m j') := by
+  classical
   rw [Finset.disjoint_left]
   intro eps h1 h2
   have e1 := (Finset.mem_filter.mp (Fintype.mem_piFinset.mp h1 (fun _ => false, 0))).2
@@ -1054,6 +808,7 @@ private lemma fejerValidRelations_card_good {N k : Nat} [NeZero N] (m T : Nat)
     (hadd : IsAdditiveTuple R.crossSection) (hres : R.IsRespected phi) :
     ∑ j ∈ Finset.range T, (m + 1 - j) ^ (2 ^ (k + 4)) ≤
       (fejerValidRelations m phi R).card := by
+  classical
   have hsub : (Finset.range T).biUnion (fun j => fejerMultiplePatterns (k := k) m j) ⊆
       fejerValidRelations m phi R :=
     Finset.biUnion_subset.mpr fun j _ => fejerMultiplePatterns_valid m j phi R hadd hres
@@ -1080,6 +835,7 @@ private lemma fejerValidRelations_subset_diagonal {N k : Nat} [NeZero N]
     fejerValidRelations m phi R ⊆
       Fintype.piFinset fun _ : fejerIndex k =>
         Finset.univ.filter fun p : FejerDigit m => p.1 = p.2 := by
+  classical
   intro eps heps
   have hvalid := (Finset.mem_filter.mp heps).2
   have hmom : ∀ A, arrangementMoment R (fun e j => fejerDigitInt (eps (e, j))) A = 0 := by
@@ -1133,6 +889,7 @@ private lemma fejer_diagonal_card {k : Nat} (m : Nat) :
     (Fintype.piFinset fun _ : fejerIndex k =>
       Finset.univ.filter fun p : FejerDigit m => p.1 = p.2).card =
       (m + 1) ^ (2 ^ (k + 4)) := by
+  classical
   rw [Fintype.card_piFinset]
   have hdiag : (Finset.univ.filter fun p : FejerDigit m => p.1 = p.2) =
       (Finset.univ : Finset (Fin (m + 1))).image fun a => (a, a) := by
@@ -1251,6 +1008,7 @@ private noncomputable def fejerDegenerateFinset (N k m : Nat) [NeZero N] :
 private lemma fejerDegenerateFinset_card (N k m : Nat) [NeZero N] :
     (fejerDegenerateFinset N k m).card =
       degenerateGeneralArrangementCountWithin (N := N) (k := k) m 8 := by
+  classical
   unfold fejerDegenerateFinset degenerateGeneralArrangementCountWithin countWhere
   apply congrArg Finset.card
   ext R
@@ -1478,7 +1236,8 @@ private lemma fejer_loss_lower (k : Nat) (a : Real) (ha : 0 < a) (ha1 : a ≤ 1)
         calc (2 : Real) ^ (k + 7) ≤ 2 ^ (2 * (k + 5) + 2) :=
               pow_le_pow_right₀ (by norm_num) (by omega)
           _ = 4 * 2 ^ (2 * (k + 5)) := by rw [pow_add]; ring
-      rw [one_div_pow, h4, div_mul_div_comm, mul_one]
+      rw [one_div_pow, h4]
+      rw [div_mul_div_comm, mul_one]
       apply div_le_div_of_nonneg_left ha.le (by positivity) h5
     have h3 : a / 2 ^ (k + 7) ≤ (((M * T : Nat) : Real))⁻¹ := by
       rw [le_inv_comm₀ (by positivity) hMTpos]
@@ -1736,7 +1495,7 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
     have hR' := Finset.mem_sdiff.mp hR
     have hIsIn : R.IsIn B := by simpa [fejerArrangements] using hR'.1
     exact fejerCarrier_subset B R hIsIn
-  obtain ⟨S, hSB, hS⟩ := exists_subset_count_score B (fejerKernelWeight m C phi)
+  obtain ⟨S, hSB, hS⟩ := _root_.LeanProofs.GowersSzemeredi.exists_subset_count_score B (fejerKernelWeight m C phi)
     (fun z _ ↦ fejerKernelWeight_nonneg m C phi z) (fun z _ ↦ fejerKernelWeight_le_one m C phi z)
     (fejerGoodArrangements B phi) (fejerBadArrangements B phi) fejerCarrier
     hgoodCarrier hbadCarrier eta (eta * t * G) hcarrierAverage

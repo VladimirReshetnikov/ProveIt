@@ -1,3 +1,4 @@
+import GowersSzemeredi.Proofs12BernoulliSelection
 import GowersSzemeredi.Proofs15DegenerateArrangements
 import GowersSzemeredi.Proofs15SelectionMargin
 
@@ -20,266 +21,6 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-/-! ## Finite Bernoulli averaging -/
-
-private def selectionWeight {X : Type*} [DecidableEq X]
-    (U : Finset X) (p : X → Real) (S : Finset X) : Real :=
-  (∏ x ∈ S, p x) * ∏ x ∈ U \ S, (1 - p x)
-
-private lemma selectionWeight_nonneg {X : Type*} [DecidableEq X]
-    (U : Finset X) (p : X → Real) (hp0 : ∀ x ∈ U, 0 ≤ p x)
-    (hp1 : ∀ x ∈ U, p x ≤ 1) (S : Finset X) (hS : S ⊆ U) :
-    0 ≤ selectionWeight U p S := by
-  apply mul_nonneg
-  · exact Finset.prod_nonneg fun x hx ↦ hp0 x (hS hx)
-  · exact Finset.prod_nonneg fun x hx ↦
-      sub_nonneg.mpr (hp1 x (Finset.mem_sdiff.mp hx).1)
-
-private lemma selectionWeight_insert {X : Type*} [DecidableEq X]
-    (U : Finset X) (p : X → Real) (a : X) (ha : a ∉ U) (S : Finset X)
-    (hS : S ⊆ U) :
-    selectionWeight (insert a U) p (insert a S) =
-      p a * selectionWeight U p S := by
-  simp only [selectionWeight]
-  rw [Finset.prod_insert (notMem_mono hS ha)]
-  have hdiff : insert a U \ insert a S = U \ S := by
-    ext x
-    simp only [mem_sdiff, mem_insert]
-    aesop
-  rw [hdiff]
-  ring
-
-private lemma selectionWeight_not_insert {X : Type*} [DecidableEq X]
-    (U : Finset X) (p : X → Real) (a : X) (ha : a ∉ U) (S : Finset X)
-    (hS : S ⊆ U) :
-    selectionWeight (insert a U) p S =
-      (1 - p a) * selectionWeight U p S := by
-  simp only [selectionWeight]
-  have haS : a ∉ S := fun h ↦ ha (hS h)
-  have hdiff : insert a U \ S = insert a (U \ S) := by
-    ext x
-    simp only [mem_sdiff, mem_insert]
-    aesop
-  rw [hdiff, Finset.prod_insert]
-  · ring
-  · simp [ha]
-
-private lemma selectionWeight_sum {X : Type*} [DecidableEq X]
-    (U : Finset X) (p : X → Real) :
-    ∑ S ∈ U.powerset, selectionWeight U p S = 1 := by
-  induction U using Finset.induction_on with
-  | empty => simp [selectionWeight]
-  | @insert a U ha ih =>
-      rw [Finset.sum_powerset_insert ha]
-      have hleft :
-          (∑ S ∈ U.powerset, selectionWeight (insert a U) p S) =
-            (1 - p a) * ∑ S ∈ U.powerset, selectionWeight U p S := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro S hS
-        rw [selectionWeight_not_insert U p a ha S
-          (Finset.mem_powerset.mp hS)]
-      have hright :
-          (∑ S ∈ U.powerset, selectionWeight (insert a U) p (insert a S)) =
-            p a * ∑ S ∈ U.powerset, selectionWeight U p S := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro S hS
-        rw [selectionWeight_insert U p a ha S
-          (Finset.mem_powerset.mp hS)]
-      rw [hleft, hright, ih]
-      ring
-
-private lemma selectionWeight_event {X : Type*} [DecidableEq X]
-    (U C : Finset X) (p : X → Real) (hC : C ⊆ U) :
-    ∑ S ∈ U.powerset, selectionWeight U p S * (if C ⊆ S then 1 else 0) =
-      ∏ x ∈ C, p x := by
-  induction U using Finset.induction_on generalizing C with
-  | empty =>
-      have hC0 : C = ∅ := Finset.eq_empty_iff_forall_notMem.mpr fun x hx ↦
-        (Finset.notMem_empty x) (hC hx)
-      subst C
-      simp [selectionWeight]
-  | @insert a U ha ih =>
-      rw [Finset.sum_powerset_insert ha]
-      by_cases haC : a ∈ C
-      · let C₀ := C.erase a
-        have hCeq : C = insert a C₀ := (Finset.insert_erase haC).symm
-        have hC₀ : C₀ ⊆ U := by
-          intro x hx
-          have hxC : x ∈ C := Finset.mem_of_mem_erase hx
-          rcases Finset.mem_insert.mp (hC hxC) with hxa | hxU
-          · subst x
-            exact (Finset.notMem_erase a C hx).elim
-          · exact hxU
-        have haC₀ : a ∉ C₀ := Finset.notMem_erase _ _
-        have hfalse (S : Finset X) (hS : S ∈ U.powerset) : ¬ C ⊆ S := by
-          intro hCS
-          exact ha (Finset.mem_powerset.mp hS (hCS haC))
-        have hins (S : Finset X) (_ : S ∈ U.powerset) :
-            (C ⊆ insert a S) ↔ C₀ ⊆ S := by
-          rw [hCeq, Finset.insert_subset_iff]
-          constructor
-          · rintro ⟨-, hsub⟩ x hx
-            rcases Finset.mem_insert.mp (hsub hx) with hxa | hxS
-            · subst x
-              exact (haC₀ hx).elim
-            · exact hxS
-          · intro hsub
-            exact ⟨Finset.mem_insert_self _ _, fun x hx ↦
-              Finset.mem_insert_of_mem (hsub hx)⟩
-        have hleft :
-            (∑ S ∈ U.powerset,
-              selectionWeight (insert a U) p S *
-                (if C ⊆ S then 1 else 0)) = 0 := by
-          apply Finset.sum_eq_zero
-          intro S hS
-          rw [if_neg (hfalse S hS), mul_zero]
-        have hright :
-            (∑ S ∈ U.powerset,
-              selectionWeight (insert a U) p (insert a S) *
-                (if C ⊆ insert a S then 1 else 0)) =
-              p a * ∑ S ∈ U.powerset,
-                selectionWeight U p S * (if C₀ ⊆ S then 1 else 0) := by
-          rw [Finset.mul_sum]
-          apply Finset.sum_congr rfl
-          intro S hS
-          rw [selectionWeight_insert U p a ha S
-            (Finset.mem_powerset.mp hS)]
-          simp only [hins S hS]
-          ring
-        rw [hleft, zero_add, hright, ih C₀ hC₀, hCeq,
-          Finset.prod_insert haC₀]
-      · have hCU : C ⊆ U := by
-          intro x hx
-          rcases Finset.mem_insert.mp (hC hx) with hxa | hxU
-          · subst x
-            exact (haC hx).elim
-          · exact hxU
-        have hevent (S : Finset X) (_ : S ∈ U.powerset) :
-            (C ⊆ insert a S) ↔ C ⊆ S := by
-          constructor
-          · intro hsub x hx
-            rcases Finset.mem_insert.mp (hsub hx) with hxa | hxS
-            · subst x
-              exact (haC hx).elim
-            · exact hxS
-          · exact fun hsub ↦ hsub.trans (Finset.subset_insert _ _)
-        have hleft :
-            (∑ S ∈ U.powerset,
-              selectionWeight (insert a U) p S *
-                (if C ⊆ S then 1 else 0)) =
-              (1 - p a) * ∑ S ∈ U.powerset,
-                selectionWeight U p S * (if C ⊆ S then 1 else 0) := by
-          rw [Finset.mul_sum]
-          apply Finset.sum_congr rfl
-          intro S hS
-          rw [selectionWeight_not_insert U p a ha S
-            (Finset.mem_powerset.mp hS)]
-          ring
-        have hright :
-            (∑ S ∈ U.powerset,
-              selectionWeight (insert a U) p (insert a S) *
-                (if C ⊆ insert a S then 1 else 0)) =
-              p a * ∑ S ∈ U.powerset,
-                selectionWeight U p S * (if C ⊆ S then 1 else 0) := by
-          rw [Finset.mul_sum]
-          apply Finset.sum_congr rfl
-          intro S hS
-          rw [selectionWeight_insert U p a ha S
-            (Finset.mem_powerset.mp hS)]
-          simp only [hevent S hS]
-          ring
-        rw [hleft, hright, ih C hCU]
-        ring
-
-private lemma selectionWeight_count {X E : Type*} [DecidableEq X]
-    [DecidableEq E] (U : Finset X) (p : X → Real) (edges : Finset E)
-    (carrier : E → Finset X) (hcarrier : ∀ e ∈ edges, carrier e ⊆ U) :
-    (∑ S ∈ U.powerset, selectionWeight U p S *
-        ((edges.filter fun e ↦ carrier e ⊆ S).card : Real)) =
-      ∑ e ∈ edges, ∏ x ∈ carrier e, p x := by
-  simp_rw [Finset.cast_card, Finset.sum_filter]
-  simp_rw [Finset.mul_sum]
-  rw [Finset.sum_comm]
-  apply Finset.sum_congr rfl
-  intro e he
-  rw [← selectionWeight_event U (carrier e) p (hcarrier e he)]
-
-private lemma exists_subset_count_score {X E : Type*} [DecidableEq X]
-    [DecidableEq E] (U : Finset X) (p : X → Real)
-    (hp0 : ∀ x ∈ U, 0 ≤ p x) (hp1 : ∀ x ∈ U, p x ≤ 1)
-    (good bad : Finset E) (carrier : E → Finset X)
-    (hgood : ∀ e ∈ good, carrier e ⊆ U)
-    (hbad : ∀ e ∈ bad, carrier e ⊆ U) (eta A : Real)
-    (haverage : A ≤
-      eta * (∑ e ∈ good, ∏ x ∈ carrier e, p x) -
-        ∑ e ∈ bad, ∏ x ∈ carrier e, p x) :
-    ∃ S ⊆ U, A ≤
-      eta * ((good.filter fun e ↦ carrier e ⊆ S).card : Real) -
-        ((bad.filter fun e ↦ carrier e ⊆ S).card : Real) := by
-  let F : Finset X → Real := fun S ↦
-    eta * ((good.filter fun e ↦ carrier e ⊆ S).card : Real) -
-      ((bad.filter fun e ↦ carrier e ⊆ S).card : Real)
-  have hmean : A ≤
-      ∑ S ∈ U.powerset, selectionWeight U p S * F S := by
-    have hgoodMean := selectionWeight_count U p good carrier hgood
-    have hbadMean := selectionWeight_count U p bad carrier hbad
-    dsimp only [F]
-    calc
-      A ≤ eta * (∑ e ∈ good, ∏ x ∈ carrier e, p x) -
-          ∑ e ∈ bad, ∏ x ∈ carrier e, p x := haverage
-      _ = eta *
-            (∑ S ∈ U.powerset, selectionWeight U p S *
-              ((good.filter fun e ↦ carrier e ⊆ S).card : Real)) -
-          (∑ S ∈ U.powerset, selectionWeight U p S *
-              ((bad.filter fun e ↦ carrier e ⊆ S).card : Real)) := by
-        rw [hgoodMean, hbadMean]
-      _ = ∑ S ∈ U.powerset, selectionWeight U p S *
-          (eta * ((good.filter fun e ↦ carrier e ⊆ S).card : Real) -
-            ((bad.filter fun e ↦ carrier e ⊆ S).card : Real)) := by
-        rw [Finset.mul_sum, ← Finset.sum_sub_distrib]
-        apply Finset.sum_congr rfl
-        intro S _
-        ring
-  by_contra hno
-  push Not at hno
-  have hstrict :
-      (∑ S ∈ U.powerset, selectionWeight U p S * F S) < A := by
-    have hle : ∀ S ∈ U.powerset,
-        selectionWeight U p S * F S ≤ selectionWeight U p S * A := by
-      intro S hS
-      exact mul_le_mul_of_nonneg_left
-        (le_of_lt (hno S (Finset.mem_powerset.mp hS)))
-        (selectionWeight_nonneg U p hp0 hp1 S
-          (Finset.mem_powerset.mp hS))
-    have hex : ∃ T ∈ U.powerset, 0 < selectionWeight U p T := by
-      by_contra hz
-      push Not at hz
-      have hall : ∀ T ∈ U.powerset, selectionWeight U p T = 0 := by
-        intro T hT
-        exact le_antisymm (hz T hT)
-          (selectionWeight_nonneg U p hp0 hp1 T
-            (Finset.mem_powerset.mp hT))
-      have hsum := selectionWeight_sum U p
-      have : (∑ T ∈ U.powerset, selectionWeight U p T) = 0 := by
-        exact Finset.sum_eq_zero fun T hT ↦ hall T hT
-      rw [this] at hsum
-      norm_num at hsum
-    have hsumlt :
-        (∑ S ∈ U.powerset, selectionWeight U p S * F S) <
-          ∑ S ∈ U.powerset, selectionWeight U p S * A := by
-      apply Finset.sum_lt_sum hle
-      obtain ⟨T, hT, hTpos⟩ := hex
-      exact ⟨T, hT, mul_lt_mul_of_pos_left
-        (hno T (Finset.mem_powerset.mp hT)) hTpos⟩
-    have hright :
-        (∑ S ∈ U.powerset, selectionWeight U p S * A) = A := by
-      rw [← Finset.sum_mul, selectionWeight_sum]
-      simp
-    simpa only [hright] using hsumlt
-  exact (hmean.trans_lt hstrict).false
-
 /-! ## Arrangements as finite hyperedges -/
 
 private abbrev selectionIndex (k : Nat) :=
@@ -297,6 +38,7 @@ private noncomputable def selectionCarrier {N k : Nat}
 private lemma selectionCarrier_subset {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (R : GeneralArrangement N k 8)
     (hR : R.IsIn B) : selectionCarrier R ⊆ B := by
+  classical
   intro z hz
   rw [selectionCarrier, Finset.mem_image] at hz
   obtain ⟨i, -, rfl⟩ := hz
@@ -438,6 +180,7 @@ private def selectionIndexSign {N : Nat} (j : Fin 16) : ZMod N :=
 private lemma selection_additive_iff {N : Nat} (x : Fin 16 → ZMod N) :
     IsAdditiveTuple (k := 8) x ↔
       ∑ j, selectionIndexSign (N := N) j * x j = 0 := by
+  classical
   let L := Finset.univ.filter fun j : Fin 16 ↦ (j : Nat) < 8
   let U := Finset.univ.filter fun j : Fin 16 ↦ 8 ≤ (j : Nat)
   have hcomp :
@@ -641,7 +384,8 @@ private lemma oneStageSelectionWeight_complex {N k : Nat} [NeZero N]
     ring
   unfold oneStageSelectionWeight
   push_cast
-  rw [Complex.normSq_eq_conj_mul_self, hsum, div_eq_mul_inv, mul_comm _ (4 : Complex)⁻¹]
+  rw [Complex.normSq_eq_conj_mul_self, hsum]
+  rw [div_eq_mul_inv, mul_comm _ (4 : Complex)⁻¹]
   change ((4 : Complex)⁻¹ * ((star (1 + u)) * (1 + u))) =
     (4 : Complex)⁻¹ * (2 + u + star u)
   congr 1
@@ -707,6 +451,7 @@ lemma selection_expect_pi_prod {I C : Type*} [Fintype I]
     [Fintype C] [Nonempty C] (f : I → C → Complex) :
     (𝔼 g : I → C, ∏ i : I, f i (g i)) =
       ∏ i : I, 𝔼 c : C, f i c := by
+  classical
   simp only [Finset.expect_univ, Fintype.card_fun]
   rw [← Fintype.prod_sum]
   simp only [NNRat.smul_def, NNRat.cast_inv, NNRat.cast_natCast,
@@ -719,6 +464,7 @@ private lemma selection_expect_phase {N k : Nat} [NeZero N]
     (𝔼 C : SelectionPhase N k,
       exponential (∑ F, C F * rel F)) =
       if ∀ F, rel F = 0 then 1 else 0 := by
+  classical
   have hexp (C : SelectionPhase N k) :
       exponential (∑ F, C F * rel F) =
         ∏ F, exponential (C F * rel F) := by
@@ -803,6 +549,7 @@ private lemma selectionRelation_some {N k : Nat} [NeZero N]
     (phi : Point N (k + 1) → ZMod N) (R : GeneralArrangement N k 8) :
     selectionRelation eps (some A) phi R =
       arrangementMoment R (selectionEta eps) A := by
+  classical
   unfold selectionRelation arrangementMoment selectionFeatureValue selectionEta
   rw [Fintype.sum_prod_type]
   rfl
@@ -906,6 +653,7 @@ private lemma selection_multiple_classification {N k : Nat} [NeZero N]
       (fun z ↦ arrangementParityCoefficient (N := N) (d := 8) z.1 z.2)) :
     (∀ z, selectionDigit (N := N) (eps z) = 0) ∨
       eps = selectionCanonicalDigit ∨ eps = selectionNegativeCanonicalDigit := by
+  classical
   rcases hmultiple with ⟨q, hq⟩
   let z₀ : selectionIndex k := (fun _ ↦ false, (0 : Fin 16))
   have heta₀ : arrangementParityCoefficient (N := N) (d := 8)
@@ -975,6 +723,7 @@ lemma selection_parity_cube_sum_subset {N k : Nat} [NeZero N]
     (∑ e : Fin k → Bool, parityCharacter (N := N) e *
       ∏ i ∈ A, (y i + if e i then h i else 0)) =
       ∏ i : Fin k, if i ∈ A then -h i else 0 := by
+  classical
   have hprod (e : Fin k → Bool) :
       (∏ i ∈ A, (y i + if e i then h i else 0)) =
         ∏ i : Fin k,
@@ -1005,6 +754,7 @@ lemma selection_vertex_product_split {N k : Nat}
       (∏ i : Fin k, if i.castSucc ∈ A then
         (R.base j i + if e i then R.side i else 0) else 1) *
       (if Fin.last k ∈ A then R.crossSection j else 1) := by
+  classical
   calc
     (∏ i ∈ A, R.vertex e j i) =
         ∏ i : Fin (k + 1), if i ∈ A then R.vertex e j i else 1 := by
@@ -1025,6 +775,7 @@ private lemma selectionEtaZero_moment {N k : Nat} [NeZero N]
     (R : GeneralArrangement N k 8) (hadd : IsAdditiveTuple R.crossSection)
     (A : Finset (Fin (k + 1))) :
     arrangementMoment R selectionEtaZero A = 0 := by
+  classical
   let A₀ : Finset (Fin k) :=
     Finset.univ.filter fun i ↦ i.castSucc ∈ A
   let P : ZMod N := ∏ i : Fin k, if i ∈ A₀ then -R.side i else 0
@@ -1144,6 +895,7 @@ private lemma selectionRelation_negative {N k : Nat} [NeZero N]
     (R : GeneralArrangement N k 8) :
     selectionRelation selectionNegativeCanonicalDigit F phi R =
       -selectionRelation selectionCanonicalDigit F phi R := by
+  classical
   unfold selectionRelation
   rw [← Finset.sum_neg_distrib]
   apply Finset.sum_congr rfl
@@ -1157,6 +909,7 @@ private lemma selectionRelation_canonical_none_iff {N k : Nat} [NeZero N]
       R.IsRespected phi := by
   have heq : selectionRelation selectionCanonicalDigit none phi R =
       ∑ j : Fin 16, selectionIndexSign (N := N) j * R.cubeValue phi j := by
+    classical
     unfold selectionRelation selectionFeatureValue GeneralArrangement.cubeValue
     rw [Fintype.sum_prod_type, Finset.sum_comm]
     apply Finset.sum_congr rfl
@@ -1203,6 +956,7 @@ private lemma selection_zeroDigit_card (N : Nat) (hN : 3 ≤ N) :
 
 private lemma selectionZeroRelations_card (N k : Nat) (hN : 3 ≤ N) :
     (selectionZeroRelations N k).card = 2 ^ (2 ^ (k + 4)) := by
+  classical
   letI : Fact (1 < N) := ⟨by omega⟩
   have hdigit := selection_zeroDigit_card N hN
   unfold selectionZeroRelations
@@ -1225,6 +979,7 @@ private lemma selectionZeroRelations_card (N k : Nat) (hN : 3 ≤ N) :
 
 private lemma selectionCanonical_not_zeroRelation (N k : Nat) (hN : 3 ≤ N) :
     selectionCanonicalDigit (k := k) ∉ selectionZeroRelations N k := by
+  classical
   letI : NeZero N := ⟨by omega⟩
   letI : Fact (1 < N) := ⟨by omega⟩
   simp only [selectionZeroRelations, Finset.mem_filter, Finset.mem_univ, true_and]
@@ -1240,6 +995,7 @@ private lemma selectionCanonical_not_zeroRelation (N k : Nat) (hN : 3 ≤ N) :
 private lemma selectionNegativeCanonical_not_zeroRelation
     (N k : Nat) (hN : 3 ≤ N) :
     selectionNegativeCanonicalDigit (k := k) ∉ selectionZeroRelations N k := by
+  classical
   letI : NeZero N := ⟨by omega⟩
   letI : Fact (1 < N) := ⟨by omega⟩
   simp only [selectionZeroRelations, Finset.mem_filter, Finset.mem_univ, true_and]
@@ -1277,6 +1033,7 @@ private lemma selectionValidRelations_eq_zero_of_nondegenerate
     (phi : Point N (k + 1) → ZMod N) (R : GeneralArrangement N k 8)
     (hnondegenerate : ¬ R.IsDegenerate) (hbad : ¬ R.IsRespected phi) :
     selectionValidRelations phi R = selectionZeroRelations N k := by
+  classical
   ext eps
   simp only [selectionValidRelations, selectionZeroRelations,
     Finset.mem_filter, Finset.mem_univ, true_and]
@@ -1305,6 +1062,7 @@ private lemma selectionValidRelations_eq_insert_of_nondegenerate
     selectionValidRelations phi R =
       insert selectionCanonicalDigit
         (insert selectionNegativeCanonicalDigit (selectionZeroRelations N k)) := by
+  classical
   ext eps
   simp only [selectionValidRelations, selectionZeroRelations,
     Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_insert]
@@ -1335,6 +1093,7 @@ private lemma selectionValidRelations_card_good {N k : Nat} [NeZero N]
     (R : GeneralArrangement N k 8) (hadd : IsAdditiveTuple R.crossSection)
     (hnondegenerate : ¬ R.IsDegenerate) (hgood : R.IsRespected phi) :
     (selectionValidRelations phi R).card = 2 ^ (2 ^ (k + 4)) + 2 := by
+  classical
   rw [selectionValidRelations_eq_insert_of_nondegenerate hN phi R hadd
     hnondegenerate hgood]
   rw [Finset.card_insert_of_notMem]
@@ -1374,7 +1133,8 @@ private lemma selection_good_average_base {N k : Nat} [NeZero N]
       ((2 : Real)⁻¹) ^ (2 * M) := by
     rw [show (4 : Real)⁻¹ = ((2 : Real)⁻¹) ^ 2 by norm_num,
       ← pow_mul]
-  rw [hfour, show 2 * M = M + M by omega, pow_add]
+  rw [hfour]
+  rw [show 2 * M = M + M by omega, pow_add]
   ring
 
 private lemma selection_bad_average_base {N k : Nat} [NeZero N]
@@ -1391,6 +1151,7 @@ private lemma selection_bad_average_base {N k : Nat} [NeZero N]
 private lemma selection_third_index {k : Nat}
     (u v : selectionIndex k) :
     ∃ w : selectionIndex k, w ≠ u ∧ w ≠ v := by
+  classical
   let e₀ : Fin k → Bool := fun _ ↦ false
   let z₀ : selectionIndex k := (e₀, (0 : Fin 16))
   let z₁ : selectionIndex k := (e₀, (1 : Fin 16))
@@ -1406,6 +1167,7 @@ private lemma selection_injective_of_nondegenerate {N k : Nat} [NeZero N]
     (hN : 2 ≤ N) (R : GeneralArrangement N k 8)
     (hnondegenerate : ¬ R.IsDegenerate) :
     Function.Injective (selectionVertex R) := by
+  classical
   letI : Fact (1 < N) := ⟨by omega⟩
   intro u v huvVertex
   by_contra huv
@@ -1482,6 +1244,7 @@ private lemma selectionCarrier_prod_of_nondegenerate {N k : Nat} [NeZero N]
     (p : Point N (k + 1) → Real) :
     (∏ z ∈ selectionCarrier R, p z) =
       ∏ i : selectionIndex k, p (selectionVertex R i) := by
+  classical
   unfold selectionCarrier
   rw [Finset.prod_image
     (selection_injective_of_nondegenerate hN R hnondegenerate).injOn]
@@ -1492,6 +1255,7 @@ private lemma selection_expect_pi_prod_real {I C : Type*} [Fintype I]
     [DecidableEq I] [Fintype C] [Nonempty C] (f : I → C → Real) :
     (𝔼 g : I → C, ∏ i : I, f i (g i)) =
       ∏ i : I, 𝔼 c : C, f i c := by
+  classical
   simp only [Finset.expect_univ, Fintype.card_fun]
   rw [← Fintype.prod_sum]
   simp only [NNRat.smul_def, NNRat.cast_inv, NNRat.cast_natCast,
@@ -1527,6 +1291,7 @@ private lemma selection_multiStage_indexed_average {N k r : Nat} [NeZero N]
         multiStageSelectionWeight C phi (selectionVertex R z)) =
       (((4 : Real)⁻¹) ^ (2 ^ (k + 4)) *
         (selectionValidRelations phi R).card) ^ r := by
+  classical
   calc
     (𝔼 C : Fin r → SelectionPhase N k,
         ∏ z : selectionIndex k,
@@ -1666,6 +1431,7 @@ private noncomputable def selectionDegenerateFinset (N k : Nat) [NeZero N] :
 private lemma selectionDegenerateFinset_card (N k : Nat) [NeZero N] :
     (selectionDegenerateFinset N k).card =
       degenerateGeneralArrangementCount (N := N) (k := k) 8 := by
+  classical
   unfold selectionDegenerateFinset degenerateGeneralArrangementCount countWhere
   apply congrArg Finset.card
   ext R
@@ -2078,7 +1844,8 @@ private def selectionZeroDoubleExceptEquiv (i j : Fin 16) (hij : i ≠ j) :
 
 private lemma selectionZero_doubleExcept_card (i j : Fin 16) (hij : i ≠ j) :
     Fintype.card {q : Fin 16 // q ≠ i ∧ q ≠ j} = 14 := by
-  rw [Fintype.card_congr (selectionZeroDoubleExceptEquiv i j hij), Fintype.card_subtype_compl]
+  rw [Fintype.card_congr (selectionZeroDoubleExceptEquiv i j hij)]
+  rw [Fintype.card_subtype_compl]
   simp
 
 private lemma selectionZero_sum_mul_sub_eq_two {N : Nat}
@@ -2086,6 +1853,7 @@ private lemma selectionZero_sum_mul_sub_eq_two {N : Nat}
     (hoff : ∀ q, q ≠ i → q ≠ j → x q = y q) :
     (∑ q, f q * x q) - (∑ q, f q * y q) =
       f i * (x i - y i) + f j * (x j - y j) := by
+  classical
   rw [← Finset.sum_sub_distrib]
   calc
     (∑ q, (f q * x q - f q * y q)) =
@@ -2135,6 +1903,7 @@ private lemma selectionZeroRelationSolutions_card_le {N : Nat} [NeZero N]
     (hnoncanonical : selectionZeroNoncanonical (N := N) eps) :
     Fintype.card (SelectionZeroRelationSolutions (N := N) eps) ≤
       2 * N ^ 14 := by
+  classical
   obtain ⟨j, hj0, hcne⟩ :=
     selectionZero_exists_reducedCoefficient eps hnoncanonical
   let c := selectionZeroReducedCoefficient (N := N) eps j
@@ -2300,6 +2069,7 @@ private lemma selectionZeroRelationFinset_card_le {N : Nat} [NeZero N]
 private lemma selectionZeroExceptionalFinset_card_le {N : Nat} [NeZero N]
     (hN : 3 ≤ N) :
     (selectionZeroExceptionalFinset N).card ≤ (2 * 4 ^ 16) * N ^ 14 := by
+  classical
   calc
     (selectionZeroExceptionalFinset N).card ≤
         ∑ eps ∈ selectionZeroPatternFinset N,
@@ -2340,6 +2110,7 @@ private lemma selectionZero_moment_univ {N : Nat} [NeZero N]
     (eta : (Fin 0 → Bool) → Fin 16 → Int) :
     arrangementMoment R eta Finset.univ =
       ∑ j, (eta selectionZeroBool j : ZMod N) * R.crossSection j := by
+  classical
   unfold arrangementMoment
   rw [Finset.sum_eq_single selectionZeroBool]
   · apply Finset.sum_congr rfl
@@ -2769,7 +2540,7 @@ private theorem selection_scale_estimate_of_exceptional_bound_explicit
       have hmem := (Finset.mem_sdiff.mp hR).1
       have hIsIn : R.IsIn B := by simpa [selectionArrangements] using hmem
       exact selectionCarrier_subset B R hIsIn
-    obtain ⟨B', hB'B, hscore⟩ := exists_subset_count_score
+    obtain ⟨B', hB'B, hscore⟩ := _root_.LeanProofs.GowersSzemeredi.exists_subset_count_score
       B (multiStageSelectionWeight C phi)
       (fun z _ ↦ multiStageSelectionWeight_nonneg C phi z)
       (fun z _ ↦ multiStageSelectionWeight_le_one C phi z)

@@ -1,0 +1,151 @@
+{
+  "status": "source-only prospective research; not Lean tested",
+  "baseline_source_commit": "6a753d0702d1691c25a21bdbdb58e29412931be5",
+  "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+  "changed_declaration": "LeanProofs.GowersSzemeredi.GenParamsJT3.slice_exps_inv_leJT3",
+  "old_start_line": 623,
+  "baseline_sha256": "fbd777fbe70e0f734cfdfb33e8d293f4a7e0790030b44cf9b7d87be5c0fe9036",
+  "draft_sha256": "fba4fef9927291e1365d8af6ea13571c1bd936dd3933f9724a88180be8cbc41d",
+  "preservation": {
+    "all_parsed_declarations": 48,
+    "theorem_lemma_count": 20,
+    "non_theorem_count": 28,
+    "all_complete_headers_and_contexts_exact": true,
+    "all_other_declaration_blocks_exact": true,
+    "entire_prefix_and_suffix_outside_one_body_exact": true,
+    "imports_exact": true,
+    "new_helpers": 0,
+    "new_hypotheses": 0,
+    "new_imports": 0,
+    "definition_changes": 0
+  },
+  "statement": "theorem slice_exps_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha)\n    (ha2 : alpha ≤ 1 / 2) :\n    (P.Eth alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ (rhoDegJT3 P.k P.μ0 + tDegT3 P.k + 9))",
+  "context": [
+    "variable (P : GenParamsJT3) {alpha : Real}"
+  ],
+  "lines": {
+    "old_owner": 827,
+    "new_owner": 809,
+    "source_delta": -18,
+    "old_tactic_body": 35,
+    "new_tactic_body": 17,
+    "proof_delta": -18
+  },
+  "existing_providers": [
+    {
+      "owner": "Proofs18GenericEnvelopeBase.lean",
+      "name": "density_div_bounds_pw",
+      "line": 71,
+      "purpose": "A single division by 4 preserves positivity and at-most-one, and adds one reciprocal envelope degree."
+    },
+    {
+      "owner": "Proofs18GenericEnvelopeBase.lean",
+      "name": "four_le_pw_one",
+      "line": 633,
+      "purpose": "4 ≤ X² for X ≥ 2."
+    },
+    {
+      "owner": "Proofs18GenericEnvelopeBase.lean",
+      "name": "GenParams.rho_step",
+      "line": 431,
+      "purpose": "Rho reciprocal at degree rhoDegJT3+2."
+    },
+    {
+      "owner": "Proofs18GenericEnvelopeBase.lean",
+      "name": "GenParams.thetaS_step",
+      "line": 446,
+      "purpose": "ThS reciprocal at degree rhoDegJT3+5."
+    },
+    {
+      "owner": "Proofs18FinalClasses.lean",
+      "name": "uCount_scale_le_deg",
+      "line": 100,
+      "purpose": "Apply once at the actual ThS/4 scale."
+    }
+  ],
+  "mathematical_argument": [
+    "Set X=2/alpha and r=rhoDegJT3(P.k,P.mu0). Existing hypotheses give X≥2; rhoDegJT3_ge gives P.mu0≤r and r≥1.",
+    "rho_step and thetaS_step give 0<ThS≤1 and ThS inverse ≤ X^(2^(r+5)). The definitions Rho=spectrumPieceRho(t↦t/2)Rho1 and ThS=singlePieceTheta Rho 1 are reducible.",
+    "four_le_pw_one followed by pw_mono gives 4≤X^(2^(r+5)). density_div_bounds_pw gives 0<ThS/4≤1 and its inverse ≤X^(2^(r+6)).",
+    "uCount_scale_le_deg at c=r+6 and D=uDegT3(k)=2^tDegT3(k) gives uCount≤X^(2^(r+7+tDegT3(k))).",
+    "Eth is the inverse of that same uCount. inv_inv and monotonicity in the natural exponent yield the unchanged bound at degree r+tDegT3(k)+9. No k≥1 hypothesis or tightened endpoint is introduced."
+  ],
+  "type_review_notes": [
+    "The local hS is instantiated before the division helper, so its degree and density are determined. The explicit 1≤4 type fixes the divisor to Real. The uCount call explicitly fixes c, D and muD. Remaining Definitional equalities are exactly the existing Rho/ThS/B/Eth/uExp definitions.",
+    "No local helper is introduced. This removes the old forall s,m half-scale detour and applies the existing public general count estimate directly."
+  ],
+  "scope": {
+    "module_graph_unchanged": true,
+    "import_cycle_change": false,
+    "earlier_consumer_growth": 0,
+    "root_line_delta_when_owner_reachable": -18,
+    "root_line_delta_otherwise": 0,
+    "no_broad_graph_or_native_validation_pack_constructed": true,
+    "key_routes": {
+      "original_final": {
+        "owner_reachable": false,
+        "module_delta": 0,
+        "source_and_proof_delta": 0,
+        "post_next547_source_lines": 123416,
+        "post_next547_plus_candidate_source_lines": 123416
+      },
+      "stronger_final": {
+        "owner_reachable": true,
+        "module_delta": 0,
+        "source_and_proof_delta": -18,
+        "post_next547_source_lines": 137195,
+        "post_next547_plus_candidate_source_lines": 137177
+      },
+      "core": {
+        "owner_reachable": true,
+        "module_delta": 0,
+        "source_and_proof_delta": -18,
+        "post_next547_source_lines": 124187,
+        "post_next547_plus_candidate_source_lines": 124169
+      },
+      "shared": {
+        "owner_reachable": true,
+        "module_delta": 0,
+        "source_and_proof_delta": -18,
+        "post_next547_source_lines": 277732,
+        "post_next547_plus_candidate_source_lines": 277714
+      },
+      "supplemental": {
+        "owner_reachable": false,
+        "module_delta": 0,
+        "source_and_proof_delta": 0,
+        "post_next547_source_lines": 64813,
+        "post_next547_plus_candidate_source_lines": 64813
+      },
+      "union": {
+        "owner_reachable": true,
+        "module_delta": 0,
+        "source_and_proof_delta": -18,
+        "post_next547_source_lines": 281534,
+        "post_next547_plus_candidate_source_lines": 281516
+      }
+    },
+    "shared_root_members": [
+      "GowersSzemeredi.Proofs18CoverFejerAllDegrees",
+      "GowersSzemeredi.FinalProofSimplificationAudit",
+      "GowersSzemeredi.IntegerOriginalCorollaryFidelityAudit"
+    ],
+    "supplemental_root_members": []
+  },
+  "next547": {
+    "composition_report": "/tmp/gowers-canonical-bernoulli547-composition/report.json",
+    "composition_report_sha256": "d67c6dcd77ac9894cadb29f2a75f47c33b74cfc469fc927c8031b8a467de0b8a",
+    "owner_disjoint_from_all_six": true,
+    "not_added_to_or_applied_with_that_package": true
+  },
+  "limitations": [
+    "No Lean elaboration or kernel/native check was run.",
+    "Existing parser is only used on this bounded source; whole-prefix/suffix equality independently protects all unchanged syntax.",
+    "Any later source application or validation needs root authorization and the actual future accepted source."
+  ],
+  "inventory": {
+    "baseline_sha256": "6ba9ef5ed2fd95dab508eae0b2ee15191ef7e2795da094c0286b4b413266b812",
+    "owner_occurrences": [],
+    "location_leaves_changed": 0
+  }
+}

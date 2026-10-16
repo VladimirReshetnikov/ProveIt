@@ -1,0 +1,527 @@
+{
+  "status": "PROSPECTIVE_STATIC_DRAFT_UNAPPLIED_NATIVE_UNTESTED",
+  "source_commit_anchor": "6a753d0702d1691c25a21bdbdb58e29412931be5",
+  "baseline": "Exact NEXT598 v2 for Basics/Restriction; current source at anchor for InitialProgression/PreparedFrequencyGraph. All route/scope costs apply the complete NEXT598 overlay first.",
+  "change": "Move the existing public lemma134_additive_ext and its four private supports verbatim into an existing identically opened Basics section; replace three calls to two private copies by the existing public theorem; delete the eight now-unneeded private declarations.",
+  "mathematics": "For x,y:Fin16\u2192ZMod N, equal tails and both additive-tuple equations determine the remaining zero coordinate by cancellation. The canonical complete statement is identical to both private extensionality statements after name/private-prefix normalization. N is arbitrary: no NeZero, positivity, primality, nonemptiness or additional finite-family assumption is introduced.",
+  "canonical_header": "lemma lemma134_additive_ext {N : Nat}\n    {x y : Fin 16 \u2192 ZMod N} (hx : IsAdditiveTuple (k := 8) x)\n    (hy : IsAdditiveTuple (k := 8) y)\n    (htail : \u2200 i : Fin 15, x i.succ = y i.succ) : x = y",
+  "source_rows": [
+    {
+      "owner": "Proofs00Basics",
+      "module": "GowersSzemeredi.Proofs00Basics",
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs00Basics.lean",
+      "baseline_path": "/tmp/gowers-next598-prospective-composition-v2/draft/Proofs00Basics.lean",
+      "baseline_sha256": "37499ca60fe07da043cf0fa1a03195477d22627821016fe700af7905165dd8c1",
+      "draft_path": "/tmp/gowers-additive-tuple-three-copy-reuse-research/draft/Proofs00Basics.lean",
+      "draft_sha256": "2bb78cbc00006b8a3f61d2aa7db9a125b6ebdba0a63fd45dfd75c16313131d05",
+      "source_lines_before": 629,
+      "source_lines_after": 682,
+      "source_delta": 53,
+      "theorem_tactic_lines_before": 260,
+      "theorem_tactic_lines_after": 298,
+      "theorem_tactic_delta": 38,
+      "declarations_before": 33,
+      "declarations_after": 38,
+      "same_owner_retained_headers": 33,
+      "same_owner_retained_non_theorem_blocks": 0,
+      "changed_callers": [],
+      "imports": [
+        "GowersSzemeredi.Definitions"
+      ]
+    },
+    {
+      "owner": "Proofs12Restriction",
+      "module": "GowersSzemeredi.Proofs12Restriction",
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs12Restriction.lean",
+      "baseline_path": "/tmp/gowers-next598-prospective-composition-v2/draft/Proofs12Restriction.lean",
+      "baseline_sha256": "98bd19294cc7a85f5adf4fdb5bd73c5bd13f9c760d8b1ed4c6bf68eb42fe1656",
+      "draft_path": "/tmp/gowers-additive-tuple-three-copy-reuse-research/draft/Proofs12Restriction.lean",
+      "draft_sha256": "ade11b5f644efa3b38b54d34c673d11f85a4dce1873b7c7cb70ddbf259f8c357",
+      "source_lines_before": 3152,
+      "source_lines_after": 3105,
+      "source_delta": -47,
+      "theorem_tactic_lines_before": 2226,
+      "theorem_tactic_lines_after": 2188,
+      "theorem_tactic_delta": -38,
+      "declarations_before": 157,
+      "declarations_after": 154,
+      "same_owner_retained_headers": 154,
+      "same_owner_retained_non_theorem_blocks": 59,
+      "changed_callers": [
+        "LeanProofs.GowersSzemeredi.encodeRestrictionArrangement_injective",
+        "LeanProofs.GowersSzemeredi.restrictionEncodeAdditiveX_injective"
+      ],
+      "imports": [
+        "GowersSzemeredi.Proofs12BernoulliSelection",
+        "GowersSzemeredi.Proofs12Amplification"
+      ]
+    },
+    {
+      "owner": "Proofs13InitialProgression",
+      "module": "GowersSzemeredi.Proofs13InitialProgression",
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13InitialProgression.lean",
+      "baseline_path": "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13InitialProgression.lean",
+      "baseline_sha256": "5c5d33a5f6a41fd92edd745d041baeecd3b65c101f7a215e5dc86b6e5f1e5e99",
+      "draft_path": "/tmp/gowers-additive-tuple-three-copy-reuse-research/draft/Proofs13InitialProgression.lean",
+      "draft_sha256": "134ebd5a5e3ddaf1ae3d5ba90cf4d5600d2a8824d54154dbb3001a5d7f250272",
+      "source_lines_before": 1549,
+      "source_lines_after": 1496,
+      "source_delta": -53,
+      "theorem_tactic_lines_before": 952,
+      "theorem_tactic_lines_after": 914,
+      "theorem_tactic_delta": -38,
+      "declarations_before": 92,
+      "declarations_after": 87,
+      "same_owner_retained_headers": 87,
+      "same_owner_retained_non_theorem_blocks": 34,
+      "changed_callers": [],
+      "imports": [
+        "GowersSzemeredi.Proofs13LargeSpectrumCover",
+        "GowersSzemeredi.Proofs07ProgressionLinearity",
+        "Mathlib.Analysis.MeanInequalitiesPow",
+        "Mathlib.Analysis.Real.Pi.Bounds"
+      ]
+    },
+    {
+      "owner": "Proofs13PreparedFrequencyGraph",
+      "module": "GowersSzemeredi.Proofs13PreparedFrequencyGraph",
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.lean",
+      "baseline_path": "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.lean",
+      "baseline_sha256": "8f10d0a85df036a59c0ca107db8d56cecef6a10fa44d4b07bd6f1c2d70ae5db8",
+      "draft_path": "/tmp/gowers-additive-tuple-three-copy-reuse-research/draft/Proofs13PreparedFrequencyGraph.lean",
+      "draft_sha256": "54b6ae101bc1df83dc303a39fab143044722be1240c6dcfc9374b96d36f0a0a9",
+      "source_lines_before": 500,
+      "source_lines_after": 444,
+      "source_delta": -56,
+      "theorem_tactic_lines_before": 344,
+      "theorem_tactic_lines_after": 303,
+      "theorem_tactic_delta": -41,
+      "declarations_before": 26,
+      "declarations_after": 21,
+      "same_owner_retained_headers": 21,
+      "same_owner_retained_non_theorem_blocks": 5,
+      "changed_callers": [
+        "LeanProofs.GowersSzemeredi.contextEncodeArrangement_injective"
+      ],
+      "imports": [
+        "GowersSzemeredi.Proofs03Equivalences",
+        "GowersSzemeredi.Proofs05_10",
+        "GowersSzemeredi.Proofs07AdditiveRestriction",
+        "GowersSzemeredi.Sections12_13"
+      ]
+    }
+  ],
+  "ledger": {
+    "old_declarations": 308,
+    "retained_complete_headers_and_contexts": 300,
+    "retained_non_theorem_blocks": 100,
+    "byte_exact_moved_declarations": 5,
+    "retained_declarations_changed_only_at_call_names": 3,
+    "removed_private_declarations": 8,
+    "removed_private_theorems": 6,
+    "removed_private_definitions": 2,
+    "new_declarations": 0,
+    "global_source_delta": -103,
+    "global_theorem_tactic_delta": -79,
+    "removed_private_definition_body_lines": 2,
+    "term_proof_delta": 0,
+    "import_delta": 0,
+    "module_delta": 0,
+    "canonical_moved_block_source_lines": 53,
+    "canonical_moved_block_theorem_proof_lines": 38,
+    "canonical_moved_block_sha256": "36b1b097a1fde02efd04cb201124effa5bf6f96eaa0129c002a6c22977bc0c97"
+  },
+  "moves": [
+    {
+      "name": "LeanProofs.GowersSzemeredi.lemma134Left",
+      "kind": "def",
+      "old_owner": "Proofs13InitialProgression",
+      "new_owner": "Proofs00Basics",
+      "old_line": 871,
+      "new_line": 144,
+      "header": "private def lemma134Left : Finset (Fin 16)",
+      "context": [],
+      "header_sha256": "2b6a1a8c002bf3fc5cd6ceb4b55b34e6e12ed5c6dfd9a70595f1d8e0f2ab2b4b",
+      "old_block_sha256": "b472f6ca956970a7ca1e895b5bd66cc6db6bf9f44b13ea3b8bdd7c4d6523fe3b",
+      "new_block_sha256": "b472f6ca956970a7ca1e895b5bd66cc6db6bf9f44b13ea3b8bdd7c4d6523fe3b",
+      "exact_block": true
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.lemma134Right",
+      "kind": "def",
+      "old_owner": "Proofs13InitialProgression",
+      "new_owner": "Proofs00Basics",
+      "old_line": 874,
+      "new_line": 147,
+      "header": "private def lemma134Right : Finset (Fin 16)",
+      "context": [],
+      "header_sha256": "4fcc91f2544e34df95d50d5dc1b67cec9453a5b741aa320704ee31d61298a270",
+      "old_block_sha256": "725c16997ae73346b17e79937d8317ae77ca4161fa88d8d51b076f54e5e72af9",
+      "new_block_sha256": "725c16997ae73346b17e79937d8317ae77ca4161fa88d8d51b076f54e5e72af9",
+      "exact_block": true
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.lemma134_zero_mem_left",
+      "kind": "lemma",
+      "old_owner": "Proofs13InitialProgression",
+      "new_owner": "Proofs00Basics",
+      "old_line": 877,
+      "new_line": 150,
+      "header": "private lemma lemma134_zero_mem_left : (0 : Fin 16) \u2208 lemma134Left",
+      "context": [],
+      "header_sha256": "7d8ba6ed8b3bf7f9c9fc9a076677a0f231f78a4b39e0884a21434b96bd5a11ab",
+      "old_block_sha256": "f451a59e0cbf41e9796c7d0dcd48ef77909cbcce3187f35950fd333fbf15b4f7",
+      "new_block_sha256": "f451a59e0cbf41e9796c7d0dcd48ef77909cbcce3187f35950fd333fbf15b4f7",
+      "exact_block": true
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.lemma134_zero_notMem_right",
+      "kind": "lemma",
+      "old_owner": "Proofs13InitialProgression",
+      "new_owner": "Proofs00Basics",
+      "old_line": 880,
+      "new_line": 153,
+      "header": "private lemma lemma134_zero_notMem_right : (0 : Fin 16) \u2209 lemma134Right",
+      "context": [],
+      "header_sha256": "d59753e516e8a27d2e5386da6157d89c6165500cc0ba0c25b8ca2f5ea7e7ced0",
+      "old_block_sha256": "2ab92b7a36c2a51c660237600b6bd31d381a7727a2b04d764c69e1ad0223f9db",
+      "new_block_sha256": "2ab92b7a36c2a51c660237600b6bd31d381a7727a2b04d764c69e1ad0223f9db",
+      "exact_block": true
+    },
+    {
+      "name": "LeanProofs.GowersSzemeredi.lemma134_additive_ext",
+      "kind": "lemma",
+      "old_owner": "Proofs13InitialProgression",
+      "new_owner": "Proofs00Basics",
+      "old_line": 883,
+      "new_line": 156,
+      "header": "lemma lemma134_additive_ext {N : Nat}\n    {x y : Fin 16 \u2192 ZMod N} (hx : IsAdditiveTuple (k := 8) x)\n    (hy : IsAdditiveTuple (k := 8) y)\n    (htail : \u2200 i : Fin 15, x i.succ = y i.succ) : x = y",
+      "context": [],
+      "header_sha256": "a03b644adb35526e7273535001e2361c4a86d5dafabfc52e02a8c3385209a57a",
+      "old_block_sha256": "3e5a77d8df7460b7db66d7a30c49056982f810789407a9bdca5dad619bb262d2",
+      "new_block_sha256": "3e5a77d8df7460b7db66d7a30c49056982f810789407a9bdca5dad619bb262d2",
+      "exact_block": true
+    }
+  ],
+  "preservation": [
+    "All nonedited owner bytes remain exact, apart from the five-block move, two duplicate-range removals and three call-name replacements shown in changes.patch.",
+    "restrictionLeft and restrictionRight are retained byte-for-byte because later restriction signs/counts still use them.",
+    "Canonical namespace, declaration headers, variable context, autoImplicit setting, noncomputable section and BigOperators/Pointwise/ZMod/Finset opens are preserved. No attributes, instances, simp registrations or notation are moved or removed.",
+    "Existing InitialProgression callers and stage135_additive_ext alias retain public name availability; all three consumers already transitively import Basics.",
+    "All 120 inventory rows and 544 occurrence objects retain names/files/order; only five existing line fields shift. No new audit names are proposed."
+  ],
+  "routes": {
+    "core": {
+      "module_count": 572,
+      "source_lines_before": 124136,
+      "source_lines_after": 124080,
+      "source_delta": -56,
+      "theorem_tactic_delta": -41,
+      "changed_owners": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs13InitialProgression",
+        "GowersSzemeredi.Proofs13PreparedFrequencyGraph"
+      ]
+    },
+    "shared": {
+      "module_count": 1915,
+      "source_lines_before": 278486,
+      "source_lines_after": 278383,
+      "source_delta": -103,
+      "theorem_tactic_delta": -79,
+      "changed_owners": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs12Restriction",
+        "GowersSzemeredi.Proofs13InitialProgression",
+        "GowersSzemeredi.Proofs13PreparedFrequencyGraph"
+      ]
+    },
+    "supplemental": {
+      "module_count": 351,
+      "source_lines_before": 64797,
+      "source_lines_after": 64850,
+      "source_delta": 53,
+      "theorem_tactic_delta": 38,
+      "changed_owners": [
+        "GowersSzemeredi.Proofs00Basics"
+      ]
+    },
+    "original_final": {
+      "module_count": 600,
+      "source_lines_before": 123383,
+      "source_lines_after": 123327,
+      "source_delta": -56,
+      "theorem_tactic_delta": -41,
+      "changed_owners": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs13InitialProgression",
+        "GowersSzemeredi.Proofs13PreparedFrequencyGraph"
+      ]
+    },
+    "stronger_final": {
+      "module_count": 656,
+      "source_lines_before": 137144,
+      "source_lines_after": 137088,
+      "source_delta": -56,
+      "theorem_tactic_delta": -41,
+      "changed_owners": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs13InitialProgression",
+        "GowersSzemeredi.Proofs13PreparedFrequencyGraph"
+      ]
+    },
+    "union": {
+      "module_count": 1964,
+      "source_lines_before": 282288,
+      "source_lines_after": 282185,
+      "source_delta": -103,
+      "theorem_tactic_delta": -79,
+      "changed_owners": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs12Restriction",
+        "GowersSzemeredi.Proofs13InitialProgression",
+        "GowersSzemeredi.Proofs13PreparedFrequencyGraph"
+      ]
+    },
+    "prior_shared58": {
+      "module_count": 1906,
+      "source_lines_before": 277681,
+      "source_lines_after": 277578,
+      "source_delta": -103,
+      "theorem_tactic_delta": -79,
+      "changed_owners": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs12Restriction",
+        "GowersSzemeredi.Proofs13InitialProgression",
+        "GowersSzemeredi.Proofs13PreparedFrequencyGraph"
+      ]
+    },
+    "prior_union1955": {
+      "module_count": 1955,
+      "source_lines_before": 281483,
+      "source_lines_after": 281380,
+      "source_delta": -103,
+      "theorem_tactic_delta": -79,
+      "changed_owners": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs12Restriction",
+        "GowersSzemeredi.Proofs13InitialProgression",
+        "GowersSzemeredi.Proofs13PreparedFrequencyGraph"
+      ]
+    },
+    "Proofs00Basics": {
+      "module_count": 2,
+      "source_lines_before": 1002,
+      "source_lines_after": 1055,
+      "source_delta": 53,
+      "theorem_tactic_delta": 38,
+      "changed_owners": [
+        "GowersSzemeredi.Proofs00Basics"
+      ]
+    },
+    "Proofs12Restriction": {
+      "module_count": 22,
+      "source_lines_before": 13362,
+      "source_lines_after": 13368,
+      "source_delta": 6,
+      "theorem_tactic_delta": 0,
+      "changed_owners": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs12Restriction"
+      ]
+    },
+    "Proofs13InitialProgression": {
+      "module_count": 21,
+      "source_lines_before": 10944,
+      "source_lines_after": 10944,
+      "source_delta": 0,
+      "theorem_tactic_delta": 0,
+      "changed_owners": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs13InitialProgression"
+      ]
+    },
+    "Proofs13PreparedFrequencyGraph": {
+      "module_count": 20,
+      "source_lines_before": 8629,
+      "source_lines_after": 8626,
+      "source_delta": -3,
+      "theorem_tactic_delta": -3,
+      "changed_owners": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs13PreparedFrequencyGraph"
+      ]
+    }
+  },
+  "scope_summary": {
+    "full_local_graph_modules": 6021,
+    "reverse_consumers": 1624,
+    "covered_by_NEXT598_expanded1964": 1621,
+    "uncovered_by_NEXT598": [
+      "GowersSzemeredi",
+      "GowersSzemeredi.Audit",
+      "GowersSzemeredi.PortImportAudit"
+    ],
+    "growing_source_consumers": 1026,
+    "shrinking_source_consumers": 260,
+    "unchanged_source_consumers": 338
+  },
+  "scope_cost_summary": [
+    {
+      "count": 1024,
+      "source_delta": 53,
+      "theorem_tactic_delta": 38,
+      "owners_present": [
+        "GowersSzemeredi.Proofs00Basics"
+      ]
+    },
+    {
+      "count": 2,
+      "source_delta": 6,
+      "theorem_tactic_delta": 0,
+      "owners_present": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs12Restriction"
+      ]
+    },
+    {
+      "count": 58,
+      "source_delta": -103,
+      "theorem_tactic_delta": -79,
+      "owners_present": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs12Restriction",
+        "GowersSzemeredi.Proofs13InitialProgression",
+        "GowersSzemeredi.Proofs13PreparedFrequencyGraph"
+      ]
+    },
+    {
+      "count": 3,
+      "source_delta": -50,
+      "theorem_tactic_delta": -41,
+      "owners_present": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs12Restriction",
+        "GowersSzemeredi.Proofs13PreparedFrequencyGraph"
+      ]
+    },
+    {
+      "count": 338,
+      "source_delta": 0,
+      "theorem_tactic_delta": 0,
+      "owners_present": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs13InitialProgression"
+      ]
+    },
+    {
+      "count": 189,
+      "source_delta": -56,
+      "theorem_tactic_delta": -41,
+      "owners_present": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs13InitialProgression",
+        "GowersSzemeredi.Proofs13PreparedFrequencyGraph"
+      ]
+    },
+    {
+      "count": 10,
+      "source_delta": -3,
+      "theorem_tactic_delta": -3,
+      "owners_present": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs13PreparedFrequencyGraph"
+      ]
+    }
+  ],
+  "affected_selected_roots": {
+    "core": 1,
+    "shared": 62,
+    "supplemental": 18
+  },
+  "inventory": {
+    "ordered_statement_rows": 120,
+    "ordered_occurrences": 544,
+    "changed_line_leaves": [
+      {
+        "path": [
+          "statements",
+          72,
+          "exact_companions",
+          0,
+          "line"
+        ],
+        "name": "lemma_12_5_holds",
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs12Restriction.lean",
+        "before": 3143,
+        "after": 3096
+      },
+      {
+        "path": [
+          "statements",
+          72,
+          "related_theorems",
+          0,
+          "line"
+        ],
+        "name": "lemma_12_5_uniform_holds",
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs12Restriction.lean",
+        "before": 3122,
+        "after": 3075
+      },
+      {
+        "path": [
+          "statements",
+          77,
+          "exact_companions",
+          0,
+          "line"
+        ],
+        "name": "lemma_13_4_holds",
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13InitialProgression.lean",
+        "before": 1521,
+        "after": 1468
+      },
+      {
+        "path": [
+          "statements",
+          77,
+          "related_theorems",
+          3,
+          "line"
+        ],
+        "name": "lemma_13_4_at_real_graph_bound",
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13InitialProgression.lean",
+        "before": 1531,
+        "after": 1478
+      },
+      {
+        "path": [
+          "statements",
+          77,
+          "related_theorems",
+          4,
+          "line"
+        ],
+        "name": "lemma_13_4_fixed_real_bound",
+        "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13InitialProgression.lean",
+        "before": 1541,
+        "after": 1488
+      }
+    ],
+    "all_other_objects_values_and_order_preserved": true
+  },
+  "limitations": [
+    "No Lean/native/check_gowers invocation. Static source/import/interface checks do not establish elaboration success; native validation is mandatory before acceptance.",
+    "The canonical block is copied exactly, but its private Lean kernel names change with the owner. Only its own copied proof references those private supports; public theorem name is unchanged.",
+    "The new provider makes 1,026 earlier source closures larger (maximum +53 source/+38 theorem-proof); supplemental union also grows +53/+38. Exact growing consumer names are in scope.json.",
+    "Corpus savings -103/-79 must not be attributed to final routes: Proofs12Restriction is absent from original Final, stronger Final and FinalStep, so each of those saves -56/-41 only.",
+    "NEXT598 remains frozen and accepted independently; these four drafts are a separate prospective additive proposal, not applied to the repository."
+  ],
+  "external_pins": {
+    "/tmp/gowers-next598-prospective-composition-v2/report.json": "0b796087b516e64d6392a10c287fe5599816487b73003f07a99b23b6bb83476a",
+    "/tmp/gowers-next598-prospective-composition-v2/freeze.json": "f20f1e36dddb71742ddbc84e90d988caa3126b14ec5d92e2c5f05ec30b73b8d9",
+    "/tmp/gowers-next297-repaired6a75-source-snapshot.json": "e3f24c8ebfe20b2a248076497748ca1cbd2f2c1d5176e56ce45af9eebe6011b3",
+    "/tmp/gowers-equation-aware-scoped-parser/legacy-parsers.py": "8efad41a0a5f1ec5946154a0643920ce1f4bf47f25d1fd85de167cabe2448d1f"
+  }
+}

@@ -1,0 +1,103 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15FejerSelection.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15FejerSelection.lean
+index 87742bc0f..811f366f8 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15FejerSelection.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15FejerSelection.lean
+@@ -471,10 +471,6 @@ private lemma fejer_additive_iff {N : Nat} (x : Fin 16 → ZMod N) :
+   rw [hsum, sub_eq_zero]
+   rfl
+ 
+-private abbrev FejerArrangementCode {N k : Nat} [NeZero N]
+-    (B : Finset (Point N (k + 1))) :=
+-  (Fin 15 → {z : Point N (k + 1) // z ∈ B}) × Point N k × Point N k
+-
+ private abbrev FejerFeature (k : Nat) :=
+   Option (Finset (Fin (k + 1)))
+ 
+@@ -845,16 +841,6 @@ private lemma fejerKernelWeight_complex {N k : Nat} [NeZero N] (m : Nat)
+   rw [Complex.ofReal_div, Complex.ofReal_pow, Complex.ofReal_add, Complex.ofReal_natCast,
+     Complex.ofReal_one, hnorm, hexp, div_eq_inv_mul]
+ 
+-private lemma fejer_phase_relation {N k : Nat} [NeZero N]
+-    (C : FejerPhase N k) (phi : Point N (k + 1) → ZMod N)
+-    (R : GeneralArrangement N k 8) (eta : fejerIndex k → Int) :
+-    (∑ z, (eta z : ZMod N) * fejerPhaseValue C phi (fejerVertex R z)) =
+-      ∑ F, C F * fejerRelationInt eta F phi R := by
+-  unfold fejerPhaseValue fejerRelationInt
+-  simp only [Finset.mul_sum]
+-  rw [Finset.sum_comm]
+-  exact Finset.sum_congr rfl fun F _ => Finset.sum_congr rfl fun z _ => by ring
+-
+ private lemma fejer_product_complex {N k : Nat} [NeZero N] (m : Nat)
+     (C : FejerPhase N k) (phi : Point N (k + 1) → ZMod N)
+     (R : GeneralArrangement N k 8) :
+@@ -873,7 +859,10 @@ private lemma fejer_product_complex {N k : Nat} [NeZero N] (m : Nat)
+   intro eps _
+   rw [fejer_prod_exponential]
+   congr 1
+-  exact fejer_phase_relation C phi R (fun z => fejerDigitInt (eps z))
++  unfold fejerPhaseValue fejerRelationInt
++  simp only [Finset.mul_sum]
++  rw [Finset.sum_comm]
++  exact Finset.sum_congr rfl fun F _ => Finset.sum_congr rfl fun z _ => by ring
+ 
+ /-- The digit patterns whose integer values annihilate every feature. -/
+ private noncomputable def fejerValidRelations {N k : Nat} [NeZero N] (m : Nat)
+@@ -1178,18 +1167,6 @@ private lemma fejer_diagonal_card {k : Nat} (m : Nat) :
+ 
+ /-! ## The averages over good and bad arrangements -/
+ 
+-private lemma fejer_good_average_lower {N k : Nat} [NeZero N] (m T : Nat)
+-    (hT : T ≤ m + 1) (phi : Point N (k + 1) → ZMod N) (R : GeneralArrangement N k 8)
+-    (hadd : IsAdditiveTuple R.crossSection) (hres : R.IsRespected phi) :
+-    ((((m : Real) + 1) ^ 2)⁻¹) ^ (2 ^ (k + 4)) *
+-        (∑ j ∈ Finset.range T, ((m + 1 - j : Nat) : Real) ^ (2 ^ (k + 4))) ≤
+-      𝔼 C : FejerPhase N k,
+-        ∏ z : fejerIndex k, fejerKernelWeight m C phi (fejerVertex R z) := by
+-  rw [fejer_oneStage_average]
+-  apply mul_le_mul_of_nonneg_left _ (by positivity)
+-  have h := fejerValidRelations_card_good m T hT phi R hadd hres
+-  exact_mod_cast h
+-
+ private lemma fejer_bad_average_upper {N k : Nat} [NeZero N] [Fact N.Prime]
+     (m : Nat) (hmN : m < N) (phi : Point N (k + 1) → ZMod N)
+     (R : GeneralArrangement N k 8)
+@@ -1325,14 +1302,6 @@ private lemma fejerGoodNondegenerate_card_lower {N k : Nat} [NeZero N] (m : Nat)
+       _ = _ := fejerDegenerateFinset_card N k m
+   omega
+ 
+-private lemma fejerBadNondegenerate_card_upper {N k : Nat} [NeZero N] (m : Nat)
+-    (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N) :
+-    (fejerBadNondegenerate m B phi).card ≤ (fejerArrangements B).card := by
+-  classical
+-  apply Finset.card_le_card
+-  intro R hR
+-  exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hR).1).1
+-
+ private lemma fejer_carrier_score_lower {N k : Nat} [NeZero N]
+     (hN : 2 ≤ N) (m : Nat) (hm : 1 ≤ m) (eta : Real) (heta : 0 ≤ eta)
+     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
+@@ -1449,7 +1418,10 @@ private lemma fejer_phase_score_lower {N k : Nat} [NeZero N] [Fact N.Prime]
+       simpa [fejerGoodArrangements] using hR'.1
+     have hIsIn : R.IsIn B := by
+       simpa [fejerArrangements] using hgoodData.1
+-    exact fejer_good_average_lower m T hT phi R hIsIn.1 hgoodData.2
++    rw [fejer_oneStage_average]
++    apply mul_le_mul_of_nonneg_left _ (by positivity)
++    have h := fejerValidRelations_card_good m T hT phi R (hIsIn.1) (hgoodData.2)
++    exact_mod_cast h
+   have hbad : (∑ R ∈ fejerBadNondegenerate m B phi, 𝔼 C : FejerPhase N k,
+         ∏ z : fejerIndex k, fejerKernelWeight m C phi (fejerVertex R z)) ≤
+       (fejerBadNondegenerate m B phi).card * (((m : Real) + 1)⁻¹) ^ (2 ^ (k + 4)) := by
+@@ -1694,7 +1666,11 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
+         _ ≤ _ := hrespected
+     linarith
+   have hbadCard : ((fejerBadNondegenerate m B phi).card : Real) ≤ G := by
+-    have h := fejerBadNondegenerate_card_upper m B phi
++    have h : (fejerBadNondegenerate m B phi).card ≤ (fejerArrangements B).card := by
++      classical
++      apply Finset.card_le_card
++      intro R hR
++      exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hR).1).1
+     rw [fejerArrangements_card] at h
+     calc ((fejerBadNondegenerate m B phi).card : Real) ≤ generalArrangementCount 8 B := by
+           exact_mod_cast h

@@ -1,0 +1,272 @@
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs00Basics.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs00Basics.lean
+@@ -140,6 +140,59 @@
+ 
+ open scoped BigOperators Pointwise ZMod
+ open Finset
++
++private def lemma134Left : Finset (Fin 16) :=
++  Finset.univ.filter fun i => (i : Nat) < 8
++
++private def lemma134Right : Finset (Fin 16) :=
++  Finset.univ.filter fun i => 8 ≤ (i : Nat)
++
++private lemma lemma134_zero_mem_left : (0 : Fin 16) ∈ lemma134Left := by
++  simp [lemma134Left]
++
++private lemma lemma134_zero_notMem_right : (0 : Fin 16) ∉ lemma134Right := by
++  simp [lemma134Right]
++
++lemma lemma134_additive_ext {N : Nat}
++    {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)
++    (hy : IsAdditiveTuple (k := 8) y)
++    (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y := by
++  have hoff : ∀ i : Fin 16, i ≠ 0 → x i = y i := by
++    intro i hi
++    rcases i with ⟨(_ | i), hiBound⟩
++    · exact (hi rfl).elim
++    · exact htail ⟨i, by omega⟩
++  unfold IsAdditiveTuple at hx hy
++  change (∑ i ∈ lemma134Left, x i) = ∑ i ∈ lemma134Right, x i at hx
++  change (∑ i ∈ lemma134Left, y i) = ∑ i ∈ lemma134Right, y i at hy
++  have hleft :
++      (∑ i ∈ lemma134Left.erase 0, x i) =
++        ∑ i ∈ lemma134Left.erase 0, y i := by
++    apply Finset.sum_congr rfl
++    intro i hi
++    exact hoff i (Finset.ne_of_mem_erase hi)
++  have hright :
++      (∑ i ∈ lemma134Right, x i) = ∑ i ∈ lemma134Right, y i := by
++    apply Finset.sum_congr rfl
++    intro i hi
++    apply hoff i
++    intro hzero
++    subst i
++    exact lemma134_zero_notMem_right hi
++  funext i
++  refine Fin.cases ?_ (fun j => htail j) i
++  apply add_left_cancel (a := ∑ i ∈ lemma134Left.erase 0, x i)
++  calc
++    (∑ i ∈ lemma134Left.erase 0, x i) + x 0 =
++        ∑ i ∈ lemma134Left, x i :=
++      Finset.sum_erase_add _ _ lemma134_zero_mem_left
++    _ = ∑ i ∈ lemma134Right, x i := hx
++    _ = ∑ i ∈ lemma134Right, y i := hright
++    _ = ∑ i ∈ lemma134Left, y i := hy.symm
++    _ = (∑ i ∈ lemma134Left.erase 0, y i) + y 0 := by
++      symm
++      exact Finset.sum_erase_add _ _ lemma134_zero_mem_left
++    _ = (∑ i ∈ lemma134Left.erase 0, x i) + y 0 := by rw [hleft]
+ 
+ lemma restriction_mulLeft_range {N : Nat} [NeZero N] (h : ZMod N) :
+     (AddMonoidHom.mulLeft h).range = AddSubgroup.zmultiples h := by
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs12Restriction.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs12Restriction.lean
+@@ -198,53 +198,6 @@
+ private def restrictionRight : Finset (Fin 16) :=
+   Finset.univ.filter fun i ↦ 8 ≤ (i : Nat)
+ 
+-private lemma restriction_zero_mem_left : (0 : Fin 16) ∈ restrictionLeft := by
+-  simp [restrictionLeft]
+-
+-private lemma restriction_zero_notMem_right : (0 : Fin 16) ∉ restrictionRight := by
+-  simp [restrictionRight]
+-
+-private lemma restriction_additive_ext {N : Nat}
+-    {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)
+-    (hy : IsAdditiveTuple (k := 8) y)
+-    (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y := by
+-  have hoff : ∀ i : Fin 16, i ≠ 0 → x i = y i := by
+-    intro i hi
+-    rcases i with ⟨(_ | i), hiBound⟩
+-    · exact (hi rfl).elim
+-    · exact htail ⟨i, by omega⟩
+-  unfold IsAdditiveTuple at hx hy
+-  change (∑ i ∈ restrictionLeft, x i) = ∑ i ∈ restrictionRight, x i at hx
+-  change (∑ i ∈ restrictionLeft, y i) = ∑ i ∈ restrictionRight, y i at hy
+-  have hleft :
+-      (∑ i ∈ restrictionLeft.erase 0, x i) =
+-        ∑ i ∈ restrictionLeft.erase 0, y i := by
+-    apply Finset.sum_congr rfl
+-    intro i hi
+-    exact hoff i (Finset.ne_of_mem_erase hi)
+-  have hright :
+-      (∑ i ∈ restrictionRight, x i) = ∑ i ∈ restrictionRight, y i := by
+-    apply Finset.sum_congr rfl
+-    intro i hi
+-    apply hoff i
+-    intro hzero
+-    subst i
+-    exact restriction_zero_notMem_right hi
+-  funext i
+-  refine Fin.cases ?_ (fun j ↦ htail j) i
+-  apply add_left_cancel (a := ∑ i ∈ restrictionLeft.erase 0, x i)
+-  calc
+-    (∑ i ∈ restrictionLeft.erase 0, x i) + x 0 =
+-        ∑ i ∈ restrictionLeft, x i :=
+-      Finset.sum_erase_add _ _ restriction_zero_mem_left
+-    _ = ∑ i ∈ restrictionRight, x i := hx
+-    _ = ∑ i ∈ restrictionRight, y i := hright
+-    _ = ∑ i ∈ restrictionLeft, y i := hy.symm
+-    _ = (∑ i ∈ restrictionLeft.erase 0, y i) + y 0 := by
+-      symm
+-      exact Finset.sum_erase_add _ _ restriction_zero_mem_left
+-    _ = (∑ i ∈ restrictionLeft.erase 0, x i) + y 0 := by rw [hleft]
+-
+ private abbrev restrictionTailCode {N : Nat} [NeZero N]
+     (B : Finset (Pair N)) :=
+   (Fin 15 → ↑B) × ZMod N × ZMod N
+@@ -273,7 +226,7 @@
+     intro i
+     exact congrArg (fun f ↦ (f i : Pair N).2) hfun
+   have hx : R.1.x = S.1.x :=
+-    restriction_additive_ext R.2.1 S.2.1 hxTail
++    lemma134_additive_ext R.2.1 S.2.1 hxTail
+   have hy0 : R.1.y 0 = S.1.y 0 :=
+     congrArg (fun c ↦ c.2.1) hcode
+   have hy : R.1.y = S.1.y := by
+@@ -1487,7 +1440,7 @@
+     Function.Injective (restrictionEncodeAdditiveX (N := N)) := by
+   intro x y hxy
+   apply Subtype.ext
+-  apply restriction_additive_ext x.2 y.2
++  apply lemma134_additive_ext x.2 y.2
+   intro i
+   exact congrFun hxy i
+ 
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13InitialProgression.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13InitialProgression.lean
+@@ -867,59 +867,6 @@
+     intro R
+     simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+     tauto)
+-
+-private def lemma134Left : Finset (Fin 16) :=
+-  Finset.univ.filter fun i => (i : Nat) < 8
+-
+-private def lemma134Right : Finset (Fin 16) :=
+-  Finset.univ.filter fun i => 8 ≤ (i : Nat)
+-
+-private lemma lemma134_zero_mem_left : (0 : Fin 16) ∈ lemma134Left := by
+-  simp [lemma134Left]
+-
+-private lemma lemma134_zero_notMem_right : (0 : Fin 16) ∉ lemma134Right := by
+-  simp [lemma134Right]
+-
+-lemma lemma134_additive_ext {N : Nat}
+-    {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)
+-    (hy : IsAdditiveTuple (k := 8) y)
+-    (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y := by
+-  have hoff : ∀ i : Fin 16, i ≠ 0 → x i = y i := by
+-    intro i hi
+-    rcases i with ⟨(_ | i), hiBound⟩
+-    · exact (hi rfl).elim
+-    · exact htail ⟨i, by omega⟩
+-  unfold IsAdditiveTuple at hx hy
+-  change (∑ i ∈ lemma134Left, x i) = ∑ i ∈ lemma134Right, x i at hx
+-  change (∑ i ∈ lemma134Left, y i) = ∑ i ∈ lemma134Right, y i at hy
+-  have hleft :
+-      (∑ i ∈ lemma134Left.erase 0, x i) =
+-        ∑ i ∈ lemma134Left.erase 0, y i := by
+-    apply Finset.sum_congr rfl
+-    intro i hi
+-    exact hoff i (Finset.ne_of_mem_erase hi)
+-  have hright :
+-      (∑ i ∈ lemma134Right, x i) = ∑ i ∈ lemma134Right, y i := by
+-    apply Finset.sum_congr rfl
+-    intro i hi
+-    apply hoff i
+-    intro hzero
+-    subst i
+-    exact lemma134_zero_notMem_right hi
+-  funext i
+-  refine Fin.cases ?_ (fun j => htail j) i
+-  apply add_left_cancel (a := ∑ i ∈ lemma134Left.erase 0, x i)
+-  calc
+-    (∑ i ∈ lemma134Left.erase 0, x i) + x 0 =
+-        ∑ i ∈ lemma134Left, x i :=
+-      Finset.sum_erase_add _ _ lemma134_zero_mem_left
+-    _ = ∑ i ∈ lemma134Right, x i := hx
+-    _ = ∑ i ∈ lemma134Right, y i := hright
+-    _ = ∑ i ∈ lemma134Left, y i := hy.symm
+-    _ = (∑ i ∈ lemma134Left.erase 0, y i) + y 0 := by
+-      symm
+-      exact Finset.sum_erase_add _ _ lemma134_zero_mem_left
+-    _ = (∑ i ∈ lemma134Left.erase 0, x i) + y 0 := by rw [hleft]
+ 
+ private abbrev lemma134AtHeightCode (N : Nat) :=
+   (Fin 15 → ZMod N) × (Fin 16 → ZMod N)
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.lean
+@@ -303,62 +303,6 @@
+         (pow_nonneg ha _))
+       (pow_le_pow_left₀ (pow_nonneg ha _) hbeta _) (by positivity) (by positivity)
+ 
+-private def contextRestrictionLeft : Finset (Fin 16) :=
+-  Finset.univ.filter fun i ↦ (i : Nat) < 8
+-
+-private def contextRestrictionRight : Finset (Fin 16) :=
+-  Finset.univ.filter fun i ↦ 8 ≤ (i : Nat)
+-
+-private lemma context_zero_mem_left : (0 : Fin 16) ∈ contextRestrictionLeft := by
+-  simp [contextRestrictionLeft]
+-
+-private lemma context_zero_notMem_right : (0 : Fin 16) ∉ contextRestrictionRight := by
+-  simp [contextRestrictionRight]
+-
+-private lemma context_additive_ext {N : Nat}
+-    {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)
+-    (hy : IsAdditiveTuple (k := 8) y)
+-    (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y := by
+-  have hoff : ∀ i : Fin 16, i ≠ 0 → x i = y i := by
+-    intro i hi
+-    rcases i with ⟨(_ | i), hiBound⟩
+-    · exact (hi rfl).elim
+-    · exact htail ⟨i, by omega⟩
+-  unfold IsAdditiveTuple at hx hy
+-  change (∑ i ∈ contextRestrictionLeft, x i) =
+-      ∑ i ∈ contextRestrictionRight, x i at hx
+-  change (∑ i ∈ contextRestrictionLeft, y i) =
+-      ∑ i ∈ contextRestrictionRight, y i at hy
+-  have hleft :
+-      (∑ i ∈ contextRestrictionLeft.erase 0, x i) =
+-        ∑ i ∈ contextRestrictionLeft.erase 0, y i := by
+-    apply Finset.sum_congr rfl
+-    intro i hi
+-    exact hoff i (Finset.ne_of_mem_erase hi)
+-  have hright :
+-      (∑ i ∈ contextRestrictionRight, x i) =
+-        ∑ i ∈ contextRestrictionRight, y i := by
+-    apply Finset.sum_congr rfl
+-    intro i hi
+-    apply hoff i
+-    intro hzero
+-    subst i
+-    exact context_zero_notMem_right hi
+-  funext i
+-  refine Fin.cases ?_ (fun j ↦ htail j) i
+-  apply add_left_cancel (a := ∑ i ∈ contextRestrictionLeft.erase 0, x i)
+-  calc
+-    (∑ i ∈ contextRestrictionLeft.erase 0, x i) + x 0 =
+-        ∑ i ∈ contextRestrictionLeft, x i :=
+-      Finset.sum_erase_add _ _ context_zero_mem_left
+-    _ = ∑ i ∈ contextRestrictionRight, x i := hx
+-    _ = ∑ i ∈ contextRestrictionRight, y i := hright
+-    _ = ∑ i ∈ contextRestrictionLeft, y i := hy.symm
+-    _ = (∑ i ∈ contextRestrictionLeft.erase 0, y i) + y 0 := by
+-      symm
+-      exact Finset.sum_erase_add _ _ context_zero_mem_left
+-    _ = (∑ i ∈ contextRestrictionLeft.erase 0, x i) + y 0 := by rw [hleft]
+-
+ private abbrev contextTailCode {N : Nat} [NeZero N]
+     (B : Finset (Pair N)) :=
+   (Fin 15 → ↑B) × ZMod N × ZMod N
+@@ -387,7 +331,7 @@
+     intro i
+     exact congrArg (fun q ↦ (q i : Pair N).2) hfun
+   have hx : R.1.x = S.1.x :=
+-    context_additive_ext R.2.1 S.2.1 hxTail
++    lemma134_additive_ext R.2.1 S.2.1 hxTail
+   have hy0 : R.1.y 0 = S.1.y 0 :=
+     congrArg (fun c ↦ c.2.1) hcode
+   have hy : R.1.y = S.1.y := by

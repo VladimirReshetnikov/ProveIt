@@ -1,0 +1,25 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Multiaffine.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Multiaffine.lean
+index c51d7fe8e..bb765e123 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Multiaffine.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Multiaffine.lean
+@@ -158,20 +158,6 @@ theorem isMultilinear_iff_multiaffineEval {N k : Nat} (mu : Point N k → ZMod N
+     intro e _
+     rw [hprod]
+ 
+-/-- Any finitely supported square-free expression is multilinear in the
+-catalogue's sense. -/
+-theorem isMultilinear_multiaffineEval {N k : Nat}
+-    (F : Finset (Finset (Fin k))) (c : Finset (Fin k) → ZMod N) :
+-    IsMultilinear (multiaffineEval F c) := by
+-  classical
+-  apply (isMultilinear_iff_multiaffineEval _).2
+-  refine ⟨fun S => if S ∈ F then c S else 0, ?_⟩
+-  intro x
+-  unfold multiaffineEval
+-  simp only [ite_mul, zero_mul]
+-  rw [← Finset.sum_filter]
+-  simp
+-
+ /-- Bound a square-free term on an index box with coordinate upper bounds u. -/
+ theorem diameterAtMost_multiaffine_monomial {N k u : Nat} [NeZero N]
+     (B : Finset (Fin k → Nat)) (S : Finset (Fin k)) (a : ZMod N)

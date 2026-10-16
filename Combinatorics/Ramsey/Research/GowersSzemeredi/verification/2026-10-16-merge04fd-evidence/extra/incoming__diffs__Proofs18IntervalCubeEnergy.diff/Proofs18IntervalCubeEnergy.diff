@@ -1,0 +1,22 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18IntervalCubeEnergy.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18IntervalCubeEnergy.lean
+index 93f06f1ff..81ac1665a 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18IntervalCubeEnergy.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18IntervalCubeEnergy.lean
+@@ -69,17 +69,4 @@ theorem intervalExtension_uniformEnergy_eq {N M L k : Nat} [NeZero N] [NeZero M]
+     sum_cube_succ_eq_sum_norm_sq, sum_cube_succ_eq_sum_norm_sq] at hcomplex
+   exact Complex.ofReal_injective hcomplex
+ 
+-/-- Changing modulus changes normalized uniformity by the exact factor
+-(N/M)^(k+2), even though the unnormalized energy is unchanged. -/
+-theorem intervalExtension_uniform_iff {N M L k : Nat} [NeZero N] [NeZero M]
+-    (hN : (k + 2) * L ≤ N) (hM : (k + 2) * L ≤ M)
+-    (g : Fin L → Complex) (alpha : Real) :
+-    UniformOfDegree (intervalExtension N g) alpha k ↔
+-      UniformOfDegree (intervalExtension M g) (alpha * ((N : Real) / M) ^ (k + 2)) k := by
+-  have hMne : (M : Real) ≠ 0 := by exact_mod_cast NeZero.ne M
+-  have hscale : (alpha * ((N : Real) / M) ^ (k + 2)) * (M : Real) ^ (k + 2) =
+-      alpha * (N : Real) ^ (k + 2) := by rw [div_pow]; field_simp
+-  unfold UniformOfDegree
+-  rw [intervalExtension_uniformEnergy_eq hN hM g, hscale]
+-
+ end LeanProofs.GowersSzemeredi

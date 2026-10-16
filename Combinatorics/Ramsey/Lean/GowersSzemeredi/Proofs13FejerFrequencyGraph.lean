@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs13FejerPurifiedDensity
+import GowersSzemeredi.Proofs12Amplification
 
 /-! Propagate uniform Fejer purification through the prepared frequency
 graph. The retained density exponent is 4,207,554,485, with the exact

@@ -1,0 +1,149 @@
+[
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs02Uniformity.lean",
+    "name": "LeanProofs.GowersSzemeredi.condition_i_iff_ii",
+    "kind": "lemma",
+    "header": "private lemma condition_i_iff_ii {N : Nat} [NeZero N]\n    (f : ZMod N → Complex) (c : Real) :\n    uniformCondition2i f c ↔ uniformCondition2ii f c",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Lemma9Induction.lean",
+    "name": "LeanProofs.GowersSzemeredi.section5_image_mono",
+    "kind": "theorem",
+    "header": "theorem section5_image_mono {X Y : Type*} [DecidableEq X] [DecidableEq Y]\n    {A B : Finset X} (f : X -> Y) (hAB : A ⊆ B) :\n    A.image f ⊆ B.image f",
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Lemma9Induction.lean",
+    "name": "LeanProofs.GowersSzemeredi.polynomialOn_section5NatIndexPoint",
+    "kind": "theorem",
+    "header": "theorem polynomialOn_section5NatIndexPoint {N k : Nat} [NeZero N]\n    (P : NatAP) (phi : ZMod N -> ZMod N)\n    (hphi : PolynomialOn k Finset.univ phi) :\n    PolynomialOn k Finset.univ\n      (fun x => phi ((P.start : ZMod N) + x * (P.step : ZMod N)))",
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05_10.lean",
+    "name": "LeanProofs.GowersSzemeredi.prop61QuadEquiv",
+    "kind": "def",
+    "header": "private def prop61QuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X)",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs07BalogSzemeredi.lean",
+    "name": "LeanProofs.GowersSzemeredi.indexedNeighborhood_subset",
+    "kind": "lemma",
+    "header": "private lemma indexedNeighborhood_subset {G : Type*} [DecidableEq G]\n    [AddCommGroup G] (A : Finset G) (c : Real)\n    (V : Finset G) (i : Fin V.card) :\n    indexedNeighborhood A c V i ⊆ A",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Extraction.lean",
+    "name": "LeanProofs.GowersSzemeredi.audit_additive_partition",
+    "kind": "lemma",
+    "header": "private lemma audit_additive_partition :\n    countWhere auditAdditive =\n      countWhere (fun q => auditAdditive q ∧ auditPhiRelation q) +\n        countWhere (fun q => auditAdditive q ∧ ¬ auditPhiRelation q)",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Main.lean",
+    "name": "LeanProofs.GowersSzemeredi.theorem1013QuadPairEquiv",
+    "kind": "def",
+    "header": "private def theorem1013QuadPairEquiv (X : Type*) :\n    Theorem1013Quad X ≃ (X × X) × (X × X)",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Regular.lean",
+    "name": "LeanProofs.GowersSzemeredi.regularWindow",
+    "kind": "def",
+    "header": "private noncomputable def regularWindow {N : Nat} {X : Type*}\n    [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) (x : X)\n    (alpha rho : Real) (M : Nat) (p : Real × Real) : Finset X",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Regular.lean",
+    "name": "LeanProofs.GowersSzemeredi.regularBoundary",
+    "kind": "def",
+    "header": "private noncomputable def regularBoundary {N : Nat} {X : Type*}\n    [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) (x : X)\n    (alpha rho sigma : Real) (M : Nat) (p : Real × Real) : Finset X",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs12.lean",
+    "name": "LeanProofs.GowersSzemeredi.prop121SubEquiv",
+    "kind": "def",
+    "header": "private def prop121SubEquiv {N p : Nat} (s : ZMod N) :\n    (Fin p → ZMod N) ≃ (Fin p → ZMod N)",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13Basic.lean",
+    "name": "LeanProofs.GowersSzemeredi.prop131QuadEquiv",
+    "kind": "def",
+    "header": "private def prop131QuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X)",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13LargeSpectrumCover.lean",
+    "name": "LeanProofs.GowersSzemeredi.cor133_build_cover",
+    "kind": "def",
+    "header": "private noncomputable def cor133_build_cover {N : Nat} [NeZero N]\n    (A : Finset (Pair N)) (theta : Real) (hprime : Nat.Prime N)\n    (htheta : 0 < theta) :\n    ∀ Gamma : Finset (Pair N), Gamma ⊆ cor133LargePairs A theta →\n      Cor133CoverData N theta Gamma",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs14Fourier.lean",
+    "name": "LeanProofs.GowersSzemeredi.prop141QuadEquiv",
+    "kind": "def",
+    "header": "private def prop141QuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X)",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs14Product.lean",
+    "name": "LeanProofs.GowersSzemeredi.prop14QuadEquiv",
+    "kind": "def",
+    "header": "private def prop14QuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X)",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs14Product.lean",
+    "name": "LeanProofs.GowersSzemeredi.prop142_component_disc",
+    "kind": "lemma",
+    "header": "private lemma prop142_component_disc {N n : Nat} (f : ZMod N → Complex)\n    (hf : DiscValued f) (y : Point N (n + 1)) (j : Fin (n + 1)) :\n    DiscValued (prop142Component f y j)",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15DegenerateArrangements.lean",
+    "name": "LeanProofs.GowersSzemeredi.lemma154DoubleExceptEquiv",
+    "kind": "def",
+    "header": "private def lemma154DoubleExceptEquiv {I : Type*} [DecidableEq I]\n    (i j : I) (hij : i ≠ j) :\n    {t : I // t ≠ i ∧ t ≠ j} ≃\n      {t : {t : I // t ≠ i} // t ≠ ⟨j, hij.symm⟩}",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16BaseCaseUnion.lean",
+    "name": "LeanProofs.GowersSzemeredi.BaseCase.finFunctionEquiv",
+    "kind": "def",
+    "header": "private noncomputable def finFunctionEquiv (r q : Nat) :\n    (Fin r → Fin q) ≃ Fin (q ^ r)",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ClassDeletion.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16FibreClassSet_mono",
+    "kind": "theorem",
+    "header": "theorem section16FibreClassSet_mono {α β : Type*} [DecidableEq α] [DecidableEq β]\n    (h : β) {C D : Finset α} (hsub : C ⊆ D) :\n    section16FibreClassSet h C ⊆ section16FibreClassSet h D",
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16InducedCounting.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16RespectedTupleArrangementEquiv",
+    "kind": "def",
+    "header": "private def section16RespectedTupleArrangementEquiv\n    {N k d : Nat} [NeZero N]\n    (B : Finset (Point N (k + 1))) (h : Point N k)\n    (phi : Point N (k + 1) → ZMod N) :\n    {x : Fin (2 * d) → Section16CubeElement B h //\n      section16IndexAdditive B h x ∧ section16ValueAdditive B h phi x} ≃\n    {R : GeneralArrangement N k d //\n      R.IsIn B ∧ R.side = h ∧ R.IsRespected phi}",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WeightedGraphSums.lean",
+    "name": "LeanProofs.GowersSzemeredi.quadPairEquiv",
+    "kind": "def",
+    "header": "private def quadPairEquiv (X : Type*) : (Fin 4 → X) ≃ ((X × X) × (X × X))",
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18LengthSixScale.lean",
+    "name": "LeanProofs.GowersSzemeredi.one_le_lsNestThr",
+    "kind": "theorem",
+    "header": "theorem one_le_lsNestThr (Eb : Nat → Real → Real → Real → Real) (C : Real → Real)\n    (alpha t : Real) : 1 ≤ lsNestThr Eb C alpha t",
+    "private": false
+  }
+]

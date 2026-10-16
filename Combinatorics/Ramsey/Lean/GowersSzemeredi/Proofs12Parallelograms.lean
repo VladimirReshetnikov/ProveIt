@@ -58,20 +58,11 @@ private lemma lemma122_cubeDifference_eq {N : Nat}
 lemma lemma122_fourier_norm_le {N : Nat} [NeZero N]
     (g : ZMod N → Complex) (hg : DiscValued g) (r : ZMod N) :
     ‖fourier g r‖ ≤ (N : Real) := by
+  rw [fourier, ZMod.dft_apply]
   calc
-    ‖fourier g r‖ ≤
-        ∑ x : ZMod N, ‖exponential (-(x * r)) * g x‖ := by
-      simpa only [fourier, ZMod.dft_apply, smul_eq_mul, exponential] using
-        norm_sum_le (Finset.univ : Finset (ZMod N))
-          (fun x : ZMod N ↦ exponential (-(x * r)) * g x)
-    _ ≤ ∑ _x : ZMod N, (1 : Real) := by
-      apply Finset.sum_le_sum
-      intro x _
-      rw [norm_mul]
-      have hexponential : ‖exponential (-(x * r))‖ = 1 :=
-        (ZMod.stdAddChar (N := N)).norm_apply (-(x * r))
-      rw [hexponential, one_mul]
-      exact hg x
+    _ ≤ ∑ _x : ZMod N, (1 : Real) :=
+      norm_sum_le_of_le _ fun x _ => by
+        simpa only [smul_eq_mul, norm_mul, AddChar.norm_apply, one_mul] using hg x
     _ = (N : Real) := by simp
 
 private lemma lemma122_gamma_le_one {N : Nat} [NeZero N]

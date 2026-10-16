@@ -1,0 +1,24 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13RecurrenceRange.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13RecurrenceRange.lean
+index 608ebff19..f327fcdd0 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13RecurrenceRange.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13RecurrenceRange.lean
+@@ -21,10 +21,6 @@ theorem polynomial_threshold_twice_le_tower (d : Nat) :
+   unfold polynomialPartitionThreshold weylThreshold
+   exact twice_square_tower_le _
+ 
+-private theorem tower_power_identity (a b c : Nat) :
+-    ((2 : Nat) ^ (2 ^ a)) ^ ((2 ^ b) ^ c) = 2 ^ (2 ^ (a + b * c)) := by
+-  rw [← pow_mul, ← pow_mul, ← pow_add]
+-
+ theorem simultaneous_partition_threshold_le_tower (k q b : Nat)
+     (hK : polynomialPartitionConstant k ≤ 2 ^ b) :
+     simultaneousPolynomialThreshold k q ≤ 2 ^ (2 ^ (40 * k ^ 3 + 2 + b * (q - 1))) := by
+@@ -36,7 +32,7 @@ theorem simultaneous_partition_threshold_le_tower (k q b : Nat)
+     _ ≤ (2 ^ (2 ^ (40 * k ^ 3 + 2))) ^ ((2 ^ b) ^ (q - 1)) :=
+       Nat.pow_le_pow_right (n := 2 ^ (2 ^ (40 * k ^ 3 + 2)))
+         (one_le_pow₀ (by norm_num : (1 : Nat) ≤ 2)) (Nat.pow_le_pow_left hK _)
+-    _ = _ := tower_power_identity _ _ _
++    _ = _ := by rw [← pow_mul, ← pow_mul, ← pow_add]
+ 
+ theorem quadratic_partition_threshold_le_singleton_cutoff {q : Nat} (hq : 311 ≤ q) :
+     simultaneousPolynomialThreshold 2 q ≤ 2 ^ (2 ^ (12 * q)) := by

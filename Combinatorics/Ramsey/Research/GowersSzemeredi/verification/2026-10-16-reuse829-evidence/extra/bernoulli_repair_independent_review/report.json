@@ -1,0 +1,64 @@
+{
+  "status": "passed: exact one-line repair and actual targeted-success evidence reviewed",
+  "reviewed_at": "2026-10-16T03:59:58.443324+00:00",
+  "baseline_commit": "f4e4e721f3ddad360216b6ce69ddc152a39abb4d",
+  "source": {
+    "path": "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs12BernoulliSelection.lean",
+    "baseline_sha256": "0ea0bd16fe15d990b00860a6e3bcd4143ba1824f47222318741cc3a69692995a",
+    "repaired_sha256": "d1ca4c9c0e3e44be052ad8d310889d1c9df5b2747a71d803a6ec937583547f44"
+  },
+  "repair": {
+    "line": 49,
+    "before": "      rw [Finset.prod_ite_zero, hSC]",
+    "after": "      simp only [Finset.prod_ite_zero, hSC]",
+    "only_changed_line": true,
+    "line_count_before": 157,
+    "line_count_after": 157,
+    "all_nine_declaration_headers_unchanged": true,
+    "all_other_1970_snapshot_protected_files_unchanged": true,
+    "route_source_line_counts_unchanged": true
+  },
+  "inventory": {
+    "path": "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/gowers-proof-status.json",
+    "sha256": "42f4c83dede24e9913d4ff3ac10e1cd221383d17b2cc47f5eb5f1ec9675b3803",
+    "byte_identical_to_f4e4_snapshot": true
+  },
+  "failed_attempt": {
+    "receipt": "/tmp/gowers-next829-f4e4-core-attempt1/receipt.json",
+    "receipt_sha256": "86a90b847c0388274bf8e6b2ac88ac3725b4aef27a9c73f7349ddcb33ec01e29",
+    "log": "/tmp/gowers-next829-f4e4-core-attempt1/native.log",
+    "log_sha256": "b94a26cecdbae376bf75bbf14c555c537d2e7b37699ab271467d58f93e6534e1",
+    "status": "failed",
+    "terminal_exit": 1,
+    "expected_modules": 572,
+    "terminal_module_count": null,
+    "source_and_snapshot_link_verified": true,
+    "error_lines": [
+      "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs12BernoulliSelection.lean:49:32: error: Tactic `rewrite` failed: motive is not type correct:"
+    ],
+    "interpretation": "rw failed to construct a dependent rewrite motive involving a Decidable instance; failure preserved."
+  },
+  "targeted_attempt": {
+    "receipt": "/tmp/gowers-next829-bernoulli-repair-targeted-attempt1/receipt.json",
+    "receipt_sha256": "0135f1f4c859817ff264c7f6236263516c0a9625e2578401b04b1e51cb773c03",
+    "log": "/tmp/gowers-next829-bernoulli-repair-targeted-attempt1/native.log",
+    "log_sha256": "685933dc7f32370305efae3b228e08d446d36c995375e02fa128dbe5e09082a9",
+    "command": [
+      "/home/codex/.local/bin/python3",
+      "Combinatorics/Ramsey/scripts/check_gowers.py",
+      "GowersSzemeredi.Proofs12BernoulliSelection"
+    ],
+    "recorded_terminal_exit": 0,
+    "terminal_module_count": 2,
+    "exact_repaired_source_hash_link_verified": true,
+    "started_after_failed_core_finished": true,
+    "successful_footer_and_no_error_diagnostic": true,
+    "warnings": "Unused/unreachable ring tactic warnings only."
+  },
+  "material_findings": [],
+  "limitations": [
+    "Targeted success covers the repaired owner and its two-module local closure, not full core/shared/supplemental validation.",
+    "Did not run Lean or native checker, modify repository/Git/cache, or infer fresh full-chain success.",
+    "Current HEAD was intentionally not pinned because root may commit the already-tested exact repair during this bounded review."
+  ]
+}

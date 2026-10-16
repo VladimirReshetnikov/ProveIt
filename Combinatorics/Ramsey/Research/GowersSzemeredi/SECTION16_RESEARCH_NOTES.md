@@ -9528,6 +9528,145 @@ qualifications remain; the 120-row catalogue does not certify literal fidelity
 of every original statement. This is a proof/dependency simplification, with no
 new numerical-bound claim.
 
+### L.109. Sharing Bernoulli and additive-tuple proofs
+
+Repaired source `5e5af281970d9f5c1ea637fa6b32fa7c4551a810` removes 829 source lines
+and 691 theorem proof-body lines across 13 production files relative to
+`823ad7063d4f098246e204cea91f7756d5fe1aa3`. Section 15 reuses the canonical
+Bernoulli subset-selection result; that result now uses the existing finite
+product identities and a finite maximum argument. Three implementations of
+the additive-tuple extension argument share the existing public theorem,
+moved unchanged with its four supporting declarations into `Proofs00Basics`.
+Four Fourier estimates reuse existing norm bounds, and the final-step exponent
+estimate works directly at the quarter-scale threshold.
+
+The source review preserves 743 complete declaration headers, including five
+moved declarations, and 236 non-theorem blocks. It removes 26 private declarations
+and changes 13 retained proof bodies. No new declaration, helper or module is
+introduced. The moved additive-tuple block increases the imported source of
+some early consumers by 53 lines, including 38 proof lines; the total reduction
+includes that cost. Explicit imports keep the required amplification provider
+available to the two consumers that need it.
+
+The original `Final` closure decreases from 601 modules / 123,958 source lines
+to 600 / 123,199; the stronger `Proofs18CoverFejerAllDegrees` closure decreases
+from 657 / 137,999 to 656 / 136,960. These dependency totals are distinct from
+the direct 829-line source reduction.
+
+The actual inventory generator and independent comparison preserve all 120
+ordered rows and 544 companion occurrences. Four arrays are restored through
+whole-object permutations; the only final differences are 14 source-line
+locations. Duplicate occurrences, qualifications and all other fields are
+preserved. The inventory comparison does not certify literal fidelity of every
+original paper statement.
+
+The first core attempt at `f4e4e721` failed when `rw` tried to replace a
+condition inside an indicator with a dependent `Decidable` instance. Replacing
+that step with `simp only` preserves the statement and all source locations.
+The targeted `Proofs12BernoulliSelection` check passed with two modules; the
+failed core log and the targeted repair evidence remain part of the archive.
+The independent repair review checks the sole proof-line change and confirms
+that the other 1,970 protected source files are unchanged. The targeted pass is
+separate from the full validation chain on repaired source.
+
+Three actual native checker commands passed with exit zero: the 572-module
+core; one command for 65 shared roots with a 1,915-module footer; and one
+command for 18 supplemental roots with a 351-module footer. Source and artifact
+stability checks passed for all three commands. Their union contains 1,964
+freshly verified modules. All seven previously retained historical scopes are
+included in the fresh shared command; no historical retention is needed. The
+84 per-root closure entries are metadata, not 84 native command outcomes.
+
+The [archive index](verification/2026-10-16-reuse829-evidence/index.json) and
+[evidence map](verification/2026-10-16-reuse829-evidence/evidence-map.json) bind
+105 evidence files, including the actual receipts and logs, source ledger,
+source and tool pins, source and inventory reviews, and the failed core attempt
+and targeted repair. The index and map are two additional files. This evidence
+covers repaired proof source `5e5af281`; later simplifications require their own
+native validation.
+
+Final statements, numerical bounds and positive-step progression conclusions
+are unchanged. The documented Lemma 16.10 correction and original-paper fidelity
+qualifications remain. This checkpoint simplifies the proof and its dependencies;
+it introduces no new numerical-bound claim.
+
+### L.110. Integrating the upstream helper cleanup
+
+Merged source `a87906dc3960604bc3a0b423868d392b43ba85c0` incorporates incoming
+`68ad8d39173bf0494fa46154869ccea9b1a3c623` after checkpoint `685a3095`.
+It changes 153 production Lean files and removes 93 source lines relative to
+that checkpoint. The three Bernoulli conflicts retain the already shared local
+proofs while preserving the other incoming edits. All retained declaration
+headers and imports remain unchanged. The cleanup removes 21 helper declarations,
+including four public wrappers with no remaining repository callers; the exported
+helper-name set is therefore intentionally smaller.
+
+The three sequential native commands passed with exit zero: core, 572 modules;
+shared, 65 roots and 1,915 modules; supplemental, 18 roots and 351 modules.
+The receipts verify source and artifact stability throughout the chain. The selected scope is three
+commands covering 1,964 distinct modules, with 1,971 protected source/configuration
+inputs. Its 84 per-root closure entries are metadata, not 84 command outcomes.
+The scope covers 1,668 of 1,671 affected consumers; only the three protected
+aggregate facades are excluded. Earlier `5e5af281` outcomes do not validate this
+merged source, and no historical retention is substituted for the fresh checks.
+
+The completed source-inventory comparison preserves all 120 ordered rows and
+544 companion occurrences. Four arrays are restored by whole-object permutations;
+only 30 line-location fields change. Objects, duplicate occurrences and
+qualifications are preserved.
+
+The [archive index](verification/2026-10-16-merge68ad-evidence/index.json) and
+[evidence map](verification/2026-10-16-merge68ad-evidence/evidence-map.json) bind
+the actual command events, receipts and logs, source snapshot and ledger,
+merge review and inventory evidence. The archive contains 99 byte-exact copied evidence files plus its index and map.
+The index SHA256 is `8578f6772c9d6054b677c271112e3c4a0fc220e17284cf8fe38583bd88427926`;
+the evidence-map SHA256 is `dee79a86645e2864c02fabe93fe2ccc99d08f2844b61014bbc258b7efcd5c6c5`.
+
+The final statements, numerical bounds and ordinary positive-step progression
+conclusions are unchanged. The documented Lemma 16.10 correction and original-paper
+fidelity qualifications remain; catalogue coverage is not a fidelity certificate.
+Unapplied source-only proposals contribute no savings or validation claims to
+this checkpoint.
+### L.111. Removing unused helpers and inlining single-use proofs
+
+Merged source `aca2a610c9b3722e66e8cf415bca374e9f28cb1a` incorporates incoming
+`04fd0fb36e46ff05373664236758eff99665bded` after checkpoint `cb7319ce`.
+The 70 changed production owners contain 1,386 fewer source lines. The core
+and stronger-final closures each lose 1,386 lines; the original `Final` closure
+loses 1,320. Imports and module counts are unchanged. The merge preserves the
+local shared additive proof instead of restoring an obsolete private helper
+chain, and corrects two comments that referred to deleted helpers.
+
+The source review verifies 1,253 retained declaration headers and contexts.
+It records 129 removed intermediate names, including 76 public names with no
+remaining repository callers; external callers of those names may need changes.
+Eight final-facing source files, including the strengthened bounds, progression
+definitions and axiom audit, are byte-identical to the passed a879 checkpoint.
+
+All three commands passed on the merged source with exit 0: the 572-module core,
+the shared command with 65 roots and a 1,915-module footer, and the supplemental
+command with 18 roots and a 351-module footer. Their sequential receipts record
+source and artifact stability across 1,964 distinct modules and 1,971 protected
+inputs. These checks include up-to-date dependencies. The 84 own-root closure
+rows are metadata, not separate command outcomes. The selected scope covers
+1,628 of 1,631 affected consumers; only the three protected aggregate facades
+are excluded. Prior a879 outcomes remain separate historical evidence.
+
+The inventory comparison preserves 120 ordered rows and 544 companion
+occurrences. Only 27 line-location fields change; four arrays are restored by
+whole-object permutations, preserving names, duplicates and qualifications.
+The [archive index](verification/2026-10-16-merge04fd-evidence/index.json) and
+[evidence map](verification/2026-10-16-merge04fd-evidence/evidence-map.json)
+bind 177 copied evidence files, plus the index and map, to the actual commands,
+committed source, merge review and inventory evidence. The archive helper
+completed its evidence and stability checks; artifact checks use freshness,
+mtime and size rather than artifact-content hashes.
+
+Final bounds and ordinary positive-step progression conclusions are unchanged.
+The accepted Lemma 16.10 correction and original-paper fidelity qualifications
+remain; catalogue coverage is not a fidelity certificate. Unapplied future
+proposals contribute no source savings or validation claims to this checkpoint.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1

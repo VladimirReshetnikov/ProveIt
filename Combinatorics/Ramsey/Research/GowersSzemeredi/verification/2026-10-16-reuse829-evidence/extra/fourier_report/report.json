@@ -1,0 +1,270 @@
+{
+  "status": "source-only proposal; unapplied and not Lean-tested",
+  "baseline_source_commit": "6a753d0702d1691c25a21bdbdb58e29412931be5",
+  "snapshot": {
+    "path": "/tmp/gowers-next297-repaired6a75-source-snapshot.json",
+    "sha256": "e3f24c8ebfe20b2a248076497748ca1cbd2f2c1d5176e56ce45af9eebe6011b3"
+  },
+  "purpose": "Replace repeated Fourier triangle-inequality calculations by existing library inequalities and make the duplicate indicator bound call its existing exact producer.",
+  "source_rows": [
+    {
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs00Basics.lean",
+      "declaration": "fourier_indicator_norm_le_card'",
+      "line": 501,
+      "header": "lemma fourier_indicator_norm_le_card' {N : Nat} [NeZero N]\n    (A : Finset (ZMod N)) (r : ZMod N) :\n    \u2016fourier (indicator A) r\u2016 \u2264 A.card := by\n",
+      "header_sha256": "aa9fd73bd98ba9d11c15779788f7ce97324372346200fb2c57cb182c1424c641",
+      "before_sha256": "00da570f37c25312694fbd1caaefa68fc549ca03b4751011d5de2e4e063a8bdc",
+      "draft_path": "/tmp/gowers-fourier-norm-library-reuse-research/draft/Proofs00Basics.lean",
+      "draft_sha256": "37499ca60fe07da043cf0fa1a03195477d22627821016fe700af7905165dd8c1",
+      "before_source_lines": 639,
+      "after_source_lines": 629,
+      "before_body_lines": 11,
+      "after_body_lines": 1,
+      "source_delta": -10,
+      "proof_body_delta": -10,
+      "all_other_bytes_exact": true,
+      "imports_unchanged": true
+    },
+    {
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05PolynomialPartition.lean",
+      "declaration": "fourier_natWeight_norm_le_mass",
+      "line": 123,
+      "header": "private lemma fourier_natWeight_norm_le_mass {N : Nat} [NeZero N]\n    (w : ZMod N \u2192 Nat) (r : ZMod N) :\n    \u2016fourier (fun x => (w x : Complex)) r\u2016 \u2264 \u2211 x, w x := by\n",
+      "header_sha256": "b481a6a9804dc3e92d334b74295d12358cbe398b4eb2ebe1891d7b864730dc13",
+      "before_sha256": "a51fa915c29baa83a5ca4d91137e1ab100c922dbf020ce0d263bc46a0f2b6343",
+      "draft_path": "/tmp/gowers-fourier-norm-library-reuse-research/draft/Proofs05PolynomialPartition.lean",
+      "draft_sha256": "ab886bed10179624fb6ca08ae9d472d98cd530e1bc96339ec84117469878de84",
+      "before_source_lines": 2471,
+      "after_source_lines": 2465,
+      "before_body_lines": 10,
+      "after_body_lines": 4,
+      "source_delta": -6,
+      "proof_body_delta": -6,
+      "all_other_bytes_exact": true,
+      "imports_unchanged": true
+    },
+    {
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Main.lean",
+      "declaration": "theorem1013_fourier_norm_le_card",
+      "line": 498,
+      "header": "private lemma theorem1013_fourier_norm_le_card {N : Nat} [NeZero N]\n    {X : Type*} [Fintype X] [DecidableEq X]\n    (D : MultifunctionDomain N X) (r : ZMod N) :\n    \u2016fourier (domainFibreCountFunction D) r\u2016 \u2264 Fintype.card X := by\n",
+      "header_sha256": "cd9dd82ddf2f79da0880208975b54c8d450747e841faf402f357479fa154835d",
+      "before_sha256": "6f236cc531fbe35f91f311ac35966e920c8b6a38c973e52fe249ea4f7390207d",
+      "draft_path": "/tmp/gowers-fourier-norm-library-reuse-research/draft/Proofs10Main.lean",
+      "draft_sha256": "ff06780a8b4d952e0289d338379520a702ef5cbb740ddde5b9c4fd7a0c544cef",
+      "before_source_lines": 1380,
+      "after_source_lines": 1372,
+      "before_body_lines": 13,
+      "after_body_lines": 5,
+      "source_delta": -8,
+      "proof_body_delta": -8,
+      "all_other_bytes_exact": true,
+      "imports_unchanged": true
+    },
+    {
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs12Parallelograms.lean",
+      "declaration": "lemma122_fourier_norm_le",
+      "line": 58,
+      "header": "lemma lemma122_fourier_norm_le {N : Nat} [NeZero N]\n    (g : ZMod N \u2192 Complex) (hg : DiscValued g) (r : ZMod N) :\n    \u2016fourier g r\u2016 \u2264 (N : Real) := by\n",
+      "header_sha256": "9f3b44a62d13e09a7a645563125c2f45124a5ea06aceda96e341f7b4fc11eed3",
+      "before_sha256": "a3ce7ff555e72e2d0fd5fbc867b7c7473b7e94b06b6ba100f7c87e1a3d2ac5c8",
+      "draft_path": "/tmp/gowers-fourier-norm-library-reuse-research/draft/Proofs12Parallelograms.lean",
+      "draft_sha256": "995d8c9e57910c862097ba3d0889abdf50bee0f10cf20adddc1a6c197ddbaf29",
+      "before_source_lines": 392,
+      "after_source_lines": 383,
+      "before_body_lines": 15,
+      "after_body_lines": 6,
+      "source_delta": -9,
+      "proof_body_delta": -9,
+      "all_other_bytes_exact": true,
+      "imports_unchanged": true
+    }
+  ],
+  "totals": {
+    "owners": 4,
+    "changed_theorem_bodies": 4,
+    "theorem_body_lines_before": 49,
+    "theorem_body_lines_after": 16,
+    "source_lines_delta": -33,
+    "theorem_proof_body_lines_delta": -33,
+    "new_helpers": 0,
+    "new_modules": 0,
+    "moved_declarations": 0,
+    "changed_imports": 0,
+    "retained_complete_headers_and_contexts": 178,
+    "all_other_owner_bytes_preserved": true
+  },
+  "mathematical_reasoning": [
+    {
+      "name": "fourier_indicator_norm_le_card'",
+      "reason": "Calls the earlier fourier_indicator_norm_le_card at Proofs00Basics:359. Both complete statements are identical apart from <= versus \u2264 notation. The preceding theorem already has exactly the same N, NeZero N, A and r."
+    },
+    {
+      "name": "fourier_natWeight_norm_le_mass",
+      "reason": "Expand the discrete Fourier sum and distribute the natural-to-real cast over the mass. The existing norm_sum_le bound simplifies termwise because every standard additive character has norm one and a natural complex cast has norm equal to its real cast."
+    },
+    {
+      "name": "theorem1013_fourier_norm_le_card",
+      "reason": "First rewrite card X using the already imported theorem1013Parameters_sum_fibre_cards D. After casting the fibre sum to Real, norm_sum_le applies to the Fourier sum; unfolding the fibre-count function and the same norm-one/natural-cast identities produces exactly that total."
+    },
+    {
+      "name": "lemma122_fourier_norm_le",
+      "reason": "Use existing norm_sum_le_of_le with constant bound one. Its pointwise hypothesis is precisely hg x after character norm one and scalar multiplication normalization; the sum of ones is N."
+    }
+  ],
+  "edge_cases": "The original NeZero N premise remains. No prime, positive weight, nonempty support, or nonempty X premise is added. Empty supports, zero weights and empty X are covered by the original finite-sum statements; all original DiscValued and Fintype/DecidableEq hypotheses remain byte-exact.",
+  "library_apis": [
+    {
+      "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Basic.lean",
+      "line": 829,
+      "name": "norm_sum_le",
+      "signature": "(s : Finset \u03b9) (f : \u03b9 \u2192 E) : \u2016\u2211 i \u2208 s, f i\u2016 \u2264 \u2211 i \u2208 s, \u2016f i\u2016",
+      "availability": "Already used by all three original nontrivial Fourier proofs."
+    },
+    {
+      "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Group/Basic.lean",
+      "line": 847,
+      "name": "norm_sum_le_of_le",
+      "signature": "Generated by @[to_additive] on norm_prod_le_of_le: (s : Finset \u03b9) {f : \u03b9 \u2192 E} {n : \u03b9 \u2192 Real} (h : \u2200 b \u2208 s, \u2016f b\u2016 \u2264 n b) : \u2016\u2211 b \u2208 s, f b\u2016 \u2264 \u2211 b \u2208 s, n b",
+      "availability": "Generated in the same already available module as norm_sum_le; no import added."
+    },
+    {
+      "file": ".lake/packages/mathlib/Mathlib/Analysis/Normed/Ring/Finite.lean",
+      "line": 36,
+      "name": "AddChar.norm_apply",
+      "signature": "[AddLeftCancelMonoid G] [Finite G] (\u03c8 : AddChar G \u03b1) (g : G) : \u2016\u03c8 g\u2016 = 1",
+      "availability": "The original lemma122 proof invokes this API explicitly."
+    },
+    {
+      "file": ".lake/packages/mathlib/Mathlib/Analysis/Complex/Norm.lean",
+      "line": 113,
+      "name": "Complex.norm_natCast",
+      "signature": "(n : Nat) : \u2016(n : Complex)\u2016 = (n : Real)",
+      "availability": "Normalization already used by simp in the two original natural-weight proofs."
+    },
+    {
+      "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10MainParameters.lean",
+      "line": 23,
+      "name": "theorem1013Parameters_sum_fibre_cards",
+      "signature": "(D : MultifunctionDomain N X) : (\u2211 s : ZMod N, (D.fibre s).card) = Fintype.card X",
+      "availability": "Existing direct import, already used by the old Main proof."
+    }
+  ],
+  "actual_endpoint_routes": [
+    {
+      "root": "GowersSzemeredi.Final",
+      "modules_before": 601,
+      "modules_after": 601,
+      "source_before": 123958,
+      "source_after": 123925,
+      "source_delta": -33,
+      "theorem_proof_body_delta": -33,
+      "changed_owners_present": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs05PolynomialPartition",
+        "GowersSzemeredi.Proofs10Main",
+        "GowersSzemeredi.Proofs12Parallelograms"
+      ]
+    },
+    {
+      "root": "GowersSzemeredi.Proofs18CoverFejerAllDegrees",
+      "modules_before": 657,
+      "modules_after": 657,
+      "source_before": 137999,
+      "source_after": 137966,
+      "source_delta": -33,
+      "theorem_proof_body_delta": -33,
+      "changed_owners_present": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs05PolynomialPartition",
+        "GowersSzemeredi.Proofs10Main",
+        "GowersSzemeredi.Proofs12Parallelograms"
+      ]
+    },
+    {
+      "root": "GowersSzemeredi.Proofs18FinalStep",
+      "modules_before": 573,
+      "modules_after": 573,
+      "source_before": 124991,
+      "source_after": 124958,
+      "source_delta": -33,
+      "theorem_proof_body_delta": -33,
+      "changed_owners_present": [
+        "GowersSzemeredi.Proofs00Basics",
+        "GowersSzemeredi.Proofs05PolynomialPartition",
+        "GowersSzemeredi.Proofs10Main",
+        "GowersSzemeredi.Proofs12Parallelograms"
+      ]
+    }
+  ],
+  "scope": {
+    "graph_module_count": 6021,
+    "graph_sha256": "5d9cddd4ed75a75bb000cef54367ca42e74de39ab16930a570b520510f728752",
+    "selected_union_module_count": 1955,
+    "reverse_consumer_count": 1625,
+    "covered_consumers": 1618,
+    "uncovered_consumers": [
+      "GowersSzemeredi",
+      "GowersSzemeredi.Audit",
+      "GowersSzemeredi.PortImportAudit",
+      "GowersSzemeredi.Proofs05MinimumModularPartition",
+      "GowersSzemeredi.Proofs13ContextualBilinear",
+      "GowersSzemeredi.Proofs13SmallScaleExtraction",
+      "GowersSzemeredi.Proofs18UniformInterval"
+    ]
+  },
+  "scope_limit": "Coverage is not complete for the ordinary consumers: four named ordinary modules lie outside the existing selected union, in addition to three aggregate facades. No additional native root is selected or authorized by this proposal.",
+  "affected_selected_root_counts": {
+    "core": 1,
+    "shared": 58,
+    "supplemental": 18
+  },
+  "NEXT547_relation": {
+    "disjoint_source_owners": true,
+    "no_frozen_package_changes": true,
+    "note": "Separate proposal. No integrated patch or native plan has been prepared."
+  },
+  "static_validation": [
+    "Exact four baseline hashes match the current frozen native snapshot.",
+    "All 178 complete parsed declaration headers and contexts agree.",
+    "All non-target declaration blocks and all imports agree.",
+    "Each draft is exactly its original file with one contiguous proof body replaced.",
+    "Complete comment-aware 6,021-module graph was rebuilt; protected selected local import edges agree with the snapshot.",
+    "All four owners belong to original Final, stronger CoverFejerAllDegrees and FinalStep; no graph edge changes or earlier consumer growth."
+  ],
+  "limitations": [
+    "No Lean/compiler/native command or candidate entrypoint was run. Elaboration of Nat.cast_sum rewrites and the implicit summand of norm_sum_le_of_le remains to be confirmed by future native checks.",
+    "This proposal changes no final mathematical statement, numerical bound, AP definition, or paper-fidelity qualification.",
+    "No source, repository, Git, cache, live tools or native evidence was modified."
+  ],
+  "assets": [
+    {
+      "path": "/tmp/gowers-fourier-norm-library-reuse-research/changes.patch",
+      "sha256": "4e7e102fe66fa4bcc0449b32c81dea3acc468bc0c8d54084f0dd86857b627d21"
+    },
+    {
+      "path": "/tmp/gowers-fourier-norm-library-reuse-research/draft/Proofs00Basics.lean",
+      "sha256": "37499ca60fe07da043cf0fa1a03195477d22627821016fe700af7905165dd8c1"
+    },
+    {
+      "path": "/tmp/gowers-fourier-norm-library-reuse-research/draft/Proofs05PolynomialPartition.lean",
+      "sha256": "ab886bed10179624fb6ca08ae9d472d98cd530e1bc96339ec84117469878de84"
+    },
+    {
+      "path": "/tmp/gowers-fourier-norm-library-reuse-research/draft/Proofs10Main.lean",
+      "sha256": "ff06780a8b4d952e0289d338379520a702ef5cbb740ddde5b9c4fd7a0c544cef"
+    },
+    {
+      "path": "/tmp/gowers-fourier-norm-library-reuse-research/draft/Proofs12Parallelograms.lean",
+      "sha256": "995d8c9e57910c862097ba3d0889abdf50bee0f10cf20adddc1a6c197ddbaf29"
+    },
+    {
+      "path": "/tmp/gowers-fourier-norm-library-reuse-research/scope.json",
+      "sha256": "a7aab08b60530c293a958b3f4ae397410c365fea47059b2cb8a4cea63a6cc61b"
+    },
+    {
+      "path": "/tmp/gowers-fourier-norm-library-reuse-research/source-rows.json",
+      "sha256": "721c7c9fd77db9d234385b99723b43fcf650775d5bf929d628fc30de674bf475"
+    }
+  ]
+}

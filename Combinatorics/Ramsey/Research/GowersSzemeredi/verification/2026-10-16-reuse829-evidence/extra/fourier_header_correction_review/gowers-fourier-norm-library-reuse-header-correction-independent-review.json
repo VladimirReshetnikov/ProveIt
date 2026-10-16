@@ -1,0 +1,40 @@
+{
+  "status": "PASS: additive complete-header qualification; no source or mathematical finding",
+  "supersedes_only": "The parser-completeness wording in the prior independent report:177 headers were parsed to the actual boundary; the178th is now explicitly checked at the true outer delimiter. The stronger whole-owner one-body-replacement check was already exact.",
+  "prior_review": {
+    "path": "/tmp/gowers-fourier-norm-library-reuse-independent-review/report.json",
+    "sha256": "c6d78c6fa8eb5c5af3ef253228a4bab753ee1001b42b6495ae94b050b46deaf2"
+  },
+  "proposal_report": {
+    "path": "/tmp/gowers-fourier-norm-library-reuse-research/report.json",
+    "sha256": "9930bad00e3e8236cd5273fcf14a02e7508bfeac31ce3851a60853ef45cb1d44"
+  },
+  "declarations_total": 178,
+  "correctly_bounded_legacy_headers": 177,
+  "explicit_complete_header_corrections": [
+    {
+      "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Main.lean",
+      "name": "LeanProofs.GowersSzemeredi.theorem10_13_zeta_bound",
+      "old_parser_header": "theorem theorem10_13_zeta_bound (alpha : Real) (halpha : 0 < alpha) :\n    let k",
+      "complete_header": "theorem theorem10_13_zeta_bound (alpha : Real) (halpha : 0 < alpha) :\n    let k := section10SpectrumParameter alpha\n    let epsilon := section10BohrRadius alpha\n    section10Zeta alpha ≤\n      (2 : Real) ^ (-((k : Real) + 4)) * epsilon ^ k / k",
+      "complete_header_sha256": "f861ad787aebdd374ee46b236e44dffca5872efb5fcddb990cfc6f339d0d7b21",
+      "complete_unchanged_block_sha256": "8d871b67f4630a1a730210b490e6f003485d4e4f314e94b9fd628fd41957d11a",
+      "first_line": 448,
+      "header_last_line": 452,
+      "term_proof_line": 453,
+      "statement_local_lets": 2,
+      "complete_header_and_body_exact": true
+    }
+  ],
+  "after_correction_all178_complete_headers_exact": true,
+  "all27_non_theorem_blocks_exact": true,
+  "source_or_proof_delta_change": 0,
+  "no_source_revision_needed": true,
+  "scope_review_unchanged": true,
+  "authorship_note": "Composition author repair_native_tools reported this metadata issue; threshold_review independently confirmed the complete current/draft block and true outer delimiter.",
+  "limitations": [
+    "No native or candidate entrypoint executed.",
+    "This narrow known-boundary correction is not a claim to a complete Lean parser.",
+    "Future composition should use the explicit complete header, retaining original report bytes."
+  ]
+}

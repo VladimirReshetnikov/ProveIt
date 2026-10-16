@@ -487,19 +487,11 @@ private lemma theorem1013_fourier_norm_le_card {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
     (D : MultifunctionDomain N X) (r : ZMod N) :
     ‖fourier (domainFibreCountFunction D) r‖ ≤ Fintype.card X := by
-  rw [fourier, ZMod.dft_apply]
-  calc
-    ‖∑ s : ZMod N,
-        ZMod.stdAddChar (-(s * r)) • domainFibreCountFunction D s‖ ≤
-        ∑ s : ZMod N,
-          ‖ZMod.stdAddChar (-(s * r)) • domainFibreCountFunction D s‖ :=
-      norm_sum_le _ _
-    _ = ∑ s : ZMod N, ((D.fibre s).card : Real) := by
-      apply Finset.sum_congr rfl
-      intro s _
-      simp [domainFibreCountFunction]
-    _ = Fintype.card X := by
-      rw [← Nat.cast_sum, theorem1013Parameters_sum_fibre_cards]
+  rw [fourier, ZMod.dft_apply, ← theorem1013Parameters_sum_fibre_cards D, Nat.cast_sum]
+  simpa only [domainFibreCountFunction, smul_eq_mul, norm_mul, AddChar.norm_apply,
+    Complex.norm_natCast, one_mul] using
+      norm_sum_le Finset.univ
+        (fun s : ZMod N => ZMod.stdAddChar (-(s * r)) • domainFibreCountFunction D s)
 
 private lemma theorem1013_fourier_energy_upper {N M : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]

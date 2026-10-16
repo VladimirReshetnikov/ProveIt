@@ -15,8 +15,8 @@ coordinate `i` with `e i = false`. This module provides, in every dimension:
 * `relSumFin n Γ`, the pointwise sum of `n + 1` relations, and
   `MultiplyLinearWith.relSumFin`: every summand is covered at scale
   `ρ/(n+1)`, so counts and width exponents multiply at that common scale;
-* `vertexFace` and `translatedVertex_eq_face`: when `e i = false`, the vertex
-  map is a function of `dropAt (castSucc i) z`.
+* `exists_false_of_ne_one`: every vertex other than the all-ones vertex
+  has a coordinate `i` with `e i = false`.
 
 These replace the named faces of dimension three (`cylMid`, `cylFirst`,
 `cylLast`, `relationSum` twice). -/

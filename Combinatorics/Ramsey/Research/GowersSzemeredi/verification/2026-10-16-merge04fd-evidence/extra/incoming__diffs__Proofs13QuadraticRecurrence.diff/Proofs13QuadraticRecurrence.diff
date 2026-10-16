@@ -1,0 +1,48 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13QuadraticRecurrence.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13QuadraticRecurrence.lean
+index 2c0096914..4118e989c 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13QuadraticRecurrence.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13QuadraticRecurrence.lean
+@@ -160,43 +160,8 @@ structure Stage135CandidateFamily {N : Nat} [NeZero N]
+     ∑ j, S.alpha ^ 32 * (N : Real) ^ 31 * (Q j).length / 8 ≤
+       ∑ j, (goodHeightWeight S ((Q j).carrier ∩ D.H) : Real)
+ 
+-private abbrev stage135AtHeightCode (N : Nat) :=
+-  (Fin 15 → ZMod N) × (Fin 16 → ZMod N)
+-
+-private def stage135EncodeAtHeight {N : Nat} [NeZero N]
+-    (A : Finset (Pair N)) (h : ZMod N)
+-    (R : {R : DArrangement N 8 // R.IsIn A ∧ R.height = h}) :
+-    stage135AtHeightCode N :=
+-  (fun i => R.1.x i.succ, R.1.y)
+-
+-private def stage135Left : Finset (Fin 16) :=
+-  Finset.univ.filter fun i => (i : Nat) < 8
+-
+-private def stage135Right : Finset (Fin 16) :=
+-  Finset.univ.filter fun i => 8 ≤ (i : Nat)
+-
+-private lemma stage135_zero_mem_left : (0 : Fin 16) ∈ stage135Left := by
+-  simp [stage135Left]
+-
+-private lemma stage135_zero_notMem_right : (0 : Fin 16) ∉ stage135Right := by
+-  simp [stage135Right]
+-
+ alias stage135_additive_ext := lemma134_additive_ext
+ 
+-private lemma stage135EncodeAtHeight_injective {N : Nat} [NeZero N]
+-    (A : Finset (Pair N)) (h : ZMod N) :
+-    Function.Injective (stage135EncodeAtHeight A h) := by
+-  intro R T hcode
+-  apply Subtype.ext
+-  have hxTail : ∀ i : Fin 15, R.1.x i.succ = T.1.x i.succ := by
+-    intro i
+-    exact congrFun (congrArg Prod.fst hcode) i
+-  have hx : R.1.x = T.1.x :=
+-    stage135_additive_ext R.2.1.1 T.2.1.1 hxTail
+-  have hy : R.1.y = T.1.y := congrArg Prod.snd hcode
+-  have hh : R.1.height = T.1.height := R.2.2.trans T.2.2.symm
+-  exact Prod.ext hx (Prod.ext hy hh)
+-
+ alias stage135_sectionC_upper := lemma134_sectionC_upper
+ 
+ /-- Weighted height mass supplies the stronger pre-trimming density 1/16. -/

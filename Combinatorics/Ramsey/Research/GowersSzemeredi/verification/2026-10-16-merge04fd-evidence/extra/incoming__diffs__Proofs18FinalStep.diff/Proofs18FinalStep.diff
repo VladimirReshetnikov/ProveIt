@@ -1,0 +1,30 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean
+index 627a135b5..4064fa8f9 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean
+@@ -334,13 +334,6 @@ end LeanProofs.GowersSzemeredi
+ 
+ namespace LeanProofs.GowersSzemeredi
+ 
+-/-- `3(k+4)² ≤ 2·tDegT3 k + 6k + 35`: the side condition of `eta_step_small`
+-at the joint-slice density degree. -/
+-theorem sq_le_two_tDegT3 (k : Nat) : 3 * (k + 4) ^ 2 ≤ 2 * tDegT3 k + 6 * k + 35 := by
+-  rcases Nat.lt_or_ge k 15 with h | h
+-  · interval_cases k <;> decide
+-  · rw [tDegT3_eq_of_ge h]; omega
+-
+ variable {alpha : Real}
+ 
+ /-- **The common precision of the vertex covers.** -/
+@@ -523,7 +516,10 @@ theorem yIn_boundsJT3 {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
+   -- `η`, `yIn`
+   -- the polynomial side condition of `eta_step_small`, from the class degree
+   have hm : 3 * (k + 4) ^ 2 ≤ rhoDegJT3 k P.μ0 + 2 + 3 + (μD + 1) + 3 := by
+-    have h1 := sq_le_two_tDegT3 k
++    have h1 : 3 * (k + 4) ^ 2 ≤ 2 * tDegT3 k + 6 * k + 35 := by
++      rcases Nat.lt_or_ge k 15 with h | h
++      · interval_cases k <;> decide
++      · rw [tDegT3_eq_of_ge h]; omega
+     have h6 : tDegT3 k + P.μ0 + 3 + k ≤ rhoDegJT3 k P.μ0 := by
+       unfold rhoDegJT3; have := le_max_left (tDegT3 k + P.μ0 + 3) (pDeg k + 1); omega
+     have h5 : pDeg k = 5 * k + 21 := rfl

@@ -1,0 +1,30 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs17NonuniformCellMass.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs17NonuniformCellMass.lean
+index c091a37c4..3ccf8513a 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs17NonuniformCellMass.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs17NonuniformCellMass.lean
+@@ -9,14 +9,6 @@ noncomputable section
+ namespace LeanProofs.GowersSzemeredi
+ open scoped BigOperators
+ 
+-/-- The support estimate for the extension by zero of a disc-valued function. -/
+-theorem restrictToCell_uniformEnergy_le {N k : Nat} [NeZero N]
+-    {f : ZMod N → Complex} (hf : DiscValued f) (S : Finset (ZMod N)) :
+-    (∑ a : Point N k, ‖∑ s : ZMod N, cubeDifference (restrictToCell S f) a s‖ ^ 2) ≤
+-      (S.card : Real) ^ (k + 2) :=
+-  uniformEnergy_le_support_pow (restrictToCell_discValued hf S) S
+-    (fun x hx => by simp [restrictToCell, hx])
+-
+ /-- If a partition fails degree-k uniformity at beta, cells failing at half
+ that local parameter contain more than beta/2 of the total ambient mass.
+ There is no dependence on the number of cells in this mass fraction. -/
+@@ -42,7 +34,9 @@ theorem not_uniformOnPartition_nonuniform_cell_mass {N M k m : Nat} [NeZero N]
+     exact lt_of_not_ge hfail
+   have hE (i : Fin M) : E i ≤ (m : Real) ^ (k + 1) * (Q i).carrier.card := by
+     calc
+-      E i ≤ ((Q i).carrier.card : Real) ^ (k + 2) := restrictToCell_uniformEnergy_le hf _
++      E i ≤ ((Q i).carrier.card : Real) ^ (k + 2) :=
++        uniformEnergy_le_support_pow (restrictToCell_discValued hf _) _
++          (fun x hx => by simp [restrictToCell, hx])
+       _ = ((Q i).carrier.card : Real) ^ (k + 1) * (Q i).carrier.card := pow_succ _ _
+       _ ≤ _ := mul_le_mul_of_nonneg_right
+         (pow_le_pow_left₀ (by positivity) (by exact_mod_cast hsize i) _) (by positivity)

@@ -1,0 +1,24 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PrefixLift.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PrefixLift.lean
+index 547bbf898..14a1e89c3 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PrefixLift.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PrefixLift.lean
+@@ -64,19 +64,4 @@ theorem MultiplyLinearFunction.lift_prefix {N l d : Nat} [NeZero N] [Fact N.Prim
+         rw [hdom] at hp
+         exact hp
+ 
+-/-- The structured-pair face parameter already supplies the full reserve
+-for every prefix extension up to the original ambient dimension. -/
+-theorem MultiplyLinearFunction.lift_prefix_face_parameter
+-    {N k l d : Nat} [NeZero N] [Fact N.Prime]
+-    {theta gamma : Real} {B : Finset (Point N l)} {phi : Point N l → ZMod N}
+-    (hML : MultiplyLinearFunction gamma
+-      (gamma ^ (-(2 : Int)) * multipleS ((2 : Real) ^ (-(k + 2 : Real)) * theta) gamma k) B phi)
+-    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+-    (hld : l ≤ d) (hdk : d ≤ k + 1) :
+-    MultiplyLinearFunction gamma
+-      (gamma ^ (-(2 : Int)) * multipleS ((2 : Real) ^ (-(k + 2 : Real)) * theta) gamma k)
+-      (prefixDomain hld B) (fun z => phi (coordinatePrefix hld z)) := by
+-  obtain ⟨hs, hreserve⟩ := section16_face_parameter_lift_reserve k ht ht1 hg hg1
+-  exact hML.lift_prefix hg hg1 hs (hreserve d hdk) hld
+-
+ end LeanProofs.GowersSzemeredi

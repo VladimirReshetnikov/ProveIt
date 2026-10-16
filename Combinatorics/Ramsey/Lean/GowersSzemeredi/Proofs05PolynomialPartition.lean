@@ -122,16 +122,10 @@ private lemma weighted_centered_reciprocal_sq_tail {N K : Nat} [NeZero N]
 private lemma fourier_natWeight_norm_le_mass {N : Nat} [NeZero N]
     (w : ZMod N → Nat) (r : ZMod N) :
     ‖fourier (fun x => (w x : Complex)) r‖ ≤ ∑ x, w x := by
-  rw [fourier, ZMod.dft_apply]
-  calc
-    ‖∑ x : ZMod N, ZMod.stdAddChar (-(x * r)) • (w x : Complex)‖ ≤
-        ∑ x : ZMod N, ‖ZMod.stdAddChar (-(x * r)) • (w x : Complex)‖ :=
-      norm_sum_le _ _
-    _ = ∑ x : ZMod N, (w x : Real) := by
-      apply Finset.sum_congr rfl
-      intro x _
-      simp [ZMod.stdAddChar_apply]
-    _ = (∑ x : ZMod N, w x : Nat) := by push_cast; rfl
+  rw [fourier, ZMod.dft_apply, Nat.cast_sum]
+  simpa only [smul_eq_mul, norm_mul, AddChar.norm_apply, Complex.norm_natCast, one_mul] using
+    norm_sum_le Finset.univ
+      (fun x : ZMod N => ZMod.stdAddChar (-(x * r)) • (w x : Complex))
 
 @[simp] private lemma fourier_natWeight_zero {N : Nat} [NeZero N]
     (w : ZMod N → Nat) :

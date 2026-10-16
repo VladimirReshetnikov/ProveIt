@@ -1,0 +1,33 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithUnion.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithUnion.lean
+index ad6969234..f340f3dad 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithUnion.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithUnion.lean
+@@ -59,15 +59,6 @@ def appendMultilinearFamily {N k p q : Nat} (nu : Fin p → Point N k → ZMod N
+   if h : (i : Nat) < p then nu ⟨i, h⟩
+   else mu ⟨i - p, by have := i.isLt; omega⟩
+ 
+-theorem appendMultilinearFamily_isMultilinear {N k p q : Nat}
+-    (nu : Fin p → Point N k → ZMod N) (mu : Fin q → Point N k → ZMod N)
+-    (hnu : ∀ i, IsMultilinear (nu i)) (hmu : ∀ i, IsMultilinear (mu i))
+-    (i : Fin (p + q)) : IsMultilinear (appendMultilinearFamily nu mu i) := by
+-  unfold appendMultilinearFamily
+-  split_ifs
+-  · exact hnu _
+-  · exact hmu _
+-
+ theorem appendMultilinearFamily_left {N k p q : Nat}
+     (nu : Fin p → Point N k → ZMod N) (mu : Fin q → Point N k → ZMod N)
+     (i : Fin p) : appendMultilinearFamily nu mu (Fin.castAdd q i) = nu i := by
+@@ -135,7 +126,11 @@ theorem MultiplyLinearWith.union {N k : Nat} [NeZero N]
+     exact (Real.rpow_le_rpow (Real.rpow_nonneg (Nat.cast_nonneg _) _) (hBwidth _)
+       (hE2 _ hb hb1)).trans (hRwidth _ _)
+   · intro j i
+-    exact appendMultilinearFamily_isMultilinear _ _ (hnu _) (hmu _ _) i
++    exact show IsMultilinear (appendMultilinearFamily _ _ i) by
++      unfold appendMultilinearFamily
++      split_ifs
++      · exact (hnu _) _
++      · exact (hmu _ _) _
+   · intro j x hx hxH y hxy
+     have hxR : x ∈ (R (e.symm j).1 (e.symm j).2).carrier := hx
+     have hxB : x ∈ (B (e.symm j).1).carrier := IsPartition.cell_subset (hRpart _) _ hxR

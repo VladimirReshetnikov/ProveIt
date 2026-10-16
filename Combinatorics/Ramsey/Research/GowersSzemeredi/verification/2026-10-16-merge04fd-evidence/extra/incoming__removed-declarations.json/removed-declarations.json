@@ -1,0 +1,1306 @@
+[
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs02Partition.lean",
+    "name": "LeanProofs.GowersSzemeredi.residueChunkLength_pos",
+    "kind": "lemma",
+    "header": "private lemma residueChunkLength_pos {c L n j : Nat} (hL : 0 < L) :\n    0 < residueChunkLength c L n j",
+    "block": "private lemma residueChunkLength_pos {c L n j : Nat} (hL : 0 < L) :\n    0 < residueChunkLength c L n j := by\n  unfold residueChunkLength\n  split_ifs <;> omega",
+    "context": [],
+    "line": 54,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs02Partition.lean",
+    "name": "LeanProofs.GowersSzemeredi.chunkCount_pos",
+    "kind": "lemma",
+    "header": "private lemma chunkCount_pos {c L : Nat} (hL : 0 < L) (hLc : L ≤ c) :\n    0 < c / L",
+    "block": "private lemma chunkCount_pos {c L : Nat} (hL : 0 < L) (hLc : L ≤ c) :\n    0 < c / L := by\n  exact Nat.div_pos hLc hL",
+    "context": [],
+    "line": 72,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs02Partition.lean",
+    "name": "LeanProofs.GowersSzemeredi.residueChunkFamily_isProper",
+    "kind": "lemma",
+    "header": "private lemma residueChunkFamily_isProper {r u L : Nat} (hu : 0 < u)\n    (z : Fin (Fintype.card (ResidueChunkIndex r u L))) :\n    (residueChunkFamily r u L z).IsProper",
+    "block": "private lemma residueChunkFamily_isProper {r u L : Nat} (hu : 0 < u)\n    (z : Fin (Fintype.card (ResidueChunkIndex r u L))) :\n    (residueChunkFamily r u L z).IsProper := by\n  change (residueChunkAP r u L ((Fintype.equivFin _).symm z)).IsProper\n  exact residueChunkAP_isProper hu _",
+    "context": [],
+    "line": 295,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs02Partition.lean",
+    "name": "LeanProofs.GowersSzemeredi.residueChunkFamily_length_ge",
+    "kind": "lemma",
+    "header": "private lemma residueChunkFamily_length_ge {r u L : Nat}\n    (z : Fin (Fintype.card (ResidueChunkIndex r u L))) :\n    L ≤ (residueChunkFamily r u L z).length",
+    "block": "private lemma residueChunkFamily_length_ge {r u L : Nat}\n    (z : Fin (Fintype.card (ResidueChunkIndex r u L))) :\n    L ≤ (residueChunkFamily r u L z).length := by\n  change L ≤ residueChunkLength\n    (residueClassLength r u ((Fintype.equivFin _).symm z).1) L\n    (residueClassLength r u ((Fintype.equivFin _).symm z).1 / L)\n    ((Fintype.equivFin _).symm z).2\n  exact residueChunkLength_ge",
+    "context": [],
+    "line": 301,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs02Partition.lean",
+    "name": "LeanProofs.GowersSzemeredi.residueChunkFamily_length_lt",
+    "kind": "lemma",
+    "header": "private lemma residueChunkFamily_length_lt {r u L : Nat} (hL : 0 < L)\n    (z : Fin (Fintype.card (ResidueChunkIndex r u L))) :\n    (residueChunkFamily r u L z).length < 2 * L",
+    "block": "private lemma residueChunkFamily_length_lt {r u L : Nat} (hL : 0 < L)\n    (z : Fin (Fintype.card (ResidueChunkIndex r u L))) :\n    (residueChunkFamily r u L z).length < 2 * L := by\n  change residueChunkLength\n    (residueClassLength r u ((Fintype.equivFin _).symm z).1) L\n    (residueClassLength r u ((Fintype.equivFin _).symm z).1 / L)\n    ((Fintype.equivFin _).symm z).2 < 2 * L\n  exact residueChunkLength_lt_two_mul hL",
+    "context": [],
+    "line": 310,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs02Partition.lean",
+    "name": "LeanProofs.GowersSzemeredi.partitionRatio_one_le",
+    "kind": "lemma",
+    "header": "private lemma partitionRatio_one_le {N r s : Nat} (hN : 0 < N)\n    (hrs : N ≤ r * s) : 1 ≤ partitionRatio N r s",
+    "block": "private lemma partitionRatio_one_le {N r s : Nat} (hN : 0 < N)\n    (hrs : N ≤ r * s) : 1 ≤ partitionRatio N r s := by\n  have hNreal : (0 : Real) < N := by exact_mod_cast hN\n  rw [partitionRatio, Real.one_le_sqrt]\n  apply (le_div_iff₀ hNreal).2\n  have hrsReal : (N : Real) ≤ (r : Real) * s := by exact_mod_cast hrs\n  simpa only [one_mul] using hrsReal",
+    "context": [],
+    "line": 423,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs02Uniformity.lean",
+    "name": "LeanProofs.GowersSzemeredi.fourthMoment_eq_correlationEnergy",
+    "kind": "lemma",
+    "header": "private lemma fourthMoment_eq_correlationEnergy {N : Nat} [NeZero N]\n    (f : ZMod N → Complex) :\n    ∑ r : ZMod N, ‖fourier f r‖ ^ 4 =\n      (N : Real) * ∑ t : ZMod N,\n        ‖∑ s : ZMod N, f s * star (f (s - t))‖ ^ 2",
+    "block": "private lemma fourthMoment_eq_correlationEnergy {N : Nat} [NeZero N]\n    (f : ZMod N → Complex) :\n    ∑ r : ZMod N, ‖fourier f r‖ ^ 4 =\n      (N : Real) * ∑ t : ZMod N,\n        ‖∑ s : ZMod N, f s * star (f (s - t))‖ ^ 2 := by\n  have h := lemma_2_1_holds N f f\n  convert h using 1\n  apply Finset.sum_congr rfl\n  intro r _\n  ring",
+    "context": [],
+    "line": 21,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs02Uniformity.lean",
+    "name": "LeanProofs.GowersSzemeredi.fourthMoment_eq_quadrupleSum",
+    "kind": "lemma",
+    "header": "private lemma fourthMoment_eq_quadrupleSum {N : Nat} [NeZero N]\n    (f : ZMod N → Complex) :\n    ∑ r : ZMod N, ‖fourier f r‖ ^ 4 =\n      (N : Real) *\n        (∑ q : Fin 4 → ZMod N,\n          if q 0 - q 1 = q 2 - q 3\n            then f (q 0) * star (f (q 1) * f (q 2)) * f (q 3)\n            else 0).re",
+    "block": "private lemma fourthMoment_eq_quadrupleSum {N : Nat} [NeZero N]\n    (f : ZMod N → Complex) :\n    ∑ r : ZMod N, ‖fourier f r‖ ^ 4 =\n      (N : Real) *\n        (∑ q : Fin 4 → ZMod N,\n          if q 0 - q 1 = q 2 - q 3\n            then f (q 0) * star (f (q 1) * f (q 2)) * f (q 3)\n            else 0).re := by\n  have h := congrArg Complex.re (identity_2_6_holds N f)\n  simpa only [Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im,\n    Complex.natCast_re, Complex.natCast_im, Nat.cast_ofNat, zero_mul, mul_zero,\n    sub_zero] using h",
+    "context": [],
+    "line": 32,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05DegreeBudgets.lean",
+    "name": "LeanProofs.GowersSzemeredi.partitionConstant_pos",
+    "kind": "theorem",
+    "header": "private theorem partitionConstant_pos (k : Nat) : 1 ≤ polynomialPartitionConstant k",
+    "block": "private theorem partitionConstant_pos (k : Nat) : 1 ≤ polynomialPartitionConstant k := by\n  unfold polynomialPartitionConstant\n  have := Nat.factorial_pos k\n  exact Nat.one_le_iff_ne_zero.mpr (by positivity)",
+    "context": [],
+    "line": 19,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Lemma9.lean",
+    "name": "LeanProofs.GowersSzemeredi.polynomialPartitionInductionDenominator",
+    "kind": "def",
+    "header": "def polynomialPartitionInductionDenominator (k : Nat) : Nat",
+    "block": "def polynomialPartitionInductionDenominator (k : Nat) : Nat :=\n  (Nat.factorial k) ^ 2 * 2 ^ (k ^ 2 + k + 2)",
+    "context": [],
+    "line": 148,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Lemma9.lean",
+    "name": "LeanProofs.GowersSzemeredi.polynomialPartitionConstant_eq_inductionDenominator_mul",
+    "kind": "theorem",
+    "header": "theorem polynomialPartitionConstant_eq_inductionDenominator_mul\n    {k : Nat} (hk : 1 <= k) :\n    polynomialPartitionConstant k =\n      polynomialPartitionInductionDenominator k * 2 ^ (k - 1)",
+    "block": "theorem polynomialPartitionConstant_eq_inductionDenominator_mul\n    {k : Nat} (hk : 1 <= k) :\n    polynomialPartitionConstant k =\n      polynomialPartitionInductionDenominator k * 2 ^ (k - 1) := by\n  unfold polynomialPartitionConstant polynomialPartitionInductionDenominator\n  rw [mul_assoc, ← pow_add]\n  congr 2\n  calc\n    (k + 1) ^ 2 = k ^ 2 + 2 * k + 1 := by ring\n    _ = k ^ 2 + k + 2 + (k - 1) := by omega",
+    "context": [],
+    "line": 153,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Lemma9.lean",
+    "name": "LeanProofs.GowersSzemeredi.polynomialPartition_induction_exponent_eq",
+    "kind": "theorem",
+    "header": "theorem polynomialPartition_induction_exponent_eq\n    {k : Nat} (hk : 1 <= k) :\n    (polynomialPartitionInductionDenominator k : Real)⁻¹ =\n      (2 ^ (k - 1) : Nat) *\n        (polynomialPartitionConstant k : Real)⁻¹",
+    "block": "theorem polynomialPartition_induction_exponent_eq\n    {k : Nat} (hk : 1 <= k) :\n    (polynomialPartitionInductionDenominator k : Real)⁻¹ =\n      (2 ^ (k - 1) : Nat) *\n        (polynomialPartitionConstant k : Real)⁻¹ := by\n  have hD : (0 : Real) < polynomialPartitionInductionDenominator k := by\n    unfold polynomialPartitionInductionDenominator\n    positivity\n  have hF : (0 : Real) < (2 ^ (k - 1) : Nat) := by positivity\n  have hfactor := polynomialPartitionConstant_eq_inductionDenominator_mul hk\n  rw [hfactor]\n  push_cast\n  field_simp [ne_of_gt hD, ne_of_gt hF]",
+    "context": [],
+    "line": 165,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Lemma9.lean",
+    "name": "LeanProofs.GowersSzemeredi.polynomialPartition_two_mul_inverse_le_induction_exponent",
+    "kind": "theorem",
+    "header": "theorem polynomialPartition_two_mul_inverse_le_induction_exponent\n    {k : Nat} (hk : 2 <= k) :\n    2 * (polynomialPartitionConstant k : Real)⁻¹ <=\n      (polynomialPartitionInductionDenominator k : Real)⁻¹",
+    "block": "theorem polynomialPartition_two_mul_inverse_le_induction_exponent\n    {k : Nat} (hk : 2 <= k) :\n    2 * (polynomialPartitionConstant k : Real)⁻¹ <=\n      (polynomialPartitionInductionDenominator k : Real)⁻¹ := by\n  rw [polynomialPartition_induction_exponent_eq (by omega)]\n  have hfactor : (2 : Real) <= (2 ^ (k - 1) : Nat) := by\n    exact_mod_cast pow_le_pow_right₀ (by norm_num : 1 <= (2 : Nat))\n      (by omega : 1 <= k - 1)\n  exact mul_le_mul_of_nonneg_right hfactor (by positivity)",
+    "context": [],
+    "line": 181,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Lemma9.lean",
+    "name": "LeanProofs.GowersSzemeredi.polynomialPartition_linear_induction_exponent",
+    "kind": "theorem",
+    "header": "theorem polynomialPartition_linear_induction_exponent :\n    (polynomialPartitionInductionDenominator 1 : Real)⁻¹ =\n      (polynomialPartitionConstant 1 : Real)⁻¹",
+    "block": "theorem polynomialPartition_linear_induction_exponent :\n    (polynomialPartitionInductionDenominator 1 : Real)⁻¹ =\n      (polynomialPartitionConstant 1 : Real)⁻¹ := by\n  rw [polynomialPartition_induction_exponent_eq (by norm_num)]\n  norm_num",
+    "context": [],
+    "line": 193,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Multiaffine.lean",
+    "name": "LeanProofs.GowersSzemeredi.isMultilinear_multiaffineEval",
+    "kind": "theorem",
+    "header": "theorem isMultilinear_multiaffineEval {N k : Nat}\n    (F : Finset (Finset (Fin k))) (c : Finset (Fin k) → ZMod N) :\n    IsMultilinear (multiaffineEval F c)",
+    "block": "theorem isMultilinear_multiaffineEval {N k : Nat}\n    (F : Finset (Finset (Fin k))) (c : Finset (Fin k) → ZMod N) :\n    IsMultilinear (multiaffineEval F c) := by\n  classical\n  apply (isMultilinear_iff_multiaffineEval _).2\n  refine ⟨fun S => if S ∈ F then c S else 0, ?_⟩\n  intro x\n  unfold multiaffineEval\n  simp only [ite_mul, zero_mul]\n  rw [← Finset.sum_filter]\n  simp",
+    "context": [],
+    "line": 163,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05PolynomialPartition.lean",
+    "name": "LeanProofs.GowersSzemeredi.recurrenceExponent_nonneg",
+    "kind": "lemma",
+    "header": "private lemma recurrenceExponent_nonneg (k : Nat) :\n    0 ≤ (((k : Real) * (2 : Real) ^ (k + 1))⁻¹)",
+    "block": "private lemma recurrenceExponent_nonneg (k : Nat) :\n    0 ≤ (((k : Real) * (2 : Real) ^ (k + 1))⁻¹) := by positivity",
+    "context": [],
+    "line": 692,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05QuadraticRecurrenceBudget.lean",
+    "name": "LeanProofs.GowersSzemeredi.quadraticRecurrenceRoot_pos",
+    "kind": "theorem",
+    "header": "theorem quadraticRecurrenceRoot_pos {R : Real} (hR : 0 < R) :\n    0 < quadraticRecurrenceRoot R",
+    "block": "theorem quadraticRecurrenceRoot_pos {R : Real} (hR : 0 < R) :\n    0 < quadraticRecurrenceRoot R := by\n  unfold quadraticRecurrenceRoot\n  positivity",
+    "context": [],
+    "line": 22,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05Weyl.lean",
+    "name": "LeanProofs.GowersSzemeredi.eight_le_cube",
+    "kind": "lemma",
+    "header": "private lemma eight_le_cube {k : Nat} (hk : 2 ≤ k) : 8 ≤ k ^ 3",
+    "block": "private lemma eight_le_cube {k : Nat} (hk : 2 ≤ k) : 8 ≤ k ^ 3 := by\n  have hpow := Nat.pow_le_pow_left hk 3\n  norm_num at hpow\n  exact hpow",
+    "context": [],
+    "line": 3079,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05WeylConstantBounds.lean",
+    "name": "LeanProofs.GowersSzemeredi.weylBudget_one_lt",
+    "kind": "theorem",
+    "header": "theorem weylBudget_one_lt (j : Nat) (hj : j ≤ 2) : OAI.Erdos3.weylBudget j 1 < 2 ^ 192",
+    "block": "theorem weylBudget_one_lt (j : Nat) (hj : j ≤ 2) : OAI.Erdos3.weylBudget j 1 < 2 ^ 192 := by\n  interval_cases j <;>\n    simp only [OAI.Erdos3.weylBudget, OAI.Erdos3.weylNextBudget] <;> norm_num",
+    "context": [],
+    "line": 32,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs07BalogSzemeredi.lean",
+    "name": "LeanProofs.GowersSzemeredi.popularSums_mem_comm",
+    "kind": "lemma",
+    "header": "private lemma popularSums_mem_comm {G : Type*} [DecidableEq G]\n    [AddCommGroup G] (A : Finset G) (c : Real) (a b : G) :\n    a + b ∈ popularSums A c ↔ b + a ∈ popularSums A c",
+    "block": "private lemma popularSums_mem_comm {G : Type*} [DecidableEq G]\n    [AddCommGroup G] (A : Finset G) (c : Real) (a b : G) :\n    a + b ∈ popularSums A c ↔ b + a ∈ popularSums A c := by\n  rw [add_comm]",
+    "context": [],
+    "line": 151,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs07BalogSzemeredi.lean",
+    "name": "LeanProofs.GowersSzemeredi.popularNeighbors_symm",
+    "kind": "lemma",
+    "header": "private lemma popularNeighbors_symm {G : Type*} [DecidableEq G]\n    [AddCommGroup G] (A : Finset G) (c : Real) {a b : G}\n    (ha : a ∈ A) (hb : b ∈ A) :\n    b ∈ popularNeighbors A c a ↔ a ∈ popularNeighbors A c b",
+    "block": "private lemma popularNeighbors_symm {G : Type*} [DecidableEq G]\n    [AddCommGroup G] (A : Finset G) (c : Real) {a b : G}\n    (ha : a ∈ A) (hb : b ∈ A) :\n    b ∈ popularNeighbors A c a ↔ a ∈ popularNeighbors A c b := by\n  simp only [popularNeighbors, Finset.mem_filter, ha, hb, true_and]\n  exact popularSums_mem_comm A c a b",
+    "context": [],
+    "line": 156,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs07BalogSzemeredi.lean",
+    "name": "LeanProofs.GowersSzemeredi.bsg_delta_le_one",
+    "kind": "lemma",
+    "header": "private lemma bsg_delta_le_one (c : Real) (hc : 0 < c) (hc1 : c ≤ 1) :\n    bsgDelta c ≤ 1",
+    "block": "private lemma bsg_delta_le_one (c : Real) (hc : 0 < c) (hc1 : c ≤ 1) :\n    bsgDelta c ≤ 1 := by\n  unfold bsgDelta\n  nlinarith [sq_nonneg c, mul_nonneg hc.le (sub_nonneg.mpr hc1)]",
+    "context": [],
+    "line": 412,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs07BalogSzemeredi.lean",
+    "name": "LeanProofs.GowersSzemeredi.bsg_c_le_one",
+    "kind": "lemma",
+    "header": "private lemma bsg_c_le_one {G : Type*} [DecidableEq G] [AddCommGroup G]\n    (A : Finset G) (c : Real) (hA : A.Nonempty)\n    (henergy : c * (A.card : Real) ^ 3 ≤ Finset.addEnergy A A) : c ≤ 1",
+    "block": "private lemma bsg_c_le_one {G : Type*} [DecidableEq G] [AddCommGroup G]\n    (A : Finset G) (c : Real) (hA : A.Nonempty)\n    (henergy : c * (A.card : Real) ^ 3 ≤ Finset.addEnergy A A) : c ≤ 1 := by\n  have hm : (0 : Real) < A.card := by exact_mod_cast hA.card_pos\n  have hupper : (Finset.addEnergy A A : Real) ≤ (A.card : Real) ^ 3 := by\n    exact_mod_cast energy_le_card_cube A\n  have := henergy.trans hupper\n  nlinarith [pow_pos hm 3]",
+    "context": [],
+    "line": 417,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs07BalogSzemeredi.lean",
+    "name": "LeanProofs.GowersSzemeredi.quadWitnesses_card_le_fourReps",
+    "kind": "lemma",
+    "header": "private lemma quadWitnesses_card_le_fourReps {G : Type*} [DecidableEq G]\n    [AddCommGroup G] (A : Finset G) (c : Real) (u v : G) :\n    (quadWitnesses A c u v).card ≤ (fourReps A (u - v)).card",
+    "block": "private lemma quadWitnesses_card_le_fourReps {G : Type*} [DecidableEq G]\n    [AddCommGroup G] (A : Finset G) (c : Real) (u v : G) :\n    (quadWitnesses A c u v).card ≤ (fourReps A (u - v)).card := by\n  exact Finset.card_le_card_of_injOn quadWitnessTuple\n    (fun w hw => quadWitnessTuple_mem A c u v w hw)\n    (quadWitnessTuple_injOn A c u v)",
+    "context": [],
+    "line": 539,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs07BalogSzemeredi.lean",
+    "name": "LeanProofs.GowersSzemeredi.goodIntersection_symm",
+    "kind": "lemma",
+    "header": "private lemma goodIntersection_symm {X I : Type*} [DecidableEq X]\n    (A : I → Finset X) (threshold : Real) (i j : I) :\n    goodIntersection A threshold i j ↔ goodIntersection A threshold j i",
+    "block": "private lemma goodIntersection_symm {X I : Type*} [DecidableEq X]\n    (A : I → Finset X) (threshold : Real) (i j : I) :\n    goodIntersection A threshold i j ↔ goodIntersection A threshold j i := by\n  unfold goodIntersection\n  rw [Finset.inter_comm]",
+    "context": [],
+    "line": 610,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs07BalogSzemeredi.lean",
+    "name": "LeanProofs.GowersSzemeredi.octWitnesses_card_le_eightReps",
+    "kind": "lemma",
+    "header": "private lemma octWitnesses_card_le_eightReps {G : Type*} [DecidableEq G]\n    [AddCommGroup G] (A : Finset G) (c delta : Real)\n    (V : Finset G) (K : Finset (Fin V.card)) (i j : Fin V.card) :\n    (octWitnesses A c delta V K i j).card ≤\n      (eightReps A (centerAt V i - centerAt V j)).card",
+    "block": "private lemma octWitnesses_card_le_eightReps {G : Type*} [DecidableEq G]\n    [AddCommGroup G] (A : Finset G) (c delta : Real)\n    (V : Finset G) (K : Finset (Fin V.card)) (i j : Fin V.card) :\n    (octWitnesses A c delta V K i j).card ≤\n      (eightReps A (centerAt V i - centerAt V j)).card := by\n  exact Finset.card_le_card_of_injOn octWitnessTuple\n    (fun w hw => octWitnessTuple_mem A c delta V K i j w hw)\n    (octWitnessTuple_injOn A c delta V K i j)",
+    "context": [],
+    "line": 727,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs07SimultaneousLinearity.lean",
+    "name": "LeanProofs.GowersSzemeredi.bohr_neg_mem",
+    "kind": "lemma",
+    "header": "private lemma bohr_neg_mem {p : Nat} [NeZero p] {K : Finset (ZMod p)}\n    {rho : Real} {d : ZMod p} (hd : d ∈ bohr K rho) : -d ∈ bohr K rho",
+    "block": "private lemma bohr_neg_mem {p : Nat} [NeZero p] {K : Finset (ZMod p)}\n    {rho : Real} {d : ZMod p} (hd : d ∈ bohr K rho) : -d ∈ bohr K rho := by\n  rw [bohr, Finset.mem_filter] at hd ⊢\n  refine ⟨Finset.mem_univ _, ?_⟩\n  intro r hr\n  simpa only [mul_neg, centeredAbs_neg] using hd.2 r hr",
+    "context": [],
+    "line": 782,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs07SimultaneousLinearity.lean",
+    "name": "LeanProofs.GowersSzemeredi.centeredAbs_pos_of_ne_zero",
+    "kind": "lemma",
+    "header": "private lemma centeredAbs_pos_of_ne_zero {p : Nat} [NeZero p]\n    {d : ZMod p} (hd : d != 0) : 0 < centeredAbs d",
+    "block": "private lemma centeredAbs_pos_of_ne_zero {p : Nat} [NeZero p]\n    {d : ZMod p} (hd : d != 0) : 0 < centeredAbs d := by\n  apply Nat.pos_of_ne_zero\n  intro hzero\n  have hvalMin : d.valMinAbs = 0 := Int.natAbs_eq_zero.mp hzero\n  have hd0 : d = 0 := by simpa using (ZMod.valMinAbs_spec d 0).1 hvalMin |>.1\n  exact (bne_iff_ne.mp hd) hd0",
+    "context": [],
+    "line": 861,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs08OddFrequencyProgression.lean",
+    "name": "LeanProofs.GowersSzemeredi.quadratic_nonuniformity_odd_affine_frequencies",
+    "kind": "theorem",
+    "header": "theorem quadratic_nonuniformity_odd_affine_frequencies :\n    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 → ∃ N₀ : Nat,\n      ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →\n        ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 2 →\n        ∃ m : Nat, ∃ P : ModAP N, ∃ D : Finset (ZMod N), ∃ a b : ZMod N,\n          Odd m ∧ 0 < m ∧ (m : Real) ≤ Real.sqrt N ∧\n          (N : Real) ^ cor711Exponent ((alpha / 2) ^ (12359 : Nat)) 1 / 2 ≤ m ∧\n          P.step != 0 ∧ P.IsProper ∧ P.length = m ∧ D ⊆ P.carrier ∧\n          (alpha / 2) ^ (12359 : Nat) / 2 * m ≤ (D.card : Real) ∧\n          ∀ x ∈ D, alpha / 2 * N ≤ ‖fourier (difference f x) (a * x + b)‖",
+    "block": "theorem quadratic_nonuniformity_odd_affine_frequencies :\n    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 → ∃ N₀ : Nat,\n      ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →\n        ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 2 →\n        ∃ m : Nat, ∃ P : ModAP N, ∃ D : Finset (ZMod N), ∃ a b : ZMod N,\n          Odd m ∧ 0 < m ∧ (m : Real) ≤ Real.sqrt N ∧\n          (N : Real) ^ cor711Exponent ((alpha / 2) ^ (12359 : Nat)) 1 / 2 ≤ m ∧\n          P.step != 0 ∧ P.IsProper ∧ P.length = m ∧ D ⊆ P.carrier ∧\n          (alpha / 2) ^ (12359 : Nat) / 2 * m ≤ (D.card : Real) ∧\n          ∀ x ∈ D, alpha / 2 * N ≤ ‖fourier (difference f x) (a * x + b)‖ := by\n  intro alpha hα hαone\n  have he := (quadratic_frequency_exponent_bounds hα hαone).1\n  obtain ⟨N₀, hN₀⟩ := Filter.eventually_atTop.mp\n    (eventually_nat_mul_rpow_le (C := 4) (D := 1) he zero_lt_one)\n  refine ⟨N₀, fun N _ _ hN ↦ ?_⟩\n  apply quadratic_nonuniformity_odd_affine_frequencies_of_power_bound alpha hα hαone N\n  simpa only [Real.rpow_zero, mul_one, one_mul] using hN₀ N hN",
+    "context": [],
+    "line": 117,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Error.lean",
+    "name": "LeanProofs.GowersSzemeredi.bad_count_eq_xy_pair_sum",
+    "kind": "lemma",
+    "header": "private lemma bad_count_eq_xy_pair_sum {N : Nat} {X : Type*}\n    [Fintype X] (D : MultifunctionDomain N X) (phi : X → ZMod N) :\n    (countWhere (AltPhiBad D phi) : Real) =\n      ∑ x : X, ∑ y : X, ∑ zw : X × X,\n        if AltPhiBad D phi ![x, y, zw.1, zw.2] then 1 else 0",
+    "block": "private lemma bad_count_eq_xy_pair_sum {N : Nat} {X : Type*}\n    [Fintype X] (D : MultifunctionDomain N X) (phi : X → ZMod N) :\n    (countWhere (AltPhiBad D phi) : Real) =\n      ∑ x : X, ∑ y : X, ∑ zw : X × X,\n        if AltPhiBad D phi ![x, y, zw.1, zw.2] then 1 else 0 := by\n  classical\n  rw [countWhere_cast_eq_sum_ite, sum_fin_four]\n  simp_rw [Fintype.sum_prod_type]",
+    "context": [],
+    "line": 600,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Error.lean",
+    "name": "LeanProofs.GowersSzemeredi.proportionateError_nonneg",
+    "kind": "lemma",
+    "header": "private lemma proportionateError_nonneg {N : Nat} {X : Type*}\n    [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)\n    (phi : X → ZMod N) (B : Finset (ZMod N)) (x y : X) :\n    0 ≤ domainProportionateError D phi B x y",
+    "block": "private lemma proportionateError_nonneg {N : Nat} {X : Type*}\n    [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)\n    (phi : X → ZMod N) (B : Finset (ZMod N)) (x y : X) :\n    0 ≤ domainProportionateError D phi B x y := by\n  unfold domainProportionateError\n  positivity",
+    "context": [],
+    "line": 801,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Extraction.lean",
+    "name": "LeanProofs.GowersSzemeredi.audit_totalWeight_lower",
+    "kind": "lemma",
+    "header": "private lemma audit_totalWeight_lower :\n    4 * auditL ^ 3 ≤ domainTotalWeight auditDomain auditX0",
+    "block": "private lemma audit_totalWeight_lower :\n    4 * auditL ^ 3 ≤ domainTotalWeight auditDomain auditX0 := by\n  rw [audit_totalWeight_formula]\n  have huniv : (Finset.univ : Finset (ZMod 8)) = {0, 1, 2, 3, 4, 5, 6, 7} := by\n    decide\n  rw [huniv]\n  decide",
+    "context": [],
+    "line": 260,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Extraction.lean",
+    "name": "LeanProofs.GowersSzemeredi.audit_L_pos",
+    "kind": "lemma",
+    "header": "private lemma audit_L_pos : 0 < auditL",
+    "block": "private lemma audit_L_pos : 0 < auditL := by\n  unfold auditL\n  exact Nat.mul_pos (Nat.mul_pos (by omega) audit_Q_pos) audit_H_pos",
+    "context": [],
+    "line": 543,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Extraction.lean",
+    "name": "LeanProofs.GowersSzemeredi.audit_profile_shift_four",
+    "kind": "lemma",
+    "header": "private lemma audit_profile_shift_four (s : ZMod 8) :\n    auditProfile (s + 4) = auditProfile s ∨\n      (auditProfile (s + 4) = 0 ∧ auditProfile s = 1) ∨\n      (auditProfile (s + 4) = 1 ∧ auditProfile s = 0)",
+    "block": "private lemma audit_profile_shift_four (s : ZMod 8) :\n    auditProfile (s + 4) = auditProfile s ∨\n      (auditProfile (s + 4) = 0 ∧ auditProfile s = 1) ∨\n      (auditProfile (s + 4) = 1 ∧ auditProfile s = 0) := by\n  fin_cases s <;> decide",
+    "context": [],
+    "line": 613,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Extraction.lean",
+    "name": "LeanProofs.GowersSzemeredi.audit_card_cube_le",
+    "kind": "lemma",
+    "header": "private lemma audit_card_cube_le :\n    (auditCard : Real) ^ 3 ≤ (5 * (auditL : Real)) ^ 3",
+    "block": "private lemma audit_card_cube_le :\n    (auditCard : Real) ^ 3 ≤ (5 * (auditL : Real)) ^ 3 :=\n  pow_le_pow_left₀ (by positivity) audit_card_le_five_L_real 3",
+    "context": [],
+    "line": 688,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Extraction.lean",
+    "name": "LeanProofs.GowersSzemeredi.audit_anchor",
+    "kind": "lemma",
+    "header": "private lemma audit_anchor :\n    IsSection10Anchor auditDomain auditPhi auditB auditAlpha auditM 8\n      auditEta auditX0",
+    "block": "private lemma audit_anchor :\n    IsSection10Anchor auditDomain auditPhi auditB auditAlpha auditM 8\n      auditEta auditX0 :=\n  ⟨audit_anchor_fibre_bound, audit_anchor_weight_bound,\n    audit_anchor_error_bound⟩",
+    "context": [],
+    "line": 722,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Extraction.lean",
+    "name": "LeanProofs.GowersSzemeredi.audit_regular_card_bound",
+    "kind": "lemma",
+    "header": "private lemma audit_regular_card_bound :\n    auditRho ^ 2 * auditAlpha ^ 2 * auditM * (8 : Nat) / 16 ≤\n      auditW.card",
+    "block": "private lemma audit_regular_card_bound :\n    auditRho ^ 2 * auditAlpha ^ 2 * auditM * (8 : Nat) / 16 ≤\n      auditW.card := by\n  rw [audit_regular_card_scale, audit_card_W]",
+    "context": [],
+    "line": 768,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Extraction.lean",
+    "name": "LeanProofs.GowersSzemeredi.audit_eta_eq_pow",
+    "kind": "lemma",
+    "header": "private lemma audit_eta_eq_pow :\n    auditEta = ((1 : Real) / 32) ^ 5",
+    "block": "private lemma audit_eta_eq_pow :\n    auditEta = ((1 : Real) / 32) ^ 5 := by\n  norm_num [auditEta, auditQ]",
+    "context": [],
+    "line": 871,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Extraction.lean",
+    "name": "LeanProofs.GowersSzemeredi.extraction_almostEvery_of_nonpos",
+    "kind": "lemma",
+    "header": "private lemma extraction_almostEvery_of_nonpos {Y : Type*}\n    [DecidableEq Y] (p : Real) (U : Finset Y) (P : Y → Prop)\n    (hp : p ≤ 0) : AlmostEvery p U P",
+    "block": "private lemma extraction_almostEvery_of_nonpos {Y : Type*}\n    [DecidableEq Y] (p : Real) (U : Finset Y) (P : Y → Prop)\n    (hp : p ≤ 0) : AlmostEvery p U P := by\n  classical\n  unfold AlmostEvery\n  exact (mul_nonpos_of_nonpos_of_nonneg hp (by positivity)).trans (by positivity)",
+    "context": [],
+    "line": 1121,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Regular.lean",
+    "name": "LeanProofs.GowersSzemeredi.integral_indicator_Icc_one",
+    "kind": "lemma",
+    "header": "private lemma integral_indicator_Icc_one {a b : Real} (hab : a ≤ b) :\n    (∫ x : Real, if x ∈ Set.Icc a b then (1 : Real) else 0) = b - a",
+    "block": "private lemma integral_indicator_Icc_one {a b : Real} (hab : a ≤ b) :\n    (∫ x : Real, if x ∈ Set.Icc a b then (1 : Real) else 0) = b - a := by\n  have hind :\n      (fun x : Real => if x ∈ Set.Icc a b then (1 : Real) else 0) =\n        (Set.Icc a b).indicator (fun _ => (1 : Real)) := by\n    funext x\n    simp only [Set.indicator]\n  rw [hind]\n  rw [MeasureTheory.integral_indicator measurableSet_Icc]\n  simp [hab]",
+    "context": [],
+    "line": 38,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Regular.lean",
+    "name": "LeanProofs.GowersSzemeredi.boundaryCount_integrable",
+    "kind": "lemma",
+    "header": "private lemma boundaryCount_integrable {X : Type*} [Fintype X]\n    (rho sigma : Real) (a b : X → Real) (μ : Measure (Real × Real))\n    [IsFiniteMeasure μ] :\n    Integrable (boundaryCount rho sigma a b) μ",
+    "block": "private lemma boundaryCount_integrable {X : Type*} [Fintype X]\n    (rho sigma : Real) (a b : X → Real) (μ : Measure (Real × Real))\n    [IsFiniteMeasure μ] :\n    Integrable (boundaryCount rho sigma a b) μ := by\n  unfold boundaryCount\n  apply integrable_finsetSum\n  intro y _\n  exact (integrable_const (1 : Real)).indicator\n    (measurableSet_normalizedBoundarySet rho sigma (a y) (b y))",
+    "context": [],
+    "line": 461,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Shift.lean",
+    "name": "LeanProofs.GowersSzemeredi.self_mem_fibre",
+    "kind": "lemma",
+    "header": "private lemma self_mem_fibre {N : Nat} [NeZero N]\n    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)\n    (x : X) : x ∈ D.fibre (D.index x)",
+    "block": "private lemma self_mem_fibre {N : Nat} [NeZero N]\n    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)\n    (x : X) : x ∈ D.fibre (D.index x) := by\n  simp",
+    "context": [],
+    "line": 27,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Shift.lean",
+    "name": "LeanProofs.GowersSzemeredi.fibreSize_pos",
+    "kind": "lemma",
+    "header": "private lemma fibreSize_pos {N : Nat} [NeZero N]\n    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)\n    (x : X) : 0 < D.fibreSize x",
+    "block": "private lemma fibreSize_pos {N : Nat} [NeZero N]\n    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)\n    (x : X) : 0 < D.fibreSize x := by\n  unfold MultifunctionDomain.fibreSize\n  exact Finset.card_pos.mpr ⟨x, self_mem_fibre D x⟩",
+    "context": [],
+    "line": 32,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs10Shift.lean",
+    "name": "LeanProofs.GowersSzemeredi.twoStep_localDifference",
+    "kind": "lemma",
+    "header": "private lemma twoStep_localDifference {N : Nat} [NeZero N]\n    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)\n    (phi : X → ZMod N) (W : Finset X) (B : Finset (ZMod N))\n    (psi : ZMod N → ZMod N) (eta theta tau : Real)\n    (hregular : IsSection10ShiftRegular D W B eta) (htau : 0 < tau)\n    (htheta_tau : theta ≤ tau)\n    (hround : theta + (Real.sqrt tau + eta) ≤ 3 * Real.sqrt tau)\n    (hintermediate : theta + 2 * Real.sqrt tau < 1)\n    (d₁ d₂ : ZMod N) (hd₁ : d₁ ∈ B)\n    (hlocal₁ : AlmostEvery (1 - theta) W\n      (localDifferenceGood D phi psi theta d₁))\n    (hlocal₂ : AlmostEvery (1 - theta) W\n      (localDifferenceGood D phi psi theta d₂)) :\n    AlmostEvery (1 - 3 * Real.sqrt tau) W fun w =>\n      AlmostEvery (1 - theta) (D.fibre (D.index w + d₁ + d₂)) fun z =>\n        phi z - phi w = psi d₁ + psi d₂",
+    "block": "private lemma twoStep_localDifference {N : Nat} [NeZero N]\n    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)\n    (phi : X → ZMod N) (W : Finset X) (B : Finset (ZMod N))\n    (psi : ZMod N → ZMod N) (eta theta tau : Real)\n    (hregular : IsSection10ShiftRegular D W B eta) (htau : 0 < tau)\n    (htheta_tau : theta ≤ tau)\n    (hround : theta + (Real.sqrt tau + eta) ≤ 3 * Real.sqrt tau)\n    (hintermediate : theta + 2 * Real.sqrt tau < 1)\n    (d₁ d₂ : ZMod N) (hd₁ : d₁ ∈ B)\n    (hlocal₁ : AlmostEvery (1 - theta) W\n      (localDifferenceGood D phi psi theta d₁))\n    (hlocal₂ : AlmostEvery (1 - theta) W\n      (localDifferenceGood D phi psi theta d₂)) :\n    AlmostEvery (1 - 3 * Real.sqrt tau) W fun w =>\n      AlmostEvery (1 - theta) (D.fibre (D.index w + d₁ + d₂)) fun z =>\n        phi z - phi w = psi d₁ + psi d₂ := by\n  classical\n  let Q₁ : X → Prop := localDifferenceGood D phi psi theta d₁\n  let Q₂ : X → Prop := localDifferenceGood D phi psi theta d₂\n  let S : X → Prop := fun w =>\n    w ∈ shiftEligible D W d₁ ∧\n      AlmostEvery (1 - 2 * Real.sqrt tau) (D.fibre (D.index w + d₁)) Q₂\n  have hlocal₂tau : AlmostEvery (1 - tau) W Q₂ := by\n    exact almostEvery_weaken_error theta tau W Q₂ htheta_tau hlocal₂\n  have hshift : AlmostEvery (1 - (Real.sqrt tau + eta)) W S := by\n    have hs := shift_almostEvery_eligible D W B eta tau Q₂ hregular htau\n      hlocal₂tau d₁ hd₁\n    convert hs using 1\n    ring\n  have hboth : AlmostEvery (1 - (theta + (Real.sqrt tau + eta))) W\n      (fun w => Q₁ w ∧ S w) :=\n    almostEvery_and theta (Real.sqrt tau + eta) W Q₁ S hlocal₁ hshift\n  have hboth' : AlmostEvery (1 - 3 * Real.sqrt tau) W\n      (fun w => Q₁ w ∧ S w) :=\n    almostEvery_weaken_error (theta + (Real.sqrt tau + eta))\n      (3 * Real.sqrt tau) W (fun w => Q₁ w ∧ S w) hround hboth\n  apply almostEvery_mono (1 - 3 * Real.sqrt tau) W (fun w => Q₁ w ∧ S w)\n  · exact hboth'\n  · intro w _ hw\n    rcases hw with ⟨hQ₁, hwEligible, hQ₂⟩\n    have hwEligible' : w ∈ W ∩ D.shift W (-d₁) := by\n      simpa only [shiftEligible] using hwEligible\n    obtain ⟨u, _, huindex⟩ := exists_shifted_representative D d₁ hwEligible'\n    have huFibre : u ∈ D.fibre (D.index w + d₁) :=\n      (mem_fibre_iff D _ _).mpr huindex\n    obtain ⟨w', hw'Fibre, hrel₁, hQ₂w'⟩ :=\n      exists_and_of_almostEvery theta (2 * Real.sqrt tau)\n        (D.fibre (D.index w + d₁))\n        (fun w' => phi w' - phi w = psi d₁) Q₂\n        ⟨u, huFibre⟩ hintermediate hQ₁ hQ₂\n    have hw'index : D.index w' = D.index w + d₁ :=\n      (mem_fibre_iff D _ _).mp hw'Fibre\n    have hQ₂w'' :\n        AlmostEvery (1 - theta) (D.fibre (D.index w + d₁ + d₂)) fun z =>\n          phi z - phi w' = psi d₂ := by\n      simpa only [Q₂, localDifferenceGood, hw'index, add_assoc] using hQ₂w'\n    exact almostEvery_mono (1 - theta) (D.fibre (D.index w + d₁ + d₂))\n      (fun z => phi z - phi w' = psi d₂)\n      (fun z => phi z - phi w = psi d₁ + psi d₂) hQ₂w''\n      (fun z _ hrel₂ => by\n        calc\n          phi z - phi w = (phi z - phi w') + (phi w' - phi w) := by abel\n          _ = psi d₂ + psi d₁ := by rw [hrel₂, hrel₁]\n          _ = psi d₁ + psi d₂ := add_comm _ _)",
+    "context": [],
+    "line": 519,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13CompleteSquareExtraction.lean",
+    "name": "LeanProofs.GowersSzemeredi.section13_complete_square_extraction",
+    "kind": "theorem",
+    "header": "theorem section13_complete_square_extraction {alpha : Real}\n    (hα : 0 < alpha) (hαsixth : alpha ≤ 1 / 6) :\n    ∃ N₀ : Nat, ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N),\n      S.alpha = alpha → N₀ ≤ N →\n      ∃ V W : ModAP N, ∃ B : Finset (Pair N),\n        V.step != 0 ∧ V.step = W.step ∧ V.IsProper ∧ W.IsProper ∧ V.length = W.length ∧\n        (N : Real) ^ section13SquareExponent alpha ≤ V.length ∧\n        B ⊆ S.A ∧ B ⊆ V.carrier.product W.carrier ∧\n        (2 : Real) ^ (-(137 : Int)) * alpha ^ 704 * V.length * W.length ≤ B.card ∧\n        BilinearOn B S.phi",
+    "block": "theorem section13_complete_square_extraction {alpha : Real}\n    (hα : 0 < alpha) (hαsixth : alpha ≤ 1 / 6) :\n    ∃ N₀ : Nat, ∀ (N : Nat) [Fact N.Prime] (S : Section13Context N),\n      S.alpha = alpha → N₀ ≤ N →\n      ∃ V W : ModAP N, ∃ B : Finset (Pair N),\n        V.step != 0 ∧ V.step = W.step ∧ V.IsProper ∧ W.IsProper ∧ V.length = W.length ∧\n        (N : Real) ^ section13SquareExponent alpha ≤ V.length ∧\n        B ⊆ S.A ∧ B ⊆ V.carrier.product W.carrier ∧\n        (2 : Real) ^ (-(137 : Int)) * alpha ^ 704 * V.length * W.length ≤ B.card ∧\n        BilinearOn B S.phi := by\n  exact section13_complete_square_extraction_all_densities hα (hαsixth.trans (by norm_num))",
+    "context": [],
+    "line": 94,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13EdgeModels.lean",
+    "name": "LeanProofs.GowersSzemeredi.section13_vertical_spectrum",
+    "kind": "theorem",
+    "header": "theorem section13_vertical_spectrum {N : Nat} [NeZero N]\n    (A : Finset (Pair N)) (h : ZMod N) (t : Real) :\n    domainLargeSpectrum (section13VerticalDomain A h) t =\n      Finset.univ.filter (fun r ↦ t ≤ ‖fourier (verticalEdgeFiberFunction A h) r‖)",
+    "block": "theorem section13_vertical_spectrum {N : Nat} [NeZero N]\n    (A : Finset (Pair N)) (h : ZMod N) (t : Real) :\n    domainLargeSpectrum (section13VerticalDomain A h) t =\n      Finset.univ.filter (fun r ↦ t ≤ ‖fourier (verticalEdgeFiberFunction A h) r‖) := by\n  classical\n  unfold domainLargeSpectrum\n  rw [section13_vertical_fibre_function]",
+    "context": [],
+    "line": 132,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13FeatureVertices.lean",
+    "name": "LeanProofs.GowersSzemeredi.balancedHorizontal_balance",
+    "kind": "theorem",
+    "header": "theorem balancedHorizontal_balance {I R : Type*} [Fintype I] [CommRing R]\n    (sign x : I → R) :\n    (∑ i, sign i * balancedHorizontal sign x (some i)) - balancedHorizontal sign x none = 0",
+    "block": "theorem balancedHorizontal_balance {I R : Type*} [Fintype I] [CommRing R]\n    (sign x : I → R) :\n    (∑ i, sign i * balancedHorizontal sign x (some i)) - balancedHorizontal sign x none = 0 := by\n  simp [balancedHorizontal]",
+    "context": [],
+    "line": 66,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13FeatureZeroCount.lean",
+    "name": "LeanProofs.GowersSzemeredi.feature_countWhere_sum",
+    "kind": "theorem",
+    "header": "private theorem feature_countWhere_sum {T : Type*} [Fintype T] (P : T → Prop) :\n    countWhere P = ∑ t : T, @ite Nat (P t) (Classical.propDecidable _) 1 0",
+    "block": "private theorem feature_countWhere_sum {T : Type*} [Fintype T] (P : T → Prop) :\n    countWhere P = ∑ t : T, @ite Nat (P t) (Classical.propDecidable _) 1 0 := by\n  classical\n  simp [countWhere]",
+    "context": [],
+    "line": 13,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13FeatureZeroCount.lean",
+    "name": "LeanProofs.GowersSzemeredi.balancedFeaturePolynomial_zero_count_32",
+    "kind": "theorem",
+    "header": "theorem balancedFeaturePolynomial_zero_count_32 {N : Nat} [NeZero N] [Fact N.Prime]\n    (sign : Fin 15 → ZMod N) (hsign : ∀ i, sign i ≠ 0) (u₀ u₁ : Option (Fin 15) → ZMod N)\n    (hnot : ¬ ∃ c : ZMod N, u₀ none = c ∧ u₁ none = -c ∧\n      (∀ i, u₀ (some i) = -(sign i * c)) ∧\n      (∀ i, u₁ (some i) = sign i * c)) :\n    countWhere (fun z => MvPolynomial.eval z (balancedFeaturePolynomial sign u₀ u₁) = 0) ≤\n      2 * N ^ 31",
+    "block": "theorem balancedFeaturePolynomial_zero_count_32 {N : Nat} [NeZero N] [Fact N.Prime]\n    (sign : Fin 15 → ZMod N) (hsign : ∀ i, sign i ≠ 0) (u₀ u₁ : Option (Fin 15) → ZMod N)\n    (hnot : ¬ ∃ c : ZMod N, u₀ none = c ∧ u₁ none = -c ∧\n      (∀ i, u₀ (some i) = -(sign i * c)) ∧\n      (∀ i, u₁ (some i) = sign i * c)) :\n    countWhere (fun z => MvPolynomial.eval z (balancedFeaturePolynomial sign u₀ u₁) = 0) ≤\n      2 * N ^ 31 := by\n  simpa using balancedFeaturePolynomial_zero_count sign hsign u₀ u₁ hnot",
+    "context": [],
+    "line": 102,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13FejerArrangementParameters.lean",
+    "name": "LeanProofs.GowersSzemeredi.fejerBalancedArrangement_card",
+    "kind": "theorem",
+    "header": "theorem fejerBalancedArrangement_card {N : Nat} [NeZero N] :\n    Fintype.card (FejerBalancedArrangement N) = N ^ 32",
+    "block": "theorem fejerBalancedArrangement_card {N : Nat} [NeZero N] :\n    Fintype.card (FejerBalancedArrangement N) = N ^ 32 := by\n  rw [← Fintype.card_congr (fejerArrangementParametersEquiv (N := N))]\n  simp only [FejerArrangementParameters, Fintype.card_fun, ZMod.card, balancedFeatureVariable_card,\n    Fintype.card_fin]",
+    "context": [],
+    "line": 94,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13FejerKernel.lean",
+    "name": "LeanProofs.GowersSzemeredi.finiteFejerKernel_zero",
+    "kind": "theorem",
+    "header": "theorem finiteFejerKernel_zero {N L : Nat} [NeZero N] (hL : 0 < L) :\n    finiteFejerKernel (N := N) L 0 = 1",
+    "block": "theorem finiteFejerKernel_zero {N L : Nat} [NeZero N] (hL : 0 < L) :\n    finiteFejerKernel (N := N) L 0 = 1 := by\n  have hLr : (L : Real) ≠ 0 := by exact_mod_cast (Nat.ne_of_gt hL)\n  simp [finiteFejerKernel, exponential, hLr]",
+    "context": [],
+    "line": 30,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13FejerSurvival.lean",
+    "name": "LeanProofs.GowersSzemeredi.fejer_kernel_mean_carrier_of_injective",
+    "kind": "theorem",
+    "header": "theorem fejer_kernel_mean_carrier_of_injective {N L : Nat} [NeZero N]\n    {I X : Type*} [Fintype I] [DecidableEq I] [DecidableEq X]\n    (vertex : I → X) (hinj : Function.Injective vertex) (phi feature : X → ZMod N) :\n    (𝔼 c : ZMod N × ZMod N,\n      ∏ x ∈ Finset.univ.image vertex,\n        finiteFejerKernel L (c.1 * phi x + c.2 * feature x)) =\n      (((L : Real) ^ 2)⁻¹) ^ Fintype.card I *\n        (countWhere (fun v : I → Fin L × Fin L =>\n          fejerPairRelation v (phi ∘ vertex) = 0 ∧\n            fejerPairRelation v (feature ∘ vertex) = 0) : Real)",
+    "block": "theorem fejer_kernel_mean_carrier_of_injective {N L : Nat} [NeZero N]\n    {I X : Type*} [Fintype I] [DecidableEq I] [DecidableEq X]\n    (vertex : I → X) (hinj : Function.Injective vertex) (phi feature : X → ZMod N) :\n    (𝔼 c : ZMod N × ZMod N,\n      ∏ x ∈ Finset.univ.image vertex,\n        finiteFejerKernel L (c.1 * phi x + c.2 * feature x)) =\n      (((L : Real) ^ 2)⁻¹) ^ Fintype.card I *\n        (countWhere (fun v : I → Fin L × Fin L =>\n          fejerPairRelation v (phi ∘ vertex) = 0 ∧\n            fejerPairRelation v (feature ∘ vertex) = 0) : Real) := by\n  simp_rw [Finset.prod_image hinj.injOn]\n  exact finiteFejerKernel_mean_product_real (phi ∘ vertex) (feature ∘ vertex)",
+    "context": [],
+    "line": 45,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13PreparedFrequencyGraph.lean",
+    "name": "LeanProofs.GowersSzemeredi.context_zero_notMem_right",
+    "kind": "lemma",
+    "header": "private lemma context_zero_notMem_right : (0 : Fin 16) ∉ contextRestrictionRight",
+    "block": "private lemma context_zero_notMem_right : (0 : Fin 16) ∉ contextRestrictionRight := by\n  simp [contextRestrictionRight]",
+    "context": [],
+    "line": 315,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13QuadraticRecurrence.lean",
+    "name": "LeanProofs.GowersSzemeredi.stage135AtHeightCode",
+    "kind": "abbrev",
+    "header": "private abbrev stage135AtHeightCode (N : Nat)",
+    "block": "private abbrev stage135AtHeightCode (N : Nat) :=\n  (Fin 15 → ZMod N) × (Fin 16 → ZMod N)",
+    "context": [],
+    "line": 163,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13QuadraticRecurrence.lean",
+    "name": "LeanProofs.GowersSzemeredi.stage135EncodeAtHeight",
+    "kind": "def",
+    "header": "private def stage135EncodeAtHeight {N : Nat} [NeZero N]\n    (A : Finset (Pair N)) (h : ZMod N)\n    (R : {R : DArrangement N 8 // R.IsIn A ∧ R.height = h}) :\n    stage135AtHeightCode N",
+    "block": "private def stage135EncodeAtHeight {N : Nat} [NeZero N]\n    (A : Finset (Pair N)) (h : ZMod N)\n    (R : {R : DArrangement N 8 // R.IsIn A ∧ R.height = h}) :\n    stage135AtHeightCode N :=\n  (fun i => R.1.x i.succ, R.1.y)",
+    "context": [],
+    "line": 166,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13QuadraticRecurrence.lean",
+    "name": "LeanProofs.GowersSzemeredi.stage135Left",
+    "kind": "def",
+    "header": "private def stage135Left : Finset (Fin 16)",
+    "block": "private def stage135Left : Finset (Fin 16) :=\n  Finset.univ.filter fun i => (i : Nat) < 8",
+    "context": [],
+    "line": 172,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13QuadraticRecurrence.lean",
+    "name": "LeanProofs.GowersSzemeredi.stage135Right",
+    "kind": "def",
+    "header": "private def stage135Right : Finset (Fin 16)",
+    "block": "private def stage135Right : Finset (Fin 16) :=\n  Finset.univ.filter fun i => 8 ≤ (i : Nat)",
+    "context": [],
+    "line": 175,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13QuadraticRecurrence.lean",
+    "name": "LeanProofs.GowersSzemeredi.stage135_zero_mem_left",
+    "kind": "lemma",
+    "header": "private lemma stage135_zero_mem_left : (0 : Fin 16) ∈ stage135Left",
+    "block": "private lemma stage135_zero_mem_left : (0 : Fin 16) ∈ stage135Left := by\n  simp [stage135Left]",
+    "context": [],
+    "line": 178,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13QuadraticRecurrence.lean",
+    "name": "LeanProofs.GowersSzemeredi.stage135_zero_notMem_right",
+    "kind": "lemma",
+    "header": "private lemma stage135_zero_notMem_right : (0 : Fin 16) ∉ stage135Right",
+    "block": "private lemma stage135_zero_notMem_right : (0 : Fin 16) ∉ stage135Right := by\n  simp [stage135Right]",
+    "context": [],
+    "line": 181,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13QuadraticRecurrence.lean",
+    "name": "LeanProofs.GowersSzemeredi.stage135EncodeAtHeight_injective",
+    "kind": "lemma",
+    "header": "private lemma stage135EncodeAtHeight_injective {N : Nat} [NeZero N]\n    (A : Finset (Pair N)) (h : ZMod N) :\n    Function.Injective (stage135EncodeAtHeight A h)",
+    "block": "private lemma stage135EncodeAtHeight_injective {N : Nat} [NeZero N]\n    (A : Finset (Pair N)) (h : ZMod N) :\n    Function.Injective (stage135EncodeAtHeight A h) := by\n  intro R T hcode\n  apply Subtype.ext\n  have hxTail : ∀ i : Fin 15, R.1.x i.succ = T.1.x i.succ := by\n    intro i\n    exact congrFun (congrArg Prod.fst hcode) i\n  have hx : R.1.x = T.1.x :=\n    stage135_additive_ext R.2.1.1 T.2.1.1 hxTail\n  have hy : R.1.y = T.1.y := congrArg Prod.snd hcode\n  have hh : R.1.height = T.1.height := R.2.2.trans T.2.2.symm\n  exact Prod.ext hx (Prod.ext hy hh)",
+    "context": [],
+    "line": 186,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13RecurrenceRange.lean",
+    "name": "LeanProofs.GowersSzemeredi.tower_power_identity",
+    "kind": "theorem",
+    "header": "private theorem tower_power_identity (a b c : Nat) :\n    ((2 : Nat) ^ (2 ^ a)) ^ ((2 ^ b) ^ c) = 2 ^ (2 ^ (a + b * c))",
+    "block": "private theorem tower_power_identity (a b c : Nat) :\n    ((2 : Nat) ^ (2 ^ a)) ^ ((2 ^ b) ^ c) = 2 ^ (2 ^ (a + b * c)) := by\n  rw [← pow_mul, ← pow_mul, ← pow_add]",
+    "context": [],
+    "line": 24,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13UniformDensityParameters.lean",
+    "name": "LeanProofs.GowersSzemeredi.section13SquareExponent_mono",
+    "kind": "theorem",
+    "header": "theorem section13SquareExponent_mono {a b : Real} (ha : 0 < a) (hab : a ≤ b) :\n    section13SquareExponent a ≤ section13SquareExponent b",
+    "block": "theorem section13SquareExponent_mono {a b : Real} (ha : 0 < a) (hab : a ≤ b) :\n    section13SquareExponent a ≤ section13SquareExponent b := by\n  rw [section13SquareExponent_formula, section13SquareExponent_formula]\n  have hb : 0 < b := ha.trans_le hab\n  apply div_le_div₀ (mul_nonneg (zpow_nonneg (by norm_num) _) (pow_nonneg hb.le _))\n    (mul_le_mul_of_nonneg_left (pow_le_pow_left₀ ha.le hab 1856) (by positivity)) (by positivity)\n  exact Real.rpow_le_rpow_of_exponent_le (by norm_num)\n    (mul_le_mul_of_nonneg_left (section13Q_antitone ha hab) (by norm_num))",
+    "context": [],
+    "line": 35,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13UniformEdgeModels.lean",
+    "name": "LeanProofs.GowersSzemeredi.section10SpectrumParameter_antitone",
+    "kind": "theorem",
+    "header": "theorem section10SpectrumParameter_antitone {a b : Real}\n    (ha : 0 < a) (hab : a ≤ b) :\n    section10SpectrumParameter b ≤ section10SpectrumParameter a",
+    "block": "theorem section10SpectrumParameter_antitone {a b : Real}\n    (ha : 0 < a) (hab : a ≤ b) :\n    section10SpectrumParameter b ≤ section10SpectrumParameter a := by\n  apply Nat.ceil_mono\n  unfold section10SpectrumBound\n  exact mul_le_mul_of_nonneg_left\n    (Real.rpow_le_rpow_of_nonpos ha hab (by norm_num)) (by positivity)",
+    "context": [],
+    "line": 12,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15DegenerateRange.lean",
+    "name": "LeanProofs.GowersSzemeredi.rangeDegDoubleExceptEquiv",
+    "kind": "def",
+    "header": "private def rangeDegDoubleExceptEquiv {I : Type*} [DecidableEq I]\n    (i j : I) (hij : i ≠ j) :\n    {t : I // t ≠ i ∧ t ≠ j} ≃\n      {t : {t : I // t ≠ i} // t ≠ ⟨j, hij.symm⟩}",
+    "block": "private def rangeDegDoubleExceptEquiv {I : Type*} [DecidableEq I]\n    (i j : I) (hij : i ≠ j) :\n    {t : I // t ≠ i ∧ t ≠ j} ≃\n      {t : {t : I // t ≠ i} // t ≠ ⟨j, hij.symm⟩} where\n  toFun t := ⟨⟨t, t.2.1⟩, by\n    intro h\n    exact t.2.2 (congrArg Subtype.val h)⟩\n  invFun t := ⟨t.1.1, t.1.2, by\n    intro h\n    apply t.2\n    apply Subtype.ext\n    exact h⟩\n  left_inv _ := rfl\n  right_inv _ := rfl",
+    "context": [
+      "variable {m : Nat}"
+    ],
+    "line": 158,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15DegenerateRange.lean",
+    "name": "LeanProofs.GowersSzemeredi.rangeDegBooleanCoefficient",
+    "kind": "def",
+    "header": "private def rangeDegBooleanCoefficient {N k : Nat}\n    (eta : (Fin k → Bool) → Int) (h : Point N k)\n    (A : Finset (Fin k)) (u : Fin k → Bool) : ZMod N",
+    "block": "private def rangeDegBooleanCoefficient {N k : Nat}\n    (eta : (Fin k → Bool) → Int) (h : Point N k)\n    (A : Finset (Fin k)) (u : Fin k → Bool) : ZMod N :=\n  ∑ e : Fin k → Bool, (eta e : ZMod N) *\n    ∏ i : Fin k,\n      if i ∈ A then\n        if u i then 1 else if e i then h i else 0\n      else if u i then 0 else 1",
+    "context": [
+      "variable {m : Nat}"
+    ],
+    "line": 377,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15FejerSelection.lean",
+    "name": "LeanProofs.GowersSzemeredi.FejerArrangementCode",
+    "kind": "abbrev",
+    "header": "private abbrev FejerArrangementCode {N k : Nat} [NeZero N]\n    (B : Finset (Point N (k + 1)))",
+    "block": "private abbrev FejerArrangementCode {N k : Nat} [NeZero N]\n    (B : Finset (Point N (k + 1))) :=\n  (Fin 15 → {z : Point N (k + 1) // z ∈ B}) × Point N k × Point N k",
+    "context": [],
+    "line": 474,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15FejerSelection.lean",
+    "name": "LeanProofs.GowersSzemeredi.fejer_phase_relation",
+    "kind": "lemma",
+    "header": "private lemma fejer_phase_relation {N k : Nat} [NeZero N]\n    (C : FejerPhase N k) (phi : Point N (k + 1) → ZMod N)\n    (R : GeneralArrangement N k 8) (eta : fejerIndex k → Int) :\n    (∑ z, (eta z : ZMod N) * fejerPhaseValue C phi (fejerVertex R z)) =\n      ∑ F, C F * fejerRelationInt eta F phi R",
+    "block": "private lemma fejer_phase_relation {N k : Nat} [NeZero N]\n    (C : FejerPhase N k) (phi : Point N (k + 1) → ZMod N)\n    (R : GeneralArrangement N k 8) (eta : fejerIndex k → Int) :\n    (∑ z, (eta z : ZMod N) * fejerPhaseValue C phi (fejerVertex R z)) =\n      ∑ F, C F * fejerRelationInt eta F phi R := by\n  unfold fejerPhaseValue fejerRelationInt\n  simp only [Finset.mul_sum]\n  rw [Finset.sum_comm]\n  exact Finset.sum_congr rfl fun F _ => Finset.sum_congr rfl fun z _ => by ring",
+    "context": [],
+    "line": 848,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15FejerSelection.lean",
+    "name": "LeanProofs.GowersSzemeredi.fejer_good_average_lower",
+    "kind": "lemma",
+    "header": "private lemma fejer_good_average_lower {N k : Nat} [NeZero N] (m T : Nat)\n    (hT : T ≤ m + 1) (phi : Point N (k + 1) → ZMod N) (R : GeneralArrangement N k 8)\n    (hadd : IsAdditiveTuple R.crossSection) (hres : R.IsRespected phi) :\n    ((((m : Real) + 1) ^ 2)⁻¹) ^ (2 ^ (k + 4)) *\n        (∑ j ∈ Finset.range T, ((m + 1 - j : Nat) : Real) ^ (2 ^ (k + 4))) ≤\n      𝔼 C : FejerPhase N k,\n        ∏ z : fejerIndex k, fejerKernelWeight m C phi (fejerVertex R z)",
+    "block": "private lemma fejer_good_average_lower {N k : Nat} [NeZero N] (m T : Nat)\n    (hT : T ≤ m + 1) (phi : Point N (k + 1) → ZMod N) (R : GeneralArrangement N k 8)\n    (hadd : IsAdditiveTuple R.crossSection) (hres : R.IsRespected phi) :\n    ((((m : Real) + 1) ^ 2)⁻¹) ^ (2 ^ (k + 4)) *\n        (∑ j ∈ Finset.range T, ((m + 1 - j : Nat) : Real) ^ (2 ^ (k + 4))) ≤\n      𝔼 C : FejerPhase N k,\n        ∏ z : fejerIndex k, fejerKernelWeight m C phi (fejerVertex R z) := by\n  rw [fejer_oneStage_average]\n  apply mul_le_mul_of_nonneg_left _ (by positivity)\n  have h := fejerValidRelations_card_good m T hT phi R hadd hres\n  exact_mod_cast h",
+    "context": [],
+    "line": 1181,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15FejerSelection.lean",
+    "name": "LeanProofs.GowersSzemeredi.fejerBadNondegenerate_card_upper",
+    "kind": "lemma",
+    "header": "private lemma fejerBadNondegenerate_card_upper {N k : Nat} [NeZero N] (m : Nat)\n    (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N) :\n    (fejerBadNondegenerate m B phi).card ≤ (fejerArrangements B).card",
+    "block": "private lemma fejerBadNondegenerate_card_upper {N k : Nat} [NeZero N] (m : Nat)\n    (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N) :\n    (fejerBadNondegenerate m B phi).card ≤ (fejerArrangements B).card := by\n  classical\n  apply Finset.card_le_card\n  intro R hR\n  exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hR).1).1",
+    "context": [],
+    "line": 1328,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AffineClasses.lean",
+    "name": "LeanProofs.GowersSzemeredi.affine_graph_cover_partition",
+    "kind": "theorem",
+    "header": "theorem affine_graph_cover_partition {N q : Nat} [NeZero N]\n    (hq : 0 < q) (B : Finset (ZMod N)) (f : ZMod N → ZMod N)\n    (ell : Fin q → ZMod N → ZMod N) (hell : ∀ i, LinearOn Finset.univ (ell i))\n    (hcover : ∀ x ∈ B, ∃ i, f x = ell i x) :\n    ∃ C : Fin q → Finset (ZMod N), IsPartition C B ∧ ∀ i, LinearOn (C i) f",
+    "block": "theorem affine_graph_cover_partition {N q : Nat} [NeZero N]\n    (hq : 0 < q) (B : Finset (ZMod N)) (f : ZMod N → ZMod N)\n    (ell : Fin q → ZMod N → ZMod N) (hell : ∀ i, LinearOn Finset.univ (ell i))\n    (hcover : ∀ x ∈ B, ∃ i, f x = ell i x) :\n    ∃ C : Fin q → Finset (ZMod N), IsPartition C B ∧ ∀ i, LinearOn (C i) f := by\n  obtain ⟨C, hpart, hC⟩ := finite_graph_cover_partition hq B f ell hcover\n  refine ⟨C, hpart, ?_⟩\n  intro i\n  obtain ⟨a, b, hab⟩ := hell i\n  exact ⟨a, b, fun x hx => (hC i x hx).trans (hab x (Finset.mem_univ _))⟩",
+    "context": [],
+    "line": 42,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16BaseCaseLongBoxTransport.lean",
+    "name": "LeanProofs.GowersSzemeredi.BaseCase.boxOneIndexAP_length",
+    "kind": "lemma",
+    "header": "lemma boxOneIndexAP_length {N : Nat} (P : Box N 1) :\n    (boxOneIndexAP P).length = P.width",
+    "block": "lemma boxOneIndexAP_length {N : Nat} (P : Box N 1) :\n    (boxOneIndexAP P).length = P.width := rfl",
+    "context": [],
+    "line": 51,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16BaseCaseUnion.lean",
+    "name": "LeanProofs.GowersSzemeredi.BaseCase.indexedPartition_cell_subset",
+    "kind": "lemma",
+    "header": "private lemma indexedPartition_cell_subset {X ι : Type*} [DecidableEq X]\n    [Fintype ι] {A : ι → Finset X} {S : Finset X}\n    (hA : IndexedPartition A S) (i : ι) : A i ⊆ S",
+    "block": "private lemma indexedPartition_cell_subset {X ι : Type*} [DecidableEq X]\n    [Fintype ι] {A : ι → Finset X} {S : Finset X}\n    (hA : IndexedPartition A S) (i : ι) : A i ⊆ S := by\n  intro x hx\n  exact (hA.1 x).2 ⟨i, hx⟩",
+    "context": [],
+    "line": 75,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ClassPieces.lean",
+    "name": "LeanProofs.GowersSzemeredi.selectPt_vertex_eq_classFace",
+    "kind": "theorem",
+    "header": "theorem selectPt_vertex_eq_classFace {N k : Nat} (phi : Point N (k + 1) → ZMod N) (x0 : Point N k)\n    {e : Fin k → Bool} (he : e ≠ fun _ => true) (w : Point N (k + 1)) :\n    phi (selectPt (Fin.snoc e true) (Fin.snoc x0 0) w) =\n      classFace phi x0 e (dropAt (vertexDrop e) w)",
+    "block": "theorem selectPt_vertex_eq_classFace {N k : Nat} (phi : Point N (k + 1) → ZMod N) (x0 : Point N k)\n    {e : Fin k → Bool} (he : e ≠ fun _ => true) (w : Point N (k + 1)) :\n    phi (selectPt (Fin.snoc e true) (Fin.snoc x0 0) w) =\n      classFace phi x0 e (dropAt (vertexDrop e) w) := by\n  obtain ⟨i, hp, hi⟩ := vertexDrop_spec he\n  rw [classFace_eq_faceSel phi x0 hp, hp]\n  exact selectPt_vertex_eq_face phi x0 hi w",
+    "context": [],
+    "line": 66,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ClassPieces.lean",
+    "name": "LeanProofs.GowersSzemeredi.classPieceThreshold_eq",
+    "kind": "theorem",
+    "header": "theorem classPieceThreshold_eq (V : Real) (dT : Nat) (theta gamma : Real) (k : Nat) :\n    classPieceThreshold V dT theta gamma k =\n      classPieceThr (fun theta gamma => (V * (2 / (gamma * theta))) ^ dT) theta gamma k",
+    "block": "theorem classPieceThreshold_eq (V : Real) (dT : Nat) (theta gamma : Real) (k : Nat) :\n    classPieceThreshold V dT theta gamma k =\n      classPieceThr (fun theta gamma => (V * (2 / (gamma * theta))) ^ dT) theta gamma k := rfl",
+    "context": [],
+    "line": 158,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ClassPruning.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16LargeClass",
+    "kind": "def",
+    "header": "def section16LargeClass {α : Type*} [Fintype α]\n    (C : Finset α) (q : Nat) (σ : ℝ) : Finset α",
+    "block": "def section16LargeClass {α : Type*} [Fintype α]\n    (C : Finset α) (q : Nat) (σ : ℝ) : Finset α :=\n  if σ * Fintype.card α ≤ (q : ℝ) * C.card then C else ∅",
+    "context": [],
+    "line": 15,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ClassPruning.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16LargeClass_subset",
+    "kind": "theorem",
+    "header": "theorem section16LargeClass_subset {α : Type*} [Fintype α]\n    (C : Finset α) (q : Nat) (σ : ℝ) : section16LargeClass C q σ ⊆ C",
+    "block": "theorem section16LargeClass_subset {α : Type*} [Fintype α]\n    (C : Finset α) (q : Nat) (σ : ℝ) : section16LargeClass C q σ ⊆ C := by\n  classical\n  unfold section16LargeClass\n  split_ifs <;> simp",
+    "context": [],
+    "line": 19,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ClassPruning.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16LargeClass_size",
+    "kind": "theorem",
+    "header": "theorem section16LargeClass_size {α : Type*} [Fintype α]\n    (C : Finset α) (q : Nat) (σ : ℝ) (hq : 0 < q)\n    (hlong : 2 * (q : ℝ) ≤ σ * Fintype.card α)\n    (hne : (section16LargeClass C q σ).Nonempty) :\n    2 ≤ (section16LargeClass C q σ).card ∧\n      σ * Fintype.card α ≤ (q : ℝ) * (section16LargeClass C q σ).card",
+    "block": "theorem section16LargeClass_size {α : Type*} [Fintype α]\n    (C : Finset α) (q : Nat) (σ : ℝ) (hq : 0 < q)\n    (hlong : 2 * (q : ℝ) ≤ σ * Fintype.card α)\n    (hne : (section16LargeClass C q σ).Nonempty) :\n    2 ≤ (section16LargeClass C q σ).card ∧\n      σ * Fintype.card α ≤ (q : ℝ) * (section16LargeClass C q σ).card := by\n  classical\n  unfold section16LargeClass at *\n  split_ifs with h\n  · refine ⟨?_, h⟩\n    have hq' : (0 : ℝ) < q := by exact_mod_cast hq\n    have hc : (2 : ℝ) ≤ C.card := by nlinarith\n    exact_mod_cast hc\n  · simp [h] at hne",
+    "context": [],
+    "line": 25,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ClassPruning.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16LargeClass_loss",
+    "kind": "theorem",
+    "header": "theorem section16LargeClass_loss {α : Type*} [Fintype α]\n    (C : Finset α) (q : Nat) (σ : ℝ) (hq : 0 < q) (hσ : 0 ≤ σ) :\n    (C.card : ℝ) - (section16LargeClass C q σ).card ≤\n      σ * Fintype.card α / q",
+    "block": "theorem section16LargeClass_loss {α : Type*} [Fintype α]\n    (C : Finset α) (q : Nat) (σ : ℝ) (hq : 0 < q) (hσ : 0 ≤ σ) :\n    (C.card : ℝ) - (section16LargeClass C q σ).card ≤\n      σ * Fintype.card α / q := by\n  classical\n  have hq' : (0 : ℝ) < q := by exact_mod_cast hq\n  unfold section16LargeClass\n  split_ifs with h\n  · simp only [sub_self]\n    positivity\n  · simp only [Finset.card_empty, Nat.cast_zero, sub_zero]\n    apply (le_div_iff₀ hq').mpr\n    linarith [not_le.mp h]",
+    "context": [],
+    "line": 41,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ClassPruning.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16LargeClass_total_loss",
+    "kind": "theorem",
+    "header": "theorem section16LargeClass_total_loss {α β : Type*} [Fintype α] [Fintype β]\n    (q : Nat) (C : β × Fin q → Finset α) (σ : ℝ) (hq : 0 < q) (hσ : 0 ≤ σ) :\n    (∑ i, ((C i).card : ℝ)) - (∑ i, ((section16LargeClass (C i) q σ).card : ℝ)) ≤\n      σ * Fintype.card β * Fintype.card α",
+    "block": "theorem section16LargeClass_total_loss {α β : Type*} [Fintype α] [Fintype β]\n    (q : Nat) (C : β × Fin q → Finset α) (σ : ℝ) (hq : 0 < q) (hσ : 0 ≤ σ) :\n    (∑ i, ((C i).card : ℝ)) - (∑ i, ((section16LargeClass (C i) q σ).card : ℝ)) ≤\n      σ * Fintype.card β * Fintype.card α := by\n  rw [← Finset.sum_sub_distrib]\n  calc\n    _ ≤ ∑ _i : β × Fin q, σ * Fintype.card α / q :=\n      Finset.sum_le_sum (fun i _ => section16LargeClass_loss (C i) q σ hq hσ)\n    _ = _ := by\n      have hq' : (q : ℝ) ≠ 0 := by exact_mod_cast (Nat.ne_of_gt hq)\n      simp only [Finset.sum_const, Finset.card_univ, Fintype.card_prod,\n        Fintype.card_fin, nsmul_eq_mul, Nat.cast_mul]\n      field_simp",
+    "context": [],
+    "line": 57,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ClassPruning.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16_prune_and_sample",
+    "kind": "theorem",
+    "header": "theorem section16_prune_and_sample {α β : Type*}\n    [Fintype α] [DecidableEq α] [Nonempty α] [Fintype β]\n    (q r : Nat) (C : β × Fin q → Finset α) (σ : ℝ) (hq : 0 < q) (hσ : 0 < σ)\n    (hlong : 2 * (q : ℝ) ≤ σ * Fintype.card α)\n    (hmass : (∑ i, ((C i).card : ℝ)) ≤ (Fintype.card β : ℝ) * Fintype.card α)\n    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * σ ^ 2) :\n    ∃ (sample : Fin r → α) (D : β × Fin q → Finset α),\n      (∀ i, D i ⊆ C i) ∧\n      (∀ i, (D i).Nonempty → section16SampleHasDistinctPair (D i) sample) ∧\n      (∑ i, ((C i).card : ℝ)) - (∑ i, ((D i).card : ℝ)) ≤\n        2 * σ * Fintype.card β * Fintype.card α",
+    "block": "theorem section16_prune_and_sample {α β : Type*}\n    [Fintype α] [DecidableEq α] [Nonempty α] [Fintype β]\n    (q r : Nat) (C : β × Fin q → Finset α) (σ : ℝ) (hq : 0 < q) (hσ : 0 < σ)\n    (hlong : 2 * (q : ℝ) ≤ σ * Fintype.card α)\n    (hmass : (∑ i, ((C i).card : ℝ)) ≤ (Fintype.card β : ℝ) * Fintype.card α)\n    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * σ ^ 2) :\n    ∃ (sample : Fin r → α) (D : β × Fin q → Finset α),\n      (∀ i, D i ⊆ C i) ∧\n      (∀ i, (D i).Nonempty → section16SampleHasDistinctPair (D i) sample) ∧\n      (∑ i, ((C i).card : ℝ)) - (∑ i, ((D i).card : ℝ)) ≤\n        2 * σ * Fintype.card β * Fintype.card α := by\n  let L := fun i => section16LargeClass (C i) q σ\n  obtain ⟨sample, hs⟩ := section16_sample_retained_mass L q r σ hσ\n    (fun i hi => section16LargeClass_size (C i) q σ hq hlong hi) hr\n  refine ⟨sample, fun i => section16RetainedClass (L i) sample,\n    fun i => (section16RetainedClass_subset _ _).trans (section16LargeClass_subset _ _ _),\n    fun i hi => section16RetainedClass_anchors _ _ hi, ?_⟩\n  have hloss := section16LargeClass_total_loss q C σ hq hσ.le\n  have hsub : (∑ i, ((L i).card : ℝ)) ≤ ∑ i, ((C i).card : ℝ) := by\n    apply Finset.sum_le_sum\n    intro i _\n    exact_mod_cast Finset.card_le_card (section16LargeClass_subset (C i) q σ)\n  have hweighted := mul_le_mul_of_nonneg_left (hsub.trans hmass) hσ.le\n  change (∑ i, ((C i).card : ℝ)) - (∑ i, ((L i).card : ℝ)) ≤ _ at hloss\n  nlinarith [hs, hloss, hweighted]",
+    "context": [],
+    "line": 74,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16CoordinateDirections.lean",
+    "name": "LeanProofs.GowersSzemeredi.coordinateDirectionSplit_symm_inl",
+    "kind": "theorem",
+    "header": "theorem coordinateDirectionSplit_symm_inl {d : Nat} (s : Finset (Fin d))\n    (i : Fin s.card) :\n    (coordinateDirectionSplit s).symm (Sum.inl i) = (s.equivFinOfCardEq rfl).symm i",
+    "block": "theorem coordinateDirectionSplit_symm_inl {d : Nat} (s : Finset (Fin d))\n    (i : Fin s.card) :\n    (coordinateDirectionSplit s).symm (Sum.inl i) = (s.equivFinOfCardEq rfl).symm i := rfl",
+    "context": [],
+    "line": 17,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16CoordinateDirections.lean",
+    "name": "LeanProofs.GowersSzemeredi.coordinateDirectionSplit_symm_inr",
+    "kind": "theorem",
+    "header": "theorem coordinateDirectionSplit_symm_inr {d : Nat} (s : Finset (Fin d))\n    (i : Fin sᶜ.card) :\n    (coordinateDirectionSplit s).symm (Sum.inr i) = (sᶜ.equivFinOfCardEq rfl).symm i",
+    "block": "theorem coordinateDirectionSplit_symm_inr {d : Nat} (s : Finset (Fin d))\n    (i : Fin sᶜ.card) :\n    (coordinateDirectionSplit s).symm (Sum.inr i) = (sᶜ.equivFinOfCardEq rfl).symm i := rfl",
+    "context": [],
+    "line": 21,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16CubicStructuredCover.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16CubicTwoExponent_pos",
+    "kind": "theorem",
+    "header": "theorem section16CubicTwoExponent_pos {q : Nat} {theta gamma rho : Real}\n    (hq : 0 < q) (ht : 0 < theta) (hg : 0 < gamma) (hr : 0 < rho) :\n    0 < section16CubicTwoExponent q theta gamma rho",
+    "block": "theorem section16CubicTwoExponent_pos {q : Nat} {theta gamma rho : Real}\n    (hq : 0 < q) (ht : 0 < theta) (hg : 0 < gamma) (hr : 0 < rho) :\n    0 < section16CubicTwoExponent q theta gamma rho := by\n  apply section16CappedWidthExponent_pos\n  exact section16CubicLiftExponent_pos hq (by decide) (by positivity) ht hg\n    (cubicBaseExponent_pos (section16CubicSpectrumCount_pos theta gamma) (by positivity))",
+    "context": [],
+    "line": 52,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16DistinctSampling.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16_distinct_sampling_ceil_budget",
+    "kind": "theorem",
+    "header": "theorem section16_distinct_sampling_ceil_budget {α : Type*}\n    [Fintype α] [DecidableEq α] [Nonempty α]\n    (C : Finset α) (q : Nat) (σ : ℝ) (hσ : 0 < σ) (hC : 2 ≤ C.card)\n    (hsize : σ * Fintype.card α ≤ (q : ℝ) * C.card) :\n    ((Finset.univ.filter (fun sample : Fin ⌈6 * (q : ℝ) / σ ^ 2⌉₊ → α =>\n      ¬ section16SampleHasDistinctPair C sample)).card : ℝ) /\n      Fintype.card (Fin ⌈6 * (q : ℝ) / σ ^ 2⌉₊ → α) ≤ σ",
+    "block": "theorem section16_distinct_sampling_ceil_budget {α : Type*}\n    [Fintype α] [DecidableEq α] [Nonempty α]\n    (C : Finset α) (q : Nat) (σ : ℝ) (hσ : 0 < σ) (hC : 2 ≤ C.card)\n    (hsize : σ * Fintype.card α ≤ (q : ℝ) * C.card) :\n    ((Finset.univ.filter (fun sample : Fin ⌈6 * (q : ℝ) / σ ^ 2⌉₊ → α =>\n      ¬ section16SampleHasDistinctPair C sample)).card : ℝ) /\n      Fintype.card (Fin ⌈6 * (q : ℝ) / σ ^ 2⌉₊ → α) ≤ σ := by\n  apply section16_distinct_sampling_budget C q _ σ hσ hC hsize\n  exact (div_le_iff₀ (sq_pos_of_pos hσ)).mp (Nat.le_ceil _)",
+    "context": [],
+    "line": 164,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FaceLifts.lean",
+    "name": "LeanProofs.GowersSzemeredi.cylAt_mono",
+    "kind": "theorem",
+    "header": "theorem cylAt_mono {N k : Nat} [NeZero N] (j : Fin (k + 1)) {Λ Λ' : Finset (Point N k × ZMod N)}\n    (h : Λ ⊆ Λ') : cylAt j Λ ⊆ cylAt j Λ'",
+    "block": "theorem cylAt_mono {N k : Nat} [NeZero N] (j : Fin (k + 1)) {Λ Λ' : Finset (Point N k × ZMod N)}\n    (h : Λ ⊆ Λ') : cylAt j Λ ⊆ cylAt j Λ' := fun _ hz => mem_cylAt.mpr (h (mem_cylAt.mp hz))",
+    "context": [],
+    "line": 46,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FaceLifts.lean",
+    "name": "LeanProofs.GowersSzemeredi.cylAt_fiber_le",
+    "kind": "theorem",
+    "header": "theorem cylAt_fiber_le {N k : Nat} [NeZero N] (j : Fin (k + 1)) (Λ : Finset (Point N k × ZMod N))\n    {M : Nat} (hfib : ∀ x : Point N k, (Λ.filter fun z => z.1 = x).card ≤ M)\n    (w : Point N (k + 1)) : ((cylAt j Λ).filter fun z => z.1 = w).card ≤ M",
+    "block": "theorem cylAt_fiber_le {N k : Nat} [NeZero N] (j : Fin (k + 1)) (Λ : Finset (Point N k × ZMod N))\n    {M : Nat} (hfib : ∀ x : Point N k, (Λ.filter fun z => z.1 = x).card ≤ M)\n    (w : Point N (k + 1)) : ((cylAt j Λ).filter fun z => z.1 = w).card ≤ M := by\n  classical\n  refine le_trans ?_ (hfib (dropAt j w))\n  refine Finset.card_le_card_of_injOn (fun z => (dropAt j z.1, z.2)) (fun z hz => ?_) ?_\n  · obtain ⟨hz1, hz2⟩ := Finset.mem_filter.mp hz\n    refine Finset.mem_filter.mpr ⟨mem_cylAt.mp hz1, ?_⟩\n    show dropAt j z.1 = dropAt j w\n    rw [hz2]\n  · intro z hz z' hz' hzz\n    have h1 := (Finset.mem_filter.mp hz).2\n    have h2 := (Finset.mem_filter.mp hz').2\n    have h3 : z.2 = z'.2 := by simpa using congrArg Prod.snd hzz\n    exact Prod.ext (h1.trans h2.symm) h3",
+    "context": [],
+    "line": 50,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FaceLifts.lean",
+    "name": "LeanProofs.GowersSzemeredi.vertexFace",
+    "kind": "def",
+    "header": "def vertexFace {N k : Nat} (phi : Point N (k + 1) → ZMod N) (x0 : Point N k) (e : Fin k → Bool)\n    (i : Fin k) (y : Point N k) : ZMod N",
+    "block": "def vertexFace {N k : Nat} (phi : Point N (k + 1) → ZMod N) (x0 : Point N k) (e : Fin k → Bool)\n    (i : Fin k) (y : Point N k) : ZMod N :=\n  section16TranslatedVertex phi x0 e (Fin.insertNth i.castSucc 0 y)",
+    "context": [],
+    "line": 181,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FaceLifts.lean",
+    "name": "LeanProofs.GowersSzemeredi.translatedVertex_eq_face",
+    "kind": "theorem",
+    "header": "theorem translatedVertex_eq_face {N k : Nat} (phi : Point N (k + 1) → ZMod N) (x0 : Point N k)\n    {e : Fin k → Bool} {i : Fin k} (hi : e i = false) (z : Point N (k + 1)) :\n    section16TranslatedVertex phi x0 e z = vertexFace phi x0 e i (dropAt i.castSucc z)",
+    "block": "theorem translatedVertex_eq_face {N k : Nat} (phi : Point N (k + 1) → ZMod N) (x0 : Point N k)\n    {e : Fin k → Bool} {i : Fin k} (hi : e i = false) (z : Point N (k + 1)) :\n    section16TranslatedVertex phi x0 e z = vertexFace phi x0 e i (dropAt i.castSucc z) := by\n  unfold vertexFace dropAt\n  rw [Fin.insertNth_removeNth]\n  unfold section16TranslatedVertex\n  congr 2\n  · funext j\n    by_cases hj : j = i\n    · subst hj\n      simp [hi]\n    · have hne : j.castSucc ≠ i.castSucc := fun h => hj (Fin.castSucc_injective _ h)\n      simp [section16Init, Function.update_of_ne hne]\n  · have hne : Fin.last k ≠ i.castSucc := (Fin.castSucc_lt_last i).ne'\n    simp [section16Last, Function.update_of_ne hne]",
+    "context": [],
+    "line": 186,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FiniteCoverPadding.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16_recovered_candidate_mono",
+    "kind": "theorem",
+    "header": "theorem section16_recovered_candidate_mono {r p q : Nat} (hpq : p ≤ q) :\n    Fintype.card ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) ≤\n      r * q + r * r * q * q",
+    "block": "theorem section16_recovered_candidate_mono {r p q : Nat} (hpq : p ≤ q) :\n    Fintype.card ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) ≤\n      r * q + r * r * q * q := by\n  rw [section16_recovered_candidate_count]\n  gcongr",
+    "context": [],
+    "line": 28,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FiniteCoverPadding.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16_recovered_candidate_bound",
+    "kind": "theorem",
+    "header": "theorem section16_recovered_candidate_bound {r p : Nat} {b : ℝ} (hp : (p : ℝ) ≤ b) :\n    ((r * p + r * r * p * p : Nat) : ℝ) ≤\n      (r : ℝ) * b + (r : ℝ) * r * b * b",
+    "block": "theorem section16_recovered_candidate_bound {r p : Nat} {b : ℝ} (hp : (p : ℝ) ≤ b) :\n    ((r * p + r * r * p * p : Nat) : ℝ) ≤\n      (r : ℝ) * b + (r : ℝ) * r * b * b := by\n  have hb : 0 ≤ b := (Nat.cast_nonneg p).trans hp\n  push_cast\n  gcongr",
+    "context": [],
+    "line": 34,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16InducedCounting.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16CubeElement_vertex_mem",
+    "kind": "lemma",
+    "header": "private lemma section16CubeElement_vertex_mem {N k : Nat} [NeZero N]\n    {B : Finset (Point N (k + 1))} {h : Point N k}\n    (C : Section16CubeElement B h) (e : Fin k → Bool) :\n    appendCoordinate (C.1.1.vertex e) C.1.2 ∈ B",
+    "block": "private lemma section16CubeElement_vertex_mem {N k : Nat} [NeZero N]\n    {B : Finset (Point N (k + 1))} {h : Point N k}\n    (C : Section16CubeElement B h) (e : Fin k → Bool) :\n    appendCoordinate (C.1.1.vertex e) C.1.2 ∈ B := by\n  have hC := C.property\n  simp only [section16CubeDomain, Finset.mem_filter, Finset.mem_univ,\n    true_and] at hC\n  exact hC.2 e",
+    "context": [],
+    "line": 30,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16Interpolation.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16_sampled_slice_candidate_count",
+    "kind": "theorem",
+    "header": "theorem section16_sampled_slice_candidate_count (r q : Nat) :\n    Fintype.card (Fin r × Fin r × Fin q × Fin q) = r * r * q * q",
+    "block": "theorem section16_sampled_slice_candidate_count (r q : Nat) :\n    Fintype.card (Fin r × Fin r × Fin q × Fin q) = r * r * q * q := by\n  simp [mul_assoc]",
+    "context": [],
+    "line": 133,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PolyPieceThreeInputs.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16_remainder_vertices_two",
+    "kind": "theorem",
+    "header": "theorem section16_remainder_vertices_two :\n    (Finset.univ.filter fun e : Fin 2 → Bool => e ≠ fun _ => true) =\n      {fun _ => false, vTF, vFT}",
+    "block": "theorem section16_remainder_vertices_two :\n    (Finset.univ.filter fun e : Fin 2 → Bool => e ≠ fun _ => true) =\n      {fun _ => false, vTF, vFT} := by\n  decide",
+    "context": [],
+    "line": 33,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PrefixLift.lean",
+    "name": "LeanProofs.GowersSzemeredi.MultiplyLinearFunction.lift_prefix_face_parameter",
+    "kind": "theorem",
+    "header": "theorem MultiplyLinearFunction.lift_prefix_face_parameter\n    {N k l d : Nat} [NeZero N] [Fact N.Prime]\n    {theta gamma : Real} {B : Finset (Point N l)} {phi : Point N l → ZMod N}\n    (hML : MultiplyLinearFunction gamma\n      (gamma ^ (-(2 : Int)) * multipleS ((2 : Real) ^ (-(k + 2 : Real)) * theta) gamma k) B phi)\n    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)\n    (hld : l ≤ d) (hdk : d ≤ k + 1) :\n    MultiplyLinearFunction gamma\n      (gamma ^ (-(2 : Int)) * multipleS ((2 : Real) ^ (-(k + 2 : Real)) * theta) gamma k)\n      (prefixDomain hld B) (fun z => phi (coordinatePrefix hld z))",
+    "block": "theorem MultiplyLinearFunction.lift_prefix_face_parameter\n    {N k l d : Nat} [NeZero N] [Fact N.Prime]\n    {theta gamma : Real} {B : Finset (Point N l)} {phi : Point N l → ZMod N}\n    (hML : MultiplyLinearFunction gamma\n      (gamma ^ (-(2 : Int)) * multipleS ((2 : Real) ^ (-(k + 2 : Real)) * theta) gamma k) B phi)\n    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)\n    (hld : l ≤ d) (hdk : d ≤ k + 1) :\n    MultiplyLinearFunction gamma\n      (gamma ^ (-(2 : Int)) * multipleS ((2 : Real) ^ (-(k + 2 : Real)) * theta) gamma k)\n      (prefixDomain hld B) (fun z => phi (coordinatePrefix hld z)) := by\n  obtain ⟨hs, hreserve⟩ := section16_face_parameter_lift_reserve k ht ht1 hg hg1\n  exact hML.lift_prefix hg hg1 hs (hreserve d hdk) hld",
+    "context": [],
+    "line": 69,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ProductRecurrence.lean",
+    "name": "LeanProofs.GowersSzemeredi.lifted_last_diameter_commonDiff",
+    "kind": "theorem",
+    "header": "theorem lifted_last_diameter_commonDiff {N k : Nat} [NeZero N]\n    (P : Box N (k + 1)) (mu : Point N k → ZMod N) (s : Real)\n    (hdiam : diameterAtMostReal\n      (P.carrier.image (fun z => mu (Fin.init z) * z (Fin.last k))) s)\n    (hwidth : 2 ≤ P.width) (x : Point N k) (hx : x ∈ (boxInit P).carrier) :\n    (centeredAbs (mu x * P.commonDiff) : Real) ≤ s",
+    "block": "theorem lifted_last_diameter_commonDiff {N k : Nat} [NeZero N]\n    (P : Box N (k + 1)) (mu : Point N k → ZMod N) (s : Real)\n    (hdiam : diameterAtMostReal\n      (P.carrier.image (fun z => mu (Fin.init z) * z (Fin.last k))) s)\n    (hwidth : 2 ≤ P.width) (x : Point N k) (hx : x ∈ (boxInit P).carrier) :\n    (centeredAbs (mu x * P.commonDiff) : Real) ≤ s := by\n  classical\n  let I := P.axis (Fin.last k)\n  have hI : 2 ≤ I.length := hwidth.trans (P.width_le_axis_length (Fin.last k))\n  have hy : I.start ∈ I.carrier := by\n    refine Finset.mem_image.mpr ⟨⟨0, by omega⟩, Finset.mem_univ _, ?_⟩\n    simp\n  have hmem (y : ZMod N) (hy : y ∈ I.carrier) :\n      mu x * y ∈ P.carrier.image (fun z => mu (Fin.init z) * z (Fin.last k)) := by\n    refine Finset.mem_image.mpr ⟨Fin.snoc x y, (mem_boxInit_snoc _ _ _).mpr ⟨hx, hy⟩, ?_⟩\n    simp\n  obtain hnext | hprev := I.adjacent_mem hI hy\n  · have h := hdiam.centeredAbs_sub_le (hmem _ hnext) (hmem _ hy)\n    have heq : mu x * (I.start + I.step) - mu x * I.start = mu x * P.commonDiff := by\n      change mu x * (I.start + (P.axis (Fin.last k)).step) - mu x * I.start = _\n      rw [P.axis_step]\n      ring\n    rwa [heq] at h\n  · have h := hdiam.centeredAbs_sub_le (hmem _ hy) (hmem _ hprev)\n    have heq : mu x * I.start - mu x * (I.start - I.step) = mu x * P.commonDiff := by\n      change mu x * I.start - mu x * (I.start - (P.axis (Fin.last k)).step) = _\n      rw [P.axis_step]\n      ring\n    rwa [heq] at h",
+    "context": [],
+    "line": 70,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ProductRecurrence.lean",
+    "name": "LeanProofs.GowersSzemeredi.proper_product_multilinear_recurrence",
+    "kind": "theorem",
+    "header": "theorem proper_product_multilinear_recurrence {N k q m : Nat} [NeZero N]\n    (hk : 1 ≤ k) (P : Box N (k + 1)) (hP : P.IsProper)\n    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))\n    (hm : section16WidthThreshold k q ≤ m) (hmP : m ≤ P.width) :\n    ∃ M : Nat, ∃ Q : Fin M → Box N (k + 1),\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, (m : Real) ^ section16RecurrenceExponent k q ≤ (Q j).width) ∧\n      ∀ i j x, x ∈ (boxInit (Q j)).carrier →\n        (centeredAbs (mu i x * (Q j).commonDiff) : Real) ≤\n          2 * (m : Real) ^ (-section16RecurrenceExponent k q) * N",
+    "block": "theorem proper_product_multilinear_recurrence {N k q m : Nat} [NeZero N]\n    (hk : 1 ≤ k) (P : Box N (k + 1)) (hP : P.IsProper)\n    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))\n    (hm : section16WidthThreshold k q ≤ m) (hmP : m ≤ P.width) :\n    ∃ M : Nat, ∃ Q : Fin M → Box N (k + 1),\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, (m : Real) ^ section16RecurrenceExponent k q ≤ (Q j).width) ∧\n      ∀ i j x, x ∈ (boxInit (Q j)).carrier →\n        (centeredAbs (mu i x * (Q j).commonDiff) : Real) ≤\n          2 * (m : Real) ^ (-section16RecurrenceExponent k q) * N := by\n  let nu (i : Fin q) (z : Point N (k + 1)) := mu i (Fin.init z) * z (Fin.last k)\n  have hnu : ∀ i, MultilinearOn P.carrier (nu i) :=\n    fun i => ⟨nu i, (hmu i).mul_last_coordinate, fun _ _ => rfl⟩\n  rw [section16WidthThreshold_eq_multilinear] at hm\n  obtain ⟨M, Q, hpart, hproper, hwidth, hdiam⟩ :=\n    proper_multilinear_simultaneous (k + 1) (by omega) q N m P hP nu hm hmP hnu\n  refine ⟨M, Q, hpart, hproper, ?_, ?_⟩\n  · simpa only [section16RecurrenceExponent_eq_multilinear] using hwidth\n  · intro i j x hx\n    rw [section16RecurrenceExponent_eq_multilinear]\n    have hw : 2 ≤ (Q j).width := by\n      exact_mod_cast (multilinearPartition_root_two_le (by omega : 2 ≤ k + 1) hm).trans (hwidth j)\n    exact lifted_last_diameter_commonDiff (Q j) (mu i) _ (hdiam i j) hw x hx",
+    "context": [],
+    "line": 103,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16RecurrenceThreshold.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16_local_linearity_above_one",
+    "kind": "theorem",
+    "header": "theorem section16_local_linearity_above_one {N k q m : Nat} [NeZero N]\n    (hk : 1 ≤ k) (hm : 0 < m) (theta gamma : Real)\n    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)\n    (P : Box N (k + 1)) (hP : P.IsProper) (hmP : m ≤ P.width)\n    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))\n    (K : Point N k → Finset (ZMod N)) (G : Finset (Point N k))\n    (A : Point N k → Finset (ZMod N)) (f : Point N k → ZMod N → ZMod N)\n    (hcover : ∀ x ∈ (boxInit P).carrier, x ∈ G → ∀ r ∈ K x, ∃ i, r = mu i x)\n    (hlinear : ∀ x ∈ G, ∀ v : Nat, 0 < v → ∀ I : ModAP N, I.length ≤ v →\n      I.step ∈ bohr (K x) (section16Zeta theta gamma k / v) →\n      LinearOn (I.carrier ∩ A x) (f x))\n    (hlarge : 1 < (section16Zeta theta gamma k / 2) *\n      Real.sqrt ((m : Real) ^ section16RecurrenceExponent k q)) :\n    ∃ M : Nat, ∃ Q : Fin M → Box N (k + 1),\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, (section16Zeta theta gamma k / 2) *\n        Real.sqrt ((m : Real) ^ section16RecurrenceExponent k q) ≤ (Q j).width) ∧\n      ∀ j x, x ∈ (boxInit (Q j)).carrier → x ∈ G →\n        LinearOn (((Q j).axis (Fin.last k)).carrier.filter fun y => y ∈ A x) (f x)",
+    "block": "theorem section16_local_linearity_above_one {N k q m : Nat} [NeZero N]\n    (hk : 1 ≤ k) (hm : 0 < m) (theta gamma : Real)\n    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)\n    (P : Box N (k + 1)) (hP : P.IsProper) (hmP : m ≤ P.width)\n    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))\n    (K : Point N k → Finset (ZMod N)) (G : Finset (Point N k))\n    (A : Point N k → Finset (ZMod N)) (f : Point N k → ZMod N → ZMod N)\n    (hcover : ∀ x ∈ (boxInit P).carrier, x ∈ G → ∀ r ∈ K x, ∃ i, r = mu i x)\n    (hlinear : ∀ x ∈ G, ∀ v : Nat, 0 < v → ∀ I : ModAP N, I.length ≤ v →\n      I.step ∈ bohr (K x) (section16Zeta theta gamma k / v) →\n      LinearOn (I.carrier ∩ A x) (f x))\n    (hlarge : 1 < (section16Zeta theta gamma k / 2) *\n      Real.sqrt ((m : Real) ^ section16RecurrenceExponent k q)) :\n    ∃ M : Nat, ∃ Q : Fin M → Box N (k + 1),\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, (section16Zeta theta gamma k / 2) *\n        Real.sqrt ((m : Real) ^ section16RecurrenceExponent k q) ≤ (Q j).width) ∧\n      ∀ j x, x ∈ (boxInit (Q j)).carrier → x ∈ G →\n        LinearOn (((Q j).axis (Fin.last k)).carrier.filter fun y => y ∈ A x) (f x) := by\n  have hmr : (0 : Real) < m := by exact_mod_cast hm\n  obtain ⟨hz, hzHalf⟩ := section16Zeta_pos_le_half k ht ht1 hg hg1\n  obtain ⟨v, hv, hvwidth, hvscale, hvbudget⟩ := section16_short_scale\n    ((m : Real) ^ section16RecurrenceExponent k q) (section16Zeta theta gamma k)\n    (Real.rpow_pos_of_pos hmr _) hz hzHalf hlarge\n  have hthreshold := section16_threshold_of_large_width hk hm ht ht1 hg hg1 hlarge\n  have hbudget : 2 * (m : Real) ^ (-section16RecurrenceExponent k q) ≤ section16Zeta theta gamma k / v := by\n    simpa only [Real.rpow_neg hmr.le, div_eq_mul_inv] using hvbudget\n  obtain ⟨M, Q, hpart, hproper, hwidth, hlin⟩ := proper_short_product_linearity\n    hk P hP mu hmu hthreshold hmP hv hvscale K (section16Zeta theta gamma k) G A f\n    hcover (fun x hx I hI hd => hlinear x hx v (by omega) I hI hd) hbudget\n  refine ⟨M, Q, hpart, hproper, ?_, hlin⟩\n  intro j\n  exact hvwidth.trans (by exact_mod_cast hwidth j)",
+    "context": [],
+    "line": 107,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16SampleSelection.lean",
+    "name": "LeanProofs.GowersSzemeredi.finite_weighted_event_selection",
+    "kind": "theorem",
+    "header": "theorem finite_weighted_event_selection {Ω I : Type*}\n    [Fintype Ω] [Nonempty Ω] [Fintype I]\n    (bad : I → Ω → Prop) [∀ i, DecidablePred (bad i)] (weight : I → ℝ) (σ : ℝ)\n    (hw : ∀ i, 0 ≤ weight i)\n    (hcount : ∀ i, weight i ≠ 0 →\n      ((Finset.univ.filter (bad i)).card : ℝ) ≤ σ * Fintype.card Ω) :\n    ∃ outcome, (∑ i, if bad i outcome then weight i else 0) ≤ σ * ∑ i, weight i",
+    "block": "theorem finite_weighted_event_selection {Ω I : Type*}\n    [Fintype Ω] [Nonempty Ω] [Fintype I]\n    (bad : I → Ω → Prop) [∀ i, DecidablePred (bad i)] (weight : I → ℝ) (σ : ℝ)\n    (hw : ∀ i, 0 ≤ weight i)\n    (hcount : ∀ i, weight i ≠ 0 →\n      ((Finset.univ.filter (bad i)).card : ℝ) ≤ σ * Fintype.card Ω) :\n    ∃ outcome, (∑ i, if bad i outcome then weight i else 0) ≤ σ * ∑ i, weight i := by\n  classical\n  have hsum : (∑ outcome : Ω, ∑ i, if bad i outcome then weight i else 0) ≤\n      ∑ _outcome : Ω, σ * ∑ i, weight i := by\n    calc\n      _ = ∑ i, ((Finset.univ.filter (bad i)).card : ℝ) * weight i := by\n        rw [Finset.sum_comm]\n        apply Finset.sum_congr rfl\n        intro i _\n        rw [← Finset.sum_filter]\n        simp\n      _ ≤ ∑ i, (σ * Fintype.card Ω) * weight i := by\n        apply Finset.sum_le_sum\n        intro i _\n        by_cases hi : weight i = 0\n        · simp [hi]\n        · exact mul_le_mul_of_nonneg_right (hcount i hi) (hw i)\n      _ = _ := by simp [Finset.mul_sum, mul_comm, mul_left_comm, mul_assoc]\n  obtain ⟨outcome, _, h⟩ := Finset.exists_le_of_sum_le Finset.univ_nonempty hsum\n  exact ⟨outcome, h⟩",
+    "context": [],
+    "line": 17,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16SampleSelection.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16_sample_discarded_mass",
+    "kind": "theorem",
+    "header": "theorem section16_sample_discarded_mass {α I : Type*}\n    [Fintype α] [DecidableEq α] [Nonempty α] [Fintype I]\n    (C : I → Finset α) (q r : Nat) (σ : ℝ) (hσ : 0 < σ)\n    (hclass : ∀ i, (C i).Nonempty →\n      2 ≤ (C i).card ∧ σ * Fintype.card α ≤ (q : ℝ) * (C i).card)\n    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * σ ^ 2) :\n    ∃ sample : Fin r → α,\n      (∑ i, if ¬ section16SampleHasDistinctPair (C i) sample\n        then ((C i).card : ℝ) else 0) ≤ σ * ∑ i, ((C i).card : ℝ)",
+    "block": "theorem section16_sample_discarded_mass {α I : Type*}\n    [Fintype α] [DecidableEq α] [Nonempty α] [Fintype I]\n    (C : I → Finset α) (q r : Nat) (σ : ℝ) (hσ : 0 < σ)\n    (hclass : ∀ i, (C i).Nonempty →\n      2 ≤ (C i).card ∧ σ * Fintype.card α ≤ (q : ℝ) * (C i).card)\n    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * σ ^ 2) :\n    ∃ sample : Fin r → α,\n      (∑ i, if ¬ section16SampleHasDistinctPair (C i) sample\n        then ((C i).card : ℝ) else 0) ≤ σ * ∑ i, ((C i).card : ℝ) := by\n  classical\n  have hcount : ∀ i, ((C i).card : ℝ) ≠ 0 →\n      ((Finset.univ.filter (fun sample : Fin r → α =>\n        ¬ section16SampleHasDistinctPair (C i) sample)).card : ℝ) ≤\n        σ * Fintype.card (Fin r → α) := by\n    intro i hi\n    have hne : (C i).Nonempty := Finset.card_pos.mp (Nat.pos_of_ne_zero (by exact_mod_cast hi))\n    obtain ⟨hc, hdensity⟩ := hclass i hne\n    have hp := section16_distinct_sampling_budget (C i) q r σ hσ hc hdensity hr\n    exact (div_le_iff₀ (by exact_mod_cast Fintype.card_pos :\n      (0 : ℝ) < Fintype.card (Fin r → α))).mp hp\n  simpa only [ite_not] using finite_weighted_event_selection\n    (fun i (sample : Fin r → α) => ¬ section16SampleHasDistinctPair (C i) sample)\n    (fun i => ((C i).card : ℝ)) σ (fun _ => Nat.cast_nonneg _) hcount",
+    "context": [],
+    "line": 46,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16SampleSelection.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16_sample_retained_mass",
+    "kind": "theorem",
+    "header": "theorem section16_sample_retained_mass {α I : Type*}\n    [Fintype α] [DecidableEq α] [Nonempty α] [Fintype I]\n    (C : I → Finset α) (q r : Nat) (σ : ℝ) (hσ : 0 < σ)\n    (hclass : ∀ i, (C i).Nonempty →\n      2 ≤ (C i).card ∧ σ * Fintype.card α ≤ (q : ℝ) * (C i).card)\n    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * σ ^ 2) :\n    ∃ sample : Fin r → α,\n      (1 - σ) * (∑ i, ((C i).card : ℝ)) ≤\n        ∑ i, ((section16RetainedClass (C i) sample).card : ℝ)",
+    "block": "theorem section16_sample_retained_mass {α I : Type*}\n    [Fintype α] [DecidableEq α] [Nonempty α] [Fintype I]\n    (C : I → Finset α) (q r : Nat) (σ : ℝ) (hσ : 0 < σ)\n    (hclass : ∀ i, (C i).Nonempty →\n      2 ≤ (C i).card ∧ σ * Fintype.card α ≤ (q : ℝ) * (C i).card)\n    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * σ ^ 2) :\n    ∃ sample : Fin r → α,\n      (1 - σ) * (∑ i, ((C i).card : ℝ)) ≤\n        ∑ i, ((section16RetainedClass (C i) sample).card : ℝ) := by\n  obtain ⟨sample, hs⟩ := section16_sample_discarded_mass C q r σ hσ hclass hr\n  refine ⟨sample, ?_⟩\n  have hsplit : (∑ i, ((section16RetainedClass (C i) sample).card : ℝ)) +\n      (∑ i, if ¬ section16SampleHasDistinctPair (C i) sample\n        then ((C i).card : ℝ) else 0) = ∑ i, ((C i).card : ℝ) := by\n    rw [← Finset.sum_add_distrib]\n    apply Finset.sum_congr rfl\n    intro i _\n    by_cases h : section16SampleHasDistinctPair (C i) sample <;>\n      simp [section16RetainedClass, h]\n  nlinarith [hs, hsplit]",
+    "context": [],
+    "line": 93,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ShortColumns.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16_recovered_candidate_count",
+    "kind": "theorem",
+    "header": "theorem section16_recovered_candidate_count (r p : Nat) :\n    Fintype.card ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) =\n      r * p + r * r * p * p",
+    "block": "theorem section16_recovered_candidate_count (r p : Nat) :\n    Fintype.card ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) =\n      r * p + r * r * p * p := by simp [mul_assoc]",
+    "context": [],
+    "line": 124,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ShortProduct.lean",
+    "name": "LeanProofs.GowersSzemeredi.boxInit_carrier_subset",
+    "kind": "theorem",
+    "header": "theorem boxInit_carrier_subset {N k : Nat} [NeZero N]\n    (P Q : Box N (k + 1)) (hsub : P.carrier ⊆ Q.carrier)\n    (hpos : 0 < (P.axis (Fin.last k)).length) :\n    (boxInit P).carrier ⊆ (boxInit Q).carrier",
+    "block": "theorem boxInit_carrier_subset {N k : Nat} [NeZero N]\n    (P Q : Box N (k + 1)) (hsub : P.carrier ⊆ Q.carrier)\n    (hpos : 0 < (P.axis (Fin.last k)).length) :\n    (boxInit P).carrier ⊆ (boxInit Q).carrier := by\n  classical\n  intro x hx\n  have hy : (P.axis (Fin.last k)).start ∈ (P.axis (Fin.last k)).carrier := by\n    refine Finset.mem_image.mpr ⟨⟨0, hpos⟩, Finset.mem_univ _, ?_⟩\n    simp\n  exact ((mem_boxInit_snoc Q _ _).mp (hsub ((mem_boxInit_snoc P _ _).mpr ⟨hx, hy⟩))).1",
+    "context": [],
+    "line": 10,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ShortProduct.lean",
+    "name": "LeanProofs.GowersSzemeredi.proper_short_product_recurrence",
+    "kind": "theorem",
+    "header": "theorem proper_short_product_recurrence {N k q m v : Nat} [NeZero N]\n    (hk : 1 ≤ k) (P : Box N (k + 1)) (hP : P.IsProper)\n    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))\n    (hm : section16WidthThreshold k q ≤ m) (hmP : m ≤ P.width)\n    (hv : 2 ≤ v) (hvscale : (v : Real) ^ 2 ≤ (m : Real) ^ section16RecurrenceExponent k q) :\n    ∃ M : Nat, ∃ Q : Fin M → Box N (k + 1),\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, v - 1 ≤ (Q j).width) ∧\n      (∀ j i, 0 < ((Q j).axis i).length ∧ ((Q j).axis i).length ≤ v) ∧\n      ∀ i j x, x ∈ (boxInit (Q j)).carrier →\n        (centeredAbs (mu i x * (Q j).commonDiff) : Real) ≤\n          2 * (m : Real) ^ (-section16RecurrenceExponent k q) * N",
+    "block": "theorem proper_short_product_recurrence {N k q m v : Nat} [NeZero N]\n    (hk : 1 ≤ k) (P : Box N (k + 1)) (hP : P.IsProper)\n    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))\n    (hm : section16WidthThreshold k q ≤ m) (hmP : m ≤ P.width)\n    (hv : 2 ≤ v) (hvscale : (v : Real) ^ 2 ≤ (m : Real) ^ section16RecurrenceExponent k q) :\n    ∃ M : Nat, ∃ Q : Fin M → Box N (k + 1),\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, v - 1 ≤ (Q j).width) ∧\n      (∀ j i, 0 < ((Q j).axis i).length ∧ ((Q j).axis i).length ≤ v) ∧\n      ∀ i j x, x ∈ (boxInit (Q j)).carrier →\n        (centeredAbs (mu i x * (Q j).commonDiff) : Real) ≤\n          2 * (m : Real) ^ (-section16RecurrenceExponent k q) * N := by\n  classical\n  obtain ⟨M, R, hRpart, hRproper, hRwidth, hRsmall⟩ :=\n    proper_product_multilinear_recurrence hk P hP mu hmu hm hmP\n  have hsize (j : Fin M) : 1 * v ^ 2 ≤ (R j).width := by\n    have := hvscale.trans (hRwidth j)\n    simp only [one_mul]\n    exact_mod_cast this\n  choose L S hSpart hSproper hSwidth hSaxes hSstep using fun j : Fin M =>\n    section5_box_residue_partition (R j) (hRproper j) (by omega) 1 v (by norm_num) (by omega) (hsize j)\n  refine ⟨∑ j, L j, boxFlatten L S, boxFlatten_partition P R L S hRpart hSpart, ?_, ?_, ?_, ?_⟩\n  · intro j\n    exact hSproper _ _\n  · intro j\n    exact hSwidth _ _\n  · intro j i\n    dsimp only [boxFlatten]\n    have h := hSaxes ((section5NatFlattenEquiv L).symm j).1 ((section5NatFlattenEquiv L).symm j).2 i\n    exact ⟨h.1, by rcases h.2 with h | h <;> omega⟩\n  · intro i j x hx\n    let z := (section5NatFlattenEquiv L).symm j\n    have hsub : (boxInit (S z.1 z.2)).carrier ⊆ (boxInit (R z.1)).carrier :=\n      boxInit_carrier_subset _ _ (IsPartition.cell_subset (hSpart z.1) z.2)\n        (hSaxes z.1 z.2 (Fin.last k)).1\n    have hstep : (S z.1 z.2).commonDiff = (R z.1).commonDiff := by simpa using hSstep z.1 z.2\n    change (centeredAbs (mu i x * (S z.1 z.2).commonDiff) : Real) ≤ _\n    rw [hstep]\n    exact hRsmall i z.1 x (hsub hx)",
+    "context": [],
+    "line": 23,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ShortProduct.lean",
+    "name": "LeanProofs.GowersSzemeredi.proper_short_product_linearity",
+    "kind": "theorem",
+    "header": "theorem proper_short_product_linearity {N k q m v : Nat} [NeZero N]\n    (hk : 1 ≤ k) (P : Box N (k + 1)) (hP : P.IsProper)\n    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))\n    (hm : section16WidthThreshold k q ≤ m) (hmP : m ≤ P.width)\n    (hv : 2 ≤ v) (hvscale : (v : Real) ^ 2 ≤ (m : Real) ^ section16RecurrenceExponent k q)\n    (K : Point N k → Finset (ZMod N)) (zeta : Real) (G : Finset (Point N k))\n    (A : Point N k → Finset (ZMod N)) (f : Point N k → ZMod N → ZMod N)\n    (hcover : ∀ x ∈ (boxInit P).carrier, x ∈ G → ∀ r ∈ K x, ∃ i, r = mu i x)\n    (hlinear : ∀ x ∈ G, ∀ I : ModAP N, I.length ≤ v → I.step ∈ bohr (K x) (zeta / v) →\n      LinearOn (I.carrier ∩ A x) (f x))\n    (hbudget : 2 * (m : Real) ^ (-section16RecurrenceExponent k q) ≤ zeta / v) :\n    ∃ M : Nat, ∃ Q : Fin M → Box N (k + 1),\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, v - 1 ≤ (Q j).width) ∧\n      ∀ j x, x ∈ (boxInit (Q j)).carrier → x ∈ G →\n        LinearOn (((Q j).axis (Fin.last k)).carrier.filter fun y => y ∈ A x) (f x)",
+    "block": "theorem proper_short_product_linearity {N k q m v : Nat} [NeZero N]\n    (hk : 1 ≤ k) (P : Box N (k + 1)) (hP : P.IsProper)\n    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))\n    (hm : section16WidthThreshold k q ≤ m) (hmP : m ≤ P.width)\n    (hv : 2 ≤ v) (hvscale : (v : Real) ^ 2 ≤ (m : Real) ^ section16RecurrenceExponent k q)\n    (K : Point N k → Finset (ZMod N)) (zeta : Real) (G : Finset (Point N k))\n    (A : Point N k → Finset (ZMod N)) (f : Point N k → ZMod N → ZMod N)\n    (hcover : ∀ x ∈ (boxInit P).carrier, x ∈ G → ∀ r ∈ K x, ∃ i, r = mu i x)\n    (hlinear : ∀ x ∈ G, ∀ I : ModAP N, I.length ≤ v → I.step ∈ bohr (K x) (zeta / v) →\n      LinearOn (I.carrier ∩ A x) (f x))\n    (hbudget : 2 * (m : Real) ^ (-section16RecurrenceExponent k q) ≤ zeta / v) :\n    ∃ M : Nat, ∃ Q : Fin M → Box N (k + 1),\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, v - 1 ≤ (Q j).width) ∧\n      ∀ j x, x ∈ (boxInit (Q j)).carrier → x ∈ G →\n        LinearOn (((Q j).axis (Fin.last k)).carrier.filter fun y => y ∈ A x) (f x) := by\n  classical\n  obtain ⟨M, Q, hpart, hproper, hwidth, haxes, hsmall⟩ :=\n    proper_short_product_recurrence hk P hP mu hmu hm hmP hv hvscale\n  refine ⟨M, Q, hpart, hproper, hwidth, ?_⟩\n  intro j x hx hxG\n  have hxP := boxInit_carrier_subset (Q j) P (IsPartition.cell_subset hpart j)\n    (haxes j (Fin.last k)).1 hx\n  have hd := product_recurrence_bohr_mem mu K x (Q j).commonDiff _ zeta v\n    (hcover x hxP hxG) (fun i => hsmall i j x hx) hbudget\n  have hl := hlinear x hxG ((Q j).axis (Fin.last k)) (haxes j (Fin.last k)).2\n    (by simpa only [(Q j).axis_step] using hd)\n  simpa only [Finset.filter_mem_eq_inter] using hl",
+    "context": [],
+    "line": 79,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ShortScale.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16_short_scale",
+    "kind": "theorem",
+    "header": "theorem section16_short_scale (s zeta : Real) (hs : 0 < s)\n    (hz : 0 < zeta) (hzHalf : zeta ≤ 1 / 2)\n    (hl : 1 < (zeta / 2) * Real.sqrt s) :\n    ∃ v : Nat, 2 ≤ v ∧ (zeta / 2) * Real.sqrt s ≤ (v - 1 : Nat) ∧\n      (v : Real) ^ 2 ≤ s ∧ 2 / s ≤ zeta / v",
+    "block": "theorem section16_short_scale (s zeta : Real) (hs : 0 < s)\n    (hz : 0 < zeta) (hzHalf : zeta ≤ 1 / 2)\n    (hl : 1 < (zeta / 2) * Real.sqrt s) :\n    ∃ v : Nat, 2 ≤ v ∧ (zeta / 2) * Real.sqrt s ≤ (v - 1 : Nat) ∧\n      (v : Real) ^ 2 ≤ s ∧ 2 / s ≤ zeta / v := by\n  obtain ⟨v, hv, hwidth, hmargin, hbudget⟩ := section16_short_scale_margin s zeta hs hz hzHalf hl\n  exact ⟨v, hv, hwidth, by linarith, hbudget⟩",
+    "context": [],
+    "line": 49,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16SingletonPartition.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16_local_linearity",
+    "kind": "theorem",
+    "header": "theorem section16_local_linearity {N k q m : Nat} [NeZero N]\n    (hk : 1 ≤ k) (theta gamma : Real)\n    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)\n    (P : Box N (k + 1)) (hP : P.IsProper) (hmP : m ≤ P.width)\n    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))\n    (K : Point N k → Finset (ZMod N)) (G : Finset (Point N k))\n    (A : Point N k → Finset (ZMod N)) (f : Point N k → ZMod N → ZMod N)\n    (hcover : ∀ x ∈ (boxInit P).carrier, x ∈ G → ∀ r ∈ K x, ∃ i, r = mu i x)\n    (hlinear : ∀ x ∈ G, ∀ v : Nat, 0 < v → ∀ I : ModAP N, I.length ≤ v →\n      I.step ∈ bohr (K x) (section16Zeta theta gamma k / v) →\n      LinearOn (I.carrier ∩ A x) (f x)) :\n    ∃ M : Nat, ∃ Q : Fin M → Box N (k + 1),\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, (section16Zeta theta gamma k / 2) *\n        Real.sqrt ((m : Real) ^ section16RecurrenceExponent k q) ≤ (Q j).width) ∧\n      ∀ j x, x ∈ (boxInit (Q j)).carrier → x ∈ G →\n        LinearOn (((Q j).axis (Fin.last k)).carrier.filter fun y => y ∈ A x) (f x)",
+    "block": "theorem section16_local_linearity {N k q m : Nat} [NeZero N]\n    (hk : 1 ≤ k) (theta gamma : Real)\n    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)\n    (P : Box N (k + 1)) (hP : P.IsProper) (hmP : m ≤ P.width)\n    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))\n    (K : Point N k → Finset (ZMod N)) (G : Finset (Point N k))\n    (A : Point N k → Finset (ZMod N)) (f : Point N k → ZMod N → ZMod N)\n    (hcover : ∀ x ∈ (boxInit P).carrier, x ∈ G → ∀ r ∈ K x, ∃ i, r = mu i x)\n    (hlinear : ∀ x ∈ G, ∀ v : Nat, 0 < v → ∀ I : ModAP N, I.length ≤ v →\n      I.step ∈ bohr (K x) (section16Zeta theta gamma k / v) →\n      LinearOn (I.carrier ∩ A x) (f x)) :\n    ∃ M : Nat, ∃ Q : Fin M → Box N (k + 1),\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, (section16Zeta theta gamma k / 2) *\n        Real.sqrt ((m : Real) ^ section16RecurrenceExponent k q) ≤ (Q j).width) ∧\n      ∀ j x, x ∈ (boxInit (Q j)).carrier → x ∈ G →\n        LinearOn (((Q j).axis (Fin.last k)).carrier.filter fun y => y ∈ A x) (f x) := by\n  classical\n  by_cases hl : (section16Zeta theta gamma k / 2) *\n      Real.sqrt ((m : Real) ^ section16RecurrenceExponent k q) ≤ 1\n  · obtain ⟨M, Q, hpart, hproper, hwidth, hlin⟩ := section16_local_linearity_singletons P _ hl A f\n    exact ⟨M, Q, hpart, hproper, hwidth, fun j x _ _ => hlin j x⟩\n  · have hm : 0 < m := by\n      by_contra hm\n      have hm0 : m = 0 := by omega\n      have he : 0 < section16RecurrenceExponent k q := by\n        rw [section16RecurrenceExponent_eq_multilinear]\n        have hK := multilinearPartitionConstant_eight_le (by omega : 2 ≤ k + 1)\n        unfold multilinearPartitionExponent\n        positivity\n      subst m\n      simp [Real.zero_rpow he.ne'] at hl\n    exact section16_local_linearity_above_one hk hm theta gamma ht ht1 hg hg1 P hP hmP\n      mu hmu K G A f hcover hlinear (lt_of_not_ge hl)",
+    "context": [],
+    "line": 91,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16SynchronizedSliceCover.lean",
+    "name": "LeanProofs.GowersSzemeredi.Section16SampledOrAnchoredOn.synchronized_cover",
+    "kind": "theorem",
+    "header": "theorem Section16SampledOrAnchoredOn.synchronized_cover {N k r m v : Nat} [NeZero N]\n    {gamma s : ℝ} {B D F : Finset (Point N (k + 1))}\n    {phi : Point N (k + 1) → ZMod N} {sample : Fin r → ZMod N}\n    (ha : Section16SampledOrAnchoredOn D phi sample F) (hD : D ⊆ B)\n    (hsections : FinalCoordinateSectionsMultiplyLinear gamma s B phi)\n    (hr : 0 < r) (hs : 1 ≤ s) (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)\n    (T : Box N k) (I : ModAP N) (hT : T.IsProper) (hI : I.IsProper)\n    (hstep : I.step = T.commonDiff) (u : (ZMod N)ˣ) (hu : I.step = (↑u : ZMod N))\n    (hk : 0 < k) (hm : 4 ≤ m) (hmT : m ≤ T.width) (hmI : m ≤ I.length)\n    (hv : 1 ≤ v)\n    (hvscale : (v : ℝ) ^ 2 + 1 ≤ ((m : ℝ) / 8) ^\n      ((multipleC (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s)))\n    (η : ℝ) (hF : F ⊆ lastProductSet T.carrier I.carrier)\n    (hFm : (1 - η) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ F.card) :\n    ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))\n      (nu : Fin L → ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) →\n        Point N (k + 1) → ZMod N),\n      (p : ℝ) ≤ (multipleQ (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s) ∧\n      G ⊆ F ∧ (1 - η - ε) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ G.card ∧\n      IsPartition (fun j => (S j).carrier) (lastProductSet T.carrier I.carrier) ∧\n      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧\n      (∀ j ij, IsMultilinear (nu j ij)) ∧\n      ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z",
+    "block": "theorem Section16SampledOrAnchoredOn.synchronized_cover {N k r m v : Nat} [NeZero N]\n    {gamma s : ℝ} {B D F : Finset (Point N (k + 1))}\n    {phi : Point N (k + 1) → ZMod N} {sample : Fin r → ZMod N}\n    (ha : Section16SampledOrAnchoredOn D phi sample F) (hD : D ⊆ B)\n    (hsections : FinalCoordinateSectionsMultiplyLinear gamma s B phi)\n    (hr : 0 < r) (hs : 1 ≤ s) (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)\n    (T : Box N k) (I : ModAP N) (hT : T.IsProper) (hI : I.IsProper)\n    (hstep : I.step = T.commonDiff) (u : (ZMod N)ˣ) (hu : I.step = (↑u : ZMod N))\n    (hk : 0 < k) (hm : 4 ≤ m) (hmT : m ≤ T.width) (hmI : m ≤ I.length)\n    (hv : 1 ≤ v)\n    (hvscale : (v : ℝ) ^ 2 + 1 ≤ ((m : ℝ) / 8) ^\n      ((multipleC (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s)))\n    (η : ℝ) (hF : F ⊆ lastProductSet T.carrier I.carrier)\n    (hFm : (1 - η) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ F.card) :\n    ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))\n      (nu : Fin L → ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) →\n        Point N (k + 1) → ZMod N),\n      (p : ℝ) ≤ (multipleQ (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s) ∧\n      G ⊆ F ∧ (1 - η - ε) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ G.card ∧\n      IsPartition (fun j => (S j).carrier) (lastProductSet T.carrier I.carrier) ∧\n      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧\n      (∀ j ij, IsMultilinear (nu j ij)) ∧\n      ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z := by\n  classical\n  let Gamma := fun i : Fin r => partialGraph (section16FinalCoordinateSection B (sample i))\n    (section16FinalCoordinateRestriction phi (sample i))\n  have hGamma : ∀ i, ProperMultiplyLinear gamma s (Gamma i) := fun i => hsections (sample i)\n  have hML := BaseCase.properMultiplyLinear_finsetUnion gamma s hs Gamma hr hGamma\n  obtain ⟨p, H, b, P, n, R, mu, hp, hH, hHm, hPpart, _,\n      hPaxes, hPstep, hRpart, hRproper, hRwidth, hmu, hc⟩ :=\n    hML.short_parent_cover ε hε hε1 T I hT hI hk hm hmT hmI\n  let e := section5NatFlattenEquiv n\n  let R' := boxFlatten n R\n  have hR'part : IsBoxPartition R' T := boxFlatten_partition T P n R hPpart hRpart\n  have hfit (j : Fin (∑ a, n a)) : v ^ 2 ≤ (R' j).width - 1 := by\n    have h := hvscale.trans (hRwidth (e.symm j).1 (e.symm j).2)\n    have h' : v ^ 2 + 1 ≤ (R' j).width := by exact_mod_cast h\n    omega\n  have hne (j : Fin (∑ a, n a)) : (R' j).carrier.Nonempty := by\n    apply Box.carrier_nonempty_of_axis_pos\n    intro a\n    have hw := (R' j).width_le_axis_length a\n    have hf := hfit j\n    have hv2 : 1 ≤ v ^ 2 := by nlinarith\n    omega\n  let axis : Fin k := ⟨0, hk⟩\n  let parent := fun j : Fin (∑ a, n a) => (P (e.symm j).1).axis axis\n  have hsub (j : Fin (∑ a, n a)) : ((R' j).axis axis).carrier ⊆ (parent j).carrier :=\n    (R' j).axis_carrier_subset_of_carrier_subset (P (e.symm j).1) (hne j)\n      (IsPartition.cell_subset (hRpart (e.symm j).1) (e.symm j).2) axis\n  have hparentstep (j : Fin (∑ a, n a)) : (parent j).step = (↑u : ZMod N) := by\n    dsimp only [parent]\n    rw [(P _).axis_step, hPstep, ← hstep, hu]\n  have hparallel (j : Fin (∑ a, n a)) : I.step = (parent j).step := by\n    rw [hparentstep, hu]\n  have hlift : ∀ j : Fin (∑ a, n a),\n      ∃ nu : ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) → Point N (k + 1) → ZMod N,\n        (∀ ij, IsMultilinear (nu ij)) ∧\n        ∀ h ∈ H ∩ (R' j).carrier, ∀ x, appendCoordinate h x ∈ D →\n          appendCoordinate h x ∈ F → ∃ ij, phi (appendCoordinate h x) = nu ij (appendCoordinate h x) := by\n    intro j\n    apply ha.multilinear_cover (H ∩ (R' j).carrier)\n      (fun _ => mu (e.symm j).1 (e.symm j).2) (fun _ => hmu _ _)\n    intro h hh i hi _\n    obtain ⟨hhH, hhR⟩ := Finset.mem_inter.mp hh\n    apply hc (e.symm j).1 (e.symm j).2 h hhR hhH (phi (appendCoordinate h (sample i)))\n    apply Finset.mem_biUnion.mpr\n    refine ⟨i, Finset.mem_univ _, ?_⟩\n    apply Finset.mem_image.mpr\n    exact ⟨h, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hD hi⟩, rfl⟩\n  choose nu hnu hcov using hlift\n  let G := F ∩ lastProductSet H I.carrier\n  have hprod := lastProductSet_good_mass T.carrier H I.carrier ε hH hHm\n  have hGmass := good_intersection_mass (lastProductSet T.carrier I.carrier) F\n    (lastProductSet H I.carrier) η ε hF hprod.1 hFm hprod.2\n  have hcover : ∀ j z, section16Init z ∈ (R' j).carrier → z ∈ D → z ∈ G →\n      ∃ ij, phi z = nu j ij z := by\n    intro j z hzR hzD hzG\n    obtain ⟨hzF, hzH⟩ := Finset.mem_inter.mp hzG\n    have hhH := (Finset.mem_filter.mp hzH).2.1\n    have hd : appendCoordinate (section16Init z) (section16Last z) ∈ D := by\n      simpa only [appendCoordinate_init_last] using hzD\n    have hf : appendCoordinate (section16Init z) (section16Last z) ∈ F := by\n      simpa only [appendCoordinate_init_last] using hzF\n    simpa only [appendCoordinate_init_last] using hcov j (section16Init z)\n      (Finset.mem_inter.mpr ⟨hhH, hzR⟩) (section16Last z) hd hf\n  obtain ⟨L, S, nu', hSpart, hSproper, hnu', hc'⟩ := section16_synchronize_base_cover\n    T I hI R' hR'part (fun j => hRproper _ _) parent axis (fun _ => u)\n    hparentstep hparallel hsub (fun j => (hPaxes (e.symm j).1 axis).2.1)\n    (fun j => (hPaxes (e.symm j).1 axis).2.2) hv hfit D G phi nu hnu hcover\n  exact ⟨p, G, L, S, nu', hp, Finset.inter_subset_left, hGmass, hSpart, hSproper, hnu', hc'⟩",
+    "context": [],
+    "line": 15,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ThreeSlices.lean",
+    "name": "LeanProofs.GowersSzemeredi.card_point_two_le",
+    "kind": "theorem",
+    "header": "theorem card_point_two_le (N : Nat) [NeZero N] (S : Finset (Point N 2)) :\n    (S.card : Real) ≤ (N : Real) ^ 2",
+    "block": "theorem card_point_two_le (N : Nat) [NeZero N] (S : Finset (Point N 2)) :\n    (S.card : Real) ≤ (N : Real) ^ 2 := by\n  have h := Finset.card_le_univ S\n  have hc : Fintype.card (Point N 2) = N ^ 2 := by\n    simp [Point, ZMod.card]\n  rw [hc] at h\n  exact_mod_cast h",
+    "context": [],
+    "line": 48,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16ThreeSlices.lean",
+    "name": "LeanProofs.GowersSzemeredi.threeSliceBase_nonneg",
+    "kind": "theorem",
+    "header": "theorem threeSliceBase_nonneg (theta gamma : Real) (ht : 0 < theta) (hg : 0 < gamma)\n    (K1 p1 r : Nat) (eps : Real) : 0 ≤ threeSliceBase theta gamma K1 p1 r eps",
+    "block": "theorem threeSliceBase_nonneg (theta gamma : Real) (ht : 0 < theta) (hg : 0 < gamma)\n    (K1 p1 r : Nat) (eps : Real) : 0 ≤ threeSliceBase theta gamma K1 p1 r eps := by\n  unfold threeSliceBase; positivity",
+    "context": [],
+    "line": 215,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16UniformLiftParameters.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16UniformLiftThreshold_one_le",
+    "kind": "theorem",
+    "header": "theorem section16UniformLiftThreshold_one_le (sigma theta gamma s : Real) (k : Nat) :\n    1 ≤ section16UniformLiftThreshold sigma theta gamma s k",
+    "block": "theorem section16UniformLiftThreshold_one_le (sigma theta gamma s : Real) (k : Nat) :\n    1 ≤ section16UniformLiftThreshold sigma theta gamma s k :=\n  (positivePowerThreshold_one_le _ _ _).trans (le_max_left _ _)",
+    "context": [],
+    "line": 108,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WeightedSamplingBudget.lean",
+    "name": "LeanProofs.GowersSzemeredi.section16_linear_sample_budget_le_quadratic",
+    "kind": "theorem",
+    "header": "theorem section16_linear_sample_budget_le_quadratic (q : Nat) {σ : Real}\n    (hσ : 0 < σ) (hσ1 : σ ≤ 1) :\n    ⌈6 * (q : Real) / σ⌉₊ ≤ ⌈6 * (q : Real) / σ ^ 2⌉₊",
+    "block": "theorem section16_linear_sample_budget_le_quadratic (q : Nat) {σ : Real}\n    (hσ : 0 < σ) (hσ1 : σ ≤ 1) :\n    ⌈6 * (q : Real) / σ⌉₊ ≤ ⌈6 * (q : Real) / σ ^ 2⌉₊ := by\n  apply Nat.ceil_mono\n  exact div_le_div_of_nonneg_left (by positivity) (sq_pos_of_pos hσ) (by nlinarith only [hσ, hσ1])",
+    "context": [],
+    "line": 160,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithUnion.lean",
+    "name": "LeanProofs.GowersSzemeredi.appendMultilinearFamily_isMultilinear",
+    "kind": "theorem",
+    "header": "theorem appendMultilinearFamily_isMultilinear {N k p q : Nat}\n    (nu : Fin p → Point N k → ZMod N) (mu : Fin q → Point N k → ZMod N)\n    (hnu : ∀ i, IsMultilinear (nu i)) (hmu : ∀ i, IsMultilinear (mu i))\n    (i : Fin (p + q)) : IsMultilinear (appendMultilinearFamily nu mu i)",
+    "block": "theorem appendMultilinearFamily_isMultilinear {N k p q : Nat}\n    (nu : Fin p → Point N k → ZMod N) (mu : Fin q → Point N k → ZMod N)\n    (hnu : ∀ i, IsMultilinear (nu i)) (hmu : ∀ i, IsMultilinear (mu i))\n    (i : Fin (p + q)) : IsMultilinear (appendMultilinearFamily nu mu i) := by\n  unfold appendMultilinearFamily\n  split_ifs\n  · exact hnu _\n  · exact hmu _",
+    "context": [],
+    "line": 62,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs17NonuniformCellMass.lean",
+    "name": "LeanProofs.GowersSzemeredi.restrictToCell_uniformEnergy_le",
+    "kind": "theorem",
+    "header": "theorem restrictToCell_uniformEnergy_le {N k : Nat} [NeZero N]\n    {f : ZMod N → Complex} (hf : DiscValued f) (S : Finset (ZMod N)) :\n    (∑ a : Point N k, ‖∑ s : ZMod N, cubeDifference (restrictToCell S f) a s‖ ^ 2) ≤\n      (S.card : Real) ^ (k + 2)",
+    "block": "theorem restrictToCell_uniformEnergy_le {N k : Nat} [NeZero N]\n    {f : ZMod N → Complex} (hf : DiscValued f) (S : Finset (ZMod N)) :\n    (∑ a : Point N k, ‖∑ s : ZMod N, cubeDifference (restrictToCell S f) a s‖ ^ 2) ≤\n      (S.card : Real) ^ (k + 2) :=\n  uniformEnergy_le_support_pow (restrictToCell_discValued hf S) S\n    (fun x hx => by simp [restrictToCell, hx])",
+    "context": [],
+    "line": 13,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs17Regions.lean",
+    "name": "LeanProofs.GowersSzemeredi.regionFamily_vcDim_le",
+    "kind": "lemma",
+    "header": "private lemma regionFamily_vcDim_le {k m : Nat}\n    (H : Fin m -> AffineHyperplane k) : (regionFamily H).vcDim <= k",
+    "block": "private lemma regionFamily_vcDim_le {k m : Nat}\n    (H : Fin m -> AffineHyperplane k) : (regionFamily H).vcDim <= k := by\n  unfold Finset.vcDim\n  apply Finset.sup_le\n  intro s hs\n  exact regionFamily_shattered_card_le H s (Finset.mem_shatterer.mp hs)",
+    "context": [],
+    "line": 161,
+    "private": true
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18AffineTransfer.lean",
+    "name": "LeanProofs.GowersSzemeredi.ModAP.density_cyclic_pullback",
+    "kind": "theorem",
+    "header": "theorem ModAP.density_cyclic_pullback {N M : Nat} [NeZero M]\n    (P : ModAP N) (hP : P.IsProper) (A : Finset (ZMod N))\n    (hsize : P.length ≤ M) :\n    density ((P.pullback A).image fun i : Nat => (i : ZMod M)) =\n      (P.length : Real) / M * ((A ∩ P.carrier).card / (P.length : Real))",
+    "block": "theorem ModAP.density_cyclic_pullback {N M : Nat} [NeZero M]\n    (P : ModAP N) (hP : P.IsProper) (A : Finset (ZMod N))\n    (hsize : P.length ≤ M) :\n    density ((P.pullback A).image fun i : Nat => (i : ZMod M)) =\n      (P.length : Real) / M * ((A ∩ P.carrier).card / (P.length : Real)) := by\n  classical\n  rw [density, P.card_cyclic_pullback hP A hsize]\n  by_cases hL : P.length = 0\n  · have hempty : P.pullback A = ∅ := by simp [ModAP.pullback, hL]\n    have hcard : (A ∩ P.carrier).card = 0 := by\n      rw [← P.card_pullback hP A, hempty, Finset.card_empty]\n    simp [hL, hcard]\n  · have hL' : (P.length : Real) ≠ 0 := by exact_mod_cast hL\n    have hM : (M : Real) ≠ 0 := by exact_mod_cast NeZero.ne M\n    field_simp",
+    "context": [],
+    "line": 87,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerPrimeThresholdEnvelope.lean",
+    "name": "LeanProofs.GowersSzemeredi.fejerCubicPrimeModelThreshold_le_double_exp",
+    "kind": "theorem",
+    "header": "theorem fejerCubicPrimeModelThreshold_le_double_exp {alpha T A : Real}\n    (hα : 0 < alpha) (hαone : alpha ≤ 1) (hA : 256 ≤ A)\n    (hF : (2 / alpha) ^ ((2 : Nat) ^ 54) ≤ A) (hT : T ≤ Real.exp A) :\n    fejerCubicPrimeModelThreshold alpha T ≤ Real.exp (Real.exp (4 * A))",
+    "block": "theorem fejerCubicPrimeModelThreshold_le_double_exp {alpha T A : Real}\n    (hα : 0 < alpha) (hαone : alpha ≤ 1) (hA : 256 ≤ A)\n    (hF : (2 / alpha) ^ ((2 : Nat) ^ 54) ≤ A) (hT : T ≤ Real.exp A) :\n    fejerCubicPrimeModelThreshold alpha T ≤ Real.exp (Real.exp (4 * A)) := by\n  let e := (1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53))\n  have hA0 : 0 ≤ A := by linarith only [hA]\n  have hAe : A ≤ Real.exp A := by have h := Real.add_one_le_exp A; linarith only [h]\n  have h12 : (12 : Real) ≤ Real.exp A := by linarith only [hA, hAe]\n  have h2 : (2 : Real) ≤ Real.exp A := by linarith only [h12]\n  have hmax : max 2 T ≤ Real.exp A := max_le h2 hT\n  have hC : 12 * max 2 T ≤ Real.exp (2 * A) := by\n    have h := mul_le_mul h12 hmax (le_trans (by norm_num : (0 : Real) ≤ 2) (le_max_left _ _)) (Real.exp_pos _).le\n    simpa only [← Real.exp_add, show A + A = 2 * A by ring] using h\n  have he : 0 < e := Real.rpow_pos_of_pos (by norm_num) _\n  have hx : 1 ≤ 2 / alpha := (le_div_iff₀ hα).mpr (by linarith only [hαone])\n  have hsmall : (2 / alpha) ^ ((2 : Nat) ^ 53) ≤ A :=\n    (pow_le_pow_right₀ hx (by norm_num : (2 : Nat) ^ 53 ≤ (2 : Nat) ^ 54)).trans hF\n  have heI : e⁻¹ ≤ Real.exp (1 * A) := by\n    rw [one_mul]\n    exact (fejerCubicLocalizationExponent_inv_le_exp hα).trans (Real.exp_le_exp.mpr hsmall)\n  have h1 : (1 : Real)⁻¹ ≤ Real.exp (1 * A) := by\n    simpa only [inv_one, one_mul] using Real.one_le_exp_iff.mpr hA0\n  have hp := positivePowerThreshold_le_double_exp (C := 12 * max 2 T) zero_lt_one he.le hA0\n    (by norm_num : (0 : Real) ≤ 2) (by norm_num : (0 : Real) ≤ 1) hC h1 heI\n  norm_num only [show (2 + 1 + 1 : Real) = 4 by norm_num] at hp\n  have h4 : A ≤ 4 * A := by linarith only [hA0]\n  have hlarge : (256 : Real) ≤ Real.exp (Real.exp (4 * A)) :=\n    hA.trans (h4.trans (real_le_double_exp _))\n  unfold fejerCubicPrimeModelThreshold\n  refine max_le hlarge (max_le ?_ hp)\n  exact (section13FejerOddSquareThreshold_le_double_exp hα hαone).trans\n    (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr (hF.trans h4)))",
+    "context": [],
+    "line": 43,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerPrimeThresholdEnvelope.lean",
+    "name": "LeanProofs.GowersSzemeredi.fejerCubicTwistedThreshold_le_double_exp",
+    "kind": "theorem",
+    "header": "theorem fejerCubicTwistedThreshold_le_double_exp {alpha : Real}\n    (hα : 0 < alpha) (hαone : alpha ≤ 1) :\n    fejerCubicTwistedThreshold alpha ≤ Real.exp (Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 324)))",
+    "block": "theorem fejerCubicTwistedThreshold_le_double_exp {alpha : Real}\n    (hα : 0 < alpha) (hαone : alpha ≤ 1) :\n    fejerCubicTwistedThreshold alpha ≤ Real.exp (Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 324))) := by\n  let x := 2 / alpha\n  let A := x ^ ((2 : Nat) ^ 323)\n  have hx : 2 ≤ x := (le_div_iff₀ hα).mpr (by linarith only [hαone])\n  have hx1 : 1 ≤ x := by linarith only [hx]\n  have hA : 256 ≤ A := by\n    calc\n      _ = (2 : Real) ^ (8 : Nat) := by norm_num\n      _ ≤ x ^ (8 : Nat) := pow_le_pow_left₀ (by norm_num) hx _\n      _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num : (8 : Nat) ≤ (2 : Nat) ^ 323)\n  have hF : x ^ ((2 : Nat) ^ 54) ≤ A := pow_le_pow_right₀ hx1 (by norm_num : (2 : Nat) ^ 54 ≤ (2 : Nat) ^ 323)\n  have h4 : (4 : Real) ≤ Real.exp A := by\n    have hh := Real.add_one_le_exp A\n    linarith only [hh, hA]\n  have hT := max_le h4 (quadraticExponentialThreshold_fejer_le_exp hα hαone)\n  have h := fejerCubicPrimeModelThreshold_le_double_exp hα hαone hA hF hT\n  apply h.trans\n  apply Real.exp_le_exp.mpr (Real.exp_le_exp.mpr _)\n  have hx2 : (4 : Real) ≤ x ^ (2 : Nat) := by\n    have hh := pow_le_pow_left₀ (by norm_num : (0 : Real) ≤ 2) hx 2\n    norm_num at hh\n    exact hh\n  calc\n    _ ≤ x ^ (2 : Nat) * x ^ ((2 : Nat) ^ 323) := mul_le_mul_of_nonneg_right hx2 (by positivity)\n    _ = x ^ (2 + (2 : Nat) ^ 323) := (pow_add _ _ _).symm\n    _ ≤ _ := pow_le_pow_right₀ hx1 (by norm_num : 2 + (2 : Nat) ^ 323 ≤ (2 : Nat) ^ 324)",
+    "context": [],
+    "line": 79,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean",
+    "name": "LeanProofs.GowersSzemeredi.sq_le_two_tDegT3",
+    "kind": "theorem",
+    "header": "theorem sq_le_two_tDegT3 (k : Nat) : 3 * (k + 4) ^ 2 ≤ 2 * tDegT3 k + 6 * k + 35",
+    "block": "theorem sq_le_two_tDegT3 (k : Nat) : 3 * (k + 4) ^ 2 ≤ 2 * tDegT3 k + 6 * k + 35 := by\n  rcases Nat.lt_or_ge k 15 with h | h\n  · interval_cases k <;> decide\n  · rw [tDegT3_eq_of_ge h]; omega",
+    "context": [],
+    "line": 339,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18IntervalCubeEnergy.lean",
+    "name": "LeanProofs.GowersSzemeredi.intervalExtension_uniform_iff",
+    "kind": "theorem",
+    "header": "theorem intervalExtension_uniform_iff {N M L k : Nat} [NeZero N] [NeZero M]\n    (hN : (k + 2) * L ≤ N) (hM : (k + 2) * L ≤ M)\n    (g : Fin L → Complex) (alpha : Real) :\n    UniformOfDegree (intervalExtension N g) alpha k ↔\n      UniformOfDegree (intervalExtension M g) (alpha * ((N : Real) / M) ^ (k + 2)) k",
+    "block": "theorem intervalExtension_uniform_iff {N M L k : Nat} [NeZero N] [NeZero M]\n    (hN : (k + 2) * L ≤ N) (hM : (k + 2) * L ≤ M)\n    (g : Fin L → Complex) (alpha : Real) :\n    UniformOfDegree (intervalExtension N g) alpha k ↔\n      UniformOfDegree (intervalExtension M g) (alpha * ((N : Real) / M) ^ (k + 2)) k := by\n  have hMne : (M : Real) ≠ 0 := by exact_mod_cast NeZero.ne M\n  have hscale : (alpha * ((N : Real) / M) ^ (k + 2)) * (M : Real) ^ (k + 2) =\n      alpha * (N : Real) ^ (k + 2) := by rw [div_pow]; field_simp\n  unfold UniformOfDegree\n  rw [intervalExtension_uniformEnergy_eq hN hM g, hscale]",
+    "context": [],
+    "line": 74,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18IntervalCubeGeometry.lean",
+    "name": "LeanProofs.GowersSzemeredi.cubeArgument_anchor_relation",
+    "kind": "theorem",
+    "header": "theorem cubeArgument_anchor_relation {N d : Nat} (s : ZMod N) (a : Point N d)\n    (e : Fin d → Bool) :\n    cubeArgument s a e + (∑ i, if e i then s else 0) =\n      s + ∑ i, if e i then cubeArgument s a (cubeUnit i) else 0",
+    "block": "theorem cubeArgument_anchor_relation {N d : Nat} (s : ZMod N) (a : Point N d)\n    (e : Fin d → Bool) :\n    cubeArgument s a e + (∑ i, if e i then s else 0) =\n      s + ∑ i, if e i then cubeArgument s a (cubeUnit i) else 0 := by\n  simp_rw [cubeArgument_unit, cube_ite_sub]\n  unfold cubeArgument\n  rw [Finset.sum_sub_distrib]\n  abel",
+    "context": [],
+    "line": 28,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18NaturalWrapSplit.lean",
+    "name": "LeanProofs.GowersSzemeredi.NatAP.exists_modular_translate_inter",
+    "kind": "theorem",
+    "header": "theorem NatAP.exists_modular_translate_inter (P : NatAP) (hP : P.IsProper)\n    (N a L : Nat) (ha : a < N) (hsub : P.carrier ⊆ Finset.range N) :\n    ∃ Q R : NatAP, Q.IsProper ∧ R.IsProper ∧ Disjoint Q.carrier R.carrier ∧\n      Q.carrier ∪ R.carrier = (P.carrier.image (fun x => (a + x) % N)) ∩ Finset.range L",
+    "block": "theorem NatAP.exists_modular_translate_inter (P : NatAP) (hP : P.IsProper)\n    (N a L : Nat) (ha : a < N) (hsub : P.carrier ⊆ Finset.range N) :\n    ∃ Q R : NatAP, Q.IsProper ∧ R.IsProper ∧ Disjoint Q.carrier R.carrier ∧\n      Q.carrier ∪ R.carrier = (P.carrier.image (fun x => (a + x) % N)) ∩ Finset.range L := by\n  obtain ⟨Q₀, R₀, hQ₀, hR₀, hdis, hcover⟩ := P.exists_modular_translate_split hP N a ha hsub\n  obtain ⟨Q, hQ, hQc⟩ := Q₀.exists_inter_Ico hQ₀ 0 L\n  obtain ⟨R, hR, hRc⟩ := R₀.exists_inter_Ico hR₀ 0 L\n  refine ⟨Q, R, hQ, hR, ?_, ?_⟩\n  · rw [hQc, hRc]\n    exact hdis.mono Finset.inter_subset_left Finset.inter_subset_left\n  · rw [hQc, hRc, ← Finset.union_inter_distrib_right, hcover, ← Finset.range_eq_Ico]",
+    "context": [],
+    "line": 66,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticDensityIncrement.lean",
+    "name": "LeanProofs.GowersSzemeredi.quadratic_nonuniformity_density_increment",
+    "kind": "theorem",
+    "header": "theorem quadratic_nonuniformity_density_increment :\n    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 → ∃ N₀ : Nat,\n      ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →\n        ∀ A : Finset (ZMod N), ¬ UniformSetOfDegree A alpha 2 →\n        ∃ P : ModAP N, P.IsProper ∧\n          quadraticDiscrepancyParameter alpha / 4 *\n            (N : Real) ^ quadraticDiscrepancyExponent alpha ≤ (P.carrier.card : Real) ∧\n          (density A + quadraticDiscrepancyParameter alpha / 4) * P.carrier.card ≤\n            (A ∩ P.carrier).card",
+    "block": "theorem quadratic_nonuniformity_density_increment :\n    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 → ∃ N₀ : Nat,\n      ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →\n        ∀ A : Finset (ZMod N), ¬ UniformSetOfDegree A alpha 2 →\n        ∃ P : ModAP N, P.IsProper ∧\n          quadraticDiscrepancyParameter alpha / 4 *\n            (N : Real) ^ quadraticDiscrepancyExponent alpha ≤ (P.carrier.card : Real) ∧\n          (density A + quadraticDiscrepancyParameter alpha / 4) * P.carrier.card ≤\n            (A ∩ P.carrier).card := by\n  intro alpha hα hαone\n  obtain ⟨N₀, hN₀⟩ := quadratic_nonuniformity_discrepancy_partition alpha hα hαone\n  refine ⟨N₀, fun N _ _ hN A hnot ↦ ?_⟩\n  obtain ⟨M, P, hpart, hproper, havg, hdis⟩ := hN₀ N hN (balanced A) (balanced_discValued A) hnot\n  have hβ : 0 ≤ quadraticDiscrepancyParameter alpha := by\n    unfold quadraticDiscrepancyParameter\n    positivity\n  obtain ⟨j, hsize, hinc⟩ := density_increment_of_discrepancy_partition A P _ _ hβ hpart havg hdis\n  exact ⟨P j, hproper j, hsize, hinc⟩",
+    "context": [],
+    "line": 41,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticDiscrepancy.lean",
+    "name": "LeanProofs.GowersSzemeredi.quadratic_nonuniformity_discrepancy_partition",
+    "kind": "theorem",
+    "header": "theorem quadratic_nonuniformity_discrepancy_partition :\n    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 → ∃ N₀ : Nat,\n      ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →\n        ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 2 →\n        ∃ L : Nat, ∃ R : Fin L → ModAP N,\n          IsPartition (fun j ↦ (R j).carrier) Finset.univ ∧\n          (∀ j, (R j).IsProper) ∧\n          (N : Real) ^ quadraticDiscrepancyExponent alpha ≤\n            averageCellSize (fun j ↦ (R j).carrier) ∧\n          quadraticDiscrepancyParameter alpha * N ≤\n            ∑ j, ‖∑ s ∈ (R j).carrier, f s‖",
+    "block": "theorem quadratic_nonuniformity_discrepancy_partition :\n    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 → ∃ N₀ : Nat,\n      ∀ (N : Nat) [NeZero N] [Fact N.Prime], N₀ ≤ N →\n        ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 2 →\n        ∃ L : Nat, ∃ R : Fin L → ModAP N,\n          IsPartition (fun j ↦ (R j).carrier) Finset.univ ∧\n          (∀ j, (R j).IsProper) ∧\n          (N : Real) ^ quadraticDiscrepancyExponent alpha ≤\n            averageCellSize (fun j ↦ (R j).carrier) ∧\n          quadraticDiscrepancyParameter alpha * N ≤\n            ∑ j, ‖∑ s ∈ (R j).carrier, f s‖ := by\n  intro alpha hα hαone\n  have he := (quadratic_frequency_exponent_bounds hα hαone).1\n  have hs : 0 < quadraticDiscrepancyExponent alpha := by\n    exact div_pos he (by norm_num)\n  obtain ⟨N₁, hN₁⟩ := Filter.eventually_atTop.mp\n    (eventually_nat_mul_rpow_le (C := 4) (D := 1) he zero_lt_one)\n  obtain ⟨N₂, hN₂⟩ := Filter.eventually_atTop.mp\n    (eventually_nat_mul_rpow_le (C := quadraticRefinementConstant alpha) (D := 1) hs zero_lt_one)\n  refine ⟨max N₁ N₂, fun N _ _ hN ↦ ?_⟩\n  apply quadratic_nonuniformity_discrepancy_partition_of_power_bounds alpha hα hαone N\n  · simpa only [Real.rpow_zero, mul_one, one_mul] using hN₁ N (by omega)\n  · simpa only [Real.rpow_zero, mul_one, one_mul] using hN₂ N (by omega)",
+    "context": [],
+    "line": 143,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticSharperEnvelope.lean",
+    "name": "LeanProofs.GowersSzemeredi.quadraticIntervalClosedThreshold_le_double_exp_sharp",
+    "kind": "theorem",
+    "header": "theorem quadraticIntervalClosedThreshold_le_double_exp_sharp {delta : Real}\n    (hδ : 0 < delta) (hδone : delta ≤ 1) :\n    quadraticIntervalClosedThreshold delta ≤\n      Real.exp (Real.exp ((2 / delta) ^ (1500642 : Nat)))",
+    "block": "theorem quadraticIntervalClosedThreshold_le_double_exp_sharp {delta : Real}\n    (hδ : 0 < delta) (hδone : delta ≤ 1) :\n    quadraticIntervalClosedThreshold delta ≤\n      Real.exp (Real.exp ((2 / delta) ^ (1500642 : Nat))) := by\n  have hα := intervalQuadraticUniformityParameter_pos hδ\n  apply (quadraticIntervalClosedThreshold_le_double_exp_alpha_sharp hδ hδone).trans\n  apply Real.exp_le_exp.mpr (Real.exp_le_exp.mpr _)\n  have h := pow_le_pow_left₀\n    (by positivity : 0 ≤ 2 / intervalQuadraticUniformityParameter delta)\n    (intervalQuadraticUniformityParameter_inv_upper hδ hδone).2 (12402 : Nat)\n  simpa only [← pow_mul] using h",
+    "context": [],
+    "line": 73,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18RelativeBalance.lean",
+    "name": "LeanProofs.GowersSzemeredi.relativeBalanced_univ",
+    "kind": "theorem",
+    "header": "theorem relativeBalanced_univ {N : Nat} [NeZero N] (A : Finset (ZMod N)) :\n    relativeBalanced A Finset.univ (density A) = balanced A",
+    "block": "theorem relativeBalanced_univ {N : Nat} [NeZero N] (A : Finset (ZMod N)) :\n    relativeBalanced A Finset.univ (density A) = balanced A := by\n  funext x\n  rw [relativeBalanced_eq_indicators]\n  simp [indicator, balanced]",
+    "context": [],
+    "line": 71,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18RelativeIntervalModel.lean",
+    "name": "LeanProofs.GowersSzemeredi.finiteIntervalImage_univ",
+    "kind": "theorem",
+    "header": "theorem finiteIntervalImage_univ {N L : Nat} :\n    finiteIntervalImage N (Finset.univ : Finset (Fin L)) = (modInterval N 0 L).carrier",
+    "block": "theorem finiteIntervalImage_univ {N L : Nat} :\n    finiteIntervalImage N (Finset.univ : Finset (Fin L)) = (modInterval N 0 L).carrier := by\n  classical\n  unfold finiteIntervalImage ModAP.carrier\n  apply Finset.image_congr\n  intro i _\n  simp [modInterval]",
+    "context": [],
+    "line": 39,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18RelativeIntervalModel.lean",
+    "name": "LeanProofs.GowersSzemeredi.finiteIntervalImage_relative_card",
+    "kind": "theorem",
+    "header": "theorem finiteIntervalImage_relative_card {N L : Nat} [NeZero N]\n    (hL : L ≤ N) (B : Finset (Fin L)) (delta : Real)\n    (hcard : (B.card : Real) = delta * L) :\n    ((finiteIntervalImage N B).card : Real) = delta * (finiteIntervalImage N (Finset.univ : Finset (Fin L))).card",
+    "block": "theorem finiteIntervalImage_relative_card {N L : Nat} [NeZero N]\n    (hL : L ≤ N) (B : Finset (Fin L)) (delta : Real)\n    (hcard : (B.card : Real) = delta * L) :\n    ((finiteIntervalImage N B).card : Real) = delta * (finiteIntervalImage N (Finset.univ : Finset (Fin L))).card := by\n  simpa only [finiteIntervalImage_card hL, Finset.card_univ, Fintype.card_fin] using hcard",
+    "context": [],
+    "line": 82,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18RelativeIntervalModel.lean",
+    "name": "LeanProofs.GowersSzemeredi.relative_interval_uniform_iff",
+    "kind": "theorem",
+    "header": "theorem relative_interval_uniform_iff {N M L k : Nat} [NeZero N] [NeZero M]\n    (hN : (k + 2) * L ≤ N) (hM : (k + 2) * L ≤ M)\n    (B : Finset (Fin L)) (delta alpha : Real) :\n    UniformOfDegree (relativeBalanced (finiteIntervalImage N B) (finiteIntervalImage (L := L) N Finset.univ) delta) alpha k ↔\n      UniformOfDegree (relativeBalanced (finiteIntervalImage M B) (finiteIntervalImage (L := L) M Finset.univ) delta)\n        (alpha * ((N : Real) / M) ^ (k + 2)) k",
+    "block": "theorem relative_interval_uniform_iff {N M L k : Nat} [NeZero N] [NeZero M]\n    (hN : (k + 2) * L ≤ N) (hM : (k + 2) * L ≤ M)\n    (B : Finset (Fin L)) (delta alpha : Real) :\n    UniformOfDegree (relativeBalanced (finiteIntervalImage N B) (finiteIntervalImage (L := L) N Finset.univ) delta) alpha k ↔\n      UniformOfDegree (relativeBalanced (finiteIntervalImage M B) (finiteIntervalImage (L := L) M Finset.univ) delta)\n        (alpha * ((N : Real) / M) ^ (k + 2)) k := by\n  have hLN : L ≤ N := (Nat.le_mul_of_pos_left L (by omega)).trans hN\n  have hLM : L ≤ M := (Nat.le_mul_of_pos_left L (by omega)).trans hM\n  rw [relativeBalanced_finiteIntervalImage hLN, relativeBalanced_finiteIntervalImage hLM]\n  exact intervalExtension_uniform_iff hN hM _ alpha",
+    "context": [],
+    "line": 90,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18UniformCovers.lean",
+    "name": "LeanProofs.GowersSzemeredi.uCount_pos",
+    "kind": "theorem",
+    "header": "theorem uCount_pos {V : Real} (_hV : 1 ≤ V) (D : Nat) {gamma theta rho : Real}\n    (_hg : 0 < gamma) (_hg1 : gamma ≤ 1) (_ht : 0 < theta) (_ht1 : theta ≤ 1) (_hr : 0 < rho)\n    (_hr1 : rho ≤ 1) : 1 ≤ uCount V D gamma theta rho",
+    "block": "theorem uCount_pos {V : Real} (_hV : 1 ≤ V) (D : Nat) {gamma theta rho : Real}\n    (_hg : 0 < gamma) (_hg1 : gamma ≤ 1) (_ht : 0 < theta) (_ht1 : theta ≤ 1) (_hr : 0 < rho)\n    (_hr1 : rho ≤ 1) : 1 ≤ uCount V D gamma theta rho := one_le_uCount V D gamma theta rho",
+    "context": [],
+    "line": 73,
+    "private": false
+  },
+  {
+    "file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18UniformCovers.lean",
+    "name": "LeanProofs.GowersSzemeredi.uDeg_mono",
+    "kind": "theorem",
+    "header": "theorem uDeg_mono : Monotone uDeg",
+    "block": "theorem uDeg_mono : Monotone uDeg := fun j k h =>\n  Nat.pow_le_pow_right (by norm_num) (Nat.mul_le_mul_left _ (Nat.pow_le_pow_right (by norm_num) h))",
+    "context": [],
+    "line": 190,
+    "private": false
+  }
+]

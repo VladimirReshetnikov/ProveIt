@@ -1,0 +1,20 @@
+--- /tmp/gowers-next297-post-native-tools-repaired6a75/archive.py
++++ /tmp/gowers-next829-post-native-tools-f4e4/archive.py
+@@ -3,7 +3,7 @@
+ sys.dont_write_bytecode = True
+ from pathlib import Path
+ import argparse, fcntl, functools, hashlib, json, re, runpy
+-NATIVE = Path('/tmp/gowers-next297-native-tools')
++NATIVE = Path('/tmp/gowers-next829-native-tools')
+ PINS = {'common.py': '4c71aedd3ec630046fd5dd5d205e250893c93bb0b1f1d2b0faf69bfe89e07328',
+         'capture.py': '8463cc8e288255e12fd9ad777f8a2fe7f0a75aa6cbf888f423129a112f6cecd2',
+         'run.py': 'bf1aa169ed14fc098fd20c57a93a8c9904718bfc2b2648997384a3effd61e83a'}
+@@ -35,7 +35,7 @@
+         by_source[str(path)] = destination; return destination
+     snapshot_path = Path(args.snapshot[0]).resolve(); snapshot_hash = args.snapshot[1]
+     bind(snapshot_path, snapshot_hash, 'snapshot.json'); snapshot = json.loads(snapshot_path.read_text())
+-    require(snapshot['source_commit'] == '6a753d0702d1691c25a21bdbdb58e29412931be5', 'Wrong batch source')
++    require(snapshot['source_commit'] == 'f4e4e721f3ddad360216b6ce69ddc152a39abb4d', 'Wrong batch source')
+     require(same(snapshot['tools'], {str(NATIVE / name): value for name, value in PINS.items()}), 'Native tool keyset/pins mismatch')
+     root = Path(snapshot['root']); worker_check(root)
+     lock_path = Path('/tmp') / ('gowers-native-' + hashlib.sha256(str(root).encode()).hexdigest()[:16] + '.lock')

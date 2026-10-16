@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs12Amplification
+import GowersSzemeredi.Definitions
 
 /-! Finite Bernoulli averaging and score selection for arbitrary hyperedges.
 Repeated physical vertices occur once in each carrier. -/
@@ -23,208 +23,56 @@ private lemma restrictionWeight_nonneg {X : Type*} [DecidableEq X]
   · exact Finset.prod_nonneg fun x hx ↦
       sub_nonneg.mpr (hp1 x (Finset.mem_sdiff.mp hx).1)
 
-private lemma restrictionWeight_insert {X : Type*} [DecidableEq X]
-    (U : Finset X) (p : X → Real) (a : X) (ha : a ∉ U) (S : Finset X)
-    (hS : S ⊆ U) :
-    restrictionWeight (insert a U) p (insert a S) =
-      p a * restrictionWeight U p S := by
-  simp only [restrictionWeight]
-  rw [Finset.prod_insert (notMem_mono hS ha)]
-  have hdiff : insert a U \ insert a S = U \ S := by
-    ext x
-    simp only [mem_sdiff, mem_insert]
-    aesop
-  rw [hdiff]
-  ring
-
-private lemma restrictionWeight_not_insert {X : Type*} [DecidableEq X]
-    (U : Finset X) (p : X → Real) (a : X) (ha : a ∉ U) (S : Finset X)
-    (hS : S ⊆ U) :
-    restrictionWeight (insert a U) p S =
-      (1 - p a) * restrictionWeight U p S := by
-  simp only [restrictionWeight]
-  have haS : a ∉ S := fun h ↦ ha (hS h)
-  have hdiff : insert a U \ S = insert a (U \ S) := by
-    ext x
-    simp only [mem_sdiff, mem_insert]
-    aesop
-  rw [hdiff, Finset.prod_insert]
-  · ring
-  · simp [ha]
-
 private lemma restrictionWeight_sum {X : Type*} [DecidableEq X]
     (U : Finset X) (p : X → Real) :
     ∑ S ∈ U.powerset, restrictionWeight U p S = 1 := by
-  induction U using Finset.induction_on with
-  | empty => simp [restrictionWeight]
-  | @insert a U ha ih =>
-      rw [Finset.sum_powerset_insert ha]
-      have hleft :
-          (∑ S ∈ U.powerset, restrictionWeight (insert a U) p S) =
-            (1 - p a) * ∑ S ∈ U.powerset, restrictionWeight U p S := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro S hS
-        rw [restrictionWeight_not_insert U p a ha S
-          (Finset.mem_powerset.mp hS)]
-      have hright :
-          (∑ S ∈ U.powerset,
-            restrictionWeight (insert a U) p (insert a S)) =
-            p a * ∑ S ∈ U.powerset, restrictionWeight U p S := by
-        rw [Finset.mul_sum]
-        apply Finset.sum_congr rfl
-        intro S hS
-        rw [restrictionWeight_insert U p a ha S
-          (Finset.mem_powerset.mp hS)]
-      rw [hleft, hright, ih]
-      ring
+  have h (x : X) : p x + (1 - p x) = 1 := by ring
+  simpa only [restrictionWeight, h, Finset.prod_const_one] using
+    (Finset.prod_add p (fun x => 1 - p x) U).symm
 
 private lemma restrictionWeight_event {X : Type*} [DecidableEq X]
     (U C : Finset X) (p : X → Real) (hC : C ⊆ U) :
     ∑ S ∈ U.powerset, restrictionWeight U p S * (if C ⊆ S then 1 else 0) =
       ∏ x ∈ C, p x := by
-  induction U using Finset.induction_on generalizing C with
-  | empty =>
-      have hC0 : C = ∅ := Finset.eq_empty_iff_forall_notMem.mpr fun x hx ↦
-        (Finset.notMem_empty x) (hC hx)
-      subst C
-      simp [restrictionWeight]
-  | @insert a U ha ih =>
-      rw [Finset.sum_powerset_insert ha]
-      by_cases haC : a ∈ C
-      · let C₀ := C.erase a
-        have hCeq : C = insert a C₀ := (Finset.insert_erase haC).symm
-        have hC₀ : C₀ ⊆ U := by
+  calc
+    _ = ∑ S ∈ U.powerset, (∏ x ∈ S, p x) *
+        ∏ x ∈ U \ S, (if x ∉ C then 1 - p x else 0) := by
+      apply Finset.sum_congr rfl
+      intro S hS
+      have hSC : (∀ x ∈ U \ S, x ∉ C) ↔ C ⊆ S := by
+        constructor
+        · intro h x hx
+          by_contra hxs
+          exact h x (Finset.mem_sdiff.mpr ⟨hC hx, hxs⟩) hx
+        · intro h x hx hxc
+          exact (Finset.mem_sdiff.mp hx).2 (h hxc)
+      simp only [Finset.prod_ite_zero, hSC]
+      by_cases h : C ⊆ S <;> simp [restrictionWeight, h]
+    _ = ∏ x ∈ U, (p x + if x ∉ C then 1 - p x else 0) :=
+      (Finset.prod_add p (fun x => if x ∉ C then 1 - p x else 0) U).symm
+    _ = ∏ x ∈ C, p x := by
+      calc
+        _ = ∏ x ∈ U, (if x ∈ C then p x else 1) := by
+          apply Finset.prod_congr rfl
           intro x hx
-          have hxC : x ∈ C := Finset.mem_of_mem_erase hx
-          have hxins := hC hxC
-          rcases Finset.mem_insert.mp hxins with hxa | hxU
-          · subst x
-            exact (Finset.notMem_erase a C hx).elim
-          · exact hxU
-        have haC₀ : a ∉ C₀ := Finset.notMem_erase _ _
-        have hfalse (S : Finset X) (hS : S ∈ U.powerset) : ¬ C ⊆ S := by
-          intro hCS
-          exact ha (Finset.mem_powerset.mp hS (hCS haC))
-        have hins (S : Finset X) (_ : S ∈ U.powerset) :
-            (C ⊆ insert a S) ↔ C₀ ⊆ S := by
-          rw [hCeq, Finset.insert_subset_iff]
-          constructor
-          · rintro ⟨-, hsub⟩ x hx
-            have := hsub hx
-            rcases Finset.mem_insert.mp this with hxa | hxS
-            · subst x
-              exact (haC₀ hx).elim
-            · exact hxS
-          · intro hsub
-            exact ⟨Finset.mem_insert_self _ _, fun x hx ↦
-              Finset.mem_insert_of_mem (hsub hx)⟩
-        have hleft :
-            (∑ S ∈ U.powerset,
-              restrictionWeight (insert a U) p S *
-                (if C ⊆ S then 1 else 0)) = 0 := by
-          apply Finset.sum_eq_zero
-          intro S hS
-          rw [if_neg (hfalse S hS), mul_zero]
-        have hright :
-            (∑ S ∈ U.powerset,
-              restrictionWeight (insert a U) p (insert a S) *
-                (if C ⊆ insert a S then 1 else 0)) =
-              p a * ∑ S ∈ U.powerset,
-                restrictionWeight U p S *
-                  (if C₀ ⊆ S then 1 else 0) := by
-          rw [Finset.mul_sum]
-          apply Finset.sum_congr rfl
-          intro S hS
-          rw [restrictionWeight_insert U p a ha S
-            (Finset.mem_powerset.mp hS)]
-          simp only [hins S hS]
-          ring
-        rw [hleft, zero_add, hright]
-        rw [ih C₀ hC₀, hCeq,
-          Finset.prod_insert haC₀]
-      · have hCU : C ⊆ U := by
-          intro x hx
-          rcases Finset.mem_insert.mp (hC hx) with hxa | hxU
-          · subst x
-            exact (haC hx).elim
-          · exact hxU
-        have hevent (S : Finset X) (_ : S ∈ U.powerset) :
-            (C ⊆ insert a S) ↔ C ⊆ S := by
-          constructor
-          · intro hsub x hx
-            rcases Finset.mem_insert.mp (hsub hx) with hxa | hxS
-            · subst x
-              exact (haC hx).elim
-            · exact hxS
-          · exact fun hsub ↦ hsub.trans (Finset.subset_insert _ _)
-        have hleft :
-            (∑ S ∈ U.powerset,
-              restrictionWeight (insert a U) p S *
-                (if C ⊆ S then 1 else 0)) =
-              (1 - p a) * ∑ S ∈ U.powerset,
-                restrictionWeight U p S * (if C ⊆ S then 1 else 0) := by
-          rw [Finset.mul_sum]
-          apply Finset.sum_congr rfl
-          intro S hS
-          rw [restrictionWeight_not_insert U p a ha S
-            (Finset.mem_powerset.mp hS)]
-          ring
-        have hright :
-            (∑ S ∈ U.powerset,
-              restrictionWeight (insert a U) p (insert a S) *
-                (if C ⊆ insert a S then 1 else 0)) =
-              p a * ∑ S ∈ U.powerset,
-                restrictionWeight U p S * (if C ⊆ S then 1 else 0) := by
-          rw [Finset.mul_sum]
-          apply Finset.sum_congr rfl
-          intro S hS
-          rw [restrictionWeight_insert U p a ha S
-            (Finset.mem_powerset.mp hS)]
-          simp only [hevent S hS]
-          ring
-        rw [hleft, hright, ih C hCU]
-        ring
+          by_cases hxC : x ∈ C <;> simp [hxC] <;> ring
+        _ = _ := by rw [Finset.prod_ite_mem, Finset.inter_eq_right.mpr hC]
 
 private lemma exists_subset_of_weighted_average {X : Type*} [DecidableEq X]
     (U : Finset X) (p : X → Real) (hp0 : ∀ x ∈ U, 0 ≤ p x)
     (hp1 : ∀ x ∈ U, p x ≤ 1) (F : Finset X → Real) (A : Real)
     (haverage : A ≤ ∑ S ∈ U.powerset, restrictionWeight U p S * F S) :
     ∃ S ⊆ U, A ≤ F S := by
-  by_contra hno
-  push Not at hno
-  have hex : ∃ T ∈ U.powerset, 0 < restrictionWeight U p T := by
-    by_contra hz
-    push Not at hz
-    have hall : ∀ T ∈ U.powerset, restrictionWeight U p T = 0 := by
-      intro T hT
-      exact le_antisymm (hz T hT)
-        (restrictionWeight_nonneg U p hp0 hp1 T
-          (Finset.mem_powerset.mp hT))
-    have hsum := restrictionWeight_sum U p
-    have hzero :
-        (∑ T ∈ U.powerset, restrictionWeight U p T) = 0 := by
-      apply Finset.sum_eq_zero
-      intro T hT
-      exact hall T hT
-    rw [hzero] at hsum
-    norm_num at hsum
-  have hstrict :
-      (∑ S ∈ U.powerset, restrictionWeight U p S * F S) <
-        ∑ S ∈ U.powerset, restrictionWeight U p S * A := by
-    apply Finset.sum_lt_sum
-    · intro S hS
-      exact mul_le_mul_of_nonneg_left (le_of_lt (hno S (Finset.mem_powerset.mp hS)))
-        (restrictionWeight_nonneg U p hp0 hp1 S (Finset.mem_powerset.mp hS))
-    · obtain ⟨T, hT, hTpos⟩ := hex
-      exact ⟨T, hT,
-        mul_lt_mul_of_pos_left (hno T (Finset.mem_powerset.mp hT)) hTpos⟩
-  have hright :
-      (∑ S ∈ U.powerset, restrictionWeight U p S * A) = A := by
-    rw [← Finset.sum_mul, restrictionWeight_sum]
-    simp
-  rw [hright] at hstrict
-  exact (haverage.trans_lt hstrict).false
+  obtain ⟨S, hS, hmax⟩ :=
+    Finset.exists_max_image U.powerset F (Finset.powerset_nonempty U)
+  refine ⟨S, Finset.mem_powerset.mp hS, haverage.trans ?_⟩
+  calc
+    (∑ T ∈ U.powerset, restrictionWeight U p T * F T) ≤
+        ∑ T ∈ U.powerset, restrictionWeight U p T * F S := by
+      exact Finset.sum_le_sum fun T hT =>
+        mul_le_mul_of_nonneg_left (hmax T hT)
+          (restrictionWeight_nonneg U p hp0 hp1 T (Finset.mem_powerset.mp hT))
+    _ = F S := by rw [← Finset.sum_mul, restrictionWeight_sum, one_mul]
 
 private lemma restrictionWeight_count {X E : Type*} [DecidableEq X]
     [DecidableEq E] (U : Finset X) (p : X → Real) (edges : Finset E)
@@ -232,6 +80,7 @@ private lemma restrictionWeight_count {X E : Type*} [DecidableEq X]
     (∑ S ∈ U.powerset, restrictionWeight U p S *
         ((edges.filter fun e ↦ carrier e ⊆ S).card : Real)) =
       ∑ e ∈ edges, ∏ x ∈ carrier e, p x := by
+  classical
   simp_rw [Finset.cast_card, Finset.sum_filter]
   simp_rw [Finset.mul_sum]
   rw [Finset.sum_comm]

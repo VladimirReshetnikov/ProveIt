@@ -1,0 +1,100 @@
+{
+  "status": "STATIC_PASS_NO_FINDINGS_NATIVE_UNTESTED",
+  "reviewer": "/root/repair_native_tools",
+  "candidate_author": "/root",
+  "independence": "Reviewer did not author this proof draft. This review uses exact source bytes and existing theorem signatures; it does not reuse the candidate declaration parser.",
+  "candidate": {
+    "report_path": "/tmp/gowers-jt3-direct-quarter-scale-research/report.json",
+    "report_sha256": "207209f879dc3d2469258007bfdc27d1534c75958dcd7354bcbc312156e14779",
+    "freeze_sha256": "21f86b0716af125a9675b90dca910907638b2fb25a7f06fbf59f9a053967b1a2",
+    "all_frozen_assets_verified": true,
+    "baseline_matches_current_owner": true,
+    "baseline_source_commit": "6a753d0702d1691c25a21bdbdb58e29412931be5",
+    "baseline_sha256": "fbd777fbe70e0f734cfdfb33e8d293f4a7e0790030b44cf9b7d87be5c0fe9036",
+    "draft_sha256": "fba4fef9927291e1365d8af6ea13571c1bd936dd3933f9724a88180be8cbc41d"
+  },
+  "preservation": {
+    "declaration": "LeanProofs.GowersSzemeredi.GenParamsJT3.slice_exps_inv_leJT3",
+    "context": "variable (P : GenParamsJT3) {alpha : Real}",
+    "complete_header_including_proof_delimiter": "theorem slice_exps_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha)\n    (ha2 : alpha ≤ 1 / 2) :\n    (P.Eth alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ (rhoDegJT3 P.k P.μ0 + tDegT3 P.k + 9)) := by\n",
+    "complete_header_sha256": "f75fd6fb7d169d2fe94541f28cfad6278d76f7f4c36982a65a6eb516565dff3c",
+    "comparison_boundary": "The exact declaration name through its own := by newline; body ends immediately before the next existing Eloc theorem documentation.",
+    "identical_entire_prefix_bytes": 31754,
+    "prefix_sha256": "0ae6e717418f89cbb5db3ba5dc53facb008ab4539778a71ecc724d8f48501655",
+    "identical_entire_suffix_bytes": 9282,
+    "suffix_sha256": "aa2bd8cb42efbc6186cd36e6a1b641a1775c36f51d71d9d145a46e0e5cdf7394",
+    "all_syntax_outside_one_body_exact": true,
+    "imports": [
+      "GowersSzemeredi.Proofs18FinalClasses",
+      "GowersSzemeredi.Proofs18LengthSixScale"
+    ],
+    "imports_exact": true,
+    "definitions_contexts_and_other_proof_blocks_exact": true,
+    "source_lines_before": 827,
+    "source_lines_after": 809,
+    "tactic_body_nonblank_lines_before": 35,
+    "tactic_body_nonblank_lines_after": 17,
+    "source_and_proof_delta": -18
+  },
+  "specialization_checks": [
+    {
+      "step": "rho_step",
+      "details": "rho1_inv_leJT3 fixes m = rhoDegJT3 P.k P.μ0. rhoDegJT3_ge gives tDegT3 P.k + P.μ0 + 3 ≤ m, hence 1 ≤ m. The unchanged hypotheses provide positive Rho1 ≤ 1; result reciprocal degree is m+2."
+    },
+    {
+      "step": "thetaS_step",
+      "details": "Instantiates R to Rho1/2*(Rho1/2/2), definitionally P.Rho alpha. It gives the density P.ThS alpha in (0,1] and reciprocal degree m+2+3."
+    },
+    {
+      "step": "density_div_bounds_pw",
+      "details": "The previously elaborated hS fixes t and a=m+2+3. The explicitly Real proof 1≤4 fixes d=4. four_le_pw_one gives 4≤X^(2^1); pw_mono uses 1≤m+2+3. The resulting positive density is exactly ThS/4, at most1, with reciprocal degree m+2+3+1."
+    },
+    {
+      "step": "uCount_scale_le_deg",
+      "details": "Explicit c=m+2+3+1,D=uDegT3 P.k,μD=tDegT3 P.k. Its b is pDeg P.k, fixed by seven_le_pDeg,H.hμ0 and the existing gamma/budget bounds. gamma=alpha/2 is positive and ≤1; theta=P.B alpha has all required bounds. The final le_rfl is valid because uDegT3 is defined as 2^tDegT3."
+    },
+    {
+      "step": "max and endpoint",
+      "details": "rhoDegJT3_ge proves P.μ0≤m+6, so max P.μ0 (m+6) reduces to m+6. Eth and uExp unfold to the double inverse of the identical uCount at ThS/4; B,ThS,Rho and spectrumPieceRho are reducible definitions. inv_inv removes the two inverses. pw_mono then weakens degree m+7+tDegT3 to the existing m+tDegT3+9."
+    }
+  ],
+  "side_conditions": {
+    "dimension_k_zero_allowed": true,
+    "no_positive_dimension_assumption_added": true,
+    "alpha_requirements_unchanged": "0 < alpha and alpha ≤ 1/2",
+    "no_new_hypotheses_or_axioms": true,
+    "theorem_bound_unchanged": true
+  },
+  "bounded_route_checks": {
+    "method": "Reachability queries only within the existing frozen snapshot graph; no broad graph recount or validation pack.",
+    "snapshot_path": "/tmp/gowers-next297-repaired6a75-source-snapshot.json",
+    "snapshot_sha256": "e3f24c8ebfe20b2a248076497748ca1cbd2f2c1d5176e56ce45af9eebe6011b3",
+    "original_final_contains_owner": false,
+    "stronger_final_contains_owner": true,
+    "core_is_owner": true,
+    "all_reused_provider_modules_already_reachable": true,
+    "original_final_source_saving": 0,
+    "stronger_and_core_source_saving": 18,
+    "module_graph_unchanged": true
+  },
+  "inventory": {
+    "sha256": "6ba9ef5ed2fd95dab508eae0b2ee15191ef7e2795da094c0286b4b413266b812",
+    "owner_occurrences": [],
+    "location_changes": 0
+  },
+  "read_source_pins": {
+    "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalStep.lean": "fbd777fbe70e0f734cfdfb33e8d293f4a7e0790030b44cf9b7d87be5c0fe9036",
+    "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GenericEnvelopeBase.lean": "5a26b61ca7cf14e913e88cac13512abd95d0c2a8863010821265812b9ae50e4b",
+    "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalClasses.lean": "d172dc6abf094e06ce210ac8a46cd68da6924506931fc2a718b7adad7a76794d",
+    "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18UniformCovers.lean": "fdf5aa69be9aed0298fbfe2b27b563255cdea2bf76a523257e4fa8cf96bcd98d",
+    "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16SinglePieceSpectrum.lean": "6eff195be072d72d445eb767f83bfb39c3944b40a6cd43be24eaaa8e1f039c14",
+    "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16SinglePieceSections.lean": "02af1f5f67ee5f58ffa6c6ae8b11e760686af333989645e07989b54f52ab3404",
+    "Combinatorics/Ramsey/gowers-proof-status.json": "6ba9ef5ed2fd95dab508eae0b2ee15191ef7e2795da094c0286b4b413266b812"
+  },
+  "findings": [],
+  "limitations": [
+    "Static reasoning does not certify Lean elaboration; an actual later native check remains necessary.",
+    "No Lean/compiler/checker/helper entrypoint, Git/source/cache mutation, or live-artifact access.",
+    "Only this new /tmp review package was written; all candidate and existing evidence bytes remain unchanged."
+  ]
+}

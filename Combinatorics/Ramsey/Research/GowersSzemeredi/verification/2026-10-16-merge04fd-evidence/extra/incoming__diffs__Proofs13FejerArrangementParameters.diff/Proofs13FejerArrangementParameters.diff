@@ -1,0 +1,15 @@
+diff --git a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13FejerArrangementParameters.lean b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13FejerArrangementParameters.lean
+index 6af52a568..5fece9cfe 100644
+--- a/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13FejerArrangementParameters.lean
++++ b/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs13FejerArrangementParameters.lean
+@@ -91,10 +91,4 @@ def fejerArrangementParametersEquiv {N : Nat} :
+   left_inv := fejerArrangementEncode_decode
+   right_inv R := Subtype.ext (fejerArrangementDecode_encode R.1 R.2)
+ 
+-theorem fejerBalancedArrangement_card {N : Nat} [NeZero N] :
+-    Fintype.card (FejerBalancedArrangement N) = N ^ 32 := by
+-  rw [← Fintype.card_congr (fejerArrangementParametersEquiv (N := N))]
+-  simp only [FejerArrangementParameters, Fintype.card_fun, ZMod.card, balancedFeatureVariable_card,
+-    Fintype.card_fin]
+-
+ end LeanProofs.GowersSzemeredi

@@ -619,40 +619,22 @@ theorem slice_exps_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alph
     (ha2 : alpha ≤ 1 / 2) :
     (P.Eth alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ (rhoDegJT3 P.k P.μ0 + tDegT3 P.k + 9)) := by
   have hX := two_div_ge_two ha ha2
-  have hri := P.rho1_inv_leJT3 ha ha2 H.hV H.hVμ H.hμ0
-  set k := P.k
-  set ρ := rhoDegJT3 k P.μ0
-  set μD := tDegT3 k
-  have hρ1 : μD + P.μ0 + 3 ≤ ρ := (rhoDegJT3_ge k P.μ0).1
-  obtain ⟨hB0, hB1, hBi⟩ := budget_gen_bounds_fejerW k ha ha2
-  obtain ⟨hr0, hr1⟩ : 0 < P.Rho1 alpha ∧ P.Rho1 alpha ≤ 1 := P.rho1_pos_le ha ha2
-  obtain ⟨hR0, hR1, hRi⟩ := GenParams.rho_step hX hr0 hr1 hri (by omega)
-  obtain ⟨hS0, hS1, hSi⟩ := GenParams.thetaS_step hX hR0 hR1 hRi
-  have hThS : P.ThS alpha =
-      singlePieceTheta ((P.Rho1 alpha) / 2 * ((P.Rho1 alpha) / 2 / 2)) 1 := rfl
-  rw [← hThS] at hS0 hS1 hSi
-  have hslice : ∀ {s : Real} {m : Nat}, 0 < s → s ≤ 1 → s⁻¹ ≤ (2 / alpha) ^ (2 ^ m) →
-      P.μ0 ≤ m + 1 → (uExp P.V (uDegT3 k) (alpha / 2) (globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k) (s / 2))⁻¹ ≤
-        (2 / alpha) ^ (2 ^ (m + 1 + 1 + μD)) := by
-    intro s m hs0 hs1 hsi hm
-    have hs20 : 0 < s / 2 := half_pos hs0
-    have hs2i : (s / 2)⁻¹ ≤ (2 / alpha) ^ (2 ^ (m + 1)) := by
-      rw [inv_div, div_eq_mul_inv]
-      exact pw_mul hX (inv_pos.mpr hs0).le (hX.trans (pw_X hX _)) hsi
-    have h := uCount_scale_le_deg (c := m + 1) (D := uDegT3 k) (μD := μD) hX H.hV H.hVμ (seven_le_pDeg _) H.hμ0
-      (half_pos ha) (by linarith) (GenParams.half_inv_le_deg (pDeg k) ha ha2) hB0 hB1 hBi hs20 (by linarith)
-      hs2i le_rfl
-    rw [max_eq_right hm] at h
-    show (uCount P.V (uDegT3 k) _ _ _)⁻¹⁻¹ ≤ _
-    rw [inv_inv]; exact h
-  have hS2 : 0 < P.ThS alpha / 2 := half_pos hS0
-  have hS21 : P.ThS alpha / 2 ≤ 1 := by linarith
-  have hS2i : (P.ThS alpha / 2)⁻¹ ≤ (2 / alpha) ^ (2 ^ (ρ + 2 + 3 + 1)) := by
-    rw [inv_div, div_eq_mul_inv]
-    exact pw_mul hX (inv_pos.mpr hS0).le (hX.trans (pw_X hX _)) hSi
-  have hE := hslice hS2 hS21 hS2i (by omega)
-  rw [show P.ThS alpha / 2 / 2 = P.ThS alpha / 4 by ring] at hE
-  exact pw_mono hX hE (by omega)
+  have hρ := rhoDegJT3_ge P.k P.μ0
+  obtain ⟨hr0, hr1⟩ := P.rho1_pos_le ha ha2
+  obtain ⟨hR0, hR1, hRi⟩ := GenParams.rho_step hX hr0 hr1
+    (P.rho1_inv_leJT3 ha ha2 H.hV H.hVμ H.hμ0) (by omega)
+  have hS := GenParams.thetaS_step hX hR0 hR1 hRi
+  obtain ⟨hs0, hs1, hsi⟩ := density_div_bounds_pw hX hS (by norm_num : (1 : Real) ≤ 4)
+    (pw_mono hX (four_le_pw_one hX) (by omega))
+  obtain ⟨hB0, hB1, hBi⟩ := budget_gen_bounds_fejerW P.k ha ha2
+  have h := uCount_scale_le_deg (c := rhoDegJT3 P.k P.μ0 + 2 + 3 + 1)
+    (D := uDegT3 P.k) (μD := tDegT3 P.k) hX H.hV H.hVμ
+    (seven_le_pDeg _) H.hμ0 (half_pos ha) (by linarith)
+    (GenParams.half_inv_le_deg (pDeg P.k) ha ha2) hB0 hB1 hBi hs0 hs1 hsi le_rfl
+  rw [max_eq_right (show P.μ0 ≤ rhoDegJT3 P.k P.μ0 + 2 + 3 + 1 by omega)] at h
+  change (uCount P.V (uDegT3 P.k) (alpha / 2) (P.B alpha) (P.ThS alpha / 4))⁻¹⁻¹ ≤ _
+  rw [inv_inv]
+  exact pw_mono hX h (by omega)
 
 /-- **The localization exponent is polynomially small.** -/
 theorem Eloc_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :

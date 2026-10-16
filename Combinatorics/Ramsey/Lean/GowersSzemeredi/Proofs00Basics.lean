@@ -58,6 +58,7 @@ lemma gcs_countWhere_eq_sum_ite {X : Type*} [Fintype X]
     (P : X → Prop) :
     countWhere P = ∑ x : X,
       @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
+  classical
   unfold countWhere
   simp
 
@@ -71,6 +72,7 @@ open Finset
 lemma gcs_boolWeight_insertNth {n : Nat}
     (j : Fin (n + 1)) (b : Bool) (e : Fin n → Bool) :
     boolWeight (j.insertNth b e) = (if b then 1 else 0) + boolWeight e := by
+  classical
   unfold boolWeight
   rw [gcs_countWhere_eq_sum_ite, gcs_countWhere_eq_sum_ite]
   let ind : Bool → Nat := fun c => if c then 1 else 0
@@ -138,6 +140,59 @@ section
 
 open scoped BigOperators Pointwise ZMod
 open Finset
+
+private def lemma134Left : Finset (Fin 16) :=
+  Finset.univ.filter fun i => (i : Nat) < 8
+
+private def lemma134Right : Finset (Fin 16) :=
+  Finset.univ.filter fun i => 8 ≤ (i : Nat)
+
+private lemma lemma134_zero_mem_left : (0 : Fin 16) ∈ lemma134Left := by
+  simp [lemma134Left]
+
+private lemma lemma134_zero_notMem_right : (0 : Fin 16) ∉ lemma134Right := by
+  simp [lemma134Right]
+
+lemma lemma134_additive_ext {N : Nat}
+    {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)
+    (hy : IsAdditiveTuple (k := 8) y)
+    (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y := by
+  have hoff : ∀ i : Fin 16, i ≠ 0 → x i = y i := by
+    intro i hi
+    rcases i with ⟨(_ | i), hiBound⟩
+    · exact (hi rfl).elim
+    · exact htail ⟨i, by omega⟩
+  unfold IsAdditiveTuple at hx hy
+  change (∑ i ∈ lemma134Left, x i) = ∑ i ∈ lemma134Right, x i at hx
+  change (∑ i ∈ lemma134Left, y i) = ∑ i ∈ lemma134Right, y i at hy
+  have hleft :
+      (∑ i ∈ lemma134Left.erase 0, x i) =
+        ∑ i ∈ lemma134Left.erase 0, y i := by
+    apply Finset.sum_congr rfl
+    intro i hi
+    exact hoff i (Finset.ne_of_mem_erase hi)
+  have hright :
+      (∑ i ∈ lemma134Right, x i) = ∑ i ∈ lemma134Right, y i := by
+    apply Finset.sum_congr rfl
+    intro i hi
+    apply hoff i
+    intro hzero
+    subst i
+    exact lemma134_zero_notMem_right hi
+  funext i
+  refine Fin.cases ?_ (fun j => htail j) i
+  apply add_left_cancel (a := ∑ i ∈ lemma134Left.erase 0, x i)
+  calc
+    (∑ i ∈ lemma134Left.erase 0, x i) + x 0 =
+        ∑ i ∈ lemma134Left, x i :=
+      Finset.sum_erase_add _ _ lemma134_zero_mem_left
+    _ = ∑ i ∈ lemma134Right, x i := hx
+    _ = ∑ i ∈ lemma134Right, y i := hright
+    _ = ∑ i ∈ lemma134Left, y i := hy.symm
+    _ = (∑ i ∈ lemma134Left.erase 0, y i) + y 0 := by
+      symm
+      exact Finset.sum_erase_add _ _ lemma134_zero_mem_left
+    _ = (∑ i ∈ lemma134Left.erase 0, x i) + y 0 := by rw [hleft]
 
 lemma restriction_mulLeft_range {N : Nat} [NeZero N] (h : ZMod N) :
     (AddMonoidHom.mulLeft h).range = AddSubgroup.zmultiples h := by
@@ -240,6 +295,7 @@ lemma lemma154_sum_mul_sub_eq_two {N : Nat} {I : Type*}
     (hij : i ≠ j) (hoff : ∀ t, t ≠ i → t ≠ j → x t = y t) :
     (∑ t, a t * x t) - (∑ t, a t * y t) =
       a i * (x i - y i) + a j * (x j - y j) := by
+  classical
   rw [← Finset.sum_sub_distrib]
   calc
     (∑ t, (a t * x t - a t * y t)) =
@@ -314,6 +370,7 @@ lemma rangeDeg_exists_det_pair {N : Nat} [NeZero N] [Fact N.Prime]
     (a b : I → ZMod N) (ha : ∀ i, a i ≠ 0)
     (hnot : ¬ ∃ q, ∀ i, b i = q * a i) :
     ∃ i j, i ≠ j ∧ a i * b j - a j * b i ≠ 0 := by
+  classical
   by_contra h
   push Not at h
   let i0 : I := Classical.choice inferInstance
@@ -355,6 +412,7 @@ open Finset
 lemma fourier_indicator_norm_le_card {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (r : ZMod N) :
     ‖fourier (indicator A) r‖ <= A.card := by
+  classical
   rw [fourier, ZMod.dft_apply]
   calc
     ‖∑ x : ZMod N, ZMod.stdAddChar (-(x * r)) • indicator A x‖ <=
@@ -377,6 +435,7 @@ lemma cor58_sum_partition {X R : Type*} [DecidableEq X] {m : Nat}
     [AddCommMonoid R] (P : Fin m → Finset X) (S : Finset X)
     (hpartition : IsPartition P S) (g : X → R) :
     ∑ j, ∑ x ∈ P j, g x = ∑ x ∈ S, g x := by
+  classical
   have hpair : ((Finset.univ : Finset (Fin m)) : Set (Fin m)).PairwiseDisjoint P := by
     intro i _ j _ hij
     exact hpartition.2 i j (bne_iff_ne.mpr hij)
@@ -482,6 +541,7 @@ open Finset
 
 lemma fourier_indicator_zero {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) : fourier (indicator A) 0 = (A.card : Complex) := by
+  classical
   simp [fourier, ZMod.dft_apply, indicator]
 
 end
@@ -494,16 +554,7 @@ open Finset
 lemma fourier_indicator_norm_le_card' {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (r : ZMod N) :
     ‖fourier (indicator A) r‖ ≤ A.card := by
-  rw [fourier, ZMod.dft_apply]
-  calc
-    ‖∑ x : ZMod N, ZMod.stdAddChar (-(x * r)) • indicator A x‖ ≤
-        ∑ x : ZMod N, ‖ZMod.stdAddChar (-(x * r)) • indicator A x‖ :=
-      norm_sum_le _ _
-    _ = ∑ x : ZMod N, if x ∈ A then (1 : Real) else 0 := by
-      apply Finset.sum_congr rfl
-      intro x _
-      by_cases hx : x ∈ A <;> simp [indicator, hx, ZMod.stdAddChar_apply]
-    _ = A.card := by simp
+  exact fourier_indicator_norm_le_card A r
 
 end
 
@@ -532,6 +583,7 @@ lemma lemma154_level_subtype_card {N k : Nat} [NeZero N]
     (mu : Point N k → ZMod N) (a : ZMod N) :
     Fintype.card {y : Point N k // mu y = a} =
       countWhere fun y : Point N k => mu y = a := by
+  classical
   unfold countWhere
   rw [Finset.filter_congr_decidable]
   exact Fintype.card_subtype (fun y : Point N k => mu y = a)
@@ -559,6 +611,7 @@ open Finset
 lemma countWhere_eq_sum_ite {T : Type*} [Fintype T]
     (P : T → Prop) [DecidablePred P] :
     countWhere P = ∑ x : T, if P x then 1 else 0 := by
+  classical
   unfold countWhere
   rw [Finset.filter_congr_decidable]
   simp
@@ -574,6 +627,7 @@ lemma context_countWhere_prod {X Y : Type*} [Fintype X] [Fintype Y]
     (P : X → Y → Prop) :
     countWhere (fun z : X × Y ↦ P z.1 z.2) =
       ∑ x : X, countWhere (P x) := by
+  classical
   simp_rw [gcs_countWhere_eq_sum_ite]
   rw [Fintype.sum_prod_type]
 
@@ -586,6 +640,7 @@ open Finset
 
 lemma lemma78_indicator_star {N : Nat}
     (A : Finset (ZMod N)) (x : ZMod N) : star (indicator A x) = indicator A x := by
+  classical
   by_cases hx : x ∈ A <;> simp [indicator, hx]
 
 end
@@ -597,6 +652,7 @@ open Finset
 
 lemma modInterval_one_carrier {N : Nat} (t : ZMod N) :
     (modInterval N t 1).carrier = {t} := by
+  classical
   ext x
   simp [modInterval, ModAP.carrier]
 
