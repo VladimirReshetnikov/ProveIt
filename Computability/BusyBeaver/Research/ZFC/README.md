@@ -110,6 +110,18 @@ and 148,368 fusion records reproduce. The 288/271 controls supply no state
 improvement; fusion fuel/abstraction outcomes remain unresolved. See the host's
 full dossiers and offline `code/reproduce_151.py` helper.
 
+Batch 152 adds sources 26–34 from `da6dabcd89` (placement `b123527ff4`,
+reconciliation `f6fdf828af`), bringing the host to 34 sources. Its ordinary
+theory candidates are EPSC1 plus fixed adjunction, contraction/ground-epsilon
+engines, shared subworld SR₂⁺ and finite assignment/class FAK12. A 253-state
+variant saves 40 bootstrap steps with the same whole tape; it does not reduce
+the state count. Reproduced clean initializer quotients remain at least 309,
+and a new protected-basis replay matches the existing 268 control. The host
+keeps the code 0/free-variable correction, exact bounded-search limits,
+archived Lean audit scope and current post-pin overlaps. Full dossiers and
+`code/reproduce_152.py` provide offline recovery and finite replay. None of
+these new frontends has a kernel-checked full consistency-machine endpoint.
+
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
 A positive singleton-decoder hull covers the root's members without
