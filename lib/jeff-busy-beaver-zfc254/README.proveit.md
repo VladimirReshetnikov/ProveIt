@@ -42,7 +42,8 @@ Coq theorem does not itself export a PA or ZFC derivation of that connection.
 The snapshot contains all **81** files under upstream `ZF/m254/`, including
 its machine, Coq proofs, design notes, tools, and README; the exact **157-file
 Coq dependency closure** computed by that directory's unchanged `check.py`;
-and the relevant upstream READMEs and vendor licenses. There are **202
+the relevant upstream READMEs and vendor licenses; and five public
+`ZF/generator/` files for the reproducible compiler experiments. There are **207
 unchanged upstream files** in total. Dependencies shared with other upstream
 machines retain their original `ZF/stdzf/` and `ZF/stdzf_r3/` paths.
 
@@ -89,6 +90,17 @@ before compilation. Coq work was then stopped at the user's request to use
 Lean. **No local end-to-end Coq pass or Coq 8.20 build is claimed.**
 [`build-status.json`](build-status.json) records these results. The upstream
 reported successful build is not substituted for a local result.
+
+## Public compiler backend
+
+`ZF/generator/TMBuilder.py`, `tm.py` and `tmdb.py` are Andrew James Wade’s
+public backend, distributed under the retained `LICENSE.wade` (MIT-0). The
+upstream generator README records their source. They enable offline
+reconstruction of the published 219-node DAG as a 281-state machine; they
+are separate from Mira-Cult’s optimized interpreter. See
+`Computability/BusyBeaver/Research/ZFC/compiler_route.md` for the exact
+reconstruction and its verification limits. No original `source.py` is
+recreated by adding this backend.
 
 ## License boundary
 
