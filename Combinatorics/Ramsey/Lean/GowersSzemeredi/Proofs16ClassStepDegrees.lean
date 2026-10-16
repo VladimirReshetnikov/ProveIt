@@ -62,6 +62,26 @@ def stepExpDeg (k D : Nat) : Nat :=
 /-- The threshold degree of the next class. -/
 def stepThrDeg (k D : Nat) : Nat := D * (stepP k + 2) + stepP k + 2
 
+/-! ### The degrees at any parameter exponent `P` and Bohr exponent `T`
+
+The degrees above are these at `P = stepP k`, `T = stepT k`, and the Fejér
+degrees of `Proofs16ClassStepDegreesFejer` are these at `fejerStepP k`,
+`fejerStepT k` (both by `rfl`). -/
+
+def stepY1W (P k : Nat) : Nat := 2 * P + k + 9
+def stepQrDegW (P k D : Nat) : Nat := 2 ^ k * (D * stepY1W P k)
+def stepSDegW (P k D : Nat) : Nat := stepQrDegW P k D + (P + 2) + 7
+def stepPbDegW (P k D : Nat) : Nat := D * (stepSDegW P k D + 2 * P + 8)
+def stepEbDegW (P D : Nat) : Nat := D * (2 * P + 9)
+def stepErDegW (P k D : Nat) : Nat := (4 + D * stepY1W P k) * 2 ^ k
+def stepBqDegW (P k D : Nat) : Nat := 4 + (stepEbDegW P D + 1) * 2 ^ (k + 2)
+def stepLDegW (P k D : Nat) : Nat := stepBqDegW P k D + (stepErDegW P k D + stepEbDegW P D)
+def stepZDegW (P T D : Nat) : Nat := T + stepEbDegW P D + 4
+def stepCountDegW (P k D : Nat) : Nat :=
+  (P + 2) + (2 * stepSDegW P k D + stepPbDegW P k D + stepPbDegW P k D)
+def stepExpDegW (P T k D : Nat) : Nat :=
+  stepZDegW P T D + 1 + stepLDegW P k D + stepPbDegW P k D + 5
+
 /-! ### Bases -/
 
 theorem twoDiv_budget_le {gamma theta g : Real} (k : Nat) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
@@ -125,7 +145,6 @@ theorem level_base_le {V w g thp rho' : Real} {M' : Nat} {a b c : Nat} (hw : 2 �
         mul_le_mul h1 h2 h0 (by positivity)
     _ = w ^ (a + 1 + c + b) := by rw [← pow_add, ← pow_add, ← pow_add]; ring_nf
 
-
 /-! ### Shared facts -/
 
 theorem stepP_ge (k : Nat) : k + 8 ≤ stepP k := by
@@ -169,26 +188,24 @@ theorem inv_scale_le {w rho : Real} {c : Real} {j : Nat} (hw : 2 ≤ w) (hr : 0 
 
 /-! ### The count -/
 
-/-- **The count of the next class.** -/
-theorem step_count_le {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V) (hVV : V ≤ V')
+/-! ### The width exponent -/
+
+/-- **The count of the next class**, from the class-step bounds at `P`. -/
+theorem step_count_le_W {k D P : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V) (hVV : V ≤ V')
     {theta gamma rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1)
-    (hr : 0 < rho) (hr1 : rho ≤ 1) (n : Nat) :
-    max (famPieceGraphBound (classQr V D k (n * classPieces gamma theta k) (classBudget theta gamma k) gamma)
-        (classPb V D (n * classPieces gamma theta k) (classBudget theta gamma k) gamma)
-        (n * classPieces gamma theta k) rho)
-      (((3 ^ (k + 1) * (n * classPieces gamma theta k)) : Nat) : Real) ≤
-      uniformBase V' n theta gamma rho ^ stepCountDeg k D := by
+    (hr : 0 < rho) (hr1 : rho ≤ 1) (n : Nat) {m : Nat} {tS : Real} (hb : 0 < tS)
+    (hm : (m : Real) ≤ (2 / (gamma * theta)) ^ P)
+    (hgd : 2 / (gamma * tS) ≤ (2 / (gamma * theta)) ^ (P + 1)) (hPk : k + 8 ≤ P) :
+    max (famPieceGraphBound (classQr V D k (n * m) (tS) gamma)
+        (classPb V D (n * m) (tS) gamma)
+        (n * m) rho)
+      (((3 ^ (k + 1) * (n * m)) : Nat) : Real) ≤
+      uniformBase V' n theta gamma rho ^ stepCountDegW P k D := by
   obtain ⟨hw2, huw, hrw, hnw, hVw, hV'w⟩ := step_w_facts hV hVV n hg hg1 ht ht1 hr hr1
   obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-  obtain ⟨hb, -⟩ := classBudget_pos_le k ht ht1 hg hg1
-  have hm := classPieces_le_stepP k hg hg1 ht ht1
-  have hgd := twoDiv_gamma_le k hg hg1 ht ht1
-  have hPk := stepP_ge k
   have hnv := classVertexNum_succ_le k
   set w := uniformBase V' n theta gamma rho with hwdef
   set u := 2 / (gamma * theta) with hu
-  set m := classPieces gamma theta k
-  set tS := classBudget theta gamma k
   clear_value w u
   have hw1 : 1 ≤ w := by linarith
   have hV0 : 0 ≤ V := by linarith
@@ -198,11 +215,11 @@ theorem step_count_le {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V) (h
   have hgdw := liftu _ _ hgd
   -- the number of pieces
   have hnw1 : (n : Real) ≤ w ^ 1 := by rw [pow_one]; exact hnw
-  have hM : ((n * m : Nat) : Real) ≤ w ^ (stepP k + 2) :=
+  have hM : ((n * m : Nat) : Real) ≤ w ^ (P + 2) :=
     le_pow_mono hw2 (by omega) (nat_mul_le_pow hw2 hnw1 hmw)
-  have hM1 : ((n * m : Nat) : Real) + 1 ≤ w ^ (stepP k + 2 + 1) :=
+  have hM1 : ((n * m : Nat) : Real) + 1 ≤ w ^ (P + 2 + 1) :=
     add_le_pow_succ hw2 hM (one_le_pow_of_two_le hw2 _)
-  have h3k : (((3 ^ (k + 1) * (n * m)) : Nat) : Real) ≤ w ^ (2 * (k + 1) + (stepP k + 2)) := by
+  have h3k : (((3 ^ (k + 1) * (n * m)) : Nat) : Real) ≤ w ^ (2 * (k + 1) + (P + 2)) := by
     have h3 : ((3 ^ (k + 1) : Nat) : Real) ≤ w ^ (2 * (k + 1)) := by
       push_cast
       rw [pow_mul]
@@ -211,7 +228,7 @@ theorem step_count_le {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V) (h
   -- the remainder count at `ρ/8`
   have hY1 : ∀ _ : Fin (classVertexNum k + 1),
       max (uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1)) ^ D)
-        (((3 ^ (k + 1) * (n * m)) : Nat) : Real) ≤ w ^ (D * stepY1 k) := by
+        (((3 ^ (k + 1) * (n * m)) : Nat) : Real) ≤ w ^ (D * stepY1W P k) := by
     intro _
     have hnv0 : (0 : Real) < (classVertexNum k : Real) + 1 := by
       have := Nat.cast_nonneg (α := Real) (classVertexNum k); linarith only [this]
@@ -228,36 +245,36 @@ theorem step_count_le {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V) (h
       exact inv_scale_le (c := 8 * ((classVertexNum k : Real) + 1)) (j := k + 3) hw2 hr hrw hc0 hc
     have hbase := level_base_le hw2 hV0 hVw hM1 hscale hri hg hb hgdw
     have hbase' : uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1)) ≤
-        w ^ stepY1 k := le_pow_mono hw2 (by unfold stepY1; omega) hbase
+        w ^ stepY1W P k := le_pow_mono hw2 (by unfold stepY1W; omega) hbase
     refine max_le ?_ ?_
-    · rw [show D * stepY1 k = stepY1 k * D from Nat.mul_comm D (stepY1 k), pow_mul]
+    · rw [show D * stepY1W P k = stepY1W P k * D from Nat.mul_comm D (stepY1W P k), pow_mul]
       exact pow_le_pow_left₀ (uniformBase_nonneg hV _ hb hg hscale.le) hbase' D
     · refine le_pow_mono hw2 ?_ h3k
-      have : stepY1 k ≤ D * stepY1 k := Nat.le_mul_of_pos_left _ hD
-      unfold stepY1 at this ⊢
+      have : stepY1W P k ≤ D * stepY1W P k := Nat.le_mul_of_pos_left _ hD
+      unfold stepY1W at this ⊢
       omega
-  have hQr : classQr V D k (n * m) tS gamma (rho / 8) ≤ w ^ stepQrDeg k D := by
+  have hQr : classQr V D k (n * m) tS gamma (rho / 8) ≤ w ^ stepQrDegW P k D := by
     unfold classQr
     refine (Finset.prod_le_prod (fun i _ => le_max_of_le_right (Nat.cast_nonneg _))
       (fun i _ => hY1 i)).trans ?_
     rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
     refine (pow_le_pow_right₀ (one_le_pow_of_two_le hw2 _) hnv).trans (le_of_eq ?_)
-    unfold stepQrDeg
+    unfold stepQrDegW
     rw [← pow_mul, mul_comm]
   -- the samples and the slice count
   have hS := famPieceSamples_le_power hw2 hr hrw hQr hM
   set S := famPieceSamples (classQr V D k (n * m) tS gamma) (n * m) rho
-  have hMS : ((n * m * S : Nat) : Real) + 1 ≤ w ^ ((stepP k + 2) + stepSDeg k D + 1) :=
+  have hMS : ((n * m * S : Nat) : Real) + 1 ≤ w ^ ((P + 2) + stepSDegW P k D + 1) :=
     add_le_pow_succ hw2 (nat_mul_le_pow hw2 hM hS) (one_le_pow_of_two_le hw2 _)
   have hr4 : (rho / 4)⁻¹ ≤ w ^ (2 + 1) := inv_scale_le hw2 hr hrw (by norm_num) (by norm_num)
   have hPbase := level_base_le hw2 hV0 hVw hMS (by positivity) hr4 hg hb hgdw
-  have hPb : classPb V D (n * m) tS gamma S (rho / 4) ≤ w ^ stepPbDeg k D := by
+  have hPb : classPb V D (n * m) tS gamma S (rho / 4) ≤ w ^ stepPbDegW P k D := by
     unfold classPb
     rw [abs_of_pos (by positivity : (0 : Real) < rho / 4)]
     have h := pow_le_pow_left₀ (uniformBase_nonneg hV _ hb hg (by positivity)) hPbase D
     rw [← pow_mul] at h
     refine h.trans (pow_le_pow_right₀ hw1 ?_)
-    unfold stepPbDeg
+    unfold stepPbDegW
     rw [mul_comm]
     exact Nat.mul_le_mul_left D (by omega)
   have hPb0 : 0 ≤ classPb V D (n * m) tS gamma S (rho / 4) := by
@@ -266,13 +283,245 @@ theorem step_count_le {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V) (h
   have hG := famPieceGraphBound_le_power hw2 hM hS hPb0 hPb
   refine max_le hG ?_
   refine le_pow_mono hw2 ?_ h3k
-  have h1 : stepSDeg k D + 2 * stepP k + 8 ≤ stepPbDeg k D := by
-    unfold stepPbDeg; exact Nat.le_mul_of_pos_left _ hD
-  unfold stepCountDeg
-  unfold stepSDeg at h1 ⊢
+  have h1 : stepSDegW P k D + 2 * P + 8 ≤ stepPbDegW P k D := by
+    unfold stepPbDegW; exact Nat.le_mul_of_pos_left _ hD
+  unfold stepCountDegW
+  unfold stepSDegW at h1 ⊢
   omega
 
-/-! ### The width exponent -/
+/-- **The count of the next class.** -/
+theorem step_count_le {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V) (hVV : V ≤ V')
+    {theta gamma rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1)
+    (hr : 0 < rho) (hr1 : rho ≤ 1) (n : Nat) :
+    max (famPieceGraphBound (classQr V D k (n * classPieces gamma theta k) (classBudget theta gamma k) gamma)
+        (classPb V D (n * classPieces gamma theta k) (classBudget theta gamma k) gamma)
+        (n * classPieces gamma theta k) rho)
+      (((3 ^ (k + 1) * (n * classPieces gamma theta k)) : Nat) : Real) ≤
+      uniformBase V' n theta gamma rho ^ stepCountDeg k D :=
+  step_count_le_W hD hV hVV hg hg1 ht ht1 hr hr1 n (P := stepP k)
+    (classBudget_pos_le k ht ht1 hg hg1).1 (classPieces_le_stepP k hg hg1 ht ht1)
+    (twoDiv_gamma_le k hg hg1 ht ht1) (stepP_ge k)
+
+/-! ### The threshold -/
+
+/-- **The width exponent of the next class**, from the class-step bounds at `(P, T)`. -/
+theorem step_exp_inv_le_W {k D P T : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V) (hVV : V ≤ V')
+    {K p : Nat} (hK : 1 ≤ K) (hp : 0 < p) (hKV : (K : Real) ≤ V') (hpV : (p : Real) ≤ V')
+    {theta gamma rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1)
+    (hr : 0 < rho) (hr1 : rho ≤ 1) (n : Nat) {m : Nat} {tS gS zeta : Real}
+    (hb : 0 < tS) (hb1 : tS ≤ 1) (hd : 0 < gS) (hd1 : gS ≤ 1)
+    (hz : 0 < zeta ∧ zeta ≤ 1 ∧ zeta⁻¹ ≤ Real.exp ((2 / (gamma * theta)) ^ T))
+    (hm : (m : Real) ≤ (2 / (gamma * theta)) ^ P)
+    (hgd : 2 / (gamma * tS) ≤ (2 / (gamma * theta)) ^ (P + 1))
+    (hdd : 2 / (gS * tS) ≤ (2 / (gamma * theta)) ^ (P + 1)) (hPk : k + 8 ≤ P) :
+    let M := n * m
+    let e := section16CappedWidthExponent
+        (pieceLineExponent (familyWidthDivisor k p) (classQb V D M tS gS) (classEb V D M tS gS)
+            (classEr V D k M tS gamma) rho *
+          famPieceSliceExponent (classQr V D k M tS gamma) (classEs V D M tS gamma) M rho / 4)
+        (section16RoundedPowerThreshold
+          (pieceWidthScale (familyWidthPrefactor K) (classQb V D M tS gS) (zeta) rho)
+          (pieceLineExponent (familyWidthDivisor k p) (classQb V D M tS gS) (classEb V D M tS gS)
+            (classEr V D k M tS gamma) rho)
+          (famPieceSliceExponent (classQr V D k M tS gamma) (classEs V D M tS gamma) M rho))
+    0 < e ∧ e⁻¹ ≤ uniformBase V' n theta gamma rho ^ stepExpDegW P T k D := by
+  intro M e
+  obtain ⟨hw2, huw, hrw, hnw, hVw, hV'w⟩ := step_w_facts hV hVV n hg hg1 ht ht1 hr hr1
+  obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  obtain ⟨hz0, hz1, hzi⟩ := hz
+  have hnv := classVertexNum_succ_le k
+  have hnv0 : (0 : Real) < (classVertexNum k : Real) + 1 := by
+    have := Nat.cast_nonneg (α := Real) (classVertexNum k); linarith only [this]
+  set w := uniformBase V' n theta gamma rho with hwdef
+  set u := 2 / (gamma * theta) with hu
+  clear_value w u
+  have hw0 : 0 ≤ w := by linarith
+  have hw1 : 1 ≤ w := by linarith
+  have hV0 : 0 ≤ V := by linarith
+  have liftu : ∀ (x : Real) (j : Nat), x ≤ u ^ j → x ≤ w ^ j := fun x j h =>
+    h.trans (pow_le_pow_left₀ (by linarith) huw j)
+  have hmw := liftu _ _ hm
+  have hgdw := liftu _ _ hgd
+  have hddw := liftu _ _ hdd
+  have hnw1 : (n : Real) ≤ w ^ 1 := by rw [pow_one]; exact hnw
+  have hM : ((n * m : Nat) : Real) ≤ w ^ (P + 2) :=
+    le_pow_mono hw2 (by omega) (nat_mul_le_pow hw2 hnw1 hmw)
+  have hM1 : ((n * m : Nat) : Real) + 1 ≤ w ^ (P + 2 + 1) :=
+    add_le_pow_succ hw2 hM (one_le_pow_of_two_le hw2 _)
+  -- the spectrum controls at `ρ/8`
+  have hr8 : (rho / 8)⁻¹ ≤ w ^ (3 + 1) := inv_scale_le hw2 hr hrw (by norm_num) (by norm_num)
+  have hSbase := level_base_le hw2 hV0 hVw hM1 (by positivity) hr8 hd hb hddw
+  have hSbase' : uniformBase V (n * m) tS gS (rho / 8) ≤ w ^ (2 * P + 9) :=
+    le_pow_mono hw2 (by omega) hSbase
+  have hSbase1 : 1 ≤ uniformBase V (n * m) tS gS (rho / 8) :=
+    le_trans (by norm_num) (uniformBase_two_le hV _ hb hb1 hd hd1 (by positivity)
+      (by linarith only [hr1]))
+  have hQb : classQb V D (n * m) tS gS (rho / 8) ≤ w ^ stepEbDegW P D := by
+    unfold classQb stepEbDegW
+    rw [show D * (2 * P + 9) = (2 * P + 9) * D from Nat.mul_comm _ _, pow_mul]
+    exact pow_le_pow_left₀ (by linarith) hSbase' D
+  have hEbi : (classEb V D (n * m) tS gS (rho / 8))⁻¹ ≤ w ^ stepEbDegW P D := by
+    unfold classEb; rw [inv_inv]; exact hQb
+  have hEb0 : 0 < classEb V D (n * m) tS gS (rho / 8) := by
+    unfold classEb; exact inv_pos.mpr (pow_pos (by linarith) _)
+  -- the remainder exponent at `ρ/8`
+  have hscale : 0 < rho / 8 / ((classVertexNum k : Real) + 1) :=
+    div_pos (div_pos hr (by norm_num)) hnv0
+  have hc : (8 : Real) * ((classVertexNum k : Real) + 1) ≤ 2 ^ (k + 3) := by
+    have h1 : ((classVertexNum k : Real) + 1) ≤ 2 ^ k := by exact_mod_cast hnv
+    have h2 : (2 : Real) ^ (k + 3) = 2 ^ k * 8 := by rw [pow_add]; norm_num
+    rw [h2]; linarith only [h1]
+  have hri : (rho / 8 / ((classVertexNum k : Real) + 1))⁻¹ ≤ w ^ (k + 3 + 1) := by
+    rw [div_div]
+    exact inv_scale_le (c := 8 * ((classVertexNum k : Real) + 1)) (j := k + 3) hw2 hr hrw
+      (mul_pos (by norm_num) hnv0) hc
+  have hRbase := level_base_le hw2 hV0 hVw hM1 hscale hri hg hb hgdw
+  have hRbase' : uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1)) ≤
+      w ^ stepY1W P k := le_pow_mono hw2 (by unfold stepY1W; omega) hRbase
+  have hRbase1 : 1 ≤ uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1)) :=
+    le_trans (by norm_num) (uniformBase_two_le hV _ hb hb1 hg hg1 hscale
+      (by rw [div_le_one hnv0]; have := Nat.cast_nonneg (α := Real) (classVertexNum k)
+          linarith only [this, hr1]))
+  have hfac : (16 * uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1)) ^ D) ≤
+      w ^ (4 + D * stepY1W P k) := by
+    rw [pow_add]
+    refine mul_le_mul (const_le_pow hw2 (by norm_num)) ?_ (pow_nonneg (by linarith) _)
+      (pow_nonneg hw0 _)
+    rw [show D * stepY1W P k = stepY1W P k * D from Nat.mul_comm _ _, pow_mul]
+    exact pow_le_pow_left₀ (by linarith) hRbase' D
+  have hEr0 : 0 < classEr V D k (n * m) tS gamma (rho / 8) := by
+    unfold classEr
+    exact Finset.prod_pos fun i _ => (div_pos (inv_pos.mpr (pow_pos (by linarith) _)) (by norm_num))
+  have hEri : (classEr V D k (n * m) tS gamma (rho / 8))⁻¹ ≤ w ^ stepErDegW P k D := by
+    unfold classEr
+    rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← inv_pow]
+    set b := uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1))
+    have hc' : ((b ^ D)⁻¹ / 16)⁻¹ ≤ w ^ (4 + D * stepY1W P k) := by
+      rw [inv_div, div_inv_eq_mul]
+      exact hfac
+    have hc0 : 0 ≤ ((b ^ D)⁻¹ / 16)⁻¹ := by
+      rw [inv_div, div_inv_eq_mul]
+      exact mul_nonneg (by norm_num) (pow_nonneg (le_trans zero_le_one hRbase1) _)
+    refine (pow_le_pow_left₀ hc0 hc' _).trans ?_
+    refine (pow_le_pow_right₀ (one_le_pow_of_two_le hw2 _) hnv).trans (le_of_eq ?_)
+    unfold stepErDegW
+    rw [← pow_mul]
+  -- the divisor
+  set q := ⌊classQb V D (n * m) tS gS (rho / 8)⌋₊ with hqdef
+  have hq : (q : Real) ≤ w ^ stepEbDegW P D :=
+    (Nat.floor_le (by unfold classQb; exact pow_nonneg (le_trans zero_le_one hSbase1) _)).trans hQb
+  have hq1 : ((q + 1 : Nat) : Real) ≤ w ^ (stepEbDegW P D + 1) := by
+    push_cast; exact add_le_pow_succ hw2 hq (one_le_pow_of_two_le hw2 _)
+  have hBq : familyWidthDivisor k p q ≤ w ^ stepBqDegW P k D := by
+    unfold familyWidthDivisor stepBqDegW
+    have hpow : (((q + 1) ^ (2 * 2 ^ (k + 1)) : Nat) : Real) ≤ w ^ ((stepEbDegW P D + 1) * 2 ^ (k + 2)) := by
+      rw [Nat.cast_pow]
+      calc ((q + 1 : Nat) : Real) ^ (2 * 2 ^ (k + 1))
+          ≤ (w ^ (stepEbDegW P D + 1)) ^ (2 * 2 ^ (k + 1)) :=
+            pow_le_pow_left₀ (Nat.cast_nonneg _) hq1 _
+        _ = w ^ ((stepEbDegW P D + 1) * 2 ^ (k + 2)) := by
+            rw [← pow_mul]
+            congr 1
+            rw [pow_succ 2 (k + 1)]
+            ring
+    have hpw : ((p : Nat) : Real) ≤ w ^ 1 := by rw [pow_one]; exact hpV.trans hV'w
+    have h1 := nat_mul_le_pow hw2 hpw hpow
+    have h2 := nat_mul_le_pow hw2 (show ((2 : Nat) : Real) ≤ w ^ 1 by rw [pow_one]; push_cast; linarith) h1
+    have h3 := const_mul_le_pow (c := (4 : Real)) (j := 2) hw2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) h2
+    refine h3.trans (pow_le_pow_right₀ hw1 ?_)
+    omega
+  have hBq0 : 0 < familyWidthDivisor k p q := familyWidthDivisor_pos hp q
+  -- the line exponent
+  set L := pieceLineExponent (familyWidthDivisor k p) (classQb V D (n * m) tS gS)
+    (classEb V D (n * m) tS gS) (classEr V D k (n * m) tS gamma) rho with hLdef
+  have hL0 : 0 < L := by
+    rw [hLdef]; unfold pieceLineExponent
+    exact div_pos (mul_pos hEr0 hEb0) hBq0
+  have hLi : L⁻¹ ≤ w ^ stepLDegW P k D := by
+    rw [hLdef]; unfold pieceLineExponent
+    rw [inv_div, div_eq_mul_inv, mul_inv, ← hqdef]
+    exact mul_le_pow_add (mul_nonneg (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le)
+      hBq (mul_le_pow_add (inv_pos.mpr hEb0).le hEri hEbi hw0) hw0
+  -- the slice exponent
+  have hQr : classQr V D k (n * m) tS gamma (rho / 8) ≤ w ^ stepQrDegW P k D := by
+    unfold classQr
+    refine (Finset.prod_le_prod (g := fun _ => w ^ (D * stepY1W P k))
+      (fun i _ => le_max_of_le_right (Nat.cast_nonneg _)) ?_).trans ?_
+    · intro i _
+      refine max_le ?_ ?_
+      · rw [show D * stepY1W P k = stepY1W P k * D from Nat.mul_comm _ _, pow_mul]
+        exact pow_le_pow_left₀ (by linarith) hRbase' D
+      · have h3 : ((3 ^ (k + 1) : Nat) : Real) ≤ w ^ (2 * (k + 1)) := by
+          push_cast; rw [pow_mul]
+          exact pow_le_pow_left₀ (by norm_num) (by nlinarith only [hw2]) _
+        refine le_pow_mono hw2 ?_ (nat_mul_le_pow hw2 h3 hM)
+        have : stepY1W P k ≤ D * stepY1W P k := Nat.le_mul_of_pos_left _ hD
+        unfold stepY1W at this ⊢
+        omega
+    · rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
+      refine (pow_le_pow_right₀ (one_le_pow_of_two_le hw2 _) hnv).trans (le_of_eq ?_)
+      unfold stepQrDegW
+      rw [← pow_mul, mul_comm]
+  have hS := famPieceSamples_le_power hw2 hr hrw hQr hM
+  set S := famPieceSamples (classQr V D k (n * m) tS gamma) (n * m) rho with hSdef
+  have hMS : ((n * m * S : Nat) : Real) + 1 ≤ w ^ ((P + 2) + stepSDegW P k D + 1) :=
+    add_le_pow_succ hw2 (nat_mul_le_pow hw2 hM hS) (one_le_pow_of_two_le hw2 _)
+  have hr4 : (rho / 4)⁻¹ ≤ w ^ (2 + 1) := inv_scale_le hw2 hr hrw (by norm_num) (by norm_num)
+  have hPbase := level_base_le hw2 hV0 hVw hMS (by positivity) hr4 hg hb hgdw
+  have hPbase1 : 1 ≤ uniformBase V (n * m * S) tS gamma (rho / 4) :=
+    le_trans (by norm_num) (uniformBase_two_le hV _ hb hb1 hg hg1 (by positivity)
+      (by linarith only [hr1]))
+  set Sl := famPieceSliceExponent (classQr V D k (n * m) tS gamma) (classEs V D (n * m) tS gamma)
+    (n * m) rho with hSldef
+  have hSlval : Sl = (uniformBase V (n * m * S) tS gamma (rho / 4) ^ D)⁻¹ := by
+    rw [hSldef]
+    unfold famPieceSliceExponent classEs
+    rw [← hSdef, abs_of_pos (by positivity : (0 : Real) < rho / 4)]
+  have hSl0 : 0 < Sl := by rw [hSlval]; exact inv_pos.mpr (pow_pos (by linarith) _)
+  have hSl1 : Sl ≤ 1 := by rw [hSlval]; exact inv_le_one_of_one_le₀ (one_le_pow₀ hPbase1)
+  have hSli : Sl⁻¹ ≤ w ^ stepPbDegW P k D := by
+    rw [hSlval, inv_inv]
+    have h := pow_le_pow_left₀ (by linarith) hPbase D
+    rw [← pow_mul] at h
+    refine h.trans (pow_le_pow_right₀ hw1 ?_)
+    unfold stepPbDegW
+    rw [mul_comm]
+    exact Nat.mul_le_mul_left D (by omega)
+  -- the width scale
+  have hA1 : 1 ≤ familyWidthPrefactor K q := by
+    unfold familyWidthPrefactor
+    have : (1 : Real) ≤ ((K * (q + 1) : Nat) : Real) := by
+      exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))
+    linarith only [this]
+  have hA : familyWidthPrefactor K q ≤ w ^ (stepEbDegW P D + 4) := by
+    unfold familyWidthPrefactor
+    have hKw : ((K : Nat) : Real) ≤ w ^ 1 := by rw [pow_one]; exact hKV.trans hV'w
+    have h1 := nat_mul_le_pow hw2 hKw hq1
+    have h2 := const_mul_le_pow (c := (4 : Real)) (j := 2) hw2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) h1
+    exact h2.trans (pow_le_pow_right₀ hw1 (by omega))
+  set z := pieceWidthScale (familyWidthPrefactor K) (classQb V D (n * m) tS gS)
+    (zeta) rho with hzdef
+  have hzval : z = zeta / familyWidthPrefactor K q := by rw [hzdef]; rfl
+  have hzpos : 0 < z := by rw [hzval]; exact div_pos hz0 (lt_of_lt_of_le zero_lt_one hA1)
+  have hzle : z ≤ 1 := by
+    rw [hzval, div_le_one (lt_of_lt_of_le zero_lt_one hA1)]; exact hz1.trans hA1
+  have hzinv : z⁻¹ ≤ Real.exp (w ^ (stepZDegW P T D + 1)) := by
+    rw [hzval, inv_div, div_eq_mul_inv]
+    have hAe : familyWidthPrefactor K q ≤ Real.exp (w ^ stepZDegW P T D) :=
+      le_exp_pow_of_le_pow (le_pow_mono hw2 (by unfold stepZDegW; omega) hA)
+    have hze : (zeta)⁻¹ ≤ Real.exp (w ^ stepZDegW P T D) := by
+      refine hzi.trans (Real.exp_le_exp.mpr ?_)
+      refine (pow_le_pow_left₀ (by linarith) huw _).trans (pow_le_pow_right₀ hw1 ?_)
+      unfold stepZDegW
+      omega
+    exact exp_mul_le hw2 (inv_pos.mpr hz0).le hAe hze
+  -- the cap
+  have hnz : 6 ≤ stepZDegW P T D + 1 := by
+    have : 1 ≤ stepEbDegW P D := Nat.mul_pos (by omega) (by omega)
+    unfold stepZDegW
+    omega
+  have hfin := capped_rounded_inv_le hw2 hnz hL0 hLi hSl0 hSl1 hSli hzpos hzle hzinv
+  exact ⟨section16CappedWidthExponent_pos (div_pos (mul_pos hL0 hSl0) (by norm_num)), hfin⟩
 
 /-- **The width exponent of the next class.** -/
 theorem step_exp_inv_le {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V) (hVV : V ≤ V')
@@ -291,214 +540,13 @@ theorem step_exp_inv_le {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V) 
           (pieceLineExponent (familyWidthDivisor k p) (classQb V D M tS gS) (classEb V D M tS gS)
             (classEr V D k M tS gamma) rho)
           (famPieceSliceExponent (classQr V D k M tS gamma) (classEs V D M tS gamma) M rho))
-    0 < e ∧ e⁻¹ ≤ uniformBase V' n theta gamma rho ^ stepExpDeg k D := by
-  intro M tS gS e
-  obtain ⟨hw2, huw, hrw, hnw, hVw, hV'w⟩ := step_w_facts hV hVV n hg hg1 ht ht1 hr hr1
-  obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-  obtain ⟨hb, hb1⟩ := classBudget_pos_le k ht ht1 hg hg1
-  obtain ⟨-, -, hd, hd1⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
-  obtain ⟨hz0, hz1, hzi⟩ := section16Zeta_inv_le_gen k hg ht
-  have hm := classPieces_le_stepP k hg hg1 ht ht1
-  have hgd := twoDiv_gamma_le k hg hg1 ht ht1
-  have hdd := twoDiv_delta_le k hg hg1 ht ht1
-  have hPk := stepP_ge k
-  have hnv := classVertexNum_succ_le k
-  have hnv0 : (0 : Real) < (classVertexNum k : Real) + 1 := by
-    have := Nat.cast_nonneg (α := Real) (classVertexNum k); linarith only [this]
-  set w := uniformBase V' n theta gamma rho with hwdef
-  set u := 2 / (gamma * theta) with hu
-  set m := classPieces gamma theta k
-  clear_value w u
-  have hw0 : 0 ≤ w := by linarith
-  have hw1 : 1 ≤ w := by linarith
-  have hV0 : 0 ≤ V := by linarith
-  have liftu : ∀ (x : Real) (j : Nat), x ≤ u ^ j → x ≤ w ^ j := fun x j h =>
-    h.trans (pow_le_pow_left₀ (by linarith) huw j)
-  have hmw := liftu _ _ hm
-  have hgdw := liftu _ _ hgd
-  have hddw := liftu _ _ hdd
-  have hnw1 : (n : Real) ≤ w ^ 1 := by rw [pow_one]; exact hnw
-  have hM : ((n * m : Nat) : Real) ≤ w ^ (stepP k + 2) :=
-    le_pow_mono hw2 (by omega) (nat_mul_le_pow hw2 hnw1 hmw)
-  have hM1 : ((n * m : Nat) : Real) + 1 ≤ w ^ (stepP k + 2 + 1) :=
-    add_le_pow_succ hw2 hM (one_le_pow_of_two_le hw2 _)
-  -- the spectrum controls at `ρ/8`
-  have hr8 : (rho / 8)⁻¹ ≤ w ^ (3 + 1) := inv_scale_le hw2 hr hrw (by norm_num) (by norm_num)
-  have hSbase := level_base_le hw2 hV0 hVw hM1 (by positivity) hr8 hd hb hddw
-  have hSbase' : uniformBase V (n * m) tS gS (rho / 8) ≤ w ^ (2 * stepP k + 9) :=
-    le_pow_mono hw2 (by omega) hSbase
-  have hSbase1 : 1 ≤ uniformBase V (n * m) tS gS (rho / 8) :=
-    le_trans (by norm_num) (uniformBase_two_le hV _ hb hb1 hd hd1 (by positivity)
-      (by linarith only [hr1]))
-  have hQb : classQb V D (n * m) tS gS (rho / 8) ≤ w ^ stepEbDeg k D := by
-    unfold classQb stepEbDeg
-    rw [show D * (2 * stepP k + 9) = (2 * stepP k + 9) * D from Nat.mul_comm _ _, pow_mul]
-    exact pow_le_pow_left₀ (by linarith) hSbase' D
-  have hEbi : (classEb V D (n * m) tS gS (rho / 8))⁻¹ ≤ w ^ stepEbDeg k D := by
-    unfold classEb; rw [inv_inv]; exact hQb
-  have hEb0 : 0 < classEb V D (n * m) tS gS (rho / 8) := by
-    unfold classEb; exact inv_pos.mpr (pow_pos (by linarith) _)
-  -- the remainder exponent at `ρ/8`
-  have hscale : 0 < rho / 8 / ((classVertexNum k : Real) + 1) :=
-    div_pos (div_pos hr (by norm_num)) hnv0
-  have hc : (8 : Real) * ((classVertexNum k : Real) + 1) ≤ 2 ^ (k + 3) := by
-    have h1 : ((classVertexNum k : Real) + 1) ≤ 2 ^ k := by exact_mod_cast hnv
-    have h2 : (2 : Real) ^ (k + 3) = 2 ^ k * 8 := by rw [pow_add]; norm_num
-    rw [h2]; linarith only [h1]
-  have hri : (rho / 8 / ((classVertexNum k : Real) + 1))⁻¹ ≤ w ^ (k + 3 + 1) := by
-    rw [div_div]
-    exact inv_scale_le (c := 8 * ((classVertexNum k : Real) + 1)) (j := k + 3) hw2 hr hrw
-      (mul_pos (by norm_num) hnv0) hc
-  have hRbase := level_base_le hw2 hV0 hVw hM1 hscale hri hg hb hgdw
-  have hRbase' : uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1)) ≤
-      w ^ stepY1 k := le_pow_mono hw2 (by unfold stepY1; omega) hRbase
-  have hRbase1 : 1 ≤ uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1)) :=
-    le_trans (by norm_num) (uniformBase_two_le hV _ hb hb1 hg hg1 hscale
-      (by rw [div_le_one hnv0]; have := Nat.cast_nonneg (α := Real) (classVertexNum k)
-          linarith only [this, hr1]))
-  have hfac : (16 * uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1)) ^ D) ≤
-      w ^ (4 + D * stepY1 k) := by
-    rw [pow_add]
-    refine mul_le_mul (const_le_pow hw2 (by norm_num)) ?_ (pow_nonneg (by linarith) _)
-      (pow_nonneg hw0 _)
-    rw [show D * stepY1 k = stepY1 k * D from Nat.mul_comm _ _, pow_mul]
-    exact pow_le_pow_left₀ (by linarith) hRbase' D
-  have hEr0 : 0 < classEr V D k (n * m) tS gamma (rho / 8) := by
-    unfold classEr
-    exact Finset.prod_pos fun i _ => (div_pos (inv_pos.mpr (pow_pos (by linarith) _)) (by norm_num))
-  have hEri : (classEr V D k (n * m) tS gamma (rho / 8))⁻¹ ≤ w ^ stepErDeg k D := by
-    unfold classEr
-    rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← inv_pow]
-    set b := uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1))
-    have hc' : ((b ^ D)⁻¹ / 16)⁻¹ ≤ w ^ (4 + D * stepY1 k) := by
-      rw [inv_div, div_inv_eq_mul]
-      exact hfac
-    have hc0 : 0 ≤ ((b ^ D)⁻¹ / 16)⁻¹ := by
-      rw [inv_div, div_inv_eq_mul]
-      exact mul_nonneg (by norm_num) (pow_nonneg (le_trans zero_le_one hRbase1) _)
-    refine (pow_le_pow_left₀ hc0 hc' _).trans ?_
-    refine (pow_le_pow_right₀ (one_le_pow_of_two_le hw2 _) hnv).trans (le_of_eq ?_)
-    unfold stepErDeg
-    rw [← pow_mul]
-  -- the divisor
-  set q := ⌊classQb V D (n * m) tS gS (rho / 8)⌋₊ with hqdef
-  have hq : (q : Real) ≤ w ^ stepEbDeg k D :=
-    (Nat.floor_le (by unfold classQb; exact pow_nonneg (le_trans zero_le_one hSbase1) _)).trans hQb
-  have hq1 : ((q + 1 : Nat) : Real) ≤ w ^ (stepEbDeg k D + 1) := by
-    push_cast; exact add_le_pow_succ hw2 hq (one_le_pow_of_two_le hw2 _)
-  have hBq : familyWidthDivisor k p q ≤ w ^ stepBqDeg k D := by
-    unfold familyWidthDivisor stepBqDeg
-    have hpow : (((q + 1) ^ (2 * 2 ^ (k + 1)) : Nat) : Real) ≤ w ^ ((stepEbDeg k D + 1) * 2 ^ (k + 2)) := by
-      rw [Nat.cast_pow]
-      calc ((q + 1 : Nat) : Real) ^ (2 * 2 ^ (k + 1))
-          ≤ (w ^ (stepEbDeg k D + 1)) ^ (2 * 2 ^ (k + 1)) :=
-            pow_le_pow_left₀ (Nat.cast_nonneg _) hq1 _
-        _ = w ^ ((stepEbDeg k D + 1) * 2 ^ (k + 2)) := by
-            rw [← pow_mul]
-            congr 1
-            rw [pow_succ 2 (k + 1)]
-            ring
-    have hpw : ((p : Nat) : Real) ≤ w ^ 1 := by rw [pow_one]; exact hpV.trans hV'w
-    have h1 := nat_mul_le_pow hw2 hpw hpow
-    have h2 := nat_mul_le_pow hw2 (show ((2 : Nat) : Real) ≤ w ^ 1 by rw [pow_one]; push_cast; linarith) h1
-    have h3 := const_mul_le_pow (c := (4 : Real)) (j := 2) hw2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) h2
-    refine h3.trans (pow_le_pow_right₀ hw1 ?_)
-    omega
-  have hBq0 : 0 < familyWidthDivisor k p q := familyWidthDivisor_pos hp q
-  -- the line exponent
-  set L := pieceLineExponent (familyWidthDivisor k p) (classQb V D (n * m) tS gS)
-    (classEb V D (n * m) tS gS) (classEr V D k (n * m) tS gamma) rho with hLdef
-  have hL0 : 0 < L := by
-    rw [hLdef]; unfold pieceLineExponent
-    exact div_pos (mul_pos hEr0 hEb0) hBq0
-  have hLi : L⁻¹ ≤ w ^ stepLDeg k D := by
-    rw [hLdef]; unfold pieceLineExponent
-    rw [inv_div, div_eq_mul_inv, mul_inv, ← hqdef]
-    exact mul_le_pow_add (mul_nonneg (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le)
-      hBq (mul_le_pow_add (inv_pos.mpr hEb0).le hEri hEbi hw0) hw0
-  -- the slice exponent
-  have hQr : classQr V D k (n * m) tS gamma (rho / 8) ≤ w ^ stepQrDeg k D := by
-    unfold classQr
-    refine (Finset.prod_le_prod (g := fun _ => w ^ (D * stepY1 k))
-      (fun i _ => le_max_of_le_right (Nat.cast_nonneg _)) ?_).trans ?_
-    · intro i _
-      refine max_le ?_ ?_
-      · rw [show D * stepY1 k = stepY1 k * D from Nat.mul_comm _ _, pow_mul]
-        exact pow_le_pow_left₀ (by linarith) hRbase' D
-      · have h3 : ((3 ^ (k + 1) : Nat) : Real) ≤ w ^ (2 * (k + 1)) := by
-          push_cast; rw [pow_mul]
-          exact pow_le_pow_left₀ (by norm_num) (by nlinarith only [hw2]) _
-        refine le_pow_mono hw2 ?_ (nat_mul_le_pow hw2 h3 hM)
-        have : stepY1 k ≤ D * stepY1 k := Nat.le_mul_of_pos_left _ hD
-        unfold stepY1 at this ⊢
-        omega
-    · rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
-      refine (pow_le_pow_right₀ (one_le_pow_of_two_le hw2 _) hnv).trans (le_of_eq ?_)
-      unfold stepQrDeg
-      rw [← pow_mul, mul_comm]
-  have hS := famPieceSamples_le_power hw2 hr hrw hQr hM
-  set S := famPieceSamples (classQr V D k (n * m) tS gamma) (n * m) rho with hSdef
-  have hMS : ((n * m * S : Nat) : Real) + 1 ≤ w ^ ((stepP k + 2) + stepSDeg k D + 1) :=
-    add_le_pow_succ hw2 (nat_mul_le_pow hw2 hM hS) (one_le_pow_of_two_le hw2 _)
-  have hr4 : (rho / 4)⁻¹ ≤ w ^ (2 + 1) := inv_scale_le hw2 hr hrw (by norm_num) (by norm_num)
-  have hPbase := level_base_le hw2 hV0 hVw hMS (by positivity) hr4 hg hb hgdw
-  have hPbase1 : 1 ≤ uniformBase V (n * m * S) tS gamma (rho / 4) :=
-    le_trans (by norm_num) (uniformBase_two_le hV _ hb hb1 hg hg1 (by positivity)
-      (by linarith only [hr1]))
-  set Sl := famPieceSliceExponent (classQr V D k (n * m) tS gamma) (classEs V D (n * m) tS gamma)
-    (n * m) rho with hSldef
-  have hSlval : Sl = (uniformBase V (n * m * S) tS gamma (rho / 4) ^ D)⁻¹ := by
-    rw [hSldef]
-    unfold famPieceSliceExponent classEs
-    rw [← hSdef, abs_of_pos (by positivity : (0 : Real) < rho / 4)]
-  have hSl0 : 0 < Sl := by rw [hSlval]; exact inv_pos.mpr (pow_pos (by linarith) _)
-  have hSl1 : Sl ≤ 1 := by rw [hSlval]; exact inv_le_one_of_one_le₀ (one_le_pow₀ hPbase1)
-  have hSli : Sl⁻¹ ≤ w ^ stepPbDeg k D := by
-    rw [hSlval, inv_inv]
-    have h := pow_le_pow_left₀ (by linarith) hPbase D
-    rw [← pow_mul] at h
-    refine h.trans (pow_le_pow_right₀ hw1 ?_)
-    unfold stepPbDeg
-    rw [mul_comm]
-    exact Nat.mul_le_mul_left D (by omega)
-  -- the width scale
-  have hA1 : 1 ≤ familyWidthPrefactor K q := by
-    unfold familyWidthPrefactor
-    have : (1 : Real) ≤ ((K * (q + 1) : Nat) : Real) := by
-      exact_mod_cast Nat.one_le_iff_ne_zero.mpr (Nat.mul_ne_zero (by omega) (by omega))
-    linarith only [this]
-  have hA : familyWidthPrefactor K q ≤ w ^ (stepEbDeg k D + 4) := by
-    unfold familyWidthPrefactor
-    have hKw : ((K : Nat) : Real) ≤ w ^ 1 := by rw [pow_one]; exact hKV.trans hV'w
-    have h1 := nat_mul_le_pow hw2 hKw hq1
-    have h2 := const_mul_le_pow (c := (4 : Real)) (j := 2) hw2 (by norm_num) (by norm_num) (Nat.cast_nonneg _) h1
-    exact h2.trans (pow_le_pow_right₀ hw1 (by omega))
-  set z := pieceWidthScale (familyWidthPrefactor K) (classQb V D (n * m) tS gS)
-    (section16Zeta theta gamma k) rho with hzdef
-  have hzval : z = section16Zeta theta gamma k / familyWidthPrefactor K q := by rw [hzdef]; rfl
-  have hzpos : 0 < z := by rw [hzval]; exact div_pos hz0 (lt_of_lt_of_le zero_lt_one hA1)
-  have hzle : z ≤ 1 := by
-    rw [hzval, div_le_one (lt_of_lt_of_le zero_lt_one hA1)]; exact hz1.trans hA1
-  have hzinv : z⁻¹ ≤ Real.exp (w ^ (stepZDeg k D + 1)) := by
-    rw [hzval, inv_div, div_eq_mul_inv]
-    have hAe : familyWidthPrefactor K q ≤ Real.exp (w ^ stepZDeg k D) :=
-      le_exp_pow_of_le_pow (le_pow_mono hw2 (by unfold stepZDeg; omega) hA)
-    have hze : (section16Zeta theta gamma k)⁻¹ ≤ Real.exp (w ^ stepZDeg k D) := by
-      refine hzi.trans (Real.exp_le_exp.mpr ?_)
-      refine (pow_le_pow_left₀ (by linarith) huw _).trans (pow_le_pow_right₀ hw1 ?_)
-      unfold stepZDeg stepT
-      omega
-    exact exp_mul_le hw2 (inv_pos.mpr hz0).le hAe hze
-  -- the cap
-  have hnz : 6 ≤ stepZDeg k D + 1 := by
-    unfold stepZDeg stepT
-    have : 1 ≤ 2 ^ (2 ^ (k + 6)) := Nat.one_le_two_pow
-    omega
-  have hfin := capped_rounded_inv_le hw2 hnz hL0 hLi hSl0 hSl1 hSli hzpos hzle hzinv
-  exact ⟨section16CappedWidthExponent_pos (div_pos (mul_pos hL0 hSl0) (by norm_num)), hfin⟩
-
-
-/-! ### The threshold -/
+    0 < e ∧ e⁻¹ ≤ uniformBase V' n theta gamma rho ^ stepExpDeg k D :=
+  have hb := classBudget_pos_le k ht ht1 hg hg1
+  have hd := section16_theta_delta_bounds k ht ht1 hg hg1
+  step_exp_inv_le_W hD hV hVV hK hp hKV hpV hg hg1 ht ht1 hr hr1 n (P := stepP k) (T := stepT k)
+    hb.1 hb.2 hd.2.2.1 hd.2.2.2 (section16Zeta_inv_le_gen k hg ht)
+    (classPieces_le_stepP k hg hg1 ht ht1) (twoDiv_gamma_le k hg hg1 ht ht1)
+    (twoDiv_delta_le k hg hg1 ht ht1) (stepP_ge k)
 
 theorem step_thr_le {k D : Nat} (hk : 1 ≤ k) {V V' : Real} (hV : 1 ≤ V) (hVV : V ≤ V')
     {theta gamma : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1) :
