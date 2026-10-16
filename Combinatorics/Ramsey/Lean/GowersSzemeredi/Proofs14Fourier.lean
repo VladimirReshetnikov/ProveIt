@@ -358,7 +358,7 @@ private lemma prop141_correlation_eq {N p : Nat} [NeZero N]
         (fun i => s + x i) u (fun i => s + w i) h := by
   classical
   simp only [correlation]
-  rw [← (Equiv.addRight s).sum_comp]
+  rw [← Equiv.sum_comp (Equiv.addRight s)]
   simp only [Equiv.coe_addRight, add_sub_cancel_right]
   apply Finset.sum_congr rfl
   intro h _
@@ -403,8 +403,8 @@ private lemma prop141_double_shift_sum {N p : Nat} [NeZero N]
       intro s _
       let e := Equiv.addLeft (fun _ : Fin p => s)
       change (∑ x, ∑ w, F (e x) (e w)) = _
-      rw [e.sum_comp (fun x => ∑ w, F x (e w))]
-      exact Finset.sum_congr rfl fun x _ => e.sum_comp (F x)
+      rw [Equiv.sum_comp e (fun x => ∑ w, F x (e w))]
+      exact Finset.sum_congr rfl fun x _ => Equiv.sum_comp e (F x)
     _ = _ := by simp
 
 private lemma prop141_mixed_eq_l2 {N p : Nat} [NeZero N]
