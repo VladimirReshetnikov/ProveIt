@@ -314,3 +314,29 @@ specific gap in the imported conditional theorem, while leaving numerical
 syntax, relative runtime falsity, theory emission, enumeration and binary
 simulation as distinct obligations. It does not repair the reduced systems
 refuted by the earlier fixed-slot and finite-sort countermodels.
+
+## Batch 151: a small equality formula and finite carriers
+
+The [source-24 review](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-151-source-24.md)
+accepts a four-node outgoing equality proxy and a reserved-zero falsity
+translation. Both membership positions retain full variable transport.
+A local zero binder inside the equality macro is safe; globally forbidding
+GEN0 alone does not protect the distinguished point from other binder-producing
+operations. The package's translator is a finite diagnostic interface, while
+its translated proof checker remains a specification. Its actual strict EPSC
+proxy control is 288 states, with the full variable dispatcher charged.
+
+The same source emits a complete SK term and a one-constant version for the
+attributed public 253 table. The three-equation/inequation carrier retains its
+large ground payload: 192,272 BCL bits. No binary evaluator cost is supplied.
+The generic parser-domain claim is false for a negative start label; the host
+preserves the exact native-halt/compiled-loop counterexample and limits the
+claim to valid nonnegative starts. The frozen start-zero payload reproduces.
+
+The [source-25 review](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-151-source-25.md)
+checks a complete genuine-Bottom Hilbert reference with capture-avoiding
+instantiation and an EPSC/EFPC selector. It also verifies a narrow modal-list
+counterexample against the primary paper: omitting reflexivity allows constant
+true box/false diamond. The original quantifier and equational presentations
+exclude that valuation; their main interpretation theorem is unaffected.
+Neither reference is the numerical algorithm of the measured machine controls.

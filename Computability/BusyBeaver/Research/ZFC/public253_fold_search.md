@@ -122,3 +122,13 @@ rejected here. Any survivor would still need an independently checked
 certificate and a Lean proof connecting the certificate algorithm to the
 actual blank machine. A larger search, mutation of box contracts, or repair
 of the initializer has not been run as part of this result.
+
+Batch151 source25 now supplies an independently replayed complementary
+symbol-wise fusion family: 148,368 candidates, 55 protected rows, zero passing
+affine contracts at fuel1000. Its 132,389 fuel and 15,336 abstraction-limit
+outcomes remain unresolved; 643 candidates halt unexpectedly. The complete
+ledger matches. Its inherited 56,196 direct-fold family was also rerun and
+still excludes old5/84. Thus it does not contradict this experiment's known
+5→64 runtime survivor. Source24 separately gives a complete finite exact-step
+quotient obstruction for literal253, not a blank-equivalence lower bound.
+See the host's `intake-151-source-25-machine.md` and `intake-151-source-24.md`.

@@ -288,3 +288,25 @@ The complete proofs, attribution, diagnostic counterexamples and replay
 limits are recorded in
 [the batch 150 reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch-150-bounded-parameters-native-closure-and-quantified-nand)
 and `intake-150-source-21.md` / `intake-150-source-22.md` beside it.
+
+## Batch 151: outgoing equality and exact hulls
+
+[Sources 24 and 25](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch-151-outgoing-equality-finite-carriers-and-exact-fixed-point-hulls)
+add two reusable ordinary proofs. Exact full-profile singletons make
+`forall z, (x in z -> y in z)` equivalent to full observational equality.
+The singleton construction comes first, so this does not assume raw
+incoming-profile congruence or Extensionality. Reserving variable zero at an
+empty object then permits a membership-only translation of equality and
+Bottom, provided every other binder and substitution respects that convention.
+The raw observational quotient remains distinct from the hereditary incoming
+quotient used for extensional set theory.
+
+EFPC asks for a represented fixed point of the empty-seeded image operator.
+Its equivalence with full EPSC uses raw Separation to represent an intersection
+of prefixed subobjects and a second image cut. A three-object counterexample
+shows that replacing one universally closed EPSC instance in isolation fails.
+The delivered constructive Lean theorem assumes those two explicit resources;
+global leastness requires an additional intersection resource. Connecting them
+to `RawPSCModel.separation_of_model` needs actual fresh formula builders and
+an EPSC/PSC adapter. The exact-hull control costs 271 states versus its 270-state
+EPSC comparison; the new normal form supplies no measured saving.
