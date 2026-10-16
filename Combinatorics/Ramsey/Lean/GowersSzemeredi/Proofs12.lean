@@ -288,17 +288,6 @@ private lemma prop121_correlation_eq {N p : Nat} [NeZero N]
             congr 1
             · ring
 
-private def prop121SubEquiv {N p : Nat} (s : ZMod N) :
-    (Fin p → ZMod N) ≃ (Fin p → ZMod N) where
-  toFun v := fun i => s - v i
-  invFun v := fun i => s - v i
-  left_inv v := by
-    funext i
-    ring
-  right_inv v := by
-    funext i
-    ring
-
 private lemma prop121_shift_sum {N p : Nat} [NeZero N]
     (F : (Fin p → ZMod N) → Real) :
     (∑ s : ZMod N, ∑ v : Fin p → ZMod N, F (fun i => s - v i)) =
@@ -308,7 +297,15 @@ private lemma prop121_shift_sum {N p : Nat} [NeZero N]
         ∑ _s : ZMod N, ∑ x : Fin p → ZMod N, F x := by
           apply Finset.sum_congr rfl
           intro s _
-          exact Fintype.sum_equiv (prop121SubEquiv (p := p) s)
+          exact Fintype.sum_equiv
+              ({ toFun v := fun i => s - v i
+                 invFun v := fun i => s - v i
+                 left_inv v := by
+                   funext i
+                   ring
+                 right_inv v := by
+                   funext i
+                   ring } : (Fin p → ZMod N) ≃ (Fin p → ZMod N))
             (fun v => F (fun i => s - v i)) F (fun _ => rfl)
     _ = (N : Real) * ∑ x : Fin p → ZMod N, F x := by simp
 

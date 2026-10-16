@@ -219,26 +219,23 @@ private abbrev prop61AltAdditive {N : Nat} (B : Finset (ZMod N))
   prop61QuadMem B q ∧ q 0 - q 1 = q 2 - q 3 ∧
     phi (q 0) - phi (q 1) = phi (q 2) - phi (q 3)
 
-private def prop61QuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X) where
-  toFun q := ![q 0, q 3, q 2, q 1]
-  invFun q := ![q 0, q 3, q 2, q 1]
-  left_inv q := by
-    funext i
-    fin_cases i <;> rfl
-  right_inv q := by
-    funext i
-    fin_cases i <;> rfl
-
 private lemma prop61_alt_count_eq {N : Nat} [NeZero N] (B : Finset (ZMod N))
     (phi : ZMod N → ZMod N) :
     countWhere (prop61AltAdditive B phi) = phiAdditiveCount B phi := by
   classical
   unfold countWhere phiAdditiveCount
-  apply Finset.card_equiv (prop61QuadEquiv (ZMod N))
+  apply Finset.card_equiv
+      ({ toFun q := ![q 0, q 3, q 2, q 1]
+         invFun q := ![q 0, q 3, q 2, q 1]
+         left_inv q := by
+           funext i
+           fin_cases i <;> rfl
+         right_inv q := by
+           funext i
+           fin_cases i <;> rfl } : (Fin 4 → ((ZMod N))) ≃ (Fin 4 → ((ZMod N))))
   intro q
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-  simp only [prop61AltAdditive, prop61QuadMem, IsPhiAdditive, IsAdditiveQuadruple,
-    prop61QuadEquiv]
+  simp only [prop61AltAdditive, prop61QuadMem, IsPhiAdditive, IsAdditiveQuadruple]
   constructor
   · rintro ⟨⟨h0, h1, h2, h3⟩, hadd, hphi⟩
     refine ⟨?_, ?_, ?_⟩

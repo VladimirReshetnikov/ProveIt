@@ -75,12 +75,6 @@ private def prop14RestrictedWeight {N : Nat} [NeZero N]
     (E : Finset (ZMod N)) (theta : ZMod N → Real) : ZMod N → Real :=
   fun x => if x ∈ E then theta x else 0
 
-private def prop14QuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X) where
-  toFun q := ![q 0, q 3, q 2, q 1]
-  invFun q := ![q 0, q 3, q 2, q 1]
-  left_inv q := by funext i; fin_cases i <;> rfl
-  right_inv q := by funext i; fin_cases i <;> rfl
-
 private lemma prop14_restricted_weight_eq_energy {N p : Nat} [NeZero N]
     (E : Finset (ZMod N)) (theta : ZMod N → Real)
     (sigma : Fin p → ZMod N → ZMod N) :
@@ -88,9 +82,13 @@ private lemma prop14_restricted_weight_eq_energy {N p : Nat} [NeZero N]
       weightedSimultaneousAdditiveEnergy E theta sigma := by
   classical
   unfold simultaneouslyAdditiveWeight weightedSimultaneousAdditiveEnergy
-  apply Fintype.sum_equiv (prop14QuadEquiv (ZMod N))
+  apply Fintype.sum_equiv
+      ({ toFun q := ![q 0, q 3, q 2, q 1]
+         invFun q := ![q 0, q 3, q 2, q 1]
+         left_inv q := by funext i; fin_cases i <;> rfl
+         right_inv q := by funext i; fin_cases i <;> rfl } : (Fin 4 → ((ZMod N))) ≃ (Fin 4 → ((ZMod N))))
   intro q
-  simp only [prop14QuadEquiv, IsSimultaneouslyAdditive,
+  simp only [IsSimultaneouslyAdditive,
     IsAdditiveQuadruple]
   have hadd :
       q 0 - q 1 = q 2 - q 3 ↔ q 0 + q 3 = q 2 + q 1 :=

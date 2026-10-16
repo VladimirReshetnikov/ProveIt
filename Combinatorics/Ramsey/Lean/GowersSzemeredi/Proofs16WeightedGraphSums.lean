@@ -11,12 +11,6 @@ def section16ParallelPairSum {N p : Nat} (psi : Fin p → ZMod N → ZMod N)
     (z : ZMod N × ZMod N) : ZMod N × (Fin p → ZMod N) :=
   (z.1 + z.2, fun i => psi i z.1 + psi i z.2)
 
-private def quadPairEquiv (X : Type*) : (Fin 4 → X) ≃ ((X × X) × (X × X)) where
-  toFun q := ((q 0, q 1), (q 2, q 3))
-  invFun z := ![z.1.1, z.1.2, z.2.1, z.2.2]
-  left_inv q := by funext i; fin_cases i <;> rfl
-  right_inv z := by rcases z with ⟨⟨a, b⟩, ⟨c, d⟩⟩; rfl
-
 private theorem sum_univ_indicator {X : Type*} [Fintype X] [DecidableEq X]
     (S : Finset X) (f : X → Real) : (∑ x, if x ∈ S then f x else 0) = ∑ x ∈ S, f x := by
   classical
@@ -36,7 +30,11 @@ theorem weightedSimultaneousAdditiveEnergy_eq_collision {N p : Nat} [NeZero N]
       if z.1 ∈ (E ×ˢ E) then if z.2 ∈ (E ×ˢ E) then
         if section16ParallelPairSum psi z.1 = section16ParallelPairSum psi z.2 then
           (w z.1.1 * w z.1.2) * (w z.2.1 * w z.2.2) else 0 else 0 else 0 := by
-      apply Fintype.sum_equiv (quadPairEquiv (ZMod N))
+      apply Fintype.sum_equiv
+          ({ toFun q := ((q 0, q 1), (q 2, q 3))
+             invFun z := ![z.1.1, z.1.2, z.2.1, z.2.2]
+             left_inv q := by funext i; fin_cases i <;> rfl
+             right_inv z := by rcases z with ⟨⟨a, b⟩, ⟨c, d⟩⟩; rfl } : (Fin 4 → ((ZMod N))) ≃ ((((ZMod N)) × ((ZMod N))) × (((ZMod N)) × ((ZMod N)))))
       intro q
       have hmem : (∀ t, q t ∈ E) ↔ (q 0, q 1) ∈ (E ×ˢ E) ∧ (q 2, q 3) ∈ (E ×ˢ E) := by
         simp only [Finset.mem_product]
@@ -50,7 +48,7 @@ theorem weightedSimultaneousAdditiveEnergy_eq_collision {N p : Nat} [NeZero N]
         simp only [IsAdditiveQuadruple, section16ParallelPairSum, Prod.mk.injEq, funext_iff]
       change (if (∀ t, q t ∈ E) ∧ IsAdditiveQuadruple q ∧
         (∀ i, IsAdditiveQuadruple (fun t => psi i (q t))) then ∏ t, w (q t) else 0) = _
-      simp only [hmem, hadd, quadPairEquiv, Equiv.coe_fn_mk, Fin.prod_univ_four, ite_and]
+      simp only [hmem, hadd, Equiv.coe_fn_mk, Fin.prod_univ_four, ite_and]
       split_ifs <;> ring
     _ = _ := by
       rw [Fintype.sum_prod_type]

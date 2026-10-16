@@ -122,25 +122,21 @@ private lemma lemma154_linear_solutions_card_le {N : Nat} [NeZero N]
       rw [Fintype.card_subtype_compl]
       simp
 
-private def lemma154DoubleExceptEquiv {I : Type*} [DecidableEq I]
-    (i j : I) (hij : i ≠ j) :
-    {t : I // t ≠ i ∧ t ≠ j} ≃
-      {t : {t : I // t ≠ i} // t ≠ ⟨j, hij.symm⟩} where
-  toFun t := ⟨⟨t, t.2.1⟩, by
-    intro h
-    exact t.2.2 (congrArg Subtype.val h)⟩
-  invFun t := ⟨t.1.1, t.1.2, by
-    intro h
-    apply t.2
-    apply Subtype.ext
-    exact h⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 lemma lemma154_double_except_card {I : Type*} [Fintype I]
     [DecidableEq I] (i j : I) (hij : i ≠ j) :
     Fintype.card {t : I // t ≠ i ∧ t ≠ j} = Fintype.card I - 2 := by
-  rw [Fintype.card_congr (lemma154DoubleExceptEquiv i j hij)]
+  rw [Fintype.card_congr
+      ({ toFun t := ⟨⟨t, t.2.1⟩, by
+           intro h
+           exact t.2.2 (congrArg Subtype.val h)⟩
+         invFun t := ⟨t.1.1, t.1.2, by
+           intro h
+           apply t.2
+           apply Subtype.ext
+           exact h⟩
+         left_inv _ := rfl
+         right_inv _ := rfl } : {t : I // t ≠ i ∧ t ≠ j} ≃
+      {t : {t : I // t ≠ i} // t ≠ ⟨j, hij.symm⟩})]
   rw [Fintype.card_subtype_compl, Fintype.card_subtype_compl]
   simp only [Fintype.card_subtype_eq]
   omega

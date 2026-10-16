@@ -234,127 +234,122 @@ private lemma cor133_extract_piece {N : Nat} [NeZero N]
         rw [htwo]
       _ ≤ B.card := hBsize
 
-private noncomputable def cor133_build_cover {N : Nat} [NeZero N]
-    (A : Finset (Pair N)) (theta : Real) (hprime : Nat.Prime N)
-    (htheta : 0 < theta) :
-    ∀ Gamma : Finset (Pair N), Gamma ⊆ cor133LargePairs A theta →
-      Cor133CoverData N theta Gamma := by
-  classical
-  intro Gamma
-  refine Finset.strongInductionOn Gamma ?_
-  intro Gamma ih hGamma
-  let D : Finset (ZMod N) := Gamma.image Prod.fst
-  by_cases hsmall : (D.card : Real) < theta * N
-  · let G : Finset (ZMod N) := Finset.univ \ D
-    have hDcard : D.card ≤ N := by
-      calc
-        D.card ≤ (Finset.univ : Finset (ZMod N)).card :=
-          Finset.card_le_card (Finset.subset_univ D)
-        _ = N := by simp [ZMod.card]
-    have hGcard : (G.card : Real) = N - D.card := by
-      rw [show G = Finset.univ \ D by rfl]
-      rw [Finset.card_sdiff]
-      simp [ZMod.card, Nat.cast_sub hDcard]
-    let B : Fin 0 → Finset (ZMod N) := Fin.elim0
-    let sigma : Fin 0 → ZMod N → ZMod N := Fin.elim0
-    refine
-      { q := 0
-        B := B
-        sigma := sigma
-        G := G
-        G_large := ?_
-        freiman := ?_
-        piece_large := ?_
-        budget := ?_
-        covers := ?_ }
-    · rw [hGcard]
-      nlinarith
-    · exact fun i => Fin.elim0 i
-    · exact fun i => Fin.elim0 i
-    · simp
-    · intro p hp hpG
-      exfalso
-      have hpD : p.1 ∈ D := Finset.mem_image.2 ⟨p, hp, rfl⟩
-      exact (Finset.mem_sdiff.mp hpG).2 hpD
-  · have hproj : theta * N ≤ (Gamma.image Prod.fst).card := by
-      simpa only [D] using le_of_not_gt hsmall
-    have hextract :=
-      cor133_extract_piece A theta hprime htheta Gamma hGamma hproj
-    let B0 := Classical.choose hextract
-    have hextractB := Classical.choose_spec hextract
-    let sigma0 := Classical.choose hextractB
-    have hextractSpec := Classical.choose_spec hextractB
-    have hPsub := hextractSpec.1
-    have hFreiman0 := hextractSpec.2.1
-    have hB0size := hextractSpec.2.2
-    let P := functionGraph B0 sigma0
-    have hscalePos :
-        0 < (2 : Real) ^ (-(1882 : Int)) * theta ^ 10477 * N := by
-      exact mul_pos
-        (mul_pos (zpow_pos (by norm_num : (0 : Real) < 2) _)
-          (pow_pos htheta 10477))
-        (by exact_mod_cast NeZero.pos N)
-    have hB0nonempty : B0.Nonempty := by
-      apply Finset.card_pos.mp
-      exact_mod_cast hscalePos.trans_le hB0size
-    have hPnonempty : P.Nonempty := by
-      obtain ⟨b, hb⟩ := hB0nonempty
-      refine ⟨(b, sigma0 b), ?_⟩
-      simp [P, functionGraph, hb]
-    have hremain_lt : Gamma \ P ⊂ Gamma :=
-      Finset.sdiff_ssubset hPsub hPnonempty
-    have hremainSub : Gamma \ P ⊆ cor133LargePairs A theta :=
-      Finset.sdiff_subset.trans hGamma
-    let tail := ih (Gamma \ P) hremain_lt hremainSub
-    let B : Fin (tail.q + 1) → Finset (ZMod N) :=
-      Fin.cases B0 tail.B
-    let sigma : Fin (tail.q + 1) → ZMod N → ZMod N :=
-      Fin.cases sigma0 tail.sigma
-    refine
-      { q := tail.q + 1
-        B := B
-        sigma := sigma
-        G := tail.G
-        G_large := tail.G_large
-        freiman := ?_
-        piece_large := ?_
-        budget := ?_
-        covers := ?_ }
-    · intro i
-      refine Fin.cases ?_ (fun j => ?_) i
-      · exact hFreiman0
-      · exact tail.freiman j
-    · intro i
-      refine Fin.cases ?_ (fun j => ?_) i
-      · exact hB0size
-      · exact tail.piece_large j
-    · have hPcard : P.card = B0.card := cor75_card_functionGraph B0 sigma0
-      have hcards : (Gamma \ P).card + P.card = Gamma.card := by
-        rw [Finset.card_sdiff_add_card]
-        rw [Finset.union_eq_left.mpr hPsub]
-      have hcardsR :
-          ((Gamma \ P).card : Real) + B0.card = Gamma.card := by
-        exact_mod_cast (by simpa [hPcard] using hcards)
-      have hqcast : ((tail.q + 1 : Nat) : Real) = tail.q + 1 := by norm_num
-      rw [hqcast]
-      nlinarith [tail.budget, hB0size]
-    · intro p hp hpG
-      by_cases hpP : p ∈ P
-      · have hp' : p.1 ∈ B0 ∧ p.2 = sigma0 p.1 := by
-          simpa [P, functionGraph, Prod.ext_iff, eq_comm] using hpP
-        refine ⟨0, ?_, ?_⟩
-        · exact hp'.1
-        · exact hp'.2
-      · obtain ⟨j, hjB, hjSigma⟩ :=
-          tail.covers p (Finset.mem_sdiff.2 ⟨hp, hpP⟩) hpG
-        exact ⟨j.succ, hjB, hjSigma⟩
-
 /-- Gowers's Corollary 13.3, with the prime-modulus convention explicit. -/
 theorem corollary_13_3_holds : corollary_13_3 := by
   intro N _ A theta hprime htheta
   classical
   let Gamma := cor133LargePairs A theta
-  let cover := cor133_build_cover A theta hprime htheta Gamma
+  let cover := (by
+       classical
+       intro Gamma
+       refine Finset.strongInductionOn Gamma ?_
+       intro Gamma ih hGamma
+       let D : Finset (ZMod N) := Gamma.image Prod.fst
+       by_cases hsmall : (D.card : Real) < theta * N
+       · let G : Finset (ZMod N) := Finset.univ \ D
+         have hDcard : D.card ≤ N := by
+           calc
+             D.card ≤ (Finset.univ : Finset (ZMod N)).card :=
+               Finset.card_le_card (Finset.subset_univ D)
+             _ = N := by simp [ZMod.card]
+         have hGcard : (G.card : Real) = N - D.card := by
+           rw [show G = Finset.univ \ D by rfl]
+           rw [Finset.card_sdiff]
+           simp [ZMod.card, Nat.cast_sub hDcard]
+         let B : Fin 0 → Finset (ZMod N) := Fin.elim0
+         let sigma : Fin 0 → ZMod N → ZMod N := Fin.elim0
+         refine
+           { q := 0
+             B := B
+             sigma := sigma
+             G := G
+             G_large := ?_
+             freiman := ?_
+             piece_large := ?_
+             budget := ?_
+             covers := ?_ }
+         · rw [hGcard]
+           nlinarith
+         · exact fun i => Fin.elim0 i
+         · exact fun i => Fin.elim0 i
+         · simp
+         · intro p hp hpG
+           exfalso
+           have hpD : p.1 ∈ D := Finset.mem_image.2 ⟨p, hp, rfl⟩
+           exact (Finset.mem_sdiff.mp hpG).2 hpD
+       · have hproj : theta * N ≤ (Gamma.image Prod.fst).card := by
+           simpa only [D] using le_of_not_gt hsmall
+         have hextract :=
+           cor133_extract_piece A theta hprime htheta Gamma hGamma hproj
+         let B0 := Classical.choose hextract
+         have hextractB := Classical.choose_spec hextract
+         let sigma0 := Classical.choose hextractB
+         have hextractSpec := Classical.choose_spec hextractB
+         have hPsub := hextractSpec.1
+         have hFreiman0 := hextractSpec.2.1
+         have hB0size := hextractSpec.2.2
+         let P := functionGraph B0 sigma0
+         have hscalePos :
+             0 < (2 : Real) ^ (-(1882 : Int)) * theta ^ 10477 * N := by
+           exact mul_pos
+             (mul_pos (zpow_pos (by norm_num : (0 : Real) < 2) _)
+               (pow_pos htheta 10477))
+             (by exact_mod_cast NeZero.pos N)
+         have hB0nonempty : B0.Nonempty := by
+           apply Finset.card_pos.mp
+           exact_mod_cast hscalePos.trans_le hB0size
+         have hPnonempty : P.Nonempty := by
+           obtain ⟨b, hb⟩ := hB0nonempty
+           refine ⟨(b, sigma0 b), ?_⟩
+           simp [P, functionGraph, hb]
+         have hremain_lt : Gamma \ P ⊂ Gamma :=
+           Finset.sdiff_ssubset hPsub hPnonempty
+         have hremainSub : Gamma \ P ⊆ cor133LargePairs A theta :=
+           Finset.sdiff_subset.trans hGamma
+         let tail := ih (Gamma \ P) hremain_lt hremainSub
+         let B : Fin (tail.q + 1) → Finset (ZMod N) :=
+           Fin.cases B0 tail.B
+         let sigma : Fin (tail.q + 1) → ZMod N → ZMod N :=
+           Fin.cases sigma0 tail.sigma
+         refine
+           { q := tail.q + 1
+             B := B
+             sigma := sigma
+             G := tail.G
+             G_large := tail.G_large
+             freiman := ?_
+             piece_large := ?_
+             budget := ?_
+             covers := ?_ }
+         · intro i
+           refine Fin.cases ?_ (fun j => ?_) i
+           · exact hFreiman0
+           · exact tail.freiman j
+         · intro i
+           refine Fin.cases ?_ (fun j => ?_) i
+           · exact hB0size
+           · exact tail.piece_large j
+         · have hPcard : P.card = B0.card := cor75_card_functionGraph B0 sigma0
+           have hcards : (Gamma \ P).card + P.card = Gamma.card := by
+             rw [Finset.card_sdiff_add_card]
+             rw [Finset.union_eq_left.mpr hPsub]
+           have hcardsR :
+               ((Gamma \ P).card : Real) + B0.card = Gamma.card := by
+             exact_mod_cast (by simpa [hPcard] using hcards)
+           have hqcast : ((tail.q + 1 : Nat) : Real) = tail.q + 1 := by norm_num
+           rw [hqcast]
+           nlinarith [tail.budget, hB0size]
+         · intro p hp hpG
+           by_cases hpP : p ∈ P
+           · have hp' : p.1 ∈ B0 ∧ p.2 = sigma0 p.1 := by
+               simpa [P, functionGraph, Prod.ext_iff, eq_comm] using hpP
+             refine ⟨0, ?_, ?_⟩
+             · exact hp'.1
+             · exact hp'.2
+           · obtain ⟨j, hjB, hjSigma⟩ :=
+               tail.covers p (Finset.mem_sdiff.2 ⟨hp, hpP⟩) hpG
+             exact ⟨j.succ, hjB, hjSigma⟩ : ∀ Gamma : Finset (Pair N), Gamma ⊆ cor133LargePairs A theta →
+      Cor133CoverData N theta Gamma) Gamma
     (show Gamma ⊆ cor133LargePairs A theta by rfl)
   refine ⟨cover.q, cover.B, cover.sigma, cover.G, cover.G_large,
     cover.freiman, cover.piece_large, ?_, ?_⟩

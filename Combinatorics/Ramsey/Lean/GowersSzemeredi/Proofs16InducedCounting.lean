@@ -206,41 +206,6 @@ private lemma section16ValueAdditive_iff_respected
   unfold HasEqualHalfSums IsAdditiveTuple
   simp_rw [section16TupleArrangement_cubeValue]
 
-private def section16RespectedTupleArrangementEquiv
-    {N k d : Nat} [NeZero N]
-    (B : Finset (Point N (k + 1))) (h : Point N k)
-    (phi : Point N (k + 1) → ZMod N) :
-    {x : Fin (2 * d) → Section16CubeElement B h //
-      section16IndexAdditive B h x ∧ section16ValueAdditive B h phi x} ≃
-    {R : GeneralArrangement N k d //
-      R.IsIn B ∧ R.side = h ∧ R.IsRespected phi} := by
-  let e₁ := (Equiv.subtypeSubtypeEquivSubtypeInter
-    (section16IndexAdditive (d := d) B h)
-    (section16ValueAdditive (d := d) B h phi)).symm
-  let e₂ :
-      {x : {x : Fin (2 * d) → Section16CubeElement B h //
-        section16IndexAdditive B h x} //
-          section16ValueAdditive B h phi x.1} ≃
-      {R : {R : GeneralArrangement N k d //
-        section16ArrangementAtSide B h R} // R.1.IsRespected phi} :=
-    (section16AdditiveTupleArrangementEquiv (d := d) B h).subtypeEquiv
-      (section16ValueAdditive_iff_respected (d := d) B h phi)
-  let e₃ := Equiv.subtypeSubtypeEquivSubtypeInter
-    (section16ArrangementAtSide (d := d) B h)
-    (fun R : GeneralArrangement N k d ↦ R.IsRespected phi)
-  let e₄ :
-      {R : GeneralArrangement N k d //
-        section16ArrangementAtSide B h R ∧ R.IsRespected phi} ≃
-      {R : GeneralArrangement N k d //
-        R.IsIn B ∧ R.side = h ∧ R.IsRespected phi} :=
-    Equiv.subtypeEquivRight fun R ↦ by
-      constructor
-      · rintro ⟨⟨hR, hside⟩, hrespected⟩
-        exact ⟨hR, hside, hrespected⟩
-      · rintro ⟨hR, hside, hrespected⟩
-        exact ⟨⟨hR, hside⟩, hrespected⟩
-  exact e₁.trans (e₂.trans (e₃.trans e₄))
-
 private lemma section16_countWhere_eq_card_subtype
     {X : Type*} [Fintype X] (P : X → Prop)
     [Fintype {x : X // P x}] :
@@ -294,7 +259,36 @@ theorem section16_domainPhiAdditiveTupleCount_eq_respectedArrangementCountAtSide
             section16ValueAdditive B h phi x)
     _ = Fintype.card {R : GeneralArrangement N k d //
           R.IsIn B ∧ R.side = h ∧ R.IsRespected phi} :=
-      Fintype.card_congr (section16RespectedTupleArrangementEquiv B h phi)
+      Fintype.card_congr ((by
+           let e₁ := (Equiv.subtypeSubtypeEquivSubtypeInter
+             (section16IndexAdditive (d := d) B h)
+             (section16ValueAdditive (d := d) B h phi)).symm
+           let e₂ :
+               {x : {x : Fin (2 * d) → Section16CubeElement B h //
+                 section16IndexAdditive B h x} //
+                   section16ValueAdditive B h phi x.1} ≃
+               {R : {R : GeneralArrangement N k d //
+                 section16ArrangementAtSide B h R} // R.1.IsRespected phi} :=
+             (section16AdditiveTupleArrangementEquiv (d := d) B h).subtypeEquiv
+               (section16ValueAdditive_iff_respected (d := d) B h phi)
+           let e₃ := Equiv.subtypeSubtypeEquivSubtypeInter
+             (section16ArrangementAtSide (d := d) B h)
+             (fun R : GeneralArrangement N k d ↦ R.IsRespected phi)
+           let e₄ :
+               {R : GeneralArrangement N k d //
+                 section16ArrangementAtSide B h R ∧ R.IsRespected phi} ≃
+               {R : GeneralArrangement N k d //
+                 R.IsIn B ∧ R.side = h ∧ R.IsRespected phi} :=
+             Equiv.subtypeEquivRight fun R ↦ by
+               constructor
+               · rintro ⟨⟨hR, hside⟩, hrespected⟩
+                 exact ⟨hR, hside, hrespected⟩
+               · rintro ⟨hR, hside, hrespected⟩
+                 exact ⟨⟨hR, hside⟩, hrespected⟩
+           exact e₁.trans (e₂.trans (e₃.trans e₄)) : {x : Fin (2 * d) → Section16CubeElement B h //
+      section16IndexAdditive B h x ∧ section16ValueAdditive B h phi x} ≃
+    {R : GeneralArrangement N k d //
+      R.IsIn B ∧ R.side = h ∧ R.IsRespected phi}))
     _ = section16RespectedArrangementCountAtSide d B phi h := by
       unfold section16RespectedArrangementCountAtSide
       exact (section16_countWhere_eq_card_subtype

@@ -274,17 +274,6 @@ private lemma theorem1013_difference_fibre_function {N : Nat} [NeZero N]
     simp [Ne.symm ht]
   · simp
 
-private def theorem1013QuadPairEquiv (X : Type*) :
-    Theorem1013Quad X ≃ (X × X) × (X × X) where
-  toFun q := ((q 0, q 1), (q 2, q 3))
-  invFun q := ![q.1.1, q.1.2, q.2.1, q.2.2]
-  left_inv q := by
-    funext i
-    fin_cases i <;> rfl
-  right_inv q := by
-    rcases q with ⟨⟨a, b⟩, ⟨c, d⟩⟩
-    rfl
-
 private lemma theorem1013_quad_fibre_function {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
     (D : MultifunctionDomain N X) (s : ZMod N) :
@@ -297,10 +286,17 @@ private lemma theorem1013_quad_fibre_function {N : Nat} [NeZero N]
       ((theorem1013QuadDomain D).fibre s).card =
         ((theorem1013DifferenceDomain (theorem1013DifferenceDomain D)).fibre s).card := by
     unfold MultifunctionDomain.fibre
-    apply Finset.card_equiv (theorem1013QuadPairEquiv X)
+    apply Finset.card_equiv
+        ({ toFun q := ((q 0, q 1), (q 2, q 3))
+           invFun q := ![q.1.1, q.1.2, q.2.1, q.2.2]
+           left_inv q := by
+             funext i
+             fin_cases i <;> rfl
+           right_inv q := by
+             rcases q with ⟨⟨a, b⟩, ⟨c, d⟩⟩
+             rfl } : Theorem1013Quad X ≃ (X × X) × (X × X))
     intro q
-    simp [theorem1013QuadDomain, theorem1013DifferenceDomain,
-      theorem1013QuadPairEquiv]
+    simp [theorem1013QuadDomain, theorem1013DifferenceDomain]
     constructor <;> intro h <;> rw [← h] <;> abel
   change
     (((theorem1013QuadDomain D).fibre s).card : Complex) = _

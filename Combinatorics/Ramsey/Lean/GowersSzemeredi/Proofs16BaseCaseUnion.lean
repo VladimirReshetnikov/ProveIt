@@ -682,7 +682,6 @@ theorem properUnionClosure_holds : ProperUnionClosure := by
   intro N d r _ gamma s Gamma hr hs hGamma
   exact properMultiplyLinear_finsetUnion gamma s hs Gamma hr hGamma
 
-
 private lemma isMultilinear_sum {N d r : Nat}
     (mu : Fin r → Point N d → ZMod N)
     (hmu : ∀ i, IsMultilinear (mu i)) :
@@ -702,11 +701,6 @@ private lemma isMultilinear_sum {N d r : Nat}
       apply Finset.sum_congr rfl
       intro e _
       rw [Finset.sum_mul]
-
-private noncomputable def finFunctionEquiv (r q : Nat) :
-    (Fin r → Fin q) ≃ Fin (q ^ r) :=
-  (Fintype.equivFin (Fin r → Fin q)).trans
-    (finCongr (by simp))
 
 private lemma mem_partialGraph_iff {N d : Nat} [NeZero N]
     (B : Finset (Point N d)) (phi : Point N d → ZMod N)
@@ -787,7 +781,8 @@ theorem properMultiplyLinear_fin_sum {N d r : Nat} [NeZero N]
       have hgamma := abs_gamma_le_iteration_of_nonempty hsPos (hGamma i0) hGiNe
       have hcounts := final_graph_count_bounds (d := d) hr htheta hthetaOne hs
         hgammaPos hgamma (by simpa only [stageQ, eta] using hq0Floor)
-      let ef := finFunctionEquiv r q0
+      let ef := ((Fintype.equivFin (Fin r → Fin q0)).trans
+           (finCongr (by simp)) : (Fin r → Fin q0) ≃ Fin (q0 ^ r))
       let mu : Fin D.M → Fin (q0 ^ r) → Point N d → ZMod N :=
         fun j a x => ∑ i, D.mu j i (ef.symm a i) x
       refine ⟨D.M, q0 ^ r, D.H, D.Q, mu, D.H_subset, hDcard,

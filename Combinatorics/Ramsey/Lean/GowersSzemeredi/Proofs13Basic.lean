@@ -389,26 +389,24 @@ private abbrev prop131AltAdditive {N : Nat} (B : Finset (ZMod N))
   prop131QuadMem B q ∧ q 0 - q 1 = q 2 - q 3 ∧
     sigma (q 0) - sigma (q 1) = sigma (q 2) - sigma (q 3)
 
-private def prop131QuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X) where
-  toFun q := ![q 0, q 3, q 2, q 1]
-  invFun q := ![q 0, q 3, q 2, q 1]
-  left_inv q := by
-    funext i
-    fin_cases i <;> rfl
-  right_inv q := by
-    funext i
-    fin_cases i <;> rfl
-
 private lemma prop131_alt_count_eq {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (sigma : ZMod N → ZMod N) :
     countWhere (prop131AltAdditive B sigma) = phiAdditiveCount B sigma := by
   classical
   unfold countWhere phiAdditiveCount
-  apply Finset.card_equiv (prop131QuadEquiv (ZMod N))
+  apply Finset.card_equiv
+      ({ toFun q := ![q 0, q 3, q 2, q 1]
+         invFun q := ![q 0, q 3, q 2, q 1]
+         left_inv q := by
+           funext i
+           fin_cases i <;> rfl
+         right_inv q := by
+           funext i
+           fin_cases i <;> rfl } : (Fin 4 → ((ZMod N))) ≃ (Fin 4 → ((ZMod N))))
   intro q
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
   simp only [prop131AltAdditive, prop131QuadMem, IsPhiAdditive,
-    IsAdditiveQuadruple, prop131QuadEquiv]
+    IsAdditiveQuadruple]
   constructor
   · rintro ⟨⟨h0, h1, h2, h3⟩, hadd, hsigma⟩
     refine ⟨?_, ?_, ?_⟩

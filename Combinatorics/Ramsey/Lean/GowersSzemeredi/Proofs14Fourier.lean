@@ -794,16 +794,6 @@ private lemma prop141_fourthB_eq_weight {N p : Nat} [NeZero N]
             ring
   exact Complex.ofReal_injective hcomplex
 
-private def prop141QuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X) where
-  toFun q := ![q 0, q 3, q 2, q 1]
-  invFun q := ![q 0, q 3, q 2, q 1]
-  left_inv q := by
-    funext i
-    fin_cases i <;> rfl
-  right_inv q := by
-    funext i
-    fin_cases i <;> rfl
-
 lemma prop141_prod_fin_four (a : Fin 4 → Real) :
     (∏ i, a i) = a 0 * a 1 * a 2 * a 3 := by
   rw [Fin.prod_univ_four]
@@ -814,9 +804,17 @@ private lemma prop141_weight_eq_energy {N p : Nat} [NeZero N]
       weightedSimultaneousAdditiveEnergy Finset.univ lambda sigma := by
   classical
   unfold simultaneouslyAdditiveWeight weightedSimultaneousAdditiveEnergy
-  apply Fintype.sum_equiv (prop141QuadEquiv (ZMod N))
+  apply Fintype.sum_equiv
+      ({ toFun q := ![q 0, q 3, q 2, q 1]
+         invFun q := ![q 0, q 3, q 2, q 1]
+         left_inv q := by
+           funext i
+           fin_cases i <;> rfl
+         right_inv q := by
+           funext i
+           fin_cases i <;> rfl } : (Fin 4 → ((ZMod N))) ≃ (Fin 4 → ((ZMod N))))
   intro q
-  simp only [prop141QuadEquiv, Finset.mem_univ, forall_const, true_and,
+  simp only [Finset.mem_univ, forall_const, true_and,
     IsAdditiveQuadruple]
   by_cases hadd : q 0 - q 1 = q 2 - q 3
   · have hadd' : q 0 + q 3 = q 2 + q 1 :=
