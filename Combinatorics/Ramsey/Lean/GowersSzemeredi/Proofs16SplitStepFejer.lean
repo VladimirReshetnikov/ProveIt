@@ -63,19 +63,6 @@ def fsExpW2 (k ac Dc ae De : Nat) : Nat :=
 
 /-! ### The step bounds at `(fejerStepP k, fejerStepT k)` -/
 
-/-- The piece count `M = n·m` and the level-`k` bases, in the two bases. -/
-theorem split_step_basics_fejer {k : Nat} {V V' : Real} (hV : 1 ≤ V) (hVV : V ≤ V')
-    {theta gamma rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1)
-    (hr : 0 < rho) (hr1 : rho ≤ 1) (n : Nat) :
-    let ν : Real := (n : Real) + 1
-    let W := splitW V' theta gamma rho
-    (((n * classPiecesFejer gamma theta k : Nat) : Real) ≤ ν ^ 1 * W ^ (fejerStepP k)) ∧
-      (((n * classPiecesFejer gamma theta k : Nat) : Real) + 1 ≤ ν ^ 1 * W ^ (fejerStepP k + 1)) ∧
-      (2 / (gamma * classBudgetW (fejerThetaOne theta gamma k) k) ≤ W ^ (fejerStepP k + 1)) ∧
-      (2 / (section16Delta (fejerThetaOne theta gamma k) * classBudgetW (fejerThetaOne theta gamma k) k) ≤ W ^ (fejerStepP k + 1)) :=
-  split_step_basics_W hV hVV hg hg1 ht ht1 hr hr1 n (classPiecesFejer_le_gen k hg hg1 ht ht1) (twoDiv_gamma_le_fejer k hg hg1 ht ht1)
-    (twoDiv_delta_le_fejer k hg hg1 ht ht1)
-
 /-- **The remainder count, in two bases.** -/
 theorem split_Qr_le_fejer {k a D : Nat} (ha : 1 ≤ a) (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V)
     (hVV : V ≤ V') {theta gamma rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta)

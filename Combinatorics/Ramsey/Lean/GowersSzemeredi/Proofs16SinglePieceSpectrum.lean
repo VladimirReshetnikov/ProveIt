@@ -40,7 +40,7 @@ multilinear map agree with `φ` on a `singlePieceDensity c ρ 1` fraction,
 3. A dense cell (`exists_dense_cell`), then a short-parent sub-cell
    (`Box.short_parent_partition`).
 4. There `φ(h, ·)` is affine on each fibre, so `q = 1` in step 2
-   (`single_piece_on_affine_cell`).
+   (`single_piece_on_affine_cell_of_scheme`).
 
 The remainder `φ″` enters as one multilinear map `M″` on `E`. Its own
 single piece is a nested product of lower-dimensional pieces of the
@@ -189,36 +189,6 @@ theorem single_piece_on_affine_cell_of_scheme {k : Nat} (hk : 0 < k)
     (fun h _ x => a h * x + b h) (fun h _ => ⟨a h, b h, fun _ _ => rfl⟩) ?_ Dom hsl hDom hwidth
   rintro ⟨h, x⟩ hp
   exact hab h x hp
-
-/-- **Step 2 with affine fibres** (one class, `q = 1`). -/
-theorem single_piece_on_affine_cell {k : Nat} (hk : 0 < k)
-    {c : Real → Real} {w : Real → Nat → Nat}
-    (hc : ∀ t, 0 < t → t ≤ 1 → 0 < c t ∧ c t ≤ 1) (hw : ∀ t, Monotone (w t))
-    {N : Nat} [NeZero N] [Fact N.Prime]
-    (T : Box N k) (J : ModAP N) (hT : T.IsProper) (hJ : J.IsProper) (hTne : T.carrier.Nonempty)
-    (hTd : T.commonDiff ≠ 0) (hJstep : J.step = T.commonDiff)
-    (hshort : 2 * (T.axis ⟨0, hk⟩).length ≤ N) (hTJ : (T.axis ⟨0, hk⟩).length ≤ J.length)
-    (D : Finset (Point N k × ZMod N)) (hD : D ⊆ T.carrier ×ˢ J.carrier)
-    {theta : Real} (hθ : 0 < theta) (hθ1 : theta ≤ 1)
-    (hDc : theta * T.carrier.card * J.carrier.card ≤ D.card)
-    (hJq : 2 ≤ theta ^ 3 * J.length)
-    (phi : Point N k × ZMod N → ZMod N)
-    (haff : ∀ h, ∃ a b : ZMod N, ∀ x, (h, x) ∈ D → phi (h, x) = a * x + b)
-    (Dom : ZMod N → Finset (Point N k))
-    (hsl : ∀ x ∈ J.carrier, LocalPieceFor c w (Dom x) (fun h => phi (h, x)))
-    (hDom : ∀ p ∈ D, p.1 ∈ Dom p.2)
-    (hwidth : 2 ≤ w (c (singlePieceTheta theta 1)) (w (singlePieceTheta theta 1) T.width)) :
-    ∃ (S : Box N (k + 1)) (R : Box N k) (I : ModAP N) (mu : Point N (k + 1) → ZMod N),
-      S.IsProper ∧ IsLastCoordinateBoxProduct S R I ∧ R.carrier ⊆ T.carrier ∧
-      S.carrier ⊆ lastProductSet T.carrier J.carrier ∧
-      Nat.sqrt (w (c (singlePieceTheta theta 1)) (w (singlePieceTheta theta 1) T.width) - 1) - 1
-        ≤ S.width ∧
-      IsMultilinear mu ∧
-      singlePieceDensity c theta 1 * S.carrier.card ≤
-        (D.filter fun p => appendCoordinate p.1 p.2 ∈ S.carrier ∧
-          phi p = mu (appendCoordinate p.1 p.2)).card :=
-  single_piece_on_affine_cell_of_scheme hk (localPieceScheme c w hc hw) T J hT hJ hTne hTd hJstep
-    hshort hTJ D hD hθ hθ1 hDc hJq phi haff Dom hsl hDom hwidth
 
 /-- The density after the spectrum cover: `ρ = (θ/2)·c_R(θ/2)`. -/
 def spectrumPieceRho (cR : Real → Real) (theta : Real) : Real :=

@@ -21,19 +21,6 @@ theorem section16RecurrenceExponent_antitone (k : Nat) :
   apply (inv_le_inv₀ (by positivity) (by positivity)).mpr
   exact pow_le_pow_right₀ hK (Nat.mul_le_mul_left _ hpq)
 
-/-- The corrected Lemma 16.6 width is monotone in the input width. -/
-theorem section16Lemma6Width_mono {m n q k : Nat} {sigma delta theta1 zeta : Real}
-    (hmn : m ≤ n) (hz : 0 ≤ zeta)
-    (ha : 0 ≤ (multipleC ((section16T delta theta1 k)⁻¹ * sigma) delta k) ^
-      section16T delta theta1 k) :
-    section16Lemma6Width m q k sigma delta theta1 zeta ≤
-      section16Lemma6Width n q k sigma delta theta1 zeta := by
-  rw [section16Lemma6Width_eq_sqrt, section16Lemma6Width_eq_sqrt]
-  apply mul_le_mul_of_nonneg_left _ (by positivity)
-  apply Real.sqrt_le_sqrt
-  exact Real.rpow_le_rpow (Nat.cast_nonneg _) (by exact_mod_cast hmn)
-    (mul_nonneg ha (section16RecurrenceExponent_pos_le_one k q).1.le)
-
 theorem lemma6WidthWith_antitone_count {m p q k : Nat} {a zeta : Real}
     (hpq : p ≤ q) (hz : 0 ≤ zeta) (ha : 0 < a) :
     lemma6WidthWith m q k a zeta ≤ lemma6WidthWith m p k a zeta := by

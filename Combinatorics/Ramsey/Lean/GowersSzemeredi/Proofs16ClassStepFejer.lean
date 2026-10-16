@@ -57,10 +57,6 @@ def classPieceThresholdW (V : Real) (dT : Nat) (t1 gamma : Real) (k : Nat) : Rea
   max ((V * (2 / (section16Delta t1 * classBudgetW t1 k))) ^ dT)
     ((V * (2 / (gamma * classBudgetW t1 k))) ^ dT)
 
-theorem classPieceThresholdW_eq (V : Real) (dT : Nat) (t1 gamma : Real) (k : Nat) :
-    classPieceThresholdW V dT t1 gamma k =
-      classPieceThrW (fun theta gamma => (V * (2 / (gamma * theta))) ^ dT) t1 gamma k := rfl
-
 /-! ### Parameters of the step -/
 
 /-- Pieces per relation: `⌊γ⁻²/θ′⌋`. -/

@@ -47,22 +47,11 @@ theorem countWhere_le_card {X : Type*} [Fintype X] (p : X → Prop) :
   simpa [countWhere] using
     Finset.card_le_card (Finset.filter_subset (s := Finset.univ) p)
 
-theorem IsPartition.mem_iff {X : Type*} [DecidableEq X] {m : Nat}
-    {P : Fin m → Finset X} {S : Finset X} (hP : IsPartition P S) (x : X) :
-    x ∈ S ↔ ∃ i, x ∈ P i :=
-  hP.1 x
-
 theorem IsPartition.cell_subset {X : Type*} [DecidableEq X] {m : Nat}
     {P : Fin m → Finset X} {S : Finset X} (hP : IsPartition P S) (i : Fin m) :
     P i ⊆ S := by
   intro x hx
   exact (hP.1 x).2 ⟨i, hx⟩
-
-theorem IsPartition.pairwise_disjoint {X : Type*} [DecidableEq X] {m : Nat}
-    {P : Fin m → Finset X} {S : Finset X} (hP : IsPartition P S) :
-    Set.Pairwise (Set.univ : Set (Fin m)) fun i j ↦ Disjoint (P i) (P j) := by
-  intro i _ j _ hij
-  exact hP.2 i j (bne_iff_ne.mpr hij)
 
 /-- The cells of a finite partition account for the cardinality of the set
 exactly once. -/
@@ -101,11 +90,5 @@ theorem density_le_one {N : Nat} [NeZero N] (A : Finset (ZMod N)) :
   have hcard : A.card ≤ N := by
     simpa only [ZMod.card] using A.card_le_univ
   exact_mod_cast hcard
-
-theorem indicator_discValued {N : Nat} (A : Finset (ZMod N)) :
-    DiscValued (indicator A) := by
-  intro x
-  simp only [indicator]
-  split_ifs <;> simp
 
 end LeanProofs.GowersSzemeredi

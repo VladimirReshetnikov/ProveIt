@@ -151,42 +151,6 @@ theorem section16_synchronized_compressed_cover_family
   exact ⟨p, G, L, S, nu', hp, Finset.inter_subset_left, hGmass, hSpart, hSproper, hnu',
     fun a j z hz hzD hzG => hc' a j z hz hzD hzG⟩
 
-theorem Section16SampledOrAnchoredOn.synchronized_compressed_cover_with
-    {N k r m v : Nat} [Fact N.Prime]
-    {B D F : Finset (Point N (k + 1))}
-    {phi : Point N (k + 1) → ZMod N} {sample : Fin r → ZMod N} {Pb Eb : Real → Real}
-    (ha : Section16SampledOrAnchoredOn D phi sample F) (hD : D ⊆ B)
-    (hslice : MultiplyLinearWith Pb Eb (section16StackedSlices B phi sample))
-    (hr : 0 < r) (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)
-    (hPb : 0 ≤ Pb ε) (hEb : 0 ≤ Eb ε)
-    (T : Box N k) (I : ModAP N) (hT : T.IsProper) (hI : I.IsProper)
-    (hstep : I.step = T.commonDiff) (u : (ZMod N)ˣ) (hu : I.step = (↑u : ZMod N))
-    (hk : 0 < k) (hm : 4 ≤ m) (hmT : m ≤ T.width) (hmI : m ≤ I.length)
-    (hv : 1 ≤ v)
-    (hvscale : (v : ℝ) ^ 2 + 1 ≤ ((m : ℝ) / 8) ^ (Eb ε))
-    (η : ℝ) (hF : F ⊆ lastProductSet T.carrier I.carrier)
-    (hFm : (1 - η) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ F.card) :
-    ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))
-      (nu : Fin L → Fin (section16CompressedCandidateCount r p) →
-        Point N (k + 1) → ZMod N),
-      (p : ℝ) ≤ Pb ε ∧
-      G ⊆ F ∧ (1 - η - ε) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ G.card ∧
-      IsPartition (fun j => (S j).carrier) (lastProductSet T.carrier I.carrier) ∧
-      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
-      (∀ j ij, IsMultilinear (nu j ij)) ∧
-      ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z := by
-  obtain ⟨p, G, L, S, nu, hp, hGF, hGmass, hpart, hproper, hnu, hcover⟩ :=
-    section16_synchronized_compressed_cover_family (ι := Unit)
-      (D := fun _ => D) (F := fun _ => F) (phi := fun _ => phi) (sample := fun _ => sample)
-      (fun _ => ha) hslice (fun _ h i hi => section16StackedSlices_mem h i (hD hi))
-      hr ε hε hε1 hPb hEb T I hT hI hstep u hu hk hm hmT hmI hv hvscale
-      η F (fun _ => Finset.Subset.refl _) hF hFm
-  refine ⟨p, G, L, S, fun j i => nu j ((), i), hp, hGF, hGmass, hpart, hproper,
-    fun j i => hnu j ((), i), ?_⟩
-  intro j z hz hzD hzG
-  obtain ⟨⟨⟨⟩, i⟩, hi⟩ := hcover () j z hz hzD hzG
-  exact ⟨i, hi⟩
-
 /-- Finitely many good sets inside one set lose at most the sum of their
 losses. -/
 theorem good_finite_intersection_mass {α : Type*} [DecidableEq α] {ι : Type} [Fintype ι]

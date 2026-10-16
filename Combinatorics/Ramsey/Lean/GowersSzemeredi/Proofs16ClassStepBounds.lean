@@ -35,12 +35,6 @@ theorem gen_exp_fact1 (k : Nat) : k + 34 + 2 ^ (2 ^ (k + 5) + 4) ≤ 2 ^ (2 ^ (k
   have h4 : 2 ^ (2 ^ (k + 5) + 5) = 2 ^ (2 ^ (k + 5)) * 32 := by rw [pow_add]; norm_num
   omega
 
-theorem gen_exp_fact2 (k : Nat) : 37 + (2 ^ (2 ^ (k + 5) + 1) + 2) * 6 ≤ 2 ^ (2 ^ (k + 5) + 5) := by
-  have h1 := two_pow_k5_ge k
-  have h2 := two_pow_X_ge k
-  have h4 : 2 ^ (2 ^ (k + 5) + 5) = 2 ^ (2 ^ (k + 5)) * 32 := by rw [pow_add]; norm_num
-  omega
-
 theorem gen_exp_fact3 (k : Nat) : 2 + 2 ^ (2 ^ (k + 5) + 5) ≤ 2 ^ (2 ^ (k + 5) + 6) := by
   have h1 := two_pow_k5_ge k
   have h2 := two_pow_X_ge k
@@ -155,7 +149,6 @@ theorem section16Zeta_inv_le_gen {gamma theta : Real} (k : Nat) (hg : 0 < gamma)
     calc Real.log 2 * multipleS theta gamma k ≤ 1 * multipleS theta gamma k :=
           mul_le_mul_of_nonneg_right h hm0
       _ = multipleS theta gamma k := one_mul _
-
 
 /-! ### Lemma 15.6's threshold -/
 

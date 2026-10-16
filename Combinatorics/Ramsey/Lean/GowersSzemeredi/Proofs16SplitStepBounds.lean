@@ -201,7 +201,6 @@ def swCountW (P k a D : Nat) : Nat := P + 1 + 2 * swSW P k a D + 2 * swPbW P k a
 def swEbW (P k a D : Nat) : Nat := a * (P + 1) + D * (P + 6)
 def swErW (P k a D : Nat) : Nat := (swStepY P k a D + 4) * 2 ^ k
 def swBqW (P k a D : Nat) : Nat := 4 + (swEbW P k a D + 1) * 2 ^ (k + 2)
-def swLW (P k a D : Nat) : Nat := swBqW P k a D + (swErW P k a D + swEbW P k a D)
 def swZW (P T k a D : Nat) : Nat := T + a + swEbW P k a D + 7
 def swPbW2 (P k ac Dc ae De : Nat) : Nat := ae * (P + swSW P k ac Dc + 1) + De * (P + 5)
 def swLW2 (P k ac Dc ae De : Nat) : Nat := swBqW P k ac Dc + (swErW P k ae De + swEbW P k ae De)
@@ -235,19 +234,6 @@ theorem split_step_basics_W {P m : Nat} {tS gS V V' : Real} (hV : 1 ≤ V) (hVV 
     rw [Nat.cast_mul, pow_one]
     exact mul_le_mul hn hmW (Nat.cast_nonneg _) (le_trans zero_le_one hν)
   exact ⟨hM, tb_add_one hν hw2 hM, lift _ _ hgd, lift _ _ hdd⟩
-
-/-- The piece count `M = n·m` and the level-`k` bases, in the two bases. -/
-theorem split_step_basics {k : Nat} {V V' : Real} (hV : 1 ≤ V) (hVV : V ≤ V')
-    {theta gamma rho : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1) (ht : 0 < theta) (ht1 : theta ≤ 1)
-    (hr : 0 < rho) (hr1 : rho ≤ 1) (n : Nat) :
-    let ν : Real := (n : Real) + 1
-    let W := splitW V' theta gamma rho
-    (((n * classPieces gamma theta k : Nat) : Real) ≤ ν ^ 1 * W ^ (stepP k)) ∧
-      (((n * classPieces gamma theta k : Nat) : Real) + 1 ≤ ν ^ 1 * W ^ (stepP k + 1)) ∧
-      (2 / (gamma * classBudget theta gamma k) ≤ W ^ (stepP k + 1)) ∧
-      (2 / (classDelta theta gamma k * classBudget theta gamma k) ≤ W ^ (stepP k + 1)) :=
-  split_step_basics_W hV hVV hg hg1 ht ht1 hr hr1 n (classPieces_le_stepP k hg hg1 ht ht1) (twoDiv_gamma_le k hg hg1 ht ht1)
-    (twoDiv_delta_le k hg hg1 ht ht1)
 
 /-! ### The remainder count, the samples and the slices -/
 

@@ -25,7 +25,7 @@ and the face `firstFixedFace x₀ : y ↦ (x₀, y)`.
 The budgets `polyPieceBudgetW`, `polyPieceSpecCountW`, `polyPieceFaceCountW` and
 `section16_poly_piece_two_data_with` take the density `t1` and the radius `ζ`
 as parameters (Notes L.16d). At the printed values the budgets are the printed
-ones by `rfl` (`…W_printed`), and `section16_poly_piece_two_data` is the
+ones by `rfl`, and `section16_poly_piece_two_data` is the
 instance. -/
 set_option autoImplicit false
 noncomputable section
@@ -137,16 +137,6 @@ def polyPieceSpecCountW (t1 : Real) : Nat :=
 /-- The Freiman-family count of the faces and slices, at density `t1`. -/
 def polyPieceFaceCountW (t1 gamma : Real) : Nat :=
   section16BaseFamilyBound gamma (polyPieceBudgetW t1)
-
-theorem polyPieceBudgetW_printed (theta gamma : Real) :
-    polyPieceBudgetW (section16ThetaOne theta gamma 1) = polyPieceBudget theta gamma := rfl
-
-theorem polyPieceSpecCountW_printed (theta gamma : Real) :
-    polyPieceSpecCountW (section16ThetaOne theta gamma 1) = polyPieceSpecCount theta gamma := rfl
-
-theorem polyPieceFaceCountW_printed (theta gamma : Real) :
-    polyPieceFaceCountW (section16ThetaOne theta gamma 1) gamma =
-      polyPieceFaceCount theta gamma := rfl
 
 theorem section16_theta_delta_bounds_with {t1 : Real} (ha0 : 0 < t1 / 4) (haS : t1 / 4 ≤ 1 / 36) :
     0 < t1 ∧ t1 ≤ 1 ∧ 0 < section16Delta t1 ∧ section16Delta t1 ≤ 1 := by

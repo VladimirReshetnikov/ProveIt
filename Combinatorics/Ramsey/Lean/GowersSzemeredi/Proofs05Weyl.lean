@@ -392,22 +392,6 @@ private def iteratedDifferenceNormSqSum (phi : Int → Real) (t : Nat) :
   | j + 1, hs =>
       ∑ h ∈ weylShiftRange t, iteratedDifferenceNormSqSum phi t j (h :: hs)
 
-private lemma iteratedDifferenceNormSum_nonneg (phi : Int → Real) (t j : Nat)
-    (hs : List Int) : 0 ≤ iteratedDifferenceNormSum phi t j hs := by
-  induction j generalizing hs with
-  | zero => simp [iteratedDifferenceNormSum]
-  | succ j ih =>
-      simp only [iteratedDifferenceNormSum]
-      exact sum_nonneg fun h _ => ih _
-
-private lemma iteratedDifferenceNormSqSum_nonneg (phi : Int → Real) (t j : Nat)
-    (hs : List Int) : 0 ≤ iteratedDifferenceNormSqSum phi t j hs := by
-  induction j generalizing hs with
-  | zero => simp [iteratedDifferenceNormSqSum]
-  | succ j ih =>
-      simp only [iteratedDifferenceNormSqSum]
-      exact sum_nonneg fun h _ => ih _
-
 private lemma iteratedDifferenceNormSum_sq_le (phi : Int → Real) (t j : Nat)
     (hs : List Int) :
     iteratedDifferenceNormSum phi t j hs ^ 2 ≤
@@ -750,15 +734,6 @@ private def iteratedNonzeroDifferenceNormSum (phi : Int → Real) (t : Nat) :
   | j + 1, hs =>
       ∑ h ∈ (weylShiftRange t).erase 0,
         iteratedNonzeroDifferenceNormSum phi t j (h :: hs)
-
-private lemma iteratedNonzeroDifferenceNormSum_nonneg
-    (phi : Int → Real) (t j : Nat) (hs : List Int) :
-    0 ≤ iteratedNonzeroDifferenceNormSum phi t j hs := by
-  induction j generalizing hs with
-  | zero => simp [iteratedNonzeroDifferenceNormSum]
-  | succ j ih =>
-      simp only [iteratedNonzeroDifferenceNormSum]
-      exact sum_nonneg fun h _ => ih _
 
 private def weylZeroContribution (t : Nat) : Nat → Real
   | 0 => 0

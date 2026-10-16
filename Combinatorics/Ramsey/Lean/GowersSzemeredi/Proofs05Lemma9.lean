@@ -209,24 +209,4 @@ theorem polynomialPartitionIteratedRoundingThreshold_le_roundingSafe
     (polynomialPartitionThreshold k) (polynomialPartitionConstant k)
     (q - 1) hT hK
 
-/-- At `r = T^K + 1`, the unrepaired ideal-root threshold `T^K < r` holds,
-but no
-integer target `u >= T+1` can satisfy `u^K <= r`.  Such a target is exactly
-the weakest conceivable rounding margin; the next strict Corollary 5.6 call
-actually needs the still stronger `u >= T+2`. -/
-theorem polynomialPartition_rounding_threshold_gap
-    (T K : Nat) (hT : 1 <= T) (hK : 2 <= K) :
-    T ^ K < T ^ K + 1 /\
-      ¬ exists u : Nat, T + 1 <= u /\ u ^ K <= T ^ K + 1 := by
-  refine ⟨Nat.lt_add_one _, ?_⟩
-  rintro ⟨u, hu, hupow⟩
-  have hbase : (T + 1) ^ K <= u ^ K :=
-    pow_le_pow_left₀ (by omega) hu K
-  have hgap : T ^ K + 1 < (T + 1) ^ K := by
-    have htwo : T ^ K + 2 <= (T + 1) ^ K := by
-      exact (Nat.add_le_add_left hK (T ^ K)).trans
-        (pow_add_exponent_le_add_one_pow T K hT)
-    omega
-  omega
-
 end LeanProofs.GowersSzemeredi

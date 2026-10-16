@@ -75,17 +75,4 @@ theorem intervalUniformityParameter_count_error {delta : Real} {k : Nat}
   rw [hroot]
   field_simp
 
-/-- A single explicit parameter suffices for the stopping branch at any
-progression length. No higher-degree inverse theorem is assumed here. -/
-theorem interval_uniform_stopping {N L k : Nat} [NeZero N] [Fact N.Prime]
-    (hk : 2 ≤ k) (hL : 2 * L < N) (hkL : k ≤ L) (hNL : N ≤ 8 * L)
-    (B : Finset (Fin L)) (delta : Real) (hδ : 0 < delta) (hδone : delta ≤ 1)
-    (hlarge : 512 * (k : Real) ^ 2 < delta ^ k * N)
-    (hu : UniformOfDegree (intervalExtension N (finiteIntervalBalance B delta))
-      (intervalUniformityParameter delta k) (k - 2)) : HasNatAP (B.image Fin.val) k := by
-  exact interval_relative_uniform_hasNatAP hk hL hkL hNL B delta
-    (intervalUniformityParameter delta k) hδ.le hδone
-    (intervalUniformityParameter_pos hδ (by omega)).le
-    (intervalUniformityParameter_count_error hδ.le (by omega)).le hlarge hu
-
 end LeanProofs.GowersSzemeredi

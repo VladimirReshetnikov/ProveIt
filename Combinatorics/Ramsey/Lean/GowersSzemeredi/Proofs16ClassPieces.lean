@@ -304,12 +304,6 @@ def classBudgetW (t1 : Real) (k : Nat) : Real := section16ThetaTwo t1 / 2 ^ (k +
 def classPieceThrW (Thr : Real → Real → Real) (t1 gamma : Real) (k : Nat) : Real :=
   max (Thr (classBudgetW t1 k) (section16Delta t1)) (Thr (classBudgetW t1 k) gamma)
 
-theorem classBudgetW_printed (theta gamma : Real) (k : Nat) :
-    classBudgetW (section16ThetaOne theta gamma k) k = classBudget theta gamma k := rfl
-
-theorem classPieceThrW_printed (Thr : Real → Real → Real) (theta gamma : Real) (k : Nat) :
-    classPieceThrW Thr (section16ThetaOne theta gamma k) gamma k = classPieceThr Thr theta gamma k := rfl
-
 theorem classBudgetW_pos_le {t1 : Real} (k : Nat) (ha0 : 0 < t1 / 4) (haS : t1 / 4 ≤ 1 / 36) :
     0 < classBudgetW t1 k ∧ classBudgetW t1 k ≤ 1 := by
   obtain ⟨h0, h1⟩ := section16ThetaTwo_pos_le_with ha0 haS
