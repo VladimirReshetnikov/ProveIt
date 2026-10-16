@@ -190,6 +190,8 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `NumericCode254.lean` | Exact equality of the two pairing/encoding definitions and equivalence of their twelve-constructor numerical derivability relations, including zero and all actual gates. |
 | `RegisterMark253.lean`, `RegisterIncrement253.lean` | Actual public253 marking and increment excursions, with arbitrary register values and spares, exact step counts and whole-tape output. PC updates, positive decrement and general dispatch remain separate. |
 | `QuotientSeparation.lean` | The full quotient satisfies the actual `Sep_form` schema for arbitrary formulas and quotient parameter valuations, using a literal equality-free GIC matrix. Other ZF axioms remain separate. |
+| `QuotientPower.lean`, `QuotientReplacement.lean` | Actual quotient `Pow_form` and all `Repl_form` instances, using literal trace/filter and guarded translated matrices; quotient subsets and parameter valuations are unrestricted. |
+| `RegisterDecrement253.lean` | Positive decrement of the actual public253 table: arbitrary register values, exact twice-old-file-width-plus-three duration, all spare data preserved and the additional zero spare retained. All four register boxes are now proved; PC and general dispatch remain separate. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
@@ -222,8 +224,8 @@ Rebuild the entire small dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 64 source units: the first-order logic, calculus and completeness
-modules, `ZF.Zf`, `BusyBeaver.Core`, 58 research modules and the umbrella into a
+This compiles 67 source units: the first-order logic, calculus and completeness
+modules, `ZF.Zf`, `BusyBeaver.Core`, 61 research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the prior 38-unit fresh source check and axiom outputs. The seven
@@ -257,6 +259,11 @@ The [abstract enumerator audit](enum254_review.md) and
 [quotient Separation](quotient_separation.md) extend the runner to 64 units.
 `results/enum-separation-integration-verification.json` records the corrected
 enumerator, Separation and umbrella checks with previously verified dependencies.
+The [Power Set](quotient_power.md), [Replacement](quotient_replacement.md) and
+[positive-decrement](register_decrement253.md) developments bring the runner
+to 67 units. Their scoped source, caller and axiom checks are linked in those
+notes; `results/power-replacement-decrement-integration-verification.json`
+records the joint source and umbrella check with the earlier dependencies reused.
 The standalone BusyBeaver Lake package declares its FirstOrder and ZF path
 dependencies; the ZFC umbrella is opt-in.
 

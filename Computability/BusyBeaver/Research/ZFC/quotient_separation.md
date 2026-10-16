@@ -85,3 +85,8 @@ Commands and results are recorded in
 axioms, the singleton-closed versus usual Infinity comparison, the
 opposite ZFC-to-source interpretation, numerical enumeration and binary
 execution remain separate. No machine or state bound changes here.
+
+The subsequent [Power Set](quotient_power.md) and
+[Replacement](quotient_replacement.md) modules now discharge those actual
+quotient axioms using literal formula-indexed instances. The other remaining
+interpretation and machine obligations are unchanged by these results.

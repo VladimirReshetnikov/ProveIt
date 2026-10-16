@@ -1,0 +1,72 @@
+{
+  "scope": "Scoped Power/Replacement/positive-decrement integration; previously verified64 dependencies reused, no full source closure or bootstrap rebuild.",
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "scratch": "/tmp/zfc-power-replacement-decrement-integration-l9dibtbd",
+  "dependency_cache": "/tmp/zfc-enum-separation-integration-n2oad713",
+  "default_source_units": 67,
+  "research_modules": 61,
+  "dependency_order_checked": true,
+  "modules": [
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientPower.lean",
+      "source_sha256": "d911fcca763a0e8a1e2b6e85e2222ac62c2ae92d8c7177991d8f2a1e2563235e",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-power-replacement-decrement-integration-l9dibtbd/BusyBeaver/ZFC/QuotientPower.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientPower.lean"
+      ],
+      "seconds": 0.339,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientReplacement.lean",
+      "source_sha256": "456a06ccda2fc6193b2f0173f1715a70d73e0d81a4a36a2ebd6577bb3755a14d",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-power-replacement-decrement-integration-l9dibtbd/BusyBeaver/ZFC/QuotientReplacement.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientReplacement.lean"
+      ],
+      "seconds": 0.357,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterDecrement253.lean",
+      "source_sha256": "29920971f0835fc7392df9c5e59d0561945acc74f972aed7a8c8c72b939f7a77",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-power-replacement-decrement-integration-l9dibtbd/BusyBeaver/ZFC/RegisterDecrement253.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterDecrement253.lean"
+      ],
+      "seconds": 0.904,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean",
+      "source_sha256": "3d3720d68608916910bd104a8de6d93201c561eeb284e078559460a773c01907",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-power-replacement-decrement-integration-l9dibtbd/BusyBeaver/ZFC.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean"
+      ],
+      "seconds": 0.481,
+      "returncode": 0,
+      "output": ""
+    }
+  ],
+  "audit": {
+    "source": "import BusyBeaver.ZFC\nopen SetTheory.BusyBeaver.ZFC\n#print axioms QuotientPower.quotient_power\n#print axioms QuotientPower.quotient_pow_form\n#print axioms QuotientReplacement.quotient_replacement\n#print axioms QuotientReplacement.quotient_repl_form\n#print axioms RegisterDecrement253.zipRep_pad_right\n#print axioms RegisterDecrement253.positive_decrement\nexample {V : Type} (mem : V \u2192 V \u2192 Prop) (hirr : \u2200 x, \u00ac mem x x)\n    (v : V) (h : Code254Models.ModelsDecoded mem) :\n    \u2200 phi env, SetTheory.Sat\n      (QuotientModel.quotientMember mem v\n        (Code254Models.modelsCPGIC_of_decoded mem hirr h (fun _ => v))) env\n      (SetTheory.Repl_form phi) :=\n  QuotientReplacement.quotient_repl_form mem v\n    (Code254Models.modelsCPGIC_of_decoded mem hirr h (fun _ => v))\n",
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "/tmp/zfc-power-replacement-decrement-integration-l9dibtbd/Audit.lean"
+    ],
+    "returncode": 0,
+    "output": "'SetTheory.BusyBeaver.ZFC.QuotientPower.quotient_power' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientPower.quotient_pow_form' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientReplacement.quotient_replacement' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientReplacement.quotient_repl_form' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.RegisterDecrement253.zipRep_pad_right' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.RegisterDecrement253.positive_decrement' depends on axioms: [propext, Quot.sound]\n"
+  }
+}

@@ -80,3 +80,9 @@ endpoint remain open. The result makes no first-arrival or complete logical
 `EDecnz` claim. The next modular source contracts are `box_mark`, `box_inc`
 and `box_decp`; positive decrement must preserve the arbitrary suffix while
 appending the extra zero block required by the original source invariant.
+
+The subsequent [marking and increment proofs](register_mark_increment253.md)
+and [positive-decrement proof](register_decrement253.md) now complete all four
+register-box excursions for the actual253 table. The latter retains the added
+zero spare and proves its extra false-padding representation step. PC updates,
+reachable program paths and general dispatch remain separate.
