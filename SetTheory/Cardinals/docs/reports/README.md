@@ -2254,7 +2254,7 @@ subset-PSC results have their own narrower scope; no new internally
 ZFC-certified sub-254 endpoint is supplied. Placement `ac4287e5b` and
 reconciliation `6d8bc7f1b` preserve all sources and independent reviews.
 
-Batches 145 and 146 add six manuscripts to the same host, now fifteen
+Batches 145 and 146 add six manuscripts to the same host, then fifteen
 sources in one report. Batch 145 (`9c98495586`, `96836f9eea`) contributes
 ordinary two-sided equality erasure and exact 250/248-state compiler artifacts
 (placement `3cc6ba5b1`, reconciliation `5ae03164f`). Batch 146 (`47f3a36029`,
@@ -2273,6 +2273,21 @@ A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
 own theorems are not formalized.
 
+Batches 147 and 148 add sources 16 and 17, bringing this host to seventeen
+manuscripts while the collection remains 290 reports. Arrival `9439d775aa`
+(placement `520bcb2a1`, write `c2d9eba53`) gives a genuine-Bottom ternary codec,
+a complete Hilbert reference and distinct 250/251/252 compiler controls.
+The finite-sort model also excludes those unchanged reduced frontends.
+Arrival `5e5603303d` (placement `30e6d1fd1`, write `90be76d59`) gives an ordinary
+PA strengthening, a general fresh-hull obstruction, a complete ground-clause
+reference and a local tagged Capture repair. Its complete original-word
+270-state comparison does not improve the prior 269. All advertised suites,
+searches and independent certificates replay on copies. The new ternary
+codec has subsequent Lean round-trip, freshness and semantic-preservation
+proofs (`830647031`); the whole reference frontend and machine endpoint remain
+unformalized. The base article is unchanged; detailed reconciliation and
+runnable recovery helpers are in the host.
+
 ## Rebuilding the manifest
 
 ```sh
@@ -2281,8 +2296,8 @@ latexmk -pdf manifest.tex && latexmk -c manifest.tex
 
 ## Merged reports
 
-Batches 143–146's [closure kernels](set-theory/zfc-closure-kernels) are a
-complementary merge and twelve additions with a reconciliation README: the
+Batches 143–148's [closure kernels](set-theory/zfc-closure-kernels) are a
+complementary merge and fourteen additions with a reconciliation README: the
 seeded base, BIC control, exact-fiber alternative and later saturation/engineering
 work retain their distinct hypotheses,
 metrics and verification evidence. The member articles remain recoverable

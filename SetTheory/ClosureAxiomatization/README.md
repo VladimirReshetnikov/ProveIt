@@ -18,11 +18,13 @@ The Lean development is mathlib-free. Its standalone project is under
 
 The external report
 [`ZFC closure kernels`](../Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md)
-(batches 143–146) compares bounded-image, seeded and exact-fiber closure schemas
+(batches 143–148) compares bounded-image, seeded and exact-fiber closure schemas
 for a small ZFC-inconsistency search machine, with a new mathematical
 PSC-only hereditary-saturation interpretation and an equivalent empty-input
 schema. The reduced numerical C/G calculus has a reviewed finite-sort
-countermodel; this does not refute the ordinary set-theory interpretation.
+countermodel, with an ordinary PA strengthening; this does not refute the
+ordinary set-theory interpretation. Complete Hilbert and ground-clause
+references are supplied separately from the experimental binary tables.
 These delivery claims are
 not formalized in this project; specific subset-PSC results are now checked
 in `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PSCCalibration.lean`. The existing `T_iff_ZF` theorem and Foundation-free

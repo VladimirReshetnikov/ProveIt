@@ -800,7 +800,7 @@ Source **16**, `zfc_small_machine_research (2).zip`, arrived in `9439d775aa`
 and was placed in `520bcb2a1`. Its main review pin is
 `96836f9eea3540e96322c3d28c7127a582aae223`; the inherited machine/backend pin
 is `297ab8df7e5de329605c3875b4934643b371a5e3`. It continues this report's
-PSC, numerical syntax and proof-language spine. The source08 PSC calibration
+PSC, numerical syntax and proof-language spine. The source 08 PSC calibration
 is explicitly credited, as are Mira-Cult, Jeff and Andrew James Wade. No
 blanket license is inferred for unlicensed upstream material.
 
@@ -808,11 +808,11 @@ The manuscript independently reconstructs the accepted ordinary raw-PSC
 interpretation, including the full incoming/outgoing profile decoder,
 hereditary saturation, noncircular local bounds, and the extensional
 exact-fiber converse. Its Empty/Power argument excludes finite models without
-requiring Extensionality. These overlap source08 and the later Lean resources;
+requiring Extensionality. These overlap source 08 and the later Lean resources;
 they do not fill the still-open whole-theory Lean interpretation.
 
-The new numerical codec reserves code1 as primitive Bottom while moving
-membership from `3P(i,j)+1` to `3P(i,j)+4`. Truth0, implication `3P` and
+The new numerical codec reserves code 1 as primitive Bottom while moving
+membership from `3P(i,j)+1` to `3P(i,j)+4`. Truth 0, implication `3P` and
 universal quantification `3P+2` are unchanged. Every natural decodes exactly;
 formula round trips recursively contract only Truth→Truth. This is neither
 alpha canonicalization nor arbitrary Boolean simplification. Every variable
@@ -833,7 +833,7 @@ support the ordinary soundness/completeness and reference-search argument.
 This is a separate unbounded algorithm, not the frontend of any supplied table.
 The checker and its Python runtime are not kernel verified.
 
-| Source16 experiment | Decision + framework | Total binary rows |
+| Source 16 experiment | Decision + framework | Total binary rows |
 |---|---|---|
 | Original-rho6 C/G/V, relative falsity | 188 + 62 = **250** | 500 |
 | Same word, genuine ternary Bottom | 189 + 62 = **251** | 502 |
@@ -886,8 +886,8 @@ Independent scratch verification reproduced:
   and 20,000 semantic comparisons; 2,000 fixed-slot cases and three exact
   wrapper AST comparisons.
 - All nine table/name-map outputs and two sets of 225 constructor contracts;
-  2,200 original-row seeds (128 minima250), and 200 seeds in each Bottom lane
-  (eight minima251; only seed93 attains252). Entire recorded search metadata
+  2,200 original-row seeds (128 minima 250), and 200 seeds in each Bottom lane
+  (eight minima 251; only seed 93 attains 252). Entire recorded search metadata
   match. These are bounded-family minima, not lower bounds.
 - Conservative graph/bisimulation/window audits of all three tables and the
   auditor's eleven regression cases; no safe state merge found.
@@ -900,7 +900,7 @@ All 74 delivered files (67 distinct Git blobs) were searched in history;
 manuscript. Placement preserves 64 ancillary files with prefix `16-bot3-`.
 The ten article/section/PDF/delivery-README files remain archive-only.
 `data/intake-147-placement.json` maps every path, with maximum Windows-prefixed
-length148; `intake-147-placement-check.json` verifies all placed blobs in the
+length 148; `intake-147-placement-check.json` verifies all placed blobs in the
 placement commit's own tree against fresh extraction. Original source layout,
 imports and paths remain verbatim. In particular the copied upstream notice
 refers to a larger historical import, not all files in this subset. No
@@ -928,7 +928,7 @@ Source **17**, `zfc_consistency_machine_report_20261016.zip`, arrived in
 `5e5603303d` and was placed in `30e6d1fd1`. Its audit cutoff is
 `47f3a3602946dfe48803a91a910c646e74637ac8`. The PSC interpretation, sorted
 countermodel and schema constructor are credited to sources08/12/13;
-the full-word grammar tools descend from source08, with ProveIt helper pin
+the full-word grammar tools descend from source 08, with ProveIt helper pin
 `17d0f2eaa` and upstream Mira-Cult/Jeff/Wade pin `297ab8df7e`. The attributed
 public253 proof is a prior benchmark, not a new result of this manuscript.
 No Coq build was repeated at intake.
@@ -940,7 +940,7 @@ truth tables for all codes k≤n, and bounds their concatenation below
 and ambient projection coherence yield one uniform validity predicate Val(k).
 All C/G witnesses are bounded arithmetic sums/tests. Induction proves the
 validity of every finite proof and every current/cache/stack entry of the
-abstract enumerator, while target1 is false. The argument is accepted as an
+abstract enumerator, while target 1 is false. The argument is accepted as an
 ordinary proof of PA provability; neither a PA derivation nor a Lean theorem
 is delivered. Entry/read counts are not bit-operation runtime bounds. The
 literal-table nonhalting conclusion remains conditional on simulation.
@@ -978,23 +978,23 @@ separate 270-state control.
 
 That control retains **all original equality, logical and theory rows**.
 It preserves a 186-token expansion of the original AX word, with seventeen
-used closed macros, and transforms 219 decision nodes to208. The public
-framework contributes62, so the actual output has **270 named working states,
+used closed macros, and transforms 219 decision nodes to 208. The public
+framework contributes 62, so the actual output has **270 named working states,
 539 partial rows**, start `0.boot.A`, and only `1.inc/read1` undefined. No total
 numbered table is delivered. The 4,000-choice search (1,000 seeds at each
-exponent1/2/4/8) reproduces every histogram and all six output artifacts.
-The selected recipe is exponent4/seed287, with26 productions and78 residual
-tokens. Its independent register certificate verifies4,533 operation pairs
-(2,601 increments,1,931 decrements,one halt), both decrement exits, all related
+exponents 1/2/4/8) reproduces every histogram and all six output artifacts.
+The selected recipe is exponent 4 / seed 287, with 26 productions and 78 residual
+tokens. Its independent register certificate verifies 4,533 operation pairs
+(2,601 increments, 1,931 decrements, one halt), both decrement exits, all related
 sites and entry, and finite contracted control paths. Both unfolded programs
-have6,460 sites. Six certificate mutations are rejected. This is an ordinary
+have 6,460 sites. Six certificate mutations are rejected. This is an ordinary
 register correspondence, not a binary simulation or an instance of the Lean
-register theorem. The prior source08 recipe was also reproduced at269 states:
-its coarser185-token word expands to the same186-token word. The new control
+register theorem. The prior source 08 recipe was also reproduced at 269 states:
+its coarser 185-token word expands to the same 186-token word. The new control
 is therefore a comparison, not a new state record or lower bound.
 
 The article retains finite predicative class theory (with set Choice), its
-possible15-axiom presentation and proof-elimination obligations, and the
+possible 15-axiom presentation and proof-elimination obligations, and the
 artificial SK carrier route. Neither provides a free small interpreter or
 expanded fixed payload. A primitive-recursive external proof transformer
 alone is not a PA proof of its correctness. Equality/nontriviality, full
@@ -1004,10 +1004,10 @@ where they require full translation, enumeration, runtime or consistency proofs.
 
 One local external inference is corrected. We inspected the primary
 [Friedman manuscript](https://bpb-us-w2.wpmucdn.com/u.osu.edu/dist/1/1952/files/2020/09/NBGAxioms091520.pdf),
-Theorem3.21, printed page19. Let A={0,2}, with witnesses (0,1) and (2,3).
-The family containing only `{0,{0,1}}=A` covers A by union, although input2
+Theorem 3.21, printed page 19. Let A={0,2}, with witnesses (0,1) and (2,3).
+The family containing only `{0,{0,1}}=A` covers A by union, although input 2
 is covered through another input's second component; its double union omits
-witness3. Thus the displayed untagged extraction does not follow from Capture.
+witness 3. Thus the displayed untagged extraction does not follow from Capture.
 This refutes that step, not Capture or the theorem's global NBG equivalence.
 The supplied repair tags inputs `<0,x>` and outputs `<1,y>`. The tagged input
 set is bounded in a double power set, without Replacement; disjoint tags force
@@ -1017,14 +1017,14 @@ tags are explicit assumptions. No Choice, Collection, Foundation or Infinity
 is used beyond those resources. No current repository assertion of the faulty
 step needed a pre-placement retraction.
 
-Independent finite checks reproduce159 formulas /2,862 finite
-structure-Skolem comparisons, all20,854 relevant three-atom clause families
-and4,613 refutations,15 invalid traces,200 actual PSC matrices (2,167 clauses,
-1,326 Skolem symbols, maximum arity5),5,000 round trips for each of three
+Independent finite checks reproduce 159 formulas / 2,862 finite
+structure-Skolem comparisons, all 20,854 relevant three-atom clause families
+and 4,613 refutations, 15 invalid traces, 200 actual PSC matrices (2,167 clauses,
+1,326 Skolem symbols, maximum arity 5), 5,000 round trips for each of three
 codecs, and both cross-variable/diagonal specialization examples. The inherited
 countermodel suite and the Capture counterexample/tagged regression pass.
-A1,000-candidate search prefix rejects every candidate and proves no consistency
-statement. The scratch PDF rebuild has25 pages,18 embedded fonts and zero
+A 1,000-candidate search prefix rejects every candidate and proves no consistency
+statement. The scratch PDF rebuild has 25 pages, 18 embedded fonts and zero
 warnings or cross-reference defects; all-page contact sheet and five enlarged
 pages were inspected, as was the primary external page.
 
@@ -1036,12 +1036,12 @@ The arbitrary-formula hereditary translation, all local-bound/invariance
 obligations, proof-predicate calibration and full machine endpoint remain.
 These partial advances do not certify the new Python frontend or table.
 
-Placement preserves46 ancillary files under `17-clause-`; four main/experimental
-TeX, PDF and delivery-README files remain archive-only. All50 files/49 distinct
-Git blobs were searched in history;16 borrowed blobs do not constitute a prior
+Placement preserves 46 ancillary files under `17-clause-`; four main/experimental
+TeX, PDF and delivery-README files remain archive-only. All 50 files / 49 distinct
+Git blobs were searched in history; 16 borrowed blobs do not constitute a prior
 placement of this manuscript. The placement map and fresh-extraction/own-tree
 check are `data/intake-148-placement{,-check}.json`, with maximum Windows path
-length141. Borrowed notices retain larger historical-package references;
+length 141. Borrowed notices retain larger historical-package references;
 flattened imports and paths are intentionally unchanged. No manifests or
 line endings were audited. Full independent reviews are
 `intake-148-source-17{,-article,-machine}.md`, with `data/intake-148-*.json`
