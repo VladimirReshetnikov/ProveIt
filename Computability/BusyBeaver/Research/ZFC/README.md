@@ -33,6 +33,14 @@ was completed before this research: placement `b07d1a27b`, reconciliation
 `83ef1da6b`, catalogue `1ce7ab050`. The three source archives remain
 recoverable from arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`.
 
+Batch 144 adds six later reports to the same host (placement `ac4287e5b`,
+reconciliation `6d8bc7f1b`), including arrivals `39409c8c9` and `83dec60c2`.
+The accepted ordinary PSC-only hereditary-saturation argument is local source
+08; the new `PSCSaturation` module checks its semantic hull transfer under
+explicit resources. The host also attributes the existing 253 reduction to
+mira-emmy/Mira-Cult/Jeff and distinguishes all prepared/runtime-only and
+experimental 252 artifacts. The delivered claims have no automatic Lean status.
+
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
 A positive singleton-decoder hull covers the root's members without

@@ -17,10 +17,12 @@ collection of research reports on other subjects.
 - [`ClosureAxiomatization/`](ClosureAxiomatization/) proves that replacing
   Pairing, Union, Infinity, and Replacement by the set-like-relation Closure
   schema is semantically and deductively equivalent to ordinary ZF.
-  The unformalized report
+  The external report
   [`zfc-closure-kernels`](Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md)
   compares smaller bounded-image, seeded and exact-fiber alternatives for
-  a ZFC-inconsistency search machine; it supplies no new machine table.
+  a ZFC-inconsistency search machine. Its additions give a mathematical
+  PSC-only interpretation and attributed machine/compiler experiments;
+  the internal ZFC endpoint remains open.
 - [`Cardinals/`](Cardinals/) studies exacting, ultraexacting and
   cover-exacting cardinals: research reports, a synthesis stating each result
   once in its strongest form (in ZFC, a cover-exacting cardinal cannot lie
