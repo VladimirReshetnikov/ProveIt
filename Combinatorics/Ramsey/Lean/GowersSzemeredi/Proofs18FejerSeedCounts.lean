@@ -57,35 +57,9 @@ theorem polyPieceBudgetW_fejer_ge_power {gamma theta : Real} (hg : 0 < gamma) (h
     (ht : 0 < theta) (ht1 : theta ≤ 1) :
     ((2 / (gamma * theta)) ^ ((2 : Nat) ^ 23))⁻¹ ≤
       polyPieceBudgetW (fejerThetaOne theta gamma 1) := by
-  obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-  have hθ1 := fejerThetaOne_one_ge_power hg hg1 ht ht1
-  set u := 2 / (gamma * theta) with hu
-  clear_value u
-  have hu1 : 1 ≤ u := by linarith
-  have hupos : 0 < u := by linarith
-  have h35 : (u ^ 35)⁻¹ ≤ (2 : Real) ^ (-(32 : Real)) / 8 := by
-    have h1 : (2 : Real) ^ (-(32 : Real)) / 8 = ((2 : Real) ^ 35)⁻¹ := by
-      rw [Real.rpow_neg (by norm_num)]
-      norm_num
-    rw [h1]
-    exact inv_anti₀ (by positivity) (pow_le_pow_left₀ (by norm_num) hu2 35)
-  have hθ18 : (u ^ ((2 : Nat) ^ 22))⁻¹ ≤ fejerThetaOne theta gamma 1 ^ 8 := by
-    have h := pow_le_pow_left₀ (inv_nonneg.mpr (pow_pos hupos _).le) hθ1 8
-    rw [inv_pow, ← pow_mul] at h
-    refine le_trans ?_ h
-    apply inv_anti₀ (pow_pos hupos _)
-    apply pow_le_pow_right₀ hu1
-    norm_num
-  unfold polyPieceBudgetW section16ThetaTwo
-  calc (u ^ ((2 : Nat) ^ 23))⁻¹ ≤ (u ^ 35 * u ^ ((2 : Nat) ^ 22))⁻¹ := by
-        apply inv_anti₀ (mul_pos (pow_pos hupos _) (pow_pos hupos _))
-        rw [← pow_add]
-        apply pow_le_pow_right₀ hu1
-        norm_num
-    _ = (u ^ 35)⁻¹ * (u ^ ((2 : Nat) ^ 22))⁻¹ := mul_inv _ _
-    _ ≤ (2 : Real) ^ (-(32 : Real)) / 8 * fejerThetaOne theta gamma 1 ^ 8 :=
-        mul_le_mul h35 hθ18 (inv_nonneg.mpr (pow_pos hupos _).le) (by positivity)
-    _ = (2 : Real) ^ (-(32 : Real)) * fejerThetaOne theta gamma 1 ^ 8 / 8 := by ring
+  exact section16ThetaTwo_budget_ge_power
+    (prod_scale_basic hg hg1 ht ht1).1 (by norm_num : 3 ≤ 19)
+    (fejerThetaOne_one_ge_power hg hg1 ht ht1)
 
 theorem polyPieceBudgetW_fejer_pos_le {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) :

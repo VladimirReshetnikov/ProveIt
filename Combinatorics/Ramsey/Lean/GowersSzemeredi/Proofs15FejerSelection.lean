@@ -27,9 +27,9 @@ With `m + 1 = M·⌈6/(αη)⌉` Bernoulli's inequality gives a gain of
 `fejerSelectionExponent k = 2^(k+4)·(k+6)`, and it implies the printed one
 (`lemma_15_5_of_fejer_restriction`).
 
-The finite Bernoulli averaging uses `Proofs12BernoulliSelection`. The hyperedge
-bookkeeping, parity moment and vertex injectivity are copied from
-`Proofs15Restriction` (private there). -/
+The finite Bernoulli averaging uses `Proofs12BernoulliSelection`. The parity
+moment and vertex injectivity use shared theorems in `Proofs15Restriction`;
+the remaining hyperedge bookkeeping follows its private constructions. -/
 
 set_option autoImplicit false
 set_option maxRecDepth 10000
@@ -289,189 +289,8 @@ private lemma fejerEtaZero_moment {N k : Nat} [NeZero N]
     (R : GeneralArrangement N k 8) (hadd : IsAdditiveTuple R.crossSection)
     (A : Finset (Fin (k + 1))) :
     arrangementMoment R fejerEtaZero A = 0 := by
-  classical
-  let A₀ : Finset (Fin k) :=
-    Finset.univ.filter fun i ↦ i.castSucc ∈ A
-  let P : ZMod N := ∏ i : Fin k, if i ∈ A₀ then -R.side i else 0
-  have heta (e : Fin k → Bool) (j : Fin 16) :
-      (fejerEtaZero e j : ZMod N) =
-        fejerIndexSign (N := N) j * parityCharacter (N := N) e := by
-    rw [fejerEtaZero_cast]
-    by_cases hj : (j : Nat) < 8 <;>
-      simp [arrangementParityCoefficient, fejerIndexSign, hj]
-  have hinner (j : Fin 16) :
-      (∑ e : Fin k → Bool, parityCharacter (N := N) e *
-        ∏ i : Fin k, if i.castSucc ∈ A then
-          (R.base j i + if e i then R.side i else 0) else 1) = P := by
-    calc
-      (∑ e : Fin k → Bool, parityCharacter (N := N) e *
-          ∏ i : Fin k, if i.castSucc ∈ A then
-            (R.base j i + if e i then R.side i else 0) else 1) =
-          ∑ e : Fin k → Bool, parityCharacter (N := N) e *
-            ∏ i ∈ A₀, (R.base j i + if e i then R.side i else 0) := by
-        apply Finset.sum_congr rfl
-        intro e _
-        congr 1
-        rw [← Finset.prod_filter]
-      _ = P := selection_parity_cube_sum_subset R.side (R.base j) A₀
-  unfold arrangementMoment
-  rw [Finset.sum_comm]
-  calc
-    (∑ j : Fin 16, ∑ e : Fin k → Bool,
-        (fejerEtaZero e j : ZMod N) * ∏ i ∈ A, R.vertex e j i) =
-        ∑ j : Fin 16, fejerIndexSign (N := N) j *
-          (P * (if Fin.last k ∈ A then R.crossSection j else 1)) := by
-      apply Finset.sum_congr rfl
-      intro j _
-      simp_rw [heta, selection_vertex_product_split]
-      calc
-        (∑ e : Fin k → Bool,
-            (fejerIndexSign (N := N) j * parityCharacter (N := N) e) *
-              ((∏ i : Fin k, if i.castSucc ∈ A then
-                (R.base j i + if e i then R.side i else 0) else 1) *
-                (if Fin.last k ∈ A then R.crossSection j else 1))) =
-            fejerIndexSign (N := N) j *
-              ((∑ e : Fin k → Bool, parityCharacter (N := N) e *
-                ∏ i : Fin k, if i.castSucc ∈ A then
-                  (R.base j i + if e i then R.side i else 0) else 1) *
-                (if Fin.last k ∈ A then R.crossSection j else 1)) := by
-          rw [Finset.sum_mul, Finset.mul_sum]
-          apply Finset.sum_congr rfl
-          intro e _
-          ring
-        _ = fejerIndexSign (N := N) j *
-            (P * (if Fin.last k ∈ A then R.crossSection j else 1)) := by
-          rw [hinner]
-    _ = 0 := by
-      by_cases hfull : A₀ = Finset.univ
-      · by_cases hlast : Fin.last k ∈ A
-        · simp only [if_pos hlast]
-          have hadd' := (fejer_additive_iff R.crossSection).mp hadd
-          calc
-            (∑ j : Fin 16, fejerIndexSign (N := N) j *
-                (P * R.crossSection j)) =
-                P * ∑ j : Fin 16,
-                  fejerIndexSign (N := N) j * R.crossSection j := by
-              rw [Finset.mul_sum]
-              apply Finset.sum_congr rfl
-              intro j _
-              ring
-            _ = 0 := by rw [hadd', mul_zero]
-        · simp only [if_neg hlast, mul_one]
-          have hsign : (∑ j : Fin 16, fejerIndexSign (N := N) j) = 0 := by
-            have hconst : IsAdditiveTuple (k := 8)
-                (fun _ : Fin 16 ↦ (1 : ZMod N)) := by
-              have hleft :
-                  (Finset.univ.filter fun i : Fin 16 ↦ (i : Nat) < 8).card = 8 := by
-                decide
-              have hright :
-                  (Finset.univ.filter fun i : Fin 16 ↦ 8 ≤ (i : Nat)).card = 8 := by
-                decide
-              unfold IsAdditiveTuple
-              simp [hleft, hright]
-            simpa only [mul_one] using
-              (fejer_additive_iff (N := N) (fun _ : Fin 16 ↦ 1)).mp hconst
-          rw [← Finset.sum_mul, hsign, zero_mul]
-      · have hex : ∃ i : Fin k, i ∉ A₀ := by
-          by_contra hno
-          push Not at hno
-          exact hfull (Finset.eq_univ_of_forall hno)
-        obtain ⟨i, hi⟩ := hex
-        have hP : P = 0 := by
-          unfold P
-          apply Finset.prod_eq_zero (Finset.mem_univ i)
-          simp [hi]
-        simp [hP]
-
-private lemma fejer_third_index {k : Nat}
-    (u v : fejerIndex k) :
-    ∃ w : fejerIndex k, w ≠ u ∧ w ≠ v := by
-  classical
-  let e₀ : Fin k → Bool := fun _ ↦ false
-  let z₀ : fejerIndex k := (e₀, (0 : Fin 16))
-  let z₁ : fejerIndex k := (e₀, (1 : Fin 16))
-  let z₂ : fejerIndex k := (e₀, (2 : Fin 16))
-  by_cases h₀ : z₀ ≠ u ∧ z₀ ≠ v
-  · exact ⟨z₀, h₀⟩
-  by_cases h₁ : z₁ ≠ u ∧ z₁ ≠ v
-  · exact ⟨z₁, h₁⟩
-  refine ⟨z₂, ?_, ?_⟩ <;>
-    push Not at h₀ h₁ <;> aesop
-
-private lemma fejer_injective_of_nondegenerate {N k : Nat} [NeZero N]
-    (hN : 2 ≤ N) (R : GeneralArrangement N k 8)
-    (hnondegenerate : ¬ R.IsDegenerate) :
-    Function.Injective (fejerVertex R) := by
-  classical
-  letI : Fact (1 < N) := ⟨by omega⟩
-  intro u v huvVertex
-  by_contra huv
-  apply hnondegenerate
-  have hvu : v ≠ u := by
-    intro h
-    exact huv h.symm
-  obtain ⟨w, hwu, hwv⟩ := fejer_third_index u v
-  let eta : (Fin k → Bool) → Fin 16 → Int := fun e j ↦
-    if (e, j) = u then 1 else if (e, j) = v then -1 else 0
-  have hetaTernary : IsTernaryCoefficient
-      (fun z : (Fin k → Bool) × Fin 16 ↦ eta z.1 z.2) := by
-    intro z
-    by_cases hzu : z = u <;> by_cases hzv : z = v <;>
-      simp [eta, hzu, hzv, hvu]
-  have hmoment : ∀ A : Finset (Fin (k + 1)),
-      arrangementMoment R eta A = 0 := by
-    intro A
-    unfold arrangementMoment
-    rw [← Fintype.sum_prod_type (fun z : fejerIndex k ↦
-      ((eta z.1 z.2 : Int) : ZMod N) *
-        ∏ i ∈ A, R.vertex z.1 z.2 i)]
-    let f : fejerIndex k → ZMod N := fun z ↦
-      ∏ i ∈ A, R.vertex z.1 z.2 i
-    have hf : f u = f v := by
-      change R.vertex u.1 u.2 = R.vertex v.1 v.2 at huvVertex
-      unfold f
-      apply Finset.prod_congr rfl
-      intro i _
-      exact congrFun huvVertex i
-    simp only [eta, Int.cast_ite, Int.cast_one, Int.cast_neg, Int.cast_zero]
-    simp_rw [ite_mul, one_mul, neg_one_mul, zero_mul]
-    change (∑ z, if z = u then f z else if z = v then -f z else 0) = 0
-    calc
-      (∑ z, if z = u then f z else if z = v then -f z else 0) =
-          (∑ z, if z = u then f z else 0) +
-            ∑ z, if z = v then -f z else 0 := by
-        rw [← Finset.sum_add_distrib]
-        apply Finset.sum_congr rfl
-        intro z _
-        by_cases hzu : z = u <;> by_cases hzv : z = v <;>
-          simp [hzu, hzv, huv, hvu]
-      _ = f u + -f v := by
-        rw [Finset.sum_ite_eq', Finset.sum_ite_eq']
-        simp
-      _ = 0 := by rw [hf]; ring
-  have hnotmultiple : ¬ IsModularMultiple
-      (fun z : (Fin k → Bool) × Fin 16 ↦ eta z.1 z.2)
-      (fun z ↦ arrangementParityCoefficient (N := N) (d := 8) z.1 z.2) := by
-    rintro ⟨q, hq⟩
-    have hqu := hq u
-    have hqw := hq w
-    have hparityUnit (z : fejerIndex k) :
-        IsUnit (arrangementParityCoefficient (N := N) (d := 8) z.1 z.2) := by
-      unfold arrangementParityCoefficient parityCharacter
-      split
-      · exact (isUnit_one.neg.pow _)
-      · exact (isUnit_one.neg.pow _).neg
-    have hqne : q ≠ 0 := by
-      intro hqzero
-      rw [hqzero, zero_mul] at hqu
-      simp [eta] at hqu
-    have hqwzero : q *
-        arrangementParityCoefficient (N := N) (d := 8) w.1 w.2 = 0 := by
-      simpa [eta, hwu, hwv] using hqw.symm
-    apply hqne
-    apply (hparityUnit w).mul_right_cancel
-    simpa using hqwzero
-  exact ⟨eta, hetaTernary, hnotmultiple, hmoment⟩
+  exact arrangementMoment_eq_zero_of_parity R hadd fejerEtaZero
+    (fun e j ↦ fejerEtaZero_cast e j) A
 
 private lemma fejerCarrier_prod_of_nondegenerate {N k : Nat} [NeZero N]
     (hN : 2 ≤ N) (R : GeneralArrangement N k 8)
@@ -482,7 +301,7 @@ private lemma fejerCarrier_prod_of_nondegenerate {N k : Nat} [NeZero N]
   classical
   unfold fejerCarrier
   rw [Finset.prod_image
-    (fejer_injective_of_nondegenerate hN R hnondegenerate).injOn]
+    (GeneralArrangement.vertex_injective_of_nondegenerate_eight hN R hnondegenerate).injOn]
 
 /-! ## Fejér weights of order `m` -/
 

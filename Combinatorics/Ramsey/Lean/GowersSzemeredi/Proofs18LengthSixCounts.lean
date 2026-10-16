@@ -107,47 +107,42 @@ theorem quarter_prod_ge_inv_sq {gamma theta : Real} (hg : 0 < gamma) (ht : 0 < t
   rw [heq]
   exact inv_anti₀ (by positivity) (by nlinarith)
 
-theorem polyPieceBudget_ge_power {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    (ht : 0 < theta) (ht1 : theta ≤ 1) :
-    ((2 / (gamma * theta)) ^ ((2 : Nat) ^ 69))⁻¹ ≤ polyPieceBudget theta gamma := by
-  obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
-  have hq := quarter_prod_ge_inv_sq hg ht hu2
-  set u := 2 / (gamma * theta) with hu
-  clear_value u
-  have hu1 : 1 ≤ u := by linarith
-  have hupos : 0 < u := by linarith
+/-- Dividing the eighth-power density budget by eight adds four dyadic degrees. -/
+theorem section16ThetaTwo_budget_ge_power {u t : Real} {a : Nat}
+    (hu : 2 ≤ u) (ha : 3 ≤ a) (ht : (u ^ (2 ^ a))⁻¹ ≤ t) :
+    (u ^ (2 ^ (a + 4)))⁻¹ ≤ section16ThetaTwo t / 8 := by
+  have hu0 : 0 < u := lt_of_lt_of_le (by norm_num) hu
+  have hu1 : 1 ≤ u := le_trans (by norm_num) hu
   have h35 : (u ^ 35)⁻¹ ≤ (2 : Real) ^ (-(32 : Real)) / 8 := by
     have h1 : (2 : Real) ^ (-(32 : Real)) / 8 = ((2 : Real) ^ 35)⁻¹ := by
       rw [Real.rpow_neg (by norm_num)]
       norm_num
     rw [h1]
-    exact inv_anti₀ (by positivity) (pow_le_pow_left₀ (by norm_num) hu2 35)
-  -- θ₁ ≥ u^(-2^65)
-  have hθ1 : (u ^ ((2 : Nat) ^ 65))⁻¹ ≤ section16ThetaOne theta gamma 1 := by
-    unfold section16ThetaOne
-    have h := pow_le_pow_left₀ (by positivity) hq ((2 : Nat) ^ ((2 : Nat) ^ (1 + 5)))
-    rw [inv_pow, ← pow_mul] at h
-    refine le_trans ?_ h
-    apply inv_anti₀ (pow_pos hupos _)
-    apply pow_le_pow_right₀ hu1
-    norm_num
-  have hθ18 : (u ^ ((2 : Nat) ^ 68))⁻¹ ≤ section16ThetaOne theta gamma 1 ^ 8 := by
-    have h := pow_le_pow_left₀ (inv_nonneg.mpr (pow_pos hupos _).le) hθ1 8
-    rw [inv_pow, ← pow_mul] at h
-    refine le_trans ?_ h
-    apply inv_anti₀ (pow_pos hupos _)
-    apply pow_le_pow_right₀ hu1
-    norm_num
-  unfold polyPieceBudget section16ThetaTwo
-  calc (u ^ ((2 : Nat) ^ 69))⁻¹ ≤ (u ^ 35 * u ^ ((2 : Nat) ^ 68))⁻¹ := by
-        apply inv_anti₀ (mul_pos (pow_pos hupos _) (pow_pos hupos _))
-        rw [← pow_add]
-        apply pow_le_pow_right₀ hu1
-        norm_num
-    _ = (u ^ 35)⁻¹ * (u ^ ((2 : Nat) ^ 68))⁻¹ := mul_inv _ _
-    _ ≤ (2 : Real) ^ (-(32 : Real)) / 8 * section16ThetaOne theta gamma 1 ^ 8 :=
-        mul_le_mul h35 hθ18 (inv_nonneg.mpr (pow_pos hupos _).le) (by positivity)
-    _ = (2 : Real) ^ (-(32 : Real)) * section16ThetaOne theta gamma 1 ^ 8 / 8 := by ring
+    exact inv_anti₀ (by positivity) (pow_le_pow_left₀ (by norm_num) hu 35)
+  have h8 := pow_le_pow_left₀ (inv_nonneg.mpr (pow_pos hu0 _).le) ht 8
+  rw [inv_pow, ← pow_mul] at h8
+  have he : 35 + 2 ^ a * 8 ≤ 2 ^ (a + 4) := by
+    have h : (2 : Nat) ^ 3 ≤ 2 ^ a := Nat.pow_le_pow_right (by norm_num) ha
+    norm_num [pow_add] at h ⊢
+    omega
+  calc (u ^ (2 ^ (a + 4)))⁻¹ ≤ (u ^ (35 + 2 ^ a * 8))⁻¹ :=
+        inv_anti₀ (pow_pos hu0 _) (pow_le_pow_right₀ hu1 he)
+    _ = (u ^ 35)⁻¹ * (u ^ (2 ^ a * 8))⁻¹ := by rw [pow_add, mul_inv]
+    _ ≤ (2 : Real) ^ (-(32 : Real)) / 8 * t ^ 8 :=
+        mul_le_mul h35 h8 (inv_nonneg.mpr (pow_pos hu0 _).le) (by positivity)
+    _ = section16ThetaTwo t / 8 := by unfold section16ThetaTwo; ring
+
+theorem polyPieceBudget_ge_power {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+    (ht : 0 < theta) (ht1 : theta ≤ 1) :
+    ((2 / (gamma * theta)) ^ ((2 : Nat) ^ 69))⁻¹ ≤ polyPieceBudget theta gamma := by
+  obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
+  have hq := quarter_prod_ge_inv_sq hg ht hu2
+  have hθ1 : ((2 / (gamma * theta)) ^ ((2 : Nat) ^ 65))⁻¹ ≤
+      section16ThetaOne theta gamma 1 := by
+    simpa only [section16ThetaOne, inv_pow, ← pow_mul,
+      show (2 : Nat) * 2 ^ (2 ^ (1 + 5)) = 2 ^ 65 by norm_num] using
+      pow_le_pow_left₀ (by positivity) hq (2 ^ (2 ^ (1 + 5)))
+  exact section16ThetaTwo_budget_ge_power hu2 (by norm_num : 3 ≤ 65) hθ1
 
 theorem polyPieceBudget_pos_le {gamma theta : Real} (hg : 0 < gamma) (hg1 : gamma ≤ 1)
     (ht : 0 < theta) (ht1 : theta ≤ 1) :

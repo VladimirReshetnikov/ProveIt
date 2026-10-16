@@ -771,18 +771,22 @@ lemma selection_vertex_product_split {N k : Nat}
           AxisCube.vertex, AxisCube.base, AxisCube.side, appendCoordinate]
       · simp [GeneralArrangement.vertex, appendCoordinate]
 
-private lemma selectionEtaZero_moment {N k : Nat} [NeZero N]
+/-- The parity coefficients annihilate coordinate monomials on an additive `8`-arrangement. -/
+lemma arrangementMoment_eq_zero_of_parity {N k : Nat} [NeZero N]
     (R : GeneralArrangement N k 8) (hadd : IsAdditiveTuple R.crossSection)
+    (eta : (Fin k → Bool) → Fin 16 → Int)
+    (heta : ∀ e j, (eta e j : ZMod N) =
+      arrangementParityCoefficient (N := N) (d := 8) e j)
     (A : Finset (Fin (k + 1))) :
-    arrangementMoment R selectionEtaZero A = 0 := by
+    arrangementMoment R eta A = 0 := by
   classical
   let A₀ : Finset (Fin k) :=
     Finset.univ.filter fun i ↦ i.castSucc ∈ A
   let P : ZMod N := ∏ i : Fin k, if i ∈ A₀ then -R.side i else 0
-  have heta (e : Fin k → Bool) (j : Fin 16) :
-      (selectionEtaZero e j : ZMod N) =
+  have hcoeff (e : Fin k → Bool) (j : Fin 16) :
+      (eta e j : ZMod N) =
         selectionIndexSign (N := N) j * parityCharacter (N := N) e := by
-    rw [selectionEtaZero_cast]
+    rw [heta e j]
     by_cases hj : (j : Nat) < 8 <;>
       simp [arrangementParityCoefficient, selectionIndexSign, hj]
   have hinner (j : Fin 16) :
@@ -800,74 +804,45 @@ private lemma selectionEtaZero_moment {N k : Nat} [NeZero N]
         congr 1
         rw [← Finset.prod_filter]
       _ = P := selection_parity_cube_sum_subset R.side (R.base j) A₀
-  unfold arrangementMoment
-  rw [Finset.sum_comm]
   calc
-    (∑ j : Fin 16, ∑ e : Fin k → Bool,
-        (selectionEtaZero e j : ZMod N) * ∏ i ∈ A, R.vertex e j i) =
-        ∑ j : Fin 16, selectionIndexSign (N := N) j *
-          (P * (if Fin.last k ∈ A then R.crossSection j else 1)) := by
+    arrangementMoment R eta A =
+        P * ∑ j : Fin 16, selectionIndexSign (N := N) j *
+          (if Fin.last k ∈ A then R.crossSection j else 1) := by
+      unfold arrangementMoment
+      rw [Finset.sum_comm, Finset.mul_sum]
       apply Finset.sum_congr rfl
       intro j _
-      simp_rw [heta, selection_vertex_product_split]
-      calc
-        (∑ e : Fin k → Bool,
-            (selectionIndexSign (N := N) j * parityCharacter (N := N) e) *
-              ((∏ i : Fin k, if i.castSucc ∈ A then
-                (R.base j i + if e i then R.side i else 0) else 1) *
-                (if Fin.last k ∈ A then R.crossSection j else 1))) =
-            selectionIndexSign (N := N) j *
-              ((∑ e : Fin k → Bool, parityCharacter (N := N) e *
-                ∏ i : Fin k, if i.castSucc ∈ A then
-                  (R.base j i + if e i then R.side i else 0) else 1) *
-                (if Fin.last k ∈ A then R.crossSection j else 1)) := by
-          rw [Finset.sum_mul, Finset.mul_sum]
-          apply Finset.sum_congr rfl
-          intro e _
-          ring
-        _ = selectionIndexSign (N := N) j *
-            (P * (if Fin.last k ∈ A then R.crossSection j else 1)) := by
-          rw [hinner]
+      rw [← hinner j, Finset.sum_mul]
+      apply Finset.sum_congr rfl
+      intro e _
+      rw [hcoeff e j, selection_vertex_product_split R e j A]
+      ring
     _ = 0 := by
-      by_cases hfull : A₀ = Finset.univ
-      · by_cases hlast : Fin.last k ∈ A
-        · simp only [if_pos hlast]
-          have hadd' := (selection_additive_iff R.crossSection).mp hadd
-          calc
-            (∑ j : Fin 16, selectionIndexSign (N := N) j *
-                (P * R.crossSection j)) =
-                P * ∑ j : Fin 16,
-                  selectionIndexSign (N := N) j * R.crossSection j := by
-              rw [Finset.mul_sum]
-              apply Finset.sum_congr rfl
-              intro j _
-              ring
-            _ = 0 := by rw [hadd', mul_zero]
-        · simp only [if_neg hlast, mul_one]
-          have hsign : (∑ j : Fin 16, selectionIndexSign (N := N) j) = 0 := by
-            have hconst : IsAdditiveTuple (k := 8)
-                (fun _ : Fin 16 ↦ (1 : ZMod N)) := by
-              have hleft :
-                  (Finset.univ.filter fun i : Fin 16 ↦ (i : Nat) < 8).card = 8 := by
-                decide
-              have hright :
-                  (Finset.univ.filter fun i : Fin 16 ↦ 8 ≤ (i : Nat)).card = 8 := by
-                decide
-              unfold IsAdditiveTuple
-              simp [hleft, hright]
-            simpa only [mul_one] using
-              (selection_additive_iff (N := N) (fun _ : Fin 16 ↦ 1)).mp hconst
-          rw [← Finset.sum_mul, hsign, zero_mul]
-      · have hex : ∃ i : Fin k, i ∉ A₀ := by
-          by_contra hno
-          push Not at hno
-          exact hfull (Finset.eq_univ_of_forall hno)
-        obtain ⟨i, hi⟩ := hex
-        have hP : P = 0 := by
-          unfold P
-          apply Finset.prod_eq_zero (Finset.mem_univ i)
-          simp [hi]
-        simp [hP]
+      by_cases hlast : Fin.last k ∈ A
+      · simp only [if_pos hlast]
+        rw [(selection_additive_iff R.crossSection).mp hadd, mul_zero]
+      · simp only [if_neg hlast, mul_one]
+        have hsign : (∑ j : Fin 16, selectionIndexSign (N := N) j) = 0 := by
+          have hconst : IsAdditiveTuple (k := 8)
+              (fun _ : Fin 16 ↦ (1 : ZMod N)) := by
+            have hleft :
+                (Finset.univ.filter fun i : Fin 16 ↦ (i : Nat) < 8).card = 8 := by
+              decide
+            have hright :
+                (Finset.univ.filter fun i : Fin 16 ↦ 8 ≤ (i : Nat)).card = 8 := by
+              decide
+            unfold IsAdditiveTuple
+            simp [hleft, hright]
+          simpa only [mul_one] using
+            (selection_additive_iff (N := N) (fun _ : Fin 16 ↦ 1)).mp hconst
+        rw [hsign, mul_zero]
+
+private lemma selectionEtaZero_moment {N k : Nat} [NeZero N]
+    (R : GeneralArrangement N k 8) (hadd : IsAdditiveTuple R.crossSection)
+    (A : Finset (Fin (k + 1))) :
+    arrangementMoment R selectionEtaZero A = 0 := by
+  exact arrangementMoment_eq_zero_of_parity R hadd selectionEtaZero
+    (fun e j ↦ selectionEtaZero_cast e j) A
 
 private lemma selectionEta_canonical {k : Nat} :
     selectionEta (selectionCanonicalDigit (k := k)) = selectionEtaZero := by
@@ -1219,6 +1194,13 @@ private lemma selection_injective_of_nondegenerate {N k : Nat} [NeZero N]
     apply (hparityUnit w).mul_right_cancel
     simpa using hqwzero
   exact ⟨eta, hetaTernary, hnotmultiple, hmoment⟩
+
+/-- The vertices of a nondegenerate 8-arrangement have distinct indices. -/
+theorem GeneralArrangement.vertex_injective_of_nondegenerate_eight {N k : Nat}
+    [NeZero N] (hN : 2 ≤ N) (R : GeneralArrangement N k 8)
+    (hnondegenerate : ¬ R.IsDegenerate) :
+    Function.Injective (fun z : (Fin k → Bool) × Fin 16 => R.vertex z.1 z.2) := by
+  exact selection_injective_of_nondegenerate hN R hnondegenerate
 
 private lemma selectionCarrier_prod_of_nondegenerate {N k : Nat} [NeZero N]
     (hN : 2 ≤ N) (R : GeneralArrangement N k 8)
