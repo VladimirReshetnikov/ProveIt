@@ -205,3 +205,28 @@ offset PSC wrapper and same-variable specialization. The original complete
 equality engine and the controls retaining it are outside that argument.
 Ordinary equality-free PSC/CP/GIC calibration survives; a complete replacement
 frontend or the original engine is needed to implement it.
+
+## Batch 147: complete specification and ternary Bottom
+
+Source 16 of the closure-kernel report (`9439d775aa`) supplies another complete
+ordinary Hilbert checker: K/S/C, arbitrary capture-avoiding cross-variable UI,
+QD with its free-variable side condition, MP, theorem GEN and a closed PSC
+schema constructor. Every accepted conclusion is constructed; arbitrary
+assumptions are not accepted. The ordinary completeness argument provides a
+reference for future refutation transports. The checker has not been compiled
+into any of the source's 250/251/252 tables.
+
+Its ternary primitive-Bottom codec now has Lean round-trip, canonical
+injectivity, label-bound and ordinary semantic-preservation proofs; see
+[bottom3_codec.md](bottom3_codec.md). These address formula representation,
+not UI or proof enumeration. The finite-sort countermodel continues to
+validate the source's reduced C/G/V word after the member-code offset changes.
+The genuine Bottom change therefore cannot repair that calculus by itself.
+
+The proposed total theorem constructor (invalid local tests return Truth)
+remains an unimplemented compression design. It needs both a theorem-validity
+invariant and surjectivity onto refutations, including normalization and
+capture-avoiding substitution. The source's finite Horn encoding of any fixed
+machine similarly gives an ordinary consistency/nonhalting equivalence, but
+its clauses contain the original computation; interpreter and clause-printer
+costs must be counted before it can save states.

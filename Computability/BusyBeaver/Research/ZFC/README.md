@@ -57,6 +57,17 @@ remain open. The opt-in formal library now includes actual raw-PSC model
 adapters, generic register bisimulation and finite facts about the attributed
 248 table. All 35 source units passed a fresh serial check.
 
+Batches 147/148 add two further sources (arrivals `9439d775aa` and
+`5e5603303d`): the [primitive-Bottom ternary codec](bottom3_codec.md), a
+complete Hilbert reference, an ordinary PA strengthening of the sorted
+obstruction, and a [complete ground-clause reference](clausal_reference.md).
+The new codec now has Lean proofs for all-code round trips, freshness and
+ordinary semantic preservation; all 36 source units pass a fresh serial
+check (`830647031`). The new 251-state reduced C/G encoding retains the
+countermodel. A separate 270-state complete-original-word comparison is
+reproducible but does not improve the prior 269. These reference algorithms
+still need complete binary implementations and the requested internal proof.
+
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
 A positive singleton-decoder hull covers the root's members without
@@ -250,6 +261,13 @@ uv run --no-project python Computability/BusyBeaver/Research/ZFC/audit_tm.py --s
 
 Regeneration of `kernel_metrics.json` and `stream_encoding.json` is explicit
 by running their respective generators. Delivered intake files stay unchanged.
+
+[The complete-frontend grammar experiment](full_grammar_experiment.md) applies
+source16's overlap-safe counting to both original full-word tokenizations.
+Across 32,000 paired DAG evaluations it still reaches 269 states, matching
+rather than improving the prior control. The fixed winner regenerates and its
+operation certificate passes independent checks and six mutations. The full
+equality/theory frontend is retained; binary simulation remains open.
 
 ## Next proof and compiler work
 

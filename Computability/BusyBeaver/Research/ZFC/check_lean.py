@@ -34,7 +34,7 @@ def main() -> None:
                         "ProfileAxioms", "PowerSyntax", "PSCSaturation", "RawPSCProfile", "RawPSCModel",
                         "StateReduction", "Table254", "Table252", "Table253", "Table248",
                         "RegisterBisimulation", "FormulaRPN", "Base3Encoding",
-                        "Base3Syntax", "PartialTotalization", "WadeMachine",
+                        "Base3Syntax", "Bottom3Syntax", "PartialTotalization", "WadeMachine",
                         "PSCCalibration") ),
         ("Computability/BusyBeaver/Lean", "BusyBeaver/ZFC.lean"),
     ]

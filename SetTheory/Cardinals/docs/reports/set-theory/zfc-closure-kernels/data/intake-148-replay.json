@@ -1,0 +1,66 @@
+[
+  {
+    "check": "clausal",
+    "command": [
+      "code/check_clausal_trace.py",
+      "--output-dir",
+      "/tmp/zfc-batch148-reproduce-aw4oczwa/clausal"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch148-reproduce-aw4oczwa/clausal.log"
+  },
+  {
+    "check": "prefix",
+    "command": [
+      "code/clausal_trace.py",
+      "--prefix",
+      "1000"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch148-reproduce-aw4oczwa/prefix.log"
+  },
+  {
+    "check": "capture",
+    "command": [
+      "code/capture_tagged_check.py"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch148-reproduce-aw4oczwa/capture.log"
+  },
+  {
+    "check": "countermodel",
+    "command": [
+      "code/equality_free_countermodel.py"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch148-reproduce-aw4oczwa/countermodel.log"
+  },
+  {
+    "check": "grammar",
+    "command": [
+      "code/search_full_grammar.py",
+      "--archive",
+      ".",
+      "--output",
+      "/tmp/zfc-batch148-reproduce-aw4oczwa/grammar",
+      "--seeds",
+      "1000"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch148-reproduce-aw4oczwa/grammar.log"
+  },
+  {
+    "check": "certificate",
+    "command": [
+      "vendor/one_schema_machine/verify_rm_certificate.py",
+      "--source",
+      "vendor/ProveIt/lib/jeff-busy-beaver-zfc254/ZF/m254/coq/prog/Dag254.v",
+      "--candidate",
+      "/tmp/zfc-batch148-reproduce-aw4oczwa/grammar/candidate_dag.json",
+      "--certificate",
+      "/tmp/zfc-batch148-reproduce-aw4oczwa/grammar/rm_bisimulation.json"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch148-reproduce-aw4oczwa/certificate.log"
+  }
+]

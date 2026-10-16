@@ -32,7 +32,10 @@ compares theories for a smaller ZFC-inconsistency search machine. It now
 includes a mathematical PSC-only hereditary-saturation interpretation,
 an empty-input equivalent schema, attributed prior 253-state work and separate
 compiler experiments. A reviewed finite-sort model rules out the reduced raw
-C/G abstract calculus; its 248/250-state tables remain compiler benchmarks. The
+C/G abstract calculus, including the new primitive-Bottom variant; its
+248–252-state tables remain compiler benchmarks. Complete Hilbert and
+ground-clause references restore general substitution but have no new binary
+state bound. The
 [Lean minimization project](BusyBeaver/Research/ZFC/README.md) checks subset-PSC
 calibration and specific quotient, coding and table lemmas. Its current
 target remains an internal ZFC proof of a sub-254 blank-tape halting equivalence.

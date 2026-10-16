@@ -47,3 +47,37 @@ This supersedes the earlier plan to calibrate the unchanged reduced
 calculus. The state tables and exact regeneration evidence remain useful
 compiler benchmarks. Work toward a consistency machine must preserve the
 complete 253-state frontend or prove a replacement refutation interface.
+
+Source 16 (`9439d775aa`, batch 147) replaces membership code `3P(i,j)+1`
+by `3P(i,j)+4` and makes code 1 primitive Bottom. This also satisfies the
+hypotheses of the finite-sort argument. Each variable label in matrix c
+remains strictly below c (now checked for all codes by
+`Bottom3Syntax.decoded_label_lt`), and Bottom is interpreted as false.
+Neither the C/G formulas nor their freshness gate or logical rows change.
+The C/G/V label's V means the inherited atomic vacuity row, not a new
+substitution rule. Thus the 251-state genuine-Bottom C/G experiment and the
+historical 250 relative-Bottom control are both excluded as unchanged
+abstract consistency searches. Source 16's 252-state PSC experiment has its
+own explicit fixed-slot identity-quantifier countermodel. Its complete
+Hilbert reference checker is a different program and is not refuted by these
+models. The literal-table qualification above continues to apply.
+
+Source 17 (`5e5603303d`, batch 148) gives an ordinary strengthening to PA.
+For ambient n, use A(n)=product(i<n,d_i) mixed-radix assignments and build
+truth tables for all codes k≤n in increasing code order. Each table has A(n)
+bits; the complete packed array is below 2^((n+1)A(n)). Coordinate updates,
+finite quantifiers, C/G range witnesses and the support lemma are primitive
+recursive. Coherence under projection gives one predicate Val(k), evaluated
+in ambient dimension k, and makes GEN/MP validity preservation uniform.
+Induction on proof lines and on the abstract enumerator's current/cache/stack
+invariant proves non-refutation in PA. This is an explicit mathematical
+formalizability argument, not a delivered Lean theorem or PA proof object.
+
+Its general finite-range hull lemma explains why changing the PSC guard is
+insufficient. For distinct input/output labels i,j and fresh k>j with k≠i,
+represent the entire finite matrix range in sort k. If the matrix omits k,
+this witness validates both guarded closure and unrestricted support for
+*any* additional guard and any boundedness antecedent. Same-variable UI and
+primitive Bottom therefore leave this obstruction intact. A replacement
+frontend must enforce common-domain variable instantiation; the complete
+ground-clause route in [clausal_reference.md](clausal_reference.md) does so.
