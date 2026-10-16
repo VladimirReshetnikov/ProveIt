@@ -1,0 +1,138 @@
+MINIMAL REPRODUCIBILITY SOURCES
+Prepared 2026-10-16 for the accompanying small-Turing-machine research report.
+
+This directory contains the exact source files and finite input data needed
+by generate_schema_candidates.py and verify_schema_rm_certificate.py, plus
+the incoming report's PSC reference checker and its regression artifacts.
+All copied source files are unmodified. SHA256SUMS records their hashes.
+This is a deliberately partial source snapshot, not a complete ProveIt or
+busy-beaver checkout and not a copy of either project's formal proof library.
+
+1. PROVEIT RESEARCH HELPERS
+
+Source repository: https://github.com/VladimirReshetnikov/ProveIt
+Exact commit: 17d0f2eaa650901cda59764dfcc4661c199e49c8
+Source directory: Computability/BusyBeaver/Research/ZFC/
+
+The following files retain their original repository paths under ProveIt/:
+  theory_backend_experiment.py
+  recover_wade_dag.py
+  pairing_backend_experiment.py
+  audit_raw_candidate.py
+  audit_tm.py
+  kernel_metrics.py
+
+The first four are imported by the candidate generator. audit_tm.py is a
+separate transition-table auditor; the generator checks its hash but does
+not execute it. kernel_metrics.py supports the optional PSC comparison in
+section 4; its SHA-256 is identical to the earlier commit recorded there.
+ProveIt/LICENSE is the exact MIT No Attribution license
+retrieved from the same commit. Attribution and licensing of third-party
+files in the lib/ subtree are described separately below.
+
+2. WADE BACKEND AND UPSTREAM PROGRAM INPUTS
+
+Source repository: https://github.com/jeff87654/busy-beaver
+Exact commit: 297ab8df7e5de329605c3875b4934643b371a5e3
+Copied through the pinned ProveIt lib/jeff-busy-beaver-zfc254 snapshot.
+
+Original upstream paths retained below ProveIt/lib/jeff-busy-beaver-zfc254/:
+  ZF/generator/TMBuilder.py
+  ZF/generator/tm.py
+  ZF/generator/tmdb.py
+  ZF/generator/LICENSE.wade
+  ZF/m254/coq/prog/Dag254.v
+  ZF/m254/tools/logic/spec.py
+
+Andrew James Wade's three Python backend files are reproduced without
+modification, with their original MIT No Attribution license LICENSE.wade.
+Mira-Cult designed the original 254-state machine, compact proof calculus,
+nonextensional theory, and source program; Jeff (jeff87654) published the
+Coq verification and the 219-node numeric program used in this experiment.
+
+Dag254.v is retained solely as the hash-pinned finite numeric DAG input;
+it is parsed as data and is not compiled by these scripts. From spec.py the
+ProveIt helper selects the pure symbolic formula definitions by AST. It
+does not run that file's import statement, numeric encoding function, or
+enumerator, so bignum.py is not a dependency. No blanket relicensing of
+Dag254.v, spec.py, or other upstream third-party work is intended.
+
+3. INCOMING ONE-SCHEMA REPORT HELPERS
+
+Source archive in ProveIt: docs/incoming/zfc_one_schema_research.zip
+Commit that introduced the archive: 39409c8c921cccdbd6162c8767c84cfb7df65df1
+Source URL:
+https://github.com/VladimirReshetnikov/ProveIt/blob/39409c8c921cccdbd6162c8767c84cfb7df65df1/docs/incoming/zfc_one_schema_research.zip
+
+Original archive members copied to one_schema_machine/:
+  zfc_one_schema_research/machine/rebracket_axioms.py
+  zfc_one_schema_research/machine/verify_rm_certificate.py
+
+The archive's zfc_one_schema_research/NOTICE.txt is retained without changes
+as one_schema_machine/ORIGINAL_NOTICE.txt. Paths mentioned in that original
+notice describe the original archive layout, not this smaller vendor layout.
+Its backend attribution corresponds here to section 2 above. No additional
+license grant or change to that notice is asserted by this packaging.
+
+The two helpers import only Python standard-library modules and perform no
+file reads or writes when imported. The new generator passes all DAG and
+compiler inputs explicitly to their functions. Their standalone entry
+points can also use the single shared upstream snapshot in ProveIt/:
+rebracket_axioms.py accepts --repo vendor/ProveIt, and verify_rm_certificate.py
+accepts --source vendor/ProveIt/lib/jeff-busy-beaver-zfc254/ZF/m254/coq/prog/Dag254.v.
+Consequently a duplicate inputs/backend/ or source_dag.json is unnecessary.
+
+4. INCOMING PSC REFERENCE CHECKER
+
+Source: the same incoming archive and commit identified in section 3.
+The complete non-cache contents of its directory
+zfc_one_schema_research/proof_checker/ are copied to psc_reference_checker/:
+  psc_checker.py
+  test_psc_checker.py
+  validate.py
+  README.md
+  identity.cert
+  provenance.json
+  validation.json
+
+These are the prior report's reference implementation and evidence, not
+new checker code authored for this report. Their original README, recorded
+validation, and provenance are unmodified. ProveIt's MIT No Attribution
+license is retained above, as are the archive's attribution boundaries in
+one_schema_machine/ORIGINAL_NOTICE.txt. All files listed in the original
+provenance's artifact_sha256 map match those original recorded hashes.
+
+The optional comparison uses
+ProveIt/Computability/BusyBeaver/Research/ZFC/kernel_metrics.py, byte-identical
+to the file cited by the checker at ProveIt commit
+6594795e9db81637c30959e42b3bcfc9eb77722f, SHA-256
+8b6b5a62d81b9bca6d0a04f7c0ac37b545d2b53214e792f1a6fed12f9a94a124.
+It has only standard-library imports and requires no other source files.
+
+The checker and unit tests can run directly from this directory with
+python -B. Before running validate.py, copy psc_reference_checker/ to a
+scratch directory: that unmodified validation driver rewrites identity.cert
+beside itself, even when --output points elsewhere. Pass --upstream-kernel
+with the path above to reproduce its six exact-syntax comparisons. Its
+validation.json is the incoming report's historical record; fresh output
+should be written separately to preserve that provenance.
+
+5. REPRODUCTION AND SCOPE
+
+Use Python 3.10 or newer; all required imports are standard-library modules
+or the files above. Use python -B (or PYTHONDONTWRITEBYTECODE=1) to avoid
+creating Python bytecode caches beside these unmodified inputs. The
+candidate generator copies the Wade modules into its selected output
+directory before executing them. No network connection, Git checkout,
+Lean installation, or Coq installation is needed for these finite checks.
+
+For the candidate generator, pass --repo vendor/ProveIt and
+--rebracket-dir vendor/one_schema_machine. For the new certificate checker,
+pass --prior-machine-dir vendor/one_schema_machine. Choose a separate
+output directory outside vendor/ProveIt. The preserved path depth matters:
+recover_wade_dag.py derives its repository root from its own file location.
+
+Successful generation and finite register-machine certificate verification
+are executable evidence. They are not a theorem that the resulting binary
+machine has halting equivalent to inconsistency of ZFC. The accompanying
+report states the remaining logical and compiler calibration obligations.
