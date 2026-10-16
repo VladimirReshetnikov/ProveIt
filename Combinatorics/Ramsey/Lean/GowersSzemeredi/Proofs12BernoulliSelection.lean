@@ -46,7 +46,7 @@ private lemma restrictionWeight_event {X : Type*} [DecidableEq X]
           exact h x (Finset.mem_sdiff.mpr ⟨hC hx, hxs⟩) hx
         · intro h x hx hxc
           exact (Finset.mem_sdiff.mp hx).2 (h hxc)
-      rw [Finset.prod_ite_zero, hSC]
+      simp only [Finset.prod_ite_zero, hSC]
       by_cases h : C ⊆ S <;> simp [restrictionWeight, h]
     _ = ∏ x ∈ U, (p x + if x ∉ C then 1 - p x else 0) :=
       (Finset.prod_add p (fun x => if x ∉ C then 1 - p x else 0) U).symm
