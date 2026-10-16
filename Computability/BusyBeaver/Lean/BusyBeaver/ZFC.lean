@@ -63,5 +63,11 @@ import BusyBeaver.ZFC.L2Lib254
 import BusyBeaver.ZFC.L2Macros254
 import BusyBeaver.ZFC.L2Control254
 
+import BusyBeaver.ZFC.L2Axioms254
+import BusyBeaver.ZFC.DecodeFresh254
+import BusyBeaver.ZFC.NamedForm254
+import BusyBeaver.ZFC.DuplicateProfiles
+import BusyBeaver.ZFC.WritingRuns
+
 /-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC
 consistency theorem or state-count improvement is claimed by these imports. -/

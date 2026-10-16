@@ -36,3 +36,24 @@ structured program to the existing path semantics. Concrete binary dispatch
 is another separate simulation; the new `BreakSite253` theorem proves only
 its stated001→1 site. Source review and the local kernel checks supply no
 whole-program or machine endpoint.
+
+The later `798aaa6ce1` adds `L2Axioms254`, generated from the same pinned
+DAG. Its110 generated node lemmas compose the actual AX subtree into the
+state transformer `f1`, with `l1` proving `Rn (.node 1) st (f1 st)` and `c1`
+preserving clean scratch registers. The special node35 transformer includes
+its entire remaining tail through46/58; it is not just a read operation.
+The generated860-line source reproduces exactly in a scratch copy and passes
+pinned Lean4.32 in1.587seconds, with standard-axiom audits for `l1` and the
+gate theorem, and an axiom-free `c1`. Evidence is in
+`results/decoder-duplicate-integration-verification.json`.
+
+Independent symbolic review of the181 macro calls matches the intended
+eight logical rows, saved old formula, generalization using the old parameter,
+additive second parameter, two consumed literals and final gate. However,
+the source header's assertion of a final symbolic equality with
+`Enum254.axStack`/`gate` is premature at this commit: no such equality is
+among its declarations. The actual proved result is execution to `f1 st`.
+Identifying that transformer with the abstract AX command and completing
+the root loop remain separate obligations; the earlier paragraph describes
+the previous five-module checkpoint. Read-only reproduction and comparison
+records are retained in `/tmp/zfc-l2-axioms-read-review-zluls6ey/`.

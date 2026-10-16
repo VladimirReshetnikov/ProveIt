@@ -198,6 +198,10 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `FiniteSets.lean`, `InductiveAttempts.lean` | Actual finite graph objects and formula atoms construct an ordinary inductive set in the CP/GIC quotient, using three specific Separation matrices and one Replacement matrix, with no prior Infinity. |
 | `QuotientZF0.lean` | The complete quotient satisfies ZF without Foundation or Choice; a refutation of that theory forces the actual abstract enumerator to halt. The converse and binary simulation remain open. |
 | `RMDag.lean`, `Dag254.lean`, `L2Lib254.lean`, `L2Macros254.lean`, `L2Control254.lean` | Structured semantics and the actual219-node program; proved pair/unpair, stack/formula macros, equality/fetch/MP/NIP branches. Root enumeration and the separate Prog254 relation remain open. |
+| `DecodeFresh254.lean`, `NamedForm254.lean` | Every-code semantic freshness, including truth code0, and exact named-to-de-Bruijn matrices including shadowed/colliding names. Native equality is retained explicitly. |
+| `DuplicateProfiles.lean` | A conditional duplicate-model obstruction: equality-free CP/GIC and IR can hold while the actual native-equality numerical bundle fails. No starting-model existence is asserted. |
+| `WritingRuns.lean` | Exact arbitrary-length scans that overwrite the read bit, with whole-tape Core corollaries and explicit actual-transition premises. |
+| `L2Axioms254.lean` | Generated composition of the actual axioms subtree into its symbolic state transformer; identification with the abstract AX command is separate. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
@@ -230,8 +234,8 @@ Rebuild the entire small dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 78 source units: the first-order logic, calculus and completeness
-modules, `ZF.Zf`, `BusyBeaver.Core`, 72 research modules and the umbrella into a
+This compiles 83 source units: the first-order logic, calculus and completeness
+modules, `ZF.Zf`, `BusyBeaver.Core`, 77 research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the prior 38-unit fresh source check and axiom outputs. The seven
@@ -283,6 +287,13 @@ The [finite set atoms](finite_sets.md), [ordinary Infinity proof](inductive_atte
 builds and the umbrella. `results/quotient-zf0-verification.json` records the
 final quotient module's additional abstract-enumerator consequence and renewed
 umbrella/audit checks. Previously verified dependencies are reused.
+The [all-code freshness proof](decode_fresh254.md), [named matrix adapter](named_form254.md),
+[duplicate-model obstruction](duplicate_profiles.md), [overwriting scans](writing_runs.md)
+and generated AX subtree extend the runner to83 units. Their five source
+checks, umbrella, fourteen axiom audits and three callers are recorded in
+`results/decoder-duplicate-integration-verification.json`, with the earlier
+dependencies reused. This record also checks the duplicate module's final
+comment-only clarification after its separate source audit.
 The standalone BusyBeaver Lake package declares its FirstOrder and ZF path
 dependencies; the ZFC umbrella is opt-in.
 

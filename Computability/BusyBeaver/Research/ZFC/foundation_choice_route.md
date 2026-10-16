@@ -66,6 +66,10 @@ not formalized in `Choice.lean`; matching upstream `ax_ac` requires this
 object-theory comparison. Both are standard presentations of Choice, but
 their finite proof translation is an explicit formal obligation.
 
+The existing `Logic/FirstOrder/Lean/FirstOrder/Relativization.lean` handles
+the particular loop-free subtype defined by ¬x∈x; it is not the arbitrary-class
+well-founded-part or constructible-class interpretation required here.
+
 A constructive Lean port can begin with literal `Form` relativization and
 its proof transport, followed by the well-founded-part axiom resources and
 then the constructible-class resources. Generic first-order completeness
