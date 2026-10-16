@@ -461,6 +461,12 @@ carries no content of its own and will be removed in due course.
 
 ## Vendored components
 
+[`lib/jeff-busy-beaver-zfc254`](lib/jeff-busy-beaver-zfc254/README.proveit.md)
+preserves Mira-Cult's 254-state ZFC machine and jeff87654's end-to-end Coq
+verification, pinned at `297ab8df...`, with its exact build dependency
+closure and upstream attribution. Its import README records the distinct
+license boundary and local verification status.
+
 Apart from one exception below, only [`lib/`](lib/) contains vendored code. `lib/Coq-BB5/BB2`, `BB3`, and
 `BB4` come from `ccz181078/Coq-BB5` commit `9142e219...`; their nested READMEs
 record provenance and repository-local kernel hardening, and their nested MIT
@@ -496,4 +502,6 @@ stays inside that package.
 ## License
 
 Unless a nested license says otherwise, this repository is available under
-the [MIT No Attribution License (MIT-0)](LICENSE).
+the [MIT No Attribution License (MIT-0)](LICENSE). The unchanged upstream
+files in `lib/jeff-busy-beaver-zfc254/` are excluded from this grant; their
+provenance and applicable notices are recorded in its import README.

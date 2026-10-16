@@ -33,3 +33,11 @@ every per-file port change.
 
 Repository-authored Busy Beaver models, bridges, and score certificates live
 under [`../Computability/BusyBeaver/`](../Computability/BusyBeaver/), not here.
+
+[`jeff-busy-beaver-zfc254/`](jeff-busy-beaver-zfc254/README.proveit.md) contains
+the unchanged 254-state machine designed by Mira-Cult and Jeff's published
+Coq verification, pinned to `jeff87654/busy-beaver` commit
+`297ab8df7e5de329605c3875b4934643b371a5e3`, with its exact build dependency
+closure, attribution and source manifest. No upstream-wide license is
+declared; this snapshot is excluded from ProveIt's blanket MIT-0 grant, and
+its nested dependencies retain their own licenses.
