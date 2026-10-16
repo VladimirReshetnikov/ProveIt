@@ -360,14 +360,14 @@ private lemma cor146_energy_eq_fiber_count {N k : Nat} [NeZero N]
         (cor146Theta B phi K) (cor146Sigma phi K) =
       (countWhere (cor146FiberGood B phi K) : Nat) := by
   classical
+  rw [show countWhere (cor146FiberGood B phi K) = _ from prop144_countWhere_prod (fun q f => cor146FiberGood B phi K (q, f)), Nat.cast_sum]
   unfold weightedSimultaneousAdditiveEnergy cor146Theta cor146FiberGood cor146EnergyCondition
-  rw [prop144_countWhere_prod, Nat.cast_sum]
   apply Fintype.sum_congr
   intro q
   by_cases hq : (∀ t, q t ∈ cor146ReferenceSection B K) ∧
       IsAdditiveQuadruple q ∧
       ∀ i, IsAdditiveQuadruple (fun t => cor146Sigma phi K i (q t))
-  · simp only [hq, if_true, true_and]
+  · simp [hq]
     rw [cor146_count_choices]
     norm_cast
   · simp [hq, countWhere]
