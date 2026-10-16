@@ -2254,6 +2254,21 @@ subset-PSC results have their own narrower scope; no new internally
 ZFC-certified sub-254 endpoint is supplied. Placement `ac4287e5b` and
 reconciliation `6d8bc7f1b` preserve all sources and independent reviews.
 
+Batches 145 and 146 add six manuscripts to the same host, now fifteen
+sources in one report. Batch 145 (`9c98495586`, `96836f9eea`) contributes
+ordinary two-sided equality erasure and exact 250/248-state compiler artifacts
+(placement `3cc6ba5b1`, reconciliation `5ae03164f`). Batch 146 (`47f3a36029`,
+`af518abcf8`) contributes the full finite-sort obstruction, an alternative
+incoming-profile PSC bootstrap and complete tableau reference, empty-input
+EPSC equivalent to seeded PSC, and historical 249/250 grammar comparisons
+(placement `f31ba244b`). Its obstruction rules out the unchanged reduced
+abstract calculus as a consistency search; literal-table consequences still
+require a compiler simulation. The 248-state tables remain compiler benchmarks,
+and the complete-equality EPSC control measures 270 states. Ordinary theory
+calibrations and current Lean partial results remain valid with their stated
+hypotheses. No new internal ZFC endpoint is claimed; the collection total stays
+290, with one set-theory report.
+
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
 own theorems are not formalized.
@@ -2266,8 +2281,8 @@ latexmk -pdf manifest.tex && latexmk -c manifest.tex
 
 ## Merged reports
 
-Batches 143/144's [closure kernels](set-theory/zfc-closure-kernels) are a
-complementary merge and six additions with a reconciliation README: the
+Batches 143–146's [closure kernels](set-theory/zfc-closure-kernels) are a
+complementary merge and twelve additions with a reconciliation README: the
 seeded base, BIC control, exact-fiber alternative and later saturation/engineering
 work retain their distinct hypotheses,
 metrics and verification evidence. The member articles remain recoverable

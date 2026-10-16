@@ -46,6 +46,17 @@ explicit resources. The host also attributes the existing 253 reduction to
 mira-emmy/Mira-Cult/Jeff and distinguishes all prepared/runtime-only and
 experimental 252 artifacts. The delivered claims have no automatic Lean status.
 
+Batches 145/146 add six more reports to that host: exact 250/248 compiler
+artifacts, the finite-sort obstruction, an incoming-profile PSC alternative,
+empty-input EPSC equivalent to seeded PSC, and complete reference proof engines.
+The unchanged reduced C/G calculus is retired by `59b78a0d9`; placements
+`3cc6ba5b1`/`f31ba244b` and reconciliations `5ae03164f`/`9d9e128cc` preserve
+all fifteen sources. EPSC is a new ordinary simplification, with a 270-state
+full-equality control; its uniform Lean interpretation and machine bridge
+remain open. The opt-in formal library now includes actual raw-PSC model
+adapters, generic register bisimulation and finite facts about the attributed
+248 table. All 35 source units passed a fresh serial check.
+
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
 A positive singleton-decoder hull covers the root's members without
