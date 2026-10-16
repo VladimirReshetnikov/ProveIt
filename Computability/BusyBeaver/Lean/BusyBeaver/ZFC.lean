@@ -30,6 +30,7 @@ import BusyBeaver.ZFC.Base3Syntax
 import BusyBeaver.ZFC.Bottom3Syntax
 import BusyBeaver.ZFC.PartialTotalization
 import BusyBeaver.ZFC.WadeMachine
+import BusyBeaver.ZFC.Lukasiewicz
 
 /-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC
 consistency theorem or state-count improvement is claimed by these imports. -/
