@@ -1,0 +1,71 @@
+AUTHORSHIP, SOURCE PROVENANCE, AND LICENSE BOUNDARIES
+
+1. ORIGINAL MACHINE AND VERIFICATION
+
+Mira-Cult designed the 254-state machine, compact proof-search program,
+and nonextensional container/collection approach. Jeff (jeff87654) supplies
+the public Coq verification in jeff87654/busy-beaver. The numeric 254-state
+table and indispensable functional inputs Dag254.v and tools/logic/spec.py
+are preserved here for precise scientific identification, criticism and
+reproduction of the examined program. No upstream-wide license was found
+in the pinned busy-beaver source. This report does not relicense that work.
+Only those two small functional source files are included from the proof
+package; the larger Coq libraries and proof sources are not redistributed.
+
+Pinned upstream: 297ab8df7e5de329605c3875b4934643b371a5e3
+https://github.com/jeff87654/busy-beaver
+
+2. 253-STATE REDUCTION
+
+The 253-state table is the separately published PR20 construction in
+mira-emmy/busy-beaver, head 0d544f2a2e3c18f12278441a74b7879f31cbe856.
+It changes four rows and reuses a startup state from the original machine.
+The report's regenerate_253.py is an independent small implementation
+using the published mathematical transition data and explicit bijection.
+It is not the upstream proof or a new construction claim.
+
+https://github.com/jeff87654/busy-beaver/pull/20
+
+3. WADE'S PUBLIC COMPILER
+
+TMBuilder.py, tm.py, and tmdb.py are Andrew James Wade's public compiler
+backend, copied unchanged through the pinned upstream snapshot. Its full
+MIT No Attribution license is retained at:
+
+vendor/proveit/lib/jeff-busy-beaver-zfc254/ZF/generator/LICENSE.wade
+
+4. PROVEIT SOURCES
+
+The three reconstruction/experiment scripts in vendor/proveit/Computability/
+BusyBeaver/Research/ZFC are byte-exact ProveIt files at commit
+83dec60c249ca0f9e1b2e5ee3cf18fd1ce58c373. GitHub base64 content was used to
+preserve exact line endings and Git blob hashes. ProveIt's MIT-0 license
+is retained at vendor/proveit/LICENSE. Its own import notice excludes the
+upstream third-party snapshot from that blanket grant; this package
+preserves the same boundary. ProveIt's raw 252-state table and the named
+compiler result are research artifacts, not verified consistency records.
+
+https://github.com/VladimirReshetnikov/ProveIt
+
+The separate supplement/psc-e7c4cadf directory contains two additional
+unchanged ProveIt scripts, their accompanying document and upstream result
+data at commit e7c4cadf9b180e4b1801755b09777a7572412360, plus the report's
+independent reproduction and review. Source Git/SHA identities are retained
+in its comparison.json. The same ProveIt/upstream license boundary applies.
+
+5. REPORT-SPECIFIC WORK
+
+The report, finite-sort countermodel analysis, two diagnostic-control cost
+experiments, independent regeneration/verification scripts, and package
+manifests were prepared for this research request. Their experimental
+results do not transfer the original machine's formal verification to a
+modified theory, proof calculus, coding scheme, compiler, or machine.
+
+The retained CI excerpt is a short, exact record of the observed upstream
+job. Its full decoded-log SHA-256 and retrieval provenance are recorded in
+evidence/upstream253-ci-observation.json. It is evidence of that upstream
+run, not evidence of a local proof-assistant run. No Coq or Lean compilation
+was performed for this report.
+
+This notice supplies attribution and explains the limited source subset.
+It makes no blanket relicensing claim for separately authored upstream work.

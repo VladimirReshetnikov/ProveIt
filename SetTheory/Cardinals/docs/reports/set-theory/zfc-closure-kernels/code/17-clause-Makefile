@@ -1,0 +1,19 @@
+.PHONY: all pdf check clean
+
+PYTHON ?= python3
+CHECK_OUTPUT ?= /tmp/zfc-clausal-check
+
+all: pdf
+
+pdf: report.pdf
+
+report.pdf: report.tex experiment_results.tex
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+check:
+	$(PYTHON) code/check_clausal_trace.py --output-dir "$(CHECK_OUTPUT)"
+	$(PYTHON) code/clausal_trace.py --prefix 1000
+	$(PYTHON) code/capture_tagged_check.py
+
+clean:
+	latexmk -c report.tex
