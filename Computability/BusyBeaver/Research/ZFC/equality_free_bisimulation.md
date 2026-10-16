@@ -202,8 +202,8 @@ show that every new edge is the reverse of an old edge up to `D` on its
 endpoints. Those endpoints have identical raw members to the old ones,
 so the old back clause becomes the new forth clause, and conversely.
 
-For composition, use the common container and all-code bound above.
-Filter codes up to `D` by
+One possible composition proof uses the common container and all-code bound
+above, filtering codes up to `D` by
 
 \[
  \exists s,t,u\,[\operatorname{App}(R1,s,t)\land
@@ -213,11 +213,19 @@ Filter codes up to `D` by
 All desired codes lie in the bound. The filtered relation contains every
 composite edge; every edge it contains has endpoints `D`-related to those
 of a composable pair. Successive applications of the two forth clauses,
-and of the two back clauses, prove Bisim. Consequently `E` is transitive.
-This construction uses only finitely many fixed GIC patterns. The diagonal
-and reversal arguments are checked under explicit semantic collection
-instances in `bisim_refl_of_collection`, `reverse_of_collection` and
-`eqv_symm_of_instances`; composition remains a mathematical obligation.
+and of the two back clauses, prove Bisim.
+
+The checked Lean proof instead avoids this all-code bound. For each actual
+code `d∈R1`, GIC over `R2` collects a composition fiber, using the fixed
+`FiberChoice` matrix. GIC over `R1` then collects those fiber objects using
+`CompositionChoice`; `UnionChoice` joins their edges. Endpoint uniqueness
+proves exact equality of the represented App relation to relational
+composition. These are `fiber_of_instance`, `composition_of_instances`
+and `eqv_trans_of_instances` in `ProfileComposition.lean`. Together with
+the checked diagonal and reversal arguments in `ProfileCollection.lean`,
+this proves that `E` is an equivalence under the explicitly named semantic
+collection-instance families. No assumption of collection for arbitrary
+semantic relations occurs in these statements.
 
 Equivalence of `E` and the root forth/back clauses imply that `M` respects
 `E` in both arguments. For quotient extensionality, suppose `x,y` have the
@@ -230,6 +238,11 @@ domain. Approximately union the two families and adjoin a code of
 `(x,y)`. Existing edges retain their witnesses; the new root edge has the
 two collected matching families as its witnesses. Endpoint uniqueness
 handles `D` copies of that edge. This proves `E(x,y)`.
+
+This matching construction and quotient Extensionality are also checked in
+`ProfileComposition.lean`, as `eqv_matching_of_instances` and
+`eqv_extensionality_of_instances`. Their additional GIC matrices are exactly
+`MatchChoice` and `BackMatchChoice`; neither uses equality atoms.
 
 Thus equality interpreted by `E` and membership interpreted by `M`
 satisfy equality congruence and Extensionality. Formula induction gives
@@ -316,11 +329,28 @@ translation is supplied by this note.
 
 The established Lean results are profile-pair endpoint uniqueness and
 congruence, empty/pair/code existence under the named GIC hypotheses,
-diagonal bisimulation reflexivity and reversal symmetry. `ProfileSyntax.lean`
-also checks actual first-order profile/pair predicates and the GIC wrapper.
-The adapters for all required matrix families, composition, quotient Extensionality, the
-remaining interpreted axiom proofs, the Infinity bridge and proof
-translation must be checked separately. The usual further interpretations handling
+diagonal bisimulation reflexivity, reversal symmetry, exact composition,
+bisimulation transitivity and quotient Extensionality. `ProfileSyntax.lean`
+checks the actual first-order profile, pair, App, bisimulation and Eqv
+predicates; `ProfileModel.lean` supplies actual equality-free Form-indexed
+CP/GIC adapters for the initial empty/pair/diagonal/reversal constructions.
+`CompositionModel.lean` supplies the remaining composition and matching
+adapters. `QuotientModel.lean` constructs the actual quotient domain,
+membership congruence, Extensionality, an equality-free formula translation
+and its satisfaction bridge.
+
+`ProfileAxioms.lean` checks semantic per-instance Empty, Pairing, Union,
+Separation, Power Set and partial functional Replacement modulo `E`, together
+with the singleton-closed `INF_lib` conclusion. Its Power Set proof explicitly
+retains a `SubD` trace and proves the two-power bound above.
+`PowerSyntax.lean` adapts the fixed `SubD` and bounded Power Set filter matrices
+to the actual equality-free GIC schema. These lemmas have their explicit
+instance and invariance hypotheses; semantic predicates are not silently
+promoted to schema instances.
+
+Connecting all remaining interpreted-axiom instances to actual formulas,
+the ordinary Infinity bridge and proof translation must be checked
+separately. The usual further interpretations handling
 Foundation and Choice are also not formalized here. IR is not preserved
 automatically by bisimulation: a raw cycle can become a self-member in
 the quotient. This causes no contradiction with the stated target,
