@@ -9590,6 +9590,43 @@ are unchanged. The documented Lemma 16.10 correction and original-paper fidelity
 qualifications remain. This checkpoint simplifies the proof and its dependencies;
 it introduces no new numerical-bound claim.
 
+### L.110. Integrating the upstream helper cleanup
+
+Merged source `a87906dc3960604bc3a0b423868d392b43ba85c0` incorporates incoming
+`68ad8d39173bf0494fa46154869ccea9b1a3c623` after checkpoint `685a3095`.
+It changes 153 production Lean files and removes 93 source lines relative to
+that checkpoint. The three Bernoulli conflicts retain the already shared local
+proofs while preserving the other incoming edits. All retained declaration
+headers and imports remain unchanged. The cleanup removes 21 helper declarations,
+including four public wrappers with no remaining repository callers; the exported
+helper-name set is therefore intentionally smaller.
+
+The three sequential native commands passed with exit zero: core, 572 modules;
+shared, 65 roots and 1,915 modules; supplemental, 18 roots and 351 modules.
+The receipts verify source and artifact stability throughout the chain. The selected scope is three
+commands covering 1,964 distinct modules, with 1,971 protected source/configuration
+inputs. Its 84 per-root closure entries are metadata, not 84 command outcomes.
+The scope covers 1,668 of 1,671 affected consumers; only the three protected
+aggregate facades are excluded. Earlier `5e5af281` outcomes do not validate this
+merged source, and no historical retention is substituted for the fresh checks.
+
+The completed source-inventory comparison preserves all 120 ordered rows and
+544 companion occurrences. Four arrays are restored by whole-object permutations;
+only 30 line-location fields change. Objects, duplicate occurrences and
+qualifications are preserved.
+
+The [archive index](verification/2026-10-16-merge68ad-evidence/index.json) and
+[evidence map](verification/2026-10-16-merge68ad-evidence/evidence-map.json) bind
+the actual command events, receipts and logs, source snapshot and ledger,
+merge review and inventory evidence. The archive contains 99 byte-exact copied evidence files plus its index and map.
+The index SHA256 is `8578f6772c9d6054b677c271112e3c4a0fc220e17284cf8fe38583bd88427926`;
+the evidence-map SHA256 is `dee79a86645e2864c02fabe93fe2ccc99d08f2844b61014bbc258b7efcd5c6c5`.
+
+The final statements, numerical bounds and ordinary positive-step progression
+conclusions are unchanged. The documented Lemma 16.10 correction and original-paper
+fidelity qualifications remain; catalogue coverage is not a fidelity certificate.
+Unapplied source-only proposals contribute no savings or validation claims to
+this checkpoint.
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
