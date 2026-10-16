@@ -20,7 +20,11 @@ instance. The widths are `section16PowerWidth (familyWidthPrefactor C)
 `ζ/(4C(q+1)) · m^(a/(8p(q+1)^(2^(k+2))))`.
 * `section16_rounded_recurrence_scale`: a copy of the arithmetic lemma
   `polynomial_localized_recurrence_parameters`, which sits in a heavy module.
-* `AllScaleFamilyLemma166At`, `allScaleFamilyLemma166At_of`.
+* `AbstractFamilyLemma166At`, `abstractFamilyLemma166At_of`: the same for
+  abstract members (frequencies `K`, linearity domains `A`, functions `f`); the
+  proof never uses Gowers's frame.
+* `AllScaleFamilyLemma166At`, `allScaleFamilyLemma166At_of`: its instance at
+  Gowers's data.
 * `AllScaleFamilyLemma166At.single`: the case of one piece, in the form
   `AllScaleLemma166WidthAt`. -/
 set_option autoImplicit false
@@ -190,28 +194,46 @@ def AllScaleFamilyLemma166At (k : Nat) (W : Nat → Nat → Real → Real → Re
                 LinearOn ((A u).carrier.filter fun x =>
                   (h, x) ∈ section16InducedDomain (B c) (H c) (Y c)) (phiPrime c h)
 
-/-- **The family Lemma 16.6 from the recurrence profile.** -/
-theorem allScaleFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0 < p)
+/-- **Lemma 16.6 for abstract members, at every scale.** -/
+def AbstractFamilyLemma166At (k : Nat) (W : Nat → Nat → Real → Real → Real) : Prop :=
+  ∀ (N m : Nat) [NeZero N] [Fact N.Prime], 1 ≤ k →
+    ∀ (zeta sigma : Real), 0 < zeta → zeta ≤ 1 / 2 → 0 < sigma → sigma ≤ 1 →
+    ∀ (Qb Eb : Real → Real), 0 ≤ Qb sigma → 0 < Eb sigma → Eb sigma ≤ 1 →
+    ∀ (Gamma : Finset (Point N k × ZMod N)), MultiplyLinearWith Qb Eb Gamma →
+    ∀ (ι : Type) (H1 : ι → Finset (Point N k)) (K A : ι → Point N k → Finset (ZMod N))
+      (f : ι → Point N k → ZMod N → ZMod N),
+    (∀ c, ∀ x ∈ H1 c, ∀ r ∈ K c x, (x, r) ∈ Gamma) →
+    (∀ c, ∀ x ∈ H1 c, ∀ v : Nat, 0 < v → ∀ J : ModAP N, J.length ≤ v →
+      J.step ∈ bohr (K c x) (zeta / v) → LinearOn (J.carrier ∩ A c x) (f c x)) →
+    ∀ (P : Box N (k + 1)) (Q : Box N k) (I : ModAP N),
+      P.IsProper → IsLastCoordinateBoxProduct P Q I → m ≤ P.width →
+      ∃ G : Finset (Point N k), ∃ M : Nat,
+          ∃ S : Fin M → Box N (k + 1),
+            ∃ T : Fin M → Box N k, ∃ J : Fin M → ModAP N,
+              G ⊆ Q.carrier ∧
+              (1 - sigma) * Q.carrier.card ≤ G.card ∧
+              IsBoxPartition S P ∧ (∀ u, (S u).IsProper) ∧
+              (∀ u, IsLastCoordinateBoxProduct (S u) (T u) (J u)) ∧
+              (∀ u, W m (Nat.floor (Qb sigma)) (Eb sigma) zeta ≤ (S u).width) ∧
+              ∀ c u x, x ∈ G → x ∈ H1 c → x ∈ (T u).carrier →
+                LinearOn ((J u).carrier ∩ A c x) (f c x)
+
+/-- The abstract family Lemma 16.6 from the recurrence profile. -/
+theorem abstractFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0 < p)
     (hrec : Section16RecurrenceProfileWith k (familyRecThr k C p) (familyRecExp k p)) :
-    AllScaleFamilyLemma166At k
+    AbstractFamilyLemma166At k
       (section16PowerWidth (familyWidthPrefactor C) (familyWidthDivisor k p)) := by
-  unfold AllScaleFamilyLemma166At
-  intro N m _ _ hk theta gamma sigma ht ht1 hg hg1 hs hs1 Qb Eb hQ ha ha1 Gamma hML
-    ι B phi H H1 Y phiPrime hfreq hH1 hselection P Q I hP hproduct hmP
+  unfold AbstractFamilyLemma166At
+  intro N m _ _ hk zeta sigma hz hzHalf hs hs1 Qb Eb hQ ha ha1 Gamma hML
+    ι H1 K A f hfreq hlinear P Q I hP hproduct hmP
   have hfam := hrec.retiled_family (fun q => familyRecThr_pos (by omega) q)
-  let delta := section16Delta (section16ThetaOne theta gamma k)
-  let zeta := section16Zeta theta gamma k
-  obtain ⟨hz, hzHalf⟩ := section16Zeta_pos_le_half k ht ht1 hg hg1
-  let D (c : ι) (x : Point N k) :=
-    Finset.univ.filter (fun y => (x, y) ∈ section16InducedDomain (B c) (H c) (Y c))
   let q := Nat.floor (Qb sigma)
   let b := C * (q + 1)
   let E := 2 * (p * (q + 1) ^ (2 * (2 ^ (k + 1))))
   let l := section16PowerWidth (familyWidthPrefactor C) (familyWidthDivisor k p) m q (Eb sigma) zeta
   have hlval : l = (zeta / (4 * (b : Real))) * (m : Real) ^ (Eb sigma / (4 * (E : Real))) := rfl
   by_cases hl : l ≤ 1
-  · -- singleton cells
-    obtain ⟨M, x, hpart⟩ := box_singleton_partition P
+  · obtain ⟨M, x, hpart⟩ := box_singleton_partition P
     refine ⟨Q.carrier, M, fun j => pointSingletonBox (x j),
       (fun j => boxInit (pointSingletonBox (x j))),
       (fun j => (pointSingletonBox (x j)).axis (Fin.last k)), Finset.Subset.refl _, ?_, hpart,
@@ -224,7 +246,7 @@ theorem allScaleFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0
     · intro c j h _ _ _
       apply LinearOn.of_subset_singleton _ _ ((x j) (Fin.last k))
       intro y hy
-      simpa only [pointSingletonBox_axis_carrier] using (Finset.mem_filter.mp hy).1
+      simpa only [pointSingletonBox_axis_carrier] using (Finset.mem_inter.mp hy).1
   · have hlarge : 1 < l := lt_of_not_ge hl
     have hb : 2 ≤ b := hC.trans (Nat.le_mul_of_pos_right C (by omega))
     have hE : 0 < E := by dsimp [E]; positivity
@@ -237,7 +259,6 @@ theorem allScaleFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0
       norm_num at hlarge
     obtain ⟨n, hm4, hn, hnscale, hnthreshold, htarget⟩ :=
       section16_rounded_recurrence_scale hm hb hE ha ha1 hz hzHalf hlarge
-    -- the base factors of P
     have hwidthpos : 0 < P.width := by omega
     have hcanon := hproduct.canonical_factors hwidthpos
     let Q' := boxInit P
@@ -249,7 +270,6 @@ theorem allScaleFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0
     obtain ⟨u, hu⟩ := I'.step_isUnit_of_prime hI' (by omega)
     have hu' : I'.step = (↑u : ZMod N) := hu.symm
     have hstep : I'.step = Q'.commonDiff := P.axis_step (Fin.last k)
-    -- the spectrum cover on short parents
     obtain ⟨q', G, bb, Bp, cnt, R, mu, hq', hGsub, hGmass, hBpart, _,
         hBaxes, hBstep, hRpart, hRproper, hRwidth, hmu, hcover⟩ :=
       hML.short_parent_cover sigma hs hs1 hQ ha.le Q' I' hQ' hI' (by omega) hm4 hmQ' hmI'
@@ -292,19 +312,16 @@ theorem allScaleFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0
           (∀ z, (S z).IsProper ∧ lcell ≤ (S z).width) ∧
           (∀ z, IsLastCoordinateBoxProduct (S z) (T z) (J z)) ∧
           ∀ c z x, x ∈ (T z).carrier → x ∈ G ∩ H1 c →
-            LinearOn ((J z).carrier ∩ D c x) (phiPrime c x) := by
+            LinearOn ((J z).carrier ∩ A c x) (f c x) := by
       apply hfam q' N n (R' j) ((Bp (e.symm j).1).axis i) I' i u
         (hRproper _ _) hI' (hBunit j) (hIparallel j) (hsub j)
         (hBaxes _ i).2.1 (hBaxes _ i).2.2 (mu (e.symm j).1 (e.symm j).2)
-        (hmu _ _) hthreshold (hnR j) ι (fun c x => section16LargeSpectrum (B c) x delta)
-        (fun c => G ∩ H1 c) D phiPrime zeta hz hzHalf
+        (hmu _ _) hthreshold (hnR j) ι K (fun c => G ∩ H1 c) A f zeta hz hzHalf
       · intro c x hx hxGH r hr
         exact hcover (e.symm j).1 (e.symm j).2 x hx (Finset.mem_inter.mp hxGH).1 r
           (hfreq c x (Finset.mem_inter.mp hxGH).2 r hr)
       · intro c x hxGH v hv J hJ hd
-        have hxH := hH1 c (Finset.mem_inter.mp hxGH).2
-        have h := (hselection c).2 x hxH v hv J.step hd J rfl hJ
-        simpa only [D, Finset.inter_filter, Finset.inter_univ] using h
+        exact hlinear c x (Finset.mem_inter.mp hxGH).2 v hv J hJ hd
       · exact hlcell
     choose L S T J hSpart hSproper hSproduct hSlin using hlocal
     let fidx := section5NatFlattenEquiv L
@@ -325,9 +342,27 @@ theorem allScaleFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0
       have hw := (hSproper (fidx.symm j).1 (fidx.symm j).2).2
       exact (le_of_eq hlval).trans (htarget'.trans hw)
     · intro c j h hhG hhH hhT
-      have hlin := hSlin (fidx.symm j).1 c (fidx.symm j).2 h hhT (Finset.mem_inter.mpr ⟨hhG, hhH⟩)
-      simpa only [D, Finset.inter_filter, Finset.inter_univ] using hlin
+      exact hSlin (fidx.symm j).1 c (fidx.symm j).2 h hhT (Finset.mem_inter.mpr ⟨hhG, hhH⟩)
 
+/-- **The family Lemma 16.6 from the recurrence profile.** -/
+theorem allScaleFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0 < p)
+    (hrec : Section16RecurrenceProfileWith k (familyRecThr k C p) (familyRecExp k p)) :
+    AllScaleFamilyLemma166At k
+      (section16PowerWidth (familyWidthPrefactor C) (familyWidthDivisor k p)) := by
+  unfold AllScaleFamilyLemma166At
+  intro N m _ _ hk theta gamma sigma ht ht1 hg hg1 hs hs1 Qb Eb hQ ha ha1 Gamma hML
+    ι B phi H H1 Y phiPrime hfreq hH1 hselection P Q I hP hproduct hmP
+  obtain ⟨hz, hzHalf⟩ := section16Zeta_pos_le_half k ht ht1 hg hg1
+  obtain ⟨G, M, S, T, J, hGQ, hGm, hSP, hSpr, hSpd, hSw, hlin⟩ :=
+    abstractFamilyLemma166At_of k hC hp hrec N m hk _ sigma hz hzHalf hs hs1 Qb Eb hQ ha ha1 Gamma
+      hML ι H1 (fun c x => section16LargeSpectrum (B c) x (section16Delta (section16ThetaOne theta gamma k)))
+      (fun c x => Finset.univ.filter fun y => (x, y) ∈ section16InducedDomain (B c) (H c) (Y c))
+      phiPrime hfreq (fun c x hx v hv J hJ hd => by
+        simpa only [Finset.inter_filter, Finset.inter_univ] using
+          (hselection c).2 x (hH1 c hx) v hv J.step hd J rfl hJ)
+      P Q I hP hproduct hmP
+  refine ⟨G, M, S, T, J, hGQ, hGm, hSP, hSpr, hSpd, hSw, fun c u h hhG hhH hhT => ?_⟩
+  simpa only [Finset.inter_filter, Finset.inter_univ] using hlin c u h hhG hhH hhT
 
 /-- The family Lemma 16.6 contains the single-piece one: take one member and
 the restricted spectrum relation as `Γ`. -/
