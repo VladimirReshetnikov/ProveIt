@@ -188,10 +188,16 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `ZipperRuns.lean`, `RegisterBoxes253.lean` | Generic whole-tape sequential execution and preserving scans; actual public253 zero-decrement box for arbitrary preceding and following registers, in exactly twice the prefix width plus five steps. No PC-update or complete instruction simulation claim. |
 | `Code254GIC.lean`, `Code254Models.lean` | Hygienic actual Form matrices and padded gated bundles give the CP/GIC model interface; semantic encoding/decoding gives the decoded-to-encodable model implication. The reverse implication and full ZFC calibration remain separate. |
 | `NumericCode254.lean` | Exact equality of the two pairing/encoding definitions and equivalence of their twelve-constructor numerical derivability relations, including zero and all actual gates. |
-| `RegisterMark253.lean`, `RegisterIncrement253.lean` | Actual public253 marking and increment excursions, with arbitrary register values and spares, exact step counts and whole-tape output. PC updates, positive decrement and general dispatch remain separate. |
+| `RegisterMark253.lean`, `RegisterIncrement253.lean` | Actual public253 marking and increment excursions, with arbitrary register values and spares, exact step counts and whole-tape output. PC updates and general dispatch remain separate. |
 | `QuotientSeparation.lean` | The full quotient satisfies the actual `Sep_form` schema for arbitrary formulas and quotient parameter valuations, using a literal equality-free GIC matrix. Other ZF axioms remain separate. |
 | `QuotientPower.lean`, `QuotientReplacement.lean` | Actual quotient `Pow_form` and all `Repl_form` instances, using literal trace/filter and guarded translated matrices; quotient subsets and parameter valuations are unrestricted. |
 | `RegisterDecrement253.lean` | Positive decrement of the actual public253 table: arbitrary register values, exact twice-old-file-width-plus-three duration, all spare data preserved and the additional zero spare retained. All four register boxes are now proved; PC and general dispatch remain separate. |
+| `QuotientBasic.lean` | Actual quotient Empty Set, Pairing, Union and an empty-root singleton-closed container; ordinary Infinity is a separate construction. |
+| `SingletonInfinity.lean` | A literal Separation cut gives the least singleton-closed index, with induction over represented sets and formulas; Infinity is not an assumption. |
+| `BreakSite253.lean` | Complete actual PC site001→1 with unchanged registers/spares and whole-tape DispatchFrame, in 2×gap+34 steps. General dispatch remains open. |
+| `FiniteSets.lean`, `InductiveAttempts.lean` | Actual finite graph objects and formula atoms construct an ordinary inductive set in the CP/GIC quotient, using three specific Separation matrices and one Replacement matrix, with no prior Infinity. |
+| `QuotientZF0.lean` | The complete quotient satisfies ZF without Foundation or Choice; a refutation of that theory forces the actual abstract enumerator to halt. The converse and binary simulation remain open. |
+| `RMDag.lean`, `Dag254.lean`, `L2Lib254.lean`, `L2Macros254.lean`, `L2Control254.lean` | Structured semantics and the actual219-node program; proved pair/unpair, stack/formula macros, equality/fetch/MP/NIP branches. Root enumeration and the separate Prog254 relation remain open. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
@@ -207,8 +213,8 @@ for the reverse construction, then its generic completeness theorem for
 deductive equivalence; [psc_calibration.md](psc_calibration.md) gives the exact
 statements and comparison theory. It is not a computable proof-code translator verified
 in arithmetic. No theorem here supplies a proof-producing theory translator, a complete
-refutation checker, an enumerator compiler, a verified executing decoder, or
-the final ZFC machine endpoint. `PositiveClosure` deliberately assumes the
+binary refutation checker, an enumerator compiler, a general verified executing
+decoder, or the final ZFC machine endpoint. `PositiveClosure` deliberately assumes the
 specific closure instances used by each lemma, rather than silently assert
 all second-order relations form an implemented first-order schema.
 
@@ -224,8 +230,8 @@ Rebuild the entire small dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 67 source units: the first-order logic, calculus and completeness
-modules, `ZF.Zf`, `BusyBeaver.Core`, 61 research modules and the umbrella into a
+This compiles 78 source units: the first-order logic, calculus and completeness
+modules, `ZF.Zf`, `BusyBeaver.Core`, 72 research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the prior 38-unit fresh source check and axiom outputs. The seven
@@ -264,6 +270,19 @@ The [Power Set](quotient_power.md), [Replacement](quotient_replacement.md) and
 to 67 units. Their scoped source, caller and axiom checks are linked in those
 notes; `results/power-replacement-decrement-integration-verification.json`
 records the joint source and umbrella check with the earlier dependencies reused.
+The [basic quotient axioms](quotient_basic.md), [singleton index](singleton_infinity.md)
+and [first complete PC site](break_site253.md) extend the runner to 70 units.
+Their independent checks are supplemented by
+`results/singleton-break-integration-verification.json`: three source builds,
+the umbrella, seven axiom audits and a caller, reusing the verified67 cache.
+This integration does not rebuild the expensive finite bootstrap.
+The [finite set atoms](finite_sets.md), [ordinary Infinity proof](inductive_attempts.md),
+[full quotient comparison](quotient_zf0.md) and five merged
+[structured-program modules](l2_component_review.md) extend the runner to78 units.
+`results/infinity-l2-integration-verification.json` records all eight source
+builds and the umbrella. `results/quotient-zf0-verification.json` records the
+final quotient module's additional abstract-enumerator consequence and renewed
+umbrella/audit checks. Previously verified dependencies are reused.
 The standalone BusyBeaver Lake package declares its FirstOrder and ZF path
 dependencies; the ZFC umbrella is opt-in.
 
@@ -427,3 +446,9 @@ DAGs while retaining the same complete revised word. Its selected 269-state
 candidate has an independently checked 4,533-pair RM certificate; it does not
 improve the retained 268-state control. The bounded beam and coarse pruning
 key make no optimality claim.
+
+The [incoming-edge deletion search](public253_context_search.md) tests 502 new
+nonuniform old107 removals and two uniform controls, preserving the full original
+frontend and all55 protected pairs. No recipe survives the bounded affine
+filter; no modified table proceeds to bootstrap testing. The complete per-recipe
+ledger distinguishes fuel exhaustion, abstraction limits and unexpected halts.

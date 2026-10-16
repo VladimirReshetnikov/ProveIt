@@ -1,0 +1,46 @@
+{
+  "scope": "Final quotientZF0 and abstract enumerator consequence; two changed source units rebuilt after prior eight-module integration, dependencies reused.",
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "scratch": "/tmp/zfc-infinity-l2-integration-1rmcfjvy",
+  "dependency_cache": "/tmp/zfc-infinity-l2-integration-6e6h2rfq",
+  "default_source_units": 78,
+  "research_modules": 72,
+  "modules": [
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientZF0.lean",
+      "source_sha256": "8819382e2f33d307754e1899d82a9834cb140b89780c5e6693a50d0660ba0ee4",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-infinity-l2-integration-1rmcfjvy/BusyBeaver/ZFC/QuotientZF0.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientZF0.lean"
+      ],
+      "seconds": 0.339,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean",
+      "source_sha256": "9031a3bd409ac78565880583720e10313b322d2babfd8237746c7c2a5001702b",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-infinity-l2-integration-1rmcfjvy/BusyBeaver/ZFC.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean"
+      ],
+      "seconds": 0.479,
+      "returncode": 0,
+      "output": ""
+    }
+  ],
+  "audit": {
+    "source": "import BusyBeaver.ZFC\nopen SetTheory.BusyBeaver.ZFC\n#print axioms FiniteSets.kpair_inj\n#print axioms FiniteSets.sat_appForm\n#print axioms FiniteSets.sat_succForm\n#print axioms InductiveAttempts.quotient_inf_form\n#print axioms QuotientZF0.quotient_zfAxioms\n#print axioms QuotientZF0.quotient_zf0\n#print axioms QuotientZF0.quotient_models\n#print axioms QuotientZF0.zf0_consistent_of_model\n#print axioms QuotientZF0.decoded_quotient_zf0\n#print axioms QuotientZF0.zf0_consistent_of_decoded\n#print axioms QuotientZF0.c254_of_zf0_refutation\n#print axioms QuotientZF0.enum_halts_of_zf0_refutation\n#print axioms QuotientZF0.zf0_consistent_of_enum_nonhalting\n#print axioms L2.pair162\n#print axioms L2.loop115\n#print axioms L2.loop116\nexample (h : \u00ac Enum254.Halts) : \u00ac SetTheory.BProv PSCCalibration.ZF0Ax [] .fBot :=\n  QuotientZF0.zf0_consistent_of_enum_nonhalting h\nexample {V : Type} (mem : V \u2192 V \u2192 Prop) (hirr : \u2200 x, \u00ac mem x x)\n    (h : Code254Models.ModelsDecoded mem) (v : Nat \u2192 V) :\n    \u00ac SetTheory.BProv PSCCalibration.ZF0Ax [] .fBot :=\n  QuotientZF0.zf0_consistent_of_decoded mem hirr h v\nexample {V : Type} (mem : V \u2192 V \u2192 Prop) (v : V)\n    (h : ProfileModel.ModelsCPGIC mem) :\n    SetTheory.ZFAxioms (QuotientModel.quotientMember mem v h) :=\n  QuotientZF0.quotient_zfAxioms mem v h\n",
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "/tmp/zfc-infinity-l2-integration-1rmcfjvy/Audit.lean"
+    ],
+    "returncode": 0,
+    "output": "'SetTheory.BusyBeaver.ZFC.FiniteSets.kpair_inj' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.FiniteSets.sat_appForm' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.FiniteSets.sat_succForm' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.InductiveAttempts.quotient_inf_form' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientZF0.quotient_zfAxioms' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientZF0.quotient_zf0' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientZF0.quotient_models' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientZF0.zf0_consistent_of_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientZF0.decoded_quotient_zf0' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientZF0.zf0_consistent_of_decoded' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientZF0.c254_of_zf0_refutation' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientZF0.enum_halts_of_zf0_refutation' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientZF0.zf0_consistent_of_enum_nonhalting' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.L2.pair162' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.L2.loop115' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.L2.loop116' depends on axioms: [propext, Classical.choice, Quot.sound]\n"
+  },
+  "dependency_order_checked": true
+}

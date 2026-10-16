@@ -1,0 +1,90 @@
+{
+  "scope": "Actual Empty Set, Pairing, Union and exact singleton-closed INF_lib in the CP/GIC quotient; no ordinary Infinity, complete ZF or machine endpoint.",
+  "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientBasic.lean",
+  "source_sha256": "966c269abe7552895d97cc943582db7f53cc5a487a59d695a0a84922fb8cc412",
+  "source_lines": 165,
+  "observed_head": "9157df9e5b6c595de0b5c8285aad1d62f673ae50",
+  "upstream_argument_pin": "297ab8df7e5de329605c3875b4934643b371a5e3",
+  "upstream_arguments": [
+    "ZF/m254/coq/settheory/S_ax.v:S_eset",
+    "ZF/m254/coq/settheory/S_ax.v:S_pair",
+    "ZF/m254/coq/settheory/S_ax.v:S_union",
+    "ZF/m254/coq/settheory/S_ax.v:S_inf"
+  ],
+  "build": {
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "-o",
+      "/tmp/zfc-quotient-basic-v9bj4atv/BusyBeaver/ZFC/QuotientBasic.olean",
+      "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientBasic.lean"
+    ],
+    "actual_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "cache": "/tmp/zfc-power-replacement-decrement-integration-l9dibtbd",
+    "output_cache": "/tmp/zfc-quotient-basic-v9bj4atv",
+    "returncode": 0,
+    "seconds": 0.36681749392300844
+  },
+  "audit": {
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "/tmp/zfc-quotient-basic-v9bj4atv/Audit.lean"
+    ],
+    "actual_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "returncode": 0,
+    "seconds": 0.2856348128989339,
+    "axiom_audits": 15,
+    "audit_names": [
+      "sat_emptyForm",
+      "interpreted_empty",
+      "quotient_empty",
+      "quotient_empty_form",
+      "interpreted_pair",
+      "quotient_pair",
+      "quotient_pair_form",
+      "interpreted_union",
+      "quotient_union",
+      "quotient_union_form",
+      "sat_singletonClosedForm",
+      "interpreted_singleton_closed",
+      "quotient_singleton_closed",
+      "quotient_singletonClosed_form",
+      "quotient_empty_singleton_container"
+    ],
+    "callers": 3
+  },
+  "axioms_union": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "no_sorry_or_custom_axioms": true,
+  "additional_schema_assumption": false,
+  "formula_resources": {
+    "empty": "ProfileModel.false_instance",
+    "pair": "ProfileModel.pairs_of_model",
+    "union": "CompositionModel.union_instance",
+    "singleton_closure": "ProfileAxioms.singleton_closed_of_containers using the existing CP containers and pairs"
+  },
+  "nonempty_domain": "Explicit raw witness.",
+  "raw_extensionality_profile_congruence_or_IR_assumed": false,
+  "quotient_coverage": "Quotient.ind / Quotient.ind2 cover arbitrary elements; Quotient.exists_rep lifts Union witnesses; mk_eq_iff converts Eqv to actual quotient equality.",
+  "formulas": [
+    "emptyForm, with sat_emptyForm semantic equivalence",
+    "Repository Pair_form via bridge_Pair",
+    "Repository Union_form via bridge_Union",
+    "singletonClosedForm, with sat_singletonClosedForm semantic equivalence"
+  ],
+  "singleton_interface": "Every root belongs to a set closed under exact singleton formation; quotient_empty_singleton_container also places an actual empty quotient object in such a set.",
+  "ordinary_Infinity_claimed": false,
+  "callers": [
+    "Pairing and Union fit actual ZFAxioms fields while other fields are supplied separately; not a full ZF construction.",
+    "Satisfaction of sealed singletonClosedForm.",
+    "EncBundle model with explicit IR and raw witness -> ModelsCPGIC -> quotient Pair_form, Union_form, emptyForm and singletonClosedForm under every valuation."
+  ],
+  "independent_review": "Machine-proof agent read the full source and found resources, quotient representatives and all INF_lib binder indices correct, with the ordinary Infinity distinction explicit.",
+  "initial_debugging": "One surplus closing parenthesis in the initial sentence and layout issues in scratch caller examples were corrected before the passing builds; preserved scratch logs are not passing proof claims.",
+  "whole_ZF_axioms_claimed": false,
+  "machine_changed": false,
+  "build_grant_released_to_root": true,
+  "scratch": "/tmp/zfc-quotient-basic-v9bj4atv"
+}

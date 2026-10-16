@@ -43,7 +43,8 @@ def main() -> None:
                         "Code254Containers", "ZipperRuns", "RegisterBoxes253", "Code254GIC",
                         "Code254Models", "NumericCode254", "RegisterMark253", "RegisterIncrement253",
                         "Enum254", "QuotientSeparation", "QuotientPower", "QuotientReplacement",
-                        "RegisterDecrement253") ),
+                        "RegisterDecrement253", "QuotientBasic", "SingletonInfinity", "BreakSite253", "FiniteSets", "InductiveAttempts", "QuotientZF0",
+                        "RMDag", "Dag254", "L2Lib254", "L2Macros254", "L2Control254") ),
         ("Computability/BusyBeaver/Lean", "BusyBeaver/ZFC.lean"),
     ]
     if args.include_no_quotient:
