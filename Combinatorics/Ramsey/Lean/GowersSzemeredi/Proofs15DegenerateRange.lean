@@ -155,21 +155,6 @@ private lemma rangeDeg_linear_solutions_card_le {N : Nat} [NeZero N]
       rw [Fintype.card_subtype_compl]
       simp
 
-private def rangeDegDoubleExceptEquiv {I : Type*} [DecidableEq I]
-    (i j : I) (hij : i ≠ j) :
-    {t : I // t ≠ i ∧ t ≠ j} ≃
-      {t : {t : I // t ≠ i} // t ≠ ⟨j, hij.symm⟩} where
-  toFun t := ⟨⟨t, t.2.1⟩, by
-    intro h
-    exact t.2.2 (congrArg Subtype.val h)⟩
-  invFun t := ⟨t.1.1, t.1.2, by
-    intro h
-    apply t.2
-    apply Subtype.ext
-    exact h⟩
-  left_inv _ := rfl
-  right_inv _ := rfl
-
 private abbrev RangeDegDoubleLinearSolutions {N : Nat} {I : Type*}
     [Fintype I] (a b : I → ZMod N) :=
   {x : I → ZMod N //
@@ -373,15 +358,6 @@ private lemma rangeDeg_arrangementMoment_lift {N k d : Nat} [NeZero N]
   apply Finset.sum_congr rfl
   intro e _
   rw [rangeDeg_vertex_product_lift]
-
-private def rangeDegBooleanCoefficient {N k : Nat}
-    (eta : (Fin k → Bool) → Int) (h : Point N k)
-    (A : Finset (Fin k)) (u : Fin k → Bool) : ZMod N :=
-  ∑ e : Fin k → Bool, (eta e : ZMod N) *
-    ∏ i : Fin k,
-      if i ∈ A then
-        if u i then 1 else if e i then h i else 0
-      else if u i then 0 else 1
 
 private abbrev rangeDegEta {k d : Nat} (c : RangeDegCoefficient m k d) :=
   fun e j => rangeDegCoefficientValue c e j

@@ -19,11 +19,6 @@ theorem quadraticRecurrenceSample_natCast (R : Nat) :
     ((2 ^ 256 * R ^ 16 : Nat) : Real) = quadraticRecurrenceSample R := by
   simp only [Nat.cast_mul, Nat.cast_pow, Nat.cast_ofNat, quadraticRecurrenceSample]
 
-theorem quadraticRecurrenceRoot_pos {R : Real} (hR : 0 < R) :
-    0 < quadraticRecurrenceRoot R := by
-  unfold quadraticRecurrenceRoot
-  positivity
-
 theorem quadraticRecurrenceSample_sqrt (R : Real) :
     Real.sqrt (quadraticRecurrenceSample R) = quadraticRecurrenceRoot R := by
   rw [quadraticRecurrenceSample_eq_sq, Real.sqrt_sq]

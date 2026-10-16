@@ -49,13 +49,6 @@ def section16CubicTwoExponent (q : Nat) (theta gamma rho : Real) : Real :=
     (section16CubicLiftExponent q 1 (rho / 4) theta gamma Qd Ed)
     (section16CubicLiftThreshold q 1 (rho / 4) theta gamma Qd Ed)
 
-theorem section16CubicTwoExponent_pos {q : Nat} {theta gamma rho : Real}
-    (hq : 0 < q) (ht : 0 < theta) (hg : 0 < gamma) (hr : 0 < rho) :
-    0 < section16CubicTwoExponent q theta gamma rho := by
-  apply section16CappedWidthExponent_pos
-  exact section16CubicLiftExponent_pos hq (by decide) (by positivity) ht hg
-    (cubicBaseExponent_pos (section16CubicSpectrumCount_pos theta gamma) (by positivity))
-
 /-- Construct both inputs to the affine lift and translate its output back
 inside the original graph without losing any of its selected mass. -/
 theorem section16_cubic_structured_piece {N q : Nat} [Fact N.Prime]
@@ -82,7 +75,6 @@ theorem section16_cubic_structured_piece {N q : Nat} [Fact N.Prime]
     all_goals
       funext rho
       simp [section16CubicTwoGraphBound, section16CubicTwoExponent]
-
 
 /-- Unconditional extraction from a dense two-dimensional product-property
 graph, with explicit controls uniform in the ambient prime and in the graph. -/

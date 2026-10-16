@@ -10,11 +10,6 @@ open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
 open MvPolynomial
 
-private theorem feature_countWhere_sum {T : Type*} [Fintype T] (P : T → Prop) :
-    countWhere P = ∑ t : T, @ite Nat (P t) (Classical.propDecidable _) 1 0 := by
-  classical
-  simp [countWhere]
-
 theorem polynomial_zero_count_fin {R : Type*} [Field R] [Fintype R]
     {n : Nat} (p : MvPolynomial (Fin (n + 1)) R) (hp : p ≠ 0) :
     countWhere (fun x => eval x p = 0) ≤ p.totalDegree * Fintype.card R ^ n := by
@@ -98,14 +93,5 @@ theorem balancedFeaturePolynomial_exceptional_count {I R E : Type*}
       intro e he
       exact balancedFeaturePolynomial_zero_count sign hsign (u₀ e) (u₁ e) (hnot e he)
     _ = _ := by simp
-
-theorem balancedFeaturePolynomial_zero_count_32 {N : Nat} [NeZero N] [Fact N.Prime]
-    (sign : Fin 15 → ZMod N) (hsign : ∀ i, sign i ≠ 0) (u₀ u₁ : Option (Fin 15) → ZMod N)
-    (hnot : ¬ ∃ c : ZMod N, u₀ none = c ∧ u₁ none = -c ∧
-      (∀ i, u₀ (some i) = -(sign i * c)) ∧
-      (∀ i, u₁ (some i) = sign i * c)) :
-    countWhere (fun z => MvPolynomial.eval z (balancedFeaturePolynomial sign u₀ u₁) = 0) ≤
-      2 * N ^ 31 := by
-  simpa using balancedFeaturePolynomial_zero_count sign hsign u₀ u₁ hnot
 
 end LeanProofs.GowersSzemeredi

@@ -35,17 +35,6 @@ private lemma intervalProbability_isProbability {rho : Real} (hrho : 0 < rho) :
     simpa [Real.volume_Icc, ENNReal.ofReal_eq_zero] using hlen'
   · exact measure_Icc_lt_top.ne
 
-private lemma integral_indicator_Icc_one {a b : Real} (hab : a ≤ b) :
-    (∫ x : Real, if x ∈ Set.Icc a b then (1 : Real) else 0) = b - a := by
-  have hind :
-      (fun x : Real => if x ∈ Set.Icc a b then (1 : Real) else 0) =
-        (Set.Icc a b).indicator (fun _ => (1 : Real)) := by
-    funext x
-    simp only [Set.indicator]
-  rw [hind]
-  rw [MeasureTheory.integral_indicator measurableSet_Icc]
-  simp [hab]
-
 private lemma intervalProbability_apply_Icc {rho a b : Real}
     (hrho : 0 < rho) (ha : -rho ≤ a) (hb : b ≤ 1 + rho) :
     intervalProbability rho (Set.Icc a b) =
@@ -458,16 +447,6 @@ private lemma windowedSum_integrable {X : Type*}
   exact (integrable_const (w y)).indicator
     (measurableSet_normalizedWindowSet rho (a y) (b y))
 
-private lemma boundaryCount_integrable {X : Type*} [Fintype X]
-    (rho sigma : Real) (a b : X → Real) (μ : Measure (Real × Real))
-    [IsFiniteMeasure μ] :
-    Integrable (boundaryCount rho sigma a b) μ := by
-  unfold boundaryCount
-  apply integrable_finsetSum
-  intro y _
-  exact (integrable_const (1 : Real)).indicator
-    (measurableSet_normalizedBoundarySet rho sigma (a y) (b y))
-
 private lemma integral_windowedSum {X : Type*}
     (rho : Real) (a b w : X → Real) (U : Finset X)
     (hrho : 0 < rho) (ha : ∀ y, 0 ≤ a y ∧ a y ≤ 1)
@@ -568,7 +547,12 @@ private lemma exists_regular_parameters {X : Type*} [Fintype X]
   have hCwInt : Integrable Cw μ := by
     exact windowedSum_integrable rho a b (fun _ => 1) Finset.univ μ
   have hCvInt : Integrable Cv μ := by
-    exact boundaryCount_integrable rho sigma a b μ
+    exact show Integrable (boundaryCount rho sigma a b) μ by
+      unfold boundaryCount
+      apply integrable_finsetSum
+      intro y _
+      exact (integrable_const (1 : Real)).indicator
+        (measurableSet_normalizedBoundarySet rho sigma (a y) (b y))
   have hFInt : Integrable F μ := by
     dsimp only [F]
     exact (((hSprInt.sub (hEwInt.const_mul cE)).sub

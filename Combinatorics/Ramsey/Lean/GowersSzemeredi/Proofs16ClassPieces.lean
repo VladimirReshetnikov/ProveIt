@@ -62,15 +62,6 @@ theorem classFaceDomain_eq {N k : Nat} [NeZero N] (B : Finset (Point N (k + 1)))
   unfold classFaceDomain faceSelDomain
   rw [hp]
 
-/-- **The vertex map is the face function of the dropped point.** -/
-theorem selectPt_vertex_eq_classFace {N k : Nat} (phi : Point N (k + 1) → ZMod N) (x0 : Point N k)
-    {e : Fin k → Bool} (he : e ≠ fun _ => true) (w : Point N (k + 1)) :
-    phi (selectPt (Fin.snoc e true) (Fin.snoc x0 0) w) =
-      classFace phi x0 e (dropAt (vertexDrop e) w) := by
-  obtain ⟨i, hp, hi⟩ := vertexDrop_spec he
-  rw [classFace_eq_faceSel phi x0 hp, hp]
-  exact selectPt_vertex_eq_face phi x0 hi w
-
 theorem mem_classFaceDomain {N k : Nat} [NeZero N] {B : Finset (Point N (k + 1))} {x0 : Point N k}
     {e : Fin k → Bool} (he : e ≠ fun _ => true) {w : Point N (k + 1)}
     (hw : selectPt (Fin.snoc e true) (Fin.snoc x0 0) w ∈ B) :
@@ -154,10 +145,6 @@ def classPieceThr (Thr : Real → Real → Real) (theta gamma : Real) (k : Nat) 
 def classPieceThreshold (V : Real) (dT : Nat) (theta gamma : Real) (k : Nat) : Real :=
   max ((V * (2 / (classDelta theta gamma k * classBudget theta gamma k))) ^ dT)
     ((V * (2 / (gamma * classBudget theta gamma k))) ^ dT)
-
-theorem classPieceThreshold_eq (V : Real) (dT : Nat) (theta gamma : Real) (k : Nat) :
-    classPieceThreshold V dT theta gamma k =
-      classPieceThr (fun theta gamma => (V * (2 / (gamma * theta))) ^ dT) theta gamma k := rfl
 
 theorem classBudget_pos_le {theta gamma : Real} (k : Nat) (ht : 0 < theta) (ht1 : theta ≤ 1)
     (hg : 0 < gamma) (hg1 : gamma ≤ 1) :
@@ -287,7 +274,6 @@ theorem class_slice_decomposition {k : Nat} {Thr : Real → Real → Real}
     unfold restrictRelation
     exact Finset.mem_filter.mpr ⟨Finset.mem_image.mpr ⟨h, hhS, rfl⟩, hhJ⟩
 
-
 /-! ### One piece -/
 
 theorem phiOne_eq_shiftPt {N k : Nat} (phi : Point N (k + 1) → ZMod N) (x0 : Point N k)
@@ -304,7 +290,9 @@ theorem translatedVertex_eq_classFace {N k : Nat} (phi : Point N (k + 1) → ZMo
       classFace phi x0 e (dropAt (vertexDrop e) (shiftPt x0 z)) := by
   unfold section16TranslatedVertex
   rw [translatedVertex_point]
-  exact selectPt_vertex_eq_classFace phi x0 he _
+  obtain ⟨i, hp, hi⟩ := vertexDrop_spec he
+  rw [classFace_eq_faceSel phi x0 hp, hp]
+  exact selectPt_vertex_eq_face phi x0 hi _
 
 /-- **One `(k+1)`-dimensional piece over a uniform class**, from Lemma 15.6's
 arrangements and the product property. -/

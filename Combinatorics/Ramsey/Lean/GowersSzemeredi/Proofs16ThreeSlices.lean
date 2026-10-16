@@ -45,14 +45,6 @@ theorem HasProductProperty.final_section {N k : Nat} [NeZero N] {gamma : Real}
 
 /-! ### The slice decomposition -/
 
-theorem card_point_two_le (N : Nat) [NeZero N] (S : Finset (Point N 2)) :
-    (S.card : Real) ≤ (N : Real) ^ 2 := by
-  have h := Finset.card_le_univ S
-  have hc : Fintype.card (Point N 2) = N ^ 2 := by
-    simp [Point, ZMod.card]
-  rw [hc] at h
-  exact_mod_cast h
-
 /-- **Every section decomposes into pieces of the uniform class.** -/
 theorem section16_slice_decomposition_three
     {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
@@ -78,7 +70,12 @@ theorem section16_slice_decomposition_three
         (section16FinalCoordinateRestriction phi t)).card : Real) ≤
         gamma ^ (-(2 : Int)) * (N : Real) ^ 2 := by
       rw [partialGraph_card]
-      have h := card_point_two_le N (section16FinalCoordinateSection B t)
+      have h : ((section16FinalCoordinateSection B t).card : Real) ≤ (N : Real) ^ 2 := by
+        have h := Finset.card_le_univ (section16FinalCoordinateSection B t)
+        have hc : Fintype.card (Point N 2) = N ^ 2 := by
+          simp [Point, ZMod.card]
+        rw [hc] at h
+        exact_mod_cast h
       nlinarith
     exact section16_poly_piece_decomposition_two ht ht1 hg hg1 hN _ hsize
       (partialGraph_relationProductProperty (hprod.final_section t))
@@ -212,10 +209,6 @@ theorem threeSliceBase_mono (theta gamma : Real) (ht : 0 < theta) (hg : 0 < gamm
   rw [e1, e2]
   exact mul_le_mul_of_nonneg_right (by linarith) h0
 
-theorem threeSliceBase_nonneg (theta gamma : Real) (ht : 0 < theta) (hg : 0 < gamma)
-    (K1 p1 r : Nat) (eps : Real) : 0 ≤ threeSliceBase theta gamma K1 p1 r eps := by
-  unfold threeSliceBase; positivity
-
 /-- The envelopes have the ranges and monotonicity the lift needs. -/
 theorem threeSlice_ranges {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1)
     (hg : 0 < gamma) (hg1 : gamma ≤ 1) (K1 p1 : Nat) :
@@ -231,7 +224,7 @@ theorem threeSlice_ranges {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤
   · intro eps r r' hrr
     show threeSliceBase theta gamma K1 p1 r eps ^ ((2 : Nat) ^ 89) ≤
       threeSliceBase theta gamma K1 p1 r' eps ^ ((2 : Nat) ^ 89)
-    exact pow_le_pow_left₀ (threeSliceBase_nonneg theta gamma ht hg K1 p1 r eps)
+    exact pow_le_pow_left₀ (by unfold threeSliceBase; positivity)
       (threeSliceBase_mono theta gamma ht hg K1 p1 eps hrr) _
   · intro eps he r r' hrr
     show (threeSliceBase theta gamma K1 p1 r' eps ^ ((2 : Nat) ^ 130))⁻¹ ≤

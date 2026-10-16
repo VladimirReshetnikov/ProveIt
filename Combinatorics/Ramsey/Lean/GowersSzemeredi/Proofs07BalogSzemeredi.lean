@@ -148,18 +148,6 @@ private lemma popularSums_card_lower {G : Type*} [DecidableEq G]
   dsimp only [D] at hcombined ⊢
   nlinarith [sq_pos_of_pos hm]
 
-private lemma popularSums_mem_comm {G : Type*} [DecidableEq G]
-    [AddCommGroup G] (A : Finset G) (c : Real) (a b : G) :
-    a + b ∈ popularSums A c ↔ b + a ∈ popularSums A c := by
-  rw [add_comm]
-
-private lemma popularNeighbors_symm {G : Type*} [DecidableEq G]
-    [AddCommGroup G] (A : Finset G) (c : Real) {a b : G}
-    (ha : a ∈ A) (hb : b ∈ A) :
-    b ∈ popularNeighbors A c a ↔ a ∈ popularNeighbors A c b := by
-  simp only [popularNeighbors, Finset.mem_filter, ha, hb, true_and]
-  exact popularSums_mem_comm A c a b
-
 private lemma sum_popularNeighbors_card {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) :
     ∑ a ∈ A, (popularNeighbors A c a).card =
@@ -409,20 +397,6 @@ private lemma bsg_delta_pos (c : Real) (hc : 0 < c) : 0 < bsgDelta c := by
   unfold bsgDelta
   positivity
 
-private lemma bsg_delta_le_one (c : Real) (hc : 0 < c) (hc1 : c ≤ 1) :
-    bsgDelta c ≤ 1 := by
-  unfold bsgDelta
-  nlinarith [sq_nonneg c, mul_nonneg hc.le (sub_nonneg.mpr hc1)]
-
-private lemma bsg_c_le_one {G : Type*} [DecidableEq G] [AddCommGroup G]
-    (A : Finset G) (c : Real) (hA : A.Nonempty)
-    (henergy : c * (A.card : Real) ^ 3 ≤ Finset.addEnergy A A) : c ≤ 1 := by
-  have hm : (0 : Real) < A.card := by exact_mod_cast hA.card_pos
-  have hupper : (Finset.addEnergy A A : Real) ≤ (A.card : Real) ^ 3 := by
-    exact_mod_cast energy_le_card_cube A
-  have := henergy.trans hupper
-  nlinarith [pow_pos hm 3]
-
 private lemma exists_bsg_drc_core {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) (hc : 0 < c)
     (henergy : c * (A.card : Real) ^ 3 ≤ Finset.addEnergy A A) :
@@ -443,9 +417,16 @@ private lemma exists_bsg_drc_core {G : Type*} [DecidableEq G]
     refine ⟨∅, ?_, ?_, ?_⟩ <;> simp [highDegreeCenters, bsgDelta,
       goodPairCount]
   have hAnonempty : A.Nonempty := Finset.nonempty_iff_ne_empty.mpr hA
-  have hc1 := bsg_c_le_one A c hAnonempty henergy
+  have hc1 : c ≤ 1 := by
+    have hm : (0 : Real) < A.card := by exact_mod_cast hAnonempty.card_pos
+    have hupper : (Finset.addEnergy A A : Real) ≤ (A.card : Real) ^ 3 := by
+      exact_mod_cast energy_le_card_cube A
+    have := henergy.trans hupper
+    nlinarith [pow_pos hm 3]
   have hdelta0 := bsg_delta_pos c hc
-  have hdelta1 := bsg_delta_le_one c hc hc1
+  have hdelta1 : bsgDelta c ≤ 1 := by
+    unfold bsgDelta
+    nlinarith [sq_nonneg c, mul_nonneg hc.le (sub_nonneg.mpr hc1)]
   have hFsub : ∀ i, F i ⊆ A := fun i => Finset.filter_subset _ _
   have hFcard : ∀ i, bsgDelta c * A.card ≤ (F i).card := by
     intro i
@@ -536,13 +517,6 @@ private lemma quadWitnessTuple_injOn {G : Type*} [DecidableEq G]
   · exact Prod.ext h0 h1
   · exact Prod.ext h2 h3
 
-private lemma quadWitnesses_card_le_fourReps {G : Type*} [DecidableEq G]
-    [AddCommGroup G] (A : Finset G) (c : Real) (u v : G) :
-    (quadWitnesses A c u v).card ≤ (fourReps A (u - v)).card := by
-  exact Finset.card_le_card_of_injOn quadWitnessTuple
-    (fun w hw => quadWitnessTuple_mem A c u v w hw)
-    (quadWitnessTuple_injOn A c u v)
-
 private lemma quadWitnesses_card_lower {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) (hc : 0 < c) (u v : G) :
     ((popularNeighbors A c u ∩ popularNeighbors A c v).card : Real) *
@@ -584,7 +558,10 @@ private lemma fourReps_card_lower_of_good {G : Type*} [DecidableEq G]
   have hfactor : 0 ≤ (c * (A.card : Real) / 2) ^ 2 := sq_nonneg _
   have hw := quadWitnesses_card_lower A c hc u v
   have hscale := mul_le_mul_of_nonneg_right hgood hfactor
-  have hcard := quadWitnesses_card_le_fourReps A c u v
+  have hcard : (quadWitnesses A c u v).card ≤ (fourReps A (u - v)).card := by
+    exact Finset.card_le_card_of_injOn quadWitnessTuple
+      (fun w hw => quadWitnessTuple_mem A c u v w hw)
+      (quadWitnessTuple_injOn A c u v)
   have hcardR : ((quadWitnesses A c u v).card : Real) ≤
       (fourReps A (u - v)).card := by exact_mod_cast hcard
   calc
@@ -606,12 +583,6 @@ private noncomputable def goodIndexNeighbors {X I : Type*} [DecidableEq X]
     (threshold : Real) (i : I) :
     (goodIndexNeighbors A K threshold i).card = goodDegree A K threshold i := by
   rfl
-
-private lemma goodIntersection_symm {X I : Type*} [DecidableEq X]
-    (A : I → Finset X) (threshold : Real) (i j : I) :
-    goodIntersection A threshold i j ↔ goodIntersection A threshold j i := by
-  unfold goodIntersection
-  rw [Finset.inter_comm]
 
 private lemma common_goodIndexNeighbors_card_lower {X I : Type*}
     [DecidableEq X] [DecidableEq I] (A : I → Finset X)
@@ -724,15 +695,6 @@ private lemma octWitnessTuple_injOn {G : Type*} [DecidableEq G]
   rw [heq_iff_eq]
   exact Prod.ext hq hr
 
-private lemma octWitnesses_card_le_eightReps {G : Type*} [DecidableEq G]
-    [AddCommGroup G] (A : Finset G) (c delta : Real)
-    (V : Finset G) (K : Finset (Fin V.card)) (i j : Fin V.card) :
-    (octWitnesses A c delta V K i j).card ≤
-      (eightReps A (centerAt V i - centerAt V j)).card := by
-  exact Finset.card_le_card_of_injOn octWitnessTuple
-    (fun w hw => octWitnessTuple_mem A c delta V K i j w hw)
-    (octWitnessTuple_injOn A c delta V K i j)
-
 private lemma octWitnesses_card_lower {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c delta : Real) (hc : 0 < c)
     (V : Finset G) (K : Finset (Fin V.card)) (i j : Fin V.card) :
@@ -816,7 +778,11 @@ private lemma eightReps_card_lower_of_core {G : Type*} [DecidableEq G]
       _ ≤ W.card := hW
   have hscale := mul_le_mul_of_nonneg_right hKW hR0
   have hoct := octWitnesses_card_lower A c delta hc V K i j
-  have hmap := octWitnesses_card_le_eightReps A c delta V K i j
+  have hmap : (octWitnesses A c delta V K i j).card ≤
+            (eightReps A (centerAt V i - centerAt V j)).card := by
+    exact Finset.card_le_card_of_injOn octWitnessTuple
+      (fun w hw => octWitnessTuple_mem A c delta V K i j w hw)
+      (octWitnessTuple_injOn A c delta V K i j)
   have hmapR : ((octWitnesses A c delta V K i j).card : Real) ≤
       (eightReps A (centerAt V i - centerAt V j)).card := by exact_mod_cast hmap
   have hbase0 : 0 ≤ (2 : Real) ^ (-(1 : Real) / 2) *

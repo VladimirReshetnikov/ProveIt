@@ -82,24 +82,6 @@ theorem ModAP.card_cyclic_pullback {N M : Nat} [NeZero M]
   have h := congrArg ZMod.val hij
   simpa only [ZMod.val_natCast_of_lt hiM, ZMod.val_natCast_of_lt hjM] using h
 
-/-- The exact density in the new cyclic model. Reindexing preserves the
-numerator, but changing the ambient modulus changes the denominator. -/
-theorem ModAP.density_cyclic_pullback {N M : Nat} [NeZero M]
-    (P : ModAP N) (hP : P.IsProper) (A : Finset (ZMod N))
-    (hsize : P.length ≤ M) :
-    density ((P.pullback A).image fun i : Nat => (i : ZMod M)) =
-      (P.length : Real) / M * ((A ∩ P.carrier).card / (P.length : Real)) := by
-  classical
-  rw [density, P.card_cyclic_pullback hP A hsize]
-  by_cases hL : P.length = 0
-  · have hempty : P.pullback A = ∅ := by simp [ModAP.pullback, hL]
-    have hcard : (A ∩ P.carrier).card = 0 := by
-      rw [← P.card_pullback hP A, hempty, Finset.card_empty]
-    simp [hL, hcard]
-  · have hL' : (P.length : Real) ≠ 0 := by exact_mod_cast hL
-    have hM : (M : Real) ≠ 0 := by exact_mod_cast NeZero.ne M
-    field_simp
-
 /-- Ordinary progressions in the index set transport to nonconstant modular
 progressions. Properness suffices to make the new common difference nonzero. -/
 theorem ModAP.hasModAP_of_hasNatAP_pullback {N k : Nat}

@@ -48,9 +48,6 @@ lemma boxOneIndexAP_proper {N : Nat} (P : Box N 1) :
       apply Fin.ext
       simpa [boxOneIndexAP] using hij
 
-lemma boxOneIndexAP_length {N : Nat} (P : Box N 1) :
-    (boxOneIndexAP P).length = P.width := rfl
-
 lemma boxOneIndexDomain_subset {N : Nat} [NeZero N]
     (P : Box N 1) (B : Finset (Point N 1)) :
     boxOneIndexDomain P B ⊆ (boxOneIndexAP P).carrier := by

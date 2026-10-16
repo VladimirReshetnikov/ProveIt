@@ -61,18 +61,4 @@ theorem NatAP.exists_modular_translate_split (P : NatAP) (hP : P.IsProper)
     omega
   · rw [hQimage, hRimage, ← Finset.image_union, hsplit]
 
-/-- Intersecting the two unwrapped pieces with a target interval still uses
-at most two ordinary progressions and gives the exact intersection. -/
-theorem NatAP.exists_modular_translate_inter (P : NatAP) (hP : P.IsProper)
-    (N a L : Nat) (ha : a < N) (hsub : P.carrier ⊆ Finset.range N) :
-    ∃ Q R : NatAP, Q.IsProper ∧ R.IsProper ∧ Disjoint Q.carrier R.carrier ∧
-      Q.carrier ∪ R.carrier = (P.carrier.image (fun x => (a + x) % N)) ∩ Finset.range L := by
-  obtain ⟨Q₀, R₀, hQ₀, hR₀, hdis, hcover⟩ := P.exists_modular_translate_split hP N a ha hsub
-  obtain ⟨Q, hQ, hQc⟩ := Q₀.exists_inter_Ico hQ₀ 0 L
-  obtain ⟨R, hR, hRc⟩ := R₀.exists_inter_Ico hR₀ 0 L
-  refine ⟨Q, R, hQ, hR, ?_, ?_⟩
-  · rw [hQc, hRc]
-    exact hdis.mono Finset.inter_subset_left Finset.inter_subset_left
-  · rw [hQc, hRc, ← Finset.union_inter_distrib_right, hcover, ← Finset.range_eq_Ico]
-
 end LeanProofs.GowersSzemeredi

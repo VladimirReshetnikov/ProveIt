@@ -27,8 +27,9 @@ asserts a fixed explicit tower bound. The combinatorial affine and no-wrap
 transfers are proved in `Proofs18AffineTransfer` and `Proofs18IntervalTransfer`,
 and `Proofs18UniformInterval` supplies the uniform stopping cases. Iteration
 still needs a quantitative prime-model construction preserving the required
-density increment: `ModAP.density_cyclic_pullback` records the ambient-density
-loss when the progression indices are embedded in a larger cyclic group.
+density increment: `ModAP.card_cyclic_pullback` preserves cardinality when
+the progression indices are embedded in a larger cyclic group; ambient
+density still uses the new modulus.
 -/
 
 set_option autoImplicit false

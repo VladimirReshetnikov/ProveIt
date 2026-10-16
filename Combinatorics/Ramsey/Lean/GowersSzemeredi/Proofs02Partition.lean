@@ -18,7 +18,6 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-
 private def singletonNatAP (x : Nat) : NatAP where
   start := x
   step := 1
@@ -51,11 +50,6 @@ private def residueChunkAP (r u L : Nat) (z : ResidueChunkIndex r u L) : NatAP w
   length := residueChunkLength (residueClassLength r u z.1) L
     (residueClassLength r u z.1 / L) z.2
 
-private lemma residueChunkLength_pos {c L n j : Nat} (hL : 0 < L) :
-    0 < residueChunkLength c L n j := by
-  unfold residueChunkLength
-  split_ifs <;> omega
-
 private lemma residueChunkLength_ge {c L n j : Nat} :
     L ≤ residueChunkLength c L n j := by
   unfold residueChunkLength
@@ -68,10 +62,6 @@ private lemma residueChunkLength_lt_two_mul {c L n j : Nat} (hL : 0 < L) :
   · have := Nat.mod_lt c hL
     omega
   · omega
-
-private lemma chunkCount_pos {c L : Nat} (hL : 0 < L) (hLc : L ≤ c) :
-    0 < c / L := by
-  exact Nat.div_pos hLc hL
 
 private lemma chunk_quotient_lt {c L : Nat} (j : Fin (c / L)) (i : Nat)
     (hi : i < residueChunkLength c L (c / L) j) :
@@ -96,7 +86,7 @@ private lemma exists_chunk_for_quotient {c L q : Nat}
     ∃ j : Fin (c / L), ∃ i : Nat,
       i < residueChunkLength c L (c / L) j ∧ q = j * L + i := by
   let n := c / L
-  have hn : 0 < n := chunkCount_pos hL hLc
+  have hn : 0 < n := Nat.div_pos hLc hL
   by_cases hfront : q < n * L
   · let j : Fin n := ⟨q / L, (Nat.div_lt_iff_lt_mul hL).2 hfront⟩
     refine ⟨j, q % L, ?_, ?_⟩
@@ -292,30 +282,6 @@ private lemma residueChunkFamily_partition {r u L : Nat}
       exact hzw.trans hzw'.symm
     exact bne_iff_ne.mp hzz' hzEq
 
-private lemma residueChunkFamily_isProper {r u L : Nat} (hu : 0 < u)
-    (z : Fin (Fintype.card (ResidueChunkIndex r u L))) :
-    (residueChunkFamily r u L z).IsProper := by
-  change (residueChunkAP r u L ((Fintype.equivFin _).symm z)).IsProper
-  exact residueChunkAP_isProper hu _
-
-private lemma residueChunkFamily_length_ge {r u L : Nat}
-    (z : Fin (Fintype.card (ResidueChunkIndex r u L))) :
-    L ≤ (residueChunkFamily r u L z).length := by
-  change L ≤ residueChunkLength
-    (residueClassLength r u ((Fintype.equivFin _).symm z).1) L
-    (residueClassLength r u ((Fintype.equivFin _).symm z).1 / L)
-    ((Fintype.equivFin _).symm z).2
-  exact residueChunkLength_ge
-
-private lemma residueChunkFamily_length_lt {r u L : Nat} (hL : 0 < L)
-    (z : Fin (Fintype.card (ResidueChunkIndex r u L))) :
-    (residueChunkFamily r u L z).length < 2 * L := by
-  change residueChunkLength
-    (residueClassLength r u ((Fintype.equivFin _).symm z).1) L
-    (residueClassLength r u ((Fintype.equivFin _).symm z).1 / L)
-    ((Fintype.equivFin _).symm z).2 < 2 * L
-  exact residueChunkLength_lt_two_mul hL
-
 private lemma linear_image_diameter {N r s : Nat} [NeZero N]
     (phi : Nat → ZMod N) (a b : ZMod N)
     (hphi : ∀ x, x < r → phi x = a * (x : Nat) + b)
@@ -419,14 +385,6 @@ private lemma ratio_product {N r s : Nat} (hN : 0 < N) (hs : 0 < s) :
     field_simp
   rw [hprod, Real.sqrt_sq_eq_abs, abs_of_nonneg]
   positivity
-
-private lemma partitionRatio_one_le {N r s : Nat} (hN : 0 < N)
-    (hrs : N ≤ r * s) : 1 ≤ partitionRatio N r s := by
-  have hNreal : (0 : Real) < N := by exact_mod_cast hN
-  rw [partitionRatio, Real.one_le_sqrt]
-  apply (le_div_iff₀ hNreal).2
-  have hrsReal : (N : Real) ≤ (r : Real) * s := by exact_mod_cast hrs
-  simpa only [one_mul] using hrsReal
 
 private lemma partitionRatio_le_approximationRatio {N r s : Nat}
     (hN : 0 < N) (hs : 0 < s) (hsN : s ≤ N) :
@@ -562,7 +520,12 @@ theorem lemma_2_3_holds : lemma_2_3 := by
   let q := partitionRatio N r s
   have hqnonneg : 0 ≤ q := Real.sqrt_nonneg _
   have hqpos : 0 < q := partitionRatio_pos hN hr hs
-  have hqone : 1 ≤ q := partitionRatio_one_le hN hrs
+  have hqone : 1 ≤ partitionRatio N r s := by
+    have hNreal : (0 : Real) < N := by exact_mod_cast hN
+    rw [partitionRatio, Real.one_le_sqrt]
+    apply (le_div_iff₀ hNreal).2
+    have hrsReal : (N : Real) ≤ (r : Real) * s := by exact_mod_cast hrs
+    simpa only [one_mul] using hrsReal
   by_cases hqsmall : q < 4
   · refine ⟨r, fun i => singletonNatAP i, singletonNatAP_partition r, ?_⟩
     intro j
@@ -648,9 +611,21 @@ theorem lemma_2_3_holds : lemma_2_3 := by
       residueChunkFamily r u L, hpart, ?_⟩
     intro j
     let P := residueChunkFamily r u L j
-    have hPproper : P.IsProper := residueChunkFamily_isProper hu j
-    have hPge : L ≤ P.length := residueChunkFamily_length_ge j
-    have hPlt : P.length < 2 * L := residueChunkFamily_length_lt hLpos j
+    have hPproper : P.IsProper := by
+      change (residueChunkAP r u L ((Fintype.equivFin _).symm j)).IsProper
+      exact residueChunkAP_isProper hu _
+    have hPge : L ≤ P.length := by
+      change L ≤ residueChunkLength
+        (residueClassLength r u ((Fintype.equivFin _).symm j).1) L
+        (residueClassLength r u ((Fintype.equivFin _).symm j).1 / L)
+        ((Fintype.equivFin _).symm j).2
+      exact residueChunkLength_ge
+    have hPlt : P.length < 2 * L := by
+      change residueChunkLength
+        (residueClassLength r u ((Fintype.equivFin _).symm j).1) L
+        (residueClassLength r u ((Fintype.equivFin _).symm j).1 / L)
+        ((Fintype.equivFin _).symm j).2 < 2 * L
+      exact residueChunkLength_lt_two_mul hLpos
     have hqQuarterLeL : q / 4 ≤ (L : Real) := by
       nlinarith
     have hPgeReal : (L : Real) ≤ P.length := by exact_mod_cast hPge

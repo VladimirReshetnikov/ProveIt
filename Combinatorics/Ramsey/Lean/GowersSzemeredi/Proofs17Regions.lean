@@ -158,20 +158,17 @@ private lemma regionFamily_shattered_card_le {k m : Nat}
     exact neg_nonneg.mpr hcOffset
   exact (not_le_of_gt hsumNeg) hsumNonneg
 
-private lemma regionFamily_vcDim_le {k m : Nat}
-    (H : Fin m -> AffineHyperplane k) : (regionFamily H).vcDim <= k := by
-  unfold Finset.vcDim
-  apply Finset.sup_le
-  intro s hs
-  exact regionFamily_shattered_card_le H s (Finset.mem_shatterer.mp hs)
-
 private lemma hyperplaneRegionCount_le {k m : Nat}
     (H : Fin m -> AffineHyperplane k) :
     hyperplaneRegionCount H <=
       ∑ j ∈ Finset.range (k + 1), Nat.choose m j := by
   classical
   let A := regionFamily H
-  have hvc : A.vcDim <= k := regionFamily_vcDim_le H
+  have hvc : A.vcDim <= k := by
+    unfold Finset.vcDim
+    apply Finset.sup_le
+    intro s hs
+    exact regionFamily_shattered_card_le H s (Finset.mem_shatterer.mp hs)
   have hIic : Finset.Iic A.vcDim ⊆ Finset.Iic k := by
     intro j hj
     exact Finset.mem_Iic.mpr ((Finset.mem_Iic.mp hj).trans hvc)
@@ -621,6 +618,5 @@ theorem lemma_17_4_holds : lemma_17_4 := by
   refine ⟨hyperplaneRegionCount_le H, fun hgp => ?_⟩
   exact Nat.le_antisymm (hyperplaneRegionCount_le H)
     (hyperplaneRegionCount_ge_of_generalPosition H hgp)
-
 
 end LeanProofs.GowersSzemeredi

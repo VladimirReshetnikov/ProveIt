@@ -161,16 +161,6 @@ theorem section16_distinct_sampling_budget {α : Type*}
   apply (section16_distinct_sampling_probability_bound C r).trans
   simpa [x, n, d0, Nat.cast_sub hdn] using hfinal
 
-theorem section16_distinct_sampling_ceil_budget {α : Type*}
-    [Fintype α] [DecidableEq α] [Nonempty α]
-    (C : Finset α) (q : Nat) (σ : ℝ) (hσ : 0 < σ) (hC : 2 ≤ C.card)
-    (hsize : σ * Fintype.card α ≤ (q : ℝ) * C.card) :
-    ((Finset.univ.filter (fun sample : Fin ⌈6 * (q : ℝ) / σ ^ 2⌉₊ → α =>
-      ¬ section16SampleHasDistinctPair C sample)).card : ℝ) /
-      Fintype.card (Fin ⌈6 * (q : ℝ) / σ ^ 2⌉₊ → α) ≤ σ := by
-  apply section16_distinct_sampling_budget C q _ σ hσ hC hsize
-  exact (div_le_iff₀ (sq_pos_of_pos hσ)).mp (Nat.le_ceil _)
-
 theorem section16SampleHasDistinctPair_singleton {α : Type*} [DecidableEq α]
     {r : Nat} (a : α) (sample : Fin r → α) :
     ¬ section16SampleHasDistinctPair {a} sample := by

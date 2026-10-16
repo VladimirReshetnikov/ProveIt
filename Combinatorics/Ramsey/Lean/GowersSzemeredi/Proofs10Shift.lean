@@ -24,17 +24,6 @@ namespace LeanProofs.GowersSzemeredi
   classical
   simp [MultifunctionDomain.fibre]
 
-private lemma self_mem_fibre {N : Nat} [NeZero N]
-    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
-    (x : X) : x ∈ D.fibre (D.index x) := by
-  simp
-
-private lemma fibreSize_pos {N : Nat} [NeZero N]
-    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
-    (x : X) : 0 < D.fibreSize x := by
-  unfold MultifunctionDomain.fibreSize
-  exact Finset.card_pos.mpr ⟨x, self_mem_fibre D x⟩
-
 private lemma fibreSize_eq_of_index_eq {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     {x y : X} (hxy : D.index x = D.index y) :
@@ -332,7 +321,8 @@ private lemma shiftExceptional_card_le {N : Nat} [NeZero N]
   have hxmin_eq : D.fibreSize xmin = m := hxmin
   have hmpos : 0 < m := by
     rw [← hxmin_eq]
-    exact fibreSize_pos D xmin
+    unfold MultifunctionDomain.fibreSize
+    exact Finset.card_pos.mpr ⟨xmin, (by simp)⟩
   have hupper (w : X) (hw : w ∈ W) : D.fibreSize w ≤ 2 * m := by
     simpa only [← hxmin_eq] using hvar w hw xmin hxminW
   have hspos : 0 < Real.sqrt theta := Real.sqrt_pos.2 htheta
@@ -513,73 +503,6 @@ private def localDifferenceGood {N : Nat} [NeZero N]
     (d : ZMod N) (w : X) : Prop :=
   AlmostEvery (1 - theta) (D.fibre (D.index w + d)) fun z =>
     phi z - phi w = psi d
-
-/-- Combine the local models in two directions into an almost-everywhere
-model for their sum. -/
-private lemma twoStep_localDifference {N : Nat} [NeZero N]
-    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
-    (phi : X → ZMod N) (W : Finset X) (B : Finset (ZMod N))
-    (psi : ZMod N → ZMod N) (eta theta tau : Real)
-    (hregular : IsSection10ShiftRegular D W B eta) (htau : 0 < tau)
-    (htheta_tau : theta ≤ tau)
-    (hround : theta + (Real.sqrt tau + eta) ≤ 3 * Real.sqrt tau)
-    (hintermediate : theta + 2 * Real.sqrt tau < 1)
-    (d₁ d₂ : ZMod N) (hd₁ : d₁ ∈ B)
-    (hlocal₁ : AlmostEvery (1 - theta) W
-      (localDifferenceGood D phi psi theta d₁))
-    (hlocal₂ : AlmostEvery (1 - theta) W
-      (localDifferenceGood D phi psi theta d₂)) :
-    AlmostEvery (1 - 3 * Real.sqrt tau) W fun w =>
-      AlmostEvery (1 - theta) (D.fibre (D.index w + d₁ + d₂)) fun z =>
-        phi z - phi w = psi d₁ + psi d₂ := by
-  classical
-  let Q₁ : X → Prop := localDifferenceGood D phi psi theta d₁
-  let Q₂ : X → Prop := localDifferenceGood D phi psi theta d₂
-  let S : X → Prop := fun w =>
-    w ∈ shiftEligible D W d₁ ∧
-      AlmostEvery (1 - 2 * Real.sqrt tau) (D.fibre (D.index w + d₁)) Q₂
-  have hlocal₂tau : AlmostEvery (1 - tau) W Q₂ := by
-    exact almostEvery_weaken_error theta tau W Q₂ htheta_tau hlocal₂
-  have hshift : AlmostEvery (1 - (Real.sqrt tau + eta)) W S := by
-    have hs := shift_almostEvery_eligible D W B eta tau Q₂ hregular htau
-      hlocal₂tau d₁ hd₁
-    convert hs using 1
-    ring
-  have hboth : AlmostEvery (1 - (theta + (Real.sqrt tau + eta))) W
-      (fun w => Q₁ w ∧ S w) :=
-    almostEvery_and theta (Real.sqrt tau + eta) W Q₁ S hlocal₁ hshift
-  have hboth' : AlmostEvery (1 - 3 * Real.sqrt tau) W
-      (fun w => Q₁ w ∧ S w) :=
-    almostEvery_weaken_error (theta + (Real.sqrt tau + eta))
-      (3 * Real.sqrt tau) W (fun w => Q₁ w ∧ S w) hround hboth
-  apply almostEvery_mono (1 - 3 * Real.sqrt tau) W (fun w => Q₁ w ∧ S w)
-  · exact hboth'
-  · intro w _ hw
-    rcases hw with ⟨hQ₁, hwEligible, hQ₂⟩
-    have hwEligible' : w ∈ W ∩ D.shift W (-d₁) := by
-      simpa only [shiftEligible] using hwEligible
-    obtain ⟨u, _, huindex⟩ := exists_shifted_representative D d₁ hwEligible'
-    have huFibre : u ∈ D.fibre (D.index w + d₁) :=
-      (mem_fibre_iff D _ _).mpr huindex
-    obtain ⟨w', hw'Fibre, hrel₁, hQ₂w'⟩ :=
-      exists_and_of_almostEvery theta (2 * Real.sqrt tau)
-        (D.fibre (D.index w + d₁))
-        (fun w' => phi w' - phi w = psi d₁) Q₂
-        ⟨u, huFibre⟩ hintermediate hQ₁ hQ₂
-    have hw'index : D.index w' = D.index w + d₁ :=
-      (mem_fibre_iff D _ _).mp hw'Fibre
-    have hQ₂w'' :
-        AlmostEvery (1 - theta) (D.fibre (D.index w + d₁ + d₂)) fun z =>
-          phi z - phi w' = psi d₂ := by
-      simpa only [Q₂, localDifferenceGood, hw'index, add_assoc] using hQ₂w'
-    exact almostEvery_mono (1 - theta) (D.fibre (D.index w + d₁ + d₂))
-      (fun z => phi z - phi w' = psi d₂)
-      (fun z => phi z - phi w = psi d₁ + psi d₂) hQ₂w''
-      (fun z _ hrel₂ => by
-        calc
-          phi z - phi w = (phi z - phi w') + (phi w' - phi w) := by abel
-          _ = psi d₂ + psi d₁ := by rw [hrel₂, hrel₁]
-          _ = psi d₁ + psi d₂ := add_comm _ _)
 
 /-- A non-vacuous version of the two-step argument. Besides shifting the
 second local model, it shifts the assertion that the terminal fibre exists. -/

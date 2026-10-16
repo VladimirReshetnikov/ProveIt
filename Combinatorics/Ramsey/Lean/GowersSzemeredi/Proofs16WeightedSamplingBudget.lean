@@ -155,12 +155,4 @@ theorem section16_linear_prune_and_sample {α β : Type*}
   have hsingle := mul_le_mul_of_nonneg_left hlong (Nat.cast_nonneg (Fintype.card β) : (0 : Real) ≤ Fintype.card β)
   nlinarith only [hs, hbudget, hloss, hsingle]
 
-/-- The new rounded budget never exceeds the previous quadratic budget
-throughout the permitted loss range. -/
-theorem section16_linear_sample_budget_le_quadratic (q : Nat) {σ : Real}
-    (hσ : 0 < σ) (hσ1 : σ ≤ 1) :
-    ⌈6 * (q : Real) / σ⌉₊ ≤ ⌈6 * (q : Real) / σ ^ 2⌉₊ := by
-  apply Nat.ceil_mono
-  exact div_le_div_of_nonneg_left (by positivity) (sq_pos_of_pos hσ) (by nlinarith only [hσ, hσ1])
-
 end LeanProofs.GowersSzemeredi

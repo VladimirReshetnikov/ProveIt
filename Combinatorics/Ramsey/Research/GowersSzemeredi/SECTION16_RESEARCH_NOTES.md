@@ -9778,7 +9778,27 @@ needed for names inside tactic proofs (`lint_pass.py`).
   looks like a peer breaking `main`. Rebuild stale oleans in import
   order before trusting a stub check.
 
-### Polynomial width through multilinear extraction
+**Addendum (2026-10-16): inlining and dead code.**
+- *Single-use declarations* (`single_use.py`): 1,321 on the final
+  route. Almost all are proofs whose statements are checked separately.
+  Inlining one would restate it as a local `have`, so they stay.
+  - d44616a inlined 8 thin wrappers (bodies that are one term).
+  - 68ad8d3 inlined 13 definitions whose single application sits inside
+    a proof, e.g. one-off bijections such as `prop121SubEquiv` and
+    `cor133_build_cover` (`inline_defs.py`).
+  - Definitions that appear in theorem statements stay: they are the
+    vocabulary that keeps statements readable against the paper.
+- *Dead declarations* (`dead_decls.py`, `delete_decls.py`): cc482c5
+  deleted **87** declarations (its title says 89; the diff counts 87),
+  −1,201 lines.
+  - Deleted: orphans whose last user a refactor had removed (git
+    history shows the name in another module), private declarations,
+    and small helpers of ≤16 lines, repeated over six rounds to a
+    fixpoint.
+  - Kept: 18 standalone results that are unused but deliberate,
+    including the quadratic dichotomies, the Lemma 13.5 mod-four
+    counterexample, and the Section 18 cyclic consequence of
+    Theorem 18.1.
 
 `Proofs16PolynomialMultilinearCover.exists_all_scale_polynomial_multilinear_cover`
 composes the improved all-scale Lemma 16.9 with the rounded affine lift.

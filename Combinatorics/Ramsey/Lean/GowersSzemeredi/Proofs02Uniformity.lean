@@ -18,30 +18,6 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma fourthMoment_eq_correlationEnergy {N : Nat} [NeZero N]
-    (f : ZMod N → Complex) :
-    ∑ r : ZMod N, ‖fourier f r‖ ^ 4 =
-      (N : Real) * ∑ t : ZMod N,
-        ‖∑ s : ZMod N, f s * star (f (s - t))‖ ^ 2 := by
-  have h := lemma_2_1_holds N f f
-  convert h using 1
-  apply Finset.sum_congr rfl
-  intro r _
-  ring
-
-private lemma fourthMoment_eq_quadrupleSum {N : Nat} [NeZero N]
-    (f : ZMod N → Complex) :
-    ∑ r : ZMod N, ‖fourier f r‖ ^ 4 =
-      (N : Real) *
-        (∑ q : Fin 4 → ZMod N,
-          if q 0 - q 1 = q 2 - q 3
-            then f (q 0) * star (f (q 1) * f (q 2)) * f (q 3)
-            else 0).re := by
-  have h := congrArg Complex.re (identity_2_6_holds N f)
-  simpa only [Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im,
-    Complex.natCast_re, Complex.natCast_im, Nat.cast_ofNat, zero_mul, mul_zero,
-    sub_zero] using h
-
 private lemma condition_i_iff_iii {N : Nat} [NeZero N]
     (f : ZMod N → Complex) (c : Real) :
     uniformCondition2i f c ↔ uniformCondition2iii f c := by
@@ -49,7 +25,12 @@ private lemma condition_i_iff_iii {N : Nat} [NeZero N]
     ‖∑ s : ZMod N, f s * star (f (s - t))‖ ^ 2
   let F := ∑ r : ZMod N, ‖fourier f r‖ ^ 4
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hFE : F = (N : Real) * E := fourthMoment_eq_correlationEnergy f
+  have hFE : F = (N : Real) * E := by
+    have h := lemma_2_1_holds N f f
+    convert h using 1
+    apply Finset.sum_congr rfl
+    intro r _
+    ring
   change E ≤ c * (N : Real) ^ 3 ↔ F ≤ c * (N : Real) ^ 4
   constructor
   · intro h
@@ -74,7 +55,11 @@ private lemma condition_ii_iff_iii {N : Nat} [NeZero N]
       else 0).re
   let F := ∑ r : ZMod N, ‖fourier f r‖ ^ 4
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hFQ : F = (N : Real) * Q := fourthMoment_eq_quadrupleSum f
+  have hFQ : F = (N : Real) * Q := by
+    have h := congrArg Complex.re (identity_2_6_holds N f)
+    simpa only [Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im,
+      Complex.natCast_re, Complex.natCast_im, Nat.cast_ofNat, zero_mul, mul_zero,
+      sub_zero] using h
   change Q ≤ c * (N : Real) ^ 3 ↔ F ≤ c * (N : Real) ^ 4
   constructor
   · intro h
