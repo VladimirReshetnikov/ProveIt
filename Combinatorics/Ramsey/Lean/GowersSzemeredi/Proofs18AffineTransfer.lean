@@ -59,8 +59,7 @@ theorem ModAP.card_pullback {N : Nat} (P : ModAP N) (hP : P.IsProper)
     (A : Finset (ZMod N)) : (P.pullback A).card = (A ∩ P.carrier).card := by
   rw [← P.image_pullback A]
   symm
-  apply Finset.card_image_iff.mpr
-  exact (P.index_injOn hP).mono (Finset.filter_subset _ _)
+  exact Finset.card_image_iff.mpr ((P.index_injOn hP).mono (Finset.filter_subset _ _))
 
 /-- Injecting the index set into a larger cyclic group preserves cardinality.
 This concerns cardinality, not density relative to the new modulus. -/

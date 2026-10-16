@@ -192,11 +192,9 @@ lemma lemma163_local_bounds {gamma theta eta : Real} {q : Nat}
       _ = ((2 : Real) ^ (512 : Nat) * eta ^ (-(2 : Int)))⁻¹ := by
         rw [htwoNeg, mul_inv, zpow_neg, zpow_ofNat, inv_inv]
   have hlocalExponent :
-      lemma163LocalExponent gamma theta eta q = (b ^ E) ^ s := by
-    rfl
+      lemma163LocalExponent gamma theta eta q = (b ^ E) ^ s := rfl
   have hlocalGraphBound :
-      lemma163LocalGraphBound gamma theta eta q = ((b ^ E)⁻¹) ^ s := by
-    rfl
+      lemma163LocalGraphBound gamma theta eta q = ((b ^ E)⁻¹) ^ s := rfl
   refine ⟨?_, ?_, ?_⟩
   · rw [hlocalExponent]
     exact hwPos

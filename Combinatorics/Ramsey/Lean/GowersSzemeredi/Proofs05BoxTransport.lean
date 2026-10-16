@@ -153,8 +153,7 @@ theorem Box.carrier_nonempty_of_axis_pos {N k : Nat} [NeZero N]
   refine ⟨fun i => (P.axis i).start, ?_⟩
   simp only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and]
   intro i
-  apply Finset.mem_image.mpr
-  exact ⟨⟨0, hP i⟩, Finset.mem_univ _, by simp⟩
+  exact Finset.mem_image.mpr (⟨⟨0, hP i⟩, Finset.mem_univ _, by simp⟩)
 
 /-- A nonempty proper child in index coordinates transports to a proper box. -/
 theorem boxAffineTransport_isProper {N k : Nat} [NeZero N]

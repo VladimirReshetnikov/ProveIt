@@ -652,8 +652,7 @@ theorem section5_efficient_local_phase_refinement_of_corollary_5_6
   by_cases hlarge : cutoff < P.length
   · have hroot4strict :
         4 < (P.length : Real) ^ (K : Real)⁻¹ := by
-      apply section5_rpow_root_ge_four
-      exact lt_of_le_of_lt (le_max_right _ _) hlarge
+      exact section5_rpow_root_ge_four (lt_of_le_of_lt (le_max_right _ _) hlarge)
     obtain ⟨v, hvTwo, hvupper, hvhalf⟩ :=
       section5_floor_target
         ((P.length : Real) ^ (K : Real)⁻¹) hroot4strict.le
@@ -920,8 +919,7 @@ theorem section5_efficient_diameter_refinement_of_corollary_5_6
   by_cases hlarge : cutoff < P.length
   · have hroot4strict :
         4 < (P.length : Real) ^ (K : Real)⁻¹ := by
-      apply section5_rpow_root_ge_four
-      exact lt_of_le_of_lt (le_max_right _ _) hlarge
+      exact section5_rpow_root_ge_four (lt_of_le_of_lt (le_max_right _ _) hlarge)
     obtain ⟨v, hvTwo, hvupper, hvhalf⟩ :=
       section5_floor_target
         ((P.length : Real) ^ (K : Real)⁻¹) hroot4strict.le

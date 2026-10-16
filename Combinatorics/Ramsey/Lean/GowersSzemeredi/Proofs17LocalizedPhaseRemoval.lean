@@ -1063,8 +1063,7 @@ private lemma prop177_singleton_cube_sum {N n : Nat} [NeZero N]
       rw [harg]
       have hne : t - x i ≠ t := by
         intro heq
-        apply hi
-        exact sub_eq_self.mp heq
+        exact hi (sub_eq_self.mp heq)
       simp [h, restrictToCell, hne, parityConj]
     · let e0 := prop177ZeroVertex (n + 1)
       apply Finset.prod_eq_zero (Finset.mem_univ e0)
@@ -1092,8 +1091,7 @@ private lemma prop177_singleton_partition (N : Nat) [NeZero N] :
     rw [modInterval_one_carrier, modInterval_one_carrier]
     apply Finset.disjoint_singleton.mpr
     intro h
-    apply bne_iff_ne.mp hij
-    exact (prop177FinZModEquiv N).injective h
+    exact bne_iff_ne.mp hij ((prop177FinZModEquiv N).injective h)
 
 private lemma prop177_singleton_proper (N : Nat) [NeZero N] (i : Fin N) :
     (prop177SingletonCells N i).IsProper := by
@@ -2139,8 +2137,7 @@ private lemma prop177_output_proper {N M : Nat} [NeZero N]
   rw [prop177_mapCell_carrier d offset hd, Finset.card_image_iff.mpr]
   · exact prop177_balancedCell_isProper hM i
   · intro x _ y _ hxy
-    apply (prop177AffineEquiv d offset hd).injective
-    exact hxy
+    exact (prop177AffineEquiv d offset hd).injective hxy
 
 private lemma prop177_output_length {N M : Nat}
     (d offset : ZMod N) (i : Fin M) :

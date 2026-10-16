@@ -80,8 +80,7 @@ private noncomputable def differenceMultiplicity {N : Nat} [NeZero N]
 private lemma differenceWeight_eq_multiplicity {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     (x y : X) :
-    domainDifferenceWeight D x y = differenceMultiplicity D (D.index y - D.index x) := by
-  rfl
+    domainDifferenceWeight D x y = differenceMultiplicity D (D.index y - D.index x) := rfl
 
 private lemma sum_differenceMultiplicity {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] (D : MultifunctionDomain N X) :

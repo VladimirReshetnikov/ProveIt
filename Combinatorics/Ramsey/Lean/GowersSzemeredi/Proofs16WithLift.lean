@@ -50,8 +50,7 @@ theorem section16StackedSlices_mem {N k r : Nat} [NeZero N]
   unfold section16StackedSlices section16FinsetUnion
   apply Finset.mem_biUnion.mpr
   refine ⟨i, Finset.mem_univ _, ?_⟩
-  apply Finset.mem_image.mpr
-  exact ⟨h, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hB⟩, rfl⟩
+  exact Finset.mem_image.mpr (⟨h, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hB⟩, rfl⟩)
 
 /-- **Synchronized compressed cover for a family.** One cover of a relation
 containing all members' sampled slices; each member interpolates its own

@@ -24,8 +24,7 @@ theorem densityIterationThreshold_le_exp {T c rho A q : Real}
     change max (max 1 T) ((densityIterationThreshold T c rho n / c) ^ rho⁻¹) ≤ _
     apply max_le
     · apply hMexp.trans
-      apply Real.exp_le_exp.mpr
-      exact le_mul_of_one_le_right hApos.le (one_le_pow₀ hbase)
+      exact Real.exp_le_exp.mpr (le_mul_of_one_le_right hApos.le (one_le_pow₀ hbase))
     · have hn : 0 < densityIterationThreshold T c rho n := lt_of_lt_of_le (by norm_num)
         (densityIterationThreshold_one_le T c rho n)
       rw [Real.rpow_def_of_pos (div_pos hn hc), Real.log_div hn.ne' hc.ne']

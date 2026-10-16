@@ -363,8 +363,7 @@ private lemma audit_additive_count_lower :
     auditL ^ 4 ≤ domainAdditiveTupleCount auditDomain 2 := by
   rw [← audit_core_count]
   unfold domainAdditiveTupleCount
-  apply countWhere_mono
-  exact audit_core_additive
+  exact countWhere_mono audit_core_additive
 
 private lemma audit_phi_good_without_exception (q : Fin 4 → AuditX)
     (hq : ∀ i, (q i).1 ≠ 5) :
@@ -1554,8 +1553,7 @@ private lemma extraction_directionGood_gives_mode {N : Nat} [NeZero N]
     have hzNot := hzBad.2
     have hzNe : phi yz.2 - phi w ≠ m := by
       intro hzEq
-      apply hzNot
-      exact Finset.mem_filter.mpr ⟨hzC, hzEq⟩
+      exact hzNot (Finset.mem_filter.mpr ⟨hzC, hzEq⟩)
     exact Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨hyAm.1, hzC⟩,
       fun heq => hzNe (heq ▸ hyAm.2)⟩
   have hrectangle : (Am.card : Real) * (C \ Cm).card ≤ Ebad.card := by

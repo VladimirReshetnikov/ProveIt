@@ -60,8 +60,7 @@ theorem quadratic_family_floor_scale {r : Real} (hr : 1 ≤ r) {q : Nat} (hq : 1
     exact hden
   have hWfour : 4 < W := by nlinarith only [hX, hXsq]
   have hUfour : 4 ≤ U := by
-    apply (Nat.le_floor_iff (by positivity : 0 ≤ W)).mpr
-    exact hWfour.le
+    exact (Nat.le_floor_iff (by positivity : 0 ≤ W)).mpr hWfour.le
   have hUle : (U : Real) ≤ W := Nat.floor_le (by positivity)
   have hround : W < (U : Real) + 1 := Nat.lt_floor_add_one W
   have hhalf : W ≤ 2 * (U : Real) := by

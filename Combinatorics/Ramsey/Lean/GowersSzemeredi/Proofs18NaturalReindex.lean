@@ -10,8 +10,7 @@ def NatAP.index (Q : NatAP) (i : Fin Q.length) : Nat := Q.start + (i : Nat) * Q.
 
 theorem NatAP.index_injective (Q : NatAP) (hQ : Q.IsProper) : Function.Injective Q.index := by
   intro i j hij
-  apply Fin.ext
-  exact Nat.mul_right_cancel hQ.1 (Nat.add_left_cancel hij)
+  exact Fin.ext (Nat.mul_right_cancel hQ.1 (Nat.add_left_cancel hij))
 
 /-- The original set on the finite index interval of the progression. -/
 def NatAP.pullback (Q : NatAP) (A : Finset Nat) : Finset (Fin Q.length) :=

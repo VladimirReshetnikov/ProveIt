@@ -14,8 +14,7 @@ theorem NatAP.isProper_of_step_pos (P : NatAP) (hstep : 0 < P.step) : P.IsProper
   rw [Finset.card_image_of_injective]
   · simp
   · intro i j hij
-    apply Fin.ext
-    exact (Nat.mul_right_cancel hstep) (Nat.add_left_cancel hij)
+    exact Fin.ext ((Nat.mul_right_cancel hstep) (Nat.add_left_cancel hij))
 
 /-- A proper progression contained in a short interval lifts, after possibly
 reversing its orientation, to exactly the same set of natural representatives. -/

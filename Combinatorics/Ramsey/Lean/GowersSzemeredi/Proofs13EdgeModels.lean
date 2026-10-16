@@ -120,8 +120,7 @@ theorem section13_vertical_fibre_cap {N : Nat} [NeZero N]
   · intro z hz w hw hzw
     have hxz := (Finset.mem_filter.mp hz).2
     have hxw := (Finset.mem_filter.mp hw).2
-    apply Subtype.ext
-    exact Prod.ext (hxz.trans hxw.symm) hzw
+    exact Subtype.ext (Prod.ext (hxz.trans hxw.symm) hzw)
 
 /-- The good-height model with any valid fibre cap, rather than just N. -/
 theorem section13_good_height_model_with_cap {N : Nat} [NeZero N]

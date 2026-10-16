@@ -252,15 +252,13 @@ private lemma cor147_arrangement_vertex {N k d : Nat}
       appendCoordinate
         (AxisCube.vertex
           ((cor147PairEquiv d (cor147Atom N k) p j).1, h) e)
-        (cor147PairEquiv d (cor147Atom N k) p j).2 := by
-  rfl
+        (cor147PairEquiv d (cor147Atom N k) p j).2 := rfl
 
 private lemma cor147_arrangement_cubeValue {N k d : Nat} [NeZero N]
     (phi : Point N (k + 1) → ZMod N) (h : Point N k)
     (p : cor147PairFamily N k d) (j : Fin (2 * d)) :
     (cor147ArrangementEquiv N k d (h, p)).cubeValue phi j =
-      cor147CubeValue phi h (cor147PairEquiv d (cor147Atom N k) p j) := by
-  rfl
+      cor147CubeValue phi h (cor147PairEquiv d (cor147Atom N k) p j) := rfl
 
 private lemma cor147_good_iff_arrangement {N k d : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)

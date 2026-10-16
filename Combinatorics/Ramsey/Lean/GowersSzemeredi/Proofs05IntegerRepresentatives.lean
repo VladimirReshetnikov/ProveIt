@@ -78,8 +78,7 @@ theorem NatAP.toModAP_hasIntegerRepresentatives_of_bound {N : Nat}
     rw [Finset.card_image_of_injective]
     · simp
     · intro i j hij
-      apply Fin.ext
-      exact Nat.mul_right_cancel hstep (Nat.add_left_cancel hij)
+      exact Fin.ext (Nat.mul_right_cancel hstep (Nat.add_left_cancel hij))
   · intro x hx
     obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
     exact Finset.mem_range.mpr (hbound i i.isLt)

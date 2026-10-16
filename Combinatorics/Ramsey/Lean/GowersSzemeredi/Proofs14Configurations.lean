@@ -727,8 +727,7 @@ private def prop145Slice {N k : Nat} (C : CubeConfiguration N k)
 
 private lemma prop145_slice_vertex {N k : Nat} (C : CubeConfiguration N k)
     (e u : Fin k → Bool) :
-    (prop145Slice C e).vertex u = C.vertex e u := by
-  rfl
+    (prop145Slice C e).vertex u = C.vertex e u := rfl
 
 private lemma prop145_slice_value_update {N n : Nat} [NeZero N]
     (C : CubeConfiguration N (n + 1)) (phi : Point N (n + 1) → ZMod N)
@@ -773,8 +772,7 @@ private lemma prop145_prefix_update_true {k m : Nat} (hm : m < k) :
     simp [Function.update, prop145Prefix]
   · have hiv : i.val ≠ m := by
       intro hiv
-      apply hi
-      exact Fin.ext hiv
+      exact hi (Fin.ext hiv)
     by_cases hlt : i.val < m
     · have hlt' : i.val < m + 1 := by omega
       simp [Function.update, hi, prop145Prefix, hlt, hlt']

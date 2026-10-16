@@ -30,8 +30,7 @@ theorem section16_large_spectrum_card {N k : Nat} [NeZero N]
       _ ≤ ∑ r ∈ K, ‖fourier f r‖ ^ 2 := by
         apply Finset.sum_le_sum
         intro r hr
-        apply (sq_le_sq₀ (by positivity) (norm_nonneg _)).mpr
-        exact (Finset.mem_filter.mp hr).2
+        exact (sq_le_sq₀ (by positivity) (norm_nonneg _)).mpr ((Finset.mem_filter.mp hr).2)
       _ ≤ _ := Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
         (fun _ _ _ => sq_nonneg _)
   have hu : (∑ r : ZMod N, ‖fourier f r‖ ^ 2) ≤ ((N : Real) ^ (k + 1)) ^ 2 := by

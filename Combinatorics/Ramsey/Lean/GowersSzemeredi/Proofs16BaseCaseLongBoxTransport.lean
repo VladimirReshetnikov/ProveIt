@@ -103,8 +103,7 @@ lemma boxOneIndexDomain_card {N : Nat} [NeZero N]
       · rw [boxOneIndexDomain, Finset.mem_filter]
         constructor
         · rw [IntAP.carrier]
-          apply Finset.mem_image.mpr
-          exact ⟨i, Finset.mem_univ i, by simp [boxOneIndexAP]⟩
+          exact Finset.mem_image.mpr (⟨i, Finset.mem_univ i, by simp [boxOneIndexAP]⟩)
         · simpa [f, boxOneIntPoint_of_nat, hix] using hx'.1
       · simpa [f, boxOneIntPoint_of_nat] using hix
   rw [← himage, Finset.card_image_iff.mpr]
@@ -227,8 +226,7 @@ lemma indexCells_partition {N M : Nat} [NeZero N]
       let z : Int := i
       have hzR : z ∈ (boxOneIndexAP P).carrier := by
         rw [IntAP.carrier]
-        apply Finset.mem_image.mpr
-        exact ⟨i, Finset.mem_univ i, by simp [z, boxOneIndexAP]⟩
+        exact Finset.mem_image.mpr (⟨i, Finset.mem_univ i, by simp [z, boxOneIndexAP]⟩)
       obtain ⟨j, hzS⟩ := (hS.1 z).mp hzR
       refine ⟨j, ?_⟩
       change x ∈ (indexCellBox P (S j)).carrier

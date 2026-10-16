@@ -303,8 +303,7 @@ private lemma rangeDeg_zero_side_card_le {N k d : Nat}
     exact ⟨i, R.1, R.2.1, Classical.choose_spec R.2.2⟩
   have hinj : Function.Injective enc := by
     intro R S hRS
-    apply Subtype.ext
-    exact congrArg (fun z => z.2.1) hRS
+    exact Subtype.ext (congrArg (fun z => z.2.1) hRS)
   calc
     Fintype.card (RangeDegZeroSideArrangements N k d) ≤
         Fintype.card (Σ i : Fin k, RangeDegZeroSideAt N k d i) :=
@@ -739,8 +738,7 @@ private lemma rangeDeg_nonzero_degenerate_card_le {N k d : Nat} [NeZero N]
     exact ⟨⟨c, hc.1⟩, ⟨R.1, R.2.2.2, R.2.1, hc.2⟩⟩
   have hinj : Function.Injective enc := by
     intro R S hRS
-    apply Subtype.ext
-    exact congrArg (fun z ↦ z.2.1) hRS
+    exact Subtype.ext (congrArg (fun z ↦ z.2.1) hRS)
   have hcoeff := rangeDeg_exceptional_coefficients_card_le N m k d
   calc
     Fintype.card (RangeDegNonzeroDegenerateArrangements N m k d) ≤
@@ -806,8 +804,7 @@ private lemma rangeDeg_degenerate_card_le {N k d : Nat} [NeZero N]
     split <;> rfl
   have hinj : Function.Injective enc := by
     intro R S hRS
-    apply Subtype.ext
-    exact (hrecover R).symm.trans ((congrArg recover hRS).trans (hrecover S))
+    exact Subtype.ext ((hrecover R).symm.trans ((congrArg recover hRS).trans (hrecover S)))
   letI : Fact N.Prime := ⟨hprime⟩
   have hzero := rangeDeg_zero_side_card_le (N := N) hk hd
   have hnonzero := rangeDeg_nonzero_degenerate_card_le (m := m) hprime hodd hk hd

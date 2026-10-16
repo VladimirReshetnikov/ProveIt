@@ -107,12 +107,10 @@ theorem section13_density_integer_budgets_explicit {delta : Real}
   have hw : 0 < w := by dsimp [w]; positivity
   have hvone : v ≤ 1 := by
     dsimp [v]
-    apply (div_le_one (by positivity)).mpr
-    exact one_le_pow₀ (by norm_num)
+    exact (div_le_one (by positivity)).mpr (one_le_pow₀ (by norm_num))
   have hwone : w ≤ 1 := by
     dsimp [w]
-    apply (div_le_one (by positivity)).mpr
-    exact one_le_pow₀ (by norm_num)
+    exact (div_le_one (by positivity)).mpr (one_le_pow₀ (by norm_num))
   have hz : z₀ ≤ section10Zeta (alpha ^ 32 / 16) := by
     apply section10Zeta_mono (by positivity)
       (div_le_div_of_nonneg_right (pow_le_pow_left₀ hδ.le hδα 32) (by norm_num))

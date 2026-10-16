@@ -119,8 +119,7 @@ theorem spectrumCellWidth_mono_exp {zeta : Real} (hz : 0 ≤ zeta) {m : Nat} (hm
     {e e' : Real} (hee' : e ≤ e') : spectrumCellWidth zeta m e ≤ spectrumCellWidth zeta m e' := by
   unfold spectrumCellWidth
   apply mul_le_mul_of_nonneg_left _ (by positivity)
-  apply Real.sqrt_le_sqrt
-  exact Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hm) hee'
+  exact Real.sqrt_le_sqrt (Real.rpow_le_rpow_of_exponent_le (by exact_mod_cast hm) hee')
 
 /-- The spectrum cell width as a power. -/
 theorem spectrumCellWidth_eq {zeta : Real} {m : Nat} {e : Real} :

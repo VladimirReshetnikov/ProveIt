@@ -65,11 +65,9 @@ private lemma card_multiples_in_real_Ioc (g h : Nat) (hg : 0 < g) (hgh : g ∣ h
     have hnEqReal : ((n / g : Nat) : Real) * g = n := by exact_mod_cast hnEq
     have hhEqReal : ((h / g : Nat) : Real) * g = h := by exact_mod_cast hhEq
     have hnQuot : ((n / g : Nat) : Real) = (n : Real) / g := by
-      apply (eq_div_iff hgReal.ne').2
-      exact hnEqReal
+      exact (eq_div_iff hgReal.ne').2 hnEqReal
     have hhQuot : ((h / g : Nat) : Real) = (h : Real) / g := by
-      apply (eq_div_iff hgReal.ne').2
-      exact hhEqReal
+      exact (eq_div_iff hgReal.ne').2 hhEqReal
     have hnLower : A / g - (h / g : Nat) < (n / g : Nat) := by
       rw [hnQuot, hhQuot]
       calc
@@ -618,8 +616,7 @@ theorem corollary_10_11_holds : corollary_10_11 := by
     intro c hc x hx y hy hxy
     have hr := hrep c hc
     have hsum : x + (rep c).2 = (rep c).1 + y := by
-      apply sub_eq_sub_iff_add_eq_add.mp
-      exact hxy.trans hr.2.2.symm
+      exact sub_eq_sub_iff_add_eq_add.mp (hxy.trans hr.2.2.symm)
     have hmap := hpsi'.add_eq_add hx hr.2.1 hr.1 hy hsum
     dsimp only [psi1]
     exact sub_eq_sub_iff_add_eq_add.mpr hmap

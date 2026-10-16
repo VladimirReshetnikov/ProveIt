@@ -78,8 +78,7 @@ theorem NatAP.exists_image_add_sub (P : NatAP) (hP : P.IsProper) (a b : Nat)
     rw [hempty]
     simp [NatAP.carrier]
   · have hstart : P.start ∈ P.carrier := by
-      apply Finset.mem_image.mpr
-      exact ⟨⟨0, by omega⟩, Finset.mem_univ _, by simp⟩
+      exact Finset.mem_image.mpr (⟨⟨0, by omega⟩, Finset.mem_univ _, by simp⟩)
     have hab : b ≤ a + P.start := hlo _ hstart
     let Q : NatAP := ⟨a + P.start - b, P.step, P.length⟩
     refine ⟨Q, Q.isProper_of_step_pos hP.1, ?_⟩

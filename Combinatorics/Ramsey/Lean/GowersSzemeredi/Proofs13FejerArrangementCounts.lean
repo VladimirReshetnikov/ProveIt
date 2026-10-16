@@ -68,8 +68,7 @@ theorem fejerArrangementEdges_carrier {N : Nat} [NeZero N] (U : Finset (Pair N))
     (hR : R ∈ fejerArrangementEdges U P) :
     Finset.univ.image (fejerArrangementVertex R.1) ⊆ U := by
   classical
-  apply (fejerArrangement_carrier_iff R.1 R.2 U).mpr
-  exact (Finset.mem_filter.mp hR).2.1
+  exact (fejerArrangement_carrier_iff R.1 R.2 U).mpr ((Finset.mem_filter.mp hR).2.1)
 
 theorem fejerArrangementEdges_restrict {N : Nat} [NeZero N] (U S : Finset (Pair N))
     (hS : S ⊆ U) (P : DArrangement N 8 → Prop) :

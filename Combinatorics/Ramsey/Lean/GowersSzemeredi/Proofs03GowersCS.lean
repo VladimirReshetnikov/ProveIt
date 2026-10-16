@@ -306,8 +306,7 @@ private lemma overwritePrefix_succ {d n : Nat} (hn : n < d)
     · have hi' : ¬i.val < n + 1 := by omega
       have hij : i ≠ (⟨n, hn⟩ : Fin d) := by
         intro h
-        apply hin
-        exact Fin.ext_iff.mp h
+        exact hin (Fin.ext_iff.mp h)
       simp [overwritePrefix, hi, hi', hij]
 
 private lemma duplicate_prefixFamily {N d n : Nat} (hn : n < d)

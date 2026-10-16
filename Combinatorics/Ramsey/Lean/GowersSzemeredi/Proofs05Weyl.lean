@@ -1087,8 +1087,7 @@ private lemma positiveProductMajorantSum_eq_sum_lists
       apply Finset.sum_congr rfl
       intro l _
       apply congrArg (geometricSumMajorant t)
-      have hprod : (listConsEmbedding Nat (h, l)).prod = h * l.prod := by
-        rfl
+      have hprod : (listConsEmbedding Nat (h, l)).prod = h * l.prod := rfl
       rw [hprod]
       have hcastHN : ((h * n : Nat) : Real) =
           (h : Real) * (n : Real) := Nat.cast_mul h n
@@ -3406,8 +3405,7 @@ private theorem weyl_explicit_bound_repaired (k : Nat) (hk : 1 ≤ k)
     have hKpos : (0 : Real) < K := by exact_mod_cast hKposNat
     have hm : 1 ≤ m := by
       dsimp only [m, weylDivisorParameter]
-      apply Nat.one_le_iff_ne_zero.mpr
-      exact mul_ne_zero (by norm_num) (pow_ne_zero _ (by omega))
+      exact Nat.one_le_iff_ne_zero.mpr (mul_ne_zero (by norm_num) (pow_ne_zero _ (by omega)))
     have heta : eta ≤ (8 * (k : Real))⁻¹ := weyl_divisor_exponent_le hk
     have hB : 0 ≤ B := weylRationalFactor_nonneg hq
     have hraised := weyl_raised_estimate

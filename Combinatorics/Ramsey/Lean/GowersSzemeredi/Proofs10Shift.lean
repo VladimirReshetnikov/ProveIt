@@ -257,8 +257,7 @@ private lemma second_slice_le {N : Nat} [NeZero N]
         have hxrel := (Finset.mem_filter.mp hx).2.1
         have hwrel := (Finset.mem_filter.mp hw).2.1
         apply (mem_fibre_iff D _ _).mpr
-        apply sub_right_inj.mp
-        exact hxrel.trans hwrel.symm
+        exact sub_right_inj.mp (hxrel.trans hwrel.symm)
       exact (Finset.card_le_card hsub).trans (hupper w hwW)
     · simpa only [Finset.not_nonempty_iff_eq_empty.mp hs, Finset.card_empty] using
         Nat.zero_le (2 * m)

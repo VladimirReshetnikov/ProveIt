@@ -177,8 +177,7 @@ lemma section16_cor711_graph_cover {N : Nat} [NeZero N]
       rw [boxOneIndexDomain, Finset.mem_filter]
       refine ⟨hSsub j ?_, ?_⟩
       · rw [IntAP.carrier]
-        apply Finset.mem_image.mpr
-        exact ⟨i, _hi, rfl⟩
+        exact Finset.mem_image.mpr (⟨i, _hi, rfl⟩)
       · rw [hzx']
         exact hy.1
     have hvalue := hcd j i

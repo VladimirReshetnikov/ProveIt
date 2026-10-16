@@ -422,8 +422,7 @@ private lemma lemma77_centeredAbs_sub_le {N m : Nat} [NeZero N]
       exact Nat.min_le_left _ _
     have hcenterR : (centeredAbs (a - b) : ℝ) ≤ (a.val - b.val : Nat) := by
       exact_mod_cast hcenterNat
-    apply (lt_div_iff₀ hmreal).2
-    exact (mul_le_mul_of_nonneg_right hcenterR hmreal.le).trans_lt hdiffR
+    exact (lt_div_iff₀ hmreal).2 ((mul_le_mul_of_nonneg_right hcenterR hmreal.le).trans_lt hdiffR)
   rcases le_total y.val x.val with hyx | hxy
   · exact (ordered hyx hbin).le.trans hNm
   · have hneg : centeredAbs (x - y) = centeredAbs (y - x) := by
@@ -512,8 +511,7 @@ theorem proposition_6_1_holds : proposition_6_1 := by
     exact Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ =>
       pow_nonneg (norm_nonneg _) 4
   have hmixed_sq : (alpha ^ 2 * (N : ℝ) ^ 5) ^ 2 ≤ mixed ^ 2 := by
-    apply (sq_le_sq₀ (mul_nonneg (sq_nonneg _) (pow_nonneg hN.le 5)) hmixed_nonneg).2
-    exact hmixed
+    exact (sq_le_sq₀ (mul_nonneg (sq_nonneg _) (pow_nonneg hN.le 5)) hmixed_nonneg).2 hmixed
   have hglobal : mixed ^ 2 ≤ fourthF * fourthG := by
     simpa only [mixed, fourthF, fourthG] using prop61_global_cauchy f B phi
   have hfourthG : alpha ^ 4 * (N : ℝ) ^ 5 ≤ fourthG := by

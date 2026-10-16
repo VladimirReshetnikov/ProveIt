@@ -861,8 +861,7 @@ private lemma selectionEtaZero_moment {N k : Nat} [NeZero N]
       · have hex : ∃ i : Fin k, i ∉ A₀ := by
           by_contra hno
           push Not at hno
-          apply hfull
-          exact Finset.eq_univ_of_forall hno
+          exact hfull (Finset.eq_univ_of_forall hno)
         obtain ⟨i, hi⟩ := hex
         have hP : P = 0 := by
           unfold P

@@ -104,8 +104,7 @@ lemma boxOne_card_eq_width {N : Nat} [NeZero N] (P : Box N 1)
   rw [boxOne_carrier_eq_image, Finset.card_image_iff.mpr]
   · simp only [Finset.card_univ, Fintype.card_fin]
   · intro i _ j _ hij
-    apply Fin.ext
-    exact boxOnePoint_injective P hP i.isLt j.isLt hij
+    exact Fin.ext (boxOnePoint_injective P hP i.isLt j.isLt hij)
 
 def coarseChildBox {N : Nat} (P : Box N 1) (m : Nat)
     (j : Fin (P.width / m)) : Box N 1 where

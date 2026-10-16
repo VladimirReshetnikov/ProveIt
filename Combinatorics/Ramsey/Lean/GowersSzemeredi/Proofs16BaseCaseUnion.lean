@@ -579,8 +579,7 @@ theorem properMultiplyLinear_finsetUnion {N d r : Nat} [NeZero N]
   have heta : 0 < eta := by dsimp only [eta]; positivity
   have hetaOne : eta ≤ 1 := by
     dsimp only [eta]
-    apply (div_le_one hrReal).2
-    exact hthetaOne.trans (by exact_mod_cast hr)
+    exact (div_le_one hrReal).2 (hthetaOne.trans (by exact_mod_cast hr))
   have harg : s⁻¹ * eta = ((r : Real) * s)⁻¹ * theta := by
     dsimp only [eta]
     field_simp
@@ -716,8 +715,7 @@ theorem properMultiplyLinear_fin_sum {N d r : Nat} [NeZero N]
   have heta : 0 < eta := by dsimp only [eta]; positivity
   have hetaOne : eta ≤ 1 := by
     dsimp only [eta]
-    apply (div_le_one hrReal).2
-    exact hthetaOne.trans (by exact_mod_cast hr)
+    exact (div_le_one hrReal).2 (hthetaOne.trans (by exact_mod_cast hr))
   have harg : s⁻¹ * eta = ((r : Real) * s)⁻¹ * theta := by
     dsimp only [eta]
     field_simp

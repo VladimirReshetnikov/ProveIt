@@ -347,8 +347,7 @@ private lemma balancedResidueChunkFamily_partition (R : IntAP) (d m : Nat)
     have hk : k = k' := balancedChunk_index_unique k k' i i' hi hi' rfl hquot
     subst k'
     have hzEq : j = j' := by
-      apply E.symm.injective
-      exact hz.trans hz'.symm
+      exact E.symm.injective (hz.trans hz'.symm)
     exact bne_iff_ne.mp hjj' hzEq
 
 private lemma balancedResidueChunkFamily_properties (R : IntAP) (d m : Nat)

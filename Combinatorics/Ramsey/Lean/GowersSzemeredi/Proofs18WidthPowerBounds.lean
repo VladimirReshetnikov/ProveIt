@@ -177,8 +177,7 @@ theorem liftLastW_two_coverWidth_powerLB {E : Real → Real} {t : Real}
       (max (8 * max (8 * 0 + 8) ((6 : Real) ^ (4 / E (t / 2 / 2 / 2))) + 8)
         ((6 : Real) ^ (4 / (E (t / 2 / 2 / 2) / 4)))) := by
   have h1 := liftLastW_coverWidth_powerLB (E := E) (t := t / 2) hE hE1
-  have hrw : (liftLastW^[2] (coverWidth E)) t = liftLastW (liftLastW (coverWidth E)) t := by
-    rfl
+  have hrw : (liftLastW^[2] (coverWidth E)) t = liftLastW (liftLastW (coverWidth E)) t := rfl
   rw [hrw]
   exact liftLastW_powerLB (by positivity) (by linarith) (by positivity) h1
 

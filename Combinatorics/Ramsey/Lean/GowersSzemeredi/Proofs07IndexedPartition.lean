@@ -13,11 +13,9 @@ theorem intAP_step_span_in_interval (R : IntAP) (L : Nat) (hl : 0 < R.length)
     (hsub : R.carrier ⊆ ({ start := 0, step := 1, length := L } : IntAP).carrier) :
     R.step * (R.length - 1) < L := by
   have hfirst : R.start ∈ R.carrier := by
-    apply Finset.mem_image.mpr
-    exact ⟨⟨0, hl⟩, Finset.mem_univ _, by simp⟩
+    exact Finset.mem_image.mpr (⟨⟨0, hl⟩, Finset.mem_univ _, by simp⟩)
   have hlast : R.start + (((R.length - 1) * R.step : Nat) : Int) ∈ R.carrier := by
-    apply Finset.mem_image.mpr
-    exact ⟨⟨R.length - 1, by omega⟩, Finset.mem_univ _, rfl⟩
+    exact Finset.mem_image.mpr (⟨⟨R.length - 1, by omega⟩, Finset.mem_univ _, rfl⟩)
   obtain ⟨i, _, hi⟩ := Finset.mem_image.mp (hsub hfirst)
   obtain ⟨j, _, hj⟩ := Finset.mem_image.mp (hsub hlast)
   have hi' : (i.val : Int) = R.start := by simpa using hi

@@ -473,8 +473,7 @@ private lemma restrictedWeight_pos_of_pair {N : Nat} {X : Type*}
     0 < domainRestrictedDifferenceWeight D B x y := by
   unfold domainRestrictedDifferenceWeight countWhere
   rw [Finset.filter_congr_decidable]
-  apply Finset.card_pos.mpr
-  exact ⟨(u, v), Finset.mem_filter.mpr ⟨Finset.mem_univ _, hrel⟩⟩
+  exact Finset.card_pos.mpr (⟨(u, v), Finset.mem_filter.mpr ⟨Finset.mem_univ _, hrel⟩⟩)
 
 private lemma large_reverse_inv_sum_le_four {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -539,8 +538,7 @@ private lemma large_reverse_inv_sum_le_four {N : Nat} [NeZero N]
             RestrictedPair D B xy.1 xy.2 (u, v)
         then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0) =
         ∑ xy : X × X, if Eligible xy
-          then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0 := by
-      rfl
+          then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0 := rfl
     _ ≤ ∑ xy : X × X, if Eligible xy then 4 * (buv : Real)⁻¹ else 0 := hsumPoint
     _ = (c : Real) * (4 * (buv : Real)⁻¹) := by
       rw [hccast, Finset.sum_mul]
@@ -732,8 +730,7 @@ private lemma large_weighted_sum_le_five_bad {N : Nat} [NeZero N]
               AltPhiBad D phi ![xy.1, xy.2, zw.1, zw.2] :=
             ⟨hs.1.1, hs.1.2, hleft⟩
           rw [if_pos houter, if_pos hs.2.2]
-          apply le_add_of_nonneg_right
-          exact ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity))
+          exact le_add_of_nonneg_right (ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity)))
         · have hpair : RestrictedPair D B xy.1 xy.2 uv :=
             ⟨hs.2.2.1, hs.2.2.2.1⟩
           have hinner : LargeFibre D alpha eta M xy.1 ∧
@@ -741,8 +738,7 @@ private lemma large_weighted_sum_le_five_bad {N : Nat} [NeZero N]
               RestrictedPair D B xy.1 xy.2 uv :=
             ⟨hs.1.1, hs.1.2, hpair⟩
           rw [if_pos hright, if_pos hinner]
-          apply le_add_of_nonneg_left
-          exact ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity))
+          exact le_add_of_nonneg_left (ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity)))
       · rw [if_neg hs]
         apply add_nonneg
         · exact ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity))

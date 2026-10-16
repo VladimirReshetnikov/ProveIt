@@ -41,8 +41,7 @@ theorem section13_height_count_le_edge_card {N : Nat} [NeZero N]
       exact congrArg (fun z : Section13Edges A h ↦ z.val.2) hlast
     apply Subtype.ext
     funext i
-    apply Subtype.ext
-    exact Prod.ext (congrFun hxall i) (congrFun hyall i)
+    exact Subtype.ext (Prod.ext (congrFun hxall i) (congrFun hyall i))
   have hcount : arrangementCountAtHeight 8 A h = Fintype.card T := by
     rw [← section13_domain_additive_count]
     unfold domainAdditiveTupleCount countWhere
@@ -86,8 +85,7 @@ theorem section13_edge_density_bounds {N : Nat} [NeZero N]
       S.alpha ^ 32 / 16 ≤ section13EdgeDensity S h ∧ section13EdgeDensity S h ≤ S.alpha := by
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hlo : S.alpha ^ 32 / 16 ≤ section13EdgeDensity S h := by
-    apply (le_div_iff₀ (pow_pos hN 2)).mpr
-    exact section13_strong_height_edge_density S h hh
+    exact (le_div_iff₀ (pow_pos hN 2)).mpr (section13_strong_height_edge_density S h hh)
   refine ⟨lt_of_lt_of_le (by have := S.alpha_pos; positivity) hlo, hlo, ?_⟩
   apply (div_le_iff₀ (pow_pos hN 2)).mpr
   have hsub : verticalEdgeDomain S.A h ⊆ S.A := by

@@ -271,8 +271,7 @@ private lemma residueChunkFamily_partition {r u L : Nat}
     have hj : j = j' := chunk_index_unique j j' i i' hi hi' rfl hq
     subst j'
     have hzEq : z = z' := by
-      apply E.symm.injective
-      exact hzw.trans hzw'.symm
+      exact E.symm.injective (hzw.trans hzw'.symm)
     exact bne_iff_ne.mp hzz' hzEq
 
 private lemma linear_image_diameter {N r s : Nat} [NeZero N]

@@ -177,8 +177,7 @@ private lemma popular_edge_count_lower {G : Type*} [DecidableEq G]
       _ = ∑ _x ∈ popularSums A c, (c * A.card / 2) := by
         simp [mul_comm]
       _ ≤ _ := by
-        apply Finset.sum_le_sum
-        exact hterm
+        exact Finset.sum_le_sum hterm
   have hD := popularSums_card_lower A c hc henergy
   have hthreshold : 0 ≤ c * (A.card : Real) / 2 := by positivity
   calc
@@ -274,8 +273,7 @@ private lemma centerAt_mem {G : Type*} [DecidableEq G] (V : Finset G)
 private lemma centerAt_injective {G : Type*} [DecidableEq G] (V : Finset G) :
     Function.Injective (centerAt V) := by
   intro i j hij
-  apply V.equivFin.symm.injective
-  exact Subtype.ext hij
+  exact V.equivFin.symm.injective (Subtype.ext hij)
 
 private noncomputable def indexedNeighborhood {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real)
@@ -438,8 +436,7 @@ private noncomputable def sumRepPairs {G : Type*} [DecidableEq G]
 
 @[simp] private lemma card_sumRepPairs {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (x : G) :
-    (sumRepPairs A x).card = sumRep A x := by
-  rfl
+    (sumRepPairs A x).card = sumRep A x := rfl
 
 private noncomputable def fourReps {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (x : G) : Finset (Fin 4 → G) := by
@@ -571,8 +568,7 @@ private noncomputable def goodIndexNeighbors {X I : Type*} [DecidableEq X]
 @[simp] private lemma card_goodIndexNeighbors {X I : Type*} [DecidableEq X]
     [DecidableEq I] (A : I → Finset X) (K : Finset I)
     (threshold : Real) (i : I) :
-    (goodIndexNeighbors A K threshold i).card = goodDegree A K threshold i := by
-  rfl
+    (goodIndexNeighbors A K threshold i).card = goodDegree A K threshold i := rfl
 
 private lemma common_goodIndexNeighbors_card_lower {X I : Type*}
     [DecidableEq X] [DecidableEq I] (A : I → Finset X)
@@ -829,8 +825,7 @@ theorem proposition_7_3_group_holds {G : Type*} [DecidableEq G]
     apply highGoodDegree_card_lower F K threshold
     simpa only [F, threshold, delta] using hKdense
   have hAcard : A''.card = L.card := by
-    apply Finset.card_image_iff.mpr
-    exact (centerAt_injective V).injOn
+    exact Finset.card_image_iff.mpr ((centerAt_injective V).injOn)
   have hAsub : A'' ⊆ A := by
     intro a ha
     obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp ha
@@ -886,8 +881,7 @@ theorem proposition_7_3_group_holds {G : Type*} [DecidableEq G]
     calc
       _ = ∑ _x ∈ D, repLower := by simp [mul_comm]
       _ ≤ _ := by
-        apply Finset.sum_le_sum
-        exact hrep
+        exact Finset.sum_le_sum hrep
   have hsumUpper :
       ∑ x ∈ D, ((eightReps A x).card : Real) ≤ (A.card : Real) ^ 8 := by
     exact_mod_cast sum_eightReps_card_le A D
