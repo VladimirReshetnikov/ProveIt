@@ -689,9 +689,6 @@ private lemma weylThreshold_sixtyFour_le {k : Nat} (hk : 2 ≤ k) :
     pow_le_pow_right₀ (by norm_num : 1 ≤ (2 : Nat)) houterExponent
   simpa [weylThreshold] using hpow
 
-private lemma recurrenceExponent_nonneg (k : Nat) :
-    0 ≤ (((k : Real) * (2 : Real) ^ (k + 1))⁻¹) := by positivity
-
 private lemma recurrenceExponent_le_half {k : Nat} (hk : 2 ≤ k) :
     (((k : Real) * (2 : Real) ^ (k + 1))⁻¹) ≤ 1 / 2 := by
   have hkReal : (2 : Real) ≤ k := by exact_mod_cast hk
@@ -743,7 +740,7 @@ private lemma recurrenceScale_le_N {k t N : Nat} (ht : 1 ≤ t) :
       (t : Real) ^
           (-(((k : Real) * (2 : Real) ^ (k + 1))⁻¹)) ≤ 1 :=
     Real.rpow_le_one_of_one_le_of_nonpos htOne
-      (neg_nonpos.mpr (recurrenceExponent_nonneg k))
+      (neg_nonpos.mpr (by positivity))
   have hN : (0 : Real) ≤ N := by positivity
   calc
     (t : Real) ^

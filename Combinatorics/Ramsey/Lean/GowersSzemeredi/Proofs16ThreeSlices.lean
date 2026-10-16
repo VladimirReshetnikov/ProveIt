@@ -212,10 +212,6 @@ theorem threeSliceBase_mono (theta gamma : Real) (ht : 0 < theta) (hg : 0 < gamm
   rw [e1, e2]
   exact mul_le_mul_of_nonneg_right (by linarith) h0
 
-theorem threeSliceBase_nonneg (theta gamma : Real) (ht : 0 < theta) (hg : 0 < gamma)
-    (K1 p1 r : Nat) (eps : Real) : 0 ≤ threeSliceBase theta gamma K1 p1 r eps := by
-  unfold threeSliceBase; positivity
-
 /-- The envelopes have the ranges and monotonicity the lift needs. -/
 theorem threeSlice_ranges {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1)
     (hg : 0 < gamma) (hg1 : gamma ≤ 1) (K1 p1 : Nat) :
@@ -231,7 +227,7 @@ theorem threeSlice_ranges {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤
   · intro eps r r' hrr
     show threeSliceBase theta gamma K1 p1 r eps ^ ((2 : Nat) ^ 89) ≤
       threeSliceBase theta gamma K1 p1 r' eps ^ ((2 : Nat) ^ 89)
-    exact pow_le_pow_left₀ (threeSliceBase_nonneg theta gamma ht hg K1 p1 r eps)
+    exact pow_le_pow_left₀ (by unfold threeSliceBase; positivity)
       (threeSliceBase_mono theta gamma ht hg K1 p1 eps hrr) _
   · intro eps he r r' hrr
     show (threeSliceBase theta gamma K1 p1 r' eps ^ ((2 : Nat) ^ 130))⁻¹ ≤

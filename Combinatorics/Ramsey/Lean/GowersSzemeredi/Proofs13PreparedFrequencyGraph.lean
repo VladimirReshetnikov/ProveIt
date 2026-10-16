@@ -312,9 +312,6 @@ private def contextRestrictionRight : Finset (Fin 16) :=
 private lemma context_zero_mem_left : (0 : Fin 16) ∈ contextRestrictionLeft := by
   simp [contextRestrictionLeft]
 
-private lemma context_zero_notMem_right : (0 : Fin 16) ∉ contextRestrictionRight := by
-  simp [contextRestrictionRight]
-
 private lemma context_additive_ext {N : Nat}
     {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)
     (hy : IsAdditiveTuple (k := 8) y)
@@ -343,7 +340,7 @@ private lemma context_additive_ext {N : Nat}
     apply hoff i
     intro hzero
     subst i
-    exact context_zero_notMem_right hi
+    exact (show (0 : Fin 16) ∉ contextRestrictionRight by simp [contextRestrictionRight]) hi
   funext i
   refine Fin.cases ?_ (fun j ↦ htail j) i
   apply add_left_cancel (a := ∑ i ∈ contextRestrictionLeft.erase 0, x i)

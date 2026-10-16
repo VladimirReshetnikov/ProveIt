@@ -63,10 +63,6 @@ private lemma residueChunkLength_lt_two_mul {c L n j : Nat} (hL : 0 < L) :
     omega
   · omega
 
-private lemma chunkCount_pos {c L : Nat} (hL : 0 < L) (hLc : L ≤ c) :
-    0 < c / L := by
-  exact Nat.div_pos hLc hL
-
 private lemma chunk_quotient_lt {c L : Nat} (j : Fin (c / L)) (i : Nat)
     (hi : i < residueChunkLength c L (c / L) j) :
     j * L + i < c := by
@@ -90,7 +86,7 @@ private lemma exists_chunk_for_quotient {c L q : Nat}
     ∃ j : Fin (c / L), ∃ i : Nat,
       i < residueChunkLength c L (c / L) j ∧ q = j * L + i := by
   let n := c / L
-  have hn : 0 < n := chunkCount_pos hL hLc
+  have hn : 0 < n := Nat.div_pos hLc hL
   by_cases hfront : q < n * L
   · let j : Fin n := ⟨q / L, (Nat.div_lt_iff_lt_mul hL).2 hfront⟩
     refine ⟨j, q % L, ?_, ?_⟩

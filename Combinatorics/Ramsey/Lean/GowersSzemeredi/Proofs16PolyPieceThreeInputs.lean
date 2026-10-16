@@ -30,18 +30,14 @@ def vTF : Fin 2 → Bool := ![true, false]
 /-- The vertex `ft`. -/
 def vFT : Fin 2 → Bool := ![false, true]
 
-theorem section16_remainder_vertices_two :
-    (Finset.univ.filter fun e : Fin 2 → Bool => e ≠ fun _ => true) =
-      {fun _ => false, vTF, vFT} := by
-  decide
-
 theorem section16PhiRemainder_two {N : Nat} [NeZero N] (phi : Point N 3 → ZMod N)
     (x0 : Point N 2) (z : Point N 3) :
     section16PhiRemainder phi x0 z = section16TranslatedVertex phi x0 vTF z +
       section16TranslatedVertex phi x0 vFT z - section16TranslatedVertex phi x0 (fun _ => false) z := by
   classical
   unfold section16PhiRemainder
-  rw [section16_remainder_vertices_two]
+  rw [show (Finset.univ.filter fun e : Fin 2 → Bool => e ≠ fun _ => true) =
+      {fun _ => false, vTF, vFT} by decide]
   have h1 : (fun _ : Fin 2 => false) ∉ ({vTF, vFT} : Finset (Fin 2 → Bool)) := by decide
   have h2 : vTF ∉ ({vFT} : Finset (Fin 2 → Bool)) := by decide
   rw [Finset.sum_insert h1, Finset.sum_insert h2, Finset.sum_singleton]

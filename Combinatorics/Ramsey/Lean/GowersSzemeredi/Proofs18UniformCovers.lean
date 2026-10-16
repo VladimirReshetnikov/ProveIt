@@ -183,9 +183,6 @@ theorem classV_mono (Kc pc : Nat → Nat) {j k : Nat} (h : j ≤ k) :
 /-- The uniform degree in dimension `k`. -/
 def uDeg (k : Nat) : Nat := 2 ^ (76 * 2 ^ k)
 
-theorem uDeg_mono : Monotone uDeg := fun j k h =>
-  Nat.pow_le_pow_right (by norm_num) (Nat.mul_le_mul_left _ (Nat.pow_le_pow_right (by norm_num) h))
-
 /-- The split degrees fit the uniform degree. -/
 theorem split_pair_le_uDeg {l : Nat} (hl : 2 ≤ l) :
     (splitPair l).1 + (splitPair l).2 + l + 1 ≤ uDeg l := by
@@ -242,6 +239,8 @@ theorem uniformCovers_of_classes (Kc pc : Nat → Nat) (hK : ∀ k, 1 ≤ Kc k) 
       · intro g t s hg hg1 ht ht1 hs hs1
         show (uCount _ _ g t s)⁻¹ ≤ _
         rw [uCount_eq hVl _ hg hg1 ht ht1 hs hs1]
-    exact P.uniform_mono hVl (classV_mono Kc pc hlk) (uDeg_mono hlk)
+    exact P.uniform_mono hVl (classV_mono Kc pc hlk)
+      (Nat.pow_le_pow_right (by norm_num)
+        (Nat.mul_le_mul_left _ (Nat.pow_le_pow_right (by norm_num) hlk)))
 
 end LeanProofs.GowersSzemeredi

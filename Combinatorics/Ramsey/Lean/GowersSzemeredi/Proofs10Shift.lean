@@ -24,16 +24,11 @@ namespace LeanProofs.GowersSzemeredi
   classical
   simp [MultifunctionDomain.fibre]
 
-private lemma self_mem_fibre {N : Nat} [NeZero N]
-    {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
-    (x : X) : x ∈ D.fibre (D.index x) := by
-  simp
-
 private lemma fibreSize_pos {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     (x : X) : 0 < D.fibreSize x := by
   unfold MultifunctionDomain.fibreSize
-  exact Finset.card_pos.mpr ⟨x, self_mem_fibre D x⟩
+  exact Finset.card_pos.mpr ⟨x, (by simp)⟩
 
 private lemma fibreSize_eq_of_index_eq {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)

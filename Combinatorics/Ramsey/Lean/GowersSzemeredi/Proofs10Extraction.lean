@@ -606,12 +606,6 @@ private lemma audit_symmetric : IsSymmetricModSet auditB := by
       _ = -4 := congrArg Neg.neg hd
       _ = 4 := hneg
 
-private lemma audit_profile_shift_four (s : ZMod 8) :
-    auditProfile (s + 4) = auditProfile s ∨
-      (auditProfile (s + 4) = 0 ∧ auditProfile s = 1) ∨
-      (auditProfile (s + 4) = 1 ∧ auditProfile s = 0) := by
-  fin_cases s <;> decide
-
 private lemma audit_invariant :
     DomainInvariant auditDomain auditB (auditSigma * auditM) := by
   intro s d hd
@@ -619,7 +613,10 @@ private lemma audit_invariant :
   subst d
   rw [audit_sigma_mul_M]
   simp only [audit_fibre_card]
-  rcases audit_profile_shift_four s with hEq | h01 | h10
+  rcases (show auditProfile (s + 4) = auditProfile s ∨
+      (auditProfile (s + 4) = 0 ∧ auditProfile s = 1) ∨
+      (auditProfile (s + 4) = 1 ∧ auditProfile s = 0) by
+    fin_cases s <;> decide) with hEq | h01 | h10
   · rw [hEq]
     norm_num
   · rw [h01.1, h01.2]
@@ -681,10 +678,6 @@ private lemma audit_card_le_five_L_real :
   have h := audit_card_le_five_L
   exact_mod_cast h
 
-private lemma audit_card_cube_le :
-    (auditCard : Real) ^ 3 ≤ (5 * (auditL : Real)) ^ 3 :=
-  pow_le_pow_left₀ (by positivity) audit_card_le_five_L_real 3
-
 private lemma audit_fiveL_cube_div_le :
     (5 * (auditL : Real)) ^ 3 / 32 ≤ 4 * auditL ^ 3 := by
   have hL3 : (0 : Real) ≤ (auditL : Real) ^ 3 := by positivity
@@ -706,7 +699,8 @@ private lemma audit_anchor_weight_bound :
     auditAlpha ^ 3 * auditM ^ 3 * (8 : Nat) ^ 2 / 4 ≤
       domainTotalWeight auditDomain auditX0 := by
   rw [audit_anchor_weight_scale]
-  exact (div_le_div_of_nonneg_right audit_card_cube_le (by norm_num)).trans
+  exact (div_le_div_of_nonneg_right
+      (pow_le_pow_left₀ (by positivity) audit_card_le_five_L_real 3) (by norm_num)).trans
     (audit_fiveL_cube_div_le.trans audit_totalWeight_lower_real)
 
 private lemma audit_anchor_error_bound :
@@ -714,12 +708,6 @@ private lemma audit_anchor_error_bound :
       60 * auditEta * domainTotalWeight auditDomain auditX0 := by
   rw [audit_weightedError_zero]
   positivity
-
-private lemma audit_anchor :
-    IsSection10Anchor auditDomain auditPhi auditB auditAlpha auditM 8
-      auditEta auditX0 :=
-  ⟨audit_anchor_fibre_bound, audit_anchor_weight_bound,
-    audit_anchor_error_bound⟩
 
 private lemma audit_fibreSaturated :
     auditDomain.FibreSaturated auditW := by
@@ -760,11 +748,6 @@ private lemma audit_regular_card_scale :
   push_cast
   field_simp
   ring
-
-private lemma audit_regular_card_bound :
-    auditRho ^ 2 * auditAlpha ^ 2 * auditM * (8 : Nat) / 16 ≤
-      auditW.card := by
-  rw [audit_regular_card_scale, audit_card_W]
 
 private lemma audit_fibreSize_varies :
     VariesByFactorAtMostTwo auditW auditDomain.fibreSize := by
@@ -850,7 +833,7 @@ private lemma audit_regular :
     IsSection10RegularComponent auditDomain auditPhi auditB auditX0
       auditAlpha auditEta auditRho auditM 8 auditW :=
   ⟨audit_fibreSaturated, audit_weight_varies, audit_error_almostEvery,
-    audit_regular_card_bound, audit_fibreSize_varies,
+    (by rw [audit_regular_card_scale, audit_card_W]), audit_fibreSize_varies,
     audit_regular_fibre_bound, audit_overlap⟩
 
 private lemma audit_sigma_bound :
@@ -864,13 +847,9 @@ private lemma audit_sigma_bound :
   field_simp
   norm_num
 
-private lemma audit_eta_eq_pow :
-    auditEta = ((1 : Real) / 32) ^ 5 := by
-  norm_num [auditEta, auditQ]
-
 private lemma audit_eta_root :
     auditEta ^ ((1 : Real) / 5) = (1 : Real) / 32 := by
-  rw [audit_eta_eq_pow]
+  rw [(show auditEta = ((1 : Real) / 32) ^ 5 by norm_num [auditEta, auditQ])]
   simpa [show (1 : Real) / 5 = ((5 : Nat) : Real)⁻¹ by norm_num] using
     (Real.pow_rpow_inv_natCast (x := (1 : Real) / 32) (n := 5)
       (by positivity) (by norm_num))
@@ -1065,8 +1044,9 @@ theorem lemma_10_6_counterexample :
       ¬ ∃ B' : Finset (ZMod 8), ∃ psi : ZMod 8 → ZMod 8,
         IsSection10LocalDifferenceModel auditDomain auditPhi auditW auditB B' psi
           (10 * auditEta ^ ((1 : Real) / 5)) :=
-  ⟨audit_setup, audit_anchor, audit_regular, audit_sigma_bound,
-    audit_no_local_difference_model⟩
+  ⟨audit_setup,
+    ⟨audit_anchor_fibre_bound, audit_anchor_weight_bound, audit_anchor_error_bound⟩,
+    audit_regular, audit_sigma_bound, audit_no_local_difference_model⟩
 
 /-! ## Companion proof for the corrected statement -/
 
