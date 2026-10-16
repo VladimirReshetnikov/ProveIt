@@ -69,5 +69,9 @@ import BusyBeaver.ZFC.NamedForm254
 import BusyBeaver.ZFC.DuplicateProfiles
 import BusyBeaver.ZFC.WritingRuns
 
+import BusyBeaver.ZFC.ZeroSite253
+
+import BusyBeaver.ZFC.EqualityGIC
+
 /-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC
 consistency theorem or state-count improvement is claimed by these imports. -/
