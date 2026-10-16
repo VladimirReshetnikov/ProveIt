@@ -31,6 +31,7 @@ import BusyBeaver.ZFC.Bottom3Syntax
 import BusyBeaver.ZFC.PartialTotalization
 import BusyBeaver.ZFC.WadeMachine
 import BusyBeaver.ZFC.Lukasiewicz
+import BusyBeaver.ZFC.Prefix330
 import BusyBeaver.ZFC.TarskiFalsity
 
 /-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC

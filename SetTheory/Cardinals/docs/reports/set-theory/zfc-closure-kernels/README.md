@@ -1283,9 +1283,10 @@ bridge relates each computed block to actual Core semantics. All506 actions
 of the fast lookup equal the literal table;83 blocks use kernel `decide`.
 The38-module fresh source closure passes with only standard Lean axioms;
 the full-boot roots use `propext`/`Quot.sound`. This advances the finite253
-baseline independently of either new checker. First dispatch arrival, the330
-register prefix, arbitrary runtime, compiler and internal consistency endpoint
-remain open. See `Computability/BusyBeaver/Research/ZFC/finite253_lean.md`.
+baseline independently of either new checker. First dispatch arrival,
+arbitrary runtime, compiler and internal consistency endpoint remain open.
+The separate 330-step register prefix has since been proved in `Prefix330`,
+as described in the latest formal-scope update below. See `Computability/BusyBeaver/Research/ZFC/finite253_lean.md`.
 
 Dated intake correction,16October2026: write `81bcbe6a7` and catalogue
 `1cd824fda` incorrectly reported a six-versus-five PSC histogram discrepancy.
@@ -1445,8 +1446,14 @@ for the original machine, verification,253 reduction and compiler inputs.
 Since these cutoffs, `Bottom3Syntax` has the all-natural ternary codec
 and semantic facts, and `Boot253.fullBootstrap253` proves the literal
 public253 machine's complete312975-step finite bootstrap with all-integer
-tape reads and activity through the endpoint. The separate RM330 prefix,
-general runtime and consistency endpoint remain open. The imported named-variable Tarski completeness theorem initially required
+tape reads and activity through the endpoint. `Prefix330.prefix330` now
+separately proves the exact 330-step infinite-register prefix, with all
+6,459 original program rows and the complete zero register tail. The three
+modules pass a fresh pinned Lean 4.32 check; an earlier scratch-toolchain
+version-recording error is corrected and retained in their evidence. See
+`Computability/BusyBeaver/Research/ZFC/rm330_lean.md`. General binary/runtime
+correspondence and the consistency endpoint remain open. The imported
+named-variable Tarski completeness theorem initially required
 explicit propositional-basis structures. Subsequent Lean work now derives
 K/S/Peirce from the attributed107 upstream certificates and ex falso from
 rho6, supplying `Tarski.classical` and `Tarski.complete` without those

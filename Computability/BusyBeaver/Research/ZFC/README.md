@@ -95,6 +95,9 @@ or improves public 253. The 269 grammar control survives full-cost repricing.
 [logical interfaces](logical_engine_completeness.md#batch-150-three-further-complete-interfaces)
 and [initializer controls](mira_backend.md#batch-150-initializer-controls)
 record their actionable consequences. The host now reconciles 23 sources.
+The reviewed compact initializer is also integrated into the clean assembler:
+`compile_dag(..., initializer="compact")` reproduces the exact 341/343 tables
+with all runtime rows preserved; `--initializer compact` selects it on the CLI.
 
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
@@ -160,8 +163,15 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `WadeMachine.lean` | Actual literal-table INC execution from state 13 through its return to state 55, for a nonempty preceding-register prefix and gap of at least two zeros; selected unary register increments and every other tape cell is preserved. |
 | `Kalmar.lean` | Generic classical implication calculus and its deduction, consistency and maximal-theory tools. |
 | `TarskiCalculus.lean`, `TarskiDerived.lean`, `TarskiLeibniz.lean`, `TarskiClean.lean`, `TarskiComplete.lean` | Soundness and conditional completeness of the full named-variable calculus, with primitive Bottom, genuine equality, all eight logical rows and both gated atomic vacuity families; capture-safe specialization and clean-form model construction. |
+<<<<<<< HEAD
+| `Lukasiewicz.lean` | Attributed port of 107 upstream implication certificates; derives K/S/Peirce and rho6-based ex falso, constructs `Tarski.classical`, and proves `Tarski.complete` without the conditional theorem's extra basis hypotheses. |
+| `RegisterPath.lean` | Exact upstream RM path semantics including truncate/zero-extend, break/continue and infinite registers; finite-list execution proves the same runs. |
+| `Prog254.lean` | All 6,459 original decoder rows, with a verified balanced lookup equal to flat lookup for every index; no replacement by the different structured DAG. |
+| `Prefix330.lean` | Exact 330-step public register prefix from the original initial vector to path 000 and logical registers [5,0,0,0,2,0,0,0,0], with the entire remaining register tail zero. |
+=======
 | `Lukasiewicz.lean` | Attributed port of 107 upstream implication certificates; derives K/S/Peirce and rho6-based ex falso, constructs `Tarski.classical`, and proves `Tarski.complete` without the conditional theorem's extra basis hypotheses. An independent condensed-detachment search regenerates exactly the same 106 derived formulas ([tarski_logic_layer.md](tarski_logic_layer.md)). |
 | `TarskiFalsity.lean` | The machines' relative falsity `F = Rel(0,0)`: the literal row set `ThmG (rel 0 0)` is sound for irreflexive models and complete for ⊥-free theories and targets; the comparison axiom IR is a generalized identity, not a row. |
+>>>>>>> origin/main
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
@@ -194,8 +204,8 @@ Rebuild the entire small dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 45 source units: the first-order logic, calculus and completeness
-modules, `ZF.Zf`, `BusyBeaver.Core`, 39 research modules and the umbrella into a
+This compiles 48 source units: the first-order logic, calculus and completeness
+modules, `ZF.Zf`, `BusyBeaver.Core`, 42 research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the prior 38-unit fresh source check and axiom outputs. The seven
@@ -203,6 +213,8 @@ subsequent modules and updated umbrella have separate scoped evidence in
 `results/tarski-verification.json` and `results/lukasiewicz-verification.json`;
 the expensive finite bootstrap was reused in those checks. The pinned Lean toolchain must
 be installed. Source SHA-256 pins are included for each checked module.
+The three RM-prefix modules also passed a separate fresh source closure;
+`results/rm330-verification.json` records their exact data audit and checks.
 The standalone BusyBeaver Lake package declares its FirstOrder and ZF path
 dependencies; the ZFC umbrella is opt-in.
 
@@ -283,6 +295,13 @@ blocks use kernel `decide`, through a faster transition lookup proved equal
 to all506 literal actions. The theorem specifies every integer tape position
 and activity throughout the prefix. The fresh38-module checked closure passes;
 no first-dispatch-arrival, arbitrary runtime or consistency endpoint is claimed.
+
+The [separate register prefix](rm330_lean.md) is now also checked in Lean:
+330 actual path instructions reach the same primary register values, with
+all higher logical registers zero. Its 6,459-row literal program is imported
+exactly, and finite execution transfers to infinite-register semantics.
+The two finite certificates still require a general binary/register
+representation and instruction-simulation bridge.
 
 [The PSC-only compiler control](psc_backend_experiment.md) tests the new
 schema with original rho6, a fresh `code+2` binder and genuine bottom. Exact
