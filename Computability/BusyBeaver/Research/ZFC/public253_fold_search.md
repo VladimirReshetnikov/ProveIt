@@ -111,7 +111,7 @@ Python because its checked contracts use assertions. Its source hash is
 recorded for reproducibility; the literal table/program pin checks are
 functional input-identity checks rather than bulk manifest verification.
 
-A different, still unrun experiment is to apply `audit_tm.py`'s conservative
+A different experiment, unrun when this fold search was recorded, applies `audit_tm.py`'s conservative
 local-window macro certificate to public253. Read-only radius4 setup reaches
 31,909 abstract configurations, including all253 working states, giving
 63,756 ordered state pairs. Old5/compact0 has128 possible windows and
@@ -122,6 +122,12 @@ rejected here. Any survivor would still need an independently checked
 certificate and a Lean proof connecting the certificate algorithm to the
 actual blank machine. A larger search, mutation of box contracts, or repair
 of the initializer has not been run as part of this result.
+
+The subsequent [local-window macro search](public253_macro_search.md) completed
+all 63,756 pairs at both radius 4 and radius 5, with 64 steps per side and no
+certificates. Radius 5 removed 447 projected radius 4 windows across 26 states.
+Its negative result has the same limited scope: it does not establish a lower
+bound for machines preserving blank-start halting behavior.
 
 Batch151 source25 now supplies an independently replayed complementary
 symbol-wise fusion family: 148,368 candidates, 55 protected rows, zero passing

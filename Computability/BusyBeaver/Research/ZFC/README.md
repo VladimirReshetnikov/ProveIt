@@ -183,6 +183,8 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `OutgoingProfile.lean` | Four-node outgoing equality from exact full-profile singletons, actual raw-PSC model corollaries and reserved-zero named semantic translation at one false point. Source equality denotes full observational classes. |
 | `Numeric254.lean`, `NamedNumeric254.lean` | Exact original four-tag numerical rules and gated C/G/vacuity bundle; named proof transport and refutation equivalence for the explicitly defined encoded-numerical-theorem theory Q. Q/ZFC calibration remains open. |
 | `BootstrapFrame253.lean` | The actual 312,975-step binary bootstrap realizes the actual 330-step register endpoint, with all nine permuted registers, 158 spare blocks and exterior blanks retained. |
+| `Code254Containers.lean` | A literal gated bundle gives the existing transitive, powerset-bounding container resource in an irreflexive model with an explicit valuation. The GIC schema adapter remains open. |
+| `ZipperRuns.lean`, `RegisterBoxes253.lean` | Generic whole-tape sequential execution and preserving scans; actual public253 zero-decrement box for arbitrary preceding and following registers, in exactly twice the prefix width plus five steps. No PC-update or complete instruction simulation claim. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
@@ -215,8 +217,8 @@ Rebuild the entire small dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 54 source units: the first-order logic, calculus and completeness
-modules, `ZF.Zf`, `BusyBeaver.Core`, 48 research modules and the umbrella into a
+This compiles 57 source units: the first-order logic, calculus and completeness
+modules, `ZF.Zf`, `BusyBeaver.Core`, 51 research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the prior 38-unit fresh source check and axiom outputs. The seven
@@ -233,9 +235,14 @@ Lean 4.32.0 checks and axiom audits in their linked evidence files.
 module and the complete updated umbrella against those source-verified caches.
 The subsequent [code-calculus review](code254_review.md) and
 [outgoing equality development](outgoing_profile.md) are integrated into the
-54-unit runner. Their separate source and axiom checks are linked in those
+runner. Their separate source and axiom checks are linked in those
 notes; `results/code-outgoing-integration-verification.json` records the
 corrected numerical module and updated umbrella check with reused dependencies.
+The [encoded container adapter](code254_containers.md) and
+[arbitrary-length zero-decrement box](register_boxes253.md) add three more
+modules. Their separate source and caller checks are linked in those notes;
+`results/containers-boxes-integration-verification.json` records their joint
+integration with the 57-unit umbrella, reusing the previously verified dependencies.
 The standalone BusyBeaver Lake package declares its FirstOrder and ZF path
 dependencies; the ZFC umbrella is opt-in.
 
@@ -387,3 +394,9 @@ register-box row. Only the known 5→64 runtime fold survives all 8,391 affine
 cases; it does not reach the exact bootstrap frame within 2,000,000 steps.
 Fuel exhaustion remains unresolved. This bounded experiment supplies no new
 blank-start consistency machine or general minimality result.
+
+The distinct [public253 local-window search](public253_macro_search.md) checks
+all 63,756 ordered deletions at radii 4 and 5, with 64 steps per side. Neither
+run produces a certificate. The larger window removes 447 projected patterns
+across 26 states, but both abstractions still allow both symbols in every
+working state. These bounded results supply no minimality theorem.

@@ -39,7 +39,8 @@ def main() -> None:
                         "PSCCalibration", "Kalmar", "TarskiCalculus", "TarskiDerived",
                         "TarskiLeibniz", "TarskiClean", "TarskiComplete", "Lukasiewicz",
                         "RegisterPath", "Prog254", "Prefix330", "TarskiFalsity",
-                        "Numeric254", "NamedNumeric254", "BootstrapFrame253", "Code254", "OutgoingProfile") ),
+                        "Numeric254", "NamedNumeric254", "BootstrapFrame253", "Code254", "OutgoingProfile",
+                        "Code254Containers", "ZipperRuns", "RegisterBoxes253") ),
         ("Computability/BusyBeaver/Lean", "BusyBeaver/ZFC.lean"),
     ]
     if args.include_no_quotient:
