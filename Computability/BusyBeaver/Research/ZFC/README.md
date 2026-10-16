@@ -15,16 +15,21 @@ Its exact table has 254 working states, two symbols and terminal label 254.
 Our new Lean representation proves finite table facts; the upstream
 end-to-end consistency equivalence has not been ported to Lean.
 
-The current [experimental candidate](raw_candidate_252.md) has **252 working
+The frozen [experimental table](raw_candidate_252.md) has **252 working
 states and 504 total binary transition rows**. Its generator reproduces the
-frozen table byte for byte. Its ZFC consistency calibration and compiler
-simulation are unproved, so it does not yet achieve the goal. The candidate
+frozen table byte for byte. The finite-sort argument in
+[typed_countermodel.md](typed_countermodel.md) rules out the intended abstract
+calculus as a consistency-search target. Its consequence for the literal table
+still requires the missing compiler simulation. The experiment
 uses equality-free theory rows, base-3 formula coding, a dual quantifier
 schema and shared code. [theory_backend_experiment.md](theory_backend_experiment.md)
 records the exact recipe and competing measurements. The
 [dual-quantifier gap](dual_quantifier_gap.md) gives a counterexample to the
-generic calculus replacement used in this experiment. Its particular theory
-bundle remains uncalibrated; measured repair variants reach 254 or more states.
+generic calculus replacement used in this experiment. The stronger finite-sort
+model satisfies the actual C/G bundle with either quantifier row. The later
+250- and 248-state rewrites preserve that obstruction; their state savings remain
+compiler measurements. Full ordinary equality-free PSC and CP/GIC retain their
+separate mathematical consistency calibrations.
 
 ## Intake and theory minimization
 
@@ -240,10 +245,13 @@ by running their respective generators. Delivered intake files stay unchanged.
 1. Complete the equality-free interpretation and its Foundation/Choice
    consistency bridge, using the calibrated subset-PSC theory as a control.
    Keep alternative and artificial calculi eligible by complete compiler cost.
-2. Prove the changed base-3 calculus, dynamic-binder coverage, falsity convention
-   and dual quantifier row sound and refutation-complete for the emitted program.
-3. Prove the enumerator and compiler simulations and the actual initializer,
-   then connect them to the frozen 252-state literal table. The existing generic
-   totalization result covers one normalization step, not the whole compiler.
+2. Supply a complete logical frontend with a proved cross-variable substitution
+   or refutation interface. The finite-sort model rules out calibrating the
+   existing reduced C/G calculus. Preserve the attributed 253 construction as
+   the implementation baseline while measuring complete alternatives.
+3. Prove the selected enumerator, compiler and actual initializer simulations.
+   The existing generic totalization result covers one normalization step,
+   and register bisimulation covers exposed operations; neither covers the
+   complete binary interpreter.
 4. Establish the required ZFC-provable nonhalting/consistency equivalence before
    claiming the numerical candidate as an improvement on the benchmark.

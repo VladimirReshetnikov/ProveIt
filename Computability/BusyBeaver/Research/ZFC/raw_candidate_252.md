@@ -2,9 +2,15 @@
 two-symbol research candidate**, with start state 0 and terminal target 252.
 It has 504 transition rows and SHA-256
 `58f8aab7fcc21a7e3a88e6250bf05b7a97eaafd340f75ea8117b6d8f989f3142`.
-The raw equality-free `C_P + GIC + IR` theory and its compiler calibration
-remain unresolved. The numerical count is below 254; this is not a proved
-ZFC-consistency machine or a solution to the project goal.
+The full ordinary equality-free theory and the emitted code calculus have
+different strengths. The reviewed finite-sort model in
+[typed_countermodel.md](typed_countermodel.md) satisfies every emitted C/G
+bundle and retained logical row while making target code 1 false. Thus the
+intended abstract enumerator has a ZFC-formalizable nonhalting proof and cannot
+provide the proposed consistency calibration. Applying this conclusion to the
+literal table still requires its unproved compiler simulation. The numerical
+count is below 254; this table is a compiler benchmark, with no proved
+ZFC-consistency endpoint.
 
 This candidate derives from Mira-Cult's published register program and
 container/collection calculus, preserved by Jeff's attributed verification
