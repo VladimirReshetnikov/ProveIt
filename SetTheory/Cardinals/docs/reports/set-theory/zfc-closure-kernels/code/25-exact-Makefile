@@ -1,0 +1,19 @@
+.PHONY: pdf check formal full-search fusion
+
+PYTHON ?= python3
+LEAN ?= lean
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+check:
+	$(PYTHON) reproduce.py --quick
+
+formal:
+	$(PYTHON) reproduce.py --quick --lean $(LEAN)
+
+full-search:
+	$(PYTHON) reproduce.py --full-search
+
+fusion:
+	$(PYTHON) machine/reproduce.py --fusion
