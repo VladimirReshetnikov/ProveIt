@@ -1,0 +1,1500 @@
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in,headheight=14pt]{geometry}
+\usepackage{microtype,booktabs,longtable,array,enumitem,xcolor,fancyhdr,xurl}
+\usepackage[colorlinks=true,linkcolor=blue!45!black,citecolor=blue!45!black,urlcolor=blue!45!black]{hyperref}
+\usepackage{listings}
+\hypersetup{pdftitle={Seeded Closure Kernels for a PA-Certified ZFC-Inconsistency Machine},pdfauthor={Research memorandum prepared for Vladimir Reshetnikov}}
+\pagestyle{fancy}\fancyhf{}
+\fancyhead[L]{\small Seeded closure kernels}
+\fancyhead[R]{\small ZFC inconsistency over PA}
+\fancyfoot[C]{\thepage}
+\setlength{\parskip}{4pt}\setlength{\parindent}{0pt}
+\setlist{itemsep=3pt,topsep=5pt,leftmargin=1.6em}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}\newtheorem{remark}[theorem]{Remark}
+\newcommand{\PA}{\mathsf{PA}}
+\newcommand{\ZFC}{\mathsf{ZFC}}
+\newcommand{\ZF}{\mathsf{ZF}}
+\newcommand{\ZFz}{\mathsf{ZF}_{0}}
+\newcommand{\Ext}{\mathsf{Ext}}
+\newcommand{\Sep}{\mathsf{Sep}}
+\newcommand{\Pow}{\mathcal{P}}
+\newcommand{\Con}{\operatorname{Con}}
+\newcommand{\Inc}{\operatorname{Inc}}
+\newcommand{\Prf}{\operatorname{Prf}}
+\newcommand{\Prov}{\operatorname{Prov}}
+\newcommand{\Halt}{\operatorname{Halt}}
+\newcommand{\BIC}{\mathsf{BIC}}
+\newcommand{\SBC}{\mathsf{SBC}}
+\newcommand{\SBI}{\mathsf{SBI}}
+\newcommand{\ISI}{\mathsf{ISI}}
+\newcommand{\TC}{\mathsf{TC}}
+\newcommand{\EC}{\mathsf{EC}}
+\newcommand{\NE}{\mathsf{NE}}
+\newcommand{\CP}{\mathsf{CP}}
+\newcommand{\GIC}{\mathsf{GIC}}
+\newcommand{\RCC}{\mathsf{RCC}}
+\newcommand{\eqpa}{\mathrel{\equiv_{\Con(\PA)}}}
+\newcommand{\eqd}{\mathrel{\equiv_{\mathrm{ded}}}}
+\newcommand{\Tpt}{T_{\mathrm{pt}}}
+\newcommand{\Tsub}{T_{\mathrm{sub}}}
+\newcommand{\QTsub}{Q_{\mathrm{sub}}}
+\newcommand{\ps}{\bar p}
+\newcommand{\Sing}{\operatorname{Sing}}
+\newcommand{\Succ}{\operatorname{Succ}}
+\newcommand{\LB}{\operatorname{LB}}
+\newcommand{\SB}{\operatorname{SB}}
+\newcommand{\Cl}{\operatorname{Cl}}
+\lstset{basicstyle=\ttfamily\small,breaklines=true,columns=fullflexible,frame=single}
+\title{\textbf{Seeded Closure Kernels for a\newline PA-Certified ZFC-Inconsistency Machine}}
+\author{Research memorandum prepared for Vladimir Reshetnikov}
+\date{15 October 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+We seek a small blank-tape Turing machine $M$ satisfying
+\[\PA\vdash\Halt(M)\leftrightarrow\neg\Con(\ZFC).\]
+We continue the three reports in the supplied \texttt{zfc-consistency.zip}
+and analyze the closure principle in MathOverflow question 380000.
+The main addition is a family of \emph{seeded bounded-image closure}
+axiomatizations. Each of two transparent equality-bearing theories has
+just Extensionality and one parameterized schema, and is deductively
+equivalent to ZF with Foundation and Choice omitted. Infinity,
+Separation, Power Set, Pairing, Union, and functional Replacement are
+all derived rather than separately recognized by the proof-search engine.
+A subset-seeded variant admits a direct equality-free calibration using
+one congruence sentence, without the raw-bisimulation construction used
+by the earlier aggressive container--collection proposal.
+We give explicit mathematical proofs, explain the uniform syntactic
+reductions required for PA, and compare the theories in a declared
+formula-tree metric. The point-seeded theory uses 69 template nodes;
+the directly calibrated equality-free variant uses 83, versus 80 for
+RCC in the same metric. These are not Turing-machine state counts.
+Executable finite checks and a precise certification roadmap accompany
+the article. No smaller transition table, global minimality theorem,
+or serialized PA proof object is claimed.
+\end{abstract}
+\tableofcontents
+\clearpage
+
+\section{Assessment and the substantive change from the supplied research}
+
+The right optimization target is not the number of displayed axioms.
+It is the size of the complete machine implementing a sound and complete
+finite-certificate search, together with a proof in PA that its halting
+condition is exactly ZFC inconsistency. A complicated interpretation may
+be harmless if it stays in the correctness proof; a short axiom may be
+expensive if it requires elaborate parsing or variable manipulation.
+
+The supplied dossier develops three important controls: the
+subset-bounded image theory $\Ext+\mathsf{Infinity}+\SBI$;
+nonextensional relational container--collection, abbreviated RCC; and
+finite predicative class theories. It also emphasizes the distinction
+between refutation and designated-target theoremhood, and the need to
+calibrate the actual arithmetic endpoint \cite{prior1,prior2,prior3}.
+We retain these distinctions rather than reclassifying an auxiliary
+positive theory as ZFC-equiconsistent.
+
+The MathOverflow proposal adds a useful ingredient: close a set under a
+definable relation whose individual fibers are bounded \cite{mo}.
+We combine that ingredient with the earlier exact-image idea. The new
+schema requires both closure and a weak global-image condition. That
+condition is precisely what makes constant relations produce \emph{exact}
+sets and thereby absorbs Separation as well as Power Set.
+
+The recommended experimental comparison is:
+\begin{center}
+\begin{tabular}{p{.19\linewidth}p{.34\linewidth}p{.37\linewidth}}
+\toprule
+Candidate & Reason to implement it & Main remaining cost or risk\\
+\midrule
+$\Tpt$ & Extensionality plus one closure schema; direct elementary calibration & Logical equality remains on the search side.\\
+$\QTsub$ & Equality-free; only one congruence sentence and one schema & Congruence has a measurable syntax cost.\\
+RCC & Earlier aggressive equality-free benchmark & More elaborate nonextensional interpretation.\\
+Finite predicative classes & No set-theoretic schema recognizer after finite compilation & Larger fixed vocabulary/axiom data or Skolem-term machinery.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The new contribution is a mathematical reduction and a better-controlled
+candidate family, not an assertion that any displayed candidate is the
+smallest possible machine. Novelty here means an extension of the supplied
+dossier; no historical priority claim is made.
+
+\section{The arithmetic contract and the meaning of calibration}
+\label{sec:contract}
+
+Fix effective proof systems and ordinary arithmetizations. Set
+\[
+ \Inc(T):=\exists p\,\Prf_T(p,\ulcorner\bot\urcorner),
+ \qquad \Con(T):=\neg\Inc(T).
+\]
+An axiom schema is represented by its formula parameter, fresh variables,
+and any finite syntactic side conditions. A certificate may carry the
+schema parameter, so the checker need not solve a reverse pattern-matching
+problem on an arbitrary purported axiom.
+
+For a fixed literal Turing-machine table $M$, let $\Halt(M)$ be the
+$\Sigma^0_1$ sentence asserting a finite halting computation from its
+specified blank-tape initial configuration. The required statement is
+\begin{equation}\label{eq:target}
+ \PA\vdash \Halt(M)\leftrightarrow\Inc(\ZFC).
+\end{equation}
+It is not enough to show that both sides are false under a consistency
+assumption, or that some stronger background system verifies an informal
+analogue of this equivalence.
+
+\begin{proposition}[Compositional refutation contract]\label{prop:contract}
+Suppose $f$ and $g$ are primitive-recursive proof transformers and PA proves
+\begin{align*}
+ \Prf_T(p,\bot)&\longrightarrow\Prf_{\ZFC}(f(p),\bot),\\
+ \Prf_{\ZFC}(p,\bot)&\longrightarrow\Prf_T(g(p),\bot).
+\end{align*}
+Suppose also that PA proves $\Halt(M)\leftrightarrow\Inc(T)$.
+Then \eqref{eq:target} follows in PA.
+\end{proposition}
+\begin{proof}
+Existentially quantify the two proof implications to obtain
+$\Inc(T)\leftrightarrow\Inc(\ZFC)$, and compose the equivalences.
+No semantic soundness assertion for ZFC is used.
+\end{proof}
+
+A theory will be called \emph{PA-equiconsistent} with another when their
+consistency sentences are provably equivalent in PA; we write $T\eqpa S$.
+This is not the same as deductive equivalence $T\eqd S$ in a fixed language.
+The new equality-bearing theories satisfy the stronger deductive
+comparison with an explicitly specified foundation-free theory.
+
+\begin{definition}[The comparison theory]\label{def:ZF0}
+$\ZFz$ consists of Extensionality, Empty Set, Pairing, Union, Power Set,
+Infinity, full Separation, and full \emph{functional} Replacement, in
+classical first-order membership logic with equality. It has neither
+Foundation nor Choice. It does not have unrestricted Collection as an
+additional axiom schema.
+\end{definition}
+
+The classical effective Foundation and Choice reductions yield
+\begin{equation}\label{eq:standard}
+ \ZFz\eqpa\ZF\eqpa\ZFC.
+\end{equation}
+The relevant use of this result is syntactic: translate formulas into a
+well-founded class and then the constructible class, and expand translated
+axiom instances by uniform derivations. Section~\ref{sec:PA} makes this
+boundary explicit. Foundation elimination is described in
+\cite{avigad}; the constructibility argument and its metatheoretic
+formalization issues are discussed in \cite{paulson}. Background on
+arithmetization and incompleteness is given in \cite{buss}.
+
+\section{The MathOverflow closure proposal, with the bootstrap made explicit}
+\label{sec:MO}
+
+Write $\rho(x,y;\ps)$ with the \emph{input} first: from $x$, the relation
+produces $y$. This reverses the display order of the predecessor notation
+in the question but not its intended direction. Define
+\begin{align}
+ \LB(\rho)&:\quad
+   \forall x\exists b\forall y\bigl(\rho(x,y)\to y\in b\bigr),\label{eq:LB}\\
+ \Cl_\rho(W)&:\quad
+   \forall x\forall y\bigl((x\in W\land\rho(x,y))\to y\in W\bigr).
+\end{align}
+The corrected set-seeded schema in the question is
+\begin{equation}\label{eq:TCset}
+ \TC^{\subseteq}_\rho:\quad
+ \LB(\rho)\to\forall A\exists W
+       \bigl(A\subseteq W\land\Cl_\rho(W)\bigr).
+\end{equation}
+A related root-seeded schema is
+\begin{equation}\label{eq:TCroot}
+ \TC^{\in}_\rho:\quad
+ \LB(\rho)\to\forall a\exists W
+       \bigl(a\in W\land\Cl_\rho(W)\bigr).
+\end{equation}
+All parameters are universally closed, and witness variables are fresh.
+There is no quantification over arbitrary semantic class relations: each
+$\rho$ is an ordinary first-order formula.
+
+The original question includes Extensionality, Foundation, Separation,
+Power Set, and Choice in addition to \eqref{eq:TCset}. Glazer's answer
+establishes the intended equivalence with ZFC and discusses the seed
+convention \cite{mo}. For the machine problem, Foundation and Choice can
+be omitted. Here is a streamlined derivation that also avoids defining
+``natural number'' before Infinity is available.
+
+\begin{theorem}[Calibration of the corrected closure proposal]
+\label{thm:MO}
+Both
+\[
+ T_{\mathrm{MO}}=\Ext+\Sep+\mathsf{Power}+\TC^{\subseteq}
+ \quad\text{and}\quad
+ T_{\mathrm{MO}}^{\mathrm{root}}
+       =\Ext+\Sep+\mathsf{Power}+\TC^{\in}
+\]
+are deductively equivalent to $\ZFz$, by uniform axiom-instance proofs.
+Consequently both are PA-equiconsistent with ZFC.
+\end{theorem}
+\begin{proof}
+First work with the set-seeded presentation. Separation from any object
+produces an empty set $e$. For every $a$, the Power Set axiom and
+$a\subseteq a$ give $a\in\Pow(a)$; separation in $\Pow(a)$ yields
+$\{a\}$. Thus set-seeded closure can also be applied with seed $\{a\}$
+to obtain root-seeded closure.
+
+For Pairing, use the constant relation $\rho(x,y)\equiv y=v$ and start
+with seed $\{u\}$. The pointwise bound is $\{v\}$. A closure witness
+contains $u$ and $v$, and Separation extracts exactly $\{u,v\}$.
+
+For Union, use $\rho(x,y)\equiv y\in x$, whose pointwise bound is $x$
+itself. A witness for seed $A$ contains every member of every member of
+$A$, so Separation in that witness produces $\bigcup A$.
+
+Pairing and Union now give, for every set $x$, a unique successor
+$x^+=x\cup\{x\}$. Apply closure to
+$\rho(x,y)\equiv y=x^+$ and seed $\{e\}$. Every fiber has singleton
+bound $\{x^+\}$. The resulting $W$ contains $e$ and is closed under
+successor, so it is an inductive set. This proves ordinary Infinity
+without referring to a preexisting $\omega$.
+
+For a functional Replacement instance on $A$, use
+$\rho(x,y)\equiv x\in A\land\varphi(x,y)$ and seed $A$.
+Each fiber is empty or a singleton, so it is set-like. Closure bounds all
+outputs, and Separation extracts exactly the image of $A$.
+This derives all axioms of $\ZFz$.
+
+For the root presentation, apply closure to the empty relation to get a
+set containing any prescribed $a$; Separation gives $\{a\}$.
+Pairing follows from the same constant relation. Membership closure
+rooted at $A$ is transitive and contains $A$, hence bounds $\bigcup A$.
+Successor closure rooted at $e$ proves Infinity. To collect a functional
+image of $A$, first choose $r\notin A$ by Russell separation and use
+\[
+ \rho(x,y)\equiv
+   (x=r\land y\in A)\lor(x\in A\land\varphi(x,y)).
+\]
+The cases $x=r$ and $x\in A$ are disjoint, so each fiber is either $A$,
+a singleton, or empty. A root witness at $r$ contains all inputs and
+outputs; Separation extracts the image.
+
+Conversely, in $\ZFz$ a pointwise membership bound lets Separation form
+the exact fiber $d_x=\{y:\rho(x,y)\}$. Extensionality makes $d_x$
+unique, independently of the chosen bound. Replacement and Union form
+the image of any set under these fibers. Starting from $A$ or $\{a\}$,
+iterate this operation along $\omega$ and take the union of the stages.
+This supplies both closure schemas. The construction uses unique exact
+fibers, not a chosen function of arbitrary bounds.
+\end{proof}
+
+\begin{remark}[The seed distinction is real before bootstrapping]
+The theory $\Ext+\Sep+\TC^{\subseteq}$ without Power Set has a one-object
+model with empty membership. For a nonempty relation the antecedent
+$\LB$ fails; for the empty relation the closure conclusion is vacuous.
+Thus one cannot replace $A\subseteq W$ by $a\in W$ for free in this weak
+base. The Power Set step that yields $\{a\}$ is an actual proof obligation.
+\end{remark}
+
+\section{Main construction: seeded bounded-image closure}
+\label{sec:main}
+
+The closure proposal by itself still needs a separate Separation schema
+and Power Set axiom. We now absorb both. The key is to require that all
+members of the output occur somewhere in the defining relation's global
+range, without requiring that they come directly from the initial seed.
+
+Define the mixed fiber bound
+\begin{equation}\label{eq:K}
+ K(y,b):\quad y\in b\ \lor\ y\subseteq b,
+ \qquad
+ B_K(\rho):\quad
+ \forall x\exists b\forall y\bigl(\rho(x,y)\to K(y,b)\bigr).
+\end{equation}
+Let $\sigma(x,a)$ be either of the two fixed seed tests
+\begin{equation}\label{eq:seeds}
+ \sigma_{\mathrm{pt}}(x,a):\ x=a,
+ \qquad
+ \sigma_{\mathrm{sub}}(x,a):\ x\subseteq a.
+\end{equation}
+Both satisfy $\sigma(a,a)$ by logic alone. In ordinary set theory their
+seed classes are respectively $\{a\}$ and $\Pow(a)$.
+
+\begin{definition}[Seeded bounded-image closure]\label{def:BIC}
+For every formula $\rho(x,y;\ps)$, the schema $\BIC_\sigma$ contains the
+universal parameter closure of
+\begin{equation}\label{eq:BIC}
+\begin{split}
+ B_K(\rho)\ \longrightarrow\ \forall a\exists C\,[{}&
+ \forall x\forall y\bigl(
+   ((\sigma(x,a)\lor x\in C)\land\rho(x,y))\to y\in C\bigr)\\
+ &{}\land\forall y\bigl(y\in C\to\exists x\,\rho(x,y)\bigr)].
+\end{split}
+\end{equation}
+\end{definition}
+
+The seed variable $a$ and the witness $C$ are fresh for $\rho$.
+A relation may nevertheless depend on an intended seed as an ordinary
+parameter; instantiate that parameter and $a$ with the same object when
+needed. This convention avoids an implicit variable-capture exception.
+The last existential input $x$ in \eqref{eq:BIC} is unrestricted.
+We are not silently replacing it by a bounded input quantifier.
+
+The two theories are
+\begin{equation}\label{eq:Tptsub}
+ \Tpt:=\Ext+\BIC_{\sigma_{\mathrm{pt}}},
+ \qquad
+ \Tsub:=\Ext+\BIC_{\sigma_{\mathrm{sub}}}.
+\end{equation}
+Each has \emph{one fixed nonlogical sentence and one infinite schema}.
+Neither is a finite axiomatization.
+
+\begin{theorem}[Main deductive calibration]\label{thm:main}
+In classical first-order membership logic with equality,
+\[
+ \Tpt\eqd\ZFz\eqd\Tsub.
+\]
+The equivalences are given by uniform axiom-instance derivations.
+Consequently
+\[
+ \PA\vdash\Con(\Tpt)\leftrightarrow\Con(\Tsub)
+                \leftrightarrow\Con(\ZFC).
+\]
+\end{theorem}
+
+We prove the forward derivations without assuming any of the set
+constructions that the theories are intended to supply.
+
+\subsection{The constant-relation exactness lemma}
+
+\begin{lemma}[Exact bounded classes]\label{lem:constant}
+Work in either theory in \eqref{eq:Tptsub}. Suppose $\theta(y;\ps)$ has
+some mixed bound:
+\[
+ \exists b\forall y\bigl(\theta(y)\to K(y,b)\bigr).
+\]
+Then there is a set $C$ with
+$\forall y(y\in C\leftrightarrow\theta(y))$.
+\end{lemma}
+\begin{proof}
+Use $\rho(x,y)\equiv\theta(y)$, independent of $x$. The assumed $b$
+verifies $B_K(\rho)$ for every input. Choose any object $a$, using the
+nonempty-domain convention of first-order logic, and obtain $C$ from
+\eqref{eq:BIC}. If $\theta(y)$, take $x=a$. Since $\sigma(a,a)$,
+the closure clause gives $y\in C$. Conversely $y\in C$ implies
+$\exists x\,\theta(y)$ by the global-image clause, hence $\theta(y)$.
+No Separation, Pairing, or infinite set was used.
+\end{proof}
+
+\begin{corollary}[Four immediate constructions]\label{cor:basic}
+Either theory proves Empty Set, singleton formation, full Separation,
+and Power Set.
+\end{corollary}
+\begin{proof}
+For Empty Set, take $\theta(y)\equiv\bot$; any object is a bound.
+For $\{t\}$, take $\theta(y)\equiv y=t$ and use $b=t$, since
+$t\subseteq t$. For separation of $\psi$ from $A$, take
+$\theta(y)\equiv y\in A\land\psi(y)$ and $b=A$, using the membership
+arm of $K$. For Power Set of $A$, take $\theta(y)\equiv y\subseteq A$
+and again $b=A$, this time using the subset arm.
+\end{proof}
+
+The two arms of $K$ have different bootstrap jobs. Deleting either arm
+requires a new argument; the displayed derivation does not justify such
+a deletion. In particular, the earlier subset-only image theorem cannot
+be applied here before its separate bootstrap hypotheses are recovered.
+
+\subsection{Pairing from a two-cycle, without a preexisting pair bound}
+
+\begin{lemma}[Two-cycle pairing]\label{lem:pair}
+Either theory proves Pairing.
+\end{lemma}
+\begin{proof}
+Given $u,v$, put
+\[
+ \rho(x,y)\equiv(x=u\land y=v)\lor(x=v\land y=u).
+\]
+Every fiber is empty or a singleton. If $u=v$, the two displayed branches
+have the same output, so this assertion remains correct. An empty fiber
+has any bound; a singleton fiber with output $t$ has bound $b=t$ because
+$t\subseteq t$. Thus $B_K(\rho)$ holds without first forming
+$u\cup v$ or $\{u,v\}$.
+
+Apply the schema with seed parameter $a=u$. The seed test holds at $x=u$,
+so $v\in C$. Closure at $x=v$ then gives $u\in C$. Every member of $C$
+belongs to the global range, which is included in $\{u,v\}$ in the
+\emph{formula} sense $y=u\lor y=v$. Therefore
+\[
+ \forall y\,(y\in C\leftrightarrow(y=u\lor y=v)).
+\]
+This is Pairing, also when $u=v$.
+\end{proof}
+
+\subsection{Union from membership closure}
+
+\begin{lemma}[A transitive bound for the union]\label{lem:union}
+Either theory proves Union.
+\end{lemma}
+\begin{proof}
+Use $\rho(x,y)\equiv y\in x$. The choice $b=x$ verifies the membership
+arm of $B_K(\rho)$. Apply the schema with $a=A$. Because
+$\sigma(A,A)$, every $x\in A$ belongs to $C$. Closure says that every
+member of every member of $C$ is again in $C$. In particular,
+$y\in x\in A$ implies $y\in C$.
+
+Separation, already derived in Corollary~\ref{cor:basic}, forms
+\[
+ U=\{y\in C:\exists x\,(x\in A\land y\in x)\}.
+\]
+This is exactly $\bigcup A$. Notice that $A\in C$ was not needed:
+$A$ is an allowed \emph{input seed}, not necessarily an output.
+\end{proof}
+
+\subsection{Replacement without Collection or Choice}
+
+\begin{lemma}[Partial functional images]\label{lem:replacement}
+Either theory proves the exact-image schema for every relation
+$\varphi(x,y;\ps)$ which is at most single-valued on $A$.
+In particular, it proves ordinary functional Replacement.
+\end{lemma}
+\begin{proof}
+By Separation form
+$r=\{t\in A:t\notin t\}$. Russell's argument proves $r\notin A$:
+if $r\in A$, then $r\in r\leftrightarrow r\notin r$.
+Use the relation
+\begin{equation}\label{eq:star}
+ \rho(x,y)\equiv
+ (x=r\land y\in A)\lor(x\in A\land\varphi(x,y)).
+\end{equation}
+At input $r$, every output is in $A$, so $b=A$ is a mixed bound.
+At an input in $A$, the first branch is false and there is at most one
+output; a present output $t$ is bounded using $t\subseteq t$.
+At every other input the fiber is empty. These are local existence
+arguments, not a simultaneous selection of bounds.
+
+Apply the schema with $a=r$. Since $\sigma(r,r)$, all $x\in A$ lie in
+$C$. The closure clause then puts every $\varphi$-output of such an $x$
+in $C$. Separation in $C$ gives the exact image
+\[
+ \{y\in C:\exists x\in A\,\varphi(x,y)\}.
+\]
+Nothing in this proof invokes unrestricted Collection.
+\end{proof}
+
+\subsection{Infinity from successor closure}
+
+\begin{lemma}[Infinity with no natural-number predicate]\label{lem:infinity}
+Either theory proves the ordinary axiom of Infinity.
+\end{lemma}
+\begin{proof}
+Let $e$ be the empty set. Pairing and Union supply a unique set
+$x^+=x\cup\{x\}$ for each $x$. Use
+\[
+ \rho(x,y)\equiv\Succ(x,y),\qquad
+ \Succ(x,y):\ \forall z\bigl(z\in y\leftrightarrow(z\in x\lor z=x)\bigr).
+\]
+Each fiber consists of its unique successor, and $b=x^+$ is a subset
+bound for that output. Apply the schema with $a=e$.
+Then $e^+\in C$ and $x\in C$ implies $x^+\in C$.
+Using Pairing and Union, form $I=C\cup\{e\}$. It contains $e$, and every
+member has its successor in $I$: for $e$ this is the initial output,
+and for a member of $C$ it is the closure clause. Thus $I$ is inductive.
+\end{proof}
+
+All axioms of $\ZFz$ have now been obtained. The argument never assumes
+Foundation to distinguish an object from one of its members; the only
+fresh root needed in the Replacement proof is supplied by Russell
+separation.
+
+\subsection{The reverse direction: collect exact fibers, not arbitrary bounds}
+
+\begin{lemma}[Uniform construction in $\ZFz$]\label{lem:reverse}
+$\ZFz$ proves every instance of both seeded bounded-image closure schemas.
+\end{lemma}
+\begin{proof}
+Fix $\rho$ and assume $B_K(\rho)$. For a fixed input $x$, take a bound
+$b$. In $\ZFz$ the set
+\[
+ b\cup\Pow(b)
+\]
+exists. Separation in this set forms
+\[
+ d_x=\{y\in b\cup\Pow(b):\rho(x,y)\}.
+\]
+Because $b$ bounds every output, this is the exact fiber
+$\{y:\rho(x,y)\}$. Extensionality shows that it is independent of the
+chosen bound. Consequently ``$d$ is the exact fiber at $x$'' is a
+definable, everywhere functional relation.
+
+For any set $D$, Replacement forms the family of its exact fibers and
+Union forms
+\[
+ F(D)=\bigcup\{d_x:x\in D\}.
+\]
+Fix $a$. Let $D_0=\{a\}$ for the point seed and $D_0=\Pow(a)$ for the
+subset seed. Define $D_{n+1}=F(D_n)$ by recursion on $\omega$, and put
+\begin{equation}\label{eq:positiveorbit}
+ C=\bigcup_{n<\omega}D_{n+1}.
+\end{equation}
+The seeds themselves need not be outputs, which is why the union starts
+at $D_1$ rather than $D_0$.
+
+If $\sigma(x,a)$, then $x\in D_0$ and all its outputs lie in $D_1$.
+If $x\in C$, it lies in some $D_{n+1}$ and all its outputs lie in
+$D_{n+2}$. This proves the closure clause. Every $y\in C$ belongs to a
+positive stage and therefore is the output of some input, proving the
+global-image clause. Only functional Replacement, Separation, and
+ordinary $\omega$-recursion have been used. There is no choice function
+$x\mapsto b_x$ in the construction.
+\end{proof}
+
+\begin{proof}[Completion of Theorem~\ref{thm:main}]
+The preceding lemmas derive every axiom in both directions. Their
+schema-dependent parts are fixed proof templates with the matrix as a
+syntactic parameter. Capture-avoiding substitution and concatenation of
+these templates give primitive-recursive proof transformations, verified
+by induction on syntax and proof records in PA. Compose with
+\eqref{eq:standard} to obtain the stated consistency equivalences.
+Section~\ref{sec:PA} distinguishes this metamathematical argument from an
+exported formal PA certificate.
+\end{proof}
+
+\begin{corollary}[A reusable seed criterion]\label{cor:seed}
+The same proof works for any fixed seed formula $\sigma(x,a)$ such that
+$\forall a\,\sigma(a,a)$ has a pure logical proof and $\ZFz$ has a fixed
+proof that $\{x:\sigma(x,a)\}$ is a set for every $a$.
+\end{corollary}
+\begin{proof}
+The forward bootstrap uses only $\sigma(a,a)$. The reverse construction
+uses only the set of seeds as $D_0$. Both hypotheses are effective when
+the displayed logical and set-theoretic proofs are fixed.
+\end{proof}
+
+The criterion explains the point/subset tradeoff. Point seeding has the
+shortest displayed wrapper but uses equality. Subset seeding costs a few
+membership-logic nodes and removes equality from the wrapper itself.
+
+\section{A directly calibrated equality-free competitor}
+\label{sec:equalityfree}
+
+The subset-seeded schema contains no equality except any equality placed
+inside its arbitrary matrix. This permits a direct equality-free control
+whose calibration does not use raw set-coded bisimulation.
+
+In equality-free membership logic define
+\begin{equation}\label{eq:D}
+ D(x,y):\quad\forall z\,(z\in x\leftrightarrow z\in y),
+\end{equation}
+and add the single sentence
+\begin{equation}\label{eq:EC}
+ \EC:\quad\forall x\forall y
+ \left[D(x,y)\to\forall w\,(x\in w\leftrightarrow y\in w)\right].
+\end{equation}
+The first argument of membership must respect equality of member
+profiles. Respect for the second argument already follows from the
+definition of $D$.
+
+\begin{definition}
+$\QTsub$ is the equality-free theory consisting of $\EC$ and all
+$\BIC_{\sigma_{\mathrm{sub}}}$ instances with equality-free matrices.
+\end{definition}
+
+\begin{theorem}[Equality-free seed calibration]\label{thm:Qsub}
+There are primitive-recursive refutation translations, correct in PA,
+between $\QTsub$ and $\Tsub$. In particular,
+\[
+ \PA\vdash\Con(\QTsub)\leftrightarrow\Con(\ZFC).
+\]
+\end{theorem}
+\begin{proof}
+Translate an equality-bearing formula $A$ to $A^D$ by replacing
+$x=y$ with $D(x,y)$ and commuting with the other constructors.
+Pure logic proves that $D$ is reflexive, symmetric, and transitive.
+The definition of $D$ supplies membership congruence in its second
+argument; $\EC$ supplies it in its first. Induction on formulas therefore
+constructs the usual substitution-of-equals derivations for $D$.
+This justifies the translated logical equality axioms and rules.
+
+Extensionality translates to
+\[
+ \forall x\forall y\,(D(x,y)\to D(x,y)),
+\]
+which is a logical theorem. The subset seed, the mixed bound, and all
+other parts of the closure wrapper are equality-free. Hence the
+translation of a source closure instance is precisely an allowed
+closure instance for the matrix $\rho^D$. This gives a proof compiler
+from $\Tsub$ to $\QTsub$.
+
+For the reverse compiler, work in $\Tsub$ with actual logical equality.
+Extensionality gives $D(x,y)\to x=y$, and equality substitution proves
+$\EC$. Every equality-free closure instance is already among the
+$\Tsub$ axioms. Thus a $\QTsub$ derivation can be expanded in $\Tsub$.
+Both compilers preserve falsity. Formula and derivation induction prove
+their correctness in PA.
+\end{proof}
+
+This is more than an informal quotient-model observation: it describes
+why the translated logical rules and every translated schema instance
+are syntactically available. In a semantic presentation, the same proof
+says that the quotient by $D$ is extensional and has well-defined
+membership. No choice of representatives is needed in the proof compiler.
+
+\paragraph{What is not being deleted.}
+It would be incorrect to drop $\EC$ and continue using this argument.
+Equality of predecessor profiles alone need not imply equality of
+outgoing membership behavior. The raw nonextensional theory obtained by
+deleting $\EC$ is an interesting next problem, but it is not calibrated
+by Theorem~\ref{thm:Qsub}. The earlier RCC interpretation relies on
+additional constructions that cannot simply be imported without checking
+which collection principles they use.
+
+\section{Two complementary refinements of the closure idea}
+\label{sec:otherkernels}
+
+The point/subset-seeded mixed-bound theories are the main recommendation.
+Two other refinements help isolate where the compression comes from and
+provide alternative implementation controls.
+
+\subsection{Subset-bounded closure with a separate Separation schema}
+
+Define
+\begin{equation}\label{eq:SB}
+ \SB(\rho):\quad
+ \forall x\exists b\forall y\bigl(\rho(x,y)\to y\subseteq b\bigr),
+\end{equation}
+and use the root closure schema
+\begin{equation}\label{eq:SBC}
+ \SBC_\rho:\quad
+ \SB(\rho)\to\forall a\exists W
+ \bigl(a\in W\land\Cl_\rho(W)\bigr).
+\end{equation}
+Here we strengthen the permitted fibers from membership-bounded to
+subset-bounded, while retaining Separation rather than the global-image
+condition.
+
+\begin{theorem}[Subset-bounded closure]\label{thm:SBC}
+$\Ext+\Sep+\SBC$ is deductively equivalent to $\ZFz$, and hence
+PA-equiconsistent with ZFC.
+\end{theorem}
+\begin{proof}
+Separation gives an empty set. Closure for the empty relation gives a
+set containing any desired root; Separation extracts singletons.
+A constant singleton-output relation and Separation give Pairing.
+For Power Set of $A$, use $\rho(x,y)\equiv y\subseteq A$,
+whose fibers have subset bound $A$, then separate the subsets of $A$
+from a root closure witness.
+
+The nontrivial bootstrap is Union. Merely closing under subsets is not
+enough to obtain a transitive set: for example, the family
+$\{\varnothing,\{\{\varnothing\}\}\}$ is closed under taking subsets of
+its members but omits $\{\varnothing\}$, a member of one of them.
+Instead use the following switching relation. Define
+\[
+ \Sing(x,t):\quad\forall z\,(z\in x\leftrightarrow z=t)
+\]
+and let
+\begin{equation}\label{eq:switch}
+ \rho_*(x,y):\quad
+ \Sing(x,y)\ \lor\
+ \bigl(\neg\exists t\,\Sing(x,t)\land y\subseteq x\bigr).
+\end{equation}
+If $x$ is a singleton with unique member $t$, its only output is $t$,
+bounded by $b=t$. Otherwise its outputs are the subsets of $x$, bounded
+by $b=x$. Thus $\SB(\rho_*)$ holds without already having Union.
+
+Let $W$ contain a root $A$ and be closed under $\rho_*$. We claim $W$
+is transitive. Given $x\in W$ and $y\in x$, if $x$ is a singleton its
+decoder edge directly places $y$ in $W$. Otherwise $\{y\}\subseteq x$,
+so $\{y\}\in W$, and its decoder edge then gives $y\in W$.
+Since $A\in W$, two applications of transitivity bound $\bigcup A$;
+Separation gives its exact set.
+
+Membership-bounded relations are now subset-bounded: if all outputs lie
+in $b$, they are all subsets of $\bigcup b$. Thus every instance of root
+set-like closure follows. The earlier successor and functional-image
+proofs give Infinity and Replacement.
+
+Conversely, under $\SB(\rho)$, $\ZFz$ forms the unique exact fiber by
+Separation in $\Pow(b)$, and iterates those unique fibers along $\omega$.
+This proves \eqref{eq:SBC}. All arguments are uniform in $\rho$.
+\end{proof}
+
+The switching relation is useful independently of this particular theory:
+it converts a subset-closure resource into transitivity without requiring
+a simultaneous bound for two different kinds of outputs. The mutually
+exclusive cases avoid the circular use of a binary union.
+
+\subsection{Subset-only iterated images with a weak nonempty seed}
+
+The supplied subset-image theory uses a relatively long Infinity axiom.
+It can instead use an iterated image schema plus the very short sentence
+\[
+ \NE:\quad\exists u\exists v\,(u\in v).
+\]
+For every matrix $\rho$, define
+\begin{equation}\label{eq:ISI}
+\begin{split}
+ \ISI_\rho:\quad \SB(\rho)\to\forall A\exists C\,[{}&
+ \forall x\forall y\bigl(((x\in A\lor x\in C)\land\rho(x,y))
+                       \to y\in C\bigr)\\
+ &{}\land\forall y\bigl(y\in C\to\exists x\,\rho(x,y)\bigr)].
+\end{split}
+\end{equation}
+This wrapper is equality-free and uses only subset bounds. Unlike the
+main schemas, its seed is the membership extension of $A$; it need not
+contain any initial input without $\NE$.
+
+\begin{theorem}[Iterated subset images]\label{thm:ISI}
+$T_{\ISI}=\Ext+\NE+\ISI$ is deductively equivalent to $\ZFz$.
+Its equality-free congruence version $\EC+\NE+\ISI$ is PA-equiconsistent
+with ZFC.
+\end{theorem}
+\begin{proof}
+First derive the subset-bounded image schema from the supplied dossier:
+\begin{equation}\label{eq:SBI}
+\begin{split}
+ &\forall x\in A\exists b\forall y
+   (\varphi(x,y)\to y\subseteq b)\\
+ &\hspace{1em}\longrightarrow\exists C\forall y
+   \bigl(y\in C\leftrightarrow\exists x\in A\,\varphi(x,y)\bigr).
+\end{split}
+\end{equation}
+Use $\rho(x,y)\equiv x\in A\land\varphi(x,y)$ with $A$ as a parameter
+of the matrix. For inputs outside $A$ the fiber is empty, so the local
+premise becomes global. Instantiate the schema's independently bound
+seed variable with $A$. All desired outputs are in $C$, and the
+global-image clause excludes every other output. Thus \eqref{eq:SBI}
+holds exactly, not merely as a bounding assertion.
+
+A false matrix yields an empty set $e$. A fixed nonempty domain from
+$\NE$, with constant output $t$, yields $\{t\}$: a partial functional
+fiber is subset-bounded by its unique output. In particular let
+$s=\{e\}$, so $e\ne s$. Apply \eqref{eq:ISI} to the two-cycle
+$e\mapsto s\mapsto e$, starting with the membership seed $s=\{e\}$.
+The resulting output is exactly $\{e,s\}$.
+Using these two labels as a domain in \eqref{eq:SBI}, a functional
+selector gives $\{u,v\}$ for arbitrary $u,v$.
+
+Partial functional images give Separation. A constant matrix
+$y\subseteq a$ on a fixed nonempty domain gives Power Set.
+For Union, first form
+\[
+ D=\{s:\exists x\in A\ (s\subseteq x)\}
+\]
+using \eqref{eq:SBI} directly. Apply partial functional image formation
+to the singleton decoder $\Sing(s,y)$ on $D$. Its image is exactly
+$\bigcup A$: a member $y\in x\in A$ is decoded from $\{y\}\subseteq x$,
+and every decoded singleton has its unique member in some $x\in A$.
+Functional Replacement follows from the partial functional image rule.
+
+Finally apply \eqref{eq:ISI} to the successor relation with membership
+seed $\{e\}$. The output $C$ contains $e^+$ and is successor-closed;
+$C\cup\{e\}$ is inductive. Conversely, exact fibers in $\Pow(b)$ and
+positive $\omega$-iteration from $D_0=A$ prove every $\ISI$ instance in
+$\ZFz$. The equality-free calibration uses the proof translation from
+Theorem~\ref{thm:Qsub}, since the whole wrapper and $\NE$ are equality-free.
+\end{proof}
+
+\begin{remark}[A necessary bootstrap for this particular wrapper]
+Deleting $\NE$ from $\Ext+\NE+\ISI$ leaves a one-object model with empty
+membership. Both clauses about $C$ are vacuous there for every matrix.
+This deletion really does lose the required strength; it is not just an
+unfilled step in the proof. By contrast, the reflexive point and subset
+seeds in the main construction force outputs of constant nonempty
+relations, so no separate $\NE$ axiom is needed.
+\end{remark}
+
+\section{Comparison with container--collection and the finite-axiom route}
+\label{sec:competitors}
+
+\subsection{The earlier aggressive relational kernel}
+
+For comparison, the inherited RCC presentation uses the container sentence
+\begin{equation}\label{eq:CP}
+\begin{split}
+ \CP:\quad\forall p\exists V\,[p\in V\land\forall x\in V\,(
+ x\subseteq V\land\exists W\in V\,
+          \forall z(z\subseteq x\to z\in W))]
+\end{split}
+\end{equation}
+and the global-image collection schema
+\begin{equation}\label{eq:GIC}
+\begin{split}
+ \GIC_\varphi:\quad\forall B\exists C\,[{}&
+ \forall x\in B\forall y\bigl(\varphi(x,y)\to
+         \exists v(\varphi(x,v)\land v\in C)\bigr)\\
+ &{}\land\forall y\in C\exists x\,\varphi(x,y)].
+\end{split}
+\end{equation}
+Both are read in equality-free logic with unrestricted equality-free
+matrices and fresh schema witnesses.
+
+The preceding dossier gives a nonextensional calibration via raw set
+constructions, a set-coded bisimulation relation, and transfer of the
+compact axioms to an extensional completion \cite{prior2,prior3}.
+The present work does not independently reconstruct that whole proof.
+Its main new theories provide a different control: their extensional
+calibration is direct, and $\QTsub$ removes equality by a single explicit
+congruence law. That makes it possible to compare machine size without
+making the most delicate interpretation the only route to certification.
+
+It is significant that the reverse proofs here collect \emph{unique exact
+fibers}. They do not replace functional Replacement by unrestricted
+Collection in a foundation-free universe. Importing the full RCC
+bisimulation proof into a weakened image theory would require an audit
+of precisely that distinction.
+
+\subsection{Finite predicative classes remain a serious alternative}
+
+The finite-axiom route should use a precisely specified predicative
+G\"odel--Bernays/NBG theory, with the set/class and choice conventions
+frozen. Friedman states finite axiomatizability and equiconsistency with
+ZF in a fragment of PA allowing superexponentiation; the corresponding
+choice versions calibrate with ZFC \cite[p.~28]{friedman}.
+This is the right kind of metatheoretic strength for the requested PA
+endpoint.
+
+The attraction is operational: once a finite class theory is compiled,
+there is no unbounded set-theoretic schema recognizer. One can Skolemize
+it offline and search for finite ground refutations. The price is the
+fixed clause data, Skolem-term handling, and any treatment of equality.
+A finite presentation is not automatically a smaller complete program.
+
+Do not substitute impredicative class comprehension for predicative
+comprehension. That changes the theory and invalidates the cited
+calibration. Nor should one assume that the expanded-language finite
+class theory is uniformly interpretable back into ZFC merely because it
+is conservative over ZFC for set-language sentences. The source explicitly
+distinguishes conservativity, equiconsistency, and interpretability.
+
+\subsection{Why a finite list of ordinary ZFC theorems cannot suffice}
+
+\begin{proposition}[Finite-consequence obstruction]\label{prop:finite}
+Assume ZFC is consistent. Let $F$ be a finite set of membership-language
+sentences, each provable in ZFC. Then
+\[
+ \PA\not\vdash\Con(F)\leftrightarrow\Con(\ZFC).
+\]
+\end{proposition}
+\begin{proof}
+Reflection for the finite list of sentences yields, inside ZFC, a set
+structure satisfying all members of $F$. Satisfaction for that finite
+list and elementary soundness give $\ZFC\vdash\Con(F)$.
+If PA proved the displayed equivalence, ZFC would prove its own
+consistency, contrary to the second incompleteness theorem under the
+consistency assumption.
+\end{proof}
+
+Thus bundling all ZFC schemas into one enormous fixed sentence of the
+same language cannot work if that sentence is itself a ZFC theorem and
+has the requested calibration. A finite class theory changes the
+language and the way finite proofs are reduced; the obstruction does
+not rule it out. Likewise, writing ``for every formula'' is a schema,
+not a finite first-order axiom unless the required syntactic machinery
+has genuinely been internalized and justified.
+
+\section{From the mathematical reductions to a proof in PA}
+\label{sec:PA}
+
+\subsection{What has been proved at the mathematical level}
+
+For the main theories, the new part of the calibration consists of
+explicit uniform derivations. A source axiom certificate contains its
+matrix and variable data. The reduction substitutes that matrix into
+one of a fixed collection of derivations, renames bound variables, and
+concatenates the result with the translated logical proof.
+
+For example, the following proof constructors are sufficient for the
+$\ZFz$-to-$\Tpt$ direction:
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+Constructor & Formula parameter or fixed input\\
+\midrule
+\texttt{empty}, \texttt{singleton}, \texttt{pair} & fixed templates and variable codes\\
+\texttt{separation} & an arbitrary formula $\psi(y,\ps)$\\
+\texttt{powerset}, \texttt{union}, \texttt{infinity} & fixed templates\\
+\texttt{replacement} & an arbitrary formula $\varphi(x,y,\ps)$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The Replacement constructor inserts the two-level relation
+\eqref{eq:star}; it does not inspect the semantic meaning of $\varphi$.
+The reverse closure constructor inserts $\rho$ into the exact-fiber and
+recursion proof in Lemma~\ref{lem:reverse}. Matrix complexity does not
+require a stronger mathematical induction principle on the target side;
+it affects only the length of the generated finite proof.
+
+With standard syntactic coding these constructors are primitive
+recursive. Their correctness is proved by structural induction on
+formulas and finite derivations, together with fixed checks of the
+underlying proof templates. PA supports those inductions. This is the
+ordinary metamathematical content of saying that the displayed
+calibrations are provable in PA.
+
+\subsection{The standard Foundation/Choice bridge is off-machine}
+
+The remaining bridge \eqref{eq:standard} is not a claim that PA proves
+set-theoretic truth or that $\ZFz$ proves the existence of a set model of
+ZFC. In a foundation-free ambient theory, the cumulative well-founded
+hierarchy is constructed by recursion along ordinal well-orders. The
+class of its ranked sets satisfies Foundation as well as the other ZF
+axioms; the constructible class inside it satisfies Choice.
+
+To obtain the arithmetic theorem, use the corresponding formula
+relativizations as proof translations. For each source axiom instance,
+insert the formal derivation of its relativization. The uniformity in
+Separation and Replacement matrices is essential. The arithmetic
+verification is an induction on a \emph{finite proof code}, not an
+application of transfinite induction in PA.
+
+This distinction matters in formal developments: a proof assistant may
+verify mathematical statements about a constructible class while leaving
+the uniform metatheorem external. Paulson's discussion explicitly warns
+about this gap \cite{paulson}. A Lean or Coq theorem in a strong ambient
+logic is valuable evidence, but it is not by itself an exported proof
+that PA derives the intended arithmetized equivalence.
+
+\subsection{The exact deliverable boundary}
+
+This archive supplies ordinary mathematical proofs and executable
+syntax/finite-combinatorics checks. It does \emph{not} supply a complete
+PA proof term, a serialized derivation of every template in a chosen
+Hilbert calculus, or a verified TM compiler. The mathematical statements
+above do not depend on the finite experiments; the experiments are
+regressions for formulas and constructions used in those statements.
+
+The next certification artifact should fix, rather than leave implicit,
+the following interfaces:
+\begin{equation}\label{eq:PAinterfaces}
+\begin{aligned}
+ \PA&\vdash \Prf_T(p,\bot)\to\Prf_{\ZFC}(f(p),\bot),\\
+ \PA&\vdash \Prf_{\ZFC}(p,\bot)\to\Prf_T(g(p),\bot),\\
+ \PA&\vdash \operatorname{Accept}_T(c)\to\Inc(T),\\
+ \PA&\vdash \Inc(T)\to\exists c\,\operatorname{Accept}_T(c),\\
+ \PA&\vdash \Halt(M)\leftrightarrow\exists c\,\operatorname{Accept}_T(c).
+\end{aligned}
+\end{equation}
+The last line must refer to the literal released transition table, the
+actual blank-tape convention, and the actual halting convention. None
+of those details is determined merely by selecting a set theory.
+
+\section{Co-designing the search language and the halting condition}
+\label{sec:search}
+
+\subsection{Generate certified instances rather than recognize arbitrary axioms}
+
+For a closure-schema certificate, store the matrix and a small constructor
+tag. The checker builds the axiom using the fixed wrapper, verifies the
+freshness convention, and universally closes the remaining parameters.
+This often avoids a more complicated recognizer that tries to determine
+whether an arbitrary formula is an instance of the schema.
+
+A reference enumerator has the following shape:
+\begin{lstlisting}
+for n = 0, 1, 2, ...:
+    c = decode_finite_certificate(n)
+    if well_formed(c) and verify_derivation(c, theory=T):
+        if conclusion(c) == designated_target:
+            halt
+\end{lstlisting}
+Every candidate check must terminate. If the certificate is itself a
+program, include a finite execution bound or dovetail its execution;
+otherwise one invalid or diverging candidate could block the entire
+search. For a total syntactic checker, PA proves that every fixed
+finite candidate is eventually examined. Completeness then translates
+a source proof into one such finite accepted candidate.
+
+A useful implementation sequence is to keep one common parser, one
+logical calculus, one proof-record format, and one TM backend, while
+substituting only the theory-instance generator. Otherwise the comparison
+conflates changes in foundations with changes in compiler engineering.
+
+\subsection{Falsity-free theorem search is compatible with the new kernel}
+
+The dossier's positive-target technique applies to $\QTsub$ as well as
+RCC. It should remain a separate implementation layer, not be confused
+with the consistency calibration of the foundation.
+
+Let the equality-free primitive language be
+\[
+ E(v_i,v_j),\qquad A\to B,\qquad\forall v_i A,
+\]
+and let $H=\forall x\forall y\,E(x,y)$. For every formula $A$ in this
+language, pure implicational/universal logic proves $H\to A$ by a
+uniform induction: instantiate $H$ for atomic conclusions, use the
+consequent for an implication, and generalize for a universal formula.
+The closedness of $H$ is essential in the last step.
+
+Start with a bottom-bearing equality-free theory $T$ proving $\neg H$.
+Expand its derived connectives in $E,\to,\forall,\bot$ and replace
+$\bot$ by $H$. Call the resulting axiom presentation $T^+$.
+The uniform explosion lemma translates a $T$ refutation into a
+$T^+$ proof of $H$. Conversely, under the fixed $T$ theorem $\neg H$,
+structural induction gives equivalence of every source formula with its
+translation; a $T^+$ proof of $H$ therefore yields a $T$ refutation.
+
+For $T=\QTsub$, the required $\neg H$ follows from the empty-set instance
+of the closure schema. Under $H$, that empty object would be a member
+of itself. Hence the target translation is available with no additional
+set-theoretic axiom.
+
+Since all theory axioms are sentences, a fixed open theorem
+$E(v_0,v_1)$ with \emph{distinct} variables can be universally generalized
+to $H$, and $H$ can be instantiated back. Thus an implementation may use
+this atomic theoremhood target. It must not substitute that open atom
+for falsity inside arbitrary formulas: the substitution macro is the
+\emph{closed} $H$.
+
+The positive theory $T^+$ has a one-object full-relation model: every
+atom and hence every formula in this grammar is true. It is therefore
+not the desired ZFC-equiconsistent foundation. What is calibrated is
+\[
+ \Prov_{T^+}(H)\ \leftrightarrow\ \Inc(T),
+\]
+not $\Inc(T^+)\leftrightarrow\Inc(T)$. This distinction is unchanged
+from the supplied dossier \cite{prior2}.
+
+\subsection{The diagonal target and irreflexivity must be audited together}
+
+A nonextensional machine may encode falsity by $E(v_0,v_0)$ only when its
+theory/calculus supplies the required refutability. Removing an
+irreflexivity axiom without changing that encoding can invalidate
+soundness even when the underlying theory remains equiconsistent with
+ZFC. The inspected 254-state source explicitly identifies this dependency
+\cite{upstream}.
+
+The all-relation target $H$ avoids assuming irreflexivity of membership,
+but its wrapper and any resulting formula expansion have a cost.
+Neither the old diagonal encoding nor the positive-target alternative
+can be declared cheaper before passing through the same backend.
+
+\section{Reproducible syntax measurements}
+\label{sec:metrics}
+
+The accompanying \texttt{code/formulas.py} builds the displayed templates
+as abstract syntax trees. Its metric counts every occurrence of a
+primitive formula node in
+\[
+ \{\in,=,\bot,\to,\forall\}.
+\]
+A schema-matrix occurrence is a single placeholder node. Variable names,
+variable-code lengths, and the universal closure of arbitrary extra
+parameters are excluded. The count is a tree count, not a shared-DAG
+count. Derived connectives are expanded classically by
+\begin{align*}
+ \neg A&:=A\to\bot,\\
+ A\land B&:=(A\to(B\to\bot))\to\bot,\\
+ A\lor B&:=(A\to\bot)\to B,\\
+ \exists x A&:=(\forall x(A\to\bot))\to\bot,\\
+ A\leftrightarrow B&:=(A\to B)\land(B\to A).
+\end{align*}
+Other bases or variable encodings can reverse a close ranking.
+
+\begin{center}
+\begin{tabular}{p{.49\linewidth}rr}
+\toprule
+Theory / template package & Nodes & Matrix occurrences\\
+\midrule
+$\Tpt=\Ext+\BIC_{=}$ & 69 & 3\\
+$\Tsub=\Ext+\BIC_{\subseteq}$ & 72 & 3\\
+$\Ext+\NE+\ISI$ & 76 & 3\\
+RCC: $\CP+\GIC$, equality-free & 80 & 3\\
+$\QTsub=\EC+\BIC_{\subseteq}$, equality-free & 83 & 3\\
+$\Ext+\Sep+\SBC$ & 83 & 4\\
+$\EC+\NE+\ISI$, equality-free & 87 & 3\\
+MO root-seeded control, no Foundation/Choice & 104 & 4\\
+MO set-seeded control, no Foundation/Choice & 107 & 4\\
+Prior $\Ext+\mathsf{Infinity}+\SBI$ control & 131 & 3\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+These measurements are new calculations for this archive. They are not
+numerically interchangeable with earlier reports that used another
+formula basis or another definition of a template node. In particular,
+one should not compare the old ``43-node'' SBI figure with a complete
+theory total in this table.
+
+The useful conclusion is modest but concrete. The point-seeded theory
+has a short and transparent equality-bearing presentation. Its
+subset-seeded equality-free control is only three template nodes larger
+than RCC in this metric, while admitting the direct calibration in
+Theorem~\ref{thm:Qsub}. That is a good reason to compile both, not a
+proof that either will use fewer states.
+
+\subsection{Costs deliberately not hidden inside a state estimate}
+
+A complete cost ledger must include formula decoding, substitution and
+freshness, logical axiom generation, theory-instance generation, proof
+validation, enumeration, the target test, bootstrap tape data, the
+register/stack interpreter, and the final encoding into states and
+symbols. Actual sizes need not add independently: code sharing and
+state merging can couple the components.
+
+Equality is especially important. The low score of $\Tpt$ does not
+include the extra formula constructor or equality-rule machinery that
+an equality-bearing proof engine may need. Conversely, eliminating
+logical equality by replacing each equality atom with $D$ can greatly
+expand \emph{proofs} while adding only a small fixed generator. Proof
+length and machine description size are different objectives.
+
+The subset test also occurs repeatedly in the new schemas. Sharing one
+subset-template constructor could be more valuable than saving one
+unshared formula occurrence. A backend-aware experiment should compare
+both expanded trees and constructor-program descriptions.
+
+\section{Executed finite checks and what they establish}
+\label{sec:experiments}
+
+The code uses only the Python standard library. The actual successful
+run is recorded in \texttt{results/experiments.json}; the formula counts
+are recorded in \texttt{results/metrics.json}.
+
+\begin{center}
+\begin{tabular}{p{.66\linewidth}r}
+\toprule
+Check & Executed scope\\
+\midrule
+All directed relations on domains of size 1 through 4 & 66,066\\
+All relation/seed-subset pairs & 1,052,740\\
+Candidate closure-witness checks & 16,810,248\\
+Point-seed positive-orbit checks & 263,714\\
+Hereditarily finite roots for the switching construction & 4,096\\
+Outputs checked against the local subset bound & 531,429\\
+Members checked in switching-closure hulls & 555,198\\
+Finite families in singleton-decoding Union test & 65,536\\
+Random formula/expansion comparisons & 4,000\\
+Template/finite-model expansion comparisons & 4,160\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For the graph checks, inputs and outputs are vertices of an arbitrary
+finite directed graph. The code computes the positive orbit from a seed,
+checks closure under outputs, checks that every output belongs to the
+global range, and checks minimality among finite closed candidates.
+It also checks the exact-image consequence of guarding a relation by
+the initial domain, as used in the proof of Theorem~\ref{thm:ISI}.
+These are graph-combinatorial statements, not assertions that the graphs
+are models of ZFC or of the complete closure schemas.
+
+The hereditary-finite checks use Ackermann coding: the members of a
+natural code are the positions of its nonzero binary digits. For all
+roots below 4096, the program checks the switching relation's local
+subset bound and the transitivity of its finite closure. The naive
+subset-only closure fails at root code 2: its hull is $\{0,2\}$ and
+omits member code 1. This is the concrete counterexample used in the
+proof discussion, not a countermodel to the calibrated theory.
+
+The one-object deletion countermodels are particularly useful because
+all possible binary matrices can be checked, not merely a finite
+sample of syntactic formulas:
+\begin{center}
+\begin{tabular}{p{.60\linewidth}p{.29\linewidth}}
+\toprule
+Weakened theory & One-object membership relation\\
+\midrule
+$\Ext+\ISI$ with $\NE$ deleted & Empty\\
+$\Ext+\SBC$ with Separation deleted & Full\\
+$\Ext+\Sep+\TC^{\subseteq}$ with Power Set deleted & Empty\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+On a one-object domain every definable binary relation is one of the two
+relations checked. These observations give genuine finite models for
+the specified weakened theories. They do not settle the more difficult
+question of deleting $\EC$ or the membership arm of the main mixed
+bound.
+
+The code does not implement a proof checker or the set-theoretic proof
+transformers. It verifies the displayed formula encodings and finite
+construction identities. The paper-level proofs, the proposed PA
+certificates, and the implementation tests are deliberately separate.
+
+\section{The external 254-state benchmark}
+\label{sec:benchmark}
+
+The current inspected branch of \texttt{jeff87654/busy-beaver} reports an
+end-to-end Coq verification of Mira-Cult's 254-state machine. Its README
+attributes the machine to Mira-Cult and describes the TM, program,
+calculus, and set-theory layers \cite{upstream}. We checked the branch
+metadata and source description at commit
+\begin{center}\small
+\texttt{c132d7eae8158cd3a9850ea3eb7251158c3dd821}.
+\end{center}
+The reported table digest is
+\begin{center}\small
+\texttt{d655ce2cf8cccebd21caa21a49f0f9f010960a44b95c17aae6cc425c518954eb}.
+\end{center}
+
+This is an external reported benchmark, not a new state-count result of
+this work. The full Coq build was not rerun here, the complete table
+hash was not independently recomputed, and the development was not
+translated into an internal PA derivation. The attached earlier dossier
+also warns that the exact endpoint convention concerning Foundation
+must be read from the actual source definitions rather than inferred
+from a theorem's name \cite{prior3}.
+
+The practical use of the benchmark is to choose a realistic comparison
+pipeline and to identify expensive layers. Its existence does not turn
+an axiom-template score into a state count, and its stronger-system
+verification does not dispense with the user's PA requirement.
+
+\section{Prioritized next experiments and research questions}
+\label{sec:priorities}
+
+\subsection{First milestone: compile the transparent candidates}
+
+Implement $\Tpt$, $\QTsub$, and RCC as theory generators within one
+certificate checker and one backend. Keep the formula coding, inference
+rules, enumeration order, and target convention fixed whenever possible.
+Record the complete tables and code-size ledger, not only the number of
+source instructions. The purpose is to learn whether equality elimination,
+shorter bootstrapping, or a smaller container generator dominates the
+actual cost.
+
+The directly calibrated $\QTsub$ deserves early attention: it keeps the
+machine language equality-free while remaining close to RCC in the
+declared fixed-template metric. The $\Tpt$ version is the natural
+readable correctness control and may still win if equality support is
+cheap or already shared with other proof machinery.
+
+\subsection{Second milestone: serialize the new proof reductions}
+
+Choose a concrete first-order calculus and implement the finite proof
+constructors in Section~\ref{sec:PA}. Begin with the constant-relation
+lemma, which simultaneously covers Empty Set, Separation, and Power
+Set. Next certify two-cycle Pairing and the Replacement star. Only then
+add the recursion proof used for the reverse direction.
+
+This ordering isolates short, checkable obligations before introducing
+the standard Foundation/Choice bridge. It also makes errors such as
+using an unavailable singleton or silently choosing a family of bounds
+visible in a small derivation rather than in the final end-to-end proof.
+
+\subsection{Third milestone: test a finite class-theory ground engine}
+
+Fix one finite predicative class presentation. Compile to clauses
+outside the runtime machine and search for finite ground certificates.
+The machine should enumerate terms and validate a propositional
+refutation certificate; the proof of Skolemization and completeness
+belongs in the PA audit. If equality is retained, ground congruence or
+an equality elimination must be part of the soundness/completeness proof.
+
+The stopping criterion is a \emph{complete} state count for the same
+blank-tape and symbol conventions. A smaller axiom database but a larger
+term interpreter is not a win.
+
+\subsection{Focused mathematical questions}
+
+Several possible deletions now have precise boundaries.
+
+\paragraph{Can the membership arm be deleted from point-seeded BIC?}
+Replace $K(y,b)$ by $y\subseteq b$ but retain the point seed and the
+global-image clause. The constant false relation, constant singleton
+relations, two-cycle Pairing, and Power Set still have immediate
+proofs. The direct Separation argument no longer applies: members of
+$A$ need not all be subsets of an available common bound before Union
+has been obtained. The subset-image argument from the earlier dossier
+has extra bootstrap assumptions, so it cannot simply be cited here.
+The calibration of this smaller point-seeded theory is left open in
+this report; neither inadequacy nor equiconsistency is claimed.
+
+\paragraph{Can $\EC$ be removed from the subset-seeded theory?}
+This asks for a new nonextensional interpretation or a rigorous
+countermodel/strength analysis. The direct $D$-translation fails at the
+missing first-argument congruence step. The closure operation may provide
+useful transitive bounds, but whether it supplies the representative
+collection needed for a raw quotient requires a separate proof.
+
+\paragraph{Can the seed and fiber kernels share more code?}
+The general seed criterion allows $\sigma(x,a)=K(x,a)$ as well:
+its seed set is $a\cup\Pow(a)$ and $K(a,a)$ is logically valid.
+This is not the shortest expanded tree, but sharing the same kernel in
+the local-bound test and the seed test may improve an actual generator.
+It is a backend experiment supported by Corollary~\ref{cor:seed}, not
+an unproved consistency conjecture.
+
+\paragraph{Can the minimum useful matrix grammar be reduced safely?}
+The calibration uses arbitrary formulas, including the translated
+matrices of arbitrary ZFC Separation and Replacement instances. A bounded
+quantifier-rank restriction or a fixed finite list cannot simply be
+assumed to retain ZFC strength. A useful restricted grammar would need
+an explicit uniform coding of all required instances and a PA proof of
+that translation.
+
+\paragraph{Can proof certificates absorb more operational complexity?}
+Hints for substitutions, branch selections, and term instantiations may
+make validation simpler even when certificates become much longer.
+Such a design is appropriate for Busy Beaver applications, where
+runtime can be enormous. Every hint still needs a finite syntactic
+check; no semantic oracle may be hidden in the certificate format.
+
+\section{Busy Beaver consequences and final recommendation}
+
+If a particular $n$-state table is certified to satisfy
+\eqref{eq:target}, consistency of ZFC implies that it does not halt.
+The same equivalence gives
+$\PA\vdash\neg\Halt(M)\leftrightarrow\Con(\ZFC)$.
+Thus, under the usual consistency hypothesis, ZFC cannot prove its
+nonhalting, by the second incompleteness theorem. Ruling out every
+possible false proof of the $\Sigma^0_1$ halting claim would require an
+appropriate soundness hypothesis, not merely consistency.
+
+For the usual step-count Busy Beaver function, a proved finite value
+at that state budget would bound the machine's halting time. If ZFC is
+consistent, any particular finite initial run is nonhalting and PA can
+verify it. Combining the asserted bound with that finite verification
+would prove nonhalting, giving the familiar incompleteness obstruction.
+This consequence becomes quantitative only after a literal table and
+its state budget have been certified. The present theory proposals do
+not establish a new numerical Busy Beaver threshold.
+
+The immediate recommendation is therefore to preserve the earlier RCC
+route while adding the seeded closure family as a serious competitor.
+The main equality-bearing theory is particularly compact:
+\[
+ \boxed{\Tpt=\text{Extensionality}+\text{one seeded bounded-image closure schema}.}
+\]
+The subset seed then gives the direct equality-free control
+\[
+ \boxed{\QTsub=\text{member-profile congruence}+\text{one equality-free closure schema}.}
+\]
+Both have explicit calibration arguments; the second avoids the raw
+bisimulation step. Finite predicative class theory remains the genuinely
+finite-axiom alternative. The decisive next result should be an
+arithmetically audited compiler comparison, not another uncompiled
+claim that a short displayed axiom must give the smallest machine.
+
+\appendix
+\section{Dependency ledger for the main theorem}
+
+\begin{longtable}{p{.20\linewidth}p{.38\linewidth}p{.32\linewidth}}
+\toprule
+Target & Chosen relation or operation & Previously available facts\\
+\midrule\endhead
+Empty Set & $\rho(x,y)\equiv\bot$ & Nonempty first-order domain; reflexive seed.\\
+Singleton $\{t\}$ & $\rho(x,y)\equiv y=t$ & $t\subseteq t$; reflexive seed.\\
+Separation & $\rho(x,y)\equiv y\in A\land\psi(y)$ & Membership arm of $K$ only.\\
+Power Set & $\rho(x,y)\equiv y\subseteq A$ & Subset arm of $K$ only.\\
+Pairing & $u\mapsto v\mapsto u$ & Local singleton bounds; no pair set assumed.\\
+Union & $\rho(x,y)\equiv y\in x$ & Closure and derived Separation.\\
+Replacement & Root-to-domain-to-image relation \eqref{eq:star} & Separation for $r\notin A$; local partial functionality.\\
+Infinity & $\rho(x,y)\equiv y=x\cup\{x\}$ & Empty Set, Pairing, Union, Extensionality.\\
+Reverse schema & Unique fibers in $b\cup\Pow(b)$; positive $\omega$-iteration & Exactly the listed axioms of $\ZFz$.\\
+Equality removal & $x=y$ becomes $D(x,y)$ & $\EC$ and formula induction.\\
+\bottomrule
+\end{longtable}
+
+This ledger is intended for turning the arguments into derivation
+constructors. For example, using $\{u,v\}$ as a bound in the Pairing
+row would be circular. The two-cycle is included specifically to avoid
+that error. Similarly, collecting the chosen $b_x$ in the reverse row
+would introduce an unjustified selection step; the unique exact fibers
+are what make functional Replacement applicable.
+
+\section{Artifact contents, build instructions, and status}
+
+\begin{center}
+\begin{tabular}{p{.38\linewidth}p{.53\linewidth}}
+\toprule
+Path & Purpose\\
+\midrule
+\texttt{article/seeded\_closure\_zfc.tex} & Self-contained article source and bibliography.\\
+\texttt{article/seeded\_closure\_zfc.pdf} & Compiled article.\\
+\texttt{code/formulas.py} & Displayed templates and declared syntax metric.\\
+\texttt{code/experiments.py} & Finite closure, bootstrap, and expansion regressions.\\
+\texttt{results/} & Actual JSON results and fully expanded template text.\\
+\texttt{notes/PA\_OBLIGATIONS.md} & Explicit certification interfaces and exclusions.\\
+\texttt{notes/DELTA.md} & What this report adds to the supplied archive.\\
+\texttt{provenance/sources.json} & Input hashes, sources, and external verification scope.\\
+\texttt{build.py} & Tests and reproducible LaTeX build.\\
+\texttt{SHA256SUMS} & Release-file integrity manifest.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Run \texttt{python3 build.py --tests} to execute the checks and rebuild
+the PDF. The Python code requires Python 3.10 or later and only the
+standard library. Building the PDF requires \texttt{pdflatex} and the
+packages listed in the preamble. Temporary TeX files are kept in
+\texttt{.build/} rather than in the release's article directory.
+
+The mathematical statements are ordinary proved results with explicit
+uniformity arguments, not proof-assistant certificates. The standard
+Foundation/Choice bridge is a cited effective metatheorem, not a newly
+mechanized development. The source formulas and finite regressions were
+executed; a full derivation compiler, a new transition table, and a PA
+proof object were not produced. The prior archive and external source
+code are not redistributed.
+
+\begin{thebibliography}{99}
+
+\bibitem{prior1}
+User-supplied research dossier, \emph{Smaller kernels for a PA-certified
+ZFC-inconsistency machine}, 15 October 2026.
+\texttt{zfc-consistency.zip}, component
+\texttt{1/article/zfc\_subset\_kernel.tex}.
+Input hash recorded in \texttt{provenance/sources.json}.
+
+\bibitem{prior2}
+User-supplied research dossier, \emph{Smaller Search Languages for ZFC
+Inconsistency}, 15 October 2026.
+\texttt{zfc-consistency.zip}, component
+\texttt{2/article/zfc\_followup.tex}.
+Input hash recorded in \texttt{provenance/sources.json}.
+
+\bibitem{prior3}
+User-supplied research dossier, \emph{Small theories for a
+ZFC-inconsistency machine}, 15 October 2026.
+\texttt{zfc-consistency.zip}, component \texttt{3/article/report.tex}.
+Input hash recorded in \texttt{provenance/sources.json}.
+
+\bibitem{mo}
+Vladimir Reshetnikov, \emph{Is this set theory equivalent to ZFC?},
+MathOverflow question 380000, 29 December 2020; answer by Elliot Glazer,
+30 December 2020. Corrected set-seeded formalization and answer consulted
+15 October 2026.
+\url{https://mathoverflow.net/questions/380000/is-this-set-theory-equivalent-to-zfc}.
+
+\bibitem{avigad}
+Jeremy Avigad, \emph{Foundations}, arXiv:2009.09541, especially Section 4.
+Consulted 15 October 2026.
+\url{https://arxiv.org/html/2009.09541v4}.
+The served page has differing header and manuscript date metadata;
+no dating conclusion is used here.
+
+\bibitem{paulson}
+Lawrence C. Paulson, \emph{The Relative Consistency of the Axiom of Choice
+Mechanized Using Isabelle/ZF}, LMS Journal of Computation and Mathematics
+\textbf{6} (2003), 198--248; arXiv posting 2104.12674 (2021).
+\url{https://arxiv.org/abs/2104.12674}.
+This source is used for the construction and the explicit warning about
+formalizing the metatheory, not as a claim that this archive contains a
+PA-certified implementation.
+
+\bibitem{friedman}
+Harvey M. Friedman, \emph{Philosophy 532: Philosophical Problems in Logic},
+Princeton seminar notes, 2002, printed p.~28.
+\url{https://cpb-us-w2.wpmucdn.com/u.osu.edu/dist/1/1952/files/2014/01/Princeton532-1pa84c4.pdf}.
+The cited page was inspected as a rendered PDF page.
+
+\bibitem{buss}
+Samuel R. Buss, \emph{First-Order Proof Theory of Arithmetic}, in
+\emph{Handbook of Proof Theory}, Elsevier, 1998, 79--147.
+\url{https://mathweb.ucsd.edu/~sbuss/ResearchWeb/handbookII/ChapterII.pdf}.
+
+\bibitem{upstream}
+\texttt{jeff87654/busy-beaver}, \emph{A verified 254-state Turing machine
+that halts iff ZFC is inconsistent}, branch \texttt{zf-254}, commit
+\texttt{c132d7eae8158cd3a9850ea3eb7251158c3dd821},
+\texttt{ZF/m254/README.md}. Machine attributed there to Mira-Cult.
+Source description and branch metadata consulted 15 October 2026.
+\url{https://github.com/jeff87654/busy-beaver/blob/c132d7eae8158cd3a9850ea3eb7251158c3dd821/ZF/m254/README.md}.
+The reported verification was not independently rebuilt here.
+
+\end{thebibliography}
+\end{document}

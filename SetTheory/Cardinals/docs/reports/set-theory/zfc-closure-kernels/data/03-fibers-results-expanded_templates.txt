@@ -1,0 +1,47 @@
+Ext
+(all v0 (all v1 ((all v2 ~(((v2 in v0) -> (v2 in v1)) -> ~((v2 in v1) -> (v2 in v0)))) -> (v0 = v1))))
+
+EC
+(all v0 (all v1 ((all v2 ~(((v2 in v0) -> (v2 in v1)) -> ~((v2 in v1) -> (v2 in v0)))) -> (all v2 ((v0 in v2) -> (v1 in v2))))))
+
+CP
+(all v0 ~(all v1 ~~((v0 in v1) -> ~(all v0 ((v0 in v1) -> ~((all v2 ((v2 in v0) -> (v2 in v1))) -> ~~(all v2 ~~((v2 in v1) -> ~(all v1 ((all v2 ((v2 in v1) -> (v2 in v0))) -> (v1 in v2)))))))))))
+
+Inf
+~(all v0 ~~(~(all v1 ~~((v1 in v0) -> ~(all v0 ~(v0 in v1)))) -> ~(all v1 ((v1 in v0) -> ~(all v2 ~~((v2 in v0) -> ~(all v0 ~(((v0 in v2) -> (~(v0 in v1) -> (v0 = v1))) -> ~((~(v0 in v1) -> (v0 = v1)) -> (v0 in v2))))))))))
+
+SBI
+(all v0 (all v1 ((all v2 ((v2 in v1) -> ~(all v3 ~(all v4 (Phi(v2,v4,v1,v0) -> (all v0 ((v0 in v4) -> (v0 in v3)))))))) -> ~(all v2 ~(all v3 ~(((v3 in v2) -> ~(all v2 ~~((v2 in v1) -> ~Phi(v2,v3,v1,v0)))) -> ~(~(all v2 ~~((v2 in v1) -> ~Phi(v2,v3,v1,v0))) -> (v3 in v2))))))))
+
+BFI_member_or_subset
+(all v0 (all v1 ((all v2 ((v2 in v1) -> ~(all v3 ~(all v4 (Phi(v2,v4,v1,v0) -> (~(v4 in v3) -> (all v0 ((v0 in v4) -> (v0 in v3))))))))) -> ~(all v2 ~(all v3 ~(((v3 in v2) -> ~(all v2 ~~((v2 in v1) -> ~Phi(v2,v3,v1,v0)))) -> ~(~(all v2 ~~((v2 in v1) -> ~Phi(v2,v3,v1,v0))) -> (v3 in v2))))))))
+
+MBI_member_only
+(all v0 (all v1 ((all v2 ((v2 in v1) -> ~(all v3 ~(all v4 (Phi(v2,v4,v1,v0) -> (v4 in v3)))))) -> ~(all v2 ~(all v3 ~(((v3 in v2) -> ~(all v2 ~~((v2 in v1) -> ~Phi(v2,v3,v1,v0)))) -> ~(~(all v2 ~~((v2 in v1) -> ~Phi(v2,v3,v1,v0))) -> (v3 in v2))))))))
+
+PFI
+(all v0 (all v1 ((all v2 ((v2 in v1) -> (all v3 (all v4 (~(Phi(v2,v3,v1,v0) -> ~Phi(v2,v4,v1,v0)) -> (v3 = v4)))))) -> ~(all v2 ~(all v3 ~(((v3 in v2) -> ~(all v2 ~~((v2 in v1) -> ~Phi(v2,v3,v1,v0)))) -> ~(~(all v2 ~~((v2 in v1) -> ~Phi(v2,v3,v1,v0))) -> (v3 in v2))))))))
+
+GIC
+(all v0 (all v1 ~(all v2 ~~((all v3 ((v3 in v1) -> (all v4 (Phi(v3,v4,v1,v0) -> ~(all v4 ~~((v4 in v2) -> ~Phi(v3,v4,v1,v0))))))) -> ~(all v3 ((v3 in v2) -> ~(all v2 ~Phi(v2,v3,v1,v0))))))))
+
+EFH
+(all v0 ((all v1 ~(all v2 ~(all v3 (Phi(v1,v3,v0) -> (all v0 ((v0 in v3) -> (v0 in v2))))))) -> (all v1 ~(all v2 ~~((v1 in v2) -> ~(all v1 ((v1 in v2) -> ~((all v0 ((v0 in v1) -> (v0 in v2))) -> ~~(all v3 ~~((v3 in v2) -> ~(all v2 ~(((v2 in v3) -> Phi(v1,v2,v0)) -> ~(Phi(v1,v2,v0) -> (v2 in v3))))))))))))))
+
+EFH_member_only
+(all v0 ((all v1 ~(all v2 ~(all v3 (Phi(v1,v3,v0) -> (v3 in v2))))) -> (all v1 ~(all v2 ~~((v1 in v2) -> ~(all v1 ((v1 in v2) -> ~((all v0 ((v0 in v1) -> (v0 in v2))) -> ~~(all v3 ~~((v3 in v2) -> ~(all v2 ~(((v2 in v3) -> Phi(v1,v2,v0)) -> ~(Phi(v1,v2,v0) -> (v2 in v3))))))))))))))
+
+TC_element_seed
+(all v0 ((all v1 ~(all v2 ~(all v3 (Phi(v1,v3,v0) -> (v3 in v2))))) -> (all v1 ~(all v2 ~~((all v0 ((v0 in v1) -> (v0 in v2))) -> ~(all v1 ((v1 in v2) -> (all v3 (Phi(v1,v3,v0) -> (v3 in v2))))))))))
+
+TC_rooted
+(all v0 ((all v1 ~(all v2 ~(all v3 (Phi(v1,v3,v0) -> (v3 in v2))))) -> (all v1 ~(all v2 ~~((v1 in v2) -> ~(all v1 ((v1 in v2) -> (all v3 (Phi(v1,v3,v0) -> (v3 in v2))))))))))
+
+SC_rooted
+(all v0 ((all v1 ~(all v2 ~(all v3 (Phi(v1,v3,v0) -> (all v0 ((v0 in v3) -> (v0 in v2))))))) -> (all v1 ~(all v2 ~~((v1 in v2) -> ~(all v1 ((v1 in v2) -> (all v3 (Phi(v1,v3,v0) -> (v3 in v2))))))))))
+
+Separation
+(all v0 (all v1 ~(all v2 ~(all v3 ~(((v3 in v2) -> ~((v3 in v1) -> ~Phi(v3,v0))) -> ~(~((v3 in v1) -> ~Phi(v3,v0)) -> (v3 in v2)))))))
+
+Power
+(all v0 ~(all v1 ~(all v2 ~(((v2 in v1) -> (all v1 ((v1 in v2) -> (v1 in v0)))) -> ~((all v1 ((v1 in v2) -> (v1 in v0))) -> (v2 in v1))))))

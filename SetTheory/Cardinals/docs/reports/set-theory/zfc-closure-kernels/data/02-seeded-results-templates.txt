@@ -1,0 +1,79 @@
+Ext
+(all x. (all y. ((all z. ((z in x) iff (z in y))) imp (x = y))))
+Expanded:
+(all x. (all y. ((all z. ((((z in x) imp (z in y)) imp (((z in y) imp (z in x)) imp FALSE)) imp FALSE)) imp (x = y))))
+
+EC
+(all x. (all y. ((all z. ((z in x) iff (z in y))) imp (all w. ((x in w) iff (y in w))))))
+Expanded:
+(all x. (all y. ((all z. ((((z in x) imp (z in y)) imp (((z in y) imp (z in x)) imp FALSE)) imp FALSE)) imp (all w. ((((x in w) imp (y in w)) imp (((y in w) imp (x in w)) imp FALSE)) imp FALSE)))))
+
+NE
+(ex a. (ex b. (a in b)))
+Expanded:
+((all a. (((all b. ((a in b) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE)
+
+Sep
+(all A. (ex C. (all y. ((y in C) iff ((y in A) and P(y))))))
+Expanded:
+(all A. ((all C. ((all y. ((((y in C) imp (((y in A) imp (P(y) imp FALSE)) imp FALSE)) imp (((((y in A) imp (P(y) imp FALSE)) imp FALSE) imp (y in C)) imp FALSE)) imp FALSE)) imp FALSE)) imp FALSE))
+
+Power
+(all A. (ex C. (all y. ((y in C) iff (all z. ((z in y) imp (z in A)))))))
+Expanded:
+(all A. ((all C. ((all y. ((((y in C) imp (all z. ((z in y) imp (z in A)))) imp (((all z. ((z in y) imp (z in A))) imp (y in C)) imp FALSE)) imp FALSE)) imp FALSE)) imp FALSE))
+
+TC_root
+((all x. (ex b. (all y. (R(x,y) imp (y in b))))) imp (all a. (ex W. ((a in W) and (all x. (all y. (((x in W) and R(x,y)) imp (y in W))))))))
+Expanded:
+((all x. ((all b. ((all y. (R(x,y) imp (y in b))) imp FALSE)) imp FALSE)) imp (all a. ((all W. ((((a in W) imp ((all x. (all y. ((((x in W) imp (R(x,y) imp FALSE)) imp FALSE) imp (y in W)))) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE)))
+
+TC_set
+((all x. (ex b. (all y. (R(x,y) imp (y in b))))) imp (all A. (ex W. ((all z. ((z in A) imp (z in W))) and (all x. (all y. (((x in W) and R(x,y)) imp (y in W))))))))
+Expanded:
+((all x. ((all b. ((all y. (R(x,y) imp (y in b))) imp FALSE)) imp FALSE)) imp (all A. ((all W. ((((all z. ((z in A) imp (z in W))) imp ((all x. (all y. ((((x in W) imp (R(x,y) imp FALSE)) imp FALSE) imp (y in W)))) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE)))
+
+SBC
+((all x. (ex b. (all y. (R(x,y) imp (all z. ((z in y) imp (z in b))))))) imp (all a. (ex W. ((a in W) and (all x. (all y. (((x in W) and R(x,y)) imp (y in W))))))))
+Expanded:
+((all x. ((all b. ((all y. (R(x,y) imp (all z. ((z in y) imp (z in b))))) imp FALSE)) imp FALSE)) imp (all a. ((all W. ((((a in W) imp ((all x. (all y. ((((x in W) imp (R(x,y) imp FALSE)) imp FALSE) imp (y in W)))) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE)))
+
+SBI
+(all A. ((all x. ((x in A) imp (ex b. (all y. (R(x,y) imp (all z. ((z in y) imp (z in b)))))))) imp (ex C. (all y. ((y in C) iff (ex x. ((x in A) and R(x,y))))))))
+Expanded:
+(all A. ((all x. ((x in A) imp ((all b. ((all y. (R(x,y) imp (all z. ((z in y) imp (z in b))))) imp FALSE)) imp FALSE))) imp ((all C. ((all y. ((((y in C) imp ((all x. ((((x in A) imp (R(x,y) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE)) imp ((((all x. ((((x in A) imp (R(x,y) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE) imp (y in C)) imp FALSE)) imp FALSE)) imp FALSE)) imp FALSE)))
+
+ISI
+((all x. (ex b. (all y. (R(x,y) imp (all z. ((z in y) imp (z in b))))))) imp (all A. (ex C. ((all x. (all y. ((((x in A) or (x in C)) and R(x,y)) imp (y in C)))) and (all y. ((y in C) imp (ex x. R(x,y))))))))
+Expanded:
+((all x. ((all b. ((all y. (R(x,y) imp (all z. ((z in y) imp (z in b))))) imp FALSE)) imp FALSE)) imp (all A. ((all C. ((((all x. (all y. ((((((x in A) imp FALSE) imp (x in C)) imp (R(x,y) imp FALSE)) imp FALSE) imp (y in C)))) imp ((all y. ((y in C) imp ((all x. (R(x,y) imp FALSE)) imp FALSE))) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE)))
+
+PIBI
+((all x. (ex b. (all y. (R(x,y) imp ((y in b) or (all z. ((z in y) imp (z in b)))))))) imp (all a. (ex C. ((all x. (all y. ((((x = a) or (x in C)) and R(x,y)) imp (y in C)))) and (all y. ((y in C) imp (ex x. R(x,y))))))))
+Expanded:
+((all x. ((all b. ((all y. (R(x,y) imp (((y in b) imp FALSE) imp (all z. ((z in y) imp (z in b)))))) imp FALSE)) imp FALSE)) imp (all a. ((all C. ((((all x. (all y. ((((((x = a) imp FALSE) imp (x in C)) imp (R(x,y) imp FALSE)) imp FALSE) imp (y in C)))) imp ((all y. ((y in C) imp ((all x. (R(x,y) imp FALSE)) imp FALSE))) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE)))
+
+SIBI
+((all x. (ex b. (all y. (R(x,y) imp ((y in b) or (all z. ((z in y) imp (z in b)))))))) imp (all a. (ex C. ((all x. (all y. ((((all z. ((z in x) imp (z in a))) or (x in C)) and R(x,y)) imp (y in C)))) and (all y. ((y in C) imp (ex x. R(x,y))))))))
+Expanded:
+((all x. ((all b. ((all y. (R(x,y) imp (((y in b) imp FALSE) imp (all z. ((z in y) imp (z in b)))))) imp FALSE)) imp FALSE)) imp (all a. ((all C. ((((all x. (all y. ((((((all z. ((z in x) imp (z in a))) imp FALSE) imp (x in C)) imp (R(x,y) imp FALSE)) imp FALSE) imp (y in C)))) imp ((all y. ((y in C) imp ((all x. (R(x,y) imp FALSE)) imp FALSE))) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE)))
+
+PISI_open
+((all x. (ex b. (all y. (R(x,y) imp (all z. ((z in y) imp (z in b))))))) imp (all a. (ex C. ((all x. (all y. ((((x = a) or (x in C)) and R(x,y)) imp (y in C)))) and (all y. ((y in C) imp (ex x. R(x,y))))))))
+Expanded:
+((all x. ((all b. ((all y. (R(x,y) imp (all z. ((z in y) imp (z in b))))) imp FALSE)) imp FALSE)) imp (all a. ((all C. ((((all x. (all y. ((((((x = a) imp FALSE) imp (x in C)) imp (R(x,y) imp FALSE)) imp FALSE) imp (y in C)))) imp ((all y. ((y in C) imp ((all x. (R(x,y) imp FALSE)) imp FALSE))) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE)))
+
+Infinity
+(ex I. ((ex e. ((all z. (not (z in e))) and (e in I))) and (all x. ((x in I) imp (ex s. ((s in I) and (all z. ((z in s) iff ((z in x) or (z = x))))))))))
+Expanded:
+((all I. (((((all e. ((((all z. ((z in e) imp FALSE)) imp ((e in I) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE) imp ((all x. ((x in I) imp ((all s. ((((s in I) imp ((all z. ((((z in s) imp (((z in x) imp FALSE) imp (z = x))) imp (((((z in x) imp FALSE) imp (z = x)) imp (z in s)) imp FALSE)) imp FALSE)) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE))) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE)
+
+CP
+(all p. (ex V. ((p in V) and (all x. ((x in V) imp ((all z. ((z in x) imp (z in V))) and (ex W. ((W in V) and (all z. ((all u. ((u in z) imp (u in x))) imp (z in W)))))))))))
+Expanded:
+(all p. ((all V. ((((p in V) imp ((all x. ((x in V) imp (((all z. ((z in x) imp (z in V))) imp (((all W. ((((W in V) imp ((all z. ((all u. ((u in z) imp (u in x))) imp (z in W))) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE))) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE))
+
+GIC
+(all B. (ex C. ((all x. ((x in B) imp (all y. (R(x,y) imp (ex v. (R(x,v) and (v in C))))))) and (all y. ((y in C) imp (ex x. R(x,y)))))))
+Expanded:
+(all B. ((all C. ((((all x. ((x in B) imp (all y. (R(x,y) imp ((all v. (((R(x,v) imp ((v in C) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE))))) imp ((all y. ((y in C) imp ((all x. (R(x,y) imp FALSE)) imp FALSE))) imp FALSE)) imp FALSE) imp FALSE)) imp FALSE))
