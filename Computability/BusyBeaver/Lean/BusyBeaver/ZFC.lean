@@ -25,6 +25,7 @@ import BusyBeaver.ZFC.RegisterBisimulation
 import BusyBeaver.ZFC.FormulaRPN
 import BusyBeaver.ZFC.Base3Encoding
 import BusyBeaver.ZFC.Base3Syntax
+import BusyBeaver.ZFC.Bottom3Syntax
 import BusyBeaver.ZFC.PartialTotalization
 import BusyBeaver.ZFC.WadeMachine
 
