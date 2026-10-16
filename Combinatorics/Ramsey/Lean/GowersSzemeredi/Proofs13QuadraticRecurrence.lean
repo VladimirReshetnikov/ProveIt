@@ -202,8 +202,7 @@ theorem stage135_critical_count_of_weight {N : Nat} [NeZero N]
         · rw [if_neg hk]
           have hnot : ¬ S.alpha ^ 32 * (N : Real) ^ 31 / 16 ≤
               section13C S h := by
-            intro hs
-            exact hk (Finset.mem_filter.mpr ⟨hh, hs⟩)
+            exact fun hs => hk (Finset.mem_filter.mpr ⟨hh, hs⟩)
           exact le_of_lt (lt_of_not_ge hnot)
       _ ≤ (K.card : Real) * (N : Real) ^ 31 +
           (G.card : Real) *

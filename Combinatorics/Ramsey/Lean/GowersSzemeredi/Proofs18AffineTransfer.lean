@@ -48,8 +48,7 @@ theorem ModAP.image_pullback {N : Nat} (P : ModAP N) (A : Finset (ZMod N)) :
   simp only [Finset.mem_image, ModAP.mem_pullback, Finset.mem_inter]
   constructor
   · rintro ⟨i, ⟨hi, hA⟩, rfl⟩
-    refine ⟨hA, ?_⟩
-    exact Finset.mem_image.mpr ⟨⟨i, hi⟩, Finset.mem_univ _, rfl⟩
+    exact ⟨hA, Finset.mem_image.mpr ⟨⟨i, hi⟩, Finset.mem_univ _, rfl⟩⟩
   · rintro ⟨hxA, hxP⟩
     obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hxP
     exact ⟨i, ⟨i.isLt, hxA⟩, rfl⟩

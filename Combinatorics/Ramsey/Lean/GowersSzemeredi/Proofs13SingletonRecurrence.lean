@@ -19,8 +19,7 @@ theorem exists_nonzero_small_multiples {N q L : Nat} [NeZero N]
   by_cases hhalf : (1 / 2 : Real) ≤ delta
   · have hNne : N ≠ 1 := by omega
     have hone : (1 : ZMod N) != 0 := bne_iff_ne.mpr (by
-      intro hz
-      exact hNne (ZMod.one_eq_zero_iff.mp hz))
+      exact fun hz => hNne (ZMod.one_eq_zero_iff.mp hz))
     refine ⟨1, hone, fun i => ?_⟩
     exact (centeredAbs_le_half_modulus _).trans (by
       have hb := mul_le_mul_of_nonneg_right hhalf (Nat.cast_nonneg N)

@@ -1062,8 +1062,7 @@ private lemma prop177_singleton_cube_sum {N n : Nat} [NeZero N]
         simp [cubeArgument, hsum]
       rw [harg]
       have hne : t - x i ≠ t := by
-        intro heq
-        exact hi (sub_eq_self.mp heq)
+        exact fun heq => hi (sub_eq_self.mp heq)
       simp [h, restrictToCell, hne, parityConj]
     · let e0 := prop177ZeroVertex (n + 1)
       apply Finset.prod_eq_zero (Finset.mem_univ e0)
@@ -1090,8 +1089,7 @@ private lemma prop177_singleton_partition (N : Nat) [NeZero N] :
       (modInterval N (j : ZMod N) 1).carrier
     rw [modInterval_one_carrier, modInterval_one_carrier]
     apply Finset.disjoint_singleton.mpr
-    intro h
-    exact bne_iff_ne.mp hij ((prop177FinZModEquiv N).injective h)
+    exact fun h => bne_iff_ne.mp hij ((prop177FinZModEquiv N).injective h)
 
 private lemma prop177_singleton_proper (N : Nat) [NeZero N] (i : Fin N) :
     (prop177SingletonCells N i).IsProper := by

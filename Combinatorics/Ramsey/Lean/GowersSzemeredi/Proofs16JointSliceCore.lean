@@ -166,8 +166,7 @@ theorem single_piece_lift_core_rem_joint {k : Nat} (hk : 1 ≤ k) {delta zeta : 
   have hQwidth : ⌈(ω1 : Real) / 8⌉₊ ≤
       Q.width := by
     apply Nat.ceil_le.mpr
-    refine le_trans ?_ hQw
-    exact div_le_div_of_nonneg_right (by exact_mod_cast hR1w) (by norm_num)
+    exact le_trans (div_le_div_of_nonneg_right (by exact_mod_cast hR1w) (by norm_num)) hQw
   obtain ⟨q, hq, S, mu, hS, -, hSw, hmu, hcount⟩ :=
     single_piece_of_spectrum_cover_for_joint hk0 hcR hQs hEs eps thr hretile hz hz2
       Q I hQ hI hQd (by rw [hQstep]; exact R1.axis_step _) hshort hQI

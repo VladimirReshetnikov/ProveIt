@@ -203,7 +203,6 @@ theorem section16_retiled_linearity_above_one {N k q m : Nat} [NeZero N]
     K (section16Zeta theta gamma k) G A f hcover
     (fun x hx J hJ hd => hlinear x hx v (by omega) J hJ hd) hbudget
   refine ⟨M, S, T, J, hpart, ?_, hproduct, hlin⟩
-  intro j
-  exact ⟨(hproper j).1, hvwidth.trans (by exact_mod_cast (hproper j).2)⟩
+  exact fun j => ⟨(hproper j).1, hvwidth.trans (by exact_mod_cast (hproper j).2)⟩
 
 end LeanProofs.GowersSzemeredi

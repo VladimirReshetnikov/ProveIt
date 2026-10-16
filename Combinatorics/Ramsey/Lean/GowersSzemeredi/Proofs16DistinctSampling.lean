@@ -51,8 +51,7 @@ theorem section16_distinct_sampling_split_bound {α : Type*}
       intro j hj
       apply hfail
       refine ⟨i, j, hA hi, hB hj, ?_⟩
-      intro heq
-      exact Finset.disjoint_left.mp hdisj hi (heq.symm ▸ hj)
+      exact fun heq => Finset.disjoint_left.mp hdisj hi (heq.symm ▸ hj)
   calc
     _ ≤ (section16MissingSamples A r ∪ section16MissingSamples B r).card :=
       Finset.card_le_card hsub

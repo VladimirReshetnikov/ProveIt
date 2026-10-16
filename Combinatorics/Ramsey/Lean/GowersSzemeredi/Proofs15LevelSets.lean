@@ -260,8 +260,7 @@ theorem lemma_15_3_holds : lemma_15_3 := by
     by_contra hzero
     push Not at hzero
     apply hnconstant
-    refine ⟨a, fun x => ?_⟩
-    exact sub_eq_zero.mp ((heval x).symm.trans (hzero x))
+    exact ⟨a, fun x => (sub_eq_zero.mp ((heval x).symm.trans (hzero x)))⟩
   have hnonzeroCount :
       (N - 1) ^ k ≤ countWhere fun x : Point N k => mu x ≠ a := by
     have hgrid := multiaffine_nonzero_count_lower k c' hnonzero

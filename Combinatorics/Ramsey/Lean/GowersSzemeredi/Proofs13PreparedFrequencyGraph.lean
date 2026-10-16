@@ -316,11 +316,9 @@ private lemma contextEncodeArrangement_injective {N : Nat} [NeZero N]
           ⟨(S.1.x i.succ, S.1.y i.succ), (S.2.2 i.succ).1⟩ :=
     congrArg Prod.fst hcode
   have hxTail : ∀ i : Fin 15, R.1.x i.succ = S.1.x i.succ := by
-    intro i
-    exact congrArg (fun q ↦ (q i : Pair N).1) hfun
+    exact fun i => congrArg (fun q ↦ (q i : Pair N).1) hfun
   have hyTail : ∀ i : Fin 15, R.1.y i.succ = S.1.y i.succ := by
-    intro i
-    exact congrArg (fun q ↦ (q i : Pair N).2) hfun
+    exact fun i => congrArg (fun q ↦ (q i : Pair N).2) hfun
   have hx : R.1.x = S.1.x :=
     lemma134_additive_ext R.2.1 S.2.1 hxTail
   have hy0 : R.1.y 0 = S.1.y 0 :=

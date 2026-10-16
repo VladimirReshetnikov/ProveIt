@@ -59,8 +59,7 @@ theorem corollary_15_2_holds : corollary_15_2 := by
   let hhalf : Point N k :=
     fun i => h i / (2 : ZMod N)
   have hhalf_ne : ∀ i, hhalf i ≠ 0 := by
-    intro i
-    exact div_ne_zero (hh i) htwo
+    exact fun i => div_ne_zero (hh i) htwo
   have hcoord :
       ∀ (y : Point N k) (i : Fin k) (b : Bool),
         y i + walshSign (N := N) b * hhalf i =

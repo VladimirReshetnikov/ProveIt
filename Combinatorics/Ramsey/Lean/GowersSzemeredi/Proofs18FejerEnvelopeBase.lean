@@ -154,8 +154,7 @@ theorem section16Zeta_le_tight_fejer (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤
   have hexp : tightRadiusExponent (fejerThetaOne alpha (alpha / 2) k / 4) ≤
       multipleS alpha (alpha / 2) k := by
     unfold tightRadiusExponent
-    refine le_trans ?_ hbud
-    exact div_le_div_of_nonneg_left (by positivity) (pow_pos hq0 11) hpow
+    exact le_trans (div_le_div_of_nonneg_left (by positivity) (pow_pos hq0 11) hpow) hbud
   unfold section16Zeta tightZeta
   exact Real.rpow_le_rpow_of_exponent_le (by norm_num) (neg_le_neg hexp)
 

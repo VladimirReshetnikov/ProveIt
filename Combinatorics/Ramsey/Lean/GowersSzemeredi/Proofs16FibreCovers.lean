@@ -40,7 +40,6 @@ theorem affine_plus_multilinear_fibres {N k q : Nat} [NeZero N]
     (h : Point N k) (ell : ZMod N → ZMod N) (hell : LinearOn Finset.univ ell)
     (c : ZMod N) :
     ∀ i, LinearOn Finset.univ (fun x => c * ell x + mu i (appendCoordinate h x)) := by
-  intro i
-  exact (hell.const_mul c).add ((hmu i).linearOn_last_fibre h)
+  exact fun i => (hell.const_mul c).add ((hmu i).linearOn_last_fibre h)
 
 end LeanProofs.GowersSzemeredi

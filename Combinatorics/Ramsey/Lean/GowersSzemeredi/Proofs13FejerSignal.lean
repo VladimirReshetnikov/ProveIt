@@ -55,8 +55,7 @@ theorem fejerRelation_count_signal {N L M : Nat}
   have hinj : Function.Injective f := by
     intro v w h
     have heq : ∀ i, (v.1, v.2 i) = (w.1, w.2 i) := by
-      intro i
-      exact fejerShiftedPair_injective hML (positive i) (congrArg (fun z : V => z.1 i) h)
+      exact fun i => fejerShiftedPair_injective hML (positive i) (congrArg (fun z : V => z.1 i) h)
     exact Prod.ext (congrArg (fun z : Fin M × Fin M => z.1) (heq (Classical.arbitrary I)))
       (funext fun i => congrArg (fun z : Fin M × Fin M => z.2) (heq i))
   have hcard := Fintype.card_le_of_injective f hinj

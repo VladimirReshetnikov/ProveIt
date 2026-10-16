@@ -1552,8 +1552,7 @@ private lemma extraction_directionGood_gives_mode {N : Nat} [NeZero N]
     have hzC := hzBad.1
     have hzNot := hzBad.2
     have hzNe : phi yz.2 - phi w ≠ m := by
-      intro hzEq
-      exact hzNot (Finset.mem_filter.mpr ⟨hzC, hzEq⟩)
+      exact fun hzEq => hzNot (Finset.mem_filter.mpr ⟨hzC, hzEq⟩)
     exact Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨hyAm.1, hzC⟩,
       fun heq => hzNe (heq ▸ hyAm.2)⟩
   have hrectangle : (Am.card : Real) * (C \ Cm).card ≤ Ebad.card := by

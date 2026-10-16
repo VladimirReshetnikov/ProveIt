@@ -45,8 +45,7 @@ theorem lastLiftRelation_fiber_le {N k : Nat} [NeZero N] {Λ : Finset (Point N k
     have h1 := (Finset.mem_filter.mp hz).2
     have h1' := (Finset.mem_filter.mp hz').2
     have h2 : z.2 = z'.2 := by
-      have h3 := congrArg Prod.snd heq
-      simpa using h3
+      simpa using congrArg Prod.snd heq
     exact Prod.ext (h1.trans h1'.symm) h2
 
 /-- **A relation cover lifted across an unused final coordinate, at every

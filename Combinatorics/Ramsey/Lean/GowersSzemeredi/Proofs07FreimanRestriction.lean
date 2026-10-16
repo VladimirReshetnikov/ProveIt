@@ -122,8 +122,7 @@ private lemma cor75_verticalFiber_bound {N k : Nat} [NeZero N] [Fact N.Prime]
   have hGammaCard : Gamma.card = B.card := cor75_card_functionGraph B phi
   have hGamma : Gamma.Nonempty := by
     obtain ⟨b, hb⟩ := hB
-    refine ⟨(b, phi b), ?_⟩
-    exact (cor75_mem_functionGraph B phi _).2 ⟨hb, rfl⟩
+    exact ⟨(b, phi b), (cor75_mem_functionGraph B phi _).2 ⟨hb, rfl⟩⟩
   have hGammaPosR : (0 : Real) < Gamma.card := by exact_mod_cast hGamma.card_pos
   have hPR := Finset.pluennecke_ruzsa_inequality_nsmul_sub_nsmul_sub
     hGamma Gamma (2 * k) (2 * k)
@@ -272,8 +271,7 @@ theorem lemma_7_5_holds : lemma_7_5 := by
       cor75_verticalFiber_bound B phi C hB hk hC hsmall
   have hGamma : Gamma.Nonempty := by
     obtain ⟨b, hb⟩ := hB
-    refine ⟨(b, phi b), ?_⟩
-    exact (cor75_mem_functionGraph B phi _).2 ⟨hb, rfl⟩
+    exact ⟨(b, phi b), (cor75_mem_functionGraph B phi _).2 ⟨hb, rfl⟩⟩
   have hK : K.Nonempty := by
     obtain ⟨g, hg⟩ := hGamma
     have hzero : ((0 : ZMod N), (0 : ZMod N)) ∈ S := by

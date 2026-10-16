@@ -48,8 +48,7 @@ theorem ProperCrossSectionsMultiplyLinear.good_domain_final_sections
     simpa only [section16Init_appendCoordinate, section16Last_appendCoordinate,
       ite_true, ← Pi.add_def, add_comm] using hv
   apply Finset.mem_image.mpr
-  refine ⟨y + x0, ?_, by simp⟩
-  exact (F.mem_domain B _).mpr hb
+  exact ⟨y + x0, (F.mem_domain B _).mpr hb, by simp⟩
 
 /-- The first packaged premise of Lemma 16.10 is a theorem for the genuine
 structured pair, independently of any line-cover or lifting assumption. -/

@@ -738,8 +738,7 @@ private lemma prop145_slice_value_update {N n : Nat} [NeZero N]
   unfold AxisCube.value
   simp_rw [prop145_slice_vertex]
   apply prop145_alternating_sum_eq_of_faces
-  intro u
-  exact hrespect j e u
+  exact fun u => hrespect j e u
 
 private def prop145Prefix {k : Nat} (m : Nat) : Fin k → Bool :=
   fun i => if i.val < m then true else false
@@ -771,8 +770,7 @@ private lemma prop145_prefix_update_true {k m : Nat} (hm : m < k) :
   · subst i
     simp [Function.update, prop145Prefix]
   · have hiv : i.val ≠ m := by
-      intro hiv
-      exact hi (Fin.ext hiv)
+      exact fun hiv => hi (Fin.ext hiv)
     by_cases hlt : i.val < m
     · have hlt' : i.val < m + 1 := by omega
       simp [Function.update, hi, prop145Prefix, hlt, hlt']

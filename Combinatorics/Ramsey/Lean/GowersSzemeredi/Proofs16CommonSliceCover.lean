@@ -39,8 +39,7 @@ theorem FinalCoordinateSectionsMultiplyLinear.common_cover {N k r : Nat} [NeZero
   apply Finset.mem_biUnion.mpr
   refine ⟨i, Finset.mem_univ _, ?_⟩
   apply Finset.mem_image.mpr
-  refine ⟨h, ?_, rfl⟩
-  exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hB⟩
+  exact ⟨h, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hB⟩, rfl⟩
 
 /-- The common slice partition and the anchor identity give a multilinear
 cover on each refined base cell, retaining the explicit base width and

@@ -32,8 +32,7 @@ theorem finiteInterval_hasModAP_of_hasNatAP {N k : Nat} [NeZero N]
   obtain ⟨j, _, hj⟩ := Finset.mem_image.mp (hAP 1 (by omega))
   have hdN : d < N := by have := j.isLt; omega
   have hd0 : (d : ZMod N) ≠ 0 := by
-    intro h
-    exact Nat.not_dvd_of_pos_of_lt hd hdN ((ZMod.natCast_eq_zero_iff d N).mp h)
+    exact fun h => Nat.not_dvd_of_pos_of_lt hd hdN ((ZMod.natCast_eq_zero_iff d N).mp h)
   refine ⟨(a : ZMod N), (d : ZMod N), bne_iff_ne.mpr hd0, ?_⟩
   intro i hi
   obtain ⟨j, hj, hji⟩ := Finset.mem_image.mp (hAP i hi)

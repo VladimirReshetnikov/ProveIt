@@ -49,8 +49,7 @@ theorem weightedSimultaneousAdditiveEnergy_translate {N p : Nat} [NeZero N]
       ∀ i, IsAdditiveQuadruple (fun t => psi i (q t + c))
   · rw [if_pos hc, if_pos ⟨hmem.mp hc.1, hq.mp hc.2.1, hc.2.2⟩]
   · rw [if_neg hc, if_neg]
-    intro h'
-    exact hc ⟨hmem.mpr h'.1, hq.mpr h'.2.1, h'.2.2⟩
+    exact fun h' => hc ⟨hmem.mpr h'.1, hq.mpr h'.2.1, h'.2.2⟩
 
 theorem replaceCoordinate_sub {N k : Nat} (y t : Point N k) (j : Fin k) (x : ZMod N) :
     replaceCoordinate (y - t) j (x - t j) = replaceCoordinate y j x - t := by

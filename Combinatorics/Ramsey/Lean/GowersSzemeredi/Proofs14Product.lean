@@ -153,8 +153,7 @@ theorem lemma_14_2_holds : lemma_14_2 := by
           · exact htheta x
           · exact le_rfl
         have hf' : ∀ i, DiscValued (f' i) := by
-          intro i
-          exact cubeDifference_discValued hf (j.removeNth (y i))
+          exact fun i => cubeDifference_discValued hf (j.removeNth (y i))
         have hcoeff (i : Fin p) (x : ZMod N) (hx : x ∈ E) :
             gamma * (N : Real) ≤
               ‖fourier (difference (f' i) x) (sigma i x)‖ := by
@@ -593,8 +592,7 @@ theorem lemma_14_3_holds : lemma_14_3 := by
           · exact htheta x
           · exact le_rfl
         have hCdisc : ∀ i, DiscValued (C v i) := by
-          intro i
-          exact prop143_component_disc f hf (y i) j (v i)
+          exact fun i => prop143_component_disc f hf (y i) j (v i)
         have hinput :
             alpha * (N : Real) ^ (4 * p + 1) ≤
               ∑ x : ZMod N, lambda x * ∏ i : Fin p,

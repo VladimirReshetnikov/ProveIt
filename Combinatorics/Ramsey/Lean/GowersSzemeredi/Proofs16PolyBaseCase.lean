@@ -213,8 +213,7 @@ theorem section16_freiman_family_poly_cover {N q : Nat} [NeZero N] [Fact N.Prime
         intro i hi
         have hiI := (Finset.mem_filter.mp hi).2
         have hnot : ¬ (sigma / (q : Real) * W ≤ ((boxOneIndexDomain P (B i)).card : Real)) := by
-          intro h
-          exact hiI (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)
+          exact fun h => hiI (Finset.mem_filter.mpr ⟨Finset.mem_univ _, h⟩)
         rw [← boxOneIndexDomain_card P hP (B i)]
         push Not at hnot
         exact hnot.le

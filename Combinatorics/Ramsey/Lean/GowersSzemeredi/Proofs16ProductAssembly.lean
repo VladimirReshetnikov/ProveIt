@@ -67,8 +67,7 @@ theorem MultiplyLinearWith.product_linearity_large_m {N k m : Nat} [NeZero N]
       exact_mod_cast h
     have hne (j : Fin (∑ z, n z)) : (R' j).carrier.Nonempty := by
       apply Box.carrier_nonempty_of_axis_pos
-      intro z
-      exact hp.trans_le ((hpR j).trans ((R' j).width_le_axis_length z))
+      exact fun z => hp.trans_le ((hpR j).trans ((R' j).width_le_axis_length z))
     have hsub (j : Fin (∑ z, n z)) :
         ((R' j).axis i).carrier ⊆ ((B (e.symm j).1).axis i).carrier :=
       (R' j).axis_carrier_subset_of_carrier_subset (B (e.symm j).1) (hne j)

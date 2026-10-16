@@ -1605,8 +1605,7 @@ private lemma rational_circle_norm_lower {a q d : Int}
     rw [abs_lt] at hint
     omega
   have hqdvd : q ∣ a * d := by
-    refine ⟨r, ?_⟩
-    exact sub_eq_zero.mp heq
+    exact ⟨r, sub_eq_zero.mp heq⟩
   have hcop : IsCoprime a q := Int.isCoprime_iff_gcd_eq_one.mpr haq
   have hqd : q ∣ d := hcop.symm.dvd_of_dvd_mul_left hqdvd
   exact hd0 (Int.eq_zero_of_abs_lt_dvd hqd hdq)

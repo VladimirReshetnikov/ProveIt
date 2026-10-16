@@ -130,8 +130,7 @@ theorem weylBudgetLog_le : ∀ j : Nat, weylBudgetLog j ≤ (j + 10) * 6 ^ (j + 
 theorem weylBudgetPolynomial_eval_one_le_gen (j : Nat) :
     (OAI.Erdos3.weylBudgetPolynomial j).eval 1 ≤ 2 ^ weylBudgetLog j := by
   rw [OAI.Erdos3.weylBudgetPolynomial_eval]
-  have h := weylBudget_le_gen j (B := 1) le_rfl
-  simpa using h
+  simpa using weylBudget_le_gen j (B := 1) le_rfl
 
 theorem weylBudgetPolynomial_natDegree_le_gen (j : Nat) :
     (OAI.Erdos3.weylBudgetPolynomial j).natDegree ≤ weylBudgetLog j + weylBudgetDeg j := by

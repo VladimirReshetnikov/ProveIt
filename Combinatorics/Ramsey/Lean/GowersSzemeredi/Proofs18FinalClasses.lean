@@ -53,8 +53,7 @@ theorem thetaTwo_fejer_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2)
   obtain ⟨h0, h1⟩ := section16ThetaTwo_pos_le_with
     (fejer_alpha_bounds k ha ha2).1 (fejer_alpha_bounds k ha ha2).2
   obtain ⟨t0, -, ti⟩ := thetaOne_fejer_bounds k ha ha2
-  refine ⟨h0, h1, ?_⟩
-  exact (section16ThetaTwo_inv_le_pw (two_div_ge_two ha ha2) (by omega) t0 ti)
+  exact ⟨h0, h1, section16ThetaTwo_inv_le_pw (two_div_ge_two ha ha2) (by omega) t0 ti⟩
 
 theorem budget_fejer_bounds5 (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
     0 < globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k ∧ globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k ≤ 1 ∧

@@ -293,8 +293,7 @@ theorem step_exp_inv_le_fejer {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 �
     exact pow_le_pow_left₀ (by linarith) hRbase' D
   have hEr0 : 0 < classEr V D k (n * m) tS gamma (rho / 8) := by
     unfold classEr
-    refine Finset.prod_pos fun i _ => ?_
-    exact div_pos (inv_pos.mpr (pow_pos (by linarith) _)) (by norm_num)
+    exact Finset.prod_pos fun i _ => (div_pos (inv_pos.mpr (pow_pos (by linarith) _)) (by norm_num))
   have hEri : (classEr V D k (n * m) tS gamma (rho / 8))⁻¹ ≤ w ^ fejerStepErDeg k D := by
     unfold classEr
     rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← inv_pow]

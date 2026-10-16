@@ -23,8 +23,7 @@ theorem MultiplyLinearWith.translate {N k : Nat} [NeZero N] [Fact N.Prime]
     hq, ?_, fun j i => (hmu j i).translate (-t), ?_⟩
   · intro x hx
     obtain ⟨y, hy, rfl⟩ := Finset.mem_image.mp hx
-    have hh := (Box.translate_mem_carrier (P.translate (-t)) t y).mpr (hH hy)
-    simpa using hh
+    simpa using (Box.translate_mem_carrier (P.translate (-t)) t y).mpr (hH hy)
   · rw [Finset.card_image_of_injective _ (add_left_injective t)]
     simpa using hHcard
   · simpa using hpart.translate t

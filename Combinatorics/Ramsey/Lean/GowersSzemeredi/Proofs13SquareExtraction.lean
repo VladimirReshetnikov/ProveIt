@@ -41,8 +41,7 @@ theorem section13_square_of_indexed_coefficients {N : Nat} [Fact N.Prime]
   have hCrows : ∀ z ∈ H.C,
       S.phi z = H.a (z.2 - G.y) + H.c (z.2 - G.y) * z.1 := by
     intro z hz
-    have h := hrow _ (hJsub (hCmem z hz).2) z.1 (by simpa using (hCmem z hz).1)
-    simpa using h
+    simpa using hrow _ (hJsub (hCmem z hz).2) z.1 (by simpa using (hCmem z hz).1)
   have ha : FreimanHom 8 H.J H.a :=
     (AddHomClass.isAddFreimanHom (AddMonoidHom.fst (ZMod N) (ZMod N))
       (Set.mapsTo_univ _ _)).comp hpair

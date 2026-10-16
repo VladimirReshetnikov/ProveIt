@@ -37,8 +37,7 @@ theorem section13_edge_tuple_count {N k : Nat} [NeZero N]
     simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx ⊢
     obtain ⟨hxadd, hxP⟩ := hx
     refine ⟨⟨hxadd, ?_⟩, rfl, hxP⟩
-    intro i
-    exact (Finset.mem_filter.mp (x i).property).2
+    exact fun i => (Finset.mem_filter.mp (x i).property).2
   · intro x _ y _ hxy
     funext i
     apply Subtype.ext

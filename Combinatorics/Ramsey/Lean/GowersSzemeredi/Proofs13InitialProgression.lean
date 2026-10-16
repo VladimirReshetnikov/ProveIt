@@ -869,8 +869,7 @@ private lemma lemma134EncodeAtHeight_injective {N : Nat} [NeZero N]
   intro R T hcode
   apply Subtype.ext
   have hxTail : ∀ i : Fin 15, R.1.x i.succ = T.1.x i.succ := by
-    intro i
-    exact congrFun (congrArg Prod.fst hcode) i
+    exact fun i => congrFun (congrArg Prod.fst hcode) i
   have hx : R.1.x = T.1.x :=
     lemma134_additive_ext R.2.1.1 T.2.1.1 hxTail
   have hy : R.1.y = T.1.y := congrArg Prod.snd hcode

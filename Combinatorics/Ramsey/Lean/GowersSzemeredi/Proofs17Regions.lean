@@ -256,8 +256,7 @@ private lemma exists_avoiding_kernels
     simp only [K, Finset.mem_image] at hmem
     obtain ⟨i, hiS, hi⟩ := hmem
     have hk : LinearMap.ker (f i) ≠ ⊤ := by
-      intro hker
-      exact hf i hiS (LinearMap.ker_eq_top.mp hker)
+      exact fun hker => hf i hiS (LinearMap.ker_eq_top.mp hker)
     exact hk hi
   have hne := Subspace.biUnion_ne_univ_of_top_notMem htop
   have hex : ∃ v, v ∉ ⋃ p ∈ K, (p : Set V) := by
@@ -423,8 +422,7 @@ private lemma stronglyShatters_regionFamily_of_card_le {k m : Nat}
       realDot_add_smul _ _ _ _
     by_cases his : i ∈ s
     · have hiNotU : i ∉ u := by
-        intro hiu
-        exact (Finset.mem_sdiff.mp (Finset.mem_filter.mp hiu).1).2 his
+        exact fun hiu => (Finset.mem_sdiff.mp (Finset.mem_filter.mp hiu).1).2 his
       have hiTarget := hw ⟨i, his⟩
       simp only [Finset.mem_union, hiNotU, false_or]
       rw [hxFormula, hx0S i his, hiTarget]

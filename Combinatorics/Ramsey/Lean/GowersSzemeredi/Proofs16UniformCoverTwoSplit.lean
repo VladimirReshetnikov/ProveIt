@@ -228,8 +228,7 @@ theorem uniTwoFejerExp_inv_le_split {V : Real} (hV : 1 ≤ V) {K1 p1 : Nat} (hK1
   set Sp := famPieceSamples (famTwoQr M qf) M rho
   set SB := 5 + (4 + ((2 : Nat) ^ 24 + (2 : Nat) ^ 38 + 1) + (2 : Nat) ^ 24 + 1) + 1 with hSBdef
   have hSq : ((Sp : Real) * qf) ≤ ν ^ 2 * W ^ (SB + (2 : Nat) ^ 38) := by
-    have h := tb_mul hν hW1 (Nat.cast_nonneg _) hSamp hqf
-    simpa using h
+    simpa using tb_mul hν hW1 (Nat.cast_nonneg _) hSamp hqf
   have hqS : ((M * (Sp * qf) + 1 : Nat) : Real) ≤ ν ^ 3 * W ^ ((2 : Nat) ^ 24 + (SB + (2 : Nat) ^ 38) + 1) := by
     have h1 := tb_mul hν hW1 (by positivity) hM hSq
     push_cast

@@ -68,13 +68,11 @@ private lemma drcCore_card_sq {X : Type*} [DecidableEq X] {n : Nat}
       rw [if_pos hij]
       simp [hi, hj]
     · have hn : ¬ (forall r, t r ∈ A i ∩ A j) := by
-        intro h
-        exact hj fun r => (Finset.mem_inter.mp (h r)).2
+        exact fun h => hj fun r => (Finset.mem_inter.mp (h r)).2
       rw [if_neg hn]
       simp [hi, hj]
   · have hn : ¬ (forall r, t r ∈ A i ∩ A j) := by
-      intro h
-      exact hi fun r => (Finset.mem_inter.mp (h r)).1
+      exact fun h => hi fun r => (Finset.mem_inter.mp (h r)).1
     rw [if_neg hn]
     simp [hi]
 
@@ -147,8 +145,7 @@ private lemma drcSamples_filter_inter {X : Type*} [DecidableEq X] {n : Nat}
   · exact fun h r => h.2 r
   · intro h
     refine ⟨?_, h⟩
-    intro r
-    exact hA i (Finset.mem_inter.mp (h r)).1
+    exact fun r => hA i (Finset.mem_inter.mp (h r)).1
 
 private lemma sum_drcCore_card_sq {X : Type*} [DecidableEq X] {n : Nat}
     (V : Finset X) (A : Fin n -> Finset X) (hA : forall i, A i ⊆ V) :
@@ -238,13 +235,11 @@ private lemma sum_drcBadPairCount {X : Type*} [DecidableEq X] {n : Nat}
               fun r => by simp [hi r, hj r]
             rw [if_pos hi, if_pos hj, if_pos hij]
           · have hn : ¬ (forall r, t r ∈ A i ∩ A j) := by
-              intro h
-              exact hj fun r => (Finset.mem_inter.mp (h r)).2
+              exact fun h => hj fun r => (Finset.mem_inter.mp (h r)).2
             rw [if_pos hi, if_neg hj, if_neg hn]
 
         · have hn : ¬ (forall r, t r ∈ A i ∩ A j) := by
-            intro h
-            exact hi fun r => (Finset.mem_inter.mp (h r)).1
+            exact fun h => hi fun r => (Finset.mem_inter.mp (h r)).1
           rw [if_neg hi, if_neg hn]
       _ = (((A i ∩ A j).card : Nat) : Real) ^ 5 := by
         calc

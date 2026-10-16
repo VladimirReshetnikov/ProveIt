@@ -86,8 +86,7 @@ theorem boxCons_width {N k m : Nat} (P : Box N k) (I : ModAP N)
     (hstep : I.step = P.commonDiff) (hm : m ≤ P.width) (hI : m ≤ I.length) :
     m ≤ (boxCons P I hstep).width := by
   apply Box.le_width_of_le_axis _ (by omega)
-  intro i
-  exact Fin.cases hI (fun j => hm.trans (P.width_le_axis_length j)) i
+  exact fun i => Fin.cases hI (fun j => hm.trans (P.width_le_axis_length j)) i
 
 @[simp] theorem mem_boxTail_cons {N k : Nat} [NeZero N]
     (P : Box N (k + 1)) (y : ZMod N) (x : Point N k) :
@@ -132,8 +131,7 @@ theorem box_slice_partition {N k M : Nat} [NeZero N] (P : Box N k)
     apply Finset.disjoint_left.mpr
     intro x hxa hxb
     have hne : (e.symm a).val ≠ (e.symm b).val := by
-      intro he
-      exact (bne_iff_ne.mp hab) (e.symm.injective (Subtype.ext he))
+      exact fun he => (bne_iff_ne.mp hab) (e.symm.injective (Subtype.ext he))
     exact Finset.disjoint_left.mp (hQ.2 _ _ (bne_iff_ne.mpr hne))
       ((mem_boxTail_cons _ _ _).mpr ⟨(e.symm a).property, hxa⟩)
       ((mem_boxTail_cons _ _ _).mpr ⟨(e.symm b).property, hxb⟩)

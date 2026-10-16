@@ -159,8 +159,7 @@ theorem step_w_facts {V V' : Real} (hV : 1 ≤ V) (hVV : V ≤ V') (n : Nat) {th
   obtain ⟨hvw, hrw, hnw, hVw, hw2⟩ := uniformBase_facts hV' n hg hg1 ht ht1 hr hr1
   obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   have hV'w : V' ≤ uniformBase V' n theta gamma rho := by
-    refine le_trans ?_ hVw
-    exact le_mul_of_one_le_right (by linarith) (le_trans (by norm_num) hu2)
+    exact le_trans (le_mul_of_one_le_right (by linarith) (le_trans (by norm_num) hu2)) hVw
   exact ⟨hw2, hvw, hrw, by linarith, hVV.trans hV'w, hV'w⟩
 
 theorem inv_scale_le {w rho : Real} {c : Real} {j : Nat} (hw : 2 ≤ w) (hr : 0 < rho)
@@ -366,8 +365,7 @@ theorem step_exp_inv_le {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V) 
     exact pow_le_pow_left₀ (by linarith) hRbase' D
   have hEr0 : 0 < classEr V D k (n * m) tS gamma (rho / 8) := by
     unfold classEr
-    refine Finset.prod_pos fun i _ => ?_
-    exact div_pos (inv_pos.mpr (pow_pos (by linarith) _)) (by norm_num)
+    exact Finset.prod_pos fun i _ => (div_pos (inv_pos.mpr (pow_pos (by linarith) _)) (by norm_num))
   have hEri : (classEr V D k (n * m) tS gamma (rho / 8))⁻¹ ≤ w ^ stepErDeg k D := by
     unfold classEr
     rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin, ← inv_pow]

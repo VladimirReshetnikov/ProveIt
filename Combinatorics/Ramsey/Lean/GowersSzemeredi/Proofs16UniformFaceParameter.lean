@@ -34,8 +34,7 @@ theorem restrict_proper_faces_common_parameter (k : Nat)
     rw [zpow_neg, zpow_ofNat]
     exact (one_le_inv₀ (pow_pos hg 2)).mpr (pow_le_one₀ hg.le hg1)
   have hr : ∀ l, 1 ≤ gamma ^ (-(2 : Int)) * multipleS eps gamma l := by
-    intro l
-    exact one_le_mul_of_one_le_of_one_le hginv (one_le_multipleS l heps heps1 hg hg1)
+    exact fun l => one_le_mul_of_one_le_of_one_le hginv (one_le_multipleS l heps heps1 hg hg1)
   obtain ⟨N0, hN0⟩ := restrict_proper_faces_half_density k hth gamma theta hg hg1 ht ht1
   refine ⟨N0, ?_⟩
   intro N _ _ hN B phi hB hprod

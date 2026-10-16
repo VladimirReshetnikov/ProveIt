@@ -159,8 +159,7 @@ theorem card_translated_slice_bad_le {N : Nat} [NeZero N] {theta : Real}
         appendCoordinate (section16Init z + x0) (section16Last z) ∈ B ∧
           section16Init z + x0 ∉ C (section16Last z)).card : Real) ≤
       theta * (N : Real) ^ 2 := by
-  have h := card_translated_slice_bad_le_succ (k := 1) B C hC (fun t => by simpa using hcard t) x0
-  simpa using h
+  simpa using card_translated_slice_bad_le_succ (k := 1) B C hC (fun t => by simpa using hcard t) x0
 
 theorem cubicSlice_count_monotone (q : Nat) :
     Monotone (fun r : Nat => ((3 * (max 1 r * q) : Nat) : Real)) := by

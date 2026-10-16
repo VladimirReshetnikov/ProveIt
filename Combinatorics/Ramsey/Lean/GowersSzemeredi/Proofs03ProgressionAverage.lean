@@ -32,8 +32,7 @@ private lemma progressionTailDifference_discValued {N n : Nat}
     (f : Fin (n + 1) → ZMod N → Complex)
     (hf : ∀ i, DiscValued (f i)) (u : ZMod N) :
     ∀ i, DiscValued (progressionTailDifference f u i) := by
-  intro i
-  exact difference_discValued (hf i.succ) _
+  exact fun i => difference_discValued (hf i.succ) _
 
 private lemma progressionAverage_trivial {N k : Nat} [NeZero N]
     (f : Fin k → ZMod N → Complex) (hf : ∀ i, DiscValued (f i)) :

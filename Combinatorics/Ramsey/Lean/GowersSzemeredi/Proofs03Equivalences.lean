@@ -417,8 +417,7 @@ private lemma higher_condition_iii_imp_vi_succ {N n : Nat} [NeZero N]
       ext a
       simp only [B, Finset.mem_filter, Finset.mem_univ, true_and, Finset.notMem_empty,
         iff_false]
-      intro hnot
-      exact hnot (by simpa [hc20, halpha0 a] using hlocal a)
+      exact fun hnot => hnot (by simpa [hc20, halpha0 a] using hlocal a)
     simp [hB, hc20]
   · have hc2pos : 0 < c2 := lt_of_le_of_ne hc2 (Ne.symm hc20)
     have hbad (a : Point N n) (ha : a ∈ B) : c2 ≤ alpha a := by
@@ -555,8 +554,7 @@ private lemma higher_condition_vii_imp_vi_succ {N n : Nat} [NeZero N]
     by_contra hnot
     have hsmall : ∀ r : ZMod N,
         ‖fourier (cubeDifference g a) r‖ < c3 * N := by
-      intro r
-      exact lt_of_not_ge (fun hr ↦ hnot ⟨r, hr⟩)
+      exact fun r => lt_of_not_ge (fun hr ↦ hnot ⟨r, hr⟩)
     have hdisc := cubeDifference_discValued hg a
     rcases lemma_2_2_holds N (cubeDifference g a) hdisc c2 c3 0 with
       ⟨_, hi_iii, _, hiv_iii, _, _⟩

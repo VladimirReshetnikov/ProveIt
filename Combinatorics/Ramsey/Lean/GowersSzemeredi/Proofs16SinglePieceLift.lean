@@ -354,8 +354,7 @@ theorem single_piece_lift {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
     fun p hp => Finset.mem_filter.mpr ⟨Finset.mem_univ _, hvertex p hp⟩
   have hQwidth : ⌈(liftRemainderWidth C W theta gamma k N : Real) / 8⌉₊ ≤ Q.width := by
     apply Nat.ceil_le.mpr
-    refine le_trans ?_ hQw
-    exact div_le_div_of_nonneg_right (by exact_mod_cast hR1w) (by norm_num)
+    exact le_trans (div_le_div_of_nonneg_right (by exact_mod_cast hR1w) (by norm_num)) hQw
   obtain ⟨q, hq, S, mu, hS, _, hSw, hmu, hcount⟩ :=
     single_piece_of_spectrum_cover hk0 hcover hcR hc hw eps thr hretile hζpos
       (by linarith) Q I hQ hI hQd (by rw [hQstep]; exact R1.axis_step _) hshort hQI

@@ -51,11 +51,9 @@ theorem with_lift_width_budget {a : Real} (ha : 0 < a) (ha1 : a ≤ 1) (m : Nat)
     ring
   have hX16 : (2 : Real) ^ 16 < X ^ 16 := pow_lt_pow_left₀ hlarge (by norm_num) (by norm_num)
   have hmle : (m : Real) ^ a ≤ m := by
-    have h := Real.rpow_le_rpow_of_exponent_le hm1 ha1
-    simpa using h
+    simpa using Real.rpow_le_rpow_of_exponent_le hm1 ha1
   have h8 : (8 : Real) ^ a ≤ 8 := by
-    have h := Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : Real) ≤ 8) ha1
-    simpa using h
+    simpa using Real.rpow_le_rpow_of_exponent_le (by norm_num : (1 : Real) ≤ 8) ha1
   have h8pos : (0 : Real) < (8 : Real) ^ a := by positivity
   have hw : ((m : Real) / 8) ^ a = (m : Real) ^ a / (8 : Real) ^ a :=
     Real.div_rpow hm0.le (by norm_num) a

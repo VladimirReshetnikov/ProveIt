@@ -832,8 +832,7 @@ private lemma prop141_weight_eq_energy {N p : Nat} [NeZero N]
     · have hsigma' : ¬ ∀ i,
           sigma i (q 0) + sigma i (q 3) =
             sigma i (q 2) + sigma i (q 1) := by
-        intro h
-        exact hsigma fun i => sub_eq_sub_iff_add_eq_add.mpr (h i)
+        exact fun h => hsigma fun i => sub_eq_sub_iff_add_eq_add.mpr (h i)
       rw [if_neg (fun h => hsigma h.2), if_neg]
       exact fun h => hsigma' h.2
   · have hadd' : q 0 + q 3 ≠ q 2 + q 1 := fun h =>

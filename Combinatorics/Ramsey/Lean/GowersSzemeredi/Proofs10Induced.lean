@@ -129,8 +129,7 @@ theorem lemma_10_12_holds : lemma_10_12 := by
     have hxT : x ∈ T := (Finset.mem_inter.mp hxU).2
     by_cases hxB' : x ∈ B'
     · have hxnotT' : x ∉ T' := by
-        intro hxT'
-        exact hxnot (Finset.mem_inter.mpr ⟨hxB', hxT'⟩)
+        exact fun hxT' => hxnot (Finset.mem_inter.mpr ⟨hxB', hxT'⟩)
       exact Finset.mem_union.mpr (Or.inr (Finset.mem_sdiff.mpr ⟨hxT, hxnotT'⟩))
     · exact Finset.mem_union.mpr (Or.inl (Finset.mem_sdiff.mpr ⟨hxB, hxB'⟩))
   have hdiffUNat : (U \ U').card ≤ E0.card + Ec.card :=

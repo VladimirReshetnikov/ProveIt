@@ -77,8 +77,7 @@ theorem exists_fourier_restrict_energy_bound {N : Nat} [NeZero N]
         mul_le_mul_of_nonneg_left hparseval (by positivity)
       _ = _ := by ring
   rw [fourthMoment_eq_degreeOneEnergy] at hfour
-  refine ⟨r, ?_⟩
-  exact (mul_le_mul_iff_right₀ (show (0 : Real) < N by exact_mod_cast NeZero.pos N)).mp hfour
+  exact ⟨r, (mul_le_mul_iff_right₀ (show (0 : Real) < N by exact_mod_cast NeZero.pos N)).mp hfour⟩
 
 /-- Partition nonuniformity of degree one gives total Fourier correlation
 at least beta times the ambient size. No prime-model or selected-cell loss

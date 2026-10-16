@@ -409,8 +409,7 @@ private lemma cor146_energy_eq_fiber_count {N k : Nat} [NeZero N]
         countWhere (fun f : Fin 4 → AxisCube N k =>
           ∀ t, f t ∈ cor146GoodSet B phi K (q t)) := by
       apply countWhere_congr
-      intro f
-      exact and_iff_right hq
+      exact fun f => and_iff_right hq
     rw [hcount, cor146_count_choices]
     norm_cast
   · rw [if_neg hq]
@@ -436,8 +435,7 @@ private lemma cor146_theta_eq_zero_of_not_reference {N k : Nat} [NeZero N]
     ext K'
     simp only [cor146GoodSet, Finset.mem_filter, Finset.mem_univ, true_and,
       Finset.notMem_empty, iff_false]
-    intro hgood
-    exact hr' hgood.1
+    exact fun hgood => hr' hgood.1
   simp [cor146Theta, hempty]
 
 private lemma cor146_sum_theta_reference {N k : Nat} [NeZero N]

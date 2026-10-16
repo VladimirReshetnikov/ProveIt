@@ -275,8 +275,7 @@ theorem allScaleFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0
       exact_mod_cast hnscale.trans (hRwidth (e.symm j).1 (e.symm j).2)
     have hne (j : Fin (∑ z, cnt z)) : (R' j).carrier.Nonempty := by
       apply Box.carrier_nonempty_of_axis_pos
-      intro z
-      exact hn.trans_le ((hnR j).trans ((R' j).width_le_axis_length z))
+      exact fun z => hn.trans_le ((hnR j).trans ((R' j).width_le_axis_length z))
     have hsub (j : Fin (∑ z, cnt z)) :
         ((R' j).axis i).carrier ⊆ ((Bp (e.symm j).1).axis i).carrier :=
       (R' j).axis_carrier_subset_of_carrier_subset (Bp (e.symm j).1) (hne j)

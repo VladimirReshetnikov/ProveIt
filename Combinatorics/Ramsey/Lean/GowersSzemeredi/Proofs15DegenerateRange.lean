@@ -669,8 +669,7 @@ private lemma rangeDeg_exceptional_coefficients_card_le (N m k d : Nat) :
   let enc : RangeDegExceptionalCoefficients N m k d →
       {c : RangeDegCoefficient m k d // c ≠ rangeDegZeroCoefficient m k d} :=
     fun c ↦ ⟨c.1, by
-      intro hc
-      exact rangeDeg_zero_coefficient_not_exceptional (hc ▸ c.2)⟩
+      exact fun hc => rangeDeg_zero_coefficient_not_exceptional (hc ▸ c.2)⟩
   have hinj : Function.Injective enc := by
     intro c c' h
     apply Subtype.ext

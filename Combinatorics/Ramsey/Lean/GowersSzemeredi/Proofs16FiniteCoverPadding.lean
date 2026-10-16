@@ -14,8 +14,7 @@ def padFiniteMultilinearFamily {N k : Nat} {C : Type*} [Fintype C]
 theorem padFiniteMultilinearFamily_isMultilinear {N k q : Nat} {C : Type*} [Fintype C]
     (mu : C → Point N k → ZMod N) (hmu : ∀ c, IsMultilinear (mu c)) :
     ∀ i, IsMultilinear (padFiniteMultilinearFamily mu q i) := by
-  intro i
-  exact padMultilinearFamily_isMultilinear _ (fun _ => hmu _) i
+  exact fun i => padMultilinearFamily_isMultilinear _ (fun _ => hmu _) i
 
 theorem padFiniteMultilinearFamily_covers {N k q : Nat} {C : Type*} [Fintype C]
     (mu : C → Point N k → ZMod N) (hq : Fintype.card C ≤ q)

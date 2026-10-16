@@ -124,8 +124,7 @@ lemma lemma154_double_except_card {I : Type*} [Fintype I]
     Fintype.card {t : I // t ≠ i ∧ t ≠ j} = Fintype.card I - 2 := by
   rw [Fintype.card_congr
       ({ toFun t := ⟨⟨t, t.2.1⟩, by
-           intro h
-           exact t.2.2 (congrArg Subtype.val h)⟩
+           exact fun h => t.2.2 (congrArg Subtype.val h)⟩
          invFun t := ⟨t.1.1, t.1.2, by
            intro h
            apply t.2
@@ -843,8 +842,7 @@ private lemma lemma154_exceptional_coefficients_card_le (N k d : Nat) :
   let enc : Lemma154ExceptionalCoefficients N k d →
       {c : Lemma154Coefficient k d // c ≠ lemma154ZeroCoefficient k d} :=
     fun c ↦ ⟨c.1, by
-      intro hc
-      exact lemma154_zero_coefficient_not_exceptional (hc ▸ c.2)⟩
+      exact fun hc => lemma154_zero_coefficient_not_exceptional (hc ▸ c.2)⟩
   have hinj : Function.Injective enc := by
     intro c c' h
     apply Subtype.ext

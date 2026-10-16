@@ -140,8 +140,7 @@ theorem Box.carrier_eq_index_image {N k : Nat} [NeZero N] (P : Box N k) :
       refine ⟨t, t.isLt, ?_⟩
       simpa only [P.axis_step, mul_comm] using ht
     choose t ht htx using hex
-    refine ⟨t, ?_, funext htx⟩
-    exact Fintype.mem_piFinset.mpr fun i => Finset.mem_range.mpr (ht i)
+    exact ⟨t, (Fintype.mem_piFinset.mpr fun i => Finset.mem_range.mpr (ht i)), funext htx⟩
   · rintro ⟨t, ht, rfl⟩ i
     have hi := Finset.mem_range.mp (Fintype.mem_piFinset.mp ht i)
     apply Finset.mem_image.mpr

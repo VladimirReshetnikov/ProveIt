@@ -408,8 +408,7 @@ private lemma fejer_injective_of_nondegenerate {N k : Nat} [NeZero N]
   by_contra huv
   apply hnondegenerate
   have hvu : v ≠ u := by
-    intro h
-    exact huv h.symm
+    exact fun h => huv h.symm
   obtain ⟨w, hwu, hwv⟩ := fejer_third_index u v
   let eta : (Fin k → Bool) → Fin 16 → Int := fun e j ↦
     if (e, j) = u then 1 else if (e, j) = v then -1 else 0

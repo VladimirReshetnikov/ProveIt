@@ -52,8 +52,7 @@ theorem section16_greedy_relation_decomposition {N k : Nat} [NeZero N]
       obtain ⟨q, G, J, hG, hq, hJ, hcover⟩ := ih _ hcard (Gamma \ D) he rfl
       refine ⟨q + 1, Fin.cons D G, J, ?_, ?_, hJ, ?_⟩
       · intro i
-        refine Fin.cases ⟨hD, hDgood⟩ (fun j => ?_) i
-        exact ⟨(hG j).1.trans Finset.sdiff_subset, (hG j).2⟩
+        exact Fin.cases ⟨hD, hDgood⟩ (fun j => (⟨(hG j).1.trans Finset.sdiff_subset, (hG j).2⟩)) i
       · have hc : ((Gamma \ D).card : Real) + D.card = Gamma.card := by
           exact_mod_cast Finset.card_sdiff_add_card_eq_card hD
         rw [hn] at hc

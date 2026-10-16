@@ -541,8 +541,7 @@ private lemma selectionEta_ternary {k : Nat}
     (eps : selectionIndex k → Fin 4) :
     IsTernaryCoefficient
       (fun z : (Fin k → Bool) × Fin 16 ↦ selectionEta eps z.1 z.2) := by
-  intro z
-  exact selectionDigitInt_ternary (eps z)
+  exact fun z => selectionDigitInt_ternary (eps z)
 
 private lemma selectionRelation_some {N k : Nat} [NeZero N]
     (eps : selectionIndex k → Fin 4) (A : Finset (Fin (k + 1)))
@@ -1172,8 +1171,7 @@ private lemma selection_injective_of_nondegenerate {N k : Nat} [NeZero N]
   by_contra huv
   apply hnondegenerate
   have hvu : v ≠ u := by
-    intro h
-    exact huv h.symm
+    exact fun h => huv h.symm
   obtain ⟨w, hwu, hwv⟩ := selection_third_index u v
   let eta : (Fin k → Bool) → Fin 16 → Int := fun e j ↦
     if (e, j) = u then 1 else if (e, j) = v then -1 else 0

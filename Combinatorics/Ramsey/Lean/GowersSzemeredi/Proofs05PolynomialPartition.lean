@@ -307,8 +307,7 @@ theorem weighted_missing_interval_fourier
         (t : Real) * (L + L : Nat) / (4 * N) := by
     by_contra hlarge
     apply hnot
-    refine ⟨r, hr0, ?_, le_of_not_gt hlarge⟩
-    exact (Nat.cast_le.mpr hrK).trans hKratio
+    exact ⟨r, hr0, (Nat.cast_le.mpr hrK).trans hKratio, le_of_not_gt hlarge⟩
   by_cases ht : t = 0
   · letI : Fact (1 < N) := ⟨hN⟩
     have hhalf : 1 ≤ N / 2 := by omega
@@ -1870,8 +1869,7 @@ theorem lemma_5_5_square_root_auxiliary_holds :
     apply lt_of_not_ge
     intro hpClose
     apply hrecurrence
-    refine ⟨p, hp, ?_, by simpa only [gamma] using hpClose⟩
-    exact (Nat.pow_le_pow_left hpu 2).trans huSqT
+    exact ⟨p, hp, (Nat.pow_le_pow_left hpu 2).trans huSqT, by simpa only [gamma] using hpClose⟩
   obtain ⟨r, hr0, hrsize, hrlarge⟩ :=
     polynomial_weyl_sqrt_witness a hk hWu huTwo huT htN (by
       simpa only [gamma] using hno)

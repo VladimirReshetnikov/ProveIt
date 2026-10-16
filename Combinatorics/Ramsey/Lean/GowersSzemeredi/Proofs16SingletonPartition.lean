@@ -52,8 +52,7 @@ theorem box_singleton_partition {N d : Nat} [NeZero N] (P : Box N d) :
       exact (e.symm j).property
   · intro i j hij
     simp only [pointSingletonBox_carrier, Finset.disjoint_singleton]
-    intro h
-    exact (bne_iff_ne.mp hij) (e.symm.injective (Subtype.ext h))
+    exact fun h => (bne_iff_ne.mp hij) (e.symm.injective (Subtype.ext h))
 
 /-- Every map is affine when restricted to a subset of a singleton. -/
 theorem LinearOn.of_subset_singleton {N : Nat} (A : Finset (ZMod N))

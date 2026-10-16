@@ -427,8 +427,7 @@ private lemma generic_freiman_map_int_multiple {p : Nat} {G : Type*}
         have := (Finset.mem_Icc.mp hj).2
         apply Int.ofNat_le.mp
         simpa only [Int.ofNat_eq_natCast] using this
-      have h := generic_freiman_map_nat_multiple B psi hpsi hpsiZero d m hm hmem n hn
-      simpa using h
+      simpa using generic_freiman_map_nat_multiple B psi hpsi hpsiZero d m hm hmem n hn
   | negSucc n =>
       have hn : n + 1 <= m := by
         have := (Finset.mem_Icc.mp hj).1
@@ -744,8 +743,7 @@ private lemma balancedResidueChunkAP_linear {p N : Nat}
   · refine ⟨0, 0, ?_⟩
     intro i
     dsimp only
-    intro hiA
-    exact (hnonempty ⟨i, hiA⟩).elim
+    exact fun hiA => (hnonempty ⟨i, hiA⟩).elim
 
 private lemma centeredAbs_add_le {p : Nat} [NeZero p] (x y : ZMod p) :
     centeredAbs (x + y) <= centeredAbs x + centeredAbs y := by
