@@ -1,0 +1,17 @@
+.PHONY: pdf verify clean
+
+PYTHON ?= python3
+PDFLATEX ?= pdflatex
+
+pdf:
+	mkdir -p build
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error -output-directory=build -jobname=zfc_substitution_engine report.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error -output-directory=build -jobname=zfc_substitution_engine report.tex
+	$(PDFLATEX) -interaction=nonstopmode -halt-on-error -output-directory=build -jobname=zfc_substitution_engine report.tex
+	cp build/zfc_substitution_engine.pdf zfc_substitution_engine.pdf
+
+verify:
+	$(PYTHON) -B reproduce.py
+
+clean:
+	rm -rf build
