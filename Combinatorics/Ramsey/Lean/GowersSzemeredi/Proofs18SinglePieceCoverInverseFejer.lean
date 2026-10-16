@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs16SinglePieceCoverGlobalWith
+import GowersSzemeredi.Proofs16SinglePieceCoverGlobal
 import GowersSzemeredi.Proofs16ClassStepFejer
 
 /-! **The joint-cover inverse step under the Fejér θ₁ and the tight radius**

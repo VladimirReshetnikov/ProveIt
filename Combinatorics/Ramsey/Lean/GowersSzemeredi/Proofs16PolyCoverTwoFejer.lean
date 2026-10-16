@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs16PolyCoverTwo
-import GowersSzemeredi.Proofs16PolyPieceTwoDataWith
+import GowersSzemeredi.Proofs16TightRadius
 
 /-! **`PolyCoverAt 2` with the Fejér θ₁ and the tight Bohr radius**
 (Notes L.16d).

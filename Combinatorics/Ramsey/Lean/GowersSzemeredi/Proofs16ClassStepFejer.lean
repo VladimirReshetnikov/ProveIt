@@ -1,5 +1,4 @@
 import GowersSzemeredi.Proofs16ClassStep
-import GowersSzemeredi.Proofs16ClassPiecesWith
 import GowersSzemeredi.Proofs16PolyCoverTwoFejer
 
 /-! **The class step under the Fejér θ₁ and the tight radius** (Notes L.16d).
@@ -11,7 +10,7 @@ with a guard that no printed parameter survives, and uses:
   so the arrangement density is `fejerThetaOne θ γ k = (θγ/4)^(E(k))` with
   `E(k) = fejerProductExponent k ≤ 2^(5k+14)`;
 * the tight radius `tightZeta (θ₁′/4)`;
-* `class_piece_data_with` (`Proofs16ClassPiecesWith`).
+* `class_piece_data_with` (`Proofs16ClassPieces`).
 
 The step's controls (`class_step_cover_fejer`) are the corpus's, with
 `classBudgetW θ₁′ k`, `δ(θ₁′)` and the tight radius in place of the printed

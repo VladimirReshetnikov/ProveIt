@@ -1,8 +1,6 @@
 import GowersSzemeredi.Proofs18GenericEnvelopeBase
-import GowersSzemeredi.Proofs18WidthPowerBounds
-import GowersSzemeredi.Proofs16SinglePieceCoverGlobalWith
+import GowersSzemeredi.Proofs16SinglePieceCoverGlobal
 import GowersSzemeredi.Proofs16ClassStepBoundsFejer
-import GowersSzemeredi.Proofs16RadiusComparison
 
 /-! **The fixed parameters of the Section 18 step under the Fejér θ₁**
 (Notes L.16d).

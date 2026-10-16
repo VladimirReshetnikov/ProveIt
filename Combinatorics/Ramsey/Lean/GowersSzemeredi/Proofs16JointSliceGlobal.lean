@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16JointSliceCore
-import GowersSzemeredi.Proofs16SinglePieceCoverGlobalWith
+import GowersSzemeredi.Proofs16SinglePieceCoverGlobal
+import GowersSzemeredi.Proofs16TightRadius
 
 /-! **The single-piece lift with joint vertex covers and joint slices**
 (Notes L.16q).

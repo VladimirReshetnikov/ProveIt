@@ -99,4 +99,10 @@ theorem fejer_tightRadiusExponent_large {theta gamma : Real} (k : Nat)
     _ ≤ (2 : Real) ^ (105 : Nat) * (4 / (theta * gamma)) ^ (11 * E) :=
         mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by norm_num) hb4 _) (by positivity)
 
+/-- The tight radius `tightZeta (t1/4)` satisfies the radius hypothesis for
+every density `t1`. -/
+theorem tightZeta_condition {t1 : Real} (ha0 : 0 < t1 / 4) :
+    ∀ alpha : Real, t1 / 4 ≤ alpha → alpha ≤ 1 / 6 → tightZeta (t1 / 4) ≤ section10Zeta alpha :=
+  fun _ ha ha1 => tightZeta_le_section10Zeta ha0 ha ha1
+
 end LeanProofs.GowersSzemeredi

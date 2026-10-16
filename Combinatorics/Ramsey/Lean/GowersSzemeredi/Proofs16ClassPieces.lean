@@ -17,7 +17,11 @@ is a `(k+1)`-dimensional partial function inside `Γ` with Gowers's data:
 `section16_poly_piece_three_data` in every dimension. The five deletions of
 dimension three become `2^k + 1`: the spectrum, one per vertex `e ≠ 1`
 (`card_dropAt_shift_bad_le`), and the slices. Each costs at most `θ′N^(k+1)`,
-with `θ′ = θ₂/2^(k+2)` (`classBudget`). So the piece keeps mass `θ′`. -/
+with `θ′ = θ₂/2^(k+2)` (`classBudget`). So the piece keeps mass `θ′`.
+
+`classBudgetW`, `classPieceThrW` and `class_piece_data_with` take `(t1, ζ)` as
+parameters (Notes L.16d); at the printed values the budgets are the printed
+ones by `rfl`, and `class_piece_data` is the instance. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
@@ -293,46 +297,66 @@ theorem translatedVertex_eq_classFace {N k : Nat} (phi : Point N (k + 1) → ZMo
   rw [classFace_eq_faceSel phi x0 hp, hp]
   exact selectPt_vertex_eq_face phi x0 hi _
 
-/-- **One `(k+1)`-dimensional piece over a uniform class**, from Lemma 15.6's
-arrangements and the product property. -/
-theorem class_piece_data {k : Nat} {Thr : Real → Real → Real}
+/-- The class budget `θ₂(t1)/2^(k+2)` at density `t1`. -/
+def classBudgetW (t1 : Real) (k : Nat) : Real := section16ThetaTwo t1 / 2 ^ (k + 2)
+
+/-- The class thresholds a piece needs, at density `t1`. -/
+def classPieceThrW (Thr : Real → Real → Real) (t1 gamma : Real) (k : Nat) : Real :=
+  max (Thr (classBudgetW t1 k) (section16Delta t1)) (Thr (classBudgetW t1 k) gamma)
+
+theorem classBudgetW_printed (theta gamma : Real) (k : Nat) :
+    classBudgetW (section16ThetaOne theta gamma k) k = classBudget theta gamma k := rfl
+
+theorem classPieceThrW_printed (Thr : Real → Real → Real) (theta gamma : Real) (k : Nat) :
+    classPieceThrW Thr (section16ThetaOne theta gamma k) gamma k = classPieceThr Thr theta gamma k := rfl
+
+theorem classBudgetW_pos_le {t1 : Real} (k : Nat) (ha0 : 0 < t1 / 4) (haS : t1 / 4 ≤ 1 / 36) :
+    0 < classBudgetW t1 k ∧ classBudgetW t1 k ≤ 1 := by
+  obtain ⟨h0, h1⟩ := section16ThetaTwo_pos_le_with ha0 haS
+  have h2 : (1 : Real) ≤ 2 ^ (k + 2) := one_le_pow₀ (by norm_num)
+  unfold classBudgetW
+  refine ⟨div_pos h0 (by positivity), ?_⟩
+  rw [div_le_one (by positivity)]
+  linarith
+
+theorem class_piece_data_with {k : Nat} {Thr : Real → Real → Real}
     {Cnt Exp : Real → Real → Nat → Real → Real} (C : UniformClassWith k Thr Cnt Exp)
-    {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    {N : Nat} [NeZero N] [Fact N.Prime] (hN : classPieceThr Thr theta gamma k ≤ N)
+    {t1 zeta gamma : Real} (ha0 : 0 < t1 / 4) (haS : t1 / 4 ≤ 1 / 36)
+    (hzeta : ∀ alpha : Real, t1 / 4 ≤ alpha → alpha ≤ 1 / 6 → zeta ≤ section10Zeta alpha)
+    (hz0 : 0 < zeta) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+    {N : Nat} [NeZero N] [Fact N.Prime] (hN : classPieceThrW Thr t1 gamma k ≤ N)
     (Gamma : Finset (Point N (k + 1) × ZMod N))
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
     (hBG : partialGraph B phi ⊆ Gamma)
-    (hBarr : section16ThetaOne theta gamma k * (N : Real) ^ (17 * k + 15) ≤
+    (hBarr : t1 * (N : Real) ^ (17 * k + 15) ≤
         generalArrangementCount 8 B ∧
       (1 - (2 : Real) ^ (-(44 : Real))) * generalArrangementCount 8 B ≤
         respectedGeneralArrangementCount 8 B phi)
     (hprodB : HasProductProperty B phi gamma) :
-    Nonempty (ClassPiece C Gamma (section16Zeta theta gamma k) (classBudget theta gamma k)
-      (classBudget theta gamma k) (classDelta theta gamma k) (classBudget theta gamma k) gamma) := by
-  obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
-  obtain ⟨hθ'pos, hθ'le⟩ := classBudget_pos_le k ht ht1 hg hg1
-  set θ' := classBudget theta gamma k with hθ'def
-  have hθ₂eq : section16ThetaTwo (section16ThetaOne theta gamma k) = 2 ^ (k + 2) * θ' := by
-    rw [hθ'def, classBudget]; field_simp
-  set δ := classDelta theta gamma k with hδdef
-  have hδeq : section16Delta (section16ThetaOne theta gamma k) = δ := rfl
-  rw [hδeq] at hδpos hδle
+    Nonempty (ClassPiece C Gamma (zeta) (classBudgetW t1 k)
+      (classBudgetW t1 k) (section16Delta t1) (classBudgetW t1 k) gamma) := by
+  obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds_with ha0 haS
+  obtain ⟨hθ'pos, hθ'le⟩ := classBudgetW_pos_le k ha0 haS
+  set θ' := classBudgetW t1 k with hθ'def
+  have hθ₂eq : section16ThetaTwo (t1) = 2 ^ (k + 2) * θ' := by
+    rw [hθ'def, classBudgetW]; field_simp
+  set δ := section16Delta t1
   have hN1 : Thr θ' δ ≤ (N : Real) := (le_max_left _ _).trans hN
   have hN2 : Thr θ' gamma ≤ (N : Real) := (le_max_right _ _).trans hN
   -- 1. Lemmas 16.5 and 16.7
   obtain ⟨H, Y, phiPrime, hH, hcube, hselected, hselection⟩ :=
-    section16_dense_induced_selection_of_arrangements (k := k) (Fact.out : N.Prime) theta gamma
-      B phi ht ht1 hg hg1 hBarr
-  have hmass : section16ThetaOne theta gamma k / 8 * (N : Real) ^ k ≤ H.card := by
+    section16_dense_induced_selection_with (k := k) (Fact.out : N.Prime) t1 zeta
+      B phi ha0 haS hzeta hz0 hBarr
+  have hmass : t1 / 8 * (N : Real) ^ k ≤ H.card := by
     refine le_trans ?_ hH
     have : (0 : Real) ≤ (N : Real) ^ k := by positivity
     nlinarith
-  obtain ⟨x0, hgood, hidentity⟩ := lemma_16_7_holds N k theta gamma B phi H Y phiPrime
+  obtain ⟨x0, hgood, hidentity⟩ := lemma_16_7_with t1 zeta hθ₁pos.le B phi H Y phiPrime
     hmass hcube hselected hselection
   have hid : Section16PhiOneIdentity (section16GoodDomain B H Y x0) phi x0 phiPrime :=
     section16_phi_one_identity_of_common_base B phi H Y x0 phiPrime hidentity
   set B1 := section16GoodDomain B H Y x0 with hB1def
-  have hB1card : section16ThetaTwo (section16ThetaOne theta gamma k) * (N : Real) ^ (k + 1) ≤
+  have hB1card : section16ThetaTwo (t1) * (N : Real) ^ (k + 1) ≤
       B1.card := by
     rw [hB1def, section16GoodDomain_card]; exact hgood
   -- 2. the spectrum, translated to the original frame
@@ -489,7 +513,7 @@ theorem class_piece_data {k : Nat} {Thr : Real → Real → Real}
     obtain ⟨h, hh, rfl⟩ := Finset.mem_image.mp hx
     have hhH : h ∈ H := (Finset.mem_filter.mp hh).1
     have hsh : h + x0 - x0 = h := add_sub_cancel_right h x0
-    have hd' : J.step ∈ bohr (section16LargeSpectrum B h δ) (section16Zeta theta gamma k / v) := by
+    have hd' : J.step ∈ bohr (section16LargeSpectrum B h δ) (zeta / v) := by
       simpa only [K', hsh] using hd
     have hlin := hselection.2 h hhH v hv J.step hd' J rfl hJ
     simpa only [A', f', hsh, Finset.inter_filter, Finset.inter_univ] using hlin
@@ -563,4 +587,25 @@ theorem class_piece_data {k : Nat} {Thr : Real → Real → Real}
     rw [shiftPt_last, section16Last_appendCoordinate] at hl
     rw [← hi, ← hl]
     exact hz5
+
+/-- **One `(k+1)`-dimensional piece over a uniform class**, from Lemma 15.6's
+arrangements and the product property. -/
+theorem class_piece_data {k : Nat} {Thr : Real → Real → Real}
+    {Cnt Exp : Real → Real → Nat → Real → Real} (C : UniformClassWith k Thr Cnt Exp)
+    {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
+    {N : Nat} [NeZero N] [Fact N.Prime] (hN : classPieceThr Thr theta gamma k ≤ N)
+    (Gamma : Finset (Point N (k + 1) × ZMod N))
+    (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
+    (hBG : partialGraph B phi ⊆ Gamma)
+    (hBarr : section16ThetaOne theta gamma k * (N : Real) ^ (17 * k + 15) ≤
+        generalArrangementCount 8 B ∧
+      (1 - (2 : Real) ^ (-(44 : Real))) * generalArrangementCount 8 B ≤
+        respectedGeneralArrangementCount 8 B phi)
+    (hprodB : HasProductProperty B phi gamma) :
+    Nonempty (ClassPiece C Gamma (section16Zeta theta gamma k) (classBudget theta gamma k)
+      (classBudget theta gamma k) (classDelta theta gamma k) (classBudget theta gamma k) gamma) :=
+  have hp := lemma_16_5_with_printed_hyps k ht ht1 hg hg1
+  class_piece_data_with C hp.1 hp.2.1 hp.2.2 (by unfold section16Zeta; positivity) hg hg1
+    hN Gamma B phi hBG hBarr hprodB
+
 end LeanProofs.GowersSzemeredi
