@@ -27,6 +27,10 @@ Turing-completeness and non-full-abstraction boundaries are explicit.
 [`BusyBeaver/`](BusyBeaver/) contains the repository-authored Busy Beaver
 machine model, domination theorems, exact small-state score certificates, and
 bridges to the vendored time certificates under [`../lib/Coq-BB5/`](../lib/Coq-BB5/).
+The unformalized [ZFC closure-kernel report](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md)
+compares theories for a smaller ZFC-inconsistency search machine. Its
+current target is a ZFC proof of the halting equivalence; no new transition
+table or state bound is supplied.
 
 The score and time functions are distinct measures. The proved values
 `Sigma(2)=4`, `Sigma(3)=6`, `Sigma(4)=13` and `BB(2)=6`, `BB(3)=21`,

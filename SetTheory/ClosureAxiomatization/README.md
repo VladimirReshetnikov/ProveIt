@@ -15,3 +15,11 @@ is exactly ZF.
 
 The Lean development is mathlib-free. Its standalone project is under
 [`Lean/`](Lean/); the Coq sources are under [`Coq/`](Coq/).
+
+The external report
+[`ZFC closure kernels`](../Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md)
+(batch 143) compares bounded-image, seeded and exact-fiber closure schemas
+for a small ZFC-inconsistency search machine. Its new kernels are not
+formalized here. The existing `T_iff_ZF` theorem and Foundation-free
+forward/reverse components are predecessor results; the report records
+their relation and the remaining certification work.

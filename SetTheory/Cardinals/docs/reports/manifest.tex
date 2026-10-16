@@ -17,7 +17,7 @@
 \hypersetup{%
   pdftitle={A manifest of the research reports in docs/reports},
   pdfauthor={Vladimir Reshetnikov},
-  pdfsubject={Catalogue of 289 independent mathematical research packages}}
+  pdfsubject={Catalogue of 290 independent mathematical research packages}}
 
 \definecolor{Ink}{HTML}{16324F}
 \definecolor{Accent}{HTML}{4E5C3D}
@@ -53,20 +53,20 @@
 
 \begin{center}
   {\LARGE\bfseries\color{Ink} A manifest of \texttt{docs/reports}}\\[0.6em]
-  {\large Two hundred and eighty-nine independent mathematical research packages,\\
+  {\large Two hundred and ninety independent mathematical research packages,\\
    classified by subject}\\[1.0em]
   {\normalsize Vladimir Reshetnikov}\\[0.3em]
-  {\normalsize 9 October 2026}
+  {\normalsize 16 October 2026}
 \end{center}
 
 \vspace{0.8em}
 
 \section{Scope and conventions}
 
-This document catalogues the two hundred and eighty-nine research packages stored
+This document catalogues the two hundred and ninety research packages stored
 under \dir{docs/reports}.  The collection originally held one hundred and four reports; after two
 consolidations it contributes one hundred and two maintained reports. The
-other one hundred and eighty-seven came through ProveIt's incoming-reports procedure
+other one hundred and eighty-eight came through ProveIt's incoming-reports procedure
 (\dir{docs/incoming}) --- six in batch~36, one each in batches~40, 41
 and~44, two in batch~60, one each in batches~62 and~70, three in
 batch~72, sixteen in batch~73, two in batch~74, three in batch~75, two in
@@ -77,7 +77,8 @@ batch~102, four each in batches~103, 104 and~105, seven in batch~106,
 five in batch~107, ten in batch~108, eight each in batches~109 and~110,
 five in batch~111, seven in batch~112, eight in batch~113, five in
 batch~114, two outside the numbered batches (Report~274 and a
-two-way automata manuscript of 7~October) and twelve in batch~138 --- whose
+two-way automata manuscript of 7~October), twelve in batch~138 and one in
+batch~143 --- whose
 archives remain in the repository's history.  Batches~100--113 are clusters of one session bundle
 of numbered Research Reports (arrival \texttt{60f54ea06}); batch~114 is the
 seven other archives of two arrivals of the same day.  Later batches
@@ -112,7 +113,10 @@ delivered packages.  Its other manuscripts went to
 research directories in \dir{Analysis/ErdosSimilarity},
 \dir{Combinatorics/BooleanFunctions} and \dir{Combinatorics/Sidorenko}, to
 \dir{Analysis/Polylogarithms} and to the Fabius drafts tree; batch~139
-went to \dir{Analysis/Polylogarithms} only.
+went to \dir{Analysis/Polylogarithms} only. Batch~143 opens \dir{set-theory}
+with one complementary closure-kernel report from three manuscripts; the
+seeded manuscript is the base, and a reconciliation README records their
+overlap and limits without rewriting the delivered articles.
 The next paragraphs describe the historical collection before those two
 consolidations. On 29 September 2026 the two Lipparini Problem~6.2 reports
 were unified, and the finite-height transfinite-word report was integrated
@@ -152,13 +156,16 @@ incomparable in both directions, so neither theorem contains the other and they
 are catalogued separately; the same holds for reports answering different numbered problems of
 one paper, noted where it occurs.
 
-Every package is self-contained and follows the same shape: a typeset article
+Most packages follow the same shape: a typeset article
 (\texttt{*.pdf}) with its complete \LaTeX{} source, a \texttt{README.md}
 summarising the result, usually a \texttt{code/} directory with exact-arithmetic
 verification scripts, a \texttt{data/} or \texttt{results/} directory holding the
 recorded output of those scripts, and often \texttt{STATUS.md},
 \texttt{sources.md} or \texttt{notes/} files auditing the sources consulted and
-the precise limits of the claim.
+the precise limits of the claim. The batch~143 closure-kernel reconciliation
+retains the base \LaTeX{} source and selected supporting files; its README
+identifies the member articles and PDFs recoverable from the committed
+arrival archives.
 
 Two cautions apply uniformly and are therefore not repeated in the individual
 entries.  First, these are AI-assisted research drafts: none has been
@@ -231,7 +238,9 @@ original archive names are recorded with every entry.
 \midrule
 \dir{probability} & --- & 9\\
 \midrule
-\multicolumn{2}{l}{\textbf{Total}} & \textbf{289}\\
+\dir{set-theory} & --- & 1\\
+\midrule
+\multicolumn{2}{l}{\textbf{Total}} & \textbf{290}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -7795,5 +7804,22 @@ entry, with the same nearest source (Pang, arXiv:2609.05914): the two
 share no theorem, neither cites the other, and they meet at zero skewness,
 where this extremizer attains that entry's $c(0)$.  Unrefereed; not
 formalized.}
+
+\section{Set theory}
+
+\entry{ZFC closure kernels and small inconsistency-search machines}
+{set-theory/zfc-closure-kernels}
+{article.tex}{batch~143: zfc\_closure\_research.zip + zfc\_closure\_research (1).zip + zfc\_exact\_fiber\_hulls.zip (arrival \texttt{9e5b610259})}
+{Three complementary manuscripts on bounded-image closure, seeded positive
+closure and exact-fiber transitive hulls, calibrated mathematically to ZF
+without Foundation and then to ZFC. The seeded manuscript is the base:
+it derives inhabitedness and the usual set-existence axioms from
+Extensionality and one schema. A reconciliation README preserves the
+alternatives, distinct syntax metrics and executable evidence. Continues
+\dir{SetTheory/ClosureAxiomatization}; its existing closure equivalence does
+not formalize these new kernels. The current machine goal requires a ZFC
+proof of the halting--inconsistency equivalence; the delivered PA claims and
+unfulfilled certification obligations are retained. No new transition table
+or state bound. Placement \texttt{b07d1a27b}; unrefereed and not formalized.}
 
 \end{document}

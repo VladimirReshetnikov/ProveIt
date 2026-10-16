@@ -2,14 +2,16 @@
 
 # Research reports
 
-Two hundred and eighty-nine independent mathematical research packages, unpacked
+Two hundred and ninety independent mathematical research packages, unpacked
 from the
-archives in which they were delivered and grouped by subject.  Each directory
-holds a typeset article with its LaTeX source, a `README.md`, and in most cases
+archives in which they were delivered and grouped by subject.  Most directories
+hold a typeset article with its LaTeX source, a `README.md`, and in most cases
 verification code together with the recorded output of running it.
+The closure-kernel reconciliation retains the base TeX source; its delivered
+PDFs remain recoverable from the committed arrival archives.
 
 **[`manifest.pdf`](manifest.pdf)** ([source](manifest.tex)) is the catalogue: it
-numbers all two hundred and eighty-nine reports, names the problem each one attacks
+numbers all two hundred and ninety reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
 AI-assisted drafts; none is refereed or machine-checked, and the manifest
@@ -32,7 +34,8 @@ records what each report claims rather than verifying it.
 | [`hilbert-tenth-problem/`](hilbert-tenth-problem) — witness-faithful Diophantine certificates for discrete computation; Diophantine laws of probabilistic, quantum and continuous computation; recurrence and liveness beyond halting; groups as Diophantine substrates; signal-machine collision certificates; exact events in stochastic and thermal systems; quadratic orthant certificates; polynomial witness histories; smooth Diophantine finalizers; five-particle binary automata; fixed universal polynomials; periodic turmites and a literal Langton ant | 12 |
 | [`convex-geometry/`](convex-geometry) — optimal simplex products for projection-body volume | 1 |
 | [`probability/`](probability) — tree-broadcast renormalization, longest progressions in random sets, a Bose-gas crossover, random reshuffling, exponential tilting and contingency-table sampling, nonuniform coupon collection, total variation of product laws, Gaussian quadratic forms | 9 |
-| **Total** | **289** |
+| [`set-theory/`](set-theory) — closure kernels equiconsistent with ZFC and small inconsistency-search machines | 1 |
+| **Total** | **290** |
 
 ## Later deliveries
 
@@ -2227,6 +2230,18 @@ continuations of the unified PolyLog manuscript, went to the same place as
 one merged report (`d4dead2c6`) and brought nothing here. No statement of
 batch 138 is formalized, and nothing was submitted to the OEIS.
 
+Batch 143 (16 October 2026, arrival `9e5b610259`) opens
+[`set-theory/`](set-theory) with
+[`zfc-closure-kernels`](set-theory/zfc-closure-kernels), merging three
+complementary manuscripts on bounded-image, seeded and exact-fiber closure.
+The seeded manuscript is the base because it removes the separate
+inhabitedness axiom. Placement `b07d1a27b` preserves its article and all
+three ancillary packages; the report README reconciles the sources without
+rewriting them. Their mathematical calibration is to ZF without Foundation,
+and then ZFC; no new transition table or state bound is supplied. The current
+machine goal requires a ZFC proof, while the delivered PA claims remain
+recorded with their certification limits.
+
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
 own theorems are not formalized.
@@ -2238,6 +2253,12 @@ latexmk -pdf manifest.tex && latexmk -c manifest.tex
 ```
 
 ## Merged reports
+
+Batch 143's [closure kernels](set-theory/zfc-closure-kernels) are a
+complementary merge with a reconciliation README: the seeded base, BIC
+control and exact-fiber alternative retain their distinct hypotheses,
+metrics and verification evidence. The member articles remain recoverable
+from the committed arrival archives.
 
 One hundred and fifty-four archives arrived, in ten deliveries.  Seven of the
 resulting reports — the surreal-number ones, including the merged surcomplex
@@ -2385,7 +2406,7 @@ Four maintained reports are now two, representing five original manuscripts:
 | [Minimal infinitary ordinal sum](ordinals-and-order-types/ordinal-arithmetic/lipparini-minimal-infinitary-sum/) | Both solutions of Lipparini Problem 6.2: profile/absorption and corrected-block proofs, distinct consequences, both implementations and audits |
 | [Finite-alphabet transfinite words](ordinals-and-order-types/transfinite-words/order-types-below-omega-squared/) | Finite-height atom induction plus the existing two-source guarded-block report: selected-tail classification, exact strata, both lower-bound routes and both computational suites |
 
-The collection now has **111** reports, including **19** in ordinals and order
+Immediately after that consolidation, the collection had **111** reports, including **19** in ordinals and order
 types. Old report directories contain redirects. Every existing destination
 label survives; incoming label and support-file mappings are in each report's
 `MERGE_NOTES.md`. Original sources remain recoverable in Git. The
