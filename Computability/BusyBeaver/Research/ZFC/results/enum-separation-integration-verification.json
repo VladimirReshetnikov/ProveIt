@@ -1,0 +1,65 @@
+{
+  "scope": "Scoped Enum254 correction and quotient Separation integration; previously verified62 dependencies reused, no full closure or bootstrap rebuild.",
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "scratch": "/tmp/zfc-enum-separation-integration-n2oad713",
+  "dependency_cache": "/tmp/zfc-gic-boxes-integration-1e89yz70",
+  "default_source_units": 64,
+  "research_modules": 58,
+  "dependency_order_checked": true,
+  "original_enum_failure": {
+    "returncode": 1,
+    "seconds": 7.762,
+    "output": "/tmp/zfc-enum-separation-integration-n2oad713/OriginalEnum254.lean:711:26: error: Application type mismatch: The argument\n  hnone\nhas type\n  \u2200 (D : Type) (mem : D \u2192 D \u2192 Prop),\n    (\u2200 (x : D), \u00acmem x x) \u2192 (\u2200 (f : Tarski.NF), EncBundle f \u2192 \u2200 (e : Nat \u2192 D), Tarski.Sat mem e f) \u2192 False\nbut is expected to have type\n  \u2200 (D : Type) (mem : D \u2192 D \u2192 Prop),\n    (\u2200 (x : D), \u00acmem x x) \u2192\n      (\u2200 (f : Tarski.NF), EncBundle f \u2192 \u2200 (e : Nat \u2192 D), Tarski.Sat mem e f) \u2192 \u2200 (a : Nat \u2192 D), False\nin the application\n  c254_complete hnone\n",
+    "source_commit": "0e3b7b0caf"
+  },
+  "modules": [
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Enum254.lean",
+      "source_sha256": "e44edf445c97907c1adec57ebb41afb072a2fb1c67b1b2b4dc7911b3caaa79da",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-enum-separation-integration-n2oad713/BusyBeaver/ZFC/Enum254.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Enum254.lean"
+      ],
+      "seconds": 7.799,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientSeparation.lean",
+      "source_sha256": "64ab6b82c643534de6e7d082717f0d798812ca78b7145d82c5e1c9ca5e857e65",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-enum-separation-integration-n2oad713/BusyBeaver/ZFC/QuotientSeparation.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientSeparation.lean"
+      ],
+      "seconds": 0.488,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean",
+      "source_sha256": "1a8ae358463c5cce7803f70ba93d1e4563291827cadcd9266d9cd5f260aa185f",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-enum-separation-integration-n2oad713/BusyBeaver/ZFC.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean"
+      ],
+      "seconds": 0.48,
+      "returncode": 0,
+      "output": ""
+    }
+  ],
+  "audit": {
+    "source": "import BusyBeaver.ZFC\nopen SetTheory.BusyBeaver.ZFC\n#print axioms Enum254.step_inv\n#print axioms Enum254.sound\n#print axioms Enum254.reach\n#print axioms Enum254.build\n#print axioms Enum254.complete\n#print axioms Enum254.enum_halts_iff\n#print axioms Enum254.halts_of_no_model\n#print axioms Code254.empty_domain_counterexample\n#print axioms QuotientSeparation.separation_instance\n#print axioms QuotientSeparation.quotient_separation\n#print axioms QuotientSeparation.quotient_sep_form\nexample : Enum254.Halts \u2194 Numeric254.NumThm 1 :=\n  Enum254.enum_halts_iff.trans (NumericCode254.numThm_iff_c254 1).symm\nexample (hnone : \u2200 (D : Type) (mem : D \u2192 D \u2192 Prop), (\u2200 x, \u00ac mem x x) \u2192\n    (\u2200 f, Code254.EncBundle f \u2192 \u2200 e : Nat \u2192 D, Tarski.Sat mem e f) \u2192\n    (Nat \u2192 D) \u2192 False) : Enum254.Halts := Enum254.halts_of_no_model hnone\nexample {V : Type} (mem : V \u2192 V \u2192 Prop) (hirr : \u2200 x, \u00ac mem x x)\n    (v : V) (h : Code254Models.ModelsDecoded mem) :\n    \u2200 phi env, SetTheory.Sat\n      (QuotientModel.quotientMember mem v\n        (Code254Models.modelsCPGIC_of_decoded mem hirr h (fun _ => v))) env\n      (SetTheory.Sep_form phi) :=\n  QuotientSeparation.quotient_sep_form mem v\n    (Code254Models.modelsCPGIC_of_decoded mem hirr h (fun _ => v))\n",
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "/tmp/zfc-enum-separation-integration-n2oad713/Audit.lean"
+    ],
+    "returncode": 0,
+    "output": "'SetTheory.BusyBeaver.ZFC.Enum254.step_inv' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Enum254.sound' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Enum254.reach' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Enum254.build' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Enum254.complete' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Enum254.enum_halts_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Enum254.halts_of_no_model' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254.empty_domain_counterexample' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.QuotientSeparation.separation_instance' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.QuotientSeparation.quotient_separation' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.QuotientSeparation.quotient_sep_form' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"
+  }
+}

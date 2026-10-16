@@ -98,3 +98,9 @@ an extensional structure with checked satisfaction. Full formula-indexed
 Separation and Replacement, the other quotient ZF axioms, the exact
 infinity comparison and the opposite ZFC-to-source direction remain
 separate proof obligations. No machine was changed or remeasured here.
+
+The subsequent [QuotientSeparation development](quotient_separation.md) now
+supplies the complete actual Separation schema, including arbitrary quotient
+parameter valuations. [The enumerator audit](enum254_review.md) separately
+checks the abstract enumerator/numerical-derivability equivalence. These
+advances retain the remaining interpretation and concrete simulation gaps.

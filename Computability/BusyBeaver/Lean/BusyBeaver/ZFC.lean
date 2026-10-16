@@ -45,6 +45,7 @@ import BusyBeaver.ZFC.Code254Models
 import BusyBeaver.ZFC.NumericCode254
 import BusyBeaver.ZFC.RegisterMark253
 import BusyBeaver.ZFC.RegisterIncrement253
+import BusyBeaver.ZFC.QuotientSeparation
 
 /-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC
 consistency theorem or state-count improvement is claimed by these imports. -/
