@@ -49,8 +49,7 @@ theorem theorem_1_2_holds_of_theorem_18_2
     (h18 : theorem_18_2) : theorem_1_2 := by
   intro k delta hk hdelta
   let delta0 : Real := min delta (1 / 2)
-  have hdelta0 : 0 < delta0 := by
-    exact lt_min hdelta (by norm_num)
+  have hdelta0 : 0 < delta0 := lt_min hdelta (by norm_num)
   have hdelta0le : delta0 ≤ 1 / 2 := min_le_right _ _
   obtain ⟨N, hN⟩ :=
     exists_nat_ge (max 1 (szemerediThreshold delta0 k))

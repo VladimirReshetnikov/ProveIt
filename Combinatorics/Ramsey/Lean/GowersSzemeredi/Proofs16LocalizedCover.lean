@@ -43,7 +43,6 @@ theorem IsPartition.good_union {X : Type*} [DecidableEq X] {M : Nat}
     (hmass : ∀ i, (1 - eta) * ((P i).card : Real) ≤ (H i).card) :
     Finset.univ.biUnion H ⊆ S ∧
       (1 - eta) * (S.card : Real) ≤ (Finset.univ.biUnion H).card := by
-  classical
   constructor
   · intro x hx
     obtain ⟨i, _, hi⟩ := Finset.mem_biUnion.mp hx
@@ -66,7 +65,6 @@ theorem IsPartition.good_union_mem_iff {X : Type*} [DecidableEq X] {M : Nat}
     (H : Fin M → Finset X) (hsub : ∀ i, H i ⊆ P i)
     (i : Fin M) {x : X} (hx : x ∈ P i) :
     x ∈ Finset.univ.biUnion H ↔ x ∈ H i := by
-  classical
   constructor
   · intro h
     obtain ⟨j, _, hj⟩ := Finset.mem_biUnion.mp h
@@ -85,7 +83,6 @@ def padMultilinearFamily {N k p : Nat} (mu : Fin p → Point N k → ZMod N)
 theorem padMultilinearFamily_isMultilinear {N k p q : Nat}
     (mu : Fin p → Point N k → ZMod N) (hmu : ∀ i, IsMultilinear (mu i))
     (i : Fin q) : IsMultilinear (padMultilinearFamily mu q i) := by
-  classical
   unfold padMultilinearFamily
   split_ifs
   · exact hmu _
@@ -115,7 +112,6 @@ theorem MultiplyLinearWith.on_partition {N k J : Nat} [NeZero N]
       (∀ j a i, IsMultilinear (mu j a i)) ∧
       ∀ j a x, x ∈ (R j a).carrier → x ∈ G → ∀ y,
         (x, y) ∈ Gamma → ∃ i, y = mu j a i x := by
-  classical
   choose M p H R nu hHsub hHmass hRpart hRproper hp hRwidth hnu hcover using
     fun j => hML sigma hs hs1 (B j) (hBproper j)
   let q := Nat.floor (Qb sigma)

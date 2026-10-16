@@ -18,7 +18,6 @@ theorem finite_graph_cover_dense_piece {X Y : Type*} [DecidableEq X]
     (hB : d * mass ≤ B.card) :
     ∃ i : Fin q, ∃ C : Finset X,
       C ⊆ B ∧ d / Q * mass ≤ C.card ∧ ∀ x ∈ C, f x = mu i x := by
-  classical
   obtain ⟨C, hpart, hC⟩ := finite_graph_cover_partition hq B f mu hcover
   have hqpos : (0 : Real) < q := by exact_mod_cast hq
   have hQpos : 0 < Q := hqpos.trans_le hQ
@@ -48,7 +47,6 @@ theorem MultiplyLinearFunction.dense_multilinear_box {N k : Nat} [NeZero N]
       C ⊆ B ∧ C ⊆ Q.carrier ∧
       (delta / 2) / ((multipleQ (r⁻¹ * (delta / 2)) gamma k) ^ r) * Q.carrier.card ≤ C.card ∧
       IsMultilinear mu ∧ ∀ x ∈ C, phi x = mu x := by
-  classical
   obtain ⟨M, q, H, Q, mu, hHsub, hHmass, hpart, hproper, hqbound, hwidth, hmu, hcover⟩ :=
     hML (delta / 2) (by positivity) (by linarith) P hP
   have hBHmass : delta / 2 * P.carrier.card ≤ (B ∩ H).card := by

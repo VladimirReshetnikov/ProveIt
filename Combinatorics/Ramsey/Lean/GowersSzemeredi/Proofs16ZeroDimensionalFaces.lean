@@ -8,7 +8,6 @@ namespace LeanProofs.GowersSzemeredi
 
 theorem isMultilinear_dimension_zero {N : Nat} (phi : Point N 0 → ZMod N) :
     IsMultilinear phi := by
-  classical
   let x0 : Point N 0 := fun i => Fin.elim0 i
   refine ⟨fun _ => phi x0, ?_⟩
   intro x
@@ -19,7 +18,6 @@ theorem multiplyLinearFunction_dimension_zero {N : Nat} [NeZero N]
     (B : Finset (Point N 0)) (phi : Point N 0 → ZMod N) {gamma r : Real}
     (hg : 0 < gamma) (hg1 : gamma ≤ 1) (hr : 1 ≤ r) :
     MultiplyLinearFunction gamma r B phi := by
-  classical
   intro theta ht ht1 P hP
   have hr0 : 0 < r := zero_lt_one.trans_le hr
   have hb : 0 < gamma * (r⁻¹ * theta) := by positivity

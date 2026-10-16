@@ -83,7 +83,6 @@ def section18BalancedReal {N : Nat} [NeZero N]
 lemma section18_balanced_eq_real {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (x : ZMod N) :
     balanced A x = (section18BalancedReal A x : Complex) := by
-  classical
   by_cases hx : x ∈ A <;>
     simp [balanced, indicator, section18BalancedReal, hx]
 
@@ -92,7 +91,6 @@ alias section18_density_bounds := cor25_density_bounds
 lemma section18_balancedReal_abs_le_one {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (x : ZMod N) :
     |section18BalancedReal A x| ≤ 1 := by
-  classical
   obtain ⟨hd0, hd1⟩ := section18_density_bounds A
   by_cases hx : x ∈ A
   · simp only [section18BalancedReal, hx, if_true]
@@ -105,7 +103,6 @@ lemma section18_balancedReal_abs_le_one {N : Nat} [NeZero N]
 lemma section18_balancedReal_sum_zero {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) :
     ∑ x : ZMod N, section18BalancedReal A x = 0 := by
-  classical
   simp only [section18BalancedReal, Finset.sum_sub_distrib]
   have hindicator :
       (∑ x : ZMod N, if x ∈ A then (1 : Real) else 0) = A.card := by
@@ -122,7 +119,6 @@ lemma section18_balancedReal_sum_inter {N : Nat} [NeZero N]
     (A S : Finset (ZMod N)) :
     ∑ x ∈ S, section18BalancedReal A x =
       ((A ∩ S).card : Real) - density A * S.card := by
-  classical
   simp only [section18BalancedReal, Finset.sum_sub_distrib]
   have hindicator :
       (∑ x ∈ S, if x ∈ A then (1 : Real) else 0) =
@@ -157,7 +153,6 @@ private lemma section18_partition_average {N M : Nat} [NeZero N]
 two live statements; no asymptotic absorption is used. -/
 theorem section18_cyclic_density_increment_holds_of_theorem_18_1
     (h181 : theorem_18_1) : section18_cyclic_density_increment := by
-  classical
   intro d alpha halpha halphaHalf
   obtain ⟨N0, hN0⟩ := h181 d alpha halpha halphaHalf
   refine ⟨N0, ?_⟩
@@ -187,8 +182,8 @@ theorem section18_cyclic_density_increment_holds_of_theorem_18_1
                 apply Finset.sum_congr rfl
                 intro x _hx
                 exact section18_balanced_eq_real A x
-        _ = ((∑ x ∈ (P i).carrier, f x : Real) : Complex) := by
-          exact (Complex.ofReal_sum (P i).carrier f).symm
+        _ = ((∑ x ∈ (P i).carrier, f x : Real) : Complex) :=
+          (Complex.ofReal_sum (P i).carrier f).symm
     rw [hcast, Complex.norm_real, Real.norm_eq_abs]
   have hdiscrepancyReal :
       epsilon * N ≤ ∑ i, |∑ x ∈ (P i).carrier, f x| := by

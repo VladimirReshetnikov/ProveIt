@@ -25,7 +25,6 @@ private def singletonNatAP (x : Nat) : NatAP where
 
 @[simp] private lemma singletonNatAP_carrier (x : Nat) :
     (singletonNatAP x).carrier = {x} := by
-  classical
   ext y
   simp [singletonNatAP, NatAP.carrier]
 
@@ -69,9 +68,7 @@ private lemma chunk_quotient_lt {c L : Nat} (j : Fin (c / L)) (i : Nat)
   have hdiv := Nat.div_add_mod c L
   by_cases hj : (j : Nat) + 1 = c / L
   · simp only [residueChunkLength, if_pos hj] at hi
-    rw [← hj] at hdiv
-    rw [Nat.mul_add, Nat.mul_one] at hdiv
-    rw [Nat.mul_comm L (j : Nat)] at hdiv
+    rw [← hj, Nat.mul_add, Nat.mul_one, Nat.mul_comm L (j : Nat)] at hdiv
     omega
   · simp only [residueChunkLength, if_neg hj] at hi
     have hjlt : (j : Nat) + 1 < c / L := Nat.lt_of_le_of_ne j.isLt hj
@@ -153,7 +150,6 @@ private lemma residueChunkAP_mem_iff {r u L : Nat}
       ∃ i, i < residueChunkLength (residueClassLength r u z.1) L
           (residueClassLength r u z.1 / L) z.2 ∧
         x = z.1 + (z.2 * L + i) * u := by
-  classical
   rw [residueChunkAP, NatAP.carrier]
   constructor
   · intro hx
@@ -189,7 +185,6 @@ private noncomputable def residueChunkFamily (r u L : Nat) :
 
 private lemma singletonNatAP_partition (r : Nat) :
     IsNatAPPartition (fun i : Fin r => singletonNatAP i) (Finset.range r) := by
-  classical
   constructor
   · intro x
     simp only [Finset.mem_range, singletonNatAP_carrier, Finset.mem_singleton]
@@ -209,7 +204,6 @@ private lemma residueChunkFamily_partition {r u L : Nat}
     (hu : 0 < u) (hur : u ≤ r) (hL : 0 < L)
     (hclass : ∀ a : Fin u, L ≤ residueClassLength r u a) :
     IsNatAPPartition (residueChunkFamily r u L) (Finset.range r) := by
-  classical
   let E := Fintype.equivFin (ResidueChunkIndex r u L)
   constructor
   · intro x
@@ -271,15 +265,13 @@ private lemma residueChunkFamily_partition {r u L : Nat}
     rcases w' with ⟨a', j'⟩
     dsimp only at ha
     subst a'
-    have hqmul : (j * L + i) * u = (j' * L + i') * u := by
-      exact Nat.add_left_cancel (hxi.symm.trans hxi')
+    have hqmul : (j * L + i) * u = (j' * L + i') * u := Nat.add_left_cancel (hxi.symm.trans hxi')
     have hq : j * L + i = j' * L + i' :=
       Nat.eq_of_mul_eq_mul_right hu hqmul
     have hj : j = j' := chunk_index_unique j j' i i' hi hi' rfl hq
     subst j'
     have hzEq : z = z' := by
-      apply E.symm.injective
-      exact hzw.trans hzw'.symm
+      exact E.symm.injective (hzw.trans hzw'.symm)
     exact bne_iff_ne.mp hzz' hzEq
 
 private lemma linear_image_diameter {N r s : Nat} [NeZero N]
@@ -289,7 +281,6 @@ private lemma linear_image_diameter {N r s : Nat} [NeZero N]
     (hPpos : 0 < P.length)
     (hdiam : (P.length - 1) * centeredAbs (a * (P.step : ZMod N)) ≤ s) :
     diameterAtMost (P.carrier.image phi) s := by
-  classical
   let d : ZMod N := a * (P.step : ZMod N)
   let base : ZMod N := a * (P.start : ZMod N) + b
   let h : Nat := centeredAbs d
@@ -437,8 +428,7 @@ private lemma exists_small_image_step {N r s : Nat} (hN : 0 < N)
     push_cast
     field_simp
   have hzabs : |(z : Real)| ≤ (N : Real) / (t + 1) := by
-    rw [← hzdiv, abs_div, abs_of_pos hNreal] at happ
-    rw [div_le_iff₀ hNreal] at happ
+    rw [← hzdiv, abs_div, abs_of_pos hNreal, div_le_iff₀ hNreal] at happ
     calc
       |(z : Real)| ≤ 1 / ((t : Real) + 1) * N := happ
       _ = (N : Real) / (t + 1) := by ring
@@ -579,8 +569,7 @@ theorem lemma_2_3_holds : lemma_2_3 := by
     have huX : (u : Real) ≤ x + 1 := huReal.trans htlt.le
     have hLuReal : (L : Real) * u ≤ r := by
       calc
-        (L : Real) * u ≤ (q / 2) * (x + 1) := by
-          exact mul_le_mul hLle huX (by positivity) (by positivity)
+        (L : Real) * u ≤ (q / 2) * (x + 1) := mul_le_mul hLle huX (by positivity) (by positivity)
         _ ≤ q * x := by
           have hxone : (1 : Real) ≤ x := by linarith
           nlinarith [mul_nonneg hqnonneg (sub_nonneg.mpr hxone)]
@@ -666,8 +655,7 @@ theorem lemma_2_3_holds : lemma_2_3 := by
     have hlower : Real.sqrt ((r : Real) * s / (16 * N)) ≤ P.length := by
       rw [partitionRatio_quarter hN]
       exact hqQuarterLeL.trans hPgeReal
-    have hupper : (P.length : Real) ≤ Real.sqrt ((r : Real) * s / N) := by
-      exact hPleQ
+    have hupper : (P.length : Real) ≤ Real.sqrt ((r : Real) * s / N) := hPleQ
     exact ⟨hPproper, hPdiam, hlower, hupper⟩
 
 end LeanProofs.GowersSzemeredi

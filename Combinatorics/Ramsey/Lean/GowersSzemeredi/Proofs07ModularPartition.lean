@@ -32,13 +32,11 @@ def liftScalarDomain {N : Nat} (A : Finset (ZMod N)) : Finset (Point N 1) :=
 
 @[simp] theorem mem_liftScalarDomain {N : Nat} (A : Finset (ZMod N))
     (x : Point N 1) : x ∈ liftScalarDomain A ↔ x 0 ∈ A := by
-  classical
   simp [liftScalarDomain, BaseCase.pointOneEquiv]
 
 /-- Membership in a one-dimensional box is membership of its sole coordinate. -/
 theorem mem_constant_box_one {N : Nat} [NeZero N] (P : Box N 1) (x : ZMod N) :
     (fun _ : Fin 1 ↦ x) ∈ P.carrier ↔ x ∈ (P.axis 0).carrier := by
-  classical
   constructor
   · intro hx
     exact (Finset.mem_filter.mp hx).2 0
@@ -53,7 +51,6 @@ theorem mem_constant_box_one {N : Nat} [NeZero N] (P : Box N 1) (x : ZMod N) :
 theorem box_one_partition_axes {N M : Nat} [NeZero N]
     (P : Box N 1) (Q : Fin M → Box N 1) (hQ : IsBoxPartition Q P) :
     IsPartition (fun j ↦ ((Q j).axis 0).carrier) (P.axis 0).carrier := by
-  classical
   constructor
   · intro x
     have h := hQ.1 (fun _ : Fin 1 ↦ x)
@@ -74,7 +71,6 @@ theorem indexCell_scalar_linear {N : Nat} [Fact N.Prime]
     (hlinear : IntAPLinearOn S (BaseCase.boxOneIndexDomain P (liftScalarDomain A))
       (BaseCase.boxOneIndexMap P (fun x ↦ phi (x 0)))) :
     LinearOn (((BaseCase.indexCellBox P S).axis 0).carrier.filter fun x ↦ x ∈ A) phi := by
-  classical
   obtain ⟨a, b, hab⟩ := hlinear
   let d := ((BaseCase.indexCellBox P S).axis 0).step
   let start := ((BaseCase.indexCellBox P S).axis 0).start
@@ -119,7 +115,6 @@ theorem corollary_7_11_constant_modular (N : Nat) [Fact N.Prime]
       (∀ j, (Q j).step != 0 ∧ (Q j).IsProper ∧
         (R.length : Real) ^ cor711Exponent alpha 1 ≤ (Q j).length ∧
         LinearOn ((Q j).carrier.filter fun x ↦ x ∈ A) phi) := by
-  classical
   let P := R.asBox
   let B := liftScalarDomain A
   let U := BaseCase.boxOneIndexAP P

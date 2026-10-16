@@ -37,14 +37,12 @@ private lemma empty_candidateFamily {N : Nat} [NeZero N]
 private lemma candidateFamilies_nonempty {N : Nat} [NeZero N]
     (Gamma : Finset (Point N 1 × ZMod N)) (alpha : Real) :
     (candidateFamilies Gamma alpha).Nonempty := by
-  classical
   exact ⟨∅, by simp [candidateFamilies, empty_candidateFamily]⟩
 
 private lemma candidateUnion_subset {N : Nat} [NeZero N]
     {Gamma : Finset (Point N 1 × ZMod N)} {alpha : Real}
     {F : Finset (BaseCandidate N)} (hF : CandidateFamily Gamma alpha F) :
     candidateUnion F ⊆ Gamma := by
-  classical
   intro z hz
   rw [candidateUnion, Finset.mem_biUnion] at hz
   obtain ⟨C, hCF, hzC⟩ := hz
@@ -64,7 +62,6 @@ private lemma candidateUnion_card {N : Nat} [NeZero N]
     {Gamma : Finset (Point N 1 × ZMod N)} {alpha : Real}
     {F : Finset (BaseCandidate N)} (hF : CandidateFamily Gamma alpha F) :
     (candidateUnion F).card = ∑ C ∈ F, C.1.card := by
-  classical
   unfold candidateUnion
   rw [Finset.card_biUnion (candidate_graphs_pairwise hF)]
   simp
@@ -94,7 +91,6 @@ private noncomputable def relationSelection {N k : Nat}
 private lemma relationSelection_graph {N k : Nat}
     (Gamma : Finset (Point N k × ZMod N)) :
     GraphContained (relationProjection Gamma) (relationSelection Gamma) Gamma := by
-  classical
   intro x hx
   have hex : ∃ y, (x, y) ∈ Gamma := by
     obtain ⟨z, hzG, hzx⟩ := Finset.mem_image.mp hx
@@ -107,7 +103,6 @@ private lemma candidate_disjoint_of_subset_sdiff {N : Nat} [NeZero N]
     (hA : A ⊆ Gamma \ candidateUnion F) (C : BaseCandidate N)
     (hC : candidateGraph C ⊆ A) :
     ∀ D, D ∈ F → Disjoint (candidateGraph C) (candidateGraph D) := by
-  classical
   intro D hDF
   rw [Finset.disjoint_left]
   intro z hzC hzD
@@ -222,7 +217,6 @@ private lemma section16GoodBase_card {N : Nat} [NeZero N]
     (hsmall : ((relationProjection (Gamma \ candidateUnion F)).card : Real) <
       theta * N) :
     (1 - theta) * N ≤ (section16GoodBase Gamma F).card := by
-  classical
   have hproj : relationProjection (Gamma \ candidateUnion F) ⊆
       (Finset.univ : Finset (Point N 1)) := Finset.subset_univ _
   have hcardNat := Finset.card_sdiff_add_card_eq_card hproj
@@ -236,7 +230,6 @@ private lemma section16GoodBase_card {N : Nat} [NeZero N]
 private lemma restrictedRelation_subset_candidateUnion {N : Nat} [NeZero N]
     (Gamma : Finset (Point N 1 × ZMod N)) (F : Finset (BaseCandidate N)) :
     restrictRelation Gamma (section16GoodBase Gamma F) ⊆ candidateUnion F := by
-  classical
   intro z hz
   rw [restrictRelation, Finset.mem_filter] at hz
   by_contra hzUnion

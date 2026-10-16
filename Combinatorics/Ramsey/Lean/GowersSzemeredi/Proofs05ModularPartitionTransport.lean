@@ -16,7 +16,6 @@ theorem modAPAffine_partition {N m : Nat} [NeZero N] (P : ModAP N)
     (hP : P.IsProper) (R : Fin m → ModAP N)
     (hR : IsPartition (fun j => (R j).carrier) (modInterval N 0 P.length).carrier) :
     IsPartition (fun j => (modAPAffine P (R j)).carrier) P.carrier := by
-  classical
   constructor
   · intro x
     rw [← modAPAffine_image_indexInterval P]

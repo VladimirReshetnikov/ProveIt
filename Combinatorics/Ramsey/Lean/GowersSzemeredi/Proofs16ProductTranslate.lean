@@ -24,7 +24,6 @@ theorem weightedSimultaneousAdditiveEnergy_translate {N p : Nat} [NeZero N]
     (E : Finset (ZMod N)) (theta : ZMod N → Real) (psi : Fin p → ZMod N → ZMod N) (c : ZMod N) :
     weightedSimultaneousAdditiveEnergy (E.image fun x => x - c) (fun x => theta (x + c))
       (fun i x => psi i (x + c)) = weightedSimultaneousAdditiveEnergy E theta psi := by
-  classical
   unfold weightedSimultaneousAdditiveEnergy
   refine Fintype.sum_equiv (Equiv.addRight (fun _ : Fin 4 => c)) _ _ ?_
   intro q
@@ -66,7 +65,6 @@ theorem HasProductProperty.translate {N k : Nat} [NeZero N] {B : Finset (Point N
     {phi : Point N k → ZMod N} {gamma : Real} (h : HasProductProperty B phi gamma)
     (t : Point N k) :
     HasProductProperty (B.image fun x => x + t) (fun x => phi (x - t)) gamma := by
-  classical
   intro p j y E theta htheta hE
   have hE' : ∀ i x, x ∈ E.image (fun x => x - t j) →
       replaceCoordinate (y i - t) j x ∈ B := by
@@ -99,7 +97,6 @@ theorem RelationProductProperty.translate {N k : Nat} [NeZero N] {gamma : Real}
     {Gamma : Finset (Point N k × ZMod N)} (h : RelationProductProperty gamma Gamma)
     (t : Point N k) :
     RelationProductProperty gamma (Gamma.image fun z => (z.1 + t, z.2)) := by
-  classical
   intro C phi hC
   have hC' : GraphContained (C.image fun x => x - t) (fun x => phi (x + t)) Gamma := by
     intro x hx

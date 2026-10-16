@@ -32,7 +32,6 @@ theorem Section16FinalFreimanFamilies.good_domain {N q : Nat} [NeZero N]
     (x0 : Point N 1) :
     Section16FinalFreimanFamilies q (section16GoodDomain B H Y x0)
       (section16PhiOne phi x0) := by
-  classical
   intro t
   have hp := (h t).translate (-x0)
   have heq : (fun y => section16FinalCoordinateRestriction phi t (y - -x0)) =
@@ -58,7 +57,6 @@ theorem Section16FinalFreimanFamilies.cubic_slice_provider {N q : Nat} [Fact N.P
     Section16SliceProvider B phi
       (fun r _ => ((3 * (max 1 r * q) : Nat) : Real))
       (fun r => cubicBaseExponent (max 1 r * q)) := by
-  classical
   choose D f hf hc using h
   exact section16_cubic_slice_provider_of_freiman_families hq B phi D f hf hc
 

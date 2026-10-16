@@ -18,7 +18,6 @@ def relativeBalanced {N : Nat} (A S : Finset (ZMod N)) (delta : Real) : ZMod N �
 
 theorem relativeBalanced_eq_indicators {N : Nat} (A S : Finset (ZMod N)) (delta : Real)
     (x : ZMod N) : relativeBalanced A S delta x = indicator A x - (delta : Complex) * indicator S x := by
-  classical
   by_cases hxA : x ∈ A <;> by_cases hxS : x ∈ S <;>
     simp [relativeBalanced, relativeBalancedReal, indicator, hxA, hxS]
 
@@ -52,7 +51,6 @@ theorem relativeBalanced_discValued {N : Nat} (A S : Finset (ZMod N))
 theorem relativeBalancedReal_sum {N : Nat} (A S T : Finset (ZMod N)) (delta : Real) :
     ∑ x ∈ T, relativeBalancedReal A S delta x =
       ((A ∩ T).card : Real) - delta * (S ∩ T).card := by
-  classical
   have hindicator (B : Finset (ZMod N)) :
       (∑ x ∈ T, if x ∈ B then (1 : Real) else 0) = (B ∩ T).card := by
     rw [← Finset.sum_filter]

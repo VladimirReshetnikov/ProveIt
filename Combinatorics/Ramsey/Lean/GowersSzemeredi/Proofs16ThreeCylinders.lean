@@ -53,17 +53,14 @@ def cylLast {N : Nat} [NeZero N] (Λ : Finset (Point N 1 × ZMod N)) :
 
 theorem mem_cylMid {N : Nat} [NeZero N] {Λ : Finset (Point N 2 × ZMod N)}
     {z : Point N 3 × ZMod N} : z ∈ cylMid Λ ↔ (dropMid z.1, z.2) ∈ Λ := by
-  classical
   simp [cylMid]
 
 theorem mem_cylFirst {N : Nat} [NeZero N] {Λ : Finset (Point N 2 × ZMod N)}
     {z : Point N 3 × ZMod N} : z ∈ cylFirst Λ ↔ (dropFirst z.1, z.2) ∈ Λ := by
-  classical
   simp [cylFirst]
 
 theorem mem_cylLast {N : Nat} [NeZero N] {Λ : Finset (Point N 1 × ZMod N)}
     {z : Point N 3 × ZMod N} : z ∈ cylLast Λ ↔ (lastPt3 z.1, z.2) ∈ Λ := by
-  classical
   simp [cylLast]
 
 /-! ### Fibre bounds -/
@@ -73,7 +70,6 @@ theorem cylinder_fiber_le {N a b : Nat} [NeZero N] (pi : Point N a → Point N b
     (Λ : Finset (Point N b × ZMod N)) (w : Point N a) :
     (((Finset.univ : Finset (Point N a × ZMod N)).filter fun z => (pi z.1, z.2) ∈ Λ).filter
       fun z => z.1 = w).card ≤ (Λ.filter fun z => z.1 = pi w).card := by
-  classical
   refine Finset.card_le_card_of_injOn (fun z => (pi z.1, z.2)) (fun z hz => ?_) ?_
   · obtain ⟨hz1, hz2⟩ := Finset.mem_filter.mp hz
     obtain ⟨-, hzΛ⟩ := Finset.mem_filter.mp hz1
@@ -90,7 +86,6 @@ theorem cylinder_fiber_le {N a b : Nat} [NeZero N] (pi : Point N a → Point N b
 theorem polyPieceTwoGraphs_fiber_le {N : Nat} [NeZero N] {theta gamma : Real} {M : Nat}
     (P : Fin M → PolyPieceTwo N theta gamma) (x : Point N 2) :
     ((polyPieceTwoGraphs P).filter fun z => z.1 = x).card ≤ M := by
-  classical
   unfold polyPieceTwoGraphs
   rw [Finset.filter_biUnion]
   calc (Finset.univ.biUnion fun c => (partialGraph (P c).D (P c).phi).filter fun z => z.1 = x).card
@@ -138,7 +133,6 @@ theorem MultiplyLinearWith.cylMid {N : Nat} [NeZero N] [Fact N.Prime]
     (hE : ∀ t, 0 < t → t ≤ 1 → 0 < Eb t ∧ Eb t ≤ 1) :
     MultiplyLinearWith (fun t => max (Qb t) ((3 ^ (2 + 1) * M : Nat) : Real))
       (fun t => Eb t / 16) (cylMid Λ) := by
-  classical
   have h := hML.relation_lift_last M hfib hQ hE (by norm_num)
   have h2 := MultiplyLinearWith.coordinateReindex h (Equiv.swap (1 : Fin 3) 2)
   refine MultiplyLinearWith.subset h2 ?_
@@ -160,7 +154,6 @@ theorem MultiplyLinearWith.cylFirst {N : Nat} [NeZero N] [Fact N.Prime]
     (hE : ∀ t, 0 < t → t ≤ 1 → 0 < Eb t ∧ Eb t ≤ 1) :
     MultiplyLinearWith (fun t => max (Qb t) ((3 ^ (2 + 1) * M : Nat) : Real))
       (fun t => Eb t / 16) (cylFirst Λ) := by
-  classical
   have h := hML.relation_lift_last M hfib hQ hE (by norm_num)
   have h2 := MultiplyLinearWith.coordinateReindex h (finRotate 3).symm
   refine MultiplyLinearWith.subset h2 ?_
@@ -187,7 +180,6 @@ theorem MultiplyLinearWith.cylLast {N : Nat} [NeZero N] [Fact N.Prime]
     MultiplyLinearWith
       (fun t => max (max (Qb t) ((3 ^ (1 + 1) * M : Nat) : Real)) ((3 ^ (2 + 1) * M : Nat) : Real))
       (fun t => Eb t / 16 / 16) (cylLast Λ) := by
-  classical
   have h1 := hML.last_cylinder M hfib hQ hE
   have hfib1 : ∀ x : Point N 2, ((lastCylinder Λ).filter fun z => z.1 = x).card ≤ M := by
     intro x
@@ -223,7 +215,6 @@ theorem mem_threeRemainderRel {N : Nat} [NeZero N] {Λ1 Λ2 : Finset (Point N 2 
     {Λ3 : Finset (Point N 1 × ZMod N)} {z : Point N 3} {a b c : ZMod N}
     (h1 : (dropMid z, a) ∈ Λ1) (h2 : (dropFirst z, b) ∈ Λ2) (h3 : (lastPt3 z, c) ∈ Λ3) :
     (z, a + b - c) ∈ threeRemainderRel Λ1 Λ2 Λ3 := by
-  classical
   unfold threeRemainderRel relationSum relationScale
   refine Finset.mem_image.mpr ⟨((z, a + b), (z, -1 * c)), Finset.mem_filter.mpr
     ⟨Finset.mem_product.mpr ⟨?_, ?_⟩, rfl⟩, by simp only [Prod.mk.injEq, true_and]; ring⟩

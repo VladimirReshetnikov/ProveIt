@@ -48,7 +48,6 @@ theorem proper_lemma_16_6_with :
     B phi H Jbase H1 Y phiPrime
   dsimp only
   intro hH1 hML hselection P Q I hP hproduct hmP
-  classical
   let theta1 := section16ThetaOne theta gamma k
   let delta := section16Delta theta1
   let D (x : Point N k) := Finset.univ.filter (fun y => (x, y) ∈ section16InducedDomain B H Y)

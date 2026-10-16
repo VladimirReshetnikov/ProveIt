@@ -24,8 +24,7 @@ theorem finiteFejerKernel_le_one {N L : Nat} [NeZero N] (hL : 0 < L) (x : ZMod N
         simp only [exponential, AddChar.norm_apply, Finset.sum_const, Finset.card_univ,
           Fintype.card_fin, nsmul_eq_mul, mul_one]
   unfold finiteFejerKernel
-  apply (div_le_one (by positivity)).mpr
-  exact pow_le_pow_left₀ (norm_nonneg _) hnorm 2
+  exact (div_le_one (by positivity)).mpr (pow_le_pow_left₀ (norm_nonneg _) hnorm 2)
 
 theorem finiteFejerKernel_expansion {N L : Nat} [NeZero N] (x : ZMod N) :
     (finiteFejerKernel L x : Complex) =

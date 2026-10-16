@@ -36,7 +36,6 @@ theorem Section16SampledOrAnchoredOn.synchronized_compressed_cover {N k r m v : 
       (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
       (∀ j ij, IsMultilinear (nu j ij)) ∧
       ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z := by
-  classical
   let Gamma := fun i : Fin r => partialGraph (section16FinalCoordinateSection B (sample i))
     (section16FinalCoordinateRestriction phi (sample i))
   have hGamma : ∀ i, ProperMultiplyLinear gamma s (Gamma i) := fun i => hsections (sample i)
@@ -81,8 +80,7 @@ theorem Section16SampledOrAnchoredOn.synchronized_compressed_cover {N k r m v : 
     apply hc (e.symm j).1 (e.symm j).2 h hhR hhH (phi (appendCoordinate h (sample i)))
     apply Finset.mem_biUnion.mpr
     refine ⟨i, Finset.mem_univ _, ?_⟩
-    apply Finset.mem_image.mpr
-    exact ⟨h, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hD hi⟩, rfl⟩
+    exact Finset.mem_image.mpr (⟨h, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hD hi⟩, rfl⟩)
   choose nu hnu hcov using hlift
   let G := F ∩ lastProductSet H I.carrier
   have hprod := lastProductSet_good_mass T.carrier H I.carrier ε hH hHm

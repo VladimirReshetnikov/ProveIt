@@ -66,7 +66,6 @@ theorem HasProductProperty.final_section {N k : Nat} [NeZero N] {gamma : Real}
     (hprod : HasProductProperty B phi gamma) (t : ZMod N) :
     HasProductProperty (section16FinalCoordinateSection B t)
       (section16FinalCoordinateRestriction phi t) gamma := by
-  classical
   have h := hprod.coordinateFace (lastSliceFace k t)
   have hdom : (lastSliceFace k t).domain B = section16FinalCoordinateSection B t := by
     ext x

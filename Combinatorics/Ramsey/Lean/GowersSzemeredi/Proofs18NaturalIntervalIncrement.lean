@@ -9,14 +9,12 @@ namespace LeanProofs.GowersSzemeredi
 
 /-- Positive step already implies properness over the natural numbers. -/
 theorem NatAP.isProper_of_step_pos (P : NatAP) (hstep : 0 < P.step) : P.IsProper := by
-  classical
   refine ⟨hstep, ?_⟩
   unfold NatAP.carrier
   rw [Finset.card_image_of_injective]
   · simp
   · intro i j hij
-    apply Fin.ext
-    exact (Nat.mul_right_cancel hstep) (Nat.add_left_cancel hij)
+    exact Fin.ext ((Nat.mul_right_cancel hstep) (Nat.add_left_cancel hij))
 
 /-- A proper progression contained in a short interval lifts, after possibly
 reversing its orientation, to exactly the same set of natural representatives. -/
@@ -25,7 +23,6 @@ theorem ModAP.exists_natAP_of_short_interval {N L : Nat} [NeZero N]
     (hsub : P.carrier ⊆ finiteIntervalImage N (Finset.univ : Finset (Fin L))) :
     ∃ Q : NatAP, Q.IsProper ∧ Q.length = P.length ∧
       Q.carrier = P.carrier.image ZMod.val ∧ Q.carrier ⊆ Finset.range L := by
-  classical
   let S := P.carrier.image ZMod.val
   have hS : S.card = P.length := by
     rw [Finset.card_image_of_injective _ (ZMod.val_injective N)]
@@ -72,7 +69,6 @@ theorem ModAP.exists_natAP_of_short_interval {N L : Nat} [NeZero N]
 theorem finiteIntervalImage_val {N L : Nat} [NeZero N] (hL : L ≤ N)
     (B : Finset (Fin L)) :
     (finiteIntervalImage N B).image ZMod.val = B.image Fin.val := by
-  classical
   unfold finiteIntervalImage
   rw [Finset.image_image]
   apply Finset.image_congr
@@ -85,7 +81,6 @@ theorem card_inter_natAP_of_carrier_eq {N : Nat} [NeZero N]
     (P : ModAP N) (Q : NatAP) (hQ : Q.carrier = P.carrier.image ZMod.val)
     (A : Finset (ZMod N)) :
     (A.image ZMod.val ∩ Q.carrier).card = (A ∩ P.carrier).card := by
-  classical
   rw [hQ, ← Finset.image_inter _ _ (ZMod.val_injective N),
     Finset.card_image_of_injective _ (ZMod.val_injective N)]
 

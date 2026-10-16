@@ -25,7 +25,6 @@ private theorem constant_box_partition {N k : Nat} [NeZero N]
     ∃ M : Nat, ∃ Q : Fin M → Box N k,
       IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧ (∀ j, W ≤ (Q j).width) ∧
       ∀ j, diameterAtMostReal ((Q j).carrier.image f) D := by
-  classical
   refine ⟨1, fun _ => P, ?_, fun _ => hP, fun _ => hW, ?_⟩
   · constructor
     · intro x; simp
@@ -52,8 +51,7 @@ private theorem height_constant_partition {N k h m : Nat} [NeZero N]
   have hK := multilinearPartitionConstant_eight_le hk
   have hK1 : (1 : Real) ≤ multilinearPartitionConstant k := by exact_mod_cast (show 1 ≤ multilinearPartitionConstant k by omega)
   have hpow1 : (1 : Real) ≤ (multilinearPartitionConstant k : Real) ^ h := one_le_pow₀ hK1
-  have he : multilinearHeightExponent k h ≤ 1 := by
-    exact (inv_le_one₀ (by positivity)).2 hpow1
+  have he : multilinearHeightExponent k h ≤ 1 := (inv_le_one₀ (by positivity)).2 hpow1
   have hwidth : (m : Real) ^ multilinearHeightExponent k h ≤ P.width := by
     calc
       _ ≤ (m : Real) ^ (1 : Real) := Real.rpow_le_rpow_of_exponent_le hm1 he

@@ -306,8 +306,7 @@ private lemma overwritePrefix_succ {d n : Nat} (hn : n < d)
     · have hi' : ¬i.val < n + 1 := by omega
       have hij : i ≠ (⟨n, hn⟩ : Fin d) := by
         intro h
-        apply hin
-        exact Fin.ext_iff.mp h
+        exact hin (Fin.ext_iff.mp h)
       simp [overwritePrefix, hi, hi', hij]
 
 private lemma duplicate_prefixFamily {N d n : Nat} (hn : n < d)
@@ -451,8 +450,8 @@ theorem gowers_cauchy_schwarz {N d : Nat} [NeZero N]
     simpa only [Real.rpow_natCast] using hpower
   calc
     ‖cubeForm f‖ ≤ R ^ (m : Real)⁻¹ := hroot
-    _ = ∏ e : Fin d → Bool, G e ^ (m : Real)⁻¹ := by
-      exact (Real.finsetProd_rpow Finset.univ G (fun e _ => hG e) _).symm
+    _ = ∏ e : Fin d → Bool, G e ^ (m : Real)⁻¹ :=
+      (Real.finsetProd_rpow Finset.univ G (fun e _ => hG e) _).symm
     _ = ∏ e : Fin d → Bool,
         ‖cubeForm (d := d) (fun (_ : Fin d → Bool) => f e)‖ ^
           ((1 : Real) / (2 : Real) ^ d) := by

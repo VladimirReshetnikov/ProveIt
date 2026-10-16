@@ -15,7 +15,6 @@ theorem disjoint_class_deletion {X I : Type*} [DecidableEq X] [Fintype I]
     (hdisj : Pairwise (fun i j => Disjoint (A i) (A j))) :
     ∃ E : Finset X, E ⊆ S ∧ (∀ i, E ∩ A i = D i) ∧
       (S.card : ℝ) - ((∑ i, ((A i).card : ℝ)) - ∑ i, ((D i).card : ℝ)) ≤ E.card := by
-  classical
   let bad := Finset.univ.biUnion (fun i => A i \ D i)
   have hbad : bad ⊆ S := by
     intro x hx
@@ -96,7 +95,6 @@ theorem section16_prune_and_sample_good_set {α β : Type*}
       ∀ h t x, (h, x) ∈ E → x ∈ C (h, t) →
         ∃ i j, sample i ∈ C (h, t) ∧ sample j ∈ C (h, t) ∧
           sample i ≠ sample j ∧ (h, sample i) ∈ E ∧ (h, sample j) ∈ E := by
-  classical
   let A := fun i : β × Fin q => section16FibreClassSet i.1 (C i)
   have hAdisj := section16FibreClassSet_pairwise C hdisj
   obtain ⟨sample, D, hD, hanchors, hloss⟩ :=

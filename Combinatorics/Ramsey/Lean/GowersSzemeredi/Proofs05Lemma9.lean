@@ -188,8 +188,7 @@ theorem polynomialPartitionIteratedRoundingThreshold_le
         pow_le_pow_left₀ (by omega) ih K
       calc
         polynomialPartitionIteratedRoundingThreshold T K (n + 1) + 3 =
-            (S + 2) ^ K + 3 := by
-              rfl
+            (S + 2) ^ K + 3 := rfl
         _ <= (S + 3) ^ K := hgap
         _ <= B ^ K := hbase
         _ = (2 * T) ^ (K ^ (n + 1)) := by

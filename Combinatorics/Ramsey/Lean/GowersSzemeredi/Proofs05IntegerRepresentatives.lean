@@ -26,7 +26,6 @@ def NatAP.toModAP (N : Nat) (Q : NatAP) : ModAP N :=
 
 theorem NatAP.toModAP_carrier (N : Nat) (Q : NatAP) :
     (Q.toModAP N).carrier = Q.carrier.image (fun x : Nat => (x : ZMod N)) := by
-  classical
   simp only [NatAP.toModAP, ModAP.carrier, NatAP.carrier, Finset.image_image]
   apply Finset.image_congr
   intro i _
@@ -41,7 +40,6 @@ theorem NatAP.toModAP_hasIntegerRepresentatives {N : Nat} (Q : NatAP)
 nonzero modulus. No primality hypothesis is needed. -/
 theorem ModAP.HasIntegerRepresentatives.isProper {N : Nat} [NeZero N]
     {P : ModAP N} (hP : P.HasIntegerRepresentatives) : P.IsProper := by
-  classical
   obtain ⟨Q, hQ, hlen, hsub, himage⟩ := hP
   have hinj : Set.InjOn (fun x : Nat => (x : ZMod N)) (Q.carrier : Set Nat) := by
     intro x hx y hy heq
@@ -57,7 +55,6 @@ theorem ModAP.HasIntegerRepresentatives.val_carrier {N : Nat} [NeZero N]
     {P : ModAP N} (hP : P.HasIntegerRepresentatives) :
     ∃ Q : NatAP, Q.IsProper ∧ Q.length = P.length ∧
       P.carrier.image ZMod.val = Q.carrier := by
-  classical
   obtain ⟨Q, hQ, hlen, hsub, himage⟩ := hP
   refine ⟨Q, hQ, hlen, ?_⟩
   rw [← himage, Finset.image_image]
@@ -75,15 +72,13 @@ theorem NatAP.toModAP_hasIntegerRepresentatives_of_bound {N : Nat}
     (Q : NatAP) (hstep : 0 < Q.step)
     (hbound : ∀ i : Nat, i < Q.length → Q.start + i * Q.step < N) :
     (Q.toModAP N).HasIntegerRepresentatives := by
-  classical
   apply Q.toModAP_hasIntegerRepresentatives
   · refine ⟨hstep, ?_⟩
     unfold NatAP.carrier
     rw [Finset.card_image_of_injective]
     · simp
     · intro i j hij
-      apply Fin.ext
-      exact Nat.mul_right_cancel hstep (Nat.add_left_cancel hij)
+      exact Fin.ext (Nat.mul_right_cancel hstep (Nat.add_left_cancel hij))
   · intro x hx
     obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
     exact Finset.mem_range.mpr (hbound i i.isLt)
@@ -104,15 +99,14 @@ theorem wrappingThreeTermAP_isProper : wrappingThreeTermAP.IsProper := by
 properness required by the paper's integer-representative convention. -/
 theorem wrappingThreeTermAP_noIntegerRepresentatives :
     ¬ wrappingThreeTermAP.HasIntegerRepresentatives := by
-  classical
   rintro ⟨Q, hQ, hlen, hsub, himage⟩
   have hlen3 : Q.length = 3 := hlen
   have hterm (i : Nat) (hi : i < 3) :
       Q.start + i * Q.step < 7 ∧
         (Q.start + i * Q.step = 0 ∨ Q.start + i * Q.step = 1 ∨
           Q.start + i * Q.step = 6) := by
-    have hmem : Q.start + i * Q.step ∈ Q.carrier := by
-      exact Finset.mem_image.mpr ⟨⟨i, by omega⟩, Finset.mem_univ _, rfl⟩
+    have hmem : Q.start + i * Q.step ∈ Q.carrier :=
+      Finset.mem_image.mpr ⟨⟨i, by omega⟩, Finset.mem_univ _, rfl⟩
     have hlt := Finset.mem_range.mp (hsub hmem)
     have hmod : ((Q.start + i * Q.step : Nat) : ZMod 7) ∈
         wrappingThreeTermAP.carrier := by

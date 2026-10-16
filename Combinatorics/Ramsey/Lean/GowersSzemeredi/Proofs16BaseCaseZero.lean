@@ -21,8 +21,8 @@ theorem multipleQ_rpow_ge_parameter (k : Nat) {gamma theta r : Real}
   have hb1 : gamma * (r⁻¹ * theta) ≤ 1 :=
     hbr.trans (inv_le_one_of_one_le₀ hr)
   have hc : 0 < multipleC (r⁻¹ * theta) gamma k := pow_pos hb _
-  have hcr : multipleC (r⁻¹ * theta) gamma k ≤ r⁻¹ := by
-    exact (pow_le_of_le_one hb.le hb1 (by positivity)).trans hbr
+  have hcr : multipleC (r⁻¹ * theta) gamma k ≤ r⁻¹ :=
+    (pow_le_of_le_one hb.le hb1 (by positivity)).trans hbr
   have hq : r ≤ multipleQ (r⁻¹ * theta) gamma k := by
     simpa only [inv_inv, multipleQ] using inv_anti₀ hc hcr
   exact hq.trans (Real.self_le_rpow_of_one_le (hr.trans hq) hr)
@@ -31,7 +31,6 @@ theorem multiplyLinear_relation_dimension_zero {N : Nat} [NeZero N]
     (Gamma : Finset (Point N 0 × ZMod N)) {gamma r : Real}
     (hg : 0 < gamma) (hg1 : gamma ≤ 1) (hr : 1 ≤ r)
     (hcard : (Gamma.card : Real) ≤ r) : MultiplyLinear gamma r Gamma := by
-  classical
   let e : Fin Gamma.card ≃ {z // z ∈ Gamma} := Gamma.equivFin.symm
   intro theta ht ht1 P hP
   have hc : 0 < multipleC (r⁻¹ * theta) gamma 0 := pow_pos (by positivity) _
@@ -56,7 +55,6 @@ theorem multiplyLinear_relation_dimension_zero {N : Nat} [NeZero N]
     simp only [Equiv.apply_symm_apply]
 
 theorem theorem_16_2_zero : Theorem162At 0 := by
-  classical
   intro gamma theta hg hg1 ht ht1
   refine ⟨0, ?_⟩
   intro N _ _ _ Gamma hcard _

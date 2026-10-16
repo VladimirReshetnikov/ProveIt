@@ -29,7 +29,6 @@ theorem rowPairMass_sum {X Y : Type*} [DecidableEq X]
     (hD : ∀ h ∈ I, D h ⊆ S) :
     ∑ x₁ ∈ S, ∑ x₂ ∈ S, rowPairMass I D x₁ x₂ =
       ∑ h ∈ I, ((D h).card : Real) ^ 3 := by
-  classical
   unfold rowPairMass
   conv_lhs =>
     arg 2
@@ -51,7 +50,6 @@ theorem rowPairMass_diagonal {X Y : Type*} [DecidableEq X]
     (hD : ∀ h ∈ I, D h ⊆ S) :
     ∑ x ∈ S, rowPairMass I D x x =
       ∑ h ∈ I, ((D h).card : Real) ^ 2 := by
-  classical
   unfold rowPairMass
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
@@ -67,7 +65,6 @@ theorem rowPairMass_off_diagonal {X Y : Type*} [DecidableEq X]
     ∑ x₁ ∈ S, ∑ x₂ ∈ S, (if x₁ = x₂ then 0 else rowPairMass I D x₁ x₂) =
       (∑ h ∈ I, ((D h).card : Real) ^ 3) -
       ∑ h ∈ I, ((D h).card : Real) ^ 2 := by
-  classical
   rw [← rowPairMass_sum S I D hD, ← rowPairMass_diagonal S I D hD,
     ← Finset.sum_sub_distrib]
   apply Finset.sum_congr rfl
@@ -89,7 +86,6 @@ theorem exists_distinct_rowPairMass_of_moments {X Y : Type*} [DecidableEq X]
       (∑ h ∈ I, ((D h).card : Real) ^ 3) -
       ∑ h ∈ I, ((D h).card : Real) ^ 2) :
     ∃ x₁ ∈ S, ∃ x₂ ∈ S, x₁ ≠ x₂ ∧ t ≤ rowPairMass I D x₁ x₂ := by
-  classical
   have havg : (∑ _ ∈ S ×ˢ S, t) ≤
       ∑ p ∈ S ×ˢ S, (if p.1 = p.2 then 0 else rowPairMass I D p.1 p.2) := by
     simp only [Finset.sum_product]

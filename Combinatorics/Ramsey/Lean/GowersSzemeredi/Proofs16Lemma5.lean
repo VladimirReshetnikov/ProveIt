@@ -35,7 +35,6 @@ theorem section16_selected_side_model_with {N k : Nat} [NeZero N]
       HasBohrDifferenceModel (section16CubeMultifunctionDomain B h)
         (section16InducedCubeMap B h phi) (section16LargeSpectrum B h (section16Delta (t1)))
         (zeta) Y psi := by
-  classical
   let a := t1 / 4
   let D := section16CubeMultifunctionDomain B h
   have ha : 0 < a := ha0
@@ -114,7 +113,6 @@ theorem lemma_16_5_with {N k : Nat} [NeZero N] (t1 zeta : Real)
               (section16CubeMultifunctionDomain B h)
               (section16InducedCubeMap B h phi)
               (section16LargeSpectrum B h (section16Delta t1)) zeta (Y h) (psi h) := by
-  classical
   have ht1 : 0 ≤ t1 := by linarith
   obtain ⟨H, hmass, hgood⟩ := section16_good_sidelengths_with t1 B phi ht1 hB
   refine ⟨H, hmass, ?_⟩

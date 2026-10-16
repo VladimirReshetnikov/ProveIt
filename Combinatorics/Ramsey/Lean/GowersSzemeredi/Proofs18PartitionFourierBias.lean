@@ -14,7 +14,6 @@ theorem fourier_restrictToCell {N : Nat} [NeZero N] (S : Finset (ZMod N))
     (f : ZMod N → Complex) (r : ZMod N) :
     fourier (restrictToCell S f) r =
       ∑ x ∈ S, f x * exponential (-(r * x)) := by
-  classical
   rw [fourier, ZMod.dft_apply]
   simp only [restrictToCell, smul_eq_mul, mul_ite, mul_zero]
   rw [← Finset.sum_filter]
@@ -45,7 +44,6 @@ theorem exists_fourier_restrict_energy_bound {N : Nat} [NeZero N]
     ∃ r : ZMod N,
       (∑ a : Point N 1, ‖∑ s : ZMod N, cubeDifference (restrictToCell S f) a s‖ ^ 2) ≤
         (S.card : Real) ^ 2 * ‖fourier (restrictToCell S f) r‖ := by
-  classical
   let g := restrictToCell S f
   obtain ⟨r, _, hr⟩ := Finset.exists_max_image Finset.univ (fun r ↦ ‖fourier g r‖)
     Finset.univ_nonempty
@@ -93,7 +91,6 @@ theorem partition_linear_nonuniformity_fourier_bias {N K m : Nat} [NeZero N]
     (hfail : ¬ UniformOnPartition f 1 beta Q m) :
     ∃ r : Fin K → ZMod N,
       beta * N < ∑ i, ‖∑ x ∈ (Q i).carrier, f x * exponential (-(r i * x))‖ := by
-  classical
   have henergy : beta * (m : Real) ^ 3 * K <
       ∑ i, ∑ a : Point N 1, ‖∑ s : ZMod N, cubeDifference (restrictToCell (Q i).carrier f) a s‖ ^ 2 := by
     unfold UniformOnPartition at hfail

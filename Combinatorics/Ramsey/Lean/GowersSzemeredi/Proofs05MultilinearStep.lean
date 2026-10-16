@@ -46,7 +46,6 @@ theorem multiaffine_box_height_step {N k : Nat} [NeZero N]
       IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
       (∀ j, W ≤ (Q j).width) ∧
       ∀ j, diameterAtMostReal ((Q j).carrier.image (multiaffineEval F c)) (E + D) := by
-  classical
   obtain ⟨M, Q, hQpart, hQproper, hQwidth, hQlengths, hQstep⟩ :=
     section5_box_residue_partition P hP hk p u hp hu hsize
   have hQupper (i : Fin M) (j : Fin k) : ((Q i).axis j).length ≤ u := by

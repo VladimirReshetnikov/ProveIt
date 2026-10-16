@@ -45,7 +45,6 @@ theorem fejerRelation_count_signal {N L M : Nat}
     M ^ (Fintype.card I + 1) ≤
       countWhere (fun v : I → Fin L × Fin L =>
         fejerPairRelation v phi = 0 ∧ fejerPairRelation v feature = 0) := by
-  classical
   let V := {v : I → Fin L × Fin L //
     fejerPairRelation v phi = 0 ∧ fejerPairRelation v feature = 0}
   let f : Fin M × (I → Fin M) → V := fun z =>
@@ -57,8 +56,7 @@ theorem fejerRelation_count_signal {N L M : Nat}
     intro v w h
     have heq : ∀ i, (v.1, v.2 i) = (w.1, w.2 i) := by
       intro i
-      apply fejerShiftedPair_injective hML (positive i)
-      exact congrArg (fun z : V => z.1 i) h
+      exact fejerShiftedPair_injective hML (positive i) (congrArg (fun z : V => z.1 i) h)
     exact Prod.ext (congrArg (fun z : Fin M × Fin M => z.1) (heq (Classical.arbitrary I)))
       (funext fun i => congrArg (fun z : Fin M × Fin M => z.2) (heq i))
   have hcard := Fintype.card_le_of_injective f hinj

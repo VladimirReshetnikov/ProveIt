@@ -23,7 +23,6 @@ theorem MultiplyLinear.coordinateReindex {N k : Nat} [NeZero N]
     (h : MultiplyLinear gamma r Gamma) (e : Fin k ≃ Fin k) :
     MultiplyLinear gamma r
       (Gamma.image (fun z => (LeanProofs.GowersSzemeredi.coordinateReindex e z.1, z.2))) := by
-  classical
   intro theta ht ht1 P hP
   obtain ⟨M, q, H, Q, mu, hH, hHcard, hpart, hproper, hq, hwidth, hmu, hcover⟩ :=
     h theta ht ht1 (P.coordinateReindex e.symm) (hP.coordinateReindex e.symm)
@@ -54,7 +53,6 @@ theorem MultiplyLinearFunction.coordinateReindex {N k : Nat} [NeZero N]
     (h : MultiplyLinearFunction gamma r B phi) (e : Fin k ≃ Fin k) :
     MultiplyLinearFunction gamma r (B.image (LeanProofs.GowersSzemeredi.coordinateReindex e))
       (fun x => phi (LeanProofs.GowersSzemeredi.coordinateReindex e.symm x)) := by
-  classical
   have hh := MultiplyLinear.coordinateReindex h e
   have heq : (partialGraph B phi).image
       (fun z => (LeanProofs.GowersSzemeredi.coordinateReindex e z.1, z.2)) =
@@ -81,7 +79,6 @@ theorem CoordinateFace.multiplyLinear_of_reparametrization {N d l m : Nat} [NeZe
     {B : Finset (Point N d)} {phi : Point N d → ZMod N} {gamma r : Real}
     (h : MultiplyLinearFunction gamma r (G.domain B) (G.pullback phi)) :
     MultiplyLinearFunction gamma r (F.domain B) (F.pullback phi) := by
-  classical
   have hh := h.reindex e.symm
   have hdomain : (G.domain B).image (fun x i => x (e.symm i)) = F.domain B := by
     ext x

@@ -77,8 +77,7 @@ private lemma measureReal_intervalProbability_window {rho a : Real}
     (hrho : 0 < rho) (ha0 : 0 ≤ a) (ha1 : a ≤ 1) :
     (intervalProbability rho).real (Set.Icc (a - rho) (a + rho)) =
       (2 * rho) / (1 + 2 * rho) := by
-  rw [Measure.real, intervalProbability_window hrho ha0 ha1]
-  rw [ENNReal.toReal_ofReal]
+  rw [Measure.real, intervalProbability_window hrho ha0 ha1, ENNReal.toReal_ofReal]
   positivity
 
 private lemma measureReal_productProbability_window {rho a b : Real}
@@ -229,7 +228,6 @@ private lemma small_eighth_fibre_card_bound {N : Nat} [NeZero N]
     (countWhere (fun y : X =>
       ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)) : Real) ≤
         alpha ^ 2 * M * N / 8 := by
-  classical
   let T : Real := alpha ^ 2 * M / 8
   let f : ZMod N → Real := fun s =>
     if T ≤ (D.fibre s).card then 0 else 1
@@ -303,7 +301,6 @@ private lemma windowedSum_eq_filter {X : Type*} [DecidableEq X]
     (rho : Real) (a b w : X → Real) (U : Finset X) (p : Real × Real) :
     windowedSum rho a b w U p =
       ∑ y ∈ windowFilter rho a b U p, w y := by
-  classical
   unfold windowedSum windowFilter
   rw [Finset.sum_filter]
   apply Finset.sum_congr rfl
@@ -316,10 +313,8 @@ private lemma boundaryCount_eq_card_filter {X : Type*} [Fintype X]
     (rho sigma : Real) (a b : X → Real) (p : Real × Real) :
     boundaryCount rho sigma a b p =
       (boundaryFilter rho sigma a b p).card := by
-  classical
   unfold boundaryCount boundaryFilter
-  rw [Finset.card_eq_sum_ones, Nat.cast_sum]
-  rw [Finset.sum_filter]
+  rw [Finset.card_eq_sum_ones, Nat.cast_sum, Finset.sum_filter]
   apply Finset.sum_congr rfl
   intro y _
   by_cases hy : p ∈ normalizedBoundarySet rho sigma (a y) (b y)
@@ -340,14 +335,10 @@ private lemma mem_normalizedWindow_of_close_of_not_boundary
   simp only [not_or] at hpBoundary
   rcases hp with ⟨⟨hpAlo, hpAhi⟩, hpBlo, hpBhi⟩
   rcases hpBoundary with ⟨⟨⟨hAhi, hAlo⟩, hBhi⟩, hBlo⟩
-  have hpAhi' : p.1 < a + rho - sigma := by
-    exact lt_of_not_ge fun h => hAhi ⟨h, hpAhi⟩
-  have hpAlo' : a - rho + sigma < p.1 := by
-    exact lt_of_not_ge fun h => hAlo ⟨hpAlo, h⟩
-  have hpBhi' : p.2 < b + rho - sigma := by
-    exact lt_of_not_ge fun h => hBhi ⟨h, hpBhi⟩
-  have hpBlo' : b - rho + sigma < p.2 := by
-    exact lt_of_not_ge fun h => hBlo ⟨hpBlo, h⟩
+  have hpAhi' : p.1 < a + rho - sigma := lt_of_not_ge fun h => hAhi ⟨h, hpAhi⟩
+  have hpAlo' : a - rho + sigma < p.1 := lt_of_not_ge fun h => hAlo ⟨hpAlo, h⟩
+  have hpBhi' : p.2 < b + rho - sigma := lt_of_not_ge fun h => hBhi ⟨h, hpBhi⟩
+  have hpBlo' : b - rho + sigma < p.2 := lt_of_not_ge fun h => hBlo ⟨hpBlo, h⟩
   rcases abs_le.mp ha with ⟨haLo, haHi⟩
   rcases abs_le.mp hb with ⟨hbLo, hbHi⟩
   constructor <;> constructor <;> linarith
@@ -540,12 +531,9 @@ private lemma exists_regular_parameters {X : Type*} [Fintype X]
   have hprob : 0 < prob := by
     dsimp only [prob]
     positivity
-  have hSprInt : Integrable Spr μ := by
-    exact windowedSum_integrable rho a b q U μ
-  have hEwInt : Integrable Ew μ := by
-    exact windowedSum_integrable rho a b e Finset.univ μ
-  have hCwInt : Integrable Cw μ := by
-    exact windowedSum_integrable rho a b (fun _ => 1) Finset.univ μ
+  have hSprInt : Integrable Spr μ := windowedSum_integrable rho a b q U μ
+  have hEwInt : Integrable Ew μ := windowedSum_integrable rho a b e Finset.univ μ
+  have hCwInt : Integrable Cw μ := windowedSum_integrable rho a b (fun _ => 1) Finset.univ μ
   have hCvInt : Integrable Cv μ := by
     exact show Integrable (boundaryCount rho sigma a b) μ by
       unfold boundaryCount
@@ -831,8 +819,7 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
             then q y else 0 := by
         simp only [Finset.sum_filter]
   have hU : S / 2 ≤ ∑ y ∈ X', q y := by
-    have hbase : alpha ^ 3 * M ^ 3 * N ^ 2 / 4 ≤ S := by
-      exact hSanchor
+    have hbase : alpha ^ 3 * M ^ 3 * N ^ 2 / 4 ≤ S := hSanchor
     linarith only [hsplit, hbadWeight, hbase]
   have hTcard : (Fintype.card X : Real) = T := by
     dsimp only [T]
@@ -1118,8 +1105,8 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
     dsimp only [T]
     convert hWcardLower using 1
     ring
-  have hVcard : (V.card : Real) ≤ eta * W.card := by
-    exact hVcardPre.trans (mul_le_mul_of_nonneg_left hBaseT heta)
+  have hVcard : (V.card : Real) ≤ eta * W.card :=
+    hVcardPre.trans (mul_le_mul_of_nonneg_left hBaseT heta)
   have hOverlap (d : ZMod N) (hd : d ∈ B) :
       (1 - eta) * W.card ≤ (W ∩ D.shift W d).card := by
     have hsub : W \ V ⊆ W ∩ D.shift W d := by

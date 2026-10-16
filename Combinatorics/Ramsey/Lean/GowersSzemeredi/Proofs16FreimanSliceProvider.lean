@@ -45,7 +45,6 @@ theorem section16_slice_provider_of_freiman_families {N q : Nat} [Fact N.Prime]
     Section16SliceProvider B phi
       (fun r _ => ((3 * (max 1 r * q) : Nat) : Real))
       (fun r => polyBaseExponent (max 1 r * q)) := by
-  classical
   intro r sample
   let sample' : Fin (max 1 r) → ZMod N := fun i =>
     if h : i.val < r then sample ⟨i.val, h⟩ else 0

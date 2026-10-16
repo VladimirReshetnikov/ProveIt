@@ -46,8 +46,7 @@ theorem residueNatAP_proper {r p : Nat} (hp : 0 < p) (a : Fin p) :
   rw [Finset.card_image_of_injective]
   · simp
   · intro i j hij
-    apply Fin.ext
-    exact Nat.mul_right_cancel hp (Nat.add_left_cancel hij)
+    exact Fin.ext (Nat.mul_right_cancel hp (Nat.add_left_cancel hij))
 
 theorem residueNatAP_partition {r p : Nat} (hp : 0 < p) (hpr : p ≤ r) :
     IsNatAPPartition (residueNatAP r p) (Finset.range r) := by
@@ -82,7 +81,6 @@ theorem section5_residue_target_partition (r p v : Nat)
       (∀ j, (Q j).IsProper ∧ 0 < (Q j).length ∧
         ((Q j).length = v - 1 ∨ (Q j).length = v)) ∧
       ∀ j, (Q j).step = p := by
-  classical
   have hv2 : 1 ≤ v ^ 2 := one_le_pow₀ hv
   have hpr : p ≤ r := by nlinarith
   let P := residueNatAP r p

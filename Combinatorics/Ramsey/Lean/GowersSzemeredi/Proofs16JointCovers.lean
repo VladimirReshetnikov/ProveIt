@@ -138,7 +138,6 @@ theorem JointCoverOn.piece {N d : Nat} [NeZero N] {ι : Type*} {E : Finset ι}
       (∀ e ∈ E, IsMultilinear (nu e)) ∧
       (theta - s) / Qt * R.carrier.card ≤
         (H.filter fun x => x ∈ R.carrier ∧ ∀ e ∈ E, f e x = nu e x).card := by
-  classical
   obtain ⟨M, q, G, Q, mu, hGP, hGm, hQpart, hQprop, hq, hQw, hmu, hcov⟩ := hJ
   -- the good part of `H`
   have hHG : (theta - s) * P.carrier.card ≤ (H ∩ G).card := by
@@ -231,7 +230,6 @@ theorem remainder_piece_of_vertex_covers {N k : Nat} [NeZero N] [Fact N.Prime]
           (∏ e ∈ Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true), Qb e (θv e)) *
           R.carrier.card ≤
         (H.filter fun x => x ∈ R.carrier ∧ section16PhiRemainder phi x0 x = mu x).card := by
-  classical
   set E := Finset.univ.filter fun e : Fin k → Bool => e ≠ fun _ => true with hEdef
   have hEmem : ∀ e ∈ E, e ≠ fun _ => true := fun e he => (Finset.mem_filter.mp he).2
   have hJ := joint_cover_on Dom (section16TranslatedVertex phi x0) Qb Eb θv E

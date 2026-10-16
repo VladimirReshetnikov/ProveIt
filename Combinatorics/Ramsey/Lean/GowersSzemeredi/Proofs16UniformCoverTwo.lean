@@ -99,7 +99,6 @@ theorem section16_uniform_cover_two {A Bq : Nat → Real} (hA : ∀ q, 0 < A q)
     (hcov : ∀ i, restrictRelation (Gammas i) (J i) ⊆ polyPieceTwoGraphs (P i)) :
     MultiplyLinearWith (uniTwoCount theta gamma (n * m)) (uniTwoExp A Bq theta gamma (n * m))
       (Finset.univ.biUnion fun i => restrictRelation (Gammas i) (J i)) := by
-  classical
   let e : Fin (n * m) ≃ Fin n × Fin m := finProdFinEquiv.symm
   let R : Fin (n * m) → PolyPieceTwo N theta gamma := fun c => P (e c).1 (e c).2
   refine MultiplyLinearWith.subset

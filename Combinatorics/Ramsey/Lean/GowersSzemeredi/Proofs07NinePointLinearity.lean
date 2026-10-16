@@ -15,7 +15,6 @@ private lemma freiman_index_interpolation {N : Nat} [Fact N.Prime]
     ((c - a : Nat) : ZMod N) * phi (s + b * d) =
       ((b - a : Nat) : ZMod N) * phi (s + c * d) +
         ((c - b : Nat) : ZMod N) * phi (s + a * d) := by
-  classical
   let S := Multiset.replicate (c - a) (s + b * d)
   let T := Multiset.replicate (b - a) (s + c * d) +
     Multiset.replicate (c - b) (s + a * d)
@@ -52,7 +51,6 @@ theorem linearOn_nine_point_progression {N : Nat} [Fact N.Prime]
     (P : ModAP N) (A : Finset (ZMod N)) (phi : ZMod N → ZMod N)
     (hP : P.IsProper) (hlen : P.length ≤ 9) (hA : A ⊆ P.carrier)
     (hphi : FreimanHom 8 A phi) : LinearOn A phi := by
-  classical
   by_cases htwo : A.card ≤ 2
   · exact linearOn_of_card_le_two A phi htwo
   let I : Finset (Fin P.length) := Finset.univ.filter
@@ -127,7 +125,6 @@ theorem eight_modular_affine_partition {N : Nat} [Fact N.Prime]
       IsPartition (fun j ↦ (Q j).carrier) R.carrier ∧
       ∀ j, (Q j).step != 0 ∧ (Q j).IsProper ∧ t ≤ (Q j).length ∧
         LinearOn ((Q j).carrier.filter fun x ↦ x ∈ A) phi := by
-  classical
   have hlinear (P : ModAP N) (hp : P.IsProper) (hlen : P.length ≤ 9) :
       LinearOn (P.carrier.filter fun x ↦ x ∈ A) phi := by
     apply linearOn_nine_point_progression P _ phi hp hlen (Finset.filter_subset _ _)

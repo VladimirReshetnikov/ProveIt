@@ -78,7 +78,6 @@ theorem section5Flatten_partition {N M : Nat} [NeZero N]
     (hQ : IsPartition (fun i ↦ (Q i).carrier) Finset.univ)
     (hR : ∀ i, IsPartition (fun j ↦ (R i j).carrier) (Q i).carrier) :
     IsPartition (fun j ↦ (section5Flatten L R j).carrier) Finset.univ := by
-  classical
   let e := section5FlattenEquiv L
   have hsigma := section5_sigma_partition L (fun i ↦ (Q i).carrier)
     Finset.univ (fun i j ↦ (R i j).carrier) hQ hR
@@ -110,7 +109,6 @@ theorem section5Flatten_refinement {N M : Nat} [NeZero N]
     (hR : ∀ i, IsPartition (fun j ↦ (R i j).carrier) (Q i).carrier) :
     IsRefinement (fun j ↦ (section5Flatten L R j).carrier)
       (fun i ↦ (Q i).carrier) := by
-  classical
   have hflat := section5Flatten_partition Q L R hQ hR
   refine ⟨fun x ↦ (hflat.1 x).symm.trans (hQ.1 x), ?_, hflat.2⟩
   intro j
@@ -133,7 +131,6 @@ theorem section5Flatten_sum {N M : Nat} (L : Fin M → Nat)
     (R : (i : Fin M) → Fin (L i) → ModAP N)
     {A : Type*} [AddCommMonoid A] (F : ModAP N → A) :
     ∑ j, F (section5Flatten L R j) = ∑ i, ∑ j, F (R i j) := by
-  classical
   let e := section5FlattenEquiv L
   calc
     ∑ j, F (section5Flatten L R j) =
@@ -159,14 +156,12 @@ theorem section5_sum_rpow_le {M N K : Nat} (hM : 0 < M) (hK : 0 < K)
     ∑ i, (m i : Real) ^ (1 - (K : Real)⁻¹) ≤
       (M : Real) ^ (K : Real)⁻¹ *
         (N : Real) ^ (1 - (K : Real)⁻¹) := by
-  classical
   let q : Real := (K : Real)⁻¹
   let p : Real := 1 - q
   have hKreal : (0 : Real) < K := by exact_mod_cast hK
   have hKone : (1 : Real) ≤ K := by exact_mod_cast hK
   have hq0 : 0 ≤ q := (inv_pos.mpr hKreal).le
-  have hq1 : q ≤ 1 := by
-    exact inv_le_one_of_one_le₀ hKone
+  have hq1 : q ≤ 1 := inv_le_one_of_one_le₀ hKone
   have hp0 : 0 ≤ p := by dsimp only [p]; linarith
   have hp1 : p ≤ 1 := by dsimp only [p]; linarith
   have hMreal : (0 : Real) < M := by exact_mod_cast hM
@@ -230,7 +225,6 @@ inequality turns the sum of local sublinear cell counts into the claimed
 `M^(1/K) N^(1-1/K)` global bound. -/
 theorem lemma_5_14_holds_of_corollary_5_6
     (h56 : corollary_5_6) : lemma_5_14 := by
-  classical
   intro k alpha hk halpha
   refine ⟨section5LocalRefinementConstant k alpha,
     section5LocalRefinementConstant_pos k alpha, ?_⟩

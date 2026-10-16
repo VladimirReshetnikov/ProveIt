@@ -29,7 +29,6 @@ theorem bilinear_square_of_short_parent_partition {N : Nat} [Fact N.Prime]
       (L : Real) ^ (cor711Exponent delta 1 / 2) - 1 ≤ V.length ∧
       E ⊆ C ∧ E ⊆ V.carrier.product W.carrier ∧
       delta / 4 * V.length * W.length ≤ E.card ∧ BilinearOn E phi := by
-  classical
   have hQcard : Q.carrier.card = Q.length := hQ
   have hQne : Q.carrier.Nonempty := Finset.card_pos.mp (by simpa only [hQcard] using hQpos)
   obtain ⟨j, hj⟩ := exists_coordinate_filter_cell C Q.carrier (fun z => z.2 - y)

@@ -226,7 +226,6 @@ theorem class_slice_decomposition {k : Nat} {Thr : Real → Real → Real}
         (Cs t).card) ∧
       ∀ t, C.U N theta gamma
         (partialGraph (Cs t) (section16FinalCoordinateRestriction phi t)) := by
-  classical
   have hex : ∀ t : ZMod N, ∃ J : Finset (Point N k), (1 - theta) * (N : Real) ^ k ≤ J.card ∧
       C.U N theta gamma (restrictRelation (partialGraph (section16FinalCoordinateSection B t)
         (section16FinalCoordinateRestriction phi t)) J) := by
@@ -337,7 +336,6 @@ theorem class_piece_data_with {k : Nat} {Thr : Real → Real → Real}
     (hprodB : HasProductProperty B phi gamma) :
     Nonempty (ClassPiece C Gamma (zeta) (classBudgetW t1 k)
       (classBudgetW t1 k) (section16Delta t1) (classBudgetW t1 k) gamma) := by
-  classical
   obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds_with ha0 haS
   obtain ⟨hθ'pos, hθ'le⟩ := classBudgetW_pos_le k ha0 haS
   set θ' := classBudgetW t1 k with hθ'def

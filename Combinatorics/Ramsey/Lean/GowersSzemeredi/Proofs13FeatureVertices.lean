@@ -28,7 +28,6 @@ theorem balancedFeatureVertex_pair_relation {I R : Type*} [Fintype I] [CommRing 
       u₁ j * ((balancedFeatureVertex sign x y h (j, true)).1 *
         (balancedFeatureVertex sign x y h (j, true)).2))) =
       balancedFeatureRelation sign u₀ u₁ x y h := by
-  classical
   have ht (j : Option I) :
       u₀ j * ((balancedFeatureVertex sign x y h (j, false)).1 *
         (balancedFeatureVertex sign x y h (j, false)).2) +
@@ -48,7 +47,6 @@ theorem balancedFeatureVertex_relation {I R : Type*} [Fintype I] [CommRing R]
     (∑ v : Option I × Bool, balancedRelationCoefficient u₀ u₁ v *
       ((balancedFeatureVertex sign x y h v).1 * (balancedFeatureVertex sign x y h v).2)) =
       balancedFeatureRelation sign u₀ u₁ x y h := by
-  classical
   rw [Fintype.sum_prod_type]
   simpa only [Fintype.sum_bool, balancedRelationCoefficient, Bool.false_eq_true,
     if_false, if_true, add_comm] using

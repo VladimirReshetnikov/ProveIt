@@ -42,7 +42,6 @@ theorem proper_lemma_16_9_with :
     B phi H Jbase H1 Y phiPrime x0
   dsimp only
   intro hH1 hML hselection hidentity hrem P hP hmP
-  classical
   let theta1 := section16ThetaOne theta gamma k
   let _ := section16Delta theta1
   let zeta := section16Zeta theta gamma k

@@ -11,7 +11,6 @@ namespace LeanProofs.GowersSzemeredi
 theorem IsMultilinear.linearOn_coordinate {N k : Nat} [NeZero N]
     {phi : Point N k → ZMod N} (h : IsMultilinear phi) (y : Point N k) (j : Fin k) :
     LinearOn Finset.univ (coordinateRestriction phi y j) := by
-  classical
   obtain ⟨c, hc⟩ := h
   let a : (Fin k → Bool) → ZMod N := fun e =>
     ∏ i ∈ Finset.univ.erase j, if e i then y i else 1
@@ -55,7 +54,6 @@ theorem HasProductProperty.of_coordinate_linear {N k : Nat} [NeZero N]
     (phi : Point N k → ZMod N)
     (h : ∀ y j, LinearOn Finset.univ (coordinateRestriction phi y j)) :
     HasProductProperty Finset.univ phi 1 := by
-  classical
   intro p j y E theta ht hE
   have hz := (section16_zero_unit_product (N := N) (k := k)) p j y E theta ht hE
   have heq : weightedSimultaneousAdditiveEnergy E theta

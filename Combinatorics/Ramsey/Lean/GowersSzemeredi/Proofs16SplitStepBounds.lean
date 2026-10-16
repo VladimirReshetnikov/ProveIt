@@ -692,7 +692,6 @@ theorem splitUniformClass_succ {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 1 ≤ V
       (section16PowerWidth (familyWidthPrefactor K) (familyWidthDivisor k p)))
     {V' : Real} (hVV : V ≤ V') (hKV : (K : Real) ≤ V') (hpV : (p : Real) ≤ V') :
     Nonempty (SplitUniformClass (k + 1) V' (splitStepA k a) (splitStepD k a D)) := by
-  classical
   obtain ⟨hCnt, hExp, hCntMono, hExpAnti⟩ := splitCnt_controls hV a D
   refine ⟨{
     U := fun N _ theta gamma Gamma =>

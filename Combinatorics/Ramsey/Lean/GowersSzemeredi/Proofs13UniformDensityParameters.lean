@@ -76,8 +76,7 @@ theorem section13_double_recurrence_exponent_margin {alpha : Real} (hα : 0 < al
       _ ≤ (2 : Real) ^ (-(59 : Int)) * 1 :=
         mul_le_mul_of_nonneg_left (pow_le_one₀ hα.le hαone) (by positivity)
       _ ≤ 1 := by norm_num
-  have hB : 0 < B := by
-    exact mul_pos (pow_pos (by norm_num) _) (zpow_pos hθ _)
+  have hB : 0 < B := mul_pos (pow_pos (by norm_num) _) (zpow_pos hθ _)
   have hQB : B ≤ Q / 2 := section13_qBound_le_half_Q hα hαone
   have hQ : 2 ≤ Q := by
     have hqone : (1 : Real) ≤ q := by exact_mod_cast hq
@@ -97,8 +96,7 @@ theorem section13_double_recurrence_exponent_margin {alpha : Real} (hα : 0 < al
   have hden : 16 * B ^ 3 ≤ 2 * Q ^ 3 := by
     have hp := pow_le_pow_left₀ hB.le hQB 3
     nlinarith only [hp]
-  have hu : 1 / (2 * Q ^ 3) ≤ u := by
-    exact (one_div_le_one_div_of_le (by positivity) hden).trans huB
+  have hu : 1 / (2 * Q ^ 3) ≤ u := (one_div_le_one_div_of_le (by positivity) hden).trans huB
   have he : 2 / (2 : Real) ^ (7 * Q) < u := by
     have hfour := four_mul_cube_lt_two_rpow_seven hQ
     have hlt : 2 / (2 : Real) ^ (7 * Q) < 1 / (2 * Q ^ 3) := by

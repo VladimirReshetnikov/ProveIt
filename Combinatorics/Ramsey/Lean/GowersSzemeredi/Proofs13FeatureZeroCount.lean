@@ -40,8 +40,7 @@ theorem polynomial_zero_count {V R : Type*} [Fintype V] [DecidableEq V] [Nonempt
     omega
   let e : V ≃ Fin (n + 1) := (Fintype.equivFin V).trans (finCongr hn)
   let q := rename e p
-  have hq : q ≠ 0 := by
-    exact fun h => hp ((rename_eq_zero_iff_of_injective p e.injective).mp h)
+  have hq : q ≠ 0 := fun h => hp ((rename_eq_zero_iff_of_injective p e.injective).mp h)
   have h := polynomial_zero_count_fin q hq
   have hc : countWhere (fun x => eval x p = 0) = countWhere (fun x => eval x q = 0) := by
     rw [feature_countWhere_equiv (e.symm.arrowCongr (Equiv.refl R))]

@@ -491,7 +491,6 @@ theorem LocalPieceFor.simultaneous {N n : Nat} [NeZero N] {c : Nat → Real → 
 theorem IsMultilinear.finset_sum {N n : Nat} {ι : Type*} (s : Finset ι)
     (f : ι → Point N n → ZMod N) (hf : ∀ i ∈ s, IsMultilinear (f i)) :
     IsMultilinear (fun x => ∑ i ∈ s, f i x) := by
-  classical
   induction s using Finset.induction_on with
   | empty => simpa using (isMultilinear_constant (N := N) (k := n) 0)
   | insert a s ha ih =>

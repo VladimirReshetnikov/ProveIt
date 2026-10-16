@@ -42,7 +42,6 @@ theorem section10Zeta_mono {a b : Real} (ha : 0 < a) (hab : a ≤ b) (hb : b ≤
 /-- More frequencies and a smaller radius give a smaller Bohr domain. -/
 theorem bohr_domain_mono {N : Nat} [NeZero N] {K L : Finset (ZMod N)} {r s : Real}
     (hK : K ⊆ L) (hrs : r ≤ s) : bohr L r ⊆ bohr K s := by
-  classical
   intro d hd
   apply Finset.mem_filter.mpr
   refine ⟨Finset.mem_univ _, ?_⟩
@@ -72,7 +71,6 @@ theorem section13_uniform_height_bohr_model {N : Nat} [NeZero N]
       (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224 * (N : Real) ^ 2 ≤ Y.card ∧
       HasBohrDifferenceModel (section13EdgeIndexDomain N) (verticalPhiDifference S.phi h)
         K (section10Zeta a) Y psi := by
-  classical
   let a : Real := S.alpha ^ 32 / 16
   have ha : 0 < a := by dsimp [a]; have := S.alpha_pos; positivity
   have hbounds := section13_edge_density_bounds S h hh

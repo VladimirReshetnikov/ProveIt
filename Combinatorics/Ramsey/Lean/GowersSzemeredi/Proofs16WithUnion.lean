@@ -89,7 +89,6 @@ theorem MultiplyLinearWith.union {N k : Nat} [NeZero N]
     (hE2 : ∀ s, 0 < s → s ≤ 1 → 0 ≤ E2 s) :
     MultiplyLinearWith (fun s => Q1 (lam * s) + Q2 ((1 - lam) * s))
       (fun s => E1 (lam * s) * E2 ((1 - lam) * s)) (Gamma1 ∪ Gamma2) := by
-  classical
   intro s hs hs1 P hP
   have ha : 0 < lam * s := mul_pos hl hs
   have ha1 : lam * s ≤ 1 := by nlinarith [mul_le_mul_of_nonneg_right hl1.le hs.le]

@@ -76,15 +76,13 @@ lemma lemma163_stage_large {gamma theta : Real} {q : Nat}
         (2 : Real) ^ (-(2000 : Real)) * a ^ (10000 : Nat) := by
       unfold lemma163Alpha
       rfl
-    rw [hS, hAlpha]
-    rw [hsplit, pow_add]
+    rw [hS, hAlpha, hsplit, pow_add]
     have hcancel :
         (2 / a) ^ (10000 : Nat) * a ^ (10000 : Nat) =
           (2 : Real) ^ (10000 : Nat) := by
       rw [← mul_pow]
       field_simp [ha.ne']
-    have htail : (1 : Real) ≤ (2 / a) ^ (T - 10000) := by
-      exact one_le_pow₀ hbase
+    have htail : (1 : Real) ≤ (2 / a) ^ (T - 10000) := one_le_pow₀ hbase
     calc
       (2 : Real) ^ (8000 : Nat) =
           (2 : Real) ^ (10000 : Nat) * (2 : Real) ^ (-(2000 : Real)) := by
@@ -194,11 +192,9 @@ lemma lemma163_local_bounds {gamma theta eta : Real} {q : Nat}
       _ = ((2 : Real) ^ (512 : Nat) * eta ^ (-(2 : Int)))⁻¹ := by
         rw [htwoNeg, mul_inv, zpow_neg, zpow_ofNat, inv_inv]
   have hlocalExponent :
-      lemma163LocalExponent gamma theta eta q = (b ^ E) ^ s := by
-    rfl
+      lemma163LocalExponent gamma theta eta q = (b ^ E) ^ s := rfl
   have hlocalGraphBound :
-      lemma163LocalGraphBound gamma theta eta q = ((b ^ E)⁻¹) ^ s := by
-    rfl
+      lemma163LocalGraphBound gamma theta eta q = ((b ^ E)⁻¹) ^ s := rfl
   refine ⟨?_, ?_, ?_⟩
   · rw [hlocalExponent]
     exact hwPos
@@ -249,8 +245,8 @@ lemma lemma163_coarse_count_le_graphBound {gamma theta eta : Real}
       lemma163LocalGraphBound gamma theta eta q := by
   have hg := (lemma163_local_bounds hgamma hgammaOne htheta hthetaOne
     heta hetaOne hq hqBound).2.2
-  have hceil : (lemma163CoarseCellLength eta : Real) < 4096 / eta + 1 := by
-    exact Nat.ceil_lt_add_one (by positivity)
+  have hceil : (lemma163CoarseCellLength eta : Real) < 4096 / eta + 1 :=
+    Nat.ceil_lt_add_one (by positivity)
   have hetaInv : 1 ≤ eta⁻¹ := by
     simpa using (inv_le_inv₀ (by norm_num : (0 : Real) < 1) heta).2 hetaOne
   have hcoarse : ((2 * lemma163CoarseCellLength eta : Nat) : Real) ≤

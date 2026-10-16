@@ -40,7 +40,6 @@ def cylAt {N k : Nat} [NeZero N] (j : Fin (k + 1)) (Λ : Finset (Point N k × ZM
 
 theorem mem_cylAt {N k : Nat} [NeZero N] {j : Fin (k + 1)} {Λ : Finset (Point N k × ZMod N)}
     {z : Point N (k + 1) × ZMod N} : z ∈ cylAt j Λ ↔ (dropAt j z.1, z.2) ∈ Λ := by
-  classical
   simp [cylAt]
 
 /-- The permutation sending `last ↦ j` and `castSucc i ↦ j.succAbove i`. -/
@@ -71,7 +70,6 @@ theorem MultiplyLinearWith.cylAt {N k : Nat} [NeZero N] [Fact N.Prime]
     (hE : ∀ t, 0 < t → t ≤ 1 → 0 < Eb t ∧ Eb t ≤ 1) (hk : 0 < k) (j : Fin (k + 1)) :
     MultiplyLinearWith (fun t => max (Qb t) ((3 ^ (k + 1) * M : Nat) : Real))
       (fun t => Eb t / 16) (cylAt j Λ) := by
-  classical
   have h := hML.relation_lift_last M hfib hQ hE hk
   have h2 := MultiplyLinearWith.coordinateReindex h (liftPerm j).symm
   refine MultiplyLinearWith.subset h2 ?_
@@ -89,7 +87,6 @@ theorem MultiplyLinearWith.cylAt {N k : Nat} [NeZero N] [Fact N.Prime]
 theorem mem_relationSum_of {N k : Nat} [NeZero N] {Gamma1 Gamma2 : Finset (Point N k × ZMod N)}
     {x : Point N k} {y1 y2 : ZMod N} (h1 : (x, y1) ∈ Gamma1) (h2 : (x, y2) ∈ Gamma2) :
     (x, y1 + y2) ∈ relationSum Gamma1 Gamma2 := by
-  classical
   unfold relationSum
   exact Finset.mem_image.mpr ⟨((x, y1), (x, y2)),
     Finset.mem_filter.mpr ⟨Finset.mem_product.mpr ⟨h1, h2⟩, rfl⟩, rfl⟩

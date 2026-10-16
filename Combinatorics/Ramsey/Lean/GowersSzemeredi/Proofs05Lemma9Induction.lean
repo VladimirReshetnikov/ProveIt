@@ -40,7 +40,6 @@ def section5NatTransport (P R : NatAP) : NatAP where
 
 theorem section5Nat_carrier_eq_image_range (P : NatAP) :
     P.carrier = (Finset.range P.length).image (section5NatIndexPoint P) := by
-  classical
   ext x
   unfold NatAP.carrier section5NatIndexPoint
   simp only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_range]
@@ -53,7 +52,6 @@ theorem section5Nat_carrier_eq_image_range (P : NatAP) :
 theorem section5NatTransport_carrier (P R : NatAP) :
     (section5NatTransport P R).carrier =
       R.carrier.image (section5NatIndexPoint P) := by
-  classical
   ext x
   simp only [NatAP.carrier, section5NatTransport, section5NatIndexPoint,
     Finset.mem_image, Finset.mem_univ, true_and]
@@ -74,7 +72,6 @@ theorem section5NatIndexPoint_injective (P : NatAP) (hstep : 0 < P.step) :
 theorem section5NatTransport_isProper (P R : NatAP)
     (hP : P.IsProper) (hR : R.IsProper) :
     (section5NatTransport P R).IsProper := by
-  classical
   constructor
   · exact Nat.mul_pos hR.1 hP.1
   · rw [section5NatTransport_carrier, Finset.card_image_iff.mpr]
@@ -84,9 +81,7 @@ theorem section5NatTransport_isProper (P R : NatAP)
 theorem section5NatTransport_subset (P R : NatAP)
     (hR : R.carrier ⊆ Finset.range P.length) :
     (section5NatTransport P R).carrier ⊆ P.carrier := by
-  classical
-  rw [section5NatTransport_carrier]
-  rw [section5Nat_carrier_eq_image_range P]
+  rw [section5NatTransport_carrier, section5Nat_carrier_eq_image_range P]
   exact Finset.image_mono (section5NatIndexPoint P) hR
 
 /-- Transporting an interval partition through a proper natural progression
@@ -95,7 +90,6 @@ theorem section5NatTransport_partition {M : Nat} (P : NatAP)
     (R : Fin M -> NatAP) (hP : P.IsProper)
     (hR : IsNatAPPartition R (Finset.range P.length)) :
     IsNatAPPartition (fun j => section5NatTransport P (R j)) P.carrier := by
-  classical
   have hinj := section5NatIndexPoint_injective P hP.1
   constructor
   · intro x
@@ -136,7 +130,6 @@ private theorem section5NatTransport_image_phi {N : Nat} (P R : NatAP)
         (fun x : Nat => phi (x : ZMod N)) =
       R.carrier.image (fun t : Nat =>
         phi ((P.start : ZMod N) + (t : ZMod N) * (P.step : ZMod N))) := by
-  classical
   rw [section5NatTransport_carrier, Finset.image_image]
   apply Finset.image_congr
   intro t _ht
@@ -166,7 +159,6 @@ theorem section5_strong_nat_refinement_of_corollary_5_6
         ((Q j).carrier.image fun x : Nat => phi (x : ZMod N))
         ((P.length : Real) ^
           (-(2 * (polynomialPartitionConstant k : Real)⁻¹)) * N) := by
-  classical
   let pulledPhi : ZMod N -> ZMod N := fun x =>
     phi ((P.start : ZMod N) + x * (P.step : ZMod N))
   have hpulled : PolynomialOn k Finset.univ pulledPhi :=
@@ -253,7 +245,6 @@ theorem section5NatFlatten_partition {M : Nat} (P : Fin M -> NatAP)
     (hP : IsNatAPPartition P S)
     (hR : forall i, IsNatAPPartition (R i) (P i).carrier) :
     IsNatAPPartition (section5NatFlatten L R) S := by
-  classical
   let e := section5NatFlattenEquiv L
   have hsigma := section5Nat_sigma_partition L (fun i => (P i).carrier) S
     (fun i j => (R i j).carrier) hP hR
@@ -453,8 +444,8 @@ theorem section5_iterated_strong_nat_refinement
               exact (hQsubset i j).trans (hRsubset i)
             have hMsum : 0 < ∑ i, M i := by
               let i : Fin L := ⟨0, hL⟩
-              have hle : M i <= ∑ j, M j := by
-                exact Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
+              have hle : M i <= ∑ j, M j :=
+                Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
               exact (hM i).trans_le hle
             refine ⟨∑ i, M i, F, hMsum, hFpartition, ?_, hFsubset, ?_⟩
             · intro j
@@ -488,7 +479,6 @@ def section5RangeNatAP (r : Nat) : NatAP where
 
 @[simp] theorem section5RangeNatAP_carrier (r : Nat) :
     (section5RangeNatAP r).carrier = Finset.range r := by
-  classical
   ext x
   simp only [NatAP.carrier, section5RangeNatAP, Finset.mem_image,
     Finset.mem_univ, true_and, Finset.mem_range, zero_add, mul_one]

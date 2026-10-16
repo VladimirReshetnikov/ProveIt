@@ -23,13 +23,11 @@ namespace LeanProofs.GowersSzemeredi
 lemma cor75_mem_functionGraph {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (phi : ZMod N → ZMod N) (p : ZMod N × ZMod N) :
     p ∈ functionGraph B phi ↔ p.1 ∈ B ∧ p.2 = phi p.1 := by
-  classical
   simp [functionGraph, Prod.ext_iff, eq_comm]
 
 lemma cor75_card_functionGraph {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (phi : ZMod N → ZMod N) :
     (functionGraph B phi).card = B.card := by
-  classical
   unfold functionGraph
   rw [Finset.card_image_iff.mpr]
   intro x _ y _ h
@@ -116,7 +114,6 @@ private lemma cor75_verticalFiber_bound {N k : Nat} [NeZero N] [Fact N.Prime]
     let S := k • Gamma - k • Gamma
     let K := (Finset.univ : Finset (ZMod N)).filter fun y => (0, y) ∈ S
     (K.card : Real) ≤ C ^ (4 * k) := by
-  classical
   dsimp only
   let Gamma := functionGraph B phi
   let S := k • Gamma - k • Gamma
@@ -156,12 +153,9 @@ private lemma cor75_verticalFiber_bound {N k : Nat} [NeZero N] [Fact N.Prime]
   have hMaps : Set.MapsTo F (↑(K ×ˢ B)) (↑T) := by
     intro p hp
     rw [Finset.mem_coe, Finset.mem_product] at hp
-    have hGraphP : (p.2, phi p.2) ∈ Gamma := by
-      exact (cor75_mem_functionGraph B phi _).2 ⟨hp.2, rfl⟩
-    have hGraph0 : gamma0 ∈ Gamma := by
-      exact (cor75_mem_functionGraph B phi _).2 ⟨hb0, rfl⟩
-    have hz : (p.2, phi p.2) - gamma0 ∈ S := by
-      exact cor75_sub_mem_nsmul_sub_nsmul Gamma hGraphP hGraph0 hk
+    have hGraphP : (p.2, phi p.2) ∈ Gamma := (cor75_mem_functionGraph B phi _).2 ⟨hp.2, rfl⟩
+    have hGraph0 : gamma0 ∈ Gamma := (cor75_mem_functionGraph B phi _).2 ⟨hb0, rfl⟩
+    have hz : (p.2, phi p.2) - gamma0 ∈ S := cor75_sub_mem_nsmul_sub_nsmul Gamma hGraphP hGraph0 hk
     have hy : (0, p.1) ∈ S := by
       simpa [K] using hp.1
     have hd := cor75_sub_mem_double_nsmul Gamma hz hy
@@ -195,7 +189,6 @@ private lemma cor75_exists_good_d {N k L : Nat} [NeZero N] [Fact N.Prime]
     (hsize : 4 * k * K.card * L ≤ N) :
     ∃ d : ZMod N, d ≠ 0 ∧
       ∀ q : Bool × Fin (k * L), cor75Coeff N (k * L) q * d ∉ K := by
-  classical
   have hprime := Fact.out (p := Nat.Prime N)
   have hN2 : 2 ≤ N := hprime.two_le
   have hTLT : k * L < N := by
@@ -216,8 +209,7 @@ private lemma cor75_exists_good_d {N k L : Nat} [NeZero N] [Fact N.Prime]
     exact hnone ⟨q, hq⟩
   let D0 := {d : ZMod N // d ∈ (Finset.univ.erase 0 : Finset (ZMod N))}
   let Q := Bool × Fin (k * L)
-  have hd0ne (d : D0) : (d : ZMod N) ≠ 0 := by
-    exact Finset.ne_of_mem_erase d.property
+  have hd0ne (d : D0) : (d : ZMod N) ≠ 0 := Finset.ne_of_mem_erase d.property
   choose q hq using fun d : D0 => hall d (hd0ne d)
   let target := Q × {w : ZMod N // w ∈ K}
   let F : D0 → target := fun d =>
@@ -267,7 +259,6 @@ private lemma cor75_coeff_rep_neg {N k L n : Nat} [NeZero N]
 theorem lemma_7_5_holds : lemma_7_5 := by
   intro N k _ B phi C hprime hk hC hsmall
   letI : Fact N.Prime := ⟨hprime⟩
-  classical
   by_cases hB : B.Nonempty
   swap
   · refine ⟨∅, Finset.empty_subset _, ?_, ?_⟩
@@ -349,15 +340,13 @@ theorem lemma_7_5_holds : lemma_7_5 := by
       simp only [Finset.mem_range] at this
       omega
     exact Prod.ext hfirst (cor75_natCast_injective hzlt hwlt hcast)
-  have hB'card : B'.card = fiber.card := by
-    exact Finset.card_image_iff.mpr hFiberInj
+  have hB'card : B'.card = fiber.card := Finset.card_image_iff.mpr hFiberInj
   have hB'sub : B' ⊆ B := by
     intro x hx
     obtain ⟨z, hz, rfl⟩ := Finset.mem_image.mp hx
     have hzdom : z ∈ domain := (Finset.mem_filter.mp hz).1
     exact (Finset.mem_product.mp hzdom).1
-  have hfloor : N < (L + 1) * (4 * k * K.card) := by
-    exact (Nat.div_lt_iff_lt_mul hdenomPos).mp (by simp [L])
+  have hfloor : N < (L + 1) * (4 * k * K.card) := (Nat.div_lt_iff_lt_mul hdenomPos).mp (by simp [L])
   have hscale : (N : Real) ≤ (L + 1) * (8 * (k : Real) * C ^ (4 * k)) := by
     have hfloorR : (N : Real) < (L + 1) * (4 * k * K.card) := by exact_mod_cast hfloor
     nlinarith

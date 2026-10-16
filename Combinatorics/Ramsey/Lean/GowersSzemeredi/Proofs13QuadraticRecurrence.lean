@@ -83,7 +83,6 @@ def stage135ModPoint {N : Nat} (P : ModAP N) (t : ZMod N) : ZMod N :=
 theorem stage135Quadratic_polynomial {N : Nat} [NeZero N]
     (P : ModAP N) (a b : ZMod N) :
     PolynomialOn 2 Finset.univ (stage135Quadratic P a b) := by
-  classical
   refine ⟨![a * (4 : ZMod N)⁻¹ * P.start ^ 2 +
         b * (2 : ZMod N)⁻¹ * P.start,
       2 * (a * (4 : ZMod N)⁻¹) * P.start * P.step +
@@ -259,7 +258,6 @@ theorem lemma_13_5_of_candidate_family {N : Nat} [NeZero N]
     (S : Section13Context N) (D : Stage134Data N)
     (F : Stage135CandidateFamily S D) :
     ∃ E : Stage135Data N, IsStage135Data S D E := by
-  classical
   have hnonempty : (Finset.univ : Finset (Fin F.count)).Nonempty := by
     let j : Fin F.count := ⟨0, F.count_pos⟩
     exact ⟨j, Finset.mem_univ j⟩

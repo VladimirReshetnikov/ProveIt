@@ -21,7 +21,6 @@ private lemma cor76_count_le_graph_energy {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (phi : ZMod N → ZMod N) :
     phiAdditiveCount B phi ≤
       Finset.addEnergy (functionGraph B phi) (functionGraph B phi) := by
-  classical
   unfold phiAdditiveCount countWhere Finset.addEnergy
   let graphPoint : ZMod N → ZMod N × ZMod N := fun x => (x, phi x)
   let toEnergy : (Fin 4 → ZMod N) →
@@ -51,7 +50,6 @@ private lemma cor76_extract_subgraph {N : Nat} [NeZero N]
     (hsub : Gamma1 ⊆ functionGraph B0 phi) :
     let B1 := Gamma1.image Prod.fst
     B1 ⊆ B0 ∧ functionGraph B1 phi = Gamma1 ∧ B1.card = Gamma1.card := by
-  classical
   dsimp only
   let B1 := Gamma1.image Prod.fst
   have hB1sub : B1 ⊆ B0 := by
@@ -84,10 +82,8 @@ private lemma cor76_extract_subgraph {N : Nat} [NeZero N]
 
 theorem corollary_7_6_holds : corollary_7_6 := by
   intro N _ B0 phi alpha gamma hprime halpha hgamma hB0card hadd
-  classical
   let Gamma0 := functionGraph B0 phi
-  have hGamma0cardNat : Gamma0.card = B0.card := by
-    exact cor75_card_functionGraph B0 phi
+  have hGamma0cardNat : Gamma0.card = B0.card := cor75_card_functionGraph B0 phi
   have hGamma0card : (Gamma0.card : Real) = alpha * N := by
     rw [hGamma0cardNat, hB0card]
   have hcountEnergyNat := cor76_count_le_graph_energy B0 phi
@@ -134,8 +130,7 @@ theorem corollary_7_6_holds : corollary_7_6 := by
         gcongr
       _ = C * Gamma1.card := by
         dsimp only [C]
-        rw [Real.rpow_neg (le_of_lt hgamma)]
-        rw [Real.rpow_neg (show (0 : Real) ≤ 2 by norm_num)]
+        rw [Real.rpow_neg (le_of_lt hgamma), Real.rpow_neg (show (0 : Real) ≤ 2 by norm_num)]
         norm_num [Real.rpow_natCast]
         field_simp
         ring
@@ -167,12 +162,10 @@ theorem corollary_7_6_holds : corollary_7_6 := by
           (2 : Real) ^ (20 : Nat) *
             ((2 : Real) ^ (6 : Nat) *
               ((2 : Real) ^ (58 : Nat)) ^ (32 : Nat)) := by
-        rw [show (1882 : Nat) = 20 + (6 + 58 * 32) by norm_num]
-        rw [pow_add, pow_add, pow_mul]
+        rw [show (1882 : Nat) = 20 + (6 + 58 * 32) by norm_num, pow_add, pow_add, pow_mul]
       dsimp only [D, C]
       norm_num only [show 4 * 8 = 32 by norm_num]
-      rw [Real.rpow_neg (le_of_lt hgamma)]
-      rw [Real.rpow_neg (show (0 : Real) ≤ 2 by norm_num)]
+      rw [Real.rpow_neg (le_of_lt hgamma), Real.rpow_neg (show (0 : Real) ≤ 2 by norm_num)]
       norm_num [Real.rpow_natCast]
       field_simp
       rw [hpow2]

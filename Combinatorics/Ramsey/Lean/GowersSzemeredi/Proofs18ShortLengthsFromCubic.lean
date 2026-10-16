@@ -17,8 +17,7 @@ theorem szemerediThresholdAt_mono {c c' k : Nat} (hc : c ≤ c') {delta : Real} 
   apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
   apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
   apply Real.rpow_le_rpow_of_exponent_le hu
-  apply Real.rpow_le_rpow_of_exponent_le (by norm_num)
-  exact pow_le_pow_right₀ (by norm_num) (by omega)
+  exact Real.rpow_le_rpow_of_exponent_le (by norm_num) (pow_le_pow_right₀ (by norm_num) (by omega))
 
 /-- A smaller constant gives a stronger Theorem 18.2. -/
 theorem Theorem182AtSharp.mono {c c' k : Nat} (h : Theorem182AtSharp c k) (hc : c ≤ c') :

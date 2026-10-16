@@ -91,7 +91,6 @@ theorem two_mul_stage135PolyExponent_le {p q : Nat} (hp : 0 < p) :
 /-- A proper progression of length at least two has a nonzero step. -/
 theorem ModAP.step_ne_zero_of_proper {N : Nat} (P : ModAP N) (hP : P.IsProper)
     (h2 : 2 ≤ P.length) : P.step != 0 := by
-  classical
   refine bne_iff_ne.mpr fun hs => ?_
   have hsub : P.carrier ⊆ {P.start} := by
     intro x hx
@@ -106,7 +105,6 @@ theorem stage135_empty_at {N : Nat} [NeZero N] (S : Section13Context N)
     (D : Stage134Data N) (theta : Real) (h134 : IsStage134Data S theta D)
     (hL : D.P.length = 0) {eL eP : Real} (heL : 0 < eL) :
     ∃ E : Stage135Data N, IsStage135At S D E eL eP := by
-  classical
   have hempty : D.P.carrier = ∅ := Finset.card_eq_zero.mp (h134.2.2.1.trans hL)
   refine ⟨⟨D.P⟩, h134.2.1, h134.2.2.1, subset_rfl, ?_, ?_, ?_⟩
   · change (D.P.length : Real) ^ eL / 2 ≤ (D.P.length : Real)
@@ -199,7 +197,6 @@ theorem stage135_phase_partition_at {N : Nat} [NeZero N] {K : Real} {p : Nat}
     (hscale : 2 < (D.P.length : Real) ^ stage135PolyExponent p D.q) :
     ∃ E : Stage135Data N, IsStage135At S D E
       (stage135PolyExponent p D.q) (stage135PolyExponent p D.q) := by
-  classical
   have hP : D.P.IsProper := h134.2.2.1
   obtain ⟨m, hm⟩ : ∃ m : Nat, m = p * (D.q + 1) ^ 8 := ⟨_, rfl⟩
   have hm0 : 0 < m := by rw [hm]; positivity

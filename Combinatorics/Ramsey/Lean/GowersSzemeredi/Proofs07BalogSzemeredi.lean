@@ -32,7 +32,6 @@ private noncomputable def popularNeighbors {G : Type*} [DecidableEq G]
 
 private lemma sumRep_le_card {G : Type*} [DecidableEq G] [AddCommGroup G]
     (A : Finset G) (x : G) : sumRep A x ≤ A.card := by
-  classical
   unfold sumRep
   let f : {ab // ab ∈ (A ×ˢ A).filter fun ab => ab.1 + ab.2 = x} → A :=
     fun ab => ⟨ab.1.1, (Finset.mem_product.mp (Finset.mem_filter.mp ab.2).1).1⟩
@@ -53,7 +52,6 @@ private lemma sumRep_le_card {G : Type*} [DecidableEq G] [AddCommGroup G]
 private lemma sum_sumRep {G : Type*} [DecidableEq G] [AddCommGroup G]
     (A : Finset G) :
     ∑ x ∈ A + A, sumRep A x = A.card ^ 2 := by
-  classical
   unfold sumRep
   rw [Finset.sum_card_fiberwise_eq_card_filter]
   have hfilter :
@@ -87,7 +85,6 @@ private lemma popularSums_card_lower {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) (hc : 0 < c)
     (henergy : c * (A.card : Real) ^ 3 ≤ Finset.addEnergy A A) :
     c * A.card / 2 ≤ (popularSums A c).card := by
-  classical
   by_cases hA : A = ∅
   · subst A
     simp [popularSums]
@@ -152,7 +149,6 @@ private lemma sum_popularNeighbors_card {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) :
     ∑ a ∈ A, (popularNeighbors A c a).card =
       ∑ x ∈ popularSums A c, sumRep A x := by
-  classical
   have hleft :
       (∑ a ∈ A, (popularNeighbors A c a).card) =
         ((A ×ˢ A).filter fun ab => ab.1 + ab.2 ∈ popularSums A c).card := by
@@ -168,7 +164,6 @@ private lemma popular_edge_count_lower {G : Type*} [DecidableEq G]
     (henergy : c * (A.card : Real) ^ 3 ≤ Finset.addEnergy A A) :
     c ^ 2 * (A.card : Real) ^ 2 / 4 ≤
       ∑ a ∈ A, ((popularNeighbors A c a).card : Real) := by
-  classical
   rw [← Nat.cast_sum, sum_popularNeighbors_card]
   push_cast
   have hterm : ∀ x ∈ popularSums A c,
@@ -182,15 +177,13 @@ private lemma popular_edge_count_lower {G : Type*} [DecidableEq G]
       _ = ∑ _x ∈ popularSums A c, (c * A.card / 2) := by
         simp [mul_comm]
       _ ≤ _ := by
-        apply Finset.sum_le_sum
-        exact hterm
+        exact Finset.sum_le_sum hterm
   have hD := popularSums_card_lower A c hc henergy
   have hthreshold : 0 ≤ c * (A.card : Real) / 2 := by positivity
   calc
     c ^ 2 * (A.card : Real) ^ 2 / 4 =
         (c * A.card / 2) * (c * A.card / 2) := by ring
-    _ ≤ (popularSums A c).card * (c * A.card / 2) := by
-      exact mul_le_mul_of_nonneg_right hD hthreshold
+    _ ≤ (popularSums A c).card * (c * A.card / 2) := mul_le_mul_of_nonneg_right hD hthreshold
     _ ≤ _ := hsum
 
 private def bsgDelta (c : Real) : Real := c ^ 2 / 8
@@ -203,7 +196,6 @@ private lemma highDegreeCenters_card_lower {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) (hc : 0 < c)
     (henergy : c * (A.card : Real) ^ 3 ≤ Finset.addEnergy A A) :
     bsgDelta c * A.card ≤ (highDegreeCenters A c).card := by
-  classical
   by_cases hA : A = ∅
   · subst A
     simp [bsgDelta, highDegreeCenters]
@@ -281,8 +273,7 @@ private lemma centerAt_mem {G : Type*} [DecidableEq G] (V : Finset G)
 private lemma centerAt_injective {G : Type*} [DecidableEq G] (V : Finset G) :
     Function.Injective (centerAt V) := by
   intro i j hij
-  apply V.equivFin.symm.injective
-  exact Subtype.ext hij
+  exact V.equivFin.symm.injective (Subtype.ext hij)
 
 private noncomputable def indexedNeighborhood {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real)
@@ -326,7 +317,6 @@ private lemma sum_goodDegree_eq_pairCount {X I : Type*} [DecidableEq X]
     (threshold : Real) :
     ∑ i ∈ K, goodDegree A K threshold i =
       goodPairCount A K threshold := by
-  classical
   simp only [goodDegree, goodPairCount, Finset.card_filter]
   rw [Finset.sum_product]
 
@@ -446,8 +436,7 @@ private noncomputable def sumRepPairs {G : Type*} [DecidableEq G]
 
 @[simp] private lemma card_sumRepPairs {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (x : G) :
-    (sumRepPairs A x).card = sumRep A x := by
-  rfl
+    (sumRepPairs A x).card = sumRep A x := rfl
 
 private noncomputable def fourReps {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (x : G) : Finset (Fin 4 → G) := by
@@ -471,7 +460,6 @@ private lemma quadWitnessTuple_mem {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) (u v : G)
     (w : QuadWitness G) (hwmem : w ∈ quadWitnesses A c u v) :
     quadWitnessTuple w ∈ fourReps A (u - v) := by
-  classical
   have hw := Finset.mem_sigma.mp hwmem
   have hpq := Finset.mem_product.mp hw.2
   have hp := Finset.mem_filter.mp hpq.1
@@ -521,7 +509,6 @@ private lemma quadWitnesses_card_lower {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real) (hc : 0 < c) (u v : G) :
     ((popularNeighbors A c u ∩ popularNeighbors A c v).card : Real) *
         (c * A.card / 2) ^ 2 ≤ (quadWitnesses A c u v).card := by
-  classical
   rw [quadWitnesses, Finset.card_sigma]
   push_cast
   calc
@@ -581,8 +568,7 @@ private noncomputable def goodIndexNeighbors {X I : Type*} [DecidableEq X]
 @[simp] private lemma card_goodIndexNeighbors {X I : Type*} [DecidableEq X]
     [DecidableEq I] (A : I → Finset X) (K : Finset I)
     (threshold : Real) (i : I) :
-    (goodIndexNeighbors A K threshold i).card = goodDegree A K threshold i := by
-  rfl
+    (goodIndexNeighbors A K threshold i).card = goodDegree A K threshold i := rfl
 
 private lemma common_goodIndexNeighbors_card_lower {X I : Type*}
     [DecidableEq X] [DecidableEq I] (A : I → Finset X)
@@ -641,7 +627,6 @@ private lemma octWitnessTuple_mem {G : Type*} [DecidableEq G]
     (w : OctWitness (Fin V.card) G)
     (hwmem : w ∈ octWitnesses A c delta V K i j) :
     octWitnessTuple w ∈ eightReps A (centerAt V i - centerAt V j) := by
-  classical
   have hw := Finset.mem_sigma.mp hwmem
   have hqr := Finset.mem_product.mp hw.2
   have hq := Finset.mem_filter.mp hqr.1
@@ -802,7 +787,6 @@ private lemma eightReps_card_lower_of_core {G : Type*} [DecidableEq G]
 private lemma sum_eightReps_card_le {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A S : Finset G) :
     ∑ x ∈ S, (eightReps A x).card ≤ A.card ^ 8 := by
-  classical
   unfold eightReps
   rw [Finset.sum_card_fiberwise_eq_card_filter]
   calc
@@ -819,7 +803,6 @@ theorem proposition_7_3_group_holds {G : Type*} [DecidableEq G]
       (2 : Real) ^ (-(20 : Real)) * c ^ 12 * A.card ≤ A''.card ∧
       ((A'' - A'').card : Real) ≤
         (2 : Real) ^ (38 : Nat) * c ^ (-(24 : Real)) * A.card := by
-  classical
   by_cases hAempty : A = ∅
   · subst A
     refine ⟨∅, by simp, ?_, ?_⟩
@@ -842,8 +825,7 @@ theorem proposition_7_3_group_holds {G : Type*} [DecidableEq G]
     apply highGoodDegree_card_lower F K threshold
     simpa only [F, threshold, delta] using hKdense
   have hAcard : A''.card = L.card := by
-    apply Finset.card_image_iff.mpr
-    exact (centerAt_injective V).injOn
+    exact Finset.card_image_iff.mpr ((centerAt_injective V).injOn)
   have hAsub : A'' ⊆ A := by
     intro a ha
     obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp ha
@@ -899,8 +881,7 @@ theorem proposition_7_3_group_holds {G : Type*} [DecidableEq G]
     calc
       _ = ∑ _x ∈ D, repLower := by simp [mul_comm]
       _ ≤ _ := by
-        apply Finset.sum_le_sum
-        exact hrep
+        exact Finset.sum_le_sum hrep
   have hsumUpper :
       ∑ x ∈ D, ((eightReps A x).card : Real) ≤ (A.card : Real) ^ 8 := by
     exact_mod_cast sum_eightReps_card_le A D

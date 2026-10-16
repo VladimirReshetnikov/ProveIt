@@ -60,8 +60,7 @@ private lemma lemma78_spectrum_card_bound {N : Nat} [NeZero N]
     dsimp [lambda]
     rw [div_pow]
     have hpow : (alpha ^ ((3 : Real) / 2)) ^ (2 : Nat) = alpha ^ 3 := by
-      rw [← Real.rpow_natCast]
-      rw [← Real.rpow_mul halpha.le]
+      rw [← Real.rpow_natCast, ← Real.rpow_mul halpha.le]
       norm_num
     rw [hpow]
     norm_num
@@ -73,8 +72,8 @@ private lemma lemma78_spectrum_card_bound {N : Nat} [NeZero N]
           ((section7Spectrum A alpha).card : Real) * (lambda * N) ^ 2 := by ring
       _ <= (N : Real) * (alpha * N) := hsumLower
       _ = alpha * (N : Real) ^ 2 := by ring
-  have hcancel : ((section7Spectrum A alpha).card : Real) * lambda ^ 2 <= alpha := by
-    exact le_of_mul_le_mul_right hscaled (sq_pos_of_pos hN)
+  have hcancel : ((section7Spectrum A alpha).card : Real) * lambda ^ 2 <= alpha :=
+    le_of_mul_le_mul_right hscaled (sq_pos_of_pos hN)
   have hraw : ((section7Spectrum A alpha).card : Real) <= alpha / lambda ^ 2 :=
     (le_div_iff₀ (sq_pos_of_pos hlambda)).2 hcancel
   calc
@@ -100,8 +99,7 @@ private lemma lemma78_fourier_pairCorrelation {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (r : ZMod N) :
     fourier (lemma78PairCorrelation A) r =
       ((‖fourier (indicator A) r‖ ^ 2 : Real) : Complex) := by
-  rw [lemma78PairCorrelation, identity_2_1_holds]
-  rw [Complex.star_def, Complex.mul_conj']
+  rw [lemma78PairCorrelation, identity_2_1_holds, Complex.star_def, Complex.mul_conj']
   norm_cast
 
 private lemma lemma78_fourier_fourCorrelation {N : Nat} [NeZero N]
@@ -256,8 +254,7 @@ private lemma lemma78_lambda_sq (alpha lambda : Real) (halpha : 0 < alpha)
     lambda ^ 2 = alpha ^ 3 / 16 := by
   rw [hlambda, div_pow]
   have hpow : (alpha ^ ((3 : Real) / 2)) ^ (2 : Nat) = alpha ^ 3 := by
-    rw [← Real.rpow_natCast]
-    rw [← Real.rpow_mul halpha.le]
+    rw [← Real.rpow_natCast, ← Real.rpow_mul halpha.le]
     norm_num
   rw [hpow]
   norm_num
@@ -352,8 +349,7 @@ private lemma lemma78_fourCorrelation_sub_zero {N : Nat} [NeZero N]
   apply Finset.sum_congr rfl
   intro r _
   simp only [mul_zero]
-  have hzero : exponential (0 : ZMod N) = 1 := by
-    exact AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
+  have hzero : exponential (0 : ZMod N) = 1 := AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
   rw [hzero]
   ring
 
@@ -467,7 +463,6 @@ private def Lemma78Representation.value {N : Nat} {G : Type*}
 private lemma lemma78_pairCorrelation_star {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (t : ZMod N) :
     star (lemma78PairCorrelation A t) = lemma78PairCorrelation A t := by
-  classical
   unfold lemma78PairCorrelation correlation
   simp only [star_sum, star_mul, lemma78_indicator_star]
   apply Finset.sum_congr rfl
@@ -478,7 +473,6 @@ private lemma lemma78_representation_of_fourCorrelation_ne_zero
     {N : Nat} [NeZero N] (A : Finset (ZMod N)) (d : ZMod N)
     (hne : lemma78FourCorrelation A d != 0) :
     Nonempty (Lemma78Representation A d) := by
-  classical
   rw [bne_iff_ne] at hne
   unfold lemma78FourCorrelation correlation at hne
   obtain ⟨t, _htmem, ht⟩ := Finset.exists_ne_zero_of_sum_ne_zero hne
@@ -764,7 +758,6 @@ private lemma lemma78_constant_weighted_phase {N : Nat} [NeZero N]
     (hd : d ∈ bohr (section7Spectrum A alpha) (1 / (8 * Real.pi))) :
     (∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4 * ‖exponential (r * d) - 1‖) ≤
       (3 / 8 : Real) * ∑ r : ZMod N, ‖fourier (indicator A) r‖ ^ 4 := by
-  classical
   let K := section7Spectrum A alpha
   let F := fun r : ZMod N ↦ ‖fourier (indicator A) r‖ ^ 4
   let w := fun r : ZMod N ↦ F r * ‖exponential (r * d) - 1‖
@@ -844,7 +837,6 @@ private lemma lemma78_induced_on_represented_domain {N : Nat} {G : Type*}
     (hrep : ∀ d ∈ B, Nonempty (Lemma78Representation A d)) :
     ∃ psi : ZMod N → G, FreimanHom 2 B psi ∧
       ∀ x ∈ A, ∀ y ∈ A, x - y ∈ B → phi x - phi y = psi (x - y) := by
-  classical
   let rep := fun d hd ↦ Classical.choice (hrep d hd)
   let psi := fun d ↦ if hd : d ∈ B then (rep d hd).value phi else 0
   refine ⟨psi, ?_, ?_⟩

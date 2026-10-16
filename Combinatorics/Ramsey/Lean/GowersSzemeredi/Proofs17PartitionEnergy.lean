@@ -32,7 +32,6 @@ theorem not_uniformOnPartition_exists_cell {N M k m : Nat} [NeZero N]
     (h : ¬ UniformOnPartition f k beta Q m) :
     ∃ i : Fin M, ¬ UniformOfDegree (restrictToCell (Q i).carrier f)
       (beta * ((m : Real) / N) ^ (k + 2)) k := by
-  classical
   by_contra hn
   push Not at hn
   apply h

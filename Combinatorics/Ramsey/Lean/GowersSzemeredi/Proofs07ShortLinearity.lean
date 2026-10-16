@@ -21,7 +21,6 @@ namespace LeanProofs.GowersSzemeredi
 theorem linearOn_of_card_le_two {N : Nat} [Fact N.Prime]
     (A : Finset (ZMod N)) (phi : ZMod N → ZMod N) (hA : A.card ≤ 2) :
     LinearOn A phi := by
-  classical
   by_cases htwo : A.card = 2
   · obtain ⟨x, y, hxy, rfl⟩ := Finset.card_eq_two.mp htwo
     let a := (phi y - phi x) / (y - x)
@@ -51,7 +50,6 @@ theorem linearOn_short_progression {N : Nat} [Fact N.Prime]
     (P : ModAP N) (A : Finset (ZMod N)) (phi : ZMod N → ZMod N)
     (hP : P.IsProper) (hlen : P.length ≤ 3) (hA : A ⊆ P.carrier)
     (hphi : FreimanHom 8 A phi) : LinearOn A phi := by
-  classical
   by_cases htwo : A.card ≤ 2
   · exact linearOn_of_card_le_two A phi htwo
   have hcard : P.carrier.card = P.length := hP
@@ -61,8 +59,7 @@ theorem linearOn_short_progression {N : Nat} [Fact N.Prime]
   subst A
   have hd : P.step ≠ 0 := BaseCase.proper_modAP_step_ne_zero_of_two_le P hP (by omega)
   have hmem (i : Fin 3) : P.start + (i : Nat) * P.step ∈ P.carrier := by
-    apply Finset.mem_image.mpr
-    exact ⟨⟨i, by omega⟩, Finset.mem_univ _, rfl⟩
+    exact Finset.mem_image.mpr (⟨⟨i, by omega⟩, Finset.mem_univ _, rfl⟩)
   have h₀ := hmem (0 : Fin 3)
   have h₁ := hmem (1 : Fin 3)
   have h₂ := hmem (2 : Fin 3)
@@ -102,7 +99,6 @@ theorem short_modular_affine_partition {N : Nat} [Fact N.Prime]
       IsPartition (fun j ↦ (Q j).carrier) R.carrier ∧
       ∀ j, (Q j).step != 0 ∧ (Q j).IsProper ∧ t ≤ (Q j).length ∧
         LinearOn ((Q j).carrier.filter fun x ↦ x ∈ A) phi := by
-  classical
   have hlinear (P : ModAP N) (hp : P.IsProper) (hlen : P.length ≤ 3) :
       LinearOn (P.carrier.filter fun x ↦ x ∈ A) phi := by
     apply linearOn_short_progression P _ phi hp hlen (Finset.filter_subset _ _)

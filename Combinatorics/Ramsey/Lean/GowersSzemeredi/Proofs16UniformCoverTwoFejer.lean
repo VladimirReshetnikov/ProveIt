@@ -99,7 +99,6 @@ theorem section16_uniform_cover_two_fejer {A Bq : Nat → Real} (hA : ∀ q, 0 <
     (hcov : ∀ i, restrictRelation (Gammas i) (J i) ⊆ polyPieceTwoFejerGraphs (P i)) :
     MultiplyLinearWith (uniTwoFejerCount theta gamma (n * m)) (uniTwoFejerExp A Bq theta gamma (n * m))
       (Finset.univ.biUnion fun i => restrictRelation (Gammas i) (J i)) := by
-  classical
   let e : Fin (n * m) ≃ Fin n × Fin m := finProdFinEquiv.symm
   let R : Fin (n * m) → PolyPieceTwoFejer N theta gamma := fun c => P (e c).1 (e c).2
   refine MultiplyLinearWith.subset
@@ -192,7 +191,6 @@ theorem powerUniformClass_two_fejer {K1 p1 : Nat} (hK1 : 1 ≤ K1) (hp1 : 0 < p1
       (section16PowerWidth (familyWidthPrefactor K1) (familyWidthDivisor 1 p1)))
     {V : Real} (hV : 1 ≤ V) (hKV : (K1 : Real) ≤ V) (hpV : (p1 : Real) ≤ V) :
     Nonempty (PowerUniformClass 2 V ((2 : Nat) ^ 43) ((2 : Nat) ^ 46) ((2 : Nat) ^ 15)) := by
-  classical
   refine ⟨{
     U := fun N _ theta gamma Gamma =>
       ∃ P : Fin (polyTwoFejerPieces gamma theta) → PolyPieceTwoFejer N theta gamma,

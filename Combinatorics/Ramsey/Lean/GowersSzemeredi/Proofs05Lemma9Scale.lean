@@ -232,8 +232,7 @@ private theorem section5LocalDiameter_of_quarterInvariant
   have hxSixteen := section5Sixteen_le_of_iteratedRoot hx (by omega : 1 <= K) hlarge
   have hsqrt : x ^ (2 : Real)⁻¹ <= (t : Real) :=
     (section5Sqrt_le_quarter hxSixteen).trans hlower
-  have hsqrtPos : 0 < x ^ (2 : Real)⁻¹ := by
-    exact Real.rpow_pos_of_pos (by linarith) _
+  have hsqrtPos : 0 < x ^ (2 : Real)⁻¹ := Real.rpow_pos_of_pos (by linarith) _
   have hnegative : -(2 * (K : Real)⁻¹) <= 0 := by
     have : (0 : Real) <= (K : Real)⁻¹ := inv_nonneg.mpr (by positivity)
     linarith

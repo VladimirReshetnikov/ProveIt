@@ -82,7 +82,6 @@ def flattenPieces {N : Nat} [NeZero N] {theta gamma : Real} {m n : Nat}
 theorem polyPieceTwoGraphs_flatten {N : Nat} [NeZero N] {theta gamma : Real} {m n : Nat}
     (Q : Fin m → Fin n → PolyPieceTwo N theta gamma) (c : Fin m) :
     polyPieceTwoGraphs (Q c) ⊆ polyPieceTwoGraphs (flattenPieces Q) := by
-  classical
   intro z hz
   obtain ⟨j, -, hj⟩ := Finset.mem_biUnion.mp hz
   refine Finset.mem_biUnion.mpr ⟨finProdFinEquiv (c, j), Finset.mem_univ _, ?_⟩
@@ -168,7 +167,6 @@ theorem section16_poly_family_three_cover
             (famThreeEr (familyWidthPrefactor K1) (familyWidthDivisor 1 p1) thF gF q3 m) rho)
           (famPieceSliceExponent (famThreeQr thF gF q3 m) (famThreeEs thF gF K1 p1 m) m rho)))
       (Finset.univ.biUnion fun c => partialGraph (P c).D (P c).phi) := by
-  classical
   have hA1 : ∀ q, 0 < familyWidthPrefactor K1 q := familyWidthPrefactor_pos (by omega)
   have hB1 : ∀ q, 0 < familyWidthDivisor 1 p1 q := familyWidthDivisor_pos hp1
   -- spectra

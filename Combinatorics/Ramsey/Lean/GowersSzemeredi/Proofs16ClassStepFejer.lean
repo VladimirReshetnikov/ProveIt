@@ -101,7 +101,6 @@ theorem class_piece_of_subrelation_fejer (C : UniformClassWith k Thr Cnt Exp) (h
     (hproj : theta * (N : Real) ^ (k + 1) ≤ (relationProjection Delta).card) :
     Nonempty (ClassPiece C Delta (tightZeta (fejerThetaOne theta gamma k / 4)) (classBudgetW (fejerThetaOne theta gamma k) k)
       (classBudgetW (fejerThetaOne theta gamma k) k) (section16Delta (fejerThetaOne theta gamma k)) (classBudgetW (fejerThetaOne theta gamma k) k) gamma) := by
-  classical
   let phi : Point N (k + 1) → ZMod N := fun x =>
     if h : ∃ y, (x, y) ∈ Delta then Classical.choose h else 0
   have hsel : GraphContained (relationProjection Delta) phi Delta := by
@@ -156,7 +155,6 @@ theorem class_step_decomp_fejer (C : UniformClassWith k Thr Cnt Exp) (hk : 1 ≤
     ∃ J : Finset (Point N (k + 1)), (1 - theta) * (N : Real) ^ (k + 1) ≤ J.card ∧
       ∃ P : Fin (classPiecesFejer gamma theta k) → StepPieceFejer C N theta gamma,
         restrictRelation Gamma J ⊆ stepPieceFejerGraphs C P := by
-  classical
   obtain ⟨hθ'pos, hθ'le⟩ := classBudgetW_pos_le k (fejerThetaOne_bounds k ht ht1 hg hg1).1 (fejerThetaOne_bounds k ht ht1 hg hg1).2
   set θ' := classBudgetW (fejerThetaOne theta gamma k) k
   let Good : Finset (Point N (k + 1) × ZMod N) → Prop := fun G =>
@@ -233,7 +231,6 @@ theorem class_step_cover_gen_fejer (C : UniformClassWith k Thr Cnt Exp) (hk : 1 
           (famPieceSliceExponent (clsQr Cnt k M tS gamma) (clsEs Exp M tS gamma) M rho)))
       (Finset.univ.biUnion Gamma) := by
   intro M tS gS
-  classical
   obtain ⟨htS, htS1⟩ := classBudgetW_pos_le k (fejerThetaOne_bounds k ht ht1 hg hg1).1 (fejerThetaOne_bounds k ht ht1 hg hg1).2
   obtain ⟨-, -, hgS, hgS1⟩ := section16_theta_delta_bounds_with (fejerThetaOne_bounds k ht ht1 hg hg1).1 (fejerThetaOne_bounds k ht ht1 hg hg1).2
   obtain ⟨hz, hzHalf⟩ := tightZeta_pos_le_half (fejerThetaOne_bounds k ht ht1 hg hg1).1 (by linarith [(fejerThetaOne_bounds k ht ht1 hg hg1).2])
@@ -276,7 +273,6 @@ theorem class_step_cover_fejer {V : Real} {dC dE dT : Nat} (C : PowerUniformClas
           (famPieceSliceExponent (classQr V dC k M tS gamma) (classEs V dE M tS gamma) M rho)))
       (Finset.univ.biUnion Gamma) := by
   intro M tS gS
-  classical
   obtain ⟨htS, htS1⟩ := classBudgetW_pos_le k (fejerThetaOne_bounds k ht ht1 hg hg1).1 (fejerThetaOne_bounds k ht ht1 hg hg1).2
   obtain ⟨-, -, hgS, hgS1⟩ := section16_theta_delta_bounds_with (fejerThetaOne_bounds k ht ht1 hg hg1).1 (fejerThetaOne_bounds k ht ht1 hg hg1).2
   obtain ⟨hz, hzHalf⟩ := tightZeta_pos_le_half (fejerThetaOne_bounds k ht ht1 hg hg1).1 (by linarith [(fejerThetaOne_bounds k ht ht1 hg hg1).2])

@@ -20,7 +20,6 @@ theorem MultiplyLinearFunction.lift_last {N k : Nat} [NeZero N] [Fact N.Prime]
     (hgraphs : (3 ^ (k + 1) : Nat) ≤ s) (hk : 0 < k) :
     MultiplyLinearFunction gamma s (lastProductSet B Finset.univ)
       (fun z => phi (section16Init z)) := by
-  classical
   intro theta ht ht1 P hP
   obtain ⟨ha, ha1, hA, hgap⟩ := section16_dimension_exponent_gap k hg hg1 ht ht1 hs
   let _ := (multipleC (s⁻¹ * theta) gamma k) ^ s

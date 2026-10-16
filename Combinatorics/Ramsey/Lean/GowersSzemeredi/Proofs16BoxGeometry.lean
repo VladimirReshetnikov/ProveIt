@@ -15,7 +15,6 @@ namespace LeanProofs.GowersSzemeredi
 /-- Width is at most the length of each axis. -/
 theorem Box.width_le_axis_length {N k : Nat} (P : Box N k) (i : Fin k) :
     P.width ≤ (P.axis i).length := by
-  classical
   have hk : k ≠ 0 := by have := i.isLt; omega
   simp only [Box.width, dif_neg hk]
   exact Finset.min'_le _ _ (Finset.mem_image.mpr ⟨i, Finset.mem_univ _, rfl⟩)

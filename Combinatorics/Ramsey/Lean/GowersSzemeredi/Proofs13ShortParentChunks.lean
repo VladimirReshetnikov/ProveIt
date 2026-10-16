@@ -18,7 +18,6 @@ def shortParentChunk (L m : Nat) (j : Fin (L / m)) : NatAP where
 theorem shortParentChunk_mem (L m : Nat) (j : Fin (L / m)) (x : Nat) :
     x ∈ (shortParentChunk L m j).carrier ↔
       ∃ i : Nat, i < (shortParentChunk L m j).length ∧ x = j.val * m + i := by
-  classical
   simp only [NatAP.carrier, Finset.mem_image, Finset.mem_univ, true_and]
   constructor
   · rintro ⟨i, rfl⟩
@@ -28,7 +27,6 @@ theorem shortParentChunk_mem (L m : Nat) (j : Fin (L / m)) (x : Nat) :
 
 theorem shortParentChunk_isProper (L m : Nat) (j : Fin (L / m)) :
     (shortParentChunk L m j).IsProper := by
-  classical
   refine ⟨by simp [shortParentChunk], ?_⟩
   unfold NatAP.carrier
   rw [Finset.card_image_of_injective]
@@ -59,7 +57,6 @@ theorem shortParentChunk_subset (L m : Nat) (j : Fin (L / m)) :
 /-- These blocks partition the interval for every positive m at most L. -/
 theorem shortParentChunk_partition {L m : Nat} (hm : 0 < m) (hmL : m ≤ L) :
     IsNatAPPartition (shortParentChunk L m) (Finset.range L) := by
-  classical
   have hn : 0 < L / m := Nat.div_pos hmL hm
   have hdiv : L / m * m + L % m = L := by simpa only [Nat.mul_comm] using Nat.div_add_mod L m
   constructor
@@ -108,7 +105,6 @@ theorem section13_residue_short_partition (r p m : Nat)
     ∃ M : Nat, ∃ Q : Fin M → NatAP,
       0 < M ∧ IsNatAPPartition Q (Finset.range r) ∧
       ∀ j, (Q j).IsProper ∧ m ≤ (Q j).length ∧ (Q j).length < 2 * m ∧ (Q j).step = p := by
-  classical
   have hpr : p ≤ r := by nlinarith
   let P := residueNatAP r p
   have hlong (a : Fin p) : m ≤ (P a).length := by

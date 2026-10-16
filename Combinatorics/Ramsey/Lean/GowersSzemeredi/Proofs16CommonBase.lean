@@ -90,7 +90,6 @@ private lemma lemma167_witness_le_good {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (H : Finset (Point N k))
     (Y : (h : Point N k) → Finset (Section16CubeElement B h)) :
     (lemma167Witnesses B H Y).card ≤ (lemma167GoodTriples B H Y).card := by
-  classical
   exact Finset.card_le_card_of_injOn lemma167Target
     (fun w hw => by
       show lemma167Target w ∈ lemma167GoodTriples B H Y
@@ -102,7 +101,6 @@ private lemma lemma167_good_card {N k : Nat} [NeZero N]
     (Y : (h : Point N k) → Finset (Section16CubeElement B h)) :
     (lemma167GoodTriples B H Y).card =
       ∑ x0 : Point N k, section16GoodInducedPairCount B H Y x0 := by
-  classical
   change countWhere (fun q : Point N k × (Point N k × ZMod N) =>
       Section16GoodInducedPair B H Y q.1 q.2) =
     ∑ x0 : Point N k,
@@ -141,8 +139,7 @@ private lemma lemma167_sum_good_lower {N k : Nat} [NeZero N]
               rw [htwo29]
               ring
       _ ≤ ((2 : Real) ^ (-(27 : Real)) * theta1 ^ 6) *
-          (section16CubeDomain B h).card := by
-            exact mul_le_mul_of_nonneg_left (hX h hh) hcoefficient
+          (section16CubeDomain B h).card := mul_le_mul_of_nonneg_left (hX h hh) hcoefficient
       _ ≤ (Y h).card := hY h hh
   have hsumY :
       (H.card : Real) *
@@ -156,8 +153,7 @@ private lemma lemma167_sum_good_lower {N k : Nat} [NeZero N]
           ∑ _h ∈ H,
             ((2 : Real) ^ (-(29 : Real)) * theta1 ^ (7 : Nat) *
               (N : Real) ^ (k + 1)) := by simp
-      _ ≤ ∑ h ∈ H, ((Y h).card : Real) := by
-        exact Finset.sum_le_sum fun h hh => hper h hh
+      _ ≤ ∑ h ∈ H, ((Y h).card : Real) := Finset.sum_le_sum fun h hh => hper h hh
   have hperNonneg :
       0 ≤ (2 : Real) ^ (-(29 : Real)) * theta1 ^ (7 : Nat) *
         (N : Real) ^ (k + 1) := by positivity
@@ -236,7 +232,6 @@ theorem lemma_16_7_with {N k : Nat} [NeZero N] (t1 zeta : Real) (ht1 : 0 ≤ t1)
       section16ThetaTwo t1 * (N : Real) ^ (k + 1) ≤ section16GoodInducedPairCount B H1 Y x0 ∧
       ∀ z, Section16GoodInducedPair B H1 Y x0 z →
         phiPrime z.1 z.2 = section16CubeValueAtBase phi x0 z.1 z.2 := by
-  classical
   have htotal := lemma167_sum_good_lower t1 B H1 Y hH hX hY ht1
   have hcard :
       (Fintype.card (Point N k) : Real) *
@@ -258,7 +253,6 @@ theorem lemma_16_7_with {N k : Nat} [NeZero N] (t1 zeta : Real) (ht1 : 0 ≤ t1)
 
 /-- **Gowers, Lemma 16.7.** -/
 theorem lemma_16_7_holds : lemma_16_7 := by
-  classical
   unfold lemma_16_7
   intro N k _ theta gamma B phi H1 Y phiPrime
   dsimp only

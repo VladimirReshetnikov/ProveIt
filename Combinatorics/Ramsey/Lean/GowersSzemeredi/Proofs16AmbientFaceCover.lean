@@ -21,7 +21,6 @@ theorem ProperCrossSectionsMultiplyLinear.ambient_face_cover
     (hD : ∀ z ∈ D, F.map (selectedCoordinates F.free (z + t)) ∈ B) :
     MultiplyLinearFunction gamma s D
       (fun z => phi (F.map (selectedCoordinates F.free (z + t)))) := by
-  classical
   have hp := ((hfaces l hl F).lift_embedding hg hg1 hs hgraphs F.free).translate (-t)
   simp only [neg_neg] at hp
   apply hp.mono

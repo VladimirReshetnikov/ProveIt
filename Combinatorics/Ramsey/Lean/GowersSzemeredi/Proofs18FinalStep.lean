@@ -220,7 +220,6 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
     SinglePieceModulusConditionsFJ (fun l => uCount P.V (uDegT3 l)) (fun l => uExp P.V (uDegT3 l))
       alpha P.k (familyRecExp P.k P.p) (familyRecThr P.k P.K P.p)
       (P.Eloc alpha) N := by
-  classical
   obtain ⟨hρ, ⟨hEm, -⟩, ⟨hEth, -⟩, ⟨haN, -⟩, ⟨hb, -⟩, hζ⟩ :=
     P.ranges hp ha haHalf
   obtain ⟨he, -, hF, -, hmE, -⟩ := P.Eloc_pos_le hV hp ha haHalf
@@ -397,8 +396,7 @@ theorem vertex_uCount_le {μV : Nat} (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) (h
   have hD : uDegT3 l ≤ 2 ^ (tDegT3 P.k) := uDegT3_le_pow hl
   have h := uCount_scale_le_deg (c := pDeg P.k + 1) hX hV hVμ (seven_le_pDeg _) hμ0 (half_pos ha) (by linarith)
     (GenParams.half_inv_le_deg (pDeg P.k) ha ha2) hB0 hB1 hBi hs0 hs1 hsi hD
-  have hm : max P.μ0 (pDeg P.k + 1) = P.μ0 := by
-    exact max_eq_left (by omega)
+  have hm : max P.μ0 (pDeg P.k + 1) = P.μ0 := max_eq_left (by omega)
   rw [hm] at h
   exact h
 

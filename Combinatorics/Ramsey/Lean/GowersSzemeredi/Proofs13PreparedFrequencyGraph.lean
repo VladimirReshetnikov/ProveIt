@@ -37,14 +37,12 @@ private lemma context_density_moment_identity (K R n : Real) (hn : n ≠ 0) :
 private lemma context_sum_vertical_card {N : Nat} [NeZero N]
     (B : Finset (Pair N)) :
     ∑ x : ZMod N, (verticalSection B x).card = B.card := by
-  classical
   convert (context_countWhere_prod (fun x y : ZMod N => (x, y) ∈ B)).symm using 1 <;>
     simp [verticalSection, countWhere] <;> congr!
 
 private lemma context_sum_horizontal_card {N : Nat} [NeZero N]
     (B : Finset (Pair N)) :
     ∑ y : ZMod N, (horizontalSection B y).card = B.card := by
-  classical
   convert ((context_countWhere_prod (fun y x : ZMod N => (x, y) ∈ B)).symm.trans
       (feature_countWhere_equiv (Equiv.prodComm (ZMod N) (ZMod N))
         (fun z : Pair N => z ∈ B)).symm) using 1 <;>
@@ -65,7 +63,6 @@ private lemma context_restrict_fibres {N : Nat} [NeZero N]
           ((∑ x : ZMod N, (S x).card / (N : Real)) / (N : Real)) ^ 1165 *
           (N : Real) ^ 2 ≤
         ∑ x : ZMod N, ((T x).card : Real) := by
-  classical
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hN0 : (N : Real) ≠ 0 := hN.ne'
   let rho : ZMod N → Real := fun x ↦ (S x).card / (N : Real)
@@ -173,28 +170,24 @@ private noncomputable def contextHorizontalJoin {N : Nat} [NeZero N]
 private lemma context_vertical_join_section {N : Nat} [NeZero N]
     (T : ZMod N → Finset (ZMod N)) (x : ZMod N) :
     verticalSection (contextVerticalJoin T) x = T x := by
-  classical
   ext y
   simp [verticalSection, contextVerticalJoin]
 
 private lemma context_horizontal_join_section {N : Nat} [NeZero N]
     (T : ZMod N → Finset (ZMod N)) (y : ZMod N) :
     horizontalSection (contextHorizontalJoin T) y = T y := by
-  classical
   ext x
   simp [horizontalSection, contextHorizontalJoin]
 
 private lemma context_vertical_join_card {N : Nat} [NeZero N]
     (T : ZMod N → Finset (ZMod N)) :
     (contextVerticalJoin T).card = ∑ x : ZMod N, (T x).card := by
-  classical
   simpa only [context_vertical_join_section] using
     (context_sum_vertical_card (contextVerticalJoin T)).symm
 
 private lemma context_horizontal_join_card {N : Nat} [NeZero N]
     (T : ZMod N → Finset (ZMod N)) :
     (contextHorizontalJoin T).card = ∑ y : ZMod N, (T y).card := by
-  classical
   simpa only [context_horizontal_join_section] using
     (context_sum_horizontal_card (contextHorizontalJoin T)).symm
 
@@ -209,7 +202,6 @@ private lemma context_vertical_restriction {N : Nat} [NeZero N]
           ((B.card : Real) / (N : Real) ^ 2) ^ 1165 * (N : Real) ^ 2 ≤
         B'.card ∧
       ∀ x, FreimanHom 8 (verticalSection B' x) (fun y ↦ phi (x, y)) := by
-  classical
   obtain ⟨T, hTsub, hTfreiman, hTcard⟩ := context_restrict_fibres hprime a ha
     (fun x ↦ verticalSection B x) (fun x ↦ difference f x)
     (fun x y ↦ phi (x, y)) (fun x ↦ difference_discValued hf x) (by
@@ -249,7 +241,6 @@ private lemma context_horizontal_restriction {N : Nat} [NeZero N]
           ((B.card : Real) / (N : Real) ^ 2) ^ 1165 * (N : Real) ^ 2 ≤
         B'.card ∧
       ∀ y, FreimanHom 8 (horizontalSection B' y) (fun x ↦ phi (x, y)) := by
-  classical
   obtain ⟨T, hTsub, hTfreiman, hTcard⟩ := context_restrict_fibres hprime a ha
     (fun y ↦ horizontalSection B y) (fun y ↦ difference f y)
     (fun y x ↦ phi (x, y)) (fun y ↦ difference_discValued hf y) (by
@@ -347,7 +338,6 @@ theorem section13_prepared_frequency_graph {N : Nat} [NeZero N] [Fact N.Prime]
       (alpha / 2) ^ (14409429 : Nat) * (N : Real) ^ 2 ≤ A.card ∧
       SeparatelyFreimanEight A phi ∧
       ∀ z, z ∈ A → (alpha / 2) * N ≤ ‖secondDifferenceFourier f z.1 z.2 (phi z)‖ := by
-  classical
   let a : Real := alpha / 2
   have ha : 0 < a := by dsimp only [a]; positivity
   have haHalf : a ≤ 1 / 2 := by dsimp only [a]; nlinarith

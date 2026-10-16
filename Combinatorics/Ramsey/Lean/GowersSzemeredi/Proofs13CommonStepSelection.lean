@@ -17,7 +17,6 @@ theorem cyclic_common_step_partition {N : Nat} [Fact N.Prime]
       IsPartition (fun j ↦ (P j).carrier) Finset.univ ∧
       ∀ j, (P j).step = d ∧ (P j).IsProper ∧
         ((P j).length = m ∨ (P j).length = m + 1) := by
-  classical
   let R : ModAP N := { start := 0, step := d, length := N }
   have hRuniv : R.carrier = Finset.univ := by
     apply Finset.eq_univ_of_forall
@@ -50,7 +49,6 @@ its first `m` positive or negative step multiples. -/
 theorem modAP_difference_mem_symmetric {N : Nat} (P : ModAP N) {m : Nat}
     (hlen : P.length ≤ m + 1) {x y : ZMod N} (hx : x ∈ P.carrier) (hy : y ∈ P.carrier) :
     x - y ∈ section10SymmetricMultiples P.step m := by
-  classical
   obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
   obtain ⟨j, _, rfl⟩ := Finset.mem_image.mp hy
   apply Finset.mem_image.mpr
@@ -73,7 +71,6 @@ theorem linearOnDomain_of_short_difference_rule {N : Nat} {X : Type*}
       r v - r w ∈ section10SymmetricMultiples P.step m →
         phi v - phi w = c * (r v - r w)) :
     LinearOnDomain (Y.filter fun v ↦ r v ∈ P.carrier) r phi := by
-  classical
   obtain ⟨c, hc⟩ := hrule
   by_cases hne : (Y.filter fun v ↦ r v ∈ P.carrier).Nonempty
   · obtain ⟨w, hw⟩ := hne
@@ -102,7 +99,6 @@ theorem common_step_row_selection {N : Nat} [Fact N.Prime]
         (fun z : Pair N ↦ z.1) (phi h)) ∧
       delta * R.length * N * I.card ≤
         ∑ h ∈ I, ((Y h).filter fun z ↦ z.1 ∈ R.carrier).card := by
-  classical
   obtain ⟨M, P, hP, hcell⟩ := cyclic_common_step_partition d hd m hm hsize
   let C := I.sigma Y
   have hcard : C.card = ∑ h ∈ I, (Y h).card := by simp [C]
@@ -147,7 +143,6 @@ theorem lemma_13_6_of_short_difference_rules_with_length {N : Nat} [Fact N.Prime
         verticalPhiDifference S.phi h v - verticalPhiDifference S.phi h w =
           c * (v.1 - w.1)) :
     ∃ F : Stage136Data N, IsStage136Data S D E F ∧ m ≤ F.R.length ∧ F.R.length ≤ E.Q.length := by
-  classical
   let delta : Real := (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224
   obtain ⟨R, hs, hp, hl, hlinear, hmass⟩ := common_step_row_selection
     (criticalHeights S D E) Y (verticalPhiDifference S.phi) E.Q.step m delta

@@ -27,7 +27,6 @@ theorem fourierSquare_cubeDifference {N : Nat} (f : ZMod N → Complex) (z : Pai
 under the coordinate convention of the cube difference. -/
 theorem IsBilinear.to_multilinear {N : Nat} {mu : Pair N → ZMod N} (hmu : IsBilinear mu) :
     IsMultilinear (fun x : Point N 2 => mu ((fourierSquareEquiv N).symm x)) := by
-  classical
   obtain ⟨c00, c10, c01, c11, hmu⟩ := hmu
   let e : (Bool × Bool) ≃ (Fin 2 → Bool) := {
     toFun b := ![b.1, b.2]
@@ -62,7 +61,6 @@ theorem fourierSquareBox_width {N m : Nat} (P Q : ModAP N) (hstep : P.step = Q.s
 theorem fourierSquareBox_mem {N : Nat} [NeZero N] (P Q : ModAP N) (hstep : P.step = Q.step)
     (z : Pair N) : fourierSquareEquiv N z ∈ (fourierSquareBox P Q hstep).carrier ↔
       z ∈ P.carrier.product Q.carrier := by
-  classical
   simp only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and]
   constructor
   · intro h
@@ -84,7 +82,6 @@ theorem fourierSquare_energy {N m : Nat} [NeZero N]
     (delta * alpha ^ 2 / 4) * (N : Real) ^ 2 * (m : Real) ^ 2 ≤
       ∑ x ∈ (fourierSquareBox P Q hstep).carrier,
         ‖fourier (cubeDifference f x) (mu ((fourierSquareEquiv N).symm x))‖ ^ 2 := by
-  classical
   let E := B.image (fourierSquareEquiv N)
   have hE : E ⊆ (fourierSquareBox P Q hstep).carrier := by
     intro x hx

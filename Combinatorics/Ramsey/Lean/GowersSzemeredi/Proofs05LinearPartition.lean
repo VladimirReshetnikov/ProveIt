@@ -94,7 +94,6 @@ theorem section5_strong_linear_partition (N r v : Nat) [NeZero N]
       ∀ j, diameterAtMostReal
         ((P j).carrier.image fun x : Nat => phi (x : ZMod N))
         ((r : Real) ^ (-((1 : Real) / 8)) * N) := by
-  classical
   have hr : 0 < r := by omega
   have hr0 : (0 : Real) < r := by exact_mod_cast hr
   let u : Real := (r : Real) ^ ((1 : Real) / 8)

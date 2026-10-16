@@ -23,7 +23,6 @@ theorem selected_discrepancy_refinement {N M : Nat} [NeZero N]
       IsRefinement (fun j => (R j).carrier) (fun i => (P i).carrier) ∧
       (∀ j, (R j).IsProper) ∧ (J : Real) ≤ ∑ i, budget i ∧
       beta * (∑ i ∈ B, ((P i).carrier.card : Real)) ≤ ∑ j, ‖∑ x ∈ (R j).carrier, f x‖ := by
-  classical
   have hexists (i : Fin M) : ∃ J : Nat, ∃ R : Fin J → ModAP N,
       IsPartition (fun j => (R j).carrier) (P i).carrier ∧
       (∀ j, (R j).IsProper) ∧ (J : Real) ≤ budget i ∧

@@ -55,7 +55,6 @@ theorem corollary_16_11_of_dimension_induction {k : Nat} (hk : 1 ≤ k)
           (N : Real) ^ section16CorollaryWidthExponent alpha k ≤ P.width ∧
           section16CorollaryExponent alpha k * P.carrier.card ≤
             section16LargeMultilinearFrequencyCount f P mu alpha := by
-  classical
   obtain ⟨N0, hN0⟩ := hth.restrict_function (alpha / 2) (alpha / 4)
     (by positivity) (by linarith) (by positivity) (by linarith)
   refine ⟨N0, fun N _ _ hN f hf hnot ↦ ?_⟩

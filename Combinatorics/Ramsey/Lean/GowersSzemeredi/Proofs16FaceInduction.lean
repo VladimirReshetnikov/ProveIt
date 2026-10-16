@@ -9,13 +9,11 @@ namespace LeanProofs.GowersSzemeredi
 
 theorem partialGraph_card {N l : Nat} (B : Finset (Point N l))
     (phi : Point N l → ZMod N) : (partialGraph B phi).card = B.card := by
-  classical
   exact Finset.card_image_of_injective _ (fun _ _ h => congrArg Prod.fst h)
 
 theorem restrictRelation_partialGraph {N l : Nat} (B J : Finset (Point N l))
     (phi : Point N l → ZMod N) :
     restrictRelation (partialGraph B phi) J = partialGraph (B ∩ J) phi := by
-  classical
   ext ⟨x, y⟩
   simp [restrictRelation, partialGraph, and_assoc, and_comm]
 

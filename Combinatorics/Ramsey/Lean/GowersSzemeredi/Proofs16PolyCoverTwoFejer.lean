@@ -98,7 +98,6 @@ theorem section16_poly_piece_two_of_subrelation_fejer
     Nonempty (PolyPieceTwoData Delta (tightZeta (fejerThetaOne theta gamma 1 / 4))
       (5 * polyPieceBudgetW (fejerThetaOne theta gamma 1)) (polyPieceSpecCountW (fejerThetaOne theta gamma 1))
       (polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma) (polyPieceFaceCountW (fejerThetaOne theta gamma 1) gamma)) := by
-  classical
   -- a selection
   let phi : Point N 2 → ZMod N := fun x =>
     if h : ∃ y, (x, y) ∈ Delta then Classical.choose h else 0
@@ -191,7 +190,6 @@ theorem polyCoverAt_two_fejer_of_family_lemma6 {A Bq : Nat → Real} (hA : ∀ q
     (hB : ∀ q, 0 < Bq q) (hlemma6 : AbstractFamilyLemma166At 1 (section16PowerWidth A Bq)) :
     PolyCoverAt 2 polyTwoFejerQb (polyTwoFejerEb A Bq) := by
   intro N _ _ gamma theta hg hg1 ht ht1 Gamma hsize hprod
-  classical
   by_cases hN : polyTwoFejerThreshold theta gamma ≤ N
   · obtain ⟨J, hJ, hML⟩ := section16_poly_cover_two_large_fejer hA hB hlemma6 ht ht1 hg hg1 hN
       Gamma hsize hprod

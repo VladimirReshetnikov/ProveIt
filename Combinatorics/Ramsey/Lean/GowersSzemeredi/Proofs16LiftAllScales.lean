@@ -24,8 +24,7 @@ theorem section16_slice_control_ranges {r k : Nat} {s gamma ε : ℝ}
       _ = 1 := by norm_num
   have hc : 0 < multipleC (((r : ℝ) * s)⁻¹ * ε) gamma k := pow_pos hb _
   have hc1 : multipleC (((r : ℝ) * s)⁻¹ * ε) gamma k ≤ 1 := pow_le_one₀ hb.le hb1
-  have hQ : 1 ≤ multipleQ (((r : ℝ) * s)⁻¹ * ε) gamma k := by
-    exact (one_le_inv₀ hc).mpr hc1
+  have hQ : 1 ≤ multipleQ (((r : ℝ) * s)⁻¹ * ε) gamma k := (one_le_inv₀ hc).mpr hc1
   exact ⟨Real.rpow_pos_of_pos hc _, Real.rpow_le_one hc.le hc1 ht0.le,
     Real.one_le_rpow hQ ht0.le⟩
 
@@ -56,7 +55,6 @@ theorem section16_local_affine_lift_all_scales {N k q r m : Nat} [Fact N.Prime]
         ((multipleC (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s))) / 4 ≤ (S j).width) ∧
       (∀ j ij, IsMultilinear (nu j ij)) ∧
       ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z := by
-  classical
   have hrpos : 0 < r := by
     by_contra hz
     have hz' : r = 0 := by omega

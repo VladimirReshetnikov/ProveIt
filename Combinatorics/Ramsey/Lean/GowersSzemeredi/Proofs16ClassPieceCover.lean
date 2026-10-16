@@ -105,7 +105,6 @@ theorem uniformBase_mono_n {V : Real} (hV : 1 ≤ V) {theta gamma rho : Real} (h
 theorem pieceFaceRel_fiber_le_one {N k : Nat} [NeZero N] (D : Finset (Point N (k + 1)))
     (G : (Fin k → Bool) → Point N k → ZMod N) (e : Fin k → Bool) (y : Point N k) :
     ((pieceFaceRel D G e).filter fun z => z.1 = y).card ≤ 1 := by
-  classical
   refine Finset.card_le_one.mpr ?_
   intro a ha b hb
   obtain ⟨ha1, ha2⟩ := Finset.mem_filter.mp ha
@@ -165,7 +164,6 @@ theorem class_piece_family_cover_gen {k : Nat} (hk : 1 ≤ k) {Thr : Real → Re
           (pieceLineExponent Bq (Cnt thS gS n) (Exp thS gS n) (clsEr Exp k n thF gF) rho)
           (famPieceSliceExponent (clsQr Cnt k n thF gF) (clsEs Exp n thF gF) n rho)))
       (Finset.univ.biUnion fun c => partialGraph (P c).D (P c).phi) := by
-  classical
   have hk0 : 0 < k := hk
   set nv := classVertexNum k
   have hnvc : nv + 1 = (otherVertices k).card := classVertexNum_succ hk
@@ -239,9 +237,7 @@ theorem class_piece_family_cover_gen {k : Nat} (hk : 1 ≤ k) {Thr : Real → Re
     have hsum : classRem (P c).G z =
         ∑ s : Fin (nv + 1), sgn s * (P c).G (ev s).1 (dropAt (vertexDrop (ev s).1) z) := by
       unfold classRem
-      rw [← Finset.sum_neg_distrib]
-      rw [← Finset.sum_coe_sort (otherVertices k)]
-      rw [← Equiv.sum_comp ev]
+      rw [← Finset.sum_neg_distrib, ← Finset.sum_coe_sort (otherVertices k), ← Equiv.sum_comp ev]
       refine Finset.sum_congr rfl fun s _ => ?_
       simp only [sgn]
       ring

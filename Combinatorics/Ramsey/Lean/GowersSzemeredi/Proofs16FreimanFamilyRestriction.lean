@@ -30,7 +30,6 @@ theorem Section16FreimanFamilyCover.translate {N q : Nat} [NeZero N]
     {B : Finset (Point N 1)} {phi : Point N 1 → ZMod N}
     (h : Section16FreimanFamilyCover q B phi) (t : Point N 1) :
     Section16FreimanFamilyCover q (B.image (fun x => x + t)) (fun x => phi (x - t)) := by
-  classical
   obtain ⟨D, f, hf, hc⟩ := h
   let D' := fun i => (D i).image (fun x => x + t)
   let f' := fun i x => f i (x - t)
@@ -80,7 +79,6 @@ theorem section16_restrict_function_freiman_family {N : Nat} [Fact N.Prime]
     ∃ C : Finset (Point N 1), C ⊆ B ∧
       (B.card : Real) - theta * N ≤ C.card ∧
       Section16FreimanFamilyCover (section16BaseFamilyBound gamma theta) C phi := by
-  classical
   have hginv : 1 ≤ gamma ^ (-(2 : Int)) := by
     rw [zpow_neg, zpow_ofNat]
     exact (one_le_inv₀ (pow_pos hg 2)).mpr (pow_le_one₀ hg.le hg1)

@@ -19,17 +19,14 @@ namespace LeanProofs.GowersSzemeredi
 
 @[simp] theorem countWhere_true {X : Type*} [Fintype X] :
     countWhere (fun _ : X => True) = Fintype.card X := by
-  classical
   simp [countWhere]
 
 @[simp] theorem countWhere_false {X : Type*} [Fintype X] :
     countWhere (fun _ : X => False) = 0 := by
-  classical
   simp [countWhere]
 
 theorem countWhere_congr {X : Type*} [Fintype X] {p q : X → Prop}
     (h : ∀ x, p x ↔ q x) : countWhere p = countWhere q := by
-  classical
   simp only [countWhere]
   congr 1
   ext x
@@ -72,7 +69,6 @@ exactly once. -/
 theorem IsPartition.sum_card {X : Type*} [DecidableEq X] {m : Nat}
     {P : Fin m → Finset X} {S : Finset X} (hP : IsPartition P S) :
     ∑ i, (P i).card = S.card := by
-  classical
   have hdisj :
       ((Finset.univ : Finset (Fin m)) : Set (Fin m)).PairwiseDisjoint P := by
     intro i _ j _ hij
@@ -85,12 +81,10 @@ theorem IsPartition.sum_card {X : Type*} [DecidableEq X] {m : Nat}
 
 @[simp] theorem sum_indicator {N : Nat} [NeZero N] (A : Finset (ZMod N)) :
     ∑ x : ZMod N, indicator A x = (A.card : Complex) := by
-  classical
   simp [indicator]
 
 @[simp] theorem sum_balanced {N : Nat} [NeZero N] (A : Finset (ZMod N)) :
     ∑ x : ZMod N, balanced A x = 0 := by
-  classical
   simp only [balanced, sum_sub_distrib, sum_indicator, sum_const, card_univ,
     ZMod.card, nsmul_eq_mul, density]
   apply sub_eq_zero.mpr
@@ -98,8 +92,8 @@ theorem IsPartition.sum_card {X : Type*} [DecidableEq X] {m : Nat}
   exact (mul_div_cancel₀ (A.card : Real)
     (by exact_mod_cast NeZero.ne N : (N : Real) ≠ 0)).symm
 
-theorem density_nonneg {N : Nat} (A : Finset (ZMod N)) : 0 ≤ density A := by
-  exact div_nonneg (by positivity) (by positivity)
+theorem density_nonneg {N : Nat} (A : Finset (ZMod N)) : 0 ≤ density A :=
+    div_nonneg (by positivity) (by positivity)
 
 theorem density_le_one {N : Nat} [NeZero N] (A : Finset (ZMod N)) :
     density A ≤ 1 := by
@@ -111,7 +105,6 @@ theorem density_le_one {N : Nat} [NeZero N] (A : Finset (ZMod N)) :
 theorem indicator_discValued {N : Nat} (A : Finset (ZMod N)) :
     DiscValued (indicator A) := by
   intro x
-  classical
   simp only [indicator]
   split_ifs <;> simp
 

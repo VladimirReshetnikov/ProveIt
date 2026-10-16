@@ -70,8 +70,8 @@ private lemma backwardDiffPoly_degree_coeff (P : R[X]) (n : Nat)
     rw [show X - C h = X + C (-h) by simp [sub_eq_add_neg]]
     rw [← Polynomial.taylor_apply, Polynomial.natDegree_taylor]
     exact hP
-  have hrough : (backwardDiffPoly h P).natDegree ≤ n + 1 := by
-    exact (P.natDegree_sub_le_of_le hP hshift).trans (by simp)
+  have hrough : (backwardDiffPoly h P).natDegree ≤ n + 1 :=
+    (P.natDegree_sub_le_of_le hP hshift).trans (by simp)
   have htop : (backwardDiffPoly h P).coeff (n + 1) = 0 := by
     rw [backwardDiffPoly, coeff_sub]
     have htaylor : (P.comp (X - C h)).coeff (n + 1) = P.coeff (n + 1) := by
@@ -101,7 +101,6 @@ private lemma powersetDifferencePoly_insert (a : ι) (S : Finset ι)
     (ha : a ∉ S) (x : ι → R) (P : R[X]) :
     powersetDifferencePoly (insert a S) x P =
       powersetDifferencePoly S x (backwardDiffPoly (x a) P) := by
-  classical
   rw [powersetDifferencePoly, Finset.sum_powerset_insert ha,
     powersetDifferencePoly, ← Finset.sum_add_distrib]
   apply Finset.sum_congr rfl
@@ -125,7 +124,6 @@ private lemma powersetDifferencePoly_eq_C (S : Finset ι) (x : ι → R)
     (P : R[X]) (hP : P.natDegree ≤ S.card) :
     powersetDifferencePoly S x P =
       C (((S.card.factorial : Nat) : R) * (∏ i ∈ S, x i) * P.coeff S.card) := by
-  classical
   induction S using Finset.induction_on generalizing P with
   | empty =>
       simpa [powersetDifferencePoly] using
@@ -183,7 +181,6 @@ private def boolFinsetEquiv (k : Nat) : (Fin k → Bool) ≃ Finset (Fin k) wher
 
 private lemma boolSupport_card {k : Nat} (e : Fin k → Bool) :
     (boolSupport e).card = boolWeight e := by
-  classical
   unfold boolSupport boolWeight countWhere
   congr 1
   ext i
@@ -192,13 +189,11 @@ private lemma boolSupport_card {k : Nat} (e : Fin k → Bool) :
 private lemma boolSupport_sum {N k : Nat} (e : Fin k → Bool)
     (x : Point N k) :
     (∑ i ∈ boolSupport e, x i) = ∑ i, if e i then x i else 0 := by
-  classical
   rw [boolSupport, sum_filter]
 
 private lemma boolSupport_prod {N k : Nat} (e : Fin k → Bool)
     (x : Point N k) :
     (∏ i ∈ boolSupport e, x i) = ∏ i, if e i then x i else 1 := by
-  classical
   rw [boolSupport, prod_filter]
 
 private lemma parityTerm_eq_negOnePow {N n : Nat} (z : ZMod N) :
@@ -223,7 +218,6 @@ private def polarizationPhase {N k : Nat}
 private lemma polarizationPhase_polynomialOn {N k : Nat} [NeZero N]
     (c : (Fin k → Bool) → ZMod N) (E : Finset (Fin k)) :
     PolynomialOn k Finset.univ (polarizationPhase c E) := by
-  classical
   let q : Fin (k + 1) → ZMod N := fun j =>
     ∑ U ∈ (Finset.univ : Finset (Fin k)).powersetCard (j : Nat),
       if E ⊆ U then polarizationCoefficient c U else 0
@@ -248,7 +242,6 @@ private lemma sum_if_subset_powerset {R ι : Type*} [AddCommMonoid R]
     [DecidableEq ι] (F U : Finset ι) (hUF : U ⊆ F) (g : Finset ι → R) :
     (∑ E ∈ F.powerset, if E ⊆ U then g E else 0) =
       ∑ E ∈ U.powerset, g E := by
-  classical
   have hfilter : F.powerset.filter (fun E => E ⊆ U) = U.powerset := by
     ext E
     simp only [mem_filter, mem_powerset]
@@ -304,7 +297,6 @@ private lemma signedCubeSum_polarization {N k : Nat} [NeZero N] [Fact N.Prime]
     signedCubeSum
         (fun e => polarizationPhase c (boolSupport e)) s x =
       ∑ e : Fin k → Bool, c e * ∏ i, if e i then x i else 1 := by
-  classical
   let F : Finset (Fin k) := Finset.univ
   calc
     signedCubeSum (fun e => polarizationPhase c (boolSupport e)) s x =

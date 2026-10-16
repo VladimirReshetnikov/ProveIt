@@ -68,7 +68,6 @@ theorem section16CubeMultifunctionDomain_fibre_card_le
     {N k : Nat} [NeZero N] (B : Finset (Point N (k + 1)))
     (h : Point N k) (s : ZMod N) :
     ((section16CubeMultifunctionDomain B h).fibre s).card ≤ N ^ k := by
-  classical
   calc
     ((section16CubeMultifunctionDomain B h).fibre s).card =
         Fintype.card {C : Section16CubeElement B h //

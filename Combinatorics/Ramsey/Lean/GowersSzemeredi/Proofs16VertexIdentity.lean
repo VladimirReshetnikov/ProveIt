@@ -12,7 +12,6 @@ theorem section16_phi_one_cube_identity {N k : Nat} [NeZero N]
     section16PhiOne phi x0 z =
       (-1 : ZMod N) ^ k * section16CubeValueAtBase phi x0 (section16Init z) (section16Last z) +
         section16PhiRemainder phi x0 z := by
-  classical
   let e1 : Fin k → Bool := fun _ => true
   let f : (Fin k → Bool) → ZMod N := fun e =>
     (-1 : ZMod N) ^ (k + boolWeight e) * section16TranslatedVertex phi x0 e z

@@ -53,14 +53,12 @@ private lemma multiaffineEval_succ {R : Type*} [CommSemiring R] {k : Nat}
         x 0 * multiaffineEval (fun u => c (Fin.cons true u)) (Fin.tail x) := by
       simp only [Fintype.sum_bool, Fin.prod_univ_succ, Fin.cons_zero, Fin.cons_succ,
         Fin.tail, multiaffineEval, Bool.false_eq_true, if_false, if_true]
-      rw [Finset.mul_sum]
-      rw [add_comm]
+      rw [Finset.mul_sum, add_comm]
       congr 1 <;> simp only [one_mul, mul_assoc, mul_comm]
 
 private lemma countWhere_pi_succ {R : Type*} [Fintype R] {k : Nat}
     (P : (Fin (k + 1) → R) → Prop) [DecidablePred P] :
     countWhere P = ∑ y : Fin k → R, countWhere fun t : R => P (Fin.cons t y) := by
-  classical
   simp_rw [countWhere_eq_sum_ite]
   let e := Fin.consEquiv (fun _ : Fin (k + 1) => R)
   calc
@@ -82,7 +80,6 @@ private lemma countWhere_pi_succ {R : Type*} [Fintype R] {k : Nat}
 private lemma countWhere_affine_ne_zero {R : Type*} [Fintype R]
     [Field R] [DecidableEq R] (a b : R) (hb : b ≠ 0) :
     countWhere (fun t : R => a + t * b ≠ 0) = Fintype.card R - 1 := by
-  classical
   let root : R := -a / b
   have hroot (t : R) : a + t * b = 0 ↔ t = root := by
     constructor
@@ -129,8 +126,7 @@ private theorem multiaffine_nonzero_count_lower {R : Type*} [Fintype R]
           multiaffineEval c (Fin.cons t y) = r y + t * q y := by
         simpa only [r, q, c0, c1, Fin.tail_cons, Fin.cons_zero] using
           multiaffineEval_succ c (Fin.cons t y)
-      rw [pow_succ]
-      rw [countWhere_pi_succ]
+      rw [pow_succ, countWhere_pi_succ]
       by_cases hq : ∃ y, q y ≠ 0
       · have ihq : (Fintype.card R - 1) ^ k ≤
             countWhere fun y : Fin k → R => q y ≠ 0 := by
@@ -161,8 +157,7 @@ private theorem multiaffine_nonzero_count_lower {R : Type*} [Fintype R]
           obtain ⟨x, hx⟩ := hnonzero
           refine ⟨Fin.tail x, ?_⟩
           have hs := heval (x 0) (Fin.tail x)
-          rw [Fin.cons_self_tail] at hs
-          rw [hqzero (Fin.tail x), mul_zero, add_zero] at hs
+          rw [Fin.cons_self_tail, hqzero (Fin.tail x), mul_zero, add_zero] at hs
           exact fun hzero => hx (hs.trans hzero)
         have ihr : (Fintype.card R - 1) ^ k ≤
             countWhere fun y : Fin k → R => r y ≠ 0 := by
@@ -206,7 +201,6 @@ private def shiftedCoefficients {R : Type*} [Ring R] {k : Nat}
 private lemma multiaffineEval_shifted {R : Type*} [CommRing R] {k : Nat}
     (c : (Fin k → Bool) → R) (a : R) (x : Fin k → R) :
     multiaffineEval (shiftedCoefficients c a) x = multiaffineEval c x - a := by
-  classical
   unfold multiaffineEval shiftedCoefficients
   simp_rw [sub_mul]
   rw [Finset.sum_sub_distrib]
@@ -217,7 +211,6 @@ private lemma levelSet_complement_count {N k : Nat} [NeZero N]
     (mu : Point N k → ZMod N) (a : ZMod N) :
     countWhere (fun y : Point N k => mu y = a) +
         countWhere (fun y : Point N k => mu y ≠ a) = N ^ k := by
-  classical
   simp_rw [countWhere_eq_sum_ite]
   calc
     (∑ y : Point N k, if mu y = a then 1 else 0) +
@@ -248,8 +241,7 @@ private lemma real_pow_sub_pred_pow_le (N k : Nat) (hN : 1 ≤ N) :
   have habsY : |y| = y := abs_of_nonneg hy0
   have hmax : max |x| |y| = x := by rw [habsX, habsY, max_eq_left hyx]
   have hbound := abs_pow_sub_pow_le (a := x) (b := y) (n := k)
-  rw [abs_of_nonneg (sub_nonneg.mpr hpows)] at hbound
-  rw [habsDiff, hmax, one_mul] at hbound
+  rw [abs_of_nonneg (sub_nonneg.mpr hpows), habsDiff, hmax, one_mul] at hbound
   simpa only [x, y] using hbound
 
 /-- Lemma 15.3: a nonconstant multiaffine polynomial over the prime field

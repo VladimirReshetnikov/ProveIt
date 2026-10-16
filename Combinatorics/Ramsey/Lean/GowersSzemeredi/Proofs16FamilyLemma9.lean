@@ -64,7 +64,6 @@ theorem allScaleFamilyLemma169At_of (k : Nat) {W : Nat → Nat → Real → Real
   intro N m _ _ hk theta gamma sigma ht ht1 hg hg1 hs hs1 Qb Eb Qr Er hQ ha ha1 hEr
     Gamma hML Gr hrem ι B phi H H1 Y phiPrime x0 D hfreq hH1 hselection hidentity hD hGr
     P hP hmP
-  classical
   let zeta := section16Zeta theta gamma k
   have hsHalf : 0 < sigma / 2 := by positivity
   have hsHalf1 : sigma / 2 ≤ 1 := by linarith

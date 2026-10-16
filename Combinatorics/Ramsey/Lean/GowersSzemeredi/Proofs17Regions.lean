@@ -167,7 +167,6 @@ private lemma hyperplaneRegionCount_le {k m : Nat}
     (H : Fin m -> AffineHyperplane k) :
     hyperplaneRegionCount H <=
       ∑ j ∈ Finset.range (k + 1), Nat.choose m j := by
-  classical
   let A := regionFamily H
   have hvc : A.vcDim <= k := by
     unfold Finset.vcDim
@@ -224,8 +223,7 @@ private lemma exists_dot_values {k : Nat} {I : Type*} [Fintype I]
   rw [LinearMap.comp_apply] at hcomp
   rw [show f (v i) = f0 ⟨v i, hvi⟩ by simpa using hcomp]
   dsimp only [f0, coeff]
-  rw [LinearMap.comp_apply]
-  rw [hli.repr_eq_single i ⟨v i, hvi⟩ rfl]
+  rw [LinearMap.comp_apply, hli.repr_eq_single i ⟨v i, hvi⟩ rfl]
   simp
 
 private lemma exists_avoiding_kernels
@@ -233,7 +231,6 @@ private lemma exists_avoiding_kernels
     {I : Type*} [DecidableEq I] (S : Finset I) (f : I → V →ₗ[Real] Real)
     (hf : ∀ i, i ∈ S → f i ≠ 0) :
     ∃ v : V, ∀ i, i ∈ S → f i v ≠ 0 := by
-  classical
   let K : Finset (Subspace Real V) := S.image fun i => LinearMap.ker (f i)
   have htop : (⊤ : Subspace Real V) ∉ K := by
     intro hmem
@@ -262,7 +259,6 @@ private lemma exists_intersectionPoint_avoids {k m : Nat}
     ∃ x : Fin k → Real,
       (∀ i, i ∈ s → realDot (H i).normal x = (H i).offset) ∧
       (∀ i, i ∉ s → realDot (H i).normal x ≠ (H i).offset) := by
-  classical
   have hliS := hgp.1 s hsk
   obtain ⟨a, ha⟩ := exists_dot_values
     (fun i : s => (H i.1).normal) hliS (fun i => (H i.1).offset)
@@ -449,7 +445,6 @@ private lemma not_stronglyShatters_iff_compl_shatters
     {alpha : Type*} [Fintype alpha] [DecidableEq alpha]
     (A : Finset (Finset alpha)) (s : Finset alpha) :
     ¬ StronglyShatters A s ↔ Aᶜ.Shatters sᶜ := by
-  classical
   constructor
   · intro hstrong t hts
     rw [StronglyShatters] at hstrong
@@ -512,7 +507,6 @@ private lemma card_nonStrongFamily_eq_card_compl_shatterer
     {alpha : Type*} [Fintype alpha] [DecidableEq alpha]
     (A : Finset (Finset alpha)) :
     (nonStrongFamily A).card = Aᶜ.shatterer.card := by
-  classical
   rw [show nonStrongFamily A = Aᶜ.shatterer.image (fun s => sᶜ) by
     ext s
     simp only [nonStrongFamily, Finset.mem_filter, Finset.mem_univ, true_and,
@@ -535,7 +529,6 @@ private lemma card_nonStrongFamily_eq_card_compl_shatterer
 private lemma card_strongShatterer_le
     {alpha : Type*} [Fintype alpha] [DecidableEq alpha]
     (A : Finset (Finset alpha)) : (strongShatterer A).card ≤ A.card := by
-  classical
   have hpartition : (strongShatterer A).card + (nonStrongFamily A).card =
       Fintype.card (Finset alpha) := by
     rw [show nonStrongFamily A = (strongShatterer A)ᶜ by
@@ -556,7 +549,6 @@ private def smallSubsets (m k : Nat) : Finset (Finset (Fin m)) :=
 private lemma card_smallSubsets (m k : Nat) :
     (smallSubsets m k).card =
       ∑ j ∈ Finset.range (k + 1), Nat.choose m j := by
-  classical
   unfold smallSubsets
   rw [Finset.card_biUnion
     ((Finset.univ : Finset (Fin m)).pairwise_disjoint_powersetCard.set_pairwise _)]
@@ -567,7 +559,6 @@ private lemma card_smallSubsets (m k : Nat) :
 private lemma smallSubsets_subset_strongShatterer {k m : Nat}
     (H : Fin m → AffineHyperplane k) (hgp : HyperplanesInGeneralPosition H) :
     smallSubsets m k ⊆ strongShatterer (regionFamily H) := by
-  classical
   intro s hs
   rw [smallSubsets, Finset.mem_biUnion] at hs
   obtain ⟨j, hj, hsPower⟩ := hs

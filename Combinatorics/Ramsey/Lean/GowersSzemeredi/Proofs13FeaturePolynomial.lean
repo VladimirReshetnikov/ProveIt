@@ -28,7 +28,6 @@ theorem balancedFeaturePolynomial_eval {I R : Type*} [Fintype I] [CommRing R]
     (sign : I → R) (u₀ u₁ : Option I → R) (x : I → R) (y : Option I → R) (h : R) :
     eval (balancedFeatureAssignment x y h) (balancedFeaturePolynomial sign u₀ u₁) =
       balancedFeatureRelation sign u₀ u₁ x y h := by
-  classical
   simp [balancedFeaturePolynomial, balancedFeatureRelation, balancedFeatureAssignment]
 
 theorem balancedFeaturePolynomial_ne_zero {I R : Type*}
@@ -50,7 +49,6 @@ theorem balancedFeaturePolynomial_eq_zero_iff {I R : Type*}
       ∃ c : R, u₀ none = c ∧ u₁ none = -c ∧
         (∀ i, u₀ (some i) = -(sign i * c)) ∧
         (∀ i, u₁ (some i) = sign i * c) := by
-  classical
   constructor
   · intro hp
     apply (balancedFeatureRelation_universal_iff sign hsign u₀ u₁).mp
@@ -68,7 +66,6 @@ theorem balancedFeaturePolynomial_totalDegree {I R : Type*}
     [Fintype I] [CommRing R] [Nontrivial R]
     (sign : I → R) (u₀ u₁ : Option I → R) :
     (balancedFeaturePolynomial sign u₀ u₁).totalDegree ≤ 2 := by
-  classical
   have hlinear (j : Option I) :
       ((C (u₀ j) + C (u₁ j)) * X (some (Sum.inr j)) +
         C (u₁ j) * X (none : BalancedFeatureVariable I)).totalDegree ≤ 1 := by

@@ -65,7 +65,6 @@ private lemma theorem1013_quad_fibre_cap {N M : Nat} [NeZero N]
     (hfibre : ∀ s, (D.fibre s).card ≤ M) (s : ZMod N) :
     ((theorem1013QuadDomain D).fibre s).card ≤
       M * Fintype.card X ^ 3 := by
-  classical
   have hcard :
       ((theorem1013QuadDomain D).fibre s).card =
         ∑ q : Theorem1013Quad X,
@@ -184,7 +183,6 @@ private lemma theorem1013_quad_additive_count {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) :
     domainAdditiveTupleCount (theorem1013QuadDomain D) 2 =
       domainAdditiveTupleCount D 8 := by
-  classical
   unfold domainAdditiveTupleCount countWhere
   apply Finset.card_equiv (theorem1013ArrayEquiv X)
   intro q
@@ -201,7 +199,6 @@ private lemma theorem1013_quad_phi_additive_count {N : Nat} {X : Type*}
     domainPhiAdditiveTupleCount (theorem1013QuadDomain D)
         (theorem1013QuadPhase phi) 2 =
       domainPhiAdditiveTupleCount D phi 8 := by
-  classical
   unfold domainPhiAdditiveTupleCount countWhere
   apply Finset.card_equiv (theorem1013ArrayEquiv X)
   intro q
@@ -235,7 +232,6 @@ private lemma theorem1013_difference_fibre_function {N : Nat} [NeZero N]
     (D : MultifunctionDomain N X) (s : ZMod N) :
     domainFibreCountFunction (theorem1013DifferenceDomain D) s =
       correlation (domainFibreCountFunction D) (domainFibreCountFunction D) s := by
-  classical
   change
     (((theorem1013DifferenceDomain D).fibre s).card : Complex) =
       ∑ t : ZMod N,
@@ -281,7 +277,6 @@ private lemma theorem1013_quad_fibre_function {N : Nat} [NeZero N]
       correlation
         (correlation (domainFibreCountFunction D) (domainFibreCountFunction D))
         (correlation (domainFibreCountFunction D) (domainFibreCountFunction D)) s := by
-  classical
   have hcard :
       ((theorem1013QuadDomain D).fibre s).card =
         ((theorem1013DifferenceDomain (theorem1013DifferenceDomain D)).fibre s).card := by
@@ -327,8 +322,7 @@ private lemma theorem1013_quad_fourier {N : Nat} [NeZero N]
           (correlation (domainFibreCountFunction D) (domainFibreCountFunction D)) := by
     funext s
     exact theorem1013_quad_fibre_function D s
-  rw [hfun, identity_2_1_holds, identity_2_1_holds]
-  rw [Complex.star_def, Complex.mul_conj']
+  rw [hfun, identity_2_1_holds, identity_2_1_holds, Complex.star_def, Complex.mul_conj']
   norm_cast
   rw [norm_mul]
   change (‖fourier (domainFibreCountFunction D) r‖ *
@@ -677,8 +671,7 @@ private lemma theorem1013_quad_shift_fourier {N : Nat} [NeZero N]
           exponential (r * s) * (exponential (r * d) - 1) := by
   let h := domainFibreCountFunction (theorem1013QuadDomain D)
   change h (s + d) - h s = _
-  rw [identity_2_4_holds N h (s + d), identity_2_4_holds N h s]
-  rw [← mul_sub, ← Finset.sum_sub_distrib]
+  rw [identity_2_4_holds N h (s + d), identity_2_4_holds N h s, ← mul_sub, ← Finset.sum_sub_distrib]
   apply congrArg ((N : Complex)⁻¹ * ·)
   apply Finset.sum_congr rfl
   intro r _
@@ -857,8 +850,7 @@ private lemma theorem1013_theta_small :
     unfold theorem1013Eta
     rw [Real.rpow_neg (by norm_num : (0 : Real) ≤ 2)]
     norm_num [Real.rpow_natCast]
-  have htheta : theorem1013Theta < 1 / 36 := by
-    exact lt_of_pow_lt_pow_left₀ 5 (by norm_num) hcompare
+  have htheta : theorem1013Theta < 1 / 36 := lt_of_pow_lt_pow_left₀ 5 (by norm_num) hcompare
   have hthetaNonneg : 0 ≤ theorem1013Theta := by
     unfold theorem1013Theta
     positivity
@@ -881,8 +873,7 @@ private lemma theorem1013_sigma_eq (alpha : Real) (halpha : 0 < alpha) :
     theorem1013Sigma alpha =
       (2 : Real) ^ (-(72 : Real)) * alpha ^ (9 : Nat) := by
   unfold theorem1013Sigma
-  rw [theorem1013_lambda_sq alpha halpha]
-  rw [Real.rpow_neg (by norm_num : (0 : Real) ≤ 2)]
+  rw [theorem1013_lambda_sq alpha halpha, Real.rpow_neg (by norm_num : (0 : Real) ≤ 2)]
   norm_num [Real.rpow_natCast]
   field_simp [ne_of_gt halpha]
   ring
@@ -1026,7 +1017,6 @@ private lemma theorem1013_exists_large_tail_fibre {X : Type*}
     ∃ p : X × X × X,
       (W.card : Real) ≤ (Fintype.card X : Real) ^ 3 *
         ((W.filter fun q ↦ theorem1013Tail q = p).card : Real) := by
-  classical
   let T : Finset (X × X × X) := Finset.univ
   let F : X × X × X → Finset (Theorem1013Quad X) := fun p ↦
     W.filter fun q ↦ theorem1013Tail q = p
@@ -1064,7 +1054,6 @@ private def theorem1013OfHead {X : Type*} (p : X × X × X) (y : X) :
 private lemma theorem1013_of_head_mem {X : Type*} [Fintype X] [DecidableEq X]
     (W : Finset (Theorem1013Quad X)) (p : X × X × X) (y : X)
     (hy : y ∈ theorem1013Slice W p) : theorem1013OfHead p y ∈ W := by
-  classical
   rw [theorem1013Slice, Finset.mem_image] at hy
   obtain ⟨q, hq, hqy⟩ := hy
   have htail := (Finset.mem_filter.mp hq).2
@@ -1084,7 +1073,6 @@ private lemma theorem1013_slice_card {X : Type*} [Fintype X] [DecidableEq X]
     (W : Finset (Theorem1013Quad X)) (p : X × X × X) :
     (theorem1013Slice W p).card =
       (W.filter fun q ↦ theorem1013Tail q = p).card := by
-  classical
   unfold theorem1013Slice
   apply Finset.card_image_iff.mpr
   intro q₁ hq₁ q₂ hq₂ hzero
@@ -1126,7 +1114,6 @@ def theorem_10_13_power_five : Prop :=
 /-- Strengthen the corrected Theorem 10.13 set-size bound from
 `alpha^6/20000` to `alpha^5/20000`. -/
 theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
-  classical
   intro N M _ X _ _ D phi alpha halpha halphaSixth hM hfibre hcard happrox
   dsimp only
   refine ⟨theorem10_13_spectrum_bound D alpha halpha hM hfibre hcard,
@@ -1250,8 +1237,7 @@ theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
       alpha ^ 5 * Fintype.card (Theorem1013Quad X) / 20000 ≤
           (5 / 6 : Real) * (rho ^ 2 * alpha ^ 2 * L * N / 16) := hnumeric
       _ ≤ (5 / 6 : Real) * W.card := by gcongr
-      _ ≤ (1 - Real.sqrt theta) * W.card := by
-        exact mul_le_mul_of_nonneg_right hfactor.le (by positivity)
+      _ ≤ (1 - Real.sqrt theta) * W.card := mul_le_mul_of_nonneg_right hfactor.le (by positivity)
       _ ≤ W₁.card := hW₁lower
   have hXcardPosReal : (0 : Real) < Fintype.card X := by
     rw [hcard]
@@ -1307,10 +1293,8 @@ theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
   intro y hy z hz hyz
   let qy : Theorem1013Quad X := theorem1013OfHead p y
   let qz : Theorem1013Quad X := theorem1013OfHead p z
-  have hqy : qy ∈ W₁ := by
-    exact theorem1013_of_head_mem W₁ p y (by simpa only [Y] using hy)
-  have hqz : qz ∈ W₁ := by
-    exact theorem1013_of_head_mem W₁ p z (by simpa only [Y] using hz)
+  have hqy : qy ∈ W₁ := theorem1013_of_head_mem W₁ p y (by simpa only [Y] using hy)
+  have hqz : qz ∈ W₁ := theorem1013_of_head_mem W₁ p z (by simpa only [Y] using hz)
   have hindex : D₄.index qy - D₄.index qz = D.index y - D.index z := by
     dsimp only [D₄, qy, qz, theorem1013QuadDomain, theorem1013OfHead]
     simp [sub_eq_add_neg]

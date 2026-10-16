@@ -12,7 +12,6 @@ theorem Section16LineCover.mono_count {N k q q' : Nat} [NeZero N]
     {phi : Point N (k + 1) → ZMod N} {σ l : ℝ}
     (hline : Section16LineCover P B phi σ l q) (hqq' : q ≤ q') :
     Section16LineCover P B phi σ l q' := by
-  classical
   obtain ⟨E, M, S, T, J, ell, hE, hEm, hpart, hproper, hproduct, hw, hell, hc⟩ := hline
   let ell' := fun u h (i : Fin q') =>
     if hi : i.val < q then ell u h ⟨i.val, hi⟩ else fun _ => 0

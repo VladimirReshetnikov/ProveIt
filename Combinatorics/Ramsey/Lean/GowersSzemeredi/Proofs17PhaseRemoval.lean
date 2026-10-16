@@ -81,7 +81,6 @@ multiaffine. -/
 lemma prop172_multilinear_cons {N k : Nat}
     (sigma : Point N k → ZMod N) (hsigma : IsMultilinear sigma) :
     IsMultilinear (fun z : Point N (k + 1) => z 0 * sigma (Fin.tail z)) := by
-  classical
   obtain ⟨c, hc⟩ := hsigma
   let c' : (Fin (k + 1) → Bool) → ZMod N := fun e =>
     if e 0 then c (Fin.tail e) else 0
@@ -112,13 +111,11 @@ lemma prop172_multilinear_cons {N k : Nat}
       simp [hfalse]
     _ = ∑ p : Bool × (Fin k → Bool), T (Fin.cons p.1 p.2) := by
       rw [Fintype.sum_prod_type, Fintype.sum_bool]
-    _ = ∑ e : Fin (k + 1) → Bool, T e := by
-      exact (Fin.consEquiv (fun _ : Fin (k + 1) => Bool)).sum_comp T
+    _ = ∑ e : Fin (k + 1) → Bool, T e := (Fin.consEquiv (fun _ : Fin (k + 1) => Bool)).sum_comp T
 
 lemma prop172_boolWeight_cons {n : Nat}
     (b : Bool) (e : Fin n → Bool) :
     boolWeight (Fin.cons b e) = (if b then 1 else 0) + boolWeight e := by
-  classical
   unfold boolWeight
   simp_rw [gcs_countWhere_eq_sum_ite]
   rw [Fin.sum_univ_succ]
@@ -198,8 +195,8 @@ lemma prop172_cubeDifference_product {N d : Nat}
             rfl
         _ = ∏ p : Bool × (Fin n → Bool), T (Fin.cons p.1 p.2) := by
           rw [Fintype.prod_prod_type, Fintype.prod_bool, mul_comm]
-        _ = ∏ e : Fin (n + 1) → Bool, T e := by
-          exact (Fin.consEquiv (fun _ : Fin (n + 1) => Bool)).prod_comp T
+        _ = ∏ e : Fin (n + 1) → Bool, T e :=
+          (Fin.consEquiv (fun _ : Fin (n + 1) => Bool)).prod_comp T
 
 private def prop172PhasedFamily {N d : Nat} [NeZero N]
     (f : ZMod N → Complex)
@@ -372,8 +369,7 @@ theorem proposition_17_2_holds : proposition_17_2 := by
       cubeForm F = ∑ z : Point N (k + 1), ∑ s : ZMod N,
           cubeDifference f z s * exponential (-(tau z)) :=
         prop172_cubeForm_phased f Phi tau hPhi
-      _ = (E : Complex) := by
-        exact (prop172_energy_expansion f sigma).symm
+      _ = (E : Complex) := (prop172_energy_expansion f sigma).symm
   have hcubeNorm : ‖cubeForm F‖ = E := by
     rw [hcube, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hE]
   have hFdisc : ∀ e, DiscValued (F e) := fun e =>

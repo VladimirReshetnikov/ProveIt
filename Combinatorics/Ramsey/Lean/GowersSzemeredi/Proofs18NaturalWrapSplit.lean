@@ -12,7 +12,6 @@ theorem NatAP.exists_modular_translate_split (P : NatAP) (hP : P.IsProper)
     (N a : Nat) (ha : a < N) (hsub : P.carrier ⊆ Finset.range N) :
     ∃ Q R : NatAP, Q.IsProper ∧ R.IsProper ∧ Disjoint Q.carrier R.carrier ∧
       Q.carrier ∪ R.carrier = P.carrier.image (fun x => (a + x) % N) := by
-  classical
   obtain ⟨P₀, hP₀, hc₀⟩ := P.exists_inter_Ico hP 0 (N - a)
   obtain ⟨P₁, hP₁, hc₁⟩ := P.exists_inter_Ico hP (N - a) N
   obtain ⟨Q, hQ, hQc⟩ := P₀.exists_image_add_sub hP₀ a 0 (by intros; omega)

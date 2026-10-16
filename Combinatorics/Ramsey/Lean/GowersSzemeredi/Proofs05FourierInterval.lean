@@ -39,7 +39,6 @@ private lemma centeredInterval_cast_injective (N M : Nat) [NeZero N]
 private lemma centeredInterval_card (N M : Nat) [NeZero N]
     (hMN : 2 * M <= N) :
     (centeredInterval N M).card = 2 * M := by
-  classical
   rw [centeredInterval, Finset.card_image_iff.mpr]
   · simp only [Int.card_Ico, sub_neg_eq_add]
     rw [Int.toNat_add (by positivity) (by positivity)]
@@ -52,7 +51,6 @@ private lemma fourier_centeredInterval_eq_int_sum (N M : Nat) [NeZero N]
     fourier (indicator (centeredInterval N M)) r =
       ∑ x ∈ Finset.Ico (-(M : Int)) (M : Int),
         ZMod.stdAddChar (-((x : ZMod N) * r)) := by
-  classical
   rw [fourier, ZMod.dft_apply]
   simp only [indicator, smul_eq_mul]
   simp_rw [mul_ite, mul_one, mul_zero]
@@ -80,8 +78,7 @@ private lemma int_Ico_zpow_sum_eq (M : Nat) (q : Complex) (hq : q ≠ 0) :
   have hlen : ((M : Int) - -(M : Int)).toNat = 2 * M := by
     simp only [sub_neg_eq_add]
     omega
-  rw [hlen]
-  rw [Finset.mul_sum]
+  rw [hlen, Finset.mul_sum]
   apply Finset.sum_congr rfl
   intro i _
   change q ^ (-(M : Int) + (i : Int)) = q ^ (-(M : Int)) * q ^ i

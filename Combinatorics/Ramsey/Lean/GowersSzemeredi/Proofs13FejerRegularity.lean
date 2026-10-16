@@ -43,7 +43,6 @@ theorem fejer_vertex_injective_of_feature_line {N L : Nat} [NeZero N] [Fact N.Pr
     (hline : ∀ v : I → Fin L × Fin L, fejerPairRelation v (feature ∘ vertex) = 0 →
       ∃ c : ZMod N, ∀ i, ((v i).1 - (v i).2 : ZMod N) = c * lambda i) :
     Function.Injective vertex := by
-  classical
   intro i j hij
   by_contra hne
   have hk : ∃ k : I, k ≠ i ∧ k ≠ j := by
@@ -55,8 +54,7 @@ theorem fejer_vertex_injective_of_feature_line {N L : Nat} [NeZero N] [Fact N.Pr
       · simp [hki]
       · simp [h k hki]
     have hc := Finset.card_le_card hsub
-    have htwo : ({i, j} : Finset I).card ≤ 2 := by
-      exact (Finset.card_insert_le _ _).trans (by simp)
+    have htwo : ({i, j} : Finset I).card ≤ 2 := (Finset.card_insert_le _ _).trans (by simp)
     rw [Finset.card_univ] at hc
     omega
   obtain ⟨k, hki, hkj⟩ := hk

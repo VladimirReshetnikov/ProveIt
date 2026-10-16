@@ -13,7 +13,6 @@ def section16ParallelPairSum {N p : Nat} (psi : Fin p → ZMod N → ZMod N)
 
 private theorem sum_univ_indicator {X : Type*} [Fintype X] [DecidableEq X]
     (S : Finset X) (f : X → Real) : (∑ x, if x ∈ S then f x else 0) = ∑ x ∈ S, f x := by
-  classical
   rw [← Finset.sum_filter]
   congr 1
   ext x

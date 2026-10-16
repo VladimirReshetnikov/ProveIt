@@ -13,7 +13,6 @@ an initial interval gives an exact finite-set partition of that interval. -/
 theorem IsPartition.representatives_inter_range {N M L : Nat} [NeZero N]
     {P : Fin M → Finset (ZMod N)} (hP : IsPartition P Finset.univ) (hL : L ≤ N) :
     IsPartition (fun i => (P i).image ZMod.val ∩ Finset.range L) (Finset.range L) := by
-  classical
   constructor
   · intro x
     constructor
@@ -67,7 +66,6 @@ theorem small_diameter_partition_interval_unwrap {N M L d : Nat} [NeZero N]
         (∀ x, L ≤ x.val → f x = 0) →
         (∑ i, ‖∑ x ∈ (P i).carrier, f x‖) ≤
           ∑ j, ‖∑ t ∈ (R j).carrier, f (t : ZMod N)‖ := by
-  classical
   choose S hSproper hS using fun i => (P i).two_cell_interval_partition (L := L) (hproper i) (hdiam i) hshort
   let sizes : Fin M → Nat := fun _ => 2
   let R := section5NatFlatten sizes S

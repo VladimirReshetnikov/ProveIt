@@ -18,7 +18,6 @@ theorem lemma_13_7_with_step_span {N : Nat} [Fact N.Prime]
     ∃ G : Stage137Data N, IsStage137Data S D E F G ∧
       ∃ t : Nat, 0 < t ∧ G.S.step = (t : ZMod N) * F.R.step ∧
         t * (G.S.length - 1) < F.R.length := by
-  classical
   have hR := stage136_progression_nonempty S D E F hF
   have hRcard : F.R.carrier.card = F.R.length := hF.2.2.1
   have hRlen : 0 < F.R.length := by simpa only [hRcard] using hR.card_pos

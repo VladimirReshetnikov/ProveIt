@@ -20,7 +20,6 @@ theorem balancedFeatureRelation_pair_test {I R : Type*}
     (sign : I → R) (u₀ u₁ : Option I → R) (i : I) :
     balancedFeatureRelation sign u₀ u₁ (Pi.single i 1) (Pi.single (some i) 1) 0 =
       u₀ (some i) + u₁ (some i) := by
-  classical
   simp [balancedFeatureRelation, Pi.single_apply]
 
 theorem balancedFeatureRelation_last_test {I R : Type*}
@@ -28,7 +27,6 @@ theorem balancedFeatureRelation_last_test {I R : Type*}
     (sign : I → R) (u₀ u₁ : Option I → R) (i : I) :
     balancedFeatureRelation sign u₀ u₁ (Pi.single i 1) (Pi.single none 1) 0 =
       sign i * (u₀ none + u₁ none) := by
-  classical
   simp [balancedFeatureRelation, Pi.single_apply]
 
 theorem balancedFeatureRelation_height_test {I R : Type*}
@@ -36,7 +34,6 @@ theorem balancedFeatureRelation_height_test {I R : Type*}
     (sign : I → R) (u₀ u₁ : Option I → R) (i : I) :
     balancedFeatureRelation sign u₀ u₁ (Pi.single i 1) 0 1 =
       u₁ (some i) + sign i * u₁ none := by
-  classical
   simp [balancedFeatureRelation, Pi.single_apply]
 
 theorem balancedFeatureRelation_universal_iff {I R : Type*}
@@ -46,7 +43,6 @@ theorem balancedFeatureRelation_universal_iff {I R : Type*}
       ∃ c : R, u₀ none = c ∧ u₁ none = -c ∧
         (∀ i, u₀ (some i) = -(sign i * c)) ∧
         (∀ i, u₁ (some i) = sign i * c) := by
-  classical
   constructor
   · intro hall
     have hpair (i : I) : u₀ (some i) + u₁ (some i) = 0 := by
@@ -68,8 +64,7 @@ theorem balancedFeatureRelation_universal_iff {I R : Type*}
   · rintro ⟨c, h₀, h₁, h₀s, h₁s⟩ x y h
     simp only [balancedFeatureRelation, h₀, h₁, h₀s, h₁s,
       neg_add_cancel, add_neg_cancel, zero_mul, zero_add]
-    rw [Finset.sum_mul]
-    rw [← Finset.sum_add_distrib]
+    rw [Finset.sum_mul, ← Finset.sum_add_distrib]
     apply Finset.sum_eq_zero
     intro i _
     ring
@@ -81,7 +76,6 @@ theorem balancedFeatureRelation_nonzero_witness {I R : Type*}
       (∀ i, u₀ (some i) = -(sign i * c)) ∧
       (∀ i, u₁ (some i) = sign i * c)) :
     ∃ x y h, balancedFeatureRelation sign u₀ u₁ x y h ≠ 0 := by
-  classical
   by_contra h
   push Not at h
   exact hnot ((balancedFeatureRelation_universal_iff sign hsign u₀ u₁).mp h)

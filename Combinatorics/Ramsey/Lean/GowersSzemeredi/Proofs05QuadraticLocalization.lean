@@ -20,7 +20,6 @@ theorem quadratic_phase_localization {N L : Nat} [NeZero N]
       IsPartition (fun j => (S j).carrier) P.carrier ∧
       ∀ j, (S j).IsProper ∧ L ≤ (S j).length ∧ ‖z j‖ = 1 ∧
         ∀ x, x ∈ (S j).carrier → ‖exponential (-(phi x)) - z j‖ ≤ 1 / (4 * L) := by
-  classical
   let H := quadraticLocalizationChunk L
   let R := quadraticLocalizationPrecision L
   let T := 2 ^ 256 * R ^ 16

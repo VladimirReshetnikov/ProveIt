@@ -19,7 +19,6 @@ theorem diameterAtMost_add_image {N : Nat} {X : Type*} [DecidableEq X]
     (A : Finset X) (f g : X → ZMod N) {s t : Nat}
     (hf : diameterAtMost (A.image f) s) (hg : diameterAtMost (A.image g) t) :
     diameterAtMost (A.image fun x => f x + g x) (s + t) := by
-  classical
   obtain ⟨a, ha⟩ := hf
   obtain ⟨b, hb⟩ := hg
   refine ⟨a + b, ?_⟩
@@ -57,7 +56,6 @@ theorem diameterAtMost_bounded_multiples {N : Nat} [NeZero N]
     {X : Type*} [DecidableEq X] (A : Finset X) (a : ZMod N)
     (w : X → Nat) (L : Nat) (hw : ∀ x, x ∈ A → w x ≤ L) :
     diameterAtMost (A.image fun x => a * (w x : ZMod N)) (L * centeredAbs a) := by
-  classical
   have hcast := ZMod.natCast_natAbs_valMinAbs a
   have hsign : (centeredAbs a : ZMod N) = a ∨ (centeredAbs a : ZMod N) = -a := by
     unfold centeredAbs

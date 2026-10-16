@@ -64,7 +64,6 @@ theorem Section16SampledOrAnchoredOn.compressed_multilinear_cover {N k r p : Nat
       (∀ c, IsMultilinear (M c)) ∧
       ∀ h ∈ H, ∀ x, appendCoordinate h x ∈ D → appendCoordinate h x ∈ F →
         ∃ c, phi (appendCoordinate h x) = M c (appendCoordinate h x) := by
-  classical
   obtain ⟨K, hK, hanchor, hrecovered⟩ := ha
   by_cases hdistinct : ∃ i j, sample i ≠ sample j
   · let C := Section16AnchorPair r × Fin p × Fin p

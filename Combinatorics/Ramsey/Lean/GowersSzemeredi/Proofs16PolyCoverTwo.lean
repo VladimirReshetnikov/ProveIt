@@ -35,7 +35,6 @@ open BaseCase
 theorem relation_fiber_card_le_modulus {N k : Nat} [NeZero N]
     (Gamma : Finset (Point N k × ZMod N)) (x : Point N k) :
     (Gamma.filter fun z => z.1 = x).card ≤ N := by
-  classical
   refine (Finset.card_le_card_of_injOn (fun z => z.2) (fun _ _ => Finset.mem_univ _)
     ?_).trans (by simp [ZMod.card])
   intro z hz z' hz' h
@@ -118,7 +117,6 @@ theorem section16_poly_piece_two_decomposition_of_extract
       ∃ P : Fin ⌊cap / mass⌋₊ →
         PolyPieceTwoData (Finset.univ : Finset (Point N 2 × ZMod N)) zeta 0 qs qr ql,
         restrictRelation Gamma J ⊆ Finset.univ.biUnion fun c => partialGraph (P c).D (P c).phi := by
-  classical
   have hNpos : 0 < (N : Real) ^ 2 := by
     have : (0 : Real) < N := by exact_mod_cast NeZero.pos N
     positivity
@@ -194,7 +192,6 @@ theorem section16_poly_piece_two_of_subrelation
     Nonempty (PolyPieceTwoData Delta (section16Zeta theta gamma 1)
       (5 * polyPieceBudget theta gamma) (polyPieceSpecCount theta gamma)
       (polyPieceFaceCount theta gamma) (polyPieceFaceCount theta gamma)) := by
-  classical
   -- a selection
   let phi : Point N 2 → ZMod N := fun x =>
     if h : ∃ y, (x, y) ∈ Delta then Classical.choose h else 0
@@ -284,7 +281,6 @@ theorem polyCoverAt_two_of_family_lemma6 {A Bq : Nat → Real} (hA : ∀ q, 0 < 
     (hB : ∀ q, 0 < Bq q) (hlemma6 : AbstractFamilyLemma166At 1 (section16PowerWidth A Bq)) :
     PolyCoverAt 2 polyTwoQb (polyTwoEb A Bq) := by
   intro N _ _ gamma theta hg hg1 ht ht1 Gamma hsize hprod
-  classical
   by_cases hN : polyTwoThreshold theta gamma ≤ N
   · obtain ⟨J, hJ, hML⟩ := section16_poly_cover_two_large hA hB hlemma6 ht ht1 hg hg1 hN
       Gamma hsize hprod

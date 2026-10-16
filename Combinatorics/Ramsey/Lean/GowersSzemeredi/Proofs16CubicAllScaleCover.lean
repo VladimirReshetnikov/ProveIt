@@ -69,7 +69,6 @@ theorem Section16AllBoxLineCoversWith.cubic_large_box_profile
 theorem partialGraph_fiber_card_le_one {N k : Nat}
     (B : Finset (Point N k)) (phi : Point N k → ZMod N) (x : Point N k) :
     ((partialGraph B phi).filter fun z => z.1 = x).card ≤ 1 := by
-  classical
   have hsub : (partialGraph B phi).filter (fun z => z.1 = x) ⊆ {(x, phi x)} := by
     intro z hz
     obtain ⟨hz, hx⟩ := Finset.mem_filter.mp hz

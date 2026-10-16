@@ -18,7 +18,6 @@ namespace LeanProofs.GowersSzemeredi
 private lemma countWhere_eq_card_filter {T : Type*} [Fintype T]
     (P : T → Prop) [DecidablePred P] :
     countWhere P = (Finset.univ.filter P).card := by
-  classical
   unfold countWhere
   rw [Finset.filter_congr_decidable]
 
@@ -62,7 +61,6 @@ lemma hasEqualHalfSums_two {G : Type*} [AddCommMonoid G]
 private lemma altDomainAdditive_count_eq {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) :
     countWhere (AltDomainAdditive D) = domainAdditiveTupleCount D 2 := by
-  classical
   unfold countWhere domainAdditiveTupleCount
   apply Finset.card_equiv (altQuadEquiv X)
   intro q
@@ -77,7 +75,6 @@ private lemma altPhiAdditive_count_eq {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     (phi : X → ZMod N) :
     countWhere (AltPhiAdditive D phi) = domainPhiAdditiveTupleCount D phi 2 := by
-  classical
   unfold countWhere domainPhiAdditiveTupleCount
   apply Finset.card_equiv (altQuadEquiv X)
   intro q
@@ -115,7 +112,6 @@ private lemma total_differenceWeight_eq_alt_count {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) :
     (∑ x : X, ∑ y : X, (domainDifferenceWeight D x y : Real)) =
       countWhere (AltDomainAdditive D) := by
-  classical
   rw [countWhere_cast_eq_sum_ite, sum_fin_four]
   unfold domainDifferenceWeight
   simp_rw [countWhere_cast_eq_sum_ite]
@@ -126,7 +122,6 @@ private lemma alt_additive_partition {N : Nat} {X : Type*}
     [Fintype X] (D : MultifunctionDomain N X) (phi : X → ZMod N) :
     countWhere (AltDomainAdditive D) =
       countWhere (AltPhiAdditive D phi) + countWhere (AltPhiBad D phi) := by
-  classical
   let A : Finset (Fin 4 → X) := Finset.univ.filter (AltDomainAdditive D)
   let P (q : Fin 4 → X) : Prop :=
     phi (q 3) - phi (q 2) = phi (q 1) - phi (q 0)
@@ -195,13 +190,11 @@ private lemma weightedTerm_eq_sextuple_sum {N : Nat} {X : Type*}
       ∑ zw : X × X, ∑ uv : X × X,
         if DifferenceQuad D x y zw ∧ RestrictedError D phi B x y uv
         then ((domainRestrictedDifferenceWeight D B x y : Real)⁻¹) else 0 := by
-  classical
   unfold domainProportionateError domainDifferenceErrorCount domainDifferenceWeight
   change ((countWhere (RestrictedError D phi B x y) : Real) /
       (domainRestrictedDifferenceWeight D B x y : Real)) *
       (countWhere (DifferenceQuad D x y) : Real) = _
-  rw [countWhere_cast_eq_sum_ite, countWhere_cast_eq_sum_ite]
-  rw [div_eq_mul_inv]
+  rw [countWhere_cast_eq_sum_ite, countWhere_cast_eq_sum_ite, div_eq_mul_inv]
   calc
     ((∑ uv : X × X, if RestrictedError D phi B x y uv then 1 else 0) *
           (domainRestrictedDifferenceWeight D B x y : Real)⁻¹) *
@@ -238,7 +231,6 @@ lemma fibre_card_cast_eq_sum_ite {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) (s : ZMod N) :
     ((D.fibre s).card : Real) =
       ∑ x : X, if D.index x = s then 1 else 0 := by
-  classical
   unfold MultifunctionDomain.fibre
   rw [Finset.filter_congr_decidable]
   simp
@@ -249,7 +241,6 @@ private lemma restrictedPair_ite_eq_sum {N : Nat} {X : Type*}
       ∑ d ∈ B,
         if D.index u = D.index x + d ∧ D.index v = D.index y + d
         then 1 else 0 := by
-  classical
   unfold RestrictedPair
   simp_rw [← sub_eq_iff_eq_add' (a := D.index u) (b := D.index x),
     ← sub_eq_iff_eq_add' (a := D.index v) (b := D.index y), ite_and]
@@ -263,11 +254,9 @@ private lemma restrictedWeight_eq_sum_fibre {N : Nat} {X : Type*}
     (domainRestrictedDifferenceWeight D B x y : Real) =
       ∑ d ∈ B, ((D.fibre (D.index x + d)).card : Real) *
         (D.fibre (D.index y + d)).card := by
-  classical
   unfold domainRestrictedDifferenceWeight
   change (countWhere (RestrictedPair D B x y) : Real) = _
-  rw [countWhere_cast_eq_sum_ite]
-  rw [Fintype.sum_prod_type]
+  rw [countWhere_cast_eq_sum_ite, Fintype.sum_prod_type]
   simp_rw [restrictedPair_ite_eq_sum]
   calc
     (∑ u : X, ∑ v : X, ∑ d ∈ B,
@@ -402,7 +391,6 @@ private lemma restrictedError_inv_sum_le_one {N : Nat} {X : Type*}
     (phi : X → ZMod N) (B : Finset (ZMod N)) (x y : X) :
     (∑ uv : X × X, if RestrictedError D phi B x y uv
       then (domainRestrictedDifferenceWeight D B x y : Real)⁻¹ else 0) ≤ 1 := by
-  classical
   let e : Nat := countWhere (RestrictedError D phi B x y)
   let b : Nat := domainRestrictedDifferenceWeight D B x y
   have heb : e ≤ b := by
@@ -426,8 +414,8 @@ private lemma restrictedError_inv_sum_le_one {N : Nat} {X : Type*}
       apply Finset.sum_congr rfl
       intro uv _
       by_cases huv : RestrictedError D phi B x y uv <;> simp [huv]
-    _ ≤ (b : Real) * (b : Real)⁻¹ := by
-      exact mul_le_mul_of_nonneg_right hebReal (inv_nonneg.mpr (by positivity))
+    _ ≤ (b : Real) * (b : Real)⁻¹ :=
+      mul_le_mul_of_nonneg_right hebReal (inv_nonneg.mpr (by positivity))
     _ ≤ 1 := by
       by_cases hb : b = 0
       · simp [hb]
@@ -455,11 +443,9 @@ private lemma restrictedWeight_pos_of_pair {N : Nat} {X : Type*}
     (B : Finset (ZMod N)) (x y u v : X)
     (hrel : RestrictedPair D B x y (u, v)) :
     0 < domainRestrictedDifferenceWeight D B x y := by
-  classical
   unfold domainRestrictedDifferenceWeight countWhere
   rw [Finset.filter_congr_decidable]
-  apply Finset.card_pos.mpr
-  exact ⟨(u, v), Finset.mem_filter.mpr ⟨Finset.mem_univ _, hrel⟩⟩
+  exact Finset.card_pos.mpr (⟨(u, v), Finset.mem_filter.mpr ⟨Finset.mem_univ _, hrel⟩⟩)
 
 private lemma large_reverse_inv_sum_le_four {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -472,7 +458,6 @@ private lemma large_reverse_inv_sum_le_four {N : Nat} [NeZero N]
       if LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2 ∧
           RestrictedPair D B xy.1 xy.2 (u, v)
       then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0) ≤ 4 := by
-  classical
   let Eligible (xy : X × X) : Prop :=
     LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2 ∧
       RestrictedPair D B xy.1 xy.2 (u, v)
@@ -525,16 +510,14 @@ private lemma large_reverse_inv_sum_le_four {N : Nat} [NeZero N]
             RestrictedPair D B xy.1 xy.2 (u, v)
         then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0) =
         ∑ xy : X × X, if Eligible xy
-          then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0 := by
-      rfl
+          then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0 := rfl
     _ ≤ ∑ xy : X × X, if Eligible xy then 4 * (buv : Real)⁻¹ else 0 := hsumPoint
     _ = (c : Real) * (4 * (buv : Real)⁻¹) := by
       rw [hccast, Finset.sum_mul]
       apply Finset.sum_congr rfl
       intro xy _
       by_cases hxy : Eligible xy <;> simp [hxy]
-    _ ≤ (buv : Real) * (4 * (buv : Real)⁻¹) := by
-      exact mul_le_mul_of_nonneg_right hcReal (by positivity)
+    _ ≤ (buv : Real) * (4 * (buv : Real)⁻¹) := mul_le_mul_of_nonneg_right hcReal (by positivity)
     _ ≤ 4 := by
       by_cases hbuv : buv = 0
       · simp [hbuv]
@@ -574,7 +557,6 @@ private lemma bad_count_eq_pair_pair_sum {N : Nat} {X : Type*}
     (countWhere (AltPhiBad D phi) : Real) =
       ∑ uv : X × X, ∑ zw : X × X,
         if AltPhiBad D phi ![uv.1, uv.2, zw.1, zw.2] then 1 else 0 := by
-  classical
   rw [countWhere_cast_eq_sum_ite, sum_fin_four]
   simp_rw [Fintype.sum_prod_type]
 
@@ -607,7 +589,6 @@ private lemma left_contribution_le_bad {N : Nat} {X : Type*}
       then if RestrictedError D phi B xy.1 xy.2 uv
         then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0
       else 0) ≤ countWhere (AltPhiBad D phi) := by
-  classical
   rw [bad_count_eq_pair_pair_sum]
   apply Finset.sum_le_sum
   intro xy _
@@ -637,10 +618,7 @@ private lemma right_contribution_le_four_bad {N : Nat} [NeZero N]
           RestrictedPair D B xy.1 xy.2 uv
         then (domainRestrictedDifferenceWeight D B xy.1 xy.2 : Real)⁻¹ else 0
       else 0) ≤ 4 * countWhere (AltPhiBad D phi) := by
-  classical
-  rw [sum_triple_rotate]
-  rw [bad_count_eq_pair_pair_sum]
-  rw [Finset.mul_sum]
+  rw [sum_triple_rotate, bad_count_eq_pair_pair_sum, Finset.mul_sum]
   apply Finset.sum_le_sum
   intro uv _
   rw [Finset.mul_sum]
@@ -666,7 +644,6 @@ private lemma large_weighted_sum_le_five_bad {N : Nat} [NeZero N]
       then domainProportionateError D phi B xy.1 xy.2 *
         domainDifferenceWeight D xy.1 xy.2
       else 0) ≤ 5 * countWhere (AltPhiBad D phi) := by
-  classical
   calc
     (∑ xy : X × X,
         if LargeFibre D alpha eta M xy.1 ∧ LargeFibre D alpha eta M xy.2
@@ -725,8 +702,7 @@ private lemma large_weighted_sum_le_five_bad {N : Nat} [NeZero N]
               AltPhiBad D phi ![xy.1, xy.2, zw.1, zw.2] :=
             ⟨hs.1.1, hs.1.2, hleft⟩
           rw [if_pos houter, if_pos hs.2.2]
-          apply le_add_of_nonneg_right
-          exact ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity))
+          exact le_add_of_nonneg_right (ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity)))
         · have hpair : RestrictedPair D B xy.1 xy.2 uv :=
             ⟨hs.2.2.1, hs.2.2.2.1⟩
           have hinner : LargeFibre D alpha eta M xy.1 ∧
@@ -734,8 +710,7 @@ private lemma large_weighted_sum_le_five_bad {N : Nat} [NeZero N]
               RestrictedPair D B xy.1 xy.2 uv :=
             ⟨hs.1.1, hs.1.2, hpair⟩
           rw [if_pos hright, if_pos hinner]
-          apply le_add_of_nonneg_left
-          exact ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity))
+          exact le_add_of_nonneg_left (ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity)))
       · rw [if_neg hs]
         apply add_nonneg
         · exact ite_ite_nonneg _ _ _ (inv_nonneg.mpr (by positivity))
@@ -786,7 +761,6 @@ lemma sum_comp_index_eq_sum_mul_fibre {N : Nat} [NeZero N]
     (D : MultifunctionDomain N X) (f : ZMod N → Real) :
     (∑ x : X, f (D.index x)) =
       ∑ s : ZMod N, f s * (D.fibre s).card := by
-  classical
   simp_rw [fibre_card_cast_eq_sum_ite, Finset.mul_sum]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
@@ -804,7 +778,6 @@ private lemma small_fibre_card_bound {N : Nat} [NeZero N]
     (heta : 0 ≤ eta) :
     (countWhere (fun x : X => ¬ LargeFibre D alpha eta M x) : Real) ≤
       5 * eta * alpha ^ 2 * M * N := by
-  classical
   let T : Real := 5 * eta * alpha ^ 2 * M
   let f : ZMod N → Real := fun s =>
     if T ≤ (D.fibre s).card then 0 else 1
@@ -834,7 +807,6 @@ private lemma small_fibre_card_bound {N : Nat} [NeZero N]
 private lemma differenceWeight_symm {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) (x y : X) :
     domainDifferenceWeight D x y = domainDifferenceWeight D y x := by
-  classical
   unfold domainDifferenceWeight countWhere
   apply Finset.card_equiv (Equiv.prodComm X X)
   intro zw
@@ -856,7 +828,6 @@ private lemma small_first_weight_le {N : Nat} [NeZero N]
     (∑ x : X, if ¬ LargeFibre D alpha eta M x
       then ∑ y : X, (domainDifferenceWeight D x y : Real) else 0) ≤
       5 * eta * alpha ^ 4 * M ^ 4 * N ^ 3 := by
-  classical
   have hcount := small_fibre_card_bound D alpha eta M heta
   have htotal (x : X) :
       (∑ y : X, (domainDifferenceWeight D x y : Real)) ≤
@@ -908,7 +879,6 @@ private lemma small_second_weight_le {N : Nat} [NeZero N]
 
 /-- **Gowers, Lemma 10.2.** -/
 theorem lemma_10_2_holds : lemma_10_2 := by
-  classical
   intro N _ X _ _ D phi B alpha M sigma eta hsetup hsigma
   rcases hsetup with
     ⟨hbounds, _hsigmaPos, heta, _hetaOne, hsymmetric, hinvariant, happrox⟩
@@ -1009,10 +979,8 @@ theorem lemma_10_2_holds : lemma_10_2 := by
   have hscale : 0 ≤ 5 * eta := mul_nonneg (by norm_num) heta
   have hsmallBase : 5 * eta * (alpha ^ 4 * M ^ 4 * N ^ 3) ≤
       5 * eta * Q := mul_le_mul_of_nonneg_left hQlower hscale
-  have hS₁Q : S₁ ≤ 5 * eta * Q := by
-    exact hS₁.trans (by simpa only [mul_assoc] using hsmallBase)
-  have hS₂Q : S₂ ≤ 5 * eta * Q := by
-    exact hS₂.trans (by simpa only [mul_assoc] using hsmallBase)
+  have hS₁Q : S₁ ≤ 5 * eta * Q := hS₁.trans (by simpa only [mul_assoc] using hsmallBase)
+  have hS₂Q : S₂ ≤ 5 * eta * Q := hS₂.trans (by simpa only [mul_assoc] using hsmallBase)
   change (∑ x : X, ∑ y : X, domainProportionateError D phi B x y *
       domainDifferenceWeight D x y) ≤ 15 * eta * Q
   calc

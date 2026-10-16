@@ -19,7 +19,6 @@ theorem Section16StructuredPair.good_domain_remainder_cover
     (x0 : Point N k) :
     MultiplyLinearFunction gamma (section16Lemma9R theta gamma k)
       (section16GoodDomain B H Y x0) (section16PhiRemainder phi x0) := by
-  classical
   let E := Finset.univ.filter (fun e : Fin k → Bool => e ≠ fun _ => true)
   have hE : E.card = 2 ^ k - 1 := by
     have heq : E = Finset.univ.erase (fun _ : Fin k => true) := by

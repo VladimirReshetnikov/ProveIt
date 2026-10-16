@@ -89,7 +89,6 @@ theorem MultiplyLinearWith.lift_last {N k : Nat} [NeZero N] [Fact N.Prime]
     (hE : ∀ t, 0 < t → t ≤ 1 → 0 < Eb t ∧ Eb t ≤ 1) (hk : 0 < k) :
     MultiplyLinearWith (fun t => max (Qb t) ((3 ^ (k + 1) : Nat) : Real)) (fun t => Eb t / 16)
       (partialGraph (lastProductSet B Finset.univ) (fun z => phi (section16Init z))) := by
-  classical
   intro theta ht ht1 P hP
   obtain ⟨ha, ha1⟩ := hE theta ht ht1
   have hA : 0 < Eb theta / 16 := by positivity
@@ -154,7 +153,6 @@ theorem MultiplyLinearWith.coordinateReindex {N k : Nat} [NeZero N]
     (h : MultiplyLinearWith Qb Eb Gamma) (e : Fin k ≃ Fin k) :
     MultiplyLinearWith Qb Eb
       (Gamma.image (fun z => (LeanProofs.GowersSzemeredi.coordinateReindex e z.1, z.2))) := by
-  classical
   intro theta ht ht1 P hP
   obtain ⟨M, q, H, Q, mu, hH, hHcard, hpart, hproper, hq, hwidth, hmu, hcover⟩ :=
     h theta ht ht1 (P.coordinateReindex e.symm) (hP.coordinateReindex e.symm)
@@ -186,7 +184,6 @@ theorem MultiplyLinearWith.coordinateReindex_graph {N k : Nat} [NeZero N]
     MultiplyLinearWith Qb Eb
       (partialGraph (B.image (LeanProofs.GowersSzemeredi.coordinateReindex e))
         (fun x => phi (LeanProofs.GowersSzemeredi.coordinateReindex e.symm x))) := by
-  classical
   have hh := MultiplyLinearWith.coordinateReindex h e
   have heq : (partialGraph B phi).image
       (fun z => (LeanProofs.GowersSzemeredi.coordinateReindex e z.1, z.2)) =
@@ -204,7 +201,6 @@ theorem MultiplyLinearWith.lift_prefix {N l d : Nat} [NeZero N] [Fact N.Prime]
     MultiplyLinearWith (fun t => max (Qb t) ((3 ^ d : Nat) : Real))
       (fun t => Eb t / 16 ^ (d - l))
       (partialGraph (prefixDomain hld B) (fun z => phi (coordinatePrefix hld z))) := by
-  classical
   induction d with
   | zero => omega
   | succ d ih =>
@@ -256,7 +252,6 @@ theorem MultiplyLinearWith.lift_embedding {N l d : Nat} [NeZero N] [Fact N.Prime
     MultiplyLinearWith (fun t => max (Qb t) ((3 ^ d : Nat) : Real))
       (fun t => Eb t / 16 ^ (d - l))
       (partialGraph (selectedDomain f B) (fun z => phi (selectedCoordinates f z))) := by
-  classical
   have hld : l ≤ d := by simpa using Fintype.card_le_of_injective f f.injective
   obtain ⟨sigma, hsigma⟩ := Equiv.Perm.exists_extending_pair
     (fun i : Fin l => i.castLE hld) f (Fin.castLE_injective hld) f.injective

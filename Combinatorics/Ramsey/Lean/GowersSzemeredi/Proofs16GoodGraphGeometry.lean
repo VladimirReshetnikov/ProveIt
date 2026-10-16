@@ -30,7 +30,6 @@ theorem section16TranslatedGoodGraph_subset {N k : Nat} [NeZero N]
     (H : Finset (Point N k)) (Y : (h : Point N k) → Finset (Section16CubeElement B h))
     (x0 : Point N k) (hgraph : GraphContained B phi Gamma) :
     section16TranslatedGoodGraph B phi H Y x0 ⊆ Gamma := by
-  classical
   intro z hz
   obtain ⟨⟨a, b⟩, hab, rfl⟩ := Finset.mem_image.mp hz
   obtain ⟨x, hx, heq⟩ := Finset.mem_image.mp hab

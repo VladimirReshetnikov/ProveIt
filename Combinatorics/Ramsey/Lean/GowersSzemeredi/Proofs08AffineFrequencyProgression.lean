@@ -13,7 +13,6 @@ namespace LeanProofs.GowersSzemeredi
 /-- The entire cyclic group is an indexed progression of length N. -/
 @[simp] theorem modInterval_zero_modulus_carrier (N : Nat) [NeZero N] :
     (modInterval N 0 N).carrier = Finset.univ := by
-  classical
   apply Finset.eq_univ_of_forall
   intro x
   refine Finset.mem_image.mpr ⟨⟨x.val, x.val_lt⟩, Finset.mem_univ _, ?_⟩
@@ -31,7 +30,6 @@ theorem freiman_frequencies_affine_progression
       (N : Real) ^ cor711Exponent delta 1 ≤ P.length ∧
       delta * P.length ≤ (D.card : Real) ∧
       ∀ x ∈ D, phi x = a * x + b := by
-  classical
   let R := modInterval N 0 N
   have hRuniv : R.carrier = Finset.univ := modInterval_zero_modulus_carrier N
   have hR : R.IsProper := by

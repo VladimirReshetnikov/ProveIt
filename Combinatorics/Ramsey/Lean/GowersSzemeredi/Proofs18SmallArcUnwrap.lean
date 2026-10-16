@@ -14,7 +14,6 @@ theorem ModAP.exists_short_arc_natAP {N d : Nat} [NeZero N]
     ∃ a : ZMod N, ∃ Q : NatAP, Q.IsProper ∧ Q.length = P.length ∧
       Q.carrier ⊆ Finset.range (d + 1) ∧
       P.carrier = Q.carrier.image (fun x : Nat => a + (x : ZMod N)) := by
-  classical
   obtain ⟨a, ha⟩ := hdiam
   let R := P.translateBy (-a)
   have hRc : R.carrier = P.carrier.image (fun x => x - a) := by

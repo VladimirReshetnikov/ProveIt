@@ -12,7 +12,6 @@ theorem finite_graph_cover_partition {X Y : Type*} [DecidableEq X]
     (hcover : ∀ x ∈ B, ∃ i, f x = ell i x) :
     ∃ C : Fin q → Finset X, IsPartition C B ∧
       ∀ i x, x ∈ C i → f x = ell i x := by
-  classical
   let label : X → Fin q := fun x =>
     if hx : x ∈ B then (hcover x hx).choose else ⟨0, hq⟩
   let C : Fin q → Finset X := fun i => B.filter (fun x => label x = i)

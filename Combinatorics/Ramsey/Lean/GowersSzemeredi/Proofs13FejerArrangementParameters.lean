@@ -21,7 +21,6 @@ theorem fejerArrangementFreeSign_ne_zero {N : Nat} [NeZero N] [Fact N.Prime]
 
 theorem fejerArrangement_additive_iff {N : Nat} (x : Fin 16 → ZMod N) :
     IsAdditiveTuple (k := 8) x ↔ ∑ i, fejerArrangementSign i * x i = 0 := by
-  classical
   have hs : (∑ i, fejerArrangementSign i * x i) =
       (∑ i ∈ Finset.univ.filter (fun i : Fin 16 => i.val < 8), x i) -
       ∑ i ∈ Finset.univ.filter (fun i : Fin 16 => 8 ≤ i.val), x i := by

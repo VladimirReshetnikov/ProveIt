@@ -68,7 +68,6 @@ theorem ModAP.exists_prime_model_of_nonuniform {N k : Nat} [Fact N.Prime]
       _ ≤ _ := mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) hratio _) hβ
   refine ⟨M, hM, hMlower, hMupper, intervalExtension_discValued M (fun i => hf (P.index i)), ?_⟩
   intro huniform
-  apply hnew
-  exact huniform.trans (mul_le_mul_of_nonneg_right hparam (pow_nonneg hMpos.le _))
+  exact hnew (huniform.trans (mul_le_mul_of_nonneg_right hparam (pow_nonneg hMpos.le _)))
 
 end LeanProofs.GowersSzemeredi

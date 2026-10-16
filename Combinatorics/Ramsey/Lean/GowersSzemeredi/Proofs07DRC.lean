@@ -53,7 +53,6 @@ private lemma drcCore_card_sq {X : Type*} [DecidableEq X] {n : Nat}
     ((drcCore A t).card : Real) ^ 2 =
       ∑ i : Fin n, ∑ j : Fin n,
         if (forall r, t r ∈ A i ∩ A j) then 1 else 0 := by
-  classical
   simp only [drcCore, card_filter]
   push_cast
   rw [pow_two, Finset.sum_mul]
@@ -91,7 +90,6 @@ private lemma sum_incidenceDegree {X : Type*} [DecidableEq X] {n : Nat}
     (V : Finset X) (A : Fin n -> Finset X) (hA : forall i, A i ⊆ V) :
     ∑ x ∈ V, (incidenceDegree A x : Real) =
       ∑ i : Fin n, ((A i).card : Real) := by
-  classical
   simp_rw [incidenceDegree, Finset.card_filter]
   push_cast
   rw [Finset.sum_comm]
@@ -108,7 +106,6 @@ private lemma sum_intersection_eq_sum_degree_sq {X : Type*} [DecidableEq X]
     (∑ i : Fin n, ∑ j : Fin n,
         (((A i ∩ A j).card : Nat) : Real)) =
       ∑ x ∈ V, (incidenceDegree A x : Real) ^ 2 := by
-  classical
   have hinter (i j : Fin n) :
       (((A i ∩ A j).card : Nat) : Real) =
         ∑ x ∈ V, if x ∈ A i ∩ A j then (1 : Real) else 0 := by
@@ -144,7 +141,6 @@ private lemma drcSamples_filter_inter {X : Type*} [DecidableEq X] {n : Nat}
     (i j : Fin n) :
     (drcSamples V).filter (fun t => forall r, t r ∈ A i ∩ A j) =
       drcSamples (A i ∩ A j) := by
-  classical
   ext t
   simp only [mem_filter, drcSamples, Fintype.mem_piFinset]
   constructor
@@ -159,7 +155,6 @@ private lemma sum_drcCore_card_sq {X : Type*} [DecidableEq X] {n : Nat}
     ∑ t ∈ drcSamples V, ((drcCore A t).card : Real) ^ 2 =
       ∑ i : Fin n, ∑ j : Fin n,
         (((A i ∩ A j).card : Nat) : Real) ^ 5 := by
-  classical
   simp_rw [drcCore_card_sq]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
@@ -186,7 +181,6 @@ private lemma drcBadPairCount_eq_sum {X : Type*} [DecidableEq X] {n : Nat}
       ∑ i ∈ K, ∑ j ∈ K,
         if ((((A i ∩ A j).card : Nat) : Real) < delta ^ 2 * m / 2)
           then 1 else 0 := by
-  classical
   unfold drcBadPairCount
   rw [Finset.card_filter]
   push_cast
@@ -199,7 +193,6 @@ private lemma sum_drcBadPairCount {X : Type*} [DecidableEq X] {n : Nat}
       ∑ i : Fin n, ∑ j : Fin n,
         if ((((A i ∩ A j).card : Nat) : Real) < delta ^ 2 * m / 2)
           then (((A i ∩ A j).card : Nat) : Real) ^ 5 else 0 := by
-  classical
   simp_rw [drcBadPairCount_eq_sum]
   -- Expand membership in the random core and exchange the three finite sums.
   simp_rw [drcCore, Finset.sum_filter]
@@ -271,7 +264,6 @@ private lemma intersection_fifth_moment_lower {X : Type*} [DecidableEq X]
     delta ^ 10 * (m : Real) ^ 5 * (n : Real) ^ 2 <=
       ∑ i : Fin n, ∑ j : Fin n,
         (((A i ∩ A j).card : Nat) : Real) ^ 5 := by
-  classical
   by_cases hn : n = 0
   · subst n
     simp
@@ -346,7 +338,6 @@ private lemma large_add_bad_eq_sq {X : Type*} [DecidableEq X] {n : Nat}
     (delta : Real) :
     (largeIntersectionPairCount A K (delta ^ 2 * m / 2) : Real) +
         (drcBadPairCount A K m delta : Real) = (K.card : Real) ^ 2 := by
-  classical
   let p : Fin n × Fin n -> Prop := fun ij =>
     delta ^ 2 * (m : Real) / 2 <=
       (((A ij.1 ∩ A ij.2).card : Nat) : Real)
@@ -366,7 +357,6 @@ private lemma exists_drc_sample {X : Type*} [DecidableEq X] {n m : Nat}
     exists t, t ∈ drcSamples V /\
       (11 : Real) / 16 * delta ^ 10 * (n : Real) ^ 2 <=
         drcScore A t m delta := by
-  classical
   have hcore :
       delta ^ 10 * (m : Real) ^ 5 * (n : Real) ^ 2 <=
         ∑ t ∈ drcSamples V, ((drcCore A t).card : Real) ^ 2 := by
@@ -409,7 +399,6 @@ private lemma hasDenseIntersectionCore_of_score {X : Type*} [DecidableEq X]
     (hscore : (11 : Real) / 16 * delta ^ 10 * (n : Real) ^ 2 <=
       drcScore A t m delta) :
     HasDenseIntersectionCore m A delta := by
-  classical
   let K := drcCore A t
   let q : Real := K.card
   let b : Real := drcBadPairCount A K m delta
@@ -422,8 +411,7 @@ private lemma hasDenseIntersectionCore_of_score {X : Type*} [DecidableEq X]
     dsimp [drcScore, K, q, b] at hscore ⊢
     nlinarith
   have ha_sq : (((2 : Real) ^ (-(1 : Real) / 2)) ^ (2 : Nat)) = 1 / 2 := by
-    rw [← Real.rpow_natCast]
-    rw [← Real.rpow_mul (by norm_num : (0 : Real) <= 2)]
+    rw [← Real.rpow_natCast, ← Real.rpow_mul (by norm_num : (0 : Real) <= 2)]
     norm_num [Real.rpow_neg_one]
   let d : Real := (2 : Real) ^ (-(1 : Real) / 2) * delta ^ 5 * n
   have hd : 0 <= d := by
@@ -457,7 +445,6 @@ private lemma intersection_sum_lower_of_card_lower {X : Type*} [DecidableEq X]
     delta ^ 2 * m * (n : Real) ^ 2 <=
       ∑ i : Fin n, ∑ j : Fin n,
         (((A i ∩ A j).card : Nat) : Real) := by
-  classical
   have hincidence :
       delta * (m : Real) * (n : Real) <=
         ∑ x ∈ V, (incidenceDegree A x : Real) := by
@@ -501,7 +488,6 @@ private lemma hasDenseIntersectionCore_zero {X : Type*} [DecidableEq X]
     {n : Nat} (A : Fin n -> Finset X) (delta : Real)
     (hdelta : 0 < delta) (hdelta_one : delta <= 1) :
     HasDenseIntersectionCore 0 A delta := by
-  classical
   refine ⟨Finset.univ, ?_, ?_⟩
   · have ha : (2 : Real) ^ (-(1 : Real) / 2) <= 1 :=
       le_of_lt (Real.rpow_lt_one_of_one_lt_of_neg (by norm_num) (by norm_num))

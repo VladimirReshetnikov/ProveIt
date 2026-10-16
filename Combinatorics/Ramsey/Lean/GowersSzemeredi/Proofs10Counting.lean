@@ -21,7 +21,6 @@ namespace LeanProofs.GowersSzemeredi
 lemma countWhere_cast_eq_sum_ite {T : Type*} [Fintype T]
     (P : T → Prop) [DecidablePred P] :
     (countWhere P : Real) = ∑ x : T, if P x then 1 else 0 := by
-  classical
   unfold countWhere
   rw [Finset.filter_congr_decidable]
   simp
@@ -31,10 +30,8 @@ private lemma differenceWeight_eq_sum_fibre {N : Nat} [NeZero N]
     (x y : X) :
     (domainDifferenceWeight D x y : Real) =
       ∑ z : X, ((D.fibre (D.index z + (D.index y - D.index x))).card : Real) := by
-  classical
   unfold domainDifferenceWeight
-  rw [countWhere_cast_eq_sum_ite]
-  rw [Fintype.sum_prod_type]
+  rw [countWhere_cast_eq_sum_ite, Fintype.sum_prod_type]
   apply Finset.sum_congr rfl
   intro z _
   have hcond (w : X) :
@@ -83,14 +80,12 @@ private noncomputable def differenceMultiplicity {N : Nat} [NeZero N]
 private lemma differenceWeight_eq_multiplicity {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     (x y : X) :
-    domainDifferenceWeight D x y = differenceMultiplicity D (D.index y - D.index x) := by
-  rfl
+    domainDifferenceWeight D x y = differenceMultiplicity D (D.index y - D.index x) := rfl
 
 private lemma sum_differenceMultiplicity {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] (D : MultifunctionDomain N X) :
     ∑ d : ZMod N, (differenceMultiplicity D d : Real) =
       (Fintype.card X : Real) ^ 2 := by
-  classical
   simp_rw [differenceMultiplicity, countWhere_cast_eq_sum_ite]
   rw [Finset.sum_comm]
   simp [pow_two]
@@ -99,7 +94,6 @@ private lemma sum_differenceWeight_eq_sum_sq {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) :
     (∑ x : X, ∑ y : X, (domainDifferenceWeight D x y : Real)) =
       ∑ d : ZMod N, (differenceMultiplicity D d : Real) ^ 2 := by
-  classical
   simp_rw [differenceWeight_eq_multiplicity]
   calc
     (∑ x : X, ∑ y : X,
@@ -137,7 +131,6 @@ private lemma card_fourth_le_total_differenceWeight {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) :
     (Fintype.card X : Real) ^ 4 ≤
       (N : Real) * ∑ x : X, ∑ y : X, (domainDifferenceWeight D x y : Real) := by
-  classical
   have hcs := sq_sum_le_card_mul_sum_sq
     (s := (Finset.univ : Finset (ZMod N)))
     (f := fun d : ZMod N => (differenceMultiplicity D d : Real))

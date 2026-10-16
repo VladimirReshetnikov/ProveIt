@@ -18,7 +18,6 @@ theorem CoordinateFace.map_injective {N d l : Nat} (F : CoordinateFace N d l) :
 theorem CoordinateFace.map_replaceCoordinate {N d l : Nat} (F : CoordinateFace N d l)
     (x : Point N l) (j : Fin l) (a : ZMod N) :
     F.map (replaceCoordinate x j a) = replaceCoordinate (F.map x) (F.free j) a := by
-  classical
   funext i
   by_cases hi : ∃ t, F.free t = i
   · obtain ⟨t, rfl⟩ := hi
@@ -30,7 +29,6 @@ theorem CoordinateFace.map_replaceCoordinate {N d l : Nat} (F : CoordinateFace N
 @[simp] theorem CoordinateFace.mem_domain {N d l : Nat} [NeZero N]
     (F : CoordinateFace N d l) (B : Finset (Point N d)) (x : Point N l) :
     x ∈ F.domain B ↔ F.map x ∈ B := by
-  classical
   simp [CoordinateFace.domain]
 
 theorem CoordinateFace.domain_mono {N d l : Nat} [NeZero N]
@@ -95,7 +93,6 @@ theorem HasProductProperty.coordinateFace {N d l : Nat} [NeZero N]
 theorem partialGraph_relationProductProperty {N k : Nat} [NeZero N]
     {B : Finset (Point N k)} {phi : Point N k → ZMod N} {gamma : Real}
     (h : HasProductProperty B phi gamma) : RelationProductProperty gamma (partialGraph B phi) := by
-  classical
   intro C psi hgraph
   have hdata (x : Point N k) (hx : x ∈ C) : x ∈ B ∧ phi x = psi x := by
     obtain ⟨y, hy, heq⟩ := Finset.mem_image.mp (hgraph x hx)

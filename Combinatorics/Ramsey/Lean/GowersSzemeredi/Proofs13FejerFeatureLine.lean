@@ -29,7 +29,6 @@ theorem fejerFeature_regular_line {N L : Nat} [NeZero N] [Fact N.Prime]
     (hf : fejerPairRelation v (fun j =>
       (balancedFeatureVertex sign x y h j).1 * (balancedFeatureVertex sign x y h j).2) = 0) :
     ∃ c : ZMod N, ∀ j, ((v j).1 - (v j).2 : ZMod N) = c * balancedFeatureCoefficient sign j := by
-  classical
   let a : (Option I × Bool) → Fin (2 * L) := fun j => fejerCoefficientBoxIndex (v j)
   let u₀ := fun j => fejerBoxCoefficient (N := N) (a (j, false))
   let u₁ := fun j => fejerBoxCoefficient (N := N) (a (j, true))

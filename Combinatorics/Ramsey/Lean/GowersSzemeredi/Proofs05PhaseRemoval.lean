@@ -51,7 +51,6 @@ lemma cor57_phase_close_of_mem_interval {N d : Nat} [NeZero N]
     (a y : ZMod N) (hy : y ∈ (modInterval N a (d + 1)).carrier) :
     ‖exponential (-y) - exponential (-a)‖ ≤
       2 * Real.pi * d / N := by
-  classical
   unfold ModAP.carrier modInterval at hy
   simp only [Finset.mem_image, Finset.mem_univ, true_and] at hy
   obtain ⟨i, rfl⟩ := hy
@@ -62,8 +61,7 @@ lemma cor57_phase_close_of_mem_interval {N d : Nat} [NeZero N]
     ‖exponential (-(a + (i : ZMod N))) - exponential (-a)‖ =
         ‖exponential (-a) * (exponential (-(i : ZMod N)) - 1)‖ := by
       congr 1
-      rw [show -(a + (i : ZMod N)) = -a + -(i : ZMod N) by ring]
-      rw [exponential_add]
+      rw [show -(a + (i : ZMod N)) = -a + -(i : ZMod N) by ring, exponential_add]
       ring
     _ = ‖exponential (-(i : ZMod N)) - 1‖ := by
       rw [norm_mul, cor57_norm_exponential, one_mul]
@@ -79,7 +77,6 @@ private lemma cor57_sum_partition {X : Type*} [DecidableEq X] {m : Nat}
     (P : Fin m → Finset X) (S : Finset X) (hpartition : IsPartition P S)
     (g : X → Complex) :
     ∑ j, ∑ x ∈ P j, g x = ∑ x ∈ S, g x := by
-  classical
   have hpair : ((Finset.univ : Finset (Fin m)) : Set (Fin m)).PairwiseDisjoint P := by
     intro i _ j _ hij
     exact hpartition.2 i j (bne_iff_ne.mpr hij)
@@ -140,7 +137,6 @@ lemma cor57_cell_norm_le {N : Nat} [NeZero N]
     (hscale : scale ≤ alpha * N / (4 * Real.pi)) :
     ‖∑ s ∈ S, f (s : ZMod N) * exponential (-(phi (s : ZMod N)))‖ ≤
       ‖∑ s ∈ S, f (s : ZMod N)‖ + alpha / 2 * S.card := by
-  classical
   obtain ⟨d, ⟨a, hsubset⟩, hdscale⟩ := hdiam
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hphase (s : Nat) (hs : s ∈ S) :
@@ -166,8 +162,7 @@ lemma cor57_cell_norm_le {N : Nat} [NeZero N]
       (exponential (-(phi (s : ZMod N))) - exponential (-a))
   have hdecomp : twisted = exponential (-a) * plain + err := by
     dsimp only [twisted, plain, err]
-    rw [Finset.mul_sum]
-    rw [← Finset.sum_add_distrib]
+    rw [Finset.mul_sum, ← Finset.sum_add_distrib]
     apply Finset.sum_congr rfl
     intro s _
     ring
@@ -202,7 +197,6 @@ lemma cor57_cell_norm_le {N : Nat} [NeZero N]
 target-length form of Corollary 5.6. -/
 theorem corollary_5_7_holds_of_corollary_5_6
     (h56 : corollary_5_6) : corollary_5_7 := by
-  classical
   intro N k r v _ phi alpha hk hphi halpha hlarge hrN hv hvupper
   have hthreshold : polynomialPartitionThreshold k < r := by
     exact_mod_cast (lt_of_le_of_lt (le_max_left _ _) hlarge)

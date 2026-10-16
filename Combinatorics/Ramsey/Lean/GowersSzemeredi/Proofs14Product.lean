@@ -80,7 +80,6 @@ private lemma prop14_restricted_weight_eq_energy {N p : Nat} [NeZero N]
     (sigma : Fin p → ZMod N → ZMod N) :
     simultaneouslyAdditiveWeight (prop14RestrictedWeight E theta) sigma =
       weightedSimultaneousAdditiveEnergy E theta sigma := by
-  classical
   unfold simultaneouslyAdditiveWeight weightedSimultaneousAdditiveEnergy
   apply Fintype.sum_equiv
       ({ toFun q := ![q 0, q 3, q 2, q 1]

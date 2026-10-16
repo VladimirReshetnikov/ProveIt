@@ -19,7 +19,6 @@ theorem affineFrequencyProgression_energy {N m : Nat} [NeZero N]
     (hlarge : ∀ x ∈ D, alpha / 2 * N ≤ ‖fourier (difference f x) (a * x + b)‖) :
     (delta * alpha ^ 2 / 4) * (N : Real) ^ 2 * (m : Real) ≤
       ∑ x ∈ P.asBox.carrier, ‖fourier (cubeDifference f x) (a * x 0 + b)‖ ^ 2 := by
-  classical
   let E := D.image (pointOneEquiv N)
   have hE : E ⊆ P.asBox.carrier := by
     intro x hx

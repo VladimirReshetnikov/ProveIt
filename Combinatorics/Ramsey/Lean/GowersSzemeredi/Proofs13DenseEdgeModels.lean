@@ -68,7 +68,6 @@ theorem section13_uniform_height_model_all_densities {N : Nat} [NeZero N]
       (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224 * (N : Real) ^ 2 ≤ Y.card ∧
       HasBohrDifferenceModel (section13EdgeIndexDomain N) (verticalPhiDifference S.phi h)
         K (section10Zeta a) Y psi := by
-  classical
   let a : Real := S.alpha ^ 32 / 16
   let beta := section13EdgeDensity S h
   have hbounds := section13_edge_density_bounds S h hh

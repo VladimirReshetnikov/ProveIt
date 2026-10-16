@@ -149,7 +149,6 @@ theorem uniformBase_small_controls {V gamma theta rho : Real} (hV : 1 ≤ V)
 
 theorem restrictRelation_univ {N k : Nat} [NeZero N] (Gamma : Finset (Point N k × ZMod N)) :
     restrictRelation Gamma Finset.univ = Gamma := by
-  classical
   unfold restrictRelation
   exact Finset.filter_true_of_mem fun z _ => Finset.mem_univ _
 
@@ -162,7 +161,6 @@ theorem PowerUniformClass.polyCoverAt {k : Nat} {V : Real} {dC dE dT : Nat}
     PolyCoverAt k (fun gamma theta rho => uniformBase V 1 theta gamma rho ^ D)
       (fun gamma theta rho => (uniformBase V 1 theta gamma rho ^ D)⁻¹) := by
   intro N _ _ gamma theta hg hg1 ht ht1 Gamma hsize hprod
-  classical
   have hfacts := fun rho (hr : 0 < rho) (hr1 : rho ≤ 1) =>
     uniformBase_facts hV 1 hg hg1 ht ht1 hr hr1
   by_cases hN : (V * (2 / (gamma * theta))) ^ dT ≤ (N : Real)
@@ -262,7 +260,6 @@ theorem powerUniformClass_two {K1 p1 : Nat} (hK1 : 1 ≤ K1) (hp1 : 0 < p1)
       (section16PowerWidth (familyWidthPrefactor K1) (familyWidthDivisor 1 p1)))
     {V : Real} (hV : 1 ≤ V) (hKV : (K1 : Real) ≤ V) (hpV : (p1 : Real) ≤ V) :
     Nonempty (PowerUniformClass 2 V ((2 : Nat) ^ 89) ((2 : Nat) ^ 130) ((2 : Nat) ^ 45)) := by
-  classical
   refine ⟨{
     U := fun N _ theta gamma Gamma =>
       ∃ P : Fin (polyTwoPieces gamma theta) → PolyPieceTwo N theta gamma,

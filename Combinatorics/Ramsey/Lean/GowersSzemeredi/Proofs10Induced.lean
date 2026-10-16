@@ -20,7 +20,6 @@ namespace LeanProofs.GowersSzemeredi
 @[simp] private lemma mem_inducedTranslate_iff {N : Nat}
     (A : Finset (ZMod N)) (d x : ZMod N) :
     x ∈ section10Translate A d ↔ x - d ∈ A := by
-  classical
   unfold section10Translate
   constructor
   · intro hx
@@ -48,8 +47,7 @@ theorem lemma_10_12_holds : lemma_10_12 := by
   change c ∈ C at hc
   change phi w1 - phi w2 = psi1 c
 
-  have hBne : B.Nonempty := by
-    exact ⟨0, bohr_zero_mem K delta hdelta.le⟩
+  have hBne : B.Nonempty := ⟨0, bohr_zero_mem K delta hdelta.le⟩
   have hBcardPos : (0 : Real) < B.card := by
     exact_mod_cast Finset.card_pos.mpr hBne
   have hB'cardLeNat : B'.card ≤ B.card :=

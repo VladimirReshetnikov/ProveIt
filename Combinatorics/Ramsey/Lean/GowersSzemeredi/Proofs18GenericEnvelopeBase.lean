@@ -249,8 +249,7 @@ theorem zeta_gen_bounds (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 2) :
   rw [Real.rpow_neg (by norm_num), inv_inv]
   refine (two_rpow_le_exp hS0).trans (Real.exp_le_exp.mpr ?_)
   rw [hS, ← pow_mul]
-  apply pow_le_pow_right₀ (le_trans (by norm_num) hX)
-  exact le_of_eq (by ring)
+  exact pow_le_pow_right₀ (le_trans (by norm_num) hX) (le_of_eq (by ring))
 
 /-- `3^(k+1) ≤ X^(2^a)` once `k + 2 ≤ a`. -/
 theorem three_pow_le_pw {X : Real} (hX : 2 ≤ X) {k a : Nat} (hka : k + 2 ≤ a) :

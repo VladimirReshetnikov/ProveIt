@@ -19,7 +19,6 @@ def section16RetainedClass {α : Type*} {r : Nat}
 
 theorem section16RetainedClass_subset {α : Type*} {r : Nat}
     (C : Finset α) (sample : Fin r → α) : section16RetainedClass C sample ⊆ C := by
-  classical
   unfold section16RetainedClass
   split_ifs <;> simp
 
@@ -27,7 +26,6 @@ theorem section16RetainedClass_anchors {α : Type*} {r : Nat}
     (C : Finset α) (sample : Fin r → α)
     (hne : (section16RetainedClass C sample).Nonempty) :
     section16SampleHasDistinctPair (section16RetainedClass C sample) sample := by
-  classical
   unfold section16RetainedClass at *
   split_ifs with h
   · exact h

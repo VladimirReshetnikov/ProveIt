@@ -41,7 +41,6 @@ def parallelFaceUnion {N d l r : Nat} [NeZero N] (e : Fin d ≃ Fin l ⊕ Fin r)
 theorem splitCoordinateFace_domain_union {N d l r : Nat} [NeZero N]
     (e : Fin d ≃ Fin l ⊕ Fin r) (C : Point N r → Finset (Point N l)) (z : Point N r) :
     (splitCoordinateFace e z).domain (parallelFaceUnion e C) = C z := by
-  classical
   ext x
   rw [CoordinateFace.mem_domain]
   simp only [parallelFaceUnion, Finset.mem_biUnion, Finset.mem_univ, true_and, Finset.mem_image]
@@ -56,7 +55,6 @@ theorem parallelFaceUnion_subset {N d l r : Nat} [NeZero N]
     (e : Fin d ≃ Fin l ⊕ Fin r) (B : Finset (Point N d))
     (C : Point N r → Finset (Point N l))
     (hC : ∀ z, C z ⊆ (splitCoordinateFace e z).domain B) : parallelFaceUnion e C ⊆ B := by
-  classical
   intro x hx
   obtain ⟨z, _, hz⟩ := Finset.mem_biUnion.mp hx
   obtain ⟨y, hy, rfl⟩ := Finset.mem_image.mp hz
@@ -65,7 +63,6 @@ theorem parallelFaceUnion_subset {N d l r : Nat} [NeZero N]
 theorem parallelFaceUnion_card {N d l r : Nat} [NeZero N]
     (e : Fin d ≃ Fin l ⊕ Fin r) (C : Point N r → Finset (Point N l)) :
     (parallelFaceUnion e C).card = ∑ z, (C z).card := by
-  classical
   unfold parallelFaceUnion
   rw [Finset.card_biUnion]
   · apply Finset.sum_congr rfl
@@ -81,7 +78,6 @@ theorem parallelFaceUnion_card {N d l r : Nat} [NeZero N]
 theorem parallelFaceUnion_domains {N d l r : Nat} [NeZero N]
     (e : Fin d ≃ Fin l ⊕ Fin r) (B : Finset (Point N d)) :
     parallelFaceUnion e (fun z => (splitCoordinateFace e z).domain B) = B := by
-  classical
   apply Finset.Subset.antisymm (parallelFaceUnion_subset e B _ (fun _ => le_rfl))
   intro x hx
   let z : Point N r := fun i => x (e.symm (Sum.inr i))

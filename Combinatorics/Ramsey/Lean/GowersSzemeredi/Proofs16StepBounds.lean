@@ -13,7 +13,6 @@ namespace LeanProofs.GowersSzemeredi
 /-- The indexed point of a modular progression belongs to its carrier. -/
 theorem modAP_index_mem {N : Nat} (P : ModAP N) {i : Nat} (hi : i < P.length) :
     P.start + (i : ZMod N) * P.step ∈ P.carrier := by
-  classical
   exact Finset.mem_image.mpr ⟨⟨i, hi⟩, Finset.mem_univ _, rfl⟩
 
 /-- Membership in a short initial modular interval bounds the ordinary

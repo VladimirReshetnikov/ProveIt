@@ -47,12 +47,10 @@ theorem section16StackedSlices_mem {N k r : Nat} [NeZero N]
     {sample : Fin r → ZMod N} (h : Point N k) (i : Fin r)
     (hB : appendCoordinate h (sample i) ∈ B) :
     (h, phi (appendCoordinate h (sample i))) ∈ section16StackedSlices B phi sample := by
-  classical
   unfold section16StackedSlices section16FinsetUnion
   apply Finset.mem_biUnion.mpr
   refine ⟨i, Finset.mem_univ _, ?_⟩
-  apply Finset.mem_image.mpr
-  exact ⟨h, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hB⟩, rfl⟩
+  exact Finset.mem_image.mpr (⟨h, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hB⟩, rfl⟩)
 
 /-- **Synchronized compressed cover for a family.** One cover of a relation
 containing all members' sampled slices; each member interpolates its own
@@ -85,7 +83,6 @@ theorem section16_synchronized_compressed_cover_family
       (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
       (∀ j c, IsMultilinear (nu j c)) ∧
       ∀ a j z, z ∈ (S j).carrier → z ∈ D a → z ∈ G → ∃ c, phi a z = nu j c z := by
-  classical
   obtain ⟨p, H, b, P, n, R, mu, hp, hH, hHm, hPpart, _,
       hPaxes, hPstep, hRpart, hRproper, hRwidth, hmu, hc⟩ :=
     hslice.short_parent_cover ε hε hε1 hPb hEb T I hT hI hk hm hmT hmI
@@ -178,7 +175,6 @@ theorem Section16SampledOrAnchoredOn.synchronized_compressed_cover_with
       (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
       (∀ j ij, IsMultilinear (nu j ij)) ∧
       ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z := by
-  classical
   obtain ⟨p, G, L, S, nu, hp, hGF, hGmass, hpart, hproper, hnu, hcover⟩ :=
     section16_synchronized_compressed_cover_family (ι := Unit)
       (D := fun _ => D) (F := fun _ => F) (phi := fun _ => phi) (sample := fun _ => sample)
@@ -198,7 +194,6 @@ theorem good_finite_intersection_mass {α : Type*} [DecidableEq α] {ι : Type} 
     (hF : ∀ a, F a ⊆ P) (hFm : ∀ a, (1 - t) * (P.card : Real) ≤ (F a).card) :
     (P.filter fun z => ∀ a, z ∈ F a) ⊆ P ∧
       (1 - Fintype.card ι * t) * (P.card : Real) ≤ (P.filter fun z => ∀ a, z ∈ F a).card := by
-  classical
   set X := P.filter fun z => ∀ a, z ∈ F a
   have hXP : X ⊆ P := Finset.filter_subset _ _
   refine ⟨hXP, ?_⟩
@@ -251,7 +246,6 @@ theorem section16_local_affine_lift_family {N k q r m v : Nat} [Fact N.Prime]
       IsBoxPartition S P ∧ (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
       (∀ j c, IsMultilinear (nu j c)) ∧
       ∀ a j z, z ∈ (S j).carrier → z ∈ D a → z ∈ G → ∃ c, phi a z = nu j c z := by
-  classical
   let T := boxInit P
   let I := P.axis (Fin.last k)
   have hT : T.IsProper := boxInit_isProper P hP
@@ -347,7 +341,6 @@ theorem section16_local_affine_lift_all_scales_family {N k q r m : Nat} [Fact N.
       (∀ j, (S j).IsProper ∧ Real.sqrt (((m : ℝ) / 8) ^ (Eb ε)) / 4 ≤ (S j).width) ∧
       (∀ j c, IsMultilinear (nu j c)) ∧
       ∀ a j z, z ∈ (S j).carrier → z ∈ D a → z ∈ G → ∃ c, phi a z = nu j c z := by
-  classical
   let w := ((m : ℝ) / 8) ^ (Eb ε)
   by_cases hw : 16 ≤ w
   · have hm : 4 ≤ m := by
@@ -425,7 +418,6 @@ theorem Section16LineCoverFamily.global_affine_lift_family {N k q r m : Nat} [Fa
       (∀ j, Real.sqrt (((m : ℝ) / 8) ^ (Eb ε)) / 4 ≤ (Q j).width) ∧
       (∀ j i, IsMultilinear (mu j i)) ∧
       ∀ a j z, z ∈ (Q j).carrier → z ∈ B a → z ∈ H → ∃ i, phi a z = mu j i z := by
-  classical
   obtain ⟨E, M, S, T, J, ell, hE, hEm, hSpart, hSproper, hproduct, hwidth, hell, hc⟩ := hline
   have hlocal : ∀ u, ∃ (p : Nat) (G : Finset (Point N (k + 1)))
       (L : Nat) (R : Fin L → Box N (k + 1))
@@ -506,7 +498,6 @@ theorem section16_local_affine_lift_with {N k q r m v : Nat} [Fact N.Prime]
       IsBoxPartition S P ∧ (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
       (∀ j ij, IsMultilinear (nu j ij)) ∧
       ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z := by
-  classical
   obtain ⟨p, G, L, S, nu, hp, hG, hGm, hpart, hproper, hnu, hc⟩ :=
     section16_local_affine_lift_family (ι := Unit) P hP hk hm hmP
       (fun _ => D) (fun _ => phi) Pb Eb
@@ -543,7 +534,6 @@ theorem section16_local_affine_lift_all_scales_with {N k q r m : Nat} [Fact N.Pr
       (∀ j, (S j).IsProper ∧ Real.sqrt (((m : ℝ) / 8) ^ (Eb ε)) / 4 ≤ (S j).width) ∧
       (∀ j ij, IsMultilinear (nu j ij)) ∧
       ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z := by
-  classical
   obtain ⟨p, G, L, S, nu, hp, hG, hGm, hpart, hproper, hnu, hc⟩ :=
     section16_local_affine_lift_all_scales_family (ι := Unit) P hP hk hmP
       (fun _ => D) (fun _ => phi) Pb Eb
@@ -575,7 +565,6 @@ theorem Section16LineCover.global_affine_lift_with {N k q r m : Nat} [Fact N.Pri
       (∀ j, Real.sqrt (((m : ℝ) / 8) ^ (Eb ε)) / 4 ≤ (Q j).width) ∧
       (∀ j i, IsMultilinear (mu j i)) ∧
       ∀ j z, z ∈ (Q j).carrier → z ∈ B → z ∈ H → ∃ i, phi z = mu j i z := by
-  classical
   obtain ⟨E, M, S, T, J, ell, hE, hEm, hpart, hproper, hproduct, hw, hell, hc⟩ := hline
   have hfamily : Section16LineCoverFamily P (fun _ : Unit => B) (fun _ => phi) σ l q :=
     ⟨E, M, S, T, J, fun _ => ell, hE, hEm, hpart, hproper, hproduct, hw,

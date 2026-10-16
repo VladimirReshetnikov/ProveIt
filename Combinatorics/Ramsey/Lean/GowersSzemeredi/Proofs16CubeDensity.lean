@@ -11,7 +11,6 @@ theorem section16_cube_fibre_card {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (h : Point N k) (s : ZMod N) :
     ((section16CubeMultifunctionDomain B h).fibre s).card =
       countWhere (fun x : Point N k => ∀ e, appendCoordinate (AxisCube.vertex (x, h) e) s ∈ B) := by
-  classical
   apply Finset.card_bij (fun C _ => C.val.1.base)
   · intro C hC
     have hside : C.val.1.side = h := by
@@ -58,7 +57,6 @@ theorem section16_cube_correlation_eq_fibreCount {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (h : Point N k) :
     higherCubeCorrelation (section16PointIndicator B) h =
       domainFibreCountFunction (section16CubeMultifunctionDomain B h) := by
-  classical
   funext s
   rw [domainFibreCountFunction, section16_cube_fibre_card]
   have hproduct (x : Point N k) :
@@ -95,7 +93,6 @@ theorem section16_spectrum_eq_domain {N k : Nat} [NeZero N]
 theorem section16_cube_card_le {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (h : Point N k) :
     (section16CubeDomain B h).card ≤ N ^ (k + 1) := by
-  classical
   let D := section16CubeMultifunctionDomain B h
   have hsum : (∑ s : ZMod N, (D.fibre s).card) =
       Fintype.card (Section16CubeElement B h) := by

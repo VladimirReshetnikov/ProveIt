@@ -35,7 +35,6 @@ theorem section16_coarse_relation_cover {N k : Nat} [NeZero N] (hk : 0 < k)
         (∀ j, min 2 P.width ≤ (R j).width) ∧
         (∀ j i, IsMultilinear (mu j i)) ∧
         ∀ j x, x ∈ (R j).carrier → ∀ y, (x, y) ∈ Gamma → ∃ i, y = mu j i x := by
-  classical
   have hcells : ∃ L : Nat, ∃ R : Fin L → Box N k,
       IsBoxPartition R P ∧ (∀ j, (R j).IsProper) ∧
       (∀ j, min 2 P.width ≤ (R j).width) ∧ ∀ j, (R j).carrier.card ≤ 3 ^ k := by

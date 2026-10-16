@@ -100,7 +100,6 @@ theorem section16_poly_piece_two
       5 * polyPieceBudget theta gamma * (N : Real) ^ 2 ≤ D.card ∧
       MultiplyLinearWith (polyPieceTwoCount theta gamma) (polyPieceTwoExponent A Bq theta gamma)
         (partialGraph D (section16PhiOne phi x0)) := by
-  classical
   obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds 1 ht ht1 hg hg1
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le 1 ht ht1 hg hg1
   have hθ'pos : 0 < polyPieceBudget theta gamma := by
@@ -291,7 +290,6 @@ theorem section16_poly_piece_two_original
       5 * polyPieceBudget theta gamma * (N : Real) ^ 2 ≤ D'.card ∧
       MultiplyLinearWith (polyPieceTwoCount theta gamma) (polyPieceTwoExponent A Bq theta gamma)
         (partialGraph D' phi) := by
-  classical
   obtain ⟨x0, D, hDB, hDcard, hML⟩ :=
     section16_poly_piece_two hA hB hlemma6 ht ht1 hg hg1 B phi hBarr hprodB
   set t := appendCoordinate x0 0 with htdef

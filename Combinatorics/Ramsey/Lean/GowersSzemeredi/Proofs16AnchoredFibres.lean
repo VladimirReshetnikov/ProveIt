@@ -29,7 +29,6 @@ theorem section16_affine_cover_anchored_good_set {N q r : Nat} [Fact N.Prime]
           f h x = (coord (sample i) - coord (sample j))⁻¹ *
             ((f h (sample i) + (-1) * f h (sample j)) * coord x +
               ((-coord (sample j)) * f h (sample i) + coord (sample i) * f h (sample j))) := by
-  classical
   choose C hpart hC using fun h =>
     affine_column_cover_partition coord hq (B h) (f h) (ell h) (hell h) (hcover h)
   have hdisj : ∀ h, Pairwise (fun i j => Disjoint (C h i) (C h j)) := by

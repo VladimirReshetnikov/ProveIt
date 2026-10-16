@@ -103,7 +103,6 @@ theorem isMultilinear_of_coordinate_linear {N k : Nat} [Fact N.Prime]
     (phi : Point N k → ZMod N)
     (h : ∀ y j, LinearOn Finset.univ (coordinateRestriction phi y j)) :
     IsMultilinear phi := by
-  classical
   induction k with
   | zero =>
     refine ⟨fun _ => phi 0, fun x => ?_⟩

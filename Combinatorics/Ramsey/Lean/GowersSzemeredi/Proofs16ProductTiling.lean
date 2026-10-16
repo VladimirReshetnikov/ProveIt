@@ -63,7 +63,6 @@ theorem boxAppend_partition {N k M : Nat} [NeZero N]
     IsPartition (fun j => (boxAppend R (J j) (hstep j)).carrier)
       (Finset.univ.filter (fun x : Point N (k + 1) =>
         section16Init x ∈ R.carrier ∧ section16Last x ∈ I.carrier)) := by
-  classical
   have hmem (j : Fin M) (x : Point N (k + 1)) :
       x ∈ (boxAppend R (J j) (hstep j)).carrier ↔
         section16Init x ∈ R.carrier ∧ section16Last x ∈ (J j).carrier := by

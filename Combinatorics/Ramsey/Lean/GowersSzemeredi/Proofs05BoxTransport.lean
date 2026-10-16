@@ -46,7 +46,6 @@ def modAPAffine {N : Nat} (P R : ModAP N) : ModAP N where
 
 theorem modAPAffine_carrier {N : Nat} (P R : ModAP N) :
     (modAPAffine P R).carrier = R.carrier.image (fun t => P.start + P.step * t) := by
-  classical
   unfold ModAP.carrier
   rw [Finset.image_image]
   apply Finset.image_congr
@@ -97,7 +96,6 @@ def boxAffineTransport {N k : Nat} (P Q : Box N k) : Box N k where
 /-- Affine transport commutes with the Cartesian product carrier. -/
 theorem boxAffineTransport_carrier {N k : Nat} [NeZero N] (P Q : Box N k) :
     (boxAffineTransport P Q).carrier = Q.carrier.image (boxAffinePoint P) := by
-  classical
   ext x
   simp only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and,
     boxAffineTransport, modAPAffine_carrier, Finset.mem_image]
@@ -134,7 +132,6 @@ theorem boxAffinePoint_injective_on_indexModel {N k : Nat} [NeZero N]
 theorem Box.axis_carrier_subset_of_carrier_subset {N k : Nat} [NeZero N]
     (Q R : Box N k) (hQ : Q.carrier.Nonempty) (hsub : Q.carrier ⊆ R.carrier)
     (i : Fin k) : (Q.axis i).carrier ⊆ (R.axis i).carrier := by
-  classical
   obtain ⟨x, hx⟩ := hQ
   have hx' : ∀ j, x j ∈ (Q.axis j).carrier := by
     simpa only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and] using hx
@@ -147,19 +144,16 @@ theorem Box.axis_carrier_subset_of_carrier_subset {N k : Nat} [NeZero N]
     · subst j; simpa [z] using hy
     · simpa [z, hji] using hx' j
   have hz' := hsub hz
-  have hzi : z i ∈ (R.axis i).carrier := by
-    exact (Finset.mem_filter.mp hz').2 i
+  have hzi : z i ∈ (R.axis i).carrier := (Finset.mem_filter.mp hz').2 i
   simpa [z] using hzi
 
 /-- Positive axis lengths make the box nonempty. -/
 theorem Box.carrier_nonempty_of_axis_pos {N k : Nat} [NeZero N]
     (P : Box N k) (hP : ∀ i, 0 < (P.axis i).length) : P.carrier.Nonempty := by
-  classical
   refine ⟨fun i => (P.axis i).start, ?_⟩
   simp only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and]
   intro i
-  apply Finset.mem_image.mpr
-  exact ⟨⟨0, hP i⟩, Finset.mem_univ _, by simp⟩
+  exact Finset.mem_image.mpr (⟨⟨0, hP i⟩, Finset.mem_univ _, by simp⟩)
 
 /-- A nonempty proper child in index coordinates transports to a proper box. -/
 theorem boxAffineTransport_isProper {N k : Nat} [NeZero N]
@@ -210,7 +204,6 @@ theorem finsetPartition_flatten {X : Type*} [DecidableEq X] {M : Nat}
     (hA : IsPartition A S) (hB : ∀ i, IsPartition (B i) (A i)) :
     IsPartition (fun j : Fin (∑ i, L i) =>
       let z := (section5NatFlattenEquiv L).symm j; B z.1 z.2) S := by
-  classical
   let e := section5NatFlattenEquiv L
   have hsigma := section5Nat_sigma_partition L A S B hA hB
   constructor

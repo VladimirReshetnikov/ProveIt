@@ -12,7 +12,6 @@ namespace LeanProofs.GowersSzemeredi
 theorem section16_large_spectrum_card {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (h : Point N k) {delta : Real} (hd : 0 < delta) :
     ((section16LargeSpectrum B h delta).card : Real) ≤ delta ^ (-(2 : Int)) := by
-  classical
   let f := higherCubeCorrelation (section16PointIndicator B) h
   let K := section16LargeSpectrum B h delta
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
@@ -31,8 +30,7 @@ theorem section16_large_spectrum_card {N k : Nat} [NeZero N]
       _ ≤ ∑ r ∈ K, ‖fourier f r‖ ^ 2 := by
         apply Finset.sum_le_sum
         intro r hr
-        apply (sq_le_sq₀ (by positivity) (norm_nonneg _)).mpr
-        exact (Finset.mem_filter.mp hr).2
+        exact (sq_le_sq₀ (by positivity) (norm_nonneg _)).mpr ((Finset.mem_filter.mp hr).2)
       _ ≤ _ := Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
         (fun _ _ _ => sq_nonneg _)
   have hu : (∑ r : ZMod N, ‖fourier f r‖ ^ 2) ≤ ((N : Real) ^ (k + 1)) ^ 2 := by
@@ -56,7 +54,6 @@ theorem section16_spectrum_relation_card {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) {delta : Real} (hd : 0 < delta) :
     ((section16SpectrumRelation B delta).card : Real) ≤
       delta ^ (-(2 : Int)) * (N : Real) ^ k := by
-  classical
   have hc : (section16SpectrumRelation B delta).card =
       ∑ h : Point N k, (section16LargeSpectrum B h delta).card := by
     simp only [section16SpectrumRelation, Finset.card_eq_sum_ones, Finset.sum_filter,
@@ -71,7 +68,6 @@ theorem section16_spectrum_relation_card {N k : Nat} [NeZero N]
 theorem section16_spectrum_relation_product {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) {delta : Real} (hd : 0 < delta) :
     RelationProductProperty delta (section16SpectrumRelation B delta) := by
-  classical
   intro C phi hgraph
   apply lemma_14_3_holds N k delta (section16PointIndicator B) C phi hd
     (fun x => by simp only [section16PointIndicator]; split_ifs <;> simp)

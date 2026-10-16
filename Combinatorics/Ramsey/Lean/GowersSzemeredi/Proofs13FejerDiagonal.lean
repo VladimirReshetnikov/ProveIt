@@ -14,7 +14,6 @@ theorem fejerRelation_count_diagonal {N L : Nat}
         ∀ i, (v i).1 = (v i).2) :
     countWhere (fun v : I → Fin L × Fin L =>
       fejerPairRelation v phi = 0 ∧ fejerPairRelation v feature = 0) = L ^ Fintype.card I := by
-  classical
   let V := {v : I → Fin L × Fin L //
     fejerPairRelation v phi = 0 ∧ fejerPairRelation v feature = 0}
   let e : V ≃ (I → Fin L) :=

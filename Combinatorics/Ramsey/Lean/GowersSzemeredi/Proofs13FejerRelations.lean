@@ -20,7 +20,6 @@ theorem finiteFejerKernel_product_expansion {N L : Nat} [NeZero N]
       (((L : Complex) ^ 2)⁻¹) ^ Fintype.card I *
         ∑ v : I → Fin L × Fin L,
           exponential (a * fejerPairRelation v phi + b * fejerPairRelation v feature) := by
-  classical
   have hpair (x : ZMod N) : (finiteFejerKernel L x : Complex) =
       ((L : Complex) ^ 2)⁻¹ * ∑ p : Fin L × Fin L,
         exponential (((p.1 : ZMod N) - (p.2 : ZMod N)) * x) := by
@@ -54,7 +53,6 @@ theorem finiteFejerKernel_mean_product {N L : Nat} [NeZero N]
       (((L : Complex) ^ 2)⁻¹) ^ Fintype.card I *
         (countWhere (fun v : I → Fin L × Fin L =>
           fejerPairRelation v phi = 0 ∧ fejerPairRelation v feature = 0) : Complex) := by
-  classical
   simp_rw [finiteFejerKernel_product_expansion]
   rw [← Finset.mul_expect, Finset.expect_sum_comm]
   simp_rw [fejer_seed_orthogonality]

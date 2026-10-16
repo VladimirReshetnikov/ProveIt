@@ -98,7 +98,6 @@ theorem section16_piece_large_box_profile {k : Nat} (hk : 1 ≤ k)
         (pieceLineExponent Bq Qb Eb Er rho * pieceSliceExponent Qr Es rho / 4)
         (section16RoundedPowerThreshold (pieceWidthScale A Qb (section16Zeta theta gamma k) rho)
           (pieceLineExponent Bq Qb Eb Er rho) (pieceSliceExponent Qr Es rho)) := by
-  classical
   intro rho hrho hrho1 P hP hlarge
   let sigma := rho / 4
   have hs : 0 < sigma := by dsimp [sigma]; positivity

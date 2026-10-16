@@ -20,7 +20,6 @@ theorem Theorem162At.restrict_parallel_faces {l : Nat} (hth : Theorem162At l)
           ∀ z : Point N r,
             MultiplyLinearFunction gamma (gamma ^ (-(2 : Int)) * multipleS theta gamma l)
               ((splitCoordinateFace e z).domain B') ((splitCoordinateFace e z).pullback phi) := by
-  classical
   obtain ⟨N0, hN0⟩ := hth.restrict_coordinate_face gamma theta hg hg1 ht ht1
   refine ⟨N0, ?_⟩
   intro N d r _ _ hN e B phi hprod

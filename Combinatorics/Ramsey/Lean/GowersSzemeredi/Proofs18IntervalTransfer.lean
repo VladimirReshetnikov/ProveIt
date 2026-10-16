@@ -92,7 +92,6 @@ theorem hasNatAP_of_hasModAP_image {N n k : Nat} [NeZero N]
     (A : Finset Nat) (hA : A ⊆ Finset.Icc 1 n) (hsize : 2 * n < N)
     (hAP : HasModAP (A.image fun x : Nat => (x : ZMod N)) k) :
     HasNatAP A k := by
-  classical
   obtain ⟨a, d, hd, hAP⟩ := hAP
   apply hasNatAP_of_short_modular_sequence A (fun i => (a + (i : ZMod N) * d).val)
     a d (bne_iff_ne.mp hd) hsize
