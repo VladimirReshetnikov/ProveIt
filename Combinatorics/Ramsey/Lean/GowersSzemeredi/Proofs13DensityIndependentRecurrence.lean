@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs13UntrimmedRecurrence
 import GowersSzemeredi.Proofs13LargeScaleRecurrence
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! Removing endpoint deletion makes the ambient-modulus threshold depend
 only on the Fourier cutoff, uniformly over every positive context density. -/

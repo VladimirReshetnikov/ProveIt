@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16BaseCaseLongBoxTransport
 import GowersSzemeredi.Proofs16IntegerLocalCover
 import GowersSzemeredi.Proofs18NaturalIntervalIncrement
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! Ordinary integer index cells transport to ascending natural-axis cells.
 This includes empty index cells, whose stored start is normalized separately. -/

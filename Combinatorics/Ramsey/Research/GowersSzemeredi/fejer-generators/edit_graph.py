@@ -88,8 +88,11 @@ if '--apply' in sys.argv:
             assert k == 1, (m, d)
         extra = [d for d in edits.get(m, {}).get('add', []) if d not in old[m]] + comp.get(m, [])
         if extra:
-            last = list(re.finditer(r'^import .*$', t, re.M))[-1]
-            t = t[:last.end()] + ''.join('\nimport ' + d for d in extra) + t[last.end():]
+            ims = list(re.finditer(r'^import .*$', t, re.M))
+            if ims:
+                t = t[:ims[-1].end()] + ''.join('\nimport ' + d for d in extra) + t[ims[-1].end():]
+            else:
+                t = ''.join('import ' + d + '\n' for d in extra) + t
         open(os.path.join(GS, m.split('.', 1)[1] + '.lean'), 'w', encoding='utf8', newline='\n').write(t)
     print('applied to', len(set(edits) | set(comp)), 'modules')
 json.dump(dict(comp=comp), open('edit_graph_comp.json', 'w', encoding='utf8'), indent=1)

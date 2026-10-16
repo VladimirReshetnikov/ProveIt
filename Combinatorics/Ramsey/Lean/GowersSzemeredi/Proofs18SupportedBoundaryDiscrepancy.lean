@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18BoundaryRefinement
 import GowersSzemeredi.Proofs18IntervalBoundarySelection
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! Discrepancy of arbitrary bounded complex functions survives removal of
 cells crossing the boundary of their supporting interval. -/

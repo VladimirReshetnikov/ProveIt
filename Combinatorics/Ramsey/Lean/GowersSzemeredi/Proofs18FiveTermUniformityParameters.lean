@@ -1,4 +1,6 @@
 import GowersSzemeredi.Proofs18GeneralIteration
+import GowersSzemeredi.Proofs03FourFactorSymmetry
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! Polynomial substitution bounds for the five-term interval uniformity parameter. -/
 set_option autoImplicit false

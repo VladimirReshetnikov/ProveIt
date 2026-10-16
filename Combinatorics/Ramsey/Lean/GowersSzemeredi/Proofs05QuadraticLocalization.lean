@@ -83,8 +83,4 @@ theorem thresholdFreePolynomialLocalization_two : ThresholdFreePolynomialLocaliz
   exact quadratic_phase_localization P phi hP hphi hL
     ((quadraticLocalization_chunk_budget hL).trans hsize)
 
-/-- The complete degree-two specialization with the catalogue's scale and gain. -/
-theorem corollary_5_8_degree_two : Corollary58At 2 :=
-  corollary58At_of_threshold_free_localization 2 (by omega) thresholdFreePolynomialLocalization_two
-
 end LeanProofs.GowersSzemeredi

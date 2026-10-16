@@ -1,4 +1,3 @@
-import GowersSzemeredi.Proofs03FourFactorSymmetry
 import GowersSzemeredi.Proofs18RelativeBalance
 
 /-! Counting four-term progressions relative to a support, using uniformity
