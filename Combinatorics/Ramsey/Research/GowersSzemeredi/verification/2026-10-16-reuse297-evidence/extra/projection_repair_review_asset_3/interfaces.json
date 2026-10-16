@@ -1,0 +1,46 @@
+[
+  {
+    "name": "LeanProofs.GowersSzemeredi.intervalDiscrepancyClosedThreshold",
+    "kind": "def",
+    "header": "def intervalDiscrepancyClosedThreshold (k : Nat) (delta beta sigma T : Real) : Real",
+    "context": [],
+    "line": 11,
+    "old_block_sha256": "404da762bed7e0078a7146be86e6fe965bb100749dfb0b4c58510cde8e9eaa9f",
+    "new_block_sha256": "404da762bed7e0078a7146be86e6fe965bb100749dfb0b4c58510cde8e9eaa9f",
+    "proof_lines_before": 0,
+    "proof_lines_after": 0
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.FunctionDiscrepancyBound.interval_szemeredi_closed",
+    "kind": "theorem",
+    "header": "theorem FunctionDiscrepancyBound.interval_szemeredi_closed\n    {k : Nat} {delta beta sigma T : Real} (hk : 2 ≤ k) (hδ : 0 < delta)\n    (hβ : 0 < beta) (hσ : 0 < sigma)\n    (hbound : FunctionDiscrepancyBound (k - 2) (intervalUniformityParameter delta k) beta sigma T)\n    (L : Nat) (hL : intervalDiscrepancyClosedThreshold k delta beta sigma T ≤ L)\n    (B : Finset (Fin L)) (hcard : delta * L ≤ B.card) : HasNatAP (B.image Fin.val) k",
+    "context": [],
+    "line": 17,
+    "old_block_sha256": "824377c7dac7ea2da5534f46ba26dce623a43d8accb0bbee7a025eba3d081510",
+    "new_block_sha256": "824377c7dac7ea2da5534f46ba26dce623a43d8accb0bbee7a025eba3d081510",
+    "proof_lines_before": 10,
+    "proof_lines_after": 10
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.hasNatAP_Icc_of_fin_interval",
+    "kind": "theorem",
+    "header": "theorem hasNatAP_Icc_of_fin_interval {N k : Nat} {delta : Real}\n    (hfin : ∀ B : Finset (Fin N), delta * N ≤ B.card → HasNatAP (B.image Fin.val) k)\n    (A : Finset Nat) (hA : A ⊆ Finset.Icc 1 N) (hcard : delta * N ≤ A.card) : HasNatAP A k",
+    "context": [],
+    "line": 36,
+    "old_block_sha256": "71e982d1248635f4245874d54cf5793eeaf84dbf2c7ab00a3b67b6885ec89aad",
+    "new_block_sha256": "31c685b780f4146e4e84408af833600e5edc1b1be44278911469d138892fe630",
+    "proof_lines_before": 15,
+    "proof_lines_after": 15
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.FunctionDiscrepancyBound.natural_szemeredi_closed",
+    "kind": "theorem",
+    "header": "theorem FunctionDiscrepancyBound.natural_szemeredi_closed\n    {k : Nat} {delta beta sigma T : Real} (hk : 2 ≤ k) (hδ : 0 < delta)\n    (hβ : 0 < beta) (hσ : 0 < sigma)\n    (hbound : FunctionDiscrepancyBound (k - 2) (intervalUniformityParameter delta k) beta sigma T)\n    (N : Nat) (hN : intervalDiscrepancyClosedThreshold k delta beta sigma T ≤ N)\n    (A : Finset Nat) (hA : A ⊆ Finset.Icc 1 N) (hcard : delta * N ≤ A.card) : HasNatAP A k",
+    "context": [],
+    "line": 57,
+    "old_block_sha256": "64ab4e9d98fc8fbc415cc57139a5b827f35aabadba6840e1ba3fd984b2429552",
+    "new_block_sha256": "64ab4e9d98fc8fbc415cc57139a5b827f35aabadba6840e1ba3fd984b2429552",
+    "proof_lines_before": 0,
+    "proof_lines_after": 0
+  }
+]

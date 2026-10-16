@@ -1,0 +1,24 @@
+--- /tmp/gowers-next297-post-native-tools/archive.py
++++ /tmp/gowers-next297-post-native-tools-repaired6a75/archive.py
+@@ -35,7 +35,7 @@
+         by_source[str(path)] = destination; return destination
+     snapshot_path = Path(args.snapshot[0]).resolve(); snapshot_hash = args.snapshot[1]
+     bind(snapshot_path, snapshot_hash, 'snapshot.json'); snapshot = json.loads(snapshot_path.read_text())
+-    require(snapshot['source_commit'] == '9dce5ce380082bb050254e9625c6aa1ce48ae34a', 'Wrong batch source')
++    require(snapshot['source_commit'] == '6a753d0702d1691c25a21bdbdb58e29412931be5', 'Wrong batch source')
+     require(same(snapshot['tools'], {str(NATIVE / name): value for name, value in PINS.items()}), 'Native tool keyset/pins mismatch')
+     root = Path(snapshot['root']); worker_check(root)
+     lock_path = Path('/tmp') / ('gowers-native-' + hashlib.sha256(str(root).encode()).hexdigest()[:16] + '.lock')
+--- /tmp/gowers-next297-post-native-tools/verify_retention.py
++++ /tmp/gowers-next297-post-native-tools-repaired6a75/verify_retention.py
+@@ -6,8 +6,8 @@
+ from common import *
+ from run import verify_prior
+ 
+-SOURCE = '9dce5ce380082bb050254e9625c6aa1ce48ae34a'
+-SNAPSHOT_SHA = '320b01d77d6ecb4a100d34fc16a4dfa35133060850c997003d58d62270d5bb2d'
++SOURCE = '6a753d0702d1691c25a21bdbdb58e29412931be5'
++SNAPSHOT_SHA = 'e3f24c8ebfe20b2a248076497748ca1cbd2f2c1d5176e56ce45af9eebe6011b3'
+ ADDED_MODULES = {
+     'GowersSzemeredi.Proofs05FullPartitionScale',
+     'GowersSzemeredi.Proofs05ThresholdFreeCorollary58',

@@ -1,0 +1,1796 @@
+[
+  {
+    "name": "LeanProofs.GowersSzemeredi.Box.le_width_of_le_axis",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "header": "theorem Box.le_width_of_le_axis {N k v : Nat} (P : Box N k) (hk : 0 < k)\n    (h : ∀ i, v ≤ (P.axis i).length) : v ≤ P.width",
+    "context": [],
+    "old_block_sha256": "5b475028cee4b0f8f84035d3be8280fd862d62fe124b3af60db184bdd06d7804",
+    "new_block_sha256": "5b475028cee4b0f8f84035d3be8280fd862d62fe124b3af60db184bdd06d7804"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.boxProductCell",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "header": "def boxProductCell {N k : Nat} (m : Fin k → Nat)\n    (Q : (i : Fin k) → Fin (m i) → ModAP N) (d : ZMod N)\n    (hstep : ∀ i j, (Q i j).step = d) (j : ∀ i, Fin (m i)) : Box N k",
+    "context": [],
+    "old_block_sha256": "735e36277792d217c78cd9ba96baa4c38fbfb70e4610a25c8f363ffac244382f",
+    "new_block_sha256": "735e36277792d217c78cd9ba96baa4c38fbfb70e4610a25c8f363ffac244382f"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.boxProductCell_partition",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "header": "theorem boxProductCell_partition {N k : Nat} [NeZero N] (P : Box N k)\n    (m : Fin k → Nat) (Q : (i : Fin k) → Fin (m i) → ModAP N) (d : ZMod N)\n    (hstep : ∀ i j, (Q i j).step = d)\n    (hpart : ∀ i, IsPartition (fun j => (Q i j).carrier) (P.axis i).carrier) :\n    IsBoxPartition\n      (fun j : Fin (Fintype.card (∀ i, Fin (m i))) =>\n        boxProductCell m Q d hstep ((Fintype.equivFin _).symm j)) P",
+    "context": [],
+    "old_block_sha256": "6922c7a70f0977dcfc3bcedf03157a2d0949135e769772942ed12e6a46bf811b",
+    "new_block_sha256": "6922c7a70f0977dcfc3bcedf03157a2d0949135e769772942ed12e6a46bf811b"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.section5_box_residue_partition",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "header": "theorem section5_box_residue_partition {N k : Nat} [NeZero N]\n    (P : Box N k) (hP : P.IsProper) (hk : 0 < k) (p v : Nat)\n    (hp : 0 < p) (hv : 1 ≤ v) (hsize : p * v ^ 2 ≤ P.width) :\n    ∃ M : Nat, ∃ Q : Fin M → Box N k,\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, v - 1 ≤ (Q j).width) ∧\n      (∀ j i, 0 < ((Q j).axis i).length ∧\n        (((Q j).axis i).length = v - 1 ∨ ((Q j).axis i).length = v)) ∧\n      ∀ j, (Q j).commonDiff = (p : ZMod N) * P.commonDiff",
+    "context": [],
+    "old_block_sha256": "89fd8b3cc6510c57560b05a41b4c4cbcccb4f2cd75caa682f70115a4aad8ddcd",
+    "new_block_sha256": "89fd8b3cc6510c57560b05a41b4c4cbcccb4f2cd75caa682f70115a4aad8ddcd"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.boxIndexSet",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "header": "def boxIndexSet {N k : Nat} (P : Box N k) : Finset (Fin k → Nat)",
+    "context": [],
+    "old_block_sha256": "38c46efa763a0fcfa18352d4b32b417867352357957d23fd99880716a5fd4d76",
+    "new_block_sha256": "38c46efa763a0fcfa18352d4b32b417867352357957d23fd99880716a5fd4d76"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.boxIndexPoint",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "header": "def boxIndexPoint {N k : Nat} (P : Box N k) (t : Fin k → Nat) : Point N k",
+    "context": [],
+    "old_block_sha256": "4c8e0d337bb1b12b3d8b959434c1dbc32afdeeca74b03c7cd08c2fb8107cc524",
+    "new_block_sha256": "4c8e0d337bb1b12b3d8b959434c1dbc32afdeeca74b03c7cd08c2fb8107cc524"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Box.carrier_eq_index_image",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "header": "theorem Box.carrier_eq_index_image {N k : Nat} [NeZero N] (P : Box N k) :\n    P.carrier = (boxIndexSet P).image (boxIndexPoint P)",
+    "context": [],
+    "old_block_sha256": "de420417254c1a45727a202c2bbb16cac4629d5f181a51ad6773008e3dc3a356",
+    "new_block_sha256": "de420417254c1a45727a202c2bbb16cac4629d5f181a51ad6773008e3dc3a356"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.schmidtWeylA",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "def schmidtWeylA (j : Nat) : Nat",
+    "context": [],
+    "old_block_sha256": "cc409e8aeaa4ccc58dbcc421978a0dcf04a2fd6b3e4713831cd5fcf87a42a454",
+    "new_block_sha256": "cc409e8aeaa4ccc58dbcc421978a0dcf04a2fd6b3e4713831cd5fcf87a42a454"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.schmidtWeylD",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "def schmidtWeylD (j : Nat) : Nat",
+    "context": [],
+    "old_block_sha256": "1c7d219a055b1e0529e91c39eb95dc32d1b9b5c6dbbe00b393f6e4c333a76b5e",
+    "new_block_sha256": "1c7d219a055b1e0529e91c39eb95dc32d1b9b5c6dbbe00b393f6e4c333a76b5e"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.schmidtWeylC",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "def schmidtWeylC (j : Nat) : Nat",
+    "context": [],
+    "old_block_sha256": "7af7c97013e768c473d571a7084038f60d46674d49f3df3229e13f5da2a9493d",
+    "new_block_sha256": "7af7c97013e768c473d571a7084038f60d46674d49f3df3229e13f5da2a9493d"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.schmidtWeylA_pos",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem schmidtWeylA_pos (j : Nat) : 0 < schmidtWeylA j",
+    "context": [],
+    "old_block_sha256": "db2890b2659993e41ee5fae31ef96c7dd5e9708852cf55e37413cb80b1dde129",
+    "new_block_sha256": "db2890b2659993e41ee5fae31ef96c7dd5e9708852cf55e37413cb80b1dde129"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.schmidtWeylD_pos",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem schmidtWeylD_pos (j : Nat) : 0 < schmidtWeylD j",
+    "context": [],
+    "old_block_sha256": "b29017acd95f19a851aaff0b99ebe142e87cf19cd4f8e8501cd989950760517d",
+    "new_block_sha256": "b29017acd95f19a851aaff0b99ebe142e87cf19cd4f8e8501cd989950760517d"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.schmidtWeylC_pos",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem schmidtWeylC_pos (j : Nat) : 0 < schmidtWeylC j",
+    "context": [],
+    "old_block_sha256": "af0d8f452c2388849abfd6197095ef1eec462ce16175badb5832f6a45d17242f",
+    "new_block_sha256": "af0d8f452c2388849abfd6197095ef1eec462ce16175badb5832f6a45d17242f"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.weylBudget_le_explicit",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem weylBudget_le_explicit (j : Nat) {B : Nat} (hB : 1 ≤ B) :\n    OAI.Erdos3.weylBudget j B ≤ schmidtWeylA j * B ^ schmidtWeylD j",
+    "context": [],
+    "old_block_sha256": "af06c75f67aa6a0ab3942f1d4dad17b83fe6747c2fe920272eef91eb56ef0b7d",
+    "new_block_sha256": "af06c75f67aa6a0ab3942f1d4dad17b83fe6747c2fe920272eef91eb56ef0b7d"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.polynomial_weyl_inverse_power_bound_explicit",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem polynomial_weyl_inverse_power_bound_explicit (j : Nat) :\n    ∀ (P : Polynomial Real) (N : Nat) (δ : Real),\n      P.natDegree ≤ j + 1 → 0 < N → 0 < δ → δ ≤ 1 →\n      (schmidtWeylC j : Real) ≤ δ ^ schmidtWeylD j * N →\n      δ * N ≤ ‖OAI.Erdos3.polynomialExponentialSum P N‖ →\n      ∃ q : Nat, 0 < q ∧ (q : Real) ≤ schmidtWeylC j / δ ^ schmidtWeylD j ∧ ∃ p : Int,\n        |(q : Real) * P.coeff (j + 1) - p| ≤\n          schmidtWeylC j / (δ ^ schmidtWeylD j * (N : Real) ^ (j + 1))",
+    "context": [],
+    "old_block_sha256": "d6b02f3ac02b833c2dc957085c93f3d9e5c32d0f9a8673ac182c269f37277093",
+    "new_block_sha256": "d6b02f3ac02b833c2dc957085c93f3d9e5c32d0f9a8673ac182c269f37277093"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.polynomial_weyl_inverse_power_interval_explicit",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem polynomial_weyl_inverse_power_interval_explicit (j : Nat) :\n    OAI.Erdos3.PolynomialIntervalPowerBound (j + 1) (schmidtWeylC j) (schmidtWeylD j)",
+    "context": [],
+    "old_block_sha256": "2b20f1527b8327af7f30db1ba77d00f115065dd020dea0a56cae8f4d7474c0e0",
+    "new_block_sha256": "2b20f1527b8327af7f30db1ba77d00f115065dd020dea0a56cae8f4d7474c0e0"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.schmidtMonomialK",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "def schmidtMonomialK (j : Nat) : Real",
+    "context": [],
+    "old_block_sha256": "241fe46a44c593396b29f753ebec397d92b7ed2f538af169de4a9bb26116ec25",
+    "new_block_sha256": "241fe46a44c593396b29f753ebec397d92b7ed2f538af169de4a9bb26116ec25"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.schmidtMonomialP",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "def schmidtMonomialP (j : Nat) : Nat",
+    "context": [],
+    "old_block_sha256": "d9e962bc654b2ec84aca7806633be5caa882ae3651e3bf56fc384287d300cdd9",
+    "new_block_sha256": "d9e962bc654b2ec84aca7806633be5caa882ae3651e3bf56fc384287d300cdd9"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.one_le_schmidtMonomialK",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem one_le_schmidtMonomialK (j : Nat) : 1 ≤ schmidtMonomialK j",
+    "context": [],
+    "old_block_sha256": "ffe2e0193448063276d8e8b4ffec2256ecc03f26d943be9a3d24193d5e42e518",
+    "new_block_sha256": "ffe2e0193448063276d8e8b4ffec2256ecc03f26d943be9a3d24193d5e42e518"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.schmidtMonomialP_pos",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem schmidtMonomialP_pos (j : Nat) : 0 < schmidtMonomialP j",
+    "context": [],
+    "old_block_sha256": "55b3b75bd56c61d9d1494dd4f170991a3147f7f39b7c08b05bb4668c1b6259d7",
+    "new_block_sha256": "55b3b75bd56c61d9d1494dd4f170991a3147f7f39b7c08b05bb4668c1b6259d7"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.simultaneous_modular_monomial_recurrence_explicit",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem simultaneous_modular_monomial_recurrence_explicit (j : Nat) :\n    ∀ (N : Nat) [NeZero N] (ι : Type) [Fintype ι]\n      (a : ι → ZMod N) (M : Nat) (R : Real), 0 < R → R ≤ 1 →\n      (schmidtMonomialK j * ((Fintype.card ι : Real) + 1) / R) ^\n        (schmidtMonomialP j * (Fintype.card ι + 1) ^ 2) ≤ M →\n      ∃ q : Nat, 0 < q ∧ q ≤ M ∧ ∀ i,\n        (centeredAbs ((q : ZMod N) ^ (j + 1) * a i) : Real) < R * N",
+    "context": [],
+    "old_block_sha256": "ba120caeae2f395b1b44f710236e744a602910a926d66a996ed28d7381c258a4",
+    "new_block_sha256": "ba120caeae2f395b1b44f710236e744a602910a926d66a996ed28d7381c258a4"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.uniformSchmidtK",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "def uniformSchmidtK (k : Nat) : Real",
+    "context": [],
+    "old_block_sha256": "9ac782f9f7362a95d409ed06593aac71bfab9df186362541ebafd8db225cfe00",
+    "new_block_sha256": "9ac782f9f7362a95d409ed06593aac71bfab9df186362541ebafd8db225cfe00"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.uniformSchmidtP",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "def uniformSchmidtP (k : Nat) : Nat",
+    "context": [],
+    "old_block_sha256": "30d61dad9b4a6a22eac3a4473facf5c590a826738393999a0f2f78c7fd7c2511",
+    "new_block_sha256": "30d61dad9b4a6a22eac3a4473facf5c590a826738393999a0f2f78c7fd7c2511"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.one_le_uniformSchmidtK",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem one_le_uniformSchmidtK (k : Nat) : 1 ≤ uniformSchmidtK k",
+    "context": [],
+    "old_block_sha256": "2d1623fcad5595eedc16a93d3d53f24f43662a7161d51122ff810c0efa346f99",
+    "new_block_sha256": "2d1623fcad5595eedc16a93d3d53f24f43662a7161d51122ff810c0efa346f99"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.uniformSchmidtP_pos",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem uniformSchmidtP_pos (k : Nat) : 0 < uniformSchmidtP k",
+    "context": [],
+    "old_block_sha256": "90b321de2a244d2edd45517f31b2837a6f7210a20c603138d5f310fb0f9ac90c",
+    "new_block_sha256": "90b321de2a244d2edd45517f31b2837a6f7210a20c603138d5f310fb0f9ac90c"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.uniform_modular_monomial_recurrence_explicit",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem uniform_modular_monomial_recurrence_explicit (k : Nat) :\n    UniformModularMonomialRecurrence k (uniformSchmidtK k) (uniformSchmidtP k)",
+    "context": [],
+    "old_block_sha256": "ac03a84918360e941221b75813c5a23477dc099c47d8c4e57d3340c062fd2e35",
+    "new_block_sha256": "ac03a84918360e941221b75813c5a23477dc099c47d8c4e57d3340c062fd2e35"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.multiaffinePartitionK",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "def multiaffinePartitionK (k : Nat) : Nat → Real",
+    "context": [],
+    "old_block_sha256": "21f47db4892c3d0c064a778a69979f4fa39df96c8eababdd8956bab805554e9b",
+    "new_block_sha256": "21f47db4892c3d0c064a778a69979f4fa39df96c8eababdd8956bab805554e9b"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.multiaffinePartitionP",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "def multiaffinePartitionP (k : Nat) : Nat → Nat",
+    "context": [],
+    "old_block_sha256": "de9848f6ede316c4ca00aa2ea7ce8dda723737e47bc686100cc2c6b110eafa75",
+    "new_block_sha256": "de9848f6ede316c4ca00aa2ea7ce8dda723737e47bc686100cc2c6b110eafa75"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.two_le_multiaffinePartitionK",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem two_le_multiaffinePartitionK (k h : Nat) : 2 ≤ multiaffinePartitionK k h",
+    "context": [],
+    "old_block_sha256": "449e8804ef86e3f094eeb0d9b650629f4bbfe141aff2e1f97606fb0133e8b1c6",
+    "new_block_sha256": "449e8804ef86e3f094eeb0d9b650629f4bbfe141aff2e1f97606fb0133e8b1c6"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.multiaffinePartitionP_pos",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem multiaffinePartitionP_pos (k h : Nat) : 0 < multiaffinePartitionP k h",
+    "context": [],
+    "old_block_sha256": "754191530a6b275947dbb92ec6a593153e59e500aeb82a1f86f0dba54658dfdf",
+    "new_block_sha256": "754191530a6b275947dbb92ec6a593153e59e500aeb82a1f86f0dba54658dfdf"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.simultaneous_multiaffine_partition_bound_explicit",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem simultaneous_multiaffine_partition_bound_explicit (k : Nat) (hk : 0 < k) (h : Nat) :\n    SimultaneousMultiaffinePartitionBound k h (multiaffinePartitionK k h)\n      (multiaffinePartitionP k h)",
+    "context": [],
+    "old_block_sha256": "8265c1781010cb80d5195d531cd202e85db97febae95cb51fd167f68f97b65fc",
+    "new_block_sha256": "8265c1781010cb80d5195d531cd202e85db97febae95cb51fd167f68f97b65fc"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.multilinearPartitionBoundAt_explicit",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem multilinearPartitionBoundAt_explicit (k : Nat) (hk : 0 < k) :\n    MultilinearPartitionBoundAt k (multiaffinePartitionK k (2 ^ k))\n      (multiaffinePartitionP k (2 ^ k))",
+    "context": [],
+    "old_block_sha256": "e4ad5437af83fe364d643c2b6a34c2b16bcb88ad90939ac861665cd81a739f52",
+    "new_block_sha256": "e4ad5437af83fe364d643c2b6a34c2b16bcb88ad90939ac861665cd81a739f52"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.multilinearDiameterPartition_explicit",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05ExplicitSchmidtRecurrence.lean",
+    "header": "theorem multilinearDiameterPartition_explicit :\n    MultilinearDiameterPartition (multiaffinePartitionK 2 (2 ^ 2))\n      (multiaffinePartitionP 2 (2 ^ 2))",
+    "context": [],
+    "old_block_sha256": "9d739f41efc1ff3a73ae593d63d9818817f4552f7155e0a539f9df4057e60d14",
+    "new_block_sha256": "9d739f41efc1ff3a73ae593d63d9818817f4552f7155e0a539f9df4057e60d14"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.lemma156_coefficient_without_density_factor",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15LowerDensityRestriction.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "header": "theorem lemma156_coefficient_without_density_factor (k : Nat) (hk : 1 ≤ k)\n    {beta gamma : Real} (hb : 0 < beta) (hb1 : beta ≤ 1)\n    (hg : 0 < gamma) (hg1 : gamma ≤ 1) :\n    (beta * gamma / 2) ^ (2 ^ (2 ^ (k + 5))) ≤\n      (beta ^ (7 * 4 ^ (k + 1)) * gamma ^ (21 * k * 4 ^ (k + 1)) *\n        ((2 : Real)⁻¹ ^ 44) / 4) ^ arrangementSelectionExponent k",
+    "context": [],
+    "old_block_sha256": "c0ac36bdd9a60bc4c17a9e67492b7763f30d553868132fd0aece5fee2be4fd41",
+    "new_block_sha256": "c0ac36bdd9a60bc4c17a9e67492b7763f30d553868132fd0aece5fee2be4fd41"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.lemma_15_6_of_density_lower",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15LowerDensityRestriction.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "header": "theorem lemma_15_6_of_density_lower (k : Nat) (beta gamma : Real)\n    (hk : 1 ≤ k) (hb : 0 < beta) (hb1 : beta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1) :\n    ∃ N0 : Nat, ∀ (N : Nat) [NeZero N], N0 ≤ N → N.Prime → Odd N →\n      ∀ (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N),\n        beta * (N : Real) ^ (k + 1) ≤ B.card → HasProductProperty B phi gamma →\n        ∃ B' : Finset (Point N (k + 1)), B' ⊆ B ∧\n          (beta * gamma / 2) ^ (2 ^ (2 ^ (k + 5))) * (N : Real) ^ (17 * k + 15) ≤\n            generalArrangementCount 8 B' ∧\n          (1 - (2 : Real)⁻¹ ^ 44) * generalArrangementCount 8 B' ≤\n            respectedGeneralArrangementCount 8 B' phi",
+    "context": [],
+    "old_block_sha256": "0882c7a7ae503306996dabbf0427be9d2619f6ddbefd92a0b76b166d6974dbf2",
+    "new_block_sha256": "0882c7a7ae503306996dabbf0427be9d2619f6ddbefd92a0b76b166d6974dbf2"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.lemma156_nat_le_two_pow",
+    "kind": "lemma",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "header": "lemma lemma156_nat_le_two_pow (k : Nat) : k ≤ 2 ^ k",
+    "context": [],
+    "old_block_sha256": "2d9c0718dd04bb10116181c9cdf9dad9b27cd58211f599dedd17852a08995039",
+    "new_block_sha256": "2d9c0718dd04bb10116181c9cdf9dad9b27cd58211f599dedd17852a08995039"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.lemma156_linear_le_vertex",
+    "kind": "lemma",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "header": "private lemma lemma156_linear_le_vertex (k : Nat) :\n    4 * k + 10 ≤ 2 ^ (k + 4)",
+    "context": [],
+    "old_block_sha256": "68d9c1deed2d3ad8d9283fd82017c50f4b948a07d81a67520f0417189d9b0509",
+    "new_block_sha256": "68d9c1deed2d3ad8d9283fd82017c50f4b948a07d81a67520f0417189d9b0509"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.lemma156_scale_ratio_bound",
+    "kind": "lemma",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "header": "private lemma lemma156_scale_ratio_bound (k : Nat) :\n    2 ^ (3 * k + 7) * arrangementSelectionExponent k ≤\n      2 ^ (2 ^ (k + 5))",
+    "context": [],
+    "old_block_sha256": "6c403a6deced9e9efd07a81ac46c62effd9b1fa63f7cadae77f2a1fb33fc640e",
+    "new_block_sha256": "6c403a6deced9e9efd07a81ac46c62effd9b1fa63f7cadae77f2a1fb33fc640e"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.lemma156_beta_base_exponent",
+    "kind": "lemma",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "header": "lemma lemma156_beta_base_exponent (k : Nat) (hk : 1 ≤ k) :\n    7 * 4 ^ (k + 1) + 15 ≤ 2 ^ (3 * k + 7)",
+    "context": [],
+    "old_block_sha256": "1bfb13fe82612fd305fd22c93d7e85e687d9a42a4c9df456749db5bd409c9b93",
+    "new_block_sha256": "1bfb13fe82612fd305fd22c93d7e85e687d9a42a4c9df456749db5bd409c9b93"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.lemma156_gamma_base_exponent",
+    "kind": "lemma",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "header": "lemma lemma156_gamma_base_exponent (k : Nat) :\n    21 * k * 4 ^ (k + 1) ≤ 2 ^ (3 * k + 7)",
+    "context": [],
+    "old_block_sha256": "a34330b3287ba061e99718ab0fbea1b18b6281220790a8c2ef25890adb6db812",
+    "new_block_sha256": "a34330b3287ba061e99718ab0fbea1b18b6281220790a8c2ef25890adb6db812"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.lemma156_constant_base_exponent",
+    "kind": "lemma",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "header": "lemma lemma156_constant_base_exponent (k : Nat) :\n    46 ≤ 2 ^ (3 * k + 7)",
+    "context": [],
+    "old_block_sha256": "a2371b93ced62fa254f0b773254e85ea8fb488e4319e967bef7b080a5b7111c9",
+    "new_block_sha256": "a2371b93ced62fa254f0b773254e85ea8fb488e4319e967bef7b080a5b7111c9"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.lemma156_beta_total_exponent",
+    "kind": "lemma",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "header": "lemma lemma156_beta_total_exponent (k : Nat) (hk : 1 ≤ k) :\n    7 * 4 ^ (k + 1) * arrangementSelectionExponent k + 15 ≤\n      2 ^ (2 ^ (k + 5))",
+    "context": [],
+    "old_block_sha256": "64cc93cd66f6601e147bd5245c1e1374c01b11a724dcfe5371b39fab734848e4",
+    "new_block_sha256": "64cc93cd66f6601e147bd5245c1e1374c01b11a724dcfe5371b39fab734848e4"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.lemma156_gamma_total_exponent",
+    "kind": "lemma",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "header": "lemma lemma156_gamma_total_exponent (k : Nat) :\n    21 * k * 4 ^ (k + 1) * arrangementSelectionExponent k ≤\n      2 ^ (2 ^ (k + 5))",
+    "context": [],
+    "old_block_sha256": "bffff9256817f4f5ba897031db418e85536a8b5f194fc9dc42a506574ecc2c00",
+    "new_block_sha256": "bffff9256817f4f5ba897031db418e85536a8b5f194fc9dc42a506574ecc2c00"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.lemma156_constant_total_exponent",
+    "kind": "lemma",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "header": "lemma lemma156_constant_total_exponent (k : Nat) :\n    46 * arrangementSelectionExponent k ≤ 2 ^ (2 ^ (k + 5))",
+    "context": [],
+    "old_block_sha256": "6790950c1ffa4d13bb2b17a2a255636ae621a89ead50e9f1da4aa7784585ec02",
+    "new_block_sha256": "6790950c1ffa4d13bb2b17a2a255636ae621a89ead50e9f1da4aa7784585ec02"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.lemma_15_6_holds",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs15ProductToRestriction.lean",
+    "header": "theorem lemma_15_6_holds : lemma_15_6",
+    "context": [],
+    "old_block_sha256": "4ce9ae2e2bfa9f769d6fbe3a7a531406726a0e3b15076342cca8b3090a104571",
+    "new_block_sha256": "cc094f6dfda314d088ba47d64651221791a151c709d88daac46a2107de69c494"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.stepP_ge9",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem stepP_ge9 (k : Nat) : k + 9 ≤ stepP k",
+    "context": [],
+    "old_block_sha256": "4ad9f3701f9f10ee946cfef9954117093802f0373dad98444f5903d2ce488d3f",
+    "new_block_sha256": "4ad9f3701f9f10ee946cfef9954117093802f0373dad98444f5903d2ce488d3f"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.stepT_le_sq",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem stepT_le_sq (k : Nat) : stepT k ≤ stepP k * stepP k",
+    "context": [],
+    "old_block_sha256": "1290301262e935a326a55989be913fdf73c5f08a7d018fe8cbb1a91591c35cf5",
+    "new_block_sha256": "1290301262e935a326a55989be913fdf73c5f08a7d018fe8cbb1a91591c35cf5"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.step_degrees_le",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem step_degrees_le {k D : Nat} (hD : 1 ≤ D) :\n    stepCountDeg k D + stepExpDeg k D + stepThrDeg k D ≤\n      2 ^ (k + 7) * (D * D) * (stepP k * stepP k)",
+    "context": [],
+    "old_block_sha256": "9d48935113fbe86e2a24afcb83020b8c4f2f9d0f8756b4f7d2a174f0d973877d",
+    "new_block_sha256": "9d48935113fbe86e2a24afcb83020b8c4f2f9d0f8756b4f7d2a174f0d973877d"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.classDeg",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "def classDeg (k : Nat) : Nat",
+    "context": [],
+    "old_block_sha256": "906b582c3e68689b0e4afacb5b78a9b9bad41c004abbf25d4b07e779715650d0",
+    "new_block_sha256": "906b582c3e68689b0e4afacb5b78a9b9bad41c004abbf25d4b07e779715650d0"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.two_pow_ge_double",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem two_pow_ge_double {a : Nat} (ha : 1 ≤ a) : 2 * a ≤ 2 ^ a",
+    "context": [],
+    "old_block_sha256": "4631ae670ddc9fea01de7f867fe1a0d637cb12c4ba457eade04118355bb022fc",
+    "new_block_sha256": "4631ae670ddc9fea01de7f867fe1a0d637cb12c4ba457eade04118355bb022fc"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.step_degree_closed",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem step_degree_closed (k : Nat) :\n    2 ^ (k + 7) * (classDeg k * classDeg k) * (stepP k * stepP k) ≤ classDeg (k + 1)",
+    "context": [],
+    "old_block_sha256": "aa0e6931daf0972b9cfe5347c76f010a3af536f4a35b5e52fdb1d2369d296652",
+    "new_block_sha256": "aa0e6931daf0972b9cfe5347c76f010a3af536f4a35b5e52fdb1d2369d296652"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.classDeg_pos",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem classDeg_pos (k : Nat) : 1 ≤ classDeg k",
+    "context": [],
+    "old_block_sha256": "31821df16c770b0280a2b0ebc5e48f89ffbd252f8971fe58ad4fe937401a245b",
+    "new_block_sha256": "31821df16c770b0280a2b0ebc5e48f89ffbd252f8971fe58ad4fe937401a245b"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.classDeg_add_le",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem classDeg_add_le (k : Nat) :\n    classDeg k + k + 1 ≤ (2 : Nat) ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6)))",
+    "context": [],
+    "old_block_sha256": "a85210bdde23297e7868a2296682b34a9cd7f2c838bacff2a97a975c59ea9e79",
+    "new_block_sha256": "a85210bdde23297e7868a2296682b34a9cd7f2c838bacff2a97a975c59ea9e79"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.classV",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "def classV (Kc pc : Nat → Nat) (k : Nat) : Real",
+    "context": [],
+    "old_block_sha256": "bf0e18e277c9ca3a663ec8681332206f5baf3a579626893e010911e46e430c9d",
+    "new_block_sha256": "bf0e18e277c9ca3a663ec8681332206f5baf3a579626893e010911e46e430c9d"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.one_le_classV",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem one_le_classV (Kc pc : Nat → Nat) (k : Nat) : 1 ≤ classV Kc pc k",
+    "context": [],
+    "old_block_sha256": "b95ff3387d7d4786117ba99037a12369900d2bee1887799206f015cc8ac7551e",
+    "new_block_sha256": "b95ff3387d7d4786117ba99037a12369900d2bee1887799206f015cc8ac7551e"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.classV_succ",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem classV_succ (Kc pc : Nat → Nat) (k : Nat) :\n    classV Kc pc (k + 1) = classV Kc pc k + ((Kc k : Real) + pc k)",
+    "context": [],
+    "old_block_sha256": "56f925d94d4ea3354167417d397bccec2e3425fca7083ff1986fb25c5b40cfe9",
+    "new_block_sha256": "56f925d94d4ea3354167417d397bccec2e3425fca7083ff1986fb25c5b40cfe9"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.classV_le_succ",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem classV_le_succ (Kc pc : Nat → Nat) (k : Nat) : classV Kc pc k ≤ classV Kc pc (k + 1)",
+    "context": [],
+    "old_block_sha256": "9709fc1213643c52ac7029919736b8e5f1ca698ac10f6151b32dd36d8e8fcea9",
+    "new_block_sha256": "9709fc1213643c52ac7029919736b8e5f1ca698ac10f6151b32dd36d8e8fcea9"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.const_le_classV_succ",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem const_le_classV_succ (Kc pc : Nat → Nat) (k : Nat) :\n    (Kc k : Real) ≤ classV Kc pc (k + 1) ∧ (pc k : Real) ≤ classV Kc pc (k + 1)",
+    "context": [],
+    "old_block_sha256": "30c2f661cdec4f5daed715d7477fcc378a34b3cd07f992798a67bfd882250ccd",
+    "new_block_sha256": "30c2f661cdec4f5daed715d7477fcc378a34b3cd07f992798a67bfd882250ccd"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.powerUniformClass_all",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem powerUniformClass_all (Kc pc : Nat → Nat) (hK : ∀ k, 1 ≤ Kc k) (hp : ∀ k, 0 < pc k)\n    (hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k\n      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k)))) :\n    ∀ k, 2 ≤ k →\n      Nonempty (PowerUniformClass k (classV Kc pc k) (classDeg k) (classDeg k) (classDeg k))",
+    "context": [],
+    "old_block_sha256": "7b15ee3db09490d56f0301a253ec89765ed4ad791bf77964f9131b66fad40739",
+    "new_block_sha256": "7b15ee3db09490d56f0301a253ec89765ed4ad791bf77964f9131b66fad40739"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.classV_bound",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem classV_bound (Kc pc : Nat → Nat)\n    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) {k : Nat}\n    (hk : 2 ≤ k) :\n    2 * classV Kc pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 6)) - 1)",
+    "context": [],
+    "old_block_sha256": "982a9ff72f579c3eb8e5ab1535cd45ca75c3c5d943687c09d3185434c71bd282",
+    "new_block_sha256": "982a9ff72f579c3eb8e5ab1535cd45ca75c3c5d943687c09d3185434c71bd282"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.theorem_16_2_of_family_lemmas",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem theorem_16_2_of_family_lemmas (Kc pc : Nat → Nat) (hK : ∀ k, 1 ≤ Kc k)\n    (hp : ∀ k, 0 < pc k)\n    (hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k\n      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))))\n    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) :\n    theorem_16_2",
+    "context": [],
+    "old_block_sha256": "9c7e317f3de13c76eae445cf1b75cab424d545e3fc6b78c4dd24f94df9f72d75",
+    "new_block_sha256": "9c7e317f3de13c76eae445cf1b75cab424d545e3fc6b78c4dd24f94df9f72d75"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.corollary_16_11_of_family_lemmas",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem corollary_16_11_of_family_lemmas (Kc pc : Nat → Nat) (hK : ∀ k, 1 ≤ Kc k)\n    (hp : ∀ k, 0 < pc k)\n    (hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k\n      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))))\n    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) :\n    corollary_16_11",
+    "context": [],
+    "old_block_sha256": "971768fd5e22f463e6cb860c95f894ade052347daecbd74c1d2c99fae11934e6",
+    "new_block_sha256": "541207a65dc5c77a747b12f5dfd4bf95e447ac44abfdd830a81d8da208c6cbea"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.theorem_16_2_of_profiles_all",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16AllDimensions.lean",
+    "header": "theorem theorem_16_2_of_profiles_all (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)\n    (hp : ∀ k, 0 < pc k)\n    (hrec : ∀ k, 1 ≤ k →\n      Section16RecurrenceProfileWith k (familyRecThr k (Kc k) (pc k)) (familyRecExp k (pc k)))\n    (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) :\n    theorem_16_2 ∧ corollary_16_11",
+    "context": [],
+    "old_block_sha256": "d572d84c056f3ac6ca57d02dda9587c2c7b90fda1c775a1e68ba0dcc942b26db",
+    "new_block_sha256": "d572d84c056f3ac6ca57d02dda9587c2c7b90fda1c775a1e68ba0dcc942b26db"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.good_finite_intersection_mass",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FamilyAffineLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "theorem good_finite_intersection_mass {α : Type*} [DecidableEq α] {ι : Type} [Fintype ι]\n    (P : Finset α) (F : ι → Finset α) (t : Real)\n    (hF : ∀ a, F a ⊆ P) (hFm : ∀ a, (1 - t) * (P.card : Real) ≤ (F a).card) :\n    (P.filter fun z => ∀ a, z ∈ F a) ⊆ P ∧\n      (1 - Fintype.card ι * t) * (P.card : Real) ≤ (P.filter fun z => ∀ a, z ∈ F a).card",
+    "context": [],
+    "old_block_sha256": "93155d6178ef669a4d35f66f3ddfe108ab0406778a094f7e20e3dcc1cdbd3231",
+    "new_block_sha256": "93155d6178ef669a4d35f66f3ddfe108ab0406778a094f7e20e3dcc1cdbd3231"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.section16_local_affine_lift_family",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FamilyAffineLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "theorem section16_local_affine_lift_family {N k q r m v : Nat} [Fact N.Prime]\n    {ι : Type} [Fintype ι]\n    (P : Box N (k + 1)) (hP : P.IsProper) (hk : 0 < k)\n    (hm : 4 ≤ m) (hmP : m ≤ P.width)\n    (D : ι → Finset (Point N (k + 1))) (phi : ι → Point N (k + 1) → ZMod N)\n    (Pb Eb : Real → Real) (Gs : (ι → Fin r → ZMod N) → Finset (Point N k × ZMod N))\n    (hslice : ∀ sample, MultiplyLinearWith Pb Eb (Gs sample))\n    (hGs : ∀ sample a h i, appendCoordinate h (sample a i) ∈ D a →\n      (h, phi a (appendCoordinate h (sample a i))) ∈ Gs sample)\n    (ell : ι → Point N k → Fin q → ZMod N → ZMod N)\n    (hell : ∀ a h i, LinearOn Finset.univ (ell a h i))\n    (hcover : ∀ a h x, appendCoordinate h x ∈ P.carrier → appendCoordinate h x ∈ D a →\n      ∃ i, phi a (appendCoordinate h x) = ell a h i x)\n    (τ ε : ℝ) (hq : 0 < q) (hτ : 0 < τ) (hτ1 : τ ≤ 1)\n    (hε : 0 < ε) (hε1 : ε ≤ 1) (hPb : 0 ≤ Pb ε) (hEb : 0 ≤ Eb ε)\n    (hr : 6 * (q : ℝ) * ((max 1 (Fintype.card ι) : Nat) : ℝ) ≤ (r : ℝ) * τ) (hv : 1 ≤ v)\n    (hvscale : (v : ℝ) ^ 2 + 1 ≤ ((m : ℝ) / 8) ^ (Eb ε)) :\n    ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))\n      (nu : Fin L → ι × Fin (section16CompressedCandidateCount r p) →\n        Point N (k + 1) → ZMod N),\n      (p : ℝ) ≤ Pb ε ∧\n      G ⊆ P.carrier ∧ (1 - 2 * τ - ε) * (P.carrier.card : ℝ) ≤ G.card ∧\n      IsBoxPartition S P ∧ (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧\n      (∀ j c, IsMultilinear (nu j c)) ∧\n      ∀ a j z, z ∈ (S j).carrier → z ∈ D a → z ∈ G → ∃ c, phi a z = nu j c z",
+    "context": [],
+    "old_block_sha256": "df2d6d0c9c2d1af527922989a7d65e12e460d3ac1868f93f463fe0c4040e0e53",
+    "new_block_sha256": "df2d6d0c9c2d1af527922989a7d65e12e460d3ac1868f93f463fe0c4040e0e53"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.section16_local_affine_lift_all_scales_family",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FamilyAffineLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "theorem section16_local_affine_lift_all_scales_family {N k q r m : Nat} [Fact N.Prime]\n    {ι : Type} [Fintype ι]\n    (P : Box N (k + 1)) (hP : P.IsProper) (hk : 0 < k) (hmP : m ≤ P.width)\n    (D : ι → Finset (Point N (k + 1))) (phi : ι → Point N (k + 1) → ZMod N)\n    (Pb Eb : Real → Real) (Gs : (ι → Fin r → ZMod N) → Finset (Point N k × ZMod N))\n    (hslice : ∀ sample, MultiplyLinearWith Pb Eb (Gs sample))\n    (hGs : ∀ sample a h i, appendCoordinate h (sample a i) ∈ D a →\n      (h, phi a (appendCoordinate h (sample a i))) ∈ Gs sample)\n    (ell : ι → Point N k → Fin q → ZMod N → ZMod N)\n    (hell : ∀ a h i, LinearOn Finset.univ (ell a h i))\n    (hcover : ∀ a h x, appendCoordinate h x ∈ P.carrier → appendCoordinate h x ∈ D a →\n      ∃ i, phi a (appendCoordinate h x) = ell a h i x)\n    (τ ε : ℝ) (hq : 0 < q) (hτ : 0 < τ) (hτ1 : τ ≤ 1)\n    (hε : 0 < ε) (hε1 : ε ≤ 1)\n    (hPb : 1 ≤ Pb ε) (hEb : 0 < Eb ε) (_hEb1 : Eb ε ≤ 1)\n    (hr : 6 * (q : ℝ) * ((max 1 (Fintype.card ι) : Nat) : ℝ) ≤ (r : ℝ) * τ) :\n    ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))\n      (nu : Fin L → ι × Fin (section16CompressedCandidateCount r p) →\n        Point N (k + 1) → ZMod N),\n      (p : ℝ) ≤ Pb ε ∧\n      G ⊆ P.carrier ∧ (1 - 2 * τ - ε) * (P.carrier.card : ℝ) ≤ G.card ∧\n      IsBoxPartition S P ∧\n      (∀ j, (S j).IsProper ∧ Real.sqrt (((m : ℝ) / 8) ^ (Eb ε)) / 4 ≤ (S j).width) ∧\n      (∀ j c, IsMultilinear (nu j c)) ∧\n      ∀ a j z, z ∈ (S j).carrier → z ∈ D a → z ∈ G → ∃ c, phi a z = nu j c z",
+    "context": [],
+    "old_block_sha256": "3f799d1799dc3ec878f79262e5f6b9c1719f5dbf7392b13640bac3fe0325f150",
+    "new_block_sha256": "3f799d1799dc3ec878f79262e5f6b9c1719f5dbf7392b13640bac3fe0325f150"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Section16LineCoverFamily",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FamilyAffineLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "def Section16LineCoverFamily {N k : Nat} [NeZero N] {ι : Type}\n    (P : Box N (k + 1)) (B1 : ι → Finset (Point N (k + 1)))\n    (phi1 : ι → Point N (k + 1) → ZMod N)\n    (sigma l : Real) (q : Nat) : Prop",
+    "context": [],
+    "old_block_sha256": "0b5b33d370f9192a545c9b1e5cec8a932ff8950efa092d11d3fa168bde747f85",
+    "new_block_sha256": "0b5b33d370f9192a545c9b1e5cec8a932ff8950efa092d11d3fa168bde747f85"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Section16LineCoverFamily.mono_count",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FamilyAffineLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FamilyAffineLift.lean",
+    "header": "theorem Section16LineCoverFamily.mono_count {N k q q' : Nat} [NeZero N] {ι : Type}\n    {P : Box N (k + 1)} {B : ι → Finset (Point N (k + 1))}\n    {phi : ι → Point N (k + 1) → ZMod N} {σ l : ℝ}\n    (hline : Section16LineCoverFamily P B phi σ l q) (hqq' : q ≤ q') :\n    Section16LineCoverFamily P B phi σ l q'",
+    "context": [],
+    "old_block_sha256": "5c7bc69da4eefe4b8852ba695a701e346b6c864afbd1b514f0135a2e4601fcd8",
+    "new_block_sha256": "5c7bc69da4eefe4b8852ba695a701e346b6c864afbd1b514f0135a2e4601fcd8"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Section16LineCoverFamily.global_affine_lift_family",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FamilyAffineLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "theorem Section16LineCoverFamily.global_affine_lift_family {N k q r m : Nat} [Fact N.Prime]\n    {ι : Type} [Fintype ι]\n    {P : Box N (k + 1)} {B : ι → Finset (Point N (k + 1))}\n    {phi : ι → Point N (k + 1) → ZMod N} {σ l : ℝ} {Pb Eb : Real → Real}\n    (hline : Section16LineCoverFamily P B phi σ l q)\n    (Gs : (ι → Fin r → ZMod N) → Finset (Point N k × ZMod N))\n    (hslice : ∀ sample, MultiplyLinearWith Pb Eb (Gs sample))\n    (hGs : ∀ sample a h i, appendCoordinate h (sample a i) ∈ B a →\n      (h, phi a (appendCoordinate h (sample a i))) ∈ Gs sample)\n    (hk : 0 < k) (hm : (m : ℝ) ≤ l) (τ ε : ℝ) (hq : 0 < q)\n    (hτ : 0 < τ) (hτ1 : τ ≤ 1) (hε : 0 < ε) (hε1 : ε ≤ 1)\n    (hPb : 1 ≤ Pb ε) (hEb : 0 < Eb ε) (hEb1 : Eb ε ≤ 1)\n    (hr : 6 * (q : ℝ) * ((max 1 (Fintype.card ι) : Nat) : ℝ) ≤ (r : ℝ) * τ) :\n    ∃ (n : Nat) (H : Finset (Point N (k + 1))) (L : Nat)\n      (Q : Fin L → Box N (k + 1)) (mu : Fin L → Fin n → Point N (k + 1) → ZMod N),\n      (n : ℝ) ≤ (Fintype.card ι : ℝ) * max (Pb ε) ((r.choose 2 : ℝ) * Pb ε * Pb ε) ∧\n      H ⊆ P.carrier ∧ (1 - σ - 2 * τ - ε) * (P.carrier.card : ℝ) ≤ H.card ∧\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, Real.sqrt (((m : ℝ) / 8) ^ (Eb ε)) / 4 ≤ (Q j).width) ∧\n      (∀ j i, IsMultilinear (mu j i)) ∧\n      ∀ a j z, z ∈ (Q j).carrier → z ∈ B a → z ∈ H → ∃ i, phi a z = mu j i z",
+    "context": [],
+    "old_block_sha256": "0d805bd3736d090e72e5bc3622c07c4add665733e559db6ddedb9a8a8cbbad54",
+    "new_block_sha256": "0d805bd3736d090e72e5bc3622c07c4add665733e559db6ddedb9a8a8cbbad54"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Section16LineCoverFamily.global_affine_lift_rounded_family",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FamilyAffineLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16FamilyAffineLift.lean",
+    "header": "theorem Section16LineCoverFamily.global_affine_lift_rounded_family {N k q : Nat} [Fact N.Prime]\n    {ι : Type} [Fintype ι]\n    {P : Box N (k + 1)} {B : ι → Finset (Point N (k + 1))}\n    {phi : ι → Point N (k + 1) → ZMod N} {σ l : ℝ} {Pb Eb : Nat → Real → Real}\n    (hline : Section16LineCoverFamily P B phi σ l q)\n    (Gs : (r : Nat) → (ι → Fin r → ZMod N) → Finset (Point N k × ZMod N))\n    (hslice : ∀ r sample, MultiplyLinearWith (Pb r) (Eb r) (Gs r sample))\n    (hGs : ∀ r sample a h i, appendCoordinate h (sample a i) ∈ B a →\n      (h, phi a (appendCoordinate h (sample a i))) ∈ Gs r sample)\n    (hranges : Section16SliceProviderRanges Pb Eb)\n    (hk : 0 < k) (hl : 0 ≤ l) (τ ε : ℝ) (hτ : 0 < τ) (hτ1 : τ ≤ 1) (hε : 0 < ε) (hε1 : ε ≤ 1) :\n    let r := ⌈6 * (max 1 q : ℝ) * ((max 1 (Fintype.card ι) : Nat) : ℝ) / τ⌉₊\n    ∃ (n : Nat) (H : Finset (Point N (k + 1))) (L : Nat)\n      (Q : Fin L → Box N (k + 1)) (mu : Fin L → Fin n → Point N (k + 1) → ZMod N),\n      (n : ℝ) ≤ (Fintype.card ι : ℝ) * max (Pb r ε) ((r.choose 2 : ℝ) * Pb r ε * Pb r ε) ∧\n      H ⊆ P.carrier ∧ (1 - σ - 2 * τ - ε) * (P.carrier.card : ℝ) ≤ H.card ∧\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, Real.sqrt (((⌊l⌋₊ : ℝ) / 8) ^ (Eb r ε)) / 4 ≤ (Q j).width) ∧\n      (∀ j i, IsMultilinear (mu j i)) ∧\n      ∀ a j z, z ∈ (Q j).carrier → z ∈ B a → z ∈ H → ∃ i, phi a z = mu j i z",
+    "context": [],
+    "old_block_sha256": "30189e1cea6fb92a7dc3e0bf04fd1d24e6dc56a96a94a13b8515104798f23d57",
+    "new_block_sha256": "30189e1cea6fb92a7dc3e0bf04fd1d24e6dc56a96a94a13b8515104798f23d57"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.MultilinearDiameterPartition",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs05BoxPartition.lean",
+    "header": "def MultilinearDiameterPartition (K : Real) (p : Nat) : Prop",
+    "context": [],
+    "old_block_sha256": "b4a3172b18adeaa7338934f9a2e63a8d4c86aca62e02d0d65f79992fe02dab84",
+    "new_block_sha256": "b4a3172b18adeaa7338934f9a2e63a8d4c86aca62e02d0d65f79992fe02dab84"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.freiman_column_multilinearOn",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "header": "theorem freiman_column_multilinearOn {N : Nat} [NeZero N] [Fact N.Prime]\n    {B : Finset (ZMod N)} {ℓ : ZMod N → ZMod N} (hℓ : IsFreimanLinearOn B ℓ)\n    (C : Box N 2) (hC : ∀ x ∈ C.carrier, x 1 ∈ B) :\n    MultilinearOn C.carrier (fun x => ℓ (x 1) * x 0)",
+    "context": [],
+    "old_block_sha256": "29b5b7c43e58eb53ec207a09a52373d77d450059b3ced9957fb6069ce9174a85",
+    "new_block_sha256": "29b5b7c43e58eb53ec207a09a52373d77d450059b3ced9957fb6069ce9174a85"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.linearForms",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "header": "def linearForms {N : Nat} (Γ Ψ : Finset (ZMod N)) : Fin (Γ.card + Ψ.card) → Point N 2 → ZMod N",
+    "context": [],
+    "old_block_sha256": "d871596f5dd4ca441ac3cedd03a3ef47b55bb7fa5a3a31d069cbbd8180526280",
+    "new_block_sha256": "d871596f5dd4ca441ac3cedd03a3ef47b55bb7fa5a3a31d069cbbd8180526280"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.linearForms_multilinearOn",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "header": "theorem linearForms_multilinearOn {N : Nat} (Γ Ψ : Finset (ZMod N)) (A : Finset (Point N 2))\n    (i : Fin (Γ.card + Ψ.card)) : MultilinearOn A (linearForms Γ Ψ i)",
+    "context": [],
+    "old_block_sha256": "c66acd650bc93bbbf15a2b9fcc3130bb48d42bceda97d4f9ee1aa8699f86030b",
+    "new_block_sha256": "c66acd650bc93bbbf15a2b9fcc3130bb48d42bceda97d4f9ee1aa8699f86030b"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.linearForms_left",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "header": "theorem linearForms_left {N : Nat} {Γ : Finset (ZMod N)} (Ψ : Finset (ZMod N)) {γ : ZMod N}\n    (hγ : γ ∈ Γ) (x : Point N 2) :\n    linearForms Γ Ψ (Fin.castAdd Ψ.card (Γ.equivFin ⟨γ, hγ⟩)) x = γ * x 0",
+    "context": [],
+    "old_block_sha256": "a7a6e8728046ee87a1002d522dc62a358ccfa2175d80e16bab1ffb6458596a7b",
+    "new_block_sha256": "a7a6e8728046ee87a1002d522dc62a358ccfa2175d80e16bab1ffb6458596a7b"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.linearForms_right",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "header": "theorem linearForms_right {N : Nat} (Γ : Finset (ZMod N)) {Ψ : Finset (ZMod N)} {ψ : ZMod N}\n    (hψ : ψ ∈ Ψ) (x : Point N 2) :\n    linearForms Γ Ψ (Fin.natAdd Γ.card (Ψ.equivFin ⟨ψ, hψ⟩)) x = ψ * x 1",
+    "context": [],
+    "old_block_sha256": "c63ae2f37ed3a6202b74ef0012f9bc99adbb81def5332ebaf306027dbe59ec0b",
+    "new_block_sha256": "c63ae2f37ed3a6202b74ef0012f9bc99adbb81def5332ebaf306027dbe59ec0b"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.image_diam_sub_le",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "header": "theorem image_diam_sub_le {N : Nat} [NeZero N] {A : Finset (Point N 2)} {g : Point N 2 → ZMod N}\n    {s : Real} (h : diameterAtMostReal (A.image g) s) {x y : Point N 2} (hx : x ∈ A) (hy : y ∈ A) :\n    (centeredAbs (g y - g x) : Real) ≤ s",
+    "context": [],
+    "old_block_sha256": "056dd1418fc10a2c852dd91859299dd9cbb628c8b0713c1678e92878af272d81",
+    "new_block_sha256": "056dd1418fc10a2c852dd91859299dd9cbb628c8b0713c1678e92878af272d81"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.oscillation_cell_refine",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "header": "theorem oscillation_cell_refine {N : Nat} [NeZero N] [Fact N.Prime]\n    {Γ Ψ : Finset (ZMod N)} {r : Nat} {L : Fin r → ZMod N → ZMod N} {ρ : Real}\n    (hL : ∀ k, IsFreimanLinearOn (bohr Ψ ρ) (L k)) {K : Real} {p : Nat}\n    (hMD : MultilinearDiameterPartition K p) (C : Box N 2) (hC : C.IsProper)\n    (hγ : ∀ γ ∈ Γ, ∀ x ∈ C.carrier, ∀ y ∈ C.carrier,\n      (centeredAbs (γ * y 0 - γ * x 0) : Real) ≤ ρ / 4 * N)\n    (hψ : ∀ ψ ∈ Ψ, ∀ x ∈ C.carrier, ∀ y ∈ C.carrier,\n      (centeredAbs (ψ * y 1 - ψ * x 1) : Real) ≤ ρ / 4 * N)\n    (H₂ : Nat) (hH₂ : 0 < H₂) (hK₂ : K * ((r : Real) + 1) ≤ H₂) (hρ₂ : 8 ≤ ρ * H₂)\n    (hwide : H₂ ^ (p * (r + 1) ^ (2 * (2 ^ 2))) ≤ C.width) (hH₂C : (H₂ : Real) ≤ C.width) :\n    ∃ m : Nat, ∃ R : Fin m → Box N 2,\n      IsBoxPartition R C ∧ (∀ j, (R j).IsProper) ∧ (∀ j, (H₂ : Real) ≤ (R j).width) ∧\n      ∀ j, (∀ x ∈ (R j).carrier, (x 0, x 1) ∉ bilinearBohrVariety Γ Ψ L (ρ / 2)) ∨\n        SmallOscillation Γ Ψ L (ρ / 2) (cellPairs (R j))",
+    "context": [],
+    "old_block_sha256": "6dce3e3c989a57738fa9fed6dae16fee79bdba0a9ceca01fd220e1742dc41bed",
+    "new_block_sha256": "6dce3e3c989a57738fa9fed6dae16fee79bdba0a9ceca01fd220e1742dc41bed"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.oscillation_partition_of_scales",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16OscillationPartition.lean",
+    "header": "theorem oscillation_partition_of_scales {N : Nat} [NeZero N] [Fact N.Prime]\n    {Γ Ψ : Finset (ZMod N)} {r : Nat} {L : Fin r → ZMod N → ZMod N} {ρ : Real}\n    (hL : ∀ k, IsFreimanLinearOn (bohr Ψ ρ) (L k)) {K : Real} {p : Nat}\n    (hMD : MultilinearDiameterPartition K p) (P : Box N 2) (hP : P.IsProper)\n    (H₁ H₂ : Nat) (hH₂ : 0 < H₂) (hK₂ : K * ((r : Real) + 1) ≤ H₂) (hρ₂ : 8 ≤ ρ * H₂)\n    (hK₁ : K * (((Γ.card + Ψ.card : Nat) : Real) + 1) ≤ H₁) (hρ₁ : 16 ≤ ρ * H₁)\n    (h₂₁ : H₂ ^ (p * (r + 1) ^ (2 * (2 ^ 2))) ≤ H₁) (hH₂₁ : H₂ ≤ H₁)\n    (hwide : H₁ ^ (p * (Γ.card + Ψ.card + 1) ^ (2 * (2 ^ 2))) ≤ P.width) :\n    ∃ M : Nat, ∃ Q : Fin M → Box N 2,\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧ (∀ j, (H₂ : Real) ≤ (Q j).width) ∧\n      ∀ j, (∀ x ∈ (Q j).carrier, (x 0, x 1) ∉ bilinearBohrVariety Γ Ψ L (ρ / 2)) ∨\n        SmallOscillation Γ Ψ L (ρ / 2) (cellPairs (Q j))",
+    "context": [],
+    "old_block_sha256": "e5e0afdb34548b86410257c0a163e054fe8b19967d436f932478fb9e94817035",
+    "new_block_sha256": "e5e0afdb34548b86410257c0a163e054fe8b19967d436f932478fb9e94817035"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.MultiplyLinearFunction.unused_coordinate_cover",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16UnusedCoordinateCover.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16UnusedCoordinateCover.lean",
+    "header": "theorem MultiplyLinearFunction.unused_coordinate_cover {N k m v : Nat} [NeZero N]\n    {gamma s : Real} {B : Finset (Point N k)} {phi : Point N k → ZMod N}\n    (hML : MultiplyLinearFunction gamma s B phi)\n    (epsilon : Real) (he : 0 < epsilon) (he1 : epsilon ≤ 1)\n    (T : Box N k) (I : ModAP N) (hT : T.IsProper) (hI : I.IsProper)\n    (hstep : I.step = T.commonDiff) (u : (ZMod N)ˣ) (hu : I.step = (↑u : ZMod N))\n    (hk : 0 < k) (hm : 4 ≤ m) (hmT : m ≤ T.width) (hmI : m ≤ I.length)\n    (hv : 1 ≤ v)\n    (hfit : (v : Real) ^ 2 + 1 ≤ ((m : Real) / 8) ^ ((multipleC (s⁻¹ * epsilon) gamma k) ^ s)) :\n    ∃ (q : Nat) (G : Finset (Point N (k + 1))) (L : Nat)\n      (S : Fin L → Box N (k + 1)) (mu : Fin L → Fin q → Point N (k + 1) → ZMod N),\n      (q : Real) ≤ (multipleQ (s⁻¹ * epsilon) gamma k) ^ s ∧\n      G ⊆ lastProductSet T.carrier I.carrier ∧\n      (1 - epsilon) * ((lastProductSet T.carrier I.carrier).card : Real) ≤ G.card ∧\n      IsPartition (fun j => (S j).carrier) (lastProductSet T.carrier I.carrier) ∧\n      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧\n      (∀ j i, IsMultilinear (mu j i)) ∧\n      ∀ j z, z ∈ (S j).carrier → section16Init z ∈ B → z ∈ G →\n        ∃ i, phi (section16Init z) = mu j i z",
+    "context": [],
+    "old_block_sha256": "124d474413a90b2e52cdc262220f1d8cbf953713c54bdd29236e049acdc39cca",
+    "new_block_sha256": "d680abdc9f36d6470b744f3c357a651c45011ccd1158d00913d6e9d6c12f3c59"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.MultiplyLinearFunction.unused_coordinate_cover_sqrt",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16UnusedCoordinateCover.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16UnusedCoordinateCover.lean",
+    "header": "theorem MultiplyLinearFunction.unused_coordinate_cover_sqrt {N k m : Nat} [NeZero N]\n    {gamma s : Real} {B : Finset (Point N k)} {phi : Point N k → ZMod N}\n    (hML : MultiplyLinearFunction gamma s B phi)\n    (epsilon : Real) (he : 0 < epsilon) (he1 : epsilon ≤ 1)\n    (T : Box N k) (I : ModAP N) (hT : T.IsProper) (hI : I.IsProper)\n    (hstep : I.step = T.commonDiff) (u : (ZMod N)ˣ) (hu : I.step = (↑u : ZMod N))\n    (hk : 0 < k) (hm : 4 ≤ m) (hmT : m ≤ T.width) (hmI : m ≤ I.length)\n    (hw : 16 ≤ ((m : Real) / 8) ^ ((multipleC (s⁻¹ * epsilon) gamma k) ^ s)) :\n    ∃ (q : Nat) (G : Finset (Point N (k + 1))) (L : Nat)\n      (S : Fin L → Box N (k + 1)) (mu : Fin L → Fin q → Point N (k + 1) → ZMod N),\n      (q : Real) ≤ (multipleQ (s⁻¹ * epsilon) gamma k) ^ s ∧\n      G ⊆ lastProductSet T.carrier I.carrier ∧\n      (1 - epsilon) * ((lastProductSet T.carrier I.carrier).card : Real) ≤ G.card ∧\n      IsPartition (fun j => (S j).carrier) (lastProductSet T.carrier I.carrier) ∧\n      (∀ j, (S j).IsProper ∧ Real.sqrt (((m : Real) / 8) ^\n        ((multipleC (s⁻¹ * epsilon) gamma k) ^ s)) / 4 ≤ (S j).width) ∧\n      (∀ j i, IsMultilinear (mu j i)) ∧\n      ∀ j z, z ∈ (S j).carrier → section16Init z ∈ B → z ∈ G →\n        ∃ i, phi (section16Init z) = mu j i z",
+    "context": [],
+    "old_block_sha256": "a6e328fbe199a5783775aeb0eb03799a4632842612d18024687d9f7ed6ce8101",
+    "new_block_sha256": "a6e328fbe199a5783775aeb0eb03799a4632842612d18024687d9f7ed6ce8101"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.MultiplyLinearWith.relation_unused_coordinate_cover",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16UnusedCoordinateCover.lean",
+    "header": "theorem MultiplyLinearWith.relation_unused_coordinate_cover {N k m v : Nat} [NeZero N]\n    {Qb Eb : Real → Real} {Λ : Finset (Point N k × ZMod N)}\n    (hML : MultiplyLinearWith Qb Eb Λ)\n    (epsilon : Real) (he : 0 < epsilon) (he1 : epsilon ≤ 1)\n    (hQ : 0 ≤ Qb epsilon) (hE : 0 ≤ Eb epsilon)\n    (T : Box N k) (I : ModAP N) (hT : T.IsProper) (hI : I.IsProper)\n    (hstep : I.step = T.commonDiff) (u : (ZMod N)ˣ) (hu : I.step = (↑u : ZMod N))\n    (hk : 0 < k) (hm : 4 ≤ m) (hmT : m ≤ T.width) (hmI : m ≤ I.length)\n    (hv : 1 ≤ v)\n    (hfit : (v : Real) ^ 2 + 1 ≤ ((m : Real) / 8) ^ (Eb epsilon)) :\n    ∃ (q : Nat) (G : Finset (Point N (k + 1))) (L : Nat)\n      (S : Fin L → Box N (k + 1)) (mu : Fin L → Fin q → Point N (k + 1) → ZMod N),\n      (q : Real) ≤ Qb epsilon ∧\n      G ⊆ lastProductSet T.carrier I.carrier ∧\n      (1 - epsilon) * ((lastProductSet T.carrier I.carrier).card : Real) ≤ G.card ∧\n      IsPartition (fun j => (S j).carrier) (lastProductSet T.carrier I.carrier) ∧\n      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧\n      (∀ j i, IsMultilinear (mu j i)) ∧\n      ∀ j z, z ∈ (S j).carrier → z ∈ G → ∀ y, (section16Init z, y) ∈ Λ →\n        ∃ i, y = mu j i z",
+    "context": [],
+    "old_block_sha256": "27f893e93b5d952d150f18080caeefc128b107422f8817e0d0abf59872b2688d",
+    "new_block_sha256": "27f893e93b5d952d150f18080caeefc128b107422f8817e0d0abf59872b2688d"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.MultiplyLinearWith.unused_coordinate_cover",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16UnusedCoordinateCover.lean",
+    "header": "theorem MultiplyLinearWith.unused_coordinate_cover {N k m v : Nat} [NeZero N]\n    {Qb Eb : Real → Real} {B : Finset (Point N k)} {phi : Point N k → ZMod N}\n    (hML : MultiplyLinearWith Qb Eb (partialGraph B phi))\n    (epsilon : Real) (he : 0 < epsilon) (he1 : epsilon ≤ 1)\n    (hQ : 0 ≤ Qb epsilon) (hE : 0 ≤ Eb epsilon)\n    (T : Box N k) (I : ModAP N) (hT : T.IsProper) (hI : I.IsProper)\n    (hstep : I.step = T.commonDiff) (u : (ZMod N)ˣ) (hu : I.step = (↑u : ZMod N))\n    (hk : 0 < k) (hm : 4 ≤ m) (hmT : m ≤ T.width) (hmI : m ≤ I.length)\n    (hv : 1 ≤ v)\n    (hfit : (v : Real) ^ 2 + 1 ≤ ((m : Real) / 8) ^ (Eb epsilon)) :\n    ∃ (q : Nat) (G : Finset (Point N (k + 1))) (L : Nat)\n      (S : Fin L → Box N (k + 1)) (mu : Fin L → Fin q → Point N (k + 1) → ZMod N),\n      (q : Real) ≤ Qb epsilon ∧\n      G ⊆ lastProductSet T.carrier I.carrier ∧\n      (1 - epsilon) * ((lastProductSet T.carrier I.carrier).card : Real) ≤ G.card ∧\n      IsPartition (fun j => (S j).carrier) (lastProductSet T.carrier I.carrier) ∧\n      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧\n      (∀ j i, IsMultilinear (mu j i)) ∧\n      ∀ j z, z ∈ (S j).carrier → section16Init z ∈ B → z ∈ G →\n        ∃ i, phi (section16Init z) = mu j i z",
+    "context": [],
+    "old_block_sha256": "aa3554c6b961fb78a249e977b82163bbc2b051d924b9d7b15a2236f952f7ca24",
+    "new_block_sha256": "aa3554c6b961fb78a249e977b82163bbc2b051d924b9d7b15a2236f952f7ca24"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.with_lift_width_budget",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "header": "theorem with_lift_width_budget {a : Real} (ha : 0 < a) (ha1 : a ≤ 1) (m : Nat)\n    (hlarge : 2 < (m : Real) ^ (a / 16)) :\n    4 ≤ m ∧ 16 ≤ ((m : Real) / 8) ^ a ∧\n      (m : Real) ^ (a / 16) ≤ Real.sqrt (((m : Real) / 8) ^ a) / 4",
+    "context": [],
+    "old_block_sha256": "80fa437c15cfee066bd28352c8f318a37342afe05c2d095ecbfd22975e3d7d5d",
+    "new_block_sha256": "80fa437c15cfee066bd28352c8f318a37342afe05c2d095ecbfd22975e3d7d5d"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.MultiplyLinearWith.lift_last",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "header": "theorem MultiplyLinearWith.lift_last {N k : Nat} [NeZero N] [Fact N.Prime]\n    {Qb Eb : Real → Real} {B : Finset (Point N k)} {phi : Point N k → ZMod N}\n    (hML : MultiplyLinearWith Qb Eb (partialGraph B phi))\n    (hQ : ∀ t, 0 < t → t ≤ 1 → 0 ≤ Qb t)\n    (hE : ∀ t, 0 < t → t ≤ 1 → 0 < Eb t ∧ Eb t ≤ 1) (hk : 0 < k) :\n    MultiplyLinearWith (fun t => max (Qb t) ((3 ^ (k + 1) : Nat) : Real)) (fun t => Eb t / 16)\n      (partialGraph (lastProductSet B Finset.univ) (fun z => phi (section16Init z)))",
+    "context": [],
+    "old_block_sha256": "c9ba4bed4d6fc3ecb53af1ba5f49e617f95213cd5177d7717dc60c8245288115",
+    "new_block_sha256": "c9ba4bed4d6fc3ecb53af1ba5f49e617f95213cd5177d7717dc60c8245288115"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.MultiplyLinearWith.coordinateReindex",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "header": "theorem MultiplyLinearWith.coordinateReindex {N k : Nat} [NeZero N]\n    {Qb Eb : Real → Real} {Gamma : Finset (Point N k × ZMod N)}\n    (h : MultiplyLinearWith Qb Eb Gamma) (e : Fin k ≃ Fin k) :\n    MultiplyLinearWith Qb Eb\n      (Gamma.image (fun z => (LeanProofs.GowersSzemeredi.coordinateReindex e z.1, z.2)))",
+    "context": [],
+    "old_block_sha256": "63202a8d71818ac48bcb28c08630f3ac2d233607b7932d803a4c0dbb31171c31",
+    "new_block_sha256": "63202a8d71818ac48bcb28c08630f3ac2d233607b7932d803a4c0dbb31171c31"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.MultiplyLinearWith.coordinateReindex_graph",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "header": "theorem MultiplyLinearWith.coordinateReindex_graph {N k : Nat} [NeZero N]\n    {Qb Eb : Real → Real} {B : Finset (Point N k)} {phi : Point N k → ZMod N}\n    (h : MultiplyLinearWith Qb Eb (partialGraph B phi)) (e : Fin k ≃ Fin k) :\n    MultiplyLinearWith Qb Eb\n      (partialGraph (B.image (LeanProofs.GowersSzemeredi.coordinateReindex e))\n        (fun x => phi (LeanProofs.GowersSzemeredi.coordinateReindex e.symm x)))",
+    "context": [],
+    "old_block_sha256": "8dc2901722b0e2698e8992bf53953236c431c64732cdb56a0b855a6180b57d69",
+    "new_block_sha256": "8dc2901722b0e2698e8992bf53953236c431c64732cdb56a0b855a6180b57d69"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.MultiplyLinearWith.lift_prefix",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "header": "theorem MultiplyLinearWith.lift_prefix {N l d : Nat} [NeZero N] [Fact N.Prime]\n    {Qb Eb : Real → Real} {B : Finset (Point N l)} {phi : Point N l → ZMod N}\n    (hML : MultiplyLinearWith Qb Eb (partialGraph B phi))\n    (hE : ∀ t, 0 < t → t ≤ 1 → 0 < Eb t ∧ Eb t ≤ 1) (hl : 0 < l) (hld : l ≤ d) :\n    MultiplyLinearWith (fun t => max (Qb t) ((3 ^ d : Nat) : Real))\n      (fun t => Eb t / 16 ^ (d - l))\n      (partialGraph (prefixDomain hld B) (fun z => phi (coordinatePrefix hld z)))",
+    "context": [],
+    "old_block_sha256": "84cf538604818c7039d5a96864f94015f1355e5f34bcc2e78bf6ad466654a37f",
+    "new_block_sha256": "84cf538604818c7039d5a96864f94015f1355e5f34bcc2e78bf6ad466654a37f"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.MultiplyLinearWith.lift_embedding",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithCoordinateLifts.lean",
+    "header": "theorem MultiplyLinearWith.lift_embedding {N l d : Nat} [NeZero N] [Fact N.Prime]\n    {Qb Eb : Real → Real} {B : Finset (Point N l)} {phi : Point N l → ZMod N}\n    (hML : MultiplyLinearWith Qb Eb (partialGraph B phi))\n    (hE : ∀ t, 0 < t → t ≤ 1 → 0 < Eb t ∧ Eb t ≤ 1) (hl : 0 < l) (f : Fin l ↪ Fin d) :\n    MultiplyLinearWith (fun t => max (Qb t) ((3 ^ d : Nat) : Real))\n      (fun t => Eb t / 16 ^ (d - l))\n      (partialGraph (selectedDomain f B) (fun z => phi (selectedCoordinates f z)))",
+    "context": [],
+    "old_block_sha256": "19674134a5266404190a43eb6637de274189dd63cf6735eb430ec70be2e89d88",
+    "new_block_sha256": "19674134a5266404190a43eb6637de274189dd63cf6735eb430ec70be2e89d88"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.section16StackedSlices",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "def section16StackedSlices {N k r : Nat} [NeZero N] (B : Finset (Point N (k + 1)))\n    (phi : Point N (k + 1) → ZMod N) (sample : Fin r → ZMod N) :\n    Finset (Point N k × ZMod N)",
+    "context": [],
+    "old_block_sha256": "e866b7414f41de27fafe0b1a24ff9f8f40ec2c3062fffc0bbd7d9a70e24fa01f",
+    "new_block_sha256": "e866b7414f41de27fafe0b1a24ff9f8f40ec2c3062fffc0bbd7d9a70e24fa01f"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Section16SliceProvider",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "def Section16SliceProvider {N k : Nat} [NeZero N] (B : Finset (Point N (k + 1)))\n    (phi : Point N (k + 1) → ZMod N) (Pb Eb : Nat → Real → Real) : Prop",
+    "context": [],
+    "old_block_sha256": "aa0c444cd7e05834093848fda6c1fac4021b6e1b31b144339dd6b07a615b13bd",
+    "new_block_sha256": "aa0c444cd7e05834093848fda6c1fac4021b6e1b31b144339dd6b07a615b13bd"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Section16SliceProviderRanges",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "def Section16SliceProviderRanges (Pb Eb : Nat → Real → Real) : Prop",
+    "context": [],
+    "old_block_sha256": "d7739ba9bdef6a51959dce4b0b8d146f3c95f5347b46454fd880d7d9ca55b792",
+    "new_block_sha256": "d7739ba9bdef6a51959dce4b0b8d146f3c95f5347b46454fd880d7d9ca55b792"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.section16StackedSlices_mem",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "theorem section16StackedSlices_mem {N k r : Nat} [NeZero N]\n    {B : Finset (Point N (k + 1))} {phi : Point N (k + 1) → ZMod N}\n    {sample : Fin r → ZMod N} (h : Point N k) (i : Fin r)\n    (hB : appendCoordinate h (sample i) ∈ B) :\n    (h, phi (appendCoordinate h (sample i))) ∈ section16StackedSlices B phi sample",
+    "context": [],
+    "old_block_sha256": "886650e268475d5162fe6f720e6b0e802bc730353bc7844c4c9809e189a31e93",
+    "new_block_sha256": "886650e268475d5162fe6f720e6b0e802bc730353bc7844c4c9809e189a31e93"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.section16_synchronized_compressed_cover_family",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "theorem section16_synchronized_compressed_cover_family\n    {N k r m v : Nat} [Fact N.Prime] {ι : Type}\n    {D F : ι → Finset (Point N (k + 1))}\n    {phi : ι → Point N (k + 1) → ZMod N} {sample : ι → Fin r → ZMod N}\n    {Pb Eb : Real → Real} {Gs : Finset (Point N k × ZMod N)}\n    (ha : ∀ a, Section16SampledOrAnchoredOn (D a) (phi a) (sample a) (F a))\n    (hslice : MultiplyLinearWith Pb Eb Gs)\n    (hGs : ∀ a h i, appendCoordinate h (sample a i) ∈ D a →\n      (h, phi a (appendCoordinate h (sample a i))) ∈ Gs)\n    (hr : 0 < r) (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)\n    (hPb : 0 ≤ Pb ε) (hEb : 0 ≤ Eb ε)\n    (T : Box N k) (I : ModAP N) (hT : T.IsProper) (hI : I.IsProper)\n    (hstep : I.step = T.commonDiff) (u : (ZMod N)ˣ) (hu : I.step = (↑u : ZMod N))\n    (hk : 0 < k) (hm : 4 ≤ m) (hmT : m ≤ T.width) (hmI : m ≤ I.length)\n    (hv : 1 ≤ v)\n    (hvscale : (v : ℝ) ^ 2 + 1 ≤ ((m : ℝ) / 8) ^ (Eb ε))\n    (η : ℝ) (F' : Finset (Point N (k + 1))) (hF'c : ∀ a, F' ⊆ F a)\n    (hF : F' ⊆ lastProductSet T.carrier I.carrier)\n    (hFm : (1 - η) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ F'.card) :\n    ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))\n      (nu : Fin L → ι × Fin (section16CompressedCandidateCount r p) →\n        Point N (k + 1) → ZMod N),\n      (p : ℝ) ≤ Pb ε ∧\n      G ⊆ F' ∧ (1 - η - ε) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ G.card ∧\n      IsPartition (fun j => (S j).carrier) (lastProductSet T.carrier I.carrier) ∧\n      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧\n      (∀ j c, IsMultilinear (nu j c)) ∧\n      ∀ a j z, z ∈ (S j).carrier → z ∈ D a → z ∈ G → ∃ c, phi a z = nu j c z",
+    "context": [],
+    "old_block_sha256": "2537ea0bce59c5bfe66e42cba0c00c8eb916bd58ba98027f0948e556d9064960",
+    "new_block_sha256": "2537ea0bce59c5bfe66e42cba0c00c8eb916bd58ba98027f0948e556d9064960"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Section16SampledOrAnchoredOn.synchronized_compressed_cover_with",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "theorem Section16SampledOrAnchoredOn.synchronized_compressed_cover_with\n    {N k r m v : Nat} [Fact N.Prime]\n    {B D F : Finset (Point N (k + 1))}\n    {phi : Point N (k + 1) → ZMod N} {sample : Fin r → ZMod N} {Pb Eb : Real → Real}\n    (ha : Section16SampledOrAnchoredOn D phi sample F) (hD : D ⊆ B)\n    (hslice : MultiplyLinearWith Pb Eb (section16StackedSlices B phi sample))\n    (hr : 0 < r) (ε : ℝ) (hε : 0 < ε) (hε1 : ε ≤ 1)\n    (hPb : 0 ≤ Pb ε) (hEb : 0 ≤ Eb ε)\n    (T : Box N k) (I : ModAP N) (hT : T.IsProper) (hI : I.IsProper)\n    (hstep : I.step = T.commonDiff) (u : (ZMod N)ˣ) (hu : I.step = (↑u : ZMod N))\n    (hk : 0 < k) (hm : 4 ≤ m) (hmT : m ≤ T.width) (hmI : m ≤ I.length)\n    (hv : 1 ≤ v)\n    (hvscale : (v : ℝ) ^ 2 + 1 ≤ ((m : ℝ) / 8) ^ (Eb ε))\n    (η : ℝ) (hF : F ⊆ lastProductSet T.carrier I.carrier)\n    (hFm : (1 - η) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ F.card) :\n    ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))\n      (nu : Fin L → Fin (section16CompressedCandidateCount r p) →\n        Point N (k + 1) → ZMod N),\n      (p : ℝ) ≤ Pb ε ∧\n      G ⊆ F ∧ (1 - η - ε) * ((lastProductSet T.carrier I.carrier).card : ℝ) ≤ G.card ∧\n      IsPartition (fun j => (S j).carrier) (lastProductSet T.carrier I.carrier) ∧\n      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧\n      (∀ j ij, IsMultilinear (nu j ij)) ∧\n      ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z",
+    "context": [],
+    "old_block_sha256": "01e16907047188fc4b87eb3ae2c1d645636324296b93e9f5ce89c611aa68fc18",
+    "new_block_sha256": "01e16907047188fc4b87eb3ae2c1d645636324296b93e9f5ce89c611aa68fc18"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.section16_local_affine_lift_with",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "theorem section16_local_affine_lift_with {N k q r m v : Nat} [Fact N.Prime]\n    (P : Box N (k + 1)) (hP : P.IsProper) (hk : 0 < k)\n    (hm : 4 ≤ m) (hmP : m ≤ P.width)\n    (B D : Finset (Point N (k + 1))) (hD : D ⊆ B)\n    (phi : Point N (k + 1) → ZMod N) (Pb Eb : Real → Real)\n    (hslice : ∀ sample : Fin r → ZMod N,\n      MultiplyLinearWith Pb Eb (section16StackedSlices B phi sample))\n    (ell : Point N k → Fin q → ZMod N → ZMod N)\n    (hell : ∀ h i, LinearOn Finset.univ (ell h i))\n    (hcover : ∀ h x, appendCoordinate h x ∈ P.carrier → appendCoordinate h x ∈ D →\n      ∃ i, phi (appendCoordinate h x) = ell h i x)\n    (τ ε : ℝ) (hq : 0 < q) (hτ : 0 < τ) (hτ1 : τ ≤ 1)\n    (hε : 0 < ε) (hε1 : ε ≤ 1) (hPb : 0 ≤ Pb ε) (hEb : 0 ≤ Eb ε)\n    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ) (hv : 1 ≤ v)\n    (hvscale : (v : ℝ) ^ 2 + 1 ≤ ((m : ℝ) / 8) ^ (Eb ε)) :\n    ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))\n      (nu : Fin L → Fin (section16CompressedCandidateCount r p) →\n        Point N (k + 1) → ZMod N),\n      (p : ℝ) ≤ Pb ε ∧\n      G ⊆ P.carrier ∧ (1 - 2 * τ - ε) * (P.carrier.card : ℝ) ≤ G.card ∧\n      IsBoxPartition S P ∧ (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧\n      (∀ j ij, IsMultilinear (nu j ij)) ∧\n      ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z",
+    "context": [],
+    "old_block_sha256": "11b4b6eaa52fca72a97796c9298fdeaa6c823f83cbebd71127c077004499a5a2",
+    "new_block_sha256": "7a625ed4fed3290c30aed3535b108ebedc5f28c016084d9c145fa3d83dcd3f61"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.section16_local_affine_lift_all_scales_with",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "theorem section16_local_affine_lift_all_scales_with {N k q r m : Nat} [Fact N.Prime]\n    (P : Box N (k + 1)) (hP : P.IsProper) (hk : 0 < k) (hmP : m ≤ P.width)\n    (B D : Finset (Point N (k + 1))) (hD : D ⊆ B)\n    (phi : Point N (k + 1) → ZMod N) (Pb Eb : Real → Real)\n    (hslice : ∀ sample : Fin r → ZMod N,\n      MultiplyLinearWith Pb Eb (section16StackedSlices B phi sample))\n    (ell : Point N k → Fin q → ZMod N → ZMod N)\n    (hell : ∀ h i, LinearOn Finset.univ (ell h i))\n    (hcover : ∀ h x, appendCoordinate h x ∈ P.carrier → appendCoordinate h x ∈ D →\n      ∃ i, phi (appendCoordinate h x) = ell h i x)\n    (τ ε : ℝ) (hq : 0 < q) (hτ : 0 < τ) (hτ1 : τ ≤ 1)\n    (hε : 0 < ε) (hε1 : ε ≤ 1)\n    (hPb : 1 ≤ Pb ε) (hEb : 0 < Eb ε) (hEb1 : Eb ε ≤ 1)\n    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ) :\n    ∃ (p : Nat) (G : Finset (Point N (k + 1))) (L : Nat) (S : Fin L → Box N (k + 1))\n      (nu : Fin L → Fin (section16CompressedCandidateCount r p) →\n        Point N (k + 1) → ZMod N),\n      (p : ℝ) ≤ Pb ε ∧\n      G ⊆ P.carrier ∧ (1 - 2 * τ - ε) * (P.carrier.card : ℝ) ≤ G.card ∧\n      IsBoxPartition S P ∧\n      (∀ j, (S j).IsProper ∧ Real.sqrt (((m : ℝ) / 8) ^ (Eb ε)) / 4 ≤ (S j).width) ∧\n      (∀ j ij, IsMultilinear (nu j ij)) ∧\n      ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z",
+    "context": [],
+    "old_block_sha256": "54e4284d166db7e58462970c60383ecfd421217424250a3b61286c51616488d0",
+    "new_block_sha256": "a91cee8ad94e3f90f58e59a5030c1544eb5175918e470c626758523f88cf16eb"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Section16LineCover.global_affine_lift_with",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "theorem Section16LineCover.global_affine_lift_with {N k q r m : Nat} [Fact N.Prime]\n    {P : Box N (k + 1)} {B : Finset (Point N (k + 1))}\n    {phi : Point N (k + 1) → ZMod N} {σ l : ℝ} {Pb Eb : Real → Real}\n    (hline : Section16LineCover P B phi σ l q)\n    (hslice : ∀ sample : Fin r → ZMod N,\n      MultiplyLinearWith Pb Eb (section16StackedSlices B phi sample))\n    (hk : 0 < k) (hm : (m : ℝ) ≤ l) (τ ε : ℝ) (hq : 0 < q)\n    (hτ : 0 < τ) (hτ1 : τ ≤ 1) (hε : 0 < ε) (hε1 : ε ≤ 1)\n    (hPb : 1 ≤ Pb ε) (hEb : 0 < Eb ε) (hEb1 : Eb ε ≤ 1)\n    (hr : 6 * (q : ℝ) ≤ (r : ℝ) * τ) :\n    ∃ (n : Nat) (H : Finset (Point N (k + 1))) (L : Nat)\n      (Q : Fin L → Box N (k + 1)) (mu : Fin L → Fin n → Point N (k + 1) → ZMod N),\n      (n : ℝ) ≤ max (Pb ε) ((r.choose 2 : ℝ) * Pb ε * Pb ε) ∧\n      H ⊆ P.carrier ∧ (1 - σ - 2 * τ - ε) * (P.carrier.card : ℝ) ≤ H.card ∧\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, Real.sqrt (((m : ℝ) / 8) ^ (Eb ε)) / 4 ≤ (Q j).width) ∧\n      (∀ j i, IsMultilinear (mu j i)) ∧\n      ∀ j z, z ∈ (Q j).carrier → z ∈ B → z ∈ H → ∃ i, phi z = mu j i z",
+    "context": [],
+    "old_block_sha256": "8047bda44d38064f469cf652f730d31eccec76612bd18042cfecae21ac152426",
+    "new_block_sha256": "eb294e9712da21567fe1841f1e10c8e8beb2ae8ad1d43c806a2430a522dc5e27"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Section16LineCover.global_affine_lift_rounded_with",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "theorem Section16LineCover.global_affine_lift_rounded_with {N k q : Nat} [Fact N.Prime]\n    {P : Box N (k + 1)} {B : Finset (Point N (k + 1))}\n    {phi : Point N (k + 1) → ZMod N} {σ l : ℝ} {Pb Eb : Nat → Real → Real}\n    (hline : Section16LineCover P B phi σ l q)\n    (hslice : Section16SliceProvider B phi Pb Eb)\n    (hranges : Section16SliceProviderRanges Pb Eb)\n    (hk : 0 < k) (hl : 0 ≤ l) (τ ε : ℝ) (hτ : 0 < τ) (hτ1 : τ ≤ 1) (hε : 0 < ε) (hε1 : ε ≤ 1) :\n    let r := ⌈6 * (max 1 q : ℝ) / τ⌉₊\n    ∃ (n : Nat) (H : Finset (Point N (k + 1))) (L : Nat)\n      (Q : Fin L → Box N (k + 1)) (mu : Fin L → Fin n → Point N (k + 1) → ZMod N),\n      (n : ℝ) ≤ max (Pb r ε) ((r.choose 2 : ℝ) * Pb r ε * Pb r ε) ∧\n      H ⊆ P.carrier ∧ (1 - σ - 2 * τ - ε) * (P.carrier.card : ℝ) ≤ H.card ∧\n      IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n      (∀ j, Real.sqrt (((⌊l⌋₊ : ℝ) / 8) ^ (Eb r ε)) / 4 ≤ (Q j).width) ∧\n      (∀ j i, IsMultilinear (mu j i)) ∧\n      ∀ j z, z ∈ (Q j).carrier → z ∈ B → z ∈ H → ∃ i, phi z = mu j i z",
+    "context": [],
+    "old_block_sha256": "fc8f95d7adfcd58e08eb411c40e1a8d5b8cb535440b3cfb4c74d25f9867b257b",
+    "new_block_sha256": "fc8f95d7adfcd58e08eb411c40e1a8d5b8cb535440b3cfb4c74d25f9867b257b"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Section16AllBoxLineCoversWith.explicit_multilinear_cover_with",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16WithLift.lean",
+    "header": "theorem Section16AllBoxLineCoversWith.explicit_multilinear_cover_with {N k : Nat} [Fact N.Prime]\n    {B : Finset (Point N (k + 1))} {phi : Point N (k + 1) → ZMod N}\n    {theta gamma : Real} {Qd Ed : Real → Real} {Pb Eb : Nat → Real → Real}\n    (hline : Section16AllBoxLineCoversWith theta gamma Qd Ed B phi)\n    (hslice : Section16SliceProvider B phi Pb Eb)\n    (hranges : Section16SliceProviderRanges Pb Eb)\n    (hk : 0 < k) (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)\n    (hEd : ∀ s, 0 < s → s ≤ 1 → 0 ≤ Ed s)\n    {rho : Real} (hrho : 0 < rho) (hrho1 : rho ≤ 1)\n    (m : Nat) (P : Box N (k + 1)) (hP : P.IsProper) (hm : m ≤ P.width) :\n    let sigma := rho / 4\n    ∃ qGamma qDelta : Nat,\n      (qGamma : Real) ≤ section16Lemma9QBound sigma theta gamma k ∧\n      (qDelta : Real) ≤ Qd (sigma / 2) ∧\n      let l := lemma9WidthWith m qDelta k sigma theta gamma (Ed (sigma / 2))\n        (section16Zeta theta gamma k)\n      let r := ⌈6 * (max 1 qGamma : Real) / sigma⌉₊\n      ∃ (n : Nat) (H : Finset (Point N (k + 1))) (L : Nat)\n        (Q : Fin L → Box N (k + 1)) (mu : Fin L → Fin n → Point N (k + 1) → ZMod N),\n        (n : Real) ≤ max (Pb r sigma) ((r.choose 2 : Real) * Pb r sigma * Pb r sigma) ∧\n        H ⊆ P.carrier ∧ (1 - rho) * (P.carrier.card : Real) ≤ H.card ∧\n        IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧\n        (∀ j, Real.sqrt (((Nat.floor l : Real) / 8) ^ (Eb r sigma)) / 4 ≤ (Q j).width) ∧\n        (∀ j i, IsMultilinear (mu j i)) ∧\n        ∀ j z, z ∈ (Q j).carrier → z ∈ B → z ∈ H → ∃ i, phi z = mu j i z",
+    "context": [],
+    "old_block_sha256": "50252354840d2d3ce9ac542aafc59b64b0d9253c3e662e4022fee02df72cfc9e",
+    "new_block_sha256": "50252354840d2d3ce9ac542aafc59b64b0d9253c3e662e4022fee02df72cfc9e"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.fejerCubicDiscrepancyExponent_inv_le_exp",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerInverseThresholdEnvelope.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerInverseThresholdEnvelope.lean",
+    "header": "theorem fejerCubicDiscrepancyExponent_inv_le_exp {alpha : Real}\n    (hα : 0 < alpha) (hαone : alpha ≤ 1) :\n    (fejerCubicDiscrepancyExponent alpha)⁻¹ ≤\n      Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 61))",
+    "context": [],
+    "old_block_sha256": "f5423399b2348a959dcd2f3fe90aef684fd54a3640441f8499caa0e16b3ef18f",
+    "new_block_sha256": "f5423399b2348a959dcd2f3fe90aef684fd54a3640441f8499caa0e16b3ef18f"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.fejerCubicPhaseRefinementConstant_le_power",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerInverseThresholdEnvelope.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerInverseThresholdEnvelope.lean",
+    "header": "theorem fejerCubicPhaseRefinementConstant_le_power {alpha : Real}\n    (hα : 0 < alpha) (hαone : alpha ≤ 1) :\n    fejerCubicPhaseRefinementConstant alpha ≤ (2 / alpha) ^ ((2 : Nat) ^ 1085)",
+    "context": [],
+    "old_block_sha256": "c95129f83045756262b7d478d7aebfe1bc8b20262693ac9eb7c5041b80a6bff0",
+    "new_block_sha256": "c95129f83045756262b7d478d7aebfe1bc8b20262693ac9eb7c5041b80a6bff0"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.fejerCubicInverseThreshold_le_double_exp",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerInverseThresholdEnvelope.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerInverseThresholdEnvelope.lean",
+    "header": "theorem fejerCubicInverseThreshold_le_double_exp {alpha : Real}\n    (hα : 0 < alpha) (hαone : alpha ≤ 1) :\n    fejerCubicInverseThreshold alpha ≤ Real.exp (Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 62)))",
+    "context": [],
+    "old_block_sha256": "a66be78830d9804a6af4b45b046b97d6d220e8a2d9556dd607b78c3c6ce8dd04",
+    "new_block_sha256": "a7ba9193f71d338582abc23391b89e6206a2fc5a1a15e045a775a2e74e449f51"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.fejer_cubic_function_discrepancy_bound_double_exp",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerInverseThresholdEnvelope.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FejerInverseThresholdEnvelope.lean",
+    "header": "theorem fejer_cubic_function_discrepancy_bound_double_exp {alpha : Real}\n    (hα : 0 < alpha) (hαone : alpha ≤ 1) :\n    FunctionDiscrepancyBound 3 alpha (fejerCubicDiscrepancyParameter alpha)\n      (fejerCubicDiscrepancyExponent alpha)\n      (Real.exp (Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 62))))",
+    "context": [],
+    "old_block_sha256": "c65a8eb4ddec15551055a41c2be622d64d999979a8b4090b6f25479899636dcb",
+    "new_block_sha256": "c65a8eb4ddec15551055a41c2be622d64d999979a8b4090b6f25479899636dcb"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.tightMu0Z",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "def tightMu0Z (k : Nat) : Nat",
+    "context": [],
+    "old_block_sha256": "325fed29191842377352d7658e76bb3be9764e0350cfa707603184dfe9ff3506",
+    "new_block_sha256": "325fed29191842377352d7658e76bb3be9764e0350cfa707603184dfe9ff3506"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.genMuKZ",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "def genMuKZ (k : Nat) : Nat",
+    "context": [],
+    "old_block_sha256": "8f76e0eaeaa00e2eccc2868a69eae59c76e911a287c7d605c262ca7597b53fe2",
+    "new_block_sha256": "8f76e0eaeaa00e2eccc2868a69eae59c76e911a287c7d605c262ca7597b53fe2"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.thirtytwo_sq_le_two_pow_fourteen",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem thirtytwo_sq_le_two_pow_fourteen : ∀ k, 14 ≤ k → 32 * (k + 5) ^ 2 ≤ 2 ^ k",
+    "context": [],
+    "old_block_sha256": "00b302a410b1f35392b062bbaf6c0f590002b1968121f46eab54ad62d4958d8b",
+    "new_block_sha256": "00b302a410b1f35392b062bbaf6c0f590002b1968121f46eab54ad62d4958d8b"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.four_sq_add_five_le",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem four_sq_add_five_le (k : Nat) : 4 * (k + 3) ^ 2 + 5 ≤ 2 ^ (k + 9)",
+    "context": [],
+    "old_block_sha256": "fbc61eed75d4ca8b8e064d45cb242e59b40d4bd48b86475c2edce93c6f5d5760",
+    "new_block_sha256": "fbc61eed75d4ca8b8e064d45cb242e59b40d4bd48b86475c2edce93c6f5d5760"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.succ_sq_le_four_pow",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem succ_sq_le_four_pow : ∀ n, 1 ≤ n → (n + 1) ^ 2 ≤ 4 ^ n",
+    "context": [],
+    "old_block_sha256": "e95e2d5e894038873c3db772be000b4c6d1b392b52269afa7ade53039994bfe9",
+    "new_block_sha256": "f182173f39cd5bd5c25feb72afc06ea120a324b9fb745577786e43215a1cd5af"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.factorial_sq_mul_two_pow_le",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem factorial_sq_mul_two_pow_le : ∀ d : Nat, d.factorial ^ 2 * 2 ^ d ≤ 2 ^ (d * d)",
+    "context": [],
+    "old_block_sha256": "b70dcfa30cd224042419c1ed30f9fd1d33ace8feea453809aaf5c4b37455628a",
+    "new_block_sha256": "0edbf97b1d1e3faf847e2b26bf0009a6364044f302085e62cc82811a36fa4589"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.partDeg",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "def partDeg (k : Nat) : Nat",
+    "context": [],
+    "old_block_sha256": "52da2ade1c87f11d28394dbcb1a42ad70e26382d2eed0ab252bada0db1d5003a",
+    "new_block_sha256": "52da2ade1c87f11d28394dbcb1a42ad70e26382d2eed0ab252bada0db1d5003a"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.polyPartConst_le_sharp",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem polyPartConst_le_sharp (k : Nat) :\n    polynomialPartitionConstant (k + 1 + 1) ≤ 2 ^ partDeg k",
+    "context": [],
+    "old_block_sha256": "ec55b41260c09be984244bad87d94f5ed9a1647557033744ec2d05a8cbdacb1f",
+    "new_block_sha256": "ec55b41260c09be984244bad87d94f5ed9a1647557033744ec2d05a8cbdacb1f"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.inv_thr_le_ex_sharp",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem inv_thr_le_ex_sharp {X : Real} (hX : 2 ≤ X) {k : Nat} {η β e σ : Real} {M s : Nat}\n    (hη0 : 0 < η) (hη1 : η ≤ 1) (hβ0 : 0 < β) (hβ1 : β ≤ 1)\n    (hηi : η⁻¹ ≤ X ^ (2 ^ M)) (hβi : β⁻¹ ≤ X ^ (2 ^ M)) (hs0 : 0 < σ) (hs16 : σ ≤ 16)\n    (hσ'0 : 0 < inverseStepExponent (k + 1) e σ)\n    (hσ' : (inverseStepExponent (k + 1) e σ)⁻¹ ≤ Real.exp (X ^ (2 ^ s))) :\n    inverseStepThreshold (k + 1) η β e (6 * ((k + 1 : Nat) : Real)) σ ≤\n      Real.exp (Real.exp (X ^ (2 ^ (max (max (M + partDeg k + 4) (k + 16)) s + 1))))",
+    "context": [],
+    "old_block_sha256": "391b8ec1f161bcd0d5e56c1a80181e1c194d5ae49521c2d8f5cf28f8ec1f04a9",
+    "new_block_sha256": "391b8ec1f161bcd0d5e56c1a80181e1c194d5ae49521c2d8f5cf28f8ec1f04a9"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.envStepKTx3",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "def envStepKTx3 (k μ0 μK μ : Nat) : Nat",
+    "context": [],
+    "old_block_sha256": "5dfcf700b6474b9a428fc1680e589e9bb7af51b684f7996cd43b462561f30a5f",
+    "new_block_sha256": "5dfcf700b6474b9a428fc1680e589e9bb7af51b684f7996cd43b462561f30a5f"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.envBound_stepKx3",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem envBound_stepKx3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp μV μK) (hk : 1 ≤ P.k)\n    (hcov : ∀ l, 1 ≤ l → l ≤ P.k → PolyCoverAt l (uCount P.V (uDegT3 l)) (uExp P.V (uDegT3 l)))\n    (hrec : Section16RecurrenceProfileWith P.k (familyRecThr P.k P.K P.p) (familyRecExp P.k P.p))\n    (hlow : EnvBound (P.k + 1) μ) : EnvBound (P.k + 2) (envStepKTx3 P.k P.μ0 μK μ)",
+    "context": [],
+    "old_block_sha256": "e608be05597764b2b76380ddd82355c5726b56e124ac2764464a4dac60207bf7",
+    "new_block_sha256": "e608be05597764b2b76380ddd82355c5726b56e124ac2764464a4dac60207bf7"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.genMuXK3",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "def genMuXK3 : Nat → Nat",
+    "context": [],
+    "old_block_sha256": "3d6404b18fcbd76c2411337f8602b41cdbe00b1f6807efa25037ab46bfeec678",
+    "new_block_sha256": "3d6404b18fcbd76c2411337f8602b41cdbe00b1f6807efa25037ab46bfeec678"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.genMuXK3_succ",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem genMuXK3_succ {k : Nat} (hk : 1 ≤ k) :\n    genMuXK3 (k + 1) = envStepKTx3 (k + 1) (tightMu0Z (k + 1)) (genMuKZ (k + 1)) (genMuXK3 k)",
+    "context": [],
+    "old_block_sha256": "ee5177594e7ce1a80ce09bfda6d12c4978c63681f1a936f728d3fe5e44df7046",
+    "new_block_sha256": "ee5177594e7ce1a80ce09bfda6d12c4978c63681f1a936f728d3fe5e44df7046"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.envStepKTx3_le_tight",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem envStepKTx3_le_tight {k : Nat} (hk : 15 ≤ k) (μ : Nat) :\n    envStepKTx3 k (tightMu0Z k) (genMuKZ k) μ ≤\n      μ + 10 * 2 ^ (k - 1) + 6 * (k + 4) ^ 2 + partDeg k + 6 * k + 59",
+    "context": [],
+    "old_block_sha256": "86616b6b47b23c8a3e4af6cf76c38686b7e26a290e5033bcdcb189e5965adeb7",
+    "new_block_sha256": "86616b6b47b23c8a3e4af6cf76c38686b7e26a290e5033bcdcb189e5965adeb7"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.envStepKTx3_ge",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem envStepKTx3_ge (k μ0 μK μ : Nat) : 5 * k + 33 ≤ envStepKTx3 k μ0 μK μ",
+    "context": [],
+    "old_block_sha256": "fd738fb8c492d0c810e396aecc894038fbfdea36cd25fd51fe0edede5c6ed0c8",
+    "new_block_sha256": "fd738fb8c492d0c810e396aecc894038fbfdea36cd25fd51fe0edede5c6ed0c8"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.genMuXK3_fifteen",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem genMuXK3_fifteen : genMuXK3 15 + 4 * 15 + 128 ≤ 16 * 2 ^ 15",
+    "context": [],
+    "old_block_sha256": "cc154aa493fb672a789f7c9a8098c8f5f6b33e50cae63b91df03cf62bd9b8d38",
+    "new_block_sha256": "cc154aa493fb672a789f7c9a8098c8f5f6b33e50cae63b91df03cf62bd9b8d38"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.genMuXK3_le16",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem genMuXK3_le16 : ∀ k, 15 ≤ k → genMuXK3 k + 4 * k + 128 ≤ 16 * 2 ^ k",
+    "context": [],
+    "old_block_sha256": "bffe0399566f0e0bc97241e48a6e7d42ad366cdf8df6d155b709b5a0c815fb2c",
+    "new_block_sha256": "bffe0399566f0e0bc97241e48a6e7d42ad366cdf8df6d155b709b5a0c815fb2c"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.genMuXK3_ge",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem genMuXK3_ge {k : Nat} (hk : 2 ≤ k) : 5 * k + 33 ≤ genMuXK3 k",
+    "context": [],
+    "old_block_sha256": "6f3b1807c07b69c9da48d94c96fdc0f565fe21c1a10f64bd41b964829b85d740",
+    "new_block_sha256": "6f3b1807c07b69c9da48d94c96fdc0f565fe21c1a10f64bd41b964829b85d740"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.singlePieceEtaFJ_le_density",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem singlePieceEtaFJ_le_density {Qb : Nat → Real → Real → Real → Real} {alpha : Real}\n    {k : Nat} (ha : 0 < alpha) (ha1 : alpha ≤ 1) (hD : 0 ≤ singlePieceGlobalDensityFJ Qb alpha (alpha / 2) k) :\n    singlePieceEtaFJ Qb alpha k ≤ singlePieceGlobalDensityFJ Qb alpha (alpha / 2) k",
+    "context": [],
+    "old_block_sha256": "d85140c9655537f15c9a9a4f019075a6efff8ef99ebc608de306a4f77030a06d",
+    "new_block_sha256": "d85140c9655537f15c9a9a4f019075a6efff8ef99ebc608de306a4f77030a06d"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.expDegJT3_tight_le",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem expDegJT3_tight_le (k : Nat) :\n    GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3 ≤ 2 * tDegT3 k + 7 * k + 38",
+    "context": [],
+    "old_block_sha256": "8668f871e5185607466e91b01caa8225c7cdd6e723e5ae88ed268d689067ff11",
+    "new_block_sha256": "8668f871e5185607466e91b01caa8225c7cdd6e723e5ae88ed268d689067ff11"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.envStepJT3",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "def envStepJT3 (k μ0 μK μ : Nat) : Nat",
+    "context": [],
+    "old_block_sha256": "bdfe39a80ad9ba93a21643ecfe88e3e202beb1650b7fd7f07a89f8702523f77e",
+    "new_block_sha256": "bdfe39a80ad9ba93a21643ecfe88e3e202beb1650b7fd7f07a89f8702523f77e"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.polyEnvBound_stepJT3",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem polyEnvBound_stepJT3 (P : GenParamsJT3) {μV μK μ : Nat} (H : P.CHyp μV μK) (hk : 1 ≤ P.k)\n    (hcov : ∀ l, 1 ≤ l → l ≤ P.k → PolyCoverAt l (uCount P.V (uDegT3 l)) (uExp P.V (uDegT3 l)))\n    (hrec : Section16RecurrenceProfileWith P.k (familyRecThr P.k P.K P.p) (familyRecExp P.k P.p))\n    (hlow : PolyEnvBound (P.k + 1) μ) : PolyEnvBound (P.k + 2) (envStepJT3 P.k P.μ0 μK μ)",
+    "context": [],
+    "old_block_sha256": "07c11669c68c7aa4f155273f65abd7c258140e6d00a0fd395ddb31681693787d",
+    "new_block_sha256": "07c11669c68c7aa4f155273f65abd7c258140e6d00a0fd395ddb31681693787d"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.polyGenMuJT3",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "def polyGenMuJT3 : Nat → Nat",
+    "context": [],
+    "old_block_sha256": "ec770e253995574f1e2d5767bb18c76fa9494804db6d82c1b1f7aaa431303588",
+    "new_block_sha256": "ec770e253995574f1e2d5767bb18c76fa9494804db6d82c1b1f7aaa431303588"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.polyGenMuJT3_succ",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem polyGenMuJT3_succ {k : Nat} (hk : 1 ≤ k) :\n    polyGenMuJT3 (k + 1) = envStepJT3 (k + 1) (tightMu0Z (k + 1)) (genMuKZ (k + 1)) (polyGenMuJT3 k)",
+    "context": [],
+    "old_block_sha256": "da74e2c0af6cb540e51aa0c5e3646bf452ac96b9226e975fa0afd6875a8dcd22",
+    "new_block_sha256": "da74e2c0af6cb540e51aa0c5e3646bf452ac96b9226e975fa0afd6875a8dcd22"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.envStepJT3_le_tight",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem envStepJT3_le_tight {k : Nat} (hk : 15 ≤ k) (μ : Nat) :\n    envStepJT3 k (tightMu0Z k) (genMuKZ k) μ ≤\n      μ + 10 * 2 ^ (k - 1) + 6 * (k + 4) ^ 2 + 7 * k + 64",
+    "context": [],
+    "old_block_sha256": "19ea3922e16d3b0e51d1ae35790fd6e89704f6941ead7b3b2cead9834d818943",
+    "new_block_sha256": "19ea3922e16d3b0e51d1ae35790fd6e89704f6941ead7b3b2cead9834d818943"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.polyGenMuJT3_fifteen",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem polyGenMuJT3_fifteen : polyGenMuJT3 15 + 4 * 15 + 128 ≤ 16 * 2 ^ 15",
+    "context": [],
+    "old_block_sha256": "460fb920edf91e6d9eff99067e40d79766bf196191ac59bcbc88c2c3d1ff53e1",
+    "new_block_sha256": "460fb920edf91e6d9eff99067e40d79766bf196191ac59bcbc88c2c3d1ff53e1"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.polyGenMuJT3_le16",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem polyGenMuJT3_le16 : ∀ k, 15 ≤ k → polyGenMuJT3 k + 4 * k + 128 ≤ 16 * 2 ^ k",
+    "context": [],
+    "old_block_sha256": "c1e9233dc6aa0c7d24ad58537aad2546dba95f903ceb265e0bd347f5c4a16e3d",
+    "new_block_sha256": "c1e9233dc6aa0c7d24ad58537aad2546dba95f903ceb265e0bd347f5c4a16e3d"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.FinalInputs",
+    "kind": "structure",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "structure FinalInputs",
+    "context": [],
+    "old_block_sha256": "703b4a687272e2106d6d0183e046fbef85e14a84f2684d9e75046e55aa63e593",
+    "new_block_sha256": "703b4a687272e2106d6d0183e046fbef85e14a84f2684d9e75046e55aa63e593"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.polyGenMuJT3_fit",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem polyGenMuJT3_fit {C k0 k : Nat} (hC : 16 ≤ C)\n    (hsmall : ∀ j, k0 ≤ j → j ≤ 14 → polyGenMuJT3 j + 1 ≤ C * 2 ^ j) (hk : k0 ≤ k) :\n    polyGenMuJT3 k + 1 ≤ C * 2 ^ k",
+    "context": [],
+    "old_block_sha256": "8b6f5a5f462a88c7c102aeed46f5d043ae90e9ac6c3437419c95827c0dfcae51",
+    "new_block_sha256": "8b6f5a5f462a88c7c102aeed46f5d043ae90e9ac6c3437419c95827c0dfcae51"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.genMuXK3_fit",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem genMuXK3_fit {C k0 k : Nat} (hC : 16 ≤ C)\n    (hsmall : ∀ j, k0 ≤ j → j ≤ 14 → genMuXK3 j + 2 * j + 22 ≤ C * 2 ^ j) (hk : k0 ≤ k) :\n    genMuXK3 k + 2 * k + 22 ≤ C * 2 ^ k",
+    "context": [],
+    "old_block_sha256": "7b155a781193dc6aeade523c5180302edcb7c6b3edbc5cfaf8e1685985a1c5c8",
+    "new_block_sha256": "7b155a781193dc6aeade523c5180302edcb7c6b3edbc5cfaf8e1685985a1c5c8"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.FinalInputs.params",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "def params (k : Nat) : GenParamsJT3",
+    "context": [
+      "variable (I : FinalInputs)",
+      "include I"
+    ],
+    "old_block_sha256": "3d5aaa2d3041fcbd9b65ab34f3955fa6ed5e31d22986564178f9bb7681234544",
+    "new_block_sha256": "3d5aaa2d3041fcbd9b65ab34f3955fa6ed5e31d22986564178f9bb7681234544"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.FinalInputs.hyp",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem hyp {k : Nat} (hk : 2 ≤ k) : (I.params k).CHyp (tightMuW k) (genMuKZ k)",
+    "context": [
+      "variable (I : FinalInputs)",
+      "include I"
+    ],
+    "old_block_sha256": "1beb02c60fc4cf8bb19a45f5765b802faf66d342e4ea4b891f0fe559a61a8408",
+    "new_block_sha256": "1beb02c60fc4cf8bb19a45f5765b802faf66d342e4ea4b891f0fe559a61a8408"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.FinalInputs.cover",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem cover {l : Nat} (hl : 1 ≤ l) :\n    PolyCoverAt l (uCount (classV I.Kc I.pc l) (uDegT3 l)) (uExp (classV I.Kc I.pc l) (uDegT3 l))",
+    "context": [
+      "variable (I : FinalInputs)",
+      "include I"
+    ],
+    "old_block_sha256": "07b4312ad14725f4f2c1e152603e86ac478df2a909645b2fc1f324581ccb3f05",
+    "new_block_sha256": "07b4312ad14725f4f2c1e152603e86ac478df2a909645b2fc1f324581ccb3f05"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.FinalInputs.covers",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem covers (k : Nat) : ∀ l, 1 ≤ l → l ≤ (I.params k).k →\n    PolyCoverAt l (uCount (I.params k).V (uDegT3 l)) (uExp (I.params k).V (uDegT3 l))",
+    "context": [
+      "variable (I : FinalInputs)",
+      "include I"
+    ],
+    "old_block_sha256": "803ca8e0c794c6933fdfecbccb4f0b9531a56fc6ef9d0bfecee148f365e74a66",
+    "new_block_sha256": "803ca8e0c794c6933fdfecbccb4f0b9531a56fc6ef9d0bfecee148f365e74a66"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.FinalInputs.envBound",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem envBound : ∀ k, 2 ≤ k → EnvBound (k + 2) (genMuXK3 k)",
+    "context": [
+      "variable (I : FinalInputs)",
+      "include I"
+    ],
+    "old_block_sha256": "6ceb45e3101e0f61ad35bffa1a2e7152a2729e5d41b8230cecbcb1abbf6d5a1e",
+    "new_block_sha256": "6ceb45e3101e0f61ad35bffa1a2e7152a2729e5d41b8230cecbcb1abbf6d5a1e"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.FinalInputs.polyEnvBound",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem polyEnvBound : ∀ k, 2 ≤ k → PolyEnvBound (k + 2) (polyGenMuJT3 k)",
+    "context": [
+      "variable (I : FinalInputs)",
+      "include I"
+    ],
+    "old_block_sha256": "6d33fdd6effb47dbf7b6f6b84f03581a8a16e318f9b7468fd9a861b88cdcec18",
+    "new_block_sha256": "6d33fdd6effb47dbf7b6f6b84f03581a8a16e318f9b7468fd9a861b88cdcec18"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.FinalInputs.theorem_16_2_polynomial",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem theorem_16_2_polynomial {k : Nat} (hk : 1 ≤ k) :\n    PolyCoverAt k (uCount (2 ^ (2 ^ tightMuW k)) (uDegT3 k))\n      (uExp (2 ^ (2 ^ tightMuW k)) (uDegT3 k))",
+    "context": [
+      "variable (I : FinalInputs)",
+      "include I"
+    ],
+    "old_block_sha256": "b7cd1a9652a4260c5ef60b8383eea689880561476e843dc1d6c389dea5c45ece",
+    "new_block_sha256": "b7cd1a9652a4260c5ef60b8383eea689880561476e843dc1d6c389dea5c45ece"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.FinalInputs.corollary_16_11_polynomial",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18FinalEnvelopes.lean",
+    "header": "theorem corollary_16_11_polynomial {k : Nat} (hk : 2 ≤ k) :\n    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 / 2 →\n      ∃ e : Real, 0 < e ∧\n        e⁻¹ ≤ (2 / alpha) ^ (2 ^ (GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3)) ∧\n        ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →\n          ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha (k + 2) →\n            ∃ P : Box N (k + 1), ∃ mu : Point N (k + 1) → ZMod N,\n              IsMultilinear mu ∧ (N : Real) ^ e ≤ P.width ∧\n              e * P.carrier.card ≤ section16LargeMultilinearFrequencyCount f P mu alpha",
+    "context": [
+      "variable (I : FinalInputs)",
+      "include I"
+    ],
+    "old_block_sha256": "5c4bd4cc2bb27f36544ab9a54eab0deb45ec9a55371b38e234b4f3f4df77bb56",
+    "new_block_sha256": "5c4bd4cc2bb27f36544ab9a54eab0deb45ec9a55371b38e234b4f3f4df77bb56"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.intervalDiscrepancyClosedThreshold",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIteration.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIteration.lean",
+    "header": "def intervalDiscrepancyClosedThreshold (k : Nat) (delta beta sigma T : Real) : Real",
+    "context": [],
+    "old_block_sha256": "404da762bed7e0078a7146be86e6fe965bb100749dfb0b4c58510cde8e9eaa9f",
+    "new_block_sha256": "404da762bed7e0078a7146be86e6fe965bb100749dfb0b4c58510cde8e9eaa9f"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.FunctionDiscrepancyBound.interval_szemeredi_closed",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIteration.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIteration.lean",
+    "header": "theorem FunctionDiscrepancyBound.interval_szemeredi_closed\n    {k : Nat} {delta beta sigma T : Real} (hk : 2 ≤ k) (hδ : 0 < delta)\n    (hβ : 0 < beta) (hσ : 0 < sigma)\n    (hbound : FunctionDiscrepancyBound (k - 2) (intervalUniformityParameter delta k) beta sigma T)\n    (L : Nat) (hL : intervalDiscrepancyClosedThreshold k delta beta sigma T ≤ L)\n    (B : Finset (Fin L)) (hcard : delta * L ≤ B.card) : HasNatAP (B.image Fin.val) k",
+    "context": [],
+    "old_block_sha256": "824377c7dac7ea2da5534f46ba26dce623a43d8accb0bbee7a025eba3d081510",
+    "new_block_sha256": "824377c7dac7ea2da5534f46ba26dce623a43d8accb0bbee7a025eba3d081510"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.hasNatAP_Icc_of_fin_interval",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIteration.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIteration.lean",
+    "header": "theorem hasNatAP_Icc_of_fin_interval {N k : Nat} {delta : Real}\n    (hfin : ∀ B : Finset (Fin N), delta * N ≤ B.card → HasNatAP (B.image Fin.val) k)\n    (A : Finset Nat) (hA : A ⊆ Finset.Icc 1 N) (hcard : delta * N ≤ A.card) : HasNatAP A k",
+    "context": [],
+    "old_block_sha256": "973d5fad99dacf987117f537152044546d9e500299ec4c0e3af95f44d454428c",
+    "new_block_sha256": "71e982d1248635f4245874d54cf5793eeaf84dbf2c7ab00a3b67b6885ec89aad"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.FunctionDiscrepancyBound.natural_szemeredi_closed",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIteration.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIteration.lean",
+    "header": "theorem FunctionDiscrepancyBound.natural_szemeredi_closed\n    {k : Nat} {delta beta sigma T : Real} (hk : 2 ≤ k) (hδ : 0 < delta)\n    (hβ : 0 < beta) (hσ : 0 < sigma)\n    (hbound : FunctionDiscrepancyBound (k - 2) (intervalUniformityParameter delta k) beta sigma T)\n    (N : Nat) (hN : intervalDiscrepancyClosedThreshold k delta beta sigma T ≤ N)\n    (A : Finset Nat) (hA : A ⊆ Finset.Icc 1 N) (hcard : delta * N ≤ A.card) : HasNatAP A k",
+    "context": [],
+    "old_block_sha256": "64ab4e9d98fc8fbc415cc57139a5b827f35aabadba6840e1ba3fd984b2429552",
+    "new_block_sha256": "64ab4e9d98fc8fbc415cc57139a5b827f35aabadba6840e1ba3fd984b2429552"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.intervalQuadraticGain",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticIterationStep.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticIterationStep.lean",
+    "header": "def intervalQuadraticGain (delta : Real) : Real",
+    "context": [],
+    "old_block_sha256": "dfa0d85234dde7205248abbc8bbd783a039595f2ee27959c184cee64f21761b2",
+    "new_block_sha256": "dfa0d85234dde7205248abbc8bbd783a039595f2ee27959c184cee64f21761b2"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.intervalQuadraticLengthExponent",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticIterationStep.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticIterationStep.lean",
+    "header": "def intervalQuadraticLengthExponent (delta : Real) : Real",
+    "context": [],
+    "old_block_sha256": "feac4e86ab76deeb9e65a70a6815ef0ff60e7a07db98e5291958845fa875b36d",
+    "new_block_sha256": "feac4e86ab76deeb9e65a70a6815ef0ff60e7a07db98e5291958845fa875b36d"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.intervalQuadraticLengthFactor",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticIterationStep.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticIterationStep.lean",
+    "header": "def intervalQuadraticLengthFactor (delta : Real) : Real",
+    "context": [],
+    "old_block_sha256": "e4dc0687becb6e6a769d875daf2c27efc8fd40900e024ae67825a97e4f34be7c",
+    "new_block_sha256": "e4dc0687becb6e6a769d875daf2c27efc8fd40900e024ae67825a97e4f34be7c"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.intervalQuadraticStepThreshold",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticIterationStep.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticIterationStep.lean",
+    "header": "def intervalQuadraticStepThreshold (delta : Real) : Real",
+    "context": [],
+    "old_block_sha256": "9fd89dae520547b99fae287b6e6ea4cd061c836271a6a23f7cd8f942da87ffe3",
+    "new_block_sha256": "9fd89dae520547b99fae287b6e6ea4cd061c836271a6a23f7cd8f942da87ffe3"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.intervalQuadratic_constants_pos",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticIterationStep.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticIterationStep.lean",
+    "header": "theorem intervalQuadratic_constants_pos {delta : Real} (hδ : 0 < delta) :\n    0 < intervalQuadraticGain delta ∧ 0 < intervalQuadraticLengthExponent delta ∧\n      0 < intervalQuadraticLengthFactor delta",
+    "context": [],
+    "old_block_sha256": "ea608abd83d16796c6a9523ac93a91cdba79b84bf635f8a4a2bc8f3c851ac711",
+    "new_block_sha256": "ea608abd83d16796c6a9523ac93a91cdba79b84bf635f8a4a2bc8f3c851ac711"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.interval_quadratic_iteration_step",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticIterationStep.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18QuadraticIterationStep.lean",
+    "header": "theorem interval_quadratic_iteration_step\n    (delta : Real) (hδ : 0 < delta) (hδone : delta ≤ 1)\n    (L : Nat) (hL : intervalQuadraticStepThreshold delta ≤ L)\n    (B : Finset (Fin L)) (d : Real) (hd : delta ≤ d) (hcard : d * L ≤ B.card) :\n    HasNatAP (B.image Fin.val) 4 ∨\n      ∃ l : Nat, ∃ B' : Finset (Fin l),\n        intervalQuadraticLengthFactor delta * (L : Real) ^ intervalQuadraticLengthExponent delta ≤ l ∧\n        (d + intervalQuadraticGain delta) * l ≤ B'.card ∧\n        (HasNatAP (B'.image Fin.val) 4 → HasNatAP (B.image Fin.val) 4)",
+    "context": [],
+    "old_block_sha256": "ec9bb17e550bc2d7dc175a7a3f5176548cea39f6ae9eb6592edef3d94d43b0e2",
+    "new_block_sha256": "3aa3b39b31c068fcc467ce685e31df2edf0c2e29499c1360bea4fa69ada58f2d"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.CommonDiffPartitionOne",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PhasePartitionOne.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PhasePartitionOne.lean",
+    "header": "def CommonDiffPartitionOne (K : Real) (p : Nat) : Prop",
+    "context": [],
+    "old_block_sha256": "61916a11ca094bdbc9746f6aa669355d25be551bd314f886d428838728288125",
+    "new_block_sha256": "61916a11ca094bdbc9746f6aa669355d25be551bd314f886d428838728288125"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Box.width_one",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PhasePartitionOne.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PhasePartitionOne.lean",
+    "header": "theorem Box.width_one {N : Nat} (B : Box N 1) : B.width = (B.axis 0).length",
+    "context": [],
+    "old_block_sha256": "1c8e835b2f0477931e8782c8071053c81787fb830793068c141cbb1e092b65d6",
+    "new_block_sha256": "1c8e835b2f0477931e8782c8071053c81787fb830793068c141cbb1e092b65d6"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Box.mem_carrier_one",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PhasePartitionOne.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PhasePartitionOne.lean",
+    "header": "theorem Box.mem_carrier_one {N : Nat} [NeZero N] (B : Box N 1) (x : Point N 1) :\n    x ∈ B.carrier ↔ x 0 ∈ (B.axis 0).carrier",
+    "context": [],
+    "old_block_sha256": "bd5df668540d1b24bd9fe1a11aebba7c2a510de15cffe64933a2a4af3d10b3be",
+    "new_block_sha256": "bd5df668540d1b24bd9fe1a11aebba7c2a510de15cffe64933a2a4af3d10b3be"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.ModAP.toBoxOne",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PhasePartitionOne.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PhasePartitionOne.lean",
+    "header": "def ModAP.toBoxOne {N : Nat} (P : ModAP N) : Box N 1",
+    "context": [],
+    "old_block_sha256": "405474296ad44cb71aa3151b9b8343427d688e47d5071429900e89d463432c8e",
+    "new_block_sha256": "405474296ad44cb71aa3151b9b8343427d688e47d5071429900e89d463432c8e"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.progressionPhasePartition_of_commonDiffOne",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PhasePartitionOne.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs16PhasePartitionOne.lean",
+    "header": "theorem progressionPhasePartition_of_commonDiffOne {K : Real} {p : Nat}\n    (h : CommonDiffPartitionOne K p) : ProgressionPhasePartition K p",
+    "context": [],
+    "old_block_sha256": "75b426b94e392bfaeba2859e5930e66e9ea80aa5d7d7190518e3d941f47f2d22",
+    "new_block_sha256": "75b426b94e392bfaeba2859e5930e66e9ea80aa5d7d7190518e3d941f47f2d22"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.Theorem182AtSharp.van_der_waerden",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverVanDerWaerden.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18CoverVanDerWaerden.lean",
+    "header": "theorem Theorem182AtSharp.van_der_waerden {c k : Nat} (h : Theorem182AtSharp c k) {r : Nat}\n    (hr : 2 ≤ r) (N : Nat) (hN : szemerediThresholdAt c (1 / (r : Real)) k ≤ N)\n    (color : Nat → Fin r) : HasMonochromaticAP N r color k",
+    "context": [],
+    "old_block_sha256": "4d764cfc96cbe87029e770cb7763ee6016415376c128fa6e250ed77b17c5abba",
+    "new_block_sha256": "4d764cfc96cbe87029e770cb7763ee6016415376c128fa6e250ed77b17c5abba"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.singlePieceGlobalDensityC",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "header": "def singlePieceGlobalDensityC (Qb : Nat → Real → Real → Real → Real)\n    (theta gamma : Real) (k : Nat) : Real",
+    "context": [],
+    "old_block_sha256": "cbd80ec0ff76e3371251147532d7687df5802115f8f5ae264e808f34f67593a2",
+    "new_block_sha256": "cbd80ec0ff76e3371251147532d7687df5802115f8f5ae264e808f34f67593a2"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.singlePieceGlobalQmaxC",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "header": "def singlePieceGlobalQmaxC (Qb : Nat → Real → Real → Real → Real)\n    (theta gamma : Real) (k : Nat) : Real",
+    "context": [],
+    "old_block_sha256": "65a5db800d47d56bdafef6b1d41e2f372819d20fb00ac470039ccb311eeb3bc1",
+    "new_block_sha256": "65a5db800d47d56bdafef6b1d41e2f372819d20fb00ac470039ccb311eeb3bc1"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.singlePieceGlobalWidthC",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "header": "def singlePieceGlobalWidthC (Qb Eb : Nat → Real → Real → Real → Real)\n    (theta gamma : Real) (k : Nat) (eps : Nat → Real) (m q : Nat) : Nat",
+    "context": [],
+    "old_block_sha256": "878cdbef7c10a5b9696da6c45cd95dab266c74c7977b5f4a28c0b0445099d313",
+    "new_block_sha256": "878cdbef7c10a5b9696da6c45cd95dab266c74c7977b5f4a28c0b0445099d313"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.SinglePieceGlobalScaleC",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "header": "def SinglePieceGlobalScaleC (Qb Eb : Nat → Real → Real → Real → Real) (theta gamma : Real) (k : Nat) (eps : Nat → Real)\n    (thr : Nat → Nat) (N m : Nat) : Prop",
+    "context": [],
+    "old_block_sha256": "75372c753c82aad56790463ef559512f6baae493b9cb214a7cefdacc1f7c0e5c",
+    "new_block_sha256": "75372c753c82aad56790463ef559512f6baae493b9cb214a7cefdacc1f7c0e5c"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.single_piece_lift_global_cover'",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "header": "theorem single_piece_lift_global_cover' {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}\n    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)\n    {Qb Eb : Nat → Real → Real → Real → Real}\n    (hcov : ∀ l, 1 ≤ l → l ≤ k → PolyCoverAt l (Qb l) (Eb l))\n    (hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ Qb l g t s)\n    (hEb : ∀ l g t s, 0 < s → s ≤ 1 → 0 < Eb l g t s)\n    (hEb1 : ∀ l g t s, 0 < s → s ≤ 1 → Eb l g t s ≤ 1)\n    (eps : Nat → Real) (thr : Nat → Nat)\n    (hretile : ∀ q, Section16RetiledLinearityBound k q (eps q) (thr q))\n    {N : Nat} [NeZero N] [Fact N.Prime]\n    (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)\n    (hB : section16ThetaOne theta gamma k * (N : Real) ^ (17 * k + 15) ≤\n        generalArrangementCount 8 B ∧\n      (1 - (2 : Real) ^ (-(44 : Real))) * generalArrangementCount 8 B ≤\n        respectedGeneralArrangementCount 8 B phi)\n    (hprodB : HasProductProperty B phi gamma) (m : Nat)\n    (hscale : SinglePieceGlobalScaleC Qb Eb theta gamma k eps thr N m) :\n    ∃ q : Nat, (q : Real) ≤ singlePieceGlobalQmaxC Qb theta gamma k ∧\n      ∃ (S : Box N (k + 1)) (mu : Point N (k + 1) → ZMod N),\n        S.IsProper ∧ IsMultilinear mu ∧\n        singlePieceGlobalWidthC Qb Eb theta gamma k eps m q ≤ S.width ∧\n        singlePieceGlobalDensityC Qb theta gamma k * S.carrier.card ≤\n          (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card",
+    "context": [],
+    "old_block_sha256": "dc1bbd0e2b8b10ca16b036d815132879ea64d744b33f857567e0192cde6d8cd6",
+    "new_block_sha256": "dc1bbd0e2b8b10ca16b036d815132879ea64d744b33f857567e0192cde6d8cd6"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.single_piece_frequency_box_global_cover",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "header": "theorem single_piece_frequency_box_global_cover {k : Nat} (hk : 1 ≤ k) {alpha : Real}\n    (ha : 0 < alpha) (haHalf : alpha ≤ 1 / 2)\n    {Qb Eb : Nat → Real → Real → Real → Real}\n    (hcov : ∀ l, 1 ≤ l → l ≤ k → PolyCoverAt l (Qb l) (Eb l))\n    (hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ Qb l g t s)\n    (hEb : ∀ l g t s, 0 < s → s ≤ 1 → 0 < Eb l g t s)\n    (hEb1 : ∀ l g t s, 0 < s → s ≤ 1 → Eb l g t s ≤ 1)\n    (eps : Nat → Real) (thr : Nat → Nat)\n    (hretile : ∀ q, Section16RetiledLinearityBound k q (eps q) (thr q))\n    {N : Nat} [NeZero N] [Fact N.Prime] (hodd : Odd N)\n    (hN : lemma156ExplicitThreshold k (alpha / 2) (alpha / 2) ≤ (N : Real)) (m : Nat)\n    (hscale : SinglePieceGlobalScaleC Qb Eb alpha (alpha / 2) k eps thr N m)\n    (f : ZMod N → Complex) (hf : DiscValued f) (hnot : ¬ UniformOfDegree f alpha (k + 2)) :\n    ∃ q : Nat, (q : Real) ≤ singlePieceGlobalQmaxC Qb alpha (alpha / 2) k ∧\n      ∃ (P : Box N (k + 1)) (mu : Point N (k + 1) → ZMod N),\n        P.IsProper ∧ IsMultilinear mu ∧\n        singlePieceGlobalWidthC Qb Eb alpha (alpha / 2) k eps m q ≤ P.width ∧\n        singlePieceGlobalDensityC Qb alpha (alpha / 2) k * P.carrier.card ≤\n          section16LargeMultilinearFrequencyCount f P mu alpha",
+    "context": [],
+    "old_block_sha256": "364f7cc59e4b4890f6b1faff0d3d3556d7204969b79464685754849b1f9a010c",
+    "new_block_sha256": "364f7cc59e4b4890f6b1faff0d3d3556d7204969b79464685754849b1f9a010c"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.singlePieceEtaC",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "header": "def singlePieceEtaC (Qb : Nat → Real → Real → Real → Real) (alpha : Real)\n    (k : Nat) : Real",
+    "context": [],
+    "old_block_sha256": "beffc52482950dcfeb44fedd08d71bf79bff93d25ea8c3c6c03e8fbaf777d453",
+    "new_block_sha256": "beffc52482950dcfeb44fedd08d71bf79bff93d25ea8c3c6c03e8fbaf777d453"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.singlePieceGlobalDensityC_pos",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "header": "theorem singlePieceGlobalDensityC_pos {Qb : Nat → Real → Real → Real → Real}\n    {alpha : Real} {k : Nat} (ha : 0 < alpha) (ha1 : alpha ≤ 1)\n    (hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ Qb l g t s) :\n    0 < singlePieceGlobalDensityC Qb alpha (alpha / 2) k",
+    "context": [],
+    "old_block_sha256": "da3d158d4b459194d7f9130b040584134f391062c5601c02fb238d7303c308d8",
+    "new_block_sha256": "da3d158d4b459194d7f9130b040584134f391062c5601c02fb238d7303c308d8"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.singlePieceEtaC_pos",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "header": "theorem singlePieceEtaC_pos {Qb : Nat → Real → Real → Real → Real}\n    {alpha : Real} {k : Nat} (ha : 0 < alpha) (ha1 : alpha ≤ 1)\n    (hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ Qb l g t s) : 0 < singlePieceEtaC Qb alpha k",
+    "context": [],
+    "old_block_sha256": "ae8615a055c33df01c07813475b22f98bfa80343eaa81a18ef56f4002dc6e456",
+    "new_block_sha256": "ae8615a055c33df01c07813475b22f98bfa80343eaa81a18ef56f4002dc6e456"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.single_piece_localization_global_cover",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "header": "theorem single_piece_localization_global_cover {k : Nat} (hk : 1 ≤ k) {alpha : Real}\n    (ha : 0 < alpha) (haHalf : alpha ≤ 1 / 2)\n    {Qb Eb : Nat → Real → Real → Real → Real}\n    (hcov : ∀ l, 1 ≤ l → l ≤ k → PolyCoverAt l (Qb l) (Eb l))\n    (hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ Qb l g t s)\n    (hEb : ∀ l g t s, 0 < s → s ≤ 1 → 0 < Eb l g t s)\n    (hEb1 : ∀ l g t s, 0 < s → s ≤ 1 → Eb l g t s ≤ 1)\n    (eps : Nat → Real) (thr : Nat → Nat)\n    (hretile : ∀ q, Section16RetiledLinearityBound k q (eps q) (thr q))\n    {e : Real} (he : e ≤ 1 / 2)\n    {N : Nat} [NeZero N] [Fact N.Prime] (hodd : Odd N)\n    (hN : lemma156ExplicitThreshold k (alpha / 2) (alpha / 2) ≤ (N : Real)) (m : Nat)\n    (hscale : SinglePieceGlobalScaleC Qb Eb alpha (alpha / 2) k eps thr N m)\n    (hwide : ∀ q : Nat, (q : Real) ≤ singlePieceGlobalQmaxC Qb alpha (alpha / 2) k →\n      (N : Real) ^ e ≤ singlePieceGlobalWidthC Qb Eb alpha (alpha / 2) k eps m q)\n    (hlarge : 4 ≤ (N : Real) ^ e)\n    (f : ZMod N → Complex) (hf : DiscValued f) (hnot : ¬ UniformOfDegree f alpha (k + 2)) :\n    ∃ phi : ZMod N → ZMod N, ∃ K l : Nat, ∃ Q : Fin K → ModAP N,\n      PolynomialOn (k + 2) Finset.univ phi ∧\n      IsPartition (fun i => (Q i).carrier) Finset.univ ∧\n      (∀ i, (Q i).IsProper ∧ ((Q i).length = l ∨ (Q i).length = l + 1)) ∧\n      (N : Real) ^ e / (6 * (k + 1 : Nat)) ≤ l ∧\n      (∀ i, ((Q i).length : Real) ≤ Real.sqrt N) ∧\n      ¬ UniformOnPartition (phaseTwist f phi) (k + 1) (singlePieceEtaC Qb alpha k) Q (l + 1)",
+    "context": [],
+    "old_block_sha256": "eb4aa69f91808b4e5c0c43e150fceb8e33bab016d74341e78a190164dd08d91b",
+    "new_block_sha256": "eb4aa69f91808b4e5c0c43e150fceb8e33bab016d74341e78a190164dd08d91b"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.SinglePieceModulusConditionsC",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "header": "def SinglePieceModulusConditionsC (Qb Eb : Nat → Real → Real → Real → Real) (alpha : Real) (k : Nat) (eps : Nat → Real) (thr : Nat → Nat)\n    (e : Real) (N : Nat) : Prop",
+    "context": [],
+    "old_block_sha256": "887f0bd3011e2d640fade14fe400d7248552e31f3177188e38e2f1d03b985fbf",
+    "new_block_sha256": "887f0bd3011e2d640fade14fe400d7248552e31f3177188e38e2f1d03b985fbf"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.single_piece_inverse_step_global_cover",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "header": "theorem single_piece_inverse_step_global_cover {k : Nat} (hk : 1 ≤ k) {alpha : Real}\n    (ha : 0 < alpha) (haHalf : alpha ≤ 1 / 2)\n    {Qb Eb : Nat → Real → Real → Real → Real}\n    (hcov : ∀ l, 1 ≤ l → l ≤ k → PolyCoverAt l (Qb l) (Eb l))\n    (hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ Qb l g t s)\n    (hEb : ∀ l g t s, 0 < s → s ≤ 1 → 0 < Eb l g t s)\n    (hEb1 : ∀ l g t s, 0 < s → s ≤ 1 → Eb l g t s ≤ 1)\n    (eps : Nat → Real) (thr : Nat → Nat)\n    (hretile : ∀ q, Section16RetiledLinearityBound k q (eps q) (thr q))\n    {e : Real} (he0 : 0 < e) (he : e ≤ 1 / 2) {beta sigma T Tloc : Real}\n    (hbound : FunctionDiscrepancyBound (k + 1)\n      ((singlePieceEtaC Qb alpha k / 2) / (2 * (k + 1 + 2 : Nat) : Real) ^ (k + 1 + 2))\n      beta sigma T)\n    (hb : 0 < beta) (hs : 0 < sigma) (hs16 : sigma ≤ 16)\n    (hmod : ∀ (N : Nat) [NeZero N] [Fact N.Prime], Tloc ≤ (N : Real) →\n      SinglePieceModulusConditionsC Qb Eb alpha k eps thr e N) :\n    FunctionDiscrepancyBound (k + 2) alpha (singlePieceEtaC Qb alpha k * beta / 4)\n      (inverseStepExponent (k + 1) e sigma)\n      (max (shortLocalizationThreshold (k + 1) e (6 * ((k + 1 : Nat) : Real)) T Tloc)\n        (inverseStepThreshold (k + 1) (singlePieceEtaC Qb alpha k) beta e\n          (6 * ((k + 1 : Nat) : Real)) sigma))",
+    "context": [],
+    "old_block_sha256": "618fba47df6e1b224c075166ec85d34f27ef258ce9e08282bb4d65f69235df95",
+    "new_block_sha256": "618fba47df6e1b224c075166ec85d34f27ef258ce9e08282bb4d65f69235df95"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.singlePieceGlobalDensityC_le_one",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18SinglePieceCoverInverse.lean",
+    "header": "theorem singlePieceGlobalDensityC_le_one {Qb : Nat → Real → Real → Real → Real}\n    {alpha : Real} {k : Nat} (ha : 0 < alpha) (ha1 : alpha ≤ 1)\n    (hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ Qb l g t s) :\n    singlePieceGlobalDensityC Qb alpha (alpha / 2) k ≤ 1",
+    "context": [],
+    "old_block_sha256": "5c11262c53a9d2f0de7f3a4db4ea2c413f91bd64f50ef5e354d8ce28ccc27eef",
+    "new_block_sha256": "5c11262c53a9d2f0de7f3a4db4ea2c413f91bd64f50ef5e354d8ce28ccc27eef"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.stepP_eq",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18TightClasses.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18TightClasses.lean",
+    "header": "theorem stepP_eq (k : Nat) : stepP k = 2 ^ (32 * 2 ^ k + 6)",
+    "context": [],
+    "old_block_sha256": "04ece83831d35489c0dd979ded8b7ea40b9c6c773f6c4d3e1e31a756fd8b47db",
+    "new_block_sha256": "04ece83831d35489c0dd979ded8b7ea40b9c6c773f6c4d3e1e31a756fd8b47db"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.stepT_eq",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18TightClasses.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18TightClasses.lean",
+    "header": "theorem stepT_eq (k : Nat) : stepT k = 2 ^ (64 * 2 ^ k)",
+    "context": [],
+    "old_block_sha256": "cfcaf17c62a22e126dbbea9cd3ab8f8957a7aaddaac963fee2eb4a8f311114c6",
+    "new_block_sha256": "cfcaf17c62a22e126dbbea9cd3ab8f8957a7aaddaac963fee2eb4a8f311114c6"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.split_pair_tight",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18TightClasses.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18TightClasses.lean",
+    "header": "theorem split_pair_tight : ∀ k, 3 ≤ k → 2 * (splitPair k).2 ≤ 2 ^ (68 * 2 ^ k)",
+    "context": [],
+    "old_block_sha256": "82c7577095846ccafdd1bde1eb1eb9a2c05479d7a5a9595da7dce29449e581bc",
+    "new_block_sha256": "82c7577095846ccafdd1bde1eb1eb9a2c05479d7a5a9595da7dce29449e581bc"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.uDeg68",
+    "kind": "def",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18TightClasses.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18TightClasses.lean",
+    "header": "def uDeg68 (l : Nat) : Nat",
+    "context": [],
+    "old_block_sha256": "f063471fdfd11f8c4044d561812a68ad3f4b2e11a267c976949c9542bb426e69",
+    "new_block_sha256": "f063471fdfd11f8c4044d561812a68ad3f4b2e11a267c976949c9542bb426e69"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.split_pair_le_uDeg68",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18TightClasses.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18TightClasses.lean",
+    "header": "theorem split_pair_le_uDeg68 {l : Nat} (hl : 2 ≤ l) :\n    (splitPair l).1 + (splitPair l).2 + l + 1 ≤ uDeg68 l",
+    "context": [],
+    "old_block_sha256": "ea5a577dc3e793a1faf8bc61645d5217e10ff6bc54859e9d2ef602bf417f4082",
+    "new_block_sha256": "ea5a577dc3e793a1faf8bc61645d5217e10ff6bc54859e9d2ef602bf417f4082"
+  },
+  {
+    "name": "LeanProofs.GowersSzemeredi.polyCoverAt_class68",
+    "kind": "theorem",
+    "old_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18TightClasses.lean",
+    "new_file": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18TightClasses.lean",
+    "header": "theorem polyCoverAt_class68 (Kc pc : Nat → Nat) (hK : ∀ k, 1 ≤ Kc k) (hp : ∀ k, 0 < pc k)\n    (hlem : ∀ k, 1 ≤ k → AbstractFamilyLemma166At k\n      (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))))\n    {l : Nat} (hl1 : 1 ≤ l) :\n    PolyCoverAt l (uCount (classV Kc pc l) (uDeg68 l)) (uExp (classV Kc pc l) (uDeg68 l))",
+    "context": [],
+    "old_block_sha256": "83bc7d7637b80db9a65ee468b2e7868aa68bb8fb06c7da0d214c0c63c5bb7319",
+    "new_block_sha256": "83bc7d7637b80db9a65ee468b2e7868aa68bb8fb06c7da0d214c0c63c5bb7319"
+  }
+]

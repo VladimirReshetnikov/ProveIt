@@ -1,0 +1,91 @@
+--- /tmp/gowers-reuse135-archive-tools-repaired703b/archive.py
++++ /tmp/gowers-next297-post-native-tools/archive.py
+@@ -3,7 +3,7 @@
+ sys.dont_write_bytecode = True
+ from pathlib import Path
+ import argparse, fcntl, functools, hashlib, json, re, runpy
+-NATIVE = Path('/tmp/gowers-reuse135-native-tools')
++NATIVE = Path('/tmp/gowers-next297-native-tools')
+ PINS = {'common.py': '4c71aedd3ec630046fd5dd5d205e250893c93bb0b1f1d2b0faf69bfe89e07328',
+         'capture.py': '8463cc8e288255e12fd9ad777f8a2fe7f0a75aa6cbf888f423129a112f6cecd2',
+         'run.py': 'bf1aa169ed14fc098fd20c57a93a8c9904718bfc2b2648997384a3effd61e83a'}
+@@ -35,7 +35,7 @@
+         by_source[str(path)] = destination; return destination
+     snapshot_path = Path(args.snapshot[0]).resolve(); snapshot_hash = args.snapshot[1]
+     bind(snapshot_path, snapshot_hash, 'snapshot.json'); snapshot = json.loads(snapshot_path.read_text())
+-    require(snapshot['source_commit'] == '703b85dbbc3a2b897d9f77e854b89eefed6efb8f', 'Wrong batch source')
++    require(snapshot['source_commit'] == '9dce5ce380082bb050254e9625c6aa1ce48ae34a', 'Wrong batch source')
+     require(same(snapshot['tools'], {str(NATIVE / name): value for name, value in PINS.items()}), 'Native tool keyset/pins mismatch')
+     root = Path(snapshot['root']); worker_check(root)
+     lock_path = Path('/tmp') / ('gowers-native-' + hashlib.sha256(str(root).encode()).hexdigest()[:16] + '.lock')
+--- /tmp/gowers-reuse135-retention-final-verifier/verify_retention.py
++++ /tmp/gowers-next297-post-native-tools/verify_retention.py
+@@ -6,8 +6,12 @@
+ from common import *
+ from run import verify_prior
+ 
+-SOURCE = '703b85dbbc3a2b897d9f77e854b89eefed6efb8f'
+-SNAPSHOT_SHA = '70cb53c5f7f38d2064518233f85b8c9b23a83036dea5f053f2bb376e9c2c00a6'
++SOURCE = '9dce5ce380082bb050254e9625c6aa1ce48ae34a'
++SNAPSHOT_SHA = '320b01d77d6ecb4a100d34fc16a4dfa35133060850c997003d58d62270d5bb2d'
++ADDED_MODULES = {
++    'GowersSzemeredi.Proofs05FullPartitionScale',
++    'GowersSzemeredi.Proofs05ThresholdFreeCorollary58',
++}
+ REVIEW = Path('/tmp/gowers-reuse135-seven-supplemental-retention-input-review.json')
+ REVIEW_SHA = '0ce8d9f986e2963fceb6c08c4c96193e9db4c5ca061fde0ee1cd4fe92e7e57dc'
+ HELPERS = {'common.py': '4c71aedd3ec630046fd5dd5d205e250893c93bb0b1f1d2b0faf69bfe89e07328',
+@@ -34,14 +38,15 @@
+     for path, expected in protected.items(): require(sha(path) == expected, 'Input/helper pin mismatch: ' + path)
+     snapshot = load(a.snapshot); root = Path(snapshot['root']); review = load(REVIEW)
+     require(snapshot['source_commit'] == SOURCE, 'Wrong accepted source')
+-    require(set(snapshot['tools']) == {str(Path('/tmp/gowers-reuse135-native-tools') / n) for n in ('common.py', 'capture.py', 'run.py')}, 'Snapshot tool keyset mismatch')
++    require(set(snapshot['tools']) == {str(Path('/tmp/gowers-next297-native-tools') / n) for n in ('common.py', 'capture.py', 'run.py')}, 'Snapshot tool keyset mismatch')
+     protected.update(snapshot['tools']); protected[snapshot['plan']['path']] = snapshot['plan']['sha256']
+     for path, expected in protected.items(): require(sha(path) == expected, 'Tool/plan mismatch: ' + path)
+     worker_check(root); guard = source_guard(snapshot)
+-    require([len(snapshot['modes'][m]['roots']) for m in ('core', 'shared', 'supplemental')] == [1, 57, 18], 'Unexpected current roots')
+-    require([snapshot['modes'][m]['module_count'] for m in ('core', 'shared', 'supplemental')] == [603, 1904, 351], 'Unexpected current closures')
++    require([len(snapshot['modes'][m]['roots']) for m in ('core', 'shared', 'supplemental')] == [1, 58, 18], 'Unexpected current roots')
++    require([snapshot['modes'][m]['module_count'] for m in ('core', 'shared', 'supplemental')] == [573, 1906, 351], 'Unexpected current closures')
+     new_modules = set(snapshot['modes']['supplemental']['cumulative_modules'])
+-    require(len(new_modules) == 1953, 'Unexpected current union')
++    require(len(new_modules) == 1955, 'Unexpected current union')
++    require(ADDED_MODULES <= set(snapshot['graph']) and ADDED_MODULES <= new_modules, 'Required two added modules absent from current snapshot/native union')
+ 
+     # Traverse actual receipt links; each verifier checks current artifacts,
+     # source guards, exact events, terminal/log output and its own chronology.
+@@ -57,6 +62,7 @@
+         else: require(r['previous_receipt'] is None, 'Core is not a fresh-batch start')
+     chronology([receipts['core']['recorded_at'], receipts['shared']['started_at'], receipts['shared']['recorded_at'], receipts['supplemental']['started_at']])
+     final = receipts['supplemental']
++    require(ADDED_MODULES <= set(final['artifacts_after']), 'Required two added modules absent from verified actual native receipt')
+ 
+     # Historical evidence stays attributed to its one actual 25-root command.
+     old_pins = review['published_evidence_pins']
+@@ -122,7 +128,8 @@
+     for commit in (review['historical_validated_source_commit'], review['published_checkpoint_commit'], SOURCE): committed(root, commit, inputs)
+     overlap = retained & new_modules; outside = retained - new_modules
+     require(len(overlap) == 116 and len(outside) == 9 and sorted(outside) == review['retained_union']['outside_new_native_scope_modules'], 'Retained overlap changed')
+-    require(new_modules | retained == set(old_graph), 'Combined current coverage differs from historical1962 union')
++    require(ADDED_MODULES.isdisjoint(old_graph), 'Added modules already occur in historical union')
++    require(new_modules | retained == set(old_graph) | ADDED_MODULES and len(new_modules | retained) == 1964, 'Combined current coverage differs from historical1962 union plus exactly the two added modules')
+     for path, digest in inputs.items(): protected[str(root / path)] = digest
+     for path, digest in snapshot['source_hashes'].items(): protected[str(root / path)] = digest
+     for path, expected in protected.items(): require(sha(path) == expected, 'Protected input changed')
+@@ -148,11 +155,12 @@
+         'retained_scopes': scope_metadata, 'retained_input_hashes': dict(sorted(inputs.items())),
+         'retained_artifacts': observed, 'overlap_with_new_receipt_modules': sorted(overlap),
+         'outside_new_receipt_modules': sorted(outside),
+-        'coverage': {'new_native_union': 1953, 'retained_union': 125, 'retained_overlap': 116,
+-            'retained_outside': 9, 'combined_union': 1962, 'retained_unique_inputs': 128},
++        'coverage': {'new_native_union': 1955, 'retained_union': 125, 'retained_overlap': 116,
++            'retained_outside': 9, 'combined_union': 1964, 'retained_unique_inputs': 128,
++            'historical_union': 1962, 'added_native_modules': sorted(ADDED_MODULES)},
+         'attribution': 'The seven retained roots belong to the historical single 25-root/437-module command. Their own closure counts are metadata; no seven new commands, root footers or root exits are claimed.',
+         'checks': {'all_three_actual_new_modes_verified': True, 'historical_events_and_log_verified': True,
+-            'retained_sources_match_historical_publication_and703b': True, 'all125_retained_artifacts_fresh_and_stable': True,
++            'retained_sources_match_historical_publication_and_current_source': True, 'all125_retained_artifacts_fresh_and_stable': True,
+             'overlap116_matches_new_final_receipt': True, 'outside9_matches_published_historical_receipt': True},
+         'artifact_record_semantics': 'Native helper records freshness, mtime_ns and size; no separate artifact-content hashes are claimed.',
+         'evidence_hashes': protected, 'native_commands_executed_by_this_verifier': 0}

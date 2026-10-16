@@ -1,0 +1,64 @@
+{
+  "status": "PASS independent narrow source repair review; targeted/native replay outcome not certified by this review",
+  "findings": [],
+  "failed_source_commit": "9dce5ce380082bb050254e9625c6aa1ce48ae34a",
+  "owner": "Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18GeneralIteration.lean",
+  "original_source_sha256": "60c54ae1983eb400ec7d78036139e1a5dfba98c3e4a88146de0fcf060a7759fc",
+  "repaired_source_sha256": "ea464a5217c03066e2e3b7343f1a6dddf393010ab8d02717ed57e0347a8d13e1",
+  "exact_change": {
+    "before": "Q.isProper_of_step_pos (by decide)",
+    "after": "Q.isProper_of_step_pos (by change 0 < (1 : Nat); decide)",
+    "occurrences": 1,
+    "line": 41
+  },
+  "mathematics": [
+    "Q is the local NatAP structure ⟨1,1,N⟩, so its step projection is definitionally1 independently of N.",
+    "The existing provider asks only for0<Q.step. The change tactic exposes the definitionally equal closed proposition0<(1:Nat), and decide proves that proposition.",
+    "The properness proof therefore has the identical type and meaning. There is no added nonempty or positive-N hypothesis; N=0 and all original k/delta premises are preserved."
+  ],
+  "preservation": {
+    "complete_declarations_headers_contexts": 4,
+    "exact_non_theorem_blocks": 1,
+    "other_complete_blocks_exact": 3,
+    "changed_proof_body_lines_before": 15,
+    "changed_proof_body_lines_after": 15,
+    "owner_source_lines_before": 66,
+    "owner_source_lines_after": 66,
+    "source_delta": 0,
+    "proof_delta": 0,
+    "imports_identical": true,
+    "all_declaration_line_numbers_identical": true,
+    "inventory_owner_occurrences": [],
+    "inventory_location_delta": []
+  },
+  "provider": {
+    "path": "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Proofs18NaturalIntervalIncrement.lean",
+    "sha256": "5b54cc62c03808d8dd0ba9bb6caa8e7b5e2d0252ecb0f793d8e66c94f556eddc",
+    "line": 11
+  },
+  "definitions": {
+    "path": "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/Lean/GowersSzemeredi/Definitions.lean",
+    "sha256": "1ff6ecb2f2cf9ca17117a73b8644689e180d2145f410bcc44066f166e37f5d77",
+    "NatAP_structure_line": 63
+  },
+  "preserved_failure": {
+    "receipt_path": "/tmp/gowers-next297-integrated9dce-core-attempt1/receipt.json",
+    "receipt_sha256": "28949134b834f72050984bdc8d832dea0c64889dc3c4071043933e4489197475",
+    "log_path": "/tmp/gowers-next297-integrated9dce-core-attempt1/native.log",
+    "log_sha256": "be6f685c289157e7920019d74937c01643e83d2a38c652e35393320ec324ab98",
+    "terminal_exit": 1,
+    "expected_core_modules": 573,
+    "diagnostic": "Expected type must not contain free variables:0<{start:=1,step:=1,length:=N}.step"
+  },
+  "inventory": {
+    "path": "/home/codex/.codex/worktrees/9c9b/Proofs/Combinatorics/Ramsey/gowers-proof-status.json",
+    "sha256": "6ba9ef5ed2fd95dab508eae0b2ee15191ef7e2795da094c0286b4b413266b812"
+  },
+  "scope": "Only one closed-goal elaboration clarification; preserves the approved source/proof saving and every public interface. No source import graph or validation root changes.",
+  "native_result_claimed": false,
+  "repository_git_cache_or_existing_evidence_modified": false,
+  "review_script": {
+    "path": "/tmp/gowers_review_next297_general_iteration_repair1.py",
+    "sha256": "c9576d507fd2633a8d420f956de9c3804803f8bd6c91a32e3eadf550cbe59e30"
+  }
+}
