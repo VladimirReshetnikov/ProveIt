@@ -84,6 +84,18 @@ historical sweeps still lack full drivers. The
 records the practical interface requirements. No new literal-machine consistency
 endpoint follows from these controls or finite checks.
 
+Batch 150 adds sources 20–23 (placement `a6823de93`, reconciliation
+`ad685a601`): low-code falsity calibration and captured closures, a
+**two-parameter EPSC** interpretation, equivalent native protected-witness
+rules, and quantified-NAND tableaux. All advertised functional checks and
+bounded searches reproduce. The new 255/271 and 341/343 tables are separate
+compiler/initializer controls; none implements these new complete frontends
+or improves public 253. The 269 grammar control survives full-cost repricing.
+[Raw PSC notes](raw_psc.md#batch-150-two-slots-and-native-rules),
+[logical interfaces](logical_engine_completeness.md#batch-150-three-further-complete-interfaces)
+and [initializer controls](mira_backend.md#batch-150-initializer-controls)
+record their actionable consequences. The host now reconciles 23 sources.
+
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
 A positive singleton-decoder hull covers the root's members without

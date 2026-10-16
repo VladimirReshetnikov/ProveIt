@@ -277,3 +277,40 @@ choices reproduce. The full-equality PSC controls reach278 without explicit
 IR and282 with IR; these improve the fixed measurements above without giving
 new binary/calibration proofs. See the complete
 [intake149 reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch-149-binding-certificates-and-shared-substitution).
+
+## Batch 150: three further complete interfaces
+
+Reviewed sources 20–23 add three concrete complete reference interfaces:
+source 20's captured-closure tableau keeps the matrix namespace separate
+from private template labels; source 21 bounds the matrix environment to
+[x,y,p,q] using its independently calibrated EPSC2 theory; source 23 replaces
+implication/falsity/forall syntax by R and quantified NAND Q, binding both
+children of Q. Each public checker reconstructs only its intended theory
+roots, checks all required branches and enforces fresh witnesses. Their
+ordinary completeness proofs and finite tests are accepted at intake; no
+new binary implementation is supplied for these frontends.
+
+Source 22 instead retains a complete K/S/contraposition Hilbert kernel and
+implements a native closure production. Its unary protected-witness version
+removes a separate matrix argument, while adding a bound parser and shared
+edit passes. The equivalent basic-rule and axiom versions provide controlled
+comparators. Keep their codecs separate: source 22 has bijective Bottom0,
+whereas source 20's exceptional Bottom1 codec also normalizes a Truth0 alias.
+Neither is identified with the existing machine by the ordinary theory proof.
+
+The source 23 old-word control remains 269 states after independent full-cost
+repricing of all 6,720 distinct recipes; its 960/6,000 advertised searches
+originally ranked only decision nodes. The retained source 19 word already
+has a 268-state control. Every future comparison must charge the actual
+compiled dispatcher depth, initialization, arithmetic, matrix generation,
+branch storage and freshness. The four detailed dossiers and original
+recovery commands are in the closure-kernel host's batch 150 section.
+
+Separately, `Tarski.complete` now proves completeness of the full named
+primitive-falsity calculus without supplied classical-basis hypotheses.
+The attributed [107-certificate Lean port](lukasiewicz_basis.md) derives
+K/S/Peirce from rho8 and ex falso from original rho6. This closes the
+specific gap in the imported conditional theorem, while leaving numerical
+syntax, relative runtime falsity, theory emission, enumeration and binary
+simulation as distinct obligations. It does not repair the reduced systems
+refuted by the earlier fixed-slot and finite-sort countermodels.

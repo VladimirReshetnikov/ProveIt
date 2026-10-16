@@ -259,3 +259,32 @@ syntax and proof-transport result remains to be checked. The separate
 equality-free CP/GIC experiment is analyzed in
 `equality_free_bisimulation.md`; it cannot use this PSC exact-image lemma
 without another proof.
+
+## Batch 150: two slots and native rules
+
+The reviewed source 21 in the closure-kernel host now gives an ordinary
+ZFC-level consistency calibration for **EPSC2**, restricting free matrix
+variables to x,y,p,q while allowing arbitrary internal quantifiers. The proof
+obtains covers, Union and binary bounds with this budget, then hereditary
+Pairing before encoding parameter tuples. Only hereditary interpretations
+are packed; incoming-profile equivalence need not preserve arbitrary raw
+predicates. Restoring a seed uses the second slot, and the support filter
+then uses the hull and packed tuple. This is a useful concrete interface
+reduction, not a finite first-order axiom set or a smaller measured machine.
+One-slot and parameter-free versions remain open.
+
+Source 22 proves an alternative presentation theorem: EPSC is equivalent to
+its global boundedness-to-hull rule, even with purely logical premises. The
+proof guards the matrix by its **open** boundedness statement and completes
+the premise before applying the rule. Universally closing that guard first
+fails in the delivered three-object counterexample. A unary protected-witness
+rule uses `forall b beta` as the matrix and recovers the basic rule through
+an unused witness slot. Its complete numeric de Bruijn reference has two
+76-line positive closure certificates, but no compiled binary table.
+
+These results complement the prior raw PSC and hereditary-saturation
+resources; neither is currently a Lean theorem for the full new theory.
+The complete proofs, attribution, diagnostic counterexamples and replay
+limits are recorded in
+[the batch 150 reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch-150-bounded-parameters-native-closure-and-quantified-nand)
+and `intake-150-source-21.md` / `intake-150-source-22.md` beside it.

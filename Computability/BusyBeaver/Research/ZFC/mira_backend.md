@@ -162,3 +162,27 @@ the emitted table to the RM semantics, prove the initializer and box contracts,
 and connect each edited theory program to its intended calculus and ZFC
 metatheory. State minimization must then measure actual emitted tables,
 including initialization, rather than infer savings from formula length.
+
+## Batch 150 initializer controls
+
+Source 21's reviewed initializer has, for nine nonnegative register values
+of sum S and positive n,m, gap `n(m+2)+2`, `S+28+2n+m` states and exactly
+`S+28+6n+(m+2)n(n+2)` steps. The frontier/counter invariant accounts for all
+nonzero cells and the blank exterior. For required gap 102, minimal cost
+`2n+m=27` occurs at (6,15), (7,13), (8,11); (6,15) is fastest. Integrating
+it preserves all 572 runtime rows and changes the old clean assembler from
+408 to 341 states, or 343 with next-proof value 2. Both tables and all finite
+frame/affine checks reproduce. This saving compares two clean-assembler
+initializers and cannot be subtracted from the optimized public 253 table.
+
+Source 20 separately transfers the attributed public 253 initializer idea
+into source 09's decoder 256, obtaining a 255-state table. Its 606,702-step
+blank run reaches the recorded whole frame; independent simulation checks
+all 283 nonzero cells and the blank exterior. Its 8,391 affine checks and
+57,150 bounded fold attempts pass, with no surviving fold. Those contracts
+and finite runs do not prove arbitrary runtime or a new consistency endpoint.
+The source's separate EPSC 271 control also reproduces; its 276 comparison
+has only a table and historical data, without the generating search.
+
+See the host's `intake-150-source-20.md` and `intake-150-source-21.md` for the
+exact scope, provenance, ordinary initializer proof and reproducible commands.
