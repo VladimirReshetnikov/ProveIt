@@ -874,13 +874,6 @@ private lemma selectionEta_canonical {k : Nat} :
   rcases selectionEtaZero_cases e j with h | h <;>
     simp [selectionEta, selectionCanonicalDigit, selectionDigitInt, h]
 
-private lemma selectionEta_negativeCanonical {k : Nat} :
-    selectionEta (selectionNegativeCanonicalDigit (k := k)) =
-      fun e j ↦ -selectionEtaZero e j := by
-  funext e j
-  rcases selectionEtaZero_cases e j with h | h <;>
-    simp [selectionEta, selectionNegativeCanonicalDigit, selectionDigitInt, h]
-
 private lemma selectionRelation_canonical_some {N k : Nat} [NeZero N]
     (phi : Point N (k + 1) → ZMod N) (R : GeneralArrangement N k 8)
     (hadd : IsAdditiveTuple R.crossSection) (A : Finset (Fin (k + 1))) :

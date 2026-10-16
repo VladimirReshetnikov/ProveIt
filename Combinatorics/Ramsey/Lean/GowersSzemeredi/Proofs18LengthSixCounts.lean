@@ -21,12 +21,6 @@ open BaseCase
 
 /-! ### Power calculus -/
 
-theorem pow_le_pow_of_base_le {x y : Real} (hy : 0 ≤ y) (hxy : y ≤ x) (n : Nat) :
-    y ^ n ≤ x ^ n := pow_le_pow_left₀ hy hxy n
-
-theorem pow_mono_exp {x : Real} (hx : 1 ≤ x) {a b : Nat} (hab : a ≤ b) : x ^ a ≤ x ^ b :=
-  pow_le_pow_right₀ hx hab
-
 /-- `y ≤ x^a`, `z ≤ x^b` give `y z ≤ x^(a+b)`. -/
 theorem mul_le_pow_add {x y z : Real} {a b : Nat} (hz0 : 0 ≤ z)
     (hy : y ≤ x ^ a) (hz : z ≤ x ^ b) (hx : 0 ≤ x) : y * z ≤ x ^ (a + b) := by
@@ -340,11 +334,6 @@ theorem nat_affine_le_pow {w : Real} {c m n : Nat} {a b j : Nat} (hw : 2 ≤ w) 
     exact add_le_pow_succ hw hmn h1
   rw [Nat.cast_mul]
   exact const_mul_le_pow hw (Nat.cast_nonneg _) hc (Nat.cast_nonneg _) hs
-
-theorem nat_max_one_le_pow {w : Real} {n a : Nat} (hw : 2 ≤ w) (hn : (n : Real) ≤ w ^ a) :
-    ((max 1 n : Nat) : Real) ≤ w ^ a := by
-  rw [Nat.cast_max, Nat.cast_one]
-  exact max_le (one_le_pow₀ (le_trans (by norm_num) hw)) hn
 
 /-- The sample count from separate family-size and parameter bases. -/
 theorem famPieceSamples_le_two_bases {ν w rho : Real} {Qr : Real → Real}

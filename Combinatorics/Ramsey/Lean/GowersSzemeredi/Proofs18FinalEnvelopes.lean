@@ -55,13 +55,6 @@ end LeanProofs.GowersSzemeredi
 
 namespace LeanProofs.GowersSzemeredi
 
-/-- `(n+1)² ≤ 4^n` for `n ≥ 1`. -/
-theorem succ_sq_le_four_pow : ∀ n, 1 ≤ n → (n + 1) ^ 2 ≤ 4 ^ n := by
-  intro n _
-  calc (n + 1) ^ 2 ≤ (2 ^ n) ^ 2 :=
-      Nat.pow_le_pow_left (Nat.succ_le_of_lt (Nat.lt_two_pow_self (n := n))) 2
-    _ = 4 ^ n := by rw [← pow_mul, Nat.mul_comm n 2, pow_mul]; norm_num
-
 /-- `(d!)² · 2^d ≤ 2^(d²)`. -/
 theorem factorial_sq_mul_two_pow_le : ∀ d : Nat, d.factorial ^ 2 * 2 ^ d ≤ 2 ^ (d * d)
   | 0 => by norm_num

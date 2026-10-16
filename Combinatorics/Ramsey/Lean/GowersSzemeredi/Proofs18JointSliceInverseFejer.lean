@@ -82,12 +82,6 @@ theorem singlePieceGlobalDensityFJ_pos {Qb : Nat → Real → Real → Real → 
     0 < singlePieceGlobalDensityFJ Qb alpha (alpha / 2) k :=
   (singlePieceGlobalDensityFJ_pos_le ha ha1 hQb).1
 
-theorem singlePieceGlobalDensityFJ_le_one {Qb : Nat → Real → Real → Real → Real}
-    {alpha : Real} {k : Nat} (ha : 0 < alpha) (ha1 : alpha ≤ 1)
-    (hQb : ∀ l g t s, 0 < s → s ≤ 1 → 1 ≤ Qb l g t s) :
-    singlePieceGlobalDensityFJ Qb alpha (alpha / 2) k ≤ 1 :=
-  (singlePieceGlobalDensityFJ_pos_le ha ha1 hQb).2
-
 /-- **The single-piece lift from global-to-local covers**, packaged. -/
 theorem single_piece_lift_global_cover_fejer_joint {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
     (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
@@ -206,7 +200,6 @@ theorem single_piece_localization_global_cover_fejer_joint {k : Nat} (hk : 1 ≤
     (singlePieceGlobalDensityFJ_pos ha (by linarith) hQb) he hf hmu
     ((hwide q hq).trans (by exact_mod_cast hPw)) hlarge hmass
   exact h
-
 
 /-- The per-modulus conditions of the single-piece inverse step. -/
 def SinglePieceModulusConditionsFJ (Qb Eb : Nat → Real → Real → Real → Real) (alpha : Real) (k : Nat) (eps : Nat → Real) (thr : Nat → Nat)
