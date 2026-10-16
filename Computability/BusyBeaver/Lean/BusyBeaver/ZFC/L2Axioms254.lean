@@ -66,7 +66,7 @@ theorem readp2C (st : AS) (hc : Clean st) : Clean (readp2F st) := hc
 /-- The gate (node 71): clear the bundle when `c = b` or `c = a`, and clear
 `axiomcode`, `param1`, `param2`. -/
 def gateF (st : AS) : AS :=
-  { st with ac := 0, p1 := 0, p2 := 0, tw := if st.ac = st.p2 ∨ st.ac = st.p1 then 0 else st.tw }
+  { st with ac := 0, p1 := 0, p2 := 0, tw := if st.ac = st.p1 ∨ st.ac = st.p2 then 0 else st.tw }
 
 theorem gateC (st : AS) (hc : Clean st) : Clean (gateF st) := hc
 
