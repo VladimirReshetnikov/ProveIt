@@ -38,7 +38,7 @@ theorem hasNatAP_Icc_of_fin_interval {N k : Nat} {delta : Real}
     (A : Finset Nat) (hA : A ⊆ Finset.Icc 1 N) (hcard : delta * N ≤ A.card) : HasNatAP A k := by
   classical
   let Q : NatAP := ⟨1, 1, N⟩
-  have hQ : Q.IsProper := Q.isProper_of_step_pos (by decide)
+  have hQ : Q.IsProper := Q.isProper_of_step_pos (by change 0 < (1 : Nat); decide)
   apply Q.hasNatAP_of_pullback hQ A
   apply hfin
   rw [Q.card_pullback hQ]
