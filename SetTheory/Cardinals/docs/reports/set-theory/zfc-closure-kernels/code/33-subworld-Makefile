@@ -1,0 +1,11 @@
+.PHONY: all verify clean
+all: report.pdf
+
+report.pdf: report.tex references.tex $(wildcard sections/*.tex)
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+verify:
+	python3 -B reproduce.py
+
+clean:
+	latexmk -c report.tex

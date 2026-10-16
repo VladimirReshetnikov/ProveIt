@@ -1,0 +1,267 @@
+name: Coq proofs
+
+# Builds busycoq at the pinned commit with Coq 8.20.1, compiles the BB8 proofs in BB8/verify/,
+# and fails unless probe.v reports "Closed under the global context" for all five main theorems.
+# Also builds BB13/ and BB14/ (BB10/ and BB12/ take hours and are not built here).
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  pa238:
+    # Exact blank-tape PA238 halting iff a finite ordinary classical PA refutation.
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    container:
+      image: coqorg/coq:8.20.1
+      options: --user root
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Put the image's opam switch on PATH; ensure Python and ps
+        run: |
+          if ! command -v coqc >/dev/null; then
+            dirname "$(ls -d /home/coq/.opam/*/bin/coqc | head -1)" >> "$GITHUB_PATH"
+          fi
+          if ! command -v python3 >/dev/null || [ ! -x /bin/ps ]; then
+            apt-get update && apt-get install -y python3 procps
+          fi
+
+      - uses: actions/checkout@v4
+
+      - name: Provision absent compilation locks without replacing existing files
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          for name in ('/tmp/mm0-native-mac.lock', '/tmp/mm0_compile.lock'):
+              try:
+                  with Path(name).open('xb'):
+                      pass
+              except FileExistsError:
+                  pass
+          PY
+
+      - name: Build PA238 and check closed assumptions
+        run: python3 -I PA/m238/check.py --coqc coqc --wall-seconds 120 --memory-mib 2048
+
+  bb8:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    container:
+      image: coqorg/coq:8.20.1
+      options: --user root
+    env:
+      BUSYCOQ_COMMIT: bd2e36f6aa204eb011742d2ca6c8741102b2e59e
+    defaults:
+      run:
+        shell: bash   # bash -eo pipefail, so a failing coqc is not hidden by `| tee`
+    steps:
+      - name: Put the image's opam switch on PATH
+        run: |
+          if ! command -v coqc >/dev/null; then
+            dirname "$(ls -d /home/coq/.opam/*/bin/coqc | head -1)" >> "$GITHUB_PATH"
+          fi
+          command -v git >/dev/null || (apt-get update && apt-get install -y git)
+
+      - uses: actions/checkout@v4
+
+      - name: Coq version
+        run: coqc --version
+
+      - name: Build busycoq (pinned commit, only the files BB8 depends on)
+        run: |
+          git clone https://github.com/meithecatte/busycoq "$RUNNER_TEMP/busycoq"
+          cd "$RUNNER_TEMP/busycoq"
+          git checkout "$BUSYCOQ_COMMIT"
+          git log -1 --format='busycoq %H %ci %s'
+          cd verify
+          coq_makefile -Q . BusyCoq -o Makefile.coq LibTactics.v Helper.v TM.v Compute.v Flip.v Permute.v Individual.v
+          make -f Makefile.coq Individual.vo Flip.vo
+
+      - name: Compile the BB8 proofs
+        working-directory: BB8/verify
+        run: BUSYCOQ="$RUNNER_TEMP/busycoq/verify" bash ./compile_clean.sh 2>&1 | tee compile_ci.log
+
+      - name: Check that the main theorems use no axioms
+        working-directory: BB8/verify
+        run: |
+          coqc -Q "$RUNNER_TEMP/busycoq/verify" BusyCoq -Q . BB8 probe.v | tee probe_ci.log
+          closed=$(grep -c 'Closed under the global context' probe_ci.log || true)
+          echo "probe.v: $closed of 5 theorems closed under the global context"
+          if grep -q 'Axioms:' probe_ci.log || [ "$closed" -ne 5 ]; then
+            echo "::error::probe.v did not report five axiom-free theorems"
+            exit 1
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coq-logs
+          path: |
+            BB8/verify/compile_ci.log
+            BB8/verify/probe_ci.log
+
+  bb13-bb14:
+    # BB13/, BB14/: the 13- and 14-state f_(omega+2) machines M13 and M14 (about a minute each).
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        n: ['13', '14']
+    container:
+      image: coqorg/coq:8.20.1
+      options: --user root
+    env:
+      BUSYCOQ_COMMIT: bd2e36f6aa204eb011742d2ca6c8741102b2e59e
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Put the image's opam switch on PATH
+        run: |
+          if ! command -v coqc >/dev/null; then
+            dirname "$(ls -d /home/coq/.opam/*/bin/coqc | head -1)" >> "$GITHUB_PATH"
+          fi
+          command -v git >/dev/null || (apt-get update && apt-get install -y git)
+
+      - uses: actions/checkout@v4
+
+      - name: Build busycoq (pinned commit, only the files the proofs depend on)
+        run: |
+          git clone https://github.com/meithecatte/busycoq "$RUNNER_TEMP/busycoq"
+          cd "$RUNNER_TEMP/busycoq"
+          git checkout "$BUSYCOQ_COMMIT"
+          cd verify
+          coq_makefile -Q . BusyCoq -o Makefile.coq LibTactics.v Helper.v TM.v Compute.v Flip.v Permute.v Individual.v
+          make -f Makefile.coq Individual.vo Flip.vo
+
+      - name: Compile BB${{ matrix.n }} and run the probe
+        working-directory: BB${{ matrix.n }}/verify/multifile
+        run: |
+          BUSYCOQ="$RUNNER_TEMP/busycoq/verify" bash ./compile_clean.sh 2>&1 | tee compile_ci.log
+          closed=$(grep -c 'Closed under the global context' probe.log || true)
+          if grep -q 'Axioms:' probe.log || [ "$closed" -ne 4 ]; then
+            echo "::error::probe.v did not report four axiom-free theorems"
+            exit 1
+          fi
+
+  zf:
+    # ZF/: the 393-, 361- and 354-state "halts iff ZF proves a contradiction" machines.
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        machine: ['393', '361', '354', '336', '335']
+    container:
+      image: coqorg/coq:8.20.1
+      options: --user root
+    env:
+      BUSYCOQ_COMMIT: bd2e36f6aa204eb011742d2ca6c8741102b2e59e
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Put the image's opam switch on PATH; install git and python3
+        run: |
+          if ! command -v coqc >/dev/null; then
+            dirname "$(ls -d /home/coq/.opam/*/bin/coqc | head -1)" >> "$GITHUB_PATH"
+          fi
+          if ! command -v git >/dev/null || ! command -v python3 >/dev/null; then
+            apt-get update && apt-get install -y git python3
+          fi
+
+      - uses: actions/checkout@v4
+
+      - name: Build busycoq (pinned commit, TM.v and its dependencies)
+        run: |
+          git clone https://github.com/meithecatte/busycoq "$RUNNER_TEMP/busycoq"
+          cd "$RUNNER_TEMP/busycoq"
+          git checkout "$BUSYCOQ_COMMIT"
+          cd verify
+          coq_makefile -Q . BusyCoq -o Makefile.coq LibTactics.v Helper.v TM.v
+          make -f Makefile.coq TM.vo
+
+      - name: Check the ${{ matrix.machine }}-state machine
+        working-directory: ZF/verify
+        run: BUSYCOQ="$RUNNER_TEMP/busycoq/verify" python3 check.py ${{ matrix.machine }} 2>&1 | tee check_${{ matrix.machine }}.log
+
+  zf-stdzf:
+    # ZF/stdzf: O'Rear's system vs the Coq Library of Undecidability Proofs' ZF, regularity, and the
+    # end-to-end theorem halts tm c0 <-> ZFc ⊢TC ⊥ for the 354-state machine. Self-contained (vendored).
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    container:
+      image: coqorg/coq:8.20.1
+      options: --user root
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Put the image's opam switch on PATH; install python3
+        run: |
+          if ! command -v coqc >/dev/null; then
+            dirname "$(ls -d /home/coq/.opam/*/bin/coqc | head -1)" >> "$GITHUB_PATH"
+          fi
+          command -v python3 >/dev/null || (apt-get update && apt-get install -y python3)
+
+      - uses: actions/checkout@v4
+
+      - name: Build and check ZF/stdzf
+        working-directory: ZF/stdzf
+        run: python3 check.py 2>&1 | tee check_ci.log
+
+  zf-stdzf-r3:
+    # ZF/stdzf_r3: the 335- and 336-state machines end to end against the Coq Library of Undecidability
+    # Proofs' ZF (with/without regularity), plus the relative consistency of AC (zfc/): the 335-state
+    # machine halts iff ZFC is inconsistent. Self-contained (vendored).
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    container:
+      image: coqorg/coq:8.20.1
+      options: --user root
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Put the image's opam switch on PATH; install python3
+        run: |
+          if ! command -v coqc >/dev/null; then
+            dirname "$(ls -d /home/coq/.opam/*/bin/coqc | head -1)" >> "$GITHUB_PATH"
+          fi
+          command -v python3 >/dev/null || (apt-get update && apt-get install -y python3)
+
+      - uses: actions/checkout@v4
+
+      - name: Build and check ZF/stdzf_r3
+        working-directory: ZF/stdzf_r3
+        run: python3 check.py 2>&1 | tee check_ci.log
+
+  zf-m254:
+    # ZF/m254: Mira-Cult's 254-state machine zfc_254.tm halts iff ZF (resp. ZFC) is inconsistent, end to
+    # end against the Coq Library of Undecidability Proofs' ZF. Uses ../stdzf and ../stdzf_r3 sources.
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    container:
+      image: coqorg/coq:8.20.1
+      options: --user root
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Put the image's opam switch on PATH; install python3
+        run: |
+          if ! command -v coqc >/dev/null; then
+            dirname "$(ls -d /home/coq/.opam/*/bin/coqc | head -1)" >> "$GITHUB_PATH"
+          fi
+          command -v python3 >/dev/null || (apt-get update && apt-get install -y python3)
+
+      - uses: actions/checkout@v4
+
+      - name: Build and check ZF/m254
+        working-directory: ZF/m254
+        run: python3 check.py 2>&1 | tee check_ci.log

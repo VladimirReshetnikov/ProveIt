@@ -1,0 +1,219 @@
+SMALL ZF/ZFC MACHINES: SOURCE AND ENDPOINT AUDIT
+Audit date: 2026-10-16 UTC
+
+1. Repository pins and scope
+
+The merged upstream baseline inspected here is jeff87654/busy-beaver at
+297ab8df7e5de329605c3875b4934643b371a5e3 (2026-10-15).  Its ZF/m254 package
+retains Mira-Cult's 254-state table and an end-to-end Coq development added
+on 2026-10-14.  The source endpoint is in ZF/m254/coq/e2e/E2E254.v.
+
+The smaller public submission is pull request 20, open at the audit time:
+https://github.com/jeff87654/busy-beaver/pull/20
+Head: 0d544f2a2e3c18f12278441a74b7879f31cbe856
+Head tree: f7b80a370a1c1ba8929fc911bd76770372695997
+CI merge commit: 26bd0b2beeed5c3dd88511e39acd604c235e2f1c
+CI merge tree: f7b80a370a1c1ba8929fc911bd76770372695997
+
+The identical trees establish that the successful CI run used exactly the
+submitted source files, although Actions checked out a synthetic merge commit.
+This is a published pre-existing improvement; rediscovering or repackaging it
+must not be described as a new 253-state result.  The defensible benchmark is
+the smallest publicly submitted and CI-checked table audited in this session,
+not a proof that no smaller construction exists elsewhere.
+
+Local clones used for inspection:
+  busy-beaver: merged main at the above main pin.
+  busy-beaver-pr20: the above PR head.
+
+2. Literal machines and count convention
+
+All machine initializers and helpers are counted.  Alphabet {0,1}; blank 0;
+one two-way tape; one head; each ordinary transition writes a bit and moves
+left or right.  The terminal state is distinct and uncounted.
+
+Merged baseline:
+  254 ordinary states, 508 ordinary transition rows, start 0, terminal 254.
+  ZF/m254/machine/zfc_254.tm
+  SHA256 d655ce2cf8cccebd21caa21a49f0f9f010960a44b95c17aae6cc425c518954eb
+
+Public PR20 submission:
+  253 ordinary states, 506 ordinary transition rows, start 0, terminal 253.
+  ZF/m253/machine/zfc_253.tm
+  SHA256 84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95
+
+The new initializer and a runtime helper share old state 5.  In old labels,
+the four changed transitions are:
+  (3,0)  -> (write 0, left, 48)
+  (5,0)  -> (write 1, right, 97)
+  (5,1)  -> (write 1, right, 64)
+  (49,1) -> (write 0, right, 5)
+Old state 8 is removed.  The explicit bijection puts old 5 at new 0 and old
+96 at new 33.  This description is exactly reproducible by
+ZF/m253/tools/generate_candidate.py; it is not a heuristic edit recipe.
+
+3. Verification evidence actually inspected
+
+The following commands completed locally:
+  python3 -I -B ZF/m253/check.py --source-only
+  python3 -I -B ZF/m253/tools/generate_candidate.py --check
+  python3 -I -B ZF/m253/tools/gen_sites253.py --check
+
+Results: literal state maps/table agree, exact table hash agrees, the source
+dependency closure has 160 modules and 194 assumption probes, and all 6,460
+instruction sites agree with the committed register program.  These commands
+do not check Coq proof terms.
+
+The GitHub plugin returned a successful zf253 check, completed at
+2026-10-16T00:45:27Z.  The job's actual log was downloaded and inspected:
+https://github.com/jeff87654/busy-beaver/actions/runs/38829452130/job/116744580063
+It reports the exact table hash, the 160-module closure, all 194 closed
+assumption reports, and recursive coqchk passing all 160 module roots and
+recursive dependencies.  The log gives 225.6 seconds for recursive coqchk and
+1049.7 seconds total.  Relevant lines are in ci_zf253_excerpt.log.
+
+No local Coq executable was installed.  Accordingly this audit did not perform
+an independent local kernel rebuild.  The distinction between inspected
+upstream CI evidence and locally executed source checks must be retained.
+
+4. Exact source theory of the 254/253 machines
+
+The definition is in ZF/m254/coq/settheory/S_def.v.  The relational signature
+has membership and equality, no function symbols.  S0 has the four equality
+axioms, the following container sentence CP, and all universally closed
+instances of the global-image collection scheme GIC.  SIR adds irreflexivity.
+
+Let x subseteq y abbreviate forall z (z in x -> z in y).  Then:
+
+  CP:
+    forall p exists V [p in V and
+      forall x in V (x subseteq V and
+        exists W in V forall z (z subseteq x -> z in W))].
+
+  GIC_phi:
+    forall B exists C [
+      forall a in B forall y
+        (phi(a,y) -> exists y' (phi(a,y') and y' in C))
+      and forall y in C exists x phi(x,y)].
+
+  IR:
+    forall x not (x in x).
+
+The universal closures include arbitrary extra parameters of phi.  SIR does
+not assume extensionality, Foundation, or Choice.  It is a scheme theory, not
+a claim of finitely many ordinary first-order axioms.  The four equality
+axioms are object-theory axioms for a relational equality predicate.
+
+S_main.v contains both S_equicons and S0_equicons, relating refutations of SIR
+and S0 to refutations of closed ZF.  Thus IR is dispensable for the abstract
+equiconsistency theorem, while it remains relevant to the particular compact
+formula coding used by the machine.
+
+5. Coding cautions and optimization interface
+
+The formula encoding is stated in Codes254.v and Wff254.v.  It uses the dual
+Cantor pairing P(x,y)=(x+y)(x+y+1)/2+y and 4*P(x,y)+tag, with tags for
+implication, membership, universal quantification, and equality.  The special
+target code 1 is raw self-membership Rel(0,0), interpreted as falsity using IR.
+Changing that convention without modifying the soundness argument is invalid.
+
+The bundle construction is given in Bundle254.v.  Its freshness gate requires
+c different from a and b.  Dropping that gate or treating raw self-membership
+as pure logical falsity would alter the proof obligations, even if a finite
+test suite continued to pass.
+
+The runtime proof checks a complete prefix-code instruction tree.  The program
+interface uses nine source-order registers, with nextproof initially 2.  The
+public253 boot theorem reaches register program step 330 after 312,975 literal
+TM moves, with header distance 40.  Thus a future runtime reduction may retain
+the entire program/theory proof and replace only the table-specific simulation
+and finite-prefix bridge, provided their hypotheses still hold.  This is a
+concrete proof-preserving engineering interface, not a state-count estimate.
+
+6. Foundation-inclusive ZFC endpoint
+
+ZF.Std_iface.ZFc is closed ZF without Foundation.  The public endpoint named
+zf253_halts_iff_ZFC is literally the theory ZFc plus Choice.  However,
+ZFC.Z_main.ZFCReg_equicons already proves finite-refutation equivalence between
+((ZFc plus Foundation) plus Choice) and ZFc.  The Foundation sentence is
+RegCon.MinZF.ax_reg', not a symbol defined in the vendored minZF.v file.
+
+FullZFC253.v composes those two existing equivalences.  It states:
+
+  Public253_halts <-> Refutable_full_ZFC
+  (~Public253_halts) <-> Consistent_full_ZFC
+
+Here Consistent_full_ZFC is by definition the absence of a finite classical
+natural-deduction refutation of the exact object theory including Foundation
+and Choice.  Negating a biconditional in this manner is constructive; the
+wrapper adds no classical meta-axiom.  The existing derivation transports do
+the mathematical work.
+
+Wrapper status: source-reviewed, not separately kernel rebuilt.  The companion
+check_wrapper.py verifies its bytes, two assumption probes, 158 imported Coq
+sources, and 8 build/provenance artifacts.  It also prints build commands.
+It explicitly prints KERNEL NOT RUN.  upstream_source_manifest.json records
+the necessary source hashes and CI pins.
+
+7. External equivalence and the requested internal ZFC statement
+
+The Coq propositions relate finite object-theory refutations to the actual TM
+semantics.  A closed Coq proof term is not, by itself, an emitted first-order
+ZFC derivation of the arithmetized assertion.  The manuscript should separately
+describe why the finite syntax, machine simulation, and interpretation
+arguments can be formalized in ZFC, or provide a proof-code translation.
+The target assertion is ZFC proves (Nonhalts(M) iff Con(ZFC)), with a fixed
+recursive proof predicate.  Neither the upstream proof nor this wrapper is a
+claim to prove Con(ZFC).
+
+For incompleteness consequences, mere consistency suffices to exclude a ZFC
+proof of nonhalting once the required internal implication to Con(ZFC) is
+established.  Both-sided independence additionally needs an appropriate
+soundness hypothesis to exclude a false Sigma-1 halting assertion; in general,
+consistency alone does not supply Sigma-1 soundness.  Avoid silently treating
+these two hypotheses as interchangeable.
+
+8. Historical comparators and exclusions
+
+The 7910-state Yedidia-Aaronson construction is historically foundational but
+its search uses a Friedman statement of stronger consistency strength.  It
+must not appear in a table headed solely by exact Con(ZFC)-equivalent machines
+without this qualification.  The 2016 preprint at arXiv:1605.04343 has 7910;
+the older author-hosted PDF busybeaver.pdf still has 7918, so do not conflate
+versions.
+
+O'Rear's zf2.nql is an explicit ZF proof enumerator, and is the relevant
+lineage for the 1919/748 and later Wade-style machines.  Its source comments
+document replacing expensive syntactic side conditions by logical schemes.
+Upstream's merged 335-state machine has the literal end-to-end ZF/regularity/
+Choice interfaces, and the 254 machine is the smaller accepted baseline.
+
+The repository also contains a 238-state PA-consistency result.  It does not
+meet the ZFC-consistency target.  Public PR19's 296-state Grothendieck-universe
+consistency machine concerns a stronger theory and likewise is not a smaller
+same-target comparator.
+
+9. Principal URLs for the report's bibliography
+
+Public253 source and exact endpoint:
+https://github.com/jeff87654/busy-beaver/tree/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/m253
+https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/m253/coq/e2e/E2E253.v
+
+Source theory and equiconsistency:
+https://github.com/jeff87654/busy-beaver/blob/297ab8df7e5de329605c3875b4934643b371a5e3/ZF/m254/coq/settheory/S_def.v
+https://github.com/jeff87654/busy-beaver/blob/297ab8df7e5de329605c3875b4934643b371a5e3/ZF/m254/coq/settheory/S_main.v
+
+Foundation/Choice bridge:
+https://github.com/jeff87654/busy-beaver/blob/297ab8df7e5de329605c3875b4934643b371a5e3/ZF/stdzf_r3/zfc/Z_main.v
+
+Merged construction overview:
+https://github.com/jeff87654/busy-beaver/blob/main/ZF/README.md
+
+Historical primary sources:
+https://arxiv.org/abs/1605.04343
+https://www.scottaaronson.com/busybeaver.pdf
+https://github.com/sorear/metamath-turing-machines/blob/master/machines/2017-zf-sorear-748/zf2.nql
+
+The advertised original Mira-Cult/turing-machines repository returned GitHub
+404 through the plugin at audit time.  Attribution is retained from the
+audited upstream sources; the table itself is pinned and available there.

@@ -1,0 +1,15 @@
+PYTHON ?= python3
+
+.PHONY: all check pdf clean
+all: pdf
+
+check:
+	$(PYTHON) -B reproduce.py
+
+pdf: report.pdf
+
+report.pdf: report.tex $(wildcard sections/*.tex)
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+clean:
+	latexmk -c report.tex

@@ -1,0 +1,41 @@
+{
+  "verification_date": "2026-10-16",
+  "verification_kind": "separate rerun of delivered audits and generator-independent operation certificate checker",
+  "working_directory": "workspace root",
+  "commands": [
+    {
+      "command": "python -B fixed_emission/audit.py",
+      "exit_code": 0
+    },
+    {
+      "command": "python -B fixed_emission/verify_operation_certificate.py --reference fixed_emission/results/reference_dag.json --candidate fixed_emission/results/candidate_dag.json --certificate fixed_emission/results/rm_bisimulation.json",
+      "exit_code": 0
+    }
+  ],
+  "results": {
+    "scalar_helper_cases": 144,
+    "all_untouched_registers_and_stack_tail_checked": true,
+    "operation_certificate_verified": true,
+    "operation_pairs": 4248,
+    "operation_labels": {
+      "EDecnz": 1797,
+      "EInc": 2450,
+      "EHalt": 1
+    },
+    "mutation_controls_tested": 6,
+    "mutation_controls_rejected": 6,
+    "baseline_public_Wade_recompile": {
+      "dag_nodes": 219,
+      "framework_states": 62,
+      "working_states": 281
+    },
+    "fixed_macro_word_length": 200,
+    "original_macro_word_length": 186,
+    "reference_dag_sha256": "df8c7b7510e91129ae79dcbf441fc900b575ddfab97588c207a7488a8afcae5b",
+    "candidate_dag_sha256": "546933c7f2dd33d0da1a779358deeb577f8dbe402e18b12ce31de9603d4bc8b5",
+    "certificate_sha256": "ac6babbabfd511911c6a1239d84cdce6f3d895bf24a72b7d898b734373b3e8f4",
+    "kernel_checked": false,
+    "binary_TM_correctness_proved": false
+  },
+  "scope": "This rerun checks finite helper diagnostics and operation-level reference/candidate correspondence. It does not prove theory completeness, correctness of the binary interpreter, or the internal ZFC endpoint."
+}

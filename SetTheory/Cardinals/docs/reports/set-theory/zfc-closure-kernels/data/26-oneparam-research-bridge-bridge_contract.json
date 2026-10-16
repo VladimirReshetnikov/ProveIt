@@ -1,0 +1,203 @@
+{
+  "title": "Finite witness interface and internalization contract for public 253-state machine",
+  "upstream_repository": "https://github.com/jeff87654/busy-beaver",
+  "upstream_pin": "0d544f2a2e3c18f12278441a74b7879f31cbe856",
+  "machine_sha256": "84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95",
+  "targets": {
+    "T0": "Std_iface.ZFc: equality axioms, extensionality, empty, pair, union, power, least inductive set, universally closed separation/replacement; no Foundation or Choice.",
+    "Tstar": "(Std_iface.ZFc OR ax_reg') OR Z_wo.ax_ac",
+    "SIR": "S0 OR ax_ir: equality, CP, closed GIC, irreflexivity",
+    "R_T": "finite_bridge.refutation_predicate(theory, certificate_code)",
+    "H_M": "finite_bridge.halted_within(table, time_bound)",
+    "arithmetic_goal": "B proves (not exists t H_M(t)) iff (forall p not R_Tstar(p)), with B=PA or ZFC"
+  },
+  "transports": [
+    {
+      "name": "F",
+      "statement": "B proves forall t, H_M(t) implies R_T0(F(t)).",
+      "source": "E2E253.zf253_halts_iff_ZF forward direction; factors through TM/RM/program/enumerator/numeric calculus/SIR",
+      "status": "Uniform arithmetic certificate absent from this artifact."
+    },
+    {
+      "name": "G",
+      "statement": "B proves forall p, R_T0(p) implies H_M(G(p)).",
+      "source": "E2E253.zf253_halts_iff_ZF reverse direction",
+      "status": "Uniform arithmetic certificate absent from this artifact."
+    },
+    {
+      "name": "K",
+      "statement": "B proves forall p, R_Tstar(p) implies R_T0(K(p)).",
+      "source": "Z_main.ac_reg_relcon",
+      "status": "External finite-derivation transformer exists in upstream Rocq. Reified arithmetic generator/correctness certificate absent here."
+    },
+    {
+      "name": "J",
+      "statement": "B proves forall p, R_T0(p) implies R_Tstar(p).",
+      "source": "Axiom-witness tag inclusion; identity certificate",
+      "status": "Elementary identity transport proved in the report; theory-tag behavior tested in reference checker."
+    }
+  ],
+  "completed_here": [
+    "Exact target audit; existing upstream full Foundation+Choice bridge identified.",
+    "Finite bit-stack arithmetic TM semantics with proof of stream correspondence.",
+    "All 15 FullND rule checks including both binder shift conditions.",
+    "Annotated axiom generators with closedness checks for six exact source theory variants.",
+    "Explicit natural-number coding for formulas, axiom witnesses, nodes and whole finite refutation certificates.",
+    "Finite-refutation reification lemma and conditional internalization theorem.",
+    "Reproducible finite self-tests and independently represented finite TM simulation."
+  ],
+  "not_claimed": [
+    "No smaller machine is constructed by the finite witness interface.",
+    "No arbitrary runtime theorem is inferred from the finite bootstrap run.",
+    "No complete Rocq source dependency closure is rebuilt here.",
+    "No PA or ZFC certificate for F, G or K is provided.",
+    "Manual transcription of formula templates is not a mechanically verified cross-language extraction.",
+    "No axiom-free Rocq theorem is treated automatically as an internal ZFC theorem.",
+    "Recursive Python is not a total executable infinite search; ideal total PR syntax algorithms are distinguished from finite diagnostics."
+  ],
+  "sources": [
+    {
+      "path": "ZF/stdzf/coq/Std_iface.v",
+      "git_blob_sha": "45b4a9431eb12e19c2f23b74deddfb99a353d206",
+      "role": "Defines T0=ZFc; Foundation and Choice absent; schemes require universal closedness.",
+      "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/stdzf/coq/Std_iface.v",
+      "local_path": "upstream/ZF/stdzf/coq/Std_iface.v",
+      "bytes": 3271,
+      "sha256": "ea132c7b1bf5912f162a6e3141087cf5b7f306aa4fd8626d5505d1cd6b74fe87"
+    },
+    {
+      "path": "ZF/stdzf/vendor/undecidability/theories/FOL/Deduction/FullND.v",
+      "git_blob_sha": "8243793b1e81b9b12f042c2768568c0fe5db7c3e",
+      "role": "Fifteen natural-deduction rules; theory derivability is a finite context plus proof.",
+      "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/stdzf/vendor/undecidability/theories/FOL/Deduction/FullND.v",
+      "local_path": "upstream/ZF/stdzf/vendor/undecidability/theories/FOL/Deduction/FullND.v",
+      "bytes": 2280,
+      "sha256": "d9cdb7ae425802fb2b8a9f4eaa19a73af321ce08d337bee9b118518178c66b31"
+    },
+    {
+      "path": "ZF/stdzf/vendor/undecidability/theories/FOL/Sets/minZF.v",
+      "git_blob_sha": "351a9e874f873c98011d0f8cd455f3e20713506e",
+      "role": "Fixed ZF axioms and Separation/Replacement matrix constructors.",
+      "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/stdzf/vendor/undecidability/theories/FOL/Sets/minZF.v",
+      "local_path": "upstream/ZF/stdzf/vendor/undecidability/theories/FOL/Sets/minZF.v",
+      "bytes": 3813,
+      "sha256": "7ba24f9c3764981d12bd1b250eeb803c2fb21fc74627855913e208b910fc4dee"
+    },
+    {
+      "path": "ZF/stdzf_r3/regcon/MinZF.v",
+      "git_blob_sha": "3505dbde81a7a420e2de4b5a0599f3e2cf7b37c2",
+      "role": "Foundation formula, finite collect lemma, regularity proof transport.",
+      "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/stdzf_r3/regcon/MinZF.v",
+      "local_path": "upstream/ZF/stdzf_r3/regcon/MinZF.v",
+      "bytes": 14716,
+      "sha256": "b819346b5783b79d00d6e9d0093547c75f96b383d01b11e4f7aabfdf8e1a9836"
+    },
+    {
+      "path": "ZF/stdzf_r3/regcon/Link.v",
+      "git_blob_sha": "5d75bc2d98c37cab1ea20250c14208cc105ae72d",
+      "role": "regularity_relcon_std target adapter.",
+      "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/stdzf_r3/regcon/Link.v",
+      "local_path": "upstream/ZF/stdzf_r3/regcon/Link.v",
+      "bytes": 3105,
+      "sha256": "746ea59204aa74ab02459b970392ae7861400e9dc75dd9e79679c448d26c46ac"
+    },
+    {
+      "path": "ZF/stdzf_r3/zfc/Z_wo.v",
+      "git_blob_sha": "75ab5c1d230a43774023320303a1344b85135221",
+      "role": "Zermelo choice-set formula ax_ac.",
+      "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/stdzf_r3/zfc/Z_wo.v",
+      "local_path": "upstream/ZF/stdzf_r3/zfc/Z_wo.v",
+      "bytes": 101426,
+      "sha256": "e763164c6ac95ba1ac556bd9115abb78ade80a369c06ae0e22e7475ab538ac24"
+    },
+    {
+      "path": "ZF/stdzf_r3/zfc/Z_main.v",
+      "git_blob_sha": "7f6707cda4ba42f5eacd08fefe7f59e1beb06c4f",
+      "role": "ac_reg_relcon and ZFCReg_equicons supply full Foundation+Choice refutation bridge.",
+      "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/stdzf_r3/zfc/Z_main.v",
+      "local_path": "upstream/ZF/stdzf_r3/zfc/Z_main.v",
+      "bytes": 3947,
+      "sha256": "ffd5eb43525c9046bffdb60a67f26cbb190729678f49c89e01ccbc1c1c5c46c9"
+    },
+    {
+      "path": "ZF/m254/coq/settheory/S_def.v",
+      "git_blob_sha": "bca52b5963134bb88a236af98416c6be3b3f3d33",
+      "role": "S0/SIR fixed and schema definitions.",
+      "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/m254/coq/settheory/S_def.v",
+      "local_path": "upstream/ZF/m254/coq/settheory/S_def.v",
+      "bytes": 2517,
+      "sha256": "9443947fcc66bfa072b351f5e273a7201c0ad0b863a9ecbe477e1e4b24852b9c"
+    },
+    {
+      "path": "ZF/stdzf/vendor/busycoq/TM.v",
+      "git_blob_sha": "16ba4912d2ed972d985ff8cd159a211f488852ce",
+      "role": "Stream-tape semantics and finite multistep halting predicate.",
+      "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/stdzf/vendor/busycoq/TM.v",
+      "local_path": "upstream/ZF/stdzf/vendor/busycoq/TM.v",
+      "bytes": 17437,
+      "sha256": "71dbd2271eaf728fddf590665845ea0798d6ae0a8143a35ee12ce8346505b4e6"
+    },
+    {
+      "path": "ZF/m253/coq/tm/TM253.v",
+      "git_blob_sha": "9f888c43a2f680a75f608c3ed37fede33c07944f",
+      "role": "Literal compact semantics; start 0, terminal253; entering terminal is a transition.",
+      "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/m253/coq/tm/TM253.v",
+      "local_path": "upstream/ZF/m253/coq/tm/TM253.v",
+      "bytes": 7807,
+      "sha256": "6216cd737890f9d4ed60bb88469b0c6a66b39b0c61c2eee83f37f307bdebfb9d"
+    },
+    {
+      "path": "ZF/m253/coq/e2e/E2E253.v",
+      "git_blob_sha": "739a81229c5bf01c49551c3c1d7dce5274691de8",
+      "role": "End-to-end or set-theory proof composition.",
+      "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/m253/coq/e2e/E2E253.v",
+      "local_path": "upstream/ZF/m253/coq/e2e/E2E253.v",
+      "bytes": 2913,
+      "sha256": "5b584950d02a1431d2088817ddd216ec228002476b42a8668bc7fae862c1b5ed"
+    },
+    {
+      "path": "ZF/m254/coq/settheory/S_main.v",
+      "git_blob_sha": "c8421498a3877e3d3e8c010950def89c27c72325",
+      "role": "End-to-end or set-theory proof composition.",
+      "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/m254/coq/settheory/S_main.v",
+      "local_path": "upstream/ZF/m254/coq/settheory/S_main.v",
+      "bytes": 1787,
+      "sha256": "5973e325407881b924c5eccf02e8011ba8f5190dfb448f4300165efe3eb48aea"
+    }
+  ],
+  "source_snapshot": {
+    "source_files": 12,
+    "scope": "Exact audited source files, not the complete build dependency closure.",
+    "verification": "Local bytes checked against pinned Git blob SHA-1 identities; SHA-256 recorded per file.",
+    "licenses": [
+      {
+        "path": "ZF/stdzf/vendor/undecidability/LICENSE",
+        "local_path": "upstream/ZF/stdzf/vendor/undecidability/LICENSE",
+        "license_identification": "Mozilla Public License 2.0",
+        "git_blob_sha": "d0a1fa1482eea82e19510e7920cbe3a03e41f691",
+        "bytes": 16726,
+        "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04",
+        "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/stdzf/vendor/undecidability/LICENSE"
+      },
+      {
+        "path": "ZF/stdzf/vendor/busycoq/LICENSE",
+        "local_path": "upstream/ZF/stdzf/vendor/busycoq/LICENSE",
+        "license_identification": "MIT",
+        "git_blob_sha": "015db163bb1176fc0b84e868b5030d06e88dacce",
+        "bytes": 1060,
+        "sha256": "9f935f2deeaa52941c083a9a01ae2b836bf5a66ce5dd3df79b9d8be66baf12e6",
+        "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/stdzf/vendor/busycoq/LICENSE"
+      },
+      {
+        "path": "ZF/stdzf/vendor/busycoq/LICENSE-LibTactics",
+        "local_path": "upstream/ZF/stdzf/vendor/busycoq/LICENSE-LibTactics",
+        "license_identification": "MIT X11",
+        "git_blob_sha": "0dc5e467372f3cb6677facfef82df9f5ed3f55e0",
+        "bytes": 1339,
+        "sha256": "595e7e16cd53595294182365e68e3bdcabd34ebbd6aa2be9a77c80f2bec6bc98",
+        "url": "https://github.com/jeff87654/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/stdzf/vendor/busycoq/LICENSE-LibTactics"
+      }
+    ],
+    "licensing_note": "Vendor license files retained. No repository-wide license file was located in the pinned recursive tree for upstream-authored proof files. This audit does not assign those files a new license or extend vendor licenses to them."
+  }
+}

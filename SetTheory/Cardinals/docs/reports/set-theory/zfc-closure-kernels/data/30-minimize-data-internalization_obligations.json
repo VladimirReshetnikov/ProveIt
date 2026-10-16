@@ -1,0 +1,41 @@
+{
+  "blank_trace_predicate": "Trace_M(t): finite literal blank-start halting trace for the pinned table",
+  "conclusion": "ZFC |- not Halt_blank(M) <-> Con(ZFC)",
+  "contradiction_predicate": "Prf_T(p,bottom): finite proof in the specified effective theory/calculus",
+  "not_required": [
+    "Primitive-recursive total runtime bound for proof-to-trace search",
+    "An exported serialized ZFC proof translator",
+    "Global soundness of all of CIC"
+  ],
+  "permitted_routes": [
+    "Uniform finite-proof transport formalized in ZFC",
+    "Uniform set-coded model/completeness and interpretation argument formalized in ZFC"
+  ],
+  "presentation_bridge": {
+    "composition": "iff_trans zf253_halts_iff_ZF (iff_sym ZFC.Z_main.ZFCReg_equicons)",
+    "lemma": "ZFC.Z_main.ZFCReg_equicons",
+    "new_local_kernel_check": false,
+    "source": "ZF/stdzf_r3/zfc/Z_main.v"
+  },
+  "status": "proposed proof obligations, not completed endpoint",
+  "sufficient_internal_statements": [
+    {
+      "formula": "ZFC |- forall p (Prf_T(p,bottom) -> exists t Trace_M(t))",
+      "name": "enumeration_completeness"
+    },
+    {
+      "formula": "ZFC |- forall t (Trace_M(t) -> exists p Prf_T(p,bottom))",
+      "name": "machine_soundness"
+    },
+    {
+      "formula": "ZFC |- Con(T) <-> Con(ZFC)",
+      "name": "theory_calibration"
+    }
+  ],
+  "target_theory": "A fixed recursive conventional presentation of ZFC including Regularity and Choice",
+  "verification_boundaries": [
+    "Closed external Coq dependencies are not by themselves an object-level ZFC derivation",
+    "Finite runtime tests or bounded blank simulations do not prove unbounded adequacy",
+    "Register-operation certificates do not prove binary-tape compiler correctness"
+  ]
+}

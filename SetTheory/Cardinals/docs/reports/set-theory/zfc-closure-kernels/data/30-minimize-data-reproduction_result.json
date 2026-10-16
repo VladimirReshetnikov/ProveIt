@@ -1,0 +1,155 @@
+{
+  "checks": [
+    {
+      "command": [
+        "audit.py"
+      ],
+      "exit_code": 0,
+      "result": {
+        "all_untouched_registers_and_stack_tail_checked": true,
+        "baseline_public_Wade_recompile": {
+          "dag_nodes": 219,
+          "decision_states": 219,
+          "framework_states": 62,
+          "partial_transition_rows": 561,
+          "working_states": 281
+        },
+        "emission_comparison": {
+          "fixed_conjunction_tokens": 6,
+          "fixed_macro_word_length": 200,
+          "new_scalar_increment_tokens": 16,
+          "original_conjunction_tokens": 8,
+          "original_macro_word_length": 186
+        },
+        "independent_certificate": {
+          "binary_TM_correctness_proved": false,
+          "candidate_sha256": "546933c7f2dd33d0da1a779358deeb577f8dbe402e18b12ce31de9603d4bc8b5",
+          "certificate_sha256": "ac6babbabfd511911c6a1239d84cdce6f3d895bf24a72b7d898b734373b3e8f4",
+          "kernel_checked": false,
+          "labels": {
+            "EDecnz": 1797,
+            "EHalt": 1,
+            "EInc": 2450
+          },
+          "pairs": 4248,
+          "reference_sha256": "df8c7b7510e91129ae79dcbf441fc900b575ddfab97588c207a7488a8afcae5b",
+          "verified": true
+        },
+        "mutation_controls": [
+          {
+            "mutation": "wrong_operation",
+            "rejected": true
+          },
+          {
+            "mutation": "missing_pair",
+            "rejected": true
+          },
+          {
+            "mutation": "duplicate_pair",
+            "rejected": true
+          },
+          {
+            "mutation": "wrong_zero_successor",
+            "rejected": true
+          },
+          {
+            "mutation": "wrong_positive_successor",
+            "rejected": true
+          },
+          {
+            "mutation": "wrong_initial",
+            "rejected": true
+          }
+        ],
+        "scalar_helper_cases": 144,
+        "scalar_helpers_checked": [
+          "push_2",
+          "push_c_plus_2"
+        ]
+      }
+    },
+    {
+      "command": [
+        "verify_operation_certificate.py",
+        "--reference",
+        "results/reference_dag.json",
+        "--candidate",
+        "results/candidate_dag.json",
+        "--certificate",
+        "results/rm_bisimulation.json"
+      ],
+      "exit_code": 0,
+      "result": {
+        "binary_TM_correctness_proved": false,
+        "candidate_sha256": "546933c7f2dd33d0da1a779358deeb577f8dbe402e18b12ce31de9603d4bc8b5",
+        "certificate_sha256": "ac6babbabfd511911c6a1239d84cdce6f3d895bf24a72b7d898b734373b3e8f4",
+        "kernel_checked": false,
+        "labels": {
+          "EDecnz": 1797,
+          "EHalt": 1,
+          "EInc": 2450
+        },
+        "pairs": 4248,
+        "reference_sha256": "df8c7b7510e91129ae79dcbf441fc900b575ddfab97588c207a7488a8afcae5b",
+        "verified": true
+      }
+    },
+    {
+      "command": [
+        "quick_verify.py"
+      ],
+      "exit_code": 0,
+      "result": "{\n  \"program_sha256\": \"1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746\",\n  \"certificate_sha256\": \"ecb9f560b78b7a20636d5d7bcefaf3c3d2022b16eaa81e5bd52613f459ce25fc\",\n  \"k\": 2,\n  \"states\": 6460,\n  \"initial_inclusion\": true,\n  \"transition_obligations_passed\": 8384,\n  \"allowed_cases\": 8385,\n  \"removed_cases\": 6,\n  \"removed\": [\n    [\n      6316,\n      \"p\"\n    ],\n    [\n      6317,\n      \"-\"\n    ],\n    [\n      6318,\n      \"-\"\n    ],\n    [\n      6434,\n      \"p\"\n    ],\n    [\n      6435,\n      \"-\"\n    ],\n    [\n      6436,\n      \"-\"\n    ]\n  ],\n  \"scope\": \"Independent finite invariant verifier; elementary soundness proof is provided in optimizer findings, not a proof-assistant artifact.\"\n}\n{\n  \"operational_states_per_candidate\": 252,\n  \"affine_runtime_cases_checked\": 8391,\n  \"all_four_prepared_tables_verified\": true,\n  \"single_row_mutations_tested\": 453939,\n  \"affine_accepted_mutations\": 707,\n  \"initial_state_choices\": 178164,\n  \"zero_only_cycle_initial_states\": 8487,\n  \"starts_reducing_to_first_write\": 169677,\n  \"distinct_first_write_representatives\": 4951,\n  \"blank_run_outcomes\": {\n    \"fuel_limit\": 2106,\n    \"blank_ray_self_loop\": 2845\n  },\n  \"maximum_ray_certificate_prefix\": 1045,\n  \"simulation_fuel_per_representative\": 3000000,\n  \"total_recorded_moves\": 6318032976,\n  \"valid_gap40_frames\": 0,\n  \"full_long_runs_repeated_by_quick_gate\": false,\n  \"scope\": \"Source integrity, symbolic runtime audit, exact short certificates and fixed-point certificate checked. Capped long runs are archived experimental observations; rerun the C++ search to reproduce them.\"\n}"
+    }
+  ],
+  "literal_table_audits": [
+    {
+      "graph_reachable_labels_including_terminal": 254,
+      "machine": "machines/upstream_zfc_253.tm",
+      "nontrivial_blocks": [],
+      "refinement_rounds": 13,
+      "scope": "All-symbol stepwise state quotient only; no minimality or blank-tape reachability claim.",
+      "sha256": "84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95",
+      "start_state": 0,
+      "stepwise_state_bisimulation_blocks_including_terminal": 254,
+      "terminal_state": 253,
+      "transitions": 506,
+      "working_states": 253
+    },
+    {
+      "graph_reachable_labels_including_terminal": 255,
+      "machine": "machines/upstream_zfc_254.tm",
+      "nontrivial_blocks": [],
+      "refinement_rounds": 13,
+      "scope": "All-symbol stepwise state quotient only; no minimality or blank-tape reachability claim.",
+      "sha256": "d655ce2cf8cccebd21caa21a49f0f9f010960a44b95c17aae6cc425c518954eb",
+      "start_state": 0,
+      "stepwise_state_bisimulation_blocks_including_terminal": 255,
+      "terminal_state": 254,
+      "transitions": 508,
+      "working_states": 254
+    },
+    {
+      "graph_reachable_labels_including_terminal": 284,
+      "machine": "fixed_emission/results/candidate.tm",
+      "nontrivial_blocks": [],
+      "refinement_rounds": 11,
+      "scope": "All-symbol stepwise state quotient only; no minimality or blank-tape reachability claim.",
+      "sha256": "2e544e7fcb295696fd839d2f8268c799d729f05d95e12cdb3ebef04bfff578a6",
+      "start_state": 0,
+      "stepwise_state_bisimulation_blocks_including_terminal": 284,
+      "terminal_state": 283,
+      "transitions": 566,
+      "working_states": 283
+    }
+  ],
+  "manifested_files_verified": 102,
+  "scope": {
+    "capped_startup_runs_remain_unresolved": true,
+    "full_1272_compilation_search_repeated": false,
+    "long_startup_runs_repeated": false,
+    "new_sub_253_consistency_machine_claimed": false,
+    "proof_assistant_rebuild": false
+  },
+  "status": "pass"
+}

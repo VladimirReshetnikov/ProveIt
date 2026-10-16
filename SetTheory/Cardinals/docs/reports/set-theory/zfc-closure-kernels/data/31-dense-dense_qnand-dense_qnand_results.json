@@ -1,0 +1,101 @@
+{
+  "canonical_roundtrips": 96000,
+  "independently_evaluated_structure_assignment_cases": 120000,
+  "syntax_generated_roundtrips": 2048,
+  "seed": 20261016,
+  "bit_comparison_corpus": {
+    "dense_shorter": 1888,
+    "equal": 155,
+    "raw_shorter": 5
+  },
+  "aggregate_dense_bits": 311192,
+  "aggregate_raw_bits": 419660,
+  "malformed_api_cases_rejected": 7,
+  "examples": [
+    {
+      "name": "atom at the last free slot",
+      "scope": 4,
+      "formula": [
+        "rel",
+        3,
+        3
+      ],
+      "dense_code": 15,
+      "raw_code": 48,
+      "dense_bits": 4,
+      "raw_bits": 6
+    },
+    {
+      "name": "least compound",
+      "scope": 4,
+      "formula": [
+        "q",
+        [
+          "rel",
+          0,
+          0
+        ],
+        [
+          "rel",
+          0,
+          0
+        ]
+      ],
+      "dense_code": 16,
+      "raw_code": 1,
+      "dense_bits": 5,
+      "raw_bits": 1
+    },
+    {
+      "name": "both branches use the new scope",
+      "scope": 1,
+      "formula": [
+        "q",
+        [
+          "rel",
+          1,
+          0
+        ],
+        [
+          "rel",
+          0,
+          1
+        ]
+      ],
+      "dense_code": 9,
+      "raw_code": 51,
+      "dense_bits": 4,
+      "raw_bits": 6
+    },
+    {
+      "name": "two nested binders",
+      "scope": 1,
+      "formula": [
+        "q",
+        [
+          "q",
+          [
+            "rel",
+            2,
+            0
+          ],
+          [
+            "rel",
+            1,
+            2
+          ]
+        ],
+        [
+          "rel",
+          1,
+          0
+        ]
+      ],
+      "dense_code": 1655,
+      "raw_code": 293227,
+      "dense_bits": 11,
+      "raw_bits": 19
+    }
+  ],
+  "interpretation": "Finite validation only; no compiled-state advantage or consistency result."
+}
