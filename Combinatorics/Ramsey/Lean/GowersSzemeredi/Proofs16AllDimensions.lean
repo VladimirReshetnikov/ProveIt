@@ -1,7 +1,7 @@
 import GowersSzemeredi.Proofs16ClassStepDegrees
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs16BaseCaseEndpoint
-import GowersSzemeredi.Proofs16CorollaryLowDimensions
+import GowersSzemeredi.Proofs16CorollaryFromInduction
 
 /-! Theorem 16.2 and Corollary 16.11 in every dimension, from the family
 Lemma 16.6 in every dimension (Notes L.6, E6).
@@ -228,10 +228,8 @@ theorem corollary_16_11_of_family_lemmas (Kc pc : Nat → Nat) (hK : ∀ k, 1 �
       (section16PowerWidth (familyWidthPrefactor (Kc k)) (familyWidthDivisor k (pc k))))
     (hconst : ∀ k, (Kc k : Real) + pc k ≤ 2 ^ ((2 : Nat) ^ ((2 : Nat) ^ (k + 5)))) :
     corollary_16_11 := by
-  have hth := theorem_16_2_of_family_lemmas Kc pc hK hp hlem hconst
-  rw [corollary_16_11_iff_forall_dimension]
-  intro k hk
-  exact (hth k).corollary_16_11 hk
+  exact corollary_16_11_of_theorem_16_2
+    (theorem_16_2_of_family_lemmas Kc pc hK hp hlem hconst)
 
 /-- **Theorem 16.2 in every dimension from the recurrence profiles.** -/
 theorem theorem_16_2_of_profiles_all (Kc pc : Nat → Nat) (hK : ∀ k, 2 ≤ Kc k)

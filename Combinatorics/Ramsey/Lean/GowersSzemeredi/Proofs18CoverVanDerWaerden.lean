@@ -1,10 +1,5 @@
 import GowersSzemeredi.Proofs18ColorClass
 import GowersSzemeredi.Proofs18SharpInterfaces
-import GowersSzemeredi.Proofs03FourFactorSymmetry
-import GowersSzemeredi.Proofs05Corollary58
-import GowersSzemeredi.Proofs05HighCorrelationAssembly
-import GowersSzemeredi.Proofs05HighCorrelationScale
-import GowersSzemeredi.Proofs05ThresholdFreeScale
 
 /-! **Van der Waerden numbers with `r` colours** (Notes L.15g).
 

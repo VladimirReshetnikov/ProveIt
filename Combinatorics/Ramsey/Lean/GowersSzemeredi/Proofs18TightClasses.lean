@@ -1,6 +1,4 @@
 import GowersSzemeredi.Proofs18UniformCovers
-import GowersSzemeredi.Proofs03FourFactorSymmetry
-import GowersSzemeredi.Proofs05Corollary58
 
 /-! A tighter degree for the split classes (Notes L.10b).
 
