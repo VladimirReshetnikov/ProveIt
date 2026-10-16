@@ -92,8 +92,8 @@ theorem IsPartition.sum_card {X : Type*} [DecidableEq X] {m : Nat}
   exact (mul_div_cancel₀ (A.card : Real)
     (by exact_mod_cast NeZero.ne N : (N : Real) ≠ 0)).symm
 
-theorem density_nonneg {N : Nat} (A : Finset (ZMod N)) : 0 ≤ density A := by
-  exact div_nonneg (by positivity) (by positivity)
+theorem density_nonneg {N : Nat} (A : Finset (ZMod N)) : 0 ≤ density A :=
+    div_nonneg (by positivity) (by positivity)
 
 theorem density_le_one {N : Nat} [NeZero N] (A : Finset (ZMod N)) :
     density A ≤ 1 := by

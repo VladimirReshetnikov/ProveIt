@@ -54,8 +54,7 @@ theorem fejer_vertex_injective_of_feature_line {N L : Nat} [NeZero N] [Fact N.Pr
       · simp [hki]
       · simp [h k hki]
     have hc := Finset.card_le_card hsub
-    have htwo : ({i, j} : Finset I).card ≤ 2 := by
-      exact (Finset.card_insert_le _ _).trans (by simp)
+    have htwo : ({i, j} : Finset I).card ≤ 2 := (Finset.card_insert_le _ _).trans (by simp)
     rw [Finset.card_univ] at hc
     omega
   obtain ⟨k, hki, hkj⟩ := hk

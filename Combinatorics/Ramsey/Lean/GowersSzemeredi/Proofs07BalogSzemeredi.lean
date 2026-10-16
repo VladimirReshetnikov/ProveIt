@@ -184,8 +184,7 @@ private lemma popular_edge_count_lower {G : Type*} [DecidableEq G]
   calc
     c ^ 2 * (A.card : Real) ^ 2 / 4 =
         (c * A.card / 2) * (c * A.card / 2) := by ring
-    _ ≤ (popularSums A c).card * (c * A.card / 2) := by
-      exact mul_le_mul_of_nonneg_right hD hthreshold
+    _ ≤ (popularSums A c).card * (c * A.card / 2) := mul_le_mul_of_nonneg_right hD hthreshold
     _ ≤ _ := hsum
 
 private def bsgDelta (c : Real) : Real := c ^ 2 / 8

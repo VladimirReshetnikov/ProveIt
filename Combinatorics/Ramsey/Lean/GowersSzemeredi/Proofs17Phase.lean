@@ -70,8 +70,8 @@ private lemma backwardDiffPoly_degree_coeff (P : R[X]) (n : Nat)
     rw [show X - C h = X + C (-h) by simp [sub_eq_add_neg]]
     rw [← Polynomial.taylor_apply, Polynomial.natDegree_taylor]
     exact hP
-  have hrough : (backwardDiffPoly h P).natDegree ≤ n + 1 := by
-    exact (P.natDegree_sub_le_of_le hP hshift).trans (by simp)
+  have hrough : (backwardDiffPoly h P).natDegree ≤ n + 1 :=
+    (P.natDegree_sub_le_of_le hP hshift).trans (by simp)
   have htop : (backwardDiffPoly h P).coeff (n + 1) = 0 := by
     rw [backwardDiffPoly, coeff_sub]
     have htaylor : (P.comp (X - C h)).coeff (n + 1) = P.coeff (n + 1) := by

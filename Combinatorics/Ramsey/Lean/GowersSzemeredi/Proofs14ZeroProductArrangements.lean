@@ -68,8 +68,8 @@ theorem productProperty_zero_eight_arrangements {N : Nat} [NeZero N]
       (beta ^ 4 * gamma ^ 8) * (N : Real) ^ (5 * 0 + 3) =
           gamma ^ 8 * (N : Real)⁻¹ * (beta * N) ^ 4 := by
         field_simp
-      _ ≤ gamma ^ 8 * (N : Real)⁻¹ * (B.card : Real) ^ 4 := by
-        exact mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) hB 4) (by positivity)
+      _ ≤ gamma ^ 8 * (N : Real)⁻¹ * (B.card : Real) ^ 4 :=
+        mul_le_mul_of_nonneg_left (pow_le_pow_left₀ (by positivity) hB 4) (by positivity)
       _ ≤ _ := hquad
   have hheight := lemma_14_7_holds N 0 (beta ^ 4 * gamma ^ 8) B phi (by positivity) htwo
   simpa only [mul_pow, ← pow_mul, Nat.reduceMul, Nat.zero_add] using hheight

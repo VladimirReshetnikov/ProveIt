@@ -714,8 +714,7 @@ theorem lemma_5_15_holds : lemma_5_15 := by
       _ = (P j).card := by simp
   by_cases hAlphaZero : alpha = 0
   · subst alpha
-    have hne : (Finset.univ : Finset (Fin M)).Nonempty := by
-      exact ⟨⟨0, hM⟩, Finset.mem_univ _⟩
+    have hne : (Finset.univ : Finset (Fin M)).Nonempty := ⟨⟨0, hM⟩, Finset.mem_univ _⟩
     obtain ⟨j, _, hj⟩ := Finset.exists_le_of_sum_le hne
       (f := fun _ : Fin M => (0 : ℝ)) (g := S) (by simp [hsum])
     exact ⟨j, by simpa using hj, by simp⟩
@@ -749,8 +748,7 @@ theorem lemma_5_15_holds : lemma_5_15 := by
           nlinarith [mul_nonneg hAlpha (Nat.cast_nonneg (P j).card)]
         · rw [max_eq_right (le_of_not_ge hS)]
           positivity
-    have hne : (Finset.univ : Finset (Fin M)).Nonempty := by
-      exact ⟨⟨0, hM⟩, Finset.mem_univ _⟩
+    have hne : (Finset.univ : Finset (Fin M)).Nonempty := ⟨⟨0, hM⟩, Finset.mem_univ _⟩
     have hmaxsum :
         (∑ j, max (S j) 0) < ∑ j, (alpha * (P j).card / 4 + T) :=
       Finset.sum_lt_sum_of_nonempty hne fun j _ => hmax j

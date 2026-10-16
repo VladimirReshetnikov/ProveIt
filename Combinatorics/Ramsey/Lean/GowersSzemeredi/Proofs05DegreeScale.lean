@@ -80,8 +80,7 @@ theorem polynomial_degree_scale_real (K D d T r v : Nat) (x gamma : Real)
     have h : (T : Real) + 1 ≤ L := by change 2 * ((T : Real) + 1) ≤ y at hthreshold; linarith
     have h' : T + 1 ≤ L := by exact_mod_cast h
     omega
-  have hxK : 4 ≤ x ^ K := by
-    exact hx.trans (by simpa only [pow_one] using pow_le_pow_right₀ hx1 hK)
+  have hxK : 4 ≤ x ^ K := hx.trans (by simpa only [pow_one] using pow_le_pow_right₀ hx1 hK)
   have hxKL : x ^ K ≤ (L : Real) := by
     have hy : y = (x ^ K) ^ 2 := by dsimp [y]; rw [← pow_mul]; congr 1; omega
     rw [hy] at hLlower

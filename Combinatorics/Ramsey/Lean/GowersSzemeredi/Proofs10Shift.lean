@@ -164,8 +164,8 @@ private lemma exists_and_of_almostEvery {X : Type*} [DecidableEq X]
   unfold AlmostEvery at hAnd
   rw [Finset.filter_congr_decidable] at hAnd
   have hUcard : (0 : Real) < U.card := by exact_mod_cast Finset.card_pos.mpr hU
-  have hgood : (0 : Real) < ((U.filter fun x => P x ∧ Q x).card : Real) := by
-    exact lt_of_lt_of_le (mul_pos (sub_pos.mpr hab) hUcard) hAnd
+  have hgood : (0 : Real) < ((U.filter fun x => P x ∧ Q x).card : Real) :=
+    lt_of_lt_of_le (mul_pos (sub_pos.mpr hab) hUcard) hAnd
   obtain ⟨x, hx⟩ := Finset.card_pos.mp (by exact_mod_cast hgood)
   exact ⟨x, (Finset.mem_filter.mp hx).1, (Finset.mem_filter.mp hx).2⟩
 
@@ -517,10 +517,9 @@ private lemma twoStep_localDifference_nonempty {N : Nat} [NeZero N]
   let S : X → Prop := fun w =>
     w ∈ shiftEligible D W d₁ ∧
       AlmostEvery (1 - 2 * Real.sqrt rho) (D.fibre (D.index w + d₁)) R₂
-  have hE₂ : AlmostEvery (1 - eta) W E₂ := by
-    exact almostEvery_shiftEligible D W B eta hregular d₂ hd₂
-  have hR₂base : AlmostEvery (1 - (theta + eta)) W R₂ := by
-    exact almostEvery_and theta eta W Q₂ E₂ hlocal₂ hE₂
+  have hE₂ : AlmostEvery (1 - eta) W E₂ := almostEvery_shiftEligible D W B eta hregular d₂ hd₂
+  have hR₂base : AlmostEvery (1 - (theta + eta)) W R₂ :=
+    almostEvery_and theta eta W Q₂ E₂ hlocal₂ hE₂
   have hR₂rho : AlmostEvery (1 - rho) W R₂ :=
     almostEvery_weaken_error (theta + eta) rho W R₂ htheta_eta_rho hR₂base
   have hshift : AlmostEvery (1 - (Real.sqrt rho + eta)) W S := by

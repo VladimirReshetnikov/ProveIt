@@ -265,8 +265,7 @@ private lemma residueChunkFamily_partition {r u L : Nat}
     rcases w' with ⟨a', j'⟩
     dsimp only at ha
     subst a'
-    have hqmul : (j * L + i) * u = (j' * L + i') * u := by
-      exact Nat.add_left_cancel (hxi.symm.trans hxi')
+    have hqmul : (j * L + i) * u = (j' * L + i') * u := Nat.add_left_cancel (hxi.symm.trans hxi')
     have hq : j * L + i = j' * L + i' :=
       Nat.eq_of_mul_eq_mul_right hu hqmul
     have hj : j = j' := chunk_index_unique j j' i i' hi hi' rfl hq
@@ -571,8 +570,7 @@ theorem lemma_2_3_holds : lemma_2_3 := by
     have huX : (u : Real) ≤ x + 1 := huReal.trans htlt.le
     have hLuReal : (L : Real) * u ≤ r := by
       calc
-        (L : Real) * u ≤ (q / 2) * (x + 1) := by
-          exact mul_le_mul hLle huX (by positivity) (by positivity)
+        (L : Real) * u ≤ (q / 2) * (x + 1) := mul_le_mul hLle huX (by positivity) (by positivity)
         _ ≤ q * x := by
           have hxone : (1 : Real) ≤ x := by linarith
           nlinarith [mul_nonneg hqnonneg (sub_nonneg.mpr hxone)]
@@ -658,8 +656,7 @@ theorem lemma_2_3_holds : lemma_2_3 := by
     have hlower : Real.sqrt ((r : Real) * s / (16 * N)) ≤ P.length := by
       rw [partitionRatio_quarter hN]
       exact hqQuarterLeL.trans hPgeReal
-    have hupper : (P.length : Real) ≤ Real.sqrt ((r : Real) * s / N) := by
-      exact hPleQ
+    have hupper : (P.length : Real) ≤ Real.sqrt ((r : Real) * s / N) := hPleQ
     exact ⟨hPproper, hPdiam, hlower, hupper⟩
 
 end LeanProofs.GowersSzemeredi

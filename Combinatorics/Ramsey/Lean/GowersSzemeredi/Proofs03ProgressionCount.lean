@@ -167,8 +167,8 @@ private lemma cor33_progression_bound {N k : Nat} [NeZero N] [Fact N.Prime]
     exact Nat.lt_succ_of_le (Finset.le_max' B i hi)
   let g : Fin ((j : Nat) + 1) → ZMod N → Complex :=
     cor33PrefixFamily A B hm
-  have hEq : cor33Progression A B = progressionAverage g := by
-    exact cor33_progression_eq_prefix A B hm hBinPrefix
+  have hEq : cor33Progression A B = progressionAverage g :=
+    cor33_progression_eq_prefix A B hm hBinPrefix
   have hgdisc : ∀ i, DiscValued (g i) :=
     cor33_prefix_discValued A B hm
   rw [hEq]

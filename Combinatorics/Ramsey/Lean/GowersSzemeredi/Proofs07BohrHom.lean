@@ -72,8 +72,8 @@ private lemma lemma78_spectrum_card_bound {N : Nat} [NeZero N]
           ((section7Spectrum A alpha).card : Real) * (lambda * N) ^ 2 := by ring
       _ <= (N : Real) * (alpha * N) := hsumLower
       _ = alpha * (N : Real) ^ 2 := by ring
-  have hcancel : ((section7Spectrum A alpha).card : Real) * lambda ^ 2 <= alpha := by
-    exact le_of_mul_le_mul_right hscaled (sq_pos_of_pos hN)
+  have hcancel : ((section7Spectrum A alpha).card : Real) * lambda ^ 2 <= alpha :=
+    le_of_mul_le_mul_right hscaled (sq_pos_of_pos hN)
   have hraw : ((section7Spectrum A alpha).card : Real) <= alpha / lambda ^ 2 :=
     (le_div_iff₀ (sq_pos_of_pos hlambda)).2 hcancel
   calc
@@ -349,8 +349,7 @@ private lemma lemma78_fourCorrelation_sub_zero {N : Nat} [NeZero N]
   apply Finset.sum_congr rfl
   intro r _
   simp only [mul_zero]
-  have hzero : exponential (0 : ZMod N) = 1 := by
-    exact AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
+  have hzero : exponential (0 : ZMod N) = 1 := AddChar.map_zero_eq_one (ZMod.stdAddChar (N := N))
   rw [hzero]
   ring
 

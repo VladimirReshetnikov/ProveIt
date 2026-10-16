@@ -468,8 +468,7 @@ theorem corollary_16_11_polynomial {k : Nat} (hk : 2 ≤ k) :
   obtain ⟨-, -, hei, -, -, -⟩ := P.yIn_boundsJT3 ha ha2 H.hV H.hVμ H.hμ0
   set D := singlePieceGlobalDensityFJ (fun l => uCount P.V (uDegT3 l)) alpha (alpha / 2) P.k
   have hD0 : 0 < D := singlePieceGlobalDensityFJ_pos ha (by linarith) hQb
-  have heta0 : 0 < P.eta alpha := by
-    exact singlePieceEtaFJ_pos ha (by linarith) hQb
+  have heta0 : 0 < P.eta alpha := singlePieceEtaFJ_pos ha (by linarith) hQb
   have hetaD : P.eta alpha ≤ D := singlePieceEtaFJ_le_density ha (by linarith) hD0.le
   have hDi : D⁻¹ ≤ (2 / alpha) ^ (2 ^ (GenParamsJT3.expDegJT3 k (tightMu0Z k) (genMuKZ k) + 3)) := by
     refine (inv_anti₀ heta0 hetaD).trans (pw_mono hX hei ?_)

@@ -451,8 +451,8 @@ theorem gowers_cauchy_schwarz {N d : Nat} [NeZero N]
     simpa only [Real.rpow_natCast] using hpower
   calc
     ‖cubeForm f‖ ≤ R ^ (m : Real)⁻¹ := hroot
-    _ = ∏ e : Fin d → Bool, G e ^ (m : Real)⁻¹ := by
-      exact (Real.finsetProd_rpow Finset.univ G (fun e _ => hG e) _).symm
+    _ = ∏ e : Fin d → Bool, G e ^ (m : Real)⁻¹ :=
+      (Real.finsetProd_rpow Finset.univ G (fun e _ => hG e) _).symm
     _ = ∏ e : Fin d → Bool,
         ‖cubeForm (d := d) (fun (_ : Fin d → Bool) => f e)‖ ^
           ((1 : Real) / (2 : Real) ^ d) := by

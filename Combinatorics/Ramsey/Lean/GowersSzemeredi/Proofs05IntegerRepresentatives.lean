@@ -106,8 +106,8 @@ theorem wrappingThreeTermAP_noIntegerRepresentatives :
       Q.start + i * Q.step < 7 ∧
         (Q.start + i * Q.step = 0 ∨ Q.start + i * Q.step = 1 ∨
           Q.start + i * Q.step = 6) := by
-    have hmem : Q.start + i * Q.step ∈ Q.carrier := by
-      exact Finset.mem_image.mpr ⟨⟨i, by omega⟩, Finset.mem_univ _, rfl⟩
+    have hmem : Q.start + i * Q.step ∈ Q.carrier :=
+      Finset.mem_image.mpr ⟨⟨i, by omega⟩, Finset.mem_univ _, rfl⟩
     have hlt := Finset.mem_range.mp (hsub hmem)
     have hmod : ((Q.start + i * Q.step : Nat) : ZMod 7) ∈
         wrappingThreeTermAP.carrier := by

@@ -95,10 +95,8 @@ theorem fejer_product_restriction : FejerProductRestriction := by
     calc A * S + 15 ≤ (A + 15) * S := by nlinarith
       _ ≤ 2 ^ (3 * k + 7) * S := Nat.mul_le_mul_right S (lemma156_beta_base_exponent k hk)
       _ = T := rfl
-  have hgammaExponent : G * S ≤ T := by
-    exact Nat.mul_le_mul_right S (lemma156_gamma_base_exponent k)
-  have hconstantExponent : 46 * S ≤ T := by
-    exact Nat.mul_le_mul_right S (lemma156_constant_base_exponent k)
+  have hgammaExponent : G * S ≤ T := Nat.mul_le_mul_right S (lemma156_gamma_base_exponent k)
+  have hconstantExponent : 46 * S ≤ T := Nat.mul_le_mul_right S (lemma156_constant_base_exponent k)
   have hbetaPow : beta ^ T ≤ beta ^ (A * S + 15) :=
     pow_le_pow_of_le_one hbeta.le hbeta_one hbetaExponent
   have hgammaPow : gamma ^ T ≤ gamma ^ (G * S) :=

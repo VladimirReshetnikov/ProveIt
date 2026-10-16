@@ -17,8 +17,8 @@ theorem labelled_probability_le_carrier_probability {I X : Type*}
     exact pow_nonneg (hp0 x) _
   · intro x hx
     obtain ⟨i, _, hi⟩ := Finset.mem_image.mp hx
-    have hc : 1 ≤ (Finset.univ.filter fun i => vertex i = x).card := by
-      exact Finset.card_pos.mpr ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hi⟩⟩
+    have hc : 1 ≤ (Finset.univ.filter fun i => vertex i = x).card :=
+      Finset.card_pos.mpr ⟨i, Finset.mem_filter.mpr ⟨Finset.mem_univ _, hi⟩⟩
     simpa only [pow_one] using pow_le_pow_of_le_one (hp0 x) (hp1 x) hc
 
 theorem fejer_kernel_mean_carrier_lower {N L : Nat} [NeZero N]

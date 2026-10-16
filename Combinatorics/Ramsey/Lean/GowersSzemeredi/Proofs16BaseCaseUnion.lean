@@ -147,16 +147,14 @@ private lemma biUnion_card_lower {X ι : Type*} [DecidableEq X] [Fintype ι]
     exact Disjoint.mono (hH i) (hH j)
       (hA.2 i j hij)
   have hsumA : ∑ i, (A i).card = S.card := indexedPartition_sum_card hA
-  have hsumH : (Finset.univ.biUnion H).card = ∑ i, (H i).card := by
-    exact Finset.card_biUnion hpair
+  have hsumH : (Finset.univ.biUnion H).card = ∑ i, (H i).card := Finset.card_biUnion hpair
   calc
     (1 - eta) * (S.card : Real) =
         ∑ i, (1 - eta) * ((A i).card : Real) := by
       rw [← Finset.mul_sum]
       congr 1
       exact_mod_cast hsumA.symm
-    _ ≤ ∑ i, ((H i).card : Real) := by
-      exact Finset.sum_le_sum fun i _ => hcard i
+    _ ≤ ∑ i, ((H i).card : Real) := Finset.sum_le_sum fun i _ => hcard i
     _ = ((Finset.univ.biUnion H).card : Real) := by
       rw [hsumH, Nat.cast_sum]
 
@@ -595,8 +593,7 @@ theorem properMultiplyLinear_finsetUnion {N d r : Nat} [NeZero N]
     exact (Nat.even_pow.mpr ⟨even_two, by positivity⟩).pow_nonneg _
   have hstageBoundNonneg : 0 ≤ stageQ ^ s :=
     Real.rpow_nonneg hstageQnonneg _
-  have hq0Floor : (q0 : Real) ≤ stageQ ^ s := by
-    exact Nat.floor_le hstageBoundNonneg
+  have hq0Floor : (q0 : Real) ≤ stageQ ^ s := Nat.floor_le hstageBoundNonneg
   let D := iterateProperUnionRefinement Gamma P hP gamma eta s heta hetaOne
     hsPos hGamma (fun q hq => Nat.le_floor hq) (q0 := q0) (t := r) le_rfl
   have hDcard : (1 - theta) * (P.carrier.card : Real) ≤ D.H.card := by

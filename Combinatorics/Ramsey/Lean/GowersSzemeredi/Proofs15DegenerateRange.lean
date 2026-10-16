@@ -266,8 +266,8 @@ private lemma rangeDeg_zero_side_code_card_le {N k d : Nat}
         congr 1
         ring]
       ring
-    _ ≤ N ^ (k - 1) * N ^ (2 * d * k) * N ^ (2 * d - 1) := by
-      exact Nat.mul_le_mul_left (N ^ (k - 1) * N ^ (2 * d * k)) hcross
+    _ ≤ N ^ (k - 1) * N ^ (2 * d * k) * N ^ (2 * d - 1) :=
+      Nat.mul_le_mul_left (N ^ (k - 1) * N ^ (2 * d * k)) hcross
 
 private lemma rangeDeg_zero_side_at_card_le {N k d : Nat}
     [NeZero N] [Fact N.Prime] (hd : 1 ≤ d) (i : Fin k) :
@@ -394,8 +394,8 @@ private lemma rangeDeg_case_one_key_card_le {N k d : Nat}
         congr 1
         ring]
       ring
-    _ ≤ N ^ k * N ^ (2 * d - 1) * N ^ ((2 * d - 1) * k) := by
-      exact Nat.mul_le_mul_right _ (Nat.mul_le_mul_left _ hcross)
+    _ ≤ N ^ k * N ^ (2 * d - 1) * N ^ ((2 * d - 1) * k) :=
+      Nat.mul_le_mul_right _ (Nat.mul_le_mul_left _ hcross)
 
 private lemma rangeDeg_case_one_card_le {N k d : Nat} [NeZero N]
     (hprime : N.Prime) (hodd : Odd N) (hk : 1 ≤ k) (hd : 1 ≤ d)
@@ -563,8 +563,7 @@ private lemma rangeDeg_case_two_key_card_le {N k d : Nat} [NeZero N]
         congr 1
         ring]
       ring
-    _ ≤ N ^ k * N ^ (2 * d * k) * N ^ (2 * d - 2) := by
-      exact Nat.mul_le_mul_left _ (by simpa using hcross)
+    _ ≤ N ^ k * N ^ (2 * d * k) * N ^ (2 * d - 2) := Nat.mul_le_mul_left _ (by simpa using hcross)
     _ = N ^ ((2 * d + 1) * k + 2 * d - 2) := by
       rw [← pow_add, ← pow_add]
       congr 1
@@ -631,8 +630,7 @@ private lemma rangeDeg_case_two_card_le {N k d : Nat} [NeZero N]
       Fintype.card_le_of_injective proj hinj
     _ ≤ N ^ ((2 * d + 1) * k + 2 * d - 2) :=
       rangeDeg_case_two_key_card_le hd a s i j hij hdet
-    _ ≤ k * N ^ ((2 * d + 1) * k + 2 * d - 2) := by
-      exact Nat.le_mul_of_pos_left _ hk
+    _ ≤ k * N ^ ((2 * d + 1) * k + 2 * d - 2) := Nat.le_mul_of_pos_left _ hk
 
 private lemma rangeDeg_coefficient_solutions_card_le {N k d : Nat} [NeZero N]
     (hprime : N.Prime) (hodd : Odd N) (hk : 1 ≤ k) (hd : 1 ≤ d)

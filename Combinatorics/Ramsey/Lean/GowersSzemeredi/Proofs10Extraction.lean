@@ -1215,8 +1215,8 @@ private lemma extraction_sigma_le_alpha_sq_div_64 {N : Nat} {X : Type*}
     rcases (mul_pos_iff.mp hetaRhoPositive) with h | h
     · exact h.2
     · exact (not_lt_of_ge heta h.1).elim
-  have hetaRhoUpper : eta * rho ≤ alpha ^ 2 / 32 := by
-    exact (mul_le_of_le_one_left hrhoPositive.le hetaOne).trans hrho
+  have hetaRhoUpper : eta * rho ≤ alpha ^ 2 / 32 :=
+    (mul_le_of_le_one_left hrhoPositive.le hetaOne).trans hrho
   have halphaSqOne : alpha ^ 2 ≤ 1 := by
     nlinarith [mul_nonneg (sub_nonneg.mpr halphaOne)
       (show 0 ≤ 1 + alpha by linarith)]
@@ -1341,10 +1341,9 @@ private lemma extraction_direction_good_almostEvery {N : Nat} [NeZero N]
   by_contra hBadBound
   have hBadGt : 35 * t ^ 2 * (B.card : Real) < BadD.card :=
     lt_of_not_ge hBadBound
-  have hBadPositiveReal : 0 < (BadD.card : Real) := by
-    exact (mul_nonneg (by positivity) (by positivity)).trans_lt hBadGt
-  have hBadNonempty : BadD.Nonempty := by
-    exact Finset.card_pos.mp (by exact_mod_cast hBadPositiveReal)
+  have hBadPositiveReal : 0 < (BadD.card : Real) :=
+    (mul_nonneg (by positivity) (by positivity)).trans_lt hBadGt
+  have hBadNonempty : BadD.Nonempty := Finset.card_pos.mp (by exact_mod_cast hBadPositiveReal)
   obtain ⟨d₀, hd₀B, hd₀min⟩ := B.exists_min_image P hBnonempty
   have hxQuarter := extraction_sigmaM_le_anchor_quarter D phi B alpha rho M
     sigma eta x hsetup hanchor hrho hsigma
@@ -1659,10 +1658,8 @@ private lemma extraction_select_directions {Y Z : Type*}
   change (H.card : Real) ≤ 7 * t * V.card
   by_contra hHBound
   have hHGt : 7 * t * (V.card : Real) < H.card := lt_of_not_ge hHBound
-  have hHPosReal : 0 < (H.card : Real) := by
-    exact (mul_nonneg (by positivity) (by positivity)).trans_lt hHGt
-  have hHnonempty : H.Nonempty := by
-    exact Finset.card_pos.mp (by exact_mod_cast hHPosReal)
+  have hHPosReal : 0 < (H.card : Real) := (mul_nonneg (by positivity) (by positivity)).trans_lt hHGt
+  have hHnonempty : H.Nonempty := Finset.card_pos.mp (by exact_mod_cast hHPosReal)
   have hBadRows : BadPair.card =
       ∑ y ∈ U, (V.filter fun z => ¬ Q y z).card := by
     exact extraction_product_filter_card_first U V (fun y z => ¬ Q y z)

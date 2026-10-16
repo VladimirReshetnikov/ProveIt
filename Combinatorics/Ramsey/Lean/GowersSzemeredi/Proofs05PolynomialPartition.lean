@@ -73,8 +73,8 @@ private lemma weighted_centered_reciprocal_sq_tail {N K : Nat} [NeZero N]
   let H : Finset (ZMod N) :=
     Finset.univ.filter fun r : ZMod N => K < centeredAbs r
   let T : Finset (Nat × Bool) := Finset.Ioc K N ×ˢ Finset.univ
-  have habsN (r : ZMod N) : centeredAbs r ≤ N := by
-    exact (ZMod.natAbs_valMinAbs_le r).trans (Nat.div_le_self N 2)
+  have habsN (r : ZMod N) : centeredAbs r ≤ N :=
+    (ZMod.natAbs_valMinAbs_le r).trans (Nat.div_le_self N 2)
   by_cases hKN : K ≤ N
   · have hcode_mem : ∀ r ∈ H, weightedCenteredCode r ∈ T := by
       intro r hr
@@ -96,8 +96,8 @@ private lemma weighted_centered_reciprocal_sq_tail {N K : Nat} [NeZero N]
             rw [Finset.sum_image]
             · rfl
             · exact weightedCenteredCode_injective.injOn
-      _ ≤ ∑ p ∈ T, (((p.1 : Nat) : Real) ^ 2)⁻¹ := by
-        exact Finset.sum_le_sum_of_subset_of_nonneg himage (fun _ _ _ => by positivity)
+      _ ≤ ∑ p ∈ T, (((p.1 : Nat) : Real) ^ 2)⁻¹ :=
+        Finset.sum_le_sum_of_subset_of_nonneg himage (fun _ _ _ => by positivity)
       _ = 2 * ∑ n ∈ Finset.Ioc K N, (((n : Nat) : Real) ^ 2)⁻¹ := by
         simp only [T, Finset.sum_product]
         simp only [Finset.sum_const, Finset.card_univ, Fintype.card_bool,
@@ -239,8 +239,8 @@ theorem weighted_missing_interval_fourier
   have hKmul : K * (L + L) ^ 2 ≤ N ^ 2 := by
     dsimp only [K]
     exact Nat.div_mul_le_self _ _
-  have hfloor : N ^ 2 < (K + 1) * (L + L) ^ 2 := by
-    exact (Nat.div_lt_iff_lt_mul hden).mp (Nat.lt_succ_self K)
+  have hfloor : N ^ 2 < (K + 1) * (L + L) ^ 2 :=
+    (Nat.div_lt_iff_lt_mul hden).mp (Nat.lt_succ_self K)
   have hthree : 3 * N ^ 2 ≤ 4 * K * (L + L) ^ 2 := by
     have hcoef : 3 * (K + 1) ≤ 4 * K := by omega
     calc
@@ -647,10 +647,8 @@ private lemma twice_floor_quarter_bounds {x : Real} (hx : 8 ≤ x) :
     0 < M ∧ Even M ∧ (M : Real) ≤ x / 2 ∧ x / 4 ≤ M := by
   let u : Nat := Nat.floor (x / 4)
   have hx0 : 0 ≤ x / 4 := by positivity
-  have huUpper : (u : Real) ≤ x / 4 := by
-    exact Nat.floor_le hx0
-  have huLower : x / 4 < (u : Real) + 1 := by
-    exact Nat.lt_floor_add_one (x / 4)
+  have huUpper : (u : Real) ≤ x / 4 := Nat.floor_le hx0
+  have huLower : x / 4 < (u : Real) + 1 := Nat.lt_floor_add_one (x / 4)
   have huOne : 1 ≤ u := by
     apply Nat.le_floor
     linarith
@@ -766,8 +764,7 @@ private theorem polynomial_weyl_witness
       _ = scale := by ring
       _ ≤ N := hscaleN
   have hMN : 2 * M ≤ N := by exact_mod_cast hMNReal
-  have hMscale : (M : Real) ≤ (t : Real) ^ (-gamma) * N := by
-    exact hMupper.trans (by linarith [hscaleEight])
+  have hMscale : (M : Real) ≤ (t : Real) ^ (-gamma) * N := hMupper.trans (by linarith [hscaleEight])
   obtain ⟨r, hr0, hrsize, hrlarge⟩ :=
     polynomial_missing_interval_witness a gamma htTwo htN hMpos hMeven hMN
       hMscale (by simpa only [gamma] using hno)
@@ -1749,8 +1746,7 @@ theorem lemma_5_5_holds : lemma_5_5 := by
     have hInt : (E.natAbs : Int) = |E| := by
       rw [Int.abs_eq_natAbs]
     calc
-      (E.natAbs : Real) = ((E.natAbs : Int) : Real) := by
-        exact (Int.cast_natCast E.natAbs).symm
+      (E.natAbs : Real) = ((E.natAbs : Int) : Real) := (Int.cast_natCast E.natAbs).symm
       _ = ((|E| : Int) : Real) :=
         congrArg (fun z : Int => (z : Real)) hInt
       _ = |(E : Real)| := by rw [Int.cast_abs]
@@ -1763,8 +1759,8 @@ theorem lemma_5_5_holds : lemma_5_5 := by
         dsimp only [E]
         push_cast
         rw [abs_mul, abs_pow, abs_of_nonneg (by positivity : (0 : Real) ≤ p)]
-      _ ≤ ((N : Real) / t) * (p : Real) ^ (k - 1) := by
-        exact mul_le_mul_of_nonneg_right he₀Bound (by positivity)
+      _ ≤ ((N : Real) / t) * (p : Real) ^ (k - 1) :=
+        mul_le_mul_of_nonneg_right he₀Bound (by positivity)
   have hcCast : (c : ZMod N) = a * r := by
     dsimp only [c]
     exact ZMod.coe_valMinAbs _
@@ -1828,8 +1824,8 @@ theorem lemma_5_5_holds : lemma_5_5 := by
       (centeredAbs (((p : ZMod N) ^ k) * a) : Real) ≤ E.natAbs :=
         hcenterReal
       _ ≤ ((N : Real) / t) * (p : Real) ^ (k - 1) := hEBound
-      _ ≤ ((N : Real) / t) * (t : Real) ^ (1 - gamma) := by
-        exact mul_le_mul_of_nonneg_left hpPow (by positivity)
+      _ ≤ ((N : Real) / t) * (t : Real) ^ (1 - gamma) :=
+        mul_le_mul_of_nonneg_left hpPow (by positivity)
       _ = (t : Real) ^ (-gamma) * N := by
         rw [show 1 - gamma = -gamma + 1 by ring,
           Real.rpow_add htPos, Real.rpow_one]
@@ -2085,8 +2081,7 @@ theorem lemma_5_5_square_root_auxiliary_holds :
     have hInt : (E.natAbs : Int) = |E| := by
       rw [Int.abs_eq_natAbs]
     calc
-      (E.natAbs : Real) = ((E.natAbs : Int) : Real) := by
-        exact (Int.cast_natCast E.natAbs).symm
+      (E.natAbs : Real) = ((E.natAbs : Int) : Real) := (Int.cast_natCast E.natAbs).symm
       _ = ((|E| : Int) : Real) :=
         congrArg (fun z : Int => (z : Real)) hInt
       _ = |(E : Real)| := by rw [Int.cast_abs]
@@ -2099,8 +2094,8 @@ theorem lemma_5_5_square_root_auxiliary_holds :
         dsimp only [E]
         push_cast
         rw [abs_mul, abs_pow, abs_of_nonneg (by positivity : (0 : Real) ≤ p)]
-      _ ≤ ((N : Real) / u) * (p : Real) ^ (k - 1) := by
-        exact mul_le_mul_of_nonneg_right he₀Bound (by positivity)
+      _ ≤ ((N : Real) / u) * (p : Real) ^ (k - 1) :=
+        mul_le_mul_of_nonneg_right he₀Bound (by positivity)
   have hcCast : (c : ZMod N) = a * r := by
     dsimp only [c]
     exact ZMod.coe_valMinAbs _
@@ -2425,8 +2420,7 @@ private theorem corollary_5_6_counterexample_of_Q (Q : Nat) (hQ : 2 < Q)
     rw [← hevenPartition.sum_card]
     exact Finset.dvd_sum fun j _ => hcellDvd j
   rw [card_filter_even_range] at hglobalDvd
-  have hrOdd : Odd (cor56CounterR Q) := by
-    exact hQodd.pow
+  have hrOdd : Odd (cor56CounterR Q) := hQodd.pow
   have hrSuccEven : Even (cor56CounterR Q + 1) := hrOdd.add_one
   have hQdvdSucc : Q ∣ cor56CounterR Q + 1 := by
     have hmul := hglobalDvd.mul_right 2

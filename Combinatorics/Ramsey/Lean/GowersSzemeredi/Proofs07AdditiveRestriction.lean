@@ -83,8 +83,7 @@ private lemma cor76_extract_subgraph {N : Nat} [NeZero N]
 theorem corollary_7_6_holds : corollary_7_6 := by
   intro N _ B0 phi alpha gamma hprime halpha hgamma hB0card hadd
   let Gamma0 := functionGraph B0 phi
-  have hGamma0cardNat : Gamma0.card = B0.card := by
-    exact cor75_card_functionGraph B0 phi
+  have hGamma0cardNat : Gamma0.card = B0.card := cor75_card_functionGraph B0 phi
   have hGamma0card : (Gamma0.card : Real) = alpha * N := by
     rw [hGamma0cardNat, hB0card]
   have hcountEnergyNat := cor76_count_le_graph_energy B0 phi

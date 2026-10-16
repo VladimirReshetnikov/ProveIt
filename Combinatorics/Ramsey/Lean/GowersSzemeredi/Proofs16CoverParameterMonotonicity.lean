@@ -27,8 +27,8 @@ theorem multipleCover_controls_mono (k : Nat) {gamma theta r s : Real}
   have hcr : 0 < multipleC (r⁻¹ * theta) gamma k := pow_pos hbr _
   have hcs : 0 < multipleC (s⁻¹ * theta) gamma k := pow_pos hbs _
   have hcr1 : multipleC (r⁻¹ * theta) gamma k ≤ 1 := pow_le_one₀ hbr.le hbr1
-  have hcc : multipleC (s⁻¹ * theta) gamma k ≤ multipleC (r⁻¹ * theta) gamma k := by
-    exact pow_le_pow_left₀ hbs.le hbase _
+  have hcc : multipleC (s⁻¹ * theta) gamma k ≤ multipleC (r⁻¹ * theta) gamma k :=
+    pow_le_pow_left₀ hbs.le hbase _
   have hqq : multipleQ (r⁻¹ * theta) gamma k ≤ multipleQ (s⁻¹ * theta) gamma k :=
     inv_anti₀ hcs hcc
   have hqr : 1 ≤ multipleQ (r⁻¹ * theta) gamma k := (one_le_inv₀ hcr).mpr hcr1

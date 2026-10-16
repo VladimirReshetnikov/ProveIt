@@ -264,8 +264,8 @@ private lemma bohr_sdiff_translate_card_le {N : Nat} [NeZero N]
     ((bohr K delta \ section10Translate (bohr K delta) d).card : Real) ≤
         ∑ r ∈ K, (2 * centeredAbs (r * d) : Nat) := hcardReal
     _ = ∑ r ∈ K, (2 * centeredAbs (r * d) : Real) := by norm_cast
-    _ ≤ ∑ r ∈ K, 2 * (zeta * N) := by
-      exact Finset.sum_le_sum fun r hr => mul_le_mul_of_nonneg_left (hd' r hr) (by positivity)
+    _ ≤ ∑ r ∈ K, 2 * (zeta * N) :=
+      Finset.sum_le_sum fun r hr => mul_le_mul_of_nonneg_left (hd' r hr) (by positivity)
     _ = 2 * K.card * zeta * N := by simp; ring
 
 theorem lemma_10_10_holds : lemma_10_10 := by
@@ -393,8 +393,7 @@ private lemma exists_dense_bohr_chain {N : Nat}
   let S₀₃ := B ∩ T₃
   let S₀₁₂ := S₀₁ ∩ S₁₂
   let U := S₀₁₂ ∩ S₀₃
-  have hS₀₁ : (7 / 8 : Real) * B.card ≤ S₀₁.card := by
-    exact hoverlap d₁ hd₁
+  have hS₀₁ : (7 / 8 : Real) * B.card ≤ S₀₁.card := hoverlap d₁ hd₁
   have hS₁₂eq : S₁₂ = section10Translate (B ∩ section10Translate B d₂) d₁ := by
     dsimp only [S₁₂, T₁, T₁₂]
     rw [section10Translate_inter, section10Translate_add]
@@ -403,8 +402,7 @@ private lemma exists_dense_bohr_chain {N : Nat}
   have hS₁₂ : (7 / 8 : Real) * B.card ≤ S₁₂.card := by
     rw [hS₁₂eq, section10Translate_card]
     exact hoverlap d₂ hd₂
-  have hS₀₃ : (7 / 8 : Real) * B.card ≤ S₀₃.card := by
-    exact hoverlap d₃ hd₃
+  have hS₀₃ : (7 / 8 : Real) * B.card ≤ S₀₃.card := hoverlap d₃ hd₃
   have hS₀₁sub : S₀₁ ⊆ T₁ := Finset.inter_subset_right
   have hS₁₂sub : S₁₂ ⊆ T₁ := Finset.inter_subset_left
   have hT₁card : T₁.card = B.card := section10Translate_card B d₁
@@ -487,8 +485,7 @@ private lemma exists_dense_bohr_chain {N : Nat}
         Finset.card_le_card hdiffSub
       _ ≤ ((E₀ ∪ E₁) ∪ E₁₂).card + E₃.card :=
         Finset.card_union_le _ _
-      _ ≤ ((E₀ ∪ E₁).card + E₁₂.card) + E₃.card := by
-        exact Nat.add_le_add_right (Finset.card_union_le _ _) _
+      _ ≤ ((E₀ ∪ E₁).card + E₁₂.card) + E₃.card := Nat.add_le_add_right (Finset.card_union_le _ _) _
       _ ≤ (E₀.card + E₁.card + E₁₂.card) + E₃.card := by
         exact Nat.add_le_add_right
           (Nat.add_le_add_right (Finset.card_union_le _ _) _) _

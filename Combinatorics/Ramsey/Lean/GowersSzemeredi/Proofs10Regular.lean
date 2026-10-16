@@ -335,14 +335,10 @@ private lemma mem_normalizedWindow_of_close_of_not_boundary
   simp only [not_or] at hpBoundary
   rcases hp with ⟨⟨hpAlo, hpAhi⟩, hpBlo, hpBhi⟩
   rcases hpBoundary with ⟨⟨⟨hAhi, hAlo⟩, hBhi⟩, hBlo⟩
-  have hpAhi' : p.1 < a + rho - sigma := by
-    exact lt_of_not_ge fun h => hAhi ⟨h, hpAhi⟩
-  have hpAlo' : a - rho + sigma < p.1 := by
-    exact lt_of_not_ge fun h => hAlo ⟨hpAlo, h⟩
-  have hpBhi' : p.2 < b + rho - sigma := by
-    exact lt_of_not_ge fun h => hBhi ⟨h, hpBhi⟩
-  have hpBlo' : b - rho + sigma < p.2 := by
-    exact lt_of_not_ge fun h => hBlo ⟨hpBlo, h⟩
+  have hpAhi' : p.1 < a + rho - sigma := lt_of_not_ge fun h => hAhi ⟨h, hpAhi⟩
+  have hpAlo' : a - rho + sigma < p.1 := lt_of_not_ge fun h => hAlo ⟨hpAlo, h⟩
+  have hpBhi' : p.2 < b + rho - sigma := lt_of_not_ge fun h => hBhi ⟨h, hpBhi⟩
+  have hpBlo' : b - rho + sigma < p.2 := lt_of_not_ge fun h => hBlo ⟨hpBlo, h⟩
   rcases abs_le.mp ha with ⟨haLo, haHi⟩
   rcases abs_le.mp hb with ⟨hbLo, hbHi⟩
   constructor <;> constructor <;> linarith
@@ -535,12 +531,9 @@ private lemma exists_regular_parameters {X : Type*} [Fintype X]
   have hprob : 0 < prob := by
     dsimp only [prob]
     positivity
-  have hSprInt : Integrable Spr μ := by
-    exact windowedSum_integrable rho a b q U μ
-  have hEwInt : Integrable Ew μ := by
-    exact windowedSum_integrable rho a b e Finset.univ μ
-  have hCwInt : Integrable Cw μ := by
-    exact windowedSum_integrable rho a b (fun _ => 1) Finset.univ μ
+  have hSprInt : Integrable Spr μ := windowedSum_integrable rho a b q U μ
+  have hEwInt : Integrable Ew μ := windowedSum_integrable rho a b e Finset.univ μ
+  have hCwInt : Integrable Cw μ := windowedSum_integrable rho a b (fun _ => 1) Finset.univ μ
   have hCvInt : Integrable Cv μ := by
     exact show Integrable (boundaryCount rho sigma a b) μ by
       unfold boundaryCount
@@ -826,8 +819,7 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
             then q y else 0 := by
         simp only [Finset.sum_filter]
   have hU : S / 2 ≤ ∑ y ∈ X', q y := by
-    have hbase : alpha ^ 3 * M ^ 3 * N ^ 2 / 4 ≤ S := by
-      exact hSanchor
+    have hbase : alpha ^ 3 * M ^ 3 * N ^ 2 / 4 ≤ S := hSanchor
     linarith only [hsplit, hbadWeight, hbase]
   have hTcard : (Fintype.card X : Real) = T := by
     dsimp only [T]
@@ -1129,8 +1121,8 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
     dsimp only [T]
     convert hWcardLower using 1
     ring
-  have hVcard : (V.card : Real) ≤ eta * W.card := by
-    exact hVcardPre.trans (mul_le_mul_of_nonneg_left hBaseT heta)
+  have hVcard : (V.card : Real) ≤ eta * W.card :=
+    hVcardPre.trans (mul_le_mul_of_nonneg_left hBaseT heta)
   have hOverlap (d : ZMod N) (hd : d ∈ B) :
       (1 - eta) * W.card ≤ (W ∩ D.shift W d).card := by
     have hsub : W \ V ⊆ W ∩ D.shift W d := by

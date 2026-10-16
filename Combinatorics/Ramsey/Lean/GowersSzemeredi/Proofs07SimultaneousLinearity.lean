@@ -111,8 +111,7 @@ private lemma exists_balancedChunk_for_quotient {c m t : Nat}
       have hjb : t / (m + 1) < b := (Nat.div_lt_iff_lt_mul hmp).2 hfront
       exact hjb.trans_le hbn⟩
     let i := t % (m + 1)
-    have hjb : (j : Nat) < b := by
-      exact (Nat.div_lt_iff_lt_mul (by omega : 0 < m + 1)).2 hfront
+    have hjb : (j : Nat) < b := (Nat.div_lt_iff_lt_mul (by omega : 0 < m + 1)).2 hfront
     refine ⟨j, i, ?_, ?_⟩
     · rw [balancedChunkLength_of_lt hjb]
       exact Nat.mod_lt _ (by omega)
@@ -838,8 +837,7 @@ private lemma bohr_symmetric_multiples_subset {p : Nat} [NeZero p]
         (centeredAbs (r * (((n + 1 : Nat) : ZMod p) * d)) : Real) <=
             (n + 1) * centeredAbs (r * d) := by exact_mod_cast hcenter
         _ <= (n + 1) * (rho / (m : Real) * p) := by gcongr
-        _ <= m * (rho / (m : Real) * p) := by
-          exact mul_le_mul_of_nonneg_right (by exact_mod_cast hn) hbase
+        _ <= m * (rho / (m : Real) * p) := mul_le_mul_of_nonneg_right (by exact_mod_cast hn) hbase
         _ = rho * p := hcollapse
 
 private def cor711Density (p : Nat) (R : IntAP) (A : Finset Int) : Real :=
@@ -997,8 +995,8 @@ private lemma cor711_spectrumUnion_card {p q : Nat} [NeZero p]
   let U := Finset.univ.biUnion (cor711Spectrum p R A)
   have hunionNat : (cor711SpectrumUnion p R A).card <= 1 + U.card := by
     calc
-      (cor711SpectrumUnion p R A).card <= ({1} : Finset (ZMod p)).card + U.card := by
-        exact Finset.card_union_le _ _
+      (cor711SpectrumUnion p R A).card <= ({1} : Finset (ZMod p)).card + U.card :=
+        Finset.card_union_le _ _
       _ = 1 + U.card := by simp
   have hbiNat : U.card <= ∑ i : Fin q, (cor711Spectrum p R A i).card := by
     dsimp only [U]

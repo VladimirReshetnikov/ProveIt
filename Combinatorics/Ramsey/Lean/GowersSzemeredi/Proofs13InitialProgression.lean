@@ -147,8 +147,7 @@ private lemma lemma134_thetaOne_le_one {N : Nat} [NeZero N]
   have hthetaOne := lemma134_theta_le_one S theta hthetaBound
   have hpow : theta ^ 10477 ≤ 1 :=
     pow_le_one₀ htheta.le hthetaOne
-  have htwo : (2 : Real) ^ (-(1882 : Int)) ≤ 1 := by
-    exact zpow_le_one_of_nonpos₀ (by norm_num) (by norm_num)
+  have htwo : (2 : Real) ^ (-(1882 : Int)) ≤ 1 := zpow_le_one_of_nonpos₀ (by norm_num) (by norm_num)
   unfold section13ThetaOne
   nlinarith [mul_le_mul htwo hpow (by positivity) (by positivity)]
 
@@ -997,8 +996,7 @@ private lemma lemma134_good_exceptional_lower {N : Nat} [NeZero N]
       _ ≤ (theta * N) * (N : Real) ^ 31 :=
         mul_le_mul_of_nonneg_right hEcard (by positivity)
       _ = theta * (N : Real) ^ 32 := by ring
-  have hdisj : Disjoint G E := by
-    exact Finset.disjoint_sdiff
+  have hdisj : Disjoint G E := Finset.disjoint_sdiff
   have hunion : G ∪ E = Finset.univ := by
     simp [E]
   have hweightPartition :
@@ -1194,8 +1192,7 @@ private lemma lemma134_spectrum_union_card
         ∑ i : Fin q₀,
           ((section7Spectrum (B i) (lemma134Density (B i))).card : Real) :=
       hcardReal
-    _ ≤ ∑ _i : Fin q₀, 16 * theta₁ ^ (-(2 : Real)) := by
-      exact Finset.sum_le_sum fun i _ => hper i
+    _ ≤ ∑ _i : Fin q₀, 16 * theta₁ ^ (-(2 : Real)) := Finset.sum_le_sum fun i _ => hper i
     _ = (q₀ : Real) * (16 * theta₁ ^ (-(2 : Real))) := by simp
     _ ≤ (q : Real) * (16 * theta₁ ^ (-(2 : Real))) := by
       gcongr
@@ -1335,8 +1332,7 @@ private theorem lemma134_at_graph_budget
       hq₀Bound, hcover⟩ :=
     corollary_13_3_holds N S.A theta hprime htheta
   let q := max 1 q₀
-  have hq : 0 < q := by
-    exact (by norm_num : 0 < 1).trans_le (Nat.le_max_left 1 q₀)
+  have hq : 0 < q := (by norm_num : 0 < 1).trans_le (Nat.le_max_left 1 q₀)
   have hq₀q : q₀ ≤ q := Nat.le_max_right 1 q₀
   have hqBound : (q : Real) ≤ section13QBound theta := by
     have hOneBound := lemma134_qBound_one_le S theta htheta hthetaBound
@@ -1393,8 +1389,7 @@ private theorem lemma134_at_graph_budget
       lemma134_exists_progression_average S G d hd hlN
     let P := lemma134Progression d s l
     let H := P.carrier ∩ G
-    have hproper : P.IsProper := by
-      exact lemma134_progression_proper d s hd hlN
+    have hproper : P.IsProper := lemma134_progression_proper d s hd hlN
     have hgoodG : S.alpha ^ 32 * (N : Real) ^ 32 / 4 ≤
         goodHeightWeight S G :=
       lemma134_good_exceptional_lower S theta G htheta hthetaBound hGcard

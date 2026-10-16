@@ -144,8 +144,7 @@ theorem Box.axis_carrier_subset_of_carrier_subset {N k : Nat} [NeZero N]
     · subst j; simpa [z] using hy
     · simpa [z, hji] using hx' j
   have hz' := hsub hz
-  have hzi : z i ∈ (R.axis i).carrier := by
-    exact (Finset.mem_filter.mp hz').2 i
+  have hzi : z i ∈ (R.axis i).carrier := (Finset.mem_filter.mp hz').2 i
   simpa [z] using hzi
 
 /-- Positive axis lengths make the box nonempty. -/

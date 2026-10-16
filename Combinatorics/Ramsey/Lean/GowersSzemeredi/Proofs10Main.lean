@@ -873,8 +873,7 @@ private lemma theorem1013_theta_small :
     unfold theorem1013Eta
     rw [Real.rpow_neg (by norm_num : (0 : Real) ≤ 2)]
     norm_num [Real.rpow_natCast]
-  have htheta : theorem1013Theta < 1 / 36 := by
-    exact lt_of_pow_lt_pow_left₀ 5 (by norm_num) hcompare
+  have htheta : theorem1013Theta < 1 / 36 := lt_of_pow_lt_pow_left₀ 5 (by norm_num) hcompare
   have hthetaNonneg : 0 ≤ theorem1013Theta := by
     unfold theorem1013Theta
     positivity
@@ -1261,8 +1260,7 @@ theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
       alpha ^ 5 * Fintype.card (Theorem1013Quad X) / 20000 ≤
           (5 / 6 : Real) * (rho ^ 2 * alpha ^ 2 * L * N / 16) := hnumeric
       _ ≤ (5 / 6 : Real) * W.card := by gcongr
-      _ ≤ (1 - Real.sqrt theta) * W.card := by
-        exact mul_le_mul_of_nonneg_right hfactor.le (by positivity)
+      _ ≤ (1 - Real.sqrt theta) * W.card := mul_le_mul_of_nonneg_right hfactor.le (by positivity)
       _ ≤ W₁.card := hW₁lower
   have hXcardPosReal : (0 : Real) < Fintype.card X := by
     rw [hcard]
@@ -1318,10 +1316,8 @@ theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
   intro y hy z hz hyz
   let qy : Theorem1013Quad X := theorem1013OfHead p y
   let qz : Theorem1013Quad X := theorem1013OfHead p z
-  have hqy : qy ∈ W₁ := by
-    exact theorem1013_of_head_mem W₁ p y (by simpa only [Y] using hy)
-  have hqz : qz ∈ W₁ := by
-    exact theorem1013_of_head_mem W₁ p z (by simpa only [Y] using hz)
+  have hqy : qy ∈ W₁ := theorem1013_of_head_mem W₁ p y (by simpa only [Y] using hy)
+  have hqz : qz ∈ W₁ := theorem1013_of_head_mem W₁ p z (by simpa only [Y] using hz)
   have hindex : D₄.index qy - D₄.index qz = D.index y - D.index z := by
     dsimp only [D₄, qy, qz, theorem1013QuadDomain, theorem1013OfHead]
     simp [sub_eq_add_neg]

@@ -82,8 +82,7 @@ private lemma cor36_two_pow_eta_le {k : Nat} (hk : 2 ≤ k)
   let p : Real := delta ^ k
   let q : Real := (2 : Real) ^ k
   have hp0 : 0 ≤ p := pow_nonneg hdelta0.le _
-  have hp1 : p ≤ 1 := by
-    exact pow_le_one₀ hdelta0.le hdelta1
+  have hp1 : p ≤ 1 := pow_le_one₀ hdelta0.le hdelta1
   have hq0 : 0 < q := by positivity
   have hq2 : 2 ≤ q := by
     have hp : (2 : Nat) ^ 1 ≤ 2 ^ k :=

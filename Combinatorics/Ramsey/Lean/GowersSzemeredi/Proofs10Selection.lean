@@ -86,8 +86,7 @@ theorem lemma_10_3_holds : lemma_10_3 := by
   let QT : Real := ∑ x : X, Q x
   let QS : Real := ∑ x ∈ S, Q x
   let ES : Real := ∑ x ∈ S, E x
-  have hEnonneg (x : X) : 0 ≤ E x := by
-    exact weightedError_nonneg D phi B x
+  have hEnonneg (x : X) : 0 ≤ E x := weightedError_nonneg D phi B x
   have hApos : 0 < A := by
     dsimp only [A]
     have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
@@ -173,8 +172,7 @@ theorem lemma_10_3_holds : lemma_10_3 := by
     calc
       ES ≤ ∑ x : X, E x := hESleTotal
       _ ≤ 15 * eta * QT := hEtotal
-      _ ≤ 15 * eta * (2 * QS) := by
-        exact mul_le_mul_of_nonneg_left hQTle (mul_nonneg (by norm_num) heta)
+      _ ≤ 15 * eta * (2 * QS) := mul_le_mul_of_nonneg_left hQTle (mul_nonneg (by norm_num) heta)
       _ = 30 * eta * QS := by ring
   have hScard : (S.card : Real) ≤ Fintype.card X := by
     exact_mod_cast S.card_le_univ

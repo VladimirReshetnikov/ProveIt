@@ -586,8 +586,7 @@ private lemma cor146_build_good {N k : Nat} [NeZero N]
     · intro e t
       have ht : cor146GoodPair B phi K (q t) (f t) := by
         simpa [cor146GoodSet] using hgood t
-      have ht' : (f t).IsIn (cor146Section B (q t)) := by
-        exact ht.2.1
+      have ht' : (f t).IsIn (cor146Section B (q t)) := ht.2.1
       have hv := ht' e
       unfold GeneralArrangement.vertex
       rw [cor146_build_cube B phi K q f hgood]
@@ -775,8 +774,7 @@ private lemma cor146_direct_lower {N k : Nat} [NeZero N]
         gamma ^ (2 * k * 4 ^ (k + 1) + 8 * 2 ^ k) *
         (N : Real) ^ (5 * k + 3)) * (N : Real) ^ k =
       H * ((beta ^ (4 ^ k) * gamma ^ (2 * k * 4 ^ k)) ^ 4 *
-        (N : Real) ^ (6 * k)) := by
-          exact cor146_direct_constant_identity beta gamma
+        (N : Real) ^ (6 * k)) := cor146_direct_constant_identity beta gamma
     _ ≤ (∑ K : AxisCube N k,
         countWhere (cor146FiberGood B phi K) : Real) := by
           simpa only [Nat.cast_sum] using hsource

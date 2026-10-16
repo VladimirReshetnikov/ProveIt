@@ -571,8 +571,7 @@ private lemma prop144_fourth_moment {N n : Nat} [NeZero N]
         (N : Real) ^ (3 * n + 1)) ^ 4 /
         ((N : Real) ^ (3 * n)) ^ 3 ≤
       (∑ L : CubeConfiguration N n, m L) ^ 4 /
-        ((N : Real) ^ (3 * n)) ^ 3 := by
-          exact div_le_div_of_nonneg_right hpow (by positivity)
+        ((N : Real) ^ (3 * n)) ^ 3 := div_le_div_of_nonneg_right hpow (by positivity)
     _ ≤ ∑ L : CubeConfiguration N n, m L ^ 4 := hmean
     _ = ∑ L : CubeConfiguration N n,
         ((prop144GoodSet B phi L).card : Real) ^ 4 := by rfl
@@ -688,8 +687,7 @@ private lemma prop145_alternating_sum_eq_of_faces {N n : Nat} [NeZero N]
     (∑ u : Fin (n + 1) → Bool,
         (-1 : ZMod N) ^ boolWeight u * F₀ u) =
       ∑ p : Bool × (Fin n → Bool),
-        (-1 : ZMod N) ^ boolWeight (E p) * F₀ (E p) := by
-          exact (E.sum_comp _).symm
+        (-1 : ZMod N) ^ boolWeight (E p) * F₀ (E p) := (E.sum_comp _).symm
     _ = ∑ e : Fin n → Bool, ∑ b : Bool,
         (-1 : ZMod N) ^ boolWeight (j.insertNth b e) *
           F₀ (j.insertNth b e) := by

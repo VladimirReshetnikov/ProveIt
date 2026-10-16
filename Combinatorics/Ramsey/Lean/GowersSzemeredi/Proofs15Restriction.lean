@@ -1684,8 +1684,7 @@ private lemma selection_exists_stage_margin_lower (k : Nat) (alpha eta : Real)
   let K : Nat := 2 ^ (M - 1)
   let E : Nat := arrangementSelectionExponent k
   let amp : Real := 1 + 2 * ((2 : Real)⁻¹) ^ M
-  have hamp : (2 : Real) ≤ amp ^ K := by
-    exact selection_amplification_step k
+  have hamp : (2 : Real) ≤ amp ^ K := selection_amplification_step k
   have hamp_pow : (2 : Real) ^ m ≤ amp ^ (K * m) := by
     calc
       (2 : Real) ^ m ≤ (amp ^ K) ^ m :=
@@ -1695,8 +1694,7 @@ private lemma selection_exists_stage_margin_lower (k : Nat) (alpha eta : Real)
     dsimp [q]
     rw [← mul_pow]
     norm_num
-  have hME : M * K = E := by
-    exact selection_vertex_times_amplification k
+  have hME : M * K = E := selection_vertex_times_amplification k
   have hpower :
       (((2 : Real)⁻¹) ^ M) ^ (K * m) = q ^ E := by
     calc
@@ -2080,8 +2078,7 @@ private lemma selectionZeroExceptionalFinset_card_le {N : Nat} [NeZero N]
       intro eps heps
       exact selectionZeroRelationFinset_card_le hN eps heps
     _ = (selectionZeroPatternFinset N).card * (2 * N ^ 14) := by simp
-    _ ≤ (4 ^ 16) * (2 * N ^ 14) := by
-      exact Nat.mul_le_mul_right _ (selectionZeroPatternFinset_card_le N)
+    _ ≤ (4 ^ 16) * (2 * N ^ 14) := Nat.mul_le_mul_right _ (selectionZeroPatternFinset_card_le N)
     _ = (2 * 4 ^ 16) * N ^ 14 := by ring
 
 private def selectionZeroTernaryDigit (a : Int) : Fin 4 :=
@@ -2295,8 +2292,8 @@ private lemma selectionDegenerate_real_small_explicit (k : Nat) (scale delta : R
   calc
     (degenerateGeneralArrangementCount (N := N) (k := k) 8 : Real) ≤
         C * (N : Real) ^ (17 * k + 14) := hdeg'
-    _ ≤ (D * (N : Real)) * (N : Real) ^ (17 * k + 14) := by
-      exact mul_le_mul_of_nonneg_right hC (pow_nonneg (Nat.cast_nonneg N) _)
+    _ ≤ (D * (N : Real)) * (N : Real) ^ (17 * k + 14) :=
+      mul_le_mul_of_nonneg_right hC (pow_nonneg (Nat.cast_nonneg N) _)
     _ = delta * scale * (N : Real) ^ (17 * k + 15) := by
       dsimp only [D]
       rw [show 17 * k + 15 = (17 * k + 14) + 1 by omega, pow_succ]
@@ -2325,8 +2322,8 @@ private lemma selectionDegenerate_real_small_zero_explicit (scale delta : Real)
   calc
     (degenerateGeneralArrangementCount (N := N) (k := 0) 8 : Real) ≤
         C * (N : Real) ^ 14 := hdeg
-    _ ≤ (D * (N : Real)) * (N : Real) ^ 14 := by
-      exact mul_le_mul_of_nonneg_right hC (pow_nonneg (Nat.cast_nonneg N) _)
+    _ ≤ (D * (N : Real)) * (N : Real) ^ 14 :=
+      mul_le_mul_of_nonneg_right hC (pow_nonneg (Nat.cast_nonneg N) _)
     _ = delta * scale * (N : Real) ^ 15 := by
       dsimp only [D]
       rw [show 15 = 14 + 1 by omega, pow_succ]
@@ -2435,8 +2432,7 @@ private theorem selection_scale_estimate_of_exceptional_bound_explicit
     have hamp2 : amp ≤ 2 := by
       dsimp only [amp, qb] at hqbHalf ⊢
       linarith
-    have hqg0 : 0 ≤ qg := by
-      exact mul_nonneg hqb0 hamp0
+    have hqg0 : 0 ≤ qg := mul_nonneg hqb0 hamp0
     have hqg1 : qg ≤ 1 := by
       dsimp only [qg]
       calc

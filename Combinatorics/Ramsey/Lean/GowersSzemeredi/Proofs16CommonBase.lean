@@ -139,8 +139,7 @@ private lemma lemma167_sum_good_lower {N k : Nat} [NeZero N]
               rw [htwo29]
               ring
       _ ≤ ((2 : Real) ^ (-(27 : Real)) * theta1 ^ 6) *
-          (section16CubeDomain B h).card := by
-            exact mul_le_mul_of_nonneg_left (hX h hh) hcoefficient
+          (section16CubeDomain B h).card := mul_le_mul_of_nonneg_left (hX h hh) hcoefficient
       _ ≤ (Y h).card := hY h hh
   have hsumY :
       (H.card : Real) *
@@ -154,8 +153,7 @@ private lemma lemma167_sum_good_lower {N k : Nat} [NeZero N]
           ∑ _h ∈ H,
             ((2 : Real) ^ (-(29 : Real)) * theta1 ^ (7 : Nat) *
               (N : Real) ^ (k + 1)) := by simp
-      _ ≤ ∑ h ∈ H, ((Y h).card : Real) := by
-        exact Finset.sum_le_sum fun h hh => hper h hh
+      _ ≤ ∑ h ∈ H, ((Y h).card : Real) := Finset.sum_le_sum fun h hh => hper h hh
   have hperNonneg :
       0 ≤ (2 : Real) ^ (-(29 : Real)) * theta1 ^ (7 : Nat) *
         (N : Real) ^ (k + 1) := by positivity

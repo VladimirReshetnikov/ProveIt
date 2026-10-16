@@ -103,8 +103,8 @@ private lemma bohr_symmetric_multiples_subset {N : Nat} [NeZero N]
             (n + 1) * centeredAbs (r * d) := by exact_mod_cast hcenter
         _ ≤ (n + 1) * (alpha / (32 * Real.pi * (m : Real)) * N) := by
           gcongr
-        _ ≤ m * (alpha / (32 * Real.pi * (m : Real)) * N) := by
-          exact mul_le_mul_of_nonneg_right (by exact_mod_cast hn) hbase
+        _ ≤ m * (alpha / (32 * Real.pi * (m : Real)) * N) :=
+          mul_le_mul_of_nonneg_right (by exact_mod_cast hn) hbase
         _ = alpha / (32 * Real.pi) * N := hcollapse
 
 private lemma freiman_map_nat_multiple {N : Nat} [NeZero N]

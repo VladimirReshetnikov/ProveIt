@@ -320,8 +320,7 @@ private lemma prop177_region_sum_bound (k : Nat) (hk : 0 < k) :
   · have hn2 : 2 ≤ n := by
       dsimp only [n]
       rw [prop177_thresholdCount_eq]
-      have hpow : 2 ≤ 2 ^ k := by
-        exact (show 2 ^ 1 ≤ 2 ^ k from Nat.pow_le_pow_right (by decide) hk)
+      have hpow : 2 ≤ 2 ^ k := (show 2 ^ 1 ≤ 2 ^ k from Nat.pow_le_pow_right (by decide) hk)
       have hR : 0 < k * (k + 1) := Nat.mul_pos hk (Nat.succ_pos k)
       have hfirst : 1 ≤ 2 ^ k - 1 := by omega
       have hsecond : 2 ≤ 2 * (k * (k + 1)) := by omega
@@ -334,8 +333,7 @@ private lemma prop177_region_sum_bound (k : Nat) (hk : 0 < k) :
       _ ≤ 2 * n ^ (k + 2) := by
         simpa only [Nat.add_assoc] using
           sum_range_pow_le_two_mul_pow n (k + 2) hn2
-      _ ≤ 2 * (2 ^ (3 * k + 2)) ^ (k + 2) := by
-        exact Nat.mul_le_mul_left 2 (Nat.pow_le_pow_left hn _)
+      _ ≤ 2 * (2 ^ (3 * k + 2)) ^ (k + 2) := Nat.mul_le_mul_left 2 (Nat.pow_le_pow_left hn _)
       _ = 2 ^ 1 * 2 ^ ((3 * k + 2) * (k + 2)) := by
         rw [pow_mul]
         norm_num
@@ -377,8 +375,7 @@ private theorem prop177_exists_normalized_integer_patterns (k : Nat) (hk : 0 < k
       have hh' := (Finset.mem_filter.mp hh).2.1
       exact prop177_thresholdCode_injective
         (Nat.mul_pos hk (Nat.succ_pos k)) hg' hh' hcode
-    have hCcard : C.card = S.card := by
-      exact Finset.card_image_iff.mpr hcodeInj
+    have hCcard : C.card = S.card := Finset.card_image_iff.mpr hcodeInj
     have hCsubset : C ⊆ Finset.univ.filter
         (RealizesRegion (prop177ThresholdHyperplanes k R)) := by
       intro p hp
@@ -969,8 +966,8 @@ private lemma prop177_energy_implies_moment {N k m : Nat} [NeZero N]
       ‖fourier (cubeDifference f x) (sigma x)‖ ^ 2) ≤
       (m : Real) ^ k * ((N : Real) * T) := by
     calc
-      _ ≤ ∑ _x ∈ P.carrier, (N : Real) * T := by
-        exact Finset.sum_le_sum fun x _ => prop177_fourier_sq_le_moment f x (sigma x)
+      _ ≤ ∑ _x ∈ P.carrier, (N : Real) * T :=
+        Finset.sum_le_sum fun x _ => prop177_fourier_sq_le_moment f x (sigma x)
       _ = (P.carrier.card : Real) * ((N : Real) * T) := by simp [mul_comm]
       _ ≤ (m : Real) ^ k * ((N : Real) * T) := by
         gcongr
@@ -1303,8 +1300,7 @@ private lemma prop177_difference_mixedProduct {N k : Nat}
         rfl
     _ = ∏ p : Bool × (Fin k → Bool), T (Fin.cons p.1 p.2) := by
       rw [Fintype.prod_prod_type, Fintype.prod_bool, mul_comm]
-    _ = ∏ E : Fin (k + 1) → Bool, T E := by
-      exact (Fin.consEquiv (fun _ : Fin (k + 1) => Bool)).prod_comp T
+    _ = ∏ E : Fin (k + 1) → Bool, T E := (Fin.consEquiv (fun _ : Fin (k + 1) => Bool)).prod_comp T
 
 private lemma prop177_mixedEnergy_expansion {N k : Nat} [NeZero N]
     (H : (Fin k → Bool) → ZMod N → Complex)
@@ -1919,8 +1915,7 @@ private lemma prop177_select_local_vertex
         apply Finset.sum_congr rfl
         intro E _
         rw [Finset.mul_sum]
-  have hU : (Finset.univ : Finset (Fin (k + 1) → Bool)).Nonempty := by
-    exact Finset.univ_nonempty
+  have hU : (Finset.univ : Finset (Fin (k + 1) → Bool)).Nonempty := Finset.univ_nonempty
   obtain ⟨E, _, hEmax⟩ := Finset.exists_max_image
     (Finset.univ : Finset (Fin (k + 1) → Bool)) T hU
   refine ⟨E, htotal.trans ?_⟩
@@ -2090,8 +2085,7 @@ private lemma prop177_mapCell_carrier {N : Nat} [NeZero N]
   ext x
   let e := prop177AffineEquiv d offset hd
   let u := e.symm x
-  have heu : d * u - offset = x := by
-    exact e.apply_symm_apply x
+  have heu : d * u - offset = x := e.apply_symm_apply x
   simp only [Finset.mem_image]
   constructor
   · intro hx
@@ -2224,16 +2218,13 @@ private lemma prop177_scale_bounds {N h k : Nat}
   have hkR : (0 : Real) < k := by exact_mod_cast hk
   have hhR : (0 : Real) < h := by exact_mod_cast hh
   have hratio0 : (0 : Real) < (h : Real) / k := div_pos hhR hkR
-  have hqpos : 0 < q := by
-    exact Nat.ceil_pos.mpr hratio0
-  have hqLower : (h : Real) / k ≤ (q : Real) := by
-    exact Nat.le_ceil ((h : Real) / k)
+  have hqpos : 0 < q := Nat.ceil_pos.mpr hratio0
+  have hqLower : (h : Real) / k ≤ (q : Real) := Nat.le_ceil ((h : Real) / k)
   have hkOne : (1 : Real) ≤ k := by exact_mod_cast hk
   have hratioUpper : (h : Real) / k ≤ (h : Real) := by
     rw [div_le_iff₀ hkR]
     nlinarith
-  have hqle : q ≤ h := by
-    exact Nat.ceil_le.mpr hratioUpper
+  have hqle : q ≤ h := Nat.ceil_le.mpr hratioUpper
   have hqSucc : q + 1 ≤ 2 * h + 1 := by omega
   have hqSqR : ((q : Real) ^ 2) ≤ (N : Real) := by
     calc
@@ -2265,8 +2256,7 @@ private lemma prop177_quotient_width_bounds {N q : Nat}
     have hqq : q ≤ q * q := by nlinarith
     exact hqq.trans hqSq
   have hM : 0 < M := Nat.div_pos hqN hq
-  have hqM : q ≤ M := by
-    exact (Nat.le_div_iff_mul_le hq).mpr hqSq
+  have hqM : q ≤ M := (Nat.le_div_iff_mul_le hq).mpr hqSq
   have hMReal : (0 : Real) < M := by exact_mod_cast hM
   have hqWidth : (q : Real) ≤ prop177CellWidth N M := by
     unfold prop177CellWidth
@@ -2367,8 +2357,7 @@ private lemma prop177_quantitative_strict
         ((q + 1 : Nat) : Real) ^ (k + 2) * M < S := by
   let L : Real := ((2 ^ (k * (k + 1) ^ 2) : Nat) : Real)
   let c : Real := (2 : Real) ^ (-(2 * (k + 1) ^ 3 : Int))
-  have hcoeff : L ^ 2 * c < 1 / 4 := by
-    exact prop177_pattern_coefficient_lt_quarter k hk
+  have hcoeff : L ^ 2 * c < 1 / 4 := prop177_pattern_coefficient_lt_quarter k hk
   have hqhalf : (((q + 1 : Nat) : Real)) ≤ 2 * (q : Real) := by
     exact_mod_cast (show q + 1 ≤ 2 * q by omega)
   have hqSquare :
@@ -2477,8 +2466,7 @@ private theorem prop177_large_branch
   obtain ⟨hMpos, _, hqWidth, hWidthUpper⟩ :=
     prop177_quotient_width_bounds (N := N) (q := q) hqpos hqSq
   letI : NeZero M := ⟨hMpos.ne'⟩
-  have hqLower : (h : Real) / k ≤ (q : Real) := by
-    exact Nat.le_ceil ((h : Real) / k)
+  have hqLower : (h : Real) / k ≤ (q : Real) := Nat.le_ceil ((h : Real) / k)
   obtain ⟨F, hFcard, hFzero, hFmem⟩ :=
     prop177_exists_normalized_mod_patterns k M hk
   have hFnonempty : F.Nonempty := by

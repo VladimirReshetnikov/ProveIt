@@ -47,8 +47,7 @@ theorem lemma_10_12_holds : lemma_10_12 := by
   change c ∈ C at hc
   change phi w1 - phi w2 = psi1 c
 
-  have hBne : B.Nonempty := by
-    exact ⟨0, bohr_zero_mem K delta hdelta.le⟩
+  have hBne : B.Nonempty := ⟨0, bohr_zero_mem K delta hdelta.le⟩
   have hBcardPos : (0 : Real) < B.card := by
     exact_mod_cast Finset.card_pos.mpr hBne
   have hB'cardLeNat : B'.card ≤ B.card :=
@@ -134,8 +133,8 @@ theorem lemma_10_12_holds : lemma_10_12 := by
         exact hxnot (Finset.mem_inter.mpr ⟨hxB', hxT'⟩)
       exact Finset.mem_union.mpr (Or.inr (Finset.mem_sdiff.mpr ⟨hxT, hxnotT'⟩))
     · exact Finset.mem_union.mpr (Or.inl (Finset.mem_sdiff.mpr ⟨hxB, hxB'⟩))
-  have hdiffUNat : (U \ U').card ≤ E0.card + Ec.card := by
-    exact (Finset.card_le_card hdiffUsub).trans (Finset.card_union_le E0 Ec)
+  have hdiffUNat : (U \ U').card ≤ E0.card + Ec.card :=
+    (Finset.card_le_card hdiffUsub).trans (Finset.card_union_le E0 Ec)
   have hdiffU : ((U \ U').card : Real) ≤ 2 * theta * B.card := by
     have hdiffUReal : ((U \ U').card : Real) ≤ E0.card + Ec.card := by
       exact_mod_cast hdiffUNat

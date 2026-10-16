@@ -1438,8 +1438,8 @@ theorem fejer_scale_estimate_explicit (k : Nat) (alpha scale eta : Real) (hk : 1
       have h1 : eta * (alpha * G - D) ≤ eta * (fejerGoodNondegenerate m B phi).card :=
         mul_le_mul_of_nonneg_left hgoodCard heta.le
       calc eta * (alpha * G - D) * (t * (((T : Real) + 1) / 2))
-          ≤ eta * (fejerGoodNondegenerate m B phi).card * (t * (((T : Real) + 1) / 2)) := by
-            exact mul_le_mul_of_nonneg_right h1 hLnn
+          ≤ eta * (fejerGoodNondegenerate m B phi).card * (t * (((T : Real) + 1) / 2)) :=
+            mul_le_mul_of_nonneg_right h1 hLnn
         _ ≤ _ := mul_le_mul_of_nonneg_left hL (by positivity)
     have hbadTerm : ((fejerBadNondegenerate m B phi).card : Real) * t ≤ G * t :=
       mul_le_mul_of_nonneg_right hbadCard ht0.le

@@ -444,8 +444,8 @@ theorem section5_iterated_strong_nat_refinement
               exact (hQsubset i j).trans (hRsubset i)
             have hMsum : 0 < ∑ i, M i := by
               let i : Fin L := ⟨0, hL⟩
-              have hle : M i <= ∑ j, M j := by
-                exact Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
+              have hle : M i <= ∑ j, M j :=
+                Finset.single_le_sum (fun _ _ => Nat.zero_le _) (Finset.mem_univ i)
               exact (hM i).trans_le hle
             refine ⟨∑ i, M i, F, hMsum, hFpartition, ?_, hFsubset, ?_⟩
             · intro j

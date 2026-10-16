@@ -116,8 +116,7 @@ private lemma cor1014_symmetric_multiples_subset {N : Nat} [NeZero N]
         (centeredAbs (r * (((n + 1 : Nat) : ZMod N) * d)) : Real) ≤
             (n + 1) * centeredAbs (r * d) := by exact_mod_cast hcenter
         _ ≤ (n + 1) * (zeta / (m : Real) * N) := by gcongr
-        _ ≤ m * (zeta / (m : Real) * N) := by
-          exact mul_le_mul_of_nonneg_right (by exact_mod_cast hn) hbase
+        _ ≤ m * (zeta / (m : Real) * N) := mul_le_mul_of_nonneg_right (by exact_mod_cast hn) hbase
         _ = zeta * N := hcollapse
 
 private lemma cor1014_zero_mem_symmetric {N : Nat} (d : ZMod N) (m : Nat) :

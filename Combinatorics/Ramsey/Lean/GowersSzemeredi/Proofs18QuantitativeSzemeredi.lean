@@ -182,8 +182,8 @@ theorem section18_cyclic_density_increment_holds_of_theorem_18_1
                 apply Finset.sum_congr rfl
                 intro x _hx
                 exact section18_balanced_eq_real A x
-        _ = ((∑ x ∈ (P i).carrier, f x : Real) : Complex) := by
-          exact (Complex.ofReal_sum (P i).carrier f).symm
+        _ = ((∑ x ∈ (P i).carrier, f x : Real) : Complex) :=
+          (Complex.ofReal_sum (P i).carrier f).symm
     rw [hcast, Complex.norm_real, Real.norm_eq_abs]
   have hdiscrepancyReal :
       epsilon * N ≤ ∑ i, |∑ x ∈ (P i).carrier, f x| := by

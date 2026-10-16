@@ -68,8 +68,8 @@ theorem section16_distinct_sampling_half_bound {α : Type*}
       ¬ section16SampleHasDistinctPair C sample)).card ≤
       2 * (Fintype.card α - C.card / 2) ^ r := by
   obtain ⟨A, hA, hcard⟩ := Finset.exists_subset_card_eq (Nat.div_le_self C.card 2)
-  have hdisj : Disjoint A (C \ A) := by
-    exact Finset.disjoint_left.mpr (fun _ ha hb => (Finset.mem_sdiff.mp hb).2 ha)
+  have hdisj : Disjoint A (C \ A) :=
+    Finset.disjoint_left.mpr (fun _ ha hb => (Finset.mem_sdiff.mp hb).2 ha)
   have hbound := section16_distinct_sampling_split_bound C A (C \ A) r hA
     Finset.sdiff_subset hdisj
   rw [Finset.card_sdiff_of_subset hA, hcard] at hbound

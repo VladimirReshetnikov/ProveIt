@@ -8,8 +8,7 @@ namespace LeanProofs.GowersSzemeredi
 
 theorem affine_localization_eighth_power_budget {L : Nat} (hL : 2 ≤ L) :
     1024 * L ^ 3 ≤ (2 * L) ^ 8 := by
-  have hpow : 4 ≤ L ^ 5 := by
-    exact (by norm_num : (4 : Nat) ≤ 2 ^ 5).trans (Nat.pow_le_pow_left hL 5)
+  have hpow : 4 ≤ L ^ 5 := (by norm_num : (4 : Nat) ≤ 2 ^ 5).trans (Nat.pow_le_pow_left hL 5)
   calc
     1024 * L ^ 3 ≤ (256 * L ^ 5) * L ^ 3 := Nat.mul_le_mul_right _ (by omega)
     _ = (2 * L) ^ 8 := by ring

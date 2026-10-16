@@ -51,8 +51,7 @@ theorem section13_edge_tuple_count {N k : Nat} [NeZero N]
     let x : Fin (2 * k) → Section13Edges A h := fun i ↦
       ⟨(R.x i, R.y i), Finset.mem_filter.mpr ⟨Finset.mem_univ _,
         (hRin.2 i).1, by simpa only [hheight] using (hRin.2 i).2⟩⟩
-    have hxR : section13EdgeArrangement x = R := by
-      exact Prod.ext rfl (Prod.ext rfl hheight.symm)
+    have hxR : section13EdgeArrangement x = R := Prod.ext rfl (Prod.ext rfl hheight.symm)
     refine ⟨x, ?_, hxR⟩
     simp only [Finset.mem_filter, Finset.mem_univ, true_and]
     exact ⟨hRin.1, hxR ▸ hRP⟩

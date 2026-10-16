@@ -442,8 +442,8 @@ private lemma restrictedError_inv_sum_le_one {N : Nat} {X : Type*}
       apply Finset.sum_congr rfl
       intro uv _
       by_cases huv : RestrictedError D phi B x y uv <;> simp [huv]
-    _ ≤ (b : Real) * (b : Real)⁻¹ := by
-      exact mul_le_mul_of_nonneg_right hebReal (inv_nonneg.mpr (by positivity))
+    _ ≤ (b : Real) * (b : Real)⁻¹ :=
+      mul_le_mul_of_nonneg_right hebReal (inv_nonneg.mpr (by positivity))
     _ ≤ 1 := by
       by_cases hb : b = 0
       · simp [hb]
@@ -547,8 +547,7 @@ private lemma large_reverse_inv_sum_le_four {N : Nat} [NeZero N]
       apply Finset.sum_congr rfl
       intro xy _
       by_cases hxy : Eligible xy <;> simp [hxy]
-    _ ≤ (buv : Real) * (4 * (buv : Real)⁻¹) := by
-      exact mul_le_mul_of_nonneg_right hcReal (by positivity)
+    _ ≤ (buv : Real) * (4 * (buv : Real)⁻¹) := mul_le_mul_of_nonneg_right hcReal (by positivity)
     _ ≤ 4 := by
       by_cases hbuv : buv = 0
       · simp [hbuv]
@@ -1012,10 +1011,8 @@ theorem lemma_10_2_holds : lemma_10_2 := by
   have hscale : 0 ≤ 5 * eta := mul_nonneg (by norm_num) heta
   have hsmallBase : 5 * eta * (alpha ^ 4 * M ^ 4 * N ^ 3) ≤
       5 * eta * Q := mul_le_mul_of_nonneg_left hQlower hscale
-  have hS₁Q : S₁ ≤ 5 * eta * Q := by
-    exact hS₁.trans (by simpa only [mul_assoc] using hsmallBase)
-  have hS₂Q : S₂ ≤ 5 * eta * Q := by
-    exact hS₂.trans (by simpa only [mul_assoc] using hsmallBase)
+  have hS₁Q : S₁ ≤ 5 * eta * Q := hS₁.trans (by simpa only [mul_assoc] using hsmallBase)
+  have hS₂Q : S₂ ≤ 5 * eta * Q := hS₂.trans (by simpa only [mul_assoc] using hsmallBase)
   change (∑ x : X, ∑ y : X, domainProportionateError D phi B x y *
       domainDifferenceWeight D x y) ≤ 15 * eta * Q
   calc

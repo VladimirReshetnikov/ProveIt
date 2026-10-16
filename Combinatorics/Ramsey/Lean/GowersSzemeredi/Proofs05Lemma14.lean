@@ -161,8 +161,7 @@ theorem section5_sum_rpow_le {M N K : Nat} (hM : 0 < M) (hK : 0 < K)
   have hKreal : (0 : Real) < K := by exact_mod_cast hK
   have hKone : (1 : Real) ≤ K := by exact_mod_cast hK
   have hq0 : 0 ≤ q := (inv_pos.mpr hKreal).le
-  have hq1 : q ≤ 1 := by
-    exact inv_le_one_of_one_le₀ hKone
+  have hq1 : q ≤ 1 := inv_le_one_of_one_le₀ hKone
   have hp0 : 0 ≤ p := by dsimp only [p]; linarith
   have hp1 : p ≤ 1 := by dsimp only [p]; linarith
   have hMreal : (0 : Real) < M := by exact_mod_cast hM

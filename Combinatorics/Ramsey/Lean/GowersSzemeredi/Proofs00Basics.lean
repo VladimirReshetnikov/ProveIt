@@ -243,8 +243,8 @@ lemma restriction_mul_kernel_card {N : Nat} [NeZero N]
       hgpos
   have heq : N.gcd h.val * (N / N.gcd h.val) = N :=
     Nat.mul_div_cancel' hdiv
-  have hker : Nat.card f.ker = N.gcd h.val := by
-    exact Nat.eq_of_mul_eq_mul_right hquotpos (hprod.trans heq.symm)
+  have hker : Nat.card f.ker = N.gcd h.val :=
+    Nat.eq_of_mul_eq_mul_right hquotpos (hprod.trans heq.symm)
   let e : {x : ZMod N // h * x = 0} ≃ f.ker :=
     Equiv.subtypeEquiv (Equiv.refl _) (fun x ↦ by rfl)
   calc
@@ -342,8 +342,8 @@ lemma prop121_vector_orthogonality {N p : Nat} [NeZero N]
       if ∀ i, x i = 0 then ((N : Nat) ^ p : Complex) else 0 := by
   calc
     (∑ u : Fin p → ZMod N, ∏ i, exponential (x i * u i)) =
-        ∏ i : Fin p, ∑ a : ZMod N, exponential (x i * a) := by
-          exact (Fintype.prod_sum (fun i (a : ZMod N) => exponential (x i * a))).symm
+        ∏ i : Fin p, ∑ a : ZMod N, exponential (x i * a) :=
+          (Fintype.prod_sum (fun i (a : ZMod N) => exponential (x i * a))).symm
     _ = ∏ i : Fin p, if x i = 0 then (N : Complex) else 0 := by
           apply Finset.prod_congr rfl
           intro i _

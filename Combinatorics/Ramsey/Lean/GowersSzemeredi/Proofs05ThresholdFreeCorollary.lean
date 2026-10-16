@@ -22,11 +22,10 @@ def ThresholdFreePolynomialLocalization (k : Nat) : Prop :=
 
 theorem polynomialPartitionConstant_ge_four {k : Nat} (hk : 1 ≤ k) :
     4 ≤ polynomialPartitionConstant k := by
-  have hf : 1 ≤ (Nat.factorial k) ^ 2 := by
-    exact Nat.one_le_iff_ne_zero.mpr (by positivity)
+  have hf : 1 ≤ (Nat.factorial k) ^ 2 := Nat.one_le_iff_ne_zero.mpr (by positivity)
   have he : 2 ≤ (k + 1) ^ 2 := by nlinarith
-  have hp : 4 ≤ 2 ^ ((k + 1) ^ 2) := by
-    exact (by norm_num : (4 : Nat) = 2 ^ 2) ▸ Nat.pow_le_pow_right (by omega : 1 ≤ 2) he
+  have hp : 4 ≤ 2 ^ ((k + 1) ^ 2) :=
+    (by norm_num : (4 : Nat) = 2 ^ 2) ▸ Nat.pow_le_pow_right (by omega : 1 ≤ 2) he
   exact hp.trans (Nat.le_mul_of_pos_left _ (by omega))
 
 /-- The full Corollary 5.8 interface in one fixed positive degree. -/

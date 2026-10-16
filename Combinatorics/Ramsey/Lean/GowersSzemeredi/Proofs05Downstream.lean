@@ -238,8 +238,7 @@ theorem polynomialOn_affine_pullback {N k : Nat} [NeZero N]
   obtain ⟨c, hc⟩ := hphi
   let p : Polynomial (ZMod N) := Polynomial.ofFn (k + 1) c
   have hkpos : 1 ≤ k + 1 := Nat.succ_pos k
-  have hpdeg : p.natDegree < k + 1 := by
-    exact Polynomial.ofFn_natDegree_lt hkpos c
+  have hpdeg : p.natDegree < k + 1 := Polynomial.ofFn_natDegree_lt hkpos c
   have hpeval (x : ZMod N) :
       p.eval x = ∑ i, c i * x ^ (i : Nat) := by
     rw [Polynomial.eval_eq_sum_range' hpdeg, ← Fin.sum_univ_eq_sum_range]
@@ -383,8 +382,8 @@ theorem section5_local_phase_refinement_of_corollary_5_6
   obtain ⟨L, S, _, hpartition, hproper, hdiam⟩ :=
     h56 N k P.length v pulledPhi hk hpulled hthreshold hrN hv hvupper
   let R : Fin L → ModAP N := fun j => section5Transport P (S j)
-  have hrefine : IsPartition (fun j => (R j).carrier) P.carrier := by
-    exact section5Transport_partition P S hP hpartition
+  have hrefine : IsPartition (fun j => (R j).carrier) P.carrier :=
+    section5Transport_partition P S hP hpartition
   have hRproper (j : Fin L) :
       (R j).IsProper ∧ 0 < (R j).length ∧
         ((R j).length = v - 1 ∨ (R j).length = v) := by
@@ -591,8 +590,8 @@ private lemma section5_large_partition_count
       (L : Real) * root = 4 * ((L : Real) * (root / 4)) := by ring
       _ ≤ 4 * ((L : Real) * (v - 1 : Nat)) := by gcongr
       _ ≤ 4 * r := by gcongr
-  have hdiv : (L : Real) ≤ 4 * r / root := by
-    exact (le_div_iff₀ hrootPos).2 (by simpa only [mul_comm] using hmul)
+  have hdiv : (L : Real) ≤ 4 * r / root :=
+    (le_div_iff₀ hrootPos).2 (by simpa only [mul_comm] using hmul)
   calc
     (L : Real) ≤ 4 * r / root := hdiv
     _ = 4 * (r : Real) ^
@@ -675,16 +674,16 @@ theorem section5_efficient_local_phase_refinement_of_corollary_5_6
           exact (hproper j).1.symm
         _ = P.carrier.card := IsPartition.sum_card hrefine
     have hsumLower : ∑ _j : Fin L, (v - 1 : Nat) ≤ P.length := by
-      have : ∑ _j : Fin L, (v - 1 : Nat) ≤ ∑ j, (R j).length := by
-        exact Finset.sum_le_sum fun j _hj => hlower j
+      have : ∑ _j : Fin L, (v - 1 : Nat) ≤ ∑ j, (R j).length :=
+        Finset.sum_le_sum fun j _hj => hlower j
       rw [hsumLengths, hP] at this
       exact this
     have hcount0 : (L : Real) ≤ 4 * (P.length : Real) ^
         (1 - (K : Real)⁻¹) := by
       exact section5_large_partition_count hr (by simpa only [K] using hvhalf)
         (by simpa only [K] using hroot4strict.le) hsumLower
-    have hconstant : (4 : Real) ≤ section5LocalRefinementConstant k eta := by
-      exact section5LocalRefinementConstant_ge_four k eta
+    have hconstant : (4 : Real) ≤ section5LocalRefinementConstant k eta :=
+      section5LocalRefinementConstant_ge_four k eta
     refine ⟨L, R, hrefine, fun j => (hproper j).1, ?_, herror⟩
     rw [hP]
     calc
@@ -699,8 +698,8 @@ theorem section5_efficient_local_phase_refinement_of_corollary_5_6
       fun i => section5SingletonNatAP i
     let R : Fin P.length → ModAP N :=
       fun i => section5Transport P (S i)
-    have hpartition : IsNatAPPartition S (Finset.range P.length) := by
-      exact section5SingletonNatAP_partition P.length
+    have hpartition : IsNatAPPartition S (Finset.range P.length) :=
+      section5SingletonNatAP_partition P.length
     have hrefine : IsPartition (fun j => (R j).carrier) P.carrier :=
       section5Transport_partition P S hP hpartition
     have hproper (j : Fin P.length) : (R j).IsProper := by
@@ -843,8 +842,8 @@ theorem section5_local_diameter_refinement_of_corollary_5_6
   obtain ⟨L, S, _, hpartition, hproper, hdiam⟩ :=
     h56 N k P.length v pulledPhi hk hpulled hthreshold hrN hv hvupper
   let R : Fin L → ModAP N := fun j => section5Transport P (S j)
-  have hrefine : IsPartition (fun j => (R j).carrier) P.carrier := by
-    exact section5Transport_partition P S hP hpartition
+  have hrefine : IsPartition (fun j => (R j).carrier) P.carrier :=
+    section5Transport_partition P S hP hpartition
   have hRproper (j : Fin L) :
       (R j).IsProper ∧ 0 < (R j).length ∧
         ((R j).length = v - 1 ∨ (R j).length = v) := by
@@ -943,16 +942,16 @@ theorem section5_efficient_diameter_refinement_of_corollary_5_6
           exact (hproper j).1.symm
         _ = P.carrier.card := IsPartition.sum_card hrefine
     have hsumLower : ∑ _j : Fin L, (v - 1 : Nat) ≤ P.length := by
-      have : ∑ _j : Fin L, (v - 1 : Nat) ≤ ∑ j, (R j).length := by
-        exact Finset.sum_le_sum fun j _hj => hlower j
+      have : ∑ _j : Fin L, (v - 1 : Nat) ≤ ∑ j, (R j).length :=
+        Finset.sum_le_sum fun j _hj => hlower j
       rw [hsumLengths, hP] at this
       exact this
     have hcount0 : (L : Real) ≤ 4 * (P.length : Real) ^
         (1 - (K : Real)⁻¹) := by
       exact section5_large_partition_count hr (by simpa only [K] using hvhalf)
         (by simpa only [K] using hroot4strict.le) hsumLower
-    have hconstant : (4 : Real) ≤ section5LocalRefinementConstant k eta := by
-      exact section5LocalRefinementConstant_ge_four k eta
+    have hconstant : (4 : Real) ≤ section5LocalRefinementConstant k eta :=
+      section5LocalRefinementConstant_ge_four k eta
     refine ⟨L, R, hrefine, fun j => (hproper j).1, ?_, hdiam⟩
     rw [hP]
     calc
@@ -967,8 +966,8 @@ theorem section5_efficient_diameter_refinement_of_corollary_5_6
       fun i => section5SingletonNatAP i
     let R : Fin P.length → ModAP N :=
       fun i => section5Transport P (S i)
-    have hpartition : IsNatAPPartition S (Finset.range P.length) := by
-      exact section5SingletonNatAP_partition P.length
+    have hpartition : IsNatAPPartition S (Finset.range P.length) :=
+      section5SingletonNatAP_partition P.length
     have hrefine : IsPartition (fun j => (R j).carrier) P.carrier :=
       section5Transport_partition P S hP hpartition
     have hproper (j : Fin P.length) : (R j).IsProper := by

@@ -91,8 +91,7 @@ lemma previousUniformEnergy_sq_le {N n : Nat} [NeZero N]
   let X : Point N (n + 1) → Complex :=
     fun b => ∑ s : ZMod N, cubeDifference f b s
   have hD : 0 ≤ D := Finset.sum_nonneg fun a _ => sq_nonneg _
-  have htotal : ∑ b : Point N (n + 1), X b = (D : Complex) := by
-    exact sum_cube_succ_eq_sum_norm_sq f
+  have htotal : ∑ b : Point N (n + 1), X b = (D : Complex) := sum_cube_succ_eq_sum_norm_sq f
   have hnorm : ‖∑ b : Point N (n + 1), X b‖ = D := by
     rw [htotal, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg hD]
   have htriangle : ‖∑ b : Point N (n + 1), X b‖ ≤

@@ -12,8 +12,8 @@ theorem section5_local_diameter_quarter {x : Real} {t K q : Nat}
     (t : Real) ^ (-(2 * (K : Real)⁻¹)) ≤ x ^ (-((K : Real) ^ q)⁻¹) / 4 := by
   have hx0 : 0 < x := zero_lt_one.trans_le hx
   have hK0 : (0 : Real) < K := by exact_mod_cast (show 0 < K by omega)
-  have hKpow : (K : Real) ≤ (K : Real) ^ q := by
-    exact le_self_pow₀ (by exact_mod_cast (show 1 ≤ K by omega)) (by omega)
+  have hKpow : (K : Real) ≤ (K : Real) ^ q :=
+    le_self_pow₀ (by exact_mod_cast (show 1 ≤ K by omega)) (by omega)
   have hi : ((K : Real) ^ q)⁻¹ ≤ (K : Real)⁻¹ := inv_anti₀ hK0 hKpow
   let u := x ^ (K : Real)⁻¹
   let y := x ^ ((K : Real) ^ q)⁻¹
