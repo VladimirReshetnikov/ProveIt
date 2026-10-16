@@ -1,5 +1,8 @@
 import GowersSzemeredi.Proofs18PolyCubicDegree
 import GowersSzemeredi.Proofs18GenericLengths
+import GowersSzemeredi.Proofs05HighCorrelationAssembly
+import GowersSzemeredi.Proofs05HighCorrelationScale
+import GowersSzemeredi.Proofs05ThresholdFreeScale
 
 /-! **Theorem 18.1 at degrees four to seven**, from the recurrence profiles
 and a polynomial phase partition (Notes L.9a).

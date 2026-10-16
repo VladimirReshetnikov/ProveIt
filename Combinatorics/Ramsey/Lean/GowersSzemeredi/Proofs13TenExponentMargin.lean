@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs13UniformDensityParameters
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! A stronger exponent margin for the common-step row extraction. -/
 set_option autoImplicit false

@@ -41,18 +41,6 @@ namespace LeanProofs.GowersSzemeredi
 
 open Classical
 
-/-- The dimension-two multilinear partition theorem, as a hypothesis. This
-is the body of `exists_simultaneous_multilinear_partition_bound 2`. -/
-def MultilinearDiameterPartition (K : Real) (p : Nat) : Prop :=
-  ∀ (N : Nat) [NeZero N] (q : Nat) (P : Box N 2), P.IsProper →
-    ∀ mu : Fin q → Point N 2 → ZMod N, (∀ i, MultilinearOn P.carrier (mu i)) →
-    ∀ H : Nat, 0 < H → K * ((q : Real) + 1) ≤ H →
-      H ^ (p * (q + 1) ^ (2 * (2 ^ 2))) ≤ P.width →
-      ∃ M : Nat, ∃ Q : Fin M → Box N 2,
-        IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
-        (∀ j, (H : Real) ≤ (Q j).width) ∧
-        ∀ i j, diameterAtMostReal ((Q j).carrier.image (mu i)) ((2 ^ 2 : Real) / H * N)
-
 /-- **Freiman-linear columns are multilinear.** If `ℓ` is Freiman-linear on
 `B` and every point of the box has its second coordinate in `B`, then
 `x ↦ ℓ(x₁)·x₀` agrees on the box with a multilinear map. -/

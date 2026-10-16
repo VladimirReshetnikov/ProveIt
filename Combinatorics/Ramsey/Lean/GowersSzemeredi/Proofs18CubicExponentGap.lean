@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs18FejerInverseThresholdEnvelope
 import GowersSzemeredi.Sections17_18
+import GowersSzemeredi.Proofs03FourFactorSymmetry
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! The certified cubic exponent is below Theorem 18.1's printed exponent.
 

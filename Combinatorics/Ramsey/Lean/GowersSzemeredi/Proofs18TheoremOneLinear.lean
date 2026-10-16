@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs18TheoremOneDegrees
 import GowersSzemeredi.Proofs18LinearFourierObstruction
 import GowersSzemeredi.Proofs18GeneralPhaseInverseAssembly
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! Linear inverse helpers and the printed degree-one Theorem 18.1.
 

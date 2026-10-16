@@ -58,8 +58,4 @@ theorem thresholdFreePolynomialLocalization_one : ThresholdFreePolynomialLocaliz
   exact affine_phase_localization P phi hP hphi hL
     ((affine_localization_eighth_power_budget hL).trans hs)
 
-/-- The complete degree-one specialization, without any added scale condition. -/
-theorem corollary_5_8_degree_one : Corollary58At 1 :=
-  corollary58At_of_threshold_free_localization 1 (by omega) thresholdFreePolynomialLocalization_one
-
 end LeanProofs.GowersSzemeredi

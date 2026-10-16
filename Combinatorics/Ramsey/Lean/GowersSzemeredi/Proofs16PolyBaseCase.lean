@@ -1,4 +1,3 @@
-import GowersSzemeredi.Proofs16BaseCaseLongBoxCover
 import GowersSzemeredi.Proofs16RegimeSplitting
 
 /-! Polynomial controls for one-dimensional Freiman families.

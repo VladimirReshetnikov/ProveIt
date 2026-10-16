@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18StructuralInverseParameters
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! Complete the induction in the uniformity degree. The only unproved
 inputs are the finitely many required dimensions of the Section 16

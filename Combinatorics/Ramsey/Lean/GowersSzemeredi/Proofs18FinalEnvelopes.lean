@@ -57,34 +57,26 @@ namespace LeanProofs.GowersSzemeredi
 
 /-- `(n+1)² ≤ 4^n` for `n ≥ 1`. -/
 theorem succ_sq_le_four_pow : ∀ n, 1 ≤ n → (n + 1) ^ 2 ≤ 4 ^ n := by
-  intro n hn
-  induction n, hn using Nat.le_induction with
-  | base => norm_num
-  | succ n hn ih =>
-    calc (n + 1 + 1) ^ 2 ≤ (2 * (n + 1)) ^ 2 := Nat.pow_le_pow_left (by omega) 2
-      _ = 4 * (n + 1) ^ 2 := by ring
-      _ ≤ 4 * 4 ^ n := Nat.mul_le_mul_left 4 ih
-      _ = 4 ^ (n + 1) := by ring
+  intro n _
+  calc (n + 1) ^ 2 ≤ (2 ^ n) ^ 2 :=
+      Nat.pow_le_pow_left (Nat.succ_le_of_lt (Nat.lt_two_pow_self (n := n))) 2
+    _ = 4 ^ n := by rw [← pow_mul, Nat.mul_comm n 2, pow_mul]; norm_num
 
 /-- `(d!)² · 2^d ≤ 2^(d²)`. -/
 theorem factorial_sq_mul_two_pow_le : ∀ d : Nat, d.factorial ^ 2 * 2 ^ d ≤ 2 ^ (d * d)
   | 0 => by norm_num
   | n + 1 => by
-    have ih := factorial_sq_mul_two_pow_le n
-    have h4 : (n + 1) ^ 2 * 2 ≤ 2 ^ (2 * n + 1) := by
-      rcases Nat.eq_zero_or_pos n with h | h
-      · subst h; norm_num
-      · have h1 := succ_sq_le_four_pow n h
-        have e : 2 ^ (2 * n + 1) = 4 ^ n * 2 := by
-          rw [pow_succ, pow_mul]; norm_num
-        rw [e]; omega
-    have e1 : (n + 1).factorial ^ 2 * 2 ^ (n + 1) =
+    calc (n + 1).factorial ^ 2 * 2 ^ (n + 1) =
         (n.factorial ^ 2 * 2 ^ n) * ((n + 1) ^ 2 * 2) := by
-      rw [Nat.factorial_succ]; ring
-    have e2 : 2 ^ ((n + 1) * (n + 1)) = 2 ^ (n * n) * 2 ^ (2 * n + 1) := by
-      rw [← pow_add]; congr 1 <;> ring
-    rw [e1, e2]
-    exact Nat.mul_le_mul ih h4
+          rw [Nat.factorial_succ]; ring
+      _ ≤ 2 ^ (n * n) * ((2 ^ n) ^ 2 * 2) :=
+        Nat.mul_le_mul (factorial_sq_mul_two_pow_le n)
+          (Nat.mul_le_mul_right 2
+            (Nat.pow_le_pow_left (Nat.succ_le_of_lt (Nat.lt_two_pow_self (n := n))) 2))
+      _ = 2 ^ ((n + 1) * (n + 1)) := by
+        rw [← pow_mul, ← pow_succ, ← pow_add]
+        congr 1
+        ring
 
 /-- The log-degree of the partition constant of the step: `(k+3)² + (k+2)(k+1)`. -/
 def partDeg (k : Nat) : Nat := (k + 3) ^ 2 + (k + 2) * (k + 1)

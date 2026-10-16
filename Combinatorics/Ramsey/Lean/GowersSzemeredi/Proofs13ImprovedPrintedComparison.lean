@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs13FejerExplicitExponent
 import Mathlib.Algebra.Order.Ring.Pow
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! A sharper elementary comparison in the overlap with the endpoint
 argument reduces the printed top length power from 2^70 to 2^61. -/

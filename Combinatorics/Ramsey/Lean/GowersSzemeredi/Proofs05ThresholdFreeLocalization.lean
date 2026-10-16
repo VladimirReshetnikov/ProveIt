@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs05FiniteChunkLocalization
 import GowersSzemeredi.Proofs05QuadraticLocalization
+import GowersSzemeredi.Proofs05ThresholdFreeCorollary58
 
 /-! Complete threshold-free polynomial phase localization by induction on
 its degree, then discharge the full catalogue statement of Corollary 5.8. -/

@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs18ExplicitQuarticInverse
 import GowersSzemeredi.Proofs18GeneralIteration
 import GowersSzemeredi.Proofs18FejerIterationParameters
 import GowersSzemeredi.Sections17_18
+import GowersSzemeredi.Proofs03FourFactorSymmetry
 
 /-! The proved route cannot give Theorem 18.2 at length six and density 1/2.
 

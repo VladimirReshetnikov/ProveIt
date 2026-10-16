@@ -2,6 +2,9 @@ import GowersSzemeredi.Proofs13SquareScale
 import GowersSzemeredi.Proofs13CompleteSquareExtraction
 import GowersSzemeredi.Proofs13FiniteRecurrence
 import GowersSzemeredi.Proofs13ImprovedRowLength
+import GowersSzemeredi.Proofs05HighCorrelationAssembly
+import GowersSzemeredi.Proofs05HighCorrelationScale
+import GowersSzemeredi.Proofs05ThresholdFreeScale
 
 /-! A direct large-N common-step bilinear square theorem from the original
 Section 13 context, retaining an explicit positive power of N. -/

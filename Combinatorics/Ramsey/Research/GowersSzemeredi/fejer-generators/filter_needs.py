@@ -11,7 +11,7 @@ for l in open('decl_needs2.txt', encoding='utf8'):
     m, n = head.split(' ', 1)
     own[m].add(n)
     rows.append((m, n, ms.split(), same))
-EQ = re.compile(r'\.(eq_\d+|eq_def|eq_unfold)$')
+EQ = re.compile(r'\.(eq_\d+|eq_def|eq_unfold|congr_simp)$')
 art = 0
 with open('decl_needs_real.txt', 'w', encoding='utf8') as out:
     for m, n, ms, same in rows:

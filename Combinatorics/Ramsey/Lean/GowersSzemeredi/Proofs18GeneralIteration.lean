@@ -37,27 +37,20 @@ theorem hasNatAP_Icc_of_fin_interval {N k : Nat} {delta : Real}
     (hfin : ∀ B : Finset (Fin N), delta * N ≤ B.card → HasNatAP (B.image Fin.val) k)
     (A : Finset Nat) (hA : A ⊆ Finset.Icc 1 N) (hcard : delta * N ≤ A.card) : HasNatAP A k := by
   classical
-  let B : Finset (Fin N) := Finset.univ.filter (fun i => (i : Nat) + 1 ∈ A)
-  have himage : B.image (fun i : Fin N => (i : Nat) + 1) = A := by
-    ext x
-    constructor
-    · intro hx
-      obtain ⟨i, hi, rfl⟩ := Finset.mem_image.mp hx
-      exact (Finset.mem_filter.mp hi).2
-    · intro hx
-      have hxI := Finset.mem_Icc.mp (hA hx)
-      have hidx : x - 1 < N := by omega
-      refine Finset.mem_image.mpr ⟨⟨x - 1, hidx⟩, ?_, by change x - 1 + 1 = x; omega⟩
-      apply Finset.mem_filter.mpr
-      exact ⟨Finset.mem_univ _, by simpa only [Nat.sub_add_cancel hxI.1] using hx⟩
-  have hBcard : B.card = A.card := by
-    rw [← himage, Finset.card_image_of_injective _ (fun i j hij => Fin.ext (Nat.add_right_cancel hij))]
-  obtain ⟨a, d, hd, hAP⟩ := hfin B (by simpa only [hBcard] using hcard)
-  refine ⟨a + 1, d, hd, ?_⟩
-  intro i hi
-  obtain ⟨j, hj, hji⟩ := Finset.mem_image.mp (hAP i hi)
-  rw [← himage]
-  exact Finset.mem_image.mpr ⟨j, hj, by omega⟩
+  let Q : NatAP := ⟨1, 1, N⟩
+  have hQ : Q.IsProper := Q.isProper_of_step_pos (by decide)
+  apply Q.hasNatAP_of_pullback hQ A
+  apply hfin
+  rw [Q.card_pullback hQ]
+  have hAQ : A ⊆ Q.carrier := by
+    intro x hx
+    have hxI := Finset.mem_Icc.mp (hA hx)
+    refine Finset.mem_image.mpr ⟨⟨x - 1, ?_⟩, Finset.mem_univ _, ?_⟩
+    · change x - 1 < N
+      omega
+    · change 1 + (x - 1) * 1 = x
+      omega
+  simpa only [Finset.inter_eq_left.mpr hAQ] using hcard
 
 /-- Quantitative Szemeredi on the source's natural interval, conditional
 on the explicit discrepancy input, with a proved closed length threshold. -/

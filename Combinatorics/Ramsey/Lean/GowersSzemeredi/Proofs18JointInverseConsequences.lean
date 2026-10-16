@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18JointInverseInduction
 import GowersSzemeredi.Proofs18GeneralIteration
+import GowersSzemeredi.Proofs03FourFactorSymmetry
 
 /-! Consequences of the joint-cover inverse induction with its actual
 recursive parameters. No comparison with the source's headline tower

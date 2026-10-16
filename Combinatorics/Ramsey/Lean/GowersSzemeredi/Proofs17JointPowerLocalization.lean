@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16JointFrequencyBox
 import GowersSzemeredi.Proofs17DenseFrequencyLocalization
 import GowersSzemeredi.Proofs13ExplicitPowerThreshold
 import GowersSzemeredi.Proofs18ShortLocalizationInverse
+import GowersSzemeredi.Proofs05Corollary58
 
 /-! The joint power cover supplies polynomial localization without the
 current-dimensional source structural theorem. Only lower dimensions remain. -/

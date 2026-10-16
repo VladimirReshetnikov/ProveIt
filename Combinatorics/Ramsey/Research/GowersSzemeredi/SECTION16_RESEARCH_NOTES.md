@@ -9573,9 +9573,20 @@ the new module `Proofs00Basics` (imports only `Definitions`) holds the
   needs (`ModuleNeeds.lean`) shows that none of them can be dropped by
   editing imports: each is needed by a side result in a module the final
   route does use. Removing them would mean splitting those modules.
-  Splitting only the cheapest regions would take 2,557 lines off the
-  route, and would cost 38 re-routed imports, compensating imports in
-  outside modules and about ten relocated declarations. Not done.
+  *Update 2026-10-15:* the 38 re-routes were mostly artifacts.
+  Equation and `congr_simp` lemmas are stored wherever Lean first
+  generated them, and filtering them out leaves 0. c182fff detached 11
+  modules (1,457 lines) via two side modules
+  (`Proofs05FullPartitionScale`, `Proofs05ThresholdFreeCorollary58`) and
+  three cut imports, with compensating imports that keep every outside
+  module's closure unchanged.
+
+  `cascade_moves.py` closes the moved set under use. Every other region
+  is either infeasible (the closure reaches a declaration the final
+  theorems use), or it would relocate paper-named results. For example,
+  the 819-line BaseCase region needs `lemma_16_3_holds`,
+  `theorem_16_2_at_two` and `corollary_16_11_at_one`/`_two` moved out of
+  their modules.
 
 **Addendum (2026-10-15): linting the whole final route.** All 609
 modules in the closure of `Proofs18Final` were elaborated with the

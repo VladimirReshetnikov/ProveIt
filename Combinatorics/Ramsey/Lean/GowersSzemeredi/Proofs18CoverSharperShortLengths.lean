@@ -1,6 +1,9 @@
 import GowersSzemeredi.Proofs18RothThresholdBounds
 import GowersSzemeredi.Proofs18ShortLengthsFromCubic
 import GowersSzemeredi.Proofs18SzemerediSmallLengths
+import GowersSzemeredi.Proofs05HighCorrelationAssembly
+import GowersSzemeredi.Proofs05HighCorrelationScale
+import GowersSzemeredi.Proofs05ThresholdFreeScale
 
 /-! Legacy scalar threshold comparisons for short lengths.
 
