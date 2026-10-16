@@ -191,3 +191,18 @@ of `EncBundle` (the bisimulation-quotient interpretation, upstream
 `S_quot.v`/`S_ax.v`, partly mirrored by the equality-free CP/GIC modules
 here), with explicit encodability and binder-freshness checks for the chosen
 instances; (iii) the enumerator, program and literal table.
+
+## Next: L2 for the shared register program (in progress)
+
+The attributed public 253-state machine and Mira-Cult's 254-state machine run
+the same 219-node register program (upstream `ZF/m254/coq/prog/Dag254.v`, the
+Wade-compiled DAG). The missing middle link of a Lean end-to-end proof for
+either table is L2: one run of the program root from a boundary state
+(scratch registers and axiom code zero) performs exactly `Enum254.enumStep`,
+under Wade's structured semantics. This lane is now writing that layer
+(`BusyBeaver/ZFC/RMDag.lean`, `Dag254.lean`, `L2Prog254.lean`); its target
+statement will relate iterated root runs from the boundary registers to
+`Enum254.Halts`. The path semantics and the decoder-tree bisimulation belong
+to the TM layer. Coordination note for parallel sessions: please avoid
+duplicating those files.
+
