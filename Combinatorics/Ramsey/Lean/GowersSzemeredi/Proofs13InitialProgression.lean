@@ -868,59 +868,6 @@ private lemma lemma134_sectionG_le_C {N : Nat} [NeZero N]
     simp only [Finset.mem_filter, Finset.mem_univ, true_and]
     tauto)
 
-private def lemma134Left : Finset (Fin 16) :=
-  Finset.univ.filter fun i => (i : Nat) < 8
-
-private def lemma134Right : Finset (Fin 16) :=
-  Finset.univ.filter fun i => 8 ≤ (i : Nat)
-
-private lemma lemma134_zero_mem_left : (0 : Fin 16) ∈ lemma134Left := by
-  simp [lemma134Left]
-
-private lemma lemma134_zero_notMem_right : (0 : Fin 16) ∉ lemma134Right := by
-  simp [lemma134Right]
-
-lemma lemma134_additive_ext {N : Nat}
-    {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)
-    (hy : IsAdditiveTuple (k := 8) y)
-    (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y := by
-  have hoff : ∀ i : Fin 16, i ≠ 0 → x i = y i := by
-    intro i hi
-    rcases i with ⟨(_ | i), hiBound⟩
-    · exact (hi rfl).elim
-    · exact htail ⟨i, by omega⟩
-  unfold IsAdditiveTuple at hx hy
-  change (∑ i ∈ lemma134Left, x i) = ∑ i ∈ lemma134Right, x i at hx
-  change (∑ i ∈ lemma134Left, y i) = ∑ i ∈ lemma134Right, y i at hy
-  have hleft :
-      (∑ i ∈ lemma134Left.erase 0, x i) =
-        ∑ i ∈ lemma134Left.erase 0, y i := by
-    apply Finset.sum_congr rfl
-    intro i hi
-    exact hoff i (Finset.ne_of_mem_erase hi)
-  have hright :
-      (∑ i ∈ lemma134Right, x i) = ∑ i ∈ lemma134Right, y i := by
-    apply Finset.sum_congr rfl
-    intro i hi
-    apply hoff i
-    intro hzero
-    subst i
-    exact lemma134_zero_notMem_right hi
-  funext i
-  refine Fin.cases ?_ (fun j => htail j) i
-  apply add_left_cancel (a := ∑ i ∈ lemma134Left.erase 0, x i)
-  calc
-    (∑ i ∈ lemma134Left.erase 0, x i) + x 0 =
-        ∑ i ∈ lemma134Left, x i :=
-      Finset.sum_erase_add _ _ lemma134_zero_mem_left
-    _ = ∑ i ∈ lemma134Right, x i := hx
-    _ = ∑ i ∈ lemma134Right, y i := hright
-    _ = ∑ i ∈ lemma134Left, y i := hy.symm
-    _ = (∑ i ∈ lemma134Left.erase 0, y i) + y 0 := by
-      symm
-      exact Finset.sum_erase_add _ _ lemma134_zero_mem_left
-    _ = (∑ i ∈ lemma134Left.erase 0, x i) + y 0 := by rw [hleft]
-
 private abbrev lemma134AtHeightCode (N : Nat) :=
   (Fin 15 → ZMod N) × (Fin 16 → ZMod N)
 

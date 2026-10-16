@@ -1,4 +1,3 @@
-import GowersSzemeredi.Proofs16SinglePieceGradedGlobal
 import GowersSzemeredi.Proofs16JointCovers
 import GowersSzemeredi.Proofs16VertexWithCovers
 import GowersSzemeredi.Proofs16FaceInduction

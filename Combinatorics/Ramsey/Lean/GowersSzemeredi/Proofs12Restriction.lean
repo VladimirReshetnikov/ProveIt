@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs12BernoulliSelection
+import GowersSzemeredi.Proofs12Amplification
 
 /-!
 # The random restriction in Gowers's Lemma 12.5
@@ -197,53 +198,6 @@ private def restrictionLeft : Finset (Fin 16) :=
 private def restrictionRight : Finset (Fin 16) :=
   Finset.univ.filter fun i ↦ 8 ≤ (i : Nat)
 
-private lemma restriction_zero_mem_left : (0 : Fin 16) ∈ restrictionLeft := by
-  simp [restrictionLeft]
-
-private lemma restriction_zero_notMem_right : (0 : Fin 16) ∉ restrictionRight := by
-  simp [restrictionRight]
-
-private lemma restriction_additive_ext {N : Nat}
-    {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)
-    (hy : IsAdditiveTuple (k := 8) y)
-    (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y := by
-  have hoff : ∀ i : Fin 16, i ≠ 0 → x i = y i := by
-    intro i hi
-    rcases i with ⟨(_ | i), hiBound⟩
-    · exact (hi rfl).elim
-    · exact htail ⟨i, by omega⟩
-  unfold IsAdditiveTuple at hx hy
-  change (∑ i ∈ restrictionLeft, x i) = ∑ i ∈ restrictionRight, x i at hx
-  change (∑ i ∈ restrictionLeft, y i) = ∑ i ∈ restrictionRight, y i at hy
-  have hleft :
-      (∑ i ∈ restrictionLeft.erase 0, x i) =
-        ∑ i ∈ restrictionLeft.erase 0, y i := by
-    apply Finset.sum_congr rfl
-    intro i hi
-    exact hoff i (Finset.ne_of_mem_erase hi)
-  have hright :
-      (∑ i ∈ restrictionRight, x i) = ∑ i ∈ restrictionRight, y i := by
-    apply Finset.sum_congr rfl
-    intro i hi
-    apply hoff i
-    intro hzero
-    subst i
-    exact restriction_zero_notMem_right hi
-  funext i
-  refine Fin.cases ?_ (fun j ↦ htail j) i
-  apply add_left_cancel (a := ∑ i ∈ restrictionLeft.erase 0, x i)
-  calc
-    (∑ i ∈ restrictionLeft.erase 0, x i) + x 0 =
-        ∑ i ∈ restrictionLeft, x i :=
-      Finset.sum_erase_add _ _ restriction_zero_mem_left
-    _ = ∑ i ∈ restrictionRight, x i := hx
-    _ = ∑ i ∈ restrictionRight, y i := hright
-    _ = ∑ i ∈ restrictionLeft, y i := hy.symm
-    _ = (∑ i ∈ restrictionLeft.erase 0, y i) + y 0 := by
-      symm
-      exact Finset.sum_erase_add _ _ restriction_zero_mem_left
-    _ = (∑ i ∈ restrictionLeft.erase 0, x i) + y 0 := by rw [hleft]
-
 private abbrev restrictionTailCode {N : Nat} [NeZero N]
     (B : Finset (Pair N)) :=
   (Fin 15 → ↑B) × ZMod N × ZMod N
@@ -272,7 +226,7 @@ private lemma encodeRestrictionArrangement_injective {N : Nat} [NeZero N]
     intro i
     exact congrArg (fun f ↦ (f i : Pair N).2) hfun
   have hx : R.1.x = S.1.x :=
-    restriction_additive_ext R.2.1 S.2.1 hxTail
+    lemma134_additive_ext R.2.1 S.2.1 hxTail
   have hy0 : R.1.y 0 = S.1.y 0 :=
     congrArg (fun c ↦ c.2.1) hcode
   have hy : R.1.y = S.1.y := by
@@ -1486,7 +1440,7 @@ private lemma restrictionEncodeAdditiveX_injective {N : Nat} :
     Function.Injective (restrictionEncodeAdditiveX (N := N)) := by
   intro x y hxy
   apply Subtype.ext
-  apply restriction_additive_ext x.2 y.2
+  apply lemma134_additive_ext x.2 y.2
   intro i
   exact congrFun hxy i
 
