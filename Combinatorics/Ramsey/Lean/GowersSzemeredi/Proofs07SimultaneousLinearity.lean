@@ -822,7 +822,7 @@ private lemma bohr_symmetric_multiples_subset {p : Nat} [NeZero p]
   | ofNat n =>
       have hcastNat : ((Int.ofNat n : Int) : ZMod p) = (n : ZMod p) := by norm_num
       rw [hcastNat]
-      exact hnatural n (by have := hjBounds.2; omega)
+      exact hnatural n (Int.ofNat_le.mp (by simpa only [Int.ofNat_eq_natCast] using hjBounds.2))
   | negSucc n =>
       have hcast : ((Int.negSucc n : Int) : ZMod p) * d =
           -(((n + 1 : Nat) : ZMod p) * d) := by
