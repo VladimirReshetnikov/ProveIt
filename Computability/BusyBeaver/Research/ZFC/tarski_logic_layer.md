@@ -230,3 +230,14 @@ end-to-end statement about the 253- or 254-state table is the TM layer
 theory of the bundle (an irreflexive model of all decoded bundles from
 Con(ZFC), and the bisimulation-quotient interpretation in the other
 direction).
+
+## Next: path semantics ↔ structured semantics (in progress)
+
+The Turing machine implements Wade's *path* semantics, ported by the Codex
+lane as `RegisterPath.lean`; L2 above is stated in the *structured*
+semantics of `RMDag.lean`. This lane is now proving their equivalence for
+well-formed programs (the counterpart of upstream `RMEquiv.v`), in
+`BusyBeaver/ZFC/RMEquiv.lean`, so that a TM-level theorem about the decoder
+tree, composed with a decoder-tree/DAG bisimulation, reaches
+`L2.program_halts_iff`. Coordination note: please avoid duplicating that file.
+
