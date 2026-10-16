@@ -27,7 +27,6 @@ theorem finiteIntervalImage_card {N L : Nat} [NeZero N] (hL : L ≤ N) (B : Fins
 @[simp] theorem finiteIntervalImage_mem_natCast {N L : Nat} [NeZero N]
     (hL : L ≤ N) (B : Finset (Fin L)) (i : Fin L) :
     ((i : Nat) : ZMod N) ∈ finiteIntervalImage N B ↔ i ∈ B := by
-  classical
   constructor
   · rintro hx
     obtain ⟨j, hj, hji⟩ := Finset.mem_image.mp hx
@@ -55,7 +54,6 @@ theorem relativeBalanced_finiteIntervalImage {N L : Nat} [NeZero N]
     (hL : L ≤ N) (B : Finset (Fin L)) (delta : Real) :
     relativeBalanced (finiteIntervalImage N B) (finiteIntervalImage (L := L) N Finset.univ) delta =
       intervalExtension N (finiteIntervalBalance B delta) := by
-  classical
   funext x
   by_cases hx : x.val < L
   · let i : Fin L := ⟨x.val, hx⟩

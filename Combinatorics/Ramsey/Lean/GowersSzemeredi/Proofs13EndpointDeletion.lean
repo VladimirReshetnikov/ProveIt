@@ -19,7 +19,6 @@ def ModAP.interior {N : Nat} (P : ModAP N) : ModAP N where
 theorem ModAP.interior_neighbors {N : Nat} (P : ModAP N) {x : ZMod N}
     (hx : x ∈ P.interior.carrier) :
     x ∈ P.carrier ∧ x + P.step ∈ P.carrier ∧ x - P.step ∈ P.carrier := by
-  classical
   obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
   have hi : i.val < P.length - 2 := i.isLt
   refine ⟨?_, ?_, ?_⟩
@@ -44,7 +43,6 @@ theorem ModAP.interior_subset {N : Nat} (P : ModAP N) :
 /-- Removing endpoints preserves properness even when the interior is empty. -/
 theorem ModAP.interior_isProper {N : Nat} (P : ModAP N) (hP : P.IsProper) :
     P.interior.IsProper := by
-  classical
   have hcard : (Finset.univ.image (fun i : Fin P.length =>
       P.start + (i : Nat) * P.step)).card = (Finset.univ : Finset (Fin P.length)).card := by
     simpa only [ModAP.IsProper, ModAP.carrier, Finset.card_univ, Fintype.card_fin] using hP
@@ -78,7 +76,6 @@ theorem ModAP.card_sdiff_interior_le_two {N : Nat} (P : ModAP N) (hP : P.IsPrope
 theorem stage135_critical_count_interior {N : Nat} [NeZero N]
     (S : Section13Context N) (D : Stage134Data N) (Q : ModAP N) (hQ : Q.IsProper) :
     (criticalHeights S D ⟨Q⟩).card ≤ (criticalHeights S D ⟨Q.interior⟩).card + 2 := by
-  classical
   let A := criticalHeights S D ⟨Q⟩
   let B := criticalHeights S D ⟨Q.interior⟩
   have hBA : B ⊆ A := by
@@ -129,7 +126,6 @@ theorem stage135_interior_small_affine {N : Nat} [NeZero N]
     (hdiam : diameterAtMostReal (Q.carrier.image (stage135AmbientQuadratic a b)) s)
     {h : ZMod N} (hh : h ∈ Q.interior.carrier) :
     (centeredAbs ((a * h + b) * Q.interior.step) : Real) ≤ s := by
-  classical
   obtain ⟨_, hp, hm⟩ := Q.interior_neighbors hh
   have hid := stage135Quadratic_symmetric_difference hprime hodd
     (modInterval N 0 N) a b h Q.step

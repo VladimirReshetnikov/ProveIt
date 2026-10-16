@@ -35,7 +35,6 @@ theorem LargeBoxMultilinearCover.translate {N k : Nat} [NeZero N] [Fact N.Prime]
     {Gamma : Finset (Point N k × ZMod N)} {rho C e T : Real}
     (h : LargeBoxMultilinearCover Gamma rho C e T) (t : Point N k) :
     LargeBoxMultilinearCover (Gamma.image (fun z => (z.1 + t, z.2))) rho C e T := by
-  classical
   intro P hP hT
   obtain ⟨M, q, H, Q, mu, hH, hm, hp, hproper, hq, hw, hmu, hc⟩ :=
     h (P.translate (-t)) (hP.translate (-t)) (by simpa using hT)

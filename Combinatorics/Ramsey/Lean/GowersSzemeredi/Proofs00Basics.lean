@@ -58,7 +58,6 @@ lemma gcs_countWhere_eq_sum_ite {X : Type*} [Fintype X]
     (P : X → Prop) :
     countWhere P = ∑ x : X,
       @ite Nat (P x) (Classical.propDecidable (P x)) 1 0 := by
-  classical
   unfold countWhere
   simp
 
@@ -72,7 +71,6 @@ open Finset
 lemma gcs_boolWeight_insertNth {n : Nat}
     (j : Fin (n + 1)) (b : Bool) (e : Fin n → Bool) :
     boolWeight (j.insertNth b e) = (if b then 1 else 0) + boolWeight e := by
-  classical
   unfold boolWeight
   rw [gcs_countWhere_eq_sum_ite, gcs_countWhere_eq_sum_ite]
   let ind : Bool → Nat := fun c => if c then 1 else 0
@@ -242,7 +240,6 @@ lemma lemma154_sum_mul_sub_eq_two {N : Nat} {I : Type*}
     (hij : i ≠ j) (hoff : ∀ t, t ≠ i → t ≠ j → x t = y t) :
     (∑ t, a t * x t) - (∑ t, a t * y t) =
       a i * (x i - y i) + a j * (x j - y j) := by
-  classical
   rw [← Finset.sum_sub_distrib]
   calc
     (∑ t, (a t * x t - a t * y t)) =
@@ -317,7 +314,6 @@ lemma rangeDeg_exists_det_pair {N : Nat} [NeZero N] [Fact N.Prime]
     (a b : I → ZMod N) (ha : ∀ i, a i ≠ 0)
     (hnot : ¬ ∃ q, ∀ i, b i = q * a i) :
     ∃ i j, i ≠ j ∧ a i * b j - a j * b i ≠ 0 := by
-  classical
   by_contra h
   push Not at h
   let i0 : I := Classical.choice inferInstance
@@ -359,7 +355,6 @@ open Finset
 lemma fourier_indicator_norm_le_card {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (r : ZMod N) :
     ‖fourier (indicator A) r‖ <= A.card := by
-  classical
   rw [fourier, ZMod.dft_apply]
   calc
     ‖∑ x : ZMod N, ZMod.stdAddChar (-(x * r)) • indicator A x‖ <=
@@ -382,7 +377,6 @@ lemma cor58_sum_partition {X R : Type*} [DecidableEq X] {m : Nat}
     [AddCommMonoid R] (P : Fin m → Finset X) (S : Finset X)
     (hpartition : IsPartition P S) (g : X → R) :
     ∑ j, ∑ x ∈ P j, g x = ∑ x ∈ S, g x := by
-  classical
   have hpair : ((Finset.univ : Finset (Fin m)) : Set (Fin m)).PairwiseDisjoint P := by
     intro i _ j _ hij
     exact hpartition.2 i j (bne_iff_ne.mpr hij)
@@ -488,7 +482,6 @@ open Finset
 
 lemma fourier_indicator_zero {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) : fourier (indicator A) 0 = (A.card : Complex) := by
-  classical
   simp [fourier, ZMod.dft_apply, indicator]
 
 end
@@ -501,7 +494,6 @@ open Finset
 lemma fourier_indicator_norm_le_card' {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (r : ZMod N) :
     ‖fourier (indicator A) r‖ ≤ A.card := by
-  classical
   rw [fourier, ZMod.dft_apply]
   calc
     ‖∑ x : ZMod N, ZMod.stdAddChar (-(x * r)) • indicator A x‖ ≤
@@ -540,7 +532,6 @@ lemma lemma154_level_subtype_card {N k : Nat} [NeZero N]
     (mu : Point N k → ZMod N) (a : ZMod N) :
     Fintype.card {y : Point N k // mu y = a} =
       countWhere fun y : Point N k => mu y = a := by
-  classical
   unfold countWhere
   rw [Finset.filter_congr_decidable]
   exact Fintype.card_subtype (fun y : Point N k => mu y = a)
@@ -568,7 +559,6 @@ open Finset
 lemma countWhere_eq_sum_ite {T : Type*} [Fintype T]
     (P : T → Prop) [DecidablePred P] :
     countWhere P = ∑ x : T, if P x then 1 else 0 := by
-  classical
   unfold countWhere
   rw [Finset.filter_congr_decidable]
   simp
@@ -584,7 +574,6 @@ lemma context_countWhere_prod {X Y : Type*} [Fintype X] [Fintype Y]
     (P : X → Y → Prop) :
     countWhere (fun z : X × Y ↦ P z.1 z.2) =
       ∑ x : X, countWhere (P x) := by
-  classical
   simp_rw [gcs_countWhere_eq_sum_ite]
   rw [Fintype.sum_prod_type]
 
@@ -597,7 +586,6 @@ open Finset
 
 lemma lemma78_indicator_star {N : Nat}
     (A : Finset (ZMod N)) (x : ZMod N) : star (indicator A x) = indicator A x := by
-  classical
   by_cases hx : x ∈ A <;> simp [indicator, hx]
 
 end
@@ -609,7 +597,6 @@ open Finset
 
 lemma modInterval_one_carrier {N : Nat} (t : ZMod N) :
     (modInterval N t 1).carrier = {t} := by
-  classical
   ext x
   simp [modInterval, ModAP.carrier]
 

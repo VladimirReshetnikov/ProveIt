@@ -31,7 +31,6 @@ theorem section13_edge_tuple_count {N k : Nat} [NeZero N]
       HasEqualHalfSums (fun i ↦ (section13VerticalDomain A h).index (x i)) ∧
         P (section13EdgeArrangement x)) =
     countWhere (fun R : DArrangement N k ↦ R.IsIn A ∧ R.height = h ∧ P R) := by
-  classical
   unfold countWhere
   apply Finset.card_bij (fun x _ ↦ section13EdgeArrangement x)
   · intro x hx
@@ -93,7 +92,6 @@ theorem section13_good_height_approx {N : Nat} [NeZero N]
 theorem section13_vertical_fibre_card {N : Nat} [NeZero N]
     (A : Finset (Pair N)) (h x : ZMod N) :
     ((section13VerticalDomain A h).fibre x).card = verticalEdgeFiberCount A h x := by
-  classical
   unfold verticalEdgeFiberCount
   apply Finset.card_bij (fun z _ ↦ z.val)
   · intro z hz
@@ -115,7 +113,6 @@ theorem section13_vertical_fibre_function {N : Nat} [NeZero N]
 theorem section13_vertical_fibre_cap {N : Nat} [NeZero N]
     (A : Finset (Pair N)) (h x : ZMod N) :
     ((section13VerticalDomain A h).fibre x).card ≤ N := by
-  classical
   suffices hle : ((section13VerticalDomain A h).fibre x).card ≤
       (Finset.univ : Finset (ZMod N)).card by simpa using hle
   apply Finset.card_le_card_of_injOn (fun z : Section13Edges A h ↦ z.val.2)
@@ -140,7 +137,6 @@ theorem section13_good_height_model_with_cap {N : Nat} [NeZero N]
       beta ^ 6 * (verticalEdgeDomain S.A h).card / 20000 ≤ Y.card ∧
       HasBohrDifferenceModel (section13EdgeIndexDomain N) (verticalPhiDifference S.phi h)
         K (section10Zeta beta) Y psi := by
-  classical
   have hcard' : (Fintype.card (Section13Edges S.A h) : Real) = beta * M * N := by
     simpa only [Fintype.card_coe] using hcard
   have hmain := theorem_10_13_holds N M (Section13Edges S.A h)

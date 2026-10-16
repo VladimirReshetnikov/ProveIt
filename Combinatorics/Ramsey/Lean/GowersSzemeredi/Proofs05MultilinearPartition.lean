@@ -16,7 +16,6 @@ theorem proper_multilinear_partition {N k m : Nat} [NeZero N]
       ∀ j, (m : Real) ^ multilinearPartitionExponent k 1 ≤ (Q j).width ∧
         diameterAtMostReal ((Q j).carrier.image mu)
           (2 * (m : Real) ^ (-multilinearPartitionExponent k 1) * N) := by
-  classical
   obtain ⟨psi, hpsi, heq⟩ := hmu
   obtain ⟨c, hc⟩ := (isMultilinear_iff_multiaffineEval psi).mp hpsi
   have hF : MonomialFamilyClosed (Finset.univ : Finset (Finset (Fin k))) :=

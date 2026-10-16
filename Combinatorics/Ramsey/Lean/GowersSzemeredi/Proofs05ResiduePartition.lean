@@ -82,7 +82,6 @@ theorem section5_residue_target_partition (r p v : Nat)
       (∀ j, (Q j).IsProper ∧ 0 < (Q j).length ∧
         ((Q j).length = v - 1 ∨ (Q j).length = v)) ∧
       ∀ j, (Q j).step = p := by
-  classical
   have hv2 : 1 ≤ v ^ 2 := one_le_pow₀ hv
   have hpr : p ≤ r := by nlinarith
   let P := residueNatAP r p

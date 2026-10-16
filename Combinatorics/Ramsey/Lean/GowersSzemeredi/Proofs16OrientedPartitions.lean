@@ -29,7 +29,6 @@ theorem ModAP.reverse_index {N : Nat} (P : ModAP N) (i : Fin P.length) :
 
 @[simp] theorem ModAP.reverse_carrier {N : Nat} (P : ModAP N) :
     P.reverse.carrier = P.carrier := by
-  classical
   ext x
   constructor
   · intro hx

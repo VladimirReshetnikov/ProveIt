@@ -27,7 +27,6 @@ theorem translatedRow_card {N : Nat} (S : Finset (ZMod N))
     (B : Finset (Pair N)) (y h : ZMod N)
     (hB : ∀ z ∈ B, z.1 ∈ S) :
     (translatedRow S B y h).card = (B.filter fun z ↦ z.2 - y = h).card := by
-  classical
   apply Finset.card_bij (fun x _ ↦ (x, y + h))
   · intro x hx
     exact Finset.mem_filter.mpr ⟨(Finset.mem_filter.mp hx).2, by simp⟩
@@ -46,7 +45,6 @@ theorem translatedRow_sum {N : Nat} (S : Finset (ZMod N))
     (hB : ∀ z ∈ B, z.1 ∈ S) :
     ∑ h ∈ J, (translatedRow S B y h).card =
       (B.filter fun z ↦ z.2 - y ∈ J).card := by
-  classical
   simp_rw [translatedRow_card S B y _ hB]
   rw [Finset.sum_card_fiberwise_eq_card_filter]
 
@@ -61,7 +59,6 @@ theorem rowPairMass_eq_common_card {N : Nat} (S I : Finset (ZMod N))
     (hB : ∀ z ∈ B, z.1 ∈ S) (h₁ : x₁ ∈ S) (h₂ : x₂ ∈ S) :
     rowPairMass I (translatedRow S B y) x₁ x₂ =
       ((B.filter fun z ↦ z.2 - y ∈ commonTranslatedRows B I y x₁ x₂).card : Real) := by
-  classical
   rw [← translatedRow_sum S B y _ hB, Nat.cast_sum]
   unfold rowPairMass commonTranslatedRows
   rw [Finset.sum_filter]
@@ -77,7 +74,6 @@ theorem exists_translated_row_coefficients {N : Nat}
     (hlinear : ∀ h ∈ I, LinearOn (translatedRow S B y h) (fun x ↦ phi (x, y + h))) :
     ∃ a c : ZMod N → ZMod N, ∀ h ∈ I, ∀ x, (x, y + h) ∈ B →
       phi (x, y + h) = a h + c h * x := by
-  classical
   have hchoice : ∀ h, ∃ a c : ZMod N, ∀ x, h ∈ I → (x, y + h) ∈ B →
       phi (x, y + h) = a + c * x := by
     intro h
@@ -106,7 +102,6 @@ theorem exists_freiman_common_rows_of_moments {N : Nat} [Fact N.Prime]
       (∀ h ∈ I, ∀ x, (x, y + h) ∈ B → ctx.phi (x, y + h) = a h + c h * x) ∧
       J ⊆ I ∧ FreimanHom 8 J (fun h ↦ (a h, c h)) ∧
       t ≤ (B.filter fun z ↦ z.2 - y ∈ J).card := by
-  classical
   obtain ⟨a, c, hrow⟩ := exists_translated_row_coefficients S I B y ctx.phi hB hlinear
   obtain ⟨x₁, hx₁, x₂, hx₂, hne, hmass⟩ :=
     exists_distinct_rowPairMass_of_moments S I (translatedRow S B y) hS
@@ -126,7 +121,6 @@ theorem translatedRow_total {N : Nat} (S I : Finset (ZMod N))
     (B : Finset (Pair N)) (y : ZMod N)
     (hB : B ⊆ S.product (translateFinset I y)) :
     ∑ h ∈ I, (translatedRow S B y h).card = B.card := by
-  classical
   rw [translatedRow_sum S B y I (fun z hz ↦ (Finset.mem_product.mp (hB hz)).1)]
   congr 1
   apply Finset.filter_eq_self.mpr
@@ -152,7 +146,6 @@ theorem exists_freiman_common_rows_of_two_densities {N : Nat} [Fact N.Prime]
       (∀ h ∈ I, ∀ x, (x, y + h) ∈ B → ctx.phi (x, y + h) = a h + c h * x) ∧
       J ⊆ I ∧ FreimanHom 8 J (fun h ↦ (a h, c h)) ∧
       m * (δ ^ 2 * β * S.card - 1) ≤ (B.filter fun z ↦ z.2 - y ∈ J).card := by
-  classical
   have hn : (0 : Real) < S.card := by exact_mod_cast hS.card_pos
   have htotal : (∑ h ∈ I, ((translatedRow S B y h).card : Real)) = B.card := by
     exact_mod_cast translatedRow_total S I B y hB

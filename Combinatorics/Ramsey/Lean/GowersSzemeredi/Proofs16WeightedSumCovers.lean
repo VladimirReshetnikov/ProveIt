@@ -12,7 +12,6 @@ theorem MultiplyLinearFunction.const_mul {N d : Nat} [NeZero N]
     {gamma r : Real} {B : Finset (Point N d)} {phi : Point N d → ZMod N}
     (h : MultiplyLinearFunction gamma r B phi) (c : ZMod N) :
     MultiplyLinearFunction gamma r B (fun z => c * phi z) := by
-  classical
   intro theta ht ht1 P hP
   obtain ⟨M, q, H, Q, mu, hH, hmass, hpart, hproper, hq, hw, hmu, hc⟩ := h theta ht ht1 P hP
   refine ⟨M, q, H, Q, fun j i z => c * mu j i z, hH, hmass, hpart, hproper,

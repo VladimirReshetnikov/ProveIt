@@ -108,8 +108,7 @@ theorem coverWidth_div8_powerLB (E : Real → Real) (t : Real)
     rw [← Real.rpow_mul hLpos.le, ← Real.rpow_add hLpos]
     congr 1
     ring
-  rw [Real.div_rpow hLpos.le (by norm_num), hsplit]
-  rw [le_div_iff₀ (by positivity)]
+  rw [Real.div_rpow hLpos.le (by norm_num), hsplit, le_div_iff₀ (by positivity)]
   have h8E : (8 : Real) ^ E (t / 2) ≤ ((L : Real) ^ ((1 : Real) / 2)) ^ E (t / 2) :=
     Real.rpow_le_rpow (by norm_num) hsq hE.le
   have hLE : 0 ≤ (L : Real) ^ (E (t / 2) / 2) := Real.rpow_nonneg hLpos.le _
@@ -257,7 +256,6 @@ theorem ls_modulus_conditions {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {K2 p
     SinglePieceModulusConditions sixQb (sixEb A Bq) (sixC sixQb alpha)
       (sixW (sixEb A Bq) alpha) alpha 2 (familyRecExp 2 p2) (familyRecThr 2 K2 p2)
       (lsE A Bq p2 alpha) N := by
-  classical
   -- ranges of the controls
   have hE : ∀ l g u s, 0 < s → s ≤ 1 → 0 < sixEb A Bq l g u s ∧ sixEb A Bq l g u s ≤ 1 :=
     fun l g u s hs hs1 => ⟨sixEb_pos hB l g u s hs hs1, sixEb_le_one l g u s hs hs1⟩

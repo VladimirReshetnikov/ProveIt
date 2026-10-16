@@ -37,7 +37,6 @@ theorem lemma_15_1_holds : lemma_15_1 := by
       (eta (Function.update e j false) : ZMod N) =
         -(eta (Function.update e j true) : ZMod N) := by
     intro e j
-    classical
     let ef := Function.update e j false
     let et := Function.update e j true
     have heft : ef ≠ et := by
@@ -141,7 +140,6 @@ theorem lemma_15_1_holds : lemma_15_1 := by
       (mul_eq_zero.mp hzero).resolve_right hK
     exact eq_neg_iff_add_eq_zero.mpr heta_sum
 
-  classical
   let uOf : Finset (Fin k) → (Fin k → Bool) := fun s i =>
     if i ∈ s then false else true
   have hu_insert (s : Finset (Fin k)) (j : Fin k)

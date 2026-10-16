@@ -124,7 +124,6 @@ theorem section16_freiman_family_poly_cover {N q : Nat} [NeZero N] [Fact N.Prime
     (Gamma : Finset (Point N 1 × ZMod N))
     (hcover : Gamma ⊆ section16FinsetUnion (fun i => partialGraph (B i) (phi i))) :
     MultiplyLinearWith (fun _ => ((3 ^ 1 * q : Nat) : Real)) (polyBaseExponent q) Gamma := by
-  classical
   intro sigma hs hs1 P hP
   -- Every point carries at most `q` values.
   have hmem : ∀ z ∈ Gamma, ∃ i, z.1 ∈ B i ∧ z.2 = phi i z.1 := by
@@ -386,8 +385,7 @@ theorem section16_freiman_family_poly_cover {N q : Nat} [NeZero N] [Fact N.Prime
     have hstepNe : ((S j).step : ZMod N) * (P.axis 0).step ≠ 0 := by
       exact proper_modAP_step_ne_zero_of_two_le ((indexCellBox P (S j)).axis 0)
         (hQproper j 0) (by simpa [indexCellBox] using hm2j)
-    rw [hy, ← hzx', indexCellAffine_value P (S j) (c j i') (d j i') t hstepNe]
-    rw [← hvalue]
+    rw [hy, ← hzx', indexCellAffine_value P (S j) (c j i') (d j i') t hstepNe, ← hvalue]
     simp only [psi, boxOneIndexMap, hei]
 
 end LeanProofs.GowersSzemeredi

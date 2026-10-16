@@ -25,7 +25,6 @@ theorem IsLastCoordinateBoxProduct.init_carrier {N k : Nat} [NeZero N]
     {P : Box N (k + 1)} {Q : Box N k} {I : ModAP N}
     (h : IsLastCoordinateBoxProduct P Q I) (hP : P.carrier.Nonempty) :
     (boxInit P).carrier = Q.carrier := by
-  classical
   obtain ⟨z, hz⟩ := hP
   have hz' : Fin.snoc (Fin.init z) (z (Fin.last k)) ∈ P.carrier := by
     simpa only [Fin.snoc_init_self] using hz
@@ -40,7 +39,6 @@ theorem IsLastCoordinateBoxProduct.last_carrier {N k : Nat} [NeZero N]
     {P : Box N (k + 1)} {Q : Box N k} {I : ModAP N}
     (h : IsLastCoordinateBoxProduct P Q I) (hP : P.carrier.Nonempty) :
     (P.axis (Fin.last k)).carrier = I.carrier := by
-  classical
   obtain ⟨z, hz⟩ := hP
   have hz' : Fin.snoc (Fin.init z) (z (Fin.last k)) ∈ P.carrier := by
     simpa only [Fin.snoc_init_self] using hz

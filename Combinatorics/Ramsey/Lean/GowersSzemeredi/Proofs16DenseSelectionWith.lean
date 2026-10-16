@@ -41,7 +41,6 @@ theorem section16_dense_induced_selection_with {N k : Nat} [NeZero N]
           Section16InducedSelection B phi H Y
             (fun h => section16LargeSpectrum B h (section16Delta (t1)))
             (zeta) phiPrime := by
-  classical
   obtain ⟨H, hmass, hgood⟩ :=
     section16_good_sidelengths_with t1 B phi (by linarith) hB
   have hex : ∀ h : Point N k,

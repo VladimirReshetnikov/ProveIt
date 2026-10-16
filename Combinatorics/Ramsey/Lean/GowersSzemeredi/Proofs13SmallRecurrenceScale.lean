@@ -67,7 +67,6 @@ theorem lemma_13_5_empty_progression {N : Nat} [NeZero N]
     (S : Section13Context N) (D : Stage134Data N) (theta : Real)
     (h134 : IsStage134Data S theta D) (hL : D.P.length = 0) :
     ∃ E : Stage135Data N, IsStage135Data S D E := by
-  classical
   have hPempty : D.P.carrier = ∅ := Finset.card_eq_zero.mp (h134.2.2.1.trans hL)
   refine ⟨⟨D.P⟩, h134.2.1, h134.2.2.1, Finset.Subset.rfl, ?_, ?_, ?_⟩
   · change (D.P.length : Real) ^ ((1 : Real) / (2 : Real) ^ (12 * D.q)) / 2 ≤ D.P.length

@@ -46,7 +46,6 @@ theorem section16_common_base_data_with {N k : Nat} [NeZero N] [Fact N.Prime]
         (restrictRelation (section16SpectrumRelation B
           (section16Delta (section16ThetaOne theta gamma k))) J)) :
     Nonempty (Section16CommonBaseDataWith theta gamma Qb Eb B phi) := by
-  classical
   obtain ⟨H, Y, phiPrime, hH, hcube, hselected, hselection⟩ :=
     section16_dense_induced_selection (Fact.out : N.Prime) theta gamma B phi ht ht1 hg hg1 hB
   obtain ⟨J, hJ, hspectrum⟩ := hspectrum

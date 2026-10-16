@@ -13,7 +13,6 @@ namespace LeanProofs.GowersSzemeredi
 theorem finite_sample_surjective {α : Type*} [Fintype α] [Nonempty α]
     (r : Nat) (hr : Fintype.card α ≤ r) :
     ∃ sample : Fin r → α, Function.Surjective sample := by
-  classical
   let e := Fintype.equivFin α
   let sample : Fin r → α := fun i =>
     if hi : i.val < Fintype.card α then e.symm ⟨i.val, hi⟩ else Classical.choice inferInstance
@@ -47,7 +46,6 @@ theorem section16_product_recovered_good_set {N k q r : Nat} [Fact N.Prime]
       (∀ i, sample i ∈ J) ∧ F ⊆ lastProductSet A J ∧
       (1 - 2 * τ) * ((lastProductSet A J).card : ℝ) ≤ F.card ∧
       Section16SampledOrAnchoredOn D phi sample F := by
-  classical
   by_cases hlong : 2 * (q : ℝ) ≤ τ * J.card
   · obtain ⟨sample, F, hs, hF, hm, ha⟩ :=
       section16_product_anchored_good_set A J D phi ell hell hcover τ hq hτ hlong hr

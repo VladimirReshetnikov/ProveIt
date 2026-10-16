@@ -44,7 +44,6 @@ private structure Cor133CoverData (N : Nat) [NeZero N]
 private lemma cor133_fiber_norm_le {N : Nat} [NeZero N]
     (A : Finset (Pair N)) (h x : ZMod N) :
     ‖verticalEdgeFiberFunction A h x‖ ≤ (N : Real) := by
-  classical
   let F := (verticalEdgeDomain A h).filter fun z => z.1 = x
   have hmaps : Set.MapsTo (fun p : Pair N => p.2) (↑F)
       (↑(Finset.univ : Finset (ZMod N))) := by
@@ -86,7 +85,6 @@ private lemma cor133_largePairs_card_le {N : Nat} [NeZero N]
     (A : Finset (Pair N)) (theta : Real) (htheta : 0 < theta) :
     ((cor133LargePairs A theta).card : Real) ≤
       theta ^ (-(2 : Int)) * N := by
-  classical
   let Gamma := cor133LargePairs A theta
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hpoint (z : Pair N) (hz : z ∈ Gamma) :
@@ -113,8 +111,7 @@ private lemma cor133_largePairs_card_le {N : Nat} [NeZero N]
   have hmain :
       (Gamma.card : Real) * (theta * (N : Real) ^ 2) ^ 2 ≤
         (N : Real) ^ 5 := hsum.trans hmass
-  rw [zpow_neg, zpow_ofNat]
-  rw [mul_comm, ← div_eq_mul_inv]
+  rw [zpow_neg, zpow_ofNat, mul_comm, ← div_eq_mul_inv]
   apply (le_div_iff₀ (sq_pos_of_pos htheta)).2
   apply le_of_mul_le_mul_right (a := (N : Real) ^ 4) ?_ (pow_pos hN 4)
   calc
@@ -134,7 +131,6 @@ private lemma cor133_extract_piece {N : Nat} [NeZero N]
       functionGraph B sigma ⊆ Gamma ∧
       FreimanHom 8 B sigma ∧
       (2 : Real) ^ (-(1882 : Int)) * theta ^ 10477 * N ≤ B.card := by
-  classical
   let D : Finset (ZMod N) := Gamma.image Prod.fst
   let delta : Real := (D.card : Real) / N
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
@@ -237,10 +233,8 @@ private lemma cor133_extract_piece {N : Nat} [NeZero N]
 /-- Gowers's Corollary 13.3, with the prime-modulus convention explicit. -/
 theorem corollary_13_3_holds : corollary_13_3 := by
   intro N _ A theta hprime htheta
-  classical
   let Gamma := cor133LargePairs A theta
   let cover := (by
-       classical
        intro Gamma
        refine Finset.strongInductionOn Gamma ?_
        intro Gamma ih hGamma
@@ -253,8 +247,7 @@ theorem corollary_13_3_holds : corollary_13_3 := by
                Finset.card_le_card (Finset.subset_univ D)
              _ = N := by simp [ZMod.card]
          have hGcard : (G.card : Real) = N - D.card := by
-           rw [show G = Finset.univ \ D by rfl]
-           rw [Finset.card_sdiff]
+           rw [show G = Finset.univ \ D by rfl, Finset.card_sdiff]
            simp [ZMod.card, Nat.cast_sub hDcard]
          let B : Fin 0 → Finset (ZMod N) := Fin.elim0
          let sigma : Fin 0 → ZMod N → ZMod N := Fin.elim0
@@ -331,8 +324,7 @@ theorem corollary_13_3_holds : corollary_13_3 := by
            · exact tail.piece_large j
          · have hPcard : P.card = B0.card := cor75_card_functionGraph B0 sigma0
            have hcards : (Gamma \ P).card + P.card = Gamma.card := by
-             rw [Finset.card_sdiff_add_card]
-             rw [Finset.union_eq_left.mpr hPsub]
+             rw [Finset.card_sdiff_add_card, Finset.union_eq_left.mpr hPsub]
            have hcardsR :
                ((Gamma \ P).card : Real) + B0.card = Gamma.card := by
              exact_mod_cast (by simpa [hPcard] using hcards)

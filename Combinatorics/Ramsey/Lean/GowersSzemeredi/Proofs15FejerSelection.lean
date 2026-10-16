@@ -220,7 +220,6 @@ private lemma fejerWeight_count {X E : Type*} [DecidableEq X]
     (∑ S ∈ U.powerset, fejerWeight U p S *
         ((edges.filter fun e ↦ carrier e ⊆ S).card : Real)) =
       ∑ e ∈ edges, ∏ x ∈ carrier e, p x := by
-  classical
   simp_rw [Finset.cast_card, Finset.sum_filter]
   simp_rw [Finset.mul_sum]
   rw [Finset.sum_comm]
@@ -260,8 +259,7 @@ private lemma exists_subset_count_score {X E : Type*} [DecidableEq X]
       _ = ∑ S ∈ U.powerset, fejerWeight U p S *
           (eta * ((good.filter fun e ↦ carrier e ⊆ S).card : Real) -
             ((bad.filter fun e ↦ carrier e ⊆ S).card : Real)) := by
-        rw [Finset.mul_sum]
-        rw [← Finset.sum_sub_distrib]
+        rw [Finset.mul_sum, ← Finset.sum_sub_distrib]
         apply Finset.sum_congr rfl
         intro S _
         ring
@@ -320,7 +318,6 @@ private noncomputable def fejerCarrier {N k : Nat}
 private lemma fejerCarrier_subset {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (R : GeneralArrangement N k 8)
     (hR : R.IsIn B) : fejerCarrier R ⊆ B := by
-  classical
   intro z hz
   rw [fejerCarrier, Finset.mem_image] at hz
   obtain ⟨i, -, rfl⟩ := hz
@@ -454,7 +451,6 @@ private def fejerIndexSign {N : Nat} (j : Fin 16) : ZMod N :=
 private lemma fejer_additive_iff {N : Nat} (x : Fin 16 → ZMod N) :
     IsAdditiveTuple (k := 8) x ↔
       ∑ j, fejerIndexSign (N := N) j * x j = 0 := by
-  classical
   let L := Finset.univ.filter fun j : Fin 16 ↦ (j : Nat) < 8
   let U := Finset.univ.filter fun j : Fin 16 ↦ 8 ≤ (j : Nat)
   have hcomp :
@@ -506,7 +502,6 @@ private lemma fejer_expect_phase {N k : Nat} [NeZero N]
     (𝔼 C : FejerPhase N k,
       exponential (∑ F, C F * rel F)) =
       if ∀ F, rel F = 0 then 1 else 0 := by
-  classical
   have hexp (C : FejerPhase N k) :
       exponential (∑ F, C F * rel F) =
         ∏ F, exponential (C F * rel F) := by
@@ -551,7 +546,6 @@ private lemma fejerEtaZero_moment {N k : Nat} [NeZero N]
     (R : GeneralArrangement N k 8) (hadd : IsAdditiveTuple R.crossSection)
     (A : Finset (Fin (k + 1))) :
     arrangementMoment R fejerEtaZero A = 0 := by
-  classical
   let A₀ : Finset (Fin k) :=
     Finset.univ.filter fun i ↦ i.castSucc ∈ A
   let P : ZMod N := ∏ i : Fin k, if i ∈ A₀ then -R.side i else 0
@@ -649,7 +643,6 @@ private lemma fejerEtaZero_moment {N k : Nat} [NeZero N]
 private lemma fejer_third_index {k : Nat}
     (u v : fejerIndex k) :
     ∃ w : fejerIndex k, w ≠ u ∧ w ≠ v := by
-  classical
   let e₀ : Fin k → Bool := fun _ ↦ false
   let z₀ : fejerIndex k := (e₀, (0 : Fin 16))
   let z₁ : fejerIndex k := (e₀, (1 : Fin 16))
@@ -665,7 +658,6 @@ private lemma fejer_injective_of_nondegenerate {N k : Nat} [NeZero N]
     (hN : 2 ≤ N) (R : GeneralArrangement N k 8)
     (hnondegenerate : ¬ R.IsDegenerate) :
     Function.Injective (fejerVertex R) := by
-  classical
   letI : Fact (1 < N) := ⟨by omega⟩
   intro u v huvVertex
   by_contra huv
@@ -742,7 +734,6 @@ private lemma fejerCarrier_prod_of_nondegenerate {N k : Nat} [NeZero N]
     (p : Point N (k + 1) → Real) :
     (∏ z ∈ fejerCarrier R, p z) =
       ∏ i : fejerIndex k, p (fejerVertex R i) := by
-  classical
   unfold fejerCarrier
   rw [Finset.prod_image
     (fejer_injective_of_nondegenerate hN R hnondegenerate).injOn]
@@ -932,7 +923,6 @@ private lemma fejerRelationInt_some {N k : Nat} [NeZero N]
     (phi : Point N (k + 1) → ZMod N) (R : GeneralArrangement N k 8) :
     fejerRelationInt eta (some A) phi R =
       arrangementMoment R (fun e j => eta (e, j)) A := by
-  classical
   unfold fejerRelationInt arrangementMoment fejerFeatureValue
   rw [Fintype.sum_prod_type]
   rfl
@@ -941,7 +931,6 @@ private lemma fejerRelationInt_etaZero_none {N k : Nat} [NeZero N]
     (phi : Point N (k + 1) → ZMod N) (R : GeneralArrangement N k 8) :
     fejerRelationInt fejerEtaZeroIdx none phi R =
       ∑ j : Fin 16, fejerIndexSign (N := N) j * R.cubeValue phi j := by
-  classical
   unfold fejerRelationInt fejerFeatureValue GeneralArrangement.cubeValue
   rw [Fintype.sum_prod_type, Finset.sum_comm]
   apply Finset.sum_congr rfl
@@ -971,7 +960,6 @@ private noncomputable def fejerMultiplePatterns {k : Nat} (m j : Nat) :
 private lemma fejer_digit_count_pos (m j : Nat) (hj : j ≤ m) :
     (Finset.univ.filter fun p : FejerDigit m => fejerDigitInt p = (j : Int)).card =
       m + 1 - j := by
-  classical
   have himg : (Finset.univ.filter fun p : FejerDigit m => fejerDigitInt p = (j : Int)) =
       (Finset.univ : Finset (Fin (m + 1 - j))).image
         (fun a : Fin (m + 1 - j) => ((⟨(a : Nat) + j, by have := a.isLt; omega⟩ : Fin (m + 1)),
@@ -997,7 +985,6 @@ private lemma fejer_digit_count (m j : Nat) (hj : j ≤ m) (s : Int)
     (hs : s = 1 ∨ s = -1) :
     (Finset.univ.filter fun p : FejerDigit m => fejerDigitInt p = (j : Int) * s).card =
       m + 1 - j := by
-  classical
   rcases hs with rfl | rfl
   · simpa using fejer_digit_count_pos m j hj
   · have himg : (Finset.univ.filter fun p : FejerDigit m =>
@@ -1021,7 +1008,6 @@ private lemma fejer_digit_count (m j : Nat) (hj : j ≤ m) (s : Int)
 
 private lemma fejerMultiplePatterns_card {k : Nat} (m j : Nat) (hj : j ≤ m) :
     (fejerMultiplePatterns (k := k) m j).card = (m + 1 - j) ^ (2 ^ (k + 4)) := by
-  classical
   unfold fejerMultiplePatterns
   rw [Fintype.card_piFinset]
   rw [Finset.prod_congr rfl (fun z _ => fejer_digit_count m j hj (fejerEtaZeroIdx z)
@@ -1032,7 +1018,6 @@ private lemma fejerMultiplePatterns_valid {N k : Nat} [NeZero N] (m j : Nat)
     (phi : Point N (k + 1) → ZMod N) (R : GeneralArrangement N k 8)
     (hadd : IsAdditiveTuple R.crossSection) (hres : R.IsRespected phi) :
     fejerMultiplePatterns (k := k) m j ⊆ fejerValidRelations m phi R := by
-  classical
   intro eps heps
   have hval : (fun z => fejerDigitInt (eps z)) = fun z => (j : Int) * fejerEtaZeroIdx z := by
     funext z
@@ -1053,7 +1038,6 @@ private lemma fejerMultiplePatterns_valid {N k : Nat} [NeZero N] (m j : Nat)
 private lemma fejerMultiplePatterns_disjoint {k : Nat} (m : Nat) {j j' : Nat}
     (hjj : j ≠ j') :
     Disjoint (fejerMultiplePatterns (k := k) m j) (fejerMultiplePatterns (k := k) m j') := by
-  classical
   rw [Finset.disjoint_left]
   intro eps h1 h2
   have e1 := (Finset.mem_filter.mp (Fintype.mem_piFinset.mp h1 (fun _ => false, 0))).2
@@ -1070,7 +1054,6 @@ private lemma fejerValidRelations_card_good {N k : Nat} [NeZero N] (m T : Nat)
     (hadd : IsAdditiveTuple R.crossSection) (hres : R.IsRespected phi) :
     ∑ j ∈ Finset.range T, (m + 1 - j) ^ (2 ^ (k + 4)) ≤
       (fejerValidRelations m phi R).card := by
-  classical
   have hsub : (Finset.range T).biUnion (fun j => fejerMultiplePatterns (k := k) m j) ⊆
       fejerValidRelations m phi R :=
     Finset.biUnion_subset.mpr fun j _ => fejerMultiplePatterns_valid m j phi R hadd hres
@@ -1097,7 +1080,6 @@ private lemma fejerValidRelations_subset_diagonal {N k : Nat} [NeZero N]
     fejerValidRelations m phi R ⊆
       Fintype.piFinset fun _ : fejerIndex k =>
         Finset.univ.filter fun p : FejerDigit m => p.1 = p.2 := by
-  classical
   intro eps heps
   have hvalid := (Finset.mem_filter.mp heps).2
   have hmom : ∀ A, arrangementMoment R (fun e j => fejerDigitInt (eps (e, j))) A = 0 := by
@@ -1151,7 +1133,6 @@ private lemma fejer_diagonal_card {k : Nat} (m : Nat) :
     (Fintype.piFinset fun _ : fejerIndex k =>
       Finset.univ.filter fun p : FejerDigit m => p.1 = p.2).card =
       (m + 1) ^ (2 ^ (k + 4)) := by
-  classical
   rw [Fintype.card_piFinset]
   have hdiag : (Finset.univ.filter fun p : FejerDigit m => p.1 = p.2) =
       (Finset.univ : Finset (Fin (m + 1))).image fun a => (a, a) := by
@@ -1270,7 +1251,6 @@ private noncomputable def fejerDegenerateFinset (N k m : Nat) [NeZero N] :
 private lemma fejerDegenerateFinset_card (N k m : Nat) [NeZero N] :
     (fejerDegenerateFinset N k m).card =
       degenerateGeneralArrangementCountWithin (N := N) (k := k) m 8 := by
-  classical
   unfold fejerDegenerateFinset degenerateGeneralArrangementCountWithin countWhere
   apply congrArg Finset.card
   ext R
@@ -1498,8 +1478,7 @@ private lemma fejer_loss_lower (k : Nat) (a : Real) (ha : 0 < a) (ha1 : a ≤ 1)
         calc (2 : Real) ^ (k + 7) ≤ 2 ^ (2 * (k + 5) + 2) :=
               pow_le_pow_right₀ (by norm_num) (by omega)
           _ = 4 * 2 ^ (2 * (k + 5)) := by rw [pow_add]; ring
-      rw [one_div_pow, h4]
-      rw [div_mul_div_comm, mul_one]
+      rw [one_div_pow, h4, div_mul_div_comm, mul_one]
       apply div_le_div_of_nonneg_left ha.le (by positivity) h5
     have h3 : a / 2 ^ (k + 7) ≤ (((M * T : Nat) : Real))⁻¹ := by
       rw [le_inv_comm₀ (by positivity) hMTpos]

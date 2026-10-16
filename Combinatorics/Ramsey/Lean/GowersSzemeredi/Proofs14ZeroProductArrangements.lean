@@ -25,7 +25,6 @@ theorem zeroArrangement_vertex {N d : Nat} (R : GeneralArrangement N 0 d)
 theorem zeroArrangement_cubeValue {N d : Nat} [NeZero N]
     (R : GeneralArrangement N 0 d) (phi : Point N 1 → ZMod N) (j : Fin (2 * d)) :
     R.cubeValue phi j = BaseCase.pointOneMap phi (R.crossSection j) := by
-  classical
   unfold GeneralArrangement.cubeValue
   rw [Fintype.sum_unique]
   simp [zeroArrangement_vertex, boolWeight, countWhere, BaseCase.pointOneMap]
@@ -38,7 +37,6 @@ theorem respectedGeneralArrangementCount_two_zero {N : Nat} [NeZero N]
     (B : Finset (Point N 1)) (phi : Point N 1 → ZMod N) :
     respectedGeneralArrangementCount 2 B phi =
       phiAdditiveCount (BaseCase.pointOneDomain B) (BaseCase.pointOneMap phi) := by
-  classical
   unfold respectedGeneralArrangementCount phiAdditiveCount countWhere
   apply Finset.card_equiv (zeroArrangementEquiv N 2)
   intro R

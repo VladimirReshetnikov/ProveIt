@@ -26,7 +26,6 @@ theorem extract_bilinear_cell_with_step_span {N : Nat} [Fact N.Prime]
       delta * S.card * U.length ≤ (C.filter fun z ↦ z.2 - y ∈ U.carrier).card ∧
       BilinearOn (C.filter fun z ↦ z.2 - y ∈ U.carrier) phi ∧
       0 < t ∧ U.step = (t : ZMod N) * T.step ∧ t * (U.length - 1) < T.length := by
-  classical
   have hcard := translated_row_card_le C S J y hsupport
   have hcardReal : (C.card : Real) ≤ (S.card : Real) * J.card := by exact_mod_cast hcard
   have hSpos : (0 : Real) < S.card := by exact_mod_cast hS.card_pos
@@ -70,7 +69,6 @@ theorem bilinear_square_from_short_parent {N : Nat} [Fact N.Prime]
       (T.length : Real) ^ (cor711Exponent delta 1 / 2) - 1 ≤ V.length ∧
       E ⊆ C ∧ E ⊆ V.carrier.product W.carrier ∧
       delta / 4 * V.length * W.length ≤ E.card ∧ BilinearOn E phi := by
-  classical
   have hScard : S.carrier.card = S.length := hS
   obtain ⟨U, t, hUs, hU, _, hUl, hmassU, hbilinear, ht, hstepU, hspan⟩ :=
     extract_bilinear_cell_with_step_span T S.carrier J C y phi a c delta hT hTpos

@@ -131,7 +131,6 @@ lemma section16_product_restriction {N : Nat} [NeZero N]
     (hBlarge : theta * N ≤ B.card)
     (hgraph : GraphContained B phi Gamma) :
     ∃ C : BaseCandidate N, IsBaseCandidate Gamma (lemma163Alpha gamma theta) C := by
-  classical
   let beta : Real := (B.card : Real) / N
   have hNposNat : 0 < N := NeZero.pos N
   have hNpos : (0 : Real) < N := by exact_mod_cast hNposNat
@@ -257,7 +256,6 @@ lemma section16_product_restriction {N : Nat} [NeZero N]
 
 @[simp] lemma candidateGraph_card {N : Nat} [NeZero N]
     (C : BaseCandidate N) : (candidateGraph C).card = C.1.card := by
-  classical
   unfold candidateGraph partialGraph
   rw [Finset.card_image_iff.mpr]
   intro x _ y _ hxy

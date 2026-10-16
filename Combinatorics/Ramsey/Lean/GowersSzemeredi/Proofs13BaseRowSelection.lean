@@ -24,7 +24,6 @@ theorem stage137UpperEndpoints_card {N : Nat} (R I : Finset (ZMod N))
     (Y : ZMod N → Finset (Pair N)) (y : ZMod N) :
     (stage137UpperEndpoints R I Y y).card =
       ∑ h ∈ I, (R.filter fun x ↦ (x, y) ∈ Y h).card := by
-  classical
   rw [← translatedRow_total R I (stage137UpperEndpoints R I Y y) y
     (Finset.filter_subset _ _)]
   apply Finset.sum_congr rfl
@@ -41,7 +40,6 @@ theorem stage137UpperEndpoints_sum {N : Nat} [NeZero N]
     (R I : Finset (ZMod N)) (Y : ZMod N → Finset (Pair N)) :
     ∑ y : ZMod N, (stage137UpperEndpoints R I Y y).card =
       ∑ h ∈ I, ((Y h).filter fun z ↦ z.1 ∈ R).card := by
-  classical
   simp_rw [stage137UpperEndpoints_card]
   rw [Finset.sum_comm]
   apply Finset.sum_congr rfl
@@ -62,7 +60,6 @@ theorem exists_stage137_base_row {N : Nat} [NeZero N]
     (R I : Finset (ZMod N)) (Y : ZMod N → Finset (Pair N)) {b : Real}
     (hb : b * N ≤ ∑ h ∈ I, (((Y h).filter fun z ↦ z.1 ∈ R).card : Real)) :
     ∃ y : ZMod N, b ≤ (stage137UpperEndpoints R I Y y).card := by
-  classical
   have hsum : (∑ _ : ZMod N, b) ≤
       ∑ y : ZMod N, ((stage137UpperEndpoints R I Y y).card : Real) := by
     rw [← Nat.cast_sum, stage137UpperEndpoints_sum]

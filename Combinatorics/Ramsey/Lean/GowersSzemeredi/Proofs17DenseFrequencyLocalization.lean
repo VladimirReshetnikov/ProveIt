@@ -23,7 +23,6 @@ theorem polynomial_localization_of_dense_frequency_box {N d : Nat} [Fact N.Prime
       (∀ i, ((Q i).length : Real) ≤ Real.sqrt N) ∧
       ¬ UniformOnPartition (phaseTwist f phi) d
         ((2 : Real) ^ (-(2 * (d + 1) ^ 3 : Int)) * (delta / (2 : Real) ^ d * alpha ^ 2 / 4)) Q (l + 1) := by
-  classical
   let B := P.carrier.filter fun x => alpha / 2 * N ≤ ‖fourier (cubeDifference f x) (mu x)‖
   have hBcard : B.card = section16LargeMultilinearFrequencyCount f P mu alpha := by
     unfold section16LargeMultilinearFrequencyCount countWhere

@@ -35,7 +35,6 @@ theorem fejerFeatureExceptional_count {N L : Nat} [NeZero N] [Fact N.Prime]
     (sign : I → ZMod N) (hsign : ∀ i, sign i ≠ 0) :
     countWhere (fejerFeatureExceptional (L := L) sign) ≤
       (2 * L) ^ (2 * Fintype.card I + 2) * (2 * N ^ (2 * Fintype.card I + 1)) := by
-  classical
   let u₀ (a : (Option I × Bool) → Fin (2 * L)) := fun j => fejerBoxCoefficient (N := N) (a (j, false))
   let u₁ (a : (Option I × Bool) → Fin (2 * L)) := fun j => fejerBoxCoefficient (N := N) (a (j, true))
   let S := Finset.univ.filter (fun a => balancedFeaturePolynomial sign (u₀ a) (u₁ a) ≠ 0)

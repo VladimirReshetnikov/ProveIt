@@ -11,7 +11,6 @@ namespace LeanProofs.GowersSzemeredi
 
 theorem Box.card_le_pow_of_axis_card_le {N k n : Nat} [NeZero N]
     (P : Box N k) (h : ∀ i, (P.axis i).carrier.card ≤ n) : P.carrier.card ≤ n ^ k := by
-  classical
   have heq : P.carrier = Fintype.piFinset (fun i => (P.axis i).carrier) := by
     ext x
     simp [Box.carrier]
@@ -30,7 +29,6 @@ theorem section16_coarse_function_cover {N k : Nat} [NeZero N]
         IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper ∧ 2 ≤ (Q j).width) ∧
         (∀ j i, IsMultilinear (mu j i)) ∧
         ∀ j x, x ∈ (Q j).carrier → ∃ i, phi x = mu j i x := by
-  classical
   obtain ⟨M, Q, hpart, hproper, haxes, _⟩ := P.bounded_partition hP hk 2 (by omega) hw
   have hcard (j : Fin M) : (Q j).carrier.card ≤ 3 ^ k := by
     apply (Q j).card_le_pow_of_axis_card_le
@@ -62,7 +60,6 @@ theorem section16_singleton_function_cover {N k : Nat} [NeZero N]
         IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper ∧ (Q j).width = 1) ∧
         (∀ j i, IsMultilinear (mu j i)) ∧
         ∀ j x, x ∈ (Q j).carrier → ∃ i, phi x = mu j i x := by
-  classical
   obtain ⟨M, x, hpart⟩ := box_singleton_partition P
   refine ⟨M, fun j => pointSingletonBox (x j), fun j _ _ => phi (x j), hpart,
     fun j => ⟨pointSingletonBox_isProper _, pointSingletonBox_width hk _⟩,

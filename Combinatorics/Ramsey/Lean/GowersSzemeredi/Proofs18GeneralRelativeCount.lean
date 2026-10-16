@@ -79,7 +79,6 @@ theorem relative_progression_counting_bound {N k : Nat} [NeZero N] [Fact N.Prime
     ‖progressionAverage (fun _ : Fin k => indicator A) -
         (delta : Complex) ^ k * progressionAverage (fun _ : Fin k => indicator S)‖ ≤
       k * alpha ^ (1 / (2 : Real) ^ (k - 1)) * (N : Real) ^ 2 := by
-  classical
   have hf : DiscValued (indicator A) := by
     intro x
     by_cases hx : x ∈ A <;> simp [indicator, hx]

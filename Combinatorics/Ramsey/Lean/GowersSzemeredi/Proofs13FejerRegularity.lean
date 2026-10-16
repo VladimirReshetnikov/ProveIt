@@ -43,7 +43,6 @@ theorem fejer_vertex_injective_of_feature_line {N L : Nat} [NeZero N] [Fact N.Pr
     (hline : ∀ v : I → Fin L × Fin L, fejerPairRelation v (feature ∘ vertex) = 0 →
       ∃ c : ZMod N, ∀ i, ((v i).1 - (v i).2 : ZMod N) = c * lambda i) :
     Function.Injective vertex := by
-  classical
   intro i j hij
   by_contra hne
   have hk : ∃ k : I, k ≠ i ∧ k ≠ j := by

@@ -27,7 +27,6 @@ theorem restrict_all_positive_proper_faces (d : Nat)
           ∀ (l : Nat), 0 < l → l < d → ∀ F : CoordinateFace N d l,
             MultiplyLinearFunction gamma (gamma ^ (-(2 : Int)) * multipleS theta gamma l)
               (F.domain B') (F.pullback phi) := by
-  classical
   obtain ⟨N0, hN0⟩ := restrict_finite_parallel_directions
     (I := ProperCoordinateDirection d) d (fun s => s.val.card) (fun s => s.valᶜ.card)
     (fun s => coordinateDirectionSplit s.val)

@@ -22,7 +22,6 @@ theorem not_uniformOnPartition_nonuniform_cell_mass {N M k m : Nat} [NeZero N]
       beta / 2 * N < ∑ i ∈ B, ((Q i).carrier.card : Real) ∧
       ∀ i ∈ B, ¬ UniformOfDegree (restrictToCell (Q i).carrier f)
         (beta / 2 * ((m : Real) / N) ^ (k + 2)) k := by
-  classical
   let E : Fin M → Real := fun i =>
     ∑ a : Point N k, ‖∑ s : ZMod N, cubeDifference (restrictToCell (Q i).carrier f) a s‖ ^ 2
   let t : Real := beta / 2 * (m : Real) ^ (k + 2)

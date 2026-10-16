@@ -23,7 +23,6 @@ theorem fejerArrangement_regular_injective {N L : Nat} [NeZero N] [Fact N.Prime]
     (hL : 2 ≤ L) (R : FejerBalancedArrangement N)
     (hregular : R ∉ fejerExceptionalArrangements (L := L)) :
     Function.Injective (fejerArrangementVertex R.1) := by
-  classical
   have hr : ¬ fejerFeatureExceptional (L := L) fejerArrangementFreeSign
       (fejerArrangementEncode R.1) := by
     simpa [fejerExceptionalArrangements] using hregular
@@ -38,7 +37,6 @@ theorem fejerArrangement_regular_diagonal {N L : Nat} [NeZero N] [Fact N.Prime]
       (fejerPairRelation v (phi ∘ fejerArrangementVertex R.1) = 0 ∧
         fejerPairRelation v ((fun z => z.1 * z.2) ∘ fejerArrangementVertex R.1) = 0) ↔
         ∀ j, (v j).1 = (v j).2 := by
-  classical
   have hr : ¬ fejerFeatureExceptional (L := L) fejerArrangementFreeSign
       (fejerArrangementEncode R.1) := by
     simpa [fejerExceptionalArrangements] using hregular

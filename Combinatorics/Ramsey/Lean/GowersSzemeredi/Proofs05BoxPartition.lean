@@ -31,7 +31,6 @@ def MultilinearDiameterPartition (K : Real) (p : Nat) : Prop :=
 /-- A uniform lower bound on axis lengths is a lower bound on width. -/
 theorem Box.le_width_of_le_axis {N k v : Nat} (P : Box N k) (hk : 0 < k)
     (h : ∀ i, v ≤ (P.axis i).length) : v ≤ P.width := by
-  classical
   simp only [Box.width, dif_neg (Nat.ne_of_gt hk)]
   apply Finset.le_min'
   intro y hy
@@ -54,7 +53,6 @@ theorem boxProductCell_partition {N k : Nat} [NeZero N] (P : Box N k)
     IsBoxPartition
       (fun j : Fin (Fintype.card (∀ i, Fin (m i))) =>
         boxProductCell m Q d hstep ((Fintype.equivFin _).symm j)) P := by
-  classical
   let e := Fintype.equivFin (∀ i, Fin (m i))
   constructor
   · intro x
@@ -91,7 +89,6 @@ theorem section5_box_residue_partition {N k : Nat} [NeZero N]
       (∀ j i, 0 < ((Q j).axis i).length ∧
         (((Q j).axis i).length = v - 1 ∨ ((Q j).axis i).length = v)) ∧
       ∀ j, (Q j).commonDiff = (p : ZMod N) * P.commonDiff := by
-  classical
   have haxis (i : Fin k) : p * v ^ 2 ≤ (P.axis i).length :=
     hsize.trans (P.width_le_axis_length i)
   choose m R _ hRpart hRprop hRstep using
@@ -132,7 +129,6 @@ def boxIndexPoint {N k : Nat} (P : Box N k) (t : Fin k → Nat) : Point N k :=
 /-- The natural index box parametrizes precisely the modular carrier. -/
 theorem Box.carrier_eq_index_image {N k : Nat} [NeZero N] (P : Box N k) :
     P.carrier = (boxIndexSet P).image (boxIndexPoint P) := by
-  classical
   ext x
   simp only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image]
   constructor

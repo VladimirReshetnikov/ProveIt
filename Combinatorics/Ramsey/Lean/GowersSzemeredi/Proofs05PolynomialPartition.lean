@@ -70,7 +70,6 @@ private lemma weighted_centered_reciprocal_sq_tail {N K : Nat} [NeZero N]
     (hK : 0 < K) :
     (∑ r ∈ (Finset.univ.filter fun r : ZMod N => K < centeredAbs r),
       (((centeredAbs r : Nat) : Real) ^ 2)⁻¹) ≤ 2 / K := by
-  classical
   let H : Finset (ZMod N) :=
     Finset.univ.filter fun r : ZMod N => K < centeredAbs r
   let T : Finset (Nat × Bool) := Finset.Ioc K N ×ˢ Finset.univ
@@ -145,7 +144,6 @@ private lemma weighted_centeredInterval_sub_mem {N L : Nat} [NeZero N]
     {x y : ZMod N} (hx : x ∈ centeredInterval N L)
     (hy : y ∈ centeredInterval N L) :
     x - y ∈ centeredInterval N (L + L) := by
-  classical
   simp only [centeredInterval, Finset.mem_image] at hx hy ⊢
   obtain ⟨a, ha, rfl⟩ := hx
   obtain ⟨b, hb, rfl⟩ := hy
@@ -156,7 +154,6 @@ private lemma weighted_centeredInterval_sub_mem {N L : Nat} [NeZero N]
 private lemma weighted_centeredInterval_card (N L : Nat) [NeZero N]
     (hLN : 2 * L ≤ N) :
     (centeredInterval N L).card = 2 * L := by
-  classical
   rw [centeredInterval, Finset.card_image_iff.mpr]
   · simp only [Int.card_Ico, sub_neg_eq_add]
     rw [Int.toNat_add (by positivity) (by positivity)]
@@ -179,7 +176,6 @@ private lemma correlation_centeredInterval_eq_zero_of_not_mem {N L : Nat}
     [NeZero N] {a : ZMod N} (ha : a ∉ centeredInterval N (L + L)) :
     correlation (indicator (centeredInterval N L))
       (indicator (centeredInterval N L)) a = 0 := by
-  classical
   unfold correlation
   apply Finset.sum_eq_zero
   intro x _
@@ -202,7 +198,6 @@ private lemma weighted_fourier_energy_relation {N L : Nat} [NeZero N]
   have hparse := identity_2_2_holds N (fun x => (w x : Complex)) (correlation I I)
   have hright :
       (∑ s : ZMod N, (w s : Complex) * star (correlation I I s)) = 0 := by
-    classical
     apply Finset.sum_eq_zero
     intro s _
     by_cases hs : s ∈ centeredInterval N (L + L)
@@ -489,7 +484,6 @@ private noncomputable def polynomialValueMultiplicity {N : Nat}
 private lemma polynomialValueMultiplicity_mass {N k t : Nat} [NeZero N]
     (a : ZMod N) :
     ∑ x : ZMod N, polynomialValueMultiplicity k t a x = t := by
-  classical
   have hfiber := Finset.card_eq_sum_card_fiberwise
     (s := Finset.Icc 1 t) (t := (Finset.univ : Finset (ZMod N)))
     (f := fun s : Nat => ((s : ZMod N) ^ k) * a) (by simp)
@@ -498,7 +492,6 @@ private lemma polynomialValueMultiplicity_mass {N k t : Nat} [NeZero N]
 private lemma centeredAbs_le_of_mem_centeredInterval {N M : Nat} [NeZero N]
     (hMN : 2 * M ≤ N) {x : ZMod N} (hx : x ∈ centeredInterval N M) :
     centeredAbs x ≤ M := by
-  classical
   simp only [centeredInterval, Finset.mem_image] at hx
   obtain ⟨z, hz, rfl⟩ := hx
   simp only [Finset.mem_Ico] at hz
@@ -531,7 +524,6 @@ private lemma polynomialValueMultiplicity_zero_of_avoids {N k t M : Nat}
     (havoid : ∀ s ∈ Finset.Icc 1 t,
       ((s : ZMod N) ^ k) * a ∉ centeredInterval N M) :
     ∀ x ∈ centeredInterval N M, polynomialValueMultiplicity k t a x = 0 := by
-  classical
   intro x hx
   rw [polynomialValueMultiplicity, Finset.card_eq_zero]
   apply Finset.eq_empty_iff_forall_notMem.mpr
@@ -544,7 +536,6 @@ private lemma fourier_polynomialValueMultiplicity {N k t : Nat} [NeZero N]
     fourier (fun x => (polynomialValueMultiplicity k t a x : Complex)) r =
       ∑ s ∈ Finset.Icc 1 t,
         exponential (-((((s : ZMod N) ^ k) * a) * r)) := by
-  classical
   rw [fourier, ZMod.dft_apply]
   simp only [smul_eq_mul, polynomialValueMultiplicity,
     Finset.card_eq_sum_ones, Nat.cast_sum, Nat.cast_one]
@@ -972,8 +963,7 @@ private lemma lemma55_threshold_root {k t D E : Nat}
       rw [← Real.rpow_natCast,
         ← Real.rpow_natCast_mul (by norm_num : (0 : Real) ≤ 2)]
       apply Real.rpow_le_rpow_of_exponent_le one_le_two
-      rw [mul_comm (H : Real) ((D : Real)⁻¹)]
-      rw [le_inv_mul_iff₀ hDReal]
+      rw [mul_comm (H : Real) ((D : Real)⁻¹), le_inv_mul_iff₀ hDReal]
       exact_mod_cast hDE
     _ ≤ (t : Real) ^ ((D : Real)⁻¹) := by
       apply Real.rpow_le_rpow (by positivity)
@@ -2373,7 +2363,6 @@ doubly-exponential numerical threshold. -/
 private theorem corollary_5_6_counterexample_of_Q (Q : Nat) (hQ : 2 < Q)
     (hQodd : Odd Q) (hthreshold : polynomialPartitionThreshold 1 < Q) :
     ¬ corollary_5_6_exact_cell_legacy := by
-  classical
   intro h56
   unfold corollary_5_6_exact_cell_legacy at h56
   obtain ⟨P, hpartition, hproper, hbalanced, hdiameter⟩ :=

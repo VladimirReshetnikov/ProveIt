@@ -20,7 +20,6 @@ theorem HasBohrDifferenceModel.constant_on_fibres {N : Nat} [NeZero N]
     (h : HasBohrDifferenceModel D phi K zeta Y psi) (hzeta : 0 ≤ zeta)
     {x y : X} (hx : x ∈ Y) (hy : y ∈ Y) (hindex : D.index x = D.index y) :
     phi x = phi y := by
-  classical
   have hzero : (0 : ZMod N) ∈ bohr K zeta := by
     simp only [bohr, Finset.mem_filter, Finset.mem_univ, true_and]
     intro r _
@@ -38,7 +37,6 @@ theorem domainInducedValue_agrees {N : Nat} [NeZero N]
     {Y : Finset X} {psi : ZMod N → ZMod N}
     (h : HasBohrDifferenceModel D phi K zeta Y psi) (hzeta : 0 ≤ zeta)
     (x : X) (hx : x ∈ Y) : domainInducedValue D phi Y (D.index x) = phi x := by
-  classical
   let hs : ∃ y, y ∈ Y ∧ D.index y = D.index x := ⟨x, hx, rfl⟩
   unfold domainInducedValue
   rw [dif_pos hs]
@@ -49,7 +47,6 @@ step with coefficient bounded by any upper bound for its length. -/
 theorem ModAP.sub_mem_symmetricMultiples {N m : Nat} (I : ModAP N)
     (hI : I.length ≤ m) {x y : ZMod N} (hx : x ∈ I.carrier) (hy : y ∈ I.carrier) :
     x - y ∈ section10SymmetricMultiples I.step m := by
-  classical
   obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
   obtain ⟨j, _, rfl⟩ := Finset.mem_image.mp hy
   apply Finset.mem_image.mpr
@@ -70,7 +67,6 @@ theorem domainInducedValue_linearOn {N : Nat} [NeZero N]
     (hzeta : 0 ≤ zeta) (m : Nat) (hm : 0 < m) (I : ModAP N)
     (hd : I.step ∈ bohr K (zeta / m)) (hI : I.length ≤ m) :
     LinearOn (I.carrier ∩ Y.image D.index) (domainInducedValue D phi Y) := by
-  classical
   obtain ⟨c, hc⟩ := corollary_10_14_holds N X D phi K zeta Y psi hprime hmodel m hm I.step hd
   by_cases hne : (I.carrier ∩ Y.image D.index).Nonempty
   · obtain ⟨y, hy⟩ := hne
@@ -103,7 +99,6 @@ theorem section16_inducedSelection_exists {N k : Nat} [NeZero N]
       (section16InducedCubeMap B h phi) (K h) zeta (Y h) (psi h)) :
     ∃ phiPrime : Point N k → ZMod N → ZMod N,
       Section16InducedSelection B phi H Y K zeta phiPrime := by
-  classical
   let phiPrime (h : Point N k) := domainInducedValue (section16CubeMultifunctionDomain B h)
     (section16InducedCubeMap B h phi) (Y h)
   refine ⟨phiPrime, ?_, ?_⟩
@@ -142,7 +137,6 @@ theorem section16_models_and_induced_selection {N k : Nat} [NeZero N]
           Section16InducedSelection B phi H Y
             (fun h => section16LargeSpectrum B h (section16Delta (section16ThetaOne theta gamma k)))
             (section16Zeta theta gamma k) phiPrime := by
-  classical
   obtain ⟨H, hmass, Y, psi, hmodel⟩ := lemma_16_5_holds N k theta gamma B phi ht ht1 hg hg1 hB
   obtain ⟨phiPrime, hselection⟩ := section16_inducedSelection_exists B phi H Y _ _ psi hprime
     (by unfold section16Zeta; positivity) (fun h hh => (hmodel h hh).2)

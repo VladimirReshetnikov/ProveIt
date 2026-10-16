@@ -40,7 +40,6 @@ theorem quadratic_family_phase_localization {N q : Nat} [NeZero N]
       ∀ j, (R j).IsProper ∧ U ≤ (R j).length ∧
         ∀ i, ∃ z : Complex, ‖z‖ = 1 ∧
           ∀ x, x ∈ (R j).carrier → ‖exponential (-(phi i x)) - z‖ ≤ 1 / (4 * U) := by
-  classical
   induction q generalizing P with
   | zero =>
     refine ⟨1, fun _ => P, ?_, ?_⟩

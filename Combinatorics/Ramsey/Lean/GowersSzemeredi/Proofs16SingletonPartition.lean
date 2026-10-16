@@ -13,12 +13,10 @@ def pointSingletonBox {N d : Nat} (x : Point N d) : Box N d where
 
 @[simp] theorem pointSingletonBox_axis_carrier {N d : Nat} (x : Point N d) (i : Fin d) :
     ((pointSingletonBox x).axis i).carrier = {x i} := by
-  classical
   simp [pointSingletonBox, ModAP.carrier]
 
 @[simp] theorem pointSingletonBox_carrier {N d : Nat} [NeZero N] (x : Point N d) :
     (pointSingletonBox x).carrier = {x} := by
-  classical
   ext y
   simp only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and,
     pointSingletonBox_axis_carrier, Finset.mem_singleton]
@@ -26,7 +24,6 @@ def pointSingletonBox {N d : Nat} (x : Point N d) : Box N d where
 
 theorem pointSingletonBox_isProper {N d : Nat} (x : Point N d) :
     (pointSingletonBox x).IsProper := by
-  classical
   intro i
   change ((pointSingletonBox x).axis i).carrier.card = 1
   rw [pointSingletonBox_axis_carrier]
@@ -43,7 +40,6 @@ positive dimension and allowing the empty partition for the empty box. -/
 theorem box_singleton_partition {N d : Nat} [NeZero N] (P : Box N d) :
     ∃ M : Nat, ∃ x : Fin M → Point N d,
       IsBoxPartition (fun j => pointSingletonBox (x j)) P := by
-  classical
   let e := Fintype.equivFin {x // x ∈ P.carrier}
   refine ⟨Fintype.card {x // x ∈ P.carrier}, fun j => (e.symm j).val, ?_⟩
   constructor
@@ -75,7 +71,6 @@ theorem section16_local_linearity_singletons {N k : Nat} [NeZero N]
       IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧
       (∀ j, l ≤ (Q j).width) ∧
       ∀ j x, LinearOn (((Q j).axis (Fin.last k)).carrier.filter fun y => y ∈ A x) (f x) := by
-  classical
   obtain ⟨M, x, hpart⟩ := box_singleton_partition P
   refine ⟨M, fun j => pointSingletonBox (x j), hpart,
     fun j => pointSingletonBox_isProper _, ?_, ?_⟩

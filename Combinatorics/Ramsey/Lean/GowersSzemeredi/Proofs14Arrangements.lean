@@ -63,7 +63,6 @@ private lemma cor146_section_product_property {N k : Nat} [NeZero N]
 private lemma cor146_sum_section_card {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) :
     ∑ r : ZMod N, (cor146Section B r).card = B.card := by
-  classical
   let e : Point N k × ZMod N ≃ Point N (k + 1) :=
     (Equiv.prodComm (Point N k) (ZMod N)).trans
       (Fin.snocEquiv (fun _ : Fin (k + 1) => ZMod N))
@@ -133,7 +132,6 @@ private lemma cor146_pair_count_eq_sum {N k : Nat} [NeZero N]
     (r : ZMod N) :
     respectedCubePairCount (cor146Section B r) (cor146SectionPhi phi r) =
       ∑ K : AxisCube N k, (cor146GoodSet B phi K r).card := by
-  classical
   unfold respectedCubePairCount
   change countWhere (fun z : AxisCube N k × AxisCube N k =>
     cor146GoodPair B phi z.1 r z.2) = _
@@ -435,7 +433,6 @@ private lemma cor146_theta_eq_zero_of_not_reference {N k : Nat} [NeZero N]
   have hr' : ¬ K.IsIn (cor146Section B r) := by
     simpa [cor146ReferenceSection] using hr
   have hempty : cor146GoodSet B phi K r = ∅ := by
-    classical
     ext K'
     simp only [cor146GoodSet, Finset.mem_filter, Finset.mem_univ, true_and,
       Finset.notMem_empty, iff_false]
@@ -448,7 +445,6 @@ private lemma cor146_sum_theta_reference {N k : Nat} [NeZero N]
     (K : AxisCube N k) :
     ∑ r ∈ cor146ReferenceSection B K, cor146Theta B phi K r =
       ∑ r : ZMod N, cor146Theta B phi K r := by
-  classical
   apply Finset.sum_subset (Finset.subset_univ _)
   intro r _ hr
   exact cor146_theta_eq_zero_of_not_reference B phi K r hr

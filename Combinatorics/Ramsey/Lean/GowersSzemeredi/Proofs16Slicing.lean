@@ -17,7 +17,6 @@ alias centeredAbs_intCast_le := lemma55_centeredAbs_intCast_le
 theorem diameterAtMost.centeredAbs_sub_le {N d : Nat} [NeZero N]
     {A : Finset (ZMod N)} (h : diameterAtMost A d) {x y : ZMod N}
     (hx : x ∈ A) (hy : y ∈ A) : centeredAbs (x - y) ≤ d := by
-  classical
   obtain ⟨a, ha⟩ := h
   obtain ⟨i, _, hi⟩ := Finset.mem_image.mp (ha hx)
   obtain ⟨j, _, hj⟩ := Finset.mem_image.mp (ha hy)
@@ -44,7 +43,6 @@ in one of the two orientations. No order on the modular progression is used. -/
 theorem ModAP.adjacent_mem {N : Nat} (P : ModAP N) (hP : 2 ≤ P.length)
     {y : ZMod N} (hy : y ∈ P.carrier) :
     y + P.step ∈ P.carrier ∨ y - P.step ∈ P.carrier := by
-  classical
   obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hy
   by_cases hi : i.val + 1 < P.length
   · left
@@ -110,7 +108,6 @@ theorem box_slice_partition {N k M : Nat} [NeZero N] (P : Box N k)
     ∃ L : Nat, ∃ j : Fin L → Fin M,
       (∀ a, y ∈ ((Q (j a)).axis 0).carrier) ∧
       IsBoxPartition (fun a => boxTail (Q (j a))) P := by
-  classical
   let S := {a : Fin M // y ∈ ((Q a).axis 0).carrier}
   let e := Fintype.equivFin S
   refine ⟨Fintype.card S, fun a => (e.symm a).val, fun a => (e.symm a).property, ?_⟩

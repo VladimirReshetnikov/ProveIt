@@ -52,7 +52,6 @@ theorem card_biUnion_partialGraph_fiber_le {N k : Nat} {ι : Type} [Fintype ι]
     (D : ι → Finset (Point N k)) (f : ι → Point N k → ZMod N) (x : Point N k) :
     ((Finset.univ.biUnion fun c => partialGraph (D c) (f c)).filter
       fun z => z.1 = x).card ≤ Fintype.card ι := by
-  classical
   rw [Finset.filter_biUnion]
   calc (Finset.univ.biUnion fun c => (partialGraph (D c) (f c)).filter fun z => z.1 = x).card
       ≤ ∑ c, ((partialGraph (D c) (f c)).filter fun z => z.1 = x).card :=
@@ -100,7 +99,6 @@ theorem section16_family_piece_large_box_profile {k : Nat} (hk : 1 ≤ k)
         (pieceLineExponent Bq Qb Eb Er rho * famPieceSliceExponent Qr Es (Fintype.card ι) rho / 4)
         (section16RoundedPowerThreshold (pieceWidthScale A Qb (section16Zeta theta gamma k) rho)
           (pieceLineExponent Bq Qb Eb Er rho) (famPieceSliceExponent Qr Es (Fintype.card ι) rho)) := by
-  classical
   intro rho hrho hrho1 P hP hlarge
   let sigma := rho / 4
   have hs : 0 < sigma := by dsimp [sigma]; positivity

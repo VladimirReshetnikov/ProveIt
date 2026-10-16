@@ -81,7 +81,6 @@ multiaffine. -/
 lemma prop172_multilinear_cons {N k : Nat}
     (sigma : Point N k → ZMod N) (hsigma : IsMultilinear sigma) :
     IsMultilinear (fun z : Point N (k + 1) => z 0 * sigma (Fin.tail z)) := by
-  classical
   obtain ⟨c, hc⟩ := hsigma
   let c' : (Fin (k + 1) → Bool) → ZMod N := fun e =>
     if e 0 then c (Fin.tail e) else 0
@@ -118,7 +117,6 @@ lemma prop172_multilinear_cons {N k : Nat}
 lemma prop172_boolWeight_cons {n : Nat}
     (b : Bool) (e : Fin n → Bool) :
     boolWeight (Fin.cons b e) = (if b then 1 else 0) + boolWeight e := by
-  classical
   unfold boolWeight
   simp_rw [gcs_countWhere_eq_sum_ite]
   rw [Fin.sum_univ_succ]

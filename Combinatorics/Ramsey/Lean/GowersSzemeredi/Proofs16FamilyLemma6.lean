@@ -145,8 +145,7 @@ theorem section16_rounded_recurrence_scale {m b E : Nat} {a zeta : Real}
     exact_mod_cast h
   have hnroot : (n : Real) ^ ((E : Real)⁻¹) = (H : Real) ^ 2 := by
     dsimp only [n]
-    rw [Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg H)]
-    rw [← Real.rpow_natCast]
+    rw [Nat.cast_pow, ← Real.rpow_natCast, ← Real.rpow_mul (Nat.cast_nonneg H), ← Real.rpow_natCast]
     congr 1
     push_cast
     field_simp
@@ -199,7 +198,6 @@ theorem allScaleFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0
   unfold AllScaleFamilyLemma166At
   intro N m _ _ hk theta gamma sigma ht ht1 hg hg1 hs hs1 Qb Eb hQ ha ha1 Gamma hML
     ι B phi H H1 Y phiPrime hfreq hH1 hselection P Q I hP hproduct hmP
-  classical
   have hfam := hrec.retiled_family (fun q => familyRecThr_pos (by omega) q)
   let delta := section16Delta (section16ThetaOne theta gamma k)
   let zeta := section16Zeta theta gamma k
@@ -341,7 +339,6 @@ theorem AllScaleFamilyLemma166At.single {k : Nat} {W : Nat → Nat → Real → 
     B phi H Jbase H1 Y phiPrime
   dsimp only
   intro hH1 hML hselection P Q I hP hproduct hmP
-  classical
   have hfreq : ∀ _c : Unit, ∀ x ∈ H1, ∀ r ∈ section16LargeSpectrum B x
       (section16Delta (section16ThetaOne theta gamma k)),
       (x, r) ∈ restrictRelation (section16SpectrumRelation B

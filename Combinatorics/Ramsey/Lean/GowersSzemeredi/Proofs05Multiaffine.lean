@@ -36,8 +36,7 @@ theorem multiaffine_monomial_affine {ι R : Type*} [DecidableEq ι] [CommRing R]
     (S : Finset ι) (a x : ι → R) (d : R) :
     (∏ i ∈ S, (a i + d * x i)) =
       ∑ T ∈ S.powerset, (d ^ T.card * ∏ i ∈ S \ T, a i) * ∏ i ∈ T, x i := by
-  rw [show (fun i => a i + d * x i) = (fun i => d * x i + a i) by funext i; ring]
-  rw [Finset.prod_add]
+  rw [show (fun i => a i + d * x i) = (fun i => d * x i + a i) by funext i; ring, Finset.prod_add]
   apply Finset.sum_congr rfl
   intro T _
   rw [Finset.prod_mul_distrib, Finset.prod_const]
@@ -138,7 +137,6 @@ def boolMonomialEquiv (k : Nat) : (Fin k → Bool) ≃ Finset (Fin k) where
 theorem isMultilinear_iff_multiaffineEval {N k : Nat} (mu : Point N k → ZMod N) :
     IsMultilinear mu ↔ ∃ c : Finset (Fin k) → ZMod N,
       ∀ x, mu x = multiaffineEval Finset.univ c x := by
-  classical
   have hprod (e : Fin k → Bool) (x : Point N k) :
       (∏ i ∈ boolMonomialEquiv k e, x i) = ∏ i, if e i then x i else 1 := by
     simp [boolMonomialEquiv, Finset.prod_filter]

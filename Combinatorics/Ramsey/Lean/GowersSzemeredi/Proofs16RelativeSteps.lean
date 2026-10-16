@@ -29,7 +29,6 @@ def modAPUnitPullback {N : Nat} (u : (ZMod N)ˣ) (a : ZMod N) (R : ModAP N) : Mo
 theorem modAPUnitPullback_carrier {N : Nat} (u : (ZMod N)ˣ) (a : ZMod N) (R : ModAP N) :
     (modAPUnitPullback u a R).carrier =
       R.carrier.image (fun x => (↑u⁻¹ : ZMod N) * (x - a)) := by
-  classical
   unfold ModAP.carrier
   rw [Finset.image_image]
   apply Finset.image_congr
@@ -50,7 +49,6 @@ ordinary index interval of its parent. -/
 theorem modAPUnitPullback_subset {N : Nat} (u : (ZMod N)ˣ) (B R : ModAP N)
     (hstep : B.step = (↑u : ZMod N)) (hsub : R.carrier ⊆ B.carrier) :
     (modAPUnitPullback u B.start R).carrier ⊆ (modInterval N 0 B.length).carrier := by
-  classical
   rw [modAPUnitPullback_carrier]
   intro x hx
   obtain ⟨y, hy, rfl⟩ := Finset.mem_image.mp hx

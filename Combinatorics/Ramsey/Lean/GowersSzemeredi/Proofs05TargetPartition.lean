@@ -134,7 +134,6 @@ theorem section5_refine_target_lengths {M r v : Nat} (P : Fin M → NatAP)
       (∀ j, (Q j).IsProper ∧ 0 < (Q j).length ∧
         ((Q j).length = v - 1 ∨ (Q j).length = v)) ∧
       ∀ j, ∃ i, (Q j).carrier ⊆ (P i).carrier := by
-  classical
   choose L R hL hRpart hRcells hRsub using
     fun i => section5_target_progression_partition (P i) v (hP i) hv (hlong i)
   have hsum : 0 < ∑ i, L i := by

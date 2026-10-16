@@ -15,7 +15,6 @@ theorem MultiplyLinearWith.translate {N k : Nat} [NeZero N] [Fact N.Prime]
     {Qb Eb : Real → Real} {Gamma : Finset (Point N k × ZMod N)}
     (h : MultiplyLinearWith Qb Eb Gamma) (t : Point N k) :
     MultiplyLinearWith Qb Eb (Gamma.image (fun z => (z.1 + t, z.2))) := by
-  classical
   intro theta ht ht1 P hP
   obtain ⟨M, q, H, Q, mu, hH, hHcard, hpart, hproper, hq, hw, hmu, hcover⟩ :=
     h theta ht ht1 (P.translate (-t)) (hP.translate (-t))

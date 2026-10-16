@@ -173,7 +173,6 @@ theorem MultiplyLinearWith.localPieceFor {N k : Nat} [NeZero N]
 theorem card_fibre_selected {N n l : Nat} [NeZero N] (f : Fin l ↪ Fin n) (c y : Point N l) :
     ((Finset.univ : Finset (Point N n)).filter fun z => (fun i => z (f i) + c i) = y).card =
       N ^ (n - l) := by
-  classical
   let e : {z : Point N n // (fun i => z (f i) + c i) = y} ≃
       ({j : Fin n // j ∉ Set.range f} → ZMod N) :=
     { toFun := fun z j => z.1 j.1
@@ -210,7 +209,6 @@ theorem card_filter_selected_mem {N n l : Nat} [NeZero N] (f : Fin l ↪ Fin n) 
     (S : Finset (Point N l)) :
     ((Finset.univ : Finset (Point N n)).filter fun z => (fun i => z (f i) + c i) ∈ S).card =
       S.card * N ^ (n - l) := by
-  classical
   rw [Finset.card_eq_sum_card_fiberwise (f := fun z : Point N n => fun i => z (f i) + c i)
     (s := (Finset.univ : Finset (Point N n)).filter fun z => (fun i => z (f i) + c i) ∈ S)
     (t := S) (fun z hz => (Finset.mem_filter.mp hz).2)]
@@ -229,7 +227,6 @@ theorem card_filter_selected_not_mem_le {N n l : Nat} [NeZero N] (f : Fin l ↪ 
     (hS : (1 - theta) * (N : Real) ^ l ≤ S.card) (hln : l ≤ n) :
     (((Finset.univ : Finset (Point N n)).filter fun z =>
       (fun i => z (f i) + c i) ∉ S).card : Real) ≤ theta * (N : Real) ^ n := by
-  classical
   have hcompl := card_filter_selected_mem f c (Finset.univ \ S)
   have heq : ((Finset.univ : Finset (Point N n)).filter fun z => (fun i => z (f i) + c i) ∉ S) =
       (Finset.univ.filter fun z => (fun i => z (f i) + c i) ∈ Finset.univ \ S) := by

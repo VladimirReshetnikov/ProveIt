@@ -112,8 +112,7 @@ private lemma prop144_build_vertex {N n : Nat} (L : CubeConfiguration N n)
         CubeConfiguration.secondSide, Fin.cons_zero, if_true,
         prop144QuadCoordinate]
       change q 0 + (q 2 - q 0) + (q 3 - q 0) = q 1
-      rw [show q 0 + (q 2 - q 0) + (q 3 - q 0) = q 2 + q 3 - q 0 by abel]
-      rw [← hq]
+      rw [show q 0 + (q 2 - q 0) + (q 3 - q 0) = q 2 + q 3 - q 0 by abel, ← hq]
       abel
   · simp [prop144Build, CubeConfiguration.vertex, CubeConfiguration.base,
       CubeConfiguration.firstSide, CubeConfiguration.secondSide,
@@ -325,7 +324,6 @@ alias prop144_countWhere_equiv := feature_countWhere_equiv
 private lemma prop144_sum_section_card {N n : Nat} [NeZero N]
     (B : Finset (Point N (n + 1))) :
     ∑ r : ZMod N, (prop144Section B r).card = B.card := by
-  classical
   let e := Fin.consEquiv (fun _ : Fin (n + 1) => ZMod N)
   calc
     ∑ r : ZMod N, (prop144Section B r).card =
@@ -350,7 +348,6 @@ private lemma prop144_sum_goodset_card {N n : Nat} [NeZero N]
       ∑ r : ZMod N,
         respectedConfigurationCount (prop144Section B r)
           (prop144SectionPhi phi r) := by
-  classical
   simp_rw [show ∀ L : CubeConfiguration N n,
       (prop144GoodSet B phi L).card =
         countWhere (fun r : ZMod N => prop144GoodAt B phi L r) by
@@ -620,8 +617,7 @@ private lemma prop144_constant_identity {N n : Nat} [NeZero N]
     ring
   rw [hgamma, hfour, pow_add]
   have hcomm (x : Nat) : 4 * x = x * 4 := by omega
-  rw [hcomm (4 ^ n), pow_mul]
-  rw [hcomm (2 * n * 4 ^ n), pow_mul]
+  rw [hcomm (4 ^ n), pow_mul, hcomm (2 * n * 4 ^ n), pow_mul]
   simp only [mul_pow]
   have hNfactor : (N : Real) ^ (3 * (n + 1)) =
       (N : Real)⁻¹ * (((N : Real) ^ (3 * n + 1)) ^ 4 /

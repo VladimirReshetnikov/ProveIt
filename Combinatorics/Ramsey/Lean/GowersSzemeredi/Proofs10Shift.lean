@@ -21,7 +21,6 @@ namespace LeanProofs.GowersSzemeredi
 @[simp] private lemma mem_fibre_iff {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     (s : ZMod N) (x : X) : x ∈ D.fibre s ↔ D.index x = s := by
-  classical
   simp [MultifunctionDomain.fibre]
 
 private lemma fibreSize_eq_of_index_eq {N : Nat} [NeZero N]
@@ -41,7 +40,6 @@ private lemma mem_shift_iff {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     (W : Finset X) (d : ZMod N) (x : X) :
     x ∈ D.shift W d ↔ ∃ w ∈ W, D.index x = D.index w + d := by
-  classical
   simp [MultifunctionDomain.shift]
 
 /-- If `w` lies in `W ∩ (W-d)`, its whole `d`-shifted fibre lies in `W`. -/
@@ -76,7 +74,6 @@ private lemma almostEvery_bad_card_le {X : Type*} [DecidableEq X]
     (theta : Real) (U : Finset X) (P : X → Prop) [DecidablePred P]
     (hP : AlmostEvery (1 - theta) U P) :
     ((U.filter fun x => ¬ P x).card : Real) ≤ theta * U.card := by
-  classical
   have hpartNat := Finset.card_filter_add_card_filter_not P (s := U)
   have hpart :
       ((U.filter P).card : Real) + ((U.filter fun x => ¬ P x).card : Real) = U.card := by
@@ -89,7 +86,6 @@ private lemma bad_card_lt_of_not_almostEvery {X : Type*} [DecidableEq X]
     (tau : Real) (U : Finset X) (P : X → Prop) [DecidablePred P]
     (hP : ¬ AlmostEvery (1 - tau) U P) :
     tau * U.card < ((U.filter fun x => ¬ P x).card : Real) := by
-  classical
   have hpartNat := Finset.card_filter_add_card_filter_not P (s := U)
   have hpart :
       ((U.filter P).card : Real) + ((U.filter fun x => ¬ P x).card : Real) = U.card := by
@@ -103,7 +99,6 @@ private lemma almostEvery_of_bad_card_le {X : Type*} [DecidableEq X]
     (theta : Real) (U : Finset X) (P : X → Prop) [DecidablePred P]
     (hbad : ((U.filter fun x => ¬ P x).card : Real) ≤ theta * U.card) :
     AlmostEvery (1 - theta) U P := by
-  classical
   have hpartNat := Finset.card_filter_add_card_filter_not P (s := U)
   have hpart :
       ((U.filter P).card : Real) + ((U.filter fun x => ¬ P x).card : Real) = U.card := by
@@ -207,10 +202,8 @@ private lemma shiftBadPairs_card_first {N : Nat} [NeZero N]
     (shiftBadPairs D W d P).card =
       ∑ w ∈ W, (W.filter fun z =>
         D.index z - D.index w = d ∧ ¬ P z).card := by
-  classical
   unfold shiftBadPairs
-  rw [Finset.filter_congr_decidable]
-  rw [Finset.card_filter]
+  rw [Finset.filter_congr_decidable, Finset.card_filter]
   change (∑ i ∈ W ×ˢ W,
     if D.index i.2 - D.index i.1 = d ∧ ¬ P i.2 then 1 else 0) = _
   rw [Finset.sum_product]
@@ -222,10 +215,8 @@ private lemma shiftBadPairs_card_second {N : Nat} [NeZero N]
     (shiftBadPairs D W d P).card =
       ∑ z ∈ W, (W.filter fun w =>
         D.index z - D.index w = d ∧ ¬ P z).card := by
-  classical
   unfold shiftBadPairs
-  rw [Finset.filter_congr_decidable]
-  rw [Finset.card_filter]
+  rw [Finset.filter_congr_decidable, Finset.card_filter]
   change (∑ i ∈ W ×ˢ W,
     if D.index i.2 - D.index i.1 = d ∧ ¬ P i.2 then 1 else 0) = _
   rw [Finset.sum_product, Finset.sum_comm]
@@ -238,7 +229,6 @@ private lemma first_slice_eq_shiftedBadCount {N : Nat} [NeZero N]
     {w : X} (hw : w ∈ W ∩ D.shift W (-d)) :
     (W.filter fun z => D.index z - D.index w = d ∧ ¬ P z).card =
       shiftedBadCount D d P w := by
-  classical
   unfold shiftedBadCount
   apply congrArg Finset.card
   ext z
@@ -256,7 +246,6 @@ private lemma second_slice_le {N : Nat} [NeZero N]
     (hupper : ∀ w, w ∈ W → D.fibreSize w ≤ 2 * m) (z : X) :
     (W.filter fun w => D.index z - D.index w = d ∧ ¬ P z).card ≤
       if ¬ P z then 2 * m else 0 := by
-  classical
   by_cases hzbad : ¬ P z
   · rw [if_pos hzbad]
     by_cases hs : (W.filter fun w => D.index z - D.index w = d ∧ ¬ P z).Nonempty
@@ -467,7 +456,6 @@ private lemma shift_almostEvery_eligible {N : Nat} [NeZero N]
   nlinarith
 
 theorem lemma_10_8_holds : lemma_10_8 := by
-  classical
   intro N _ X _ _ D W B eta theta P hregular htheta hP d hd
   exact almostEvery_mono (1 - Real.sqrt theta - eta) W
     (fun w => w ∈ shiftEligible D W d ∧
@@ -484,7 +472,6 @@ private lemma almostEvery_shiftEligible {N : Nat} [NeZero N]
     (hregular : IsSection10ShiftRegular D W B eta)
     (d : ZMod N) (hd : d ∈ B) :
     AlmostEvery (1 - eta) W fun w => w ∈ shiftEligible D W d := by
-  classical
   rcases hregular with ⟨_, hsym, _, hoverlap⟩
   have hnegd : -d ∈ B := (hsym d).mp hd
   have hover := hoverlap (-d) hnegd
@@ -523,7 +510,6 @@ private lemma twoStep_localDifference_nonempty {N : Nat} [NeZero N]
       (D.fibre (D.index w + d₁ + d₂)).Nonempty ∧
       AlmostEvery (1 - theta) (D.fibre (D.index w + d₁ + d₂)) fun z =>
         phi z - phi w = psi d₁ + psi d₂ := by
-  classical
   let Q₁ : X → Prop := localDifferenceGood D phi psi theta d₁
   let Q₂ : X → Prop := localDifferenceGood D phi psi theta d₂
   let E₂ : X → Prop := fun w => w ∈ shiftEligible D W d₂
@@ -599,7 +585,6 @@ private lemma twoStep_localDifference_exact {N : Nat} [NeZero N]
     (D.fibre (D.index w + d₁ + d₂)).Nonempty ∧
       ∀ z ∈ D.fibre (D.index w + d₁ + d₂),
         phi z - phi w = psi d₁ + psi d₂ := by
-  classical
   let E₁ : X → Prop := fun x => x ∈ shiftEligible D W d₁
   have hE₁ : AlmostEvery 1 W E₁ := by
     simpa only [sub_zero] using almostEvery_shiftEligible D W B 0 hregular d₁ hd₁
@@ -637,7 +622,6 @@ private lemma twoStep_localDifference_exact {N : Nat} [NeZero N]
     _ = psi d₁ + psi d₂ := add_comm _ _
 
 theorem lemma_10_9_holds : lemma_10_9 := by
-  classical
   intro N _ X _ _ D phi W B B' psi eta
   dsimp only
   intro hWne hregular hmodel hsmall

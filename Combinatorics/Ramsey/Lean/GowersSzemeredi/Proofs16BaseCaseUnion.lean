@@ -21,7 +21,6 @@ namespace LeanProofs.GowersSzemeredi.BaseCase
 
 lemma isMultilinear_const {N k : Nat} (c : ZMod N) :
     IsMultilinear (fun _ : Point N k => c) := by
-  classical
   let e0 : Fin k -> Bool := fun _ => false
   refine ⟨fun e => if e = e0 then c else 0, ?_⟩
   intro x
@@ -45,7 +44,6 @@ private def properPointSingletonBox {N d : Nat} (x : Point N d) : Box N d where
 
 @[simp] private lemma properPointSingletonBox_carrier {N d : Nat} [NeZero N]
     (x : Point N d) : (properPointSingletonBox x).carrier = {x} := by
-  classical
   ext y
   simp only [Box.carrier, properPointSingletonBox, Finset.mem_filter,
     Finset.mem_univ, true_and, ModAP.carrier, Finset.mem_image,
@@ -75,7 +73,6 @@ private def IndexedPartition {X ι : Type*} [DecidableEq X] [Fintype ι]
 private lemma indexedPartition_sum_card {X ι : Type*} [DecidableEq X]
     [Fintype ι] {A : ι → Finset X} {S : Finset X}
     (hA : IndexedPartition A S) : ∑ i, (A i).card = S.card := by
-  classical
   have hpair : ((Finset.univ : Finset ι) : Set ι).PairwiseDisjoint A := by
     intro i _ j _ hij
     exact hA.2 i j hij
@@ -145,7 +142,6 @@ private lemma biUnion_card_lower {X ι : Type*} [DecidableEq X] [Fintype ι]
     (hcard : ∀ i, (1 - eta) * (A i).card ≤ (H i).card) :
     (1 - eta) * (S.card : Real) ≤
       ((Finset.univ.biUnion H).card : Real) := by
-  classical
   have hpair : ((Finset.univ : Finset ι) : Set ι).PairwiseDisjoint H := by
     intro i _ j _ hij
     exact Disjoint.mono (hH i) (hH j)
@@ -182,7 +178,6 @@ private lemma mem_local_of_mem_cell_and_biUnion {X : Type*} [DecidableEq X]
     (hA : IsPartition A S) (hH : ∀ i, H i ⊆ A i)
     {j : Fin m} {x : X} (hxA : x ∈ A j)
     (hxH : x ∈ Finset.univ.biUnion H) : x ∈ H j := by
-  classical
   rw [Finset.mem_biUnion] at hxH
   obtain ⟨i, _hi, hxi⟩ := hxH
   by_contra hxj
@@ -680,7 +675,6 @@ private lemma isMultilinear_sum {N d r : Nat}
     (mu : Fin r → Point N d → ZMod N)
     (hmu : ∀ i, IsMultilinear (mu i)) :
     IsMultilinear (fun x => ∑ i, mu i x) := by
-  classical
   choose c hc using hmu
   refine ⟨fun e => ∑ i, c i e, ?_⟩
   intro x
@@ -700,7 +694,6 @@ private lemma mem_partialGraph_iff {N d : Nat} [NeZero N]
     (B : Finset (Point N d)) (phi : Point N d → ZMod N)
     (x : Point N d) (y : ZMod N) :
     (x, y) ∈ partialGraph B phi ↔ x ∈ B ∧ y = phi x := by
-  classical
   rw [partialGraph, Finset.mem_image]
   constructor
   · rintro ⟨z, hz, hzx⟩
@@ -794,8 +787,7 @@ theorem properMultiplyLinear_fin_sum {N d r : Nat} [NeZero N]
         let tuple : Fin r → Fin q0 := fun i => a i
         refine ⟨ef tuple, ?_⟩
         change y = ∑ i, D.mu j i (ef.symm (ef tuple) i) x
-        rw [ef.symm_apply_apply]
-        rw [hgraph.2]
+        rw [ef.symm_apply_apply, hgraph.2]
         exact Finset.sum_congr rfl fun i _ => ha i
     · refine ⟨D.M, 0, D.H, D.Q, (fun _ i => Fin.elim0 i),
         D.H_subset, hDcard, D.partition, D.proper, (by simpa using htargetBoundNonneg),

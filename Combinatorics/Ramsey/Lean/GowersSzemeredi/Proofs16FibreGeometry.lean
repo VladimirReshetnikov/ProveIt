@@ -27,7 +27,6 @@ theorem appendCoordinate_eq_snoc {N k : Nat} (x : Point N k) (y : ZMod N) :
 theorem lastProductSet_eq_image {N k : Nat} [NeZero N]
     (A : Finset (Point N k)) (I : Finset (ZMod N)) :
     lastProductSet A I = (A ×ˢ I).image (fun z => Fin.snoc z.1 z.2) := by
-  classical
   ext x
   simp only [lastProductSet, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_image,
     Finset.mem_product]
@@ -56,7 +55,6 @@ theorem lastProductSet_good_mass {N k : Nat} [NeZero N]
     (hsub : G ⊆ A) (hmass : (1 - eta) * (A.card : Real) ≤ G.card) :
     lastProductSet G I ⊆ lastProductSet A I ∧
       (1 - eta) * ((lastProductSet A I).card : Real) ≤ (lastProductSet G I).card := by
-  classical
   constructor
   · intro x hx
     have h := (Finset.mem_filter.mp hx).2
@@ -82,7 +80,6 @@ theorem good_intersection_mass {X : Type*} [DecidableEq X]
 theorem IsMultilinear.linearOn_last_fibre {N k : Nat} [NeZero N]
     {mu : Point N (k + 1) → ZMod N} (hmu : IsMultilinear mu) (h : Point N k) :
     LinearOn Finset.univ (fun x => mu (appendCoordinate h x)) := by
-  classical
   obtain ⟨c, hc⟩ := hmu
   refine ⟨∑ e : Fin k → Bool, c (Fin.snoc e true) * ∏ i, if e i then h i else 1,
     ∑ e : Fin k → Bool, c (Fin.snoc e false) * ∏ i, if e i then h i else 1, ?_⟩

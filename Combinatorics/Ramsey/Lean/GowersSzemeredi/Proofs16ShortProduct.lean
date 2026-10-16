@@ -14,7 +14,6 @@ theorem product_recurrence_bohr_mem {N k q : Nat} [NeZero N]
     (hcover : ∀ r ∈ K x, ∃ i, r = mu i x)
     (hsmall : ∀ i, (centeredAbs (mu i x * d) : Real) ≤ e * N)
     (hbudget : e ≤ zeta / v) : d ∈ bohr (K x) (zeta / v) := by
-  classical
   simp only [bohr, Finset.mem_filter, Finset.mem_univ, true_and]
   intro r hr
   obtain ⟨i, rfl⟩ := hcover r hr

@@ -31,7 +31,6 @@ theorem Section16LineCover.global_affine_lift {N k q r m : Nat} [Fact N.Prime]
         ((multipleC (((r : ℝ) * s)⁻¹ * ε) gamma k) ^ ((r : ℝ) * s))) / 4 ≤ (Q j).width) ∧
       (∀ j i, IsMultilinear (mu j i)) ∧
       ∀ j z, z ∈ (Q j).carrier → z ∈ B → z ∈ H → ∃ i, phi z = mu j i z := by
-  classical
   dsimp only
   obtain ⟨E, M, S, T, J, ell, hE, hEm, hSpart, hSproper, hproduct, hwidth, hell, hc⟩ := hline
   have hlocal : ∀ u, ∃ (p : Nat) (G : Finset (Point N (k + 1)))

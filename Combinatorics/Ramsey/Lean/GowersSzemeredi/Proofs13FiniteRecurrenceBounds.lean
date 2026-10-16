@@ -36,7 +36,6 @@ theorem lemma_13_5_prime_large_case {N : Nat} [NeZero N] (hprime : N.Prime)
     ∃ E : Stage135Data N, IsStage135Data S D E ∧
       Nat.floor ((D.P.length : Real) ^ ((1 : Real) / (2 : Real) ^ (11 * D.q))) ≤ E.Q.length ∧
       S.alpha ^ 32 * E.Q.length / 16 ≤ (criticalHeights S D E).card := by
-  classical
   have hsmall := not_le.mpr hlargeCase
   have hq : 1 ≤ D.q := h134.1
   have hP : D.P.IsProper := h134.2.2.1

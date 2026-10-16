@@ -255,7 +255,6 @@ private lemma prop131_correlation_eq {N : Nat} [NeZero N]
     (sigma : ZMod N → ZMod N) (u x w y : ZMod N) :
     correlation (prop131A f u x w) (prop131G B sigma u) y =
       ∑ h ∈ B, prop131InnerTerm f sigma u x y (w + y) h := by
-  classical
   simp only [correlation]
   rw [← (prop131AddRightEquiv y).sum_comp]
   simp only [prop131AddRightEquiv_apply, add_sub_cancel_right]
@@ -392,7 +391,6 @@ private abbrev prop131AltAdditive {N : Nat} (B : Finset (ZMod N))
 private lemma prop131_alt_count_eq {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (sigma : ZMod N → ZMod N) :
     countWhere (prop131AltAdditive B sigma) = phiAdditiveCount B sigma := by
-  classical
   unfold countWhere phiAdditiveCount
   apply Finset.card_equiv
       ({ toFun q := ![q 0, q 3, q 2, q 1]
@@ -433,7 +431,6 @@ private lemma prop131_g_product {N : Nat} [NeZero N]
         exponential
           ((sigma (q 0) - sigma (q 1) - sigma (q 2) + sigma (q 3)) * u)
       else 0 := by
-  classical
   simp only [prop131G, indicator, star_mul]
   by_cases h0 : q 0 ∈ B <;> by_cases h1 : q 1 ∈ B <;>
     by_cases h2 : q 2 ∈ B <;> by_cases h3 : q 3 ∈ B
@@ -499,7 +496,6 @@ private lemma prop131_g_fourth_eq_count {N : Nat} [NeZero N]
     (∑ u : ZMod N, ∑ r : ZMod N,
         ‖fourier (prop131G B sigma u) r‖ ^ 4) =
       (N : Real) ^ 2 * phiAdditiveCount B sigma := by
-  classical
   have hcomplex :
       (((∑ u : ZMod N, ∑ r : ZMod N,
           ‖fourier (prop131G B sigma u) r‖ ^ 4 : Real)) : Complex) =
@@ -690,7 +686,6 @@ private def prop132Indicator {N : Nat} (A : Finset (Pair N)) :
 private lemma prop132_indicator_disc {N : Nat} (A : Finset (Pair N)) :
     DiscValued (prop132Indicator A) := by
   intro z
-  classical
   simp only [prop132Indicator]
   split_ifs <;> simp
 
@@ -699,7 +694,6 @@ private lemma prop132_fiber_count_eq {N : Nat} [NeZero N]
     verticalEdgeFiberCount A h x =
       ((Finset.univ : Finset (ZMod N)).filter fun y =>
         (x, y) ∈ A ∧ (x, y + h) ∈ A).card := by
-  classical
   unfold verticalEdgeFiberCount verticalEdgeDomain
   apply Finset.card_bij (fun z _ => z.2)
   · rintro ⟨zx, zy⟩ hz
@@ -724,7 +718,6 @@ private lemma prop132_indicator_product {N : Nat} (A : Finset (Pair N))
     (h x y : ZMod N) :
     prop132Indicator A (x, y + h) * star (prop132Indicator A (x, y)) =
       if (x, y) ∈ A ∧ (x, y + h) ∈ A then 1 else 0 := by
-  classical
   by_cases hy : (x, y) ∈ A <;> by_cases hyh : (x, y + h) ∈ A <;>
     simp [prop132Indicator, hy, hyh]
 

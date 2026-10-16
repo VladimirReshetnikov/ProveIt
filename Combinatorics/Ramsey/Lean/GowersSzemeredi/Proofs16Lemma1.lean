@@ -29,7 +29,6 @@ theorem lifted_diameter_commonDiff {N k : Nat} [NeZero N]
     (hwidth : 2 ≤ Q.width) (y : ZMod N) (hy : y ∈ (Q.axis 0).carrier)
     (x : Point N k) (hx : x ∈ (boxTail Q).carrier) :
     (centeredAbs (mu x * Q.commonDiff) : Real) ≤ s := by
-  classical
   have hbase : mu x * y ∈ Q.carrier.image (fun z => mu (Fin.tail z) * z 0) := by
     refine Finset.mem_image.mpr ⟨Fin.cons y x, (mem_boxTail_cons _ _ _).mpr ⟨hy, hx⟩, ?_⟩
     simp
@@ -65,7 +64,6 @@ theorem proper_lemma_16_1 (N k q m : Nat) [NeZero N] (P : Box N k)
       ∀ i j x, x ∈ (Q j).carrier →
         (centeredAbs (mu i x * (Q j).commonDiff) : Real) ≤
           2 * (m : Real) ^ (-section16RecurrenceExponent k q) * N := by
-  classical
   have hm0 : 0 < m := by
     have h : 0 < section16WidthThreshold k q := by
       unfold section16WidthThreshold polynomialPartitionThreshold weylThreshold

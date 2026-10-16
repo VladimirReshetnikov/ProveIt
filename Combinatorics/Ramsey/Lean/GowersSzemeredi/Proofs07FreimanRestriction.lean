@@ -23,13 +23,11 @@ namespace LeanProofs.GowersSzemeredi
 lemma cor75_mem_functionGraph {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (phi : ZMod N → ZMod N) (p : ZMod N × ZMod N) :
     p ∈ functionGraph B phi ↔ p.1 ∈ B ∧ p.2 = phi p.1 := by
-  classical
   simp [functionGraph, Prod.ext_iff, eq_comm]
 
 lemma cor75_card_functionGraph {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (phi : ZMod N → ZMod N) :
     (functionGraph B phi).card = B.card := by
-  classical
   unfold functionGraph
   rw [Finset.card_image_iff.mpr]
   intro x _ y _ h
@@ -116,7 +114,6 @@ private lemma cor75_verticalFiber_bound {N k : Nat} [NeZero N] [Fact N.Prime]
     let S := k • Gamma - k • Gamma
     let K := (Finset.univ : Finset (ZMod N)).filter fun y => (0, y) ∈ S
     (K.card : Real) ≤ C ^ (4 * k) := by
-  classical
   dsimp only
   let Gamma := functionGraph B phi
   let S := k • Gamma - k • Gamma
@@ -195,7 +192,6 @@ private lemma cor75_exists_good_d {N k L : Nat} [NeZero N] [Fact N.Prime]
     (hsize : 4 * k * K.card * L ≤ N) :
     ∃ d : ZMod N, d ≠ 0 ∧
       ∀ q : Bool × Fin (k * L), cor75Coeff N (k * L) q * d ∉ K := by
-  classical
   have hprime := Fact.out (p := Nat.Prime N)
   have hN2 : 2 ≤ N := hprime.two_le
   have hTLT : k * L < N := by
@@ -267,7 +263,6 @@ private lemma cor75_coeff_rep_neg {N k L n : Nat} [NeZero N]
 theorem lemma_7_5_holds : lemma_7_5 := by
   intro N k _ B phi C hprime hk hC hsmall
   letI : Fact N.Prime := ⟨hprime⟩
-  classical
   by_cases hB : B.Nonempty
   swap
   · refine ⟨∅, Finset.empty_subset _, ?_, ?_⟩

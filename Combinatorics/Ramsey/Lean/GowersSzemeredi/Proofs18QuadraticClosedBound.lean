@@ -28,7 +28,6 @@ modular progression. The second point ensures its positive step is < N. -/
 theorem finiteInterval_hasModAP_of_hasNatAP {N k : Nat} [NeZero N]
     (B : Finset (Fin N)) (hk : 2 ≤ k) (hAP : HasNatAP (B.image Fin.val) k) :
     HasModAP (finiteIntervalImage N B) k := by
-  classical
   obtain ⟨a, d, hd, hAP⟩ := hAP
   obtain ⟨j, _, hj⟩ := Finset.mem_image.mp (hAP 1 (by omega))
   have hdN : d < N := by have := j.isLt; omega
@@ -50,7 +49,6 @@ theorem quadratic_cyclic_szemeredi_closed
     (delta : Real) (hδ : 0 < delta) (hδone : delta ≤ 1)
     (N : Nat) [NeZero N] (hN : quadraticIntervalClosedThreshold delta ≤ N)
     (A : Finset (ZMod N)) (hcard : delta * N ≤ A.card) : HasModAP A 4 := by
-  classical
   let B : Finset (Fin N) := Finset.univ.filter fun i => ((i : Nat) : ZMod N) ∈ A
   have himage : finiteIntervalImage N B = A := by
     ext x

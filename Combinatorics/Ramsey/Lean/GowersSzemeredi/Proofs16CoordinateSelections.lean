@@ -35,7 +35,6 @@ theorem HasProductProperty.comp_of_coordinates {N d l : Nat} [NeZero N]
     (hnone : ∀ y j x, r j = none → A (replaceCoordinate y j x) = A y) :
     HasProductProperty ((Finset.univ : Finset (Point N l)).filter fun y => A y ∈ B)
       (fun y => phi (A y)) gamma := by
-  classical
   intro p j y E theta htheta hE
   cases hr : r j with
   | none =>
@@ -139,7 +138,6 @@ theorem mem_faceSelDomain {N k : Nat} [NeZero N] {B : Finset (Point N (k + 1))} 
     {e : Fin k → Bool} {i : Fin k} (hi : e i = false) {w : Point N (k + 1)}
     (hw : selectPt (Fin.snoc e true) (Fin.snoc x0 0) w ∈ B) :
     dropAt i.castSucc w ∈ faceSelDomain B x0 e i := by
-  classical
   unfold faceSelDomain
   refine Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩
   rw [← selectPt_vertex_eq_drop x0 hi]
@@ -150,7 +148,6 @@ theorem faceSel_product {N k : Nat} [NeZero N] {B : Finset (Point N (k + 1))}
     {phi : Point N (k + 1) → ZMod N} {gamma : Real} (h : HasProductProperty B phi gamma)
     (hg0 : 0 ≤ gamma) (hg1 : gamma ≤ 1) (x0 : Point N k) (e : Fin k → Bool) (i : Fin k) :
     HasProductProperty (faceSelDomain B x0 e i) (faceSel phi x0 e i) gamma := by
-  classical
   have hmain := h.comp_of_coordinates hg0 hg1
     (fun y => selectPt (Fin.snoc e true) (Fin.snoc x0 0) (Fin.insertNth i.castSucc 0 y))
     (fun j => if (Fin.snoc e true : Fin (k + 1) → Bool) (i.castSucc.succAbove j) = true

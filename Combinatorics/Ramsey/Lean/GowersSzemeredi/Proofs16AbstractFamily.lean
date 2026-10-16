@@ -58,7 +58,6 @@ theorem abstractFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0
   unfold AbstractFamilyLemma166At
   intro N m _ _ hk zeta sigma hz hzHalf hs hs1 Qb Eb hQ ha ha1 Gamma hML
     ι H1 K A f hfreq hlinear P Q I hP hproduct hmP
-  classical
   have hfam := hrec.retiled_family (fun q => familyRecThr_pos (by omega) q)
   let q := Nat.floor (Qb sigma)
   let b := C * (q + 1)
@@ -209,7 +208,6 @@ theorem abstractFamilyLemma169At_of (k : Nat) {W : Nat → Nat → Real → Real
   unfold AbstractFamilyLemma169At
   intro N m _ _ hk zeta sigma hz hzHalf hs hs1 Qb Eb Qr Er hQ ha ha1 hEr
     Gamma hML Gr hrem ι H1 K A f D phi rem hfreq hlinear hdom hid hGr P hP hmP
-  classical
   have hsHalf : 0 < sigma / 2 := by positivity
   have hsHalf1 : sigma / 2 ≤ 1 := by linarith
   obtain ⟨M, qGamma, F, R, mu, hFsub, hFmass, hRpart, hRproper, hqGamma,
@@ -319,7 +317,6 @@ theorem abstract_family_piece_large_box_profile {k : Nat} (hk : 1 ≤ k)
         (pieceLineExponent Bq Qb Eb Er rho * famPieceSliceExponent Qr Es (Fintype.card ι) rho / 4)
         (section16RoundedPowerThreshold (pieceWidthScale A Qb zeta rho)
           (pieceLineExponent Bq Qb Eb Er rho) (famPieceSliceExponent Qr Es (Fintype.card ι) rho)) := by
-  classical
   intro rho hrho hrho1 P hP hlarge
   let sigma := rho / 4
   have hs : 0 < sigma := by dsimp [sigma]; positivity

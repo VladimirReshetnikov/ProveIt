@@ -17,7 +17,6 @@ theorem exists_dense_equal_cover {X I : Type*} [DecidableEq X]
     (hcap : Fintype.card I * m ≤ 2 * S.card)
     (hmass : delta * S.card ≤ (D.card : Real)) :
     ∃ i, delta / 2 * m ≤ ((D ∩ V i).card : Real) := by
-  classical
   have hD : D ⊆ Finset.univ.biUnion (fun i ↦ D ∩ V i) := by
     intro x hx
     obtain ⟨i, hi⟩ := hcover x (hsub hx)
@@ -42,7 +41,6 @@ theorem ModAP.dense_short_cover {N : Nat} [Fact N.Prime]
     ∃ Q : ModAP N, ∃ E : Finset (ZMod N),
       Q.step = P.step ∧ Q.IsProper ∧ Q.length = m ∧ E ⊆ D ∧ E ⊆ Q.carrier ∧
       delta / 2 * m ≤ (E.card : Real) := by
-  classical
   let I := Fin 1 × Fin (P.length / (1 * m) + 1)
   let V : I → ModAP N := commonStepCoverCell P 1 m
   letI : Nonempty I := ⟨(0, ⟨0, Nat.zero_lt_succ _⟩)⟩

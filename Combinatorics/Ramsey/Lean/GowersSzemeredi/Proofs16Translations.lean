@@ -39,7 +39,6 @@ theorem Box.IsProper.translate {N k : Nat} {P : Box N k}
 @[simp] theorem Box.translate_mem_carrier {N k : Nat} [NeZero N]
     (P : Box N k) (t x : Point N k) :
     x + t ∈ (P.translate t).carrier ↔ x ∈ P.carrier := by
-  classical
   simp only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and,
     Box.translate, ModAP.translateBy_carrier, translateFinset, Pi.add_apply]
   apply forall_congr'
@@ -52,7 +51,6 @@ theorem Box.IsProper.translate {N k : Nat} {P : Box N k}
 
 theorem Box.translate_carrier {N k : Nat} [NeZero N] (P : Box N k) (t : Point N k) :
     (P.translate t).carrier = P.carrier.image (fun x => x + t) := by
-  classical
   ext x
   obtain ⟨y, rfl⟩ := (Equiv.addRight t).surjective x
   change y + t ∈ (P.translate t).carrier ↔ y + t ∈ _
@@ -78,7 +76,6 @@ theorem Box.translate_carrier {N k : Nat} [NeZero N] (P : Box N k) (t : Point N 
 theorem IsBoxPartition.translate {N k m : Nat} [NeZero N]
     {Q : Fin m → Box N k} {P : Box N k} (h : IsBoxPartition Q P) (t : Point N k) :
     IsBoxPartition (fun j => (Q j).translate t) (P.translate t) := by
-  classical
   constructor
   · intro x
     obtain ⟨y, rfl⟩ := (Equiv.addRight t).surjective x
@@ -95,7 +92,6 @@ theorem MultiplyLinear.translate {N k : Nat} [NeZero N] [Fact N.Prime]
     {gamma r : Real} {Gamma : Finset (Point N k × ZMod N)}
     (h : MultiplyLinear gamma r Gamma) (t : Point N k) :
     MultiplyLinear gamma r (Gamma.image (fun z => (z.1 + t, z.2))) := by
-  classical
   intro theta ht ht1 P hP
   obtain ⟨M, q, H, Q, mu, hH, hHcard, hpart, hproper, hq, hw, hmu, hcover⟩ :=
     h theta ht ht1 (P.translate (-t)) (hP.translate (-t))
@@ -124,7 +120,6 @@ theorem MultiplyLinearFunction.translate {N k : Nat} [NeZero N] [Fact N.Prime]
     (h : MultiplyLinearFunction gamma r B phi) (t : Point N k) :
     MultiplyLinearFunction gamma r (B.image (fun x => x + t))
       (fun x => phi (x + -t)) := by
-  classical
   have hh := MultiplyLinear.translate h t
   have heq : (partialGraph B phi).image (fun z => (z.1 + t, z.2)) =
       partialGraph (B.image (fun x => x + t)) (fun x => phi (x + -t)) := by

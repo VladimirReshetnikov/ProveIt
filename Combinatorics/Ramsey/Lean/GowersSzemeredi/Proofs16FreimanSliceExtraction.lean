@@ -17,7 +17,6 @@ def section16SliceUnion {N k : Nat} [NeZero N]
 theorem section16FinalCoordinateSection_sliceUnion {N k : Nat} [NeZero N]
     (C : ZMod N → Finset (Point N k)) (t : ZMod N) :
     section16FinalCoordinateSection (section16SliceUnion C) t = C t := by
-  classical
   ext x
   simp only [section16FinalCoordinateSection, Finset.mem_filter, Finset.mem_univ, true_and,
     section16SliceUnion, Finset.mem_biUnion, Finset.mem_image]
@@ -31,7 +30,6 @@ theorem section16FinalCoordinateSection_sliceUnion {N k : Nat} [NeZero N]
 theorem section16SliceUnion_card {N k : Nat} [NeZero N]
     (C : ZMod N → Finset (Point N k)) :
     (section16SliceUnion C).card = ∑ t, (C t).card := by
-  classical
   unfold section16SliceUnion
   rw [Finset.card_biUnion]
   · apply Finset.sum_congr rfl
@@ -50,7 +48,6 @@ theorem section16SliceUnion_card {N k : Nat} [NeZero N]
 theorem section16SliceUnion_sections {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) :
     section16SliceUnion (section16FinalCoordinateSection B) = B := by
-  classical
   apply Finset.Subset.antisymm
   · intro z hz
     obtain ⟨t, -, hz⟩ := Finset.mem_biUnion.mp hz
@@ -72,7 +69,6 @@ theorem section16_restrict_final_freiman_families {N : Nat} [Fact N.Prime]
     ∃ C : Finset (Point N 2), C ⊆ B ∧
       (B.card : Real) - theta * (N : Real)^2 ≤ C.card ∧
       Section16FinalFreimanFamilies (section16BaseFamilyBound gamma theta) C phi := by
-  classical
   have hs (t : ZMod N) : HasProductProperty (section16FinalCoordinateSection B t)
       (section16FinalCoordinateRestriction phi t) gamma :=
     hprod.coordinateFace (CoordinateFace.lastSlice t)

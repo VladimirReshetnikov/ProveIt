@@ -21,7 +21,6 @@ namespace LeanProofs.GowersSzemeredi
 private lemma cor33_countWhere_cast_complex {T : Type*} [Fintype T]
     (P : T → Prop) [DecidablePred P] :
     (countWhere P : Complex) = ∑ x : T, if P x then 1 else 0 := by
-  classical
   unfold countWhere
   rw [Finset.filter_congr_decidable]
   simp
@@ -31,7 +30,6 @@ private lemma cor33_translated_count_eq_indicator {N k : Nat} [NeZero N]
     (translatedIntersectionCount A : Complex) =
       ∑ r : ZMod N, ∑ s : ZMod N,
         ∏ i : Fin k, indicator (A i) (s - (((i : Nat) + 1 : ZMod N) * r)) := by
-  classical
   unfold translatedIntersectionCount
   rw [cor33_countWhere_cast_complex, Fintype.sum_prod_type]
   apply Finset.sum_congr rfl
@@ -56,7 +54,6 @@ private lemma cor33_indicator_eq_balanced_add {N : Nat} [NeZero N]
 lemma cor33_balanced_discValued {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) : DiscValued (balanced A) := by
   intro x
-  classical
   have hd0 : 0 ≤ density A := density_nonneg A
   have hd1 : density A ≤ 1 := density_le_one A
   by_cases hx : x ∈ A
@@ -88,7 +85,6 @@ private lemma cor33_prefix_product {N k m : Nat} [NeZero N]
     (hB : ∀ i ∈ B, (i : Nat) < m) (s r : ZMod N) :
     (∏ i : Fin m, cor33PrefixFamily A B hm i (s - (i : Nat) * r)) =
       ∏ i ∈ B, balanced (A i) (s - (i : Nat) * r) := by
-  classical
   unfold cor33PrefixFamily
   rw [← Finset.prod_filter]
   apply Finset.prod_bij (fun i _ ↦ Fin.castLE hm i)
@@ -114,7 +110,6 @@ private lemma cor33_progression_eq_prefix {N k m : Nat} [NeZero N]
     (A : Fin k → Finset (ZMod N)) (B : Finset (Fin k)) (hm : m ≤ k)
     (hB : ∀ i ∈ B, (i : Nat) < m) :
     cor33Progression A B = progressionAverage (cor33PrefixFamily A B hm) := by
-  classical
   unfold cor33Progression progressionAverage
   apply Finset.sum_congr rfl
   intro r _
@@ -146,7 +141,6 @@ private lemma cor33_prefix_discValued {N k m : Nat} [NeZero N]
     (A : Fin k → Finset (ZMod N)) (B : Finset (Fin k)) (hm : m ≤ k) :
     ∀ i, DiscValued (cor33PrefixFamily A B hm i) := by
   intro i x
-  classical
   unfold cor33PrefixFamily
   split
   · exact cor33_balanced_discValued _ _
@@ -164,7 +158,6 @@ private lemma cor33_progression_bound {N k : Nat} [NeZero N] [Fact N.Prime]
       UniformSetOfDegree (A i) (alpha ^ ((2 : Nat) ^ (i : Nat))) ((i : Nat) - 1))
     (B : Finset (Fin k)) (hBne : B ≠ ∅) :
     ‖cor33Progression A B‖ ≤ alpha * (N : Real) ^ 2 := by
-  classical
   have hBnon : B.Nonempty := Finset.nonempty_iff_ne_empty.mpr hBne
   let j : Fin k := B.max' hBnon
   have hjB : j ∈ B := Finset.max'_mem B hBnon
@@ -265,7 +258,6 @@ private lemma cor33_count_expansion {N k : Nat} [NeZero N]
     (translatedIntersectionCount A : Complex) =
       ∑ B : Finset (Fin k),
         (cor33Coefficient delta B : Complex) * cor33Progression A B := by
-  classical
   rw [cor33_translated_count_eq_indicator]
   have hindicator (i : Fin k) (x : ZMod N) :
       indicator (A i) x = balanced (A i) x + delta i :=
@@ -335,14 +327,12 @@ private lemma cor33_empty_term {N k : Nat} [NeZero N]
     (A : Fin k → Finset (ZMod N)) (delta : Fin k → Real) :
     (cor33Coefficient delta ∅ : Complex) * cor33Progression A ∅ =
       ((∏ i, delta i) * (N : Real) ^ 2 : Real) := by
-  classical
   simp [cor33Coefficient, cor33Progression, ZMod.card, pow_two]
 
 /-- **Corollary 3.3.** The number of translated modular progressions differs
 from its density main term by at most `2^k α N²`. -/
 theorem corollary_3_3_holds : corollary_3_3 := by
   intro N k _ _ hkN A delta alpha ha0 hcard huniform
-  classical
   let T : Finset (Fin k) → Complex := fun B ↦
     (cor33Coefficient delta B : Complex) * cor33Progression A B
   let S : Finset (Finset (Fin k)) :=

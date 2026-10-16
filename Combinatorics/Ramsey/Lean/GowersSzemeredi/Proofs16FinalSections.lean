@@ -30,7 +30,6 @@ theorem ProperCrossSectionsMultiplyLinear.good_domain_final_sections
     (x0 : Point N k) :
     FinalCoordinateSectionsMultiplyLinear gamma r (section16GoodDomain B H Y x0)
       (section16PhiOne phi x0) := by
-  classical
   intro x
   let F : CoordinateFace N (k + 1) k := CoordinateFace.lastSlice x
   have hp := (h k (Nat.lt_succ_self k) F).translate (-x0)

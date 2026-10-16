@@ -137,10 +137,8 @@ private lemma audit_differenceWeight_eq_sum_fibre (y : AuditX) :
       ∑ z : AuditX,
         (auditDomain.fibre
           (z.1 + (y.1 - auditX0.1))).card := by
-  classical
   unfold domainDifferenceWeight
-  rw [countWhere_eq_sum_ite]
-  rw [Fintype.sum_prod_type]
+  rw [countWhere_eq_sum_ite, Fintype.sum_prod_type]
   apply Finset.sum_congr rfl
   intro z _
   simp only [auditDomain]
@@ -261,7 +259,6 @@ private lemma audit_countWhere_coordinate_mem {Y : Type*}
     [Fintype Y] [DecidableEq Y] (A : Finset Y) (i : Fin 4) :
     countWhere (fun q : Fin 4 → Y => q i ∈ A) =
       A.card * Fintype.card Y ^ 3 := by
-  classical
   unfold countWhere
   rw [Finset.filter_congr_decidable]
   rw [show (Finset.univ.filter (fun q : Fin 4 → Y => q i ∈ A)) =
@@ -286,7 +283,6 @@ private lemma audit_countWhere_coordinate_mem {Y : Type*}
 private lemma audit_countWhere_all_mem {Y : Type*}
     [Fintype Y] [DecidableEq Y] (A : Finset Y) :
     countWhere (fun q : Fin 4 → Y => ∀ i, q i ∈ A) = A.card ^ 4 := by
-  classical
   unfold countWhere
   rw [Finset.filter_congr_decidable]
   rw [show (Finset.univ.filter
@@ -1051,7 +1047,6 @@ private lemma extraction_almostEvery_bad_card_le {Y : Type*}
     [DecidableEq Y] (a : Real) (U : Finset Y) (P : Y → Prop)
     [DecidablePred P] (hP : AlmostEvery (1 - a) U P) :
     ((U.filter fun y => ¬ P y).card : Real) ≤ a * U.card := by
-  classical
   have hpartNat := Finset.card_filter_add_card_filter_not P (s := U)
   have hpart :
       ((U.filter P).card : Real) +
@@ -1065,7 +1060,6 @@ private lemma extraction_bad_card_lt_of_not_almostEvery {Y : Type*}
     [DecidableEq Y] (a : Real) (U : Finset Y) (P : Y → Prop)
     [DecidablePred P] (hP : ¬ AlmostEvery (1 - a) U P) :
     a * U.card < ((U.filter fun y => ¬ P y).card : Real) := by
-  classical
   have hpartNat := Finset.card_filter_add_card_filter_not P (s := U)
   have hpart :
       ((U.filter P).card : Real) +
@@ -1081,7 +1075,6 @@ private lemma extraction_almostEvery_of_bad_card_le {Y : Type*}
     [DecidablePred P]
     (hbad : ((U.filter fun y => ¬ P y).card : Real) ≤ a * U.card) :
     AlmostEvery (1 - a) U P := by
-  classical
   have hpartNat := Finset.card_filter_add_card_filter_not P (s := U)
   have hpart :
       ((U.filter P).card : Real) +
@@ -1112,7 +1105,6 @@ private lemma extraction_restricted_ite_eq_sum {N : Nat} {X : Type*}
         D.index uv.1 - D.index x ∈ B then 1 else 0) =
       ∑ d ∈ B, if D.index uv.1 = D.index x + d ∧
         D.index uv.2 = D.index w + d then 1 else 0 := by
-  classical
   by_cases hrel : D.index uv.1 - D.index x =
       D.index uv.2 - D.index w ∧ D.index uv.1 - D.index x ∈ B
   · rw [if_pos hrel]
@@ -1158,7 +1150,6 @@ private lemma extraction_error_ite_eq_sum {N : Nat} {X : Type*}
       ∑ d ∈ B, if D.index uv.1 = D.index x + d ∧
         D.index uv.2 = D.index w + d ∧
         (phi uv.1 - phi x != phi uv.2 - phi w) = true then 1 else 0 := by
-  classical
   by_cases hphi : (phi uv.1 - phi x != phi uv.2 - phi w) = true
   · simp only [hphi, and_true]
     exact extraction_restricted_ite_eq_sum D B x w uv
@@ -1170,7 +1161,6 @@ private lemma extraction_restrictedWeight_eq_sum {N : Nat} {X : Type*}
     domainRestrictedDifferenceWeight D B x w =
       ∑ d ∈ B, (D.fibre (D.index x + d)).card *
         (D.fibre (D.index w + d)).card := by
-  classical
   unfold domainRestrictedDifferenceWeight
   rw [countWhere_eq_sum_ite]
   simp_rw [extraction_restricted_ite_eq_sum D B x w]
@@ -1193,7 +1183,6 @@ private lemma extraction_errorCount_eq_sum {N : Nat} {X : Type*}
     (phi : X → ZMod N) (B : Finset (ZMod N)) (x w : X) :
     domainDifferenceErrorCount D phi B x w =
       ∑ d ∈ B, (extractionBadPairs D phi x w d).card := by
-  classical
   unfold domainDifferenceErrorCount
   rw [countWhere_eq_sum_ite]
   simp_rw [extraction_error_ite_eq_sum D phi B x w]
@@ -1472,7 +1461,6 @@ private lemma extraction_agreement_card_eq_sum {Y Z L : Type*}
     (A : Finset Y) (C : Finset Z) (f : Y → L) (g : Z → L) :
     ((A.product C).filter fun yz => f yz.1 = g yz.2).card =
       ∑ z ∈ C, (A.filter fun y => f y = g z).card := by
-  classical
   rw [Finset.filter_congr_decidable, Finset.card_filter]
   change (∑ yz ∈ A ×ˢ C, if f yz.1 = g yz.2 then 1 else 0) = _
   rw [Finset.sum_product, Finset.sum_comm]
@@ -1503,7 +1491,6 @@ private lemma extraction_directionGood_gives_mode {N : Nat} [NeZero N]
     (hgood : extractionDirectionGood D phi x w d t) :
     AlmostEvery (1 - 10 * t) (D.fibre (D.index w + d))
       (fun z => phi z - phi w = extractionMode D phi x d) := by
-  classical
   let A : Finset X := D.fibre (D.index x + d)
   let C : Finset X := D.fibre (D.index w + d)
   let m : ZMod N := extractionMode D phi x d
@@ -1632,7 +1619,6 @@ private lemma extraction_product_filter_card_first {Y Z : Type*}
     (P : Y → Z → Prop) [DecidableRel P] :
     ((U.product V).filter fun yz : Y × Z => P yz.1 yz.2).card =
       ∑ y ∈ U, (V.filter fun z : Z => P y z).card := by
-  classical
   rw [Finset.filter_congr_decidable, Finset.card_filter]
   change (∑ yz ∈ U ×ˢ V, if P yz.1 yz.2 then 1 else 0) = _
   rw [Finset.sum_product]
@@ -1643,7 +1629,6 @@ private lemma extraction_product_filter_card_second {Y Z : Type*}
     (P : Y → Z → Prop) [DecidableRel P] :
     ((U.product V).filter fun yz : Y × Z => P yz.1 yz.2).card =
       ∑ z ∈ V, (U.filter fun y : Y => P y z).card := by
-  classical
   rw [Finset.filter_congr_decidable, Finset.card_filter]
   change (∑ yz ∈ U ×ˢ V, if P yz.1 yz.2 then 1 else 0) = _
   rw [Finset.sum_product, Finset.sum_comm]

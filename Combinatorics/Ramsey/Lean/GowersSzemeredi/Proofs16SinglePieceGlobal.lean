@@ -348,7 +348,6 @@ theorem section16_retained_domain_card {N k : Nat} [NeZero N]
           selectedCoordinates (coordinateSubsetFace (section16VertexDirections e) t).free
             (z + t) ∈ Jv e) ∧
         section16Init z + x0 ∈ Js (section16Last z)).card := by
-  classical
   set E := Finset.univ.filter fun e : Fin k → Bool => e ≠ fun _ => true with hEdef
   set B1' := B1.filter fun z => section16Init z ∈ JΔ ∧
       (∀ e ∈ E, selectedCoordinates

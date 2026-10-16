@@ -163,7 +163,6 @@ private lemma prop61_correlation_eq {N : Nat} [NeZero N]
     correlation (prop61F f u) (prop61G B phi u) (-s) =
       ∑ k ∈ B, star (f (s - k)) * f (s - k - u) *
         exponential (-(phi k * u)) := by
-  classical
   simp only [correlation]
   rw [← (Equiv.subRight s).sum_comp]
   simp only [Equiv.subRight_apply, prop61F, prop61G, sub_neg_eq_add, sub_add_cancel,
@@ -222,7 +221,6 @@ private abbrev prop61AltAdditive {N : Nat} (B : Finset (ZMod N))
 private lemma prop61_alt_count_eq {N : Nat} [NeZero N] (B : Finset (ZMod N))
     (phi : ZMod N → ZMod N) :
     countWhere (prop61AltAdditive B phi) = phiAdditiveCount B phi := by
-  classical
   unfold countWhere phiAdditiveCount
   apply Finset.card_equiv
       ({ toFun q := ![q 0, q 3, q 2, q 1]
@@ -261,7 +259,6 @@ private lemma prop61_g_product {N : Nat} [NeZero N]
       if prop61QuadMem B q then
         exponential ((phi (q 0) - phi (q 1) - phi (q 2) + phi (q 3)) * u)
       else 0 := by
-  classical
   simp only [prop61G, indicator, star_mul]
   by_cases h0 : q 0 ∈ B <;> by_cases h1 : q 1 ∈ B <;>
     by_cases h2 : q 2 ∈ B <;> by_cases h3 : q 3 ∈ B
@@ -319,7 +316,6 @@ private lemma prop61_g_fourth_eq_count {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (phi : ZMod N → ZMod N) :
     (∑ u : ZMod N, ∑ r : ZMod N, ‖fourier (prop61G B phi u) r‖ ^ 4) =
       (N : ℝ) ^ 2 * phiAdditiveCount B phi := by
-  classical
   have hcomplex :
       (((∑ u : ZMod N, ∑ r : ZMod N,
           ‖fourier (prop61G B phi u) r‖ ^ 4 : ℝ)) : Complex) =
@@ -542,7 +538,6 @@ theorem proposition_6_1_holds : proposition_6_1 := by
 additive-energy quadruple in the product group. -/
 theorem lemma_6_2_holds : lemma_6_2 := by
   intro N _ gamma B phi _ hadd
-  classical
   unfold GammaAdditive at hadd
   apply hadd.trans
   norm_cast
@@ -573,7 +568,6 @@ theorem lemma_6_2_holds : lemma_6_2 := by
 cardinality bound. -/
 theorem lemma_7_7_holds : lemma_7_7 := by
   intro N _ K delta _ hdelta hdelta_one
-  classical
   let m : Nat := ⌈delta⁻¹⌉₊
   have hm : 0 < m := by
     dsimp only [m]
@@ -688,7 +682,6 @@ positive discrepancy half the total absolute discrepancy, and pigeonholing
 then supplies a large cell. -/
 theorem lemma_5_15_holds : lemma_5_15 := by
   intro N M _ f P alpha hM hAlpha hf hmean hpart hlarge
-  classical
   let S : Fin M → ℝ := fun j => ∑ s ∈ P j, f s
   have hpair : ((Finset.univ : Finset (Fin M)) : Set (Fin M)).PairwiseDisjoint P := by
     intro i _ j _ hij
@@ -938,7 +931,6 @@ lemma lemma78_fourier_indicator_energy {N : Nat} [NeZero N]
       (N : Real) * A.card := by
   rw [identity_2_3_holds]
   congr 1
-  classical
   calc
     (∑ x : ZMod N, ‖indicator A x‖ ^ 2) =
         ∑ x : ZMod N, if x ∈ A then (1 : Real) else 0 := by

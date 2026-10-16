@@ -11,7 +11,6 @@ theorem section16GoodDomain_card {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (H : Finset (Point N k))
     (Y : (h : Point N k) → Finset (Section16CubeElement B h)) (x0 : Point N k) :
     (section16GoodDomain B H Y x0).card = section16GoodInducedPairCount B H Y x0 := by
-  classical
   unfold section16GoodDomain section16GoodInducedPairCount countWhere
   apply Finset.card_bij (fun z _ => (section16Init z, section16Last z))
   · intro z hz
@@ -73,7 +72,6 @@ theorem section16_good_domain_subrelation {N k : Nat} [NeZero N] [Fact N.Prime]
     (hML : MultiplyLinearFunction gamma r (section16GoodDomain B H Y x0)
       (section16PhiOne phi x0)) :
     ∃ D ⊆ Gamma, delta * (N : Real) ^ (k + 1) ≤ D.card ∧ MultiplyLinear gamma r D := by
-  classical
   let t := appendCoordinate x0 (0 : ZMod N)
   let G := partialGraph (section16GoodDomain B H Y x0) (section16PhiOne phi x0)
   let D := G.image (fun z => (z.1 + t, z.2))

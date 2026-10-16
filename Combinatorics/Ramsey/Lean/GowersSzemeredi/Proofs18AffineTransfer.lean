@@ -23,7 +23,6 @@ def ModAP.index {N : Nat} (P : ModAP N) (i : Nat) : ZMod N :=
 /-- A proper modular progression has an injective index parametrization. -/
 theorem ModAP.index_injOn {N : Nat} (P : ModAP N) (hP : P.IsProper) :
     Set.InjOn P.index (Finset.range P.length) := by
-  classical
   have hcard : (Finset.univ.image
       (fun i : Fin P.length => P.start + (i : Nat) * P.step)).card =
       (Finset.univ : Finset (Fin P.length)).card := by
@@ -41,12 +40,10 @@ def ModAP.pullback {N : Nat} (P : ModAP N) (A : Finset (ZMod N)) : Finset Nat :=
 @[simp] theorem ModAP.mem_pullback {N : Nat} (P : ModAP N)
     (A : Finset (ZMod N)) (i : Nat) :
     i ∈ P.pullback A ↔ i < P.length ∧ P.index i ∈ A := by
-  classical
   simp [ModAP.pullback]
 
 theorem ModAP.image_pullback {N : Nat} (P : ModAP N) (A : Finset (ZMod N)) :
     (P.pullback A).image P.index = A ∩ P.carrier := by
-  classical
   ext x
   simp only [Finset.mem_image, ModAP.mem_pullback, Finset.mem_inter]
   constructor
@@ -60,7 +57,6 @@ theorem ModAP.image_pullback {N : Nat} (P : ModAP N) (A : Finset (ZMod N)) :
 /-- Reindexing preserves the cardinality used in the density increment. -/
 theorem ModAP.card_pullback {N : Nat} (P : ModAP N) (hP : P.IsProper)
     (A : Finset (ZMod N)) : (P.pullback A).card = (A ∩ P.carrier).card := by
-  classical
   rw [← P.image_pullback A]
   symm
   apply Finset.card_image_iff.mpr
@@ -73,7 +69,6 @@ theorem ModAP.card_cyclic_pullback {N M : Nat} [NeZero M]
     (hsize : P.length ≤ M) :
     ((P.pullback A).image fun i : Nat => (i : ZMod M)).card =
       (A ∩ P.carrier).card := by
-  classical
   rw [← P.card_pullback hP A]
   apply Finset.card_image_iff.mpr
   intro i hi j hj hij
@@ -87,7 +82,6 @@ progressions. Properness suffices to make the new common difference nonzero. -/
 theorem ModAP.hasModAP_of_hasNatAP_pullback {N k : Nat}
     (P : ModAP N) (hP : P.IsProper) (A : Finset (ZMod N)) (hk : 2 ≤ k)
     (hAP : HasNatAP (P.pullback A) k) : HasModAP A k := by
-  classical
   obtain ⟨a, d, hd, hAP⟩ := hAP
   have h0 := (P.mem_pullback A a).mp (by simpa using hAP 0 (by omega))
   have h1 := (P.mem_pullback A (a + d)).mp (by simpa using hAP 1 (by omega))
@@ -113,7 +107,6 @@ theorem ModAP.hasModAP_of_cyclic_pullback {N M k : Nat} [NeZero M]
     (hsize : 2 * P.length < M)
     (hAP : HasModAP ((P.pullback A).image fun i : Nat => (i : ZMod M)) k) :
     HasModAP A k := by
-  classical
   obtain ⟨a, d, hd, hAP⟩ := hAP
   have hnat : HasNatAP (P.pullback A) k := by
     apply hasNatAP_of_short_modular_sequence (P.pullback A)

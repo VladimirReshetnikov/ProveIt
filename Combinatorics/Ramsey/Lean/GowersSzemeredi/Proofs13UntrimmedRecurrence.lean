@@ -14,7 +14,6 @@ theorem lemma_13_5_from_polynomial_threshold {N : Nat} [NeZero N]
     (hthreshold : simultaneousPolynomialThreshold 2 D.q < D.P.length) :
     ∃ E : Stage135Data N, IsStage135Data S D E ∧
       S.alpha ^ 32 * E.Q.length / 16 ≤ (criticalHeights S D E).card := by
-  classical
   let X := (D.P.length : Real) ^ ((1 : Real) / (2 : Real) ^ (12 * D.q))
   let v := max 4 (Nat.floor X)
   have hq : 1 ≤ D.q := h134.1

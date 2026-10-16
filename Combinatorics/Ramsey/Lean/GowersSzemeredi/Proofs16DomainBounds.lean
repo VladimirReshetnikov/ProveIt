@@ -42,7 +42,6 @@ theorem MultifunctionDomain.card_le_cap {N M : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
     (D : MultifunctionDomain N X) (hfibre : ∀ s, (D.fibre s).card ≤ M) :
     Fintype.card X ≤ M * N := by
-  classical
   have hsum : (∑ s : ZMod N, (D.fibre s).card) = Fintype.card X := by
     rw [Fintype.card]
     exact (Finset.card_eq_sum_card_fiberwise (s := Finset.univ)

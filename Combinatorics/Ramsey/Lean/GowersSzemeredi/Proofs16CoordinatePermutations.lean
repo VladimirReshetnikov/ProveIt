@@ -26,7 +26,6 @@ def coordinateReindex {k : Nat} {A : Type*} (e : Fin k ≃ Fin k) :
 theorem IsMultilinear.coordinateReindex {N k : Nat} {mu : Point N k → ZMod N}
     (h : IsMultilinear mu) (e : Fin k ≃ Fin k) :
     IsMultilinear (fun x => mu (LeanProofs.GowersSzemeredi.coordinateReindex e x)) := by
-  classical
   obtain ⟨c, hc⟩ := h
   refine ⟨fun b => c (LeanProofs.GowersSzemeredi.coordinateReindex e b), ?_⟩
   intro x
@@ -50,7 +49,6 @@ theorem Box.IsProper.coordinateReindex {N k : Nat} {P : Box N k}
     (P : Box N k) (e : Fin k ≃ Fin k) (x : Point N k) :
     LeanProofs.GowersSzemeredi.coordinateReindex e x ∈ (P.coordinateReindex e).carrier ↔
       x ∈ P.carrier := by
-  classical
   simp only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and,
     Box.coordinateReindex, coordinateReindex_apply]
   exact (e.surjective.forall (p := fun i => x i ∈ (P.axis i).carrier)).symm
@@ -58,7 +56,6 @@ theorem Box.IsProper.coordinateReindex {N k : Nat} {P : Box N k}
 theorem Box.coordinateReindex_carrier {N k : Nat} [NeZero N]
     (P : Box N k) (e : Fin k ≃ Fin k) :
     (P.coordinateReindex e).carrier = P.carrier.image (LeanProofs.GowersSzemeredi.coordinateReindex e) := by
-  classical
   ext x
   obtain ⟨y, rfl⟩ := (LeanProofs.GowersSzemeredi.coordinateReindex e).surjective x
   rw [Box.coordinateReindex_mem_carrier]
@@ -71,7 +68,6 @@ theorem Box.coordinateReindex_carrier {N k : Nat} [NeZero N]
 
 @[simp] theorem Box.coordinateReindex_width {N k : Nat}
     (P : Box N k) (e : Fin k ≃ Fin k) : (P.coordinateReindex e).width = P.width := by
-  classical
   have himage : Finset.univ.image (fun i => (P.axis (e i)).length) =
       Finset.univ.image (fun i => (P.axis i).length) := by
     ext n
@@ -86,7 +82,6 @@ theorem IsBoxPartition.coordinateReindex {N k m : Nat} [NeZero N]
     {Q : Fin m → Box N k} {P : Box N k} (h : IsBoxPartition Q P)
     (e : Fin k ≃ Fin k) :
     IsBoxPartition (fun j => (Q j).coordinateReindex e) (P.coordinateReindex e) := by
-  classical
   constructor
   · intro x
     obtain ⟨y, rfl⟩ := (LeanProofs.GowersSzemeredi.coordinateReindex e).surjective x

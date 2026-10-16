@@ -31,7 +31,6 @@ theorem MultiplyLinearWith.translate_graph {N k : Nat} [NeZero N] [Fact N.Prime]
     (h : MultiplyLinearWith Qb Eb (partialGraph D g)) (t : Point N k) :
     MultiplyLinearWith Qb Eb
       (partialGraph (Finset.univ.filter fun x => x + t ∈ D) (fun x => g (x + t))) := by
-  classical
   refine MultiplyLinearWith.subset (h.translate (-t)) ?_
   intro z hz
   obtain ⟨v, hv, rfl⟩ := Finset.mem_image.mp hz
@@ -46,7 +45,6 @@ theorem MultiplyLinearWith.congr_graph {N k : Nat} [NeZero N]
     (h : MultiplyLinearWith Qb Eb (partialGraph D g)) (hD : D' ⊆ D)
     (hg : ∀ x ∈ D', g' x = g x) :
     MultiplyLinearWith Qb Eb (partialGraph D' g') := by
-  classical
   refine MultiplyLinearWith.subset h ?_
   intro z hz
   obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hz
@@ -66,7 +64,6 @@ theorem vertex_multiplyLinearWith_of_face {N k : Nat} [NeZero N] [Fact N.Prime]
           (coordinateSubsetFace (section16VertexDirections e) (appendCoordinate x0 0)).free
             (z + appendCoordinate x0 0) ∈ DomF)
         (section16TranslatedVertex phi x0 e)) := by
-  classical
   set S := section16VertexDirections e
   set t := appendCoordinate x0 0
   set F := coordinateSubsetFace S t
@@ -91,7 +88,6 @@ theorem vertex_multiplyLinearWith_of_face {N k : Nat} [NeZero N] [Fact N.Prime]
 theorem section16PhiRemainder_one {N : Nat} [NeZero N]
     (phi : Point N 2 → ZMod N) (x0 : Point N 1) :
     section16PhiRemainder phi x0 = section16TranslatedVertex phi x0 (fun _ => false) := by
-  classical
   funext z
   have hE : (Finset.univ.filter fun e : Fin 1 → Bool => e ≠ fun _ => true) =
       {fun _ => false} := by

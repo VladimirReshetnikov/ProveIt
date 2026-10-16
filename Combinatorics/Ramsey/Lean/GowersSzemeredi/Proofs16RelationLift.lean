@@ -29,14 +29,12 @@ def lastLiftRelation {N k : Nat} [NeZero N] (Λ : Finset (Point N k × ZMod N)) 
 theorem mem_lastLiftRelation {N k : Nat} [NeZero N] {Λ : Finset (Point N k × ZMod N)}
     {z : Point N (k + 1) × ZMod N} :
     z ∈ lastLiftRelation Λ ↔ (section16Init z.1, z.2) ∈ Λ := by
-  classical
   simp [lastLiftRelation]
 
 theorem lastLiftRelation_fiber_le {N k : Nat} [NeZero N] {Λ : Finset (Point N k × ZMod N)}
     {M : Nat} (hfib : ∀ x : Point N k, (Λ.filter fun z => z.1 = x).card ≤ M)
     (w : Point N (k + 1)) :
     ((lastLiftRelation Λ).filter fun z => z.1 = w).card ≤ M := by
-  classical
   refine le_trans ?_ (hfib (section16Init w))
   refine Finset.card_le_card_of_injOn (fun z => (section16Init z.1, z.2)) (fun z hz => ?_) ?_
   · obtain ⟨hzΛ, hzw⟩ := Finset.mem_filter.mp hz
@@ -61,7 +59,6 @@ theorem MultiplyLinearWith.relation_lift_last {N k : Nat} [NeZero N] [Fact N.Pri
     (hE : ∀ t, 0 < t → t ≤ 1 → 0 < Eb t ∧ Eb t ≤ 1) (hk : 0 < k) :
     MultiplyLinearWith (fun t => max (Qb t) ((3 ^ (k + 1) * M : Nat) : Real))
       (fun t => Eb t / 16) (lastLiftRelation Λ) := by
-  classical
   intro theta ht ht1 P hP
   obtain ⟨ha, ha1⟩ := hE theta ht ht1
   have hA : 0 < Eb theta / 16 := by positivity

@@ -15,7 +15,6 @@ theorem appendCoordinate_pair_injective {N k : Nat} :
 theorem mem_lastProductSet_append {N k : Nat} [NeZero N]
     (A : Finset (Point N k)) (J : Finset (ZMod N)) (h : Point N k) (x : ZMod N) :
     appendCoordinate h x ∈ lastProductSet A J ↔ h ∈ A ∧ x ∈ J := by
-  classical
   simp [lastProductSet]
 
 /-- The finite-space sampling construction on an actual product of a
@@ -42,7 +41,6 @@ theorem section16_product_anchored_good_set {N k q r : Nat} [Fact N.Prime]
             ((phi (appendCoordinate h (sample i)) + (-1) * phi (appendCoordinate h (sample j))) * x +
               ((-sample j) * phi (appendCoordinate h (sample i)) +
                 sample i * phi (appendCoordinate h (sample j)))) := by
-  classical
   have hJ : J.Nonempty := by
     apply Finset.card_pos.mp
     by_contra hz

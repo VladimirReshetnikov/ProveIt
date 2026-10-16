@@ -54,7 +54,6 @@ private lemma card_multiples_in_real_Ioc (g h : Nat) (hg : 0 < g) (hgh : g ∣ h
     (A : Real) (S : Finset Nat)
     (hS : ∀ n, n ∈ S → g ∣ n ∧ A - h < n ∧ (n : Real) ≤ A) :
     S.card ≤ h / g := by
-  classical
   let T : Finset Int := Finset.Ioc ⌊A / g - (h / g : Nat)⌋ ⌊A / g⌋
   have hmaps : Set.MapsTo (fun n : Nat => ((n / g : Nat) : Int))
       (S : Set Nat) (T : Set Int) := by
@@ -119,7 +118,6 @@ at most twice the centered displacement in that coordinate. -/
 private lemma frequencyBoundary_card_le {N : Nat} [NeZero N]
     (r d : ZMod N) (A : Real) :
     (frequencyBoundary r d A).card ≤ 2 * centeredAbs (r * d) := by
-  classical
   let g : Nat := N.gcd r.val
   let h : Nat := centeredAbs (r * d)
   let f : ZMod N →+ ZMod N := nsmulAddMonoidHom r.val
@@ -146,8 +144,7 @@ private lemma frequencyBoundary_card_le {N : Nat} [NeZero N]
         (Finset.univ.filter fun x => f x = 0).card :=
       AddMonoidHom.card_fiber_eq_of_mem_range f hyrange hzero
     have hzeroCard : (Finset.univ.filter fun x => f x = 0).card = Nat.card f.ker := by
-      rw [Nat.card_eq_fintype_card]
-      rw [← Fintype.card_subtype (fun x => f x = 0)]
+      rw [Nat.card_eq_fintype_card, ← Fintype.card_subtype (fun x => f x = 0)]
       exact Fintype.card_congr
         (Equiv.subtypeEquiv (Equiv.refl _) fun x => AddMonoidHom.mem_ker)
     calc
@@ -209,7 +206,6 @@ private lemma frequencyBoundary_card_le {N : Nat} [NeZero N]
 @[simp] private lemma mem_section10Translate_iff {N : Nat}
     (A : Finset (ZMod N)) (d x : ZMod N) :
     x ∈ section10Translate A d ↔ x - d ∈ A := by
-  classical
   simp only [section10Translate, Finset.mem_image]
   constructor
   · rintro ⟨y, hy, rfl⟩
@@ -221,7 +217,6 @@ private lemma bohr_sdiff_translate_subset_boundaries {N : Nat} [NeZero N]
     (K : Finset (ZMod N)) (delta : Real) (d : ZMod N) :
     bohr K delta \ section10Translate (bohr K delta) d ⊆
       K.biUnion fun r => frequencyBoundary r d (delta * N) := by
-  classical
   intro x hx
   have hxB := (Finset.mem_sdiff.mp hx).1
   have hxdNot : x - d ∉ bohr K delta := by
@@ -246,7 +241,6 @@ private lemma bohr_sdiff_translate_card_le {N : Nat} [NeZero N]
     (hd : d ∈ bohr K zeta) :
     ((bohr K delta \ section10Translate (bohr K delta) d).card : Real) ≤
       2 * K.card * zeta * N := by
-  classical
   have hsubset := bohr_sdiff_translate_subset_boundaries K delta d
   have hcardNat :
       (bohr K delta \ section10Translate (bohr K delta) d).card ≤
@@ -275,7 +269,6 @@ private lemma bohr_sdiff_translate_card_le {N : Nat} [NeZero N]
     _ = 2 * K.card * zeta * N := by simp; ring
 
 theorem lemma_10_10_holds : lemma_10_10 := by
-  classical
   intro N k _ K delta zeta hk hdelta hdeltaOne hzeta _
   dsimp only
   intro d hd
@@ -307,8 +300,7 @@ theorem lemma_10_10_holds : lemma_10_10 := by
     positivity
   have hcancel :
       delta ^ (-(K.card : Real)) * delta ^ (K.card : Nat) = 1 := by
-    rw [← Real.rpow_natCast]
-    rw [← Real.rpow_add hdelta]
+    rw [← Real.rpow_natCast, ← Real.rpow_add hdelta]
     norm_num
   have hidentity : c * ((delta / 2) ^ K.card * (N : Real)) =
       2 * K.card * zeta * N := by
@@ -334,14 +326,12 @@ theorem lemma_10_10_holds : lemma_10_10 := by
 lemma section10Translate_card {N : Nat}
     (A : Finset (ZMod N)) (d : ZMod N) :
     (section10Translate A d).card = A.card := by
-  classical
   unfold section10Translate
   exact Finset.card_image_of_injective A (add_left_injective d)
 
 lemma section10Translate_mono {N : Nat}
     {A A' : Finset (ZMod N)} (hAA' : A ⊆ A') (d : ZMod N) :
     section10Translate A d ⊆ section10Translate A' d := by
-  classical
   intro x hx
   rw [mem_section10Translate_iff] at hx ⊢
   exact hAA' hx
@@ -350,14 +340,12 @@ private lemma section10Translate_inter {N : Nat}
     (A A' : Finset (ZMod N)) (d : ZMod N) :
     section10Translate (A ∩ A') d =
       section10Translate A d ∩ section10Translate A' d := by
-  classical
   ext x
   simp only [Finset.mem_inter, mem_section10Translate_iff]
 
 private lemma section10Translate_add {N : Nat}
     (A : Finset (ZMod N)) (d e : ZMod N) :
     section10Translate (section10Translate A d) e = section10Translate A (d + e) := by
-  classical
   ext x
   simp only [mem_section10Translate_iff]
   constructor <;> intro hx
@@ -382,7 +370,6 @@ lemma inter_card_lower_of_subsets {X : Type*} [DecidableEq X]
 lemma bohr_zero_mem {N : Nat} [NeZero N]
     (K : Finset (ZMod N)) (delta : Real) (hdelta : 0 ≤ delta) :
     (0 : ZMod N) ∈ bohr K delta := by
-  classical
   unfold bohr
   simp only [Finset.mem_filter, Finset.mem_univ, true_and, mul_zero,
     centeredAbs, ZMod.valMinAbs_zero, Int.natAbs_zero, Nat.cast_zero]
@@ -398,7 +385,6 @@ private lemma exists_dense_bohr_chain {N : Nat}
     (d₁ d₂ d₃ : ZMod N)
     (hd₁ : d₁ ∈ C) (hd₂ : d₂ ∈ C) (hd₃ : d₃ ∈ C) :
     ∃ x ∈ B', x - d₁ ∈ B' ∧ x - d₁ - d₂ ∈ B' ∧ x - d₃ ∈ B' := by
-  classical
   let T₁ := section10Translate B d₁
   let T₁₂ := section10Translate B (d₁ + d₂)
   let T₃ := section10Translate B d₃
@@ -533,7 +519,6 @@ lemma corollary_10_11_overlap {N : Nat} [NeZero N]
     let C := bohr K zeta
     ∀ d, d ∈ C →
       (7 / 8 : Real) * B.card ≤ (B ∩ section10Translate B d).card := by
-  classical
   dsimp only
   intro d hd
   let k : Nat := K.card
@@ -562,15 +547,13 @@ lemma corollary_10_11_overlap {N : Nat} [NeZero N]
       _ ≤ delta := hdeltaPowLe
   have htwoCancel :
       (2 : Real) ^ (k + 1) * (2 : Real) ^ (-((k : Real) + 4)) = 1 / 8 := by
-    rw [← Real.rpow_natCast]
-    rw [← Real.rpow_add (by norm_num : (0 : Real) < 2)]
+    rw [← Real.rpow_natCast, ← Real.rpow_add (by norm_num : (0 : Real) < 2)]
     rw [show ((k + 1 : Nat) : Real) + (-((k : Real) + 4)) = -3 by
       norm_num
       ring]
     norm_num [Real.rpow_neg (by norm_num : (0 : Real) ≤ 2)]
   have hdeltaCancel : delta ^ (-(k : Real)) * delta ^ k = 1 := by
-    rw [← Real.rpow_natCast]
-    rw [← Real.rpow_add hdelta]
+    rw [← Real.rpow_natCast, ← Real.rpow_add hdelta]
     norm_num
   have hcoeff :
       (2 : Real) ^ (k + 1) * delta ^ (-(k : Real)) * k * zeta = 1 / 8 := by
@@ -592,7 +575,6 @@ lemma corollary_10_11_overlap {N : Nat} [NeZero N]
   exact hraw
 
 theorem corollary_10_11_holds : corollary_10_11 := by
-  classical
   intro N _ K delta hK hdelta hdeltaOne
   dsimp only
   intro B' psi hB'sub hB'dense hpsi

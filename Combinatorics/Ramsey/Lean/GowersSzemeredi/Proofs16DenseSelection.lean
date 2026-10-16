@@ -64,7 +64,6 @@ theorem section16_dense_induced_selection_of_arrangements {N k : Nat} [NeZero N]
           Section16InducedSelection B phi H Y
             (fun h => section16LargeSpectrum B h (section16Delta (section16ThetaOne theta gamma k)))
             (section16Zeta theta gamma k) phiPrime := by
-  classical
   obtain ⟨H, hmass, hgood⟩ :=
     section16_good_sidelengths_of_arrangements theta gamma B phi ht hg hB
   have hex : ∀ h : Point N k,

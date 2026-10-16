@@ -58,7 +58,6 @@ theorem Section16LineCover.anchored_cells {N k q r : Nat} [Fact N.Prime]
           (∀ i, sample i ∈ (J u).carrier) ∧ F ⊆ (S u).carrier ∧
           (1 - 2 * τ) * ((S u).carrier.card : ℝ) ≤ F.card ∧
           Section16AnchoredOn (B1 ∩ E) phi sample F := by
-  classical
   obtain ⟨E, M, S, T, J, ell, hE, hm, hp, hproper, hprod, hw, hell, hc⟩ := hline
   refine ⟨E, M, S, T, J, hE, hm, hp, hproper, hprod, hw, ?_⟩
   intro u hlong

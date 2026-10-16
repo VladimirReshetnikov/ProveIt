@@ -24,7 +24,6 @@ private lemma small_anchor_fibre_card_bound {N : Nat} [NeZero N]
     (countWhere (fun x : X =>
       ¬ alpha ^ 2 * M / 2 ≤ (D.fibreSize x : Real)) : Real) ≤
         alpha ^ 2 * M * N / 2 := by
-  classical
   let T : Real := alpha ^ 2 * M / 2
   let f : ZMod N → Real := fun s =>
     if T ≤ (D.fibre s).card then 0 else 1
@@ -70,7 +69,6 @@ private lemma weightedError_nonneg {N : Nat} {X : Type*}
 
 /-- **Gowers, Lemma 10.3.** -/
 theorem lemma_10_3_holds : lemma_10_3 := by
-  classical
   intro N _ X _ _ D phi B alpha M sigma eta hsetup hsigma
   rcases hsetup with
     ⟨hbounds, hsigmaPos, heta, hetaOne, hsymmetric, hinvariant, happrox⟩

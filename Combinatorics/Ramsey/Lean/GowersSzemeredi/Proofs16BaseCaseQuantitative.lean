@@ -76,8 +76,7 @@ lemma lemma163_stage_large {gamma theta : Real} {q : Nat}
         (2 : Real) ^ (-(2000 : Real)) * a ^ (10000 : Nat) := by
       unfold lemma163Alpha
       rfl
-    rw [hS, hAlpha]
-    rw [hsplit, pow_add]
+    rw [hS, hAlpha, hsplit, pow_add]
     have hcancel :
         (2 / a) ^ (10000 : Nat) * a ^ (10000 : Nat) =
           (2 : Real) ^ (10000 : Nat) := by

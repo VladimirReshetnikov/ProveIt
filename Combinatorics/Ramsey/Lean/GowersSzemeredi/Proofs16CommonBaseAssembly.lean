@@ -17,7 +17,6 @@ theorem Section16InducedSelection.mono {N k : Nat} [NeZero N]
     {phiPrime : Point N k → ZMod N → ZMod N}
     (h : Section16InducedSelection B phi H Y K zeta phiPrime) (hsub : H1 ⊆ H) :
     Section16InducedSelection B phi H1 Y K zeta phiPrime := by
-  classical
   refine ⟨fun x hx => h.1 x (hsub hx), ?_⟩
   intro x hx m hm d hd I hstep hlen
   have heq : (I.carrier.filter fun s => (x, s) ∈ section16InducedDomain B H1 Y) =
@@ -60,7 +59,6 @@ theorem Theorem162At.common_base_data {k : Nat} (hth : Theorem162At k)
     ∃ N0 : Nat, ∀ (N : Nat) [NeZero N] [Fact N.Prime], N0 ≤ N →
       ∀ (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N),
         Section16StructuredPair theta gamma B phi → Nonempty (Section16CommonBaseData theta gamma B phi) := by
-  classical
   obtain ⟨N0, hN0⟩ := hth.restrict_spectrum theta gamma ht ht1 hg hg1
   refine ⟨N0, fun N _ _ hN B phi hB => ?_⟩
   obtain ⟨H, Y, phiPrime, hH, hcube, hselected, hselection⟩ :=

@@ -306,7 +306,6 @@ private lemma cor147_good_count_eq {N k d : Nat} [NeZero N]
     countWhere (fun hp : Point N k × cor147PairFamily N k d ↦
       cor147Good B phi hp.1 hp.2) =
       respectedGeneralArrangementCount d B phi := by
-  classical
   unfold respectedGeneralArrangementCount countWhere
   apply Finset.card_equiv (cor147ArrangementEquiv N k d)
   intro hp
@@ -341,7 +340,6 @@ private lemma cor147_prod_fourierTerm {N k d : Nat} [NeZero N]
           (-((∑ i, (a i).2) * r) +
             (∑ i, cor147CubeValue phi h (a i)) * u)
       else 0 := by
-  classical
   by_cases ha : ∀ i, cor147CubeIn B h (a i)
   · rw [if_pos ha]
     simp only [cor147FourierTerm, if_pos (ha _)]
@@ -363,7 +361,6 @@ private lemma cor147_pair_orthogonality {N k d : Nat} [NeZero N]
       (∏ i, cor147FourierTerm B phi h u r (a i)) *
         star (∏ i, cor147FourierTerm B phi h u r (b i))) =
       if cor147Good B phi h (a, b) then (N : Complex) ^ 2 else 0 := by
-  classical
   by_cases ha : ∀ i, cor147CubeIn B h (a i) <;>
     by_cases hb : ∀ i, cor147CubeIn B h (b i)
   · simp_rw [cor147_prod_fourierTerm, if_pos ha, if_pos hb,
@@ -427,7 +424,6 @@ private lemma cor147_sum_pair {X Y M : Type*} [Fintype X] [Fintype Y]
 private lemma cor147_sum_ite {X : Type*} [Fintype X]
     (P : X → Prop) (c : Complex) :
     (∑ x : X, if P x then c else 0) = c * countWhere P := by
-  classical
   unfold countWhere
   rw [← Finset.sum_filter]
   simp [mul_comm]
@@ -437,7 +433,6 @@ private lemma cor147_fourier_eq {N k : Nat} [NeZero N]
     (h : Point N k) (u r : ZMod N) :
     fourier (cor147Phase B phi h u) r =
       ∑ z : cor147Atom N k, cor147FourierTerm B phi h u r z := by
-  classical
   rw [cor147_sum_pair]
   simp only [fourier, ZMod.dft_apply, smul_eq_mul, cor147Phase,
     cor147FourierTerm, exponential]
@@ -454,8 +449,7 @@ private lemma cor147_norm_power_expansion {N k d : Nat} [NeZero N]
         ∑ b : Fin d → cor147Atom N k,
           (∏ i, cor147FourierTerm B phi h u r (a i)) *
             star (∏ i, cor147FourierTerm B phi h u r (b i)) := by
-  rw [cor147_ofReal_norm_even_pow, cor147_fourier_eq]
-  rw [Fintype.sum_pow]
+  rw [cor147_ofReal_norm_even_pow, cor147_fourier_eq, Fintype.sum_pow]
   simp only [star_sum, Fintype.sum_pow]
   rw [Finset.sum_mul]
   apply Finset.sum_congr rfl
@@ -470,7 +464,6 @@ private lemma cor147_moment_eq_count {N k d : Nat} [NeZero N]
     (∑ h : Point N k, ∑ u : ZMod N, ∑ r : ZMod N,
       ‖fourier (cor147Phase B phi h u) r‖ ^ (2 * d)) =
       (N : Real) ^ 2 * respectedGeneralArrangementCount d B phi := by
-  classical
   have hcomplex :
       (((∑ h : Point N k, ∑ u : ZMod N, ∑ r : ZMod N,
           ‖fourier (cor147Phase B phi h u) r‖ ^ (2 * d) : Real)) : Complex) =
@@ -563,7 +556,6 @@ private lemma cor147_phase_norm_le {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
     (h : Point N k) (u x : ZMod N) :
     ‖cor147Phase B phi h u x‖ ≤ (N : Real) ^ k := by
-  classical
   calc
     ‖cor147Phase B phi h u x‖ ≤
         ∑ y : Point N k,

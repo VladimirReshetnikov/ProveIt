@@ -19,7 +19,6 @@ theorem quadratic_chunk_phase_localization {N L : Nat} [NeZero N]
       IsPartition (fun j => (R j).carrier) P.carrier ∧
       ∀ j, (R j).IsProper ∧ L ≤ (R j).length ∧ ‖z j‖ = 1 ∧
         ∀ x, x ∈ (R j).carrier → ‖exponential (-(phi x)) - z j‖ ≤ 1 / (4 * L) := by
-  classical
   have hlenN : P.length ≤ N := by
     rw [← hP]
     simpa only [ZMod.card] using P.carrier.card_le_univ

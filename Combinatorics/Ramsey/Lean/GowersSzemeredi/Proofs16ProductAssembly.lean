@@ -37,7 +37,6 @@ theorem MultiplyLinearWith.product_linearity_large_m {N k m : Nat} [NeZero N]
       (∀ j, IsLastCoordinateBoxProduct (S j) (T j) (J j)) ∧
       ∀ j x, x ∈ G → x ∈ H → x ∈ (T j).carrier →
         LinearOn ((J j).carrier ∩ A x) (f x) := by
-  classical
   obtain ⟨q, G, b, B, n, R, mu, hq, hGsub, hGmass, hBpart, _,
       hBaxes, hBstep, hRpart, hRproper, hRwidth, hmu, hcover⟩ :=
     hML.short_parent_cover sigma hs hs1 hQ ha.le P I hP hI (by omega) hm hmP hmI

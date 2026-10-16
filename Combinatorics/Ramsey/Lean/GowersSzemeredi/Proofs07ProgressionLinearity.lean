@@ -45,7 +45,6 @@ private lemma bohr_symmetric_multiples_subset {N : Nat} [NeZero N]
     (m : Nat) (hm : 0 < m) (d : ZMod N)
     (hd : d ∈ bohr K (alpha / (32 * Real.pi * m))) :
     symmetricMultiples d m ⊆ bohr K (alpha / (32 * Real.pi)) := by
-  classical
   intro z hz
   rw [symmetricMultiples, Finset.mem_image] at hz
   obtain ⟨j, hj, rfl⟩ := hz
@@ -196,7 +195,6 @@ lemma freiman_map_int_multiple_of_zero {N : Nat} [NeZero N]
 
 /- **Gowers, Corollary 7.9.** -/
 theorem corollary_7_9_holds : corollary_7_9 := by
-  classical
   intro N _ A phi alpha hprime halpha hcard hphi
   dsimp only
   intro m hm d hd

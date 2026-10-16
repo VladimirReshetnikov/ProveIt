@@ -17,7 +17,6 @@ theorem section16_weighted_graph_sum_bound {N p : Nat} [NeZero N]
     (hsize : (A + A).card * (S + S).card ≤ N) :
     (N : Real)⁻¹ * (∑ x ∈ E, w x) ^ 4 ≤
       weightedSimultaneousAdditiveEnergy E w (fun _ : Fin p => f) := by
-  classical
   let T : Finset (ZMod N × (Fin p → ZMod N)) :=
     ((A + A) ×ˢ (S + S)).image (fun z => (z.1, fun _ => z.2))
   have hT : T.card ≤ N := Finset.card_image_le.trans (by simpa only [Finset.card_product] using hsize)
@@ -33,7 +32,6 @@ theorem section16_zero_parallel_energy {N p : Nat} [NeZero N]
     (E : Finset (ZMod N)) (w : ZMod N → Real) :
     (N : Real)⁻¹ * (∑ x ∈ E, w x) ^ 4 ≤
       weightedSimultaneousAdditiveEnergy E w (fun _ : Fin p => fun _ => 0) := by
-  classical
   apply section16_weighted_graph_sum_bound Finset.univ {0} E (fun _ => 0) w
     (Finset.subset_univ _) (by simp)
   simp only [Finset.singleton_add_singleton, zero_add, Finset.card_singleton, Nat.mul_one]
@@ -45,7 +43,6 @@ theorem weightedSimultaneousAdditiveEnergy_constants {N p : Nat} [NeZero N]
     (E : Finset (ZMod N)) (w : ZMod N → Real) (c : Fin p → ZMod N) :
     weightedSimultaneousAdditiveEnergy E w (fun i _ => c i) =
       weightedSimultaneousAdditiveEnergy E w (fun _ : Fin p => fun _ => 0) := by
-  classical
   unfold weightedSimultaneousAdditiveEnergy
   simp [IsAdditiveQuadruple]
 
@@ -58,7 +55,6 @@ theorem section16_slab_unit_product {N k : Nat} [NeZero N]
     (hf : ∀ x ∈ A, f x ∈ S) (hsize : (A + A).card * (S + S).card ≤ N) :
     HasProductProperty (lastProductSet (Finset.univ : Finset (Point N k)) A)
       (fun z => f (section16Last z)) 1 := by
-  classical
   intro p j y E w _hw hE
   simp only [one_pow, one_mul]
   by_cases hj : j = Fin.last k

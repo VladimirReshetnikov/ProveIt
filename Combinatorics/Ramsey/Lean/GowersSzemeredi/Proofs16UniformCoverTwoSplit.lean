@@ -329,7 +329,6 @@ theorem splitUniformClass_two_small {K1 p1 : Nat} (hK1 : 1 ≤ K1) (hp1 : 0 < p1
       (section16PowerWidth (familyWidthPrefactor K1) (familyWidthDivisor 1 p1)))
     {V : Real} (hV : 1 ≤ V) (hKV : (K1 : Real) ≤ V) (hpV : (p1 : Real) ≤ V) :
     Nonempty (SplitUniformClass 2 V 32 ((2 : Nat) ^ 48)) := by
-  classical
   refine ⟨{
     U := fun N _ theta gamma Gamma =>
       ∃ P : Fin (polyTwoFejerPieces gamma theta) → PolyPieceTwoFejer N theta gamma,

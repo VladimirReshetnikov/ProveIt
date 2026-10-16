@@ -18,7 +18,6 @@ theorem exists_positive_large_cell_outside_exception {M : Nat}
     (hdis : beta * n ≤ ∑ i, |v i|)
     (hbad : ∑ i ∈ B, w i ≤ beta * n / 8) :
     ∃ i, i ∉ B ∧ beta / 8 * w i ≤ v i ∧ beta * n / (8 * M) ≤ w i := by
-  classical
   let T := beta * n / (8 * M)
   have hT : 0 < T := by dsimp [T]; positivity
   have habs (i : Fin M) : |v i| = 2 * max (v i) 0 - v i := by
@@ -74,7 +73,6 @@ theorem relative_density_increment_away_from_boundary {N M : Nat} [NeZero N]
     ∃ j : Fin M, j ∉ B ∧ (P j).carrier ⊆ S ∧
       beta * N / (8 * M) ≤ ((P j).carrier.card : Real) ∧
       (delta + beta / 8) * (P j).carrier.card ≤ (A ∩ (P j).carrier).card := by
-  classical
   let w : Fin M → Real := fun i ↦ (P i).carrier.card
   let v : Fin M → Real := fun i ↦ ∑ x ∈ (P i).carrier, relativeBalancedReal A S delta x
   have hM := section18_partition_index_nonempty (fun i ↦ (P i).carrier) hpart

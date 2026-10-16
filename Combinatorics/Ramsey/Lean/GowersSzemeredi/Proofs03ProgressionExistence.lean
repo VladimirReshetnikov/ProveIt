@@ -109,7 +109,6 @@ private lemma cor36_two_pow_eta_le {k : Nat} (hk : 2 ≤ k)
 private lemma cor36_count_le_modulus_of_no_ap {N k : Nat} [NeZero N]
     (A : Finset (ZMod N)) (hno : ¬ HasModAP A k) :
     translatedIntersectionCount (fun _ : Fin k ↦ A) ≤ N := by
-  classical
   unfold translatedIntersectionCount countWhere
   rw [Finset.filter_congr_decidable]
   calc

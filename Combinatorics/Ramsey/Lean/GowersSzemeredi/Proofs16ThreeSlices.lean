@@ -32,7 +32,6 @@ theorem HasProductProperty.final_section {N k : Nat} [NeZero N] {gamma : Real}
     (hprod : HasProductProperty B phi gamma) (t : ZMod N) :
     HasProductProperty (section16FinalCoordinateSection B t)
       (section16FinalCoordinateRestriction phi t) gamma := by
-  classical
   have h := hprod.coordinateFace (lastSliceFace k t)
   have hdom : (lastSliceFace k t).domain B = section16FinalCoordinateSection B t := by
     ext x
@@ -57,7 +56,6 @@ theorem section16_slice_decomposition_three
       ∃ P : ZMod N → Fin (polyTwoPieces gamma theta) → PolyPieceTwo N theta gamma,
         ∀ t, partialGraph (C t) (section16FinalCoordinateRestriction phi t) ⊆
           polyPieceTwoGraphs (P t) := by
-  classical
   have hex : ∀ t : ZMod N, ∃ J : Finset (Point N 2), (1 - theta) * (N : Real) ^ 2 ≤ J.card ∧
       ∃ P : Fin (polyTwoPieces gamma theta) → PolyPieceTwo N theta gamma,
         restrictRelation (partialGraph (section16FinalCoordinateSection B t)
@@ -247,7 +245,6 @@ theorem section16_slices_envelope_cover {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < 
     (hP : ∀ i, Gammas i ⊆ polyPieceTwoGraphs (P i)) :
     MultiplyLinearWith (threeSlicePb theta gamma K1 p1 r) (threeSliceEs theta gamma K1 p1 r)
       (Finset.univ.biUnion Gammas) := by
-  classical
   have hA : ∀ q, 0 < familyWidthPrefactor K1 q := familyWidthPrefactor_pos (by omega)
   have hB : ∀ q, 0 < familyWidthDivisor 1 p1 q := familyWidthDivisor_pos hp1
   have hcov := section16_uniform_cover_two hA hB hlemma6 ht ht1 hg hg1 Gammas
@@ -294,7 +291,6 @@ theorem section16_three_slice_provider {K1 p1 : Nat} (hK1 : 0 < K1) (hp1 : 0 < p
     (hD : ∀ z ∈ D, section16Init z + x0 ∈ C (section16Last z)) :
     Section16SliceProvider D (section16PhiOne phi x0) (threeSlicePb theta gamma K1 p1)
       (threeSliceEs theta gamma K1 p1) := by
-  classical
   intro r sample
   have hcov := section16_slices_envelope_cover hK1 hp1 hlemma6 ht ht1 hg hg1
     (fun i => partialGraph (C (sample i)) (section16FinalCoordinateRestriction phi (sample i)))

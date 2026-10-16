@@ -504,7 +504,6 @@ private lemma higher_condition_vi_imp_vii_succ {N n : Nat} [NeZero N]
     (hroot : c2 ^ ((1 : Real) / 4) < c3)
     (hvi : higherUniformConditionvi g c2 (n + 1)) :
     higherUniformConditionvii g c3 (n + 1) := by
-  classical
   have hc2root : c2 ≤ c2 ^ ((1 : Real) / 4) := by
     have h := Real.rpow_le_rpow_of_exponent_ge' hc20 hc21
       (by norm_num : (0 : Real) ≤ 1 / 4) (by norm_num : (1 : Real) / 4 ≤ 1)
@@ -544,7 +543,6 @@ private lemma higher_condition_vii_imp_vi_succ {N n : Nat} [NeZero N]
     (hc32 : c3 ≤ c2)
     (hvii : higherUniformConditionvii g c3 (n + 1)) :
     higherUniformConditionvi g c2 (n + 1) := by
-  classical
   have hc3self : c3 ^ 2 ≤ c3 := by
     nlinarith [mul_nonneg hc30 (sub_nonneg.mpr hc31)]
   have hc3sq : c3 ^ 2 ≤ c2 := hc3self.trans hc32

@@ -19,7 +19,6 @@ theorem multilinear_box_fourier_energy {N k m : Nat} [NeZero N]
     (hfourier : ∀ x ∈ B, alpha / 2 * N ≤ ‖fourier (cubeDifference f x) (mu x)‖) :
     (delta * alpha ^ 2 / 4) * (N : Real) ^ 2 * (m : Real) ^ k ≤
       ∑ x ∈ P.carrier, ‖fourier (cubeDifference f x) (mu x)‖ ^ 2 := by
-  classical
   have hpoint : ∀ x ∈ B, (alpha / 2 * N) ^ 2 ≤
       ‖fourier (cubeDifference f x) (mu x)‖ ^ 2 := by
     intro x hx
@@ -68,7 +67,6 @@ theorem short_odd_multilinear_fourier_box {N k : Nat} [Fact N.Prime]
       Q.width = m ∧ (∀ i, (Q.axis i).length = m) ∧ IsMultilinear mu ∧
       (section16ShortBoxDensity alpha k * alpha ^ 2 / 4) * (N : Real) ^ 2 * (m : Real) ^ k ≤
         ∑ x ∈ Q.carrier, ‖fourier (cubeDifference f x) (mu x)‖ ^ 2 := by
-  classical
   let B := P.carrier.filter fun x => alpha / 2 * N ≤ ‖fourier (cubeDifference f x) (mu x)‖
   have hBcard : B.card = section16LargeMultilinearFrequencyCount f P mu alpha := by
     unfold section16LargeMultilinearFrequencyCount countWhere

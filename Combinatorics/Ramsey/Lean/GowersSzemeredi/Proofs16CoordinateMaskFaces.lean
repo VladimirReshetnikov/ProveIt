@@ -29,7 +29,6 @@ def coordinateSubsetFace {N d : Nat} (s : Finset (Fin d)) (a : Point N d) :
     (coordinateSubsetFace s a).map
       (selectedCoordinates (coordinateSubsetFace s a).free z) j =
       if j ∈ s then z j else a j := by
-  classical
   by_cases hj : j ∈ s <;> simp [coordinateSubsetFace, selectedCoordinates, hj]
 
 /-- Every strict coordinate mask inherits an ambient cover from the proper

@@ -15,7 +15,6 @@ theorem coordinate_filter_partition {X Y : Type*} [DecidableEq X] [DecidableEq Y
     {q : Nat} (C : Finset X) (R : Finset Y) (f : X → Y) (P : Fin q → Finset Y)
     (hP : IsPartition P R) (hC : ∀ z ∈ C, f z ∈ R) :
     IsPartition (fun j ↦ C.filter fun z ↦ f z ∈ P j) C := by
-  classical
   constructor
   · intro z
     constructor
@@ -36,7 +35,6 @@ theorem exists_coordinate_filter_cell {X Y : Type*} [DecidableEq X] [DecidableEq
     (hR : R.Nonempty) (hP : IsPartition P R) (hC : ∀ z ∈ C, f z ∈ R)
     {b : Real} (hmass : b * R.card ≤ C.card) :
     ∃ j : Fin q, b * (P j).card ≤ (C.filter fun z ↦ f z ∈ P j).card := by
-  classical
   obtain ⟨x, hx⟩ := hR
   obtain ⟨j, _⟩ := (hP.1 x).mp hx
   letI : Nonempty (Fin q) := ⟨j⟩
@@ -54,7 +52,6 @@ theorem translated_row_card_le {N : Nat} (C : Finset (Pair N))
     (S J : Finset (ZMod N)) (y : ZMod N)
     (hsupport : ∀ z ∈ C, z.1 ∈ S ∧ z.2 - y ∈ J) :
     C.card ≤ S.card * J.card := by
-  classical
   rw [← Finset.card_product]
   apply Finset.card_le_card_of_injOn (fun z : Pair N ↦ (z.1, z.2 - y))
   · intro z hz
@@ -98,7 +95,6 @@ theorem extract_bilinear_cell {N : Nat} [Fact N.Prime]
       (T.length : Real) ^ cor711Exponent delta 1 ≤ U.length ∧
       delta * S.card * U.length ≤ (C.filter fun z ↦ z.2 - y ∈ U.carrier).card ∧
       BilinearOn (C.filter fun z ↦ z.2 - y ∈ U.carrier) phi := by
-  classical
   have hcard := translated_row_card_le C S J y hsupport
   have hcardReal : (C.card : Real) ≤ (S.card : Real) * J.card := by exact_mod_cast hcard
   have hSpos : (0 : Real) < S.card := by exact_mod_cast hS.card_pos

@@ -34,8 +34,7 @@ theorem linear_small_multiplier {N : Nat} [NeZero N] (t : Nat) (ht : 2 ≤ t)
     push_cast
     field_simp
   have hzabs : |(z : Real)| ≤ (N : Real) / (t + 1) := by
-    rw [← hzdiv, abs_div, abs_of_pos hNreal] at happ
-    rw [div_le_iff₀ hNreal] at happ
+    rw [← hzdiv, abs_div, abs_of_pos hNreal, div_le_iff₀ hNreal] at happ
     calc
       |(z : Real)| ≤ 1 / ((t : Real) + 1) * N := happ
       _ = (N : Real) / (t + 1) := by ring

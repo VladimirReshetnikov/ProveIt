@@ -25,7 +25,6 @@ theorem variable_polynomial_phase_refinement {N M k : Nat} [NeZero N]
         (M : Real) ^ (polynomialPartitionConstant k : Real)⁻¹ *
         (N : Real) ^ (1 - (polynomialPartitionConstant k : Real)⁻¹) ∧
       (alpha / 2) * N ≤ ∑ j, ‖∑ s ∈ (R j).carrier, f s‖ := by
-  classical
   have hM : 0 < M := by
     obtain ⟨i, _⟩ := (hQ.1 (0 : ZMod N)).mp (Finset.mem_univ _)
     exact Nat.zero_lt_of_lt i.isLt
@@ -63,7 +62,6 @@ theorem variable_polynomial_phase_refinement {N M k : Nat} [NeZero N]
 theorem PolynomialOn.add_linear {N k : Nat} {S : Finset (ZMod N)}
     {phi : ZMod N → ZMod N} (hphi : PolynomialOn k S phi) (hk : 1 ≤ k) (r : ZMod N) :
     PolynomialOn k S (fun x ↦ phi x + r * x) := by
-  classical
   obtain ⟨c, hc⟩ := hphi
   let j : Fin (k + 1) := ⟨1, by omega⟩
   refine ⟨fun i ↦ c i + if i = j then r else 0, fun x hx ↦ ?_⟩

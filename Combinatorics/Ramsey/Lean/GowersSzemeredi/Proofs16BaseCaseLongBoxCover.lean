@@ -43,7 +43,6 @@ lemma section16_cor711_graph_cover {N : Nat} [NeZero N]
           (∀ j i, IsMultilinear (mu j i)) ∧
           ∀ j x, x ∈ (Q j).carrier → x ∈ H → ∀ y,
             (x, y) ∈ partialGraph B phi → ∃ i, y = mu j i x := by
-  classical
   letI : Fact N.Prime := ⟨Nprime⟩
   let R := boxOneIndexAP P
   let A := boxOneIndexDomain P B
@@ -119,8 +118,7 @@ lemma section16_cor711_graph_cover {N : Nat} [NeZero N]
     have hbase : (1 : Real) ≤ P.width := by exact_mod_cast hRpos
     have hyNonneg : 0 ≤ (P.width : Real) ^ w := by positivity
     have hsq : ((P.width : Real) ^ w) ^ 2 ≤ X := by
-      rw [← Real.rpow_natCast]
-      rw [← Real.rpow_mul (by positivity : (0 : Real) ≤ P.width)]
+      rw [← Real.rpow_natCast, ← Real.rpow_mul (by positivity : (0 : Real) ≤ P.width)]
       dsimp only [X]
       apply Real.rpow_le_rpow_of_exponent_le hbase
       dsimp only [w, aexp]

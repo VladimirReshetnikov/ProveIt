@@ -13,7 +13,6 @@ namespace LeanProofs.GowersSzemeredi
 entirely inside the interval. Both parameters are recovered from the pair. -/
 theorem finiteInterval_progressionCount_floor {N L k : Nat} [NeZero N] (hL : L ≤ N) (_hk : 0 < k) :
     (L / k) ^ 2 ≤ progressionCount (finiteIntervalImage N (Finset.univ : Finset (Fin L))) k := by
-  classical
   let m := L / k
   let F : Fin m × Fin m → ZMod N × ZMod N := fun p => (-(p.2 : Nat), (p.1 : Nat))
   have hmL : m ≤ L := Nat.div_le_self _ _
@@ -93,7 +92,6 @@ theorem finiteInterval_fourTermCount_lower {N L : Nat} [NeZero N]
 theorem finiteIntervalImage_hasNatAP {N L k : Nat} [NeZero N]
     (B : Finset (Fin L)) (hL : 2 * L < N)
     (hAP : HasModAP (finiteIntervalImage N B) k) : HasNatAP (B.image Fin.val) k := by
-  classical
   obtain ⟨a, d, hd, hAP⟩ := hAP
   apply hasNatAP_of_short_modular_sequence (B.image Fin.val)
     (fun i => (a + (i : ZMod N) * d).val) a d (bne_iff_ne.mp hd) hL

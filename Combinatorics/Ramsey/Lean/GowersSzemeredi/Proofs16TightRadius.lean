@@ -44,8 +44,7 @@ theorem fejer_tightRadiusExponent_eq {theta gamma : Real} (k : Nat)
     have : 4 / (theta * gamma) * (theta * gamma / 4) = 1 := by field_simp
     rw [this, one_pow]
   unfold tightRadiusExponent fejerThetaOne
-  rw [div_pow, ← pow_mul, mul_comm (fejerProductExponent k) 11]
-  rw [div_eq_iff (by positivity)]
+  rw [div_pow, ← pow_mul, mul_comm (fejerProductExponent k) 11, div_eq_iff (by positivity)]
   field_simp
   nlinarith [hinv]
 

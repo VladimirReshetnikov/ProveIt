@@ -41,8 +41,7 @@ lemma boxOneIndexAP_proper {N : Nat} (P : Box N 1) :
   constructor
   · simp [boxOneIndexAP]
   · classical
-    rw [IntAP.carrier]
-    rw [Finset.card_image_iff.mpr]
+    rw [IntAP.carrier, Finset.card_image_iff.mpr]
     · simp only [Finset.card_univ, Fintype.card_fin]
     · intro i _ j _ hij
       apply Fin.ext
@@ -77,7 +76,6 @@ lemma boxOneIntPoint_injective_on_indexAP {N : Nat} [NeZero N]
 lemma boxOneIndexDomain_card {N : Nat} [NeZero N]
     (P : Box N 1) (hP : P.IsProper) (B : Finset (Point N 1)) :
     (boxOneIndexDomain P B).card = (B ∩ P.carrier).card := by
-  classical
   let f := boxOneIntPoint P
   have hinj : Set.InjOn f (boxOneIndexDomain P B) :=
     (boxOneIntPoint_injective_on_indexAP P hP).mono
@@ -173,7 +171,6 @@ def indexCellBox {N : Nat} (P : Box N 1) (S : IntAP) : Box N 1 where
 lemma indexCellBox_carrier {N : Nat} [NeZero N]
     (P : Box N 1) (S : IntAP) :
     (indexCellBox P S).carrier = S.carrier.image (boxOneIntPoint P) := by
-  classical
   ext x
   simp only [Box.carrier, indexCellBox, Finset.mem_filter, Finset.mem_univ,
     true_and, ModAP.carrier, IntAP.carrier, Finset.mem_image]
@@ -210,8 +207,7 @@ lemma indexCellBox_proper {N : Nat} [NeZero N]
   fin_cases i
   rw [ModAP.IsProper]
   have hcardBox : (indexCellBox P S).carrier.card = S.carrier.card := by
-    rw [indexCellBox_carrier]
-    rw [Finset.card_image_iff.mpr]
+    rw [indexCellBox_carrier, Finset.card_image_iff.mpr]
     intro x hx y hy hxy
     exact boxOneIntPoint_injective_on_indexAP P hP (hsub hx) (hsub hy) hxy
   have hScard : S.carrier.card = S.length := hS.2
@@ -222,7 +218,6 @@ lemma indexCells_partition {N M : Nat} [NeZero N]
     (P : Box N 1) (hP : P.IsProper) (S : Fin M → IntAP)
     (hS : IsIntAPPartition S (boxOneIndexAP P)) :
     IsBoxPartition (fun j => indexCellBox P (S j)) P := by
-  classical
   constructor
   · intro x
     constructor
@@ -273,7 +268,6 @@ lemma indexCells_partition {N M : Nat} [NeZero N]
 
 lemma isMultilinear_affine_one {N : Nat} (a b : ZMod N) :
     IsMultilinear (fun x : Point N 1 => a * x 0 + b) := by
-  classical
   let e0 : Fin 1 → Bool := fun _ => false
   let e1 : Fin 1 → Bool := fun _ => true
   refine ⟨fun e => if e = e0 then b else if e = e1 then a else 0, ?_⟩
@@ -314,7 +308,6 @@ lemma proper_modAP_step_ne_zero_of_two_le {N : Nat}
     (P : ModAP N) (hP : P.IsProper) (hL : 2 ≤ P.length) : P.step ≠ 0 := by
   intro hstep
   have hcarrier : P.carrier = {P.start} := by
-    classical
     ext x
     simp only [ModAP.carrier, Finset.mem_image, Finset.mem_univ, true_and,
       Finset.mem_singleton]

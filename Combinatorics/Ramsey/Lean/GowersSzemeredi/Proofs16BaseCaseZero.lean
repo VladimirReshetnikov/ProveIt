@@ -31,7 +31,6 @@ theorem multiplyLinear_relation_dimension_zero {N : Nat} [NeZero N]
     (Gamma : Finset (Point N 0 × ZMod N)) {gamma r : Real}
     (hg : 0 < gamma) (hg1 : gamma ≤ 1) (hr : 1 ≤ r)
     (hcard : (Gamma.card : Real) ≤ r) : MultiplyLinear gamma r Gamma := by
-  classical
   let e : Fin Gamma.card ≃ {z // z ∈ Gamma} := Gamma.equivFin.symm
   intro theta ht ht1 P hP
   have hc : 0 < multipleC (r⁻¹ * theta) gamma 0 := pow_pos (by positivity) _
@@ -56,7 +55,6 @@ theorem multiplyLinear_relation_dimension_zero {N : Nat} [NeZero N]
     simp only [Equiv.apply_symm_apply]
 
 theorem theorem_16_2_zero : Theorem162At 0 := by
-  classical
   intro gamma theta hg hg1 ht ht1
   refine ⟨0, ?_⟩
   intro N _ _ _ Gamma hcard _

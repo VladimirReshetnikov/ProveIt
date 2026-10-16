@@ -172,7 +172,6 @@ private def lemma134Progression {N : Nat} (d s : ZMod N) (l : Nat) :
 private lemma lemma134_progression_proper {N l : Nat} [NeZero N]
     [Fact N.Prime] (d s : ZMod N) (hd : d ≠ 0) (hlN : l ≤ N) :
     (lemma134Progression d s l).IsProper := by
-  classical
   unfold ModAP.IsProper ModAP.carrier lemma134Progression
   rw [Finset.card_image_iff.mpr]
   · simp
@@ -194,7 +193,6 @@ private def lemma134StartSet {N : Nat} (d h : ZMod N) (l : Nat) :
 private lemma lemma134_startSet_card {N l : Nat} [NeZero N]
     [Fact N.Prime] (d h : ZMod N) (hd : d ≠ 0) (hlN : l ≤ N) :
     (lemma134StartSet d h l).card = l := by
-  classical
   unfold lemma134StartSet
   rw [Finset.card_image_iff.mpr]
   · simp
@@ -213,7 +211,6 @@ private lemma lemma134_mem_progression_iff_start {N l : Nat}
     (d s h : ZMod N) :
     h ∈ (lemma134Progression d s l).carrier ↔
       s ∈ lemma134StartSet d h l := by
-  classical
   unfold lemma134Progression lemma134StartSet ModAP.carrier
   simp only [Finset.mem_image, Finset.mem_univ, true_and]
   constructor
@@ -230,7 +227,6 @@ private lemma lemma134_sum_indicator_progression {N l : Nat} [NeZero N]
     (∑ s : ZMod N,
       if h ∈ (lemma134Progression d s l).carrier then w else 0) =
       l * w := by
-  classical
   simp_rw [lemma134_mem_progression_iff_start]
   rw [← Finset.sum_filter]
   rw [Finset.filter_mem_eq_inter, Finset.univ_inter]
@@ -288,7 +284,6 @@ private lemma lemma134_exists_progression_average {N l : Nat} [NeZero N]
       (l : Real) * goodHeightWeight S G ≤
         (N : Real) * goodHeightWeight S
           ((lemma134Progression d s l).carrier ∩ G) := by
-  classical
   let W : ZMod N → Real := fun s =>
     goodHeightWeight S ((lemma134Progression d s l).carrier ∩ G)
   have hsum : ∑ s : ZMod N, W s =
@@ -339,7 +334,6 @@ private lemma lemma134_collision_lower {X Y : Type*}
     [Fintype X] [Fintype Y] [DecidableEq Y] (f : X → Y) :
     (Fintype.card X : Real) ^ 2 ≤
       Fintype.card Y * (lemma134CollisionSet f).card := by
-  classical
   let c : Y → Real := fun y => Fintype.card (lemma134Fiber f y)
   have hsource : (Fintype.card X : Real) = ∑ y : Y, c y := by
     have hcard := Fintype.card_congr (Equiv.sigmaFiberEquiv f).symm
@@ -438,7 +432,6 @@ private def lemma134_edgePairEquiv {N : Nat} [NeZero N]
 private lemma lemma134_edge_card_lower {N : Nat} [NeZero N]
     (A : Finset (Pair N)) :
     (A.card : Real) ^ 2 ≤ N * Fintype.card (lemma134Edge A) := by
-  classical
   have h := lemma134_collision_lower (fun z : A => z.1.1)
   have hcard := Fintype.card_congr (lemma134_edgePairEquiv A)
   simp only [Fintype.card_coe] at hcard
@@ -449,7 +442,6 @@ private lemma lemma134_edge_eight_lower {N : Nat} [NeZero N]
     (A : Finset (Pair N)) :
     (Fintype.card (lemma134Edge A) : Real) ^ 8 ≤
       (N : Real) ^ 7 * Fintype.card (lemma134EdgeEight A) := by
-  classical
   let e : Real := Fintype.card (lemma134Edge A)
   let e₂ : Real := Fintype.card (lemma134EdgeTwo A)
   let e₄ : Real := Fintype.card (lemma134EdgeFour A)
@@ -578,7 +570,6 @@ private lemma lemma134_arrangement_collision_lower {N : Nat} [NeZero N]
     (A : Finset (Pair N)) :
     (Fintype.card (lemma134EdgeEight A) : Real) ^ 2 ≤
       (N : Real) ^ 2 * Fintype.card (lemma134ArrangementCollision A) := by
-  classical
   simpa only [Fintype.card_prod, Fintype.card_coe, ZMod.card,
     Nat.cast_mul, Nat.cast_pow, pow_two] using
     lemma134_collision_lower (lemma134EdgeEight.key (A := A))
@@ -621,16 +612,14 @@ private lemma lemma134EdgeSixteenGet_height {N : Nat} [NeZero N]
   by_cases hi : (i : Nat) < 8
   · let j : Fin 8 := ⟨i, hi⟩
     have hij : i = Fin.castAdd 8 j := by apply Fin.ext; rfl
-    rw [hij]
-    rw [lemma134EdgeSixteenGet_castAdd, p.1.1.get_height]
+    rw [hij, lemma134EdgeSixteenGet_castAdd, p.1.1.get_height]
   · have _ : 8 ≤ (i : Nat) := by omega
     let j : Fin 8 := ⟨(i : Nat) - 8, by omega⟩
     have hij : i = Fin.natAdd 8 j := by
       apply Fin.ext
       simp [j]
       omega
-    rw [hij]
-    rw [lemma134EdgeSixteenGet_natAdd, p.1.2.get_height]
+    rw [hij, lemma134EdgeSixteenGet_natAdd, p.1.2.get_height]
     exact hh.symm
 
 private lemma lemma134_left_indices :
@@ -745,7 +734,6 @@ private lemma lemma134_arrangement_count_lower_card {N : Nat} [NeZero N]
     (A : Finset (Pair N)) :
     (A.card : Real) ^ 32 ≤
       (N : Real) ^ 32 * arrangementCount 8 A := by
-  classical
   let e : Real := Fintype.card (lemma134Edge A)
   let e₈ : Real := Fintype.card (lemma134EdgeEight A)
   let c : Real := Fintype.card (lemma134ArrangementCollision A)
@@ -860,7 +848,6 @@ private lemma lemma134_sectionG_total {N : Nat} [NeZero N]
 private lemma lemma134_sectionG_le_C {N : Nat} [NeZero N]
     (S : Section13Context N) (h : ZMod N) :
     section13G S h ≤ section13C S h := by
-  classical
   unfold section13G section13C respectedArrangementCountAtHeight
     arrangementCountAtHeight countWhere
   exact Finset.card_le_card (by
@@ -1127,7 +1114,6 @@ private lemma lemma134_progression_difference {N l : Nat}
     (hx : x ∈ (lemma134Progression d s l).carrier)
     (hy : y ∈ (lemma134Progression d s l).carrier) :
     x - y ∈ symmetricMultiples d l := by
-  classical
   unfold lemma134Progression ModAP.carrier at hx hy
   simp only [Finset.mem_image, Finset.mem_univ, true_and] at hx hy
   obtain ⟨i, rfl⟩ := hx
@@ -1173,7 +1159,6 @@ private lemma lemma134_individual_bohr {N q₀ l : Nat} [NeZero N]
       (theta₁ / (32 * Real.pi * l))) (i : Fin q₀) :
     d ∈ bohr (section7Spectrum (B i) (lemma134Density (B i)))
       (lemma134Density (B i) / (32 * Real.pi * l)) := by
-  classical
   have hbeta := lemma134_density_lower (B i) theta₁ htheta₁ (hBlarge i)
   rw [bohr, Finset.mem_filter] at hd ⊢
   refine ⟨Finset.mem_univ _, ?_⟩
@@ -1234,7 +1219,6 @@ private lemma lemma134_spectrum_union_card
     (hFreiman : ∀ i, FreimanHom 8 (B i) (sigma i)) :
     ((lemma134SpectrumUnion B).card : Real) ≤
       16 * q * theta₁ ^ (-(2 : Real)) := by
-  classical
   have hper (i : Fin q₀) :
       ((section7Spectrum (B i) (lemma134Density (B i))).card : Real) ≤
         16 * theta₁ ^ (-(2 : Real)) := by
@@ -1286,7 +1270,6 @@ private lemma lemma134_exists_common_step
       d ∈ bohr (lemma134SpectrumUnion B)
         (section13ThetaOne theta / (32 * Real.pi * l)) ∧
       d ≠ 0 := by
-  classical
   let theta₁ := section13ThetaOne theta
   let K := lemma134SpectrumUnion B
   let exponent : Real := theta₁ ^ 2 / (16 * (q : Real))
@@ -1400,7 +1383,6 @@ private theorem lemma134_at_graph_budget
       (q : Real) ≤ budget q) :
     ∃ D : Stage134Data N, (D.q : Real) ≤ section13QBound theta ∧
       IsStage134DataAtRealBound S theta (budget D.q) D := by
-  classical
   letI : Fact N.Prime := ⟨hprime⟩
   obtain ⟨q₀, B, sigma, G, hGcard, hFreiman, hBlarge,
       hq₀Bound, hcover⟩ :=

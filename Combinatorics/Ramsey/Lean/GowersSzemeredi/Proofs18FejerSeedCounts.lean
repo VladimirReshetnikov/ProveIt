@@ -159,8 +159,7 @@ theorem polyPieceFaceCountW_fejer_le_tight {gamma theta : Real} (hg : 0 < gamma)
   clear_value u b
   have hupos : 0 < u := lt_of_lt_of_le (by norm_num) hu2
   have hbase : 2 / (gamma * b) ≤ u ^ ((2 : Nat) ^ 23 + 1) := by
-    rw [show 2 / (gamma * b) = 2 / gamma * b⁻¹ by field_simp]
-    rw [pow_succ, mul_comm (u ^ _) u]
+    rw [show 2 / (gamma * b) = 2 / gamma * b⁻¹ by field_simp, pow_succ, mul_comm (u ^ _) u]
     exact mul_le_mul h2g hbinv (inv_pos.mpr hb).le hupos.le
   refine hBF.trans ?_
   calc (2 / (gamma * b)) ^ (10002 : Nat)

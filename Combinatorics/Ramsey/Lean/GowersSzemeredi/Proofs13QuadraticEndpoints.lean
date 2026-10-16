@@ -41,7 +41,6 @@ theorem stage135_forward_small_affine_of_pairwise {N : Nat} [NeZero N]
       (centeredAbs (stage135AmbientQuadratic a b x - stage135AmbientQuadratic a b y) : Real) ≤ s)
     (hh : h ∈ A) (h1 : h + d ∈ A) (h2 : h + 2 * d ∈ A) :
     (centeredAbs ((a * h + b) * d) : Real) ≤ 4 * s := by
-  classical
   have hd1 := hpair _ h1 _ hh
   have hd2 := hpair _ h1 _ h2
   rw [stage135Quadratic_forward_difference hprime hodd]
@@ -62,7 +61,6 @@ theorem stage135_full_cell_small_affine_of_pairwise {N : Nat} [NeZero N]
       (centeredAbs (stage135AmbientQuadratic a b x - stage135AmbientQuadratic a b y) : Real) ≤ s)
     {h : ZMod N} (hh : h ∈ Q.carrier) :
     (centeredAbs ((a * h + b) * Q.step) : Real) ≤ 4 * s := by
-  classical
   obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hh
   have hi := i.isLt
   have hmem (j : Nat) (hj : j < Q.length) : Q.start + (j : ZMod N) * Q.step ∈ Q.carrier :=
@@ -110,7 +108,6 @@ theorem stage135_full_cell_small_affine_of_pairwise {N : Nat} [NeZero N]
     {s : Real} (hdiam : diameterAtMostReal (A.image (stage135AmbientQuadratic a b)) s)
     (hh : h ∈ A) (h1 : h + d ∈ A) (h2 : h + 2 * d ∈ A) :
     (centeredAbs ((a * h + b) * d) : Real) ≤ 4 * s := by
-  classical
   exact stage135_forward_small_affine_of_pairwise hprime hodd A a b h d
     (fun x hx y hy => hdiam.centeredAbs_sub_le (Finset.mem_image.mpr ⟨x, hx, rfl⟩)
       (Finset.mem_image.mpr ⟨y, hy, rfl⟩)) hh h1 h2
@@ -121,7 +118,6 @@ theorem stage135_full_cell_small_affine {N : Nat} [NeZero N]
     (hdiam : diameterAtMostReal (Q.carrier.image (stage135AmbientQuadratic a b)) s)
     {h : ZMod N} (hh : h ∈ Q.carrier) :
     (centeredAbs ((a * h + b) * Q.step) : Real) ≤ 4 * s := by
-  classical
   exact stage135_full_cell_small_affine_of_pairwise hprime hodd Q hQ a b hs
     (fun x hx y hy => hdiam.centeredAbs_sub_le (Finset.mem_image.mpr ⟨x, hx, rfl⟩)
       (Finset.mem_image.mpr ⟨y, hy, rfl⟩)) hh

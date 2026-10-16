@@ -45,7 +45,6 @@ theorem fejerRelation_count_signal {N L M : Nat}
     M ^ (Fintype.card I + 1) ≤
       countWhere (fun v : I → Fin L × Fin L =>
         fejerPairRelation v phi = 0 ∧ fejerPairRelation v feature = 0) := by
-  classical
   let V := {v : I → Fin L × Fin L //
     fejerPairRelation v phi = 0 ∧ fejerPairRelation v feature = 0}
   let f : Fin M × (I → Fin M) → V := fun z =>

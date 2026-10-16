@@ -42,8 +42,7 @@ theorem fejerArrangement_phase_sum {N : Nat} (R : DArrangement N 8)
     (∑ j, balancedFeatureCoefficient fejerArrangementFreeSign j * phi (fejerArrangementVertex R j)) =
       ∑ i : Fin 16, fejerArrangementSign i *
         (phi (R.x i, R.y i + R.height) - phi (R.x i, R.y i)) := by
-  rw [Fintype.sum_prod_type]
-  rw [← (finSuccEquivLast : Fin 16 ≃ Option (Fin 15)).sum_comp]
+  rw [Fintype.sum_prod_type, ← (finSuccEquivLast : Fin 16 ≃ Option (Fin 15)).sum_comp]
   apply Finset.sum_congr rfl
   intro i _
   simp only [fejerArrangementCoefficient_reindex, Fintype.sum_bool,
@@ -76,7 +75,6 @@ theorem fejerArrangement_feature_sum {N : Nat} (R : DArrangement N 8)
 theorem fejerArrangement_carrier_iff {N : Nat} (R : DArrangement N 8)
     (hR : IsAdditiveTuple R.x) (U : Finset (ZMod N × ZMod N)) :
     Finset.univ.image (fejerArrangementVertex R) ⊆ U ↔ R.IsIn U := by
-  classical
   constructor
   · intro hsub
     refine ⟨hR, ?_⟩

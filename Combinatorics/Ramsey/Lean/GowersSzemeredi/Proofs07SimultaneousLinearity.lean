@@ -41,8 +41,7 @@ private def balancedChunkLength (m b j : Nat) : Nat :=
 
 private lemma balancedChunkStart_of_lt {m b j : Nat} (hjb : j < b) :
     balancedChunkStart m b j = j * (m + 1) := by
-  rw [balancedChunkStart, min_eq_left hjb.le]
-  rw [Nat.mul_add, Nat.mul_one]
+  rw [balancedChunkStart, min_eq_left hjb.le, Nat.mul_add, Nat.mul_one]
 
 private lemma balancedChunkStart_of_ge {m b j : Nat} (hbj : b <= j) :
     balancedChunkStart m b j = j * m + b := by
@@ -217,7 +216,6 @@ private lemma balancedResidueChunkAP_mem_iff (R : IntAP) (d m : Nat)
         x = intAPPoint R
           (z.1 + (balancedChunkStart m
             (residueClassLength R.length d z.1 % m) z.2 + i) * d) := by
-  classical
   rw [IntAP.carrier]
   constructor
   · intro hx
@@ -242,8 +240,7 @@ private lemma balancedResidueChunkAP_isProper (R : IntAP) (d m : Nat)
   · simp only [balancedResidueChunkAP]
     positivity
   · classical
-    rw [IntAP.carrier]
-    rw [Finset.card_image_iff.mpr]
+    rw [IntAP.carrier, Finset.card_image_iff.mpr]
     · simp
     · intro i _ j _ hij
       apply Fin.ext
@@ -260,7 +257,6 @@ private lemma balancedResidueChunkFamily_partition (R : IntAP) (d m : Nat)
     (hclass : forall a : Fin d,
       m * m <= residueClassLength R.length d a) :
     IsIntAPPartition (balancedResidueChunkFamily R d m) R := by
-  classical
   let E := Fintype.equivFin (BalancedResidueChunkIndex R.length d m)
   constructor
   · intro x
@@ -474,7 +470,6 @@ private def modularCoordinateSet (p : Nat) (R : IntAP)
 private lemma intAPCoordinateSet_image (R : IntAP) (A : Finset Int)
     (hA : A ⊆ R.carrier) :
     (intAPCoordinateSet R A).image (intAPPoint R) = A := by
-  classical
   ext x
   constructor
   · intro hx
@@ -519,7 +514,6 @@ private lemma mem_modularCoordinateSet_iff {p : Nat} [NeZero p]
     (R : IntAP) (A : Finset Int) (hlp : R.length < p) (x : ZMod p) :
     x ∈ modularCoordinateSet p R A ↔
       x.val < R.length /\ intAPPoint R x.val ∈ A := by
-  classical
   rw [modularCoordinateSet]
   constructor
   · intro hx
@@ -659,7 +653,6 @@ private lemma balancedResidueChunkAP_linear {p N : Nat}
     (hshort : symmetricMultiples (d : ZMod p) m ⊆ B)
     (hAne : (modularCoordinateSet p R A).Nonempty) :
     IntAPLinearOn (balancedResidueChunkAP R d m z) A phi := by
-  classical
   let P := balancedResidueChunkAP R d m z
   let base := z.1 + balancedChunkStart m
     (residueClassLength R.length d z.1 % m) z.2 * d
@@ -685,8 +678,7 @@ private lemma balancedResidueChunkAP_linear {p N : Nat}
   have hcoord_mem (i : Fin P.length)
       (hiA : P.start + ((i : Nat) * P.step : Nat) ∈ A) :
       (coord i : ZMod p) ∈ modularCoordinateSet p R A := by
-    rw [mem_modularCoordinateSet_iff R A hlp]
-    rw [hcoord_cast]
+    rw [mem_modularCoordinateSet_iff R A hlp, hcoord_cast]
     exact ⟨hcoord_lt i, by simpa only [← hcoord_eq i] using hiA⟩
   have hlength : P.length = m ∨ P.length = m + 1 := by
     change balancedChunkLength m
@@ -793,7 +785,6 @@ private lemma bohr_symmetric_multiples_subset {p : Nat} [NeZero p]
     (m : Nat) (hm : 0 < m) (d : ZMod p)
     (hd : d ∈ bohr K (rho / m)) :
     symmetricMultiples d m ⊆ bohr K rho := by
-  classical
   intro z hz
   rw [symmetricMultiples, Finset.mem_image] at hz
   obtain ⟨j, hj, rfl⟩ := hz

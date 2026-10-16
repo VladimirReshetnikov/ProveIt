@@ -13,7 +13,6 @@ theorem IsMultilinear.multiplyLinearFunction {N k : Nat} [NeZero N]
     (B : Finset (Point N k)) {gamma r : Real}
     (hg : 0 < gamma) (hg1 : gamma ≤ 1) (hr : 1 ≤ r) :
     MultiplyLinearFunction gamma r B phi := by
-  classical
   intro theta ht ht1 P hP
   obtain ⟨ha, ha1, hq⟩ := section16_slice_control_ranges (r := 1) (k := k)
     (by omega) hr hg hg1 ht ht1

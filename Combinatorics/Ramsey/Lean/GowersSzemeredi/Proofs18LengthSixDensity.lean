@@ -336,8 +336,7 @@ theorem singlePieceEta_two_inv {alpha D : Real} (ha : 0 < alpha) (hD : 0 < D)
     (hDdef : singlePieceGlobalDensity sixQb (sixC sixQb alpha) alpha (alpha / 2) 2 = D) :
     (singlePieceEta sixQb (sixC sixQb alpha) alpha 2)⁻¹ = 2 ^ 133 * D⁻¹ * (alpha⁻¹) ^ 2 := by
   unfold singlePieceEta
-  rw [hDdef]
-  rw [show (-(2 * (((2 : Nat) + 1 : Int) + 1) ^ 3) : Int) = -128 by norm_num, zpow_neg]
+  rw [hDdef, show (-(2 * (((2 : Nat) + 1 : Int) + 1) ^ 3) : Int) = -128 by norm_num, zpow_neg]
   have h128 : (2 : Real) ^ (128 : Int) = 2 ^ (128 : Nat) := zpow_natCast 2 128
   rw [h128]
   field_simp

@@ -28,7 +28,6 @@ theorem mem_stage137UpperEndpoints {N : Nat} (S I : Finset (ZMod N))
     (Y : ZMod N → Finset (Pair N)) (y x h : ZMod N) :
     (x, y + h) ∈ stage137UpperEndpoints S I Y y ↔
       x ∈ S ∧ h ∈ I ∧ (x, y) ∈ Y h := by
-  classical
   constructor
   · intro hz
     obtain ⟨hprod, hY⟩ := Finset.mem_filter.mp hz
@@ -48,7 +47,6 @@ theorem stage137UpperEndpoints_subset_domain {N : Nat} [NeZero N]
     (Y : ZMod N → Finset (Pair N)) (y : ZMod N)
     (hY : ∀ h ∈ I, Y h ⊆ verticalEdgeDomain A h) :
     stage137UpperEndpoints S I Y y ⊆ A := by
-  classical
   intro z hz
   obtain ⟨hzprod, hzY⟩ := Finset.mem_filter.mp hz
   obtain ⟨h, hh, heq⟩ := Finset.mem_image.mp (Finset.mem_product.mp hzprod).2
@@ -70,7 +68,6 @@ theorem stage137UpperEndpoints_rows_linear {N : Nat} [NeZero N]
     ∀ h ∈ I, LinearOn
       (translatedRow S (stage137UpperEndpoints S I Y y) y h)
       (fun x ↦ phi (x, y + h)) := by
-  classical
   obtain ⟨a, b, hbase⟩ := hbase
   intro h hh
   obtain ⟨c, d, hdiff⟩ := hdiff h hh

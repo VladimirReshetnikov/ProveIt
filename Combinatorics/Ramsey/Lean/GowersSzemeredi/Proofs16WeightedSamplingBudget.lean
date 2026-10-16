@@ -56,7 +56,6 @@ theorem finite_weighted_event_selection_budgets {Ω I : Type*}
     (hbudget : ∀ i, ((Finset.univ.filter (bad i)).card : Real) * weight i ≤
       budget i * Fintype.card Ω) :
     ∃ outcome, (∑ i, if bad i outcome then weight i else 0) ≤ ∑ i, budget i := by
-  classical
   have hsum : (∑ outcome : Ω, ∑ i, if bad i outcome then weight i else 0) ≤
       ∑ _outcome : Ω, ∑ i, budget i := by
     calc
@@ -81,7 +80,6 @@ theorem section16_weighted_sample_loss {α I : Type*}
       (∑ i, ((C i).card : Real)) -
         (∑ i, ((section16RetainedClass (C i) sample).card : Real)) ≤
       (Fintype.card I : Real) * (6 * Fintype.card α / r) := by
-  classical
   have hΩ : (0 : Real) < Fintype.card (Fin r → α) := by exact_mod_cast Fintype.card_pos
   have hb (i : I) :
       ((Finset.univ.filter (fun sample : Fin r → α => ¬ section16SampleHasDistinctPair (C i) sample)).card : Real) * (C i).card ≤
@@ -115,7 +113,6 @@ theorem section16_linear_prune_and_sample {α β : Type*}
       (∀ i, (D i).Nonempty → section16SampleHasDistinctPair (D i) sample) ∧
       (∑ i, ((C i).card : Real)) - (∑ i, ((D i).card : Real)) ≤
         2 * σ * Fintype.card β * Fintype.card α := by
-  classical
   let L := fun i => if 2 ≤ (C i).card then C i else ∅
   have hL (i) : L i ⊆ C i := by dsimp [L]; split_ifs <;> simp
   have hLsize (i) : (L i).card = 0 ∨ 2 ≤ (L i).card := by

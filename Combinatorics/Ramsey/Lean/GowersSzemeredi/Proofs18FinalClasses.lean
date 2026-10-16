@@ -290,7 +290,6 @@ theorem splitUniformClass2_succ_fejer {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 
     {V' : Real} (hVV : V ≤ V') (hKV : (K : Real) ≤ V') (hpV : (p : Real) ≤ V') :
     Nonempty (SplitUniformClass2 (k + 1) V' (sCountN k ac)
       (max (fsCountW k ac Dc) (fejerStepThrDeg k Dc)) (sExpN2 k ac ae) (fsExpW2 k ac Dc ae De)) := by
-  classical
   obtain ⟨hCnt, -, hCntMono, -⟩ := splitCnt_controls hV ac Dc
   obtain ⟨-, hExp, -, hExpAnti⟩ := splitCnt_controls hV ae De
   refine ⟨{
@@ -371,7 +370,6 @@ theorem splitUniformClass2_two_tight {K1 p1 : Nat} (hK1 : 1 ≤ K1) (hp1 : 0 < p
       (section16PowerWidth (familyWidthPrefactor K1) (familyWidthDivisor 1 p1)))
     {V : Real} (hV : 1 ≤ V) (hKV : (K1 : Real) ≤ V) (hpV : (p1 : Real) ≤ V) :
     Nonempty (SplitUniformClass2 2 V 11 ((2 : Nat) ^ 39) 29 ((2 : Nat) ^ 46)) := by
-  classical
   refine ⟨{
     U := fun N _ theta gamma Gamma =>
       ∃ P : Fin (polyTwoFejerPieces gamma theta) → PolyPieceTwoFejer N theta gamma,

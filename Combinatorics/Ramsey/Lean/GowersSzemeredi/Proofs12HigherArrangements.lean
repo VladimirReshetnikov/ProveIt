@@ -157,7 +157,6 @@ private lemma lemma123_arrangement_count_eq {N d : Nat} [NeZero N]
     respectedGeneralArrangementCount d (lemma123PointSet B)
         (lemma123PointPhi phi) =
       respectedArrangementCount d B phi := by
-  classical
   unfold respectedGeneralArrangementCount respectedArrangementCount countWhere
   apply Finset.card_equiv (lemma123ArrangementEquiv N d)
   intro R

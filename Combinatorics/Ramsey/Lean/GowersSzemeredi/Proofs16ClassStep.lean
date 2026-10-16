@@ -122,7 +122,6 @@ theorem class_piece_of_subrelation (C : UniformClassWith k Thr Cnt Exp) (hk : 1 
     (hproj : theta * (N : Real) ^ (k + 1) ≤ (relationProjection Delta).card) :
     Nonempty (ClassPiece C Delta (section16Zeta theta gamma k) (classBudget theta gamma k)
       (classBudget theta gamma k) (classDelta theta gamma k) (classBudget theta gamma k) gamma) := by
-  classical
   let phi : Point N (k + 1) → ZMod N := fun x =>
     if h : ∃ y, (x, y) ∈ Delta then Classical.choose h else 0
   have hsel : GraphContained (relationProjection Delta) phi Delta := by
@@ -174,7 +173,6 @@ theorem class_step_decomp (C : UniformClassWith k Thr Cnt Exp) (hk : 1 ≤ k)
     ∃ J : Finset (Point N (k + 1)), (1 - theta) * (N : Real) ^ (k + 1) ≤ J.card ∧
       ∃ P : Fin (classPieces gamma theta k) → StepPiece C N theta gamma,
         restrictRelation Gamma J ⊆ stepPieceGraphs C P := by
-  classical
   obtain ⟨hθ'pos, hθ'le⟩ := classBudget_pos_le k ht ht1 hg hg1
   set θ' := classBudget theta gamma k
   let Good : Finset (Point N (k + 1) × ZMod N) → Prop := fun G =>
@@ -251,7 +249,6 @@ theorem class_step_cover_gen (C : UniformClassWith k Thr Cnt Exp) (hk : 1 ≤ k)
           (famPieceSliceExponent (clsQr Cnt k M tS gamma) (clsEs Exp M tS gamma) M rho)))
       (Finset.univ.biUnion Gamma) := by
   intro M tS gS
-  classical
   obtain ⟨htS, htS1⟩ := classBudget_pos_le k ht ht1 hg hg1
   obtain ⟨-, -, hgS, hgS1⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
   obtain ⟨hz, hzHalf⟩ := section16Zeta_pos_le_half k ht ht1 hg hg1
@@ -294,7 +291,6 @@ theorem class_step_cover {V : Real} {dC dE dT : Nat} (C : PowerUniformClass k V 
           (famPieceSliceExponent (classQr V dC k M tS gamma) (classEs V dE M tS gamma) M rho)))
       (Finset.univ.biUnion Gamma) := by
   intro M tS gS
-  classical
   obtain ⟨htS, htS1⟩ := classBudget_pos_le k ht ht1 hg hg1
   obtain ⟨-, -, hgS, hgS1⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
   obtain ⟨hz, hzHalf⟩ := section16Zeta_pos_le_half k ht ht1 hg hg1

@@ -28,7 +28,6 @@ private theorem fejer_countWhere_subtype {X : Type*} [Fintype X] (P Q : X → Pr
 
 private theorem fejer_countWhere_sum {X : Type*} [Fintype X] (P : X → Prop) :
     countWhere P = ∑ x : X, @ite Nat (P x) (Classical.propDecidable _) 1 0 := by
-  classical
   simp [countWhere]
 
 def fejerArrangementEdges {N : Nat} [NeZero N] (U : Finset (Pair N))
@@ -39,7 +38,6 @@ def fejerArrangementEdges {N : Nat} [NeZero N] (U : Finset (Pair N))
 theorem fejerArrangementEdges_card {N : Nat} [NeZero N] (U : Finset (Pair N))
     (P : DArrangement N 8 → Prop) :
     (fejerArrangementEdges U P).card = countWhere (fun R => R.IsIn U ∧ P R) := by
-  classical
   have ht := fejer_countWhere_subtype (fun R : DArrangement N 8 => IsAdditiveTuple R.x)
     (fun R => R.IsIn U ∧ P R) (fun _ h => h.1.1)
   convert ht using 1
@@ -57,7 +55,6 @@ theorem fejerArrangementEdges_partition_card {N : Nat} [NeZero N] (U : Finset (P
     (P : DArrangement N 8 → Prop) :
     (fejerArrangementEdges U P).card + (fejerArrangementEdges U (fun R => ¬ P R)).card =
       arrangementCount 8 U := by
-  classical
   rw [fejerArrangementEdges_card, fejerArrangementEdges_card]
   unfold arrangementCount
   simp_rw [fejer_countWhere_sum]
@@ -78,7 +75,6 @@ theorem fejerArrangementEdges_restrict {N : Nat} [NeZero N] (U S : Finset (Pair 
     (hS : S ⊆ U) (P : DArrangement N 8 → Prop) :
     ((fejerArrangementEdges U P).filter fun R => Finset.univ.image (fejerArrangementVertex R.1) ⊆ S) =
       fejerArrangementEdges S P := by
-  classical
   ext R
   have hmono : R.1.IsIn S → R.1.IsIn U := by
     rintro ⟨hx, hv⟩

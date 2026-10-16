@@ -342,8 +342,7 @@ theorem step_exp_inv_le_fejer {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 �
     exact div_pos (mul_pos hEr0 hEb0) hBq0
   have hLi : L⁻¹ ≤ w ^ fejerStepLDeg k D := by
     rw [hLdef]; unfold pieceLineExponent
-    rw [inv_div, div_eq_mul_inv, mul_inv]
-    rw [← hqdef]
+    rw [inv_div, div_eq_mul_inv, mul_inv, ← hqdef]
     exact mul_le_pow_add (mul_nonneg (inv_pos.mpr hEr0).le (inv_pos.mpr hEb0).le)
       hBq (mul_le_pow_add (inv_pos.mpr hEb0).le hEri hEbi hw0) hw0
   -- the slice exponent
@@ -485,7 +484,6 @@ theorem powerUniformClass_succ_fejer {k : Nat} (hk : 1 ≤ k) {V : Real} (hV : 1
       (section16PowerWidth (familyWidthPrefactor K) (familyWidthDivisor k p)))
     {V' : Real} (hVV : V ≤ V') (hKV : (K : Real) ≤ V') (hpV : (p : Real) ≤ V') :
     Nonempty (PowerUniformClass (k + 1) V' (fejerStepCountDeg k D) (fejerStepExpDeg k D) (fejerStepThrDeg k D)) := by
-  classical
   refine ⟨{
     U := fun N _ theta gamma Gamma =>
       ∃ P : Fin (classPiecesFejer gamma theta k) → StepPieceFejer C N theta gamma,

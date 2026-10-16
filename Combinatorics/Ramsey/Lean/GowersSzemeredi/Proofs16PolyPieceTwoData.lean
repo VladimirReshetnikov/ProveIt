@@ -38,13 +38,11 @@ def lastCylinder {N : Nat} [NeZero N] (Λ : Finset (Point N 1 × ZMod N)) :
 
 theorem mem_lastCylinder {N : Nat} [NeZero N] {Λ : Finset (Point N 1 × ZMod N)}
     {z : Point N 2 × ZMod N} : z ∈ lastCylinder Λ ↔ (lastPt z.1, z.2) ∈ Λ := by
-  classical
   simp [lastCylinder]
 
 /-- A relation inside `q` graphs has fibres of size at most `q`. -/
 theorem RelFreimanCover.fiber_le {N q : Nat} [NeZero N] {R : Finset (Point N 1 × ZMod N)}
     (h : RelFreimanCover q R) (x : Point N 1) : (R.filter fun z => z.1 = x).card ≤ q := by
-  classical
   obtain ⟨D, f, -, hc⟩ := h
   have hsub : (R.filter fun z => z.1 = x) ⊆
       (section16FinsetUnion (fun i => partialGraph (D i) (f i))).filter fun z => z.1 = x :=
@@ -67,7 +65,6 @@ theorem MultiplyLinearWith.last_cylinder {N : Nat} [NeZero N] [Fact N.Prime]
     (hE : ∀ t, 0 < t → t ≤ 1 → 0 < Eb t ∧ Eb t ≤ 1) :
     MultiplyLinearWith (fun t => max (Qb t) ((3 ^ (1 + 1) * M : Nat) : Real))
       (fun t => Eb t / 16) (lastCylinder Λ) := by
-  classical
   have h := hML.relation_lift_last M hfib hQ hE (by norm_num)
   have h2 := MultiplyLinearWith.coordinateReindex h (Equiv.swap 0 1)
   refine MultiplyLinearWith.subset h2 ?_
@@ -139,7 +136,6 @@ theorem section16_poly_piece_two_data
     Nonempty (PolyPieceTwoData Gamma (section16Zeta theta gamma 1)
       (5 * polyPieceBudget theta gamma) (polyPieceSpecCount theta gamma)
       (polyPieceFaceCount theta gamma) (polyPieceFaceCount theta gamma)) := by
-  classical
   obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds 1 ht ht1 hg hg1
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le 1 ht ht1 hg hg1
   have hθ'pos : 0 < polyPieceBudget theta gamma := by

@@ -39,7 +39,6 @@ theorem weighted_good_large_mass {X : Type*} [Fintype X]
     (hrespect : (1 - eta) * ∑ x, C x ≤ ∑ x, G x) :
     (∑ x, C x) / 2 - Fintype.card X * t ≤
       ∑ x, if (1 - 2 * eta) * C x ≤ G x ∧ t ≤ C x then C x else 0 := by
-  classical
   have hpoint (x : X) : 2 * eta * C x ≤
       2 * eta * ((if (1 - 2 * eta) * C x ≤ G x ∧ t ≤ C x then C x else 0) + t) +
         (C x - G x) := by
@@ -75,7 +74,6 @@ theorem section16_good_sidelengths_of_arrangements {N k : Nat} [NeZero N]
           section16ArrangementCountAtSide 8 B h ∧
         DomainApproxHomOfOrder (section16CubeMultifunctionDomain B h)
           (section16InducedCubeMap B h phi) ((2 : Real) ^ (-(43 : Real))) 8 := by
-  classical
   let eta : Real := (2 : Real) ^ (-(44 : Real))
   let t : Real := section16ThetaOne theta gamma k / 4 * (N : Real) ^ (16 * k + 15)
   let C (h : Point N k) : Real := section16ArrangementCountAtSide 8 B h

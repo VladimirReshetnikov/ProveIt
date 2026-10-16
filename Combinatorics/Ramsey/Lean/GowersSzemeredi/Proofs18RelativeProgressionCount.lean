@@ -14,7 +14,6 @@ def progressionCount {N : Nat} [NeZero N] (A : Finset (ZMod N)) (k : Nat) : Nat 
 theorem progressionCount_eq_progressionAverage {N k : Nat} [NeZero N]
     (A : Finset (ZMod N)) :
     (progressionCount A k : Complex) = progressionAverage (fun _ : Fin k => indicator A) := by
-  classical
   have hcount {T : Type} [Fintype T] (P : T → Prop) [DecidablePred P] :
       (countWhere P : Complex) = ∑ x : T, if P x then 1 else 0 := by
     unfold countWhere
@@ -31,7 +30,6 @@ theorem progressionCount_eq_progressionAverage {N k : Nat} [NeZero N]
 
 theorem progressionCount_le_modulus_of_no_ap {N k : Nat} [NeZero N]
     (A : Finset (ZMod N)) (hno : ¬ HasModAP A k) : progressionCount A k ≤ N := by
-  classical
   unfold progressionCount countWhere
   rw [Finset.filter_congr_decidable]
   calc

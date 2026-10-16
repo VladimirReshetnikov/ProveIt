@@ -83,7 +83,6 @@ private lemma prop177_realDot_threshold (k R : Nat)
 private lemma prop177_exists_small_positive
     {I : Type*} [Fintype I] (y b : I → Real) :
     ∃ delta : Real, 0 < delta ∧ ∀ i, y i < b i → y i + delta < b i := by
-  classical
   let S := Finset.univ.filter fun i => y i < b i
   obtain ⟨delta, hzero, hbound⟩ := Finset.exists_between' ({0} : Finset Real)
     (S.image fun i => b i - y i) (by
@@ -276,7 +275,6 @@ private lemma prop177_thresholdCode_injective {k R : Nat} (_hR : 0 < R)
 
 private lemma prop177_thresholdCount_eq (k R : Nat) :
     prop177ThresholdCount k R = (2 ^ k - 1) * (2 * R) := by
-  classical
   simp only [prop177ThresholdCount, Prop177Threshold, Fintype.card_prod,
     Fintype.card_subtype_compl, Fintype.card_fun, Fintype.card_bool,
     Fintype.card_fin, Fintype.card_unique]
@@ -430,7 +428,6 @@ private theorem prop177_exists_normalized_mod_patterns (k M : Nat)
         (∀ i, -((k + 1 : Nat) : Real) < a i ∧ a i < (k + 1 : Nat)) →
         (fun e => floorAffinePattern (M := M) a0 a e -
           floorAffinePattern (M := M) a0 a (prop177ZeroVertex k)) ∈ F := by
-  classical
   obtain ⟨G, hGcard, hGzero, hGmem⟩ :=
     prop177_exists_normalized_integer_patterns k hk
   let castPattern : ((Fin k → Bool) → Int) → ((Fin k → Bool) → ZMod M) :=
@@ -500,7 +497,6 @@ private lemma prop177_modInterval_mem_iff_val {N b L : Nat} [NeZero N]
     (hend : b + L ≤ N) (x : ZMod N) :
     x ∈ (modInterval N (b : ZMod N) L).carrier ↔
       b ≤ x.val ∧ x.val < b + L := by
-  classical
   rw [modInterval, ModAP.carrier]
   simp only [mul_one, Finset.mem_image, Finset.mem_univ, true_and]
   constructor
@@ -525,8 +521,7 @@ private lemma prop177_balancedCell_mem_iff {N M : Nat} [NeZero N]
       (prop177Boundary N M (i + 1) - prop177Boundary N M i) ≤ N := by
     rw [Nat.add_sub_of_le hmono]
     exact prop177_boundary_le_N hN hM (Nat.succ_le_iff.mpr i.isLt)
-  rw [prop177BalancedCell, prop177_modInterval_mem_iff_val hend]
-  rw [Nat.add_sub_of_le hmono]
+  rw [prop177BalancedCell, prop177_modInterval_mem_iff_val hend, Nat.add_sub_of_le hmono]
 
 private def prop177CellIndex {N M : Nat} [NeZero N]
     (hM : 0 < M) (x : ZMod N) : Fin M :=
@@ -578,7 +573,6 @@ private lemma prop177_balancedCell_partition {N M : Nat} [NeZero N]
     (hM : 0 < M) :
     IsPartition (fun i : Fin M => (prop177BalancedCell N M i).carrier)
       Finset.univ := by
-  classical
   constructor
   · intro x
     simp only [Finset.mem_univ, true_iff]
@@ -593,7 +587,6 @@ private lemma prop177_balancedCell_partition {N M : Nat} [NeZero N]
 
 private lemma prop177_balancedCell_isProper {N M : Nat} [NeZero N]
     (hM : 0 < M) (i : Fin M) : (prop177BalancedCell N M i).IsProper := by
-  classical
   let b := prop177Boundary N M i
   let L := prop177Boundary N M (i + 1) - b
   have hmono : prop177Boundary N M i ≤ prop177Boundary N M (i + 1) :=
@@ -629,8 +622,7 @@ private lemma prop177_boundary_increment {N M q : Nat}
   have hw0 : 0 ≤ w := (prop177_width_pos hN hM).le
   have hiw0 : 0 ≤ (i : Real) * w := mul_nonneg (by positivity) hw0
   have hlower : prop177Boundary N M i + q ≤ prop177Boundary N M (i + 1) := by
-    rw [prop177Boundary, prop177Boundary]
-    rw [← Nat.ceil_add_natCast hiw0]
+    rw [prop177Boundary, prop177Boundary, ← Nat.ceil_add_natCast hiw0]
     apply Nat.ceil_mono
     dsimp only [w]
     push_cast
@@ -710,8 +702,7 @@ private lemma prop177_cellIndex_floorAffine {N M k : Nat} [NeZero N]
   congr 1
   dsimp only [z]
   push_cast
-  rw [sub_div, Finset.sum_div, sub_eq_add_neg]
-  rw [← Finset.sum_neg_distrib]
+  rw [sub_div, Finset.sum_div, sub_eq_add_neg, ← Finset.sum_neg_distrib]
   congr 1
   rw [add_left_cancel_iff]
   apply Finset.sum_congr rfl
@@ -786,7 +777,6 @@ private lemma prop177_support_decomposition {N M k : Nat} [NeZero N]
             (restrictToCell
               (prop177ResidueCell N M (g e + c)).carrier (H e)
               (t - ∑ i, if e i then (a i : ZMod N) else 0)) := by
-  classical
   let e0 := prop177ZeroVertex k
   let p := prop177RawPattern hM t a
   let g0 : (Fin k → Bool) → ZMod M := fun e => p e - p e0
@@ -882,9 +872,7 @@ private lemma prop177_cube_norm_sq_le_moment {N k : Nat}
     field_simp
   have hterm (e : Fin k → Bool) : G e ^ w = ‖f (cubeArgument s x e)‖ ^ 2 := by
     dsimp only [G]
-    rw [← Real.rpow_natCast]
-    rw [← Real.rpow_mul (norm_nonneg _)]
-    rw [hpw, Real.rpow_two]
+    rw [← Real.rpow_natCast, ← Real.rpow_mul (norm_nonneg _), hpw, Real.rpow_two]
   calc
     ‖cubeDifference f x s‖ ^ 2 =
         ∏ e : Fin k → Bool, ‖f (cubeArgument s x e)‖ ^ 2 := by
@@ -951,7 +939,6 @@ private lemma prop177_fourier_sq_le_moment {N k : Nat} [NeZero N]
 private lemma prop177_box_card_le {N k m : Nat} [NeZero N]
     (P : Box N k) (haxes : ∀ i, (P.axis i).length = m) :
     P.carrier.card ≤ m ^ k := by
-  classical
   have hcarrier : P.carrier = Fintype.piFinset (fun i => (P.axis i).carrier) := by
     ext x
     simp [Box.carrier]
@@ -1030,8 +1017,7 @@ private lemma prop177_parity_product_closed (n : Nat) (z : Complex) :
       rw [prop177_parity_product_succ]
       simp [parityConj, boolWeight, countWhere, Complex.mul_conj']
   | succ n ih =>
-      rw [prop177_parity_product_succ, ih]
-      rw [← starRingEnd_apply, Complex.conj_ofReal]
+      rw [prop177_parity_product_succ, ih, ← starRingEnd_apply, Complex.conj_ofReal]
       push_cast
       rw [pow_succ]
       ring
@@ -1041,7 +1027,6 @@ private lemma prop177_singleton_cube_sum {N n : Nat} [NeZero N]
     (∑ x : Point N (n + 1), ∑ s : ZMod N,
       cubeDifference (restrictToCell {t} f) x s) =
       ((‖f t‖ ^ ((2 : Nat) ^ (n + 1)) : Real) : Complex) := by
-  classical
   let h := restrictToCell {t} f
   rw [← constant_cubeForm_eq_sum_cubeDifference h]
   unfold cubeForm
@@ -1097,14 +1082,12 @@ private def prop177SingletonCells (N : Nat) : Fin N → ModAP N :=
 
 private lemma prop177_singleton_partition (N : Nat) [NeZero N] :
     IsPartition (fun i : Fin N => (prop177SingletonCells N i).carrier) Finset.univ := by
-  classical
   constructor
   · intro x
     simp only [Finset.mem_univ, true_iff]
     let i : Fin N := (prop177FinZModEquiv N).symm x
     refine ⟨i, ?_⟩
-    rw [prop177SingletonCells, modInterval_one_carrier]
-    rw [Finset.mem_singleton]
+    rw [prop177SingletonCells, modInterval_one_carrier, Finset.mem_singleton]
     exact (prop177FinZModEquiv N).apply_symm_apply x |>.symm
   · intro i j hij
     change Disjoint (modInterval N (i : ZMod N) 1).carrier
@@ -1499,7 +1482,6 @@ private lemma prop177_box_carrier_eq_image {N k m : Nat} [NeZero N]
     (P : Box N k) (haxes : ∀ i, (P.axis i).length = m) :
     P.carrier = (Finset.univ : Finset (prop177BoxParameter k m)).image
       (prop177BoxPoint P) := by
-  classical
   ext x
   simp only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and,
     Finset.mem_image]
@@ -1566,8 +1548,7 @@ private lemma prop177_affine_cubeArgument {N k : Nat}
     apply Finset.sum_congr rfl
     intro i _
     cases e i <;> simp
-  rw [hsum]
-  rw [mul_sub, Finset.mul_sum]
+  rw [hsum, mul_sub, Finset.mul_sum]
   have hmul :
       (∑ i : Fin k, if e i then d * a i else 0) =
         ∑ i : Fin k, d * (if e i then a i else 0) := by
@@ -1648,7 +1629,6 @@ private lemma prop177_sum_centered_le_univ {N k m h : Nat} [NeZero N]
     (hG : ∀ a, 0 ≤ G a) :
     (∑ u : prop177BoxParameter k m, G (prop177CenteredPoint h u)) ≤
       ∑ a : Point N k, G a := by
-  classical
   rw [← Finset.sum_image
     (prop177_centeredPoint_injective (N := N) (k := k) (h := h) hmN).injOn]
   apply Finset.sum_le_sum_of_subset_of_nonneg (Finset.subset_univ _)
@@ -1971,7 +1951,6 @@ private lemma prop177_mapCell_mem_iff {N : Nat} [NeZero N]
     (Q : ModAP N) (u : ZMod N) :
     d * u - offset ∈ (prop177MapCell d offset Q).carrier ↔
       u ∈ Q.carrier := by
-  classical
   unfold prop177MapCell ModAP.carrier
   simp only [Finset.mem_image, Finset.mem_univ, true_and]
   constructor
@@ -2012,8 +1991,7 @@ private lemma prop177_cubeArgument_affine {N q : Nat}
     apply Finset.sum_congr rfl
     intro i _
     cases e i <;> simp
-  rw [hsum]
-  rw [mul_sub, Finset.mul_sum]
+  rw [hsum, mul_sub, Finset.mul_sum]
   ring
 
 private lemma prop177_constantCubeForm_affine {N q : Nat} [NeZero N]
@@ -2109,7 +2087,6 @@ private lemma prop177_mapCell_carrier {N : Nat} [NeZero N]
     [Fact N.Prime] (d offset : ZMod N) (hd : d ≠ 0) (Q : ModAP N) :
     (prop177MapCell d offset Q).carrier =
       Q.carrier.image (fun u => d * u - offset) := by
-  classical
   ext x
   let e := prop177AffineEquiv d offset hd
   let u := e.symm x
@@ -2129,7 +2106,6 @@ private lemma prop177_output_partition {N M : Nat} [NeZero N]
     IsPartition
       (fun i : Fin M => (prop177OutputCell N M d offset i).carrier)
       Finset.univ := by
-  classical
   let e := prop177AffineEquiv d offset hd
   constructor
   · intro x
@@ -2165,10 +2141,8 @@ private lemma prop177_output_partition {N M : Nat} [NeZero N]
 private lemma prop177_output_proper {N M : Nat} [NeZero N]
     [Fact N.Prime] (hM : 0 < M) (d offset : ZMod N) (hd : d ≠ 0)
     (i : Fin M) : (prop177OutputCell N M d offset i).IsProper := by
-  classical
   unfold ModAP.IsProper prop177OutputCell
-  rw [prop177_mapCell_carrier d offset hd]
-  rw [Finset.card_image_iff.mpr]
+  rw [prop177_mapCell_carrier d offset hd, Finset.card_image_iff.mpr]
   · exact prop177_balancedCell_isProper hM i
   · intro x _ y _ hxy
     apply (prop177AffineEquiv d offset hd).injective

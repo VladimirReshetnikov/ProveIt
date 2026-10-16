@@ -62,7 +62,6 @@ private lemma cor1014_symmetric_multiples_subset {N : Nat} [NeZero N]
     (m : Nat) (hm : 0 < m) (d : ZMod N)
     (hd : d ∈ bohr K (zeta / m)) :
     section10SymmetricMultiples d m ⊆ bohr K zeta := by
-  classical
   intro z hz
   rw [section10SymmetricMultiples, Finset.mem_image] at hz
   obtain ⟨j, hj, rfl⟩ := hz
@@ -129,7 +128,6 @@ private lemma cor1014_zero_mem_symmetric {N : Nat} (d : ZMod N) (m : Nat) :
 
 /- **Gowers, Corollary 10.14.** -/
 theorem corollary_10_14_holds : corollary_10_14 := by
-  classical
   intro N _ X _ _ D phi K zeta Y psi1 hprime hmodel m hm d hd
   obtain ⟨hpsi, hagree⟩ := hmodel
   by_cases hY : Y.Nonempty

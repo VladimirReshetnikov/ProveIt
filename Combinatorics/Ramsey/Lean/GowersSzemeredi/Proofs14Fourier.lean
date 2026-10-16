@@ -365,7 +365,6 @@ private lemma prop141_correlation_eq {N p : Nat} [NeZero N]
     correlation (prop141A f y x u w) (prop141B lambda sigma u) s =
       ∑ h : ZMod N, prop141InnerTerm lambda f sigma y
         (fun i => s + x i) u (fun i => s + w i) h := by
-  classical
   simp only [correlation]
   rw [← (prop141AddRightEquiv s).sum_comp]
   simp only [prop141AddRightEquiv_apply, add_sub_cancel_right]
@@ -802,7 +801,6 @@ private lemma prop141_weight_eq_energy {N p : Nat} [NeZero N]
     (lambda : ZMod N → Real) (sigma : Fin p → ZMod N → ZMod N) :
     simultaneouslyAdditiveWeight lambda sigma =
       weightedSimultaneousAdditiveEnergy Finset.univ lambda sigma := by
-  classical
   unfold simultaneouslyAdditiveWeight weightedSimultaneousAdditiveEnergy
   apply Fintype.sum_equiv
       ({ toFun q := ![q 0, q 3, q 2, q 1]
@@ -877,8 +875,7 @@ private lemma prop141_fourthB_total_eq_energy {N p : Nat} [NeZero N]
             rw [prop141_fourthB_eq_weight]
     _ = (N : Real) ^ (4 * p + 1) *
         weightedSimultaneousAdditiveEnergy Finset.univ lambda sigma := by
-          rw [prop141_weight_eq_energy]
-          rw [show 4 * p + 1 = 3 * p + (p + 1) by omega, pow_add]
+          rw [prop141_weight_eq_energy, show 4 * p + 1 = 3 * p + (p + 1) by omega, pow_add]
           ring
 
 /-- Proposition 14.1 follows by expanding the squared Fourier coefficients,

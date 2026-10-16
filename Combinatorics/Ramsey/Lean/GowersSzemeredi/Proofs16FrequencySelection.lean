@@ -17,7 +17,6 @@ theorem section16_large_frequency_graph {N k : Nat} [NeZero N]
       alpha / 2 * (N : Real) ^ k ≤ B.card ∧
       HasProductProperty B phi (alpha / 2) ∧
       ∀ y ∈ B, alpha / 2 * N ≤ ‖fourier (cubeDifference f y) (phi y)‖ := by
-  classical
   have hahalf : 0 < alpha / 2 := by positivity
   have hahalfOne : alpha / 2 ≤ 1 := by linarith
   obtain ⟨hi_ii, hii_iii, _, _, _, hvi_iii, _, hvii_vi⟩ :=

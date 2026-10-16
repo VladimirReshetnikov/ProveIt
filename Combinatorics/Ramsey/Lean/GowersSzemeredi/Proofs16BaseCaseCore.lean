@@ -47,7 +47,6 @@ private def inflatedSingletonBox {N : Nat} (x : Point N 1) (L : Nat) : Box N 1 w
 @[simp] private lemma inflatedSingletonBox_carrier {N : Nat} [NeZero N]
     (x : Point N 1) (L : Nat) (hL : 0 < L) :
     (inflatedSingletonBox x L).carrier = {x} := by
-  classical
   ext y
   simp only [Box.carrier, inflatedSingletonBox, Finset.mem_filter,
     Finset.mem_univ, true_and, ModAP.carrier, Finset.mem_image,
@@ -69,7 +68,6 @@ representing box is necessarily improper. -/
 theorem exists_improper_singleton_box_of_width {N L : Nat} [NeZero N]
     (x : Point N 1) (hL : 2 ≤ L) :
     ∃ P : Box N 1, P.carrier = {x} ∧ P.width = L ∧ ¬ P.IsProper := by
-  classical
   refine ⟨inflatedSingletonBox x L,
     inflatedSingletonBox_carrier x L (by omega),
     inflatedSingletonBox_width x L, ?_⟩

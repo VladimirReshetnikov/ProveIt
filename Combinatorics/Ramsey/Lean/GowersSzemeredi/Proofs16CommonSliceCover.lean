@@ -28,7 +28,6 @@ theorem FinalCoordinateSectionsMultiplyLinear.common_cover {N k r : Nat} [NeZero
       ∀ j h, h ∈ (Q j).carrier → h ∈ H → ∀ i,
         appendCoordinate h (sample i) ∈ B →
         ∃ u, phi (appendCoordinate h (sample i)) = mu j u h := by
-  classical
   let Gamma := fun i : Fin r => partialGraph (section16FinalCoordinateSection B (sample i))
     (section16FinalCoordinateRestriction phi (sample i))
   have hGamma : ∀ i, ProperMultiplyLinear gamma s (Gamma i) := fun i => hsections (sample i)
@@ -65,7 +64,6 @@ theorem Section16AnchoredOn.common_slice_cover {N k r : Nat} [NeZero N]
       ∀ j h, h ∈ (Q j).carrier → h ∈ H → ∀ x,
         appendCoordinate h x ∈ D → appendCoordinate h x ∈ F →
         ∃ ij, phi (appendCoordinate h x) = nu j ij (appendCoordinate h x) := by
-  classical
   obtain ⟨p, H, M, Q, mu, hH, hm, hQ, hproper, hp, hw, hmu, hc⟩ :=
     hsections.common_cover sample hr hs ε hε hε1 T hT
   have hj : ∀ j, ∃ nu : (Fin r × Fin r × Fin p × Fin p) → Point N (k + 1) → ZMod N,

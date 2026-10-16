@@ -25,7 +25,6 @@ private theorem constant_box_partition {N k : Nat} [NeZero N]
     ∃ M : Nat, ∃ Q : Fin M → Box N k,
       IsBoxPartition Q P ∧ (∀ j, (Q j).IsProper) ∧ (∀ j, W ≤ (Q j).width) ∧
       ∀ j, diameterAtMostReal ((Q j).carrier.image f) D := by
-  classical
   refine ⟨1, fun _ => P, ?_, fun _ => hP, fun _ => hW, ?_⟩
   · constructor
     · intro x; simp

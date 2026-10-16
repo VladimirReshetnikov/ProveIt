@@ -34,7 +34,6 @@ theorem section16PhiRemainder_two {N : Nat} [NeZero N] (phi : Point N 3 → ZMod
     (x0 : Point N 2) (z : Point N 3) :
     section16PhiRemainder phi x0 z = section16TranslatedVertex phi x0 vTF z +
       section16TranslatedVertex phi x0 vFT z - section16TranslatedVertex phi x0 (fun _ => false) z := by
-  classical
   unfold section16PhiRemainder
   rw [show (Finset.univ.filter fun e : Fin 2 → Bool => e ≠ fun _ => true) =
       {fun _ => false, vTF, vFT} by decide]

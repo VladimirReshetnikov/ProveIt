@@ -22,7 +22,6 @@ theorem lastProductSet_partition {N k M : Nat} [NeZero N]
     (A : Fin M → Finset (Point N k)) (S : Finset (Point N k))
     (I : Finset (ZMod N)) (hpart : IsPartition A S) :
     IsPartition (fun j => lastProductSet (A j) I) (lastProductSet S I) := by
-  classical
   constructor
   · intro x
     simp only [lastProductSet, Finset.mem_filter, Finset.mem_univ, true_and]
@@ -65,7 +64,6 @@ theorem proper_retiled_product_of_recurrence {N k q v : Nat} [NeZero N]
       ∀ a j x, x ∈ (T j).carrier →
         (centeredAbs (mu a x * (J j).step) : Real) ≤
           error * N := by
-  classical
   obtain ⟨M, R, hpart, hproper, hwidth, hsmall⟩ :=
     hrec
   have hfit (j : Fin M) : v ^ 2 ≤ (R j).width - 1 := by

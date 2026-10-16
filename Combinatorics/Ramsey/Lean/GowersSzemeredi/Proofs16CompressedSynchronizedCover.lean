@@ -36,7 +36,6 @@ theorem Section16SampledOrAnchoredOn.synchronized_compressed_cover {N k r m v : 
       (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
       (∀ j ij, IsMultilinear (nu j ij)) ∧
       ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z := by
-  classical
   let Gamma := fun i : Fin r => partialGraph (section16FinalCoordinateSection B (sample i))
     (section16FinalCoordinateRestriction phi (sample i))
   have hGamma : ∀ i, ProperMultiplyLinear gamma s (Gamma i) := fun i => hsections (sample i)

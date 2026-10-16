@@ -31,7 +31,6 @@ theorem section16GoodDomain_inter {N k : Nat} [NeZero N]
     (Y : (h : Point N k) → Finset (Section16CubeElement B h)) (x0 : Point N k) :
     section16GoodDomain B (H ∩ J) Y x0 =
       (section16GoodDomain B H Y x0).filter fun z => section16Init z ∈ J := by
-  classical
   ext z
   simp only [section16GoodDomain, Section16GoodInducedPair, Finset.mem_filter,
     Finset.mem_univ, true_and, Finset.mem_inter]
@@ -55,7 +54,6 @@ theorem section16_final_freiman_families_of_product {N : Nat} [Fact N.Prime]
       (∀ t, ((section16FinalCoordinateSection B t).card : Real) - theta * N ≤ (C t).card) ∧
       Section16FinalFreimanFamilies (section16BaseFamilyBound gamma theta)
         (B.filter fun z => section16Init z ∈ C (section16Last z)) phi := by
-  classical
   have hsl : ∀ t : ZMod N, HasProductProperty (section16FinalCoordinateSection B t)
       (section16FinalCoordinateRestriction phi t) gamma := by
     intro t
@@ -90,7 +88,6 @@ theorem Section16FinalFreimanFamilies.of_translate {N q : Nat} [NeZero N]
     (D : Finset (Point N 2))
     (hD : ∀ z ∈ D, appendCoordinate (section16Init z + x0) (section16Last z) ∈ Bs) :
     Section16FinalFreimanFamilies q D (section16PhiOne phi x0) := by
-  classical
   intro t
   have hp := (h t).translate (-x0)
   have heq : (fun y => section16FinalCoordinateRestriction phi t (y - -x0)) =
@@ -119,7 +116,6 @@ theorem card_translated_slice_bad_le_succ {N k : Nat} [NeZero N] {theta : Real}
         appendCoordinate (section16Init z + x0) (section16Last z) ∈ B ∧
           section16Init z + x0 ∉ C (section16Last z)).card : Real) ≤
       theta * (N : Real) ^ (k + 1) := by
-  classical
   set X := (Finset.univ : Finset (Point N (k + 1))).filter fun z =>
     appendCoordinate (section16Init z + x0) (section16Last z) ∈ B ∧
       section16Init z + x0 ∉ C (section16Last z) with _

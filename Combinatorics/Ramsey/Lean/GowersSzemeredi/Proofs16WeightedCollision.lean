@@ -18,7 +18,6 @@ theorem weightedCollisionEnergy_eq_sum_sq {X Y : Type*} [DecidableEq Y]
     (hmap : ∀ x ∈ S, f x ∈ T) :
     weightedCollisionEnergy S f w =
       ∑ y ∈ T, (∑ x ∈ S, if f x = y then w x else 0) ^ 2 := by
-  classical
   symm
   simp_rw [pow_two, Finset.sum_mul, Finset.mul_sum]
   rw [Finset.sum_comm]
@@ -42,7 +41,6 @@ theorem weightedCollisionEnergy_mass_bound {X Y : Type*} [DecidableEq Y]
     (S : Finset X) (T : Finset Y) (f : X → Y) (w : X → Real)
     (hmap : ∀ x ∈ S, f x ∈ T) :
     (∑ x ∈ S, w x) ^ 2 ≤ (T.card : Real) * weightedCollisionEnergy S f w := by
-  classical
   have hsum : (∑ y ∈ T, ∑ x ∈ S, if f x = y then w x else 0) = ∑ x ∈ S, w x := by
     rw [Finset.sum_comm]
     apply Finset.sum_congr rfl
@@ -56,7 +54,6 @@ theorem weightedCollisionEnergy_mass_bound {X Y : Type*} [DecidableEq Y]
 theorem weightedCollisionEnergy_nonneg {X Y : Type*} [DecidableEq Y]
     (S : Finset X) (f : X → Y) (w : X → Real) :
     0 ≤ weightedCollisionEnergy S f w := by
-  classical
   rw [weightedCollisionEnergy_eq_sum_sq S (S.image f) f w (fun x hx => Finset.mem_image.mpr ⟨x, hx, rfl⟩)]
   exact Finset.sum_nonneg (fun _ _ => sq_nonneg _)
 

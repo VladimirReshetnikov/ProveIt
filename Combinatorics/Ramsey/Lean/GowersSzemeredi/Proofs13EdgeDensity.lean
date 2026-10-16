@@ -84,7 +84,6 @@ theorem section13_edge_density_bounds {N : Nat} [NeZero N]
     (S : Section13Context N) (h : ZMod N) (hh : IsStrongHeight S h) :
     0 < section13EdgeDensity S h ∧
       S.alpha ^ 32 / 16 ≤ section13EdgeDensity S h ∧ section13EdgeDensity S h ≤ S.alpha := by
-  classical
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hlo : S.alpha ^ 32 / 16 ≤ section13EdgeDensity S h := by
     apply (le_div_iff₀ (pow_pos hN 2)).mpr

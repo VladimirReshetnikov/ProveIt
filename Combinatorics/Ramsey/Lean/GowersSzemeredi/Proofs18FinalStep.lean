@@ -230,7 +230,6 @@ theorem modulus_conditions (hV : 1 ≤ P.V) (hK : 2 ≤ P.K) (hp : 0 < P.p) {alp
     SinglePieceModulusConditionsFJ (fun l => uCount P.V (uDegT3 l)) (fun l => uExp P.V (uDegT3 l))
       alpha P.k (familyRecExp P.k P.p) (familyRecThr P.k P.K P.p)
       (P.Eloc alpha) N := by
-  classical
   obtain ⟨hρ, ⟨hEm, -⟩, ⟨hEth, -⟩, ⟨haN, -⟩, ⟨hb, -⟩, hζ⟩ :=
     P.ranges hp ha haHalf
   obtain ⟨he, -, hF, -, hmE, -⟩ := P.Eloc_pos_le hV hp ha haHalf

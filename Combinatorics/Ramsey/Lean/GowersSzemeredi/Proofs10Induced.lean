@@ -20,7 +20,6 @@ namespace LeanProofs.GowersSzemeredi
 @[simp] private lemma mem_inducedTranslate_iff {N : Nat}
     (A : Finset (ZMod N)) (d x : ZMod N) :
     x ∈ section10Translate A d ↔ x - d ∈ A := by
-  classical
   unfold section10Translate
   constructor
   · intro hx

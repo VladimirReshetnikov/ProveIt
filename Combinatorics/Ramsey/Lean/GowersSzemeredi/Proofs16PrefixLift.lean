@@ -20,7 +20,6 @@ def prefixDomain {N l d : Nat} [NeZero N] (h : l ≤ d) (B : Finset (Point N l))
 @[simp] theorem mem_prefixDomain {N l d : Nat} [NeZero N]
     (h : l ≤ d) (B : Finset (Point N l)) (z : Point N d) :
     z ∈ prefixDomain h B ↔ coordinatePrefix h z ∈ B := by
-  classical
   simp [prefixDomain]
 
 /-- Any number of unused final coordinates can be added with the same
@@ -32,7 +31,6 @@ theorem MultiplyLinearFunction.lift_prefix {N l d : Nat} [NeZero N] [Fact N.Prim
     (hgraphs : ((3 ^ d : Nat) : Real) ≤ s) (hld : l ≤ d) :
     MultiplyLinearFunction gamma s (prefixDomain hld B)
       (fun z => phi (coordinatePrefix hld z)) := by
-  classical
   by_cases hl : l = 0
   · subst l
     have heq : (fun z : Point N d => phi (coordinatePrefix hld z)) =

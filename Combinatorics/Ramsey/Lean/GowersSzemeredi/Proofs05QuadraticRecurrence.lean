@@ -13,7 +13,6 @@ theorem quadratic_recurrence {N R : Nat} [NeZero N] (a : ZMod N)
     (hR : 2 ≤ R) (hN : 2 ^ 256 * R ^ 16 ≤ N) :
     ∃ p : Nat, 1 ≤ p ∧ p ≤ 2 ^ 256 * R ^ 16 ∧
       (centeredAbs (((p : ZMod N) ^ 2) * a) : Real) < (N : Real) / R := by
-  classical
   let t := 2 ^ 256 * R ^ 16
   have htlarge : 4 * R ≤ t := quadraticRecurrenceSample_nat_large hR
   have ht : 2 ≤ t := by omega

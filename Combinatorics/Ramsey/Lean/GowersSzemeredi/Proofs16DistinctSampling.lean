@@ -173,7 +173,6 @@ theorem section16_singleton_failure_set {α : Type*} [Fintype α] [DecidableEq �
     (r : Nat) (a : α) :
     Finset.univ.filter (fun sample : Fin r → α =>
       ¬ section16SampleHasDistinctPair {a} sample) = Finset.univ := by
-  classical
   ext sample
   simp [section16SampleHasDistinctPair_singleton]
 
@@ -183,7 +182,6 @@ theorem section16_singleton_failure_probability {α : Type*}
     ((Finset.univ.filter (fun sample : Fin r → α =>
       ¬ section16SampleHasDistinctPair {a} sample)).card : ℚ) /
       Fintype.card (Fin r → α) = 1 := by
-  classical
   letI : Nonempty α := ⟨a⟩
   rw [section16_singleton_failure_set, Finset.card_univ]
   exact div_self (by exact_mod_cast Fintype.card_ne_zero)

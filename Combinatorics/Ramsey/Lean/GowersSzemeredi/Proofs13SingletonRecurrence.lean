@@ -11,7 +11,6 @@ theorem exists_nonzero_small_multiples {N q L : Nat} [NeZero N]
     (a : Fin q → ZMod N) {e : Real} (he : 0 < e) (hqe : 2 * (q : Real) * e ≤ 1) :
     ∃ d : ZMod N, d != 0 ∧ ∀ i,
       (centeredAbs (a i * d) : Real) ≤ (L : Real) ^ (-e) * N := by
-  classical
   let delta := (L : Real) ^ (-e)
   have hL0 : (0 : Real) < L := by exact_mod_cast hL
   have hL1 : (1 : Real) ≤ L := by exact_mod_cast hL

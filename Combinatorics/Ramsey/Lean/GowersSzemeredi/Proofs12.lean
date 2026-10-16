@@ -259,7 +259,6 @@ private lemma prop121_correlation_eq {N p : Nat} [NeZero N]
     (u v : Fin p → ZMod N) (s : ZMod N) :
     correlation (prop121A f u v) (prop121B lambda phi u) (-s) =
       ∑ k : ZMod N, prop121InnerTerm lambda f phi u (fun i => s - v i) k := by
-  classical
   simp only [correlation, prop121A, prop121B, prop121InnerTerm]
   rw [← (Equiv.subRight s).sum_comp]
   simp only [Equiv.subRight_apply, sub_neg_eq_add, sub_add_cancel, star_mul,

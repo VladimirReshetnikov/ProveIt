@@ -31,7 +31,6 @@ theorem Section16SampledOrAnchoredOn.product_slice_cover {N k r : Nat} [NeZero N
       ∀ j h, h ∈ (Q j).carrier → ∀ x,
         appendCoordinate h x ∈ D → appendCoordinate h x ∈ G →
         ∃ ij, phi (appendCoordinate h x) = nu j ij (appendCoordinate h x) := by
-  classical
   obtain ⟨p, H, M, Q, mu, hH, hm, hQ, hproper, hp, hw, hmu, hc⟩ :=
     hsections.common_cover sample hr hs ε hε hε1 T hT
   have hj : ∀ j, ∃ nu : ((Fin r × Fin p) ⊕ (Fin r × Fin r × Fin p × Fin p)) →

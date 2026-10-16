@@ -90,7 +90,6 @@ theorem section16_poly_piece_three_data
     Nonempty (PolyPieceThreeData Gamma (section16Zeta theta gamma 2)
       (3 * threeBudget theta gamma) (threeBudget theta gamma) (threeDelta theta gamma)
       (threeBudget theta gamma) gamma (threeFaceCount theta gamma)) := by
-  classical
   obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds 2 ht ht1 hg hg1
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le 2 ht ht1 hg hg1
   have hθ'pos : 0 < threeBudget theta gamma := by unfold threeBudget; positivity

@@ -33,7 +33,6 @@ def relationSum {N k : Nat} [NeZero N] (Gamma1 Gamma2 : Finset (Point N k × ZMo
 theorem mem_relationSum {N k : Nat} [NeZero N] {Gamma1 Gamma2 : Finset (Point N k × ZMod N)}
     {x : Point N k} {y : ZMod N} (h : (x, y) ∈ relationSum Gamma1 Gamma2) :
     ∃ y1 y2, (x, y1) ∈ Gamma1 ∧ (x, y2) ∈ Gamma2 ∧ y = y1 + y2 := by
-  classical
   unfold relationSum at h
   obtain ⟨⟨⟨x1, y1⟩, ⟨x2, y2⟩⟩, hp, heq⟩ := Finset.mem_image.mp h
   obtain ⟨hp, hx⟩ := Finset.mem_filter.mp hp
@@ -45,7 +44,6 @@ theorem mem_relationSum {N k : Nat} [NeZero N] {Gamma1 Gamma2 : Finset (Point N 
 
 theorem relationSum_mono {N k : Nat} [NeZero N] {G1 G2 G1' G2' : Finset (Point N k × ZMod N)}
     (h1 : G1 ⊆ G1') (h2 : G2 ⊆ G2') : relationSum G1 G2 ⊆ relationSum G1' G2' := by
-  classical
   intro z hz
   obtain ⟨x, y⟩ := z
   obtain ⟨y1, y2, hy1, hy2, rfl⟩ := mem_relationSum hz
@@ -81,7 +79,6 @@ theorem MultiplyLinearWith.relationSum {N k : Nat} [NeZero N]
     (hE2 : ∀ s, 0 < s → s ≤ 1 → 0 ≤ E2 s) :
     MultiplyLinearWith (fun s => Q1 (lam * s) * Q2 ((1 - lam) * s))
       (fun s => E1 (lam * s) * E2 ((1 - lam) * s)) (relationSum Gamma1 Gamma2) := by
-  classical
   intro s hs hs1 P hP
   have ha : 0 < lam * s := mul_pos hl hs
   have ha1 : lam * s ≤ 1 := by nlinarith [mul_le_mul_of_nonneg_right hl1.le hs.le]
@@ -138,7 +135,6 @@ def relationScale {N k : Nat} [NeZero N] (c : ZMod N) (Gamma : Finset (Point N k
 theorem MultiplyLinearWith.relationScale {N k : Nat} [NeZero N] {Q E : Real → Real}
     {Gamma : Finset (Point N k × ZMod N)} (h : MultiplyLinearWith Q E Gamma) (c : ZMod N) :
     MultiplyLinearWith Q E (relationScale c Gamma) := by
-  classical
   intro s hs hs1 P hP
   obtain ⟨M, q, H, R, mu, hH, hmass, hpart, hproper, hq, hwidth, hmu, hcover⟩ :=
     h s hs hs1 P hP

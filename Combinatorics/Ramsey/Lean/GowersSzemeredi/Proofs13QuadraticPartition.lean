@@ -52,7 +52,6 @@ theorem stage135_select_weighted_cell {N M : Nat} [NeZero N]
       (goodHeightWeight S D.H : Real)) :
     ∃ j, S.alpha ^ 32 * (N : Real) ^ 31 * (Q j).length / 8 ≤
       (goodHeightWeight S ((Q j).carrier ∩ D.H) : Real) := by
-  classical
   have hsum : ∑ j, S.alpha ^ 32 * (N : Real) ^ 31 * (Q j).length / 8 ≤
       ∑ j, (goodHeightWeight S ((Q j).carrier ∩ D.H) : Real) := by
     have hl : ∑ j, (Q j).length = D.P.length := by
@@ -82,7 +81,6 @@ theorem lemma_13_5_with_scale {N : Nat} [NeZero N]
     (hmass : 160 + 2 * S.alpha ^ 32 ≤
       S.alpha ^ 32 * (D.P.length : Real) ^ ((1 : Real) / (2 : Real) ^ (12 * D.q))) :
     ∃ E : Stage135Data N, IsStage135Data S D E := by
-  classical
   let X := (D.P.length : Real) ^ ((1 : Real) / (2 : Real) ^ (12 * D.q))
   let v := Nat.floor X
   have hq : 1 ≤ D.q := h134.1

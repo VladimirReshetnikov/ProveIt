@@ -29,7 +29,6 @@ on the interval function. All cubes leaving the interval have zero weight. -/
 theorem cubeForm_intervalExtension {N L d : Nat} [NeZero N]
     (hsize : (d + 1) * L ≤ N) (g : Fin L → Complex) :
     cubeForm (fun _ : Fin d → Bool => intervalExtension N g) = intervalCubeForm d g := by
-  classical
   have hL : L ≤ N := (Nat.le_mul_of_pos_left L (by omega)).trans hsize
   let F : Point N d × ZMod N → Complex := fun p =>
     ∏ e : Fin d → Bool, parityConj e (intervalExtension N g (cubeArgument p.2 p.1 e))

@@ -10,7 +10,6 @@ namespace LeanProofs.GowersSzemeredi
 The endpoints are chosen from the first and last surviving indices. -/
 theorem NatAP.exists_inter_Ico (P : NatAP) (hP : P.IsProper) (a b : Nat) :
     ∃ Q : NatAP, Q.IsProper ∧ Q.carrier = P.carrier ∩ Finset.Ico a b := by
-  classical
   let I : Finset (Fin P.length) := Finset.univ.filter (fun i => a ≤ P.index i ∧ P.index i < b)
   by_cases hI : I.Nonempty
   · let u := I.min' hI
@@ -73,7 +72,6 @@ progressions. The lower bound is required only on actual carrier points. -/
 theorem NatAP.exists_image_add_sub (P : NatAP) (hP : P.IsProper) (a b : Nat)
     (hlo : ∀ x ∈ P.carrier, b ≤ a + x) :
     ∃ Q : NatAP, Q.IsProper ∧ Q.carrier = P.carrier.image (fun x => a + x - b) := by
-  classical
   by_cases hlen : P.length = 0
   · refine ⟨⟨0, 1, 0⟩, NatAP.isProper_of_step_pos _ (by decide), ?_⟩
     have hempty : P.carrier = ∅ := Finset.card_eq_zero.mp (hP.2.trans hlen)

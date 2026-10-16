@@ -19,12 +19,10 @@ def NatAP.pullback (Q : NatAP) (A : Finset Nat) : Finset (Fin Q.length) :=
 
 @[simp] theorem NatAP.mem_pullback (Q : NatAP) (A : Finset Nat) (i : Fin Q.length) :
     i ∈ Q.pullback A ↔ Q.index i ∈ A := by
-  classical
   simp [NatAP.pullback]
 
 theorem NatAP.image_pullback (Q : NatAP) (A : Finset Nat) :
     (Q.pullback A).image Q.index = A ∩ Q.carrier := by
-  classical
   ext x
   simp only [Finset.mem_image, NatAP.mem_pullback, Finset.mem_inter]
   constructor
@@ -41,7 +39,6 @@ theorem NatAP.card_pullback (Q : NatAP) (hQ : Q.IsProper) (A : Finset Nat) :
 /-- Reindexing cannot introduce a progression that was absent originally. -/
 theorem NatAP.hasNatAP_of_pullback {k : Nat} (Q : NatAP) (hQ : Q.IsProper)
     (A : Finset Nat) (hAP : HasNatAP ((Q.pullback A).image Fin.val) k) : HasNatAP A k := by
-  classical
   obtain ⟨a, d, hd, hAP⟩ := hAP
   refine ⟨Q.start + a * Q.step, d * Q.step, Nat.mul_pos hd hQ.1, ?_⟩
   intro i hi

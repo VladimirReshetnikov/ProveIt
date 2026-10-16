@@ -74,7 +74,6 @@ theorem section5_strong_partition_degree_step {k : Nat} (hk : 1 ≤ k)
       ∀ j, diameterAtMostReal
         ((P j).carrier.image fun x : Nat => phi (x : ZMod N))
         ((r : Real) ^ (-(2 * (polynomialPartitionConstant (k + 1) : Real)⁻¹)) * N) := by
-  classical
   obtain ⟨a, hdecompose⟩ := polynomialOn_affine_degree_drop phi hphi
   obtain ⟨p, hp, hp2, hrec⟩ :=
     lemma_5_5_square_root_auxiliary_holds (k + 1) r N (by omega)

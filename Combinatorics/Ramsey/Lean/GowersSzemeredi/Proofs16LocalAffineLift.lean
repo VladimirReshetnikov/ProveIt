@@ -33,7 +33,6 @@ theorem section16_local_affine_lift {N k q r m v : Nat} [Fact N.Prime]
       IsBoxPartition S P ∧ (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
       (∀ j ij, IsMultilinear (nu j ij)) ∧
       ∀ j z, z ∈ (S j).carrier → z ∈ D → z ∈ G → ∃ ij, phi z = nu j ij z := by
-  classical
   let T := boxInit P
   let I := P.axis (Fin.last k)
   have hT : T.IsProper := boxInit_isProper P hP

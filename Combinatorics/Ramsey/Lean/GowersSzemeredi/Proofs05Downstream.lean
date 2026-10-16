@@ -53,7 +53,6 @@ theorem section5_modIndexPoint_natCast {N : Nat} (P : ModAP N) (t : Nat) :
 
 theorem section5_carrier_eq_image_range {N : Nat} (P : ModAP N) :
     P.carrier = (Finset.range P.length).image (section5IndexPoint P) := by
-  classical
   ext x
   unfold ModAP.carrier section5IndexPoint
   simp only [Finset.mem_image, Finset.mem_univ, true_and, Finset.mem_range]
@@ -66,7 +65,6 @@ theorem section5_carrier_eq_image_range {N : Nat} (P : ModAP N) :
 theorem section5Transport_carrier {N : Nat} (P : ModAP N) (R : NatAP) :
     (section5Transport P R).carrier =
       R.carrier.image (section5IndexPoint P) := by
-  classical
   ext x
   simp only [ModAP.carrier, NatAP.carrier, section5Transport,
     section5IndexPoint, Finset.mem_image, Finset.mem_univ, true_and]
@@ -83,14 +81,12 @@ theorem section5Transport_carrier {N : Nat} (P : ModAP N) (R : NatAP) :
 theorem section5Transport_subset {N : Nat} (P : ModAP N) (R : NatAP)
     (hR : R.carrier ⊆ Finset.range P.length) :
     (section5Transport P R).carrier ⊆ P.carrier := by
-  classical
   rw [section5Transport_carrier, section5_carrier_eq_image_range]
   exact Finset.image_mono _ hR
 
 theorem section5IndexPoint_injective_on_range {N : Nat} [NeZero N]
     (P : ModAP N) (hP : P.IsProper) :
     Set.InjOn (section5IndexPoint P) (Finset.range P.length : Set Nat) := by
-  classical
   rw [ModAP.IsProper, section5_carrier_eq_image_range] at hP
   have hinj : Set.InjOn (section5IndexPoint P)
       (Finset.range P.length : Set Nat) := by
@@ -102,7 +98,6 @@ theorem section5Transport_isProper {N : Nat} [NeZero N]
     (P : ModAP N) (R : NatAP) (hP : P.IsProper) (hR : R.IsProper)
     (hsub : R.carrier ⊆ Finset.range P.length) :
     (section5Transport P R).IsProper := by
-  classical
   rw [ModAP.IsProper, section5Transport_carrier,
     Finset.card_image_iff.mpr]
   · exact hR.2
@@ -114,9 +109,7 @@ theorem section5Transport_sum {N : Nat} [NeZero N]
     (hsub : R.carrier ⊆ Finset.range P.length) (g : ZMod N → Complex) :
     (∑ x ∈ (section5Transport P R).carrier, g x) =
       ∑ t ∈ R.carrier, g (section5IndexPoint P t) := by
-  classical
-  rw [section5Transport_carrier]
-  rw [Finset.sum_image]
+  rw [section5Transport_carrier, Finset.sum_image]
   intro x hx y hy hxy
   exact section5IndexPoint_injective_on_range P hP (hsub hx) (hsub hy) hxy
 
@@ -124,7 +117,6 @@ theorem section5Transport_partition {N M : Nat} [NeZero N]
     (P : ModAP N) (R : Fin M → NatAP) (hP : P.IsProper)
     (hR : IsNatAPPartition R (Finset.range P.length)) :
     IsPartition (fun j => (section5Transport P (R j)).carrier) P.carrier := by
-  classical
   have hinj := section5IndexPoint_injective_on_range P hP
   constructor
   · intro x
@@ -178,7 +170,6 @@ private lemma section5_carrier_eq_order_range_of_le {N : Nat} [NeZero N]
     (P : ModAP N) (horder : addOrderOf P.step ≤ P.length) :
     P.carrier = (Finset.range (addOrderOf P.step)).image
       (section5IndexPoint P) := by
-  classical
   rw [section5_carrier_eq_image_range]
   apply Finset.Subset.antisymm
   · intro x hx
@@ -193,7 +184,6 @@ private lemma section5_carrier_eq_order_range_of_le {N : Nat} [NeZero N]
 
 private lemma section5_carrier_card {N : Nat} [NeZero N] (P : ModAP N) :
     P.carrier.card = min P.length (addOrderOf P.step) := by
-  classical
   by_cases hlength : P.length ≤ addOrderOf P.step
   · have hinj : Set.InjOn (section5IndexPoint P)
         (Finset.range P.length : Set Nat) := by
@@ -219,7 +209,6 @@ def section5Normalize {N : Nat} (P : ModAP N) : ModAP N :=
 
 theorem section5Normalize_carrier {N : Nat} [NeZero N] (P : ModAP N) :
     (section5Normalize P).carrier = P.carrier := by
-  classical
   let t := addOrderOf P.step
   have hcard := section5_carrier_card P
   by_cases hlength : P.length ≤ t
@@ -246,7 +235,6 @@ theorem polynomialOn_affine_pullback {N k : Nat} [NeZero N]
     (hphi : PolynomialOn k Finset.univ phi) :
     PolynomialOn k Finset.univ
       (fun x => phi (a + x * d)) := by
-  classical
   obtain ⟨c, hc⟩ := hphi
   let p : Polynomial (ZMod N) := Polynomial.ofFn (k + 1) c
   have hkpos : 1 ≤ k + 1 := Nat.succ_pos k
@@ -254,8 +242,7 @@ theorem polynomialOn_affine_pullback {N k : Nat} [NeZero N]
     exact Polynomial.ofFn_natDegree_lt hkpos c
   have hpeval (x : ZMod N) :
       p.eval x = ∑ i, c i * x ^ (i : Nat) := by
-    rw [Polynomial.eval_eq_sum_range' hpdeg]
-    rw [← Fin.sum_univ_eq_sum_range]
+    rw [Polynomial.eval_eq_sum_range' hpdeg, ← Fin.sum_univ_eq_sum_range]
     apply Finset.sum_congr rfl
     intro i _hi
     change (Polynomial.ofFn (k + 1) c).coeff (i : Nat) * x ^ (i : Nat) = _
@@ -291,8 +278,7 @@ theorem polynomialOn_affine_pullback {N k : Nat} [NeZero N]
         Polynomial.eval_C, Polynomial.eval_mul, Polynomial.eval_X]
       rw [mul_comm d x]
     _ = ∑ i : Fin (k + 1), q.coeff (i : Nat) * x ^ (i : Nat) := by
-      rw [Polynomial.eval_eq_sum_range' hqdeg]
-      rw [← Fin.sum_univ_eq_sum_range]
+      rw [Polynomial.eval_eq_sum_range' hqdeg, ← Fin.sum_univ_eq_sum_range]
 
 theorem polynomialOn_section5ModIndexPoint {N k : Nat} [NeZero N]
     (P : ModAP N) (phi : ZMod N → ZMod N)
@@ -316,7 +302,6 @@ private lemma downstream_sum_partition {X R : Type*} [DecidableEq X]
     [AddCommMonoid R] {m : Nat} (P : Fin m → Finset X) (S : Finset X)
     (hpartition : IsPartition P S) (g : X → R) :
     ∑ j, ∑ x ∈ P j, g x = ∑ x ∈ S, g x := by
-  classical
   have hpair : ((Finset.univ : Finset (Fin m)) : Set (Fin m)).PairwiseDisjoint P := by
     intro i _ j _ hij
     exact hpartition.2 i j (bne_iff_ne.mpr hij)
@@ -380,7 +365,6 @@ theorem section5_local_phase_refinement_of_corollary_5_6
         ‖∑ s ∈ P.carrier, f s * exponential (-(phi s))‖ ≤
           (∑ j, ‖∑ s ∈ (R j).carrier, f s‖) +
             eta / 2 * P.carrier.card := by
-  classical
   have hrPos : 0 < P.length := by
     have hzero : (0 : Real) ≤ polynomialPartitionThreshold k := by positivity
     have : (0 : Real) < P.length := hzero.trans_lt
@@ -498,7 +482,6 @@ private def section5SingletonNatAP (t : Nat) : NatAP where
 
 @[simp] private lemma section5SingletonNatAP_carrier (t : Nat) :
     (section5SingletonNatAP t).carrier = {t} := by
-  classical
   simp [section5SingletonNatAP, NatAP.carrier]
 
 private lemma section5SingletonNatAP_isProper (t : Nat) :
@@ -511,7 +494,6 @@ private lemma section5SingletonNatAP_isProper (t : Nat) :
 private lemma section5SingletonNatAP_partition (r : Nat) :
     IsNatAPPartition (fun i : Fin r => section5SingletonNatAP i)
       (Finset.range r) := by
-  classical
   constructor
   · intro x
     simp only [Finset.mem_range, section5SingletonNatAP_carrier,
@@ -641,7 +623,6 @@ theorem section5_efficient_local_phase_refinement_of_corollary_5_6
         ‖∑ s ∈ P.carrier, f s * exponential (-(phi s))‖ ≤
           (∑ j, ‖∑ s ∈ (R j).carrier, f s‖) +
             eta / 2 * P.carrier.card := by
-  classical
   let K := polynomialPartitionConstant k
   let cutoff : Real := max
     (max (polynomialPartitionThreshold k : Real)
@@ -844,7 +825,6 @@ theorem section5_local_diameter_refinement_of_corollary_5_6
       (∀ j, (R j).IsProper ∧ 0 < (R j).length ∧
         ((R j).length = v - 1 ∨ (R j).length = v)) ∧
       ∀ j, diameterAtMostReal ((R j).carrier.image phi) (eta * N / (4 * Real.pi)) := by
-  classical
   have hrPos : 0 < P.length := by
     have hzero : (0 : Real) ≤ polynomialPartitionThreshold k := by positivity
     have : (0 : Real) < P.length := hzero.trans_lt
@@ -911,7 +891,6 @@ theorem section5_efficient_diameter_refinement_of_corollary_5_6
         (P.carrier.card : Real) ^
           (1 - (polynomialPartitionConstant k : Real)⁻¹) ∧
       ∀ j, diameterAtMostReal ((R j).carrier.image phi) (eta * N / (4 * Real.pi)) := by
-  classical
   let K := polynomialPartitionConstant k
   let cutoff : Real := max
     (max (polynomialPartitionThreshold k : Real)

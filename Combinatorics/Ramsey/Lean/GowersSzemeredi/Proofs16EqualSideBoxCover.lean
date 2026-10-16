@@ -11,7 +11,6 @@ open scoped BigOperators
 
 theorem Box.card_eq_prod_axis_card {N k : Nat} [NeZero N] (P : Box N k) :
     P.carrier.card = ∏ i, (P.axis i).carrier.card := by
-  classical
   have heq : P.carrier = Fintype.piFinset (fun i => (P.axis i).carrier) := by
     ext x
     simp [Box.carrier]
@@ -37,7 +36,6 @@ def Box.equalSideCoverCell {N k : Nat} (P : Box N k) (m : Nat)
 theorem Box.equalSideCover_covers {N k m : Nat} [NeZero N]
     (P : Box N k) (hm : 0 < m) {x : Point N k} (hx : x ∈ P.carrier) :
     ∃ j : P.equalSideCoverIndex m, x ∈ (P.equalSideCoverCell m j).carrier := by
-  classical
   have hxi : ∀ i, x i ∈ (P.axis i).carrier := by simpa [Box.carrier] using hx
   choose j hj using fun i => commonStepCoverCell_covers (P.axis i) (by omega : 0 < 1) hm (hxi i)
   exact ⟨j, by simpa [Box.carrier, Box.equalSideCoverCell] using hj⟩
@@ -45,7 +43,6 @@ theorem Box.equalSideCover_covers {N k m : Nat} [NeZero N]
 theorem Box.equalSideCover_capacity {N k m : Nat} [NeZero N]
     (P : Box N k) (hP : P.IsProper) (hm : m ≤ P.width) :
     Fintype.card (P.equalSideCoverIndex m) * m ^ k ≤ 2 ^ k * P.carrier.card := by
-  classical
   have hcap (i : Fin k) : (1 * ((P.axis i).length / (1 * m) + 1)) * m ≤
       2 * (P.axis i).carrier.card := by
     rw [hP i]
@@ -66,7 +63,6 @@ theorem Box.dense_equal_side_box {N k m : Nat} [Fact N.Prime]
     ∃ Q : Box N k, ∃ C : Finset (Point N k),
       Q.commonDiff = P.commonDiff ∧ Q.IsProper ∧ (∀ i, (Q.axis i).length = m) ∧
       C ⊆ B ∧ C ⊆ Q.carrier ∧ delta / (2 : Real) ^ k * (m : Real) ^ k ≤ C.card := by
-  classical
   let I := P.equalSideCoverIndex m
   let Q : I → Box N k := P.equalSideCoverCell m
   let C : I → Finset (Point N k) := fun j => B ∩ (Q j).carrier

@@ -13,7 +13,6 @@ theorem conditional_affine_extension {N : Nat} [NeZero N]
     (h : C → LinearOn A f) :
     ∃ ell : ZMod N → ZMod N, LinearOn Finset.univ ell ∧
       (C → ∀ x ∈ A, f x = ell x) := by
-  classical
   by_cases hC : C
   · obtain ⟨ell, hlin, heq⟩ := (h hC).exists_extension
     exact ⟨ell, hlin, fun _ => heq⟩

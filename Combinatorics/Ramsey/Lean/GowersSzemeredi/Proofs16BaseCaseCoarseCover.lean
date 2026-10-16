@@ -110,7 +110,6 @@ lemma section16_coarse_graph_cover {N : Nat} [NeZero N]
           (∀ j i, IsMultilinear (mu j i)) ∧
           ∀ j x, x ∈ (Q j).carrier → x ∈ H → ∀ y,
             (x, y) ∈ partialGraph B phi → ∃ i, y = mu j i x := by
-  classical
   by_cases hLzero : P.width = 0
   · have hcarrier : P.carrier = ∅ := by
       have hc := boxOne_card_eq_width P hP

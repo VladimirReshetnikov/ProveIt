@@ -56,13 +56,11 @@ theorem boxInit_last_product {N k : Nat} [NeZero N] (P : Box N (k + 1)) :
 theorem IsMultilinear.mul_last_coordinate {N k : Nat}
     {mu : Point N k → ZMod N} (hmu : IsMultilinear mu) :
     IsMultilinear (fun z : Point N (k + 1) => mu (Fin.init z) * z (Fin.last k)) := by
-  classical
   obtain ⟨c, hc⟩ := hmu
   refine ⟨fun e => if e (Fin.last k) then c (Fin.init e) else 0, ?_⟩
   intro z
   dsimp only
-  rw [hc]
-  rw [← (Fin.snocEquiv (fun _ : Fin (k + 1) => Bool)).sum_comp, Fintype.sum_prod_type]
+  rw [hc, ← (Fin.snocEquiv (fun _ : Fin (k + 1) => Bool)).sum_comp, Fintype.sum_prod_type]
   simp [Fin.snocEquiv, Fin.prod_univ_castSucc, Fin.init, Finset.mul_sum,
     mul_comm, mul_left_comm]
 

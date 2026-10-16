@@ -42,7 +42,6 @@ theorem section16_good_sidelengths_with {N k : Nat} [NeZero N]
           section16ArrangementCountAtSide 8 B h ∧
         DomainApproxHomOfOrder (section16CubeMultifunctionDomain B h)
           (section16InducedCubeMap B h phi) ((2 : Real) ^ (-(43 : Real))) 8 := by
-  classical
   let eta : Real := (2 : Real) ^ (-(44 : Real))
   let t : Real := t1 / 4 * (N : Real) ^ (16 * k + 15)
   let C (h : Point N k) : Real := section16ArrangementCountAtSide 8 B h
@@ -104,7 +103,6 @@ theorem section16_selected_side_model_with {N k : Nat} [NeZero N]
       HasBohrDifferenceModel (section16CubeMultifunctionDomain B h)
         (section16InducedCubeMap B h phi) (section16LargeSpectrum B h (section16Delta (t1)))
         (zeta) Y psi := by
-  classical
   let a := t1 / 4
   let D := section16CubeMultifunctionDomain B h
   have ha : 0 < a := ha0
@@ -183,7 +181,6 @@ theorem lemma_16_5_with {N k : Nat} [NeZero N] (t1 zeta : Real)
               (section16CubeMultifunctionDomain B h)
               (section16InducedCubeMap B h phi)
               (section16LargeSpectrum B h (section16Delta t1)) zeta (Y h) (psi h) := by
-  classical
   have ht1 : 0 ≤ t1 := by linarith
   obtain ⟨H, hmass, hgood⟩ := section16_good_sidelengths_with t1 B phi ht1 hB
   refine ⟨H, hmass, ?_⟩

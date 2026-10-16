@@ -10,7 +10,6 @@ namespace LeanProofs.GowersSzemeredi
 theorem exists_color_class_ge {r : Nat} (hr : 0 < r) (N : Nat) (color : Nat → Fin r) :
     ∃ c : Fin r, (N : Real) / r ≤
       (((Finset.Icc 1 N).filter fun x => color x = c).card : Real) := by
-  classical
   have hrR : (0 : Real) < r := by exact_mod_cast hr
   obtain ⟨c, _, hc⟩ := Finset.exists_le_card_fiber_of_nsmul_le_card_of_maps_to
     (s := Finset.Icc 1 N) (t := Finset.univ) (f := color) (b := (N : Real) / r)
@@ -24,7 +23,6 @@ theorem hasMonochromaticAP_of_density {N r k : Nat} (hr : 0 < r)
     (h : ∀ A : Finset Nat, A ⊆ Finset.Icc 1 N →
       (1 / (r : Real)) * N ≤ A.card → HasNatAP A k)
     (color : Nat → Fin r) : HasMonochromaticAP N r color k := by
-  classical
   obtain ⟨col, hcol⟩ := exists_color_class_ge hr N color
   let A := (Finset.Icc 1 N).filter fun x => color x = col
   have hcard : (1 / (r : Real)) * N ≤ A.card := by

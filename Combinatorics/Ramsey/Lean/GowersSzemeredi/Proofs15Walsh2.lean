@@ -18,10 +18,8 @@ theorem parityCharacter_eq_prod {N k : Nat}
     parityCharacter (N := N) e =
       ∏ i : Fin k,
         if e i then (-1 : ZMod N) else 1 := by
-  classical
   simp only [parityCharacter, boolWeight, countWhere]
-  rw [← Finset.prod_const]
-  rw [Finset.prod_filter]
+  rw [← Finset.prod_const, Finset.prod_filter]
   apply Finset.prod_congr rfl
   intro i _
   by_cases h : e i = true <;> simp [h]
@@ -30,7 +28,6 @@ theorem walshProduct_eq_parity {N k : Nat}
     (e : Fin k → Bool) :
     (∏ i : Fin k, walshSign (N := N) (e i)) =
       (-1 : ZMod N) ^ k * parityCharacter (N := N) e := by
-  classical
   rw [parityCharacter_eq_prod]
   have hconst :
       (-1 : ZMod N) ^ k =
@@ -110,7 +107,6 @@ lemma rangeDeg_sum_mul_sub_eq_one {N : Nat} {I : Type*}
     (hoff : ∀ t, t ≠ i → x t = y t) :
     (∑ t, a t * x t) - (∑ t, a t * y t) =
       a i * (x i - y i) := by
-  classical
   rw [← Finset.sum_sub_distrib]
   calc
     (∑ t, (a t * x t - a t * y t)) =

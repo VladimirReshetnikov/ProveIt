@@ -47,7 +47,6 @@ theorem restrict_finite_parallel_directions {I : Type*} [Fintype I]
             MultiplyLinearFunction gamma (gamma ^ (-(2 : Int)) * multipleS theta gamma (l i))
               ((splitCoordinateFace (e i) z).domain B')
               ((splitCoordinateFace (e i) z).pullback phi) := by
-  classical
   choose T hT using (fun i => (hth i).restrict_parallel_faces gamma theta hg hg1 ht ht1)
   refine ⟨∑ i, T i, ?_⟩
   intro N _ _ hN B phi hprod

@@ -24,7 +24,6 @@ theorem FunctionDiscrepancyBound.interval_density_step
     IntervalDensityStep k delta (tau / 8)
       (tau / (8 * boundaryRefinementConstant (tau / 64))) (sigma / 16)
       (intervalDiscrepancyStepThreshold k delta tau T) := by
-  classical
   intro L hL B d hd hcard
   let alpha := intervalUniformityParameter delta k
   have hα : 0 < alpha := intervalUniformityParameter_pos hδ (by omega : 0 < k)

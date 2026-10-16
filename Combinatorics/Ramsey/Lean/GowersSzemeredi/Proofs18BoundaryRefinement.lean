@@ -119,7 +119,6 @@ theorem small_diameter_partition_refinement {N M : Nat} [NeZero N]
       (∀ j, diameterAtMostReal (R j).carrier (epsilon * N)) ∧
       ∀ f : ZMod N → Complex,
         (∑ i, ‖∑ x ∈ (Q i).carrier, f x‖) ≤ ∑ j, ‖∑ x ∈ (R j).carrier, f x‖ := by
-  classical
   have hM := section18_partition_index_nonempty (fun i ↦ (Q i).carrier) hQ
   choose L R hpart hRproper hcount hdiam using fun i ↦ (Q i).small_diameter_refinement (hproper i) epsilon hε
   refine ⟨∑ i, L i, section5Flatten L R, section5Flatten_partition Q L R hQ hpart,

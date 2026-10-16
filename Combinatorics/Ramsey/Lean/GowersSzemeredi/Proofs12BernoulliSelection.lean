@@ -221,8 +221,7 @@ private lemma exists_subset_of_weighted_average {X : Type*} [DecidableEq X]
         mul_lt_mul_of_pos_left (hno T (Finset.mem_powerset.mp hT)) hTpos⟩
   have hright :
       (∑ S ∈ U.powerset, restrictionWeight U p S * A) = A := by
-    rw [← Finset.sum_mul]
-    rw [restrictionWeight_sum]
+    rw [← Finset.sum_mul, restrictionWeight_sum]
     simp
   rw [hright] at hstrict
   exact (haverage.trans_lt hstrict).false
@@ -233,7 +232,6 @@ private lemma restrictionWeight_count {X E : Type*} [DecidableEq X]
     (∑ S ∈ U.powerset, restrictionWeight U p S *
         ((edges.filter fun e ↦ carrier e ⊆ S).card : Real)) =
       ∑ e ∈ edges, ∏ x ∈ carrier e, p x := by
-  classical
   simp_rw [Finset.cast_card, Finset.sum_filter]
   simp_rw [Finset.mul_sum]
   rw [Finset.sum_comm]

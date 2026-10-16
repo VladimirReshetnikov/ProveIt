@@ -35,7 +35,6 @@ theorem section16_selected_side_model {N k : Nat} [NeZero N]
       HasBohrDifferenceModel (section16CubeMultifunctionDomain B h)
         (section16InducedCubeMap B h phi) (section16LargeSpectrum B h (section16Delta (section16ThetaOne theta gamma k)))
         (section16Zeta theta gamma k) Y psi := by
-  classical
   let a := section16ThetaOne theta gamma k / 4
   let D := section16CubeMultifunctionDomain B h
   obtain ⟨ha, haSmall⟩ := section16_density_parameter_bounds k ht ht1 hg hg1
@@ -94,7 +93,6 @@ theorem section16_selected_side_model {N k : Nat} [NeZero N]
 
 /-- Exact companion for Lemma 16.5. -/
 theorem lemma_16_5_holds : lemma_16_5 := by
-  classical
   intro N k _ theta gamma B phi ht ht1 hg hg1 hB
   dsimp only
   obtain ⟨H, hmass, hgood⟩ := section16_good_sidelengths theta gamma B phi ht hg hB

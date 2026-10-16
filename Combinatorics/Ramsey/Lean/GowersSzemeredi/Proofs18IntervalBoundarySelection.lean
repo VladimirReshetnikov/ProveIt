@@ -27,7 +27,6 @@ theorem interval_crossing_cells_mass {N M L : Nat} [NeZero N]
       (∀ i, i ∉ B → (P i).carrier ⊆ finiteIntervalImage N (Finset.univ : Finset (Fin L)) ∨
         Disjoint (P i).carrier (finiteIntervalImage N (Finset.univ : Finset (Fin L)))) ∧
       (∑ i ∈ B, (P i).carrier.card) ≤ 4 * Nat.floor (epsilon * N) + 2 := by
-  classical
   let S := finiteIntervalImage N (Finset.univ : Finset (Fin L))
   let B := Finset.univ.filter (fun i ↦ ¬ (P i).carrier ⊆ S ∧ ¬ Disjoint (P i).carrier S)
   refine ⟨B, ?_, ?_⟩

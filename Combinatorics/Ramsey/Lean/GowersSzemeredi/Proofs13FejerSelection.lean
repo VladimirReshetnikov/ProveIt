@@ -25,7 +25,6 @@ theorem exists_subset_seed_survival_bounds {X E C : Type*} [DecidableEq X]
     ∃ S ⊆ U, mass ≤ ((good.filter fun e => carrier e ⊆ S).card : Real) ∧
       ((bad.filter fun e => carrier e ⊆ S).card : Real) ≤
         eta * ((good.filter fun e => carrier e ⊆ S).card : Real) := by
-  classical
   apply exists_subset_seed_purification U p hp0 hp1 good bad carrier hgood hbad eta mass heta hmass
   rw [Finset.expect_sub_distrib, ← Finset.mul_expect,
     Finset.expect_sum_comm, Finset.expect_sum_comm]
@@ -68,7 +67,6 @@ theorem exists_subset_fejer_purification {N L M : Nat} [NeZero N]
     ∃ S ⊆ U, mass ≤ ((good.filter fun e => Finset.univ.image (vertex e) ⊆ S).card : Real) ∧
       ((bad.filter fun e => Finset.univ.image (vertex e) ⊆ S).card : Real) ≤
         eta * ((good.filter fun e => Finset.univ.image (vertex e) ⊆ S).card : Real) := by
-  classical
   apply exists_subset_seed_survival_bounds U
     (fun c : ZMod N × ZMod N => fun x => finiteFejerKernel L (c.1 * phi x + c.2 * feature x))
     (fun _ _ _ => finiteFejerKernel_nonneg _) (fun _ _ _ => finiteFejerKernel_le_one hL _)

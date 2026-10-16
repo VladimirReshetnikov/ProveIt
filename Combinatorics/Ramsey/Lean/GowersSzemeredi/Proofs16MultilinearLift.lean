@@ -10,14 +10,11 @@ namespace LeanProofs.GowersSzemeredi
 theorem IsMultilinear.mul_new_coordinate {N k : Nat}
     {mu : Point N k → ZMod N} (hmu : IsMultilinear mu) :
     IsMultilinear (fun z : Point N (k + 1) => mu (Fin.tail z) * z 0) := by
-  classical
   obtain ⟨c, hc⟩ := hmu
   refine ⟨fun e => if e 0 then c (Fin.tail e) else 0, ?_⟩
   intro z
   dsimp only
-  rw [hc]
-  rw [← (Fin.consEquiv (fun _ : Fin (k + 1) => Bool)).sum_comp]
-  rw [Fintype.sum_prod_type]
+  rw [hc, ← (Fin.consEquiv (fun _ : Fin (k + 1) => Bool)).sum_comp, Fintype.sum_prod_type]
   simp [Fin.consEquiv, Fin.prod_univ_succ, Fin.tail, Finset.mul_sum, mul_comm, mul_left_comm]
 
 /-- The threshold forces the final root to be at least two, so every axis

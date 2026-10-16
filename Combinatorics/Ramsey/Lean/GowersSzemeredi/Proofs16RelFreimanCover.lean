@@ -38,7 +38,6 @@ theorem relFreimanCover_of_familyCover {N q : Nat} [NeZero N]
 /-- More graphs may be allowed: pad with empty graphs. -/
 theorem RelFreimanCover.pad {N q q' : Nat} [NeZero N] {R : Finset (Point N 1 × ZMod N)}
     (h : RelFreimanCover q R) (hqq' : q ≤ q') : RelFreimanCover q' R := by
-  classical
   obtain ⟨D, f, hf, hc⟩ := h
   let D' : Fin q' → Finset (Point N 1) := fun i => if hi : i.val < q then D ⟨i.val, hi⟩ else ∅
   let f' : Fin q' → Point N 1 → ZMod N := fun i => if hi : i.val < q then f ⟨i.val, hi⟩ else 0
@@ -63,7 +62,6 @@ theorem RelFreimanCover.pad {N q q' : Nat} [NeZero N] {R : Finset (Point N 1 × 
 theorem RelFreimanCover.translate {N q : Nat} [NeZero N] {R : Finset (Point N 1 × ZMod N)}
     (h : RelFreimanCover q R) (t : Point N 1) :
     RelFreimanCover q (R.image (fun z => (z.1 + t, z.2))) := by
-  classical
   obtain ⟨D, f, hf, hc⟩ := h
   let D' := fun i => (D i).image (fun x => x + t)
   let f' := fun i x => f i (x - t)
@@ -106,7 +104,6 @@ theorem RelFreimanCover.translate {N q : Nat} [NeZero N] {R : Finset (Point N 1 
 theorem relFreimanCover_union {N q m : Nat} [NeZero N]
     (R : Fin m → Finset (Point N 1 × ZMod N)) (h : ∀ c, RelFreimanCover q (R c)) :
     RelFreimanCover (m * q) (Finset.univ.biUnion R) := by
-  classical
   choose D f hf hc using h
   let e : Fin (m * q) ≃ Fin m × Fin q := finProdFinEquiv.symm
   refine ⟨fun i => D (e i).1 (e i).2, fun i => f (e i).1 (e i).2, fun i => hf _ _, ?_⟩

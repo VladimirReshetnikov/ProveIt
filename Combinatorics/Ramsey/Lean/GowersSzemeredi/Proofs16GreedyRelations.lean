@@ -23,7 +23,6 @@ theorem section16_greedy_relation_decomposition {N k : Nat} [NeZero N]
         (q : Real) * mass ≤ Gamma.card ∧
         (1 - theta) * (N : Real) ^ k ≤ J.card ∧
         restrictRelation Gamma J ⊆ section16FinsetUnion G := by
-  classical
   induction hn : Gamma.card using Nat.strong_induction_on generalizing Gamma with
   | h n ih =>
     by_cases hsmall : ((relationProjection Gamma).card : Real) < theta * (N : Real) ^ k

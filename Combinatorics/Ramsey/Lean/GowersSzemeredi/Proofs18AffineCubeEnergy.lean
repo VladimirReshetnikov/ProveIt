@@ -57,7 +57,6 @@ theorem ModAP.restrict_affine_eq_intervalExtension {N : Nat} [Fact N.Prime]
     (P : ModAP N) (f : ZMod N → Complex) (hd : P.step ≠ 0) (hL : P.length ≤ N) :
     (fun x => restrictToCell P.carrier f (P.start + P.step * x)) =
       intervalExtension N (P.pullbackFunction f) := by
-  classical
   funext x
   have hmem : P.start + P.step * x ∈ P.carrier ↔ x.val < P.length := by
     constructor

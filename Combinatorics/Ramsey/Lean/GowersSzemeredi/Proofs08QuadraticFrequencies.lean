@@ -34,7 +34,6 @@ theorem quadratic_nonuniformity_freiman_frequencies
       (alpha / 2) ^ (12359 : Nat) * N ≤ (B.card : Real) ∧
       FreimanHom 8 B phi ∧
       ∀ x ∈ B, alpha / 2 * N ≤ ‖fourier (difference f x) (phi x)‖ := by
-  classical
   let a : Real := alpha / 2
   have ha : 0 < a := by dsimp [a]; positivity
   have hahalf : a ≤ 1 / 2 := by dsimp [a]; linarith

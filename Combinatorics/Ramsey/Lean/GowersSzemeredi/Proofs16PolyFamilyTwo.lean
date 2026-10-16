@@ -51,7 +51,6 @@ theorem stackedSlices_relFreimanCover {N r ql : Nat} [NeZero N]
     {D : Finset (Point N 2)} {phi : Point N 2 → ZMod N}
     (h : Section16FinalFreimanFamilies ql D phi) (sample : Fin r → ZMod N) :
     RelFreimanCover (r * ql) (section16StackedSlices D phi sample) := by
-  classical
   have hu := relFreimanCover_union (fun i : Fin r =>
     partialGraph (section16FinalCoordinateSection D (sample i))
       (section16FinalCoordinateRestriction phi (sample i)))
@@ -104,7 +103,6 @@ theorem section16_poly_family_two_cover
           (pieceLineExponent Bq (famTwoQb m qs) (famTwoEb m qs) (famTwoEr m qr) rho)
           (famPieceSliceExponent (famTwoQr m qr) (famTwoEs m ql) m rho)))
       (Finset.univ.biUnion fun c => partialGraph (P c).D (P c).phi) := by
-  classical
   -- spectra
   set Gspec := Finset.univ.biUnion fun c : Fin m =>
     ((P c).H1 ×ˢ (Finset.univ : Finset (ZMod N))).filter fun z => z.2 ∈ (P c).K z.1 with _

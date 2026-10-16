@@ -34,7 +34,6 @@ theorem short_universal_modular_partition {N : Nat} [Fact N.Prime]
       ∀ j, (Q j).step != 0 ∧ (Q j).IsProper ∧ t ≤ (Q j).length ∧
         ∀ phi : ZMod N → ZMod N, FreimanHom 8 A phi →
           LinearOn ((Q j).carrier.filter fun x ↦ x ∈ A) phi := by
-  classical
   let P := R.asBox
   have hP : P.IsProper := fun _ ↦ hR
   have hwidth : P.width = R.length := BaseCase.boxOne_width P
@@ -70,7 +69,6 @@ theorem corollary_7_11_all_scales_universal (N : Nat) [Fact N.Prime]
         (R.length : Real) ^ cor711Exponent alpha 1 ≤ (Q j).length ∧
         ∀ phi : ZMod N → ZMod N, FreimanHom 8 A phi →
           LinearOn ((Q j).carrier.filter fun x ↦ x ∈ A) phi) := by
-  classical
   have he := cor711_single_exponent_bounds hα hαone
   by_cases hlarge : 8 ≤ (R.length : Real) ^ cor711Exponent alpha 1
   · exact corollary_7_11_universal_modular N R A alpha hR hl hα hA hdensity hlarge

@@ -58,7 +58,6 @@ lemma boxOnePoint_injective {N : Nat} [NeZero N] (P : Box N 1)
 lemma boxOne_carrier_eq_image {N : Nat} [NeZero N] (P : Box N 1) :
     P.carrier = (Finset.univ : Finset (Fin P.width)).image
       (fun i : Fin P.width => boxOnePoint P i) := by
-  classical
   ext x
   simp only [Box.carrier, Finset.mem_filter, Finset.mem_univ, true_and,
     ModAP.carrier, Finset.mem_image]
@@ -79,7 +78,6 @@ lemma boxOne_carrier_eq_image {N : Nat} [NeZero N] (P : Box N 1) :
 
 lemma boxOne_carrier_card_eq_axis_card {N : Nat} [NeZero N]
     (P : Box N 1) : P.carrier.card = (P.axis 0).carrier.card := by
-  classical
   have himage : P.carrier.map (pointOneEquiv N).toEmbedding =
       (P.axis 0).carrier := by
     ext z
@@ -103,8 +101,7 @@ lemma boxOne_carrier_card_eq_axis_card {N : Nat} [NeZero N]
 
 lemma boxOne_card_eq_width {N : Nat} [NeZero N] (P : Box N 1)
     (hP : P.IsProper) : P.carrier.card = P.width := by
-  rw [boxOne_carrier_eq_image]
-  rw [Finset.card_image_iff.mpr]
+  rw [boxOne_carrier_eq_image, Finset.card_image_iff.mpr]
   · simp only [Finset.card_univ, Fintype.card_fin]
   · intro i _ j _ hij
     apply Fin.ext
@@ -131,7 +128,6 @@ lemma coarseChildBox_carrier {N : Nat} [NeZero N]
       (Finset.univ : Finset (Fin (coarseChunkLength m (P.width % m) j))).image
         (fun i : Fin (coarseChunkLength m (P.width % m) j) =>
           boxOnePoint P (coarseChunkStart m (P.width % m) j + i)) := by
-  classical
   ext x
   simp only [Box.carrier, coarseChildBox, Finset.mem_filter, Finset.mem_univ,
     true_and, ModAP.carrier, Finset.mem_image]
@@ -154,7 +150,6 @@ lemma coarseChildBox_proper {N : Nat} [NeZero N]
   intro i
   fin_cases i
   rw [ModAP.IsProper]
-  classical
   rw [ModAP.carrier, Finset.card_image_iff.mpr]
   · simp only [Finset.card_univ, Fintype.card_fin]
   · intro a _ b _ hab
@@ -173,7 +168,6 @@ lemma coarseChildBox_partition {N : Nat} [NeZero N]
     (P : Box N 1) (hP : P.IsProper) (m : Nat) (hm : 0 < m)
     (hLm : m * m ≤ P.width) :
     IsBoxPartition (fun j : Fin (P.width / m) => coarseChildBox P m j) P := by
-  classical
   constructor
   · intro x
     constructor
@@ -216,7 +210,6 @@ lemma coarseChildBox_partition {N : Nat} [NeZero N]
 
 lemma isMultilinear_const_one {N : Nat} (c : ZMod N) :
     IsMultilinear (fun _ : Point N 1 => c) := by
-  classical
   let e0 : Fin 1 → Bool := fun _ => false
   refine ⟨fun e => if e = e0 then c else 0, ?_⟩
   intro x
@@ -230,7 +223,6 @@ lemma mem_partialGraph_one {N : Nat} [NeZero N]
     (B : Finset (Point N 1)) (phi : Point N 1 → ZMod N)
     (x : Point N 1) (y : ZMod N) :
     (x, y) ∈ partialGraph B phi ↔ x ∈ B ∧ y = phi x := by
-  classical
   rw [partialGraph, Finset.mem_image]
   constructor
   · rintro ⟨z, hz, hzx⟩

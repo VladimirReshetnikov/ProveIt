@@ -18,7 +18,6 @@ def selectedDomain {N l d : Nat} [NeZero N] (f : Fin l ↪ Fin d)
 @[simp] theorem mem_selectedDomain {N l d : Nat} [NeZero N]
     (f : Fin l ↪ Fin d) (B : Finset (Point N l)) (z : Point N d) :
     z ∈ selectedDomain f B ↔ selectedCoordinates f z ∈ B := by
-  classical
   simp [selectedDomain]
 
 /-- Extend a partial function across every unused coordinate, regardless of
@@ -30,7 +29,6 @@ theorem MultiplyLinearFunction.lift_embedding {N l d : Nat} [NeZero N] [Fact N.P
     (hgraphs : ((3 ^ d : Nat) : Real) ≤ s) (f : Fin l ↪ Fin d) :
     MultiplyLinearFunction gamma s (selectedDomain f B)
       (fun z => phi (selectedCoordinates f z)) := by
-  classical
   have hld : l ≤ d := by simpa using Fintype.card_le_of_injective f f.injective
   obtain ⟨sigma, hsigma⟩ := Equiv.Perm.exists_extending_pair
     (fun i : Fin l => i.castLE hld) f (Fin.castLE_injective hld) f.injective

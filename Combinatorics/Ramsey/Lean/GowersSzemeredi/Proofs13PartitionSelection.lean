@@ -26,7 +26,6 @@ theorem stage137UpperEndpoints_partition {N q : Nat}
     (hP : IsPartition P R) :
     IsPartition (fun i ↦ stage137UpperEndpoints (P i) I Y y)
       (stage137UpperEndpoints R I Y y) := by
-  classical
   constructor
   · intro z
     constructor
@@ -55,7 +54,6 @@ theorem exists_stage137_partition_cell {N q : Nat}
     (hR : R.Nonempty) (hP : IsPartition P R) {b : Real}
     (hb : b * R.card ≤ (stage137UpperEndpoints R I Y y).card) :
     ∃ i : Fin q, b * (P i).card ≤ (stage137UpperEndpoints (P i) I Y y).card := by
-  classical
   obtain ⟨x, hx⟩ := hR
   obtain ⟨i, _⟩ := (hP.1 x).mp hx
   letI : Nonempty (Fin q) := ⟨i⟩
@@ -109,7 +107,6 @@ theorem lemma_13_7_of_affine_base_partitions_nonempty {N : Nat} [NeZero N]
         (F.R.carrier.filter fun x ↦ (x, y) ∈ S.A).card →
       Stage137AffineBasePartition S F y) :
     ∃ G : Stage137Data N, IsStage137Data S D E F G := by
-  classical
   have hRcard : F.R.carrier.card = F.R.length := hF.2.2.1
   have hY := hF.2.2.2.2.1
   obtain ⟨y, hy₁, hy₂⟩ := stage136_exists_base_row S D E F hF
@@ -161,7 +158,6 @@ follows by restriction from the original Section 13 context. -/
 theorem section13_base_row_freiman {N : Nat} [NeZero N]
     (S : Section13Context N) (R : Finset (ZMod N)) (y : ZMod N) :
     FreimanHom 8 (R.filter fun x ↦ (x, y) ∈ S.A) (fun x ↦ S.phi (x, y)) := by
-  classical
   apply IsAddFreimanHom.subset _ (S.separately_freiman.2 y) (Set.mapsTo_univ _ _)
   intro x hx
   exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, (Finset.mem_filter.mp hx).2⟩
@@ -173,7 +169,6 @@ theorem lemma_13_7_of_empty_heights {N : Nat} [NeZero N]
     (F : Stage136Data N) (hF : IsStage136Data S D E F)
     (hI : criticalHeights S D E = ∅) :
     ∃ G : Stage137Data N, IsStage137Data S D E F G := by
-  classical
   have hR := stage136_progression_nonempty S D E F hF
   have hcard : F.R.carrier.card = F.R.length := hF.2.2.1
   have hn : 0 < F.R.length := by simpa only [hcard] using hR.card_pos
@@ -213,7 +208,6 @@ theorem lemma_13_7_of_affine_base_partitions {N : Nat} [NeZero N]
         (F.R.carrier.filter fun x ↦ (x, y) ∈ S.A).card →
       Stage137AffineBasePartition S F y) :
     ∃ G : Stage137Data N, IsStage137Data S D E F G := by
-  classical
   by_cases hI : (criticalHeights S D E).Nonempty
   · exact lemma_13_7_of_affine_base_partitions_nonempty S D E F hF
       (stage136_progression_nonempty S D E F hF) hI hpart

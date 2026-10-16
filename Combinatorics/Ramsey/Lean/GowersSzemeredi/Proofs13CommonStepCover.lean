@@ -13,7 +13,6 @@ namespace LeanProofs.GowersSzemeredi
 /-- A nonzero step gives a proper progression up to the prime modulus. -/
 theorem ModAP.isProper_of_prime_step {N : Nat} [Fact N.Prime]
     (P : ModAP N) (hd : P.step != 0) (hlen : P.length ≤ N) : P.IsProper := by
-  classical
   unfold ModAP.IsProper ModAP.carrier
   rw [Finset.card_image_iff.mpr]
   · simp
@@ -36,7 +35,6 @@ def commonStepCoverCell {N : Nat} (P : ModAP N) (t m : Nat)
 theorem commonStepCoverCell_covers {N : Nat} (P : ModAP N) {t m : Nat}
     (ht : 0 < t) (hm : 0 < m) {x : ZMod N} (hx : x ∈ P.carrier) :
     ∃ j, x ∈ (commonStepCoverCell P t m j).carrier := by
-  classical
   obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
   let a : Fin t := ⟨i.val % t, Nat.mod_lt _ ht⟩
   have hb : i.val / t / m < P.length / (t * m) + 1 := by
@@ -77,7 +75,6 @@ theorem exists_dense_equal_product_cover {X Y I J : Type*}
     (hcapW : Fintype.card J * m ≤ 2 * T.card)
     (hmass : delta * S.card * T.card ≤ D.card) :
     ∃ i j, delta / 4 * m * m ≤ (D ∩ (V i).product (W j)).card := by
-  classical
   let C := fun z : I × J => D ∩ (V z.1).product (W z.2)
   have hcover : D ⊆ Finset.univ.biUnion C := by
     intro z hz
@@ -116,7 +113,6 @@ theorem bilinear_square_of_integer_step_fit {N : Nat} [Fact N.Prime]
       V.step = T.step ∧ W.step = T.step ∧ V.IsProper ∧ W.IsProper ∧
       V.length = m ∧ W.length = m ∧ E ⊆ D ∧ E ⊆ V.carrier.product W.carrier ∧
       delta / 4 * m * m ≤ E.card ∧ BilinearOn E phi := by
-  classical
   let I := Fin t × Fin (S.length / (t * m) + 1)
   let J := Fin 1 × Fin (T.length / (1 * m) + 1)
   let V : I → ModAP N := commonStepCoverCell S t m
@@ -157,7 +153,6 @@ def ModAP.translateBy {N : Nat} (P : ModAP N) (y : ZMod N) : ModAP N where
 
 theorem ModAP.translateBy_carrier {N : Nat} (P : ModAP N) (y : ZMod N) :
     (P.translateBy y).carrier = translateFinset P.carrier y := by
-  classical
   unfold ModAP.carrier translateFinset
   rw [Finset.image_image]
   apply Finset.image_congr

@@ -32,7 +32,6 @@ theorem section16_extract_uniform_base_family {N : Nat} [Fact N.Prime]
       (1 - theta) * (N : Real) ≤ J.card ∧
       (∀ i, FreimanHom 8 (pointOneDomain (D i)) (pointOneMap (f i))) ∧
       restrictRelation Gamma J ⊆ section16FinsetUnion (fun i => partialGraph (D i) (f i)) := by
-  classical
   let E := section16_extract_base_family gamma theta hg hg1 ht ht1
     (Fact.out : N.Prime) Gamma hsize hproduct
   have hcount : E.q ≤ section16BaseFamilyBound gamma theta := by

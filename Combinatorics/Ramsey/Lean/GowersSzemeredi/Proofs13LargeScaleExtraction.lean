@@ -38,7 +38,6 @@ theorem stage137_affine_base_partition_large {N : Nat} [Fact N.Prime]
     (hdense : (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224 * F.R.length ≤
       (F.R.carrier.filter fun x ↦ (x, y) ∈ S.A).card) :
     Stage137AffineBasePartition S F y := by
-  classical
   let δ : Real := (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224
   let A := F.R.carrier.filter fun x ↦ (x, y) ∈ S.A
   have hα := S.alpha_pos
