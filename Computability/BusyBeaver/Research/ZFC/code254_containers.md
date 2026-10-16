@@ -159,3 +159,10 @@ All eight theorem axiom audits and a caller with an explicit inhabitant pass;
 the two encoding identities use no axioms, and the main adapter uses only
 `propext`, `Classical.choice` and `Quot.sound`. Reproducible commands and
 scope are recorded in `results/code254-containers-verification.json`.
+
+The subsequent [GIC adapter](code254_gic.md) now completes steps 1–2 above,
+using odd free names and even bound names, with selected input/output names
+1/3. Its padding proves both actual gates. The
+[numerical calculus bridge](numeric_code254.md) also proves the all-code
+`NumThm ↔ C254` identification proposed above. The quotient-ZF and decoded
+soundness obligations retain their separately stated scope.

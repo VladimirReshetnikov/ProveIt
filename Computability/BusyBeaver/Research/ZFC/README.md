@@ -184,8 +184,11 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `OutgoingProfile.lean` | Four-node outgoing equality from exact full-profile singletons, actual raw-PSC model corollaries and reserved-zero named semantic translation at one false point. Source equality denotes full observational classes. |
 | `Numeric254.lean`, `NamedNumeric254.lean` | Exact original four-tag numerical rules and gated C/G/vacuity bundle; named proof transport and refutation equivalence for the explicitly defined encoded-numerical-theorem theory Q. Q/ZFC calibration remains open. |
 | `BootstrapFrame253.lean` | The actual 312,975-step binary bootstrap realizes the actual 330-step register endpoint, with all nine permuted registers, 158 spare blocks and exterior blanks retained. |
-| `Code254Containers.lean` | A literal gated bundle gives the existing transitive, powerset-bounding container resource in an irreflexive model with an explicit valuation. The GIC schema adapter remains open. |
+| `Code254Containers.lean` | A literal gated bundle gives the existing transitive, powerset-bounding container resource in an irreflexive model with an explicit valuation. |
 | `ZipperRuns.lean`, `RegisterBoxes253.lean` | Generic whole-tape sequential execution and preserving scans; actual public253 zero-decrement box for arbitrary preceding and following registers, in exactly twice the prefix width plus five steps. No PC-update or complete instruction simulation claim. |
+| `Code254GIC.lean`, `Code254Models.lean` | Hygienic actual Form matrices and padded gated bundles give the CP/GIC model interface; semantic encoding/decoding gives the decoded-to-encodable model implication. The reverse implication and full ZFC calibration remain separate. |
+| `NumericCode254.lean` | Exact equality of the two pairing/encoding definitions and equivalence of their twelve-constructor numerical derivability relations, including zero and all actual gates. |
+| `RegisterMark253.lean`, `RegisterIncrement253.lean` | Actual public253 marking and increment excursions, with arbitrary register values and spares, exact step counts and whole-tape output. PC updates, positive decrement and general dispatch remain separate. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
@@ -218,8 +221,8 @@ Rebuild the entire small dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 57 source units: the first-order logic, calculus and completeness
-modules, `ZF.Zf`, `BusyBeaver.Core`, 51 research modules and the umbrella into a
+This compiles 62 source units: the first-order logic, calculus and completeness
+modules, `ZF.Zf`, `BusyBeaver.Core`, 56 research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the prior 38-unit fresh source check and axiom outputs. The seven
@@ -244,6 +247,11 @@ The [encoded container adapter](code254_containers.md) and
 modules. Their separate source and caller checks are linked in those notes;
 `results/containers-boxes-integration-verification.json` records their joint
 integration with the 57-unit umbrella, reusing the previously verified dependencies.
+The [GIC model bridge](code254_gic.md), [model comparison](code254_models.md),
+[calculus identification](numeric_code254.md) and
+[marking/increment proofs](register_mark_increment253.md) add five further
+modules. `results/gic-boxes-integration-verification.json` records their serial
+source and 62-unit umbrella checks with the earlier dependencies reused.
 The standalone BusyBeaver Lake package declares its FirstOrder and ZF path
 dependencies; the ZFC umbrella is opt-in.
 
@@ -401,3 +409,9 @@ all 63,756 ordered deletions at radii 4 and 5, with 64 steps per side. Neither
 run produces a certificate. The larger window removes 447 projected patterns
 across 26 states, but both abstractions still allow both symbols in every
 working state. These bounded results supply no minimality theorem.
+
+The [whole-cost grammar beam search](grammar_beam_experiment.md) scores 103,596
+DAGs while retaining the same complete revised word. Its selected 269-state
+candidate has an independently checked 4,533-pair RM certificate; it does not
+improve the retained 268-state control. The bounded beam and coarse pruning
+key make no optimality claim.
