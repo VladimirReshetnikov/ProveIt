@@ -89,8 +89,9 @@ cannot derive F, which is false at w. The old calculus derives explosion
 Peirce give relative DNE. It therefore derives A from Γ's first axiom, Q0 A
 by GEN, and F by Γ's second axiom. This refutes generic refutation equivalence
 for arbitrary common theory extensions. No assertion here says that Γ occurs
-in, or is derivable from, the actual C/G bundle theory. That separate
-calibration question remains open.
+in, or is derivable from, the actual C/G bundle theory. The later finite-sort
+model described below independently establishes nonrefutation for both actual
+reduced variants; it rules out their proposed consistency calibration.
 
 An explicit explosion schema repairs the specific classical-logic issue:
 with `F→B` for every code B, relative DNE is derivable. GEN/rho2 then lift
@@ -140,3 +141,11 @@ public backend's undefined `1.inc/read1` row; they are not presented here as
 new total standard machines. The frozen252 table and its audits remain
 unchanged. No calculus/equiconsistency or end-to-end machine theorem is
 claimed by these search results.
+
+Later intake provides a [finite-sort model](typed_countermodel.md) of the
+actual reduced C/G bundle with **both** quantifier rows and target false.
+Thus both unchanged abstract variants fail as consistency searches, independent
+of this generic replacement counterexample. Their literal-table consequence
+remains conditional on compilation correctness. Repair lanes that add further
+axioms must be assessed separately; eliminating this model alone would not
+establish their completeness.

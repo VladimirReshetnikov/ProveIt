@@ -30,7 +30,9 @@ bridges to the vendored time certificates under [`../lib/Coq-BB5/`](../lib/Coq-B
 The external [ZFC closure-kernel report](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md)
 compares theories for a smaller ZFC-inconsistency search machine. It now
 includes a mathematical PSC-only hereditary-saturation interpretation,
-attributed prior 253-state work and separate compiler experiments. The
+an empty-input equivalent schema, attributed prior 253-state work and separate
+compiler experiments. A reviewed finite-sort model rules out the reduced raw
+C/G abstract calculus; its 248/250-state tables remain compiler benchmarks. The
 [Lean minimization project](BusyBeaver/Research/ZFC/README.md) checks subset-PSC
 calibration and specific quotient, coding and table lemmas. Its current
 target remains an internal ZFC proof of a sub-254 blank-tape halting equivalence.

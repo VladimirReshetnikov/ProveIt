@@ -1,0 +1,591 @@
+COMMAND: code/test_tableau.py
+test_alpha_conversion_has_identical_debruijn_formula (__main__.TableauTests.test_alpha_conversion_has_identical_debruijn_formula) ... ok
+test_boolean_tableau_branches_and_bottom (__main__.TableauTests.test_boolean_tableau_branches_and_bottom) ... ok
+test_missing_instantiation_witness_is_accepted (__main__.TableauTests.test_missing_instantiation_witness_is_accepted) ... ok
+test_schema_identity_with_parameters_and_nested_binders (__main__.TableauTests.test_schema_identity_with_parameters_and_nested_binders) ... ok
+test_strict_rejection (__main__.TableauTests.test_strict_rejection) ... ok
+test_template_against_direct_finite_semantics (__main__.TableauTests.test_template_against_direct_finite_semantics) ... ok
+test_wrong_parameter_does_not_close (__main__.TableauTests.test_wrong_parameter_does_not_close) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.013s
+
+OK
+
+
+COMMAND: code/test_search.py
+test_codec_inverses (__main__.SearchTests.test_codec_inverses) ... ok
+test_diagnostic_prefix (__main__.SearchTests.test_diagnostic_prefix) ... ok
+test_theorem_mode_cannot_enter_refutation_search (__main__.SearchTests.test_theorem_mode_cannot_enter_refutation_search) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.028s
+
+OK
+
+
+COMMAND: code/audit_calculus.py --output results/calculus_audit.json
+{
+  "status": "passed",
+  "Lukasiewicz_all_boolean_assignments": 16,
+  "identity_quantifier_old_dual_truth_table": [
+    {
+      "F": false,
+      "p": false,
+      "dual": true,
+      "old": true
+    },
+    {
+      "F": false,
+      "p": true,
+      "dual": true,
+      "old": true
+    },
+    {
+      "F": true,
+      "p": false,
+      "dual": true,
+      "old": false
+    },
+    {
+      "F": true,
+      "p": true,
+      "dual": true,
+      "old": true
+    }
+  ],
+  "models": {
+    "name_incoherent_false_F": {
+      "true_atoms": [
+        [
+          0,
+          1
+        ]
+      ],
+      "F_value": false,
+      "schema_and_constructor_checks": 5824
+    },
+    "true_F": {
+      "true_atoms": [
+        [
+          0,
+          0
+        ]
+      ],
+      "F_value": true,
+      "schema_and_constructor_checks": 5824
+    }
+  },
+  "valid_FOL_but_kernel_underivable": {
+    "substitution_formula": "(forall v0. Rel(v0,v1)) -> Rel(v2,v1)",
+    "substitution_base3_code": 25221,
+    "substitution_countermodel_value": false,
+    "closed_alpha_formula": "(forall v0 forall v1. Rel(v0,v1)) -> (forall v2 forall v1. Rel(v2,v1))",
+    "closed_alpha_base3_code": 2306316221757,
+    "closed_alpha_countermodel_value": false
+  },
+  "dual_not_old": {
+    "p_base3_code": 7,
+    "dual_value": true,
+    "old_value": false
+  },
+  "codec_integer_range_checked": [
+    0,
+    9999
+  ],
+  "codec_checks": [
+    "Cantor inversion",
+    "encode(decode(n))=n",
+    "all labels < n",
+    "positive-node children < n"
+  ],
+  "scope": "Exact witnesses and finite code diagnostics. Universal nonderivability rests on the Boolean soundness proof. Neither model is asserted to satisfy full C/G, and no 252-state nonhalting or consistency theorem is asserted."
+}
+
+
+COMMAND: code/audit_monochromatic_decoder.py --output results/monochromatic_decoder_audit.json
+{
+  "status": "all assertions passed",
+  "scope": "All binary relations on nonempty labeled domains up to max_n; not full PSC models.",
+  "fragment_condition": "Two-step descent is checked whenever the exact fragment is represented.",
+  "max_n": 4,
+  "by_domain_size": [
+    {
+      "domain_size": 1,
+      "structures": 2
+    },
+    {
+      "domain_size": 2,
+      "structures": 16
+    },
+    {
+      "domain_size": 3,
+      "structures": 512
+    },
+    {
+      "domain_size": 4,
+      "structures": 65536
+    }
+  ],
+  "counts": {
+    "structures": 66066,
+    "profile_equivalence_structures": 66066,
+    "local_bound_inputs": 263714,
+    "monochromatic_inputs": 72610,
+    "monochromatic_endpoint_pairs": 136303,
+    "direct_descent_memberships": 79358,
+    "nonmonochromatic_memberships": 447267,
+    "fragment_descent_witnesses": 84436,
+    "fragment_missing_memberships": 367660,
+    "all_fragment_structures": 2172,
+    "closed_hull_checks_with_all_fragments": 8552
+  },
+  "nonempty_gate_necessity_witness": {
+    "domain_size": 3,
+    "members_by_object": [
+      [
+        1
+      ],
+      [
+        0
+      ],
+      []
+    ],
+    "empty_input": 2,
+    "ungated_monochromatic_outputs": [
+      0,
+      1,
+      2
+    ],
+    "has_common_subset_bound": false,
+    "gated_monochromatic_outputs": [],
+    "correct_decoder_outputs": [
+      2
+    ]
+  },
+  "old_exact_singleton_decoder_failure": {
+    "domain_size": 3,
+    "members_by_object": [
+      [
+        1
+      ],
+      [
+        0
+      ],
+      [
+        0
+      ]
+    ],
+    "seed": 0,
+    "all_profile_fragments_exist": true,
+    "seed_is_saturated": false,
+    "old_exact_singleton_hull": [
+      0
+    ],
+    "new_monochromatic_hull": [
+      0,
+      1,
+      2
+    ],
+    "old_missing_root_members": [
+      1
+    ],
+    "old_nontransitive_member_objects": [
+      0
+    ]
+  },
+  "old_decoder_witness_scope": "If present: all profile fragments exist, but the old positive hull fails root coverage or transitivity at a nonsaturated seed. This is a local-lemma example, not a PSC model.",
+  "elapsed_seconds": 2.254,
+  "script_sha256": "cdd00cba891f5dc5faaefb488431f5a465705a8413d437e6f73742867929d731"
+}
+
+
+COMMAND: code/check_exceptional_psc.py --output results/exceptional_psc.json
+{
+  "status": "passed",
+  "cases_by_seed_and_c": {
+    "point": [
+      69,
+      69
+    ],
+    "subset": [
+      69,
+      69
+    ]
+  },
+  "total_cases": 276,
+  "expected_c0": "true exactly when the irreflexive relation has at least one edge",
+  "expected_c1": "always true in a nonempty irreflexive model",
+  "scope": "Finite binder-sensitive semantic diagnostics; the universal justification is the elementary symbolic proof in psc_compiler_notes.md."
+}
+
+
+COMMAND: code/verify_benchmarks.py --out results/benchmark_audit.json
+{
+  "status": "passed",
+  "baseline_sha256": "d655ce2cf8cccebd21caa21a49f0f9f010960a44b95c17aae6cc425c518954eb",
+  "candidate_sha256": "84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95",
+  "working_states": [
+    254,
+    253
+  ],
+  "transition_counts": [
+    508,
+    506
+  ],
+  "changed_old_rows": [
+    {
+      "state": 3,
+      "read": 0,
+      "before": [
+        0,
+        "L",
+        5
+      ],
+      "after": [
+        0,
+        "L",
+        48
+      ]
+    },
+    {
+      "state": 5,
+      "read": 0,
+      "before": [
+        0,
+        "L",
+        7
+      ],
+      "after": [
+        1,
+        "R",
+        97
+      ]
+    },
+    {
+      "state": 5,
+      "read": 1,
+      "before": [
+        1,
+        "L",
+        8
+      ],
+      "after": [
+        1,
+        "R",
+        64
+      ]
+    },
+    {
+      "state": 49,
+      "read": 1,
+      "before": [
+        0,
+        "R",
+        64
+      ],
+      "after": [
+        0,
+        "R",
+        5
+      ]
+    }
+  ],
+  "deleted_old_state": 8,
+  "inferred_old_to_compact_bijection": {
+    "0": 19,
+    "1": 21,
+    "2": 20,
+    "3": 23,
+    "4": 22,
+    "5": 0,
+    "6": 24,
+    "7": 12,
+    "9": 25,
+    "10": 14,
+    "11": 81,
+    "12": 42,
+    "13": 26,
+    "14": 16,
+    "15": 94,
+    "16": 95,
+    "17": 50,
+    "18": 48,
+    "19": 27,
+    "20": 18,
+    "21": 67,
+    "22": 111,
+    "23": 99,
+    "24": 74,
+    "25": 53,
+    "26": 61,
+    "27": 47,
+    "28": 5,
+    "29": 28,
+    "30": 64,
+    "31": 13,
+    "32": 58,
+    "33": 36,
+    "34": 77,
+    "35": 116,
+    "36": 88,
+    "37": 89,
+    "38": 9,
+    "39": 59,
+    "40": 7,
+    "41": 29,
+    "42": 78,
+    "43": 79,
+    "44": 15,
+    "45": 71,
+    "46": 72,
+    "47": 40,
+    "48": 10,
+    "49": 92,
+    "50": 91,
+    "51": 132,
+    "52": 133,
+    "53": 105,
+    "54": 106,
+    "55": 107,
+    "56": 11,
+    "57": 73,
+    "58": 30,
+    "59": 93,
+    "60": 17,
+    "61": 85,
+    "62": 86,
+    "63": 8,
+    "64": 2,
+    "65": 141,
+    "66": 146,
+    "67": 127,
+    "68": 126,
+    "69": 122,
+    "70": 123,
+    "71": 63,
+    "72": 124,
+    "73": 87,
+    "74": 31,
+    "75": 110,
+    "76": 101,
+    "77": 102,
+    "78": 103,
+    "79": 142,
+    "80": 143,
+    "81": 125,
+    "82": 62,
+    "83": 104,
+    "84": 32,
+    "85": 4,
+    "86": 118,
+    "87": 119,
+    "88": 83,
+    "89": 120,
+    "90": 153,
+    "91": 154,
+    "92": 60,
+    "93": 75,
+    "94": 76,
+    "95": 121,
+    "96": 33,
+    "97": 1,
+    "98": 135,
+    "99": 136,
+    "100": 137,
+    "101": 138,
+    "102": 97,
+    "103": 98,
+    "104": 139,
+    "105": 96,
+    "106": 164,
+    "107": 45,
+    "108": 90,
+    "109": 140,
+    "110": 34,
+    "111": 35,
+    "112": 3,
+    "113": 84,
+    "114": 147,
+    "115": 148,
+    "116": 149,
+    "117": 150,
+    "118": 151,
+    "119": 114,
+    "120": 115,
+    "121": 43,
+    "122": 152,
+    "123": 112,
+    "124": 113,
+    "125": 55,
+    "126": 108,
+    "127": 109,
+    "128": 37,
+    "129": 38,
+    "130": 39,
+    "131": 6,
+    "132": 100,
+    "133": 156,
+    "134": 157,
+    "135": 158,
+    "136": 159,
+    "137": 160,
+    "138": 161,
+    "139": 162,
+    "140": 163,
+    "141": 129,
+    "142": 130,
+    "143": 131,
+    "144": 51,
+    "145": 52,
+    "146": 128,
+    "147": 66,
+    "148": 41,
+    "149": 44,
+    "150": 46,
+    "151": 117,
+    "152": 165,
+    "153": 166,
+    "154": 167,
+    "155": 168,
+    "156": 169,
+    "157": 170,
+    "158": 171,
+    "159": 172,
+    "160": 173,
+    "161": 174,
+    "162": 175,
+    "163": 176,
+    "164": 177,
+    "165": 178,
+    "166": 145,
+    "167": 49,
+    "168": 144,
+    "169": 80,
+    "170": 54,
+    "171": 56,
+    "172": 57,
+    "173": 134,
+    "174": 179,
+    "175": 82,
+    "176": 180,
+    "177": 181,
+    "178": 182,
+    "179": 183,
+    "180": 184,
+    "181": 185,
+    "182": 186,
+    "183": 187,
+    "184": 188,
+    "185": 189,
+    "186": 190,
+    "187": 191,
+    "188": 192,
+    "189": 193,
+    "190": 194,
+    "191": 195,
+    "192": 196,
+    "193": 197,
+    "194": 198,
+    "195": 199,
+    "196": 200,
+    "197": 201,
+    "198": 202,
+    "199": 203,
+    "200": 155,
+    "201": 65,
+    "202": 68,
+    "203": 69,
+    "204": 70,
+    "205": 204,
+    "206": 205,
+    "207": 206,
+    "208": 207,
+    "209": 208,
+    "210": 209,
+    "211": 210,
+    "212": 211,
+    "213": 212,
+    "214": 213,
+    "215": 214,
+    "216": 215,
+    "217": 216,
+    "218": 217,
+    "219": 218,
+    "220": 219,
+    "221": 220,
+    "222": 221,
+    "223": 222,
+    "224": 223,
+    "225": 224,
+    "226": 225,
+    "227": 226,
+    "228": 227,
+    "229": 228,
+    "230": 229,
+    "231": 230,
+    "232": 231,
+    "233": 232,
+    "234": 233,
+    "235": 234,
+    "236": 235,
+    "237": 236,
+    "238": 237,
+    "239": 238,
+    "240": 239,
+    "241": 240,
+    "242": 241,
+    "243": 242,
+    "244": 243,
+    "245": 244,
+    "246": 245,
+    "247": 246,
+    "248": 247,
+    "249": 248,
+    "250": 249,
+    "251": 250,
+    "252": 251,
+    "253": 252,
+    "254": 253
+  },
+  "literal_boot": {
+    "steps": 312975,
+    "state": 33,
+    "head": -17,
+    "head_to_header_gap": 40,
+    "physical_registers": [
+      0,
+      2,
+      0,
+      0,
+      0,
+      0,
+      5,
+      0,
+      0
+    ],
+    "source_order_registers": [
+      5,
+      0,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0,
+      0
+    ],
+    "spare_blocks": 158,
+    "nonzero_spares": {
+      "2": 1,
+      "8": 1
+    },
+    "one_cells": 178,
+    "first_one": -18,
+    "last_one": 366,
+    "sorted_one_positions_json_sha256": "7fb7a028c81106b7f4a38c9a78199d5d19411ef750946e3b5be38cc09c9321ca",
+    "entire_finite_tape_matched": true
+  },
+  "scope": "Finite table/renumbering/boot checks only; not a nonhalting proof, RM-prefix proof, or ZFC internalization."
+}
+

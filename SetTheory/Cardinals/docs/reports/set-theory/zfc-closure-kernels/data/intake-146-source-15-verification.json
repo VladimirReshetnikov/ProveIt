@@ -1,0 +1,141 @@
+{
+  "source": "batch146 source04, proposed local source15",
+  "untouched_source": "/tmp/zfc-intake-146-6sz0yfz_/04-zfc_small_machine_proposal/zfc_small_machine_proposal",
+  "review_copy": "/tmp/zfc-batch146-source04-review-trf7ro8y/bundle",
+  "full_report_and_notes_read": true,
+  "full_new_code_read": true,
+  "command": "uv run --no-project python build.py --checks --machines --repo /tmp/zfc-batch146-source04-review-trf7ro8y/pinned-repo --pdf",
+  "command_exit_code": 0,
+  "dependency_recovery": "Nine files recovered by git show 17d0f2eaa650901cda59764dfcc4661c199e49c8:path from existing local repository objects; no network fetch",
+  "python_suites": {
+    "checks": [
+      {
+        "script": "code/base3_codec.py",
+        "output": "results/base3-codec.json",
+        "passed": true
+      },
+      {
+        "script": "code/logic_audit.py",
+        "output": "results/logic-audit.json",
+        "passed": true
+      },
+      {
+        "script": "code/table_audit.py",
+        "output": "results/table-audit.json",
+        "passed": true
+      },
+      {
+        "script": "machines/verify_candidates.py",
+        "output": "results/root-candidate-replay.json",
+        "passed": true
+      },
+      {
+        "script": "code/modal_search.py",
+        "output": "results/modal-search.json",
+        "passed": true
+      }
+    ],
+    "scope": "Executable audits; not a formal proof of the proposed machine endpoint.",
+    "new_proof_assistant_build_performed": false
+  },
+  "machine_replay": {
+    "pinned_repo_commit": "17d0f2eaa650901cda59764dfcc4661c199e49c8",
+    "verified_source_files": 9,
+    "candidates": [
+      {
+        "name": "candidate-250-oldrho6",
+        "baseline_working_states": 254,
+        "working_states": 250,
+        "complete_binary_rows": 500,
+        "decision_states": 188,
+        "framework_states": 62,
+        "maximum_decoder_zero_run": 7,
+        "macro_calls": 138,
+        "exact_macro_word_verified": true,
+        "all_19_macro_bodies_unchanged": true,
+        "program_context_outside_AX_unchanged": true,
+        "all_19_macro_effects_normal": true,
+        "numeric_sha256": "2bc151a7ba41fab11a2ebf15c7c9913acf46241843ec12e4bec48417153d8cd0",
+        "graph_reachable_working_states": 250,
+        "bisimulation_working_classes": 250,
+        "bisimulation_refinement_rounds": 12,
+        "halt_edges": 2,
+        "compiler_simulation_proved": false,
+        "ZFC_consistency_calibration_proved": false
+      },
+      {
+        "name": "candidate-249-dual",
+        "baseline_working_states": 252,
+        "working_states": 249,
+        "complete_binary_rows": 498,
+        "decision_states": 187,
+        "framework_states": 62,
+        "maximum_decoder_zero_run": 7,
+        "macro_calls": 138,
+        "exact_macro_word_verified": true,
+        "all_19_macro_bodies_unchanged": true,
+        "program_context_outside_AX_unchanged": true,
+        "all_19_macro_effects_normal": true,
+        "numeric_sha256": "711d6edf4a523db3d8861387636dbc8fc028eb74a7f4d3f174060a128d04a3a9",
+        "graph_reachable_working_states": 249,
+        "bisimulation_working_classes": 249,
+        "bisimulation_refinement_rounds": 11,
+        "halt_edges": 2,
+        "compiler_simulation_proved": false,
+        "ZFC_consistency_calibration_proved": false
+      }
+    ]
+  },
+  "modal_summary": [
+    {
+      "domain_size": 2,
+      "relations_tested": 4,
+      "CP_valid_relations": [],
+      "independent_direct_CP_crosschecks": 32,
+      "independent_direct_GIC_crosschecks": 512,
+      "GIC_candidate_matrices_checked_after_CP": 0
+    },
+    {
+      "domain_size": 3,
+      "relations_tested": 64,
+      "CP_valid_relations": [],
+      "independent_direct_CP_crosschecks": 1728,
+      "independent_direct_GIC_crosschecks": 0,
+      "GIC_candidate_matrices_checked_after_CP": 0
+    }
+  ],
+  "logic_counts": {
+    "propositional": 625,
+    "other_logical": 500,
+    "bundles": 80,
+    "toggle": 640
+  },
+  "pdf_build": {
+    "pdf": "report.pdf",
+    "passes": 3,
+    "bytes": 570916,
+    "undefined_references": false,
+    "overfull_boxes": [],
+    "sha256": "aa55aaec05ed9c1e359443471396a931de34ce64058bfc349f1e41139b80c7eb",
+    "engine": "pdflatex"
+  },
+  "pdf_physical_pages": 41,
+  "visual_qa": {
+    "sampled_physical_pages": [
+      25,
+      32
+    ],
+    "readable": true,
+    "clipping_or_collision_found": false,
+    "images": [
+      "/tmp/zfc-batch146-source04-review-trf7ro8y/page25.png",
+      "/tmp/zfc-batch146-source04-review-trf7ro8y/page32.png"
+    ]
+  },
+  "no_manifest_integrity_or_line_end_checks": true,
+  "no_lean_or_coq_builds": true,
+  "no_edits_to_delivered_source": true,
+  "verdict": "Accept valid ordinary mathematics and reproducible compiler benchmarks under existing closure-kernel host; unchanged restricted-calculus recommendation superseded by finite-sort non-refutation model",
+  "current_status_reference": "Computability/BusyBeaver/Research/ZFC/typed_countermodel.md:15-44; commit59b78a0d9e85c0ba68fb220d68cb173a24f0e7ac",
+  "global_minimality_or_consistency_machine_result": false
+}

@@ -1,0 +1,87 @@
+{
+  "status": "algebraic countermodel checks passed",
+  "counts": {
+    "propositional": 625,
+    "other_logical": 500,
+    "bundles": 80,
+    "toggle": 640
+  },
+  "first_countermodel": {
+    "F_value": true,
+    "false_atom_code": 13,
+    "nonderivable_explosion_code": 354,
+    "old_rho6_is_not_valid": true,
+    "scope": "all dual logical axioms and CP/GIC bundles; induction proves every generated theorem true"
+  },
+  "second_countermodel": {
+    "F_value": false,
+    "invalid_universal_instantiation_code": 19686,
+    "assignment_ones": [
+      0,
+      1
+    ],
+    "scope": "pure equality-free logical fragment only; no assertion about CP/GIC"
+  },
+  "third_countermodel": {
+    "counts": {
+      "propositional": 256,
+      "dual": 8,
+      "distribution": 32,
+      "commutation": 16,
+      "fresh_vacuity": 36,
+      "modus_ponens": 16,
+      "generalization": 2
+    },
+    "world_order": [
+      "w",
+      "v"
+    ],
+    "truth_table": {
+      "F": [
+        false,
+        true
+      ],
+      "A": [
+        true,
+        false
+      ],
+      "DN_F_A": [
+        true,
+        true
+      ],
+      "Q0_A": [
+        false,
+        false
+      ],
+      "Q0_A_implies_F": [
+        true,
+        true
+      ],
+      "Q0_DN_F_A": [
+        true,
+        true
+      ],
+      "DN_F_Q0_A": [
+        false,
+        true
+      ]
+    },
+    "source": "dual_quantifier_gap.md at ProveIt commit e7c4cadf9b180e4b1801755b09777a7572412360",
+    "scope": "Dual plus the two common Gamma axioms cannot derive F. The old-calculus derivation uses its written DNE theorem, GEN, and MP. No CP/GIC model or machine claim is made."
+  },
+  "fourth_countermodel": {
+    "counts": {
+      "propositional": 32,
+      "other_logical": 64,
+      "psc_templates": 12,
+      "ir": 2,
+      "negative_cp_gic_controls": 6
+    },
+    "source": "psc_backend_experiment.md at ProveIt commit e7c4cadf9b180e4b1801755b09777a7572412360",
+    "F_value": false,
+    "universal_operator_is_constant_true": true,
+    "ordinary_universal_specialization_is_invalid": true,
+    "scope": "All instances of the stated PSC source axioms are valid by the displayed structural argument; finite regressions are checked here. Induction on derivations excludes F. The actual CP/GIC bundles fail this valuation. No literal Turing-machine nonhalting theorem is asserted."
+  },
+  "limitation": "The first two models leave the particular CP/GIC refutation target open. The third refutes generic preservation for arbitrary common extensions. The fourth excludes the PSC source-calculus target. No check establishes a claim about any literal Turing machine halting or not halting."
+}

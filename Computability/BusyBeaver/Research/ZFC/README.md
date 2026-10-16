@@ -15,16 +15,21 @@ Its exact table has 254 working states, two symbols and terminal label 254.
 Our new Lean representation proves finite table facts; the upstream
 end-to-end consistency equivalence has not been ported to Lean.
 
-The current [experimental candidate](raw_candidate_252.md) has **252 working
+The frozen [experimental table](raw_candidate_252.md) has **252 working
 states and 504 total binary transition rows**. Its generator reproduces the
-frozen table byte for byte. Its ZFC consistency calibration and compiler
-simulation are unproved, so it does not yet achieve the goal. The candidate
+frozen table byte for byte. The finite-sort argument in
+[typed_countermodel.md](typed_countermodel.md) rules out the intended abstract
+calculus as a consistency-search target. Its consequence for the literal table
+still requires the missing compiler simulation. The experiment
 uses equality-free theory rows, base-3 formula coding, a dual quantifier
 schema and shared code. [theory_backend_experiment.md](theory_backend_experiment.md)
 records the exact recipe and competing measurements. The
 [dual-quantifier gap](dual_quantifier_gap.md) gives a counterexample to the
-generic calculus replacement used in this experiment. Its particular theory
-bundle remains uncalibrated; measured repair variants reach 254 or more states.
+generic calculus replacement used in this experiment. The stronger finite-sort
+model satisfies the actual C/G bundle with either quantifier row. The later
+250- and 248-state rewrites preserve that obstruction; their state savings remain
+compiler measurements. Full ordinary equality-free PSC and CP/GIC retain their
+separate mathematical consistency calibrations.
 
 ## Intake and theory minimization
 
@@ -40,6 +45,17 @@ The accepted ordinary PSC-only hereditary-saturation argument is local source
 explicit resources. The host also attributes the existing 253 reduction to
 mira-emmy/Mira-Cult/Jeff and distinguishes all prepared/runtime-only and
 experimental 252 artifacts. The delivered claims have no automatic Lean status.
+
+Batches 145/146 add six more reports to that host: exact 250/248 compiler
+artifacts, the finite-sort obstruction, an incoming-profile PSC alternative,
+empty-input EPSC equivalent to seeded PSC, and complete reference proof engines.
+The unchanged reduced C/G calculus is retired by `59b78a0d9`; placements
+`3cc6ba5b1`/`f31ba244b` and reconciliations `5ae03164f`/`9d9e128cc` preserve
+all fifteen sources. EPSC is a new ordinary simplification, with a 270-state
+full-equality control; its uniform Lean interpretation and machine bridge
+remain open. The opt-in formal library now includes actual raw-PSC model
+adapters, generic register bisimulation and finite facts about the attributed
+248 table. All 35 source units passed a fresh serial check.
 
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
@@ -82,6 +98,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `QuotientModel.lean` | Actual quotient domain and membership congruence; computable equality-free formula translation, its satisfaction bridge and quotient Extensionality. |
 | `ProfileAxioms.lean` | Interpreted Empty, Pairing, Union, Separation, Power and partial Replacement under explicit instances/invariance hypotheses; singleton-closed containers, with ordinary Infinity still separate. |
 | `PowerSyntax.lean` | Fixed equality-free SubD/Power-filter matrices obtained from actual Form-indexed CP/GIC, including the bound for copies outside a transitive container. |
+| `RawPSCProfile.lean` | Full incoming/outgoing profile equivalence, twin singletons, the equality-free decoder, transitive covers, Separation and Union under explicit PSC instances; actual formula adapters remain separate. |
 | `PSCSaturation.lean` | Hereditary incoming-profile saturation, the purity cut and guarded PSC hull transfer under explicit per-instance semantic resources; no full first-order interpretation theorem yet. |
 | `PositiveClosure.lean` | Exact constant fibers, singletons, Power Set, gated decoder root coverage, Separation and Union, under explicit per-relation semantic closure instances. |
 | `Bootstrap.lean` | Pairing, Russell-root partial Replacement and Infinity under explicit per-relation instances and the earlier set constructions; Infinity needs no Extensionality. |
@@ -90,6 +107,10 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `PSCCalibration.lean` | Extensionality plus subset-seeded PSC and ZF without Foundation or Choice have the same models and the same sentence theorems in the existing `BProv` calculus. |
 | `StateReduction.lean` | A valid transition quotient preserves every finite run, arbitrary/blank halting and exact final score in the existing machine model. |
 | `Table254.lean` | Literal baseline table, bounds, halt-edge count and initial action, checked by kernel `decide`. |
+| `Table248.lean` | Attributed original-rho6 source-11 experimental table: all 496 actions, 248 working states, both halt edges and actual first 1,024 blank steps checked by kernel reduction; no calculus or full simulation theorem. |
+| `RegisterBisimulation.lean` | Actual increment/decrement/halt semantics: matching instruction/index/both-exit bisimulation preserves finite halting from every common register vector, including exact counts of attempted steps; no submitted certificate instance yet. |
+| `RawPSCModel.lean` | Raw PSC model indexed by `EqualityFreeForm`: named definable instances supply cover/Separation/Union, semantic saturation and purity-cut resources; guarded hull transfer retains explicit local-bound and invariance hypotheses. |
+| `Table253.lean` | Attributed literal mira-emmy 253-state table and actual first 1,024 blank-tape steps, checked by kernel reduction; the complete 312,975-step boot and runtime bridge remain open. |
 | `Table252.lean` | Literal experimental table, 252-state/504-row bounds, both halt edges and the normalized row, checked by kernel `decide`. |
 | `FormulaRPN.lean` | Three-constructor NAND formula syntax; exact prefix-token parsing in both directions; De Bruijn scope check and a closed semantic contradiction. |
 | `Base3Encoding.lean` | Finite named membership/implication/forall code tags and label freshness; excludes cyclic truth code 0. |
@@ -120,7 +141,7 @@ uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
 This compiles the first-order logic, calculus and completeness modules,
-`ZF.Zf`, `BusyBeaver.Core`, the twenty-four research modules and the umbrella into a
+`ZF.Zf`, `BusyBeaver.Core`, the twenty-six research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the source check and axiom outputs. The pinned Lean toolchain must
@@ -192,6 +213,16 @@ first-order matrix adapters for those steps. The remaining set-existence lemmas
 are checked under explicit semantic instances. Their complete first-order
 adapters, the ordinary Infinity bridge and the ZFC consistency reduction remain.
 
+[The logical-engine audit](logical_engine_completeness.md) locates the
+original equality machinery's role in substitution and alpha conversion.
+Quantifier-only repairs do not supply cross-variable atomic transport. A
+control keeping all nine original logical outputs and four formula tags
+compiles raw PSC to 279 states with fixed grammar sharing; it retains the
+complete logical frontend specification, with its changed theory/enumerator
+and binary simulation still unproved. Its exact baseline and controls reproduce.
+[The finite 253-state Lean layer](finite253_lean.md) records the attributed
+table and initial 1,024 actual steps, with no end-to-end endpoint claim.
+
 [The PSC-only compiler control](psc_backend_experiment.md) tests the new
 schema with original rho6, a fresh `code+2` binder and genuine bottom. Exact
 macro-word sharing reaches a different 252-state partial table. An algebraic
@@ -225,10 +256,13 @@ by running their respective generators. Delivered intake files stay unchanged.
 1. Complete the equality-free interpretation and its Foundation/Choice
    consistency bridge, using the calibrated subset-PSC theory as a control.
    Keep alternative and artificial calculi eligible by complete compiler cost.
-2. Prove the changed base-3 calculus, dynamic-binder coverage, falsity convention
-   and dual quantifier row sound and refutation-complete for the emitted program.
-3. Prove the enumerator and compiler simulations and the actual initializer,
-   then connect them to the frozen 252-state literal table. The existing generic
-   totalization result covers one normalization step, not the whole compiler.
+2. Supply a complete logical frontend with a proved cross-variable substitution
+   or refutation interface. The finite-sort model rules out calibrating the
+   existing reduced C/G calculus. Preserve the attributed 253 construction as
+   the implementation baseline while measuring complete alternatives.
+3. Prove the selected enumerator, compiler and actual initializer simulations.
+   The existing generic totalization result covers one normalization step,
+   and register bisimulation covers exposed operations; neither covers the
+   complete binary interpreter.
 4. Establish the required ZFC-provable nonhalting/consistency equivalence before
    claiming the numerical candidate as an improvement on the benchmark.

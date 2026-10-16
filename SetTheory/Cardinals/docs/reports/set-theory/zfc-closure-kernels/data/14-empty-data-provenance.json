@@ -1,0 +1,117 @@
+{
+  "ProveIt_inspected_commit": "83dec60c249ca0f9e1b2e5ee3cf18fd1ce58c373",
+  "artifacts": {
+    "compressed_register_dag": {
+      "bytes": 18280,
+      "file": "candidate_dag.json",
+      "sha256": "3eebec7e4c8b162146a45862441a4855d7e742b764c12be42702f8474f4bf24d"
+    },
+    "full_equality270": {
+      "bytes": 7056,
+      "file": "best_total.tm",
+      "sha256": "54d631fa31f36b02dd41634de8cadeb2cc8fcfae4bc75fea8812af0794b2a136"
+    },
+    "independent_operation_check": {
+      "bytes": 755,
+      "file": "independent_rm_verification.json",
+      "sha256": "46562eecfeb8ac55cd47ba99063bc69eaf37846706ae3d0d733363045b1a8d97"
+    },
+    "operation_certificate": {
+      "bytes": 1036390,
+      "file": "rm_bisimulation.json",
+      "sha256": "9aa2e8c88ad8c0c95ca906b41e7f25e9068f2bfc5e82731e0819f9e7aa987d4e"
+    },
+    "rejected248": {
+      "bytes": 6477,
+      "file": "raw-candidate-total.tm",
+      "sha256": "0e0158bdf27c2d590525aa389ac72cd8ba4ce2c2408b99c0a56f5b64f600f1e3"
+    },
+    "source_register_dag": {
+      "bytes": 23318,
+      "file": "source_dag.json",
+      "sha256": "825b051d49a9050215c02b87c66716b48be9bd3f32f0e66f507e5df981ac7a47"
+    },
+    "upstream253": {
+      "bytes": 6598,
+      "file": "zfc_253.tm",
+      "sha256": "84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95"
+    }
+  },
+  "audit_code": {
+    "compress_full_equality.py": "a998fb010f4623467d5f1c9da67f011c40e49dd9e66aafcea8f06d8f1817a2fb",
+    "full_equality_epsc.py": "67cd6d8715099e011f8c7fdd40a53ae2d5af5c220c2ee05451fc7d3fed6da884",
+    "macro_contract.py": "94abe6607e2674d7b3e8f88ce05fc2f895d7c1ebedaaf41ae473219776ee4376",
+    "verify_operation_certificate.py": "d75cd3a999556dc5120ae1d1a376bb1902580e9bab37815b92379b6f0da3a044"
+  },
+  "bootstrap253_independent_recheck": {
+    "complete_tape_matched": true,
+    "head": -17,
+    "literal_steps": 312975,
+    "note": "The RM330 statement is verified upstream; the local recheck independently simulates only the literal finite TM prefix.",
+    "ones": 178,
+    "register_program_prefix_steps": 330,
+    "spare_blocks": 158,
+    "state": 33
+  },
+  "control270_recipe": {
+    "alpha": 4,
+    "bisimulation_operation_pairs": 3620,
+    "coding_radix": 4,
+    "conjunction": "(EPSC AND equality vacuity) AND membership vacuity",
+    "decision_states": 208,
+    "empty_PSC_support_first": true,
+    "framework_states": 62,
+    "grammar": "weighted Re-Pair",
+    "independently_checked_successor_pairs": 5162,
+    "logic": "all eight original schemas, including equality",
+    "logical_rho_order": [
+      8,
+      7,
+      6,
+      5,
+      4,
+      3,
+      2,
+      1
+    ],
+    "seed": 0,
+    "total_transition_rows": 540,
+    "working_states": 270
+  },
+  "grammar_helper_origin": "User-supplied incoming zfc_one_schema_research/machine/rebracket_axioms.py",
+  "grammar_helper_sha256": "bdbf5a84ab1a2914e351e917d7ff3994fec5729bddbe33971678cd51c2839119",
+  "primary_bootstrap_source": "https://github.com/mira-emmy/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/m253/coq/tm/Boot253.v",
+  "primary_endpoint_source": "https://github.com/mira-emmy/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/m253/coq/e2e/E2E253.v",
+  "search_scope": "192 original selected full-equality emission arrangements gave best277. 2048 weighted grammar candidates were considered with a heuristic screen; best actually emitted270. No exhaustive minimization or lower bound.",
+  "source_Coq_DAG": {
+    "node_count": 219,
+    "sha256": "538ddaddd932058c2b319011126579d77783231f54331772377c05848a0599e3",
+    "source_url": "https://github.com/jeff87654/busy-beaver/blob/297ab8df7e5de329605c3875b4934643b371a5e3/ZF/m254/coq/prog/Dag254.v"
+  },
+  "statuses": {
+    "248": "Rejected fixed-variable equality-free design; exact emission verified, logical calibration blocked by an explicit Boolean countermodel.",
+    "253": "Published externally verified blank-halting/finite-refutation equivalence; upstream CI inspected, no local full build or additional ZFC proof object produced.",
+    "270": "A full-equality compiler control with exact register-program rebracketing evidence; no newly verified TM/compiler/theory endpoint or record claim."
+  },
+  "upstream253_pull_request": {
+    "CI_job": "https://github.com/jeff87654/busy-beaver/actions/runs/38829452130/job/116744580063",
+    "CI_result": "recursive coqchk PASS:160 module roots; CHECK PASS:194 closed reports",
+    "Coq": "8.20.1",
+    "completed_UTC": "2026-10-16T00:45:25.4418380Z",
+    "head": "0d544f2a2e3c18f12278441a74b7879f31cbe856",
+    "local_Coq_rebuild": false,
+    "observed_state": "open, unmerged",
+    "tested_merge": "26bd0b2beeed5c3dd88511e39acd604c235e2f1c",
+    "url": "https://github.com/jeff87654/busy-beaver/pull/20"
+  },
+  "upstream254_commit": "297ab8df7e5de329605c3875b4934643b371a5e3",
+  "upstream254_literal_table": {
+    "redistributed_here": false,
+    "repository_path": "lib/jeff-busy-beaver-zfc254/ZF/m254/machine/zfc_254.tm",
+    "sha256": "d655ce2cf8cccebd21caa21a49f0f9f010960a44b95c17aae6cc425c518954eb",
+    "source_url": "https://github.com/jeff87654/busy-beaver/blob/297ab8df7e5de329605c3875b4934643b371a5e3/ZF/m254/machine/zfc_254.tm",
+    "transition_rows": 508,
+    "working_states": 254
+  },
+  "verifier_attribution": "Adapted from user-supplied zfc_one_schema_research/machine/verify_rm_certificate.py, generalized to two JSON DAG inputs; no compiler/backend imports."
+}

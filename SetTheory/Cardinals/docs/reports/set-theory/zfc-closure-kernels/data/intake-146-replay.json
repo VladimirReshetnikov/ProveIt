@@ -1,0 +1,67 @@
+[
+  {
+    "source": 1,
+    "command": [
+      "-c",
+      "import runpy,sys; ns=runpy.run_path('verify.py',run_name='intake_146'); main=ns['main']; main.__globals__['source_hashes']=lambda root,m:m['files'].clear(); sys.argv=['verify.py','--root','.',*sys.argv[1:]]; main()",
+      "--output",
+      "/tmp/zfc-batch146-reproduce-b064qcts/source12-verification.json"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch146-reproduce-b064qcts/01-01.log"
+  },
+  {
+    "source": 2,
+    "command": [
+      "code/run_checks.py"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch146-reproduce-b064qcts/02-02.log"
+  },
+  {
+    "source": 2,
+    "command": [
+      "code/measure_psc_controls.py",
+      "--repo",
+      "reference_sources/proveit",
+      "--output",
+      "/tmp/zfc-batch146-reproduce-b064qcts/source13-controls"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch146-reproduce-b064qcts/02-03.log"
+  },
+  {
+    "source": 3,
+    "command": [
+      "build.py"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch146-reproduce-b064qcts/03-04.log"
+  },
+  {
+    "source": 3,
+    "command": [
+      "code/compress_full_equality.py",
+      "--repo",
+      "/tmp/zfc-batch146-reproduce-b064qcts/pinned-repo",
+      "--incoming",
+      "third_party/one_schema",
+      "--scratch",
+      "/tmp/zfc-batch146-reproduce-b064qcts/source14-compression"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch146-reproduce-b064qcts/03-05.log"
+  },
+  {
+    "source": 4,
+    "command": [
+      "build.py",
+      "--checks",
+      "--machines",
+      "--repo",
+      "/tmp/zfc-batch146-reproduce-b064qcts/pinned-repo"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch146-reproduce-b064qcts/04-06.log"
+  }
+]
