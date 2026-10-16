@@ -291,6 +291,12 @@ rather than improving the prior control. The fixed winner regenerates and its
 operation certificate passes independent checks and six mutations. The full
 equality/theory frontend is retained; binary simulation remains open.
 
+[The revised-layout grammar experiment](layout_grammar_experiment.md) preserves
+source 19's complete word and matches its 268-state control across 56,000 DAG
+evaluations. Both searches charge the compiled dispatcher depth; their
+framework cost varies from 61 to 65 states. Exact-word certificates pass,
+without a new state bound or binary simulation theorem.
+
 ## Next proof and compiler work
 
 1. Complete the equality-free interpretation and its Foundation/Choice
