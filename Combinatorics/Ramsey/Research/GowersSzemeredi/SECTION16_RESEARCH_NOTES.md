@@ -9839,6 +9839,32 @@ needed for names inside tactic proofs (`lint_pass.py`).
     including the quadratic dichotomies, the Lemma 13.5 mod-four
     counterexample, and the Section 18 cyclic consequence of
     Theorem 18.1.
+- *Redundant tactics* (`micro_*.py`). Each module is elaborated once
+  with all its edits; declarations that report errors get their edits
+  back, and a second elaboration confirms.
+  - 4dc4330: 955 `classical` lines that were not needed are gone, and
+    99 runs of `rw` lines are merged (theorem and lemma proofs only).
+  - 0559413: 183 blocks `by` + `exact e` become the term `e`.
+  - d7f3e33: 66 `apply f` + `exact h` become `exact f h`, and 12
+    `by rfl` become `rfl`.
+  - e42310c: 83 `intro`/`refine`/`have` + `exact`/`simpa` pairs
+    become single terms.
+- *More inlining.*
+  - e816211: 14 single-use lemmas with 1–2-line proofs.
+  - 04fd0fb: 29 with proofs of up to six lines, at `have`/`exact` uses.
+  - bb1e6cb: **10** private helpers with proofs of up to 40 lines, with
+    docstrings kept as comments. Its title says 11 and its body adds
+    "one more from the same modules"; both are wrong.
+    `lemma_10_4_holds` shows up in that diff only because a helper's
+    tactics moved into its proof.
+  - Of the 694 single-use declarations left, only 59 are used at a
+    whole-line `have`/`exact`; the rest are used inside expressions.
+    Public single-use theorems such as `linearPattern_uniform_bound`
+    (the generalized von Neumann estimate) stay, as results stated for
+    their own sake.
+- Closure of `Proofs18Final` on 2026-10-16: 578 modules, about 122,000
+  lines, down from 608 modules and 131,743 lines at 1d382fc. The peer's
+  merged simplifications are included in that figure.
 
 `Proofs16PolynomialMultilinearCover.exists_all_scale_polynomial_multilinear_cover`
 composes the improved all-scale Lemma 16.9 with the rounded affine lift.
