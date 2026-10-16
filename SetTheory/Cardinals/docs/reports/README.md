@@ -14,8 +14,8 @@ PDFs remain recoverable from the committed arrival archives.
 numbers all two hundred and ninety reports, names the problem each one attacks
 and the
 result it claims, and records the archives each directory came from.  These are
-AI-assisted drafts; none is refereed or machine-checked, and the manifest
-records what each report claims rather than verifying it.
+AI-assisted drafts; none is refereed or fully machine-checked. The manifest
+records their claims and identifies the limited scope of checked components.
 
 | Category | Reports |
 |---|---:|
@@ -2271,7 +2271,8 @@ hypotheses. No new internal ZFC endpoint is claimed; the collection total stays
 
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
-own theorems are not formalized.
+own claims remain unformalized unless an independently checked component is
+explicitly identified.
 
 Batches 147 and 148 add sources 16 and 17, bringing this host to seventeen
 manuscripts while the collection remains 290 reports. Arrival `9439d775aa`
@@ -2288,6 +2289,24 @@ proofs (`830647031`); the whole reference frontend and machine endpoint remain
 unformalized. The base article is unchanged; detailed reconciliation and
 runnable recovery helpers are in the host.
 
+Batch 149 adds sources 18 and 19 from `de047657e` and `be9e617d2`
+(placement `a9a313b79`, write `81bcbe6a7`), bringing the same host to nineteen manuscripts;
+the collection remains 290 reports. Explicit open/close/plug witnesses and
+a strict binary Hilbert format provide one complete reference frontend.
+A shared PSC template with dynamic parameter maps provides another complete
+tableau frontend, including identification of existing variables. The new
+diagonal obstruction shows why fresh and signed-atomic instantiation alone
+do not suffice. Two standalone delivered Lean files independently compile:
+their twelve audited roots prove finite-syntax binding and a specified
+PSC/modal derivation invariant, not Python or binary-machine correctness.
+The full-original-logic 268-state control improves the prior 269 control;
+it is not a compilation of either new checker or a new consistency endpoint.
+Fixed tables and register certificates reproduce. Source 18's reconstructed
+1,024-choice PSC search has six minimizers where its saved histogram has five;
+the winning 283-state table is exact, while the historical histogram and
+unbundled sweeps retain their reproduction limits. Detailed dossiers and
+`code/reproduce_149.py` preserve these boundaries without changing deliveries.
+
 ## Rebuilding the manifest
 
 ```sh
@@ -2296,8 +2315,8 @@ latexmk -pdf manifest.tex && latexmk -c manifest.tex
 
 ## Merged reports
 
-Batches 143–148's [closure kernels](set-theory/zfc-closure-kernels) are a
-complementary merge and fourteen additions with a reconciliation README: the
+Batches 143–149's [closure kernels](set-theory/zfc-closure-kernels) are a
+complementary merge and sixteen additions with a reconciliation README: the
 seeded base, BIC control, exact-fiber alternative and later saturation/engineering
 work retain their distinct hypotheses,
 metrics and verification evidence. The member articles remain recoverable

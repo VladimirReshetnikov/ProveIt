@@ -25,8 +25,10 @@ collection of research reports on other subjects.
   machine/compiler experiments. A finite-sort model rejects the reduced
   emitted calculus while preserving the full ordinary theory calibration;
   a later ordinary proof strengthens that obstruction to PA. Complete
-  ground-clause and Hilbert references supply alternative specifications;
-  the internal ZFC endpoint remains open.
+  ground-clause, binding-witness Hilbert and shared-template tableau references
+  supply complete alternative specifications. Two standalone delivered Lean
+  files check narrow syntax/obstruction results; the separate complete-logic
+  268-state control has no binary simulation or internal ZFC endpoint.
 - [`Cardinals/`](Cardinals/) studies exacting, ultraexacting and
   cover-exacting cardinals: research reports, a synthesis stating each result
   once in its strongest form (in ZFC, a cover-exacting cardinal cannot lie
