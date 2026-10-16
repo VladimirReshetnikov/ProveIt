@@ -704,10 +704,11 @@ theorem halts_no_model (h : Halts) {D : Type} (mem : D → D → Prop) (hirr : �
     (e : Nat → D) : False :=
   no_model_of_c254_one (sound h) mem hirr hB e
 
-/-- If the encodable bundle theory has no irreflexive model, the enumerator halts. -/
+/-- If the encodable bundle theory has no irreflexive model with a valuation
+(equivalently, with a nonempty domain), the enumerator halts. -/
 theorem halts_of_no_model
     (hnone : ∀ (D : Type) (mem : D → D → Prop), (∀ x, ¬ mem x x) →
-      (∀ f, EncBundle f → ∀ e : Nat → D, Tarski.Sat mem e f) → False) : Halts :=
+      (∀ f, EncBundle f → ∀ e : Nat → D, Tarski.Sat mem e f) → (Nat → D) → False) : Halts :=
   complete (c254_complete hnone)
 
 end SetTheory.BusyBeaver.ZFC.Enum254
