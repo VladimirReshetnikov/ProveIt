@@ -10,6 +10,7 @@ import BusyBeaver.ZFC.ProfileAxioms
 import BusyBeaver.ZFC.PowerSyntax
 import BusyBeaver.ZFC.PSCSaturation
 import BusyBeaver.ZFC.RawPSCProfile
+import BusyBeaver.ZFC.RawPSCModel
 import BusyBeaver.ZFC.PositiveClosure
 import BusyBeaver.ZFC.Bootstrap
 import BusyBeaver.ZFC.DeepPositiveClosure
@@ -19,6 +20,8 @@ import BusyBeaver.ZFC.StateReduction
 import BusyBeaver.ZFC.Table254
 import BusyBeaver.ZFC.Table252
 import BusyBeaver.ZFC.Table253
+import BusyBeaver.ZFC.Table248
+import BusyBeaver.ZFC.RegisterBisimulation
 import BusyBeaver.ZFC.FormulaRPN
 import BusyBeaver.ZFC.Base3Encoding
 import BusyBeaver.ZFC.Base3Syntax
