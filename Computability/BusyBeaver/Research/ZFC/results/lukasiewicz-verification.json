@@ -1,0 +1,142 @@
+{
+  "head_at_verification": "a6823de93c2cae1e4056cae22f1b10ee314c292e",
+  "date_utc": "2026-10-16T21:31:47.139644+00:00",
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "new_source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+  "new_source_sha256": "5bae5186d702414adc6f1f7006d241a48ef9f24e53de48c90f84394ce3c500d3",
+  "new_source_git_blob": "ab9f8f558c6167d378f0f324f0c2f5b8b59a5fe0",
+  "upstream": {
+    "repository": "https://github.com/jeff87654/busy-beaver",
+    "pin": "297ab8df7e5de329605c3875b4934643b371a5e3",
+    "path": "lib/jeff-busy-beaver-zfc254/ZF/m254/coq/logic/CD254.v",
+    "sha256": "898b6498cc50b81f465c2cac72fcfe1bb5eaf8e4af91359a02b18906202a8a4a",
+    "git_blob": "78dcc05ec4cd22e19b9ef12003b93eb787a408bc",
+    "attribution": "Mira-Cult designed the machine; Jeff supplies the verification and CD254.v certificates; original cdgen.py generator retained in vendored snapshot."
+  },
+  "certificate_port": {
+    "numbered_certificates": 107,
+    "initial_rho8_instances": 1,
+    "detachment_lemmas": 106,
+    "all_statements_and_terms_match_documented_translation": true,
+    "translation": "wim->generic imp; thm254->generic T; T_mp minor major->detach minor major; source proof-only filler 0->local arbitrary v0; source rho8 parameter order normalized in cd0",
+    "targets": {
+      "K": 16,
+      "Peirce": 25,
+      "composition": 91,
+      "S": 106
+    },
+    "uses_implication_injectivity_or_numerical_aliases": false
+  },
+  "dependency_cache": {
+    "base": "/tmp/zfc-lean-check-h9rvzdmj",
+    "Tarski": "/tmp/zfc-tarski-review-u2w07due/build",
+    "merged_symlink_cache": "/tmp/zfc-lukasiewicz-check-z6r4piop",
+    "rebuilt": false,
+    "Boot253_rebuilt": false,
+    "Tarski_sources_checked_against_cache_review": [
+      {
+        "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Kalmar.lean",
+        "git_blob": "fb5a761285a259531aac1e14e9da54e1dd13fe49",
+        "matches_source_verified_Tarski_cache": true
+      },
+      {
+        "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiCalculus.lean",
+        "git_blob": "b3bcb7f302eb38e5903dfb19b633cb3cb942a138",
+        "matches_source_verified_Tarski_cache": true
+      },
+      {
+        "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean",
+        "git_blob": "e7fa0c278a820f53e8af82b3118aae36cca54dc1",
+        "matches_source_verified_Tarski_cache": true
+      },
+      {
+        "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean",
+        "git_blob": "2295d5ef31e2a69d9a50afa03664a174f63b75b8",
+        "matches_source_verified_Tarski_cache": true
+      },
+      {
+        "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean",
+        "git_blob": "9c39ec10ea719c709df694e7ae2810267d956a63",
+        "matches_source_verified_Tarski_cache": true
+      },
+      {
+        "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiComplete.lean",
+        "git_blob": "a7fc2441fe034c37ca5c77c48c0dc6eeb9e201c3",
+        "matches_source_verified_Tarski_cache": true
+      }
+    ]
+  },
+  "compile": {
+    "directory": "/tmp/zfc-lukasiewicz-check-z6r4piop",
+    "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+    "command": [
+      "lean",
+      "-o",
+      "/tmp/zfc-lukasiewicz-check-z6r4piop/BusyBeaver/ZFC/Lukasiewicz.olean",
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean"
+    ],
+    "returncode": 0,
+    "seconds": 0.5375895351171494,
+    "output": ""
+  },
+  "audit": {
+    "command": [
+      "lean",
+      "/tmp/zfc-lukasiewicz-check-z6r4piop/Audit.lean"
+    ],
+    "environment": {
+      "LEAN_PATH": "/tmp/zfc-lukasiewicz-check-z6r4piop"
+    },
+    "returncode": 0,
+    "source": "/tmp/zfc-lukasiewicz-check-z6r4piop/Audit.lean",
+    "source_text": "import BusyBeaver.ZFC.Lukasiewicz\nopen SetTheory.BusyBeaver.ZFC\n#check Lukasiewicz.k\n#check Lukasiewicz.s\n#check Lukasiewicz.peirce\n#check Tarski.ex_falso\n#check Tarski.classical\n#check Tarski.complete\n#print axioms Lukasiewicz.k\n#print axioms Lukasiewicz.s\n#print axioms Lukasiewicz.peirce\n#print axioms Lukasiewicz.composition\n#print axioms Tarski.ex_falso\n#print axioms Tarski.classical\n#print axioms Tarski.complete\n\n-- A caller supplies neither an extra classical basis nor an empty-theory basis.\nexample {Ax : Tarski.NF \u2192 Prop} (f : Tarski.NF)\n    (hval : \u2200 (D : Type) (mem : D \u2192 D \u2192 Prop),\n      (\u2200 a, Ax a \u2192 \u2200 e : Nat \u2192 D, Tarski.Sat mem e a) \u2192\n        \u2200 e : Nat \u2192 D, Tarski.Sat mem e f) : Tarski.Thm Ax f :=\n  Tarski.complete f hval\n",
+    "output": "SetTheory.BusyBeaver.ZFC.Lukasiewicz.k.{u} {\u03b1 : Type u} {imp : \u03b1 \u2192 \u03b1 \u2192 \u03b1} {T : \u03b1 \u2192 Prop}\n  (h : Lukasiewicz.Implicational imp T) (a b : \u03b1) : T (imp a (imp b a))\nSetTheory.BusyBeaver.ZFC.Lukasiewicz.s.{u} {\u03b1 : Type u} {imp : \u03b1 \u2192 \u03b1 \u2192 \u03b1} {T : \u03b1 \u2192 Prop}\n  (h : Lukasiewicz.Implicational imp T) (a b c : \u03b1) : T (imp (imp a (imp b c)) (imp (imp a b) (imp a c)))\nSetTheory.BusyBeaver.ZFC.Lukasiewicz.peirce.{u} {\u03b1 : Type u} {imp : \u03b1 \u2192 \u03b1 \u2192 \u03b1} {T : \u03b1 \u2192 Prop}\n  (h : Lukasiewicz.Implicational imp T) (a b : \u03b1) : T (imp (imp (imp a b) a) a)\nSetTheory.BusyBeaver.ZFC.Tarski.ex_falso {Ax : Tarski.NF \u2192 Prop} (a : Tarski.NF) : Tarski.Thm Ax (Tarski.NF.bot.imp a)\nSetTheory.BusyBeaver.ZFC.Tarski.classical (Ax : Tarski.NF \u2192 Prop) :\n  Kalmar.Classical Tarski.NF.imp Tarski.NF.bot (Tarski.Thm Ax)\nSetTheory.BusyBeaver.ZFC.Tarski.complete {Ax : Tarski.NF \u2192 Prop} (f : Tarski.NF)\n  (hval :\n    \u2200 (D : Type) (mem : D \u2192 D \u2192 Prop),\n      (\u2200 (a : Tarski.NF), Ax a \u2192 \u2200 (e : Nat \u2192 D), Tarski.Sat mem e a) \u2192 \u2200 (e : Nat \u2192 D), Tarski.Sat mem e f) :\n  Tarski.Thm Ax f\n'SetTheory.BusyBeaver.ZFC.Lukasiewicz.k' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Lukasiewicz.s' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Lukasiewicz.peirce' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Lukasiewicz.composition' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Tarski.ex_falso' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Tarski.classical' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Tarski.complete' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+    "theorems_audited": 7,
+    "caller_without_hC_hC0": "passed",
+    "axioms": {
+      "Lukasiewicz.k": [],
+      "Lukasiewicz.s": [],
+      "Lukasiewicz.peirce": [],
+      "Lukasiewicz.composition": [],
+      "Tarski.ex_falso": [],
+      "Tarski.classical": [],
+      "Tarski.complete": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ]
+    }
+  },
+  "initial_environment_issue": {
+    "status": "resolved before successful check",
+    "description": "A separate empty first LEAN_PATH prefix shadows later BusyBeaver namespace paths. Dependencies were symlink-merged into one fresh cache; no source change was needed."
+  },
+  "scope": {
+    "closed": "Pure rho8 derivations of K/S/Peirce; rho6-derived ex falso; actual Tarski.Classical structures for any Ax; unconditional named primitive-falsity first-order completeness wrapper.",
+    "open": [
+      "numeric syntax and arbitrary-code adapters",
+      "runtime relative-falsity alias",
+      "specific theory-bundle calibration",
+      "proof enumeration and RM compilation",
+      "binary-table consistency endpoint/state bound"
+    ],
+    "no_new_axioms_or_admissions": true,
+    "no_machine_size_claim": true
+  },
+  "umbrella_integration": {
+    "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean",
+    "source_sha256": "d429e4eacda50a0ebb7574849400530e0396b80f5ba448aa062c18be88bd92ed",
+    "returncode": 0,
+    "output": "",
+    "serialized_runner_units": 45,
+    "run_scope": "new umbrella checked against previously verified38-source closure plus6 imported Tarski modules and new Lukasiewicz; full45-unit rebuild not repeated"
+  },
+  "independent_source_review": {
+    "all_107_statements_and_terms_match_pinned_source": true,
+    "K_S_Peirce_exact_types": true,
+    "rho6_ex_falso_correct_for_arbitrary_formula": true,
+    "unconditional_wrapper_supplies_both_bases": true,
+    "scope": "Read-only independent comparison; no second compiler run",
+    "minor_note": "Existing NF.luk comment describes normalized c,u,a,b as machine order, whereas numerical rho8 API binds a,b,c,u; formula and applications agree."
+  }
+}

@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 from collections import Counter
 import copy
+from functools import cache
 import hashlib
 import importlib
 import importlib.util
@@ -123,6 +124,20 @@ def normalize(machine):
     return ('\n'.join(text) + '\n').encode(), labels, missing
 
 
+def dispatch_depth(nodes):
+    """Wade generate() charges one dispatcher state per consecutive-zero level."""
+    @cache
+    def zeros(q):
+        first = nodes[q][0]
+        return 1 + (zeros(int(first.split()[1])) if first.startswith('ENode ') else 0)
+    return max(2, max(map(zeros, nodes)))
+
+
+def framework_leaves(nodes):
+    return {(bit, e) for es in nodes.values() for bit, e in enumerate(es)
+            if not e.startswith('ENode ')}
+
+
 def mutation_checks(verifier, source, candidate, certificate, out):
     original = json.loads(certificate.read_text())
     inc = next(i for i, row in enumerate(original['pairs'])
@@ -188,44 +203,73 @@ def main():
         if any(bounds(f'ENode {q}') != (0, 0) for q in set(word)):
             raise ValueError('source macro escapes reassociation context')
     control = self_check(helper.repair)
-    best = None
-    histograms, changes, diagnostics = {}, {}, Counter()
-    start = time.monotonic()
-    for lane, word in words.items():
-        histograms[lane] = {}
-        changes[lane] = dict(different_grammars=0, different_node_counts=0,
-                             safe_smaller=0, legacy_smaller=0)
-        for exponent in args.exponents:
-            histogram = Counter()
-            legacy_histogram = Counter()
-            for seed in range(args.start_seed, args.start_seed + args.seeds):
-                seq, grammar, diag = safe_repair(word, seed, exponent)
-                diagnostics.update(diag)
-                newnodes, newnames, axroot = helper.transform(nodes, names, seq, grammar)
-                count = len(newnodes)
-                histogram[count] += 1
-                if args.compare_legacy:
-                    old_seq, old_grammar = helper.repair(word, seed, exponent)
-                    old_nodes, _, _ = helper.transform(nodes, names, old_seq, old_grammar)
-                    old_count = len(old_nodes)
-                    legacy_histogram[old_count] += 1
-                    changes[lane]['different_grammars'] += (seq, grammar) != (old_seq, old_grammar)
-                    changes[lane]['different_node_counts'] += count != old_count
-                    changes[lane]['safe_smaller'] += count < old_count
-                    changes[lane]['legacy_smaller'] += count > old_count
-                key = count, len(grammar), len(seq), lane, exponent, seed
-                if best is None or key < best['key']:
-                    best = dict(key=key, lane=lane, exponent=exponent, seed=seed,
-                                nodes=newnodes, names=newnames, root=axroot,
-                                word=word, residual=seq, productions=grammar)
-                    print(json.dumps(dict(new_minimum_nodes=count, lane=lane,
-                                          exponent=exponent, seed=seed)), flush=True)
-            histograms[lane][exponent] = dict(safe=dict(sorted(histogram.items())),
-                                             legacy=dict(sorted(legacy_histogram.items())))
     for name in ('TMBuilder.py', 'tm.py', 'tmdb.py', 'LICENSE.wade'):
         (out / name).write_bytes(recover.git_bytes(None, 'ZF/generator/' + name))
     sys.path.insert(0, str(out))
     backend = importlib.import_module('TMBuilder')
+    original_leaves = framework_leaves(nodes)
+    best = None
+    histograms, decision_histograms, changes, diagnostics = {}, {}, {}, Counter()
+    framework_checks, depths = {}, {}
+    def evaluate(lane, algorithm, exponent, seed, seq, grammar):
+        nonlocal best
+        if expand(seq, grammar) != words[lane]:
+            raise ValueError('grammar changed source token word')
+        nn, nm, root = helper.transform(nodes, names, seq, grammar)
+        if framework_leaves(nn) != original_leaves:
+            raise ValueError('register/control leaves changed')
+        depth = dispatch_depth(nn)
+        framework = 55 + depth
+        if depth not in framework_checks:
+            sample = helper.compile_dag(backend, nn, nm)
+            helper.reextract(sample, nn, nm)
+            states = {q for q, _ in sample.states}
+            actual_framework = sum(q[0].isdigit() for q in states)
+            if actual_framework != framework or len(states) != len(nn)+framework:
+                raise ValueError('dispatcher cost model disagrees with actual backend')
+            framework_checks[depth] = dict(decision_nodes=len(nn), framework_states=framework,
+                                           total_states=len(states), every_edge_reextracted=True)
+        depths[lane][depth] += 1
+        cost = len(nn) + framework
+        key = cost, len(nn), len(grammar), len(seq), lane, algorithm, exponent, seed
+        if best is None or key < best['key']:
+            best = dict(key=key, lane=lane, algorithm=algorithm, exponent=exponent, seed=seed,
+                        nodes=nn, names=nm, root=root, word=words[lane], residual=seq,
+                        productions=grammar, dispatcher_depth=depth, framework=framework)
+            print(json.dumps(dict(new_minimum_states=cost, decision_nodes=len(nn),
+                                  framework_states=framework, lane=lane, algorithm=algorithm,
+                                  exponent=exponent, seed=seed)), flush=True)
+        return len(nn), cost
+    start = time.monotonic()
+    for lane, word in words.items():
+        histograms[lane] = {}; decision_histograms[lane] = {}; depths[lane] = Counter()
+        changes[lane] = dict(different_grammars=0, different_node_counts=0,
+                             different_state_counts=0,
+                             safe_smaller=0, legacy_smaller=0)
+        for exponent in args.exponents:
+            histogram = Counter()
+            legacy_histogram = Counter()
+            decision_histogram, legacy_decision_histogram = Counter(), Counter()
+            for seed in range(args.start_seed, args.start_seed + args.seeds):
+                seq, grammar, diag = safe_repair(word, seed, exponent)
+                diagnostics.update(diag)
+                count, cost = evaluate(lane, 'safe', exponent, seed, seq, grammar)
+                histogram[cost] += 1; decision_histogram[count] += 1
+                if args.compare_legacy:
+                    old_seq, old_grammar = helper.repair(word, seed, exponent)
+                    old_count, old_cost = evaluate(lane, 'legacy', exponent, seed, old_seq, old_grammar)
+                    legacy_histogram[old_cost] += 1; legacy_decision_histogram[old_count] += 1
+                    changes[lane]['different_grammars'] += (seq, grammar) != (old_seq, old_grammar)
+                    changes[lane]['different_node_counts'] += count != old_count
+                    changes[lane]['different_state_counts'] += cost != old_cost
+                    changes[lane]['safe_smaller'] += cost < old_cost
+                    changes[lane]['legacy_smaller'] += cost > old_cost
+            histograms[lane][exponent] = dict(safe=dict(sorted(histogram.items())),
+                                             legacy=dict(sorted(legacy_histogram.items())))
+            decision_histograms[lane][exponent] = dict(safe=dict(sorted(decision_histogram.items())),
+                                                       legacy=dict(sorted(legacy_decision_histogram.items())))
+            print(json.dumps(dict(lane=lane, exponent=exponent, best_states=best['key'][0],
+                                  elapsed_seconds=time.monotonic()-start)), flush=True)
     machine = helper.compile_dag(backend, best['nodes'], best['names'])
     helper.reextract(machine, best['nodes'], best['names'])
     machine.save(str(out / 'candidate.named.tm'))
@@ -244,8 +288,8 @@ def main():
     mutations = mutation_checks(verifier, source, candidate, cert_path, out)
     states = {q for q, _ in machine.states}
     framework = sum(q[0].isdigit() for q in states)
-    if framework != 62 or len(states) != len(best['nodes']) + 62:
-        raise ValueError('measured framework cost differs from fixed62 control')
+    if framework != best['framework'] or len(states) != best['key'][0]:
+        raise ValueError('measured backend differs from charged dispatcher cost')
     result = dict(source_upstream_commit=recover.COMMIT,
                   driver_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                   source08_helper=str(helper_path.relative_to(ROOT)),
@@ -256,11 +300,17 @@ def main():
                   samples_per_lane=len(args.exponents) * args.seeds,
                   exponents=args.exponents, seed_start=args.start_seed,
                   compare_legacy=args.compare_legacy, histograms=histograms,
+                  histogram_unit='total working states including variable dispatcher',
+                  decision_histograms=decision_histograms,
+                  dispatch_depth_histograms=depths,
+                  framework_cost_model='55 fixed states plus max_zeros dispatcher depth; unchanged register/control leaves checked',
+                  actual_compiler_framework_checks=framework_checks,
                   paired_comparisons=changes, overlap_diagnostics=dict(diagnostics),
                   overlap_self_check=control,
-                  winner={k: best[k] for k in ('lane', 'exponent', 'seed', 'key')},
+                  winner={k: best[k] for k in ('lane', 'algorithm', 'exponent', 'seed', 'key')},
                   decision_nodes=len(best['nodes']), working_states=len(states),
                   framework_states=framework, named_rows=len(machine.states),
+                  winner_dispatcher_depth=best['dispatcher_depth'],
                   total_rows=2 * len(states), missing_rows=missing,
                   total_table_sha256=hashlib.sha256(table).hexdigest(),
                   named_table_sha256=hashlib.sha256((out/'candidate.named.tm').read_bytes()).hexdigest(),

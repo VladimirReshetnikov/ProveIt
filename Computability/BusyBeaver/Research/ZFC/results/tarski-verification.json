@@ -1,0 +1,82 @@
+{
+  "source_pin": "04d4900ac9d228054a8b3580141841636d9f693e",
+  "head": "cd4049ea385ddec02ac61b0cc4ced6a36be8a69e",
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "dependency_cache": "/tmp/zfc-lean-check-h9rvzdmj",
+  "rebuilt_dependencies": false,
+  "modules": [
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Kalmar.lean",
+      "returncode": 0,
+      "seconds": 0.643,
+      "log": "/tmp/zfc-tarski-review-u2w07due/build/Kalmar.log",
+      "output": "",
+      "git_blob": "fb5a761285a259531aac1e14e9da54e1dd13fe49"
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiCalculus.lean",
+      "returncode": 0,
+      "seconds": 0.87,
+      "log": "/tmp/zfc-tarski-review-u2w07due/build/TarskiCalculus.log",
+      "output": "",
+      "git_blob": "b3bcb7f302eb38e5903dfb19b633cb3cb942a138"
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean",
+      "returncode": 0,
+      "seconds": 0.434,
+      "log": "/tmp/zfc-tarski-review-u2w07due/build/TarskiDerived.log",
+      "output": "",
+      "git_blob": "e7fa0c278a820f53e8af82b3118aae36cca54dc1"
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean",
+      "returncode": 0,
+      "seconds": 1.055,
+      "log": "/tmp/zfc-tarski-review-u2w07due/build/TarskiLeibniz.log",
+      "output": "",
+      "git_blob": "2295d5ef31e2a69d9a50afa03664a174f63b75b8"
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean",
+      "returncode": 0,
+      "seconds": 0.977,
+      "log": "/tmp/zfc-tarski-review-u2w07due/build/TarskiClean.log",
+      "output": "",
+      "git_blob": "9c39ec10ea719c709df694e7ae2810267d956a63"
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiComplete.lean",
+      "returncode": 0,
+      "seconds": 1.084,
+      "log": "/tmp/zfc-tarski-review-u2w07due/build/TarskiComplete.log",
+      "output": "BusyBeaver/ZFC/TarskiComplete.lean:282:0: warning: automatically included section variable(s) unused in theorem `SetTheory.BusyBeaver.ZFC.Tarski.gam_list`:\n  hC\n  hz\nconsider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:\n  omit hC hz in theorem ...\n\nNote: This linter can be disabled with `set_option linter.unusedSectionVars false`\nBusyBeaver/ZFC/TarskiComplete.lean:299:0: warning: automatically included section variable(s) unused in theorem `SetTheory.BusyBeaver.ZFC.Tarski.gam_complete`:\n  hC\n  hz\nconsider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:\n  omit hC hz in theorem ...\n\nNote: This linter can be disabled with `set_option linter.unusedSectionVars false`\nBusyBeaver/ZFC/TarskiComplete.lean:437:9: warning: Variable name `a1` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\nBusyBeaver/ZFC/TarskiComplete.lean:437:12: warning: Variable name `b1` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\nBusyBeaver/ZFC/TarskiComplete.lean:437:15: warning: Variable name `a2` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\nBusyBeaver/ZFC/TarskiComplete.lean:437:18: warning: Variable name `b2` is not explicitly referenced.\n\nThe binding can be removed (if unused) or named `_` (if used implicitly).\n\nNote: This linter can be disabled with `set_option linter.unusedVariables false`\n",
+      "git_blob": "a7fc2441fe034c37ca5c77c48c0dc6eeb9e201c3"
+    }
+  ],
+  "audit": {
+    "returncode": 0,
+    "source": "/tmp/zfc-tarski-review-u2w07due/build/Audit.lean",
+    "output": "SetTheory.BusyBeaver.ZFC.Tarski.soundness.{u} {V : Type u} {Ax : NF \u2192 Prop} {mem : V \u2192 V \u2192 Prop}\n  (hAx : \u2200 (a : NF), Ax a \u2192 \u2200 (e : Nat \u2192 V), Sat mem e a) {f : NF} : Thm Ax f \u2192 \u2200 (e : Nat \u2192 V), Sat mem e f\nSetTheory.BusyBeaver.ZFC.Tarski.completeness {Ax : NF \u2192 Prop} (hC : Classical imp bot (Thm Ax))\n  (hC0 : Classical imp bot (Thm fun x => False)) (f : NF)\n  (hval :\n    \u2200 (D : Type) (mem : D \u2192 D \u2192 Prop),\n      (\u2200 (a : NF), Ax a \u2192 \u2200 (e : Nat \u2192 D), Sat mem e a) \u2192 \u2200 (e : Nat \u2192 D), Sat mem e f) :\n  Thm Ax f\n'SetTheory.BusyBeaver.ZFC.Kalmar.tautology_complete' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.soundness' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.vac_of_not_occurs' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Tarski.eq_refl' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.leibniz' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.spec' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.spec_self' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.alpha_fwd' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.alpha_bwd' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.sat_rn' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.clean_cl' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.cl_equiv' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.enumF_code' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.cons_witness' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.gam_witness' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.gam_rich' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.truth' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.sat_close' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Tarski.completeness' depends on axioms: [propext, Classical.choice, Quot.sound]\n'efq_of_k_s' does not depend on any axioms\n'classical_of_empty' does not depend on any axioms\n",
+    "theorems_audited": 21
+  },
+  "scope": "Six new source modules rebuilt serially against previously source-verified 38-module cache; dependencies and Boot253 were not rebuilt.",
+  "findings": [
+    {
+      "status": "passed",
+      "claim": "The conditional soundness/completeness and capture-safe model construction match their Lean statements."
+    },
+    {
+      "status": "open",
+      "claim": "Classical K/S/Peirce/ex-falso hypotheses are supplied, not constructed from the eight rows in these six modules."
+    },
+    {
+      "status": "documentation_correction_needed",
+      "claim": "Lukasiewicz.lean/Tarski.classical referenced in module comments are absent; rho8 alone cannot imply ex falso for an arbitrary primitive bot."
+    },
+    {
+      "status": "proved_in_scratch",
+      "claim": "K and S together with rho6 derive ex falso; empty-theory Classical implies Classical over any Ax by theorem monotonicity."
+    }
+  ]
+}

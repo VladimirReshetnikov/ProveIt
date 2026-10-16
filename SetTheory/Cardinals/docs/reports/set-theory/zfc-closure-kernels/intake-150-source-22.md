@@ -1,0 +1,51 @@
+# Batch 150, source 03: unary protected-witness closure rule
+
+**Verdict:** accept as a complementary addition to the existing closure-kernel report. I found no substantive mathematical or checker defect. This source adds a useful ordinary presentation theorem and an implemented complete reference search, with no new transition table, state count, Lean proof or Coq build. Relative to its inspected pin, the protected unary interface is new; this review asserts no global or same-batch priority beyond that scope.
+
+Untouched source: `/tmp/zfc-intake-150-g2hme2lw/03/zfc_minimal_rule_research`. Fresh verification copy: `/tmp/zfc-review150-source03-0jp4oxb2/package`. The report pins `c1f2cc90c15fbdcd5f3ddfd7fcbb0b635c93c650`, including requested `6d8bc7f1...` and `63c83cf79...`; arrival is `47e887108`. I read the README, main report, every section including both literature supplements, all nine Python modules, reproduction driver, diagnostics and positive certificates. No delivered/repository files were changed. No release manifest or checksum enforcement was run. Root owns the PDF review.
+
+## Mathematical findings
+
+The basic global rule `proved B_rho / H_rho`, its pure-logical-premise restriction, and EPSC have the same first-order theorems. The key construction is `sigma = B_rho(params) AND rho`, retaining parameters open. Its bound is a pure logical theorem by splitting on the guard; closure is applied only after completing that unconditional proof. Pure logic then transports `H_sigma` to `B_rho -> H_rho`. Thus the argument does not misuse a deduction theorem by applying a global rule under a local hypothesis. The explicit three-object counterexample correctly shows why universally closing the parameter guard first would fail (`sections/02-closure-presentation.tex:59-118`).
+
+The stronger unary rule parses `T_beta = forall x exists b forall y (beta -> y subset b)` and produces the EPSC hull for `rho_beta = forall b beta`. The original existential witness bounds this universally protected fiber, even when beta depends on b. Conversely, inserting an unused witness slot into an ordinary matrix makes protection vacuous and recovers the basic rule. Applying that adapter to the guarded matrix preserves the pure-premise theorem. Nonempty-domain semantics and capture avoidance are stated explicitly (`02-closure-presentation.tex:128-172`). Existential protection or substituting an arbitrary parameter for b would be unsound; both have concrete negative controls.
+
+The inherited EPSC/PSC equivalence and hereditary-saturation interpretation correctly retain source 14 and source 08 ownership. I checked the reconstructed bootstrap: empty object, exact subset-bounded classes, full-profile twins, gated decoder/transitive covers before Union, Separation/Union, binary bound without Choice, then supported filtering to recover PSC. The saturation proof uses incoming-profile equality only on the hereditary saturated domain; it does not silently assume raw outgoing congruence or choose infinitely many covers. The subsequent extensional PSC/ZF0 comparison, ranked core and constructibility argument support the stated ordinary ZFC-level consistency formalizability. This is neither a new exported formal theorem nor a consistency assertion.
+
+The complete de Bruijn Hilbert kernel has K/S/full classical contraposition, full capture-avoiding UI, lifted UD, MP and global GEN. The assignment substitution lemma and the free-renaming induction correctly justify the named-calculus translation, including generalization of arbitrary named variables. The renaming metatheorem is proof construction, not a hidden runtime rule. Open theory lines are globally valid under every assignment, so arbitrary parameters require no runtime arity scan. Genuine Bottom and the C row explicitly provide explosion; the retired relative-falsity/Peirce issue is not inherited (`04-logic-codec.tex:91-171`).
+
+The optional arithmetic carrier `PA proves Con(Q+theta) iff theta` for a fixed Pi1 theta has the stated argument: formalized Sigma1 completeness gives one direction, and essential reflexivity of finite sentential extensions of PA gives the other. This is a derived per-sentence observation, with no uniform truth predicate or compressed ZFC proof predicate claimed. The primary [Interpretability in PRA](https://staff.fnwi.uva.nl/d.h.j.dejongh/APAL1949.pdf), p129, supports the essential-reflexivity premise. I also checked the cited primary Df3, finite class theory, Craig–Vaught and tableau scope. Their limitations are stated accurately: [Df3](https://arxiv.org/pdf/1111.0995) supplies a designated translated fragment and 18 expanded equations; its abbreviated modal list omits reflexivity. [Friedman's finite class axioms](https://bpb-us-w2.wpmucdn.com/u.osu.edu/dist/1/1952/files/2020/09/NBGAxioms091520.pdf) require a separate Choice calibration, and [Craig–Vaught's quoted equality case](https://doi.org/10.2307/2964289) requires only infinite models.
+
+## Exact codec and program contract
+
+The formula codec is a genuine bijection: Bottom0; Rel(i,j)=1+3P(i,j); Imp(a,b)=2+3P(a,b); All(a)=3a+3. Every recursive formula component is smaller, and truth Imp(0,0)=2 differs from Bottom. There are no aliases or unrecognized natural codes. This differs from both the retired cyclic-Truth base-three codec and the earlier genuine-Bottom3 offsets. Existing Lean codec facts for those other representations do not certify this one.
+
+`edit(code,depth,target)` is the single variable transformation. UI uses target j+1; UD inserts slot0. The protected adapter is `All(subst0(edit(edit(beta,3,0),3,0),2))`, giving free map y0→2, b1→0, x2→1, parameters i>=3→i+1 inside the protecting binder. I checked it against the intended environments. The factored hull shares exactly the same `[x,y,v,params]` context in its closure and support copies (`code/rule_search.py:32-85`).
+
+The bound parser peels the literal All/Exists/All/Imp skeleton and checks the constant inclusion branch. It rejects code0 as All, accepts beta0, and uses None rather than falsity for failure (`rule_search.py:88-123`). The primary numeric search hardcodes protected mode, not a user-supplied theory emitter. Its eighth production is `8*p+7`; the separately selected basic/axiom comparators have different eighth productions and are not mixed. All recursive proof references decrease. The JSON DAG checker enforces prior references, tag/arity, exact MP and exact bound matching; a caller never supplies an accepted conclusion.
+
+Purity metadata is actually retained in the shared Python implementation. Only optional pure-premise mode inspects it, and its erasure is a proposed compiler simplification rather than an already measured property. The two 76-line certificates have 75 pure logical rows followed by a genuine closure step; they conclude empty-hull theorems, not contradictions. The offline producer eliminates every temporary hypothesis before export. A DAG expands to an ideal numeric proof; no feasible host-size bound on that expansion is asserted.
+
+## Advertised reproduction: PASS
+
+Run on the copy with assertions enabled:
+
+```
+uv run --no-project python reproduce.py
+```
+
+All six suites and both certificate regeneration/check commands pass in 12.8 seconds. Every one of the six diagnostic JSON files and both certificates is byte-identical to the delivered data. See `reproduction.log`, `comparison.json`, and joined `evidence.json`.
+
+Key coverage includes 100,000 bijective codec cases; 76,800 edit-semantic comparisons; 46,080 UI and 32,768 UD cases; 200,000 independent basic wrapper AST transports; 100,000 protected AST transports; 30,720 protected matrix and 7,680 complete premise/hull semantic cases; all 4,100 graph/ternary-matrix cases on domains1–2; 262,404 closure/guard graph-matrix cases on domains1–3; 1,560 expanded-formula comparisons; 530 Russell controls; and explicit wrong-guard/capture/existential-projection controls. The 5,000-code proof prefix has 3,579 logical theorems and no successful closure use, which the report correctly separates from its positive certificates. Nine malformed DAG mutations are rejected. A separate deliberately inconsistent generic-theory control derives genuine falsity at proof code2150; it is not the fixed EPSC theory.
+
+No unbounded consistency search was launched. Host exceptions, recursion or memory limits are explicitly outside the ideal accepting semantics. No finite no-refutation prefix is used as consistency evidence.
+
+## Current repository reconciliation and remaining work
+
+The complete raw EPSC/PSC interpretation remains ordinary mathematics: `RawPSCModel.lean:7-12` explicitly leaves whole interpretation/calibration/compiler endpoints open, while `PSCCalibration.lean:171-177` proves the actual extensional PSC/ZF0 deductive consistency comparison. `RegisterBisimulation.lean:10-13` is generic operation transport, not a certificate/decoder/binary proof. De Bruijn syntax, rename and variable instantiation already exist in `Logic/FirstOrder/Lean/FirstOrder/{Fol,Calculus}.lean`; the contribution here is this concrete numeric Hilbert/rule interface and shared-edit specialization, not de Bruijn notation itself.
+
+The current tree has also advanced beyond the report's pin: `Boot253.lean:14-19` proves the complete finite 312,975-step public253 bootstrap, while explicitly excluding RM330/runtime/consistency. That progress does not close this new checker’s compilation gap. No current Lean theorem was found for this codec, its protected rule or its EPSC proof translation.
+
+The useful next controlled measurement is all three equivalent eighth productions on the same complete backend: open EPSC axiom, basic native rule, and protected unary rule. Universal protection removes the separate matrix payload, whole-bound re-emission at that step and witness-freshness scan; it adds a parser, three shared-edit passes and two protecting binders in the copied hull matrix. The report correctly leaves the whole initialized machine cost unmeasured.
+
+Only minor stale comments were found: `closure_rule_checks.py` names absent `closure_rule_notes.md`, and the literature supplement comment names absent `alternatives_bib.tex`. Actual proofs and included bibliography are present in the report sections, so these do not obstruct reproduction or affect any theorem.

@@ -1,0 +1,7 @@
+.PHONY: pdf check
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+check:
+	python3 reproduce.py

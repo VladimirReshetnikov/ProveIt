@@ -84,6 +84,18 @@ historical sweeps still lack full drivers. The
 records the practical interface requirements. No new literal-machine consistency
 endpoint follows from these controls or finite checks.
 
+Batch 150 adds sources 20–23 (placement `a6823de93`, reconciliation
+`ad685a601`): low-code falsity calibration and captured closures, a
+**two-parameter EPSC** interpretation, equivalent native protected-witness
+rules, and quantified-NAND tableaux. All advertised functional checks and
+bounded searches reproduce. The new 255/271 and 341/343 tables are separate
+compiler/initializer controls; none implements these new complete frontends
+or improves public 253. The 269 grammar control survives full-cost repricing.
+[Raw PSC notes](raw_psc.md#batch-150-two-slots-and-native-rules),
+[logical interfaces](logical_engine_completeness.md#batch-150-three-further-complete-interfaces)
+and [initializer controls](mira_backend.md#batch-150-initializer-controls)
+record their actionable consequences. The host now reconciles 23 sources.
+
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
 A positive singleton-decoder hull covers the root's members without
@@ -146,6 +158,18 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `Base3Syntax.lean` | Complete numerical decoder including the truth alias at code 0; encode/decode round trips on canonical syntax and code freshness. This is not a calculus interpretation. |
 | `PartialTotalization.lean` | Filling undefined transitions with a tape-preserving halt action preserves halting and final score under an explicit partial-step convention. |
 | `WadeMachine.lean` | Actual literal-table INC execution from state 13 through its return to state 55, for a nonempty preceding-register prefix and gap of at least two zeros; selected unary register increments and every other tape cell is preserved. |
+| `Kalmar.lean` | Generic classical implication calculus and its deduction, consistency and maximal-theory tools. |
+| `TarskiCalculus.lean`, `TarskiDerived.lean`, `TarskiLeibniz.lean`, `TarskiClean.lean`, `TarskiComplete.lean` | Soundness and conditional completeness of the full named-variable calculus, with primitive Bottom, genuine equality, all eight logical rows and both gated atomic vacuity families; capture-safe specialization and clean-form model construction. |
+| `Lukasiewicz.lean` | Attributed port of 107 upstream implication certificates; derives K/S/Peirce and rho6-based ex falso, constructs `Tarski.classical`, and proves `Tarski.complete` without the conditional theorem's extra basis hypotheses. |
+
+The [Tarski audit](tarski_calculus_review.md) and subsequent
+[propositional certificate port](lukasiewicz_basis.md) now establish full
+named-calculus completeness. The seven added modules and updated umbrella
+pass scoped direct Lean checks against the source-verified dependency cache.
+The basis and ex-falso derivations use no axioms; completeness uses only
+`propext`, `Classical.choice` and `Quot.sound`. Numerical syntax, relative
+runtime falsity, the literal theory bundle and the machine remain separate
+proof obligations.
 
 The calibration uses the repository's first-order internal recursion theorem
 for the reverse construction, then its generic completeness theorem for
@@ -169,11 +193,14 @@ Rebuild the entire small dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles the first-order logic, calculus and completeness modules,
-`ZF.Zf`, `BusyBeaver.Core`, the twenty-six research modules and the umbrella into a
+This compiles 45 source units: the first-order logic, calculus and completeness
+modules, `ZF.Zf`, `BusyBeaver.Core`, 39 research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
-records the source check and axiom outputs. The pinned Lean toolchain must
+records the prior 38-unit fresh source check and axiom outputs. The seven
+subsequent modules and updated umbrella have separate scoped evidence in
+`results/tarski-verification.json` and `results/lukasiewicz-verification.json`;
+the expensive finite bootstrap was reused in those checks. The pinned Lean toolchain must
 be installed. Source SHA-256 pins are included for each checked module.
 The standalone BusyBeaver Lake package declares its FirstOrder and ZF path
 dependencies; the ZFC umbrella is opt-in.
@@ -290,6 +317,12 @@ Across 32,000 paired DAG evaluations it still reaches 269 states, matching
 rather than improving the prior control. The fixed winner regenerates and its
 operation certificate passes independent checks and six mutations. The full
 equality/theory frontend is retained; binary simulation remains open.
+
+[The revised-layout grammar experiment](layout_grammar_experiment.md) preserves
+source 19's complete word and matches its 268-state control across 56,000 DAG
+evaluations. Both searches charge the compiled dispatcher depth; their
+framework cost varies from 61 to 65 states. Exact-word certificates pass,
+without a new state bound or binary simulation theorem.
 
 ## Next proof and compiler work
 

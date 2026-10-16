@@ -2309,6 +2309,32 @@ the [host correction](set-theory/zfc-closure-kernels/README.md) records its
 refutation. Unbundled historical sweeps retain their reproduction limits. Detailed dossiers and
 `code/reproduce_149.py` preserve these boundaries without changing deliveries.
 
+Batch 150 adds four manuscripts from `47e887108` (placement `a6823de93`,
+write `ad685a601`), local sources 20–23 of the same host. The collection remains
+290 reports; the host now reconciles twenty-three sources. All 150 ancillary
+files are preserved; 50 article, section, PDF and delivery-README files remain
+recoverable from the arrivals. No source supersedes another.
+
+The ordinary mathematical additions are a captured EPSC tableau and genuine
+Bottom low-code calibration, a two-parameter EPSC2 interpretation, a protected
+closure rule with a complete de Bruijn Hilbert reference, and a complete
+quantified-NAND EPSC tableau. These are distinct from their machine controls:
+271-state EPSC and 255-state decoder comparisons, separate 341/343-state clean
+initializers, and a 269-state original-word grammar control. All finite suites
+and fixed artifacts reproduce. The decoder's 606,702-step blank prefix and
+57,150 fold trials are Python evidence. Independently pricing all 6,720 distinct
+quantified-NAND report recipes by decision nodes plus 55 plus dispatcher depth
+confirms a minimum of 269 within that sample; the new checker has no binary table.
+
+Current-source reconciliation preserves the newer 268-state retained-logic
+comparison, the Lean 312,975-step literal bootstrap, and unconditional named-variable
+Tarski completeness for primitive Bottom (`ebbc0a660`). Its numerical and
+runtime adapters remain open. The four
+scratch PDFs, 30/31/31/32 pages, pass layout review. Ordinary proofs, component
+tables and finite certificates supply no new internal ZFC machine endpoint.
+The host dossiers and `code/reproduce_150.py` retain these scopes; the helper's
+validation covers all four selected finite replays after its scoped smoke checks.
+
 ## Rebuilding the manifest
 
 ```sh
@@ -2317,8 +2343,8 @@ latexmk -pdf manifest.tex && latexmk -c manifest.tex
 
 ## Merged reports
 
-Batches 143–149's [closure kernels](set-theory/zfc-closure-kernels) are a
-complementary merge and sixteen additions with a reconciliation README: the
+Batches 143–150's [closure kernels](set-theory/zfc-closure-kernels) are a
+complementary merge and twenty additions with a reconciliation README: the
 seeded base, BIC control, exact-fiber alternative and later saturation/engineering
 work retain their distinct hypotheses,
 metrics and verification evidence. The member articles remain recoverable
