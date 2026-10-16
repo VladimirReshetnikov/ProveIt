@@ -66,10 +66,6 @@ theorem section16FibreClassSet_card {α β : Type*} [DecidableEq α] [DecidableE
   intro x y heq
   exact congrArg Prod.snd heq
 
-theorem section16FibreClassSet_mono {α β : Type*} [DecidableEq α] [DecidableEq β]
-    (h : β) {C D : Finset α} (hsub : C ⊆ D) :
-    section16FibreClassSet h C ⊆ section16FibreClassSet h D := Finset.image_subset_image hsub
-
 theorem section16FibreClassSet_pairwise {α β : Type*} [DecidableEq α] [DecidableEq β]
     {q : Nat} (C : β × Fin q → Finset α)
     (hdisj : ∀ h, Pairwise (fun i j => Disjoint (C (h, i)) (C (h, j)))) :
@@ -107,7 +103,7 @@ theorem section16_prune_and_sample_good_set {α β : Type*}
     section16_linear_prune_and_sample q r C σ hq hσ hlong hr
   obtain ⟨E, _, hED, hE⟩ := disjoint_class_deletion Finset.univ A
     (fun i => section16FibreClassSet i.1 (D i)) (fun _ => Finset.subset_univ _)
-    (fun i => section16FibreClassSet_mono _ (hD i)) hAdisj
+    (fun i => Finset.image_subset_image (hD i)) hAdisj
   simp only [A, section16FibreClassSet_card, Finset.card_univ, Fintype.card_prod,
     Nat.cast_mul] at hE
   refine ⟨sample, E, by nlinarith [hE, hloss], ?_⟩

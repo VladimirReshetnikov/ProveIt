@@ -440,12 +440,6 @@ private lemma countWhere_and_partition {T : Type*} [Fintype T]
     _ = countWhere (fun x => A x ∧ P x) +
         countWhere (fun x => A x ∧ ¬ P x) := by rw [hGood, hBad]
 
-private lemma audit_additive_partition :
-    countWhere auditAdditive =
-      countWhere (fun q => auditAdditive q ∧ auditPhiRelation q) +
-        countWhere (fun q => auditAdditive q ∧ ¬ auditPhiRelation q) :=
-  countWhere_and_partition auditAdditive auditPhiRelation
-
 private lemma audit_bad_count_le :
     countWhere (fun q => auditAdditive q ∧ ¬ auditPhiRelation q) ≤
       4 * auditH * auditCard ^ 3 := by
@@ -517,7 +511,7 @@ private lemma audit_bad_numeric :
 
 private lemma audit_approx_hom :
     DomainApproxHomOfOrder auditDomain auditPhi auditEta 2 := by
-  have hpartNat := audit_additive_partition
+  have hpartNat := countWhere_and_partition auditAdditive auditPhiRelation
   have hpart : (countWhere auditAdditive : Real) =
       countWhere (fun q => auditAdditive q ∧ auditPhiRelation q) +
         countWhere (fun q => auditAdditive q ∧ ¬ auditPhiRelation q) := by

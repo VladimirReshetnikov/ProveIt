@@ -90,11 +90,6 @@ private lemma condition_ii_iff_iii {N : Nat} [NeZero N]
       _ ≤ c * (N : Real) ^ 4 := h
       _ = (N : Real) * (c * (N : Real) ^ 3) := by ring
 
-private lemma condition_i_iff_ii {N : Nat} [NeZero N]
-    (f : ZMod N → Complex) (c : Real) :
-    uniformCondition2i f c ↔ uniformCondition2ii f c :=
-  (condition_i_iff_iii f c).trans (condition_ii_iff_iii f c).symm
-
 private lemma condition_iii_imp_iv {N : Nat} [NeZero N]
     (f : ZMod N → Complex) (c1 c2 : Real)
     (hroot : c1 ^ ((1 : Real) / 4) ≤ c2)
@@ -262,7 +257,7 @@ private lemma condition_iii_imp_v {N : Nat} [NeZero N]
 with the quantitative power losses recorded in the paper. -/
 theorem lemma_2_2_holds : lemma_2_2 := by
   intro N _ f hdisc c1 c2 c3
-  refine ⟨condition_i_iff_ii f c1, condition_i_iff_iii f c1, ?_, ?_, ?_, ?_⟩
+  refine ⟨(condition_i_iff_iii f c1).trans (condition_ii_iff_iii f c1).symm, condition_i_iff_iii f c1, ?_, ?_, ?_, ?_⟩
   · exact fun h hiii => condition_iii_imp_iv f c1 c2 h hiii
   · exact fun h hiv => condition_iv_imp_iii f hdisc c1 c2 h hiv
   · exact fun h hv => condition_v_imp_i f hdisc c1 c3 h hv

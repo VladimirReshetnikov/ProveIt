@@ -71,11 +71,6 @@ private lemma prop142_component_difference {N n : Nat}
   rw [List.ofFn_cons]
   exact (prop14_ofFn_insertNth_perm j x (j.removeNth y)).symm
 
-private lemma prop142_component_disc {N n : Nat} (f : ZMod N → Complex)
-    (hf : DiscValued f) (y : Point N (n + 1)) (j : Fin (n + 1)) :
-    DiscValued (prop142Component f y j) :=
-  cubeDifference_discValued hf (j.removeNth y)
-
 private def prop14RestrictedWeight {N : Nat} [NeZero N]
     (E : Finset (ZMod N)) (theta : ZMod N → Real) : ZMod N → Real :=
   fun x => if x ∈ E then theta x else 0
@@ -162,7 +157,7 @@ theorem lemma_14_2_holds : lemma_14_2 := by
           · exact le_rfl
         have hf' : ∀ i, DiscValued (f' i) := by
           intro i
-          exact prop142_component_disc f hf (y i) j
+          exact cubeDifference_discValued hf (j.removeNth (y i))
         have hcoeff (i : Fin p) (x : ZMod N) (hx : x ∈ E) :
             gamma * (N : Real) ≤
               ‖fourier (difference (f' i) x) (sigma i x)‖ := by

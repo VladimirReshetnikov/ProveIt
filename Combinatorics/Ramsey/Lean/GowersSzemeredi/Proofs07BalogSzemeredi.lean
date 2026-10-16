@@ -301,12 +301,6 @@ private noncomputable def indexedNeighborhood {G : Type*} [DecidableEq G]
     (V : Finset G) (i : Fin V.card) : Finset G :=
   popularNeighbors A c (centerAt V i)
 
-private lemma indexedNeighborhood_subset {G : Type*} [DecidableEq G]
-    [AddCommGroup G] (A : Finset G) (c : Real)
-    (V : Finset G) (i : Fin V.card) :
-    indexedNeighborhood A c V i ⊆ A :=
-  Finset.filter_subset _ _
-
 private lemma indexedNeighborhood_card_lower {G : Type*} [DecidableEq G]
     [AddCommGroup G] (A : Finset G) (c : Real)
     (V : Finset G)
@@ -452,7 +446,7 @@ private lemma exists_bsg_drc_core {G : Type*} [DecidableEq G]
   have hc1 := bsg_c_le_one A c hAnonempty henergy
   have hdelta0 := bsg_delta_pos c hc
   have hdelta1 := bsg_delta_le_one c hc hc1
-  have hFsub : ∀ i, F i ⊆ A := fun i => indexedNeighborhood_subset A c V i
+  have hFsub : ∀ i, F i ⊆ A := fun i => Finset.filter_subset _ _
   have hFcard : ∀ i, bsgDelta c * A.card ≤ (F i).card := by
     intro i
     apply indexedNeighborhood_card_lower A c V

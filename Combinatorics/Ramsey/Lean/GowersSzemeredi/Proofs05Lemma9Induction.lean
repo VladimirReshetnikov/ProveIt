@@ -130,13 +130,6 @@ theorem section5NatIndexPoint_cast {N : Nat} (P : NatAP) (t : Nat) :
   push_cast
   rfl
 
-theorem polynomialOn_section5NatIndexPoint {N k : Nat} [NeZero N]
-    (P : NatAP) (phi : ZMod N -> ZMod N)
-    (hphi : PolynomialOn k Finset.univ phi) :
-    PolynomialOn k Finset.univ
-      (fun x => phi ((P.start : ZMod N) + x * (P.step : ZMod N))) :=
-  polynomialOn_affine_pullback phi (P.start : ZMod N) (P.step : ZMod N) hphi
-
 private theorem section5NatTransport_image_phi {N : Nat} (P R : NatAP)
     (phi : ZMod N -> ZMod N) :
     (section5NatTransport P R).carrier.image
@@ -177,7 +170,7 @@ theorem section5_strong_nat_refinement_of_corollary_5_6
   let pulledPhi : ZMod N -> ZMod N := fun x =>
     phi ((P.start : ZMod N) + x * (P.step : ZMod N))
   have hpulled : PolynomialOn k Finset.univ pulledPhi :=
-    polynomialOn_section5NatIndexPoint P phi hphi
+    (polynomialOn_affine_pullback phi (P.start : ZMod N) (P.step : ZMod N) hphi)
   obtain ⟨L, R, hL, hpartition, hcells, hdiameter⟩ :=
     hstrong N k P.length u pulledPhi hk hpulled hthreshold hPN
       (by omega) huupper
@@ -204,11 +197,6 @@ theorem diameterAtMostReal_mono {N : Nat} {A B : Finset (ZMod N)}
   obtain ⟨d, hd, hdscale⟩ := hB
   obtain ⟨a, ha⟩ := hd
   exact ⟨d, ⟨a, hAB.trans ha⟩, hdscale.trans hst⟩
-
-theorem section5_image_mono {X Y : Type*} [DecidableEq X] [DecidableEq Y]
-    {A B : Finset X} (f : X -> Y) (hAB : A ⊆ B) :
-    A.image f ⊆ B.image f :=
-  Finset.image_mono f hAB
 
 /-! ## Dependent flattening for natural progressions -/
 
@@ -479,7 +467,7 @@ theorem section5_iterated_strong_nat_refinement
                 have hsub : (F j).carrier ⊆ (R z.1).carrier := by
                   simpa only [F, section5NatFlatten, z] using hQsubset z.1 z.2
                 apply diameterAtMostReal_mono
-                  (section5_image_mono (fun x : Nat => phi (x : ZMod N)) hsub)
+                  (Finset.image_mono (fun x : Nat => phi (x : ZMod N)) hsub)
                   (hRdiameter z.1)
                 exact mul_le_mul_of_nonneg_right hschedule.2.2.2.1 (by positivity)
               · let z := (section5NatFlattenEquiv M).symm j
