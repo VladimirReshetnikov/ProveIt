@@ -6,6 +6,7 @@ directory. No Lake worker pool, shared build cache, or Coq compiler is used.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -22,10 +23,14 @@ def main() -> None:
     scratch = Path(tempfile.mkdtemp(prefix="zfc-lean-check-"))
     units = [
         ("Logic/FirstOrder/Lean", "FirstOrder/Fol.lean"),
+        ("Logic/FirstOrder/Lean", "FirstOrder/Calculus.lean"),
+        ("Logic/FirstOrder/Lean", "FirstOrder/Completeness.lean"),
+        ("SetTheory/ZF/Lean", "ZF/Zf.lean"),
         ("Computability/BusyBeaver/Lean", "BusyBeaver/Core.lean"),
         *( ("Computability/BusyBeaver/Lean", f"BusyBeaver/ZFC/{name}.lean")
-           for name in ("ProfileCongruence", "PositiveClosure", "DeepPositiveClosure", "StateReduction",
-                        "Table254", "FormulaRPN") ),
+           for name in ("ProfileCongruence", "PositiveClosure", "Bootstrap", "DeepPositiveClosure",
+                        "DefinableClosure", "StateReduction", "Table254", "FormulaRPN",
+                        "PSCCalibration") ),
         ("Computability/BusyBeaver/Lean", "BusyBeaver/ZFC.lean"),
     ]
     if args.include_no_quotient:
@@ -44,10 +49,11 @@ def main() -> None:
         log = output.with_suffix(".log")
         log.write_text(result.stdout + result.stderr)
         records.append({"source": f"{source_root}/{module}",
+                        "source_sha256": hashlib.sha256((repo / source_root / module).read_bytes()).hexdigest(),
                         "returncode": result.returncode, "log": str(log),
                         "audit_output": result.stdout.strip()})
         print(f"{module}: exit {result.returncode}", flush=True)
-        if result.returncode or "sorryAx" in result.stdout:
+        if result.returncode or "sorryAx" in result.stdout or "declaration uses 'sorry'" in result.stdout:
             print(result.stdout + result.stderr, flush=True)
             raise SystemExit(result.returncode or 1)
     (scratch / "verification.json").write_text(

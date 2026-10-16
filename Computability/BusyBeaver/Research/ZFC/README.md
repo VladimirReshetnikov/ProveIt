@@ -3,6 +3,10 @@
 The goal is a binary, single-tape machine with fewer than 254 nonhalting
 states whose blank-tape non-halting is provably in ZFC equivalent to
 Con(ZFC). The goal remains open. All new formal work uses Lean.
+An intended set-theoretic meaning is optional: any effectively presented
+theory or proof calculus is eligible once its consistency calibration is proved.
+The complete compiled search, including its data and initialization, is the
+cost measure that decides whether a candidate improves the baseline.
 
 The [attributed upstream baseline](../../../../lib/jeff-busy-beaver-zfc254/README.proveit.md)
 is imported at commit `297ab8df7e5de329605c3875b4934643b371a5e3`.
@@ -23,7 +27,9 @@ the membership arm can be removed from source 02's mixed local bound.
 A positive singleton-decoder hull covers the root's members without
 containing the root. This recovers Separation and Union noncircularly.
 The candidate remains an infinite schema, with arbitrary parameters and
-matrices; its full deductive ZFC calibration is not yet a Lean theorem.
+matrices. Lean now proves that Extensionality plus its subset-seeded version
+is deductively equivalent to ZF without Foundation or Choice. The effective
+consistency bridge from that comparison theory to ZFC remains unformalized.
 
 [Mira's container comparison](mira_containers.md) records the user-supplied
 insight and its independent mathematical audit. Mere transitive containment
@@ -49,12 +55,19 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 |---|---|
 | `ProfileCongruence.lean` | One-sided/full profile congruence equivalence; equality erasure and formula invariance for the existing `SetTheory.Form` syntax. |
 | `PositiveClosure.lean` | Exact constant fibers, singletons, Power Set, gated decoder root coverage, Separation and Union, under explicit per-relation semantic closure instances. |
+| `Bootstrap.lean` | Pairing, Russell-root partial Replacement and Infinity under explicit per-relation instances and the earlier set constructions; Infinity needs no Extensionality. |
 | `DeepPositiveClosure.lean` | Actual `SetTheory.Form` wrapper with checked binder renamings, preserving equality-freeness; satisfaction equals the intended definable closure instance. |
+| `DefinableClosure.lean` | Every forward set-existence construction connected to an actual first-order matrix, with formula-level Separation and functional Replacement. |
+| `PSCCalibration.lean` | Extensionality plus subset-seeded PSC and ZF without Foundation or Choice have the same models and the same sentence theorems in the existing `BProv` calculus. |
 | `StateReduction.lean` | A valid transition quotient preserves every finite run, arbitrary/blank halting and exact final score in the existing machine model. |
 | `Table254.lean` | Literal baseline table, bounds, halt-edge count and initial action, checked by kernel `decide`. |
 | `FormulaRPN.lean` | Three-constructor NAND formula syntax; exact prefix-token parsing in both directions; De Bruijn scope check and a closed semantic contradiction. |
 
-No theorem here supplies a proof-producing theory translator, a complete
+The calibration uses the repository's first-order internal recursion theorem
+for the reverse construction, then its generic completeness theorem for
+deductive equivalence; [psc_calibration.md](psc_calibration.md) gives the exact
+statements and comparison theory. It is not a computable proof-code translator verified
+in arithmetic. No theorem here supplies a proof-producing theory translator, a complete
 refutation checker, an enumerator compiler, a verified binary decoder, or
 the final ZFC machine endpoint. `PositiveClosure` deliberately assumes the
 specific closure instances used by each lemma, rather than silently assert
@@ -72,12 +85,14 @@ Rebuild the entire small dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles `FirstOrder.Fol`, `BusyBeaver.Core`, the six small modules and the
-umbrella into a fresh scratch directory, without shared oleans or Lake's
+This compiles the first-order logic, calculus and completeness modules,
+`ZF.Zf`, `BusyBeaver.Core`, the nine research modules and the umbrella into a
+fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the source check and axiom outputs. The pinned Lean toolchain must
-be installed. The standalone BusyBeaver Lake package also declares its
-FirstOrder path dependency; the ZFC umbrella is opt-in.
+be installed. Source SHA-256 pins are included for each checked module.
+The standalone BusyBeaver Lake package declares its FirstOrder and ZF path
+dependencies; the ZFC umbrella is opt-in.
 
 The separate [NoQuotient254 result](no_quotient254.md) proves every exact
 step-preserving state quotient of this literal machine is injective. Its
@@ -121,6 +136,19 @@ the whole-program calibration and compiler simulation remain unproved.
 The original single-marker interpreter’s phase interface is recoverable
 from the published decoder paths and is the next assembler target.
 
+An [editable theory-generator experiment](theory_backend_experiment.md)
+reproduces the original 281-state public-backend result before replacing its
+theory rows. A fixed-binder Extensionality/point-PSC variant takes 317 states.
+The formal subset-seeded control does not by itself calibrate this changed
+point-seeded enumerator; its separate freshness and falsity conventions
+remain proof obligations.
+
+[raw_psc.md](raw_psc.md) records a further candidate without Extensionality:
+the settled consequences include exact images of locally subset-bounded
+fibers and power-bounding transitive containers. Its ZFC consistency
+calibration remains open. [bootstrap.md](bootstrap.md) details the checked
+forward existence arguments.
+
 Run the Python regressions with:
 
 ```sh
@@ -134,11 +162,11 @@ by running their respective generators. Delivered intake files stay unchanged.
 
 ## Next proof and compiler work
 
-1. Extend the now-defined first-order closure schema to a complete theory
-   presentation and express every bootstrap matrix; connect all set-existence
-   derivations to actual axiom instances.
-2. Finish both proof translations, retaining the distinct Foundation/Choice
-   consistency bridge and the user's ZFC metatheory.
+1. Use the completed first-order subset-PSC calibration as a control while
+   comparing alternative and artificial proof calculi by complete compiler cost.
+2. Supply effective proof-code translations and the separate Foundation/Choice
+   consistency bridge in the user's ZFC metatheory. Audit proposed fixed-axiom
+   deletions through a full interpretation.
 3. Choose a data-valued proof certificate and prove checker soundness and
    enumeration completeness. Compare runtime encodings through one backend,
    charging initialization and the contradiction target.

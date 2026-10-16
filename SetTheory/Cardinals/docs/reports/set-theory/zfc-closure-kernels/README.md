@@ -162,6 +162,9 @@ level by combining its positive hull with the gated singleton decoder.
 `DeepPositiveClosure.lean` defines the actual equality-free first-order
 wrapper and proves its semantic specification. `ProfileCongruence.lean`
 checks that the symmetric congruence conclusion can be replaced by one
-implication. These are partial formal results, not a completed deductive
-calibration or a new small-machine theorem. The delivered source 02
+implication. Subsequently, `PSCCalibration.lean` proved deductive equivalence
+of Extensionality plus subset-seeded PSC with first-order ZF without Foundation
+or Choice, using actual formula instances in both directions. The remaining
+effective Foundation/Choice consistency bridge and small-machine theorem
+are open. The delivered source 02
 article remains unchanged, including the question it left open.

@@ -13,7 +13,7 @@ The current project target is a fixed binary Turing machine `M`, with fewer than
        \ \longleftrightarrow\ \operatorname{Con}(\mathrm{ZFC}).
 \]
 
-The result below supplies a smaller candidate theory. It supplies no literal machine, serialized proof translation, proof-assistant certificate of the full deductive equivalence, or proof of the displayed machine endpoint. Partial Lean bootstrap lemmas and the concrete first-order wrapper are recorded in the project README. The delivered sources' stronger PA claims remain their own mathematical calibration arguments; changing our target metatheory does not create missing certificates.
+The result below supplies a smaller candidate theory. It supplies no literal machine, serialized proof translation, or proof of the displayed machine endpoint. Subsequently, [PSCCalibration.lean](../../Lean/BusyBeaver/ZFC/PSCCalibration.lean) checked full first-order deductive equivalence for the equality-bearing subset-seeded variant with `ZF₀`; the point-seeded and equality-free calibrations remain mathematical here. The separate Foundation/Choice consistency bridge is not formalized by that result. The delivered sources' stronger PA claims remain their own mathematical calibration arguments; changing our target metatheory does not create missing certificates.
 
 ## The schema and the comparison theory
 
