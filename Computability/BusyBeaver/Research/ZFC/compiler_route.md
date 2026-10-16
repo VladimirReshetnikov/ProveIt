@@ -62,7 +62,9 @@ The next assembler task is to recover per-instruction phase contracts for
 this shared engine, using the published symbolic sites as specifications,
 and prove them in Lean. Cutting out a purported 35-state framework would
 discard those contracts. The current Lean quotient theorem alone cannot
-justify that transformation.
+justify that transformation. A fresh [assembler](mira_backend.md) now implements
+this interface with executable instruction checks, but its direct initializer
+and unrebalanced decoder cost 408 states for the original program.
 
 Naively replacing recursive Cantor pairs with 2-adic pairs makes this
 particular unary-register backend larger. `pairing_backend_experiment.py`
@@ -113,3 +115,9 @@ rule. The auditor's stronger finite-window/macro rule remains supported by
 its stated mathematical argument and executable checks; it has not been
 formalized in Lean. The literal 254-state audit finds no reduction by either
 rule, so there is no smaller-state claim from these experiments.
+
+The later [theory/backend experiment](theory_backend_experiment.md) changes
+the proof calculus and coding instead of quotienting the literal benchmark.
+It produces a complete [252-state table](raw_candidate_252.md), whose
+consistency calibration and compiler simulation remain unproved. That count
+is a compiler experiment, not a verified new ZFC machine bound.
