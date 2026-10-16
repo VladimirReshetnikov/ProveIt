@@ -1,0 +1,273 @@
+{
+  "source": "/tmp/zfc-intake-150-g2hme2lw/04/zfc_qnand_research",
+  "copy": "/tmp/zfc-batch150-qnand-review-4229b2gm/bundle",
+  "checks": [
+    {
+      "name": "integrated",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "reproduce.py"
+      ],
+      "returncode": 0,
+      "seconds": 4.027
+    },
+    {
+      "name": "prefix1000",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "code/qnand.py",
+        "--prefix",
+        "1000"
+      ],
+      "returncode": 0,
+      "seconds": 0.214
+    },
+    {
+      "name": "initial960",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "library_grammar.py",
+        "--search",
+        "--seeds",
+        "40",
+        "--output",
+        "/tmp/zfc-batch150-qnand-review-4229b2gm/initial960"
+      ],
+      "returncode": 0,
+      "seconds": 7.887
+    },
+    {
+      "name": "targeted6000",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "library_grammar.py",
+        "--search",
+        "--seeds",
+        "1000",
+        "--families",
+        "quantifier,variables",
+        "--output",
+        "/tmp/zfc-batch150-qnand-review-4229b2gm/targeted6000"
+      ],
+      "returncode": 0,
+      "seconds": 34.593
+    }
+  ],
+  "checksum_manifests_checked": false,
+  "integrity_patches": [],
+  "search_delivery_key_comparisons": {
+    "initial960": {
+      "compiler_proof": true,
+      "decision_nodes": true,
+      "distributions": true,
+      "framework_states": true,
+      "new_ZFC_state_bound": true,
+      "original_symbolic_contract": true,
+      "provenance": true,
+      "rm_bisimulation": true,
+      "upstream_commit": true,
+      "winner": true,
+      "working_states": true
+    },
+    "targeted6000": {
+      "compiler_proof": true,
+      "decision_nodes": true,
+      "distributions": true,
+      "framework_states": true,
+      "new_ZFC_state_bound": true,
+      "original_symbolic_contract": true,
+      "provenance": true,
+      "rm_bisimulation": true,
+      "upstream_commit": true,
+      "winner": true,
+      "working_states": true
+    }
+  },
+  "fixed_artifact_exact_bytes": {
+    "candidate_dag.json": true,
+    "candidate_named.tm": true,
+    "candidate_total.tm": true,
+    "rm_bisimulation.json": true,
+    "grammar.json": true
+  },
+  "finite_results": {
+    "numeric_codec_roundtrips": 10000,
+    "rebase_semantic_cases": 20480,
+    "shift_semantic_cases": 40960,
+    "independent_raw_evaluator_cases": 320,
+    "epsc_matrices": 256,
+    "epsc_graph_comparisons": 4608,
+    "identity_certificates": 1000,
+    "cross_variable_ui": {
+      "valid": true,
+      "actions": 5,
+      "operands": 8,
+      "closed_branches": 2,
+      "maximum_branch_entries": 5,
+      "maximum_parameters": 3
+    },
+    "variable_identification": {
+      "valid": true,
+      "actions": 13,
+      "operands": 20,
+      "closed_branches": 4,
+      "maximum_branch_entries": 8,
+      "maximum_parameters": 3
+    },
+    "invalid_certificate_regressions": 13,
+    "wire_roundtrips": 1000,
+    "diagnostic_candidate_prefix": 1000,
+    "epsc_R01_representation": {
+      "input_matrix_numeric_code": 4,
+      "reachable_nodes": 45,
+      "reachable_compound_nodes": 37,
+      "reachable_atom_nodes": 8,
+      "allocated_reference_builder_nodes": 186,
+      "scope_requirement": 0
+    },
+    "status": "finite tests only; no certified TM, state bound, or consistency claim"
+  },
+  "additional_finite_results": {
+    "gap_parameter_epscs": 16,
+    "independent_epsc_semantic_comparisons": 256,
+    "wire_words_length_at_most_13": 16383,
+    "valid_wire_words": 7815,
+    "invalid_wire_words": 8568,
+    "shortlex_prefix": 255,
+    "status": "independent finite diagnostics only; no acceptance or consistency theorem"
+  },
+  "independent_total_cost_replay": {
+    "cases": 6720,
+    "formula": "decision nodes + 55 + max_zeros",
+    "leaves_preserved_all": true,
+    "minimum": {
+      "family": "quantifier",
+      "exponent": 4,
+      "seed": 0,
+      "nodes": 207,
+      "depth": 7,
+      "total_cost": 269,
+      "actual_compiled_states": 269
+    },
+    "depth_histogram": {
+      "6": 1,
+      "7": 5029,
+      "8": 1509,
+      "9": 166,
+      "10": 15
+    },
+    "total_cost_histogram": {
+      "269": 16,
+      "270": 158,
+      "271": 243,
+      "272": 875,
+      "273": 1077,
+      "274": 610,
+      "275": 709,
+      "276": 478,
+      "277": 396,
+      "278": 324,
+      "279": 325,
+      "280": 253,
+      "281": 208,
+      "282": 197,
+      "283": 139,
+      "284": 102,
+      "285": 88,
+      "286": 86,
+      "287": 55,
+      "288": 62,
+      "289": 46,
+      "290": 35,
+      "291": 34,
+      "292": 32,
+      "293": 19,
+      "294": 24,
+      "295": 25,
+      "296": 18,
+      "297": 9,
+      "298": 7,
+      "299": 12,
+      "300": 6,
+      "301": 1,
+      "302": 4,
+      "303": 5,
+      "305": 1,
+      "306": 1,
+      "307": 1,
+      "308": 2,
+      "309": 5,
+      "310": 1,
+      "311": 2,
+      "312": 3,
+      "313": 3,
+      "314": 1,
+      "315": 3,
+      "317": 2,
+      "318": 1,
+      "320": 1,
+      "321": 2,
+      "324": 2,
+      "325": 1,
+      "326": 1,
+      "327": 1,
+      "331": 2,
+      "338": 1,
+      "339": 3,
+      "343": 1,
+      "353": 1
+    },
+    "compiled_representatives_by_depth": {
+      "7": {
+        "family": "none",
+        "exponent": 2,
+        "seed": 0,
+        "nodes": 214,
+        "depth": 7,
+        "total_cost": 276,
+        "actual_compiled_states": 276
+      },
+      "8": {
+        "family": "none",
+        "exponent": 2,
+        "seed": 7,
+        "nodes": 217,
+        "depth": 8,
+        "total_cost": 280,
+        "actual_compiled_states": 280
+      },
+      "9": {
+        "family": "none",
+        "exponent": 4,
+        "seed": 35,
+        "nodes": 216,
+        "depth": 9,
+        "total_cost": 280,
+        "actual_compiled_states": 280
+      },
+      "6": {
+        "family": "variables",
+        "exponent": 2,
+        "seed": 117,
+        "nodes": 230,
+        "depth": 6,
+        "total_cost": 291,
+        "actual_compiled_states": 291
+      },
+      "10": {
+        "family": "variables",
+        "exponent": 2,
+        "seed": 523,
+        "nodes": 229,
+        "depth": 10,
+        "total_cost": 294,
+        "actual_compiled_states": 294
+      }
+    },
+    "actual_compiled_trials": 21,
+    "seconds": 41.061
+  },
+  "total_cost_replay_script": "/tmp/zfc-batch150-qnand-review-4229b2gm/audit_costs.py",
+  "source_pin": "de047657e193ec605e930eaf149a44a38031820b",
+  "proof_assistant_builds": false
+}

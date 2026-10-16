@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 16 October 2026. This report now reconciles nineteen manuscripts.
+Intake findings, 16 October 2026. This report now reconciles twenty-three manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -1297,3 +1297,198 @@ The withdrawn calculation is retained in
 `data/intake-149-source-18-retracted-fixed62.json`; the corrected calculation
 and explicit retraction are in the source18 engineering dossier/evidence.
 The delivered report and its fixed283 artifact did not need correction.
+
+## Batch 150: bounded parameters, native closure and quantified NAND
+
+Four manuscripts from arrival `47e8871089dd8d5b5a912350f3285734041528bb`
+were placed in `a6823de93` as local sources20–23. They continue the host's
+closure calibration, complete logical search and counted blank-initializer
+questions. They are complementary additions; no source or theorem is
+superseded. This section and the four complete review dossiers reconcile
+their results; the original seeded base article is unchanged.
+
+| Local source | Archive and ProveIt cutoff | New contribution |
+|---|---|---|
+| 20 | `zfc_consistency_completion_proposal.zip`; `af518abcf8ca2a7c1b795c07973885041aee0d25` | Genuine low-code Bottom calibration, captured-closure tableau, closed falsity translation, separate271/255 machine controls. |
+| 21 | `zfc_epsc2_proposal.zip`; same cutoff | Equality-free EPSC with exactly two ordinary matrix parameter slots; complete projected tableau; exact compact initializer with341/343 clean-assembler controls. |
+| 22 | `zfc_minimal_rule_research.zip`; `c1f2cc90c15fbdcd5f3ddfd7fcbb0b635c93c650` | Equivalent global closure/protected-witness rule presentations, including pure-logical-premise restriction; complete de Bruijn Hilbert reference and positive certificates. |
+| 23 | `zfc_qnand_research.zip`; `de047657e193ec605e930eaf149a44a38031820b` | Two-constructor quantified-NAND frontend and complete tableau; separate269-state retained full-logic grammar control. |
+
+All four retain the hereditary-saturation and EPSC/PSC calibration priority
+of sources08/13/14 and their other cited predecessors. The new claims are
+ordinary mathematical arguments and finite executable evidence. None gives
+a new machine below253states, a Lean proof of its new checker or full raw
+interpretation, or an internal ZFC theorem for a new literal binary table.
+The retired reduced C/G experiments remain unsuitable as intended consistency
+searches; these complete frontend proposals use different logical machinery.
+
+### Accepted theory and checker results
+
+Source20's exceptional codec handles genuine Bottom1 separately from
+Truth0, with recursive code decrease and canonical Truth normalization.
+For the actual support-first equality-bearing emitter, its low instances
+are G1=IR and, under IR, G0 equivalent to existence of an edge. EPSC already
+implies an edge. Every code at least2 gives a proper fresh-label instance;
+padding by a tautological antecedent recovers every matrix at code at
+least544. Hence the literal source theory is EPSC with equality plus IR
+**over complete classical logic**. Connecting this to the numerical calculus
+and runtime remains separate. Its captured-closure tableau keeps matrix
+and template namespaces separate, tracks every used parameter, introduces
+fresh negative-universal witnesses and checks both implication branches.
+The ordinary fair-branch proof covers arbitrary parameter instances.
+
+Its alternative closed designated formula Q uses universal relation, which
+implies every positive equality-free formula. With a fixed proof of not-Q,
+finite refutation in T is equivalent to Q-theoremhood in the fully translated
+T^Q. The latter has a universal-relation model, so this is designated
+*theoremhood*, not inconsistency of T^Q. The narrow minimum code3239 is
+specific to the fixed Cantor representation and required off-diagonal atom;
+it is not a machine-size minimum. Translation must include every negation
+macro and retain complete cross-variable logic.
+
+Source21 supplies a complete parameter-budget argument for EPSC2: matrices
+have free variables only x,y,p,q, but unrestricted internal binders. The
+bootstrap obtains exact bounded classes, a parameter-free full-profile
+decoder, transitive covers, Union and binary common bounds before using
+Pairing. The hereditary saturated interpretation obtains pure Pairing with
+two parameters; only then are arbitrary hereditary parameter tuples packed
+into one code. Arbitrary raw predicates cannot be packed this way. The
+second slot carries a seed, and a subsequent supported filter uses only
+the first hull and the packed tuple. This yields the full interpreted
+arbitrary-parameter PSC schema and the ordinary ZFC consistency comparison.
+It is an infinite recursive schema; one-slot and zero-slot variants remain
+open. The general packing method has established predecessors, as the
+source and its intake dossier credit; the new work is the EPSC2 bootstrap.
+
+Its exact tableau interface exposes three matrix occurrences through
+(2,0,4,3), (1,0,4,3), and (0,1,4,3). Each produces [x,y,p,q] in the relevant
+five-binder environment. Virtual and expanded forms preserve certificate
+behavior. The public entry point reconstructs positive EPSC2 roots; it
+cannot accept arbitrary signed assumptions. The49-node wrapper has three
+holes and36distinct nodes, so expansion has46+3m nodes for an m-node matrix.
+These syntax counts carry no binary-state estimate.
+
+Source22 replaces the EPSC axiom presentation by a global rule from proved
+local boundedness to a supported empty-seed hull. Restricting its premise
+to pure logical theorems loses no consequences: guard the matrix by the
+*open parameterized* boundedness statement, finish the pure proof, then
+apply the rule. Applying it under a local assumption or universally closing
+the guard prematurely would be invalid; explicit counterexamples remain
+part of the report. Its unary rule protects the local witness b by using
+`forall b beta` as its output matrix. The original existential bound bounds
+that protected fiber, and an unused witness slot recovers ordinary EPSC.
+Existential protection is explicitly rejected.
+
+The complete de Bruijn Hilbert kernel has K/S/classical contraposition,
+capture-avoiding instantiation, lifted distribution, MP and global GEN.
+Its bijective formula codec has Bottom0, Rel=1+3P, Imp=2+3P and All=3+3child;
+it differs from the earlier cyclic-Truth and Bottom3 representations.
+The shared edit routine handles instantiation, insertion and the protected
+matrix permutation. The bound parser verifies the complete literal skeleton;
+all recursive numeric proof references decrease. The two76-line certificates
+end in valid closure theorems, not refutations. Pure-premise metadata exists
+in the Python reference; erasing it is an unmeasured implementation proposal.
+The source also retains its arithmetic carrier Q+theta observation, translated
+Df3/class-theory/Craig–Vaught alternatives, and each calibration caveat.
+
+Source23 uses only R(i,j) and Q(A,B)=forall x not(A and B), with Q binding
+both children. Its rebase/lift operations respect internal binders and its
+three EPSC environment maps. A positive Q branches at an existing parameter;
+a negative Q introduces the next fresh name and both children. Both branches
+must close, exact EOF is checked, and public roots are generated EPSC
+instances only. The fair-tableau argument supplies ordinary completeness.
+Quantified NAND has the attributed Schönfinkel predecessor; two constructors
+do not price the matrix generator, arithmetic, branching, freshness or boot.
+
+### Machine experiments and exact evidence
+
+| Source | Replayed evidence and limits |
+|---|---|
+| 20 | Five core jobs pass;271/255 tables and principal JSON/maps regenerate exactly. Reference tests include100000 formula and5000 proof roundtrips,14130 schema comparisons, low-code checks and18612 closed-Q cases. Independent255 simulation checks every tape cell at606702steps, state87/head−18 and283ones. All8391 affine cases and57150 bounded fold attempts pass, with no fold survivor. Extra namespace checks cover768cases and6certificates. |
+| 21 |145matrices,2610direct schema and69600projection cases,145virtual/expanded certificates,11invalid inputs,10000formula and10000proof roundtrips pass.864initializer whole-frame cases,300optimizer checks and8391affine cases per table pass; both341/343 tables match. |
+| 22 | All six suites and both76-line certificates reproduce all eight artifacts exactly. Includes100000codec cases,76800edit semantics,46080UI,32768UD,200000basic and100000protected wrapper transports,262404guard cases and nine malformed-certificate rejections. |
+| 23 | Both checker suites, examples and fixed269 control pass; independent4533-pair RM certificate passes.960- and6000-choice grammar distributions reproduce. Repricing all6720distinct recipes by decision nodes+55+dispatcher depth confirms269minimum, with16minimizers;21representative/tied tables were compiled and re-extracted. |
+
+Source20's271-state control changes the retained full-equality EPSC word
+at the genuine-Bottom site. Its255 decoder transfers the already attributed
+public253 initializer idea into the earlier source09 decoder256. Neither
+implements the new lazy tableau. The276comparison table is present and
+structurally checked, but its generator, candidate DAG/certificate and128-seed
+search are absent; its historical failed context-reuse diagnostic also lacks
+a bundled reproducer/table. Those remain recorded limitations.
+
+Source21's initializer has gap `n(m+2)+2`, states `S+28+2n+m`, and time
+`S+28+6n+(m+2)n(n+2)` for positive n,m and nine register values of sum S.
+Its invariant accounts for counters, frontier, header, registers and the
+blank exterior. For gap102, the three state minimizers are(6,15),(7,13),(8,11);
+(6,15) is fastest. The clean control changes from408 to341states, or343
+with next-proof value2, retaining all572runtime rows. This is a67-state
+saving against that clean assembler's old initializer, not against public253.
+
+Source23's grammar search originally ranked decision nodes alone. The added
+intake full-cost audit resolves that methodological limit without changing
+its269minimum. Current source19 and the subsequent revised-layout experiment
+already give268states for a different retained full-logic word. The report's
+269/279 comparisons remain dated to its pin. No finite search establishes
+global minimality or consistency; affine and register certificates do not
+supply arbitrary binary runtime correctness.
+
+Source20's `FullZFC253.v` is retained as an uncompiled source proposal, with
+an explicitly tentative short-name/import concern in its dossier. The
+intended composition matches pinned upstream finite-refutation statements,
+but is not an arithmetic internalization. It was not built: our active
+formalization uses Lean. Mira-Cult, Jeff, mira-emmy and Wade retain attribution
+for the original machine, verification,253 reduction and compiler inputs.
+
+### Current formal scope, placement and replay
+
+Since these cutoffs, `Bottom3Syntax` has the all-natural ternary codec
+and semantic facts, and `Boot253.fullBootstrap253` proves the literal
+public253 machine's complete312975-step finite bootstrap with all-integer
+tape reads and activity through the endpoint. The separate RM330 prefix,
+general runtime and consistency endpoint remain open. The imported named-variable Tarski completeness theorem initially required
+explicit propositional-basis structures. Subsequent Lean work now derives
+K/S/Peirce from the attributed107 upstream certificates and ex falso from
+rho6, supplying `Tarski.classical` and `Tarski.complete` without those
+hypotheses. This does not certify these new frontends. See
+`Computability/BusyBeaver/Research/ZFC/tarski_calculus_review.md` and
+`lukasiewicz_basis.md` in the same research directory for the scoped checks
+and the remaining numerical/theory/runtime bridges.
+
+All200delivered files (185distinct blobs) were checked against Git history;
+41union history commits and25borrowed blobs were examined, including prior
+placement commits' own trees. No complete manuscript was already placed.
+The150ancillary files (63/26/22/39 by source) were copied from fresh extractions
+and checked against placement commit `a6823de93` itself.50articles, section
+sources, bibliographies, PDFs and top-level delivery READMEs remain in the
+committed arrival ZIPs, retired from the drop zone. Prefixes are
+`20-complete-`, `21-two-`, `22-rule-`, `23-qnand-`; vendor paths are shortened
+and all ancillary paths flattened. The longest Windows-prefixed path is143.
+No delivered ancillary bytes, checksum manifests or line endings were edited.
+
+The complete mapping is `data/intake-150-placement.json`; inventory/history
+and own-tree checks are adjacent. Delivered scripts, Makefiles, notices,
+vendored READMEs and review notes retain their original import/path assumptions.
+They name original layouts or sometimes unbundled historical inputs. Recover
+the archives rather than run these prefixed copies in place:
+
+```sh
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_150.py --prepare-only
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_150.py --run all
+```
+
+The helper uses committed Git archives offline, writes outside the repository,
+and selects individual sources with `--run 20,21,22,23`. Recovery is the default.
+`--searches` adds the bounded255 folds and269grammar sweeps. In-memory adapters
+omit only bulk provenance/checksum loops; retained functional artifact tests
+remain active. Recovery/adapter validation and all four finite helper branches pass;
+every package's underlying functional suite and the optional
+searches were independently run during review, as detailed above.
+
+The full dossiers are `intake-150-source-{20,21,22,23}.md`, their article
+reviews have suffix`-article.md`, and machine-readable evidence is in
+`data/intake-150-*.json`. Scratch PDFs have30/31/31/32pages, all fonts embedded,
+no errors, unresolved references, duplicate labels/destinations or boxes.
+All pages were visually inspected, with a detailed page per source enlarged.
+No mathematical claim required retraction at this intake. All open questions,
+failed diagnostics and uncompiled/unbundled limitations remain recorded.
