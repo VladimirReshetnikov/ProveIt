@@ -183,11 +183,11 @@ theorem section16_poly_family_three_cover
   -- remainders
   set mf := polyTwoPieces gF thF
   set Λ1 := Finset.univ.biUnion fun c : Fin m =>
-    (P c).D.image fun z => (dropMid z, (P c).g1 (dropMid z)) with hΛ1
+    (P c).D.image fun z => (dropMid z, (P c).g1 (dropMid z)) with _
   set Λ2 := Finset.univ.biUnion fun c : Fin m =>
-    (P c).D.image fun z => (dropFirst z, (P c).g2 (dropFirst z)) with hΛ2
+    (P c).D.image fun z => (dropFirst z, (P c).g2 (dropFirst z)) with _
   set Λ3 := Finset.univ.biUnion fun c : Fin m =>
-    (P c).D.image fun z => (lastPt3 z, (P c).g3 (lastPt3 z)) with hΛ3
+    (P c).D.image fun z => (lastPt3 z, (P c).g3 (lastPt3 z)) with _
   have hΛ1sub : Λ1 ⊆ polyPieceTwoGraphs (flattenPieces fun c => (P c).P1) := by
     intro z hz
     obtain ⟨c, -, hc⟩ := Finset.mem_biUnion.mp hz

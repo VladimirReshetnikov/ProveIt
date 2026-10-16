@@ -47,7 +47,7 @@ theorem nestW_mono_L {c : Nat → Real → Real} {w : Nat → Real → Nat → N
     (hw : ∀ i t, Monotone (w i t)) : ∀ r t, Monotone (nestW c w r t) := by
   intro r
   induction r with
-  | zero => intro t a b hab; exact hab
+  | zero => intro _ a b hab; exact hab
   | succ r ih => intro t a b hab; exact hw r _ (ih t hab)
 
 /-- The non-top vertices of grade `j`. -/
@@ -86,7 +86,7 @@ theorem graded_vertex_blocks {N k : Nat} [NeZero N] [Fact N.Prime]
     obtain ⟨R, nu, hR, hRP, hRw, hnu, hRc⟩ := ih
     set n : Nat → Nat := fun j => (vertexBlock k g j).card
     set Hs := H.filter fun x => x ∈ R.carrier ∧ ∀ e, e ≠ (fun _ => true) → g e < J →
-      section16TranslatedVertex phi x0 e x = nu e x with hHsdef
+      section16TranslatedVertex phi x0 e x = nu e x with _
     obtain ⟨hρ0, hρ1⟩ := gradedNestC_pos_le hC n J theta hθ hθ1
     have hblock : ∀ e ∈ vertexBlock k g J, LocalPieceFor (C J) (W J) (Dom e)
         (section16TranslatedVertex phi x0 e) := by

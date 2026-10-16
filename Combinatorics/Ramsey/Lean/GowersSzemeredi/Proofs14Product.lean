@@ -23,7 +23,7 @@ private lemma prop14_iteratedDifference_perm {N : Nat}
     iteratedDifference f a = iteratedDifference f b := by
   induction h with
   | nil => rfl
-  | cons x h ih =>
+  | cons x _ ih =>
       simp only [iteratedDifference]
       rw [ih]
   | swap x y l =>
@@ -71,20 +71,9 @@ private lemma prop142_component_difference {N n : Nat}
   rw [List.ofFn_cons]
   exact (prop14_ofFn_insertNth_perm j x (j.removeNth y)).symm
 
-private lemma prop142_component_disc {N n : Nat} (f : ZMod N → Complex)
-    (hf : DiscValued f) (y : Point N (n + 1)) (j : Fin (n + 1)) :
-    DiscValued (prop142Component f y j) :=
-  cubeDifference_discValued hf (j.removeNth y)
-
 private def prop14RestrictedWeight {N : Nat} [NeZero N]
     (E : Finset (ZMod N)) (theta : ZMod N → Real) : ZMod N → Real :=
   fun x => if x ∈ E then theta x else 0
-
-private def prop14QuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X) where
-  toFun q := ![q 0, q 3, q 2, q 1]
-  invFun q := ![q 0, q 3, q 2, q 1]
-  left_inv q := by funext i; fin_cases i <;> rfl
-  right_inv q := by funext i; fin_cases i <;> rfl
 
 private lemma prop14_restricted_weight_eq_energy {N p : Nat} [NeZero N]
     (E : Finset (ZMod N)) (theta : ZMod N → Real)
@@ -93,9 +82,13 @@ private lemma prop14_restricted_weight_eq_energy {N p : Nat} [NeZero N]
       weightedSimultaneousAdditiveEnergy E theta sigma := by
   classical
   unfold simultaneouslyAdditiveWeight weightedSimultaneousAdditiveEnergy
-  apply Fintype.sum_equiv (prop14QuadEquiv (ZMod N))
+  apply Fintype.sum_equiv
+      ({ toFun q := ![q 0, q 3, q 2, q 1]
+         invFun q := ![q 0, q 3, q 2, q 1]
+         left_inv q := by funext i; fin_cases i <;> rfl
+         right_inv q := by funext i; fin_cases i <;> rfl } : (Fin 4 → ((ZMod N))) ≃ (Fin 4 → ((ZMod N))))
   intro q
-  simp only [prop14QuadEquiv, IsSimultaneouslyAdditive,
+  simp only [IsSimultaneouslyAdditive,
     IsAdditiveQuadruple]
   have hadd :
       q 0 - q 1 = q 2 - q 3 ↔ q 0 + q 3 = q 2 + q 1 :=
@@ -149,7 +142,7 @@ theorem lemma_14_2_holds : lemma_14_2 := by
         split_ifs
         · exact Finset.prod_nonneg fun t _ => htheta (q t)
         · exact le_rfl
-      · have hT : 0 < T := lt_of_le_of_ne hTnonneg (Ne.symm hTzero)
+      · have _ : 0 < T := lt_of_le_of_ne hTnonneg (Ne.symm hTzero)
         let alpha : Real := gamma ^ (2 * p) * (N : Real)⁻¹ * T
         have halpha : 0 < alpha := by
           dsimp only [alpha]
@@ -162,7 +155,7 @@ theorem lemma_14_2_holds : lemma_14_2 := by
           · exact le_rfl
         have hf' : ∀ i, DiscValued (f' i) := by
           intro i
-          exact prop142_component_disc f hf (y i) j
+          exact cubeDifference_discValued hf (j.removeNth (y i))
         have hcoeff (i : Fin p) (x : ZMod N) (hx : x ∈ E) :
             gamma * (N : Real) ≤
               ‖fourier (difference (f' i) x) (sigma i x)‖ := by
@@ -471,7 +464,7 @@ theorem lemma_14_3_holds : lemma_14_3 := by
         split_ifs
         · exact Finset.prod_nonneg fun t _ => htheta (q t)
         · exact le_rfl
-      · have hT : 0 < T := lt_of_le_of_ne hTnonneg (Ne.symm hTzero)
+      · have _ : 0 < T := lt_of_le_of_ne hTnonneg (Ne.symm hTzero)
         have hcomponentSum (i : Fin p) (x : ZMod N) (hx : x ∈ E) :
             gamma ^ 2 * (N : Real) ^ (n + 4) ≤
               ∑ u : U,
@@ -585,7 +578,7 @@ theorem lemma_14_3_holds : lemma_14_3 := by
         have hVnonempty : (Finset.univ : Finset V).Nonempty :=
           ⟨default, Finset.mem_univ _⟩
         have haverage' :
-            (∑ v ∈ (Finset.univ : Finset V), threshold) ≤
+            (∑ _ ∈ (Finset.univ : Finset V), threshold) ≤
               ∑ v ∈ (Finset.univ : Finset V), S v := by
           simpa only [Finset.sum_filter, Finset.filter_true_of_mem] using haverage
         obtain ⟨v, _, hv⟩ :=

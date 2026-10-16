@@ -40,7 +40,7 @@ private lemma cor76_count_le_graph_energy {N : Nat} [NeZero N]
         simp only [toEnergy, graphPoint, functionGraph, Finset.mem_image]
         exact ⟨_, hqB _, rfl⟩
     · exact Prod.ext hqadd hqphi
-  · intro q hq r hr hqr
+  · intro q _ r _ hqr
     simp only [toEnergy, graphPoint, Prod.mk.injEq] at hqr
     funext i
     fin_cases i <;> tauto

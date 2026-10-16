@@ -291,7 +291,7 @@ theorem powerUniformClass_two {K1 p1 : Nat} (hK1 : 1 ≤ K1) (hp1 : 0 < p1)
       simp only [restrictRelation_univ]; exact le_rfl
     refine (hcov.subset hsub).weaken ?_ ?_ ?_
     · intro rho hr hr1
-      obtain ⟨hvw, hrw, hnw, hVw, hw2⟩ := uniformBase_facts hV n hg hg1 ht ht1 hr hr1
+      obtain ⟨hvw, hrw, hnw, _, hw2⟩ := uniformBase_facts hV n hg hg1 ht ht1 hr hr1
       refine uniTwoCount_le_power hg hg1 ht ht1 hr hr1 hvw hrw ?_
       exact (nPieces_le_base hg hg1 ht ht1 hvw hnw hw2)
     · intro rho hr hr1

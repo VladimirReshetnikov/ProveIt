@@ -138,7 +138,7 @@ theorem corollary_10_14_holds : corollary_10_14 := by
       · exact cor1014_symmetric_multiples_subset K zeta
           (cor1014_small_bohr_nonnegative K zeta m hm d hd hK) m hm d hd
       · have hKempty : K = ∅ := Finset.not_nonempty_iff_eq_empty.mp hK
-        intro z hz
+        intro z _
         simp [bohr, hKempty]
     obtain ⟨a, ha⟩ := hY
     have hpsiZero : psi1 0 = 0 := by

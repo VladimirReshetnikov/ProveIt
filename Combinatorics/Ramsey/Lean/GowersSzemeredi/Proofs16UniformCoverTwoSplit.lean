@@ -60,7 +60,7 @@ theorem two_split_basics {V : Real} (hV : 1 ≤ V) {theta gamma rho : Real} (hg 
         ((n : Real) + 1) ^ 0 * splitW V theta gamma rho ^ ((2 : Nat) ^ 38) ∧
       (polyPieceSpecCountW (fejerThetaOne theta gamma 1) : Real) ≤
         ((n : Real) + 1) ^ 0 * splitW V theta gamma rho ^ ((2 : Nat) ^ 38) := by
-  obtain ⟨hW2, hvW, -, -⟩ := splitW_facts hV hg hg1 ht ht1 hr hr1
+  obtain ⟨_, hvW, -, -⟩ := splitW_facts hV hg hg1 ht ht1 hr hr1
   obtain ⟨hu2, -, -, -, -⟩ := prod_scale_basic hg hg1 ht ht1
   have hu0 : (0 : Real) ≤ 2 / (gamma * theta) := le_trans (by norm_num) hu2
   have hm := (polyTwoFejerPieces_le_power hg hg1 ht ht1).trans (pow_le_pow_left₀ hu0 hvW _)

@@ -137,7 +137,7 @@ lemma boxOneIndex_freiman {N : Nat} [NeZero N]
       have hzB := (Finset.mem_filter.mp hz).2
       rw [hpoint z]
       exact hzB
-    · intro s t hs ht hsc htc hsum
+    · intro s t _ _ hsc htc hsum
       have hsum_f (u : Multiset Int) :
           (u.map f).sum =
             (u.card : ZMod N) * (P.axis 0).start +
@@ -167,7 +167,7 @@ def indexCellBox {N : Nat} (P : Box N 1) (S : IntAP) : Box N 1 where
       step := (S.step : ZMod N) * (P.axis 0).step
       length := S.length }
   commonDiff := (S.step : ZMod N) * P.commonDiff
-  axis_step := by intro i; rw [P.axis_step 0]
+  axis_step := by intro _; rw [P.axis_step 0]
 
 @[simp] lemma indexCellBox_width {N : Nat} (P : Box N 1) (S : IntAP) :
     (indexCellBox P S).width = S.length := by

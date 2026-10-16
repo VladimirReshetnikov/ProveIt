@@ -132,7 +132,7 @@ theorem section16_piece_large_box_profile {k : Nat} (hk : 1 ≤ k)
     apply mul_le_mul_of_nonneg_left _ (by norm_num)
     exact max_le_max le_rfl hqGamma
   have hSpos : 0 < S := pieceSamples_pos hrho
-  obtain ⟨hPbS, hEsS, hEsS1⟩ := hranges S sigma hSpos hs hs1
+  obtain ⟨hPbS, hEsS, _⟩ := hranges S sigma hSpos hs hs1
   have hPbr : Pb r sigma ≤ Pb S sigma := hPb sigma hrS
   have hEsr : Es S sigma ≤ Es r sigma := hEs sigma hs hrS
   have hrpos : 0 < r := by

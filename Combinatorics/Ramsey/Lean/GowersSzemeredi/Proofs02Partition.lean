@@ -107,7 +107,7 @@ private lemma exists_chunk_for_quotient {c L q : Nat}
       calc
         q = q % L + L * (q / L) := (Nat.mod_add_div q L).symm
         _ = (q / L) * L + q % L := by ac_rfl
-  · have hqfront : n * L ≤ q := Nat.le_of_not_gt hfront
+  · have _ : n * L ≤ q := Nat.le_of_not_gt hfront
     let j : Fin n := ⟨n - 1, by omega⟩
     let i := q - (n - 1) * L
     refine ⟨j, i, ?_, ?_⟩
@@ -556,7 +556,7 @@ private lemma ratio_scaled_quotient {N r s : Nat} (hN : 0 < N)
 
 /-- The rounding-corrected form of Gowers's Lemma 2.3. -/
 theorem lemma_2_3_holds : lemma_2_3 := by
-  intro N r s hN hr hs hrN hsN hrs phi hlin
+  intro N r s hN hr hs _ hsN hrs phi hlin
   rcases hlin with ⟨a, b, hphi⟩
   letI : NeZero N := ⟨Nat.ne_of_gt hN⟩
   let q := partitionRatio N r s

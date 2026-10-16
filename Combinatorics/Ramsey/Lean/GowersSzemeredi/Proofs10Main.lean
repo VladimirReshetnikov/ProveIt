@@ -274,17 +274,6 @@ private lemma theorem1013_difference_fibre_function {N : Nat} [NeZero N]
     simp [Ne.symm ht]
   · simp
 
-private def theorem1013QuadPairEquiv (X : Type*) :
-    Theorem1013Quad X ≃ (X × X) × (X × X) where
-  toFun q := ((q 0, q 1), (q 2, q 3))
-  invFun q := ![q.1.1, q.1.2, q.2.1, q.2.2]
-  left_inv q := by
-    funext i
-    fin_cases i <;> rfl
-  right_inv q := by
-    rcases q with ⟨⟨a, b⟩, ⟨c, d⟩⟩
-    rfl
-
 private lemma theorem1013_quad_fibre_function {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
     (D : MultifunctionDomain N X) (s : ZMod N) :
@@ -297,10 +286,17 @@ private lemma theorem1013_quad_fibre_function {N : Nat} [NeZero N]
       ((theorem1013QuadDomain D).fibre s).card =
         ((theorem1013DifferenceDomain (theorem1013DifferenceDomain D)).fibre s).card := by
     unfold MultifunctionDomain.fibre
-    apply Finset.card_equiv (theorem1013QuadPairEquiv X)
+    apply Finset.card_equiv
+        ({ toFun q := ((q 0, q 1), (q 2, q 3))
+           invFun q := ![q.1.1, q.1.2, q.2.1, q.2.2]
+           left_inv q := by
+             funext i
+             fin_cases i <;> rfl
+           right_inv q := by
+             rcases q with ⟨⟨a, b⟩, ⟨c, d⟩⟩
+             rfl } : Theorem1013Quad X ≃ (X × X) × (X × X))
     intro q
-    simp [theorem1013QuadDomain, theorem1013DifferenceDomain,
-      theorem1013QuadPairEquiv]
+    simp [theorem1013QuadDomain, theorem1013DifferenceDomain]
     constructor <;> intro h <;> rw [← h] <;> abel
   change
     (((theorem1013QuadDomain D).fibre s).card : Complex) = _
@@ -1077,7 +1073,7 @@ private lemma theorem1013_exists_large_tail_fibre {X : Type*}
     simp only [Finset.sum_const, nsmul_eq_mul]
     field_simp [ne_of_gt hTcardPos]
     rfl
-  obtain ⟨p, hpT, hp⟩ := Finset.exists_le_of_sum_le hT havg
+  obtain ⟨p, _, hp⟩ := Finset.exists_le_of_sum_le hT havg
   refine ⟨p, ?_⟩
   have hp' : (W.card : Real) ≤ (T.card : Real) * (F p).card :=
     by simpa only [mul_comm] using (div_le_iff₀ hTcardPos).mp hp
@@ -1227,7 +1223,7 @@ theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
     nlinarith
   have hcor := corollary_10_11_holds N K epsilon hK hepsilon hepsilonOne
     B' psi hlocal.1 hBdense hpsi
-  rcases hcor with ⟨hCsub, psi₁, hpsi₁, hinduced⟩
+  rcases hcor with ⟨_, psi₁, hpsi₁, hinduced⟩
   have hsqrtRelaxed : Real.sqrt theta < 5 / 16 := by
     change Real.sqrt theorem1013Theta < 5 / 16
     linarith [theorem1013_theta_small]
@@ -1330,7 +1326,7 @@ theorem theorem_10_13_power_five_holds : theorem_10_13_power_five := by
     apply hpsi₁.subset
     · intro c hc
       exact hCsubFinal hc
-    · intro c hc
+    · intro c _
       exact Set.mem_univ _
   refine ⟨Y, psi₁, hYlarge, hpsiFinal, ?_⟩
   intro y hy z hz hyz

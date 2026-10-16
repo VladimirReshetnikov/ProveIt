@@ -77,7 +77,7 @@ theorem MultiplyLinearWith.relation_lift_last {N k : Nat} [NeZero N] [Fact N.Pri
     have hmin : (P.width : Real) ^ (Eb theta / 16) ≤ ((min 2 P.width : Nat) : Real) := by
       rcases Nat.lt_or_ge P.width 2 with hlt | hge
       · rw [min_eq_right hlt.le]
-        interval_cases h : P.width
+        interval_cases _ : P.width
         · simp [Real.zero_rpow hA.ne']
         · simp
       · rw [min_eq_left hge]

@@ -113,7 +113,7 @@ theorem exists_subset_count_score {X E : Type*} [DecidableEq X]
       simp only [F]
       rw [Finset.mul_sum, ← Finset.sum_sub_distrib]
       apply Finset.sum_congr rfl
-      intro S hS
+      intro S _
       ring
 
 /-- Average over finite seeds before selecting one actual subset. -/

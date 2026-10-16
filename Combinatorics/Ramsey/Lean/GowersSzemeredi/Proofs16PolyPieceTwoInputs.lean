@@ -122,7 +122,7 @@ theorem card_translated_slice_bad_le_succ {N k : Nat} [NeZero N] {theta : Real}
   classical
   set X := (Finset.univ : Finset (Point N (k + 1))).filter fun z =>
     appendCoordinate (section16Init z + x0) (section16Last z) ∈ B ∧
-      section16Init z + x0 ∉ C (section16Last z) with hX
+      section16Init z + x0 ∉ C (section16Last z) with _
   rw [Finset.card_eq_sum_card_fiberwise (f := section16Last) (t := Finset.univ)
     (fun _ _ => Finset.mem_univ _)]
   push_cast

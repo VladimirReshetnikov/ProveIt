@@ -38,7 +38,7 @@ positive formal length. -/
 private def inflatedSingletonBox {N : Nat} (x : Point N 1) (L : Nat) : Box N 1 where
   axis := fun _ => { start := x 0, step := 0, length := L }
   commonDiff := 0
-  axis_step := by intro i; rfl
+  axis_step := by intro _; rfl
 
 @[simp] private lemma inflatedSingletonBox_width {N : Nat}
     (x : Point N 1) (L : Nat) : (inflatedSingletonBox x L).width = L := by

@@ -53,7 +53,7 @@ theorem NatAP.exists_modular_translate_split (P : NatAP) (hP : P.IsProper)
     intro x hxQ hxR
     rw [hQc] at hxQ
     rw [hRc] at hxR
-    obtain ⟨u, hu, rfl⟩ := Finset.mem_image.mp hxQ
+    obtain ⟨u, _, rfl⟩ := Finset.mem_image.mp hxQ
     obtain ⟨v, hv, hvu⟩ := Finset.mem_image.mp hxR
     rw [hc₁] at hv
     have hvN := Finset.mem_Ico.mp (Finset.mem_inter.mp hv).2

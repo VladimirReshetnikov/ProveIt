@@ -219,7 +219,7 @@ theorem allScaleFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0
       (fun j => (pointSingletonBox (x j)).axis (Fin.last k)), Finset.Subset.refl _, ?_, hpart,
       fun j => pointSingletonBox_isProper _,
       (fun j => boxInit_last_product (pointSingletonBox (x j))), ?_, ?_⟩
-    · have hcard : (0 : Real) ≤ Q.carrier.card := Nat.cast_nonneg _
+    · have _ : (0 : Real) ≤ Q.carrier.card := Nat.cast_nonneg _
       nlinarith
     · intro j
       simpa only [pointSingletonBox_width (by omega : 0 < k + 1), Nat.cast_one] using hl
@@ -252,7 +252,7 @@ theorem allScaleFamilyLemma166At_of (k : Nat) {C p : Nat} (hC : 2 ≤ C) (hp : 0
     have hu' : I'.step = (↑u : ZMod N) := hu.symm
     have hstep : I'.step = Q'.commonDiff := P.axis_step (Fin.last k)
     -- the spectrum cover on short parents
-    obtain ⟨q', G, bb, Bp, cnt, R, mu, hq', hGsub, hGmass, hBpart, hBproper,
+    obtain ⟨q', G, bb, Bp, cnt, R, mu, hq', hGsub, hGmass, hBpart, _,
         hBaxes, hBstep, hRpart, hRproper, hRwidth, hmu, hcover⟩ :=
       hML.short_parent_cover sigma hs hs1 hQ ha.le Q' I' hQ' hI' (by omega) hm4 hmQ' hmI'
     have hq'q : q' ≤ q := Nat.le_floor hq'

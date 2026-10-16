@@ -228,7 +228,7 @@ theorem multiplyLinear_of_powerLossCover {N k : Nat} [NeZero N] (hk : 0 < k)
       have hmin : (P.width : Real) ^ e ≤ ((min 2 P.width : Nat) : Real) := by
         rcases Nat.lt_or_ge P.width 2 with hlt | hge
         · rw [min_eq_right hlt.le]
-          interval_cases h : P.width
+          interval_cases _ : P.width
           · simp [Real.zero_rpow he.ne']
           · simp
         · rw [min_eq_left hge]

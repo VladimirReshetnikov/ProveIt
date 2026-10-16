@@ -27,7 +27,7 @@ theorem Box.short_parent_partition {N k m : Nat} [NeZero N]
       (∀ j i, 0 < ((Q j).axis i).length ∧
         2 * ((Q j).axis i).length ≤ N ∧ ((Q j).axis i).length ≤ I.length) ∧
       ∀ j, (Q j).commonDiff = P.commonDiff := by
-  obtain ⟨hr, hlower, hupper⟩ := quarter_scale_width hm
+  obtain ⟨hr, hlower, _⟩ := quarter_scale_width hm
   obtain ⟨M, Q, hpart, hproper, haxes, hstep⟩ :=
     P.bounded_partition hP hk (m / 4) hr ((Nat.div_le_self _ _).trans hmP)
   have hIN : I.length ≤ N := by

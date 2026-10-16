@@ -163,7 +163,7 @@ theorem singlePieceGlobalDensityF_pos {Qb : Nat → Real → Real → Real → R
     0 < singlePieceGlobalDensityF Qb alpha (alpha / 2) k := by
   obtain ⟨hfa0, hfaS⟩ := fejerThetaOne_bounds k ha ha1 (show (0 : Real) < alpha / 2 by positivity)
     (show alpha / 2 ≤ 1 by linarith)
-  obtain ⟨hθ₂, hθ₂1⟩ := section16ThetaTwo_pos_le_with hfa0 hfaS
+  obtain ⟨_, _⟩ := section16ThetaTwo_pos_le_with hfa0 hfaS
   obtain ⟨hr1, hr1le⟩ := coverRho1W_pos_le Qb hQb (fejerThetaOne alpha (alpha / 2) k) (alpha / 2) k hfa0 hfaS
   have hr2 : 0 < spectrumPieceRho (fun t => t / 2) (coverRho1W Qb (fejerThetaOne alpha (alpha / 2) k) (alpha / 2) k) ∧
       spectrumPieceRho (fun t => t / 2) (coverRho1W Qb (fejerThetaOne alpha (alpha / 2) k) (alpha / 2) k) ≤ 1 := by
@@ -272,7 +272,7 @@ theorem singlePieceGlobalDensityF_le_one {Qb : Nat → Real → Real → Real �
     singlePieceGlobalDensityF Qb alpha (alpha / 2) k ≤ 1 := by
   obtain ⟨hfa0, hfaS⟩ := fejerThetaOne_bounds k ha ha1 (show (0 : Real) < alpha / 2 by positivity)
     (show alpha / 2 ≤ 1 by linarith)
-  obtain ⟨hθ₂, hθ₂1⟩ := section16ThetaTwo_pos_le_with hfa0 hfaS
+  obtain ⟨_, _⟩ := section16ThetaTwo_pos_le_with hfa0 hfaS
   obtain ⟨hr1, hr1le⟩ := coverRho1W_pos_le Qb hQb (fejerThetaOne alpha (alpha / 2) k) (alpha / 2) k hfa0 hfaS
   have hr2 : 0 < spectrumPieceRho (fun t => t / 2) (coverRho1W Qb (fejerThetaOne alpha (alpha / 2) k) (alpha / 2) k) ∧
       spectrumPieceRho (fun t => t / 2) (coverRho1W Qb (fejerThetaOne alpha (alpha / 2) k) (alpha / 2) k) ≤ 1 := by

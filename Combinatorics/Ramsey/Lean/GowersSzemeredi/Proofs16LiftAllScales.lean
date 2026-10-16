@@ -84,7 +84,7 @@ theorem section16_local_affine_lift_all_scales {N k q r m : Nat} [Fact N.Prime]
     refine ⟨1, P.carrier, L, fun j => pointSingletonBox (x j),
       fun j _ _ => phi (x j), by simpa using hQ, Finset.Subset.rfl, ?_, hpart, ?_,
       fun j _ => isMultilinear_constant _, ?_⟩
-    · have hn : (0 : ℝ) ≤ P.carrier.card := Nat.cast_nonneg _
+    · have _ : (0 : ℝ) ≤ P.carrier.card := Nat.cast_nonneg _
       nlinarith
     · intro j
       refine ⟨pointSingletonBox_isProper _, ?_⟩

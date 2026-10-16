@@ -302,7 +302,7 @@ private lemma lemma78_weighted_phase_sum {N : Nat} [NeZero N]
     calc
       ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∉ K), w r <=
           ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∉ K), 2 * F r := by
-        gcongr with r hr
+        gcongr with r _
         dsimp [w, F]
         nlinarith [lemma78_norm_exponential_sub_one_le_two (r * d),
           pow_nonneg (norm_nonneg (fourier (indicator A) r)) 4]
@@ -788,7 +788,7 @@ private lemma lemma78_constant_weighted_phase {N : Nat} [NeZero N]
       2 * ∑ r ∈ Finset.univ.filter (fun r ↦ r ∉ K), F r := by
     rw [Finset.mul_sum]
     apply Finset.sum_le_sum
-    intro r hr
+    intro r _
     dsimp only [w]
     rw [mul_comm (2 : Real)]
     exact mul_le_mul_of_nonneg_left (lemma78_norm_exponential_sub_one_le_two (r * d))

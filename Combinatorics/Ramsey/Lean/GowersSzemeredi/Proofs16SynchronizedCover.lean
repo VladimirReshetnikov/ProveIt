@@ -40,7 +40,7 @@ theorem section16_synchronize_base_cover_family {N k M v : Nat} [NeZero N] {C ι
       (∀ j c, IsMultilinear (nu j c)) ∧
       ∀ a j z, z ∈ (S j).carrier → z ∈ D a → z ∈ G a → ∃ c, phi a z = nu j c z := by
   classical
-  choose L S J hSpart hSproper hSproduct hJlength using fun j =>
+  choose L S J hSpart hSproper hSproduct _ using fun j =>
     box_product_tiling_of_contained_axis (R j) (B j) I axis (u j)
       (hR j) hI (hBstep j) (hIstep j) (hsub j) (hshort j) (hL j) hv (hfit j)
   let e := section5NatFlattenEquiv L

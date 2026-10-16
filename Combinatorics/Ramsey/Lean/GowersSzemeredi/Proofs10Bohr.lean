@@ -139,7 +139,7 @@ private lemma frequencyBoundary_card_le {N : Nat} [NeZero N]
   have hfiber (y : ZMod N) (hy : y ∈ Y) :
       (F.filter fun x => f x = y).card ≤ g := by
     have hyrange : y ∈ Set.range f := by
-      obtain ⟨x, hxF, hxy⟩ := Finset.mem_image.mp hy
+      obtain ⟨x, _, hxy⟩ := Finset.mem_image.mp hy
       exact ⟨x, hxy⟩
     have hzero : (0 : ZMod N) ∈ Set.range f := ⟨0, map_zero f⟩
     have hallEq : (Finset.univ.filter fun x => f x = y).card =
@@ -161,7 +161,7 @@ private lemma frequencyBoundary_card_le {N : Nat} [NeZero N]
   have hFY : F.card ≤ g * Y.card := by
     exact Finset.card_le_mul_card_image_of_maps_to
       (fun x hx => Finset.mem_image.mpr ⟨x, hx, rfl⟩) g hfiber
-  have hnormFiber (n : Nat) (hn : n ∈ V) :
+  have hnormFiber (n : Nat) (_ : n ∈ V) :
       (Y.filter fun y => centeredAbs y = n).card ≤ 2 := by
     by_cases hne : (Y.filter fun y => centeredAbs y = n).Nonempty
     · obtain ⟨a, ha⟩ := hne
@@ -276,7 +276,7 @@ private lemma bohr_sdiff_translate_card_le {N : Nat} [NeZero N]
 
 theorem lemma_10_10_holds : lemma_10_10 := by
   classical
-  intro N k _ K delta zeta hk hdelta hdeltaOne hzeta hzetaDelta
+  intro N k _ K delta zeta hk hdelta hdeltaOne hzeta _
   dsimp only
   intro d hd
   subst k
@@ -290,7 +290,7 @@ theorem lemma_10_10_holds : lemma_10_10 := by
       have hB : B = Finset.univ := by
         ext x
         simp only [B, bohr, Finset.mem_filter, Finset.mem_univ, true_and, iff_true]
-        intro r hr
+        intro r _
         have hrx : r * x = 0 := Subsingleton.elim _ _
         rw [hrx]
         simp only [centeredAbs, ZMod.valMinAbs_zero, Int.natAbs_zero, Nat.cast_zero]
@@ -386,7 +386,7 @@ lemma bohr_zero_mem {N : Nat} [NeZero N]
   unfold bohr
   simp only [Finset.mem_filter, Finset.mem_univ, true_and, mul_zero,
     centeredAbs, ZMod.valMinAbs_zero, Int.natAbs_zero, Nat.cast_zero]
-  intro r hr
+  intro r _
   positivity
 
 /-- The four-translate intersection used in Corollary 10.11. -/
@@ -618,7 +618,7 @@ theorem corollary_10_11_holds : corollary_10_11 := by
       d₁ d₂ d₃ hd₁ hd₂ hd₃
   have hCsub : C ⊆ B' - B' := by
     intro c hc
-    obtain ⟨x, hxB', hxcB', hxccB', hxagain⟩ := hchain c 0 c hc hCzero hc
+    obtain ⟨x, hxB', hxcB', _, _⟩ := hchain c 0 c hc hCzero hc
     rw [Finset.mem_sub]
     exact ⟨x, hxB', x - c, hxcB', by abel⟩
   refine ⟨hCsub, ?_⟩

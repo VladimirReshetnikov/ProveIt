@@ -49,7 +49,7 @@ theorem respectedGeneralArrangementCount_two_zero {N : Nat} [NeZero N]
     constructor
     · intro h j
       exact h default j
-    · intro h e j
+    · intro h _ j
       exact h j
   simp only [GeneralArrangement.IsIn, GeneralArrangement.IsRespected,
     zeroArrangement_cubeValue, isAdditiveTuple_two_iff, hvertices,

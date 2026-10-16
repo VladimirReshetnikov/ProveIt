@@ -156,7 +156,7 @@ theorem section16_poly_cover_two_large_fejer {A Bq : Nat → Real} (hA : ∀ q, 
       MultiplyLinearWith (polyTwoFejerFamCount theta gamma) (polyTwoFejerFamExp A Bq theta gamma)
         (restrictRelation Gamma J) := by
   obtain ⟨hfa0, hfaS⟩ := fejerThetaOne_one_bounds ht ht1 hg hg1
-  obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le_with hfa0 hfaS
+  obtain ⟨hθ₂pos, _⟩ := section16ThetaTwo_pos_le_with hfa0 hfaS
   have hmass : 0 < 5 * polyPieceBudgetW (fejerThetaOne theta gamma 1) := by
     unfold polyPieceBudgetW; positivity
   obtain ⟨J, hJ, P, hcov⟩ := section16_poly_piece_two_decomposition_of_extract hmass Gamma hsize
@@ -195,7 +195,7 @@ theorem polyCoverAt_two_fejer_of_family_lemma6 {A Bq : Nat → Real} (hA : ∀ q
   · obtain ⟨J, hJ, hML⟩ := section16_poly_cover_two_large_fejer hA hB hlemma6 ht ht1 hg hg1 hN
       Gamma hsize hprod
     refine ⟨J, hJ, MultiplyLinearWith.weaken hML (fun s _ _ => le_max_left _ _) ?_ ?_⟩
-    · intro s hs hs1
+    · intro s hs _
       exact section16CappedWidthExponent_pos (polyTwoFejerFamExp_pos hB hs)
     · intro s _ _
       exact min_le_left _ _
@@ -209,6 +209,6 @@ theorem polyCoverAt_two_fejer_of_family_lemma6 {A Bq : Nat → Real} (hA : ∀ q
     · exact multiplyLinearWith_of_small_modulus (by norm_num : 0 < 2) hNlt
         (restrictRelation Gamma Finset.univ)
         (polyTwoFejerFamCount theta gamma) (polyTwoFejerFamExp A Bq theta gamma)
-        (fun s hs hs1 => polyTwoFejerFamExp_pos hB hs)
+        (fun s hs _ => polyTwoFejerFamExp_pos hB hs)
 
 end LeanProofs.GowersSzemeredi

@@ -94,7 +94,7 @@ theorem section5_box_residue_partition {N k : Nat} [NeZero N]
   classical
   have haxis (i : Fin k) : p * v ^ 2 ≤ (P.axis i).length :=
     hsize.trans (P.width_le_axis_length i)
-  choose m R hm hRpart hRprop hRstep using
+  choose m R _ hRpart hRprop hRstep using
     fun i => section5_residue_target_partition (P.axis i).length p v hp hv (haxis i)
   let T (i : Fin k) (j : Fin (m i)) := section5Transport (P.axis i) (R i j)
   have hTpart (i : Fin k) : IsPartition (fun j => (T i j).carrier) (P.axis i).carrier :=

@@ -41,7 +41,7 @@ theorem multiplyLinear_relation_dimension_zero {N : Nat} [NeZero N]
     fun _ i _ => (e i).val.2, Finset.Subset.rfl, ?_, ?_, fun _ => hP,
     hcard.trans (multipleQ_rpow_ge_parameter 0 hg hg1 ht ht1 hr), ?_,
     fun _ _ => isMultilinear_dimension_zero _, ?_⟩
-  · have hnonneg : (0 : Real) ≤ P.carrier.card := by positivity
+  · have _ : (0 : Real) ≤ P.carrier.card := by positivity
     nlinarith
   · constructor
     · intro x
@@ -51,7 +51,7 @@ theorem multiplyLinear_relation_dimension_zero {N : Nat} [NeZero N]
   · intro j
     have hw : P.width = 0 := by simp [Box.width]
     simp only [hw, Nat.cast_zero, Real.zero_rpow ha.ne', le_refl]
-  · intro j x hxQ hxH y hxy
+  · intro j x _ _ y hxy
     refine ⟨e.symm ⟨(x, y), hxy⟩, ?_⟩
     simp only [Equiv.apply_symm_apply]
 
@@ -59,7 +59,7 @@ theorem theorem_16_2_zero : Theorem162At 0 := by
   classical
   intro gamma theta hg hg1 ht ht1
   refine ⟨0, ?_⟩
-  intro N _ _ hN Gamma hcard hprod
+  intro N _ _ _ Gamma hcard _
   have hginv : 1 ≤ gamma ^ (-(2 : Int)) := by
     rw [zpow_neg, zpow_ofNat]
     exact (one_le_inv₀ (pow_pos hg 2)).mpr (pow_le_one₀ hg.le hg1)

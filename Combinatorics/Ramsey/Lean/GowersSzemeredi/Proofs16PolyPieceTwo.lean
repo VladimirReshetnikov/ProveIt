@@ -101,7 +101,7 @@ theorem section16_poly_piece_two
       MultiplyLinearWith (polyPieceTwoCount theta gamma) (polyPieceTwoExponent A Bq theta gamma)
         (partialGraph D (section16PhiOne phi x0)) := by
   classical
-  obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds 1 ht ht1 hg hg1
+  obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds 1 ht ht1 hg hg1
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le 1 ht ht1 hg hg1
   have hθ'pos : 0 < polyPieceBudget theta gamma := by
     unfold polyPieceBudget; positivity

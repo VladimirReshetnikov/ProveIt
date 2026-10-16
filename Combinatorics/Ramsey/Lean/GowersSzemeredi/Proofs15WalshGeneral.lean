@@ -114,7 +114,7 @@ theorem signedWalsh_multiple_of_invariant {N k : Nat} [NeZero N]
     have hK : K ≠ 0 := by
       unfold K
       apply Finset.prod_ne_zero_iff.mpr
-      intro i hi
+      intro i _
       exact mul_ne_zero
         (mul_ne_zero htwo
           (by cases e i <;> simp [walshSign]))
@@ -155,7 +155,7 @@ theorem signedWalsh_multiple_of_invariant {N k : Nat} [NeZero N]
   let uOf : Finset (Fin k) → (Fin k → Bool) := fun s i =>
     if i ∈ s then false else true
   have hu_insert (s : Finset (Fin k)) (j : Fin k)
-      (hjs : j ∉ s) :
+      (_ : j ∉ s) :
       uOf (insert j s) =
         Function.update (uOf s) j false := by
     funext i
@@ -196,7 +196,7 @@ theorem signedWalsh_multiple_of_invariant {N k : Nat} [NeZero N]
           ∏ i : Fin k,
             if i ∈ s then (-1 : ZMod N) else 1 := by
         apply Finset.prod_congr rfl
-        intro i hi
+        intro i _
         by_cases his : i ∈ s <;>
           simp [uOf, his, walshSign]
       _ = ∏ i ∈ s, (-1 : ZMod N) := by
@@ -261,10 +261,10 @@ theorem booleanWalsh_multiple_of_invariant {N k : Nat} [NeZero N]
     intro A y
     unfold signedWalshMoment booleanWalshMoment
     apply Finset.sum_congr rfl
-    intro e he
+    intro e _
     congr 1
     apply Finset.prod_congr rfl
-    intro i hi
+    intro i _
     exact hcoord y i (e i)
   have hsigned :
       ∀ (A : Finset (Fin k)) (y z : Point N k),

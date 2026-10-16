@@ -203,7 +203,7 @@ private lemma cor75_exists_good_d {N k L : Nat} [NeZero N] [Fact N.Prime]
     by_cases hL : L = 0
     · simp [hL]
       exact NeZero.pos N
-    · have hLpos : 0 < L := Nat.pos_of_ne_zero hL
+    · have _ : 0 < L := Nat.pos_of_ne_zero hL
       nlinarith
   by_contra hgood
   have hall : ∀ d : ZMod N, d ≠ 0 →
@@ -304,7 +304,7 @@ theorem lemma_7_5_holds : lemma_7_5 := by
   let average : Real := (B.card : Real) * (L + 1) / N
   have hNpos : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have havgHyp : ((Finset.univ : Finset (ZMod N)).card : Nat) • average ≤
-      ∑ z ∈ domain, (1 : Real) := by
+      ∑ _ ∈ domain, (1 : Real) := by
     simp [average, domain, ZMod.card]
     field_simp [ne_of_gt hNpos]
     norm_num

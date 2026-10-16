@@ -88,7 +88,7 @@ lemma properMultiplyLinear_empty_base {N : Nat} [NeZero N]
         (Nat.one_le_iff_ne_zero.mpr hzero)) hwOne
   refine ⟨1, 0, P.carrier, (fun _ : Fin 1 => P), (fun _ i => Fin.elim0 i),
     Finset.Subset.rfl, ?_, ?_, (by simpa using hP), ?_, ?_, ?_, ?_⟩
-  · have hc : (0 : Real) ≤ P.carrier.card := by positivity
+  · have _ : (0 : Real) ≤ P.carrier.card := by positivity
     nlinarith
   · constructor
     · intro x
@@ -103,7 +103,7 @@ lemma properMultiplyLinear_empty_base {N : Nat} [NeZero N]
   · simpa [lemma163LocalExponent, lemma163StageIteration] using hwidth
   · intro j i
     exact Fin.elim0 i
-  · intro j x hxQ hxH y hxy
+  · intro j x _ _ y hxy
     simp at hxy
 
 /-- The repaired finite-union closure needed by the base-case assembly. -/
@@ -119,7 +119,7 @@ theorem proper_lemma_16_3_of_unionClosure
     (hunion : ProperUnionClosure) : ProperTheorem162At 1 := by
   intro gamma theta hgamma hgammaOne htheta hthetaOne
   refine ⟨0, ?_⟩
-  intro N _ hprime hN Gamma hGamma hrelation
+  intro N _ hprime _ Gamma hGamma hrelation
   have hGamma' : (Gamma.card : Real) ≤ gamma ^ (-(2 : Int)) * N := by
     simpa using hGamma
   let E := section16_extract_base_family gamma theta hgamma hgammaOne htheta

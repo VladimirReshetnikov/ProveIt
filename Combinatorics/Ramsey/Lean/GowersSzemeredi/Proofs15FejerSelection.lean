@@ -1110,8 +1110,8 @@ private lemma fejer_carrier_score_lower {N k : Nat} [NeZero N]
       _ ≤ ∑ R ∈ fejerGoodArrangements B phi,
           ∏ z ∈ fejerCarrier R, fejerKernelWeight m C phi z := by
         apply Finset.sum_le_sum_of_subset_of_nonneg hgoodSub
-        intro R hR hnot
-        exact Finset.prod_nonneg fun z hz ↦ hp0 z
+        intro R _ _
+        exact Finset.prod_nonneg fun z _ ↦ hp0 z
   have hbadSplit :
       (∑ R ∈ fejerBadArrangements B phi,
           ∏ z ∈ fejerCarrier R, fejerKernelWeight m C phi z) =
@@ -1136,8 +1136,8 @@ private lemma fejer_carrier_score_lower {N k : Nat} [NeZero N]
         (∑ R ∈ badDeg, ∏ z ∈ fejerCarrier R, fejerKernelWeight m C phi z) ≤
           ∑ _R ∈ badDeg, (1 : Real) := by
       apply Finset.sum_le_sum
-      intro R hR
-      exact Finset.prod_le_one (fun z hz ↦ hp0 z) (fun z hz ↦ hp1 z)
+      intro R _
+      exact Finset.prod_le_one (fun z _ ↦ hp0 z) (fun z _ ↦ hp1 z)
     have hsub : badDeg ⊆ fejerDegenerateFinset N k m := by
       intro R hR
       have hR' := Finset.mem_filter.mp hR

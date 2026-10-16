@@ -24,16 +24,16 @@ private lemma multiplyLinear_const_zero {N k : Nat} [NeZero N]
     (gamma : Real) (c : ZMod N) :
     MultiplyLinear gamma 0
       (partialGraph (Finset.univ : Finset (Point N k)) (fun _ => c)) := by
-  intro theta htheta hthetaOne P hP
+  intro theta htheta _ P hP
   refine ⟨1, 1, P.carrier, (fun _ : Fin 1 => P),
     (fun _ _ _ => c), Finset.Subset.rfl, ?_, BaseCase.singleton_box_partition P, (fun _ => hP), ?_, ?_, ?_, ?_⟩
-  · have hcard : (0 : Real) <= P.carrier.card := by positivity
+  · have _ : (0 : Real) <= P.carrier.card := by positivity
     nlinarith
   · simp
   · simp
-  · intro j i
+  · intro _ _
     exact BaseCase.isMultilinear_const c
-  · intro j x hxQ hxH y hxy
+  · intro j x _ _ y hxy
     have hy : y = c := by
       rw [partialGraph, Finset.mem_image] at hxy
       obtain ⟨z, _hz, hzx⟩ := hxy
@@ -47,7 +47,7 @@ private def lemma168Gamma (i : Fin 2) :
 private def lemma168Box : Box 2 1 where
   axis := fun _ => modInterval 2 0 1
   commonDiff := 1
-  axis_step := by intro i; rfl
+  axis_step := by intro _; rfl
 
 private def lemma168Point : Point 2 1 := fun _ => 0
 
@@ -75,8 +75,8 @@ theorem lemma_16_8_zero_iteration_counterexample :
   have hunion : MultiplyLinear (1 : Real) ((2 : Real) * 0)
       (section16FinsetUnion lemma168Gamma) :=
     h.1 2 0 2 (1 : Real) 0 lemma168Gamma hGamma
-  obtain ⟨M, q, H, Q, mu, hHP, hHcard, hpartition, hproper, hq, hwidth,
-      hmultilinear, hcover⟩ := hunion (1 / 2 : Real) (by norm_num) (by norm_num) lemma168Box
+  obtain ⟨M, q, H, Q, mu, hHP, hHcard, hpartition, _, hq, _,
+      _, hcover⟩ := hunion (1 / 2 : Real) (by norm_num) (by norm_num) lemma168Box
       (by intro i; simp [lemma168Box, ModAP.IsProper, modInterval, ModAP.carrier])
   have hcarrierPos : (0 : Real) < lemma168Box.carrier.card := by
     exact_mod_cast Finset.card_pos.mpr ⟨lemma168Point, lemma168Point_mem_box⟩
@@ -101,33 +101,33 @@ theorem lemma_16_8_zero_iteration_counterexample :
 private lemma multiplyLinear_empty_zero {N d : Nat} [NeZero N]
     (gamma : Real) :
     MultiplyLinear gamma 0 (∅ : Finset (Point N d × ZMod N)) := by
-  intro theta htheta hthetaOne P hP
+  intro theta htheta _ P hP
   refine ⟨1, 0, P.carrier, (fun _ : Fin 1 => P),
     (fun _ i => Fin.elim0 i), Finset.Subset.rfl, ?_,
     BaseCase.singleton_box_partition P, (fun _ => hP), ?_, ?_, ?_, ?_⟩
-  · have hcard : (0 : Real) ≤ P.carrier.card := by positivity
+  · have _ : (0 : Real) ≤ P.carrier.card := by positivity
     nlinarith
   · simp [multipleQ, multipleC]
   · simp [multipleC]
   · intro j i
     exact Fin.elim0 i
-  · intro j x hxQ hxH y hxy
+  · intro j x _ _ y hxy
     simp at hxy
 
 private lemma multiplyLinearFunction_zero_zero {N d : Nat} [NeZero N]
     (gamma : Real) (B : Finset (Point N d)) :
     MultiplyLinearFunction gamma 0 B (fun _ => 0) := by
-  intro theta htheta hthetaOne P hP
+  intro theta htheta _ P hP
   refine ⟨1, 1, P.carrier, (fun _ : Fin 1 => P),
     (fun _ _ _ => 0), Finset.Subset.rfl, ?_, BaseCase.singleton_box_partition P, (fun _ => hP),
     ?_, ?_, ?_, ?_⟩
-  · have hcard : (0 : Real) ≤ P.carrier.card := by positivity
+  · have _ : (0 : Real) ≤ P.carrier.card := by positivity
     nlinarith
   · simp [multipleQ, multipleC]
   · simp [multipleC]
-  · intro j i
+  · intro _ _
     exact BaseCase.isMultilinear_const 0
-  · intro j x hxQ hxH y hxy
+  · intro j x _ _ y hxy
     have hy : y = 0 := by
       obtain ⟨z, _, hz⟩ := Finset.mem_image.mp hxy
       exact (congrArg Prod.snd hz).symm

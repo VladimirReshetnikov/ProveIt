@@ -30,7 +30,7 @@ private noncomputable def intervalProbability (rho : Real) : Measure Real :=
 private lemma intervalProbability_isProbability {rho : Real} (hrho : 0 < rho) :
     IsProbabilityMeasure (intervalProbability rho) := by
   apply ProbabilityTheory.cond_isProbabilityMeasure_of_finite
-  · have hlen : 0 < 1 + 2 * rho := by linarith
+  · have _ : 0 < 1 + 2 * rho := by linarith
     have hlen' : 0 < 1 + rho + rho := by linarith
     simpa [Real.volume_Icc, ENNReal.ofReal_eq_zero] using hlen'
   · exact measure_Icc_lt_top.ne
@@ -233,21 +233,6 @@ private def normalizedR {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)
     (M : Nat) (y : X) : Real :=
   D.fibreSize y / (M : Real)
-
-private noncomputable def regularWindow {N : Nat} {X : Type*}
-    [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) (x : X)
-    (alpha rho : Real) (M : Nat) (p : Real × Real) : Finset X := by
-  classical
-  exact Finset.univ.filter fun y =>
-    p ∈ normalizedWindowSet rho (normalizedQ D x alpha M y) (normalizedR D M y)
-
-private noncomputable def regularBoundary {N : Nat} {X : Type*}
-    [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) (x : X)
-    (alpha rho sigma : Real) (M : Nat) (p : Real × Real) : Finset X := by
-  classical
-  exact Finset.univ.filter fun y =>
-    p ∈ normalizedBoundarySet rho sigma
-      (normalizedQ D x alpha M y) (normalizedR D M y)
 
 private lemma small_eighth_fibre_card_bound {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
@@ -746,7 +731,7 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
   rcases hsetup with
     ⟨hbounds, hsigmaPos, heta, hetaOne, hsymmetric, hinvariant, happrox⟩
   rcases hbounds with ⟨halpha, halphaOne, hM, hcard, hfibre⟩
-  rcases hanchor with ⟨hRanchor, hSanchor, hEanchor⟩
+  rcases hanchor with ⟨_, hSanchor, hEanchor⟩
   have hsetup' : Section10Setup D phi B alpha M sigma eta :=
     ⟨⟨halpha, halphaOne, hM, hcard, hfibre⟩, hsigmaPos, heta, hetaOne,
       hsymmetric, hinvariant, happrox⟩
@@ -871,18 +856,25 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
   obtain ⟨p, hSpr, hEw, hCw, hCv⟩ :=
     exists_regular_parameters rho sigma eta S T a b q e X' hrho hL
       hsigmaPos hetaPos hS hT ha hb hq he hU hEsum hTcard
-  let W : Finset X := regularWindow D x alpha rho M p
-  let V : Finset X := regularBoundary D x alpha rho sigma M p
+  let W : Finset X := (by
+       classical
+       exact Finset.univ.filter fun y =>
+         p ∈ normalizedWindowSet rho (normalizedQ D x alpha M y) (normalizedR D M y) : Finset X)
+  let V : Finset X := (by
+       classical
+       exact Finset.univ.filter fun y =>
+         p ∈ normalizedBoundarySet rho sigma
+           (normalizedQ D x alpha M y) (normalizedR D M y) : Finset X)
   have hWfilter : windowFilter rho a b Finset.univ p = W := by
     ext y
-    simp [windowFilter, W, regularWindow, a, b]
+    simp [windowFilter, W, a, b]
   have hVfilter : boundaryFilter rho sigma a b p = V := by
     ext y
-    simp [boundaryFilter, V, regularBoundary, a, b]
+    simp [boundaryFilter, V, a, b]
   have hSprFilter : windowFilter rho a b X' p =
       X'.filter (fun y => y ∈ W) := by
     ext y
-    simp [windowFilter, W, regularWindow, a, b]
+    simp [windowFilter, W, a, b]
   have hSprEq : windowedSum rho a b q X' p =
       ∑ y ∈ X'.filter (fun y => y ∈ W), q y := by
     rw [windowedSum_eq_filter]
@@ -904,10 +896,10 @@ theorem lemma_10_5_all_tradeoffs_holds : lemma_10_5_all_tradeoffs := by
   rw [hCvEq] at hCv
   have hmemW (y : X) : y ∈ W ↔
       p ∈ normalizedWindowSet rho (a y) (b y) := by
-    simp [W, regularWindow, a, b]
+    simp [W, a, b]
   have hmemV (y : X) : y ∈ V ↔
       p ∈ normalizedBoundarySet rho sigma (a y) (b y) := by
-    simp [V, regularBoundary, a, b]
+    simp [V, a, b]
   have hWbounds (y : X) (hy : y ∈ W) :
       (a y - rho ≤ p.1 ∧ p.1 ≤ a y + rho) ∧
       (b y - rho ≤ p.2 ∧ p.2 ≤ b y + rho) := by

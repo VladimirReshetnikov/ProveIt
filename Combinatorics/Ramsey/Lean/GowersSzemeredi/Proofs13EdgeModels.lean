@@ -40,7 +40,7 @@ theorem section13_edge_tuple_count {N k : Nat} [NeZero N]
     refine ⟨⟨hxadd, ?_⟩, rfl, hxP⟩
     intro i
     exact (Finset.mem_filter.mp (x i).property).2
-  · intro x hx y hy hxy
+  · intro x _ y _ hxy
     funext i
     apply Subtype.ext
     apply Prod.ext
@@ -119,7 +119,7 @@ theorem section13_vertical_fibre_cap {N : Nat} [NeZero N]
   suffices hle : ((section13VerticalDomain A h).fibre x).card ≤
       (Finset.univ : Finset (ZMod N)).card by simpa using hle
   apply Finset.card_le_card_of_injOn (fun z : Section13Edges A h ↦ z.val.2)
-  · intro z hz
+  · intro z _
     exact Finset.mem_univ _
   · intro z hz w hw hzw
     have hxz := (Finset.mem_filter.mp hz).2
@@ -162,7 +162,7 @@ theorem section13_good_height_model_with_cap {N : Nat} [NeZero N]
   let e : Section13Edges S.A h ↪ Pair N := ⟨Subtype.val, Subtype.val_injective⟩
   refine ⟨Y.map e, psi, ?_, ?_, hmodel.1, ?_⟩
   · intro z hz
-    obtain ⟨v, hv, rfl⟩ := Finset.mem_map.mp hz
+    obtain ⟨v, _, rfl⟩ := Finset.mem_map.mp hz
     exact v.property
   · simpa only [Finset.card_map, Fintype.card_coe] using hY
   · intro z hz w hw hzw

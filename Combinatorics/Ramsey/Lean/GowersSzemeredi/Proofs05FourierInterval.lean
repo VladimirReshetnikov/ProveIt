@@ -83,7 +83,7 @@ private lemma int_Ico_zpow_sum_eq (M : Nat) (q : Complex) (hq : q ≠ 0) :
   rw [hlen]
   rw [Finset.mul_sum]
   apply Finset.sum_congr rfl
-  intro i hi
+  intro i _
   change q ^ (-(M : Int) + (i : Int)) = q ^ (-(M : Int)) * q ^ i
   rw [zpow_add₀ hq, zpow_natCast]
 

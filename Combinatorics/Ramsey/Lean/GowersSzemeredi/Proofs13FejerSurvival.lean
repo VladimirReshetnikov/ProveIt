@@ -13,7 +13,7 @@ theorem labelled_probability_le_carrier_probability {I X : Type*}
     ∏ i, p (vertex i) ≤ ∏ x ∈ Finset.univ.image vertex, p x := by
   rw [Finset.prod_comp p vertex]
   apply Finset.prod_le_prod
-  · intro x hx
+  · intro x _
     exact pow_nonneg (hp0 x) _
   · intro x hx
     obtain ⟨i, _, hi⟩ := Finset.mem_image.mp hx

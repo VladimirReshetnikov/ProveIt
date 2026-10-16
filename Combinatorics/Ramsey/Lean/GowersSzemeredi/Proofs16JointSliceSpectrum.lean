@@ -220,7 +220,7 @@ theorem single_piece_of_spectrum_cover_for_joint {k : Nat} (hk : 0 < k)
     (lastProductSet_partition _ _ _ hQpart) Dj (fun p => appendCoordinate p.1 p.2) hDjin hDjne
     (by rw [← hSjcarrier]; exact hj)
   set D := Dj.filter fun p => appendCoordinate p.1 p.2 ∈ lastProductSet (Q l).carrier I.carrier
-    with hDdef
+    with _
   -- membership facts for `D`
   have hDmem : ∀ p ∈ D, p ∈ E ∧ p.1 ∈ G ∧ appendCoordinate p.1 p.2 ∈ (S j).carrier ∧
       p.1 ∈ (Q l).carrier ∧ p.2 ∈ I.carrier := by

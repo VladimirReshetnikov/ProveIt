@@ -41,7 +41,7 @@ theorem lemma_13_6_from_initial_stages_all_densities_with_length {N : Nat} [Fact
     h134 h135 hm hsize hupper hlower
     (fun h hh ↦ ⟨(hdata h hh).1, (hdata h hh).2.1⟩) ?_ hbudget
     (fun h hh ↦ (hdata h hh).2.2)
-  intro h hh r hr
+  intro h _ r hr
   have hthreshold := (Finset.mem_filter.mp hr).2
   change section10Lambda a * N * N ≤
     ‖fourier (domainFibreCountFunction (section13VerticalDomain S.A h)) r‖ at hthreshold

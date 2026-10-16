@@ -88,7 +88,7 @@ theorem section16_poly_piece_two_data_with
       (5 * polyPieceBudgetW t1) (polyPieceSpecCountW t1)
       (polyPieceFaceCountW t1 gamma) (polyPieceFaceCountW t1 gamma)) := by
   classical
-  obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds_with ha0 haS
+  obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds_with ha0 haS
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le_with ha0 haS
   have hθ'pos : 0 < polyPieceBudgetW t1 := by
     unfold polyPieceBudgetW; linarith

@@ -59,7 +59,7 @@ theorem proper_lemma_16_6_with :
     refine ⟨0, by simpa using hQ, Q.carrier, M, S, (fun j => boxInit (S j)),
       (fun j => (S j).axis (Fin.last k)), Finset.Subset.refl _, ?_, hpart, hproper,
       (fun j => boxInit_last_product (S j)), hwidth, ?_⟩
-    · have hcard : (0 : Real) ≤ Q.carrier.card := Nat.cast_nonneg _
+    · have _ : (0 : Real) ≤ Q.carrier.card := Nat.cast_nonneg _
       nlinarith
     · intro j x _ _ _
       simpa only [D, Finset.mem_filter, Finset.mem_univ, true_and] using hlin j x

@@ -211,7 +211,7 @@ theorem single_piece_lift {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
             S.carrier.card ≤
           (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card := by
   have hk0 : 0 < k := hk
-  obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
+  obtain ⟨hθ₁pos, hθ₁le, hδpos, _⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
   obtain ⟨hζpos, hζle⟩ := section16Zeta_pos_le_one_div_32 k ht ht1 hg hg1
   -- 1. Lemmas 16.5 (without condition (i)) and 16.7
   obtain ⟨H, Y, phiPrime, hH, hcube, hselected, hselection⟩ :=
@@ -257,7 +257,7 @@ theorem single_piece_lift {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
   set ρ1 := liftRemainderRho C theta gamma k
   have hρ1 : 0 < ρ1 ∧ ρ1 ≤ 1 := nestC_pos_le (c := fun _ => C) (fun _ => hC) _ θ₂ hθ₂pos hθ₂le
   set E1 := B1.filter fun x => x ∈ R1.carrier ∧ section16PhiRemainder phi x0 x = Mrem x
-    with hE1def
+    with _
   have hR1w4 : 4 ≤ R1.width := hL4.trans hR1w
   have hR1ne : R1.carrier.Nonempty :=
     R1.carrier_nonempty_of_axis_pos fun z => lt_of_lt_of_le (by omega) (R1.width_le_axis_length z)
@@ -356,7 +356,7 @@ theorem single_piece_lift {k : Nat} (hk : 1 ≤ k) {theta gamma : Real}
     apply Nat.ceil_le.mpr
     refine le_trans ?_ hQw
     exact div_le_div_of_nonneg_right (by exact_mod_cast hR1w) (by norm_num)
-  obtain ⟨q, hq, S, mu, hS, hSsub, hSw, hmu, hcount⟩ :=
+  obtain ⟨q, hq, S, mu, hS, _, hSw, hmu, hcount⟩ :=
     single_piece_of_spectrum_cover hk0 hcover hcR hc hw eps thr hretile hζpos
       (by linarith) Q I hQ hI hQd (by rw [hQstep]; exact R1.axis_step _) hshort hQI
       (by omega) E hEsub hρ1.1 hρ1.2 hEc phi1 phiPrime ((-1 : ZMod N) ^ k) Mrem hMrem hident

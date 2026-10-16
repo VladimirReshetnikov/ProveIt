@@ -63,7 +63,7 @@ theorem single_piece_lift_core_rem_joint {k : Nat} (hk : 1 ≤ k) {delta zeta : 
   have hk0 : 0 < k := hk
   obtain ⟨R1, Mrem, hR1, hR1w, hMrem, hR1c⟩ := hrem
   set E1 := B1.filter fun x => x ∈ R1.carrier ∧ section16PhiRemainder phi x0 x = Mrem x
-    with hE1def
+    with _
   have hR1w4 : 4 ≤ R1.width := hL4.trans hR1w
   have hR1ne : R1.carrier.Nonempty :=
     R1.carrier_nonempty_of_axis_pos fun z => lt_of_lt_of_le (by omega) (R1.width_le_axis_length z)

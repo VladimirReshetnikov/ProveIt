@@ -86,7 +86,7 @@ theorem single_piece_lift_global_graded {k : Nat} (hk : 1 ≤ k) {theta gamma : 
               (gradedNestC Cg (vertexFaceCounts k) (k + 1) (globalTheta2 theta gamma k))) 1 *
             S.carrier.card ≤
           (B.filter fun z => z ∈ S.carrier ∧ phi z = mu z).card := by
-  obtain ⟨hθ₁pos, hθ₁le, hδpos, hδle⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
+  obtain ⟨hθ₁pos, _, hδpos, hδle⟩ := section16_theta_delta_bounds k ht ht1 hg hg1
   obtain ⟨hζpos, hζle⟩ := section16Zeta_pos_le_one_div_32 k ht ht1 hg hg1
   obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le k ht ht1 hg hg1
   set θ₂ := section16ThetaTwo (section16ThetaOne theta gamma k) with hθ₂def
@@ -183,7 +183,7 @@ theorem single_piece_lift_global_graded {k : Nat} (hk : 1 ≤ k) {theta gamma : 
   set B1' := B1.filter fun z => section16Init z ∈ JΔ ∧
       (∀ e ∈ E, selectedCoordinates
         (coordinateSubsetFace (section16VertexDirections e) t).free (z + t) ∈ Jv e) ∧
-      section16Init z + x0 ∈ Js (section16Last z) with hB1'def
+      section16Init z + x0 ∈ Js (section16Last z) with _
   have hB1'card : globalTheta2 theta gamma k * (N : Real) ^ (k + 1) ≤ B1'.card := by
     have hbudget : θ' * (2 ^ k + 1) = θ₂ / 2 := by
       rw [hθ'def, globalBudget, ← hθ₂def]

@@ -72,7 +72,7 @@ theorem bilinear_square_from_short_parent {N : Nat} [Fact N.Prime]
       delta / 4 * V.length * W.length ≤ E.card ∧ BilinearOn E phi := by
   classical
   have hScard : S.carrier.card = S.length := hS
-  obtain ⟨U, t, hUs, hU, hUsub, hUl, hmassU, hbilinear, ht, hstepU, hspan⟩ :=
+  obtain ⟨U, t, hUs, hU, _, hUl, hmassU, hbilinear, ht, hstepU, hspan⟩ :=
     extract_bilinear_cell_with_step_span T S.carrier J C y phi a c delta hT hTpos
       (Finset.card_pos.mp (by simpa only [hScard] using hSpos)) hδ hJ hsupport
       (by simpa only [hScard] using hmass) hrow ha hc hlarge

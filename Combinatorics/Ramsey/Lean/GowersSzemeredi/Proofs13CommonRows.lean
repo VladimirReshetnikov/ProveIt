@@ -31,7 +31,7 @@ theorem translatedRow_card {N : Nat} (S : Finset (ZMod N))
   apply Finset.card_bij (fun x _ ↦ (x, y + h))
   · intro x hx
     exact Finset.mem_filter.mpr ⟨(Finset.mem_filter.mp hx).2, by simp⟩
-  · intro x hx z hz heq
+  · intro x _ z _ heq
     exact congrArg Prod.fst heq
   · intro z hz
     obtain ⟨hzB, hzy⟩ := Finset.mem_filter.mp hz
@@ -66,7 +66,7 @@ theorem rowPairMass_eq_common_card {N : Nat} (S I : Finset (ZMod N))
   unfold rowPairMass commonTranslatedRows
   rw [Finset.sum_filter]
   apply Finset.sum_congr rfl
-  intro h hh
+  intro h _
   simp only [translatedRow, Finset.mem_filter, h₁, h₂, true_and]
 
 /-- Coefficients may be chosen on every affine row, even on rows with zero

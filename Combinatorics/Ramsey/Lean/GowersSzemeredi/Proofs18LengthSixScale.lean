@@ -84,11 +84,6 @@ theorem lsNestExp_le_one {Eb : Nat → Real → Real → Real → Real} {C : Rea
     (mul_le_mul b1 b2 a2.le zero_le_one).trans (by norm_num)
   exact (mul_le_mul h12 b3 a3.le zero_le_one).trans (by norm_num)
 
-theorem one_le_lsNestThr (Eb : Nat → Real → Real → Real → Real) (C : Real → Real)
-    (alpha t : Real) : 1 ≤ lsNestThr Eb C alpha t :=
-  (one_le_sixWThr Eb alpha t).trans ((le_max_left _ _).trans (le_max_left _ _))
-
-
 /-- `L ↦ coverWidth E t ⌈L/8⌉` is at least `L^(E/2)` above `64`. -/
 theorem coverWidth_div8_powerLB (E : Real → Real) (t : Real)
     (hE : 0 < E (t / 2)) :
@@ -295,15 +290,15 @@ theorem ls_modulus_conditions {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {K2 p
     refine ⟨by positivity, ?_⟩
     rw [div_le_one (by linarith)]
     linarith
-  obtain ⟨hz, hzHalf⟩ := section16Zeta_pos_le_half 2 ha ha1 (by positivity : 0 < alpha / 2)
+  obtain ⟨hz, _⟩ := section16Zeta_pos_le_half 2 ha ha1 (by positivity : 0 < alpha / 2)
     (by linarith : alpha / 2 ≤ 1)
   have hζ : 0 < lsZeta alpha := hz
   have hb : 0 < lsB p2 alpha := by unfold lsB; exact div_pos (familyRecExp_pos 2 p2 _ hp2) two_pos
-  obtain ⟨hEm, hEm'⟩ := hE 2 (lsDelta alpha) (lsBudget alpha) (lsRho1 alpha / 2 / 2)
+  obtain ⟨hEm, _⟩ := hE 2 (lsDelta alpha) (lsBudget alpha) (lsRho1 alpha / 2 / 2)
     (by positivity) (by linarith)
-  obtain ⟨hEth, hEth'⟩ := hE 2 (alpha / 2) (lsBudget alpha) (lsThS alpha / 2)
+  obtain ⟨hEth, _⟩ := hE 2 (alpha / 2) (lsBudget alpha) (lsThS alpha / 2)
     (by positivity) (by linarith)
-  obtain ⟨hEc, hEc'⟩ := hE 2 (alpha / 2) (lsBudget alpha) (lsCS alpha / 2)
+  obtain ⟨hEc, _⟩ := hE 2 (alpha / 2) (lsBudget alpha) (lsCS alpha / 2)
     (by linarith [hcS.1]) (by linarith [hcS.2])
   have haN := lsNestExp_pos (alpha := alpha) hE hC ht2 ht21
   have hmE : 0 < lsMExp A Bq alpha := by
@@ -353,7 +348,7 @@ theorem ls_modulus_conditions {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {K2 p
     have hcov := coverWidth_div8_powerLB (sixEb A Bq 2 (lsDelta alpha) (lsBudget alpha))
       (lsRho1 alpha / 2) hEm
     have hcomp := WidthPowerLB.comp hnest hcov haN (by positivity)
-      (one_le_lsNestThr _ _ _ _) (by norm_num)
+      ((one_le_sixWThr _ _ _).trans ((le_max_left _ _).trans (le_max_left _ _))) (by norm_num)
     have h := hcomp N hNM
     have hm' : coverWidth (sixEb A Bq 2 (lsDelta alpha) (lsBudget alpha)) (lsRho1 alpha / 2)
         ⌈((nestW (fun _ => sixC sixQb alpha) (fun _ => sixW (sixEb A Bq) alpha) 3
@@ -442,7 +437,6 @@ theorem ls_modulus_conditions {A Bq : Nat → Real} (hB : ∀ q, 0 < Bq q) {K2 p
   · intro q hq
     obtain ⟨hFq, -⟩ := hFin q hq
     exact (hloc hFq).2
-
 
 theorem familyRecExp_le_one (k p q : Nat) (hp : 0 < p) : familyRecExp k p q ≤ 1 := by
   unfold familyRecExp

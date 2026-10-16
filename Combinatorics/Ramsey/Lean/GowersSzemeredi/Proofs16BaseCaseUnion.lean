@@ -229,13 +229,13 @@ private def initialProperUnionRefinement {N d r : Nat} [NeZero N]
   partition := singleton_box_partition P
   proper := fun _ => hP
   width := by
-    intro j
+    intro _
     simp
   multilinear := by
-    intro j i
+    intro _ i
     exact Fin.elim0 i
   cover := by
-    intro j x hxQ hxH i
+    intro _ x _ _ i
     exact Fin.elim0 i
 
 private noncomputable def extendProperUnionRefinement {N d r t q0 : Nat} [NeZero N]
@@ -434,7 +434,7 @@ private lemma abs_gamma_le_iteration_of_nonempty {N d : Nat} [NeZero N]
     simpa only [properPointSingletonBox_carrier, Finset.mem_singleton] using hxP
   subst x
   obtain ⟨j, hxQ⟩ := (hpartition.1 z.1).mp (by simp)
-  obtain ⟨i, hi⟩ := hcover j z.1 hxQ hxH z.2 hz
+  obtain ⟨i, _⟩ := hcover j z.1 hxQ hxH z.2 hz
   have hqPos : 0 < q := by
     have := i.isLt
     omega
@@ -465,7 +465,7 @@ private lemma gamma_ne_zero_of_nonempty {N d : Nat} [NeZero N]
     simpa only [properPointSingletonBox_carrier, Finset.mem_singleton] using hxP
   subst x
   obtain ⟨j, hxQ⟩ := (hpartition.1 z.1).mp (by simp)
-  obtain ⟨i, hi⟩ := hcover j z.1 hxQ hxH z.2 hz
+  obtain ⟨i, _⟩ := hcover j z.1 hxQ hxH z.2 hz
   have hqPos : 0 < q := by have := i.isLt; omega
   simp [multipleQ, multipleC, hs.ne'] at hq
   linarith
@@ -664,7 +664,7 @@ theorem properMultiplyLinear_finsetUnion {N d r : Nat} [NeZero N]
         (by simpa using htargetBoundNonneg), hDwidth, ?_, ?_⟩
       · intro j i
         exact Fin.elim0 i
-      · intro j x hxQ hxH y hxy
+      · intro j x _ _ y hxy
         exact (hUnionNe ⟨(x, y), hxy⟩).elim
   · refine ⟨D.M, 0, ∅, D.Q, (fun _ i => Fin.elim0 i),
       Finset.empty_subset _, ?_, D.partition, D.proper,
@@ -673,7 +673,7 @@ theorem properMultiplyLinear_finsetUnion {N d r : Nat} [NeZero N]
       nlinarith
     · intro j i
       exact Fin.elim0 i
-    · intro j x hxQ hxH
+    · intro j x _ hxH
       simp at hxH
 
 /-- The repaired finite-union closure used by the one-dimensional base-case
@@ -681,7 +681,6 @@ assembly. -/
 theorem properUnionClosure_holds : ProperUnionClosure := by
   intro N d r _ gamma s Gamma hr hs hGamma
   exact properMultiplyLinear_finsetUnion gamma s hs Gamma hr hGamma
-
 
 private lemma isMultilinear_sum {N d r : Nat}
     (mu : Fin r → Point N d → ZMod N)
@@ -702,11 +701,6 @@ private lemma isMultilinear_sum {N d r : Nat}
       apply Finset.sum_congr rfl
       intro e _
       rw [Finset.sum_mul]
-
-private noncomputable def finFunctionEquiv (r q : Nat) :
-    (Fin r → Fin q) ≃ Fin (q ^ r) :=
-  (Fintype.equivFin (Fin r → Fin q)).trans
-    (finCongr (by simp))
 
 private lemma mem_partialGraph_iff {N d : Nat} [NeZero N]
     (B : Finset (Point N d)) (phi : Point N d → ZMod N)
@@ -787,7 +781,8 @@ theorem properMultiplyLinear_fin_sum {N d r : Nat} [NeZero N]
       have hgamma := abs_gamma_le_iteration_of_nonempty hsPos (hGamma i0) hGiNe
       have hcounts := final_graph_count_bounds (d := d) hr htheta hthetaOne hs
         hgammaPos hgamma (by simpa only [stageQ, eta] using hq0Floor)
-      let ef := finFunctionEquiv r q0
+      let ef := ((Fintype.equivFin (Fin r → Fin q0)).trans
+           (finCongr (by simp)) : (Fin r → Fin q0) ≃ Fin (q0 ^ r))
       let mu : Fin D.M → Fin (q0 ^ r) → Point N d → ZMod N :=
         fun j a x => ∑ i, D.mu j i (ef.symm a i) x
       refine ⟨D.M, q0 ^ r, D.H, D.Q, mu, D.H_subset, hDcard,
@@ -813,7 +808,7 @@ theorem properMultiplyLinear_fin_sum {N d r : Nat} [NeZero N]
         hDwidth, ?_, ?_⟩
       · intro j i
         exact Fin.elim0 i
-      · intro j x hxQ hxH y hxy
+      · intro j x _ _ y hxy
         have hxB := (mem_partialGraph_iff B (fun x => ∑ i, phi i x) x y).1 hxy |>.1
         exact (hBNe ⟨x, hxB⟩).elim
   · refine ⟨D.M, 0, ∅, D.Q, (fun _ i => Fin.elim0 i),
@@ -823,7 +818,7 @@ theorem properMultiplyLinear_fin_sum {N d r : Nat} [NeZero N]
       nlinarith
     · intro j i
       exact Fin.elim0 i
-    · intro j x hxQ hxH
+    · intro j x _ hxH
       simp at hxH
 
 end LeanProofs.GowersSzemeredi.BaseCase

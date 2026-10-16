@@ -118,7 +118,7 @@ private lemma cor57_alpha_le_one {N r : Nat} [NeZero N]
         norm_sum_le _ _
       _ ≤ ∑ _x ∈ Finset.range r, (1 : Real) := by
         apply Finset.sum_le_sum
-        intro x hx
+        intro x _
         rw [norm_mul, cor57_norm_exponential, mul_one]
         exact hf _
       _ = r := by simp
@@ -192,7 +192,7 @@ lemma cor57_cell_norm_le {N : Nat} [NeZero N]
     rw [Finset.mul_sum]
     rw [← Finset.sum_add_distrib]
     apply Finset.sum_congr rfl
-    intro s hs
+    intro s _
     ring
   have herr : ‖err‖ ≤ alpha / 2 * S.card := by
     dsimp only [err]

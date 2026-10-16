@@ -210,7 +210,7 @@ theorem step_count_le {k D : Nat} (hD : 1 ≤ D) {V V' : Real} (hV : 1 ≤ V) (h
       exact pow_le_pow_left₀ (by norm_num) (by nlinarith only [hw2]) _
     exact nat_mul_le_pow hw2 h3 hM
   -- the remainder count at `ρ/8`
-  have hY1 : ∀ i : Fin (classVertexNum k + 1),
+  have hY1 : ∀ _ : Fin (classVertexNum k + 1),
       max (uniformBase V (n * m) tS gamma (rho / 8 / ((classVertexNum k : Real) + 1)) ^ D)
         (((3 ^ (k + 1) * (n * m)) : Nat) : Real) ≤ w ^ (D * stepY1 k) := by
     intro _

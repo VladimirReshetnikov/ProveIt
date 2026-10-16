@@ -50,7 +50,7 @@ theorem section16_poly_piece_decomposition_two
     ∃ J : Finset (Point N 2), (1 - theta) * (N : Real) ^ 2 ≤ J.card ∧
       ∃ P : Fin (polyTwoPieces gamma theta) → PolyPieceTwo N theta gamma,
         restrictRelation Gamma J ⊆ polyPieceTwoGraphs P := by
-  obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le 1 ht ht1 hg hg1
+  obtain ⟨hθ₂pos, _⟩ := section16ThetaTwo_pos_le 1 ht ht1 hg hg1
   have hmass : 0 < 5 * polyPieceBudget theta gamma := by
     unfold polyPieceBudget; positivity
   exact section16_poly_piece_two_decomposition_of_extract hmass Gamma hsize

@@ -581,7 +581,7 @@ theorem spectrum_exps_inv_leJT3 {μV μK : Nat} (H : CHyp P μV μK) (ha : 0 < a
     unfold expDegJT3; exact (le_max_right _ _).trans (le_max_right _ _)
   obtain ⟨hB0, hB1, hBi⟩ := budget_gen_bounds_fejerW k ha ha2
   obtain ⟨hd0, hd1, hdi⟩ := delta_gen_bounds_fejerW k ha ha2
-  obtain ⟨ht0, ht1, -⟩ := T2_gen_bounds_fejerW k ha ha2
+  obtain ⟨_, _, -⟩ := T2_gen_bounds_fejerW k ha ha2
   obtain ⟨hr0, hr1⟩ : 0 < P.Rho1 alpha ∧ P.Rho1 alpha ≤ 1 := P.rho1_pos_le ha ha2
   have hq0 : 0 < P.Rho1 alpha / 2 / 2 := by linarith
   have hq1 : P.Rho1 alpha / 2 / 2 ≤ 1 := by linarith
@@ -767,7 +767,7 @@ theorem Tloc_le_expJT3 {μV μK : Nat} (H : CHyp P μV μK) (hk : 1 ≤ P.k) (ha
   have hZT : 5 * k + 30 ≤ T := by rw [hTdef]; unfold threshDegJT3; exact le_max_right _ _
   have hρE : rhoDegJT3 k P.μ0 + μD + k + 7 ≤ E := by
     rw [hEdef]; unfold expDegJT3; exact (le_max_left _ _).trans (le_max_right _ _)
-  obtain ⟨hρ0, hρ2⟩ := rhoDegJT3_ge k P.μ0
+  obtain ⟨_, _⟩ := rhoDegJT3_ge k P.μ0
   have hNE' : (P.NestExp alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ E) := pw_mono hX hNE (by omega)
   have hEm' : (P.Em alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ E) := pw_mono hX hEm (by omega)
   have hMx : (P.MExp alpha)⁻¹ ≤ (2 / alpha) ^ (2 ^ (E + 2)) := by

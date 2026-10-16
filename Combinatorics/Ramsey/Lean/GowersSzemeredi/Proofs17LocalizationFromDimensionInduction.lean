@@ -54,7 +54,7 @@ theorem polynomial_localization_of_dimension_induction {k : Nat} (hk : 1 ≤ k)
   obtain ⟨phi, K, l, Q, hpoly, hpart, hproper, hlength, hupper, hfail⟩ :=
     proposition_17_7_with_upper N k m f S mu rho hrho (by omega) hm hw haxes hstep hmsqrt hf hmu henergy
   refine ⟨phi, K, l, Q, hpoly, hpart, hproper, ?_, ?_, hfail⟩
-  · have hk0 : (0 : Real) < k := by exact_mod_cast (show 0 < k by omega)
+  · have _ : (0 : Real) < k := by exact_mod_cast (show 0 < k by omega)
     calc
       _ = ((N : Real) ^ e / 2) / (3 * k) := by dsimp [e]; field_simp; ring
       _ ≤ (m : Real) / (3 * k) := div_le_div_of_nonneg_right hmlower (by positivity)

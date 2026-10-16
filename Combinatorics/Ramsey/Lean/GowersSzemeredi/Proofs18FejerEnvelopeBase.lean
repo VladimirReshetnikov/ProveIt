@@ -101,7 +101,7 @@ theorem budget_gen_bounds_fejer (k : Nat) (ha : 0 < alpha) (ha2 : alpha ≤ 1 / 
       globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k ≤ 1 ∧
       (globalBudgetW (fejerThetaOne alpha (alpha / 2) k) k)⁻¹ ≤ (2 / alpha) ^ (2 ^ fixDeg k) := by
   obtain ⟨hfa0, hfaS⟩ := fejer_alpha_bounds k ha ha2
-  obtain ⟨h0, h1⟩ := section16ThetaTwo_pos_le_with hfa0 hfaS
+  obtain ⟨_, h1⟩ := section16ThetaTwo_pos_le_with hfa0 hfaS
   obtain ⟨p0, -, pi⟩ := budget_gen_bounds k ha ha2
   have hden : (1 : Real) ≤ 2 * (2 ^ k + 1) := by
     have : (1 : Real) ≤ 2 ^ k := one_le_pow₀ (by norm_num)

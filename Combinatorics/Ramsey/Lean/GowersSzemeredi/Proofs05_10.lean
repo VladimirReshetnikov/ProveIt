@@ -219,26 +219,23 @@ private abbrev prop61AltAdditive {N : Nat} (B : Finset (ZMod N))
   prop61QuadMem B q ∧ q 0 - q 1 = q 2 - q 3 ∧
     phi (q 0) - phi (q 1) = phi (q 2) - phi (q 3)
 
-private def prop61QuadEquiv (X : Type*) : (Fin 4 → X) ≃ (Fin 4 → X) where
-  toFun q := ![q 0, q 3, q 2, q 1]
-  invFun q := ![q 0, q 3, q 2, q 1]
-  left_inv q := by
-    funext i
-    fin_cases i <;> rfl
-  right_inv q := by
-    funext i
-    fin_cases i <;> rfl
-
 private lemma prop61_alt_count_eq {N : Nat} [NeZero N] (B : Finset (ZMod N))
     (phi : ZMod N → ZMod N) :
     countWhere (prop61AltAdditive B phi) = phiAdditiveCount B phi := by
   classical
   unfold countWhere phiAdditiveCount
-  apply Finset.card_equiv (prop61QuadEquiv (ZMod N))
+  apply Finset.card_equiv
+      ({ toFun q := ![q 0, q 3, q 2, q 1]
+         invFun q := ![q 0, q 3, q 2, q 1]
+         left_inv q := by
+           funext i
+           fin_cases i <;> rfl
+         right_inv q := by
+           funext i
+           fin_cases i <;> rfl } : (Fin 4 → ((ZMod N))) ≃ (Fin 4 → ((ZMod N))))
   intro q
   simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-  simp only [prop61AltAdditive, prop61QuadMem, IsPhiAdditive, IsAdditiveQuadruple,
-    prop61QuadEquiv]
+  simp only [prop61AltAdditive, prop61QuadMem, IsPhiAdditive, IsAdditiveQuadruple]
   constructor
   · rintro ⟨⟨h0, h1, h2, h3⟩, hadd, hphi⟩
     refine ⟨?_, ?_, ?_⟩
@@ -567,7 +564,7 @@ theorem lemma_6_2_holds : lemma_6_2 := by
         simp only [toEnergy, graphPoint, functionGraph, Finset.mem_image]
         exact ⟨_, hqB _, rfl⟩
     · exact Prod.ext hqadd hqphi
-  · intro q hq r hr hqr
+  · intro q _ r _ hqr
     simp only [toEnergy, graphPoint, Prod.mk.injEq] at hqr
     funext i
     fin_cases i <;> tauto
@@ -575,7 +572,7 @@ theorem lemma_6_2_holds : lemma_6_2 := by
 /-- Lemma 7.7 is the finite grid/pigeonhole proof of the standard Bohr-set
 cardinality bound. -/
 theorem lemma_7_7_holds : lemma_7_7 := by
-  intro N _ K delta hN hdelta hdelta_one
+  intro N _ K delta _ hdelta hdelta_one
   classical
   let m : Nat := ⌈delta⁻¹⌉₊
   have hm : 0 < m := by
@@ -921,7 +918,7 @@ theorem lemma_10_7_holds : lemma_10_7 := by
 /-- Lemma 9.1 is the weighted Hölder inequality with weight and function
 both equal to `a i ^ 2`, and exponent seven. -/
 theorem lemma_9_1_holds : lemma_9_1 := by
-  intro n a ha
+  intro n a _
   have h := Real.inner_le_weight_mul_Lp_of_nonneg
     (s := (Finset.univ : Finset (Fin n))) (p := (7 : ℝ)) (by norm_num)
     (fun i => a i ^ 2) (fun i => a i ^ 2)

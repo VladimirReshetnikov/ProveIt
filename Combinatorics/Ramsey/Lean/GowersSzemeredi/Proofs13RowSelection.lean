@@ -90,7 +90,7 @@ theorem exists_distinct_rowPairMass_of_moments {X Y : Type*} [DecidableEq X]
       ∑ h ∈ I, ((D h).card : Real) ^ 2) :
     ∃ x₁ ∈ S, ∃ x₂ ∈ S, x₁ ≠ x₂ ∧ t ≤ rowPairMass I D x₁ x₂ := by
   classical
-  have havg : (∑ p ∈ S ×ˢ S, t) ≤
+  have havg : (∑ _ ∈ S ×ˢ S, t) ≤
       ∑ p ∈ S ×ˢ S, (if p.1 = p.2 then 0 else rowPairMass I D p.1 p.2) := by
     simp only [Finset.sum_product]
     rw [rowPairMass_off_diagonal S I D hD]

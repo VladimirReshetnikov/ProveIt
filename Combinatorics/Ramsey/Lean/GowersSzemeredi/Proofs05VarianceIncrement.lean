@@ -81,7 +81,7 @@ theorem progressionSampleDensity_eq_density_of_good {N L : Nat} [NeZero N]
     exact progression_direction_injective d hd (add_left_cancel hij)
   have hsum : (∑ i : Fin L, realSetIndicator A (a + (i.val : ZMod N) * d)) =
       ∑ x ∈ (ModAP.mk a d L).carrier, realSetIndicator A x := by
-    simp only [ModAP.carrier, Finset.sum_image (fun i _ j _ hij => hinj hij)]
+    simp only [ModAP.carrier, Finset.sum_image (fun _ _ _ _ hij => hinj hij)]
   rw [progressionSampleDensity, hsum, sum_realSetIndicator_on]
 
 /-- The arbitrary-modulus variance lemma from Report277. -/

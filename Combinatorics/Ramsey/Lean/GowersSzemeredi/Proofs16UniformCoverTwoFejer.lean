@@ -49,7 +49,7 @@ theorem section16_poly_piece_decomposition_two_fejer
       ∃ P : Fin (polyTwoFejerPieces gamma theta) → PolyPieceTwoFejer N theta gamma,
         restrictRelation Gamma J ⊆ polyPieceTwoFejerGraphs P := by
   obtain ⟨hfa0, hfaS⟩ := fejerThetaOne_one_bounds ht ht1 hg hg1
-  obtain ⟨hθ₂pos, hθ₂le⟩ := section16ThetaTwo_pos_le_with hfa0 hfaS
+  obtain ⟨hθ₂pos, _⟩ := section16ThetaTwo_pos_le_with hfa0 hfaS
   have hmass : 0 < 5 * polyPieceBudgetW (fejerThetaOne theta gamma 1) := by
     unfold polyPieceBudgetW; positivity
   exact section16_poly_piece_two_decomposition_of_extract hmass Gamma hsize
@@ -221,7 +221,7 @@ theorem powerUniformClass_two_fejer {K1 p1 : Nat} (hK1 : 1 ≤ K1) (hp1 : 0 < p1
       simp only [restrictRelation_univ]; exact le_rfl
     refine (hcov.subset hsub).weaken ?_ ?_ ?_
     · intro rho hr hr1
-      obtain ⟨hvw, hrw, hnw, hVw, hw2⟩ := uniformBase_facts hV n hg hg1 ht ht1 hr hr1
+      obtain ⟨hvw, hrw, hnw, _, hw2⟩ := uniformBase_facts hV n hg hg1 ht ht1 hr hr1
       refine uniTwoFejerCount_le_power hg hg1 ht ht1 hr hr1 hvw hrw ?_
       exact (nPieces_le_base_fejer hg hg1 ht ht1 hvw hnw hw2)
     · intro rho hr hr1

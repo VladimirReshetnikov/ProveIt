@@ -119,7 +119,7 @@ theorem section5_strong_linear_partition (N r v : Nat) [NeZero N]
   have hlin : NatToZModLinear r (fun x : Nat => phi (x : ZMod N)) := by
     obtain ⟨c, hc⟩ := hphi
     refine ⟨c 1, c 0, ?_⟩
-    intro x hx
+    intro x _
     simpa [Fin.sum_univ_two, add_comm] using hc (x : ZMod N) (Finset.mem_univ _)
   obtain ⟨m, Q, hQpart, hQcells⟩ :=
     lemma_2_3_holds N r s (NeZero.pos N) hr hs hrN hsN hrs _ hlin

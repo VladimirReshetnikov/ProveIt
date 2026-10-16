@@ -237,7 +237,7 @@ private lemma sum_difference_fiber_eq_correlation
   · intro x hx
     obtain ⟨hxS, hxhS⟩ := mem_filter.mp hx
     exact mem_filter.mpr ⟨mem_product.mpr ⟨hxhS, hxS⟩, by omega⟩
-  · intro x₁ hx₁ x₂ hx₂ heq
+  · intro x₁ _ x₂ _ heq
     exact congrArg Prod.snd heq
   · intro p hp
     obtain ⟨hpS, hpDiff⟩ := mem_filter.mp hp
@@ -249,7 +249,7 @@ private lemma sum_difference_fiber_eq_correlation
     · apply Prod.ext
       · omega
       · rfl
-  · intro x hx
+  · intro x _
     rfl
 
 private lemma sum_mul_star_sum_eq_sum_correlation
@@ -436,7 +436,7 @@ private lemma iteratedDifferenceNormSum_sq_le (phi : Int → Real) (t j : Nat)
               ∑ h ∈ weylShiftRange t,
                 ((weylShiftRange t).card ^ j *
                   iteratedDifferenceNormSqSum phi t j (h :: hs)) := by
-          gcongr with h hh
+          gcongr with h _
           exact ih (h :: hs)
         _ = (weylShiftRange t).card ^ (j + 1) *
               ∑ h ∈ weylShiftRange t,
@@ -464,7 +464,7 @@ private lemma iteratedDifferenceNormSqSum_le_succ
         finiteDifferenceSum_sq_le phi t hs
   | succ j ih =>
       simp only [iteratedDifferenceNormSqSum, iteratedDifferenceNormSum]
-      gcongr with h hh
+      gcongr with h _
       exact ih (h :: hs)
 
 /-- The exponent of the ambient shift-range cardinality after `j` exact
@@ -576,7 +576,7 @@ private lemma forwardDifference_pow_eq (k : Nat) (h : Int) :
   simp only [Nat.sub_self, pow_zero, Nat.choose_self, Nat.cast_one, mul_one]
   rw [add_sub_cancel_right]
   apply Finset.sum_congr rfl
-  intro i hi
+  intro i _
   ring
 
 private lemma iteratedRealDifference_pow_eq_zero_of_lt (hs : List Int)
@@ -747,7 +747,7 @@ private lemma iteratedDifferenceNormSum_trivial (phi : Int → Real)
             iteratedDifferenceNormSum phi t j (h :: hs)) ≤
             ∑ _h ∈ weylShiftRange t,
               (((weylShiftRange t).card : Real) ^ j * t) := by
-          gcongr with h hh
+          gcongr with h _
           exact ih (h :: hs)
         _ = ((weylShiftRange t).card : Real) ^ (j + 1) * t := by
           simp [pow_succ]
@@ -811,7 +811,7 @@ private lemma iteratedDifferenceNormSum_split_zero (phi : Int → Real)
           apply add_le_add
           · exact iteratedDifferenceNormSum_trivial phi t j (0 :: hs)
           · apply Finset.sum_le_sum
-            intro h hh
+            intro h _
             exact ih (h :: hs)
         _ ≤ ((weylShiftRange t).card : Real) ^ j * t +
               (weylShiftRange t).card * weylZeroContribution t j +
@@ -915,7 +915,7 @@ private lemma sum_weylShiftRange_erase_zero_natAbs_le {t : Nat}
   calc
     (∑ n ∈ u, ∑ h ∈ s.filter (fun h => h.natAbs = n), f h.natAbs) ≤
         ∑ n ∈ u, 2 * f n := by
-      gcongr with n hn
+      gcongr with n _
       have hsub : s.filter (fun h => h.natAbs = n) ⊆
           ({(n : Int), -(n : Int)} : Finset Int) := by
         intro h hh
@@ -983,7 +983,7 @@ private lemma iteratedNonzeroDifferenceNormSum_le_positive
               ((2 : Real) ^ j *
                 positiveProductMajorantSum alpha k t j
                   (h.natAbs * natAbsShiftProduct hs)) := by
-          gcongr with h hh
+          gcongr with h _
           apply ih (h :: hs)
           simp only [List.length_cons] at hlen ⊢
           omega
@@ -1093,9 +1093,9 @@ private lemma positiveProductMajorantSum_eq_sum_lists
         Finset.sum_product]
       simp_rw [ih]
       apply Finset.sum_congr rfl
-      intro h hh
+      intro h _
       apply Finset.sum_congr rfl
-      intro l hl
+      intro l _
       apply congrArg (geometricSumMajorant t)
       have hprod : (listConsEmbedding Nat (h, l)).prod = h * l.prod := by
         rfl
@@ -1186,7 +1186,7 @@ private lemma card_divisors_pow_le (n m : Nat) (hn : n ≠ 0) (hm : 1 ≤ m) :
         ∏ p ∈ n.primeFactors,
           ((if p < 2 ^ m then m ^ m else 1) * p ^ n.factorization p) := by
       apply Finset.prod_le_prod
-      · intro p hp
+      · intro p _
         exact Nat.zero_le _
       · intro p hp
         apply divisor_factor_power_bound
@@ -1504,7 +1504,7 @@ private lemma separated_geometricSumMajorant_sum_le {Q Y : Nat} (hQ : 1 ≤ Q)
     radialBin Q (nearestIntegerRepresentative (phase i))
   let u := Icc 0 Q
   have hmaps : ∀ i ∈ s, level i ∈ u := by
-    intro i hi
+    intro i _
     dsimp only [u]
     rw [mem_Icc]
     exact ⟨Nat.zero_le _, radialBin_le (abs_nearestIntegerRepresentative_le _)⟩
@@ -1524,7 +1524,7 @@ private lemma separated_geometricSumMajorant_sum_le {Q Y : Nat} (hQ : 1 ≤ Q)
     calc
       _ ≤ ∑ _i ∈ s.filter (fun i => level i = 0), (Y : Real) := by
         apply Finset.sum_le_sum
-        intro i hi
+        intro i _
         exact geometricSumMajorant_le_length Y (phase i)
       _ = (s.filter (fun i => level i = 0)).card * Y := by simp
       _ ≤ 2 * Y := by
@@ -1565,7 +1565,7 @@ private lemma separated_geometricSumMajorant_sum_le {Q Y : Nat} (hQ : 1 ≤ Q)
           rw [mem_erase, mem_Icc] at hm
           rw [mem_Icc]
           omega
-        · intro m hmIcc hmNot
+        · intro m _ _
           positivity
       _ = 2 * Q * ∑ m ∈ Icc 1 Q, (m : Real)⁻¹ := by
         rw [Finset.mul_sum]
@@ -1803,7 +1803,7 @@ private lemma rational_geometric_sum_le (X Y : Nat)
         (X : Real) * Y := by
     calc
       _ ≤ ∑ _n ∈ Icc 1 X, (Y : Real) := by
-        gcongr with n hn
+        gcongr with n _
         exact geometricSumMajorant_le_length Y (alpha * n)
       _ = (X : Real) * Y := by simp [Nat.card_Icc]
   by_cases hQsmall : Q < 4
@@ -1865,7 +1865,7 @@ private lemma rational_geometric_sum_le (X Y : Nat)
         (∑ n ∈ rationalBlock X L b,
           geometricSumMajorant Y (alpha * n)) ≤
             2 * Y + 2 * Q * (1 + Real.log Q) := by
-      intro b hb
+      intro b _
       apply separated_geometricSumMajorant_sum_le hQpos
       simpa only [Q, L] using
         rationalBlock_phase_separated hq4 haq halpha X b
@@ -2041,16 +2041,16 @@ private lemma sum_factorial_frequency_le_full (alpha : Real) (k t X : Nat) :
           geometricSumMajorant t (alpha * x) := by
       rw [factorialMultiples, sum_image]
       · apply Finset.sum_congr rfl
-        intro n hn
+        intro n _
         apply congrArg (geometricSumMajorant t)
         push_cast
         ring
-      · intro x hx y hy hxy
+      · intro x _ y _ hxy
         exact Nat.eq_of_mul_eq_mul_left (Nat.factorial_pos k) hxy
     _ ≤ ∑ x ∈ Icc 1 (Nat.factorial k * X),
           geometricSumMajorant t (alpha * x) := by
       apply Finset.sum_le_sum_of_subset_of_nonneg himage
-      intro x hx hnot
+      intro x _ _
       exact geometricSumMajorant_nonneg _ _
 
 private lemma terminal_positive_sum_rational_bound
@@ -2177,13 +2177,13 @@ private lemma finiteDifferenceSum_nil_eq_weylSum (alpha : Real) (k t : Nat) :
     · have hupp : (z.toNat : Int) ≤ (t : Int) := by
         simpa only [Int.toNat_of_nonneg hzNonneg] using hz.2
       exact_mod_cast hupp
-  · intro n hn
+  · intro n _
     simp
   · intro z hz
     have hzOne : (1 : Int) ≤ z := (mem_Icc.mp hz).1
     have hzNonneg : 0 ≤ z := by omega
     simp only [Int.toNat_of_nonneg hzNonneg]
-  · intro n hn
+  · intro n _
     push_cast <;> rfl
 
 def weylRationalFactor (k t : Nat) (q : Int) : Real :=

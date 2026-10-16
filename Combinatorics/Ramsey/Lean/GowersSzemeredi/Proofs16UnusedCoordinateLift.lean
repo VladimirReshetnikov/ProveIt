@@ -23,7 +23,7 @@ theorem MultiplyLinearFunction.lift_last {N k : Nat} [NeZero N] [Fact N.Prime]
   classical
   intro theta ht ht1 P hP
   obtain ⟨ha, ha1, hA, hgap⟩ := section16_dimension_exponent_gap k hg hg1 ht ht1 hs
-  let a := (multipleC (s⁻¹ * theta) gamma k) ^ s
+  let _ := (multipleC (s⁻¹ * theta) gamma k) ^ s
   let A := (multipleC (s⁻¹ * theta) gamma (k + 1)) ^ s
   have hs1 : 1 ≤ s := by linarith
   have hQ := multipleQ_rpow_ge_parameter (k + 1) hg hg1 ht ht1 hs1

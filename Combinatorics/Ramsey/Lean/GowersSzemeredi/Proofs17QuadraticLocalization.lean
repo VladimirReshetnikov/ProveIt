@@ -56,7 +56,7 @@ theorem quadratic_nonuniformity_localized_phase_removal_of_power_bound :
           ¬ UniformOnPartition (phaseTwist f phi) 1
             ((2 : Real) ^ (-(19 : Int)) * alpha ^ 2 * (alpha / 2) ^ (12359 : Nat)) Q (l + 1) := by
   intro alpha hα hαone N _ _ hlarge f hf hnot
-  obtain ⟨m, P, D, a, b, hodd, hm, hmsqrt, hsize, hs, hP, hPl, hD, hmass, hfourier⟩ :=
+  obtain ⟨m, P, D, a, b, hodd, _, hmsqrt, hsize, hs, _, hPl, hD, hmass, hfourier⟩ :=
     quadratic_nonuniformity_odd_affine_frequencies_of_power_bound alpha hα hαone N hlarge f hf hnot
   let delta := (alpha / 2) ^ (12359 : Nat) / 2
   let rho := delta * alpha ^ 2 / 4

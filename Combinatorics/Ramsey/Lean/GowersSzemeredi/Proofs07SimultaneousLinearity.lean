@@ -123,7 +123,7 @@ private lemma exists_balancedChunk_for_quotient {c m t : Nat}
         t = t % (m + 1) + (m + 1) * (t / (m + 1)) :=
           (Nat.mod_add_div t (m + 1)).symm
         _ = (t / (m + 1)) * (m + 1) + t % (m + 1) := by ac_rfl
-  · have hback : b * (m + 1) <= t := Nat.le_of_not_gt hfront
+  · have _ : b * (m + 1) <= t := Nat.le_of_not_gt hfront
     let u := t - b * (m + 1)
     have hu : u < (n - b) * m := by
       have hrewrite : c = b * (m + 1) + (n - b) * m := by

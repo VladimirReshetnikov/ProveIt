@@ -75,7 +75,7 @@ private lemma candidateFamily_card_bound {N : Nat} [NeZero N]
     (hF : CandidateFamily Gamma alpha F) :
     (F.card : Real) * (alpha * N) ≤ Gamma.card := by
   have hsum :
-      ∑ C ∈ F, alpha * N ≤ ∑ C ∈ F, (C.1.card : Real) := by
+      ∑ _ ∈ F, alpha * N ≤ ∑ C ∈ F, (C.1.card : Real) := by
     exact Finset.sum_le_sum fun C hCF => (hF.1 C hCF).1
   have hunion : ((candidateUnion F).card : Real) ≤ Gamma.card := by
     exact_mod_cast Finset.card_le_card (candidateUnion_subset hF)

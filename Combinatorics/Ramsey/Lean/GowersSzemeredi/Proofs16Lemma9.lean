@@ -44,7 +44,7 @@ theorem proper_lemma_16_9_with :
   intro hH1 hML hselection hidentity hrem P hP hmP
   classical
   let theta1 := section16ThetaOne theta gamma k
-  let delta := section16Delta theta1
+  let _ := section16Delta theta1
   let zeta := section16Zeta theta gamma k
   let r := section16Lemma9R theta gamma k
   let B1 := section16GoodDomain B H1 Y x0
