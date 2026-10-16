@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs15Walsh2
+import GowersSzemeredi.Sections14_15
 
 /-! **Lemma 15.1 and Corollary 15.2 for arbitrary coefficients** (Notes L.16).
 
@@ -10,6 +10,10 @@ polynomial moments makes **every** integer coefficient function a modular
 multiple of parity:
 * `signedWalsh_multiple_of_invariant` (sign cube);
 * `booleanWalsh_multiple_of_invariant` (Boolean cube).
+
+The printed statements are the ternary cases: `lemma_15_1_holds`
+(`Proofs15Walsh`) and `corollary_15_2_holds` (`Proofs15Walsh2`) apply these
+theorems and drop the unused hypothesis.
 
 This is what Lemma 15.4 needs for coefficient patterns in `[−m, m]` rather
 than `{−1, 0, 1}`, as required by the Fejér selection of L.16. -/
@@ -213,7 +217,29 @@ theorem signedWalsh_multiple_of_invariant {N k : Nat} [NeZero N]
   rw [hsign]
   ring
 
-alias parityCharacter_eq_prod_general := parityCharacter_eq_prod
+theorem parityCharacter_eq_prod {N k : Nat}
+    (e : Fin k → Bool) :
+    parityCharacter (N := N) e =
+      ∏ i : Fin k,
+        if e i then (-1 : ZMod N) else 1 := by
+  simp only [parityCharacter, boolWeight, countWhere]
+  rw [← Finset.prod_const, Finset.prod_filter]
+  apply Finset.prod_congr rfl
+  intro i _
+  by_cases h : e i = true <;> simp [h]
+
+theorem walshProduct_eq_parity {N k : Nat}
+    (e : Fin k → Bool) :
+    (∏ i : Fin k, walshSign (N := N) (e i)) =
+      (-1 : ZMod N) ^ k * parityCharacter (N := N) e := by
+  rw [parityCharacter_eq_prod]
+  have hconst :
+      (-1 : ZMod N) ^ k =
+        ∏ _i : Fin k, (-1 : ZMod N) := by simp
+  rw [hconst, ← Finset.prod_mul_distrib]
+  apply Finset.prod_congr rfl
+  intro i _
+  cases e i <;> simp [walshSign]
 
 /-- **Corollary 15.2 without the ternary hypothesis.** Constancy of all
 polynomial moments on the Boolean cube forces any integer coefficient
@@ -281,7 +307,5 @@ theorem booleanWalsh_multiple_of_invariant {N k : Nat} [NeZero N]
         parityCharacter (N := N) e
   rw [walshProduct_eq_parity]
   ring
-
-alias corollary_15_2_of_general := corollary_15_2_holds
 
 end LeanProofs.GowersSzemeredi

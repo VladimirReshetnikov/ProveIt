@@ -1,6 +1,5 @@
-import GowersSzemeredi.Proofs15WalshGeneral
+import GowersSzemeredi.Proofs15Walsh2
 import GowersSzemeredi.Proofs15LevelSets
-import GowersSzemeredi.Proofs15DegenerateArrangements
 
 /-!
 # Degenerate arrangements for coefficients in `[−m, m]` (Notes L.16)
@@ -16,9 +15,9 @@ patterns changes, from `3^(2d·2^k)` to `(2m+1)^(2d·2^k)`:
 `degenerate_count_within_le`:
 `#{m-degenerate d-arrangements} ≤ (2m+1)^(2d·2^k)·k·N^((2d+1)k+2d−2)`.
 
-At `m = 1` this is the printed Lemma 15.4 (`isDegenerateWithin_one_iff`).
-The file is a copy of `Proofs15DegenerateArrangements` with the coefficient
-alphabet `Fin (2m+1)` in place of `Fin 3`. -/
+At `m = 1` this is the printed Lemma 15.4 (`isDegenerateWithin_one_iff`);
+`Proofs15DegenerateArrangements` derives `lemma_15_4_holds` from it. The
+helpers `lemma154_*` do not depend on the coefficient alphabet. -/
 
 set_option autoImplicit false
 set_option maxRecDepth 10000
@@ -29,6 +28,205 @@ open scoped BigOperators Pointwise ZMod
 open Finset
 
 namespace LeanProofs.GowersSzemeredi
+
+lemma lemma154_double_except_card {I : Type*} [Fintype I]
+    [DecidableEq I] (i j : I) (hij : i ≠ j) :
+    Fintype.card {t : I // t ≠ i ∧ t ≠ j} = Fintype.card I - 2 := by
+  rw [Fintype.card_congr
+      ({ toFun t := ⟨⟨t, t.2.1⟩, by
+           exact fun h => t.2.2 (congrArg Subtype.val h)⟩
+         invFun t := ⟨t.1.1, t.1.2, by
+           intro h
+           apply t.2
+           apply Subtype.ext
+           exact h⟩
+         left_inv _ := rfl
+         right_inv _ := rfl } : {t : I // t ≠ i ∧ t ≠ j} ≃
+      {t : {t : I // t ≠ i} // t ≠ ⟨j, hij.symm⟩})]
+  rw [Fintype.card_subtype_compl, Fintype.card_subtype_compl]
+  simp only [Fintype.card_subtype_eq]
+  omega
+
+lemma lemma154_vertex_castSucc {N k d : Nat}
+    (R : GeneralArrangement N k d) (e : Fin k → Bool)
+    (j : Fin (2 * d)) (i : Fin k) :
+    R.vertex e j i.castSucc =
+      R.base j i + if e i then R.side i else 0 := by
+  simp [GeneralArrangement.vertex, GeneralArrangement.cube, AxisCube.vertex,
+    AxisCube.base, AxisCube.side, appendCoordinate]
+
+private def lemma154BooleanCoefficient {N k : Nat}
+    (eta : (Fin k → Bool) → Int) (h : Point N k)
+    (A : Finset (Fin k)) (u : Fin k → Bool) : ZMod N :=
+  ∑ e : Fin k → Bool, (eta e : ZMod N) *
+    ∏ i : Fin k,
+      if i ∈ A then
+        if u i then 1 else if e i then h i else 0
+      else if u i then 0 else 1
+
+lemma lemma154_booleanWalshMoment_multilinear {N k : Nat} [NeZero N]
+    (eta : (Fin k → Bool) → Int) (h : Point N k)
+    (A : Finset (Fin k)) :
+    IsMultilinear (fun y => booleanWalshMoment eta h y A) := by
+  refine ⟨lemma154BooleanCoefficient eta h A, ?_⟩
+  intro y
+  unfold booleanWalshMoment lemma154BooleanCoefficient
+  calc
+    (∑ e : Fin k → Bool, (eta e : ZMod N) *
+        ∏ i ∈ A, (y i + if e i then h i else 0)) =
+        ∑ e : Fin k → Bool, (eta e : ZMod N) *
+          ∏ i : Fin k,
+            ∑ b : Bool,
+              (if i ∈ A then
+                  if b then 1 else if e i then h i else 0
+                else if b then 0 else 1) *
+                (if b then y i else 1) := by
+      apply Finset.sum_congr rfl
+      intro e _
+      congr 1
+      simp only [Fintype.sum_bool, Bool.false_eq_true, if_false, if_true,
+        ite_mul, mul_ite, one_mul, zero_mul, mul_one]
+      symm
+      calc
+        (∏ x, ((if x ∈ A then y x else 0) +
+            if x ∈ A then (if e x then h x else 0) else 1)) =
+            ∏ x, if x ∈ A then y x + (if e x then h x else 0) else 1 := by
+          apply Finset.prod_congr rfl
+          intro x _
+          by_cases hx : x ∈ A <;> simp [hx]
+        _ = ∏ x ∈ A, (y x + if e x then h x else 0) := by
+          rw [Finset.prod_ite]
+          simp
+    _ = ∑ e : Fin k → Bool, (eta e : ZMod N) *
+          ∑ u : Fin k → Bool,
+            ∏ i : Fin k,
+              (if i ∈ A then
+                  if u i then 1 else if e i then h i else 0
+                else if u i then 0 else 1) *
+                (if u i then y i else 1) := by
+      apply Finset.sum_congr rfl
+      intro e _
+      rw [Fintype.prod_sum]
+    _ = ∑ e : Fin k → Bool, ∑ u : Fin k → Bool,
+          (eta e : ZMod N) *
+            ∏ i : Fin k,
+              (if i ∈ A then
+                  if u i then 1 else if e i then h i else 0
+                else if u i then 0 else 1) *
+                (if u i then y i else 1) := by
+      apply Finset.sum_congr rfl
+      intro e _
+      rw [Finset.mul_sum]
+    _ = ∑ u : Fin k → Bool,
+          (∑ e : Fin k → Bool, (eta e : ZMod N) *
+            ∏ i : Fin k,
+              if i ∈ A then
+                if u i then 1 else if e i then h i else 0
+              else if u i then 0 else 1) *
+            ∏ i : Fin k, if u i then y i else 1 := by
+      rw [Finset.sum_comm]
+      apply Finset.sum_congr rfl
+      intro u _
+      rw [Finset.sum_mul]
+      apply Finset.sum_congr rfl
+      intro e _
+      rw [Finset.prod_mul_distrib]
+      ring
+
+lemma lemma154_parity_cube_sum {N k : Nat} [NeZero N]
+    (h y : Point N k) :
+    (∑ e : Fin k → Bool, parityCharacter (N := N) e *
+      ∏ i : Fin k, (y i + if e i then h i else 0)) =
+        (-1 : ZMod N) ^ k * ∏ i, h i := by
+  simp_rw [parityCharacter_eq_prod, ← Finset.prod_mul_distrib]
+  calc
+    (∑ e : Fin k → Bool,
+        ∏ i : Fin k,
+          (if e i then (-1 : ZMod N) else 1) *
+            (y i + if e i then h i else 0)) =
+        ∏ i : Fin k, ∑ b : Bool,
+          (if b then (-1 : ZMod N) else 1) *
+            (y i + if b then h i else 0) := by
+      exact (Fintype.prod_sum (fun i (b : Bool) =>
+        (if b then (-1 : ZMod N) else 1) *
+          (y i + if b then h i else 0))).symm
+    _ = ∏ i : Fin k, (-h i) := by
+      apply Finset.prod_congr rfl
+      intro i _
+      rw [Fintype.sum_bool]
+      simp
+    _ = (-1 : ZMod N) ^ k * ∏ i, h i := by
+      have hconst : (-1 : ZMod N) ^ k = ∏ _i : Fin k, (-1 : ZMod N) := by
+        simp
+      rw [hconst, ← Finset.prod_mul_distrib]
+      apply Finset.prod_congr rfl
+      intro i _
+      ring
+
+lemma lemma154_append_product {N k : Nat} (x : Point N k) (r : ZMod N) :
+    (∏ i : Fin (k + 1), appendCoordinate x r i) = (∏ i, x i) * r := by
+  induction k with
+  | zero =>
+      simp [appendCoordinate]
+  | succ k ih =>
+      rw [Fin.prod_univ_succ]
+      have hzero : appendCoordinate x r 0 = x 0 := by
+        simp [appendCoordinate]
+      have htail :
+          (fun i : Fin (k + 1) => appendCoordinate x r i.succ) =
+            appendCoordinate (Fin.tail x) r := by
+        funext i
+        simp [appendCoordinate, Fin.tail]
+      rw [hzero, htail, ih, Fin.prod_univ_succ]
+      simp only [Fin.tail]
+      ring
+
+lemma lemma154_vertex_product_univ {N k d : Nat}
+    (R : GeneralArrangement N k d) (e : Fin k → Bool)
+    (j : Fin (2 * d)) :
+    (∏ i : Fin (k + 1), R.vertex e j i) =
+      (∏ i : Fin k, (R.base j i + if e i then R.side i else 0)) *
+        R.crossSection j := by
+  exact lemma154_append_product _ _
+
+lemma lemma154_full_moment_eq {N k d : Nat} [NeZero N]
+    (R : GeneralArrangement N k d)
+    (eta : (Fin k → Bool) → Fin (2 * d) → Int)
+    (s : Fin (2 * d) → ZMod N)
+    (hs : ∀ j e, (eta e j : ZMod N) = s j * parityCharacter (N := N) e) :
+    arrangementMoment R eta Finset.univ =
+      ((-1 : ZMod N) ^ k * ∏ i, R.side i) *
+        ∑ j, s j * R.crossSection j := by
+  unfold arrangementMoment
+  rw [Finset.sum_comm]
+  calc
+    (∑ j : Fin (2 * d), ∑ e : Fin k → Bool,
+        (eta e j : ZMod N) * ∏ i ∈ Finset.univ, R.vertex e j i) =
+        ∑ j : Fin (2 * d), ∑ e : Fin k → Bool,
+          (s j * parityCharacter (N := N) e) *
+            ((∏ i : Fin k,
+              (R.base j i + if e i then R.side i else 0)) *
+                R.crossSection j) := by
+      apply Finset.sum_congr rfl
+      intro j _
+      apply Finset.sum_congr rfl
+      intro e _
+      rw [hs j e, lemma154_vertex_product_univ]
+    _ = ∑ j : Fin (2 * d),
+          (s j * R.crossSection j) *
+            ((-1 : ZMod N) ^ k * ∏ i, R.side i) := by
+      apply Finset.sum_congr rfl
+      intro j _
+      rw [← lemma154_parity_cube_sum R.side (R.base j), Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro e _
+      ring
+    _ = ((-1 : ZMod N) ^ k * ∏ i, R.side i) *
+          ∑ j, s j * R.crossSection j := by
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
+      intro j _
+      ring
 
 /-- A `d`-arrangement is **`m`-degenerate** when it has a dependence with
 integer coefficients in `[−m, m]` other than a modular scalar multiple of the
