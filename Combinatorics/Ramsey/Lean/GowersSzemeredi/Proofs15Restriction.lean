@@ -23,19 +23,19 @@ namespace LeanProofs.GowersSzemeredi
 
 /-! ## Arrangements as finite hyperedges -/
 
-private abbrev selectionIndex (k : Nat) :=
+abbrev selectionIndex (k : Nat) :=
   (Fin k → Bool) × Fin 16
 
-private def selectionVertex {N k : Nat} (R : GeneralArrangement N k 8)
+def selectionVertex {N k : Nat} (R : GeneralArrangement N k 8)
     (z : selectionIndex k) : Point N (k + 1) :=
   R.vertex z.1 z.2
 
-private noncomputable def selectionCarrier {N k : Nat}
+noncomputable def selectionCarrier {N k : Nat}
     (R : GeneralArrangement N k 8) : Finset (Point N (k + 1)) := by
   classical
   exact Finset.univ.image (selectionVertex R)
 
-private lemma selectionCarrier_subset {N k : Nat} [NeZero N]
+lemma selectionCarrier_subset {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) (R : GeneralArrangement N k 8)
     (hR : R.IsIn B) : selectionCarrier R ⊆ B := by
   classical
@@ -44,7 +44,7 @@ private lemma selectionCarrier_subset {N k : Nat} [NeZero N]
   obtain ⟨i, -, rfl⟩ := hz
   exact hR.2 i.1 i.2
 
-private lemma selection_isIn_iff {N k : Nat} [NeZero N]
+lemma selection_isIn_iff {N k : Nat} [NeZero N]
     (B B' : Finset (Point N (k + 1)))
     (R : GeneralArrangement N k 8) (hR : R.IsIn B) :
     R.IsIn B' ↔ selectionCarrier R ⊆ B' := by
@@ -60,33 +60,33 @@ private lemma selection_isIn_iff {N k : Nat} [NeZero N]
     rw [selectionCarrier, Finset.mem_image]
     exact ⟨(e, j), Finset.mem_univ _, rfl⟩
 
-private noncomputable def selectionArrangements {N k : Nat} [NeZero N]
+noncomputable def selectionArrangements {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) : Finset (GeneralArrangement N k 8) := by
   classical
   exact Finset.univ.filter fun R ↦ R.IsIn B
 
-private noncomputable def selectionGoodArrangements {N k : Nat} [NeZero N]
+noncomputable def selectionGoodArrangements {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1)))
     (phi : Point N (k + 1) → ZMod N) :
     Finset (GeneralArrangement N k 8) := by
   classical
   exact (selectionArrangements B).filter fun R ↦ R.IsRespected phi
 
-private noncomputable def selectionBadArrangements {N k : Nat} [NeZero N]
+noncomputable def selectionBadArrangements {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1)))
     (phi : Point N (k + 1) → ZMod N) :
     Finset (GeneralArrangement N k 8) := by
   classical
   exact selectionArrangements B \ selectionGoodArrangements B phi
 
-private lemma selectionArrangements_card {N k : Nat} [NeZero N]
+lemma selectionArrangements_card {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1))) :
     (selectionArrangements B).card = generalArrangementCount 8 B := by
   classical
   unfold selectionArrangements generalArrangementCount countWhere
   rw [Finset.filter_congr_decidable]
 
-private lemma selectionGoodArrangements_card {N k : Nat} [NeZero N]
+lemma selectionGoodArrangements_card {N k : Nat} [NeZero N]
     (B : Finset (Point N (k + 1)))
     (phi : Point N (k + 1) → ZMod N) :
     (selectionGoodArrangements B phi).card =
@@ -108,7 +108,7 @@ lemma selection_respected_le_arrangement {N k : Nat} [NeZero N]
   rw [← selectionGoodArrangements_card, ← selectionArrangements_card]
   exact Finset.card_le_card (Finset.filter_subset _ _)
 
-private lemma selection_good_restrict_card {N k : Nat} [NeZero N]
+lemma selection_good_restrict_card {N k : Nat} [NeZero N]
     (B B' : Finset (Point N (k + 1)))
     (phi : Point N (k + 1) → ZMod N) (hB'B : B' ⊆ B) :
     ((selectionGoodArrangements B phi).filter fun R ↦
@@ -130,7 +130,7 @@ private lemma selection_good_restrict_card {N k : Nat} [NeZero N]
     exact ⟨⟨hRB, hrespect⟩,
       (selection_isIn_iff B B' R hRB).mp hRB'⟩
 
-private lemma selection_good_bad_restrict_card {N k : Nat} [NeZero N]
+lemma selection_good_bad_restrict_card {N k : Nat} [NeZero N]
     (B B' : Finset (Point N (k + 1)))
     (phi : Point N (k + 1) → ZMod N) (hB'B : B' ⊆ B) :
     ((selectionGoodArrangements B phi).filter fun R ↦
@@ -174,10 +174,10 @@ private lemma selection_good_bad_restrict_card {N k : Nat} [NeZero N]
       exact ⟨hRB, (selection_isIn_iff B B' R hRB).mp hRB'⟩
   rw [← hallcard, ← hunion, Finset.card_union_of_disjoint hdisj]
 
-private def selectionIndexSign {N : Nat} (j : Fin 16) : ZMod N :=
+def selectionIndexSign {N : Nat} (j : Fin 16) : ZMod N :=
   if (j : Nat) < 8 then 1 else -1
 
-private lemma selection_additive_iff {N : Nat} (x : Fin 16 → ZMod N) :
+lemma selection_additive_iff {N : Nat} (x : Fin 16 → ZMod N) :
     IsAdditiveTuple (k := 8) x ↔
       ∑ j, selectionIndexSign (N := N) j * x j = 0 := by
   classical
@@ -289,10 +289,10 @@ lemma selection_arrangement_real_upper {N k : Nat} [NeZero N]
 
 /-! ## One-stage Riesz weights -/
 
-private abbrev SelectionFeature (k : Nat) :=
+abbrev SelectionFeature (k : Nat) :=
   Option (Finset (Fin (k + 1)))
 
-private abbrev SelectionPhase (N k : Nat) :=
+abbrev SelectionPhase (N k : Nat) :=
   SelectionFeature k → ZMod N
 
 private def selectionDigitInt (j : Fin 4) : Int :=
@@ -306,13 +306,13 @@ private lemma selectionDigitInt_ternary (j : Fin 4) :
       selectionDigitInt j = 1 := by
   fin_cases j <;> simp [selectionDigitInt]
 
-private lemma selection_index_card (k : Nat) :
+lemma selection_index_card (k : Nat) :
     Fintype.card (selectionIndex k) = 2 ^ (k + 4) := by
   simp only [selectionIndex, Fintype.card_prod, Fintype.card_fun,
     Fintype.card_fin, Fintype.card_bool]
   rw [show 16 = 2 ^ 4 by norm_num, ← pow_add]
 
-private def selectionFeatureValue {N k : Nat} [NeZero N]
+def selectionFeatureValue {N k : Nat} [NeZero N]
     (phi : Point N (k + 1) → ZMod N) (F : SelectionFeature k)
     (z : Point N (k + 1)) : ZMod N :=
   match F with
@@ -459,7 +459,7 @@ lemma selection_expect_pi_prod {I C : Type*} [Fintype I]
   rw [Finset.prod_mul_distrib, Finset.prod_const]
   simp [inv_pow]
 
-private lemma selection_expect_phase {N k : Nat} [NeZero N]
+lemma selection_expect_phase {N k : Nat} [NeZero N]
     (rel : SelectionFeature k → ZMod N) :
     (𝔼 C : SelectionPhase N k,
       exponential (∑ F, C F * rel F)) =
@@ -553,17 +553,17 @@ private lemma selectionRelation_some {N k : Nat} [NeZero N]
   rw [Fintype.sum_prod_type]
   rfl
 
-private def selectionEtaZero {k : Nat} (e : Fin k → Bool) (j : Fin 16) : Int :=
+def selectionEtaZero {k : Nat} (e : Fin k → Bool) (j : Fin 16) : Int :=
   (if (j : Nat) < 8 then 1 else -1) * (-1 : Int) ^ boolWeight e
 
-private lemma selectionEtaZero_cast {N k : Nat} (e : Fin k → Bool)
+lemma selectionEtaZero_cast {N k : Nat} (e : Fin k → Bool)
     (j : Fin 16) :
     (selectionEtaZero e j : ZMod N) =
       arrangementParityCoefficient (N := N) (d := 8) e j := by
   by_cases hj : (j : Nat) < 8 <;>
     simp [selectionEtaZero, arrangementParityCoefficient, parityCharacter, hj]
 
-private lemma selectionEtaZero_cases {k : Nat} (e : Fin k → Bool)
+lemma selectionEtaZero_cases {k : Nat} (e : Fin k → Bool)
     (j : Fin 16) : selectionEtaZero e j = 1 ∨ selectionEtaZero e j = -1 := by
   by_cases he : Even (boolWeight e)
   · have hp : (-1 : Int) ^ boolWeight e = 1 := he.neg_one_pow
@@ -770,7 +770,7 @@ lemma selection_vertex_product_split {N k : Nat}
           AxisCube.vertex, AxisCube.base, AxisCube.side, appendCoordinate]
       · simp [GeneralArrangement.vertex, appendCoordinate]
 
-private lemma selectionEtaZero_moment {N k : Nat} [NeZero N]
+lemma selectionEtaZero_moment {N k : Nat} [NeZero N]
     (R : GeneralArrangement N k 8) (hadd : IsAdditiveTuple R.crossSection)
     (A : Finset (Fin (k + 1))) :
     arrangementMoment R selectionEtaZero A = 0 := by
@@ -1146,7 +1146,7 @@ private lemma selection_bad_average_base {N k : Nat} [NeZero N]
   rw [← mul_pow]
   norm_num
 
-private lemma selection_third_index {k : Nat}
+lemma selection_third_index {k : Nat}
     (u v : selectionIndex k) :
     ∃ w : selectionIndex k, w ≠ u ∧ w ≠ v := by
   classical
@@ -1161,7 +1161,7 @@ private lemma selection_third_index {k : Nat}
   refine ⟨z₂, ?_, ?_⟩ <;>
     push Not at h₀ h₁ <;> aesop
 
-private lemma selection_injective_of_nondegenerate {N k : Nat} [NeZero N]
+lemma selection_injective_of_nondegenerate {N k : Nat} [NeZero N]
     (hN : 2 ≤ N) (R : GeneralArrangement N k 8)
     (hnondegenerate : ¬ R.IsDegenerate) :
     Function.Injective (selectionVertex R) := by
@@ -1235,7 +1235,7 @@ private lemma selection_injective_of_nondegenerate {N k : Nat} [NeZero N]
     simpa using hqwzero
   exact ⟨eta, hetaTernary, hnotmultiple, hmoment⟩
 
-private lemma selectionCarrier_prod_of_nondegenerate {N k : Nat} [NeZero N]
+lemma selectionCarrier_prod_of_nondegenerate {N k : Nat} [NeZero N]
     (hN : 2 ≤ N) (R : GeneralArrangement N k 8)
     (hnondegenerate : ¬ R.IsDegenerate)
     (p : Point N (k + 1) → Real) :
