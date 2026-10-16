@@ -1,0 +1,541 @@
+{
+  "batch": 151,
+  "manuscript": 1,
+  "local_source": 24,
+  "original": "/tmp/zfc-intake-151-gkntyfry/zfc_consistency_proposal/zfc_minimal_theory",
+  "scratch_copy": "/tmp/zfc-review151-source01-tfdq5cw4/package",
+  "paper_pin": "2178c3885423f923021d4aaf1dbf52b4e2060837",
+  "review_current_head": "65c776f4be6ca6ada7e1408ea2674e57c2770377",
+  "upstream254_pin": "297ab8df7e5de329605c3875b4934643b371a5e3",
+  "public253_pin": "0d544f2a2e3c18f12278441a74b7879f31cbe856",
+  "read_complete": [
+    "README.txt",
+    "report.tex",
+    "sections/01-findings.tex",
+    "sections/02-theory.tex",
+    "sections/03-translation.tex",
+    "sections/04-combinatory.tex",
+    "sections/05-machines.tex",
+    "sections/06-program.tex",
+    "sections/07-references.tex",
+    "experiments/sk_carrier/README.md",
+    "experiments/sk_carrier/proof_sketch.tex",
+    "experiments/sk_carrier/build_carrier.py",
+    "experiments/sk_carrier/test_carrier.py",
+    "experiments/o_erasure/README.txt",
+    "experiments/o_erasure/measure_proxy.py",
+    "experiments/o_erasure/audit_proxy_artifacts.py",
+    "experiments/record/README.md",
+    "experiments/record/make_certificate.py",
+    "experiments/record/verify_certificate.py",
+    "experiments/record/macro_census.py",
+    "code/proxy_kernel.py",
+    "reproduce.py",
+    "build_report.py"
+  ],
+  "verdict": "Accept as complementary addition to existing zfc-closure-kernels, local24. Preserve source and append generic SK parser-domain correction; no previous repository theorem retraction.",
+  "ordinary_math": "EPSC exact observational singleton and outgoing-inclusion equality proof, pointed reserved-zero translation, quotient/refutation transports, and SK/one-constant carrier arguments are sound within stated hypotheses. Generic SK implementation theorem requires nonnegative start label.",
+  "new_formal_claim": false,
+  "new_state_bound": false,
+  "best_strict_EPSC_proxy_states": 288,
+  "default_nonSK_jobs": [
+    {
+      "job": "profile_translation",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "/tmp/zfc-review151-source01-tfdq5cw4/run_functional.py",
+        "/tmp/zfc-review151-source01-tfdq5cw4/package/code/proxy_kernel.py",
+        "--output",
+        "/tmp/zfc-review151-source01-tfdq5cw4/profile-replayed.json"
+      ],
+      "returncode": 0,
+      "seconds": 1.5431036744266748,
+      "log": "/tmp/zfc-review151-source01-tfdq5cw4/profile_translation.log"
+    },
+    {
+      "job": "proxy_compiler_replay",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "/tmp/zfc-review151-source01-tfdq5cw4/run_functional.py",
+        "/tmp/zfc-review151-source01-tfdq5cw4/package/experiments/o_erasure/measure_proxy.py",
+        "--replay"
+      ],
+      "returncode": 0,
+      "seconds": 0.6363423150032759,
+      "log": "/tmp/zfc-review151-source01-tfdq5cw4/proxy_compiler_replay.log"
+    },
+    {
+      "job": "proxy_literal_audit",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "/tmp/zfc-review151-source01-tfdq5cw4/run_functional.py",
+        "/tmp/zfc-review151-source01-tfdq5cw4/package/experiments/o_erasure/audit_proxy_artifacts.py",
+        "--output",
+        "/tmp/zfc-review151-source01-tfdq5cw4/table-audit"
+      ],
+      "returncode": 0,
+      "seconds": 0.4410531083121896,
+      "log": "/tmp/zfc-review151-source01-tfdq5cw4/proxy_literal_audit.log"
+    },
+    {
+      "job": "literal_quotient_certificate",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "/tmp/zfc-review151-source01-tfdq5cw4/run_functional.py",
+        "/tmp/zfc-review151-source01-tfdq5cw4/package/experiments/record/verify_certificate.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.52486776933074,
+      "log": "/tmp/zfc-review151-source01-tfdq5cw4/literal_quotient_certificate.log"
+    },
+    {
+      "job": "macro_witness_census",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "/tmp/zfc-review151-source01-tfdq5cw4/run_functional.py",
+        "/tmp/zfc-review151-source01-tfdq5cw4/package/experiments/record/macro_census.py",
+        "--output",
+        "/tmp/zfc-review151-source01-tfdq5cw4/macro-replayed.json"
+      ],
+      "returncode": 0,
+      "seconds": 0.44064570404589176,
+      "log": "/tmp/zfc-review151-source01-tfdq5cw4/macro_witness_census.log"
+    }
+  ],
+  "optional_jobs": [
+    {
+      "job": "full264_proxy_search",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "/tmp/zfc-review151-source01-tfdq5cw4/run_functional.py",
+        "/tmp/zfc-review151-source01-tfdq5cw4/package/experiments/o_erasure/measure_proxy.py",
+        "--seeds",
+        "32",
+        "--output",
+        "/tmp/zfc-review151-source01-tfdq5cw4/full-search"
+      ],
+      "returncode": 0,
+      "seconds": 6.541174919344485,
+      "log": "/tmp/zfc-review151-source01-tfdq5cw4/full264_proxy_search.log"
+    },
+    {
+      "job": "full8391_macro_census",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "/tmp/zfc-review151-source01-tfdq5cw4/run_functional.py",
+        "/tmp/zfc-review151-source01-tfdq5cw4/package/experiments/record/macro_census.py",
+        "--program",
+        "/home/codex/.codex/worktrees/ec20/Proofs/lib/jeff-busy-beaver-zfc254/ZF/m254/coq/tm/Prog254.v",
+        "--output",
+        "/tmp/zfc-review151-source01-tfdq5cw4/full-macro-replayed.json"
+      ],
+      "returncode": 0,
+      "seconds": 1.863739307038486,
+      "log": "/tmp/zfc-review151-source01-tfdq5cw4/full8391_macro_census.log"
+    },
+    {
+      "job": "regenerate_quotient_certificate",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "/tmp/zfc-review151-source01-tfdq5cw4/run_functional.py",
+        "/tmp/zfc-review151-source01-tfdq5cw4/package/experiments/record-regenerated/make_certificate.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.4178986633196473,
+      "log": "/tmp/zfc-review151-source01-tfdq5cw4/regenerate_quotient_certificate.log"
+    }
+  ],
+  "functional_comparison": {
+    "all264_nonhash_measurements_match_frozen": true,
+    "all16_symbolic_word_formula_artifacts_match": true,
+    "profile_frozen_output_match": true,
+    "full_and_small_macro_frozen_outputs_match": true,
+    "harmless_metadata_difference": {
+      "fixed_recipe_replay": "New full-run output contains false; frozen original omits this field."
+    },
+    "counts": {
+      "cg-strict-12345678": {
+        "states": 287,
+        "decision": 224,
+        "framework": 63,
+        "seed": 1,
+        "histogram": {
+          "287": 2,
+          "288": 3,
+          "289": 5,
+          "290": 3,
+          "291": 2,
+          "292": 4,
+          "293": 4,
+          "296": 1,
+          "297": 3,
+          "299": 2,
+          "300": 2,
+          "303": 1,
+          "309": 1
+        }
+      },
+      "cg-strict-17532468": {
+        "states": 287,
+        "decision": 225,
+        "framework": 62,
+        "seed": 18,
+        "histogram": {
+          "287": 1,
+          "289": 2,
+          "290": 3,
+          "291": 2,
+          "292": 2,
+          "293": 4,
+          "294": 2,
+          "295": 5,
+          "296": 3,
+          "297": 1,
+          "298": 2,
+          "299": 1,
+          "300": 1,
+          "301": 2,
+          "307": 1,
+          "312": 1
+        }
+      },
+      "epsc-strict-12345678": {
+        "states": 288,
+        "decision": 225,
+        "framework": 63,
+        "seed": 20,
+        "histogram": {
+          "288": 1,
+          "289": 2,
+          "290": 2,
+          "291": 2,
+          "292": 2,
+          "293": 4,
+          "294": 1,
+          "295": 4,
+          "296": 5,
+          "297": 6,
+          "299": 2,
+          "300": 1,
+          "305": 1
+        }
+      },
+      "epsc-strict-17532468": {
+        "states": 292,
+        "decision": 229,
+        "framework": 63,
+        "seed": 3,
+        "histogram": {
+          "292": 1,
+          "293": 1,
+          "294": 1,
+          "295": 6,
+          "296": 5,
+          "297": 5,
+          "298": 3,
+          "299": 2,
+          "300": 3,
+          "301": 2,
+          "302": 1,
+          "303": 1,
+          "304": 1,
+          "307": 1
+        }
+      },
+      "epsc-symmetry-12345678": {
+        "states": 289,
+        "decision": 225,
+        "framework": 64,
+        "seed": 3,
+        "histogram": {
+          "289": 4,
+          "290": 3,
+          "291": 6,
+          "292": 9,
+          "293": 3,
+          "294": 2,
+          "296": 2,
+          "297": 3,
+          "299": 1
+        }
+      },
+      "epsc-symmetry-17532468": {
+        "states": 289,
+        "decision": 226,
+        "framework": 63,
+        "seed": 0,
+        "histogram": {
+          "289": 2,
+          "290": 3,
+          "292": 1,
+          "293": 7,
+          "294": 6,
+          "295": 3,
+          "296": 2,
+          "297": 5,
+          "298": 1,
+          "299": 1,
+          "300": 1,
+          "301": 1
+        }
+      },
+      "epsc-combined-12345678": {
+        "states": 288,
+        "decision": 226,
+        "framework": 62,
+        "seed": 5,
+        "histogram": {
+          "288": 1,
+          "289": 2,
+          "290": 2,
+          "291": 2,
+          "292": 7,
+          "293": 4,
+          "294": 5,
+          "295": 2,
+          "296": 2,
+          "297": 1,
+          "298": 1,
+          "299": 1,
+          "301": 1,
+          "303": 1,
+          "304": 1
+        }
+      },
+      "epsc-combined-17532468": {
+        "states": 288,
+        "decision": 225,
+        "framework": 63,
+        "seed": 0,
+        "histogram": {
+          "288": 2,
+          "290": 5,
+          "291": 8,
+          "292": 4,
+          "293": 1,
+          "294": 3,
+          "296": 5,
+          "297": 2,
+          "298": 1,
+          "301": 1,
+          "302": 1
+        }
+      }
+    }
+  },
+  "table_action_comparison": {
+    "cg-strict-12345678": {
+      "named_rows": 573,
+      "named_start": "0.boot.A",
+      "named_action_maps_equal": true,
+      "totalized_action_maps_equal": true,
+      "label_maps_equal": true
+    },
+    "cg-strict-17532468": {
+      "named_rows": 573,
+      "named_start": "0.boot.A",
+      "named_action_maps_equal": true,
+      "totalized_action_maps_equal": true,
+      "label_maps_equal": true
+    },
+    "epsc-combined-12345678": {
+      "named_rows": 575,
+      "named_start": "0.boot.A",
+      "named_action_maps_equal": true,
+      "totalized_action_maps_equal": true,
+      "label_maps_equal": true
+    },
+    "epsc-combined-17532468": {
+      "named_rows": 575,
+      "named_start": "0.boot.A",
+      "named_action_maps_equal": true,
+      "totalized_action_maps_equal": true,
+      "label_maps_equal": true
+    },
+    "epsc-strict-12345678": {
+      "named_rows": 575,
+      "named_start": "0.boot.A",
+      "named_action_maps_equal": true,
+      "totalized_action_maps_equal": true,
+      "label_maps_equal": true
+    },
+    "epsc-strict-17532468": {
+      "named_rows": 583,
+      "named_start": "0.boot.A",
+      "named_action_maps_equal": true,
+      "totalized_action_maps_equal": true,
+      "label_maps_equal": true
+    },
+    "epsc-symmetry-12345678": {
+      "named_rows": 577,
+      "named_start": "0.boot.A",
+      "named_action_maps_equal": true,
+      "totalized_action_maps_equal": true,
+      "label_maps_equal": true
+    },
+    "epsc-symmetry-17532468": {
+      "named_rows": 577,
+      "named_start": "0.boot.A",
+      "named_action_maps_equal": true,
+      "totalized_action_maps_equal": true,
+      "label_maps_equal": true
+    }
+  },
+  "certificate_mutations": [
+    {
+      "mutation": "empty_word",
+      "rejected": true,
+      "seconds": 0.14904464595019817,
+      "failure": "ValueError: invalid word for complete_table:0,1"
+    },
+    {
+      "mutation": "nonbinary_word",
+      "rejected": true,
+      "seconds": 0.14401067700237036,
+      "failure": "ValueError: invalid word for complete_table:0,1"
+    },
+    {
+      "mutation": "omitted_pair",
+      "rejected": true,
+      "seconds": 0.14245945494621992,
+      "failure": "ValueError: exact pair coverage: complete_table"
+    },
+    {
+      "mutation": "wrong_exception",
+      "rejected": true,
+      "seconds": 0.23210658598691225,
+      "failure": "ValueError: exception list: omit_initializer_row"
+    },
+    {
+      "mutation": "wrong_maximum",
+      "rejected": true,
+      "seconds": 0.19583018776029348,
+      "failure": "ValueError: word maximum: complete_table"
+    },
+    {
+      "mutation": "wrong_histogram",
+      "rejected": true,
+      "seconds": 0.2020471729338169,
+      "failure": "ValueError: word histogram: complete_table"
+    }
+  ],
+  "profile_checks": {
+    "status": "finite checks passed; unbounded theorems are proved in the report",
+    "scope": "No tested finite structure is asserted to satisfy PSC/EPSC.",
+    "relations": 66066,
+    "local_singleton_roots": 62329,
+    "local_E_iff_O_comparisons": 248729,
+    "global_singleton_structures": 92,
+    "pointed_frame_pool": 69,
+    "translation_frames": 32,
+    "formulas": 406,
+    "translation_checks": 51968,
+    "prefix_words": 32767,
+    "parsed_complete_words": 1054,
+    "negative_controls": {
+      "unshifted_proxy_capture": "rejected",
+      "generalization_at_reserved_zero": "rejected"
+    },
+    "proxy_formula_nodes": 4,
+    "proxy_example_bits": "1101000101000111",
+    "falsity_bits": "0011",
+    "per_size": [
+      {
+        "size": 1,
+        "relations": 2,
+        "local_singleton_roots": 1,
+        "global_singleton_structures": 1
+      },
+      {
+        "size": 2,
+        "relations": 16,
+        "local_singleton_roots": 16,
+        "global_singleton_structures": 3
+      },
+      {
+        "size": 3,
+        "relations": 512,
+        "local_singleton_roots": 552,
+        "global_singleton_structures": 13
+      },
+      {
+        "size": 4,
+        "relations": 65536,
+        "local_singleton_roots": 61760,
+        "global_singleton_structures": 75
+      }
+    ]
+  },
+  "full_macro_checks": {
+    "kind": "finite concrete macro tests and blank-prefix row census; not a universal simulation proof",
+    "mode": "all_pinned_program_sites",
+    "cases": 8391,
+    "total_macro_steps": 2849408,
+    "max_macro_steps": 484,
+    "runtime_rows_observed": 505,
+    "runtime_states_observed": 253,
+    "runtime_unobserved_rows": [
+      [
+        0,
+        0
+      ]
+    ],
+    "blank_prefix_steps": 312975,
+    "blank_prefix_end_state": 33,
+    "blank_prefix_end_head": -17,
+    "blank_only_rows": [
+      [
+        0,
+        0
+      ]
+    ],
+    "union_rows_observed": 506
+  },
+  "sk_review": "/tmp/zfc-batch151-machines-ld5qdq5b/source01-sk-review.json",
+  "qualification": {
+    "claim_location": "sections/04-combinatory.tex:125-132; experiments/sk_carrier/proof_sketch.tex:148-154",
+    "code_locations": [
+      "experiments/sk_carrier/build_carrier.py:243-264",
+      "experiments/sk_carrier/build_carrier.py:267-285"
+    ],
+    "counterexample": [
+      "#! start -1",
+      "1 0 0 R 1",
+      "1 1 1 R 1"
+    ],
+    "native": "No source -1 row; immediate halt.",
+    "compiled": "states[-1] selects encoded state1; nonhalting rightward loop.",
+    "frozen253_affected": false,
+    "evidence": "/tmp/zfc-batch151-machines-ld5qdq5b/negative-start-evidence.json",
+    "reproducer": "/tmp/zfc-batch151-machines-ld5qdq5b/negative_start_repro.py"
+  },
+  "checksums": "No release checksum or line-ending checks. Functional hash guards bypassed only in memory; compared table actions and generated artifact structures directly. SK computes metadata fingerprints but has no hash-enforcement checks.",
+  "original_edits": false,
+  "hosted_edits": false,
+  "Lean_or_Coq_builds": false,
+  "pdf": "Root independently handles main28-page PDF quality/visual gates; this review did not rebuild it."
+}

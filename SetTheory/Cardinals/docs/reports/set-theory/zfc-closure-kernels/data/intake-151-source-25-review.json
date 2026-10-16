@@ -1,0 +1,755 @@
+{
+  "source": 25,
+  "batch": 151,
+  "manuscript": 2,
+  "original": "/tmp/zfc-intake-151-gkntyfry/zfc_exact_hull_research/zfc_exact_hull_research",
+  "review_copy": "/tmp/zfc-review151-source25-j9qkznh3/bundle",
+  "source_pin": "de047657e193ec605e930eaf149a44a38031820b",
+  "reviewed_head": "6ec2e80dbbe45a99b7812fb5757977307959a51e",
+  "full_read": [
+    "report.tex",
+    "sections/01-findings.tex",
+    "sections/02-theory.tex",
+    "sections/03-exact-hulls.tex",
+    "sections/04-logic.tex",
+    "sections/05-experiments.tex",
+    "sections/06-proposal.tex",
+    "sections/07-artifacts.tex",
+    "sections/08-bibliography.tex",
+    "README.md",
+    "NOTICE.txt",
+    "PROVENANCE.json",
+    "Makefile",
+    "reproduce.py",
+    "code/reference_kernel.py",
+    "code/check_reference.py",
+    "code/finite_hulls.py",
+    "code/wrapper_metrics.py",
+    "formal/ExactHull.lean",
+    "formal/ModalBasisAudit.lean",
+    "machine/README.md",
+    "machine/ENGINEERING_NOTES.md",
+    "machine/ATTRIBUTION.md"
+  ],
+  "math_status": "PASS; no mathematical flaw found within stated scope",
+  "machine_suites": "delegated to /root/review_bic/mira_backend_route; not duplicated here",
+  "comparisons": [
+    {
+      "actual": "/tmp/zfc-review151-source25-j9qkznh3/finite-hulls-actual.json",
+      "delivered_record": "data/finite_hulls.json",
+      "semantic_json_equal": true
+    },
+    {
+      "actual": "/tmp/zfc-review151-source25-j9qkznh3/reference-actual.json",
+      "delivered_record": "data/reference_checks.json",
+      "semantic_json_equal": true
+    },
+    {
+      "actual": "/tmp/zfc-review151-source25-j9qkznh3/metrics-actual.json",
+      "delivered_record": "data/wrapper_metrics.json",
+      "semantic_json_equal": true
+    }
+  ],
+  "finite_hulls": {
+    "scope": "Finite instances and conditional resources only; not full-schema models.",
+    "census": [
+      {
+        "objects": 1,
+        "relation_pairs": 4,
+        "bounded_pairs": 4,
+        "epsc_true_bounded": 2,
+        "efpc_true_bounded": 2,
+        "pointwise_gaps": 0,
+        "triples_with_two_resources": 2,
+        "pointwise_gaps_with_empty": 0,
+        "nonextensional_resource_pairs": 0
+      },
+      {
+        "objects": 2,
+        "relation_pairs": 256,
+        "bounded_pairs": 242,
+        "epsc_true_bounded": 136,
+        "efpc_true_bounded": 124,
+        "pointwise_gaps": 12,
+        "triples_with_two_resources": 216,
+        "pointwise_gaps_with_empty": 0,
+        "nonextensional_resource_pairs": 18
+      },
+      {
+        "objects": 3,
+        "relation_pairs": 262144,
+        "bounded_pairs": 186694,
+        "epsc_true_bounded": 106892,
+        "efpc_true_bounded": 96068,
+        "pointwise_gaps": 10824,
+        "triples_with_two_resources": 195054,
+        "pointwise_gaps_with_empty": 816,
+        "nonextensional_resource_pairs": 29456
+      }
+    ],
+    "pointwise_counterexample": {
+      "domain": [
+        0,
+        1,
+        2
+      ],
+      "membership_profiles": [
+        [],
+        [
+          0,
+          1
+        ],
+        [
+          0,
+          2
+        ]
+      ],
+      "relation_rows": [
+        [
+          0
+        ],
+        [],
+        [
+          1
+        ]
+      ],
+      "operator_images": [
+        [
+          0
+        ],
+        [
+          0
+        ],
+        [
+          0,
+          1
+        ]
+      ],
+      "local_subset_bounded": true,
+      "epsc_witness": 1,
+      "efpc_witnesses": [],
+      "missing_separated_extension": [
+        0
+      ]
+    }
+  },
+  "reference_checks": {
+    "scope": "Finite specification regressions, not a machine proof.",
+    "distinct_matrices": 70,
+    "schema_semantic_checks": 2520,
+    "substitution_semantic_checks": 55852,
+    "rejected_certificates": 13,
+    "valid_nonrefutation_examples": 2,
+    "parameter_definable_pointwise_counterexample": true,
+    "gated_parameter_valuations_checked": 27,
+    "gated_universally_closed_epsc_holds": true,
+    "gated_efpc_failing_valuations": [
+      [
+        0,
+        1,
+        2
+      ],
+      [
+        0,
+        2,
+        1
+      ]
+    ],
+    "modal_degenerate_axiom_checks": 16,
+    "modal_T_fails": true,
+    "example_fixture_matches": true
+  },
+  "wrapper_metrics": {
+    "scope": "symbolic syntax only; no machine-state claim",
+    "metrics": {
+      "EPSC": {
+        "unary": {
+          "tree_nodes": 39,
+          "distinct_subtrees": 35,
+          "matrix_occurrences": 3,
+          "constructor_counts": {
+            "all": 10,
+            "imp": 8,
+            "matrix": 3,
+            "mem": 6,
+            "not": 12
+          }
+        },
+        "cancel": {
+          "tree_nodes": 37,
+          "distinct_subtrees": 33,
+          "matrix_occurrences": 3,
+          "constructor_counts": {
+            "all": 10,
+            "imp": 8,
+            "matrix": 3,
+            "mem": 6,
+            "not": 10
+          }
+        },
+        "bottom": {
+          "tree_nodes": 51,
+          "distinct_subtrees": 36,
+          "matrix_occurrences": 3,
+          "constructor_counts": {
+            "all": 10,
+            "bot": 12,
+            "imp": 20,
+            "matrix": 3,
+            "mem": 6
+          }
+        },
+        "primitive_iff": {
+          "tree_nodes": 39,
+          "distinct_subtrees": 35,
+          "matrix_occurrences": 3,
+          "constructor_counts": {
+            "all": 10,
+            "imp": 8,
+            "matrix": 3,
+            "mem": 6,
+            "not": 12
+          }
+        }
+      },
+      "EFPC": {
+        "unary": {
+          "tree_nodes": 49,
+          "distinct_subtrees": 34,
+          "matrix_occurrences": 3,
+          "constructor_counts": {
+            "all": 10,
+            "imp": 10,
+            "matrix": 3,
+            "mem": 8,
+            "not": 18
+          }
+        },
+        "cancel": {
+          "tree_nodes": 45,
+          "distinct_subtrees": 32,
+          "matrix_occurrences": 3,
+          "constructor_counts": {
+            "all": 10,
+            "imp": 10,
+            "matrix": 3,
+            "mem": 8,
+            "not": 14
+          }
+        },
+        "bottom": {
+          "tree_nodes": 67,
+          "distinct_subtrees": 35,
+          "matrix_occurrences": 3,
+          "constructor_counts": {
+            "all": 10,
+            "bot": 18,
+            "imp": 28,
+            "matrix": 3,
+            "mem": 8
+          }
+        },
+        "primitive_iff": {
+          "tree_nodes": 31,
+          "distinct_subtrees": 30,
+          "matrix_occurrences": 2,
+          "constructor_counts": {
+            "all": 8,
+            "iff": 1,
+            "imp": 5,
+            "matrix": 2,
+            "mem": 5,
+            "not": 10
+          }
+        }
+      }
+    }
+  },
+  "examples": {
+    "efpc": {
+      "valid": true,
+      "refutation": false,
+      "kernel": "EFPC",
+      "lines": 3,
+      "conclusion": [
+        "imp",
+        [
+          "all",
+          2,
+          [
+            "imp",
+            [
+              "all",
+              4,
+              [
+                "imp",
+                [
+                  "all",
+                  3,
+                  [
+                    "imp",
+                    [
+                      "mem",
+                      2,
+                      3
+                    ],
+                    [
+                      "all",
+                      6,
+                      [
+                        "imp",
+                        [
+                          "mem",
+                          6,
+                          3
+                        ],
+                        [
+                          "mem",
+                          6,
+                          4
+                        ]
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "bot"
+                ]
+              ]
+            ],
+            [
+              "bot"
+            ]
+          ]
+        ],
+        [
+          "imp",
+          [
+            "all",
+            5,
+            [
+              "imp",
+              [
+                "all",
+                3,
+                [
+                  "imp",
+                  [
+                    "imp",
+                    [
+                      "imp",
+                      [
+                        "mem",
+                        3,
+                        5
+                      ],
+                      [
+                        "imp",
+                        [
+                          "all",
+                          2,
+                          [
+                            "imp",
+                            [
+                              "imp",
+                              [
+                                "imp",
+                                [
+                                  "imp",
+                                  [
+                                    "imp",
+                                    [
+                                      "all",
+                                      6,
+                                      [
+                                        "imp",
+                                        [
+                                          "mem",
+                                          6,
+                                          2
+                                        ],
+                                        [
+                                          "bot"
+                                        ]
+                                      ]
+                                    ],
+                                    [
+                                      "bot"
+                                    ]
+                                  ],
+                                  [
+                                    "mem",
+                                    2,
+                                    5
+                                  ]
+                                ],
+                                [
+                                  "imp",
+                                  [
+                                    "mem",
+                                    2,
+                                    3
+                                  ],
+                                  [
+                                    "bot"
+                                  ]
+                                ]
+                              ],
+                              [
+                                "bot"
+                              ]
+                            ],
+                            [
+                              "bot"
+                            ]
+                          ]
+                        ],
+                        [
+                          "bot"
+                        ]
+                      ]
+                    ],
+                    [
+                      "imp",
+                      [
+                        "imp",
+                        [
+                          "imp",
+                          [
+                            "all",
+                            2,
+                            [
+                              "imp",
+                              [
+                                "imp",
+                                [
+                                  "imp",
+                                  [
+                                    "imp",
+                                    [
+                                      "imp",
+                                      [
+                                        "all",
+                                        6,
+                                        [
+                                          "imp",
+                                          [
+                                            "mem",
+                                            6,
+                                            2
+                                          ],
+                                          [
+                                            "bot"
+                                          ]
+                                        ]
+                                      ],
+                                      [
+                                        "bot"
+                                      ]
+                                    ],
+                                    [
+                                      "mem",
+                                      2,
+                                      5
+                                    ]
+                                  ],
+                                  [
+                                    "imp",
+                                    [
+                                      "mem",
+                                      2,
+                                      3
+                                    ],
+                                    [
+                                      "bot"
+                                    ]
+                                  ]
+                                ],
+                                [
+                                  "bot"
+                                ]
+                              ],
+                              [
+                                "bot"
+                              ]
+                            ]
+                          ],
+                          [
+                            "bot"
+                          ]
+                        ],
+                        [
+                          "mem",
+                          3,
+                          5
+                        ]
+                      ],
+                      [
+                        "bot"
+                      ]
+                    ]
+                  ],
+                  [
+                    "bot"
+                  ]
+                ]
+              ],
+              [
+                "bot"
+              ]
+            ]
+          ],
+          [
+            "bot"
+          ]
+        ]
+      ]
+    },
+    "epsc": {
+      "valid": true,
+      "refutation": false,
+      "kernel": "EPSC",
+      "lines": 3,
+      "conclusion": [
+        "imp",
+        [
+          "all",
+          2,
+          [
+            "imp",
+            [
+              "all",
+              4,
+              [
+                "imp",
+                [
+                  "all",
+                  3,
+                  [
+                    "imp",
+                    [
+                      "mem",
+                      2,
+                      3
+                    ],
+                    [
+                      "all",
+                      6,
+                      [
+                        "imp",
+                        [
+                          "mem",
+                          6,
+                          3
+                        ],
+                        [
+                          "mem",
+                          6,
+                          4
+                        ]
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "bot"
+                ]
+              ]
+            ],
+            [
+              "bot"
+            ]
+          ]
+        ],
+        [
+          "imp",
+          [
+            "all",
+            5,
+            [
+              "imp",
+              [
+                "imp",
+                [
+                  "imp",
+                  [
+                    "all",
+                    2,
+                    [
+                      "all",
+                      3,
+                      [
+                        "imp",
+                        [
+                          "imp",
+                          [
+                            "imp",
+                            [
+                              "imp",
+                              [
+                                "imp",
+                                [
+                                  "all",
+                                  6,
+                                  [
+                                    "imp",
+                                    [
+                                      "mem",
+                                      6,
+                                      2
+                                    ],
+                                    [
+                                      "bot"
+                                    ]
+                                  ]
+                                ],
+                                [
+                                  "bot"
+                                ]
+                              ],
+                              [
+                                "mem",
+                                2,
+                                5
+                              ]
+                            ],
+                            [
+                              "imp",
+                              [
+                                "mem",
+                                2,
+                                3
+                              ],
+                              [
+                                "bot"
+                              ]
+                            ]
+                          ],
+                          [
+                            "bot"
+                          ]
+                        ],
+                        [
+                          "mem",
+                          3,
+                          5
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "imp",
+                    [
+                      "all",
+                      3,
+                      [
+                        "imp",
+                        [
+                          "mem",
+                          3,
+                          5
+                        ],
+                        [
+                          "imp",
+                          [
+                            "all",
+                            2,
+                            [
+                              "imp",
+                              [
+                                "mem",
+                                2,
+                                3
+                              ],
+                              [
+                                "bot"
+                              ]
+                            ]
+                          ],
+                          [
+                            "bot"
+                          ]
+                        ]
+                      ]
+                    ],
+                    [
+                      "bot"
+                    ]
+                  ]
+                ],
+                [
+                  "bot"
+                ]
+              ],
+              [
+                "bot"
+              ]
+            ]
+          ],
+          [
+            "bot"
+          ]
+        ]
+      ]
+    }
+  },
+  "lean": {
+    "executable": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+    "version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+    "files": [
+      {
+        "file": "formal/ExactHull.lean",
+        "command": [
+          "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+          "ExactHull.lean"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.32103545498102903,
+        "expected_empty_axiom_audits": 6,
+        "actual_empty_axiom_audits": 6,
+        "nonempty_axiom_audits": false,
+        "output_matches_delivered_log": true,
+        "stdout": "/tmp/zfc-review151-source25-j9qkznh3/ExactHull.actual.log",
+        "stderr": "/tmp/zfc-review151-source25-j9qkznh3/ExactHull.actual.stderr"
+      },
+      {
+        "file": "formal/ModalBasisAudit.lean",
+        "command": [
+          "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+          "ModalBasisAudit.lean"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.29847404174506664,
+        "expected_empty_axiom_audits": 7,
+        "actual_empty_axiom_audits": 7,
+        "nonempty_axiom_audits": false,
+        "output_matches_delivered_log": true,
+        "stdout": "/tmp/zfc-review151-source25-j9qkznh3/ModalBasisAudit.actual.log",
+        "stderr": "/tmp/zfc-review151-source25-j9qkznh3/ModalBasisAudit.actual.stderr"
+      }
+    ],
+    "status": "PASS"
+  },
+  "primary_modal_check": {
+    "url": "https://arxiv.org/pdf/1111.0995v1",
+    "printed_pages": [
+      5,
+      6
+    ],
+    "pdf_pages_zero_based": [
+      4,
+      5
+    ],
+    "visually_read": true,
+    "image_paths": [
+      "/tmp/zfc-review151-source25-j9qkznh3/andreka-p5.png",
+      "/tmp/zfc-review151-source25-j9qkznh3/andreka-p6.png"
+    ],
+    "finding": "Literal abbreviated B/K/5/C1/C2 with MP/necessitation omits T; constant-box-true countervaluation is valid. Main axiom3 and equational D1 exclude it. No refutation of the main interpretation theorem."
+  },
+  "no_bulk_checksum_or_manifest_work": true,
+  "originals_not_modified": true,
+  "no_full_EPSC_EFPC_formalization_claim": true,
+  "no_new_machine_or_consistency_endpoint_claim": true,
+  "recommended_placement": "Complementary addition25 to existing zfc-closure-kernels host; retain unedited article and local proofs/code."
+}

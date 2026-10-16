@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 16 October 2026. This report now reconciles twenty-three manuscripts.
+Intake findings, 16 October 2026. This report now reconciles twenty-five manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -1499,3 +1499,237 @@ no errors, unresolved references, duplicate labels/destinations or boxes.
 All pages were visually inspected, with a detailed page per source enlarged.
 No mathematical claim required retraction at this intake. All open questions,
 failed diagnostics and uncompiled/unbundled limitations remain recorded.
+
+## Batch 151: outgoing equality, finite carriers and exact fixed-point hulls
+
+Intake findings, 16 October 2026. Arrival `121a0de1bb6ea2d9464cd524b95030b39a7c614a`
+adds two complementary manuscripts to this host. Placement `65c776f4be` preserves
+171 ancillary files; the seeded base article remains unchanged. The complete
+mathematical and executable reviews are `intake-151-source-24.md`,
+`intake-151-source-25.md` and `intake-151-source-25-machine.md`. These sources
+continue the existing theory and implementation questions; neither is a new
+internally certified sub-254 consistency machine.
+
+| Local source | Archive and inspected repository pin | Contribution |
+|---|---|---|
+| 24 | `zfc_consistency_proposal.zip`, `2178c3885423f923021d4aaf1dbf52b4e2060837` | Four-node outgoing equality, reserved-zero falsity translation, explicit SK carrier payload, 288-state strict EPSC proxy control and finite public-253 quotient obstruction. This reused archive name denotes a new manuscript, distinct from source 13. |
+| 25 | `zfc_exact_hull_research.zip`, `de047657e193ec605e930eaf149a44a38031820b` | Exact fixed-point EFPC, two-resource constructive hull lemma, stronger single-instance counterexample, narrow modal-list correction, complete Hilbert reference and 271-state EFPC control. |
+
+Both retain the ordinary prior PSC/EPSC calibration and distinguish it from
+local Lean theorems, executable finite tests, compiler contracts and the final
+internal ZFC endpoint. Mira-Cult's original machine, mira-emmy's public 253-state
+reduction, Jeff's verification and Wade's compiler framework retain their
+attribution. The public reference is pinned at
+`0d544f2a2e3c18f12278441a74b7879f31cbe856`; its inclusion is not a new construction.
+
+### Equality and reserved falsity
+
+Source 24 first forms exact classes of full two-sided observational twins O.
+The constant-output EPSC instance gives an exact class for every subset-bounded
+definable predicate; O(y,a) is bounded by a. This supplies an exact O-singleton
+of a without assuming that raw equality or incoming-profile congruence already
+holds. The short predicate
+
+`Eout(x,y) := forall z, (x in z -> y in z)`
+
+then implies O(x,y): test it on the represented O-singleton of x and use
+symmetry. The converse is immediate. Thus the four-node predicate is an
+equivalence and a congruence in both membership positions. Its direction
+matters: incoming inclusion is subset inclusion and does not imply equality.
+Eout is equality of observational classes, not literal identity of raw objects.
+The O-quotient interprets the equality-bearing raw EPSC theory, independently
+of the separate hereditary-domain construction needed for extensional ZF.
+
+For falsity, shift every source variable and binder by one, use R(0,0) as F,
+and interpret the reserved variable at an empty object. Expand equality as
+`forall 0, (R(i+1,0) -> R(j+1,0))`. This local binder is harmless because its
+body has no translated Bottom and its endpoints are positive. All other
+binder-producing operations, substitutions and universal parameter closures
+must preserve the distinguished zero. Merely disabling a rule named GEN0 is
+insufficient. The source supplies satisfaction, substitution and finite-proof
+transport arguments, with explicit no-shift and unrestricted-zero negative
+controls. The result concerns designated-F refutation, not ordinary
+inconsistency of an unrestricted bottom-free theory.
+
+The finite controls check 66,066 relations, 248,729 local singleton/profile
+comparisons, 51,968 translation comparisons and all 32,767 words of length at
+most 14 (1,054 complete parses). Finite pointed examples use only a false point
+and Eout=O. Empty objects plus exact O-singletons for every object force infinitely
+many observational classes, so these diagnostics do not model full EPSC.
+The iterative prefix parser and finite semantic translator are not an implemented
+complete proof checker. The prefix code also differs from the compiler's
+Cantor/base-three numerical representation.
+
+### Artificial finite theories and a preserved compiler correction
+
+Source 24 realizes the earlier artificial-theory route as universal SK equations
+`Kxy=x`, `Sxyz=(xz)(yz)` and one closed inequation `P != K`. The emitted P simulates
+the attributed public 253-state machine. Church–Rosser and the term model give
+the ordinary carrier argument on well-formed inputs; the relation of that
+machine to the precise Con(ZFC) sentence remains an inherited calibration
+obligation. A one-constant encoding is also emitted. The payload has 192,272
+BCL bits (24,034 packed bytes), or 302,419 bits in the one-constant tree code.
+These are term lengths, not state counts. Every interpreter, proof checker,
+term decoder and initializer would still need to be charged.
+
+**Correction 151.1 — compiler input domain.** The delivered generic claim
+"for every table accepted by the specified compiler" is too broad. Its parser
+accepts `#! start -1` with the two rows `1 0 0 R 1` and `1 1 1 R 1`. Native
+execution has no transition at state −1 and halts immediately. Python's negative
+index instead selects the final compiled state, which keeps moving right.
+This is a concrete counterexample to the stated parser-domain claim. Restrict
+the theorem to nonnegative start labels, or reject negative starts before
+compilation. The frozen 253-state input starts at zero and its four payload
+files regenerate exactly; this defect does not invalidate that payload.
+The original claim and code remain preserved, with the complete reproducer in
+the source-24 dossier. No earlier repository claim required retraction.
+
+The source also supplies a complete finite certificate that every exact
+step-preserving quotient of the literal 253-state table is injective. Separating
+read words have length at most 12. Omitting row (0,0) leaves
+compact states 0 and 2 indistinguishable, explaining a runtime-only 252-state
+quotient; that conditional quotient does not initialize from blank tape.
+The 187-case bundled macro corpus covers 505 rows, while the blank bootstrap
+uses the remaining row. This Python certificate is separate from the current
+Lean `NoQuotient254` theorem, which concerns the original 254-state table.
+
+### Exact fixed-point hulls and the scope of local replacements
+
+For a matrix rho and a represented object c, source 25 defines
+
+`F(c;y) := exists x, (Empty(x) or x in c) and rho(x,y)`.
+
+EFPC asserts a represented fixed point `y in c iff F(c;y)` under the usual
+local subset bound. The fresh c must not occur in rho. Full EPSC and full EFPC
+have the same ordinary first-order consequences, but the forward proof uses
+other schema instances to obtain Separation. It is not a replacement theorem
+for one axiom instance in isolation.
+
+The constructive local proof starts with a prefixed container C. L represents
+the intersection of its represented prefixed subobjects, and J represents
+`C intersect F(L)`. Monotonicity gives F(L) subset L; J is itself prefixed, so
+relative leastness gives L subset J and hence exactness. These two explicit
+representation resources avoid any assumption of a semantic powerset or a
+choice of representatives. Global leastness requires an additional represented
+intersection with each arbitrary prefixed object. The report gives a finite
+counterexample when that resource is absent.
+
+A second three-object structure makes the single-instance boundary stronger.
+Its incoming profiles are empty, {0,1}, {0,2}; rho has outputs 0->{0} and
+2->{1}. The generated profiles are {0}, {0}, {0,1}, so object 1 satisfies the
+EPSC closure/support clauses and no object is fixed. An equality-free parameter
+gate activates exactly two symmetric valuations; all others have empty output.
+Consequently even the universally closed single EPSC axiom can hold while its
+EFPC counterpart fails. This is not a full-schema finite model.
+
+Two standalone Lean 4.32.0 files pass all 13 empty-axiom audits. Six cover the
+explicit hull resources, seeded specialization, leastness and its boundary;
+seven cover a Boolean modal countervaluation. The latter validates the literal
+abbreviated B/K/5/C1/C2 list in Andréka–Németi, arXiv:1111.0995v1, while falsifying
+reflexivity T: box is constantly true and diamond constantly false. Primary
+printed pages 5–6 were independently inspected. The paper's earlier axiom 3
+and equational D1 exclude this valuation, so its main interpretation theorem
+is unaffected. The Lean file certifies the Boolean facts; it does not formalize
+a complete modal syntax or derivation soundness theorem.
+
+The full Hilbert reference retains genuine Bottom, K/S/classical logic,
+capture-avoiding instantiation, side-conditioned quantifier distribution, global GEN and exact MP. The
+EPSC/EFPC selector constructs its own axioms and accepts no unchecked roots.
+All 262,404 finite relation pairs, 195,272 resource triples, 2,520 schema and
+55,852 substitution comparisons pass, with 13 malformed certificates rejected.
+The two accepted examples are valid non-refutations. Wrapper sizes depend on
+the logical basis: implication/Bottom gives EPSC 51 versus EFPC 67 tree nodes;
+primitive biconditional gives 39 versus 31. Sharing and fewer matrix occurrences
+remain implementation proposals until their extra logic and decoder are priced.
+
+### Replayed machine controls and limits
+
+| Source | Independent reproduction |
+|---|---|
+| 24 | All six advertised jobs pass. The full 264-recipe proxy sweep reproduces all eight whole-machine distributions and minima 287/287/288/292/289/289/288/288. The strict EPSC winner has 288 states; framework costs vary from 62 to 64 and are counted by actual compilation. All frozen tables, words and formulas match. The full 8,391-case macro census, 187-case bundled corpus and independently regenerated literal quotient certificate also pass. |
+| 25 | All 20,480 selected grammar recipes are actually recompiled; all ten distributions and winners reproduce. Selected EPSC270 and EFPC271 tables, DAGs and independent register certificates match exactly. The independent certificates check 3,620 EPSC operation pairs and 4,028 EFPC operation pairs; the inherited EPSC270 table is byte-identical to source 14. All ten winners are total, graph-reachable and have singleton exact-step bisimulation partitions. These are finite structural facts. |
+| 25 | All 148,368 deduplicated symbol-wise fusion candidates and every row of the first-failure ledger reproduce: 132,389 exhaust fuel, 15,336 exceed the symbolic abstraction and 643 halt unexpectedly. No candidate passes the bounded instruction contract. All 55 protected box rows are retained. Fuel/abstraction outcomes are unresolved, so this is no impossibility proof. |
+
+The original attributed 253-state bootstrap is reproduced at 312,975 steps
+with every one-cell position and the blank exterior checked. Source 25's
+additional inherited direct-fold search reproduces all 56,196 attempts and
+8,391 baseline cases with no affine survivor; it excludes old states 5 and 84.
+The later project search of those two states is therefore a complementary
+family. A source using abstract box summaries still needs their correctness
+and a general binary runtime proof. The ordinary EFPC+IR treatment of relative
+falsity and exceptional codes 0/1 does not itself certify the numerical emitter.
+
+These controls preserve the full equality engine. They are distinct from the
+source-24 reserved-variable reference translation, its large SK carrier and
+source-25 genuine-Bottom equality-free reference checker. No new table is
+claimed to implement those new reference algorithms. Syntax-node rankings,
+finite quotient obstructions and failure to find a passing fusion cannot be
+combined into a state lower bound.
+
+### Current development and remaining work
+
+The project has advanced since both pins. `Tarski.complete` now derives its
+propositional basis from the attributed 107 certificates; `Tarski.alias_complete`
+handles relative falsity for bot-free theories and targets over irreflexive
+models. `NamedNumeric254.transport` translates all named proof rules into the
+original numerical calculus. Its refutation equivalence is for the explicitly
+defined theory Q of encoded numerical theorems; Q/ZFC calibration remains open.
+It does not certify either new frontend.
+
+`Boot253.fullBootstrap253`, `Prefix330.prefix330` and
+`BootstrapFrame253.bootstrap_matches_rm330` now prove the actual full binary
+bootstrap, original register prefix and their whole-tape endpoint relation.
+Instruction preservation, enumerator correspondence and the internal ZFC
+machine endpoint remain open. The existing formula-indexed
+`RawPSCModel.separation_of_model` is reusable for the two EFPC resource cuts,
+after constructing fresh formula builders and the missing EPSC/PSC adapter.
+The existing extensional `PSCCalibration.psc_iff_zf0` concerns a different
+already extensional theory. None of these partial bridges upgrades the reports'
+ordinary full-schema calibrations to completed Lean calibrations.
+
+The existing complete retained-word 268-state control remains smaller than
+these reports' measured controls and still exceeds the attributed public 253.
+The later 504-fold experiment on old states 5 and 84 preserves all 55 protected
+box rows. Its one known affine survivor fails the exact bootstrap through two
+million steps; fuel exhaustion is unresolved. This experiment and source 25's
+symbol-wise fusion family are separate bounded searches, not minimality proofs.
+
+### Placement, evidence and offline replay
+
+All 193 delivered files (176 distinct blobs) were searched through Git history;
+52 union history commits and 32 borrowed blobs were examined in their own and
+parent trees. Neither complete manuscript was previously placed. All 171
+ancillary files (91/80) match the placement commit's own tree. The 22 main,
+section and supplementary TeX files, PDFs and top-level delivery READMEs remain
+in the committed arrival archives, retired from `docs/incoming`. Prefixes are
+`24-proxy-` and `25-exact-`; paths are flattened and vendor stems shortened.
+The longest Windows-prefixed path is 159 characters. Delivered notices,
+Makefiles, scripts and nested READMEs retain their original layout assumptions.
+
+See `data/intake-151-placement.json` for every rename, and the adjacent inventory,
+history and own-tree records. Recover complete packages to scratch before running:
+
+```sh
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_151.py --prepare-only
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_151.py --run all
+```
+
+Recovery and both complete finite helper branches pass on independent scratch
+copies. `--searches` adds the 264/20,480 grammar families; `--fusion` explicitly
+adds the 148,368 bounded fusion replay. The underlying large suites were also
+run during review. In-memory adapters omit bulk manifests while retaining
+functional table/program identities and exact artifact comparisons. No Lean,
+Coq, network access or unbounded consistency search is invoked by the helper.
+
+An unpublished intake draft incorrectly reused the earlier 4,533-pair count
+for these two selected controls. Direct inspection and replay give 3,620 and
+4,028 respectively; `data/intake-151-root-review.json` preserves the correction.
+
+The source dossiers and `data/intake-151-*.json` distinguish each replay and its
+limits. Scratch articles have 28 and 27 pages. All fonts are embedded; no errors,
+unresolved references/citations or duplicate labels/destinations occur. Source
+25 has one readable underfull paragraph, recorded in its article review. Every
+page was visually inspected, with one enlarged detail per source. No delivered
+file was edited and no checksum or line-ending work was performed. Open
+questions, failed experiments and the negative-start counterexample remain
+part of the record.
