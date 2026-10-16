@@ -2301,10 +2301,12 @@ their twelve audited roots prove finite-syntax binding and a specified
 PSC/modal derivation invariant, not Python or binary-machine correctness.
 The full-original-logic 268-state control improves the prior 269 control;
 it is not a compilation of either new checker or a new consistency endpoint.
-Fixed tables and register certificates reproduce. Source 18's reconstructed
-1,024-choice PSC search has six minimizers where its saved histogram has five;
-the winning 283-state table is exact, while the historical histogram and
-unbundled sweeps retain their reproduction limits. Detailed dossiers and
+Fixed tables and register certificates reproduce. All 1,024 costs in source
+18's PSC histogram reproduce exactly using nodes plus 55 plus dispatch depth,
+including its five 283-state minimizers and exact winning table. The initial
+16 October review's six-minimizer discrepancy was an accounting error;
+the [host correction](set-theory/zfc-closure-kernels/README.md) records its
+refutation. Unbundled historical sweeps retain their reproduction limits. Detailed dossiers and
 `code/reproduce_149.py` preserve these boundaries without changing deliveries.
 
 ## Rebuilding the manifest

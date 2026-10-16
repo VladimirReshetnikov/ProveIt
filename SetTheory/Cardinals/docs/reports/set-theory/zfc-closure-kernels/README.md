@@ -1133,13 +1133,14 @@ Source18's full-original269 and full-logic PSC+IR283 tables are compiler
 controls. All11 fixed artifacts reproduce exactly, including the original
 219-to207-node register certificate with4,533 pairs; six mutations reject.
 Both total tables have no conservative quotient/window merge. The reconstructed
-1,024-choice PSC family repeats the exact seed46/exponent4 winner, but its
-histogram has six283-state winners against the delivered five. Python3.12/3.13
-agree, and the legacy grammar also fails to recover the stored histogram.
-The historical sweep driver is absent; the exact reason remains unresolved.
+1,024-choice PSC family repeats the exact seed46/exponent4 winner and **every
+saved histogram bin**, including exactly five283-state winners. All1,024 tables
+were actually compiled and every decision edge re-extracted. The framework
+cost is55 plus dispatcher depth; its observed costs61/62/63/64/65 occur
+5/479/470/66/4 times. The historical sweep driver itself is absent, but this
+precisely specified family reproduces from the delivered algorithm.
 The2,048/10,240/20,000 negative sweeps have only summaries and incomplete
-schedules, so they were not replayed. Those discrepancies do not alter the
-fixed table or its state count. They are not compilations of the binding checker. Its numerical
+schedules, so they were not replayed. They are not compilations of the binding checker. Its numerical
 search recommendations at the old pin do not revive the reduced C/G route.
 The source's report.tex:669–672 and further question at1239ff are now answered
 by source12's full finite-sort model and source17's ordinary PA strengthening.
@@ -1285,3 +1286,14 @@ the full-boot roots use `propext`/`Quot.sound`. This advances the finite253
 baseline independently of either new checker. First dispatch arrival, the330
 register prefix, arbitrary runtime, compiler and internal consistency endpoint
 remain open. See `Computability/BusyBeaver/Research/ZFC/finite253_lean.md`.
+
+Dated intake correction,16October2026: write `81bcbe6a7` and catalogue
+`1cd824fda` incorrectly reported a six-versus-five PSC histogram discrepancy.
+That was our review error. The scratch reconstruction charged a constant62
+framework states; one nominal283 winner requires an extra dispatcher state.
+The corrected price is `decision_nodes + 55 + dispatcher_depth`, verified by
+actually compiling all1,024 tables. Every saved histogram bin now agrees.
+The withdrawn calculation is retained in
+`data/intake-149-source-18-retracted-fixed62.json`; the corrected calculation
+and explicit retraction are in the source18 engineering dossier/evidence.
+The delivered report and its fixed283 artifact did not need correction.
