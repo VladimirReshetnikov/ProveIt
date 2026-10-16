@@ -47,3 +47,17 @@ This supersedes the earlier plan to calibrate the unchanged reduced
 calculus. The state tables and exact regeneration evidence remain useful
 compiler benchmarks. Work toward a consistency machine must preserve the
 complete 253-state frontend or prove a replacement refutation interface.
+
+Source 16 (`9439d775aa`, batch 147) replaces membership code `3P(i,j)+1`
+by `3P(i,j)+4` and makes code 1 primitive Bottom. This also satisfies the
+hypotheses of the finite-sort argument. Each variable label in matrix c
+remains strictly below c (now checked for all codes by
+`Bottom3Syntax.decoded_label_lt`), and Bottom is interpreted as false.
+Neither the C/G formulas nor their freshness gate or logical rows change.
+The C/G/V label's V means the inherited atomic vacuity row, not a new
+substitution rule. Thus the 251-state genuine-Bottom C/G experiment and the
+historical 250 relative-Bottom control are both excluded as unchanged
+abstract consistency searches. Source 16's 252-state PSC experiment has its
+own explicit fixed-slot identity-quantifier countermodel. Its complete
+Hilbert reference checker is a different program and is not refuted by these
+models. The literal-table qualification above continues to apply.
