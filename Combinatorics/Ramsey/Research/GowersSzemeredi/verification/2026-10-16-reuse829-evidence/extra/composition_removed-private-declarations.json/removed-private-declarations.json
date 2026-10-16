@@ -1,0 +1,236 @@
+[
+  {
+    "owner": "GowersSzemeredi.Proofs12BernoulliSelection",
+    "name": "LeanProofs.GowersSzemeredi.restrictionWeight_insert",
+    "kind": "lemma",
+    "header": "private lemma restrictionWeight_insert {X : Type*} [DecidableEq X]\n    (U : Finset X) (p : X → Real) (a : X) (ha : a ∉ U) (S : Finset X)\n    (hS : S ⊆ U) :\n    restrictionWeight (insert a U) p (insert a S) =\n      p a * restrictionWeight U p S",
+    "context": [],
+    "block_sha256": "c75e0b9c82c2228d4bf471b10b88485fd2a4dba783b52a439f5d7952ac5a1288",
+    "proof_lines": 8
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs12BernoulliSelection",
+    "name": "LeanProofs.GowersSzemeredi.restrictionWeight_not_insert",
+    "kind": "lemma",
+    "header": "private lemma restrictionWeight_not_insert {X : Type*} [DecidableEq X]\n    (U : Finset X) (p : X → Real) (a : X) (ha : a ∉ U) (S : Finset X)\n    (hS : S ⊆ U) :\n    restrictionWeight (insert a U) p S =\n      (1 - p a) * restrictionWeight U p S",
+    "context": [],
+    "block_sha256": "9046a003cb55a2ff24a8205ae54bc0be88046c73b3951413edb6352b79cbd589",
+    "proof_lines": 9
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs12Restriction",
+    "name": "LeanProofs.GowersSzemeredi.restriction_zero_mem_left",
+    "kind": "lemma",
+    "header": "private lemma restriction_zero_mem_left : (0 : Fin 16) ∈ restrictionLeft",
+    "context": [],
+    "block_sha256": "4284235985fe2773889d20cd7afcbb398f0edf7ada2a73bccf0ac1b5a13fc89e",
+    "proof_lines": 1
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs12Restriction",
+    "name": "LeanProofs.GowersSzemeredi.restriction_zero_notMem_right",
+    "kind": "lemma",
+    "header": "private lemma restriction_zero_notMem_right : (0 : Fin 16) ∉ restrictionRight",
+    "context": [],
+    "block_sha256": "a5c25a53edad8ff358d0c8dd9a827024e200f12b426a519daa2aec56d8ff44c4",
+    "proof_lines": 1
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs12Restriction",
+    "name": "LeanProofs.GowersSzemeredi.restriction_additive_ext",
+    "kind": "lemma",
+    "header": "private lemma restriction_additive_ext {N : Nat}\n    {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)\n    (hy : IsAdditiveTuple (k := 8) y)\n    (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y",
+    "context": [],
+    "block_sha256": "e56ebf63b6ad6a3f5028574a449160f94069fd8398a671941375ce514277ff8c",
+    "proof_lines": 36
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs13PreparedFrequencyGraph",
+    "name": "LeanProofs.GowersSzemeredi.contextRestrictionLeft",
+    "kind": "def",
+    "header": "private def contextRestrictionLeft : Finset (Fin 16)",
+    "context": [],
+    "block_sha256": "cfc204a6412bcaf7d942e37bea99984761fd1515f396e4a7aff86c3f019fd8e3",
+    "proof_lines": 0
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs13PreparedFrequencyGraph",
+    "name": "LeanProofs.GowersSzemeredi.contextRestrictionRight",
+    "kind": "def",
+    "header": "private def contextRestrictionRight : Finset (Fin 16)",
+    "context": [],
+    "block_sha256": "3e7ba0ff28d361de760970933221541b8eeef558b8c294a3c1375bc4f1929dc8",
+    "proof_lines": 0
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs13PreparedFrequencyGraph",
+    "name": "LeanProofs.GowersSzemeredi.context_zero_mem_left",
+    "kind": "lemma",
+    "header": "private lemma context_zero_mem_left : (0 : Fin 16) ∈ contextRestrictionLeft",
+    "context": [],
+    "block_sha256": "e73841653a4fd3c07cfb77e7bea0ee876c8f2da635abb7c38167c836e056c748",
+    "proof_lines": 1
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs13PreparedFrequencyGraph",
+    "name": "LeanProofs.GowersSzemeredi.context_zero_notMem_right",
+    "kind": "lemma",
+    "header": "private lemma context_zero_notMem_right : (0 : Fin 16) ∉ contextRestrictionRight",
+    "context": [],
+    "block_sha256": "90dcad25cda63d331c6c90dabf57fe0d35a405bf9dd259777e0b1294f51f67dc",
+    "proof_lines": 1
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs13PreparedFrequencyGraph",
+    "name": "LeanProofs.GowersSzemeredi.context_additive_ext",
+    "kind": "lemma",
+    "header": "private lemma context_additive_ext {N : Nat}\n    {x y : Fin 16 → ZMod N} (hx : IsAdditiveTuple (k := 8) x)\n    (hy : IsAdditiveTuple (k := 8) y)\n    (htail : ∀ i : Fin 15, x i.succ = y i.succ) : x = y",
+    "context": [],
+    "block_sha256": "acb524cf683719e0cdc5de16104b3016a77d5719d4adb423fc318a17ce72b352",
+    "proof_lines": 39
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15FejerSelection",
+    "name": "LeanProofs.GowersSzemeredi.fejerWeight",
+    "kind": "def",
+    "header": "private def fejerWeight {X : Type*} [DecidableEq X]\n    (U : Finset X) (p : X → Real) (S : Finset X) : Real",
+    "context": [],
+    "block_sha256": "0297d36091fa8a57a25b7d702fc75964e1fcc8de8d4c5f406ff052335645858f",
+    "proof_lines": 0
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15FejerSelection",
+    "name": "LeanProofs.GowersSzemeredi.fejerWeight_nonneg",
+    "kind": "lemma",
+    "header": "private lemma fejerWeight_nonneg {X : Type*} [DecidableEq X]\n    (U : Finset X) (p : X → Real) (hp0 : ∀ x ∈ U, 0 ≤ p x)\n    (hp1 : ∀ x ∈ U, p x ≤ 1) (S : Finset X) (hS : S ⊆ U) :\n    0 ≤ fejerWeight U p S",
+    "context": [],
+    "block_sha256": "2b3ebfd6cbe8c1e368c1469c991545ea0138df65ef474e4123323d5fdc8008dc",
+    "proof_lines": 4
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15FejerSelection",
+    "name": "LeanProofs.GowersSzemeredi.fejerWeight_insert",
+    "kind": "lemma",
+    "header": "private lemma fejerWeight_insert {X : Type*} [DecidableEq X]\n    (U : Finset X) (p : X → Real) (a : X) (ha : a ∉ U) (S : Finset X)\n    (hS : S ⊆ U) :\n    fejerWeight (insert a U) p (insert a S) =\n      p a * fejerWeight U p S",
+    "context": [],
+    "block_sha256": "f62f3d31a768b18956822e2ad1fb4b8f81d14438021d031e93dd3d0bbb362148",
+    "proof_lines": 8
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15FejerSelection",
+    "name": "LeanProofs.GowersSzemeredi.fejerWeight_not_insert",
+    "kind": "lemma",
+    "header": "private lemma fejerWeight_not_insert {X : Type*} [DecidableEq X]\n    (U : Finset X) (p : X → Real) (a : X) (ha : a ∉ U) (S : Finset X)\n    (hS : S ⊆ U) :\n    fejerWeight (insert a U) p S =\n      (1 - p a) * fejerWeight U p S",
+    "context": [],
+    "block_sha256": "972c39beea918ff5e0d2ccaa03c699ef0f0590df63f42312c487f4b81fffa075",
+    "proof_lines": 9
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15FejerSelection",
+    "name": "LeanProofs.GowersSzemeredi.fejerWeight_sum",
+    "kind": "lemma",
+    "header": "private lemma fejerWeight_sum {X : Type*} [DecidableEq X]\n    (U : Finset X) (p : X → Real) :\n    ∑ S ∈ U.powerset, fejerWeight U p S = 1",
+    "context": [],
+    "block_sha256": "c53b79526b164e9e7278ff0dda9ee933735848c9ea1fc5e897b1806f7bb6b628",
+    "proof_lines": 22
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15FejerSelection",
+    "name": "LeanProofs.GowersSzemeredi.fejerWeight_event",
+    "kind": "lemma",
+    "header": "private lemma fejerWeight_event {X : Type*} [DecidableEq X]\n    (U C : Finset X) (p : X → Real) (hC : C ⊆ U) :\n    ∑ S ∈ U.powerset, fejerWeight U p S * (if C ⊆ S then 1 else 0) =\n      ∏ x ∈ C, p x",
+    "context": [],
+    "block_sha256": "dc196d061c92e33aa77b3d776aa7909c7e69e0be7c0d8a2360057c22ee231c7f",
+    "proof_lines": 98
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15FejerSelection",
+    "name": "LeanProofs.GowersSzemeredi.fejerWeight_count",
+    "kind": "lemma",
+    "header": "private lemma fejerWeight_count {X E : Type*} [DecidableEq X]\n    [DecidableEq E] (U : Finset X) (p : X → Real) (edges : Finset E)\n    (carrier : E → Finset X) (hcarrier : ∀ e ∈ edges, carrier e ⊆ U) :\n    (∑ S ∈ U.powerset, fejerWeight U p S *\n        ((edges.filter fun e ↦ carrier e ⊆ S).card : Real)) =\n      ∑ e ∈ edges, ∏ x ∈ carrier e, p x",
+    "context": [],
+    "block_sha256": "e06b29a0db24e221fa04541e6a71733ad7f6b5ec0b025ebb785ea5adfa3bb059",
+    "proof_lines": 7
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15FejerSelection",
+    "name": "LeanProofs.GowersSzemeredi.exists_subset_count_score",
+    "kind": "lemma",
+    "header": "private lemma exists_subset_count_score {X E : Type*} [DecidableEq X]\n    [DecidableEq E] (U : Finset X) (p : X → Real)\n    (hp0 : ∀ x ∈ U, 0 ≤ p x) (hp1 : ∀ x ∈ U, p x ≤ 1)\n    (good bad : Finset E) (carrier : E → Finset X)\n    (hgood : ∀ e ∈ good, carrier e ⊆ U)\n    (hbad : ∀ e ∈ bad, carrier e ⊆ U) (eta A : Real)\n    (haverage : A ≤\n      eta * (∑ e ∈ good, ∏ x ∈ carrier e, p x) -\n        ∑ e ∈ bad, ∏ x ∈ carrier e, p x) :\n    ∃ S ⊆ U, A ≤\n      eta * ((good.filter fun e ↦ carrier e ⊆ S).card : Real) -\n        ((bad.filter fun e ↦ carrier e ⊆ S).card : Real)",
+    "context": [],
+    "block_sha256": "d52cca92243da4d73587d1d055828449aeddae1108e80059461e49aef4ee42e7",
+    "proof_lines": 62
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15Restriction",
+    "name": "LeanProofs.GowersSzemeredi.selectionWeight",
+    "kind": "def",
+    "header": "private def selectionWeight {X : Type*} [DecidableEq X]\n    (U : Finset X) (p : X → Real) (S : Finset X) : Real",
+    "context": [],
+    "block_sha256": "65c271dd0584014b8d47569a4339811cae08f6141de16cff06fcb8a0e3bcb273",
+    "proof_lines": 0
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15Restriction",
+    "name": "LeanProofs.GowersSzemeredi.selectionWeight_nonneg",
+    "kind": "lemma",
+    "header": "private lemma selectionWeight_nonneg {X : Type*} [DecidableEq X]\n    (U : Finset X) (p : X → Real) (hp0 : ∀ x ∈ U, 0 ≤ p x)\n    (hp1 : ∀ x ∈ U, p x ≤ 1) (S : Finset X) (hS : S ⊆ U) :\n    0 ≤ selectionWeight U p S",
+    "context": [],
+    "block_sha256": "dcb79d3112f25ca72f8294875cd923c634f107fc0fcbef5a63f204a2b6183126",
+    "proof_lines": 4
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15Restriction",
+    "name": "LeanProofs.GowersSzemeredi.selectionWeight_insert",
+    "kind": "lemma",
+    "header": "private lemma selectionWeight_insert {X : Type*} [DecidableEq X]\n    (U : Finset X) (p : X → Real) (a : X) (ha : a ∉ U) (S : Finset X)\n    (hS : S ⊆ U) :\n    selectionWeight (insert a U) p (insert a S) =\n      p a * selectionWeight U p S",
+    "context": [],
+    "block_sha256": "de9e13d20a19aa500d6616f43193b2055386ff90d381f67b378f1a6529cf0e50",
+    "proof_lines": 8
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15Restriction",
+    "name": "LeanProofs.GowersSzemeredi.selectionWeight_not_insert",
+    "kind": "lemma",
+    "header": "private lemma selectionWeight_not_insert {X : Type*} [DecidableEq X]\n    (U : Finset X) (p : X → Real) (a : X) (ha : a ∉ U) (S : Finset X)\n    (hS : S ⊆ U) :\n    selectionWeight (insert a U) p S =\n      (1 - p a) * selectionWeight U p S",
+    "context": [],
+    "block_sha256": "2995d486235ab65a5ddd7585b7d2ea47b36a1b89ded52dbebb18b92e4d7588be",
+    "proof_lines": 9
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15Restriction",
+    "name": "LeanProofs.GowersSzemeredi.selectionWeight_sum",
+    "kind": "lemma",
+    "header": "private lemma selectionWeight_sum {X : Type*} [DecidableEq X]\n    (U : Finset X) (p : X → Real) :\n    ∑ S ∈ U.powerset, selectionWeight U p S = 1",
+    "context": [],
+    "block_sha256": "d61485a4bb1802e60b97de067d7dad591fdb99abcb9cae899b6165e9a707e090",
+    "proof_lines": 22
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15Restriction",
+    "name": "LeanProofs.GowersSzemeredi.selectionWeight_event",
+    "kind": "lemma",
+    "header": "private lemma selectionWeight_event {X : Type*} [DecidableEq X]\n    (U C : Finset X) (p : X → Real) (hC : C ⊆ U) :\n    ∑ S ∈ U.powerset, selectionWeight U p S * (if C ⊆ S then 1 else 0) =\n      ∏ x ∈ C, p x",
+    "context": [],
+    "block_sha256": "1f2055e891acd77b62f002782b296443a3db6e34b04127241334f78f3b8b0eb2",
+    "proof_lines": 98
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15Restriction",
+    "name": "LeanProofs.GowersSzemeredi.selectionWeight_count",
+    "kind": "lemma",
+    "header": "private lemma selectionWeight_count {X E : Type*} [DecidableEq X]\n    [DecidableEq E] (U : Finset X) (p : X → Real) (edges : Finset E)\n    (carrier : E → Finset X) (hcarrier : ∀ e ∈ edges, carrier e ⊆ U) :\n    (∑ S ∈ U.powerset, selectionWeight U p S *\n        ((edges.filter fun e ↦ carrier e ⊆ S).card : Real)) =\n      ∑ e ∈ edges, ∏ x ∈ carrier e, p x",
+    "context": [],
+    "block_sha256": "dc3c7d9e274dbd0dafb985a09ba8bef8e5c7eb5b0858368ffbd3dc3af6429404",
+    "proof_lines": 7
+  },
+  {
+    "owner": "GowersSzemeredi.Proofs15Restriction",
+    "name": "LeanProofs.GowersSzemeredi.exists_subset_count_score",
+    "kind": "lemma",
+    "header": "private lemma exists_subset_count_score {X E : Type*} [DecidableEq X]\n    [DecidableEq E] (U : Finset X) (p : X → Real)\n    (hp0 : ∀ x ∈ U, 0 ≤ p x) (hp1 : ∀ x ∈ U, p x ≤ 1)\n    (good bad : Finset E) (carrier : E → Finset X)\n    (hgood : ∀ e ∈ good, carrier e ⊆ U)\n    (hbad : ∀ e ∈ bad, carrier e ⊆ U) (eta A : Real)\n    (haverage : A ≤\n      eta * (∑ e ∈ good, ∏ x ∈ carrier e, p x) -\n        ∑ e ∈ bad, ∏ x ∈ carrier e, p x) :\n    ∃ S ⊆ U, A ≤\n      eta * ((good.filter fun e ↦ carrier e ⊆ S).card : Real) -\n        ((bad.filter fun e ↦ carrier e ⊆ S).card : Real)",
+    "context": [],
+    "block_sha256": "96d48401b648a0f343bab78f39f96d1a8565855407b3ca3c641035fbf3cc524c",
+    "proof_lines": 62
+  }
+]

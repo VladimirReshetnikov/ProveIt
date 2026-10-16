@@ -9528,6 +9528,68 @@ qualifications remain; the 120-row catalogue does not certify literal fidelity
 of every original statement. This is a proof/dependency simplification, with no
 new numerical-bound claim.
 
+### L.109. Sharing Bernoulli and additive-tuple proofs
+
+Repaired source `5e5af281970d9f5c1ea637fa6b32fa7c4551a810` removes 829 source lines
+and 691 theorem proof-body lines across 13 production files relative to
+`823ad7063d4f098246e204cea91f7756d5fe1aa3`. Section 15 reuses the canonical
+Bernoulli subset-selection result; that result now uses the existing finite
+product identities and a finite maximum argument. Three implementations of
+the additive-tuple extension argument share the existing public theorem,
+moved unchanged with its four supporting declarations into `Proofs00Basics`.
+Four Fourier estimates reuse existing norm bounds, and the final-step exponent
+estimate works directly at the quarter-scale threshold.
+
+The source review preserves 743 complete declaration headers, including five
+moved declarations, and 236 non-theorem blocks. It removes 26 private declarations
+and changes 13 retained proof bodies. No new declaration, helper or module is
+introduced. The moved additive-tuple block increases the imported source of
+some early consumers by 53 lines, including 38 proof lines; the total reduction
+includes that cost. Explicit imports keep the required amplification provider
+available to the two consumers that need it.
+
+The original `Final` closure decreases from 601 modules / 123,958 source lines
+to 600 / 123,199; the stronger `Proofs18CoverFejerAllDegrees` closure decreases
+from 657 / 137,999 to 656 / 136,960. These dependency totals are distinct from
+the direct 829-line source reduction.
+
+The actual inventory generator and independent comparison preserve all 120
+ordered rows and 544 companion occurrences. Four arrays are restored through
+whole-object permutations; the only final differences are 14 source-line
+locations. Duplicate occurrences, qualifications and all other fields are
+preserved. The inventory comparison does not certify literal fidelity of every
+original paper statement.
+
+The first core attempt at `f4e4e721` failed when `rw` tried to replace a
+condition inside an indicator with a dependent `Decidable` instance. Replacing
+that step with `simp only` preserves the statement and all source locations.
+The targeted `Proofs12BernoulliSelection` check passed with two modules; the
+failed core log and the targeted repair evidence remain part of the archive.
+The independent repair review checks the sole proof-line change and confirms
+that the other 1,970 protected source files are unchanged. The targeted pass is
+separate from the full validation chain on repaired source.
+
+Three actual native checker commands passed with exit zero: the 572-module
+core; one command for 65 shared roots with a 1,915-module footer; and one
+command for 18 supplemental roots with a 351-module footer. Source and artifact
+stability checks passed for all three commands. Their union contains 1,964
+freshly verified modules. All seven previously retained historical scopes are
+included in the fresh shared command; no historical retention is needed. The
+84 per-root closure entries are metadata, not 84 native command outcomes.
+
+The [archive index](verification/2026-10-16-reuse829-evidence/index.json) and
+[evidence map](verification/2026-10-16-reuse829-evidence/evidence-map.json) bind
+105 evidence files, including the actual receipts and logs, source ledger,
+source and tool pins, source and inventory reviews, and the failed core attempt
+and targeted repair. The index and map are two additional files. This evidence
+covers repaired proof source `5e5af281`; later simplifications require their own
+native validation.
+
+Final statements, numerical bounds and positive-step progression conclusions
+are unchanged. The documented Lemma 16.10 correction and original-paper fidelity
+qualifications remain. This checkpoint simplifies the proof and its dependencies;
+it introduces no new numerical-bound claim.
+
 ## F. Routes
 
 **Status (2026-10-11, L.12).** All routes below are historical. Route 1
