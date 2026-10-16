@@ -82,6 +82,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `QuotientModel.lean` | Actual quotient domain and membership congruence; computable equality-free formula translation, its satisfaction bridge and quotient Extensionality. |
 | `ProfileAxioms.lean` | Interpreted Empty, Pairing, Union, Separation, Power and partial Replacement under explicit instances/invariance hypotheses; singleton-closed containers, with ordinary Infinity still separate. |
 | `PowerSyntax.lean` | Fixed equality-free SubD/Power-filter matrices obtained from actual Form-indexed CP/GIC, including the bound for copies outside a transitive container. |
+| `RawPSCProfile.lean` | Full incoming/outgoing profile equivalence, twin singletons, the equality-free decoder, transitive covers, Separation and Union under explicit PSC instances; actual formula adapters remain separate. |
 | `PSCSaturation.lean` | Hereditary incoming-profile saturation, the purity cut and guarded PSC hull transfer under explicit per-instance semantic resources; no full first-order interpretation theorem yet. |
 | `PositiveClosure.lean` | Exact constant fibers, singletons, Power Set, gated decoder root coverage, Separation and Union, under explicit per-relation semantic closure instances. |
 | `Bootstrap.lean` | Pairing, Russell-root partial Replacement and Infinity under explicit per-relation instances and the earlier set constructions; Infinity needs no Extensionality. |
@@ -90,6 +91,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `PSCCalibration.lean` | Extensionality plus subset-seeded PSC and ZF without Foundation or Choice have the same models and the same sentence theorems in the existing `BProv` calculus. |
 | `StateReduction.lean` | A valid transition quotient preserves every finite run, arbitrary/blank halting and exact final score in the existing machine model. |
 | `Table254.lean` | Literal baseline table, bounds, halt-edge count and initial action, checked by kernel `decide`. |
+| `Table253.lean` | Attributed literal mira-emmy 253-state table and actual first 1,024 blank-tape steps, checked by kernel reduction; the complete 312,975-step boot and runtime bridge remain open. |
 | `Table252.lean` | Literal experimental table, 252-state/504-row bounds, both halt edges and the normalized row, checked by kernel `decide`. |
 | `FormulaRPN.lean` | Three-constructor NAND formula syntax; exact prefix-token parsing in both directions; De Bruijn scope check and a closed semantic contradiction. |
 | `Base3Encoding.lean` | Finite named membership/implication/forall code tags and label freshness; excludes cyclic truth code 0. |
@@ -120,7 +122,7 @@ uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
 This compiles the first-order logic, calculus and completeness modules,
-`ZF.Zf`, `BusyBeaver.Core`, the twenty-four research modules and the umbrella into a
+`ZF.Zf`, `BusyBeaver.Core`, the twenty-six research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the source check and axiom outputs. The pinned Lean toolchain must
@@ -191,6 +193,16 @@ now extend through composition and an actual extensional quotient, with checked
 first-order matrix adapters for those steps. The remaining set-existence lemmas
 are checked under explicit semantic instances. Their complete first-order
 adapters, the ordinary Infinity bridge and the ZFC consistency reduction remain.
+
+[The logical-engine audit](logical_engine_completeness.md) locates the
+original equality machinery's role in substitution and alpha conversion.
+Quantifier-only repairs do not supply cross-variable atomic transport. A
+control keeping all nine original logical outputs and four formula tags
+compiles raw PSC to 279 states with fixed grammar sharing; it retains the
+complete logical frontend specification, with its changed theory/enumerator
+and binary simulation still unproved. Its exact baseline and controls reproduce.
+[The finite 253-state Lean layer](finite253_lean.md) records the attributed
+table and initial 1,024 actual steps, with no end-to-end endpoint claim.
 
 [The PSC-only compiler control](psc_backend_experiment.md) tests the new
 schema with original rho6, a fresh `code+2` binder and genuine bottom. Exact
