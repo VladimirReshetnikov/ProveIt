@@ -30,8 +30,10 @@ def main() -> None:
         *( ("Computability/BusyBeaver/Lean", f"BusyBeaver/ZFC/{name}.lean")
            for name in ("ProfileCongruence", "PositiveClosure", "Bootstrap", "DeepPositiveClosure",
                         "DefinableClosure", "ProfilePairs", "ProfileCollection", "ProfileSyntax",
+                        "ProfileModel", "ProfileComposition", "CompositionModel", "QuotientModel",
+                        "ProfileAxioms", "PowerSyntax", "PSCSaturation",
                         "StateReduction", "Table254", "Table252", "FormulaRPN", "Base3Encoding",
-                        "PartialTotalization",
+                        "Base3Syntax", "PartialTotalization", "WadeMachine",
                         "PSCCalibration") ),
         ("Computability/BusyBeaver/Lean", "BusyBeaver/ZFC.lean"),
     ]

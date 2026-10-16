@@ -1,0 +1,314 @@
+{
+  "scope": "Authored recovery helper: all six core suites, source04 extended engineering, source08 six pinned-generator comparisons; no manifest work or proof-assistant replay",
+  "all_commands_succeeded": true,
+  "runs": [
+    {
+      "scratch": "/tmp/zfc-batch144-reproduce-h5xl2saw",
+      "commands": [
+        {
+          "source": 1,
+          "command": [
+            "code/verify_benchmarks.py",
+            "--out",
+            "results/benchmark_verification.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/01-01.log"
+        },
+        {
+          "source": 1,
+          "command": [
+            "code/kernel_reduction.py",
+            "--out",
+            "results/kernel_reduction.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/01-02.log"
+        },
+        {
+          "source": 1,
+          "command": [
+            "engineering/blank_start_certificate.py",
+            "--sources",
+            "machines",
+            "--output",
+            "engineering/blank_start_certificate.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/01-03.log"
+        },
+        {
+          "source": 2,
+          "command": [
+            "reproduce.py",
+            "--table",
+            "/home/codex/.codex/worktrees/ec20/Proofs/lib/jeff-busy-beaver-zfc254/ZF/m254/machine/zfc_254.tm"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/02-04.log"
+        },
+        {
+          "source": 2,
+          "command": [
+            "code/check_certificate.py",
+            "--file",
+            "examples/identity.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/02-05.log"
+        },
+        {
+          "source": 2,
+          "command": [
+            "code/check_certificate.py",
+            "--start",
+            "0",
+            "--count",
+            "10000"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/02-06.log"
+        },
+        {
+          "source": 3,
+          "command": [
+            "build.py",
+            "--tests",
+            "--skip-pdf",
+            "--table",
+            "/home/codex/.codex/worktrees/ec20/Proofs/lib/jeff-busy-beaver-zfc254/ZF/m254/machine/zfc_254.tm"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/03-07.log"
+        },
+        {
+          "source": 4,
+          "command": [
+            "build.py",
+            "--tests",
+            "--skip-pdf"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/04-08.log"
+        },
+        {
+          "source": 4,
+          "command": [
+            "code/checker.py",
+            "data/identity.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/04-09.log"
+        },
+        {
+          "source": 4,
+          "command": [
+            "code/checker.py",
+            "data/schema_example.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/04-10.log"
+        },
+        {
+          "source": 5,
+          "command": [
+            "machine/rebracket_axioms.py",
+            "--inputs",
+            "machine/inputs",
+            "--output",
+            "/tmp/zfc-batch144-reproduce-h5xl2saw/generated269"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/05-11.log"
+        },
+        {
+          "source": 5,
+          "command": [
+            "machine/verify_rm_certificate.py",
+            "--source",
+            "machine/inputs/source_dag.json",
+            "--candidate",
+            "/tmp/zfc-batch144-reproduce-h5xl2saw/generated269/rebracketed_dag.json",
+            "--certificate",
+            "/tmp/zfc-batch144-reproduce-h5xl2saw/generated269/rm_bisimulation.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/05-12.log"
+        },
+        {
+          "source": 5,
+          "command": [
+            "validate.py"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/05-13.log"
+        },
+        {
+          "source": 5,
+          "command": [
+            "code/finite_saturation.py",
+            "--output",
+            "/tmp/zfc-batch144-reproduce-h5xl2saw/finite-saturation.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/05-14.log"
+        },
+        {
+          "source": 6,
+          "command": [
+            "verify.py",
+            "--no-integrity"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-h5xl2saw/06-15.log"
+        }
+      ]
+    },
+    {
+      "scratch": "/tmp/zfc-batch144-reproduce-bhm9olsp",
+      "commands": [
+        {
+          "source": 1,
+          "command": [
+            "code/verify_benchmarks.py",
+            "--out",
+            "results/benchmark_verification.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-bhm9olsp/01-01.log"
+        },
+        {
+          "source": 1,
+          "command": [
+            "code/kernel_reduction.py",
+            "--out",
+            "results/kernel_reduction.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-bhm9olsp/01-02.log"
+        },
+        {
+          "source": 1,
+          "command": [
+            "engineering/blank_start_certificate.py",
+            "--sources",
+            "machines",
+            "--output",
+            "engineering/blank_start_certificate.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-bhm9olsp/01-03.log"
+        },
+        {
+          "source": 1,
+          "command": [
+            "engineering/analyze_table.py",
+            "/tmp/zfc-batch144-reproduce-bhm9olsp/01/zfc_machine_research/engineering/sources/zfc_254.tm",
+            "/tmp/zfc-batch144-reproduce-bhm9olsp/01/zfc_machine_research/engineering/sources/zfc_253.tm",
+            "--output",
+            "engineering/structural_results.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-bhm9olsp/01-04.log"
+        },
+        {
+          "source": 1,
+          "command": [
+            "engineering/grammar_audit.py",
+            "/tmp/zfc-batch144-reproduce-bhm9olsp/01/zfc_machine_research/engineering/sources/Prog254.v",
+            "--output",
+            "engineering/grammar_results.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-bhm9olsp/01-05.log"
+        },
+        {
+          "source": 1,
+          "command": [
+            "engineering/context_search.py",
+            "--sources",
+            "/tmp/zfc-batch144-reproduce-bhm9olsp/01/zfc_machine_research/engineering/sources",
+            "--search",
+            "--all-noncore",
+            "--output",
+            "engineering/redirection_results.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-bhm9olsp/01-06.log"
+        },
+        {
+          "source": 1,
+          "command": [
+            "engineering/runtime252_audit.py",
+            "--sources",
+            "/tmp/zfc-batch144-reproduce-bhm9olsp/01/zfc_machine_research/engineering/sources",
+            "--output",
+            "engineering/runtime252_results.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-bhm9olsp/01-07.log"
+        },
+        {
+          "source": 1,
+          "command": [
+            "engineering/bootstrap_search.py",
+            "--sources",
+            "/tmp/zfc-batch144-reproduce-bhm9olsp/01/zfc_machine_research/engineering/sources",
+            "--fuel",
+            "2000000",
+            "--output",
+            "engineering/bootstrap_results.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-bhm9olsp/01-08.log"
+        },
+        {
+          "source": 5,
+          "command": [
+            "machine/rebracket_axioms.py",
+            "--inputs",
+            "machine/inputs",
+            "--output",
+            "/tmp/zfc-batch144-reproduce-bhm9olsp/generated269"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-bhm9olsp/05-09.log"
+        },
+        {
+          "source": 5,
+          "command": [
+            "machine/verify_rm_certificate.py",
+            "--source",
+            "machine/inputs/source_dag.json",
+            "--candidate",
+            "/tmp/zfc-batch144-reproduce-bhm9olsp/generated269/rebracketed_dag.json",
+            "--certificate",
+            "/tmp/zfc-batch144-reproduce-bhm9olsp/generated269/rm_bisimulation.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-bhm9olsp/05-10.log"
+        },
+        {
+          "source": 5,
+          "command": [
+            "validate.py",
+            "--upstream-kernel",
+            "/tmp/zfc-batch144-reproduce-bhm9olsp/pinned-kernel-metrics.py"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-bhm9olsp/05-11.log"
+        },
+        {
+          "source": 5,
+          "command": [
+            "code/finite_saturation.py",
+            "--output",
+            "/tmp/zfc-batch144-reproduce-bhm9olsp/finite-saturation.json"
+          ],
+          "returncode": 0,
+          "log": "/tmp/zfc-batch144-reproduce-bhm9olsp/05-12.log"
+        }
+      ]
+    }
+  ]
+}

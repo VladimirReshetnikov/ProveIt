@@ -77,6 +77,57 @@ theorem sat_orderedPairForm (mem : V → V → Prop) (env : Nat → V) (i j c : 
       (sat_pairForm mem _ 0 (i + 2) (j + 2)).mpr hp,
       (sat_pairForm mem _ (c + 2) 1 0).mpr hc⟩
 
+def appForm (r i j : Nat) : Form :=
+  fEx (fAnd (fMem 0 (r + 1)) (orderedPairForm (i + 1) (j + 1) 0))
+
+def bisimForm (r : Nat) : Form :=
+  fAll (fAll (fImp (appForm (r + 2) 1 0) (fAnd
+    (fAll (fImp (fMem 0 2)
+      (fEx (fAnd (fMem 0 2) (appForm (r + 4) 1 0)))))
+    (fAll (fImp (fMem 0 1)
+      (fEx (fAnd (fMem 0 3) (appForm (r + 4) 0 1))))))))
+
+def eqvForm (i j : Nat) : Form :=
+  fEx (fAnd (bisimForm 0) (appForm 0 (i + 1) (j + 1)))
+
+theorem sat_appForm (mem : V → V → Prop) (env : Nat → V) (r i j : Nat) :
+    Sat mem env (appForm r i j) ↔ App mem (env r) (env i) (env j) := by
+  constructor
+  · rintro ⟨c, hc, hPair⟩
+    exact ⟨c, hc, (sat_orderedPairForm mem _ (i + 1) (j + 1) 0).mp hPair⟩
+  · rintro ⟨c, hc, hPair⟩
+    exact ⟨c, hc, (sat_orderedPairForm mem _ (i + 1) (j + 1) 0).mpr hPair⟩
+
+theorem sat_bisimForm (mem : V → V → Prop) (env : Nat → V) (r : Nat) :
+    Sat mem env (bisimForm r) ↔ Bisim mem (env r) := by
+  constructor
+  · intro h x y hxy
+    obtain ⟨hForth, hBack⟩ := h x y ((sat_appForm mem _ (r + 2) 1 0).mpr hxy)
+    constructor
+    · intro a ha
+      obtain ⟨b, hb, hEdge⟩ := hForth a ha
+      exact ⟨b, hb, (sat_appForm mem _ (r + 4) 1 0).mp hEdge⟩
+    · intro b hb
+      obtain ⟨a, ha, hEdge⟩ := hBack b hb
+      exact ⟨a, ha, (sat_appForm mem _ (r + 4) 0 1).mp hEdge⟩
+  · intro h x y hxy
+    obtain ⟨hForth, hBack⟩ := h x y ((sat_appForm mem _ (r + 2) 1 0).mp hxy)
+    constructor
+    · intro a ha
+      obtain ⟨b, hb, hEdge⟩ := hForth a ha
+      exact ⟨b, hb, (sat_appForm mem _ (r + 4) 1 0).mpr hEdge⟩
+    · intro b hb
+      obtain ⟨a, ha, hEdge⟩ := hBack b hb
+      exact ⟨a, ha, (sat_appForm mem _ (r + 4) 0 1).mpr hEdge⟩
+
+theorem sat_eqvForm (mem : V → V → Prop) (env : Nat → V) (i j : Nat) :
+    Sat mem env (eqvForm i j) ↔ Eqv mem (env i) (env j) := by
+  constructor
+  · rintro ⟨r, hr, hEdge⟩
+    exact ⟨r, (sat_bisimForm mem _ 0).mp hr, (sat_appForm mem _ 0 (i + 1) (j + 1)).mp hEdge⟩
+  · rintro ⟨r, hr, hEdge⟩
+    exact ⟨r, (sat_bisimForm mem _ 0).mpr hr, (sat_appForm mem _ 0 (i + 1) (j + 1)).mpr hEdge⟩
+
 /-- GIC's support and selected-image coverage, with universally closed parameters. -/
 def gicForm (phi : Form) : Form :=
   fAll (fEx (fAnd
@@ -132,6 +183,17 @@ theorem equalityFree_pairForm (p i j : Nat) : EqualityFree (pairForm p i j) := b
 theorem equalityFree_orderedPairForm (i j c : Nat) : EqualityFree (orderedPairForm i j c) := by
   exact ⟨equalityFree_singletonForm 1 (i + 2),
     ⟨equalityFree_pairForm 0 (i + 2) (j + 2), equalityFree_pairForm (c + 2) 1 0⟩⟩
+
+theorem equalityFree_appForm (r i j : Nat) : EqualityFree (appForm r i j) := by
+  exact ⟨True.intro, equalityFree_orderedPairForm (i + 1) (j + 1) 0⟩
+
+theorem equalityFree_bisimForm (r : Nat) : EqualityFree (bisimForm r) := by
+  exact ⟨equalityFree_appForm (r + 2) 1 0,
+    ⟨⟨True.intro, ⟨True.intro, equalityFree_appForm (r + 4) 1 0⟩⟩,
+      ⟨True.intro, ⟨True.intro, equalityFree_appForm (r + 4) 0 1⟩⟩⟩⟩
+
+theorem equalityFree_eqvForm (i j : Nat) : EqualityFree (eqvForm i j) := by
+  exact ⟨equalityFree_bisimForm 0, equalityFree_appForm 0 (i + 1) (j + 1)⟩
 
 theorem equalityFree_gicForm (phi : Form) (h : EqualityFree phi) :
     EqualityFree (gicForm phi) := by

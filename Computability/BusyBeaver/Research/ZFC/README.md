@@ -21,7 +21,10 @@ frozen table byte for byte. Its ZFC consistency calibration and compiler
 simulation are unproved, so it does not yet achieve the goal. The candidate
 uses equality-free theory rows, base-3 formula coding, a dual quantifier
 schema and shared code. [theory_backend_experiment.md](theory_backend_experiment.md)
-records the exact recipe and competing measurements.
+records the exact recipe and competing measurements. The
+[dual-quantifier gap](dual_quantifier_gap.md) gives a counterexample to the
+generic calculus replacement used in this experiment. Its particular theory
+bundle remains uncalibrated; measured repair variants reach 254 or more states.
 
 ## Intake and theory minimization
 
@@ -29,6 +32,14 @@ records the exact recipe and competing measurements.
 was completed before this research: placement `b07d1a27b`, reconciliation
 `83ef1da6b`, catalogue `1ce7ab050`. The three source archives remain
 recoverable from arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`.
+
+Batch 144 adds six later reports to the same host (placement `ac4287e5b`,
+reconciliation `6d8bc7f1b`), including arrivals `39409c8c9` and `83dec60c2`.
+The accepted ordinary PSC-only hereditary-saturation argument is local source
+08; the new `PSCSaturation` module checks its semantic hull transfer under
+explicit resources. The host also attributes the existing 253 reduction to
+mira-emmy/Mira-Cult/Jeff and distinguishes all prepared/runtime-only and
+experimental 252 artifacts. The delivered claims have no automatic Lean status.
 
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
@@ -64,7 +75,14 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `ProfileCongruence.lean` | One-sided/full profile congruence equivalence; equality erasure and formula invariance for the existing `SetTheory.Form` syntax. |
 | `ProfilePairs.lean` | Equality-free pair-code endpoint uniqueness up to raw profiles, without profile congruence. |
 | `ProfileCollection.lean` | Empty/profile-pair/code existence and bisimulation reflexivity/symmetry under named collection instances and container resources. |
-| `ProfileSyntax.lean` | Equality-free first-order profile/pair predicates and GIC wrapper, with checked satisfaction specifications. |
+| `ProfileSyntax.lean` | Equality-free first-order profile/pair/App/bisimilarity predicates and GIC wrapper, with checked satisfaction specifications. |
+| `ProfileModel.lean` | Initial pair/code/reflexivity/symmetry constructions obtained from actual equality-free Form-indexed CP/GIC instances. |
+| `ProfileComposition.lean` | Exact App composition, bisimilarity transitivity and quotient Extensionality under named collection-instance families. |
+| `CompositionModel.lean` | All composition and matching matrices adapted to actual equality-free CP/GIC; bisimilarity transitivity and quotient Extensionality for these models. |
+| `QuotientModel.lean` | Actual quotient domain and membership congruence; computable equality-free formula translation, its satisfaction bridge and quotient Extensionality. |
+| `ProfileAxioms.lean` | Interpreted Empty, Pairing, Union, Separation, Power and partial Replacement under explicit instances/invariance hypotheses; singleton-closed containers, with ordinary Infinity still separate. |
+| `PowerSyntax.lean` | Fixed equality-free SubD/Power-filter matrices obtained from actual Form-indexed CP/GIC, including the bound for copies outside a transitive container. |
+| `PSCSaturation.lean` | Hereditary incoming-profile saturation, the purity cut and guarded PSC hull transfer under explicit per-instance semantic resources; no full first-order interpretation theorem yet. |
 | `PositiveClosure.lean` | Exact constant fibers, singletons, Power Set, gated decoder root coverage, Separation and Union, under explicit per-relation semantic closure instances. |
 | `Bootstrap.lean` | Pairing, Russell-root partial Replacement and Infinity under explicit per-relation instances and the earlier set constructions; Infinity needs no Extensionality. |
 | `DeepPositiveClosure.lean` | Actual `SetTheory.Form` wrapper with checked binder renamings, preserving equality-freeness; satisfaction equals the intended definable closure instance. |
@@ -75,14 +93,16 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `Table252.lean` | Literal experimental table, 252-state/504-row bounds, both halt edges and the normalized row, checked by kernel `decide`. |
 | `FormulaRPN.lean` | Three-constructor NAND formula syntax; exact prefix-token parsing in both directions; De Bruijn scope check and a closed semantic contradiction. |
 | `Base3Encoding.lean` | Finite named membership/implication/forall code tags and label freshness; excludes cyclic truth code 0. |
+| `Base3Syntax.lean` | Complete numerical decoder including the truth alias at code 0; encode/decode round trips on canonical syntax and code freshness. This is not a calculus interpretation. |
 | `PartialTotalization.lean` | Filling undefined transitions with a tape-preserving halt action preserves halting and final score under an explicit partial-step convention. |
+| `WadeMachine.lean` | Actual literal-table INC execution from state 13 through its return to state 55, for a nonempty preceding-register prefix and gap of at least two zeros; selected unary register increments and every other tape cell is preserved. |
 
 The calibration uses the repository's first-order internal recursion theorem
 for the reverse construction, then its generic completeness theorem for
 deductive equivalence; [psc_calibration.md](psc_calibration.md) gives the exact
 statements and comparison theory. It is not a computable proof-code translator verified
 in arithmetic. No theorem here supplies a proof-producing theory translator, a complete
-refutation checker, an enumerator compiler, a verified binary decoder, or
+refutation checker, an enumerator compiler, a verified executing decoder, or
 the final ZFC machine endpoint. `PositiveClosure` deliberately assumes the
 specific closure instances used by each lemma, rather than silently assert
 all second-order relations form an implemented first-order schema.
@@ -100,7 +120,7 @@ uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
 This compiles the first-order logic, calculus and completeness modules,
-`ZF.Zf`, `BusyBeaver.Core`, the fifteen research modules and the umbrella into a
+`ZF.Zf`, `BusyBeaver.Core`, the twenty-four research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the source check and axiom outputs. The pinned Lean toolchain must
@@ -160,17 +180,34 @@ reaches 252 after the additional coding and compiler changes. The formal
 subset-seeded control calibrates neither changed enumerator. Their distinct
 freshness, falsity and logical-completeness obligations remain.
 
+[wade_compiler_proof.md](wade_compiler_proof.md) records the checked local INC
+execution. PC carry/selector relocation, decrement, dispatch, bootstrap and
+whole-program simulation remain separate from that theorem.
+
 [equality_free_bisimulation.md](equality_free_bisimulation.md) gives a proposed
 interpretation for equality-free CP/GIC, carefully separating raw profile
 equality from bisimilarity. The Lean profile-pair and collection results
-check its initial lemmas. Composition, quotient Extensionality, the remaining
-interpreted axioms and their complete first-order adapters still need proofs.
+now extend through composition and an actual extensional quotient, with checked
+first-order matrix adapters for those steps. The remaining set-existence lemmas
+are checked under explicit semantic instances. Their complete first-order
+adapters, the ordinary Infinity bridge and the ZFC consistency reduction remain.
 
-[raw_psc.md](raw_psc.md) records a further candidate without Extensionality:
-the settled consequences include exact images of locally subset-bounded
-fibers and power-bounding transitive containers. Its ZFC consistency
-calibration remains open. [bootstrap.md](bootstrap.md) details the checked
-forward existence arguments.
+[The PSC-only compiler control](psc_backend_experiment.md) tests the new
+schema with original rho6, a fresh `code+2` binder and genuine bottom. Exact
+macro-word sharing reaches a different 252-state partial table. An algebraic
+counterinterpretation proves this control's reduced quantifier calculus is
+incomplete, so it is not an eligible consistency-machine result. The same
+counterinterpretation fails the frozen candidate's actual existential C/G
+bundle. Adapter, constructor, codec and grammar measurements are reproducible.
+
+[raw_psc.md](raw_psc.md) reconciles the earlier saturation proposal with
+[batch 144 source 08](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-144-source-08.md).
+That report supplies an accepted ordinary mathematical ZFC consistency
+calibration for equality-free subset PSC alone. `PSCSaturation.lean` checks
+its hereditary saturation and hull-transfer core under explicit resources;
+the equality-free bootstrap, full Form adapters and whole-theory/proof-code
+calibration remain to be connected in Lean. [bootstrap.md](bootstrap.md)
+details the earlier checked forward existence arguments.
 
 Run the Python regressions with:
 

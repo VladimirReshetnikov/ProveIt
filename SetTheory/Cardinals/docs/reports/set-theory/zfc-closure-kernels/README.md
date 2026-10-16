@@ -1,11 +1,13 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 16 October 2026. Batch 143 combines three manuscripts from
+Intake findings, 16 October 2026. This report now reconciles nine manuscripts.
+The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
 the delivered base article is preserved, rather than rewritten as a unified article.
 No merged PDF is built. These are ordinary mathematical arguments and finite
-regression checks; none of the new kernels is formally verified in this repository.
+regression checks. The deliveries confer no formal status; subsequent Lean
+results and their exact scope are listed below.
 
 The user's current machine target is an equivalence **provable in ZFC** between
 blank-tape non-halting and Con(ZFC), with fewer than 254 nonhalting states on a
@@ -168,3 +170,218 @@ or Choice, using actual formula instances in both directions. The remaining
 effective Foundation/Choice consistency bridge and small-machine theorem
 are open. The delivered source 02
 article remains unchanged, including the question it left open.
+
+## Batch 144: pure closure, hereditary saturation and machine experiments
+
+Intake findings, 16 October 2026. Six further manuscripts extend this same
+report. The first four arrived in `17d0f2eaa650901cda59764dfcc4661c199e49c8`,
+the fifth in `39409c8c921cccdbd6162c8767c84cfb7df65df1`, and the sixth in
+`83dec60c249ca0f9e1b2e5ee3cf18fd1ce58c373`. Placement `ac4287e5b` preserves their ancillary files. They answer the base's named
+membership-arm/congruence questions or continue its complete-machine cost
+question, so all are additions here. The original source 02 remains the
+unchanged article base. This is again the reconciliation-note option;
+no article or merged PDF is rewritten.
+
+The source numbers below continue this report's local sequence. Batch
+manuscript 01 is local source 04, and so on.
+
+| Local source | Archive | Contribution retained |
+|---|---|---|
+| 04, machine | `zfc_machine_research.zip` | Pure/mixed schema equivalence without Extensionality; factored syntax and capture conditions; attributed upstream 253-state reduction; runtime-only 252 body and exact blank-start classification. |
+| 05, subset | `zfc_subset_kernel_research.zip` | General pure/mixed theorem for any logically reflexive seed; separate four-node currying reduction; a bottom-based certificate checker and finite semantic regressions. |
+| 06, pure | `zfc_subset_only_machine_research.zip` | Pure-subset calibration, exact bootstrap dependency ledger, certificate grammar and total finite-candidate specification; optional irreflexivity variant. |
+| 07, codec | `zfc_tm_pure_subset_research.zip` | Directed Extensionality/congruence and currying controls; a four-tag total codec with genuine bottom; capture-avoiding checker and component cost ledger. |
+| 08, schema | `zfc_one_schema_research.zip` | Equality-free PSC alone via hereditary saturation; interpretation of the entire extensional PSC schema; iterative binary checker; 281→269 Wade rebracketing experiment with an independent RM certificate. |
+| 09, decoder | `zfc_machine_research (2).zip` | Empty-root decoder bootstrap; cofinal proof padding with retained-data conditions; 203→202 decoder certificate, 267→256 contextual-fold experiment, prepared-tape 252 body; logical-vacuity and CP-transitivity deletion obstructions. |
+
+04–07 and 09 inspect the distinct ProveIt pins `b07d1a27b`, `83ef1da6b`
+and `67086c8d8`. Source 08 additionally uses baseline
+`6594795e9db81637c30959e42b3bcfc9eb77722f`. The earlier entries are
+provenance, not a representation of the current formal status. All use
+upstream `297ab8df7e5de329605c3875b4934643b371a5e3` for the original
+benchmark. Source 04 separately pins the 253 reduction to
+`0d544f2a2e3c18f12278441a74b7879f31cbe856`.
+
+### Mathematical overlap and the new interpretation
+
+04–07 and 09 independently rederive the membership-arm deletion. For every
+fixed logically reflexive seed, their pure and mixed schemas are uniformly
+equivalent **without Extensionality**: constant instances supply singletons;
+a locally subset-bounded singleton decoder supplies a transitive cover of
+all members of a bound; that cover absorbs its membership arm. This does
+not require choosing a family of bounds. Converse iteration additionally
+requires set-sized seed classes. The ZF comparison still retains
+Extensionality, arbitrary formulas/parameters and functional Replacement,
+and uses unique exact fibers instead of a choice of local bounds.
+
+This is an answer to the historical question in `article.tex:403–406`.
+At current HEAD it is a rederivation: `Computability/BusyBeaver/Research/ZFC/subset_only.md:5`
+already says “Deleting the membership arm … preserves its calibration”, and
+lines 94–102 give the switch proof. `PositiveClosure.positive_decoder_cover`
+and `DefinableClosure.transitive_cover_of_model` check the bootstrap;
+`PSCCalibration.psc_iff_zf0` and `psc_consistency_iff_zf0` already establish
+the actual equality-bearing subset theory's deductive/consistency comparison
+with ZF without Foundation or Choice. The explicit general pure/mixed theorem
+without Extensionality and the alternate empty-root decoder remain useful
+additional formulations; these deliveries contain no Lean implementation.
+
+Source 08 supplies a substantial continuation of the proposal in
+`Computability/BusyBeaver/Research/ZFC/raw_psc.md:136`: remove the separate
+profile-congruence sentence from the **equality-free** subset PSC theory.
+Let D be incoming-profile equivalence and O be incoming plus outgoing
+profile equivalence. O is a congruence in pure logic, so O-singletons suffice
+for the raw switch, Separation and Union. Raw objects can then be saturated
+under D. Define S(a) to say its member extension is closed under D-equivalence, and H(a) to say
+S(a) with a transitive cover whose members satisfy S. H is nonempty,
+D-invariant and hereditary. If S(a) and all its members are H, separating
+H inside any transitive cover proves H(a). This purity-cut argument
+simplifies the existing unchecked least-transitive-cover proposal.
+
+For an arbitrary translated matrix, raw PSC on the H-guarded relation
+produces a hull containing only H objects. Saturating that hull under D
+makes it H; formula invariance preserves its initial closure, recurrent
+closure and unrestricted support. This interprets the full extensional
+PSC theory on H/D. Our intake found no mathematical gap in that argument.
+The delivered calibration is an ordinary proof, including a ZFC-level
+set-coded-model/completeness argument and the Foundation/Choice bridge;
+it is **not a Lean theorem or an exported proof-code translator**. The
+source retains variants with logical equality or added irreflexivity, and
+relative atom models showing raw congruence/irreflexivity need not follow.
+
+Source 09 also records a distinct logical bridge for CP/GIC: equality can
+be interpreted by two-sided observational profiles O. Its two-argument
+membership congruence is purely logical. This does not permit replacing
+actual equality by D in the existing bisimulation proof, deleting runtime
+equality rules without a compiler argument, or identifying a membership
+atom with falsity. Its pure-logic vacuity countermodel concerns that
+logical fragment, not independence over CP/GIC. Its CP-without-transitivity
+model uses the pseudo-hereditary construction at beth_omega and is a
+relative infinite set-model argument, not a finite PSC model. Source 09
+credits Greg Oman's construction. The cofinal-padding theorem distinguishes
+completeness from arbitrary retained abstract data from soundness, which
+requires theorem-valued current/cache/stack entries and an admissible
+physical register boundary.
+
+### Syntax and machine costs remain separate
+
+In the common source-02 bottom/implication/forall occurrence metric,
+04–07 reproduce mixed point/subset/symmetric-EF totals 69/72/83 and pure
+65/68/79. Currying independently gives 61/64/75. Source 07 also directs
+Extensionality and mutual-subset congruence, giving 58/61/64 in its declared
+basis. The existing `ProfileCongruence.oneWay_iff_full` already justifies
+the cheaper one-sided control; 79 is a historical symmetric control, not
+the current best syntax. Source 08's unchanged project metric gives 71
+for CG+PSC and 52 for PSC alone (56 with irreflexivity). None of these
+numbers charges variable payloads, arbitrary parameter closure, the proof
+calculus, initialization or the tape backend.
+
+The checkers/codecs are distinct. Source 07's four-tag codec reserves
+genuine bottom at code 1 (and bottom aliases), with Truth at 0 and an explicit
+normalization of Truth→Truth. Source 08's binary checker has its own
+iterative parser and fixed schema interfaces. Source 04's three-label
+appendix retains its distinct-slot/freshness conditions and explicit
+capture counterexample. These are not the project's experimental base-3
+calculus, whose dual-quantifier replacement has a separately documented
+logical gap. Source 08's Metamath ax467 lead is valid in its ordinary
+negation calculus; it is not by itself a repair for relative falsity
+`Rel(0,0)` in that experimental calculus.
+
+Source 04 documents **mira-emmy's existing 253-state reduction**, derived
+from Mira-Cult's machine and Jeff's verification, in
+[upstream PR 20](https://github.com/jeff87654/busy-beaver/pull/20).
+At intake the PR was open and unmerged at the pinned head. Both bundled
+tables match the pinned public Git objects. We reproduced its entire
+312,975-step blank boot: compact state 33, head −17, gap 40, logical
+registers `[5,0,0,0,2,0,0,0,0]`, including all spare-tail data. This differs
+from the original 254 boot; the normal register-program prefix and its
+runtime invariant must be included in any new proof.
+The GitHub job API reports success for
+[the verification job](https://github.com/jeff87654/busy-beaver/actions/runs/38829452130/job/116744580063).
+The reported 160-module/194-closed-report/coqchk details were not locally
+rerun or independently recounted from CI logs (log retrieval returned 403).
+No new Coq build was performed. The inspected upstream endpoint is an
+external finite-refutation equivalence, with Foundation/Choice comparisons
+separate; an internal arithmetized ZFC/PA proof does not follow merely
+from that result. This report claims no authorship of that reduction.
+
+The several 252 artifacts must not be conflated:
+
+- Source 04 deletes the 253 initializer to obtain a 252-state **runtime
+  body**. All 8,391 affine sites pass its protected-box audit. Of its 252
+  blank starts, 234 enter blank rays; 18 reach one common two-one-cell
+  frame within 44 steps. That common orbit has no established consistency
+  interpretation. Seven longer startup trials and 56,196 direct redirections
+  do not solve initialization or prove an impossibility result.
+- Source 09's **prepared-tape** 252-state core has no blank initializer.
+  Its separately emitted blank-start decoder variants have 267 and 256
+  working states. The baseline decoder has 203 nodes, the candidate 202;
+  its 2,985-pair RM certificate checks both decrement branches. Eleven
+  folds receive affine instruction and finite boot checks under the
+  published register-box contracts, not a new kernel proof of those boxes. Its rejected 201-node zero8 candidate,
+  certificate and table are not bundled: the reported 3,092-pair/38-failure
+  metadata were not independently replayed.
+- The project's frozen **experimental blank-start** Wade 252 table changes
+  the theory, coding and logic. Its calibration and compiler simulation
+  remain unproved. It is neither of those prepared/runtime-only cores.
+
+Source 08 instead rebrackets the existing 219-node recovered Wade program
+into 207 nodes, reducing that backend's 281-state output to **269**, not
+subtracting twelve states from the optimized 254 benchmark. Its independent
+4,533-pair RM certificate matches the actual pinned source DAG, checks both
+decrement exits and supports register-program halting equivalence. It proves
+neither the Wade binary compiler nor the new PSC search. Its MIT-0 backend
+files retain Andrew Wade's license; source 09's unchanged upstream Python
+model files retain their attribution and ownership. No intake action
+relicenses an upstream table or source.
+
+### Placement, verification and rerunning
+
+The exact 207-file rename map is `data/placement-map-144.json`, using prefixes
+`04-machine-`, `05-subset-`, `06-pure-`, `07-codec-`, `08-schema-` and
+`09-decoder-`. All copies came from a fresh untouched extraction. All 232
+extracted blobs (226 distinct) were searched with `git log --all --find-object`,
+and all nine hit records were confirmed in the introducing commit's tree.
+The hits are borrowed baseline/backend/source-02 files, not repeated
+archives; details are in `data/history-findings-144.json`. No checksum
+manifest or line-ending work was done. All six committed ZIPs were retired
+in the placement commit; their complete articles, section sources, PDFs and
+delivery READMEs remain recoverable from their arrival commits.
+
+The prefixed code retains its delivered imports and paths. In particular,
+all build/reproduce scripts, Makefiles, nested engineering/checker READMEs,
+provenance and QA records still name their original package layout, articles,
+reference data, or external pinned inputs. Those are delivery-time paths,
+not shipped unprefixed paths. Run the recovered copies, not the flattened
+prefixed scripts. Checks ran only on separate copies:
+
+| Local source | Reproduced evidence |
+|---|---|
+| 04 | Three standalone checks; all five extended engineering audits/searches, including 8,391 runtime sites, 56,196 redirections and seven two-million-step startup trials. |
+| 05 | 28 unit tests, 18,080 schema comparisons, finite graph/HF transports, identity and 10,000-candidate prefix; table audit; scratch 24-page PDF. |
+| 06 | 20 unit tests, finite graph/HF and formula/codec checks, identity and 10,000-candidate prefix; table audit; scratch 24-page PDF. |
+| 07 | 24 unit tests, 66,066 graphs/1,052,740 graph-seed pairs, 100,000 numeric codes, 1,000 substitution and 72 currying comparisons; identity/schema examples. |
+| 08 | 12 checker tests, 131,071-word census, six exact pinned schema comparisons, 530 finite relations; regenerated 269 table and 4,533-pair independent certificate; scratch 28-page PDF. |
+| 09 | Exact arithmetic, HF, vacuity and template regressions; 2,985-pair certificate; all four tables' 8,391 affine cases, and the three blank-start tables' exact 264,982-step boots; regenerated tables/eleven folds, 100,000 rotations, 57,375 fold candidates, four C++ boot domains and 256 final boot folds; scratch 25-page PDF. |
+
+Valid examples are explicitly non-refutations; bounded searches and finite
+relations prove no consistency statement. Independently regenerated outputs
+stay outside the checkout; original records remain unchanged. Sources 05/06/08/09's
+scratch PDF builds reproduce their delivered articles, not a merged report.
+No new Lean proof, serialized ZFC/PA proof, globally minimal theory/machine,
+or completed sub-254 endpoint is supplied by these deliveries. The existing
+Lean results listed above remain stated with their narrower proved scope.
+
+From the repository root:
+
+```sh
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_144.py
+```
+
+The helper recovers each committed archive into its own scratch directory,
+runs all core mathematical/checker/table checks and retains logs there.
+Use `--prepare-only` to recover without execution, `--sources 5` to select
+batch manuscript 05, `--engineering` for source 04's extended diagnostics,
+and `--rebuild-variants` for source 09's regeneration and eleven folds.
+Manifest-only checks are excluded; source 08's components run directly
+because its aggregate driver always checks a checksum manifest. To rebuild
+a delivered PDF, run its recovered build command in that scratch package.

@@ -2242,6 +2242,18 @@ and then ZFC; no new transition table or state bound is supplied. The current
 machine goal requires a ZFC proof, while the delivered PA claims remain
 recorded with their certification limits.
 
+Batch 144 (16 October 2026) adds six manuscripts to that same report,
+from arrivals `17d0f2eaa`, `39409c8c9` and `83dec60c2`. It opens no new
+report: the collection still has 290. The additions give the general
+pure/mixed closure equivalence, a mathematical hereditary-saturation
+interpretation of equality-free PSC alone, distinct certificate/codec
+experiments and attributed prior 253-state work. The 269-state Wade and
+256-state decoder experiments, and separate prepared/runtime-only 252
+cores, retain their compiler and initialization limits. Existing Lean
+subset-PSC results have their own narrower scope; no new internally
+ZFC-certified sub-254 endpoint is supplied. Placement `ac4287e5b` and
+reconciliation `6d8bc7f1b` preserve all sources and independent reviews.
+
 A report that continues a formal project gains no formal status from it:
 each README names the project declarations it builds on and says that its
 own theorems are not formalized.
@@ -2254,9 +2266,10 @@ latexmk -pdf manifest.tex && latexmk -c manifest.tex
 
 ## Merged reports
 
-Batch 143's [closure kernels](set-theory/zfc-closure-kernels) are a
-complementary merge with a reconciliation README: the seeded base, BIC
-control and exact-fiber alternative retain their distinct hypotheses,
+Batches 143/144's [closure kernels](set-theory/zfc-closure-kernels) are a
+complementary merge and six additions with a reconciliation README: the
+seeded base, BIC control, exact-fiber alternative and later saturation/engineering
+work retain their distinct hypotheses,
 metrics and verification evidence. The member articles remain recoverable
 from the committed arrival archives.
 

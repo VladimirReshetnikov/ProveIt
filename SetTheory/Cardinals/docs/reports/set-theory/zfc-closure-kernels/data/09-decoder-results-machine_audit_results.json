@@ -1,0 +1,559 @@
+{
+  "conclusion": "No sub-254-state blank-tape machine established. Prepared252 and experimental blank256 verified by Python affine audit under pinned register-box contracts.",
+  "provenance": {
+    "upstream_repository": "https://github.com/jeff87654/busy-beaver",
+    "upstream_commit": "c132d7eae8158cd3a9850ea3eb7251158c3dd821",
+    "upstream_commit_date": "2026-10-14",
+    "retrieval_mirror_repository": "https://github.com/VladimirReshetnikov/ProveIt",
+    "retrieval_mirror_commit": "67086c8d8802ea7b3625a2fc0765d39e2181e335",
+    "retrieval_mirror_prefix": "lib/jeff-busy-beaver-zfc254/",
+    "machine_author": "Mira-Cult",
+    "formal_development": "Jeff Ketchersid / jeff87654 busy-beaver",
+    "inputs": [
+      {
+        "file": "machines/baseline254.tm",
+        "upstream_path": "ZF/m254/machine/zfc_254.tm",
+        "bytes": 6619,
+        "sha256": "d655ce2cf8cccebd21caa21a49f0f9f010960a44b95c17aae6cc425c518954eb"
+      },
+      {
+        "file": "vendor/symexec.py",
+        "upstream_path": "ZF/m254/tools/tm/symexec.py",
+        "bytes": 6139,
+        "sha256": "5bf83da419c47b9c8d79fcc755e40048f599255c2f1b2cb4656dc04bb02bb85d"
+      },
+      {
+        "file": "vendor/tmlib.py",
+        "upstream_path": "ZF/m254/tools/tm/tmlib.py",
+        "bytes": 1500,
+        "sha256": "d66c407bfa9e78b01a3cd1f363beb3d68d6091eabc007caabc915ff972b4ca00"
+      }
+    ],
+    "derived_inputs": [
+      {
+        "file": "data/decoder_entries.json",
+        "description": "Exact hash-consed DAG and decoder-entry metadata reconstructed from frozen Prog254.v and literal table."
+      },
+      {
+        "file": "data/candidate202.json",
+        "description": "202-node rearranged DAG; register-machine equivalence certificate in companion compiler package."
+      }
+    ]
+  },
+  "verification": {
+    "status": "Python affine audit with existing register-box oracle contracts; no new kernel proof",
+    "machines": {
+      "baseline254.tm": {
+        "working_states": 254,
+        "transition_count": 508,
+        "terminal_state": "254",
+        "start_state": "0",
+        "blank_tape": true,
+        "total_and_target_closed": true,
+        "sha256": "d655ce2cf8cccebd21caa21a49f0f9f010960a44b95c17aae6cc425c518954eb",
+        "affine": {
+          "cases": 8391,
+          "pass": 8391,
+          "normal": 8387,
+          "abstract_steps_all_cases": 1937955,
+          "abstract_steps_nonhalting_cases": 1937942,
+          "max_abstract_steps": 331,
+          "max_root_visits": 4,
+          "halt": 1,
+          "overflow": 3,
+          "gap_lower_bound": 40,
+          "path_depth": 34
+        },
+        "boot": {
+          "steps": 264982,
+          "head": -8,
+          "state": "96",
+          "gap": 62,
+          "exact_finite_tape_match": true
+        },
+        "oracle_protected_pairs": 55,
+        "coverage_pairs_including_oracles": 508
+      },
+      "prepared252.tm": {
+        "working_states": 252,
+        "transition_count": 504,
+        "terminal_state": "254",
+        "start_state": "96",
+        "blank_tape": false,
+        "total_and_target_closed": true,
+        "sha256": "4a79476b5186877ea18760846c1997442c0d1cbc0b75dff2bd886b90019ec0a6",
+        "affine": {
+          "cases": 8391,
+          "pass": 8391,
+          "normal": 8387,
+          "abstract_steps_all_cases": 1937955,
+          "abstract_steps_nonhalting_cases": 1937942,
+          "max_abstract_steps": 331,
+          "max_root_visits": 4,
+          "halt": 1,
+          "overflow": 3,
+          "gap_lower_bound": 40,
+          "path_depth": 34
+        },
+        "boot": null,
+        "oracle_protected_pairs": 55,
+        "coverage_pairs_including_oracles": 504
+      },
+      "decoder267.tm": {
+        "working_states": 267,
+        "transition_count": 534,
+        "terminal_state": "254",
+        "start_state": "0",
+        "blank_tape": true,
+        "total_and_target_closed": true,
+        "sha256": "216fb87a39e36dafbc10b3612bca3ae3c4b01cd2186b830639bd92a5e604c664",
+        "affine": {
+          "cases": 8391,
+          "pass": 8391,
+          "normal": 8387,
+          "abstract_steps_all_cases": 1937659,
+          "abstract_steps_nonhalting_cases": 1937646,
+          "max_abstract_steps": 331,
+          "max_root_visits": 4,
+          "halt": 1,
+          "overflow": 3,
+          "gap_lower_bound": 41,
+          "path_depth": 35
+        },
+        "boot": {
+          "steps": 264982,
+          "head": -8,
+          "state": "96",
+          "gap": 62,
+          "exact_finite_tape_match": true
+        },
+        "oracle_protected_pairs": 55,
+        "coverage_pairs_including_oracles": 526
+      },
+      "decoder256.tm": {
+        "working_states": 256,
+        "transition_count": 512,
+        "terminal_state": "254",
+        "start_state": "0",
+        "blank_tape": true,
+        "total_and_target_closed": true,
+        "sha256": "15555cdef9e0a11f1bdc3c1d3ca0cb71b1e9735dae564b03a84d38a09551bfdd",
+        "affine": {
+          "cases": 8391,
+          "pass": 8391,
+          "normal": 8387,
+          "abstract_steps_all_cases": 1936739,
+          "abstract_steps_nonhalting_cases": 1936726,
+          "max_abstract_steps": 331,
+          "max_root_visits": 4,
+          "halt": 1,
+          "overflow": 3,
+          "gap_lower_bound": 41,
+          "path_depth": 35
+        },
+        "boot": {
+          "steps": 264982,
+          "head": -8,
+          "state": "96",
+          "gap": 62,
+          "exact_finite_tape_match": true
+        },
+        "oracle_protected_pairs": 55,
+        "coverage_pairs_including_oracles": 512
+      }
+    }
+  },
+  "sequential_folds": [
+    {
+      "dead": "15",
+      "replacement": "299",
+      "affine": {
+        "cases": 8391,
+        "pass": 8391,
+        "normal": 8387,
+        "abstract_steps_all_cases": 1937659,
+        "abstract_steps_nonhalting_cases": 1937646,
+        "max_abstract_steps": 331,
+        "max_root_visits": 4,
+        "halt": 1,
+        "overflow": 3,
+        "gap_lower_bound": 41,
+        "path_depth": 35
+      },
+      "boot": {
+        "steps": 264982,
+        "head": -8,
+        "state": "96",
+        "gap": 62,
+        "exact_finite_tape_match": true
+      },
+      "retained_states": 265
+    },
+    {
+      "dead": "11",
+      "replacement": "303",
+      "affine": {
+        "cases": 8391,
+        "pass": 8391,
+        "normal": 8387,
+        "abstract_steps_all_cases": 1937659,
+        "abstract_steps_nonhalting_cases": 1937646,
+        "max_abstract_steps": 331,
+        "max_root_visits": 4,
+        "halt": 1,
+        "overflow": 3,
+        "gap_lower_bound": 41,
+        "path_depth": 35
+      },
+      "boot": {
+        "steps": 264982,
+        "head": -8,
+        "state": "96",
+        "gap": 62,
+        "exact_finite_tape_match": true
+      },
+      "retained_states": 264
+    },
+    {
+      "dead": "22",
+      "replacement": "298",
+      "affine": {
+        "cases": 8391,
+        "pass": 8391,
+        "normal": 8387,
+        "abstract_steps_all_cases": 1937659,
+        "abstract_steps_nonhalting_cases": 1937646,
+        "max_abstract_steps": 331,
+        "max_root_visits": 4,
+        "halt": 1,
+        "overflow": 3,
+        "gap_lower_bound": 41,
+        "path_depth": 35
+      },
+      "boot": {
+        "steps": 264982,
+        "head": -8,
+        "state": "96",
+        "gap": 62,
+        "exact_finite_tape_match": true
+      },
+      "retained_states": 264
+    },
+    {
+      "dead": "61",
+      "replacement": "298",
+      "affine": {
+        "cases": 8391,
+        "pass": 8391,
+        "normal": 8387,
+        "abstract_steps_all_cases": 1937659,
+        "abstract_steps_nonhalting_cases": 1937646,
+        "max_abstract_steps": 331,
+        "max_root_visits": 4,
+        "halt": 1,
+        "overflow": 3,
+        "gap_lower_bound": 41,
+        "path_depth": 35
+      },
+      "boot": {
+        "steps": 264982,
+        "head": -8,
+        "state": "96",
+        "gap": 62,
+        "exact_finite_tape_match": true
+      },
+      "retained_states": 263
+    },
+    {
+      "dead": "188",
+      "replacement": "282",
+      "affine": {
+        "cases": 8391,
+        "pass": 8391,
+        "normal": 8387,
+        "abstract_steps_all_cases": 1937659,
+        "abstract_steps_nonhalting_cases": 1937646,
+        "max_abstract_steps": 331,
+        "max_root_visits": 4,
+        "halt": 1,
+        "overflow": 3,
+        "gap_lower_bound": 41,
+        "path_depth": 35
+      },
+      "boot": {
+        "steps": 264982,
+        "head": -8,
+        "state": "96",
+        "gap": 62,
+        "exact_finite_tape_match": true
+      },
+      "retained_states": 262
+    },
+    {
+      "dead": "244",
+      "replacement": "275",
+      "affine": {
+        "cases": 8391,
+        "pass": 8391,
+        "normal": 8387,
+        "abstract_steps_all_cases": 1936739,
+        "abstract_steps_nonhalting_cases": 1936726,
+        "max_abstract_steps": 331,
+        "max_root_visits": 4,
+        "halt": 1,
+        "overflow": 3,
+        "gap_lower_bound": 41,
+        "path_depth": 35
+      },
+      "boot": {
+        "steps": 264982,
+        "head": -8,
+        "state": "96",
+        "gap": 62,
+        "exact_finite_tape_match": true
+      },
+      "retained_states": 261
+    },
+    {
+      "dead": "245",
+      "replacement": "286",
+      "affine": {
+        "cases": 8391,
+        "pass": 8391,
+        "normal": 8387,
+        "abstract_steps_all_cases": 1936739,
+        "abstract_steps_nonhalting_cases": 1936726,
+        "max_abstract_steps": 331,
+        "max_root_visits": 4,
+        "halt": 1,
+        "overflow": 3,
+        "gap_lower_bound": 41,
+        "path_depth": 35
+      },
+      "boot": {
+        "steps": 264982,
+        "head": -8,
+        "state": "96",
+        "gap": 62,
+        "exact_finite_tape_match": true
+      },
+      "retained_states": 260
+    },
+    {
+      "dead": "174",
+      "replacement": "256",
+      "affine": {
+        "cases": 8391,
+        "pass": 8391,
+        "normal": 8387,
+        "abstract_steps_all_cases": 1936739,
+        "abstract_steps_nonhalting_cases": 1936726,
+        "max_abstract_steps": 331,
+        "max_root_visits": 4,
+        "halt": 1,
+        "overflow": 3,
+        "gap_lower_bound": 41,
+        "path_depth": 35
+      },
+      "boot": {
+        "steps": 264982,
+        "head": -8,
+        "state": "96",
+        "gap": 62,
+        "exact_finite_tape_match": true
+      },
+      "retained_states": 259
+    },
+    {
+      "dead": "45",
+      "replacement": "299",
+      "affine": {
+        "cases": 8391,
+        "pass": 8391,
+        "normal": 8387,
+        "abstract_steps_all_cases": 1936739,
+        "abstract_steps_nonhalting_cases": 1936726,
+        "max_abstract_steps": 331,
+        "max_root_visits": 4,
+        "halt": 1,
+        "overflow": 3,
+        "gap_lower_bound": 41,
+        "path_depth": 35
+      },
+      "boot": {
+        "steps": 264982,
+        "head": -8,
+        "state": "96",
+        "gap": 62,
+        "exact_finite_tape_match": true
+      },
+      "retained_states": 258
+    },
+    {
+      "dead": "32",
+      "replacement": "300",
+      "affine": {
+        "cases": 8391,
+        "pass": 8391,
+        "normal": 8387,
+        "abstract_steps_all_cases": 1936739,
+        "abstract_steps_nonhalting_cases": 1936726,
+        "max_abstract_steps": 331,
+        "max_root_visits": 4,
+        "halt": 1,
+        "overflow": 3,
+        "gap_lower_bound": 41,
+        "path_depth": 35
+      },
+      "boot": {
+        "steps": 264982,
+        "head": -8,
+        "state": "96",
+        "gap": 62,
+        "exact_finite_tape_match": true
+      },
+      "retained_states": 257
+    },
+    {
+      "dead": "178",
+      "replacement": "206",
+      "affine": {
+        "cases": 8391,
+        "pass": 8391,
+        "normal": 8387,
+        "abstract_steps_all_cases": 1936739,
+        "abstract_steps_nonhalting_cases": 1936726,
+        "max_abstract_steps": 331,
+        "max_root_visits": 4,
+        "halt": 1,
+        "overflow": 3,
+        "gap_lower_bound": 41,
+        "path_depth": 35
+      },
+      "boot": {
+        "steps": 264982,
+        "head": -8,
+        "state": "96",
+        "gap": 62,
+        "exact_finite_tape_match": true
+      },
+      "retained_states": 256
+    }
+  ],
+  "negative_searches": {
+    "status": "negative bounded search; not an impossibility proof",
+    "initialization_predicate": "state96; leftmost1athead-1; gap38..5000; at least9unaryblocks; physical registers zero except param1,prooflist,nextproof arbitrary; only complete blocks and blank tail",
+    "finite_tape": {
+      "cells": 20000,
+      "initial_head": 5000,
+      "abort_head_lt": 2,
+      "abort_head_gte": 19998
+    },
+    "searches": [
+      {
+        "mode": 0,
+        "description": "252prepared core from all252blank startstates",
+        "cases": 252,
+        "step_limit": 2000000,
+        "executed_steps": 39480427,
+        "successful_initializers": 0
+      },
+      {
+        "mode": 1,
+        "description": "remove8; every possible formerly runtime-unread5/1 transition; start0",
+        "cases": 1012,
+        "step_limit": 2000000,
+        "executed_steps": 1205552332,
+        "successful_initializers": 0
+      },
+      {
+        "mode": 2,
+        "description": "fold5into48; retain8; all253blank startstates",
+        "cases": 253,
+        "step_limit": 3000000,
+        "executed_steps": 57495429,
+        "successful_initializers": 0
+      },
+      {
+        "mode": 3,
+        "description": "252core with one1atposition+1or-1 and all252startstates",
+        "cases": 504,
+        "step_limit": 3000000,
+        "executed_steps": 282086239,
+        "successful_initializers": 0
+      }
+    ],
+    "new256_boot_fold_search": {
+      "description": "fold8into any other retained state, plus5into48",
+      "cases": 256,
+      "step_limit": 2000000,
+      "executed_steps": 310054603,
+      "matches_to_exact_baseline_boot_target": 0,
+      "finite_tape_cells": 40000,
+      "initial_head": 10000
+    },
+    "new256_contextual_fold_saturation": {
+      "cases": 57375,
+      "description": "all directed identifications of unprotected retained source states excluding5and8, into any other retained state",
+      "affine_survivors": 0,
+      "fuel_limit_per_affine_case": 500,
+      "gap_lower_bound": 40,
+      "limitation": "Fuel-limited failures are not semantic impossibility proofs."
+    }
+  },
+  "reproduced_fold_saturation": {
+    "tested": 57375,
+    "survivors": [],
+    "elapsed_seconds": 22.467274001999613,
+    "gap_lower_bound": 40,
+    "fuel_limit_per_case": 500,
+    "excluded_source_states": [
+      "0",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "8",
+      "28",
+      "31",
+      "38",
+      "40",
+      "43",
+      "44",
+      "48",
+      "56",
+      "59",
+      "60",
+      "63",
+      "64",
+      "69",
+      "73",
+      "75",
+      "83",
+      "85",
+      "95",
+      "96",
+      "97",
+      "109",
+      "112",
+      "131"
+    ],
+    "status": "bounded search, not a semantic minimality proof"
+  },
+  "rejected_decoder201": {
+    "decoder_nodes": 201,
+    "path_depth": 52,
+    "maximum_zero_run": 8,
+    "gap_lower_bounds_tested": [
+      56,
+      58
+    ],
+    "cases": 8391,
+    "pass": 8353,
+    "fail": 38,
+    "status": "Rejected emitted implementation; not a valid machine claim."
+  },
+  "formal_status": "Published baseline has upstream Coq theorem; new variants have Python symbolic evidence with oracle assumptions, not new kernel-checked end-to-end certificates."
+}

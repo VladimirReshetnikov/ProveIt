@@ -1,4 +1,4 @@
-# Raw PSC: settled consequences and the remaining interpretation
+# Raw PSC: hereditary-saturation interpretation and formalization
 
 Research audit, 16 October 2026. The candidate here has classical logical
 equality and all subset-only positive seeded closure instances from
@@ -7,10 +7,48 @@ works in the arguments below; only seed reflexivity is used. No proposed
 theory needs an intended set-theoretic meaning for this project. The tests
 are consistency strength and the cost of a complete compiled search.
 
-This note establishes some useful mathematical consequences. It does **not**
-establish equiconsistency of raw PSC with ZFC. The equality-free theory
-without profile congruence is a different candidate and is not covered by
-arguments using logical equality here.
+The initial audit below established useful consequences and proposed an
+interpretation. Subsequently, batch 144 source 08 supplied an independently
+reviewed mathematical calibration of **equality-free PSC alone**, with no
+Extensionality, profile congruence or irreflexivity. This also calibrates the
+equality-bearing raw variant by the stated consistency sandwich. The new
+Lean results check part of that interpretation under explicit semantic
+resources; they do not yet certify its full first-order theory translation.
+
+## Reconciliation after source 08, 16 October 2026
+
+The [source 08 intake](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-144-source-08.md)
+records the accepted ordinary mathematical argument and its provenance.
+An equality-free bootstrap uses full incoming-and-outgoing profile equivalence
+for twin singletons and the decoder. Incoming-profile saturation then gives
+the hereditary domain `H` below. The key simplification is a **purity cut**:
+given a raw transitive cover `V` of `a`, separate
+`U={u∈V:H(u)}`. Heredity makes `U` transitive. If `a` is saturated and
+all its members satisfy `H`, this one `U` witnesses `H(a)`. It replaces the
+least-transitive-cover and coextensional-Replacement construction in the
+earlier proposal retained below.
+
+For each translated matrix, guard its input and output by `H`, apply raw
+PSC, and saturate the resulting hull under incoming-profile equality.
+Matrix invariance preserves initial closure, recurrent closure and global
+support. The purity cut makes that saturated hull an `H` object. Thus the
+report interprets Extensionality plus subset-seeded PSC in equality-free
+raw PSC, and composes this with the extensional calibration and ordinary
+Foundation/Choice consistency bridges. This is an ordinary mathematical
+ZFC-provable consistency argument, not a serialized proof-code artifact or
+the experimental machine's calibration.
+
+[PSCSaturation.lean](../../Lean/BusyBeaver/ZFC/PSCSaturation.lean) now checks
+incoming-profile invariance, heredity and nonemptiness, the purity-cut lemma,
+exact saturation from one constant-image closure instance, restricted
+membership congruence/Extensionality/subset absoluteness, and guarded-hull
+transfer including support. Its resources name the required cover, cut,
+saturation and guarded relation instances. Deriving those resources from
+the actual equality-free Form-indexed schema, translating arbitrary formulas
+and connecting the whole interpretation to the ZFC proof predicate remain
+formalization work. The report's reference checker and 269-state compiler
+control are separate artifacts; neither implements a calibrated sub-254
+machine for this new theory.
 
 ## The forward bootstrap does not need Extensionality
 
@@ -106,7 +144,11 @@ power object into `V`. Neither a separate subset-output arm nor a self
 output arm is necessary. This is also a mathematical consequence pending
 a dedicated Lean adapter.
 
-## What still requires proof
+## The initial interpretation gap
+
+The following records the earlier gap and research leads. Source 08 now
+supplies a different mathematical solution through the purity cut above;
+the full first-order Lean interpretation remains unfinished.
 
 Coextensionality does not automatically respect membership in its first
 argument: `D(x,y)` alone need not give `x∈z ↔ y∈z`. A bisimulation quotient
@@ -133,7 +175,7 @@ it is neither Foundation nor an automatic property of a bisimulation
 quotient. No claim here removes a fixed control sentence from the final
 calibrated machine theory or establishes a new state bound.
 
-## A proposed direct interpretation using saturated sets
+## Earlier proposed direct interpretation using saturated sets
 
 The following is a new proof plan for independent checking, rather than a
 verified invocation of Scott's theorem. It avoids the abstraction-choice
@@ -210,8 +252,10 @@ Every auxiliary predicate here is a fixed first-order formula. Matrix
 translation replaces equality by `D`, relativizes quantifiers to `H`,
 renames fresh variables and inserts the matrix into finitely many fixed
 PSC/Separation patterns. This identifies a computable syntactic shape.
-The complete proof patterns and their implementation are still to be
-checked before upgrading the opening calibration status. The separate
+The complete proof patterns and their implementation were the missing
+interfaces of this initial proposal. Source 08 supplies the revised
+mathematical proof through the purity cut; the corresponding full Lean
+syntax and proof-transport result remains to be checked. The separate
 equality-free CP/GIC experiment is analyzed in
 `equality_free_bisimulation.md`; it cannot use this PSC exact-image lemma
 without another proof.
