@@ -317,4 +317,51 @@ theorem transfer {n m src dst : Nat} (hn : p.nodes n = (.decnz src, .node m))
       simp only [upd]
       by_cases h1 : i = src <;> by_cases h2 : i = dst <;> simp_all <;> omega
 
+/-- A loop body `((inc d₁, inc d₂), continue 2)`: copy `src` into two registers. -/
+theorem copy2 {n m m' src d1 d2 : Nat} (hn : p.nodes n = (.decnz src, .node m))
+    (hm : p.nodes m = (.node m', .cont 2)) (hm' : p.nodes m' = (.inc d1, .inc d2))
+    (h1 : src ≠ d1) (h2 : src ≠ d2) (h12 : d1 ≠ d2) :
+    ∀ R : Regs, Run p (.node n) R .normal
+      (upd (upd (upd R d1 (R d1 + R src)) d2 (R d2 + R src)) src 0) := by
+  intro R
+  let g : Regs → Regs := fun R => upd (upd R d1 (R d1 + 1)) d2 (R d2 + 1)
+  have hbody : ∀ R, Run p (.node m) R (.cont 1) (g R) := by
+    intro R
+    have hin : Run p (.node m') R .normal (upd (upd R d1 (R d1 + 1)) d2 (R d2 + 1)) := by
+      have := seq hm' (.inc d1 R) (.inc d2 (upd R d1 (R d1 + 1)))
+      rwa [upd_other R _ (Ne.symm h12)] at this
+    exact cont_cdr hm hin (.contS 1 _)
+  have hg : ∀ R, g R src = R src := by
+    intro R; simp only [g]; rw [upd_other _ _ h2, upd_other _ _ h1]
+  have h := while_loop hn g hg hbody (R src) R rfl
+  suffices e : ∀ k R, R src = k → loopRes g src k R =
+      upd (upd (upd R d1 (R d1 + k)) d2 (R d2 + k)) src 0 by rw [e (R src) R rfl] at h; exact h
+  intro k
+  induction k with
+  | zero =>
+      intro R hR; simp only [loopRes, Nat.add_zero]
+      rw [upd_self, upd_self, ← hR, upd_self]
+  | succ k ih =>
+      intro R hR
+      simp only [loopRes]
+      rw [ih _ (by simp only [g]; rw [upd_other _ _ h2, upd_other _ _ h1]; simp)]
+      funext i
+      simp only [g, upd]
+      by_cases ha : i = src <;> by_cases hb : i = d1 <;> by_cases hc : i = d2 <;> simp_all <;> omega
+
+/-- A loop `(decnz r, continue 1)` clears `r`. -/
+theorem clear {n r : Nat} (hn : p.nodes n = (.decnz r, .cont 1)) :
+    ∀ R : Regs, Run p (.node n) R .normal (upd R r 0) := by
+  intro R
+  have h := while_loop hn (fun R => R) (fun _ => rfl) (fun R => .contS 0 R) (R r) R rfl
+  suffices e : ∀ k R, R r = k → loopRes (fun R => R) r k R = upd R r 0 by
+    rw [e (R r) R rfl] at h; exact h
+  intro k
+  induction k with
+  | zero => intro R hR; simp only [loopRes]; rw [← hR, upd_self]
+  | succ k ih =>
+      intro R hR
+      simp only [loopRes]
+      rw [ih _ (by simp), upd_upd]
+
 end SetTheory.BusyBeaver.ZFC.RMDag
