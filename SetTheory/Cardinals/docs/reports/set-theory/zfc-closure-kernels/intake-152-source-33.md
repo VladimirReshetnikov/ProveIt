@@ -1,0 +1,62 @@
+# Intake 152 / manuscript08 / local33
+
+Verdict: accept as an addition. The full article and all six sections, theory and independent-review notes, internalization note, implementation READMEs, exact theory builder/tableau/codecs, principal finite checkers and compiler/search driver were reviewed. No concrete mathematical or code defect was found at the stated scope, and no current repository claim needs retraction. This is a calibrated ordinary theory proposal with finite/reference artifacts, not a newly calibrated small blank machine.
+
+## Identity and attribution
+
+Title: *Small Turing machines for Con(ZFC)*. Arrival `da6dabcd8976acf94c4f3652ed3eeae5713b3d2a`, archive `zfc_small_machine_research_2026-10-16.zip`, internal root `zfc_small_machine_research`; placement `b123527ff4`, prefix `33-subworld-`. ProveIt pin `4747142d5d15213eb711bdadfa3cc7e769fcb7a7`; upstream `297ab8df7e5de329605c3875b4934643b371a5e3`; public253 `0d544f2a2e3c18f12278441a74b7879f31cbe856`.
+
+Friedman's subworld ideas, the original Mira/Wade/Jeff/mira-emmy machinery and earlier complete268 control are credited separately. The new generic implicational proof port credits the primary public-domain Metamath derivations by Lesyna/Machado and the prior Łukasiewicz basis. The seven frozen ProveIt dependencies are a reproducibility closure, not replacement files for the current project. No required replay input was missing.
+
+## Ordinary theory calibration
+
+SR₂⁺ is an equality-bearing membership theory with one shared world constant W and a joined schema. Matrix free variables are contained in a,b,z; bound names and complexity remain unrestricted. Inhabited separation moves the source guard inside the output existential and gives both W-inhabitation and the ordinary restricted separation clause. Universal closure of the curried reducibility component supplies two-parameter reducibility; reusing z as its consequent witness is intentional rebinding. The source guard does not guard separation's parameter slots.
+
+The finite-arity reduction has the correct dependency order. For a,b in W, ambient W witnesses a container; RED₂ reflects it into W, and restricted separation forms an exact literal pair. A fixed Kuratowski code has unique endpoints even when distinct raw objects have equal membership profiles; it need not be the unique code of those endpoints. Iterated codes pack finite tuples inside W. Inhabitation pads RED₂ down to arities1/0, tuple uniqueness yields every finite reducibility instance, and sequential counterexample reflection gives upward transfer. Only then does global Pairing pack arbitrary separation parameters, including the actual object W, into an external code. That code need not belong to W. There is no circular use of global Pairing, Extensionality or hereditary decoding before these steps.
+
+After full separation/reducibility, the proof derives global separation, transitive W, rooted transitive covers and weak Cartesian products. A weak product need contain one available ordered-pair representation per endpoint pair, not all representations. Definable relations are separated from that single product without choosing representatives. B(a,b) is one W-free first-order formula asserting a set-coded bisimulation on arbitrary rooted transitive covers. Its equivalence proof handles differing middle covers by intersection/transitivity. For the reverse forth/back characterization, separating B(s,t) or the proposed root pair inside one product constructs the required witness; this is not collection of a family of bisimulation witnesses or circular definition of B.
+
+The quotient membership E*(a,b)=exists c in b B(a,c) is congruent in both arguments, and equal incoming E* profiles imply B. Target SS transfers through a representative in literal W; target RED remains admissible because B and E* are W-free. Thus the quotient has actual target equality and Extensionality. The direct comparison theory derives ordinary Union, Power, Infinity and functional Replacement; it does not identify arbitrary raw coextensional objects. The reduct is ZF without Foundation/Choice, after which the standard relative-consistency interpretations apply.
+
+The upper consistency argument uses effective finite reflection for each finite fragment. Arbitrary external separation parameters are allowed because subsets of elements of a reflected limit rank still lie in the rank. The finite proof-schema construction, not a global satisfaction class for V, gives uniformity. This supports the claimed ZFC-provable consistency comparison at the ordinary mathematical level. It is not a serialized proof translator or a Lean formalization of SR₂⁺. The primary preliminary predication sketch really uses well-founded covers and invokes a conditional lemma as though it supplied covers for arbitrary roots; its global reflexivity argument needs domain work. This report supplies a different arbitrary-cover proof. No global theorem refutation is inferred from that local gap.
+
+## Checker and syntax contracts
+
+The constant-free proof search existentially closes each cumulative finite conjunction with one common W witness. Independently closing each axiom would be wrong; the shared-witness finite-proof translation is sound. Fixed labels0/1/2 denote the matrix slots,3/4 source/output,5 world. Bound5 inside a matrix is safe because free5 is forbidden, and all literal world occurrences lie outside matrix copies. The builder makes four actual matrix occurrences.
+
+The natural codecs use predecessor-offset Cantor pairing, so recursive children are smaller. Formula/list decoding and checking are iterative and total on naturals in the unbounded-resource mathematical interpretation. Candidate0 is rejected. Positive universals persist and can be revisited at every allocated parameter. Negative universals allocate fresh IDs; environments are copied and retain all parameter references. Positive equalities generate branch equivalence, and both membership coordinates are normalized. Branch-local IDs can denote equal objects; freshness does not add disequality. Atomic clashes, retained universals and fair parameter allocation give the usual quotient-model completeness argument. Both children of an implication split must close. Host exceptions propagate instead of accepting or skipping candidates. The positive certificate is a synthetic logical contradiction, not a refutation of SR₂⁺.
+
+The exact raw open stencil is56 formula nodes/4 holes/77 postfix tokens; with both original atomic vacuities it is74/4/105 versus old C/G/V101/3/145. The comparison abstracts relative falsity only for syntax measurement. These counts exclude the matrix guard, common-world handling, full checker, encoder/decoder and blank compiler, so none is a state estimate.
+
+## Reproduced finite and Lean evidence
+
+All runs used fresh copies outside the untouched extraction; no archived patch was installed. Final quick reproduction used the exact file-specific bulk-manifest adapter, preserving all other digest and functional assertions.
+
+* Fresh-copy quick `reproduce.py`: PASS,3.433s. Exact syntax-count and all1–4-object endpoint diagnostics (66066 structures,41463 ordered-pair witness triples); seven checker groups, including5000 codec roundtrips,2580 exact template comparisons, both equality coordinates, bound5 shadowing, malformed certificates and3000 nested universals; both frozen268/269 compiler recipes reproduce their four artifacts exactly.
+* Full prepared-body coverage regeneration:8432 complete instruction runs,2783994 literal moves, maximum526, all504 state/read rows. The path file,504-row runtime and coverage certificate regenerate identically. The independent oracle-free witness replay uses26035 literal moves. All blocks after the nine logical registers are zero. Separate affine replay passes8391 cases. This proves per-row prepared-input witnesses, not actual blank-run reachability or universal instruction simulation.
+* The complete initializer-reuse search was actually rerun:218 eligible states ×251 alternate destinations ×4 common write/move pairs =218872 candidates, zero survivors,306.372s here. It protects the dispatcher/register-box interface, redirects the observed relevant predecessor rows by one common action, retains the inherited box summaries and uses fuel1000. It does not search independent predecessor actions or arbitrary coordinated multi-row rewrites. Fuel/abstraction rejection is not a semantic counterexample or lower bound.
+* Fresh serial ten-module Lean4.32.0 closure PASS,21.811s, from source only using the absolute pinned compiler. Seventeen audited roots have only their expected empty or `propext`/`Classical.choice`/`Quot.sound` dependencies. Offline regeneration of the13 primary Metamath derivations reproduces the generic implicational source exactly. The rho6 bridge correctly restores primitive ex falso. The wrapper is unconditional named-variable first-order completeness, not numerical/theory/binary calibration.
+* Full optional compiler searches were run: original80000 proposals with seed161026 retained268 (334.731s). The final broader protected driver40000 proposals reached268 (179.213s). The archive explicitly disclaims reproduction of the older protected trajectory after adding macro-expansion choices, so this new result does not falsify its recorded269 history.
+
+See [complete review evidence](data/intake-152-source-33-review.json). The final narrow adapter also passed another independent fresh-copy quick run. The earlier generic scratch adapter is superseded; its too-broad source34 loop skip and complete rerun are documented in that dossier.
+
+## Newly retained protected268 control
+
+The new broader replay first found268 at iteration25714:206 decisions plus62 framework states,536 rows, start0, terminal268, binary blank0. Its numerical table SHA256 is `5452dc56afe85beb3d6923bea055fceec8a7e29e9d9cfaae8846b27a06ecaacf` (6992 bytes). The table, named table, labels, DAG, exact recipe and history are preserved under `data/intake-152-source-33-protected268-*`. A zero-iteration fixed-recipe replay reproduces all four generated artifacts exactly. The sole undefined named `1.inc`/read1 transition is totalized to write1, moveR, halt, adding the documented final move under the partial-transition-halts convention.
+
+The driver checks the exact emitted formula stack, silent/closed macro calls, word expansion and re-extraction of every decision edge. There is no separate RM bisimulation certificate for this basis experiment, no new kernel theorem for its alternate logical basis, and no binary consistency calibration. This ties the existing complete compiler benchmark, above public253; it is not a new record. The delivered269 artifacts remain unchanged.
+
+After recovering source33, replay with:
+
+```sh
+python3 -B HOST/code/intake_152_backend_adapter.py --source 33 \
+  --root RECOVERED_SOURCE33 --script compiler_experiments/basis_experiment.py -- \
+  --basis protected --recipe HOST/data/intake-152-source-33-protected268-results.json \
+  --iterations 0 --output NEW_SCRATCH_OUTPUT
+```
+
+## PDF and current-tree comparison
+
+Three shell-escape-disabled pdfLaTeX passes PASS:23 physical pages,534048 bytes, all fonts embedded; one harmless underfull line, no undefined references/citations or overflow. Every page was rendered and inspected on contact sheets, with the arbitrary-cover fixed-point page10 enlarged and clean. [PDF evidence](data/intake-152-source-33-pdf-qa.json). Primary PDFs for the predication gap and standard Foundation interpretation were independently consulted; the repair is judged by its displayed argument, not by the delivered independent-review verdict.
+
+The reported named-classicality gap is historical and already closed in the current project. Current numeric transport/decoder freshness and CP/GIC quotient ZF0 development are additional progress, distinct from this raw subworld kernel. Actual binary boxes, PC001 break and PC000 zero through RM331 are also current. Newly merged L2 AX evaluation identifies the219-node emitted stack/gate but does not establish full register/binary simulation. SR₂⁺ still needs a literal matrix-admissible emitter, complete checker compilation and blank initializer; native equality and common-world semantics cannot be dropped. Recover the layout and use the host helper `--run 33` for the quick suite; long searches, Lean and PDF are separate evidence.

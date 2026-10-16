@@ -1,0 +1,498 @@
+{
+  "status": "PASS",
+  "checks": [
+    {
+      "check": "Regenerate and replay the exact initializer",
+      "status": "PASS",
+      "elapsed_seconds": 2.841,
+      "evidence": "initializer_experiments/output/initializer_verification.json",
+      "result": {
+        "status": "PASS",
+        "method": "independent C++ literal-table interpreter",
+        "working_states": 315,
+        "initializer_states": 29,
+        "runtime_rows_preserved": 572,
+        "replay": {
+          "steps": 47189196,
+          "state": 5,
+          "head": -44,
+          "visited_min": -45,
+          "visited_max": 12261,
+          "ones": [
+            -45,
+            12243,
+            12245,
+            12247,
+            12249,
+            12251,
+            12253,
+            12255,
+            12257,
+            12259,
+            12261
+          ]
+        },
+        "gap": 12287,
+        "minimum_runtime_gap": 102,
+        "table_sha256": "cf68ed84e9e51f1776d32666f9e3a843cd522621a1cd011a36ce0ef9ed30a097",
+        "all_zero_initial_tape": true,
+        "full_runtime_theorem": false
+      }
+    },
+    {
+      "check": "Independent Python literal-table and tape audit",
+      "status": "PASS",
+      "elapsed_seconds": 29.845,
+      "evidence": "initializer_experiments/output/independent_python_replay.json",
+      "result": {
+        "status": "PASS",
+        "method": "independent Python set of integer one-cells",
+        "machine_sha256": "cf68ed84e9e51f1776d32666f9e3a843cd522621a1cd011a36ce0ef9ed30a097",
+        "runtime_file_sha256": "5e939b9b89b7d74f40101162ed1eb263c37e558d7366d652db90fac1c26321b9",
+        "working_states": 315,
+        "rows": 630,
+        "initializer_states": 29,
+        "first_runtime_entry_steps": 47189196,
+        "entry_state": 5,
+        "head": -44,
+        "all_one_cells": [
+          -45,
+          12243,
+          12245,
+          12247,
+          12249,
+          12251,
+          12253,
+          12255,
+          12257,
+          12259,
+          12261
+        ],
+        "left_marker": -45,
+        "header": 12243,
+        "gap": 12287,
+        "visited_min": -45,
+        "visited_max": 12261,
+        "initial_registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "runtime_rows_preserved": 572,
+        "bb5_intermediate_profile_checked": true,
+        "elapsed_seconds": 29.712272,
+        "proof_scope": "Exact finite prefix and row preservation, not arbitrary runtime or Con(ZFC)."
+      }
+    },
+    {
+      "check": "Default-index checker transport finite audit",
+      "status": "PASS",
+      "elapsed_seconds": 11.775,
+      "evidence": "theory_scope/default_indices_results.json",
+      "result": {
+        "status": "PASS",
+        "decoder_and_retraction_cases": 80000,
+        "matrix_semantic_comparisons": 31744,
+        "accepted_logical_identity_certificates": 124,
+        "fixed_wrapper_semantic_comparisons": 2232,
+        "matrix_projection_semantic_comparisons": 59520,
+        "public_numeric_candidate_comparisons": 10000,
+        "numeric_candidates_with_formerly_out_of_scope_matrices": 0,
+        "targeted_numeric_codec_cases": 124,
+        "targeted_formerly_out_of_scope_matrices": 28,
+        "accepted_public_refutations_in_tested_prefix": 0,
+        "negative_controls": {
+          "fixed_depth_clamping_under_binder": "fails as expected",
+          "clamping_before_matrix_projection": "fails as expected",
+          "public_boundary_adversarial_cases": 4,
+          "full_cross_variable_transport": "retained and accepted"
+        },
+        "compiled_binary_state_count": null,
+        "proof_assistant_verification": false,
+        "claim": "finite evidence for ordinary retraction and checker transport theorems",
+        "sources": {
+          "epsc2_original.py": "efca519f170224a3a3efcb514616c793834e3bbcbc83640d287b1260a7db1c7f",
+          "epsc2_default_indices.py": "10b43c8abbda1e72677a347a54f86ec12da18771a9cbaa5f7e32c30d8a126d52"
+        }
+      }
+    },
+    {
+      "check": "Independent scope and adversarial certificate audit",
+      "status": "PASS",
+      "elapsed_seconds": 0.21,
+      "evidence": "scope_audit/independent_scope_results.json",
+      "result": {
+        "status": "PASS",
+        "independent_constructed_collision_specialization": {
+          "valid": true,
+          "actions": 3,
+          "closed_branches": 1,
+          "template_projections": 0,
+          "maximum_branch_entries": 4
+        },
+        "fresh_witness_spurious_closures_rejected": 2,
+        "exact_projection_sites": [
+          [
+            2,
+            0,
+            4,
+            3
+          ],
+          [
+            1,
+            0,
+            4,
+            3
+          ],
+          [
+            0,
+            1,
+            4,
+            3
+          ]
+        ],
+        "huge_index_bit_length": 100001,
+        "malformed_or_false_public_certificates_rejected": 5,
+        "resource_failures_propagated": [
+          "MemoryError",
+          "RecursionError",
+          "OverflowError"
+        ],
+        "source_sha256": {
+          "epsc2_original.py": "efca519f170224a3a3efcb514616c793834e3bbcbc83640d287b1260a7db1c7f",
+          "epsc2_default_indices.py": "10b43c8abbda1e72677a347a54f86ec12da18771a9cbaa5f7e32c30d8a126d52"
+        },
+        "scope": "Independent targeted checks plus source/proof review; no kernel or binary proof."
+      }
+    },
+    {
+      "check": "Dense quantified-NAND codec and semantics",
+      "status": "PASS",
+      "elapsed_seconds": 4.66,
+      "evidence": "dense_qnand/dense_qnand_results.json",
+      "result": {
+        "canonical_roundtrips": 96000,
+        "independently_evaluated_structure_assignment_cases": 120000,
+        "syntax_generated_roundtrips": 2048,
+        "seed": 20261016,
+        "bit_comparison_corpus": {
+          "dense_shorter": 1888,
+          "equal": 155,
+          "raw_shorter": 5
+        },
+        "aggregate_dense_bits": 311192,
+        "aggregate_raw_bits": 419660,
+        "malformed_api_cases_rejected": 7,
+        "examples": [
+          {
+            "name": "atom at the last free slot",
+            "scope": 4,
+            "formula": [
+              "rel",
+              3,
+              3
+            ],
+            "dense_code": 15,
+            "raw_code": 48,
+            "dense_bits": 4,
+            "raw_bits": 6
+          },
+          {
+            "name": "least compound",
+            "scope": 4,
+            "formula": [
+              "q",
+              [
+                "rel",
+                0,
+                0
+              ],
+              [
+                "rel",
+                0,
+                0
+              ]
+            ],
+            "dense_code": 16,
+            "raw_code": 1,
+            "dense_bits": 5,
+            "raw_bits": 1
+          },
+          {
+            "name": "both branches use the new scope",
+            "scope": 1,
+            "formula": [
+              "q",
+              [
+                "rel",
+                1,
+                0
+              ],
+              [
+                "rel",
+                0,
+                1
+              ]
+            ],
+            "dense_code": 9,
+            "raw_code": 51,
+            "dense_bits": 4,
+            "raw_bits": 6
+          },
+          {
+            "name": "two nested binders",
+            "scope": 1,
+            "formula": [
+              "q",
+              [
+                "q",
+                [
+                  "rel",
+                  2,
+                  0
+                ],
+                [
+                  "rel",
+                  1,
+                  2
+                ]
+              ],
+              [
+                "rel",
+                1,
+                0
+              ]
+            ],
+            "dense_code": 1655,
+            "raw_code": 293227,
+            "dense_bits": 11,
+            "raw_bits": 19
+          }
+        ],
+        "interpretation": "Finite validation only; no compiled-state advantage or consistency result."
+      }
+    },
+    {
+      "check": "Rebuild frozen runtime from pinned sources",
+      "status": "PASS",
+      "elapsed_seconds": 0.462,
+      "evidence": "initializer_experiments/output/independent_runtime_rebuild.json",
+      "result": {
+        "status": "PASS",
+        "proveit_commit": "4747142d5d15213eb711bdadfa3cc7e769fcb7a7",
+        "upstream_commit": "297ab8df7e5de329605c3875b4934643b371a5e3",
+        "provenance_method": "Exact SHA-256 pins for every executed source and input data file",
+        "source_sha256": {
+          "Computability/BusyBeaver/Research/ZFC/recover_wade_dag.py": "caa4996be46f9201991dba07f81d4673f14e874ac682226c29fce9e0cea851f1",
+          "Computability/BusyBeaver/Research/ZFC/mira_backend.py": "39508fea4786276dd3655737b07f29f827c06fc5653499a24941b1866d690836"
+        },
+        "upstream_data_sha256": {
+          "ZF/m254/coq/prog/Dag254.v": "538ddaddd932058c2b319011126579d77783231f54331772377c05848a0599e3",
+          "ZF/m254/machine/zfc_254.tm": "d655ce2cf8cccebd21caa21a49f0f9f010960a44b95c17aae6cc425c518954eb"
+        },
+        "current_source_sha256": "39508fea4786276dd3655737b07f29f827c06fc5653499a24941b1866d690836",
+        "input_DAG_sha256": "538ddaddd932058c2b319011126579d77783231f54331772377c05848a0599e3",
+        "frozen_runtime_sha256": "5e939b9b89b7d74f40101162ed1eb263c37e558d7366d652db90fac1c26321b9",
+        "recompiled_original_total_states": 408,
+        "recompiled_original_rows": 816,
+        "initializer_states": 122,
+        "exact_frozen_runtime_rows_matched": 572,
+        "baseline_gap": 102,
+        "runtime_states": 286,
+        "runtime_entry": "d:0",
+        "runtime_metadata_matched": true,
+        "source_file_writes_performed": false,
+        "upstream_programs_executed": false,
+        "proof_scope": "Exact reconstruction and row comparison; no arbitrary-runtime or Con(ZFC) theorem"
+      }
+    },
+    {
+      "check": "Validate saved grammar and local-join certificates",
+      "status": "PASS",
+      "elapsed_seconds": 9.952,
+      "evidence": "machine_experiments/validation.json",
+      "result": {
+        "fast_search_saved_improvements": [
+          {
+            "all_decision_edges_reextracted": true,
+            "exact_macro_word": true,
+            "states": 287,
+            "trial": 0
+          },
+          {
+            "all_decision_edges_reextracted": true,
+            "exact_macro_word": true,
+            "states": 286,
+            "trial": 1
+          },
+          {
+            "all_decision_edges_reextracted": true,
+            "exact_macro_word": true,
+            "states": 280,
+            "trial": 2
+          },
+          {
+            "all_decision_edges_reextracted": true,
+            "exact_macro_word": true,
+            "states": 277,
+            "trial": 4
+          },
+          {
+            "all_decision_edges_reextracted": true,
+            "exact_macro_word": true,
+            "states": 276,
+            "trial": 6
+          },
+          {
+            "all_decision_edges_reextracted": true,
+            "exact_macro_word": true,
+            "states": 275,
+            "trial": 8
+          },
+          {
+            "all_decision_edges_reextracted": true,
+            "exact_macro_word": true,
+            "states": 270,
+            "trial": 10
+          },
+          {
+            "all_decision_edges_reextracted": true,
+            "exact_macro_word": true,
+            "states": 269,
+            "trial": 261
+          },
+          {
+            "all_decision_edges_reextracted": true,
+            "exact_macro_word": true,
+            "states": 268,
+            "trial": 3423
+          }
+        ],
+        "independent_rm_engine_sha256": "30fbd95b7a2a61004422558cfab4419de5239b67b88bc9ed19b7de8fcf585f18",
+        "local_join_regression": {
+          "all_32_windows_valid_deletion": 32,
+          "all_32_windows_wrong_write_rejected": 32
+        },
+        "rm_certificate_runs": {
+          "milp_expanded": {
+            "certificate": {
+              "candidate_nodes": 207,
+              "instruction_counts": {
+                "EDecnz": 1931,
+                "EHalt": 1,
+                "EInc": 2601
+              },
+              "reference_nodes": 217,
+              "related_operation_pairs": 4533
+            },
+            "mutations": [
+              {
+                "mutation": "initial",
+                "rejected": true
+              },
+              {
+                "mutation": "missing",
+                "rejected": true
+              },
+              {
+                "mutation": "duplicate",
+                "rejected": true
+              },
+              {
+                "mutation": "operation",
+                "rejected": true
+              },
+              {
+                "mutation": "zero_exit",
+                "rejected": true
+              },
+              {
+                "mutation": "positive_exit",
+                "rejected": true
+              }
+            ]
+          },
+          "search16k": {
+            "certificate": {
+              "candidate_nodes": 206,
+              "instruction_counts": {
+                "EDecnz": 1931,
+                "EHalt": 1,
+                "EInc": 2601
+              },
+              "reference_nodes": 217,
+              "related_operation_pairs": 4533
+            },
+            "mutations": [
+              {
+                "mutation": "initial",
+                "rejected": true
+              },
+              {
+                "mutation": "missing",
+                "rejected": true
+              },
+              {
+                "mutation": "duplicate",
+                "rejected": true
+              },
+              {
+                "mutation": "operation",
+                "rejected": true
+              },
+              {
+                "mutation": "zero_exit",
+                "rejected": true
+              },
+              {
+                "mutation": "positive_exit",
+                "rejected": true
+              }
+            ]
+          }
+        },
+        "scope": "Exact finite grammar/table/certificate checks. No unbounded binary simulation, new minimality, or ZFC endpoint theorem.",
+        "source_recipe": {
+          "C": 2,
+          "G": 1,
+          "alpha": 4,
+          "order": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ],
+          "outer_order": 16,
+          "perms": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "seed": 341,
+          "tree": 1
+        },
+        "verified": true
+      }
+    }
+  ],
+  "checks_run": 7,
+  "source_checkouts_used": true,
+  "delivered_evidence_modified": false,
+  "full_machine_consistency_theorem_checked": false,
+  "new_sub253_machine": false
+}

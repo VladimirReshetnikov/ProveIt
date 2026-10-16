@@ -1,0 +1,223 @@
+{
+  "source": 6,
+  "local": 31,
+  "arrival": "da6dabcd8976acf94c4f3652ed3eeae5713b3d2a",
+  "placement": "b123527ff4",
+  "verdict": "accept-addition",
+  "full_text_read": true,
+  "current_claim_retraction_required": false,
+  "copies_only": true,
+  "original_delivery_untouched": true,
+  "checksum_project_and_line_ending_work_omitted": true,
+  "bulk_manifest_policy": "Skipped in memory. Source05 initial quick nested adapter omission is disclosed in dossier; final corrected quick rerun skipped all bulk loops. Functional table/source identity guards retained.",
+  "tests": {
+    "06-core": {
+      "name": "06-core",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "verify_artifacts.py",
+        "--output",
+        "/tmp/zfc-review152-fibers-cr40j77h/06-core-evidence.json"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/06",
+      "returncode": 0,
+      "elapsed_seconds": 32.37548272125423,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/06-core.log"
+    },
+    "06-edge-elimination-r4": {
+      "name": "06-edge-elimination-r4",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "machine_experiments/edge_elimination.py",
+        "--repo",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-proveit",
+        "--table",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-proveit/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/04-machine-machines-zfc_253.tm",
+        "--radius",
+        "4",
+        "--output",
+        "/tmp/zfc-review152-fibers-cr40j77h/06/rerun-edge-elimination-r4.json"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/06",
+      "returncode": 0,
+      "elapsed_seconds": 2.0751648200675845,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/06-edge-elimination-r4.log"
+    },
+    "06-edge-elimination-r6": {
+      "name": "06-edge-elimination-r6",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "machine_experiments/edge_elimination.py",
+        "--repo",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-proveit",
+        "--table",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-proveit/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/04-machine-machines-zfc_253.tm",
+        "--radius",
+        "6",
+        "--output",
+        "/tmp/zfc-review152-fibers-cr40j77h/06/rerun-edge-elimination-r6.json"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/06",
+      "returncode": 0,
+      "elapsed_seconds": 7.17740891315043,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/06-edge-elimination-r6.log"
+    },
+    "06-edge-rewrite-r6": {
+      "name": "06-edge-rewrite-r6",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "machine_experiments/edge_rewrite.py",
+        "--repo",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-proveit",
+        "--table",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-proveit/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/04-machine-machines-zfc_253.tm",
+        "--radius",
+        "6",
+        "--output",
+        "/tmp/zfc-review152-fibers-cr40j77h/06/rerun-edge-rewrite-r6.json"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/06",
+      "returncode": 0,
+      "elapsed_seconds": 7.063636573962867,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/06-edge-rewrite-r6.log"
+    },
+    "06-fast-compile": {
+      "name": "06-fast-compile",
+      "command": [
+        "g++",
+        "-O3",
+        "-std=c++17",
+        "machine_experiments/fast_grammar.cpp",
+        "-o",
+        "/tmp/zfc-review152-fibers-cr40j77h/fast_grammar"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/06",
+      "returncode": 0,
+      "elapsed_seconds": 4.308302138000727,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/06-fast-compile.log"
+    },
+    "06-fast200000": {
+      "name": "06-fast200000",
+      "command": [
+        "/tmp/zfc-review152-fibers-cr40j77h/fast_grammar",
+        "machine_experiments/fast-coarse.input",
+        "/tmp/zfc-review152-fibers-cr40j77h/06/rerun-fast-coarse-records.jsonl",
+        "200000",
+        "20261016"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/06",
+      "returncode": 0,
+      "elapsed_seconds": 22.492858411744237,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/06-fast200000.log"
+    },
+    "06-grammar16384": {
+      "name": "06-grammar16384",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "machine_experiments/grammar_search.py",
+        "--repo",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-proveit",
+        "--upstream",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-upstream",
+        "--output",
+        "/tmp/zfc-review152-fibers-cr40j77h/06/rerun_search16k",
+        "--seeds",
+        "2048"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/06",
+      "returncode": 0,
+      "elapsed_seconds": 129.52527020964772,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/06-grammar16384.log"
+    },
+    "06-milp120": {
+      "name": "06-milp120",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "--with",
+        "scipy==1.16.3",
+        "python",
+        "machine_experiments/grammar_milp.py",
+        "--repo",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-proveit",
+        "--upstream",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-upstream",
+        "--output",
+        "/tmp/zfc-review152-fibers-cr40j77h/06/rerun_milp",
+        "--time-limit",
+        "120",
+        "--lane",
+        "expanded",
+        "--free-161"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/06",
+      "returncode": 0,
+      "elapsed_seconds": 125.32018455862999
+    },
+    "06-regenerated-validation": {
+      "name": "06-regenerated-validation",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "/tmp/zfc-review152-fibers-cr40j77h/06-regenerated-validation/validate_experiments.py",
+        "--repo",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-proveit",
+        "--upstream",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-upstream",
+        "--experiments",
+        "/tmp/zfc-review152-fibers-cr40j77h/06-regenerated-validation"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 4.486766209825873
+    },
+    "06-sources-and-saved": {
+      "name": "06-sources-and-saved",
+      "command": [
+        "uv",
+        "run",
+        "--no-project",
+        "python",
+        "verify_artifacts.py",
+        "--repo",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-proveit",
+        "--upstream",
+        "/tmp/zfc-review152-fibers-cr40j77h/pinned-upstream",
+        "--output",
+        "/tmp/zfc-review152-fibers-cr40j77h/06-source-evidence.json"
+      ],
+      "cwd": "/tmp/zfc-review152-fibers-cr40j77h/06",
+      "returncode": 0,
+      "elapsed_seconds": 59.961447519250214,
+      "stdout_path": "/tmp/zfc-review152-fibers-cr40j77h/06-sources-and-saved.log"
+    }
+  },
+  "dossier": "intake-152-source-31.md",
+  "new_sub253_calibrated_machine": false,
+  "new_proof_assistant_calibration": false,
+  "milp_rerun_states": 272,
+  "delivered_milp_states": 270,
+  "solver_variation_explicitly_allowed": true,
+  "review_setup_failures": [
+    "First full sweep omitted pinned audit_raw_candidate.py at final emission",
+    "Second full sweep omitted pinned source19 reference DAG at final emission"
+  ],
+  "final_complete_sweep_passed": true
+}
