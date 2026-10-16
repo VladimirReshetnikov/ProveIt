@@ -1,0 +1,4072 @@
+{
+  "scope": "Executable formula generation and encoding only; not a proof checker, compiler, machine, state estimate, or minimality result.",
+  "credits": "Intake sources01--03; source02 raw bottom-basis reference; new subset-only research and one-way congruence comparison.",
+  "template_basis": "mem,eq,hole,not,imp,all; each hole occurrence counts one leaf; parameter closure absent for the parameter-free abstract matrix.",
+  "normalization": "Classical double-negation cancellation only; raw source02 reference performs no cancellation.",
+  "congruence_equivalence": "The symmetric conclusion implies one-way CG. Conversely D(x,y) is symmetric; instantiate universal one-way CG at (y,x) to obtain the reverse membership implication, then conjoin both directions. Finite tests are regressions, not the universal proof.",
+  "concrete_matrix": [
+    "mem",
+    0,
+    1
+  ],
+  "concrete_warning": "Mem(0,1) instantiates one matrix, not the infinite schema. No matrix holes are serialized. Parameter-bearing matrices are universally closed by the generators.",
+  "binary_basis": "NAND basis: mem,NAND,all (3), plus eq when needed (4); trees repeat subexpressions without DAG sharing.",
+  "binary_format": "Mode bit; Elias gamma(payload_bit_length+1); postfix tokens. Mode0 opcodes mem0,NAND10,all11; mode1 mem00,eq01,NAND10,all11. Each variable/binder label v uses gamma(v+1). Strict whole-frame decoding.",
+  "exclusions": "Formula encodings charge variable and binder payloads but exclude proof-engine/equality rules, schema recognizer, certificate grammar, search enumeration, targets, initialization, and TM backend. Separate axiom frames exclude a theory-list container.",
+  "templates": {
+    "Ext": {
+      "template_raw_negation_basis": {
+        "nodes": 14,
+        "operators": {
+          "all": 3,
+          "eq": 1,
+          "imp": 4,
+          "mem": 4,
+          "not": 2
+        },
+        "variable_occurrences_including_binders": 13,
+        "binder_occurrences": 3,
+        "distinct_variable_labels": 3,
+        "maximum_variable_label": 2,
+        "free_variables": []
+      },
+      "template_dn_normalized": {
+        "nodes": 14,
+        "operators": {
+          "all": 3,
+          "eq": 1,
+          "imp": 4,
+          "mem": 4,
+          "not": 2
+        },
+        "variable_occurrences_including_binders": 13,
+        "binder_occurrences": 3,
+        "distinct_variable_labels": 3,
+        "maximum_variable_label": 2,
+        "free_variables": []
+      },
+      "template_source02_bottom_basis": {
+        "nodes": 16,
+        "operators": {
+          "all": 3,
+          "bot": 2,
+          "eq": 1,
+          "imp": 6,
+          "mem": 4
+        },
+        "variable_occurrences_including_binders": 13,
+        "binder_occurrences": 3,
+        "distinct_variable_labels": 3,
+        "maximum_variable_label": 2,
+        "free_variables": []
+      },
+      "concrete_Mem_0_1_raw": {
+        "nodes": 66,
+        "operators": {
+          "all": 3,
+          "eq": 2,
+          "mem": 30,
+          "nand": 31
+        },
+        "variable_occurrences_including_binders": 67,
+        "binder_occurrences": 3,
+        "distinct_variable_labels": 3,
+        "maximum_variable_label": 2,
+        "free_variables": [],
+        "basis_constructors": 4,
+        "variable_payload_bits": 159,
+        "opcode_bits": 132,
+        "framing_bits": 18,
+        "total_bits": 309
+      },
+      "concrete_Mem_0_1_dn_alpha_reused": {
+        "nodes": 66,
+        "operators": {
+          "all": 3,
+          "eq": 2,
+          "mem": 30,
+          "nand": 31
+        },
+        "variable_occurrences_including_binders": 67,
+        "binder_occurrences": 3,
+        "distinct_variable_labels": 3,
+        "maximum_variable_label": 2,
+        "free_variables": [],
+        "basis_constructors": 4,
+        "variable_payload_bits": 159,
+        "opcode_bits": 132,
+        "framing_bits": 18,
+        "total_bits": 309
+      }
+    },
+    "CG_oneway": {
+      "template_raw_negation_basis": {
+        "nodes": 17,
+        "operators": {
+          "all": 4,
+          "imp": 5,
+          "mem": 6,
+          "not": 2
+        },
+        "variable_occurrences_including_binders": 16,
+        "binder_occurrences": 4,
+        "distinct_variable_labels": 4,
+        "maximum_variable_label": 3,
+        "free_variables": []
+      },
+      "template_dn_normalized": {
+        "nodes": 17,
+        "operators": {
+          "all": 4,
+          "imp": 5,
+          "mem": 6,
+          "not": 2
+        },
+        "variable_occurrences_including_binders": 16,
+        "binder_occurrences": 4,
+        "distinct_variable_labels": 4,
+        "maximum_variable_label": 3,
+        "free_variables": []
+      },
+      "template_source02_bottom_basis": {
+        "nodes": 19,
+        "operators": {
+          "all": 4,
+          "bot": 2,
+          "imp": 7,
+          "mem": 6
+        },
+        "variable_occurrences_including_binders": 16,
+        "binder_occurrences": 4,
+        "distinct_variable_labels": 4,
+        "maximum_variable_label": 3,
+        "free_variables": []
+      },
+      "concrete_Mem_0_1_raw": {
+        "nodes": 76,
+        "operators": {
+          "all": 5,
+          "mem": 36,
+          "nand": 35
+        },
+        "variable_occurrences_including_binders": 77,
+        "binder_occurrences": 5,
+        "distinct_variable_labels": 4,
+        "maximum_variable_label": 3,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 205,
+        "opcode_bits": 116,
+        "framing_bits": 18,
+        "total_bits": 339
+      },
+      "concrete_Mem_0_1_dn_alpha_reused": {
+        "nodes": 76,
+        "operators": {
+          "all": 5,
+          "mem": 36,
+          "nand": 35
+        },
+        "variable_occurrences_including_binders": 77,
+        "binder_occurrences": 5,
+        "distinct_variable_labels": 3,
+        "maximum_variable_label": 2,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 189,
+        "opcode_bits": 116,
+        "framing_bits": 18,
+        "total_bits": 323,
+        "rpn": [
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "mem",
+            2,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            2
+          ],
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            2
+          ],
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            2
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "all",
+            0
+          ]
+        ],
+        "binary_frame": "00000000010011001000111001101000110101010001101000111001111010001101000111001111010100011010001110011110100011010001110011110101010100011100110100011010101000110100011100111101000110100011100111101010001101000111001111010001101000111001111010101010101101101011001001100100111010110110101100100110010011101011011101011010111"
+      }
+    },
+    "CG_symmetric_MiraEsharp": {
+      "template_raw_negation_basis": {
+        "nodes": 23,
+        "operators": {
+          "all": 4,
+          "imp": 7,
+          "mem": 8,
+          "not": 4
+        },
+        "variable_occurrences_including_binders": 20,
+        "binder_occurrences": 4,
+        "distinct_variable_labels": 4,
+        "maximum_variable_label": 3,
+        "free_variables": []
+      },
+      "template_dn_normalized": {
+        "nodes": 23,
+        "operators": {
+          "all": 4,
+          "imp": 7,
+          "mem": 8,
+          "not": 4
+        },
+        "variable_occurrences_including_binders": 20,
+        "binder_occurrences": 4,
+        "distinct_variable_labels": 4,
+        "maximum_variable_label": 3,
+        "free_variables": []
+      },
+      "template_source02_bottom_basis": {
+        "nodes": 27,
+        "operators": {
+          "all": 4,
+          "bot": 4,
+          "imp": 11,
+          "mem": 8
+        },
+        "variable_occurrences_including_binders": 20,
+        "binder_occurrences": 4,
+        "distinct_variable_labels": 4,
+        "maximum_variable_label": 3,
+        "free_variables": []
+      },
+      "concrete_Mem_0_1_raw": {
+        "nodes": 184,
+        "operators": {
+          "all": 5,
+          "mem": 90,
+          "nand": 89
+        },
+        "variable_occurrences_including_binders": 185,
+        "binder_occurrences": 5,
+        "distinct_variable_labels": 4,
+        "maximum_variable_label": 3,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 569,
+        "opcode_bits": 278,
+        "framing_bits": 20,
+        "total_bits": 867
+      },
+      "concrete_Mem_0_1_dn_alpha_reused": {
+        "nodes": 184,
+        "operators": {
+          "all": 5,
+          "mem": 90,
+          "nand": 89
+        },
+        "variable_occurrences_including_binders": 185,
+        "binder_occurrences": 5,
+        "distinct_variable_labels": 3,
+        "maximum_variable_label": 2,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 445,
+        "opcode_bits": 278,
+        "framing_bits": 20,
+        "total_bits": 743
+      }
+    },
+    "CP": {
+      "template_raw_negation_basis": {
+        "nodes": 32,
+        "operators": {
+          "all": 7,
+          "imp": 7,
+          "mem": 8,
+          "not": 10
+        },
+        "variable_occurrences_including_binders": 23,
+        "binder_occurrences": 7,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 5,
+        "free_variables": []
+      },
+      "template_dn_normalized": {
+        "nodes": 26,
+        "operators": {
+          "all": 7,
+          "imp": 7,
+          "mem": 8,
+          "not": 4
+        },
+        "variable_occurrences_including_binders": 23,
+        "binder_occurrences": 7,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 5,
+        "free_variables": []
+      },
+      "template_source02_bottom_basis": {
+        "nodes": 42,
+        "operators": {
+          "all": 7,
+          "bot": 10,
+          "imp": 17,
+          "mem": 8
+        },
+        "variable_occurrences_including_binders": 23,
+        "binder_occurrences": 7,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 5,
+        "free_variables": []
+      },
+      "concrete_Mem_0_1_raw": {
+        "nodes": 206834,
+        "operators": {
+          "all": 33955,
+          "mem": 86440,
+          "nand": 86439
+        },
+        "variable_occurrences_including_binders": 206835,
+        "binder_occurrences": 33955,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 5,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 959431,
+        "opcode_bits": 327228,
+        "framing_bits": 42,
+        "total_bits": 1286701
+      },
+      "concrete_Mem_0_1_dn_alpha_reused": {
+        "nodes": 3518,
+        "operators": {
+          "all": 619,
+          "mem": 1450,
+          "nand": 1449
+        },
+        "variable_occurrences_including_binders": 3519,
+        "binder_occurrences": 619,
+        "distinct_variable_labels": 3,
+        "maximum_variable_label": 2,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 9431,
+        "opcode_bits": 5586,
+        "framing_bits": 28,
+        "total_bits": 15045
+      }
+    },
+    "GIC": {
+      "template_raw_negation_basis": {
+        "nodes": 28,
+        "operators": {
+          "all": 7,
+          "hole": 3,
+          "imp": 5,
+          "mem": 3,
+          "not": 10
+        },
+        "variable_occurrences_including_binders": 19,
+        "binder_occurrences": 7,
+        "distinct_variable_labels": 5,
+        "maximum_variable_label": 6,
+        "free_variables": []
+      },
+      "template_dn_normalized": {
+        "nodes": 24,
+        "operators": {
+          "all": 7,
+          "hole": 3,
+          "imp": 5,
+          "mem": 3,
+          "not": 6
+        },
+        "variable_occurrences_including_binders": 19,
+        "binder_occurrences": 7,
+        "distinct_variable_labels": 5,
+        "maximum_variable_label": 6,
+        "free_variables": []
+      },
+      "template_source02_bottom_basis": {
+        "nodes": 38,
+        "operators": {
+          "all": 7,
+          "bot": 10,
+          "hole": 3,
+          "imp": 15,
+          "mem": 3
+        },
+        "variable_occurrences_including_binders": 19,
+        "binder_occurrences": 7,
+        "distinct_variable_labels": 5,
+        "maximum_variable_label": 6,
+        "free_variables": []
+      },
+      "concrete_Mem_0_1_raw": {
+        "nodes": 3434,
+        "operators": {
+          "all": 251,
+          "mem": 1592,
+          "nand": 1591
+        },
+        "variable_occurrences_including_binders": 3435,
+        "binder_occurrences": 251,
+        "distinct_variable_labels": 5,
+        "maximum_variable_label": 6,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 17157,
+        "opcode_bits": 5276,
+        "framing_bits": 30,
+        "total_bits": 22463
+      },
+      "concrete_Mem_0_1_dn_alpha_reused": {
+        "nodes": 380,
+        "operators": {
+          "all": 65,
+          "mem": 158,
+          "nand": 157
+        },
+        "variable_occurrences_including_binders": 381,
+        "binder_occurrences": 65,
+        "distinct_variable_labels": 3,
+        "maximum_variable_label": 2,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 769,
+        "opcode_bits": 602,
+        "framing_bits": 22,
+        "total_bits": 1393
+      }
+    },
+    "PSC_point_subset": {
+      "template_raw_negation_basis": {
+        "nodes": 38,
+        "operators": {
+          "all": 10,
+          "eq": 1,
+          "hole": 3,
+          "imp": 8,
+          "mem": 5,
+          "not": 11
+        },
+        "variable_occurrences_including_binders": 28,
+        "binder_occurrences": 10,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "template_dn_normalized": {
+        "nodes": 36,
+        "operators": {
+          "all": 10,
+          "eq": 1,
+          "hole": 3,
+          "imp": 8,
+          "mem": 5,
+          "not": 9
+        },
+        "variable_occurrences_including_binders": 28,
+        "binder_occurrences": 10,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "template_source02_bottom_basis": {
+        "nodes": 49,
+        "operators": {
+          "all": 10,
+          "bot": 11,
+          "eq": 1,
+          "hole": 3,
+          "imp": 19,
+          "mem": 5
+        },
+        "variable_occurrences_including_binders": 28,
+        "binder_occurrences": 10,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "concrete_Mem_0_1_raw": {
+        "nodes": 2156,
+        "operators": {
+          "all": 373,
+          "eq": 64,
+          "mem": 828,
+          "nand": 891
+        },
+        "variable_occurrences_including_binders": 2157,
+        "binder_occurrences": 373,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": [],
+        "basis_constructors": 4,
+        "variable_payload_bits": 8759,
+        "opcode_bits": 4312,
+        "framing_bits": 28,
+        "total_bits": 13099
+      },
+      "concrete_Mem_0_1_dn_alpha_reused": {
+        "nodes": 596,
+        "operators": {
+          "all": 109,
+          "eq": 16,
+          "mem": 228,
+          "nand": 243
+        },
+        "variable_occurrences_including_binders": 597,
+        "binder_occurrences": 109,
+        "distinct_variable_labels": 4,
+        "maximum_variable_label": 3,
+        "free_variables": [],
+        "basis_constructors": 4,
+        "variable_payload_bits": 1449,
+        "opcode_bits": 1192,
+        "framing_bits": 24,
+        "total_bits": 2665
+      }
+    },
+    "PSC_point_mixed": {
+      "template_raw_negation_basis": {
+        "nodes": 41,
+        "operators": {
+          "all": 10,
+          "eq": 1,
+          "hole": 3,
+          "imp": 9,
+          "mem": 6,
+          "not": 12
+        },
+        "variable_occurrences_including_binders": 30,
+        "binder_occurrences": 10,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "template_dn_normalized": {
+        "nodes": 39,
+        "operators": {
+          "all": 10,
+          "eq": 1,
+          "hole": 3,
+          "imp": 9,
+          "mem": 6,
+          "not": 10
+        },
+        "variable_occurrences_including_binders": 30,
+        "binder_occurrences": 10,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "template_source02_bottom_basis": {
+        "nodes": 53,
+        "operators": {
+          "all": 10,
+          "bot": 12,
+          "eq": 1,
+          "hole": 3,
+          "imp": 21,
+          "mem": 6
+        },
+        "variable_occurrences_including_binders": 30,
+        "binder_occurrences": 10,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "concrete_Mem_0_1_raw": {
+        "nodes": 2244,
+        "operators": {
+          "all": 381,
+          "eq": 64,
+          "mem": 868,
+          "nand": 931
+        },
+        "variable_occurrences_including_binders": 2245,
+        "binder_occurrences": 381,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": [],
+        "basis_constructors": 4,
+        "variable_payload_bits": 9263,
+        "opcode_bits": 4488,
+        "framing_bits": 28,
+        "total_bits": 13779
+      },
+      "concrete_Mem_0_1_dn_alpha_reused": {
+        "nodes": 684,
+        "operators": {
+          "all": 117,
+          "eq": 16,
+          "mem": 268,
+          "nand": 283
+        },
+        "variable_occurrences_including_binders": 685,
+        "binder_occurrences": 117,
+        "distinct_variable_labels": 4,
+        "maximum_variable_label": 3,
+        "free_variables": [],
+        "basis_constructors": 4,
+        "variable_payload_bits": 1649,
+        "opcode_bits": 1368,
+        "framing_bits": 24,
+        "total_bits": 3041
+      }
+    },
+    "PSC_subset_subset": {
+      "template_raw_negation_basis": {
+        "nodes": 41,
+        "operators": {
+          "all": 11,
+          "hole": 3,
+          "imp": 9,
+          "mem": 7,
+          "not": 11
+        },
+        "variable_occurrences_including_binders": 31,
+        "binder_occurrences": 11,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "template_dn_normalized": {
+        "nodes": 39,
+        "operators": {
+          "all": 11,
+          "hole": 3,
+          "imp": 9,
+          "mem": 7,
+          "not": 9
+        },
+        "variable_occurrences_including_binders": 31,
+        "binder_occurrences": 11,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "template_source02_bottom_basis": {
+        "nodes": 52,
+        "operators": {
+          "all": 11,
+          "bot": 11,
+          "hole": 3,
+          "imp": 20,
+          "mem": 7
+        },
+        "variable_occurrences_including_binders": 31,
+        "binder_occurrences": 11,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "concrete_Mem_0_1_raw": {
+        "nodes": 2476,
+        "operators": {
+          "all": 437,
+          "mem": 1020,
+          "nand": 1019
+        },
+        "variable_occurrences_including_binders": 2477,
+        "binder_occurrences": 437,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 10871,
+        "opcode_bits": 3932,
+        "framing_bits": 28,
+        "total_bits": 14831
+      },
+      "concrete_Mem_0_1_dn_alpha_reused": {
+        "nodes": 676,
+        "operators": {
+          "all": 125,
+          "mem": 276,
+          "nand": 275
+        },
+        "variable_occurrences_including_binders": 677,
+        "binder_occurrences": 125,
+        "distinct_variable_labels": 4,
+        "maximum_variable_label": 3,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 1657,
+        "opcode_bits": 1076,
+        "framing_bits": 24,
+        "total_bits": 2757,
+        "rpn": [
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            2
+          ],
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            2
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            2
+          ],
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            0,
+            2
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            2
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            3,
+            1
+          ],
+          [
+            "mem",
+            3,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            3
+          ],
+          [
+            "all",
+            2
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            3,
+            1
+          ],
+          [
+            "mem",
+            3,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            3
+          ],
+          [
+            "all",
+            2
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            3,
+            1
+          ],
+          [
+            "mem",
+            3,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            3
+          ],
+          [
+            "all",
+            2
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            2
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "mem",
+            2,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "mem",
+            2,
+            3
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            3,
+            1
+          ],
+          [
+            "mem",
+            3,
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            3
+          ],
+          [
+            "all",
+            2
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "mem",
+            0,
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "mem",
+            1,
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            1
+          ],
+          [
+            "nand"
+          ],
+          [
+            "all",
+            0
+          ],
+          [
+            "nand"
+          ],
+          [
+            "nand"
+          ]
+        ],
+        "binary_frame": "000000000000101010101110010110101101010010101010111010110101001010101011110101101101011010110101001010101011101011010100101010101111010110111011010010110101101010010101010111010110101001010101011110101101101011010110101001010101011101011010100101010101111010110111011010101110010011001010010110101101000100110010100101101011010100011010001101010100011001000011001001000110010000110010010101000100110010100101101011010001001100101001011010110101000110100011010101000110010000110010010001100100001100100101010100001000100001000101010110010011011010100010100101101101000101001011011010100010100101101101000101001011011010101010111010100010100101101101000101001011011010100010100101101101000101001011011010101010111100101000101001011011010001010010110110101000101001011011010001010010110110101010101110101000101001011011010001010010110110101000101001011011010001010010110110101010101111010101101000100110010100101101011010001001100101001011010110101000110100011010101000110010000110010010001100100001100100101010001001100101001011010110100010011001010010110101101010001101000110101010001100100001100100100011001000011001001010101000010001000010001010101100100110110101000101001011011010001010010110110101000101001011011010001010010110110101010101110101000101001011011010001010010110110101000101001011011010001010010110110101010101111001010001010010110110100010100101101101010001010010110110100010100101101101010101011101010001010010110110100010100101101101010001010010110110100010100101101101010101011110101011010101110010011001010010110101101000100110010100101101011010100011010001101010100011001000011001001000110010000110010010101000100110010100101101011010001001100101001011010110101000110100011010101000110010000110010010001100100001100100101010100001000100001000101010110010011011010100010100101101101000101001011011010100010100101101101000101001011011010101010111010100010100101101101000101001011011010100010100101101101000101001011011010101010111100101000101001011011010001010010110110101000101001011011010001010010110110101010101110101000101001011011010001010010110110101000101001011011010001010010110110101010101111010101101000100110010100101101011010001001100101001011010110101000110100011010101000110010000110010010001100100001100100101010001001100101001011010110100010011001010010110101101010001101000110101010001100100001100100100011001000011001001010101000010001000010001010101100100110110101000101001011011010001010010110110101000101001011011010001010010110110101010101110101000101001011011010001010010110110101000101001011011010001010010110110101010101111001010001010010110110100010100101101101010001010010110110100010100101101101010101011101010001010010110110100010100101101101010001010010110110100010100101101101010101011110101011010101111010"
+      }
+    },
+    "PSC_subset_mixed": {
+      "template_raw_negation_basis": {
+        "nodes": 44,
+        "operators": {
+          "all": 11,
+          "hole": 3,
+          "imp": 10,
+          "mem": 8,
+          "not": 12
+        },
+        "variable_occurrences_including_binders": 33,
+        "binder_occurrences": 11,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "template_dn_normalized": {
+        "nodes": 42,
+        "operators": {
+          "all": 11,
+          "hole": 3,
+          "imp": 10,
+          "mem": 8,
+          "not": 10
+        },
+        "variable_occurrences_including_binders": 33,
+        "binder_occurrences": 11,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "template_source02_bottom_basis": {
+        "nodes": 56,
+        "operators": {
+          "all": 11,
+          "bot": 12,
+          "hole": 3,
+          "imp": 22,
+          "mem": 8
+        },
+        "variable_occurrences_including_binders": 33,
+        "binder_occurrences": 11,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "concrete_Mem_0_1_raw": {
+        "nodes": 2564,
+        "operators": {
+          "all": 445,
+          "mem": 1060,
+          "nand": 1059
+        },
+        "variable_occurrences_including_binders": 2565,
+        "binder_occurrences": 445,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 11375,
+        "opcode_bits": 4068,
+        "framing_bits": 28,
+        "total_bits": 15471
+      },
+      "concrete_Mem_0_1_dn_alpha_reused": {
+        "nodes": 764,
+        "operators": {
+          "all": 133,
+          "mem": 316,
+          "nand": 315
+        },
+        "variable_occurrences_including_binders": 765,
+        "binder_occurrences": 133,
+        "distinct_variable_labels": 4,
+        "maximum_variable_label": 3,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 1857,
+        "opcode_bits": 1212,
+        "framing_bits": 24,
+        "total_bits": 3093
+      }
+    },
+    "ISI_member_subset": {
+      "template_raw_negation_basis": {
+        "nodes": 38,
+        "operators": {
+          "all": 10,
+          "hole": 3,
+          "imp": 8,
+          "mem": 6,
+          "not": 11
+        },
+        "variable_occurrences_including_binders": 28,
+        "binder_occurrences": 10,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "template_dn_normalized": {
+        "nodes": 36,
+        "operators": {
+          "all": 10,
+          "hole": 3,
+          "imp": 8,
+          "mem": 6,
+          "not": 9
+        },
+        "variable_occurrences_including_binders": 28,
+        "binder_occurrences": 10,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "template_source02_bottom_basis": {
+        "nodes": 49,
+        "operators": {
+          "all": 10,
+          "bot": 11,
+          "hole": 3,
+          "imp": 19,
+          "mem": 6
+        },
+        "variable_occurrences_including_binders": 28,
+        "binder_occurrences": 10,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "concrete_Mem_0_1_raw": {
+        "nodes": 2156,
+        "operators": {
+          "all": 373,
+          "mem": 892,
+          "nand": 891
+        },
+        "variable_occurrences_including_binders": 2157,
+        "binder_occurrences": 373,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 8759,
+        "opcode_bits": 3420,
+        "framing_bits": 28,
+        "total_bits": 12207
+      },
+      "concrete_Mem_0_1_dn_alpha_reused": {
+        "nodes": 596,
+        "operators": {
+          "all": 109,
+          "mem": 244,
+          "nand": 243
+        },
+        "variable_occurrences_including_binders": 597,
+        "binder_occurrences": 109,
+        "distinct_variable_labels": 4,
+        "maximum_variable_label": 3,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 1449,
+        "opcode_bits": 948,
+        "framing_bits": 24,
+        "total_bits": 2421
+      }
+    },
+    "EFH": {
+      "template_raw_negation_basis": {
+        "nodes": 47,
+        "operators": {
+          "all": 10,
+          "hole": 3,
+          "imp": 11,
+          "mem": 9,
+          "not": 14
+        },
+        "variable_occurrences_including_binders": 34,
+        "binder_occurrences": 10,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "template_dn_normalized": {
+        "nodes": 41,
+        "operators": {
+          "all": 10,
+          "hole": 3,
+          "imp": 11,
+          "mem": 9,
+          "not": 8
+        },
+        "variable_occurrences_including_binders": 34,
+        "binder_occurrences": 10,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "template_source02_bottom_basis": {
+        "nodes": 61,
+        "operators": {
+          "all": 10,
+          "bot": 14,
+          "hole": 3,
+          "imp": 25,
+          "mem": 9
+        },
+        "variable_occurrences_including_binders": 34,
+        "binder_occurrences": 10,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": []
+      },
+      "concrete_Mem_0_1_raw": {
+        "nodes": 2019372,
+        "operators": {
+          "all": 35157,
+          "mem": 992108,
+          "nand": 992107
+        },
+        "variable_occurrences_including_binders": 2019373,
+        "binder_occurrences": 35157,
+        "distinct_variable_labels": 6,
+        "maximum_variable_label": 7,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 10098941,
+        "opcode_bits": 3046636,
+        "framing_bits": 48,
+        "total_bits": 13145625
+      },
+      "concrete_Mem_0_1_dn_alpha_reused": {
+        "nodes": 32196,
+        "operators": {
+          "all": 741,
+          "mem": 15728,
+          "nand": 15727
+        },
+        "variable_occurrences_including_binders": 32197,
+        "binder_occurrences": 741,
+        "distinct_variable_labels": 3,
+        "maximum_variable_label": 2,
+        "free_variables": [],
+        "basis_constructors": 3,
+        "variable_payload_bits": 84025,
+        "opcode_bits": 48664,
+        "framing_bits": 36,
+        "total_bits": 132725
+      }
+    }
+  },
+  "theories": {
+    "Ext_PSC_point_subset": {
+      "template_raw_negation_basis": 52,
+      "template_dn_normalized": 50,
+      "template_source02_bottom_basis": 65,
+      "concrete_separate_frames_dn_alpha_bits": 2974,
+      "axioms": [
+        "Ext",
+        "PSC_point_subset"
+      ]
+    },
+    "Ext_PSC_point_mixed": {
+      "template_raw_negation_basis": 55,
+      "template_dn_normalized": 53,
+      "template_source02_bottom_basis": 69,
+      "concrete_separate_frames_dn_alpha_bits": 3350,
+      "axioms": [
+        "Ext",
+        "PSC_point_mixed"
+      ]
+    },
+    "Ext_PSC_subset_subset": {
+      "template_raw_negation_basis": 55,
+      "template_dn_normalized": 53,
+      "template_source02_bottom_basis": 68,
+      "concrete_separate_frames_dn_alpha_bits": 3066,
+      "axioms": [
+        "Ext",
+        "PSC_subset_subset"
+      ]
+    },
+    "Ext_PSC_subset_mixed": {
+      "template_raw_negation_basis": 58,
+      "template_dn_normalized": 56,
+      "template_source02_bottom_basis": 72,
+      "concrete_separate_frames_dn_alpha_bits": 3402,
+      "axioms": [
+        "Ext",
+        "PSC_subset_mixed"
+      ]
+    },
+    "QPSC_oneway": {
+      "template_raw_negation_basis": 58,
+      "template_dn_normalized": 56,
+      "template_source02_bottom_basis": 71,
+      "concrete_separate_frames_dn_alpha_bits": 3080,
+      "axioms": [
+        "CG_oneway",
+        "PSC_subset_subset"
+      ]
+    },
+    "QPSC_symmetric": {
+      "template_raw_negation_basis": 64,
+      "template_dn_normalized": 62,
+      "template_source02_bottom_basis": 79,
+      "concrete_separate_frames_dn_alpha_bits": 3500,
+      "axioms": [
+        "CG_symmetric_MiraEsharp",
+        "PSC_subset_subset"
+      ]
+    },
+    "Qmixed_oneway": {
+      "template_raw_negation_basis": 61,
+      "template_dn_normalized": 59,
+      "template_source02_bottom_basis": 75,
+      "concrete_separate_frames_dn_alpha_bits": 3416,
+      "axioms": [
+        "CG_oneway",
+        "PSC_subset_mixed"
+      ]
+    },
+    "Qmixed_symmetric": {
+      "template_raw_negation_basis": 67,
+      "template_dn_normalized": 65,
+      "template_source02_bottom_basis": 83,
+      "concrete_separate_frames_dn_alpha_bits": 3836,
+      "axioms": [
+        "CG_symmetric_MiraEsharp",
+        "PSC_subset_mixed"
+      ]
+    },
+    "RCC": {
+      "template_raw_negation_basis": 60,
+      "template_dn_normalized": 50,
+      "template_source02_bottom_basis": 80,
+      "concrete_separate_frames_dn_alpha_bits": 16438,
+      "axioms": [
+        "CP",
+        "GIC"
+      ]
+    },
+    "Ext_EFH": {
+      "template_raw_negation_basis": 61,
+      "template_dn_normalized": 55,
+      "template_source02_bottom_basis": 77,
+      "concrete_separate_frames_dn_alpha_bits": 133034,
+      "axioms": [
+        "Ext",
+        "EFH"
+      ]
+    },
+    "QEFH_oneway": {
+      "template_raw_negation_basis": 64,
+      "template_dn_normalized": 58,
+      "template_source02_bottom_basis": 80,
+      "concrete_separate_frames_dn_alpha_bits": 133048,
+      "axioms": [
+        "CG_oneway",
+        "EFH"
+      ]
+    },
+    "QEFH_symmetric": {
+      "template_raw_negation_basis": 70,
+      "template_dn_normalized": 64,
+      "template_source02_bottom_basis": 88,
+      "concrete_separate_frames_dn_alpha_bits": 133468,
+      "axioms": [
+        "CG_symmetric_MiraEsharp",
+        "EFH"
+      ]
+    }
+  }
+}

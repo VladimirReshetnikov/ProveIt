@@ -214,14 +214,15 @@ requirement to build Lean one module at a time.
   universal pair `(58, 4)`, prime-representing polynomials, and the Jones
   articles of 1974–1984 formalized statement by statement, next to corrected
   editions of the six articles with editorial notes on every discrepancy.
-- A [collection of 289 research reports](SetTheory/Cardinals/docs/reports/README.md)
+- A [collection of 290 research reports](SetTheory/Cardinals/docs/reports/README.md)
   without Lean counterparts, most of them attacking a specific conjecture from
   the literature or an OEIS entry: ordinals and well-quasi-orders, Hankel
   determinants, supercongruences, tetration and digit stabilization,
   log-concavity, graphs, automata and formal languages, enumerative
   combinatorics, generating-function asymptotics, quaternionic analysis, the
   Jacobian conjecture, radicals and Galois theory, Diophantine
-  representations of computation, convex geometry and probability; about a
+  representations of computation, convex geometry, probability and
+  [ZFC closure kernels](SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md); about a
   quarter are counterexamples rather
   than proofs.  New external reports reach it through
   [`docs/incoming`](docs/incoming/README.md).
@@ -460,6 +461,12 @@ carries no content of its own and will be removed in due course.
 
 ## Vendored components
 
+[`lib/jeff-busy-beaver-zfc254`](lib/jeff-busy-beaver-zfc254/README.proveit.md)
+preserves Mira-Cult's 254-state ZFC machine and jeff87654's end-to-end Coq
+verification, pinned at `297ab8df...`, with its exact build dependency
+closure and upstream attribution. Its import README records the distinct
+license boundary and local verification status.
+
 Apart from one exception below, only [`lib/`](lib/) contains vendored code. `lib/Coq-BB5/BB2`, `BB3`, and
 `BB4` come from `ccz181078/Coq-BB5` commit `9142e219...`; their nested READMEs
 record provenance and repository-local kernel hardening, and their nested MIT
@@ -495,4 +502,6 @@ stays inside that package.
 ## License
 
 Unless a nested license says otherwise, this repository is available under
-the [MIT No Attribution License (MIT-0)](LICENSE).
+the [MIT No Attribution License (MIT-0)](LICENSE). The unchanged upstream
+files in `lib/jeff-busy-beaver-zfc254/` are excluded from this grant; their
+provenance and applicable notices are recorded in its import README.

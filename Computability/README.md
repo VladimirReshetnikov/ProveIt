@@ -27,6 +27,10 @@ Turing-completeness and non-full-abstraction boundaries are explicit.
 [`BusyBeaver/`](BusyBeaver/) contains the repository-authored Busy Beaver
 machine model, domination theorems, exact small-state score certificates, and
 bridges to the vendored time certificates under [`../lib/Coq-BB5/`](../lib/Coq-BB5/).
+The unformalized [ZFC closure-kernel report](../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md)
+compares theories for a smaller ZFC-inconsistency search machine. Its
+current target is a ZFC proof of the halting equivalence; no new transition
+table or state bound is supplied.
 
 The score and time functions are distinct measures. The proved values
 `Sigma(2)=4`, `Sigma(3)=6`, `Sigma(4)=13` and `BB(2)=6`, `BB(3)=21`,
@@ -40,3 +44,9 @@ coarse hyperdegrees) are a second Lean library of the Turing-degree project,
 [`TuringDegrees/Lean/CoarseDegrees/`](TuringDegrees/Lean/CoarseDegrees/README.md).
 Unlike the rest of this topic it admits eight published results with `admit`;
 its README lists them.
+
+[ZFC machine minimization](BusyBeaver/Research/ZFC/README.md) adds Lean
+closure and codec lemmas, the literal 254-state baseline, and a certified
+obstruction to exact state quotients, with executable coding/compiler
+experiments. A smaller verified machine and its end-to-end ZFC theorem
+remain open. The new proofs are an opt-in `BusyBeaver.ZFC` surface.

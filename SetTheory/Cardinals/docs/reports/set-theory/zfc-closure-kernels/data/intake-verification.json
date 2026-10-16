@@ -1,0 +1,105 @@
+{
+  "batch": 143,
+  "arrival": "9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd",
+  "placement": "b07d1a27b",
+  "source_pins": {
+    "01": null,
+    "02": null,
+    "03": null
+  },
+  "pin_note": "No ProveIt commit pin was specified by any source; upstream machine pins and input attachment hashes are distinct.",
+  "history_search": {
+    "extracted_files": 60,
+    "command": "git log --all --format=COMMIT %h %s --raw --no-abbrev --find-object=<blob> [one flag per distinct extracted file blob]",
+    "prior_placement_hits": 0
+  },
+  "placement_files": 53,
+  "longest_windows_prefixed_path": 120,
+  "python_reproduction": [
+    {
+      "source": 1,
+      "command": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "code",
+        "-v"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-closure-reproduce-zb29dg3i/01-01.log"
+    },
+    {
+      "source": 1,
+      "command": [
+        "code/graph_audit.py"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-closure-reproduce-zb29dg3i/01-02.log"
+    },
+    {
+      "source": 1,
+      "command": [
+        "code/bic.py",
+        "--metrics"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-closure-reproduce-zb29dg3i/01-03.log"
+    },
+    {
+      "source": 1,
+      "command": [
+        "code/bic.py",
+        "examples/identity.json"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-closure-reproduce-zb29dg3i/01-04.log"
+    },
+    {
+      "source": 2,
+      "command": [
+        "build.py",
+        "--tests",
+        "--skip-pdf"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-closure-reproduce-zb29dg3i/02-01.log"
+    },
+    {
+      "source": 3,
+      "command": [
+        "code/hull_templates.py"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-closure-reproduce-zb29dg3i/03-01.log"
+    },
+    {
+      "source": 3,
+      "command": [
+        "code/finite_hulls.py"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-closure-reproduce-zb29dg3i/03-02.log"
+    },
+    {
+      "source": 3,
+      "command": [
+        "code/test_templates.py"
+      ],
+      "returncode": 0,
+      "log": "/tmp/zfc-closure-reproduce-zb29dg3i/03-03.log"
+    }
+  ],
+  "independent_review": {
+    "source01": "BIC/QBC forward, exact-fiber converse and checker reviewed; no headline defect found.",
+    "source02": "Seeded closure bootstrap and converse reviewed; no headline defect found.",
+    "source03": "EFH, intermediate closure and equality interpretation reviewed; no headline defect found."
+  },
+  "readme_audit_fixes": [
+    "Specify which one-object models witness each deletion.",
+    "State source02 metric exclusions explicitly.",
+    "Disclose that recovered scratch suites overwrite their own result files.",
+    "Use complete Lean source paths; preserve absent source pins."
+  ],
+  "boundary": "No new formal theorem, proof compiler, machine transition table or state bound certified by intake."
+}

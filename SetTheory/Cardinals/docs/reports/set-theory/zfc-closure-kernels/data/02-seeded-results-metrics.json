@@ -1,0 +1,253 @@
+{
+  "metric": "Formula-tree nodes in {in,eq,bottom,imp,forall}; a schema hole counts as one atom per occurrence. Variable payload costs and parameter closure are excluded.",
+  "axioms": {
+    "Ext": {
+      "nodes": 16,
+      "constructors": {
+        "all": 3,
+        "imp": 6,
+        "in": 4,
+        "bot": 2,
+        "eq": 1
+      }
+    },
+    "EC": {
+      "nodes": 27,
+      "constructors": {
+        "all": 4,
+        "imp": 11,
+        "in": 8,
+        "bot": 4
+      }
+    },
+    "NE": {
+      "nodes": 11,
+      "constructors": {
+        "imp": 4,
+        "all": 2,
+        "in": 1,
+        "bot": 4
+      }
+    },
+    "Sep": {
+      "nodes": 30,
+      "constructors": {
+        "all": 3,
+        "imp": 13,
+        "in": 4,
+        "hole": 2,
+        "bot": 8
+      }
+    },
+    "Power": {
+      "nodes": 24,
+      "constructors": {
+        "all": 5,
+        "imp": 9,
+        "in": 6,
+        "bot": 4
+      }
+    },
+    "TC_root": {
+      "nodes": 34,
+      "constructors": {
+        "imp": 13,
+        "all": 7,
+        "hole": 2,
+        "in": 4,
+        "bot": 8
+      }
+    },
+    "TC_set": {
+      "nodes": 37,
+      "constructors": {
+        "imp": 14,
+        "all": 8,
+        "hole": 2,
+        "in": 5,
+        "bot": 8
+      }
+    },
+    "SBC": {
+      "nodes": 37,
+      "constructors": {
+        "imp": 14,
+        "all": 8,
+        "hole": 2,
+        "in": 5,
+        "bot": 8
+      }
+    },
+    "SBI": {
+      "nodes": 56,
+      "constructors": {
+        "all": 9,
+        "imp": 23,
+        "in": 7,
+        "hole": 3,
+        "bot": 14
+      }
+    },
+    "ISI": {
+      "nodes": 49,
+      "constructors": {
+        "imp": 19,
+        "all": 10,
+        "hole": 3,
+        "in": 6,
+        "bot": 11
+      }
+    },
+    "PIBI": {
+      "nodes": 53,
+      "constructors": {
+        "imp": 21,
+        "all": 10,
+        "hole": 3,
+        "in": 6,
+        "bot": 12,
+        "eq": 1
+      }
+    },
+    "SIBI": {
+      "nodes": 56,
+      "constructors": {
+        "imp": 22,
+        "all": 11,
+        "hole": 3,
+        "in": 8,
+        "bot": 12
+      }
+    },
+    "PISI_open": {
+      "nodes": 49,
+      "constructors": {
+        "imp": 19,
+        "all": 10,
+        "hole": 3,
+        "in": 5,
+        "bot": 11,
+        "eq": 1
+      }
+    },
+    "Infinity": {
+      "nodes": 59,
+      "constructors": {
+        "imp": 26,
+        "all": 6,
+        "in": 8,
+        "bot": 17,
+        "eq": 2
+      }
+    },
+    "CP": {
+      "nodes": 42,
+      "constructors": {
+        "all": 7,
+        "imp": 17,
+        "in": 8,
+        "bot": 10
+      }
+    },
+    "GIC": {
+      "nodes": 38,
+      "constructors": {
+        "all": 7,
+        "imp": 15,
+        "in": 3,
+        "hole": 3,
+        "bot": 10
+      }
+    }
+  },
+  "theories": {
+    "MO_root": {
+      "templates": [
+        "Ext",
+        "Sep",
+        "Power",
+        "TC_root"
+      ],
+      "nodes": 104,
+      "hole_occurrences": 4
+    },
+    "MO_set_seed": {
+      "templates": [
+        "Ext",
+        "Sep",
+        "Power",
+        "TC_set"
+      ],
+      "nodes": 107,
+      "hole_occurrences": 4
+    },
+    "SBC": {
+      "templates": [
+        "Ext",
+        "Sep",
+        "SBC"
+      ],
+      "nodes": 83,
+      "hole_occurrences": 4
+    },
+    "prior_SBI": {
+      "templates": [
+        "Ext",
+        "Infinity",
+        "SBI"
+      ],
+      "nodes": 131,
+      "hole_occurrences": 3
+    },
+    "ISI": {
+      "templates": [
+        "Ext",
+        "NE",
+        "ISI"
+      ],
+      "nodes": 76,
+      "hole_occurrences": 3
+    },
+    "QISI": {
+      "templates": [
+        "EC",
+        "NE",
+        "ISI"
+      ],
+      "nodes": 87,
+      "hole_occurrences": 3
+    },
+    "PIBI": {
+      "templates": [
+        "Ext",
+        "PIBI"
+      ],
+      "nodes": 69,
+      "hole_occurrences": 3
+    },
+    "SIBI": {
+      "templates": [
+        "Ext",
+        "SIBI"
+      ],
+      "nodes": 72,
+      "hole_occurrences": 3
+    },
+    "QSIBI": {
+      "templates": [
+        "EC",
+        "SIBI"
+      ],
+      "nodes": 83,
+      "hole_occurrences": 3
+    },
+    "RCC": {
+      "templates": [
+        "CP",
+        "GIC"
+      ],
+      "nodes": 80,
+      "hole_occurrences": 3
+    }
+  }
+}

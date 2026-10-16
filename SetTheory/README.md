@@ -17,6 +17,10 @@ collection of research reports on other subjects.
 - [`ClosureAxiomatization/`](ClosureAxiomatization/) proves that replacing
   Pairing, Union, Infinity, and Replacement by the set-like-relation Closure
   schema is semantically and deductively equivalent to ordinary ZF.
+  The unformalized report
+  [`zfc-closure-kernels`](Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md)
+  compares smaller bounded-image, seeded and exact-fiber alternatives for
+  a ZFC-inconsistency search machine; it supplies no new machine table.
 - [`Cardinals/`](Cardinals/) studies exacting, ultraexacting and
   cover-exacting cardinals: research reports, a synthesis stating each result
   once in its strongest form (in ZFC, a cover-exacting cardinal cannot lie
@@ -24,13 +28,13 @@ collection of research reports on other subjects.
   synthesis's ZFC theorems about a single witness in Mathlib's `ZFSet`. The
   Lean library closes nineteen published results with `admit`, which no
   other ProveIt set-theory project does; `Cardinals/Cardinals/README.md`
-  lists them and its audit exposes them. The directory also holds 289
+  lists them and its audit exposes them. The directory also holds 290
   research reports without Lean counterparts, on ordinals and
   well-quasi-orders, Hankel determinants, supercongruences, tetration,
   log-concavity, graphs, automata, enumerative combinatorics,
   generating-function asymptotics, quaternionic analysis, the Jacobian
   conjecture, radicals, Diophantine representations of computation,
-  convex geometry and probability.
+  convex geometry, probability and ZFC closure kernels.
   It is a Lake package that requires this repository's root by path
   (`lake --dir SetTheory/Cardinals build`).
 
