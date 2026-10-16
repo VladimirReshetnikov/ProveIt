@@ -33,6 +33,7 @@ import BusyBeaver.ZFC.WadeMachine
 import BusyBeaver.ZFC.Lukasiewicz
 import BusyBeaver.ZFC.Prefix330
 import BusyBeaver.ZFC.TarskiFalsity
+import BusyBeaver.ZFC.Code254
 import BusyBeaver.ZFC.NamedNumeric254
 import BusyBeaver.ZFC.BootstrapFrame253
 

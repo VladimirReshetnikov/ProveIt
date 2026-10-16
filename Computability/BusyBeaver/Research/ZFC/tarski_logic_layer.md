@@ -145,14 +145,28 @@ upstream dual-Cantor base-4 codec) to `NF`, the gated theory bundle to a
 set-theory schema, the enumerator, the compiler, or any literal table. They
 supply the logical half of each such calibration in Lean.
 
-## Next: the numerical code bridge (in progress)
+## The numerical code bridge
 
-The base-4 dual-Cantor codec (`code = 4·P(x,y) + tag`, `P(x,y) = tri(x+y) + y`,
-tags Imp 0 / Rel 1 / All 2 / Eq 3, truth alias `0 = Imp(0,0)`, falsity
-`1 = Rel(0,0)`) is shared by the calibrated 254-state machine and the
-279-state full-logic PSC control. A Lean module connecting that code calculus
-(truth, MP, GEN, the eight coded rows and the gated bundle) to `ThmG (rel 0 0)`
-in both directions is being written in this lane, so that the logical half of
-those calibrations needs no further assumption. Coordination note for parallel
-sessions: please avoid duplicating `BusyBeaver/ZFC/Code254*.lean`.
+`Code254.lean` connects the base-4 dual-Cantor code calculus (`code =
+4·P(x,y) + tag`, `P(x,y) = tri(x+y) + y`, tags Imp 0 / Rel 1 / All 2 / Eq 3,
+truth alias `0 = Imp(0,0)`, falsity `1 = Rel(0,0)`) shared by the calibrated
+254-state machine and the 279-state full-logic PSC control to the named
+calculus. `C254` has the truth code, MP, GEN, the eight coded rows and the
+gated bundle; its definitions state the content of the published code
+calculus in independent Lean.
 
+* `c254_sound`: every derivable code decodes (`dec`, with `dec 0 = F → F`)
+  to a formula true in every irreflexive model of all decoded bundles. The
+  alias `Imp(0,0) = 0` is harmless because both readings are true.
+* `c254_complete`: if the bundles that are literal encodings of named
+  formulas (`EncBundle`) have no irreflexive model, then code 1 is derivable.
+  Atomic vacuity, which the calculus emits only inside the gated bundle, is
+  projected out with the same gate `c ≠ a, b`; conjunction elimination is a
+  tautology instance through Kalmár's theorem over codes.
+
+The remaining calibration obligations are therefore purely set-theoretic and
+operational: (i) Con(ZFC) gives an irreflexive model of all decoded bundles
+(upstream: `SoundBW254.v`, via L); (ii) a refutation of ZF gives a refutation
+of `EncBundle` (the bisimulation-quotient interpretation, upstream
+`S_quot.v`/`S_ax.v`, partly mirrored by the equality-free CP/GIC modules
+here); (iii) the enumerator, program and literal table.
