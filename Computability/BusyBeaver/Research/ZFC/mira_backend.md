@@ -6,7 +6,7 @@ tables into an outside-repository scratch directory, and charges its own
 initializer. It supplies executable compiler evidence; it does not supply a
 Lean simulation theorem or calibrate a new machine to consistency of ZFC.
 
-The original 219-node DAG compiles to **408 working states** from nine zero
+With the default direct initializer, the original 219-node DAG compiles to **408 working states** from nine zero
 registers, or **410** when `nextproof` starts at 2. These are larger than the
 281-state public Wade-backend baseline. The clean assembler provides an
 editable interface for experiments, and does not reconstruct the decoder
@@ -29,6 +29,13 @@ which is 102 here, and the original nine-zero dispatcher. The large direct
 initializer is therefore a measured cost. The optimized published decoder
 has depth 34; its shape cannot simply be substituted for a modified theory.
 
+The source 21 compact initializer is now available in the same API and CLI.
+It compiles this DAG to **341/343 working states**, with 55/57 initializer
+states, gap 104 and exactly 880/882 blank steps. Both tables are byte-identical
+to the reviewed delivery. Every one of the 572 runtime rows is preserved
+under label renaming. This improves the clean assembler control; it does not
+improve the separately optimized public 253-state machine.
+
 Reproduce offline from the repository root:
 
 ```sh
@@ -43,12 +50,21 @@ state count, with no transition rows of its own. Every working state has both
 binary rows. The checked measurements, hashes and provenance are recorded in
 [`mira-backend-results.json`](mira-backend-results.json).
 
+Add `--initializer compact` for the smaller initializer. Use a different
+scratch directory to retain both variants. Native integrated evidence is in
+[`compact-initializer-results.json`](compact-initializer-results.json): both
+full affine checks, concrete box/instruction checks, exact absolute boot
+frames, all existing regressions and four small compact-boot machines pass.
+The direct-default tables still have their original hashes.
+
 The callable interface is:
 
 ```python
 from mira_backend import compile_dag, compile_builder
 
 machine = compile_dag(nodes, names)  # nodes[0] is the root
+# Optional compact initializer; the actual gap is reported in machine.gap.
+compact = compile_dag(nodes, names, initializer="compact")
 # Or: machine = compile_builder(builder) after builder.reduce_to_cons().
 machine.check_sites()
 machine.save("/tmp/my-candidate.tm")
@@ -67,7 +83,11 @@ The result has `.table`, `.evidence`, `.save(path)` and `.check_sites()`.
 The table maps `(state, read_bit)` to `(write_bit, "L" or "R", next_state)`.
 Optional keyword arguments are `initial_registers` (nine naturals, default
 all zero), `gap`, `dispatcher_threshold`, and `generic_decrement` (default
-true). Explicit gap and dispatcher choices must meet the conservative checks
+true), and `initializer` (`"direct"` by default, or `"compact"`). In compact
+mode, `gap` is a required minimum; the state/time optimizer may round it up
+to a realizable counter/stride gap. The selected exact gap and blank-step
+contract are stored in the evidence. Compact initialization is not always
+smaller for tiny requested gaps. Explicit gap and dispatcher choices must meet the conservative checks
 below. Saving inside the repository is rejected, including through symlinks.
 
 The engine's dispatch configuration is

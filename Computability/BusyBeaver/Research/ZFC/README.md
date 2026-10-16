@@ -95,6 +95,9 @@ or improves public 253. The 269 grammar control survives full-cost repricing.
 [logical interfaces](logical_engine_completeness.md#batch-150-three-further-complete-interfaces)
 and [initializer controls](mira_backend.md#batch-150-initializer-controls)
 record their actionable consequences. The host now reconciles 23 sources.
+The reviewed compact initializer is also integrated into the clean assembler:
+`compile_dag(..., initializer="compact")` reproduces the exact 341/343 tables
+with all runtime rows preserved; `--initializer compact` selects it on the CLI.
 
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
