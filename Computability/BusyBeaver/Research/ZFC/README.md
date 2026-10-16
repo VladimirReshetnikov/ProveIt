@@ -192,6 +192,14 @@ first-order matrix adapters for those steps. The remaining set-existence lemmas
 are checked under explicit semantic instances. Their complete first-order
 adapters, the ordinary Infinity bridge and the ZFC consistency reduction remain.
 
+[The PSC-only compiler control](psc_backend_experiment.md) tests the new
+schema with original rho6, a fresh `code+2` binder and genuine bottom. Exact
+macro-word sharing reaches a different 252-state partial table. An algebraic
+counterinterpretation proves this control's reduced quantifier calculus is
+incomplete, so it is not an eligible consistency-machine result. The same
+counterinterpretation fails the frozen candidate's actual existential C/G
+bundle. Adapter, constructor, codec and grammar measurements are reproducible.
+
 [raw_psc.md](raw_psc.md) reconciles the earlier saturation proposal with
 [batch 144 source 08](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-144-source-08.md).
 That report supplies an accepted ordinary mathematical ZFC consistency
