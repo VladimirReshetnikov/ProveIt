@@ -24,14 +24,16 @@ verification (upstream `ZF/m254/coq/logic/Enum254.v`), stated independently.
 Main theorem `enum_halts_iff`: the enumerator halts from the zero state iff
 the falsity code 1 is derivable in `C254`. Soundness is a stack invariant;
 completeness compiles a derivation into command blocks and shows that every
-candidate is eventually reached.
+candidate is eventually reached unless the run has already halted. This is
+the abstract functional interface; its simulation by Prog254/RegisterPath
+and the binary table are not proved in this module.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.Enum254
 
 open SetTheory.BusyBeaver.ZFC.Code254
 
-/- Closed codes such as `rho2 1 0 1 0` are astronomically large nested pairings;
+/- Closed codes such as `rho2 1 0 1` are astronomically large nested pairings;
    the pairing must never be evaluated, only manipulated through its lemmas. -/
 attribute [local irreducible] P
 
@@ -704,11 +706,13 @@ theorem halts_no_model (h : Halts) {D : Type} (mem : D → D → Prop) (hirr : �
     (e : Nat → D) : False :=
   no_model_of_c254_one (sound h) mem hirr hB e
 
-/-- If the encodable bundle theory has no irreflexive model with a valuation
-(equivalently, with a nonempty domain), the enumerator halts. -/
+/-- If the encodable bundle theory has no irreflexive model with a valuation,
+the enumerator halts. The valuation is necessary: the former premise without
+it was refuted by Code254.empty_domain_counterexample. -/
 theorem halts_of_no_model
     (hnone : ∀ (D : Type) (mem : D → D → Prop), (∀ x, ¬ mem x x) →
-      (∀ f, EncBundle f → ∀ e : Nat → D, Tarski.Sat mem e f) → (Nat → D) → False) : Halts :=
+      (∀ f, EncBundle f → ∀ e : Nat → D, Tarski.Sat mem e f) →
+      (Nat → D) → False) : Halts :=
   complete (c254_complete hnone)
 
 end SetTheory.BusyBeaver.ZFC.Enum254
