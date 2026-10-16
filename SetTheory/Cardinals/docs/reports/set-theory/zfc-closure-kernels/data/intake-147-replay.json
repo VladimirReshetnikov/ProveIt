@@ -1,0 +1,62 @@
+[
+  {
+    "check": "checker",
+    "command": [
+      "-m",
+      "unittest",
+      "-v",
+      "test_psc_hilbert.py"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-wlchel6v/checker.log"
+  },
+  {
+    "check": "identity",
+    "command": [
+      "reference_checker/psc_hilbert.py",
+      "reference_checker/identity.json"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-wlchel6v/identity.log"
+  },
+  {
+    "check": "codec",
+    "command": [
+      "code/bottom3_codec.py",
+      "--output",
+      "/tmp/zfc-batch147-reproduce-wlchel6v/codec.json"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-wlchel6v/codec.log"
+  },
+  {
+    "check": "obstruction",
+    "command": [
+      "code/fixed_slot_obstruction.py",
+      "--emitter",
+      "machine/proveit_snapshot/Computability/BusyBeaver/Research/ZFC/psc_backend_experiment.py",
+      "--output",
+      "/tmp/zfc-batch147-reproduce-wlchel6v/obstruction.json"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-wlchel6v/obstruction.log"
+  },
+  {
+    "check": "checker-semantics",
+    "command": [
+      "code/review_psc_checker.py"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-wlchel6v/checker-semantics.log"
+  },
+  {
+    "check": "machines",
+    "command": [
+      "-c",
+      "from pathlib import Path; import sys; p=Path('reproduce.py').resolve(); source=p.read_text(); old='pins=json.loads((root/\"snapshot-sha256.json\").read_text())'; assert source.count(old)==1; sys.argv=['reproduce.py','--output',sys.argv[1]]; exec(compile(source.replace(old,'pins={}'),str(p),'exec'),{'__file__':str(p),'__name__':'__main__'})",
+      "/tmp/zfc-batch147-reproduce-wlchel6v/machines"
+    ],
+    "returncode": 0,
+    "log": "/tmp/zfc-batch147-reproduce-wlchel6v/machines.log"
+  }
+]

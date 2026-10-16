@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 16 October 2026. This report now reconciles fifteen manuscripts.
+Intake findings, 16 October 2026. This report now reconciles sixteen manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -793,3 +793,131 @@ audits are bypassed in memory; table identity and functional compiler pin
 contracts remain. PDF and proof-assistant builds are separate. Flattened
 retained code keeps its original imports and nested provenance names; execute
 the recovered packages rather than renaming paths inside delivered scripts.
+
+## Batch 147: genuine ternary Bottom and a complete reference calculus
+
+Source **16**, `zfc_small_machine_research (2).zip`, arrived in `9439d775aa`
+and was placed in `520bcb2a1`. Its main review pin is
+`96836f9eea3540e96322c3d28c7127a582aae223`; the inherited machine/backend pin
+is `297ab8df7e5de329605c3875b4934643b371a5e3`. It continues this report's
+PSC, numerical syntax and proof-language spine. The source08 PSC calibration
+is explicitly credited, as are Mira-Cult, Jeff and Andrew James Wade. No
+blanket license is inferred for unlicensed upstream material.
+
+The manuscript independently reconstructs the accepted ordinary raw-PSC
+interpretation, including the full incoming/outgoing profile decoder,
+hereditary saturation, noncircular local bounds, and the extensional
+exact-fiber converse. Its Empty/Power argument excludes finite models without
+requiring Extensionality. These overlap source08 and the later Lean resources;
+they do not fill the still-open whole-theory Lean interpretation.
+
+The new numerical codec reserves code1 as primitive Bottom while moving
+membership from `3P(i,j)+1` to `3P(i,j)+4`. Truth0, implication `3P` and
+universal quantification `3P+2` are unchanged. Every natural decodes exactly;
+formula round trips recursively contract only Truth→Truth. This is neither
+alpha canonicalization nor arbitrary Boolean simplification. Every variable
+label, including binders, remains below the matrix code, so `code+2` is fresh.
+Subsequent repository work in `830647031`, independently reviewed at intake,
+formalizes these all-code round trips, canonical injectivity, freshness and
+ordinary semantic preservation in `Bottom3Syntax.lean`. All 36 source units
+pass a fresh serial check. The theorem names and exact limits are recorded in
+`Computability/BusyBeaver/Research/ZFC/bottom3_codec.md`; no delivered code
+acquires formal status merely from this related module.
+
+The complete reference checker uses K/S/C, arbitrary capture-avoiding
+cross-variable UI, QD with its free-variable side condition, MP and theorem
+GEN. It constructs closed PSC axioms with simultaneous safe slot replacement
+and parameter closure. It accepts no arbitrary assumptions or claimed
+conclusions. Its flat syntax and fair enumeration of finite byte strings
+support the ordinary soundness/completeness and reference-search argument.
+This is a separate unbounded algorithm, not the frontend of any supplied table.
+The checker and its Python runtime are not kernel verified.
+
+| Source16 experiment | Decision + framework | Total binary rows |
+|---|---|---|
+| Original-rho6 C/G/V, relative falsity | 188 + 62 = **250** | 500 |
+| Same word, genuine ternary Bottom | 189 + 62 = **251** | 502 |
+| Fixed-slot PSC, genuine ternary Bottom | 190 + 62 = **252** | 504 |
+
+These are distinct from earlier artifacts with the same counts. V means
+inherited atomic membership vacuity, not a new instantiation rule. The
+250 control preserves its exact 138-token macro word; its 254-state
+predecessor was an experimental equality-free Wade output, not Mira's
+published machine. The overlap-safe weighted grammar handles repeated equal
+tokens. All 19 macro roots have no escaping control flow; exact-word
+preservation supports the ordinary partial-transformation composition proof.
+No operation-bisimulation certificate is included in this source. The Bottom
+change makes the existing add-four helper reachable at a one-state cost.
+All named tables lack only `1.inc/read1`; normalization adds write1/R/halt
+without another working state. All original actions and the unique added
+row were independently compared. The count includes initialization.
+
+**The current finite-sort obstruction also covers the new 251 codec.** Its
+strict label bound survives the membership offset, Bottom is constantly
+false, and the actual C/G ASTs, gates and logical stack are unchanged. Thus
+both C/G experiments remain excluded as intended abstract consistency
+searches. The source's exact fixed-slot PSC identity-quantifier model also
+excludes its 252 frontend, even after adding same-variable specialization
+and explosion. Generic identity-quantifier and constant-true diagnostics are
+kept at their stated narrower scopes. None is a refutation of ordinary full
+first-order PSC. Literal-table nonhalting still requires simulation; no such
+unbounded theorem is inferred from the finite tests. The source's historical
+recommendation to calibrate its 251 C/G program is retained here as superseded
+research advice, with the obstruction explaining why.
+
+Other retained proposals are the finite universal-Horn encoding of a fixed
+machine (free term constructors, exact reachable configurations and a halting
+denial), finite class-theory and Craig–Vaught expansions, Diophantine coding,
+and a total theorem constructor returning Truth on invalid local steps. The
+Horn consistency/nonhalting equivalence has a valid ordinary proof; it simply
+moves program data into clauses. None of these alternatives supplies a measured
+smaller complete machine. The theorem-constructor plan still needs both
+refutation transports, totality, capture-safe substitution, canonical
+comparison and an implementation that counts all program/data-writing costs.
+Weak universality with a periodic infinite background is not a free blank-tape
+simulation. All of these are preserved further questions, not omitted results.
+
+Independent scratch verification reproduced:
+
+- Twenty checker tests and a five-line identity certificate, explicitly not a
+  refutation; 9,600 substitution and 9,600 UI semantics cases, 1,280 PSC
+  comparisons, 10,000 malformed inputs and one huge variable index.
+- 200,000 numeric codec round trips, 5,000 formula round trips, 5,000 renamings
+  and 20,000 semantic comparisons; 2,000 fixed-slot cases and three exact
+  wrapper AST comparisons.
+- All nine table/name-map outputs and two sets of 225 constructor contracts;
+  2,200 original-row seeds (128 minima250), and 200 seeds in each Bottom lane
+  (eight minima251; only seed93 attains252). Entire recorded search metadata
+  match. These are bounded-family minima, not lower bounds.
+- Conservative graph/bisimulation/window audits of all three tables and the
+  auditor's eleven regression cases; no safe state merge found.
+- Three-pass PDF rebuild: 25 pages, nineteen embedded fonts, zero warnings or
+  cross-reference defects; all-page contact sheet and four enlarged pages
+  visually inspected. The delivered PDF remains recoverable in the archive.
+
+All 74 delivered files (67 distinct Git blobs) were searched in history;
+14 previously occurring blobs are borrowed inputs/licenses, not a repeated
+manuscript. Placement preserves 64 ancillary files with prefix `16-bot3-`.
+The ten article/section/PDF/delivery-README files remain archive-only.
+`data/intake-147-placement.json` maps every path, with maximum Windows-prefixed
+length148; `intake-147-placement-check.json` verifies all placed blobs in the
+placement commit's own tree against fresh extraction. Original source layout,
+imports and paths remain verbatim. In particular the copied upstream notice
+refers to a larger historical import, not all files in this subset. No
+checksum-manifest or line-ending audit was performed.
+
+Detailed reviews: `intake-147-source-16.md` (theory/checker),
+`intake-147-source-16-machine.md`, `intake-147-source-16-article.md`, and
+`intake-147-source-16-lean.md`; associated `data/intake-147-*.json` records give
+exact evidence. Recover and rerun outside the checkout with:
+
+```sh
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_147.py
+```
+
+All six default jobs pass. `--searches` additionally repeats the bounded search
+families; `--prepare-only` recovers the original layout. The helper excludes
+only the delivered source-manifest audit in memory, reporting zero such
+verified files; exact functional and generated-table contracts remain. The
+base article and all delivered files remain unchanged. The complete internal
+ZFC equivalence and binary compiler endpoint remain open.
