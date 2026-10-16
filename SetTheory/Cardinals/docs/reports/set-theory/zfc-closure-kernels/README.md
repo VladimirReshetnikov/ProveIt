@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 16 October 2026. This report now reconciles seventeen manuscripts.
+Intake findings, 16 October 2026. This report now reconciles nineteen manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -1054,3 +1054,222 @@ uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closu
 
 The helper passes from a fresh scratch recovery; `--prepare-only` restores the
 original layout. The base article and every delivered file remain unchanged.
+
+## Batch 149: binding certificates and shared substitution
+
+Sources **18** and **19** arrived in `de047657e` and `be9e617d2`, respectively,
+and were placed in `a9a313b79`. Their archives are `zfc_consistency_research.zip`
+(pin `96836f9eea3540e96322c3d28c7127a582aae223`) and
+`zfc_substitution_engine.zip` (pin `47f3a3602946dfe48803a91a910c646e74637ac8`).
+They continue the existing proof-checker and compilation obligations. Source18
+contributes an explicit binding-witness calculus, a strict binary certificate
+format, narrow Lean theorems and a destructive-read audit. Source19 implements
+the shared-template optimization suggested by source13, strengthens the warning
+about inadequate instantiation rules, and delivers a **268-state complete-logic
+compiler control**. Neither new checker has a compiled state bound. Their
+ordinary raw-PSC calibration is inherited, with sources08/13 credited.
+
+### Source18: binding witnesses and a formal obstruction
+
+The fixed-slot counterinterpretation sets every quantifier to identity and
+`R(i,j)` true exactly when `i>=2` and `j=0`. It validates every specified PSC
+wrapper with hull label k>=2, without requiring freshness relative to the
+matrix; primitive Bottom and R00 remain false. It also validates both rho6
+variants, same-name UI, distribution, commutation, explosion, IR, vacuity,
+modal S4/S5 and any additional identity-valid schema. MP/GEN preserve truth.
+Thus neither designated falsity nor a particular genuine cross-variable UI
+instance is derivable. This is a counterinterpretation of the specified
+syntactic calculus, not an ordinary single-domain relation model. The actual
+C/G negative control is false, so it is not the full C/G countermodel.
+
+The delivered `PSCIdentityObstruction.lean` independently compiles under
+Lean4.32.0. Its `eval_psc`, `derivation_sound`, `bottom_calculus_consistent`,
+`relative_calculus_consistent` and `properUISample_underivable` audits use only
+`propext`. No numeric-code or TM simulation is formalized by these statements.
+The second independently compiled file, `BinderSyntax.lean`, proves scope,
+open/close inverses, arbitrary free-name substitution (including an existing
+name), the precise freshness condition for the reverse inverse, and two-slot
+plugging scope. Its seven audited roots likewise use only `propext`.
+Opening is for a scoped single outer binder; it is not a general substitution
+operation on arbitrary open contexts. These syntax theorems do not prove
+satisfaction or verify the Python checker.
+
+The complete ordinary checker uses locally nameless formulas, topological DAGs
+and explicit open/close/plug witnesses. Every witness verifies constructors,
+terms, scope, child depths and earlier references, and its exact root.
+K/S/C, arbitrary UI, side-conditioned quantifier distribution, MP and GEN
+reconstruct their conclusions. Closing an antecedent to itself certifies the
+freshness side condition. Three checked slot maps insert a matrix in the curried
+PSC context without capturing its internal binders. Open parameter instances
+and universal closures are interderivable in this complete calculus. There is
+no arbitrary-assumption opcode or caller-supplied alleged axiom. Only the
+actual final reconstructed Bottom is a refutation. The ordinary completeness
+argument translates finite standard proofs and their finite witnesses/DAGs;
+it does not apply to the retired reduced calculus.
+
+The binary format fixes each witness mode from its rule, rejects truncations
+and trailing fields, and admits a fair shortlex enumeration of all finite bit
+strings. All mathematical checks terminate; memory or interruption failures
+are errors. The tested eight-line example is a **392-bit non-refutation**.
+The independent audit additionally exercises all eight opcodes in eleven lines
+and 609bits. Tests include 6,044 binding and 2,700 PSC semantic comparisons,
+17 negatives, depth6,000, all392 truncations, all131,071 strings through16bits
+(92 valid derivations, no refutations), 2,160 field mutations, 1,600 independent
+opening/UI comparisons and 1,001 bit mutations. The actual old emitter checks
+100,000 matrices in each of base3/base4, 204 additional wrappers and 14,336
+logical cases. These samples are evidence about implementations, not the
+reason for a consistency theorem.
+
+The destructive-read audit matters operationally. The rho8 metavariables occur
+with multiplicities 2,1,3,1. Only12 of24 abstract permutations place the streamed
+u read once; six read twice and six three times. For the unsafe two-read shape
+`((c->d)->u1)->((u2->c)->(b->c))`, take c=false, b=true, u1=true, u2=false:
+the result is false for either d. Our retained source11 permutation maps u
+into the old multiplicity-one b position and explicitly asserts one read;
+this warning does not refute that artifact. Repairs by explicit caching remain
+a separate compiler design, not a valid interpretation of repeated stream reads.
+
+Source18's full-original269 and full-logic PSC+IR283 tables are compiler
+controls. All11 fixed artifacts reproduce exactly, including the original
+219-to207-node register certificate with4,533 pairs; six mutations reject.
+Both total tables have no conservative quotient/window merge. The reconstructed
+1,024-choice PSC family repeats the exact seed46/exponent4 winner, but its
+histogram has six283-state winners against the delivered five. Python3.12/3.13
+agree, and the legacy grammar also fails to recover the stored histogram.
+The historical sweep driver is absent; the exact reason remains unresolved.
+The2,048/10,240/20,000 negative sweeps have only summaries and incomplete
+schedules, so they were not replayed. Those discrepancies do not alter the
+fixed table or its state count. They are not compilations of the binding checker. Its numerical
+search recommendations at the old pin do not revive the reduced C/G route.
+The source's report.tex:669–672 and further question at1239ff are now answered
+by source12's full finite-sort model and source17's ordinary PA strengthening.
+Literal nonhalting still needs simulation. RawPSCModel already supplies actual
+formula-indexed bootstrap resources; arbitrary-formula hereditary interpretation,
+definability/invariance and the internal proof-predicate endpoint remain open.
+
+Finite universal/equational/rewriting presentations, relation algebra and
+Diophantine search remain credited alternatives. Friedman's *Impossible
+Counting*, Theorem4.2.3 and its later variable/function reduction, supports the
+finite-universal proposal; no ready-to-compile fixed payload is supplied here.
+Pure equations have trivial models, so a distinguished collapse/nontriviality
+target must be specified and charged. Intended mathematical meaning is optional;
+fixed payloads, term handling, proof search and blank initialization still count.
+
+### Source19: shared PSC and genuine colliding instantiation
+
+The new logical obstruction uses actual two-bit coordinate quantification but
+`R(i,j) := (i != j and s(i)=s(j))`. It validates Boolean logic, quantified
+implication, MP/GEN, same-name UI, S5, commutation, side-conditioned vacuity,
+alpha conversion, capture-safe injective renaming, fresh UI and both signed
+atomic UI schemas. Nevertheless, for distinct x,y,z,
+`A=((R(x,y)<->R(x,z))<->R(y,z))` is universally true in x, whereas identifying
+x with existing y makes it uniformly false. Thus atomic/fresh instantiation
+is insufficient for composite formulas. This interpretation is **not claimed
+to satisfy PSC or C/G**; the earlier finite-sort model supplies that stronger
+obstruction. All8 assignments falsify the displayed composite UI instance.
+
+The new complete checker keeps one fixed PSC context and enters the same matrix
+through three saved environments. The template has48 tree occurrences and36
+distinct subtrees before representation costs; its three holes use slot pairs
+(2,0),(1,0),(0,1). Expanded45+3m versus shared48+m counts exclude pointers,
+maps, instructions, parsing and initialization and are not TM state counts.
+Matrix entry resets its local bound stack, saves precisely the two wrapper
+values, and retains its finite root map. Internal matrix binders extend only
+that new stack. Atom closure compares evaluated ordered parameter pairs, so
+arbitrary identifications of different variable slots are available.
+
+The AX instruction can occur **after** fresh witnesses are allocated. It inserts
+only an actual fixed-context instance from the checked matrix pool and a finite
+map: unique keys>=2, previously allocated values, and default parameter0.
+It accepts neither arbitrary axioms nor caller-supplied conclusions. A branch
+starts with p0, so domains are nonempty. The allocation invariant covers hidden
+map values and saved slot values as well as visible bound stacks. Negative
+universals allocate a genuinely fresh ID; positive universals may revisit any
+allocated ID. Branches are immutable and every sibling must close.
+
+The ordinary soundness proof uses closure materialization and the allocation
+invariant. The completeness construction fairly revisits universals after new
+IDs and schedules AX for every relevant matrix/map when its values are
+available. An open saturated branch would supply a common-domain model; hence
+a finite inconsistent matrix set admits a finite checked tree. The natural
+codec has strictly decreasing children for every recursive formula, proof and
+list constructor, including its zero cases. It enumerates every finite pool,
+map and instruction tree. It is a total mathematical decoder followed by a
+validity check, not a theorem that every decoded candidate is well scoped.
+
+All12 focused tests, 1,920 three-way semantic comparisons, 8,568 independent
+direct PSC comparisons, five families of10,000 codec roundtrips, 8,192 signed
+atomic UI cases, 12,000 fresh UI, 12,000 alpha, 72,000 modal and4,000 permutation
+cases pass. The three accepted examples are closed logical theorems, not PSC
+refutations; the most substantial uses late AX with103 actions/25branches.
+The refutation search has a fixed Bottom target and cannot import those theorem
+targets. A10,000-candidate prefix finds no refutation and proves no consistency
+claim. Host resource failures do not count as logical rejection or acceptance.
+
+### The268 control and its additional source bridge
+
+This table keeps all eight original logical/equality rows in their original
+order, original rho6, both atomic vacuity factors, base4 and the arithmetic,
+parameter and enumeration framework. It commutes two internal conjunctions in
+C/G and uses outer layout `Vr AND ((Ve AND C*) AND G*)`. Every one of3,840
+possible source layouts was independently checked to canonicalize to the
+original using only relative conjunction commutation/association; all logical
+rows remain literally identical.
+
+For arbitrary F, `And_F(A,B)=((A->(B->F))->F)` equals `F or (A and B)`.
+Both directions of these rewrites are classical implicational tautologies.
+The full original basis proves them; GEN and quantified implication lift them
+through unchanged universal binders, and implication congruence lifts through
+relative negation/existentials. This ordinary uniform proof transport needs no
+assumption F=false and moves no binder. It is not a supplied checked code-proof
+certificate or equality of the original and revised register executions.
+
+Grammar compression then preserves the **revised** exact word. The certificate
+compares its217-node reference with206 compressed decision nodes, not the
+original219-node DAG. Adding62 framework states gives268, including blank
+initialization. The total table has536 binary L/R rows, start0, terminal268;
+its normalized identity is
+`77f88b15383b13846090a31f3780673daf57c8b66fed2b9e7de252686901a61d`.
+The sole missing named row, `1.inc/read1`, is totalized as write1/R/halt.
+
+All53,760 searched choices reproduce the selected C2/G1/order16/tree1,
+seed341/exponent4 recipe and all six artifacts. The independent certificate
+checks4,533 operation pairs (2,601INC,1,931DEC,1HALT), both decrement exits,
+entry, unique pairs and finite silent paths; six mutations fail. Conservative
+table audits find no quotient/window merge. All8,192 full-logic PSC controls
+also reproduce:278 states with/without the root universal,282 with IR.
+The reduced PSC identity regression is not a countermodel to those full-Eq
+controls. Historical60,000-step exploration is recorded but was not rerun.
+This improves the complete-word269 control by one state; it is not a new
+sub253 record, a compiled shared-template checker or a literal ZFC endpoint.
+
+### Preservation, review and reproduction
+
+All149 delivered files/143 distinct Git blobs were searched against history;
+29 borrowed blobs across51 union history commits are not a repeated manuscript.
+Placement preserves58 source18 and75 source19 ancillary files;16 article,
+section, PDF and top-level delivery-README files remain archive-only. The
+maximum Windows-prefixed path is151. Delivered paths/imports remain unchanged
+inside flattened files. Nested notices refer to their larger historical
+packages. The stale `theory_support.tex` pointer in source19's diagnostic
+actually means `sections/obstruction.tex` in the recoverable package.
+No checksum-manifest or line-ending audit was performed.
+
+Both full manuscripts and all new checker/proof code were independently read.
+Scratch PDFs rebuilt in three passes:26pages/19embedded fonts for18, with
+three pre-existing underfull boxes;28pages/23fonts for19, no boxes. Neither has
+errors, undefined/mistyped references, duplicate labels/destinations or build
+warnings. Every page was inspected in contact sheets and five pages per source
+at enlarged resolution. Delivered files and the host base article are unchanged.
+
+Detailed evidence is in `intake-149-source-18{,-machine,-article}.md`,
+`intake-149-source-19{,-machine,-article}.md` and `data/intake-149-*.json`,
+including the placement commit's own-tree comparison with fresh extraction.
+The offline helper `code/reproduce_149.py` recovers original layouts from Git
+into scratch; `--prepare-only` recovers without execution. The individual
+review dossiers specify which finite suites and optional searches were actually
+repeated. All eight default helper jobs pass on a fresh recovery.
+`--source01-controls` also regenerates the two fixed controls; `--searches`
+repeats source19's full grid and PSC controls. Those optional helper branches
+were not themselves rerun; their underlying recipes were independently tested. No complete Python, binary-backend or ZFC consistency proof follows
+from these finite tests or the two narrow delivered Lean developments.

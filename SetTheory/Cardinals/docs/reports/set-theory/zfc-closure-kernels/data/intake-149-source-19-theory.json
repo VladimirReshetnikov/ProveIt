@@ -1,0 +1,64 @@
+{
+  "batch": 149,
+  "source": "02",
+  "arrival": "be9e617d2",
+  "pin": "47f3a3602946dfe48803a91a910c646e74637ac8",
+  "dossier": "/tmp/zfc-batch149-theory-review-fw5hc93s/source02-review.md",
+  "review_copy": "/tmp/zfc-batch149-theory-review-fw5hc93s/02",
+  "originals_untouched": true,
+  "manifests_checked": false,
+  "repo_edited": false,
+  "lean_build": "No Lean files for the new checker are supplied; no source02 build attempted. Separate source01 standalone checks passed.",
+  "suite_results": [
+    {
+      "name": "02-checker",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "code/verify_artifacts.py"
+      ],
+      "cwd": "/tmp/zfc-batch149-theory-review-fw5hc93s/02",
+      "exit_code": 0,
+      "elapsed_seconds": 3.508436786942184
+    },
+    {
+      "name": "02-independent",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "code/independent_review.py"
+      ],
+      "cwd": "/tmp/zfc-batch149-theory-review-fw5hc93s/02",
+      "exit_code": 0,
+      "elapsed_seconds": 9.196226025000215
+    },
+    {
+      "name": "02-diagonal",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "code/diagonal_obstruction.py"
+      ],
+      "cwd": "/tmp/zfc-batch149-theory-review-fw5hc93s/02",
+      "exit_code": 0,
+      "elapsed_seconds": 0.3549251137301326
+    },
+    {
+      "name": "02-prefix",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "code/certificate_codec.py",
+        "--limit",
+        "10000"
+      ],
+      "cwd": "/tmp/zfc-batch149-theory-review-fw5hc93s/02",
+      "exit_code": 0,
+      "elapsed_seconds": 0.16981430258601904
+    }
+  ],
+  "mathematical_or_acceptance_defects_found": [],
+  "placement": "continuation of zfc-closure-kernels",
+  "minor_pointer_defect": "diagonal_obstruction.py docstring theory_support.tex absent; actual proof sections/obstruction.tex",
+  "formal_scope": "ordinary abstract soundness/completeness/internalization arguments plus finite Python evidence; no Lean/newcheckerbinarytable"
+}
