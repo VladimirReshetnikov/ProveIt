@@ -1328,3 +1328,13 @@ externally finite buffer, then cancels that buffer at a closed source conclusion
 The interface admits arbitrary internal free parameters and actual axiom-proof
 callbacks. Concrete predicate-family laws and Collection callbacks remain to
 be instantiated; no internal ZFC comparison is inferred from this interface.
+
+`ArithmeticControlFrame254.lean` and
+[arithmetic_control_frame254.md](arithmetic_control_frame254.md) give a fixed
+Sigma1 whole-frame relation for every valid represented catalogue control and
+six exact source-case binary runtimes in arbitrary `IΣ1` models. The relation
+keeps invalid controls out, and rebasing retains the actual walk/resolver
+witness; positive decrement adds one zero spare exactly once. The focused
+check passed 27 probes and 30 callers with zero warnings, using 83 matched
+project providers. Coded-step calibration, represented iteration and the
+internal L2/scheduler connection remain separate obligations.
