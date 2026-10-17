@@ -13,10 +13,11 @@ and the propositional connectives unchanged and guards every quantifier:
 It is one `UformulaRec1` construction with `d` as the recursion parameter,
 hence a total Σ₁-definable function in every model of IΣ₁, defined at every
 internal code (nonstandard ones included). This module proves its constructor
-equations, formation and commutation laws, and transport of internal
-derivations with domain side formulas. The transport assumes a shift-fixed
-domain, variable-only closed terms, and proofs of the relativized axioms.
-Discharging these premises and the side formulas is a further obligation.
+equations, formation and commutation laws, transport of internal derivations,
+and discharge of their domain side formulas from a proof of nonemptiness.
+The transport assumes a well-formed shift-fixed domain, variable-only closed
+terms, and proofs of all relativized axioms. The actual domain, nonemptiness,
+and translated-axiom proofs for each interpretation remain separate obligations.
 
 This is the represented counterpart of a relative interpretation's formula
 translation (`LO.FirstOrder.DirectTranslation` is the external one). It is the
