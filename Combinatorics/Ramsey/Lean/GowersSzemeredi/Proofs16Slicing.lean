@@ -6,8 +6,7 @@ noncomputable section
 open scoped BigOperators
 namespace LeanProofs.GowersSzemeredi
 
-@[simp] theorem centeredAbs_neg {N : Nat} [NeZero N] (x : ZMod N) :
-    centeredAbs (-x) = centeredAbs x := ZMod.natAbs_valMinAbs_neg x
+attribute [simp] centeredAbs_neg
 
 alias centeredAbs_natCast_le := lemma55_centeredAbs_natCast_le
 

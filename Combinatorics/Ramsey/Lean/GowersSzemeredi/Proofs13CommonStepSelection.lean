@@ -196,6 +196,56 @@ lower-endpoint pairs. Only the selected subset enters the Bohr model. -/
 def section13EdgeIndexDomain (N : Nat) : MultifunctionDomain N (Pair N) where
   index := Prod.fst
 
+/-- The common step lies in every required Bohr set, at any precision `ε`
+of the Stage 13.5 phases with `ε ≤ ζ/m`. -/
+theorem stage136_common_step_mem_bohr_at {N : Nat} [NeZero N]
+    (S : Section13Context N) (theta zeta eps : Real) (D : Stage134Data N)
+    (E : Stage135Data N) (m : Nat) (K : ZMod N → Finset (ZMod N))
+    (h134 : IsStage134Data S theta D)
+    (hprec : ∀ i, ∀ h, h ∈ E.Q.carrier →
+      (centeredAbs ((D.a i * h + D.b i) * E.Q.step) : Real) ≤ eps * N)
+    (hK : ∀ h ∈ criticalHeights S D E, ∀ r ∈ K h,
+      theta * (N : Real) ^ 2 ≤ ‖fourier (verticalEdgeFiberFunction S.A h) r‖)
+    (hbudget : eps ≤ zeta / m) :
+    ∀ h ∈ criticalHeights S D E, E.Q.step ∈ bohr (K h) (zeta / m) := by
+  classical
+  intro h hh
+  have hmem := Finset.mem_inter.mp (Finset.mem_filter.mp hh).1
+  apply Finset.mem_filter.mpr
+  refine ⟨Finset.mem_univ _, ?_⟩
+  intro r hr
+  obtain ⟨i, hi⟩ := h134.2.2.2.2.2.2.2.2 h hmem.2 r (hK h hh r hr)
+  rw [hi]
+  exact (hprec i h hmem.1).trans (mul_le_mul_of_nonneg_right hbudget (Nat.cast_nonneg _))
+
+/-- The common-step extraction from Bohr models at a general precision. -/
+theorem lemma_13_6_of_bohr_models_at {N : Nat} [Fact N.Prime]
+    (S : Section13Context N) (theta zeta eps : Real) (D : Stage134Data N)
+    (E : Stage135Data N) (m : Nat) (Y : ZMod N → Finset (Pair N))
+    (K : ZMod N → Finset (ZMod N)) (psi : ZMod N → ZMod N → ZMod N)
+    (h134 : IsStage134Data S theta D) (h135 : IsStage135Data S D E)
+    (hprec : ∀ i, ∀ h, h ∈ E.Q.carrier →
+      (centeredAbs ((D.a i * h + D.b i) * E.Q.step) : Real) ≤ eps * N)
+    (hm : 0 < m) (hsize : m * m ≤ N) (hupper : m + 1 ≤ E.Q.length)
+    (hlower : section13Zeta S.alpha / 2 *
+      (N : Real) ^ ((1 : Real) / (2 : Real) ^ (13 * section13Q S.alpha)) ≤ m)
+    (hY : ∀ h ∈ criticalHeights S D E,
+      Y h ⊆ verticalEdgeDomain S.A h ∧
+      (2 : Real) ^ (-(43 : Int)) * S.alpha ^ 224 * (N : Real) ^ 2 ≤ (Y h).card)
+    (hK : ∀ h ∈ criticalHeights S D E, ∀ r ∈ K h,
+      theta * (N : Real) ^ 2 ≤ ‖fourier (verticalEdgeFiberFunction S.A h) r‖)
+    (hbudget : eps ≤ zeta / m)
+    (hmodel : ∀ h ∈ criticalHeights S D E,
+      HasBohrDifferenceModel (section13EdgeIndexDomain N) (verticalPhiDifference S.phi h)
+        (K h) zeta (Y h) (psi h)) :
+    ∃ F : Stage136Data N, IsStage136Data S D E F ∧ m ≤ F.R.length ∧ F.R.length ≤ E.Q.length := by
+  apply lemma_13_6_of_short_difference_rules_with_length S D E h135 m Y hm hsize hupper hlower hY
+  intro h hh
+  exact corollary_10_14_holds N (Pair N) (section13EdgeIndexDomain N)
+    (verticalPhiDifference S.phi h) (K h) zeta (Y h) (psi h) (Fact.out : N.Prime)
+    (hmodel h hh) m hm E.Q.step
+    (stage136_common_step_mem_bohr_at S theta zeta eps D E m K h134 hprec hK hbudget h hh)
+
 /-- The linear frequency cover from Stage 13.4 and the simultaneous
 smallness in Stage 13.5 place the prescribed step in every required Bohr set. -/
 theorem stage136_common_step_mem_bohr {N : Nat} [NeZero N]
@@ -206,17 +256,8 @@ theorem stage136_common_step_mem_bohr {N : Nat} [NeZero N]
       theta * (N : Real) ^ 2 ≤ ‖fourier (verticalEdgeFiberFunction S.A h) r‖)
     (hbudget : (D.P.length : Real) ^ (-((1 : Real) / (2 : Real) ^ (11 * D.q))) ≤
       zeta / m) :
-    ∀ h ∈ criticalHeights S D E, E.Q.step ∈ bohr (K h) (zeta / m) := by
-  classical
-  intro h hh
-  have hmem := Finset.mem_inter.mp (Finset.mem_filter.mp hh).1
-  apply Finset.mem_filter.mpr
-  refine ⟨Finset.mem_univ _, ?_⟩
-  intro r hr
-  obtain ⟨i, hi⟩ := h134.2.2.2.2.2.2.2.2 h hmem.2 r (hK h hh r hr)
-  rw [hi]
-  exact (h135.2.2.2.2.1 i h hmem.1).trans
-    (mul_le_mul_of_nonneg_right hbudget (Nat.cast_nonneg _))
+    ∀ h ∈ criticalHeights S D E, E.Q.step ∈ bohr (K h) (zeta / m) :=
+  stage136_common_step_mem_bohr_at S theta zeta _ D E m K h134 h135.2.2.2.2.1 hK hbudget
 
 /-- The complete common-step extraction from its Bohr models and numerical
 budgets. The conclusion retains `|R| <= |Q|` for the later coefficient step. -/
@@ -238,13 +279,9 @@ theorem lemma_13_6_of_bohr_models_with_length {N : Nat} [Fact N.Prime]
     (hmodel : ∀ h ∈ criticalHeights S D E,
       HasBohrDifferenceModel (section13EdgeIndexDomain N) (verticalPhiDifference S.phi h)
         (K h) zeta (Y h) (psi h)) :
-    ∃ F : Stage136Data N, IsStage136Data S D E F ∧ m ≤ F.R.length ∧ F.R.length ≤ E.Q.length := by
-  apply lemma_13_6_of_short_difference_rules_with_length S D E h135 m Y hm hsize hupper hlower hY
-  intro h hh
-  exact corollary_10_14_holds N (Pair N) (section13EdgeIndexDomain N)
-    (verticalPhiDifference S.phi h) (K h) zeta (Y h) (psi h) (Fact.out : N.Prime)
-    (hmodel h hh) m hm E.Q.step
-    (stage136_common_step_mem_bohr S theta zeta D E m K h134 h135 hK hbudget h hh)
+    ∃ F : Stage136Data N, IsStage136Data S D E F ∧ m ≤ F.R.length ∧ F.R.length ≤ E.Q.length :=
+  lemma_13_6_of_bohr_models_at S theta zeta _ D E m Y K psi h134 h135 h135.2.2.2.2.1 hm hsize hupper
+    hlower hY hK hbudget hmodel
 
 theorem lemma_13_6_of_bohr_models {N : Nat} [Fact N.Prime]
     (S : Section13Context N) (theta zeta : Real) (D : Stage134Data N)

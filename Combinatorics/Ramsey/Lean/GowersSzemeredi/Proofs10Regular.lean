@@ -227,37 +227,8 @@ private lemma small_eighth_fibre_card_bound {N : Nat} [NeZero N]
     (D : MultifunctionDomain N X) (alpha : Real) (M : Nat) :
     (countWhere (fun y : X =>
       ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)) : Real) ≤
-        alpha ^ 2 * M * N / 8 := by
-  let T : Real := alpha ^ 2 * M / 8
-  let f : ZMod N → Real := fun s =>
-    if T ≤ (D.fibre s).card then 0 else 1
-  have hT : 0 ≤ T := by
-    dsimp only [T]
-    positivity
-  have hcast :
-      (countWhere (fun y : X =>
-        ¬ alpha ^ 2 * M / 8 ≤ (D.fibreSize y : Real)) : Real) =
-        ∑ y : X, f (D.index y) := by
-    rw [countWhere_cast_eq_sum_ite]
-    apply Finset.sum_congr rfl
-    intro y _
-    unfold MultifunctionDomain.fibreSize
-    by_cases hy : T ≤ ((D.fibre (D.index y)).card : Real)
-    · simp [f, T, hy]
-    · simp [f, T, hy]
-  rw [hcast, sum_comp_index_eq_sum_mul_fibre]
-  calc
-    (∑ s : ZMod N, f s * (D.fibre s).card) ≤ ∑ _s : ZMod N, T := by
-      apply Finset.sum_le_sum
-      intro s _
-      by_cases hs : T ≤ ((D.fibre s).card : Real)
-      · simp [f, hs, hT]
-      · have hle : ((D.fibre s).card : Real) ≤ T := le_of_not_ge hs
-        simpa [f, hs] using hle
-    _ = T * N := by simp [ZMod.card, mul_comm]
-    _ = alpha ^ 2 * M * N / 8 := by
-      dsimp only [T]
-      ring
+        alpha ^ 2 * M * N / 8 :=
+  (small_fibre_count_le D (T := alpha ^ 2 * M / 8) (by positivity)).trans_eq (by ring)
 
 private lemma differenceWeight_eq_of_index_eq {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X)

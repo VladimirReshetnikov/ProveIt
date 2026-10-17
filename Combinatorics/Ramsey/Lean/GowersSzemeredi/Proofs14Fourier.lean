@@ -1,5 +1,6 @@
 import GowersSzemeredi.Sections14_15
 import GowersSzemeredi.Proofs01_03
+import GowersSzemeredi.Proofs12
 import Mathlib.Analysis.MeanInequalities
 import Mathlib.Algebra.Order.Chebyshev
 
@@ -344,11 +345,6 @@ private def prop141A {N p : Nat} (f : Fin p → Pair N → Complex)
     (y x u w : Fin p → ZMod N) (s : ZMod N) : Complex :=
   ∏ i, f i (s + x i, y i) * star (f i (s + w i, y i - u i))
 
-private def prop141B {N p : Nat} [NeZero N] (lambda : ZMod N → Real)
-    (sigma : Fin p → ZMod N → ZMod N)
-    (u : Fin p → ZMod N) (h : ZMod N) : Complex :=
-  (lambda h : Complex) * ∏ i, exponential (sigma i h * u i)
-
 private def prop141AddRightEquiv {N : Nat} (s : ZMod N) : ZMod N ≃ ZMod N where
   toFun h := h + s
   invFun t := t - s
@@ -362,7 +358,7 @@ private lemma prop141_correlation_eq {N p : Nat} [NeZero N]
     (lambda : ZMod N → Real) (f : Fin p → Pair N → Complex)
     (sigma : Fin p → ZMod N → ZMod N)
     (y x u w : Fin p → ZMod N) (s : ZMod N) :
-    correlation (prop141A f y x u w) (prop141B lambda sigma u) s =
+    correlation (prop141A f y x u w) (prop121B lambda sigma u) s =
       ∑ h : ZMod N, prop141InnerTerm lambda f sigma y
         (fun i => s + x i) u (fun i => s + w i) h := by
   simp only [correlation]
@@ -370,7 +366,7 @@ private lemma prop141_correlation_eq {N p : Nat} [NeZero N]
   simp only [prop141AddRightEquiv_apply, add_sub_cancel_right]
   apply Finset.sum_congr rfl
   intro h _
-  simp only [prop141A, prop141B, prop141InnerTerm, star_mul, star_prod,
+  simp only [prop141A, prop121B, prop141InnerTerm, star_mul, star_prod,
     Complex.star_def, Complex.conj_ofReal, star_exponential]
   calc
     (∏ i : Fin p,
@@ -444,7 +440,7 @@ private lemma prop141_mixed_eq_l2 {N p : Nat} [NeZero N]
         ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
           ∑ r : ZMod N,
             ‖fourier (prop141A f y x u w) r‖ ^ 2 *
-              ‖fourier (prop141B lambda sigma u) r‖ ^ 2) =
+              ‖fourier (prop121B lambda sigma u) r‖ ^ 2) =
       (N : Real) ^ 2 *
         ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
           ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
@@ -453,7 +449,7 @@ private lemma prop141_mixed_eq_l2 {N p : Nat} [NeZero N]
   calc
     _ = ∑ y : U, ∑ x : U, ∑ u : U, ∑ w : U,
         (N : Real) * ∑ s : ZMod N,
-          ‖correlation (prop141A f y x u w) (prop141B lambda sigma u) s‖ ^ 2 := by
+          ‖correlation (prop141A f y x u w) (prop121B lambda sigma u) s‖ ^ 2 := by
             apply Finset.sum_congr rfl
             intro y _
             apply Finset.sum_congr rfl
@@ -463,10 +459,10 @@ private lemma prop141_mixed_eq_l2 {N p : Nat} [NeZero N]
             apply Finset.sum_congr rfl
             intro w _
             exact lemma_2_1_holds N (prop141A f y x u w)
-              (prop141B lambda sigma u)
+              (prop121B lambda sigma u)
     _ = (N : Real) * ∑ y : U, ∑ x : U, ∑ u : U, ∑ w : U,
         ∑ s : ZMod N,
-          ‖correlation (prop141A f y x u w) (prop141B lambda sigma u) s‖ ^ 2 := by
+          ‖correlation (prop141A f y x u w) (prop121B lambda sigma u) s‖ ^ 2 := by
             simp_rw [← Finset.mul_sum]
     _ = (N : Real) * ∑ y : U, ∑ x : U, ∑ u : U, ∑ w : U,
         ∑ s : ZMod N,
@@ -590,13 +586,13 @@ private lemma prop141_global_cauchy {N p : Nat} [NeZero N]
         ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
           ∑ r : ZMod N,
             ‖fourier (prop141A f y x u w) r‖ ^ 2 *
-              ‖fourier (prop141B lambda sigma u) r‖ ^ 2) ^ 2 ≤
+              ‖fourier (prop121B lambda sigma u) r‖ ^ 2) ^ 2 ≤
       (∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
         ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
           ∑ r : ZMod N, ‖fourier (prop141A f y x u w) r‖ ^ 4) *
       ∑ _y : Fin p → ZMod N, ∑ _x : Fin p → ZMod N,
         ∑ u : Fin p → ZMod N, ∑ _w : Fin p → ZMod N,
-          ∑ r : ZMod N, ‖fourier (prop141B lambda sigma u) r‖ ^ 4 := by
+          ∑ r : ZMod N, ‖fourier (prop121B lambda sigma u) r‖ ^ 4 := by
   let U := Fin p → ZMod N
   have h := Finset.sum_mul_sq_le_sq_mul_sq
     ((((Finset.univ : Finset U) ×ˢ (Finset.univ : Finset U)) ×ˢ
@@ -604,194 +600,10 @@ private lemma prop141_global_cauchy {N p : Nat} [NeZero N]
         (Finset.univ : Finset (ZMod N)))
     (fun z => ‖fourier
       (prop141A f z.1.1.1 z.1.1.2 z.1.2.1 z.1.2.2) z.2‖ ^ 2)
-    (fun z => ‖fourier (prop141B lambda sigma z.1.2.1) z.2‖ ^ 2)
+    (fun z => ‖fourier (prop121B lambda sigma z.1.2.1) z.2‖ ^ 2)
   simpa only [Finset.sum_product, ← pow_mul] using h
 
 alias prop141_sum_exponential_mul := fejer_sum_exponential_mul
-
-private lemma prop141_b_product {N p : Nat} [NeZero N]
-    (lambda : ZMod N → Real) (sigma : Fin p → ZMod N → ZMod N)
-    (q : Fin 4 → ZMod N) (u : Fin p → ZMod N) :
-    prop141B lambda sigma u (q 0) *
-        star (prop141B lambda sigma u (q 1) *
-          prop141B lambda sigma u (q 2)) *
-        prop141B lambda sigma u (q 3) =
-      ((lambda (q 0) * lambda (q 1) * lambda (q 2) * lambda (q 3) : Real) :
-        Complex) *
-        ∏ i, exponential
-          ((sigma i (q 0) - sigma i (q 1) - sigma i (q 2) +
-            sigma i (q 3)) * u i) := by
-  simp only [prop141B, star_mul, star_prod, Complex.star_def,
-    Complex.conj_ofReal, star_exponential]
-  push_cast
-  have hphase :
-      (∏ i : Fin p, exponential (sigma i (q 0) * u i)) *
-          (∏ i : Fin p, exponential (-(sigma i (q 2) * u i))) *
-          (∏ i : Fin p, exponential (-(sigma i (q 1) * u i))) *
-          (∏ i : Fin p, exponential (sigma i (q 3) * u i)) =
-        ∏ i : Fin p, exponential
-          ((sigma i (q 0) - sigma i (q 1) - sigma i (q 2) +
-            sigma i (q 3)) * u i) := by
-    rw [prop141_prod_four]
-    apply Finset.prod_congr rfl
-    intro i _
-    rw [← exponential_add, ← exponential_add,
-      ← exponential_add]
-    congr 1
-    ring
-  calc
-    ((lambda (q 0) : Complex) * ∏ i, exponential (sigma i (q 0) * u i)) *
-          ((∏ i, exponential (-(sigma i (q 2) * u i))) *
-            (lambda (q 2) : Complex) *
-            ((∏ i, exponential (-(sigma i (q 1) * u i))) *
-              (lambda (q 1) : Complex))) *
-        ((lambda (q 3) : Complex) *
-          ∏ i, exponential (sigma i (q 3) * u i)) =
-      (lambda (q 0) : Complex) * lambda (q 1) * lambda (q 2) * lambda (q 3) *
-        (((∏ i, exponential (sigma i (q 0) * u i)) *
-          (∏ i, exponential (-(sigma i (q 2) * u i))) *
-          (∏ i, exponential (-(sigma i (q 1) * u i))) *
-          ∏ i, exponential (sigma i (q 3) * u i))) := by ring
-    _ = (lambda (q 0) : Complex) * lambda (q 1) * lambda (q 2) * lambda (q 3) *
-        ∏ i, exponential
-          ((sigma i (q 0) - sigma i (q 1) - sigma i (q 2) +
-            sigma i (q 3)) * u i) := by rw [hphase]
-
-private lemma prop141_sum_b_product {N p : Nat} [NeZero N]
-    (lambda : ZMod N → Real) (sigma : Fin p → ZMod N → ZMod N)
-    (q : Fin 4 → ZMod N) :
-    (∑ u : Fin p → ZMod N,
-      prop141B lambda sigma u (q 0) *
-        star (prop141B lambda sigma u (q 1) *
-          prop141B lambda sigma u (q 2)) *
-        prop141B lambda sigma u (q 3)) =
-      if (∀ i,
-          sigma i (q 0) - sigma i (q 1) = sigma i (q 2) - sigma i (q 3))
-      then (((N : Real) ^ p *
-        (lambda (q 0) * lambda (q 1) * lambda (q 2) * lambda (q 3)) : Real) :
-          Complex)
-      else 0 := by
-  simp_rw [prop141_b_product]
-  rw [← Finset.mul_sum, prop121_vector_orthogonality]
-  by_cases h : ∀ i,
-      sigma i (q 0) - sigma i (q 1) = sigma i (q 2) - sigma i (q 3)
-  · have hz : ∀ i,
-        sigma i (q 0) - sigma i (q 1) - sigma i (q 2) + sigma i (q 3) = 0 := by
-      intro i
-      calc
-        _ = (sigma i (q 0) - sigma i (q 1)) -
-            (sigma i (q 2) - sigma i (q 3)) := by abel
-        _ = 0 := sub_eq_zero.mpr (h i)
-    rw [if_pos hz, if_pos h]
-    push_cast
-    ring
-  · have hnz : ¬ ∀ i,
-        sigma i (q 0) - sigma i (q 1) - sigma i (q 2) + sigma i (q 3) = 0 := by
-      intro hz
-      apply h
-      intro i
-      apply sub_eq_zero.mp
-      calc
-        (sigma i (q 0) - sigma i (q 1)) -
-            (sigma i (q 2) - sigma i (q 3)) =
-          sigma i (q 0) - sigma i (q 1) - sigma i (q 2) +
-            sigma i (q 3) := by abel
-        _ = 0 := hz i
-    rw [if_neg hnz, if_neg h]
-    simp
-
-private lemma prop141_fourthB_eq_weight {N p : Nat} [NeZero N]
-    (lambda : ZMod N → Real) (sigma : Fin p → ZMod N → ZMod N) :
-    (∑ u : Fin p → ZMod N, ∑ r : ZMod N,
-        ‖fourier (prop141B lambda sigma u) r‖ ^ 4) =
-      (N : Real) ^ (p + 1) * simultaneouslyAdditiveWeight lambda sigma := by
-  classical
-  have hcomplex :
-      (((∑ u : Fin p → ZMod N, ∑ r : ZMod N,
-          ‖fourier (prop141B lambda sigma u) r‖ ^ 4 : Real)) : Complex) =
-        (((N : Real) ^ (p + 1) * simultaneouslyAdditiveWeight lambda sigma :
-          Real) : Complex) := by
-    rw [Complex.ofReal_sum]
-    calc
-      (∑ u : Fin p → ZMod N,
-          ((∑ r : ZMod N, ‖fourier (prop141B lambda sigma u) r‖ ^ 4 :
-            Real) : Complex)) =
-          ∑ u : Fin p → ZMod N, (N : Complex) *
-            ∑ q : Fin 4 → ZMod N,
-              if q 0 - q 1 = q 2 - q 3 then
-                prop141B lambda sigma u (q 0) *
-                  star (prop141B lambda sigma u (q 1) *
-                    prop141B lambda sigma u (q 2)) *
-                  prop141B lambda sigma u (q 3)
-              else 0 := by
-                apply Finset.sum_congr rfl
-                intro u _
-                exact identity_2_6_holds N (prop141B lambda sigma u)
-      _ = (N : Complex) * ∑ q : Fin 4 → ZMod N,
-          if q 0 - q 1 = q 2 - q 3 then
-            ∑ u : Fin p → ZMod N,
-              prop141B lambda sigma u (q 0) *
-                star (prop141B lambda sigma u (q 1) *
-                  prop141B lambda sigma u (q 2)) *
-                prop141B lambda sigma u (q 3)
-          else 0 := by
-            rw [← Finset.mul_sum]
-            congr 1
-            rw [Finset.sum_comm]
-            apply Finset.sum_congr rfl
-            intro q _
-            by_cases hadd : q 0 - q 1 = q 2 - q 3 <;> simp [hadd]
-      _ = (N : Complex) * ∑ q : Fin 4 → ZMod N,
-          if IsSimultaneouslyAdditive sigma q then
-            (((N : Real) ^ p *
-              (lambda (q 0) * lambda (q 1) * lambda (q 2) * lambda (q 3)) :
-                Real) : Complex)
-          else 0 := by
-            congr 1
-            apply Finset.sum_congr rfl
-            intro q _
-            rw [prop141_sum_b_product]
-            by_cases hadd : q 0 - q 1 = q 2 - q 3 <;>
-              by_cases hsigma : ∀ i,
-                sigma i (q 0) - sigma i (q 1) =
-                  sigma i (q 2) - sigma i (q 3) <;>
-              simp [IsSimultaneouslyAdditive, hadd, hsigma]
-      _ = (N : Complex) * ((N : Complex) ^ p *
-          ∑ q : Fin 4 → ZMod N,
-            if IsSimultaneouslyAdditive sigma q then
-              ((lambda (q 0) * lambda (q 1) * lambda (q 2) * lambda (q 3) :
-                Real) : Complex)
-            else 0) := by
-              congr 1
-              rw [Finset.mul_sum]
-              apply Finset.sum_congr rfl
-              intro q _
-              by_cases hq : IsSimultaneouslyAdditive sigma q
-              · rw [if_pos hq, if_pos hq]
-                push_cast
-                rfl
-              · rw [if_neg hq, if_neg hq]
-                simp
-      _ = (((N : Real) ^ (p + 1) * simultaneouslyAdditiveWeight lambda sigma :
-          Real) : Complex) := by
-            unfold simultaneouslyAdditiveWeight
-            rw [show
-              (∑ q : Fin 4 → ZMod N,
-                if IsSimultaneouslyAdditive sigma q then
-                  ((lambda (q 0) * lambda (q 1) * lambda (q 2) *
-                    lambda (q 3) : Real) : Complex)
-                else 0) =
-              (((∑ q : Fin 4 → ZMod N,
-                if IsSimultaneouslyAdditive sigma q then
-                  lambda (q 0) * lambda (q 1) * lambda (q 2) * lambda (q 3)
-                else 0 : Real)) : Complex) by
-                  rw [Complex.ofReal_sum]
-                  apply Finset.sum_congr rfl
-                  intro q _
-                  by_cases hq : IsSimultaneouslyAdditive sigma q <;> simp [hq]]
-            push_cast
-            ring
-  exact Complex.ofReal_injective hcomplex
 
 lemma prop141_prod_fin_four (a : Fin 4 → Real) :
     (∏ i, a i) = a 0 * a 1 * a 2 * a 3 := by
@@ -846,23 +658,23 @@ private lemma prop141_fourthB_total_eq_energy {N p : Nat} [NeZero N]
     (lambda : ZMod N → Real) (sigma : Fin p → ZMod N → ZMod N) :
     (∑ _y : Fin p → ZMod N, ∑ _x : Fin p → ZMod N,
         ∑ u : Fin p → ZMod N, ∑ _w : Fin p → ZMod N,
-          ∑ r : ZMod N, ‖fourier (prop141B lambda sigma u) r‖ ^ 4) =
+          ∑ r : ZMod N, ‖fourier (prop121B lambda sigma u) r‖ ^ 4) =
       (N : Real) ^ (4 * p + 1) *
         weightedSimultaneousAdditiveEnergy Finset.univ lambda sigma := by
   let U := Fin p → ZMod N
   have hcard : Fintype.card U = N ^ p := by simp [U]
   calc
     _ = ∑ y : U, ∑ u : U, ∑ _x : U, ∑ _w : U,
-        ∑ r : ZMod N, ‖fourier (prop141B lambda sigma u) r‖ ^ 4 := by
+        ∑ r : ZMod N, ‖fourier (prop121B lambda sigma u) r‖ ^ 4 := by
           apply Finset.sum_congr rfl
           intro y _
           exact Finset.sum_comm
     _ = ∑ u : U, ∑ _y : U, ∑ _x : U, ∑ _w : U,
-        ∑ r : ZMod N, ‖fourier (prop141B lambda sigma u) r‖ ^ 4 :=
+        ∑ r : ZMod N, ‖fourier (prop121B lambda sigma u) r‖ ^ 4 :=
       Finset.sum_comm
     _ = (N : Real) ^ (3 * p) *
         ∑ u : U, ∑ r : ZMod N,
-          ‖fourier (prop141B lambda sigma u) r‖ ^ 4 := by
+          ‖fourier (prop121B lambda sigma u) r‖ ^ 4 := by
             simp only [Finset.sum_const, Finset.card_univ, hcard, nsmul_eq_mul]
             push_cast
             simp_rw [← Finset.mul_sum]
@@ -871,7 +683,7 @@ private lemma prop141_fourthB_total_eq_energy {N p : Nat} [NeZero N]
     _ = (N : Real) ^ (3 * p) *
         ((N : Real) ^ (p + 1) *
           simultaneouslyAdditiveWeight lambda sigma) := by
-            rw [prop141_fourthB_eq_weight]
+            rw [prop121_fourthB_eq_weight]
     _ = (N : Real) ^ (4 * p + 1) *
         weightedSimultaneousAdditiveEnergy Finset.univ lambda sigma := by
           rw [prop141_weight_eq_energy, show 4 * p + 1 = 3 * p + (p + 1) by omega, pow_add]
@@ -895,7 +707,7 @@ theorem proposition_14_1_holds : proposition_14_1 := by
       ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
         ∑ r : ZMod N,
           ‖fourier (prop141A f y x u w) r‖ ^ 2 *
-            ‖fourier (prop141B lambda sigma u) r‖ ^ 2
+            ‖fourier (prop121B lambda sigma u) r‖ ^ 2
   let fourthA : Real :=
     ∑ y : Fin p → ZMod N, ∑ x : Fin p → ZMod N,
       ∑ u : Fin p → ZMod N, ∑ w : Fin p → ZMod N,
@@ -903,7 +715,7 @@ theorem proposition_14_1_holds : proposition_14_1 := by
   let fourthB : Real :=
     ∑ _y : Fin p → ZMod N, ∑ _x : Fin p → ZMod N,
       ∑ u : Fin p → ZMod N, ∑ _w : Fin p → ZMod N,
-        ∑ r : ZMod N, ‖fourier (prop141B lambda sigma u) r‖ ^ 4
+        ∑ r : ZMod N, ‖fourier (prop121B lambda sigma u) r‖ ^ 4
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hN4p : (0 : Real) < (N : Real) ^ (4 * p) := by positivity
   have hN4p4 : (0 : Real) < (N : Real) ^ (4 * p + 4) := by positivity

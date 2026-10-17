@@ -1210,6 +1210,7 @@ import GowersSzemeredi.Proofs18Final
 import GowersSzemeredi.Proofs00Basics
 import GowersSzemeredi.Proofs05FullPartitionScale
 import GowersSzemeredi.Proofs05ThresholdFreeCorollary58
+import GowersSzemeredi.Proofs06PhiAdditiveFourier
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 
