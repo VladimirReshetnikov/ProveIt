@@ -336,3 +336,15 @@ bundles is assumed. The represented environment/alpha induction and actual
 ZF axiom reconstruction remain open. See `ValidatorQuantifierCore254.lean`,
 `validator_quantifier_core254.md`, and the matching records. The maintained
 prepare-only check queries the compiler version and performs no proof build.
+
+The [internal equality interface](validator_equality_core254.md) now checks reflexivity, symmetry, transitivity and both-coordinate atomic congruence for arbitrary internal labels. All nine probes and twelve callers passed with standard axioms and zero warnings; the environment induction and source-proof compiler remain open.
+
+The [configurable environment encoder](validator_environment_labels254.md) now checks total internal free/bound environment graphs and exact term, vector and formula SHIFT laws, including nested quantifiers. All 39 probes and 28 callers passed with standard axioms and zero warnings. Opening, alpha induction and the source-proof compiler remain open.
+
+[Internal binder opening](validator_environment_opening254.md) now proves the
+exact term, vector and formula substitution identities for arbitrary internal
+depths and environments, with explicit stack-extension premises. Its finite
+clients identify the opened matrices of ALL and EXS. The check passed 19 probes
+and 22 callers with standard axioms and zero warnings. Alpha equivalence and
+the source-proof compiler remain open; this computation does not rename
+accepted proofs.
