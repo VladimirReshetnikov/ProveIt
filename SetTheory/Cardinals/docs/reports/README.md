@@ -2583,3 +2583,34 @@ ZFC endpoint remain open. Nine scratch PDFs (40/24/28/28/28/32/25/23/25 pages)
 were rebuilt and visually reviewed. Dossiers, command evidence and an offline
 recovery/finite-replay helper are in the host; no new calibrated sub-253 table
 or global minimality theorem is claimed.
+
+
+Batch153 adds two manuscripts from `4e720ccbbf`, placed by `6135ffef4b`,
+reconciled in `837b30d620`, with reciprocal notes `3cf360ff63`. They become
+sources35–36 of [ZFC closure kernels](set-theory/zfc-closure-kernels), now36
+sources; the collection remains290 reports. All144 ancillary files are
+preserved, with11 manuscript/PDF/delivery-README files recoverable from the
+committed archives. The original host article remains unchanged.
+
+Source35 supplies checked arbitrary-cutoff enumeration and exact dirty-root
+absorption, widening the admissible initializer's numeric fields while
+retaining safe formula data, a genuine root and the logical zero tail. Its
+same-count253 direction rewrite has a standalone12-window certificate;
+597080 bounded transition-alternative checks yield no deletion. Its short-gap
+runtime252 continuation is explicitly a mixture of literal finite checks
+and abstract register-box execution, with no safe-root or divergence theorem.
+Source36 proves an ordinary three-component EPSC1 interpretation lacking
+Pairing and one EPSC2 instance even with the listed additional set axioms.
+This is a deductive separation, leaving EPSC1 consistency strength open.
+Its scanner counterexample is actually reached from blank at1011713 steps;
+the rejected edit breaks the advertised instruction simulation. All432
+outgoing-equality recipes compile, best290states;12002 permutation grammars
+have minimum270, while3million substring proposals retain the prior268.
+
+All advertised functional suites, the fresh19-source Lean closure and both
+23-page scratch PDFs pass, with independent mathematical, source, artifact
+and visual review. The recovery helper was independently replayed; its
+known bulk-manifest omissions and three retained functional table pins are
+explicit. The sources' old missing-clean-root/model comparison passages are
+reconciled with current checked Lean results. No new smaller blank machine,
+full binary simulation or internal-ZFC consistency endpoint is claimed.
