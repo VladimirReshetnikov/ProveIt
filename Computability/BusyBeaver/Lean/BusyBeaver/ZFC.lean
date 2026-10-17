@@ -80,6 +80,12 @@ import BusyBeaver.ZFC.ProgramZF0
 import BusyBeaver.ZFC.QuotientCPGIC
 import BusyBeaver.ZFC.NativeDecoded254
 import BusyBeaver.ZFC.NativeTheory254
+import BusyBeaver.ZFC.EnumSafeStart254
+import BusyBeaver.ZFC.DirtyRoot254
+import BusyBeaver.ZFC.DirtyProgram254
+import BusyBeaver.ZFC.WellFoundedPart
+import BusyBeaver.ZFC.SeedInvariant254
+import BusyBeaver.ZFC.RMBisim
 
 /-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC
 consistency theorem or state-count improvement is claimed by these imports. -/

@@ -232,6 +232,10 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `ProgramZF0.lean` | A ZF0 refutation forces the actual 219-node structured program to halt from nextproof = 2; structured non-halting implies Con(ZF0). Literal Prog254/binary simulation and Foundation/Choice transport remain separate. |
 | `NativeDecoded254.lean` | Native CP + full actual-Form GIC + raw IR satisfy every decoded bundle, including coincident binders and truth code 0. With an explicit valuation, ModelsEncodable and ModelsDecoded are equivalent. |
 | `NativeTheory254.lean` | Numerical falsity and actual 219-node structured-program halting are each equivalent to refutability of the explicit sentence theory CP + full native-Form GIC + IR. ZFC calibration and binary execution remain separate. |
+| `EnumSafeStart254.lean`, `DirtyRoot254.lean`, `DirtyProgram254.lean` | Attributed arbitrary-cutoff enumeration and dirty-root absorption, composed with the actual structured219/path program. Six numerical fields are unrestricted; top/cache/stack retain their exact theorem invariant and logical registers beyond8 remain zero. |
+| `SeedInvariant254.lean` | Six constructors certify nonzero initial theorem codes, unshifted stacks, and the resulting dirty-start/native-refutation equivalence. This gives a larger sufficient initializer target; no binary startup is inferred. |
+| `WellFoundedPart.lean` | One actual equality-free GIC matrix collects internal well-founded witnesses; closure, heredity and actual Regularity on the subtype. Full interpreted ZF and effective consistency transport remain separate. |
+| `RMBisim.lean` | Merged generic segment bisimulation with symmetric halting transport and a sound finite checker on explicit decoder trees. No concrete certificate instance is included in this module. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
@@ -264,8 +268,8 @@ Rebuild the entire small dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 93 source units: the first-order logic, calculus and completeness
-modules, `ZF.Zf`, `BusyBeaver.Core`, 87 research modules and the umbrella into a
+This compiles 99 source units: the first-order logic, calculus and completeness
+modules, `ZF.Zf`, `BusyBeaver.Core`, 93 research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the prior 38-unit fresh source check and axiom outputs. The seven
@@ -358,6 +362,23 @@ axiom audits and three callers. The 219-node DAG's path semantics is now
 equivalent to its structured semantics for every register vector. This
 still leaves the separate 6,459-node literal `Prog254` correspondence and
 binary runtime proof; the public 3,010-pair certificate is the next bridge.
+The [dirty-start composition](dirty_program254.md),
+[safe initializer families](safe_initializer_families.md),
+[internal well-founded part](well_founded_part.md), and merged generic
+`RMBisim` bring the runner to 99 units. The scoped verification record
+`results/breakthrough99-integration-verification.json` checks all source
+identities and import order, the two newly built modules and umbrella,
+12 axiom audits and three callers. The four other new modules have matching
+separate scoped build records. No full dependency or bootstrap rerun is claimed.
+The safe-seed certificate language proves that startup formula fields need
+not be zero: even code60 is the theorem `Rel(1,0) → Truth`, while stack60
+contains falsity and is unsafe. This motivates changing physical register
+roles during initialization. The first36 permutations pass all selected
+instruction contracts but produce no safe startup in their stated finite
+blank runs; three controls were independently replayed. The
+[functional subset-closure experiment](functional_subset_closure.md) is
+a separate ordinary theory alternative whose measured retained compiler
+cost increases to347. Neither experiment supplies a new state bound.
 The separate [target-permutation obstruction](quotient_ir_obstruction.md)
 shows at the ordinary mathematical level why raw IR cannot simply be passed
 through this bisimulation quotient, even when native equality and Pairing are
