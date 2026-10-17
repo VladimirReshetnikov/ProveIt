@@ -66,23 +66,24 @@ also pass a narrow fresh check with Cantor:38 reports and42 callers, reusing14
 matched core imports. The subsequent
 [represented concatenation](arithmetic_command_append254.md) proves the exact
 recurrence at every internal index and all-Nat command-list agreement. Its
-24 axiom reports and 30 callers pass. The complete proof-to-command compiler
-and its internal execution contract remain the next arithmetic bridge.
+24 axiom reports and 30 callers pass. The complete proof-to-command compiler and its internal execution contract
+are now checked by the later word-history and correctness modules below.
 The [validator recurrence](arithmetic_history_recurrence254.md) also holds at
 all internal indices: accepted MP/GEN parents force acceptance of their actual
 child codes. Eleven reports and twelve generic callers pass.
 The [actual compiler-block circuits](arithmetic_command_blocks254.md) now have
 fixed arithmetic graphs and symbolic agreement with the existing command
 lists, including all leaf, MP and GEN blocks. Fifteen reports and twenty-five
-callers pass; internal command execution remains open.
+callers pass; the later execution modules below establish their internal
+command contracts.
 The [internal word laws](arithmetic_command_word_laws254.md) prove tail
 replacement identities and append associativity for arbitrary internal codes,
 with six reports and seven callers.
 The [arithmetic proof-word history](arithmetic_proof_word254.md) now builds
 these words at every internal proof code, then applies the original validator
 once at its public output. Twenty-eight reports and twenty-one callers pass.
-Its PA theorem asserts unique totality; execution and consistency transport
-remain open.
+Its PA theorem asserts unique totality. The later correctness module below
+proves accepted-proof execution; consistency transport remains open.
 The [quotation and nonemptiness adapters](arithmetic_proof_word_adapters254.md)
 give exact structural-compiler agreement on ordinary quoted proof trees,
 including invalid ones, and identify empty public outputs with validator
@@ -101,8 +102,16 @@ agreement with the existing natural executor and all-internal successor and
 append execution, passing twelve/fifteen and fifteen/twenty reports/callers.
 The [Π1 contract interface](arithmetic_proof_word_contract254.md) proves that
 compiler correctness for every initial top and saved stack admits IΣ1
-induction. Six reports and eight callers pass; the twelve-case successor
-premise remains explicit.
+induction. Six reports and eight callers pass. The
+[fixed block execution contracts](arithmetic_command_block_execution254.md)
+now cover discard, all leaves, GEN and MP, passing 19/20, 12/12 and 11/8
+reports/callers. The [compiler correctness theorem](arithmetic_proof_word_correct254.md)
+discharges the twelve-case successor premise and proves the exact contract
+for every accepted internal code, with five reports and thirteen callers.
+The [represented refutation word](arithmetic_refutation_word254.md) then halts
+from every working state for each internal accepted falsity proof, passing
+eleven reports and twelve callers. Scheduler, binary-trace and internal
+proof-system transport remain open for the PA endpoint.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof

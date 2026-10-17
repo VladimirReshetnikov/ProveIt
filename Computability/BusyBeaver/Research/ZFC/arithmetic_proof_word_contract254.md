@@ -26,8 +26,9 @@ supplies Π1 induction in every IΣ1 model. No bound on changing registers or
 compiler output sizes is introduced.
 
 `good_of_step` reduces the full theorem to the exact successor premise
-`forall raw, PrefixGood(raw) -> Good(raw+1)`. The premise remains explicit:
-this module alone does not assert that the twelve-case row step holds.
+`forall raw, PrefixGood(raw) -> Good(raw+1)`. This module keeps that premise explicit. The subsequent
+[compiler correctness module](arithmetic_proof_word_correct254.md) now proves
+the twelve-case row step and discharges it for every internal code.
 `major_input_of_prefix` separately demonstrates that an accepted earlier
 child's contract applies at top zero and stack `P(minorTarget, savedStack)`.
 The halt alternative remains necessary because an intermediate NIP may
@@ -51,6 +52,7 @@ python -B Computability/BusyBeaver/Research/ZFC/check_arithmetic_proof_word_cont
   --output /outside/new-empty-contract-check
 ```
 
-The next module must discharge the successor premise from the actual
-validator recurrence, child bounds and compiler-block contracts. This
-induction interface alone proves no consistency equivalence or machine bound.
+The [successor proof](arithmetic_proof_word_correct254.md) now combines the
+actual validator recurrence, child bounds and compiler-block contracts. The
+result establishes accepted-proof execution. Scheduler, binary and internal
+proof-system transport remain necessary for the PA consistency equivalence.

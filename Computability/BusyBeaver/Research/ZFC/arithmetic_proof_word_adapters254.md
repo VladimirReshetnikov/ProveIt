@@ -64,5 +64,7 @@ python -B Computability/BusyBeaver/Research/ZFC/check_arithmetic_proof_word_none
   --output /outside/new-empty-nonempty-check
 ```
 
-Accepted-proof execution, scheduler and binary-trace transport, and the
-internal proof transformations between C254 and ZFC remain open.
+The subsequent [compiler correctness theorem](arithmetic_proof_word_correct254.md)
+now supplies accepted-proof execution at every internal code. Scheduler and
+binary-trace transport, and the internal proof transformations between C254
+and ZFC remain open.

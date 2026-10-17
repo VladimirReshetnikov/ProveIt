@@ -219,7 +219,9 @@ blocks and proves their exact result contract. Its explicit refutation word
 halts from any working state; the existing fair scheduler yields the external
 enumerator-halting corollary. See [the compiler note](code254_proof_compiler.md).
 This removes proof-existence extraction from the compiler function itself;
-representing that computation and its correctness inside PA remains open.
+the subsequent arithmetic word history and correctness modules now represent
+that computation and establish its contract in every IΣ1 model. The internal
+scheduler and proof-system comparisons remain open.
 
 The [numeric command-word adapter](command_word254.md) now supplies a total
 shifted encoding of the actual command lists, exact tail replacement, and
@@ -258,7 +260,8 @@ exact internal recurrence and PA-provable unique totality. The
 with the structural compiler on every ordinary finite quoted proof tree,
 including invalid trees. The accompanying all-internal nonemptiness theorem
 identifies empty public output exactly with rejection by the original
-validator. Its accepted-proof execution contract remains open.
+validator. The later [correctness theorem](arithmetic_proof_word_correct254.md)
+now proves its accepted-proof execution contract.
 
 The [command-step graph](arithmetic_command_step254.md) now represents the
 exact MP, DROP, NIP and AX effects on every internal IOpen input, agrees with
@@ -276,8 +279,14 @@ the actual natural executor and prove successor/append execution at every
 internal input. The [Π1 contract interface](arithmetic_proof_word_contract254.md)
 uses the total Δ1 functions to retain universal top/stack quantifiers inside
 a Π1 induction hypothesis. Thus the MP major can use its changed saved stack
-without a register-growth bound. The exact twelve-case successor premise
-remains to be discharged from the block contracts and validator recurrence.
+without a register-growth bound. The [fixed block contracts](arithmetic_command_block_execution254.md)
+and [correctness theorem](arithmetic_proof_word_correct254.md) now discharge
+the exact twelve-case successor premise using the actual validator recurrence.
+The [represented refutation word](arithmetic_refutation_word254.md) then
+resets arbitrary working registers and halts whenever the validator accepts
+falsity. This closes the compiler-to-word direction in every IΣ1 model;
+scheduler transport, command-halting soundness, binary traces and internal
+C254/ZFC proof transformations remain to be connected.
 
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its

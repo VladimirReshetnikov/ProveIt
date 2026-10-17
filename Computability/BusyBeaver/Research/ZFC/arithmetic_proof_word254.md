@@ -6,7 +6,8 @@ represent a numeric proof-to-word computation at every internal input of an
 IΣ1 model. Fixed Σ1/Δ1 graphs define an unconditional history of command words
 and a public output gated by the existing twelve-rule proof checker. The
 module proves actual IΣ1 and PA derivability of the output's unique totality.
-Its command execution contract remains open.
+Its [accepted-proof execution contract](arithmetic_proof_word_correct254.md)
+is now proved in the subsequent correctness module.
 
 The history starts with word 0 at proof code 0. At index `raw + 1`, it splits
 `raw` into tag `raw % 12` and payload `raw / 12`, decodes that payload, and
@@ -79,7 +80,7 @@ python -B Computability/BusyBeaver/Research/ZFC/check_arithmetic_proof_word254.p
   --output /outside/new-empty-proof-word-check
 ```
 
-The remaining obligations include accepted-proof execution, scheduler and
-binary-trace transport, and internal proof
-transformations between C254 and ZFC. Unique totality alone establishes none
+Accepted-proof execution is now checked for every internal code. The
+remaining obligations include scheduler and binary-trace transport, and
+internal proof transformations between C254 and ZFC. Unique totality alone establishes none
 of those comparisons and changes no machine state count.

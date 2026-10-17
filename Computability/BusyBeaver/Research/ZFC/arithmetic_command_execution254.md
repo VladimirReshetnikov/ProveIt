@@ -65,6 +65,7 @@ python -B Computability/BusyBeaver/Research/ZFC/check_arithmetic_command_executi
   --output /outside/new-empty-execution-check
 ```
 
-These laws support the fixed compiler-block contracts. Accepted-proof
-induction, scheduler transport, binary traces and the PA consistency
-equivalence are separate obligations; no state count changes here.
+These laws now support the checked [fixed compiler-block contracts](arithmetic_command_block_execution254.md)
+and [all-internal accepted-proof induction](arithmetic_proof_word_correct254.md).
+Scheduler transport, binary traces and the PA consistency equivalence remain
+separate obligations; no state count changes here.
