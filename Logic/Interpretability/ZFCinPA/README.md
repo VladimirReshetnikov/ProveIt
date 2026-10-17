@@ -328,3 +328,5 @@ ZF axiom reconstruction remain open. See `ValidatorQuantifierCore254.lean`,
 prepare-only check queries the compiler version and performs no proof build.
 
 The [internal equality interface](validator_equality_core254.md) now checks reflexivity, symmetry, transitivity and both-coordinate atomic congruence for arbitrary internal labels. All nine probes and twelve callers passed with standard axioms and zero warnings; the environment induction and source-proof compiler remain open.
+
+The [configurable environment encoder](validator_environment_labels254.md) now checks total internal free/bound environment graphs and exact term, vector and formula SHIFT laws, including nested quantifiers. All39 probes and28 callers passed with standard axioms and zero warnings. Opening, alpha induction and the source-proof compiler remain open.
