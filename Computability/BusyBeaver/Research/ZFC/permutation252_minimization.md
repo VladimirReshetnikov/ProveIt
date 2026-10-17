@@ -67,3 +67,11 @@ machine, Jeff's verification, Wade's compiler and mira-emmy's public253
 reduction. The diagnostic executor is from attributed closure-kernel source
 27. The new searches operate on the separately frozen ProveIt permutation
 candidate and do not modify it.
+
+Two further experiments broaden the boundary. The [lazy incoming-target
+search](permutation252_lazy_context_search.md) permits compensating reroutes
+and records an explicit unfinished frontier; its entire branch/prune partition
+was independently replayed. The [spare-suffix box experiment](permutation252_spare_fold_search.md)
+tests7,279 previously excluded folds with arbitrary valid spare values in
+finite literal box samples; no candidate survives its subsequent conditional
+instruction screen. Neither experiment changes the frozen candidate.
