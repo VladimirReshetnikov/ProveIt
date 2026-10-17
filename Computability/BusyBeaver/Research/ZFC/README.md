@@ -93,6 +93,13 @@ Four units are freshly checked and159 source-matched units reused. Nonstandard
 codes and lengths are included. The full constructible order, its bounded key
 sets and the exact Choice adapter remain open.
 
+The separate [arithmetic Cantor adapter](arithmetic_cantor.md) now proves the
+exact pairing and bounded inverse graphs in arbitrary IOpen models, then
+identifies them with the live numerical checker on every natural input.
+Its27 axiom probes and20 callers pass using pinned Foundation/Mathlib caches.
+This closes the pairing component of the PA representation plan; represented
+history evaluation and the full coded proof/trace comparison remain open.
+
 A measured attempt to save a register by changing Cantor pairing to a
 [power-of-two encoding](register_lifetime.md) retained the full calculus but
 cost 306 states; its tested hybrids cost at least293. The current 252-state

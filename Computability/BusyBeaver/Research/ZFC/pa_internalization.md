@@ -215,3 +215,11 @@ project-specific all-code adapters remain to be implemented. Its PA transport
 requires an actual primitive-recursive proof compiler and verified axiom-proof
 generators, not merely external semantic equivalence. None of these reports
 closes the requested internal PA theorem.
+
+
+The subsequent [ArithmeticCantor adapter](arithmetic_cantor.md) now supplies the
+literal Cantor polynomial graph, bounded inverse graphs and all-natural
+identification with `Code254.P`/`Cantor.ofNat`, in arbitrary IOpen models.
+Its semantic representation uses weaker arithmetic than full PA. The actual
+checker/history and finite proof/trace compiler remain unrepresented here;
+this local definability theorem is not the requested whole-machine PA proof.

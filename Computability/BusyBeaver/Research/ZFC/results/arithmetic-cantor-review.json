@@ -1,0 +1,92 @@
+{
+  "status": "CLEAN independent mathematical/API review",
+  "scope": "Full source +Audit +verification read; no Lean invocation, no tracked edits, no PA proof-code inference",
+  "reviewed_source": {
+    "path": "/tmp/zfc-cantor-arithmetic/ArithmeticCantor.lean",
+    "sha256": "aadfdeb41e75c1652b555ed996fea5d15d7f1b9f65c7c553823a99773ee24c84",
+    "lines": 235,
+    "importable_copy_equal": true
+  },
+  "reviewed_audit": {
+    "path": "/tmp/zfc-cantor-arithmetic/Audit.lean",
+    "sha256": "1c6927ed924d1075fb248a984825f0a65fec53fb43ee2c19d7c3bb795579a2a2",
+    "recorded_axiom_probes": 27,
+    "caller_examples": 20,
+    "reported_generic_callers": 7,
+    "reported_Nat_callers": 13
+  },
+  "Foundation": {
+    "source_path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation",
+    "actual_pin": "32e1a0956a8622fad067328ca1959729a7634428",
+    "checkout_clean": true,
+    "freshly_built_by_this_review": false,
+    "scope": "Dependency source pin inspected; inherited cached object reuse remains explicit, not a fresh closure build"
+  },
+  "live_dependencies": {
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean": {
+      "sha256": "18311d4a28cba6778a0ba1a1ddee34f5c2dd5044a23958b63f46d0640be4e01e",
+      "matches_source_verified_161_record": true,
+      "matching_record": {
+        "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean",
+        "sha256": "18311d4a28cba6778a0ba1a1ddee34f5c2dd5044a23958b63f46d0640be4e01e",
+        "validation": "source identity with157-unit checked closure",
+        "evidence": "barrier-constructible-integration-verification.json",
+        "olean": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/Code254.olean"
+      },
+      "cache_object": "/tmp/zfc-native91-integration-yduvdh8f/BusyBeaver/ZFC/Code254.olean"
+    },
+    "Logic/FirstOrder/Lean/FirstOrder/Fol.lean": {
+      "sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+      "matches_source_verified_161_record": true,
+      "matching_record": {
+        "path": "Logic/FirstOrder/Lean/FirstOrder/Fol.lean",
+        "sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+        "validation": "source identity with157-unit checked closure",
+        "evidence": "barrier-constructible-integration-verification.json",
+        "olean": "/tmp/zfc-native91-integration-yduvdh8f/FirstOrder/Fol.olean"
+      },
+      "cache_object": "/tmp/zfc-native91-integration-yduvdh8f/FirstOrder/Fol.olean"
+    }
+  },
+  "assumptions": [
+    "ORingStructure V",
+    "V models Foundation IOpen=PAminus+open induction; no extra PA/standardness/model/consistency assumption"
+  ],
+  "mathematical_checks": [
+    "s*(s+1) divisible by2 from model parity; exact triangle graph follows library IOpendivision",
+    "triangle successor/monotonicity/growth valid in nonnegative discrete semiring",
+    "diagonal_exists uses only literal open polynomial inequality, not induction over division or existential inverse predicate",
+    "injectivity separates anti-diagonals then cancels same triangle and coordinate",
+    "surjection subtracts within bounds and covers every model element",
+    "projections bounded by input; unique despite choice-defined implementation",
+    "pairDef uses multiplication/addition only, exact outputfirst inputs a,b",
+    "inverse <\u207ap means \u2264p; zero included",
+    "Nat triangle recurrence, P orientation, and ofNat inverse uniqueness exactly match actual implementations",
+    "native constructor callers preserve base4 tags0,1,2,3"
+  ],
+  "evidence_scope": [
+    "verification records fresh235line module check and27axiom/20caller audit using pinnedLean4.32",
+    "all27 recorded axiom sets are standard Lean axioms; this alone is not a PA strength theorem",
+    "Foundation/Mathlib cached dependencies not freshly rebuilt",
+    "No Code254History evaluator/sparsecertificate/stack/register/TM/interpretation internalization follows"
+  ],
+  "defects_found": [],
+  "documentation_or_reproduction_notes": [
+    "Use fully qualified ArithmeticCantor.pairDef when opening arithmeticnamespace; Foundation pairDef is Szudzik",
+    "Current worktree lib/FormalizedFormalLogic-Foundation is an empty submodule directory; actual checked dependency is explicit /home/codex/src/Proofs checkout. Portable checker must locate/validate it or populate pinned submodule, not silently claim vendored sources present",
+    "Five linter warnings are style suggestions, not missing proof obligations."
+  ],
+  "output_markdown": "/tmp/zfc-cantor-arithmetic/independent-review.md",
+  "maintained_checker_read_only_review": {
+    "path": "/tmp/zfc-cantor-arithmetic/check_arithmetic_cantor.py",
+    "read_completely": true,
+    "ran_by_independent_reviewer": false,
+    "reported_successful_replay": "/tmp/zfc-cantor-maintained-check/verification.json",
+    "same_exact_source_and_audit": true,
+    "core_units": 163,
+    "core_closure_reused": 10,
+    "dependency_root_explicit": "/home/codex/src/Proofs",
+    "checks": "Exact Foundationpin/clean tracked checkout; Mathlibmanifestpin/clean tracked checkout; actual source-matched Code254 closure; object identities+new source+audit+postcheck identities; no fetch or rebuild"
+  },
+  "full_review_text": "# Independent review of ArithmeticCantor\n\nVerdict: **clean**. I read the complete235-line candidate, its entire `Audit.lean`, the verification record and scope note, and the relevant Foundation definitions/proofs and live pairing implementation. I found no stronger arithmetic assumption hidden in the generic theorems, no restriction to standard elements, and no pairing-orientation or zero-case mismatch. This was a read-only mathematical/API review: no compiler or axiom-printer invocation, no source edit and no tracked repository change.\n\nExact reviewed source: `/tmp/zfc-cantor-arithmetic/ArithmeticCantor.lean`, SHA256 `aadfdeb41e75c1652b555ed996fea5d15d7f1b9f65c7c553823a99773ee24c84`,235lines. Its importable source copy is byte-identical. Reviewed audit SHA256 `1c6927ed924d1075fb248a984825f0a65fec53fb43ee2c19d7c3bb795579a2a2`. The machine-readable companion is `independent-review.json`. These identities identify the reviewed sources; they are not a checksum-manifest audit.\n\n## Arithmetic assumptions and total inverse\n\nThe generic declarations assume exactly `[ORingStructure V]` and the assertion that its ordered-arithmetic reduct models Foundation's IOpen. At the inspected Foundation pin, `FirstOrder/Arithmetic/Schemata.lean:29` defines IOpen as PA-minus plus induction for open formulas. The model supplies nonnegative discrete ordered arithmetic; the typeclass name does not mean that arbitrary negative elements of an ordered ring are permitted. No PA model instance, standardness assumption, set theory, consistency statement, truth predicate, or arbitrary predicate-induction principle is added.\n\nDivision is the existing IOpen operation in `IOpen/Basic.lean:86`, chosen from a uniquely proved quotient theorem. The library derives it from open induction (`div_exists_unique_pos`, line59), not a stronger imported arithmetic theory. Parity follows from its remainder theorem (`even_or_odd`, line383). Thus `triangle s = s*(s+1)/2` is a convenient definitional extension. The polynomial graph ultimately contains no division symbol.\n\n`triangle_double` handles both parity cases explicitly and proves exact divisibility by2. Multiplicative cancellation by nonzero2 gives the successor recurrence. Monotonicity and `s\u2264triangle s` use the model's nonnegativity/discreteness; their zero branch is covered. No integer-square-root totality or nonstandard square-root axiom is assumed.\n\n`cantor_graph` is exactly\n\n```text\np=cantor(a,b)  iff  2p=(a+b)(a+b+1)+2b.\n```\n\nIt has the live dual-Cantor orientation, with b added to the triangular number. Injectivity first rules out unequal anti-diagonals by the strict gap between consecutive triangular numbers, then cancels the common triangular term to recover b and finally a. Both components are bounded by the output.\n\nSurjectivity is valid for **every element of every IOpen model**, not just standard numerals. The critical `diagonal_exists` call uses Foundation's `least_number` with the explicitly open polynomial inequality `s*(s+1)\u22642*p`. That theorem needs P(0) and one counterexample and yields a transition P(s), not P(s+1). It does not assume every external subclass has a least element. The chosen counterexample is p+1, whose triangular number is strictly above p. Multiplication by2 transfers the transition to `triangle s\u2264p<triangle(s+1)`.\n\nDiscrete order then gives `b=p\u2212triangle s\u2264s`; truncated subtraction is used only with the appropriate inequalities. Setting `a=s\u2212b` gives a+b=s and exactly the original p. The already proved component bounds give a,b\u2264p. `first` and `second` are choice-defined mathematical witnesses, but injectivity makes them unique. Their inverse equations therefore add no new arithmetic axiom or unspecified implementation oracle.\n\n## Actual bounded formulas\n\n`pairDef : Sigma0.Semisentence3` is an explicit polynomial equation with output p first and inputs a,b in that order. `firstDef` and `secondDef` include the output bound and quantify the other component with `<\u207ap`. The latter notation means **less than p+1**, hence at most p, by `Arithmetic/Basic/Misc.lean:160\u2013181`. It does not accidentally omit endpoint p or the p=0 inverse. For zero, both coordinates are0 and are allowed by the inclusive bound.\n\nThe defined-function instances prove exact formula evaluation iff equality to the corresponding choice-defined function, for arbitrary environments in arbitrary IOpen models. They do not merely show that some satisfying arithmetic graph exists for quoted standard examples. The inverse graph's bounded existential is proper Sigma0 arithmetic; it does not use an unbounded search predicate.\n\nFoundation already has a different `pairDef` (its Szudzik pairing). The candidate deliberately introduces a namespaced Cantor graph instead of silently replacing that pairing or claiming its existing sequence codec is already Cantor-based. Callers that open both namespaces must qualify `ArithmeticCantor.pairDef`; the supplied Audit does so.\n\n## Exact standard-natural adapter\n\nThe live implementations are `Code254.P` at `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean:47` and `SetTheory.Cantor.{tri,toNat,ofNat}` at `Logic/FirstOrder/Lean/FirstOrder/Fol.lean:21\u201334`. `toNat(a,b)=b+tri(a+b)`; the inverse walks the anti-diagonals recursively.\n\n`triangle_nat` proves equality to the live recursive triangle by its successor recurrence, rather than assuming that the generic chosen division is definitionally native `Nat.div`. `cantor_nat` then uses commutativity of addition to recover exactly `Code254.P`. `projections_nat` uses the live `Cantor.toNat_inj` and `toNat_ofNat`; uniqueness identifies both generic choice-defined coordinates with the actual recursive decoder on **every** natural input, including zero. It does not compare the inverse only on already paired inputs.\n\n`codeP_defined`, `codeFirst_defined` and `codeSecond_defined` transfer the same fixed formulas to the actual implementation functions. The final native polynomial theorem explicitly reconciles Foundation's numeral interpretation with the native Nat numeral2. The Audit checks all four current base4 constructors: implication `4P`, membership `4P+1`, universal `4P+2`, equality `4P+3`. No swap of the two components, off-by-one stack convention or separate-zero assumption enters this adapter. P(0,0)=0 remains unchanged.\n\n## Audit and dependency evidence\n\nThe supplied verification records a successful fresh source compile with explicit Lean4.32.0 in4.648seconds, and a successful audit in1.973seconds. Its27 named axiom reports contain only `propext`, `Classical.choice`, `Quot.sound`. I counted all20 actual caller examples: seven generic IOpen callers and thirteen standard-Nat callers. They exercise generic totality, unique inverses, injectivity, bounds and each graph, followed by live P/ofNat adapters, zero, native polynomial evaluation and all four constructors. Five linter suggestions are stylistic; they are not absent proof obligations. I did not independently rerun these compiler checks during this review.\n\nThe actual Foundation source checkout is clean at `32e1a0956a8622fad067328ca1959729a7634428`, as recorded. Relevant IOpen source definitions were read there. Its cached object trace records the same source path and explicit Lean4.32.0 build lineage. The new module's current cache links for live `Code254` and `FirstOrder.Fol` resolve to the earlier verified native91 cache; their present source fingerprints match the source-verified161 integration record. Exact fingerprints/cache paths are retained in `independent-review.json`.\n\nThis supports the stated **fresh scoped candidate check with reused dependency objects**. It is not a fresh Foundation/Mathlib/project-closure rebuild. The worktree's own `lib/FormalizedFormalLogic-Foundation` directory is currently empty; the real source and cached Foundation objects used here are under `/home/codex/src/Proofs`. A portable checker must locate and validate those dependencies or populate the exact pinned source, rather than implying that this worktree already contains the dependency. This is a reproduction requirement, not a mathematical defect in the candidate. The maintained checker now implements that explicit boundary: its reported successful replay is `/tmp/zfc-cantor-maintained-check/verification.json`, using `--dependency-root /home/codex/src/Proofs`. I read the complete checker without running it: it validates the exact clean Foundation pin and Mathlib manifest revision, reuses the actual10-module source-matched Code254 closure from successful163-unit evidence, records object identities, and compiles only the same-byte candidate and audit. Its final replay uses4.460seconds for source and1.938seconds for audit. It explicitly does not fetch, install or rebuild dependencies, and makes no fresh dependency-cache attestation. No defect was found in that stated reproduction contract.\n\n## Exact remaining boundary\n\nThis is genuine all-model arithmetic graph progress for the fixed pairing and bounded inverse. The standard-Nat functions are identified with the actual project implementation, not an unconnected convenient codec. However, the generic `DefinedFunction` instances and their external semantic correctness proofs are not themselves an exported finite PA derivation of the complete machine theorem.\n\nStill separate are the graph/totality proof of the complete numeric evaluator on internal codes, dense or sparse histories, the scheduler and register semantics, literal binary traces, logical proof translation, Choice/refutation removal, and the desired internal ZFC or PA consistency equivalence. No primitive-recursive whole-proof compiler, full PA representation theorem, smaller machine, bootstrap extension or unconditional nonhalting follows from this fixed component. The note and verification record preserve these boundaries accurately.\n"
+}
