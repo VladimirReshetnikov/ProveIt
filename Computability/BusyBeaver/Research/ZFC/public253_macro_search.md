@@ -85,3 +85,19 @@ The snapshot's `radius5_merge_search_run: false` records its status before the
 authorized followup; the surrounding completed-run evidence records that the
 followup subsequently finished. Original logs are retained under
 `/tmp/zfc-public253-macro-6uctpk7a`.
+
+## Batch153: stronger windows and an actual scanner boundary
+
+Source36's radius6 replay extends this auditor to335,369 abstract
+configurations, still testing all63,756 ordered pairs with64 moves per side
+and accepting no deletion. Its projection removes1,604 radius5 patterns
+across33 states. These remain bounded sufficient-certificate failures.
+
+The same report reaches source32's scanner obstruction on the original
+blank run at1,011,713 steps, including the entire tape and370 spare blocks.
+From that frame the original reaches its expected successor in476 steps;
+the compact30/read0→32/delete31 edit reaches the wrong PC in556 without
+first visiting the expected frame. This rejects that instruction simulation,
+not ultimate blank-halting equivalence. Phase bits explain why the maximum
+leaf zero-run alone is insufficient. See the source36 dossier and literal
+scanner evidence in the closure-kernels host.
