@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs02Partition
 import GowersSzemeredi.ProofInfrastructure
 import Mathlib.Analysis.Real.Pi.Bounds
 import GowersSzemeredi.Proofs00Basics
+import GowersSzemeredi.Proofs00ExponentialBounds
 
 /-!
 # Phase-removing progression partitions in Gowers's Section 2
@@ -21,24 +22,6 @@ namespace LeanProofs.GowersSzemeredi
 attribute [simp] cor57_norm_exponential
 
 attribute [simp] exponential_add
-
-private lemma cor24_norm_exponential_sub_one_le {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    ‖exponential x - 1‖ <= 2 * Real.pi * centeredAbs x / N := by
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have habsval : |(x.valMinAbs : Real)| = (centeredAbs x : Real) := by
-    rw [centeredAbs, ← Int.cast_abs, Int.abs_eq_natAbs]
-    rfl
-  rw [cor24_exponential_eq_exp_valMinAbs]
-  calc
-    ‖Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) - 1‖ <=
-        ‖2 * Real.pi * (x.valMinAbs : Real) / N‖ :=
-      Real.norm_exp_I_mul_ofReal_sub_one_le
-    _ = 2 * Real.pi * centeredAbs x / N := by
-      rw [Real.norm_eq_abs, abs_div, abs_mul, abs_mul,
-        abs_of_nonneg (by norm_num : (0 : Real) <= 2),
-        abs_of_pos Real.pi_pos, habsval, abs_of_pos hN]
 
 private lemma cor24_centeredAbs_natCast_le {N i : Nat} [NeZero N] :
     centeredAbs (i : ZMod N) <= i := by
@@ -71,7 +54,7 @@ private lemma cor24_phase_close_of_mem_interval {N s : Nat} [NeZero N]
     _ = ‖exponential (-(i : ZMod N)) - 1‖ := by
       rw [norm_mul, cor57_norm_exponential, one_mul]
     _ <= 2 * Real.pi * centeredAbs (-(i : ZMod N)) / N :=
-      cor24_norm_exponential_sub_one_le _
+      cor57_norm_exponential_sub_one_le _
     _ <= 2 * Real.pi * s / N := by
       apply div_le_div_of_nonneg_right _ hN.le
       gcongr

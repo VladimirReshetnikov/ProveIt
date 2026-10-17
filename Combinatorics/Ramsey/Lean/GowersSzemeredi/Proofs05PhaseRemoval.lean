@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs05PolynomialPartition
 import Mathlib.Analysis.Real.Pi.Bounds
+import GowersSzemeredi.Proofs00ExponentialBounds
 
 /-!
 # Removing polynomial phases on the Section 5 partition
@@ -23,24 +24,6 @@ attribute [simp] cor57_norm_exponential
 attribute [simp] exponential_add
 
 alias cor57_exponential_eq_exp_valMinAbs := cor24_exponential_eq_exp_valMinAbs
-
-lemma cor57_norm_exponential_sub_one_le {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    ‖exponential x - 1‖ ≤ 2 * Real.pi * centeredAbs x / N := by
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have habsval : |(x.valMinAbs : Real)| = (centeredAbs x : Real) := by
-    rw [centeredAbs, ← Int.cast_abs, Int.abs_eq_natAbs]
-    rfl
-  rw [cor57_exponential_eq_exp_valMinAbs]
-  calc
-    ‖Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) - 1‖ ≤
-        ‖2 * Real.pi * (x.valMinAbs : Real) / N‖ :=
-      Real.norm_exp_I_mul_ofReal_sub_one_le
-    _ = 2 * Real.pi * centeredAbs x / N := by
-      rw [Real.norm_eq_abs, abs_div, abs_mul, abs_mul,
-        abs_of_nonneg (by norm_num : (0 : Real) ≤ 2),
-        abs_of_pos Real.pi_pos, habsval, abs_of_pos hN]
 
 lemma cor57_centeredAbs_neg_natCast_le {N i : Nat} [NeZero N] :
     centeredAbs (-(i : ZMod N)) ≤ i := by
