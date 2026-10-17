@@ -248,7 +248,7 @@ private def prop121A {N p : Nat} (f : Fin p → ZMod N → Complex)
     (u v : Fin p → ZMod N) (x : ZMod N) : Complex :=
   ∏ i, star (f i (-v i - x)) * f i (-v i - x - u i)
 
-private def prop121B {N p : Nat} [NeZero N] (lambda : ZMod N → Real)
+def prop121B {N p : Nat} [NeZero N] (lambda : ZMod N → Real)
     (phi : Fin p → ZMod N → ZMod N)
     (u : Fin p → ZMod N) (x : ZMod N) : Complex :=
   (lambda x : Complex) * ∏ i, exponential (phi i x * u i)
@@ -502,7 +502,7 @@ private lemma prop121_sum_b_product {N p : Nat} [NeZero N]
     rw [if_neg hnz, if_neg h]
     simp
 
-private lemma prop121_fourthB_eq_weight {N p : Nat} [NeZero N]
+lemma prop121_fourthB_eq_weight {N p : Nat} [NeZero N]
     (lambda : ZMod N → Real) (phi : Fin p → ZMod N → ZMod N) :
     (∑ u : Fin p → ZMod N, ∑ r : ZMod N,
         ‖fourier (prop121B lambda phi u) r‖ ^ 4) =

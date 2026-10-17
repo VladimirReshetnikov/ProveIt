@@ -52,13 +52,32 @@ theorem exists_nonzero_small_multiples {N q L : Nat} [NeZero N]
     refine ⟨d, hdne, fun i => ?_⟩
     exact (Finset.mem_filter.mp hd).2 (a i) (Finset.mem_image.mpr ⟨i, Finset.mem_univ _, rfl⟩)
 
-/-- The entire singleton-scale case from the printed Lemma 13.5 proof.
-A simultaneous Bohr step replaces the unstated smallness argument. -/
-theorem lemma_13_5_singleton_scale_positive {N : Nat} [NeZero N]
+/-- Stage 13.5 data at a length exponent `eL` and a precision exponent `eP`. -/
+def IsStage135At {N : Nat} [NeZero N] (S : Section13Context N)
+    (D : Stage134Data N) (E : Stage135Data N) (eL eP : Real) : Prop :=
+  E.Q.step != 0 ∧ E.Q.IsProper ∧ E.Q.carrier ⊆ D.P.carrier ∧
+  (D.P.length : Real) ^ eL / 2 ≤ E.Q.length ∧
+  (∀ i, ∀ h, h ∈ E.Q.carrier →
+    (centeredAbs ((D.a i * h + D.b i) * E.Q.step) : Real) ≤
+      (D.P.length : Real) ^ (-eP) * N) ∧
+  S.alpha ^ 32 * E.Q.length / 20 ≤ (criticalHeights S D E).card
+
+theorem isStage135Data_iff_at {N : Nat} [NeZero N] (S : Section13Context N)
+    (D : Stage134Data N) (E : Stage135Data N) :
+    IsStage135Data S D E ↔
+      IsStage135At S D E ((1 : Real) / (2 : Real) ^ (12 * D.q))
+        ((1 : Real) / (2 : Real) ^ (11 * D.q)) :=
+  Iff.rfl
+
+/-- **The singleton scale.** One strong critical height, with a nonzero
+step making every phase small, is a Stage 13.5 progression at a length
+exponent `eL` with `|P|^eL ≤ 2` and a precision exponent `eP` with
+`2q·eP ≤ 1`. -/
+theorem stage135_singleton_at {N : Nat} [NeZero N]
     (S : Section13Context N) (D : Stage134Data N) (theta : Real)
-    (h134 : IsStage134Data S theta D) (hL : 0 < D.P.length)
-    (hscale : (D.P.length : Real) ^ ((1 : Real) / (2 : Real) ^ (12 * D.q)) ≤ 2) :
-    ∃ E : Stage135Data N, IsStage135Data S D E := by
+    (h134 : IsStage134Data S theta D) (hL : 0 < D.P.length) {eL eP : Real} (he : 0 < eP)
+    (hqe : 2 * (D.q : Real) * eP ≤ 1) (hscale : (D.P.length : Real) ^ eL ≤ 2) :
+    ∃ E : Stage135Data N, IsStage135At S D E eL eP := by
   classical
   have hP := h134.2.2.1
   have hH := h134.2.2.2.1
@@ -81,14 +100,8 @@ theorem lemma_13_5_singleton_scale_positive {N : Nat} [NeZero N]
   have hLN : D.P.length ≤ N := by
     rw [← hP]
     simpa only [ZMod.card] using Finset.card_le_univ D.P.carrier
-  have hqn : 2 * D.q ≤ 2 ^ (11 * D.q) := by
-    have h := Nat.lt_two_pow_self (n := 11 * D.q)
-    omega
-  have hqe : 2 * (D.q : Real) * ((1 : Real) / 2 ^ (11 * D.q)) ≤ 1 := by
-    rw [mul_one_div]
-    exact (div_le_one (by positivity)).mpr (by exact_mod_cast hqn)
   obtain ⟨d, hd, hsmall⟩ := exists_nonzero_small_multiples hNtwo h134.1 hL hLN
-    (fun i => D.a i * h + D.b i) (by positivity) hqe
+    (fun i => D.a i * h + D.b i) he hqe
   let Q : ModAP N := ⟨h, d, 1⟩
   have hQ : Q.carrier = {h} := by simp [Q, ModAP.carrier]
   have hproper : Q.IsProper := by change Q.carrier.card = 1; rw [hQ]; simp
@@ -109,6 +122,21 @@ theorem lemma_13_5_singleton_scale_positive {N : Nat} [NeZero N]
     have ha : S.alpha ^ 32 ≤ 1 := pow_le_one₀ S.alpha_pos.le S.alpha_at_most_one
     simp only [Q, Nat.cast_one, mul_one]
     linarith only [ha]
+
+/-- The entire singleton-scale case from the printed Lemma 13.5 proof.
+A simultaneous Bohr step replaces the unstated smallness argument. -/
+theorem lemma_13_5_singleton_scale_positive {N : Nat} [NeZero N]
+    (S : Section13Context N) (D : Stage134Data N) (theta : Real)
+    (h134 : IsStage134Data S theta D) (hL : 0 < D.P.length)
+    (hscale : (D.P.length : Real) ^ ((1 : Real) / (2 : Real) ^ (12 * D.q)) ≤ 2) :
+    ∃ E : Stage135Data N, IsStage135Data S D E := by
+  have hqn : 2 * D.q ≤ 2 ^ (11 * D.q) := by
+    have h := Nat.lt_two_pow_self (n := 11 * D.q)
+    omega
+  exact stage135_singleton_at S D theta h134 hL (eP := (1 : Real) / (2 : Real) ^ (11 * D.q))
+    (by positivity)
+    (by rw [mul_one_div]; exact (div_le_one (by positivity)).mpr (by exact_mod_cast hqn)) hscale
+
 theorem lemma_13_5_singleton_scale {N : Nat} [NeZero N]
     (S : Section13Context N) (D : Stage134Data N) (theta : Real)
     (h134 : IsStage134Data S theta D)

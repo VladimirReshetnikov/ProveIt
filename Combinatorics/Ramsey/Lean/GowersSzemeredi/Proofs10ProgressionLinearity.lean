@@ -19,28 +19,7 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
-private lemma cor1014_centeredAbs_add_le {N : Nat} [NeZero N] (x y : ZMod N) :
-    centeredAbs (x + y) ≤ centeredAbs x + centeredAbs y := by
-  unfold centeredAbs
-  calc
-    (x + y).valMinAbs.natAbs ≤
-        (x.valMinAbs + y.valMinAbs).natAbs :=
-      ZMod.natAbs_valMinAbs_add_le x y
-    _ ≤ x.valMinAbs.natAbs + y.valMinAbs.natAbs := Int.natAbs_add_le _ _
-
-@[simp] private lemma cor1014_centeredAbs_neg {N : Nat} [NeZero N]
-    (x : ZMod N) : centeredAbs (-x) = centeredAbs x := by
-  unfold centeredAbs
-  exact ZMod.natAbs_valMinAbs_neg x
-
-private lemma cor1014_centeredAbs_nsmul_le {N : Nat} [NeZero N]
-    (n : Nat) (x : ZMod N) : centeredAbs (n • x) ≤ n * centeredAbs x := by
-  induction n with
-  | zero => simp [centeredAbs]
-  | succ n ih =>
-      rw [succ_nsmul, Nat.succ_mul]
-      exact le_trans (cor1014_centeredAbs_add_le (n • x) x)
-        (Nat.add_le_add_right ih _)
+attribute [simp] centeredAbs_neg
 
 private lemma cor1014_small_bohr_nonnegative {N : Nat} [NeZero N]
     (K : Finset (ZMod N)) (zeta : Real) (m : Nat) (hm : 0 < m)
@@ -57,68 +36,6 @@ private lemma cor1014_small_bohr_nonnegative {N : Nat} [NeZero N]
     mul_neg_of_neg_of_pos (div_neg_of_neg_of_pos hzetaNeg hmReal) hNReal
   linarith
 
-private lemma cor1014_symmetric_multiples_subset {N : Nat} [NeZero N]
-    (K : Finset (ZMod N)) (zeta : Real) (hzeta : 0 ≤ zeta)
-    (m : Nat) (hm : 0 < m) (d : ZMod N)
-    (hd : d ∈ bohr K (zeta / m)) :
-    section10SymmetricMultiples d m ⊆ bohr K zeta := by
-  intro z hz
-  rw [section10SymmetricMultiples, Finset.mem_image] at hz
-  obtain ⟨j, hj, rfl⟩ := hz
-  rw [bohr, Finset.mem_filter]
-  refine ⟨Finset.mem_univ _, ?_⟩
-  intro r hr
-  rw [bohr, Finset.mem_filter] at hd
-  have hdr := hd.2 r hr
-  have hbase : 0 ≤ zeta / (m : Real) * N := by positivity
-  have hcollapse :
-      (m : Real) * (zeta / (m : Real) * N) = zeta * N := by
-    field_simp
-  have hjBounds : -(m : Int) ≤ j ∧ j ≤ (m : Int) := Finset.mem_Icc.mp hj
-  cases j with
-  | ofNat n =>
-      have hcastNat : ((Int.ofNat n : Int) : ZMod N) = (n : ZMod N) := by norm_num
-      rw [hcastNat]
-      have hn : n ≤ m := by
-        apply Int.ofNat_le.mp
-        simpa only [Int.ofNat_eq_natCast] using hjBounds.2
-      have hcenter : centeredAbs (r * ((n : ZMod N) * d)) ≤
-          n * centeredAbs (r * d) := by
-        have hmul : r * ((n : ZMod N) * d) = n • (r * d) := by
-          simp [nsmul_eq_mul]
-          ring
-        rw [hmul]
-        exact cor1014_centeredAbs_nsmul_le n (r * d)
-      calc
-        (centeredAbs (r * ((n : ZMod N) * d)) : Real) ≤
-            n * centeredAbs (r * d) := by exact_mod_cast hcenter
-        _ ≤ n * (zeta / (m : Real) * N) := by gcongr
-        _ ≤ m * (zeta / (m : Real) * N) := by gcongr
-        _ = zeta * N := hcollapse
-  | negSucc n =>
-      have hn : n + 1 ≤ m := by
-        have := hjBounds.1
-        omega
-      have hcast : ((Int.negSucc n : Int) : ZMod N) * d =
-          -(((n + 1 : Nat) : ZMod N) * d) := by
-        push_cast
-        ring
-      rw [hcast, mul_neg, cor1014_centeredAbs_neg]
-      have hcenter : centeredAbs (r * (((n + 1 : Nat) : ZMod N) * d)) ≤
-          (n + 1) * centeredAbs (r * d) := by
-        have hmul : r * (((n + 1 : Nat) : ZMod N) * d) =
-            (n + 1) • (r * d) := by
-          simp [nsmul_eq_mul]
-          ring
-        rw [hmul]
-        exact cor1014_centeredAbs_nsmul_le (n + 1) (r * d)
-      calc
-        (centeredAbs (r * (((n + 1 : Nat) : ZMod N) * d)) : Real) ≤
-            (n + 1) * centeredAbs (r * d) := by exact_mod_cast hcenter
-        _ ≤ (n + 1) * (zeta / (m : Real) * N) := by gcongr
-        _ ≤ m * (zeta / (m : Real) * N) := mul_le_mul_of_nonneg_right (by exact_mod_cast hn) hbase
-        _ = zeta * N := hcollapse
-
 private lemma cor1014_zero_mem_symmetric {N : Nat} (d : ZMod N) (m : Nat) :
     (0 : ZMod N) ∈ section10SymmetricMultiples d m := by
   rw [section10SymmetricMultiples, Finset.mem_image]
@@ -132,7 +49,7 @@ theorem corollary_10_14_holds : corollary_10_14 := by
   by_cases hY : Y.Nonempty
   · have hshort : section10SymmetricMultiples d m ⊆ bohr K zeta := by
       by_cases hK : K.Nonempty
-      · exact cor1014_symmetric_multiples_subset K zeta
+      · exact bohr_symmetric_multiples_subset K zeta
           (cor1014_small_bohr_nonnegative K zeta m hm d hd hK) m hm d hd
       · have hKempty : K = ∅ := Finset.not_nonempty_iff_eq_empty.mp hK
         intro z _

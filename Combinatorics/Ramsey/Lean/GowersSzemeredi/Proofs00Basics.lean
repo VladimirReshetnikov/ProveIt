@@ -679,4 +679,11 @@ theorem const_le_pow {w c : Real} {n : Nat} (hw : 2 ≤ w) (hc : c ≤ 2 ^ n) : 
 
 end
 
+section
+
+theorem centeredAbs_neg {N : Nat} [NeZero N] (x : ZMod N) :
+    centeredAbs (-x) = centeredAbs x := ZMod.natAbs_valMinAbs_neg x
+
+end
+
 end LeanProofs.GowersSzemeredi

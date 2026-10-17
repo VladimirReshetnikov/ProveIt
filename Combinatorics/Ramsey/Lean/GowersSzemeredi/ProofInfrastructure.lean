@@ -53,6 +53,41 @@ theorem IsPartition.cell_subset {X : Type*} [DecidableEq X] {m : Nat}
   intro x hx
   exact (hP.1 x).2 ⟨i, hx⟩
 
+/-- Refining every cell of a partition by a partition gives a partition
+indexed by the sigma type. -/
+theorem IsPartition.sigma {X : Type*} [DecidableEq X]
+    {M : Nat} (L : Fin M -> Nat) (A : Fin M -> Finset X) (S : Finset X)
+    (B : (i : Fin M) -> Fin (L i) -> Finset X)
+    (hA : IsPartition A S) (hB : forall i, IsPartition (B i) (A i)) :
+    (forall x, x ∈ S <->
+      exists z : Sigma fun i : Fin M => Fin (L i), x ∈ B z.1 z.2) /\
+      forall z w : Sigma fun i : Fin M => Fin (L i), z != w ->
+        Disjoint (B z.1 z.2) (B w.1 w.2) := by
+  constructor
+  · intro x
+    rw [hA.1]
+    constructor
+    · rintro ⟨i, hi⟩
+      obtain ⟨j, hj⟩ := (hB i).1 x |>.mp hi
+      exact ⟨⟨i, j⟩, hj⟩
+    · rintro ⟨⟨i, j⟩, hij⟩
+      exact ⟨i, (hB i).1 x |>.mpr ⟨j, hij⟩⟩
+  · intro z w hzw
+    have hzw' : z ≠ w := bne_iff_ne.mp hzw
+    by_cases hi : z.1 = w.1
+    · rcases z with ⟨i, j⟩
+      rcases w with ⟨i', j'⟩
+      dsimp only at hi ⊢
+      subst i'
+      have hj : j ≠ j' := by
+        intro h
+        subst j'
+        exact hzw' rfl
+      exact (hB i).2 j j' (bne_iff_ne.mpr hj)
+    · exact Disjoint.mono (IsPartition.cell_subset (hB z.1) z.2)
+        (IsPartition.cell_subset (hB w.1) w.2)
+        (hA.2 z.1 w.1 (bne_iff_ne.mpr hi))
+
 /-- The cells of a finite partition account for the cardinality of the set
 exactly once. -/
 theorem IsPartition.sum_card {X : Type*} [DecidableEq X] {m : Nat}

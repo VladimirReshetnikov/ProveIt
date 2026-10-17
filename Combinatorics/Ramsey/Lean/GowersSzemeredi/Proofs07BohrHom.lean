@@ -892,4 +892,171 @@ theorem bogolyubov_classical {N : Nat} [NeZero N] (A : Finset (ZMod N)) (alpha :
     (lemma78_constant_correlation_nonzero A alpha hα hcard d hd)
   exact ⟨R.a, R.ha, R.e, R.he, R.b, R.hb, R.c, R.hc, R.relation.symm⟩
 
+private lemma centeredAbs_add_le {N : Nat} [NeZero N] (x y : ZMod N) :
+    centeredAbs (x + y) ≤ centeredAbs x + centeredAbs y := by
+  unfold centeredAbs
+  calc
+    (x + y).valMinAbs.natAbs ≤
+        (x.valMinAbs + y.valMinAbs).natAbs :=
+      ZMod.natAbs_valMinAbs_add_le x y
+    _ ≤ x.valMinAbs.natAbs + y.valMinAbs.natAbs := Int.natAbs_add_le _ _
+
+/-- `|n x| ≤ n |x|` for the centered absolute value. -/
+theorem centeredAbs_nsmul_le {N : Nat} [NeZero N] (n : Nat) (x : ZMod N) :
+    centeredAbs (n • x) ≤ n * centeredAbs x := by
+  induction n with
+  | zero => simp [centeredAbs]
+  | succ n ih =>
+      rw [succ_nsmul, Nat.succ_mul]
+      exact le_trans (centeredAbs_add_le (n • x) x) (Nat.add_le_add_right ih _)
+
+/-- **Symmetric multiples of a small Bohr element**: if `d ∈ Bohr(K, ρ/m)` then
+`{j d : |j| ≤ m} ⊆ Bohr(K, ρ)`. -/
+theorem bohr_symmetric_multiples_subset {p : Nat} [NeZero p]
+    (K : Finset (ZMod p)) (rho : Real) (hrho : 0 ≤ rho)
+    (m : Nat) (hm : 0 < m) (d : ZMod p)
+    (hd : d ∈ bohr K (rho / m)) :
+    symmetricMultiples d m ⊆ bohr K rho := by
+  intro z hz
+  rw [symmetricMultiples, Finset.mem_image] at hz
+  obtain ⟨j, hj, rfl⟩ := hz
+  rw [bohr, Finset.mem_filter]
+  refine ⟨Finset.mem_univ _, ?_⟩
+  intro r hr
+  rw [bohr, Finset.mem_filter] at hd
+  have hdr := hd.2 r hr
+  have hbase : 0 <= rho / (m : Real) * p := by positivity
+  have hcollapse : (m : Real) * (rho / (m : Real) * p) = rho * p := by
+    field_simp
+  have hjBounds : -(m : Int) <= j ∧ j <= (m : Int) := Finset.mem_Icc.mp hj
+  cases j with
+  | ofNat n =>
+      have hcastNat : ((Int.ofNat n : Int) : ZMod p) = (n : ZMod p) := by norm_num
+      rw [hcastNat]
+      have hn : n <= m := by
+        apply Int.ofNat_le.mp
+        simpa only [Int.ofNat_eq_natCast] using hjBounds.2
+      have hcenter : centeredAbs (r * ((n : ZMod p) * d)) <=
+          n * centeredAbs (r * d) := by
+        have hmul : r * ((n : ZMod p) * d) = n • (r * d) := by
+          simp [nsmul_eq_mul]
+          ring
+        rw [hmul]
+        exact centeredAbs_nsmul_le n (r * d)
+      calc
+        (centeredAbs (r * ((n : ZMod p) * d)) : Real) <=
+            n * centeredAbs (r * d) := by exact_mod_cast hcenter
+        _ <= n * (rho / (m : Real) * p) := by gcongr
+        _ <= m * (rho / (m : Real) * p) := by gcongr
+        _ = rho * p := hcollapse
+  | negSucc n =>
+      have hn : n + 1 <= m := by
+        have := hjBounds.1
+        omega
+      have hcast : ((Int.negSucc n : Int) : ZMod p) * d =
+          -(((n + 1 : Nat) : ZMod p) * d) := by
+        push_cast
+        ring_nf
+      rw [hcast, mul_neg, centeredAbs_neg]
+      have hcenter : centeredAbs (r * (((n + 1 : Nat) : ZMod p) * d)) <=
+          (n + 1) * centeredAbs (r * d) := by
+        have hmul : r * (((n + 1 : Nat) : ZMod p) * d) =
+            (n + 1) • (r * d) := by
+          simp [nsmul_eq_mul]
+          ring
+        rw [hmul]
+        exact centeredAbs_nsmul_le (n + 1) (r * d)
+      calc
+        (centeredAbs (r * (((n + 1 : Nat) : ZMod p) * d)) : Real) <=
+            (n + 1) * centeredAbs (r * d) := by exact_mod_cast hcenter
+        _ <= (n + 1) * (rho / (m : Real) * p) := by gcongr
+        _ <= m * (rho / (m : Real) * p) := mul_le_mul_of_nonneg_right (by exact_mod_cast hn) hbase
+        _ = rho * p := hcollapse
+
+/-- A Freiman map vanishing at zero is additive along `{n d : n ≤ m}`. -/
+theorem generic_freiman_map_nat_multiple {p : Nat} {G : Type*}
+    [NeZero p] [AddCommGroup G]
+    (B : Finset (ZMod p)) (psi : ZMod p -> G)
+    (hpsi : FreimanHom 2 B psi) (hpsiZero : psi 0 = 0)
+    (d : ZMod p) (m : Nat) (hm : 0 < m)
+    (hmem : symmetricMultiples d m ⊆ B) (n : Nat) (hn : n <= m) :
+    psi ((n : ZMod p) * d) = n • psi d := by
+  have hzero : (0 : ZMod p) ∈ symmetricMultiples d m := by
+    rw [symmetricMultiples, Finset.mem_image]
+    refine ⟨0, Finset.mem_Icc.mpr ?_, by simp⟩
+    constructor <;> omega
+  have hd : d ∈ symmetricMultiples d m := by
+    rw [symmetricMultiples, Finset.mem_image]
+    refine ⟨1, Finset.mem_Icc.mpr ?_, by simp⟩
+    constructor <;> omega
+  have hpsi' : IsAddFreimanHom 2 (B : Set (ZMod p)) Set.univ psi := hpsi
+  induction n with
+  | zero => simpa using hpsiZero
+  | succ n ih =>
+      have hn' : n <= m := Nat.le_trans (Nat.le_succ n) hn
+      have hnm : ((n : ZMod p) * d) ∈ symmetricMultiples d m := by
+        rw [symmetricMultiples, Finset.mem_image]
+        refine ⟨(n : Int), Finset.mem_Icc.mpr ?_, by simp⟩
+        constructor <;> omega
+      have hsucc : (((n + 1 : Nat) : ZMod p) * d) ∈ symmetricMultiples d m := by
+        rw [symmetricMultiples, Finset.mem_image]
+        refine ⟨(n + 1 : Int), Finset.mem_Icc.mpr ?_, by simp⟩
+        constructor <;> omega
+      have hadd : ((n + 1 : Nat) : ZMod p) * d + 0 =
+          (n : ZMod p) * d + d := by push_cast; ring
+      have hmap := hpsi'.add_eq_add (hmem hsucc) (hmem hzero)
+        (hmem hnm) (hmem hd) hadd
+      rw [hpsiZero, add_zero, ih hn'] at hmap
+      simpa only [add_nsmul, one_nsmul] using hmap
+
+/-- A Freiman map vanishing at zero is `ℤ`-linear on `{j d : |j| ≤ m}`. -/
+theorem generic_freiman_map_int_multiple {p : Nat} {G : Type*}
+    [NeZero p] [AddCommGroup G]
+    (B : Finset (ZMod p)) (psi : ZMod p -> G)
+    (hpsi : FreimanHom 2 B psi) (hpsiZero : psi 0 = 0)
+    (d : ZMod p) (m : Nat) (hm : 0 < m)
+    (hmem : symmetricMultiples d m ⊆ B) (j : Int)
+    (hj : j ∈ Finset.Icc (-(m : Int)) (m : Int)) :
+    psi ((j : ZMod p) * d) = j • psi d := by
+  have hzero : (0 : ZMod p) ∈ symmetricMultiples d m := by
+    rw [symmetricMultiples, Finset.mem_image]
+    refine ⟨0, Finset.mem_Icc.mpr ?_, by simp⟩
+    constructor <;> omega
+  have hpsi' : IsAddFreimanHom 2 (B : Set (ZMod p)) Set.univ psi := hpsi
+  cases j with
+  | ofNat n =>
+      have hn : n <= m := by
+        have := (Finset.mem_Icc.mp hj).2
+        apply Int.ofNat_le.mp
+        simpa only [Int.ofNat_eq_natCast] using this
+      simpa using generic_freiman_map_nat_multiple B psi hpsi hpsiZero d m hm hmem n hn
+  | negSucc n =>
+      have hn : n + 1 <= m := by
+        have := (Finset.mem_Icc.mp hj).1
+        omega
+      have hpos : (((n + 1 : Nat) : ZMod p) * d) ∈ symmetricMultiples d m := by
+        rw [symmetricMultiples, Finset.mem_image]
+        refine ⟨(n + 1 : Int), Finset.mem_Icc.mpr ?_, by simp⟩
+        constructor <;> omega
+      have hneg : (-(((n + 1 : Nat) : ZMod p) * d)) ∈
+          symmetricMultiples d m := by
+        rw [symmetricMultiples, Finset.mem_image]
+        refine ⟨Int.negSucc n, Finset.mem_Icc.mpr ?_, ?_⟩
+        · constructor <;> omega
+        · push_cast
+          ring
+      have hadd : -(((n + 1 : Nat) : ZMod p) * d) +
+          ((n + 1 : Nat) : ZMod p) * d = 0 + 0 := by ring
+      have hmap := hpsi'.add_eq_add (hmem hneg) (hmem hpos)
+        (hmem hzero) (hmem hzero) hadd
+      have hnat := generic_freiman_map_nat_multiple B psi hpsi hpsiZero
+        d m hm hmem (n + 1) hn
+      rw [hpsiZero, add_zero, hnat] at hmap
+      have hnegValue : psi (-(((n + 1 : Nat) : ZMod p) * d)) =
+          -((n + 1) • psi d) := eq_neg_of_add_eq_zero_left hmap
+      convert hnegValue using 1
+      · push_cast
+        ring_nf
+      · simp [add_nsmul]
+
 end LeanProofs.GowersSzemeredi
