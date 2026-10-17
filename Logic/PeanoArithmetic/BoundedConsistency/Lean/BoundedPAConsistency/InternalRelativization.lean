@@ -12,10 +12,20 @@ and the propositional connectives unchanged and guards every quantifier:
 
 It is one `UformulaRec1` construction with `d` as the recursion parameter,
 hence a total Σ₁-definable function in every model of IΣ₁, defined at every
-internal code (nonstandard ones included). This module proves its constructor
-equations. Preservation of well-formed (semi)formulas, commutation with
-negation, shift and substitution, and transport of internal derivations
-are further obligations.
+internal code (nonstandard ones included). The module proves, in every model
+of IΣ₁:
+
+* the constructor equations, preservation of well-formed (semi)formulas, and
+  commutation with negation, shift (for shift-fixed `d`) and substitution;
+* `derivable_relSet`: every internal T-derivation of a sequent `s` yields a
+  U-derivation of `s^δ` with side formulas `¬δ(&i)`, `i < m`, given U-proofs
+  of the relativized T-axioms and that closed terms are free variables;
+* `derivable_of_domSet`: the side formulas are discharged from `U ⊢ ∃x δ(x)`;
+* `provable_relativize` and `provable_falsum_of_relativize`: the internal
+  relative-interpretation theorem, and `Prov_T(⊥) → Prov_U(⊥)`.
+
+The interpretation-specific axiom obligations (for `L`, `ZF ⊢ ax^L` at every
+internal ZFC axiom code) are not part of this module.
 
 This is the represented counterpart of a relative interpretation's formula
 translation (`LO.FirstOrder.DirectTranslation` is the external one). It is the
