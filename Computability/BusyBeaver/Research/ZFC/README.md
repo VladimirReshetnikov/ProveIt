@@ -162,6 +162,13 @@ fixed checker-totality sentence. Internal translations of proof codes and
 binary traces remain necessary for the requested PA equivalence with Con(ZFC).
 The five-module arithmetic verification passes 151 axiom probes and 164 callers.
 
+The first [complete term-certificate register implementation](term-register/README.md)
+now has an actual blank binary table and full cost: **4,704 working states**.
+It retains all twelve rules, both gates and fixed falsity. Finite differential
+tests pass, but it is far larger than the checked 252-state machine. Repeated
+pattern-path traversal dominates its control; supplied constructor witnesses
+and a shared checking loop are the next concrete comparison.
+
 [Intake157/source50](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
 adds exact quotation bounds and canonical constructor-only certificates for all
 twelve C254 rules, with both freshness gates and a fixed contradiction target.

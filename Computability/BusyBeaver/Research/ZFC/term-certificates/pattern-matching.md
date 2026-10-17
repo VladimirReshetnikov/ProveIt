@@ -5,8 +5,9 @@ pattern matcher. Certificates omit `constructor_ids`, and matching keeps no
 constructor-results array. The exact twelve rules, both bundle gates, normalized
 zero and fixed falsity endpoint remain. `pattern_codec.py` removes only those
 witness fields from the earlier unary codec. This is an executable research
-frontend with an ordinary soundness/completeness argument; no compiled TM,
-state saving, Lean theorem or internal PA theorem is claimed.
+frontend with an ordinary soundness/completeness argument. The later complete
+register implementation below measures its machine cost; the frontend itself
+supplies no Lean theorem or internal PA theorem.
 
 The fixed templates still come from source50's attributed `spec254.json`
 (arrival `85633fd2f57b5dca16f87667699134d1b500ebc0`, manuscript pin
@@ -131,3 +132,12 @@ references. Then charge the whole parser, prior-proof access, both gates,
 patterns, fixedF, fair scheduler, reset and blank initializer through an actual
 backend. More constructor reads may offset the removed fields. No comparison
 with252 states follows from witness-bit savings alone.
+
+## Later complete implementation
+
+The [register implementation](../term-register/README.md) now provides a
+complete experimental binary table for this protocol: 4,704 working states,
+including parsing, all rules and gates, enumeration and blank initialization.
+Its static pattern paths dominate the cost. This measured baseline motivates
+restoring supplied constructor witnesses with a shared checking loop; the
+smaller certificate words did not produce a smaller machine in this version.
