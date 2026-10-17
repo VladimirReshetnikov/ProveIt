@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 16 October 2026. This report now reconciles forty-one manuscripts.
+Intake findings, 16 October 2026. This report now reconciles forty-six manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -2390,3 +2390,232 @@ are omitted in memory, with functional identity/certificate assertions retained.
 No checksum manifests or line endings were checked or normalized. No delivered
 file, new state record, global optimality theorem, strict EPSC1 consistency
 separation, Coq rebuild or complete internal-ZFC endpoint is claimed.
+
+## Batch155: dirty-stack barrier, nine-function kernels and transport controls
+
+Intake findings,16 October2026. Five manuscripts from arrival
+`fab89c5d26b81cd2ccab2ee5d213ff23725c7726` become sources42–46, bringing this
+reconciliation to46 manuscripts; the collection remains290 reports. Placement
+`799bcd094d` preserves393 ancillary files and retires the five committed ZIPs in
+the same commit. The58 article/section/bibliography/PDF/top-level delivery-README
+files remain recoverable from that arrival. The base article, its labels and
+all delivered files remain unchanged; this is a reconciliation note, with no
+merged host PDF. Full source dossiers below retain the proofs, limits, credits,
+commands and exact current-tree comparisons.
+
+| Source | Delivered archive | ProveIt pin | Contribution |
+|---|---|---|---|
+| [42](intake-155-source-42.md) | `proveit_zfc252_research_2026-10-17.zip` | `61e77836565f63582561f54745f633d50efd9c7d` | Ordinary dirty-stack proof for the older runtime252 table, exact accelerated blank reachability and901-bit finite kernel. |
+| [43](intake-155-source-43.md) | `zfc_consistency_research_2026-10-17.zip` | `3d731d8cf44941560752abc625149f7bfa109930`; novelty recheck `ba00775e2bf56b184d071346867db74f2eb0c621` | Integer-ray support models, guarded Replacement, fixed empty-replacement repair and short-gap diagnostics. |
+| [44](intake-155-source-44.md) | `zfc_finite_closure_2026-10-17.zip` | `61e77836565f63582561f54745f633d50efd9c7d` | Nine-function FC15*/FC16* kernels, exact equality completion and composed253 shortcut. |
+| [45](intake-155-source-45.md) | `zfc_fused_transport.zip` | `61e77836565f63582561f54745f633d50efd9c7d` |22-control shift transport,24-control two-map transport, syntax/proof translations and guarded decoder experiments. |
+| [46](intake-155-source-46.md) | `zfc_research_2026-10-17.zip` | `61e77836565f63582561f54745f633d50efd9c7d` | Borrowed-register initialization, congruence fusion, raw EPSC1+BU deduction and interpretation-support obstruction. |
+
+### A global ordering argument makes some dirty starts safe
+
+Source42 supplies a new ordinary proof for the previously known unpermuted
+runtime252 fold. It is a different table from the repository's checked
+register-permutation252 machine. Its exact blank trajectory uses999186 literal
+moves, certified transfer/pair/unpair accelerations, two periodic whole-tape
+repairs and a6321-node arithmetic DAG to reach a legal gap37 root. The repair
+lengths2079923824320782982672 and2101702102394623143846 are individual segments,
+not the total bootstrap length. The observed root has PL=NP=D=cache=0 and
+specific huge TW/WS values, with formula1 in the old stack at depth10. The
+abstract soundness theorem allows arbitrary TW/WS/cache at PL=NP=D=0. Arithmetic
+uncertainty rejects the replay; small cases are controls, not extrapolation.
+
+The new soundness argument uses the order of the actual candidate enumeration.
+Replace a marked NIP occurrence by DROP: its whole candidate code strictly
+decreases, preserving parameters, context and the marked position. This gives
+an injection of pop occurrences into earlier push occurrences. At every
+reached pop, the earlier unmatched credit is at least one. Candidate0 resets
+the formula/cache/accumulator before they can inject old data. A witnessed
+prefix of C254 theorems therefore shields the arbitrary old stack forever.
+The witness handles the alias P(0,0)=0; no unique positive stack length is
+assumed. Existing arbitrary-start completeness gives the converse. The start
+condition NP=0 is essential to this proof; it is not the historical NP=2 root
+or a claim about arbitrary interior program counters.
+
+The ordinary composition uses the actual decoded program and generic-register
+bridge, with explicit low-gap/whole-tape runtime arguments. It inherits the
+published C254/ZFC calibration. Four standalone Lean modules freshly compile
+with14 standard-axiom reports, proving code/order/selector/count components.
+They do not serialize the actual Enum scheduling invariant, enormous blank
+trajectory or full new table endpoint. Thus this is an independently reviewed
+ordinary252 result, not a new251 machine or a second complete Lean endpoint.
+The candidate table, original machine, public253 and compiler remain attributed
+to Mira-Cult, Jeff Ketchersid, mira-emmy and Wade as specified in the notices.
+
+### Smaller finite payloads retain full equality and witness dependencies
+
+Sources42/44 continue the assignment/class route of sources34/40. Evaluation
+and update laws manufacture arbitrarily many distinct coordinates; class NAND,
+membership and existential operations represent every finite equality-free E-formula.
+The upper expansion of a possibly ill-founded countable ZFC model uses external
+codes for its E-definable classes, not expanded-language truth/comprehension.
+Each application of EPSC still uses a pure E-definition with parameters.
+
+Source42's best native-equality payload has16 clauses,35 literals,167 term
+nodes,9 proper functions,2 constants and3 binary predicates:901 meaningful
+bits/113 bytes. Its explicit equality completion costs1998 bits; the separate
+term-selector variant has917 native/1703 explicit bits, so the preferred
+representation changes when equality is charged. Marker predicates,
+commutative NAND and shared conditional Skolem witnesses have separate model
+arguments; a short stream is not a compiled state count.
+
+Source44's FC15* has9 functions,1 constant,3 binary predicates,15 clauses and
+35 literals. The derived member selector removes a separate function; F/H and
+S/Y witness sharing is justified only when the complete keys agree and guards
+are disjoint. Equality completion gives29 clauses,82 literals and202 bytes.
+FC16* adds guarded coded Extensionality, yielding30 completed clauses,
+86 literals and228 bytes, with a direct ZF-without-Foundation lower route.
+The weakened FC15*/explicit-X FC17* Change axioms have finite countermodels.
+Their transfer to a weakened FC16* cannot be inferred from an equivalence
+whose proof used the deleted Change clauses.
+
+The ideal ground searches include collisions, genuine equality and every
+retained symbol's congruence; quotienting ground models is part of completeness.
+Finite-stage satisfiability and resource-limit exits never mean consistency.
+Source44's radix16/Cantor term encoding covers every natural number, with smaller
+children and explicit padding constructors. All delivered clauses/bitstreams
+and finite regressions reproduce. The respective Herbrand/compactness arguments
+remain ordinary mathematics; neither complete small binary frontend is supplied.
+The source42/44 theories are distinct from the calculus run by their machine
+controls. No state saving follows from901 bits or202 bytes alone.
+
+### Unary closure: exact repairs and stronger obstructions
+
+Source43 normalizes bilateral integer rays so singleton duplicates disappear,
+literal Extensionality holds, and all finite acyclicity axioms hold despite
+failure of Foundation. The capacity-k support construction over2k+1 components
+satisfies EPSC1, Union, Power, Separation, native containers and source-covered
+partial functional Replacement. It still fails Pairing, AU and EPSC2 for the
+specified raw interpretation. This does not separate consistency strengths:
+the ambient well-founded part and other interpretations remain relevant.
+Its fixed empty-replacement sentence ER is equivalent to Pairing over the
+stated Power/Union/Separation background, even without Extensionality or a
+separate Singleton axiom. The background surcharge must be charged in a compiler.
+
+Source46 strengthens the unary repair to a raw deductive equivalence:
+EPSC1+exact BinaryUnion, EPSC1+outgoing-profile adjunction AU, and full EPSC
+derive the same raw membership sentences. EPSC1 already provides exact
+full-profile singletons, U=O, transitive containers and raw Union. These yield
+BU↔AU; finite observational tuple coding then imports source26's parameter
+collapse. The orientation of U(y,b), unrestricted global support of a hull,
+one ordinary schema parameter and arbitrary internal binders are preserved.
+The primitive-recursive proof translations are described, not serialized.
+
+The same source proves a broader interpretation obstruction. For the full
+symmetric group on an infinite component set, finite supports have least
+supports. An equivariant injection X×X→X forces trivial action when all supports
+have one fixed finite bound. Every fixed-dimensional definable quotient of
+the unary model has such a bound, even with finitely many parameters after
+fixing their support. Thus Extensionality+Pairing interpretations can only
+have trivial action outside that base. An invariant-domain interpretation is
+still possible; this is not a theorem that no interpretation or equiconsistency
+exists. The finite support scripts test the group lemmas, not full schema models.
+
+### Name transport and measured complete controls
+
+Source45 replaces four free-name maps by the shifts n↦n+1 and n↦n−1 on signed
+names, with fixed GEN0 and unrestricted UI0 in locally nameless syntax.
+Conjugation recovers arbitrary-name GEN and UI; simultaneous substitution first
+generalizes original free names and then instantiates in reverse order.
+Colliding target names are allowed because bound indices and free names are
+different syntactic sorts. UI0 has no spurious freshness restriction. Complete
+finite proof translations to/from the prior kernel preserve closed theories;
+open contexts must be transported too. The22 controls count variable-output
+stream transducers only, not a full machine.
+
+Its primary closed theory is CP plus full equality-free GIC without IR;
+EPSC2 and EPSC1+BU are separate alternatives. Their ordinary calibrations
+do not automatically identify these languages with the current native-equality
+`NativeAx` theory or inherit its complete Lean endpoint.
+
+A second pair consists of upward shift and a two-exception downward map.
+It realizes every finite partial renaming, with explicit protected-hole swaps,
+contractions and a finite downshift macro. It does not generate arbitrary
+global permutations: the exceptional map has a collision. The one-generator
+and one-exception obstructions are confined to the stated name-map architecture,
+not general Turing machines. The two-map24-control transport replaces the old46;
+the26-control and three-map alternatives remain recorded. Classical existence
+results and the lack of historical-priority or optimal-length claims are retained.
+
+The same report's phase analysis finds two forced-zero decrements and four
+unreachable leaves. Current `permutation252_phase_analysis.md` already identifies
+those same sites and six guards; the new five-atom abstraction and NP=2 analysis
+are additional evidence, not the first current discovery. Its guarded identities
+and complete265-state sharing control are measured experiments, with their
+restricted search grammars and negative findings intact.
+
+Source46 borrows future zero-register markers as counter bits and restores them
+on underflow. Sharing an existing runtime return costs31/32 private initializer
+states and produces complete299/300-state decoder202 controls. All eight final
+tables, exact state quotients,36 standalone fixtures and14 full integrations
+are checked; sharing is charged once. Congruence fusion reduces186 macro calls
+to180 but costs271 states (209 decoder+62 framework), exceeding268. The4549-pair
+certificate compares the new uncompressed284-node program with its new209-node
+compression, not with the original axiom emitter. Logical equivalence uses the
+retained classical basis and F→A; a truth table with arbitrary true F would be
+unsound. All418 actual decision edges and542 literal rows are independently
+checked. Full search has20736 recipes in its declared grid, with no global
+optimality claim. The lone missing upstream row is explicitly totalized only
+with respect to halting outcome.
+
+Source44's composed public253 shortcut has an ordinary positive-progress
+whole-run argument from a3530-window/7044-obligation invariant. Its full blank
+bootstrap takes312855 moves, saving120 with unchanged253 states, state33,
+head−17 and all178 one-cells. Its exhaustive two-row family has31878 pairs and
+1012 choices per row; both public/composed radius6 searches find no sufficient
+deletion certificate. Negative bounded searches are not state lower bounds.
+
+### Current formal status, reproduction and open work
+
+Current `BinaryPerm252.nonhalting_iff_zf_consistency` is a closed Lean endpoint
+for the different permuted252 table, including actual boot, all decoder sites,
+runtime, native calculus, Power and Foundation. `ZFCBoundPerm252` proves
+Con(ZFC)→its nonhalting. Choice removal and PA internalization remain separate.
+`Code254History.accepts_iff_check` now gives numeric evaluation for every proof
+code, while the156-unit integration freshly checks History, the first part of
+constructible satisfaction absoluteness and their umbrella. This is not a
+fresh156-module rebuild. The reports' older binary/Foundation gaps are historical.
+The new dirty-stack theorem, different table's enormous reachability, finite
+kernel interpretations and proof-transducer compilers acquire no Lean status
+from neighbouring modules. No current theorem required a retraction.
+
+All advertised executable finite suites and bounded searches were reproduced on copies;
+source42 alone adds four fresh standalone Lean checks. No Coq rebuild or
+unbounded consistency search was run. The first root replays of sources45/46
+inadvertently included nested manifest loops; corrected independent replays
+omit those loops and retain exact functional comparisons. The corrected recovery
+helper does the same. This is an intake-harness correction, not a submission
+defect. Source46's supplementary42/219 subtree-match/commuting diagnostic has no
+supplied driver and was not independently rerun; no positive endpoint depends
+on it. No line-ending work was done. Five scratch
+PDFs rebuild to30/28/27/34/29 pages with embedded fonts and visual review; exact
+warnings and per-source build scopes are in their dossiers. The delivered PDFs
+remain unchanged in archive history.
+
+Inventory queries426 unique Git blobs, finds47 prior matches and inspects33
+placement/merge own trees; shared dependencies do not duplicate manuscripts.
+The393 copied ancillary files are126/35/79/81/72 by source. Prefixes42-barrier,
+43-rays,44-nine,45-transport,46-borrowed flatten delivery paths; `.log` gains
+`.txt`. Maximum Windows checkout path163; no case-insensitive collisions.
+`data/intake-155-placement.json` maps every name. Nested functional READMEs,
+Makefiles, notes and scripts retain original delivery paths; recover the original
+layout into scratch instead of executing flattened placed sources:
+
+```sh
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_155.py --prepare-only
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_155.py --run all
+```
+
+`--extended` additionally selects source43's full gap/affine/100M diagnostics
+and source45's optional transport/control suite. Other optional full searches
+and explicit standalone Lean commands remain in the source dossiers. Bulk
+manifest loops are omitted in memory; mathematical, table and certificate
+assertions remain. Outputs go outside the checkout. No source is superseded.
+Useful next work is actual-enumerator serialization of the dirty-stack barrier,
+complete costed finite-kernel certificate engines, and broader initialized
+machine searches. All retained unsuccessful routes and proposal sketches stay
+open with the specific missing obligations above.
