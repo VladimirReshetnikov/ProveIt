@@ -1365,3 +1365,5 @@ bootstrap discharge all runtime assumptions; no bootstrap or guard replay is
 needed. The focused first check passed 16 probes and 18 callers with zero
 warnings, using 87 matched project providers. The further all-internal L2/Enum
 scheduler connection remains explicit.
+
+The checked [fixed Collection template](../../../../Logic/Interpretability/ZFCinPA/collection_template254.md) proves one ordinary enlarged-language sentence from lifted ZF, explicit enlarged equality, and three particular predicate-dependent schemas: witness-rank Separation, globally total least-rank Replacement with empty-ordinal fallback, and output Separation. The two new modules and audit pass 7 axiom reports/12 callers with standard Lean axioms and zero warnings; the record preserves all six attempts, including an interrupted second attempt. The source theorem is ready for a finite-template compiler, while translated schema/equality callbacks and the exact decoder-G conclusion bridge remain separate obligations. It does not establish the internal bundle or PA proof-code comparison.
