@@ -68,6 +68,15 @@ were freshly checked and 156 source-matched units reused. The merged
 operations and an ordinal-recursive order-extension interface. A concrete
 constructible well-order and Choice transport still need implementation.
 
+Intake156/source49's [six dirty starts](dirty_reset254.md) are now proved for the
+actual enumerator: next candidate `0,1,2,4,5,6`, empty command pointer, and
+arbitrary current formula, stack, additive parameter and cache. Counter3 with
+cache1 is checked to halt immediately. The
+[161-unit integration](results/dirty-reset-integration-verification.json)
+freshly checks `DirtyReset254` and the umbrella, with 159 source-matched reused
+units. This enlarges the proved logical targets for initializer searches; it
+does not supply a new binary initializer or reduce the 252-state table.
+
 A measured attempt to save a register by changing Cantor pairing to a
 [power-of-two encoding](register_lifetime.md) retained the full calculus but
 cost 306 states; its tested hybrids cost at least293. The current 252-state
@@ -359,6 +368,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `NativeTheory254.lean` | Numerical falsity and actual 219-node structured-program halting are each equivalent to refutability of the explicit sentence theory CP + full native-Form GIC + IR. ZFC calibration and binary execution remain separate. |
 | `EnumStackBarrier254.lean` | Actual candidate/command round trips, injective marked NIP-to-earlier-DROP replacement, witnessed safe stack prefix over arbitrary bottom, local preservation with positive credit, and candidate-zero reset. The global scheduler/counting theorem is not supplied. |
 | `EnumStackCount254.lean` | Closes the actual global scheduler/counting link; safe credit at every candidate boundary, arbitrary dirty bottom, and `dirty_start_iff` for `pl=np=d=0`. No binary initializer or internal PA theorem is inferred. |
+| `DirtyReset254.lean` | `six_dirty_starts_iff`: counters0,1,2,4,5,6 accept arbitrary four working fields, including d, through the actual AX eight-row shield and credit7=1; counter3/cache1 halts immediately. |
 | `InternalWO.lean`, `OrderRec.lean` | Internal natural, lexicographic, pullback and appended well-orders, with explicit collection/separation premises; definable order recursion on internal ordinals. The concrete constructible order and Choice remain open. |
 | `EnumSafeStart254.lean`, `DirtyRoot254.lean`, `DirtyProgram254.lean` | Attributed arbitrary-cutoff enumeration and dirty-root absorption, composed with the actual structured219/path program. Six numerical fields are unrestricted; top/cache/stack retain their exact theorem invariant and logical registers beyond8 remain zero. |
 | `SeedInvariant254.lean` | Six constructors certify nonzero initial theorem codes, unshifted stacks, and the resulting dirty-start/native-refutation equivalence. This gives a larger sufficient initializer target; no binary startup is inferred. |
