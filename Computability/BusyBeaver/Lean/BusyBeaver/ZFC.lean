@@ -51,7 +51,6 @@ import BusyBeaver.ZFC.InternalOrd
 import BusyBeaver.ZFC.InternalRank
 import BusyBeaver.ZFC.ZFRank
 import BusyBeaver.ZFC.ZFNative
-import BusyBeaver.ZFC.Endpoint254
 import BusyBeaver.ZFC.TransRec
 import BusyBeaver.ZFC.ConstructibleDef
 import BusyBeaver.ZFC.Constructible
@@ -64,6 +63,8 @@ import BusyBeaver.ZFC.OrderRec
 import BusyBeaver.ZFC.CodeOrder
 import BusyBeaver.ZFC.TupleOrder
 import BusyBeaver.ZFC.ConstructibleOrder
+import BusyBeaver.ZFC.ConstructibleChoice
+import BusyBeaver.ZFC.Endpoint254
 import BusyBeaver.ZFC.WFRelativization
 import BusyBeaver.ZFC.WFModel
 import BusyBeaver.ZFC.WFTheory
@@ -136,6 +137,7 @@ import BusyBeaver.ZFC.SitesPerm252
 import BusyBeaver.ZFC.BinaryPerm252
 import BusyBeaver.ZFC.ZFCBoundPerm252
 import BusyBeaver.ZFC.ChoiceCalibration254
+import BusyBeaver.ZFC.BinaryZFC252
 
 /-! Opt-in foundations for ZFC machine minimization. The exact 252-state
 blank machine has a closed external nonhalting iff Con(ZFC) theorem.

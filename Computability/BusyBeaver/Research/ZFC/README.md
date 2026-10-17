@@ -44,6 +44,20 @@ standard-theory bounds, umbrella and joint callers. This is not a full153-module
 rebuild. At this checkpoint the ZFC direction was one-way; the later Choice
 calibration above closes the reverse implication. The internal PA proof remains open.
 
+**Choice transport (closed).** `ConstructibleChoice` proves Gödel's
+theorem in Lean: the constructible class of any model of `ZFax_s` is a model
+of `ZFCax_s`, hence `BProv ZFax_s [] ⊥ ↔ BProv ZFCax_s [] ⊥`
+(`zf_refutation_iff_zfc_refutation`, standard axioms only). With the closed ZF
+endpoints this gives `Endpoint254.literal_nonhalting_iff_zfc_consistent`
+(the literal `Prog254` register program never halts iff Con(ZFC)) and
+`BinaryZFC252.nonhalting_iff_zfc_consistency` (the 252-state blank machine
+never halts iff Con(ZFC)). `BinaryZFC252` is a one-line composition; in this
+lane it was type-checked against `BinaryPerm252`'s exact endpoint statement
+(a typed stub), because the site-certificate batches of the
+`BinaryPerm252` closure need about 6 GB each. Its full-closure build is
+pending in the verified-integration workflow. See
+[tarski_logic_layer.md](tarski_logic_layer.md).
+
 The later merged `SatSupport` module also passed a
 [154-unit integration](results/sat-support-integration-verification.json).
 It proves uniform internally finite support for satisfaction on every internal
@@ -451,6 +465,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `BinaryPerm252.lean`, `ZFCBoundPerm252.lean` | Actual blank252 halting iff numerical/native/ZF refutation, also iff an accepted finite proof code. Con(ZFC) implies blank nonhalting; the following Choice module closes the converse. Internal PA formalization remains open. |
 | `CodeOrder.lean`, `TupleOrder.lean`, `ConstructibleOrder.lean` | Represented well-orders of all internal formula codes and finite tuples; bounded definition-key sets; definable ordinal recursion orders each constructible stage; `choice_of_VL` proves the exact selector-Choice axiom under V=L. |
 | `ChoiceCalibration254.lean` | Choice in the actual constructible subtype, sealed ZFC model, refutation transfer through external completeness, and closed actual252 blank nonhalting iff Con(ZFC). No internal PA proof-code claim. |
+| `ConstructibleChoice.lean`, `BinaryZFC252.lean` | Independently supplied Choice-in-L/refutation bridge and its composition with the exact literal 252-state binary endpoint. The merged versions are undergoing the same verified integration against actual binary objects; the original remote stub check alone is insufficient. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full

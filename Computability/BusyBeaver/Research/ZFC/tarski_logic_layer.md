@@ -423,22 +423,49 @@ of `ZFax_s` should be a model of `ZFCax_s`. The ZF half is proved.
   definable over `L_β`), Replacement in L (collect images in the model, bound
   them in a stage, separate), and `L_models_ZF`.
 
-**What remains: AC in L.** The selector principle (`ChoiceSem`) needs a
-well-order of each `L_α` that is itself constructible. Three ingredients are
-missing: (i) a well-order of the internal formula codes, which are hereditarily
-finite sets, so new elements of `L_{α+1}` can be compared by their least
-definitions; (ii) definitions with *finite* parameter tuples (internal finite
-sequences with their lexicographic order), since environments over `ω` cannot
-be well-ordered lexicographically, or else an internal proof that a coded
-formula depends on finitely many variables; (iii) absoluteness: the hierarchy
-computed inside the constructible model agrees with `L` (agreement of every
-internal operation and of certificates between the two), so that the
-canonical well-order lies in `L`. A Gödel-operations presentation would trade
-(i)-(ii) for Gödel's normal form theorem. Upstream's `zfc/` spends about 7.6k
-Coq lines here. Mathematically the goal does not wait on it: non-halting is
-equivalent to `Con(ZF)` (`WFTheory.c254_refutation_iff_zf` with L4), and
-`Con(ZF) ↔ Con(ZFC)` is Gödel's 1938 theorem, whose `L ⊨ ZF` half is now
-formalized here.
+**AC in L and the Choice transport (done).** Three ingredients, then the
+assembly:
+
+* `SatSupport`: every internal formula code, nonstandard ones included, has
+  an internal natural `n` such that `SatIn` at that code reads only the
+  environment below `n` (code induction on a named formula).
+* `ConstructibleAbs`: for a model `M` of ZF and its constructible
+  substructure `N`, every notion of the satisfaction machinery computed in
+  `N` agrees with `M` on constructible arguments: set operations, `ω`,
+  application, the environment shift, truth bits, the eight-clause
+  certificate step, certificates and `SatIn` (`N`'s own total certificate
+  read through `M`'s functionality); formula codes in both directions (the
+  hard direction by a least-rank counterexample and code inversion inside
+  `N`); definability, replacing a non-constructible environment by a
+  constructible one with the same finite part (finite support); `Def`; and
+  the approximations of the hierarchy. Hence **`V = L` holds in `L`**
+  (`vEqL`).
+* The well-order: `InternalWO` (well-orders of classes: naturals,
+  lexicographic pairs with well-ordered fibres, least-key pullback, ordered
+  sums), `OrderRec` (every stage of a `TransRec` hierarchy of an appending
+  step is a well-order end-extending all earlier ones), `CodeOrder` (the pair
+  closure of `ω` well-ordered along `ω`; every internal code lies in its
+  field), `TupleOrder` (same-length lexicographic order of tuples, a
+  well-order for every internal length by induction), and
+  `ConstructibleOrder` (new elements of `Def(F)` ordered by least keys
+  `⟨code, ⟨n, tuple⟩⟩`; keys exist by finite support and determine their
+  element; the stage of the canonical order at `a` has field `L_a`; and
+  `choice_of_VL`: a model of ZF with `V = L` satisfies the selector
+  principle).
+* `ConstructibleChoice`: `L_models_ZFC`, and by soundness and completeness
+  `choice_refutation_remove` / `zf_refutation_iff_zfc_refutation`.
+
+Endpoints: `Endpoint254.literal_nonhalting_iff_zfc_consistent` (the literal
+6459-row register program never halts iff Con(ZFC)) and
+`BinaryZFC252.nonhalting_iff_zfc_consistency` (the 252-state blank machine
+never halts iff Con(ZFC)). Both use only standard axioms. `Endpoint254` was
+compiled against the previously checked `Bisim254` object, whose exported
+`literal_halts_iff` statement is unchanged by the literal-tree rework.
+`BinaryZFC252` composes `BinaryPerm252.blank_halts_iff_zf_refutation` with
+the Choice transport; it was type-checked here against a stub carrying that
+exact statement, since the `BinaryPerm252` closure's site batches need about
+6 GB each. Its full-closure build belongs in the verified-integration
+workflow. PA internalization remains separate.
 
 The constructibility modules received an
 [independent source review](constructible_choice_review.md). The review found
@@ -449,7 +476,7 @@ so definitions use finite parameter tuples rather than arbitrary full
 omega-environments. Fixed-standard-Form support lemmas alone do not supply it.
 The review does not claim Choice or a new compiler check.
 
-**Claimed by this lane (Choice transport, in progress).** New modules, in
+**Delivered by this lane (Choice transport).** New modules, in
 dependency order: `SatSupport.lean` (uniform finite support of `SatIn` on
 every internal code, by code induction), `InternalWO.lean` (internal
 well-orders: append, lexicographic product, least-key pullback, chain union),
