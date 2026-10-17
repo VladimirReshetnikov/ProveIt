@@ -1,0 +1,122 @@
+{
+  "status": "PASS",
+  "command": "semantics",
+  "package": "/tmp/zfc-intake-158/run-53",
+  "upstream_subset": "/tmp/zfc-intake-158/run-53/upstream",
+  "python": "3.13.14 (main, Jun 23 2026, 15:18:27) [Clang 22.1.3 ]",
+  "commands": [
+    {
+      "label": "mp-birth",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake-158/replay-53/semantics/semantics/mp_birth_cost.py"
+      ],
+      "cwd": "/tmp/zfc-intake-158/replay-53/semantics/semantics",
+      "log": "logs/mp-birth.log",
+      "returncode": 0,
+      "elapsed_seconds": 11.79407182149589
+    },
+    {
+      "label": "deterministic-mp",
+      "argv": [
+        "/home/codex/.local/bin/python3",
+        "-B",
+        "/tmp/zfc-intake-158/replay-53/semantics/semantics/deterministic_mp_cost.py"
+      ],
+      "cwd": "/tmp/zfc-intake-158/replay-53/semantics/semantics",
+      "log": "logs/deterministic-mp.log",
+      "returncode": 0,
+      "elapsed_seconds": 5.008292321115732
+    }
+  ],
+  "checks": [
+    {
+      "check": "semantics/mp_birth_results/results.json",
+      "status": "PASS",
+      "excluded_metadata_fields": [
+        "source_sha256"
+      ]
+    },
+    {
+      "check": "MP-birth input hashes after directory-prefix normalization",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/mp_birth_results/baseline-dag.json",
+      "sha256": "fb67ec1bf888c8400b14b64787cf54193f3681a51a4c37680fd1ff0f78857ac5",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/mp_birth_results/baseline.tm",
+      "sha256": "b25b51795586757aa3b52e1aa4d732f5d3a2b69c80f47098c3328889fcd49914",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/mp_birth_results/param_no_dummy-dag.json",
+      "sha256": "efc7437822982da2e438e1cabdff93ac904f3614931c74f0031699951276b19b",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/mp_birth_results/param_no_dummy.tm",
+      "sha256": "04573b82c7e17ebe10f0284aec5c8b83dd71409acce7c56e98a60de36be52647",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/mp_birth_results/param_preserve-dag.json",
+      "sha256": "ee4c23d950e81f83a20f91123538f246a751b4cee129eccfbe8f6970a9096d0f",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/mp_birth_results/param_preserve.tm",
+      "sha256": "ae750534c22e56e8305c60d471285afd8a095af22353dca2b6eaef205327c8fc",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/mp_birth_results/top_no_dummy-dag.json",
+      "sha256": "56bea504aadda1e866d7e1254bff104a07b007654bbbdfcf994b037e50b81bc1",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/mp_birth_results/top_no_dummy.tm",
+      "sha256": "9cc4a20cad7cd91dca067557ef0047743931e9aa769fba348a3d5c1fd87bbc68",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/mp_birth_results/top_preserve-dag.json",
+      "sha256": "73ce9f71ccd15af89fb9c583e76afa6c0334f0726175a4e0471dee5324ab2593",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/mp_birth_results/top_preserve.tm",
+      "sha256": "acbd7f82da447944f1b8dc4a345fc71e90388a04687f2ed7b01678d5830963d2",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/deterministic_mp_results/results.json",
+      "status": "PASS",
+      "excluded_metadata_fields": []
+    },
+    {
+      "check": "semantics/deterministic_mp_results/deterministic_birth-dag.json",
+      "sha256": "f71f4c1706232f25a350f319177485e8eee9b16524bc22cc6f1b87dcd455deb8",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/deterministic_mp_results/deterministic_birth.tm",
+      "sha256": "14dc51e31a061e81f37e12a65d13849632b3c724eced84ad1bca4613f51029ab",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/deterministic_mp_results/deterministic_nip_halt-dag.json",
+      "sha256": "d11b556bceb5f71c756c587b93c1e0a263597fcf8352d998d0a8883496584602",
+      "status": "PASS"
+    },
+    {
+      "check": "semantics/deterministic_mp_results/deterministic_nip_halt.tm",
+      "sha256": "b7eed0f5673df298bc1551c5cf67dbcf2641fff869c8e49a0806cb107fd622fa",
+      "status": "PASS"
+    }
+  ],
+  "scope": "Reproduction of finite evidence only; no new consistency or state lower-bound theorem."
+}

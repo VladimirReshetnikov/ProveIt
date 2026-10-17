@@ -1,0 +1,13 @@
+MAIN = cachemp252_research
+SOURCES = $(MAIN).tex cache_result_proof.tex search_results.tex
+
+.PHONY: all clean
+
+all: $(MAIN).pdf
+
+$(MAIN).pdf: $(SOURCES)
+	pdflatex -interaction=nonstopmode -halt-on-error $(MAIN).tex
+	pdflatex -interaction=nonstopmode -halt-on-error $(MAIN).tex
+
+clean:
+	rm -f $(MAIN).aux $(MAIN).log $(MAIN).out $(MAIN).toc

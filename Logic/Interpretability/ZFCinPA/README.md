@@ -385,3 +385,12 @@ fallback1 and both old stacks. The first check passed 18 probes and 22 callers
 with standard axioms; three source linter warnings remain. Concrete stream
 selection, source-proof compilation and the reverse consistency endpoint
 remain open; that compiler can use the configurable encoder directly.
+
+[Concrete fresh-stream selection](validator_environment_streams254.md) now
+compares configurable encodings at any two free-safe binder starts, including
+overlapping starts `s` and `s+2`. A fixed Σ0 opposite-parity selector above the
+numeric vector bound supplies the intermediate stream for composition. The
+first check passed 14 probes and 18 callers with standard axioms, retaining
+four source and two audit linter warnings. The configurable encoder can serve
+the remaining source-proof compiler directly; source-rule transport, ZF axiom
+reconstruction and the reverse consistency endpoint remain open.

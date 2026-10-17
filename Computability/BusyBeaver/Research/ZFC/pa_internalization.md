@@ -62,8 +62,10 @@ The current arithmetic checkpoints are:
   [alpha transport](../../../../Logic/Interpretability/ZFCinPA/validator_environment_alpha254.md)
   now proves both implications between encodings of every internal formula
   under the same equality context, using Π₂ induction in IΣ₂ and explicit
-  disjoint fresh streams. Concrete stream selection and source-proof
-  translation remain open. The latter can use the configurable encoder
+  disjoint fresh streams. [Concrete stream selection](../../../../Logic/Interpretability/ZFCinPA/validator_environment_streams254.md)
+  now compares encodings at any two free-safe starts, including overlapping
+  starts `s` and `s+2`, through a represented opposite-parity intermediate.
+  Source-proof translation remains open and can use the configurable encoder
   directly, since its falsity code is already `1`; comparison with the earlier
   fixed encoder is optional. Arbitrary accepted proofs are not assumed closed
   under variable renaming.
@@ -89,8 +91,11 @@ The current arithmetic checkpoints are:
   and WS to the pair of the original TW and WS. The
   [short MP unpair](arithmetic_control_unpair_core254.md) and its composition
   with the initial push now restore the original WS, put old TW in scratch1,
-  and put param1 in TW. The constructor sequence and composition into full MP
-  remain open; AX also remains open.
+  and put param1 in TW. The [complete MP branch](arithmetic_control_mp254.md)
+  now composes the actual constructor, fourfold transfer and comparison tail.
+  It returns to fetch, sets TW to param1 and pushes a zero on success, clears
+  TW and preserves WS on failure, and clears cache in both cases. Its AC0
+  dispatch composition is also checked. AX remains open.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
 translation, the internal L-specific Separation/Replacement proofs, and the complete

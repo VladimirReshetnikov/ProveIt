@@ -1,0 +1,77 @@
+{
+  "status": "PASS as a conditional prepared-frame runtime",
+  "claim": "No sub252 machine or verified blank-tape initializer is asserted.",
+  "source_commit": "85633fd2f57b5dca16f87667699134d1b500ebc0",
+  "physical_registers": [
+    8,
+    2,
+    1,
+    4,
+    3,
+    6,
+    7,
+    5,
+    0
+  ],
+  "first_eight_logical_by_slot": [
+    8,
+    2,
+    1,
+    4,
+    3,
+    7,
+    5,
+    6
+  ],
+  "register_file_hypothesis": "At least9 blocks; slots0..7 active; slot8 onward arbitrary spares.",
+  "runtime_certificate": {
+    "passed": true,
+    "cases": 8381,
+    "min_literal": 15,
+    "maximum_source_depth": 36
+  },
+  "working_states": 253,
+  "new_loader_states": 7,
+  "new_shell_states": 2,
+  "loader_samples": 288,
+  "loader_contract": "(g,L0,h) -> (g+1,Lg+1,h-g-2), PC empty; all other register cells fixed",
+  "loader_time_including_dispatch": "2*g*g+15*g+40",
+  "whole_pruned_table_reverified": true,
+  "inherited_boot": {
+    "outcome": "fuel_limit",
+    "steps": 1000000,
+    "state": "42",
+    "head": 999910,
+    "one_count": 999901
+  },
+  "blank_start_escape_certificate": {
+    "steps": 102,
+    "state": "42",
+    "head": 12,
+    "ones": [
+      4,
+      6,
+      10
+    ],
+    "all_other_cells_zero": true,
+    "right_half_blank": true,
+    "zero_transition": [
+      1,
+      "R",
+      "42"
+    ],
+    "conclusion": "By induction, state42 writes1 and moves right forever. The inherited blank start cannot initialize the intended program."
+  },
+  "old_table_sha256": "96647b74b9f457828445705a849670d53d1fe25c8312977557d3bc449988b822",
+  "canonical_table_sha256": "792c74314caa940e858d96ac70d3ab5bef6ed37baf6b7fc84e37185e4c3421af",
+  "removed_baseline_labels": [
+    12,
+    17,
+    18,
+    26,
+    69,
+    110,
+    128,
+    148
+  ]
+}

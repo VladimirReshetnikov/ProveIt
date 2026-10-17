@@ -1,0 +1,26 @@
+RUN value_analysis.py
+{'K': 32, 'pops': 440917, 'seconds': 2.269732825000119, 'excluded': [8202, 8203, 8204, 8358, 8359, 8360]}
+RUN freeze_allocation.py
+{'mode': 'optimistic', 'seed': 0, 'accepted': 596, 'rejected': 372, 'coalesced_ranges': 789, 'colors': 9}
+RUN allocation_certificate.py
+{'status': 'PASS exact symbolic affine edge certificate', 'edges': 5480, 'sites': 4520, 'modes': {'dec0': 961, 'decp': 961, 'control': 957, 'inc': 1631, 'move': 372, 'erase': 598}, 'initial_zero_slots': True, 'all_unused_slots_zero_preserved': True, 'allocated_physical_slots': 9, 'halt_sites': [6324]}
+RUN allocated_dag.py
+{'original_nodes': 203, 'allocated_nodes': 917, 'leaves': 5264, 'depth': 34, 'max_zero_run': 7, 'macros': {'move': 372, 'erase': 598}}
+RUN compact_allocated_dag.py
+{'removed': 598, 'retained': 0, 'bad': 0}
+{'input_nodes': 917, 'output_nodes': 778, 'original_nops': 598, 'removed_nops': 598, 'retained_nops': 0, 'control_checks': 5999, 'rebased': 0, 'history': [{'removed': 598, 'retained': 0, 'bad': 0}]}
+RUN compile_controls.py
+original_control 314 {'initializer': 44, 'decoder': 203, 'literal_engine': 44, 'arithmetic_and_control_leaves': 19, 'break_scans': 1, 'continue_scans': 3, 'extended_dispatcher': 0} {'cases_passed': 8391, 'cases_by_operation': {'EBreak': 128, 'EContinue': 1799, 'EDecnz/positive': 1931, 'EDecnz/zero': 1931, 'EHalt': 1, 'EInc': 2601}, 'max_symbolic_steps': 313, 'max_dispatch_visits': 4, 'arbitrary_gap_parameter_and_register_box': True, 'formal_proof': False} {'passed': True, 'concrete_steps': 292, 'head': -60, 'nonzero_cells': 11, 'register_blocks': 9, 'spare_zero_blocks': 0}
+coalesced_control 888 {'initializer': 43, 'decoder': 778, 'literal_engine': 44, 'arithmetic_and_control_leaves': 19, 'break_scans': 1, 'continue_scans': 3, 'extended_dispatcher': 0} {'cases_passed': 5999, 'cases_by_operation': {'EBreak': 128, 'EContinue': 1201, 'EDecnz/positive': 1333, 'EDecnz/zero': 1333, 'EHalt': 1, 'EInc': 2003}, 'max_symbolic_steps': 301, 'max_dispatch_visits': 4, 'arbitrary_gap_parameter_and_register_box': True, 'formal_proof': False} {'passed': True, 'concrete_steps': 268, 'head': -56, 'nonzero_cells': 11, 'register_blocks': 9, 'spare_zero_blocks': 0}
+{
+  "status": "PASS exact replay",
+  "checked_outputs": [
+    "static-coalescing.json",
+    "allocation-certificate.json",
+    "allocated-dag.json",
+    "allocated-dag-compacted.json",
+    "frozen/original_control.tm",
+    "frozen/coalesced_control.tm",
+    "frozen/complete-table-controls.json"
+  ]
+}

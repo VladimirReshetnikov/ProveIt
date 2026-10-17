@@ -1,0 +1,19 @@
+PYTHON ?= python3
+LEAN ?= lean
+
+.PHONY: finite formal pdf census
+
+finite:
+	$(PYTHON) -B clock_schedule.py --candidates 100000 --output data/clock_schedule_results.json
+	$(PYTHON) -B gap_dag_audit.py --source machine/inputs/Prog254.v --output gap-dag-audit.json
+	$(PYTHON) -B machine/code/assemble_gap_runtime.py
+	$(PYTHON) -B experiments/no_filler_unit/check_no_filler_unit253.py --runtime-root machine --output experiments/no_filler_unit/results
+
+formal:
+	$(PYTHON) formal/reproduce.py --lean $(LEAN)
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+census:
+	$(PYTHON) -B experiments/no_filler_frozen/nofiller_frozen_search.py --input-dir experiments/no_filler_frozen/inputs --output experiments/no_filler_frozen/replay

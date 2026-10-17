@@ -2769,3 +2769,34 @@ obstruction concern a specified prepared representation, not blank reachability
 or a universal state lower bound. Both25-page source PDFs rebuild cleanly and
 receive visual review. The offline helper recovers all67 original files and
 replays the finite checks without modifying delivered files.
+
+
+Batches158–159 add five complete manuscripts and one explicitly salvaged partial
+manuscript as sources51–56 of [ZFC closure kernels](set-theory/zfc-closure-kernels),
+now56 sources and still290 collection reports. Placements `78b528440a` and
+`901dd50056` preserve1133 ancillary files;40 article/section/PDF/delivery files
+remain recoverable from the committed arrival archives. The reconciliation is
+in `98baa6b001`, with full source reviews and portable recovery tools.
+The base article is unchanged.
+
+The useful additions are parity-complete geometric scheduling, no-filler and
+cache-result MP contracts, exact HF semantic seeds, role-allocation/progress
+certificates, completed and partial incoming-action searches, affine-code cost
+bounds and181 conditional binary-countdown contracts. The cache-result machine
+has252 states and a newly reproduced707393-step safe blank bootstrap; it is a
+different research variant without the maintained machine's Lean certification.
+All138 countdown candidates fail later cases. No sub252 solution is delivered.
+Repeated target2 and fold families are counted once; diagnostic rejection is
+not a semantic state lower bound.
+
+The damaged negation archive supplies327 complete local payloads but lacks its
+ZIP directory, independent theory checkers and four partition journals. At the
+user's explicit request it was salvaged rather than left waiting for impossible
+replacement. All32 available journals pass partition audits covering32514048 recipes, with
+explicitly incomplete overall coverage. Available255-state finite controls pass; the full verifier fails
+on missing source. All missing/unverified claims and partial-domain limits are
+retained. Every executed suite ran on an external copy, with manifest-only
+checks omitted and no Lean/Coq build. Independent source and reconciliation
+reviews preserve the original PA-provability goal, the closed external ZFC
+comparison and the still-open internal PA endpoint. The collection manifest
+was rebuilt and visually checked; delivered reports/PDFs were not rewritten.

@@ -1,0 +1,359 @@
+{
+  "schema": "proveit-research-delivery-manifest-v1",
+  "scope": "Two complete negative Wade compiler cost controls and the associated proof audit.",
+  "paths_relative_to": "The directory containing delivery_manifest.json; preserve its backend/, reference/, and output subdirectories.",
+  "manifest_self_hash": "Excluded to avoid a circular digest; the containing package manifest may hash this file.",
+  "source_pins": {
+    "ProveIt": "43026ff42f0939f09b9e95495248cfadcad38e38",
+    "jeff87654/busy-beaver": "297ab8df7e5de329605c3875b4934643b371a5e3"
+  },
+  "runtime": {
+    "python": "Python 3.10 or later; tested with Python 3.12.14",
+    "external_python_packages": [],
+    "network_required": false,
+    "git_required": false,
+    "Lean_or_Coq_required": false,
+    "note": "The controls import only the vendored recovery helper functions; they do not invoke its standalone CLI or git snapshot loader. Dag254.v is parsed as finite data."
+  },
+  "reproduction": [
+    {
+      "id": "mp_birth",
+      "working_directory": ".",
+      "command_argv": [
+        "python3",
+        "mp_birth_cost.py"
+      ],
+      "required_files": [
+        "backend/LICENSE.wade",
+        "backend/TMBuilder.py",
+        "backend/tm.py",
+        "backend/tmdb.py",
+        "mp_birth_cost.py",
+        "reference/Dag254.v",
+        "reference/recover_wade_dag.py"
+      ],
+      "writes": [
+        "mp_birth_results/"
+      ],
+      "expected_working_states": {
+        "baseline": 281,
+        "top_preserve": 284,
+        "param_preserve": 285,
+        "top_no_dummy": 284,
+        "param_no_dummy": 285
+      },
+      "expected_finite_controls_per_changed_variant": {
+        "exact_one_guard": 101,
+        "unconditional_nip": 50
+      }
+    },
+    {
+      "id": "deterministic_mp",
+      "working_directory": ".",
+      "command_argv": [
+        "python3",
+        "deterministic_mp_cost.py"
+      ],
+      "required_files": [
+        "backend/LICENSE.wade",
+        "backend/TMBuilder.py",
+        "backend/tm.py",
+        "backend/tmdb.py",
+        "deterministic_mp_cost.py",
+        "mp_birth_cost.py",
+        "reference/Dag254.v",
+        "reference/recover_wade_dag.py"
+      ],
+      "writes": [
+        "deterministic_mp_results/"
+      ],
+      "expected_working_states": {
+        "deterministic_nip_halt": 302,
+        "deterministic_birth": 305
+      },
+      "expected_finite_controls_per_variant": {
+        "exact_structured_mp_cases": 2178
+      }
+    }
+  ],
+  "reproduction_notes": [
+    "No earlier generated output is an input to either control; both can be run independently from the listed sources.",
+    "The generated .tm files and DAGs are deterministic in the tested runtime. The mp_birth results ledger embeds input paths relative to the driver directory parent, so changing the driver directory basename changes those metadata strings.",
+    "Each driver overwrites generated measurements only in its own output directory; Python may also create import caches. Record any desired prior output before rerunning.",
+    "Every emitted working state has both read-symbol rows. The original missing backend row is explicitly totalized by preserving the read bit, moving right, and halting.",
+    "The complete source counts are relative to the 281-state public Wade baseline and cannot be subtracted from the separately optimized 252-state decoder.",
+    "Finite source-path controls and source decision re-extraction do not establish a new compiled blank-tape simulation theorem or consistency endpoint."
+  ],
+  "excluded": [
+    "__pycache__/",
+    "*.pyc",
+    "delivery_manifest.json self digest"
+  ],
+  "file_count": 30,
+  "files": [
+    {
+      "path": "backend/LICENSE.wade",
+      "sha256": "c1dffee77db98625debe39b47538e1d2f3b7956cbc7bcd6ed9363701b2177cfa",
+      "bytes": 912,
+      "role": "required_compiler_license_notice",
+      "needed_for": [
+        "mp_birth",
+        "deterministic_mp"
+      ],
+      "source_url": "https://github.com/jeff87654/busy-beaver/blob/297ab8df7e5de329605c3875b4934643b371a5e3/ZF/generator/LICENSE.wade",
+      "license": "MIT-0"
+    },
+    {
+      "path": "backend/TMBuilder.py",
+      "sha256": "03d3a636404e1bcdeceafd98b9478b7a367ab334f3ab9f8a00df1d5c03fdf517",
+      "bytes": 31486,
+      "role": "imported_compiler_module",
+      "needed_for": [
+        "mp_birth",
+        "deterministic_mp"
+      ],
+      "source_url": "https://github.com/jeff87654/busy-beaver/blob/297ab8df7e5de329605c3875b4934643b371a5e3/ZF/generator/TMBuilder.py",
+      "license": "MIT-0; see backend/LICENSE.wade"
+    },
+    {
+      "path": "backend/tm.py",
+      "sha256": "2d00bf8c8324d8e9bc5639ba14e508091d854a7c93ecb96ab598f41c15ae9787",
+      "bytes": 6703,
+      "role": "imported_compiler_module",
+      "needed_for": [
+        "mp_birth",
+        "deterministic_mp"
+      ],
+      "source_url": "https://github.com/jeff87654/busy-beaver/blob/297ab8df7e5de329605c3875b4934643b371a5e3/ZF/generator/tm.py",
+      "license": "MIT-0; see backend/LICENSE.wade"
+    },
+    {
+      "path": "backend/tmdb.py",
+      "sha256": "4ccf4dab37438109a350d77259b5eb52e33ce110a954cd2d56a218e84e653526",
+      "bytes": 10563,
+      "role": "imported_compiler_module",
+      "needed_for": [
+        "mp_birth",
+        "deterministic_mp"
+      ],
+      "source_url": "https://github.com/jeff87654/busy-beaver/blob/297ab8df7e5de329605c3875b4934643b371a5e3/ZF/generator/tmdb.py",
+      "license": "MIT-0; see backend/LICENSE.wade"
+    },
+    {
+      "path": "deterministic_mp_cost.py",
+      "sha256": "44227da332a38008fa7c05db850e2996c30bf35525443ec4605d1ed0479f0c2e",
+      "bytes": 5349,
+      "role": "experiment_driver",
+      "needed_for": [
+        "deterministic_mp"
+      ]
+    },
+    {
+      "path": "deterministic_mp_results/deterministic_birth-dag.json",
+      "sha256": "f71f4c1706232f25a350f319177485e8eee9b16524bc22cc6f1b87dcd455deb8",
+      "bytes": 21046,
+      "role": "generated_source_decision_graph",
+      "needed_for": [],
+      "generated_by": "deterministic_mp"
+    },
+    {
+      "path": "deterministic_mp_results/deterministic_birth.tm",
+      "sha256": "14dc51e31a061e81f37e12a65d13849632b3c724eced84ad1bca4613f51029ab",
+      "bytes": 8055,
+      "role": "generated_total_binary_transition_table",
+      "needed_for": [],
+      "generated_by": "deterministic_mp"
+    },
+    {
+      "path": "deterministic_mp_results/deterministic_nip_halt-dag.json",
+      "sha256": "d11b556bceb5f71c756c587b93c1e0a263597fcf8352d998d0a8883496584602",
+      "bytes": 20617,
+      "role": "generated_source_decision_graph",
+      "needed_for": [],
+      "generated_by": "deterministic_mp"
+    },
+    {
+      "path": "deterministic_mp_results/deterministic_nip_halt.tm",
+      "sha256": "b7eed0f5673df298bc1551c5cf67dbcf2641fff869c8e49a0806cb107fd622fa",
+      "bytes": 7973,
+      "role": "generated_total_binary_transition_table",
+      "needed_for": [],
+      "generated_by": "deterministic_mp"
+    },
+    {
+      "path": "deterministic_mp_results/results.json",
+      "sha256": "fbb419ced585cb482c7070d90c2e46da0875fe822f53be3233b2c14ee9367fd5",
+      "bytes": 1622,
+      "role": "generated_experiment_ledger",
+      "needed_for": [],
+      "generated_by": "deterministic_mp"
+    },
+    {
+      "path": "mp_birth_cost.py",
+      "sha256": "0a90102a0238963a79eaa4e4c0bb4d03ee111fc876759e988408e8dea8934a2c",
+      "bytes": 8399,
+      "role": "experiment_driver_and_shared_path_interpreter",
+      "needed_for": [
+        "mp_birth",
+        "deterministic_mp"
+      ]
+    },
+    {
+      "path": "mp_birth_results/baseline-dag.json",
+      "sha256": "fb67ec1bf888c8400b14b64787cf54193f3681a51a4c37680fd1ff0f78857ac5",
+      "bytes": 18821,
+      "role": "generated_source_decision_graph",
+      "needed_for": [],
+      "generated_by": "mp_birth"
+    },
+    {
+      "path": "mp_birth_results/baseline.tm",
+      "sha256": "b25b51795586757aa3b52e1aa4d732f5d3a2b69c80f47098c3328889fcd49914",
+      "bytes": 7400,
+      "role": "generated_total_binary_transition_table",
+      "needed_for": [],
+      "generated_by": "mp_birth"
+    },
+    {
+      "path": "mp_birth_results/param_no_dummy-dag.json",
+      "sha256": "efc7437822982da2e438e1cabdff93ac904f3614931c74f0031699951276b19b",
+      "bytes": 19360,
+      "role": "generated_source_decision_graph",
+      "needed_for": [],
+      "generated_by": "mp_birth"
+    },
+    {
+      "path": "mp_birth_results/param_no_dummy.tm",
+      "sha256": "04573b82c7e17ebe10f0284aec5c8b83dd71409acce7c56e98a60de36be52647",
+      "bytes": 7508,
+      "role": "generated_total_binary_transition_table",
+      "needed_for": [],
+      "generated_by": "mp_birth"
+    },
+    {
+      "path": "mp_birth_results/param_preserve-dag.json",
+      "sha256": "ee4c23d950e81f83a20f91123538f246a751b4cee129eccfbe8f6970a9096d0f",
+      "bytes": 19360,
+      "role": "generated_source_decision_graph",
+      "needed_for": [],
+      "generated_by": "mp_birth"
+    },
+    {
+      "path": "mp_birth_results/param_preserve.tm",
+      "sha256": "ae750534c22e56e8305c60d471285afd8a095af22353dca2b6eaef205327c8fc",
+      "bytes": 7508,
+      "role": "generated_total_binary_transition_table",
+      "needed_for": [],
+      "generated_by": "mp_birth"
+    },
+    {
+      "path": "mp_birth_results/results.json",
+      "sha256": "6c3493648e0c79f3e6da9c932c7a7818dcfdb92274725bfb8a911c9e21b81344",
+      "bytes": 4355,
+      "role": "generated_experiment_ledger",
+      "needed_for": [],
+      "generated_by": "mp_birth"
+    },
+    {
+      "path": "mp_birth_results/top_no_dummy-dag.json",
+      "sha256": "56bea504aadda1e866d7e1254bff104a07b007654bbbdfcf994b037e50b81bc1",
+      "bytes": 19358,
+      "role": "generated_source_decision_graph",
+      "needed_for": [],
+      "generated_by": "mp_birth"
+    },
+    {
+      "path": "mp_birth_results/top_no_dummy.tm",
+      "sha256": "9cc4a20cad7cd91dca067557ef0047743931e9aa769fba348a3d5c1fd87bbc68",
+      "bytes": 7482,
+      "role": "generated_total_binary_transition_table",
+      "needed_for": [],
+      "generated_by": "mp_birth"
+    },
+    {
+      "path": "mp_birth_results/top_preserve-dag.json",
+      "sha256": "73ce9f71ccd15af89fb9c583e76afa6c0334f0726175a4e0471dee5324ab2593",
+      "bytes": 19358,
+      "role": "generated_source_decision_graph",
+      "needed_for": [],
+      "generated_by": "mp_birth"
+    },
+    {
+      "path": "mp_birth_results/top_preserve.tm",
+      "sha256": "acbd7f82da447944f1b8dc4a345fc71e90388a04687f2ed7b01678d5830963d2",
+      "bytes": 7482,
+      "role": "generated_total_binary_transition_table",
+      "needed_for": [],
+      "generated_by": "mp_birth"
+    },
+    {
+      "path": "proof_notes.md",
+      "sha256": "81af4ecaaeb8f52e596e51e50301454bceaca6993598682a7709397740036a43",
+      "bytes": 11671,
+      "role": "mathematical_audit_and_experiment_interpretation",
+      "needed_for": []
+    },
+    {
+      "path": "reference/BinaryZFC252.lean",
+      "sha256": "1560e4b24d23ce95e34f84d8357624aed7bf3f49f1be4b1445ed24016ddf5c44",
+      "bytes": 1390,
+      "role": "audit_reference_only_not_a_Lean_dependency_closure",
+      "needed_for": [],
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/43026ff42f0939f09b9e95495248cfadcad38e38/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BinaryZFC252.lean"
+    },
+    {
+      "path": "reference/ChoiceCalibration254.lean",
+      "sha256": "03eae38d3c99d27dc2a9bc2de8de9ef627130417c7d42417744eefb2af524844",
+      "bytes": 3618,
+      "role": "audit_reference_only_not_a_Lean_dependency_closure",
+      "needed_for": [],
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/43026ff42f0939f09b9e95495248cfadcad38e38/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ChoiceCalibration254.lean"
+    },
+    {
+      "path": "reference/Dag254.v",
+      "sha256": "538ddaddd932058c2b319011126579d77783231f54331772377c05848a0599e3",
+      "bytes": 13023,
+      "role": "pinned_original_219_node_program_data",
+      "needed_for": [
+        "mp_birth",
+        "deterministic_mp"
+      ],
+      "source_url": "https://github.com/jeff87654/busy-beaver/blob/297ab8df7e5de329605c3875b4934643b371a5e3/ZF/m254/coq/prog/Dag254.v"
+    },
+    {
+      "path": "reference/Enum254.lean",
+      "sha256": "9f65a89f05d6e851639189b34e191bc59fadc07ee869a1e09c3182a6e8ad0c5f",
+      "bytes": 29376,
+      "role": "audit_reference_only_not_a_Lean_dependency_closure",
+      "needed_for": [],
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/43026ff42f0939f09b9e95495248cfadcad38e38/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Enum254.lean"
+    },
+    {
+      "path": "reference/binary_zfc252.md",
+      "sha256": "78febbfbfdef8df84fe6445f4f9ba0233c5bcb77bdda2b8a579c3a43ecf2f30b",
+      "bytes": 2459,
+      "role": "audit_reference_only",
+      "needed_for": [],
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/43026ff42f0939f09b9e95495248cfadcad38e38/Computability/BusyBeaver/Research/ZFC/binary_zfc252.md"
+    },
+    {
+      "path": "reference/candidate-permutation252-README.md",
+      "sha256": "8e27ce42b11796f268b33510573f21a9f7430e87ab3371db0fa5a442c7dfe3bc",
+      "bytes": 9164,
+      "role": "audit_reference_only",
+      "needed_for": [],
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/43026ff42f0939f09b9e95495248cfadcad38e38/Computability/BusyBeaver/Research/ZFC/candidate-permutation252/README.md"
+    },
+    {
+      "path": "reference/recover_wade_dag.py",
+      "sha256": "caa4996be46f9201991dba07f81d4673f14e874ac682226c29fce9e0cea851f1",
+      "bytes": 8838,
+      "role": "imported_parser_compiler_adapter_and_reextraction_checker",
+      "needed_for": [
+        "mp_birth",
+        "deterministic_mp"
+      ],
+      "source_url": "https://github.com/VladimirReshetnikov/ProveIt/blob/43026ff42f0939f09b9e95495248cfadcad38e38/Computability/BusyBeaver/Research/ZFC/recover_wade_dag.py"
+    }
+  ]
+}

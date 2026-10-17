@@ -1,0 +1,11 @@
+.PHONY: pdf verify verify-journals
+
+pdf:
+	pdflatex -interaction=nonstopmode -halt-on-error report.tex
+	pdflatex -interaction=nonstopmode -halt-on-error report.tex
+
+verify:
+	python3 verify.py
+
+verify-journals:
+	python3 verify.py --journals
