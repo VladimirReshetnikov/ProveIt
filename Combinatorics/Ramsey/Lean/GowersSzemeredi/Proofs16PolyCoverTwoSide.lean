@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16PolyCoverTwo
 import GowersSzemeredi.Proofs15ExplicitThresholds
 import GowersSzemeredi.Proofs16SinglePieceGlobalSide
+import GowersSzemeredi.Proofs16PolyPieceTwoDataSide
 
 /-! Declarations of `Proofs16PolyCoverTwo` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

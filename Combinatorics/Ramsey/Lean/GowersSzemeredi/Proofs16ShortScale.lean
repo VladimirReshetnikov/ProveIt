@@ -1,4 +1,6 @@
-import GowersSzemeredi.Proofs16RadiusComparison
+import GowersSzemeredi.Section16
+import Mathlib.Algebra.Order.Floor.Semifield
+import Mathlib.Analysis.Complex.ExponentialBounds
 
 /-! # Rounding-safe short-cell scales for the product partition -/
 set_option autoImplicit false

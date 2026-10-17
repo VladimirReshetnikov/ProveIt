@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs03Basic
 import GowersSzemeredi.Proofs03ProgressionCount
+import GowersSzemeredi.Proofs03ProgressionCountSide
 
 /-!
 # Existence of modular progressions from higher uniformity

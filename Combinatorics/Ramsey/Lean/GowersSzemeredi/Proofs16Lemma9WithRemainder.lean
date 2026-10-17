@@ -1,6 +1,9 @@
 import GowersSzemeredi.Proofs16ShortScale
 import GowersSzemeredi.Proofs16FibreCovers
 import GowersSzemeredi.Proofs16LocalizedCover
+import Mathlib.Combinatorics.Additive.PluenneckeRuzsa
+import Mathlib.Combinatorics.Pigeonhole
+import Mathlib.NumberTheory.Bertrand
 
 /-! Lemma 16.9 at every scale with arbitrary remainder controls, for an
 abstract linearity width.

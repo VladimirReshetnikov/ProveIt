@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs16SinglePieceLift
 import GowersSzemeredi.Proofs16FrequencySelection
+import Mathlib.Algebra.Order.Ring.Abs
+import Mathlib.Data.Fin.Tuple.Finset
 
 /-! The single-piece lift, step 6 (Notes L.1): a dense multilinear frequency
 box from local inputs only.

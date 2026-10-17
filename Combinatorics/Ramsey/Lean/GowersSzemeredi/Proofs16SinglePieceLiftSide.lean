@@ -1,5 +1,8 @@
 import GowersSzemeredi.Proofs16SinglePieceLift
 import GowersSzemeredi.Proofs16Lemma6Parameters
+import GowersSzemeredi.Proofs16DenseSelectionSide
+import GowersSzemeredi.Proofs16ProductAnchors
+import GowersSzemeredi.Proofs16SynchronizedCover
 
 /-! Declarations of `Proofs16SinglePieceLift` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

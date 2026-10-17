@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs13UniformSquareExtraction
 import GowersSzemeredi.Proofs13ContextExtraction
 import GowersSzemeredi.Proofs05Corollary58
+import GowersSzemeredi.Proofs13UniformSquareExtractionSide
 
 /-! Bilinear Fourier extraction with the exponent retained by the checked
 construction. The printed Theorem 13.12 exponent is a separate comparison. -/

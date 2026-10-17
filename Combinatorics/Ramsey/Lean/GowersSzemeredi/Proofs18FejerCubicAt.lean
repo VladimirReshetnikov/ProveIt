@@ -22,17 +22,14 @@ from an abstract square extraction:
 The chain ends in `FejerSquareAt.functionDiscrepancyBound`:
 `FunctionDiscrepancyBound 3 α β σ T'` with the corpus's β and with
 `σ = phaseInverseExponent 3 (e·κ)`, where `κ` is the corpus local count
-exponent. The corpus bound is the instance at `fejerSquareAt_corpus`. -/
+exponent. The corpus bound is the instance at `fejerSquareAt_corpus`.
+
+`fejerSquareAt_corpus` is in `Proofs18FejerCubicAtSide`, outside the final
+route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
 open scoped BigOperators
-
-/-- The corpus extraction is an instance. -/
-theorem fejerSquareAt_corpus {alpha : Real} (hα : 0 < alpha) (hαone : alpha ≤ 1) :
-    FejerSquareAt alpha (section13SquareExponent ((alpha / 2) ^ (4207554485 : Nat)))
-      (section13FourierThreshold alpha) :=
-  theorem_13_12_fejer_extraction_explicit alpha hα hαone
 
 /-- A smaller exponent is weaker. -/
 theorem FejerSquareAt.mono {alpha e e' T : Real} (h : FejerSquareAt alpha e T) (he : e' ≤ e) :

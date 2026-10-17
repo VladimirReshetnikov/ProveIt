@@ -1,4 +1,28 @@
 import GowersSzemeredi.Definitions
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Algebra.Group.ForwardDiff
+import Mathlib.Algebra.Order.Chebyshev
+import Mathlib.Algebra.Order.Floor.Semifield
+import Mathlib.Algebra.Polynomial.OfFn
+import Mathlib.Analysis.Complex.ExponentialBounds
+import Mathlib.Analysis.MeanInequalities
+import Mathlib.Analysis.Normed.Group.AddCircle
+import Mathlib.Analysis.PSeries
+import Mathlib.Analysis.Real.Pi.Bounds
+import Mathlib.Analysis.SpecialFunctions.Complex.Circle
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+import Mathlib.Combinatorics.Additive.PluenneckeRuzsa
+import Mathlib.Combinatorics.Pigeonhole
+import Mathlib.Data.Fintype.EquivFin
+import Mathlib.Data.Int.Lemmas
+import Mathlib.Data.Nat.Dist
+import Mathlib.GroupTheory.OrderOfElement
+import Mathlib.NumberTheory.ArithmeticFunction.Misc
+import Mathlib.NumberTheory.Bertrand
+import Mathlib.NumberTheory.DiophantineApproximation.Basic
+import Mathlib.NumberTheory.Divisors
+import Mathlib.NumberTheory.Harmonic.Bounds
+import Mathlib.RingTheory.Coprime.Lemmas
 
 /-! Iterated extension across unused final coordinates. The zero-dimensional
 case uses a constant graph, so the result includes every proper face dimension.

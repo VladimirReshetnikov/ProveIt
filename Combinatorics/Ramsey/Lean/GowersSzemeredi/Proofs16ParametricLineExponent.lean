@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16CubicUniformControls
+import GowersSzemeredi.Proofs16WidthMonotonicity
 
 /-! Power form and uniform count control for the parametric line width.
 These estimates keep the spectrum exponent explicit, so a cubic spectrum

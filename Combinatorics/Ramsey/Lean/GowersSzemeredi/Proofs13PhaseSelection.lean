@@ -1,5 +1,8 @@
-import GowersSzemeredi.Proofs13UntrimmedSelection
 import GowersSzemeredi.Proofs05PhaseMetric
+import GowersSzemeredi.Proofs13QuadraticEndpoints
+import Mathlib.Algebra.Polynomial.Degree.Monomial
+import Mathlib.Analysis.Convex.Jensen
+import Mathlib.Analysis.Convex.SpecificFunctions.Pow
 
 /-! Phase clusters control the affine expressions on full quadratic cells,
 including endpoints, and preserve the stronger critical-height density. -/

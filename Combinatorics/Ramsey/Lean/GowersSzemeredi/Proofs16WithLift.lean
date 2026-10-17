@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16ShortScale
 import GowersSzemeredi.Proofs16FiniteCoverPadding
+import GowersSzemeredi.Proofs16SynchronizedCover
 
 /-! The affine lift with an abstract slice provider.
 

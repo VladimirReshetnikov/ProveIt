@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs13SmallIntegerSquare
 import GowersSzemeredi.Proofs13FourierThresholdEnvelope
 import GowersSzemeredi.Proofs13FejerPrintedRange
 import GowersSzemeredi.Proofs13EndpointGlobalFourier
+import GowersSzemeredi.Proofs13FourierThresholdEnvelopeSide
 
 /-! Remove the eventual-modulus restriction from Theorem 13.12.
 Below the explicit extraction threshold, the printed target length is at

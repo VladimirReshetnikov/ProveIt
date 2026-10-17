@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs13ImprovedPrintedEndpoint
+import GowersSzemeredi.Proofs13FejerExplicitExponentSide
 
 /-! Strengthen Theorem 13.12 simultaneously: the top length exponent
 is 2^61 instead of 2^70, and the density exponent is 2^42 instead of

@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16Lemma5
+import GowersSzemeredi.Proofs16RadiusComparison
 
 /-! Recover the original Lemma 16.5 coefficient 2^-22. The stronger
 Theorem 10.13 bound alpha^5/20000 absorbs the earlier constant loss.

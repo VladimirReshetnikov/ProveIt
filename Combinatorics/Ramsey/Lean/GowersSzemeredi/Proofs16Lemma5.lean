@@ -1,6 +1,8 @@
 import GowersSzemeredi.Proofs16ArrangementSelection
-import GowersSzemeredi.Proofs16RadiusComparison
 import GowersSzemeredi.Proofs10Main
+import GowersSzemeredi.Proofs16DomainBounds
+import Mathlib.Algebra.Order.Floor.Semifield
+import Mathlib.Analysis.Complex.ExponentialBounds
 
 /-! # Extracting Bohr difference models on many fixed-side cube domains
 
@@ -8,7 +10,10 @@ import GowersSzemeredi.Proofs10Main
 and the radius `(t1, ζ)` as parameters, under `0 < t1/4 ≤ 1/36` and
 `ζ ≤ section10Zeta α` for `t1/4 ≤ α ≤ 1/6` (Notes L.16d). The printed values
 satisfy these (`lemma_16_5_with_printed_hyps`), and the printed results are
-the instances. -/
+the instances.
+
+`lemma_16_5_holds` and `lemma_16_5_with_printed_hyps` are in
+`Proofs16Lemma5Side`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
@@ -24,16 +29,6 @@ theorem HasBohrDifferenceModel.restrict_bohr {N : Nat} [NeZero N]
   refine ⟨IsAddFreimanHom.subset hsub h.1 (Set.mapsTo_univ _ _), ?_⟩
   intro y hy z hz hd
   exact h.2 y hy z hz (hsub hd)
-
-/-- The printed parameters satisfy the hypotheses: `lemma_16_5_with` contains
-the printed Lemma 16.5's conclusion. -/
-theorem lemma_16_5_with_printed_hyps {theta gamma : Real} (k : Nat)
-    (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1) :
-    0 < section16ThetaOne theta gamma k / 4 ∧ section16ThetaOne theta gamma k / 4 ≤ 1 / 36 ∧
-      ∀ alpha : Real, section16ThetaOne theta gamma k / 4 ≤ alpha → alpha ≤ 1 / 6 →
-        section16Zeta theta gamma k ≤ section10Zeta alpha := by
-  obtain ⟨h0, h1⟩ := section16_density_parameter_bounds k ht ht1 hg hg1
-  exact ⟨h0, h1, fun alpha ha ha1 => section16_zeta_le_section10Zeta k ht ht1 hg hg1 ha ha1⟩
 
 theorem section16_selected_side_model_with {N k : Nat} [NeZero N]
     (t1 zeta : Real) (B : Finset (Point N (k + 1)))
@@ -145,11 +140,5 @@ theorem lemma_16_5_with {N k : Nat} [NeZero N] (t1 zeta : Real)
     · exact ⟨∅, fun _ => 0, fun hmem => (hh hmem).elim⟩
   choose Y psi hY using hex
   exact ⟨Y, psi, hY⟩
-
-/-- Exact companion for Lemma 16.5. -/
-theorem lemma_16_5_holds : lemma_16_5 := by
-  intro N k _ theta gamma B phi ht ht1 hg hg1 hB
-  have hp := lemma_16_5_with_printed_hyps k ht ht1 hg hg1
-  exact lemma_16_5_with _ _ B phi hp.1 hp.2.1 hp.2.2 hB.2
 
 end LeanProofs.GowersSzemeredi

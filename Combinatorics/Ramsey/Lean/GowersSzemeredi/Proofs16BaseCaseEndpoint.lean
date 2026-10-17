@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16BaseCaseUnion
+import GowersSzemeredi.Proofs16BaseCaseAssemblySide
 
 /-!
 # Repaired endpoint for Lemma 16.3

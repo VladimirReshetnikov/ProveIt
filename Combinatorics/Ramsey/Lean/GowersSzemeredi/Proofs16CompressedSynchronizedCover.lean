@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs16SynchronizedSliceCover
 import GowersSzemeredi.Proofs16CompressedInterpolation
+import GowersSzemeredi.Proofs16BaseCaseCore
+import GowersSzemeredi.Proofs16BaseCaseUnion
 
 /-! # Synchronization of the compressed interpolation family
 

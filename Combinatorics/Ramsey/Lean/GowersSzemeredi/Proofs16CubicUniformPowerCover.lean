@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16ParametricLineExponent
+import GowersSzemeredi.Proofs16WithLiftSide
 
 /-! A uniform pure-power affine cover with cubic slice controls.
 All exponents, thresholds, and graph budgets depend only on the input

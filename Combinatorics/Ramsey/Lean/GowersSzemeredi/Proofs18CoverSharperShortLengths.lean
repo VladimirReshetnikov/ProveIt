@@ -4,6 +4,7 @@ import GowersSzemeredi.Proofs18SzemerediSmallLengths
 import GowersSzemeredi.Proofs05HighCorrelationAssembly
 import GowersSzemeredi.Proofs05HighCorrelationScale
 import GowersSzemeredi.Proofs05ThresholdFreeScale
+import GowersSzemeredi.Proofs18ShortLengthsFromCubicSide
 
 /-! Legacy scalar threshold comparisons for short lengths.
 

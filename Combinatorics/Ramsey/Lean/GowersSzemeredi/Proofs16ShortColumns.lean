@@ -1,4 +1,7 @@
 import GowersSzemeredi.Proofs16AnchoredCover
+import Mathlib.Combinatorics.Additive.PluenneckeRuzsa
+import Mathlib.Combinatorics.Pigeonhole
+import Mathlib.NumberTheory.Bertrand
 
 /-! # Short columns and directly sampled points
 

@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16FreimanFinalSections
 import GowersSzemeredi.Proofs16ProductAnchors
+import GowersSzemeredi.Proofs16FinalSections
 
 /-! Extract fixed Freiman families on all final-coordinate slices at once.
 The slices are disjoint, so the one-dimensional deletion bounds sum to one

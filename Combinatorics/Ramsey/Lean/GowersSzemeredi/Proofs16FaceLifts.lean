@@ -1,6 +1,16 @@
 import GowersSzemeredi.Proofs16FibreGeometry
 import GowersSzemeredi.Proofs16RelationLift
 import GowersSzemeredi.Proofs16WithSum
+import Mathlib.Algebra.Order.Ring.Abs
+import Mathlib.Analysis.MeanInequalitiesPow
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib.Data.Fin.Tuple.Finset
+import Mathlib.GroupTheory.SpecificGroups.Cyclic
+import Mathlib.MeasureTheory.Integral.Average
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+import Mathlib.Probability.ConditionalProbability
 
 /-! Generic face lifts and finite relation sums (Notes L.6, E2).
 

@@ -1,4 +1,9 @@
 import GowersSzemeredi.Proofs16BaseCaseExtraction
+import Mathlib.Analysis.MeanInequalities
+import Mathlib.Analysis.Real.Pi.Bounds
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+import Mathlib.NumberTheory.Bertrand
+import Mathlib.NumberTheory.DiophantineApproximation.Basic
 
 /-!
 # Finite-family assembly for the repaired Lemma 16.3

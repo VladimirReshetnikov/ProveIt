@@ -1,4 +1,6 @@
 import GowersSzemeredi.Proofs05BoxPartition
+import Mathlib.Algebra.BigOperators.Ring.Finset
+import Mathlib.Analysis.Complex.ExponentialBounds
 
 /-! # The singleton branch of the Section 16 local partition construction -/
 set_option autoImplicit false

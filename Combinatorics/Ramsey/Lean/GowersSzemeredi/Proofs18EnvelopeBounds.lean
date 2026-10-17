@@ -2,13 +2,15 @@ import GowersSzemeredi.Proofs18GenericEnvelopeBase
 import GowersSzemeredi.Proofs18DoubleExponentialBounds
 import GowersSzemeredi.Proofs18FejerIterationParameters
 import GowersSzemeredi.Proofs05RefinementConstantBounds
-import GowersSzemeredi.Proofs18StructuralInverseParameters
+import GowersSzemeredi.Proofs18ShortLocalizationInverse
 
 /-! Shared discrepancy envelopes and numerical bounds for the inverse step.
 
 `EnvBound` records power-of-two controls of the discrepancy parameters and
 threshold. The degree-three base, power estimates and localization thresholds
-are shared by the generic iteration and the final proof routes. -/
+are shared by the generic iteration and the final proof routes.
+
+`envBound_three` is in `Proofs18EnvelopeBoundsSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -28,29 +30,6 @@ theorem EnvBound.mono {d μ μ' : Nat} (h : EnvBound d μ) (hμ : μ ≤ μ') : 
   refine ⟨b, s, T, hB, b0, b1, s0, s16, pw_mono hX bi hμ, ex_mono hX si hμ, ?_⟩
   refine Ti.trans (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr
     (pow_le_pow_right₀ (le_trans (by norm_num) hX) (Nat.pow_le_pow_right (by norm_num) hμ))))
-
-/-- **Degree three**, from the Fejér cubic bound. -/
-theorem envBound_three : EnvBound 3 62 := by
-  intro alpha ha ha2
-  have ha1 : alpha ≤ 1 := by linarith
-  have hX := two_div_ge_two ha ha2
-  have hb0 := fejerCubicDiscrepancyParameter_pos ha
-  have hb1 := fejerCubicDiscrepancyParameter_le_one ha ha1
-  have hs0 := fejerCubicDiscrepancyExponent_pos ha ha1
-  refine ⟨fejerCubicDiscrepancyParameter alpha, min (fejerCubicDiscrepancyExponent alpha) 16,
-    fejerCubicInverseThreshold alpha,
-    (fejer_cubic_function_discrepancy_bound ha ha1).mono le_rfl le_rfl (min_le_left _ _) le_rfl,
-    hb0, hb1, lt_min hs0 (by norm_num), min_le_right _ _, ?_, ?_, ?_⟩
-  · have h8 : (fejerCubicDiscrepancyParameter alpha)⁻¹ ≤ (fejerCubicDiscrepancyParameter alpha / 8)⁻¹ :=
-      inv_anti₀ (by positivity) (by linarith only [hb0])
-    have hg := fejer_cubic_gain_inv_le_power ha ha1
-    exact (h8.trans hg).trans (pw_natpow hX (Nat.pow_le_pow_right (by norm_num) (by norm_num)))
-  · have hs := fejerCubicDiscrepancyExponent_inv_le_exp ha ha1
-    rcases min_choice (fejerCubicDiscrepancyExponent alpha) 16 with h | h
-    · rw [h]; exact ex_mono hX hs (by norm_num)
-    · rw [h]
-      exact (show ((16 : Real))⁻¹ ≤ 1 by norm_num).trans (Real.one_le_exp (by positivity))
-  · exact (fejerCubicInverseThreshold_le_double_exp ha ha1).trans (le_of_eq rfl)
 
 /-! ### The fixed constants -/
 

@@ -5,7 +5,10 @@ import GowersSzemeredi.Proofs18QuadraticSourceThreshold
 quadratic and cubic discrepancy arguments. Lengths two through four use
 prefixes of the explicit four-term progression; length five uses the
 cubic envelope through the general density iteration. The empty and
-one-term cases follow from positive density. -/
+one-term cases follow from positive density.
+
+`theorem_18_2_L3_le_five` is in `Proofs18ShortLengthsFromCubicSide`, outside the
+final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -61,9 +64,5 @@ theorem theorem_18_2_L3_le_five_of (h3 : EnvBound 3 62) {k : Nat} (hk : k ≤ 5)
   obtain ⟨a, d, hd, hmem⟩ := natural_four_term_explicit_tower delta N hδ hδhalf
     (hthreshold.trans hN) A hA hcard
   exact ⟨a, d, hd, fun i hi => hmem i (hi.trans_le hk4)⟩
-
-/-- **Theorem 18.2 with `L + 3` at every length `L ≤ 5`**, from the explicit base. -/
-theorem theorem_18_2_L3_le_five {k : Nat} (hk : k ≤ 5) : Theorem182AtSharp 3 k :=
-  theorem_18_2_L3_le_five_of envBound_three hk
 
 end LeanProofs.GowersSzemeredi

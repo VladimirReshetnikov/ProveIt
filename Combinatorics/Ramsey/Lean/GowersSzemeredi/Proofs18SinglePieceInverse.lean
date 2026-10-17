@@ -3,6 +3,7 @@ import GowersSzemeredi.Proofs17DenseFrequencyLocalization
 import GowersSzemeredi.Proofs18ShortLocalizationInverse
 import GowersSzemeredi.Proofs18FejerCubicDiscrepancy
 import GowersSzemeredi.Proofs18StructuralInverseParameters
+import GowersSzemeredi.Proofs18FejerCubicDiscrepancySide
 
 /-! The single-piece lift, step 7 (Notes L.1): an inverse step from
 global-to-local covers.

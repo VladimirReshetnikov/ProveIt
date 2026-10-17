@@ -1,5 +1,4 @@
 import GowersSzemeredi.Proofs16ClassStepDegrees
-import GowersSzemeredi.Proofs16CorollaryFromInduction
 
 /-! Theorem 16.2 and Corollary 16.11 in every dimension, from the family
 Lemma 16.6 in every dimension (Notes L.6, E6).

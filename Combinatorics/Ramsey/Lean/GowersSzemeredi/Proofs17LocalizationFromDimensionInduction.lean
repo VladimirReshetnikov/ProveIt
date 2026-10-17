@@ -1,6 +1,8 @@
 import GowersSzemeredi.Proofs17MultilinearBoxEnergy
 import GowersSzemeredi.Proofs13ExplicitPowerThreshold
 import GowersSzemeredi.Proofs18ShortLocalizationInverse
+import GowersSzemeredi.Proofs16CorollaryFromInduction
+import GowersSzemeredi.Proofs17MultilinearBoxEnergySide
 
 /-! The fixed-dimensional Section 16 structural theorem supplies the actual
 short polynomial localization needed for the general inverse induction.
