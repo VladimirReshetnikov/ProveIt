@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 16 October 2026. This report now reconciles fifty manuscripts.
+Intake findings, 17 October 2026. This report now reconciles fifty-six manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -21,6 +21,16 @@ Batch 146 below supplies a countermodel to the entire intended raw
 C/G code calculus, including the variants behind the earlier 252/250/248
 experiments. Those artifacts remain compiler benchmarks. The ordinary
 first-order closure-theory calibrations remain separate accepted arguments.
+
+Batches 158–159 add [six source reviews and their reconciliation](intake-158-159.md):
+five complete manuscripts and the recoverable part of a sixth, salvaged at the
+user's explicit request. All 327 available files of the damaged archive are
+preserved; missing invariant checkers and four journals remain explicit gaps.
+The available 255-state audit and 32 journal partitions reproduce. The separate
+cache-result MP report provides a different 252-state startup and proof-block
+interface, with no smaller machine or new Lean endpoint. See the [complete-package
+recovery instructions](intake-158-reproduction.md) and [partial-package recovery
+instructions](intake-159-reproduction.md).
 
 ## Sources, overlap and base
 

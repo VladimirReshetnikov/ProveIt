@@ -10,6 +10,12 @@ theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
 cost measure that decides whether a candidate improves the baseline.
 
+The [latest intake reconciliation](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-158-159.md)
+preserves five complete reports and one explicitly partial salvage. Useful new
+interfaces include cache-result MP, semantic seeds and matrix countdowns; the
+recovered negation identity fits the checked Pair/Scale4 components. These
+reports establish no smaller machine and leave the internal PA endpoint open.
+
 The [252-state register-permutation machine](candidate-permutation252/README.md)
 now has a [closed ZFC endpoint](choice_calibration254.md): its literal blank-tape
 nonhalting is equivalent to consistency of ZFC. The proof passes through the

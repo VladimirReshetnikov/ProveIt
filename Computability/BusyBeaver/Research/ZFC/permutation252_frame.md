@@ -69,9 +69,9 @@ proofs](permutation252_runtime.md) with this frame and the register-program
 endpoint, giving actual blank-machine halting iff numerical, native-theory,
 and ZF refutation. Its 23 axiom reports and seven caller controls passed in
 0.65 seconds; full evidence is in
-`results/sites-permutation252-verification.json`. The standard-ZFC Choice
-consistency comparison and arithmetic internalization remain separate
-obligations.
+`results/sites-permutation252-verification.json`. The [standard-ZFC Choice comparison](choice_calibration254.md)
+is also closed externally. [PA internalization](pa_internalization.md) remains
+open.
 
 Sources: `lib/jeff-busy-beaver-zfc254/ZF/m254/coq/tm/Box.v:233,248,270,286`,
 `Sim.v:81–84,161–165`; Lean `RegisterIncrement253.increment_zip`,
