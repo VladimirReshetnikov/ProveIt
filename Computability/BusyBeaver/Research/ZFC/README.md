@@ -1120,6 +1120,12 @@ arbitrary internal inputs, including the exact implication case split at zero
 and code 1's membership(0,0) output. Nine axiom reports and twelve callers pass
 with zero warnings; proof-rule and consistency transport remain separate.
 
+The [decoded truth and MP proof constructors](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_propositional254.md)
+now supply explicit internal proof codes with fixed total Σ1 graphs. MP handles
+the zero implication alias by returning the antecedent proof. Nine axiom
+reports and fourteen callers pass with zero warnings, including actual ZF/ZFC
+clients. GEN, the source axiom rows and the full PA endpoint remain open.
+
 
 The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)
 reuses actual finite segment/configuration syntax and normalization with an
@@ -1134,3 +1140,13 @@ replacing the consumed bit under explicit actual self-loop rows, for every
 internal length and both whole tape halves. Six axiom reports and twelve
 callers pass with standard axioms; four audit style warnings are preserved.
 Concrete boxes and full symbolic/runtime transport remain separate.
+
+
+The [concrete internal register-box interpretation](arithmetic_symbolic_boxes_perm252.md)
+now uses the actual finite Box/Effect/Branch syntax, nine arbitrary internal
+primary values and an internal zero-spare count. It retains the explicit final
+padding cell, checks branches on the original values, and reuses all four
+checked box endpoints. Positive decrement alone appends a zero spare. Seventeen
+axiom reports and twenty callers pass with standard axioms; four source
+unused-section-variable style warnings are preserved. Whole symbolic-checker
+soundness and full internal runtime transport remain separate.

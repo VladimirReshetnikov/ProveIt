@@ -1,0 +1,104 @@
+{
+  "status": "PASS",
+  "scope": "Four rejection controls and relocated23-object preflight; no proof builds.",
+  "portable_guard": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py",
+    "sha256": "4f684e69b1446ace71db9025131b7e220517b50c6d2976857cd0d2c46eacd775"
+  },
+  "negative_controls": [
+    {
+      "kind": "python-O",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-O",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py",
+        "--output",
+        "/tmp/zfc-decoder-propositional/reject-O",
+        "--prepare-only"
+      ],
+      "exit_code": 1,
+      "expected": "Do not use Python -O",
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py\", line 78, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py\", line 24, in main\n    req(__debug__,'Do not use Python -O.');R=a.repo.resolve();D=a.dependency_root.resolve();P=R/'Logic/Interpretability/ZFCinPA';E=(a.decoder_evidence or P/'results/model-coded-decoder-constructors254-verification.json').resolve();S=(a.source or P/'Lean/ZFCinPA/ModelCodedDecoderPropositional254.lean').resolve();A=(a.audit or P/'Lean/ZFCinPA/ModelCodedDecoderPropositional254Audit.lean').resolve();W=a.output.resolve()\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py\", line 9, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Do not use Python -O.\n"
+    },
+    {
+      "kind": "nonempty",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py",
+        "--output",
+        "/tmp/zfc-decoder-propositional/reject-nonempty",
+        "--prepare-only"
+      ],
+      "exit_code": 1,
+      "expected": "Fresh external output required",
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py\", line 78, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py\", line 26, in main\n    req(not W.is_relative_to(R)and not W.is_relative_to(D)and(not W.exists()or not any(W.iterdir())),'Fresh external output required.')\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py\", line 9, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Fresh external output required.\n"
+    },
+    {
+      "kind": "fake-first-Omega",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py",
+        "--output",
+        "/tmp/zfc-decoder-propositional/reject-Omega",
+        "--prepare-only",
+        "--library-path",
+        "/tmp/zfc-decoder-propositional/fake-library",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/build/lib/lean"
+      ],
+      "exit_code": 1,
+      "expected": "Wrong actual toolchain provider",
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py\", line 78, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py\", line 57, in main\n    rel=Path(m.replace('.','/')).with_suffix('.olean');reference=toolroot/rel;o=next((d/rel for d in [cache,*libs,toolroot]if(d/rel).is_file()),None);req(o and reference.is_file()and sha(o)==sha(reference),'Wrong actual toolchain provider '+m)\n                                                                                                                                                      ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py\", line 9, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Wrong actual toolchain provider Lean.Elab.Tactic.Omega\n"
+    },
+    {
+      "kind": "wrong-isolated-constructors",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py",
+        "--output",
+        "/tmp/zfc-decoder-propositional/reject-constructors",
+        "--prepare-only",
+        "--decoder-cache",
+        "/tmp/zfc-decoder-propositional/relocated-cache",
+        "--namespace-cache",
+        "/tmp/zfc-decoder-propositional/relocated-cache"
+      ],
+      "exit_code": 1,
+      "expected": "Changed selected predecessor ZFCinPA.ModelCodedDecoderConstructors254",
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py\", line 78, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py\", line 47, in main\n    visit('ZFCinPA.ModelCodedDecoderConstructors254')\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py\", line 41, in visit\n    old=prior[m];roots={'ZFCinPA':'Logic/Interpretability/ZFCinPA/Lean','BusyBeaver':'Computability/BusyBeaver/Lean','FirstOrder':'Logic/FirstOrder/Lean'};ss=R/roots[m.split('.')[0]]/rel.with_suffix('.lean');o=a.closed_cache/rel.with_suffix('.olean')if a.closed_cache else Path(old['object']);req(sha(ss)==old['source_sha256']and sha(o)==old['object_sha256'],'Changed selected predecessor '+m);selected[m]=dict(module=m,source=str(ss),source_sha256=sha(ss),object=str(o.resolve()),object_sha256=sha(o))\n                                                                                                                                                                                                                                                                                                     ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_decoder_propositional254.py\", line 9, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Changed selected predecessor ZFCinPA.ModelCodedDecoderConstructors254\n"
+    }
+  ],
+  "maintained_preflight": {
+    "path": "/tmp/zfc-decoder-propositional/maintained-prepared/verification.json",
+    "sha256": "6d7f476843a41c2e7ff4b2142d0fa19a35e1969e72b569df576c56c7fa7fed11"
+  },
+  "relocated_preflight": {
+    "path": "/tmp/zfc-decoder-propositional/relocated-prepared/verification.json",
+    "sha256": "8a1aaf121a8958dd54651def67f80fc62a2f0da77974bfaeec4e9a3a504718ef"
+  },
+  "isolated_object_restored": true,
+  "original_inputs_unchanged": true
+}
