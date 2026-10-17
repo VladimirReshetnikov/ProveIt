@@ -371,6 +371,17 @@ seconds. `Endpoint254` was checked here against the plain-lookup `Bisim254`
 (`results/bisim254-optimized-verification.json`, 6.9 GB peak, too large to
 repeat on this 13 GB machine alongside other builds).
 
+A subsequent independent local replay freshly checked all nine newly imported
+units, including `Basic`, `OmegaRecursion`, `Choice` and the six ZFC research
+modules, against the current source-matched optimized `Bisim254` object.
+All nine passed in about nine seconds; five axiom audits and two direct callers
+also passed. Their exact sources, commands and outputs are in
+[the fresh verification record](results/zfnative-fresh-verification.json).
+This replay reuses the other 117 previously checked source-matched imports;
+it does not rebuild the entire expanded library. A separate full-source
+mathematical review of the named-formula and rank construction is recorded in
+[the independent review](results/zfrank-independent-source-review.json).
+
 **Status of the goal.** For the literal register program the machine
 decodes: `Con(ZFC)` implies non-halting (this lane), and non-halting is
 equivalent to the consistency of `NativeAx` (L1–L4 with the Codex lane's
