@@ -1419,3 +1419,11 @@ Its AC=1 dispatcher composition also clears AC. The check passed 12 probes and
 18 callers with standard axioms; eleven unused-simp source warnings remain.
 Both attempts, exact evidence and independent review are recorded. Complete
 MP/AX, interpreter-to-Enum and the final PA equivalence remain open.
+
+The [actual MP destructive comparison](arithmetic_control_compare254.md) now has
+an exact all-internal logical clock: `3*a+2*distance(a,b)+2`, where `a` and `b`
+are the original scratch1 and cache. It clears both fields, preserves every
+other register, and enters the actual success push exactly on equality;
+otherwise it returns to fetch. The first source/audit check passed 14 axiom
+probes and 18 callers with standard axioms and no warnings. The full MP
+constructor and success-push composition remain open.
