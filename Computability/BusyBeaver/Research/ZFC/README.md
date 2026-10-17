@@ -75,6 +75,15 @@ fold recipes. None passes the bounded checker; fuel and abstraction stops
 remain distinct from counterexamples. Three literal continuation probes also
 show why different program counters need a proved semantic relation.
 
+A wider ordinary [initializer credit criterion](dirty_initializer_credit.md)
+allows an arbitrary dirty stack bottom when the safe prefix covers the exact
+DROP-minus-NIP balance skipped by the starting candidate. Its AX-first adapter
+has 161 eligible counters below 100,000 in the finite syntax audit. A replay of
+28,672 map/start cases found only the known clean initializer; the all-start
+portion is redundant with the earlier blank-ray classification. Under the
+retained universal runtime contracts all 504 rows are used, so another fold
+needs a weaker phase or continuation invariant, or a different evaluator.
+
 The [attributed upstream baseline](../../../../lib/jeff-busy-beaver-zfc254/README.proveit.md)
 is imported at commit `297ab8df7e5de329605c3875b4934643b371a5e3`.
 Mira-Cult designed the machine; Jeff supplies the published verification.
