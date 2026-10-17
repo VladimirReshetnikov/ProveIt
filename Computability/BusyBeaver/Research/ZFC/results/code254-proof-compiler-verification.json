@@ -1,0 +1,38 @@
+{
+  "status": "PASS explicit finite-proof-data compiler and callers",
+  "scope": "Pure structural compiler with Contract and explicit refutation command word for the existing enumerator. External theorem only; no arithmetic representation or PA formalization.",
+  "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254ProofCompiler.lean",
+  "sha256": "5aee29785eb0ccb9dd742b4718d2b5c34a9ec50bc7adb9adb3bad08b4d1f9538",
+  "raw_proof_sha256": "7bb8daf0f1c0965d22f2f16bbb1898d60cfb79f9a6feabe8ab38b3f69b3bc6d1",
+  "cache": "/tmp/zfc-constructible-fresh/cache",
+  "olean": "/tmp/zfc-constructible-fresh/cache/BusyBeaver/ZFC/Code254ProofCompiler.olean",
+  "checks": [
+    {
+      "kind": "module",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-constructible-fresh/cache/BusyBeaver/ZFC/Code254ProofCompiler.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254ProofCompiler.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean",
+      "LEAN_PATH": "/tmp/zfc-constructible-fresh/cache",
+      "elapsed_seconds": 0.43797560688108206,
+      "exit_code": 0,
+      "output": "'SetTheory.BusyBeaver.ZFC.Code254ProofCompiler.compile_contract' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254ProofCompiler.refutation_cexec_none' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254ProofCompiler.refutation_halts' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"
+    },
+    {
+      "kind": "audit",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "/tmp/zfc-code254-proof-compiler-ld0hcvxf/Audit.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean",
+      "LEAN_PATH": "/tmp/zfc-constructible-fresh/cache",
+      "elapsed_seconds": 0.2574397958815098,
+      "exit_code": 0,
+      "output": "'SetTheory.BusyBeaver.ZFC.Code254ProofCompilerAudit.truth_word' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.Code254ProofCompilerAudit.truth_contract' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254ProofCompilerAudit.axiom8_contract' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254ProofCompilerAudit.gen_contract_caller' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254ProofCompilerAudit.mp_contract_caller' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254ProofCompilerAudit.explicit_word_refutes_from_every_state' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254ProofCompilerAudit.data_refutation_halts' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"
+    }
+  ],
+  "audit_source": "import BusyBeaver.ZFC.Code254ProofCompiler\nnamespace SetTheory.BusyBeaver.ZFC.Code254ProofCompilerAudit\nopen Code254 Code254Proof Enum254 Code254ProofCompiler\n\ntheorem truth_word : compile RawProof.truth = discard := rfl\n\ntheorem truth_contract : Contract (compile RawProof.truth) 0 :=\n  compile_contract .truth rfl\n\ntheorem axiom8_contract (a b c u : Nat) :\n    Contract (compile (.r8 a b c u)) (rho8 a b c u) :=\n  compile_contract (.r8 a b c u) rfl\n\ntheorem gen_contract_caller (a : Nat) (p : RawProof) (hp : p.valid = true) :\n    Contract (compile (.gen a p)) (wal a p.conclusion) :=\n  compile_contract (.gen a p) hp\n\ntheorem mp_contract_caller (b : Nat) (p q : RawProof)\n    (hp : p.valid = true) (hq : q.valid = true)\n    (he : q.conclusion = wim p.conclusion b) :\n    Contract (compile (.mp b p q)) b :=\n  compile_contract (.mp b p q) (by simp [RawProof.valid, hp, hq, he])\n\ntheorem explicit_word_refutes_from_every_state (p : RawProof)\n    (hp : p.valid = true) (hf : p.conclusion = F) :\n    \u2200 w, cexec (refutationWord p) w = none :=\n  refutation_cexec_none p hp hf\n\ntheorem data_refutation_halts (p : RawProof) (hp : p.valid = true)\n    (hf : p.conclusion = F) : Enum254.Halts := refutation_halts p hp hf\n\n#print axioms truth_word\n#print axioms truth_contract\n#print axioms axiom8_contract\n#print axioms gen_contract_caller\n#print axioms mp_contract_caller\n#print axioms explicit_word_refutes_from_every_state\n#print axioms data_refutation_halts\nend SetTheory.BusyBeaver.ZFC.Code254ProofCompilerAudit\n"
+}
