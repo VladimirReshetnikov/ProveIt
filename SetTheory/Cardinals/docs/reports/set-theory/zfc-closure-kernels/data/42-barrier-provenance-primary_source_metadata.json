@@ -1,0 +1,21 @@
+[
+  {
+    "title": "intake-144-source-08.md",
+    "url": "https://github.com/VladimirReshetnikov/ProveIt/blob/61e77836565f63582561f54745f633d50efd9c7d/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/intake-144-source-08.md",
+    "git_blob_sha": "d590578011a5d6c126844b28ef8e3db7571238b6"
+  },
+  {
+    "title": "README.md",
+    "url": "https://github.com/jeff87654/busy-beaver/blob/297ab8df7e5de329605c3875b4934643b371a5e3/ZF/m254/README.md",
+    "git_blob_sha": "d2f3eb1d7150a35f99cc866720aeb9bb75981f5f"
+  },
+  {
+    "title": "ZF253: verify a 253-state machine for finite ZF/ZFC refutations",
+    "url": "https://github.com/jeff87654/busy-beaver/pull/20",
+    "state_at_read": "open",
+    "head": "0d544f2a2e3c18f12278441a74b7879f31cbe856",
+    "repo": "mira-emmy/busy-beaver",
+    "created_at": "2026-10-15T23:50:55Z",
+    "body": "Reduces Mira-Cult's verified 254-state binary machine to **253 working states**, including initialization, with start state 0, blank symbol 0 and separate terminal state 253. The saving shares old state 5 between initialization on symbol 0 and a guarded runtime helper on symbol 1, deletes old state 8, and explicitly renumbers the literal table.\n\nThe new table-specific proofs establish exact blank-tape halting iff a finite classical refutation of the existing SIR, closed ZF, or ZF+AC theory. Universal symbolic execution covers every instruction site. The exact 312,975-step bootstrap reaches the unchanged register program's 330th configuration with header gap 40; finite-prefix transport then composes with the accepted program, enumeration, calculus and set-theory proofs. The 254-state baseline remains available under `ZF/m254`.\n\nValidation on the exact submitted source tree:\n\n```sh\npython3 -I -B ZF/m253/check.py --coqc coqc \\\n  --wall-seconds 240 --memory-mib 1536 --coqchk-seconds 900\n```\n\nAll **160 source modules** rebuild, all **194 assumption reports** are closed, and recursive `coqchk` passes. Fresh source-package extraction also passes generator, literal-table and source checks. The standalone CI workflow uses Coq 8.20.1 with an immutable container digest, a pinned checkout action, read-only permissions and no persisted checkout credentials.\n\nSource pins:\n\n- New table SHA256: `84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95`.\n- Original 254-state table SHA256: `d655ce2cf8cccebd21caa21a49f0f9f010960a44b95c17aae6cc425c518954eb`.\n- Committed register program input SHA256: `1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746`.\n- Existing busycoq `bd2e36f6aa204eb011742d2ca6c8741102b2e59e` and Undecidability `70dfc56f33a6e4835281044e68aa68279989047e` sources and licenses are reused unchanged.\n\nThe checked result is the external halting/refutation equivalence. No formalized independence or additional internalization claim is made.\n"
+  }
+]

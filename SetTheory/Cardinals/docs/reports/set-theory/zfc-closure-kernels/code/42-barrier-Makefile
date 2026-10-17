@@ -1,0 +1,22 @@
+PYTHON ?= python3
+LEAN ?= lean
+
+.PHONY: pdf verify quick lean clean
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+verify:
+	$(PYTHON) verify.py
+
+quick:
+	$(PYTHON) verify.py --quick
+
+lean:
+	$(LEAN) formal/FiniteKernelSelectors.lean
+	$(LEAN) formal/FiniteKernelSelectorsIndependent.lean
+	$(LEAN) formal/CantorOccurrenceOrder.lean
+	$(LEAN) formal/PrefixStackBarrier.lean
+
+clean:
+	latexmk -c report.tex

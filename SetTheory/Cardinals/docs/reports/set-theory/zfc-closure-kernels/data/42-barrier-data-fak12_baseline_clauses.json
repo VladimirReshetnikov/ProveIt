@@ -1,0 +1,917 @@
+{
+  "name": "FAK12 prior reference, faithful format conversion",
+  "functions": {
+    "e": 0,
+    "I": 0,
+    "V": 2,
+    "C": 3,
+    "Pair": 2,
+    "Union": 1,
+    "Power": 1,
+    "Nand": 2,
+    "Atom": 2,
+    "Exists": 2,
+    "ExistsWitness": 3,
+    "ExtWitness": 2,
+    "UnionWitness": 2,
+    "PowerWitness": 2,
+    "Sep": 3,
+    "Collect": 3,
+    "CollectWitness": 4
+  },
+  "predicates": {
+    "E": 2,
+    "eps": 2,
+    "eq": 2
+  },
+  "clauses": [
+    {
+      "name": "prior0_A1.Change",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "eq",
+          "args": [
+            [
+              "V",
+              [
+                "C",
+                "?s",
+                "?j",
+                "?z"
+              ],
+              "?j"
+            ],
+            "?z"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior1_A1.Change",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "eq",
+          "args": [
+            "?k",
+            "?j"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "eq",
+          "args": [
+            [
+              "V",
+              [
+                "C",
+                "?s",
+                "?j",
+                "?z"
+              ],
+              "?k"
+            ],
+            [
+              "V",
+              "?s",
+              "?k"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior2_A2.NAND",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "eps",
+          "args": [
+            "?s",
+            [
+              "Nand",
+              "?a",
+              "?b"
+            ]
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "eps",
+          "args": [
+            "?s",
+            "?a"
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "eps",
+          "args": [
+            "?s",
+            "?b"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior3_A2.NAND",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "eps",
+          "args": [
+            "?s",
+            [
+              "Nand",
+              "?a",
+              "?b"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "eps",
+          "args": [
+            "?s",
+            "?a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior4_A2.NAND",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "eps",
+          "args": [
+            "?s",
+            [
+              "Nand",
+              "?a",
+              "?b"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "eps",
+          "args": [
+            "?s",
+            "?b"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior5_A3.Atom",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "eps",
+          "args": [
+            "?s",
+            [
+              "Atom",
+              "?j",
+              "?k"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            [
+              "V",
+              "?s",
+              "?j"
+            ],
+            [
+              "V",
+              "?s",
+              "?k"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior6_A3.Atom",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "eps",
+          "args": [
+            "?s",
+            [
+              "Atom",
+              "?j",
+              "?k"
+            ]
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            [
+              "V",
+              "?s",
+              "?j"
+            ],
+            [
+              "V",
+              "?s",
+              "?k"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior7_A4.Exists",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "eps",
+          "args": [
+            "?s",
+            [
+              "Exists",
+              "?j",
+              "?a"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "eps",
+          "args": [
+            [
+              "C",
+              "?s",
+              "?j",
+              [
+                "ExistsWitness",
+                "?j",
+                "?a",
+                "?s"
+              ]
+            ],
+            "?a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior8_A4.Exists",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "eps",
+          "args": [
+            [
+              "C",
+              "?s",
+              "?j",
+              "?z"
+            ],
+            "?a"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "eps",
+          "args": [
+            "?s",
+            [
+              "Exists",
+              "?j",
+              "?a"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior9_A5.Empty",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "e"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior10_A6.Ext",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "eq",
+          "args": [
+            "?a",
+            "?b"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            [
+              "ExtWitness",
+              "?a",
+              "?b"
+            ],
+            "?a"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            [
+              "ExtWitness",
+              "?a",
+              "?b"
+            ],
+            "?b"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior11_A6.Ext",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "eq",
+          "args": [
+            "?a",
+            "?b"
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            [
+              "ExtWitness",
+              "?a",
+              "?b"
+            ],
+            "?a"
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            [
+              "ExtWitness",
+              "?a",
+              "?b"
+            ],
+            "?b"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior12_A7.Pair",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "Pair",
+              "?a",
+              "?b"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "eq",
+          "args": [
+            "?x",
+            "?a"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "eq",
+          "args": [
+            "?x",
+            "?b"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior13_A7.Pair",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "eq",
+          "args": [
+            "?x",
+            "?a"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "Pair",
+              "?a",
+              "?b"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior14_A7.Pair",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "eq",
+          "args": [
+            "?x",
+            "?b"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "Pair",
+              "?a",
+              "?b"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior15_A8.Union",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "Union",
+              "?a"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            [
+              "UnionWitness",
+              "?a",
+              "?x"
+            ],
+            "?a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior16_A8.Union",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "Union",
+              "?a"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "UnionWitness",
+              "?a",
+              "?x"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior17_A8.Union",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?z",
+            "?a"
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?x",
+            "?z"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "Union",
+              "?a"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior18_A9.Power",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "Power",
+              "?a"
+            ]
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?z",
+            "?x"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            "?z",
+            "?a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior19_A9.Power",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "Power",
+              "?a"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            [
+              "PowerWitness",
+              "?a",
+              "?x"
+            ],
+            "?x"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior20_A9.Power",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "Power",
+              "?a"
+            ]
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            [
+              "PowerWitness",
+              "?a",
+              "?x"
+            ],
+            "?a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior21_A10.Infinity",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            [
+              "e"
+            ],
+            [
+              "I"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior22_A10.Infinity",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "I"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            [
+              "Union",
+              [
+                "Pair",
+                "?x",
+                [
+                  "Pair",
+                  "?x",
+                  "?x"
+                ]
+              ]
+            ],
+            [
+              "I"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior23_A11.Sep",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "Sep",
+              "?a",
+              "?b",
+              "?t"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            "?x",
+            "?a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior24_A11.Sep",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "Sep",
+              "?a",
+              "?b",
+              "?t"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "eps",
+          "args": [
+            [
+              "C",
+              "?b",
+              [
+                "e"
+              ],
+              "?x"
+            ],
+            "?t"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior25_A11.Sep",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?x",
+            "?a"
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "eps",
+          "args": [
+            [
+              "C",
+              "?b",
+              [
+                "e"
+              ],
+              "?x"
+            ],
+            "?t"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "Sep",
+              "?a",
+              "?b",
+              "?t"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior26_A12.Collection",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?x",
+            "?a"
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "eps",
+          "args": [
+            [
+              "C",
+              [
+                "C",
+                "?b",
+                [
+                  "e"
+                ],
+                "?x"
+              ],
+              [
+                "I"
+              ],
+              "?y"
+            ],
+            "?t"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            [
+              "CollectWitness",
+              "?a",
+              "?b",
+              "?t",
+              "?x"
+            ],
+            [
+              "Collect",
+              "?a",
+              "?b",
+              "?t"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "prior27_A12.Collection",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?x",
+            "?a"
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "eps",
+          "args": [
+            [
+              "C",
+              [
+                "C",
+                "?b",
+                [
+                  "e"
+                ],
+                "?x"
+              ],
+              [
+                "I"
+              ],
+              "?y"
+            ],
+            "?t"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "eps",
+          "args": [
+            [
+              "C",
+              [
+                "C",
+                "?b",
+                [
+                  "e"
+                ],
+                "?x"
+              ],
+              [
+                "I"
+              ],
+              [
+                "CollectWitness",
+                "?a",
+                "?b",
+                "?t",
+                "?x"
+              ]
+            ],
+            "?t"
+          ]
+        }
+      ]
+    }
+  ]
+}
