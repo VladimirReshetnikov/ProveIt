@@ -1,4 +1,5 @@
 import GowersSzemeredi.Sections01_03
+import GowersSzemeredi.ProofInfrastructure
 import Mathlib.NumberTheory.DiophantineApproximation.Basic
 
 /-!
@@ -17,16 +18,6 @@ open scoped BigOperators ZMod
 open Finset
 
 namespace LeanProofs.GowersSzemeredi
-
-private def singletonNatAP (x : Nat) : NatAP where
-  start := x
-  step := 1
-  length := 1
-
-@[simp] private lemma singletonNatAP_carrier (x : Nat) :
-    (singletonNatAP x).carrier = {x} := by
-  ext y
-  simp [singletonNatAP, NatAP.carrier]
 
 private def residueClassLength (r u a : Nat) : Nat :=
   (r - 1 - a) / u + 1
@@ -182,23 +173,6 @@ private lemma residueChunkAP_isProper {r u L : Nat}
 private noncomputable def residueChunkFamily (r u L : Nat) :
     Fin (Fintype.card (ResidueChunkIndex r u L)) → NatAP :=
   fun i => residueChunkAP r u L ((Fintype.equivFin _).symm i)
-
-private lemma singletonNatAP_partition (r : Nat) :
-    IsNatAPPartition (fun i : Fin r => singletonNatAP i) (Finset.range r) := by
-  constructor
-  · intro x
-    simp only [Finset.mem_range, singletonNatAP_carrier, Finset.mem_singleton]
-    constructor
-    · intro hx
-      exact ⟨⟨x, hx⟩, rfl⟩
-    · rintro ⟨i, rfl⟩
-      exact i.isLt
-  · intro i j hij
-    change Disjoint (singletonNatAP (i : Nat)).carrier
-      (singletonNatAP (j : Nat)).carrier
-    rw [singletonNatAP_carrier, singletonNatAP_carrier]
-    exact Finset.disjoint_singleton.mpr fun h =>
-      bne_iff_ne.mp hij (Fin.ext h)
 
 private lemma residueChunkFamily_partition {r u L : Nat}
     (hu : 0 < u) (hur : u ≤ r) (hL : 0 < L)

@@ -18,62 +18,25 @@ open Finset
 
 namespace LeanProofs.GowersSzemeredi
 
+/-- An identity `F = N X` with `N > 0` turns the bound `X ≤ c N³` into `F ≤ c N⁴`. -/
+private lemma le_cube_iff_le_fourth {N X F c : Real} (hN : 0 < N) (h : F = N * X) :
+    X ≤ c * N ^ 3 ↔ F ≤ c * N ^ 4 := by
+  rw [h, show c * N ^ 4 = N * (c * N ^ 3) by ring, mul_le_mul_iff_right₀ hN]
+
 private lemma condition_i_iff_iii {N : Nat} [NeZero N]
     (f : ZMod N → Complex) (c : Real) :
     uniformCondition2i f c ↔ uniformCondition2iii f c := by
-  let E := ∑ t : ZMod N,
-    ‖∑ s : ZMod N, f s * star (f (s - t))‖ ^ 2
-  let F := ∑ r : ZMod N, ‖fourier f r‖ ^ 4
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hFE : F = (N : Real) * E := by
-    have h := lemma_2_1_holds N f f
-    convert h using 1
-    apply Finset.sum_congr rfl
-    intro r _
-    ring
-  change E ≤ c * (N : Real) ^ 3 ↔ F ≤ c * (N : Real) ^ 4
-  constructor
-  · intro h
-    calc
-      F = (N : Real) * E := hFE
-      _ ≤ (N : Real) * (c * (N : Real) ^ 3) :=
-        mul_le_mul_of_nonneg_left h hN.le
-      _ = c * (N : Real) ^ 4 := by ring
-  · intro h
-    refine le_of_mul_le_mul_left ?_ hN
-    calc
-      (N : Real) * E = F := hFE.symm
-      _ ≤ c * (N : Real) ^ 4 := h
-      _ = (N : Real) * (c * (N : Real) ^ 3) := by ring
+  refine le_cube_iff_le_fourth (by exact_mod_cast NeZero.pos N) ?_
+  convert lemma_2_1_holds N f f using 1
+  exact Finset.sum_congr rfl fun r _ => by ring
 
 private lemma condition_ii_iff_iii {N : Nat} [NeZero N]
     (f : ZMod N → Complex) (c : Real) :
     uniformCondition2ii f c ↔ uniformCondition2iii f c := by
-  let Q := (∑ q : Fin 4 → ZMod N,
-    if q 0 - q 1 = q 2 - q 3
-      then f (q 0) * star (f (q 1) * f (q 2)) * f (q 3)
-      else 0).re
-  let F := ∑ r : ZMod N, ‖fourier f r‖ ^ 4
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have hFQ : F = (N : Real) * Q := by
-    have h := congrArg Complex.re (identity_2_6_holds N f)
-    simpa only [Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im,
-      Complex.natCast_re, Complex.natCast_im, Nat.cast_ofNat, zero_mul, mul_zero,
-      sub_zero] using h
-  change Q ≤ c * (N : Real) ^ 3 ↔ F ≤ c * (N : Real) ^ 4
-  constructor
-  · intro h
-    calc
-      F = (N : Real) * Q := hFQ
-      _ ≤ (N : Real) * (c * (N : Real) ^ 3) :=
-        mul_le_mul_of_nonneg_left h hN.le
-      _ = c * (N : Real) ^ 4 := by ring
-  · intro h
-    refine le_of_mul_le_mul_left ?_ hN
-    calc
-      (N : Real) * Q = F := hFQ.symm
-      _ ≤ c * (N : Real) ^ 4 := h
-      _ = (N : Real) * (c * (N : Real) ^ 3) := by ring
+  refine le_cube_iff_le_fourth (by exact_mod_cast NeZero.pos N) ?_
+  simpa only [Complex.ofReal_re, Complex.mul_re, Complex.ofReal_im,
+    Complex.natCast_re, Complex.natCast_im, Nat.cast_ofNat, zero_mul, mul_zero,
+    sub_zero] using congrArg Complex.re (identity_2_6_holds N f)
 
 private lemma condition_iii_imp_iv {N : Nat} [NeZero N]
     (f : ZMod N → Complex) (c1 c2 : Real)
