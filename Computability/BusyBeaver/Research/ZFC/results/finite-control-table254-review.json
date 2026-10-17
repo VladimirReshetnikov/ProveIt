@@ -1,0 +1,162 @@
+{
+  "status": "CLEAN_FINAL_ACTUAL_CATALOGUE_PROOF_AND_PORTABLE_SCOPE",
+  "independent_reviewer": "/root/review_bic/mira_backend_route",
+  "json_path": "/tmp/zfc-finite-control-table/child-final-review.json",
+  "json_sha256": "e18605c41b12a1e5f2faa9f1a58433d0cf01a657cfc87bc7f3e5b0951a868d6b",
+  "review": {
+    "status": "CLEAN_READ_ONLY_FINAL_PROOF_AND_PORTABLE_DEFAULT_CONTROLS",
+    "reviewer": "/root/review_bic/mira_backend_route",
+    "defects": [],
+    "proof_review": {
+      "path": "/tmp/zfc-finite-control-table/child-finalproof-review.json",
+      "sha256": "fd6f8fdbea32535ecff23710a2efbba7439450482a5c06a3c1ab83c528a1ccaf"
+    },
+    "source_first_review": {
+      "path": "/tmp/zfc-finite-control-table/child-source-first-review.json",
+      "sha256": "21b3a5b222766890f6734abe691fcd79ac6323ffae1b8f6aa5d194c9f035f29a"
+    },
+    "original_reviews_unchanged": true,
+    "source": {
+      "path": "/tmp/zfc-finite-control-table/sources/BusyBeaver/ZFC/FiniteControlTable254.lean",
+      "sha256": "326c3d191c17c7c5d75ebafb85cc38a1361e5091cd5d7bdbb01c88b7e9649c2a"
+    },
+    "source_lines": 227,
+    "audit": {
+      "path": "/tmp/zfc-finite-control-table/Audit.lean",
+      "sha256": "d89330f86692f8967c83535a71e9cf8ea3714c0bf7415de2e42471b41ee55ce6"
+    },
+    "proof_evidence": {
+      "path": "/tmp/zfc-finite-control-table/run5/verification.json",
+      "sha256": "bc0de17e9ba4d66101775fde6c59eaeeac6878ce14e97bea885b62f438f1c1be"
+    },
+    "proof_contract": {
+      "status": "PASS",
+      "probes": 14,
+      "callers": 17,
+      "only_standard_axioms": true,
+      "warnings": 0,
+      "source_seconds": 0.6410323120653629,
+      "audit_seconds": 0.47131858486682177,
+      "input_paths": 74,
+      "reused_projects": 32,
+      "external_boundaries": 0,
+      "toolchain_modules": [
+        "Init",
+        "Lean.Elab.Tactic.Omega"
+      ],
+      "coverage_guard_replay": false,
+      "bootstrap_replay": false,
+      "dependency_build": false
+    },
+    "mathematical_findings": [
+      "The exact actualEntries list is derived structurally from bound ActualTree254.tree in false-first DFS order. Its length6460 and every source acceptance/walk/follow property are inherited from actual existing coverage without rerunning individual guards.",
+      "Generic leafEntries soundness/completeness and NoDup retain complete consumed path/edge pairs. Repeated instruction opcodes at different paths are not incorrectly merged. Source injectivity is pair identity, not a claim of unique opcodes.",
+      "resolveControl computes actual walk and idxOf on the consumed path/edge, with coverage discharging only the impossible none branch in Prop. The returned data are deterministic and in Fin6460; there is no proof-selection oracle or added execution hypothesis.",
+      "The final entry_at_index helper takes the actual BEq plus LawfulBEq and derives DecidableEq from it. Its induction proves first-match lookup correctly without silently replacing the product BEq used by actualEntries.idxOf. This resolves the run4 dictionary mismatch and changes no actual resolver definition.",
+      "Other proofdelta replaces unsupported lemma syntax with theorem, uses explicit list induction/projections, exact consume_self simplification and dependent-match normalization. Public mathematical contracts and source/resolver algorithms are unchanged.",
+      "Implicit trailing zero bits and exact consumed depth are preserved by walk_entry_mem; empty_control and first_source are literal finite computations. The result identifies only consumed code, not an arbitrary unused suffix or whole tape.",
+      "The actual first toolchain providers are Init and Omega from the pinned compiler; the reusable32-node closure is pure Std and source/object matched to exact native169 evidence. No Mathlib/Foundation library path is admitted.",
+      "Final audit reports14 ordered standard-only declarations and17 callers. No custom axiom/sorry, cut-off, runtime or whole tape assumption is added."
+    ],
+    "scope_limit": "External native Control=Fin6460 and ordinary finite Bool paths only. This binds the actual source catalogue and consumed-path resolver; arithmetic lookup/table binding, all-internal variable-PC execution, and L2 scheduler bridge remain separate work. Full-tape rebasing still requires the independent Clean interfaces.",
+    "portable_guard": {
+      "path": "/tmp/zfc-finite-control-table/publication/check_finite_control_table254.py",
+      "sha256": "b0036af11e2575e06a7a55508c2a335c6454740934feac31ed7c61419dbb2658"
+    },
+    "executed_guard": {
+      "path": "/tmp/zfc-finite-control-table/check.py",
+      "sha256": "5deaed2a3f45a72be9ada489a54744a6e53277a01f421633c223aa14dae9c3dd"
+    },
+    "portable_delta": "Only frozen maintained-default source pin changes to the exact successful source326c3d19...9649c2a; original successful driver and record remain unchanged. Explicit source/audit overrides are recorded and intentionally bypass only maintained-default source/audit pins.",
+    "guard_findings": [
+      "The final guard requires the exact pinned native169 record, compiler hash/version, source+postsource and object+postobject hashes for every current32-node DFS import provider. Foundation/Mathlib import roots are excluded; it builds only this new source/audit.",
+      "First project providers, Init and Omega are selected from the owned fresh cache followed by compiler sysroot, with explicit sysroot equality and all source/object/compiler/evidence/snapshot inputs checked pre/post. LEAN_PATH excludes inherited environment/library paths.",
+      "Fresh object hash is captured after source and before audit, then compared after ordered14-report/17-caller standard-axiom audit. No coverage/binary guard/bootstrap/dependency replay or fetch occurs.",
+      "Python-O is rejected by an explicit executable branch before assertions. Nonfresh output is rejected before any write. Output must be external to current repo. Source/audit and selected-object relocation are supported with exact identity checks."
+    ],
+    "maintained_default_preflight": {
+      "path": "/tmp/zfc-finite-control-table/maintained-prepared/verification.json",
+      "sha256": "cd20a1fac32701d0a8a223a9ecaba5557c5735a88870474095815b217a4a9027"
+    },
+    "preflight_scope": "PREPARED_NOT_BUILT, no source/audit overrides, no commands/fresh objects;74inputs/32pureStdmodules/Init+Omega. Version query may occur; no proof build.",
+    "controls": {
+      "record": {
+        "path": "/tmp/zfc-finite-control-table/guard-controls/negative-controls.json",
+        "sha256": "442d6aef2d8f38514a7f39c5a87a74c502b8600e1ce8f34fc373df15754bef63"
+      },
+      "expected_rejections": [
+        "optimized_python",
+        "nonempty_output",
+        "selected_project_object",
+        "modified_core_record"
+      ],
+      "review": "Read all four recorded nonzero exits and commands. Wrong selected RegisterPath object differs from the frozen expected hash; modified core JSON differs from the mandatory native169 hash. No controls were replayed.",
+      "toolchain_scope": "Init/Omega were positively selected and hash-checked, not shadow-tested. The guard offers no arbitrary library-path override; no shadow-library rejection coverage is claimed."
+    },
+    "note_review": "Corrected note explicitly distinguishes unchanged main source/resolver endpoint contracts from entry_at_index helper typeclass API repair. Whole-tape/Clean and arithmetic/runtime scope are accurate.",
+    "identities": {
+      "record": {
+        "path": "/tmp/zfc-finite-control-table/child-final-identities.json",
+        "sha256": "bfed50abd6b1da2a8cf38c1433d6f0696f3896a9b95b52b3277605878768f2d8"
+      },
+      "comparisons": 378,
+      "unique_paths": 91,
+      "current_placements": [
+        {
+          "target": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteControlTable254.lean",
+          "present": true,
+          "sha256": "326c3d191c17c7c5d75ebafb85cc38a1361e5091cd5d7bdbb01c88b7e9649c2a"
+        },
+        {
+          "target": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/finite_control_table254_audit.lean",
+          "present": true,
+          "sha256": "d89330f86692f8967c83535a71e9cf8ea3714c0bf7415de2e42471b41ee55ce6"
+        },
+        {
+          "target": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_finite_control_table254.py",
+          "present": true,
+          "sha256": "b0036af11e2575e06a7a55508c2a335c6454740934feac31ed7c61419dbb2658"
+        },
+        {
+          "target": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/finite_control_table254.md",
+          "present": false,
+          "sha256": "364909e7e0b48f48aed58f102dbc6d82f6950162c5112ac16bf1a0ff361a320b"
+        },
+        {
+          "target": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/finite-control-table254-verification.json",
+          "present": false,
+          "sha256": "bc0de17e9ba4d66101775fde6c59eaeeac6878ce14e97bea885b62f438f1c1be"
+        },
+        {
+          "target": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/finite-control-table254-publication.json",
+          "present": false,
+          "sha256": "6e46d39c2fb5fdb26a220b32d0b946d59f54e610ddf0f9ce338140aa619caa33"
+        }
+      ]
+    },
+    "publication_scope": "First three code/audit/guard files were maintained exactly at this review. Doc/result publication candidates were read and hashed; candidate status/publication metadata will be updated by the author to include this review. Reviewer-owned exact snapshots retain the reviewed candidate bytes rather than asserting future mutable status/map hashes.",
+    "candidate_snapshots": [
+      {
+        "path": "/tmp/zfc-finite-control-table/child-joined-snapshots/check_finite_control_table254.py",
+        "sha256": "b0036af11e2575e06a7a55508c2a335c6454740934feac31ed7c61419dbb2658"
+      },
+      {
+        "path": "/tmp/zfc-finite-control-table/child-joined-snapshots/finite-control-table254-publication.json",
+        "sha256": "6e46d39c2fb5fdb26a220b32d0b946d59f54e610ddf0f9ce338140aa619caa33"
+      },
+      {
+        "path": "/tmp/zfc-finite-control-table/child-joined-snapshots/finite_control_table254.md",
+        "sha256": "364909e7e0b48f48aed58f102dbc6d82f6950162c5112ac16bf1a0ff361a320b"
+      },
+      {
+        "path": "/tmp/zfc-finite-control-table/child-joined-snapshots/publication-map.json",
+        "sha256": "3bc1dc7dde37bfecefc68db2caa454b14378a0f7c68d427ed898de9d19c83af5"
+      }
+    ],
+    "review_method": "Full final source/audit/proofdelta/guard/note/history/control read; independent current source/object/input/compiler/evidence hashes, native169 linkage, import DFS and actual first-provider checks. Reviewer invoked no compiler or checker and performed no proof/control replay. No author/tracked edits."
+  },
+  "prose_path": "/tmp/zfc-finite-control-table/child-final-review.md",
+  "prose_sha256": "3fdf79ce7bb1a12b5ed6609b38057068a52c52a1e7dbaa0e5743bdf4aaba5a4c",
+  "prose": "# Final catalogue/resolver portable review\n\nCLEAN. Joins the preserved full final proof review with the final portable guard, corrected note, maintained-default preflight and four recorded controls. The guard changes only its frozen default source pin; the original successful source/audit/driver/record remain exact.\n\nThe actual source catalogue/resolver proof passes14/17/std3, zero warnings. Current74 input paths,32 pure-Std project objects, actual first Init/Omega and fresh object match, with378 joined hash comparisons across91 paths. The maintained-default preflight has no overrides, commands or fresh objects and is explicitly unbuilt.\n\nFour controls reject Python-O, nonempty output, a changed selected RegisterPath object and modified pinned core JSON. Init/Omega are positively checked, with no shadow-library control claim. Preparation may query compiler version; reviewer invoked no compiler/checker and reran no proof/control.\n\nThe corrected note states that main source/resolver endpoint contracts are unchanged while the helper's BEq/LawfulBEq API changed. Whole-tape rebasing still needs Clean; arithmetic lookup/runtime and all-internal variable-PC simulation remain open.\n\nFirst three maintained code/audit/guard files are exact. Pending doc/results publication metadata are retained in reviewer snapshots because author will append this review and refresh status/map. No author/tracked edits by reviewer.\n\nJSON: `/tmp/zfc-finite-control-table/child-final-review.json`, SHA256 `e18605c41b12a1e5f2faa9f1a58433d0cf01a657cfc87bc7f3e5b0951a868d6b`.\n",
+  "activity": "Read-only source/evidence/hash review; no compiler or checker/control replay by reviewer."
+}

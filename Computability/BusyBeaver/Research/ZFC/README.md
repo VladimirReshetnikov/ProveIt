@@ -1280,6 +1280,14 @@ The [compact finite-control representation](arithmetic_finite_control254.md)
 proves binary constants and bounded table lookup in every IOpen model, together
 with an exact common 40-bit dispatch frame under IΣ1. Eight axiom reports and
 thirteen callers pass with zero warnings. Large constants use their binary
-digits, keeping the recursive term only once at each step. The actual 6,460-row
-control certificate, represented interpreter and internal scheduler bridge
-remain open; the separate Python extraction is untrusted formal data.
+digits, keeping the recursive term only once at each step. Binding these
+formulas to the actual 6,460 control rows, the represented interpreter and the
+internal scheduler bridge remain open.
+
+The [literal control catalogue](finite_control_table254.md) derives all 6,460
+actual source leaves from the checked tree. It proves unique source indexing,
+inherited site acceptance, and a deterministic walk/consume/index resolver,
+including the empty pointer's first control. Fourteen axiom reports and
+seventeen callers pass with zero warnings, reusing the existing coverage
+proofs. Resolving a pointer alone does not justify whole-frame equality without
+`Clean`; arithmetic lookup/iteration and the internal scheduler remain open.
