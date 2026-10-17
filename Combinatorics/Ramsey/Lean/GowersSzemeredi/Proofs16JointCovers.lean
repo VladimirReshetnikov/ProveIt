@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs16WithLemma6
-import GowersSzemeredi.Proofs16SinglePieceGradedRemainder
+import GowersSzemeredi.Proofs16PieceCalculus
 
 /-! Joint covers: additive composition of vertex covers (Notes L.12).
 

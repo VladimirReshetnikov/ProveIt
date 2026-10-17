@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs16ClassPruning
+import GowersSzemeredi.Proofs16SampleSelection
 
 /-! Size-weighted failure bounds give a linear inverse-loss sample budget.
 Classes of size at least two are estimated without a minimum density;

@@ -9866,6 +9866,166 @@ needed for names inside tactic proofs (`lint_pass.py`).
   lines, down from 608 modules and 131,743 lines at 1d382fc. The peer's
   merged simplifications are included in that figure.
 
+**Addendum (2026-10-16, later): folding parametric copies.** A
+near-duplicate scan of the closure of `Proofs18Final` (`near_dups.py`:
+token 6-gram shingles, then line diffs) found 177 pairs of near-identical
+theorem proofs, about 9,000 lines in the shorter copies. They come from two
+sources:
+- copies made by substitution, the generators of `fejer-generators/`; the
+  refactor map of L.16e planned to fold them back;
+- hand-made generalizations that re-proved the printed statement instead of
+  deriving it.
+
+The general version was always the copy, downstream of the printed
+original. Folding therefore reverses the dependency: the general proof
+moves below the printed statement, and the printed theorem becomes its
+instance. Every statement that the commits list as kept is unchanged.
+
+| commit | family | change | Lean lines |
+|---|---|---|---|
+| 1ef6a84 | Lemma 15.1, Corollary 15.2 | `Proofs15WalshGeneral` moves below the paper companions; both printed results are one-line ternary cases | −240 |
+| 1ef6a84 | Lemma 15.4 | the case `m = 1` of `degenerate_count_within_le`; 51 ternary declarations deleted, 8 coefficient-free helpers moved | −791 |
+| 0621422 | the five `…With` modules (L.16d) | folded into their originals as `(t1, ζ)`-parametric theorems; 5 modules deleted | −959 |
+| edbe3a5 | Section 5 refinements | both phase refinements follow from the diameter ones (`section5_phase_error_of_diameter`) | −229 |
+| a02face | Theorem 3.2 | `progressionAverage f` is `linearPatternAverage (fun i => i) f`; the progression copies are deleted | −320 |
+| 5b6898b | Lemma 15.5 helpers | 26 private helpers were copied because they were private; the originals are now public and shared | −429 |
+| 59090aa | single-piece and joint-slice lifts (L.16q–r) | `SliceScheme` (`localPieceScheme`, `jointSliceScheme`) and one lift per level; 2 modules deleted | −631 |
+| a37c6f2 | class-step degrees | `step_count_le_W`, `step_exp_inv_le_W` at any `(P, T)`; printed and Fejér instances | −248 |
+| af9dd61 | split-class step | `split_…_W` at any `(P, T)`, two tracks; the printed chain is the diagonal instance | −184 |
+| a24a88a | family Lemmas 16.6/16.9 | the concrete family Lemma 16.6 is an instance of the abstract one; the unused concrete Lemma 16.9 and piece cover are deleted; 1 module deleted | −443 |
+| fd8730a | unused declarations | 32 private, small or orphaned declarations, and the `…W_printed` rfl hooks | −255 |
+
+In total these commits remove about 4,700 Lean lines and 8 modules. The
+closure of `Proofs18Final` has 627 modules in the stub check, down from 635.
+
+Lessons:
+- *Privacy breeds copies.* An exact-copy detector up to renaming of
+  module-local names (`alpha_dups.py`) finds only 315 lines on the whole
+  route. The 26 Lemma 15.5 helpers were exact copies only because the
+  originals were private.
+- *Most families differ by terms, not names.* Examples are
+  `classBudget θ γ k` against `classBudgetW (fejerThetaOne θ γ k) k`, and
+  sequential against joint slice covers. They need a real parameter:
+  `(t1, ζ)`, `(P, T)`, or a slice scheme.
+- *Generalize the inputs, not the defined terms.* The printed definitions
+  keep their bodies, because downstream proofs unfold them (one rebuild of
+  `Proofs16AllDimensions` confirmed this). The parametric theorems are
+  applied with `exact` against the printed statements, so the instances
+  hold by unfolding, without rfl lemmas.
+- *Two tracks contain one track.* When the copy generalizes further, as in
+  `split_exp_inv_le_fejer2`, the printed theorem is its diagonal instance.
+  The degrees then have to agree by unfolding on the diagonal.
+- *Gate on the full log.* One stub check failed after its normal running
+  time while the machine was swapping, and the rerun with its whole output
+  kept passed. Keep the log, so that a failure can be attributed.
+- *Scanners must tokenize names as Lean does.* The text scan for unused
+  declarations first dropped a trailing `?`, and reported three used
+  `getLast?` lemmas as dead. The build would have caught it.
+
+**Addendum (2026-10-16, evening): what the final proof is, and folds inside it.**
+Three different module sets have been called "the final route".
+- The *real* final module is `Proofs18CoverFejerAllDegrees`. It instantiates
+  `FinalInputs` (`explicitFinalInputs`) with the four corpus bridges, which are
+  proved in ten heavy modules over the OAI recurrence. Its import closure is
+  582 modules and about 118,800 lines (before the commits below).
+- The stub check (`StubFinal.lean`) axiomatizes the four bridges. It also
+  imports 20 further roots that the bridges' interface needs, so it compiles
+  627 modules, 54 of them outside the real closure.
+- The *cone* is the set of declarations that the 25 final theorems use
+  (`getUsedConstants`, closed transitively). It is rooted at the 25 theorems and
+  at every corpus name mentioned in the ten bridge modules, which cannot be
+  loaded locally. It covered 6,779 declarations and 71,401 lines in 463 modules
+  before the folds below, and 6,728 declarations and 70,607 lines after
+  them.
+
+Two consequences follow.
+- The length-six route does not belong to the proof. The stub's axiom
+  allow-list contains no `theorem_18_2_le_six`. The five `Proofs18LengthSix*`
+  modules that remain in the closure are there for a few helpers, and
+  `Proofs18LengthSixExplicit` (which proves `theorem_18_2_le_six`) is not in the
+  closure at all.
+- A fold shortens the proof only when every copy lies in the cone. A pair with
+  one copy outside shortens the corpus, and the closure only if that copy's
+  module leaves it. `pairs_in_cone.py` classifies the near-duplicate pairs. The
+  folds of the earlier addendum were all of the first kind or deleted whole
+  modules.
+
+| commit | family | change | Lean lines |
+|---|---|---|---|
+| 51c2217 | Lemma 13.1 / Prop. 6.1 | the fourth-moment count moves to the new `Proofs06PhiAdditiveFourier`, imported by both | −157 |
+| 51c2217 | Prop. 14.1 / Prop. 12.1 | `prop121B` and its fourth-moment identity become public; `Proofs14Fourier` imports `Proofs12` | −188 |
+| 51c2217 | symmetric multiples (§7, §10) | one `bohr_symmetric_multiples_subset` at any `ρ ≥ 0`; the ZMod-valued Freiman-map lemma is the case `G = ZMod N` of the group-valued one | −235 |
+| 51c2217 | small fibres (§10) | `small_fibre_count_le` at any threshold | −54 |
+| 51c2217 | Stage 13.6 | the general-precision results move upstream; the printed ones are their case `ε = \|P\|^(−1/2^(11q))` | −37 |
+| 51c2217 | Stage 13.5, singleton | separate length and precision exponents; the printed lemma is an instance | −42 |
+| 51c2217 | sigma partitions | `IsPartition.sigma` in `ProofInfrastructure` | −30 |
+
+Lessons:
+- *Private simp lemmas are global.* `@[simp] private lemma` enters every
+  importer's simp set. A deleted copy is replaced by `attribute [simp] host`
+  in the same module (not `local`), so that no simp call downstream changes.
+  The same applies to `Proofs16Slicing`'s `centeredAbs_neg`, which moved
+  upstream without the attribute.
+- *Hosts must be upstream of every user, and of every namesake.* A public
+  helper in a module that some same-named declaration's module does not see
+  makes their common descendants fail to import. `Proofs16VarietyBoxes` has
+  704 descendants, 4 of which do not see `Proofs00Basics`, so its
+  `centeredAbs_add_le` stays, and the Section 7 copy stays private.
+- *A fold pays when the shared body is long against its statement.* The two
+  Section 13 square extractions share a 25-line tail, but a shared lemma
+  needs about 20 lines of statement, so that pair stays.
+- *A host must see what the moved proofs use, Mathlib included.* The four
+  copies of `‖e(x) − 1‖ ≤ 2π|x|/N` (`cor57_norm_exponential_sub_one_le`
+  and three private ones) were to move to `Proofs00Basics`, but it imports
+  only `Definitions` and does not see
+  `Real.norm_exp_I_mul_ofReal_sub_one_le`. Adding that Mathlib import would
+  change the environment of nearly every module, so the fold waits for a host
+  that already sees it.
+- *Plain comments are block boundaries.* The fold library first ended a
+  block at the next declaration or docstring only, and a reproof would have
+  swallowed `/- **Gowers, Corollary 7.9.** -/`. The corpus has two such
+  comments; no earlier fold lost one.
+- *Audits cite names.* 43 audit files cite 1,070 declarations by
+  ``LeanProofs.GowersSzemeredi.…; `audit_names.py` checks them, with a
+  negative control on deleted names.
+
+**Detaching unused modules from the real route.** A module of the real route
+is *dead* when it holds no declaration of the cone. Equation lemmas that Lean
+stored away from their definition do not count, since Lean regenerates them
+where needed. After 51c2217 the real route had 109 dead modules (9,903 lines);
+the 474 live ones hold 108,152 lines, 70,607 of them in the cone. Dead modules
+connected by imports form regions. A region leaves the route when every import
+into it from a live module is cut, provided
+- no live declaration needs it (otherwise that declaration would have to move
+  out of its module);
+- no bridge module imports it;
+- it declares no instance and no global attribute, through which a module could
+  depend on it without naming it.
+Each cut importer then imports directly what its declarations need and no
+longer reach. A bridge module keeps its whole closure except the region. A
+module outside the route keeps a module it would lose only if it mentions a
+declaration, structure field or namespace that no module it still sees declares
+(`detach_plan.py`).
+
+- 0026300: the eight regions that need no moves leave: 15 modules, 561 lines, with
+  16 imports cut and 18 added. The real route goes from 583 to 568 modules and
+  from 118,055 to 117,496 lines; the stub check from 628 to 613 modules.
+- The remaining regions need moves. A first version of the move test looked
+  only at the region's direct importers. It missed `Proofs16RetiledRecurrence`,
+  which uses `Proofs16RecurrenceThreshold` through a longer path; the planner
+  caught the gap with an assertion. Seeded from every live module, the 811-line
+  BaseCase region needs `lemma163Alpha_le_gammaInvSq` evacuated from
+  `Proofs16BaseCaseAssembly` and `properUnionClosure_holds` moved. The two largest
+  regions (2,369 and 1,433 lines) need 71 and 85 moved declarations, among them
+  paper-named results.
+- Mostly-unused live modules are the other side of the same picture.
+  `Proofs16BaseCaseUnion` has 805 lines, of which the 10 of
+  `isMultilinear_const` are used; `Proofs16PolyPieceTwo` has 322, of which 4.
+  Evacuating such a helper upstream kills the module, but its region then
+  usually needs moves elsewhere: `Proofs16PolyPieceTwo` defines `polyPieceBudget`,
+  which the printed dimension-two chain still uses (`evacuate_rank.py`, and
+  `remap.txt` to simulate an evacuation).
+
 `Proofs16PolynomialMultilinearCover.exists_all_scale_polynomial_multilinear_cover`
 composes the improved all-scale Lemma 16.9 with the rounded affine lift.
 For total loss `rho`, let `sigma=rho/4` and let `l` be the new polynomial

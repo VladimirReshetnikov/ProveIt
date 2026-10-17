@@ -1,4 +1,5 @@
-import GowersSzemeredi.Proofs13BilinearExtraction
+import GowersSzemeredi.Section10
+import GowersSzemeredi.Sections12_13
 
 /-! Quantitative margins between the Section 13 recurrence exponents.
 Large powers of two are kept symbolic rather than expanded as numerals. -/

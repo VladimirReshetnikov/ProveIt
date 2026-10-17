@@ -1,7 +1,7 @@
 import GowersSzemeredi.Proofs18GeneralLocalInverseAssembly
 import GowersSzemeredi.Proofs05VariablePhaseRefinement
-import GowersSzemeredi.Proofs13ExplicitGeometricThreshold
 import GowersSzemeredi.Proofs18QuantitativeSzemeredi
+import GowersSzemeredi.Proofs13ExplicitPowerThreshold
 
 /-! Remove polynomial phases of arbitrary degree from a discrepancy
 partition, with an explicit threshold absorbing the refinement constant. -/
