@@ -75,6 +75,15 @@ fold recipes. None passes the bounded checker; fuel and abstraction stops
 remain distinct from counterexamples. Three literal continuation probes also
 show why different program counters need a proved semantic relation.
 
+A new [finite quotient checker](finite_quotient_frontend.md) replaces the
+source44 kernels' explicit equality-clause enumeration with class labels,
+three predicate tables, and retained-function congruence checks. Its exact
+finite `stage_exists` decision uses one packed candidate counter and direct
+literal endpoints. It removes 735 stored clause bits and reduces the largest
+native substitution interface from six variables to four. Ordinary equivalence
+and practical finite tests are recorded; the stage cutoff can be extremely
+slow, and no complete RM/TM implementation or state saving is yet established.
+
 A wider ordinary [initializer credit criterion](dirty_initializer_credit.md)
 allows an arbitrary dirty stack bottom when the safe prefix covers the exact
 DROP-minus-NIP balance skipped by the starting candidate. Its AX-first adapter
