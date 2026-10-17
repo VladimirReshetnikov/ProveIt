@@ -85,7 +85,7 @@ def inc_path(Q):
         Q[i] = False
         i -= 1
     if i < 0:
-        return []  # overflow restarts at the empty pointer
+        return Q  # overflow: all zeros, same length (the root restarts)
     Q[i] = True
     return Q
 
