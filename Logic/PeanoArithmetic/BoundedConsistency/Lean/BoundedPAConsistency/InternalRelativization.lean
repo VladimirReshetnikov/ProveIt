@@ -698,4 +698,121 @@ theorem derivable_relSet (hd : IsSemiformula L 1 d) (hds : shift L d = d)
 
 end Transport
 
+/-! ### Discharging the side formulas -/
+
+section Discharge
+
+variable {U : Theory L} [U.Δ₁] {d : V}
+
+lemma domSet_succ (hd : IsSemiformula L 1 d) (hds : shift L d = d) (m : V) :
+    domSet L d (m + 1) = insert (domF L d 0) (setShift L (domSet L d m)) := by
+  apply mem_ext; intro y
+  constructor
+  · intro hy
+    obtain ⟨i, hi, rfl⟩ := mem_domSet_iff.mp hy
+    rcases zero_or_succ i with (rfl | ⟨j, rfl⟩)
+    · simp
+    · refine mem_bitInsert_iff.mpr (Or.inr (mem_setShift_iff.mpr ⟨domF L d j, ?_, ?_⟩))
+      · exact domF_mem_domSet (by simpa using hi)
+      · exact (shift_domF hd hds j).symm
+  · intro hy
+    rcases mem_bitInsert_iff.mp hy with rfl | hy
+    · exact domF_mem_domSet (by simp)
+    · exact setShift_domSet_subset hd hds m hy
+
+/-- One side formula `¬δ(&0)` is discharged: generalize it to `∀x ¬δ(x)` and
+cut against `∃x δ(x)`. -/
+lemma derivable_of_domSet_succ (hd : IsSemiformula L 1 d) (hds : shift L d = d)
+    (hne : Derivable U (insert (^∃ d) (∅ : V))) {r m : V} (hr : IsFormula L r)
+    (hrs : shift L r = r) (h : Derivable U (insert r (domSet L d (m + 1)))) :
+    Derivable U (insert r (domSet L d m)) := by
+  have hΓ : IsFormulaSet L (insert r (domSet L d m)) := by
+    simp [hr, isFormulaSet_domSet hd m]
+  -- the derivable sequent is `free (¬d), shift (r, side formulas below m)`
+  have h' : Derivable U (insert (free L (neg L d)) (setShift L (insert r (domSet L d m)))) := by
+    rw [free_neg_domain hd hds, mem_setShift_insert, hrs]
+    refine Derivable.ofSetEq (fun x => ?_) h
+    rw [domSet_succ hd hds m]
+    simp only [mem_bitInsert_iff]
+    tauto
+  have hall : Derivable U (insert (^∀ (neg L d)) (insert r (domSet L d m))) :=
+    Derivable.all hd.neg h'
+  have hex : Derivable U (insert (^∃ d) (insert r (domSet L d m))) := by
+    refine Derivable.wk (by simp [hd, hΓ]) ?_ hne
+    intro y hy
+    rcases mem_bitInsert_iff.mp hy with rfl | hy
+    · simp
+    · simp at hy
+  refine Derivable.cut (^∀ (neg L d)) hall ?_
+  rw [neg_all hd.isUFormula.neg, hd.isUFormula.neg_neg]
+  exact hex
+
+/-- All side formulas are discharged, by internal induction on their number. -/
+lemma derivable_of_domSet (hd : IsSemiformula L 1 d) (hds : shift L d = d)
+    (hne : Derivable U (insert (^∃ d) (∅ : V))) {r : V} (hr : IsFormula L r)
+    (hrs : shift L r = r) (m : V) (h : Derivable U (insert r (domSet L d m))) :
+    Derivable U (insert r (∅ : V)) := by
+  have key : ∀ k ≤ m, ∃ j, j + k = m ∧ Derivable U (insert r (domSet L d j)) := by
+    intro k
+    induction k using ISigma1.sigma1_succ_induction
+    · definability
+    · intro _; exact ⟨m, by simp, h⟩
+    · case succ k ih =>
+      intro hk
+      obtain ⟨j, hj, hder⟩ := ih (le_trans (by simp) hk)
+      rcases zero_or_succ j with (rfl | ⟨j', rfl⟩)
+      · exfalso
+        simp [← hj] at hk
+      · refine ⟨j', ?_, derivable_of_domSet_succ hd hds hne hr hrs hder⟩
+        rw [← hj, add_comm k 1, ← add_assoc]
+  obtain ⟨j, hj, hder⟩ := key m le_rfl
+  have hj0 : j = 0 := by simpa using hj
+  have hempty : domSet L d (0 : V) = ∅ := mem_ext fun y => by simp [mem_domSet_iff]
+  rw [hj0, hempty] at hder
+  exact hder
+
+end Discharge
+
+/-! ### The interpretation theorem -/
+
+section Interpretation
+
+variable {T U : Theory L} [T.Δ₁] [U.Δ₁] {d : V}
+
+/-- **Internal relative interpretation.** In every IΣ₁ model: if U proves
+`∃x δ(x)` and the relativization of every axiom of T (with domain side
+formulas), then U proves the relativization of every shift-fixed theorem of
+T. -/
+theorem provable_relativize (hd : IsSemiformula L 1 d) (hds : shift L d = d)
+    (hTerm : ∀ t : V, IsTerm L t → ∃ j, t = ^&j)
+    (hAx : ∀ p : V, IsFormula L p → p ∈ T.Δ₁Class →
+      ∃ m, Derivable U (insert (relativize L d p) (domSet L d m)))
+    (hne : Provable U (^∃ d)) {φ : V} (hφ : Provable T φ) (hφs : shift L φ = φ) :
+    Provable U (relativize L d φ) := by
+  obtain ⟨der, hder⟩ := hφ.toDerivable
+  have hφF : IsFormula L φ := by
+    have := hder.2.isFormulaSet
+    rw [hder.1] at this
+    simpa using this
+  obtain ⟨m, hm⟩ := derivable_relSet hd hds hTerm hAx hder.2
+  rw [hder.1, relSet_insert] at hm
+  have hrelempty : relSet L d (∅ : V) = ∅ := mem_ext fun y => by simp [mem_relSet_iff]
+  rw [hrelempty] at hm
+  have hm' : Derivable U (insert (relativize L d φ) (domSet L d m)) := by
+    refine Derivable.ofSetEq (fun x => ?_) hm
+    simp
+  apply Derivable.toProvable
+  exact derivable_of_domSet hd hds hne.toDerivable (isSemiformula_relativize hd hφF)
+    (by rw [relativize_shift hd hds hφF.isUFormula, hφs]) m hm'
+
+/-- **Consistency transfer**: a T-refutation yields a U-refutation. -/
+theorem provable_falsum_of_relativize (hd : IsSemiformula L 1 d) (hds : shift L d = d)
+    (hTerm : ∀ t : V, IsTerm L t → ∃ j, t = ^&j)
+    (hAx : ∀ p : V, IsFormula L p → p ∈ T.Δ₁Class →
+      ∃ m, Derivable U (insert (relativize L d p) (domSet L d m)))
+    (hne : Provable U (^∃ d)) (h : Provable T (^⊥ : V)) : Provable U (^⊥ : V) := by
+  simpa using provable_relativize hd hds hTerm hAx hne h (by simp)
+
+end Interpretation
+
 end LeanProofs.BoundedPAConsistency.InternalRelativization
