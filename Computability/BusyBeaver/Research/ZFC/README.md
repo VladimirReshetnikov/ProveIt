@@ -85,6 +85,14 @@ All advertised finite compiler, fusion and rotation controls reproduce; none
 improves 252 states. The ordinary ZFC reconstruction and HOD arguments remain
 distinct from the missing compiled Choice and internal PA/ZFC endpoints.
 
+The later [163-unit integration](results/code-tuple-order-integration-verification.json)
+checks the merged [internal code and tuple orders](internal_code_tuple_order.md):
+every recognized internal formula code is in a represented well-order, and
+tuples of every internal natural length admit a lexicographic well-order.
+Four units are freshly checked and159 source-matched units reused. Nonstandard
+codes and lengths are included. The full constructible order, its bounded key
+sets and the exact Choice adapter remain open.
+
 A measured attempt to save a register by changing Cantor pairing to a
 [power-of-two encoding](register_lifetime.md) retained the full calculus but
 cost 306 states; its tested hybrids cost at least293. The current 252-state
