@@ -98,3 +98,11 @@ finite-support prerequisite for its well-order and Choice remains separate.
 The [new review record](results/constructible-zf-independent-source-review.json)
 retains its SHA256
 `8d6802f21c12b9e31b8a7ba2738200cabbc5b8ce73cb9cd4bfe40663ef40b76c`.
+
+A later root replay freshly checked all ten new modules in this dependency
+closure (five set-code/satisfaction modules and five constructibility modules)
+and seven axiom reports, including `L_models_ZF`. All passed with only standard
+Lean axioms. [The fresh-check record](results/constructible-fresh-verification.json)
+and [142-unit integration](results/theory-code-integration-verification.json)
+retain exact source identities and scope; the original source reviewers did
+not run these checks. This establishes the ZF model, without claiming Choice.

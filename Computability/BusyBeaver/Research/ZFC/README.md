@@ -27,6 +27,12 @@ resource. Choice removal remains assigned to the constructible-class lane;
 proof-code bridge. The original request asks for a PA proof, which is stronger
 than the later goal record's ZFC metatheory target.
 
+The proof-data and constructible-model additions passed a
+[142-unit source-verified integration](results/theory-code-integration-verification.json):
+all141 imported source identities match successful scoped builds, with a fresh
+umbrella and joint callers. This is not a full142-module rebuild. The complete
+binary coverage check is separate and remains pending.
+
 The [attributed upstream baseline](../../../../lib/jeff-busy-beaver-zfc254/README.proveit.md)
 is imported at commit `297ab8df7e5de329605c3875b4934643b371a5e3`.
 Mira-Cult designed the machine; Jeff supplies the published verification.

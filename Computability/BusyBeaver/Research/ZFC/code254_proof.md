@@ -58,3 +58,8 @@ was not verified. Its diagnostics remain in scratch history. The final
 unindexed representation needs no increased elaboration limits. This audit
 reuses the source-verified Code254 dependency closure; it does not rebuild the
 whole project or imply arithmetic internalization.
+
+The subsequent [explicit compiler](code254_proof_compiler.md) now consumes
+this raw proof data and has also passed its scoped check. Both are included
+in the checked142-unit umbrella; their internal arithmetic representation
+remains a separate obligation.
