@@ -317,6 +317,11 @@ result satisfies Foundation's represented `Proof` predicate without requiring
 internal source proofs; its
 [interface and verification](../../../Computability/BusyBeaver/Research/ZFC/model_coded_core_compiler.md)
 document that boundary. The existing final-theorem facade is unchanged.
+The subsequent
+[`ModelCodedPeanoCore`](Lean/BoundedPAConsistency/ModelCodedPeanoCore.lean)
+client supplies the finite target axiom proofs automatically for lifted PA,
+again allowing arbitrary internal free parameters. Its maintained-path
+five-module check and three audits pass nine axiom reports and twenty callers.
 
 ### Rocq/Coq theorem surface
 

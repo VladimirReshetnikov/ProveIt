@@ -59,6 +59,29 @@ satisfies the target's represented `Proof` predicate. The source proof and
 placeholder arity remain standard finite objects. The matrix is genuinely
 internal; it need not be the quotation of a standard formula.
 
+## The lifted-PA client
+
+[`ModelCodedPeanoCore`](../../../../Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/ModelCodedPeanoCore.lean)
+now supplies the finite axiom witnesses automatically for a proof over lifted
+PA. Those source axioms contain no placeholder, so the existing translation
+identity maps each one to its ordinary quoted PA axiom, independently of the
+inserted matrix. The actual target axiom constructor provides its proof.
+
+`compilePeanoTemplateOpen` therefore accepts any typed internal matrix and a
+standard lifted-PA proof, without an extra support or axiom-discharge premise.
+`compilePeanoTemplateOpen_isPAProof` exposes the represented PA proof predicate
+for its output. The model need only satisfy IΣ1: the result is internal PA
+proof data, rather than an assertion that the translated conclusion is true
+in that model. Lifted PA does not silently acquire induction axioms containing
+the added placeholder.
+
+The [client verification](results/model-coded-peano-core-verification.json)
+freshly checks all five local modules and three audits from their maintained
+paths: nine axiom reports and twenty callers. The client itself contributes
+three reports and six callers, with no warnings. The
+[independent client review](results/model-coded-peano-core-review.json)
+confirms this scope. The earlier APIs and final-theorem facade remain unchanged.
+
 ## Boundary for the set-theoretic comparison
 
 Fixed logical and axiom templates are useful components of the planned
@@ -102,7 +125,8 @@ python -B Computability/BusyBeaver/Research/ZFC/check_model_coded_core_compiler.
   --output /outside/new-empty-template-check
 ```
 
-The published runner differs from the executed version only by an explicit
-rejection of Python's `-O` mode, whose removal of assertions would invalidate
-its checks. That preflight was tested separately; the Lean sources and audits
-are unchanged from the recorded run.
+To include the PA client and its audit, add
+`--peano-audit Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/ModelCodedPeanoCoreAudit.lean`.
+The five-module client replay used this option and the current maintained
+runner. The runner explicitly rejects Python's `-O` mode, whose removal of
+assertions would invalidate its checks.

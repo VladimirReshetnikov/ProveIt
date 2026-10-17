@@ -75,6 +75,9 @@ core and cutting supplied translated-axiom proofs at the root. Four local
 modules and two audits pass, with six axiom reports and fourteen callers.
 Its source proof remains standard finite syntax; translating arbitrary
 internal source proofs remains part of the PA bridge.
+The subsequent lifted-PA client supplies the finite axiom witnesses itself.
+Its fresh five-module check passes nine reports and twenty callers, including
+specialization at matrices with internal free parameters.
 
 The complete binary endpoint passed a
 [153-unit source-verified integration](results/binary-perm252-integration-verification.json):
