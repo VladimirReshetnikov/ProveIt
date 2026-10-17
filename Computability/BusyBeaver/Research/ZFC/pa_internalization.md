@@ -238,7 +238,9 @@ now represent all actual leaf, MP and GEN blocks using those operations,
 with symbolic equality to the existing command-list encoding on natural
 inputs. Their syntax and repetition counts are fixed external data; their
 numeric operands may be internal model elements. The compiler history
-remains the next step.
+remains the next step. The [internal word laws](arithmetic_command_word_laws254.md)
+now prove exact replacement, right identity and associativity, without
+assuming an external finite-list interpretation of internal codes.
 
 The simpler compiler design keeps an unconditional history of raw compiled
 words and uses the already checked `ArithmeticHistory254.value` once as the

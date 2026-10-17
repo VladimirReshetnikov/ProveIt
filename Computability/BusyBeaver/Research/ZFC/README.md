@@ -75,6 +75,9 @@ The [actual compiler-block circuits](arithmetic_command_blocks254.md) now have
 fixed arithmetic graphs and symbolic agreement with the existing command
 lists, including all leaf, MP and GEN blocks. Fifteen reports and twenty-five
 callers pass; internal command execution remains open.
+The [internal word laws](arithmetic_command_word_laws254.md) prove tail
+replacement identities and append associativity for arbitrary internal codes,
+with six reports and seven callers.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof
