@@ -2741,3 +2741,31 @@ Three scratch PDFs38/37/26 pages were rebuilt and visually reviewed; source49's
 two underfull paragraphs are acceptable. Base/delivered files remain unchanged.
 No new state record, lower bound, Coq build or finished internal PA/ZFC machine
 endpoint follows from this intake.
+
+
+Batch157 adds one manuscript from `85633fd2f5`, placed in `e2ceaa6f8c` and
+reconciled in `316f9284f1` as source50 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels), now50 manuscripts and
+still290 collection reports. All62 ancillary files are preserved; five
+manuscript/PDF/delivery files remain in the committed archive, retired in the
+placement. No source is superseded and the seeded article stays unchanged.
+
+Weighted quotation and height bounds give exact short parsing fuel on all
+codes. Normal constructor trees biject with all naturals, with only B0(Z,Z)
+collapsed. The local quoted and constructor-only certificate interfaces retain
+all12 C254 rules, both bundle gates and fixed falsity. Small-certificate bounds
+are existence bounds, and the decoder/compiler/blank initializer remain open.
+The current Lean Cantor arithmetic component closes only one elementary part
+of the proposed internal representation; complete Choice and PA bridges remain
+open. No new machine, state bound or internal endpoint is supplied.
+
+Both independent mathematical reviews and10 substantive replay jobs pass;
+one provenance-only loop is explicitly skipped. The complete132,048-recipe
+degree-one search reproduces its journal but repeats source48's family. The
+submitted degree-two partition is exact and partial; a fresh600-second run
+reproduces723,940 prefix nodes and independently validates its smaller explored
+partition, without a survivor. A34-move decoder identity and unbounded-history
+obstruction concern a specified prepared representation, not blank reachability
+or a universal state lower bound. Both25-page source PDFs rebuild cleanly and
+receive visual review. The offline helper recovers all67 original files and
+replays the finite checks without modifying delivered files.
