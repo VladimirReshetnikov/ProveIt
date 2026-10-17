@@ -60,14 +60,14 @@ def Chain (F : V → V → Prop) (α n f : V) : Prop :=
 section Step
 
 variable {F : V → V → Prop} (htot : Tot F)
-  (himg : ∀ x : V, ∃ Y : V, ∀ g, g ∈ Y ↔ ∃ a, a ∈ x ∧ F a g)
+  (himg : ∀ x : V, Ord (memRel V) x → ∃ Y : V, ∀ g, g ∈ Y ↔ ∃ a, a ∈ x ∧ F a g)
 include H hR htot himg
 
 /-- The step exists at every ordinal, is an ordinal above it, and contains
 the values of `F` below it. -/
 theorem hstep_exists {x : V} (hx : Ord (memRel V) x) :
     ∃ y, HStep F x y ∧ Ord (memRel V) y ∧ x ∈ y ∧ ∀ a, a ∈ x → ∀ g, F a g → g ∈ y := by
-  obtain ⟨Y, hY⟩ := himg x
+  obtain ⟨Y, hY⟩ := himg x hx
   have hYo : ∀ g, g ∈ Y → Ord (memRel V) g := by
     intro g hg
     obtain ⟨a, ha, hFa⟩ := (hY g).1 hg
@@ -105,7 +105,7 @@ end Step
 section Chains
 
 variable {F : V → V → Prop} (htot : Tot F)
-  (himg : ∀ x : V, ∃ Y : V, ∀ g, g ∈ Y ↔ ∃ a, a ∈ x ∧ F a g)
+  (himg : ∀ x : V, Ord (memRel V) x → ∃ Y : V, ∀ g, g ∈ Y ↔ ∃ a, a ∈ x ∧ F a g)
   {α : V} (hα : Ord (memRel V) α)
 
 lemma nat_ord {n : V} (hn : n ∈ ω) : Ord (memRel V) n :=
