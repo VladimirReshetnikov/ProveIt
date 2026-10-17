@@ -1309,3 +1309,5 @@ warnings, reusing 82 matched project objects and six boundaries. Fixed Sigma1
 graphs and a total Delta1 step cover every internal input; invalid0 and genuine
 halt4 remain distinct opcode facts. Binary simulation, represented iteration
 and the internal L2/scheduler connection remain open.
+
+The [positive-code freshness theorem](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-freshness254.md) proves that binding any positive label at least as large as an internal source code leaves its decoded formula unchanged, at every internal binder depth. Its eight-probe/twelve-caller Lean audit passed without warnings. The proof uses internal Π1 order induction and the actual strict child bounds, with the literal source0/label0 exception explicit. Positive codes therefore supply their own fresh label for the Collection row. The all-internal Collection proof and its zero-matrix case remain open.
