@@ -18,6 +18,13 @@ The module also supplies `PolyEnvBound`, its monotonicity and conversion
 to Theorem 18.1, and `polyEnvBound_three_of_phase_partition`. The printed
 degree-three theorem specializes this shared polynomial base.
 
+The same chain is the degree-three base of the Theorem 18.2 envelope
+(`envBound_three_of_phase_partition`, `EnvBound 3 62`). Its threshold is at
+most the explicit `fejerCubicInverseThreshold α`
+(`fejerCubicInverseThresholdAt_poly_le`): every threshold of the chain is a
+positive-power threshold, antitone in its exponent, and the polynomial row
+exponent is at least the catalogue's `2^(-13Q)`.
+
 Here the square comes from `section13_complete_square_extraction_poly`, at
 the density `δ = (α/2)^4207554485` of the corpus frequency graph
 (`fejerSquareAt_poly`). The resulting σ satisfies `σ⁻¹ ≤ (2/α)^(2^74)`:
@@ -299,11 +306,101 @@ theorem theorem181At_of_polyEnvBound {d μ : Nat} (h : PolyEnvBound d μ)
   exact ⟨b, s, T, section18Exponent_le_of_inv_le ha ha2 b0 hμ bi,
     section18Exponent_le_of_inv_le ha ha2 s0 hμ si, hB⟩
 
-/-- **Degree three with polynomial envelopes**, from a phase partition. -/
-theorem polyEnvBound_three_of_phase_partition {K : Real} {p : Nat}
+/-! ### The threshold of the polynomial chain -/
+
+theorem positivePowerThreshold_anti {C D e e' : Real} (he : 0 < e) (hee : e ≤ e') :
+    positivePowerThreshold C D e' ≤ positivePowerThreshold C D e := by
+  unfold positivePowerThreshold
+  exact max_le_max le_rfl (Real.rpow_le_rpow_of_exponent_le (le_max_left _ _) (inv_anti₀ he hee))
+
+theorem uniformRoundedPowerThreshold_anti {c d z e e' : Real} (he : 0 < e) (hee : e ≤ e') :
+    uniformRoundedPowerThreshold c d z e' ≤ uniformRoundedPowerThreshold c d z e := by
+  unfold uniformRoundedPowerThreshold
+  exact max_le_max (positivePowerThreshold_anti he hee)
+    (max_le_max (positivePowerThreshold_anti he hee) (positivePowerThreshold_anti he hee))
+
+theorem squarePowerThreshold_anti {c e e' f g : Real} (he : 0 < e) (hee : e ≤ e')
+    (hf : 0 < f) (hg : 0 < g) : squarePowerThreshold c e' f g ≤ squarePowerThreshold c e f g := by
+  have h1 := mul_le_mul_of_nonneg_right hee hf.le
+  have h2 := mul_le_mul_of_nonneg_right h1 hg.le
+  unfold squarePowerThreshold
+  exact max_le_max (positivePowerThreshold_anti (mul_pos he hf) h1)
+    (positivePowerThreshold_anti (by positivity) (by linarith only [h2]))
+
+/-- The polynomial geometric threshold is at most the explicit one. -/
+theorem section13PolyGeometricThreshold_le {delta : Real} (hδ : 0 < delta) (hδone : delta ≤ 1)
+    {p : Nat} (hp : 0 < p) (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) :
+    section13PolyGeometricThreshold p delta ≤ section13GeometricThreshold delta := by
+  have hre := catalogue_length_exponent_le_polyRowExponent hδ hδone hp hpB
+  have he : (0 : Real) < 1 / (2 : Real) ^ (13 * section13Q delta) := by positivity
+  have hf : 0 < (2 : Real) ^ (-(100 : Int)) * delta ^ 448 := by positivity
+  have hg : 0 < cor711Exponent ((2 : Real) ^ (-(135 : Int)) * delta ^ 704) 1 := by
+    unfold cor711Exponent; positivity
+  have hint : section13PolyIntegerThreshold p delta ≤ section13DensityIntegerThreshold delta := by
+    unfold section13PolyIntegerThreshold section13DensityIntegerThreshold
+    exact Finset.sup_mono_fun fun q _ => Nat.ceil_mono <| by
+      unfold section13PolyBudgetThreshold section13IntegerBudgetThreshold
+      exact max_le_max (uniformRoundedPowerThreshold_anti he hre) le_rfl
+  unfold section13PolyGeometricThreshold section13GeometricThreshold squareScaleThreshold
+  exact max_le_max le_rfl (le_max_of_le_right (max_le_max (Nat.cast_le.mpr hint)
+    (max_le_max (positivePowerThreshold_anti he hre) (squarePowerThreshold_anti he hre hf hg))))
+
+/-- The polynomial square exponent is at least the explicit one. -/
+theorem section13SquareExponent_le_poly {delta : Real} (hδ : 0 < delta) (hδone : delta ≤ 1)
+    {p : Nat} (hp : 0 < p) (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) :
+    section13SquareExponent delta ≤ section13PolySquareExponent p delta := by
+  have hf : 0 < (2 : Real) ^ (-(100 : Int)) * delta ^ 448 := by positivity
+  have hg : 0 < cor711Exponent ((2 : Real) ^ (-(135 : Int)) * delta ^ 704) 1 := by
+    unfold cor711Exponent; positivity
+  have h := mul_le_mul_of_nonneg_right (mul_le_mul_of_nonneg_right
+    (catalogue_length_exponent_le_polyRowExponent hδ hδone hp hpB) hf.le) hg.le
+  unfold section13SquareExponent section13PolySquareExponent
+  linarith only [h]
+
+/-- **The threshold of the polynomial chain** is at most the explicit
+`fejerCubicInverseThreshold α`: the same positive-power thresholds at larger
+exponents, above a smaller geometric threshold. -/
+theorem fejerCubicInverseThresholdAt_poly_le {alpha : Real} (hα : 0 < alpha) (hαone : alpha ≤ 1)
+    {p : Nat} (hp : 0 < p) (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) :
+    fejerCubicInverseThresholdAt alpha
+        (section13PolySquareExponent p ((alpha / 2) ^ (4207554485 : Nat)))
+        (max (max (section13FrequencyGraphThreshold alpha : Real)
+            (section13PolyGeometricThreshold p ((alpha / 2) ^ (4207554485 : Nat))))
+          (positivePowerThreshold 4 1
+            (section13PolySquareExponent p ((alpha / 2) ^ (4207554485 : Nat))))) ≤
+      fejerCubicInverseThreshold alpha := by
+  have hδ : 0 < (alpha / 2) ^ (4207554485 : Nat) := pow_pos (by positivity) _
+  have hδone : (alpha / 2) ^ (4207554485 : Nat) ≤ 1 :=
+    pow_le_one₀ (by positivity) (by linarith only [hαone])
+  have hl0 : 0 < fejerCubicLocalizationExponent alpha := by
+    unfold fejerCubicLocalizationExponent; positivity
+  have hl : fejerCubicLocalizationExponent alpha ≤
+      section13PolySquareExponent p ((alpha / 2) ^ (4207554485 : Nat)) :=
+    (section13_fejer_exponent_lower hα hαone).trans (section13SquareExponent_le_poly hδ hδone hp hpB)
+  have hκ := (fejerCubicLocalCountExponent_bounds hα hαone).1
+  have hK : (0 : Real) < 2 * (polynomialPartitionConstant 3 : Real) := by
+    unfold polynomialPartitionConstant; positivity
+  unfold fejerCubicInverseThresholdAt fejerCubicInverseThreshold fejerCubicTwistedThresholdAt
+    fejerCubicTwistedThreshold fejerCubicPrimeModelThresholdAt fejerCubicPrimeModelThreshold
+    section13FejerOddSquareThreshold section13FourierThreshold
+  refine max_le_max (max_le_max le_rfl (max_le_max (max_le_max (max_le_max le_rfl
+    (section13PolyGeometricThreshold_le hδ hδone hp hpB)) (positivePowerThreshold_anti hl0 hl))
+    (positivePowerThreshold_anti hl0 hl))) ?_
+  unfold fejerCubicDiscrepancyExponentAt fejerCubicDiscrepancyExponent phaseInverseExponent
+    phaseInverseConstant fejerCubicPhaseRefinementConstant
+  exact positivePowerThreshold_anti (div_pos (mul_pos hl0 hκ) hK)
+    (div_le_div_of_nonneg_right (mul_le_mul_of_nonneg_right hl hκ.le) hK.le)
+
+/-- **Degree three from the polynomial chain**, from a phase partition:
+polynomial `β` and `σ`, and a doubly exponential threshold. -/
+theorem polyCubic_three_of_phase_partition {K : Real} {p : Nat}
     (hpp : ProgressionPhasePartition K p) (hp : 0 < p) (hK : K ≤ 2 ^ p)
-    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) : PolyEnvBound 3 74 := by
-  intro alpha hα hα2
+    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) {alpha : Real} (hα : 0 < alpha)
+    (hα2 : alpha ≤ 1 / 2) :
+    ∃ beta sigma T : Real, FunctionDiscrepancyBound 3 alpha beta sigma T ∧
+      0 < beta ∧ beta ≤ 1 ∧ 0 < sigma ∧ sigma ≤ 16 ∧
+      beta⁻¹ ≤ (2 / alpha) ^ (2 ^ 59) ∧ sigma⁻¹ ≤ (2 / alpha) ^ (2 ^ 74) ∧
+      T ≤ Real.exp (Real.exp ((2 / alpha) ^ (2 ^ 62))) := by
   have hαone : alpha ≤ 1 := by linarith only [hα2]
   have hX : 2 ≤ 2 / alpha := two_div_ge_two hα hα2
   have hδ : 0 < (alpha / 2) ^ (4207554485 : Nat) := pow_pos (by positivity) _
@@ -322,11 +419,35 @@ theorem polyEnvBound_three_of_phase_partition {K : Real} {p : Nat}
     unfold fejerCubicDiscrepancyExponentAt phaseInverseExponent
     rw [div_le_iff₀ (by positivity)]
     nlinarith only [he, hehalf, hκ, hκ1, hK3]
-  refine ⟨fejerCubicDiscrepancyParameter alpha, _, _,
+  exact ⟨fejerCubicDiscrepancyParameter alpha, _, _,
     (fejerSquareAt_poly hα hαone hpp hp hK hpB).functionDiscrepancyBound hα hαone he hehalf,
     fejerCubicDiscrepancyParameter_pos hα, fejerCubicDiscrepancyParameter_le_one hα hαone,
-    hσ, hσ16, ?_, hσinv⟩
-  exact pw_mono hX (fejerCubicDiscrepancyParameter_inv_le_power hα hαone) (by norm_num)
+    hσ, hσ16, fejerCubicDiscrepancyParameter_inv_le_power hα hαone, hσinv,
+    (fejerCubicInverseThresholdAt_poly_le hα hαone hp hpB).trans
+      (fejerCubicInverseThreshold_le_double_exp hα hαone)⟩
+
+/-- **Degree three with polynomial envelopes**, from a phase partition. -/
+theorem polyEnvBound_three_of_phase_partition {K : Real} {p : Nat}
+    (hpp : ProgressionPhasePartition K p) (hp : 0 < p) (hK : K ≤ 2 ^ p)
+    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) : PolyEnvBound 3 74 := by
+  intro alpha hα hα2
+  obtain ⟨b, s, T, hB, b0, b1, s0, s16, bi, si, -⟩ :=
+    polyCubic_three_of_phase_partition hpp hp hK hpB hα hα2
+  exact ⟨b, s, T, hB, b0, b1, s0, s16, pw_mono (two_div_ge_two hα hα2) bi (by norm_num), si⟩
+
+/-- **Degree three for the Theorem 18.2 envelope**, from a phase partition:
+the polynomial chain fits `EnvBound 3 62`, the constant of the explicit base
+`envBound_three`. -/
+theorem envBound_three_of_phase_partition {K : Real} {p : Nat}
+    (hpp : ProgressionPhasePartition K p) (hp : 0 < p) (hK : K ≤ 2 ^ p)
+    (hpB : (p : Real) ≤ (2 : Real) ^ ((2 : Nat) ^ 64)) : EnvBound 3 62 := by
+  intro alpha hα hα2
+  have hX := two_div_ge_two hα hα2
+  obtain ⟨b, s, T, hB, b0, b1, s0, s16, bi, si, hT⟩ :=
+    polyCubic_three_of_phase_partition hpp hp hK hpB hα hα2
+  refine ⟨b, s, T, hB, b0, b1, s0, s16, pw_mono hX bi (by norm_num), ?_, hT⟩
+  exact si.trans ((pow_two_pow_le_exp_pow_succ hX 74).trans
+    (Real.exp_le_exp.mpr (pow_le_pow_right₀ (by linarith only [hX]) (by norm_num))))
 
 /-- **Theorem 18.1 at degree three**, from a polynomial phase partition of
 progressions with `K ≤ 2^p` and `p ≤ 2^(2^64)`. -/

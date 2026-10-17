@@ -12,7 +12,7 @@ table `tDegT3`:
   polynomial base envelope);
 * Theorem 18.2 with `L + 3` in every length, `L + 2` for `L ≥ 8`, `L + 1` for
   `L ≥ 11`, and `L + 0` for `L ≥ 13` (lengths `L ≤ 5` from the corpus's
-  explicit thresholds). -/
+  explicit thresholds and, at `L = 5`, the polynomial degree-three base). -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -90,7 +90,7 @@ theorem theorem_18_2_L2 {L : Nat} (hL : 8 ≤ L) : Theorem182AtSharp 2 L :=
 /-- **Theorem 18.2 at every length with `L + 3`.** -/
 theorem theorem_18_2_L3 (L : Nat) : Theorem182AtSharp 3 L := by
   rcases Nat.lt_or_ge L 6 with h | h
-  · exact theorem_18_2_L3_le_five (by omega)
+  · exact theorem_18_2_L3_le_five_of I.envBound3 (by omega)
   · exact I.theorem_18_2_of_fit 2 h (by norm_num) fun j _ _ => by interval_cases j <;> decide +kernel
 
 end FinalInputs

@@ -8,6 +8,9 @@ One step for each theorem over the single class table `tDegT3`:
 * Theorem 18.1: `envStepJT3` and the envelope `polyGenMuJT3` (joint slices);
 * Theorem 18.2: `envStepKTx3` and the envelope `genMuXK3` (joint slices,
   sharp partition constant).
+Both start at degree three from the polynomial Fejér chain and the phase
+partition (`polyEnvBound_three_of_phase_partition`,
+`envBound_three_of_phase_partition`).
 Beyond dimension `14` the closed forms bound both envelopes by `16·2^k - 4k - 128`;
 `decide +kernel` evaluates them below. Fits:
 * `polyGenMuJT3 k + 1 ≤ 16·2^k, 32·2^k, 64·2^k` from `k = 9, 6, 2`;
@@ -406,6 +409,11 @@ theorem covers (k : Nat) : ∀ l, 1 ≤ l → l ≤ (I.params k).k →
   fun _ hl1 hlk => (I.cover hl1).uniform_mono (one_le_classV I.Kc I.pc _)
     (classV_mono I.Kc I.pc hlk) le_rfl
 
+/-- **The degree-three base of the Theorem 18.2 envelope**, from the phase partition. -/
+theorem envBound3 : EnvBound 3 62 := by
+  obtain ⟨K, p, hpp, hp, hK, hpB⟩ := I.phase
+  exact envBound_three_of_phase_partition hpp hp hK hpB
+
 /-- **The Theorem 18.2 envelope** in every dimension `k ≥ 2`. -/
 theorem envBound : ∀ k, 2 ≤ k → EnvBound (k + 2) (genMuXK3 k) := by
   have hstep : ∀ k, 2 ≤ k → ∀ μ, EnvBound (k + 1) μ →
@@ -415,7 +423,7 @@ theorem envBound : ∀ k, 2 ≤ k → EnvBound (k + 2) (genMuXK3 k) := by
       (I.profile k (by omega)) hlow
   intro k hk
   exact envelope_induction (P := EnvBound) (budget := genMuXK3) hstep
-    envBound_three (fun _ h => genMuXK3_succ h) k (by omega)
+    I.envBound3 (fun _ h => genMuXK3_succ h) k (by omega)
 
 /-- **The Theorem 18.1 envelope** in every dimension `k ≥ 2`. -/
 theorem polyEnvBound : ∀ k, 2 ≤ k → PolyEnvBound (k + 2) (polyGenMuJT3 k) := by
