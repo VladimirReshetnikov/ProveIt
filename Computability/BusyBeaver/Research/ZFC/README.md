@@ -123,6 +123,17 @@ search repeats source48's family; the larger two-incoming search is partial.
 Both the certificate proofs and continuation obstruction are ordinary
 mathematics, separate from the existing Lean endpoint and the PA target.
 
+The new [constructor-witness experiment](term-certificates/README.md) develops
+that representation further: duplicate arena nodes are allowed, both freshness
+conditions carry distinguishing paths, and explicit constructor IDs eliminate
+template searches. It includes a total finite binary codec and fair search
+specification for the same full calculus. All twelve rule controls, adversarial
+duplicate/gate cases, 261 template comparisons and 262,143 short binary words
+pass the finite checks. A deep bundle needs 62 supplied-record constructor
+checks instead of 297,059 template-lookup visits in the first prototype.
+These are verifier operation counts; tape access, fixed data, initialization
+and the complete TM state cost still need implementation and measurement.
+
 A measured attempt to save a register by changing Cantor pairing to a
 [power-of-two encoding](register_lifetime.md) retained the full calculus but
 cost 306 states; its tested hybrids cost at least293. The current 252-state

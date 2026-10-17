@@ -1,0 +1,738 @@
+{
+  "circuit": {
+    "status": "CLEAN/ACCEPT independent ordinary soundness/completeness/source audit",
+    "reviewer": "/root/review_bic/mira_backend_route",
+    "sources": {
+      "/tmp/zfc-term-disequality/term_circuits.py": {
+        "sha256": "e505a9b0b79dcf44ab2cc7653110032b1924f765d43f2256a62d2209b27c2189",
+        "lines": 195
+      },
+      "/tmp/zfc-term-disequality/circuit-note.md": {
+        "sha256": "16a161ad8c9a7f8edb8a3b9a3ea568beb95f093636e5ee868c7806dd684fde84",
+        "lines": 28
+      },
+      "/tmp/zfc-term-disequality/note.md": {
+        "sha256": "b7a5eea0532a158004cf23479a6f35b1076d759c2ad86b6e2bf033698d49dbc3",
+        "lines": 67
+      },
+      "/tmp/zfc-term-disequality/source50/data/spec254.json": {
+        "sha256": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc",
+        "lines": 435
+      },
+      "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean": {
+        "sha256": "18311d4a28cba6778a0ba1a1ddee34f5c2dd5044a23958b63f46d0640be4e01e",
+        "lines": 478
+      }
+    },
+    "exact_live_fixed_definition_AST_match": {
+      "count": 11,
+      "definitions": [
+        "rho1",
+        "rho2",
+        "rho3",
+        "rho4",
+        "rho5",
+        "rho6",
+        "rho7",
+        "rho8",
+        "bundleC",
+        "bundleG",
+        "bundle"
+      ],
+      "status": "PASS"
+    },
+    "trusted_circuit_register_check": {
+      "3": {
+        "arity": 2,
+        "steps": 5,
+        "root_register": 7,
+        "local_backward_registers": true
+      },
+      "4": {
+        "arity": 3,
+        "steps": 6,
+        "root_register": 9,
+        "local_backward_registers": true
+      },
+      "5": {
+        "arity": 3,
+        "steps": 5,
+        "root_register": 8,
+        "local_backward_registers": true
+      },
+      "6": {
+        "arity": 3,
+        "steps": 5,
+        "root_register": 8,
+        "local_backward_registers": true
+      },
+      "7": {
+        "arity": 3,
+        "steps": 5,
+        "root_register": 8,
+        "local_backward_registers": true
+      },
+      "8": {
+        "arity": 2,
+        "steps": 6,
+        "root_register": 8,
+        "local_backward_registers": true
+      },
+      "9": {
+        "arity": 3,
+        "steps": 5,
+        "root_register": 8,
+        "local_backward_registers": true
+      },
+      "10": {
+        "arity": 4,
+        "steps": 6,
+        "root_register": 10,
+        "local_backward_registers": true
+      },
+      "11": {
+        "arity": 3,
+        "steps": 62,
+        "root_register": 65,
+        "local_backward_registers": true
+      }
+    },
+    "findings": [
+      {
+        "topic": "Arena and solezero",
+        "verdict": "CLEAN",
+        "detail": "Strict backward references and tag0..3 give finite denotations. The only forbiddenpositive recordB0(0,0), together with induction and Cantor positivity, implies exactlyID0denotes0 despite arbitrary duplicatepositive keys. Thus the verifier can use exactID0for normalization without global uniqueness."
+      },
+      {
+        "topic": "Constructor witnesses",
+        "verdict": "CLEAN",
+        "detail": "Every circuitregister is a parameter,zero,or previousstep; suppliedarenaIDs are independentlybounded. A constructor check directlyestablishes its exactdenotation. Staticsharing uses fixedsymbolicexpressions only. Dynamic parametercollisions/zeroaliases arehandled bytheconstructor0branch,so aliasingcannotchange the numerictemplate."
+      },
+      {
+        "topic": "Both gates",
+        "verdict": "CLEAN",
+        "detail": "A distinguishingpath requiresmatchingnonzero tags at every traversedposition and ends in zero/nonzero or tagmismatch. Cantor injectivity transfers inequality backwards. Equalvalued duplicatecopies neveradmit a witness. Both c/a and c/b paths arechecked beforeevery bundle."
+      },
+      {
+        "topic": "MP/GEN/truth",
+        "verdict": "CLEAN",
+        "detail": "TruthchecksID0. MPuses premiseorder minor,major; majorrecordB0(minor,out) directlyjustifies numericMP. Its allzeroalias accepts precisely the valid0,0case. GENdirectlychecksB2(binder,premise). No numeric-equalityclaim is inferredfrom unequalIDs."
+      },
+      {
+        "topic": "Fcopies and trusted inputs",
+        "verdict": "CLEAN",
+        "detail": "Defaultendpoint checks exactrecordB1(0,0),so everyduplicateFcopydenotes1. Candidategoal fields areignored. OptionalgoalIDand finitefixedtemplates are explicitlytrustedcallerinputs,notcandidate-selected theorydata. Theexact11definitionASTs match actualCode254."
+      },
+      {
+        "topic": "Completeness and implementationboundary",
+        "verdict": "CLEAN",
+        "detail": "Canonicalsource50 producer supplies allstaticcircuitintermediates and consistentIDequalities; true numericgateinequalities have finitepaths. This proves existence ofacceptedencodings for numericderivations,notacceptanceofeveryduplicateencoding. Indexedhostlists,circuitselection,codec,fairenumeration,reset,bootstrap andbinarycostremainseparate."
+      }
+    ],
+    "meaningful_finite_check": "Exact extraction of all11liveCode254definitions against trustedsource50spec and staticbackwardregistercheck only; authorsexecutablesuitesnotrerun.",
+    "new_Lean_or_Coq_builds": false,
+    "source_edits": false,
+    "codec_review": "Explicitly outside this audit; no codec result inferred.",
+    "machine_claim": "No smallerstatecount,binarycompiler,internalPA/ZFCtheoremorunconditionalnonhalting result.",
+    "resource_policy_followup": {
+      "status": "Corrected; mathematicalcore unchanged",
+      "original_sha256": "e505a9b0b79dcf44ab2cc7653110032b1924f765d43f2256a62d2209b27c2189",
+      "corrected_sha256": "b1a4e8fe445d8d4abf9a6ad8e236b63ee1948bf51990eba6ebda00a198c0b2a7",
+      "delta": "Only remove RecursionError from catch tuple; both exceptions propagate through thecodec now",
+      "codec_review": "/tmp/zfc-term-disequality/codec-independent-review.json"
+    },
+    "complete_review_text": "# Independent constructor-witness verifier audit\n\nCLEAN/ACCEPT. I read all of `term_circuits.py`, `circuit-note.md`, the arena/path denotation argument in `note.md`, the trusted source50 specification and actual live Code254 constructors/rules. All11 fixed definition ASTs agree exactly between live Code254 and the trusted specification. I also checked every trusted circuit's register references point to parameters, zero or earlier instructions. No submitted suite or Lean/Coq build was repeated; no source was edited. Exact sources/hashes and counts are in `circuit-independent-review.json`.\n\nSoundness with duplicates is valid. Backward references make the arena acyclic; forbidding only positive `B0(0,0)` still makes ID0 the sole zero-valued node, by induction and Cantor positivity. Arbitrary positive duplicates therefore cannot forge a zero alias. Each supplied constructor record establishes the intended numeric constructor, including the dynamic all-zero implication case. Static sharing occurs only in trusted fixed symbolic templates and imposes no global candidate-arena uniqueness assumption.\n\nBoth bundle witnesses are necessary and checked. Traversed prefixes have equal nonzero tags; the endpoint has a zero/nonzero or tag mismatch. Cantor injectivity propagates that inequality to the original roots. Equal-valued but pointer-distinct duplicate terms cannot pass either path gate. Overlong paths encountering an earlier mismatch are rejected, which affects completeness of that encoding only; genuine inequalities always have a finite shortest distinguishing path.\n\nTruth, direct MP and GEN match the exact numeric calculus. MP checks the major record against the minor and proposed output, preserving premise order and allowing the legitimate all-zero alias. IDs are used only as sufficient equality, so different but equal-valued premise copies can be rejected without threatening soundness. Every exact `B1(0,0)` copy denotes1, so the default endpoint correctly accepts any such copy. A certificate cannot select its goal or templates; the optional goal and compiled fixed theory data are explicitly trusted caller inputs.\n\nExistential completeness is justified by the canonical source50 producer: its arena contains every required constructor intermediate, all equalities use consistent IDs, zero aliases use0, and each valid bundle has both finite paths. The checker need not accept every duplicate-containing presentation of a valid derivation. There are5,6,5,5,5,6,5,6 instructions for rho1\u20138 and62 for the full bundle, matching the note; these are interface counts, not machine states.\n\nThe source and note correctly leave binary parsing/serialization, random-access implementation, circuit selection, failure/reset protocol, fair enumeration, blank initialization, total state cost and formal simulation open. This audit covers neither the separately developed codec nor any PA/ZFC calibration theorem.\n"
+  },
+  "codec": {
+    "status": "CLEAN/ACCEPT; narrow original resource-policy mismatch corrected and independently rechecked",
+    "reviewer": "/root/review_bic/mira_backend_route",
+    "files": {
+      "/tmp/zfc-term-disequality/term_codec.py": {
+        "sha256": "dabb09c4f7749c7e71bbd65d6056e83f3648aef58b3b24bc3807841515a4b979",
+        "lines": 227
+      },
+      "/tmp/zfc-term-disequality/term_circuits.py": {
+        "sha256": "b1a4e8fe445d8d4abf9a6ad8e236b63ee1948bf51990eba6ebda00a198c0b2a7",
+        "lines": 195
+      },
+      "/tmp/zfc-term-disequality/codec-note.md": {
+        "sha256": "e99a481051cc7589a422e5a7e67d8e0009dbeef65de225e0f2cfb4e3df91c594",
+        "lines": 50
+      },
+      "/tmp/zfc-term-disequality/test_codec.py": {
+        "sha256": "ecbaf436684abf07e25abbbc4dd022ffc852caa437f4026ea377b5e08bef8da3",
+        "lines": 179
+      },
+      "/tmp/zfc-term-disequality/source50/data/spec254.json": {
+        "sha256": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc",
+        "lines": 435
+      }
+    },
+    "findings": [
+      {
+        "topic": "Total finite-word parser",
+        "verdict": "CLEAN under stated trusted-finite-template/unbounded-resource interpretation",
+        "detail": "Exactstr binaryvalidation precedes Reader. Each bit call advancespos orraisesMalformed atEOF. Unary andpathloopsconsumeinput, node/rowloops arebounded by parsedcounts andminimumremainingbits, all otherfieldloops havefixed trustedarity. No termunfolding or recursivecandidateparse isused. Malformed paths/references/tags/trailingbits reject."
+      },
+      {
+        "topic": "Allocation and addresses",
+        "verdict": "CLEAN",
+        "detail": "Npositive recordsrequire>=4Nremainingbits; Prowsrequire>=5Premainingbits beforeperrecordallocation. Unarycounts themselvesconsumeN/P bits; no count-drivenpreallocatedzeroarray. Every index ischeckedagainst parsedarena/previousrow. Paths appendonlyaftertwoactualbits."
+      },
+      {
+        "topic": "Exact structural domain",
+        "verdict": "CLEAN",
+        "detail": "Encoder requires exactlythethreefixedcertificatefields andexacttag-specificrowfields, correctarity, strictintIDs andbackwardbounds, soleZ andnoB0ZZ. It intentionallydoesnotrequiresemanticrule/gatevalidity. Decoderproduces exactlythisdomain; extraoptionalfieldspassedtothecircuitverifier areoutsideencoder domain. This narrowerstructuralimage is sufficientforexistentialcompleteness."
+      },
+      {
+        "topic": "Roundtrips",
+        "verdict": "CLEAN ordinary structuralproof",
+        "detail": "Unary1^n0, fixedwidthMSB andend0/left10/right11 areunique fieldencodings. Trustedcounts/arity fixfieldboundaries, andEOFrejectsleftovers. Recordinduction givesdecode(encode(c))=c onstateddomain; successfulparse impliesencode(c)=word. Emptyprooflistcanparse butcannotpassverifier."
+      },
+      {
+        "topic": "FixedF/trusteddata",
+        "verdict": "CLEAN",
+        "detail": "accepts calls defaultverify_certificate withoutgoalargument; binarygrammarcontainsnogoal/template/versionselector. Fixedtemplates/lengths aretrustedcallerdata. Priorcircuit soundness andcanonicalproducer giveacceptedwordexists iffC254derives1, inordinaryfinite mathematics."
+      },
+      {
+        "topic": "Fairness and finite diagnostics",
+        "verdict": "CLEAN",
+        "detail": "EachlengthL levelhas2^Lwords inlexorder, includingemptywordatL0. Rank2^L-1+binaryvalue isfinite. Totalfiniteacceptancechecks thereforemakeeverywordreachable insemidecide. search_through isdistinct andreturns onlyexplicitboundedno-hitlabel; noresource/fuel/no-level-hit result isconsistency."
+      },
+      {
+        "topic": "Runtime exception policy",
+        "verdict": "Original narrow mismatch identified; see correction record",
+        "detail": "Original circuitverifier explicitlycaughtRecursionError despitecodecprose promisingresourceerrorspropagate. Tinyindependentinjection demonstratedFalseinstead. Thisis notanuntrustedcandidate soundnessattackanddoesnotaffectordinaryunboundedresourceproof. Fibers agreedtoremoveRecursionError andaddpropagationtest; finalresolvedstatus recordedseparately."
+      },
+      {
+        "topic": "Implementation scope",
+        "verdict": "CLEAN",
+        "detail": "UnaryIDs deliberatelydo notinherit source50O(L\u00b2)bitbound. Node/circuitdata parsing, randomaccessimplementation, enumeration/reset, startupandwholestatecostremainuncompiled. NoLean/PA/ZFCendpointornewTMresult inferred."
+      }
+    ],
+    "original_resource_probe": {
+      "scope": "Injected runtime resource-boundary harness, not an untrusted candidate exploit or logical counterexample. Mathematical parser/semidecider unaffected under unbounded-resource interpretation.",
+      "source_sha256": "e505a9b0b79dcf44ab2cc7653110032b1924f765d43f2256a62d2209b27c2189",
+      "word": "1010001100000000100010",
+      "structural_roundtrip": true,
+      "trusted_GEN_control_normally_valid": true,
+      "injected_RecursionError_propagated": false,
+      "verifier_result_instead": false,
+      "verifier_reason": "independent resource-boundary probe",
+      "accepts_result_instead": false,
+      "recommended_correction": "Remove RecursionError from V.verify_certificate except tuple, preserving its intended no-resource-failure-as-rejection policy."
+    },
+    "author_suites_read_not_repeated": [
+      "15allrule/duplicate/deeppath controls",
+      "262143words length<=17 with93successfulparse roundtrips",
+      "16malformedwords/prefixrejections",
+      "first127rankchecks/fakeacceptanceat21",
+      "MemoryErrorpropagation"
+    ],
+    "new_Lean_or_Coq_builds": false,
+    "source_edits_by_reviewer": false,
+    "full_suites_repeated_by_reviewer": false,
+    "resource_policy_correction": {
+      "status": "PASS",
+      "source_delta": "Only RecursionError removal from circuitverifier except tuple; reconstructing originalbytes reproduces auditedoriginalSHA exactly.",
+      "original_source_sha256": "e505a9b0b79dcf44ab2cc7653110032b1924f765d43f2256a62d2209b27c2189",
+      "corrected_source_sha256": "b1a4e8fe445d8d4abf9a6ad8e236b63ee1948bf51990eba6ebda00a198c0b2a7",
+      "independent_injected_controls": [
+        {
+          "exception": "MemoryError",
+          "propagated": true
+        },
+        {
+          "exception": "RecursionError",
+          "propagated": true
+        }
+      ],
+      "original_GEN_control_still_valid": true,
+      "publication_bytes_equal": {
+        "term_circuits.py": true,
+        "term_codec.py": true,
+        "test_codec.py": true
+      },
+      "author_portable_replay": {
+        "status": "PASS",
+        "python": "3.13.14 (main, Jun 23 2026, 15:18:27) [Clang 22.1.3 ]",
+        "scratch": "/tmp/zfc-term-maintained-replay-corrected",
+        "repository_HEAD": "5e5f8e78e550875c9cd7e6c32889e26c0f73a981",
+        "runner": {
+          "path": "/tmp/zfc-term-publication-bundle/Computability/BusyBeaver/Research/ZFC/check_term_certificates.py",
+          "bytes": 8825,
+          "sha256": "c9b20e39bcf3f20d9a38f335b7d8e52ee307d2b10bb07b186a2fbf32a2af46c1"
+        },
+        "recovery_helper": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_157.py",
+          "bytes": 21524,
+          "sha256": "fc270b91c96c5ff99a997d10019612c59195342e8b04d486d3578f4557f4ffaa"
+        },
+        "source50_arrival": "85633fd2f57b5dca16f87667699134d1b500ebc0",
+        "source50_pin": "fab89c5d26b81cd2ccab2ee5d213ff23725c7726",
+        "fixed_hosted_spec": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/50-terms-data-spec254.json",
+          "bytes": 7308,
+          "sha256": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+        },
+        "experiment_sources": {
+          "term_paths.py": {
+            "path": "/tmp/zfc-term-publication-bundle/Computability/BusyBeaver/Research/ZFC/term-certificates/term_paths.py",
+            "bytes": 7234,
+            "sha256": "10ffa00eb8b910ccbd0d1e135a960dae9e08415cb52af4cb434a2d374f7232de"
+          },
+          "test_paths.py": {
+            "path": "/tmp/zfc-term-publication-bundle/Computability/BusyBeaver/Research/ZFC/term-certificates/test_paths.py",
+            "bytes": 10192,
+            "sha256": "091e09edf067227172f3b3633ca1104ae3046b3ce06607c2159bbf23c1d8ff33"
+          },
+          "term_circuits.py": {
+            "path": "/tmp/zfc-term-publication-bundle/Computability/BusyBeaver/Research/ZFC/term-certificates/term_circuits.py",
+            "bytes": 8493,
+            "sha256": "b1a4e8fe445d8d4abf9a6ad8e236b63ee1948bf51990eba6ebda00a198c0b2a7"
+          },
+          "test_circuits.py": {
+            "path": "/tmp/zfc-term-publication-bundle/Computability/BusyBeaver/Research/ZFC/term-certificates/test_circuits.py",
+            "bytes": 10741,
+            "sha256": "53268737da9856c7e50ebd80aeaa00e0d3e30ec153b4aa52909f8f95667acc5f"
+          },
+          "term_codec.py": {
+            "path": "/tmp/zfc-term-publication-bundle/Computability/BusyBeaver/Research/ZFC/term-certificates/term_codec.py",
+            "bytes": 8479,
+            "sha256": "dabb09c4f7749c7e71bbd65d6056e83f3648aef58b3b24bc3807841515a4b979"
+          },
+          "test_codec.py": {
+            "path": "/tmp/zfc-term-publication-bundle/Computability/BusyBeaver/Research/ZFC/term-certificates/test_codec.py",
+            "bytes": 7849,
+            "sha256": "ecbaf436684abf07e25abbbc4dd022ffc852caa437f4026ea377b5e08bef8da3"
+          }
+        },
+        "checks": [
+          {
+            "name": "source50-prepare-only",
+            "command": [
+              "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+              "-B",
+              "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_157.py",
+              "--repo",
+              "/home/codex/.codex/worktrees/ec20/Proofs",
+              "--output",
+              "/tmp/zfc-term-maintained-replay-corrected/recovered",
+              "--prepare-only"
+            ],
+            "cwd": "/tmp/zfc-term-maintained-replay-corrected",
+            "returncode": 0,
+            "seconds": 0.123,
+            "log": "/tmp/zfc-term-maintained-replay-corrected/source50-prepare-only.log"
+          },
+          {
+            "name": "test_paths",
+            "command": [
+              "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+              "-B",
+              "/tmp/zfc-term-maintained-replay-corrected/run/test_paths.py"
+            ],
+            "cwd": "/tmp/zfc-term-maintained-replay-corrected/run",
+            "returncode": 0,
+            "seconds": 0.738,
+            "log": "/tmp/zfc-term-maintained-replay-corrected/test_paths.log"
+          },
+          {
+            "name": "test_circuits",
+            "command": [
+              "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+              "-B",
+              "/tmp/zfc-term-maintained-replay-corrected/run/test_circuits.py"
+            ],
+            "cwd": "/tmp/zfc-term-maintained-replay-corrected/run",
+            "returncode": 0,
+            "seconds": 0.153,
+            "log": "/tmp/zfc-term-maintained-replay-corrected/test_circuits.log"
+          },
+          {
+            "name": "test_codec",
+            "command": [
+              "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+              "-B",
+              "/tmp/zfc-term-maintained-replay-corrected/run/test_codec.py"
+            ],
+            "cwd": "/tmp/zfc-term-maintained-replay-corrected/run",
+            "returncode": 0,
+            "seconds": 5.96,
+            "log": "/tmp/zfc-term-maintained-replay-corrected/test_codec.log"
+          },
+          {
+            "name": "stdlib-hosted-spec",
+            "command": [
+              "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+              "-B",
+              "/tmp/zfc-term-publication-bundle/Computability/BusyBeaver/Research/ZFC/check_term_certificates.py",
+              "_standalone",
+              "/tmp/zfc-term-maintained-replay-corrected/run",
+              "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/50-terms-data-spec254.json",
+              "/tmp/zfc-term-maintained-replay-corrected/standalone.json"
+            ],
+            "cwd": "/tmp/zfc-term-maintained-replay-corrected/run",
+            "returncode": 0,
+            "seconds": 0.068,
+            "log": "/tmp/zfc-term-maintained-replay-corrected/stdlib-hosted-spec.log"
+          }
+        ],
+        "Lean_built": false,
+        "Coq_built": false,
+        "delivered_manifest_checks": false,
+        "delivered_suites_run": false,
+        "assertions_enabled": true,
+        "scope": "Finite exact-C254 verifier/circuit/codec controls and fair-search specification; no actual binary TM, state price, consistency assertion or PA theorem.",
+        "source50_recovery": {
+          "batch": 157,
+          "source": 50,
+          "arrival": "85633fd2f57b5dca16f87667699134d1b500ebc0",
+          "archive": "docs/incoming/zfc_sparse_certificates.zip",
+          "scratch": "/tmp/zfc-term-maintained-replay-corrected/recovered",
+          "package": "/tmp/zfc-term-maintained-replay-corrected/recovered/zfc_sparse_certificates",
+          "recovery_counts": {
+            "files": 67,
+            "hosted": 62,
+            "archive_only": 5
+          },
+          "recovered_path_map": "/tmp/zfc-term-maintained-replay-corrected/recovered/recovered-paths.json",
+          "checks": [],
+          "Lean_built": false,
+          "Coq_built": false,
+          "scope": "Offline exact recovery and finite functional replay; default replays delivered degree1/degree2 partitions, extended repeats only degree1. No new machine/calibration/internal PA proof.",
+          "provenance_skip": "Only named degree-one extra-LF provenance input/loop, removed in memory; functional identities and assertions retained.",
+          "status": "PREPARED"
+        },
+        "source50_test_dependencies": {
+          "code/symbolic254.py": {
+            "path": "/tmp/zfc-term-maintained-replay-corrected/recovered/zfc_sparse_certificates/code/symbolic254.py",
+            "bytes": 14812,
+            "sha256": "8e58092d6d54b01c1bf1ad1e1d72954849fba7d5bfce9982edaeaa01d97e822c"
+          },
+          "code/canonical254.py": {
+            "path": "/tmp/zfc-term-maintained-replay-corrected/recovered/zfc_sparse_certificates/code/canonical254.py",
+            "bytes": 8526,
+            "sha256": "0ced7f96fc6f2a3eaead0cd0e8c6bfcf1fe349ac0223e4ea201760ccdad9a7a8"
+          },
+          "code/term254.py": {
+            "path": "/tmp/zfc-term-maintained-replay-corrected/recovered/zfc_sparse_certificates/code/term254.py",
+            "bytes": 5592,
+            "sha256": "c8dd2f38c70bfc5a3fd8124dfb334bb66547f48c632f6bf54a6c54984f56d639"
+          },
+          "code/check_term254.py": {
+            "path": "/tmp/zfc-term-maintained-replay-corrected/recovered/zfc_sparse_certificates/code/check_term254.py",
+            "bytes": 7842,
+            "sha256": "1d66a2cdb85a791131ffe6b9c8c9fcf2c9fca1f0635c4f1701b553060e9e952d"
+          },
+          "data/spec254.json": {
+            "path": "/tmp/zfc-term-maintained-replay-corrected/recovered/zfc_sparse_certificates/data/spec254.json",
+            "bytes": 7308,
+            "sha256": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+          }
+        },
+        "test_paths": {
+          "status": "PASS",
+          "python": "3.13.14",
+          "command": "uv run --no-project python -B test_paths.py",
+          "elapsed_seconds": 0.6525590615347028,
+          "scope": "Finite executable QA and ordinary proof argument; no Lean proof, binary codec, enumerator, PA theorem or TM state cost",
+          "source50_source_pin": "fab89c5d26b81cd2ccab2ee5d213ff23725c7726",
+          "all_rule_tags": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "explicit_goal_controls": 15,
+          "fixed_default_F_rejections": 15,
+          "ordered_node_pair_checks": 10201,
+          "deep_witness": {
+            "edges": 2048,
+            "nodes": 4160,
+            "verifier_stats": {
+              "node_records": 4159,
+              "lookup_records": 297059,
+              "path_edges": 2048,
+              "proof_rows": 1,
+              "arena_uniqueness_comparisons": 0,
+              "reason": null
+            }
+          },
+          "tests": [
+            "all12 exact source50 rule controls converted; fixedF rejects all12",
+            "exact quoted canonical GEN adapter",
+            "unused duplicated positive key accepted; original canonical checker rejects it",
+            "both genuine exact bundle templates with pointer-distinct equal-value parameters rejected at gate",
+            "2048-edge witness and genuine deep bundle accepted without numeric materialization",
+            "all31 binary witnesses of length<=4 reject equal duplicated leaves",
+            "certificate cannot select its own fixed default goal",
+            "10201 ordered node pairs agree with small numeric denotation oracle",
+            "15 positive controls and fixedF negatives pass with arithmetic/producer APIs disabled"
+          ],
+          "rejected_corruptions": [
+            "bundle_gate_1_different_IDs_equal_value",
+            "bundle_gate_2_different_IDs_equal_value",
+            "path_short",
+            "path_trailing",
+            "path_bad_bit",
+            "path_negative_bit",
+            "path_bool_bit",
+            "path_not_list",
+            "path_empty_before_difference",
+            "zero_alias",
+            "self_reference",
+            "bool_constructor_tag",
+            "negative_reference",
+            "false_claimed_formula",
+            "empty_proof",
+            "false_MP_conclusion",
+            "missing_gate_paths"
+          ],
+          "verifier_has_global_arena_uniqueness_test": false,
+          "verifier_has_template_linear_lookup": true,
+          "source_sha256": {
+            "term_paths.py": "10ffa00eb8b910ccbd0d1e135a960dae9e08415cb52af4cb434a2d374f7232de",
+            "test_paths.py": "091e09edf067227172f3b3633ca1104ae3046b3ce06607c2159bbf23c1d8ff33",
+            "source50/code/audit_canonical.py": "4128a5c974fee132883b599956f4f576a49d8f9a0f006ca408369ff314e156d7",
+            "source50/code/canonical254.py": "0ced7f96fc6f2a3eaead0cd0e8c6bfcf1fe349ac0223e4ea201760ccdad9a7a8",
+            "source50/code/check_proof_code_size.py": "a4a009678677265fdee41c25cd2447ef5a86855ec0e6a6fc13f7ac667928b00e",
+            "source50/code/check_term254.py": "1d66a2cdb85a791131ffe6b9c8c9fcf2c9fca1f0635c4f1701b553060e9e952d",
+            "source50/code/extract_specs.py": "993f3c16b0b947fefd7c926021ac00a075765b4359cef6893f15c88eae52d788",
+            "source50/code/replay_all.py": "4a7aaad6c24b3322929f6df525daa85409a41281d40476c5da445adf6dce160b",
+            "source50/code/reproduce.py": "013c4f9eb1a9ad2f76bc1aba3475817fdd03ed2a80078d0d59aad59350b83569",
+            "source50/code/schema_metrics.py": "a604039456feeaaa35e64f5c7425465845d9c66a906a4a19387addb3c76b01c3",
+            "source50/code/symbolic254.py": "8e58092d6d54b01c1bf1ad1e1d72954849fba7d5bfce9982edaeaa01d97e822c",
+            "source50/code/term254.py": "c8dd2f38c70bfc5a3fd8124dfb334bb66547f48c632f6bf54a6c54984f56d639",
+            "source50/data/spec254.json": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+          }
+        },
+        "test_circuits": {
+          "status": "PASS",
+          "python": "3.13.14",
+          "command": "uv run --no-project python -B test_circuits.py",
+          "elapsed_seconds": 0.08040904346853495,
+          "scope": "Executable constructor-witness interface and ordinary exact-calculus argument; no binary codec, TM state count or internal PA theorem",
+          "all_rule_tags": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "positive_controls": 15,
+          "fixed_default_F_rejections": 15,
+          "template_identity_cases": 261,
+          "static_circuit_steps": {
+            "3": 5,
+            "4": 6,
+            "5": 5,
+            "6": 5,
+            "7": 5,
+            "8": 6,
+            "9": 5,
+            "10": 6,
+            "11": 62
+          },
+          "deep_bundle_stats": {
+            "node_records": 4159,
+            "constructor_checks": 62,
+            "circuit_steps": 62,
+            "path_edges": 2048,
+            "proof_rows": 1,
+            "template_searches": 0,
+            "arena_uniqueness_comparisons": 0,
+            "reason": null
+          },
+          "tests": [
+            "all12 exact source50 controls convert and verify; all12 reject at fixedF",
+            "261 fixed-template comparisons against original source50, including all parameter collisions over0/1/2",
+            "GEN may name a non-first duplicate result, which lookup prototype rejects",
+            "schema may name a non-first duplicate output with a valid local witness",
+            "fixedF endpoint recognizes either copy, rejects other tag; no firstF lookup",
+            "2048-edge exact bundle uses only62 explicit constructor checks after local validation",
+            "certificate cannot override trusted templates or fixed default goal",
+            "15 positive controls/fixedF negatives unchanged with every template search, compiler, numeric and producer API disabled"
+          ],
+          "rejected_corruptions": [
+            "bundle_gate_1_pointer_distinct_equal_value",
+            "bundle_gate_2_pointer_distinct_equal_value",
+            "missing_constructor_witness",
+            "truncated_circuit",
+            "extra_circuit_step",
+            "wrong_circuit_wire",
+            "out_of_range_circuit_id",
+            "boolean_circuit_id",
+            "false_MP_major",
+            "false_GEN_shape",
+            "forbidden_zero_alias",
+            "trailing_gate_path"
+          ],
+          "trusted_spec": "source50/data/spec254.json",
+          "source_sha256": {
+            "term_circuits.py": "b1a4e8fe445d8d4abf9a6ad8e236b63ee1948bf51990eba6ebda00a198c0b2a7",
+            "test_circuits.py": "53268737da9856c7e50ebd80aeaa00e0d3e30ec153b4aa52909f8f95667acc5f",
+            "source50/data/spec254.json": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+          }
+        },
+        "test_codec": {
+          "status": "PASS",
+          "python": "3.13.14",
+          "command": "uv run --no-project python -B test_codec.py",
+          "elapsed_seconds": 5.885623205453157,
+          "scope": "Finite binary codec QA and fair-search executable specification; no compiled TM/state count, Lean or PA theorem",
+          "all_rule_tags": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "exact_roundtrip_positive_controls": 15,
+          "same_controls_rejected_at_fixedF": 15,
+          "control_word_lengths": [
+            8,
+            24,
+            30,
+            73,
+            132,
+            110,
+            110,
+            110,
+            92,
+            110,
+            157,
+            4582,
+            37,
+            85,
+            9042403
+          ],
+          "exhaustive_short_words": {
+            "max_length": 17,
+            "words": 262143,
+            "successful_parses": 93,
+            "fixedF_acceptances": 0,
+            "successful_parses_by_length": {
+              "0": 0,
+              "1": 0,
+              "2": 1,
+              "3": 0,
+              "4": 0,
+              "5": 0,
+              "6": 0,
+              "7": 3,
+              "8": 1,
+              "9": 0,
+              "10": 0,
+              "11": 0,
+              "12": 9,
+              "13": 27,
+              "14": 16,
+              "15": 1,
+              "16": 6,
+              "17": 29
+            }
+          },
+          "malformed_reasons": {
+            "empty": "truncated",
+            "truncated_unary": "truncated",
+            "nonbinary": "not_binary_word",
+            "node_count_before_allocation": "node_count_exceeds_remaining_bits",
+            "row_count_before_allocation": "row_count_exceeds_remaining_bits",
+            "zero_alias": "zero_alias",
+            "node_forward_reference": "node_forward_reference",
+            "unknown_rule": "unknown_rule",
+            "proof_forward_reference": "proof_forward_reference",
+            "argument_reference": "argument_reference",
+            "formula_reference": "formula_reference",
+            "circuit_reference": "circuit_reference",
+            "truncated_circuit": "truncated",
+            "truncated_path": "truncated",
+            "unterminated_path_bit": "truncated",
+            "leftover_bits": "leftover_bits"
+          },
+          "tests": [
+            "15 positive controls roundtrip exactly, including all12 tags, duplicate outputs and2048-edge path; all reject at fixedF",
+            "16 malformed words and every proper prefix of8-bit truth control reject",
+            "structural parser accepts well-shaped false truth row; exact verifier rejects it",
+            "well-shaped false gate path roundtrips but exact verifier rejects it",
+            "all262143 words of length<=17 terminate; every successful parse re-encodes to the exact original word",
+            "length-lex order/rank on first127 words; bounded no-hit result is explicitly finite",
+            "semidecider fair-enumeration harness reaches controlled word0110 at rank21; no logical acceptance inferred",
+            "MemoryError and RecursionError from inside the actual core propagate; neither becomes fuel-as-UNSAT/rejection"
+          ],
+          "bounded_search_control": {
+            "status": "no_fixedF_certificate_through_length",
+            "max_length": 6,
+            "tested_words": 127
+          },
+          "source_sha256": {
+            "term_codec.py": "dabb09c4f7749c7e71bbd65d6056e83f3648aef58b3b24bc3807841515a4b979",
+            "test_codec.py": "ecbaf436684abf07e25abbbc4dd022ffc852caa437f4026ea377b5e08bef8da3",
+            "term_circuits.py": "b1a4e8fe445d8d4abf9a6ad8e236b63ee1948bf51990eba6ebda00a198c0b2a7",
+            "source50/data/spec254.json": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+          }
+        },
+        "stdlib_hosted_spec": {
+          "status": "PASS",
+          "word_bits": 4582,
+          "roundtrip_exact": true,
+          "positive_bundle_control": true,
+          "same_word_rejected_at_fixedF": true,
+          "numeric_or_producer_modules_imported": false,
+          "trusted_hosted_spec": {
+            "path": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/50-terms-data-spec254.json",
+            "bytes": 7308,
+            "sha256": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+          },
+          "scope": "Clean-process stdlib-only verifier/codec finite control; no logical acceptance or TM state claim."
+        },
+        "experiment_sources_unchanged": true,
+        "recovered_functional_dependencies_unchanged": true,
+        "fixed_spec_exact": true,
+        "seconds_in_subprocesses": 7.042
+      }
+    },
+    "final_source_hashes": {
+      "/tmp/zfc-term-disequality/term_circuits.py": "b1a4e8fe445d8d4abf9a6ad8e236b63ee1948bf51990eba6ebda00a198c0b2a7",
+      "/tmp/zfc-term-disequality/term_codec.py": "dabb09c4f7749c7e71bbd65d6056e83f3648aef58b3b24bc3807841515a4b979",
+      "/tmp/zfc-term-disequality/test_codec.py": "ecbaf436684abf07e25abbbc4dd022ffc852caa437f4026ea377b5e08bef8da3"
+    },
+    "complete_review_text": "# Independent finite-codec and search audit\n\nThe mathematical/source review is CLEAN. I read all of `term_codec.py`, `codec-note.md` and the stored test source, using the preceding independent circuit audit. No full suite or Lean/Coq build was repeated. One narrow exception-policy mismatch was found, corrected by the author and independently rechecked as described below.\n\nFor every finite binary string, the parser advances its cursor at every unary/path step or rejects at EOF. Node/row loops use finite parsed counts with4N/5P minimum remaining-bit checks before per-record allocation, and all other field loops have trusted fixed arity. The parser never unfolds arena terms or delegates a variable-length recursive parse. All candidate addresses are explicitly bounded. This is total as an ordinary finite algorithm under the stated unbounded-resource interpretation and fixed valid template tables.\n\nThe structural encoder domain is precise: only the three fixed outer fields and tag-specific exact row fields, sole zero node, locally valid backward references, tags/arity and witness lists. It intentionally includes false proof rows and false gate witnesses. The decoder produces that domain. Unique unary/fixed-width/path encodings, known counts/arity and mandatory EOF establish both roundtrips by finite record induction. Empty proof lists parse but fail the logical verifier. A constructor certificate admitted by the earlier flexible verifier but carrying extra object fields need not belong to this stricter encoding domain; existential completeness only needs the canonical producer's ordinary finite encodings.\n\nNo word can select a goal, template family or version. `accepts` uses only the default fixedF verifier. Thus the earlier circuit soundness/completeness argument transfers to existence of an accepted finite word. Length-lex enumeration visits every word once at rank `2^L-1+value(word)`; each earlier check terminates mathematically, so semidecide is fair. Bounded search is separately named and labels its no-hit result by the finite length bound. The code never infers consistency from a completed level or resource failure.\n\nThe note correctly does not carry the former O(L\u00b2) bit bound through unary addresses, and charges no fictitious machine-state saving. Parsing, indexed access, fixed data, workspace/reset, blank startup, whole compiler cost and formal simulation are still future implementation obligations.\n\nThe sole issue was literal exception policy: the original `term_circuits.verify_certificate` caught `RecursionError`, while codec prose said resource errors propagate. An injected constructor exception on a structurally valid GEN control was converted toFalse; the independent probe is preserved in `codec-resource-boundary-probe.json`. This was a runtime-boundary mismatch, not an accepted false proof or a failure of the ordinary unbounded-resource theorem. Fibers removed that catch and added explicit MemoryError/RecursionError probes inside the actual constructor call. I independently verified that the entire source delta is just removal of RecursionError from the catch tuple (reconstructing the original reproduces its exact audited hash), and both resource errors now propagate through codec\u2192verifier while the valid GEN control remains valid. Publication source/test copies are byte-identical. The author's fresh portable replay passed at `/tmp/zfc-term-maintained-replay-corrected/verification.json`; no full suite was repeated by me. The companion JSON records original and corrected hashes and this evidence.\n"
+  },
+  "original_resource_policy_probe": {
+    "scope": "Injected runtime resource-boundary harness, not an untrusted candidate exploit or logical counterexample. Mathematical parser/semidecider unaffected under unbounded-resource interpretation.",
+    "source_sha256": "e505a9b0b79dcf44ab2cc7653110032b1924f765d43f2256a62d2209b27c2189",
+    "word": "1010001100000000100010",
+    "structural_roundtrip": true,
+    "trusted_GEN_control_normally_valid": true,
+    "injected_RecursionError_propagated": false,
+    "verifier_result_instead": false,
+    "verifier_reason": "independent resource-boundary probe",
+    "accepts_result_instead": false,
+    "recommended_correction": "Remove RecursionError from V.verify_certificate except tuple, preserving its intended no-resource-failure-as-rejection policy."
+  },
+  "root_review": "Read all six published Python sources, complete ordinary proof/codec notes, portable runner and independent audits. Confirmed fixedF/default search, all12templates, both inequality paths, duplicate-node soundness, codec domain/fairness and corrected resource propagation. No binary TM/state saving or new Lean claim."
+}

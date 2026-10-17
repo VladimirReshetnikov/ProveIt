@@ -219,3 +219,12 @@ bounds, normal-form bijection and certificate equivalences are not yet Lean
 ports. Our exact arithmetic Cantor component now fills the elementary pairing
 step proposed by the report; internal certificate normalization, represented
 history and full coded proof/trace transports remain separate obligations.
+
+The subsequent [constructor-witness prototype](term-certificates/README.md)
+allows duplicate positive arena nodes and replaces each bundle inequality by
+a synchronized path ending at a tag/zero mismatch. Schema rows supply explicit
+constructor-record IDs, removing both global uniqueness validation and template
+search. A finite binary codec and fair default-falsity search are implemented.
+Ordinary soundness/completeness and finite controls are recorded; the new
+frontend still needs Lean verification, a low-level compiler and its full state
+cost. Its unary-address codec does not inherit the source's compact bit bound.
