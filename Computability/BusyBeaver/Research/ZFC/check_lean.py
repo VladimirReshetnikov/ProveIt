@@ -44,8 +44,11 @@ def main() -> None:
                         "Code254Models", "NumericCode254", "RegisterMark253", "RegisterIncrement253",
                         "Enum254", "QuotientSeparation", "QuotientPower", "QuotientReplacement",
                         "RegisterDecrement253", "QuotientBasic", "SingletonInfinity", "BreakSite253", "FiniteSets", "InductiveAttempts", "QuotientZF0",
-                        "RMDag", "Dag254", "L2Lib254", "L2Macros254", "L2Control254", "L2Axioms254", "L2AxiomsEval254", "L2Root254", "RMEquiv", "RMEquiv254", "RMBisim", "Bisim254", "ProgramZF0", "DecodeFresh254", "NamedForm254",
-                        "DuplicateProfiles", "WritingRuns", "ZeroSite253", "EqualityGIC", "QuotientCPGIC", "NativeDecoded254", "NativeTheory254") ),
+                        "RMDag", "Dag254", "L2Lib254", "L2Macros254", "L2Control254", "L2Axioms254", "L2AxiomsEval254", "L2Root254", "RMEquiv", "RMEquiv254", "ProgramZF0", "DecodeFresh254", "NamedForm254",
+                        "DuplicateProfiles", "WritingRuns", "ZeroSite253", "EqualityGIC", "QuotientCPGIC", "NativeDecoded254", "NativeTheory254",
+                        "EnumSafeStart254", "DirtyRoot254", "DirtyProgram254", "WellFoundedPart", "SeedInvariant254", "RMBisim", "Bisim254",
+                        "TablePerm252", "BootPerm252", "RegisterBoxesPerm252", "RegisterMarkPerm252",
+                        "RegisterIncrementPerm252", "RegisterDecrementPerm252") ),
         ("Computability/BusyBeaver/Lean", "BusyBeaver/ZFC.lean"),
     ]
     if args.include_no_quotient:

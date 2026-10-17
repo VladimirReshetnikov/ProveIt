@@ -1,0 +1,89 @@
+{
+  "scope": "Three fixed unoptimized compile comparisons, full original equality logic and base4/backend retained, local c>=2 and original c!=a,b gates retained; no full frontend/calibration or binary runtime claim.",
+  "source": "Computability/BusyBeaver/Research/ZFC/functional_subset_closure_experiment.py",
+  "upstream": "297ab8df7e5de329605c3875b4934643b371a5e3",
+  "results": [
+    {
+      "variant": "point_subset_bound_PSC_control",
+      "whole_theory_constructor_macros": 76,
+      "logical_prefix_macros": 88,
+      "vacuity_macros": 19,
+      "working_states": 317,
+      "decision_states": 255,
+      "framework_states": 62,
+      "transition_rows": 633,
+      "seconds": 0.01880814228206873,
+      "equality_helper_retained": true,
+      "symbolic_RPN_exact": true,
+      "named_table_sha256": "4adca47e443ba07e47cd4bce7072de84aa60c81b292797179249d9d65a02af30",
+      "scope": "Named compiler control; not a complete certified blank-start machine."
+    },
+    {
+      "variant": "subset_bound_subset_PSC",
+      "whole_theory_constructor_macros": 82,
+      "logical_prefix_macros": 88,
+      "vacuity_macros": 19,
+      "working_states": 320,
+      "decision_states": 258,
+      "framework_states": 62,
+      "transition_rows": 639,
+      "seconds": 0.021898983977735043,
+      "equality_helper_retained": true,
+      "symbolic_RPN_exact": true,
+      "named_table_sha256": "e605daba5646987f4a9e62a6bb629f125ce6ecc7d553bd4eaa16302330885a89",
+      "scope": "Named compiler control; not a complete certified blank-start machine."
+    },
+    {
+      "variant": "equality_bound_subset_PSC_plus_Union",
+      "whole_theory_constructor_macros": 110,
+      "logical_prefix_macros": 88,
+      "vacuity_macros": 19,
+      "working_states": 347,
+      "decision_states": 284,
+      "framework_states": 63,
+      "transition_rows": 693,
+      "seconds": 0.022169288247823715,
+      "equality_helper_retained": true,
+      "symbolic_RPN_exact": true,
+      "named_table_sha256": "73af538f4dc96ef9f9188d4687f9c29912a6c77ca5a99e8876e9d259f377cb9f",
+      "scope": "Named compiler control; not a complete certified blank-start machine."
+    }
+  ],
+  "freshness": "c is a fresh variable label distinct from fixed0,1; no parameter-renaming compiler is added",
+  "driver_sha256": "8eac629d53dbb4601ef5932306fbf3a601ff933fa4c841536e40b60fcf0a6f85",
+  "missing_rows_scope": "Tables are named compiler controls, before any separate blank initialization certificate; no complete literal blank-machine claim",
+  "logical_engine": "Full original GEN plus all eight equality/logical schemas, base4 constructors retained",
+  "status": "PASS: three fixed compiler controls and 198 finite AST/semantic regressions",
+  "date": "2026-10-16",
+  "reproduction_command": "uv run --no-project python -B Computability/BusyBeaver/Research/ZFC/functional_subset_closure_experiment.py --output /tmp/zfc-functional-subset-closure",
+  "finite_capture_regression": {
+    "status": "PASS",
+    "cases_by_variant": {
+      "point_subset_bound_PSC_control": 66,
+      "subset_bound_subset_PSC": 66,
+      "equality_bound_subset_PSC_plus_Union": 66
+    },
+    "total_AST_vs_direct_cases": 198,
+    "domain_sizes": [
+      1,
+      2
+    ],
+    "irreflexive_relations_only": true,
+    "all_relation_truth_matrices": true,
+    "equality_bound_iff_partial_functional_checked": true,
+    "scope": "Finite capture/AST regression, not equiconsistency or uniform numeric completeness."
+  },
+  "ordinary_mathematical_status": "The note gives an unformalized same-model comparison with ZF without Foundation or Choice; no coded/frontend proof follows from the finite checks.",
+  "negative_result": "In this exact fixed layout, equality-bound subset PSC plus Union costs 347 states versus 320 for the subset-bound subset-seeded control; no lower bound for other layouts or theories.",
+  "scratch_evidence": "/tmp/zfc-functional-psc-packaged",
+  "independent_root_review": {
+    "full_driver_and_ordinary_proof_read": true,
+    "rerun_all_three_controls_and_198_finite_cases": true,
+    "all_three_named_tables_byte_identical": [
+      "4adca47e443ba07e47cd4bce7072de84aa60c81b292797179249d9d65a02af30",
+      "e605daba5646987f4a9e62a6bb629f125ce6ecc7d553bd4eaa16302330885a89",
+      "73af538f4dc96ef9f9188d4687f9c29912a6c77ca5a99e8876e9d259f377cb9f"
+    ],
+    "scratch": "/tmp/zfc-root-functional-subset"
+  }
+}
