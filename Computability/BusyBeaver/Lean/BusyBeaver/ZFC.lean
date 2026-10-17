@@ -41,6 +41,7 @@ import BusyBeaver.ZFC.L2Root254
 import BusyBeaver.ZFC.RMEquiv
 import BusyBeaver.ZFC.RMEquiv254
 import BusyBeaver.ZFC.RMBisim
+import BusyBeaver.ZFC.ActualTree254
 import BusyBeaver.ZFC.Bisim254
 import BusyBeaver.ZFC.NamedNumeric254
 import BusyBeaver.ZFC.BootstrapFrame253
@@ -93,6 +94,17 @@ import BusyBeaver.ZFC.RegisterBoxesPerm252
 import BusyBeaver.ZFC.RegisterMarkPerm252
 import BusyBeaver.ZFC.RegisterIncrementPerm252
 import BusyBeaver.ZFC.RegisterDecrementPerm252
+import BusyBeaver.ZFC.Permutation252Frame
+import BusyBeaver.ZFC.BootstrapFramePerm252
+import BusyBeaver.ZFC.SymbolicPerm252
+import BusyBeaver.ZFC.SitePerm252
+import BusyBeaver.ZFC.RegisterPathClean
+import BusyBeaver.ZFC.Permutation252Simulation
+import BusyBeaver.ZFC.InstructionPerm252
+import BusyBeaver.ZFC.SiteCoverage
+import BusyBeaver.ZFC.RuntimePerm252
+import BusyBeaver.ZFC.RuntimeInstancePerm252
+import BusyBeaver.ZFC.Permutation252Program
 
 /-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC
 consistency theorem or state-count improvement is claimed by these imports. -/

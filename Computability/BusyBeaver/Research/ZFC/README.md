@@ -15,6 +15,9 @@ steps. It retains the complete original proof-search program and passes all
 independent regeneration are preserved. General binary simulation and the
 final consistency equivalence remain open; this is distinct from the older
 reduced-calculus 252-state experiment below.
+The [symbolic executor, clean-path invariant and instruction framing](permutation252_runtime.md)
+now have Lean proofs for the actual candidate. Complete decoder coverage and
+global halting composition are separate checks.
 
 The [attributed upstream baseline](../../../../lib/jeff-busy-beaver-zfc254/README.proveit.md)
 is imported at commit `297ab8df7e5de329605c3875b4934643b371a5e3`.

@@ -122,13 +122,16 @@ and [105-unit integration check](../results/permutation252-integration-verificat
 record the fresh checks and exact dependency-cache scope; the integration
 did not rebuild all prior modules.
 
-The remaining argument must combine the finite startup with a proved symbolic
-instruction checker, the complete dispatch invariant under this register
-permutation, and the existing abstract proof-search results. The zero initial
-register vector is safe; completeness from an arbitrary initial candidate
-counter, including zero, is already handled by `DirtyProgram254`. The actual
-literal-program adapter and full arithmetic consistency endpoint are separate
-proof obligations. No claim that PA proves the final equivalence is made yet.
+The [symbolic executor and instruction composition](../permutation252_runtime.md)
+are now also kernel checked. They cover arbitrary gap parameters, register
+values and spare blocks; accepted instructions preserve the complete tape
+frame. The full finite decoder certificate and global halting composition
+are separate checks. The zero initial register vector is safe; completeness
+from an arbitrary initial candidate counter, including zero, is already
+handled by `DirtyProgram254`. The literal program's equivalence with the
+structured proof search has passed a fresh 3,010-entry certificate check.
+The full arithmetic consistency endpoint remains open. No claim that PA
+proves the final equivalence is made yet.
 
 Reproduce the finite candidate audit and the exact generated artifacts with:
 
