@@ -316,3 +316,13 @@ consistency implication. See `ValidatorFormulaEncoder254.lean`,
 `validator_formula_encoder254.md`, and the matching verification/history/review
 records. Its maintained-default prepare-only check builds nothing and makes
 no compiler/version call.
+
+The finite CProv quantifier interface passes all 25 probes and 18 callers
+with standard axioms and zero warnings. It derives quantifier monotonicity,
+original gated atomic vacuity and the explicit-resource `all_relational`
+bridge at arbitrary internal formula/label values. All four vacuity proof
+witnesses remain premises; no global renaming closure of accepted proofs or
+bundles is assumed. The represented environment/alpha induction and actual
+ZF axiom reconstruction remain open. See `ValidatorQuantifierCore254.lean`,
+`validator_quantifier_core254.md`, and the matching records. The maintained
+prepare-only check queries the compiler version and performs no proof build.
