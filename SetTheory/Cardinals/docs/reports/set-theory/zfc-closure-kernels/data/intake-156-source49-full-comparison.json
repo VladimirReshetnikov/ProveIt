@@ -1,0 +1,5300 @@
+{
+  "status": "PASS",
+  "runs": [
+    {
+      "name": "radius6",
+      "command": [
+        "/tmp/zfc252-census-4n_0ia3p/exhaustive_fusions_lazy",
+        "/tmp/zfc252-census-4n_0ia3p/radius6.input",
+        "/tmp/zfc-intake156/source49-extra/radius6"
+      ],
+      "cwd": "/tmp/zfc-intake156/source49-replay",
+      "exit_code": 0,
+      "elapsed_seconds": 48.150347487069666
+    },
+    {
+      "name": "radius8",
+      "command": [
+        "/tmp/zfc252-census-4n_0ia3p/exhaustive_fusions_lazy",
+        "/tmp/zfc252-census-4n_0ia3p/radius8.input",
+        "/tmp/zfc-intake156/source49-extra/radius8"
+      ],
+      "cwd": "/tmp/zfc-intake156/source49-replay",
+      "exit_code": 0,
+      "elapsed_seconds": 505.41710243653506
+    },
+    {
+      "name": "closure8",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "machine/code/check_window_invariant.py",
+        "/tmp/zfc252-census-4n_0ia3p/radius8.input",
+        "--output",
+        "/tmp/zfc-intake156/source49-extra/closure8.json"
+      ],
+      "cwd": "/tmp/zfc-intake156/source49-replay",
+      "exit_code": 0,
+      "elapsed_seconds": 4.058026768267155
+    },
+    {
+      "name": "differential",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "machine/code/test_exhaustive_pruning.py",
+        "/tmp/zfc252-census-4n_0ia3p/exhaustive_fusions_lazy",
+        "--output",
+        "/tmp/zfc-intake156/source49-extra/differential.json"
+      ],
+      "cwd": "/tmp/zfc-intake156/source49-replay",
+      "exit_code": 0,
+      "elapsed_seconds": 0.11599101684987545
+    },
+    {
+      "name": "single-rotations",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "machine/code/joint_rotation_search.py",
+        "--runtime-only",
+        "--seconds",
+        "1000000",
+        "--output",
+        "/tmp/zfc-intake156/source49-extra/single-rotations.json"
+      ],
+      "cwd": "/tmp/zfc-intake156/source49-replay",
+      "exit_code": 0,
+      "elapsed_seconds": 468.75707636307925
+    },
+    {
+      "name": "rotation0",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "machine/code/joint_rotation_search.py",
+        "--single",
+        "0",
+        "--seconds",
+        "1000000",
+        "--output",
+        "/tmp/zfc-intake156/source49-extra/rotation0.json"
+      ],
+      "cwd": "/tmp/zfc-intake156/source49-replay",
+      "exit_code": 0,
+      "elapsed_seconds": 5.524249302223325
+    },
+    {
+      "name": "multi20261017",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "machine/code/multi_rotation_search.py",
+        "--iterations",
+        "20000",
+        "--seed",
+        "20261017",
+        "--seconds",
+        "1000000",
+        "--output",
+        "/tmp/zfc-intake156/source49-extra/multi20261017.json"
+      ],
+      "cwd": "/tmp/zfc-intake156/source49-replay",
+      "exit_code": 0,
+      "elapsed_seconds": 38.2280396502465
+    },
+    {
+      "name": "multi20261018",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "machine/code/multi_rotation_search.py",
+        "--iterations",
+        "46413",
+        "--seed",
+        "20261018",
+        "--seconds",
+        "1000000",
+        "--output",
+        "/tmp/zfc-intake156/source49-extra/multi20261018.json"
+      ],
+      "cwd": "/tmp/zfc-intake156/source49-replay",
+      "exit_code": 0,
+      "elapsed_seconds": 93.99901164881885
+    }
+  ],
+  "censuses": [
+    {
+      "radius": 6,
+      "summary": {
+        "state_pairs": 31626,
+        "actions_per_row": 1008,
+        "formal_recipe_domain": 32134040064,
+        "partial_checks": 426101486,
+        "full_recipes": 222986,
+        "full_context_checks": 7433103,
+        "certificates": 0,
+        "elapsed_seconds": 48.1275
+      },
+      "all_nontiming_summary_fields_match": true,
+      "ledgers": [
+        {
+          "saved_file": "machine/results/fusion_radius6.tsv",
+          "bytes": 485270,
+          "identical_bytes": true,
+          "sha256": "7a43c7aba82ab6068b7de767fc43b3f8692af4d023155183bf165e4881e82203"
+        },
+        {
+          "saved_file": "machine/results/fusion_radius6_certificates.tsv",
+          "bytes": 35,
+          "identical_bytes": true,
+          "sha256": "da4759348ec221c2660533b15c8248ae45522758c8466aae35be66ad7b77f22b"
+        }
+      ]
+    },
+    {
+      "radius": 8,
+      "summary": {
+        "state_pairs": 31626,
+        "actions_per_row": 1008,
+        "formal_recipe_domain": 32134040064,
+        "partial_checks": 4379321106,
+        "full_recipes": 253524,
+        "full_context_checks": 101691837,
+        "certificates": 0,
+        "elapsed_seconds": 505.164
+      },
+      "all_nontiming_summary_fields_match": true,
+      "ledgers": [
+        {
+          "saved_file": "machine/results/fusion_radius8.tsv",
+          "bytes": 486052,
+          "identical_bytes": true,
+          "sha256": "10e0bd8cbbc7b1785ee7e405d6bfa09ffae8024d063294dc2e93ca1f2fbe1917"
+        },
+        {
+          "saved_file": "machine/results/fusion_radius8_certificates.tsv",
+          "bytes": 35,
+          "identical_bytes": true,
+          "sha256": "da4759348ec221c2660533b15c8248ae45522758c8466aae35be66ad7b77f22b"
+        }
+      ]
+    }
+  ],
+  "comparisons": {
+    "single-rotations": {
+      "all_functional_fields_match": true,
+      "excluded_nontiming_fields": [
+        "execution_batches"
+      ],
+      "actual": {
+        "scope": "Joint source27 closed-block reassociation with ProveIt register-permutation252, fixed arbitrary-gap affine rule checker, finite blank prefix. Not a kernel proof.",
+        "permutation": [
+          0,
+          3,
+          4,
+          5,
+          8,
+          1,
+          6,
+          2,
+          7
+        ],
+        "baseline": {
+          "cert": {
+            "passed": true,
+            "cases": 8391,
+            "min_literal": 13
+          },
+          "boot": {
+            "outcome": "zero_root",
+            "steps": 82552,
+            "frame": {
+              "state": "96",
+              "head": 2,
+              "gap": 40,
+              "primary": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spares": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ones": [
+                1,
+                42,
+                44,
+                46,
+                48,
+                50,
+                52,
+                54,
+                56,
+                58,
+                60,
+                62,
+                64,
+                66,
+                68,
+                70,
+                72,
+                74,
+                76,
+                78,
+                79,
+                81,
+                83,
+                85,
+                87,
+                89,
+                91,
+                93,
+                95,
+                97,
+                99,
+                101,
+                103,
+                105,
+                107,
+                109,
+                111,
+                113,
+                115,
+                117,
+                119,
+                121,
+                123,
+                125,
+                127,
+                129,
+                131,
+                133,
+                135,
+                137,
+                139,
+                141,
+                143,
+                145,
+                147,
+                149,
+                151,
+                153,
+                155,
+                157,
+                159,
+                161,
+                163,
+                165,
+                167,
+                169,
+                171,
+                173,
+                175,
+                177,
+                179,
+                181,
+                183,
+                185,
+                187,
+                189,
+                191
+              ],
+              "all_other_cells_zero": true
+            }
+          }
+        },
+        "options": 238,
+        "results": [
+          {
+            "index": 0,
+            "node": 7,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 252,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 1,
+            "node": 21,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 27,
+              "failure": {
+                "path": "101011",
+                "op": "CC",
+                "reg": 2,
+                "zero": null,
+                "reason": "('no justified box operation', '40', None, ('plain', ('inc', 8)))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 2,
+            "node": 24,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 46,
+              "failure": {
+                "path": "1101011",
+                "op": "CC",
+                "reg": 2,
+                "zero": null,
+                "reason": "('no justified box operation', '40', None, ('plain', ('inc', 8)))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 3,
+            "node": 38,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 263,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 4,
+            "node": 39,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              33
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 5,
+            "node": 43,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 259,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 6,
+            "node": 43,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 7,
+            "node": 48,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 259,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 8,
+            "node": 48,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 259,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 9,
+            "node": 49,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 10,
+            "node": 49,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 11,
+            "node": 53,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 268,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 12,
+            "node": 53,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 268,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 13,
+            "node": 57,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 139,
+              "failure": {
+                "path": "1110100100100101011",
+                "op": "CC",
+                "reg": 2,
+                "zero": null,
+                "reason": "('no justified box operation', '40', None, ('plain', ('inc', 8)))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 14,
+            "node": 57,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 15,
+            "node": 58,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 259,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 16,
+            "node": 58,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 17,
+            "node": 59,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 18,
+            "node": 59,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 19,
+            "node": 60,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 176,
+              "failure": {
+                "path": "111010010010100001011",
+                "op": "CC",
+                "reg": 2,
+                "zero": null,
+                "reason": "('no justified box operation', '40', None, ('plain', ('inc', 8)))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 20,
+            "node": 63,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 266,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 21,
+            "node": 63,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 22,
+            "node": 64,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 260,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 23,
+            "node": 64,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 24,
+            "node": 65,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 254,
+              "failure": {
+                "path": "111010010010100010101011",
+                "op": "CC",
+                "reg": 2,
+                "zero": null,
+                "reason": "('no justified box operation', '40', None, ('plain', ('inc', 8)))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 25,
+            "node": 66,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 259,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 26,
+            "node": 66,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 261,
+              "failure": {
+                "path": "111010010010100010101010",
+                "op": "CI",
+                "reg": 7,
+                "zero": null,
+                "reason": "symbolic fuel exhausted"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 27,
+            "node": 67,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 258,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 28,
+            "node": 67,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 258,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 29,
+            "node": 68,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 258,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 30,
+            "node": 68,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 330,
+              "failure": {
+                "path": "11101001001010001101010",
+                "op": "CI",
+                "reg": 7,
+                "zero": null,
+                "reason": "symbolic fuel exhausted"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 31,
+            "node": 69,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 32,
+            "node": 69,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 33,
+            "node": 70,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 34,
+            "node": 70,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 35,
+            "node": 71,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 36,
+            "node": 71,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 37,
+            "node": 72,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 38,
+            "node": 72,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 433,
+              "failure": {
+                "path": "1110100100101001001010",
+                "op": "CI",
+                "reg": 7,
+                "zero": null,
+                "reason": "symbolic fuel exhausted"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 39,
+            "node": 73,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 262,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 40,
+            "node": 73,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 262,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 41,
+            "node": 74,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 262,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 42,
+            "node": 74,
+            "operation": "associate_left",
+            "nodes": 202,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 260,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 43,
+            "node": 75,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 258,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 44,
+            "node": 75,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 45,
+            "node": 76,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 46,
+            "node": 76,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 47,
+            "node": 77,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 48,
+            "node": 77,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 49,
+            "node": 78,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 50,
+            "node": 78,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 51,
+            "node": 79,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 262,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 52,
+            "node": 80,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 53,
+            "node": 80,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 54,
+            "node": 81,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 55,
+            "node": 81,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 56,
+            "node": 82,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 258,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 57,
+            "node": 82,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 58,
+            "node": 83,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 258,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 59,
+            "node": 83,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 60,
+            "node": 84,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 61,
+            "node": 84,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 745,
+              "failure": {
+                "path": "111010010010101000110100000",
+                "op": "CD",
+                "reg": 1,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (2, True), ('mark', 0))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 62,
+            "node": 85,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 673,
+              "failure": {
+                "path": "1110100100101010001100000",
+                "op": "CD",
+                "reg": 1,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (2, True), ('mark', 0))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 63,
+            "node": 85,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 64,
+            "node": 86,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 65,
+            "node": 86,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 66,
+            "node": 87,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 67,
+            "node": 88,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 68,
+            "node": 88,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 69,
+            "node": 89,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 70,
+            "node": 89,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 71,
+            "node": 90,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 72,
+            "node": 90,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 73,
+            "node": 91,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 262,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 74,
+            "node": 92,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 261,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 75,
+            "node": 92,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 76,
+            "node": 93,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 259,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 77,
+            "node": 93,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 1264,
+              "failure": {
+                "path": "111010010010101001110101000",
+                "op": "CD",
+                "reg": 1,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (2, True), ('mark', 0))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 78,
+            "node": 94,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 258,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 79,
+            "node": 94,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 258,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 80,
+            "node": 95,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 1264,
+              "failure": {
+                "path": "111010010010101001111010000",
+                "op": "CD",
+                "reg": 1,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (2, True), ('mark', 0))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 81,
+            "node": 95,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 82,
+            "node": 96,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 83,
+            "node": 96,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 84,
+            "node": 97,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 85,
+            "node": 97,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 86,
+            "node": 98,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 87,
+            "node": 98,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 88,
+            "node": 99,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 89,
+            "node": 99,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 90,
+            "node": 100,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 91,
+            "node": 100,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 92,
+            "node": 101,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 1672,
+              "failure": {
+                "path": "111010010010101011100000",
+                "op": "CD",
+                "reg": 2,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (0, True), ('mark', 2))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 93,
+            "node": 101,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 94,
+            "node": 102,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 95,
+            "node": 102,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 96,
+            "node": 103,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 97,
+            "node": 103,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 98,
+            "node": 104,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 99,
+            "node": 104,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 100,
+            "node": 105,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 101,
+            "node": 105,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 102,
+            "node": 106,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 103,
+            "node": 106,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 104,
+            "node": 107,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 105,
+            "node": 107,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 106,
+            "node": 108,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 107,
+            "node": 108,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 108,
+            "node": 109,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 109,
+            "node": 109,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 2130,
+              "failure": {
+                "path": "111010010010101101011000",
+                "op": "CD",
+                "reg": 2,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (0, True), ('mark', 2))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 110,
+            "node": 110,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 111,
+            "node": 110,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 112,
+            "node": 111,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 2305,
+              "failure": {
+                "path": "1110100100101011100100000",
+                "op": "CD",
+                "reg": 1,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (2, True), ('mark', 0))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 113,
+            "node": 111,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 114,
+            "node": 112,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 115,
+            "node": 112,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 116,
+            "node": 113,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 117,
+            "node": 113,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 118,
+            "node": 114,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 119,
+            "node": 114,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 120,
+            "node": 115,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 121,
+            "node": 115,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 122,
+            "node": 116,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 123,
+            "node": 116,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 124,
+            "node": 117,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 125,
+            "node": 117,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 126,
+            "node": 118,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 127,
+            "node": 118,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 128,
+            "node": 119,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 129,
+            "node": 119,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 130,
+            "node": 120,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 131,
+            "node": 120,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 132,
+            "node": 121,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 133,
+            "node": 121,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 134,
+            "node": 122,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 135,
+            "node": 122,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 136,
+            "node": 123,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 137,
+            "node": 123,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 138,
+            "node": 124,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 258,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 139,
+            "node": 124,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 140,
+            "node": 125,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 141,
+            "node": 125,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 3576,
+              "failure": {
+                "path": "1110100100101100100100000",
+                "op": "CD",
+                "reg": 1,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (2, True), ('mark', 0))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 142,
+            "node": 126,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 258,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 143,
+            "node": 126,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 258,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 144,
+            "node": 127,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 145,
+            "node": 127,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 146,
+            "node": 128,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 3714,
+              "failure": {
+                "path": "111010010010110011100000",
+                "op": "CD",
+                "reg": 1,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (2, True), ('mark', 0))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 147,
+            "node": 128,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 148,
+            "node": 129,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 149,
+            "node": 129,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 150,
+            "node": 130,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 151,
+            "node": 130,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 152,
+            "node": 131,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 260,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 153,
+            "node": 131,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 4232,
+              "failure": {
+                "path": "111010010010110101100101000",
+                "op": "CD",
+                "reg": 1,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (2, True), ('mark', 0))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 154,
+            "node": 132,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 259,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 155,
+            "node": 132,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 156,
+            "node": 133,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 157,
+            "node": 133,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 158,
+            "node": 134,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 159,
+            "node": 134,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 160,
+            "node": 135,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 4100,
+              "failure": {
+                "path": "111010010010110101100000",
+                "op": "CD",
+                "reg": 2,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (0, True), ('mark', 2))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 161,
+            "node": 135,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 162,
+            "node": 136,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 163,
+            "node": 136,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 164,
+            "node": 137,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 165,
+            "node": 137,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 166,
+            "node": 138,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 167,
+            "node": 138,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 168,
+            "node": 139,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 169,
+            "node": 139,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 170,
+            "node": 140,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 171,
+            "node": 140,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 172,
+            "node": 141,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 173,
+            "node": 141,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 174,
+            "node": 142,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 175,
+            "node": 142,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 176,
+            "node": 143,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 177,
+            "node": 143,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 5655,
+              "failure": {
+                "path": "111010010010111010011000",
+                "op": "CD",
+                "reg": 1,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (2, True), ('mark', 0))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 178,
+            "node": 144,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 179,
+            "node": 144,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 180,
+            "node": 145,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 181,
+            "node": 145,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 182,
+            "node": 146,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 183,
+            "node": 146,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 184,
+            "node": 147,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 185,
+            "node": 147,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 186,
+            "node": 148,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 187,
+            "node": 148,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 188,
+            "node": 149,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 6389,
+              "failure": {
+                "path": "11101001001011110011010000",
+                "op": "CD",
+                "reg": 2,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (0, True), ('mark', 2))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 189,
+            "node": 149,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 190,
+            "node": 150,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 191,
+            "node": 150,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 192,
+            "node": 151,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 193,
+            "node": 151,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 194,
+            "node": 152,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 195,
+            "node": 152,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 257,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 196,
+            "node": 153,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 197,
+            "node": 153,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 198,
+            "node": 154,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 199,
+            "node": 154,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 200,
+            "node": 155,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 201,
+            "node": 155,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 202,
+            "node": 156,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 203,
+            "node": 156,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 7476,
+              "failure": {
+                "path": "111010010010111110011000",
+                "op": "CD",
+                "reg": 2,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (0, True), ('mark', 2))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 204,
+            "node": 157,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 205,
+            "node": 157,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 206,
+            "node": 158,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 207,
+            "node": 158,
+            "operation": "associate_left",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 208,
+            "node": 159,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 209,
+            "node": 159,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 7794,
+              "failure": {
+                "path": "1110100100101111110011000",
+                "op": "CD",
+                "reg": 2,
+                "zero": true,
+                "reason": "('no justified box operation', '43', (0, True), ('mark', 2))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 210,
+            "node": 161,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 211,
+            "node": 174,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 212,
+            "node": 175,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 213,
+            "node": 176,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 8145,
+              "failure": {
+                "path": "11101001001011111111010",
+                "op": "CI",
+                "reg": 7,
+                "zero": null,
+                "reason": "('no justified box operation', '69', None, ('plain', ('inc', 2)))"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 214,
+            "node": 176,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 215,
+            "node": 177,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 216,
+            "node": 177,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 217,
+            "node": 178,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 218,
+            "node": 178,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 219,
+            "node": 179,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 220,
+            "node": 179,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 221,
+            "node": 180,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 222,
+            "node": 180,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 223,
+            "node": 181,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 255,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 224,
+            "node": 181,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 225,
+            "node": 182,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 226,
+            "node": 182,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              35
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 227,
+            "node": 183,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 256,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 228,
+            "node": 183,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              8,
+              34
+            ],
+            "outcome": "shape_bound"
+          },
+          {
+            "index": 229,
+            "node": 187,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 8215,
+              "failure": {
+                "path": "111010010111010",
+                "op": "CI",
+                "reg": 7,
+                "zero": null,
+                "reason": "symbolic fuel exhausted"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 230,
+            "node": 188,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": false,
+              "cases_passed": 8215,
+              "failure": {
+                "path": "1110100101101010",
+                "op": "CI",
+                "reg": 7,
+                "zero": null,
+                "reason": "symbolic fuel exhausted"
+              }
+            },
+            "outcome": "affine_failure"
+          },
+          {
+            "index": 231,
+            "node": 189,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 254,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 232,
+            "node": 196,
+            "operation": "associate_right",
+            "nodes": 204,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 253,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 233,
+            "node": 198,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 252,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 234,
+            "node": 200,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 14
+            },
+            "runtime_states": 253,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 235,
+            "node": 201,
+            "operation": "associate_right",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              35
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 14
+            },
+            "runtime_states": 252,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 236,
+            "node": 201,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              33
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 12
+            },
+            "runtime_states": 252,
+            "outcome": "runtime_pass"
+          },
+          {
+            "index": 237,
+            "node": 202,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              4,
+              7,
+              33
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 12
+            },
+            "runtime_states": 252,
+            "outcome": "runtime_pass"
+          }
+        ],
+        "elapsed_seconds": 468.6928883679211,
+        "status": "complete"
+      },
+      "delivery_control_metadata": {
+        "execution_batches": [
+          {
+            "start": 0,
+            "through": 187,
+            "seconds_limit": 240
+          },
+          {
+            "start": 188,
+            "through": 237,
+            "seconds_limit": 120
+          }
+        ]
+      }
+    },
+    "rotation0": {
+      "all_functional_fields_match": true,
+      "excluded_nontiming_fields": [],
+      "actual": {
+        "scope": "Joint source27 closed-block reassociation with ProveIt register-permutation252, fixed arbitrary-gap affine rule checker, finite blank prefix. Not a kernel proof.",
+        "permutation": [
+          0,
+          3,
+          4,
+          5,
+          8,
+          1,
+          6,
+          2,
+          7
+        ],
+        "baseline": {
+          "cert": {
+            "passed": true,
+            "cases": 8391,
+            "min_literal": 13
+          },
+          "boot": {
+            "outcome": "zero_root",
+            "steps": 82552,
+            "frame": {
+              "state": "96",
+              "head": 2,
+              "gap": 40,
+              "primary": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "spares": [
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "ones": [
+                1,
+                42,
+                44,
+                46,
+                48,
+                50,
+                52,
+                54,
+                56,
+                58,
+                60,
+                62,
+                64,
+                66,
+                68,
+                70,
+                72,
+                74,
+                76,
+                78,
+                79,
+                81,
+                83,
+                85,
+                87,
+                89,
+                91,
+                93,
+                95,
+                97,
+                99,
+                101,
+                103,
+                105,
+                107,
+                109,
+                111,
+                113,
+                115,
+                117,
+                119,
+                121,
+                123,
+                125,
+                127,
+                129,
+                131,
+                133,
+                135,
+                137,
+                139,
+                141,
+                143,
+                145,
+                147,
+                149,
+                151,
+                153,
+                155,
+                157,
+                159,
+                161,
+                163,
+                165,
+                167,
+                169,
+                171,
+                173,
+                175,
+                177,
+                179,
+                181,
+                183,
+                185,
+                187,
+                189,
+                191
+              ],
+              "all_other_cells_zero": true
+            }
+          }
+        },
+        "options": 238,
+        "results": [
+          {
+            "index": 0,
+            "node": 7,
+            "operation": "associate_left",
+            "nodes": 203,
+            "shape": [
+              3,
+              7,
+              34
+            ],
+            "affine": {
+              "passed": true,
+              "cases": 8391,
+              "min_literal": 13
+            },
+            "runtime_states": 252,
+            "boot": {
+              "outcome": "zero_root",
+              "steps": 82552,
+              "frame": {
+                "state": "96",
+                "head": 2,
+                "gap": 40,
+                "primary": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "spares": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "ones": [
+                  1,
+                  42,
+                  44,
+                  46,
+                  48,
+                  50,
+                  52,
+                  54,
+                  56,
+                  58,
+                  60,
+                  62,
+                  64,
+                  66,
+                  68,
+                  70,
+                  72,
+                  74,
+                  76,
+                  78,
+                  79,
+                  81,
+                  83,
+                  85,
+                  87,
+                  89,
+                  91,
+                  93,
+                  95,
+                  97,
+                  99,
+                  101,
+                  103,
+                  105,
+                  107,
+                  109,
+                  111,
+                  113,
+                  115,
+                  117,
+                  119,
+                  121,
+                  123,
+                  125,
+                  127,
+                  129,
+                  131,
+                  133,
+                  135,
+                  137,
+                  139,
+                  141,
+                  143,
+                  145,
+                  147,
+                  149,
+                  151,
+                  153,
+                  155,
+                  157,
+                  159,
+                  161,
+                  163,
+                  165,
+                  167,
+                  169,
+                  171,
+                  173,
+                  175,
+                  177,
+                  179,
+                  181,
+                  183,
+                  185,
+                  187,
+                  189,
+                  191
+                ],
+                "all_other_cells_zero": true
+              }
+            },
+            "outcome": "zero_root",
+            "working_states": 252,
+            "table": "rotation_0_permutation.tm",
+            "sha256": "3eaa14937e346afd1cce136d3fcbba827fcc3a372f0dd25b61f4a62c248bb5cc"
+          }
+        ],
+        "elapsed_seconds": 5.476377034559846,
+        "status": "complete"
+      },
+      "delivery_control_metadata": {}
+    },
+    "multi20261017": {
+      "all_functional_fields_match": true,
+      "excluded_nontiming_fields": [
+        "requested_iterations",
+        "seconds_limit"
+      ],
+      "actual": {
+        "scope": "Bounded stochastic graph-size search over compositions of closed-block reassociations and commuting increments. Graph sizes are exact, conditional affine and blank endpoint results are explicitly separate.",
+        "seed": 20261017,
+        "requested_iterations": 20000,
+        "seconds_limit": 1000000.0,
+        "iterations": 20000,
+        "accepted_mutations": 603,
+        "cost_histogram": {
+          "265": 1912,
+          "262": 970,
+          "264": 1802,
+          "259": 84,
+          "263": 1459,
+          "261": 387,
+          "252": 233,
+          "279": 183,
+          "292": 137,
+          "257": 131,
+          "275": 124,
+          "267": 890,
+          "289": 146,
+          "269": 487,
+          "266": 1291,
+          "285": 144,
+          "358": 71,
+          "302": 68,
+          "254": 192,
+          "362": 59,
+          "280": 205,
+          "268": 515,
+          "253": 205,
+          "306": 95,
+          "354": 34,
+          "284": 154,
+          "273": 69,
+          "277": 122,
+          "288": 127,
+          "291": 105,
+          "278": 69,
+          "255": 150,
+          "307": 50,
+          "283": 123,
+          "293": 76,
+          "274": 19,
+          "305": 35,
+          "304": 66,
+          "294": 45,
+          "287": 39,
+          "272": 59,
+          "290": 125,
+          "282": 161,
+          "271": 127,
+          "360": 30,
+          "270": 224,
+          "286": 90,
+          "281": 126,
+          "308": 44,
+          "364": 15,
+          "301": 53,
+          "356": 12,
+          "258": 67,
+          "328": 25,
+          "327": 27,
+          "318": 11,
+          "303": 41,
+          "309": 14,
+          "365": 12,
+          "295": 22,
+          "260": 228,
+          "276": 72,
+          "361": 17,
+          "316": 26,
+          "326": 52,
+          "256": 117,
+          "325": 39,
+          "299": 40,
+          "359": 32,
+          "355": 19,
+          "300": 10,
+          "317": 15,
+          "363": 16,
+          "319": 14,
+          "357": 9,
+          "329": 14,
+          "310": 17,
+          "296": 17,
+          "366": 6,
+          "320": 10,
+          "311": 1,
+          "330": 6
+        },
+        "best_graph_states": 252,
+        "best_recipe": [],
+        "improvements": [],
+        "elapsed_seconds": 38.18262321688235
+      },
+      "delivery_control_metadata": {
+        "seconds_limit": 60.0,
+        "requested_iterations": 20000
+      }
+    },
+    "multi20261018": {
+      "all_functional_fields_match": true,
+      "excluded_nontiming_fields": [
+        "requested_iterations",
+        "seconds_limit"
+      ],
+      "actual": {
+        "scope": "Bounded stochastic graph-size search over compositions of closed-block reassociations and commuting increments. Graph sizes are exact, conditional affine and blank endpoint results are explicitly separate.",
+        "seed": 20261018,
+        "requested_iterations": 46413,
+        "seconds_limit": 1000000.0,
+        "iterations": 46413,
+        "accepted_mutations": 1278,
+        "cost_histogram": {
+          "264": 4425,
+          "260": 462,
+          "263": 3725,
+          "266": 2983,
+          "252": 423,
+          "262": 2270,
+          "277": 241,
+          "265": 4537,
+          "354": 72,
+          "326": 136,
+          "306": 195,
+          "325": 84,
+          "269": 999,
+          "254": 387,
+          "282": 319,
+          "285": 377,
+          "290": 302,
+          "275": 285,
+          "292": 313,
+          "284": 320,
+          "261": 837,
+          "283": 264,
+          "288": 270,
+          "257": 318,
+          "273": 161,
+          "289": 330,
+          "358": 193,
+          "280": 486,
+          "291": 242,
+          "253": 564,
+          "279": 363,
+          "259": 243,
+          "307": 127,
+          "281": 311,
+          "268": 1044,
+          "305": 78,
+          "303": 100,
+          "327": 80,
+          "276": 236,
+          "317": 59,
+          "278": 244,
+          "270": 595,
+          "286": 211,
+          "363": 59,
+          "255": 298,
+          "287": 115,
+          "272": 164,
+          "328": 46,
+          "267": 1688,
+          "258": 178,
+          "295": 44,
+          "271": 287,
+          "361": 42,
+          "309": 44,
+          "329": 29,
+          "365": 15,
+          "304": 112,
+          "294": 84,
+          "293": 192,
+          "357": 13,
+          "302": 149,
+          "359": 111,
+          "355": 52,
+          "300": 60,
+          "274": 104,
+          "360": 63,
+          "308": 64,
+          "364": 29,
+          "356": 33,
+          "301": 102,
+          "256": 197,
+          "316": 68,
+          "318": 27,
+          "319": 17,
+          "362": 81,
+          "299": 72,
+          "366": 4,
+          "330": 7,
+          "321": 6,
+          "297": 9,
+          "296": 14,
+          "310": 2,
+          "331": 2,
+          "311": 3,
+          "320": 3
+        },
+        "best_graph_states": 252,
+        "best_recipe": [],
+        "improvements": [],
+        "elapsed_seconds": 93.95438082609326
+      },
+      "delivery_control_metadata": {
+        "seconds_limit": 60.0,
+        "requested_iterations": 100000
+      }
+    },
+    "differential": {
+      "all_functional_fields_match": true,
+      "excluded_nontiming_fields": [],
+      "actual": {
+        "status": "PASS",
+        "fixtures": [
+          {
+            "fixture": 0,
+            "states": 3,
+            "brute_force_recipes": 432,
+            "certificates": 244,
+            "cpp_summary": {
+              "state_pairs": 3,
+              "actions_per_row": 12,
+              "formal_recipe_domain": 432,
+              "partial_checks": 58,
+              "full_recipes": 252,
+              "full_context_checks": 496,
+              "certificates": 244,
+              "elapsed_seconds": 0.000142902
+            }
+          },
+          {
+            "fixture": 1,
+            "states": 3,
+            "brute_force_recipes": 432,
+            "certificates": 300,
+            "cpp_summary": {
+              "state_pairs": 3,
+              "actions_per_row": 12,
+              "formal_recipe_domain": 432,
+              "partial_checks": 24,
+              "full_recipes": 300,
+              "full_context_checks": 156,
+              "certificates": 300,
+              "elapsed_seconds": 0.000149702
+            }
+          },
+          {
+            "fixture": 2,
+            "states": 4,
+            "brute_force_recipes": 1536,
+            "certificates": 765,
+            "cpp_summary": {
+              "state_pairs": 6,
+              "actions_per_row": 16,
+              "formal_recipe_domain": 1536,
+              "partial_checks": 101,
+              "full_recipes": 800,
+              "full_context_checks": 834,
+              "certificates": 765,
+              "elapsed_seconds": 0.000361805
+            }
+          },
+          {
+            "fixture": 3,
+            "states": 4,
+            "brute_force_recipes": 1536,
+            "certificates": 38,
+            "cpp_summary": {
+              "state_pairs": 6,
+              "actions_per_row": 16,
+              "formal_recipe_domain": 1536,
+              "partial_checks": 341,
+              "full_recipes": 58,
+              "full_context_checks": 150,
+              "certificates": 38,
+              "elapsed_seconds": 9.2402e-05
+            }
+          },
+          {
+            "fixture": 4,
+            "states": 5,
+            "brute_force_recipes": 4000,
+            "certificates": 2421,
+            "cpp_summary": {
+              "state_pairs": 10,
+              "actions_per_row": 20,
+              "formal_recipe_domain": 4000,
+              "partial_checks": 345,
+              "full_recipes": 2470,
+              "full_context_checks": 469,
+              "certificates": 2421,
+              "elapsed_seconds": 0.000976613
+            }
+          }
+        ],
+        "total_brute_force_recipes": 7936,
+        "scope": "Every finite certificate recipe from pruned C++ equals complete unpruned Python enumeration on five small fixtures, covering positive certificates, unknown-row pruning, start removal, cycles, and terminal outcomes."
+      },
+      "delivery_control_metadata": {}
+    },
+    "closure8": {
+      "all_functional_fields_match": true,
+      "excluded_nontiming_fields": [],
+      "actual": {
+        "status": "PASS",
+        "radius": 8,
+        "state_window_pairs": 3789234,
+        "successor_obligations": 7577444,
+        "initial_included": true,
+        "actual_table_matches": true,
+        "input_sha256": "b8cf844f5657b4b691a3a04cccba5e56c1b7d9ba3ca753af3d6a913ca6628dea",
+        "elapsed_seconds": 4.0033541060984135,
+        "scope": "Independent explicit finite invariant verification; all original blank runs covered by ordinary induction. No claim every admitted window is reachable."
+      },
+      "delivery_control_metadata": {}
+    }
+  },
+  "interrupted_attempt": "Initial aggregate verify_bundle --full gotSIGTERM143 duringradius8 afterfourquickbranches+radius6passed; it is not counted complete. All branches subsequently completed oncopies, below.",
+  "rotation0_table_bytes_match": true,
+  "eager_radius6": {
+    "status": "PASS: full eager radius6 matches replayed lazy and delivered ledgers exactly",
+    "scope": "Remaining advertised eager-vs-lazy comparison only. No quick/bootstrap/full-lazy6 rerun. No Lean/Coq or delivered source edit.",
+    "scratch": "/tmp/zfc-source49-eager6-6vyesa47",
+    "source_pin": "fab89c5d26b81cd2ccab2ee5d213ff23725c7726",
+    "arrival": "2447a98214b1c4a3e24e51ee654439fbcfa002d9",
+    "compile": {
+      "command": [
+        "g++",
+        "-O3",
+        "-std=c++17",
+        "-Wall",
+        "-Wextra",
+        "/tmp/zfc-source49-eager6-6vyesa47/machine/code/exhaustive_fusions.cpp",
+        "-o",
+        "/tmp/zfc-source49-eager6-6vyesa47/exhaustive_fusions"
+      ],
+      "exit_code": 0,
+      "wall_seconds": 1.6308119259774685,
+      "log": "/tmp/zfc-source49-eager6-6vyesa47/compile.log"
+    },
+    "compiler_version": "g++ (Ubuntu 12.3.0-1ubuntu1~22.04.3) 12.3.0",
+    "source": {
+      "original": "/tmp/zfc-intake156/zfc_reset_hod_research_2026-10-17/zfc_reset_hod_research/machine/code/exhaustive_fusions.cpp",
+      "copied": "/tmp/zfc-source49-eager6-6vyesa47/machine/code/exhaustive_fusions.cpp",
+      "sha256": "bd6ff17090097b519ac05fe0df336e3b5b4464de5305146752d540e250a15194",
+      "copy_byte_identical": true,
+      "compile_log": ""
+    },
+    "input": {
+      "path": "/tmp/zfc252-census-4n_0ia3p/radius6.input",
+      "sha256": "7196326311f5f680dd2acf13ed287bdf33d7563e858106e766d19a2bca73cbb4",
+      "bytes": 1613264,
+      "working_states": 252,
+      "radius": 6,
+      "max_moves_each_side": 64,
+      "state_window_pairs": 330625,
+      "halt_windows": 128,
+      "all_tokens_consumed": true
+    },
+    "run": {
+      "command": [
+        "/tmp/zfc-source49-eager6-6vyesa47/exhaustive_fusions",
+        "/tmp/zfc252-census-4n_0ia3p/radius6.input",
+        "/tmp/zfc-source49-eager6-6vyesa47/radius6"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "exit_code": 0,
+      "wall_seconds": 54.948463,
+      "stdout": "/tmp/zfc-source49-eager6-6vyesa47/run.stdout",
+      "stderr": "/tmp/zfc-source49-eager6-6vyesa47/run.stderr"
+    },
+    "summary": {
+      "state_pairs": 31626,
+      "actions_per_row": 1008,
+      "formal_recipe_domain": 32134040064,
+      "partial_checks": 426101486,
+      "full_recipes": 222986,
+      "full_context_checks": 7433103,
+      "certificates": 0,
+      "elapsed_seconds": 54.9265
+    },
+    "replayed_lazy_summary": {
+      "state_pairs": 31626,
+      "actions_per_row": 1008,
+      "formal_recipe_domain": 32134040064,
+      "partial_checks": 426101486,
+      "full_recipes": 222986,
+      "full_context_checks": 7433103,
+      "certificates": 0,
+      "elapsed_seconds": 48.1275
+    },
+    "delivered_summary": {
+      "state_pairs": 31626,
+      "actions_per_row": 1008,
+      "formal_recipe_domain": 32134040064,
+      "partial_checks": 426101486,
+      "full_recipes": 222986,
+      "full_context_checks": 7433103,
+      "certificates": 0,
+      "elapsed_seconds": 39.9636
+    },
+    "functional_count_comparison": {
+      "elapsed_field_excluded": "elapsed_seconds",
+      "eager_equals_replayed_lazy": true,
+      "eager_equals_delivered": true,
+      "counts": {
+        "state_pairs": 31626,
+        "actions_per_row": 1008,
+        "formal_recipe_domain": 32134040064,
+        "partial_checks": 426101486,
+        "full_recipes": 222986,
+        "full_context_checks": 7433103,
+        "certificates": 0
+      }
+    },
+    "ledger_byte_comparisons": [
+      {
+        "suffix": ".tsv",
+        "eager": "/tmp/zfc-source49-eager6-6vyesa47/radius6.tsv",
+        "replayed_lazy": "/tmp/zfc-intake156/source49-extra/radius6.tsv",
+        "delivered": "/tmp/zfc-intake156/zfc_reset_hod_research_2026-10-17/zfc_reset_hod_research/machine/results/fusion_radius6.tsv",
+        "eager_equals_replayed_lazy_bytes": true,
+        "eager_equals_delivered_bytes": true,
+        "bytes": 485270,
+        "lines": 31627,
+        "sha256": "7a43c7aba82ab6068b7de767fc43b3f8692af4d023155183bf165e4881e82203"
+      },
+      {
+        "suffix": "_certificates.tsv",
+        "eager": "/tmp/zfc-source49-eager6-6vyesa47/radius6_certificates.tsv",
+        "replayed_lazy": "/tmp/zfc-intake156/source49-extra/radius6_certificates.tsv",
+        "delivered": "/tmp/zfc-intake156/zfc_reset_hod_research_2026-10-17/zfc_reset_hod_research/machine/results/fusion_radius6_certificates.tsv",
+        "eager_equals_replayed_lazy_bytes": true,
+        "eager_equals_delivered_bytes": true,
+        "bytes": 35,
+        "lines": 1,
+        "sha256": "da4759348ec221c2660533b15c8248ae45522758c8466aae35be66ad7b77f22b"
+      }
+    ],
+    "summary_text": "Both complete TSV files are byte-identical to the retained lazy replay and delivered artifacts. All functional aggregates match:31626 unordered state pairs,1008 actions/row,32134040064 formal recipes,426101486 partial-context checks,222986 full recipes,7433103 full-context checks,0 certificates. Only elapsed seconds differ.",
+    "nonclaims": [
+      "Exhaustive only for the supplied local finite-window positive-progress criterion",
+      "Rejections are not a semantic state lower bound or proof of inequivalence",
+      "No new251-state candidate or new complete consistency theorem"
+    ]
+  },
+  "root_extra_driver": "from pathlib import Path\nfrom concurrent.futures import ThreadPoolExecutor\nimport json, subprocess, sys, time\n\nbase=Path('/tmp/zfc-intake156/source49-replay')\nwork=Path('/tmp/zfc-intake156/source49-extra');work.mkdir(exist_ok=True)\nnative=Path('/tmp/zfc252-census-4n_0ia3p')\njobs=[\n ('radius6',[str(native/'exhaustive_fusions_lazy'),str(native/'radius6.input'),str(work/'radius6')]),\n ('radius8',[str(native/'exhaustive_fusions_lazy'),str(native/'radius8.input'),str(work/'radius8')]),\n ('closure8',[sys.executable,'-B','machine/code/check_window_invariant.py',str(native/'radius8.input'),'--output',str(work/'closure8.json')]),\n ('differential',[sys.executable,'-B','machine/code/test_exhaustive_pruning.py',str(native/'exhaustive_fusions_lazy'),'--output',str(work/'differential.json')]),\n ('single-rotations',[sys.executable,'-B','machine/code/joint_rotation_search.py','--runtime-only','--seconds','1000000','--output',str(work/'single-rotations.json')]),\n ('rotation0',[sys.executable,'-B','machine/code/joint_rotation_search.py','--single','0','--seconds','1000000','--output',str(work/'rotation0.json')]),\n ('multi20261017',[sys.executable,'-B','machine/code/multi_rotation_search.py','--iterations','20000','--seed','20261017','--seconds','1000000','--output',str(work/'multi20261017.json')]),\n ('multi20261018',[sys.executable,'-B','machine/code/multi_rotation_search.py','--iterations','46413','--seed','20261018','--seconds','1000000','--output',str(work/'multi20261018.json')]),\n]\ndef run(job):\n    name,cmd=job;t=time.monotonic()\n    with (work/(name+'.log')).open('w') as f:\n        p=subprocess.run(cmd,cwd=base,stdout=f,stderr=subprocess.STDOUT)\n    row=dict(name=name,command=cmd,cwd=str(base),exit_code=p.returncode,elapsed_seconds=time.monotonic()-t)\n    (work/(name+'-run.json')).write_text(json.dumps(row,indent=2)+'\\n')\n    print(json.dumps(row),flush=True)\n    return row\nwith ThreadPoolExecutor(max_workers=3) as pool: rows=list(pool.map(run,jobs))\n(work/'runs.json').write_text(json.dumps(rows,indent=2)+'\\n')\nassert all(r['exit_code']==0 for r in rows)\n"
+}
