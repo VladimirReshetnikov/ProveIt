@@ -1,0 +1,73 @@
+{
+  "status": "independent_read_only_source_review_clean",
+  "source_commit": "77972ac401b4f5e7f2e08909000c880ad04c845b",
+  "reviewed_lines": 997,
+  "snapshots": [
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean",
+      "sha256": "9899be5219d6dd729e4fbd575fc4ab1e5e385aa83b76b0ecd6f03d5ab5494d24"
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SatSupport.lean",
+      "sha256": "173760b2b8569856cbcca87365e551b9c6586f9be9addf45aa3e6d63f9ae2226"
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleDef.lean",
+      "sha256": "e487e6ff18b456c631ee377bafd7ddce998873686bea886723655f52ae07a699"
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TransRec.lean",
+      "sha256": "c7e9caf6f59e1a6c9ef3a9cb7ac4c44f39ffb6fa882fbda7936b95fa718c784d"
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean",
+      "sha256": "e6ca852afcd59f47e18b68edae14765d605fed9ecb96819af1f5d7dea1357616"
+    },
+    {
+      "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/FormulaClosedSet.lean",
+      "sha256": "4e25a31e0fcd428bc6a960a1c5b7e6b84e3c26d5186ac1baaff3ade7b79c40a8"
+    }
+  ],
+  "source_snapshot": "/tmp/zfc-constructible-abs-full-review.source.lean",
+  "markdown": "/tmp/zfc-constructible-abs-full-review.md",
+  "new_kernel_build_by_reviewer": false,
+  "source_edits_by_reviewer": false,
+  "existing_kernel_evidence": {
+    "path": "Computability/BusyBeaver/Research/ZFC/results/barrier-constructible-integration-verification.json",
+    "source_identity_matches": true,
+    "status": "PASS157-unit source-verified integration",
+    "cache": "/tmp/zfc-integration157-3gouy8g0/cache",
+    "scope": "Fresh actual-enumerator barrier foundations, extended ConstructibleAbs and umbrella;25 axiom reports/11 direct callers.154 reused source identities match156-unit checked closure; not a fresh157 rebuild. Formula-code/Def/hierarchy comparisons now give V=L in L. Global dirty-stack scheduling/counting, internal well-order/Choice and PA internalization remain open."
+  },
+  "mathematical_checks": {
+    "internal_all_code_induction": true,
+    "internal_least_rank_not_externalWF": true,
+    "all_internal_naturals_restriction_induction": true,
+    "uniform_internal_finite_support_applied": true,
+    "no_ambient_graph_as_inner_parameter": true,
+    "native_subtype_equality_preserved": true,
+    "Gdef_empty_carrier_handled": true,
+    "exact_Approx_graph_transport": true,
+    "inner_V_equals_L_endpoint": true
+  },
+  "explicit_model_hypotheses": [
+    "ZFAxioms",
+    "internal set Regularity",
+    "Power Set"
+  ],
+  "not_assumed": [
+    "external well-foundedness",
+    "standard internal omega or formula codes",
+    "object Choice",
+    "ambient global well-order",
+    "ambient V=L"
+  ],
+  "not_proved_here": [
+    "internal well-order of L",
+    "object Choice in L",
+    "ZFC refutation transport",
+    "PA internalization"
+  ],
+  "header_scope": "Matches actual extended vEqL endpoint; previous458-line header correction is historical and no longer the source scope.",
+  "review_text": "# Independent full-source review of extended ConstructibleAbs\n\nVerdict: **clean theorem contracts and proofs; no concrete defect found**. The current narrowed header matches the extended body's actual `vEqL` endpoint. The source does not prove Choice or a definable well-order of L. This was a read-only review: no source edit, Lean build, or new axiom audit was performed by the reviewer.\n\nReviewed source: `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean`,997 lines, SHA256 `9899be5219d6dd729e4fbd575fc4ab1e5e385aa83b76b0ecd6f03d5ab5494d24`. The extension is attributed to commit `77972ac401b4f5e7f2e08909000c880ad04c845b`; the current header includes root's subsequent scope correction. Immutable source snapshot: `/tmp/zfc-constructible-abs-full-review.source.lean`.\n\nThe reviewed source matches the ConstructibleAbs entry in `Research/ZFC/results/barrier-constructible-integration-verification.json`: the root's source-verified157-unit integration records fresh checks of this module, EnumStackBarrier254 and the umbrella, plus25 axiom reports/11 direct callers. That is root's kernel evidence, not an independently repeated build. It is not a claim of a fresh rebuild of all157 dependencies.\n\n## Assumptions and the previous half-module review\n\nThe Ops section explicitly takes `H : ZFAxioms mem`, internal set Regularity `hR`, and exact Power Set `hP`. The constructible subtype is the actual `InL H hP` class with inherited membership. No transitive external universe, external well-foundedness of mem, standard internal omega, ambient global well-order, object Choice, or `V=L` premise is added.\n\nThis supersedes only the scope boundary of the earlier458-line source review (SHA264aa756...fde7). At that earlier source there was no code/Def/hierarchy theorem or `vEqL`; those results now exist in the added body. Its first-half satisfaction theorem still properly retains both models' code-validity hypotheses, and the new code transport lemmas supply those hypotheses at the later applications.\n\nI reread the entire new code-inversion section and the extension from `codeN_iff` through `vEqL`, the corresponding first-half certificate interfaces, all SatSupport definitions/proofs, and the exact imported induction/least-ordinal/Def/Approx contracts.\n\n## Formula codes: all internal codes\n\n`code_shape` at104 uses `isFormCodeSem_ind'` for an explicitly represented conjunction of the code predicate and its constructor shape. It is not an induction over externally standard Lean formulas. The eight original constructors, arbitrary internal natural atomic labels, and genuine falsity are all retained. The tag formulas choose fresh variable names and prove their meanings with the actual named-formula semantics.\n\n`code_up` at576 likewise represents the predicate \u201cconstructible and a valid code of the constructible model\u201d by `codeNF`. The definability witness goes through actual `Form`, `relT`, and `sat_sub`. Its internal formula-code induction covers every ambient internal code, including those externally nonstandard, and transfers the same underlying Kuratowski code into L. Atomic indices are arbitrary members of the entire internal omega, whose absoluteness was proved earlier; they are not replaced by externally standard numerals. The Nat tags0..7 are just the finite constructor tags.\n\n`code_down` at647 does not perform external well-founded induction on arbitrary model elements. A putative inner-valid/ambient-invalid code gives a **definable internal ordinal-rank counterexample property**, represented by an actual named formula. `ZFRank.ranked` supplies an internal stage containing it; `least_ord` uses the explicit internal Regularity hypothesis to choose a least counterexample level. The Kuratowski membership paths in `rankBelow_step`, `rankBelow_of_mem`, and the local r1/r2 facts put every constituent code below that level. Inversion inside L then makes each case an ambient constructor over ambient-valid children. Any alleged smaller bad child contradicts internal minimality and ordinal irreflexivity. No theorem identifying model ranks with external well-founded ranks is assumed.\n\nThe combination therefore genuinely closes formula-code absoluteness, rather than merely assuming both predicates agree.\n\n## Internal finite restrictions and constructible environments\n\n`res_inL` at725 is an actual-formula omega induction, with the possibly nonconstructible original environment as an ambient parameter. For every **internal** natural k it constructs the exact restriction to k. The successor adds the one recorded graph pair `(k,applyV(e,k))`; its value is constructible because it belongs to the constructible carrier A. Thus there is no appeal to externally finite iteration for a nonstandard internal k.\n\n`env_in_L` at770 keeps that restriction and uses a single default value `e(0)` elsewhere. A genuine input environment provides that value and proves the carrier nonempty. The entire new graph is constructed by Separation **inside L**, bounded by the double power of `omega union X`. Its inner parameters are omega, X, the internal bound n, the constructible restricted graph, and the constructible default value. The original nonconstructible graph is not used as an inner parameter. Functionality, exact omega domain, range in X, and agreement below n are all proved from graph membership. No family of arbitrary choices or countable-choice principle is used.\n\nThe needed support theorem is `SatSupport.sat_support` at160. It too uses an explicitly represented actual-formula induction property and quantifies over every internal code. Internal natural bounds are merged by ordinal comparison. At quantifiers the same bound remains sufficient after shifting both environments by the same value: index0 agrees, and an internal successor below n reads a predecessor below n. This is stronger than standard-formula free-variable finiteness and supplies exactly the environment replacement required by Def.\n\n## Definability and Def\n\n`def_down` at849 uses constructible witnesses and transports them to the ambient model. The actual carrier and encoded membership graph remain identical; code_down supplies ambient validity; the first-half satisfaction theorem handles `econs` with the same bound variable in slot0. Transitivity of the carrier and proposed subset accounts for ambient members that must be turned into subtype witnesses.\n\n`def_up` at868 first obtains the inner membership graph and proves its ambient value equals the original graph by Extensionality. It transfers the same formula code with code_up, replaces only its internally bounded environment part, and constructs the output by a genuine Separation instance in L. The fixed separating formula has carrier/relation/code/environment in the intended parameter slots and expresses the updated environment through `econsAtomF`. Its `key` lemma uses both SatIn absoluteness and SatSupport agreement after the common shift by the prospective element. The final Extensionality proof compares every ambient member, not a selected observation window.\n\n`gdef_eq` at919 compares the full two Gdef objects. Its special empty-subset branch is handled explicitly, so empty carriers do not require a nonexistent total environment. It does **not** assert that all ambient subsets of a constructible set are constructible. The only subsets admitted are empty or definable with the actual internal syntax/parameter convention, and def_up is what makes those constructible.\n\n## Hierarchy comparison and V=L\n\n`approx_down` at939 transfers all four TransRec.Approx clauses: graph shape, totality on its domain, functional values, and the exact union-of-Gdef predecessor rule. Values/components of constructible graph pairs are constructible. In the reverse membership implication, `gdef_eq` makes any ambient member a member of the corresponding constructible Gdef object, so no nonconstructible exterior element is omitted.\n\n`isL_down` at967 transports an existing inner hierarchy witness to the ambient hierarchy. `ord_iff` at974 compares the ordinal predicates by transitivity of the subtype; internal Regularity is already explicit in the context supporting these operations and ordinal existence/uniqueness.\n\n`vEqL` at987 is the precise public endpoint: every x in the constructible subtype is internally constructible in that subtype. Starting from x's ambient L-stage, its ordinal is itself constructible. The inner ZF model supplies a hierarchy stage at that same ordinal; isL_down and ambient stage uniqueness identify its value with the original stage, which already contains x. This argument requires no blanket upward transport of an arbitrary ambient hierarchy graph and no new recursion on an external well-order.\n\nThe result is V=L in the **constructed inner model**. It is not V=L in the ambient model and does not assert that every ambient set is constructible.\n\n## Scope and remaining obligations\n\nThe current header correctly says that formula-code, environment, Def and hierarchy comparisons yield vEqL, and explicitly leaves the internal well-order and Choice arguments separate. There is no local `axiom`, `sorry`, `admit`, or `native_decide`. Standard Lean `Classical` proof tools or noncomputable selected unique sets are metatheoretic dependencies, not an object-language Choice axiom.\n\nThe module does not yet define a constructible well-order, prove object Choice in L, transport ZFC refutations, change the binary endpoint, or formalize the consistency comparison inside PA. It adds useful checked ingredients for the separately owned Choice lane. No earlier checked theorem needs weakening, and no current claim retraction is indicated by this review.\n"
+}

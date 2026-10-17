@@ -41,13 +41,22 @@ formula code, including nonstandard codes. The independent
 internal well-order and Choice arguments remain open.
 
 The [156-unit integration](results/history-abs-integration-verification.json)
-freshly checks `ConstructibleAbs`, `Code254History` and the umbrella, with153
-source-matched reused units. Satisfaction is now compared on constructible
-data with a genuine environment and code validity in both models; formula-code,
-Def/hierarchy absoluteness and Choice remain separate. The
+checked the first part of `ConstructibleAbs`, `Code254History` and the umbrella,
+with 153 source-matched reused units. The
 [numeric history checker](code254_history.md) agrees with the original proof
 validator on every natural input, including invalid codes. It is the next
 concrete evaluator for the PA representation work, not an internal PA theorem.
+
+The later [157-unit integration](results/barrier-constructible-integration-verification.json)
+freshly checks the extended `ConstructibleAbs`, the actual enumerator's
+[stack-barrier foundations](enum_stack_barrier254.md), and the umbrella;
+154 source-matched units are reused. Formula codes, definable subsets and
+hierarchy stages now compare between the ambient model and its constructible
+submodel, proving **V=L inside that submodel**. The proof covers internal
+nonstandard codes and uses internally finite environment restrictions.
+Internal well-orders and Choice remain open. The enumerator lemmas establish
+the local stack invariant and the injection of NIP occurrences into earlier
+DROP occurrences; the global trace/counting theorem remains separate.
 
 A measured attempt to save a register by changing Cantor pairing to a
 [power-of-two encoding](register_lifetime.md) retained the full calculus but
@@ -295,7 +304,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `NamedZF.lean`, `InternalOrd.lean`, `InternalRank.lean`, `ZFRank.lean`, `ZFNative.lean`, `Endpoint254.lean` | ZF proves the native axioms: named formulas over `Form` with named Separation/Replacement; inside any model of the ZFAxioms bundle with Power and set Regularity (no external well-foundedness), ordinals with trichotomy, the cumulative hierarchy by transfinite recursion, the rank theorem, Collection for every matrix and power containers; hence every `ZFax_s` model satisfies `NativeAx`, `zf_refutation_of_native` by `theory_transfer`, and `literal_nonhalting_of_zfc_consistent : Con(ZFC) → ¬ Halts Prog254.program Prog254.initial` ([tarski_logic_layer.md](tarski_logic_layer.md)). The reverse ZF comparison is now checked in `WFTheory`; Choice remains open. |
 | `TransRec.lean`, `ConstructibleDef.lean`, `Constructible.lean`, `ConstructibleReflect.lean`, `ConstructibleZF.lean` | Gödel's L inside any ZF model (no external well-foundedness): transfinite recursion for a definable stage operation; `Def(X)` through BoundedZFCConsistency's certificate satisfaction of coded formulas, with the truth bridge for standard formulas; `L_a ∩ Ord = a`; pairing, union and power in L; the reflection theorem for the L-hierarchy (closed limits by ω-iteration of a definable closing step); Separation and Replacement in L; `L_models_ZF`: the constructible substructure satisfies `ZFax_s`. AC in L (hence the Choice transport) remains ([tarski_logic_layer.md](tarski_logic_layer.md)). |
 | `OutgoingProfile.lean` | Four-node outgoing equality from exact full-profile singletons, actual raw-PSC model corollaries and reserved-zero named semantic translation at one false point. Source equality denotes full observational classes. |
-| `ConstructibleAbs.lean` | Basic operations, internal omega, recorded application, environments and certificate relations agree on constructible data; `satIn_iff` requires formula-code validity in both models and a genuine environment. `memRel_iff` compares encoded membership. This first part does not prove formula-code/Def/hierarchy absoluteness, V=L or Choice. |
+| `ConstructibleAbs.lean` | Formula-code, satisfaction, definable-subset and hierarchy comparisons between the ambient ZF model and its constructible submodel. Internal-code induction, least internal rank and internally finite environment restrictions give `vEqL` in the submodel; internal well-orders and Choice remain open. |
 | `Numeric254.lean`, `NamedNumeric254.lean` | Exact original four-tag numerical rules and gated C/G/vacuity bundle; named proof transport and refutation equivalence for the explicitly defined encoded-numerical-theorem theory Q. Q/ZFC calibration remains open. |
 | `BootstrapFrame253.lean` | The actual 312,975-step binary bootstrap realizes the actual 330-step register endpoint, with all nine permuted registers, 158 spare blocks and exterior blanks retained. |
 | `Code254Containers.lean` | A literal gated bundle gives the existing transitive, powerset-bounding container resource in an irreflexive model with an explicit valuation. |
@@ -320,6 +329,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `ProgramZF0.lean` | A ZF0 refutation forces the actual 219-node structured program to halt from nextproof = 2; structured non-halting implies Con(ZF0). The subsequent `BinaryPerm252` endpoint includes literal blank execution and Foundation; Choice remains open. |
 | `NativeDecoded254.lean` | Native CP + full actual-Form GIC + raw IR satisfy every decoded bundle, including coincident binders and truth code 0. With an explicit valuation, ModelsEncodable and ModelsDecoded are equivalent. |
 | `NativeTheory254.lean` | Numerical falsity and actual 219-node structured-program halting are each equivalent to refutability of the explicit sentence theory CP + full native-Form GIC + IR. ZFC calibration and binary execution remain separate. |
+| `EnumStackBarrier254.lean` | Actual candidate/command round trips, injective marked NIP-to-earlier-DROP replacement, witnessed safe stack prefix over arbitrary bottom, local preservation with positive credit, and candidate-zero reset. The global scheduler/counting theorem is not supplied. |
 | `EnumSafeStart254.lean`, `DirtyRoot254.lean`, `DirtyProgram254.lean` | Attributed arbitrary-cutoff enumeration and dirty-root absorption, composed with the actual structured219/path program. Six numerical fields are unrestricted; top/cache/stack retain their exact theorem invariant and logical registers beyond8 remain zero. |
 | `SeedInvariant254.lean` | Six constructors certify nonzero initial theorem codes, unshifted stacks, and the resulting dirty-start/native-refutation equivalence. This gives a larger sufficient initializer target; no binary startup is inferred. |
 | `WellFoundedPart.lean`, `WFRelativization.lean`, `WFModel.lean`, `WFTheory.lean` | One actual GIC instance supplies closure of internal well-foundedness. Actual translated Separation/Replacement, Infinity and Power make its subtype a ZF model, yielding `C254 F ↔ BProv ZFax_s [] Bot` and native/ZF equiconsistency. Choice and internal PA proof codes remain open ([direct route](wf_model.md)). |
