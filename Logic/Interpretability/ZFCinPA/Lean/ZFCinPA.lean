@@ -88,3 +88,6 @@ import ZFCinPA.LStepBasic
 import ZFCinPA.LStepBasicAudit
 import ZFCinPA.LStepAtom
 import ZFCinPA.LStepAtomAudit
+import ZFCinPA.LStepEx
+import ZFCinPA.LStepExT
+import ZFCinPA.LStepExAudit
