@@ -359,3 +359,22 @@ the concrete Lukasiewicz basis, named completeness or nonempty-model repair
 are missing now overlap checked project declarations. Archived Lean adapters
 were independently rebuilt without installing their old patches. The complete
 numeric theory calibration and binary endpoint are still separate tasks.
+
+## Batch154: fusion and finite ground kernels
+
+Source37 fuses any finite family of GIC matrices into one matrix; a fair
+refutation search may enumerate that matrix and a proof against its instance.
+This is not a single fixed sentence replacing the whole schema. Selector
+parameters, label payload and the matrix-dependent proof input must be charged
+in a compiler. The false instance and the no-membership-edge case are both
+part of the proof.
+
+Source40 reduces the assignment/class presentation to 15 explicit universal
+clauses and gives a complete ground-equality reference search. Ground stages
+retain every subterm, permit repeated substitutions and noninjective function
+interpretations, and never treat resource exhaustion as a refutation. Its
+174-term payload is a syntax count, not a measured machine. Sources38/41
+supply E7/E9/E8 cyclic-algebra interfaces, but the full ZFC query and binary
+frontend remain unexpanded. Their exact model hypotheses and finite-search
+scopes are preserved in the host's batch154 dossiers; none supersedes the
+current literal numerical calculus or establishes a smaller machine.

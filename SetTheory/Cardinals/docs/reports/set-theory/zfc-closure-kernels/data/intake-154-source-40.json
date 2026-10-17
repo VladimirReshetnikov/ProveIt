@@ -1,0 +1,473 @@
+{
+  "batch": 154,
+  "manuscript": 4,
+  "local_source": 40,
+  "arrival": "3d731d8cf44941560752abc625149f7bfa109930",
+  "archive": "zfc_finite_kernel_research.zip",
+  "repository_pin": "8cf840b8a26d002041e7a26dc9688ce7ce5fd751",
+  "placement": "d1636c9af8",
+  "review_scratch": "/tmp/zfc-intake-154-qc3_quah",
+  "original_package": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report",
+  "execution_copy": "/tmp/zfc-intake-154-qc3_quah/review/04",
+  "originals_modified": false,
+  "bulk_manifest_checks": false,
+  "line_ending_work": false,
+  "Coq_built": false,
+  "commands": [
+    {
+      "source": 4,
+      "name": "search-r10",
+      "command": [
+        "engineering/reproduce_search.py",
+        "--radius",
+        "10",
+        "--fuel",
+        "32"
+      ],
+      "cwd": "/tmp/zfc-intake-154-qc3_quah/review/04",
+      "returncode": 0,
+      "seconds": 13.70469013787806,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source04-search-r10.log",
+      "captured_output": "symbolic cases {'ok': 8390, 'halt': 1} segments 178005\n{\"boot_steps\": 312975, \"elapsed_seconds\": 11.770493641495705, \"eligible_states\": 221, \"symbolic_cases\": {\"halt\": 1, \"ok\": 8390}, \"unique_contexts\": 171450, \"watched_edges\": 412}\nSUMMARY states=221 tested=226688 successful=0 radius=10 fuel=32\nCatalog files are reproducible scratch intermediates and need not be archived.\n\nSTDERR:\n"
+    },
+    {
+      "name": "kernel",
+      "args": [
+        "code/finite_kernel.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.06557955965399742,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source04-kernel.log",
+      "captured_output": "[\n  {\n    \"name\": \"unpacked_direct\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 18,\n    \"literal_occurrences\": 51,\n    \"term_occurrences\": 319,\n    \"maximum_term_depth\": 3,\n    \"maximum_universal_variables\": 5,\n    \"constants\": 1,\n    \"proper_functions\": 12,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 1,\n      \"2\": 6,\n      \"3\": 5\n    },\n    \"relations_excluding_equality\": 2,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Direct.1\": 3,\n      \"B5.Direct.2\": 3,\n      \"B5.Direct.3\": 3\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"unpacked_predicate\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 15,\n    \"literal_occurrences\": 35,\n    \"term_occurrences\": 171,\n    \"maximum_term_depth\": 3,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 12,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 1,\n      \"2\": 6,\n      \"3\": 5\n    },\n    \"relations_excluding_equality\": 3,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Bad\": 3,\n      \"B5.Hull.1\": 1,\n      \"B5.Hull.2\": 1,\n      \"B5.Hull.3\": 1\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"unpacked_equality\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 15,\n    \"literal_occurrences\": 35,\n    \"term_occurrences\": 183,\n    \"maximum_term_depth\": 3,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 13,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 1,\n      \"2\": 7,\n      \"3\": 5\n    },\n    \"relations_excluding_equality\": 2,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Bad\": 3,\n      \"B5.Hull.1\": 1,\n      \"B5.Hull.2\": 1,\n      \"B5.Hull.3\": 1\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"packed_direct\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 18,\n    \"literal_occurrences\": 51,\n    \"term_occurrences\": 313,\n    \"maximum_term_depth\": 3,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 12,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 3,\n      \"2\": 7,\n      \"3\": 2\n    },\n    \"relations_excluding_equality\": 2,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Direct.1\": 3,\n      \"B5.Direct.2\": 3,\n      \"B5.Direct.3\": 3\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"packed_predicate\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 15,\n    \"literal_occurrences\": 35,\n    \"term_occurrences\": 163,\n    \"maximum_term_depth\": 3,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 12,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 3,\n      \"2\": 7,\n      \"3\": 2\n    },\n    \"relations_excluding_equality\": 3,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Bad\": 3,\n      \"B5.Hull.1\": 1,\n      \"B5.Hull.2\": 1,\n      \"B5.Hull.3\": 1\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"packed_equality\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 15,\n    \"literal_occurrences\": 35,\n    \"term_occurrences\": 175,\n    \"maximum_term_depth\": 3,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 13,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 4,\n      \"2\": 7,\n      \"3\": 2\n    },\n    \"relations_excluding_equality\": 2,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Bad\": 3,\n      \"B5.Hull.1\": 1,\n      \"B5.Hull.2\": 1,\n      \"B5.Hull.3\": 1\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"packed_direct_shared_derived\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 18,\n    \"literal_occurrences\": 51,\n    \"term_occurrences\": 346,\n    \"maximum_term_depth\": 3,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 9,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 1,\n      \"2\": 6,\n      \"3\": 2\n    },\n    \"relations_excluding_equality\": 2,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Direct.1\": 3,\n      \"B5.Direct.2\": 3,\n      \"B5.Direct.3\": 3\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"packed_direct_packed_derived\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 18,\n    \"literal_occurrences\": 51,\n    \"term_occurrences\": 388,\n    \"maximum_term_depth\": 4,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 8,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 1,\n      \"2\": 5,\n      \"3\": 2\n    },\n    \"relations_excluding_equality\": 2,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Direct.1\": 3,\n      \"B5.Direct.2\": 3,\n      \"B5.Direct.3\": 3\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"packed_direct_slice_derived\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 18,\n    \"literal_occurrences\": 51,\n    \"term_occurrences\": 1273,\n    \"maximum_term_depth\": 9,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 6,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 0,\n      \"2\": 4,\n      \"3\": 2\n    },\n    \"relations_excluding_equality\": 2,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Direct.1\": 3,\n      \"B5.Direct.2\": 3,\n      \"B5.Direct.3\": 3\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"packed_predicate_shared_derived\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 15,\n    \"literal_occurrences\": 35,\n    \"term_occurrences\": 174,\n    \"maximum_term_depth\": 3,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 9,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 1,\n      \"2\": 6,\n      \"3\": 2\n    },\n    \"relations_excluding_equality\": 3,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Bad\": 3,\n      \"B5.Hull.1\": 1,\n      \"B5.Hull.2\": 1,\n      \"B5.Hull.3\": 1\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"packed_predicate_packed_derived\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 15,\n    \"literal_occurrences\": 35,\n    \"term_occurrences\": 188,\n    \"maximum_term_depth\": 4,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 8,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 1,\n      \"2\": 5,\n      \"3\": 2\n    },\n    \"relations_excluding_equality\": 3,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Bad\": 3,\n      \"B5.Hull.1\": 1,\n      \"B5.Hull.2\": 1,\n      \"B5.Hull.3\": 1\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"packed_predicate_slice_derived\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 15,\n    \"literal_occurrences\": 35,\n    \"term_occurrences\": 639,\n    \"maximum_term_depth\": 9,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 6,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 0,\n      \"2\": 4,\n      \"3\": 2\n    },\n    \"relations_excluding_equality\": 2,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Bad\": 3,\n      \"B5.Hull.1\": 1,\n      \"B5.Hull.2\": 1,\n      \"B5.Hull.3\": 1\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"packed_equality_shared_derived\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 15,\n    \"literal_occurrences\": 35,\n    \"term_occurrences\": 186,\n    \"maximum_term_depth\": 3,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 10,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 2,\n      \"2\": 6,\n      \"3\": 2\n    },\n    \"relations_excluding_equality\": 2,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Bad\": 3,\n      \"B5.Hull.1\": 1,\n      \"B5.Hull.2\": 1,\n      \"B5.Hull.3\": 1\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"packed_equality_packed_derived\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 15,\n    \"literal_occurrences\": 35,\n    \"term_occurrences\": 200,\n    \"maximum_term_depth\": 4,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 9,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 2,\n      \"2\": 5,\n      \"3\": 2\n    },\n    \"relations_excluding_equality\": 2,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Bad\": 3,\n      \"B5.Hull.1\": 1,\n      \"B5.Hull.2\": 1,\n      \"B5.Hull.3\": 1\n    },\n    \"machine_state_count\": null\n  },\n  {\n    \"name\": \"packed_predicate_shared\",\n    \"nonlogical_blocks\": 5,\n    \"clauses\": 15,\n    \"literal_occurrences\": 35,\n    \"term_occurrences\": 163,\n    \"maximum_term_depth\": 3,\n    \"maximum_universal_variables\": 4,\n    \"constants\": 1,\n    \"proper_functions\": 10,\n    \"function_arities\": {\n      \"0\": 1,\n      \"1\": 2,\n      \"2\": 6,\n      \"3\": 2\n    },\n    \"relations_excluding_equality\": 3,\n    \"clauses_by_source\": {\n      \"B1.Change\": 2,\n      \"B2.NAND\": 3,\n      \"B3.Atomic\": 2,\n      \"B4.Exists\": 2,\n      \"B5.Bad\": 3,\n      \"B5.Hull.1\": 1,\n      \"B5.Hull.2\": 1,\n      \"B5.Hull.3\": 1\n    },\n    \"machine_state_count\": null\n  }\n]\n\nSTDERR:\n"
+    },
+    {
+      "name": "verify",
+      "args": [
+        "code/verify_kernel.py"
+      ],
+      "returncode": 0,
+      "seconds": 7.133270451799035,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source04-verify.log",
+      "captured_output": "{\n  \"status\": \"finite checks passed\",\n  \"not_a_formal_consistency_proof\": true,\n  \"tptp_roundtrips\": 15,\n  \"ground_controls\": {\n    \"named_controls\": 9,\n    \"independent_unit_sets\": 27,\n    \"actual_NAND_distinction\": true,\n    \"whole_kernel_search_run\": false\n  },\n  \"assignment_controls\": {\n    \"formula_count\": 40,\n    \"relations\": 16,\n    \"assignment_evaluations\": 10240,\n    \"packed_evaluations\": 10240,\n    \"scope\": \"finite syntax/assignment controls, not one-sorted K_cl models\"\n  },\n  \"closure_controls\": {\n    \"cases\": [\n      {\n        \"domain_size\": 1,\n        \"relation_pairs\": 4\n      },\n      {\n        \"domain_size\": 2,\n        \"relation_pairs\": 256\n      },\n      {\n        \"domain_size\": 3,\n        \"relation_pairs\": 262144\n      }\n    ],\n    \"true_instances\": 182494,\n    \"witness_replays\": 182494,\n    \"scope\": \"B5 equivalence only; no full-theory finite models\"\n  },\n  \"seconds\": 7.085\n}\n\nSTDERR:\n"
+    },
+    {
+      "name": "reify",
+      "args": [
+        "code/reify.py"
+      ],
+      "returncode": 0,
+      "seconds": 0.04685281403362751,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source04-reify.log",
+      "captured_output": "{\n  \"free_variables\": [\n    0,\n    1,\n    2\n  ],\n  \"class_term_occurrences\": 428,\n  \"descriptor_term_occurrences\": 493,\n  \"selector_occurrences\": [\n    1,\n    3,\n    60,\n    119,\n    178,\n    237,\n    296,\n    355,\n    414,\n    473,\n    532,\n    591\n  ]\n}\n\nSTDERR:\n"
+    },
+    {
+      "name": "baseline34",
+      "args": [
+        "baselines/34-k12-theory-finite_assignment_kernel.py",
+        "--out",
+        "baselines/generated"
+      ],
+      "returncode": 0,
+      "seconds": 0.04014212731271982,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source04-baseline34.log",
+      "captured_output": "{\n  \"metrics\": {\n    \"status\": \"syntactic payload audit, not a formal proof or TM bound\",\n    \"axioms\": 12,\n    \"clauses\": 28,\n    \"clauses_by_axiom\": {\n      \"A1.Change\": 2,\n      \"A2.NAND\": 3,\n      \"A3.Atom\": 2,\n      \"A4.Exists\": 2,\n      \"A5.Empty\": 1,\n      \"A6.Ext\": 2,\n      \"A7.Pair\": 3,\n      \"A8.Union\": 3,\n      \"A9.Power\": 3,\n      \"A10.Infinity\": 2,\n      \"A11.Sep\": 3,\n      \"A12.Collection\": 2\n    },\n    \"constants\": 2,\n    \"proper_function_symbols\": 15,\n    \"function_arity_histogram\": {\n      \"0\": 2,\n      \"1\": 2,\n      \"2\": 8,\n      \"3\": 4,\n      \"4\": 1\n    },\n    \"relation_symbols_excluding_equality\": 2,\n    \"max_universal_variables_per_clause\": 5,\n    \"literal_occurrences\": 62,\n    \"term_nodes_counting_occurrences\": 244,\n    \"max_term_depth\": 3\n  },\n  \"diagnostic_cases\": 8\n}\n\nSTDERR:\n"
+    },
+    {
+      "name": "machine-audit",
+      "args": [
+        "engineering/audit.py"
+      ],
+      "returncode": 0,
+      "seconds": 2.174149515107274,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source04-machine-audit.log",
+      "captured_output": "{\n  \"upstream_commit\": \"0d544f2a2e3c18f12278441a74b7879f31cbe856\",\n  \"table_sha256\": \"84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95\",\n  \"program_sha256\": \"1fbc30fcf82a1442ed88d1a1dde412630a431d32a7265d22bdf8517bffe01746\",\n  \"structure\": {\n    \"working_states\": 253,\n    \"binary_rows\": 506,\n    \"graph_reachable_working\": 253,\n    \"partition_class_counts\": [\n      14,\n      60,\n      128,\n      195,\n      228,\n      235,\n      242,\n      247,\n      249,\n      251,\n      252,\n      253,\n      253\n    ],\n    \"nontrivial_exact_quotient\": false\n  },\n  \"rm_prefix\": {\n    \"rm_steps\": 330,\n    \"pc\": \"000\",\n    \"logical_registers\": [\n      5,\n      0,\n      0,\n      0,\n      2,\n      0,\n      0,\n      0,\n      0\n    ]\n  },\n  \"affine_instruction_cases\": {\n    \"ok\": 8390,\n    \"halt\": 1\n  },\n  \"scope\": \"Executable finite/source-model audit; no Coq rebuild and no internal ZFC consistency theorem.\"\n}\nComplete boot tape agrees: 178 one cells, with 158 explicitly checked spare blocks.\n\nSTDERR:\n"
+    },
+    {
+      "name": "incoming-search-r20",
+      "args": [
+        "engineering/reproduce_search.py",
+        "--radius",
+        "20",
+        "--fuel",
+        "128"
+      ],
+      "returncode": 0,
+      "seconds": 55.419079021550715,
+      "log": "/tmp/zfc-intake-154-qc3_quah/source04-incoming-search-r20.log",
+      "captured_output": "symbolic cases {'ok': 8390, 'halt': 1} segments 405285\n{\"boot_steps\": 312975, \"elapsed_seconds\": 49.7877506474033, \"eligible_states\": 221, \"symbolic_cases\": {\"halt\": 1, \"ok\": 8390}, \"unique_contexts\": 1176597, \"watched_edges\": 412}\nSUMMARY states=221 tested=226688 successful=0 radius=20 fuel=128\nCatalog files are reproducible scratch intermediates and need not be archived.\n\nSTDERR:\n"
+    }
+  ],
+  "pdf": {
+    "source": 4,
+    "main": "zfc_finite_kernel_report",
+    "seconds": 3.3140062745660543,
+    "codes": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "pdf": "/tmp/zfc-intake-154-qc3_quah/review/04/zfc_finite_kernel_report.pdf",
+    "pdfinfo": "Title:           Finite Closure Kernels for Small Consistency Machines\nSubject:         A finite 15-clause theory equiconsistent with ZFC and an audit of the public 253-state Turing machine\nKeywords:        \nAuthor:          Research prepared for Vladimir Reshetnikov\nCreator:         LaTeX with hyperref\nProducer:        pdfTeX-1.40.22\nCreationDate:    Fri Oct 16 19:19:50 2026 PDT\nModDate:         Fri Oct 16 19:19:50 2026 PDT\nCustom Metadata: yes\nMetadata Stream: no\nTagged:          no\nUserProperties:  no\nSuspects:        no\nForm:            none\nJavaScript:      no\nPages:           31\nEncrypted:       no\nPage size:       612 x 792 pts (letter)\nPage rot:        0\nFile size:       455009 bytes\nOptimized:       no\nPDF version:     1.5\n",
+    "pdffonts": "name                                 type              encoding         emb sub uni object ID\n------------------------------------ ----------------- ---------------- --- --- --- ---------\nNVDECE+LMRoman12-Regular             Type 1            Custom           yes yes yes    164  0\nIDGERB+LMRoman12-Bold                Type 1            Custom           yes yes yes    165  0\nSZBJDW+LMRoman10-Regular             Type 1            Custom           yes yes yes    166  0\nZSIGAI+LMRoman10-Bold                Type 1            Custom           yes yes yes    167  0\nSZBJDW+LMRoman10-Regular             Type 1            Custom           yes yes yes    168  0\nHAJUKC+LMSans10-Regular              Type 1            Custom           yes yes yes    169  0\nCMCNVE+LMRoman7-Regular              Type 1            Custom           yes yes yes    193  0\nHIWRVD+LMMathSymbols10-Regular       Type 1            Custom           yes yes yes    194  0\nCXEWCD+LMRoman10-Italic              Type 1            Custom           yes yes yes    229  0\nGMAMWV+LMMathItalic10-Regular        Type 1            Custom           yes yes yes    230  0\nHFGLGC+LMMathItalic8-Regular         Type 1            Custom           yes yes yes    231  0\nNEOSGM+LMSans8-Regular               Type 1            Custom           yes yes yes    232  0\nTXPVXW+LMMono10-Regular              Type 1            Custom           yes yes yes    234  0\nIAYJQI+LMRoman8-Regular              Type 1            Custom           yes yes yes    235  0\nVBPGXV+LMMathExtension10-Regular     Type 1            Custom           yes yes yes    282  0\nHROMUY+LMMathSymbols8-Regular        Type 1            Custom           yes yes yes    300  0\nTECLIM+LMMathItalic6-Regular         Type 1            Custom           yes yes yes    316  0\nGWJQAP+MSAM10                        Type 1            Builtin          yes yes yes    435  0\nULZEWH+MSBM10                        Type 1            Builtin          yes yes yes    443  0\nRQKIOF+LMMono9-Regular               Type 1            Custom           yes yes yes    506  0\n",
+    "warnings": [],
+    "visual_pages": [
+      1,
+      19
+    ],
+    "all_fonts_embedded": true
+  },
+  "functional_comparisons": [
+    {
+      "label": "40-r10",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/engineering/search_summary.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/engineering/search_summary_radius10.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-verification",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/verification.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/verification.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-packed_direct.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_direct.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_direct.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_direct_slice_derived.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_direct_slice_derived.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_direct_slice_derived.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-packed_direct_packed_derived.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_direct_packed_derived.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_direct_packed_derived.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-unpacked_equality.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/unpacked_equality.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/unpacked_equality.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_equality_shared_derived.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_equality_shared_derived.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_equality_shared_derived.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-packed_direct_slice_derived.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_direct_slice_derived.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_direct_slice_derived.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_direct_packed_derived.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_direct_packed_derived.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_direct_packed_derived.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_direct_shared_derived.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_direct_shared_derived.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_direct_shared_derived.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_direct_packed_derived.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_direct_packed_derived.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_direct_packed_derived.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-packed_predicate_shared.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate_shared.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate_shared.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-unpacked_direct.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/unpacked_direct.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/unpacked_direct.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_equality_packed_derived.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_equality_packed_derived.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_equality_packed_derived.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_predicate_shared_derived.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate_shared_derived.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate_shared_derived.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_equality_shared_derived.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_equality_shared_derived.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_equality_shared_derived.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_predicate.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-unpacked_predicate.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/unpacked_predicate.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/unpacked_predicate.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-unpacked_equality.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/unpacked_equality.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/unpacked_equality.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_predicate_packed_derived.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate_packed_derived.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate_packed_derived.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-unpacked_predicate.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/unpacked_predicate.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/unpacked_predicate.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_predicate_slice_derived.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate_slice_derived.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate_slice_derived.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_predicate_slice_derived.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate_slice_derived.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate_slice_derived.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-kernel_metrics.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/kernel_metrics.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/kernel_metrics.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-packed_equality_packed_derived.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_equality_packed_derived.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_equality_packed_derived.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-reification_example.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/reification_example.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/reification_example.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-packed_predicate_shared.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate_shared.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate_shared.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_direct_shared_derived.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_direct_shared_derived.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_direct_shared_derived.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_equality.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_equality.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_equality.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-packed_equality_shared_derived.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_equality_shared_derived.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_equality_shared_derived.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_equality.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_equality.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_equality.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_predicate_packed_derived.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate_packed_derived.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate_packed_derived.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-unpacked_equality.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/unpacked_equality.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/unpacked_equality.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-packed_equality_packed_derived.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_equality_packed_derived.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_equality_packed_derived.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-unpacked_direct.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/unpacked_direct.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/unpacked_direct.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_equality.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_equality.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_equality.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-unpacked_predicate.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/unpacked_predicate.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/unpacked_predicate.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-reification_example.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/reification_example.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/reification_example.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_predicate_packed_derived.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate_packed_derived.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate_packed_derived.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_predicate.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_predicate.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_predicate_slice_derived.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate_slice_derived.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate_slice_derived.txt",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_direct.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_direct.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_direct.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-packed_predicate_shared_derived.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate_shared_derived.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate_shared_derived.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-packed_direct_slice_derived.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_direct_slice_derived.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_direct_slice_derived.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-packed_predicate_shared_derived.p",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate_shared_derived.p",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate_shared_derived.p",
+      "comparison": "literal bytes"
+    },
+    {
+      "label": "40-unpacked_direct.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/unpacked_direct.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/unpacked_direct.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-packed_predicate_shared.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_predicate_shared.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_predicate_shared.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-packed_direct_shared_derived.json",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_direct_shared_derived.json",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_direct_shared_derived.json",
+      "comparison": "complete parsed record except timing"
+    },
+    {
+      "label": "40-packed_direct.txt",
+      "matches": true,
+      "replayed": "/tmp/zfc-intake-154-qc3_quah/review/04/data/packed_direct.txt",
+      "original": "/tmp/zfc-intake-154-qc3_quah/04/zfc_finite_kernel_research/zfc_finite_kernel_report/data/packed_direct.txt",
+      "comparison": "literal bytes"
+    }
+  ],
+  "scope": "Ordinary mathematical review and specified finite functional checks; no new full consistency-machine theorem or minimality result"
+}

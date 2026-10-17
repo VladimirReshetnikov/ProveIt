@@ -19,6 +19,14 @@ The [symbolic executor, clean-path invariant and instruction framing](permutatio
 now have Lean proofs for the actual candidate. Complete decoder coverage and
 global halting composition are separate checks.
 
+The [direct well-founded-model construction](wf_model.md) now proves in Lean
+that the exact native/numerical calculus is equiconsistent with ordinary ZF,
+including Foundation and Power. It uses the quotient's existing collection
+resource. Choice removal remains assigned to the constructible-class lane;
+[PA internalization](pa_internalization.md) requires an explicit arithmetic
+proof-code bridge. The original request asks for a PA proof, which is stronger
+than the later goal record's ZFC metatheory target.
+
 The [attributed upstream baseline](../../../../lib/jeff-busy-beaver-zfc254/README.proveit.md)
 is imported at commit `297ab8df7e5de329605c3875b4934643b371a5e3`.
 Mira-Cult designed the machine; Jeff supplies the published verification.
@@ -145,6 +153,16 @@ their exact finite scopes. Both reports have complete dossiers and offline
 replay through `code/reproduce_153.py`; they supply no new sub253 machine or
 complete internal-ZFC endpoint.
 
+Batch154 adds sources 37–41 (placement `d1636c9af8`, reconciliation
+`9f4efefcff`, catalogue `21880d20b6`). Finite GIC/EPSC fusion, the EPSC1 plus
+BinaryUnion repair, stronger support countermodels, finite assignment/class
+and cyclic-algebra kernels continue the theory search. All advertised finite
+suites and the fresh 26-source Lean closure pass; the guarded shortcut keeps
+253 states. The algebraic ZFC query and complete new frontends remain
+unexpanded. These reports supply no strict EPSC1 consistency separation or
+new closed binary endpoint. Their preserved evidence and offline recovery are
+in the host's batch154 appendix and `code/reproduce_154.py`.
+
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
 A positive singleton-decoder hull covers the root's members without
@@ -219,7 +237,8 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `RMDag.lean`, `Dag254.lean`, `L2Lib254.lean`, `L2Macros254.lean`, `L2Control254.lean`, `L2Axioms254.lean`, `L2AxiomsEval254.lean`, `L2Root254.lean` | L2 for the shared 219-node register program (attributed data port of the pinned `Dag254.v`, used by the 253- and 254-state tables): Wade's structured semantics with determinism; every loop, `pair`, the unpair walk, all stack/formula macros, the equality test, fetch, MP/NIP/DROP and the generated `axioms()` closed forms; `root_step` (one root run is one `enumStep`, halting included), `iter_halts_boot` and `program_halts_iff : IterHalts dag254 (nextproof = 2) ↔ C254 1`. |
 | `RMEquiv.lean`, `RMEquiv254.lean` | L3: Wade's path semantics and the structured semantics agree for every well-formed DAG (`halts_iff_iterHalts`, forward and backward simulation up to trailing zero bits, Boolean well-formedness check); the 219-node program is well-formed (kernel-checked tables), giving `path_halts_iff : Halts pathDag254 (nextproof = 2) ↔ C254 1`. |
 | `RMBisim.lean`, `Bisim254.lean` | L4: segment bisimulations transfer path halting for every register file (symmetric relation defined by certificate lookup, so one check gives both directions); 3010 related test-site pairs between the literal 6459-row `Prog254` and the 219-node DAG, kernel-checked in 16 chunks, giving `literal_halts_iff : Halts Prog254.program Prog254.initial ↔ C254 1` ([tarski_logic_layer.md](tarski_logic_layer.md)). |
-| `NamedZF.lean`, `InternalOrd.lean`, `InternalRank.lean`, `ZFRank.lean`, `ZFNative.lean`, `Endpoint254.lean` | ZF proves the native axioms: named formulas over `Form` with named Separation/Replacement; inside any model of the ZFAxioms bundle with Power and set Regularity (no external well-foundedness), ordinals with trichotomy, the cumulative hierarchy by transfinite recursion, the rank theorem, Collection for every matrix and power containers; hence every `ZFax_s` model satisfies `NativeAx`, `zf_refutation_of_native` by `theory_transfer`, and `literal_nonhalting_of_zfc_consistent : Con(ZFC) → ¬ Halts Prog254.program Prog254.initial` ([tarski_logic_layer.md](tarski_logic_layer.md)). The converse needs the Regularity and Choice transports. |
+| `NamedZF.lean`, `InternalOrd.lean`, `InternalRank.lean`, `ZFRank.lean`, `ZFNative.lean`, `Endpoint254.lean` | ZF proves the native axioms: named formulas over `Form` with named Separation/Replacement; inside any model of the ZFAxioms bundle with Power and set Regularity (no external well-foundedness), ordinals with trichotomy, the cumulative hierarchy by transfinite recursion, the rank theorem, Collection for every matrix and power containers; hence every `ZFax_s` model satisfies `NativeAx`, `zf_refutation_of_native` by `theory_transfer`, and `literal_nonhalting_of_zfc_consistent : Con(ZFC) → ¬ Halts Prog254.program Prog254.initial` ([tarski_logic_layer.md](tarski_logic_layer.md)). The reverse ZF comparison is now checked in `WFTheory`; Choice remains open. |
+| `TransRec.lean`, `ConstructibleDef.lean`, `Constructible.lean`, `ConstructibleReflect.lean`, `ConstructibleZF.lean` | Gödel's L inside any ZF model (no external well-foundedness): transfinite recursion for a definable stage operation; `Def(X)` through BoundedZFCConsistency's certificate satisfaction of coded formulas, with the truth bridge for standard formulas; `L_a ∩ Ord = a`; pairing, union and power in L; the reflection theorem for the L-hierarchy (closed limits by ω-iteration of a definable closing step); Separation and Replacement in L; `L_models_ZF`: the constructible substructure satisfies `ZFax_s`. AC in L (hence the Choice transport) remains ([tarski_logic_layer.md](tarski_logic_layer.md)). |
 | `OutgoingProfile.lean` | Four-node outgoing equality from exact full-profile singletons, actual raw-PSC model corollaries and reserved-zero named semantic translation at one false point. Source equality denotes full observational classes. |
 | `Numeric254.lean`, `NamedNumeric254.lean` | Exact original four-tag numerical rules and gated C/G/vacuity bundle; named proof transport and refutation equivalence for the explicitly defined encoded-numerical-theorem theory Q. Q/ZFC calibration remains open. |
 | `BootstrapFrame253.lean` | The actual 312,975-step binary bootstrap realizes the actual 330-step register endpoint, with all nine permuted registers, 158 spare blocks and exterior blanks retained. |
@@ -247,7 +266,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `NativeTheory254.lean` | Numerical falsity and actual 219-node structured-program halting are each equivalent to refutability of the explicit sentence theory CP + full native-Form GIC + IR. ZFC calibration and binary execution remain separate. |
 | `EnumSafeStart254.lean`, `DirtyRoot254.lean`, `DirtyProgram254.lean` | Attributed arbitrary-cutoff enumeration and dirty-root absorption, composed with the actual structured219/path program. Six numerical fields are unrestricted; top/cache/stack retain their exact theorem invariant and logical registers beyond8 remain zero. |
 | `SeedInvariant254.lean` | Six constructors certify nonzero initial theorem codes, unshifted stacks, and the resulting dirty-start/native-refutation equivalence. This gives a larger sufficient initializer target; no binary startup is inferred. |
-| `WellFoundedPart.lean` | One actual equality-free GIC matrix collects internal well-founded witnesses; closure, heredity and actual Regularity on the subtype. Full interpreted ZF and effective consistency transport remain separate. |
+| `WellFoundedPart.lean`, `WFRelativization.lean`, `WFModel.lean`, `WFTheory.lean` | One actual GIC instance supplies closure of internal well-foundedness. Actual translated Separation/Replacement, Infinity and Power make its subtype a ZF model, yielding `C254 F ↔ BProv ZFax_s [] Bot` and native/ZF equiconsistency. Choice and internal PA proof codes remain open ([direct route](wf_model.md)). |
 | `RMBisim.lean` | Merged generic segment bisimulation with symmetric halting transport and a sound finite checker on explicit decoder trees. No concrete certificate instance is included in this module. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
@@ -527,8 +546,8 @@ without a new state bound or binary simulation theorem.
 
 ## Next proof and compiler work
 
-1. Complete the equality-free interpretation and its Foundation/Choice
-   consistency bridge, using the calibrated subset-PSC theory as a control.
+1. Complete the Choice transport from the checked native/ZF comparison,
+   using the calibrated subset-PSC theory as a control.
    Keep alternative and artificial calculi eligible by complete compiler cost.
 2. Supply a complete logical frontend with a proved cross-variable substitution
    or refutation interface. The finite-sort model rules out calibrating the
