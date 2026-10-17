@@ -100,6 +100,22 @@ Its27 axiom probes and20 callers pass using pinned Foundation/Mathlib caches.
 This closes the pairing component of the PA representation plan; represented
 history evaluation and the full coded proof/trace comparison remain open.
 
+The subsequent [constructor arithmetic graphs](arithmetic_code254.md) cover all
+four exact base4 operations and the complete rho1 payload branch. Their fixed
+parameter-free bounded formulas work in every IOpen model and agree with the
+actual numerical definitions on all natural inputs. Fresh checks of this module,
+Cantor and both audits pass56 axiom probes and47 callers. The remaining rule
+branches and history still require implementation; the core remains163 units.
+
+[Intake157/source50](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
+adds exact quotation bounds and canonical constructor-only certificates for all
+twelve C254 rules, with both freshness gates and a fixed contradiction target.
+Its checker avoids computing the large formula integers; the binary codec,
+enumerator and complete state cost remain open. The complete132,048-recipe
+search repeats source48's family; the larger two-incoming search is partial.
+Both the certificate proofs and continuation obstruction are ordinary
+mathematics, separate from the existing Lean endpoint and the PA target.
+
 A measured attempt to save a register by changing Cantor pairing to a
 [power-of-two encoding](register_lifetime.md) retained the full calculus but
 cost 306 states; its tested hybrids cost at least293. The current 252-state

@@ -8,6 +8,10 @@ is the next step toward computing our existing
 The table's recursion is already supported by the pinned Foundation library.
 The construction plan below is retained; pairing and projection graphs are now
 implemented, while the full evaluator and internal PA proof remain open.
+The later [constructor component](arithmetic_code254.md) implements fixed
+bounded graphs for all four base4 constructors and the rho1/tag3 payload
+branch, including exact all-natural compatibility. The full row selector,
+remaining branches and history graph are still open.
 
 The Foundation gitlink is `32e1a0956a8622fad067328ca1959729a7634428`.
 The initial read-only plan recovered its source from the Git object database.
@@ -170,9 +174,10 @@ graph formulas would not suffice; the blueprint here is fixed once and for all.
 
 ## Exact next proof targets
 
-First implement the Cantor arithmetic package with fixed Δ0 projection graphs
-and its standard-model compatibility lemma. Then define the twelve-case row
-graph and one history blueprint. These are independent of Native/ZF/Choice
+The Cantor arithmetic package with fixed Δ0 projection graphs and its
+standard-model compatibility lemma is now checked, as are the constructors
+and one axiom branch. Extend the fixed circuits and define the complete
+twelve-case row graph and one history blueprint. These are independent of Native/ZF/Choice
 interpretations and do not require rebuilding their proof-code translations.
 
 The external checker-equivalence target is
@@ -192,3 +197,20 @@ The arbitrary-model totality theorem is a distinct target. Neither it nor the
 standard comparison proves the later PA-internal native/ZF/ZFC proof
 translations or machine-trace translations. The construction above identifies
 a small concrete first step, not those further endpoints.
+
+## Constructor certificates as an alternative representation
+
+[Source50](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
+proves ordinary all-input equivalence between the legacy checker and local
+quoted certificates with forward polynomial equations. Its separate ground-term
+checker removes numeric literal/quotation arithmetic altogether, while retaining
+all twelve rules, native equality, both bundle gates and fixed falsity. Only
+`B0(Z,Z)` is normalized to Z. The delivered arena verifies unique constructor
+keys before treating identifier inequality as numeric inequality.
+
+These are alternatives to the already checked dense history, not corrections
+to its all-input equivalence theorem. The new weighted quotation and short-fuel
+bounds, normal-form bijection and certificate equivalences are not yet Lean
+ports. Our exact arithmetic Cantor component now fills the elementary pairing
+step proposed by the report; internal certificate normalization, represented
+history and full coded proof/trace transports remain separate obligations.
