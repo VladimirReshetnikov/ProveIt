@@ -54,10 +54,10 @@ dependency closure was not rebuilt or newly audited here.
 | --- | --- |
 | `Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/Basic.lean:200` | A `Type`-valued `ProvTree`, its erasure, and `provTree_complete : Prov → Nonempty ProvTree` at line370 give the right pattern for a data-carrying mirror. This one is for PA syntax, not BusyBeaver's Form or C254. |
 | `Logic/Interpretability/PAHF/Lean/PAHF/Interpretation.lean:8208,8226` | `TheoryInterpretation` and its composition package syntactic formula translation, axiom discharge and theorem transfer. They still use `Prop` provability, rather than an internally represented proof-code map. |
-| `.../TypedTemplateProofCompiler.lean:42,203,270,280` | `TypedTemplateTranslation`, `compileDerivation`, `compileProof`, and `compileProof_isProof` instantiate a **fixed standard proof template** at typed, possibly nonstandard model-coded formulas. Translation equations for binders, substitution and shifting are explicit. The output's `.val` is accepted by Foundation's represented `Proof` predicate. |
-| `.../PrimitiveRecursiveTruthCertificate.lean:120,170` | `PrimitiveRecursivePackage` and `paRestrictedConsistencyProofSelectorIn_of_primitiveRecursivePackage` illustrate represented `PR.Construction` iteration and correctness in arbitrary arithmetic models. They do not provide the needed BusyBeaver blueprint. |
-| `.../UniformProofPackage.lean:67` | Sigma-one definable existential packages can be iterated by internal induction without a canonical choice function. This is an alternative to demanding a primitive-recursive output selector. |
-| `.../UniformInternalProvability.lean:131,157` | A statement about proof witnesses at **every element of every PA model** is turned into an actual `Peano ⊢ sentence` theorem. Using arithmetic completeness here is legitimate because the obligation is already about represented proofs, including nonstandard codes. |
+| `Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/TypedTemplateProofCompiler.lean:47,203,270,280` | `TypedTemplateTranslation`, `compileDerivation`, `compileProof`, and `compileProof_isProof` instantiate a **fixed standard proof template** at typed, possibly nonstandard model-coded formulas. Translation equations for binders, substitution and shifting are explicit. The output's `.val` is accepted by Foundation's represented `Proof` predicate. |
+| `Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/PrimitiveRecursiveTruthCertificate.lean:120,170` | `PrimitiveRecursivePackage` and `paRestrictedConsistencyProofSelectorIn_of_primitiveRecursivePackage` illustrate represented `PR.Construction` iteration and correctness in arbitrary arithmetic models. They do not provide the needed BusyBeaver blueprint. |
+| `Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/UniformProofPackage.lean:67` | Sigma-one definable existential packages can be iterated by internal induction without a canonical choice function. This is an alternative to demanding a primitive-recursive output selector. |
+| `Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/UniformInternalProvability.lean:131,157` | A statement about proof witnesses at **every element of every PA model** is turned into an actual `Peano ⊢ sentence` theorem. Using arithmetic completeness here is legitimate because the obligation is already about represented proofs, including nonstandard codes. |
 | `Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/Instances.lean:52` and `ZFDelta1.lean:75,83` | The set language has symbol recognizers, and Foundation's actual ZF/ZFC axiom theories have `Theory.Δ₁`, enabling its represented `Proof`/`Provable` machinery. These are not yet instances for the local `NativeAx`/`ZFax_s` codings. |
 | `.../Translation.lean:77,113` and `UniformStatement.lean:142` | `toSet`, `eval_toSet`, and `toNat_toSet_congr` already handle local flat De Bruijn Form, Foundation syntax, and quotation depth. `Translation` explicitly transfers semantic results rather than source derivations; a proof-code/coded-syntax correctness adapter is still needed. |
 | `.../SetPlaceholderQuotient.lean:160` and `SetCongruence.lean:1322` | Existing placeholder-language equality/congruence completion and translated congruence proofs can support finite templates with inserted formulas. Equality cannot be silently assumed to respect an arbitrary replacement predicate. |
@@ -212,6 +212,10 @@ from the actual raw candidate0 (`MP0`). This provides the finite-data operations
 for a paired validity/compiled-word history; it does not yet represent that
 history or prove the compiler's internal execution contract. Invalid proof
 code0 must remain separate from either command-code convention.
+The subsequent [bounded command-tail graphs](arithmetic_command_word254.md)
+now represent the raw tail and replacement functions in every IOpen model,
+with all-natural identification. Represented concatenation and the paired
+compiler history remain the next steps.
 
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its

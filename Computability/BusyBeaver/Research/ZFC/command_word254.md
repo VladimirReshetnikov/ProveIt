@@ -49,8 +49,9 @@ shift, raw-versus-word arguments, four-projection AX branch and all-code scope.
 The original enumerator and codec attribution is inherited from `Enum254` and
 `EnumStackBarrier254`.
 
-The next arithmetic adapter can represent tail/replacement by bounded graphs,
-then concatenate through a course-of-values history with the right word as
+The [arithmetic tail adapter](arithmetic_command_word254.md) now represents
+tail/replacement by bounded graphs in every IOpen model. The next extension
+can concatenate through a course-of-values history with the right word as
 parameter. A subsequent history can pair the exact validity result with the
 compiled word for each proof code. Internal execution correctness and the
 finite-trace bridge remain separate requirements of the

@@ -60,7 +60,10 @@ adds the [numeric command-word codec](command_word254.md): total encoding and
 decoding, exact command-tail replacement, and concatenation on all natural
 codes. It distinguishes empty word0 from the original nonempty candidate0.
 Two units are freshly checked and167 source/object-matched imports reused;
-21 axiom reports and25 callers pass. Representing the complete proof-to-command
+21 axiom reports and25 callers pass. The separate
+[bounded arithmetic tail/replacement graphs](arithmetic_command_word254.md)
+also pass a narrow fresh check with Cantor:38 reports and42 callers, reusing14
+matched core imports. Representing concatenation, the complete proof-to-command
 compiler and its execution contract remains the next arithmetic bridge.
 
 The complete binary endpoint passed a
