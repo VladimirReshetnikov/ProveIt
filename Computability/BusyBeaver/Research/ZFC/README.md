@@ -1401,3 +1401,12 @@ source/audit check passed18/22 with zero warnings and standard axioms only.
 Exact evidence/history, independent reviews, and the unbuilt default-path
 preflight are separate; the complete L2/Enum and PA machine equivalence remain
 open.
+
+[Internal pairing and its actual DROP/MP occurrences](arithmetic_control_pair254.md)
+now have terminating contracts for all internal files in IΣ1 models. Pairing
+clears scratch1 and TW, adds their Cantor pair to scratch2, and preserves the
+remaining fields. Both literal occurrences are bound to actual controls; the
+complete DROP/MP instructions need further composition. The source and audit
+passed 13 probes and 18 callers with standard axioms and zero warnings. Exact
+evidence, all three attempts and the unbuilt default preparation are preserved
+in the matching `results/arithmetic-control-pair254-*` records.
