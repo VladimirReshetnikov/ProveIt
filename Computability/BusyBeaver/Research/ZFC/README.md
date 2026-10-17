@@ -130,6 +130,11 @@ The [ordinary-Nat scheduler adapter](arithmetic_enumerator_run_nat254.md)
 also proves exact agreement with actual `Enum254.run` for every time and
 six-register state, and identifies arithmetic blank halting with the native
 `Enum254.Halts` predicate. Eleven reports and fourteen callers pass.
+The [original validator's constructor equations](arithmetic_proof_constructors254.md)
+now produce accepted internal proof codes for every original rule, with
+seventeen reports and eighteen callers. They support the planned
+[bounded proof-witness stack invariant](arithmetic_enumerator_soundness_plan254.md)
+for the reverse implication; that invariant is not yet proved.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof

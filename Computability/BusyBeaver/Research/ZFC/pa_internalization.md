@@ -307,6 +307,12 @@ proves exact equality with the existing native scheduler at every ordinary
 time and state, including its blank-halting predicate. This identifies the
 standard interpretation of the run graph while keeping the all-internal
 proof obligations explicit.
+For the reverse direction, the [bounded-stack plan](arithmetic_enumerator_soundness_plan254.md)
+keeps one existential bound on proof witnesses for the current stack and
+registers. This gives a Σ1 time-invariant candidate. The required
+[actual proof-constructor equations](arithmetic_proof_constructors254.md)
+are now checked; stack-tail drain, local preservation and the reverse
+arithmetic sentence remain to be proved.
 
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its
