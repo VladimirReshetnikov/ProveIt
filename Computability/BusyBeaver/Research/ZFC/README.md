@@ -1188,8 +1188,15 @@ including coincident labels. Its syntax, finite logical template and numerical
 client pass fourteen axiom reports and twenty callers, with four retained
 style warnings. The [repeated-binding and vacuous-opening laws](../../../../Logic/Interpretability/ZFCinPA/model_coded_binder_absorption.md)
 pass seven reports and nine callers with no warnings; they supply the vacuity
-step for `rho6`. That last logical row, the gated set-theoretic bundle and the
-full PA equivalence remain open.
+step for `rho6`.
+
+The [decoded existential-universal row](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-rho6-254.md)
+now proves actual `rho6` in internal ZF and ZFC, including variable zero.
+Proof equivalence and named generalization handle capture of its relative
+falsity formula. Twelve axiom reports and sixteen callers pass with one
+retained style warning. The completed logical rows are `rho2` through `rho8`;
+`rho1` (existence of equality), the gated set-theoretic bundle and the full PA
+equivalence remain open.
 
 
 The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)
