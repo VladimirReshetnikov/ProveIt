@@ -6,7 +6,8 @@ The total numerical decoder correctly treats zero separately as F→F and proves
 
 The one material defect was the original completeness premise: it asserted no irreflexive model over every `D : Type`, but omitted a valuation or nonempty-domain premise. The empty domain with its empty relation satisfies irreflexivity and every global axiom vacuously. Consequently that hypothesis is impossible, independently of the theory, and the former implication was vacuous. This is not an inconsistent axiom or unsound Lean proof. The authorized repair passes an explicit `Nat → D` valuation to the no-model hypothesis, using the valuation already available in `alias_complete`. `empty_domain_counterexample` preserves the old impossible hypothesis and its empty-domain refutation as an axiom-free Lean theorem.
 
-The precise model scope remains asymmetric. Soundness assumes every decoded gated bundle. Completeness assumes no nonempty irreflexive model of the BotFree named formulas whose encodings are literally gated bundle codes. The encoder never returns zero, so EncBundle must not be silently equated with all decoded bundles. The ZFC bridge can either prove normalization/model-class comparison, or discharge these two stated obligations separately with suitable encodable schema instances and binder-freshness bounds. Neither option is implemented here. No theory interpretation, numerical enumeration, register execution, binary simulation or endpoint follows merely from this logical adapter.
+At the original review checkpoint the model scope was asymmetric. Soundness assumes every decoded gated bundle. Completeness assumes no nonempty irreflexive model of the BotFree named formulas whose encodings are literally gated bundle codes. The encoder never returns zero, so EncBundle must not be silently equated with all decoded bundles. The ZFC bridge can either prove normalization/model-class comparison, or discharge these two stated obligations separately with suitable encodable schema instances and binder-freshness bounds. That review did not implement either option; the later NativeDecoded254
+comparison below now supplies the model-class equivalence. No theory interpretation, numerical enumeration, register execution, binary simulation or endpoint follows merely from this logical adapter.
 
 The accompanying note now records this historical correction and narrows the proxy-design claim. Extensionality alone does not imply U(x,y) iff x=y: the two-object structure with sole edge 0∈1 is extensional, but U(1,0) holds. Singleton resources in an actual set-theory model suffice. Source24's stronger EPSC observational-singleton argument supplies a separate route and is not this elementary Extensionality-only claim.
 
@@ -19,4 +20,6 @@ pairings, encoders and twelve-constructor derivability relations for all
 codes. [Code254GIC](code254_gic.md) connects literal encoded bundles to the
 existing CP/GIC model interface, while the
 [semantic round trip](code254_models.md) proves the decoded-to-encodable model
-implication. The reverse model implication and full ZFC endpoint remain open.
+implication. The later `NativeDecoded254` now proves the reverse implication
+under IR and an explicit valuation, using full native-Form GIC and all-code
+freshness. The full ZFC/binary endpoint remains open.

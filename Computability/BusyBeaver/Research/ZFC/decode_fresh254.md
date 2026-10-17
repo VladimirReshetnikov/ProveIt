@@ -79,3 +79,11 @@ check rather than a fresh rebuild of the complete proof closure. Exact
 commands and results are in `results/decode-fresh254-verification.json`.
 An independent full source read found the occurrence bound, zero exception,
 semantic support and arbitrary-label update scope correct.
+
+
+The subsequent `NativeDecoded254` supplies the native matrix/collection
+adapter described above, including the allowed binder collision and truth-zero
+cases. It also closes EncBundle versus decoded-bundle model equivalence
+under raw IR and an explicit valuation. The separate quotient-IR and
+Foundation/Choice problems remain; the freshness lemma alone never asserted
+those consequences.

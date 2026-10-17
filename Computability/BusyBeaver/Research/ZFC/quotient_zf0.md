@@ -29,15 +29,16 @@ For the first arrow, assume a ZF0 refutation. Any nonempty irreflexive
 EncBundle model would yield a CP/GIC model and hence a quotient ZF0 model,
 contradicting soundness. `Code254.c254_complete` therefore yields numerical
 falsity. `Enum254.complete` supplies the second arrow. This argument uses the
-EncBundle model interface directly; it does not assume the unproved reverse
+EncBundle model interface directly; it does not need the subsequently proved reverse
 comparison from encodable to all decoded bundles. All domain valuations
 remain explicit through completeness and quotient construction.
 
 The converse consistency direction, the
 [Foundation/Choice comparison](foundation_choice_route.md), finite proof-code
-translation inside the intended base theory, and the simulations from this
-six-register enumerator through the structured program to the binary table
-remain separate. These results establish neither a ZFC equivalence nor a new
+translation inside the intended base theory, and the remaining literal-path and binary simulations remain separate.
+The merged L2 development now identifies the actual 219-node structured
+program with the enumerator, and `ProgramZF0` lifts this one-way consequence
+to that program. These results establish neither a ZFC equivalence nor a new
 state record. The underlying machine, calculus and CP/GIC interpretation keep
 the Mira-Cult/Jeff/Wade attribution recorded in their source modules.
 

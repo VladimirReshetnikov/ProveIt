@@ -1,0 +1,98 @@
+{
+  "scope": "Scoped serial merged L2 source and program/ZF0 composition check, with source-identical verified dependencies reused; not a fresh full88-unit or bootstrap rebuild.",
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "scratch": "/tmp/zfc-l2-integration88-4z5mcadu",
+  "dependency_cache": "/tmp/zfc-equality85-integration-fd9ll849",
+  "default_source_units": 88,
+  "research_modules": 82,
+  "dependency_order_checked": true,
+  "generators": [
+    {
+      "script": "Computability/BusyBeaver/Research/ZFC/generate_l2_axioms.py",
+      "byte_exact": true,
+      "generated_bytes": 34157
+    },
+    {
+      "script": "Computability/BusyBeaver/Research/ZFC/generate_l2_axioms_eval.py",
+      "byte_exact": true,
+      "generated_bytes": 79418
+    }
+  ],
+  "modules": [
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Axioms254.lean",
+      "source_sha256": "360c8b92dc43d552455ccd2a76e9c1c2aa89020b74931e31762b3599822a5662",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-l2-integration88-4z5mcadu/BusyBeaver/ZFC/L2Axioms254.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Axioms254.lean"
+      ],
+      "seconds": 1.77,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsEval254.lean",
+      "source_sha256": "78bf07b472bd43526029fbeb9ebf159633e50349d9c5a58fc799e2e3bb936f4e",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-l2-integration88-4z5mcadu/BusyBeaver/ZFC/L2AxiomsEval254.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsEval254.lean"
+      ],
+      "seconds": 2.137,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root254.lean",
+      "source_sha256": "20b2ef7733a0d85c5248ee598b5386f42ad46319a003488fb63bfacb7f737e9f",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-l2-integration88-4z5mcadu/BusyBeaver/ZFC/L2Root254.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root254.lean"
+      ],
+      "seconds": 1.071,
+      "returncode": 0,
+      "output": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root254.lean:126:31: warning: This simp argument is unused:\n  h\n\nHint: Omit it from the simp argument list.\n  simp [toAS, Enum254.fetch, h,\u0335 \u0335h\u0335v]\n\nNote: This linter can be disabled with `set_option linter.unusedSimpArgs false`\n"
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProgramZF0.lean",
+      "source_sha256": "548050235ea817eb9abe4dcd2bb6ab9469fad95de6da885c8e405dc5fab3bb93",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-l2-integration88-4z5mcadu/BusyBeaver/ZFC/ProgramZF0.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProgramZF0.lean"
+      ],
+      "seconds": 0.297,
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean",
+      "source_sha256": "4c4ea7d3baafa7e40ea67cbbb1ee0b45436cda5e26a050ba5bd377e88e1c52e2",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-l2-integration88-4z5mcadu/BusyBeaver/ZFC.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean"
+      ],
+      "seconds": 0.513,
+      "returncode": 0,
+      "output": ""
+    }
+  ],
+  "audit": {
+    "source": "import BusyBeaver.ZFC\nopen SetTheory SetTheory.BusyBeaver.ZFC\n#print axioms L2.e1\n#print axioms L2.ax_eval\n#print axioms L2.root_step\n#print axioms L2.iter_iff\n#print axioms L2.iter_halts_boot\n#print axioms L2.enc_s2\n#print axioms L2.program_halts_iff\n#print axioms ProgramZF0.program_halts_of_zf0_refutation\n#print axioms ProgramZF0.zf0_consistent_of_program_nonhalting\nexample : RMDag.IterHalts Dag254.dag254 (RMDag.upd (fun _ => 0) 0 2) \u2194 Code254.C254 Code254.F :=\n  L2.program_halts_iff\nexample (h : BProv PSCCalibration.ZF0Ax [] .fBot) :\n    RMDag.IterHalts Dag254.dag254 (RMDag.upd (fun _ => 0) 0 2) :=\n  ProgramZF0.program_halts_of_zf0_refutation h\nexample (h : \u00ac RMDag.IterHalts Dag254.dag254 (RMDag.upd (fun _ => 0) 0 2)) :\n    \u00ac BProv PSCCalibration.ZF0Ax [] .fBot :=\n  ProgramZF0.zf0_consistent_of_program_nonhalting h\n",
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "/tmp/zfc-l2-integration88-4z5mcadu/Audit.lean"
+    ],
+    "seconds": 0.503,
+    "returncode": 0,
+    "output": "'SetTheory.BusyBeaver.ZFC.L2.e1' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.L2.ax_eval' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.L2.root_step' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.L2.iter_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.L2.iter_halts_boot' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.L2.enc_s2' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.L2.program_halts_iff' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ProgramZF0.program_halts_of_zf0_refutation' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ProgramZF0.zf0_consistent_of_program_nonhalting' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"
+  }
+}

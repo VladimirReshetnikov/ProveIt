@@ -57,3 +57,29 @@ Identifying that transformer with the abstract AX command and completing
 the root loop remain separate obligations; the earlier paragraph describes
 the previous five-module checkpoint. Read-only reproduction and comparison
 records are retained in `/tmp/zfc-l2-axioms-read-review-zluls6ey/`.
+
+
+## Full root correspondence after the earlier checkpoints
+
+The subsequent merged `L2AxiomsEval254` and `L2Root254` close the AX and root
+obligations stated above at their historical pins. All 110 closed forms are
+checked against the actual generated transformers; both generators reproduce
+exactly on scratch copies. `ax_eval` now identifies the actual AX stack and
+gated bundle. `root_step` covers MP, DROP, NIP (including halt) and AX, with
+candidate fetching and both parameter reads. Determinism gives `iter_iff`;
+the two initial nonhalting candidates connect the enumerator's zero state to
+nextproof = 2. `program_halts_iff` therefore proves actual structured-program
+halting from those registers iff numerical falsity is derivable.
+
+Independent read-through and serial pinned Lean 4.32 checks pass for the
+current AX composition, closed forms and full root source. Nine principal
+axiom audits and three actual callers are included with the new `ProgramZF0`
+composition in `results/l2-program88-integration-verification.json`. All use
+only standard Lean axioms. Source-identical prior dependencies are reused;
+no full closure or binary bootstrap rebuild is claimed.
+
+The remaining different-tree issue is unchanged: this theorem concerns
+`IterHalts Dag254.dag254`, not the 6,459-node literal `Prog254` path program
+or a binary transition table. Its endpoint cannot be spliced into the
+existing RM331 tape theorem by treating the two tree shapes as identical.
+The new `ProgramZF0` consequence is likewise at the structured-program layer.
