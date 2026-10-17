@@ -1,0 +1,727 @@
+{
+  "title": "Toward a Smaller ZFC Consistency Machine",
+  "prepared_date_utc": "2026-10-16",
+  "purpose": "Research report and reproducibility material for incorporation in VladimirReshetnikov/ProveIt.",
+  "machine_convention": {
+    "tapes": 1,
+    "symbols": [
+      0,
+      1
+    ],
+    "blank_symbol": 0,
+    "tape": "bi-infinite",
+    "head_moves": [
+      "L",
+      "R"
+    ],
+    "start_state": 0,
+    "states_counted": "working states only; one separate terminal label is not counted"
+  },
+  "record_claim": "No state-count record below the attributed public253 machine is established.",
+  "source_repositories": [
+    {
+      "repository": "VladimirReshetnikov/ProveIt",
+      "commit": "426592ce97e52d309bfb8f0132411556650b7ac1",
+      "url": "https://github.com/VladimirReshetnikov/ProveIt/tree/426592ce97e52d309bfb8f0132411556650b7ac1",
+      "requested_commits_reviewed": [
+        "6d8bc7f1ba02c83e54757366f019f61b966ed0b7",
+        "63c83cf79986f8a92bb75460848a1d4f863b7b15",
+        "0301aa64e0676bed17402a63de46996631252a51"
+      ],
+      "scope": "23 original Lean sources, research experiment/checker dependencies, public253 audit helper, and source notes reviewed for the report. This package includes only the dependencies required by its checks and experiments.",
+      "license": "MIT No Attribution",
+      "license_file": {
+        "path": "licenses/ProveIt-LICENSE.txt",
+        "bytes": 923,
+        "sha256": "460d4fb6f45fd89278ba881d4b70e8bd1b7df223ee907e758342c2f9989f789d"
+      },
+      "license_git_blob_sha": "9ba84db3ce7197b149cadca52befe271bda64d8b"
+    },
+    {
+      "repository": "jeff87654/busy-beaver",
+      "commit": "297ab8df7e5de329605c3875b4934643b371a5e3",
+      "url": "https://github.com/jeff87654/busy-beaver/tree/297ab8df7e5de329605c3875b4934643b371a5e3/ZF",
+      "scope": "Pinned Jeff/Mira-Cult ZFC254 sources and Andrew James Wade generator/backend retained in the ProveIt research-input snapshot.",
+      "license_scope": "The included Wade generator/backend carries LICENSE.wade (MIT No Attribution, copyright 2025 Andrew James Wade). No repository-wide license is inferred from that component notice.",
+      "component_license": {
+        "path": "licenses/Wade-LICENSE.txt",
+        "bytes": 912,
+        "sha256": "c1dffee77db98625debe39b47538e1d2f3b7956cbc7bcd6ed9363701b2177cfa"
+      }
+    },
+    {
+      "repository": "mira-emmy/busy-beaver",
+      "commit": "0d544f2a2e3c18f12278441a74b7879f31cbe856",
+      "url": "https://github.com/mira-emmy/busy-beaver/blob/0d544f2a2e3c18f12278441a74b7879f31cbe856/ZF/m253/machine/zfc_253.tm",
+      "pull_request": "https://github.com/jeff87654/busy-beaver/pull/20",
+      "scope": "Exact original public253 binary transition table. The existing 253-state reduction is prior work, attributed to mira-emmy and derived from Mira-Cult, Jeff, and Wade sources.",
+      "license_scope": "No separate license notice accompanied the retrieved literal table. Its source and prior authorship are retained; this package does not invent a license or reassign authorship."
+    }
+  ],
+  "contributions": [
+    {
+      "name": "Lean same-structure model bridge",
+      "status": "New three-module proof addition, with a 26-source Lean 4.32.0 historical build recorded; optional verification rebuilds it.",
+      "files": [
+        {
+          "path": "formal/src/BusyBeaver/ZFC/ModelBridge254.lean",
+          "bytes": 9850,
+          "sha256": "e9ea10b793cf821aec8abf9a5969de17403acc72cfa002289df56436bea892db"
+        },
+        {
+          "path": "formal/src/BusyBeaver/ZFC/EnumModelBridge254.lean",
+          "bytes": 1130,
+          "sha256": "6c586bbd3999630da19712fb00d9843e75b567cc17d7c99ce985a1c8f3c88751"
+        },
+        {
+          "path": "formal/src/BusyBeaver/ZFC/ModelBridge254Checks.lean",
+          "bytes": 1497,
+          "sha256": "c404799981b179baaca30d237b113995d8ca777f17803e191614904c0d7aa9c2"
+        }
+      ],
+      "pinned_original_dependency_count": 23,
+      "pinned_dependency_manifest": "formal/source_manifest.json",
+      "integration_patch": {
+        "path": "formal/model-bridge.patch",
+        "bytes": 13587,
+        "sha256": "424d255197937b0049af8ab203625baee3b46e908248823990d7f38e8b6bddd6"
+      },
+      "compiler_version": "4.32.0",
+      "compiler_commit": "8c9756b28d64dab099da31a4c09229a9e6a2ef35",
+      "allowed_standard_axioms": [
+        "propext",
+        "Classical.choice",
+        "Quot.sound"
+      ],
+      "boundary": "Native-equality/decoded/encodable model equivalence on the same irreflexive structure and an abstract enumerator characterization. No literal binary simulation or internal-ZFC arithmetic endpoint is proved by these modules."
+    },
+    {
+      "name": "Public253 one-row shortcut",
+      "status": "253 working states, unchanged state count; written whole-run induction supported by an independently checked finite invariant. No new proof-assistant kernel proof is claimed.",
+      "prior_reduction_attribution": "mira-emmy public253, derived from Mira-Cult construction, Jeff verification, and Wade framework",
+      "original_row": "60 0 0 L 45",
+      "replacement_row": "60 0 0 R 51",
+      "working_states_original": 253,
+      "working_states_variant": 253,
+      "transition_rows_each": 506,
+      "separate_terminal_label": 253,
+      "radius": 2,
+      "invariant_pairs": 3530,
+      "closure_obligations": 7044,
+      "guarded_patterns": [
+        8,
+        9,
+        24,
+        25
+      ],
+      "bootstrap": {
+        "original_steps": 312975,
+        "variant_steps": 312895,
+        "shortcut_uses": 40,
+        "endpoint_state": 33,
+        "endpoint_absolute_head": -17,
+        "one_cells": 178,
+        "spare_blocks": 158,
+        "canonical_configuration_sha256": "5f59972252d34cd6a0e4660a65e5ae7409381d00d2a0182e11830224ea77aa5b"
+      },
+      "files": [
+        {
+          "path": "experiments/public253/source_zfc253.tm",
+          "bytes": 6598,
+          "sha256": "84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95"
+        },
+        {
+          "path": "experiments/public253/zfc253_shortcut.tm",
+          "bytes": 6598,
+          "sha256": "78dcbd5aa7709f349cb9c378f54909e316c27d448537cf2e9dce15811152c2a4"
+        },
+        {
+          "path": "experiments/public253/invariant_radius2.json",
+          "bytes": 4431,
+          "sha256": "81e69e526e3dda7ac20756ea99290bc45a991e1394b6949c859e1bbdc36ff529"
+        },
+        {
+          "path": "experiments/public253/bootstrap_endpoint.json",
+          "bytes": 2406,
+          "sha256": "7997b2537b8786a005b18cf39ed7462f61d10c7ec471a8aee21364f58617aaa8"
+        },
+        {
+          "path": "experiments/public253/check_certificate.py",
+          "bytes": 8636,
+          "sha256": "7c7bed5976a679103cdaa80ba2dc0acf4fe72c6a3266e05fc6b81f6c36f2d885"
+        },
+        {
+          "path": "experiments/public253/test_certificate.py",
+          "bytes": 2250,
+          "sha256": "10e7380a871e46304bb6b90e6a15931d16462b009782da1db8eb532317b4d7c2"
+        },
+        {
+          "path": "experiments/public253/regenerate.py",
+          "bytes": 2982,
+          "sha256": "f5b6cc7bee180aa55736a977f12b5eebc76c7e9634de43ae143ee56fe99418ac"
+        },
+        {
+          "path": "experiments/public253/PROOF.md",
+          "bytes": 11065,
+          "sha256": "8620051c3c28d178f4bd985bb2b843a72e93d274844dc64f2502a31ccec3418e"
+        }
+      ],
+      "negative_search_scope": {
+        "radius": 6,
+        "known_cells": 13,
+        "maximum_local_steps": 64,
+        "context_source": "Conservative blank-reach abstract window closure admitting both unseen exterior bits, not a sampled trace.",
+        "target_only_attempts_original": 65016,
+        "full_entering_row_attempts_original": 260064,
+        "full_entering_row_attempts_after_shortcut": 259056,
+        "full_state_deletions_accepted": 0,
+        "restrictions": [
+          "A deleted state may have a different replacement row for each incoming edge.",
+          "Replacement targets are retained working states; direct terminal targets are excluded.",
+          "All non-entering rows are unchanged.",
+          "Replacement prefixes stop before another edited entry and may not read beyond the known window.",
+          "Negative results are sufficient-criterion failures, not lower bounds or semantic refutations."
+        ],
+        "evidence": [
+          {
+            "path": "experiments/public253/searches/edge-results-r6.json",
+            "bytes": 742750,
+            "sha256": "f1792e918eef02b6fcd523302c0fde068d9a3c64080a6508b6afdc5a74e5d00b"
+          },
+          {
+            "path": "experiments/public253/searches/incoming-results-r6.json",
+            "bytes": 841020,
+            "sha256": "b5e0fb62da6955773cf4d66e5c77074e6472bbeb52af938cd729d55c82d4f9b9"
+          },
+          {
+            "path": "experiments/public253/searches/shortcut-results-r6.json",
+            "bytes": 48096,
+            "sha256": "757abe8242a0f0afecfdc7372c743e0a6c694e03fd5d56cd809d06db11c0c563"
+          },
+          {
+            "path": "experiments/public253/searches/shortcut-incoming-results-r6.json",
+            "bytes": 546946,
+            "sha256": "9be239d72e75ef9a584978e360cdecc0a953db9e5aecaa896371183c1a5e1e4e"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Seven-equation cyclic algebra proposal",
+      "status": "Written algebraic reduction and executable ground rewrite witness kernel; supporting finite/adversarial tests.",
+      "equations": 7,
+      "symbol_occurrences": 88,
+      "count_convention": "Total variable and operation symbol occurrences in the displayed primitive axiom trees, both sides counted; see basis.json and cyclic_proposal.md.",
+      "files": [
+        {
+          "path": "experiments/equational/basis.json",
+          "bytes": 3212,
+          "sha256": "85bbf355a75a8d36e641ca78e76d84bf0f101eaab3c9de291308245471fcbb56"
+        },
+        {
+          "path": "experiments/equational/cyclic_algebra.py",
+          "bytes": 12507,
+          "sha256": "6af363911298867956717b6e20e5a2e0c57f7c470a2d96a5e7ff881373e37a04"
+        },
+        {
+          "path": "experiments/equational/test_cyclic_algebra.py",
+          "bytes": 8074,
+          "sha256": "1fa8cc68cbbff8e0c41fd3e0a59c74f76862598b31c4e0514460961210b8e54a"
+        },
+        {
+          "path": "experiments/equational/cyclic_proposal.md",
+          "bytes": 21888,
+          "sha256": "243d509a600a29a15828c997c05864d734cc4c6f075f6d2d8ef2c5143622fc4b"
+        },
+        {
+          "path": "experiments/equational/independent_audit.md",
+          "bytes": 10695,
+          "sha256": "df64e90313c27aba8c2911075156b5df4eda55618112c4cdc92d7e57ed6e31f7"
+        },
+        {
+          "path": "experiments/equational/literature.bib",
+          "bytes": 5059,
+          "sha256": "943ffb379e1aa8109a07b3b51cb8fee80f16e54c4d1198203c3fdef8d4d6cdaf"
+        },
+        {
+          "path": "experiments/equational/literature_notes.md",
+          "bytes": 17341,
+          "sha256": "644373546a145e51ebdd7889b76b9d2d83e6dd4dfff080f3c176a2fdc3e7ba16"
+        },
+        {
+          "path": "experiments/equational/README.md",
+          "bytes": 2078,
+          "sha256": "dab0dcf770c931b142e856dc5a5529a8a576c45bb898677529f2c92de90da31c"
+        }
+      ],
+      "prior_sources": [
+        {
+          "authors": [
+            "William McCune",
+            "Robert Veroff",
+            "Branden Fitelson",
+            "Kenneth Harris",
+            "Andrew Feist",
+            "Larry Wos"
+          ],
+          "doi": "10.1023/A:1020542009983",
+          "contribution": "Published single NAND axiom for Boolean algebra."
+        },
+        {
+          "authors": [
+            "Hajnal Andreka",
+            "Istvan Nemeti"
+          ],
+          "doi": "10.1007/978-3-642-35025-2_2",
+          "author_pdf": "https://old.renyi.hu/pub/algebraic-logic/CAIII-ANpaper.pdf",
+          "contribution": "Published translation from first-order validity to diagonal-free three-dimensional cylindric-algebra identities."
+        }
+      ],
+      "boundary": [
+        "The cyclic automorphism has cube equal to the identity (order dividing three).",
+        "Identity reflection is justified; arbitrary-premise preservation is not claimed and has a tested counterexample.",
+        "Finite tests do not prove the general algebraic theorem.",
+        "No ZFC-specific ground query, binary-machine compiler, or measured TM state bound is supplied.",
+        "No global priority claim is made for the algebraic presentation."
+      ]
+    },
+    {
+      "name": "Complete-logic grammar rotation experiments",
+      "status": "No improvement below the measured 268-state Wade control in the recorded finite searches.",
+      "driver": {
+        "path": "experiments/grammar/grammar_rotation_search.py",
+        "bytes": 7285,
+        "sha256": "54421f22815f889769f3608db7d848c8460b07bc261e32146afa9b4baa8669ed"
+      },
+      "verifier": {
+        "path": "experiments/grammar/verify_certificates.py",
+        "bytes": 5591,
+        "sha256": "7f03564fd71cc43688c398648c5a5d51117c13202776fedb3bbff51f81b19ddf"
+      },
+      "reference": {
+        "source": "Reviewed source-19 recipe C=2,G=1,outer_order=16,tree=1",
+        "nodes": 217,
+        "primitive_macro_word_length": 186,
+        "coarse_macro_word_length": 185,
+        "semantics_retained": [
+          "All eight original equality-bearing logical rows",
+          "Original GEN",
+          "Both vacuity directions",
+          "Base-four encoding",
+          "Original gates, parameter maps, and cleanup"
+        ],
+        "byte_serialization_note": "All three reference DAG JSON files parse to the same object. Baseline uses numeric key ordering and the two rotation files use JSON key ordering. The wrapper pins both serializations and checks their parsed equality. The original source-08 direct CLI is pinned to the older 219-node DAG; the wrapper uses its unchanged path engine through the existing arbitrary-reference checker."
+      },
+      "cases": [
+        {
+          "name": "grammar-baseline",
+          "parameters": {
+            "start_seed": 130,
+            "seeds": 1,
+            "lanes": [
+              "coarse"
+            ],
+            "exponents": [
+              4
+            ],
+            "evaluated_dags": 2
+          },
+          "working_states": 268,
+          "decision_nodes": 206,
+          "framework_states": 62,
+          "dispatcher_depth": 7,
+          "certificate_pairs": 4533,
+          "reference_nodes": 217,
+          "candidate_nodes": 206,
+          "instructions": {
+            "EInc": 2601,
+            "EDecnz": 1931,
+            "EHalt": 1
+          },
+          "files": [
+            {
+              "path": "experiments/grammar/grammar-baseline/reference_dag.json",
+              "bytes": 20098,
+              "sha256": "a3c6729948f84d2d28beed5763b69244e988e7886fff244cdd27cec704a5d839"
+            },
+            {
+              "path": "experiments/grammar/grammar-baseline/candidate_dag.json",
+              "bytes": 18215,
+              "sha256": "867295f3e9ded81c67626fe43655f06fce569b6a23cc3aca44d49d07937d443c"
+            },
+            {
+              "path": "experiments/grammar/grammar-baseline/rm_bisimulation.json",
+              "bytes": 1133908,
+              "sha256": "f0de97cbea2de4b76eb7b5a44880cb5c3d70c4fb6fdd5fad4b911c43ea3493b6"
+            },
+            {
+              "path": "experiments/grammar/grammar-baseline/candidate.tm",
+              "bytes": 6983,
+              "sha256": "07b7aa8db8f9fa0440f67db829fad116139409f182a52a3d0a5d92e867247b4a"
+            },
+            {
+              "path": "experiments/grammar/grammar-baseline/results.json",
+              "bytes": 4772,
+              "sha256": "a0e6a4913d8820acaf6300c3e7855fa8a66ccce61cc874c1051add41b223d43e"
+            }
+          ]
+        },
+        {
+          "name": "grammar-rotation",
+          "parameters": {
+            "seed": 20261016,
+            "chains": 4,
+            "steps_per_chain": 15000,
+            "temperature": 0.8,
+            "restart_period": 0,
+            "evaluated_rotations": 50193,
+            "accepted": 31149,
+            "rejected": 19044,
+            "parameter_note": "Temperature and restart period are the recorded invocation defaults, confirmed by the researcher; this earlier results.json did not serialize those two parameters."
+          },
+          "working_states": 268,
+          "decision_nodes": 206,
+          "framework_states": 62,
+          "dispatcher_depth": 7,
+          "certificate_pairs": 4533,
+          "reference_nodes": 217,
+          "candidate_nodes": 206,
+          "instructions": {
+            "EInc": 2601,
+            "EDecnz": 1931,
+            "EHalt": 1
+          },
+          "files": [
+            {
+              "path": "experiments/grammar/grammar-rotation/reference_dag.json",
+              "bytes": 20098,
+              "sha256": "c91c3c8aa1480cdfdf2b4276e39b765fbe6163401dbfc6155bb5a9d93021a93b"
+            },
+            {
+              "path": "experiments/grammar/grammar-rotation/candidate_dag.json",
+              "bytes": 18215,
+              "sha256": "8b6439da9869cd1ed2d29b3aeda555ecb93f06fd2171c848312bf65f99e76d3f"
+            },
+            {
+              "path": "experiments/grammar/grammar-rotation/rm_bisimulation.json",
+              "bytes": 1130244,
+              "sha256": "66efe44d94cbdfa83e0e6a8316fd849e5d381e3f33a63f0919e458f37690894f"
+            },
+            {
+              "path": "experiments/grammar/grammar-rotation/candidate.tm",
+              "bytes": 6988,
+              "sha256": "a29176b303a9a840a24b9f4e8af4c3d458b83abd4de4ba90818f25849e035363"
+            },
+            {
+              "path": "experiments/grammar/grammar-rotation/results.json",
+              "bytes": 2106,
+              "sha256": "6d677bfd71f3efc31a60bacd64e06946d33b51cae6637cfa3d602eca7526fb8b"
+            }
+          ]
+        },
+        {
+          "name": "grammar-plateau",
+          "parameters": {
+            "seed": 281,
+            "chains": 4,
+            "steps_per_chain": 20000,
+            "temperature": 0.08,
+            "restart_period": 5000,
+            "evaluated_rotations": 68784,
+            "accepted": 24419,
+            "rejected": 44365
+          },
+          "working_states": 268,
+          "decision_nodes": 206,
+          "framework_states": 62,
+          "dispatcher_depth": 7,
+          "certificate_pairs": 4533,
+          "reference_nodes": 217,
+          "candidate_nodes": 206,
+          "instructions": {
+            "EInc": 2601,
+            "EDecnz": 1931,
+            "EHalt": 1
+          },
+          "files": [
+            {
+              "path": "experiments/grammar/grammar-plateau/reference_dag.json",
+              "bytes": 20098,
+              "sha256": "c91c3c8aa1480cdfdf2b4276e39b765fbe6163401dbfc6155bb5a9d93021a93b"
+            },
+            {
+              "path": "experiments/grammar/grammar-plateau/candidate_dag.json",
+              "bytes": 18215,
+              "sha256": "e7184f5bfb21e0b626db6d6357cf2d8285dc2e5ffc13a845a9d0068350ae3f74"
+            },
+            {
+              "path": "experiments/grammar/grammar-plateau/rm_bisimulation.json",
+              "bytes": 1129618,
+              "sha256": "53ae68eb29eb4155dd868063109bf2a6768f0043035053f4581c1a38250d2a7c"
+            },
+            {
+              "path": "experiments/grammar/grammar-plateau/candidate.tm",
+              "bytes": 6988,
+              "sha256": "15b9f0c4756054537912ae7f4481dba2459180ff26a9ea1bbf59a6ba3cac112f"
+            },
+            {
+              "path": "experiments/grammar/grammar-plateau/results.json",
+              "bytes": 1470,
+              "sha256": "dbc65f5bf9f6ff5ff7817c523e93c309c948ef36aef4bcd326527c6f2bcf83ac"
+            }
+          ]
+        }
+      ],
+      "state_accounting": "206 decision nodes + 55 fixed framework states + dispatcher depth 7 = 268 working states. A depth-8 dispatcher costs one additional state; framework cost is not assumed constant.",
+      "boundary": "Independent certificates validate relative register-program operation sites and both decrement branches. Literal tables are hash/count checked; binary compiler semantics and an internal-ZFC endpoint are not proved by these checks."
+    }
+  ],
+  "verification": {
+    "python_minimum": "3.10",
+    "dependencies": "Python standard library only for default checks; Lean 4.32.0 for optional fresh formal build.",
+    "optimized_python_allowed": false,
+    "default_output": "validation.json",
+    "lean_environment_variable": "ZFC_LEAN",
+    "commands": [
+      {
+        "cwd": ".",
+        "command": [
+          "python3",
+          "-B",
+          "verify.py"
+        ],
+        "scope": "Default offline replay: pinned Lean source identities, finite certificates and focused tests; no Lean build, large state/grammar search, binary compiler, or Coq rebuild."
+      },
+      {
+        "cwd": ".",
+        "command": [
+          "python3",
+          "-B",
+          "verify.py",
+          "--lean"
+        ],
+        "scope": "The default replay plus a fresh 26-module Lean build. Set ZFC_LEAN to the Lean 4.32.0 executable if it is not on PATH."
+      },
+      {
+        "cwd": ".",
+        "command": [
+          "python3",
+          "-B",
+          "formal/build.py"
+        ],
+        "scope": "Only the fresh Lean build; honors ZFC_LEAN."
+      },
+      {
+        "cwd": ".",
+        "command": [
+          "python3",
+          "-B",
+          "experiments/public253/check_certificate.py"
+        ],
+        "scope": "Independent radius-two invariant, shortcut, full table and bootstrap checks."
+      },
+      {
+        "cwd": ".",
+        "command": [
+          "python3",
+          "-B",
+          "experiments/public253/test_certificate.py"
+        ],
+        "scope": "Eight focused positive/rejection tests."
+      },
+      {
+        "cwd": ".",
+        "command": [
+          "python3",
+          "-B",
+          "experiments/equational/test_cyclic_algebra.py"
+        ],
+        "scope": "Finite algebra, translation, ground certificate, coding, and deep-term tests, including tiny bounded proof-search examples."
+      },
+      {
+        "cwd": ".",
+        "command": [
+          "python3",
+          "-B",
+          "experiments/grammar/verify_certificates.py"
+        ],
+        "scope": "All three independent register-program certificates and six corruption controls. Does not run the compiler."
+      }
+    ],
+    "optional_search_reproduction": [
+      {
+        "cwd": ".",
+        "command": [
+          "python3",
+          "-B",
+          "experiments/grammar/research-inputs/Computability/BusyBeaver/Research/ZFC/layout_grammar_experiment.py",
+          "--output",
+          "/tmp/zfc-baseline-replay",
+          "--start-seed",
+          "130",
+          "--seeds",
+          "1",
+          "--lanes",
+          "coarse",
+          "--exponents",
+          "4"
+        ],
+        "scope": "Optional reproduction of the measured complete-logic baseline; invokes the compiler in the separate output directory."
+      },
+      {
+        "cwd": ".",
+        "command": [
+          "python3",
+          "-B",
+          "experiments/grammar/grammar_rotation_search.py",
+          "--output",
+          "/tmp/zfc-rotation-replay",
+          "--steps",
+          "15000",
+          "--chains",
+          "4",
+          "--seed",
+          "20261016",
+          "--temperature",
+          "0.8",
+          "--restart-period",
+          "0"
+        ],
+        "scope": "Optional first rotation search, starting from the supplied grammar-baseline input."
+      },
+      {
+        "cwd": ".",
+        "command": [
+          "python3",
+          "-B",
+          "experiments/grammar/grammar_rotation_search.py",
+          "--output",
+          "/tmp/zfc-plateau-replay",
+          "--steps",
+          "20000",
+          "--chains",
+          "4",
+          "--seed",
+          "281",
+          "--temperature",
+          "0.08",
+          "--restart-period",
+          "5000"
+        ],
+        "scope": "Optional low-temperature rotation search, starting from the supplied grammar-baseline input."
+      },
+      {
+        "cwd": "experiments/public253/searches",
+        "command": [
+          "python3",
+          "-B",
+          "edge_redirect_search.py",
+          "../source_zfc253.tm",
+          "--radius",
+          "6",
+          "--bound",
+          "64",
+          "--output",
+          "/tmp/edge-results-r6.json"
+        ],
+        "scope": "Optional conservative finite-window search. A rejected sufficient criterion is not a semantic counterexample or state-count lower bound."
+      },
+      {
+        "cwd": "experiments/public253/searches",
+        "command": [
+          "python3",
+          "-B",
+          "incoming_row_search.py",
+          "../source_zfc253.tm",
+          "--radius",
+          "6",
+          "--bound",
+          "64",
+          "--output",
+          "/tmp/incoming-results-r6.json"
+        ],
+        "scope": "Optional conservative finite-window search. A rejected sufficient criterion is not a semantic counterexample or state-count lower bound."
+      },
+      {
+        "cwd": "experiments/public253/searches",
+        "command": [
+          "python3",
+          "-B",
+          "row_shortcuts.py",
+          "../source_zfc253.tm",
+          "--radius",
+          "6",
+          "--bound",
+          "64",
+          "--output",
+          "/tmp/shortcut-results-r6.json"
+        ],
+        "scope": "Optional conservative finite-window search. A rejected sufficient criterion is not a semantic counterexample or state-count lower bound."
+      },
+      {
+        "cwd": "experiments/public253/searches",
+        "command": [
+          "python3",
+          "-B",
+          "incoming_row_search.py",
+          "../zfc253_shortcut.tm",
+          "--radius",
+          "6",
+          "--bound",
+          "64",
+          "--output",
+          "/tmp/shortcut-incoming-results-r6.json"
+        ],
+        "scope": "Optional conservative finite-window search. A rejected sufficient criterion is not a semantic counterexample or state-count lower bound."
+      }
+    ],
+    "reproduction_notes": [
+      "Run commands from the indicated package-relative cwd.",
+      "No network fetch is required for default verification.",
+      "The supplied original sources are unchanged. New portability wrappers import existing engines without running their search entry points.",
+      "Elapsed times and captured absolute executable paths are historical observations, not portable guarantees.",
+      "Fresh Lean runs rewrite formal/dependency-build.json and formal/verification.json and create formal/cache; remove generated caches before redistributing a source-only archive.",
+      "Historical PASS records are distinguished from the current run in validation.json."
+    ]
+  },
+  "copy_policy": {
+    "manifest": "copy_manifest.json",
+    "verified_byte_for_byte_before_default_validation": true,
+    "excluded": [
+      "__pycache__",
+      "*.pyc",
+      "*.olean",
+      "cache/",
+      "expendable mutation-* files"
+    ],
+    "unmodified_upstream_dependency_bytes": true,
+    "scope": "Copied research inputs, original source dependencies, and experiment evidence. New wrapper scripts, this provenance index, and the top-level README are packaging additions. Report TeX/PDF are maintained separately."
+  },
+  "selected_packaging_files": [
+    {
+      "path": "README.md",
+      "bytes": 10234,
+      "sha256": "0fab000ef3c2c55e7fc53a88be9955ee198f69cc00a01daab3f82a78f1dff045"
+    },
+    {
+      "path": "verify.py",
+      "bytes": 6949,
+      "sha256": "39a09ee5d5c677d5f18c7987bc63fcc567369f5e69b6a9988a75d3d7f67c3b0d"
+    },
+    {
+      "path": "copy_manifest.json",
+      "bytes": 30250,
+      "sha256": "4bbcbb5bcc75e25214f9cf840d33c3427859069e59078e4f7ff68aa179de75c5"
+    }
+  ],
+  "licensing_boundary": "Existing upstream notices and attribution are retained. New research material is supplied for integration in ProveIt; this index does not extend component licenses to unrelated upstream files or reassign authorship.",
+  "final_verification": {
+    "status": "PASS",
+    "record": "validation.json",
+    "fresh_lean_build": true,
+    "lean_modules": 26,
+    "axiom_audits": 14,
+    "pdf": "pdf_validation.json",
+    "integrity_manifest": "SHA256SUMS"
+  }
+}

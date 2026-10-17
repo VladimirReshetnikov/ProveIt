@@ -1,0 +1,324 @@
+{
+  "status": "PASS",
+  "started_at_utc": "2026-10-16T23:55:06.822498+00:00",
+  "finished_at_utc": "2026-10-16T23:55:28.321549+00:00",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "seconds": 21.500488541998493,
+  "checks": [
+    {
+      "name": "pinned_lean_source_identities",
+      "status": "PASS",
+      "original_lean_dependency_blobs": 23,
+      "repository": "VladimirReshetnikov/ProveIt",
+      "commit": "426592ce97e52d309bfb8f0132411556650b7ac1",
+      "scope": "Original dependency source identities only; no Lean compilation in this step."
+    },
+    {
+      "name": "public253_invariant_macro_and_bootstrap",
+      "cwd": "experiments/public253",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "check_certificate.py"
+      ],
+      "portable_command": [
+        "python",
+        "-B",
+        "check_certificate.py"
+      ],
+      "returncode": 0,
+      "stdout": "{\n  \"status\": \"all certificate checks passed\",\n  \"working_states_original\": 253,\n  \"working_states_shortcut\": 253,\n  \"separate_terminal\": 253,\n  \"source_sha256\": \"84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95\",\n  \"shortcut_sha256\": \"78dcbd5aa7709f349cb9c378f54909e316c27d448537cf2e9dce15811152c2a4\",\n  \"radius\": 2,\n  \"invariant_configurations\": 3530,\n  \"abstract_closure_cases\": 7044,\n  \"guarded_patterns\": [\n    8,\n    9,\n    24,\n    25\n  ],\n  \"macro_cases\": 8,\n  \"source_boot_steps\": 312975,\n  \"shortcut_boot_steps\": 312895,\n  \"bootstrap_shortcut_uses\": 40,\n  \"bootstrap_ones\": 178,\n  \"bootstrap_configuration_sha256\": \"5f59972252d34cd6a0e4660a65e5ae7409381d00d2a0182e11830224ea77aa5b\",\n  \"proof_assistant_kernel_checked\": false\n}\n",
+      "stderr": "",
+      "status": "PASS",
+      "structured_output": {
+        "status": "all certificate checks passed",
+        "working_states_original": 253,
+        "working_states_shortcut": 253,
+        "separate_terminal": 253,
+        "source_sha256": "84a21f714017c1d491008d86e9bd19c43cc6c5c9ae99a538b4f2314387827d95",
+        "shortcut_sha256": "78dcbd5aa7709f349cb9c378f54909e316c27d448537cf2e9dce15811152c2a4",
+        "radius": 2,
+        "invariant_configurations": 3530,
+        "abstract_closure_cases": 7044,
+        "guarded_patterns": [
+          8,
+          9,
+          24,
+          25
+        ],
+        "macro_cases": 8,
+        "source_boot_steps": 312975,
+        "shortcut_boot_steps": 312895,
+        "bootstrap_shortcut_uses": 40,
+        "bootstrap_ones": 178,
+        "bootstrap_configuration_sha256": "5f59972252d34cd6a0e4660a65e5ae7409381d00d2a0182e11830224ea77aa5b",
+        "proof_assistant_kernel_checked": false
+      },
+      "seconds": 0.1944771269991179
+    },
+    {
+      "name": "public253_eight_rejection_tests",
+      "cwd": "experiments/public253",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "test_certificate.py"
+      ],
+      "portable_command": [
+        "python",
+        "-B",
+        "test_certificate.py"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.013s\n\nOK\n",
+      "status": "PASS",
+      "seconds": 0.05794975500248256
+    },
+    {
+      "name": "equational_kernel_tests",
+      "cwd": "experiments/equational",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "test_cyclic_algebra.py"
+      ],
+      "portable_command": [
+        "python",
+        "-B",
+        "test_cyclic_algebra.py"
+      ],
+      "returncode": 0,
+      "stdout": "{\n  \"status\": \"passed\",\n  \"basis\": {\n    \"equations\": 7,\n    \"symbols\": 88\n  },\n  \"finite_models\": {\n    \"finite_algebra_size\": 64,\n    \"universal_identity_evaluations\": 270592,\n    \"per_axiom\": {\n      \"Sh1\": 262144,\n      \"Rhom\": 4096,\n      \"R3\": 64,\n      \"Qext\": 64,\n      \"Qadd\": 4096,\n      \"Qcomp\": 64,\n      \"Qrot\": 64\n    },\n    \"noncommuting_q_r_witness\": [\n      0,\n      1,\n      0\n    ],\n    \"arbitrary_premise_counterexample_verified\": true\n  },\n  \"translation\": {\n    \"translation_cases_three_distinct_closures\": 1200,\n    \"base_boolean_algebra_size\": 256,\n    \"all_three_product_coordinates_checked\": true\n  },\n  \"certificates\": {\n    \"positive_chain_length\": 2,\n    \"negative_certificates_rejected\": 10,\n    \"malformed_ground_terms_rejected\": 7,\n    \"coding_roundtrips_each\": 5000,\n    \"first_search_witness\": 11\n  },\n  \"deep_terms\": {\n    \"unary_depth\": 2000,\n    \"recursive_call_limit_unchanged\": true,\n    \"term_codec_context_and_certificates_passed\": true,\n    \"cyclic_python_container_rejected\": true\n  },\n  \"limitation\": \"Finite checks are not a proof of the general theorem. No Con(ZFC) payload or Turing-machine compilation included.\"\n}\n",
+      "stderr": "",
+      "status": "PASS",
+      "structured_output": {
+        "status": "passed",
+        "basis": {
+          "equations": 7,
+          "symbols": 88
+        },
+        "finite_models": {
+          "finite_algebra_size": 64,
+          "universal_identity_evaluations": 270592,
+          "per_axiom": {
+            "Sh1": 262144,
+            "Rhom": 4096,
+            "R3": 64,
+            "Qext": 64,
+            "Qadd": 4096,
+            "Qcomp": 64,
+            "Qrot": 64
+          },
+          "noncommuting_q_r_witness": [
+            0,
+            1,
+            0
+          ],
+          "arbitrary_premise_counterexample_verified": true
+        },
+        "translation": {
+          "translation_cases_three_distinct_closures": 1200,
+          "base_boolean_algebra_size": 256,
+          "all_three_product_coordinates_checked": true
+        },
+        "certificates": {
+          "positive_chain_length": 2,
+          "negative_certificates_rejected": 10,
+          "malformed_ground_terms_rejected": 7,
+          "coding_roundtrips_each": 5000,
+          "first_search_witness": 11
+        },
+        "deep_terms": {
+          "unary_depth": 2000,
+          "recursive_call_limit_unchanged": true,
+          "term_codec_context_and_certificates_passed": true,
+          "cyclic_python_container_rejected": true
+        },
+        "limitation": "Finite checks are not a proof of the general theorem. No Con(ZFC) payload or Turing-machine compilation included."
+      },
+      "seconds": 1.9734991439981968
+    },
+    {
+      "name": "grammar_independent_certificates_and_corruption_controls",
+      "cwd": "experiments/grammar",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "verify_certificates.py"
+      ],
+      "portable_command": [
+        "python",
+        "-B",
+        "verify_certificates.py"
+      ],
+      "returncode": 0,
+      "stdout": "{\n  \"status\": \"PASS\",\n  \"checks\": {\n    \"grammar-baseline\": {\n      \"verified\": true,\n      \"reference_nodes\": 217,\n      \"candidate_nodes\": 206,\n      \"pairs\": 4533,\n      \"instructions\": {\n        \"EDecnz\": 1931,\n        \"EInc\": 2601,\n        \"EHalt\": 1\n      },\n      \"binary_TM_and_ZFC_endpoint_proved\": false,\n      \"binary_table\": {\n        \"working_states\": 268,\n        \"transition_rows\": 536,\n        \"separate_terminal\": 268,\n        \"sha256\": \"07b7aa8db8f9fa0440f67db829fad116139409f182a52a3d0a5d92e867247b4a\",\n        \"scope\": \"Literal-table structure and recorded hash only; no binary simulation proof.\"\n      },\n      \"reference_sha256\": \"a3c6729948f84d2d28beed5763b69244e988e7886fff244cdd27cec704a5d839\",\n      \"candidate_sha256\": \"867295f3e9ded81c67626fe43655f06fce569b6a23cc3aca44d49d07937d443c\",\n      \"certificate_sha256\": \"f0de97cbea2de4b76eb7b5a44880cb5c3d70c4fb6fdd5fad4b911c43ea3493b6\"\n    },\n    \"grammar-rotation\": {\n      \"verified\": true,\n      \"reference_nodes\": 217,\n      \"candidate_nodes\": 206,\n      \"pairs\": 4533,\n      \"instructions\": {\n        \"EDecnz\": 1931,\n        \"EInc\": 2601,\n        \"EHalt\": 1\n      },\n      \"binary_TM_and_ZFC_endpoint_proved\": false,\n      \"binary_table\": {\n        \"working_states\": 268,\n        \"transition_rows\": 536,\n        \"separate_terminal\": 268,\n        \"sha256\": \"a29176b303a9a840a24b9f4e8af4c3d458b83abd4de4ba90818f25849e035363\",\n        \"scope\": \"Literal-table structure and recorded hash only; no binary simulation proof.\"\n      },\n      \"reference_sha256\": \"c91c3c8aa1480cdfdf2b4276e39b765fbe6163401dbfc6155bb5a9d93021a93b\",\n      \"candidate_sha256\": \"8b6439da9869cd1ed2d29b3aeda555ecb93f06fd2171c848312bf65f99e76d3f\",\n      \"certificate_sha256\": \"66efe44d94cbdfa83e0e6a8316fd849e5d381e3f33a63f0919e458f37690894f\"\n    },\n    \"grammar-plateau\": {\n      \"verified\": true,\n      \"reference_nodes\": 217,\n      \"candidate_nodes\": 206,\n      \"pairs\": 4533,\n      \"instructions\": {\n        \"EDecnz\": 1931,\n        \"EInc\": 2601,\n        \"EHalt\": 1\n      },\n      \"binary_TM_and_ZFC_endpoint_proved\": false,\n      \"binary_table\": {\n        \"working_states\": 268,\n        \"transition_rows\": 536,\n        \"separate_terminal\": 268,\n        \"sha256\": \"15b9f0c4756054537912ae7f4481dba2459180ff26a9ea1bbf59a6ba3cac112f\",\n        \"scope\": \"Literal-table structure and recorded hash only; no binary simulation proof.\"\n      },\n      \"reference_sha256\": \"c91c3c8aa1480cdfdf2b4276e39b765fbe6163401dbfc6155bb5a9d93021a93b\",\n      \"candidate_sha256\": \"e7184f5bfb21e0b626db6d6357cf2d8285dc2e5ffc13a845a9d0068350ae3f74\",\n      \"certificate_sha256\": \"53ae68eb29eb4155dd868063109bf2a6768f0043035053f4581c1a38250d2a7c\"\n    }\n  },\n  \"corruption_controls\": [\n    {\n      \"mutation\": \"wrong_operation\",\n      \"rejected\": true\n    },\n    {\n      \"mutation\": \"missing_pair\",\n      \"rejected\": true\n    },\n    {\n      \"mutation\": \"duplicate_pair\",\n      \"rejected\": true\n    },\n    {\n      \"mutation\": \"wrong_zero_successor\",\n      \"rejected\": true\n    },\n    {\n      \"mutation\": \"wrong_positive_successor\",\n      \"rejected\": true\n    },\n    {\n      \"mutation\": \"wrong_initial\",\n      \"rejected\": true\n    }\n  ],\n  \"searches_rerun\": false,\n  \"compiler_executed\": false,\n  \"kernel_proof_or_ZFC_endpoint\": false\n}\n",
+      "stderr": "",
+      "status": "PASS",
+      "structured_output": {
+        "status": "PASS",
+        "checks": {
+          "grammar-baseline": {
+            "verified": true,
+            "reference_nodes": 217,
+            "candidate_nodes": 206,
+            "pairs": 4533,
+            "instructions": {
+              "EDecnz": 1931,
+              "EInc": 2601,
+              "EHalt": 1
+            },
+            "binary_TM_and_ZFC_endpoint_proved": false,
+            "binary_table": {
+              "working_states": 268,
+              "transition_rows": 536,
+              "separate_terminal": 268,
+              "sha256": "07b7aa8db8f9fa0440f67db829fad116139409f182a52a3d0a5d92e867247b4a",
+              "scope": "Literal-table structure and recorded hash only; no binary simulation proof."
+            },
+            "reference_sha256": "a3c6729948f84d2d28beed5763b69244e988e7886fff244cdd27cec704a5d839",
+            "candidate_sha256": "867295f3e9ded81c67626fe43655f06fce569b6a23cc3aca44d49d07937d443c",
+            "certificate_sha256": "f0de97cbea2de4b76eb7b5a44880cb5c3d70c4fb6fdd5fad4b911c43ea3493b6"
+          },
+          "grammar-rotation": {
+            "verified": true,
+            "reference_nodes": 217,
+            "candidate_nodes": 206,
+            "pairs": 4533,
+            "instructions": {
+              "EDecnz": 1931,
+              "EInc": 2601,
+              "EHalt": 1
+            },
+            "binary_TM_and_ZFC_endpoint_proved": false,
+            "binary_table": {
+              "working_states": 268,
+              "transition_rows": 536,
+              "separate_terminal": 268,
+              "sha256": "a29176b303a9a840a24b9f4e8af4c3d458b83abd4de4ba90818f25849e035363",
+              "scope": "Literal-table structure and recorded hash only; no binary simulation proof."
+            },
+            "reference_sha256": "c91c3c8aa1480cdfdf2b4276e39b765fbe6163401dbfc6155bb5a9d93021a93b",
+            "candidate_sha256": "8b6439da9869cd1ed2d29b3aeda555ecb93f06fd2171c848312bf65f99e76d3f",
+            "certificate_sha256": "66efe44d94cbdfa83e0e6a8316fd849e5d381e3f33a63f0919e458f37690894f"
+          },
+          "grammar-plateau": {
+            "verified": true,
+            "reference_nodes": 217,
+            "candidate_nodes": 206,
+            "pairs": 4533,
+            "instructions": {
+              "EDecnz": 1931,
+              "EInc": 2601,
+              "EHalt": 1
+            },
+            "binary_TM_and_ZFC_endpoint_proved": false,
+            "binary_table": {
+              "working_states": 268,
+              "transition_rows": 536,
+              "separate_terminal": 268,
+              "sha256": "15b9f0c4756054537912ae7f4481dba2459180ff26a9ea1bbf59a6ba3cac112f",
+              "scope": "Literal-table structure and recorded hash only; no binary simulation proof."
+            },
+            "reference_sha256": "c91c3c8aa1480cdfdf2b4276e39b765fbe6163401dbfc6155bb5a9d93021a93b",
+            "candidate_sha256": "e7184f5bfb21e0b626db6d6357cf2d8285dc2e5ffc13a845a9d0068350ae3f74",
+            "certificate_sha256": "53ae68eb29eb4155dd868063109bf2a6768f0043035053f4581c1a38250d2a7c"
+          }
+        },
+        "corruption_controls": [
+          {
+            "mutation": "wrong_operation",
+            "rejected": true
+          },
+          {
+            "mutation": "missing_pair",
+            "rejected": true
+          },
+          {
+            "mutation": "duplicate_pair",
+            "rejected": true
+          },
+          {
+            "mutation": "wrong_zero_successor",
+            "rejected": true
+          },
+          {
+            "mutation": "wrong_positive_successor",
+            "rejected": true
+          },
+          {
+            "mutation": "wrong_initial",
+            "rejected": true
+          }
+        ],
+        "searches_rerun": false,
+        "compiler_executed": false,
+        "kernel_proof_or_ZFC_endpoint": false
+      },
+      "seconds": 3.1575607800004946
+    },
+    {
+      "name": "fresh_lean_dependency_build",
+      "cwd": "formal",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "-B",
+        "build.py"
+      ],
+      "portable_command": [
+        "python",
+        "-B",
+        "build.py"
+      ],
+      "returncode": 0,
+      "stdout": "FirstOrder/Fol.lean 0 1.147\nBusyBeaver/ZFC/Kalmar.lean 0 0.487\nBusyBeaver/ZFC/TarskiCalculus.lean 0 0.504\nBusyBeaver/ZFC/TarskiDerived.lean 0 0.352\nBusyBeaver/ZFC/TarskiLeibniz.lean 0 0.687\nBusyBeaver/ZFC/TarskiClean.lean 0 0.608\nBusyBeaver/ZFC/TarskiComplete.lean 0 0.668\nBusyBeaver/ZFC/Lukasiewicz.lean 0 0.38\nBusyBeaver/ZFC/TarskiFalsity.lean 0 0.284\nBusyBeaver/ZFC/Code254.lean 0 1.382\nBusyBeaver/ZFC/ProfileCongruence.lean 0 0.337\nBusyBeaver/ZFC/ProfilePairs.lean 0 0.248\nBusyBeaver/ZFC/PositiveClosure.lean 0 0.293\nBusyBeaver/ZFC/ProfileCollection.lean 0 0.258\nBusyBeaver/ZFC/Code254Containers.lean 0 0.28\nBusyBeaver/ZFC/DeepPositiveClosure.lean 0 0.294\nBusyBeaver/ZFC/ProfileSyntax.lean 0 0.322\nBusyBeaver/ZFC/ProfileModel.lean 0 0.26\nBusyBeaver/ZFC/Code254GIC.lean 0 0.569\nBusyBeaver/ZFC/Code254Models.lean 0 0.232\nBusyBeaver/ZFC/DecodeFresh254.lean 0 0.398\nBusyBeaver/ZFC/NamedForm254.lean 0 0.262\nBusyBeaver/ZFC/ModelBridge254.lean 0 0.392\nBusyBeaver/ZFC/Enum254.lean 0 5.028\nBusyBeaver/ZFC/EnumModelBridge254.lean 0 0.179\nBusyBeaver/ZFC/ModelBridge254Checks.lean 0 0.183\n",
+      "stderr": "",
+      "status": "PASS",
+      "seconds": 16.114483007000672,
+      "verification_record": {
+        "status": "PASS",
+        "scope": "Same-structure original decoded/encodable/native-CP-GIC model equivalence and abstract enumerator characterization; no binary machine or internal-ZFC theorem.",
+        "compiler": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+        "command": [
+          "/tmp/lean-4.32.0-linux/bin/lean",
+          "-o",
+          "<cache module>",
+          "<source module>"
+        ],
+        "pinned_repository": "VladimirReshetnikov/ProveIt",
+        "pinned_commit": "426592ce97e52d309bfb8f0132411556650b7ac1",
+        "upstream_git_blobs_verified": 23,
+        "all_source_modules_recompiled": 26,
+        "module_count_expected": 26,
+        "total_compile_seconds": 16.03551643099854,
+        "new_source_sha256": {
+          "BusyBeaver/ZFC/ModelBridge254.lean": "e9ea10b793cf821aec8abf9a5969de17403acc72cfa002289df56436bea892db",
+          "BusyBeaver/ZFC/EnumModelBridge254.lean": "6c586bbd3999630da19712fb00d9843e75b567cc17d7c99ce985a1c8f3c88751",
+          "BusyBeaver/ZFC/ModelBridge254Checks.lean": "c404799981b179baaca30d237b113995d8ca777f17803e191614904c0d7aa9c2"
+        },
+        "allowed_axioms": [
+          "propext",
+          "Classical.choice",
+          "Quot.sound"
+        ],
+        "proof_audit_output": "'SetTheory.BusyBeaver.ZFC.ModelBridge254.decoded_bundle_named' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.namedC_of_containers' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.namedG_of_collection' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.decoded_collection_of_encodable' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.decoded_of_encodable' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.modelsDecoded_iff_modelsEncodable' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.modelsDecoded_iff_modelsNativeCPGIC' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.refutation_iff_no_decoded_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254.refutation_iff_no_native_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n\n'SetTheory.BusyBeaver.ZFC.EnumModelBridge254.enum_halts_iff_no_decoded_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.EnumModelBridge254.enum_halts_iff_no_native_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n\n'SetTheory.BusyBeaver.ZFC.ModelBridge254Checks.zero_equal_labels' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254Checks.native_point' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ModelBridge254Checks.empty_equivalence' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+        "logs": "dependency-build.json"
+      }
+    }
+  ],
+  "lean_requested": true,
+  "lean_rebuilt_this_run": true,
+  "historical_lean_evidence": "formal/verification.json",
+  "searches_rerun": false,
+  "binary_compiler_experiment_rerun": false,
+  "upstream_Coq_rebuilt": false,
+  "limitations": [
+    "No state-count record below the attributed public253 machine is established.",
+    "Public253 shortcut checking is an executable finite certificate plus a written induction proof, not a new kernel proof.",
+    "Algebra tests do not replace the general proof; no ZFC-specific ground query or binary compiler is provided.",
+    "Grammar checks establish the supplied relative register-program certificates, not correctness of the binary compiler or a ZFC endpoint.",
+    "The Lean additions characterize model classes and the abstract enumerator, not literal binary simulation or arithmetic internalization."
+  ]
+}

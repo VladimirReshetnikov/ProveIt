@@ -1,0 +1,20 @@
+.PHONY: all report verify machine-audit search clean
+
+all: report
+
+report:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error zfc_finite_kernel_report.tex
+
+verify:
+	python3 code/verify_kernel.py
+	python3 code/reify.py
+	python3 baselines/34-k12-theory-finite_assignment_kernel.py --out baselines/generated
+
+machine-audit:
+	python3 engineering/audit.py
+
+search:
+	python3 engineering/reproduce_search.py --radius 20 --fuel 128
+
+clean:
+	latexmk -c zfc_finite_kernel_report.tex

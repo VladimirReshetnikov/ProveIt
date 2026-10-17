@@ -10,7 +10,10 @@ those formulas are hard to read and to get right. `NForm` uses *named*
 variables, evaluated in an environment updated at the bound name, and
 `toForm` translates into `Form` (each binder moves its name to slot 0 and
 shifts the other names, as in `NamedForm254`); `sat_toForm` is the semantic
-correctness of the translation, with no freshness assumption. `sepN` and
+correctness of the translation, with no freshness assumption. An `atom`
+embeds an arbitrary De Bruijn formula, reading its slot `i` at name `args i`;
+it is how a given matrix (for instance a GIC instance) enters a named
+formula. `sepN` and
 `replN` then state Separation and Replacement for named formulas: the
 separated variable is name `0`, and for Replacement the output is name `0`
 and the input name `1`; all other names are parameters read from the
@@ -32,6 +35,8 @@ inductive NForm where
   | or (a b : NForm)
   | all (x : Nat) (a : NForm)
   | ex (x : Nat) (a : NForm)
+  /-- A De Bruijn formula whose slot `i` is read at name `args i`. -/
+  | atom (φ : Form) (args : Nat → Nat)
 
 universe u
 variable {V : Type u}
@@ -53,6 +58,7 @@ def NSat (mem : V → V → Prop) : (Nat → V) → NForm → Prop
   | ρ, .or a b => NSat mem ρ a ∨ NSat mem ρ b
   | ρ, .all x a => ∀ d, NSat mem (upd ρ x d) a
   | ρ, .ex x a => ∃ d, NSat mem (upd ρ x d) a
+  | ρ, .atom φ args => Sat mem (fun i => ρ (args i)) φ
 
 /-- Satisfaction depends on the environment only pointwise. -/
 theorem nsat_congr (mem : V → V → Prop) (φ : NForm) {ρ ρ' : Nat → V} (h : ∀ i, ρ i = ρ' i) :
@@ -73,6 +79,7 @@ def toForm (slots : Nat → Nat) : NForm → Form
   | .or a b => fOr (toForm slots a) (toForm slots b)
   | .all x a => fAll (toForm (under slots x) a)
   | .ex x a => fEx (toForm (under slots x) a)
+  | .atom φ args => rename (fun i => slots (args i)) φ
 
 theorem under_env (slots : Nat → Nat) (x : Nat) (env : Nat → V) (d : V) :
     (fun i => scons d env (under slots x i)) = upd (fun i => env (slots i)) x d := by
@@ -97,6 +104,9 @@ theorem sat_toForm (mem : V → V → Prop) :
   | .ex x a, slots, env => by
       simp only [toForm, Sat, NSat]
       exact exists_congr fun d => by rw [sat_toForm mem a, under_env]
+  | .atom φ args, slots, env => by
+      simp only [toForm, NSat]
+      exact Sat_rename φ _ env
 
 /-! ## Derived connectives -/
 
