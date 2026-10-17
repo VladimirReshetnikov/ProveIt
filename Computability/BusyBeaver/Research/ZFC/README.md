@@ -33,6 +33,13 @@ standard-theory bounds, umbrella and joint callers. This is not a full153-module
 rebuild. The closed theorem also proves Con(ZFC) implies nonhalting; the reverse
 ZFC implication and the internal PA proof remain open.
 
+The later merged `SatSupport` module also passed a
+[154-unit integration](results/sat-support-integration-verification.json).
+It proves uniform internally finite support for satisfaction on every internal
+formula code, including nonstandard codes. The independent
+[Choice-route review](constructible_choice_review.md) records its scope; the
+internal well-order and Choice arguments remain open.
+
 A measured attempt to save a register by changing Cantor pairing to a
 [power-of-two encoding](register_lifetime.md) retained the full calculus but
 cost 306 states; its tested hybrids cost at least293. The current 252-state
