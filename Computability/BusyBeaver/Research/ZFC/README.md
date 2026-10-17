@@ -1126,6 +1126,14 @@ the zero implication alias by returning the antecedent proof. Nine axiom
 reports and fourteen callers pass with zero warnings, including actual ZF/ZFC
 clients. GEN, the source axiom rows and the full PA endpoint remain open.
 
+The [internal free-renaming and binder alignment](../../../../Logic/Interpretability/ZFCinPA/model_coded_free_renaming.md)
+checkpoints supply fixed total syntax operations, their SHIFT/substitution
+laws, actual ZF/ZFC axiom invariance and the exact named-binder opening law.
+All labels and counters are internal. Together the three modules pass
+twenty-three axiom reports and twenty-four callers with zero warnings.
+Transporting arbitrary internal derivations through this renaming remains
+the next obligation for GEN.
+
 
 The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)
 reuses actual finite segment/configuration syntax and normalization with an
