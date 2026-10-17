@@ -1,0 +1,180 @@
+ARCHIVE NOTE: This is a development or independent audit record. The final
+article.tex/article.pdf and README.md are authoritative for the delivered
+status and runnable archive commands. Some original workspace paths and
+earlier-stage comments are retained as provenance. The final U14 source
+and its 10,182-node wrapper are included under data/.
+
+SPECIFICATION AND AUDIT OF THE FOURTEEN-SENTENCE FINITE SOURCE U14
+
+Source and exact scope
+----------------------
+Harvey M. Friedman, Simplified Axioms for Class Theory, September 15, 2020,
+section 2 (rows 1--7 and A--H), with inherited rows expanded from section 1.
+https://bpb-us-w2.wpmucdn.com/u.osu.edu/dist/1/1952/files/2020/09/NBGAxioms091520.pdf
+
+The generator finite_nbg.py formalizes the intended axioms with the explicit
+normalizations below. It is not a glyph-for-glyph transcription of every
+printed formula, because the source contains typographical errors. The exact
+machine-readable source is finite_nbg14.json. Its primitive formula tags are
+eq, rel, not, or, exists; equality is native and R is the sole binary relation.
+
+M(x) is defined to mean exists y R(x,y), with fresh bound variables at every
+expansion. Therefore the Sets axiom becomes a logical alpha-equivalence and
+is omitted. Every omitted free axiom parameter is universally closed. This
+is an ordinary definitional elimination of a predicate; it does not discard
+a substantive axiom. Row A remains one conjunction of two class-existence
+properties, so the total is exactly fourteen sentences, not fourteen atomic
+claims.
+
+The retained rows, with expanded tree-node counts, are:
+
+  2 Extensionality       24       A Boolean class operations 60
+  3 Pairing             42       B Class Union              31
+  4 Union               41       C Local Pairing            82
+  5 Power Set           41       D Local Union              83
+  6 Infinity            26       E Local Intersection       94
+  7 Class Foundation    21       F Union Membership         83
+                                 G Epsilon Class            66
+                                 H Capture                  58
+
+Total: 752 formula nodes. Variable-label payloads are not charged by this
+metric. All fourteen are closed formulas, validated by graph_wrapper.tree
+and graph_wrapper.free. No modal target or binary-state cost is measured.
+
+Quantifier and sort boundaries
+------------------------------
+The domain consists of classes, including any proper classes in a model.
+M guards are expanded only where the source puts them. In particular:
+
+* Power Set ranges over ALL classes x with x subset of the input set. No
+  M(x) restriction is added to its subset profile. This implies the familiar
+  theorem that every subclass of a set is a set.
+* Foundation is class-wide, not limited to set inputs.
+* Class Union has no M guard.
+* Union Membership has no M guard on the candidate x whose union belongs to
+  the parameter class. Such an x is a set as a consequence: if union(x)=u is
+  a set, then x is a subclass of P(u), so Power Set implies x is a set.
+* Epsilon Class uses unrestricted endpoint quantifiers. If an exact pair
+  representative of {x,y} exists, both x and y are elements of that class
+  and hence satisfy M. Thus the formula itself excludes pairs containing a
+  proper class; an additional sort restriction must not be silently inserted.
+
+No axiom of Choice, Global Choice, or V=L is included in U14. Calling this
+source NBG means Friedman's specified choice-free version.
+
+Printed-formula normalizations
+------------------------------
+1. On printed page 4, the section 2 abbreviation for v_i=union(v_1) uses
+   v_2 in the membership test inside its existential. The intended element
+   is the universally quantified candidate v_(i+1). The generator uses the
+   ordinary formula forall z (z in u iff exists y (y in a and z in y)).
+
+2. Boolean A contains two independent existential claims. The v_2 bound in
+   the complement conjunct does not bind the free v_2 used by pairwise union
+   in the second conjunct. The generator gives the witnesses fresh names
+   and universally quantifies both parameter classes outside the conjunction.
+
+3. Infinity is parenthesized according to its stated meaning: one nonempty
+   set with no membership-maximal element. Its set witness scopes over the
+   entire conjunction.
+
+4. Foundation's printed free-premise implication, under universal closure,
+   is equivalent to an existential nonemptiness antecedent. The generator
+   uses the latter and distinct bound names.
+
+Proof-text issues do not alter U14's axioms
+----------------------------------------
+The source states NBG* equivalent to its NBG in Theorem 3.21. The present
+audit does not claim a serialized or proof-assistant verification of the
+entire source proof. It identifies the following corrections relevant to
+using that result precisely.
+
+* Lemma 2.1 discusses a different Union Inclusion property where actual
+  axiom F is Union Membership. The latter follows by limited comprehension
+  after showing its candidate x is a set, as above; the source's Lemma 3.1
+  discusses the correct membership form.
+* In Lemma 3.19, the second negated existential in the proposed equality
+  elimination uses an implication. Extensionality instead gives
+  not exists z (z in x and not z in y) AND
+  not exists z (z in y and not z in x).
+  The generator retains native equality and does not copy this erroneous
+  equality-elimination expression.
+* In Lemma 3.20, A consists of {{1*,x},{2*,x}} codes. Two successive Class
+  Union applications, giving union(union(A)), recover the selected x's
+  together with possible tag elements; the printed single union is one
+  level short. Removing the tags for which the formula is false then gives
+  the desired class. This is another local proof-text repair, not a new axiom.
+* Theorem 3.21's displayed Collection argument needs a substantive coding
+  repair: q={x,{x,y}} allows a covered element of the source set to be the
+  second component of q associated with another first coordinate. The
+  following tagged proof repairs that implication without changing any axiom.
+
+Tagged proof of Collection from Capture after Limited Comprehension
+-----------------------------------------------------------------
+Let A be a set and suppose every x in A has a set y satisfying a limited
+formula phi(x,y), with arbitrary fixed class parameters. By the already
+derived Limited Comprehension and Power Set, the Russell subclass
+
+  b = {z in union(A) : z not in z}
+
+is a set. Russell's argument shows b not in union(A), without Foundation.
+Thus {b,y} is never an element of A: otherwise b would belong to union(A).
+
+Limited Comprehension supplies the class
+
+  B = { {x,{b,y}} : x in A, y is a set, and phi(x,y) }.
+
+Every x in A belongs to some q in B, so A is contained in union(B). Capture
+provides a SET C contained in B with A contained in union(C).
+
+Fix x in A. Choose q in C with x in q. Some u in A and set y satisfy
+q={u,{b,y}} and phi(u,y). Membership gives x=u or x={b,y}. The second case
+is impossible because {b,y} is not in A. Hence phi(x,y). Finally
+y in {b,y} in q in C, so y belongs to union(union(C)), a set by two uses
+of Union. This set collects the required witnesses. No Choice is used.
+
+Consistency calibration in the metatheory ZFC
+---------------------------------------------
+Definitional elimination of M identifies U14 with the intended NBG* axioms.
+The cited equivalence, with the corrections above, identifies consistency
+with Friedman's choice-free NBG. Its set reduct models ZF, giving one
+consistency implication.
+
+For the converse, start from a set-coded model of ZF, available from Con(ZF)
+by completeness. Expand to classes that are externally definable subsets
+of its domain with parameters. Identify each set with its membership
+extension; Extensionality makes this identification injective. Limited
+formulas with class parameters reduce to ordinary formulas in the underlying
+set model by replacing those parameters with their definitions. ZF supplies
+the requisite comprehension, collection and foundation instances. This
+yields a model of the specified choice-free NBG in the surrounding ZFC
+metatheory. No standardness or external well-foundedness of the set model
+is assumed.
+
+Thus ZFC proves Con(U14) iff Con(ZF). The additional equivalence with
+Con(ZFC) uses the usual constructible-universe relative-consistency
+interpretation. Given a finite ZFC proof of contradiction, relativize its
+formulas to L and replace its finitely many axiom instances by their ZF
+proofs under the L interpretation. This gives a finite ZF proof of
+contradiction. The opposite proof transformation is inclusion of ZF in ZFC.
+Consequently ZFC proves Con(ZF) iff Con(ZFC); it is not proving either
+consistency statement outright. This bridge does not assert that Choice
+appears among U14's axioms, nor that every original ZF model satisfies it.
+
+Remaining boundary
+------------------
+The JSON now fixes the finite relational source unambiguously. Applying
+graph_wrapper.pack fixes its membership-model wrapper as a further concrete
+formula. The source f compression and Andreka--Nemeti h translation still
+have to be implemented and their final output measured before a literal
+cyclic refutation target is available. No new small binary TM is supplied
+by this source transcription.
+
+Independent bounded transcription evidence
+------------------------------------------
+The separate review_nbg14.py computes expected row truth directly from
+membership-column sets, without the formula Builder or its macros. It agrees
+with every generated sentence on all 530 binary structures of sizes one,
+two and three: 7420 comparisons. Every individual row takes both truth
+values in this family. The reviewer confirms the 752-node total. This
+checks transcription and relation direction; it is not a consistency proof.

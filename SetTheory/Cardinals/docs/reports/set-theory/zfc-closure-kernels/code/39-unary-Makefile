@@ -1,0 +1,31 @@
+PYTHON ?= python3
+CXX ?= c++
+PDFLATEX ?= pdflatex
+LATEXMK ?= latexmk
+
+.DEFAULT_GOAL := report
+.DELETE_ON_ERROR:
+.PHONY: all report verify verify-search clean
+
+all: report
+
+report: report.pdf
+
+TEX_INPUTS := $(wildcard *.tex sections/*.tex *.bib)
+report.pdf: report.tex $(filter-out report.tex,$(TEX_INPUTS))
+	@if command -v "$(LATEXMK)" >/dev/null 2>&1; then \
+		"$(LATEXMK)" -pdf -interaction=nonstopmode -halt-on-error -file-line-error report.tex; \
+	else \
+		for pass in 1 2 3; do \
+			"$(PDFLATEX)" -interaction=nonstopmode -halt-on-error -file-line-error report.tex || exit $$?; \
+		done; \
+	fi
+
+verify:
+	$(PYTHON) verify.py
+
+verify-search:
+	$(PYTHON) verify.py --search --compiler "$(CXX)"
+
+clean:
+	rm -f report.aux report.log report.out report.toc report.fls report.fdb_latexmk report.synctex.gz report.bbl report.blg

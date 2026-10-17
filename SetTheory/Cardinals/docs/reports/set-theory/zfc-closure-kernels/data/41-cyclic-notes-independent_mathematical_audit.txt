@@ -1,0 +1,280 @@
+ARCHIVE NOTE: This is a development or independent audit record. The final
+article.tex/article.pdf and README.md are authoritative for the delivered
+status and runnable archive commands. Some original workspace paths and
+earlier-stage comments are retained as provenance. The final U14 source
+and its 10,182-node wrapper are included under data/.
+
+INDEPENDENT AUDIT OF THE CYCLIC PRESENTATION AND FINITE-TARGET BRIDGE
+
+Scope and status
+----------------
+This audit checks mathematical arguments and the listed finite diagnostics.
+It does not supply a serialized NBG target, an implementation of the full
+Andréka–Németi translation, a binary TM table, or a new state record. The
+local comparison is ProveIt at 8cf840b8a26d002041e7a26dc9688ce7ce5fd751.
+
+The 34-source local report collection already discusses three commuting S5
+modalities, the 18-equation Df3 presentation, and a counterexample to the
+abbreviated modal list that omits reflexivity T. Searches did not locate the
+cyclic conjugation compression or the invariant-generator variant. This is
+a local overlap audit, not a global novelty or priority determination.
+
+1. Nine-equation cyclic presentation: accepted
+--------------------------------------------
+Assume the cited three-equation Boolean-algebra basis over join and
+complement. Add the following equations, with all displayed variables
+universally quantified:
+
+  x + c(x) = c(x)
+  c(x+y) = c(x)+c(y)
+  c(-c(x)) = -c(x)
+  r(x+y) = r(x)+r(y)
+  r(r(r(x))) = x
+  c(r(c(r(r(x))))) = r(c(r(r(c(x))))) .
+
+The last equation is [c, r c r^2]=0, in composition notation. Let
+
+  c0=c,  c1=r c r^2,  c2=r^2 c r.
+
+The implementation uses the equivalent shorter row
+
+  c(r(c(x))) = r(c(r(r(c(r(x)))))).
+
+Composing its argument with r^2 and applying r^3=id gives the displayed
+commutator; conversely substitute r(x) into the commutator. The implemented
+row has 11 tree nodes over both sides, versus 12 for the direct form.
+
+Because r^3=id, r is bijective with inverse r^2. Join preservation makes it
+an order isomorphism: monotonicity is immediate, and order reflection follows
+by applying r^2. Every order isomorphism of Boolean algebras preserves zero,
+one, meets, and complements. Thus r is a Boolean automorphism; complement
+preservation does not need to be an additional axiom.
+
+Idempotence of c already follows from the third closure equation and Boolean
+double negation. Apply that equation at -c(x):
+
+  c(-c(-c(x))) = -c(-c(x)).
+
+Replacing c(-c(x)) by -c(x) gives c(c(x))=c(x). Conjugation by a Boolean
+automorphism preserves all four usual complemented-closure equations.
+Conjugating [c0,c1]=0 by r gives [c1,c2]=0; conjugating again gives
+[c2,c0]=0. Hence every cyclic algebra has a Df3 reduct.
+
+For the converse preservation of EQUATIONAL VALIDITY, take any Df3 algebra
+(A,+,-,f,g,h) and use A^3, with Boolean operations coordinatewise,
+
+  c(a,b,d)=(f(a),g(b),h(d)),  r(a,b,d)=(b,d,a).
+
+Then c1 acts as (g,h,f), and c2 acts as (h,f,g). The final cyclic equation
+holds because f,g,h commute pairwise. Every other defining equation follows
+coordinatewise or from rotation. Translate source f,g,h by c0,c1,c2. For a
+source term t and diagonal assignments to its generators, the coordinates of
+the translated value are evaluations of t under the three cyclic orderings
+(f,g,h), (g,h,f), (h,f,g). In particular coordinate zero is exactly the
+original value. Every failure of a source equation therefore survives.
+
+Conclusion: source Df3 validity of an equation is equivalent to validity of
+its cyclic translation. The diagonal is NOT asserted to be a subalgebra;
+typically c sends a diagonal element to a non-diagonal element. Coordinate
+projection at translated terms, rather than a diagonal homomorphism, is the
+correct argument.
+
+Arbitrary source assumptions do not automatically transfer in the same way:
+the other two coordinates see rotated versions of those assumptions. The
+proposal avoids that issue by encoding the desired consistency question as
+one theorem target without adding arbitrary source assumptions.
+
+There is also a direct syntactic reverse proof transport. Interpret every
+cyclic term as a triple of source terms; Boolean operators act coordinatewise,
+c uses f/g/h, and r rotates the tuple. Cyclic axioms become source axiom
+instances or reflexivities, and each equational inference transports
+coordinatewise. This yields effective reverse proof transport. Forward
+transport requires finitely many fixed equational derivations of the
+automorphism/conjugation facts above; these are ordinary algebraic arguments
+here, not exported checked derivation certificates.
+
+2. A fixed generator may be r-invariant: accepted, with a critical boundary
+-------------------------------------------------------------------------
+Add a distinguished CONSTANT p and the single GROUND equation r(p)=p.
+The validity/consequence comparison for source one-generator equations
+continues to hold: in the converse product construction interpret p as
+(a,a,a), so the extra ground equation holds and the first-coordinate
+counterexample survives.
+
+The equation r(p)=p must not be treated as a universal rewrite schema whose
+p can match arbitrary terms. That would force r=id everywhere, identify all
+three conjugate operators, and invalidate the intended reduction. Fixed p
+must be distinguished from axiom metavariables in the checker.
+
+This ground equation does not force c0(p)=c1(p). For example, take the
+four-element Boolean algebra, f=h=id, and g the closure mapping every nonzero
+element to top. With diagonal p=(1,1,1), r(p)=p while c0(p)=(1,3,1) and
+c1(p)=(3,1,1), using bit-mask values 0,1,2,3.
+
+A pure nine-equation alternative replaces p by p+r(p)+r^2(p), which is
+r-invariant. On diagonal product assignments this replacement equals p,
+so counterexamples still transfer. Whether either form saves actual machine
+states depends on the serialized target and evaluator.
+
+3. Phase optimization: accepted only for the explicit grammar
+------------------------------------------------------------
+Let D_t[i] represent r^(-i) tau(t), where tau is the cyclic translation and
+i is modulo three. A direct representative B_t[k] is available as follows:
+
+  p:        cost 1 only for k=0 (all k for the ground-invariant variant);
+  -u:       1 + D_u[k];
+  u+v:      1 + D_u[k] + D_v[k];
+  c_j(u):   1 + D_u[j], available only for k=j.
+
+Then
+
+  D_t[i] = min_k ((k-i mod 3) + B_t[k]).
+
+The sign is correct: prefixing a representative of r^(-k) tau(t) with
+r^(k-i) gives r^(-i) tau(t). Boolean cases use automorphism preservation;
+the modal case uses r^(-j)c_j = c r^(-j). Each node has a fixed 3-by-3
+transition computation, so runtime is linear in source tree size.
+
+The resulting exact optimality is ONLY among representations generated by
+these local phase rules, with reduced outer rotation chains. It is not
+optimality among all algebraically equivalent terms, all skeleton-preserving
+equivalent terms, all DAGs, or all Turing machines. For example p+-p is
+r-invariant because it is top; recognizing that semantic invariant can remove
+rotations even when the local pure-E9 leaf rule does not. Boolean identities,
+closure distribution/idempotence, operator commutation, incidental invariants,
+and DAG sharing are outside the stated dynamic-programming grammar.
+
+4. A finite-model wrapper avoids the full generic translation theorem
+--------------------------------------------------------------------
+Let U be a fixed finite first-order relational theory with equality and one
+binary relation R. Fix its single conjunction A_U. Let KP(z,x,y) be a pure
+membership formula for z={{x},{x,y}} in ordinary set structures. Define
+psi_U to assert the existence of d,e such that d has a member and A_U holds
+when every quantifier is relativized to x in d and every R(x,y) is replaced
+by exists z (z in e and KP(z,x,y)). Rename binders throughout to avoid capture.
+
+If an arbitrary membership structure satisfies psi_U, let D be its members
+of d and define R_D using the displayed formula. D is nonempty. Structural
+induction on every U-formula proves satisfaction transfer, with native
+equality inherited on D. Therefore this produces a U-model. KP need not be
+unique, total, or correctly set-theoretic in this direction: it is simply a
+formula defining some relation on D.
+
+Conversely, within ZFC, Con(U) yields a set-coded nonempty model (A,R) by
+first-order completeness. Choose a sufficiently large limit ordinal lambda,
+for example one larger than rank(A union R)+omega, and use the ordinary
+membership structure V_lambda. Set d=A,e=R. Transitivity and closure under
+finite Kuratowski pairing ensure that the graph interpretation agrees exactly
+with R. Hence V_lambda satisfies psi_U. The concrete ordered-pair predicates
+in Andréka–Németi Definition 5.2 are genuine Kuratowski projections there,
+so their nontrivial strong pairing sentence pi+ holds as well. There is no
+claim that V_lambda satisfies ZFC, and no inaccessible cardinal is required.
+
+For a final report, the exact source pi (referenced there to earlier work)
+must be fixed alongside pi+. It cannot be replaced by an unspecified generic
+pairing sentence merely because the notation is similar.
+
+Thus ZFC proves Con(U) iff pi+ and psi_U have a set-coded model. It follows
+that pi+ entails not-psi_U iff not-Con(U). The cited effective variable
+compression f satisfies pi entails (f(chi) iff chi) for sentences. Since
+pi+ implies pi, the fully proved Andréka–Németi Theorem 5.4 with empty T
+then gives theoremhood of h(f(not-psi_U)) iff not-Con(U).
+
+This use of a coded model avoids requiring the domain of a direct NBG model
+to satisfy pairing for all its classes. A finite NBG presentation in one
+binary language can be used for U, but its exact finite axioms and the
+ordinary ZFC-proof of Con(U) iff Con(ZFC) must be separately specified.
+
+Primary source: H. Andréka and I. Németi, Formalizing set theory in weak
+logics, arXiv:1111.0995v1, especially Definition 5.2, Theorem 5.4, and equation
+(8) in the proof of Theorem 2.1. https://arxiv.org/pdf/1111.0995v1
+The paper's introduction says its full generic Theorem 2.2 is only partially
+proved there; the above wrapper deliberately uses Theorem 5.4 instead.
+
+The finite target exists through effective syntax transformations, but no
+claim that its literal output has been generated is justified by this audit.
+Full target emission, size measurement, equational checker compilation,
+blank initialization and binary simulation remain separate deliverables.
+
+5. Executed finite evidence
+---------------------------
+Command: python audit_work/cyclic_audit.py
+Result: PASS; recorded runtime about 0.94 seconds in this environment.
+
+* Exhausted all 256 unary maps on a four-element Boolean algebra; the two
+  models of the three closure equations were idempotent.
+* Partition-induced closures and order-dividing-three atom permutations
+  were checked through five Boolean atoms. Accepted single-commutator model
+  counts for one through five atoms were 1,2,9,63,492; all conjugate closure
+  pairs commuted.
+* All 65 commuting closure triples on the eight-element Boolean algebra,
+  eight generator values, and 304 fixed-seed source terms gave 158080
+  independent comparisons of source evaluation and product translation.
+* The explicit ground-invariant generator with distinct conjugate closures
+  described above passed.
+
+These are finite regressions for orientation, equations, and translation.
+They are not a proof of the unrestricted theorem, not a test of a ZFC
+refutation, and not evidence of a small machine's non-halting.
+
+Artifacts: cyclic_audit.py and cyclic_audit_results.json.
+
+6. Eight-equation presentation with three proper operators: accepted
+------------------------------------------------------------------
+Let N be Boolean complement in a cyclic algebra and define s=N r^2.
+N and r commute, N^2=id, and r^3=id, so s^2=r and s^3=N. Replace every
+complement in the nine-equation basis by s^3, every r by s^2, and omit
+the transformed r^3=id row. This leaves eight equations in (+,c,s).
+
+Conversely, in any model of those eight equations, N=s^3 obeys the three
+Boolean axioms, so N is an actual Boolean complement. Its involutivity gives
+s^6=id. Setting r=s^2 therefore recovers r^3=id, and all other cyclic rows
+are present by substitution. Finally N r^2=s^3 s^4=s^7=s, so the constructions
+are inverse term definitions. This is a term-equivalence of the two varieties,
+not merely a one-way consistency implication.
+
+The optional ground equation r(p)=p becomes s^2(p)=p and retains the same
+literal-constant boundary. The three proper term operators permit a ternary
+constructor tag, but complement expansion grows from one unary operator to
+three and rotation from one to two. Neither the smaller signature nor eight
+axioms is evidence of a binary-machine improvement; full emitted terms and
+compiler cost must be measured.
+
+An analogous sound six-phase grammar can combine these unary expansions.
+Let D_t[i] represent s^(-i) tau8(t), modulo six. A source complement merely
+shifts the requested phase: D_not(u)[i]=D_u[(i-3) mod 6]. For a source join,
+the direct rule 1+D_left[k]+D_right[k] is allowed at even k, because even
+powers of s are Boolean automorphisms. For source modal c_j, the direct rule
+is 1+D_child[2j] at k=2j. The leaf is direct at k=0, or all even k with the
+ground-invariant generator. Remaining phases use the same outer-rotation
+minimum, now with (k-i mod 6) copies of s. This is linear-time with a fixed
+six-by-six state table, and has the same local-grammar-only optimality scope.
+
+7. Read-only implementation audit of graph_wrapper.py
+----------------------------------------------------
+Reviewed output/zfc_cyclic_algebra/code/graph_wrapper.py. Input validation
+checks the documented atomic/binder arities and natural labels, including
+rejecting Boolean values as labels. Every inserted label exceeds all labels
+anywhere in the source axioms, so source binder shadowing cannot capture d,e
+or Kuratowski auxiliaries. Source binders retain their own shadowing behavior,
+and their quantifier guard refers to the globally fresh d. Native equality is
+unchanged. The KP builder is the ordinary existential singleton/pair/pair
+definition and handles equal endpoints. Open axioms are rejected, the empty
+theory is supported, and the output is checked for free variables.
+
+The finite evaluator copies environments at binders, so it correctly restores
+shadowed assignments. Its domain argument should be a reusable materialized
+sequence or set, rather than a one-shot generator. Python resource failures
+remain execution failures; they are not successful consistency certificates.
+No mathematical defect was found under the documented finite-tree contract.
+The module correctly describes itself as a membership wrapper rather than an
+NBG-to-modal translator. Its forthcoming finite tests are separate evidence.
+
+The delivered test_graph_wrapper.py was also inspected without rerunning its
+output-writing suite. It compares satisfaction in arbitrary ambient graphs
+for all one- and two-point graphs and a stated sample of three-point graphs;
+it separately checks the outer existential wrapper on the exhaustive small
+families. Open formulas exercise quantifier shadowing; malformed/open inputs
+are rejected. Its descriptions do not overstate the three-point coverage or
+claim a ZFC calibration for its synthetic example. No code/test mismatch was
+found.
