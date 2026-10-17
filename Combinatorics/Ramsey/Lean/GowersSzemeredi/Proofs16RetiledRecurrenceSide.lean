@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16RetiledRecurrence
 import GowersSzemeredi.Proofs16RecurrenceThreshold
+import GowersSzemeredi.Proofs16Lemma1Side
 
 /-! Declarations of `Proofs16RetiledRecurrence` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/
@@ -9,6 +10,68 @@ set_option autoImplicit false
 noncomputable section
 
 open scoped BigOperators
+
+namespace LeanProofs.GowersSzemeredi
+
+/-- The base recurrence and signed tiling combine into proper product cells
+with short final axes, retaining the frequency-times-step estimate. -/
+theorem proper_retiled_product_recurrence {N k q m v : Nat} [NeZero N]
+    (P : Box N k) (B I : ModAP N) (i : Fin k) (u : (ZMod N)ˣ)
+    (hP : P.IsProper) (hI : I.IsProper)
+    (hBstep : B.step = (↑u : ZMod N)) (hIstep : I.step = B.step)
+    (hsub : (P.axis i).carrier ⊆ B.carrier) (hshort : 2 * B.length ≤ N)
+    (hL : B.length ≤ I.length)
+    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ a, IsMultilinear (mu a))
+    (hm : section16WidthThreshold k q ≤ m) (hmP : m ≤ P.width)
+    (hv : 2 ≤ v)
+    (hvscale : (v : Real) ^ 2 + 1 ≤ (m : Real) ^ section16RecurrenceExponent k q) :
+    ∃ M : Nat, ∃ S : Fin M → Box N (k + 1), ∃ T : Fin M → Box N k,
+      ∃ J : Fin M → ModAP N,
+      IsPartition (fun j => (S j).carrier) (lastProductSet P.carrier I.carrier) ∧
+      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
+      (∀ j, IsLastCoordinateBoxProduct (S j) (T j) (J j)) ∧
+      (∀ j, (T j).carrier ⊆ P.carrier) ∧
+      (∀ j, 0 < (J j).length ∧ (J j).length ≤ v) ∧
+      ∀ a j x, x ∈ (T j).carrier →
+        (centeredAbs (mu a x * (J j).step) : Real) ≤
+          2 * (m : Real) ^ (-section16RecurrenceExponent k q) * N := by
+  exact proper_retiled_product_of_recurrence P B I i u hI hBstep hIstep hsub hshort hL
+    mu _ _ (proper_lemma_16_1 N k q m P hP mu hm hmP hmu) hv hvscale
+
+/-- Frequency coverage converts the retiled base recurrence into linearity
+on every final-axis cell. This allows the base and final input steps to differ. -/
+theorem proper_retiled_product_linearity {N k q m v : Nat} [NeZero N]
+    (P : Box N k) (B I : ModAP N) (i : Fin k) (u : (ZMod N)ˣ)
+    (hP : P.IsProper) (hI : I.IsProper)
+    (hBstep : B.step = (↑u : ZMod N)) (hIstep : I.step = B.step)
+    (hsub : (P.axis i).carrier ⊆ B.carrier) (hshort : 2 * B.length ≤ N)
+    (hL : B.length ≤ I.length)
+    (mu : Fin q → Point N k → ZMod N) (hmu : ∀ a, IsMultilinear (mu a))
+    (hm : section16WidthThreshold k q ≤ m) (hmP : m ≤ P.width)
+    (hv : 2 ≤ v)
+    (hvscale : (v : Real) ^ 2 + 1 ≤ (m : Real) ^ section16RecurrenceExponent k q)
+    (K : Point N k → Finset (ZMod N)) (zeta : Real) (G : Finset (Point N k))
+    (A : Point N k → Finset (ZMod N)) (f : Point N k → ZMod N → ZMod N)
+    (hcover : ∀ x ∈ P.carrier, x ∈ G → ∀ r ∈ K x, ∃ a, r = mu a x)
+    (hlinear : ∀ x ∈ G, ∀ J : ModAP N, J.length ≤ v → J.step ∈ bohr (K x) (zeta / v) →
+      LinearOn (J.carrier ∩ A x) (f x))
+    (hbudget : 2 * (m : Real) ^ (-section16RecurrenceExponent k q) ≤ zeta / v) :
+    ∃ M : Nat, ∃ S : Fin M → Box N (k + 1), ∃ T : Fin M → Box N k,
+      ∃ J : Fin M → ModAP N,
+      IsPartition (fun j => (S j).carrier) (lastProductSet P.carrier I.carrier) ∧
+      (∀ j, (S j).IsProper ∧ v - 1 ≤ (S j).width) ∧
+      (∀ j, IsLastCoordinateBoxProduct (S j) (T j) (J j)) ∧
+      ∀ j x, x ∈ (T j).carrier → x ∈ G → LinearOn ((J j).carrier ∩ A x) (f x) := by
+  obtain ⟨M, S, T, J, hpart, hproper, hproduct, hTsub, hJlength, hsmall⟩ :=
+    proper_retiled_product_recurrence P B I i u hP hI hBstep hIstep hsub hshort hL
+      mu hmu hm hmP hv hvscale
+  refine ⟨M, S, T, J, hpart, hproper, hproduct, ?_⟩
+  intro j x hx hxG
+  exact hlinear x hxG (J j) (hJlength j).2
+    (product_recurrence_bohr_mem mu K x (J j).step _ zeta v
+      (hcover x (hTsub j hx) hxG) (fun a => hsmall a j x hx) hbudget)
+
+end LeanProofs.GowersSzemeredi
 
 namespace LeanProofs.GowersSzemeredi
 

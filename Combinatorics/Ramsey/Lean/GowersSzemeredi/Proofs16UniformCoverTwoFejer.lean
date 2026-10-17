@@ -1,5 +1,4 @@
 import GowersSzemeredi.Proofs18FejerSeedExponents
-import GowersSzemeredi.Proofs16UniformCoverTwoBounds
 import GowersSzemeredi.Proofs16SplitUniformClass
 
 /-! **The dimension-two uniform class under the Fejér θ₁ and the tight

@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18GenericEnvelopeBase
 import GowersSzemeredi.Proofs18GenericStep
+import GowersSzemeredi.Proofs18GenericEnvelopeBaseSide
 
 /-! The densities of the single-piece step in any dimension are polynomial
 in `X = 2/α` (Notes L.7a, F3c).

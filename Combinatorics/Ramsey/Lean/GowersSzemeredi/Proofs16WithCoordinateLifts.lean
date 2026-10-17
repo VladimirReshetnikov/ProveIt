@@ -1,7 +1,7 @@
-import GowersSzemeredi.Proofs16UnusedCoordinateLift
 import GowersSzemeredi.Proofs16PolyBaseCase
 import GowersSzemeredi.Proofs16EmbeddedLift
 import GowersSzemeredi.Proofs16CubicCoverControls
+import GowersSzemeredi.Proofs16UnusedCoordinateCover
 
 /-! Coordinate lifts for covers with arbitrary controls (`MultiplyLinearWith`),
 toward a polynomial-control `PolyCoverAt 2` (Notes L.3, step (A)).

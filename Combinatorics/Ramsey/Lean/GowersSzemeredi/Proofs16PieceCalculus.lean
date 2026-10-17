@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs16SinglePieceSpectrum
 import GowersSzemeredi.Proofs16EmbeddedLift
 import GowersSzemeredi.Proofs16Translations
 import GowersSzemeredi.Proofs16SingletonPartition
+import GowersSzemeredi.Proofs16LiftAllScales
 
 /-! A calculus of local piece providers (the single-piece lift, Notes L.1,
 toward the remainder half of Lemma 16.9).

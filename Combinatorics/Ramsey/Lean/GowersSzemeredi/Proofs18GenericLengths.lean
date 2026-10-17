@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18GenericSzemeredi
 import GowersSzemeredi.Proofs18GenericEnvelopeStep
+import GowersSzemeredi.Proofs18UniformCoversSide
 
 /-! Theorem 18.2 and Corollary 18.7 at lengths `6 ≤ L ≤ 10`, from the
 recurrence profiles (Notes L.7a, F4).

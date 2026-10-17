@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16IntegerNumberedLemma6
 import GowersSzemeredi.Proofs16IntegerFamilyRemainder
 import GowersSzemeredi.Proofs16Lemma9
+import GowersSzemeredi.Proofs16WidthMonotonicity
 
 /-! Lemma 16.9 with ascending integer boxes and the annotated numerical
 bounds. The two multilinearity premises use ordinary-box covers. Once

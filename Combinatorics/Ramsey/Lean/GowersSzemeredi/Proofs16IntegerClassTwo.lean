@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16IntegerUniformCoverTwo
 import GowersSzemeredi.Proofs16IntegerClassSuccessor
+import GowersSzemeredi.Proofs16PowerUniformClassSide
 
 /-! The actual dimension-two power class has integer cover certificates,
 with the same class membership, decomposition and degree envelopes. -/

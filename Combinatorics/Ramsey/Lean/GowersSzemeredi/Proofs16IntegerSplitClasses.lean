@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16IntegerClassesAll
 import GowersSzemeredi.Proofs16SplitAllDimensions
+import GowersSzemeredi.Proofs16SplitAllDimensionsSide
 
 /-! Integer progression covers with split family and parameter degrees.
 The split recurrence retains the sharper bounds while every covering box

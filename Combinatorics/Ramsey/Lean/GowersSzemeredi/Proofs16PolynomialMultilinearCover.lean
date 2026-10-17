@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16PolynomialAllScaleLemma9
 import GowersSzemeredi.Proofs16WithLift
+import GowersSzemeredi.Proofs16WithLiftSide
 
 /-! Multilinear extraction with the polynomial spectrum-count recurrence.
 

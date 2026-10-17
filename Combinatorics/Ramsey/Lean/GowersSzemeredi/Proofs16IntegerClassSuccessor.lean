@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16ClassStepDegrees
 import GowersSzemeredi.Proofs16IntegerClassStepCover
+import GowersSzemeredi.Proofs16ClassStepDegreesSide
 
 /-! The same uniform-class successor also has genuine integer covers,
 provided its predecessor does. The existing degree budgets are unchanged. -/

@@ -1,5 +1,5 @@
 import GowersSzemeredi.Proofs16FreimanFamilyRestriction
-import GowersSzemeredi.Proofs16FinalSections
+import GowersSzemeredi.Proofs16GoodDomainTransport
 
 /-! Transport fixed Freiman families into the common-base good domain.
 The original section families survive both translation and deletion; their

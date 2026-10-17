@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs16Lemma6
+import GowersSzemeredi.Proofs16RetiledRecurrence
 
 /-! # Fibre geometry and mass estimates for Lemma 16.9 -/
 set_option autoImplicit false

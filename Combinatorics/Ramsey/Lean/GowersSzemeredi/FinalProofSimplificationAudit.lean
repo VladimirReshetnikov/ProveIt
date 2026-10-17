@@ -19,6 +19,8 @@ import GowersSzemeredi.Proofs17ExplicitCubicLocalization
 import GowersSzemeredi.Proofs18CubicDiscrepancy
 import GowersSzemeredi.Proofs18FejerCubicCellModels
 import Lean.Util.CollectAxioms
+import GowersSzemeredi.Proofs16Lemma9
+import GowersSzemeredi.Proofs16WidthMonotonicity
 
 open Lean Elab Command in
 run_cmd do

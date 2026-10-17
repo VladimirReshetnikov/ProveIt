@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16SlabCommonBaseGeometry
 import GowersSzemeredi.Proofs16SpectrumInduction
 import GowersSzemeredi.Proofs16GlobalFiniteCover
+import GowersSzemeredi.Proofs16Lemma6Parameters
 
 /-! The actual Section 16 spectrum of a slab is independent of the cube
 sidelength. It is one fixed finite set, with the existing Parseval budget. -/

@@ -1,6 +1,8 @@
 import GowersSzemeredi.Proofs16PowerUniformClass
 import GowersSzemeredi.Proofs16CoordinateSelections
 import GowersSzemeredi.Proofs16PolyPieceThreeData
+import GowersSzemeredi.Proofs16ProductTranslate
+import GowersSzemeredi.Proofs16ThreeSlices
 
 /-! Pieces over a uniform class, in every dimension (Notes L.6, E3).
 
@@ -21,7 +23,9 @@ with `θ′ = θ₂/2^(k+2)` (`classBudget`). So the piece keeps mass `θ′`.
 
 `classBudgetW`, `classPieceThrW` and `class_piece_data_with` take `(t1, ζ)` as
 parameters (Notes L.16d); at the printed values the budgets are the printed
-ones by `rfl`, and `class_piece_data` is the instance. -/
+ones by `rfl`, and `class_piece_data` is the instance.
+
+`classBudget_pos_le` is in `Proofs16ClassPiecesSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
@@ -149,16 +153,6 @@ def classPieceThr (Thr : Real → Real → Real) (theta gamma : Real) (k : Nat) 
 def classPieceThreshold (V : Real) (dT : Nat) (theta gamma : Real) (k : Nat) : Real :=
   max ((V * (2 / (classDelta theta gamma k * classBudget theta gamma k))) ^ dT)
     ((V * (2 / (gamma * classBudget theta gamma k))) ^ dT)
-
-theorem classBudget_pos_le {theta gamma : Real} (k : Nat) (ht : 0 < theta) (ht1 : theta ≤ 1)
-    (hg : 0 < gamma) (hg1 : gamma ≤ 1) :
-    0 < classBudget theta gamma k ∧ classBudget theta gamma k ≤ 1 := by
-  obtain ⟨h0, h1⟩ := section16ThetaTwo_pos_le k ht ht1 hg hg1
-  have h2 : (1 : Real) ≤ 2 ^ (k + 2) := one_le_pow₀ (by norm_num)
-  unfold classBudget
-  refine ⟨by positivity, ?_⟩
-  rw [div_le_one (by positivity)]
-  linarith
 
 /-! ### Deletions -/
 

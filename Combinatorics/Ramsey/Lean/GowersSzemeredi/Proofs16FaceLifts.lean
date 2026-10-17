@@ -1,5 +1,6 @@
-import GowersSzemeredi.Proofs16ThreeCylinders
 import GowersSzemeredi.Proofs16FibreGeometry
+import GowersSzemeredi.Proofs16RelationLift
+import GowersSzemeredi.Proofs16WithSum
 
 /-! Generic face lifts and finite relation sums (Notes L.6, E2).
 

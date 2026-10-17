@@ -19,7 +19,10 @@ Both logarithms stay `O(2^k)`, which Theorem 18.2 at every length needs
 * `splitUniformClass_two`: dimension two is a split class at any
   `a = D ≥ 2^130`.
 * `SplitUniformClass.toPower`: a split class is a power class at degree
-  `a + D`. -/
+  `a + D`.
+
+`splitUniformClass_two` is in `Proofs16SplitUniformClassSide`, outside the final
+route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -121,17 +124,5 @@ def PowerUniformClass.toSplit {k : Nat} {V : Real} {d : Nat} (C : PowerUniformCl
       rw [uniformBase_eq_split, mul_pow]
     simp only [hfun] at h
     exact h
-
-/-- **Dimension two is a split class** at `a = D = 2^130`. -/
-theorem splitUniformClass_two {K1 p1 : Nat} (hK1 : 1 ≤ K1) (hp1 : 0 < p1)
-    (hlemma6 : AbstractFamilyLemma166At 1
-      (section16PowerWidth (familyWidthPrefactor K1) (familyWidthDivisor 1 p1)))
-    {V : Real} (hV : 1 ≤ V) (hKV : (K1 : Real) ≤ V) (hpV : (p1 : Real) ≤ V) {d : Nat}
-    (hd : (2 : Nat) ^ 130 ≤ d) :
-    Nonempty (SplitUniformClass 2 V d d) := by
-  obtain ⟨C⟩ := powerUniformClass_two hK1 hp1 hlemma6 hV hKV hpV
-  have h89 : (2 : Nat) ^ 89 ≤ d := le_trans (Nat.pow_le_pow_right (by norm_num) (by norm_num)) hd
-  have h45 : (2 : Nat) ^ 45 ≤ d := le_trans (Nat.pow_le_pow_right (by norm_num) (by norm_num)) hd
-  exact ⟨(C.weaken hV le_rfl h89 hd h45).toSplit⟩
 
 end LeanProofs.GowersSzemeredi

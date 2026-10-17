@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16SingletonPartition
 import GowersSzemeredi.Proofs16ProductRecurrence
+import GowersSzemeredi.Proofs05BoxTransport
 
 /-! # Recovering canonical factors from a product-box carrier
 

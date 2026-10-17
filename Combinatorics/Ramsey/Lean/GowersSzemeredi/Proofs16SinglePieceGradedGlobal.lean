@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16SinglePieceGlobal
 import GowersSzemeredi.Proofs16SinglePieceGradedRemainder
+import GowersSzemeredi.Proofs16SinglePieceGlobalSide
 
 /-! The single-piece lift with graded vertex providers (Notes L.10, G3a).
 

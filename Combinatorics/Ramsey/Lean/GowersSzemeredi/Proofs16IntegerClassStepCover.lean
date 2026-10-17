@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16ClassStep
 import GowersSzemeredi.Proofs16IntegerClassPieceCover
+import GowersSzemeredi.Proofs16ClassPiecesSide
 
 /-! Uniform families of step pieces admit genuine integer covers.
 The original controls and membership/decomposition records are preserved. -/

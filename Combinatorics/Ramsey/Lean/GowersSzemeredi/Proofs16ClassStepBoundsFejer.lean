@@ -1,5 +1,4 @@
 import GowersSzemeredi.Proofs16ClassStepFejer
-import GowersSzemeredi.Proofs16ClassStepBounds
 import GowersSzemeredi.Proofs16SplitFejerDegrees
 import GowersSzemeredi.Proofs18FejerSeedCounts
 

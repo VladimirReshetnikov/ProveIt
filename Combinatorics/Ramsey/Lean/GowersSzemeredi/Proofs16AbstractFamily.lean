@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16FamilyPieceCover
+import GowersSzemeredi.Proofs16RoundedPowerWidth
 
 /-! The simultaneous union for abstract pieces, in one common frame.
 
