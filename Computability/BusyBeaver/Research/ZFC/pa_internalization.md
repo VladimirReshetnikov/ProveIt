@@ -542,23 +542,39 @@ nonstandardly many free variables never need a nonstandard quantifier block.
   depth `d` as its changing parameter) replacing bound `#k` by `s(k)` and free
   `&i` by `s(d+i)`, each quantifier becoming a quantifier over `econs y s`;
   atoms read entries through ZF numerals (Codex's numeral code builders).
-  `P_K(s) := (K^L)⟦s⟧_0`.
-* `D_K`: a represented class of ordinals (code builder over `K`):
-  limits for atoms, `D₁ ∩ D₂` for `⋏`/`⋎`, and `D' ∩ W(P')` for `∃`/`∀`,
-  where `W(P')` is the witness-reflection class of the matrix.
-* **Invariant** `Θ(K)`: `ZF ⊢ ∃c ∈ Fml. Club(D_K) ∧
-  ∀β ∈ D_K ∀s (env on L_β) (P_K(s) ↔ SatIn(L_β, c, s))`, together with the
-  locality law `s, s'` agree below `N` → `P_K(s) ↔ P_K(s')` that the
-  witness-closure argument needs.
+  **Checked** as `ZFCinPA/EnvTransform.lean` (`envForm d K`, its equations,
+  and `isSemiformula_envForm`: the output mentions only the environment).
+* Reflecting stages are the limit **closure points of a function** `f_K`
+  (a placeholder-definable graph, existentially supplied by the induction):
+  the identity for atoms, `max(f₁, f₂)` for `⋏`/`⋎` (closure points of the
+  max are closure points of both, so no club intersection or iteration is
+  needed), and `max(f', g_{P'})` for `∃`/`∀`, where `g_{P'}(α)` bounds the
+  `L`-ranks of witnesses for all finitely supported environments on `L_α`
+  (one Collection instance). Environments are **finitely supported**
+  (eventually `∅`), so a limit stage's environment already lives below it and
+  no locality or numeral-order law is needed.
+* **Invariant** `Θ(K, d)`: `ZF ⊢ Total(f) ∧ ∃c ∈ Fml. ∀β (β limit closure
+  point of f) ∀ finitely supported env s on L_β:
+  envForm d K (s) ↔ SatIn(L_β, c, s)`, by semiformula induction with the depth
+  as parameter (exactly the shape of the construction, so `free` never
+  appears).
+* Templates use the **full** Separation/Replacement schemata over the
+  enlarged language (Codex's `separationProof`/`replacementProof` are generic
+  in the matrix) and `congruenceProof₁/₂` for the placeholders, so the
+  semantic proofs may use any instance they need. ω-iteration is needed only
+  once, in the final templates: a generic "limit closure points are
+  unbounded" lemma.
+* The only `free`-based induction is the final **glue** (`envForm` versus
+  Foundation's `relativize` on the schema core), done by induction on formula
+  rank in models of PA (the endpoint's arithmetic).
 * Each inductive step is **one fixed template** over `ℒₛₑₜ` with placeholders
-  for the component predicates (`P'`, `D'`, numerals), proved semantically
+  for the component predicates (`P'`, `f'`, numerals), proved semantically
   from `SatIn`'s Tarski clauses and the constructible hierarchy of
   `BusyBeaver.ZFC` in every template structure, and compiled at the internal
   components by Codex's `OpenSetTemplateCompiler.compileOpenTemplate` (the
   `CollectionTemplate254`/`CompiledCollection254` pattern). The internal
-  induction on `K` then only chains `Derivable` facts (Σ₁ induction on
-  `IsUFormula`).
-* **Final templates**: `Sep^L(P)` from `Θ` (choose `β ∈ D_K` above `a` and
+  induction on `K` then only chains `Derivable` facts.
+* **Final templates**: `Sep^L(P)` from `Θ` (choose a limit closure point `β` of `f_K` above `a` and
   the parameters: the separated set is `{x ∈ a | SatIn(L_β, c, x::s)}`,
   definable over `L_β`, hence in `L_{β+1}`); `Repl^L(P)` from `Sep^L` and the
   `P`-independent `Coll^L` template.
