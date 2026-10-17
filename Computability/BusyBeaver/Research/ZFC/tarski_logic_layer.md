@@ -321,3 +321,30 @@ first-order theory `NativeAx` is refutable. What remains for the binary
 machine is the TM layer (literal 253/254 table ↔ path semantics of
 `Prog254`), and for ZFC the consistency transports between `NativeAx` and
 ZFC.
+
+## Next: ZF proves the native axioms (in progress in this lane)
+
+*Correction.* An earlier version of this section claimed the Regularity
+transport and the file name `WellFoundedPart.lean`. That file already belongs
+to the Codex lane (well-founded part over the native CP/GIC base, where GIC
+supplies the Collection step), so this lane withdraws that claim.
+
+This lane now takes the other half of the comparison, the counterpart of
+upstream `S_sound.v`: every model of `SetTheory.ZFax_s` (ZF with Foundation
+and Power) satisfies `NativeTheory254.NativeAx`, so by `theory_transfer`
+
+```text
+BProv NativeAx [] Form.fBot → BProv SetTheory.ZFax_s [] Form.fBot
+```
+
+and hence, with `NativeTheory254.program_halts_iff_native_refutation`,
+halting of the 219-node program (and, by L4, of the literal `Prog254`) gives a
+refutation of ZF. Irreflexivity is Foundation on singletons. The containers
+come from internal ω-recursion (`BoundedZFCConsistency.OmegaRecursion`, which
+needs neither Power nor Foundation). Full native GIC is Collection, which in
+ZF needs the cumulative hierarchy: internal ordinals, transfinite recursion
+for `V_α` and the rank theorem by ∈-induction (Foundation on transitive
+closures), all inside an arbitrary, possibly ill-founded from outside, model.
+Files: `BusyBeaver/ZFC/InternalRank.lean` and `BusyBeaver/ZFC/ZFNative.lean`.
+Coordination note: please avoid duplicating these; the Regularity and Choice
+transports stay with the Codex lane's existing plan.
