@@ -1134,6 +1134,13 @@ twenty-three axiom reports and twenty-four callers with zero warnings.
 Transporting arbitrary internal derivations through this renaming remains
 the next obligation for GEN.
 
+The [decoded-falsity endpoint](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_falsity254.md)
+now proves internal ZF-provability of `decode 1` exactly when ZF proves
+primitive Bottom. It quotes a fixed ordinary irreflexivity theorem, opens it
+at free label zero, and uses explicit internal cut constructors. Eight axiom
+reports and twelve callers pass with zero warnings. Accepted-history
+translation and the full PA endpoint remain open.
+
 
 The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)
 reuses actual finite segment/configuration syntax and normalization with an
