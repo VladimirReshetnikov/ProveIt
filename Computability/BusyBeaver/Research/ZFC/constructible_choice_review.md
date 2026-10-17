@@ -106,3 +106,21 @@ Lean axioms. [The fresh-check record](results/constructible-fresh-verification.j
 and [142-unit integration](results/theory-code-integration-verification.json)
 retain exact source identities and scope; the original source reviewers did
 not run these checks. This establishes the ZF model, without claiming Choice.
+
+The proposed uniform-support interface is now implemented in the merged
+`SatSupport.lean` from `f7844da33f`. A separate read-only review of all193lines
+found no defect: `supF` is an actual formula for the induction predicate;
+`isFormCodeSem_ind'` covers every internal code; environment totality and
+functionality are explicit; and the quantifier step uses internal natural
+predecessors and transitivity, without external induction on nonstandard
+indices. The carrier has the stated `IsSetStructure` premises. “Finite” here
+means internally finite: the support bound can be a nonstandard member of
+the model's omega.
+
+A fresh check of this module, the merged154-unit umbrella, six axiom reports
+and four direct callers passed, reusing152 source-matched dependencies from
+the completed153-unit binary closure. The
+[support integration record](results/sat-support-integration-verification.json)
+records the exact source, commands and caller statements. This closes the
+support prerequisite identified above. Internal well-orders, constructibility
+absoluteness and the final Choice comparison remain open.

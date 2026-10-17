@@ -12,8 +12,10 @@ equality layer. Until now its soundness and completeness existed only inside
 the imported Coq development (`ZF/stdzf/coq/L1_LMeta.v`, `Std_alpha.v`,
 `Std_H.v` and `ZF/m254/coq/logic/*` at upstream commit
 `297ab8df7e5de329605c3875b4934643b371a5e3`). This note records an
-independent Lean proof. No Coq file was ported or executed; the derivations
-below were reconstructed from the classical Tarski/Kalish–Montague route.
+independent Lean proof. The named-formula metatheorems were reconstructed
+from the classical Tarski/Kalish–Montague route. The separately attributed
+propositional certificate and numerical program ports are described below;
+no Coq compiler was run.
 
 ## Statements
 
@@ -388,9 +390,11 @@ Foundation and Power. It combines this lane's `ZFNative` direction with the
 [direct well-founded model](wf_model.md) of the native CP/GIC quotient.
 For the literal register program, non-halting is therefore equivalent to
 `Con(ZF)` and follows from `Con(ZFC)`. Choice removal is the remaining semantic
-transport to full ZFC. The actual252-state binary table has a proved blank
-bootstrap and generic simulation; its complete finite coverage certificate is
-still being checked. PA internalization is an additional proof-code obligation.
+transport to full ZFC. The actual252-state binary table now has the
+[closed `BinaryPerm252` endpoint](binary_perm252.md): complete blank bootstrap,
+all8,391 decoder guards and unbounded simulation give blank nonhalting iff
+`Con(ZF)`, with no coverage premise. PA internalization is an additional
+proof-code obligation.
 
 ## The constructible class is a model of ZF
 
@@ -444,3 +448,16 @@ uniform internal finite support for `SatIn` on every internal formula code,
 so definitions use finite parameter tuples rather than arbitrary full
 omega-environments. Fixed-standard-Form support lemmas alone do not supply it.
 The review does not claim Choice or a new compiler check.
+
+**Claimed by this lane (Choice transport, in progress).** New modules, in
+dependency order: `SatSupport.lean` (uniform finite support of `SatIn` on
+every internal code, by code induction), `InternalWO.lean` (internal
+well-orders: append, lexicographic product, least-key pullback, chain union),
+`CodeOrder.lean` (a well-order of the pair closure of `ω`, hence of the
+formula codes), `ConstructibleOrder.lean` (the canonical well-order of each
+`L_α` and `ChoiceSem` in any ZF model satisfying `V = L`),
+`ConstructibleAbs.lean` (absoluteness of certificates, codes and `Def`
+between `M` and its constructible class, hence `V = L` in `L`), and
+`ConstructibleChoice.lean` (`L ⊨ ZFC`, the Choice transport
+`BProv ZFCax_s [] ⊥ → BProv ZFax_s [] ⊥`, and the literal Con(ZFC)
+endpoint).

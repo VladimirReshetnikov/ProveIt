@@ -50,9 +50,12 @@ composes these with the actual blank bootstrap; its final caller retains the
 coverage premise. All imported sources match their scoped successful checks;
 the integration freshly checks the umbrella and callers, not all 118 sources.
 
-The complete 6,460-leaf/8,391-guard decoder certificate remains a separate
-running check. The standard-ZFC consistency comparison and its arithmetization
-remain separate from this conditional machine endpoint.
+The complete 6,460-leaf/8,391-guard decoder certificate has now passed in eight
+persisted batches and the final actual-tree composition. The
+[closed binary endpoint](binary_perm252.md) supplies the coverage premise and
+proves actual blank nonhalting iff Con(ZF). Its full153-unit integration uses
+these checked runtime modules without repeating their proofs. Choice removal
+and internal PA formalization remain open.
 
 The site construction and path semantics are adapted from Mira-Cult's machine,
 Jeff's verification and Wade's compiler framework at upstream commit

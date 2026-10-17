@@ -52,12 +52,15 @@ def main() -> None:
                         "RMDag", "Dag254", "L2Lib254", "L2Macros254", "L2Control254", "L2Axioms254", "L2AxiomsEval254", "L2Root254", "RMEquiv", "RMEquiv254", "ProgramZF0", "DecodeFresh254", "NamedForm254",
                         "DuplicateProfiles", "WritingRuns", "ZeroSite253", "EqualityGIC", "QuotientCPGIC", "NativeDecoded254", "NativeTheory254",
                         "EnumSafeStart254", "DirtyRoot254", "DirtyProgram254", "WellFoundedPart", "SeedInvariant254", "RMBisim", "ActualTree254", "Bisim254", "NamedZF", "InternalOrd", "InternalRank", "ZFRank", "ZFNative", "WFRelativization", "WFModel", "WFTheory", "Endpoint254",
-                        "TransRec", "ConstructibleDef", "Constructible", "ConstructibleReflect", "ConstructibleZF",
+                        "TransRec", "ConstructibleDef", "Constructible", "ConstructibleReflect", "ConstructibleZF", "SatSupport", "ConstructibleAbs",
                         "TablePerm252", "BootPerm252", "RegisterBoxesPerm252", "RegisterMarkPerm252",
                         "RegisterIncrementPerm252", "RegisterDecrementPerm252",
                         "Permutation252Frame", "BootstrapFramePerm252", "SymbolicPerm252", "SitePerm252",
                         "RegisterPathClean", "Permutation252Simulation", "InstructionPerm252",
-                        "SiteCoverage", "RuntimePerm252", "RuntimeInstancePerm252", "Permutation252Program") ),
+                        "SiteCoverage", "RuntimePerm252", "RuntimeInstancePerm252", "Permutation252Program",
+                        "SitesPerm252Checks0", "SitesPerm252Checks1", "SitesPerm252Checks2", "SitesPerm252Checks3",
+                        "SitesPerm252Checks4", "SitesPerm252Checks5", "SitesPerm252Checks6", "SitesPerm252Checks7",
+                        "SitesPerm252", "BinaryPerm252", "ZFCBoundPerm252") ),
         ("Computability/BusyBeaver/Lean", "BusyBeaver/ZFC.lean"),
     ]
     if args.include_no_quotient:

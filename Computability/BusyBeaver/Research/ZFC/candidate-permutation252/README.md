@@ -1,12 +1,13 @@
-# A 252-state candidate with a clean blank-tape startup
+# A 252-state machine with a checked ZF consistency endpoint
 
 The frozen binary table reaches a clean root frame after **82,552 actual
 blank-tape steps**. It has **252 working states, 504 transitions and one
-halting transition**. All 8,391 conditional instruction cases pass for the
+halting transition**. All 8,391 instruction guard cases pass Lean for the
 complete original register program under a new assignment of physical
-registers. The full nonhalting/Con(ZFC) equivalence has not yet been proved
-for this table; the general binary simulation and consistency endpoint remain
-open in Lean.
+registers. The [closed binary endpoint](../binary_perm252.md) proves that this
+exact machine never halts from the blank tape iff ordinary ZF is consistent,
+including Foundation and Power. Con(ZFC) implies nonhalting. The reverse ZFC
+comparison requires Choice removal; formalization inside PA remains open.
 
 The idea is to change where the existing runtime stores its registers. This
 preserves the intended program while changing what the same states do during
@@ -126,12 +127,17 @@ The [symbolic executor and instruction composition](../permutation252_runtime.md
 are now also kernel checked. They cover arbitrary gap parameters, register
 values and spare blocks; accepted instructions preserve the complete tape
 frame. The full finite decoder certificate and global halting composition
-are separate checks. The zero initial register vector is safe; completeness
+have now passed. The zero initial register vector is safe; completeness
 from an arbitrary initial candidate counter, including zero, is already
 handled by `DirtyProgram254`. The literal program's equivalence with the
 structured proof search has passed a fresh 3,010-entry certificate check.
-The full arithmetic consistency endpoint remains open. No claim that PA
-proves the final equivalence is made yet.
+`BinaryPerm252.nonhalting_iff_zf_consistency` composes those results with the
+checked native/ZF calibration, with no coverage or startup assumption.
+`ZFCBoundPerm252.blank_nonhalting_of_zfc_consistent` gives the ZFC consistency
+direction. The [153-unit integration](../results/binary-perm252-integration-verification.json)
+checks these exact callers and all reused source identities. The full arithmetic
+consistency endpoint remains open. No claim that PA proves the final equivalence
+is made yet.
 
 Reproduce the finite candidate audit and the exact generated artifacts with:
 

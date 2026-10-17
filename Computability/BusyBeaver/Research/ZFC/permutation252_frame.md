@@ -31,6 +31,13 @@ entire zero-exterior tape, integer head and dispatch state, with
 theorem can supply its zero-root constructor without assuming execution from
 the frame definition.
 
+The zero tail belongs to the abstract logical register vector, as in
+`L2.enc`. The concrete physical spare suffix is a separate list and may contain
+nonzero values. The complete site checks establish that every logical
+register operation selects an index below nine; the frame map then implements
+those nine registers and preserves the arbitrary spare suffix. It does not
+identify physical spare values with the unused logical tail.
+
 There is no spare capacity or spare-zero obstacle in this interface. The actual
 upstream `Box.v` lemmas `box_mark`, `box_inc`, `box_dec0`, and `box_decp` require
 only at least nine represented blocks. They permit arbitrary remaining values.
@@ -55,12 +62,16 @@ compose the native semantic equivalence. Evidence is in
 theorems supply no binary simulation by themselves.
 
 The exact canonical table and 82,552-step bootstrap have separately passed
-the kernel check. The [instruction and runtime proofs](permutation252_runtime.md)
-now compose this frame with the register-program endpoint, conditional on
-complete decoder coverage. Reproducing all 8,391 affine cases as a closed
-kernel certificate remains a separate running check. Standard-ZFC calibration
-is a separate obligation from the literal machine's connection to the exact
-native theory.
+the kernel check. The [complete decoder coverage](site_coverage.md) has now
+passed all 8,391 guard cases in eight saved batches and the final structural
+composition. A closed audit composes the [instruction and runtime
+proofs](permutation252_runtime.md) with this frame and the register-program
+endpoint, giving actual blank-machine halting iff numerical, native-theory,
+and ZF refutation. Its 23 axiom reports and seven caller controls passed in
+0.65 seconds; full evidence is in
+`results/sites-permutation252-verification.json`. The standard-ZFC Choice
+consistency comparison and arithmetic internalization remain separate
+obligations.
 
 Sources: `lib/jeff-busy-beaver-zfc254/ZF/m254/coq/tm/Box.v:233,248,270,286`,
 `Sim.v:81–84,161–165`; Lean `RegisterIncrement253.increment_zip`,

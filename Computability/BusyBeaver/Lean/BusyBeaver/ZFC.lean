@@ -56,6 +56,8 @@ import BusyBeaver.ZFC.ConstructibleDef
 import BusyBeaver.ZFC.Constructible
 import BusyBeaver.ZFC.ConstructibleReflect
 import BusyBeaver.ZFC.ConstructibleZF
+import BusyBeaver.ZFC.SatSupport
+import BusyBeaver.ZFC.ConstructibleAbs
 import BusyBeaver.ZFC.WFRelativization
 import BusyBeaver.ZFC.WFModel
 import BusyBeaver.ZFC.WFTheory
@@ -121,6 +123,10 @@ import BusyBeaver.ZFC.SiteCoverage
 import BusyBeaver.ZFC.RuntimePerm252
 import BusyBeaver.ZFC.RuntimeInstancePerm252
 import BusyBeaver.ZFC.Permutation252Program
+import BusyBeaver.ZFC.SitesPerm252
+import BusyBeaver.ZFC.BinaryPerm252
+import BusyBeaver.ZFC.ZFCBoundPerm252
 
-/-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC
-consistency theorem or state-count improvement is claimed by these imports. -/
+/-! Opt-in foundations for ZFC machine minimization. The exact 252-state
+blank machine is equivalent to Con(ZF). Choice transport and the requested
+formalization of the comparison inside PA remain separate obligations. -/
