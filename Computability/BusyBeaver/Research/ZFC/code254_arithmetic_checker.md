@@ -1,21 +1,14 @@
 # A concrete arithmetic representation of the exact C254 checker
 
-2026-10-16. The [exact Cantor adapter](arithmetic_cantor.md) is now implemented
-and checked in arbitrary IOpen models, with all-input identification of the
-actual `Code254.P` and `Cantor.ofNat` operations. A represented history table
-is the next step toward computing our existing
-`Code254Proof.check` without constructing or coding the `RawProof` datatype.
-The table's recursion is already supported by the pinned Foundation library.
-The construction plan below is retained; pairing and projection graphs are now
-implemented, while the full evaluator and internal PA proof remain open.
-The later [constructor component](arithmetic_code254.md) implements fixed
-bounded graphs for all four base4 constructors and the rho1/tag3 payload
-branch, including exact all-natural compatibility. The full row selector,
-remaining branches and history graph are still open.
-The [fixed-template extension](arithmetic_templates254.md) now also implements
-rho2–8, the C and G components, and the full bundle, via a uniform finite-circuit
-graph compiler. Thus all eleven positive fixed-template graphs are checked.
-Their guarded row outputs, complete tag dispatch and history remain open.
+Updated 2026-10-17. The construction below is now implemented in the
+[represented history checker](arithmetic_history254.md), through the exact
+[Cantor](arithmetic_cantor.md), [constructor](arithmetic_code254.md),
+[fixed-template](arithmetic_templates254.md) and [complete row](arithmetic_row254.md)
+adapters. The resulting fixed formula agrees with `Code254Proof.check` for all
+natural codes and conclusions. Unique Boolean evaluation holds in every IΣ1
+model, and its fixed totality sentence is proved in both IΣ1 and PA. The
+construction plan below is retained as its design rationale. The requested PA
+proof comparing binary traces with ZFC refutations remains open.
 
 The Foundation gitlink is `32e1a0956a8622fad067328ca1959729a7634428`.
 The initial read-only plan recovered its source from the Git object database.
@@ -168,40 +161,39 @@ the fixed result graph, then testing its `c`-th value against `n+1`. This is
 Σ1; total unique evaluation also gives the complementary/Δ1 presentation.
 A separate Boolean graph can return1 on acceptance and0 otherwise.
 
-The PA-totality proof target is concrete: prove in every model of `IΣ1` that
+The implemented PA-totality proof first establishes in every model of `IΣ1` that
 `history(c)` exists and has the stated recurrence, then that every `c,n` has
 one Boolean result. The represented-iterator totality theorem already handles
-nonstandard `c`. Arithmetic completeness can produce the actual PA derivation
+nonstandard `c`. Arithmetic completeness then produces the actual PA derivation
 of that **same fixed sentence**, following the existing call in
 `UniformInternalProvability.lean:157`. A model-dependent choice of unrelated
 graph formulas would not suffice; the blueprint here is fixed once and for all.
 
-## Exact next proof targets
+## Completed checker targets and remaining translations
 
 The Cantor arithmetic package with fixed Δ0 projection graphs and its
-standard-model compatibility lemma is now checked, as are the constructors
-and all positive fixed axiom templates. Define the complete twelve-case row
-graph, including rejection and both gates, and one history blueprint.
-These are independent of Native/ZF/Choice
-interpretations and do not require rebuilding their proof-code translations.
+standard-model compatibility lemma is checked, as are the constructors,
+all positive fixed axiom templates, the complete twelve-case row including
+rejection and both gates, and the history blueprint. These are independent of
+Native/ZF/Choice interpretations.
 
-The external checker-equivalence target is
+The checked external comparison is
 
 ```text
 ∀c n : Nat, Check254_ℕ(c,n) ↔ Code254Proof.check c n = true.
 ```
 
-Prove it by strong induction on the natural proof code: the two recursive
-fields are smaller, and the numeric value records exactly successful parsing,
-validity and conclusion. The existing `c254_iff_checked` then gives the usual
-external proof-existence equivalence. This comparison covers **all natural
-inputs**, including invalid MP nodes, missing children and colliding gates;
-quotation roundtrips alone are insufficient.
+`history_lookup_nat` first proves the equality of all lookups by induction on
+history length, including out-of-range indices. `checkDef_nat` composes that
+result with the existing all-input numeric-history/checker comparison. The
+existing `c254_iff_checked` gives external proof-existence equivalence. This
+covers **all natural inputs**, including invalid MP nodes, missing children and
+colliding gates.
 
-The arbitrary-model totality theorem is a distinct target. Neither it nor the
+The arbitrary-model totality theorem is separately proved. Neither it nor the
 standard comparison proves the later PA-internal native/ZF/ZFC proof
-translations or machine-trace translations. The construction above identifies
-a small concrete first step, not those further endpoints.
+translations or machine-trace translations. Those are the remaining arithmetic
+interfaces needed for the requested endpoint.
 
 ## Constructor certificates as an alternative representation
 

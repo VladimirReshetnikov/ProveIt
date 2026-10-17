@@ -128,8 +128,9 @@ The separate [arithmetic Cantor adapter](arithmetic_cantor.md) now proves the
 exact pairing and bounded inverse graphs in arbitrary IOpen models, then
 identifies them with the live numerical checker on every natural input.
 Its27 axiom probes and20 callers pass using pinned Foundation/Mathlib caches.
-This closes the pairing component of the PA representation plan; represented
-history evaluation and the full coded proof/trace comparison remain open.
+This closes the pairing component of the PA representation plan. The history
+extension below now supplies represented evaluation; the full coded proof/trace
+comparison remains open.
 
 The subsequent [constructor arithmetic graphs](arithmetic_code254.md) cover all
 four exact base4 operations and the complete rho1 payload branch. Their fixed
@@ -137,7 +138,7 @@ parameter-free bounded formulas work in every IOpen model and agree with the
 actual numerical definitions on all natural inputs. Fresh checks of this module,
 Cantor and both audits pass56 axiom probes and47 callers. The following extension
 adds the other positive templates. These arithmetic modules use separate
-Foundation/Mathlib dependencies and are outside the 165-unit core runner.
+Foundation/Mathlib dependencies and are outside the 167-unit core runner.
 
 The [fixed-template extension](arithmetic_templates254.md) now covers rho2–8,
 both theory components and the complete original bundle. A reusable finite
@@ -150,8 +151,16 @@ The [full arithmetic rule row](arithmetic_row254.md) now includes all twelve
 cases, failed MP, both bundle gates and invalid tags. Its fixed bounded graph
 works in every IOpen model and agrees with the actual history checker's row on
 every natural input, with child results supplied explicitly. The four-module
-chain passes 114 axiom probes and 120 callers. History lookup and construction,
-outer proof-code decoding and internal proof/trace transport remain open.
+chain passes 114 axiom probes and 120 callers. The next extension supplies the
+history lookup, construction and outer proof-code decoding.
+
+The [represented history checker](arithmetic_history254.md) now has fixed Σ1
+and Δ1 graphs and unique Boolean outputs at every element of every IΣ1 model.
+Its standard interpretation agrees with `Code254Proof.check` on every input,
+including invalid codes. Lean also proves actual IΣ1 and PA derivability of the
+fixed checker-totality sentence. Internal translations of proof codes and
+binary traces remain necessary for the requested PA equivalence with Con(ZFC).
+The five-module arithmetic verification passes 151 axiom probes and 164 callers.
 
 [Intake157/source50](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
 adds exact quotation bounds and canonical constructor-only certificates for all
@@ -437,7 +446,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `TarskiFalsity.lean` | The machines' relative falsity `F = Rel(0,0)`: the literal row set `ThmG (rel 0 0)` is sound for irreflexive models and complete for ⊥-free theories and targets; the comparison axiom IR is a generalized identity, not a row. |
 | `Code254.lean` | All-natural base-four decoder and original numerical calculus; soundness for decoded bundles, completeness under no nonempty model of literal encodable bundles. The corrected statement explicitly requires a valuation; `NativeDecoded254` now compares the two bundle model classes. |
 | `Code254Proof.lean`, `Code254ProofCompiler.lean` | Finite raw proof trees, a total natural-number checker and `C254 n ↔ ∃ code, check code n = true`; a structural compiler to the existing enumerator with exact block contracts and an explicit refutation command word. These external coding theorems are prerequisites for PA representation, not that representation itself ([checker](code254_proof.md), [compiler](code254_proof_compiler.md)). |
-| `Code254History.lean` | Numeric12-rule course-of-values evaluator; `accepts_iff_check` covers all codes/conclusions and `c254_iff_history` gives exact derivability. Ordinary Nat/list computation; arithmetic representation and internal PA totality remain open. |
+| `Code254History.lean` | Numeric12-rule course-of-values evaluator; `accepts_iff_check` covers all codes/conclusions and `c254_iff_history` gives exact derivability. The separate `ArithmeticHistory254` extension now represents this evaluator and proves checker totality in PA. |
 | `Enum254.lean` | The abstract six-register enumerator halts from zero iff code 1 is `C254`-derivable. Every candidate is reached unless an earlier one halts; proof blocks handle arbitrary retained registers. Model corollaries explicitly require a valuation. Its literal Prog254/RegisterPath simulation and the permutation252 complete binary composition are checked. |
 | `RMDag.lean`, `Dag254.lean`, `L2Lib254.lean`, `L2Macros254.lean`, `L2Control254.lean`, `L2Axioms254.lean`, `L2AxiomsEval254.lean`, `L2Root254.lean` | L2 for the shared 219-node register program (attributed data port of the pinned `Dag254.v`, used by the 253- and 254-state tables): Wade's structured semantics with determinism; every loop, `pair`, the unpair walk, all stack/formula macros, the equality test, fetch, MP/NIP/DROP and the generated `axioms()` closed forms; `root_step` (one root run is one `enumStep`, halting included), `iter_halts_boot` and `program_halts_iff : IterHalts dag254 (nextproof = 2) ↔ C254 1`. |
 | `RMEquiv.lean`, `RMEquiv254.lean` | L3: Wade's path semantics and the structured semantics agree for every well-formed DAG (`halts_iff_iterHalts`, forward and backward simulation up to trailing zero bits, Boolean well-formedness check); the 219-node program is well-formed (kernel-checked tables), giving `path_halts_iff : Halts pathDag254 (nextproof = 2) ↔ C254 1`. |

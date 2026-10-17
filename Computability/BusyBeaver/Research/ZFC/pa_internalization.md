@@ -1,8 +1,9 @@
 # Internalizing the machine comparison in arithmetic
 
-Read-only research inventory, 16 October 2026, against `7b1e56dbc59f746695a7fb375546422f91de3a96`
-and the explicitly identified work in progress below. No Lean or Coq build was
-run for this note. This is a proposed proof-code interface, not a PA theorem.
+Research inventory begun 16 October 2026 against
+`7b1e56dbc59f746695a7fb375546422f91de3a96`, updated with the explicitly linked
+Lean checks below. The full PA equivalence is still open. The represented
+checker now has an actual PA totality theorem, described near the end.
 
 The original request requires an equivalence provable in **PA**. The stored
 goal record instead says ZFC; the original PA requirement remains our target.
@@ -109,7 +110,8 @@ The external finite-data checkpoint below is now checked in
 `Code254Proof.lean`: unindexed `RawProof`, structural validity/conclusion,
 positive Nat quotation, total fuel parser, and `c254_iff_checked`. Its scoped
 verification is [recorded separately](results/code254-proof-verification.json).
-No represented arithmetic checker or PA theorem follows yet.
+That finite-data checkpoint alone does not represent the checker; the later
+arithmetic history extension below now supplies that representation.
 
 The staged route starts with this finite syntax, rather than arithmetizing model theory:
 
@@ -208,7 +210,8 @@ bounded projections, then use the existing arithmetic history iterator to
 evaluate all twelve proof rules. The pinned arithmetic library uses a different
 pairing for its own data, so that adapter cannot be omitted. The note gives the
 exact MP and gate tests, the fixed formula interface and all-input equivalence
-target; it is a construction plan, not a new PA theorem.
+target. The plan is now implemented by the arithmetic history extension below,
+including an actual PA theorem of unique Boolean evaluation.
 
 ## Intake156 proof-coding continuations
 
@@ -228,9 +231,9 @@ closes the requested internal PA theorem.
 The subsequent [ArithmeticCantor adapter](arithmetic_cantor.md) now supplies the
 literal Cantor polynomial graph, bounded inverse graphs and all-natural
 identification with `Code254.P`/`Cantor.ofNat`, in arbitrary IOpen models.
-Its semantic representation uses weaker arithmetic than full PA. The actual
-checker/history and finite proof/trace compiler remain unrepresented here;
-this local definability theorem is not the requested whole-machine PA proof.
+Its semantic representation uses weaker arithmetic than full PA. The history
+extension below now represents the checker; finite proof/trace translation
+remains open. This local definability theorem is not the whole-machine PA proof.
 
 The [constructor extension](arithmetic_code254.md) now supplies fixed bounded
 graphs for the four live numerical constructors and the rho1 payload branch.
@@ -248,9 +251,16 @@ adds both gates, exact rejected-row behavior and every invalid tag, with bounded
 witnesses justified separately for failed and successful branches. It agrees
 with `Code254History.row` on every natural input, using explicit child-result
 values, and its fixed graph works in every IOpen model. The four-module chain
-passes 114 axiom probes and 120 callers. History lookup and recursion, outer
-proof-code decoding and internally coded proof and trace translations remain
-open.
+passes 114 axiom probes and 120 callers.
+
+The [represented history checker](arithmetic_history254.md) completes the
+selector, actual child lookups and history iteration. Its fixed Σ1/Δ1 graphs
+are total at all internal codes in every IΣ1 model. `history_lookup_nat` covers
+every lookup index, including out-of-range zero, and `checkDef_nat` identifies
+the fixed formula with the actual `Code254Proof.check` for every natural input.
+The fixed `totalitySentence` also has actual IΣ1 and PA derivations. This closes
+checker representation and totality; internally coded proof and machine-trace
+translations remain open.
 
 Intake157's [canonical term certificates](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
 provide ordinary exact checker reductions and constructor-only derivations.

@@ -28,8 +28,9 @@ every supplied child-result function `rec`. `rowGraph_nat` gives the same
 comparison directly for the fixed formula. The first supplied slot is GEN's
 tail lookup or MP's minor lookup; the second is MP's major lookup. These
 theorems do **not** represent the lookup operation or encode an arbitrary
-function as a natural number. History construction, outer code-zero and
-tag-modulo-12 decoding, proof translation and finite machine traces remain
+function as a natural number. The subsequent [history extension](arithmetic_history254.md)
+supplies the actual lookups, history construction, code-zero handling and
+tag-modulo-12 decoding. Proof translation and finite machine traces remain
 separate obligations.
 
 The [maintained verification](results/arithmetic-row254-verification.json)
