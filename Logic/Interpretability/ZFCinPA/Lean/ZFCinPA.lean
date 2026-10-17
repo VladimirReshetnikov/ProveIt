@@ -77,3 +77,7 @@ import ZFCinPA.ConstructibleInterpretation
 import ZFCinPA.ConstructibleInterpretationAudit
 import ZFCinPA.EnvTransform
 import ZFCinPA.EnvTransformAudit
+import ZFCinPA.LTemplate
+import ZFCinPA.LPieces
+import ZFCinPA.LTransVal
+import ZFCinPA.LTemplateAudit
