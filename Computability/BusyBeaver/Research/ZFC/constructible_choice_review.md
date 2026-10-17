@@ -48,3 +48,53 @@ binary-machine endpoint is inferred from this review.
 | ConstructibleDef.lean | `e487e6ff18b456c631ee377bafd7ddce998873686bea886723655f52ae07a699` |
 | Constructible.lean | `c2d5ff0435d0e1f7bd5450c6f332999bbe887abfbc71a93deed46a7abc7bfa71` |
 | ConstructibleReflect.lean | `07ad377189fdb57c73b0b9058c04820d2d03dfe3863406d1933ae03179cc7a15` |
+
+A proposed route to the missing support interface is to prove existence
+directly by internal formula-code induction. This is a plan, not a proved
+lemma. Write `Agree(E,E',n)` for agreement of `applyV H E i` and
+`applyV H E' i` at every internal `i ∈ n`. Write `Supports(c,n)` for the
+uniform statement that this agreement preserves `SatIn H A R c` for every
+`IsSetStructure H A R` and both genuine `IsEnvOn H A` environments. Apply
+`LeanProofs.BoundedZFCConsistency.isFormCodeSem_ind'` from
+`FormulaClosedSet.lean` to the definable property
+
+```text
+P(c) := IsFormCodeSem H c ∧ ∃ n, n ∈ omegaV H ∧ Supports(c,n).
+```
+
+The code conjunct supplies the child-code hypotheses required by the Tarski
+clauses. The property must have an actual `Form` specification; merely
+describing it as a semantic predicate does not discharge `isFormCodeSem_ind'`'s
+`hdef` premise. Existing `ConstructibleDef.isCodeF`, `envOnF`, `satInF` and
+their `nsat_*` specifications provide several of the needed pieces.
+
+For either atomic constructor, a successor of the greater internal variable
+index bounds both arguments. Falsity needs the zero bound. For implication,
+conjunction and disjunction, use a common upper bound of the two natural
+supports. For either quantifier, even the child's bound is sufficient:
+`nat_zero_or_succ`, `econs_zero`, `econs_succ` and internal natural
+transitivity show that consing the same bound value onto two agreeing
+environments retains agreement below that bound. `econs_isEnvOn` supplies
+the shifted-environment premises. The existing `satIn_memAtom`,
+`satIn_eqAtom`, `satIn_bot`, `satIn_imp`, `satIn_and`, `satIn_or`,
+`satIn_all` and `satIn_ex` clauses then reduce each constructor to its
+children. All these steps must cover internal nonstandard indices, not
+external finite induction on natural numbers.
+
+This route would supply an existential internal natural support without
+first constructing a recursive support function. A later definable least
+support can use the uniqueness of a least natural bound. The further tuple
+coding and internal well-order arguments for Choice would still remain.
+
+A subsequent separate review of the404-line `ConstructibleZF.lean` at
+`a856bfa0eb` also found no defect. It proves `L_models_ZF` with the actual
+`InL` subtype and the ambient ZF, Power and internal Regularity premises.
+Its Separation argument explicitly truncates arbitrary valuations to the
+finitely many relevant parameters before applying reflection; thus that
+caller obligation above has now been met. Replacement uses an actual
+`InL`-guarded functional graph and the correct output0/input1 convention.
+This fifth module supplies all ZF axioms in L, while the uniform internal
+finite-support prerequisite for its well-order and Choice remains separate.
+The [new review record](results/constructible-zf-independent-source-review.json)
+retains its SHA256
+`8d6802f21c12b9e31b8a7ba2738200cabbc5b8ce73cb9cd4bfe40663ef40b76c`.

@@ -1,0 +1,64 @@
+{
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "scope": "External finite RawProof syntax, total fuel parser/Boolean validator and exact C254 n iff exists accepted Nat proof code. No PA representation/totality, enumerator compiler or new machine endpoint.",
+  "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Proof.lean",
+  "source_sha256": "7bb8daf0f1c0965d22f2f16bbb1898d60cfb79f9a6feabe8ab38b3f69b3bc6d1",
+  "cache": "/tmp/zfc-code254-proof-check-mx4hja9d/cache",
+  "LEAN_PATH": "/tmp/zfc-code254-proof-check-mx4hja9d/cache",
+  "LEAN_NUM_THREADS": "1",
+  "reused_imports": "/tmp/zfc-wf3-check/cache, unchanged Code254 dependency closure",
+  "module": {
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "-o",
+      "/tmp/zfc-code254-proof-check-mx4hja9d/cache/BusyBeaver/ZFC/Code254Proof.olean",
+      "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Proof.lean"
+    ],
+    "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+    "exit_code": 0,
+    "seconds": 1.2488583996891975,
+    "output": ""
+  },
+  "audit_source": "import BusyBeaver.ZFC.Code254Proof\nnamespace SetTheory.BusyBeaver.ZFC.Code254ProofAudit\nopen Code254 Code254Proof\n#print axioms RawProof.sound\n#print axioms rawProof_exists\n#print axioms decode_node\n#print axioms RawProof.height_le_quote\n#print axioms RawProof.decode_quote\n#print axioms check_sound\n#print axioms RawProof.check_quote\n#print axioms c254_iff_checked\n#print axioms reject_zero\n#print axioms accept_truth\n\nexample (n : Nat) : C254 n \u2194 \u2203 code, check code n = true := c254_iff_checked n\nexample (p : RawProof) : decodeFuel (p.quote + 1) p.quote = some p :=\n  p.decode_quote _ (Nat.le_trans p.height_le_quote (Nat.le_succ _))\nexample (a b c u : Nat) : check (RawProof.r8 a b c u).quote (rho8 a b c u) = true :=\n  (RawProof.r8 a b c u).check_quote\nexample (a b c : Nat) (hca : c \u2260 a) (hcb : c \u2260 b) :\n    check (RawProof.bundle a b c).quote (Code254.bundle a b c) = true := by\n  simpa [RawProof.conclusion, RawProof.valid, hca, hcb] using (RawProof.bundle a b c).check_quote\nexample {n : Nat} (code : Nat) (h : check code n = true) : C254 n := check_sound h\nexample : check 1 1 = false := by decide\nexample : check 170 0 = true := by decide\nexample : check 51 6 = true := by decide\nexample : check 12 0 = false := by decide\nexample : check 24 0 = false := by decide\nexample : check 13 0 = false := by decide\nexample : check (node 1 (P 0 (P 1 0))) 0 = false := by decide\nexample : check (node 1 (P 1 (P 1 1))) 1 = false := by decide\nend SetTheory.BusyBeaver.ZFC.Code254ProofAudit\n",
+  "audit": {
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "/tmp/zfc-code254-proof-check-mx4hja9d/Audit.lean"
+    ],
+    "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+    "exit_code": 0,
+    "seconds": 0.232575128,
+    "output": "'SetTheory.BusyBeaver.ZFC.Code254Proof.RawProof.sound' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Code254Proof.rawProof_exists' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Code254Proof.decode_node' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254Proof.RawProof.height_le_quote' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254Proof.RawProof.decode_quote' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254Proof.check_sound' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Code254Proof.RawProof.check_quote' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254Proof.c254_iff_checked' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254Proof.reject_zero' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Code254Proof.accept_truth' depends on axioms: [propext]\n",
+    "timing_source": "exec_command wall_time_seconds"
+  },
+  "status": "PASS",
+  "axiom_reports": 10,
+  "caller_checks": 13,
+  "source_diagnostics": [],
+  "axioms_observed": [
+    "Classical.choice",
+    "Quot.sound",
+    "propext"
+  ],
+  "history": [
+    {
+      "representation": "Nat-indexed Type draft",
+      "status": "not verified",
+      "details": "Default recursor generation hit heartbeat/recursion limits; one raised-bound attempt had a source option-placement error; the final indexed attempt was interrupted at about30seconds to return the shared build slot. No PASS claimed."
+    },
+    {
+      "representation": "unindexed RawProof first source attempt",
+      "status": "failed tactic sequencing only",
+      "details": "Nine leaf height bounds were already closed by simp; trailing omega reported No goals to be solved. Removing those trailing tactics produced the fresh clean source check."
+    },
+    {
+      "representation": "first caller audit",
+      "status": "one audit caller failed",
+      "details": "Bundle caller needed explicit RawProof.conclusion unfolding. The module itself was already clean. Final audit passes."
+    }
+  ],
+  "independent_review": {
+    "unindexed_revision": "Full source read independently after the representation change; all12 rules, literalMP equality, gate checks, parser payloads, fuel proof and Prop-to-existence scope found clean.",
+    "builds_by_reviewer": false
+  }
+}
