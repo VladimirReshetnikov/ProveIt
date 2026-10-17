@@ -2,7 +2,10 @@ The global runtime argument and its whole-frame instantiation passed the
 pinned Lean 4.32.0 kernel. The concrete conclusion is conditional on complete
 decoder coverage: given a checked instruction at every actual leaf, the
 register program halts exactly when the literal permutation252 machine halts
-from a related dispatch frame. The finite all-sites proof is a separate input.
+from a related dispatch frame. The finite all-sites proof is a separate input
+to these generic modules. It is now discharged by `SitesPerm252`; the
+[closed binary endpoint](binary_perm252.md) proves actual blank nonhalting iff
+Con(ZF), including Foundation and Power.
 
 `RuntimePerm252.lean` is generic over a deterministic partial logical step and
 the existing Core machine. Its `PositiveSimulation` relation requires active
@@ -45,6 +48,6 @@ are in `results/runtime-perm252-verification.json`. Dependencies came from the
 source-verified scoped cache recorded there; this did not repeat a fresh full
 source closure or the finite bootstrap calculation.
 
-This checkpoint supplies the generic runtime bridge, not the closed all-sites
-certificate or an unconditional blank-machine theorem. It does not establish
-the standard-ZFC consistency calibration or its internal PA formalization.
+This historical checkpoint supplies the generic runtime bridge. Its closed
+all-sites application is now checked in `BinaryPerm252`. The standard-ZFC
+consistency calibration and its internal PA formalization remain open.

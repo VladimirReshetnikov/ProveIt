@@ -8,16 +8,15 @@ theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
 cost measure that decides whether a candidate improves the baseline.
 
-A new [252-state register-permutation candidate](candidate-permutation252/README.md)
-reaches a clean root with all nine registers zero after 82,552 actual blank-tape
-steps. It retains the complete original proof-search program and passes all
-8,391 conditional instruction checks. The exact table, full startup tape and
-independent regeneration are preserved. General binary simulation and the
-final consistency equivalence remain open; this is distinct from the older
-reduced-calculus 252-state experiment below.
-The [symbolic executor, clean-path invariant and instruction framing](permutation252_runtime.md)
-now have Lean proofs for the actual candidate. Complete decoder coverage and
-global halting composition are separate checks.
+The [252-state register-permutation machine](candidate-permutation252/README.md)
+now has a [closed Lean endpoint](binary_perm252.md): its literal blank-tape
+nonhalting is equivalent to consistency of ordinary ZF, including Foundation
+and Power. It retains the complete original proof-search program. The proof
+includes all 82,552 bootstrap steps, all 8,391 decoder guard cases, unbounded
+register operations and both directions of global binary simulation. No
+coverage or register-operation premise remains. The exact table, full startup
+tape and independent regeneration are preserved. This is distinct from the
+older reduced-calculus 252-state experiment below.
 
 The [direct well-founded-model construction](wf_model.md) now proves in Lean
 that the exact native/numerical calculus is equiconsistent with ordinary ZF,
@@ -27,11 +26,18 @@ resource. Choice removal remains assigned to the constructible-class lane;
 proof-code bridge. The original request asks for a PA proof, which is stronger
 than the later goal record's ZFC metatheory target.
 
-The proof-data and constructible-model additions passed a
-[142-unit source-verified integration](results/theory-code-integration-verification.json):
-all141 imported source identities match successful scoped builds, with a fresh
-umbrella and joint callers. This is not a full142-module rebuild. The complete
-binary coverage check is separate and remains pending.
+The complete binary endpoint passed a
+[153-unit source-verified integration](results/binary-perm252-integration-verification.json):
+all151 reused source identities match successful scoped builds, with fresh
+standard-theory bounds, umbrella and joint callers. This is not a full153-module
+rebuild. The closed theorem also proves Con(ZFC) implies nonhalting; the reverse
+ZFC implication and the internal PA proof remain open.
+
+A measured attempt to save a register by changing Cantor pairing to a
+[power-of-two encoding](register_lifetime.md) retained the full calculus but
+cost 306 states; its tested hybrids cost at least293. The current 252-state
+table remains unchanged. Fewer registers alone do not guarantee a smaller
+complete machine.
 
 The [attributed upstream baseline](../../../../lib/jeff-busy-beaver-zfc254/README.proveit.md)
 is imported at commit `297ab8df7e5de329605c3875b4934643b371a5e3`.
@@ -261,39 +267,42 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `SingletonInfinity.lean` | A literal Separation cut gives the least singleton-closed index, with induction over represented sets and formulas; Infinity is not an assumption. |
 | `BreakSite253.lean` | Complete actual PC site001→1 with unchanged registers/spares and whole-tape DispatchFrame, in 2×gap+34 steps. General dispatch remains open. |
 | `FiniteSets.lean`, `InductiveAttempts.lean` | Actual finite graph objects and formula atoms construct an ordinary inductive set in the CP/GIC quotient, using three specific Separation matrices and one Replacement matrix, with no prior Infinity. |
-| `QuotientZF0.lean` | The complete quotient satisfies ZF without Foundation or Choice; a refutation of that theory forces the actual abstract enumerator to halt. The converse and binary simulation remain open. |
+| `QuotientZF0.lean` | The complete quotient satisfies ZF without Foundation or Choice; a refutation of that theory forces the abstract enumerator to halt. `WFTheory` supplies the full ZF comparison and `BinaryPerm252` the literal binary endpoint. |
 | `DecodeFresh254.lean`, `NamedForm254.lean` | Every-code semantic freshness, including truth code0, and exact named-to-de-Bruijn matrices including shadowed/colliding names. Native equality is retained explicitly. |
 | `DuplicateProfiles.lean` | A conditional duplicate-model obstruction: equality-free CP/GIC and IR can hold while the actual native-equality numerical bundle fails. No starting-model existence is asserted. |
 | `WritingRuns.lean` | Exact arbitrary-length scans that overwrite the read bit, with whole-tape Core corollaries and explicit actual-transition premises. |
 | `ZeroSite253.lean` | Complete actual000 zero branch preserves the full dispatch frame; the checked blank run extends to313429 binary steps and matches RM331, with all158spares retained. |
 | `EqualityGIC.lean` | Explicit outgoing-profile faithfulness, supplied for example by native Pairing, permits equality erasure and extends equality-free GIC to all actual Form matrices. |
 | `QuotientCPGIC.lean` | A literal output-guarded trace gives CP in the same raw container's quotient; translated actual Form matrices give full native-equality GIC. Quotient IR is not inferred. |
-| `ProgramZF0.lean` | A ZF0 refutation forces the actual 219-node structured program to halt from nextproof = 2; structured non-halting implies Con(ZF0). Literal Prog254/binary simulation and Foundation/Choice transport remain separate. |
+| `ProgramZF0.lean` | A ZF0 refutation forces the actual 219-node structured program to halt from nextproof = 2; structured non-halting implies Con(ZF0). The subsequent `BinaryPerm252` endpoint includes literal blank execution and Foundation; Choice remains open. |
 | `NativeDecoded254.lean` | Native CP + full actual-Form GIC + raw IR satisfy every decoded bundle, including coincident binders and truth code 0. With an explicit valuation, ModelsEncodable and ModelsDecoded are equivalent. |
 | `NativeTheory254.lean` | Numerical falsity and actual 219-node structured-program halting are each equivalent to refutability of the explicit sentence theory CP + full native-Form GIC + IR. ZFC calibration and binary execution remain separate. |
 | `EnumSafeStart254.lean`, `DirtyRoot254.lean`, `DirtyProgram254.lean` | Attributed arbitrary-cutoff enumeration and dirty-root absorption, composed with the actual structured219/path program. Six numerical fields are unrestricted; top/cache/stack retain their exact theorem invariant and logical registers beyond8 remain zero. |
 | `SeedInvariant254.lean` | Six constructors certify nonzero initial theorem codes, unshifted stacks, and the resulting dirty-start/native-refutation equivalence. This gives a larger sufficient initializer target; no binary startup is inferred. |
 | `WellFoundedPart.lean`, `WFRelativization.lean`, `WFModel.lean`, `WFTheory.lean` | One actual GIC instance supplies closure of internal well-foundedness. Actual translated Separation/Replacement, Infinity and Power make its subtype a ZF model, yielding `C254 F ↔ BProv ZFax_s [] Bot` and native/ZF equiconsistency. Choice and internal PA proof codes remain open ([direct route](wf_model.md)). |
 | `RMBisim.lean` | Merged generic segment bisimulation with symmetric halting transport and a sound finite checker on explicit decoder trees. No concrete certificate instance is included in this module. |
+| `SitesPerm252Checks0–7.lean`, `SitesPerm252.lean` | All233 decoder chunks and8,391 guarded instruction cases, composed against the complete literal tree. No external coverage premise remains. |
+| `BinaryPerm252.lean`, `ZFCBoundPerm252.lean` | Actual blank252 halting iff numerical/native/ZF refutation, also iff an accepted finite proof code. Con(ZFC) implies blank nonhalting. Choice removal and internal PA formalization remain open. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
 named-calculus completeness. The seven added modules and updated umbrella
 pass scoped direct Lean checks against the source-verified dependency cache.
 The basis and ex-falso derivations use no axioms; completeness uses only
-`propext`, `Classical.choice` and `Quot.sound`. Numerical syntax, relative
-runtime falsity, the literal theory bundle and the machine remain separate
-proof obligations.
+`propext`, `Classical.choice` and `Quot.sound`. The later numerical, native-theory
+and binary modules listed above discharge the corresponding obligations for
+the complete original calculus and the252-state permutation machine.
 
 The calibration uses the repository's first-order internal recursion theorem
 for the reverse construction, then its generic completeness theorem for
 deductive equivalence; [psc_calibration.md](psc_calibration.md) gives the exact
-statements and comparison theory. It is not a computable proof-code translator verified
-in arithmetic. No theorem here supplies a proof-producing theory translator, a complete
-binary refutation checker, an enumerator compiler, a general verified executing
-decoder, or the final ZFC machine endpoint. `PositiveClosure` deliberately assumes the
-specific closure instances used by each lemma, rather than silently assert
-all second-order relations form an implemented first-order schema.
+statements and comparison theory. That semantic calibration is not a proof-code
+translator verified in arithmetic. The current binary and proof-data modules
+supply an external checker/compiler endpoint, while internal arithmetic theory
+transport and the final ZFC comparison remain open. `PositiveClosure`
+deliberately assumes the specific closure instances used by each lemma;
+arbitrary second-order relations are not silently treated as a first-order
+schema.
 
 The Lean prefix/de Bruijn codec and Python postfix/named-variable bit codec
 are distinct encodings. Only the stated Lean token codec has a Lean theorem.
@@ -301,7 +310,7 @@ Three token forms still carry natural-number atom payloads. Axiom audits
 show no custom axioms or `sorryAx`; only the repository's ordinary Lean
 foundational axioms occur. The literal finite table facts have no axioms.
 
-Rebuild the entire small dependency closure **serially from source**:
+Rebuild the dependency closure **serially from source**:
 
 ```sh
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
@@ -553,19 +562,17 @@ without a new state bound or binary simulation theorem.
 
 ## Next proof and compiler work
 
-1. Complete the Choice transport from the checked native/ZF comparison,
-   using the calibrated subset-PSC theory as a control.
-   Keep alternative and artificial calculi eligible by complete compiler cost.
-2. Supply a complete logical frontend with a proved cross-variable substitution
-   or refutation interface. The finite-sort model rules out calibrating the
-   existing reduced C/G calculus. Preserve the attributed 253 construction as
-   the implementation baseline while measuring complete alternatives.
-3. Prove the selected enumerator, compiler and actual initializer simulations.
-   The existing generic totalization result covers one normalization step,
-   and register bisimulation covers exposed operations; neither covers the
-   complete binary interpreter.
-4. Establish the required ZFC-provable nonhalting/consistency equivalence before
-   claiming the numerical candidate as an improvement on the benchmark.
+1. Complete the Choice transport from the checked native/ZF comparison through
+   the constructible-class lane. The complete252 binary simulation is checked.
+2. Represent the exact proof checker, proof-data compiler and finite binary
+   traces inside PA, and prove the required arithmetic comparison. The external
+   Lean equivalence does not settle this stronger requirement.
+3. Continue minimizing complete machines. Alternative and artificial calculi
+   remain eligible once their consistency comparison is justified; preserve
+   the complete252 machine as the current implementation baseline.
+4. Preserve the finite-sort countermodel when evaluating reduced logical
+   engines. A smaller compiled table without a sound consistency calibration
+   does not establish the requested record.
 
 The [public 253-state fold complement](public253_fold_search.md) tests all 504
 folds of the two additional old states 5 and 84 while preserving every protected
