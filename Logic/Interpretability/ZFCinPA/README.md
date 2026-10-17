@@ -172,6 +172,7 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `CodeInductionSource` | code-induction at `StepGood` as a Separation antecedent |
 | `Endpoint` | the target, the chain to it, and its exact residue |
 | `SetRelativization` | represented relativization for `ℒₛₑₜ`: closed terms are variables, and the internal relative-interpretation theorem `provable_falsum_of_relativize_set` (generic core: `BoundedPAConsistency.InternalRelativization`) |
+| `ConstructibleInterpretation` | the constructible interpretation of `𝗭𝗙𝗖` in `𝗭𝗙`, internalized: a model-independent `x ∈ L` formula, external relativization with its evaluation and quotation laws, `𝗭𝗙 ⊢ σ^L` for the equality, fixed and choice axioms, and `provable_falsum_ZF_of_ZFC` (`Prov_ZFC(⊥) → Prov_ZF(⊥)` in every model of `IΣ₁`, modulo the separation/replacement schema obligation `hSchema`) |
 
 ## Building
 
@@ -296,3 +297,9 @@ module supplies no schema callback or arbitrary internal source-proof transport.
 [The exact numerical G row](model_coded_decoder_collection254.md) now has an internal ZF proof under precisely the two validator gates, including coincident labels and the zero-code case. The check passed 10 probes/16 callers with standard Lean axioms; eleven source style warnings remain. All five attempts are archived. Full bundle assembly, accepted-proof induction and the PA consistency equivalence remain separate.
 
 [The full numerical bundle](model_coded_decoder_bundle254.md) now has an internal ZF proof for every permitted input, including coincident labels and code zero. It combines the exact C/G rows and both atomic vacuity clauses under the original two gates. The first check passed 3 probes/8 callers with standard Lean axioms and zero warnings. Accepted-proof induction and the PA consistency comparison remain separate.
+
+[All-internal accepted-proof soundness](model_coded_decoder_accepted254.md) now transports every accepted numerical conclusion to an actual internal ZF proof, by eligible Σ₁ induction over all proof codes. Accepted value 2 yields a ZF contradiction. The complete check passed 5 probes/10 callers with standard Lean axioms; fourteen source style warnings remain. The first failed numeral-normalization attempt is retained. The reverse proof translation remains open; the fixed forward PA sentence is proved below.
+
+[The fixed forward consistency implications](validator_consistency_forward254.md) are now theorems of IΣ₁ and PA: Con(ZF) and Con(ZFC) each imply that no internal numerical proof code has validator value 2. The first check passed 8 probes/10 callers with standard Lean axioms and zero warnings. It uses the completed all-internal accepted-proof transport before arithmetic completeness. The converse and the actual binary-machine equivalence remain open.
+
+[The internal validator proof calculus](validator_provability254.md) now supplies a fixed Σ₁ theorem predicate with all twelve original rule closures and a classical implication interface, for arbitrary internal formula and proof codes. The check passed 22 probes/16 callers with standard Lean axioms and zero warnings. It reuses the existing numerical proof constructors and polymorphic propositional certificates. The internal formula/proof encoder and reverse consistency implication remain open; variable renaming needs special care because the bundle parameter is both a formula code and a variable label.

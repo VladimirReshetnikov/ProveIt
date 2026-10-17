@@ -3,11 +3,10 @@
 Research inventory begun 16 October 2026 against
 `7b1e56dbc59f746695a7fb375546422f91de3a96`, updated with the explicitly linked
 Lean checks below. The full PA equivalence is still open. The represented
-checker and actual machine-run evaluator now have PA totality theorems,
-described near the end.
+checker and actual machine-run evaluator have PA totality theorems. The
+forward validator consistency implication is now also proved in IΣ₁ and PA.
 
-The original request requires an equivalence provable in **PA**. The stored
-goal record instead says ZFC; the original PA requirement remains our target.
+The request and active goal require an equivalence provable in **PA**.
 A Lean theorem comparing halting and `BProv` is an ordinary metatheorem until
 the intended arithmetic sentence and an object-theory proof are connected to
 it. Completing the PA version would also serve the ZFC requirement, after
@@ -18,7 +17,33 @@ Lean theorem for the literal 252-state machine: blank nonhalting iff Con(ZFC).
 It uses Choice in L and external first-order completeness. This discharges the
 external consistency comparison; it does not implement the represented proof
 translations or prove their correctness for every internal code in every PA
-model. Those obligations below remain.
+model. The remaining obligations are recorded below.
+
+The current arithmetic checkpoints are:
+
+* [Accepted-proof soundness](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_accepted254.md)
+  sends every accepted internal numerical conclusion to an actual internal ZF
+  proof. It covers all twelve rows, both bundle gates and arbitrary
+  nonstandard proof codes, using Σ₁ order induction.
+* [The fixed forward sentences](../../../../Logic/Interpretability/ZFCinPA/validator_consistency_forward254.md)
+  have actual IΣ₁ and PA proofs:
+  `Con(ZF) → ¬∃code, value(code)=2` and
+  `Con(ZFC) → ¬∃code, value(code)=2`.
+  The all-internal soundness theorem supplies the model-wise premise before
+  arithmetic completeness is applied to these fixed sentences.
+* [Internal relative interpretation](internal_relativization_refresh.md)
+  now includes domain-side discharge and the function-free set-language
+  adapter. Actual interpreted-domain, nonemptiness and translated-axiom
+  proofs remain explicit.
+* [Both actual reads](arithmetic_control_read_template254.md) are checked on
+  every internal register file with its scratch fields zero. They reach the
+  actual dispatch control 38, retain the whole register file in their
+  endpoint, and give a positive internal logical runtime.
+
+The remaining major steps are the reverse internal ZF-to-validator proof
+translation, the L-specific ZFC-to-ZF axiom proofs, and the complete
+interpreter-to-Enum connection. The forward validator sentence alone does
+not yet imply the requested PA theorem about the literal binary machine.
 
 ## What is already available
 
@@ -457,11 +482,35 @@ is now **checked** (standard axioms only), in
    internal term is a free variable (its function-symbol recognizer is `⊥`),
    and `provable_falsum_of_relativize_set` packages item 4 for set theories.
 
-**Remaining for the Choice transport in PA** (this lane, next): the
-L-specific obligations of `provable_falsum_of_relativize_set` with
-`T = 𝗭𝗙𝗖`, `U = 𝗭𝗙` and `d = ⌜x ∈ L⌝`:
-`Provable 𝗭𝗙 ⌜∃x (x ∈ L)⌝`, and `ZF ⊢ ax^L` (with side formulas) for every
-internal `𝗭𝗙𝗖` axiom code, by fixed templates for the finitely many single
-axioms (Choice included) and internal formula induction, via the reflection
-principle, for the Separation and Replacement schemata. Feeding the result
-into the C254/ZF comparison then gives the Choice half of the PA endpoint.
+6. `ZFCinPA/ConstructibleInterpretation.lean`: the L-specific obligations
+   with `T = 𝗭𝗙𝗖`, `U = 𝗭𝗙`, `d = ⌜x ∈ L⌝`, except the schemata.
+   * `inLSyn`/`domL`: one model-independent formula for `x ∈ L` (the
+     repository's `Constructible.inLF` with its operation bundle unfolded;
+     `inLSyn_eq` is `rfl`), translated to a Foundation semisentence with
+     `eval_domL` in every model of `𝗭𝗙`.
+   * `relF`: external relativization, clause for clause the internal one;
+     `eval_relF` evaluates it in the carved-out substructure, and
+     `quote_relF`/`quote_relF_sentence` prove `⌜σ^L⌝ = relativize ⌜δ⌝ ⌜σ⌝`.
+   * `L_models`: the constructible class of a Foundation model of `𝗭𝗙`
+     satisfies the equality axioms, the seven fixed axioms and `𝗔𝗖` (Gödel,
+     via `BusyBeaver.ZFC.ConstructibleZF`/`ConstructibleOrder`, with the
+     bundle extracted by `zfAxioms_of_modelsZF`). Completeness gives
+     `𝗭𝗙 ⊢ σ^L` (`zf_proves_relL`) and `𝗭𝗙 ⊢ ∃x (x ∈ L)`.
+   * `mem_ZFC_class` splits the internal `𝗭𝗙𝗖` axiom class into its five
+     `Δ₁` parts; codes in the three finite parts are standard numerals
+     (`standard_of_mem_class`), so `standard_obligation` discharges them by
+     D1 with no side formulas.
+   * `provable_falsum_ZF_of_ZFC`: in every model of `IΣ₁`,
+     `Prov_ZFC(⊥) → Prov_ZF(⊥)`, **assuming** `hSchema`: every internal
+     separation or replacement axiom code `p` has an internal
+     `𝗭𝗙`-derivation of `p^L` with side formulas.
+
+**Remaining for the Choice transport in PA** (this lane, next): `hSchema`.
+An internal schema code is `∀^m (Fval K)` for an internal (possibly
+nonstandard) core `K` (`SchemaClosure.SchemaRecognizer`), so no finite
+template set covers it. The plan is a represented proof generator: by
+internal formula induction on `K`, produce an internal `𝗭𝗙`-derivation of
+the relativized instance from fixed templates (Lévy reflection for `L`:
+closure of `L` under the Gödel operations, absoluteness of `Δ₀` parts, and
+the reflection step at each quantifier). Feeding the result into the
+C254/ZF comparison then gives the Choice half of the PA endpoint.
