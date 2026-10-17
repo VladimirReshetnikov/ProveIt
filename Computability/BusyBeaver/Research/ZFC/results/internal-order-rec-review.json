@@ -1,0 +1,134 @@
+{
+  "status": "PASS_WITH_DOCUMENTATION_CAVEATS",
+  "reviewer": "review_fibers",
+  "mode": "Independent full read-only mathematical/API audit; no Lean compiler or axiom-print run by reviewer",
+  "requested_source_commit": "8735ac3f39",
+  "current_HEAD_at_review": "7b96849d42fc40573488241c77f65497361aeb86",
+  "sources": [
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean",
+      "snapshot": "/tmp/zfc-order-rec-review-sources/InternalWO.lean",
+      "lines": 311,
+      "byte_equal_to_requested_commit": true,
+      "source_git_blob": "28e82861a05d5ee2dba60de962420a81f9ed0b5f",
+      "theorem_declarations": [
+        "IsWO.mono",
+        "IsWO.congr",
+        "IsWO.least_unique",
+        "wo_nat",
+        "comp_mem_uu",
+        "firsts_exists",
+        "fibre_exists",
+        "lexR_iff",
+        "wo_lex",
+        "wo_pull",
+        "wo_append",
+        "prod_exists"
+      ],
+      "custom_axiom_or_admission_declarations": false
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean",
+      "snapshot": "/tmp/zfc-order-rec-review-sources/OrderRec.lean",
+      "lines": 308,
+      "byte_equal_to_requested_commit": true,
+      "source_git_blob": "1edd594baedd2f14735baf825ffb6137a1342822",
+      "theorem_declarations": [
+        "IsWOS.wo",
+        "isWOS_of_wo",
+        "EndExt.fld",
+        "EndExt.refl",
+        "EndExt.trans",
+        "nsat_isWOSF",
+        "nsat_endExtF",
+        "fld_step",
+        "step_wos",
+        "stage_wos"
+      ],
+      "custom_axiom_or_admission_declarations": false
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean",
+      "snapshot": "/tmp/zfc-order-rec-review-sources/InternalOrd.lean",
+      "lines": 192
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TransRec.lean",
+      "snapshot": "/tmp/zfc-order-rec-review-sources/TransRec.lean",
+      "lines": 337
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedZF.lean",
+      "snapshot": "/tmp/zfc-order-rec-review-sources/NamedZF.lean",
+      "lines": 175
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean",
+      "snapshot": "/tmp/zfc-order-rec-review-sources/InternalRank.lean",
+      "lines": 415
+    }
+  ],
+  "theorem_defects_found": [],
+  "assumptions": {
+    "ZFAxioms": "Actual six-field Extensionality, formula-indexed Separation, Pairing, Union, Infinity, formula-indexed partial functional Replacement; no Power, Foundation or Choice in this bundle (Zf.lean334-343)",
+    "Regular": "Object-model regularity for every represented nonempty set, not external WellFounded(mem) (InternalOrd.lean26-27)",
+    "IsWO": "Order laws on an arbitrary external class predicate plus least elements of represented nonempty subsets only (InternalWO.lean28-33)",
+    "wo_pull_hset": "Explicit collection of ALL keys of every represented set of PY-elements; includes bounded/set-sized singleton fibers (InternalWO.lean199-215)",
+    "wo_append_hsep": "Explicit represented separation of arbitrary PA; not inferred for every external predicate (InternalWO.lean242-244)",
+    "prod_exists_hP": "Explicit Power-set interface, invoked twice for the product bound (InternalWO.lean294-307)",
+    "AppendOp": "Explicit exact pair-edge decomposition, old/new disjointness, internal well-order on each new block, and endpoint coverage (OrderRec.lean119-123)",
+    "DefOp": "Actual NForm graph adapter valid under every environment and every input/output name, not an arbitrary semantic recursion axiom (TransRec.lean28-30)"
+  },
+  "checks": {
+    "external_well_foundedness_assumed": false,
+    "object_level_Choice_assumed_or_derived": false,
+    "arbitrary_semantic_Separation_assumed_globally": false,
+    "arbitrary_semantic_induction_assumed": false,
+    "stage_induction_literal_formula": "OrderRec.lean196-205, invokes InternalOrd.ord_induction96-116 with exact satisfaction bridge",
+    "set_cuts": "first/fiber via double Union and pmemF; step and chain least cuts via pmemF1,0,0; all have literal named formulas",
+    "nonstandard_internal_ordinals_excluded": false,
+    "Choice_circularity_found": false,
+    "CodeOrder_module_currently_present": false,
+    "ConstructibleOrder_module_currently_present": false,
+    "Lean_built_by_reviewer": false,
+    "tracked_files_edited": false
+  },
+  "documentation_caveats": [
+    {
+      "file": "InternalWO.lean",
+      "line": 15,
+      "detail": "Header says ConstructibleOrder assembles the canonical order, but that module is absent in reviewed checkout; phrase as future application."
+    },
+    {
+      "file": "OrderRec.lean",
+      "line": 15,
+      "detail": "Header names CodeOrder and ConstructibleOrder as if implemented; both are future applications in this checkout."
+    },
+    {
+      "file": "OrderRec.lean",
+      "line": 6,
+      "detail": "IsWOS constrains only pair-coded edges; it does not require every member of W to be a Kuratowski pair. Nonpair junk is ignored. This is harmless for stated Le/Fld/stage_wos theorems, but a later literal relation-set interface needs a tidying/pair-only lemma."
+    }
+  ],
+  "remaining_obligations": [
+    "Instantiate CodeOrder/constructible-order G,N,O and prove all four AppendOp fields, rather than obtaining arbitrary new-block well-orders by object-level Choice.",
+    "Supply actual DefOp graph formulas for the concrete append operations, with all-environment semantics.",
+    "For least-key pullback, bound ALL chosen keys of represented families (especially singleton fibers); unrestricted ordinal-stage keys are a proper class and do not satisfy hset.",
+    "Connect ordering the full internal/nonstandard code domain and internally finite parameter tuples; external standard-code enumeration alone is insufficient.",
+    "Give named definitions and bounds for any arbitrary predicate cuts demanded by a concrete wo_append application.",
+    "Build a definable internal Choice function/set from the concrete well-order and formula-indexed Separation/Replacement; no Choice theorem is concluded by these modules.",
+    "If required by a later relation object interface, remove nonpair junk by a named Separation formula without changing Le/Fld.",
+    "Keep external WellFoundedness and PA/proof-code internalization outside the stated conclusions."
+  ],
+  "full_review_text": "# Independent review: InternalWO and OrderRec\n\nVerdict: the theorem statements and mathematical proofs are clean. The review\nfound no Choice circularity, external well-foundedness premise, arbitrary\npredicate induction, or implicit semantic Separation schema. Three documentation\ncaveats and concrete application obligations remain below. This was a full\nsource/API read, with no compiler invocation, no independent axiom-print run,\nand no tracked edits.\n\nReviewed source: commit8735ac3f39, current files byte-identical to that commit.\nSnapshots are `/tmp/zfc-order-rec-review-sources/{InternalWO,OrderRec}.lean`;\nrelevant dependency snapshots are in the same directory. Structured evidence,\nGit blob identifiers and declaration lists are `/tmp/zfc-order-rec-review.json`.\n\n## Exact internal semantics and assumptions\n\n`InternalWO.lean:28-33` defines a reflexive total order on a class P and asks\nfor least elements only for represented sets Z whose members lie in P. This is\nnot external `WellFounded`, a well-order of every external subclass, a\nrepresented relation set, or a set-likeness assertion for every initial segment.\nThe class/relation arguments may be external predicates; the explicit resource\nhypotheses below are therefore important.\n\nThe `H : ZFAxioms mem` bundle is precisely the six-field interface at\n`SetTheory/ZF/Lean/ZF/Zf.lean:334-343`: Extensionality, actual-formula\nSeparation, Pairing, Union, Infinity, actual-formula partial functional\nReplacement. It contains no Power, Regularity or Choice. `Regular mem` is the\nrepresented-set minimality property at `InternalOrd.lean:26-27`, which does not\nimply external well-foundedness of membership in an arbitrary model.\n\n`wo_nat` (`InternalWO.lean:64`) applies this Regularity to an arbitrary\nrepresented nonempty set of internal naturals, using internal natural-number\nlinearity. It does not restrict naturals to external standard numerals. An\nexternal descending sequence in a nonstandard model is not automatically a\nrepresented set, so its existence does not contradict the theorem.\n\nThe restriction and relation-congruence lemmas preserve exactly this internal\nsemantics. `wo_lex` (`InternalWO.lean:139`) separates only pair projections and\nfibers using formulas for pair membership; it does not demand Separation for\nP1, P2, r1 or r2. Both projections are bounded by double Union of the represented\nset of pairs (`comp_mem_uu`, `firsts_exists`, `fibre_exists`, lines90-118).\nLexicographic leastness selects a least first coordinate and then a least\nsecond-coordinate fiber. No Choice function over all fibers is chosen.\n\n`wo_pull` explicitly assumes `hset` (`InternalWO.lean:199-215`): for each\nrepresented set of PY-elements there is a represented set of ALL their keys.\nIn particular every single-element key fiber must be set-sized internally.\nThe proof applies hset first to a singleton, finds a least key by hK, and uses\nkey uniqueness to prove antisymmetry. Its all-key comparison relation is valid;\nit does not silently assume a chosen global least-key function.\n\nThis hset is a real remaining resource. For example, in ordinary ZF let PY\ncontain only the empty set, PK be all ordinals, and give that sole element every\nordinal as a key. Nonempty key fibers, unique decoding of a key and the internal\nordinal order do not produce a set of all keys of that singleton. A concrete\nconstructible-order application must bound key levels or use another bounded\nkey presentation; arbitrary stage/formula keys cannot be collected for free.\n\n`wo_append` assumes `hsep` (`InternalWO.lean:242-244`) for PA. It does not infer\nSeparation for every external predicate. The actual `step_wos` application\nsupplies that resource by the literal formula `pmemF 1 0 0` for the old field\n(`OrderRec.lean:142-149`). `prod_exists` separately assumes a Power-set interface\nand applies it twice (`InternalWO.lean:294-307`); Power is not hidden in H.\n\n## Recursion and named formulas\n\n`OrderRec.lean:119-123` packages four explicit append-operation obligations:\nexact pair-edge decomposition, old/new disjointness, an internal well-order on\nthe new block, and endpoint coverage for its order edges. `step_wos` proves the\nold/new ordered sum and exact end-extension. A future application must prove\nthese hypotheses. In particular `AppendOp.wo` cannot be discharged by assuming\nthat every arbitrary new set can be well-ordered in a Choice-free argument.\n\n`stage_wos` (`OrderRec.lean:189-205`) additionally requires Regularity and a\n`TransRec.DefOp` witness. `DefOp` (`TransRec.lean:28-30`) is a genuine named-formula\ngraph adapter, whose satisfaction theorem holds for every environment and every\nchoice of input/output names. It is not a promise of closure for an arbitrary\nexternal operation. N and O need no graph adapters in this generic theorem:\nthey occur in its explicit semantic append resource, while the actual induction\npredicate mentions G through D.gF and is internally definable.\n\n`isWOSF w` uses fresh names w+1,w+2,w+3 (`OrderRec.lean:79-96`), including a\nrepresented-set quantifier for leastness. `endExtF a b` chooses a+b+1 and its\nsuccessor (`lines99-110`), so it works even when a=b. Pair-membership helpers\nintroduce still-fresh local names (`InternalRank.lean:40-45,76-82`). The stage\ninduction formula keeps name0 for the ordinal, name1 for W, names2/3 for c/Wc,\nand name4 for G(Wc); the named satisfaction proof matches the target property.\nLocally reused names in separate conjuncts or antecedents do not capture those\nparameters.\n\nThe induction is `InternalOrd.ord_induction` (`lines96-116`), which cuts a set\nof named-formula counterexamples inside the successor of the target ordinal.\nThus the property applies to every internal ordinal, including nonstandard\nones, with no unrestricted semantic induction principle.\n\nAt a union stage, pair edges and fields lie in images of earlier stages by\n`stage_spec`. Comparability and exact end-extension give a common upper image\nfor any two such images (`OrderRec.lean:216-252`). For leastness, choose any\nmember of the represented test set, take a stage containing it, separate the\ntest set by that stage's field using `pmemF 1 0 0`, and choose its least member\nthere (`lines277-293`). Every point outside that field lies above it in a later\nimage. This uses no collection of stages indexed by all test-set elements and\nno Choice of a witness stage for every element.\n\nImported selected set constructors are metatheoretic noncomputable choices of\nwitnesses guaranteed by the six model axioms. That does not add an object-level\nAxiom of Choice to these statements. The reviewed modules introduce no custom\naxiom or admission.\n\n## Documentation caveats and remaining applications\n\n1. `InternalWO.lean:15-17` says the canonical constructible well-order is assembled\n   in ConstructibleOrder; `OrderRec.lean:15-17` similarly names CodeOrder and\n   ConstructibleOrder. Neither module exists in the reviewed checkout. These\n   are intended applications, not current conclusions, and should be described\n   in future tense until supplied.\n2. The header `OrderRec.lean:6` describes W as a set of Kuratowski pairs.\n   `IsWOS` actually constrains only `Le W x y := mem (kpair x y) W`\n   (`lines31-44`). It permits nonpair junk. In an ordinary ZF model,\n   W={emptyset} has an empty coded field and satisfies these conditions while\n   containing a nonpair. This causes no error in the Le/Fld/stage_wos proofs.\n   If a later object-level well-order relation requires all members to be\n   pairs, supply that condition or separate the pair-coded members of W;\n   this tidying preserves Le and Fld.\n3. Concrete code/constructible order operators, their all-environment DefOp\n   formulas and all four AppendOp properties still need construction. Any\n   least-key application needs explicit set bounds for all keys of a\n   represented family. Ordering only external standard formula codes does not\n   cover the complete internal/nonstandard code domain. A named internal\n   choice-function construction from the resulting concrete order is also\n   separate. These modules themselves conclude no ConstructibleOrder theorem,\n   Choice axiom, ZFC model, machine calibration or PA-provable translation.\n\nThe existing constructible hierarchy/absoluteness files are useful dependencies;\nthese two new generic kits do not by themselves close that final comparison.\n",
+  "followup": "Only module headers were clarified after this read-only review; the exact current sources were freshly checked in the160-unit integration. No theorem body changed.",
+  "header_diff": "diff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean\nindex 28e82861a0..8e6c8b8428 100644\n--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean\n+++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean\n@@ -13,8 +13,8 @@ The kit: the internal naturals (`wo_nat`), restriction, the\n lexicographic order of pairs with a well-ordered fibre over each first\n component (`wo_lex`), an order pulled back along least keys (`wo_pull`), and\n the ordered sum of two disjoint well-ordered classes (`wo_append`). With them\n-the canonical well-order of the constructible hierarchy is assembled in\n-`ConstructibleOrder`.\n+a canonical well-order of the constructible hierarchy can be assembled\n+in a later module; that construction is not supplied here.\n -/\n \n namespace SetTheory.BusyBeaver.ZFC.InternalWO\ndiff --git a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean\nindex 1edd594bae..b956ae9bb5 100644\n--- a/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean\n+++ b/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean\n@@ -3,8 +3,9 @@ import BusyBeaver.ZFC.InternalWO\n /-!\n Transfinite recursion of end-extending well-orders.\n \n-A well-order is represented by a set `W` of Kuratowski pairs, reflexive on\n-its field `{x | \u27e8x, x\u27e9 \u2208 W}` (`IsWOS`). A stage operation of the shape\n+A relation is read from the Kuratowski-pair members of a set `W`, reflexive\n+on its field `{x | \u27e8x, x\u27e9 \u2208 W}` (`IsWOS`). Nonpair members of `W` are ignored;\n+a consumer requiring a literal relation set must separately remove them. A stage operation of the shape\n \n     G W = W \u222a (field W \u00d7 N W) \u222a O W,\n \n@@ -12,9 +13,9 @@ where `N W` is a set of new elements and `O W` a well-order of `N W`, appends\n the new elements after the old ones. Every stage of the `TransRec` hierarchy\n of such a `G` is then a well-order, and end-extends every earlier stage\n (`stage_wos`): the union of a chain of end-extensions of well-orders is a\n-well-order. This is the recursion behind the well-order of the formula codes\n-(`CodeOrder`) and the canonical well-order of the constructible hierarchy\n-(`ConstructibleOrder`).\n+well-order. This supplies recursion machinery for future well-orders of\n+formula codes and the constructible hierarchy; neither concrete construction\n+is supplied here.\n -/\n \n namespace SetTheory.BusyBeaver.ZFC.OrderRec\n",
+  "current_sources": {
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean": "7152e907d8fafbdc84a16d72e752c5ad05a6462e5840047dcb5c4c20c5f96858",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean": "cd2e9e8a0b05e45433ff71f79cf7585deb2885c414e06371f45553f4531a7e97",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean": "e6ca852afcd59f47e18b68edae14765d605fed9ecb96819af1f5d7dea1357616",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TransRec.lean": "c7e9caf6f59e1a6c9ef3a9cb7ac4c44f39ffb6fa882fbda7936b95fa718c784d",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedZF.lean": "b477039b6308048559a03b3db363513ec20ae84b724f1788939fc8b162a5d249",
+    "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean": "45991036b6f9ea43eda5abb353d4568ae670c59e97b7b22de4cdd743554a1097"
+  }
+}

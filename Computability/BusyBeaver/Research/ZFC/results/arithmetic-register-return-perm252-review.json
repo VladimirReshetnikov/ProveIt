@@ -1,0 +1,170 @@
+{
+  "status": "CLEAN",
+  "scope": "Independent final source/audit/portable checker and literal-row review, exact provider identity check, and root full source/audit/guard read; no additional Lean build.",
+  "original_independent_review": {
+    "path": "/tmp/zfc-register-return/child-independent-review.json",
+    "sha256": "d5919c7429bb83b6354b11f2a2446ccdd6cf3323c37074d3f1bac910e5354972",
+    "hash_comparisons": 372,
+    "distinct_paths": 148,
+    "full_hash_checks_retained_in_original": true
+  },
+  "independent_review": {
+    "status": "CLEAN_ACCEPT_FINAL_PASS_BOUND",
+    "review_kind": "Independent full final source, audit, portable guard, actual table rows and recorded evidence read; no Lean build or source edit.",
+    "source": {
+      "path": "/tmp/zfc-register-return/sources/BusyBeaver/ZFC/ArithmeticRegisterReturnPerm252.lean",
+      "sha256": "79505169cf844ec85a4969219ba700340d76f6b6d54938b9a6a55a82cec84e9e",
+      "snapshot": "/tmp/zfc-register-return/run1/sources/BusyBeaver/ZFC/ArithmeticRegisterReturnPerm252.lean"
+    },
+    "audit": {
+      "path": "/tmp/zfc-register-return/Audit.lean",
+      "sha256": "515ed1452ee7d7672a690c60d63e7c1d2341d9c69f0dc0c6fedad65e5ebb84fc",
+      "snapshot": "/tmp/zfc-register-return/run1/sources/Audit.lean"
+    },
+    "proof_evidence": {
+      "path": "/tmp/zfc-register-return/run1/verification.json",
+      "sha256": "7e25622d5d5b2b4d2c83897ff6a2ff287abc63ca425c6ddc756968b3bfc8edac"
+    },
+    "portable_runner": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_register_return_perm252.py",
+      "sha256": "f3c97c652619e23202ff7eef079bad1fb14b6d5cb85f70b710f7eb253fa3e477",
+      "original_checked_driver": "/tmp/zfc-register-return/check.py"
+    },
+    "maintained_preflight": {
+      "path": "/tmp/zfc-register-return-maintained-prepared/verification.json",
+      "sha256": "4217770818d753e270d9c8ace14f59401fd5ba74c553822ffd7944152f985086",
+      "status": "PREPARED_NOT_BUILT"
+    },
+    "named_axiom_probes": 11,
+    "callers": 12,
+    "only_standard_axioms": true,
+    "warnings": 0,
+    "project_prerequisites": 29,
+    "external_first_providers": 5,
+    "original_inputs": 78,
+    "hash_comparisons": 372,
+    "distinct_paths": 148,
+    "literal_table": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TablePerm252.lean",
+      "sha256": "d216d7292acf690095048024e2cae2575195ded015acf8e235261b8152e74bd0",
+      "all_rows_parsed": 252,
+      "checked_return_and_audit_rows": [
+        {
+          "numeric_source": 3,
+          "read": 1,
+          "write": 1,
+          "direction": "left",
+          "numeric_target": 3
+        },
+        {
+          "numeric_source": 3,
+          "read": 0,
+          "write": 0,
+          "direction": "left",
+          "numeric_target": 5
+        },
+        {
+          "numeric_source": 5,
+          "read": 1,
+          "write": 1,
+          "direction": "left",
+          "numeric_target": 3
+        },
+        {
+          "numeric_source": 4,
+          "read": 1,
+          "write": 1,
+          "direction": "left",
+          "numeric_target": 6
+        },
+        {
+          "numeric_source": 6,
+          "read": 1,
+          "write": 1,
+          "direction": "left",
+          "numeric_target": 6
+        },
+        {
+          "numeric_source": 6,
+          "read": 0,
+          "write": 0,
+          "direction": "left",
+          "numeric_target": 7
+        },
+        {
+          "numeric_source": 7,
+          "read": 1,
+          "write": 1,
+          "direction": "left",
+          "numeric_target": 6
+        },
+        {
+          "numeric_source": 63,
+          "read": 1,
+          "write": 1,
+          "direction": "left",
+          "numeric_target": 63
+        },
+        {
+          "numeric_source": 63,
+          "read": 0,
+          "write": 0,
+          "direction": "left",
+          "numeric_target": 48
+        },
+        {
+          "numeric_source": 48,
+          "read": 1,
+          "write": 1,
+          "direction": "left",
+          "numeric_target": 63
+        },
+        {
+          "numeric_source": 2,
+          "read": 0,
+          "write": 1,
+          "direction": "left",
+          "numeric_target": 3
+        },
+        {
+          "numeric_source": 2,
+          "read": 1,
+          "write": 0,
+          "direction": "left",
+          "numeric_target": 4
+        }
+      ]
+    },
+    "scope_notes": [
+      "Generic left row reads the specified low bit, writes the specified bit, moves left and retains targetstate0 as a whole halted frame rather than collapsing the tape.",
+      "leftFrame q(2L+read)R equals frame q L(2R+read); recentering keeps both entire halves and makes the first read exact.",
+      "One entry row, value uniform ones-loops, then one zero-exit row gives exactvalue+2; bitPrefix_push reconstructs the unchanged whole registerBlock onright.",
+      "All internal values and both arbitrary halves are covered; value0 and left0 need no nonempty external list or head assumption.",
+      "Six wrappers use the actual frozen rows for decrement, mark and increment entry/probe families. Twelve unique table rows, including two read/write-different audit rows, were independently read from actualTablePerm252.",
+      "The only import is checkedForward; no box oracle, external-standardness restriction, wholefile/spare invariant or complete internal runtime is assumed.",
+      "Portable guard pins actualForward10/12, exact29currentrepo source/objectclosure,5firstexternalproviders and complete externalLean/Omega set, independent of historical tool metadata.",
+      "Default source/audit/frozenhash/import/order11probes12callers, pinned compiler/deps, beforeafter sourceobjects/snapshots, freshobject-beforeaudit and output/-O guards are correct.",
+      "Maintained preparation remainsPREPARED_NOT_BUILT with emptycommands, separate from originalrun1firstPASS; no dependency rebuild or additional proofreplay."
+    ],
+    "findings": []
+  },
+  "root_review": {
+    "path": "/tmp/zfc-register-return/root-final-checks.json",
+    "sha256": "018bc317986f2a2a4d5780f57245b5cf7646bc7d7d0a455d5d949928adac6e8b",
+    "review": {
+      "status": "PASS",
+      "source_audit_guard_read": "CLEAN",
+      "original_inputs_rehashed": 78,
+      "fresh_objects_rehashed": 1,
+      "warnings": 0
+    }
+  },
+  "publication_validation": {
+    "original_proof_unchanged": true,
+    "verification_copy_byte_identical": true,
+    "original_input_rechecks": 78,
+    "fresh_object_rechecks": 1,
+    "maintained_preparation_input_rechecks": 78,
+    "additional_Lean_proof_replay": false
+  }
+}

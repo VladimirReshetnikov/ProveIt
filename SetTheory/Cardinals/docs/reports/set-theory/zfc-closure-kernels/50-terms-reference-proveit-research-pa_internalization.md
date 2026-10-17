@@ -1,0 +1,203 @@
+# Internalizing the machine comparison in arithmetic
+
+Read-only research inventory, 16 October 2026, against `7b1e56dbc59f746695a7fb375546422f91de3a96`
+and the explicitly identified work in progress below. No Lean or Coq build was
+run for this note. This is a proposed proof-code interface, not a PA theorem.
+
+The initial request mentioned an equivalence provable in PA; the later goal
+record asks for an equivalence provable in **ZFC**. These are different
+deliverables. A Lean theorem comparing halting and `BProv` is an ordinary
+metatheorem until the intended arithmetic sentence and an object-theory proof
+are connected to it. Completing the PA version would also serve the weaker
+metatheory requirement, after checking the chosen arithmetic interpretation in
+ZFC; that extra work is not required merely by the revised target.
+
+## What is already available
+
+The following declarations identify mathematical inputs, not represented
+proof-code transformations.
+
+| Existing interface | Precise boundary |
+| --- | --- |
+| `Code254.C254` (`Lean/BusyBeaver/ZFC/Code254.lean:102`) | Twelve code-level inference constructors, including the two freshness inequalities on `bundle`; the relation lives in `Prop`. Code 0 decodes as truth and code 1 as membership `(0,0)`, so native Bottom needs IR. |
+| `NativeTheory254.c254_refutation_iff` (`NativeTheory254.lean:76`) | Exact `C254 1 ↔ BProv NativeAx [] Bottom`, where `NativeAx` is sealed CP, every **native Form** GIC instance, and IR. Both directions use semantic completeness/soundness; an explicit valuation prevents the former empty-domain error. |
+| `ZFNative.zf_refutation_of_native` (`ZFNative.lean:63`) | Native refutation implies ordinary ZF refutation, through `theory_transfer` and the arbitrary-model rank construction. ZF here includes Foundation and Power. |
+| `Enum254.build`, `complete`, `enum_halts_iff` (`Enum254.lean:662,684,701`) | Proof construction and exhaustive enumeration at the ordinary metatheoretic level. The command blocks are explicit, but `build` returns an existential from a `Prop` derivation. |
+| `NumericCode254.numThm_iff_c254` (`NumericCode254.lean:133`) | The two local exact numerical calculi agree; this is useful for avoiding a third arithmetic coding. It is not an internal PA proof of that agreement. |
+| `Code254.c254_of_thmG` (`Code254.lean:425`) and `NamedNumeric254.transport` (`NamedNumeric254.lean:37`) | Existing constructor-by-constructor named/numerical transports provide templates for data-level compilers. Their current premises and results remain proposition-valued. |
+| `WFModel`, `WFTheory` | The freshly checked internally-WF interpretation supplies the reverse comparison with ordinary ZF, including Foundation and Power, using actual Form instances. `WFTheory.c254_refutation_iff_zf`/`native_refutation_iff_zf` close the ordinary two-way comparison. The scoped audit checked all three WF modules, 23 axiom reports and six callers; see `results/wf-model-theory-verification.json`. Choice and internal PA formalization remain separate. |
+| `BinaryPerm252` | The proposed closed blank-machine endpoint additionally depends on the full actual-sites certificate and the literal/structured program correspondence. Its source explicitly requires the closed certificate to pass. A bootstrap or individual certificate batch is insufficient. |
+
+`Logic/FirstOrder/Lean/FirstOrder/Calculus.lean:33` defines the seventeen-rule
+natural-deduction relation in `Prop`. `Completeness.lean:1105` defines
+`theory_transfer` by semantic completeness and soundness. Consequently the
+current semantic bridges do not expose an algorithm that inspects a proof tree.
+This is a representation boundary, not a defect in those theorems.
+
+## Local arithmetic resources worth reusing
+
+All paths in this table are repository paths. The Foundation gitlink is pinned
+to `32e1a0956a8622fad067328ca1959729a7634428`; its source directory is unpopulated
+in this worktree. The local clients below were read, but their external
+dependency closure was not rebuilt or newly audited here.
+
+| Resource | Concrete reusable API and remaining adapter |
+| --- | --- |
+| `Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/Basic.lean:200` | A `Type`-valued `ProvTree`, its erasure, and `provTree_complete : Prov → Nonempty ProvTree` at line370 give the right pattern for a data-carrying mirror. This one is for PA syntax, not BusyBeaver's Form or C254. |
+| `Logic/Interpretability/PAHF/Lean/PAHF/Interpretation.lean:8208,8226` | `TheoryInterpretation` and its composition package syntactic formula translation, axiom discharge and theorem transfer. They still use `Prop` provability, rather than an internally represented proof-code map. |
+| `.../TypedTemplateProofCompiler.lean:42,203,270,280` | `TypedTemplateTranslation`, `compileDerivation`, `compileProof`, and `compileProof_isProof` instantiate a **fixed standard proof template** at typed, possibly nonstandard model-coded formulas. Translation equations for binders, substitution and shifting are explicit. The output's `.val` is accepted by Foundation's represented `Proof` predicate. |
+| `.../PrimitiveRecursiveTruthCertificate.lean:120,170` | `PrimitiveRecursivePackage` and `paRestrictedConsistencyProofSelectorIn_of_primitiveRecursivePackage` illustrate represented `PR.Construction` iteration and correctness in arbitrary arithmetic models. They do not provide the needed BusyBeaver blueprint. |
+| `.../UniformProofPackage.lean:67` | Sigma-one definable existential packages can be iterated by internal induction without a canonical choice function. This is an alternative to demanding a primitive-recursive output selector. |
+| `.../UniformInternalProvability.lean:131,157` | A statement about proof witnesses at **every element of every PA model** is turned into an actual `Peano ⊢ sentence` theorem. Using arithmetic completeness here is legitimate because the obligation is already about represented proofs, including nonstandard codes. |
+| `Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/Instances.lean:52` and `ZFDelta1.lean:75,83` | The set language has symbol recognizers, and Foundation's actual ZF/ZFC axiom theories have `Theory.Δ₁`, enabling its represented `Proof`/`Provable` machinery. These are not yet instances for the local `NativeAx`/`ZFax_s` codings. |
+| `.../Translation.lean:77,113` and `UniformStatement.lean:142` | `toSet`, `eval_toSet`, and `toNat_toSet_congr` already handle local flat De Bruijn Form, Foundation syntax, and quotation depth. `Translation` explicitly transfers semantic results rather than source derivations; a proof-code/coded-syntax correctness adapter is still needed. |
+| `.../SetPlaceholderQuotient.lean:160` and `SetCongruence.lean:1322` | Existing placeholder-language equality/congruence completion and translated congruence proofs can support finite templates with inserted formulas. Equality cannot be silently assumed to respect an arbitrary replacement predicate. |
+
+For the revised **ZFC** metatheory, also inspect
+`SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/CodedDerivation.lean`:
+it has ranked set-coded certificates for the same seventeen ND rules, actual
+`fDerivesF`, and internal induction rather than circular closure certificates.
+`AxiomCode.lean:1054,1063` supplies `IsZFCAxiomCode`/`fZFCAxiomCodeF`.
+These offer a set-coded route, but matching the chosen natural-number proof
+and machine-trace predicates, and proving the unrestricted translation theorem,
+remain work. Its bounded-consistency endpoint is not that theorem.
+
+The bounded-consistency projects do **not** supply unrestricted `Con(ZFC)` or
+this machine's internal endpoint. In particular, a family indexed by external
+`Nat` is not automatically the corresponding internally quantified sentence.
+`ZFCinPA/README.md` also keeps its stronger uniform ZFC-provability target
+conditional on its own nonstandard-index obligations; those are not needed
+merely to reuse its syntax and proof constructors.
+
+## Finite-proof blueprints in the attributed snapshot
+
+The read-only snapshot is pinned to upstream
+`297ab8df7e5de329605c3875b4934643b371a5e3`. Its following interfaces are better
+guides for proof transport than a new appeal to semantic completeness:
+
+* `lib/jeff-busy-beaver-zfc254/ZF/m254/coq/settheory/S_qt.v:88,125` proves
+  `qt_prv`/`qt_tprv` by induction on the finite natural-deduction derivation;
+  atomic membership/equality are replaced by their interpreting formulas.
+* `ZF/stdzf_r3/regcon/Rel.v:22,49,102` defines relativization, proves its
+  substitution law, and transports derivations with `rel_prv`.
+* `ZF/m254/coq/settheory/S_ax.v:239,284,303` supplies the parameterized Sep,
+  Repl and combined interpreted-axiom derivations. `S_main.v:23` composes the
+  quotient interpretation with a finite source refutation.
+* `ZF/m254/coq/logic/Comp_Bundle254.v:128,208,291` gives native CP/GIC
+  derivations in the numerical-theorem theory and `SIR_to_thm`.
+  `logic/L1_Comp254.v:289` displays the twelve-case command-block compiler.
+* `ZF/stdzf_r3/zfc/Z_main.v:38,78,83` gives finite-refutation Choice removal
+  by relativizing to L. The last theorem includes Regularity; upstream
+  `Std_iface.ZFc` alone omits it. The local logical-equality calculus and
+  `Choice_form` still need their actual presentation adapter.
+
+These are object-theory derivability results inside Coq, useful as source for a
+Lean proof compiler. They are **not** an exported PA arithmetization theorem,
+nor permission to infer one from the upstream end-to-end theorem's closed
+global assumptions. No Coq work is proposed here.
+
+## Smallest concrete next checkpoint
+
+The external finite-data checkpoint below is now checked in
+`Code254Proof.lean`: unindexed `RawProof`, structural validity/conclusion,
+positive Nat quotation, total fuel parser, and `c254_iff_checked`. Its scoped
+verification is [recorded separately](results/code254-proof-verification.json).
+No represented arithmetic checker or PA theorem follows yet.
+
+The staged route starts with this finite syntax, rather than arithmetizing model theory:
+
+1. Mirror C254 as finite data, quote it into natural numbers, and implement a
+   total Boolean checker for its twelve rules. Record axiom parameters and
+   premise indices explicitly; all premise indices must be earlier. Prove
+   erasure and `C254 n ↔ ∃ p, checkC254 p n = true`.
+2. Make the existing explicit `leaf`, `genBlock`, and `mpBlock` constructors
+   consume that data and return command lists. Prove the same contract as
+   `Enum254.build`, now with an explicit computed result. This is a useful
+   executable checkpoint before any PA theorem, and can be compared directly
+   with upstream `L1_Comp254.compile`.
+3. Represent that checker, pairing/list operations and compiler in the
+   Foundation arithmetic layer, with correctness over **all internal codes**
+   in arbitrary PA models. Invalid inputs must be rejected or have a specified
+   harmless result. Quotations of ordinary Lean trees alone do not cover this.
+
+For native/ZF proofs, similarly carry axiom tags and the source matrix as
+finite data. An axiom node can check literal equality with `sealF(gicForm phi)`,
+or with the appropriate Sep/Repl instance. This avoids using an unbounded
+search for the matrix hidden in `NativeAx`'s existential definition. The
+ordinary equivalence with `BProv` must still be proved. Native equality,
+code0/code1 aliases, gate collisions `a=b`, and the freshness inequalities
+retain their current exact semantics.
+
+There is a further concrete coding boundary in the convenient semantic
+notation: `NamedZF.NForm.atom` (`NamedZF.lean:39`) stores `args : Nat → Nat`.
+Arbitrary such functions are not finite syntax. A coded adapter must retain
+only the finitely many entries below the embedded formula's variable bound,
+or use a finite substitution representation. The existing explicitly given
+slot maps can be treated this way; no arbitrary environment function should
+be presented as a natural-number code.
+
+The next bridge should be **uniform finite proof templates**, one per axiom
+family and logical rule. The semantic results identify which templates to
+seek; a finite template may first be found with ordinary completeness or proof
+search and then supplied as a literal checked proof. Its matrix substitution
+must be represented and proved correct for arbitrary internal formulas. A
+chosen proof for each *standard* matrix is not enough. Predicate congruence,
+domain guards, freshness and nonemptiness have to appear in this adapter.
+
+## Exact eventual endpoint
+
+Fix Boolean checkers for closed proofs and finite machine traces. Let
+`PrfT(p)` abbreviate the arithmetic formula saying that `p` is an accepted
+T-proof of Bottom, and `HaltTrace252(t)` the actual canonical table's accepting
+blank trace. The intended arithmetic obligations are:
+
+```text
+PA ⊢ ∀t (HaltTrace252(t) → ∃p PrfZFC(p))
+PA ⊢ ∀p (PrfZFC(p) → ∃t HaltTrace252(t))
+```
+
+Negating gives the desired PA-provable nonhalting/consistency equivalence.
+An adequate modular interface is the analogous pair of proof-translation
+sentences for C254/Native, Native/ZF, and ZFC/ZF, plus C254/actual-machine
+traces. The reverse ZFC/ZF direction is the genuine Choice comparison;
+Foundation is addressed by the internally-WF route rather than a false claim
+that raw IR descends to the bisimulation quotient.
+
+Primitive-recursive total translators are a sufficient implementation choice,
+not a necessary requirement. It is enough to prove in PA that each accepted
+source refutation has some accepted target refutation. A proof-search function
+can be partial away from valid inputs. External termination on valid standard
+inputs, however, supplies no PA totality/correctness proof by itself.
+
+For the binary side, use a finite coded zipper/trace predicate and prove its
+equivalence with the actual Core blank-run semantics. Register and tape
+simulations then need internally total finite-trace construction and the
+positive-progress arguments already exposed in the runtime interfaces. A
+finite bootstrap computation or certificate can supply checked constants;
+the generic executor/checker soundness and unbounded trace composition still
+need their arithmetic proofs.
+
+`Classical.choice`, quotient types and completeness in an ordinary Lean proof
+neither invalidate the result nor establish its strength over PA. A fixed
+chosen finite proof can become a checked numeral. Uniform selections,
+structural recursion on proofs and quantified code correctness require the
+additional interfaces above. Conversely, proving the represented endpoint in
+every PA model and applying **arithmetic** completeness, as the local arithmetic
+projects do, is a valid way to obtain the actual PA proof without claiming a
+primitive-recursive extractor for the original semantic Lean proof.
+
+The next finite-data checkpoint is also checked: `Code254ProofCompiler`
+structurally maps every valid raw proof into the existing `Enum254` command
+blocks and proves their exact result contract. Its explicit refutation word
+halts from any working state; the existing fair scheduler yields the external
+enumerator-halting corollary. See [the compiler note](code254_proof_compiler.md).
+This removes proof-existence extraction from the compiler function itself;
+representing that computation and its correctness inside PA remains open.
+
+The [numeric history-checker construction](code254_arithmetic_checker.md)
+specifies a concrete next adapter: represent the exact Cantor pairing and its
+bounded projections, then use the existing arithmetic history iterator to
+evaluate all twelve proof rules. The pinned arithmetic library uses a different
+pairing for its own data, so that adapter cannot be omitted. The note gives the
+exact MP and gate tests, the fixed formula interface and all-input equivalence
+target; it is a construction plan, not a new PA theorem.

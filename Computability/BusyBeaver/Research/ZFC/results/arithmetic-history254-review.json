@@ -1,0 +1,1126 @@
+{
+  "status": "CLEAN final mathematical/API source and finalized maintained runner/audit contract audit; parent fresh replay separate",
+  "review_utc": "2026-10-17T07:06:48.133630+00:00",
+  "source": {
+    "path": "/tmp/zfc-arithmetic-history/sources/BusyBeaver/ZFC/ArithmeticHistory254.lean",
+    "sha256": "4cf3d35c0c8d156bfb14ceacf87a799e9d4a35108a17c70bb63c4f93278a9e2e",
+    "lines": 337,
+    "snapshot": "/tmp/zfc-arithmetic-history/independent-final-source-snapshot.lean"
+  },
+  "historical_internal_checkpoint": {
+    "path": "/tmp/zfc-arithmetic-history/internal-checkpoint.lean",
+    "sha256": "ef2efd70d9906e579372182b27131fd2440dc85acc482cd946d6aa20b82f4ae3",
+    "lines": 172,
+    "snapshot": "/tmp/zfc-arithmetic-history/independent-internal-source-snapshot.lean"
+  },
+  "historical_nat_checkpoint": {
+    "path": "/tmp/zfc-arithmetic-history/full-nat-checkpoint.lean",
+    "sha256": "5cc94d313cf632cd02689add06f5a7f7f900826c1e199687fb9b1c72527c1afe",
+    "lines": 295,
+    "snapshot": "/tmp/zfc-arithmetic-history/independent-nat-source-snapshot.lean"
+  },
+  "method": "Read all337finalsource lines, delta to both stable checkpoints, actualFoundation quotient/remainder/sequence/PRF/completeness APIs and maintainedhistory runnerdraft. No Lean or replay by this reviewer.",
+  "inherited_internal_checks": [
+    {
+      "lines": "13-34",
+      "topic": "Actual selectors and child lookup",
+      "result": "positiveStep computes rem/div by12, uses literalCantor projections for payload and actualFoundation znth for both child values. GEN firstchild uses tail,MP firstchild uses firsttail; major uses secondtail. The fixed positiveStepDef explicitly composes remDef/divDef/Cantor projections/znthDef/rowDef. No oracle or represented-input premise."
+    },
+    {
+      "lines": "38-56",
+      "topic": "Invalidzero/positivecode selector",
+      "result": "stepValue returns0 exactly atcode0, otherwise evaluates predecessor base12 row. stepDef uses code=z+1 withz<=code and predecessor_witness. This is total at all internalcodes, not externally boundedstandardcodes."
+    },
+    {
+      "lines": "58-88",
+      "topic": "One fixed primitive recursion",
+      "result": "zeroDef encodes singletonsequence[0]. succDef binds output,previous,index as required by PR.Construction.succ_defined, while semantic succ receives index thenprevious; it appends stepValue(previous,index+1). blueprint haszero formalparameters and noV/model-specificsyntax. Fin0 environment equality usesSubsingleton.elim legitimately."
+    },
+    {
+      "lines": "74-100",
+      "topic": "Actual I\u03a31 iteration and graph",
+      "result": "history is actual PR.Construction.result on code. Foundation CSeq.exists138 andresult162 use actual Sigma1induction for arbitrary modelindices; result_succ171 gives the stated recurrence. historyDef is fixedBlueprint.resultDef; definition is not anexternalNat recursion."
+    },
+    {
+      "lines": "102-118",
+      "topic": "Nonstandard sequence validity/length",
+      "result": "Both history_seq andhistory_length use ISigma1.sigma1_succ_induction with literaldefinability obligations, not arbitrarypredicates. Seqhistory is a theorem, not an assumedinput. Appending preserves validity and increments length; base has length1, giving code+1 evenfornonstandardcode."
+    },
+    {
+      "lines": "119-130",
+      "topic": "Valuegraph and Delta1",
+      "result": "value is znth of its actual generatedhistory atcode; valueDef explicitly exposeshistorygraph andlookup. Delta graphs use actual graphDelta; Foundation proves its Pi presentation equivalent through functional totaldefinedness, not arbitrarySigma1predicate reclassification."
+    },
+    {
+      "lines": "132-170",
+      "topic": "Acceptance/Boolean totality",
+      "result": "checkDef is a fixedSigma1formula in(code,conclusion) with value=conclusion+1; checkValueDef outputs1 or0 after exposing actualvalue. Its graph andDelta1presentation are proveddefined. value_total/checkValue_total quantify allVmodel elements and use establishedactualfunctions. No assumption of inputhistory or validproofcode."
+    },
+    {
+      "lines": "15-29; FoundationSeq119-145",
+      "topic": "Defaultlookupsemantics",
+      "result": "znth_existsUnique explicitly returns0 whenever Seq(s)andindex<length fails; znth_prop_not acceptsnotSeq(s) orlength<=index. Thus step selectors are total on arbitrary suppliedhistorycodes too. This doesnot assertinvalidhistoriesaregenerated."
+    }
+  ],
+  "new_checks": [
+    {
+      "lines": "172-192",
+      "topic": "Foundation division/remainder vs nativeNat",
+      "detail": "The division theorem explicitly selects Foundation Div on the left, then verifies the actual Foundation unique quotient graph using native Nat.div inequalities, including b=0. Remainder unfolds Foundation sub(a,b*div) and uses the already checked foundation_sub_nat plus Nat.mod_eq_sub_mul_div. No silent substitution of pairings or scoped arithmetic instances."
+    },
+    {
+      "lines": "194-216",
+      "topic": "Actual positive/zero selector",
+      "detail": "Numerals12 and2 are identified with standardNat constants before rewriting rem/div. positiveStep_nat applies exact rowKernel_nat with rec=znth s, including GEN tail vs MP nested child indices; s can be anyNat sequencecode, including invalid. stepValue_nat explicitly covers code0 and every successor."
+    },
+    {
+      "lines": "217-255",
+      "topic": "Full append/OOB semantics",
+      "detail": "Generic znth_append_old uses actual sequence mapping membership and subset into appendedsequence. znth_append_last uses membership at oldlength. znth_append splits index<length, index=length, and index>length; in the lastcase discreteness gives newlength<=index and total znth_prop_not gives0. The listlookup analogue has the same full cases, not only validindex statements."
+    },
+    {
+      "lines": "257-276",
+      "topic": "All-index standardhistory equality",
+      "detail": "history_lookup_nat inducts n while generalizing i, and base covers everyindex of initial[0]. At successor it rewrites internal/listhistoryappend, length and exactstep selector; funext ih equates fulllookupfunctions on ALLindices. Thus no validquotation/childbound/Seqinput premise restricts the result. value_nat follows at i=n."
+    },
+    {
+      "lines": "278-293,299-315",
+      "topic": "Actual all-code checker and witnesses",
+      "detail": "checkDef_nat composes actual graphdefinedness, exactvalue_nat and Code254History.accepts_iff_check. It quantifies everyNat code/conclusion including invalidtrees, tag/defaults and collidinggates. checkValue_nat gives its actualBoolean output; value_zero andcheckValue_zero enforce invalidproofcode0. c254_iff_represented uses the SAME fixedcheckDef and the exact c254_iff_checked theorem, not an unrelated arithmetic consistency notion."
+    },
+    {
+      "lines": "296-335",
+      "topic": "Fixedtotalitysentence and actual arithmeticderivability",
+      "detail": "totalitySentence is literal closedArithmeticSentence: everycode/conclusion has one checkValueDef output, in{0,1}. totalitySentence_true follows for every I\u03a31model fromactualgraphdefinedness/range. isigma1_proves_totality uses Foundation Arithmetic.complete.{0}, whose Basic/Model.lean:78 applies to allORingmodels oftheactualtheory; it doesnot assume astandardmodel or leave anambientV/model premise. peano_proves_totality is actual Entailment.weakening along inferred I\u03a31\u2aafPeano."
+    },
+    {
+      "lines": "wholemodule",
+      "topic": "Fixed syntax/nonstandard/domain boundary",
+      "detail": "The internal172-linecheckpoint review remains applicable; first170lines identical in Natcheckpoint and all first294lines ofthat checkpoint retained in finalsource. Zero-parameter blueprint, real HFS/Seq/PRF iteration and actual Sigma1induction handle arbitrarypossiblynonstandardmodel elements. Closed totalityderivability has no externalmodelassumption; arithmeticstructures havezero, so no emptydomain shortcut."
+    }
+  ],
+  "runner_draft": {
+    "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_history254.py",
+    "sha256": "c3bcb106b004dad8f76b4890790bc124a1a57b77271b3dabcac81d0d3e360d9d",
+    "snapshot": "/tmp/zfc-arithmetic-history/independent-history-runner-draft.py",
+    "status": "Source/API and filesystemreview clean; emptyPROBES/CALLERS intentionally incomplete before finalaudit.",
+    "checks": [
+      "Current draft intentionally has emptyPROBES/CALLERS and failsclosed before builds until a reviewedstored audit is installed; no PASS/count claim should be made for this draft.",
+      "Its imports guard requires actualArithmeticRow254 and FoundationHFS.PRF, and it invokes the maintainedrowchecker to freshly build the four prerequisites with114probes/120callers.",
+      "It reuses rowchecker actual12-source/object-matchedCode254History closure. No newly suppliedCode254Proof/History stub is introduced.",
+      "It records actual source and prebuilt object provider identities for FoundationHFS.PRF/Seq, checks them after the run, and preserves the existing explicit dependency-cache provenance boundary.",
+      "It snapshots source/audit in newemptyexternal scratch, puts that fresh cache first, compiles onlynewhistory plus audit, validates exactnamedprobes/callercontract, standardaxioms, andpost-check source/core/fourfreshprerequisite/compileridentities.",
+      "Newmodule objectpath and freshprerequisite nestedobject traversal are correct. Aggregate counts114+newprobes and120+newcallers andfivefreshmodules/audits are correctly structured once finalaudit contract isfilled.",
+      "No shellinterpolation, checkoutwrites, dependencyfetch/rebuild or sharedStd-onlyumbrella/checkerrun. Corecache andexternalMathlib/Foundation objects are explicitly reused, not newly independently rebuilt."
+    ]
+  },
+  "reported_kernel_checks": [
+    {
+      "path": "/tmp/zfc-arithmetic-history/internal3.json",
+      "record": {
+        "command": [
+          "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+          "--root=/tmp/zfc-arithmetic-history/sources",
+          "-o",
+          "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/ArithmeticHistory254.olean",
+          "/tmp/zfc-arithmetic-history/sources/BusyBeaver/ZFC/ArithmeticHistory254.lean"
+        ],
+        "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+        "LEAN_PATH": "/tmp/zfc-arithmetic-history/cache:/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/build/lib/lean",
+        "exit_code": 0,
+        "seconds": 8.207991975359619,
+        "output": "",
+        "source_sha256": "ef2efd70d9906e579372182b27131fd2440dc85acc482cd946d6aa20b82f4ae3"
+      }
+    },
+    {
+      "path": "/tmp/zfc-arithmetic-history/full5.json",
+      "record": {
+        "command": [
+          "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+          "--root=/tmp/zfc-arithmetic-history/sources",
+          "-o",
+          "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/ArithmeticHistory254.olean",
+          "/tmp/zfc-arithmetic-history/sources/BusyBeaver/ZFC/ArithmeticHistory254.lean"
+        ],
+        "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+        "LEAN_PATH": "/tmp/zfc-arithmetic-history/cache:/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/build/lib/lean",
+        "exit_code": 0,
+        "seconds": 9.17223901860416,
+        "output": "",
+        "source_sha256": "5cc94d313cf632cd02689add06f5a7f7f900826c1e199687fb9b1c72527c1afe"
+      }
+    },
+    {
+      "path": "/tmp/zfc-arithmetic-history/totality2.json",
+      "record": {
+        "command": [
+          "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+          "--root=/tmp/zfc-arithmetic-history/sources",
+          "-o",
+          "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/ArithmeticHistory254.olean",
+          "/tmp/zfc-arithmetic-history/sources/BusyBeaver/ZFC/ArithmeticHistory254.lean"
+        ],
+        "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+        "LEAN_PATH": "/tmp/zfc-arithmetic-history/cache:/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/build/lib/lean",
+        "exit_code": 0,
+        "seconds": 9.691079040057957,
+        "output": "",
+        "source_sha256": "4cf3d35c0c8d156bfb14ceacf87a799e9d4a35108a17c70bb63c4f93278a9e2e"
+      }
+    }
+  ],
+  "strongest_checked_claims": [
+    "OnefixedSigma1/Delta1 history/value/Boolean graph, total on every elementof every I\u03a31model.",
+    "StandardNat interpretation equals exactCode254Proof.check for ALLcodes/conclusions, not just validquotes.",
+    "Actual I\u03a31 and Peano derivability of the SAME literal uniqueBoolean totalitySentence."
+  ],
+  "not_claimed": [
+    "PA proof of native/ZF/ZFC consistency comparison",
+    "Internal arithmetized correctness of the machine/registertrace simulator",
+    "Explicit primitive-recursive finiteprooftranslation through semantic completeness",
+    "Newmachine/statecost or unconditionalnonhalting",
+    "A fresh reviewer-run kernelcheck or finalmaintainedrunner replay"
+  ],
+  "findings": [],
+  "final_runner_audit_addendum": {
+    "review_utc": "2026-10-17T07:08:52.293540+00:00",
+    "status": "CLEAN finalized maintained runner/audit contract review; parent fresh replay is separate",
+    "maintained_source": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticHistory254.lean",
+      "sha256": "4cf3d35c0c8d156bfb14ceacf87a799e9d4a35108a17c70bb63c4f93278a9e2e",
+      "matches_reviewed_final_source": true
+    },
+    "runner": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_history254.py",
+      "sha256": "2f0eb65b87bae557cfed1e2320744a74bb2db220a92e8e6e49c9993d20dd4d47",
+      "snapshot": "/tmp/zfc-arithmetic-history/independent-history-runner-final.py",
+      "historical_draft_sha256": "c3bcb106b004dad8f76b4890790bc124a1a57b77271b3dabcac81d0d3e360d9d",
+      "only_ast_change": "PROBES: empty tuple ->exact37names; CALLERS:0->44. All other AST identical; pendingcomment removed."
+    },
+    "audit": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/arithmetic_history254_audit.lean",
+      "sha256": "76ec2e677535868051982edd9353fc3d346cc36e3c271b6da0af3a77d2a3cf0e",
+      "lines": 96,
+      "snapshot": "/tmp/zfc-arithmetic-history/independent-final-audit-snapshot.lean",
+      "named_probes": 37,
+      "callers": 44,
+      "probe_names_match_runner_in_exact_order": true,
+      "probe_names_unique": true
+    },
+    "chain_contract": {
+      "fresh_modules": 5,
+      "fresh_stored_audits": 5,
+      "total_named_axiom_probes": 151,
+      "total_callers": 164
+    },
+    "audit_semantic_checks": [
+      "All37 probes name the actual reviewed exported declarations, including internalSigma1/Delta1 definedness, sequencevalidity/length, fullNatlookup/check equivalence and actualI\u03a31/Peano totality derivability.",
+      "Generic callers quantify arbitraryI\u03a31models and exercise actualfixedgraph evaluation, all-index totality, appendincludingOOB andzero-code invalidity without suppliedsequencevalidity orrepresentedcode premises for the historytheorems.",
+      "Nat Div/Mod caller RHS use explicitNat.div/Nat.mod, eliminating anynotation-instance ambiguity in the bridge contract.",
+      "Allcode/Natchecker callers are universal; finite malformedcode controls additionally use actual Code254Proof.check through checkDef_nat. They do not replace the allinput theorem.",
+      "Closed callers I\u03a31\u22a2totalitySentence andPeano\u22a2totalitySentence confirm no ambientmodel/Nonempty premise leaks into the derivabilityendpoint.",
+      "44examples and37axiomreports are exactsource counts. Aggregate expectedchain is151reports and164callers. A freshparentrunner PASS is not asserted by this read-only contract audit."
+    ],
+    "findings": []
+  },
+  "phase_entry_publication_read_review": {
+    "status": "CLEAN note/source/result fidelity audit",
+    "record_path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/phase-entry-verification.json",
+    "record_sha256": "88390da793743a992735129e09dc10ff7c208e9d15c0d1692c2562c8d107ac7e",
+    "scripts": [
+      {
+        "script": "filter_journal.py",
+        "published_equals_authored": true,
+        "recorded_hash_matches": true,
+        "command_exit": 0
+      },
+      {
+        "script": "probe.py",
+        "published_equals_authored": true,
+        "recorded_hash_matches": true,
+        "command_exit": 0
+      },
+      {
+        "script": "literal_probe.py",
+        "published_equals_authored": true,
+        "recorded_hash_matches": true,
+        "command_exit": 0
+      },
+      {
+        "script": "window.py",
+        "published_equals_authored": true,
+        "recorded_hash_matches": true,
+        "command_exit": 0
+      }
+    ],
+    "outputs": [
+      {
+        "name": "journal-filter.json",
+        "authored_computational_payload_equal": true,
+        "excluded_fields": []
+      },
+      {
+        "name": "results.json",
+        "authored_computational_payload_equal": true,
+        "excluded_fields": [
+          "seconds"
+        ]
+      },
+      {
+        "name": "literal-results.json",
+        "authored_computational_payload_equal": true,
+        "excluded_fields": []
+      },
+      {
+        "name": "window-results.json",
+        "authored_computational_payload_equal": true,
+        "excluded_fields": []
+      }
+    ],
+    "note_path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/phase-entry/README.md",
+    "note_sha256": "a58fbb179eb3cb44287bbd7c3b120aed623b1cfd3c31c92571f1617b4bbc4621",
+    "scope": "Preserves threephasefiltered recipes, excluded6vsretained8390, no surviving251candidate, boundedfuel vs literalprefix distinction,36/34arbitraryexteriorfinitewindoweffect and restrictedoriginalresidualfunctional-fiber conclusion. No newbuild/replay performed."
+  },
+  "maintained_fresh_verification": {
+    "path": "results/arithmetic-history254-verification.json",
+    "sha256": "d6fd72f603b543cfb8f6ae21c7234bee54c84a02635998971366aada51e24212",
+    "status": "PASS",
+    "total_named_axiom_probes": 151,
+    "total_callers": 164,
+    "source_warning_count": 0,
+    "commands": [
+      {
+        "label": "row-prerequisite",
+        "cwd": "/tmp/zfc-arithmetic-history-maintained-final",
+        "exit_code": 0,
+        "seconds": 48.893369
+      },
+      {
+        "label": "source",
+        "cwd": "/tmp/zfc-arithmetic-history-maintained-final",
+        "exit_code": 0,
+        "seconds": 9.685333
+      },
+      {
+        "label": "audit",
+        "cwd": "/tmp/zfc-arithmetic-history-maintained-final",
+        "exit_code": 0,
+        "seconds": 3.127543
+      }
+    ]
+  },
+  "review_note": "# Independent ArithmeticHistory254 review\n\n**CLEAN final mathematical/API source audit.** No Lean build/replay by this reviewer.\n\nFinal source:337lines, SHA256 `4cf3d35c0c8d156bfb14ceacf87a799e9d4a35108a17c70bb63c4f93278a9e2e`, snapshot `/tmp/zfc-arithmetic-history/independent-final-source-snapshot.lean`. Child-recorded final kernelcheck `totality2.json` passed in9.691s with no diagnostics. Earlier172/295-line identities remain in the JSON history.\n\nThe prior internalcheckpoint review is preserved in `independent-internal-review.md/json`. The full source was checked for fixedsyntax, arbitrary/nonstandardI\u03a31models, actual selectors and all-index standardNat compatibility.\n\n## Additional Nat and derivability checks\n\n- **Foundation division/remainder vs nativeNat** (lines172-192): The division theorem explicitly selects Foundation Div on the left, then verifies the actual Foundation unique quotient graph using native Nat.div inequalities, including b=0. Remainder unfolds Foundation sub(a,b*div) and uses the already checked foundation_sub_nat plus Nat.mod_eq_sub_mul_div. No silent substitution of pairings or scoped arithmetic instances.\n- **Actual positive/zero selector** (lines194-216): Numerals12 and2 are identified with standardNat constants before rewriting rem/div. positiveStep_nat applies exact rowKernel_nat with rec=znth s, including GEN tail vs MP nested child indices; s can be anyNat sequencecode, including invalid. stepValue_nat explicitly covers code0 and every successor.\n- **Full append/OOB semantics** (lines217-255): Generic znth_append_old uses actual sequence mapping membership and subset into appendedsequence. znth_append_last uses membership at oldlength. znth_append splits index<length, index=length, and index>length; in the lastcase discreteness gives newlength<=index and total znth_prop_not gives0. The listlookup analogue has the same full cases, not only validindex statements.\n- **All-index standardhistory equality** (lines257-276): history_lookup_nat inducts n while generalizing i, and base covers everyindex of initial[0]. At successor it rewrites internal/listhistoryappend, length and exactstep selector; funext ih equates fulllookupfunctions on ALLindices. Thus no validquotation/childbound/Seqinput premise restricts the result. value_nat follows at i=n.\n- **Actual all-code checker and witnesses** (lines278-293,299-315): checkDef_nat composes actual graphdefinedness, exactvalue_nat and Code254History.accepts_iff_check. It quantifies everyNat code/conclusion including invalidtrees, tag/defaults and collidinggates. checkValue_nat gives its actualBoolean output; value_zero andcheckValue_zero enforce invalidproofcode0. c254_iff_represented uses the SAME fixedcheckDef and the exact c254_iff_checked theorem, not an unrelated arithmetic consistency notion.\n- **Fixedtotalitysentence and actual arithmeticderivability** (lines296-335): totalitySentence is literal closedArithmeticSentence: everycode/conclusion has one checkValueDef output, in{0,1}. totalitySentence_true follows for every I\u03a31model fromactualgraphdefinedness/range. isigma1_proves_totality uses Foundation Arithmetic.complete.{0}, whose Basic/Model.lean:78 applies to allORingmodels oftheactualtheory; it doesnot assume astandardmodel or leave anambientV/model premise. peano_proves_totality is actual Entailment.weakening along inferred I\u03a31\u2aafPeano.\n- **Fixed syntax/nonstandard/domain boundary** (lineswholemodule): The internal172-linecheckpoint review remains applicable; first170lines identical in Natcheckpoint and all first294lines ofthat checkpoint retained in finalsource. Zero-parameter blueprint, real HFS/Seq/PRF iteration and actual Sigma1induction handle arbitrarypossiblynonstandardmodel elements. Closed totalityderivability has no externalmodelassumption; arithmeticstructures havezero, so no emptydomain shortcut.\n\n## Maintained runner draft\n\nReviewed `check_arithmetic_history254.py` SHA256 `c3bcb106b004dad8f76b4890790bc124a1a57b77271b3dabcac81d0d3e360d9d`. Its final PROBES/CALLERS audit contract is intentionally pending; this review does not claim a maintainedreplay or finalcounts.\n\n- Current draft intentionally has emptyPROBES/CALLERS and failsclosed before builds until a reviewedstored audit is installed; no PASS/count claim should be made for this draft.\n- Its imports guard requires actualArithmeticRow254 and FoundationHFS.PRF, and it invokes the maintainedrowchecker to freshly build the four prerequisites with114probes/120callers.\n- It reuses rowchecker actual12-source/object-matchedCode254History closure. No newly suppliedCode254Proof/History stub is introduced.\n- It records actual source and prebuilt object provider identities for FoundationHFS.PRF/Seq, checks them after the run, and preserves the existing explicit dependency-cache provenance boundary.\n- It snapshots source/audit in newemptyexternal scratch, puts that fresh cache first, compiles onlynewhistory plus audit, validates exactnamedprobes/callercontract, standardaxioms, andpost-check source/core/fourfreshprerequisite/compileridentities.\n- Newmodule objectpath and freshprerequisite nestedobject traversal are correct. Aggregate counts114+newprobes and120+newcallers andfivefreshmodules/audits are correctly structured once finalaudit contract isfilled.\n- No shellinterpolation, checkoutwrites, dependencyfetch/rebuild or sharedStd-onlyumbrella/checkerrun. Corecache andexternalMathlib/Foundation objects are explicitly reused, not newly independently rebuilt.\n\n## Precise progress and boundary\n\nThis now supplies actual Peano derivability of one literal checker-totality sentence, not merely a standard-model computation. It also identifies the same represented acceptance predicate with the actual all-input external checker. The separate PA-internal theory-refutation and finite machine-trace translations needed for the target consistency equivalence remain open. No primitive-recursive translation is inferred from external completeness, and no machine/state claim follows.\n\nNo actionable mathematical or runner-structure defect found. A final stored audit and runner replay should update the pending count/status record without changing this source review.\n\n## Final maintained runner/audit contract addendum\n\nThe previously pending draft contract is now finalized and independently read.\nThe maintained source is byte-identical to the reviewed337-line checkpoint\n`4cf3d35c0c8d156bfb14ceacf87a799e9d4a35108a17c70bb63c4f93278a9e2e`.\n\nRunner SHA256 `2f0eb65b87bae557cfed1e2320744a74bb2db220a92e8e6e49c9993d20dd4d47`; audit SHA256 `76ec2e677535868051982edd9353fc3d346cc36e3c271b6da0af3a77d2a3cf0e`.\nIts only AST changes from the preserved runner draft are the exact37-name\n`PROBES` tuple and `CALLERS=44`. Every name/order and every example was checked.\nThe audit includes explicit native `Nat.div`/`Nat.mod` bridge callers, arbitrary\nI\u03a31 graph/totality/OOB callers, all-input checker comparison, malformed-code\ncontrols and closed arithmetic-derivability endpoints. Expected five-module\nchain totals are151 axiom reports and164 callers. No actionable defect found.\nThis does not preempt the parent's currently running fresh maintained replay.\nThe historical draft identity remains preserved in JSON and its snapshot.\n\nThe maintained phase-entry README, all four published scripts, and fresh\npublication evidence were also read and compared with the scratch results.\nAll four scripts are exact authored bytes and all four computational output\npayloads match (incidental runtime seconds excluded). The note retains the\nfinite/conditional boundaries and restricted functional-fiber conclusion.\n",
+  "original_scratch_check": {
+    "status": "PASS",
+    "scope": "Fixed represented full C254 history/value/Boolean evaluator in every ISigma1 model; exact all-Nat checker agreement; actual ISigma1 and PA derivability of its fixed totality sentence.",
+    "source": {
+      "path": "/tmp/zfc-arithmetic-history/sources/BusyBeaver/ZFC/ArithmeticHistory254.lean",
+      "sha256": "4cf3d35c0c8d156bfb14ceacf87a799e9d4a35108a17c70bb63c4f93278a9e2e",
+      "bytes": 13920
+    },
+    "snapshot": {
+      "path": "/tmp/zfc-arithmetic-history/ArithmeticHistory254.lean",
+      "sha256": "4cf3d35c0c8d156bfb14ceacf87a799e9d4a35108a17c70bb63c4f93278a9e2e",
+      "bytes": 13920
+    },
+    "module_object": {
+      "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/ArithmeticHistory254.olean",
+      "sha256": "199d21187c40609551c3617b6a511bb281b374e510d433868b4cd5c29c005069",
+      "bytes": 1309096
+    },
+    "audit_source": {
+      "path": "/tmp/zfc-arithmetic-history/Audit.lean",
+      "sha256": "76ec2e677535868051982edd9353fc3d346cc36e3c271b6da0af3a77d2a3cf0e",
+      "bytes": 7338
+    },
+    "audit_contract": {
+      "probes": [
+        "positiveStep_defined",
+        "step_defined",
+        "stepValue_zero",
+        "stepValue_succ",
+        "history_defined",
+        "history_defined_delta",
+        "history_zero",
+        "history_succ",
+        "history_seq",
+        "history_length",
+        "value_defined",
+        "value_defined_delta",
+        "check_defined",
+        "checkValue_defined",
+        "checkValue_defined_delta",
+        "value_total",
+        "checkValue_total",
+        "checkValue_range",
+        "foundation_div_nat",
+        "foundation_rem_nat",
+        "numeral_twelve_eq_twelve",
+        "positiveStep_nat",
+        "stepValue_nat",
+        "znth_append_old",
+        "znth_append_last",
+        "znth_append",
+        "history_lookup_nat",
+        "value_nat",
+        "checkDef_nat",
+        "c254_iff_represented",
+        "history_total",
+        "value_zero",
+        "checkValue_zero",
+        "checkValue_nat",
+        "totalitySentence_true",
+        "isigma1_proves_totality",
+        "peano_proves_totality"
+      ],
+      "callers": 44
+    },
+    "compiler": {
+      "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+      "sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550"
+    },
+    "source_build": {
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "--root=/tmp/zfc-arithmetic-history/sources",
+        "-o",
+        "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/ArithmeticHistory254.olean",
+        "/tmp/zfc-arithmetic-history/sources/BusyBeaver/ZFC/ArithmeticHistory254.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "LEAN_PATH": "/tmp/zfc-arithmetic-history/cache:/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/build/lib/lean",
+      "exit_code": 0,
+      "seconds": 9.691079040057957,
+      "output": "",
+      "source_sha256": "4cf3d35c0c8d156bfb14ceacf87a799e9d4a35108a17c70bb63c4f93278a9e2e"
+    },
+    "audit_build": {
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "/tmp/zfc-arithmetic-history/Audit.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "LEAN_PATH": "/tmp/zfc-arithmetic-history/cache:/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/build/lib/lean",
+      "exit_code": 0,
+      "seconds": 3.1227172166109085,
+      "output": "'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.positiveStep_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.step_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.stepValue_zero' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.stepValue_succ' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_defined_delta' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_zero' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_succ' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_seq' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_length' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.value_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.value_defined_delta' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.check_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkValue_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkValue_defined_delta' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.value_total' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkValue_total' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkValue_range' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.foundation_div_nat' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.foundation_rem_nat' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.numeral_twelve_eq_twelve' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.positiveStep_nat' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.stepValue_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.znth_append_old' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.znth_append_last' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.znth_append' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_lookup_nat' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.value_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkDef_nat' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.c254_iff_represented' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_total' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.value_zero' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkValue_zero' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkValue_nat' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.totalitySentence_true' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.isigma1_proves_totality' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.peano_proves_totality' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+      "source_sha256": "76ec2e677535868051982edd9353fc3d346cc36e3c271b6da0af3a77d2a3cf0e",
+      "axiom_reports": [
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.positiveStep_defined",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.step_defined",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.stepValue_zero",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.stepValue_succ",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_defined",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_defined_delta",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_zero",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_succ",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_seq",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_length",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.value_defined",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.value_defined_delta",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.check_defined",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkValue_defined",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkValue_defined_delta",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.value_total",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkValue_total",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkValue_range",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.foundation_div_nat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.foundation_rem_nat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.numeral_twelve_eq_twelve",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.positiveStep_nat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.stepValue_nat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.znth_append_old",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.znth_append_last",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.znth_append",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_lookup_nat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.value_nat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkDef_nat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.c254_iff_represented",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.history_total",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.value_zero",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkValue_zero",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.checkValue_nat",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.totalitySentence_true",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.isigma1_proves_totality",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "name": "SetTheory.BusyBeaver.ZFC.ArithmeticHistory254.peano_proves_totality",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ],
+      "callers": 44,
+      "only_standard_axioms": true
+    },
+    "source_warning_count": 0,
+    "audit_warning_count": 0,
+    "named_axiom_probes": 37,
+    "callers": 44,
+    "only_standard_axioms": true,
+    "LEAN_PATH": "/tmp/zfc-arithmetic-history/cache:/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean:/home/codex/src/Proofs/.lake/build/lib/lean",
+    "reused_core": [
+      {
+        "module": "FirstOrder.Fol",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/FirstOrder/Lean/FirstOrder/Fol.lean",
+          "sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd",
+          "bytes": 21238
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/FirstOrder/Fol.olean",
+          "sha256": "cacf1698575083566f959bedba34fefe15997d0d835de989f38d463433376fe4",
+          "bytes": 1682728
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.Kalmar",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Kalmar.lean",
+          "sha256": "7e1bd77e6e26943476e941e68caaae06a556b29f1c508d7a63f5aaa9d8397143",
+          "bytes": 8404
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/Kalmar.olean",
+          "sha256": "277a27cc6131e906b88aa0aac5e604877f8aa4f8466ca49652072167e2d4b364",
+          "bytes": 484696
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.TarskiCalculus",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiCalculus.lean",
+          "sha256": "5c7079151e9deb06014deec4f03c3990cff96556d347b501d15106d895447e06",
+          "bytes": 7642
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/TarskiCalculus.olean",
+          "sha256": "4337484639134ff2f884823522973cf95bfb26ddb8a7866ba3ebeba35f553b9b",
+          "bytes": 639728
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.TarskiDerived",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean",
+          "sha256": "2a7edf1180e4553cb1990d45c1fe755aa74c3e86f5e9862181118470c1727178",
+          "bytes": 7694
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/TarskiDerived.olean",
+          "sha256": "63fde11f53d33aff7ffae883f719bdd89c6277a1681ab9480337c378547feb18",
+          "bytes": 181072
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.TarskiLeibniz",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean",
+          "sha256": "45d8bbf29fbd7ee51ee08b4017f549a6e54120dc62728584ed8d8c11153a5df8",
+          "bytes": 15227
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/TarskiLeibniz.olean",
+          "sha256": "1851669b6797dd1769d7b5f7b7e7050376283bb0a8cf8e376bcbfa934a685787",
+          "bytes": 826624
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.TarskiClean",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean",
+          "sha256": "6d06107dfc84bea7e8c42b484fecf718b41b964d95a26293767a6fc5db83cd36",
+          "bytes": 8604
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/TarskiClean.olean",
+          "sha256": "6a2e227d9d9342d7ce0f2746165c8a617d8a3fed6b1819f5e27264032ed96108",
+          "bytes": 742576
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.TarskiComplete",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiComplete.lean",
+          "sha256": "be7b860d750bd176bb332e4d331c4bb67550ef41e98b330df7a5ebb298dbb7ae",
+          "bytes": 22340
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/TarskiComplete.olean",
+          "sha256": "61e26005a642944bdf77066a76ae7d18ade7c2efbbaf6db9dcd907101d635c75",
+          "bytes": 971624
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.Lukasiewicz",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+          "sha256": "5bae5186d702414adc6f1f7006d241a48ef9f24e53de48c90f84394ce3c500d3",
+          "bytes": 28731
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/Lukasiewicz.olean",
+          "sha256": "4e1913275587f652e4a5c412501c9a138465f63be0b779d0e4b9790542032b87",
+          "bytes": 255832
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.TarskiFalsity",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiFalsity.lean",
+          "sha256": "22e29d3aabb45646110fa3d7c29c789a221cdb571c5078786a4f19a0ae797215",
+          "bytes": 8295
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/TarskiFalsity.olean",
+          "sha256": "787b1daf1f46b2dc121be9c1ffb783b010f74e8a1fe93f23edd215b9473381c2",
+          "bytes": 298200
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.Code254",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean",
+          "sha256": "18311d4a28cba6778a0ba1a1ddee34f5c2dd5044a23958b63f46d0640be4e01e",
+          "bytes": 19775
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/Code254.olean",
+          "sha256": "f030585bad7e2281cddc172dbc3169614a74d30a59cbff9dbd92c8626a9285b3",
+          "bytes": 898328
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.Code254Proof",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Proof.lean",
+          "sha256": "7bb8daf0f1c0965d22f2f16bbb1898d60cfb79f9a6feabe8ab38b3f69b3bc6d1",
+          "bytes": 9760
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/Code254Proof.olean",
+          "sha256": "b60c3638a4a4b0b1b517cf1a22442eae30aaee98fe82e29ef8d2e6d40b5434e8",
+          "bytes": 1256528
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.Code254History",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254History.lean",
+          "sha256": "bb999a951167938e7da670e856c8634b964abe2eccf556d23ad4f8f677d732fb",
+          "bytes": 8481
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/Code254History.olean",
+          "sha256": "7da0ef1bc1303a3eea891686a2ce666f84468ff3de8668b9cc8f888476e5d46f",
+          "bytes": 740784
+        }
+      }
+    ],
+    "arithmetic_prerequisites": [
+      {
+        "module": "BusyBeaver.ZFC.ArithmeticCantor",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticCantor.lean",
+          "sha256": "aadfdeb41e75c1652b555ed996fea5d15d7f1b9f65c7c553823a99773ee24c84",
+          "bytes": 9982
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/ArithmeticCantor.olean",
+          "sha256": "ed3f999f2303c1a28dd39bc7bbe5488dddaac42d2dd57cab3e0bb319c3b0a64e",
+          "bytes": 545320
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.ArithmeticCode254",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticCode254.lean",
+          "sha256": "2edf178b0061838b13299f1332d65c4fc3194207cbd0e761f129a7bcc36bdff0",
+          "bytes": 9365
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/ArithmeticCode254.olean",
+          "sha256": "031d950a5fd57b50a607db6073f25d9c215b96d3f18b19c2e136de751bd190b6",
+          "bytes": 732456
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.ArithmeticTemplates254",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticTemplates254.lean",
+          "sha256": "2031511caadb7bf794d190cea99bedfa32022197f64612cb270daceee986f65f",
+          "bytes": 13917
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/ArithmeticTemplates254.olean",
+          "sha256": "7267301309989b8177ee6700ae293a0d5aecf755a5699287ad90d4a2e5224655",
+          "bytes": 1283184
+        }
+      },
+      {
+        "module": "BusyBeaver.ZFC.ArithmeticRow254",
+        "source": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticRow254.lean",
+          "sha256": "90c29554d76400618777a6139be5089220093a5effb2b0587f0d3ab497d0ca7c",
+          "bytes": 12215
+        },
+        "object": {
+          "path": "/tmp/zfc-arithmetic-history/cache/BusyBeaver/ZFC/ArithmeticRow254.olean",
+          "sha256": "31605fadd094293637d997b102f64ec2814da76d120a942aa0f17ef8d402b76e",
+          "bytes": 2841080
+        }
+      }
+    ],
+    "dependency_evidence": {
+      "path": "/tmp/zfc-arithmetic-row-final-replay/verification.json",
+      "sha256": "618dc2d3c9b96b031d0602dd8c5531808ff8b79480fbce0fb42936d3ee6e0c8b",
+      "status": "PASS"
+    },
+    "dependency_providers": {
+      "HFS/PRF": {
+        "source": {
+          "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/HFS/PRF.lean",
+          "sha256": "5925b829137d35293fa00955e81a584857e49a3db94baff1810b44bd05c7beeb",
+          "bytes": 8971
+        },
+        "object": {
+          "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/HFS/PRF.olean",
+          "sha256": "068ab5c4ae259a4eeff277a4cf4bcf94d690c8aaac58f242879057b32063d932",
+          "bytes": 207008
+        }
+      },
+      "HFS/Seq": {
+        "source": {
+          "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/HFS/Seq.lean",
+          "sha256": "b2f1f9fbd0c746aa1f531ba4a468bf07f24eab388b7fd4c924abe240429517a8",
+          "bytes": 18208
+        },
+        "object": {
+          "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/HFS/Seq.olean",
+          "sha256": "45aa16d07ef64b54e459449404033730cdb482d832dc050728f2267630caf923",
+          "bytes": 321488
+        }
+      },
+      "HFS/Basic": {
+        "source": {
+          "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/HFS/Basic.lean",
+          "sha256": "41583ef7c9ddef6e91dc283b52bb6df66624ea07da201a7c644e581f234e98ee",
+          "bytes": 30273
+        },
+        "object": {
+          "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/HFS/Basic.olean",
+          "sha256": "947c840bf12803a7cc4c08dad3ac4057769166cf0d3df261599d221dcc0a50a7",
+          "bytes": 350072
+        }
+      },
+      "Basic/Model": {
+        "source": {
+          "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/Basic/Model.lean",
+          "sha256": "ea28eae6af448c73fba1be30b2c01770560f132a0808628812eb9fc9d8017553",
+          "bytes": 3994
+        },
+        "object": {
+          "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/Basic/Model.olean",
+          "sha256": "22d709494075d3ee9b3147177a21bb5369c55b5f8813233424b38f4fe9fac4a2",
+          "bytes": 82280
+        }
+      },
+      "IOpen/Basic": {
+        "source": {
+          "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/IOpen/Basic.lean",
+          "sha256": "4ec52a7a487aeafb0e9ea10716452b34f138d8214ad5a1aa5466064d6a4c9d7b",
+          "bytes": 34411
+        },
+        "object": {
+          "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean",
+          "sha256": "b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad",
+          "bytes": 512672
+        }
+      }
+    },
+    "dependency_environment": {
+      "root": "/home/codex/src/Proofs",
+      "Foundation": {
+        "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation",
+        "pin": "32e1a0956a8622fad067328ca1959729a7634428",
+        "tracked_clean": true
+      },
+      "Mathlib": {
+        "path": "/home/codex/src/Proofs/.lake/packages/mathlib",
+        "pin": "81a5d257c8e410db227a6665ed08f64fea08e997",
+        "input_revision": "v4.32.0",
+        "tracked_clean": true
+      },
+      "lake_manifest_sha256": "95e215b005fe9aacc1e5490c781d57e3044d2da5ca452495cfcd0e4eff908665",
+      "discovery": "read-only lake-manifest.json and existing .lake build directories; no Lake process",
+      "providers": {
+        "Foundation.FirstOrder.Arithmetic.IOpen.Basic": {
+          "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean",
+          "sha256": "b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad"
+        },
+        "Mathlib.Tactic.Ring": {
+          "path": "/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean",
+          "sha256": "cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4"
+        }
+      },
+      "cached_objects_reused": true,
+      "dependency_rebuild": false,
+      "cache_provenance": "Existing built checkout is supplied by the caller; the checker records object identities but does not rebuild or independently attest the whole dependency cache."
+    },
+    "claims": {
+      "fixed_parameter_free_formulas": true,
+      "internal_nonstandard_ISigma1_indices": true,
+      "outer_code_zero": true,
+      "division_remainder12": true,
+      "actual_child_sequence_lookup": true,
+      "actual_full_row": true,
+      "history_iteration": true,
+      "internal_sequence_validity_and_length": true,
+      "total_unique_value_and_boolean": true,
+      "sigma1_and_delta1_graphs": true,
+      "all_Nat_input_comparison": true,
+      "all_Nat_lookup_indices_including_OOB": true,
+      "actual_ISigma1_totality_derivation": true,
+      "actual_PA_totality_derivation": true,
+      "PA_internal_native_ZFC_proof_transport": false,
+      "PA_internal_binary_trace_transport": false,
+      "goal_PA_equivalence_closed": false
+    },
+    "source_unchanged_during_final_audit": true,
+    "historical_checkpoints": {
+      "internal": "internal3.json",
+      "all_Nat": "full5.json",
+      "final": "totality2.json",
+      "initial_audit_warning_only": "audit-initial-warning-pass.json"
+    },
+    "independent-internal-review": {
+      "status": "CLEAN independent internal-checkpoint source audit",
+      "review_utc": "2026-10-17T07:03:11.547449+00:00",
+      "source": {
+        "path": "/tmp/zfc-arithmetic-history/internal-checkpoint.lean",
+        "sha256": "ef2efd70d9906e579372182b27131fd2440dc85acc482cd946d6aa20b82f4ae3",
+        "lines": 172,
+        "snapshot": "/tmp/zfc-arithmetic-history/independent-internal-source-snapshot.lean"
+      },
+      "method": "Read all172lines plus actual pinnedFoundation HFS/Seq, HFS/PRF and graphDelta/DefinedFunction.graph_delta APIs. No Lean build/replay by this reviewer; Nat extension under active development is excluded.",
+      "assumptions": [
+        "ORingStructure V",
+        "V models I\u03a31"
+      ],
+      "checks": [
+        {
+          "lines": "13-34",
+          "topic": "Actual selectors and child lookup",
+          "result": "positiveStep computes rem/div by12, uses literalCantor projections for payload and actualFoundation znth for both child values. GEN firstchild uses tail,MP firstchild uses firsttail; major uses secondtail. The fixed positiveStepDef explicitly composes remDef/divDef/Cantor projections/znthDef/rowDef. No oracle or represented-input premise."
+        },
+        {
+          "lines": "38-56",
+          "topic": "Invalidzero/positivecode selector",
+          "result": "stepValue returns0 exactly atcode0, otherwise evaluates predecessor base12 row. stepDef uses code=z+1 withz<=code and predecessor_witness. This is total at all internalcodes, not externally boundedstandardcodes."
+        },
+        {
+          "lines": "58-88",
+          "topic": "One fixed primitive recursion",
+          "result": "zeroDef encodes singletonsequence[0]. succDef binds output,previous,index as required by PR.Construction.succ_defined, while semantic succ receives index thenprevious; it appends stepValue(previous,index+1). blueprint haszero formalparameters and noV/model-specificsyntax. Fin0 environment equality usesSubsingleton.elim legitimately."
+        },
+        {
+          "lines": "74-100",
+          "topic": "Actual I\u03a31 iteration and graph",
+          "result": "history is actual PR.Construction.result on code. Foundation CSeq.exists138 andresult162 use actual Sigma1induction for arbitrary modelindices; result_succ171 gives the stated recurrence. historyDef is fixedBlueprint.resultDef; definition is not anexternalNat recursion."
+        },
+        {
+          "lines": "102-118",
+          "topic": "Nonstandard sequence validity/length",
+          "result": "Both history_seq andhistory_length use ISigma1.sigma1_succ_induction with literaldefinability obligations, not arbitrarypredicates. Seqhistory is a theorem, not an assumedinput. Appending preserves validity and increments length; base has length1, giving code+1 evenfornonstandardcode."
+        },
+        {
+          "lines": "119-130",
+          "topic": "Valuegraph and Delta1",
+          "result": "value is znth of its actual generatedhistory atcode; valueDef explicitly exposeshistorygraph andlookup. Delta graphs use actual graphDelta; Foundation proves its Pi presentation equivalent through functional totaldefinedness, not arbitrarySigma1predicate reclassification."
+        },
+        {
+          "lines": "132-170",
+          "topic": "Acceptance/Boolean totality",
+          "result": "checkDef is a fixedSigma1formula in(code,conclusion) with value=conclusion+1; checkValueDef outputs1 or0 after exposing actualvalue. Its graph andDelta1presentation are proveddefined. value_total/checkValue_total quantify allVmodel elements and use establishedactualfunctions. No assumption of inputhistory or validproofcode."
+        },
+        {
+          "lines": "15-29; FoundationSeq119-145",
+          "topic": "Defaultlookupsemantics",
+          "result": "znth_existsUnique explicitly returns0 whenever Seq(s)andindex<length fails; znth_prop_not acceptsnotSeq(s) orlength<=index. Thus step selectors are total on arbitrary suppliedhistorycodes too. This doesnot assertinvalidhistoriesaregenerated."
+        }
+      ],
+      "foundation_api": {
+        "pin": "32e1a0956a8622fad067328ca1959729a7634428",
+        "PRF_construction": "HFS/PRF.lean:37-41",
+        "PRF_internal_exists": "HFS/PRF.lean:138-160",
+        "PRF_result_recurrence": "HFS/PRF.lean:162-176",
+        "PRF_fixed_graphs": "HFS/PRF.lean:189-198",
+        "Seq_append": "HFS/Seq.lean:115,171-174",
+        "Seq_total_default": "HFS/Seq.lean:119-145",
+        "graphDelta": "Definability/Hierarchy.lean:397-402; Definability/Definable.lean:226-235"
+      },
+      "not_claimed": [
+        "Currentcheckpoint alone doesnotprove allNatagreementwith Code254Proof.check; childNatadapter isseparate/pendingreview.",
+        "No PA-syntax derivation of totality is exported by this source; these are semantic allmodeltheorems andliteralformulaobjects.",
+        "No internallyarithmetized Native/ZF/ZFCconsistency orbinarytrace translation follows.",
+        "No newmachine/statecost."
+      ],
+      "findings": []
+    }
+  }
+}

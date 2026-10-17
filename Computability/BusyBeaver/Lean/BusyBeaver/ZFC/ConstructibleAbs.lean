@@ -4,15 +4,18 @@ import BusyBeaver.ZFC.SatSupport
 Absoluteness between a model of ZF and its constructible class.
 
 `N = {x // InL x}` with `memL` is a model of the ZF bundle
-(`ConstructibleZF.L_zfAxioms`). Every internal notion of the satisfaction
-machinery computed in `N` agrees with the same notion computed in the
-ambient model `M` on constructible arguments: the basic set operations,
-`ω`, application, the environment shift, the truth bits, the certificate
-step relation, certificates themselves and hence `SatIn`, formula codes,
-definability (using the uniform finite support of `SatSupport` to replace a
-non-constructible environment), `Def`, and finally the constructible
-hierarchy. Consequently **`N` satisfies `V = L`**: every element of `N` is
-constructible in the sense of `N` (`vEqL`).
+(`ConstructibleZF.L_zfAxioms`). Basic set operations, internal `ω`, recorded
+graph application, environment shift, truth bits and satisfaction-certificate
+relations agree on constructible data. `satIn_iff` proves satisfaction agreement
+for a constructible set structure and environment when the code is valid in
+both the ambient and constructible models. `memRel_iff` compares the encoded
+membership relation.
+
+The extension below proves formula-code absoluteness, replaces an arbitrary
+ambient environment by a constructible environment on its internally finite
+support, and transports definability and `Def`. Hierarchy comparison then gives
+`vEqL`: every constructible set is constructible in the sense of the constructible
+model. The internal well-order and Choice arguments remain separate obligations.
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.ConstructibleAbs

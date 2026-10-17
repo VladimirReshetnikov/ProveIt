@@ -75,3 +75,11 @@ was independently replayed. The [spare-suffix box experiment](permutation252_spa
 tests7,279 previously excluded folds with arbitrary valid spare values in
 finite literal box samples; no candidate survives its subsequent conditional
 instruction screen. Neither experiment changes the frozen candidate.
+
+The later [phase and incoming-action follow-up](phase-entry/README.md) combines
+the six excluded source guards with source50's complete one-incoming-action
+ledger. Only three recipes need another check. One changes the movement
+direction and was outside the earlier target-only follow-up; a literal finite
+trace shows that it reaches the same wrong continuation in two extra steps.
+None passes the retained guard screen. The result narrows this particular
+combination of searches without proving a global lower bound.

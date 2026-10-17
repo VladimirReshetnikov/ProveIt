@@ -1,17 +1,19 @@
 # A concrete arithmetic representation of the exact C254 checker
 
-2026-10-16. The smallest useful next arithmetic adapter is **the exact Cantor
-pairing and its two projections in arbitrary arithmetic models**. Once that
-adapter is available, a represented history table computes our existing
-`Code254Proof.check` without constructing or coding the `RawProof` datatype.
-The table's recursion is already supported by the pinned Foundation library.
-This note specifies the construction; it does not claim a newly implemented
-arithmetic formula or PA proof.
+Updated 2026-10-17. The construction below is now implemented in the
+[represented history checker](arithmetic_history254.md), through the exact
+[Cantor](arithmetic_cantor.md), [constructor](arithmetic_code254.md),
+[fixed-template](arithmetic_templates254.md) and [complete row](arithmetic_row254.md)
+adapters. The resulting fixed formula agrees with `Code254Proof.check` for all
+natural codes and conclusions. Unique Boolean evaluation holds in every IΣ1
+model, and its fixed totality sentence is proved in both IΣ1 and PA. The
+construction plan below is retained as its design rationale. The requested PA
+proof comparing binary traces with ZFC refutations remains open.
 
-The Foundation gitlink is
-`32e1a0956a8622fad067328ca1959729a7634428`. Its worktree remains unpopulated,
-but the actual source was recovered read-only from the local submodule Git
-object database. No dependency checkout, network fetch or Lean build was done.
+The Foundation gitlink is `32e1a0956a8622fad067328ca1959729a7634428`.
+The initial read-only plan recovered its source from the Git object database.
+The later scoped adapter check uses the existing populated dependency checkout
+and cached Foundation/Mathlib objects, without rebuilding those dependencies.
 
 ## Preserve the exact literal pairing
 
@@ -159,35 +161,62 @@ the fixed result graph, then testing its `c`-th value against `n+1`. This is
 Σ1; total unique evaluation also gives the complementary/Δ1 presentation.
 A separate Boolean graph can return1 on acceptance and0 otherwise.
 
-The PA-totality proof target is concrete: prove in every model of `IΣ1` that
+The implemented PA-totality proof first establishes in every model of `IΣ1` that
 `history(c)` exists and has the stated recurrence, then that every `c,n` has
 one Boolean result. The represented-iterator totality theorem already handles
-nonstandard `c`. Arithmetic completeness can produce the actual PA derivation
+nonstandard `c`. Arithmetic completeness then produces the actual PA derivation
 of that **same fixed sentence**, following the existing call in
 `UniformInternalProvability.lean:157`. A model-dependent choice of unrelated
 graph formulas would not suffice; the blueprint here is fixed once and for all.
 
-## Exact next proof targets
+## Completed checker targets and remaining translations
 
-First implement the Cantor arithmetic package with fixed Δ0 projection graphs
-and its standard-model compatibility lemma. Then define the twelve-case row
-graph and one history blueprint. These are independent of Native/ZF/Choice
-interpretations and do not require rebuilding their proof-code translations.
+The Cantor arithmetic package with fixed Δ0 projection graphs and its
+standard-model compatibility lemma is checked, as are the constructors,
+all positive fixed axiom templates, the complete twelve-case row including
+rejection and both gates, and the history blueprint. These are independent of
+Native/ZF/Choice interpretations.
 
-The external checker-equivalence target is
+The checked external comparison is
 
 ```text
 ∀c n : Nat, Check254_ℕ(c,n) ↔ Code254Proof.check c n = true.
 ```
 
-Prove it by strong induction on the natural proof code: the two recursive
-fields are smaller, and the numeric value records exactly successful parsing,
-validity and conclusion. The existing `c254_iff_checked` then gives the usual
-external proof-existence equivalence. This comparison covers **all natural
-inputs**, including invalid MP nodes, missing children and colliding gates;
-quotation roundtrips alone are insufficient.
+`history_lookup_nat` first proves the equality of all lookups by induction on
+history length, including out-of-range indices. `checkDef_nat` composes that
+result with the existing all-input numeric-history/checker comparison. The
+existing `c254_iff_checked` gives external proof-existence equivalence. This
+covers **all natural inputs**, including invalid MP nodes, missing children and
+colliding gates.
 
-The arbitrary-model totality theorem is a distinct target. Neither it nor the
+The arbitrary-model totality theorem is separately proved. Neither it nor the
 standard comparison proves the later PA-internal native/ZF/ZFC proof
-translations or machine-trace translations. The construction above identifies
-a small concrete first step, not those further endpoints.
+translations or machine-trace translations. Those are the remaining arithmetic
+interfaces needed for the requested endpoint.
+
+## Constructor certificates as an alternative representation
+
+[Source50](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
+proves ordinary all-input equivalence between the legacy checker and local
+quoted certificates with forward polynomial equations. Its separate ground-term
+checker removes numeric literal/quotation arithmetic altogether, while retaining
+all twelve rules, native equality, both bundle gates and fixed falsity. Only
+`B0(Z,Z)` is normalized to Z. The delivered arena verifies unique constructor
+keys before treating identifier inequality as numeric inequality.
+
+These are alternatives to the already checked dense history, not corrections
+to its all-input equivalence theorem. The new weighted quotation and short-fuel
+bounds, normal-form bijection and certificate equivalences are not yet Lean
+ports. Our exact arithmetic Cantor component now fills the elementary pairing
+step proposed by the report; internal certificate normalization, represented
+history and full coded proof/trace transports remain separate obligations.
+
+The subsequent [constructor-witness prototype](term-certificates/README.md)
+allows duplicate positive arena nodes and replaces each bundle inequality by
+a synchronized path ending at a tag/zero mismatch. Schema rows supply explicit
+constructor-record IDs, removing both global uniqueness validation and template
+search. A finite binary codec and fair default-falsity search are implemented.
+Ordinary soundness/completeness and finite controls are recorded; the new
+frontend still needs Lean verification, a low-level compiler and its full state
+cost. Its unary-address codec does not inherit the source's compact bit bound.

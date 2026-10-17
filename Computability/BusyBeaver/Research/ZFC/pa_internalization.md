@@ -1,16 +1,24 @@
 # Internalizing the machine comparison in arithmetic
 
-Read-only research inventory, 16 October 2026, against `7b1e56dbc59f746695a7fb375546422f91de3a96`
-and the explicitly identified work in progress below. No Lean or Coq build was
-run for this note. This is a proposed proof-code interface, not a PA theorem.
+Research inventory begun 16 October 2026 against
+`7b1e56dbc59f746695a7fb375546422f91de3a96`, updated with the explicitly linked
+Lean checks below. The full PA equivalence is still open. The represented
+checker and actual machine-run evaluator now have PA totality theorems,
+described near the end.
 
-The initial request mentioned an equivalence provable in PA; the later goal
-record asks for an equivalence provable in **ZFC**. These are different
-deliverables. A Lean theorem comparing halting and `BProv` is an ordinary
-metatheorem until the intended arithmetic sentence and an object-theory proof
-are connected to it. Completing the PA version would also serve the weaker
-metatheory requirement, after checking the chosen arithmetic interpretation in
-ZFC; that extra work is not required merely by the revised target.
+The original request requires an equivalence provable in **PA**. The stored
+goal record instead says ZFC; the original PA requirement remains our target.
+A Lean theorem comparing halting and `BProv` is an ordinary metatheorem until
+the intended arithmetic sentence and an object-theory proof are connected to
+it. Completing the PA version would also serve the ZFC requirement, after
+checking the chosen arithmetic interpretation in ZFC.
+
+The [Choice calibration](choice_calibration254.md) now closes the external
+Lean theorem for the literal 252-state machine: blank nonhalting iff Con(ZFC).
+It uses Choice in L and external first-order completeness. This discharges the
+external consistency comparison; it does not implement the represented proof
+translations or prove their correctness for every internal code in every PA
+model. Those obligations below remain.
 
 ## What is already available
 
@@ -26,7 +34,8 @@ proof-code transformations.
 | `NumericCode254.numThm_iff_c254` (`NumericCode254.lean:133`) | The two local exact numerical calculi agree; this is useful for avoiding a third arithmetic coding. It is not an internal PA proof of that agreement. |
 | `Code254.c254_of_thmG` (`Code254.lean:425`) and `NamedNumeric254.transport` (`NamedNumeric254.lean:37`) | Existing constructor-by-constructor named/numerical transports provide templates for data-level compilers. Their current premises and results remain proposition-valued. |
 | `WFModel`, `WFTheory` | The freshly checked internally-WF interpretation supplies the reverse comparison with ordinary ZF, including Foundation and Power, using actual Form instances. `WFTheory.c254_refutation_iff_zf`/`native_refutation_iff_zf` close the ordinary two-way comparison. The scoped audit checked all three WF modules, 23 axiom reports and six callers; see `results/wf-model-theory-verification.json`. Choice and internal PA formalization remain separate. |
-| `BinaryPerm252` | The proposed closed blank-machine endpoint additionally depends on the full actual-sites certificate and the literal/structured program correspondence. Its source explicitly requires the closed certificate to pass. A bootstrap or individual certificate batch is insufficient. |
+| `BinaryPerm252` | The closed blank-machine endpoint includes the completed actual-sites certificate and literal/structured program correspondence. It proves the actual machine's nonhalting iff ordinary ZF consistency, with no coverage or startup premise. |
+| `ChoiceCalibration254` | The constructible subtype satisfies all sealed ZFC axioms. External completeness transfers ZFC refutations to ZF refutations, closing the actual machine's nonhalting iff Con(ZFC). This does not expose a represented proof-code compiler. |
 
 `Logic/FirstOrder/Lean/FirstOrder/Calculus.lean:33` defines the seventeen-rule
 natural-deduction relation in `Prop`. `Completeness.lean:1105` defines
@@ -45,10 +54,10 @@ dependency closure was not rebuilt or newly audited here.
 | --- | --- |
 | `Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/Basic.lean:200` | A `Type`-valued `ProvTree`, its erasure, and `provTree_complete : Prov → Nonempty ProvTree` at line370 give the right pattern for a data-carrying mirror. This one is for PA syntax, not BusyBeaver's Form or C254. |
 | `Logic/Interpretability/PAHF/Lean/PAHF/Interpretation.lean:8208,8226` | `TheoryInterpretation` and its composition package syntactic formula translation, axiom discharge and theorem transfer. They still use `Prop` provability, rather than an internally represented proof-code map. |
-| `.../TypedTemplateProofCompiler.lean:42,203,270,280` | `TypedTemplateTranslation`, `compileDerivation`, `compileProof`, and `compileProof_isProof` instantiate a **fixed standard proof template** at typed, possibly nonstandard model-coded formulas. Translation equations for binders, substitution and shifting are explicit. The output's `.val` is accepted by Foundation's represented `Proof` predicate. |
-| `.../PrimitiveRecursiveTruthCertificate.lean:120,170` | `PrimitiveRecursivePackage` and `paRestrictedConsistencyProofSelectorIn_of_primitiveRecursivePackage` illustrate represented `PR.Construction` iteration and correctness in arbitrary arithmetic models. They do not provide the needed BusyBeaver blueprint. |
-| `.../UniformProofPackage.lean:67` | Sigma-one definable existential packages can be iterated by internal induction without a canonical choice function. This is an alternative to demanding a primitive-recursive output selector. |
-| `.../UniformInternalProvability.lean:131,157` | A statement about proof witnesses at **every element of every PA model** is turned into an actual `Peano ⊢ sentence` theorem. Using arithmetic completeness here is legitimate because the obligation is already about represented proofs, including nonstandard codes. |
+| `Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/TypedTemplateProofCompiler.lean:47,203,270,280` | `TypedTemplateTranslation`, `compileDerivation`, `compileProof`, and `compileProof_isProof` instantiate a **fixed standard proof template** at typed, possibly nonstandard model-coded formulas. Translation equations for binders, substitution and shifting are explicit. The output's `.val` is accepted by Foundation's represented `Proof` predicate. |
+| `Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/PrimitiveRecursiveTruthCertificate.lean:120,170` | `PrimitiveRecursivePackage` and `paRestrictedConsistencyProofSelectorIn_of_primitiveRecursivePackage` illustrate represented `PR.Construction` iteration and correctness in arbitrary arithmetic models. They do not provide the needed BusyBeaver blueprint. |
+| `Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/UniformProofPackage.lean:67` | Sigma-one definable existential packages can be iterated by internal induction without a canonical choice function. This is an alternative to demanding a primitive-recursive output selector. |
+| `Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/UniformInternalProvability.lean:131,157` | A statement about proof witnesses at **every element of every PA model** is turned into an actual `Peano ⊢ sentence` theorem. Using arithmetic completeness here is legitimate because the obligation is already about represented proofs, including nonstandard codes. |
 | `Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/Instances.lean:52` and `ZFDelta1.lean:75,83` | The set language has symbol recognizers, and Foundation's actual ZF/ZFC axiom theories have `Theory.Δ₁`, enabling its represented `Proof`/`Provable` machinery. These are not yet instances for the local `NativeAx`/`ZFax_s` codings. |
 | `.../Translation.lean:77,113` and `UniformStatement.lean:142` | `toSet`, `eval_toSet`, and `toNat_toSet_congr` already handle local flat De Bruijn Form, Foundation syntax, and quotation depth. `Translation` explicitly transfers semantic results rather than source derivations; a proof-code/coded-syntax correctness adapter is still needed. |
 | `.../SetPlaceholderQuotient.lean:160` and `SetCongruence.lean:1322` | Existing placeholder-language equality/congruence completion and translated congruence proofs can support finite templates with inserted formulas. Equality cannot be silently assumed to respect an arbitrary replacement predicate. |
@@ -102,7 +111,8 @@ The external finite-data checkpoint below is now checked in
 `Code254Proof.lean`: unindexed `RawProof`, structural validity/conclusion,
 positive Nat quotation, total fuel parser, and `c254_iff_checked`. Its scoped
 verification is [recorded separately](results/code254-proof-verification.json).
-No represented arithmetic checker or PA theorem follows yet.
+That finite-data checkpoint alone does not represent the checker; the later
+arithmetic history extension below now supplies that representation.
 
 The staged route starts with this finite syntax, rather than arithmetizing model theory:
 
@@ -144,6 +154,22 @@ must be represented and proved correct for arbitrary internal formulas. A
 chosen proof for each *standard* matrix is not enough. Predicate congruence,
 domain guards, freshness and nonemptiness have to appear in this adapter.
 
+The new [finite core compiler](model_coded_core_compiler.md) specializes a
+standard proof at an arbitrary internal arithmetic matrix, including its free
+parameters, without requiring `S.shift = S`. It compiles Foundation's existing
+proof core and discharges the finite translated axiom list with supplied
+target proof witnesses. The result satisfies the represented `Proof` predicate.
+This removes the free-parameter restriction for fixed templates; represented
+translation of arbitrary internal source proofs remains open. The L schema
+step still needs syntax-sensitive relativization of the actual set-language
+matrix, rather than a generic uninterpreted-predicate substitution.
+The [fixed-template graph extension](model_coded_template_graph.md) now
+represents substitution into each standard source formula by fixed Σ1/Δ1
+graphs, and proves an actual IΣ1/PA sentence asserting provability for every
+well-formed internal matrix when a standard lifted-PA source proof is given.
+This closes the graph-selection step for fixed templates; it does not yet
+represent a translator for arbitrary internal source proof codes.
+
 ## Exact eventual endpoint
 
 Fix Boolean checkers for closed proofs and finite machine traces. Let
@@ -159,7 +185,8 @@ PA ⊢ ∀p (PrfZFC(p) → ∃t HaltTrace252(t))
 Negating gives the desired PA-provable nonhalting/consistency equivalence.
 An adequate modular interface is the analogous pair of proof-translation
 sentences for C254/Native, Native/ZF, and ZFC/ZF, plus C254/actual-machine
-traces. The reverse ZFC/ZF direction is the genuine Choice comparison;
+traces. The reverse ZFC/ZF direction must represent the now externally checked
+Choice comparison;
 Foundation is addressed by the internally-WF route rather than a false claim
 that raw IR descends to the bisimulation quotient.
 
@@ -192,7 +219,132 @@ blocks and proves their exact result contract. Its explicit refutation word
 halts from any working state; the existing fair scheduler yields the external
 enumerator-halting corollary. See [the compiler note](code254_proof_compiler.md).
 This removes proof-existence extraction from the compiler function itself;
-representing that computation and its correctness inside PA remains open.
+the subsequent arithmetic word history and correctness modules now represent
+that computation and establish its contract in every IΣ1 model. The internal
+scheduler and proof-system comparisons remain open.
+
+The [numeric command-word adapter](command_word254.md) now supplies a total
+shifted encoding of the actual command lists, exact tail replacement, and
+numeric concatenation with all-input list agreement. Empty word0 is distinct
+from the actual raw candidate0 (`MP0`). This provides the finite-data operations
+for a compiled-word history; it does not itself represent that
+history or prove the compiler's internal execution contract. Invalid proof
+code0 must remain separate from either command-code convention.
+The subsequent [bounded command-tail graphs](arithmetic_command_word254.md)
+now represent the raw tail and replacement functions in every IOpen model,
+with all-natural identification. The subsequent
+[represented concatenation](arithmetic_command_append254.md) now proves its
+exact recurrence at every internal index, all-Nat word agreement and actual
+PA unique totality. The [compiler-block circuits](arithmetic_command_blocks254.md)
+now represent all actual leaf, MP and GEN blocks using those operations,
+with symbolic equality to the existing command-list encoding on natural
+inputs. Their syntax and repetition counts are fixed external data; their
+numeric operands may be internal model elements.
+The [internal word laws](arithmetic_command_word_laws254.md)
+now prove exact replacement, right identity and associativity, without
+assuming an external finite-list interpretation of internal codes.
+
+The simpler compiler design keeps an unconditional history of raw compiled
+words and uses the already checked `ArithmeticHistory254.value` once as the
+public validity gate. Invalid public inputs return empty word 0. This avoids
+duplicating the twelve-rule validator in a paired history. For an accepted
+parent, the validator's internal recurrence must imply acceptance of the
+actual MP/GEN children; only then may their raw words be used with the
+validity-conditional execution induction. The
+[internal history recurrence](arithmetic_history_recurrence254.md) now proves
+this MP/GEN validity inversion, including the actual child bounds and
+whole-tail GEN convention. The [word-history extension](arithmetic_proof_word254.md)
+now implements the unconditional row/history and final validator gate, with
+exact internal recurrence and PA-provable unique totality. The
+[quotation adapter](arithmetic_proof_word_adapters254.md) now proves agreement
+with the structural compiler on every ordinary finite quoted proof tree,
+including invalid trees. The accompanying all-internal nonemptiness theorem
+identifies empty public output exactly with rejection by the original
+validator. The later [correctness theorem](arithmetic_proof_word_correct254.md)
+now proves its accepted-proof execution contract.
+
+The [command-step graph](arithmetic_command_step254.md) now represents the
+exact MP, DROP, NIP and AX effects on every internal IOpen input, agrees with
+the actual `Enum254.cstep` on all ordinary inputs, and is invariant under
+rest-pointer replacement. Success is encoded as working-state code plus one;
+zero is reserved for a halting NIP. These facts supply the local command
+semantics needed for internal word execution and composition.
+The [internal iterator](arithmetic_command_run254.md) now has exact
+zero/successor and semigroup laws at every internal time. A pointwise Σ1
+induction proves that every shifted word halts or completes by the numerical
+bound given by its own code, with no bound on changing working registers.
+PA proves the resulting evaluator's unique totality. The
+[execution adapters](arithmetic_command_execution254.md) now identify it with
+the actual natural executor and prove successor/append execution at every
+internal input. The [Π1 contract interface](arithmetic_proof_word_contract254.md)
+uses the total Δ1 functions to retain universal top/stack quantifiers inside
+a Π1 induction hypothesis. Thus the MP major can use its changed saved stack
+without a register-growth bound. The [fixed block contracts](arithmetic_command_block_execution254.md)
+and [correctness theorem](arithmetic_proof_word_correct254.md) now discharge
+the exact twelve-case successor premise using the actual validator recurrence.
+The [represented refutation word](arithmetic_refutation_word254.md) then
+resets arbitrary working registers and halts whenever the validator accepts
+falsity. This closes the compiler-to-word direction in every IΣ1 model.
+The scheduler comparison below is now checked; binary traces and internal
+C254/ZFC proof transformations remain to be connected.
+
+The [arithmetic scheduler step](arithmetic_enumerator_step254.md) now covers
+every internal six-register configuration and has an exact ordinary-Nat
+`Enum254.enumStep` adapter. Its [internal iterator](arithmetic_enumerator_run254.md)
+uses a Σ1 invariant retaining an earlier stopped-word witness, since a
+completed word and a scheduler boundary have different next steps. It proves
+internal fairness and schedules every positive word halting from all working
+states. The raw candidate for shifted word `w` is `w-1`. This supplies the
+forward scheduling argument. Complete binary transport and the internal
+ZFC proof comparison remain separate.
+The subsequent [composition theorem](arithmetic_enumerator_refutation254.md)
+now states this forward direction as one fixed arithmetic sentence and proves
+its IΣ1 and PA derivability. Its hypothesis is the actual represented C254
+validator returning 2; its conclusion uses the actual start and run graphs.
+It does not yet translate a ZFC proof code or a binary machine trace.
+The [ordinary-Nat adapter](arithmetic_enumerator_run_nat254.md) separately
+proves exact equality with the existing native scheduler at every ordinary
+time and state, including its blank-halting predicate. This identifies the
+standard interpretation of the run graph while keeping the all-internal
+proof obligations explicit.
+For the reverse direction, the [bounded-stack plan](arithmetic_enumerator_soundness_plan254.md)
+keeps one existential bound on proof witnesses for the current stack and
+registers. This gives the checked Σ1 time invariant. The required
+[actual proof-constructor equations](arithmetic_proof_constructors254.md)
+are now checked. The subsequent
+[tail-drain](arithmetic_stack_tail254.md) and
+[certificate](arithmetic_stack_certificate254.md) modules now close the
+stack representation and local push/pop obligations.
+[Command preservation](arithmetic_command_preservation254.md) and Σ1 time
+induction now supply the reverse implication from every certified start.
+The [fixed equivalence theorem](arithmetic_enumerator_equivalence254.md)
+proves in IΣ1 and PA that the actual validator accepts a falsity code iff
+the actual arithmetic scheduler halts from scalar1. The proof establishes
+that scalar1 is precisely `liveValue 0 0 0`. All quantified codes and times
+are internal model elements. This completes the numerical validator/scheduler
+comparison, with binary execution and internal C254/ZFC proof transformations
+still open.
+The [internal positive-clock transport](arithmetic_positive_simulation254.md)
+now handles the final conditional trace-composition argument by Σ1 induction.
+It needs only positive local clock increments, not a global upper clock
+bound. The actual binary run and simulation relation must still satisfy
+its explicit local premises in every IΣ1 model.
+The [arbitrary-initial binary run](arithmetic_machine_run_from_perm252.md)
+now supplies the concrete run's addition and halt-persistence laws, and the
+[fixed bootstrap lift](arithmetic_bootstrap_perm252.md) proves the exact
+82,552-step endpoint in every IΣ1 model and in PA. Unbounded instruction
+simulation and its arithmetic frame relation remain open.
+
+For proof-system transport, [internal axiom-proof substitution](internal_axiom_proof_transport.md)
+now composes existential target proofs through arbitrary internal source
+derivations in a shared language. It uses Σ1 induction and needs no selected
+proof compiler. Its explicit hypothesis is target provability of every
+well-formed internal source axiom. This implements a weaker sufficient
+interface already permitted by this plan; it does not supply the missing
+C254/Foundation syntax map or the WF/L axiom translations. The accompanying
+note identifies represented closed-matrix Separation/Replacement constructors
+as a concrete next client, while preserving the additional free-parameter
+closure obligation.
 
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its
@@ -200,4 +352,116 @@ bounded projections, then use the existing arithmetic history iterator to
 evaluate all twelve proof rules. The pinned arithmetic library uses a different
 pairing for its own data, so that adapter cannot be omitted. The note gives the
 exact MP and gate tests, the fixed formula interface and all-input equivalence
-target; it is a construction plan, not a new PA theorem.
+target. The plan is now implemented by the arithmetic history extension below,
+including an actual PA theorem of unique Boolean evaluation.
+
+## Intake156 proof-coding continuations
+
+The [three new reports](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch156-sparse-certificates-reset-synchronization-and-the-zfc-comparison)
+separate three useful specifications. Source47 reconstructs an ordinary
+set-coded ZFC proof for the existing machine. Source48 supplies explicit sparse
+acceptance/rejection arithmetic graphs with bounded certificate-size arguments.
+Source49 specifies HOD descriptions, the exact selector Choice adapter and an
+internal-natural decoder covering every recognized formula tree, including
+nonstandard codes. The HOD construction is classical and attributed; the
+project-specific all-code adapters remain to be implemented. Its PA transport
+requires an actual primitive-recursive proof compiler and verified axiom-proof
+generators, not merely external semantic equivalence. None of these reports
+closes the requested internal PA theorem.
+
+
+The subsequent [ArithmeticCantor adapter](arithmetic_cantor.md) now supplies the
+literal Cantor polynomial graph, bounded inverse graphs and all-natural
+identification with `Code254.P`/`Cantor.ofNat`, in arbitrary IOpen models.
+Its semantic representation uses weaker arithmetic than full PA. The history
+extension below now represents the checker; finite proof/trace translation
+remains open. This local definability theorem is not the whole-machine PA proof.
+
+The [constructor extension](arithmetic_code254.md) now supplies fixed bounded
+graphs for the four live numerical constructors and the rho1 payload branch.
+It proves parameter-free formula correctness in arbitrary IOpen models and
+exact all-natural implementation agreement. Output bounds justify those
+constructor witnesses; they do not by themselves bound the intermediate values
+of a rejected MP row with output0. The later row extension below handles that case.
+
+The subsequent [fixed-template graphs](arithmetic_templates254.md) cover the
+remaining rho2–8 and exact C/G/full-bundle expressions. Their generic circuit
+compiler yields a fixed parameter-free graph for each finite template, with
+all-natural equality to the live functions. This completes the positive
+template library. The subsequent [complete row graph](arithmetic_row254.md)
+adds both gates, exact rejected-row behavior and every invalid tag, with bounded
+witnesses justified separately for failed and successful branches. It agrees
+with `Code254History.row` on every natural input, using explicit child-result
+values, and its fixed graph works in every IOpen model. The four-module chain
+passes 114 axiom probes and 120 callers.
+
+The [represented history checker](arithmetic_history254.md) completes the
+selector, actual child lookups and history iteration. Its fixed Σ1/Δ1 graphs
+are total at all internal codes in every IΣ1 model. `history_lookup_nat` covers
+every lookup index, including out-of-range zero, and `checkDef_nat` identifies
+the fixed formula with the actual `Code254Proof.check` for every natural input.
+The fixed `totalitySentence` also has actual IΣ1 and PA derivations. This closes
+checker representation and totality; internally coded proof and machine-trace
+translations remain open.
+
+The [numeric binary-machine adapter](arithmetic_machine_perm252.md) now gives
+an exact two-natural tape simulation of the frozen 252-state table. Its
+`numericRun_sound` theorem constrains the entire actual tape and head at every
+natural time; state zero is equivalent to actual halting, with the final write
+and move retained. This Std-only checkpoint closes the ordinary finite-data
+machine adapter. The subsequent
+[arithmetic machine extension](arithmetic_machine252.md) now supplies the
+fixed bounded action/step graphs and fixed Σ1/Δ1 run graphs, with unique
+evaluation at every time in every IΣ1 model. Its all-Nat bridge identifies a
+closed Σ1 halting sentence with the actual Core blank-run endpoint. IΣ1 and PA
+prove unique totality of the evaluator. What remains is the internally coded
+proof/command/trace transport between this sentence, the represented C254
+checker, and ZFC refutations; the run representation alone does not prove it.
+
+Intake157's [canonical term certificates](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
+provide ordinary exact checker reductions and constructor-only derivations.
+Their small-witness and forward-equation arguments can guide internal sequence
+predicates, but those predicates and their all-code proof are not delivered.
+The manuscript follows the later goal record when calling PA stronger than
+requested; the original user request explicitly requires PA, and remains the
+target here. Avoiding arithmetic inside a future verifier does not remove the
+arithmetic proof obligation relating its finite traces to Con(ZFC).
+
+## Claude lane: represented relativization (L-interpretation core)
+
+The ZFC-refutation → ZF-refutation direction (Choice) and the WF comparison
+both need a *syntax-sensitive* interpretation in arithmetic. Its generic core
+is now **checked** (standard axioms only), in
+`Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/InternalRelativization.lean`
+(any language) and `Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SetRelativization.lean`
+(the set language), with `…Audit` modules:
+
+1. `relativize L d p`: relativization of every internal formula code to the
+   class defined by an internal domain formula `d` with one bound variable
+   (one `UformulaRec1` construction: atoms unchanged, `∀q ↦ ∀(¬δ ∨ q^δ)`,
+   `∃q ↦ ∃(δ ∧ q^δ)`), with Σ₁ graph and constructor equations.
+2. Formula laws: preservation of (semi)formulas; commutation with negation,
+   with shift (for shift-fixed `d`), and with substitution of terms for bound
+   variables (`subst_eq_self_of_prefix` generalizes Foundation's
+   `subst_eq_self` to longer vectors).
+3. `derivable_relSet`: every internal T-derivation of a sequent `s` (in every
+   IΣ₁ model, nonstandard derivations included) yields a U-derivation of
+   `s^δ ∪ {¬δ(&i) | i < m}` for some `m`, by one `Derivation.induction1` pass
+   with a Σ₁ predicate. Hypotheses: U derives the relativized T-axioms (with
+   side formulas), and closed terms are variables.
+4. `derivable_of_domSet`, `provable_relativize`, `provable_falsum_of_relativize`:
+   the side formulas are discharged from `U ⊢ ∃x δ(x)` (∀-rule on `¬δ(&0)`,
+   cut against `∃x δ(x)`, internal induction on `m`), so
+   `Prov_T(⊥) → Prov_U(⊥)` holds in every IΣ₁ model.
+5. `SetRelativization.isTerm_eq_fvar`: in the set language every closed
+   internal term is a free variable (its function-symbol recognizer is `⊥`),
+   and `provable_falsum_of_relativize_set` packages item 4 for set theories.
+
+**Remaining for the Choice transport in PA** (this lane, next): the
+L-specific obligations of `provable_falsum_of_relativize_set` with
+`T = 𝗭𝗙𝗖`, `U = 𝗭𝗙` and `d = ⌜x ∈ L⌝`:
+`Provable 𝗭𝗙 ⌜∃x (x ∈ L)⌝`, and `ZF ⊢ ax^L` (with side formulas) for every
+internal `𝗭𝗙𝗖` axiom code, by fixed templates for the finitely many single
+axioms (Choice included) and internal formula induction, via the reflection
+principle, for the Separation and Replacement schemata. Feeding the result
+into the C254/ZF comparison then gives the Choice half of the PA endpoint.

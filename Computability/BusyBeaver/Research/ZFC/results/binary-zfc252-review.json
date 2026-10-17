@@ -1,0 +1,116 @@
+{
+  "status": "CLEAN/ACCEPT with actual167-unit source-verified integration",
+  "scope": "Both independent implementations close the external actual252 blank nonhalting iff consistency of literal ZFCax_s. Final integration uses the actual runtime dependencies, without typed stubs.",
+  "independent_review": {
+    "review": "independent read-only mathematical/API audit of remote Choice/ZFC endpoint",
+    "reviewed_commit": "b3d82c296610c09b7c864cf961f7df85865cb822",
+    "current_head": "4a47fface63de02db9472ff9b0c0c9f08a99de22",
+    "review_utc": "2026-10-17T06:24:36.350235+00:00",
+    "verdict": "CLEAN source/API review; actual-closure kernel integration remains a separate required check",
+    "sources": {
+      "ConstructibleChoice.lean": {
+        "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean",
+        "sha256": "8531c16f2b08365a69f4a7c505431ad36abeb13dbf9f39132cbb13d4fa61ff64",
+        "bytes": 2356,
+        "lines": 59,
+        "git_blob": "c85c906abfc32fd410eb5b103018b95c1e20ecfb",
+        "current_worktree_byte_identical": true,
+        "snapshot": "/tmp/zfc-remote-choice-review-sources/ConstructibleChoice.lean"
+      },
+      "Endpoint254.lean": {
+        "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Endpoint254.lean",
+        "sha256": "7126c3fdb96b9ae445d5d66447fe13f8e6aa54829cf691eb56a5496bfd346a2c",
+        "bytes": 3545,
+        "lines": 74,
+        "git_blob": "702646ebe297687c5d555f58f7651ef569a8531f",
+        "current_worktree_byte_identical": true,
+        "snapshot": "/tmp/zfc-remote-choice-review-sources/Endpoint254.lean"
+      },
+      "BinaryZFC252.lean": {
+        "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BinaryZFC252.lean",
+        "sha256": "1d025e7c4af792783e635cec270686180ce5d237274fc6b0f0ba5b7c3a6683d1",
+        "bytes": 1389,
+        "lines": 32,
+        "git_blob": "58eea167304d61888a7b7e568dc4e76288e22856",
+        "current_worktree_byte_identical": true,
+        "snapshot": "/tmp/zfc-remote-choice-review-sources/BinaryZFC252.lean"
+      }
+    },
+    "builds_run_by_this_reviewer": [],
+    "scope": [
+      "All three remote Lean files read completely; relevant actual local model, soundness/completeness, constructible and BinaryPerm252 signatures inspected.",
+      "ConstructibleChoice.L_choice instantiates the existing choice_of_VL with the constructible subtype own ZFAxioms, Regularity, Power and internal V=L, without assuming ambient V=L or ambient Choice.",
+      "L_models_ZFC handles every actual sealed ZFC axiom via ZFax_s or bridge_Choice_sealed. No arbitrary semantic schema or additional axiom premise is introduced.",
+      "choice_refutation_remove uses the actual ZF completeness API and actual ZFNative.models_ZF extraction. Its soundness valuation is the explicit constructible empty ordinal, so no empty-domain shortcut occurs.",
+      "Refutation equivalence has the correct polarity: ZF refutation implies ZFC refutation by theory monotonicity; ZFC refutation implies ZF refutation through the constructible model and external completeness.",
+      "Endpoint254 adds only composition with the same checked literal-register-program-to-ZF iff. Its endpoint remains RegisterPath.Halts Prog254.program Prog254.initial, not a binary boot claim.",
+      "BinaryZFC252 consumes the actual BinaryPerm252.blank_halts_iff_zf_refutation. Actual BlankHalts is eventual halt of Core Machine.run from the standard blank start, machinePerm252 has type Machine 252, and the exported real endpoint has precisely the stated BProv ZFax_s conclusion and no residual coverage premise.",
+      "Final nonhalting equivalences are external Lean metatheorems for syntactic consistency. Neither PA-provability nor an internally represented effective proof translation follows from these semantic completeness proofs alone."
+    ],
+    "remote_verification_boundary": {
+      "source": "remote commit message explicitly states BinaryZFC252 was checked against a typed BinaryPerm252 stub; Endpoint254 used a previously checked Bisim254 object",
+      "this_review": "Actual local API comparison confirms the signatures and definitions agree with those consumed by the remote bridge. This source review does not promote the remote stub check to an actual-closure kernel check.",
+      "integration_required": "Freshly compile new ConstructibleChoice, changed Endpoint254, new BinaryZFC252 and the umbrella against source-matched already verified dependencies."
+    },
+    "dependency_audit": {
+      "endpoint_direct_reverse_imports": [
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean"
+      ],
+      "endpoint_transitive_reverse_imports": [
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean"
+      ],
+      "constructible_choice_reverse_imports": [
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Endpoint254.lean",
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BinaryZFC252.lean",
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean"
+      ],
+      "source_files_requiring_new_build_in_dependency_order": [
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean",
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Endpoint254.lean",
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BinaryZFC252.lean",
+        "Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean"
+      ],
+      "other_dependents_found": false,
+      "search": "rg -n ^import for Endpoint254, ConstructibleChoice and BinaryZFC252 across all repository Lean files",
+      "remote_check_lean_order_issue": "Remote commit listed Endpoint254 before newly imported ConstructibleChoice. Current merged check_lean.py already moves Endpoint254 after ConstructibleChoice."
+    },
+    "defects": [],
+    "historical_integration_issue_already_corrected": [
+      "Remote check_lean.py dependency order for Endpoint254"
+    ],
+    "source_fidelity": "No tracked source, original delivery, or verification artifacts were edited. Snapshots are ordinary review evidence only."
+  },
+  "independent_review_markdown": "# Independent remote Choice bridge review\n\nReviewed remote commit `b3d82c296610c09b7c864cf961f7df85865cb822` against actual local APIs at `4a47fface63de02db9472ff9b0c0c9f08a99de22`. **CLEAN read-only mathematical/API audit.** No Lean build was run by this reviewer; actual-closure kernel integration remains separate.\n\n## Exact sources\n\n- `ConstructibleChoice.lean`: SHA256 `8531c16f2b08365a69f4a7c505431ad36abeb13dbf9f39132cbb13d4fa61ff64`, 59 lines / 2356 bytes, Git blob `c85c906abfc32fd410eb5b103018b95c1e20ecfb`. Current worktree bytes identical: True.\n- `Endpoint254.lean`: SHA256 `7126c3fdb96b9ae445d5d66447fe13f8e6aa54829cf691eb56a5496bfd346a2c`, 74 lines / 3545 bytes, Git blob `702646ebe297687c5d555f58f7651ef569a8531f`. Current worktree bytes identical: True.\n- `BinaryZFC252.lean`: SHA256 `1d025e7c4af792783e635cec270686180ce5d237274fc6b0f0ba5b7c3a6683d1`, 32 lines / 1389 bytes, Git blob `58eea167304d61888a7b7e568dc4e76288e22856`. Current worktree bytes identical: True.\n\n## Mathematical and API checks\n\n- All three remote Lean files read completely; relevant actual local model, soundness/completeness, constructible and BinaryPerm252 signatures inspected.\n- ConstructibleChoice.L_choice instantiates the existing choice_of_VL with the constructible subtype own ZFAxioms, Regularity, Power and internal V=L, without assuming ambient V=L or ambient Choice.\n- L_models_ZFC handles every actual sealed ZFC axiom via ZFax_s or bridge_Choice_sealed. No arbitrary semantic schema or additional axiom premise is introduced.\n- choice_refutation_remove uses the actual ZF completeness API and actual ZFNative.models_ZF extraction. Its soundness valuation is the explicit constructible empty ordinal, so no empty-domain shortcut occurs.\n- Refutation equivalence has the correct polarity: ZF refutation implies ZFC refutation by theory monotonicity; ZFC refutation implies ZF refutation through the constructible model and external completeness.\n- Endpoint254 adds only composition with the same checked literal-register-program-to-ZF iff. Its endpoint remains RegisterPath.Halts Prog254.program Prog254.initial, not a binary boot claim.\n- BinaryZFC252 consumes the actual BinaryPerm252.blank_halts_iff_zf_refutation. Actual BlankHalts is eventual halt of Core Machine.run from the standard blank start, machinePerm252 has type Machine 252, and the exported real endpoint has precisely the stated BProv ZFax_s conclusion and no residual coverage premise.\n- Final nonhalting equivalences are external Lean metatheorems for syntactic consistency. Neither PA-provability nor an internally represented effective proof translation follows from these semantic completeness proofs alone.\n\n## Verification and dependency boundary\n\nremote commit message explicitly states BinaryZFC252 was checked against a typed BinaryPerm252 stub; Endpoint254 used a previously checked Bisim254 object. Actual local API comparison confirms the signatures and definitions agree with those consumed by the remote bridge. This source review does not promote the remote stub check to an actual-closure kernel check.\n\nRequired fresh compilation against the source-matched prior verified closure:\n\n- `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleChoice.lean`\n- `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Endpoint254.lean`\n- `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BinaryZFC252.lean`\n- `Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean`\n\nThe only direct or transitive reverse importer of `Endpoint254` is the umbrella `ZFC.lean`. `ConstructibleChoice` additionally feeds `BinaryZFC252`; no other affected dependent was found by a repository-wide Lean import search. The remote checker listed `Endpoint254` too early; the merged current checker already fixes that dependency order.\n\nNo mathematical defect found. No PA-internal statement, unqualified nonhalting theorem, minimality result, same-domain model inclusion, or externally well-founded/standard-model assumption is inferred.\n\nSnapshots: `/tmp/zfc-remote-choice-review-sources/`. Machine-readable evidence: `/tmp/zfc-remote-choice-review.json`.\n",
+  "fresh_actual_closure": {
+    "evidence": "results/binary-zfc252-integration-verification.json",
+    "sha256": "1da64c8cf42c4e668cd44c227c8413f5c7709fa29410fb99d850c711da5601e5",
+    "fresh_module_count": 7,
+    "fresh_modules_in_dependency_order": [
+      "BusyBeaver.ZFC.ConstructibleChoice",
+      "BusyBeaver.ZFC.Endpoint254",
+      "BusyBeaver.ZFC.BinaryPerm252",
+      "BusyBeaver.ZFC.ZFCBoundPerm252",
+      "BusyBeaver.ZFC.ChoiceCalibration254",
+      "BusyBeaver.ZFC.BinaryZFC252",
+      "BusyBeaver.ZFC"
+    ],
+    "reused_import_count": 160,
+    "named_axiom_probes": 18,
+    "callers": 12,
+    "warning_count": 0,
+    "only_standard_axioms": true
+  },
+  "post_review_update": "The independent review first identified four required fresh modules. A later BinaryPerm252 comment-only correction additionally invalidates BinaryPerm252, ZFCBoundPerm252 and ChoiceCalibration254 caches. All seven affected modules were freshly compiled in the published final integration, with160 source/object-matched reused imports. The original remote typed-stub verification boundary is historical and is not used as runtime assurance here.",
+  "closed_endpoints": [
+    "BinaryZFC252.nonhalting_iff_zfc_consistency",
+    "ChoiceCalibration254.nonhalting_iff_zfc_consistency",
+    "Endpoint254.literal_nonhalting_iff_zfc_consistent"
+  ],
+  "not_claimed": [
+    "Unconditional nonhalting or consistency",
+    "Internal PA or internally serialized ZFC arithmetic proof/trace comparison",
+    "A changed machine table or new state reduction",
+    "A fresh rebuild of160 source-matched reused dependency modules"
+  ],
+  "reviewer_did_not_rerun_Lean": true
+}

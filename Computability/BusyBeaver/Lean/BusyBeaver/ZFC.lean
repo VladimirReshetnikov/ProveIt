@@ -38,6 +38,7 @@ import BusyBeaver.ZFC.Code254
 import BusyBeaver.ZFC.Code254Proof
 import BusyBeaver.ZFC.Enum254
 import BusyBeaver.ZFC.Code254ProofCompiler
+import BusyBeaver.ZFC.Code254History
 import BusyBeaver.ZFC.L2AxiomsEval254
 import BusyBeaver.ZFC.L2Root254
 import BusyBeaver.ZFC.RMEquiv
@@ -50,7 +51,6 @@ import BusyBeaver.ZFC.InternalOrd
 import BusyBeaver.ZFC.InternalRank
 import BusyBeaver.ZFC.ZFRank
 import BusyBeaver.ZFC.ZFNative
-import BusyBeaver.ZFC.Endpoint254
 import BusyBeaver.ZFC.TransRec
 import BusyBeaver.ZFC.ConstructibleDef
 import BusyBeaver.ZFC.Constructible
@@ -58,6 +58,13 @@ import BusyBeaver.ZFC.ConstructibleReflect
 import BusyBeaver.ZFC.ConstructibleZF
 import BusyBeaver.ZFC.SatSupport
 import BusyBeaver.ZFC.ConstructibleAbs
+import BusyBeaver.ZFC.InternalWO
+import BusyBeaver.ZFC.OrderRec
+import BusyBeaver.ZFC.CodeOrder
+import BusyBeaver.ZFC.TupleOrder
+import BusyBeaver.ZFC.ConstructibleOrder
+import BusyBeaver.ZFC.ConstructibleChoice
+import BusyBeaver.ZFC.Endpoint254
 import BusyBeaver.ZFC.WFRelativization
 import BusyBeaver.ZFC.WFModel
 import BusyBeaver.ZFC.WFTheory
@@ -102,11 +109,16 @@ import BusyBeaver.ZFC.QuotientCPGIC
 import BusyBeaver.ZFC.NativeDecoded254
 import BusyBeaver.ZFC.NativeTheory254
 import BusyBeaver.ZFC.EnumSafeStart254
+import BusyBeaver.ZFC.EnumStackBarrier254
+import BusyBeaver.ZFC.CommandWord254
+import BusyBeaver.ZFC.EnumStackCount254
+import BusyBeaver.ZFC.DirtyReset254
 import BusyBeaver.ZFC.DirtyRoot254
 import BusyBeaver.ZFC.DirtyProgram254
 import BusyBeaver.ZFC.WellFoundedPart
 import BusyBeaver.ZFC.SeedInvariant254
 import BusyBeaver.ZFC.TablePerm252
+import BusyBeaver.ZFC.ArithmeticMachinePerm252
 import BusyBeaver.ZFC.BootPerm252
 import BusyBeaver.ZFC.RegisterBoxesPerm252
 import BusyBeaver.ZFC.RegisterMarkPerm252
@@ -126,7 +138,10 @@ import BusyBeaver.ZFC.Permutation252Program
 import BusyBeaver.ZFC.SitesPerm252
 import BusyBeaver.ZFC.BinaryPerm252
 import BusyBeaver.ZFC.ZFCBoundPerm252
+import BusyBeaver.ZFC.ChoiceCalibration254
+import BusyBeaver.ZFC.BinaryZFC252
 
 /-! Opt-in foundations for ZFC machine minimization. The exact 252-state
-blank machine is equivalent to Con(ZF). Choice transport and the requested
-formalization of the comparison inside PA remain separate obligations. -/
+blank machine has a closed external nonhalting iff Con(ZFC) theorem.
+Internal arithmetic proof-code and finite-trace transport, including the
+requested comparison inside PA, remain separate obligations. -/

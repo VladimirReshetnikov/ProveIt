@@ -23,8 +23,9 @@ Its canonical table is TablePerm252:252 working states, start0, halt none.
 
 The native theory here is exactly NativeTheory254.NativeAx. Its checked
 well-founded-part interpretation also gives the stated full-ZF comparison,
-including Foundation. The standard-ZFC comparison still requires Choice
-removal, and internal arithmetic formalization in PA remains separate.
+including Foundation. ChoiceCalibration254 and BinaryZFC252 extend this to
+the external standard-ZFC comparison. Internal arithmetic formalization in PA
+remains separate.
 
 This source must be checked only after SitesPerm252's full closed certificate
 has passed. Source existence alone is not a completed kernel verification.

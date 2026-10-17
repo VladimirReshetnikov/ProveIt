@@ -1,4 +1,13 @@
-An independent read-only review of all1661 current lines in `TransRec`,
+**Current status:** the [constructible order](constructible_order.md) and
+[final Choice calibration](choice_calibration254.md) have now closed the
+external theorem that the literal 252-state machine never halts iff ZFC is
+consistent. The [165-unit integration](results/choice-calibration254-integration-verification.json)
+and independent source reviews record the checks. The PA proof-code and
+finite-trace comparison remains open. The text below preserves the sequence
+of earlier reviews; their open interfaces have since been discharged by the
+later constructibility modules.
+
+An independent read-only review of all1661 then-current lines in `TransRec`,
 `ConstructibleDef`, `Constructible` and `ConstructibleReflect` found no
 concrete mathematical defect. The reviewed snapshot is commit
 `337dd3cb25c1bb4ef47e7cb2e9b7bdfa7eeb6837`, including the newer695-line
@@ -124,3 +133,25 @@ the completed153-unit binary closure. The
 records the exact source, commands and caller statements. This closes the
 support prerequisite identified above. Internal well-orders, constructibility
 absoluteness and the final Choice comparison remain open.
+
+
+The extension from `77972ac401` now closes constructibility absoluteness in
+`ConstructibleAbs.lean`. A full independent source review found no defect:
+formula-code transport uses actual internal-code induction and least internal
+ordinal rank; environment replacement uses internally finite restrictions and
+Separation inside L; `def_up`/`def_down` and `gdef_eq` compare definable subsets;
+`approx_down` transports the actual hierarchy graph. Stage uniqueness then
+proves `vEqL`: every element of the constructible submodel is constructible
+inside that submodel. It does not assert V=L in the ambient model.
+
+The explicit ambient assumptions are ZF, Power and internal Regularity. No
+external well-foundedness, standardness of internal codes, object Choice or
+ambient well-order is assumed. The
+[full source review](results/constructible-abs-full-source-review.json)
+records the exact source and these contracts. A separate fresh kernel check
+of the extension, the enumerator barrier and the umbrella passed with 25 axiom
+reports and 11 direct callers; the
+[157-unit integration](results/barrier-constructible-integration-verification.json)
+reuses 154 source-matched units and is not a full rebuild. Only the standard
+Lean axioms occur. The definable internal well-order, Choice in L, ZFC
+refutation comparison and internal PA proof remain to be constructed.

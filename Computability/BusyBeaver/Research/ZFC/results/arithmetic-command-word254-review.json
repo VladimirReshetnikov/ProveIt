@@ -1,0 +1,165 @@
+{
+  "verdict": "CLEAN",
+  "source_review": {
+    "status": "CLEAN read-only source audit",
+    "scope": "Fixed Sigma0 raw-command tail/repack, generic IOpen and exact all-Nat adapter; no append/compiler/runtime/PA endpoint",
+    "reviewed_source": {
+      "path": "/tmp/zfc-command-word/sources/BusyBeaver/ZFC/ArithmeticCommandWord254.lean",
+      "sha256": "bd6e666a96f95c4c2dae4a9cb13dbf9fc67aa1534606ccfe9ee20255d6a55b77",
+      "bytes": 4979
+    },
+    "reviewed_audit": {
+      "path": "/tmp/zfc-command-word/ArithmeticAudit.lean",
+      "sha256": "8ec1e54c8975b6d52ff96087149222bdb3ab206371805a44df1b10bc8c67d11e",
+      "bytes": 3584
+    },
+    "source_author_evidence": {
+      "path": "/tmp/zfc-command-word/arithmetic-verification.json",
+      "sha256": "3603607eac8539445f921162c83bd71e4a6ca330c6bf3a7613ead86f7168364a",
+      "source_seconds": 8.221367816440761,
+      "audit_seconds": 2.2044218629598618,
+      "probes": 11,
+      "callers": 22,
+      "warnings": 0,
+      "only_standard_axioms": true
+    },
+    "native_169_integration": {
+      "path": "/tmp/zfc-command169-souh0c_n/verification.json",
+      "sha256": "e02e4cbac881f97bc59b6d5681209e358af702e7a9b8f95cb9bbc7c061b0d5e7",
+      "units": 169,
+      "fresh": 2,
+      "reused": 167
+    },
+    "read_coverage": [
+      "entire final arithmetic source",
+      "entire 11-probe/22-caller audit",
+      "live native CommandWord254 all code",
+      "ArithmeticCantor generic projection/graph/bounds and Nat adapters",
+      "successful source/audit metadata",
+      "scope note"
+    ],
+    "reviewer_reran_Lean": false,
+    "proof_source_modified": false,
+    "findings": [],
+    "minor_wording": [
+      "All raw natural candidates decode; note malformed/arbitrary phrase does not introduce an invalid command class."
+    ],
+    "verified_boundaries": {
+      "all_IOpen_inputs": true,
+      "output_zero_allowed": true,
+      "old_fields_bounded_by_raw_input": true,
+      "new_pair_witnesses_bounded_by_output": true,
+      "tail_bound_at_nonstandard_inputs": true,
+      "all_Nat_exact_native_adapter": true,
+      "shifted_nil_distinct_from_raw_MP0": true,
+      "represented_append": false,
+      "proof_compilation": false,
+      "internal_PA_equivalence": false
+    }
+  },
+  "runner_review": {
+    "status": "CLEAN read-only runner/source audit with final author-owned narrow pipeline PASS inspected",
+    "runner": {
+      "path": "/tmp/zfc-arithmetic-command-word-publication/check_arithmetic_command_word254.py",
+      "sha256": "1eda56caa1fab825074e488913e6dd448668a734df2d2b630ae7e754f2e08992",
+      "bytes": 18162
+    },
+    "read_coverage": [
+      "entire5228initialdraft",
+      "entire1edafinalrunner",
+      "maintainedCantorhelpercompiler/dependency/core/build/auditinterfaces",
+      "actual169Word+Code254importclosure",
+      "priorbd6eproofsourceandauditreview"
+    ],
+    "reviewer_Lean_build": false,
+    "reviewer_source_edit": false,
+    "expected_reused_core_count": 14,
+    "fresh_modules": 2,
+    "aggregate_axiom_probes": 38,
+    "aggregate_callers": 42,
+    "findings": [],
+    "resolved_pre_run_findings": [
+      "CapturefreshArithWordobjectimmediatelyaftersourceandcomparepostaudit",
+      "BindfreshCantorsourceauditandsnapshotstomaintainedinputs",
+      "BindfreshCantorproviderandorderedlibrarypathmetadata",
+      "EnforceCantorexactthreeimports"
+    ],
+    "scope_limits": [
+      "FreshCantorplusArithWordonly",
+      "PrebuiltFoundationandMathlibexplicitlyreused",
+      "NoappendcompilerexecutionorPAconsistencyendpoint"
+    ],
+    "fresh_pipeline": {
+      "path": "/tmp/zfc-arithmetic-command-word-maintained-replay/verification.json",
+      "sha256": "a93c1fe54a3404f9633390f1ab4ee288d403bebe18ef83e19ba5c38e317a33e3",
+      "status": "PASS",
+      "source_seconds": 13.674435,
+      "audit_seconds": 2.128927,
+      "cantor_pipeline_seconds": 6.805568,
+      "aggregate_axiom_probes": 38,
+      "aggregate_callers": 42,
+      "reused_core": 14,
+      "identity_audited_inputs": 41,
+      "linter_warnings": {
+        "cantor": 5,
+        "arithmetic_command_word": 0,
+        "total": 5
+      },
+      "reviewer_current_hash_rechecks": true,
+      "all_recorded_guard_flags": true,
+      "new_object_sha256": "08517f98bf1031fd9fd71f8eab481ce8af616ca202279d7b5e16255e9f0099c1"
+    }
+  },
+  "publication": {
+    "status": "PASS",
+    "runner": {
+      "path": "/tmp/zfc-arithmetic-command-word-publication/check_arithmetic_command_word254.py",
+      "sha256": "1eda56caa1fab825074e488913e6dd448668a734df2d2b630ae7e754f2e08992"
+    },
+    "verification": {
+      "path": "/tmp/zfc-arithmetic-command-word-maintained-replay/verification.json",
+      "sha256": "a93c1fe54a3404f9633390f1ab4ee288d403bebe18ef83e19ba5c38e317a33e3"
+    },
+    "reproduce": [
+      "python",
+      "-B",
+      "/tmp/zfc-arithmetic-command-word-publication/check_arithmetic_command_word254.py",
+      "--repo",
+      "/home/codex/.codex/worktrees/ec20/Proofs",
+      "--dependency-root",
+      "/home/codex/src/Proofs",
+      "--core-evidence",
+      "/tmp/zfc-command169-souh0c_n/verification.json",
+      "--core-cache",
+      "/tmp/zfc-command169-souh0c_n/cache",
+      "--output",
+      "/tmp/zfc-arithmetic-command-word-next-replay"
+    ],
+    "fresh_modules": [
+      "BusyBeaver.ZFC.ArithmeticCantor",
+      "BusyBeaver.ZFC.ArithmeticCommandWord254"
+    ],
+    "audit_contracts": {
+      "Cantor": {
+        "probes": 27,
+        "callers": 20
+      },
+      "ArithmeticCommandWord254": {
+        "probes": 11,
+        "callers": 22
+      }
+    },
+    "reused_core_count": 14,
+    "linter_warnings": {
+      "cantor": 5,
+      "arithmetic_command_word": 0,
+      "total": 5
+    },
+    "scope": "Fixed bounded raw candidate tail/repack graphs over arbitrary IOpen, exact all-Nat correspondence. Shifted whole-word codec reused from actual169. No represented append/compiler or PA nonhalting-consistency transport is claimed.",
+    "tracked_files_changed_by_this_task": false,
+    "lean_slot_released": true
+  },
+  "root_review": "Complete native and arithmetic sources/audits read; complete runner and final identity patches read. No unresolved issue. All41 captured inputs and both fresh objects rehashed at publication.",
+  "publication_scope": "Fresh replay used maintained source/audit defaults. Runner copied byte-identically afterward; no second Lean replay for location-only placement.",
+  "internal_consistency_equivalence_claim": false
+}

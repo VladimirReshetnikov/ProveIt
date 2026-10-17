@@ -1,0 +1,110 @@
+CONSTRUCTOR-ONLY PRESENTATION OF THE EXACT C254 CALCULUS
+======================================================
+
+Status: an ordinary mathematical specification and proof sketch, accompanied
+by a Python reference checker and finite controls. This is not a new Lean
+theorem, PA internalization, binary codec, compiled machine or state bound.
+
+1. Normal terms
+---------------
+Let NTerm consist of Z and B_t(a,b), for t in {0,1,2,3} and a,b in NTerm,
+excluding B_0(Z,Z). Define normalized constructors b_t by the single reduction
+b_0(Z,Z)=Z; in every other case b_t(a,b)=B_t(a,b). No logical equivalences are
+used as rewrite rules. In particular, Z and B_0(B_1(Z,Z),B_1(Z,Z)) are distinct
+terms, even though their associated C254 formulas can both express truths.
+
+For the Cantor pairing P(a,b)=(a+b)(a+b+1)/2+b, define denotations
+
+  val(Z) = 0,
+  val(B_t(a,b)) = 4 P(val(a),val(b)) + t.
+
+This is an effective bijection from NTerm to Nat. First, the only normal term
+of value zero is Z: value zero forces t=0 and both children to have value zero,
+and B_0(Z,Z) is excluded. Equality of positive denotations determines the same
+tag modulo four, then the same two child denotations by injectivity of P.
+Induction gives equality of normal terms. For surjectivity, given n>0 write
+n=4P(a,b)+t. Both a and b are less than n, so induction constructs their normal
+terms. The resulting B_t is allowed because the excluded case would mean n=0.
+The zero case is Z. The inverse uses pairing only in this mathematical argument
+or in an optional producer, never in the ground-term verifier.
+
+Normalized construction therefore satisfies, for every a,b,t,
+
+  val(b_t(a,b)) = 4 P(val(a),val(b)) + t.
+
+The distinguished falsity term is F=B_1(Z,Z), with val(F)=1.
+
+2. Exact transported rules
+--------------------------
+Interpret wim, wel, wal and weq as b_0, b_1, b_2 and b_3 respectively. Define
+wn(a)=wim(a,F), wa(a,b)=wn(wim(a,wn(b))) and
+wex(a,b)=wn(wal(a,wn(b))). The eight rho templates and the bundle template are
+the exact ASTs extracted from the pinned Code254.lean; they are not shortened,
+replaced or interpreted semantically.
+
+The twelve rules are truth Z; modus ponens from a and wim(a,b) to b;
+generalization from a to wal(v,a); eight rho template families; and the bundle
+family with its two side conditions c != a and c != b. All metavariables range
+over normal ground terms. Since val is injective, these two term inequalities
+are exactly the original inequalities on natural-number codes. Thus the rules
+commute with val, including their side conditions.
+
+Induction on derivations in each direction yields the ordinary equivalence
+
+  CT254(t)  iff  C254(val(t)).
+
+In particular, CT254(F) iff C254(1). This transports the same fixed calculus;
+it does not supply a separate proof of its existing links to ZF or ZFC. Those
+links and the distinction between external reasoning and formal repository
+endpoints remain as described in the report.
+
+3. Finite certificates
+-----------------------
+A certificate has a topological arena and a topological list of proof rows.
+Arena node zero is Z. Every later node contains a constructor tag and two
+earlier node IDs. Duplicate constructor keys and B_0(0,0) are forbidden. By
+induction on nodes and injectivity above, two arena IDs denote the same natural
+number iff their IDs agree. All proof arguments are arena IDs, not natural
+formula codes. Premise references are to earlier proof rows.
+
+The verifier freezes the arena before evaluating the fixed rule templates:
+every required constructor must already be present. It checks exact rule
+arity, the two bundle gates, the modus-ponens constructor identity, and each
+claimed conclusion ID. Failing to include a needed term causes rejection.
+The final root must be the fixed F term unless the caller explicitly requests
+a different target for a control. A goal field in the certificate is ignored.
+
+Soundness follows by induction on proof rows, unfolding any shared proof DAG
+into a finite derivation. Completeness follows by interning all subterms of a
+finite CT254 derivation, including intermediate fixed-template constructions,
+and then listing its proof steps in postorder. This produces the required
+unique arena and backward premise references. Thus, at the specified calculus
+level, existence of a default-target certificate is equivalent to C254(1).
+The Python implementation is supported by ordinary inspection and the finite
+controls in check_term254.py; these arguments have not been mechanized for it.
+
+4. What is and is not removed
+-----------------------------
+The ground verifier uses constructor keys, bounded reference comparisons and
+fixed template expansion. It does not evaluate a term's natural denotation,
+decode numeric literals, pair or unpair denotations, parse old raw proof codes,
+reconstruct proof quotes, or call either previous certificate verifier. Python
+still uses integers for finite indices and rule tags; 'constructor-only' does
+not claim the implementation has no counters or index manipulation.
+
+The adapter from accepted canonical certificates replaces each numeric argument
+with its certified normal-term root, then drops the literal and quote records.
+The adapter and certificate generator are deliberately outside the ground
+verifier. The finite audit covers all twelve rule tags, both bundle gates,
+corruption rejection and deep generalization while disabling the arithmetic
+and producer helpers. Positive test goals are ordinary derived formulas, not F;
+all of them are also checked to reject at the fixed falsity target.
+
+The abstract finite-certificate relation is effective. To turn it into a small
+blank-tape consistency machine, the next work is a binary term/proof codec,
+an exhaustive enumerator, concrete routines for canonical sharing or structural
+comparison, a compiler/state budget and a formal equivalence proof. The Python
+dictionary is not free finite control. A representation that minimizes arena
+size can require more lookup states than a duplicated tree representation.
+No numerical improvement over an existing Turing-machine state bound is
+claimed for this front end.

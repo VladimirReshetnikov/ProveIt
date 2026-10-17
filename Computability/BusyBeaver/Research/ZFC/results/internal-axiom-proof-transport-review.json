@@ -1,0 +1,103 @@
+{
+  "status": "CLEAN",
+  "root_source_audit_and_portable_guard_review": true,
+  "root_rehash": {
+    "evidence": "/tmp/zfc-internal-axiom-transport/run1/verification.json",
+    "evidence_sha256": "c69bf7789ef2dfa3162bcf27d791312bbb76942636408ef4cd377a885d073d35",
+    "inputs": 14,
+    "fresh_objects": 1
+  },
+  "independent_reviews": [
+    {
+      "original": {
+        "path": "/tmp/zfc-internal-axiom-transport/independent-review.json",
+        "sha256": "d40c35cc1434c1bc6a02256e38066994d362bfe792e77bca71075f32a309b73b"
+      },
+      "review": {
+        "status": "CLEAN",
+        "review_kind": "Independent read-only mathematical source/audit review; no Lean replay",
+        "source": {
+          "path": "/tmp/zfc-internal-axiom-transport/sources/BoundedPAConsistency/InternalAxiomProofTransport.lean",
+          "sha256": "8efca1f6d357ee37b6cb0a08d684b48bf41ceae775b67182942de1b26ec473ad"
+        },
+        "audit": {
+          "path": "/tmp/zfc-internal-axiom-transport/Audit.lean",
+          "sha256": "326e0bd28075df6ec2d3273355e691b48cff6a67fad9ceac6298dde01146fd7f"
+        },
+        "evidence": {
+          "path": "/tmp/zfc-internal-axiom-transport/run1/verification.json",
+          "sha256": "c69bf7789ef2dfa3162bcf27d791312bbb76942636408ef4cd377a885d073d35"
+        },
+        "scope": [
+          "Same-language all-internal represented proof transport between two fixed Delta1 theories.",
+          "Explicit axiom premise ranges over every internal well-formed source axiom and supplies target Provable; it is not discharged by this lemma.",
+          "Actual Derivation.induction1 uses Sigma1 predicate Derivable U (fstIdx d), so internal source derivations are covered rather than only standard finite trees.",
+          "All logical cases use actual target Derivable constructors; axiom singleton weakening uses source-sequent wellformedness for IsFormula.",
+          "No selector/global witness choice, language interpretation, C254 conversion or ZF/ZFC comparison is inferred."
+        ],
+        "reviewed_probes": 3,
+        "reviewed_callers": 7,
+        "recorded_status": "PASS",
+        "findings": [],
+        "current_original_input_hash_checks": [
+          {
+            "path": "/tmp/zfc-internal-axiom-transport/check.py",
+            "sha256": "e72f869dab21b6ae278da2486c10d7b0a2ae854e4fc6bd9a740491fa685a3fe1"
+          },
+          {
+            "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_cantor.py",
+            "sha256": "9a8d4d7dd467ac8152238c8a0cbe93ed87512be36b447e38bae0b8244a28b229"
+          },
+          {
+            "path": "/tmp/zfc-internal-axiom-transport/sources/BoundedPAConsistency/InternalAxiomProofTransport.lean",
+            "sha256": "8efca1f6d357ee37b6cb0a08d684b48bf41ceae775b67182942de1b26ec473ad"
+          },
+          {
+            "path": "/tmp/zfc-internal-axiom-transport/Audit.lean",
+            "sha256": "326e0bd28075df6ec2d3273355e691b48cff6a67fad9ceac6298dde01146fd7f"
+          },
+          {
+            "path": "/tmp/zfc-internal-axiom-transport/run1/sources/BoundedPAConsistency/InternalAxiomProofTransport.lean",
+            "sha256": "8efca1f6d357ee37b6cb0a08d684b48bf41ceae775b67182942de1b26ec473ad"
+          },
+          {
+            "path": "/tmp/zfc-internal-axiom-transport/run1/sources/Audit.lean",
+            "sha256": "326e0bd28075df6ec2d3273355e691b48cff6a67fad9ceac6298dde01146fd7f"
+          },
+          {
+            "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+            "sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550"
+          },
+          {
+            "path": "/home/codex/src/Proofs/lake-manifest.json",
+            "sha256": "95e215b005fe9aacc1e5490c781d57e3044d2da5ca452495cfcd0e4eff908665"
+          },
+          {
+            "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Basic.lean",
+            "sha256": "72e3cf386967e3fed4366ee5aa59678a0333cd2f40c8dbb09bebbf8dd4fa80e3"
+          },
+          {
+            "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Basic.olean",
+            "sha256": "c46f491eded2b033f450406537c1e02b6135a6b563f18a6cac1589f535ad5b69"
+          },
+          {
+            "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/IOpen/Basic.lean",
+            "sha256": "4ec52a7a487aeafb0e9ea10716452b34f138d8214ad5a1aa5466064d6a4c9d7b"
+          },
+          {
+            "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean",
+            "sha256": "b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad"
+          },
+          {
+            "path": "/home/codex/src/Proofs/.lake/packages/mathlib/Mathlib/Tactic/Ring.lean",
+            "sha256": "d3ef5c49ebbd1108ce3f935e5ad95485e143abf02f28c027dba4bb6f3be8196e"
+          },
+          {
+            "path": "/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean",
+            "sha256": "cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4"
+          }
+        ]
+      }
+    }
+  ]
+}

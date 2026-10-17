@@ -1,0 +1,11 @@
+.PHONY: report verify clean
+
+report:
+	python3 -B code/generate_machine_appendix.py
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+verify:
+	python3 -B code/verify.py
+
+clean:
+	latexmk -c report.tex

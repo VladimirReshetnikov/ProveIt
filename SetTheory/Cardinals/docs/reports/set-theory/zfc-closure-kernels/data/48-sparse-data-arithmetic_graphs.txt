@@ -1,0 +1,268 @@
+EXACT C254 ARITHMETIC GRAPHS
+
+All variables range over the natural numbers. EXISTS x,y <= W abbreviates
+EXISTS x (x<=W AND EXISTS y (y<=W AND ...)); FORALL i<m has the usual bounded
+meaning. Every macro below is a finite textual abbreviation. On expansion,
+alpha-rename every bound variable to a fresh name to avoid variable capture.
+There are no uninterpreted recursive functions in the expanded formulas.
+
+PAIR(z,x,y) := 2*z=(x+y)*(x+y+1)+2*y.
+
+BETA(B,C,i,v) :=
+  v < 1+(i+1)*C AND
+  EXISTS q<=B (B=q*(1+(i+1)*C)+v).
+
+LOOKUP(i,k,v,Bk,Ck,Bv,Cv,W) :=
+  EXISTS j<i (BETA(Bk,Ck,j,k) AND BETA(Bv,Cv,j,v)).
+
+GRAPH_wim(a,b,o,W) :=
+  EXISTS g0 <= W (
+    PAIR(g0,a,b)
+    AND o=(4*g0)
+  ).
+
+GRAPH_wal(a,b,o,W) :=
+  EXISTS g0 <= W (
+    PAIR(g0,a,b)
+    AND o=(4*g0+2)
+  ).
+
+GRAPH_rho1(a,b,o,W) :=
+  EXISTS g0,g1,g2,g3 <= W (
+    PAIR(g0,a,b)
+    AND PAIR(g1,(4*g0+3),1)
+    AND PAIR(g2,a,(4*g1))
+    AND PAIR(g3,(4*g2+2),1)
+    AND o=(4*g3)
+  ).
+
+GRAPH_rho2(a,b,c,o,W) :=
+  EXISTS g0,g1,g2,g3,g4,g5 <= W (
+    PAIR(g0,b,c)
+    AND PAIR(g1,a,(4*g0))
+    AND PAIR(g2,a,b)
+    AND PAIR(g3,a,c)
+    AND PAIR(g4,(4*g2+2),(4*g3+2))
+    AND PAIR(g5,(4*g1+2),(4*g4))
+    AND o=(4*g5)
+  ).
+
+GRAPH_rho3(a,b,c,o,W) :=
+  EXISTS g0,g1,g2,g3,g4 <= W (
+    PAIR(g0,a,b)
+    AND PAIR(g1,c,a)
+    AND PAIR(g2,c,b)
+    AND PAIR(g3,(4*g1+1),(4*g2+1))
+    AND PAIR(g4,(4*g0+3),(4*g3))
+    AND o=(4*g4)
+  ).
+
+GRAPH_rho4(a,b,c,o,W) :=
+  EXISTS g0,g1,g2,g3,g4 <= W (
+    PAIR(g0,b,c)
+    AND PAIR(g1,a,(4*g0+2))
+    AND PAIR(g2,a,c)
+    AND PAIR(g3,b,(4*g2+2))
+    AND PAIR(g4,(4*g1+2),(4*g3+2))
+    AND o=(4*g4)
+  ).
+
+GRAPH_rho5(a,b,c,o,W) :=
+  EXISTS g0,g1,g2,g3,g4 <= W (
+    PAIR(g0,c,a)
+    AND PAIR(g1,c,b)
+    AND PAIR(g2,a,b)
+    AND PAIR(g3,(4*g1+1),(4*g2+1))
+    AND PAIR(g4,(4*g0+3),(4*g3))
+    AND o=(4*g4)
+  ).
+
+GRAPH_rho6(a,b,o,W) :=
+  EXISTS g0,g1,g2,g3,g4 <= W (
+    PAIR(g0,a,b)
+    AND PAIR(g1,(4*g0+2),1)
+    AND PAIR(g2,a,(4*g1))
+    AND PAIR(g3,(4*g2+2),1)
+    AND PAIR(g4,(4*g3),b)
+    AND o=(4*g4)
+  ).
+
+GRAPH_rho7(a,b,c,o,W) :=
+  EXISTS g0,g1,g2,g3,g4 <= W (
+    PAIR(g0,c,a)
+    AND PAIR(g1,c,b)
+    AND PAIR(g2,a,b)
+    AND PAIR(g3,(4*g1+3),(4*g2+3))
+    AND PAIR(g4,(4*g0+3),(4*g3))
+    AND o=(4*g4)
+  ).
+
+GRAPH_rho8(a,b,c,u,o,W) :=
+  EXISTS g0,g1,g2,g3,g4,g5 <= W (
+    PAIR(g0,c,u)
+    AND PAIR(g1,(4*g0),a)
+    AND PAIR(g2,a,c)
+    AND PAIR(g3,b,c)
+    AND PAIR(g4,(4*g2),(4*g3))
+    AND PAIR(g5,(4*g1),(4*g4))
+    AND o=(4*g5)
+  ).
+
+GRAPH_bundle(a,b,c,o,W) :=
+  EXISTS g0,g1,g2,g3,g4,g5,g6,g7,g8,g9,g10,g11,g12,g13,g14,g15,g16,g17,g18,g19,g20,g21,g22,g23,g24,g25,g26,g27,g28,g29,g30,g31,g32,g33,g34,g35,g36,g37,g38,g39,g40,g41,g42,g43,g44,g45,g46,g47,g48,g49,g50,g51,g52,g53,g54,g55,g56,g57,g58,g59 <= W (
+    PAIR(g0,a,b)
+    AND PAIR(g1,c,b)
+    AND PAIR(g2,c,a)
+    AND PAIR(g3,(4*g1+1),(4*g2+1))
+    AND PAIR(g4,c,(4*g3))
+    AND PAIR(g5,b,c)
+    AND PAIR(g6,(4*g4+2),(4*g5+1))
+    AND PAIR(g7,b,(4*g6))
+    AND PAIR(g8,(4*g1+1),1)
+    AND PAIR(g9,(4*g7+2),(4*g8))
+    AND PAIR(g10,(4*g9),1)
+    AND PAIR(g11,(4*g10),1)
+    AND PAIR(g12,c,(4*g11))
+    AND PAIR(g13,(4*g12+2),1)
+    AND PAIR(g14,(4*g2+1),(4*g1+1))
+    AND PAIR(g15,c,(4*g14))
+    AND PAIR(g16,(4*g15+2),1)
+    AND PAIR(g17,(4*g13),(4*g16))
+    AND PAIR(g18,(4*g17),1)
+    AND PAIR(g19,(4*g0+1),(4*g18))
+    AND PAIR(g20,a,(4*g19))
+    AND PAIR(g21,(4*g20+2),(4*g8))
+    AND PAIR(g22,(4*g21),1)
+    AND PAIR(g23,(4*g22),1)
+    AND PAIR(g24,b,(4*g23))
+    AND PAIR(g25,(4*g24+2),1)
+    AND PAIR(g26,(4*g5+1),1)
+    AND PAIR(g27,c,(4*g26))
+    AND PAIR(g28,(4*g27),1)
+    AND PAIR(g29,(4*g28),1)
+    AND PAIR(g30,b,(4*g29))
+    AND PAIR(g31,(4*g30+2),1)
+    AND PAIR(g32,c,(4*g31))
+    AND PAIR(g33,b,(4*g32))
+    AND PAIR(g34,(4*g0+1),(4*g33+2))
+    AND PAIR(g35,a,(4*g34))
+    AND PAIR(g36,c,1)
+    AND PAIR(g37,a,(4*g36))
+    AND PAIR(g38,(4*g37+2),1)
+    AND PAIR(g39,(4*g5+1),(4*g38))
+    AND PAIR(g40,b,(4*g39))
+    AND PAIR(g41,(4*g40+2),1)
+    AND PAIR(g42,(4*g35+2),(4*g41))
+    AND PAIR(g43,(4*g42),1)
+    AND PAIR(g44,(4*g43),1)
+    AND PAIR(g45,c,(4*g44))
+    AND PAIR(g46,(4*g45+2),1)
+    AND PAIR(g47,(4*g46),1)
+    AND PAIR(g48,(4*g25),(4*g47))
+    AND PAIR(g49,(4*g48),1)
+    AND PAIR(g50,c,(4*g0+1))
+    AND PAIR(g51,(4*g0+1),(4*g50+2))
+    AND PAIR(g52,c,(4*g0+3))
+    AND PAIR(g53,(4*g0+3),(4*g52+2))
+    AND PAIR(g54,(4*g53),1)
+    AND PAIR(g55,(4*g51),(4*g54))
+    AND PAIR(g56,(4*g55),1)
+    AND PAIR(g57,(4*g56),1)
+    AND PAIR(g58,(4*g49),(4*g57))
+    AND PAIR(g59,(4*g58),1)
+    AND o=(4*g59)
+  ).
+
+ROW_D(k,v,B,C,W) :=
+  (k=0 AND v=0) OR
+  EXISTS tag,p,a,t,b,d,e,f <= W (
+    k>0 AND tag<12 AND k=12*p+tag+1 AND
+    PAIR(p,a,t) AND PAIR(t,b,d) AND PAIR(d,e,f) AND (
+    (tag=0 AND ((p=0 AND v=1) OR (p!=0 AND v=0)))
+    OR (tag=1 AND b<k AND d<k AND EXISTS x,y <= W (BETA(B,C,b,x) AND BETA(B,C,d,y) AND
+      (((x=0 OR y=0) AND v=0) OR
+       EXISTS xp,yp,z <= W (x=xp+1 AND y=yp+1 AND GRAPH_wim(xp,a,z,W) AND
+          ((yp=z AND v=a+1) OR (yp!=z AND v=0))))))
+    OR (tag=2 AND t<k AND EXISTS x <= W (BETA(B,C,t,x) AND
+      ((x=0 AND v=0) OR EXISTS xp,n <= W
+        (x=xp+1 AND GRAPH_wal(a,xp,n,W) AND v=n+1))))
+    OR (tag=3 AND EXISTS n <= W (GRAPH_rho1(a,t,n,W) AND v=n+1))
+    OR (tag=4 AND EXISTS n <= W (GRAPH_rho2(a,b,d,n,W) AND v=n+1))
+    OR (tag=5 AND EXISTS n <= W (GRAPH_rho3(a,b,d,n,W) AND v=n+1))
+    OR (tag=6 AND EXISTS n <= W (GRAPH_rho4(a,b,d,n,W) AND v=n+1))
+    OR (tag=7 AND EXISTS n <= W (GRAPH_rho5(a,b,d,n,W) AND v=n+1))
+    OR (tag=8 AND EXISTS n <= W (GRAPH_rho6(a,t,n,W) AND v=n+1))
+    OR (tag=9 AND EXISTS n <= W (GRAPH_rho7(a,b,d,n,W) AND v=n+1))
+    OR (tag=10 AND EXISTS n <= W (GRAPH_rho8(a,b,e,f,n,W) AND v=n+1))
+    OR (tag=11 AND (((d=a OR d=b) AND v=0) OR
+      (d!=a AND d!=b AND EXISTS n <= W (GRAPH_bundle(a,b,d,n,W) AND v=n+1))))
+    )
+  ).
+
+ROW_S(i,k,v,Bk,Ck,Bv,Cv,W) :=
+  (k=0 AND v=0) OR
+  EXISTS tag,p,a,t,b,d,e,f <= W (
+    k>0 AND tag<12 AND k=12*p+tag+1 AND
+    PAIR(p,a,t) AND PAIR(t,b,d) AND PAIR(d,e,f) AND (
+    (tag=0 AND ((p=0 AND v=1) OR (p!=0 AND v=0)))
+    OR (tag=1 AND b<k AND d<k AND EXISTS x,y <= W (LOOKUP(i,b,x,Bk,Ck,Bv,Cv,W) AND LOOKUP(i,d,y,Bk,Ck,Bv,Cv,W) AND
+      (((x=0 OR y=0) AND v=0) OR
+       EXISTS xp,yp,z <= W (x=xp+1 AND y=yp+1 AND GRAPH_wim(xp,a,z,W) AND
+          ((yp=z AND v=a+1) OR (yp!=z AND v=0))))))
+    OR (tag=2 AND t<k AND EXISTS x <= W (LOOKUP(i,t,x,Bk,Ck,Bv,Cv,W) AND
+      ((x=0 AND v=0) OR EXISTS xp,n <= W
+        (x=xp+1 AND GRAPH_wal(a,xp,n,W) AND v=n+1))))
+    OR (tag=3 AND EXISTS n <= W (GRAPH_rho1(a,t,n,W) AND v=n+1))
+    OR (tag=4 AND EXISTS n <= W (GRAPH_rho2(a,b,d,n,W) AND v=n+1))
+    OR (tag=5 AND EXISTS n <= W (GRAPH_rho3(a,b,d,n,W) AND v=n+1))
+    OR (tag=6 AND EXISTS n <= W (GRAPH_rho4(a,b,d,n,W) AND v=n+1))
+    OR (tag=7 AND EXISTS n <= W (GRAPH_rho5(a,b,d,n,W) AND v=n+1))
+    OR (tag=8 AND EXISTS n <= W (GRAPH_rho6(a,t,n,W) AND v=n+1))
+    OR (tag=9 AND EXISTS n <= W (GRAPH_rho7(a,b,d,n,W) AND v=n+1))
+    OR (tag=10 AND EXISTS n <= W (GRAPH_rho8(a,b,e,f,n,W) AND v=n+1))
+    OR (tag=11 AND (((d=a OR d=b) AND v=0) OR
+      (d!=a AND d!=b AND EXISTS n <= W (GRAPH_bundle(a,b,d,n,W) AND v=n+1))))
+    )
+  ).
+
+CHECK_DENSE(c,n) :=
+  EXISTS B,C,W (
+    C>=1 AND c<=W AND n+1<=W AND BETA(B,C,c,n+1) AND
+    FORALL i<=c EXISTS v<=W
+      (BETA(B,C,i,v) AND ROW_D(i,v,B,C,W))
+  ).
+
+CHECK_SPARSE(c,n) :=
+  EXISTS m,last,Bk,Ck,Bv,Cv,W (
+    m=last+1 AND m<=W AND Ck>=1 AND Cv>=1 AND c<=W AND n+1<=W AND
+    BETA(Bk,Ck,0,0) AND BETA(Bv,Cv,0,0) AND
+    BETA(Bk,Ck,last,c) AND BETA(Bv,Cv,last,n+1) AND
+    FORALL i<m EXISTS k,v<=W (
+      BETA(Bk,Ck,i,k) AND BETA(Bv,Cv,i,v) AND k<=c AND
+      (FORALL j<i FORALL h<=W (BETA(Bk,Ck,j,h) IMPLIES h<k)) AND
+      ROW_S(i,k,v,Bk,Ck,Bv,Cv,W)
+    )
+  ).
+
+REJECT_SPARSE(c,n) :=
+  EXISTS m,last,Bk,Ck,Bv,Cv,W,r (
+    m=last+1 AND m<=W AND Ck>=1 AND Cv>=1 AND c<=W AND r<=W AND
+    BETA(Bk,Ck,0,0) AND BETA(Bv,Cv,0,0) AND
+    BETA(Bk,Ck,last,c) AND BETA(Bv,Cv,last,r) AND r!=n+1 AND
+    FORALL i<m EXISTS k,v<=W (
+      BETA(Bk,Ck,i,k) AND BETA(Bv,Cv,i,v) AND k<=c AND
+      (FORALL j<i FORALL h<=W (BETA(Bk,Ck,j,h) IMPLIES h<k)) AND
+      ROW_S(i,k,v,Bk,Ck,Bv,Cv,W)
+    )
+  ).
+
+Both CHECK formulas and REJECT_SPARSE are Sigma_1 after expanding the finite
+graphs and bounded quantifiers. Total existence and uniqueness of the
+evaluated value are proved in the accompanying report. Consequently
+REJECT_SPARSE(c,n) is equivalent to NOT CHECK_SPARSE(c,n).
+
+The bound W is existential certificate data, not a fixed resource cutoff.
+It bounds every evaluated value and circuit gate in that certificate.
+Missing sparse children fail LOOKUP; they are never silently treated as valid.
+The designated proof code 0 is explicitly represented by the initial invalid
+row (0,0). Formula code 0 remains truth; a proof of it has stored value 1.

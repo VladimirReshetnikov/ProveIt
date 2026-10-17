@@ -1,0 +1,586 @@
+{
+  "name": "FEC native predicate branch, term selector, commutative NAND",
+  "functions": {
+    "o": 0,
+    "V": 2,
+    "C": 3,
+    "N": 2,
+    "A": 2,
+    "Q": 2,
+    "W": 3,
+    "K": 2,
+    "U": 3,
+    "T": 3
+  },
+  "predicates": {
+    "E": 2,
+    "P": 2,
+    "eq": 2,
+    "B": 2
+  },
+  "equality": "eq denotes genuine equality; equality inference/axioms must be supplied by the checker",
+  "clauses": [
+    {
+      "name": "change_same",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "eq",
+          "args": [
+            [
+              "V",
+              [
+                "C",
+                "?s",
+                "?j",
+                "?z"
+              ],
+              "?j"
+            ],
+            "?z"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "change_other",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "eq",
+          "args": [
+            "?k",
+            "?j"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "eq",
+          "args": [
+            [
+              "V",
+              [
+                "C",
+                "?s",
+                "?j",
+                "?z"
+              ],
+              "?k"
+            ],
+            [
+              "V",
+              "?s",
+              "?k"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nand_not_both",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "P",
+          "args": [
+            "?s",
+            [
+              "N",
+              "?a",
+              "?b"
+            ]
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "P",
+          "args": [
+            "?s",
+            "?a"
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "P",
+          "args": [
+            "?s",
+            "?b"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nand_left",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "P",
+          "args": [
+            "?s",
+            [
+              "N",
+              "?a",
+              "?b"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "P",
+          "args": [
+            "?s",
+            "?a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "nand_commutative",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "eq",
+          "args": [
+            [
+              "N",
+              "?a",
+              "?b"
+            ],
+            [
+              "N",
+              "?b",
+              "?a"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "atom_forward",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "P",
+          "args": [
+            "?s",
+            [
+              "A",
+              "?j",
+              "?k"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            [
+              "V",
+              "?s",
+              "?j"
+            ],
+            [
+              "V",
+              "?s",
+              "?k"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "atom_backward",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "P",
+          "args": [
+            "?s",
+            [
+              "A",
+              "?j",
+              "?k"
+            ]
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            [
+              "V",
+              "?s",
+              "?j"
+            ],
+            [
+              "V",
+              "?s",
+              "?k"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "exists_forward",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "P",
+          "args": [
+            [
+              "C",
+              "?s",
+              "?j",
+              "?z"
+            ],
+            "?a"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "P",
+          "args": [
+            "?s",
+            [
+              "Q",
+              "?j",
+              "?a"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "exists_backward",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "P",
+          "args": [
+            "?s",
+            [
+              "Q",
+              "?j",
+              "?a"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "P",
+          "args": [
+            [
+              "C",
+              "?s",
+              "?j",
+              [
+                "W",
+                "?s",
+                "?j",
+                "?a"
+              ]
+            ],
+            "?a"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "unbounded_output",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "B",
+          "args": [
+            "?b",
+            "?t"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "P",
+          "args": [
+            [
+              "C",
+              [
+                "C",
+                "?b",
+                [
+                  "o"
+                ],
+                [
+                  "K",
+                  "?b",
+                  "?t"
+                ]
+              ],
+              [
+                "N",
+                [
+                  "o"
+                ],
+                [
+                  "o"
+                ]
+              ],
+              [
+                "U",
+                "?b",
+                "?t",
+                "?d"
+              ]
+            ],
+            "?t"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "unbounded_member",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "B",
+          "args": [
+            "?b",
+            "?t"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            [
+              "T",
+              "?b",
+              "?t",
+              "?d"
+            ],
+            [
+              "U",
+              "?b",
+              "?t",
+              "?d"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "unbounded_escape",
+      "literals": [
+        {
+          "positive": false,
+          "predicate": "B",
+          "args": [
+            "?b",
+            "?t"
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            [
+              "T",
+              "?b",
+              "?t",
+              "?d"
+            ],
+            "?d"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "empty_closure",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "B",
+          "args": [
+            "?b",
+            "?t"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            [
+              "T",
+              "?b",
+              "?t",
+              "?x"
+            ],
+            "?x"
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "P",
+          "args": [
+            [
+              "C",
+              [
+                "C",
+                "?b",
+                [
+                  "o"
+                ],
+                "?x"
+              ],
+              [
+                "N",
+                [
+                  "o"
+                ],
+                [
+                  "o"
+                ]
+              ],
+              "?y"
+            ],
+            "?t"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            "?y",
+            [
+              "K",
+              "?b",
+              "?t"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "member_closure",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "B",
+          "args": [
+            "?b",
+            "?t"
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?x",
+            [
+              "K",
+              "?b",
+              "?t"
+            ]
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "P",
+          "args": [
+            [
+              "C",
+              [
+                "C",
+                "?b",
+                [
+                  "o"
+                ],
+                "?x"
+              ],
+              [
+                "N",
+                [
+                  "o"
+                ],
+                [
+                  "o"
+                ]
+              ],
+              "?y"
+            ],
+            "?t"
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "E",
+          "args": [
+            "?y",
+            [
+              "K",
+              "?b",
+              "?t"
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "name": "support",
+      "literals": [
+        {
+          "positive": true,
+          "predicate": "B",
+          "args": [
+            "?b",
+            "?t"
+          ]
+        },
+        {
+          "positive": false,
+          "predicate": "E",
+          "args": [
+            "?y",
+            [
+              "K",
+              "?b",
+              "?t"
+            ]
+          ]
+        },
+        {
+          "positive": true,
+          "predicate": "P",
+          "args": [
+            [
+              "C",
+              [
+                "C",
+                "?b",
+                [
+                  "o"
+                ],
+                [
+                  "U",
+                  "?b",
+                  "?t",
+                  "?y"
+                ]
+              ],
+              [
+                "N",
+                [
+                  "o"
+                ],
+                [
+                  "o"
+                ]
+              ],
+              "?y"
+            ],
+            "?t"
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+INDEPENDENT REVIEW: INVOLUTIVE SEARCH AFTER THRESHOLD REFACTOR
+
+Verdict: PASS within the stated arithmetic-program scope. I found no remaining
+correctness issue in the contextual-walk completeness argument, the binary
+tour, its exact call counts, the phase lift, or the threshold controller.
+This is ordinary mathematical and source review, not a kernel-checked theorem
+or evidence of any particular binary Turing-machine state bound.
+
+Scope
+-----
+Reviewed theory-notes/involutive_theory.tex and involutive_search.py after the
+continuous universal_events refactor and the lifted_search source-lifetime
+fix. Exact reviewed hashes are in involutive_independent_review.json. Published
+first-order-to-Df3 results and the prior E7 algebraic reduction were outside
+this controller audit. The new text correctly keeps its ZFC query interface
+conditional on actually emitting and calibrating the fixed query.
+
+Mathematical review
+-------------------
+Ground contextual instances generate the congruence of ground equational
+derivability. Each directed step is implemented by its unoriented endpoint
+transposition; a failed endpoint match does nothing. Coincident endpoints
+give the identity. Thus finite words in the transpositions have exactly the
+intended equational orbit. Availability of a ground constant permits grounding
+temporary proof variables without changing a ground target.
+
+The canonical binary address of a word (i1,...,ik) is
+1 0 1^i1 ... 0 1^ik and has depth sum(ij+1). A left edge appends generator 0.
+A right edge from a word ending in j first applies j to cancel that last
+action and then applies j+1. Its inverse must run j+1 and then j, as the code
+does. All-ones addresses, including root 1, represent the empty word; their
+right edges perform no operation. The vertex invariant therefore holds for
+arbitrary involutions, with no commutativity assumption. Completing the DFS
+tour returns the current value exactly to the initial value.
+
+There are 2^D-1 left edges, each with one call in each direction. Among the
+same number of right edges exactly D have empty-word parents and no calls;
+the others have two calls in each direction. This gives
+
+    L_D = 6(2^D-1) - 4D,
+    sum(d=0..D) L_d = 6*2^(D+1) - 2D^2 - 8D - 12.
+
+Both formulas include D=0 correctly. Every finite word is covered by a finite
+stage and all preceding stages finish and restore their input. An equality
+test at initialization handles the empty proof. Testing after every call
+also covers zero-call edges because those edges leave a previously tested
+value unchanged. A bounded negative result makes no claim of nonderivability.
+
+For B=2^D, the condition v<B is exactly that heap vertex v lies above the
+leaf level. The threshold refactor therefore removes the current-level
+counter and runtime D from the continuous traversal core. Completing a stage
+at root 1 doubles B and restores the descending direction. Persistent
+traversal data are B, v, and this direction bit. Temporary arithmetic data,
+the current term and optional phase, and Python budget/report/swap metadata
+are additional. The prose now states these distinctions. The unbounded vertex
+integer stores path history; this is not a constant-space claim.
+
+The phase generator F flips the phase. J_e exchanges precisely (a_e,0) and
+(b_e,1) and fixes all other states. This remains an involution when a_e=b_e:
+it then flips phase at that term while preserving the term coordinate. Every
+ordinary oriented edge is realized after at most one preparatory F. Hence the
+projected orbit is unchanged, and completed tours restore both coordinates.
+With F indexed 0 and J_e indexed e+1, the stated lifted weighted-path bound
+sum(e+3) follows from weight 1 plus weight e+2 per original edge.
+
+Small independent structural checks
+-----------------------------------
+The separate review_involutive.py uses a recursive reference tour, not the
+delivered iterative threshold algorithm. Its exact event sequences matched
+the continuous scheduler and the finite inspection wrapper at depths 0..6.
+The corresponding involution counts were 0,2,10,30,74,166,354.
+
+At each emitted visit, a free-product-of-C2 reduction checked the vertex
+invariant without assuming that distinct involutions commute. Each completed
+stage restored the empty reduced word. Additional controls checked last-letter
+extraction for all vertices 1..255, canonical addresses for 341 short words,
+144 phase-involution instances including coincident endpoints, both edge
+directions from both phases, and six initial/root/budget search boundaries.
+
+The author's large numerical, finite-model, and exhaustive-involution suites
+were not rerun. The finite checks establish agreement on these controls;
+the mathematical induction establishes arbitrary-depth restoration and
+coverage. No binary table, expanded ZFC query, or numerical state saving is
+established by this audit.
+
+Reproduction
+------------
+python review_involutive.py /path/to/involutive_search.py review.json
+
+Only the Python standard library and the two reviewed source files are needed.

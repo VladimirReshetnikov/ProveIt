@@ -1,0 +1,175 @@
+{
+  "status": "CLEAN_FINAL_ARITHMETIC_DATA_AND_PORTABLE_SCOPE",
+  "independent_reviewer": "/root/review_bic/mira_backend_route",
+  "json": {
+    "path": "/tmp/zfc-arithmetic-control-data/child-final-review.json",
+    "sha256": "cf542f53ef5697e5e1476eebe9bed263269017bcc8daa67f52136badf9a472e1"
+  },
+  "review": {
+    "status": "CLEAN_READ_ONLY_FINAL_PROOF_PORTABLE_DEFAULT_CONTROLS",
+    "reviewer": "/root/review_bic/mira_backend_route",
+    "defects": [],
+    "source": {
+      "path": "/tmp/zfc-arithmetic-control-data/sources/BusyBeaver/ZFC/ArithmeticControlData254.lean",
+      "sha256": "7a91bee3cd77e06bbd066507bcd6c27d3bd3a61303393f9336b0dfd028fa976f",
+      "snapshot": "/tmp/zfc-arithmetic-control-data/run3/sources/BusyBeaver/ZFC/ArithmeticControlData254.lean"
+    },
+    "source_lines": 257,
+    "audit": {
+      "path": "/tmp/zfc-arithmetic-control-data/Audit.lean",
+      "sha256": "8492c8f0fe8637c1bec938b3717732ea9f22d429cfb6e2c43f723bd40455932b",
+      "snapshot": "/tmp/zfc-arithmetic-control-data/run3/sources/Audit.lean"
+    },
+    "guard": {
+      "path": "/tmp/zfc-arithmetic-control-data/publication/check_arithmetic_control_data254.py",
+      "sha256": "8d82086902aa81d3e3611a7b95fbadbd3aee2e40e6c79e7655d991803363d59f"
+    },
+    "proof_evidence": {
+      "path": "/tmp/zfc-arithmetic-control-data/run3/verification.json",
+      "sha256": "4dc61d25e6346bacc6b0fce5545a71932ebbfe24fc72f0b8e40243fe0b21da73"
+    },
+    "proof_contract": {
+      "status": "PASS",
+      "probes": 16,
+      "callers": 20,
+      "only_standard_axioms": true,
+      "warnings": 0,
+      "source_seconds": 2.860707538202405,
+      "audit_seconds": 2.519770385697484,
+      "inputs": 186,
+      "project_modules": 81,
+      "external_anchors": 6,
+      "actual_toolchain_modules": [
+        "Init",
+        "Lean.Elab.Tactic.Omega"
+      ]
+    },
+    "mathematical_findings": [
+      "natBits recurses on external Nat, decreases by division2 and encodes exactly each natural under actual bitsCode. It does not assert a reverse identity for arbitrary bitlists, where trailing-zero aliases exist. binaryTerm/binaryValue calibration uses the checked actual compact representation.",
+      "compactRows uses consecutive canonical keys first+1 at every column. compact_lookup_agrees matches the existing arbitrary-IOpen lookup on every internal q and branch, with no assumption that an input key is standard.",
+      "native_lookup_supported derives a literal finite row index from nonzero output. native_lookup_at proves selection by cast injectivity/order; fieldValue_at therefore makes every generated column refer to the same actual external Control.",
+      "The branch convention is zero versus nonzero, not Boolean validation. Arbitrary nonzero internal branch values intentionally select the positive column, consistent with the existing generic lookup.",
+      "Actual source opcode/register/outgoingPath/successor/overflow/spare/PC functions are defined from the imported catalogue and resolver. The physical register permutation, incPath/breakPath/continuePath and overflow/counter conventions match actual SitePerm252 and DispatchRebase on inspection. No second Python table or 8391 guard replay is introduced.",
+      "source_not_node uses actual source acceptance to rule out unreachable decoder-node entries. sourceOpcode_bounds proves all valid opcodes1..4, and successorNumber_zero_iff distinguishes the genuine halt leaf. Invalid opcode0 is a default, not a binary halt inference.",
+      "fieldDef is a fixed bounded three-place graph ordered output/control/branch for each fixed external pair of Nat-valued columns. Column functions are external finite data independent of V in the actual instantiations. The two-place opcode graph is correctly specialized at branch0.",
+      "opcodeValue_nonzero_iff classifies arbitrary internal q exactly as a cast of one actual live code1..6460. Other valid fields may themselves be0, so validity must continue to be decided by opcode rather than successor/register output alone.",
+      "Numeric sourcePC is the actual LSB encoding of consumed source bits and is not assumed to identify a unique Control. Catalogue numbers supply unique keys; whole unconsumed path/tape rebasing continues to require separate Clean/padding facts.",
+      "Complete16/20 audit covers Nat0, arbitrary external Nat calibration, arbitrary internal support/selection/graphs, two-column source coherence, unreachable nodes, spare delta\u22641 and nonhalt successor positivity. No internal step, evaluator or scheduler theorem is asserted."
+    ],
+    "guard_findings": [
+      "Both parent records are exact frozen successful GenericControl8/13 and actual Catalogue14/17 bytes; all inherited source/object identities, including duplicate parent objects, are checked before import and rehashed afterward. Exact current81-node DFS closure is enforced.",
+      "Six external anchors include five project import boundaries plus the identified transitive Seq provider of PRF. Actual first selected project/external/Init/Omega objects and sysroot anchors are resolved in the recorded LEAN_PATH; dependency pins/manifest/compiler are checked.",
+      "Source/audit overrides are recorded, while maintained defaults are pinned. Fresh external output and explicit Python-O rejection precede proof work. A new object hash is captured before audit and checked afterward; exact ordered reports/callers and standard axiom whitelist enforced.",
+      "No dependency build/download or control/bootstrap replay. Existing dependency cache is identified at selected boundaries, not globally reattested."
+    ],
+    "final_proof_delta": "Compared full source-first snapshot to run2 and exact whitespace-only run2\u2192run3 diff. Changes are natBits0 dead-branch rewrite, conditional normalization, explicit successor-index bound/cast arithmetic, opcode ite_self and removal of one trailing space. Source-derived data, graphs and public theorem contracts are unchanged.",
+    "portable_scope": "Run3 actually executed the final portable guard with its final default source pin. The original run1/run2 guard remains unchanged. Maintained-default preflight selects exact source/audit without overrides and is PREPARED_NOT_BUILT with no commands or fresh objects.",
+    "controls": {
+      "record": {
+        "path": "/tmp/zfc-arithmetic-control-data/guard-controls/negative-controls.json",
+        "sha256": "14083a311bd13062816683918d681f726d4949e3dc1905df9c1b8486c0a6a387"
+      },
+      "expected_rejections": [
+        "optimized_python",
+        "nonempty_output",
+        "shadowed_init",
+        "shadowed_omega"
+      ],
+      "scope": "Four exact recorded nonzero exits, all prepare-only. Shadow libraries include the real remaining provider roots, and fail at actual first Init/Omega hash checks rather than an unrelated missing import. No proof/control replay by reviewer; version queries may occur in preparation."
+    },
+    "history_scope": "Six original records are embedded: initial unbuilt preparation, run1FAIL, run2PASS, earlier explicit unbuilt portable preflight, final run3PASS and maintained unbuilt default. Exact source/audit/driver snapshots are bound. The earlier overwritten portable guard was explicitly recovered by reversing its one frozen-source-pin change and matching the old preflight hash; this is transparent recovery, not a claim of contemporaneous preservation. Run2 is historical success at its own bytes, not silently substituted for whitespace-clean run3.",
+    "scope_limit": "Fixed source-derived finite data/compact lookup graphs and all-internal finite-key classification only. No represented register-state, logical step/run, binary runtime, internal variable-length syntax or structured/scheduler bridge.",
+    "note_review": "Full final ordinary note and runtime limitations read clean. Parametric external columns are finite fixed data, not arbitrary internal table/model parameters. Zero-valued fields require opcode validity; successor0 alone is not an invalid-key halt rule. No numeric-PC increment shortcut or whole-tape claim.",
+    "identity_checks": {
+      "record": {
+        "path": "/tmp/zfc-arithmetic-control-data/child-final-identities.json",
+        "sha256": "0c9d50243de7614ed46ba48dd98a89c16d02edc5b3364259f632a9b470eb62d2"
+      },
+      "hash_comparisons": 1405,
+      "unique_paths": 227
+    },
+    "maintained_placements": [
+      {
+        "target": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticControlData254.lean",
+        "present": true,
+        "sha256": "7a91bee3cd77e06bbd066507bcd6c27d3bd3a61303393f9336b0dfd028fa976f"
+      },
+      {
+        "target": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/arithmetic_control_data254_audit.lean",
+        "present": true,
+        "sha256": "8492c8f0fe8637c1bec938b3717732ea9f22d429cfb6e2c43f723bd40455932b"
+      },
+      {
+        "target": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_control_data254.py",
+        "present": true,
+        "sha256": "8d82086902aa81d3e3611a7b95fbadbd3aee2e40e6c79e7655d991803363d59f"
+      },
+      {
+        "target": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/arithmetic_control_data254.md",
+        "present": false,
+        "sha256": "1201d393c62cc572f6239d4eb533cb1ac3203a548c7c999d480b6654c98a1fc1"
+      },
+      {
+        "target": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/arithmetic-control-data254-verification.json",
+        "present": false,
+        "sha256": "4dc61d25e6346bacc6b0fce5545a71932ebbfe24fc72f0b8e40243fe0b21da73"
+      },
+      {
+        "target": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/arithmetic-control-data254-publication.json",
+        "present": false,
+        "sha256": "26539c36b2a78c1dd07ca14c40acd347aef6dcda463833c467ae34c85b84c520"
+      },
+      {
+        "target": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/results/arithmetic-control-data254-history.json",
+        "present": false,
+        "sha256": "efe474bf3f2b15a4c0e9f9c764e2f9eb1c9e8358442ce263699bc383d8cbcf66"
+      }
+    ],
+    "candidate_publication_snapshots": [
+      {
+        "path": "/tmp/zfc-arithmetic-control-data/child-final-snapshots/ArithmeticControlData254.lean",
+        "sha256": "7a91bee3cd77e06bbd066507bcd6c27d3bd3a61303393f9336b0dfd028fa976f"
+      },
+      {
+        "path": "/tmp/zfc-arithmetic-control-data/child-final-snapshots/Audit.lean",
+        "sha256": "8492c8f0fe8637c1bec938b3717732ea9f22d429cfb6e2c43f723bd40455932b"
+      },
+      {
+        "path": "/tmp/zfc-arithmetic-control-data/child-final-snapshots/arithmetic-control-data254-history.json",
+        "sha256": "efe474bf3f2b15a4c0e9f9c764e2f9eb1c9e8358442ce263699bc383d8cbcf66"
+      },
+      {
+        "path": "/tmp/zfc-arithmetic-control-data/child-final-snapshots/arithmetic-control-data254-publication.json",
+        "sha256": "26539c36b2a78c1dd07ca14c40acd347aef6dcda463833c467ae34c85b84c520"
+      },
+      {
+        "path": "/tmp/zfc-arithmetic-control-data/child-final-snapshots/arithmetic-control-data254-verification.json",
+        "sha256": "4dc61d25e6346bacc6b0fce5545a71932ebbfe24fc72f0b8e40243fe0b21da73"
+      },
+      {
+        "path": "/tmp/zfc-arithmetic-control-data/child-final-snapshots/arithmetic_control_data254.md",
+        "sha256": "1201d393c62cc572f6239d4eb533cb1ac3203a548c7c999d480b6654c98a1fc1"
+      },
+      {
+        "path": "/tmp/zfc-arithmetic-control-data/child-final-snapshots/check_arithmetic_control_data254.py",
+        "sha256": "8d82086902aa81d3e3611a7b95fbadbd3aee2e40e6c79e7655d991803363d59f"
+      },
+      {
+        "path": "/tmp/zfc-arithmetic-control-data/child-final-snapshots/publication-map.json",
+        "sha256": "a3890f88abf173ac4b3422bb39270d147b3481dde90ba3410ce4bd6264175cb9"
+      }
+    ],
+    "publication_boundary": "First three source/audit/guard files are maintained exactly; remaining doc/result/history candidates are frozen in reviewer snapshots. Author may append this review and refresh publication/map status and hashes without changing source/audit/guard/proof/default/control bytes.",
+    "prior_source_first_review": {
+      "path": "/tmp/zfc-arithmetic-control-data/child-source-first-review.json",
+      "sha256": "b44f678a88dd768e6e6ccf20756096165182da1a33cbfd86e81a9bd70989d3f9"
+    },
+    "review_method": "Full source/audit/guard/delta/note/history/control read. Independent current original186 inputs/fresh object,81-node import closure,parent/source/object/evidence/compiler,pins and actual first-provider hash checks; all preserved/recovered history records/snapshots match. No compiler/checker invocation, proof/control replay or author/tracked edit by reviewer."
+  },
+  "prose": {
+    "path": "/tmp/zfc-arithmetic-control-data/child-final-review.md",
+    "sha256": "8fc15513f815a405a0e5b3a169c674c15739fb4483ddc92d395cb8973d5d9842",
+    "text": "# Arithmetic control-data final independent review\n\nCLEAN. Full final257-line source,16/20 audit, final portable guard, proofdelta, note, default preflight and controls reviewed. All-internal finite-key classification and common-row coherence are exact; actual source-derived fields preserve native path/register conventions. Genuine halt opcode4 remains distinct from invalid0; other zero fields are not validity tests.\n\nFinal whitespace-clean run3 passes16/20/std3, zero warnings, recorded source/audit2.860708s/2.519770s. Exact186 inputs, fresh object,81 project nodes, six external anchors (Seq is identified through PRF), actual first Init/Omega and two frozen parent records match. Joined packet has1405 comparisons/227 paths.\n\nMaintained default is unbuilt without source/audit overrides. Four controls reject Python-O, nonempty output and actual first Init/Omega shadows. Six historical records/snapshots stay distinct, including run1 failure, both successful byte variants and transparent recovery of an earlier portable guard by its recorded hash. Compiler-version queries belong to preparation.\n\nNo represented step/run, arbitrary internal-length state, L2/scheduler simulation or PA endpoint is claimed. Reviewer invoked no compiler/checker, replayed no proof/control and edited no author/tracked file. Source/audit/guard are maintained exactly; author publication-status updates are scoped through reviewer snapshots.\n\nJSON: `/tmp/zfc-arithmetic-control-data/child-final-review.json`, SHA256 `cf542f53ef5697e5e1476eebe9bed263269017bcc8daa67f52136badf9a472e1`.\n"
+  },
+  "activity": "Read-only final source, audit, evidence and guard review; no reviewer proof/checker replay."
+}

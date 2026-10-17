@@ -1,0 +1,223 @@
+{
+  "status": "CLEAN independent top-down matcher and codec review",
+  "review": {
+    "status": "CLEAN/ACCEPT after test-only description/control correction",
+    "reviewer": "/root/review_bic",
+    "reviewed_sources": {
+      "term_patterns.py": {
+        "path": "Computability/BusyBeaver/Research/ZFC/term-certificates/term_patterns.py",
+        "sha256": "539012a9bb243d5ab06cb0410d67e07736e46594b14d6910fd078f12fee4c90d",
+        "lines": 114,
+        "snapshot": "/tmp/zfc-term-pattern/independent-review-sources/term_patterns.py"
+      },
+      "pattern_codec.py": {
+        "path": "Computability/BusyBeaver/Research/ZFC/term-certificates/pattern_codec.py",
+        "sha256": "d25e0a34da6b6f2c60ad03a4f382d08e43168cea44b3cbacc7ee589a238c1fa5",
+        "lines": 213,
+        "snapshot": "/tmp/zfc-term-pattern/independent-review-sources/pattern_codec.py"
+      },
+      "test_patterns.py": {
+        "path": "Computability/BusyBeaver/Research/ZFC/term-certificates/test_patterns.py",
+        "sha256": "99b1cb43b9eccc76efb5b9cb139c53e9a180282909c57f22a95f3bc6081f1422",
+        "lines": 272,
+        "snapshot": "/tmp/zfc-term-pattern/independent-review-sources/test_patterns.py"
+      },
+      "pattern-matching.md": {
+        "path": "Computability/BusyBeaver/Research/ZFC/term-certificates/pattern-matching.md",
+        "sha256": "b0428938c350b0fef3f206be09b168d6aa6dc5018d371b5a785a49af18af2e01",
+        "lines": 125,
+        "snapshot": "/tmp/zfc-term-pattern/independent-review-sources/pattern-matching.md"
+      },
+      "term_circuits.py": {
+        "path": "Computability/BusyBeaver/Research/ZFC/term-certificates/term_circuits.py",
+        "sha256": "b1a4e8fe445d8d4abf9a6ad8e236b63ee1948bf51990eba6ebda00a198c0b2a7",
+        "lines": 195,
+        "snapshot": "/tmp/zfc-term-pattern/independent-review-sources/term_circuits.py"
+      },
+      "term_codec.py": {
+        "path": "Computability/BusyBeaver/Research/ZFC/term-certificates/term_codec.py",
+        "sha256": "dabb09c4f7749c7e71bbd65d6056e83f3648aef58b3b24bc3807841515a4b979",
+        "lines": 227,
+        "snapshot": "/tmp/zfc-term-pattern/independent-review-sources/term_codec.py"
+      }
+    },
+    "trusted_spec": {
+      "path": "SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/50-terms-data-spec254.json",
+      "sha256": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc",
+      "arrival": "85633fd2f57b5dca16f87667699134d1b500ebc0",
+      "historical_pin": "fab89c5d26b81cd2ccab2ee5d213ff23725c7726"
+    },
+    "read_scope": [
+      "Entire new verifier, codec, final test suite and note",
+      "Reused fixed circuit compiler, arena/MP/GEN/path validation",
+      "Maintained runner and final four-suite/clean-process evidence"
+    ],
+    "findings": [],
+    "corrected_during_review": {
+      "severity": "test-only",
+      "former_issue": "Stale rho1 comment and duplicate control copied F branch. No verifier/codec soundness defect.",
+      "final_change": "Correct original existential/equality rho1 description, duplicate actual left All subtree, assert tag2, rebuild root.",
+      "test_sha256": "99b1cb43b9eccc76efb5b9cb139c53e9a180282909c57f22a95f3bc6081f1422",
+      "final_complete_replay_status": "PASS"
+    },
+    "checks": {
+      "virtual_zero": "Expectedtag0/actualID0 expands only virtual0,0 and checks both remaining subpatterns; positive expected tags rejectzero. Correct B0(0,0)=0 normalization.",
+      "trusted_patterns": "Only fixed hosted spec/table; finite backward wires. Candidate cannot select templates.",
+      "duplicates": "Parameter exactID equality sufficient; repeated compound copies checked recursively. Existential completeness via interned producer, not arbitrary duplicate representations.",
+      "gates": "Both actual-value inequality witnesses remain; no ID-inequality shortcut.",
+      "fixedF": "Every exact B1(0,0) root accepted as1; binary acceptance has no goal argument.",
+      "totality": "Finite parser input consumption/countbounds and finite trusted-pattern unfolding. Mathematical unbounded-resource semantics; no host-resource guarantee.",
+      "codec": "Same protocol minus constructor witness lists; structural inverse and exact successful re-encoding; tags12..15/forwardrefs/truncation/leftovers reject.",
+      "resources": "MemoryError and RecursionError are outside catches and propagate through core+codec.",
+      "proof_scope": "Ordinary exact C254 soundness/existential completeness, not a machine/Lean/PA proof.",
+      "cost_scope": "197/98 bundle traversal versus62 shared circuit checks and exact witness-bit erasure only; no state price."
+    },
+    "maintained_evidence_reviewed": {
+      "path": "/tmp/zfc-term-pattern-final-replay/verification.json",
+      "sha256": "1428a43f0049c3c3a620f1e05512497741f77b68b00ec83ca54b2d85593501a4",
+      "status": "PASS",
+      "seconds_in_subprocesses": 15.588,
+      "checks": [
+        {
+          "name": "source50-prepare-only",
+          "command": [
+            "/home/codex/.local/bin/python",
+            "-B",
+            "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_157.py",
+            "--repo",
+            "/home/codex/.codex/worktrees/ec20/Proofs",
+            "--output",
+            "/tmp/zfc-term-pattern-final-replay/recovered",
+            "--prepare-only"
+          ],
+          "cwd": "/tmp/zfc-term-pattern-final-replay",
+          "returncode": 0,
+          "seconds": 0.323,
+          "log": "/tmp/zfc-term-pattern-final-replay/source50-prepare-only.log"
+        },
+        {
+          "name": "test_paths",
+          "command": [
+            "/home/codex/.local/bin/python",
+            "-B",
+            "/tmp/zfc-term-pattern-final-replay/run/test_paths.py"
+          ],
+          "cwd": "/tmp/zfc-term-pattern-final-replay/run",
+          "returncode": 0,
+          "seconds": 0.713,
+          "log": "/tmp/zfc-term-pattern-final-replay/test_paths.log"
+        },
+        {
+          "name": "test_circuits",
+          "command": [
+            "/home/codex/.local/bin/python",
+            "-B",
+            "/tmp/zfc-term-pattern-final-replay/run/test_circuits.py"
+          ],
+          "cwd": "/tmp/zfc-term-pattern-final-replay/run",
+          "returncode": 0,
+          "seconds": 0.16,
+          "log": "/tmp/zfc-term-pattern-final-replay/test_circuits.log"
+        },
+        {
+          "name": "test_codec",
+          "command": [
+            "/home/codex/.local/bin/python",
+            "-B",
+            "/tmp/zfc-term-pattern-final-replay/run/test_codec.py"
+          ],
+          "cwd": "/tmp/zfc-term-pattern-final-replay/run",
+          "returncode": 0,
+          "seconds": 6.013,
+          "log": "/tmp/zfc-term-pattern-final-replay/test_codec.log"
+        },
+        {
+          "name": "test_patterns",
+          "command": [
+            "/home/codex/.local/bin/python",
+            "-B",
+            "/tmp/zfc-term-pattern-final-replay/run/test_patterns.py"
+          ],
+          "cwd": "/tmp/zfc-term-pattern-final-replay/run",
+          "returncode": 0,
+          "seconds": 8.305,
+          "log": "/tmp/zfc-term-pattern-final-replay/test_patterns.log"
+        },
+        {
+          "name": "stdlib-hosted-spec",
+          "command": [
+            "/home/codex/.local/bin/python",
+            "-B",
+            "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_term_certificates.py",
+            "_standalone",
+            "/tmp/zfc-term-pattern-final-replay/run",
+            "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/50-terms-data-spec254.json",
+            "/tmp/zfc-term-pattern-final-replay/standalone.json"
+          ],
+          "cwd": "/tmp/zfc-term-pattern-final-replay/run",
+          "returncode": 0,
+          "seconds": 0.074,
+          "log": "/tmp/zfc-term-pattern-final-replay/stdlib-hosted-spec.log"
+        }
+      ],
+      "pattern_tests": {
+        "positive_controls": 15,
+        "template_assignments": 261,
+        "valid_instances": 246,
+        "invalid_gates": 15,
+        "virtual_zero_cases": 22,
+        "virtual_constructor_checks": 37,
+        "short_words": {
+          "max_length": 17,
+          "words": 262143,
+          "successful_parses": 245,
+          "fixedF_acceptances": 0
+        },
+        "deep_bundle_stats": {
+          "node_records": 4159,
+          "constructor_checks": 0,
+          "pattern_visits": 197,
+          "pattern_constructor_checks": 98,
+          "parameter_checks": 47,
+          "literal_zero_checks": 52,
+          "virtual_zero_constructors": 0,
+          "max_pending_obligations": 18,
+          "path_edges": 2048,
+          "proof_rows": 1,
+          "template_searches": 0,
+          "arena_uniqueness_comparisons": 0,
+          "reason": null
+        }
+      },
+      "standalone": {
+        "status": "PASS",
+        "word_bits": 4582,
+        "roundtrip_exact": true,
+        "positive_bundle_control": true,
+        "same_word_rejected_at_fixedF": true,
+        "pattern_word_bits": 2506,
+        "pattern_roundtrip_exact": true,
+        "pattern_positive_control": true,
+        "pattern_word_rejected_at_fixedF": true,
+        "numeric_or_producer_modules_imported": false,
+        "trusted_hosted_spec": {
+          "path": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/50-terms-data-spec254.json",
+          "bytes": 7308,
+          "sha256": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+        },
+        "scope": "Clean-process stdlib-only verifier/codec finite control; no logical acceptance or TM state claim."
+      }
+    },
+    "reviewer_reran_functional_suites": false,
+    "reviewer_ran_Lean_or_Coq": false,
+    "tracked_files_modified_by_reviewer": false,
+    "remaining_work": [
+      "Actual indexed arena and prior-proof-formula access",
+      "Complete parser/fixed control/fair scheduler/reset/blank initializer lowering and machine price",
+      "Formal correctness and arithmetic/PA transport if pursued"
+    ]
+  },
+  "review_text": "# Independent review of the top-down term-pattern frontend\n\n**Clean/accept after one test-only correction.** I read all 114 lines of `term_patterns.py`, all 213 lines of `pattern_codec.py`, all 272 lines of the final `test_patterns.py`, and the complete 125-line `pattern-matching.md`. I also read the reused trusted circuit compiler, arena validation, direct MP/GEN constructor checks, distinguishing paths, codec/fair-search interfaces, maintained runner, and final maintained replay metadata. This review ran no functional suite or Lean/Coq build. The final source hashes and copied review snapshots are in the JSON.\n\n## Zero normalization and fixed patterns\n\nThe sole zero record and prohibition of stored `B0(0,0)` make ID0 the only zero-valued arena root. Positive duplicate records remain valid. A trusted pattern contains parameters, literal Z, and backward constructor wires. Candidate data supplies neither those patterns nor their lengths or arities. `load_templates` and the static circuit compiler are trusted fixed-spec preparation, not operations selected by an input certificate.\n\nThe virtual-zero branch is correct and necessary: when a pattern expects tag0 and the actual ID is0, its children are both virtually0. The matcher still visits both expected child patterns and checks their parameter IDs or constructors. Thus success proves precisely that both expected child denotations are zero and the expected implication denotes `4*P(0,0)=0`. It does not accept an arbitrary implication at zero. Every positive expected tag rejects zero; a literal Z leaf accepts only ID0. The all-zero rho8 control exercises a genuinely nonliteral pattern whose value collapses to0.\n\nTermination follows from the trusted pattern's backward wires, even if a virtual actual root remains0. Parameter leaves stop rather than unfold their possibly enormous terms. Shared pattern nodes can be visited repeatedly, but their finite unfolding bounds all visits and pending work independently of candidate denotation depth. This is not a memoized matcher or a proof of a physical tape-access cost.\n\n## IDs, denotations, gates and proof rules\n\nParameter leaves demand exactly the supplied ID. That is sufficient for equal denotation; rejecting a different equal-valued parameter copy does not harm existential completeness. Repeated compound subpatterns may use different IDs because each is checked independently against the same symbolic subexpression. Positive duplicate records therefore do not require global uniqueness, constructor search, or a supplied constructor-results array.\n\nBoth bundle gates retain the existing distinguishing-path test on `(c,a)` and `(c,b)`. They do not infer numeric inequality from different IDs. Each path descends two positive same-tag records and ends at exactly one zero or different tags; constructor injectivity propagates actual denotational inequality upwards. Extra path symbols after an earlier mismatch reject. This remains sound when different IDs denote equal terms, and finite normal-tree descent supplies a witness for every true inequality.\n\nTruth, MP and GEN use their unchanged exact checks. The major formula in MP must be the normalized tag0 record with the minor's formula ID and proposed result ID as children, including the valid all-zero alias. Backward proof references support induction over rows. Each schema matches the trusted original template, and the last result must be any exact `B1(0,0)` record. The optional control goal is supplied only by the trusted caller; neither certificate fields nor the binary acceptance interface choose it.\n\nInduction on a matched pattern establishes the exact numeric instance; induction over rows gives a C254 derivation, and default acceptance gives C254 of1. For completeness, the existing interned normalized producer for a finite numeric C254 derivation provides identical IDs for repeated parameter values, normalized constructor records, and finite mismatch paths for both true gates. Normalization induction, including the virtual tag0 case, proves every generated schema matches. Erasing the former constructor-ID lists and using the new codec preserves existence of a default certificate. This is an ordinary existential completeness argument, not acceptance of every duplicate-containing alternative encoding or a formal Lean theorem about Python.\n\n## Codec, total finite words and resource behavior\n\nThe codec removes only constructor-ID lists; all other fixed/unary fields, proof references and both paths remain. Unary fields, the fixed-width tags and the path alphabet `0/10/11` decode uniquely. Successful decoding consumes the entire word; structural encoding restores the same bits. Encoded structurally valid certificates round-trip without requiring logical validity.\n\nAll parser loops consume a bit or iterate over a count bounded by the finite input or a fixed arity. Node and proof counts are checked against remaining physical bits before record construction. Children are strictly earlier node IDs; premises are earlier proof rows. Tags12\u201315, nonbinary input, truncation, forward/out-of-range references and trailing bits reject. Structural parsing is intentionally weaker than logical acceptance.\n\nThe decoder catches only its explicit `Malformed` exception. The verifier's caught validation exceptions exclude `MemoryError` and `RecursionError`. Both propagate through `accepts`, as the injected schema/GEN controls check. The iterator therefore specifies a fair semidecision procedure under unbounded finite-algorithm resources; a physical host resource failure is never reported as logical rejection, consistency or a completed negative search.\n\n## Tests, measurements and correction\n\nThe final maintained replay passed all four suites plus clean-process replay, using the actual hosted fixed spec. Pattern tests cover all261 small template substitutions, including22 virtual-zero cases, the15 retained gate failures, both equal-value/different-ID gate attacks, exact malformed-word boundaries, all262,143 words of length at most17, and245 exact successful re-encodings. The deep bundle's197 pattern visits/98 constructor visits and reduced word lengths match the recorded data. The note correctly distinguishes these from the old62 shared-circuit checks and from TM states. Unary witness-bit savings do not establish a control-state saving or retain the delivery's original bit-complexity claim.\n\nThe earlier test comment incorrectly identified rho1 as `a\u2192(b\u2192a)` and its duplicate control copied the F branch. Root corrected the description and strengthened the actual control to duplicate rho1's left All subtree, assert its tag2, and rebuild the root. I read that final change; the complete replay passed with final test SHA256 `99b1cb43b9eccc76efb5b9cb139c53e9a180282909c57f22a95f3bc6081f1422`. No verifier or codec change was needed.\n\nNo unresolved defect was found. Indexed arena/prior-proof access, fixed control lowering, enumeration/reset/initialization and complete binary-TM pricing remain open. The experiment claims no new compiled machine, state reduction, Lean verification, PA internalization, or change to the checked252 endpoint.\n",
+  "maintained_replay": "term-pattern-verification.json",
+  "scope": "Ordinary exact-C254 verifier/certificate equivalence and finite tests; no compiled TM, state saving, Lean theorem, or PA internalization."
+}

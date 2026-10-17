@@ -307,6 +307,27 @@ The module `BoundedPAConsistency.Basic`, in namespace
       ¬ RestrictedBProv n PA.Formula.Ax_s [] PA.Formula.bot
   ```
 
+Two reusable helper modules also support proof-template specialization:
+[`ModelCodedPredicateHygiene`](Lean/BoundedPAConsistency/ModelCodedPredicateHygiene.lean)
+and [`ModelCodedCoreCompiler`](Lean/BoundedPAConsistency/ModelCodedCoreCompiler.lean).
+They compile a standard finite proof at an arbitrary internal matrix with free
+parameters, given target proofs for its finite translated axiom list. The
+result satisfies Foundation's represented `Proof` predicate without requiring
+`S.shift = S`. This separate scoped extension does not translate arbitrary
+internal source proofs; its
+[interface and verification](../../../Computability/BusyBeaver/Research/ZFC/model_coded_core_compiler.md)
+document that boundary. The existing final-theorem facade is unchanged.
+The subsequent
+[`ModelCodedPeanoCore`](Lean/BoundedPAConsistency/ModelCodedPeanoCore.lean)
+client supplies the finite target axiom proofs automatically for lifted PA,
+again allowing arbitrary internal free parameters. Its maintained-path
+five-module check and three audits pass nine axiom reports and twenty callers.
+The subsequent [`ModelCodedTemplateGraph`](Lean/BoundedPAConsistency/ModelCodedTemplateGraph.lean)
+provides fixed Σ1/Δ1 substitution graphs and actual IΣ1/PA provability
+sentences for each standard lifted-PA template, uniformly over all internal
+matrices. Its [scoped record](../../../Computability/BusyBeaver/Research/ZFC/model_coded_template_graph.md)
+retains the boundary between fixed standard source proofs and internally coded matrices.
+
 ### Rocq/Coq theorem surface
 
 The module `BoundedPAConsistency.BoundedConsistency`, inside

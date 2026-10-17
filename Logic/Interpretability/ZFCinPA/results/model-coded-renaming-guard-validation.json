@@ -1,0 +1,683 @@
+{
+  "status": "PASS",
+  "scope": "Prepare-only relocation and five negative guard controls; no Lean proof replay.",
+  "guard_sources": [
+    {
+      "path": "/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py",
+      "sha256": "1b1a8359298c9da8b4086269443bc751a8a55cdcfd5aaabb2b6cb539ba66c8cd"
+    },
+    {
+      "path": "/tmp/zfc-model-coded-renaming/publication/check_model_coded_renaming_successors.py",
+      "sha256": "a8774e2ab904c7bbd36fca2efa6e6cb6ed2d96c72a9aa1b208b69fb377349f15"
+    }
+  ],
+  "positive_preflights": [
+    {
+      "label": "relocated-syntax",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py",
+        "--source",
+        "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedFreeRenaming.lean",
+        "--audit",
+        "/tmp/zfc-model-coded-renaming/SyntaxAudit.lean",
+        "--bind-one-evidence",
+        "/tmp/zfc-model-coded-bind-one/run4/verification.json",
+        "--prepare-only",
+        "--bind-one-cache",
+        "/tmp/zfc-model-coded-renaming/relocated-cache",
+        "--namespace-cache",
+        "/tmp/zfc-model-coded-renaming/relocated-cache",
+        "--output",
+        "/tmp/zfc-model-coded-renaming/relocated-syntax-prepared"
+      ],
+      "exit_code": 0,
+      "expected": "PREPARED_NOT_BUILT",
+      "output": "/tmp/zfc-model-coded-renaming/relocated-syntax-prepared/verification.json\n",
+      "verification": {
+        "path": "/tmp/zfc-model-coded-renaming/relocated-syntax-prepared/verification.json",
+        "sha256": "4522b14c723e770ca9aa416996107deb36bcdec1dfa43c92ae698453030aec48",
+        "project_count": 10,
+        "boundary_count": 6
+      }
+    },
+    {
+      "label": "relocated-successors",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "/tmp/zfc-model-coded-renaming/publication/check_model_coded_renaming_successors.py",
+        "--syntax-evidence",
+        "/tmp/zfc-model-coded-renaming/syntax-run2/verification.json",
+        "--syntax-source",
+        "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedFreeRenaming.lean",
+        "--syntax-audit",
+        "/tmp/zfc-model-coded-renaming/SyntaxAudit.lean",
+        "--axioms-source",
+        "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedRenamingAxioms.lean",
+        "--axioms-audit",
+        "/tmp/zfc-model-coded-renaming/AxiomsAudit.lean",
+        "--binding-source",
+        "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedRenamingBindOne.lean",
+        "--binding-audit",
+        "/tmp/zfc-model-coded-renaming/BindingAudit.lean",
+        "--prepare-only",
+        "--syntax-cache",
+        "/tmp/zfc-model-coded-renaming/relocated-cache",
+        "--namespace-cache",
+        "/tmp/zfc-model-coded-renaming/relocated-cache",
+        "--output",
+        "/tmp/zfc-model-coded-renaming/relocated-successors-prepared"
+      ],
+      "exit_code": 0,
+      "expected": "PREPARED_NOT_BUILT",
+      "output": "/tmp/zfc-model-coded-renaming/relocated-successors-prepared/verification.json\n",
+      "verification": {
+        "path": "/tmp/zfc-model-coded-renaming/relocated-successors-prepared/verification.json",
+        "sha256": "ef1fb4096bf559778b81a0904927657f8a890b44a9ed42e1d35153476e5fc776",
+        "project_count": 11,
+        "boundary_count": 6
+      }
+    }
+  ],
+  "negative_controls": [
+    {
+      "label": "python-O",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-O",
+        "/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py",
+        "--source",
+        "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedFreeRenaming.lean",
+        "--audit",
+        "/tmp/zfc-model-coded-renaming/SyntaxAudit.lean",
+        "--bind-one-evidence",
+        "/tmp/zfc-model-coded-bind-one/run4/verification.json",
+        "--prepare-only",
+        "--output",
+        "/tmp/zfc-model-coded-renaming/negative-O"
+      ],
+      "exit_code": 1,
+      "expected": "REJECTED",
+      "output": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py\", line 145, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py\", line 27, in main\n    req(__debug__,'Do not use Python -O.')\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py\", line 11, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Do not use Python -O.\n"
+    },
+    {
+      "label": "nonempty-output",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py",
+        "--source",
+        "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedFreeRenaming.lean",
+        "--audit",
+        "/tmp/zfc-model-coded-renaming/SyntaxAudit.lean",
+        "--bind-one-evidence",
+        "/tmp/zfc-model-coded-bind-one/run4/verification.json",
+        "--prepare-only",
+        "--output",
+        "/tmp/zfc-model-coded-renaming/negative-nonempty"
+      ],
+      "exit_code": 1,
+      "expected": "REJECTED",
+      "output": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py\", line 145, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py\", line 30, in main\n    req(not W.is_relative_to(R)and not W.is_relative_to(D)and(not W.exists()or not any(W.iterdir())),\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n        'Fresh external output required.')\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py\", line 11, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Fresh external output required.\n"
+    },
+    {
+      "label": "fake-Omega",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py",
+        "--source",
+        "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedFreeRenaming.lean",
+        "--audit",
+        "/tmp/zfc-model-coded-renaming/SyntaxAudit.lean",
+        "--bind-one-evidence",
+        "/tmp/zfc-model-coded-bind-one/run4/verification.json",
+        "--prepare-only",
+        "--library-path",
+        "/tmp/zfc-model-coded-renaming/fake-tools",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/build/lib/lean",
+        "--output",
+        "/tmp/zfc-model-coded-renaming/negative-Omega"
+      ],
+      "exit_code": 1,
+      "expected": "REJECTED",
+      "output": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py\", line 145, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py\", line 97, in main\n    req(o and reference.is_file()and sha(o)==sha(reference),'Wrong actual toolchain provider '+m)\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py\", line 11, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Wrong actual toolchain provider Lean.Elab.Tactic.Omega\n"
+    },
+    {
+      "label": "wrong-BindOne",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py",
+        "--source",
+        "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedFreeRenaming.lean",
+        "--audit",
+        "/tmp/zfc-model-coded-renaming/SyntaxAudit.lean",
+        "--bind-one-evidence",
+        "/tmp/zfc-model-coded-bind-one/run4/verification.json",
+        "--prepare-only",
+        "--bind-one-cache",
+        "/tmp/zfc-model-coded-renaming/relocated-cache",
+        "--namespace-cache",
+        "/tmp/zfc-model-coded-renaming/relocated-cache",
+        "--output",
+        "/tmp/zfc-model-coded-renaming/negative-wrong-BindOne"
+      ],
+      "exit_code": 1,
+      "expected": "REJECTED",
+      "output": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py\", line 145, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py\", line 75, in main\n    if m not in newnames:visit(m)\n                         ~~~~~^^^\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py\", line 59, in visit\n    req(sha(ss)==old['source_sha256']and sha(o)==old['object_sha256'],'Changed selected predecessor '+m)\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_free_renaming.py\", line 11, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Changed selected predecessor ZFCinPA.ModelCodedBindOne\n"
+    },
+    {
+      "label": "wrong-Syntax",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "/tmp/zfc-model-coded-renaming/publication/check_model_coded_renaming_successors.py",
+        "--syntax-evidence",
+        "/tmp/zfc-model-coded-renaming/syntax-run2/verification.json",
+        "--syntax-source",
+        "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedFreeRenaming.lean",
+        "--syntax-audit",
+        "/tmp/zfc-model-coded-renaming/SyntaxAudit.lean",
+        "--axioms-source",
+        "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedRenamingAxioms.lean",
+        "--axioms-audit",
+        "/tmp/zfc-model-coded-renaming/AxiomsAudit.lean",
+        "--binding-source",
+        "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedRenamingBindOne.lean",
+        "--binding-audit",
+        "/tmp/zfc-model-coded-renaming/BindingAudit.lean",
+        "--prepare-only",
+        "--syntax-cache",
+        "/tmp/zfc-model-coded-renaming/relocated-cache",
+        "--namespace-cache",
+        "/tmp/zfc-model-coded-renaming/relocated-cache",
+        "--output",
+        "/tmp/zfc-model-coded-renaming/negative-wrong-Syntax"
+      ],
+      "exit_code": 1,
+      "expected": "REJECTED",
+      "output": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_renaming_successors.py\", line 148, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_renaming_successors.py\", line 77, in main\n    if m not in newnames:visit(m)\n                         ~~~~~^^^\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_renaming_successors.py\", line 61, in visit\n    req(sha(ss)==old['source_sha256']and sha(o)==old['object_sha256'],'Changed selected predecessor '+m)\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-renaming/publication/check_model_coded_renaming_successors.py\", line 11, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Changed selected predecessor ZFCinPA.ModelCodedFreeRenaming\n"
+    }
+  ],
+  "all_original_inputs_rehashed_after_controls": [
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-renaming/check.py",
+      "sha256": "70cbea5da08311bbe045d05207e4c02e96662886e5fce49469e3f3eff75f8505"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_cantor.py",
+      "sha256": "9a8d4d7dd467ac8152238c8a0cbe93ed87512be36b447e38bae0b8244a28b229"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-bind-one/run4/verification.json",
+      "sha256": "ba5f861549f2a15126f53eec9ea8b083ebb6faaf22ada9c08d9aa3b4150d1ed3"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/src/Proofs/lake-manifest.json",
+      "sha256": "95e215b005fe9aacc1e5490c781d57e3044d2da5ca452495cfcd0e4eff908665"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedFreeRenaming.lean",
+      "sha256": "e321b3fd18b40c82d554488f4e5ac7aff665b793753523bb66e74ef5b3a45c5b"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-renaming/SyntaxAudit.lean",
+      "sha256": "abf2383011101f5e6c64a954b15c8facd1f5968784e2bf1c45169c465ac4c110"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindOne.lean",
+      "sha256": "78f5858a715e74bca2af835ec990e33775f588219ef7f30b217825acbffd6785"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSpecialization.lean",
+      "sha256": "ae18d5c05167e4fbbf9e5bfadd6d807439140ec07031af22dc5198e4fc26ac38"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedClosedSchemaAxioms.lean",
+      "sha256": "1318983c7727a9a280fe872003b6eac45b0959aec11c9d99a262bf99721be3b6"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindFree.lean",
+      "sha256": "f3a11fa8165406cec42a793a2cbd05c950b60cce867d374e5414ce867e3c36ce"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/Instances.lean",
+      "sha256": "30965b8b9533ae07fcfddf7743cd247df1ebd6a1224d4d4982786aa5bfe2446d"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SchemaClosure.lean",
+      "sha256": "64ec54b2c206d7b8ed77ce04f45af9c35625c31c06c784aedc5ac233fd18bec4"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSchemaAxioms.lean",
+      "sha256": "a9fb204ca4f00fd30d28edfcc409ad561337a8378eab0b574b21bf8607f1c760"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+      "sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ReplacementDelta1.lean",
+      "sha256": "6653c8cf532e53212633d953a25e12e4b97465be2f5112ce4cda56f41e040454"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SeparationDelta1.lean",
+      "sha256": "695c4365853fe4500bde5978633aa0696716fe07dee639d75fe7e92995dda1a2"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/SetTheory/Basic/Axioms.lean",
+      "sha256": "9952df1012c4eeb08eb2f40b1719a1912856ce013daec5735a9ac81a97f4c9b8"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax.lean",
+      "sha256": "18257680a6f1d84b6b4ae3d6dc5c07f4adcd4aa660fe3d4f63fa4df98932c79c"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.lean",
+      "sha256": "4c87d00022da1dd0b75b3d73e184d04458835f362dcdda06e5529574ce2b99cf"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.lean",
+      "sha256": "4cf3493c7437280c3e6ae9151e6f3bdecd865e9312e91b5744bdb5f3cfbdd594"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/IOpen/Basic.lean",
+      "sha256": "4ec52a7a487aeafb0e9ea10716452b34f138d8214ad5a1aa5466064d6a4c9d7b"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/src/Proofs/.lake/packages/mathlib/Mathlib/Tactic/Ring.lean",
+      "sha256": "d3ef5c49ebbd1108ce3f935e5ad95485e143abf02f28c027dba4bb6f3be8196e"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-renaming/syntax-run2/sources/ZFCinPA/ModelCodedFreeRenaming.lean",
+      "sha256": "e321b3fd18b40c82d554488f4e5ac7aff665b793753523bb66e74ef5b3a45c5b"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-renaming/syntax-run2/sources/SyntaxAudit.lean",
+      "sha256": "abf2383011101f5e6c64a954b15c8facd1f5968784e2bf1c45169c465ac4c110"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-bind-one/run4/cache/ZFCinPA/ModelCodedBindOne.olean",
+      "sha256": "c80e2be803b838d943eaec9051b93b0eaa9a2f34470c60f8920821fb21a75eca"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-closure/specialization-run3/cache/ZFCinPA/ModelCodedSpecialization.olean",
+      "sha256": "4da6590fc5c0b4dcbc74583f52f089d2c095945236bd3eb3e2d529cbcef06141"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-closure/closed-run1/cache/ZFCinPA/ModelCodedClosedSchemaAxioms.olean",
+      "sha256": "23f65cac691b24d8becf1e46438b4577957917050bde3bb3a9166762adab8c20"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-closure/run3/cache/ZFCinPA/ModelCodedBindFree.olean",
+      "sha256": "51fde1bcc35edce516064105b05ebdde64ad60aefaa00fab2484c25c1b1698e2"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/Instances.olean",
+      "sha256": "50532105d60be5b437537109a6ca8e37b2d883659dc4a64774fe5bf93d81595c"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SchemaClosure.olean",
+      "sha256": "1d132a2dd2df2b38440a826bd19b7d35617cde4d0d240da816d66abb3309ab43"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ModelCodedSchemaAxioms.olean",
+      "sha256": "cfdc122e1487621dd3ea3405f5918598917e6a804f7517486a991ba4b46afa7d"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+      "sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ReplacementDelta1.olean",
+      "sha256": "e1c374dfb26f3ce831b705d5d845e65aceacb4fea2a20dd427c717bb11ce9b1b"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SeparationDelta1.olean",
+      "sha256": "52c63317a8c193209eaeb5f44e0f24a5ec1cc9feeed3a2029096bc394ba06885"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/Foundation/FirstOrder/SetTheory/Basic/Axioms.olean",
+      "sha256": "e2654fef89ea6d605dbb52b87ad19d2b9e98ed3c532f6d3145689d404d5f0704"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax.olean",
+      "sha256": "7eecf0d4bf8fd67fd59dba66deb007a78da940367d3e3b932f5a6f19eb14a23c"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.olean",
+      "sha256": "5951b3610954e29c7de0bf2335ef7e3624a7e4c566f30eff6fb9b9d6ea6371a6"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.olean",
+      "sha256": "5415e8029090c3c989bdaa843a35c1d38422014d0849037c65c5a6c785b82d87"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean",
+      "sha256": "b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean",
+      "sha256": "cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4"
+    },
+    {
+      "record": "syntax-run2",
+      "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Lean/Elab/Tactic/Omega.olean",
+      "sha256": "eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-renaming/check_successors.py",
+      "sha256": "a468ceff3b05fb00557893fb1c583d4292175ed54988e91f39fd842cb83595cf"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_cantor.py",
+      "sha256": "9a8d4d7dd467ac8152238c8a0cbe93ed87512be36b447e38bae0b8244a28b229"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-renaming/syntax-run2/verification.json",
+      "sha256": "1f3a5b8b6eba805fe6a8b49e1c4ad4faea56f709e9798bff874ea75740415183"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "sha256": "e8baaa71855a616dc351028f3ad2200051b0671f423a1696a100e809302d5550"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/src/Proofs/lake-manifest.json",
+      "sha256": "95e215b005fe9aacc1e5490c781d57e3044d2da5ca452495cfcd0e4eff908665"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-renaming/SyntaxAudit.lean",
+      "sha256": "abf2383011101f5e6c64a954b15c8facd1f5968784e2bf1c45169c465ac4c110"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedRenamingAxioms.lean",
+      "sha256": "26cdf477bb3dff15dc53c19b72d2a145b363aa7c8cb917ef43e285482a31cab7"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-renaming/AxiomsAudit.lean",
+      "sha256": "4681561aa532d46c5fb73323f0478f7fb8ee81df7800f40b54f4e6e518f34cd2"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedRenamingBindOne.lean",
+      "sha256": "9118bac4abab0536ed5d29974b7851d97a516b6c47a0bd0af07741712064f9fe"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-renaming/BindingAudit.lean",
+      "sha256": "f12d21f580edcd8b5ebe8031404424c7f1aea17847634e6dd5b6386944921d46"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-renaming/sources/ZFCinPA/ModelCodedFreeRenaming.lean",
+      "sha256": "e321b3fd18b40c82d554488f4e5ac7aff665b793753523bb66e74ef5b3a45c5b"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindOne.lean",
+      "sha256": "78f5858a715e74bca2af835ec990e33775f588219ef7f30b217825acbffd6785"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSpecialization.lean",
+      "sha256": "ae18d5c05167e4fbbf9e5bfadd6d807439140ec07031af22dc5198e4fc26ac38"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedClosedSchemaAxioms.lean",
+      "sha256": "1318983c7727a9a280fe872003b6eac45b0959aec11c9d99a262bf99721be3b6"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindFree.lean",
+      "sha256": "f3a11fa8165406cec42a793a2cbd05c950b60cce867d374e5414ce867e3c36ce"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/Instances.lean",
+      "sha256": "30965b8b9533ae07fcfddf7743cd247df1ebd6a1224d4d4982786aa5bfe2446d"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SchemaClosure.lean",
+      "sha256": "64ec54b2c206d7b8ed77ce04f45af9c35625c31c06c784aedc5ac233fd18bec4"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSchemaAxioms.lean",
+      "sha256": "a9fb204ca4f00fd30d28edfcc409ad561337a8378eab0b574b21bf8607f1c760"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ZFDelta1.lean",
+      "sha256": "63e79fc54d9b4c2bc5092942ac564054d918651e6347f8dfc8cb0267f9285550"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ReplacementDelta1.lean",
+      "sha256": "6653c8cf532e53212633d953a25e12e4b97465be2f5112ce4cda56f41e040454"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SeparationDelta1.lean",
+      "sha256": "695c4365853fe4500bde5978633aa0696716fe07dee639d75fe7e92995dda1a2"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/SetTheory/Basic/Axioms.lean",
+      "sha256": "9952df1012c4eeb08eb2f40b1719a1912856ce013daec5735a9ac81a97f4c9b8"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax.lean",
+      "sha256": "18257680a6f1d84b6b4ae3d6dc5c07f4adcd4aa660fe3d4f63fa4df98932c79c"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.lean",
+      "sha256": "4c87d00022da1dd0b75b3d73e184d04458835f362dcdda06e5529574ce2b99cf"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.lean",
+      "sha256": "4cf3493c7437280c3e6ae9151e6f3bdecd865e9312e91b5744bdb5f3cfbdd594"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/src/Proofs/lib/FormalizedFormalLogic-Foundation/Foundation/FirstOrder/Arithmetic/IOpen/Basic.lean",
+      "sha256": "4ec52a7a487aeafb0e9ea10716452b34f138d8214ad5a1aa5466064d6a4c9d7b"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/src/Proofs/.lake/packages/mathlib/Mathlib/Tactic/Ring.lean",
+      "sha256": "d3ef5c49ebbd1108ce3f935e5ad95485e143abf02f28c027dba4bb6f3be8196e"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-renaming/successors-run6/sources/ZFCinPA/ModelCodedRenamingAxioms.lean",
+      "sha256": "26cdf477bb3dff15dc53c19b72d2a145b363aa7c8cb917ef43e285482a31cab7"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-renaming/successors-run6/sources/AxiomsAudit.lean",
+      "sha256": "4681561aa532d46c5fb73323f0478f7fb8ee81df7800f40b54f4e6e518f34cd2"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-renaming/successors-run6/sources/ZFCinPA/ModelCodedRenamingBindOne.lean",
+      "sha256": "9118bac4abab0536ed5d29974b7851d97a516b6c47a0bd0af07741712064f9fe"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-renaming/successors-run6/sources/BindingAudit.lean",
+      "sha256": "f12d21f580edcd8b5ebe8031404424c7f1aea17847634e6dd5b6386944921d46"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-renaming/syntax-run2/cache/ZFCinPA/ModelCodedFreeRenaming.olean",
+      "sha256": "c9866753d2eb848edd7ed85b9dfe67af1f0520b713210f0991f66f82204017a7"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-bind-one/run4/cache/ZFCinPA/ModelCodedBindOne.olean",
+      "sha256": "c80e2be803b838d943eaec9051b93b0eaa9a2f34470c60f8920821fb21a75eca"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-closure/specialization-run3/cache/ZFCinPA/ModelCodedSpecialization.olean",
+      "sha256": "4da6590fc5c0b4dcbc74583f52f089d2c095945236bd3eb3e2d529cbcef06141"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-closure/closed-run1/cache/ZFCinPA/ModelCodedClosedSchemaAxioms.olean",
+      "sha256": "23f65cac691b24d8becf1e46438b4577957917050bde3bb3a9166762adab8c20"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-closure/run3/cache/ZFCinPA/ModelCodedBindFree.olean",
+      "sha256": "51fde1bcc35edce516064105b05ebdde64ad60aefaa00fab2484c25c1b1698e2"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/Instances.olean",
+      "sha256": "50532105d60be5b437537109a6ca8e37b2d883659dc4a64774fe5bf93d81595c"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SchemaClosure.olean",
+      "sha256": "1d132a2dd2df2b38440a826bd19b7d35617cde4d0d240da816d66abb3309ab43"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ModelCodedSchemaAxioms.olean",
+      "sha256": "cfdc122e1487621dd3ea3405f5918598917e6a804f7517486a991ba4b46afa7d"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ZFDelta1.olean",
+      "sha256": "9b786973f362222a91d7faefd34d7e2d014944c61ed18fcf63a85475eb80be8c"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/ReplacementDelta1.olean",
+      "sha256": "e1c374dfb26f3ce831b705d5d845e65aceacb4fea2a20dd427c717bb11ce9b1b"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/ZFCinPA/SeparationDelta1.olean",
+      "sha256": "52c63317a8c193209eaeb5f44e0f24a5ec1cc9feeed3a2029096bc394ba06885"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/tmp/zfc-model-coded-set-axioms/run4/cache/Foundation/FirstOrder/SetTheory/Basic/Axioms.olean",
+      "sha256": "e2654fef89ea6d605dbb52b87ad19d2b9e98ed3c532f6d3145689d404d5f0704"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax.olean",
+      "sha256": "7eecf0d4bf8fd67fd59dba66deb007a78da940367d3e3b932f5a6f19eb14a23c"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Incompleteness/InductionSchemeDelta1.olean",
+      "sha256": "5951b3610954e29c7de0bf2335ef7e3624a7e4c566f30eff6fb9b9d6ea6371a6"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Bootstrapping/Syntax/Proof/Typed.olean",
+      "sha256": "5415e8029090c3c989bdaa843a35c1d38422014d0849037c65c5a6c785b82d87"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/src/Proofs/.lake/build/lib/lean/Foundation/FirstOrder/Arithmetic/IOpen/Basic.olean",
+      "sha256": "b43eb2f8d8a2ef18004125594adafbff02b52f1b6ef62b9b836015bdce2351ad"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/Tactic/Ring.olean",
+      "sha256": "cc12dfa66db7ef6ae4cd2d7a4e035ddffaca827168243f728812776b77836eb4"
+    },
+    {
+      "record": "successors-run6",
+      "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Lean/Elab/Tactic/Omega.olean",
+      "sha256": "eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe"
+    }
+  ],
+  "original_inputs_unchanged": true,
+  "all_copied_objects_restored": true,
+  "nonempty_sentinel_unchanged": true,
+  "Lean_proof_build_calls": 0,
+  "compiler_version_queries": "Prepare-only validation invokes lean --version through compiler_path; no Lean source or audit compilation was invoked.",
+  "metadata_correction": {
+    "historical_record": "/tmp/zfc-model-coded-renaming/publication/guard-validation-before-version-query-clarification.json",
+    "historical_sha256": "7d92f7dd0f80a6b512ffb1017ef073876e4750fefa7e45a6cb69a675290a2d7e",
+    "reason": "Lean_calls=0 was imprecise because compiler version queries occur during preflight; the intended and checked claim is zero proof builds. No control or proof replay was performed for this metadata correction."
+  }
+}

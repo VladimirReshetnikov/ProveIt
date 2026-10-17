@@ -1,0 +1,11 @@
+The complete final Sets131/Proof219 source, both audits, original and portable guards read **CLEAN**. Exact passed evidence and all selected inputs/objects were independently bound in 881 comparisons over 110 paths. No compiler or proof replay was run.
+
+Sets first attempt passed10/10. Proof run2 passed7/8 after one preserved elaboration failure. Both final audits have only the standard three axioms and zero warnings. Source-first review remains separate; final changes normalize arithmetic/typing without altering theorem contracts.
+
+The image graph is a fixed total Sigma1 arithmetic finite-set image, not object-level Choice. The actual internal derivation induction fixes one budget and bounds both changing counters. All ten source rules are handled; strict child-code bounds pay for ALL and zero-level SHIFT. Actual ZF/ZFC axiom invariance discharges the generic closure premise. Named GEN follows from exact BindOne/free alignment without a freshness or closed-matrix premise.
+
+Portable checkers preserve current-repo/cache/source/object/first-provider identities, explicit optimized-Python and fresh-output rejection, object capture before audit, and all postchecks. Four override/relocation preparations are unbuilt; five recorded controls were read without replay. Zero proof-build wording explicitly allows compiler --version queries. The packet binds eleven publication files before maintained placement; default placement may be appended later.
+
+No C254 row/history proof transport, proof-code selection function, PA endpoint or whole-cache attestation is claimed. Exact hashes, failed/prepared history and scope are in child-independent-review.json and child-final-identity-checks.json.
+
+Maintained publication addendum: CLEAN. All eleven placed files match their frozen publication bytes. Both maintained-default preflights are explicitly unbuilt, with no source/audit proof commands. Exact45/54 input and11/14 project/six external provider identities are bound, including actual first Omega. The independent maintained packet has1152 comparisons over127 paths. The initial final review and historical source-only review remain unchanged. No compiler, replay or maintained edit was run. Companion JSON records exact hashes and scope.

@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "scope": "Prepare-only relocation and five rejection controls; no proof build.",
+  "script": {
+    "path": "/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py",
+    "sha256": "f62c3f13addee2ea4dccb043411bf87ac437c005739ab76ea546278d3cfe6736"
+  },
+  "negative_controls": [
+    {
+      "kind": "python-O",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 104, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 26, in main\n    req(__debug__,'Do not use Python -O.')\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 12, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Do not use Python -O.\n",
+      "preserved_nonempty_record": true
+    },
+    {
+      "kind": "nonempty",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 104, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 29, in main\n    req(not W.is_relative_to(R)and not W.is_relative_to(D)and(not W.exists()or not any(W.iterdir())),'Fresh external output required.')\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 12, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Fresh external output required.\n",
+      "preserved_nonempty_record": true
+    },
+    {
+      "kind": "fake-first-Omega",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 104, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 84, in main\n    rel=Path(m.replace('.','/')).with_suffix('.olean');reference=toolroot/rel;o=next((q/rel for q in [cache,*libs,toolroot]if(q/rel).is_file()),None);req(o and reference.is_file()and sha(o)==sha(reference),'Wrong actual toolchain provider '+m)\n                                                                                                                                                      ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 12, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Wrong actual toolchain provider Lean.Elab.Tactic.Omega\n"
+    },
+    {
+      "kind": "wrong-BindOne-object",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 104, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 70, in main\n    for m in imports:visit(m)\n                     ~~~~~^^^\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 60, in visit\n    req(sha(s)==old['source_sha256']and sha(o)==old['object_sha256'],'Changed selected project source/object '+m)\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 12, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Changed selected project source/object ZFCinPA.ModelCodedBindOne\n"
+    },
+    {
+      "kind": "wrong-native-Cantor-object",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 104, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 70, in main\n    for m in imports:visit(m)\n                     ~~~~~^^^\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 60, in visit\n    req(sha(s)==old['source_sha256']and sha(o)==old['object_sha256'],'Changed selected project source/object '+m)\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-decoder/publication/check_model_coded_decoder254.py\", line 12, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Changed selected project source/object BusyBeaver.ZFC.ArithmeticCantor\n"
+    }
+  ],
+  "relocated_prepare": {
+    "path": "/tmp/zfc-model-coded-decoder/relocated-prepared/verification.json",
+    "sha256": "3ee4c024576d377999060c091ae3e1d133e05ca6cfe6e57b312c8fc6c3da3b90",
+    "proof_commands": 0,
+    "selected_projects": 21
+  },
+  "original_proof_inputs_unchanged": true
+}

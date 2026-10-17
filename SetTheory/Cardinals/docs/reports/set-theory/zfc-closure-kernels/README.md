@@ -1,6 +1,6 @@
 # ZFC closure kernels: intake reconciliation
 
-Intake findings, 16 October 2026. This report now reconciles forty-one manuscripts.
+Intake findings, 16 October 2026. This report now reconciles fifty manuscripts.
 The initial batch 143 combines three manuscripts from
 arrival `9e5b610259cd42c88e2cf6c862fb876a7c6d6fcd`, placed in `b07d1a27b`.
 This is the reconciliation-note option in `docs/incoming/README.md`, section 2:
@@ -2390,3 +2390,770 @@ are omitted in memory, with functional identity/certificate assertions retained.
 No checksum manifests or line endings were checked or normalized. No delivered
 file, new state record, global optimality theorem, strict EPSC1 consistency
 separation, Coq rebuild or complete internal-ZFC endpoint is claimed.
+
+## Batch155: dirty-stack barrier, nine-function kernels and transport controls
+
+Intake findings,16 October2026. Five manuscripts from arrival
+`fab89c5d26b81cd2ccab2ee5d213ff23725c7726` become sources42–46, bringing this
+reconciliation to46 manuscripts; the collection remains290 reports. Placement
+`799bcd094d` preserves393 ancillary files and retires the five committed ZIPs in
+the same commit. The58 article/section/bibliography/PDF/top-level delivery-README
+files remain recoverable from that arrival. The base article, its labels and
+all delivered files remain unchanged; this is a reconciliation note, with no
+merged host PDF. Full source dossiers below retain the proofs, limits, credits,
+commands and exact current-tree comparisons.
+
+| Source | Delivered archive | ProveIt pin | Contribution |
+|---|---|---|---|
+| [42](intake-155-source-42.md) | `proveit_zfc252_research_2026-10-17.zip` | `61e77836565f63582561f54745f633d50efd9c7d` | Ordinary dirty-stack proof for the older runtime252 table, exact accelerated blank reachability and901-bit finite kernel. |
+| [43](intake-155-source-43.md) | `zfc_consistency_research_2026-10-17.zip` | `3d731d8cf44941560752abc625149f7bfa109930`; novelty recheck `ba00775e2bf56b184d071346867db74f2eb0c621` | Integer-ray support models, guarded Replacement, fixed empty-replacement repair and short-gap diagnostics. |
+| [44](intake-155-source-44.md) | `zfc_finite_closure_2026-10-17.zip` | `61e77836565f63582561f54745f633d50efd9c7d` | Nine-function FC15*/FC16* kernels, exact equality completion and composed253 shortcut. |
+| [45](intake-155-source-45.md) | `zfc_fused_transport.zip` | `61e77836565f63582561f54745f633d50efd9c7d` |22-control shift transport,24-control two-map transport, syntax/proof translations and guarded decoder experiments. |
+| [46](intake-155-source-46.md) | `zfc_research_2026-10-17.zip` | `61e77836565f63582561f54745f633d50efd9c7d` | Borrowed-register initialization, congruence fusion, raw EPSC1+BU deduction and interpretation-support obstruction. |
+
+### A global ordering argument makes some dirty starts safe
+
+Source42 supplies a new ordinary proof for the previously known unpermuted
+runtime252 fold. It is a different table from the repository's checked
+register-permutation252 machine. Its exact blank trajectory uses999186 literal
+moves, certified transfer/pair/unpair accelerations, two periodic whole-tape
+repairs and a6321-node arithmetic DAG to reach a legal gap37 root. The repair
+lengths2079923824320782982672 and2101702102394623143846 are individual segments,
+not the total bootstrap length. The observed root has PL=NP=D=cache=0 and
+specific huge TW/WS values, with formula1 in the old stack at depth10. The
+abstract soundness theorem allows arbitrary TW/WS/cache at PL=NP=D=0. Arithmetic
+uncertainty rejects the replay; small cases are controls, not extrapolation.
+
+The new soundness argument uses the order of the actual candidate enumeration.
+Replace a marked NIP occurrence by DROP: its whole candidate code strictly
+decreases, preserving parameters, context and the marked position. This gives
+an injection of pop occurrences into earlier push occurrences. At every
+reached pop, the earlier unmatched credit is at least one. Candidate0 resets
+the formula/cache/accumulator before they can inject old data. A witnessed
+prefix of C254 theorems therefore shields the arbitrary old stack forever.
+The witness handles the alias P(0,0)=0; no unique positive stack length is
+assumed. Existing arbitrary-start completeness gives the converse. The start
+condition NP=0 is essential to this proof; it is not the historical NP=2 root
+or a claim about arbitrary interior program counters.
+
+The ordinary composition uses the actual decoded program and generic-register
+bridge, with explicit low-gap/whole-tape runtime arguments. It inherits the
+published C254/ZFC calibration. Four standalone Lean modules freshly compile
+with14 standard-axiom reports, proving code/order/selector/count components.
+They do not serialize the actual Enum scheduling invariant, enormous blank
+trajectory or full new table endpoint. Thus this is an independently reviewed
+ordinary252 result, not a new251 machine or a second complete Lean endpoint.
+The candidate table, original machine, public253 and compiler remain attributed
+to Mira-Cult, Jeff Ketchersid, mira-emmy and Wade as specified in the notices.
+
+### Smaller finite payloads retain full equality and witness dependencies
+
+Sources42/44 continue the assignment/class route of sources34/40. Evaluation
+and update laws manufacture arbitrarily many distinct coordinates; class NAND,
+membership and existential operations represent every finite equality-free E-formula.
+The upper expansion of a possibly ill-founded countable ZFC model uses external
+codes for its E-definable classes, not expanded-language truth/comprehension.
+Each application of EPSC still uses a pure E-definition with parameters.
+
+Source42's best native-equality payload has16 clauses,35 literals,167 term
+nodes,9 proper functions,2 constants and3 binary predicates:901 meaningful
+bits/113 bytes. Its explicit equality completion costs1998 bits; the separate
+term-selector variant has917 native/1703 explicit bits, so the preferred
+representation changes when equality is charged. Marker predicates,
+commutative NAND and shared conditional Skolem witnesses have separate model
+arguments; a short stream is not a compiled state count.
+
+Source44's FC15* has9 functions,1 constant,3 binary predicates,15 clauses and
+35 literals. The derived member selector removes a separate function; F/H and
+S/Y witness sharing is justified only when the complete keys agree and guards
+are disjoint. Equality completion gives29 clauses,82 literals and202 bytes.
+FC16* adds guarded coded Extensionality, yielding30 completed clauses,
+86 literals and228 bytes, with a direct ZF-without-Foundation lower route.
+The weakened FC15*/explicit-X FC17* Change axioms have finite countermodels.
+Their transfer to a weakened FC16* cannot be inferred from an equivalence
+whose proof used the deleted Change clauses.
+
+The ideal ground searches include collisions, genuine equality and every
+retained symbol's congruence; quotienting ground models is part of completeness.
+Finite-stage satisfiability and resource-limit exits never mean consistency.
+Source44's radix16/Cantor term encoding covers every natural number, with smaller
+children and explicit padding constructors. All delivered clauses/bitstreams
+and finite regressions reproduce. The respective Herbrand/compactness arguments
+remain ordinary mathematics; neither complete small binary frontend is supplied.
+The source42/44 theories are distinct from the calculus run by their machine
+controls. No state saving follows from901 bits or202 bytes alone.
+
+### Unary closure: exact repairs and stronger obstructions
+
+Source43 normalizes bilateral integer rays so singleton duplicates disappear,
+literal Extensionality holds, and all finite acyclicity axioms hold despite
+failure of Foundation. The capacity-k support construction over2k+1 components
+satisfies EPSC1, Union, Power, Separation, native containers and source-covered
+partial functional Replacement. It still fails Pairing, AU and EPSC2 for the
+specified raw interpretation. This does not separate consistency strengths:
+the ambient well-founded part and other interpretations remain relevant.
+Its fixed empty-replacement sentence ER is equivalent to Pairing over the
+stated Power/Union/Separation background, even without Extensionality or a
+separate Singleton axiom. The background surcharge must be charged in a compiler.
+
+Source46 strengthens the unary repair to a raw deductive equivalence:
+EPSC1+exact BinaryUnion, EPSC1+outgoing-profile adjunction AU, and full EPSC
+derive the same raw membership sentences. EPSC1 already provides exact
+full-profile singletons, U=O, transitive containers and raw Union. These yield
+BU↔AU; finite observational tuple coding then imports source26's parameter
+collapse. The orientation of U(y,b), unrestricted global support of a hull,
+one ordinary schema parameter and arbitrary internal binders are preserved.
+The primitive-recursive proof translations are described, not serialized.
+
+The same source proves a broader interpretation obstruction. For the full
+symmetric group on an infinite component set, finite supports have least
+supports. An equivariant injection X×X→X forces trivial action when all supports
+have one fixed finite bound. Every fixed-dimensional definable quotient of
+the unary model has such a bound, even with finitely many parameters after
+fixing their support. Thus Extensionality+Pairing interpretations can only
+have trivial action outside that base. An invariant-domain interpretation is
+still possible; this is not a theorem that no interpretation or equiconsistency
+exists. The finite support scripts test the group lemmas, not full schema models.
+
+### Name transport and measured complete controls
+
+Source45 replaces four free-name maps by the shifts n↦n+1 and n↦n−1 on signed
+names, with fixed GEN0 and unrestricted UI0 in locally nameless syntax.
+Conjugation recovers arbitrary-name GEN and UI; simultaneous substitution first
+generalizes original free names and then instantiates in reverse order.
+Colliding target names are allowed because bound indices and free names are
+different syntactic sorts. UI0 has no spurious freshness restriction. Complete
+finite proof translations to/from the prior kernel preserve closed theories;
+open contexts must be transported too. The22 controls count variable-output
+stream transducers only, not a full machine.
+
+Its primary closed theory is CP plus full equality-free GIC without IR;
+EPSC2 and EPSC1+BU are separate alternatives. Their ordinary calibrations
+do not automatically identify these languages with the current native-equality
+`NativeAx` theory or inherit its complete Lean endpoint.
+
+A second pair consists of upward shift and a two-exception downward map.
+It realizes every finite partial renaming, with explicit protected-hole swaps,
+contractions and a finite downshift macro. It does not generate arbitrary
+global permutations: the exceptional map has a collision. The one-generator
+and one-exception obstructions are confined to the stated name-map architecture,
+not general Turing machines. The two-map24-control transport replaces the old46;
+the26-control and three-map alternatives remain recorded. Classical existence
+results and the lack of historical-priority or optimal-length claims are retained.
+
+The same report's phase analysis finds two forced-zero decrements and four
+unreachable leaves. Current `permutation252_phase_analysis.md` already identifies
+those same sites and six guards; the new five-atom abstraction and NP=2 analysis
+are additional evidence, not the first current discovery. Its guarded identities
+and complete265-state sharing control are measured experiments, with their
+restricted search grammars and negative findings intact.
+
+Source46 borrows future zero-register markers as counter bits and restores them
+on underflow. Sharing an existing runtime return costs31/32 private initializer
+states and produces complete299/300-state decoder202 controls. All eight final
+tables, exact state quotients,36 standalone fixtures and14 full integrations
+are checked; sharing is charged once. Congruence fusion reduces186 macro calls
+to180 but costs271 states (209 decoder+62 framework), exceeding268. The4549-pair
+certificate compares the new uncompressed284-node program with its new209-node
+compression, not with the original axiom emitter. Logical equivalence uses the
+retained classical basis and F→A; a truth table with arbitrary true F would be
+unsound. All418 actual decision edges and542 literal rows are independently
+checked. Full search has20736 recipes in its declared grid, with no global
+optimality claim. The lone missing upstream row is explicitly totalized only
+with respect to halting outcome.
+
+Source44's composed public253 shortcut has an ordinary positive-progress
+whole-run argument from a3530-window/7044-obligation invariant. Its full blank
+bootstrap takes312855 moves, saving120 with unchanged253 states, state33,
+head−17 and all178 one-cells. Its exhaustive two-row family has31878 pairs and
+1012 choices per row; both public/composed radius6 searches find no sufficient
+deletion certificate. Negative bounded searches are not state lower bounds.
+
+### Current formal status, reproduction and open work
+
+Current `BinaryPerm252.nonhalting_iff_zf_consistency` is a closed Lean endpoint
+for the different permuted252 table, including actual boot, all decoder sites,
+runtime, native calculus, Power and Foundation. `ZFCBoundPerm252` proves
+Con(ZFC)→its nonhalting. Choice removal and PA internalization remain separate.
+`Code254History.accepts_iff_check` now gives numeric evaluation for every proof
+code, while the156-unit integration freshly checks History, the first part of
+constructible satisfaction absoluteness and their umbrella. This is not a
+fresh156-module rebuild. The reports' older binary/Foundation gaps are historical.
+At that checkpoint the new dirty-stack theorem, different table's enormous
+reachability, finite kernel interpretations and proof-transducer compilers had
+no Lean status from neighbouring modules. The later Count/Reset ports below
+now prove the actual enumerator barrier and six-start theorem separately. No current theorem required a retraction.
+
+All advertised executable finite suites and bounded searches were reproduced on copies;
+source42 alone adds four fresh standalone Lean checks. No Coq rebuild or
+unbounded consistency search was run. The first root replays of sources45/46
+inadvertently included nested manifest loops; corrected independent replays
+omit those loops and retain exact functional comparisons. The corrected recovery
+helper does the same. This is an intake-harness correction, not a submission
+defect. Source46's supplementary42/219 subtree-match/commuting diagnostic has no
+supplied driver and was not independently rerun; no positive endpoint depends
+on it. No line-ending work was done. Five scratch
+PDFs rebuild to30/28/27/34/29 pages with embedded fonts and visual review; exact
+warnings and per-source build scopes are in their dossiers. The delivered PDFs
+remain unchanged in archive history.
+
+Inventory queries426 unique Git blobs, finds47 prior matches and inspects33
+placement/merge own trees; shared dependencies do not duplicate manuscripts.
+The393 copied ancillary files are126/35/79/81/72 by source. Prefixes42-barrier,
+43-rays,44-nine,45-transport,46-borrowed flatten delivery paths; `.log` gains
+`.txt`. Maximum Windows checkout path163; no case-insensitive collisions.
+`data/intake-155-placement.json` maps every name. Nested functional READMEs,
+Makefiles, notes and scripts retain original delivery paths; recover the original
+layout into scratch instead of executing flattened placed sources:
+
+```sh
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_155.py --prepare-only
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_155.py --run all
+```
+
+`--extended` additionally selects source43's full gap/affine/100M diagnostics
+and source45's optional transport/control suite. Other optional full searches
+and explicit standalone Lean commands remain in the source dossiers. Bulk
+manifest loops are omitted in memory; mathematical, table and certificate
+assertions remain. Outputs go outside the checkout. No source is superseded.
+Useful next work is actual-enumerator serialization of the dirty-stack barrier,
+complete costed finite-kernel certificate engines, and broader initialized
+machine searches. All retained unsuccessful routes and proposal sketches stay
+open with the specific missing obligations above.
+
+## Batch156: sparse certificates, reset synchronization and the ZFC comparison
+
+Intake findings, 16 October 2026. Three manuscripts from arrival
+`2447a98214b1c4a3e24e51ee654439fbcfa002d9` become sources47–49, bringing this
+reconciliation to49 manuscripts; the collection remains290 reports. Placement
+`7755fdc9a8` preserves272 ancillary files and retires the three committed
+ZIPs in the same commit. The41 article/section/bibliography/PDF/top-level delivery
+README files remain recoverable from that arrival. The base article, its labels,
+and every delivered file remain unchanged. This is the reconciliation-note
+route of `docs/incoming/README.md`, section2; no merged host PDF is built. The
+complete source dossiers retain the source arguments, credits, limitations,
+commands and current-tree comparisons.
+
+All three manuscripts inspect ProveIt
+`fab89c5d26b81cd2ccab2ee5d213ff23725c7726`. They distinguish the later closed252
+endpoint from the requested historical commits `6d8bc7f1ba`, `63c83cf799` and
+`0301aa64e0`. Their upstream audit pin is
+`ec9ed4f713d8c017f15743ad0692cdf31a59952a`; imported verification lineage is
+`297ab8df7e5de329605c3875b4934643b371a5e3`; public253 PR20 head is
+`0d544f2a2e3c18f12278441a74b7879f31cbe856`. The canonical252 table and complete
+82,552-move blank endpoint are prior ProveIt results. Mira-Cult, Jeff Ketchersid,
+Andrew James Wade, mira-emmy and the earlier ProveIt contributions retain their
+specified credits. No newly smaller machine is introduced by these reports.
+
+| Source | Delivered archive | Contribution |
+|---|---|---|
+| [47](intake-156-source-47.md) | `zfc_consistency_252_research_20261017.zip` | Ordinary set-coded ZFC proof reconstruction for the existing252 table, cofinal-gate theorem and logical obstruction, complete compiler controls and166,413 incoming-action recipes. |
+| [48](intake-156-source-48.md) | `zfc_consistency_research_20261017.zip` | All-input exact sparse C254 bounds and arithmetic graphs, ranked continuation certificates,55,471/132,048 deletion families and a reset-free involutive controller proposal. |
+| [49](intake-156-source-49.md) | `zfc_reset_hod_research_2026-10-17.zip` | Six completely dirty enumerator starts, exact conservative finite credit, HOD/selector-Choice and internal formula-code adapters, two complete arbitrary-row fusion censuses and decoder rotations. |
+
+### Ordinary proof reconstruction and the exact formal boundary
+
+Source47 gives an ordinary mathematical proof, formalizable in ZFC, for the
+existing literal252 table. It reconstructs the finite proof/trace relation,
+productive full runtime simulation, actual clean blank frame, numerical/native
+comparison with a nonempty valuation, bisimulation quotient and internally
+well-founded ZF model. It appends the classical constructibility interpretation
+for the ZF–ZFC consistency comparison. Set-coded countable Henkin models,
+parameter-preserving schema relativization, internal ordinal recursion and
+finite definition tuples are treated explicitly; externally ill-founded and
+nonstandard models are allowed. Raw irreflexivity is not falsely transported
+through the quotient, and a truth predicate for the universe is not assumed.
+
+This is an ordinary reconstruction of the stated object-ZFC theorem. It does
+not report a new kernel verification of the final Choice or arithmetic endpoint.
+Source48 independently states a sufficient internal-ZFC criterion: finite
+literal trace/native-proof calibration, native-to-ZF interpretation,
+ZF-to-native expansion and ZF-to-ZFC via constructibility must hold uniformly
+on the actual internal codes. Countable completeness and a least-representative
+interpretation with explicit domain/equality guards supply the general route.
+The manuscript leaves those four project-specific formalizations open; it does
+not dispute source47's ordinary reconstruction. A guarded least-witness search
+is general recursive and ZFC-provably total once the required implications are
+proved, not automatically primitive recursive or an extraction from arbitrary
+Lean semantic arguments. Primitive-recursive axiom certificates distinguish an
+r.e. axiom range from a decidable predicate. All three sources keep PA
+internalization separate. Under bare consistency the standard unprovability
+of the nonhalting sentence follows from the second incompleteness theorem;
+two-sided independence requires the appropriate additional soundness premise.
+
+### A cofinal freshness generator needs its full logical basis
+
+Source47 proves that double-negation padding in the **upstream decoder's**
+closed-zero/primitive-negation syntax preserves meaning and free variables,
+strictly increases positive codes, and supplies arbitrarily fresh equivalent
+schema matrices. This is not the local open valid alias at numeric zero. The
+padding theorem applies over an independently complete first-order calculus.
+It does not establish completeness of a fragment whose own bundle also emits
+logical vacuity.
+
+The hidden-coordinate interpretation `R(a,b)=Q(s0,s1,sa,sb)` validates the retained
+logical rows and the proposed cofinal vacuity instances but refutes legitimate
+old vacuity at indices0 and1. Its two concrete two-element controls establish
+nonderivability in that logical fragment. They are not an ordinary single-binary
+relation semantics with standard substitution, a CP/GIC model, a consistency
+strength separation of the full theory, or proof that repairing only those two
+indices completes the fragment. An exact alternative enumerates all permitted
+`c≠a,b` triples by six strict-order gap families and two equal-input families.
+Its complete selector/stack/scheduler implementation and cost remain open.
+
+The measured controls retain the old GEN/eight-row prefix before shifting only
+the theory bundle. The unrestricted role shift is `c+a+b+1`; fixed input/output
+roles0/1 require `c+a+b+2`, retaining a,b for the old vacuity row. The prior `+1` allzero instance collides with role1, so
+the earlier285 fixed-role output is expressly superseded. Whole-table pricing,
+including variable framework depth and helper cleanup, gives original281,
+general287→279, and corrected fixed307→286 in32-layout comparisons per modified
+lane. The original281 did not receive a matched additional32-layout search.
+The two smaller controls have unresolved logical calibration/startup/compiler
+obligations and an explicitly totalized missing row without a proved
+unreachability theorem. Their savings cannot be subtracted from252.
+
+### A sparse history for the unchanged numerical calculus
+
+Source48 preserves the exact base12 proof tags, dual Cantor pairing, MP
+orientation, GEN, native equality and both bundle inequalities. Invalid code0
+stores0; valid truth proof1 stores1, encoding conclusion0 plus one. All demanded
+proof children are smaller even for malformed inputs. Strong induction gives
+agreement with the existing parser/checker on every natural code. Canonical
+histories evaluate the sorted dependency closure including0; the verifier may
+soundly accept redundant correct interior rows, so the size bound is canonical,
+not a bound on all accepted certificates. Outside its stated natural-number
+API, hostile Python object types can still raise errors or exploit float
+comparison; no hostile-object parser theorem is claimed.
+
+For binary input length b and unfolded positive occurrence count N,
+`N(N+2)≤3b`. Hence a canonical certificate has at most
+`floor(sqrt(3b+1))` rows, with logarithmic height, total node bit mass below2b
+and squared bit mass below4b²/3. The proof uses the actual nested Cantor pairing
+at MP, including its outer squaring. A balanced valid truth-proof family attains
+the square-root order for **unfolded occurrences**; its repeated labels give
+only h+2 distinct rows, so no matching distinct-cache lower bound follows.
+
+An explicit conservative output exponent `D=2^23` bounds `E(c)≤c^D` and output
+bit length by D times input bit length, including the depth23 bundle. Temporary
+implications at rejected MP nodes are separately bounded. These fixed-circuit
+bounds give an ordinary quadratic-bit-time/linear-space implementation with
+large constants; the actual code60 bundle already has22,009,311 conclusion bits.
+They do not improve enumeration over all proof numbers, grant a free dictionary
+or give a binary-state bound. Direct list storage and polynomial CRT/BETA
+witness size are distinguished.
+
+The arithmetic presentation expands explicit pairing/tag equations and all11
+fixed formula DAGs,103 pair gates in total, including60 for the bundle. Bounded
+preceding-row lookups and a separate witness bound include unsuccessful-MP
+intermediates. Acceptance and rejection have separate Sigma1 formulas for one
+total unique evaluator, yielding an ordinary Delta1 presentation. No actual
+PA representation proof is delivered. An independent symbolic expansion of
+all11 printed graphs agrees with the fully expanded literal source trees.
+The private historical small review driver is not wholly bundled; the advertised
+package replay and this independent replacement graph check are complete.
+
+### Productive continuation and reset-free involutive search
+
+Source48's sufficient simulation criterion uses positive exact action macros
+and a decreasing rank for register-preserving pure jumps, avoiding an infinite
+stuttering loophole. The6,459-node source has6,460 leaves and8,391 guards:
+1,927 pure jumps and4,533 actions/halt. Its action quotient has4,530 classes,
+maximum jump rank4, and only three nontrivial action pairs. The independent
+control auditor checks all successor/rank obligations,8,390 nonhalt acceptance
+boundaries,1,927 rejected artificial stutters and the invalid gap39 control.
+
+The source's completed uniform55,471-recipe and full incoming-action132,048-recipe
+families make127,868 and203,162 affine checks respectively, with zero sufficient
+certificates. The incoming-action family protects all55 register-box rows and
+retains its stated entry conventions. Source47's separate166,413-recipe family
+uses221 eligible deletions,251 destinations and three uniform incoming
+write/move changes, with210,941 candidate checks and zero survivors. Its affected
+case filtering is followed by every guard for a provisional survivor. The three
+families are different; bounded fuel/unsupported-shape/missing-row diagnostics
+are not semantic inequivalence proofs. Four exact-prefix/modular-tail analyses
+in source48 retain the same six exclusions as the earlier phase analysis and
+add no exclusion. Complete regenerated ledgers match delivery apart from time.
+
+A different source48 architecture turns every ground contextual equation into
+a total transposition of its endpoints. The resulting orbit equals the ground
+equational congruence. Inside-out contexts and binary-heap word addresses cover
+every finite generator word; each complete depth-D tour restores the initial
+term and makes exactly `6(2^D−1)−4D` generator calls. Right-edge return order is
+reversed, not repeated. Merely using a fair generator list is insufficient,
+as its finite counterexample shows. The address integer retains an unbounded
+path, so the controller is not constant-space. A phase flip and lifted edge
+transpositions preserve the projected orbit, including equal endpoints, with
+the stated extra weight charge. Initial and empty-word cases are explicit.
+
+The E7 identities, term codec, prior rewrite reduction and Boolean basis remain
+attributed to source38 and the cited primary literature. The new architecture
+has no emitted calibrated ZFC query, complete writer, binary compiler/startup,
+formal arbitrary-depth tour proof or state price. Its public phase-search wrapper
+is bounded; the unbounded architecture is specified by the event scheduler and
+ordinary proof. Finite algebra checks and searches do not complete those missing
+interfaces. Current generic contextual-walk Lean results are complementary and
+do not automatically certify this new schedule.
+
+### Six starts allow arbitrary formula, stack, additive parameter and cache
+
+Source49 strengthens the marked NIP-to-DROP occurrence injection inherited from
+source42. Replace a marked pop by a same-arity push: the whole Cantor list code
+strictly decreases and the marked position makes the map injective. Counting
+all command occurrences, not only first opcodes, gives a reserve at every pop.
+A witnessed theorem prefix shields arbitrary old stack data; the alias P(0,0)=0
+does not require a unique stack length.
+
+With `Δ(n)=DROP_<n−NIP_<n`, any theorem-valued active/cache pair and safe prefix
+of length at least Δ(n) gives a sound start at next candidate n. Successful MP
+pushes may be ignored conservatively; sound AX pushes ten. Arbitrary-start
+completeness supplies the reverse implication without an initial soundness
+invariant. For completely arbitrary four working fields, counters
+`{0,1,2,4,5,6}` synchronize: two MPs or DROP then MP reset active/cache, and
+candidate6 supplies eight unconditional axiom entries above the old data.
+`Δ(7)=1` is enough. Counter3 with cache1 halts immediately, giving the excluded
+case conditional on consistency.
+
+The seven-command candidate0..5 endpoint retains the exact dirty tail:
+`(pl,np,t,w,d,h)=(0,6,0,P(0,wε),d_initial+2,0)`, where wε is P(0,w) only when
+the very first MP succeeds. The next AX clears d/h and shields the tail. An
+arbitrary first AX provides eight good entries; ten require already good old
+top/cache. This distinction is preserved in both the proof and classifier.
+
+For conservative command weights MP0/DROP1/NIP−1/AX10, the exact future deficit
+K(n) is obtained by scanning only until `ceil(Δ(n)/10)` AX occurrences; an explicit
+triangular-code bound proves this scan finite and primitive recursive. With a
+residual pointer p, the suffix total b and minimum m give
+`K(p,n)=max(0,−m,K(n)−b)`. This is exact for the conservative syntactic weight
+model, not necessary credit for actual data where MP can add truths. An AX-first
+root with K≤8 is accepted. The reference criterion accepts215 of256 clean
+control counters; rejection alone is inconclusive.
+
+In logical register order `(N,T,W,A,D,H,X,Y,L)`, the direct six-start root requires
+`A=X=Y=L=0`, zero higher-register tail, N in the six-counter set, and arbitrary
+T/W/D/H. Under the actual physical permutation, slots1/4/5/8 are zero, slot6 is
+a safe N, and slots0/2/3/7 may vary. Nonzero A/X/Y require the exact existing
+`DirtyRoot254.virtual` map; they cannot be discarded. Full tape shape, gap,
+PC, dispatcher and spare data remain actual binary-runtime obligations.
+Relaxing logical data alone does not prove a new blank initializer.
+
+### HOD supplies a classical alternative Choice route
+
+Source49 describes one fixed set-satisfaction relation Den for rank segments,
+recognized internal formula codes and internally finite ordinal parameter
+sequences. OD closure is a formula-indexed schema. Reflection bounds least
+ordinal witness ranks by Replacement, then iterates a canonical rank bound;
+it does not choose witnesses from arbitrary families or introduce universe
+truth. The sequence order compares a bound before length and lexicographic
+entries, avoiding proper-class predecessor sets. Least-description orders are
+definable and set-like in ZF, including within externally ill-founded models.
+
+The hereditary OD domain is transitive and contains the ordinals. OD closure
+and hereditary closure give every ordinary ZF schema; ambient least-description
+minima produce the repository's exact pairwise-disjoint-family selector axiom.
+The selector/restricted order is proved to belong to HOD. Neither internal
+definability of the entire ambient order in HOD nor HOD^HOD=HOD is assumed.
+This is a classical HOD interpretation of ZFC, applied to the exact local
+Choice-removal interface, not a new relative-consistency theorem.
+
+A further paper adapter enumerates the actual tagged Kuratowski formula trees
+by a total internal natural decoder D. All recursive indices are smaller; every
+D(n) is in every formula-closed set, and Replacement makes its range a
+formula-closed set. Thus every recognized internal tree, including a nonstandard
+one, is covered without being identified with an external Lean quotation.
+Duplicated defaults represent falsity and do not disturb least descriptions.
+The decoder graph, fixed Den/HOD formulas, reflection and all actual-form
+axiom adapters are implementation tasks, not compiled modules supplied here.
+
+Ordinary model completeness gives ZFC-refutation→ZF-refutation from this
+interpretation without transitive/external-WF model assumptions. The stronger
+PA statement is conditional on an implemented primitive-recursive finite-proof
+compiler, actual axiom-proof generators and PA correctness for all internal
+codes. Logical relativization, nonempty-domain guards, binder shifts and schema
+parameters are charged proof obligations. A standard Lean axiom report or a
+classical HOD citation alone does not supply that coded theorem.
+
+### Complete fusion domains remain negative evidence, not lower bounds
+
+Source49 synthesizes arbitrary replacement rows at every unordered pair of
+252 working states, including box-state rows and the initial label when
+necessary. Its recipe domain is `binom(252,2)*(4*252)^2=32,134,040,064`. Partial
+evaluation eliminates completions only after a failure before an unknown row
+is read; the two rows are checked simultaneously for surviving completions.
+The comparison uses positive blocks of at most64 moves on both sides, full
+known tape/head equality at nonhalting matches and the same terminal outcome.
+An inductive local-window overapproximation covers all actual blank runs,
+without claiming every admitted window is reachable.
+
+The radius6 and radius8 censuses use330,625 and3,789,234 abstract state/windows.
+They test all31,626 unordered pairs, pruning to222,986 and253,524 complete row
+recipes. Partial-context counts are426,101,486 and4,379,321,106; full-context
+counts are7,433,103 and101,691,837. Neither run obtains a certificate. These are
+complete finite-domain sufficient criteria, not32 billion individually simulated
+full machines, a semantic lower bound or a restriction on different tape
+representations. The lazy/eager radius6 comparison and small differential
+fixtures include positive certificates, ruling out acceptance of a checker
+that simply fails every candidate.
+
+All238 joint decoder/physical-permutation rotations are recorded:153 pass all
+affine cases,59 exceed the shape bound and26 stop diagnostically. Options0,233,
+235,236,237 reach the retained252-state minimum; option0's full blank prefix
+matches the baseline after82,552 moves. This is a separate same-size experimental
+control with conditional instruction certificates, not a new closed endpoint.
+Two stochastic runs test20,000 and46,413 proposals with603 and1,278 accepted
+mutations; best graph size stays252. Exact iteration counts, not a time allowance,
+define these finite replays. No grammar optimality is inferred.
+
+The startup footprint consists of473 literal lookup rows and55 box-contract
+rows with24 overlaps: all504 rows and252 working states are covered. Consequently
+there are zero eligible startup-only mutations under those retained contracts.
+This does not show every row is reached by the actual blank computation; a
+weaker reachable-context proof could change the footprint. The new reset
+criterion enlarges acceptable endpoints without freeing a runtime-constrained
+row by itself.
+
+### Current formal status, tests and reproduction
+
+Current `BinaryPerm252.nonhalting_iff_zf_consistency` remains the closed external
+Lean equivalence for the exact canonical252 machine and ordinary ZF, including
+Foundation and Power. `ZFCBoundPerm252.blank_nonhalting_of_zfc_consistent` supplies
+the ZFC-to-nonhalting direction. The final Choice and internal-arithmetic
+comparisons remain separate. Source47's ordinary ZFC reconstruction and
+source49's HOD interpretation are accepted paper arguments, not those missing
+compiled endpoints.
+
+After the inspected pin, `Code254History.accepts_iff_check` checks all numeric
+inputs, including invalid codes, by a dense history. Source48's sparse bounds
+and arithmetic presentation remain new. Exploratory `GroundRewriting` source
+contains generic contextual-walk and reset/program proof drafts, but is untracked
+and outside the checked integration. It supplies no verified prior theorem for
+source48's involutive tour. `InternalWO`/`OrderRec` are generic internal
+well-order/recursion tools with explicit set-bound resources; they do not yet
+supply a constructible-order or HOD model/Choice proof. The independently
+completed `EnumStackCount254` now checks the exact late-credit scheduler and
+`pl=np=d=0` dirty-start endpoint; it does not by itself prove K's sharper bound,
+the six arbitrary-d starts or an arbitrary interior PC. The subsequent161-unit integration (two fresh units,159 source-matched reused
+units) includes the checked `DirtyReset254.six_dirty_starts_iff` now formalizes all six counters with all
+four working fields arbitrary, using the unconditional eight-row AX shield and
+computed `credit 7=1`; its immediate cache1/counter3 halt is literal. It does
+not add a binary initializer, K(p,n) theorem or PA representation result.
+
+All source47/48 advertised functional branches were replayed on separate copies.
+Source47's64 full compiler alternatives and15 selected artifacts reproduce
+exactly; its166,413 journal recipes match every replayed first failure and
+category. Its quick controls include118,848 row/assignment evaluations,
+1,137 padding triples,8,000 gap emissions and810 permitted triples. Source48's
+full replay passes all numerical, graph, involutive, continuation, deletion and
+residue suites; every saved search field agrees apart from elapsed time.
+Independent graph expansion and imported-helper AST comparisons also pass.
+Its optional figure was regenerated. The primary reduction/basis references
+were checked at their cited theorem pages. These finite checks corroborate
+source transcriptions, not their unbounded mathematical quantifiers.
+
+Source49's default suite passes independently on two fresh copies. Both complete
+radius6/8 fusion ledgers and every functional count now reproduce, together with
+all7,577,444 radius8 closure obligations, all7,936 differential recipes (including
+3,768 positive certificates), the eager/lazy radius6 comparison, all238 joint
+rotations, option0's full table/frame, and both stochastic runs at their exact
+20,000/46,413 proposal counts. An initial aggregate run was terminated during
+radius8; it is not counted as a complete replay. Separate completed invocations
+supply the recorded full results. Source49's scratch PDF has26 pages and22
+embedded font objects; two underfull paragraphs are visually acceptable, with
+no overfull boxes, undefined references, missing glyphs or layout defect.
+
+No new Lean/Coq closure is claimed by the deliveries. Their borrowed source
+excerpts retain their exact historical scope. No unbounded consistency search,
+checksum-manifest verification or line-ending work was performed. Source47/48
+scratch PDFs rebuild to38/37 pages with clean references/fonts/layout and visual
+inspection; their delivered PDFs remain unchanged in archive history. All
+original driver names, machine tables, notebooks, licenses, proof notes,
+complete ledgers, packaging adaptations and prior-review records retain their
+stated provenance. Source47's stale `cofinal_gate_analysis.md` code-header pointer
+has no corresponding file; its actual proof is `sections/cofinal.tex`, recoverable
+from the archive. Imported source48 repository-oriented helper mains must not
+be run from the flattened placement.
+
+Inventory queries288 distinct Git blobs, finds130 prior matches and inspects34
+placement/merge own trees. The272 ancillary files are163/53/56 by source;
+archive-only counts are11/17/13. Prefixes47-cofinal,48-sparse and49-reset flatten
+delivery paths; `.log` gains `.txt`. Maximum Windows checkout path185; no
+case-insensitive collisions. `data/intake-156-placement.json` maps every name.
+The original-layout recovery helper should be used instead of executing
+flattened scripts in place:
+
+```sh
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_156.py --prepare-only
+uv run --no-project python SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_156.py --run all
+```
+
+Its default selected replays are bounded finite checks. Optional complete
+searches use `--extended`; `--compiler-controls` selects source47's full layout
+controls separately. Source49's extra rotation, stochastic, closure and
+eager/differential invocations are recorded separately in its dossier evidence. The helper omits only bulk
+manifest work and keeps functional source/table/circuit/ledger identities.
+No new calibrated sub252 table, global minimality, unconditional nonhalting,
+serialized PA proof or finished internal-ZFC formal theorem is claimed.
+
+## Batch157: canonical term certificates for the full calculus
+
+Intake findings, 16 October 2026. Arrival
+`85633fd2f57b5dca16f87667699134d1b500ebc0` supplies **source50**,
+*Canonical term certificates for small consistency machines*, pinned to
+`fab89c5d26b81cd2ccab2ee5d213ff23725c7726`. Placement `e2ceaa6f8c`
+preserves62 ancillary files under `50-terms-` and retires the committed
+`zfc_sparse_certificates.zip`. Its five manuscript/PDF/top-level delivery files
+remain recoverable from the arrival. The host now reconciles50 manuscripts;
+the collection still contains290 reports. This continues the section2 README
+reconciliation route: the seeded article, its labels and every delivered file
+remain unchanged. No merged host PDF is built.
+
+The [complete dossier](intake-157-source-50.md) and
+[independent mathematical review](intake-157-independent-review.md) retain the
+ordinary arguments, exact test scope, source credits and current-tree checks.
+The original machine/calculus, verification framework and compiler retain
+their Mira-Cult, Jeff Ketchersid/contributors and Andrew James Wade credits;
+mira-emmy's earlier253 result and ProveIt's252 permutation, bootstrap and
+formalization remain prior work. The upstream import is
+`297ab8df7e5de329605c3875b4934643b371a5e3`.
+
+### Exact quotation bounds and canonical terms
+
+For every well-shaped raw proof, including logically invalid proofs, let q be
+its quotation, s its number of constructor occurrences, h its height, and W
+the product of `(v+1)` over every numeric-field occurrence. Source50 proves
+`q+1 ≥ 2^s W` and `q+1 ≥ 2^(2^h−1)`. Repeated subtrees count with their
+occurrences. Four-bit tags and Elias-gamma fields give an explicit serialization
+of at most `8 floor(log2(q+1))` bits. Reverse quotation holds for every successful
+parse, without logical validity. Consequently fuel
+`floor(log2(bits(c)+1))` gives exactly the old parser result on **every** code c,
+including0 and malformed inputs; bits(c) is standard binary length, with
+bits(0)=0. This reduces a bound; the old recursive parser
+did not execute c steps merely because its fuel was `c+1`.
+
+Normal terms consist of Z and four binary constructors B0–B3, with only
+`B0(Z,Z)` collapsed to Z. Their denotation is `4 P(a,b)+tag`, using the exact
+C254 Cantor pairing. They biject with all naturals, including variable-index
+fields as well as formula fields. No logical equivalence or other zero alias is
+introduced. A positive number n needs at most `floor(log2(n+1))` positive
+constructor occurrences. In the delivered canonical arena, topological
+references, the unique zero node, and rejection of duplicate constructor triples
+make identifier equality and inequality exact denotation tests.
+
+For a raw proof p and goal n, a constructed shared arena has O(L) nodes, where
+`L = log2(q(p)+1)+log2(n+1)`; a quoted certificate has O(L²) bits. These are
+existence/producer bounds, not limits on every accepted redundant certificate.
+Numeric conclusions already admit a fixed polynomial value bound
+`conclusion(p)+1 ≤ (q(p)+1)^(2^28)`, hence polynomial bit cost with a large
+constant. Repeated GEN does not increase the fixed exponent. The structural
+representation avoids large intermediates and operations, without establishing
+an asymptotic or state lower bound for numeric implementations.
+
+The full bundle has72 constructor occurrences, depth23 and61 distinct symbolic
+subterms. For parameters `(0,1,2)` its proof quote is540 (10 bits); a64-node arena
+represents an output whose bit length is bounded between16,777,216 and41,943,037.
+That interval is propagated symbolically; the final integer is not materialized.
+These syntax counts are not physical register or TM state counts.
+
+### Three checker interfaces, with all twelve rules
+
+The quoted compatibility certificate checks local forward literal equations
+`v = 2(a+b)(a+b+1)+4b+tag`, all twelve original C254 rule templates, both bundle
+inequalities, and each supplied child-quote equation before reuse. It binds the
+final row to the requested code and goal. The ordinary all-natural equivalence
+with `Code254Proof.check(c,n)` includes malformed c. Its unquoted compatibility
+version instead characterizes derivability. Local quote checks prevent an
+unused malicious GEN chain from forcing reconstruction of enormous true quotes
+before a false supplied quote is rejected.
+
+The constructor-only calculus CT254 replaces each numeric field by an arbitrary
+normal term. The term bijection transports exactly the full C254 derivation
+relation, including MP, GEN, eight logical templates and the bundle gates.
+Its checker removes numeric literal witnesses, quotation, pairing and inverse
+pairing. Frozen template construction requires every needed node to exist in
+the submitted arena. Its default target is the fixed `B1(Z,Z)`; a certificate
+cannot supply its own goal. A separate caller-selected goal is only an interface
+for positive controls. All14 such controls reject at the default contradiction
+target. Both the shared arena and an alternative expanded-tree verifier remain
+compiler proposals: no binary word codec, fair enumerator, workspace reset,
+charged blank initializer or complete table is delivered.
+
+### Finite machine searches and the limited continuation obstruction
+
+The complete one-incoming-action family has132,048 recipes and203,162 affine
+checks. A fresh full rerun reproduced the entire132,179-line journal exactly:
+69,429 fuel stops,61,641 unsupported symbolic operations and978 missing
+transitions, with no survivor. **This is the same family as source48**, with two
+old unsupported categories combined; it is not additional independent coverage.
+Failure of this finite diagnostic is not proof of semantic nonequivalence.
+
+The submitted two-incoming experiment covers a proper subset of46,738,944
+recipes:10,845,350 pruned,35,893,594 remaining in1,093 disjoint frontier nodes.
+Independent replay verifies that exact partition. A fresh600-second control
+finished normally at723,940 nodes/756,252 affine checks, pruning3,035,293 recipes
+with43,703,651 remaining in858 frontier nodes. Its entire journal matches the
+submitted prefix, and its own partition separately passes. This is an additional
+bounded partial reproduction; the wall-clock cutoff does not reproduce the
+same final frontier. Neither run found a survivor or invoked a candidate full
+recheck/blank run. No state lower bound follows.
+
+The34-move prepared-window decoder identity is exact for arbitrary exterior
+tape. The two original register-program residuals are
+`F(t,n,k)=(t,n+k,0)` and `G(t,n,k)=(t+n,n+k,0)` for n>0. Their fibers show why a
+functional identification through that expected tuple needs unbounded history:
+a fiber with n+k=s has s different G values, requiring at least `ceil(log2 s)`
+fixed-width bits. One retained natural n suffices. This excludes only that
+finite-label representation; it permits spare storage, stronger reachable
+invariants, changed entry representations and nonfunctional relations. Literal
+prefixes of the changed binary table are recorded separately and do not follow
+those original-program residuals. No blank reachability or global mutant
+simulation is established.
+
+### Verification, current gaps and replay
+
+The complete default replay passes10 substantive jobs. One delivered
+canonical-plus-extra-line-feed provenance loop is explicitly skipped by a
+narrow in-memory adapter, in accordance with the incoming procedure. All
+functional source/table/journal guards remain. Tests include200,000 raw codes,
+50,000 canonical scans,10,000 random raw trees,20,000 literal roundtrips,
+33,332 logical-template numeric comparisons, all12 tags,24 term corruptions,
+a1,000-deep GEN graph, both saved partitions, the literal continuation, all8,391
+baseline affine cases and the exact82,552-step whole-tape bootstrap. Both main
+TeX forms rebuild on scratch copies to25 pages, with identical extracted text,
+25 embedded font records and no final warnings or boxes; all pages received
+visual review. These finite controls supplement the ordinary proofs.
+
+Current `Code254History.lean` already checks the dense interface on all inputs;
+source50 offers a different representation. The separate checked
+`ArithmeticCantor.lean` now supplies the exact pairing graph and bounded inverse
+projections in arbitrary IOpen models, with the actual Nat adapter. This closes
+that elementary component of the report's proposed arithmetic work. It does not
+yet represent the canonical checker, its normalization, the whole proof compiler
+or the trace translation. At intake time, `CodeOrder.lean` and `TupleOrder.lean`
+closed particular internal-order steps. The later
+[constructible-order and Choice calibration](../../../../../../Computability/BusyBeaver/Research/ZFC/choice_calibration254.md)
+now complete the external ZFC comparison.
+
+The original user request asks for an equivalence **proved in PA**. The report's
+section9 follows the later goal record in calling ZFC the target and PA stronger;
+that wording does not relax the original request here. After this intake, the
+closed Lean endpoint was extended to external nonhalting iff Con(ZFC) for the
+same literal 252-state machine. The internal proof-code and PA/ZFC machine
+bridges remain open. No new state
+record, unconditional nonhalting, internally verified endpoint or new Lean
+theorem follows merely from this intake.
+
+The [placement map](data/intake-157-placement.json) maps all delivery names to
+shipped names. Paths are flattened with prefix `50-terms-`; delivered nested
+README/audit/source files retain their old paths and pin. The reference snapshot
+is deliberately minimal and is not a buildable Lean checkout. The
+[offline helper](code/reproduce_157.py) restores all67 files outside the checkout
+from the committed archive and the62 unchanged placed files:
+
+```sh
+uv run --no-project python -B SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_157.py --output /tmp/zfc-replay157
+```
+
+Use `--extended` for the complete one-incoming search. The default replays the
+two saved partitions; it does not rerun a timed search or treat a partition audit
+as a second semantic executor. See the [reproduction notes](intake-157-reproduction.md)
+and [fresh helper evidence](data/intake-157-replay.json). No delivered file is
+patched, no bulk checksum manifest is checked, and no Coq build is run.

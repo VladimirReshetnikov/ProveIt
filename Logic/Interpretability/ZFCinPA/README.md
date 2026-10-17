@@ -171,6 +171,7 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `NumeralUnique` | pins the numeral placeholder; uniqueness discharged internally |
 | `CodeInductionSource` | code-induction at `StepGood` as a Separation antecedent |
 | `Endpoint` | the target, the chain to it, and its exact residue |
+| `SetRelativization` | represented relativization for `ℒₛₑₜ`: closed terms are variables, and the internal relative-interpretation theorem `provable_falsum_of_relativize_set` (generic core: `BoundedPAConsistency.InternalRelativization`) |
 
 ## Building
 
@@ -271,3 +272,27 @@ per-formula spine walk, and it reuses the `FvFree` fact needed anyway to close a
 - [`Logic/PeanoArithmetic/BoundedConsistency`](../../PeanoArithmetic/BoundedConsistency/README.md)
   — the arithmetic analogue `PA ⊢ ∀ n, Prov_PA(⌜Conₙ(PA)⌝)`, proved, and the
   template this project mirrors.
+
+[Open template closure](open-template-closure.md) supplies
+`OpenTemplateClosure.generalizeAll` and `closeTemplate`: ordinary finite source
+parameters are universally closed while arbitrary extra free parameters of
+internal predicate interpretations stay free. The proof callback at every
+finite buffer remains explicit. The focused run6 check passed four probes and
+four callers with zero warnings, reusing 16 matched project providers; all five
+nonpasses and the maintained-default unbuilt preflight remain archived. This
+module supplies no schema callback or arbitrary internal source-proof transport.
+
+[Set congruence refresh](set_congruence_refresh.md) checks the unchanged equality-replacement and binary-congruence proofs for arbitrary internal predicates, including free parameters. Twelve axiom probes and fourteen callers passed with zero warnings. The original driver failure and the separately validated, read-only apostrophe-parser recovery are preserved; the maintained default preparation is explicitly unbuilt.
+
+
+[Open schema template callbacks](open-schema-templates.md) now provide actual internal ZF proofs of translated Separation and globally total functional Replacement, with finite closure of the ordinary source parameters and arbitrary additional internal predicate parameters retained. The lifted ordinary ZF-axiom callback is also checked. Run3 passed 5 probes/5 callers with standard axioms and one retained source unused-simp warning; both failed attempts and the maintained-default UNBUILT preflight remain separate. This supplies actual schema callbacks, not arbitrary internal source-proof compilation or nonfunctional Collection.
+
+[Internal two-slot reindexing](model_coded_bind_two_slots.md) proves the exact syntax law for two distinct chosen labels and arbitrary internal target indices, including coincident targets. It covers the three substitutions needed by Collection. The focused check passed 8 probes/12 callers with standard axioms and zero warnings; the failed first attempt and separate unbuilt preparations are preserved.
+
+[Compiled internal Collection](compiled_collection254.md) now produces an actual internal ZF proof for every binary internal predicate, including arbitrary free parameters. The fixed ordinary derivation is translated with all three schema callbacks and expanded-language equality discharged. Run3 passed 5 probes/8 callers with standard axioms and zero warnings; two failed normalization attempts and the unbuilt default preparation remain archived. Exact decoded G identification and the represented proof-search endpoint remain separate.
+
+[Exact G-circuit normalization](model_coded_decoder_collection_normalization254.md) identifies the actual numerical G circuit with its named quantifier formula, preserving every numeric label. Its equivalence and congruence check passed 3 probes/6 callers with standard axioms and zero warnings. The failed initial audit and separate unbuilt preparations are retained. This equivalence will connect the compiled Collection proof to the actual gated G row.
+
+[The exact numerical G row](model_coded_decoder_collection254.md) now has an internal ZF proof under precisely the two validator gates, including coincident labels and the zero-code case. The check passed 10 probes/16 callers with standard Lean axioms; eleven source style warnings remain. All five attempts are archived. Full bundle assembly, accepted-proof induction and the PA consistency equivalence remain separate.
+
+[The full numerical bundle](model_coded_decoder_bundle254.md) now has an internal ZF proof for every permitted input, including coincident labels and code zero. It combines the exact C/G rows and both atomic vacuity clauses under the original two gates. The first check passed 3 probes/8 callers with standard Lean axioms and zero warnings. Accepted-proof induction and the PA consistency comparison remain separate.

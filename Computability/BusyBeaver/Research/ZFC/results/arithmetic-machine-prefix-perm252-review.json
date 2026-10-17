@@ -1,0 +1,241 @@
+{
+  "status": "CLEAN",
+  "root_source_audit_and_portable_guard_review": "CLEAN",
+  "root_rehash": {
+    "evidence": "/tmp/zfc-machine-prefix/run2/verification.json",
+    "sha256": "bc027d9283f528fd9f327e57e1aa1bf142747e145c1e4cc9e4532ea49739094d",
+    "status": "PASS",
+    "current_input_rechecks": 75,
+    "fresh_object_rechecks": 1,
+    "probes": 4,
+    "callers": 6,
+    "warnings": 0,
+    "only_standard_axioms": true
+  },
+  "independent_reviews": [
+    {
+      "original_review": {
+        "path": "/tmp/zfc-machine-prefix/independent-review.json",
+        "sha256": "acd6bd4780bd9e92d41e555fef03a39841fa7b4149136ed25d1730fe8015960c"
+      },
+      "review": {
+        "status": "CLEAN_ACCEPT_FINAL_PASS_BOUND",
+        "reviewer_builds": false,
+        "files": [
+          {
+            "kind": "source",
+            "path": "/tmp/zfc-machine-prefix/sources/BusyBeaver/ZFC/ArithmeticMachinePrefixPerm252.lean",
+            "sha256": "b74d40a445157165acac2a4cb83c7e5ba6844df28f8075afe30b561d1eaec91e",
+            "snapshot": "/tmp/zfc-machine-prefix/independent-review/source.lean"
+          },
+          {
+            "kind": "audit",
+            "path": "/tmp/zfc-machine-prefix/Audit.lean",
+            "sha256": "6d0a91551f61fcf38b8fea84aa17b707147637e9f18452814a7a0568ecc0e190",
+            "snapshot": "/tmp/zfc-machine-prefix/independent-review/audit.lean"
+          },
+          {
+            "kind": "runFrom_source",
+            "path": "/tmp/zfc-machine-run-from/sources/BusyBeaver/ZFC/ArithmeticMachineRunFromPerm252.lean",
+            "sha256": "074395bea5c0762a808022dc2b2d9cd18cf6bd0f69a36e3fe3d73f6e7c8277eb",
+            "snapshot": "/tmp/zfc-machine-prefix/independent-review/runFrom_source.lean"
+          }
+        ],
+        "counts": {
+          "named_axiom_probes": 4,
+          "callers": 6
+        },
+        "mathematical_checks": [
+          "runFrom_commute is exactly runFrom_add followed by internal addition commutativity.",
+          "Forward prefix implication uses elapsed prefix+time and exact runFrom_add.",
+          "Reverse implication runs the prefix after the supplied halting run, invoking wholeconfiguration absorption. It neither subtracts time nor assumes the supplied halt occurs after the prefix.",
+          "Halting initially at time0 is included. No positiveprefix/continuingprefix assumption.",
+          "Prefix is an arbitrary internal V value, using checked allinternal RunFrom laws.",
+          "Blank comparison uses exact runFrom_blank time=run time; no Core/unboundedregister relation is inferred.",
+          "Boot specialization uses literal fixed internal_boot at82552 and inherits its existing exact bootCode.",
+          "Every existential time is explicitly typedV; four probes/six generic callers match theorem scopes."
+        ],
+        "remaining_boundary": "Only generic prefix halting composition and exact checked fixed boot specialization. No unbounded scheduler/register simulation, C254/ZFC proof-code endpoint, or PA consistency equivalence is instantiated.",
+        "historical_initial_status": "SOURCE_LEVEL_CLEAN_UNBUILT",
+        "final_evidence_binding": {
+          "status": "PASS",
+          "reviewer_builds": false,
+          "evidence": "/tmp/zfc-machine-prefix/run2/verification.json",
+          "evidence_sha256": "bc027d9283f528fd9f327e57e1aa1bf142747e145c1e4cc9e4532ea49739094d",
+          "hash_comparisons": 178,
+          "distinct_resolved_paths": 76,
+          "original_inputs": 75,
+          "project_closure": [
+            "BusyBeaver.Core",
+            "BusyBeaver.ZFC.ArithmeticBootstrapPerm252",
+            "BusyBeaver.ZFC.ArithmeticCantor",
+            "BusyBeaver.ZFC.ArithmeticCode254",
+            "BusyBeaver.ZFC.ArithmeticHistory254",
+            "BusyBeaver.ZFC.ArithmeticMachineGraphPerm252",
+            "BusyBeaver.ZFC.ArithmeticMachinePerm252",
+            "BusyBeaver.ZFC.ArithmeticMachineRunFromPerm252",
+            "BusyBeaver.ZFC.ArithmeticMachineRunPerm252",
+            "BusyBeaver.ZFC.ArithmeticMachineStepPerm252",
+            "BusyBeaver.ZFC.ArithmeticRow254",
+            "BusyBeaver.ZFC.ArithmeticTemplates254",
+            "BusyBeaver.ZFC.BootPerm252",
+            "BusyBeaver.ZFC.Code254",
+            "BusyBeaver.ZFC.Code254History",
+            "BusyBeaver.ZFC.Code254Proof",
+            "BusyBeaver.ZFC.FiniteZipper",
+            "BusyBeaver.ZFC.Kalmar",
+            "BusyBeaver.ZFC.Lukasiewicz",
+            "BusyBeaver.ZFC.TablePerm252",
+            "BusyBeaver.ZFC.TarskiCalculus",
+            "BusyBeaver.ZFC.TarskiClean",
+            "BusyBeaver.ZFC.TarskiComplete",
+            "BusyBeaver.ZFC.TarskiDerived",
+            "BusyBeaver.ZFC.TarskiFalsity",
+            "BusyBeaver.ZFC.TarskiLeibniz",
+            "FirstOrder.Fol"
+          ],
+          "direct_external_imports": [
+            "Foundation.FirstOrder.Arithmetic.Definability.Absoluteness",
+            "Foundation.FirstOrder.Arithmetic.HFS.PRF",
+            "Foundation.FirstOrder.Arithmetic.IOpen.Basic",
+            "Lean.Elab.Tactic.Omega",
+            "Mathlib.Tactic.Ring"
+          ],
+          "identified_actual_first_external_providers": [
+            "Foundation.FirstOrder.Arithmetic.Definability.Absoluteness",
+            "Foundation.FirstOrder.Arithmetic.HFS.PRF",
+            "Foundation.FirstOrder.Arithmetic.HFS.Seq",
+            "Foundation.FirstOrder.Arithmetic.IOpen.Basic",
+            "Mathlib.Tactic.Ring"
+          ],
+          "toolchain_first_providers": [],
+          "reviewer_added_current_toolchain": [
+            {
+              "module": "Lean.Elab.Tactic.Omega",
+              "object": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/lib/lean/Lean/Elab/Tactic/Omega.olean",
+              "object_sha256": "eb766bae1ab40110a853c7cca853e36e1f4aece010a09fa4dd9b1b48116953fe",
+              "provenance": "Reviewer-added current identification; absent from author before/after input map."
+            }
+          ],
+          "named_axiom_probes": 4,
+          "callers": 6,
+          "axiom_reports": [
+            {
+              "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticMachinePrefixPerm252.runFrom_commute",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound"
+              ]
+            },
+            {
+              "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticMachinePrefixPerm252.halts_after_prefix_iff",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound"
+              ]
+            },
+            {
+              "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticMachinePrefixPerm252.blank_after_prefix_iff",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound"
+              ]
+            },
+            {
+              "theorem": "SetTheory.BusyBeaver.ZFC.ArithmeticMachinePrefixPerm252.boot_halts_iff",
+              "axioms": [
+                "propext",
+                "Classical.choice",
+                "Quot.sound"
+              ]
+            }
+          ],
+          "checks": {
+            "omitted_from_published_summary": 178,
+            "full_data_in_hashed_original_review": true
+          }
+        },
+        "final_source": {
+          "path": "/tmp/zfc-machine-prefix/sources/BusyBeaver/ZFC/ArithmeticMachinePrefixPerm252.lean",
+          "sha256": "4b115f2c08c65a22cea65bb4075645ac5ccadc99be0028588611a3481f6f2c0c",
+          "snapshot": "/tmp/zfc-machine-prefix/run2/sources/BusyBeaver/ZFC/ArithmeticMachinePrefixPerm252.lean",
+          "review_snapshot": "/tmp/zfc-machine-prefix/independent-review/source-final.lean"
+        },
+        "final_audit": {
+          "path": "/tmp/zfc-machine-prefix/Audit.lean",
+          "sha256": "b91301a423b0b2ec4a9c8faa35ac19637a2838b38919c4bb39397d2d2cff53c1",
+          "snapshot": "/tmp/zfc-machine-prefix/run2/sources/Audit.lean",
+          "review_snapshot": "/tmp/zfc-machine-prefix/independent-review/audit-final.lean"
+        },
+        "provenance_note": "The author run2 input record did not separately hash bundled Lean.Elab.Tactic.Omega. The reviewer independently identified its current actual first toolchain provider and hash; this is not retroactive original pre/post attestation. All75 author-recorded original inputs and all27 project providers match."
+      }
+    },
+    {
+      "original_review": {
+        "path": "/tmp/zfc-machine-prefix-publication/independent-runner-review.json",
+        "sha256": "47a9e9a4a86f21ede5dcab210adcb7023faee6394d3ebb33961ff98ace3d24f8"
+      },
+      "review": {
+        "status": "CLEAN",
+        "scope": "Independent full portable-guard source read and exact-byte/provider review only; no Lean or negative controls run by this reviewer.",
+        "runner": {
+          "path": "/tmp/zfc-machine-prefix-publication/check_arithmetic_machine_prefix_perm252.py",
+          "sha256": "dc7836d9c23ecbbe7595b7d4655d78b18b5eb9a261dfbf0002bc629da54e7dd1"
+        },
+        "reviewed_preflights": [
+          {
+            "path": "/tmp/zfc-machine-prefix-portable-prepared/verification.json",
+            "sha256": "5c61bf0af2a3b3674b72002fa0c4fa28a7aa1c5e64fc327f90dc87989e9083bd",
+            "status": "PREPARED_NOT_BUILT",
+            "source_overridden": true,
+            "audit_overridden": true,
+            "hash_comparisons": 177,
+            "project_count": 27,
+            "external_provider_count": 5,
+            "observed_same_source_object_alternatives": 0
+          },
+          {
+            "path": "/tmp/zfc-machine-prefix-portable-maintained-default-prepared/verification.json",
+            "sha256": "2cc111ce4b6e781b561e105e0026798cc150ef44d808d5405690c11c57200766",
+            "status": "PREPARED_NOT_BUILT",
+            "source_overridden": false,
+            "audit_overridden": false,
+            "hash_comparisons": 177,
+            "project_count": 27,
+            "external_provider_count": 5,
+            "observed_same_source_object_alternatives": 0
+          }
+        ],
+        "original_checked_proof": {
+          "path": "/tmp/zfc-machine-prefix/run2/verification.json",
+          "sha256": "bc027d9283f528fd9f327e57e1aa1bf142747e145c1e4cc9e4532ea49739094d",
+          "named_axiom_probes": 4,
+          "callers": 6,
+          "scope": "Proof/audit mathematical review belongs to parent; only final source/audit/object identities checked here."
+        },
+        "hash_comparisons": 357,
+        "unique_hashed_paths": 142,
+        "checks": {
+          "omitted_from_published_summary": 357,
+          "full_data_in_hashed_original_review": true
+        },
+        "findings": [
+          "RunFrom and Bootstrap successful records supply an exact 27-node current-repository project closure, and each selected object matches its recorded hash.",
+          "Cache overrides are branch-specific: run-from-cache applies to that complete provider branch, bootstrap-cache to its complete branch. Shared-source distinct-object alternatives are allowed only for ArithmeticCantor, checked and recorded as not selected; none occur in these two preflights.",
+          "Five external providers are pinned against both records where shared; four direct external modules and Omega are re-resolved, while Seq is separately pinned as a transitive provider.",
+          "Source/audit maintained defaults, literal import sets, four ordered probes, and six callers are fixed. Current-source mapping occurs before traversal; old source paths in the evidence are not read.",
+          "Pinned real compiler, evidence, helper, manifests, source/audit originals and snapshots, project/external objects, and toolchain references are checked before/after. Fresh object is captured before audit and rechecked afterward in build mode.",
+          "Explicit -O rejection, fresh output ownership, and source-only/audit-only 4GiB single-thread invocation are present; no dependency build/download."
+        ],
+        "caveats": [
+          "Portable records remain PREPARED_NOT_BUILT. The all_fresh_objects_unchanged_after_audit flag is vacuous in prepare-only mode: commands are empty and no fresh object is claimed.",
+          "The original successful proof record and final portable wrapper have different driver identities; no new proof replay is inferred.",
+          "Existing dependency objects are identified, not rebuilt, and this prefix composition is separate from a full internal binary/scheduler equivalence."
+        ]
+      }
+    }
+  ]
+}

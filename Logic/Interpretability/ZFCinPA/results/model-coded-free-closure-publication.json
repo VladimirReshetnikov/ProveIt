@@ -1,0 +1,245 @@
+{
+  "status": "CHECKED_AND_MAINTAINED",
+  "scope": "All-internal represented closing traversal and actual closed Sep/Rep axiom codes; no repeated specialization or PA consistency endpoint.",
+  "maintained_files": [
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindFree.lean",
+      "sha256": "f3a11fa8165406cec42a793a2cbd05c950b60cce867d374e5414ce867e3c36ce"
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindFreeAudit.lean",
+      "sha256": "0e780400452ee4d7d5c3c2d5ea8987d114efb8ebfcd85f1a58f0a82099769ba7"
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedClosedSchemaAxioms.lean",
+      "sha256": "1318983c7727a9a280fe872003b6eac45b0959aec11c9d99a262bf99721be3b6"
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedClosedSchemaAxiomsAudit.lean",
+      "sha256": "3d3eb8ec5da7a092284aabfd824e0ef5f73b36fef4d24b3c17de09ec732b71c7"
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/check_model_coded_bind_free.py",
+      "sha256": "c82eed923d75017112dc437007465b62289fd0ebc82d17e6eb52320fa38c25d4"
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/check_model_coded_closed_schema_axioms.py",
+      "sha256": "8c5ce7bd840aef937ccd54ddce6bd7ed8cbadc18ba0962ea3a2c31afb9671e2c"
+    },
+    {
+      "path": "Logic/Interpretability/ZFCinPA/model_coded_free_closure.md",
+      "sha256": "f21ef44ce9bb08c36192ba5c00dd0fe36a09c8915503c4ac766a7d020ddf8b6c"
+    }
+  ],
+  "history": [
+    {
+      "attempt": "run1",
+      "status": "FAIL",
+      "original_record": {
+        "path": "/tmp/zfc-model-coded-closure/run1/verification.json",
+        "sha256": "7ee0f72d862e08c495ab4433080983a1b6a014f035b9ef2e7f13613b24f8108c"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedBindFree.lean",
+        "sha256": "e98abcb5df979b820c9197f0c39dbf3a00e723c395e4821ccdef146a8cb8950b",
+        "snapshot": "/tmp/zfc-model-coded-closure/run1/sources/ZFCinPA/ModelCodedBindFree.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-closure/Audit.lean",
+        "sha256": "0e780400452ee4d7d5c3c2d5ea8987d114efb8ebfcd85f1a58f0a82099769ba7",
+        "snapshot": "/tmp/zfc-model-coded-closure/run1/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 14.903758727945387,
+          "exit_code": 1,
+          "output": "/tmp/zfc-model-coded-closure/run1/sources/ZFCinPA/ModelCodedBindFree.lean:170:43: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern\n  (termBindFreeVecAt L depth k terms).[i]\nin the target expression\n  termShift L (termBindFreeAt L depth terms.[i]) = termBindFreeAt L depth terms.[i]\n\ncase H\nV : Type u_1\ninst\u271d\u00b3 : ORingStructure V\ninst\u271d\u00b2 : V\u2193[\u2112\u2092\u1d63] \u22a7* \ud835\udddc\ud835\udeba\u2081\nL : Language\ninst\u271d\u00b9 : L.Encodable\ninst\u271d : L.LORDefinable\ndepth term : V\nht : IsUTerm L term\nk f terms : V\nhf : L.IsFunc k f\nhv : IsUTermVec L k terms\nih : \u2200 i < k, termShift L (termBindFreeAt L depth terms.[i]) = termBindFreeAt L depth terms.[i]\ni : V\nhi : i < k\n\u22a2 termShift L (termBindFreeAt L depth terms.[i]) = termBindFreeAt L depth terms.[i]\n/tmp/zfc-model-coded-closure/run1/sources/ZFCinPA/ModelCodedBindFree.lean:182:41: error: Tactic `rewrite` failed: Did not find an occurrence of the pattern\n  (termBindFreeVecAt L depth k terms).[i]\nin the target expression\n  termShift L (termBindFreeAt L depth terms.[i]) = termBindFreeAt L depth terms.[i]\n\ncase H\nV : Type u_1\ninst\u271d\u00b3 : ORingStructure V\ninst\u271d\u00b2 : V\u2193[\u2112\u2092\u1d63] \u22a7* \ud835\udddc\ud835\udeba\u2081\nL : Language\ninst\u271d\u00b9 : L.Encodable\ninst\u271d : L.LORDefinable\ndepth k terms : V\nht : IsUTermVec L k terms\ni : V\nhi : i < k\n\u22a2 termShift L (termBindFreeAt L depth terms.[i]) = termBindFreeAt L depth terms.[i]\n/tmp/zfc-model-coded-closure/run1/sources/ZFCinPA/ModelCodedBindFree.lean:213:81: error: Application type mismatch: The argument\n  hp\nhas type\n  IsUFormula L p\nof sort `Prop` but is expected to have type\n  V\nof sort `Type u_1` in the application\n  IsUFormula.ISigma1.pi1_succ_induction ?m.42 ?m.43 ?m.44 ?m.45 ?m.46 ?m.47 ?m.48 ?m.49 ?m.50 hp\n/tmp/zfc-model-coded-closure/run1/sources/ZFCinPA/ModelCodedBindFree.lean:240:31: error: Application type mismatch: The argument\n  hp\nhas type\n  IsUFormula L p\nof sort `Prop` but is expected to have type\n  V\nof sort `Type u_1` in the application\n  IsUFormula.ISigma1.pi1_succ_induction ?m.54 ?m.55 ?m.56 ?m.57 ?m.58 ?m.59 ?m.60 ?m.61 ?m.62 hp\n/tmp/zfc-model-coded-closure/run1/sources/ZFCinPA/ModelCodedBindFree.lean:288:41: error: unknown tactic\n/tmp/zfc-model-coded-closure/run1/sources/ZFCinPA/ModelCodedBindFree.lean:278:6: error: `simp` made no progress\n/tmp/zfc-model-coded-closure/run1/sources/ZFCinPA/ModelCodedBindFree.lean:281:6: error: `simp` made no progress\n/tmp/zfc-model-coded-closure/run1/sources/ZFCinPA/ModelCodedBindFree.lean:286:6: error: Type mismatch: After simplification, term\n  hix\n has type\n  depth + (x + 1) < slots + 1\nbut is expected to have type\n  depth + x < slots\n/tmp/zfc-model-coded-closure/run1/sources/ZFCinPA/ModelCodedBindFree.lean:288:8: error: unsolved goals\nV : Type u_1\ninst\u271d\u00b3 : ORingStructure V\ninst\u271d\u00b2 : V\u2193[\u2112\u2092\u1d63] \u22a7* \ud835\udddc\ud835\udeba\u2081\nL : Language\ninst\u271d\u00b9 : L.Encodable\ninst\u271d : L.LORDefinable\ndepth slots vector : V\nho : Opening depth slots vector\nhw : IsSemitermVec L slots depth vector\nx : V\nhx : x < slots + 1\nhix : depth + 1 + x < slots + 1\nhix' : depth + x < slots\nhx' : x < slots\n\u22a2 depth + 1 + x = depth + x + 1\n/tmp/zfc-model-coded-closure/run1/sources/ZFCinPA/ModelCodedBindFree.lean:284:2: error: unsolved goals\ncase refine_2\nV : Type u_1\ninst\u271d\u00b3 : ORingStructure V\ninst\u271d\u00b2 : V\u2193[\u2112\u2092\u1d63] \u22a7* \ud835\udddc\ud835\udeba\u2081\nL : Language\ninst\u271d\u00b9 : L.Encodable\ninst\u271d : L.LORDefinable\ndepth slots vector : V\nho : Opening depth slots vector\nhw : IsSemitermVec L slots depth vector\nx : V\nhx : x < slots + 1\nhix : depth + 1 + x < slots + 1\nhix' : depth + x < slots\nhx' : x < slots\n\u22a2 (Bootstrapping.qVec L vector).[depth + x + 1] = ^&x\n"
+        }
+      ],
+      "fresh_modules": [],
+      "named_axiom_probes": null,
+      "callers": null,
+      "warnings": null
+    },
+    {
+      "attempt": "run2",
+      "status": "PASS",
+      "original_record": {
+        "path": "/tmp/zfc-model-coded-closure/run2/verification.json",
+        "sha256": "3fd8ba9791756a7f3ba7bb1d999280c2f631a231ccca791abbb039f09696e998"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedBindFree.lean",
+        "sha256": "b77dcb7d990b7644410b2403021be41409ee5f0b9c209dc7a589f11565187b3f",
+        "snapshot": "/tmp/zfc-model-coded-closure/run2/sources/ZFCinPA/ModelCodedBindFree.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-closure/Audit.lean",
+        "sha256": "0e780400452ee4d7d5c3c2d5ea8987d114efb8ebfcd85f1a58f0a82099769ba7",
+        "snapshot": "/tmp/zfc-model-coded-closure/run2/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 15.26204379182309,
+          "exit_code": 0,
+          "output": ""
+        },
+        {
+          "label": "audit",
+          "seconds": 2.344674665480852,
+          "exit_code": 0,
+          "output": "'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeAt_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeVecAt_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.bindFreeAt_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeAt_isUTerm' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeVecAt_isUTerm' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeAt_shift_fixed' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeVecAt_shift_fixed' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.bindFreeAt_isUFormula' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.bindFreeAt_shift_fixed' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.Opening.qVec' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeAt_inverse' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeVecAt_inverse' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.bindFreeAt_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.fvarVec_isTermVec' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.bindFreeAt_closing' depends on axioms: [propext, Classical.choice, Quot.sound]\n"
+        }
+      ],
+      "fresh_modules": [
+        {
+          "module": "ZFCinPA.ModelCodedBindFree",
+          "path": "/tmp/zfc-model-coded-closure/run2/cache/ZFCinPA/ModelCodedBindFree.olean",
+          "sha256": "a619611759647741f7dfeac8c6d9340cb94320512e29373f7751ad1b0fd7e298",
+          "source_sha256": "b77dcb7d990b7644410b2403021be41409ee5f0b9c209dc7a589f11565187b3f"
+        }
+      ],
+      "named_axiom_probes": 15,
+      "callers": 15,
+      "warnings": 0
+    },
+    {
+      "attempt": "run3",
+      "status": "PASS",
+      "original_record": {
+        "path": "/tmp/zfc-model-coded-closure/run3/verification.json",
+        "sha256": "c001333711a8ec93529f880e5586822e5c7e0bb142d699dc7e188aa260b65550"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedBindFree.lean",
+        "sha256": "f3a11fa8165406cec42a793a2cbd05c950b60cce867d374e5414ce867e3c36ce",
+        "snapshot": "/tmp/zfc-model-coded-closure/run3/sources/ZFCinPA/ModelCodedBindFree.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-closure/Audit.lean",
+        "sha256": "0e780400452ee4d7d5c3c2d5ea8987d114efb8ebfcd85f1a58f0a82099769ba7",
+        "snapshot": "/tmp/zfc-model-coded-closure/run3/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 14.983943753875792,
+          "exit_code": 0,
+          "output": ""
+        },
+        {
+          "label": "audit",
+          "seconds": 2.3933344101533294,
+          "exit_code": 0,
+          "output": "'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeAt_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeVecAt_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.bindFreeAt_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeAt_isUTerm' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeVecAt_isUTerm' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeAt_shift_fixed' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeVecAt_shift_fixed' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.bindFreeAt_isUFormula' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.bindFreeAt_shift_fixed' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.Opening.qVec' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeAt_inverse' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.termBindFreeVecAt_inverse' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.bindFreeAt_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.fvarVec_isTermVec' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindFree.bindFreeAt_closing' depends on axioms: [propext, Classical.choice, Quot.sound]\n"
+        }
+      ],
+      "fresh_modules": [
+        {
+          "module": "ZFCinPA.ModelCodedBindFree",
+          "path": "/tmp/zfc-model-coded-closure/run3/cache/ZFCinPA/ModelCodedBindFree.olean",
+          "sha256": "51fde1bcc35edce516064105b05ebdde64ad60aefaa00fab2484c25c1b1698e2",
+          "source_sha256": "f3a11fa8165406cec42a793a2cbd05c950b60cce867d374e5414ce867e3c36ce"
+        }
+      ],
+      "named_axiom_probes": 15,
+      "callers": 15,
+      "warnings": 0
+    },
+    {
+      "attempt": "closed-run1",
+      "status": "PASS",
+      "original_record": {
+        "path": "/tmp/zfc-model-coded-closure/closed-run1/verification.json",
+        "sha256": "a92f56e51ae587c6f92b2adb4ad71b697c87a2f8d920c7b6facaaf896ebd9f45"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedClosedSchemaAxioms.lean",
+        "sha256": "1318983c7727a9a280fe872003b6eac45b0959aec11c9d99a262bf99721be3b6",
+        "snapshot": "/tmp/zfc-model-coded-closure/closed-run1/sources/ZFCinPA/ModelCodedClosedSchemaAxioms.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-closure/ClosedAudit.lean",
+        "sha256": "3d3eb8ec5da7a092284aabfd824e0ef5f73b36fef4d24b3c17de09ec732b71c7",
+        "snapshot": "/tmp/zfc-model-coded-closure/closed-run1/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 3.423169252462685,
+          "exit_code": 0,
+          "output": ""
+        },
+        {
+          "label": "audit",
+          "seconds": 2.354762735776603,
+          "exit_code": 0,
+          "output": "'LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms.closeFormulaCode_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms.closeFormulaCode_isFormula' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms.closeFormulaCode_schemaRecognizer' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms.closedSeparation_recognized' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms.closedReplacement_recognized' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms.closedSeparation_mem_zf' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms.closedReplacement_mem_zf' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms.closedSeparation_mem_zfc' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms.closedReplacement_mem_zfc' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms.closedSeparation_zf_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms.closedReplacement_zf_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms.closedSeparation_zfc_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedClosedSchemaAxioms.closedReplacement_zfc_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"
+        }
+      ],
+      "fresh_modules": [
+        {
+          "module": "ZFCinPA.ModelCodedClosedSchemaAxioms",
+          "path": "/tmp/zfc-model-coded-closure/closed-run1/cache/ZFCinPA/ModelCodedClosedSchemaAxioms.olean",
+          "sha256": "23f65cac691b24d8becf1e46438b4577957917050bde3bb3a9166762adab8c20",
+          "source_sha256": "1318983c7727a9a280fe872003b6eac45b0959aec11c9d99a262bf99721be3b6"
+        }
+      ],
+      "named_axiom_probes": 13,
+      "callers": 13,
+      "warnings": 0
+    }
+  ],
+  "run2_to_final_header_only_diff": "--- run2\n+++ run3\n@@ -2,11 +2,11 @@\n import ZFCinPA.SchemaClosure\n \n /-!\n-SOURCE-ONLY proposed all-internal closing traversal. At binder depth d, free\n-label x becomes bound label d+x; existing bound labels are retained. The fixed\n-graphs precede the arithmetic model. The proposed shift-fixedness and inverse substitution\n-proofs below use arbitrary internal depths and opening vectors.\n-No kernel check has been performed for this draft.\n+All-internal closing traversal. At binder depth d, free label x becomes\n+bound label d+x; existing bound labels are retained. The fixed graphs precede\n+the arithmetic model. Shift-fixedness and inverse substitution hold for\n+arbitrary internal depths and opening vectors, including nonstandard codes.\n+This does not perform repeated proof specialization or consistency transport.\n -/\n namespace LeanProofs.ZFCinPA.ModelCodedBindFree\n open LO LO.FirstOrder LO.FirstOrder.Arithmetic",
+  "proof_source_changed_after_final_PASS": false,
+  "guard_hardening": {
+    "original_successful_guard": "/tmp/zfc-model-coded-closure/check_closed.py",
+    "initial_portable_guard": {
+      "path": "/tmp/zfc-model-coded-closure/publication/check_model_coded_closed_schema_axioms-before-shared-hardening.py",
+      "sha256": "0ee2266e9ed20f497f997e9eb18fc97612964cc1a93427b8ff6f0a88e88c0f1b"
+    },
+    "final_portable_guard": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_closed_schema_axioms.py",
+      "sha256": "8c5ce7bd840aef937ccd54ddce6bd7ed8cbadc18ba0962ea3a2c31afb9671e2c"
+    },
+    "reason": "Compare selected shared predecessor source/object and toolchain identities after relocation; no proof-byte change or proof replay."
+  },
+  "preflights": [
+    {
+      "path": "results/model-coded-bind-free-preflight.json",
+      "sha256": "7e1ce94032a25bc9c712a5fa5c9875471acdd506c9b180b292c45145b54eb861",
+      "status": "PREPARED_NOT_BUILT",
+      "proof_commands": 0
+    },
+    {
+      "path": "results/model-coded-closed-schema-axioms-preflight.json",
+      "sha256": "890c2028ac6709cf9de43e4ec6f0ca4c008471374a26b6f6f71f15be3571954a",
+      "status": "PREPARED_NOT_BUILT",
+      "proof_commands": 0
+    }
+  ],
+  "independent_reviews": [
+    {
+      "path": "results/model-coded-bind-free-review.json",
+      "sha256": "dbafbca62537f7d007c15c488e740f2877efeb1f26481cdb33bc0557a19ad4bd"
+    },
+    {
+      "path": "results/model-coded-closed-schema-axioms-review.json",
+      "sha256": "240d8464e13d937fe22353f1193c2ad5ea71e6cd121d311ff1e3767af877d7f4"
+    }
+  ],
+  "remaining_obligations": [
+    "All-internal repeated specialization from the closed schema axiom to its open body.",
+    "Actual source axiom interpretations and arbitrary internal proof transport for the C254/ZFC comparison.",
+    "Complete internal binary/scheduler simulation."
+  ],
+  "portable_guard_review": {
+    "path": "Logic/Interpretability/ZFCinPA/results/model-coded-free-closure-portable-review.json",
+    "sha256": "a963956f99fdb7e6379fc4664cffa1186e88f8a193db7ca4c83976806f546c04",
+    "original_path": "/tmp/zfc-model-coded-closure/portable-independent-review-bic/review.json",
+    "original_sha256": "d73a55a0e425674a549423c0241af841ae4aebf6fa33112caea2bf9e68538bc8",
+    "status": "CLEAN"
+  }
+}

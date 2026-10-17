@@ -1,0 +1,45 @@
+{
+  "status": "CLEAN read-only client review",
+  "source": {
+    "original": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/ModelCodedPeanoCore.lean",
+    "source": "/tmp/zfc-peano-template-maintained-replay/sources/BoundedPAConsistency/ModelCodedPeanoCore.lean",
+    "source_sha256": "f31b4592c9c140572ae41ad9264fcd019c8a6ae6a26cd14f3d188e909787ad98",
+    "object": "/tmp/zfc-peano-template-maintained-replay/cache/BoundedPAConsistency/ModelCodedPeanoCore.olean",
+    "object_sha256": "610686b12dac3493960c4a43af1210c402cd292c636bc840da22ddebfd23a785"
+  },
+  "audit": {
+    "source": "/tmp/zfc-peano-template-maintained-replay/sources/ModelCodedPeanoCoreAudit.lean",
+    "source_sha256": "9bfa78d594acd75c2d8e0ecc47ac4e07d43dc815bf0e657ccdc251306c80ff34",
+    "probes": 3,
+    "callers": 6,
+    "only_standard_axioms": true
+  },
+  "record": {
+    "path": "/tmp/zfc-peano-template-maintained-replay/verification.json",
+    "sha256": "58831c0c72f664c6a2b28b6e1400dfce54ced619ea5abddfe36a01c08f6e7792"
+  },
+  "reviewer_build": false,
+  "reviewer_source_edit": false,
+  "all_five_source_object_identities_independently_rechecked": true,
+  "all_recorded_inputs_and_providers_rechecked": true,
+  "probes": 3,
+  "callers": 6,
+  "closure_probes": 9,
+  "closure_callers": 20,
+  "client_warnings": 0,
+  "old_prerequisite_warnings": 10,
+  "only_standard_axioms": true,
+  "findings": [],
+  "scope": {
+    "arbitrary_internal_S_with_free_parameters": true,
+    "standard_finite_source_proof": true,
+    "finite_PA_axiom_resources_discharged": true,
+    "no_FVFree_or_shiftfixed_premise": true,
+    "actual_represented_PA_proof": true,
+    "model_assumption_ISigma1_not_PA": true,
+    "arbitrary_internal_source_proof": false,
+    "represented_compiler_graph": false,
+    "PA_consistency_comparison": false
+  },
+  "review_text": "# Independent review: open-matrix lifted-PA client\n\nCLEAN for ModelCodedPeanoCore f31b4592c9c140572ae41ad9264fcd019c8a6ae6a26cd14f3d188e909787ad98 and its audit9bfa78d594acd75c2d8e0ecc47ac4e07d43dc815bf0e657ccdc251306c80ff34. The entire source and all3probes/6callers were read without editing or running Lean. The previously reviewed CoreCompiler/Hygiene and original predicate-template interfaces supply the exact imported context.\n\nliftedPeanoAxiomProof explicitly unpacks lifted-PA axiom membership to a real standard arithmetic sentence \u03c4\u2208Peano. Existing translateFormula_lMap_add\u2081_emb, valid for arbitrary S, identifies its target with \u03c4's typed quotation. The represented Peano axiom-membership theorem and TProof.byAxm then give a genuine target proof. The inserted matrix's support never enters that argument. Lifted PA contains only the mapped ordinary arithmetic axioms; this does not silently add induction schemas mentioning the placeholder predicate.\n\ncompilePeanoTemplateOpen applies the reviewed core compiler to the standard source proof and supplies every finite root axiom witness via d.axioms_mem and that actual PA axiom constructor. The public client therefore needs no user-supplied hA, FVFree or S.shift=S premise. It accepts any typed internal S, including nonstandard codes and free parameters, while source d and \u03c3 remain ordinary standard finite syntax. The target arithmetic model need only satisfy I\u03a31, not PA: the result is a represented PA proof, not a claim that its translated conclusion is semantically true in that model.\n\ncompilePeanoTemplateOpen_isPAProof exposes the actual represented Proof Peano predicate for the emitted carrier and translated conclusion. The6audit callers include arbitrary S, generic source PA proof, its exact represented predicate, shifted S, a real open fvar17=fvar18 substitution into excluded middle, and a mapped arbitrary PA axiom. No internally coded source proof is accepted as a V input, no represented compiler function graph is defined, and no PA consistency or machine execution theorem follows.\n\nThis review binds the final maintained-path5-module/3-audit replay at /tmp/zfc-peano-template-maintained-replay/verification.json, superseding the earlier scratch-only client provenance. All5sources/objects were freshly checked there; both old prerequisite sources and Hygiene/Core match their prior independent reviews. Client source1.795041s and audit1.953698s passed,0client warnings, only propext/Classical.choice/Quot.sound. The closure totals9probes/20callers; its10older prerequisite style warnings remain. The reviewer independently rehashed all5module originals/snapshots/objects, all3audit snapshots, all recorded before/after inputs, and both provider source/object pairs. Pinned dependency caches remain explicitly reused rather than a fresh whole-cache attestation. No second compiler replay is claimed by this review.\n"
+}

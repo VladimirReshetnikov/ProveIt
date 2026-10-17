@@ -1,0 +1,1680 @@
+{
+  "status": "PASS",
+  "runner": {
+    "path": "/tmp/zfc-term-register/check_term_register.py",
+    "bytes": 4770,
+    "sha256": "964b1417219efc62b3c72180530f0cf6c5ee669eabebae8acde3b572f2be07d2"
+  },
+  "authored_sources": {
+    "term_register.py": {
+      "path": "/tmp/zfc-term-register/term_register.py",
+      "bytes": 7915,
+      "sha256": "0e33b50207dd2db4afd0e7ef337fb250963040ee18bde00a6a764679b284e39d"
+    },
+    "full_program.py": {
+      "path": "/tmp/zfc-term-register/full_program.py",
+      "bytes": 13235,
+      "sha256": "b6a1397a116f4b8d7ef7eb524e0b983b23c7ad34189e58abf01a7aae43cb91b7"
+    },
+    "test_read_node.py": {
+      "path": "/tmp/zfc-term-register/test_read_node.py",
+      "bytes": 2889,
+      "sha256": "59e91fe7ae744a16a52b9934535307e9b71e4f37901c8f54435ff834daf54539"
+    },
+    "test_full.py": {
+      "path": "/tmp/zfc-term-register/test_full.py",
+      "bytes": 4736,
+      "sha256": "684a08b010e660e0611bf61959561d7e52c4cfdbe168e5c0dd2eb4d0f7e53cde"
+    },
+    "supplementary.py": {
+      "path": "/tmp/zfc-term-register/supplementary.py",
+      "bytes": 5217,
+      "sha256": "3fdb7c1e310b2767a8ad474618897da94d332c2781bfa5d227c8c2496b657dfc"
+    },
+    "compile_full.py": {
+      "path": "/tmp/zfc-term-register/compile_full.py",
+      "bytes": 4767,
+      "sha256": "d8b126f936d05e5fe50ec2c78d7c245562a15ecc038e93acaf46eea1877d76af"
+    },
+    "measure_control.py": {
+      "path": "/tmp/zfc-term-register/measure_control.py",
+      "bytes": 4691,
+      "sha256": "b4f1a8fc761c617a7b44b6844e3f9a544a60afd76e533ea913b714d6b1ef17c0"
+    }
+  },
+  "repository_HEAD": "178697f8ed976b4bdb4a7723cbda686d4b5e3999",
+  "scratch": "/tmp/zfc-term-register-portable-full",
+  "checks": [
+    {
+      "name": "frontend-recovery-and-controls",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_term_certificates.py",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--output",
+        "/tmp/zfc-term-register-portable-full/frontend"
+      ],
+      "cwd": "/tmp/zfc-term-register-portable-full/run",
+      "returncode": 0,
+      "seconds": 15.404,
+      "log": "/tmp/zfc-term-register-portable-full/frontend-recovery-and-controls.log"
+    },
+    {
+      "name": "ReadNode",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/tmp/zfc-term-register-portable-full/run/test_read_node.py",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--max-length",
+        "7",
+        "--output",
+        "/tmp/zfc-term-register-portable-full/read-node-results.json"
+      ],
+      "cwd": "/tmp/zfc-term-register-portable-full/run",
+      "returncode": 0,
+      "seconds": 2.117,
+      "log": "/tmp/zfc-term-register-portable-full/ReadNode.log"
+    },
+    {
+      "name": "full-control",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/tmp/zfc-term-register-portable-full/run/test_full.py",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--frontend",
+        "/tmp/zfc-term-register-portable-full/frontend/run",
+        "--max-length",
+        "7",
+        "--output",
+        "/tmp/zfc-term-register-portable-full/full-results.json"
+      ],
+      "cwd": "/tmp/zfc-term-register-portable-full/run",
+      "returncode": 0,
+      "seconds": 137.42,
+      "log": "/tmp/zfc-term-register-portable-full/full-control.log"
+    },
+    {
+      "name": "supplementary",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/tmp/zfc-term-register-portable-full/run/supplementary.py",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--frontend",
+        "/tmp/zfc-term-register-portable-full/frontend/run",
+        "--output",
+        "/tmp/zfc-term-register-portable-full/supplementary-results.json"
+      ],
+      "cwd": "/tmp/zfc-term-register-portable-full/run",
+      "returncode": 0,
+      "seconds": 3.057,
+      "log": "/tmp/zfc-term-register-portable-full/supplementary.log"
+    },
+    {
+      "name": "compile-full",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/tmp/zfc-term-register-portable-full/run/compile_full.py",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--frontend",
+        "/tmp/zfc-term-register-portable-full/frontend/run",
+        "--output",
+        "/tmp/zfc-term-register-portable-full/compiled"
+      ],
+      "cwd": "/tmp/zfc-term-register-portable-full/run",
+      "returncode": 0,
+      "seconds": 3.03,
+      "log": "/tmp/zfc-term-register-portable-full/compile-full.log"
+    },
+    {
+      "name": "control-cost",
+      "command": [
+        "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+        "-B",
+        "/tmp/zfc-term-register-portable-full/run/measure_control.py",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--frontend",
+        "/tmp/zfc-term-register-portable-full/frontend/run",
+        "--compiled",
+        "/tmp/zfc-term-register-portable-full/compiled",
+        "--output",
+        "/tmp/zfc-term-register-portable-full/control-cost.json"
+      ],
+      "cwd": "/tmp/zfc-term-register-portable-full/run",
+      "returncode": 0,
+      "seconds": 2.032,
+      "log": "/tmp/zfc-term-register-portable-full/control-cost.log"
+    }
+  ],
+  "Lean_built": false,
+  "Coq_built": false,
+  "incoming_manifest_checks": false,
+  "scope": "Complete experimental primitive-register proof-search source, finite QA and actual full table cost; no compiler proof or smaller consistency machine claim.",
+  "frontend_verification": {
+    "status": "PASS",
+    "python": "3.13.14 (main, Jun 23 2026, 15:18:27) [Clang 22.1.3 ]",
+    "scratch": "/tmp/zfc-term-register-portable-full/frontend",
+    "repository_HEAD": "178697f8ed976b4bdb4a7723cbda686d4b5e3999",
+    "runner": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_term_certificates.py",
+      "bytes": 9834,
+      "sha256": "393234de5a16049281f56d2a4777e30ba9b442b7ecb3461867e55709444b1c23"
+    },
+    "recovery_helper": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_157.py",
+      "bytes": 21524,
+      "sha256": "fc270b91c96c5ff99a997d10019612c59195342e8b04d486d3578f4557f4ffaa"
+    },
+    "source50_arrival": "85633fd2f57b5dca16f87667699134d1b500ebc0",
+    "source50_pin": "fab89c5d26b81cd2ccab2ee5d213ff23725c7726",
+    "fixed_hosted_spec": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/50-terms-data-spec254.json",
+      "bytes": 7308,
+      "sha256": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+    },
+    "experiment_sources": {
+      "term_paths.py": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/term-certificates/term_paths.py",
+        "bytes": 7234,
+        "sha256": "10ffa00eb8b910ccbd0d1e135a960dae9e08415cb52af4cb434a2d374f7232de"
+      },
+      "test_paths.py": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/term-certificates/test_paths.py",
+        "bytes": 10192,
+        "sha256": "091e09edf067227172f3b3633ca1104ae3046b3ce06607c2159bbf23c1d8ff33"
+      },
+      "term_circuits.py": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/term-certificates/term_circuits.py",
+        "bytes": 8493,
+        "sha256": "b1a4e8fe445d8d4abf9a6ad8e236b63ee1948bf51990eba6ebda00a198c0b2a7"
+      },
+      "test_circuits.py": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/term-certificates/test_circuits.py",
+        "bytes": 10741,
+        "sha256": "53268737da9856c7e50ebd80aeaa00e0d3e30ec153b4aa52909f8f95667acc5f"
+      },
+      "term_codec.py": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/term-certificates/term_codec.py",
+        "bytes": 8479,
+        "sha256": "dabb09c4f7749c7e71bbd65d6056e83f3648aef58b3b24bc3807841515a4b979"
+      },
+      "test_codec.py": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/term-certificates/test_codec.py",
+        "bytes": 7849,
+        "sha256": "ecbaf436684abf07e25abbbc4dd022ffc852caa437f4026ea377b5e08bef8da3"
+      },
+      "term_patterns.py": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/term-certificates/term_patterns.py",
+        "bytes": 5595,
+        "sha256": "539012a9bb243d5ab06cb0410d67e07736e46594b14d6910fd078f12fee4c90d"
+      },
+      "pattern_codec.py": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/term-certificates/pattern_codec.py",
+        "bytes": 7877,
+        "sha256": "d25e0a34da6b6f2c60ad03a4f382d08e43168cea44b3cbacc7ee589a238c1fa5"
+      },
+      "test_patterns.py": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/term-certificates/test_patterns.py",
+        "bytes": 15201,
+        "sha256": "99b1cb43b9eccc76efb5b9cb139c53e9a180282909c57f22a95f3bc6081f1422"
+      }
+    },
+    "checks": [
+      {
+        "name": "source50-prepare-only",
+        "command": [
+          "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+          "-B",
+          "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/code/reproduce_157.py",
+          "--repo",
+          "/home/codex/.codex/worktrees/ec20/Proofs",
+          "--output",
+          "/tmp/zfc-term-register-portable-full/frontend/recovered",
+          "--prepare-only"
+        ],
+        "cwd": "/tmp/zfc-term-register-portable-full/frontend",
+        "returncode": 0,
+        "seconds": 0.128,
+        "log": "/tmp/zfc-term-register-portable-full/frontend/source50-prepare-only.log"
+      },
+      {
+        "name": "test_paths",
+        "command": [
+          "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+          "-B",
+          "/tmp/zfc-term-register-portable-full/frontend/run/test_paths.py"
+        ],
+        "cwd": "/tmp/zfc-term-register-portable-full/frontend/run",
+        "returncode": 0,
+        "seconds": 0.71,
+        "log": "/tmp/zfc-term-register-portable-full/frontend/test_paths.log"
+      },
+      {
+        "name": "test_circuits",
+        "command": [
+          "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+          "-B",
+          "/tmp/zfc-term-register-portable-full/frontend/run/test_circuits.py"
+        ],
+        "cwd": "/tmp/zfc-term-register-portable-full/frontend/run",
+        "returncode": 0,
+        "seconds": 0.152,
+        "log": "/tmp/zfc-term-register-portable-full/frontend/test_circuits.log"
+      },
+      {
+        "name": "test_codec",
+        "command": [
+          "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+          "-B",
+          "/tmp/zfc-term-register-portable-full/frontend/run/test_codec.py"
+        ],
+        "cwd": "/tmp/zfc-term-register-portable-full/frontend/run",
+        "returncode": 0,
+        "seconds": 6.169,
+        "log": "/tmp/zfc-term-register-portable-full/frontend/test_codec.log"
+      },
+      {
+        "name": "test_patterns",
+        "command": [
+          "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+          "-B",
+          "/tmp/zfc-term-register-portable-full/frontend/run/test_patterns.py"
+        ],
+        "cwd": "/tmp/zfc-term-register-portable-full/frontend/run",
+        "returncode": 0,
+        "seconds": 8.094,
+        "log": "/tmp/zfc-term-register-portable-full/frontend/test_patterns.log"
+      },
+      {
+        "name": "stdlib-hosted-spec",
+        "command": [
+          "/home/codex/.local/share/uv/python/cpython-3.13-linux-x86_64-gnu/bin/python3.13",
+          "-B",
+          "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_term_certificates.py",
+          "_standalone",
+          "/tmp/zfc-term-register-portable-full/frontend/run",
+          "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/50-terms-data-spec254.json",
+          "/tmp/zfc-term-register-portable-full/frontend/standalone.json"
+        ],
+        "cwd": "/tmp/zfc-term-register-portable-full/frontend/run",
+        "returncode": 0,
+        "seconds": 0.073,
+        "log": "/tmp/zfc-term-register-portable-full/frontend/stdlib-hosted-spec.log"
+      }
+    ],
+    "Lean_built": false,
+    "Coq_built": false,
+    "delivered_manifest_checks": false,
+    "delivered_suites_run": false,
+    "assertions_enabled": true,
+    "scope": "Finite exact-C254 verifier/circuit/codec controls and fair-search specification; no actual binary TM, state price, consistency assertion or PA theorem.",
+    "source50_recovery": {
+      "batch": 157,
+      "source": 50,
+      "arrival": "85633fd2f57b5dca16f87667699134d1b500ebc0",
+      "archive": "docs/incoming/zfc_sparse_certificates.zip",
+      "scratch": "/tmp/zfc-term-register-portable-full/frontend/recovered",
+      "package": "/tmp/zfc-term-register-portable-full/frontend/recovered/zfc_sparse_certificates",
+      "recovery_counts": {
+        "files": 67,
+        "hosted": 62,
+        "archive_only": 5
+      },
+      "recovered_path_map": "/tmp/zfc-term-register-portable-full/frontend/recovered/recovered-paths.json",
+      "checks": [],
+      "Lean_built": false,
+      "Coq_built": false,
+      "scope": "Offline exact recovery and finite functional replay; default replays delivered degree1/degree2 partitions, extended repeats only degree1. No new machine/calibration/internal PA proof.",
+      "provenance_skip": "Only named degree-one extra-LF provenance input/loop, removed in memory; functional identities and assertions retained.",
+      "status": "PREPARED"
+    },
+    "source50_test_dependencies": {
+      "code/symbolic254.py": {
+        "path": "/tmp/zfc-term-register-portable-full/frontend/recovered/zfc_sparse_certificates/code/symbolic254.py",
+        "bytes": 14812,
+        "sha256": "8e58092d6d54b01c1bf1ad1e1d72954849fba7d5bfce9982edaeaa01d97e822c"
+      },
+      "code/canonical254.py": {
+        "path": "/tmp/zfc-term-register-portable-full/frontend/recovered/zfc_sparse_certificates/code/canonical254.py",
+        "bytes": 8526,
+        "sha256": "0ced7f96fc6f2a3eaead0cd0e8c6bfcf1fe349ac0223e4ea201760ccdad9a7a8"
+      },
+      "code/term254.py": {
+        "path": "/tmp/zfc-term-register-portable-full/frontend/recovered/zfc_sparse_certificates/code/term254.py",
+        "bytes": 5592,
+        "sha256": "c8dd2f38c70bfc5a3fd8124dfb334bb66547f48c632f6bf54a6c54984f56d639"
+      },
+      "code/check_term254.py": {
+        "path": "/tmp/zfc-term-register-portable-full/frontend/recovered/zfc_sparse_certificates/code/check_term254.py",
+        "bytes": 7842,
+        "sha256": "1d66a2cdb85a791131ffe6b9c8c9fcf2c9fca1f0635c4f1701b553060e9e952d"
+      },
+      "data/spec254.json": {
+        "path": "/tmp/zfc-term-register-portable-full/frontend/recovered/zfc_sparse_certificates/data/spec254.json",
+        "bytes": 7308,
+        "sha256": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+      }
+    },
+    "test_paths": {
+      "status": "PASS",
+      "python": "3.13.14",
+      "command": "uv run --no-project python -B test_paths.py",
+      "elapsed_seconds": 0.6432254435494542,
+      "scope": "Finite executable QA and ordinary proof argument; no Lean proof, binary codec, enumerator, PA theorem or TM state cost",
+      "source50_source_pin": "fab89c5d26b81cd2ccab2ee5d213ff23725c7726",
+      "all_rule_tags": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "explicit_goal_controls": 15,
+      "fixed_default_F_rejections": 15,
+      "ordered_node_pair_checks": 10201,
+      "deep_witness": {
+        "edges": 2048,
+        "nodes": 4160,
+        "verifier_stats": {
+          "node_records": 4159,
+          "lookup_records": 297059,
+          "path_edges": 2048,
+          "proof_rows": 1,
+          "arena_uniqueness_comparisons": 0,
+          "reason": null
+        }
+      },
+      "tests": [
+        "all12 exact source50 rule controls converted; fixedF rejects all12",
+        "exact quoted canonical GEN adapter",
+        "unused duplicated positive key accepted; original canonical checker rejects it",
+        "both genuine exact bundle templates with pointer-distinct equal-value parameters rejected at gate",
+        "2048-edge witness and genuine deep bundle accepted without numeric materialization",
+        "all31 binary witnesses of length<=4 reject equal duplicated leaves",
+        "certificate cannot select its own fixed default goal",
+        "10201 ordered node pairs agree with small numeric denotation oracle",
+        "15 positive controls and fixedF negatives pass with arithmetic/producer APIs disabled"
+      ],
+      "rejected_corruptions": [
+        "bundle_gate_1_different_IDs_equal_value",
+        "bundle_gate_2_different_IDs_equal_value",
+        "path_short",
+        "path_trailing",
+        "path_bad_bit",
+        "path_negative_bit",
+        "path_bool_bit",
+        "path_not_list",
+        "path_empty_before_difference",
+        "zero_alias",
+        "self_reference",
+        "bool_constructor_tag",
+        "negative_reference",
+        "false_claimed_formula",
+        "empty_proof",
+        "false_MP_conclusion",
+        "missing_gate_paths"
+      ],
+      "verifier_has_global_arena_uniqueness_test": false,
+      "verifier_has_template_linear_lookup": true,
+      "source_sha256": {
+        "term_paths.py": "10ffa00eb8b910ccbd0d1e135a960dae9e08415cb52af4cb434a2d374f7232de",
+        "test_paths.py": "091e09edf067227172f3b3633ca1104ae3046b3ce06607c2159bbf23c1d8ff33",
+        "source50/code/audit_canonical.py": "4128a5c974fee132883b599956f4f576a49d8f9a0f006ca408369ff314e156d7",
+        "source50/code/canonical254.py": "0ced7f96fc6f2a3eaead0cd0e8c6bfcf1fe349ac0223e4ea201760ccdad9a7a8",
+        "source50/code/check_proof_code_size.py": "a4a009678677265fdee41c25cd2447ef5a86855ec0e6a6fc13f7ac667928b00e",
+        "source50/code/check_term254.py": "1d66a2cdb85a791131ffe6b9c8c9fcf2c9fca1f0635c4f1701b553060e9e952d",
+        "source50/code/extract_specs.py": "993f3c16b0b947fefd7c926021ac00a075765b4359cef6893f15c88eae52d788",
+        "source50/code/replay_all.py": "4a7aaad6c24b3322929f6df525daa85409a41281d40476c5da445adf6dce160b",
+        "source50/code/reproduce.py": "013c4f9eb1a9ad2f76bc1aba3475817fdd03ed2a80078d0d59aad59350b83569",
+        "source50/code/schema_metrics.py": "a604039456feeaaa35e64f5c7425465845d9c66a906a4a19387addb3c76b01c3",
+        "source50/code/symbolic254.py": "8e58092d6d54b01c1bf1ad1e1d72954849fba7d5bfce9982edaeaa01d97e822c",
+        "source50/code/term254.py": "c8dd2f38c70bfc5a3fd8124dfb334bb66547f48c632f6bf54a6c54984f56d639",
+        "source50/data/spec254.json": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+      }
+    },
+    "test_circuits": {
+      "status": "PASS",
+      "python": "3.13.14",
+      "command": "uv run --no-project python -B test_circuits.py",
+      "elapsed_seconds": 0.08139514457434416,
+      "scope": "Executable constructor-witness interface and ordinary exact-calculus argument; no binary codec, TM state count or internal PA theorem",
+      "all_rule_tags": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "positive_controls": 15,
+      "fixed_default_F_rejections": 15,
+      "template_identity_cases": 261,
+      "static_circuit_steps": {
+        "3": 5,
+        "4": 6,
+        "5": 5,
+        "6": 5,
+        "7": 5,
+        "8": 6,
+        "9": 5,
+        "10": 6,
+        "11": 62
+      },
+      "deep_bundle_stats": {
+        "node_records": 4159,
+        "constructor_checks": 62,
+        "circuit_steps": 62,
+        "path_edges": 2048,
+        "proof_rows": 1,
+        "template_searches": 0,
+        "arena_uniqueness_comparisons": 0,
+        "reason": null
+      },
+      "tests": [
+        "all12 exact source50 controls convert and verify; all12 reject at fixedF",
+        "261 fixed-template comparisons against original source50, including all parameter collisions over0/1/2",
+        "GEN may name a non-first duplicate result, which lookup prototype rejects",
+        "schema may name a non-first duplicate output with a valid local witness",
+        "fixedF endpoint recognizes either copy, rejects other tag; no firstF lookup",
+        "2048-edge exact bundle uses only62 explicit constructor checks after local validation",
+        "certificate cannot override trusted templates or fixed default goal",
+        "15 positive controls/fixedF negatives unchanged with every template search, compiler, numeric and producer API disabled"
+      ],
+      "rejected_corruptions": [
+        "bundle_gate_1_pointer_distinct_equal_value",
+        "bundle_gate_2_pointer_distinct_equal_value",
+        "missing_constructor_witness",
+        "truncated_circuit",
+        "extra_circuit_step",
+        "wrong_circuit_wire",
+        "out_of_range_circuit_id",
+        "boolean_circuit_id",
+        "false_MP_major",
+        "false_GEN_shape",
+        "forbidden_zero_alias",
+        "trailing_gate_path"
+      ],
+      "trusted_spec": "source50/data/spec254.json",
+      "source_sha256": {
+        "term_circuits.py": "b1a4e8fe445d8d4abf9a6ad8e236b63ee1948bf51990eba6ebda00a198c0b2a7",
+        "test_circuits.py": "53268737da9856c7e50ebd80aeaa00e0d3e30ec153b4aa52909f8f95667acc5f",
+        "source50/data/spec254.json": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+      }
+    },
+    "test_codec": {
+      "status": "PASS",
+      "python": "3.13.14",
+      "command": "uv run --no-project python -B test_codec.py",
+      "elapsed_seconds": 6.086825570091605,
+      "scope": "Finite binary codec QA and fair-search executable specification; no compiled TM/state count, Lean or PA theorem",
+      "all_rule_tags": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "exact_roundtrip_positive_controls": 15,
+      "same_controls_rejected_at_fixedF": 15,
+      "control_word_lengths": [
+        8,
+        24,
+        30,
+        73,
+        132,
+        110,
+        110,
+        110,
+        92,
+        110,
+        157,
+        4582,
+        37,
+        85,
+        9042403
+      ],
+      "exhaustive_short_words": {
+        "max_length": 17,
+        "words": 262143,
+        "successful_parses": 93,
+        "fixedF_acceptances": 0,
+        "successful_parses_by_length": {
+          "0": 0,
+          "1": 0,
+          "2": 1,
+          "3": 0,
+          "4": 0,
+          "5": 0,
+          "6": 0,
+          "7": 3,
+          "8": 1,
+          "9": 0,
+          "10": 0,
+          "11": 0,
+          "12": 9,
+          "13": 27,
+          "14": 16,
+          "15": 1,
+          "16": 6,
+          "17": 29
+        }
+      },
+      "malformed_reasons": {
+        "empty": "truncated",
+        "truncated_unary": "truncated",
+        "nonbinary": "not_binary_word",
+        "node_count_before_allocation": "node_count_exceeds_remaining_bits",
+        "row_count_before_allocation": "row_count_exceeds_remaining_bits",
+        "zero_alias": "zero_alias",
+        "node_forward_reference": "node_forward_reference",
+        "unknown_rule": "unknown_rule",
+        "proof_forward_reference": "proof_forward_reference",
+        "argument_reference": "argument_reference",
+        "formula_reference": "formula_reference",
+        "circuit_reference": "circuit_reference",
+        "truncated_circuit": "truncated",
+        "truncated_path": "truncated",
+        "unterminated_path_bit": "truncated",
+        "leftover_bits": "leftover_bits"
+      },
+      "tests": [
+        "15 positive controls roundtrip exactly, including all12 tags, duplicate outputs and2048-edge path; all reject at fixedF",
+        "16 malformed words and every proper prefix of8-bit truth control reject",
+        "structural parser accepts well-shaped false truth row; exact verifier rejects it",
+        "well-shaped false gate path roundtrips but exact verifier rejects it",
+        "all262143 words of length<=17 terminate; every successful parse re-encodes to the exact original word",
+        "length-lex order/rank on first127 words; bounded no-hit result is explicitly finite",
+        "semidecider fair-enumeration harness reaches controlled word0110 at rank21; no logical acceptance inferred",
+        "MemoryError and RecursionError from inside the actual core propagate; neither becomes fuel-as-UNSAT/rejection"
+      ],
+      "bounded_search_control": {
+        "status": "no_fixedF_certificate_through_length",
+        "max_length": 6,
+        "tested_words": 127
+      },
+      "source_sha256": {
+        "term_codec.py": "dabb09c4f7749c7e71bbd65d6056e83f3648aef58b3b24bc3807841515a4b979",
+        "test_codec.py": "ecbaf436684abf07e25abbbc4dd022ffc852caa437f4026ea377b5e08bef8da3",
+        "term_circuits.py": "b1a4e8fe445d8d4abf9a6ad8e236b63ee1948bf51990eba6ebda00a198c0b2a7",
+        "source50/data/spec254.json": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+      }
+    },
+    "test_patterns": {
+      "status": "PASS",
+      "python": "3.13.14",
+      "elapsed_seconds": 8.009544875472784,
+      "command": "uv run --no-project python -B test_patterns.py",
+      "scope": "ordinary exact-calculus transformation and finite executable/codec QA; no Lean proof, actual TM, state cost or PA claim",
+      "positive_controls": 15,
+      "fixedF_control_rejections": 15,
+      "template_assignments": 261,
+      "valid_template_rule_instances": 246,
+      "invalid_bundle_gate_instances": 15,
+      "virtual_zero_cases": 22,
+      "virtual_zero_constructor_checks": 37,
+      "per_rule": {
+        "3": {
+          "assignments": 9,
+          "accepted_rule_instances": 9,
+          "invalid_bundle_gates": 0,
+          "max_pattern_visits": 13,
+          "virtual_zero_cases": 0
+        },
+        "4": {
+          "assignments": 27,
+          "accepted_rule_instances": 27,
+          "invalid_bundle_gates": 0,
+          "max_pattern_visits": 13,
+          "virtual_zero_cases": 3
+        },
+        "5": {
+          "assignments": 27,
+          "accepted_rule_instances": 27,
+          "invalid_bundle_gates": 0,
+          "max_pattern_visits": 11,
+          "virtual_zero_cases": 0
+        },
+        "6": {
+          "assignments": 27,
+          "accepted_rule_instances": 27,
+          "invalid_bundle_gates": 0,
+          "max_pattern_visits": 11,
+          "virtual_zero_cases": 0
+        },
+        "7": {
+          "assignments": 27,
+          "accepted_rule_instances": 27,
+          "invalid_bundle_gates": 0,
+          "max_pattern_visits": 11,
+          "virtual_zero_cases": 0
+        },
+        "8": {
+          "assignments": 9,
+          "accepted_rule_instances": 9,
+          "invalid_bundle_gates": 0,
+          "max_pattern_visits": 15,
+          "virtual_zero_cases": 0
+        },
+        "9": {
+          "assignments": 27,
+          "accepted_rule_instances": 27,
+          "invalid_bundle_gates": 0,
+          "max_pattern_visits": 11,
+          "virtual_zero_cases": 0
+        },
+        "10": {
+          "assignments": 81,
+          "accepted_rule_instances": 81,
+          "invalid_bundle_gates": 0,
+          "max_pattern_visits": 13,
+          "virtual_zero_cases": 19
+        },
+        "11": {
+          "assignments": 27,
+          "accepted_rule_instances": 12,
+          "invalid_bundle_gates": 15,
+          "max_pattern_visits": 197,
+          "virtual_zero_cases": 0
+        }
+      },
+      "static_traversal_counts": {
+        "3": {
+          "circuit_steps": 5,
+          "expanded_pattern_visits": 13,
+          "expanded_constructor_visits": 6
+        },
+        "4": {
+          "circuit_steps": 6,
+          "expanded_pattern_visits": 13,
+          "expanded_constructor_visits": 6
+        },
+        "5": {
+          "circuit_steps": 5,
+          "expanded_pattern_visits": 11,
+          "expanded_constructor_visits": 5
+        },
+        "6": {
+          "circuit_steps": 5,
+          "expanded_pattern_visits": 11,
+          "expanded_constructor_visits": 5
+        },
+        "7": {
+          "circuit_steps": 5,
+          "expanded_pattern_visits": 11,
+          "expanded_constructor_visits": 5
+        },
+        "8": {
+          "circuit_steps": 6,
+          "expanded_pattern_visits": 15,
+          "expanded_constructor_visits": 7
+        },
+        "9": {
+          "circuit_steps": 5,
+          "expanded_pattern_visits": 11,
+          "expanded_constructor_visits": 5
+        },
+        "10": {
+          "circuit_steps": 6,
+          "expanded_pattern_visits": 13,
+          "expanded_constructor_visits": 6
+        },
+        "11": {
+          "circuit_steps": 62,
+          "expanded_pattern_visits": 197,
+          "expanded_constructor_visits": 98
+        }
+      },
+      "deep_bundle_pattern_stats": {
+        "node_records": 4159,
+        "constructor_checks": 0,
+        "pattern_visits": 197,
+        "pattern_constructor_checks": 98,
+        "parameter_checks": 47,
+        "literal_zero_checks": 52,
+        "virtual_zero_constructors": 0,
+        "max_pending_obligations": 18,
+        "path_edges": 2048,
+        "proof_rows": 1,
+        "template_searches": 0,
+        "arena_uniqueness_comparisons": 0,
+        "reason": null
+      },
+      "deep_bundle_old_circuit_stats": {
+        "node_records": 4159,
+        "constructor_checks": 62,
+        "circuit_steps": 62,
+        "path_edges": 2048,
+        "proof_rows": 1,
+        "template_searches": 0,
+        "arena_uniqueness_comparisons": 0,
+        "reason": null
+      },
+      "word_measurements": [
+        {
+          "last_tag": 0,
+          "positive_nodes": 0,
+          "old_bits": 8,
+          "pattern_bits": 8,
+          "removed_unary_witness_bits": 0,
+          "removed_constructor_ids": 0
+        },
+        {
+          "last_tag": 1,
+          "positive_nodes": 0,
+          "old_bits": 24,
+          "pattern_bits": 24,
+          "removed_unary_witness_bits": 0,
+          "removed_constructor_ids": 0
+        },
+        {
+          "last_tag": 2,
+          "positive_nodes": 2,
+          "old_bits": 30,
+          "pattern_bits": 30,
+          "removed_unary_witness_bits": 0,
+          "removed_constructor_ids": 0
+        },
+        {
+          "last_tag": 3,
+          "positive_nodes": 5,
+          "old_bits": 73,
+          "pattern_bits": 53,
+          "removed_unary_witness_bits": 20,
+          "removed_constructor_ids": 5
+        },
+        {
+          "last_tag": 4,
+          "positive_nodes": 8,
+          "old_bits": 132,
+          "pattern_bits": 93,
+          "removed_unary_witness_bits": 39,
+          "removed_constructor_ids": 6
+        },
+        {
+          "last_tag": 5,
+          "positive_nodes": 7,
+          "old_bits": 110,
+          "pattern_bits": 80,
+          "removed_unary_witness_bits": 30,
+          "removed_constructor_ids": 5
+        },
+        {
+          "last_tag": 6,
+          "positive_nodes": 7,
+          "old_bits": 110,
+          "pattern_bits": 80,
+          "removed_unary_witness_bits": 30,
+          "removed_constructor_ids": 5
+        },
+        {
+          "last_tag": 7,
+          "positive_nodes": 7,
+          "old_bits": 110,
+          "pattern_bits": 80,
+          "removed_unary_witness_bits": 30,
+          "removed_constructor_ids": 5
+        },
+        {
+          "last_tag": 8,
+          "positive_nodes": 6,
+          "old_bits": 92,
+          "pattern_bits": 65,
+          "removed_unary_witness_bits": 27,
+          "removed_constructor_ids": 6
+        },
+        {
+          "last_tag": 9,
+          "positive_nodes": 7,
+          "old_bits": 110,
+          "pattern_bits": 80,
+          "removed_unary_witness_bits": 30,
+          "removed_constructor_ids": 5
+        },
+        {
+          "last_tag": 10,
+          "positive_nodes": 9,
+          "old_bits": 157,
+          "pattern_bits": 112,
+          "removed_unary_witness_bits": 45,
+          "removed_constructor_ids": 6
+        },
+        {
+          "last_tag": 11,
+          "positive_nodes": 63,
+          "old_bits": 4582,
+          "pattern_bits": 2506,
+          "removed_unary_witness_bits": 2076,
+          "removed_constructor_ids": 62
+        },
+        {
+          "last_tag": 2,
+          "positive_nodes": 3,
+          "old_bits": 37,
+          "pattern_bits": 37,
+          "removed_unary_witness_bits": 0,
+          "removed_constructor_ids": 0
+        },
+        {
+          "last_tag": 3,
+          "positive_nodes": 6,
+          "old_bits": 85,
+          "pattern_bits": 64,
+          "removed_unary_witness_bits": 21,
+          "removed_constructor_ids": 5
+        },
+        {
+          "last_tag": 11,
+          "positive_nodes": 4159,
+          "old_bits": 9042403,
+          "pattern_bits": 8790471,
+          "removed_unary_witness_bits": 251932,
+          "removed_constructor_ids": 62
+        }
+      ],
+      "short_words": {
+        "max_length": 17,
+        "words": 262143,
+        "successful_parses": 245,
+        "fixedF_acceptances": 0
+      },
+      "malformed_word_reasons": {
+        "empty": "truncated",
+        "truncated_unary": "truncated",
+        "nonbinary": "not_binary_word",
+        "node_count_before_allocation": "node_count_exceeds_remaining_bits",
+        "row_count_before_allocation": "row_count_exceeds_remaining_bits",
+        "zero_alias": "zero_alias",
+        "node_forward_reference": "node_forward_reference",
+        "unknown_rule": "unknown_rule",
+        "proof_forward_reference": "proof_forward_reference",
+        "argument_reference": "argument_reference",
+        "formula_reference": "formula_reference",
+        "truncated_path": "truncated",
+        "unterminated_path": "truncated",
+        "leftover_bits": "leftover_bits"
+      },
+      "tests": [
+        "all12 exact source50 rule controls accepted with trusted goal; all12 reject default fixedF",
+        "all261 assignments over0/1/2 match exact source50 templates, including actualZ at expectedB0; invalid bundle gates remain rejected",
+        "duplicate GEN/schema outputs and non-first duplicate compound branch accepted",
+        "deep2048-edge exact bundle accepted; pattern traversal does not descend into parameter denotations",
+        "malformed nodes/rows, forgedMP/GEN, retained circuit witness fields and malformed paths reject; candidate cannot pick templates/goal",
+        "15 exact new-codec roundtrips and fixedF negatives; bit savings equal exactly sum(id+1) of omitted witnesses",
+        "14 explicit malformed-codec controls and all proper prefixes of8bit truth reject",
+        "all262143 words length<=17 terminate; every successful parse exactly re-encodes; finite negatives do not imply consistency",
+        "15 controls still accepted with all numeric/producer/compiler/old circuit verifier APIs disabled",
+        "MemoryError/RecursionError inside actual schema matcher and GEN checker propagate through codec"
+      ],
+      "rejected_corruptions": [
+        "equal_value_duplicate_parameter_leaf_mismatch_intentionally_rejected",
+        "bundle_gate_1_distinctIDs_equalvalues",
+        "bundle_gate_2_distinctIDs_equalvalues",
+        "zero_alias",
+        "forward_reference",
+        "boolean_node_tag",
+        "empty_proof",
+        "false_truth",
+        "constructor_ids_not_in_new_protocol",
+        "false_GEN",
+        "wrong_template_root",
+        "false_MP_major",
+        "trailing_gate_path"
+      ],
+      "source_sha256": {
+        "term_patterns.py": "539012a9bb243d5ab06cb0410d67e07736e46594b14d6910fd078f12fee4c90d",
+        "pattern_codec.py": "d25e0a34da6b6f2c60ad03a4f382d08e43168cea44b3cbacc7ee589a238c1fa5",
+        "test_patterns.py": "99b1cb43b9eccc76efb5b9cb139c53e9a180282909c57f22a95f3bc6081f1422",
+        "term_circuits.py": "b1a4e8fe445d8d4abf9a6ad8e236b63ee1948bf51990eba6ebda00a198c0b2a7",
+        "term_codec.py": "dabb09c4f7749c7e71bbd65d6056e83f3648aef58b3b24bc3807841515a4b979",
+        "source50/data/spec254.json": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+      }
+    },
+    "stdlib_hosted_spec": {
+      "status": "PASS",
+      "word_bits": 4582,
+      "roundtrip_exact": true,
+      "positive_bundle_control": true,
+      "same_word_rejected_at_fixedF": true,
+      "pattern_word_bits": 2506,
+      "pattern_roundtrip_exact": true,
+      "pattern_positive_control": true,
+      "pattern_word_rejected_at_fixedF": true,
+      "numeric_or_producer_modules_imported": false,
+      "trusted_hosted_spec": {
+        "path": "/home/codex/.codex/worktrees/ec20/Proofs/SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/50-terms-data-spec254.json",
+        "bytes": 7308,
+        "sha256": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc"
+      },
+      "scope": "Clean-process stdlib-only verifier/codec finite control; no logical acceptance or TM state claim."
+    },
+    "experiment_sources_unchanged": true,
+    "recovered_functional_dependencies_unchanged": true,
+    "fixed_spec_exact": true,
+    "seconds_in_subprocesses": 15.325999999999999
+  },
+  "ReadNode": {
+    "status": "PASS",
+    "scope": "Actual inc/decrement selected-prefix ReadNode in existing Wade Sequence semantics. Not full structural parser, complete checker, TM state count or formal simulation.",
+    "registers": [
+      "candidate",
+      "index",
+      "cursor",
+      "ok",
+      "is_zero",
+      "tag",
+      "left",
+      "right",
+      "count",
+      "node_number",
+      "todo",
+      "cmp_a",
+      "cmp_b",
+      "quotient",
+      "bit",
+      "unary_loop",
+      "copy_scratch",
+      "less"
+    ],
+    "register_count": 18,
+    "pop_contract_cases": 130,
+    "all_word_max_length": 7,
+    "word_codes_tested": 255,
+    "index_cases_per_word": 4,
+    "read_node_cases": 1020,
+    "successful_prefix_reads": 259,
+    "failed_prefix_reads": 761,
+    "register_operations": 1523026,
+    "max_register_operations_per_case": 3284,
+    "elapsed_seconds": 2.0739382449537516,
+    "representatives": [
+      {
+        "word": "100100",
+        "index": 1,
+        "output": {
+          "ok": 1,
+          "is_zero": 0,
+          "tag": 1,
+          "left": 0,
+          "right": 0,
+          "cursor": 0
+        }
+      },
+      {
+        "word": "101000",
+        "index": 1,
+        "output": {
+          "ok": 1,
+          "is_zero": 0,
+          "tag": 2,
+          "left": 0,
+          "right": 0,
+          "cursor": 0
+        }
+      },
+      {
+        "word": "101100",
+        "index": 1,
+        "output": {
+          "ok": 1,
+          "is_zero": 0,
+          "tag": 3,
+          "left": 0,
+          "right": 0,
+          "cursor": 0
+        }
+      },
+      {
+        "word": "1001000",
+        "index": 1,
+        "output": {
+          "ok": 1,
+          "is_zero": 0,
+          "tag": 1,
+          "left": 0,
+          "right": 0,
+          "cursor": 1
+        }
+      },
+      {
+        "word": "1001001",
+        "index": 1,
+        "output": {
+          "ok": 1,
+          "is_zero": 0,
+          "tag": 1,
+          "left": 0,
+          "right": 0,
+          "cursor": 2
+        }
+      },
+      {
+        "word": "1010000",
+        "index": 1,
+        "output": {
+          "ok": 1,
+          "is_zero": 0,
+          "tag": 2,
+          "left": 0,
+          "right": 0,
+          "cursor": 1
+        }
+      },
+      {
+        "word": "1010001",
+        "index": 1,
+        "output": {
+          "ok": 1,
+          "is_zero": 0,
+          "tag": 2,
+          "left": 0,
+          "right": 0,
+          "cursor": 2
+        }
+      },
+      {
+        "word": "1011000",
+        "index": 1,
+        "output": {
+          "ok": 1,
+          "is_zero": 0,
+          "tag": 3,
+          "left": 0,
+          "right": 0,
+          "cursor": 1
+        }
+      }
+    ],
+    "source_sha256": "0e33b50207dd2db4afd0e7ef337fb250963040ee18bde00a6a764679b284e39d",
+    "complete_machine_compiled": false
+  },
+  "full-control": {
+    "status": "PASS",
+    "scope": "Complete primitive-register control; finite tests use explicitly contracted local arithmetic loops. No compiler verification, TM execution endpoint or state reduction claim.",
+    "register_count": 56,
+    "registers": [
+      "candidate",
+      "index",
+      "cursor",
+      "ok",
+      "is_zero",
+      "tag",
+      "left",
+      "right",
+      "count",
+      "node_number",
+      "todo",
+      "cmp_a",
+      "cmp_b",
+      "quotient",
+      "bit",
+      "unary_loop",
+      "copy_scratch",
+      "less",
+      "valid",
+      "full_cursor",
+      "nodes",
+      "node_bound",
+      "arena_i",
+      "proof_count",
+      "proofs_i",
+      "rows_begin",
+      "row_tag",
+      "arg0",
+      "arg1",
+      "arg2",
+      "arg3",
+      "premise0",
+      "premise1",
+      "formula",
+      "minor",
+      "major",
+      "query",
+      "scan_todo",
+      "scan_tag",
+      "scan_formula",
+      "scan_field",
+      "path0",
+      "path1",
+      "active",
+      "gate_a",
+      "gate_b",
+      "gate_tag",
+      "gate_left",
+      "gate_right",
+      "path_bit",
+      "path_loop",
+      "saved_cursor",
+      "dispatch",
+      "temp0",
+      "temp1",
+      "main_loop"
+    ],
+    "small_words": 255,
+    "literal_contract_comparisons": 63,
+    "literal_operations": 60480,
+    "all12_controls": [
+      {
+        "rule": 0,
+        "bits": 8,
+        "goal": 0,
+        "control": [
+          "normal"
+        ],
+        "structured_calls": 453,
+        "literal_register_operations": 101,
+        "contracted_macro_calls": 77
+      },
+      {
+        "rule": 1,
+        "bits": 24,
+        "goal": 0,
+        "control": [
+          "normal"
+        ],
+        "structured_calls": 1668,
+        "literal_register_operations": 374,
+        "contracted_macro_calls": 275
+      },
+      {
+        "rule": 2,
+        "bits": 30,
+        "goal": 2,
+        "control": [
+          "normal"
+        ],
+        "structured_calls": 1739,
+        "literal_register_operations": 408,
+        "contracted_macro_calls": 256
+      },
+      {
+        "rule": 3,
+        "bits": 53,
+        "goal": 5,
+        "control": [
+          "normal"
+        ],
+        "structured_calls": 16324,
+        "literal_register_operations": 3996,
+        "contracted_macro_calls": 2061
+      },
+      {
+        "rule": 4,
+        "bits": 93,
+        "goal": 8,
+        "control": [
+          "normal"
+        ],
+        "structured_calls": 22519,
+        "literal_register_operations": 5797,
+        "contracted_macro_calls": 2416
+      },
+      {
+        "rule": 5,
+        "bits": 80,
+        "goal": 7,
+        "control": [
+          "normal"
+        ],
+        "structured_calls": 16974,
+        "literal_register_operations": 4335,
+        "contracted_macro_calls": 1876
+      },
+      {
+        "rule": 6,
+        "bits": 80,
+        "goal": 7,
+        "control": [
+          "normal"
+        ],
+        "structured_calls": 16676,
+        "literal_register_operations": 4250,
+        "contracted_macro_calls": 1856
+      },
+      {
+        "rule": 7,
+        "bits": 80,
+        "goal": 7,
+        "control": [
+          "normal"
+        ],
+        "structured_calls": 17038,
+        "literal_register_operations": 4357,
+        "contracted_macro_calls": 1876
+      },
+      {
+        "rule": 8,
+        "bits": 65,
+        "goal": 6,
+        "control": [
+          "normal"
+        ],
+        "structured_calls": 25198,
+        "literal_register_operations": 6287,
+        "contracted_macro_calls": 2999
+      },
+      {
+        "rule": 9,
+        "bits": 80,
+        "goal": 7,
+        "control": [
+          "normal"
+        ],
+        "structured_calls": 17128,
+        "literal_register_operations": 4387,
+        "contracted_macro_calls": 1876
+      },
+      {
+        "rule": 10,
+        "bits": 112,
+        "goal": 9,
+        "control": [
+          "normal"
+        ],
+        "structured_calls": 25712,
+        "literal_register_operations": 6717,
+        "contracted_macro_calls": 2616
+      },
+      {
+        "rule": 11,
+        "bits": 2506,
+        "goal": 63,
+        "control": [
+          "normal"
+        ],
+        "structured_calls": 7522302,
+        "literal_register_operations": 2104931,
+        "contracted_macro_calls": 553663
+      }
+    ],
+    "template_assignments": 261,
+    "elapsed_seconds": 137.3161089103669,
+    "source_sha256": {
+      "term_register.py": "0e33b50207dd2db4afd0e7ef337fb250963040ee18bde00a6a764679b284e39d",
+      "full_program.py": "b6a1397a116f4b8d7ef7eb524e0b983b23c7ad34189e58abf01a7aae43cb91b7",
+      "test_full.py": "684a08b010e660e0611bf61959561d7e52c4cfdbe168e5c0dd2eb4d0f7e53cde"
+    }
+  },
+  "supplementary": {
+    "status": "PASS",
+    "helper_literal_contracted_complete_vector_cases": 1001,
+    "fullsyntax_words_maxlength": 12,
+    "fullsyntax_words": 8191,
+    "malformed_unused_suffixes": [
+      "empty",
+      "truncated_unary",
+      "node_count",
+      "row_count",
+      "unused_zero_alias",
+      "unused_forward_node",
+      "unknown_unused_last_rule",
+      "proof_forward",
+      "argument_reference",
+      "formula_reference",
+      "leftover"
+    ],
+    "scheduler_positive_control": {
+      "trusted_goal": 0,
+      "first_word_code": 257,
+      "word": "01000000",
+      "actual_candidate": 257,
+      "control": [
+        "halt"
+      ],
+      "structured_calls": 49160,
+      "literal_register_operations": 12075,
+      "contracted_macro_calls": 7807
+    },
+    "scope": "finite helper loop-contract QA and full control tests. Positive scheduler uses trusted truth endpoint, separately from fixedF compiled table; no compiler equivalence proof.",
+    "elapsed_seconds": 2.9575164997950196,
+    "source_sha256": {
+      "term_register.py": "0e33b50207dd2db4afd0e7ef337fb250963040ee18bde00a6a764679b284e39d",
+      "full_program.py": "b6a1397a116f4b8d7ef7eb524e0b983b23c7ad34189e58abf01a7aae43cb91b7",
+      "supplementary.py": "3fdb7c1e310b2767a8ad474618897da94d332c2781bfa5d227c8c2496b657dfc"
+    }
+  },
+  "compile-full": {
+    "status": "compiled_experimental_complete_control",
+    "calibration": "No new compiler/codec/scheduler Lean proof. Finite differential tests are separate. This is not a smaller-machine or consistency claim.",
+    "working_states": 4704,
+    "halt_state": 4704,
+    "total_binary_rows": 9408,
+    "table_sha256": "324c23d31a98ca46cc83db970a0b943c76c509800ac732a86a3f17339dba25af",
+    "register_count": 56,
+    "register_names": [
+      "candidate",
+      "index",
+      "cursor",
+      "ok",
+      "is_zero",
+      "tag",
+      "left",
+      "right",
+      "count",
+      "node_number",
+      "todo",
+      "cmp_a",
+      "cmp_b",
+      "quotient",
+      "bit",
+      "unary_loop",
+      "copy_scratch",
+      "less",
+      "valid",
+      "full_cursor",
+      "nodes",
+      "node_bound",
+      "arena_i",
+      "proof_count",
+      "proofs_i",
+      "rows_begin",
+      "row_tag",
+      "arg0",
+      "arg1",
+      "arg2",
+      "arg3",
+      "premise0",
+      "premise1",
+      "formula",
+      "minor",
+      "major",
+      "query",
+      "scan_todo",
+      "scan_tag",
+      "scan_formula",
+      "scan_field",
+      "path0",
+      "path1",
+      "active",
+      "gate_a",
+      "gate_b",
+      "gate_tag",
+      "gate_left",
+      "gate_right",
+      "path_bit",
+      "path_loop",
+      "saved_cursor",
+      "dispatch",
+      "temp0",
+      "temp1",
+      "main_loop"
+    ],
+    "charged_source_binary_DAG_nodes": 4551,
+    "max_dispatch_zero_depth": 4,
+    "states_before_graph_gc": 4760,
+    "categories": {
+      "control": 4551,
+      "framework": 153
+    },
+    "partial_row_totalizations": [
+      [
+        13,
+        1
+      ]
+    ],
+    "undefined_named_terminals": [
+      "halt"
+    ],
+    "blank_tape": "bi-infinite all0, initialhead0,state0;0/1symbols;write-then-moveL/R before terminal entry",
+    "candidate_codec": "nil0;cons(bit,tail)=2tail+bit+1;natural enumeration starting0 visits every finite binaryword",
+    "elapsed_seconds": 2.9504900136962533,
+    "source_sha256": {
+      "/tmp/zfc-term-register-portable-full/run/term_register.py": "0e33b50207dd2db4afd0e7ef337fb250963040ee18bde00a6a764679b284e39d",
+      "/tmp/zfc-term-register-portable-full/run/full_program.py": "b6a1397a116f4b8d7ef7eb524e0b983b23c7ad34189e58abf01a7aae43cb91b7",
+      "/tmp/zfc-term-register-portable-full/run/compile_full.py": "d8b126f936d05e5fe50ec2c78d7c245562a15ecc038e93acaf46eea1877d76af"
+    },
+    "frontend_spec_sha256": "fbce2fd79f909cce5b6d0ca52e2c7ead86ce052285294cb7c9dffa657a217adc",
+    "compiler_sources_sha256": {
+      "TMBuilder.py": "03d3a636404e1bcdeceafd98b9478b7a367ab334f3ab9f8a00df1d5c03fdf517",
+      "tm.py": "2d00bf8c8324d8e9bc5639ba14e508091d854a7c93ecb96ab598f41c15ae9787",
+      "tmdb.py": "4ccf4dab37438109a350d77259b5eb52e33ce110a954cd2d56a218e84e653526",
+      "LICENSE.wade": "c1dffee77db98625debe39b47538e1d2f3b7956cbc7bcd6ed9363701b2177cfa"
+    }
+  },
+  "control-cost": {
+    "status": "PASS",
+    "scope": "Exact reachable source DAG set counts and a finite literal1M binary prefix; not compiler simulation proof, optimality/lowerbound or consistency evidence.",
+    "source_DAG_closure_counts": {
+      "search": 4551,
+      "verify": 4486,
+      "full_syntax": 769,
+      "ReadNode": 235,
+      "row_parser": 547,
+      "proof_lookup_minor": 226,
+      "semantic_rows": 3843,
+      "gate0": 461,
+      "gate1": 461,
+      "pattern3": 481,
+      "pattern4": 467,
+      "pattern5": 466,
+      "pattern6": 451,
+      "pattern7": 465,
+      "pattern8": 493,
+      "pattern9": 455,
+      "pattern10": 469,
+      "pattern11": 2946
+    },
+    "shared_helper_accounting": {
+      "ReadNode_body_distinct_DAG_nodes": 235,
+      "pattern_union_nodes": 3241,
+      "pattern_nodes_outside_ReadNode_body": 3006,
+      "gate_union_nodes": 479,
+      "gate_nodes_outside_ReadNode_body": 244,
+      "verify_outside_patterns_and_ReadNode": 1245,
+      "search_outside_verify": 65
+    },
+    "pattern_static_cost": {
+      "3": {
+        "visits": 13,
+        "constructors": 6,
+        "sum_path_lengths": 32,
+        "maximum_path_length": 4,
+        "potential_ReadNode_calls": 38,
+        "shared_circuit_wires": 5
+      },
+      "4": {
+        "visits": 13,
+        "constructors": 6,
+        "sum_path_lengths": 28,
+        "maximum_path_length": 3,
+        "potential_ReadNode_calls": 34,
+        "shared_circuit_wires": 6
+      },
+      "5": {
+        "visits": 11,
+        "constructors": 5,
+        "sum_path_lengths": 22,
+        "maximum_path_length": 3,
+        "potential_ReadNode_calls": 27,
+        "shared_circuit_wires": 5
+      },
+      "6": {
+        "visits": 11,
+        "constructors": 5,
+        "sum_path_lengths": 22,
+        "maximum_path_length": 3,
+        "potential_ReadNode_calls": 27,
+        "shared_circuit_wires": 5
+      },
+      "7": {
+        "visits": 11,
+        "constructors": 5,
+        "sum_path_lengths": 22,
+        "maximum_path_length": 3,
+        "potential_ReadNode_calls": 27,
+        "shared_circuit_wires": 5
+      },
+      "8": {
+        "visits": 15,
+        "constructors": 7,
+        "sum_path_lengths": 46,
+        "maximum_path_length": 5,
+        "potential_ReadNode_calls": 53,
+        "shared_circuit_wires": 6
+      },
+      "9": {
+        "visits": 11,
+        "constructors": 5,
+        "sum_path_lengths": 22,
+        "maximum_path_length": 3,
+        "potential_ReadNode_calls": 27,
+        "shared_circuit_wires": 5
+      },
+      "10": {
+        "visits": 13,
+        "constructors": 6,
+        "sum_path_lengths": 28,
+        "maximum_path_length": 3,
+        "potential_ReadNode_calls": 34,
+        "shared_circuit_wires": 6
+      },
+      "11": {
+        "visits": 197,
+        "constructors": 98,
+        "sum_path_lengths": 2364,
+        "maximum_path_length": 23,
+        "potential_ReadNode_calls": 2462,
+        "shared_circuit_wires": 62
+      }
+    },
+    "used_primitive_register_names": [
+      "active",
+      "arena_i",
+      "arg0",
+      "arg1",
+      "arg2",
+      "arg3",
+      "bit",
+      "candidate",
+      "cmp_a",
+      "cmp_b",
+      "copy_scratch",
+      "count",
+      "cursor",
+      "dispatch",
+      "formula",
+      "full_cursor",
+      "gate_a",
+      "gate_b",
+      "gate_left",
+      "gate_right",
+      "gate_tag",
+      "index",
+      "is_zero",
+      "left",
+      "less",
+      "main_loop",
+      "major",
+      "minor",
+      "node_bound",
+      "node_number",
+      "nodes",
+      "ok",
+      "path0",
+      "path1",
+      "path_bit",
+      "path_loop",
+      "premise0",
+      "premise1",
+      "proof_count",
+      "proofs_i",
+      "query",
+      "quotient",
+      "right",
+      "row_tag",
+      "rows_begin",
+      "saved_cursor",
+      "scan_field",
+      "scan_formula",
+      "scan_tag",
+      "scan_todo",
+      "tag",
+      "temp0",
+      "temp1",
+      "todo",
+      "unary_loop",
+      "valid"
+    ],
+    "declared_registers": 56,
+    "literal_blank_prefix": {
+      "steps": 1000000,
+      "halted": false,
+      "state": 23,
+      "named_state": "2.ret1",
+      "head": -456,
+      "ones_count": 786,
+      "first_full_main_entry": {
+        "steps": 39763,
+        "head": -19,
+        "ones_count": 203,
+        "ones_sha256": "32ca30ed68546043c8e4cb7bdcd97f4ffd06815a37b9ebb17743659d63a0c26a"
+      },
+      "ones_sha256": "32c36e0c053e77d6467e25b84396e96d912a2abff24d82d237ce3765b397be13"
+    },
+    "table_sha256": "324c23d31a98ca46cc83db970a0b943c76c509800ac732a86a3f17339dba25af",
+    "elapsed_seconds": 1.9492751937359571,
+    "source_sha256": "b4f1a8fc761c617a7b44b6844e3f9a544a60afd76e533ea913b714d6b1ef17c0"
+  },
+  "authored_sources_unchanged": true,
+  "seconds_in_checks": 163.05999999999997,
+  "publication": {
+    "sources": {
+      "Computability/BusyBeaver/Research/ZFC/term-register/term_register.py": "0e33b50207dd2db4afd0e7ef337fb250963040ee18bde00a6a764679b284e39d",
+      "Computability/BusyBeaver/Research/ZFC/term-register/full_program.py": "b6a1397a116f4b8d7ef7eb524e0b983b23c7ad34189e58abf01a7aae43cb91b7",
+      "Computability/BusyBeaver/Research/ZFC/term-register/test_read_node.py": "59e91fe7ae744a16a52b9934535307e9b71e4f37901c8f54435ff834daf54539",
+      "Computability/BusyBeaver/Research/ZFC/term-register/test_full.py": "684a08b010e660e0611bf61959561d7e52c4cfdbe168e5c0dd2eb4d0f7e53cde",
+      "Computability/BusyBeaver/Research/ZFC/term-register/supplementary.py": "3fdb7c1e310b2767a8ad474618897da94d332c2781bfa5d227c8c2496b657dfc",
+      "Computability/BusyBeaver/Research/ZFC/term-register/compile_full.py": "d8b126f936d05e5fe50ec2c78d7c245562a15ecc038e93acaf46eea1877d76af",
+      "Computability/BusyBeaver/Research/ZFC/term-register/measure_control.py": "b4f1a8fc761c617a7b44b6844e3f9a544a60afd76e533ea913b714d6b1ef17c0"
+    },
+    "runner": "Computability/BusyBeaver/Research/ZFC/check_term_register.py",
+    "runner_sha256": "964b1417219efc62b3c72180530f0cf6c5ee669eabebae8acde3b572f2be07d2",
+    "canonical_table": "Computability/BusyBeaver/Research/ZFC/term-register/full-search.tm",
+    "canonical_table_sha256": "324c23d31a98ca46cc83db970a0b943c76c509800ac732a86a3f17339dba25af",
+    "named_table_and_state_map": "Reproduced by compile_full.py; generated artifacts omitted from source checkout.",
+    "independent_table_parse_repeated_after_placement": true
+  },
+  "published_default_path_discovery": {
+    "status": "PREPARED",
+    "runner_sha256": "964b1417219efc62b3c72180530f0cf6c5ee669eabebae8acde3b572f2be07d2",
+    "source_hashes": {
+      "term_register.py": "0e33b50207dd2db4afd0e7ef337fb250963040ee18bde00a6a764679b284e39d",
+      "full_program.py": "b6a1397a116f4b8d7ef7eb524e0b983b23c7ad34189e58abf01a7aae43cb91b7",
+      "test_read_node.py": "59e91fe7ae744a16a52b9934535307e9b71e4f37901c8f54435ff834daf54539",
+      "test_full.py": "684a08b010e660e0611bf61959561d7e52c4cfdbe168e5c0dd2eb4d0f7e53cde",
+      "supplementary.py": "3fdb7c1e310b2767a8ad474618897da94d332c2781bfa5d227c8c2496b657dfc",
+      "compile_full.py": "d8b126f936d05e5fe50ec2c78d7c245562a15ecc038e93acaf46eea1877d76af",
+      "measure_control.py": "b4f1a8fc761c617a7b44b6844e3f9a544a60afd76e533ea913b714d6b1ef17c0"
+    },
+    "scope": "Only default-path discovery/copy replay after byte-identical publication; full six-stage PASS is the recorded pre-placement run."
+  }
+}

@@ -2658,3 +2658,114 @@ visual theorem-page review. Dossiers and offline recovery/replay preserve exact
 pins, implementation limits, harness correction and prior attribution.
 No new state record, global minimality, strict EPSC1 consistency separation,
 Coq rebuild or complete internal-ZFC machine endpoint follows from this intake.
+
+
+Batch155 adds five manuscripts from `fab89c5d26`, placed in `799bcd094d` and
+reconciled in `ed2953a68c` as sources42–46 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels), now46 manuscripts and
+still290 collection reports. All393 ancillary files are preserved;58 main
+article/PDF/delivery files remain in their committed archives. The five archives
+were retired in the placement commit, as the current intake procedure requires.
+
+The principal new machine idea is an ordinary dirty-stack barrier: in the actual
+candidate order, replacing a marked pop by a push gives a smaller candidate and
+an unmatched safe-stack credit. At PL=NP=D=0, arbitrary old formula/stack/cache
+data becomes harmless. Together with exact accelerated blank reachability this
+calibrates the older unpermuted runtime252 table in ordinary mathematics. Four
+standalone Lean components pass; the actual enumerator invariant and enormous
+table-specific bootstrap remain unserialized. This table is distinct from the
+current permutation252 table, whose closed Lean endpoint already compares
+literal nonhalting with Con(ZF), including Foundation. Con(ZFC) implies its
+nonhalting; Choice removal and internal PA proof remain separate.
+
+Finite assignment/class kernels reach901 native-equality bits or202 explicit-
+equality bytes under different signatures. Their nine-function witness sharing
+and member-selector arguments preserve exact dependencies. These payloads need
+complete costed certificate engines. Unary closure gains raw deductive
+EPSC1+BU↔EPSC1+AU↔fullEPSC and stronger bilateral-ray/support obstructions;
+neither bare EPSC1 equiconsistency nor all interpretations are ruled out.
+Two shifts with fixed quantifier rules cost22 stream controls; a finite-support
+universal pair costs24. These are name-transport counts, not full machine counts.
+Borrowed-register initializers produce complete299/300 controls; fused congruence
+produces271, retaining full equality and the logical-to-program proof boundary.
+The253 shortcut composition saves120 moves and zero states.
+
+All advertised executable finite suites and bounded searches reproduce on copies,
+including the20736-recipe fusion grid and117474 affine initializer evaluations.
+One supplementary subtree/commutation diagnostic has no supplied driver and is
+not independently replayed. Corrected nested-manifest adapters, all-code proof
+history integration, precise historical-pin corrections and independent reviews
+are recorded. Five scratch PDFs30/28/27/34/29 pages pass visual review; the base
+article and delivered files remain unchanged. No Coq build, new251 machine,
+general lower bound or internal PA/ZFC machine theorem follows from this intake.
+
+
+Batch156 adds three manuscripts from `2447a98214`, placed in `7755fdc9a8` and
+reconciled in `2799b08917` as sources47–49 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels), now49 manuscripts and
+still290 collection reports. All272 ancillary files are preserved;41 main
+article/section/bibliography/PDF/delivery-README files remain in their committed
+archives. The three ZIPs were retired with placement; no source is superseded.
+
+An ordinary set-coded proof reconstruction formalizable in ZFC concerns the
+existing permutation252 table. It keeps the closed external Lean Con(ZF)
+endpoint separate from the final Choice/internal-arithmetic formalization.
+Cofinal padding uses the upstream closed-zero decoder; hidden-coordinate
+logical controls refute completeness of a weakened cofinal-vacuity fragment,
+without claiming a CP/GIC consistency separation. Exact eight-family gap
+enumeration is not yet a costed machine. Complete compiler controls measure
+279 and corrected286 states with their calibration/startup obligations retained.
+
+The unchanged numerical calculus gains an exact sparse history and canonical
+square-root row bound, explicit arithmetic circuits and conservative bit costs.
+Redundant accepted histories and unfolded proof occurrences are distinguished
+from canonical rows and distinct cache entries. A productive continuation
+criterion and three separate bounded deletion families retain zero sufficient
+certificates. A reset-free involutive orbit tour is complete as ordinary
+mathematics; its ZFC query, complete writer and binary state price remain open.
+
+Six candidate counters admit arbitrary formula/stack/additive-parameter/cache
+data. The exact conservative future credit and residual-pointer formula are
+paper results, not a necessity test for actual data. Subsequent current Lean
+checks the actual scheduler barrier and all six arbitrary-data starts; the
+sharper credit classifier, new binary initializer and PA representation remain
+separate. The HOD/selector-Choice and internal formula-decoder arguments are
+ordinary proof adapters, with their all-code formal implementation still open.
+
+All source47/48 advertised functional suites and bounded searches reproduce,
+including64 compiler alternatives,166413 incoming-action recipes, and the
+separate55471/132048 continuation searches. Source49's two full fusion ledgers, closure/differential controls, all238
+rotations and two fixed-iteration stochastic runs also reproduce.
+The offline helper retains functional identities while omitting bulk manifests.
+Three scratch PDFs38/37/26 pages were rebuilt and visually reviewed; source49's
+two underfull paragraphs are acceptable. Base/delivered files remain unchanged.
+No new state record, lower bound, Coq build or finished internal PA/ZFC machine
+endpoint follows from this intake.
+
+
+Batch157 adds one manuscript from `85633fd2f5`, placed in `e2ceaa6f8c` and
+reconciled in `316f9284f1` as source50 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels), now50 manuscripts and
+still290 collection reports. All62 ancillary files are preserved; five
+manuscript/PDF/delivery files remain in the committed archive, retired in the
+placement. No source is superseded and the seeded article stays unchanged.
+
+Weighted quotation and height bounds give exact short parsing fuel on all
+codes. Normal constructor trees biject with all naturals, with only B0(Z,Z)
+collapsed. The local quoted and constructor-only certificate interfaces retain
+all12 C254 rules, both bundle gates and fixed falsity. Small-certificate bounds
+are existence bounds, and the decoder/compiler/blank initializer remain open.
+The current Lean Cantor arithmetic component closes only one elementary part
+of the proposed internal representation; complete Choice and PA bridges remain
+open. No new machine, state bound or internal endpoint is supplied.
+
+Both independent mathematical reviews and10 substantive replay jobs pass;
+one provenance-only loop is explicitly skipped. The complete132,048-recipe
+degree-one search reproduces its journal but repeats source48's family. The
+submitted degree-two partition is exact and partial; a fresh600-second run
+reproduces723,940 prefix nodes and independently validates its smaller explored
+partition, without a survivor. A34-move decoder identity and unbounded-history
+obstruction concern a specified prepared representation, not blank reachability
+or a universal state lower bound. Both25-page source PDFs rebuild cleanly and
+receive visual review. The offline helper recovers all67 original files and
+replays the finite checks without modifying delivered files.

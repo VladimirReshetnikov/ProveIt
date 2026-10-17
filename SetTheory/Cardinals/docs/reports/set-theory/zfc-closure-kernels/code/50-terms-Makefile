@@ -1,0 +1,8 @@
+PYTHON ?= python3
+
+.PHONY: verify pdf
+verify:
+	$(PYTHON) -B code/replay_all.py --output /tmp/c254-package-replay.json
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=output/pdf report.tex

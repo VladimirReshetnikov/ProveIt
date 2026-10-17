@@ -1,0 +1,48 @@
+{
+  "verdict": "CLEAN",
+  "kind": "Independent full source/audit/statement and exact-byte evidence review; no Lean builds",
+  "source": {
+    "path": "/tmp/zfc-proof-word-contract/sources/BusyBeaver/ZFC/ArithmeticProofWordContract254.lean",
+    "sha256": "0b9c6a4c6d153e448f07e836a41c355f286a0c10c38471687ff3b5143b36855a"
+  },
+  "audit": {
+    "path": "/tmp/zfc-proof-word-contract/Audit.lean",
+    "sha256": "f1dd2237ca526a603fae3674d05b268513376adcd27137d6594644bd86d26b6f"
+  },
+  "verification": {
+    "path": "/tmp/zfc-proof-word-contract/run2/verification.json",
+    "sha256": "e5ad427858a1f11be3a826d275e443650a844cf08b47de8acec73bbd56e9eb29"
+  },
+  "counts": {
+    "source_lines": 96,
+    "reused_projects": 31,
+    "providers": 4,
+    "pre_post_inputs": 77,
+    "rehash_comparisons": 152,
+    "axiom_probes": 6,
+    "callers": 8,
+    "warnings": 0
+  },
+  "findings": [
+    "Contract quantifies all initial top/stack values and retains exact coded state/result conventions, including every saved stack.",
+    "The checked total Delta1 graphs for validator value, rawWord, state and eval make the universal contract Pi1 rather than Pi2.",
+    "Good is invalidity or the exact target-minus1 contract; zero code is vacuous through the actual validator zero equation.",
+    "The bounded universal prefix preserves Pi1 definability. pi1_succ_induction uses the definable exact predicate, not an arbitrary unrepresented induction relation.",
+    "The successor proof is explicitly conditional on every raw PrefixGood\u2192Good(raw+1) instance. That hypothesis is not discharged or hidden.",
+    "major_input_of_prefix legitimately instantiates the universally quantified saved stack at P(minorTarget,stack); no hidden forallW induction premise or choice of representatives occurs."
+  ],
+  "scope_limits": [
+    "No unconditional accepted-node compiler correctness, command execution of compiled proofs, scheduler, machine, or PA endpoint is asserted by this framework.",
+    "This review rehashes the identified scoped existing external cache; it does not rebuild dependencies."
+  ],
+  "builds_by_reviewer": 0,
+  "detailed_check_count": 152,
+  "full_scratch_review_sha256": "24acc2f3e9fc2e85ed3a50fa77fb3437ebe4e2cc59fb30f281f0b134a5c488e0",
+  "root_review": {
+    "full_final_source_and_audit_read": true,
+    "current_inputs_rehashed": 77,
+    "fresh_object_rehashed": true,
+    "portable_checker_read_and_prepared": true,
+    "twelve_case_successor_premise_still_explicit": true
+  }
+}

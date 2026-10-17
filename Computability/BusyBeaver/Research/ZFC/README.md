@@ -1,17 +1,20 @@
 # Smaller machines for Con(ZFC)
 
 The goal is a binary, single-tape machine with fewer than 254 nonhalting
-states whose blank-tape non-halting is provably in ZFC equivalent to
-Con(ZFC). The goal remains open. All new formal work uses Lean.
+states whose blank-tape nonhalting is provably in **PA** equivalent to
+Con(ZFC), as originally requested. The external Lean equivalence is now proved
+for a 252-state machine; its internal PA proof remains open. All new formal
+work uses Lean.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
 cost measure that decides whether a candidate improves the baseline.
 
 The [252-state register-permutation machine](candidate-permutation252/README.md)
-now has a [closed Lean endpoint](binary_perm252.md): its literal blank-tape
-nonhalting is equivalent to consistency of ordinary ZF, including Foundation
-and Power. It retains the complete original proof-search program. The proof
+now has a [closed ZFC endpoint](choice_calibration254.md): its literal blank-tape
+nonhalting is equivalent to consistency of ZFC. The proof passes through the
+checked ordinary ZF comparison, including Foundation and Power, then Choice in
+the constructible subtype. It retains the complete original proof-search program. The proof
 includes all 82,552 bootstrap steps, all 8,391 decoder guard cases, unbounded
 register operations and both directions of global binary simulation. No
 coverage or register-operation premise remains. The exact table, full startup
@@ -21,24 +24,337 @@ older reduced-calculus 252-state experiment below.
 The [direct well-founded-model construction](wf_model.md) now proves in Lean
 that the exact native/numerical calculus is equiconsistent with ordinary ZF,
 including Foundation and Power. It uses the quotient's existing collection
-resource. Choice removal remains assigned to the constructible-class lane;
-[PA internalization](pa_internalization.md) requires an explicit arithmetic
-proof-code bridge. The original request asks for a PA proof, which is stronger
-than the later goal record's ZFC metatheory target.
+resource. The [constructible-class lane](constructible_order.md) now supplies
+Choice and the external ZFC refutation comparison.
+[PA internalization](pa_internalization.md) still requires an explicit arithmetic
+proof-code and finite-trace bridge. The original PA request remains the target
+despite the later stored goal record saying ZFC.
+
+The [167-unit integration](results/binary-zfc252-integration-verification.json)
+freshly checks both Choice/binary compositions and every affected consumer:
+seven modules, eighteen axiom reports and twelve callers, with 160 source- and
+object-matched previously checked imports. It extends the earlier
+[165-unit integration](results/choice-calibration254-integration-verification.json).
+The final theorem retains no model, Choice, coverage or startup premise and
+uses only standard Lean axioms. The earlier checkpoints below document the
+steps leading to this result; their then-open Choice interfaces are now closed.
+
+The latest [168-unit integration](results/arithmetic-machine-perm252-integration-verification.json)
+adds the [exact numeric machine simulation](arithmetic_machine_perm252.md).
+Two natural-number tape halves agree with every cell of the actual blank run
+at every natural time, including the final halting write and move. The new
+module and umbrella pass fresh checks, with 166 source/object-matched imports
+reused; nineteen axiom probes and twenty-seven callers pass.
+
+The separate [arithmetic machine extension](arithmetic_machine252.md) now
+represents all504 actions, a complete encoded configuration step, and iteration
+by fixed arithmetic formulas. Its run graph is total at every internal time in
+every IΣ1 model and agrees with the actual Core run at every ordinary natural
+time. A closed Σ1 sentence expresses actual blank halting; PA proves unique
+totality of the evaluator. Eight fresh arithmetic modules/audits pass196 axiom
+reports and237 callers. The internal PA proof connecting this sentence to ZFC
+refutations remains open.
+
+The [169-unit core integration](results/command-word254-integration-verification.json)
+adds the [numeric command-word codec](command_word254.md): total encoding and
+decoding, exact command-tail replacement, and concatenation on all natural
+codes. It distinguishes empty word0 from the original nonempty candidate0.
+Two units are freshly checked and167 source/object-matched imports reused;
+21 axiom reports and25 callers pass. The separate
+[bounded arithmetic tail/replacement graphs](arithmetic_command_word254.md)
+also pass a narrow fresh check with Cantor:38 reports and42 callers, reusing14
+matched core imports. The subsequent
+[represented concatenation](arithmetic_command_append254.md) proves the exact
+recurrence at every internal index and all-Nat command-list agreement. Its
+24 axiom reports and 30 callers pass. The complete proof-to-command compiler and its internal execution contract
+are now checked by the later word-history and correctness modules below.
+The [validator recurrence](arithmetic_history_recurrence254.md) also holds at
+all internal indices: accepted MP/GEN parents force acceptance of their actual
+child codes. Eleven reports and twelve generic callers pass.
+The [actual compiler-block circuits](arithmetic_command_blocks254.md) now have
+fixed arithmetic graphs and symbolic agreement with the existing command
+lists, including all leaf, MP and GEN blocks. Fifteen reports and twenty-five
+callers pass; the later execution modules below establish their internal
+command contracts.
+The [internal word laws](arithmetic_command_word_laws254.md) prove tail
+replacement identities and append associativity for arbitrary internal codes,
+with six reports and seven callers.
+The [arithmetic proof-word history](arithmetic_proof_word254.md) now builds
+these words at every internal proof code, then applies the original validator
+once at its public output. Twenty-eight reports and twenty-one callers pass.
+Its PA theorem asserts unique totality. The later correctness module below
+proves accepted-proof execution; consistency transport remains open.
+The [quotation and nonemptiness adapters](arithmetic_proof_word_adapters254.md)
+give exact structural-compiler agreement on ordinary quoted proof trees,
+including invalid ones, and identify empty public outputs with validator
+rejection at every internal code. Separate audits pass two/eighteen and
+twelve/eighteen reports/callers.
+The [actual command-step graph](arithmetic_command_step254.md) agrees with
+`Enum254.cstep` on every natural command and represents its exact effects on
+every internal IOpen input. Replacing the rest pointer preserves that effect.
+The two audits pass seventeen/nineteen and three/four reports/callers.
+The [internal word interpreter](arithmetic_command_run254.md) now represents
+all internal time steps and proves termination on every coded word, with
+halt and successful completion kept distinct. Its twenty-five reports and
+thirty callers pass. PA proves unique totality of this evaluator.
+The [execution adapters](arithmetic_command_execution254.md) now prove
+agreement with the existing natural executor and all-internal successor and
+append execution, passing twelve/fifteen and fifteen/twenty reports/callers.
+The [Π1 contract interface](arithmetic_proof_word_contract254.md) proves that
+compiler correctness for every initial top and saved stack admits IΣ1
+induction. Six reports and eight callers pass. The
+[fixed block execution contracts](arithmetic_command_block_execution254.md)
+now cover discard, all leaves, GEN and MP, passing 19/20, 12/12 and 11/8
+reports/callers. The [compiler correctness theorem](arithmetic_proof_word_correct254.md)
+discharges the twelve-case successor premise and proves the exact contract
+for every accepted internal code, with five reports and thirteen callers.
+The [represented refutation word](arithmetic_refutation_word254.md) then halts
+from every working state for each internal accepted falsity proof, passing
+eleven reports and twelve callers. The scheduler comparison below is now
+checked; binary-trace and internal proof-system transport remain open.
+The [arithmetic scheduler step](arithmetic_enumerator_step254.md) now models
+the actual six-register fetch/execute operation at every internal input and
+agrees with `Enum254.enumStep` on every ordinary state, passing fourteen
+reports and twelve callers. Its [internal iterator and fairness theorem](arithmetic_enumerator_run254.md)
+prove that every candidate is reached unless the scheduler halts earlier.
+A positive word halting from every working state therefore forces scheduler
+halting. Sixteen reports and thirteen callers pass. The proof records the
+first completed-word witness before the scheduler resumes enumeration.
+The [validator-to-scheduler composition](arithmetic_enumerator_refutation254.md)
+now proves a fixed arithmetic implication in IΣ1 and PA: every internal
+accepted falsity proof forces scheduler halting from pointer/candidate zero
+and arbitrary working registers. Five reports and nine callers pass. The
+[two-way blank scheduler comparison](arithmetic_enumerator_equivalence254.md)
+now proves the fixed validator/scheduler equivalence in IΣ1 and PA. Its
+reverse direction uses certified initial working fields. Fourteen reports
+and seventeen callers pass for soundness and composition. The internal
+binary and ZFC proof-code comparisons remain open.
+The [ordinary-Nat scheduler adapter](arithmetic_enumerator_run_nat254.md)
+also proves exact agreement with actual `Enum254.run` for every time and
+six-register state, and identifies arithmetic blank halting with the native
+`Enum254.Halts` predicate. Eleven reports and fourteen callers pass.
+The [original validator's constructor equations](arithmetic_proof_constructors254.md)
+now produce accepted internal proof codes for every original rule, with
+seventeen reports and eighteen callers. They support the checked
+[bounded proof-witness stack invariant](arithmetic_enumerator_soundness_plan254.md)
+for the reverse implication.
+The [internal stack-tail drain](arithmetic_stack_tail254.md) now bounds every
+stream by its numerical code, and the [bounded certificate module](arithmetic_stack_certificate254.md)
+proves Δ1 stack certification, push/pop, bound weakening, zero certification
+and cached-falsity extraction. Their audits pass fourteen/fifteen and
+twenty-four/seventeen reports/callers. The
+[local preservation theorem](arithmetic_command_preservation254.md) covers
+every actual command, preserves one explicit bound, and extracts an accepted
+falsity witness on halt. Twelve reports and fifteen callers pass.
+The [internal positive-clock transport lemma](arithmetic_positive_simulation254.md)
+then supplies a conditional halting-equivalence argument without a global
+clock bound, passing four reports and four callers. Its concrete binary
+simulation premises remain to be proved.
+The [arbitrary-initial binary iterator](arithmetic_machine_run_from_perm252.md)
+now supplies actual internal run composition, full halted-tape absorption
+and equality with the blank evaluator, passing nineteen reports and twenty
+callers. The [arithmetic bootstrap theorem](arithmetic_bootstrap_perm252.md)
+transfers the checked 82,552-step prefix into every IΣ1 model and proves its
+fixed sentence in PA, passing eleven reports and thirteen callers.
+The [prefix-removal theorem](arithmetic_machine_prefix_perm252.md) now
+equates blank halting with halting from that exact bootstrap target in every
+IΣ1 model, passing four reports and six callers. The
+[internal tape-prefix algebra](arithmetic_tape_prefix254.md) and
+[actual binary scan](arithmetic_machine_scan_perm252.md) prove an unbounded
+endpoint for a literal table row at arbitrary internal lengths and entire
+tape halves. Their audits pass ten/ten and eight/eleven reports/callers.
+The complete internal register and dispatcher simulation remains open.
+The [uniform scan module](arithmetic_machine_uniform_scans_perm252.md)
+now handles zeros and ones in both directions, passing 21 reports and 18
+callers, including four concrete table rows. The theorems retain the full
+numeric tape at arbitrary internal scan lengths.
+The [zero-register block iterator](arithmetic_zero_register_blocks254.md)
+represents an internally long spare suffix and proves exact concatenation,
+two-bit read and ordinary-Nat tape-code laws, passing fourteen reports and
+fifteen callers. Internal preservation of the spare shape remains open.
+
+The [finite proof-template compiler](model_coded_core_compiler.md) now handles
+arbitrary internal free parameters by compiling the existing logical proof
+core and cutting supplied translated-axiom proofs at the root. Four local
+modules and two audits pass, with six axiom reports and fourteen callers.
+Its source proof remains standard finite syntax; translating arbitrary
+internal source proofs remains part of the PA bridge.
+The separate [internal axiom-proof transport](internal_axiom_proof_transport.md)
+now handles arbitrary internally coded derivations when both theories use
+the same language and the target proves every well-formed source axiom.
+Three reports and seven callers pass. The actual C254/ZFC formula and axiom
+translations remain to be supplied.
+The [represented set-schema constructors](../../../../Logic/Interpretability/ZFCinPA/model_coded_schema_axioms.md)
+now provide actual internal ZF/ZFC Separation and Replacement axiom proofs
+for every shift-fixed internal matrix of arity one or two. Eleven reports
+and ten callers pass. This earlier checkpoint retains shift-fixedness;
+the later all-internal closing construction below removes that premise for
+universally closed schema axiom proofs.
+The subsequent lifted-PA client supplies the finite axiom witnesses itself.
+Its fresh five-module check passes nine reports and twenty callers, including
+specialization at matrices with internal free parameters.
+The [fixed-template arithmetic graphs](model_coded_template_graph.md) now
+represent this substitution and yield actual IΣ1/PA provability statements
+quantifying over every internal matrix. Six fresh modules and four audits
+pass twenty-two reports and thirty-seven callers.
 
 The complete binary endpoint passed a
 [153-unit source-verified integration](results/binary-perm252-integration-verification.json):
 all151 reused source identities match successful scoped builds, with fresh
 standard-theory bounds, umbrella and joint callers. This is not a full153-module
-rebuild. The closed theorem also proves Con(ZFC) implies nonhalting; the reverse
-ZFC implication and the internal PA proof remain open.
+rebuild. At this checkpoint the ZFC direction was one-way; the later Choice
+calibration above closes the reverse implication. The internal PA proof remains open.
+
+**Choice transport (closed).** `ConstructibleChoice` proves Gödel's
+theorem in Lean: the constructible class of any model of `ZFax_s` is a model
+of `ZFCax_s`, hence `BProv ZFax_s [] ⊥ ↔ BProv ZFCax_s [] ⊥`
+(`zf_refutation_iff_zfc_refutation`, standard axioms only). With the closed ZF
+endpoints this gives `Endpoint254.literal_nonhalting_iff_zfc_consistent`
+(the literal `Prog254` register program never halts iff Con(ZFC)) and
+`BinaryZFC252.nonhalting_iff_zfc_consistency` (the 252-state blank machine
+never halts iff Con(ZFC)). The original remote check of `BinaryZFC252` used a
+typed stub. The merged version now passes the verified integration against
+the actual `BinaryPerm252` object and its source-matched full dependency
+closure, including the complete site certificates. The independent
+[source review](results/binary-zfc252-review.json) records the exact interfaces. See
+[tarski_logic_layer.md](tarski_logic_layer.md).
 
 The later merged `SatSupport` module also passed a
 [154-unit integration](results/sat-support-integration-verification.json).
 It proves uniform internally finite support for satisfaction on every internal
 formula code, including nonstandard codes. The independent
 [Choice-route review](constructible_choice_review.md) records its scope; the
-internal well-order and Choice arguments remain open.
+internal well-order and Choice arguments were still open at this checkpoint.
+
+The [156-unit integration](results/history-abs-integration-verification.json)
+checked the first part of `ConstructibleAbs`, `Code254History` and the umbrella,
+with 153 source-matched reused units. The
+[numeric history checker](code254_history.md) agrees with the original proof
+validator on every natural input, including invalid codes. It is the next
+concrete evaluator for the PA representation work, not an internal PA theorem.
+
+The later [157-unit integration](results/barrier-constructible-integration-verification.json)
+freshly checks the extended `ConstructibleAbs`, the actual enumerator's
+[stack-barrier foundations](enum_stack_barrier254.md), and the umbrella;
+154 source-matched units are reused. Formula codes, definable subsets and
+hierarchy stages now compare between the ambient model and its constructible
+submodel, proving **V=L inside that submodel**. The proof covers internal
+nonstandard codes and uses internally finite environment restrictions.
+Internal well-orders and Choice were still open here. The enumerator lemmas establish
+the local stack invariant and the injection of NIP occurrences into earlier
+DROP occurrences; the global trace/counting theorem remains separate.
+
+The [160-unit integration](results/stack-count-order-integration-verification.json)
+now closes that counting link in
+[`EnumStackCount254`](enum_stack_count254.md). It proves the actual enumerator's
+halting/refutation equivalence from `pl=np=d=0` with arbitrary current formula,
+stack and cache, and supplies a general late-start credit interface. Four units
+were freshly checked and 156 source-matched units reused. The merged
+`InternalWO` and `OrderRec` modules also pass: they provide internal well-order
+operations and an ordinal-recursive order-extension interface. A concrete
+constructible well-order and Choice transport were implemented in the later
+164- and 165-unit checkpoints.
+
+Intake156/source49's [six dirty starts](dirty_reset254.md) are now proved for the
+actual enumerator: next candidate `0,1,2,4,5,6`, empty command pointer, and
+arbitrary current formula, stack, additive parameter and cache. Counter3 with
+cache1 is checked to halt immediately. The
+[161-unit integration](results/dirty-reset-integration-verification.json)
+freshly checks `DirtyReset254` and the umbrella, with 159 source-matched reused
+units. This enlarges the proved logical targets for initializer searches; it
+does not supply a new binary initializer or reduce the 252-state table.
+
+[Intake156](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch156-sparse-certificates-reset-synchronization-and-the-zfc-comparison)
+reconciles the three reports from `2447a98214`. Its useful new directions are a
+canonical sparse proof certificate with square-root row bound, the six dirty
+starts now ported above, and a classical HOD implementation plan for Choice.
+All advertised finite compiler, fusion and rotation controls reproduce; none
+improves 252 states. The ordinary ZFC reconstruction and HOD arguments remain
+distinct from the later checked external Choice comparison and the still-open
+internal PA/ZFC endpoints.
+
+The later [163-unit integration](results/code-tuple-order-integration-verification.json)
+checks the merged [internal code and tuple orders](internal_code_tuple_order.md):
+every recognized internal formula code is in a represented well-order, and
+tuples of every internal natural length admit a lexicographic well-order.
+Four units are freshly checked and159 source-matched units reused. Nonstandard
+codes and lengths are included. The subsequent
+[constructible order](constructible_order.md) supplies bounded key sets and
+Choice under V=L; [Choice calibration](choice_calibration254.md) applies it
+inside the actual constructible subtype and closes the external ZFC endpoint.
+
+The separate [arithmetic Cantor adapter](arithmetic_cantor.md) now proves the
+exact pairing and bounded inverse graphs in arbitrary IOpen models, then
+identifies them with the live numerical checker on every natural input.
+Its27 axiom probes and20 callers pass using pinned Foundation/Mathlib caches.
+This closes the pairing component of the PA representation plan. The history
+extension below now supplies represented evaluation; the full coded proof/trace
+comparison remains open.
+
+The subsequent [constructor arithmetic graphs](arithmetic_code254.md) cover all
+four exact base4 operations and the complete rho1 payload branch. Their fixed
+parameter-free bounded formulas work in every IOpen model and agree with the
+actual numerical definitions on all natural inputs. Fresh checks of this module,
+Cantor and both audits pass56 axiom probes and47 callers. The following extension
+adds the other positive templates. These arithmetic modules use separate
+Foundation/Mathlib dependencies and are outside the Std-only core runner.
+
+The [fixed-template extension](arithmetic_templates254.md) now covers rho2–8,
+both theory components and the complete original bundle. A reusable finite
+circuit compiler produces fixed bounded formulas and proves their correctness
+in every IOpen model. The three-module arithmetic chain passes97 axiom probes
+and83 callers. All positive template graphs are present; the gated twelve-case
+row function is supplied by the next extension.
+
+The [full arithmetic rule row](arithmetic_row254.md) now includes all twelve
+cases, failed MP, both bundle gates and invalid tags. Its fixed bounded graph
+works in every IOpen model and agrees with the actual history checker's row on
+every natural input, with child results supplied explicitly. The four-module
+chain passes 114 axiom probes and 120 callers. The next extension supplies the
+history lookup, construction and outer proof-code decoding.
+
+The [represented history checker](arithmetic_history254.md) now has fixed Σ1
+and Δ1 graphs and unique Boolean outputs at every element of every IΣ1 model.
+Its standard interpretation agrees with `Code254Proof.check` on every input,
+including invalid codes. Lean also proves actual IΣ1 and PA derivability of the
+fixed checker-totality sentence. Internal translations of proof codes and
+binary traces remain necessary for the requested PA equivalence with Con(ZFC).
+The five-module arithmetic verification passes 151 axiom probes and 164 callers.
+
+The first [complete term-certificate register implementation](term-register/README.md)
+now has an actual blank binary table and full cost: **4,704 working states**.
+It retains all twelve rules, both gates and fixed falsity. Finite differential
+tests pass, but it is far larger than the checked 252-state machine. Repeated
+pattern-path traversal dominates its control; supplied constructor witnesses
+and a shared checking loop are the next concrete comparison.
+
+[Intake157/source50](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
+adds exact quotation bounds and canonical constructor-only certificates for all
+twelve C254 rules, with both freshness gates and a fixed contradiction target.
+Its checker avoids computing the large formula integers; the binary codec,
+enumerator and complete state cost remain open. The complete132,048-recipe
+search repeats source48's family; the larger two-incoming search is partial.
+Both the certificate proofs and continuation obstruction are ordinary
+mathematics, separate from the existing Lean endpoint and the PA target.
+
+The new [constructor-witness experiment](term-certificates/README.md) develops
+that representation further: duplicate arena nodes are allowed, both freshness
+conditions carry distinguishing paths, and explicit constructor IDs eliminate
+template searches. It includes a total finite binary codec and fair search
+specification for the same full calculus. All twelve rule controls, adversarial
+duplicate/gate cases, 261 template comparisons and 262,143 short binary words
+pass the finite checks. A deep bundle needs 62 supplied-record constructor
+checks instead of 297,059 template-lookup visits in the first prototype.
+These are verifier operation counts; tape access, fixed data, initialization
+and the complete TM state cost still need implementation and measurement.
+
+The subsequent [fixed-pattern matcher](term-certificates/pattern-matching.md)
+eliminates the supplied constructor IDs too. It handles dynamically normalized
+zero and retains the exact twelve rules, both gates and fixed falsity target.
+The small bundle's unary certificate shrinks from 4,582 to 2,506 bits; matching
+uses 98 constructor checks instead of the shared circuit's 62. All 261 template
+controls and 262,143 short-word parses pass. This trades certificate size for
+more reads; complete machine compilation is still needed to establish a saving.
 
 A measured attempt to save a register by changing Cantor pairing to a
 [power-of-two encoding](register_lifetime.md) retained the full calculus but
@@ -56,6 +372,24 @@ source-program guards from the zero-register start and re-tests503 affected
 fold recipes. None passes the bounded checker; fuel and abstraction stops
 remain distinct from counterexamples. Three literal continuation probes also
 show why different program counters need a proved semantic relation.
+
+A new [finite quotient checker](finite_quotient_frontend.md) replaces the
+source44 kernels' explicit equality-clause enumeration with class labels,
+three predicate tables, and retained-function congruence checks. Its exact
+finite `stage_exists` decision uses one packed candidate counter and direct
+literal endpoints. It removes 735 stored clause bits and reduces the largest
+native substitution interface from six variables to four. Ordinary equivalence
+and practical finite tests are recorded; the stage cutoff can be extremely
+slow, and no complete RM/TM implementation or state saving is yet established.
+
+A wider ordinary [initializer credit criterion](dirty_initializer_credit.md)
+allows an arbitrary dirty stack bottom when the safe prefix covers the exact
+DROP-minus-NIP balance skipped by the starting candidate. Its AX-first adapter
+has 161 eligible counters below 100,000 in the finite syntax audit. A replay of
+28,672 map/start cases found only the known clean initializer; the all-start
+portion is redundant with the earlier blank-ray classification. Under the
+retained universal runtime contracts all 504 rows are used, so another fold
+needs a weaker phase or continuation invariant, or a different evaluator.
 
 The [attributed upstream baseline](../../../../lib/jeff-busy-beaver-zfc254/README.proveit.md)
 is imported at commit `297ab8df7e5de329605c3875b4934643b371a5e3`.
@@ -193,6 +527,20 @@ unexpanded. These reports supply no strict EPSC1 consistency separation or
 new closed binary endpoint. Their preserved evidence and offline recovery are
 in the host's batch154 appendix and `code/reproduce_154.py`.
 
+Batch155 adds sources42–46 from `fab89c5d26` (placement `799bcd094d`,
+reconciliation `ed2953a68c`) to the
+[same host](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch155-dirty-stack-barrier-nine-function-kernels-and-transport-controls).
+The useful new initialization idea is an ordinary enumeration-order barrier
+that shields arbitrary old stacks at PL=NP=D=0. It calibrates the older
+unpermuted runtime252 table by a separate huge accelerated bootstrap; its four
+checked Lean components do not yet prove the actual-enumerator theorem.
+Finite nine-function kernels, unary BU deduction/support obstructions and
+22/24-control name transports are new compiler inputs. Complete measured
+265/271/299/300 controls do not beat the current252. All executable suites and
+bounded searches reproduce, with exact limits in the five dossiers and offline
+`code/reproduce_155.py`. The current closed permutation252/Con(ZFC) endpoint
+remains distinct; its internal PA proof remains open.
+
 [subset_only.md](subset_only.md) proves, at the mathematical level, that
 the membership arm can be removed from source 02's mixed local bound.
 A positive singleton-decoder hull covers the root's members without
@@ -248,6 +596,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `RawPSCModel.lean` | Raw PSC model indexed by `EqualityFreeForm`: named definable instances supply cover/Separation/Union, semantic saturation and purity-cut resources; guarded hull transfer retains explicit local-bound and invariance hypotheses. |
 | `Table253.lean` | Attributed literal mira-emmy 253-state table and actual first 1,024 blank-tape steps, checked by kernel reduction. |
 | `FiniteZipper.lean` | Generic zero-exterior tape representation; one-step and balanced-block simulation to the existing Core semantics, every integer tape read and earlier activity from an active endpoint. |
+| `ArithmeticMachinePerm252.lean` | Exact two-natural tape representation and all-time simulation of the actual Core blank run, with halting write/move and invalid state behavior explicit. Includes the frozen252 table binding; fixed first-order arithmetic run graphs remain separate. |
 | `Boot253.lean` | Full312,975-step actual blank bootstrap of the attributed253 table, state33/head−17 and complete tape frame including158 spare blocks; arbitrary runtime and consistency bridge remain open. |
 | `Table252.lean` | Literal experimental table, 252-state/504-row bounds, both halt edges and the normalized row, checked by kernel `decide`. |
 | `FormulaRPN.lean` | Three-constructor NAND formula syntax; exact prefix-token parsing in both directions; De Bruijn scope check and a closed semantic contradiction. |
@@ -264,18 +613,20 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `TarskiFalsity.lean` | The machines' relative falsity `F = Rel(0,0)`: the literal row set `ThmG (rel 0 0)` is sound for irreflexive models and complete for ⊥-free theories and targets; the comparison axiom IR is a generalized identity, not a row. |
 | `Code254.lean` | All-natural base-four decoder and original numerical calculus; soundness for decoded bundles, completeness under no nonempty model of literal encodable bundles. The corrected statement explicitly requires a valuation; `NativeDecoded254` now compares the two bundle model classes. |
 | `Code254Proof.lean`, `Code254ProofCompiler.lean` | Finite raw proof trees, a total natural-number checker and `C254 n ↔ ∃ code, check code n = true`; a structural compiler to the existing enumerator with exact block contracts and an explicit refutation command word. These external coding theorems are prerequisites for PA representation, not that representation itself ([checker](code254_proof.md), [compiler](code254_proof_compiler.md)). |
-| `Enum254.lean` | The abstract six-register enumerator halts from zero iff code 1 is `C254`-derivable. Every candidate is reached unless an earlier one halts; proof blocks handle arbitrary retained registers. Model corollaries explicitly require a valuation. Its literal Prog254/RegisterPath simulation is checked; complete binary coverage remains pending. |
+| `Code254History.lean` | Numeric12-rule course-of-values evaluator; `accepts_iff_check` covers all codes/conclusions and `c254_iff_history` gives exact derivability. The separate `ArithmeticHistory254` extension now represents this evaluator and proves checker totality in PA. |
+| `Enum254.lean` | The abstract six-register enumerator halts from zero iff code 1 is `C254`-derivable. Every candidate is reached unless an earlier one halts; proof blocks handle arbitrary retained registers. Model corollaries explicitly require a valuation. Its literal Prog254/RegisterPath simulation and the permutation252 complete binary composition are checked. |
 | `RMDag.lean`, `Dag254.lean`, `L2Lib254.lean`, `L2Macros254.lean`, `L2Control254.lean`, `L2Axioms254.lean`, `L2AxiomsEval254.lean`, `L2Root254.lean` | L2 for the shared 219-node register program (attributed data port of the pinned `Dag254.v`, used by the 253- and 254-state tables): Wade's structured semantics with determinism; every loop, `pair`, the unpair walk, all stack/formula macros, the equality test, fetch, MP/NIP/DROP and the generated `axioms()` closed forms; `root_step` (one root run is one `enumStep`, halting included), `iter_halts_boot` and `program_halts_iff : IterHalts dag254 (nextproof = 2) ↔ C254 1`. |
 | `RMEquiv.lean`, `RMEquiv254.lean` | L3: Wade's path semantics and the structured semantics agree for every well-formed DAG (`halts_iff_iterHalts`, forward and backward simulation up to trailing zero bits, Boolean well-formedness check); the 219-node program is well-formed (kernel-checked tables), giving `path_halts_iff : Halts pathDag254 (nextproof = 2) ↔ C254 1`. |
 | `RMBisim.lean`, `Bisim254.lean` | L4: segment bisimulations transfer path halting for every register file (symmetric relation defined by certificate lookup, so one check gives both directions); 3010 related test-site pairs between the literal 6459-row `Prog254` and the 219-node DAG, kernel-checked in 16 chunks, giving `literal_halts_iff : Halts Prog254.program Prog254.initial ↔ C254 1` ([tarski_logic_layer.md](tarski_logic_layer.md)). |
-| `NamedZF.lean`, `InternalOrd.lean`, `InternalRank.lean`, `ZFRank.lean`, `ZFNative.lean`, `Endpoint254.lean` | ZF proves the native axioms: named formulas over `Form` with named Separation/Replacement; inside any model of the ZFAxioms bundle with Power and set Regularity (no external well-foundedness), ordinals with trichotomy, the cumulative hierarchy by transfinite recursion, the rank theorem, Collection for every matrix and power containers; hence every `ZFax_s` model satisfies `NativeAx`, `zf_refutation_of_native` by `theory_transfer`, and `literal_nonhalting_of_zfc_consistent : Con(ZFC) → ¬ Halts Prog254.program Prog254.initial` ([tarski_logic_layer.md](tarski_logic_layer.md)). The reverse ZF comparison is now checked in `WFTheory`; Choice remains open. |
-| `TransRec.lean`, `ConstructibleDef.lean`, `Constructible.lean`, `ConstructibleReflect.lean`, `ConstructibleZF.lean` | Gödel's L inside any ZF model (no external well-foundedness): transfinite recursion for a definable stage operation; `Def(X)` through BoundedZFCConsistency's certificate satisfaction of coded formulas, with the truth bridge for standard formulas; `L_a ∩ Ord = a`; pairing, union and power in L; the reflection theorem for the L-hierarchy (closed limits by ω-iteration of a definable closing step); Separation and Replacement in L; `L_models_ZF`: the constructible substructure satisfies `ZFax_s`. AC in L (hence the Choice transport) remains ([tarski_logic_layer.md](tarski_logic_layer.md)). |
+| `NamedZF.lean`, `InternalOrd.lean`, `InternalRank.lean`, `ZFRank.lean`, `ZFNative.lean`, `Endpoint254.lean` | ZF proves the native axioms: named formulas over `Form` with named Separation/Replacement; inside any model of the ZFAxioms bundle with Power and set Regularity (no external well-foundedness), ordinals with trichotomy, the cumulative hierarchy by transfinite recursion, the rank theorem, Collection for every matrix and power containers; hence every `ZFax_s` model satisfies `NativeAx`, `zf_refutation_of_native` by `theory_transfer`, and `literal_nonhalting_of_zfc_consistent : Con(ZFC) → ¬ Halts Prog254.program Prog254.initial` ([tarski_logic_layer.md](tarski_logic_layer.md)). The reverse ZF comparison is checked in `WFTheory`; `ChoiceCalibration254` now closes the external ZFC comparison. |
+| `TransRec.lean`, `ConstructibleDef.lean`, `Constructible.lean`, `ConstructibleReflect.lean`, `ConstructibleZF.lean` | Gödel's L inside any ZF model (no external well-foundedness): transfinite recursion for a definable stage operation; `Def(X)` through BoundedZFCConsistency's certificate satisfaction of coded formulas, with the truth bridge for standard formulas; `L_a ∩ Ord = a`; pairing, union and power in L; the reflection theorem for the L-hierarchy (closed limits by ω-iteration of a definable closing step); Separation and Replacement in L; `L_models_ZF`: the constructible substructure satisfies `ZFax_s`. The later `ConstructibleOrder` and `ChoiceCalibration254` supply AC in L and external refutation transport ([choice_calibration254.md](choice_calibration254.md)). |
 | `OutgoingProfile.lean` | Four-node outgoing equality from exact full-profile singletons, actual raw-PSC model corollaries and reserved-zero named semantic translation at one false point. Source equality denotes full observational classes. |
-| `Numeric254.lean`, `NamedNumeric254.lean` | Exact original four-tag numerical rules and gated C/G/vacuity bundle; named proof transport and refutation equivalence for the explicitly defined encoded-numerical-theorem theory Q. Q/ZFC calibration remains open. |
+| `ConstructibleAbs.lean` | Formula-code, satisfaction, definable-subset and hierarchy comparisons between the ambient ZF model and its constructible submodel. Internal-code induction, least internal rank and internally finite environment restrictions give `vEqL` in the submodel, used by `ChoiceCalibration254` to discharge Choice in L. |
+| `Numeric254.lean`, `NamedNumeric254.lean` | Exact original four-tag numerical rules and gated C/G/vacuity bundle; named proof transport and refutation equivalence for the explicitly defined encoded-numerical-theorem theory Q. The later native/ZF and Choice modules close the external ZFC calibration; represented arithmetic transport remains open. |
 | `BootstrapFrame253.lean` | The actual 312,975-step binary bootstrap realizes the actual 330-step register endpoint, with all nine permuted registers, 158 spare blocks and exterior blanks retained. |
 | `Code254Containers.lean` | A literal gated bundle gives the existing transitive, powerset-bounding container resource in an irreflexive model with an explicit valuation. |
 | `ZipperRuns.lean`, `RegisterBoxes253.lean` | Generic whole-tape sequential execution and preserving scans; actual public253 zero-decrement box for arbitrary preceding and following registers, in exactly twice the prefix width plus five steps. No PC-update or complete instruction simulation claim. |
-| `Code254GIC.lean`, `Code254Models.lean` | Hygienic actual Form matrices and padded gated bundles give the CP/GIC model interface; semantic encoding/decoding gives the decoded-to-encodable model implication. The reverse implication is now supplied by `NativeDecoded254`; full ZFC calibration remains separate. |
+| `Code254GIC.lean`, `Code254Models.lean` | Hygienic actual Form matrices and padded gated bundles give the CP/GIC model interface; semantic encoding/decoding gives the decoded-to-encodable model implication. The reverse implication is now supplied by `NativeDecoded254`; the later `ChoiceCalibration254` closes the external ZFC calibration. |
 | `NumericCode254.lean` | Exact equality of the two pairing/encoding definitions and equivalence of their twelve-constructor numerical derivability relations, including zero and all actual gates. |
 | `RegisterMark253.lean`, `RegisterIncrement253.lean` | Actual public253 marking and increment excursions, with arbitrary register values and spares, exact step counts and whole-tape output. PC updates and general dispatch remain separate. |
 | `QuotientSeparation.lean` | The full quotient satisfies the actual `Sep_form` schema for arbitrary formulas and quotient parameter valuations, using a literal equality-free GIC matrix. Other ZF axioms remain separate. |
@@ -292,15 +643,22 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `ZeroSite253.lean` | Complete actual000 zero branch preserves the full dispatch frame; the checked blank run extends to313429 binary steps and matches RM331, with all158spares retained. |
 | `EqualityGIC.lean` | Explicit outgoing-profile faithfulness, supplied for example by native Pairing, permits equality erasure and extends equality-free GIC to all actual Form matrices. |
 | `QuotientCPGIC.lean` | A literal output-guarded trace gives CP in the same raw container's quotient; translated actual Form matrices give full native-equality GIC. Quotient IR is not inferred. |
-| `ProgramZF0.lean` | A ZF0 refutation forces the actual 219-node structured program to halt from nextproof = 2; structured non-halting implies Con(ZF0). The subsequent `BinaryPerm252` endpoint includes literal blank execution and Foundation; Choice remains open. |
+| `ProgramZF0.lean` | A ZF0 refutation forces the actual 219-node structured program to halt from nextproof = 2; structured non-halting implies Con(ZF0). The subsequent `BinaryPerm252` endpoint includes literal blank execution and Foundation; `ChoiceCalibration254` adds the external ZFC comparison. |
 | `NativeDecoded254.lean` | Native CP + full actual-Form GIC + raw IR satisfy every decoded bundle, including coincident binders and truth code 0. With an explicit valuation, ModelsEncodable and ModelsDecoded are equivalent. |
-| `NativeTheory254.lean` | Numerical falsity and actual 219-node structured-program halting are each equivalent to refutability of the explicit sentence theory CP + full native-Form GIC + IR. ZFC calibration and binary execution remain separate. |
+| `NativeTheory254.lean` | Numerical falsity and actual 219-node structured-program halting are each equivalent to refutability of the explicit sentence theory CP + full native-Form GIC + IR. The later `BinaryPerm252` and `ChoiceCalibration254` close binary execution and the external ZFC comparison. |
+| `EnumStackBarrier254.lean` | Actual candidate/command round trips, injective marked NIP-to-earlier-DROP replacement, witnessed safe stack prefix over arbitrary bottom, local preservation with positive credit, and candidate-zero reset. The global scheduler/counting theorem is not supplied. |
+| `EnumStackCount254.lean` | Closes the actual global scheduler/counting link; safe credit at every candidate boundary, arbitrary dirty bottom, and `dirty_start_iff` for `pl=np=d=0`. No binary initializer or internal PA theorem is inferred. |
+| `DirtyReset254.lean` | `six_dirty_starts_iff`: counters0,1,2,4,5,6 accept arbitrary four working fields, including d, through the actual AX eight-row shield and credit7=1; counter3/cache1 halts immediately. |
+| `InternalWO.lean`, `OrderRec.lean` | Internal natural, lexicographic, pullback and appended well-orders, with explicit collection/separation premises; definable order recursion on internal ordinals. The concrete instance is now supplied by `ConstructibleOrder`. |
 | `EnumSafeStart254.lean`, `DirtyRoot254.lean`, `DirtyProgram254.lean` | Attributed arbitrary-cutoff enumeration and dirty-root absorption, composed with the actual structured219/path program. Six numerical fields are unrestricted; top/cache/stack retain their exact theorem invariant and logical registers beyond8 remain zero. |
 | `SeedInvariant254.lean` | Six constructors certify nonzero initial theorem codes, unshifted stacks, and the resulting dirty-start/native-refutation equivalence. This gives a larger sufficient initializer target; no binary startup is inferred. |
-| `WellFoundedPart.lean`, `WFRelativization.lean`, `WFModel.lean`, `WFTheory.lean` | One actual GIC instance supplies closure of internal well-foundedness. Actual translated Separation/Replacement, Infinity and Power make its subtype a ZF model, yielding `C254 F ↔ BProv ZFax_s [] Bot` and native/ZF equiconsistency. Choice and internal PA proof codes remain open ([direct route](wf_model.md)). |
+| `WellFoundedPart.lean`, `WFRelativization.lean`, `WFModel.lean`, `WFTheory.lean` | One actual GIC instance supplies closure of internal well-foundedness. Actual translated Separation/Replacement, Infinity and Power make its subtype a ZF model, yielding `C254 F ↔ BProv ZFax_s [] Bot` and native/ZF equiconsistency. `ChoiceCalibration254` supplies the external ZFC comparison; internal PA proof codes remain open ([direct route](wf_model.md)). |
 | `RMBisim.lean` | Merged generic segment bisimulation with symmetric halting transport and a sound finite checker on explicit decoder trees. No concrete certificate instance is included in this module. |
 | `SitesPerm252Checks0–7.lean`, `SitesPerm252.lean` | All233 decoder chunks and8,391 guarded instruction cases, composed against the complete literal tree. No external coverage premise remains. |
-| `BinaryPerm252.lean`, `ZFCBoundPerm252.lean` | Actual blank252 halting iff numerical/native/ZF refutation, also iff an accepted finite proof code. Con(ZFC) implies blank nonhalting. Choice removal and internal PA formalization remain open. |
+| `BinaryPerm252.lean`, `ZFCBoundPerm252.lean` | Actual blank252 halting iff numerical/native/ZF refutation, also iff an accepted finite proof code. Con(ZFC) implies blank nonhalting; the following Choice module closes the converse. Internal PA formalization remains open. |
+| `CodeOrder.lean`, `TupleOrder.lean`, `ConstructibleOrder.lean` | Represented well-orders of all internal formula codes and finite tuples; bounded definition-key sets; definable ordinal recursion orders each constructible stage; `choice_of_VL` proves the exact selector-Choice axiom under V=L. |
+| `ChoiceCalibration254.lean` | Choice in the actual constructible subtype, sealed ZFC model, refutation transfer through external completeness, and closed actual252 blank nonhalting iff Con(ZFC). No internal PA proof-code claim. |
+| `ConstructibleChoice.lean`, `BinaryZFC252.lean` | Independently supplied Choice-in-L/refutation bridge and its composition with the exact literal 252-state binary endpoint. Both merged endpoints pass the 167-unit integration against actual binary objects and the complete source-matched certificate closure; the earlier remote stub check is superseded. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
@@ -317,7 +675,7 @@ deductive equivalence; [psc_calibration.md](psc_calibration.md) gives the exact
 statements and comparison theory. That semantic calibration is not a proof-code
 translator verified in arithmetic. The current binary and proof-data modules
 supply an external checker/compiler endpoint, while internal arithmetic theory
-transport and the final ZFC comparison remain open. `PositiveClosure`
+transport remains open; the external ZFC comparison is now closed. `PositiveClosure`
 deliberately assumes the specific closure instances used by each lemma;
 arbitrary second-order relations are not silently treated as a first-order
 schema.
@@ -334,8 +692,8 @@ Rebuild the dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 99 source units: the first-order logic, calculus and completeness
-modules, `ZF.Zf`, `BusyBeaver.Core`, 93 research modules and the umbrella into a
+This compiles 168 source units: first-order logic, set-theory dependencies,
+`BusyBeaver.Core`, the research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the prior 38-unit fresh source check and axiom outputs. The seven
@@ -580,15 +938,14 @@ without a new state bound or binary simulation theorem.
 
 ## Next proof and compiler work
 
-1. Complete the Choice transport from the checked native/ZF comparison through
-   the constructible-class lane. The complete252 binary simulation is checked.
-2. Represent the exact proof checker, proof-data compiler and finite binary
-   traces inside PA, and prove the required arithmetic comparison. The external
-   Lean equivalence does not settle this stronger requirement.
-3. Continue minimizing complete machines. Alternative and artificial calculi
+1. Represent the proof-data translations and finite binary runs inside PA,
+   building on the represented checker and exact numeric machine simulation.
+   Prove the required arithmetic comparison; the external Lean nonhalting iff
+   Con(ZFC) theorem does not settle this stronger requirement.
+2. Continue minimizing complete machines. Alternative and artificial calculi
    remain eligible once their consistency comparison is justified; preserve
    the complete252 machine as the current implementation baseline.
-4. Preserve the finite-sort countermodel when evaluating reduced logical
+3. Preserve the finite-sort countermodel when evaluating reduced logical
    engines. A smaller compiled table without a sound consistency calibration
    does not establish the requested record.
 
@@ -641,3 +998,381 @@ Its measured complete control is299 working states after bounded sharing,
 before a ZFC-specific query and writer. The isolated171-state axiom emitter is
 a component count. This first complete control is larger than the existing
 runtime; it supplies a reproducible cost baseline for a different architecture.
+
+
+The [internal register-forward macro](arithmetic_register_forward_perm252.md)
+crosses one actual unary register block in exactly `value+2` internal steps,
+retaining both entire numeric tape halves. Three seek/probe pairs are tied to
+the frozen table. Its ten-report/twelve-caller fresh check passes with zero
+warnings; portable maintained preparation is recorded separately.
+
+The [MP dummy-push experiment](mp_dummy_push_partial_cost.md) removes one successful-MP
+helper occurrence while retaining the complete source calculus. Both tested
+raw compilers keep their original 281/341 state counts. The direct optimized-decoder patch also retains 252 states, with its changed
+blank entry unresolved within one million steps. No new bound or lower bound
+follows from these controls.
+
+
+The [internal zero-spare scan](arithmetic_zero_spare_scan_perm252.md) crosses any
+internal count of zero register blocks in exactly twice that many steps,
+preserving both complete numeric tape halves. Three frozen-table instances
+pass eleven axiom reports and twelve callers with zero new warnings. This
+endpoint supplies a scan component; the register-file invariant and full
+internal binary/scheduler comparison remain separate.
+
+
+The [internal register-return macro](arithmetic_register_return_perm252.md)
+returns across one actual unary block in exactly `value+2` steps, retaining
+both entire numeric halves through a recentered left-facing frame. Six
+entry/probe wrappers cover the three return families. Eleven reports and
+twelve callers pass with zero warnings.
+
+The [internal free-parameter closing construction](../../../../Logic/Interpretability/ZFCinPA/model_coded_free_closure.md)
+now handles every internal formula code, including nonstandard codes and
+arbitrary internal free labels. A binder-aware traversal proves shift-fixedness
+and exact reopening with the actual internal `bv` bound. The new closed-schema
+constructors yield literal ZF/ZFC Separation and Replacement axiom proof codes
+without a shift-fixedness premise on the matrix. Their separate fresh checks
+pass 15/15 and 13/13 reports/callers, with zero warnings. The later
+[internal specialization proof](../../../../Logic/Interpretability/ZFCinPA/model_coded_specialization.md)
+opens an arbitrary internal number of closing binders using explicit proof
+codes. Its 14 reports and 16 callers pass with zero warnings, including open
+Separation in ZF and Replacement in ZFC. The full PA consistency comparison
+remains open.
+
+
+The [internal zero-spare suffix shift](arithmetic_zero_spare_shift_perm252.md)
+retains the changing tape while increment shifts across an arbitrary internal
+zero-spare count. Its exact value+2*count+2-step endpoint and blank-tail turn
+pass three axiom reports and six callers with zero warnings. Complete
+increment/file framing and the internal runtime comparison remain separate.
+
+
+The [MP continuation mapping](mp_dummy_push_partial_cost.md#exact-mapping-into-the-optimized-decoder)
+connects the source edit to one actual 252-table row. All 8,366 changed-program
+guards pass conditional checks, and the 2,998-pair program certificate passes
+independent validation. The state count remains 252 and its blank bootstrap
+is unresolved; the complete frozen baseline is unchanged.
+
+The [fixed register-file increment proof](arithmetic_register_file_perm252.md)
+extends the internal spare-tail result to arbitrary internal values in every
+preceding and following register of a fixed finite file. It includes the
+complete seek, shift and return, with an exact positive running time. Its
+first Lean run passes seven axiom reports and fourteen callers with zero
+warnings. The list lengths are external; the values and growing spare count
+are internal. This covers the fixed nine-register shape while leaving the
+remaining instruction families and full arithmetic dispatcher refinement open.
+
+
+The [internal marked-register increment](arithmetic_register_increment_perm252.md)
+composes actual mark restoration, suffix shifting and return for a target
+followed only by an arbitrary internal zero-spare tail. Its exact
+2*value+4*count+7-step endpoint passes five axiom reports and eight callers
+with zero warnings. A nonzero following register and the whole runtime
+comparison require the separate register-file layer.
+
+
+The [internal positive-decrement endpoint](arithmetic_register_decrement_perm252.md)
+handles a fixed finite prefix/suffix of arbitrary internal register values and
+an arbitrary internal zero-spare count. It decreases the marked positive
+target and appends exactly one zero spare, in the stated whole-tape endpoint.
+Ten axiom reports and twelve callers pass with zero warnings; first exit and
+the complete dispatch/runtime invariant remain separate.
+
+The [open-schema proof constructors](../../../../Logic/Interpretability/ZFCinPA/model_coded_open_schema_axioms.md)
+now supply actual ZF and ZFC proofs of open Separation and Replacement bodies
+for arbitrary internal matrices and free labels. Their fixed Σ1 operation
+uses the checked closing and specialization constructions, with no shift-fixedness
+premise. Eleven axiom reports and sixteen callers pass with zero warnings.
+The numeric C254 formula translation and PA consistency comparison remain open.
+
+The [internal zero-decrement endpoint](arithmetic_register_zero_perm252.md)
+restores a marked zero and preserves every other register and spare in exactly
+`2*fileTime pre+5` steps. Six axiom reports and ten callers pass with zero
+warnings, including the fixed boot suffix with an arbitrary internal count
+of appended zero spares. The subsequent marking proof completes the four box
+operations; dispatcher composition remains.
+
+
+The [internal primary-register marking endpoint](arithmetic_register_mark_perm252.md)
+uses the nine literal selectors, arbitrary internal register values and both
+complete tape halves. An externally fixed prefix of at most eight registers
+is retained while the selected header is marked in the exact 2*fileTime+3-step
+endpoint. Eight axiom reports and twelve callers pass with zero warnings;
+PC/dispatch transport remains separate.
+
+The [single-variable binding construction](../../../../Logic/Interpretability/ZFCinPA/model_coded_bind_one.md)
+now binds an arbitrary internal free label at an arbitrary internal binder
+depth and proves exact reopening. Fifteen axiom reports and nineteen callers
+pass with zero warnings. This supplies the named-quantifier syntax for the
+checked C254 decoder; transporting GEN proofs remains a separate obligation.
+
+The [internal C254 decoder](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder254.md)
+now has a fixed total Σ1 graph, exact code-indexed history and positive
+recurrence, and formula well-formedness for every internal code. Sixteen axiom
+reports and twenty-four callers pass with zero warnings. Source code 0 retains
+the literal truth formula and its syntactic free label 0; the implication alias
+at zero and all twelve proof-rule translations remain explicit obligations.
+
+The [literal decoder constructor equations](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_constructors254.md)
+now identify all four arithmetic constructors with their decoded syntax for
+arbitrary internal inputs, including the exact implication case split at zero
+and code 1's membership(0,0) output. Nine axiom reports and twelve callers pass
+with zero warnings; proof-rule and consistency transport remain separate.
+
+The [decoded truth and MP proof constructors](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_propositional254.md)
+now supply explicit internal proof codes with fixed total Σ1 graphs. MP handles
+the zero implication alias by returning the antecedent proof. Nine axiom
+reports and fourteen callers pass with zero warnings, including actual ZF/ZFC
+clients. The source axiom rows and the full PA endpoint remain open.
+
+The [internal free-renaming and binder alignment](../../../../Logic/Interpretability/ZFCinPA/model_coded_free_renaming.md)
+checkpoints supply fixed total syntax operations, their SHIFT/substitution
+laws, actual ZF/ZFC axiom invariance and the exact named-binder opening law.
+All labels and counters are internal. Together the three modules pass
+twenty-three axiom reports and twenty-four callers with zero warnings.
+These syntax laws support the internal derivation transport below.
+
+The [internal proof-renaming and named-GEN theorem](../../../../Logic/Interpretability/ZFCinPA/model_coded_proof_renaming.md)
+now transports arbitrary internal derivations of actual ZF and ZFC, including
+nonstandard formula codes. A fixed-budget Σ1 induction bounds both changing
+renaming counters and handles all ten derivation rules. Named generalization
+has no remaining freshness or axiom-closure premise. Two modules pass seventeen
+axiom reports and eighteen callers with zero warnings; the C254 axiom rows and
+accepted-history translation remain separate.
+
+The [decoded-falsity endpoint](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_falsity254.md)
+now proves internal ZF-provability of `decode 1` exactly when ZF proves
+primitive Bottom. It quotes a fixed ordinary irreflexivity theorem, opens it
+at free label zero, and uses explicit internal cut constructors. Eight axiom
+reports and twelve callers pass with zero warnings. Accepted-history
+translation and the full PA endpoint remain open.
+
+The [decoded single propositional axiom](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_lukasiewicz254.md)
+now has an internal proof for arbitrary input codes in every IΣ1 model.
+Provable implication equivalence handles the zero alias through the actual
+arithmetic `rho8` constructor; a fixed Peirce proof supplies the target
+tautology. Five axiom reports and eight callers pass with zero warnings.
+
+The [decoded numerical GEN rule](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_generalization254.md)
+connects the actual `wal` constructor to internal named generalization in
+ZF and ZFC. It includes free label zero and repeated binders. Three axiom
+reports and six callers pass with zero warnings. The remaining axiom rows,
+set-theoretic bundle and accepted-history translation remain open.
+
+
+The [named-binder laws and universal-distribution template](../../../../Logic/Interpretability/ZFCinPA/model_coded_named_quantifiers254.md)
+prove negation/implication compatibility at arbitrary internal binder depths
+and supply a finite typed universal-distribution proof. Together they pass
+three axiom reports and eight callers with zero warnings.
+
+The [decoded numerical universal-distribution row](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_rho2_254.md)
+now has an internal proof in actual ZF and ZFC for arbitrary internal labels
+and formula codes. Named-universal congruence transports the implication zero
+alias under the binder; the final endpoints discharge the generalization
+resource. Eight axiom reports and eight callers pass with zero warnings.
+The other logical rows, gated set-theoretic bundle and full PA endpoint remain
+separate obligations.
+
+
+The [three decoded equality rows](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_equality254.md)
+now have internal proofs for arbitrary labels in actual ZF and ZFC. Fixed
+ordinary equality/congruence theorems are internalized before their bound slots
+are specialized at model elements; decoder implication equivalence identifies
+the actual `rho7`, `rho5` and `rho3` codes. Eleven axiom reports and twelve
+callers pass with zero warnings.
+
+The [decoded exchange of named universals](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-rho4-254.md)
+proves the actual `rho4` row for arbitrary internal labels and matrices,
+including coincident labels. Its syntax, finite logical template and numerical
+client pass fourteen axiom reports and twenty callers, with four retained
+style warnings. The [repeated-binding and vacuous-opening laws](../../../../Logic/Interpretability/ZFCinPA/model_coded_binder_absorption.md)
+pass seven reports and nine callers with no warnings; they supply the vacuity
+step for `rho6`.
+
+The [decoded existential-universal row](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-rho6-254.md)
+now proves actual `rho6` in internal ZF and ZFC, including variable zero.
+Proof equivalence and named generalization handle capture of its relative
+falsity formula. Twelve axiom reports and sixteen callers pass with one
+retained style warning.
+
+The [decoded existence-of-equality row](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-rho1-254.md)
+proves actual `rho1` in internal ZF and ZFC, including coincident and zero
+labels. Opening its named binder at the other label yields reflexive equality.
+Ten axiom reports and sixteen callers pass without warnings. All eight
+individual logical-row clients are now proved; the gated set-theoretic bundle,
+accepted-proof translation and full PA equivalence remain open.
+
+The [two decoded atomic vacuity clauses](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-atomic-vacuity254.md)
+now have internal proofs for every Δ1 set-language theory under the actual
+gates `c ≠ a` and `c ≠ b`, allowing `a=b`. Syntactic binder invariance supplies
+finite generalization without a target axiom or GEN premise. Ten axiom reports
+and twelve callers pass without warnings. The outer conjunction and the
+container and collection clauses remain open.
+
+The [finite circuit decoder](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-circuits254.md)
+now handles every fixed constructor circuit at arbitrary internal inputs in
+actual ZF and ZFC. It transports relative falsity through named binders while
+keeping the original numeric variable labels. The [logical normalization
+helpers](../../../../Logic/Interpretability/ZFCinPA/model-coded-named-logical-normalization254.md)
+identify its conjunction and existential encodings with the native logical
+operations. Together their focused checks pass fourteen axiom reports and
+twenty callers with zero warnings. The C/G/bundle decoder results are
+equivalences; proving C and G remains open.
+
+
+The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)
+reuses actual finite segment/configuration syntax and normalization with an
+arbitrary internal gap and parameterized box prefixes. Accepted comparisons
+preserve the complete numeric configuration; exterior deletion uses terminal 0.
+Ten axiom reports and twelve callers pass with zero warnings. Concrete boxes,
+symbolic execution and the full runtime refinement remain separate.
+
+
+The [internal read/write scans](arithmetic_writing_scans_perm252.md) permit
+replacing the consumed bit under explicit actual self-loop rows, for every
+internal length and both whole tape halves. Six axiom reports and twelve
+callers pass with standard axioms; four audit style warnings are preserved.
+Concrete boxes and full symbolic/runtime transport remain separate.
+
+
+The [concrete internal register-box interpretation](arithmetic_symbolic_boxes_perm252.md)
+now uses the actual finite Box/Effect/Branch syntax, nine arbitrary internal
+primary values and an internal zero-spare count. It retains the explicit final
+padding cell, checks branches on the original values, and reuses all four
+checked box endpoints. Positive decrement alone appends a zero spare. Seventeen
+axiom reports and twenty callers pass with standard axioms; four source
+unused-section-variable style warnings are preserved. Full internal runtime
+transport remains separate.
+
+The [arithmetic soundness of the actual symbolic checker](arithmetic_symbolic_execution_perm252.md)
+now connects the existing `sstep`, `exec` and `verifies` decisions to complete
+numeric machine runs in every IΣ1 model. A checked erasure equality retains
+the exact native targets, guards and progress flags; initially false progress
+yields a positive internal clock, including the real halt write and move.
+Twenty-five axiom reports and twenty callers pass with zero warnings. Syntax
+and fuel remain external finite data; the definable dispatcher relation and
+full internal runtime/PA endpoint remain separate.
+
+The [arithmetic site contracts](arithmetic_site_perm252.md) now turn actual
+accepted `SitePerm252` checks into their numeric endpoints in every IΣ1 model,
+including positive execution clocks, physical decrement guards and the
+complete final halt step. Twelve axiom reports and fourteen callers pass with
+zero warnings. The accepted-site premises remain explicit; internal dispatch
+and global runtime remain separate.
+
+The [arithmetic blank-to-Site entry](arithmetic_site_boot_perm252.md) connects
+the existing 82,552-step bootstrap to `Site.start []` with nine zero primary
+registers, zero gap and 56 variable zero spares in every IΣ1 model. Finite
+bit/register/Box compatibility preserves the exact final padding cell. Fifteen
+axiom reports and seventeen callers pass without warnings; this uses the
+checked bootstrap without replaying it. Global runtime remains open.
+
+The [composable arithmetic dispatch entries](arithmetic_dispatch_rebase_perm252.md)
+now connect each accepted nonhalting instruction to the next accepted canonical
+entry, with exact register updates, carry padding and one spare append on positive
+decrement. Actual decoder coverage supplies the next leaf and its `follow`
+equation. The bootstrap also reaches its first accepted leaf at the same
+82,552-step clock. Sixteen axiom reports and eighteen callers pass with zero
+warnings. Variable-PC representation and global internal runtime remain open.
+
+The [compact finite-control representation](arithmetic_finite_control254.md)
+proves binary constants and bounded table lookup in every IOpen model, together
+with an exact common 40-bit dispatch frame under IΣ1. Eight axiom reports and
+thirteen callers pass with zero warnings. Large constants use their binary
+digits, keeping the recursive term only once at each step. Binding these
+formulas to the actual 6,460 control rows, the represented interpreter and the
+internal scheduler bridge remain open.
+
+The [literal control catalogue](finite_control_table254.md) derives all 6,460
+actual source leaves from the checked tree. It proves unique source indexing,
+inherited site acceptance, and a deterministic walk/consume/index resolver,
+including the empty pointer's first control. Fourteen axiom reports and
+seventeen callers pass with zero warnings, reusing the existing coverage
+proofs. Resolving a pointer alone does not justify whole-frame equality without
+`Clean`; arithmetic lookup/iteration and the internal scheduler remain open.
+
+`ArithmeticControlData254.lean` ([note](arithmetic_control_data254.md)) derives
+coherent fixed arithmetic opcode/register/successor/overflow/spare/PC columns
+from the actual 6,460-leaf literal catalogue. Its 16-probe/20-caller focused check
+reuses 81 matched project objects and six boundaries. Compact constants and
+bounded graphs cover arbitrary internal keys; absent zero differs from genuine
+halt opcode four. Represented control step/run and the internal scheduler bridge
+remain open. Exact proof and preparation/history records are stored separately.
+
+[`NativeZFContainers254`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/NativeZFContainers254.lean) extracts the actual ordinary Foundation ZF axioms into the checked native rank interface, then proves two fixed power-container sentences, including the exact C-row binder/connective order. The 380-line source and 15-probe/15-caller audit passed with standard axioms only and zero warnings. The guarded closure reuses ten native project objects and one recorded direct Foundation boundary; both unsuccessful attempts and the successful run are retained. This is the ordinary fixed container theorem. The finite all-internal alpha/substitution client, coincident-label C case, arbitrary-internal Collection G, full bundle and PA proof-code comparison remain separate obligations. See [the note](../../../../Logic/Interpretability/ZFCinPA/native-zf-containers254.md) and [evidence](../../../../Logic/Interpretability/ZFCinPA/results/native-zf-containers254-verification.json).
+
+`ArithmeticControlStep254.lean` ([note](arithmetic_control_step254.md)) represents
+one step using the actual numbered literal-control columns and a bijective
+fixed nine-register code. Its 27-probe/30-caller focused check passed with zero
+warnings, reusing 82 matched project objects and six boundaries. Fixed Sigma1
+graphs and a total Delta1 step cover every internal input; invalid0 and genuine
+halt4 remain distinct opcode facts. Binary simulation, represented iteration
+and the internal L2/scheduler connection remain open.
+
+The [positive-code freshness theorem](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-freshness254.md) proves that binding any positive label at least as large as an internal source code leaves its decoded formula unchanged, at every internal binder depth. Its eight-probe/twelve-caller Lean audit passed without warnings. The proof uses internal Π1 order induction and the actual strict child bounds, with the literal source0/label0 exception explicit. Positive codes therefore supply their own fresh label for the Collection row. The all-internal Collection proof and its zero-matrix case remain open.
+
+[`ModelCodedDecoderContainer254`](../../../../Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderContainer254.lean) now proves the actual numerical C clause in internal ZF for arbitrary internal `a,b,c` satisfying only `c≠a` and `c≠b`, including `a=b` and valid zero-label cases. The 330-line source and 16/20 audit passed with standard axioms only and zero warnings. The finite distinct-label quote/substitution calculation uses the fixed ordinary NativeZF container row; the coincident branch is proved separately by irreflexivity and existential monotonicity. All failed attempts are retained, with no resource increase or dependency build. [The note](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-container254.md) and [evidence](../../../../Logic/Interpretability/ZFCinPA/results/model-coded-decoder-container254-verification.json) retain the remaining G, full-bundle, accepted-proof and PA comparison obligations.
+
+[Finite shift cancellation](../../../../Logic/Interpretability/ZFCinPA/model-coded-shift-cancellation.md)
+now constructs actual internal proofs of p from proofs of any externally finite
+iteration of free-variable shift on p. Arbitrary internal formula codes and
+free parameters are retained; six axiom probes and nine callers pass with
+standard axioms and zero warnings. This is the cancellation step for a proposed
+open-predicate template compiler. That compiler and Collection remain separate.
+
+The [finite-buffer proof-template compiler](../../../../Logic/Interpretability/ZFCinPA/buffered-template-proof-compiler.md)
+now passes seven axiom probes and nine callers with standard axioms and zero
+warnings. It handles both universal introduction and explicit SHIFT with an
+externally finite buffer, then cancels that buffer at a closed source conclusion.
+The interface admits arbitrary internal free parameters and actual axiom-proof
+callbacks. Concrete predicate-family laws and Collection callbacks remain to
+be instantiated; no internal ZFC comparison is inferred from this interface.
+
+`ArithmeticControlFrame254.lean` and
+[arithmetic_control_frame254.md](arithmetic_control_frame254.md) give a fixed
+Sigma1 whole-frame relation for every valid represented catalogue control and
+six exact source-case binary runtimes in arbitrary `IΣ1` models. The relation
+keeps invalid controls out, and rebasing retains the actual walk/resolver
+witness; positive decrement adds one zero spare exactly once. The focused
+check passed 27 probes and 30 callers with zero warnings, using 83 matched
+project providers. Coded-step calibration, represented iteration and the
+internal L2/scheduler connection remain separate obligations.
+
+The [open set-template compiler](../../../../Logic/Interpretability/ZFCinPA/open-set-template-compiler.md)
+now instantiates that buffer interface for arbitrary internal set predicates,
+including free parameters, with no shift-fixedness condition. The two unchanged
+precursor modules, new client, and eight-probe/eight-caller audit pass with
+standard axioms. Two harmless style warnings are recorded. Actual target
+axiom-proof callbacks remain explicit; Collection and numerical G are separate.
+
+`ArithmeticControlSimulation254.lean` and
+[arithmetic_control_simulation254.md](arithmetic_control_simulation254.md) close
+the concrete local step/halt obligations for the represented numbered control
+program. In every `IΣ1` model, a valid `Related` frame reaches the exact live
+successor or actual binary halt after a positive internal clock. Invalid
+control0 is excluded and all physical-selector/source cases are calibrated.
+The focused check passed ten probes and ten callers with zero warnings, using
+84 matched project providers. Represented iteration, blank-entry composition
+and the internal L2/Enum connection remain separate obligations.
+
+`ArithmeticControlRun254.lean` and
+[arithmetic_control_run254.md](arithmetic_control_run254.md) iterate the actual
+source-derived numbered control step at every internal `IΣ1` time and prove
+`halts_iff_blank`: that interpreter reaches zero exactly when the actual blank
+binary evaluator halts. The concrete positive-clock simulation and existing
+bootstrap discharge all runtime assumptions; no bootstrap or guard replay is
+needed. The focused first check passed 16 probes and 18 callers with zero
+warnings, using 87 matched project providers. The further all-internal L2/Enum
+scheduler connection remains explicit.
+
+The checked [fixed Collection template](../../../../Logic/Interpretability/ZFCinPA/collection_template254.md) proves one ordinary enlarged-language sentence from lifted ZF, explicit enlarged equality, and three particular predicate-dependent schemas: witness-rank Separation, globally total least-rank Replacement with empty-ordinal fallback, and output Separation. The two new modules and audit pass 7 axiom reports/12 callers with standard Lean axioms and zero warnings; the record preserves all six attempts, including an interrupted second attempt. The source theorem is ready for a finite-template compiler, while translated schema/equality callbacks and the exact decoder-G conclusion bridge remain separate obligations. It does not establish the internal bundle or PA proof-code comparison.
+
+
+The [actual internal clear-loop contract](arithmetic_control_clear254.md) now proves the literal catalogue occurrence 6431/6432/6433 in every IΣ1 model: physical register 7 is cleared in exactly `2*v+1` represented interpreter steps, stopping before the exit `brk1`. The generic loop proof keeps default limits; only three closed catalogue equations use a measured local recursion setting. The first complete source/audit check passed 9 probes/11 callers with standard axioms and zero warnings. All four attempts and the separate maintained-default UNBUILT preflight are retained. This is a local interpreter contract; the internal L2/Enum connection remains open.
+
+The [actual initial fetch contract](arithmetic_control_fetch254.md) now covers both literal interpreter branches in every IΣ1 model. Positive PL takes 2 logical instructions; PL=0 with scratch1=0 takes exactly `7*NP+4`, preserving the whole file except the specified NP/PL updates. The actual copy and restore loops and catalogue controls 0–10 are checked. Run2 passed 12 probes/15 callers with standard axioms and zero warnings; run1 and the separate UNBUILT preparations remain archived. This advances the internal L2/runtime bridge; actual unpair/read and the complete scheduler connection remain open.
+
+The [represented relativization checkpoint](internal_relativization.md) now checks all-internal formula laws and conditional derivation transport with explicit domain side formulas:11 probes/12 callers, only the standard three axioms and zero warnings. Domain-side discharge and actual L/ZFC axiom proofs remain separate.
+
+The actual first read/unpair macro is now checked in [`ArithmeticControlRead254.lean`](../../Lean/BusyBeaver/ZFC/ArithmeticControlRead254.lean). For every IΣ1 model and whole nine-register file with both scratch registers zero, literal controls 10–24 reach the next read after a positive internal logical time, replace PL by its second Cantor projection, add the first projection to AC, and preserve the remaining fields. The proof includes the IOpen inverse-successor walk, all three actual transfer loops and a fixed-file Σ1 existential-clock invariant. The focused audit passed 16 ordered probes and 19 callers, standard axioms only, with zero warnings; one failed source attempt is preserved. See [the scoped note](arithmetic_control_read254.md), [verification](results/arithmetic-control-read254-verification.json), [history](results/arithmetic-control-read254-history.json), [independent review](results/arithmetic-control-read254-review.json) and [publication record](results/arithmetic-control-read254-publication.json). The complete internal interpreter/Enum and PA endpoint remain open.

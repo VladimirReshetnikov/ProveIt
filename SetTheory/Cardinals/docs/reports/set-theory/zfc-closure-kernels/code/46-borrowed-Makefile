@@ -1,0 +1,10 @@
+.PHONY: pdf verify manifest
+
+pdf:
+	latexmk -pdf -interaction=nonstopmode -halt-on-error report.tex
+
+verify:
+	python3 -B code/verify_all.py
+
+manifest:
+	python3 -B code/make_manifest.py

@@ -1,0 +1,71 @@
+{
+  "verdict": "CLEAN source-level primitive verifier review, with an acknowledged compiler-entry naming obligation",
+  "inputs": [
+    {
+      "path": "/tmp/zfc-term-register/term_register.py",
+      "sha256": "0e33b50207dd2db4afd0e7ef337fb250963040ee18bde00a6a764679b284e39d",
+      "bytes": 7915
+    },
+    {
+      "path": "/tmp/zfc-term-register/full_program.py",
+      "sha256": "b6a1397a116f4b8d7ef7eb524e0b983b23c7ad34189e58abf01a7aae43cb91b7",
+      "bytes": 13235
+    },
+    {
+      "path": "/tmp/zfc-term-register/test_full.py",
+      "sha256": "684a08b010e660e0611bf61959561d7e52c4cfdbe168e5c0dd2eb4d0f7e53cde",
+      "bytes": 4736
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/term-certificates/term_patterns.py",
+      "sha256": "539012a9bb243d5ab06cb0410d67e07736e46594b14d6910fd078f12fee4c90d",
+      "bytes": 5595
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/term-certificates/pattern_codec.py",
+      "sha256": "d25e0a34da6b6f2c60ad03a4f382d08e43168cea44b3cbacc7ee589a238c1fa5",
+      "bytes": 7877
+    },
+    {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/term-certificates/term_circuits.py",
+      "sha256": "b1a4e8fe445d8d4abf9a6ad8e236b63ee1948bf51990eba6ebda00a198c0b2a7",
+      "bytes": 8493
+    }
+  ],
+  "builds_run": false,
+  "suites_repeated": false,
+  "findings": [
+    {
+      "id": "entry_name",
+      "severity": "required_before_TM_compile",
+      "detail": "Program.read_node names its helper main().0; FullProgram.search names the full root the same. Wade reachable starts at the first matching name. Direct-int interpreter tests are unaffected. Parent confirms final compilation will erase all names and name only full search root before reachability/naming/generation."
+    }
+  ],
+  "contracts_reviewed": [
+    "Local arithmetic macros preserve all non-scratch source registers at their actual call sites; no self-copy/move or comparison-scratch alias is used.",
+    "Full syntax scans every arena record/proof row and consumes complete suffix before semantic use; omitted remaining-bit prechecks follow from finite successful parsing.",
+    "ReadNode selected-prefix contract is only used after complete syntax, bounds references, and resets only18 helper registers.",
+    "Proof lookup scans premise+1 rows, preserves current formula/args/full_cursor, and validates each proof semantically before acceptance.",
+    "Trusted fixed patterns use exact parameter IDs and virtual zero for B0(0,0); duplicate positive nodes permitted as in maintained verifier.",
+    "Both gate paths require equal positive tags on continued edges and zero/tag mismatch at terminal; saved_cursor/path_bit survive ReadNode.",
+    "MP minor/major orientation and zero alias, GEN tag2, truth0, all9 trusted templates and fixedF endpoint match maintained pattern verifier.",
+    "Natural candidate increments fairly enumerate all finite bitstrings under word_code; order is length-first with little-endian bit variation, not the identical length-lex traversal.",
+    "Every candidate verification terminates by finite parser/scan counters and finite trusted paths, modulo literal helper contracts; no resource exhaustion is called rejection.",
+    "Fast interpreter contracts only local arithmetic helpers; parsing/semantic checking are actual generated primitives. Its output is not a binary-TM execution proof."
+  ],
+  "scope": [
+    "No unresolved logical verifier defect found in reviewed bytes.",
+    "Not a kernel proof, compiler correctness theorem, literal blank binary run, or machine state bound.",
+    "The planned actual table cost must include all56register selectors, verifier, enumeration/reset shell, dispatcher and initializer.",
+    "Parent reported and fixed mutable interpreter pop memoization before any final PASS; reviewed full_program has caching only on pure code-construction methods."
+  ],
+  "review_note": "# Independent primitive-register verifier review\n\nReviewed the exact source hashes in independent-register-review.json against maintained term_patterns.py, pattern_codec.py and term_circuits.py. No unresolved semantic defect found. This is a read-only source/math review; no suites, table compilation or Lean builds were repeated.\n\nThe helper scratch discipline is consistent at actual call sites. ReadNode touches only the original18 helper registers; the full cursor, current parameters/formula, proof scan state and gate saves live in distinct globals. Proof lookup scans exactly premise+1 previous rows. Gates save cursor and path bit before node reads, preserve both paths, and implement the maintained positive-equal-prefix/terminal-mismatch relation. The full structural pass validates unused nodes and rows and requires an empty suffix, so selected-prefix ReadNode cannot bypass malformed unused data. References and proof-premise ordering are checked before semantics. Truth, MP orientation and virtual-zero alias, GEN, all fixed trusted patterns, both bundle gates and every copy of fixed falsity match the maintained verifier.\n\nOne concrete compiler-entry obligation was found: read_node labels its helper root main().0 and search later gives that name to the full root; Wade reachable selects the first named match. Direct-int structured tests are unaffected. Parent acknowledged the issue and will erase all sequence names and assign only the actual search root before table reachability/naming/generation. This is required for a valid whole-program cost; it is not a reported logical verifier bug.\n\nNatural increments enumerate each finite binary word exactly once through word_code/code_word; the within-length order differs from the maintained length-lex iterator but fairness and proof existence are unchanged. All56 declared registers, their selectors, verifier, enumeration/reset, dispatcher and initializer must be charged for a full binary table. No new state-bound or compiler/blank-run theorem follows from the finite fast-interpreter checks. Only explicit local arithmetic helpers are contracted; parsing and reference proof checking are not delegated to the Python verifier.\n",
+  "fresh_portable_verification": {
+    "path": "results/term-register-verification.json",
+    "sha256": "ce1d5457192e4cbb869388786f44d141a276f2062c8f9ed374149d1fa14fe1c5",
+    "status": "PASS",
+    "source_bytes_match_reviewed_and_tested_snapshot": true,
+    "working_states": 4704,
+    "table_sha256": "324c23d31a98ca46cc83db970a0b943c76c509800ac732a86a3f17339dba25af"
+  }
+}

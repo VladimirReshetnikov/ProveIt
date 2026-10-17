@@ -1,0 +1,105 @@
+{
+  "status": "PASS",
+  "scope": "Prepare-only/negative guard checks; launches no Lean proof compilation.",
+  "negative_controls": [
+    {
+      "kind": "python-O",
+      "checker": "check_model_coded_bind_free.py",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_bind_free.py\", line 79, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_bind_free.py\", line 19, in main\n    p.add_argument('--schema-cache',type=Path);p.add_argument('--lean',type=Path);p.add_argument('--library-path',type=Path,action='append',default=[]);p.add_argument('--prepare-only',action='store_true');a=p.parse_args();require(__debug__,'Do not use Python -O.')\n                                                                                                                                                                                                                              ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_bind_free.py\", line 8, in require\n    if not p:raise RuntimeError(m)\n             ^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Do not use Python -O.\n",
+      "preserved_nonempty_record": true
+    },
+    {
+      "kind": "nonempty",
+      "checker": "check_model_coded_bind_free.py",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_bind_free.py\", line 79, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_bind_free.py\", line 22, in main\n    require(not W.is_relative_to(R)and not W.is_relative_to(D)and(not W.exists()or not any(W.iterdir())),'Fresh external output required.')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_bind_free.py\", line 8, in require\n    if not p:raise RuntimeError(m)\n             ^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Fresh external output required.\n",
+      "preserved_nonempty_record": true
+    },
+    {
+      "kind": "fake-first-Omega",
+      "checker": "check_model_coded_bind_free.py",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_bind_free.py\", line 79, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_bind_free.py\", line 57, in main\n    rel=Path(m.replace('.','/')).with_suffix('.olean');reference=toolroot/rel;obj=next((d/rel for d in [cache,*libs,toolroot]if(d/rel).is_file()),None);require(obj and reference.is_file()and sha(obj)==sha(reference),'Different first-selected toolchain provider: '+m)\n                                                                                                                                                        ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_bind_free.py\", line 8, in require\n    if not p:raise RuntimeError(m)\n             ^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Different first-selected toolchain provider: Lean.Elab.Tactic.Omega\n",
+      "actual_direct_coverage": true
+    },
+    {
+      "kind": "python-O",
+      "checker": "check_model_coded_closed_schema_axioms.py",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_closed_schema_axioms.py\", line 85, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_closed_schema_axioms.py\", line 20, in main\n    p.add_argument('--schema-cache',type=Path);p.add_argument('--lean',type=Path);p.add_argument('--library-path',type=Path,action='append',default=[]);p.add_argument('--prepare-only',action='store_true');a=p.parse_args();require(__debug__,'Do not use Python -O.')\n                                                                                                                                                                                                                              ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_closed_schema_axioms.py\", line 8, in require\n    if not p:raise RuntimeError(m)\n             ^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Do not use Python -O.\n",
+      "preserved_nonempty_record": true
+    },
+    {
+      "kind": "nonempty",
+      "checker": "check_model_coded_closed_schema_axioms.py",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_closed_schema_axioms.py\", line 85, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_closed_schema_axioms.py\", line 23, in main\n    require(not W.is_relative_to(R)and not W.is_relative_to(D)and(not W.exists()or not any(W.iterdir())),'Fresh external output required.')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_closed_schema_axioms.py\", line 8, in require\n    if not p:raise RuntimeError(m)\n             ^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Fresh external output required.\n",
+      "preserved_nonempty_record": true
+    },
+    {
+      "kind": "fake-first-Omega",
+      "checker": "check_model_coded_closed_schema_axioms.py",
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_closed_schema_axioms.py\", line 85, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_closed_schema_axioms.py\", line 63, in main\n    rel=Path(m.replace('.','/')).with_suffix('.olean');reference=toolroot/rel;obj=next((d/rel for d in [cache,*libs,toolroot]if(d/rel).is_file()),None);require(obj and reference.is_file()and sha(obj)==sha(reference),'Different first-selected toolchain provider: '+m)\n                                                                                                                                                        ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-closure/publication/check_model_coded_closed_schema_axioms.py\", line 8, in require\n    if not p:raise RuntimeError(m)\n             ^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Different first-selected toolchain provider: Lean.Elab.Tactic.Omega\n",
+      "actual_direct_coverage": true
+    }
+  ],
+  "relocated_preparations": [
+    {
+      "checker": "check_model_coded_bind_free.py",
+      "evidence": "/tmp/zfc-model-coded-closure/relocated-bind-prepared/verification.json",
+      "sha256": "6a36cd5e314f089100733d938ece27843867f4ae197fb29226ebb285093acef9",
+      "proof_commands": 0
+    },
+    {
+      "checker": "check_model_coded_closed_schema_axioms.py",
+      "evidence": "/tmp/zfc-model-coded-closure/relocated-closed-prepared/verification.json",
+      "sha256": "d0b386b66127c524d0e0e60d4264133d2fd318e4eb9b627b0b8466f6decb670c",
+      "proof_commands": 0
+    }
+  ],
+  "proof_builds": 0,
+  "initial_record_sha256": "e6072fadcc3673fc3d1e8bddd5ff11644a7357f6344d04d5a228e15d9ad1044b",
+  "initial_closed_guard_sha256": "0ee2266e9ed20f497f997e9eb18fc97612964cc1a93427b8ff6f0a88e88c0f1b",
+  "shared_provider_hardening": {
+    "status": "PASS",
+    "scope": "Prepare-only controls for predecessor provider continuity; no proof compilation.",
+    "script": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_closed_schema_axioms.py",
+      "sha256": "8c5ce7bd840aef937ccd54ddce6bd7ed8cbadc18ba0962ea3a2c31afb9671e2c"
+    },
+    "controls": [
+      {
+        "kind": "project",
+        "exit_code": 1,
+        "expected_rejection": "provider disagreement",
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_closed_schema_axioms.py\", line 93, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_closed_schema_axioms.py\", line 59, in main\n    now=selected[m];require(old['source_sha256']==now['source_sha256']and old['object_sha256']==now['object_sha256'],'BindFree/Closed selected provider disagreement: '+m);bind_selected[m]=dict(source_sha256=now['source_sha256'],object_sha256=now['object_sha256'])\n                    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_closed_schema_axioms.py\", line 8, in require\n    if not p:raise RuntimeError(m)\n             ^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: BindFree/Closed selected provider disagreement: ZFCinPA.Instances\n"
+      },
+      {
+        "kind": "boundary",
+        "exit_code": 1,
+        "expected_rejection": "provider disagreement",
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_closed_schema_axioms.py\", line 93, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_closed_schema_axioms.py\", line 59, in main\n    now=selected[m];require(old['source_sha256']==now['source_sha256']and old['object_sha256']==now['object_sha256'],'BindFree/Closed selected provider disagreement: '+m);bind_selected[m]=dict(source_sha256=now['source_sha256'],object_sha256=now['object_sha256'])\n                    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_closed_schema_axioms.py\", line 8, in require\n    if not p:raise RuntimeError(m)\n             ^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: BindFree/Closed selected provider disagreement: Foundation.FirstOrder.SetTheory.Basic.Axioms\n"
+      },
+      {
+        "kind": "toolchain",
+        "exit_code": 1,
+        "expected_rejection": "provider disagreement",
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_closed_schema_axioms.py\", line 93, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_closed_schema_axioms.py\", line 73, in main\n    if old['module']==m:require(sha(obj)==old['object_sha256'],'BindFree/Closed toolchain provider disagreement: '+m)\n                        ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/check_model_coded_closed_schema_axioms.py\", line 8, in require\n    if not p:raise RuntimeError(m)\n             ^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: BindFree/Closed toolchain provider disagreement: Lean.Elab.Tactic.Omega\n"
+      }
+    ],
+    "relocated_preparation": "/tmp/zfc-model-coded-closure/relocated-closed-prepared2/verification.json",
+    "proof_commands": 0
+  },
+  "scope_followup": "All records remain prepare-only/negative controls, no proof compilation. Historical initial controls are retained; final Closed guard compares selected shared BindFree source/object and toolchain hashes as well."
+}
