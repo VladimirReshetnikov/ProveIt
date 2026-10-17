@@ -95,3 +95,5 @@ import ZFCinPA.LIterate
 import ZFCinPA.LClosure
 import ZFCinPA.LFinalSep
 import ZFCinPA.LFinalSepAudit
+import ZFCinPA.LFinalRepl
+import ZFCinPA.LFinalReplAudit

@@ -639,12 +639,25 @@ environments on *earlier stages* (no finiteness argument is needed anywhere),
 and `EnvTransform`'s fixed pieces are embeddings of closed semisentences, so
 each template's definitional hypotheses translate to literal tautologies.
 
-**Remaining for `hSchema`**: (i) ω-iteration of a placeholder-defined class
-function (limit closure points are unbounded) and the final Separation and
-Replacement templates; (ii) the internal induction driver chaining the
-compiled templates at internal codes (definitional hypotheses as internal
-tautologies); (iii) the glue from `SchemaRecognizer` codes to
-`relativize`.
+**Final templates (checked).** `LIterate`/`LClosure` prove, in every template
+model, that limits closed under a total `F₅` are unbounded (ω-iteration with
+every Separation/Replacement use discharged by `sep_iff`/`repl_iff`).
+`LFinalSep.sepTemplate_provable` and `LFinalRepl.replTemplate_provable` turn
+the invariant `totS F₅ ⋏ reflS P₄ F₅` into `L`-separation for `P₄` at
+`z :: t` and `L`-replacement for `P₄` at `x :: y :: t` (the slot orders of
+the schema matrices `φ z` and `ψ x y`), for every environment `t` over a
+stage. Replacement needs no code-level shift: the image is bounded in a
+stage, and the domain `X` is stored at a slot `n` beyond a support bound of
+the reflecting code (`SatSupport.sat_support`) by patching the environment.
+
+**Remaining for `hSchema`**: (ii) the internal induction driver chaining the
+compiled step templates at internal codes (definitional hypotheses as
+internal tautologies), producing `Θ` for `envForm 1 φ` / `envForm 2 ψ`;
+(iii) the glue from `SchemaRecognizer` codes to `relativize`: an
+environment `t₀` with `t₀(i) = &i`, `φ^L ↔ envForm 1 φ (z :: t₀)` by
+internal induction on `φ`, and `relativize` commuting with the `∀^m`
+closure, so that the compiled final templates yield the relativized schema
+instances.
 
 Feeding `hSchema` into `ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`
 and the result into the C254/ZF comparison then gives the Choice half of the
