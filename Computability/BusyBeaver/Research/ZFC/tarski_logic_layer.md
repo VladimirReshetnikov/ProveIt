@@ -392,23 +392,51 @@ transport to full ZFC. The actual252-state binary table has a proved blank
 bootstrap and generic simulation; its complete finite coverage certificate is
 still being checked. PA internalization is an additional proof-code obligation.
 
-## Next: the Choice transport through L (in progress in this lane)
+## The constructible class is a model of ZF
 
-`foundation_choice_route.md` names `choice_refutation_remove`
-(a ZFC refutation yields a ZF refutation) as open. This lane owns it,
-semantically: in a model of `ZFax_s`, Gödel's
-constructible class `L` is a model of `ZFCax_s`. The internal toolkit above
-supplies ordinals, transfinite recursion and Collection; the repository's
-`BoundedZFCConsistency.InternalSatTotality` supplies satisfaction of coded
-formulas over set-sized structures, by certificates, which gives `Def(X)`.
-Planned modules: `BusyBeaver/ZFC/TransRec.lean` (transfinite recursion for a
-definable stage operation), `ConstructibleDef.lean` (`Def`), `Constructible.lean`
-(`L_α`, `L ⊨ ZF`), `ConstructibleChoice.lean` (a definable well-order and
-`L ⊨ AC`). Coordination note: please avoid duplicating these. The Codex lane
-completed the direct native-theory Foundation comparison in `WFModel` and
-`WFTheory`; no general arbitrary-ZF0 Foundation-removal theorem is claimed.
+The Choice transport (`foundation_choice_route.md`: a ZFC refutation yields a
+ZF refutation) is semantic in this lane: the constructible class of a model
+of `ZFax_s` should be a model of `ZFCax_s`. The ZF half is proved.
 
-The first four constructibility modules have now arrived and received an
+* `TransRec`: transfinite recursion `stage a = ⋃ {G (stage c) | c ∈ a}` for
+  any operation `G` whose graph is a named formula (`DefOp`); `InternalRank`'s
+  cumulative hierarchy is the case `G = P`.
+* `ConstructibleDef`: `DefinableIn X S` through
+  `BoundedZFCConsistency.InternalSatTotality.SatIn` (certificate satisfaction
+  of coded formulas over set-sized structures, total and single-valued even
+  on nonstandard codes), embedded into named formulas as atoms; the stage
+  operation `Gdef X = {S ⊆ X | S = ∅ or S definable over X}`.
+* `Constructible`: the truth bridge (for a standard formula, `SatIn` of its
+  code is satisfaction with quantifiers bounded by the carrier), `L_a` and its
+  basic laws, `L_a ∩ Ord = a`, stage bounds, pairing, union and power in L.
+* `ConstructibleReflect`: the **reflection theorem** for the L-hierarchy. A
+  limit `β` containing the least witness stage, over every internal
+  environment on an earlier stage, of each quantifier body (and its negation)
+  of `φ` reflects `φ` between `L` and `L_β` (a Tarski-Vaught induction); such
+  `β` exist above every ordinal by iterating the definable closing step along
+  ω. No closed-unbounded classes are needed.
+* `ConstructibleZF`: Separation in L (reflect, then the separated set is
+  definable over `L_β`), Replacement in L (collect images in the model, bound
+  them in a stage, separate), and `L_models_ZF`.
+
+**What remains: AC in L.** The selector principle (`ChoiceSem`) needs a
+well-order of each `L_α` that is itself constructible. Three ingredients are
+missing: (i) a well-order of the internal formula codes, which are hereditarily
+finite sets, so new elements of `L_{α+1}` can be compared by their least
+definitions; (ii) definitions with *finite* parameter tuples (internal finite
+sequences with their lexicographic order), since environments over `ω` cannot
+be well-ordered lexicographically, or else an internal proof that a coded
+formula depends on finitely many variables; (iii) absoluteness: the hierarchy
+computed inside the constructible model agrees with `L` (agreement of every
+internal operation and of certificates between the two), so that the
+canonical well-order lies in `L`. A Gödel-operations presentation would trade
+(i)-(ii) for Gödel's normal form theorem. Upstream's `zfc/` spends about 7.6k
+Coq lines here. Mathematically the goal does not wait on it: non-halting is
+equivalent to `Con(ZF)` (`WFTheory.c254_refutation_iff_zf` with L4), and
+`Con(ZF) ↔ Con(ZFC)` is Gödel's 1938 theorem, whose `L ⊨ ZF` half is now
+formalized here.
+
+The constructibility modules received an
 [independent source review](constructible_choice_review.md). The review found
 no defect in their internal recursion and reflection arguments. For the
 remaining definable well-order, it identifies an explicit prerequisite:

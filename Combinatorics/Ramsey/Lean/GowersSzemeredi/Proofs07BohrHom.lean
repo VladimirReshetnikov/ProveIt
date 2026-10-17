@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs01_03
 import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.ProofInfrastructure
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+import GowersSzemeredi.Proofs00ExponentialBounds
 
 /-!
 # The Bogolyubov--Freiman homomorphism lemma
@@ -122,49 +123,14 @@ private lemma lemma78_fourCorrelation_inversion {N : Nat} [NeZero N]
   intro r _
   rw [lemma78_fourier_fourCorrelation]
 
-private lemma lemma78_norm_exponential_sub_one_le {N : Nat} [NeZero N]
-    (x : ZMod N) :
-    ‖exponential x - 1‖ <= 2 * Real.pi * centeredAbs x / N := by
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  have habsval : |(x.valMinAbs : Real)| = (centeredAbs x : Real) := by
-    rw [centeredAbs, ← Int.cast_abs, Int.abs_eq_natAbs]
-    rfl
-  rw [cor24_exponential_eq_exp_valMinAbs]
-  calc
-    ‖Complex.exp
-        (Complex.I * (2 * Real.pi * (x.valMinAbs : Real) / N : Real)) - 1‖ <=
-        ‖2 * Real.pi * (x.valMinAbs : Real) / N‖ :=
-      Real.norm_exp_I_mul_ofReal_sub_one_le
-    _ = 2 * Real.pi * centeredAbs x / N := by
-      rw [Real.norm_eq_abs, abs_div, abs_mul, abs_mul,
-        abs_of_nonneg (by norm_num : (0 : Real) <= 2),
-        abs_of_pos Real.pi_pos, habsval, abs_of_pos hN]
-
 private lemma lemma78_bohr_phase_bound {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (alpha : Real) (d : ZMod N)
     (hd : d ∈ bohr (section7Spectrum A alpha) (alpha / (32 * Real.pi)))
     (r : ZMod N) (hr : r ∈ section7Spectrum A alpha) :
-    ‖exponential (r * d) - 1‖ <= alpha / 16 := by
-  rw [bohr, Finset.mem_filter] at hd
-  have hcenter := hd.2 r hr
-  have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
-  calc
-    ‖exponential (r * d) - 1‖ <=
-        2 * Real.pi * centeredAbs (r * d) / N :=
-      lemma78_norm_exponential_sub_one_le (r * d)
-    _ <= alpha / 16 := by
-      apply (div_le_iff₀ hN).2
-      calc
-        2 * Real.pi * (centeredAbs (r * d) : Real) <=
-            2 * Real.pi * ((alpha / (32 * Real.pi)) * N) := by
-          gcongr
-        _ = (alpha / 16) * N := by field_simp [Real.pi_ne_zero]; ring
-
-private lemma lemma78_norm_exponential_sub_one_le_two {N : Nat} [NeZero N]
-    (x : ZMod N) : ‖exponential x - 1‖ <= 2 := by
-  calc
-    ‖exponential x - 1‖ <= ‖exponential x‖ + ‖(1 : Complex)‖ := norm_sub_le _ _
-    _ = 2 := by norm_num [cor57_norm_exponential]
+    ‖exponential (r * d) - 1‖ <= alpha / 16 :=
+  (bohr_phase_bound _ _ d hd r hr).trans_eq (by
+    rw [show 2 * Real.pi * (alpha / (32 * Real.pi)) = alpha / 16 * (Real.pi / Real.pi) by ring,
+      div_self Real.pi_ne_zero, mul_one])
 
 private lemma lemma78_alpha_le_one {N : Nat} [NeZero N]
     (A : Finset (ZMod N)) (alpha : Real)
@@ -301,7 +267,7 @@ private lemma lemma78_weighted_phase_sum {N : Nat} [NeZero N]
           ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∉ K), 2 * F r := by
         gcongr with r _
         dsimp [w, F]
-        nlinarith [lemma78_norm_exponential_sub_one_le_two (r * d),
+        nlinarith [norm_exponential_sub_one_le_two (r * d),
           pow_nonneg (norm_nonneg (fourier (indicator A) r)) 4]
       _ = 2 * ∑ r ∈ (Finset.univ.filter fun r : ZMod N => r ∉ K), F r := by
         rw [Finset.mul_sum]
@@ -745,7 +711,7 @@ private lemma lemma78_constant_phase_bound {N : Nat} [NeZero N]
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   calc
     _ ≤ 2 * Real.pi * centeredAbs (r * d) / N :=
-      lemma78_norm_exponential_sub_one_le (r * d)
+      cor57_norm_exponential_sub_one_le (r * d)
     _ ≤ (1 : Real) / 4 := by
       apply (div_le_iff₀ hN).mpr
       calc
@@ -784,7 +750,7 @@ private lemma lemma78_constant_weighted_phase {N : Nat} [NeZero N]
     intro r _
     dsimp only [w]
     rw [mul_comm (2 : Real)]
-    exact mul_le_mul_of_nonneg_left (lemma78_norm_exponential_sub_one_le_two (r * d))
+    exact mul_le_mul_of_nonneg_left (norm_exponential_sub_one_le_two (r * d))
       (by dsimp [F]; positivity)
   let lambda := alpha ^ ((3 : Real) / 2) / 4
   have htail := lemma78_small_spectrum_tail A alpha lambda rfl hcard
