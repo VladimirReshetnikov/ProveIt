@@ -1203,6 +1203,13 @@ Ten axiom reports and sixteen callers pass without warnings. All eight
 individual logical-row clients are now proved; the gated set-theoretic bundle,
 accepted-proof translation and full PA equivalence remain open.
 
+The [two decoded atomic vacuity clauses](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-atomic-vacuity254.md)
+now have internal proofs for every Δ1 set-language theory under the actual
+gates `c ≠ a` and `c ≠ b`, allowing `a=b`. Syntactic binder invariance supplies
+finite generalization without a target axiom or GEN premise. Ten axiom reports
+and twelve callers pass without warnings. The outer conjunction and the
+container and collection clauses remain open.
+
 
 The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)
 reuses actual finite segment/configuration syntax and normalization with an
