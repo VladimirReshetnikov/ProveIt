@@ -180,6 +180,7 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `LInvariant` | the reflection invariant of the `hSchema` generator: `totS F` (a total function on ordinals above its argument) and `reflS P F` (one internal code reflects `P` as `SatIn` over every limit stage closed under `F`), read in every template model |
 | `LStepAnd` | the conjunction step: `and_step` for arbitrary relations (closure under the maximum gives closure under both components; the and-code reflects the conjunction by `satIn_and`) and `andTemplate_provable`, a theorem of the template theory over six placeholders |
 | `LStepBasic` | the disjunction step (`orTemplate`, by `satIn_or`), the negation step for negated atoms (`negTemplate`, code `c → ⊥`), and the constant bases `topBase`/`botBase` with the successor as reflection function |
+| `LStepAtom` | the atomic steps: if the numeral placeholders each define one natural number, the membership (equality) atom read at those environment slots, built literally from `EnvTransform`'s pieces, is reflected by the code `⟨0, ⟨a, b⟩⟩` (`⟨1, ⟨a, b⟩⟩`) with the successor as reflection function (`atom_step`, `atomTemplate_provable`) |
 
 ## Building
 
