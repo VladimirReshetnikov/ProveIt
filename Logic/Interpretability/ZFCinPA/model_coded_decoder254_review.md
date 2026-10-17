@@ -1,0 +1,9 @@
+Final Decoder245-line source, sixteen-probe/twenty-four-caller audit, run5 and portable guard read clean. The literal base4 tags and native relation-symbol orientation agree with Code254 and the actual set language. Source Cantor payloads remain separate from target HFS syntax/sequence encodings.
+
+The actual PR history starts with D0, appends row(index+1), has lengthindex+1 and preserves all prior lookups, with default0 outside the prefix. Both children are strictly below every positive source code. Bounded-prefix Σ1 induction proves every internal decoded code is a well-formed ℒset formula; no external Nat well-founded recursion or validity oracle is used.
+
+D0 is literal Mem00→Mem00: semantically truth, syntactically still containing free0. The positive recurrence deliberately leaves the sourcezero collision separate. IsFormula does not assert free-variable-closedness. GEN/twelve-rule proof transport, a formal all-Nat decoder-identification theorem, consistency comparison and the machine endpoint remain separate.
+
+Read-only verification made535 hash comparisons across96 paths for run5 plus portable override/dual-cache-relocated preflights: all67 inputs, exactly21 project nodes, six actual external boundaries, first Lean/Omega providers, compiler/snapshots/predecessors and fresh object match. Run5 reports16/24, standard three axioms, zero warnings. Runs1-4 remain nonpasses and their snapshots are retained.
+
+Both preflights are explicitly unbuilt. Five authored rejection controls were read and bound without replay. The portable delta freezes final bytes and supplies maintained defaults; historical Cantor compiler compatibility remains version-scoped while the current compiler binary is fixed by BindOne. No reviewer compiler, source edit or whole-cache attestation was performed. Exact identities and boundaries are in child-independent-review.json.

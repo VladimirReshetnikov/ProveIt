@@ -1105,7 +1105,14 @@ The [single-variable binding construction](../../../../Logic/Interpretability/ZF
 now binds an arbitrary internal free label at an arbitrary internal binder
 depth and proves exact reopening. Fifteen axiom reports and nineteen callers
 pass with zero warnings. This supplies the named-quantifier syntax for the
-planned C254 decoder; transporting GEN proofs remains a separate obligation.
+checked C254 decoder; transporting GEN proofs remains a separate obligation.
+
+The [internal C254 decoder](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder254.md)
+now has a fixed total Σ1 graph, exact code-indexed history and positive
+recurrence, and formula well-formedness for every internal code. Sixteen axiom
+reports and twenty-four callers pass with zero warnings. Source code 0 retains
+the literal truth formula and its syntactic free label 0; the implication alias
+at zero and all twelve proof-rule translations remain explicit obligations.
 
 
 The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)
@@ -1114,3 +1121,10 @@ arbitrary internal gap and parameterized box prefixes. Accepted comparisons
 preserve the complete numeric configuration; exterior deletion uses terminal 0.
 Ten axiom reports and twelve callers pass with zero warnings. Concrete boxes,
 symbolic execution and the full runtime refinement remain separate.
+
+
+The [internal read/write scans](arithmetic_writing_scans_perm252.md) permit
+replacing the consumed bit under explicit actual self-loop rows, for every
+internal length and both whole tape halves. Six axiom reports and twelve
+callers pass with standard axioms; four audit style warnings are preserved.
+Concrete boxes and full symbolic/runtime transport remain separate.
