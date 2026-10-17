@@ -1180,8 +1180,16 @@ now have internal proofs for arbitrary labels in actual ZF and ZFC. Fixed
 ordinary equality/congruence theorems are internalized before their bound slots
 are specialized at model elements; decoder implication equivalence identifies
 the actual `rho7`, `rho5` and `rho3` codes. Eleven axiom reports and twelve
-callers pass with zero warnings. The two remaining quantifier rows and the
-set-theoretic bundle remain open.
+callers pass with zero warnings.
+
+The [decoded exchange of named universals](../../../../Logic/Interpretability/ZFCinPA/model-coded-decoder-rho4-254.md)
+proves the actual `rho4` row for arbitrary internal labels and matrices,
+including coincident labels. Its syntax, finite logical template and numerical
+client pass fourteen axiom reports and twenty callers, with four retained
+style warnings. The [repeated-binding and vacuous-opening laws](../../../../Logic/Interpretability/ZFCinPA/model_coded_binder_absorption.md)
+pass seven reports and nine callers with no warnings; they supply the vacuity
+step for `rho6`. That last logical row, the gated set-theoretic bundle and the
+full PA equivalence remain open.
 
 
 The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)

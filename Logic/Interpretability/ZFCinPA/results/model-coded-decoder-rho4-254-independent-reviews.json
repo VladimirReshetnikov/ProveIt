@@ -1,0 +1,360 @@
+{
+  "scope": "Independent final full-source/audit/guard/evidence review, including maintained placement and unbuilt default preflights; reviewer performed no proof builds. Original reviewer records unchanged.",
+  "review": {
+    "status": "CLEAN_FINAL_INDEPENDENT_REVIEW",
+    "reviewer": "/root/review_bic/mira_backend_route",
+    "activity": {
+      "compiler_invocations": 0,
+      "proof_builds": 0,
+      "checker_or_control_replays": 0,
+      "author_or_tracked_source_edits": 0
+    },
+    "contracts": [
+      {
+        "label": "Swap",
+        "source": {
+          "path": "/tmp/zfc-decoder-rho4/sources/ZFCinPA/ModelCodedBindOneSwap.lean",
+          "sha256": "f8a3a672424ff5739ebd51d0df381e46277848ed34501f62b169b41bc8651daa",
+          "lines": 196
+        },
+        "evidence": {
+          "path": "/tmp/zfc-decoder-rho4/swap-run1/verification.json",
+          "sha256": "1a14376caf23c71813696639dbec7f0dbc1eebf5bba4127dce2285c80f444333"
+        },
+        "probes": 6,
+        "callers": 8,
+        "source_warnings": 0,
+        "audit_warnings": 0,
+        "only_standard_axioms": true,
+        "fresh_modules": [
+          {
+            "module": "ZFCinPA.ModelCodedBindOneSwap",
+            "path": "/tmp/zfc-decoder-rho4/swap-run1/cache/ZFCinPA/ModelCodedBindOneSwap.olean",
+            "sha256": "a7acc598ff8fe3feb7801273fb2a32e5f78aef24770427f3533928b37eea17a6",
+            "source_sha256": "f8a3a672424ff5739ebd51d0df381e46277848ed34501f62b169b41bc8651daa"
+          }
+        ],
+        "commands": [
+          {
+            "label": "syntax-source",
+            "seconds": 8.686187957413495,
+            "exit_code": 0
+          },
+          {
+            "label": "syntax-audit",
+            "seconds": 2.0031612487509847,
+            "exit_code": 0
+          }
+        ]
+      },
+      {
+        "label": "Template",
+        "source": {
+          "path": "/tmp/zfc-decoder-rho4/sources/ZFCinPA/ModelCodedTwoQuantifierSwap.lean",
+          "sha256": "91f8e2ba4d82be8c516043131ed159527954b10b33b01576e3e81d718eeadfe8",
+          "lines": 55
+        },
+        "evidence": {
+          "path": "/tmp/zfc-decoder-rho4/template-run2/verification.json",
+          "sha256": "3ae6c5d4ade693b637b1ed928cc7356a2bd6ab1562b90de93262fe263db71dd1"
+        },
+        "probes": 3,
+        "callers": 4,
+        "source_warnings": 1,
+        "audit_warnings": 0,
+        "only_standard_axioms": true,
+        "fresh_modules": [
+          {
+            "module": "ZFCinPA.ModelCodedTwoQuantifierSwap",
+            "path": "/tmp/zfc-decoder-rho4/template-run2/cache/ZFCinPA/ModelCodedTwoQuantifierSwap.olean",
+            "sha256": "c2ae8e540b5ce48023d66f2c9160e2c0594d34a6f760199d4be0a34866574827",
+            "source_sha256": "91f8e2ba4d82be8c516043131ed159527954b10b33b01576e3e81d718eeadfe8"
+          }
+        ],
+        "commands": [
+          {
+            "label": "template-source",
+            "seconds": 2.558534123003483,
+            "exit_code": 0
+          },
+          {
+            "label": "template-audit",
+            "seconds": 1.9526692098006606,
+            "exit_code": 0
+          }
+        ]
+      },
+      {
+        "label": "rho4",
+        "source": {
+          "path": "/tmp/zfc-decoder-rho4/sources/ZFCinPA/ModelCodedDecoderRho4_254.lean",
+          "sha256": "e46032e3cee19b2ba97f6d8bf76547aa422cceee41759ddcd282dc419e90cc9d",
+          "lines": 85
+        },
+        "evidence": {
+          "path": "/tmp/zfc-decoder-rho4/rho4-run3/verification.json",
+          "sha256": "0dede09ee2cb35da5a71981a37308fab099aeee2b2323c2534f1560bc5a0e223"
+        },
+        "probes": 5,
+        "callers": 8,
+        "source_warnings": 3,
+        "audit_warnings": 0,
+        "only_standard_axioms": true,
+        "fresh_modules": [
+          {
+            "module": "ZFCinPA.ModelCodedDecoderRho4_254",
+            "path": "/tmp/zfc-decoder-rho4/rho4-run3/cache/ZFCinPA/ModelCodedDecoderRho4_254.olean",
+            "sha256": "5b03ef7d6f68dbf396d8191dab3488c324062bb23ba198c983aed43b7b7ec3bf",
+            "source_sha256": "e46032e3cee19b2ba97f6d8bf76547aa422cceee41759ddcd282dc419e90cc9d"
+          }
+        ],
+        "commands": [
+          {
+            "label": "source",
+            "seconds": 2.026774032972753,
+            "exit_code": 0
+          },
+          {
+            "label": "audit",
+            "seconds": 1.9651683242991567,
+            "exit_code": 0
+          }
+        ]
+      }
+    ],
+    "findings": [
+      "Full final sources (196/55/85 lines), all three focused audits, original/final portable guards, successful evidence and final deltas were read. No mathematical or API defect found.",
+      "The fixed represented swapVec graph has arguments output/depth. Its total internal function fixes every old bound index below d and exchanges exactly d,d+1. Distinct-label term/vector/formula identities follow from genuine internal induction with changing depth and both arbitrary labels generalized. All syntax constructors and internal vector arities are covered; no external finite-support or syntax well-foundedness assumption occurs.",
+      "The finite double-universal proof uses both actual context SHIFTs. The opening vector [free 0,free 1] and two specializations of the shifted double universal produce the reversed slot assignment [free 1,free 0]. The explicit typed 2\u21922 vector gives the exact raw swapVec0 bridge. No object axiom, GEN closure resource or shift-fixed context is assumed.",
+      "The numerical client binds b at slot0 then a at slot1, matching the swap theorem. Coincident labels use implication identity; distinct labels use slot exchange. Actual numerical ALL and implication decoder conversions preserve all zero aliases and arbitrary decoded matrices, including the literal D0 with free label0. No freshness or closed-matrix restriction is hidden.",
+      "The actual theorem holds for every \u03941 set-language theory T and all internal a,b,c in every I\u03a31 model. It does not require equality, Foundation, Choice or ZF axioms. ZF/ZFC audit clients are genuine specializations of that generic result.",
+      "Template final changes only function-composition normalization and explicit output arity. Numerical final changes only the doubleBody 0+1+1/2 numeral coherence proof. One Template source failure and two numerical source failures are retained; successful logical contracts are unchanged.",
+      "Exact warning scope is Swap0, Template1 unused-simp source warning, numerical rho4 THREE unnecessary-simpa source warnings; all audits0. All fourteen axiom reports and twenty callers pass using only propext, Classical.choice and Quot.sound.",
+      "All three portable guards equal their successfully executed final bytes. They check pinned current-repo closures (10/11/38 projects), six external boundary providers, actual first Omega/sysroot, compiler/pins/manifest, namespace mirror, and input/fresh-object pre/post hashes. Numerical merging imports both fresh parents and binds selected bf2 and unused ff1 Cantor artifacts individually under their exact common source identity.",
+      "All fifteen maintained placements match the map, including the note and original successful records. Six packaged unbuilt preparations plus three new maintained-default preparations are separately bound. Nine recorded rejections were read, not replayed. Their zero-proof-build claim correctly permits author-side compiler version queries.",
+      "Nine historical records and frozen source/audit/guard snapshots are bound, including original preparations and three genuine failures. Historical changed live paths are interpreted through snapshots and are not falsely claimed current."
+    ],
+    "identity_check": {
+      "path": "/tmp/zfc-decoder-rho4/child-combined-identities.json",
+      "sha256": "9ce2fd3fce4b7a66c99a76f444785c287bb0c302f30e0fc111a1f4ada344ced8",
+      "hash_comparisons": 1877,
+      "unique_paths": 251,
+      "all_rehashed_at_finalization": true
+    },
+    "records": [
+      {
+        "path": "/tmp/zfc-decoder-rho4/swap-run1/verification.json",
+        "sha256": "1a14376caf23c71813696639dbec7f0dbc1eebf5bba4127dce2285c80f444333",
+        "status": "PASS",
+        "projects": 10,
+        "inputs": 42,
+        "hash_comparisons": 100
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/swap-portable-prepared/verification.json",
+        "sha256": "f76be8d50c34e64ef41605f6f19d04709e51d2ecc87bfd0f4f9edde8714abe83",
+        "status": "PREPARED_NOT_BUILT",
+        "projects": 10,
+        "inputs": 42,
+        "hash_comparisons": 99
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/swap-relocated-prepared/verification.json",
+        "sha256": "dda3c69e68a8482fd71e2cafaf65e7f65a769270c6fb13a25c9e5bacfcf9acae",
+        "status": "PREPARED_NOT_BUILT",
+        "projects": 10,
+        "inputs": 42,
+        "hash_comparisons": 99
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/maintained-swap-prepared/verification.json",
+        "sha256": "03254d8fe46d478dbb090711243c8c443ab990dc018f14eecfbc5f9430fe2f9c",
+        "status": "PREPARED_NOT_BUILT",
+        "projects": 10,
+        "inputs": 42,
+        "hash_comparisons": 99
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/template-run2/verification.json",
+        "sha256": "3ae6c5d4ade693b637b1ed928cc7356a2bd6ab1562b90de93262fe263db71dd1",
+        "status": "PASS",
+        "projects": 11,
+        "inputs": 45,
+        "hash_comparisons": 106
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/template-portable-prepared/verification.json",
+        "sha256": "1b53834dcef7924ecebabe77e34ef914b6a7784efaa735067cfca57b0999e136",
+        "status": "PREPARED_NOT_BUILT",
+        "projects": 11,
+        "inputs": 45,
+        "hash_comparisons": 105
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/template-relocated-prepared/verification.json",
+        "sha256": "13cae7a0fce1454adf9d471ea1706a8b1608922116a34ebce8af30de2f269a5d",
+        "status": "PREPARED_NOT_BUILT",
+        "projects": 11,
+        "inputs": 45,
+        "hash_comparisons": 105
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/maintained-template-prepared/verification.json",
+        "sha256": "cffb4bb65e21db3ac0b2e7912db45f4e6362b68c78a964c04085fbc96ed0026f",
+        "status": "PREPARED_NOT_BUILT",
+        "projects": 11,
+        "inputs": 45,
+        "hash_comparisons": 105
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/rho4-run3/verification.json",
+        "sha256": "0dede09ee2cb35da5a71981a37308fab099aeee2b2323c2534f1560bc5a0e223",
+        "status": "PASS",
+        "projects": 38,
+        "inputs": 102,
+        "hash_comparisons": 246
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/rho4-portable-prepared/verification.json",
+        "sha256": "1540f6f20ae23d34de342433f1848a26060562444ed48731bcdf621a21b40c63",
+        "status": "PREPARED_NOT_BUILT",
+        "projects": 38,
+        "inputs": 102,
+        "hash_comparisons": 245
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/rho4-relocated-prepared/verification.json",
+        "sha256": "26d7bbc5174303c0f3aa61afa7def6be96fb1b391958448ecd46a066ff89c66a",
+        "status": "PREPARED_NOT_BUILT",
+        "projects": 38,
+        "inputs": 102,
+        "hash_comparisons": 245
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/maintained-rho4-prepared/verification.json",
+        "sha256": "e34b25048ccb03d662efc869a370414be2529e94f8ea8e4902352fb64c8d4ec4",
+        "status": "PREPARED_NOT_BUILT",
+        "projects": 38,
+        "inputs": 102,
+        "hash_comparisons": 245
+      }
+    ],
+    "maintained_files": [
+      {
+        "source": "/tmp/zfc-decoder-rho4/sources/ZFCinPA/ModelCodedBindOneSwap.lean",
+        "target": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindOneSwap.lean",
+        "sha256": "f8a3a672424ff5739ebd51d0df381e46277848ed34501f62b169b41bc8651daa"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/SwapAudit.lean",
+        "target": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindOneSwapAudit.lean",
+        "sha256": "126f1e8f49f0de4107771fef5055affc365b9327b10a0680e6b1541647a860ff"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/publication/check_model_coded_bind_one_swap.py",
+        "target": "Logic/Interpretability/ZFCinPA/check_model_coded_bind_one_swap.py",
+        "sha256": "5c5a6ff2875f360247c665195965a9518b2fd4ec5d9736cfca1514839d064cb6"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/sources/ZFCinPA/ModelCodedTwoQuantifierSwap.lean",
+        "target": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedTwoQuantifierSwap.lean",
+        "sha256": "91f8e2ba4d82be8c516043131ed159527954b10b33b01576e3e81d718eeadfe8"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/TemplateAudit.lean",
+        "target": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedTwoQuantifierSwapAudit.lean",
+        "sha256": "43ca03755db0475280fd8bc9b6f14ed74b2c5dff1a43026b741f606315a44eef"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/publication/check_model_coded_two_quantifier_swap.py",
+        "target": "Logic/Interpretability/ZFCinPA/check_model_coded_two_quantifier_swap.py",
+        "sha256": "1554d904af1154fabe6a4ad5bce48fdb59c7ab87f64b762429572550ab09f9ab"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/sources/ZFCinPA/ModelCodedDecoderRho4_254.lean",
+        "target": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderRho4_254.lean",
+        "sha256": "e46032e3cee19b2ba97f6d8bf76547aa422cceee41759ddcd282dc419e90cc9d"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/Rho4Audit.lean",
+        "target": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedDecoderRho4_254Audit.lean",
+        "sha256": "d251d3bac90b4310bd134ea481759de30dea167c951f5dd1a0c0f94fd0ec7922"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/publication/check_model_coded_decoder_rho4_254.py",
+        "target": "Logic/Interpretability/ZFCinPA/check_model_coded_decoder_rho4_254.py",
+        "sha256": "d9a3868c38f05763dfb5889a1b71d3418f199227fb3664af20197eb90a551127"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/publication/model-coded-bind-one-swap-verification.json",
+        "target": "Logic/Interpretability/ZFCinPA/results/model-coded-bind-one-swap-verification.json",
+        "sha256": "1a14376caf23c71813696639dbec7f0dbc1eebf5bba4127dce2285c80f444333"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/publication/model-coded-two-quantifier-swap-verification.json",
+        "target": "Logic/Interpretability/ZFCinPA/results/model-coded-two-quantifier-swap-verification.json",
+        "sha256": "3ae6c5d4ade693b637b1ed928cc7356a2bd6ab1562b90de93262fe263db71dd1"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/publication/model-coded-decoder-rho4-254-verification.json",
+        "target": "Logic/Interpretability/ZFCinPA/results/model-coded-decoder-rho4-254-verification.json",
+        "sha256": "0dede09ee2cb35da5a71981a37308fab099aeee2b2323c2534f1560bc5a0e223"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/publication/history.json",
+        "target": "Logic/Interpretability/ZFCinPA/results/model-coded-decoder-rho4-254-history.json",
+        "sha256": "161341bc968c32ea1cb741d9c49b5421b98e0a092a98d45adb7c9ccfbf84fe79"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/publication/portable-preflight.json",
+        "target": "Logic/Interpretability/ZFCinPA/results/model-coded-decoder-rho4-254-portable-preflight.json",
+        "sha256": "6d95945f72017fef8591407a76a14fe51f610db8970fadd744b79645f86440ca"
+      },
+      {
+        "source": "/tmp/zfc-decoder-rho4/publication/model-coded-decoder-rho4-254.md",
+        "target": "Logic/Interpretability/ZFCinPA/model-coded-decoder-rho4-254.md",
+        "sha256": "9698265ac8c5010e5a3ac3ed4a29d78f6473360a1e4010911fcbba473925b85a"
+      }
+    ],
+    "publication_map": {
+      "path": "/tmp/zfc-decoder-rho4/publication/publication-map.json",
+      "sha256": "a5d1190679ff6c7e384bae48822670f98f62e405156c91cbdfc5b2eb92906ac1"
+    },
+    "history": {
+      "path": "/tmp/zfc-decoder-rho4/publication/history.json",
+      "sha256": "161341bc968c32ea1cb741d9c49b5421b98e0a092a98d45adb7c9ccfbf84fe79"
+    },
+    "controls": {
+      "path": "/tmp/zfc-decoder-rho4/publication/portable-preflight.json",
+      "sha256": "6d95945f72017fef8591407a76a14fe51f610db8970fadd744b79645f86440ca"
+    },
+    "prior_reviews": [
+      {
+        "path": "/tmp/zfc-decoder-rho4/child-prebuild-review.json",
+        "sha256": "ced9ccbd435f23fb9e56a41987a54c5fbe806b5b3708eb86c9a3151634523199"
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/child-swap-final-review.json",
+        "sha256": "ced9ccbd435f23fb9e56a41987a54c5fbe806b5b3708eb86c9a3151634523199"
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/child-template-final-review.json",
+        "sha256": "4e27b49aa477270b473f98eb165e72e78c847c4948f30dec31ed2c1c51600b9b"
+      },
+      {
+        "path": "/tmp/zfc-decoder-rho4/child-rho4-final-review.json",
+        "sha256": "680e70f5baaf7d07aaa29d87f42955047fefb192a5b19be204de58be00b56154"
+      }
+    ],
+    "nonclaims": [
+      "No arbitrary internal derivation interpretation or represented proof selector is inferred.",
+      "No complete twelve-row/history transport, binary simulation or PA consistency endpoint is proved by this checkpoint alone.",
+      "External provider hashes attest only the explicit boundaries, not the entire dependency cache.",
+      "This reviewer invoked no compiler, guard, proof build or control."
+    ],
+    "issues": []
+  },
+  "review_sha256": "f684932a252a88e6922b22d613f06b6086869ffe81a34f4a4de5043f89542dee",
+  "review_markdown": "Final independent three-stage rho4 review: CLEAN.\n\nRead all196/55/85 source lines, the6/8+3/4+5/8 audits, guards and final proof deltas. Internal slot exchange preserves previous bound variables at every depth; double-generalization retains both shifted contexts with correct reversed opening. The numerical client uses identity for equal labels and decoder congruence for all numerical aliases. Arbitrary internal labels and matrices are covered with no axiom, object GEN, freshness, closed-matrix or standard-support premise.\n\nExact kernel evidence is Swap6/8/0warnings, Template3/4/ONE source warning and rho4 5/8/THREE source warnings; every audit has0warnings and only the standard three axioms. The Template normalization/arity repair and numerical two-slot numeral repair do not change the logical claims. Three nonpasses remain preserved.\n\nBound1877 comparisons across251 paths: all three fresh objects and42/45/102 input sets, exact10/11/38 project closures, six external boundaries, actual first Omega, compiler/pins, both Cantor artifacts, fifteen maintained files, six packaged plus three maintained unbuilt preflights, nine recorded rejects and all nine historical records/snapshots. Portable guards equal executed finals. Version queries in author preflights are distinct from proof builds. No reviewer compiler, checker/control replay or source edit occurred.\n\nThis logical-row checkpoint does not itself supply general internal proof transport or a PA/binary endpoint. Exact hashes, timings, warnings, placements and prior review packets are in child-independent-review.json; all original records remain unchanged.\n",
+  "review_markdown_sha256": "30c6d48f9ac9fe9763f2b60550175e60c8b51bdab59a7a42d20bd404e024e8f9"
+}
