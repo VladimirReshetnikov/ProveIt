@@ -390,3 +390,18 @@ the converse transport, ZFC refutation → `NativeAx` refutation (Regularity
 and Choice, Codex lane: `WellFoundedPart.lean`, `foundation_choice_route.md`),
 and for the binary machine the TM layer (literal 253/254 table ↔ path
 semantics of `Prog254`).
+
+## Next: the Choice transport through L (in progress in this lane)
+
+`foundation_choice_route.md` names `choice_refutation_remove`
+(a ZFC refutation yields a ZF refutation) as open, and no lane has started
+it. This lane now takes it, semantically: in a model of `ZFax_s`, Gödel's
+constructible class `L` is a model of `ZFCax_s`. The internal toolkit above
+supplies ordinals, transfinite recursion and Collection; the repository's
+`BoundedZFCConsistency.InternalSatTotality` supplies satisfaction of coded
+formulas over set-sized structures, by certificates, which gives `Def(X)`.
+Planned modules: `BusyBeaver/ZFC/TransRec.lean` (transfinite recursion for a
+definable stage operation), `ConstructibleDef.lean` (`Def`), `Constructible.lean`
+(`L_α`, `L ⊨ ZF`), `ConstructibleChoice.lean` (a definable well-order and
+`L ⊨ AC`). Coordination note: please avoid duplicating these; the Regularity
+transport (`WellFoundedPart.lean`) stays with the Codex lane.
