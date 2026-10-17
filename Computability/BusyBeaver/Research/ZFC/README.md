@@ -144,7 +144,14 @@ both theory components and the complete original bundle. A reusable finite
 circuit compiler produces fixed bounded formulas and proves their correctness
 in every IOpen model. The three-module arithmetic chain passes97 axiom probes
 and83 callers. All positive template graphs are present; the gated twelve-case
-row function, history evaluation and internal proof/trace transport remain open.
+row function is supplied by the next extension.
+
+The [full arithmetic rule row](arithmetic_row254.md) now includes all twelve
+cases, failed MP, both bundle gates and invalid tags. Its fixed bounded graph
+works in every IOpen model and agrees with the actual history checker's row on
+every natural input, with child results supplied explicitly. The four-module
+chain passes 114 axiom probes and 120 callers. History lookup and construction,
+outer proof-code decoding and internal proof/trace transport remain open.
 
 [Intake157/source50](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
 adds exact quotation bounds and canonical constructor-only certificates for all
@@ -165,6 +172,14 @@ pass the finite checks. A deep bundle needs 62 supplied-record constructor
 checks instead of 297,059 template-lookup visits in the first prototype.
 These are verifier operation counts; tape access, fixed data, initialization
 and the complete TM state cost still need implementation and measurement.
+
+The subsequent [fixed-pattern matcher](term-certificates/pattern-matching.md)
+eliminates the supplied constructor IDs too. It handles dynamically normalized
+zero and retains the exact twelve rules, both gates and fixed falsity target.
+The small bundle's unary certificate shrinks from 4,582 to 2,506 bits; matching
+uses 98 constructor checks instead of the shared circuit's 62. All 261 template
+controls and 262,143 short-word parses pass. This trades certificate size for
+more reads; complete machine compilation is still needed to establish a saving.
 
 A measured attempt to save a register by changing Cantor pairing to a
 [power-of-two encoding](register_lifetime.md) retained the full calculus but

@@ -1,5 +1,12 @@
 # Exact C254 certificates with local constructor witnesses
 
+The latest [fixed-pattern matcher](pattern-matching.md) removes the supplied
+constructor witnesses as well. It checks a claimed formula directly against the
+trusted axiom pattern, handling zero normalization explicitly. The small bundle
+certificate shrinks from 4,582 to 2,506 bits, at the cost of more constructor
+reads. Both protocols and their comparisons are retained below; neither has a
+compiled TM state count.
+
 This experiment removes two verifier obligations from source50's constructor-term frontend: global arena-key uniqueness and template-node search. Every schema instead supplies IDs for the fixed template's constructor records. The two bundle freshness conditions carry finite distinguishing paths. A total finite-word codec and a fair length-lex search specification are included. The ordinary arguments below preserve refutation completeness for the **full twelve-rule C254 calculus**, including native equality and both freshness gates. No complete binary TM, state count, Lean proof or PA/ZFC internalization is claimed.
 
 The source is source50, *Canonical term certificates for small consistency machines*, received as `docs/incoming/zfc_sparse_certificates.zip` in `85633fd2f57b5dca16f87667699134d1b500ebc0`, with historical ProveIt pin `fab89c5d26b81cd2ccab2ee5d213ff23725c7726`. Its unchanged fixed specification is hosted at `SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/data/50-terms-data-spec254.json`. The new code is ProveIt research following that delivery. Mira-Cult's original calculus/machine, Jeff Ketchersid and contributors' verification, Andrew James Wade's framework, mira-emmy's 253 reduction and ProveIt's 252 permutation/bootstrap/formalization retain their attribution. This is a new frontend experiment and does not modify the checked 252 machine.
@@ -12,9 +19,9 @@ From the repository root:
 uv run --no-project python -B Computability/BusyBeaver/Research/ZFC/check_term_certificates.py
 ```
 
-The runner invokes the maintained `reproduce_157.py --prepare-only` helper to recover source50 offline from its committed archive and unchanged hosted ancillaries. It copies the six experiment files into a fresh directory outside the checkout, arranges the recovered `source50/code` and `source50/data` layout, and runs `test_paths.py`, `test_circuits.py` and `test_codec.py` sequentially with assertions enabled. The first test generates the deep fixture used by the next two. A separate clean process then loads the actual hosted fixed spec and runs the verifier/codec with no numeric or producer modules imported. `--repo` supports a runner outside the checkout; `--output` selects a new or empty external evidence directory.
+The runner invokes the maintained `reproduce_157.py --prepare-only` helper to recover source50 offline from its committed archive and unchanged hosted ancillaries. It copies nine experiment files into a fresh directory outside the checkout, arranges the recovered `source50/code` and `source50/data` layout, and runs `test_paths.py`, `test_circuits.py`, `test_codec.py` and `test_patterns.py` sequentially with assertions enabled. The first test generates the deep fixture used by the later suites. A separate clean process then loads the actual hosted fixed spec and runs both verifier/codec protocols with no numeric or producer modules imported. `--repo` supports a runner outside the checkout; `--output` selects a new or empty external evidence directory.
 
-No original source50 files are copied into this publication directory or edited. The recovered code is used only by test/producer adapters; `term_circuits.py` and `term_codec.py` themselves use only the standard library and explicit trusted fixed templates. No network, Lean/Coq build, incoming checksum-manifest loop or machine search runs. The output `verification.json` records exact commands, source/spec identities, all three result objects and the independent-process replay. Logs and generated controls remain outside the checkout.
+No original source50 files are copied into this publication directory or edited. The recovered code is used only by test/producer adapters; both verifier/codec protocols use only the standard library and explicit trusted fixed templates. No network, Lean/Coq build, incoming checksum-manifest loop or machine search runs. The output `verification.json` records exact commands, source/spec identities, all four result objects and the independent-process replay. Logs and generated controls remain outside the checkout.
 
 ## Normal arenas and two exact disequality witnesses
 

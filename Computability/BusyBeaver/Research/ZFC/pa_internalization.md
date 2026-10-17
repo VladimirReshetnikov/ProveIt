@@ -237,14 +237,20 @@ graphs for the four live numerical constructors and the rho1 payload branch.
 It proves parameter-free formula correctness in arbitrary IOpen models and
 exact all-natural implementation agreement. Output bounds justify those
 constructor witnesses; they do not by themselves bound the intermediate values
-of a rejected MP row with output0. The full twelve-case checker remains open.
+of a rejected MP row with output0. The later row extension below handles that case.
 
 The subsequent [fixed-template graphs](arithmetic_templates254.md) cover the
 remaining rho2–8 and exact C/G/full-bundle expressions. Their generic circuit
 compiler yields a fixed parameter-free graph for each finite template, with
 all-natural equality to the live functions. This completes the positive
-template library; it does not yet supply the two gates, rejected-row behavior,
-history recursion or internally coded proof and trace translations.
+template library. The subsequent [complete row graph](arithmetic_row254.md)
+adds both gates, exact rejected-row behavior and every invalid tag, with bounded
+witnesses justified separately for failed and successful branches. It agrees
+with `Code254History.row` on every natural input, using explicit child-result
+values, and its fixed graph works in every IOpen model. The four-module chain
+passes 114 axiom probes and 120 callers. History lookup and recursion, outer
+proof-code decoding and internally coded proof and trace translations remain
+open.
 
 Intake157's [canonical term certificates](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
 provide ordinary exact checker reductions and constructor-only derivations.

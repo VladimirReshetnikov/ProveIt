@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Recover source50 offline and replay the three new term-certificate suites.
+"""Recover source50 offline and replay the four term-certificate suites.
 
 All generation/execution occurs outside the checkout. Original source50 is
 recovered by maintained reproduce_157.py --prepare-only; none of its manifests
@@ -21,7 +21,8 @@ import time
 HOST = Path('SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels')
 EXPERIMENT = Path('Computability/BusyBeaver/Research/ZFC/term-certificates')
 SOURCES = ('term_paths.py', 'test_paths.py', 'term_circuits.py',
-           'test_circuits.py', 'term_codec.py', 'test_codec.py')
+           'test_circuits.py', 'term_codec.py', 'test_codec.py',
+           'term_patterns.py', 'pattern_codec.py', 'test_patterns.py')
 DEPENDENCIES = ('code/symbolic254.py', 'code/canonical254.py',
                 'code/term254.py', 'code/check_term254.py', 'data/spec254.json')
 
@@ -36,6 +37,8 @@ def standalone(run: Path, spec: Path, output: Path) -> None:
     sys.path.insert(0, str(run))
     import term_circuits as V
     import term_codec as B
+    import term_patterns as P
+    import pattern_codec as PB
     tables = V.load_templates(spec)
     example = json.loads((run / 'example-circuit-bundle.json').read_text())
     word = (run / 'example-bundle.bits').read_text()
@@ -44,14 +47,25 @@ def standalone(run: Path, spec: Path, output: Path) -> None:
     assert B.encode(cert, tables) == word
     assert V.verify_certificate(cert, tables, goal=example['trusted_control_goal'])
     assert not B.accepts(word, tables)
+    pattern_example = json.loads((run / 'example-pattern-bundle.json').read_text())
+    pattern_word = (run / 'example-pattern-bundle.bits').read_text()
+    pattern_cert = PB.decode(pattern_word, tables)
+    assert pattern_cert == pattern_example['certificate']
+    assert PB.encode(pattern_cert, tables) == pattern_word
+    assert P.verify_certificate(pattern_cert, tables, goal=pattern_example['trusted_control_goal'])
+    assert not PB.accepts(pattern_word, tables)
     prohibited = ('symbolic254', 'canonical254', 'term254', 'term_paths',
-                  'test_paths', 'test_circuits', 'test_codec')
+                  'test_paths', 'test_circuits', 'test_codec', 'test_patterns')
     assert not any(name in sys.modules for name in prohibited)
     assert Path(V.__file__).resolve() == (run / 'term_circuits.py').resolve()
     assert Path(B.__file__).resolve() == (run / 'term_codec.py').resolve()
+    assert Path(P.__file__).resolve() == (run / 'term_patterns.py').resolve()
+    assert Path(PB.__file__).resolve() == (run / 'pattern_codec.py').resolve()
     output.write_text(json.dumps({
         'status': 'PASS', 'word_bits': len(word), 'roundtrip_exact': True,
         'positive_bundle_control': True, 'same_word_rejected_at_fixedF': True,
+        'pattern_word_bits': len(pattern_word), 'pattern_roundtrip_exact': True,
+        'pattern_positive_control': True, 'pattern_word_rejected_at_fixedF': True,
         'numeric_or_producer_modules_imported': False,
         'trusted_hosted_spec': identity(spec),
         'scope': 'Clean-process stdlib-only verifier/codec finite control; no logical acceptance or TM state claim.'}, indent=2)+'\n')
@@ -138,7 +152,8 @@ def main() -> None:
         shutil.copyfile(source / name, run_dir / name)
     for name, result_name in [('test_paths.py','results.json'),
                               ('test_circuits.py','circuit-results.json'),
-                              ('test_codec.py','codec-results.json')]:
+                              ('test_codec.py','codec-results.json'),
+                              ('test_patterns.py','pattern-results.json')]:
         run(name.removesuffix('.py'),[sys.executable,'-B',str(run_dir / name)],run_dir)
         result = json.loads((run_dir / result_name).read_text())
         if result['status'] != 'PASS':
