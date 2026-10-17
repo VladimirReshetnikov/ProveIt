@@ -65,8 +65,11 @@ The current arithmetic checkpoints are:
   all-internal contracts, including both actual DROP and MP occurrences and
   whole-file preservation. The [complete DROP branch](arithmetic_control_drop254.md)
   pushes the old TW/WS pair, restores TW from the cache and returns to fetch;
-  its AC1 dispatcher composition is also checked. MP and AX still need their
-  complete actual-control contracts.
+  its AC1 dispatcher composition is also checked. The
+  [MP comparison](arithmetic_control_compare254.md) clears scratch1 and cache,
+  reaches success exactly when their original values agree, and has the
+  exact internal logical clock `3*a+2*distance(a,b)+2`. MP and AX still need
+  their complete actual-control contracts.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
 translation, the internal L-specific Separation/Replacement proofs, and the complete
@@ -621,10 +624,13 @@ Feeding `hSchema` into `ConstructibleInterpretation.provable_falsum_ZF_of_ZFC`
 and the result into the C254/ZF comparison then gives the Choice half of the
 PA endpoint.
 
-At the merged `4a59f5ccc9` checkpoint, `LStepEx.wb_exists` still takes the
-witness bound and the required Separation instance as premises.
-`ex_step`/`all_step` prove semantic preservation of the invariant assuming a
-total witness-bounding function. The quantifier templates, their represented
-compiler clients, the induction producing `Θ` for every internal formula,
-and the final schema/glue arguments remain to be supplied. These source
-interfaces do not yet discharge `hSchema`.
+The merged `efa3142e2d` supplies those quantifier resources:
+`LStepExT.wb_tot` obtains a total witness bound by Replacement over a set
+containing all environments on the earlier stage, then uses Separation and
+regularity to select the least bound. `exTemplate_provable` and
+`allTemplate_provable` consume it in the fixed template theory. This source
+review covers the 429-line module and its six-probe audit; it does not claim
+a new local compiler run of the upstream modules. The represented compiler
+clients, the internal induction producing `Θ`, and the final schema/glue
+arguments remain open. The atomic clients must also discharge their
+`numOK` premises in ZF. These templates do not yet discharge `hSchema`.
