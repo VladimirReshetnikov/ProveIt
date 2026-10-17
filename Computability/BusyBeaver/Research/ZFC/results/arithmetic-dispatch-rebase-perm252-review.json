@@ -1,0 +1,180 @@
+{
+  "status": "CLEAN_INDEPENDENT_SOURCE_MATH_AUDIT_GUARD_EVIDENCE_REVIEW",
+  "final": {
+    "path": "/tmp/zfc-dispatch-rebase/child-final-review.json",
+    "sha256": "b23bb342f584396b03e69ec6f7717c7400293f4da0a57d43218637685020785e",
+    "record": {
+      "status": "CLEAN_FINAL_PROOF_PORTABLE_GUARD_AND_MAINTAINED_BINDING",
+      "reviewer": "/root/review_bic/mira_backend_route",
+      "activity": {
+        "compiler_invocations": 0,
+        "Lean_proof_build_calls": 0,
+        "guard_or_control_replays": 0,
+        "author_or_tracked_source_edits": 0
+      },
+      "source": {
+        "path": "/tmp/zfc-dispatch-rebase/sources/BusyBeaver/ZFC/ArithmeticDispatchRebasePerm252.lean",
+        "sha256": "7c555c0e272f17867e5c152d07dce7799f7ba08a7813f04d463d7b21994178c7",
+        "lines": 295
+      },
+      "audit": {
+        "path": "/tmp/zfc-dispatch-rebase/Audit.lean",
+        "sha256": "3beaeb16bf7a69a89170ca79fb940cd0a1d4911a93bb458877e8037a56d0db43",
+        "lines": 166
+      },
+      "executed_guard": {
+        "path": "/tmp/zfc-dispatch-rebase/check2.py",
+        "sha256": "b1478ed8dc90924d9fceedc9bbab63f2761bd1f0a1f3cd00e4367caaa11f2c19"
+      },
+      "proof": {
+        "path": "/tmp/zfc-dispatch-rebase/run2/verification.json",
+        "sha256": "6e52fe6f1f8bdbb90a8d33d34130ccd1a198d4a76a15d9cf2c34847b6684ada7",
+        "status": "PASS",
+        "named_axiom_probes": 16,
+        "callers": 18,
+        "warnings": 0,
+        "only_standard_axioms": true,
+        "input_paths": 180,
+        "project_modules": 78,
+        "external_boundary_modules": 6,
+        "toolchain_modules": [
+          "Init",
+          "Lean.Elab.Tactic.Omega"
+        ],
+        "fresh_modules": [
+          {
+            "module": "BusyBeaver.ZFC.ArithmeticDispatchRebasePerm252",
+            "path": "/tmp/zfc-dispatch-rebase/run2/cache/BusyBeaver/ZFC/ArithmeticDispatchRebasePerm252.olean",
+            "sha256": "1551b12198b6ff8a86f66fc713826333c74dbc4a4d35e91bf64a07baf54f3c74",
+            "source_sha256": "7c555c0e272f17867e5c152d07dce7799f7ba08a7813f04d463d7b21994178c7"
+          }
+        ],
+        "commands": [
+          {
+            "label": "source",
+            "seconds": 2.953355360776186,
+            "exit_code": 0
+          },
+          {
+            "label": "audit",
+            "seconds": 2.5140543654561043,
+            "exit_code": 0
+          }
+        ]
+      },
+      "findings": [
+        "The complete 295-line source and 16-probe/18-caller audit are mathematically and API clean. All register values, spare count, gap and positive clocks have type V in an arbitrary I\u03a31 model; finite program, paths, indices and native branch syntax remain external.",
+        "Target/start format identities retain the full frame: numeric state95, left-half1, finite path bits, complete zero padding and variable gap, marker and full register/spare suffix. padded_prefix accounts for all finite zeros. target_rebase converts padded P equality to padded Q equality, increasing gap only by the overflow bit; no tape cell is discarded.",
+        "next_checked uses actual closed SitesPerm252 coverage, including all eight already-checked batch objects. It gets the exact walk/follow/checkSite facts; Clean gives a zero dropped suffix, and gap_consume proves whole finite tape equality even when the consumed depth zero-extends P. Q length\u226440 justifies the budget split.",
+        "execute_clean is instantiated with constant standard register files0/1 solely to prove outgoing path Clean. The actual branch path is independent of arithmetic-model values. No internal value is converted to an external Nat, and no standardness premise is used.",
+        "Increment uses the existing physical permutation and preserves spare count. Decrement-zero leaves all values/count unchanged, with the exact break/strip overflow. Decrement-positive updates only the physical selected value and increments spare count exactly once. Break/continue preserve all registers/count; continue keeps the gap. Each case preserves its positive existing binary clock and returns the actual next accepted consumed path and follow fact.",
+        "initial_entry is a zero-clock equality of entire numeric configurations, not an extra machine step. internal_boot_entry composes that equality with the existing 82552 all-model bootstrap theorem and nine zero primary values/count56/gap0; no bootstrap or site Boolean is replayed.",
+        "The guard binds source/object identities from the successful SiteBoot record plus the frozen native169 record. Independent traversal confirms 58 SiteBoot projects and 36 necessary native projects, of which20 are new, for exactly78 total. Six external boundary providers plus actual first Init/Omega are checked. Compiler, dependency pins/manifest/base providers, snapshots, inherited alternatives and fresh object are bound before/after.",
+        "Run1 is a preserved genuine source nonpass caused solely by noncomputable Foundation subtraction in effectValues. The final source adds its noncomputable marker and two reviewed entry lemmas, and the audit/check2 scopes expand from14/16 to16/18. No old theorem changes. Run2 is a fresh complete PASS with standard three Lean axioms and zero warnings."
+      ],
+      "nonclaims": [
+        "No represented variable-PC decoder or internal register-machine time iterator/global simulation is proved by this module.",
+        "No new bounded site census or replay of the coverage batches is claimed.",
+        "No unconditional halt/nonhalt, PA consistency endpoint or arbitrary proof-compiler execution claim follows from this local reentry checkpoint alone.",
+        "Only the explicit project closure and external provider boundaries are attested, not the whole Foundation/Mathlib cache."
+      ],
+      "guard_packaging": {
+        "status": "CLEAN_FINAL_DEFAULTS_PREPARED_NOT_BUILT",
+        "note": "Final portable changes only the two default source/audit hashes. Exact maintained source/audit/guard match. Default prepare-only has no overrides and no commands; four recorded metadata/preflight controls reject Python-O/nonempty-output/shadowed actual Init/Omega, with no proof builds and author-side --version queries explicit. Reviewer did not replay them."
+      },
+      "history": {
+        "records": [
+          {
+            "path": "/tmp/zfc-dispatch-rebase/prepared/verification.json",
+            "sha256": "0750338c9c0d8e9edb5519ce8a60c681c391db5f6dbdd6b6b5d05ce0ba60b434",
+            "status": "PREPARED_NOT_BUILT",
+            "changed_live_paths": [
+              {
+                "path": "/tmp/zfc-dispatch-rebase/sources/BusyBeaver/ZFC/ArithmeticDispatchRebasePerm252.lean",
+                "historical_sha256": "35fe13001aa5020e6e16a852927e1b2a2628277d05329db29232618981d89160",
+                "current_sha256": "7c555c0e272f17867e5c152d07dce7799f7ba08a7813f04d463d7b21994178c7"
+              },
+              {
+                "path": "/tmp/zfc-dispatch-rebase/Audit.lean",
+                "historical_sha256": "7c30007f5ee9409c35ac048d13b2498a7487995e8b94e7916c5a2544ca4386a6",
+                "current_sha256": "3beaeb16bf7a69a89170ca79fb940cd0a1d4911a93bb458877e8037a56d0db43"
+              }
+            ]
+          },
+          {
+            "path": "/tmp/zfc-dispatch-rebase/run1/verification.json",
+            "sha256": "3f3b2140018aa3136fb575b027b53f7755c4dea364b5f0f34ac95fc73f3ef686",
+            "status": "FAIL",
+            "changed_live_paths": [
+              {
+                "path": "/tmp/zfc-dispatch-rebase/sources/BusyBeaver/ZFC/ArithmeticDispatchRebasePerm252.lean",
+                "historical_sha256": "35fe13001aa5020e6e16a852927e1b2a2628277d05329db29232618981d89160",
+                "current_sha256": "7c555c0e272f17867e5c152d07dce7799f7ba08a7813f04d463d7b21994178c7"
+              },
+              {
+                "path": "/tmp/zfc-dispatch-rebase/Audit.lean",
+                "historical_sha256": "7c30007f5ee9409c35ac048d13b2498a7487995e8b94e7916c5a2544ca4386a6",
+                "current_sha256": "3beaeb16bf7a69a89170ca79fb940cd0a1d4911a93bb458877e8037a56d0db43"
+              }
+            ]
+          }
+        ],
+        "original_guard": {
+          "path": "/tmp/zfc-dispatch-rebase/check.py",
+          "sha256": "47dbdc74df69a1b92bc349efeaccf519e5a2b5cc40d101815274427ae013965b"
+        },
+        "expanded_executed_guard": {
+          "path": "/tmp/zfc-dispatch-rebase/check2.py",
+          "sha256": "b1478ed8dc90924d9fceedc9bbab63f2761bd1f0a1f3cd00e4367caaa11f2c19"
+        },
+        "final_delta": "noncomputable effectValues; appended initial_entry and internal_boot_entry; two probes/two callers and matching declared-count changes only"
+      },
+      "identity_check": {
+        "path": "/tmp/zfc-dispatch-rebase/child-combined-identities.json",
+        "sha256": "d3938bb8a734ea18a81d693f7cb80c429c938eaf7832704156c425d444b8ca0c",
+        "hash_comparisons": 1610,
+        "unique_paths": 203,
+        "all_rehashed_at_finalization": true
+      },
+      "issues": [],
+      "preserved_proof_only_review": {
+        "path": "/tmp/zfc-dispatch-rebase/child-final-proof-review-before-portable.json",
+        "sha256": "dd551c9ca7907c6c42ee0a7789fd425a3bd8f47290f2524863e0a878f60491f8"
+      },
+      "portable_guard": {
+        "path": "/tmp/zfc-dispatch-rebase-publication/check_arithmetic_dispatch_rebase_perm252.py",
+        "sha256": "55dcca3084eb0841b5c9233954bfd3e4a8944252db1971973af39260faa0940f",
+        "delta": "Only final default source/audit hash freezes"
+      },
+      "maintained": [
+        {
+          "source": "/tmp/zfc-dispatch-rebase/sources/BusyBeaver/ZFC/ArithmeticDispatchRebasePerm252.lean",
+          "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ArithmeticDispatchRebasePerm252.lean",
+          "sha256": "7c555c0e272f17867e5c152d07dce7799f7ba08a7813f04d463d7b21994178c7"
+        },
+        {
+          "source": "/tmp/zfc-dispatch-rebase/Audit.lean",
+          "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/arithmetic_dispatch_rebase_perm252_audit.lean",
+          "sha256": "3beaeb16bf7a69a89170ca79fb940cd0a1d4911a93bb458877e8037a56d0db43"
+        },
+        {
+          "source": "/tmp/zfc-dispatch-rebase-publication/check_arithmetic_dispatch_rebase_perm252.py",
+          "destination": "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_dispatch_rebase_perm252.py",
+          "sha256": "55dcca3084eb0841b5c9233954bfd3e4a8944252db1971973af39260faa0940f"
+        }
+      ],
+      "controls": {
+        "path": "/tmp/zfc-dispatch-rebase/guard-controls/negative-controls.json",
+        "sha256": "790f38aa8e764809a9db67abfce18e0cae059658d6a92165ce45f3b3643b32bf",
+        "read_not_rerun": true
+      },
+      "maintained_preflight": {
+        "path": "/tmp/zfc-dispatch-rebase-maintained-prepared/verification.json",
+        "sha256": "5911cae42799673ff1b4fdd55cdeb2ad2f1f46dbc95e10be8e5a363d78faf184",
+        "status": "PREPARED_NOT_BUILT"
+      }
+    },
+    "markdown": "Independent final source/proof/executed-guard review: CLEAN.\n\nRead all 295 source lines, 16-probe/18-caller audit and both guard scopes. Whole-frame padding equality preserves every tape field while rebasing to the actual next consumed path. Clean plus closed actual coverage supplies the discarded-zero/extended-zero PC identity. Dummy standard0/1 files prove only path Clean; arithmetic model values are never converted to Nat. All five nonhalting cases retain the physical permutation, exact register/spare updates, gap overflow and positive clock. Initial entry is equality without an additional step, so the accepted initial entry is reached at the existing82552 clock.\n\nRun2 PASS: 16/18, standard three axioms, zero warnings; source2.953s/audit2.514s. Bound180 inputs, fresh object,78 projects, six external boundaries and actual first Init/Omega. Independent merge:58 SiteBoot projects plus36 required native projects,20 new; all eight checked coverage objects reused. Read-only identity pass1042 comparisons/189 paths, rehashed at finalization. Run1 noncomputable-definition failure, original14/16 guard and snapshots remain intact. Final source delta is the noncomputable marker and the two entry lemmas only.\n\nFinal portable guard is clean: only its two maintained default hashes differ from the executed guard. Exact source/audit/guard placements and the no-override default PREPARED_NOT_BUILT record match. Four recorded controls reject Python-O, nonempty output, shadowed actual Init and shadowed actual Omega; no control replay or proof build occurred. Author-side --version metadata queries are explicit. Final combined identity pass: 1610 comparisons/203 paths. Earlier proof-only review remains unchanged under child-final-proof-review-before-portable.*. No reviewer compiler, proof build, guard replay, author-source edit or tracked edit occurred.\n\nNo variable-PC internal iterator or global runtime/PA endpoint is inferred. Exact source/audit/evidence/provider bindings are in child-final-review.json and child-final-identities.json.\n"
+  },
+  "reviewer_proof_replay": false
+}

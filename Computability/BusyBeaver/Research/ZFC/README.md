@@ -1230,3 +1230,11 @@ registers, zero gap and 56 variable zero spares in every IΣ1 model. Finite
 bit/register/Box compatibility preserves the exact final padding cell. Fifteen
 axiom reports and seventeen callers pass without warnings; this uses the
 checked bootstrap without replaying it. Global runtime remains open.
+
+The [composable arithmetic dispatch entries](arithmetic_dispatch_rebase_perm252.md)
+now connect each accepted nonhalting instruction to the next accepted canonical
+entry, with exact register updates, carry padding and one spare append on positive
+decrement. Actual decoder coverage supplies the next leaf and its `follow`
+equation. The bootstrap also reaches its first accepted leaf at the same
+82,552-step clock. Sixteen axiom reports and eighteen callers pass with zero
+warnings. Variable-PC representation and global internal runtime remain open.
