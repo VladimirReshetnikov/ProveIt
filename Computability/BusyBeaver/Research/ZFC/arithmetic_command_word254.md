@@ -4,8 +4,9 @@
 represents the actual command-tail lookup and replacement by fixed Σ0 formulas
 in every IOpen model. Their standard-Nat interpretations agree with the
 [checked numeric command codec](command_word254.md) on every input.
-This is the arithmetic basis for a later concatenation history and numeric
-proof compiler; neither is implemented by this module.
+This is the arithmetic basis for the now checked
+[concatenation history](arithmetic_command_append254.md) and a later numeric
+proof compiler. The latter remains open.
 
 The argument order is `tailDef(out,z)` and `replaceDef(out,z,rest)`.
 Here z is an unshifted original candidate code. A nonempty shifted word must

@@ -50,9 +50,10 @@ The original enumerator and codec attribution is inherited from `Enum254` and
 `EnumStackBarrier254`.
 
 The [arithmetic tail adapter](arithmetic_command_word254.md) now represents
-tail/replacement by bounded graphs in every IOpen model. The next extension
-can concatenate through a course-of-values history with the right word as
-parameter. A subsequent history can pair the exact validity result with the
-compiled word for each proof code. Internal execution correctness and the
+tail/replacement by bounded graphs in every IOpen model. The checked
+[append extension](arithmetic_command_append254.md) concatenates through a
+course-of-values history with the right word as parameter. The planned proof
+compiler keeps an unconditional history of words and uses the existing
+validator as a final public gate. Internal execution correctness and the
 finite-trace bridge remain separate requirements of the
 [PA internalization](pa_internalization.md).

@@ -1,0 +1,72 @@
+{
+  "status": "CLEAN independent read-only implementation/audit review",
+  "source": {
+    "path": "/tmp/zfc-command-append/sources/BusyBeaver/ZFC/ArithmeticCommandAppend254.lean",
+    "sha256": "bbe2560d7360b6776f773805aab3a1b5fe30278c4a9e32e15e5f58e65538352f"
+  },
+  "audit": {
+    "path": "/tmp/zfc-command-append/Audit.lean",
+    "sha256": "e75e5075cf1fd971048cd2357aff62631f7033ff284733d8a1263b973831b026"
+  },
+  "evidence": {
+    "path": "/tmp/zfc-command-append/run7.json",
+    "sha256": "25b89e258e6a022bbdccb6b2b2f6130d2a7fa73e18ccd8c6f3ce99d331c5399a",
+    "snapshot": "/tmp/zfc-command-append/independent-verification-snapshot.json"
+  },
+  "reviewer_build": false,
+  "reviewer_source_edit": false,
+  "read_coverage": [
+    "entire initial and final source",
+    "entire final24probe30caller audit",
+    "Foundation PR.Blueprint/Construction/result definitions",
+    "Foundation Seq/znth/default/append laws",
+    "final kernel evidence and reused provider provenance"
+  ],
+  "findings": [],
+  "scope_checked": {
+    "arbitrary_internal_ISigma1_indices": true,
+    "bounded_prefix_induction": true,
+    "raw_successor_no_extra_subtraction": true,
+    "right_parameter_retained": true,
+    "full_OOB_default_zero": true,
+    "exact_all_Nat_append": true,
+    "Foundation_Nat_order_bridge": true,
+    "append_zero_iff_both_inputs_zero": true,
+    "fixed_Sigma1_Delta1_graphs": true,
+    "ISigma1_PA_totality_sentence": true,
+    "proof_compiler": false,
+    "command_execution": false,
+    "PA_consistency_endpoint": false
+  },
+  "probes": 24,
+  "callers": 30,
+  "warnings": 0,
+  "source_seconds": 5.062434994615614,
+  "audit_seconds": 2.5876557249575853,
+  "only_standard_axioms": true,
+  "independent_current_hash_rechecks": true,
+  "reused_core_count": 14,
+  "dependency_cache_scope": "Pinned built caches explicitly reused, not whole fresh closure attestation",
+  "historical_failed_attempts": [
+    "run1",
+    "run2",
+    "run3",
+    "run4",
+    "run5",
+    "run6"
+  ],
+  "review_text": "# Independent read-only review: represented command-word append\n\nVerdict: CLEAN for final source bbe2560d7360b6776f773805aab3a1b5fe30278c4a9e32e15e5f58e65538352f and audit e75e5075cf1fd971048cd2357aff62631f7033ff284733d8a1263b973831b026. Reviewed the entire initial and final implementation, the final24-probe/30-caller audit, the actual Foundation PRF/Seq definitions and laws, and the successful run7 source/audit evidence. No Lean build or proof source edit was performed by the reviewer.\n\nThe PR.Blueprint has one actual parameter, right. Its zero state is the inner sequence[right]; successor index z is already the RAW predecessor of shifted word z+1. The successor appends replaceValue(z,znth(previous,tailValue(z)))+1 to that inner sequence. The blueprint graph order is output/previous/index/right, matching PR.Construction's actual argument convention. Public history and value graphs are ordered(out,left,right). The result graph represents the inner completed state, not the outer PR construction's sequence of states; these two levels are correctly distinguished.\n\nAll internal model indices are covered. Sequence validity and length(left+1) use definable Sigma1 induction. The bounded prefix invariant states that every i<=left entry of history(left,right) equals appendValue(i,right), rather than assuming a standard finite list interpretation. At a successor it uses actual old-entry preservation for valid sequences; the new last-entry case is definitional. Definability is justified by the fixed history and append function graphs and bounded internal quantification. No external all-relations induction or standardness assumption is substituted.\n\nThe exact recurrence then reads the earlier entry at tailValue(raw). Its bound tailValue(raw)<=raw was already proved at every IOpen input, so this read is in range. No further subtraction is used. Exterior lookups are separately proved0 using length=left+1; they do not accidentally participate in the valid recurrence. Thus the nil/MP0 distinction is preserved: shifted0 is empty; raw0 is a real command; the first nonempty shifted index is1.\n\nappendValue_eq_zero is an internal, two-direction result: output0 iff both inputs0. It splits left using the arithmetic model's actual zero-or-successor theorem; at a successor, the represented result is replacement+1 and hence nonzero. This does not assume every model element is a standard numeral. The audit includes generic nonemptiness and zero-boundary callers.\n\nThe all-Nat append theorem uses strong induction, with tail(raw)<=raw<raw+1 giving the exact smaller input. It invokes the all-input tail/repack Nat adapters and native CommandWord254.append_succ; no quotation-only hypothesis occurs. For history_lookup_nat the final source explicitly identifies Foundation's Nat order with ordinary Nat order before rewriting the if-condition. This resolves a real instance mismatch without changing the statement or silently restricting indices. The audit covers arbitrary out-of-range lookups, both empty-word boundaries, all encoded list concatenations and the concrete1+1 word concatenation giving code6 via actual encoding lemmas.\n\nThe Sigma1 and Delta1 graphs are fixed and parameter-free. Their total unique semantics hold at all inputs of every I\u03a31 model. The closed totality sentence says only that this append graph has one output for every left/right input. Completeness yields actual I\u03a31 and PA provability of that same totality sentence. It is not an internal proof compiler, a command evaluator or a PA nonhalting/consistency comparison. It also does not claim every nonstandard internal code is an externally finite word.\n\nFinal run7 reports source5.062435s and audit2.587656s, official absolute Lean4.32,24exact endpoint axiom probes/30callers,0warnings and only propext/Classical.choice/Quot.sound. Runs1..6 are retained historical nonpasses; none is counted as final success. The reviewer independently rehashed the final source/audit/object, all14reused source/object pairs, both arithmetic prerequisite sources/objects, the prerequisite full replay record, compiler, PRF/Seq source/object providers and current pinned clean Foundation/Mathlib checkouts. All match. The fresh native169 and arithmetic-word replay remain the explicit provenance of reused project objects; dependency caches are reused, not wholly freshly rebuilt/attested. This review inspects the author-owned successful kernel run and supplements its identities; it is not a second compiler replay.\n",
+  "root_maintained_replay_review": {
+    "evidence": "/tmp/zfc-arithmetic-command-append-maintained-replay/verification.json",
+    "source_audit_unchanged_from_independently_reviewed_run7": true,
+    "runner_read_completely_by_root_and_BIC": true,
+    "root_fresh_replay": true,
+    "fresh_source_seconds": 5.031654,
+    "fresh_audit_seconds": 2.604255,
+    "named_axiom_probes": 24,
+    "callers": 30,
+    "warnings": 0,
+    "root_rehashed_current_inputs": 47,
+    "root_rehashed_fresh_object": true
+  }
+}

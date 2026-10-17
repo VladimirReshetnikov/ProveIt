@@ -63,8 +63,11 @@ Two units are freshly checked and167 source/object-matched imports reused;
 21 axiom reports and25 callers pass. The separate
 [bounded arithmetic tail/replacement graphs](arithmetic_command_word254.md)
 also pass a narrow fresh check with Cantor:38 reports and42 callers, reusing14
-matched core imports. Representing concatenation, the complete proof-to-command
-compiler and its execution contract remains the next arithmetic bridge.
+matched core imports. The subsequent
+[represented concatenation](arithmetic_command_append254.md) proves the exact
+recurrence at every internal index and all-Nat command-list agreement. Its
+24 axiom reports and 30 callers pass. The complete proof-to-command compiler
+and its internal execution contract remain the next arithmetic bridge.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof

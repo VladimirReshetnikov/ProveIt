@@ -219,13 +219,24 @@ The [numeric command-word adapter](command_word254.md) now supplies a total
 shifted encoding of the actual command lists, exact tail replacement, and
 numeric concatenation with all-input list agreement. Empty word0 is distinct
 from the actual raw candidate0 (`MP0`). This provides the finite-data operations
-for a paired validity/compiled-word history; it does not yet represent that
+for a compiled-word history; it does not itself represent that
 history or prove the compiler's internal execution contract. Invalid proof
 code0 must remain separate from either command-code convention.
 The subsequent [bounded command-tail graphs](arithmetic_command_word254.md)
 now represent the raw tail and replacement functions in every IOpen model,
-with all-natural identification. Represented concatenation and the paired
-compiler history remain the next steps.
+with all-natural identification. The subsequent
+[represented concatenation](arithmetic_command_append254.md) now proves its
+exact recurrence at every internal index, all-Nat word agreement and actual
+PA unique totality. The compiler history remains the next step.
+
+The simpler compiler design keeps an unconditional history of raw compiled
+words and uses the already checked `ArithmeticHistory254.value` once as the
+public validity gate. Invalid public inputs return empty word 0. This avoids
+duplicating the twelve-rule validator in a paired history. For an accepted
+parent, the validator's internal recurrence must imply acceptance of the
+actual MP/GEN children; only then may their raw words be used with the
+validity-conditional execution induction. The word history, this internal
+validity inversion and the execution contract are still to be implemented.
 
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its
