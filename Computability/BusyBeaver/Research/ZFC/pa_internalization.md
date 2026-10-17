@@ -251,8 +251,10 @@ actual MP/GEN children; only then may their raw words be used with the
 validity-conditional execution induction. The
 [internal history recurrence](arithmetic_history_recurrence254.md) now proves
 this MP/GEN validity inversion, including the actual child bounds and
-whole-tail GEN convention. The word history and execution contract remain
-to be implemented.
+whole-tail GEN convention. The [word-history extension](arithmetic_proof_word254.md)
+now implements the unconditional row/history and final validator gate, with
+exact internal recurrence and PA-provable unique totality. Its full compiler
+agreement and execution contract remain to be proved.
 
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its

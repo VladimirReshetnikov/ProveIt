@@ -46,9 +46,8 @@ python -B Computability/BusyBeaver/Research/ZFC/check_arithmetic_command_blocks2
   --output /outside/new-empty-command-blocks-check
 ```
 
-The next compiler history can select these blocks using the decoded proof
-rule and earlier child words. The
+The [arithmetic compiler history](arithmetic_proof_word254.md) now selects
+these blocks using the decoded proof rule and earlier child words. The
 [checker recurrence](arithmetic_history_recurrence254.md) supplies the
-accepted-child conditions for its later correctness proof. The internal
-compiler history, command execution, scheduler transport, and PA consistency
-equivalence remain separate obligations. This result changes no state count.
+accepted-child conditions for its later correctness proof. Command execution, scheduler transport, and PA consistency equivalence
+remain separate obligations. This result changes no state count.

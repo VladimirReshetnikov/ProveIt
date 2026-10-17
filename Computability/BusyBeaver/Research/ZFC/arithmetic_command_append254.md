@@ -75,6 +75,6 @@ prove right identity and associativity in every IΣ1 model, using the exact
 recurrence and raw tail-replacement identities.
 
 No compiler, scheduler or binary simulation theorem is inferred from these
-arithmetic operations. The next compiler uses a history of raw command words
-and the existing proof checker as a final validity gate; invalid public
-outputs are empty word 0.
+arithmetic operations. The [represented compiler history](arithmetic_proof_word254.md)
+now uses raw command words and the existing proof checker as a final validity
+gate; invalid public outputs are empty word 0.

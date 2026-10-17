@@ -37,7 +37,8 @@ This is the validity interface needed by the planned compiler. Its raw-word
 history can ignore validity during construction, with the existing checker
 used once to return empty word 0 for invalid public inputs. At an accepted
 parent, the new lemmas justify using the accepted-child execution hypotheses.
-The word history and execution theorem remain separate work.
+The [word history](arithmetic_proof_word254.md) now supplies this data
+construction; its execution theorem remains separate work.
 
 The [verification record](results/arithmetic-history-recurrence254-verification.json)
 and [independent review](results/arithmetic-history-recurrence254-review.json)

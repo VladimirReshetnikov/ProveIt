@@ -78,6 +78,11 @@ callers pass; internal command execution remains open.
 The [internal word laws](arithmetic_command_word_laws254.md) prove tail
 replacement identities and append associativity for arbitrary internal codes,
 with six reports and seven callers.
+The [arithmetic proof-word history](arithmetic_proof_word254.md) now builds
+these words at every internal proof code, then applies the original validator
+once at its public output. Twenty-eight reports and twenty-one callers pass.
+Its PA theorem asserts unique totality; execution and consistency transport
+remain open.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof
