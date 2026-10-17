@@ -75,3 +75,5 @@ import ZFCinPA.SetRelativization
 import ZFCinPA.SetRelativizationAudit
 import ZFCinPA.ConstructibleInterpretation
 import ZFCinPA.ConstructibleInterpretationAudit
+import ZFCinPA.EnvTransform
+import ZFCinPA.EnvTransformAudit

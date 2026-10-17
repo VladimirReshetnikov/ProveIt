@@ -173,6 +173,7 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `Endpoint` | the target, the chain to it, and its exact residue |
 | `SetRelativization` | represented relativization for `ℒₛₑₜ`: closed terms are variables, and the internal relative-interpretation theorem `provable_falsum_of_relativize_set` (generic core: `BoundedPAConsistency.InternalRelativization`) |
 | `ConstructibleInterpretation` | the constructible interpretation of `𝗭𝗙𝗖` in `𝗭𝗙`, internalized: a model-independent `x ∈ L` formula, external relativization with its evaluation and quotation laws, `𝗭𝗙 ⊢ σ^L` for the equality, fixed and choice axioms, and `provable_falsum_ZF_of_ZFC` (`Prov_ZFC(⊥) → Prov_ZF(⊥)` in every model of `IΣ₁`, modulo the separation/replacement schema obligation `hSchema`) |
+| `EnvTransform` | the `L`-relativized environment transform `envForm d K` for the `hSchema` reflection generator: every variable of an internal formula code read from one internal environment (`econs`/`applyV` slots via von Neumann numerals), one `UformulaRec1` construction with the binder depth as parameter (large fixed codes ride in the parameter, not as numerals), constructor equations, and `isSemiformula_envForm` (the output mentions only the environment) |
 
 ## Building
 
