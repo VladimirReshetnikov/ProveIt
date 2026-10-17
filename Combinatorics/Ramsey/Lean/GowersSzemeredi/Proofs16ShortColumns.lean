@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs16CommonSliceCover
+import GowersSzemeredi.Proofs16AnchoredCover
 
 /-! # Short columns and directly sampled points
 

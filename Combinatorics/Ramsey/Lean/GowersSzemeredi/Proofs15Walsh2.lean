@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs15Walsh
+import GowersSzemeredi.Proofs15WalshGeneral
 
 /-!
 # Proven companion for Gowers (2001), Corollary 15.2

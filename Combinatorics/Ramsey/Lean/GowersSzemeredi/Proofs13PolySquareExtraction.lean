@@ -1,5 +1,4 @@
 import GowersSzemeredi.Proofs13PolyRowExponent
-import GowersSzemeredi.Proofs13ExplicitGeometricThreshold
 
 /-! The Section 13 square extraction at a polynomial exponent (Notes L.7c, P3b).
 

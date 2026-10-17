@@ -92,6 +92,30 @@ The joint-slice copies (`assemble_jslice.py`, `assemble_jspec.py`,
 lemmas (`SliceScheme`, `Proofs16SinglePieceSections`). These scripts no longer
 run against the current sources; they record the substitutions.
 
+Fold, detach and analysis tools (2026-10-16, notes L.105 addenda):
+* `foldlib.py` moves, reproves and deletes declarations and deletes modules,
+  repointing importers; `dryrun.py` runs a fold script without writing. The
+  fold scripts are the `gen_*.py` files: one per commit of the addenda, plus
+  `gen_expo.py`, which is not applied, because its host `Proofs00Basics`
+  does not see the Mathlib lemma its proof uses. `shared_names_check.py`
+  checks that every shared name is declared exactly once, private or
+  public.
+* `near_dups.py` finds near-duplicate theorem proofs on the real final route
+  (token shingles, then line diffs). `alpha_dups.py` finds exact copies up
+  to renaming of local names. `pairs_in_cone.py` sorts the pairs by whether
+  the final theorems use both copies, one or neither. `dead_text.py` lists
+  declarations that no other file names. `audit_names.py` checks the names
+  that the audit files cite.
+* `gen_used3.py` writes `UsedRanges3.lean`: the session-local stub file
+  plus two dumps. They are `used_ranges3.txt`, the cone with line ranges,
+  rooted at the 25 final theorems and at the names the bridge modules
+  mention, and `decl_needs3.txt`, each declaration's constants. `route.py`
+  prints the closures of the real final module, of `Proofs18Final` and of
+  the stub. `regions3.py` lists live and dead modules, dead regions and the
+  moves each needs; a `remap.txt` simulates evacuations. `detach_plan.py`
+  plans and applies a detachment. `evacuate_rank.py` ranks mostly-unused
+  live modules.
+
 Caveats:
 * The scripts hard-code the worktree path where they ran, and some outputs
   were edited by hand after generation (compile fixes). The committed

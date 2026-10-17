@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16LiftWidth
+import GowersSzemeredi.Proofs16BaseCaseUnion
 
 /-! # The verified local affine lift at every input scale -/
 set_option autoImplicit false

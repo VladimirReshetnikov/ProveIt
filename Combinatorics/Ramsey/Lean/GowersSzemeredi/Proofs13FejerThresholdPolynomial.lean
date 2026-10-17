@@ -1,4 +1,4 @@
-import GowersSzemeredi.Proofs13ExplicitFrequencyGraph
+import GowersSzemeredi.Proofs13FejerFrequencyGraph
 
 /-! Polynomial upper bounds for the explicit Fejer modulus threshold.
 The ceiling operations are retained in the construction and bounded here. -/

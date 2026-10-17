@@ -1,5 +1,4 @@
 import GowersSzemeredi.Proofs13RecurrenceParameterBudgets
-import GowersSzemeredi.Proofs13ExplicitDensityBudgets
 
 /-! Double-exponential envelopes for the actual uniform integer budgets. -/
 set_option autoImplicit false
