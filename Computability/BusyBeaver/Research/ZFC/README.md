@@ -1085,3 +1085,32 @@ for arbitrary internal matrices and free labels. Their fixed Σ1 operation
 uses the checked closing and specialization constructions, with no shift-fixedness
 premise. Eleven axiom reports and sixteen callers pass with zero warnings.
 The numeric C254 formula translation and PA consistency comparison remain open.
+
+The [internal zero-decrement endpoint](arithmetic_register_zero_perm252.md)
+restores a marked zero and preserves every other register and spare in exactly
+`2*fileTime pre+5` steps. Six axiom reports and ten callers pass with zero
+warnings, including the fixed boot suffix with an arbitrary internal count
+of appended zero spares. The subsequent marking proof completes the four box
+operations; dispatcher composition remains.
+
+
+The [internal primary-register marking endpoint](arithmetic_register_mark_perm252.md)
+uses the nine literal selectors, arbitrary internal register values and both
+complete tape halves. An externally fixed prefix of at most eight registers
+is retained while the selected header is marked in the exact 2*fileTime+3-step
+endpoint. Eight axiom reports and twelve callers pass with zero warnings;
+PC/dispatch transport remains separate.
+
+The [single-variable binding construction](../../../../Logic/Interpretability/ZFCinPA/model_coded_bind_one.md)
+now binds an arbitrary internal free label at an arbitrary internal binder
+depth and proves exact reopening. Fifteen axiom reports and nineteen callers
+pass with zero warnings. This supplies the named-quantifier syntax for the
+planned C254 decoder; transporting GEN proofs remains a separate obligation.
+
+
+The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)
+reuses actual finite segment/configuration syntax and normalization with an
+arbitrary internal gap and parameterized box prefixes. Accepted comparisons
+preserve the complete numeric configuration; exterior deletion uses terminal 0.
+Ten axiom reports and twelve callers pass with zero warnings. Concrete boxes,
+symbolic execution and the full runtime refinement remain separate.

@@ -1,0 +1,177 @@
+{
+  "status": "KERNEL_PASS_PORTABLE_PREFLIGHT_INDEPENDENT_REVIEW_CLEAN",
+  "scope": "Actual all-internal chosen-variable binding and exact arbitrary-depth opening inverse; no decoder or GEN proof transport.",
+  "files": [
+    {
+      "source": "/tmp/zfc-model-coded-bind-one/sources/ZFCinPA/ModelCodedBindOne.lean",
+      "target": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindOne.lean",
+      "sha256": "78f5858a715e74bca2af835ec990e33775f588219ef7f30b217825acbffd6785"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-bind-one/Audit.lean",
+      "target": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedBindOneAudit.lean",
+      "sha256": "29467fe36a55a048fb04d136ec59926b9b8fd02ef79883d9912c129ac5c825da"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py",
+      "target": "Logic/Interpretability/ZFCinPA/check_model_coded_bind_one.py",
+      "sha256": "245fcc719d7709ebf8e935c64134f7e2581428e14f2a900772f2a444677fea65"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-bind-one/publication/model_coded_bind_one.md",
+      "target": "Logic/Interpretability/ZFCinPA/model_coded_bind_one.md",
+      "sha256": "f5005c50e6f2f19fa67bd42f80e3b1a02b6f8861887868145420700dca056b19"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-bind-one/run4/verification.json",
+      "target": "Logic/Interpretability/ZFCinPA/results/model-coded-bind-one-verification.json",
+      "sha256": "ba5f861549f2a15126f53eec9ea8b083ebb6faaf22ada9c08d9aa3b4150d1ed3"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-bind-one/publication/guard-validation.json",
+      "target": "Logic/Interpretability/ZFCinPA/results/model-coded-bind-one-guard-validation.json",
+      "sha256": "66770cc012a40a3970a3c0d7b77084afabf286e52a503cd9175ab78c6d62a757"
+    }
+  ],
+  "history": [
+    {
+      "attempt": "run1",
+      "status": "FAIL",
+      "record": {
+        "path": "/tmp/zfc-model-coded-bind-one/run1/verification.json",
+        "sha256": "50aa6db567f5e2f9d684e35e6375def7e351f2a66286a94d8e4c315da82cf4b8"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-bind-one/sources/ZFCinPA/ModelCodedBindOne.lean",
+        "sha256": "a7f7fd11754ab97e570c1765ac74168701dd63b3671b6484cf1a30f1b3f2b602",
+        "snapshot": "/tmp/zfc-model-coded-bind-one/run1/sources/ZFCinPA/ModelCodedBindOne.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-bind-one/Audit.lean",
+        "sha256": "29467fe36a55a048fb04d136ec59926b9b8fd02ef79883d9912c129ac5c825da",
+        "snapshot": "/tmp/zfc-model-coded-bind-one/run1/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 12.903313675895333,
+          "exit_code": 1,
+          "output": "/tmp/zfc-model-coded-bind-one/run1/sources/ZFCinPA/ModelCodedBindOne.lean:59:10: error: typeclass instance problem is stuck\n  Language.LORDefinable ?m.33\n\nNote: Lean will not try to resolve this typeclass instance problem because the first and second type arguments to `Language.LORDefinable` are metavariables. These arguments must be fully determined before Lean will try to resolve the typeclass.\n\nHint: Adding type annotations and supplying implicit arguments to functions can give Lean more information for typeclass resolution. For example, if you have a variable `x` that you intend to be a `Nat`, but Lean reports it as having an unresolved type like `?m`, replacing `x` with `(x : Nat)` can get typeclass resolution un-stuck.\n/tmp/zfc-model-coded-bind-one/run1/sources/ZFCinPA/ModelCodedBindOne.lean:113:46: error(lean.synthInstanceFailed): failed to synthesize instance of type class\n  L\u271d.Encodable\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\n/tmp/zfc-model-coded-bind-one/run1/sources/ZFCinPA/ModelCodedBindOne.lean:113:81: error: error: variable did not found.\n/tmp/zfc-model-coded-bind-one/run1/sources/ZFCinPA/ModelCodedBindOne.lean:112:25: error: could not synthesize default value for parameter 'h\u03c6' using tactics\n/tmp/zfc-model-coded-bind-one/run1/sources/ZFCinPA/ModelCodedBindOne.lean:112:25: error: unsolved goals\nV : Type u_1\ninst\u271d\u2075 : ORingStructure V\ninst\u271d\u2074 : V\u2193[\u2112\u2092\u1d63] \u22a7* \ud835\udddc\ud835\udeba\u2081\nL\u271d : Language\ninst\u271d\u00b3 : L\u271d.Encodable\ninst\u271d\u00b2 : L\u271d.LORDefinable\nL : Language\ninst\u271d\u00b9 : L.Encodable\ninst\u271d : L.LORDefinable\n\u22a2 Hierarchy \ud835\udeba 1 (sorry ())\n/tmp/zfc-model-coded-bind-one/run1/sources/ZFCinPA/ModelCodedBindOne.lean:115:69: error: unsolved goals\nV : Type u_1\ninst\u271d\u00b3 : ORingStructure V\ninst\u271d\u00b2 : V\u2193[\u2112\u2092\u1d63] \u22a7* \ud835\udddc\ud835\udeba\u2081\nL : Language\ninst\u271d\u00b9 : L.Encodable\ninst\u271d : L.LORDefinable\ne : Fin (3 + 1) \u2192 V\n\u22a2 (Semiformula.Evalb e) \u2191(sorry L) \u2194\n    e 0 = UformulaRec1.Construction.result L (FormulaBinder.construction L) \u27eae 1, e 2\u27eb (e 3)\n/tmp/zfc-model-coded-bind-one/run1/sources/ZFCinPA/ModelCodedBindOne.lean:116:8: warning: declaration uses `sorry`\n/tmp/zfc-model-coded-bind-one/run1/sources/ZFCinPA/ModelCodedBindOne.lean:186:14: error: Application type mismatch: The argument\n  Eq.symm (termBindOneVecAt_lh chosen depth (IsSemitermVec.isUTerm hv))\nhas type\n  k = len (termBindOneVecAt L chosen depth k terms)\nbut is expected to have type\n  IsUTermVec L k (termBindOneVecAt L chosen depth k terms)\nin the application\n  IsSemitermVec.mk (Eq.symm (termBindOneVecAt_lh chosen depth (IsSemitermVec.isUTerm hv)))\n/tmp/zfc-model-coded-bind-one/run1/sources/ZFCinPA/ModelCodedBindOne.lean:189:6: error: Type mismatch\n  ih i hi chosen\nhas type\n  IsSemiterm L (depth + 1) (termBindOneAt L chosen depth terms.[i])\nbut is expected to have type\n  termBV L (termBindOneAt L chosen depth terms.[i]) \u2264 depth + 1\n/tmp/zfc-model-coded-bind-one/run1/sources/ZFCinPA/ModelCodedBindOne.lean:195:10: error: Application type mismatch: The argument\n  Eq.symm (termBindOneVecAt_lh chosen depth (IsSemitermVec.isUTerm ht))\nhas type\n  k = len (termBindOneVecAt L chosen depth k terms)\nbut is expected to have type\n  IsUTermVec L k (termBindOneVecAt L chosen depth k terms)\nin the application\n  IsSemitermVec.mk (Eq.symm (termBindOneVecAt_lh chosen depth (IsSemitermVec.isUTerm ht)))\n/tmp/zfc-model-coded-bind-one/run1/sources/ZFCinPA/ModelCodedBindOne.lean:198:2: error: Type mismatch\n  termBindOneAt_isSemiterm (IsSemitermVec.nth ht hi) chosen\nhas type\n  IsSemiterm L (depth + 1) (termBindOneAt L chosen depth terms.[i])\nbut is expected to have type\n  termBV L (termBindOneAt L chosen depth terms.[i]) \u2264 depth + 1\n"
+        }
+      ]
+    },
+    {
+      "attempt": "run2",
+      "status": "FAIL",
+      "record": {
+        "path": "/tmp/zfc-model-coded-bind-one/run2/verification.json",
+        "sha256": "41776a56c5d26061582104aa1864884f7694d343afbc79e9aff27bd9bd592fae"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-bind-one/sources/ZFCinPA/ModelCodedBindOne.lean",
+        "sha256": "709d431a7026df3901729fc3cd3823ed56d41817c440f9785c6f9fd8a2b6c865",
+        "snapshot": "/tmp/zfc-model-coded-bind-one/run2/sources/ZFCinPA/ModelCodedBindOne.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-bind-one/Audit.lean",
+        "sha256": "29467fe36a55a048fb04d136ec59926b9b8fd02ef79883d9912c129ac5c825da",
+        "snapshot": "/tmp/zfc-model-coded-bind-one/run2/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 14.598737454041839,
+          "exit_code": 1,
+          "output": "/tmp/zfc-model-coded-bind-one/run2/sources/ZFCinPA/ModelCodedBindOne.lean:58:2: error: Type mismatch: After simplification, term\n  HierarchySymbol.Defined.defined ![e 0, e 3, e 4, e 1, e 2]\n has type\n  (Semiformula.Evalb ![e 0, e 3, e 4, e 1, e 2]) \u2191(Language.TermRec.Blueprint.resultVec L TermBinder.blueprint) \u2194\n    e 0 = Language.TermRec.Construction.resultVec L TermBinder.construction (fun x => ![e 1, e 2] x) (e 3) (e 4)\nbut is expected to have type\n  (Semiformula.Eval (FirstOrder.Semiterm.val e Empty.elim \u2218 ![#0, #3, #4, #1, #2]) Empty.elim)\n      \u2191(Language.TermRec.Blueprint.resultVec L TermBinder.blueprint) \u2194\n    e 0 = Language.TermRec.Construction.resultVec L TermBinder.construction ![e 1, e 2] (e 3) (e 4)\n/tmp/zfc-model-coded-bind-one/run2/sources/ZFCinPA/ModelCodedBindOne.lean:117:69: error: unsolved goals\nV : Type u_1\ninst\u271d\u00b3 : ORingStructure V\ninst\u271d\u00b2 : V\u2193[\u2112\u2092\u1d63] \u22a7* \ud835\udddc\ud835\udeba\u2081\nL : Language\ninst\u271d\u00b9 : L.Encodable\ninst\u271d : L.LORDefinable\ne : Fin (3 + 1) \u2192 V\n\u22a2 (Semiformula.Eval ![e 0, \u27eae 1, e 2\u27eb, e 3] Empty.elim) \u2191(UformulaRec1.Blueprint.result L (FormulaBinder.blueprint L)) \u2194\n    e 0 = UformulaRec1.Construction.result L (FormulaBinder.construction L) \u27eae 1, e 2\u27eb (e 3)\n"
+        }
+      ]
+    },
+    {
+      "attempt": "run3",
+      "status": "FAIL",
+      "record": {
+        "path": "/tmp/zfc-model-coded-bind-one/run3/verification.json",
+        "sha256": "1781921ae713a53c0c7632f5f14f3904003ac3ad96542ca509407dd4e66754f4"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-bind-one/sources/ZFCinPA/ModelCodedBindOne.lean",
+        "sha256": "f04cfbf4c49c45d0c66538a586ef2654448cb5804af6197df072451ec9885822",
+        "snapshot": "/tmp/zfc-model-coded-bind-one/run3/sources/ZFCinPA/ModelCodedBindOne.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-bind-one/Audit.lean",
+        "sha256": "29467fe36a55a048fb04d136ec59926b9b8fd02ef79883d9912c129ac5c825da",
+        "snapshot": "/tmp/zfc-model-coded-bind-one/run3/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 13.835181748494506,
+          "exit_code": 1,
+          "output": "/tmp/zfc-model-coded-bind-one/run3/sources/ZFCinPA/ModelCodedBindOne.lean:58:2: error: Type mismatch: After simplification, term\n  HierarchySymbol.Defined.defined ![e 0, e 3, e 4, e 1, e 2]\n has type\n  (Semiformula.Evalb ![e 0, e 3, e 4, e 1, e 2]) \u2191(Language.TermRec.Blueprint.resultVec L TermBinder.blueprint) \u2194\n    e 0 = Language.TermRec.Construction.resultVec L TermBinder.construction (fun x => ![e 1, e 2] x) (e 3) (e 4)\nbut is expected to have type\n  (Semiformula.Eval (FirstOrder.Semiterm.val e Empty.elim \u2218 ![#0, #3, #4, #1, #2]) Empty.elim)\n      \u2191(Language.TermRec.Blueprint.resultVec L TermBinder.blueprint) \u2194\n    e 0 = Language.TermRec.Construction.resultVec L TermBinder.construction ![e 1, e 2] (e 3) (e 4)\n"
+        }
+      ]
+    },
+    {
+      "attempt": "run4",
+      "status": "PASS",
+      "record": {
+        "path": "/tmp/zfc-model-coded-bind-one/run4/verification.json",
+        "sha256": "ba5f861549f2a15126f53eec9ea8b083ebb6faaf22ada9c08d9aa3b4150d1ed3"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-bind-one/sources/ZFCinPA/ModelCodedBindOne.lean",
+        "sha256": "78f5858a715e74bca2af835ec990e33775f588219ef7f30b217825acbffd6785",
+        "snapshot": "/tmp/zfc-model-coded-bind-one/run4/sources/ZFCinPA/ModelCodedBindOne.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-bind-one/Audit.lean",
+        "sha256": "29467fe36a55a048fb04d136ec59926b9b8fd02ef79883d9912c129ac5c825da",
+        "snapshot": "/tmp/zfc-model-coded-bind-one/run4/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 13.41591644845903,
+          "exit_code": 0,
+          "output": ""
+        },
+        {
+          "label": "audit",
+          "seconds": 2.5986730083823204,
+          "exit_code": 0,
+          "output": "'LeanProofs.ZFCinPA.ModelCodedBindOne.termBindOneAt_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.termBindOneVecAt_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.bindOneAt_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.termBindOneAt_bvar' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.termBindOneAt_chosen' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.termBindOneAt_other' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.termBindOneAt_isSemiterm' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.termBindOneVecAt_isSemiterm' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.bindOneAt_isSemiformula' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.termBindOneAt_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.termBindOneVecAt_inverse' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.bindOneAt_inverse' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.namedAll_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.namedAll_isFormula' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedBindOne.bindOneAt_open' depends on axioms: [propext, Classical.choice, Quot.sound]\n"
+        }
+      ]
+    }
+  ],
+  "source_diff": {
+    "path": "/tmp/zfc-model-coded-bind-one/publication/first-to-final.diff",
+    "sha256": "88670001c71a6b3ce9c105a1d5a26e2215f184bf86109ade91140a3a43b9dcb8"
+  },
+  "portable_preflight": {
+    "path": "/tmp/zfc-model-coded-bind-one/portable-prepared/verification.json",
+    "sha256": "8b7d32d0c79566f5efa7795eac374650cd3c4e10473ce81679a1b4a56b6ba028",
+    "status": "PREPARED_NOT_BUILT",
+    "proof_commands": 0
+  },
+  "guard_controls": {
+    "path": "/tmp/zfc-model-coded-bind-one/publication/guard-validation.json",
+    "sha256": "66770cc012a40a3970a3c0d7b77084afabf286e52a503cd9175ab78c6d62a757"
+  },
+  "maintained_preflight": {
+    "path": "Logic/Interpretability/ZFCinPA/results/model-coded-bind-one-maintained-preflight.json",
+    "sha256": "c4592b97da3439aceefb0441ba853d25eedb3693ebdc526706b6f0eeeaa1006a",
+    "status": "PREPARED_NOT_BUILT",
+    "proof_commands": 0,
+    "input_hashes_checked": 40
+  },
+  "root_review": {
+    "path": "Logic/Interpretability/ZFCinPA/results/model-coded-bind-one-root-review.json",
+    "sha256": "9f5a788e1b3cf713bd0a5c4c8db8fbe7133a64b7949341b652d5b6d4febda995"
+  },
+  "independent_review": {
+    "path": "Logic/Interpretability/ZFCinPA/results/model-coded-bind-one-review.json",
+    "sha256": "1ceee6bcb0a2e267b92dc07e94718cc641957113b783e9c01f0f4db94b0d1571"
+  }
+}

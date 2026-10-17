@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "scope": "Prepare-only and negative controls for the BindOne guard, no proof build.",
+  "script": {
+    "path": "/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py",
+    "sha256": "245fcc719d7709ebf8e935c64134f7e2581428e14f2a900772f2a444677fea65"
+  },
+  "negative_controls": [
+    {
+      "kind": "python-O",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py\", line 77, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py\", line 24, in main\n    req(__debug__,'Do not use Python -O.');R=a.repo.resolve();D=a.dependency_root.resolve();P=R/'Logic/Interpretability/ZFCinPA';E=(a.specialization_evidence or P/'results/model-coded-specialization-verification.json').resolve();S=(a.source or P/'Lean/ZFCinPA/ModelCodedBindOne.lean').resolve();A=(a.audit or P/'Lean/ZFCinPA/ModelCodedBindOneAudit.lean').resolve();W=a.output.resolve()\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py\", line 9, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Do not use Python -O.\n",
+      "preserved_nonempty_record": true
+    },
+    {
+      "kind": "nonempty",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py\", line 77, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py\", line 26, in main\n    req(not W.is_relative_to(R)and not W.is_relative_to(D)and(not W.exists()or not any(W.iterdir())),'Fresh external output required.')\n    ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py\", line 9, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Fresh external output required.\n",
+      "preserved_nonempty_record": true
+    },
+    {
+      "kind": "fake-first-Omega",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py\", line 77, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py\", line 57, in main\n    rel=Path(m.replace('.','/')).with_suffix('.olean');reference=toolroot/rel;o=next((d/rel for d in [cache,*libs,toolroot]if(d/rel).is_file()),None);req(o and reference.is_file()and sha(o)==sha(reference),'Wrong actual toolchain provider '+m)\n                                                                                                                                                      ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py\", line 9, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Wrong actual toolchain provider Lean.Elab.Tactic.Omega\n"
+    },
+    {
+      "kind": "wrong-selected-predecessor-object",
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py\", line 77, in <module>\n    if __name__=='__main__':main()\n                            ~~~~^^\n  File \"/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py\", line 47, in main\n    visit('ZFCinPA.ModelCodedSpecialization')\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py\", line 41, in visit\n    old=prior[m];ss=R/'Logic/Interpretability/ZFCinPA/Lean'/rel.with_suffix('.lean');o=a.closed_cache/rel.with_suffix('.olean')if a.closed_cache else Path(old['object']);req(sha(ss)==old['source_sha256']and sha(o)==old['object_sha256'],'Changed selected predecessor '+m);selected[m]=dict(module=m,source=str(ss),source_sha256=sha(ss),object=str(o.resolve()),object_sha256=sha(o))\n                                                                                                                                                                          ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/zfc-model-coded-bind-one/publication/check_model_coded_bind_one.py\", line 9, in req\n    if not ok:raise RuntimeError(msg)\n              ^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: Changed selected predecessor ZFCinPA.ModelCodedSpecialization\n"
+    }
+  ],
+  "relocated_prepare": {
+    "path": "/tmp/zfc-model-coded-bind-one/relocated-prepared/verification.json",
+    "sha256": "00829db6acf002c72950fcfe40a539f551cda6fe88fc867d0fc0640adcebf569",
+    "proof_commands": 0
+  },
+  "original_predecessor_objects_unchanged": true
+}
