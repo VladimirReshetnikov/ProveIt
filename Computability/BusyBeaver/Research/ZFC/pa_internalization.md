@@ -205,6 +205,14 @@ enumerator-halting corollary. See [the compiler note](code254_proof_compiler.md)
 This removes proof-existence extraction from the compiler function itself;
 representing that computation and its correctness inside PA remains open.
 
+The [numeric command-word adapter](command_word254.md) now supplies a total
+shifted encoding of the actual command lists, exact tail replacement, and
+numeric concatenation with all-input list agreement. Empty word0 is distinct
+from the actual raw candidate0 (`MP0`). This provides the finite-data operations
+for a paired validity/compiled-word history; it does not yet represent that
+history or prove the compiler's internal execution contract. Invalid proof
+code0 must remain separate from either command-code convention.
+
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its
 bounded projections, then use the existing arithmetic history iterator to

@@ -55,6 +55,14 @@ totality of the evaluator. Eight fresh arithmetic modules/audits pass196 axiom
 reports and237 callers. The internal PA proof connecting this sentence to ZFC
 refutations remains open.
 
+The [169-unit core integration](results/command-word254-integration-verification.json)
+adds the [numeric command-word codec](command_word254.md): total encoding and
+decoding, exact command-tail replacement, and concatenation on all natural
+codes. It distinguishes empty word0 from the original nonempty candidate0.
+Two units are freshly checked and167 source/object-matched imports reused;
+21 axiom reports and25 callers pass. Representing the complete proof-to-command
+compiler and its execution contract remains the next arithmetic bridge.
+
 The complete binary endpoint passed a
 [153-unit source-verified integration](results/binary-perm252-integration-verification.json):
 all151 reused source identities match successful scoped builds, with fresh

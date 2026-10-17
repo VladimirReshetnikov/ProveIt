@@ -51,7 +51,7 @@ def main() -> None:
                         "RegisterDecrement253", "QuotientBasic", "SingletonInfinity", "BreakSite253", "FiniteSets", "InductiveAttempts", "QuotientZF0",
                         "RMDag", "Dag254", "L2Lib254", "L2Macros254", "L2Control254", "L2Axioms254", "L2AxiomsEval254", "L2Root254", "RMEquiv", "RMEquiv254", "ProgramZF0", "DecodeFresh254", "NamedForm254",
                         "DuplicateProfiles", "WritingRuns", "ZeroSite253", "EqualityGIC", "QuotientCPGIC", "NativeDecoded254", "NativeTheory254",
-                        "EnumSafeStart254", "EnumStackBarrier254", "EnumStackCount254", "DirtyReset254", "DirtyRoot254", "DirtyProgram254", "WellFoundedPart", "SeedInvariant254", "RMBisim", "ActualTree254", "Bisim254", "NamedZF", "InternalOrd", "InternalRank", "ZFRank", "ZFNative", "WFRelativization", "WFModel", "WFTheory",
+                        "EnumSafeStart254", "EnumStackBarrier254", "CommandWord254", "EnumStackCount254", "DirtyReset254", "DirtyRoot254", "DirtyProgram254", "WellFoundedPart", "SeedInvariant254", "RMBisim", "ActualTree254", "Bisim254", "NamedZF", "InternalOrd", "InternalRank", "ZFRank", "ZFNative", "WFRelativization", "WFModel", "WFTheory",
                         "TransRec", "ConstructibleDef", "Constructible", "ConstructibleReflect", "ConstructibleZF", "SatSupport", "ConstructibleAbs", "InternalWO", "OrderRec", "CodeOrder", "TupleOrder", "ConstructibleOrder", "ConstructibleChoice", "Endpoint254",
                         "TablePerm252", "ArithmeticMachinePerm252", "BootPerm252", "RegisterBoxesPerm252", "RegisterMarkPerm252",
                         "RegisterIncrementPerm252", "RegisterDecrementPerm252",
