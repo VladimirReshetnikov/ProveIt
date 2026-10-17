@@ -1291,3 +1291,11 @@ including the empty pointer's first control. Fourteen axiom reports and
 seventeen callers pass with zero warnings, reusing the existing coverage
 proofs. Resolving a pointer alone does not justify whole-frame equality without
 `Clean`; arithmetic lookup/iteration and the internal scheduler remain open.
+
+`ArithmeticControlData254.lean` ([note](arithmetic_control_data254.md)) derives
+coherent fixed arithmetic opcode/register/successor/overflow/spare/PC columns
+from the actual 6,460-leaf literal catalogue. Its 16-probe/20-caller focused check
+reuses 81 matched project objects and six boundaries. Compact constants and
+bounded graphs cover arbitrary internal keys; absent zero differs from genuine
+halt opcode four. Represented control step/run and the internal scheduler bridge
+remain open. Exact proof and preparation/history records are stored separately.
