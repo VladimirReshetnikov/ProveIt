@@ -82,12 +82,19 @@ variable {V : Type*} [SetStructure V] (H : _root_.SetTheory.ZFAxioms (memRel V))
 def Tot (F : V → V → Prop) : Prop :=
   ∀ a : V, Ord (memRel V) a → ∃ g, Ord (memRel V) g ∧ a ∈ g ∧ F a g ∧ ∀ h, F a h → h = g
 
-/-- One code reflects `P` at every nonzero limit closed under `F`. -/
+/-- One code reflects `P` at every nonzero limit closed under `F`, for
+environments over earlier stages. -/
 def Refl (P : V → Prop) (F : V → V → Prop) : Prop :=
   ∃ c : V, IsFormCodeSem H c ∧
     ∀ b : V, IsLim (memRel V) b → (∀ a, a ∈ b → ∀ g, F a g → g ∈ b) →
-      ∀ S, IsL H hP b S → ∀ R, MemRel H S R → ∀ t, IsEnvOn H S t → FinSupp H t →
-        (P t ↔ SatIn H S R c t)
+      ∀ S, IsL H hP b S → ∀ R, MemRel H S R → ∀ a, a ∈ b → ∀ U, IsL H hP a U →
+        ∀ t, IsEnvOn H U t → (P t ↔ SatIn H S R c t)
+
+include hR in
+/-- An environment over an earlier stage is an environment over the stage. -/
+lemma envOn_stage {b S a U t : V} (hb : IsLim (memRel V) b) (hS : IsL H hP b S) (ha : a ∈ b)
+    (hU : IsL H hP a U) (ht : IsEnvOn H U t) : IsEnvOn H S t :=
+  ⟨ht.1, fun n y h => isL_mono H hR hP hb.1 ha hU hS y (ht.2 n y h)⟩
 
 include hR in
 /-- A nonzero limit stage with its membership relation is a set structure. -/
@@ -127,7 +134,7 @@ theorem and_step {P₀ P₂ P₄ : V → Prop} {F₁ F₃ F₅ : V → V → Pro
       exact H.ext _ _ fun z => (hspec z).trans (_root_.SetTheory.vcup_spec H _ _ z).symm
   · obtain ⟨c₁, hc₁, hr₁⟩ := hrefl₁
     obtain ⟨c₂, hc₂, hr₂⟩ := hrefl₃
-    refine ⟨_, isFormCodeSem_and H hc₁ hc₂, fun b hb hcl S hS R hR' t ht hfin => ?_⟩
+    refine ⟨_, isFormCodeSem_and H hc₁ hc₂, fun b hb hcl S hS R hR' a ha U hU t ht => ?_⟩
     -- closure under the maximum gives closure under both components
     have hcl' : ∀ a, a ∈ b → ∀ g₁ g₂, F₁ a g₁ → F₃ a g₂ → g₁ ∈ b ∧ g₂ ∈ b := by
       intro a ha g₁ g₂ hF₁ hF₃
@@ -147,8 +154,9 @@ theorem and_step {P₀ P₂ P₄ : V → Prop} {F₁ F₃ F₅ : V → V → Pro
     have hcl₃ : ∀ a, a ∈ b → ∀ g, F₃ a g → g ∈ b := fun a ha g hg => by
       obtain ⟨g₁, -, -, hF₁, -⟩ := htot₁ a (ord_of_mem hb.1 ha)
       exact (hcl' a ha g₁ g hF₁ hg).2
-    rw [hdefP, hr₁ b hb hcl₁ S hS R hR' t ht hfin, hr₂ b hb hcl₃ S hS R hR' t ht hfin,
-      satIn_and H (isSetStructure_stage H hR hP hb hS hR') hc₁ hc₂ ht]
+    rw [hdefP, hr₁ b hb hcl₁ S hS R hR' a ha U hU t ht, hr₂ b hb hcl₃ S hS R hR' a ha U hU t ht,
+      satIn_and H (isSetStructure_stage H hR hP hb hS hR') hc₁ hc₂
+        (envOn_stage H hR hP hb hS ha hU ht)]
 
 end Step
 

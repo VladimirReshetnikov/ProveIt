@@ -95,18 +95,20 @@ theorem atom_step {Na Nb P : V → Prop} {F : V → V → Prop} {na nb : V}
     · intro h
       exact ⟨_, ⟨na, ha.1.1, (hfa _).2 rfl⟩, _, ⟨nb, hb.1.1, (hfb _).2 rfl⟩, h⟩
   cases isEq
-  · refine ⟨_, isFormCodeSem_memAtom H ha.2 hb.2, fun b hb' _ S hS R hR' t ht _ => ?_⟩
-    rw [hread S t ht, satIn_memAtom H (isSetStructure_stage H hR hP hb' hS hR') ha.2 hb.2 ht]
+  · refine ⟨_, isFormCodeSem_memAtom H ha.2 hb.2, fun b hb' _ S hS R hR' a ha' U hU t ht => ?_⟩
+    have htS := envOn_stage H hR hP hb' hS ha' hU ht
+    rw [hread S t htS, satIn_memAtom H (isSetStructure_stage H hR hP hb' hS hR') ha.2 hb.2 htS]
     simp only [Bool.false_eq_true, if_false]
     rw [hR']
     constructor
     · intro h
-      exact ⟨_, _, isEnvOn_apply H ht ha.2, isEnvOn_apply H ht hb.2, h, rfl⟩
+      exact ⟨_, _, isEnvOn_apply H htS ha.2, isEnvOn_apply H htS hb.2, h, rfl⟩
     · rintro ⟨x, y, -, -, hxy, hp⟩
       obtain ⟨rfl, rfl⟩ := _root_.SetTheory.kpair_inj H _ _ _ _ hp
       exact hxy
-  · refine ⟨_, isFormCodeSem_eqAtom H ha.2 hb.2, fun b hb' _ S hS R hR' t ht _ => ?_⟩
-    rw [hread S t ht, satIn_eqAtom H (isSetStructure_stage H hR hP hb' hS hR') ha.2 hb.2 ht]
+  · refine ⟨_, isFormCodeSem_eqAtom H ha.2 hb.2, fun b hb' _ S hS R hR' a ha' U hU t ht => ?_⟩
+    have htS := envOn_stage H hR hP hb' hS ha' hU ht
+    rw [hread S t htS, satIn_eqAtom H (isSetStructure_stage H hR hP hb' hS hR') ha.2 hb.2 htS]
     simp
 
 end Semantics

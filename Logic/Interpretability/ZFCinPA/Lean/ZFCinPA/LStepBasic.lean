@@ -74,7 +74,7 @@ theorem or_step {P₀ P₂ P₄ : V → Prop} {F₁ F₃ F₅ : V → V → Prop
   refine ⟨htot, ?_⟩
   obtain ⟨c₁, hc₁, hr₁⟩ := hrefl₁
   obtain ⟨c₂, hc₂, hr₂⟩ := hrefl₃
-  refine ⟨_, isFormCodeSem_or H hc₁ hc₂, fun b hb hcl S hS R hR' t ht hfin => ?_⟩
+  refine ⟨_, isFormCodeSem_or H hc₁ hc₂, fun b hb hcl S hS R hR' a ha U hU t ht => ?_⟩
   -- closure under both components, as in the conjunction step
   have hcl₁ : ∀ a, a ∈ b → ∀ g, F₁ a g → g ∈ b := fun a ha g hg => by
     have hao := ord_of_mem hb.1 ha
@@ -92,31 +92,34 @@ theorem or_step {P₀ P₂ P₄ : V → Prop} {F₁ F₃ F₅ : V → V → Prop
     rw [u₃ g hg]
     exact mem_of_sub_mem H hR hb.1 (hcl a ha _ hF₅) ho₂
       fun z hz => (_root_.SetTheory.vcup_spec H _ _ z).2 (Or.inr hz)
-  rw [hdefP, hr₁ b hb hcl₁ S hS R hR' t ht hfin, hr₂ b hb hcl₃ S hS R hR' t ht hfin,
-    satIn_or H (isSetStructure_stage H hR hP hb hS hR') hc₁ hc₂ ht]
+  rw [hdefP, hr₁ b hb hcl₁ S hS R hR' a ha U hU t ht, hr₂ b hb hcl₃ S hS R hR' a ha U hU t ht,
+    satIn_or H (isSetStructure_stage H hR hP hb hS hR') hc₁ hc₂
+      (envOn_stage H hR hP hb hS ha hU ht)]
 
 include hR in
 /-- **The negation step.** -/
 theorem neg_step {P₀ P₂ : V → Prop} {F : V → V → Prop}
     (hrefl : Refl H hP P₀ F) (hdefP : ∀ t, P₂ t ↔ ¬ P₀ t) : Refl H hP P₂ F := by
   obtain ⟨c, hc, hr⟩ := hrefl
-  refine ⟨_, isFormCodeSem_imp H hc (isFormCodeSem_bot H), fun b hb hcl S hS R hR' t ht hfin => ?_⟩
-  rw [hdefP, hr b hb hcl S hS R hR' t ht hfin,
-    satIn_imp H (isSetStructure_stage H hR hP hb hS hR') hc (isFormCodeSem_bot H) ht]
+  refine ⟨_, isFormCodeSem_imp H hc (isFormCodeSem_bot H),
+    fun b hb hcl S hS R hR' a ha U hU t ht => ?_⟩
+  rw [hdefP, hr b hb hcl S hS R hR' a ha U hU t ht,
+    satIn_imp H (isSetStructure_stage H hR hP hb hS hR') hc (isFormCodeSem_bot H)
+      (envOn_stage H hR hP hb hS ha hU ht)]
   exact ⟨fun h hs => absurd hs h, fun h hs => satIn_bot H (h hs)⟩
 
 include hR in
 /-- `⊤` is reflected (code `⊥ → ⊥`). -/
 theorem top_refl {F : V → V → Prop} : Refl H hP (fun _ => True) F :=
   ⟨_, isFormCodeSem_imp H (isFormCodeSem_bot H) (isFormCodeSem_bot H),
-    fun b hb _ S hS R hR' t ht _ => by
+    fun b hb _ S hS R hR' a ha U hU t ht => by
       rw [satIn_imp H (isSetStructure_stage H hR hP hb hS hR') (isFormCodeSem_bot H)
-        (isFormCodeSem_bot H) ht]
+        (isFormCodeSem_bot H) (envOn_stage H hR hP hb hS ha hU ht)]
       exact ⟨fun _ h => h, fun _ => trivial⟩⟩
 
 /-- `⊥` is reflected (code `⊥`). -/
 theorem bot_refl {F : V → V → Prop} : Refl H hP (fun _ => False) F :=
-  ⟨_, isFormCodeSem_bot H, fun _ _ _ _ _ _ _ _ _ _ => ⟨False.elim, satIn_bot H⟩⟩
+  ⟨_, isFormCodeSem_bot H, fun _ _ _ _ _ _ _ _ _ _ _ _ _ => ⟨False.elim, satIn_bot H⟩⟩
 
 end Semantics
 

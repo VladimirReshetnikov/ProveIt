@@ -13,9 +13,11 @@ conjunction of
 
 * `totS F`: `F` is a total function on ordinals with `α ∈ F(α)`;
 * `reflS P F`: there is an internal formula code `c` such that at every
-  nonzero limit `β` closed under `F`, every finitely supported environment
-  `t` over `S = L_β` (with membership relation `R`) satisfies
-  `P(t) ↔ (S, R) ⊨ c[t]`.
+  nonzero limit `β` closed under `F`, every environment `t` over an earlier
+  stage `L_α` (`α ∈ β`) satisfies `P(t) ↔ (S, R) ⊨ c[t]`, where `S = L_β` and
+  `R` is its membership relation. (Environments over earlier stages, rather
+  than finitely supported ones, make the quantifier step need only the
+  maximum of two ordinals below a limit.)
 
 `models_totS` and `models_reflS` read the two sentences in every model of the
 template theory, through the pieces of `LPieces`.
@@ -41,12 +43,12 @@ def totS (F : Semisentence (setTemplateLanguage k arities) 2) :
   “∀ a, !(lift ordP) a → ∃ g, !(lift ordP) g ∧ a ∈ g ∧ !F a g ∧ ∀ h, !F a h → h = g”
 
 /-- At every nonzero limit closed under `F`, `P` is internal satisfaction of one
-code over the stage. -/
+code over the stage, for environments over earlier stages. -/
 def reflS (P : Semisentence (setTemplateLanguage k arities) 1)
     (F : Semisentence (setTemplateLanguage k arities) 2) : Sentence (setTemplateLanguage k arities) :=
   “∃ c, !(lift codeP) c ∧ ∀ b, !(lift limP) b → (∀ a, a ∈ b → ∀ g, !F a g → g ∈ b) →
-    ∀ S, !(lift stageP) b S → ∀ R, !(lift memRelP) S R → ∀ t, !(lift envP) S t →
-      !(lift finSuppP) t → (!P t ↔ !(lift satP) S R c t)”
+    ∀ S, !(lift stageP) b S → ∀ R, !(lift memRelP) S R → ∀ a, a ∈ b → ∀ U, !(lift stageP) a U →
+      ∀ t, !(lift envP) U t → (!P t ↔ !(lift satP) S R c t)”
 
 /-! ## Semantics in template models -/
 
@@ -81,8 +83,9 @@ theorem models_reflS (P : Semisentence (setTemplateLanguage k arities) 1)
           ∀ S, IsL (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M))
               (ConstructibleInterpretation.power_of_modelsZF (V := M)) b S →
           ∀ R, MemRel (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M)) S R →
-          ∀ t, IsEnvOn (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M)) S t →
-            FinSupp (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M)) t →
+          ∀ a, a ∈ b → ∀ U, IsL (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M))
+              (ConstructibleInterpretation.power_of_modelsZF (V := M)) a U →
+          ∀ t, IsEnvOn (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M)) U t →
             (P.Eval ![t] Empty.elim ↔
               SatIn (ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M)) S R c t) := by
   simp [models_iff, reflS,
@@ -91,7 +94,6 @@ theorem models_reflS (P : Semisentence (setTemplateLanguage k arities) 1)
       (hP := ConstructibleInterpretation.power_of_modelsZF (V := M)),
     eval_memRelP (H := ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M)),
     eval_envP (H := ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M)),
-    eval_finSuppP (H := ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M)),
     eval_satP (H := ConstructibleInterpretation.zfAxioms_of_modelsZF (V := M))]
 
 end Semantics
