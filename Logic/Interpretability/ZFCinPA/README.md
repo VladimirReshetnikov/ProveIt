@@ -305,3 +305,14 @@ module supplies no schema callback or arbitrary internal source-proof transport.
 [The internal validator proof calculus](validator_provability254.md) now supplies a fixed Σ₁ theorem predicate with all twelve original rule closures and a classical implication interface, for arbitrary internal formula and proof codes. The check passed 22 probes/16 callers with standard Lean axioms and zero warnings. It reuses the existing numerical proof constructors and polymorphic propositional certificates. The internal formula/proof encoder and reverse consistency implication remain open; variable renaming needs special care because the bundle parameter is both a formula code and a variable label.
 
 - [Constructible interpretation: fixed L domain, finite axiom discharge, and conditional internal refutation transport](constructible_interpretation.md) — checked 25/18, standard axioms, zero warnings. Uniform internal Separation/Replacement `hSchema` remains open.
+
+The represented formula encoder now passes its 18-probe/24-caller narrow
+check: fixed Sigma1 syntax graphs and total Delta1 semantics for arbitrary
+internal source/depth inputs, with the actual set-language symbol codes and
+literal numeric constructor equations. The source has zero warnings; the
+audit retains one unused-simp warning. This supplies the computation used by
+a future ZF-to-validator proof compiler, not that compiler or a reverse
+consistency implication. See `ValidatorFormulaEncoder254.lean`,
+`validator_formula_encoder254.md`, and the matching verification/history/review
+records. Its maintained-default prepare-only check builds nothing and makes
+no compiler/version call.
