@@ -1,12 +1,16 @@
-# The remaining Foundation and Choice comparison
+# Foundation comparison and the remaining Choice transport
 
-The CP/GIC quotient now has actual formula-indexed Separation and Replacement,
-ordinary Infinity from the finite-attempt construction, and Power Set.
-These resources target `PSCCalibration.ZF0Ax`, which omits Foundation and
-Choice. Passing to full ZFC still requires relative-consistency proofs.
-Adding a `ZFCAxioms` hypothesis to the quotient would assume the missing result.
-This note records an independent source audit and exact open theorem targets;
-it supplies no new Foundation/Choice proof or internal machine endpoint.
+The machine's native calculus now has a checked comparison with ordinary ZF,
+including Foundation and Power: `WFTheory.c254_refutation_iff_zf` and
+`native_consistency_iff_zf`. The [direct well-founded model](wf_model.md) uses
+the quotient's existing Global-Image Collection witness instance. This avoids
+needing the more general Foundation-removal theorem for arbitrary ZF0 models.
+
+Choice removal remains open and is assigned to the constructible-class lane
+in [the logic-layer coordination note](tarski_logic_layer.md). The full binary
+coverage certificate and internal arithmetic proof-code comparison remain
+separate. The older general targets and upstream source audit below are kept
+to distinguish what the direct native comparison actually proves.
 
 The existing presentations already give the required syntax:
 
@@ -19,8 +23,8 @@ The existing presentations already give the required syntax:
 The repository's six-field `ZFAxioms` bundle itself omits both Power and
 Regularity. `BoundedZFCConsistency.ZFCAxioms` adds Power, Regularity and Choice
 as hypotheses; it is an axiom-extraction interface, not their relative
-consistency theorem. The following two statements isolate the missing work
-using the existing theories, without a stronger model assumption:
+consistency theorem. These two general statements remain unimplemented; the
+first is no longer needed for the checked native-to-ZF comparison:
 
 ```lean
 -- Targets only: these theorems have not been implemented.
@@ -70,9 +74,9 @@ The existing `Logic/FirstOrder/Lean/FirstOrder/Relativization.lean` handles
 the particular loop-free subtype defined by ¬x∈x; it is not the arbitrary-class
 well-founded-part or constructible-class interpretation required here.
 
-A constructive Lean port can begin with literal `Form` relativization and
-its proof transport, followed by the well-founded-part axiom resources and
-then the constructible-class resources. Generic first-order completeness
+The actual `Form` relativization and well-founded-part model resources are
+now implemented in `WFRelativization` and `WFModel`. A finite proof-transport
+port and the constructible-class resources are still separate work. Generic first-order completeness
 does not supply those set-theoretic interpretations. A semantic alternative
 must still build every actual interpreted Sep/Repl instance and an explicit
 nonempty witness or valuation. External `WellFounded mem` is stronger than
@@ -98,5 +102,7 @@ six `ZFAxioms` fields, keeps Power separate, and applies `models_ZF0` to the
 literal closed sentence theory. Its soundness corollary constructs a quotient
 valuation from the raw witness. The decoded-bundle corollaries retain both IR
 and an explicit valuation, whose slot0 supplies that witness. Their conclusion
-is ordinary metatheoretic consistency of ZF0, with the two displayed
-Foundation/Choice translations and the internal machine endpoint still open.
+was ordinary metatheoretic consistency of ZF0. The later `WFTheory` module
+extends the native comparison to ZF using the additional quotient closure
+resource. The two displayed general transports, Choice, and the internal PA
+endpoint are not consequences of that earlier composition.

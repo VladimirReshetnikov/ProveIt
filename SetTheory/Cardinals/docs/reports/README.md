@@ -2614,3 +2614,47 @@ known bulk-manifest omissions and three retained functional table pins are
 explicit. The sources' old missing-clean-root/model comparison passages are
 reconciled with current checked Lean results. No new smaller blank machine,
 full binary simulation or internal-ZFC consistency endpoint is claimed.
+
+
+Batch 154 adds five manuscripts from `61e7783656`, `3d731d8cf4` and `2b10c9072e`,
+placed by `d1636c9af8` and reconciled in `9f4efefcff`. They become sources 37–41
+of [ZFC closure kernels](set-theory/zfc-closure-kernels), now 41 manuscripts;
+the collection remains 290 reports. All 351 ancillary files are preserved;
+43 article/section/bibliography/PDF/delivery-README files remain recoverable
+from their committed archives. The base article and earlier sources are unchanged.
+
+Finite fusion combines any finite family of full GIC or EPSC instances into
+one matrix-dependent instance, with explicit bootstrap and fresh selectors.
+It changes a complete search specification, not the theory into one fixed
+finite membership sentence. The unary repair needs only EPSC1 plus exact
+BinaryUnion, interpreted by saturated pure hulls. Its stronger hereditary-support
+countermodel retains all finite coarse bounds while failing Pairing;
+bare EPSC1 consistency strength and a different internal-WF interpretation
+remain open. The five-block assignment/class kernel emits 15 universal clauses,
+35 literals and 174 term occurrences with genuine equality, improving source 34's
+28/62/244 logical payload. Its ideal ground search is complete; no whole-kernel
+search or compiled binary frontend is supplied.
+
+The two cyclic algebra proposals preserve empty-premise identities, not
+arbitrary added premises. E7 has 7 equations/81 term nodes (88 including equality
+signs); E9/E8 have 9/8 equations and 75/90 term nodes. Optional generator invariance
+is ground. The exact phase optimizers have a restricted grammar scope.
+The finite 14-sentence class source and 10182-node membership wrapper retain the
+tagged Capture repair. Neither proposal materializes its ZFC-specific modal
+query or binary backend. Current 299/333 E7 compiler controls are separate
+post-delivery experiments with a placeholder query.
+
+A native model-comparison contribution freshly rebuilds its 26-source Lean
+closure in 22.912s with 14 standard-axiom probes; current project modules already
+substantially close its advertised older gap. Its independently checked 3530-pair,
+7044-obligation invariant certifies one guarded public 253 shortcut by an ordinary
+positive-progress argument. The complete bootstrap becomes 312895 moves with the
+same full tape and state count. All advertised bounded searches, literal tables,
+regenerated contexts and grammar certificates reproduce; 118977 scored rotations
+retain 268 states. The billion-step negative run concerns the older identity-layout
+runtime 252 body, distinct from the new register-permutation candidate.
+Five scratch PDFs (25/30/26/31/24 pages) rebuild cleanly with embedded fonts and
+visual theorem-page review. Dossiers and offline recovery/replay preserve exact
+pins, implementation limits, harness correction and prior attribution.
+No new state record, global minimality, strict EPSC1 consistency separation,
+Coq rebuild or complete internal-ZFC machine endpoint follows from this intake.

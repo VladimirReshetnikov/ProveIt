@@ -382,20 +382,21 @@ it does not rebuild the entire expanded library. A separate full-source
 mathematical review of the named-formula and rank construction is recorded in
 [the independent review](results/zfrank-independent-source-review.json).
 
-**Status of the goal.** For the literal register program the machine
-decodes: `Con(ZFC)` implies non-halting (this lane), and non-halting is
-equivalent to the consistency of `NativeAx` (L1–L4 with the Codex lane's
-native comparison). What remains for the full equivalence with `Con(ZFC)` is
-the converse transport, ZFC refutation → `NativeAx` refutation (Regularity
-and Choice, Codex lane: `WellFoundedPart.lean`, `foundation_choice_route.md`),
-and for the binary machine the TM layer (literal 253/254 table ↔ path
-semantics of `Prog254`).
+**Status of the goal.** The checked `WFTheory.c254_refutation_iff_zf` now
+identifies the exact numerical calculus with ordinary ZF refutation, including
+Foundation and Power. It combines this lane's `ZFNative` direction with the
+[direct well-founded model](wf_model.md) of the native CP/GIC quotient.
+For the literal register program, non-halting is therefore equivalent to
+`Con(ZF)` and follows from `Con(ZFC)`. Choice removal is the remaining semantic
+transport to full ZFC. The actual252-state binary table has a proved blank
+bootstrap and generic simulation; its complete finite coverage certificate is
+still being checked. PA internalization is an additional proof-code obligation.
 
 ## Next: the Choice transport through L (in progress in this lane)
 
 `foundation_choice_route.md` names `choice_refutation_remove`
-(a ZFC refutation yields a ZF refutation) as open, and no lane has started
-it. This lane now takes it, semantically: in a model of `ZFax_s`, Gödel's
+(a ZFC refutation yields a ZF refutation) as open. This lane owns it,
+semantically: in a model of `ZFax_s`, Gödel's
 constructible class `L` is a model of `ZFCax_s`. The internal toolkit above
 supplies ordinals, transfinite recursion and Collection; the repository's
 `BoundedZFCConsistency.InternalSatTotality` supplies satisfaction of coded
@@ -403,5 +404,6 @@ formulas over set-sized structures, by certificates, which gives `Def(X)`.
 Planned modules: `BusyBeaver/ZFC/TransRec.lean` (transfinite recursion for a
 definable stage operation), `ConstructibleDef.lean` (`Def`), `Constructible.lean`
 (`L_α`, `L ⊨ ZF`), `ConstructibleChoice.lean` (a definable well-order and
-`L ⊨ AC`). Coordination note: please avoid duplicating these; the Regularity
-transport (`WellFoundedPart.lean`) stays with the Codex lane.
+`L ⊨ AC`). Coordination note: please avoid duplicating these. The Codex lane
+completed the direct native-theory Foundation comparison in `WFModel` and
+`WFTheory`; no general arbitrary-ZF0 Foundation-removal theorem is claimed.

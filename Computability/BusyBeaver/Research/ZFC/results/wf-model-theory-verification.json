@@ -1,0 +1,47 @@
+{
+  "status": "PASS fresh three-module WF interpretation and refutation comparison",
+  "scope": "Actual translated Sep/Repl, ordinary Infinity, Power and Foundation in the supplied-closure quotient WF domain; C254/native refutation iff ZF refutation. No general arbitrary-ZF0 Foundation removal, no Choice removal or arithmetic proof-code formalization.",
+  "lean": "Lean4.32.0",
+  "cache": "/tmp/zfc-wf3-check/cache",
+  "imports": "Source-verified current118 integration plus fresh9 native/ZF modules; prior imports reused, not rebuilt here.",
+  "modules": [
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+      "sha256": "fccff4d33c0fa673c92e8f7a1c852d4d639d6ddf155421301ae78a9877963a1d",
+      "exit_code": 0,
+      "elapsed_seconds": 0.34591620694845915,
+      "output": "",
+      "olean": "/tmp/zfc-wf3-check/cache/BusyBeaver/ZFC/WFRelativization.olean"
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModel.lean",
+      "sha256": "b0b7bfae8e6c4069c9a20e2a7459e2d9be827f888456bd41ec5e818e72bfff69",
+      "exit_code": 0,
+      "elapsed_seconds": 0.5483418367803097,
+      "output": "",
+      "olean": "/tmp/zfc-wf3-check/cache/BusyBeaver/ZFC/WFModel.olean"
+    },
+    {
+      "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFTheory.lean",
+      "sha256": "72969cd2d53f616816a83a36ae625b79adbcbecc2fd2fb1c0951a7801f747164",
+      "exit_code": 0,
+      "elapsed_seconds": 0.2782251266762614,
+      "output": "'SetTheory.BusyBeaver.ZFC.WFTheory.zf_consistent_of_model' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFTheory.c254_of_zf_refutation' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFTheory.c254_refutation_iff_zf' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFTheory.native_refutation_iff_zf' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFTheory.native_consistency_iff_zf' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+      "olean": "/tmp/zfc-wf3-check/cache/BusyBeaver/ZFC/WFTheory.olean"
+    }
+  ],
+  "audit": {
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "/tmp/zfc-wf3-check/Audit.lean"
+    ],
+    "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+    "LEAN_PATH": "/tmp/zfc-wf3-check/cache",
+    "LEAN_NUM_THREADS": "0",
+    "elapsed_seconds": 0.8781232545152307,
+    "exit_code": 0,
+    "output": "'SetTheory.BusyBeaver.ZFC.WFRelativization.liftEnv_scons' depends on axioms: [Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFRelativization.liftEnv_envOfWF' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WFRelativization.sat_guard' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WFRelativization.sat_translate' depends on axioms: [Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFRelativization.sat_translate_of_wf' depends on axioms: [Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFRelativization.sat_translate_scons' depends on axioms: [Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFRelativization.sat_translate_matrix' depends on axioms: [Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFRelativization.sat_translate_relOf' depends on axioms: [Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFRelativization.equalityFree_translate' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.WFRelativizationAudit.nested_binders' depends on axioms: [Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFRelativizationAudit.replacement_identity' depends on axioms: [Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFRelativizationAudit.arbitrary_wf_parameters' depends on axioms: [Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFModel.domain_ext' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WFModel.domain_pair' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WFModel.domain_union' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WFModel.domain_separation' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFModel.domain_power' does not depend on any axioms\n'SetTheory.BusyBeaver.ZFC.WFModel.domain_infinity' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFModel.domain_replacement' depends on axioms: [Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFModel.domain_models_ZF' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFModel.quotient_models_ZF' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFTheory.c254_refutation_iff_zf' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.WFTheory.native_consistency_iff_zf' depends on axioms: [propext, Classical.choice, Quot.sound]\n",
+    "source": "import BusyBeaver.ZFC.WFTheory\nimport BusyBeaver.ZFC.Permutation252Program\nnamespace SetTheory.BusyBeaver.ZFC.WFRelativizationAudit\nopen Form WellFoundedPart WFRelativization DeepPositiveClosure\nuniverse u\nvariable {V : Type u}\n#print axioms liftEnv_scons\n#print axioms liftEnv_envOfWF\n#print axioms sat_guard\n#print axioms sat_translate\n#print axioms sat_translate_of_wf\n#print axioms sat_translate_scons\n#print axioms sat_translate_matrix\n#print axioms sat_translate_relOf\n#print axioms equalityFree_translate\n\ntheorem nested_binders (mem : V \u2192 V \u2192 Prop) (env : Nat \u2192 Domain mem) :\n    Sat mem (liftEnv mem env)\n      (translate (fAll (fEx (fAnd (fMem 0 1) (fEq 0 2))))) \u2194\n        \u2200 x : Domain mem, \u2203 y : Domain mem, domainMem mem y x \u2227 y = env 0 := by\n  simpa only [Sat, scons] using\n    (sat_translate mem (fAll (fEx (fAnd (fMem 0 1) (fEq 0 2)))) env)\n\ntheorem replacement_identity (mem : V \u2192 V \u2192 Prop) (env : Nat \u2192 Domain mem)\n    (y x : Domain mem) :\n    relOf mem (translate (fEq 0 1)) (liftEnv mem env) y.val x.val \u2194 y = x := by\n  simpa only [relOf, Sat, scons] using\n    (sat_translate_relOf mem (fEq 0 1) env y x)\n\ntheorem arbitrary_wf_parameters (mem : V \u2192 V \u2192 Prop) (phi : Form)\n    (env : Nat \u2192 V) (hWF : \u2200 i, WF mem (env i)) :\n    Sat mem env (translate phi) \u2194 Sat (domainMem mem) (envOfWF mem env hWF) phi :=\n  sat_translate_of_wf mem phi env hWF\n\n#print axioms nested_binders\n#print axioms replacement_identity\n#print axioms arbitrary_wf_parameters\nend SetTheory.BusyBeaver.ZFC.WFRelativizationAudit\n\nnamespace SetTheory.BusyBeaver.ZFC.WFCompleteAudit\n#print axioms WFModel.domain_ext\n#print axioms WFModel.domain_pair\n#print axioms WFModel.domain_union\n#print axioms WFModel.domain_separation\n#print axioms WFModel.domain_power\n#print axioms WFModel.domain_infinity\n#print axioms WFModel.domain_replacement\n#print axioms WFModel.domain_models_ZF\n#print axioms WFModel.quotient_models_ZF\n#print axioms WFTheory.c254_refutation_iff_zf\n#print axioms WFTheory.native_consistency_iff_zf\nexample : Code254.C254 Code254.F \u2194 BProv ZFax_s [] Form.fBot :=\n  WFTheory.c254_refutation_iff_zf\nexample : (\u00ac BProv NativeTheory254.NativeAx [] Form.fBot) \u2194 \u00ac BProv ZFax_s [] Form.fBot :=\n  WFTheory.native_consistency_iff_zf\nexample (h : BProv ZFax_s [] Form.fBot) :\n    RegisterPath.Halts Prog254.program Permutation252Frame.zeroRoot :=\n  Permutation252Program.literal_zero_halts_iff_c254.mpr (WFTheory.c254_of_zf_refutation h)\nend SetTheory.BusyBeaver.ZFC.WFCompleteAudit\n"
+  },
+  "development_note": "InitialWFModel check found three identifiers eliminated by rintro rfl; explicit equality projections fixed them. Final three-module run and audit all pass. Adapter initially also passed in2.022s; final recorded recheck0.346s."
+}
