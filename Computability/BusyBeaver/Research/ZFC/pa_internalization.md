@@ -47,8 +47,11 @@ The current arithmetic checkpoints are:
   supplies reflexivity, symmetry, transitivity and atomic congruence. The
   [configurable environment encoder](../../../../Logic/Interpretability/ZFCinPA/validator_environment_labels254.md)
   proves exact internal term, vector and formula SHIFT laws through nested
-  quantifiers. Opening, alpha equivalence and source-proof translation remain
-  open; arbitrary accepted proofs are not assumed closed under variable renaming.
+  quantifiers. [Binder opening](../../../../Logic/Interpretability/ZFCinPA/validator_environment_opening254.md)
+  now gives exact term/vector/formula substitution identities and opened
+  ALL/EXS matrix equations for arbitrary internal depths. Alpha equivalence
+  and source-proof translation remain open; arbitrary accepted proofs are
+  not assumed closed under variable renaming.
 * [Both actual reads](arithmetic_control_read_template254.md) are checked on
   every internal register file with its scratch fields zero. They reach the
   actual dispatch control 38, retain the whole register file in their
@@ -60,8 +63,10 @@ The current arithmetic checkpoints are:
   then returns to fetch. The AC2 dispatcher composition additionally clears
   AC. The [pairing routines](arithmetic_control_pair254.md) now have terminating
   all-internal contracts, including both actual DROP and MP occurrences and
-  whole-file preservation. DROP, MP and AX still need their complete
-  actual-control contracts.
+  whole-file preservation. The [complete DROP branch](arithmetic_control_drop254.md)
+  pushes the old TW/WS pair, restores TW from the cache and returns to fetch;
+  its AC1 dispatcher composition is also checked. MP and AX still need their
+  complete actual-control contracts.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
 translation, the internal L-specific Separation/Replacement proofs, and the complete
