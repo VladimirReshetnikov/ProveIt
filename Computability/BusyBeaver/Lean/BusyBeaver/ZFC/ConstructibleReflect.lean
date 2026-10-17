@@ -430,4 +430,266 @@ theorem nsat_gstepF (Θ : List Form) (ρ : Nat → V) (x y : V) :
 
 end Step
 
+/-! ## Reflection -/
+
+/-- The bodies of the quantified subformulas, and their negations. -/
+def qbodies : Form → List Form
+  | .fImp a b => qbodies a ++ qbodies b
+  | .fAnd a b => qbodies a ++ qbodies b
+  | .fOr a b => qbodies a ++ qbodies b
+  | .fAll a => a :: .fImp a .fBot :: qbodies a
+  | .fEx a => a :: .fImp a .fBot :: qbodies a
+  | _ => []
+
+section Reflect
+
+variable (H : ZFAxioms mem) (hR : Regular mem) (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a)
+include H hR hP
+
+/-- `β` is a limit ordinal containing every least witness stage, for the
+formulas of `Θ`, of every environment on a stage below `β`. -/
+def Closed (Θ : List Form) (β : V) : Prop :=
+  Ord mem β ∧ (∀ γ, mem γ β → mem (vsucc H γ) β) ∧
+    ∀ γ, mem γ β → ∀ T E c, ∀ θ ∈ Θ, IsL H hP γ T → IsEnvOn H T E → LeastWit H hP θ E c → mem c β
+
+omit hR hP in
+/-- An internal environment over `T` with prescribed first values. -/
+theorem mk_env {T d : V} (hd : mem d T) :
+    ∀ (m : Nat) (v : Nat → V), (∀ k, k < m → mem (v k) T) →
+      ∃ E, IsEnvOn H T E ∧ ∀ k, k < m → envVals H E k = v k
+  | 0, _, _ => ⟨_, constEnv_isEnvOn H hd, fun k hk => absurd hk (Nat.not_lt_zero k)⟩
+  | m + 1, v, hv => by
+      obtain ⟨E, hE, hval⟩ := mk_env hd m (fun k => v (k + 1)) fun k hk => hv (k + 1) (by omega)
+      refine ⟨econs H (v 0) E, econs_isEnvOn H hE (hv 0 (by omega)), fun k hk => ?_⟩
+      rw [envVals_econs H hE (v 0) k]
+      cases k with
+      | zero => rfl
+      | succ k => exact hval k (by omega)
+
+/-- Finitely many members of `L_β` (β a limit) lie in one earlier stage. -/
+theorem common_stage {β Tβ : V} (hβ : Ord mem β) (hlim : ∀ γ, mem γ β → mem (vsucc H γ) β)
+    (hTβ : IsL H hP β Tβ) (v : Nat → V) :
+    ∀ m, (∀ k, k < m + 1 → mem (v k) Tβ) →
+      ∃ γ T, mem γ β ∧ IsL H hP γ T ∧ ∀ k, k < m + 1 → mem (v k) T := by
+  -- one member lies in a successor stage below β
+  have one : ∀ x, mem x Tβ → ∃ γ T, mem γ β ∧ IsL H hP γ T ∧ mem x T := by
+    intro x hx
+    obtain ⟨c, T, hc, hT, hxT⟩ := (isL_spec H hR hP hβ hTβ x).1 hx
+    have hoc := ord_of_mem hβ hc
+    obtain ⟨T', hT'⟩ := isL_exists H hR hP (ord_succ H hoc)
+    exact ⟨_, T', hlim c hc, hT', (isL_spec H hR hP (ord_succ H hoc) hT' x).2
+      ⟨c, T, vsucc_self H c, hT, hxT⟩⟩
+  intro m
+  induction m with
+  | zero =>
+      intro hv
+      obtain ⟨γ, T, hγ, hT, hx⟩ := one (v 0) (hv 0 (by omega))
+      exact ⟨γ, T, hγ, hT, fun k hk => by rw [show k = 0 by omega]; exact hx⟩
+  | succ m ih =>
+      intro hv
+      obtain ⟨γ1, T1, hγ1, hT1, h1⟩ := ih fun k hk => hv k (by omega)
+      obtain ⟨γ2, T2, hγ2, hT2, h2⟩ := one (v (m + 1)) (hv (m + 1) (by omega))
+      have ho1 := ord_of_mem hβ hγ1
+      have ho2 := ord_of_mem hβ hγ2
+      rcases trichotomy H hR γ1 ho1 γ2 ho2 with h | rfl | h
+      · exact ⟨γ2, T2, hγ2, hT2, fun k hk => by
+          rcases Nat.lt_succ_iff_lt_or_eq.1 hk with hk | rfl
+          · exact isL_mono H hR hP ho2 h hT1 hT2 _ (h1 k hk)
+          · exact h2⟩
+      · exact ⟨γ1, T1, hγ1, hT1, fun k hk => by
+          rcases Nat.lt_succ_iff_lt_or_eq.1 hk with hk | rfl
+          · exact h1 k hk
+          · rwa [isL_unique H hR hP ho1 hT2 hT1] at h2⟩
+      · exact ⟨γ1, T1, hγ1, hT1, fun k hk => by
+          rcases Nat.lt_succ_iff_lt_or_eq.1 hk with hk | rfl
+          · exact h1 k hk
+          · exact isL_mono H hR hP ho1 h hT2 hT1 _ h2⟩
+
+/-- **Witnesses reflect into a closed stage.** -/
+theorem closure_witness {Θ : List Form} {β Tβ : V} (hC : Closed H hP Θ β) (hTβ : IsL H hP β Tβ)
+    {θ : Form} (hθ : θ ∈ Θ) {e : Nat → V} (he : ∀ n, mem (e n) Tβ)
+    (hw : ∃ d, InL H hP d ∧ CSat mem (InL H hP) (scons d e) θ) :
+    ∃ x, mem x Tβ ∧ CSat mem (InL H hP) (scons x e) θ := by
+  obtain ⟨hβ, hlim, hcl⟩ := hC
+  obtain ⟨γ, T, hγ, hT, hvals⟩ := common_stage H hR hP hβ hlim hTβ e (bound θ) fun k _ => he k
+  have hoγ := ord_of_mem hβ hγ
+  obtain ⟨E, hE, hEv⟩ := mk_env H (hvals 0 (by omega)) (bound θ) e fun k hk => hvals k (by omega)
+  -- the formula only sees the first values
+  have agree : ∀ x, CSat mem (InL H hP) (scons x (envVals H E)) θ ↔
+      CSat mem (InL H hP) (scons x e) θ := fun x =>
+    csat_ext_free _ θ _ _ fun n hn => by
+      cases n with
+      | zero => rfl
+      | succ k => exact hEv k (by have := free_lt_bound θ _ hn; omega)
+  obtain ⟨d, hd, hdθ⟩ := hw
+  obtain ⟨c0, S0, hc0, hS0, hdS0⟩ := hd
+  obtain ⟨c, hc, hWc, hmin⟩ := least_ord H hR (Wit H hP θ E) (witF H hP θ 0 1) (upd (fun _ => E) 1 E)
+    (fun c => by
+      rw [nsat_witF H hP θ (by omega) (by omega) _ (A := T)
+        (by simp (disch := omega) only [upd_same, upd_other]; exact hE)]
+      simp (disch := omega) only [upd_same, upd_other]) hc0
+    ⟨S0, d, hS0, hdS0, (agree d).2 hdθ⟩
+  have hcβ := hcl γ hγ T E c θ hθ hT hE ⟨hc, hWc, hmin⟩
+  obtain ⟨Tc, x, hTc, hxTc, hxθ⟩ := hWc
+  exact ⟨x, isL_mono H hR hP hβ hcβ hTc hTβ x hxTc, (agree x).1 hxθ⟩
+
+/-- **Reflection.** A closed stage reflects every formula whose quantifier
+bodies are among `Θ`. -/
+theorem reflect {Θ : List Form} {β Tβ : V} (hC : Closed H hP Θ β) (hTβ : IsL H hP β Tβ) :
+    ∀ φ : Form, (∀ θ ∈ qbodies φ, θ ∈ Θ) → ∀ e : Nat → V, (∀ n, mem (e n) Tβ) →
+      (CSat mem (InL H hP) e φ ↔ RSat mem Tβ e φ)
+  | .fMem _ _, _, _, _ => Iff.rfl
+  | .fEq _ _, _, _, _ => Iff.rfl
+  | .fBot, _, _, _ => Iff.rfl
+  | .fImp a b, hq, e, he => by
+      simp only [CSat, RSat]
+      rw [reflect hC hTβ a (fun θ h => hq θ (List.mem_append_left _ h)) e he,
+        reflect hC hTβ b (fun θ h => hq θ (List.mem_append_right _ h)) e he]
+  | .fAnd a b, hq, e, he => by
+      simp only [CSat, RSat]
+      rw [reflect hC hTβ a (fun θ h => hq θ (List.mem_append_left _ h)) e he,
+        reflect hC hTβ b (fun θ h => hq θ (List.mem_append_right _ h)) e he]
+  | .fOr a b, hq, e, he => by
+      simp only [CSat, RSat]
+      rw [reflect hC hTβ a (fun θ h => hq θ (List.mem_append_left _ h)) e he,
+        reflect hC hTβ b (fun θ h => hq θ (List.mem_append_right _ h)) e he]
+  | .fEx a, hq, e, he => by
+      have hqa : ∀ θ ∈ qbodies a, θ ∈ Θ := fun θ h => hq θ (by simp [qbodies, h])
+      have hext : ∀ x, mem x Tβ → ∀ n, mem (scons x e n) Tβ := fun x hx n => by
+        cases n with
+        | zero => exact hx
+        | succ n => exact he n
+      simp only [CSat, RSat]
+      constructor
+      · intro hw
+        obtain ⟨x, hx, hxa⟩ := closure_witness H hR hP hC hTβ (hq a (by simp [qbodies])) he hw
+        exact ⟨x, hx, (reflect hC hTβ a hqa _ (hext x hx)).1 hxa⟩
+      · rintro ⟨x, hx, hxa⟩
+        exact ⟨x, ⟨β, Tβ, hC.1, hTβ, hx⟩, (reflect hC hTβ a hqa _ (hext x hx)).2 hxa⟩
+  | .fAll a, hq, e, he => by
+      have hqa : ∀ θ ∈ qbodies a, θ ∈ Θ := fun θ h => hq θ (by simp [qbodies, h])
+      have hext : ∀ x, mem x Tβ → ∀ n, mem (scons x e n) Tβ := fun x hx n => by
+        cases n with
+        | zero => exact hx
+        | succ n => exact he n
+      simp only [CSat, RSat]
+      constructor
+      · intro hall x hx
+        exact (reflect hC hTβ a hqa _ (hext x hx)).1 (hall x ⟨β, Tβ, hC.1, hTβ, hx⟩)
+      · intro hall d hd
+        apply Classical.byContradiction
+        intro hnd
+        obtain ⟨x, hx, hxa⟩ := closure_witness H hR hP hC hTβ (θ := .fImp a .fBot)
+          (hq _ (by simp [qbodies])) he ⟨d, hd, hnd⟩
+        exact hxa ((reflect hC hTβ a hqa _ (hext x hx)).2 (hall x hx))
+
+end Reflect
+
+/-! ## Closed ordinals exist -/
+
+section ClosedExists
+
+variable (H : ZFAxioms mem) (hR : Regular mem) (hP : ∀ a, ∃ p, ∀ x, mem x p ↔ Sub mem x a)
+include H hR hP
+
+omit hR in
+theorem uspec_ord {Θ : List Form} {x u : V} (hx : Ord mem x) (hu : USpec H hP Θ x u) :
+    Ord mem u ∧ Sub mem x u := by
+  have hmemOrd : ∀ z, mem z u → Ord mem z := by
+    intro z hz
+    rcases (hu z).1 hz with h | ⟨-, θ, -, T, E, c, -, -, hc, hzc⟩
+    · exact ord_of_mem hx h
+    · exact ord_of_mem hc.1 hzc
+  refine ⟨⟨fun z hz w hw => ?_, fun z hz => (hmemOrd z hz).1⟩, fun z hz => (hu z).2 (Or.inl hz)⟩
+  rcases (hu z).1 hz with h | ⟨hxo, θ, hθ, T, E, c, hT, hE, hc, hzc⟩
+  · exact (hu w).2 (Or.inl (hx.1 z h w hw))
+  · exact (hu w).2 (Or.inr ⟨hxo, θ, hθ, T, E, c, hT, hE, hc, hc.1.1 z hzc w hw⟩)
+
+theorem gstep_ord {Θ : List Form} {x : V} (hx : Ord mem x) :
+    Ord mem (Gstep H hP hR Θ x) ∧ mem x (Gstep H hP hR Θ x) := by
+  have hu := (uspec_exists H hR hP Θ x).choose_spec
+  obtain ⟨huo, hxu⟩ := uspec_ord H hP hx hu
+  refine ⟨ord_succ H huo, (vsucc_spec H _ x).2 ?_⟩
+  rcases le_of_sub H hR hx huo hxu with h | h
+  · exact Or.inr h
+  · exact Or.inl h
+
+theorem gstep_wit {Θ : List Form} {x T E c : V} (hx : Ord mem x) {θ : Form} (hθ : θ ∈ Θ)
+    (hT : IsL H hP x T) (hE : IsEnvOn H T E) (hc : LeastWit H hP θ E c) :
+    mem c (Gstep H hP hR Θ x) := by
+  have hu := (uspec_exists H hR hP Θ x).choose_spec
+  obtain ⟨huo, -⟩ := uspec_ord H hP hx hu
+  have hcu := le_of_sub H hR hc.1 huo fun z hz => (hu z).2 (Or.inr ⟨hx, θ, hθ, T, E, c, hT, hE, hc, hz⟩)
+  refine (vsucc_spec H _ c).2 ?_
+  rcases hcu with h | h
+  · exact Or.inr h
+  · exact Or.inl h
+
+omit hR hP in
+theorem isEnvOn_mono {T T' E : V} (hE : IsEnvOn H T E) (h : Sub mem T T') : IsEnvOn H T' E :=
+  ⟨hE.1, fun n y hy => h y (hE.2 n y hy)⟩
+
+/-- **Closed ordinals exist** above every ordinal. -/
+theorem closed_exists (Θ : List Form) {a : V} (ha : Ord mem a) : ∃ β, mem a β ∧ Closed H hP Θ β := by
+  obtain ⟨F, hF, h0, hs⟩ := ZFRank.iterate H (Gstep H hP hR Θ) (gstepF H hP Θ) (fun _ => vempty H)
+    (fun x y => nsat_gstepF H hR hP Θ _ x y) (vsucc H a)
+  obtain ⟨Rg, hRg⟩ := ZFRank.values H hF
+  let Pn : V → Prop := fun n => ∀ y, mem (kpair H n y) F → Ord mem y
+  have hP' : ∀ n, Sat mem (scons n (fun _ => F)) (toForm id (.all 2 (.imp (pmemF 1 0 2) (ordF 2)))) ↔
+      Pn n := by
+    intro n
+    rw [sat_toForm]
+    simp only [NSat, nsat_pmemF H, nsat_ordF]
+    simp (disch := omega) only [upd_same, upd_other]
+    rfl
+  have hPall : ∀ n, mem n (omegaV H) → Pn n := by
+    intro n hn
+    refine (hP' n).1 (omega_ind H _ (fun _ => F) ((hP' _).2 ?_) (fun m hm ih => (hP' _).2 ?_) n hn)
+    · intro y hy
+      rw [← applyV_eq H hF.1 hy, h0]; exact ord_succ H ha
+    · intro y hy
+      have ih' := (hP' m).1 ih
+      rw [← applyV_eq H hF.1 hy, hs m hm]
+      exact (gstep_ord H hR hP (ih' _ (applyV_mem H (hF.2.1 m hm)))).1
+  have hord : ∀ n, mem n (omegaV H) → Ord mem (applyV H F n) :=
+    fun n hn => hPall n hn _ (applyV_mem H (hF.2.1 n hn))
+  have hRgOrd : ∀ y, mem y Rg → Ord mem y := by
+    intro y hy; obtain ⟨n, hn, rfl⟩ := (hRg y).1 hy; exact hord n hn
+  have hβ := ord_vunion H hRgOrd
+  have hmemRg : ∀ n, mem n (omegaV H) → mem (applyV H F n) Rg := fun n hn => (hRg _).2 ⟨n, hn, rfl⟩
+  -- every member of β lies in some value, and the next value lies in β
+  have hin : ∀ z, mem z (vunion H Rg) → ∃ n, mem n (omegaV H) ∧ mem z (applyV H F n) := by
+    intro z hz
+    obtain ⟨y, hzy, hyR⟩ := (vunion_spec H Rg z).1 hz
+    obtain ⟨n, hn, rfl⟩ := (hRg y).1 hyR
+    exact ⟨n, hn, hzy⟩
+  have hnext : ∀ n, mem n (omegaV H) → ∀ z, mem z (Gstep H hP hR Θ (applyV H F n)) →
+      mem z (vunion H Rg) := by
+    intro n hn z hz
+    refine (vunion_spec H Rg z).2 ⟨_, ?_, hmemRg _ (omega_succ H n hn)⟩
+    rw [hs n hn]; exact hz
+  refine ⟨vunion H Rg, (vunion_spec H Rg a).2 ⟨_, ?_, hmemRg _ (vempty_in_omega H)⟩, hβ, ?_, ?_⟩
+  · rw [h0]; exact vsucc_self H a
+  · intro γ hγ
+    obtain ⟨n, hn, hγn⟩ := hin γ hγ
+    have hFn := hord n hn
+    have hsγ := ord_succ H (ord_of_mem hFn hγn)
+    have hle := le_of_sub H hR hsγ hFn fun w hw => by
+      rcases (vsucc_spec H γ w).1 hw with hw | rfl
+      · exact hFn.1 γ hγn w hw
+      · exact hγn
+    obtain ⟨hGo, hFG⟩ := gstep_ord H hR hP (Θ := Θ) hFn
+    refine hnext n hn _ ?_
+    rcases hle with h | h
+    · rw [h]; exact hFG
+    · exact hGo.1 _ hFG _ h
+  · intro γ hγ T E c θ hθ hT hE hc
+    obtain ⟨n, hn, hγn⟩ := hin γ hγ
+    have hFn := hord n hn
+    obtain ⟨Tn, hTn⟩ := isL_exists H hR hP hFn
+    have hE' := isEnvOn_mono H hE (isL_mono H hR hP hFn hγn hT hTn)
+    exact hnext n hn c (gstep_wit H hR hP hFn hθ hTn hE' hc)
+
+end ClosedExists
+
 end SetTheory.BusyBeaver.ZFC.ConstructibleReflect
