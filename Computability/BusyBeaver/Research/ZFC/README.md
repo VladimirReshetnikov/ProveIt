@@ -1009,3 +1009,18 @@ helper occurrence while retaining the complete source calculus. Both tested
 raw compilers keep their original 281/341 state counts. The altered source
 has not yet been compiled through the optimized 252-state decoder; no new
 bound or lower bound follows from these partial cost controls.
+
+
+The [internal zero-spare scan](arithmetic_zero_spare_scan_perm252.md) crosses any
+internal count of zero register blocks in exactly twice that many steps,
+preserving both complete numeric tape halves. Three frozen-table instances
+pass eleven axiom reports and twelve callers with zero new warnings. This
+endpoint supplies a scan component; the register-file invariant and full
+internal binary/scheduler comparison remain separate.
+
+
+The [internal register-return macro](arithmetic_register_return_perm252.md)
+returns across one actual unary block in exactly `value+2` steps, retaining
+both entire numeric halves through a recentered left-facing frame. Six
+entry/probe wrappers cover the three return families. Eleven reports and
+twelve callers pass with zero warnings.
