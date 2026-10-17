@@ -40,6 +40,8 @@ import BusyBeaver.ZFC.L2AxiomsEval254
 import BusyBeaver.ZFC.L2Root254
 import BusyBeaver.ZFC.RMEquiv
 import BusyBeaver.ZFC.RMEquiv254
+import BusyBeaver.ZFC.RMBisim
+import BusyBeaver.ZFC.Bisim254
 import BusyBeaver.ZFC.NamedNumeric254
 import BusyBeaver.ZFC.BootstrapFrame253
 import BusyBeaver.ZFC.Code254Containers
