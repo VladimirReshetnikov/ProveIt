@@ -8,6 +8,14 @@ theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
 cost measure that decides whether a candidate improves the baseline.
 
+A new [252-state register-permutation candidate](candidate-permutation252/README.md)
+reaches a clean root with all nine registers zero after 82,552 actual blank-tape
+steps. It retains the complete original proof-search program and passes all
+8,391 conditional instruction checks. The exact table, full startup tape and
+independent regeneration are preserved. General binary simulation and the
+final consistency equivalence remain open; this is distinct from the older
+reduced-calculus 252-state experiment below.
+
 The [attributed upstream baseline](../../../../lib/jeff-busy-beaver-zfc254/README.proveit.md)
 is imported at commit `297ab8df7e5de329605c3875b4934643b371a5e3`.
 Mira-Cult designed the machine; Jeff supplies the published verification.

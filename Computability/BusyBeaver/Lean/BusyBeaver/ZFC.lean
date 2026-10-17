@@ -86,6 +86,12 @@ import BusyBeaver.ZFC.DirtyProgram254
 import BusyBeaver.ZFC.WellFoundedPart
 import BusyBeaver.ZFC.SeedInvariant254
 import BusyBeaver.ZFC.RMBisim
+import BusyBeaver.ZFC.TablePerm252
+import BusyBeaver.ZFC.BootPerm252
+import BusyBeaver.ZFC.RegisterBoxesPerm252
+import BusyBeaver.ZFC.RegisterMarkPerm252
+import BusyBeaver.ZFC.RegisterIncrementPerm252
+import BusyBeaver.ZFC.RegisterDecrementPerm252
 
 /-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC
 consistency theorem or state-count improvement is claimed by these imports. -/
