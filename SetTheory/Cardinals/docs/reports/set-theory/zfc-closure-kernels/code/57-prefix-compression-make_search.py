@@ -1,0 +1,22 @@
+from pathlib import Path
+
+root = Path('/workspace/scratch/0a2205f27ca4')
+source = root / 'source/Computability/BusyBeaver/Research/ZFC/permutation252_lazy_context_search.py'
+text = source.read_text()
+text = text.replace('from permutation252_context_search import Tracking, load', "sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'source/Computability/BusyBeaver/Research/ZFC'))\nfrom permutation252_context_search import Tracking, load")
+text = text.replace('ROOT = Path(__file__).resolve().parents[4]', "ROOT = Path(__file__).resolve().parents[1] / 'source'")
+text = text.replace("parser.add_argument('--seconds', type=float, default=120)", "parser.add_argument('--seconds', type=float, default=900)\n    parser.add_argument('--exclude-phase-guards', action='store_true')\n    parser.add_argument('--deletions', type=str)")
+text = text.replace('    began = time.monotonic()', "    omitted = {8202,8203,8204,8358,8359,8360} if args.exclude_phase_guards else set()\n    included = [i for i in range(len(cases)) if i not in omitted]\n    began = time.monotonic()")
+text = text.replace('for index in range(len(cases)):', 'for index in included:')
+text = text.replace("    family.sort(key=lambda q: (q != '107', int(q)))", "    family.sort(key=lambda q: (q != '107', int(q)))\n    if args.deletions: family = [q for q in family if q in args.deletions.split(',')]")
+text = text.replace("    destinations = {dead:[q for q in states if q != dead] for dead in family}", "    destinations = {dead:[(w,d,q) for w in (0,1) for d in ('L','R') for q in states+['254'] if q != dead] for dead in family}")
+text = text.replace('251**2', '1008**2').replace('251**(2-len(assign))', '1008**(2-len(assign))')
+text = text.replace("key=row_keys[index];write,direction,_=current[key];current[key]=write,direction,destination", "key=row_keys[index];current[key]=destination")
+text = text.replace("{str(i):int(q) for i,q in assign.items()}", "{str(i):[q[0],q[1],int(q[2])] for i,q in assign.items()}")
+text = text.replace("'compensating_changes_included':True", "'compensating_changes_included':True,'entry_full_action_choices':True,'excluded_phase_cases':sorted(omitted)")
+text = text.replace("'scope':'Finite lazy context-dependent251-state diagnostics; no kernel proof of modified tables, minimality or consistency claim.'", "'scope':'Finite lazy two-incoming full-action 251-state diagnostics; no kernel proof of modified tables, minimality or consistency claim. Optional guard filter depends on an original-source phase invariant.'")
+text = text.replace("    assert len(family) == 46 and all(usage[k] for q in family for k in incoming[q])", "    assert len(family) == 46 and all(usage[k] for q in family for k in incoming[q])")
+text = text.replace("    save();print(json.dumps({k:result[k]", "    save();print(json.dumps({k:result[k]")
+text = text.replace('"""Lazy two-incoming-target deletions', '"""Derived from pinned ProveIt lazy context search: full write/move/target actions.\n\nLazy two-incoming-target deletions')
+(root / 'compression/two_entry_action_search.py').write_text(text)
+print('Created full-action derived diagnostic; original source unchanged.')
