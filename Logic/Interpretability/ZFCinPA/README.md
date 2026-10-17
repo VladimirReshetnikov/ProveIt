@@ -365,3 +365,10 @@ proofs. The check passed 21 probes and 24 callers with standard axioms and zero
 warnings. Stack lengths and all four quantifier vacuity witnesses remain
 explicit obligations for the later alpha proof; source-proof translation and
 the reverse consistency implication remain open.
+
+[Equality-context vacuity](validator_equality_context_vacuity254.md) now derives
+the two context-vacuity resources for the relational quantifier rule from
+explicit avoidance of both equal-length bound stacks. The represented-prefix
+proof uses Σ1 induction in IΣ1 and passed three probes and seven callers with
+standard axioms and zero warnings. Both cross-body vacuity resources remain
+explicit; the formula alpha induction and source-proof compiler remain open.
