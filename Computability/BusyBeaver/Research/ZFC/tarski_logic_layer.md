@@ -444,3 +444,16 @@ uniform internal finite support for `SatIn` on every internal formula code,
 so definitions use finite parameter tuples rather than arbitrary full
 omega-environments. Fixed-standard-Form support lemmas alone do not supply it.
 The review does not claim Choice or a new compiler check.
+
+**Claimed by this lane (Choice transport, in progress).** New modules, in
+dependency order: `SatSupport.lean` (uniform finite support of `SatIn` on
+every internal code, by code induction), `InternalWO.lean` (internal
+well-orders: append, lexicographic product, least-key pullback, chain union),
+`CodeOrder.lean` (a well-order of the pair closure of `ω`, hence of the
+formula codes), `ConstructibleOrder.lean` (the canonical well-order of each
+`L_α` and `ChoiceSem` in any ZF model satisfying `V = L`),
+`ConstructibleAbs.lean` (absoluteness of certificates, codes and `Def`
+between `M` and its constructible class, hence `V = L` in `L`), and
+`ConstructibleChoice.lean` (`L ⊨ ZFC`, the Choice transport
+`BProv ZFCax_s [] ⊥ → BProv ZFax_s [] ⊥`, and the literal Con(ZFC)
+endpoint).
