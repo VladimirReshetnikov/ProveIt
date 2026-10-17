@@ -1,0 +1,35 @@
+{
+  "artifact_kind": "Experimental binary Turing-machine table with independently audited finite compilation evidence",
+  "working_states": 255,
+  "symbols": 2,
+  "complete_transition_rows": 510,
+  "start_label": 64,
+  "halt_label": 254,
+  "blank_input": true,
+  "machine_file": "machine_255.tm",
+  "machine_sha256": "b4931a8d2edcb4d17bf890b22c602ea76d644643e400166e10a764d3bb087495",
+  "source_file": "source.json",
+  "source_sha256": "ddae947b76909a6802a4c4f554685b18874878b6fe764be4e270991b14124907",
+  "audit_file": "audit.json",
+  "audit_sha256": "0e479a63b84b4ad0b20752cfa10b9774e7fc6f35c14883b32e42961c46825296",
+  "checker_file": "../audit_modified_source.py",
+  "checker_sha256": "143fae89938538b19b5fbf329a66a9d4c0aaa1ec7af386e24ce582dc1d37f65a",
+  "comparison_baseline_working_states": 252,
+  "fewer_than_252": false,
+  "evidence": {
+    "all_7311_attributed_affine_contracts_pass": true,
+    "unchanged_box_support_rows": 55,
+    "exact_whole_tape_boot_steps": 82552,
+    "literal_guarded_frame_tests": 21933,
+    "literal_microsteps": 11257202,
+    "literal_rows_exercised_including_boot": 510,
+    "all_transition_rows_exercised": true,
+    "all_states_graph_reachable": true
+  },
+  "proof_boundary": [
+    "The affine suite relies on the four unchanged attributed Box contracts.",
+    "Literal tests and full row coverage are finite execution facts.",
+    "This audit does not prove equivalence of the high-level direct-negation source rewrite.",
+    "No new Lean or Coq compiler simulation, ZFC-equivalence theorem, or sub-252 result is claimed."
+  ]
+}

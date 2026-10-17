@@ -1,0 +1,11 @@
+Run from the state-reduction evidence directory with Python 3 assertions enabled:
+
+python3 -B audit_modified_source.py --repo /path/to/ProveIt \
+  --source direct_negation_255_audit/source.json \
+  --table direct_negation_255_audit/machine_255.tm \
+  --output /tmp/direct-negation255-audit.json
+
+Use ProveIt commit 43026ff42f0939f09b9e95495248cfadcad38e38.
+The audit needs only the pinned baseline binary table and strict affine executor
+from that checkout; it imports no compiler or fold-search driver.
+Read ARTIFACT_SCOPE.json for the finite-evidence boundary.

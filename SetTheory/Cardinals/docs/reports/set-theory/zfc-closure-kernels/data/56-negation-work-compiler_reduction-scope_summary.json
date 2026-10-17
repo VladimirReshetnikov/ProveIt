@@ -1,0 +1,238 @@
+{
+  "source_repository": "VladimirReshetnikov/ProveIt",
+  "source_commit": "43026ff42f0939f09b9e95495248cfadcad38e38",
+  "baseline_sha256": "939f99d602c8f7057517c4369279de99e30827050fc743581df83f26aaf1b713",
+  "conclusion": "No verified working-state improvement below the original 252-state machine was found.",
+  "original_single_rotations": {
+    "origin": {
+      "best_states": 252,
+      "counts": {
+        "passed": 119,
+        "runtime_fail": 52,
+        "boot_fuel_limit": 8,
+        "shape_bound": 59
+      }
+    },
+    "identity": {
+      "best_states": 252,
+      "counts": {
+        "passed": 117,
+        "runtime_fail": 55,
+        "boot_fuel_limit": 7,
+        "shape_bound": 59
+      }
+    },
+    "rotations_per_family": 238
+  },
+  "original_count_anneal": {
+    "iterations": 30000,
+    "best_source_nodes": 203
+  },
+  "neutral_reassociation": {
+    "working_states": 252,
+    "affine_cases": 8391,
+    "blank_steps": 82552,
+    "subsequent_fold_recipes": 2733,
+    "fold_survivors": 0
+  },
+  "zero_run_searches": {
+    "zero_results": {
+      "best_objective": [
+        0,
+        203
+      ],
+      "source_nodes": 203,
+      "champion_sources_screened": 13,
+      "emitter_checks": 65,
+      "runtime_survivors": 0
+    },
+    "zero_beam": {
+      "best_objective": [
+        0,
+        204
+      ],
+      "source_nodes": 204,
+      "champion_sources_screened": 3,
+      "emitter_checks": 15,
+      "runtime_survivors": 0,
+      "distinct_source_fingerprints": 123655
+    },
+    "zero_opaque": {
+      "best_objective": [
+        0,
+        208
+      ],
+      "source_nodes": 208,
+      "champion_sources_screened": 11,
+      "emitter_checks": 55,
+      "runtime_survivors": 0
+    },
+    "zero_beam_opaque": {
+      "best_objective": [
+        0,
+        206
+      ],
+      "source_nodes": 206,
+      "champion_sources_screened": 1,
+      "emitter_checks": 5,
+      "runtime_survivors": 0,
+      "distinct_source_fingerprints": 115227
+    }
+  },
+  "zero_run_boundary": "A 203-node DAG with maximum zero-run six was found, but every emitted table tested for that candidate failed runtime contracts.",
+  "direct_negation": {
+    "working_states": 261,
+    "source_nodes": 203,
+    "affine_cases": 7311,
+    "blank_steps": 82552
+  },
+  "shifted_variants": {
+    "shifted-negation": {
+      "working_states": 261,
+      "decoder_nodes": 203,
+      "zero_metrics": [
+        3,
+        7,
+        34
+      ],
+      "runtime": {
+        "passed": true,
+        "cases_passed": 7401
+      },
+      "blank_steps": 82552
+    },
+    "shifted-negation-s2": {
+      "working_states": 262,
+      "decoder_nodes": 204,
+      "zero_metrics": [
+        3,
+        7,
+        34
+      ],
+      "runtime": {
+        "passed": true,
+        "cases_passed": 7221
+      },
+      "blank_steps": 82552
+    },
+    "shifted-negation-preadd": {
+      "working_states": 261,
+      "decoder_nodes": 203,
+      "zero_metrics": [
+        3,
+        7,
+        34
+      ],
+      "runtime": {
+        "passed": true,
+        "cases_passed": 7221
+      },
+      "blank_steps": 82552
+    }
+  },
+  "source_node_minimization": {
+    "best_nodes": 201,
+    "iterations": 200000,
+    "seed": 82552,
+    "improvements": [
+      [
+        13693,
+        202,
+        9.726733535000676
+      ],
+      [
+        28061,
+        201,
+        19.62431266600106
+      ]
+    ],
+    "elapsed_seconds": 137.73744352799986
+  },
+  "minimized_source_boundary": "The 201-node source DAG is not a 201-state Turing machine. Its direct fresh emission fails; conservative repair gives 266 runtime states at gap 44+n without a blank-start bridge.",
+  "generic201": {
+    "source_nodes": 201,
+    "contract_states": 266,
+    "runtime": {
+      "passed": true,
+      "cases_passed": 7311,
+      "gap_base": 44
+    },
+    "forced_nodes": [
+      59
+    ],
+    "blank_search": {
+      "outcome": "fuel_limit",
+      "steps": 3000000,
+      "first_frames": []
+    }
+  },
+  "warm_single_rotations": {
+    "direct": {
+      "best_states": 256,
+      "counts": {
+        "passed": 152,
+        "runtime_fail": 24,
+        "boot_fuel_limit": 9,
+        "shape_bound": 53
+      }
+    },
+    "preadd": {
+      "best_states": 256,
+      "counts": {
+        "passed": 152,
+        "runtime_fail": 24,
+        "boot_fuel_limit": 9,
+        "shape_bound": 53
+      }
+    },
+    "rotations_per_family": 237,
+    "baseline_cases_per_family": 1,
+    "seed_folds": 5
+  },
+  "helper_families": {
+    "preadd_targeted": {
+      "input_states": 255,
+      "recipes": 933,
+      "survivors": 0,
+      "checks": 2711
+    },
+    "add8_targeted": {
+      "input_states": 255,
+      "recipes": 933,
+      "survivors": 0,
+      "checks": 5462
+    },
+    "preadd_single_incoming": {
+      "input_states": 255,
+      "recipes": 1020,
+      "survivors": 0,
+      "checks": 1023
+    },
+    "add8_single_incoming": {
+      "input_states": 255,
+      "recipes": 1020,
+      "survivors": 0,
+      "checks": 1027
+    }
+  },
+  "incremental_rotation_checkpoint": {
+    "iterations": 1051,
+    "best_states": 255,
+    "accepted": 168,
+    "counts": {
+      "contracts_reused": 2970797,
+      "contracts_replayed": 2022137,
+      "boot_reused": 568,
+      "passed": 582,
+      "shape": 255,
+      "runtime_fail": 161,
+      "duplicate": 27,
+      "boot_fail": 26
+    },
+    "elapsed": 559.7476866869983,
+    "status": "Complete recorded prefix of 1,051 proposals; process stopped after this checkpoint. An unrecorded tail is excluded from this ledger.",
+    "checkpoint_only": true
+  },
+  "incremental_seed": 252255,
+  "proof_boundary": "Ordinary affine-contract and finite-bootstrap checks conditional on the four original Box contracts; no new kernel-checked end-to-end Con(ZFC) theorem and no global state lower bound."
+}
