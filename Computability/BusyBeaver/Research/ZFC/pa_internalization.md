@@ -235,8 +235,11 @@ public validity gate. Invalid public inputs return empty word 0. This avoids
 duplicating the twelve-rule validator in a paired history. For an accepted
 parent, the validator's internal recurrence must imply acceptance of the
 actual MP/GEN children; only then may their raw words be used with the
-validity-conditional execution induction. The word history, this internal
-validity inversion and the execution contract are still to be implemented.
+validity-conditional execution induction. The
+[internal history recurrence](arithmetic_history_recurrence254.md) now proves
+this MP/GEN validity inversion, including the actual child bounds and
+whole-tail GEN convention. The word history and execution contract remain
+to be implemented.
 
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its

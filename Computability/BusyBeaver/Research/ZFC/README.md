@@ -68,6 +68,9 @@ matched core imports. The subsequent
 recurrence at every internal index and all-Nat command-list agreement. Its
 24 axiom reports and 30 callers pass. The complete proof-to-command compiler
 and its internal execution contract remain the next arithmetic bridge.
+The [validator recurrence](arithmetic_history_recurrence254.md) also holds at
+all internal indices: accepted MP/GEN parents force acceptance of their actual
+child codes. Eleven reports and twelve generic callers pass.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof

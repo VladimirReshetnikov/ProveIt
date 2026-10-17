@@ -68,6 +68,12 @@ python -B Computability/BusyBeaver/Research/ZFC/check_arithmetic_history254.py \
   --core-cache /path/to/matching/core/cache
 ```
 
+The [internal recurrence extension](arithmetic_history_recurrence254.md) now
+identifies every bounded history lookup with its own checker value, including
+nonstandard indices. An accepted MP parent forces both actual children to be
+accepted; an accepted GEN parent forces its whole-tail child to be accepted.
+The extension preserves this checker and its original gates.
+
 The next PA obligations are represented translations between accepted C254,
 native-theory, ZF and ZFC refutations, and the comparison with finite traces of
 the actual 252-state binary machine. Those require correctness on all internal
