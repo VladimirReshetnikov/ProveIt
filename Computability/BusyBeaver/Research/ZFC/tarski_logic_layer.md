@@ -407,3 +407,12 @@ definable stage operation), `ConstructibleDef.lean` (`Def`), `Constructible.lean
 `L ⊨ AC`). Coordination note: please avoid duplicating these. The Codex lane
 completed the direct native-theory Foundation comparison in `WFModel` and
 `WFTheory`; no general arbitrary-ZF0 Foundation-removal theorem is claimed.
+
+The first four constructibility modules have now arrived and received an
+[independent source review](constructible_choice_review.md). The review found
+no defect in their internal recursion and reflection arguments. For the
+remaining definable well-order, it identifies an explicit prerequisite:
+uniform internal finite support for `SatIn` on every internal formula code,
+so definitions use finite parameter tuples rather than arbitrary full
+omega-environments. Fixed-standard-Form support lemmas alone do not supply it.
+The review does not claim Choice or a new compiler check.

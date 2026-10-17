@@ -1,0 +1,129 @@
+{
+  "head": "337dd3cb25c1bb4ef47e7cb2e9b7bdfa7eeb6837",
+  "sources": [
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TransRec.lean",
+      "sha256": "c7e9caf6f59e1a6c9ef3a9cb7ac4c44f39ffb6fa882fbda7936b95fa718c784d",
+      "lines": 337,
+      "bytes": 14887
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleDef.lean",
+      "sha256": "e487e6ff18b456c631ee377bafd7ddce998873686bea886723655f52ae07a699",
+      "lines": 198,
+      "bytes": 9490
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Constructible.lean",
+      "sha256": "c2d5ff0435d0e1f7bd5450c6f332999bbe887abfbc71a93deed46a7abc7bfa71",
+      "lines": 431,
+      "bytes": 19296
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleReflect.lean",
+      "sha256": "07ad377189fdb57c73b0b9058c04820d2d03dfe3863406d1933ae03179cc7a15",
+      "lines": 695,
+      "bytes": 32253
+    }
+  ],
+  "scope": "Read-only mathematical/source audit; no Lean builds or edits to implementation",
+  "status": "READ_ONLY_REVIEW_CLEAN_WITH_OPEN_CHOICE_OBLIGATIONS",
+  "full_source_lines_read": 1661,
+  "builds_run": false,
+  "implementation_edits": false,
+  "current_sources_match_snapshots": true,
+  "locations": {
+    "TransRec": {
+      "DefOp": 28,
+      "Approx": 49,
+      "approx_unique": 81,
+      "stage_exists": 131,
+      "approx_glue": 199,
+      "approx_exists": 259,
+      "stage_spec": 308,
+      "stage_mono": 329
+    },
+    "ConstructibleDef": {
+      "MemRel": 33,
+      "satInF": 117,
+      "DefinableIn": 132,
+      "definableF": 136,
+      "gdef_exists": 163,
+      "defOp": 188
+    },
+    "Constructible": {
+      "satIn_formCode": 57,
+      "isL_trans": 170,
+      "isL_ord": 231,
+      "InL": 275,
+      "stage_bound": 308,
+      "inL_power": 403
+    },
+    "ConstructibleReflect": {
+      "relT": 82,
+      "nsat_envSatF": 224,
+      "envs_exists": 249,
+      "wst_exists": 316,
+      "USpec": 348,
+      "Closed": 451,
+      "closure_witness": 509,
+      "reflect": 538,
+      "closed_exists": 633
+    }
+  },
+  "dependency_contracts_read": [
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean",
+      "sha256": "e6ca852afcd59f47e18b68edae14765d605fed9ecb96819af1f5d7dea1357616"
+    },
+    {
+      "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFRank.lean",
+      "sha256": "cb48b517067a57d99bf528c9694b14168fb88db5b5d5a710f0855d333be7a858"
+    },
+    {
+      "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/CodePredicate.lean",
+      "sha256": "e27513981a6a5d0fb5c830e71a1a952b4508606f2e3e1c5a4433fec12780c9df"
+    },
+    {
+      "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/FormulaClosedSet.lean",
+      "sha256": "4e25a31e0fcd428bc6a960a1c5b7e6b84e3c26d5186ac1baaff3ade7b79c40a8"
+    },
+    {
+      "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSat.lean",
+      "sha256": "78b8ad51a10296d1873864ed81b993919488bf96b7567a712e7ce494d95ad8a7"
+    },
+    {
+      "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSatTotality.lean",
+      "sha256": "6261ea9968d46d60af1ff4440422f2b5140fa1cca0acdd0a17a351c0333b12b9"
+    }
+  ],
+  "conclusions": [
+    "No concrete mathematical defect found in the four reviewed modules.",
+    "Transfinite recursion and least stages use explicitly definable internal induction.",
+    "The closing sequence covers every element of the model omega and ordinal-valuedness is proved by actual-Form omega_ind.",
+    "Witness stages are unique least ordinals collected by functional Replacement; no object Choice premise is used.",
+    "Internal satisfaction ranges over IsFormCodeSem and genuine internal environments; the standard Form truth bridge is explicitly narrower."
+  ],
+  "explicit_object_assumptions": [
+    "ZFAxioms mem (six fields including actual-Form Separation/Replacement)",
+    "Regular mem (internal set Foundation)",
+    "Full powersets where requested"
+  ],
+  "no_hidden_assumptions_found": [
+    "External WellFounded mem",
+    "Standardness of model omega or ordinals",
+    "Choice in the object model",
+    "Collection over arbitrary undefinable semantic relations"
+  ],
+  "limitations": [
+    "The four modules do not yet give all ZF axioms in L or a definable well-order/Choice.",
+    "reflect is for each fixed standard Form and environments entirely valued in the reflecting stage; arbitrary valuations need finite-free-variable truncation first.",
+    "DefinableIn uses all internal codes and full omega-environments. A future Def(X) well-order must reduce them uniformly to internally finite tuples; well-ordering X^omega would assume what is not available in ZF.",
+    "No internal PA representation, proof-code translator or machine endpoint is established by this review."
+  ],
+  "next_choice_obligation": {
+    "source": "ConstructibleDef.lean:132",
+    "needed": "Uniform internal finite-variable/support bound for SatIn on every IsFormCodeSem code, then coding by finite tuples over a well-ordered stage",
+    "reason": "The current fixed-standard-Form free-variable bounds do not by themselves well-order all internal definitions."
+  }
+}
