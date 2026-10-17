@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16SingletonPartition
+import GowersSzemeredi.Proofs05BoxTransport
 
 /-! # Step bounds for progressions contained in short index intervals
 

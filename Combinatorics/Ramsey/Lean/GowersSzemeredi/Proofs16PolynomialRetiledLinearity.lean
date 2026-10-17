@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16RetiledLinearityBound
 import GowersSzemeredi.Proofs16PolynomialRecurrenceComparison
+import GowersSzemeredi.Proofs16ShortScale
 
 /-! The reciprocal-polynomial recurrence bound survives final-axis tiling.
 

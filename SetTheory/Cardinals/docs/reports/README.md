@@ -2658,3 +2658,43 @@ visual theorem-page review. Dossiers and offline recovery/replay preserve exact
 pins, implementation limits, harness correction and prior attribution.
 No new state record, global minimality, strict EPSC1 consistency separation,
 Coq rebuild or complete internal-ZFC machine endpoint follows from this intake.
+
+
+Batch155 adds five manuscripts from `fab89c5d26`, placed in `799bcd094d` and
+reconciled in `ed2953a68c` as sources42–46 of
+[ZFC closure kernels](set-theory/zfc-closure-kernels), now46 manuscripts and
+still290 collection reports. All393 ancillary files are preserved;58 main
+article/PDF/delivery files remain in their committed archives. The five archives
+were retired in the placement commit, as the current intake procedure requires.
+
+The principal new machine idea is an ordinary dirty-stack barrier: in the actual
+candidate order, replacing a marked pop by a push gives a smaller candidate and
+an unmatched safe-stack credit. At PL=NP=D=0, arbitrary old formula/stack/cache
+data becomes harmless. Together with exact accelerated blank reachability this
+calibrates the older unpermuted runtime252 table in ordinary mathematics. Four
+standalone Lean components pass; the actual enumerator invariant and enormous
+table-specific bootstrap remain unserialized. This table is distinct from the
+current permutation252 table, whose closed Lean endpoint already compares
+literal nonhalting with Con(ZF), including Foundation. Con(ZFC) implies its
+nonhalting; Choice removal and internal PA proof remain separate.
+
+Finite assignment/class kernels reach901 native-equality bits or202 explicit-
+equality bytes under different signatures. Their nine-function witness sharing
+and member-selector arguments preserve exact dependencies. These payloads need
+complete costed certificate engines. Unary closure gains raw deductive
+EPSC1+BU↔EPSC1+AU↔fullEPSC and stronger bilateral-ray/support obstructions;
+neither bare EPSC1 equiconsistency nor all interpretations are ruled out.
+Two shifts with fixed quantifier rules cost22 stream controls; a finite-support
+universal pair costs24. These are name-transport counts, not full machine counts.
+Borrowed-register initializers produce complete299/300 controls; fused congruence
+produces271, retaining full equality and the logical-to-program proof boundary.
+The253 shortcut composition saves120 moves and zero states.
+
+All advertised executable finite suites and bounded searches reproduce on copies,
+including the20736-recipe fusion grid and117474 affine initializer evaluations.
+One supplementary subtree/commutation diagnostic has no supplied driver and is
+not independently replayed. Corrected nested-manifest adapters, all-code proof
+history integration, precise historical-pin corrections and independent reviews
+are recorded. Five scratch PDFs30/28/27/34/29 pages pass visual review; the base
+article and delivered files remain unchanged. No Coq build, new251 machine,
+general lower bound or internal PA/ZFC machine theorem follows from this intake.

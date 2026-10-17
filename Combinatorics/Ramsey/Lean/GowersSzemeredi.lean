@@ -1213,6 +1213,10 @@ import GowersSzemeredi.Proofs05ThresholdFreeCorollary58
 import GowersSzemeredi.Proofs06PhiAdditiveFourier
 import GowersSzemeredi.Proofs00ExponentialBounds
 import GowersSzemeredi.Proofs16BaseCaseAssemblySide
+import GowersSzemeredi.Proofs16PieceCoverWithRemainderSide
+import GowersSzemeredi.Proofs16RetiledRecurrenceSide
+import GowersSzemeredi.Proofs18QuadraticDichotomySide
+import GowersSzemeredi.Proofs18QuantitativeSzemerediSide
 /-!
 # Gowers's proof of Szemerédi's theorem: statement catalogue
 

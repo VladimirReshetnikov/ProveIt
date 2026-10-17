@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "scope": "Ordinary-Nat numeric 12-rule history evaluation; all code/conclusion inputs accepted iff existing Code254Proof.check; exact C254 existential equivalence. No arithmetic representation, internal PA totality or consistency theorem.",
+  "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254History.lean",
+  "source_sha256": "bb999a951167938e7da670e856c8634b964abe2eccf556d23ad4f8f677d732fb",
+  "lean_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)",
+  "cache": "/tmp/zfc-code254-history-7xjlonak/cache",
+  "reused_imports": "/tmp/zfc-support154-txohpwfg/cache (source-verified154 closure)",
+  "LEAN_NUM_THREADS": "1",
+  "module": {
+    "exit_code": 0,
+    "output": "",
+    "command": [
+      "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+      "-o",
+      "/tmp/zfc-code254-history-7xjlonak/cache/BusyBeaver/ZFC/Code254History.olean",
+      "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254History.lean"
+    ]
+  },
+  "audit": {
+    "exit_code": 0,
+    "seconds": 3.51,
+    "peak_kib": 805400,
+    "output": "'SetTheory.BusyBeaver.ZFC.Code254History.row_parsedValue' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254History.row_congr' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254History.numericFuel_parsedValue' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254History.history_length' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.Code254History.history_lookup' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254History.value_parsedValue' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254History.accepts_iff_check' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254History.c254_iff_history' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254HistoryAudit.quote_caller' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254HistoryAudit.arbitrary_input_caller' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.Code254HistoryAudit.refutation_caller' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\nelapsed_seconds=3.51\npeak_kib=805400\n"
+  },
+  "audit_source": "import BusyBeaver.ZFC.Code254History\n\nnamespace SetTheory.BusyBeaver.ZFC.Code254HistoryAudit\nopen Code254 Code254Proof Code254History\nset_option maxRecDepth 10000\n\nexample : accepts 0 0 = false := by decide\nexample : accepts 1 0 = true := by decide\nexample : accepts 1 1 = false := by decide\nexample : accepts 13 0 = false := by decide\nexample : accepts 12 0 = false := by decide\nexample : accepts 51 6 = true := by decide\nexample : accepts 170 0 = true := by decide\nexample : accepts (node 1 (P 1 (P 1 1))) 1 = false := by decide\n\n theorem quote_caller (p : RawProof) :\n    accepts p.quote p.conclusion = p.valid := by\n  cases h : p.valid with\n  | false =>\n      apply Bool.eq_false_iff.mpr\n      intro ha\n      have hb := (accepts_iff_check p.quote p.conclusion).mp ha\n      rw [p.check_quote, h] at hb\n      contradiction\n  | true =>\n      exact (accepts_iff_check p.quote p.conclusion).mpr (by rw [p.check_quote, h])\n\n theorem arbitrary_input_caller (code conclusion : Nat) :\n    accepts code conclusion = true \u2194 check code conclusion = true :=\n  accepts_iff_check code conclusion\n\n theorem refutation_caller :\n    C254 F \u2194 \u2203 code, accepts code F = true := c254_iff_history F\n\n#print axioms Code254History.row_parsedValue\n#print axioms Code254History.row_congr\n#print axioms Code254History.numericFuel_parsedValue\n#print axioms Code254History.history_length\n#print axioms Code254History.history_lookup\n#print axioms Code254History.value_parsedValue\n#print axioms Code254History.accepts_iff_check\n#print axioms Code254History.c254_iff_history\n#print axioms quote_caller\n#print axioms arbitrary_input_caller\n#print axioms refutation_caller\nend SetTheory.BusyBeaver.ZFC.Code254HistoryAudit\n",
+  "concrete_cases": 8,
+  "generic_callers": 3,
+  "axiom_reports": 11,
+  "axioms_observed": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "history": [
+    {
+      "status": "first source attempt failed",
+      "detail": "Truth row required an explicit payload=0 case split; all other proofs elaborated. Final source and caller audit pass."
+    },
+    {
+      "status": "first caller launch failed before elaboration",
+      "detail": "Lean resolved the new overlay namespace without dependency siblings; linked the verified dependency closure into the overlay. No source change; final audit passes."
+    }
+  ],
+  "independent_review": {
+    "status": "CLEAN",
+    "reviewer": "separate agent read-only source review",
+    "evidence": "/tmp/zfc-history-abs-review-0yr417wi/review.md",
+    "scope": "Exact12 rule payloads, MP orientation, 0-invalid/1+conclusion encoding, universal all-code and every-larger-fuel history invariant, append stability; no quotation-only shortcut. No builds or edits by reviewer."
+  }
+}
