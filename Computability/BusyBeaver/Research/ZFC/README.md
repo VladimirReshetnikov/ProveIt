@@ -44,8 +44,16 @@ adds the [exact numeric machine simulation](arithmetic_machine_perm252.md).
 Two natural-number tape halves agree with every cell of the actual blank run
 at every natural time, including the final halting write and move. The new
 module and umbrella pass fresh checks, with 166 source/object-matched imports
-reused; nineteen axiom probes and twenty-seven callers pass. Representing this
-run by a fixed arithmetic formula remains the next binary-side step.
+reused; nineteen axiom probes and twenty-seven callers pass.
+
+The separate [arithmetic machine extension](arithmetic_machine252.md) now
+represents all504 actions, a complete encoded configuration step, and iteration
+by fixed arithmetic formulas. Its run graph is total at every internal time in
+every IΣ1 model and agrees with the actual Core run at every ordinary natural
+time. A closed Σ1 sentence expresses actual blank halting; PA proves unique
+totality of the evaluator. Eight fresh arithmetic modules/audits pass196 axiom
+reports and237 callers. The internal PA proof connecting this sentence to ZFC
+refutations remains open.
 
 The complete binary endpoint passed a
 [153-unit source-verified integration](results/binary-perm252-integration-verification.json):

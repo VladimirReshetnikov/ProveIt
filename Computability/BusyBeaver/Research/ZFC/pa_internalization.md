@@ -3,7 +3,8 @@
 Research inventory begun 16 October 2026 against
 `7b1e56dbc59f746695a7fb375546422f91de3a96`, updated with the explicitly linked
 Lean checks below. The full PA equivalence is still open. The represented
-checker now has an actual PA totality theorem, described near the end.
+checker and actual machine-run evaluator now have PA totality theorems,
+described near the end.
 
 The original request requires an equivalence provable in **PA**. The stored
 goal record instead says ZFC; the original PA requirement remains our target.
@@ -267,8 +268,14 @@ an exact two-natural tape simulation of the frozen 252-state table. Its
 `numericRun_sound` theorem constrains the entire actual tape and head at every
 natural time; state zero is equivalent to actual halting, with the final write
 and move retained. This Std-only checkpoint closes the ordinary finite-data
-machine adapter. Its fixed arithmetic step/run graphs and correctness over
-all internal times still need the separate arithmetic representation layer.
+machine adapter. The subsequent
+[arithmetic machine extension](arithmetic_machine252.md) now supplies the
+fixed bounded action/step graphs and fixed Σ1/Δ1 run graphs, with unique
+evaluation at every time in every IΣ1 model. Its all-Nat bridge identifies a
+closed Σ1 halting sentence with the actual Core blank-run endpoint. IΣ1 and PA
+prove unique totality of the evaluator. What remains is the internally coded
+proof/command/trace transport between this sentence, the represented C254
+checker, and ZFC refutations; the run representation alone does not prove it.
 
 Intake157's [canonical term certificates](../../../../SetTheory/Cardinals/docs/reports/set-theory/zfc-closure-kernels/README.md#batch157-canonical-term-certificates-for-the-full-calculus)
 provide ordinary exact checker reductions and constructor-only derivations.

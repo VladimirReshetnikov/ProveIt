@@ -4,8 +4,9 @@
 represents the actual machine's tape by two natural numbers and proves agreement
 with its complete blank run at every natural time. This is the finite-data
 bridge needed before representing the binary run in first-order arithmetic.
-It does not yet supply that fixed arithmetic run formula or a PA proof of the
-machine/consistency equivalence.
+The subsequent [arithmetic extension](arithmetic_machine252.md) supplies that
+fixed run formula. A PA proof of the machine/consistency equivalence remains
+open.
 
 A numeric configuration contains `(state, left, right)`. The low bit of `right`
 is the scanned cell; the low bit of `left` is the cell immediately to its left.
@@ -52,9 +53,9 @@ source and object hashes, and runs the stored 19-probe/27-caller audit. The
 [independent review](results/arithmetic-machine-perm252-review.json) checks tape
 orientation, final halting movement, invalid states and actual table binding.
 
-The next extension must compile the 504 fixed transition rows into a fixed
-arithmetic lookup formula, encode the numeric configuration and represent run
-iteration for all internal times. That extension can use the separate
-Foundation arithmetic lane already used by the
-[PA-total checker](arithmetic_history254.md). Proof translations relating the
-represented run and checker to ZFC refutations remain further obligations.
+The subsequent [arithmetic extension](arithmetic_machine252.md) compiles all504
+transition rows into a fixed lookup formula, encodes the numeric configuration
+and represents iteration at every internal time. It uses the separate
+Foundation arithmetic lane of the [PA-total checker](arithmetic_history254.md).
+Proof translations relating the represented run and checker to ZFC refutations
+remain further obligations.
