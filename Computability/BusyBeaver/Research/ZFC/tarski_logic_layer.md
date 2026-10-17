@@ -307,3 +307,26 @@ first-order theory `NativeAx` is refutable. What remains for the binary
 machine is the TM layer (literal 253/254 table ↔ path semantics of
 `Prog254`), and for ZFC the consistency transports between `NativeAx` and
 ZFC.
+
+## Next: the Regularity transport (in progress in this lane)
+
+This lane is now proving `foundation_choice_route.md`'s first target,
+
+```text
+regularity_refutation_remove :
+  BProv SetTheory.ZFax_s [] Form.fBot → BProv PSCCalibration.ZF0Ax [] Form.fBot
+```
+
+semantically, by the well-founded part: in a model of `ZF0Ax`, call `x`
+well-founded when it lies in some transitive set every nonempty subset of
+which has an ∈-minimal element. The well-founded part is a transitive class
+satisfying all of `ZFax_s` (Separation and Replacement through relativized
+formulas; Infinity through the internal ω; Regularity by construction).
+Replacement needs a canonical witness, and none requires ω-recursion: for
+well-founded `y` with witness `t`, the set
+`{z ∈ t | z lies in every transitive set containing y}` is independent of `t`
+and transitive and well-founded, so the image of a set is covered by the union
+of these. `completeness_inf` and `soundness_BProv` then give the displayed
+implication. File: `BusyBeaver/ZFC/WellFoundedPart.lean`. Coordination note:
+please avoid duplicating that file; the Choice transport and
+"ZF proves NativeAx" remain open.
