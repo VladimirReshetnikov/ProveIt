@@ -1,0 +1,65 @@
+{
+  "scope": "Actual native CP plus full actual-Form GIC plus raw IR imply ModelsDecoded; existing EncBundle all-Form adapters then close exact ModelsDecoded iff ModelsEncodable on an irreflexive structure with supplied valuation. No quotient IR or consistency endpoint.",
+  "source": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NativeDecoded254.lean",
+  "source_sha256": "1de8f92797fe31fc19a602bf799522bfbc65f91232946ff2cb0befe2206be9b1",
+  "source_lines": 206,
+  "observed_head": "8cf840b8a26d002041e7a26dc9688ce7ce5fd751",
+  "dependency_cache": "/tmp/zfc-quotient89-integration-66alav7r",
+  "output_cache": "/tmp/zfc-native-decoded254-q8ww89s5/cache",
+  "checks": [
+    {
+      "phase": "module",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "-o",
+        "/tmp/zfc-native-decoded254-q8ww89s5/cache/BusyBeaver/ZFC/NativeDecoded254.olean",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NativeDecoded254.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "LEAN_PATH": "/tmp/zfc-native-decoded254-q8ww89s5/cache",
+      "returncode": 0,
+      "seconds": 0.45666577760130167,
+      "actual_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)"
+    },
+    {
+      "phase": "audit",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "/tmp/zfc-native-decoded254-q8ww89s5/Audit.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "LEAN_PATH": "/tmp/zfc-native-decoded254-q8ww89s5/cache",
+      "returncode": 0,
+      "seconds": 0.3615583712235093,
+      "actual_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)"
+    }
+  ],
+  "axiom_audits": 14,
+  "callers": 6,
+  "audit_source": "import BusyBeaver.ZFC.NativeDecoded254\nimport BusyBeaver.ZFC.QuotientCPGIC\n\nnamespace SetTheory.BusyBeaver.ZFC.NativeDecoded254\nopen ProfileCollection ProfileModel QuotientModel Tarski\n\n#print axioms matrix_instance\n#print axioms sat_dec_bundle_named\n#print axioms namedC_of_containers\n#print axioms forward_matrix\n#print axioms support_matrix\n#print axioms namedG_same\n#print axioms namedG_distinct\n#print axioms namedG_of_fullGIC\n#print axioms named_vacuity\n#print axioms modelsDecoded\n#print axioms no_refutation\n#print axioms fullGIC_of_encodable\n#print axioms decoded_of_encodable\n#print axioms modelsDecoded_iff_modelsEncodable\n\nuniverse u\nvariable {V : Type u}\n\n-- Truth-code zero with colliding input/output binders.\nexample (mem : V \u2192 V \u2192 Prop) (hirr : \u2200 x, \u00ac mem x x)\n    (hc : Containers mem) (hg : FullGIC mem) (a : Nat) (ha : 0 \u2260 a) (e : Nat \u2192 V) :\n    Tarski.Sat mem e (Code254.dec (Code254.bundle a a 0)) :=\n  modelsDecoded mem hirr hc hg a a 0 ha ha e\n\n-- Truth-code zero with distinct binders.\nexample (mem : V \u2192 V \u2192 Prop) (hirr : \u2200 x, \u00ac mem x x)\n    (hg : FullGIC mem) (a b : Nat)\n    (ha : 0 \u2260 a) (hb : 0 \u2260 b) (hab : a \u2260 b) (e : Nat \u2192 V) :\n    Tarski.Sat mem e (Code254Containers.namedG a b 0 (Code254.dec 0)) :=\n  namedG_distinct mem hirr hg a b 0 hab ha hb e\n\n-- Native Eq(1,2) is exactly code35, not an equality-free matrix.\nexample (mem : V \u2192 V \u2192 Prop) (hirr : \u2200 x, \u00ac mem x x)\n    (hc : Containers mem) (hg : FullGIC mem) (a b : Nat)\n    (ha : 35 \u2260 a) (hb : 35 \u2260 b) (e : Nat \u2192 V) :\n    Code254.dec 35 = .eq 1 2 \u2227\n      Tarski.Sat mem e (Code254.dec (Code254.bundle a b 35)) := by\n  refine \u27e8?_, modelsDecoded mem hirr hc hg a b 35 ha hb e\u27e9\n  exact Code254.dec_weq 1 2\n\n-- Code4 contains a nested zero and need not be in the named encoder's image.\nexample (mem : V \u2192 V \u2192 Prop) (hirr : \u2200 x, \u00ac mem x x)\n    (hc : Containers mem) (hg : FullGIC mem) (a b : Nat)\n    (ha : 4 \u2260 a) (hb : 4 \u2260 b) (e : Nat \u2192 V) :\n    Tarski.Sat mem e (Code254.dec (Code254.bundle a b 4)) :=\n  modelsDecoded mem hirr hc hg a b 4 ha hb e\n\n-- The quotient can be used only with a separately supplied quotient IR proof.\nexample (mem : V \u2192 V \u2192 Prop) (w : V) (h : ModelsCPGIC mem)\n    (hQIR : \u2200 x, \u00ac quotientMember mem w h x x) : \u00ac Code254.C254 Code254.F :=\n  no_refutation (quotientMember mem w h) hQIR\n    (QuotientCPGIC.quotient_containers mem w h)\n    (QuotientCPGIC.quotient_fullGIC mem w h)\n    (fun _ => mk mem w h w)\n\n-- Completeness's exact EncBundle class feeds soundness's decoded model class.\nexample (mem : V \u2192 V \u2192 Prop) (hirr : \u2200 x, \u00ac mem x x)\n    (h : Code254Models.ModelsEncodable mem) (valuation : Nat \u2192 V) :\n    \u00ac Code254.C254 Code254.F :=\n  Code254Models.no_refutation_of_decoded mem hirr\n    (decoded_of_encodable mem hirr h valuation) valuation\n\nend SetTheory.BusyBeaver.ZFC.NativeDecoded254\n",
+  "audit_output": "'SetTheory.BusyBeaver.ZFC.NativeDecoded254.matrix_instance' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NativeDecoded254.sat_dec_bundle_named' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NativeDecoded254.namedC_of_containers' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NativeDecoded254.forward_matrix' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NativeDecoded254.support_matrix' depends on axioms: [propext, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NativeDecoded254.namedG_same' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NativeDecoded254.namedG_distinct' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NativeDecoded254.namedG_of_fullGIC' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NativeDecoded254.named_vacuity' depends on axioms: [propext]\n'SetTheory.BusyBeaver.ZFC.NativeDecoded254.modelsDecoded' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NativeDecoded254.no_refutation' depends on axioms: [propext, Classical.choice, Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NativeDecoded254.fullGIC_of_encodable' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NativeDecoded254.decoded_of_encodable' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.NativeDecoded254.modelsDecoded_iff_modelsEncodable' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+  "success": true,
+  "scratch": "/tmp/zfc-native-decoded254-q8ww89s5",
+  "axioms_union": [
+    "propext",
+    "Classical.choice",
+    "Quot.sound"
+  ],
+  "no_sorry_or_custom_axioms": true,
+  "matrix_schema": "Every native actual Form including equality via NamedForm254.matrix; not an EF-only or arbitrary semantic relation schema.",
+  "gates": "Original c != a and c != b retained throughout; no a != b assumption on final result.",
+  "binder_collision": "Separate a=b branch uses an empty false-matrix image and raw IR to vacate the input guard.",
+  "all_natural_codes": "DecodeFresh254.sat_context_update_own_code includes c=0 truth alias and nested zero codes; no encoder-image or syntactic zero-freshness assumption.",
+  "relative_falsity": "Global raw IR under every valuation/binder; no assumption that Rel00 is syntactically closed.",
+  "raw_IR_assumed": true,
+  "quotient_IR_proved": false,
+  "object_Choice_assumed": false,
+  "nonempty_refutation_statement": "Explicit valuation supplied only in no_refutation; universal ModelsDecoded adapter itself needs none.",
+  "encodable_decoded_model_interfaces_equivalent": true,
+  "converse_consistency_or_model_existence_claimed": false,
+  "binary_machine_endpoint_claimed": false,
+  "machine_changed": false,
+  "initial_check_notes": "One source simp needed unfolding PositiveClosure.Sub. Initial concrete fully numeral-valued bundle callers exceeded elaborator recursion because the code is huge; final callers keep binder labels arbitrary while fixing zero/35/4 matrix codes. No theorem assumptions weakened.",
+  "independent_review": "Fibers read full initial native-model adapter source and found binder collision, own-code semantic freshness includingzero, gates, update ordering and valuation scope clean. Root identified the existing all-native-Form EncBundle adapter; the three model-comparison conclusions use it directly.",
+  "grant_released": true
+}

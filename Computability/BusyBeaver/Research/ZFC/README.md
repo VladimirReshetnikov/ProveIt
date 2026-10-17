@@ -191,7 +191,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `Prog254.lean` | All 6,459 original decoder rows, with a verified balanced lookup equal to flat lookup for every index; no replacement by the different structured DAG. |
 | `Prefix330.lean` | Exact 330-step public register prefix from the original initial vector to path 000 and logical registers [5,0,0,0,2,0,0,0,0], with the entire remaining register tail zero. |
 | `TarskiFalsity.lean` | The machines' relative falsity `F = Rel(0,0)`: the literal row set `ThmG (rel 0 0)` is sound for irreflexive models and complete for ⊥-free theories and targets; the comparison axiom IR is a generalized identity, not a row. |
-| `Code254.lean` | All-natural base-four decoder and original numerical calculus; soundness for decoded bundles, completeness under no nonempty model of literal encodable bundles. The corrected statement explicitly requires a valuation; comparing the two bundle theories remains open. |
+| `Code254.lean` | All-natural base-four decoder and original numerical calculus; soundness for decoded bundles, completeness under no nonempty model of literal encodable bundles. The corrected statement explicitly requires a valuation; `NativeDecoded254` now compares the two bundle model classes. |
 | `Enum254.lean` | The abstract six-register enumerator halts from zero iff code 1 is `C254`-derivable. Every candidate is reached unless an earlier one halts; proof blocks handle arbitrary retained registers. Model corollaries explicitly require a valuation. Its Prog254/RegisterPath and binary simulations remain open. |
 | `RMDag.lean`, `Dag254.lean`, `L2Lib254.lean`, `L2Macros254.lean`, `L2Control254.lean`, `L2Axioms254.lean`, `L2AxiomsEval254.lean`, `L2Root254.lean` | L2 for the shared 219-node register program (attributed data port of the pinned `Dag254.v`, used by the 253- and 254-state tables): Wade's structured semantics with determinism; every loop, `pair`, the unpair walk, all stack/formula macros, the equality test, fetch, MP/NIP/DROP and the generated `axioms()` closed forms; `root_step` (one root run is one `enumStep`, halting included), `iter_halts_boot` and `program_halts_iff : IterHalts dag254 (nextproof = 2) ↔ C254 1`. |
 | `RMEquiv.lean`, `RMEquiv254.lean` | L3: Wade's path semantics and the structured semantics agree for every well-formed DAG (`halts_iff_iterHalts`, forward and backward simulation up to trailing zero bits, Boolean well-formedness check); the 219-node program is well-formed (kernel-checked tables), giving `path_halts_iff : Halts pathDag254 (nextproof = 2) ↔ C254 1`. The decoder-tree (`Prog254`) bisimulation remains ([tarski_logic_layer.md](tarski_logic_layer.md)). |
@@ -200,7 +200,7 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `BootstrapFrame253.lean` | The actual 312,975-step binary bootstrap realizes the actual 330-step register endpoint, with all nine permuted registers, 158 spare blocks and exterior blanks retained. |
 | `Code254Containers.lean` | A literal gated bundle gives the existing transitive, powerset-bounding container resource in an irreflexive model with an explicit valuation. |
 | `ZipperRuns.lean`, `RegisterBoxes253.lean` | Generic whole-tape sequential execution and preserving scans; actual public253 zero-decrement box for arbitrary preceding and following registers, in exactly twice the prefix width plus five steps. No PC-update or complete instruction simulation claim. |
-| `Code254GIC.lean`, `Code254Models.lean` | Hygienic actual Form matrices and padded gated bundles give the CP/GIC model interface; semantic encoding/decoding gives the decoded-to-encodable model implication. The reverse implication and full ZFC calibration remain separate. |
+| `Code254GIC.lean`, `Code254Models.lean` | Hygienic actual Form matrices and padded gated bundles give the CP/GIC model interface; semantic encoding/decoding gives the decoded-to-encodable model implication. The reverse implication is now supplied by `NativeDecoded254`; full ZFC calibration remains separate. |
 | `NumericCode254.lean` | Exact equality of the two pairing/encoding definitions and equivalence of their twelve-constructor numerical derivability relations, including zero and all actual gates. |
 | `RegisterMark253.lean`, `RegisterIncrement253.lean` | Actual public253 marking and increment excursions, with arbitrary register values and spares, exact step counts and whole-tape output. PC updates and general dispatch remain separate. |
 | `QuotientSeparation.lean` | The full quotient satisfies the actual `Sep_form` schema for arbitrary formulas and quotient parameter valuations, using a literal equality-free GIC matrix. Other ZF axioms remain separate. |
@@ -211,13 +211,15 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `BreakSite253.lean` | Complete actual PC site001→1 with unchanged registers/spares and whole-tape DispatchFrame, in 2×gap+34 steps. General dispatch remains open. |
 | `FiniteSets.lean`, `InductiveAttempts.lean` | Actual finite graph objects and formula atoms construct an ordinary inductive set in the CP/GIC quotient, using three specific Separation matrices and one Replacement matrix, with no prior Infinity. |
 | `QuotientZF0.lean` | The complete quotient satisfies ZF without Foundation or Choice; a refutation of that theory forces the actual abstract enumerator to halt. The converse and binary simulation remain open. |
-| `RMDag.lean`, `Dag254.lean`, `L2Lib254.lean`, `L2Macros254.lean`, `L2Control254.lean` | Structured semantics and the actual219-node program; proved pair/unpair, stack/formula macros, equality/fetch/MP/NIP branches. Root enumeration and the separate Prog254 relation remain open. |
 | `DecodeFresh254.lean`, `NamedForm254.lean` | Every-code semantic freshness, including truth code0, and exact named-to-de-Bruijn matrices including shadowed/colliding names. Native equality is retained explicitly. |
 | `DuplicateProfiles.lean` | A conditional duplicate-model obstruction: equality-free CP/GIC and IR can hold while the actual native-equality numerical bundle fails. No starting-model existence is asserted. |
 | `WritingRuns.lean` | Exact arbitrary-length scans that overwrite the read bit, with whole-tape Core corollaries and explicit actual-transition premises. |
-| `L2Axioms254.lean` | Generated composition of the actual axioms subtree into its symbolic state transformer; identification with the abstract AX command is separate. |
 | `ZeroSite253.lean` | Complete actual000 zero branch preserves the full dispatch frame; the checked blank run extends to313429 binary steps and matches RM331, with all158spares retained. |
 | `EqualityGIC.lean` | Explicit outgoing-profile faithfulness, supplied for example by native Pairing, permits equality erasure and extends equality-free GIC to all actual Form matrices. |
+| `QuotientCPGIC.lean` | A literal output-guarded trace gives CP in the same raw container's quotient; translated actual Form matrices give full native-equality GIC. Quotient IR is not inferred. |
+| `ProgramZF0.lean` | A ZF0 refutation forces the actual 219-node structured program to halt from nextproof = 2; structured non-halting implies Con(ZF0). Literal Prog254/binary simulation and Foundation/Choice transport remain separate. |
+| `NativeDecoded254.lean` | Native CP + full actual-Form GIC + raw IR satisfy every decoded bundle, including coincident binders and truth code 0. With an explicit valuation, ModelsEncodable and ModelsDecoded are equivalent. |
+| `NativeTheory254.lean` | Numerical falsity and actual 219-node structured-program halting are each equivalent to refutability of the explicit sentence theory CP + full native-Form GIC + IR. ZFC calibration and binary execution remain separate. |
 
 The [Tarski audit](tarski_calculus_review.md) and subsequent
 [propositional certificate port](lukasiewicz_basis.md) now establish full
@@ -250,8 +252,8 @@ Rebuild the entire small dependency closure **serially from source**:
 uv run --no-project python Computability/BusyBeaver/Research/ZFC/check_lean.py
 ```
 
-This compiles 85 source units: the first-order logic, calculus and completeness
-modules, `ZF.Zf`, `BusyBeaver.Core`, 79 research modules and the umbrella into a
+This compiles 93 source units: the first-order logic, calculus and completeness
+modules, `ZF.Zf`, `BusyBeaver.Core`, 87 research modules and the umbrella into a
 fresh scratch directory, without shared oleans or Lake's
 worker pool. [results/lean-verification.json](results/lean-verification.json)
 records the prior 38-unit fresh source check and axiom outputs. The seven
@@ -316,6 +318,31 @@ and rebuilds the umbrella with three axiom audits and an endpoint caller.
 The [conditional equality-schema adapter](equality_gic.md) brings it to85;
 `results/equality85-integration-verification.json` checks its source and the
 final umbrella. Neither integration recomputes the finite bootstrap.
+The merged AX evaluation and complete L2 root correspondence, together with
+[the structured-program ZF0 consequence](program_zf0.md), extend this to 88 units.
+`results/l2-program88-integration-verification.json` records five scoped source
+builds, nine axiom audits and three callers; both AX generators reproduce their
+current sources. [CP and native-form GIC in the quotient](quotient_cpgic.md)
+bring the runner to 89; `results/quotient89-integration-verification.json`
+checks that source, the umbrella and four joint axiom audits. Dependencies are
+reused, with no fresh full-closure or bootstrap rerun.
+The [native decoded-model adapter](native_decoded254.md) brings it to 90 units
+and closes the encoded/decoded model-class gap under raw IR and a supplied
+valuation. Its source has 14 axiom audits and six callers; the joint source,
+umbrella and five additional audits pass in
+`results/native90-integration-verification.json`. No full dependency or
+bootstrap rebuild is claimed.
+The [explicit native theory](native_theory254.md) brings the runner to 91
+units. Its exact CP/GIC/IR refutation predicate is equivalent to numerical
+falsity and to actual structured-program halting from nextproof = 2. The
+source and final umbrella check, joint axiom audits and endpoint callers are
+recorded in `results/native91-integration-verification.json`, reusing the
+verified dependencies. This equivalence does not yet calibrate the theory
+to ZFC or connect the structured DAG to binary-tape execution.
+The separate [target-permutation obstruction](quotient_ir_obstruction.md)
+shows at the ordinary mathematical level why raw IR cannot simply be passed
+through this bisimulation quotient, even when native equality and Pairing are
+available. It is conditional on an actual ZF model and is not a Lean theorem.
 The standalone BusyBeaver Lake package declares its FirstOrder and ZF path
 dependencies; the ZFC umbrella is opt-in.
 
@@ -473,6 +500,14 @@ all 63,756 ordered deletions at radii 4 and 5, with 64 steps per side. Neither
 run produces a certificate. The larger window removes 447 projected patterns
 across 26 states, but both abstractions still allow both symbols in every
 working state. These bounded results supply no minimality theorem.
+
+The [faster253 mixed-row search](variant253_search.md) tests 1,338 new
+fusion recipes around source27's three reassociated decoder states. All
+fail affected affine checks; seven have literal prepared-frame halt
+witnesses, while the other failures remain bounded diagnostics. An
+independent replay reproduces every functional result, the 8,391-case
+baseline and its complete 312,935-step bootstrap frame. No smaller table
+is accepted.
 
 The [whole-cost grammar beam search](grammar_beam_experiment.md) scores 103,596
 DAGs while retaining the same complete revised word. Its selected 269-state

@@ -76,6 +76,10 @@ import BusyBeaver.ZFC.WritingRuns
 import BusyBeaver.ZFC.ZeroSite253
 
 import BusyBeaver.ZFC.EqualityGIC
+import BusyBeaver.ZFC.ProgramZF0
+import BusyBeaver.ZFC.QuotientCPGIC
+import BusyBeaver.ZFC.NativeDecoded254
+import BusyBeaver.ZFC.NativeTheory254
 
 /-! Opt-in foundations for ZFC machine minimization. No end-to-end ZFC
 consistency theorem or state-count improvement is claimed by these imports. -/
