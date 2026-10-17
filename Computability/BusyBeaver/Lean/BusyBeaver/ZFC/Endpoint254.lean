@@ -1,6 +1,7 @@
 import BusyBeaver.ZFC.Bisim254
 import BusyBeaver.ZFC.ZFNative
 import BusyBeaver.ZFC.WFTheory
+import BusyBeaver.ZFC.ConstructibleChoice
 
 /-!
 The register-program endpoint for the literal decoder tree.
@@ -11,13 +12,15 @@ Composing L4 (`Bisim254.literal_halts_iff`), the Codex lane's native-theory
 comparison (`NativeTheory254.c254_refutation_iff`) and `ZFNative`:
 
 * the literal program halts iff the native theory is refutable;
-* if it halts, ZF and ZFC are refutable; so **Con(ZFC) implies that it never
-  halts**.
+* it halts iff ZF is refutable (with the Codex lane's well-founded-part
+  comparison `WFTheory.c254_refutation_iff_zf`);
+* it halts iff ZFC is refutable (`literal_halts_iff_zfc_refutation`), by the
+  Choice transport `ConstructibleChoice.choice_refutation_remove`: the
+  constructible class of a model of ZF is a model of ZFC.
 
-The converse direction (a refutation of ZFC makes the program halt) needs the
-Regularity and Choice transports from ZFC down to the native theory, which
-the Codex lane is pursuing; the binary machine needs the TM layer
-(literal table ↔ path semantics of `Prog254`).
+So **non-halting of the literal program is equivalent to Con(ZFC)**
+(`literal_nonhalting_iff_zfc_consistent`). The binary machine needs the TM
+layer (literal table ↔ path semantics of `Prog254`).
 -/
 
 namespace SetTheory.BusyBeaver.ZFC.Endpoint254
@@ -55,5 +58,17 @@ theorem literal_halts_iff_zf_refutation :
 theorem literal_nonhalting_iff_zf_consistent :
     ¬ RegisterPath.Halts Prog254.program Prog254.initial ↔ ¬ BProv ZFax_s [] Form.fBot :=
   not_congr literal_halts_iff_zf_refutation
+
+/-- **The literal program halts iff ZFC is refutable.** -/
+theorem literal_halts_iff_zfc_refutation :
+    RegisterPath.Halts Prog254.program Prog254.initial ↔
+      BProv LeanProofs.BoundedZFCConsistency.ZFCax_s [] Form.fBot :=
+  literal_halts_iff_zf_refutation.trans ConstructibleChoice.zf_refutation_iff_zfc_refutation
+
+/-- **Non-halting of the literal program is Con(ZFC).** -/
+theorem literal_nonhalting_iff_zfc_consistent :
+    ¬ RegisterPath.Halts Prog254.program Prog254.initial ↔
+      ¬ BProv LeanProofs.BoundedZFCConsistency.ZFCax_s [] Form.fBot :=
+  not_congr literal_halts_iff_zfc_refutation
 
 end SetTheory.BusyBeaver.ZFC.Endpoint254

@@ -64,6 +64,7 @@ import BusyBeaver.ZFC.OrderRec
 import BusyBeaver.ZFC.CodeOrder
 import BusyBeaver.ZFC.TupleOrder
 import BusyBeaver.ZFC.ConstructibleOrder
+import BusyBeaver.ZFC.ConstructibleChoice
 import BusyBeaver.ZFC.WFRelativization
 import BusyBeaver.ZFC.WFModel
 import BusyBeaver.ZFC.WFTheory
@@ -135,6 +136,7 @@ import BusyBeaver.ZFC.Permutation252Program
 import BusyBeaver.ZFC.SitesPerm252
 import BusyBeaver.ZFC.BinaryPerm252
 import BusyBeaver.ZFC.ZFCBoundPerm252
+import BusyBeaver.ZFC.BinaryZFC252
 
 /-! Opt-in foundations for ZFC machine minimization. The exact 252-state
 blank machine is equivalent to Con(ZF). Choice transport and the requested

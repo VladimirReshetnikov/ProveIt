@@ -2,7 +2,7 @@
 
 The goal is a binary, single-tape machine with fewer than 254 nonhalting
 states whose blank-tape non-halting is provably in ZFC equivalent to
-Con(ZFC). The goal remains open. All new formal work uses Lean.
+Con(ZFC). In ZFC-style metatheory (Lean) the goal is now met by the 252-state machine below, pending one full-closure build; the PA-internal form remains open. All new formal work uses Lean.
 An intended set-theoretic meaning is optional: any effectively presented
 theory or proof calculus is eligible once its consistency calibration is proved.
 The complete compiled search, including its data and initialization, is the
@@ -32,6 +32,20 @@ all151 reused source identities match successful scoped builds, with fresh
 standard-theory bounds, umbrella and joint callers. This is not a full153-module
 rebuild. The closed theorem also proves Con(ZFC) implies nonhalting; the reverse
 ZFC implication and the internal PA proof remain open.
+
+**Choice transport (closed).** `ConstructibleChoice` proves Gödel's
+theorem in Lean: the constructible class of any model of `ZFax_s` is a model
+of `ZFCax_s`, hence `BProv ZFax_s [] ⊥ ↔ BProv ZFCax_s [] ⊥`
+(`zf_refutation_iff_zfc_refutation`, standard axioms only). With the closed ZF
+endpoints this gives `Endpoint254.literal_nonhalting_iff_zfc_consistent`
+(the literal `Prog254` register program never halts iff Con(ZFC)) and
+`BinaryZFC252.nonhalting_iff_zfc_consistency` (the 252-state blank machine
+never halts iff Con(ZFC)). `BinaryZFC252` is a one-line composition; in this
+lane it was type-checked against `BinaryPerm252`'s exact endpoint statement
+(a typed stub), because the site-certificate batches of the
+`BinaryPerm252` closure need about 6 GB each. Its full-closure build is
+pending in the verified-integration workflow. See
+[tarski_logic_layer.md](tarski_logic_layer.md).
 
 The later merged `SatSupport` module also passed a
 [154-unit integration](results/sat-support-integration-verification.json).
@@ -377,8 +391,9 @@ The opt-in umbrella is `BusyBeaver.ZFC`. Its current components are:
 | `RMDag.lean`, `Dag254.lean`, `L2Lib254.lean`, `L2Macros254.lean`, `L2Control254.lean`, `L2Axioms254.lean`, `L2AxiomsEval254.lean`, `L2Root254.lean` | L2 for the shared 219-node register program (attributed data port of the pinned `Dag254.v`, used by the 253- and 254-state tables): Wade's structured semantics with determinism; every loop, `pair`, the unpair walk, all stack/formula macros, the equality test, fetch, MP/NIP/DROP and the generated `axioms()` closed forms; `root_step` (one root run is one `enumStep`, halting included), `iter_halts_boot` and `program_halts_iff : IterHalts dag254 (nextproof = 2) ↔ C254 1`. |
 | `RMEquiv.lean`, `RMEquiv254.lean` | L3: Wade's path semantics and the structured semantics agree for every well-formed DAG (`halts_iff_iterHalts`, forward and backward simulation up to trailing zero bits, Boolean well-formedness check); the 219-node program is well-formed (kernel-checked tables), giving `path_halts_iff : Halts pathDag254 (nextproof = 2) ↔ C254 1`. |
 | `RMBisim.lean`, `Bisim254.lean` | L4: segment bisimulations transfer path halting for every register file (symmetric relation defined by certificate lookup, so one check gives both directions); 3010 related test-site pairs between the literal 6459-row `Prog254` and the 219-node DAG, kernel-checked in 16 chunks, giving `literal_halts_iff : Halts Prog254.program Prog254.initial ↔ C254 1` ([tarski_logic_layer.md](tarski_logic_layer.md)). |
-| `NamedZF.lean`, `InternalOrd.lean`, `InternalRank.lean`, `ZFRank.lean`, `ZFNative.lean`, `Endpoint254.lean` | ZF proves the native axioms: named formulas over `Form` with named Separation/Replacement; inside any model of the ZFAxioms bundle with Power and set Regularity (no external well-foundedness), ordinals with trichotomy, the cumulative hierarchy by transfinite recursion, the rank theorem, Collection for every matrix and power containers; hence every `ZFax_s` model satisfies `NativeAx`, `zf_refutation_of_native` by `theory_transfer`, and `literal_nonhalting_of_zfc_consistent : Con(ZFC) → ¬ Halts Prog254.program Prog254.initial` ([tarski_logic_layer.md](tarski_logic_layer.md)). The reverse ZF comparison is now checked in `WFTheory`; Choice remains open. |
-| `TransRec.lean`, `ConstructibleDef.lean`, `Constructible.lean`, `ConstructibleReflect.lean`, `ConstructibleZF.lean` | Gödel's L inside any ZF model (no external well-foundedness): transfinite recursion for a definable stage operation; `Def(X)` through BoundedZFCConsistency's certificate satisfaction of coded formulas, with the truth bridge for standard formulas; `L_a ∩ Ord = a`; pairing, union and power in L; the reflection theorem for the L-hierarchy (closed limits by ω-iteration of a definable closing step); Separation and Replacement in L; `L_models_ZF`: the constructible substructure satisfies `ZFax_s`. AC in L (hence the Choice transport) remains ([tarski_logic_layer.md](tarski_logic_layer.md)). |
+| `NamedZF.lean`, `InternalOrd.lean`, `InternalRank.lean`, `ZFRank.lean`, `ZFNative.lean`, `Endpoint254.lean` | ZF proves the native axioms: named formulas over `Form` with named Separation/Replacement; inside any model of the ZFAxioms bundle with Power and set Regularity (no external well-foundedness), ordinals with trichotomy, the cumulative hierarchy by transfinite recursion, the rank theorem, Collection for every matrix and power containers; hence every `ZFax_s` model satisfies `NativeAx`, `zf_refutation_of_native` by `theory_transfer`, and `literal_nonhalting_of_zfc_consistent : Con(ZFC) → ¬ Halts Prog254.program Prog254.initial` ([tarski_logic_layer.md](tarski_logic_layer.md)). The reverse ZF comparison is checked in `WFTheory`; with the Choice transport, `literal_nonhalting_iff_zfc_consistent`. |
+| `TransRec.lean`, `ConstructibleDef.lean`, `Constructible.lean`, `ConstructibleReflect.lean`, `ConstructibleZF.lean` | Gödel's L inside any ZF model (no external well-foundedness): transfinite recursion for a definable stage operation; `Def(X)` through BoundedZFCConsistency's certificate satisfaction of coded formulas, with the truth bridge for standard formulas; `L_a ∩ Ord = a`; pairing, union and power in L; the reflection theorem for the L-hierarchy (closed limits by ω-iteration of a definable closing step); Separation and Replacement in L; `L_models_ZF`: the constructible substructure satisfies `ZFax_s` ([tarski_logic_layer.md](tarski_logic_layer.md)). |
+| `SatSupport.lean`, `ConstructibleAbs.lean`, `InternalWO.lean`, `OrderRec.lean`, `CodeOrder.lean`, `TupleOrder.lean`, `ConstructibleOrder.lean`, `ConstructibleChoice.lean`, `BinaryZFC252.lean` | AC in L and the Choice transport: uniform finite support of `SatIn` on every internal code; absoluteness of certificates, codes, `Def` and the hierarchy between a ZF model and its constructible class, hence `V = L` in `L` (`vEqL`); internal well-orders, the recursion of end-extending well-orders, a definable well-order of all formula codes, the lexicographic order of finite tuples; the canonical well-order of `L` by least keys (code, length, tuple) and `ChoiceSem` under `V = L` (`choice_of_VL`); `L_models_ZFC` and `zf_refutation_iff_zfc_refutation`; the literal `Prog254` and 252-state blank endpoints against Con(ZFC) (`BinaryZFC252` stub-checked, full-closure build pending). |
 | `OutgoingProfile.lean` | Four-node outgoing equality from exact full-profile singletons, actual raw-PSC model corollaries and reserved-zero named semantic translation at one false point. Source equality denotes full observational classes. |
 | `ConstructibleAbs.lean` | Formula-code, satisfaction, definable-subset and hierarchy comparisons between the ambient ZF model and its constructible submodel. Internal-code induction, least internal rank and internally finite environment restrictions give `vEqL` in the submodel; internal well-orders and Choice remain open. |
 | `Numeric254.lean`, `NamedNumeric254.lean` | Exact original four-tag numerical rules and gated C/G/vacuity bundle; named proof transport and refutation equivalence for the explicitly defined encoded-numerical-theorem theory Q. Q/ZFC calibration remains open. |
