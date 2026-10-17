@@ -39,38 +39,6 @@ noncomputable def section5Flatten {N M : Nat} (L : Fin M → Nat)
   let z := (section5FlattenEquiv L).symm j
   R z.1 z.2
 
-private theorem section5_sigma_partition {X : Type*} [DecidableEq X]
-    {M : Nat} (L : Fin M → Nat) (A : Fin M → Finset X) (S : Finset X)
-    (B : (i : Fin M) → Fin (L i) → Finset X)
-    (hA : IsPartition A S) (hB : ∀ i, IsPartition (B i) (A i)) :
-    (forall x, x ∈ S ↔ exists z : Σ i : Fin M, Fin (L i), x ∈ B z.1 z.2) ∧
-      forall z w : Σ i : Fin M, Fin (L i), z != w →
-        Disjoint (B z.1 z.2) (B w.1 w.2) := by
-  constructor
-  · intro x
-    rw [hA.1]
-    constructor
-    · rintro ⟨i, hi⟩
-      obtain ⟨j, hj⟩ := (hB i).1 x |>.mp hi
-      exact ⟨⟨i, j⟩, hj⟩
-    · rintro ⟨⟨i, j⟩, hij⟩
-      exact ⟨i, (hB i).1 x |>.mpr ⟨j, hij⟩⟩
-  · intro z w hzw
-    have hzw' : z ≠ w := bne_iff_ne.mp hzw
-    by_cases hi : z.1 = w.1
-    · rcases z with ⟨i, j⟩
-      rcases w with ⟨i', j'⟩
-      dsimp only at hi ⊢
-      subst i'
-      have hj : j ≠ j' := by
-        intro h
-        subst j'
-        exact hzw' rfl
-      exact (hB i).2 j j' (bne_iff_ne.mpr hj)
-    · exact Disjoint.mono (IsPartition.cell_subset (hB z.1) z.2)
-        (IsPartition.cell_subset (hB w.1) w.2)
-        (hA.2 z.1 w.1 (bne_iff_ne.mpr hi))
-
 /-- Flattening local partitions gives a partition of the original union. -/
 theorem section5Flatten_partition {N M : Nat} [NeZero N]
     (Q : Fin M → ModAP N)
@@ -79,7 +47,7 @@ theorem section5Flatten_partition {N M : Nat} [NeZero N]
     (hR : ∀ i, IsPartition (fun j ↦ (R i j).carrier) (Q i).carrier) :
     IsPartition (fun j ↦ (section5Flatten L R j).carrier) Finset.univ := by
   let e := section5FlattenEquiv L
-  have hsigma := section5_sigma_partition L (fun i ↦ (Q i).carrier)
+  have hsigma := IsPartition.sigma L (fun i ↦ (Q i).carrier)
     Finset.univ (fun i j ↦ (R i j).carrier) hQ hR
   constructor
   · intro x

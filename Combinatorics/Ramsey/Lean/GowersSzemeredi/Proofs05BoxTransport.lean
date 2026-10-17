@@ -204,7 +204,7 @@ theorem finsetPartition_flatten {X : Type*} [DecidableEq X] {M : Nat}
     IsPartition (fun j : Fin (∑ i, L i) =>
       let z := (section5NatFlattenEquiv L).symm j; B z.1 z.2) S := by
   let e := section5NatFlattenEquiv L
-  have hsigma := section5Nat_sigma_partition L A S B hA hB
+  have hsigma := IsPartition.sigma L A S B hA hB
   constructor
   · intro x
     rw [hsigma.1 x]

@@ -800,26 +800,23 @@ lemma sum_comp_index_eq_sum_mul_fibre {N : Nat} [NeZero N]
     simp
   · simp
 
-private lemma small_fibre_card_bound {N : Nat} [NeZero N]
+/-- At most `T·N` points lie in fibres of size below `T ≥ 0`. -/
+theorem small_fibre_count_le {N : Nat} [NeZero N]
     {X : Type*} [Fintype X] [DecidableEq X]
-    (D : MultifunctionDomain N X) (alpha eta : Real) (M : Nat)
-    (heta : 0 ≤ eta) :
-    (countWhere (fun x : X => ¬ LargeFibre D alpha eta M x) : Real) ≤
-      5 * eta * alpha ^ 2 * M * N := by
-  let T : Real := 5 * eta * alpha ^ 2 * M
+    (D : MultifunctionDomain N X) {T : Real} (hT : 0 ≤ T) :
+    (countWhere (fun x : X => ¬ T ≤ (D.fibreSize x : Real)) : Real) ≤ T * N := by
   let f : ZMod N → Real := fun s =>
     if T ≤ (D.fibre s).card then 0 else 1
-  have hT : 0 ≤ T := by
-    dsimp only [T]
-    positivity
-  have hcast : (countWhere (fun x : X => ¬ LargeFibre D alpha eta M x) : Real) =
-      ∑ x : X, f (D.index x) := by
+  have hcast :
+      (countWhere (fun x : X => ¬ T ≤ (D.fibreSize x : Real)) : Real) =
+        ∑ x : X, f (D.index x) := by
     rw [countWhere_cast_eq_sum_ite]
     apply Finset.sum_congr rfl
     intro x _
-    by_cases hx : LargeFibre D alpha eta M x
-    · simp [f, T, LargeFibre, hx]
-    · simp [f, T, LargeFibre, hx]
+    unfold MultifunctionDomain.fibreSize
+    by_cases hx : T ≤ ((D.fibre (D.index x)).card : Real)
+    · simp [f, hx]
+    · simp [f, hx]
   rw [hcast, sum_comp_index_eq_sum_mul_fibre]
   calc
     (∑ s : ZMod N, f s * (D.fibre s).card) ≤ ∑ _s : ZMod N, T := by
@@ -830,7 +827,14 @@ private lemma small_fibre_card_bound {N : Nat} [NeZero N]
       · have hle : ((D.fibre s).card : Real) ≤ T := le_of_not_ge hs
         simpa [f, hs] using hle
     _ = T * N := by simp [ZMod.card, mul_comm]
-    _ = 5 * eta * alpha ^ 2 * M * N := by rfl
+
+private lemma small_fibre_card_bound {N : Nat} [NeZero N]
+    {X : Type*} [Fintype X] [DecidableEq X]
+    (D : MultifunctionDomain N X) (alpha eta : Real) (M : Nat)
+    (heta : 0 ≤ eta) :
+    (countWhere (fun x : X => ¬ LargeFibre D alpha eta M x) : Real) ≤
+      5 * eta * alpha ^ 2 * M * N :=
+  small_fibre_count_le D (T := 5 * eta * alpha ^ 2 * M) (by positivity)
 
 private lemma differenceWeight_symm {N : Nat} {X : Type*}
     [Fintype X] [DecidableEq X] (D : MultifunctionDomain N X) (x y : X) :

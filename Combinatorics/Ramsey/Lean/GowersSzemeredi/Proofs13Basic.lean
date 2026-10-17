@@ -1,5 +1,6 @@
 import GowersSzemeredi.Sections12_13
 import GowersSzemeredi.Proofs01_03
+import GowersSzemeredi.Proofs06PhiAdditiveFourier
 import Mathlib.Analysis.MeanInequalities
 import Mathlib.Algebra.Order.Chebyshev
 
@@ -232,10 +233,6 @@ private def prop131A {N : Nat} (f : Pair N → Complex)
     (u x w h : ZMod N) : Complex :=
   f (x, w + h) * star (f (x - u, h))
 
-private def prop131G {N : Nat} [NeZero N] (B : Finset (ZMod N))
-    (sigma : ZMod N → ZMod N) (u h : ZMod N) : Complex :=
-  indicator B h * exponential (sigma h * u)
-
 attribute [simp] lemma78_indicator_star
 
 private def prop131AddRightEquiv {N : Nat} (y : ZMod N) : ZMod N ≃ ZMod N where
@@ -253,12 +250,12 @@ private def prop131AddRightEquiv {N : Nat} (y : ZMod N) : ZMod N ≃ ZMod N wher
 private lemma prop131_correlation_eq {N : Nat} [NeZero N]
     (f : Pair N → Complex) (B : Finset (ZMod N))
     (sigma : ZMod N → ZMod N) (u x w y : ZMod N) :
-    correlation (prop131A f u x w) (prop131G B sigma u) y =
+    correlation (prop131A f u x w) (prop61G B sigma u) y =
       ∑ h ∈ B, prop131InnerTerm f sigma u x y (w + y) h := by
   simp only [correlation]
   rw [← (prop131AddRightEquiv y).sum_comp]
   simp only [prop131AddRightEquiv_apply, add_sub_cancel_right]
-  unfold prop131A prop131G prop131InnerTerm
+  unfold prop131A prop61G prop131InnerTerm
   simp only [star_mul, lemma78_indicator_star, star_exponential]
   simp only [indicator, mul_ite, mul_one, mul_zero]
   rw [← Finset.sum_filter]
@@ -292,24 +289,24 @@ private lemma prop131_mixed_eq_l2 {N : Nat} [NeZero N]
     (sigma : ZMod N → ZMod N) :
     (∑ u : ZMod N, ∑ x : ZMod N, ∑ w : ZMod N, ∑ r : ZMod N,
         ‖fourier (prop131A f u x w) r‖ ^ 2 *
-          ‖fourier (prop131G B sigma u) r‖ ^ 2) =
+          ‖fourier (prop61G B sigma u) r‖ ^ 2) =
       (N : Real) *
         ∑ x : ZMod N, ∑ y' : ZMod N, ∑ u : ZMod N, ∑ y : ZMod N,
           ‖∑ h ∈ B, prop131InnerTerm f sigma u x y y' h‖ ^ 2 := by
   calc
     _ = ∑ u : ZMod N, ∑ x : ZMod N, ∑ w : ZMod N,
         (N : Real) * ∑ y : ZMod N,
-          ‖correlation (prop131A f u x w) (prop131G B sigma u) y‖ ^ 2 := by
+          ‖correlation (prop131A f u x w) (prop61G B sigma u) y‖ ^ 2 := by
             apply Finset.sum_congr rfl
             intro u _
             apply Finset.sum_congr rfl
             intro x _
             apply Finset.sum_congr rfl
             intro w _
-            exact lemma_2_1_holds N (prop131A f u x w) (prop131G B sigma u)
+            exact lemma_2_1_holds N (prop131A f u x w) (prop61G B sigma u)
     _ = (N : Real) * ∑ u : ZMod N, ∑ x : ZMod N, ∑ w : ZMod N,
         ∑ y : ZMod N,
-          ‖correlation (prop131A f u x w) (prop131G B sigma u) y‖ ^ 2 := by
+          ‖correlation (prop131A f u x w) (prop61G B sigma u) y‖ ^ 2 := by
             simp_rw [← Finset.mul_sum]
     _ = (N : Real) * ∑ u : ZMod N, ∑ x : ZMod N, ∑ w : ZMod N,
         ∑ y : ZMod N,
@@ -379,197 +376,22 @@ private lemma prop131_fourthA_le {N : Nat} [NeZero N]
             (prop131A_disc f hf u x w)
     _ = (N : Real) ^ 7 := by simp; ring
 
-private abbrev prop131QuadMem {N : Nat} (B : Finset (ZMod N))
-    (q : Fin 4 → ZMod N) : Prop :=
-  q 0 ∈ B ∧ q 1 ∈ B ∧ q 2 ∈ B ∧ q 3 ∈ B
-
-private abbrev prop131AltAdditive {N : Nat} (B : Finset (ZMod N))
-    (sigma : ZMod N → ZMod N) (q : Fin 4 → ZMod N) : Prop :=
-  prop131QuadMem B q ∧ q 0 - q 1 = q 2 - q 3 ∧
-    sigma (q 0) - sigma (q 1) = sigma (q 2) - sigma (q 3)
-
-private lemma prop131_alt_count_eq {N : Nat} [NeZero N]
-    (B : Finset (ZMod N)) (sigma : ZMod N → ZMod N) :
-    countWhere (prop131AltAdditive B sigma) = phiAdditiveCount B sigma := by
-  unfold countWhere phiAdditiveCount
-  apply Finset.card_equiv
-      ({ toFun q := ![q 0, q 3, q 2, q 1]
-         invFun q := ![q 0, q 3, q 2, q 1]
-         left_inv q := by
-           funext i
-           fin_cases i <;> rfl
-         right_inv q := by
-           funext i
-           fin_cases i <;> rfl } : (Fin 4 → ((ZMod N))) ≃ (Fin 4 → ((ZMod N))))
-  intro q
-  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
-  simp only [prop131AltAdditive, prop131QuadMem, IsPhiAdditive,
-    IsAdditiveQuadruple]
-  constructor
-  · rintro ⟨⟨h0, h1, h2, h3⟩, hadd, hsigma⟩
-    refine ⟨?_, ?_, ?_⟩
-    · intro i
-      fin_cases i <;> assumption
-    · exact sub_eq_sub_iff_add_eq_add.mp hadd
-    · exact sub_eq_sub_iff_add_eq_add.mp hsigma
-  · rintro ⟨hmem, hadd, hsigma⟩
-    have h0 := hmem 0
-    have h1 := hmem 1
-    have h2 := hmem 2
-    have h3 := hmem 3
-    exact ⟨⟨h0, h3, h2, h1⟩,
-      sub_eq_sub_iff_add_eq_add.mpr hadd,
-      sub_eq_sub_iff_add_eq_add.mpr hsigma⟩
-
-private lemma prop131_g_product {N : Nat} [NeZero N]
-    (B : Finset (ZMod N)) (sigma : ZMod N → ZMod N)
-    (u : ZMod N) (q : Fin 4 → ZMod N) :
-    prop131G B sigma u (q 0) *
-        star (prop131G B sigma u (q 1) * prop131G B sigma u (q 2)) *
-        prop131G B sigma u (q 3) =
-      if prop131QuadMem B q then
-        exponential
-          ((sigma (q 0) - sigma (q 1) - sigma (q 2) + sigma (q 3)) * u)
-      else 0 := by
-  simp only [prop131G, indicator, star_mul]
-  by_cases h0 : q 0 ∈ B <;> by_cases h1 : q 1 ∈ B <;>
-    by_cases h2 : q 2 ∈ B <;> by_cases h3 : q 3 ∈ B
-  all_goals simp only [h0, h1, h2, h3, if_true, if_false, one_mul, zero_mul,
-    mul_zero, star_zero, star_one, prop131QuadMem, and_self, and_true]
-  all_goals try {rfl}
-  rw [star_exponential, star_exponential]
-  calc
-    _ = exponential (sigma (q 0) * u +
-        (-(sigma (q 2) * u) + (-(sigma (q 1) * u) + sigma (q 3) * u))) := by
-          rw [exponential_add, exponential_add,
-            exponential_add]
-          ring
-    _ = _ := by
-      congr 1
-      ring
-
-private lemma prop131_sum_g_product {N : Nat} [NeZero N]
-    (B : Finset (ZMod N)) (sigma : ZMod N → ZMod N)
-    (q : Fin 4 → ZMod N) :
-    (∑ u : ZMod N,
-      prop131G B sigma u (q 0) *
-        star (prop131G B sigma u (q 1) * prop131G B sigma u (q 2)) *
-        prop131G B sigma u (q 3)) =
-      if prop131QuadMem B q ∧
-          sigma (q 0) - sigma (q 1) = sigma (q 2) - sigma (q 3)
-        then (N : Complex) else 0 := by
-  simp_rw [prop131_g_product]
-  by_cases hmem : prop131QuadMem B q
-  · simp_rw [if_pos hmem]
-    rw [fejer_sum_exponential_mul]
-    by_cases hsigma :
-        sigma (q 0) - sigma (q 1) = sigma (q 2) - sigma (q 3)
-    · have hcond : prop131QuadMem B q ∧
-          sigma (q 0) - sigma (q 1) = sigma (q 2) - sigma (q 3) :=
-        ⟨hmem, hsigma⟩
-      have hzero :
-          sigma (q 0) - sigma (q 1) - sigma (q 2) + sigma (q 3) = 0 := by
-        calc
-          _ = (sigma (q 0) - sigma (q 1)) -
-              (sigma (q 2) - sigma (q 3)) := by abel
-          _ = 0 := by rw [hsigma, sub_self]
-      rw [if_pos hzero, if_pos hcond]
-    · have hne :
-          sigma (q 0) - sigma (q 1) - sigma (q 2) + sigma (q 3) ≠ 0 := by
-        intro hzero
-        apply hsigma
-        apply sub_eq_zero.mp
-        calc
-          (sigma (q 0) - sigma (q 1)) - (sigma (q 2) - sigma (q 3)) =
-              sigma (q 0) - sigma (q 1) - sigma (q 2) + sigma (q 3) := by abel
-          _ = 0 := hzero
-      have hcond : ¬ (prop131QuadMem B q ∧
-          sigma (q 0) - sigma (q 1) = sigma (q 2) - sigma (q 3)) :=
-        fun h => hsigma h.2
-      rw [if_neg hne, if_neg hcond]
-  · simp_rw [if_neg hmem]
-    rw [if_neg (fun h => hmem h.1)]
-    simp
-
-private lemma prop131_g_fourth_eq_count {N : Nat} [NeZero N]
-    (B : Finset (ZMod N)) (sigma : ZMod N → ZMod N) :
-    (∑ u : ZMod N, ∑ r : ZMod N,
-        ‖fourier (prop131G B sigma u) r‖ ^ 4) =
-      (N : Real) ^ 2 * phiAdditiveCount B sigma := by
-  have hcomplex :
-      (((∑ u : ZMod N, ∑ r : ZMod N,
-          ‖fourier (prop131G B sigma u) r‖ ^ 4 : Real)) : Complex) =
-        (((N : Real) ^ 2 * countWhere (prop131AltAdditive B sigma) : Real) :
-          Complex) := by
-    rw [Complex.ofReal_sum]
-    calc
-      (∑ u : ZMod N,
-          ((∑ r : ZMod N, ‖fourier (prop131G B sigma u) r‖ ^ 4 : Real) :
-            Complex)) =
-          ∑ u : ZMod N, (N : Complex) * ∑ q : Fin 4 → ZMod N,
-            if q 0 - q 1 = q 2 - q 3 then
-              prop131G B sigma u (q 0) *
-                star (prop131G B sigma u (q 1) * prop131G B sigma u (q 2)) *
-                prop131G B sigma u (q 3)
-            else 0 := by
-              apply Finset.sum_congr rfl
-              intro u _
-              exact identity_2_6_holds N (prop131G B sigma u)
-      _ = (N : Complex) * ∑ q : Fin 4 → ZMod N,
-          if q 0 - q 1 = q 2 - q 3 then
-            ∑ u : ZMod N,
-              prop131G B sigma u (q 0) *
-                star (prop131G B sigma u (q 1) * prop131G B sigma u (q 2)) *
-                prop131G B sigma u (q 3)
-          else 0 := by
-            rw [← Finset.mul_sum]
-            congr 1
-            rw [Finset.sum_comm]
-            apply Finset.sum_congr rfl
-            intro q _
-            by_cases hadd : q 0 - q 1 = q 2 - q 3 <;> simp [hadd]
-      _ = (N : Complex) * ∑ q : Fin 4 → ZMod N,
-          if prop131AltAdditive B sigma q then (N : Complex) else 0 := by
-            congr 1
-            apply Finset.sum_congr rfl
-            intro q _
-            rw [prop131_sum_g_product]
-            by_cases hmem : prop131QuadMem B q <;>
-              by_cases hadd : q 0 - q 1 = q 2 - q 3 <;>
-              by_cases hsigma :
-                sigma (q 0) - sigma (q 1) = sigma (q 2) - sigma (q 3) <;>
-              simp [prop131AltAdditive, hmem, hadd, hsigma]
-      _ = (((N : Real) ^ 2 * countWhere (prop131AltAdditive B sigma) : Real) :
-          Complex) := by
-            push_cast
-            unfold countWhere
-            rw [← Finset.sum_filter]
-            simp only [Finset.sum_const, nsmul_eq_mul]
-            ring_nf
-            congr 1
-            norm_cast
-            apply congrArg Finset.card
-            ext q
-            simp
-  rw [prop131_alt_count_eq B sigma] at hcomplex
-  exact Complex.ofReal_injective hcomplex
-
 private lemma prop131_fourthG_eq_count {N : Nat} [NeZero N]
     (B : Finset (ZMod N)) (sigma : ZMod N → ZMod N) :
     (∑ u : ZMod N, ∑ _x : ZMod N, ∑ _w : ZMod N, ∑ r : ZMod N,
-        ‖fourier (prop131G B sigma u) r‖ ^ 4) =
+        ‖fourier (prop61G B sigma u) r‖ ^ 4) =
       (N : Real) ^ 4 * phiAdditiveCount B sigma := by
   calc
     _ = (N : Real) ^ 2 *
         ∑ u : ZMod N, ∑ r : ZMod N,
-          ‖fourier (prop131G B sigma u) r‖ ^ 4 := by
+          ‖fourier (prop61G B sigma u) r‖ ^ 4 := by
             simp only [Finset.sum_const, Finset.card_univ, ZMod.card,
               nsmul_eq_mul]
             simp_rw [← Finset.mul_sum]
             ring
     _ = (N : Real) ^ 2 *
         ((N : Real) ^ 2 * phiAdditiveCount B sigma) := by
-          rw [prop131_g_fourth_eq_count]
+          rw [prop61_g_fourth_eq_count]
     _ = (N : Real) ^ 4 * phiAdditiveCount B sigma := by ring
 
 private lemma prop131_global_cauchy {N : Nat} [NeZero N]
@@ -577,16 +399,16 @@ private lemma prop131_global_cauchy {N : Nat} [NeZero N]
     (sigma : ZMod N → ZMod N) :
     (∑ u : ZMod N, ∑ x : ZMod N, ∑ w : ZMod N, ∑ r : ZMod N,
         ‖fourier (prop131A f u x w) r‖ ^ 2 *
-          ‖fourier (prop131G B sigma u) r‖ ^ 2) ^ 2 ≤
+          ‖fourier (prop61G B sigma u) r‖ ^ 2) ^ 2 ≤
       (∑ u : ZMod N, ∑ x : ZMod N, ∑ w : ZMod N, ∑ r : ZMod N,
         ‖fourier (prop131A f u x w) r‖ ^ 4) *
       ∑ u : ZMod N, ∑ _x : ZMod N, ∑ _w : ZMod N, ∑ r : ZMod N,
-        ‖fourier (prop131G B sigma u) r‖ ^ 4 := by
+        ‖fourier (prop61G B sigma u) r‖ ^ 4 := by
   have h := Finset.sum_mul_sq_le_sq_mul_sq
     ((((Finset.univ : Finset (ZMod N)) ×ˢ (Finset.univ : Finset (ZMod N))) ×ˢ
       (Finset.univ : Finset (ZMod N))) ×ˢ (Finset.univ : Finset (ZMod N)))
     (fun z => ‖fourier (prop131A f z.1.1.1 z.1.1.2 z.1.2) z.2‖ ^ 2)
-    (fun z => ‖fourier (prop131G B sigma z.1.1.1) z.2‖ ^ 2)
+    (fun z => ‖fourier (prop61G B sigma z.1.1.1) z.2‖ ^ 2)
   simpa only [Finset.sum_product, ← pow_mul] using h
 
 /-- Lemma 13.1 follows from two Cauchy--Schwarz inequalities, the Fourier
@@ -602,13 +424,13 @@ theorem lemma_13_1_holds : lemma_13_1 := by
   let mixed : Real :=
     ∑ u : ZMod N, ∑ x : ZMod N, ∑ w : ZMod N, ∑ r : ZMod N,
       ‖fourier (prop131A f u x w) r‖ ^ 2 *
-        ‖fourier (prop131G B sigma u) r‖ ^ 2
+        ‖fourier (prop61G B sigma u) r‖ ^ 2
   let fourthA : Real :=
     ∑ u : ZMod N, ∑ x : ZMod N, ∑ w : ZMod N, ∑ r : ZMod N,
       ‖fourier (prop131A f u x w) r‖ ^ 4
   let fourthG : Real :=
     ∑ u : ZMod N, ∑ _x : ZMod N, ∑ _w : ZMod N, ∑ r : ZMod N,
-      ‖fourier (prop131G B sigma u) r‖ ^ 4
+      ‖fourier (prop61G B sigma u) r‖ ^ 4
   have hN : (0 : Real) < N := by exact_mod_cast NeZero.pos N
   have hN4 : (0 : Real) < (N : Real) ^ 4 := by positivity
   have hN7 : (0 : Real) < (N : Real) ^ 7 := by positivity

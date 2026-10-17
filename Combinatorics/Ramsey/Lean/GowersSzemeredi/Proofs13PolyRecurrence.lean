@@ -50,23 +50,6 @@ theorem ProgressionPhasePartition.mono {K : Real} {p p' : Nat}
   have hH1 : (1 : Real) ≤ H := by exact_mod_cast hH
   exact pow_le_pow_right₀ hH1 (Nat.mul_le_mul_right _ hpp')
 
-/-- Stage 13.5 data at a length exponent `eL` and a precision exponent `eP`. -/
-def IsStage135At {N : Nat} [NeZero N] (S : Section13Context N)
-    (D : Stage134Data N) (E : Stage135Data N) (eL eP : Real) : Prop :=
-  E.Q.step != 0 ∧ E.Q.IsProper ∧ E.Q.carrier ⊆ D.P.carrier ∧
-  (D.P.length : Real) ^ eL / 2 ≤ E.Q.length ∧
-  (∀ i, ∀ h, h ∈ E.Q.carrier →
-    (centeredAbs ((D.a i * h + D.b i) * E.Q.step) : Real) ≤
-      (D.P.length : Real) ^ (-eP) * N) ∧
-  S.alpha ^ 32 * E.Q.length / 20 ≤ (criticalHeights S D E).card
-
-theorem isStage135Data_iff_at {N : Nat} [NeZero N] (S : Section13Context N)
-    (D : Stage134Data N) (E : Stage135Data N) :
-    IsStage135Data S D E ↔
-      IsStage135At S D E ((1 : Real) / (2 : Real) ^ (12 * D.q))
-        ((1 : Real) / (2 : Real) ^ (11 * D.q)) :=
-  Iff.rfl
-
 /-- The polynomial Stage 13.5 exponent `(2p(q+1)^8)^(−2)`. -/
 def stage135PolyExponent (p q : Nat) : Real :=
   (((2 * p * (q + 1) ^ 8 : Nat) : Real) ^ 2)⁻¹
@@ -117,59 +100,6 @@ theorem stage135_empty_at {N : Nat} [NeZero N] (S : Section13Context N)
   · change S.alpha ^ 32 * (D.P.length : Real) / 20 ≤ _
     rw [hL, Nat.cast_zero, mul_zero, zero_div]
     exact Nat.cast_nonneg _
-
-/-- **The singleton scale.** One strong critical height, with a nonzero
-step making every phase small, is a Stage 13.5 progression whenever
-`|P|^e ≤ 2`. -/
-theorem stage135_singleton_at {N : Nat} [NeZero N]
-    (S : Section13Context N) (D : Stage134Data N) (theta : Real)
-    (h134 : IsStage134Data S theta D) (hL : 0 < D.P.length) {e : Real} (he : 0 < e)
-    (hqe : 2 * (D.q : Real) * e ≤ 1) (hscale : (D.P.length : Real) ^ e ≤ 2) :
-    ∃ E : Stage135Data N, IsStage135At S D E e e := by
-  classical
-  have hP := h134.2.2.1
-  have hH := h134.2.2.2.1
-  have hw : S.alpha ^ 32 * (N : Real) ^ 31 * D.P.length / 8 ≤
-      (goodHeightWeight S (D.P.carrier ∩ D.H) : Real) := by
-    rw [Finset.inter_eq_right.mpr hH]
-    exact h134.2.2.2.2.2.2.2.1
-  have hc := stage135_critical_count_of_weight S D D.P hP hw
-  have hmass : 0 < S.alpha ^ 32 * (D.P.length : Real) / 16 :=
-    div_pos (mul_pos (pow_pos S.alpha_pos _) (by exact_mod_cast hL)) (by norm_num)
-  have hcard : 0 < (criticalHeights S D ⟨D.P⟩).card := by exact_mod_cast hmass.trans_le hc
-  obtain ⟨h, hh⟩ := Finset.card_pos.mp hcard
-  obtain ⟨hhPH, hhstrong⟩ := Finset.mem_filter.mp hh
-  obtain ⟨hhP, hhH⟩ := Finset.mem_inter.mp hhPH
-  have hNtwo : 2 ≤ N := by
-    by_contra hN
-    have hN1 : N = 1 := by have := NeZero.pos N; omega
-    subst N
-    exact (bne_iff_ne.mp h134.2.1) (Subsingleton.elim _ _)
-  have hLN : D.P.length ≤ N := by
-    rw [← hP]
-    simpa only [ZMod.card] using Finset.card_le_univ D.P.carrier
-  obtain ⟨d, hd, hsmall⟩ := exists_nonzero_small_multiples hNtwo h134.1 hL hLN
-    (fun i => D.a i * h + D.b i) he hqe
-  let Q : ModAP N := ⟨h, d, 1⟩
-  have hQ : Q.carrier = {h} := by simp [Q, ModAP.carrier]
-  have hproper : Q.IsProper := by change Q.carrier.card = 1; rw [hQ]; simp
-  have hcrit : criticalHeights S D ⟨Q⟩ = {h} := by
-    ext x
-    simp only [criticalHeights, hQ, Finset.mem_filter, Finset.mem_inter, Finset.mem_singleton]
-    exact ⟨fun hx => hx.1.1, fun hx => by subst x; exact ⟨⟨rfl, hhH⟩, hhstrong⟩⟩
-  refine ⟨⟨Q⟩, hd, hproper, ?_, ?_, ?_, ?_⟩
-  · rw [hQ]
-    exact Finset.singleton_subset_iff.mpr hhP
-  · simp only [Q, Nat.cast_one]
-    linarith only [hscale]
-  · intro i x hx
-    rw [hQ, Finset.mem_singleton] at hx
-    subst x
-    exact hsmall i
-  · rw [hcrit, Finset.card_singleton]
-    have ha : S.alpha ^ 32 ≤ 1 := pow_le_one₀ S.alpha_pos.le S.alpha_at_most_one
-    simp only [Q, Nat.cast_one, mul_one]
-    linarith only [ha]
 
 /-- The arithmetic of the large case: `2^p·(q+1) + 1 ≤ 2^(4p(q+1)^8)`. -/
 theorem stage135_poly_threshold_nat (p q : Nat) (hp : 0 < p) :
