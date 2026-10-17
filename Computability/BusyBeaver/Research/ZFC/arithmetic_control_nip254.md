@@ -1,0 +1,18 @@
+# Actual NIP nonfalsity comparison and cache-clear phase
+
+`ArithmeticControlNip254` connects the NIP cache comparison and clear loop in the actual numbered `Prog254` interpreter to the represented all-internal control run. Its endpoint is the actual WS stack-pop entry, before executing that entry's `decnz2` instruction.
+
+For every model of IΣ1, every whole nine-register file, and scratch1=0:
+
+- Cache0 reaches `stackPopEntry` after eight logical instructions, with the entire file unchanged.
+- Cache=c+2 reaches that entry after `2*c+8` logical instructions, with only the cache set to0. The counter c may be internal/nonstandard.
+- Cache≠1 therefore has a positive internal clock to the same endpoint with cache0. The opcode predecessor decomposition covers every internal cache value.
+- From the actual dispatcher with AC2, classification composes with this phase. Only AC and cache are set to0. The stored audit additionally checks the exact clocks11 and `2*c+11` in the two nonfalsity cases.
+
+Scratch2 and all other unused fields may be arbitrary internal values throughout these theorems. The two preliminary scratch1 instructions restore its original zero. The cache-zero path briefly increments the cache and restores zero. The positive case executes six fixed instructions, the already checked literal `ClearShape` instance for `2*c+1` instructions, and a final break.
+
+Each finite control is defined by the actual resolver and bound to an actual literal tree walk/consume result. The cache-clear loop supplies all literal edges and resolved continuations to the existing generic clear theorem. There is no execution-oracle premise, new unbounded-runtime induction, replay of the 8,391 site guards, or replay of the 82,552-step bootstrap.
+
+The source passed in run2 in2.964s, but that overall attempt remains FAIL because four audit rewrites omitted the explicit unfolding of `put`. The corrected audit passed separately in run3 in2.500s:14 ordered axiom probes,18 callers, standard axioms only, zero warnings. Run3 records no source compilation and explicitly reuses the frozen run2 object. Run1 remains the original source FAIL at a broad definitionally reducing `change`; an explicit staged type fixed it without increasing options. The successful composite record, both failed attempts, exact source/audit/driver snapshots, and metadata-only maintained-default preflight are recorded separately. The checker binds the exact Dispatch evidence, 93 selected project prerequisites and six external boundary providers, their sources/objects, the pinned compiler/dependencies, and actual selected Init/Omega providers. Its output is outside the source/dependency checkouts. The ordinary portable mode freshly checks the new source and audit only. The tested audit-only continuation additionally binds the exact original overall-FAIL record, its source-PASS command, snapshots and original executed checker, and the frozen object. The failed overall record did not persist its local pre-audit object hash; the packet states the current frozen-object hash and never labels it a retrospective attestation.
+
+This does not establish the WS unpair/pop body or complete NIP semantics. That body reads logical2/physical0, whereas the existing `ReadShape` fixes its input to PL logical8/physical1; the next adapter must explicitly generalize the source field and prove all disjointness/physical bindings. Full WS unpair will require scratch2=0, while the comparison phase proved here only preserves arbitrary scratch2. The complete internal L2/Enum connection and the remaining PA machine equivalence are still open. No exact binary clock or blank-start endpoint follows from this active-control phase alone.

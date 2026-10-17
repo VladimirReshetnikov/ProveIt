@@ -33,15 +33,32 @@ The current arithmetic checkpoints are:
   arithmetic completeness is applied to these fixed sentences.
 * [Internal relative interpretation](internal_relativization_refresh.md)
   now includes domain-side discharge and the function-free set-language
-  adapter. Actual interpreted-domain, nonemptiness and translated-axiom
-  proofs remain explicit.
+  adapter. The [constructible interpretation](../../../../Logic/Interpretability/ZFCinPA/constructible_interpretation.md)
+  supplies the fixed L-domain formula, its nonemptiness, the quotation bridge,
+  and the finite equality, fixed ZF and Choice axiom obligations. The uniform
+  internal Separation/Replacement hypothesis `hSchema` remains open.
+* [Internal validator provability](../../../../Logic/Interpretability/ZFCinPA/validator_provability254.md)
+  supplies the twelve literal rule closures and a classical propositional
+  interface. The [formula encoder](../../../../Logic/Interpretability/ZFCinPA/validator_formula_encoder254.md)
+  has total, fixed arithmetic graphs with depth-sensitive variable labels.
+  The [quantifier interface](../../../../Logic/Interpretability/ZFCinPA/validator_quantifier_core254.md)
+  proves finite quantifier and vacuity laws, including a two-binder bridge
+  with four explicit vacuity premises. Environment/alpha induction and
+  source-proof translation remain open; arbitrary accepted proofs are not
+  assumed closed under variable renaming.
 * [Both actual reads](arithmetic_control_read_template254.md) are checked on
   every internal register file with its scratch fields zero. They reach the
   actual dispatch control 38, retain the whole register file in their
   endpoint, and give a positive internal logical runtime.
+* [Actual dispatch](arithmetic_control_dispatch254.md) and the
+  [complete NIP branch](arithmetic_control_unpair254.md) are checked for
+  arbitrary internal values. With both scratches zero, cache1 halts;
+  otherwise NIP writes the two Cantor projections of WS to cache and WS,
+  then returns to fetch. The AC2 dispatcher composition additionally clears
+  AC. DROP, MP and AX still need their complete actual-control contracts.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
-translation, the L-specific ZFC-to-ZF axiom proofs, and the complete
+translation, the internal L-specific Separation/Replacement proofs, and the complete
 interpreter-to-Enum connection. The forward validator sentence alone does
 not yet imply the requested PA theorem about the literal binary machine.
 

@@ -304,3 +304,26 @@ module supplies no schema callback or arbitrary internal source-proof transport.
 [The fixed forward consistency implications](validator_consistency_forward254.md) are now theorems of IΣ₁ and PA: Con(ZF) and Con(ZFC) each imply that no internal numerical proof code has validator value 2. The first check passed 8 probes/10 callers with standard Lean axioms and zero warnings. It uses the completed all-internal accepted-proof transport before arithmetic completeness. The converse and the actual binary-machine equivalence remain open.
 
 [The internal validator proof calculus](validator_provability254.md) now supplies a fixed Σ₁ theorem predicate with all twelve original rule closures and a classical implication interface, for arbitrary internal formula and proof codes. The check passed 22 probes/16 callers with standard Lean axioms and zero warnings. It reuses the existing numerical proof constructors and polymorphic propositional certificates. The internal formula/proof encoder and reverse consistency implication remain open; variable renaming needs special care because the bundle parameter is both a formula code and a variable label.
+
+- [Constructible interpretation: fixed L domain, finite axiom discharge, and conditional internal refutation transport](constructible_interpretation.md) — checked 25/18, standard axioms, zero warnings. Uniform internal Separation/Replacement `hSchema` remains open.
+
+The represented formula encoder now passes its 18-probe/24-caller narrow
+check: fixed Sigma1 syntax graphs and total Delta1 semantics for arbitrary
+internal source/depth inputs, with the actual set-language symbol codes and
+literal numeric constructor equations. The source has zero warnings; the
+audit retains one unused-simp warning. This supplies the computation used by
+a future ZF-to-validator proof compiler, not that compiler or a reverse
+consistency implication. See `ValidatorFormulaEncoder254.lean`,
+`validator_formula_encoder254.md`, and the matching verification/history/review
+records. Its maintained-default prepare-only check builds nothing and makes
+no compiler/version call.
+
+The finite CProv quantifier interface passes all 25 probes and 18 callers
+with standard axioms and zero warnings. It derives quantifier monotonicity,
+original gated atomic vacuity and the explicit-resource `all_relational`
+bridge at arbitrary internal formula/label values. All four vacuity proof
+witnesses remain premises; no global renaming closure of accepted proofs or
+bundles is assumed. The represented environment/alpha induction and actual
+ZF axiom reconstruction remain open. See `ValidatorQuantifierCore254.lean`,
+`validator_quantifier_core254.md`, and the matching records. The maintained
+prepare-only check queries the compiler version and performs no proof build.

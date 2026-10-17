@@ -466,41 +466,6 @@ theorem section5_local_phase_refinement_of_corollary_5_6
 
 /-! ### An efficient local refinement with a uniform constant -/
 
-private def section5SingletonNatAP (t : Nat) : NatAP where
-  start := t
-  step := 1
-  length := 1
-
-@[simp] private lemma section5SingletonNatAP_carrier (t : Nat) :
-    (section5SingletonNatAP t).carrier = {t} := by
-  simp [section5SingletonNatAP, NatAP.carrier]
-
-private lemma section5SingletonNatAP_isProper (t : Nat) :
-    (section5SingletonNatAP t).IsProper := by
-  constructor
-  · simp [section5SingletonNatAP]
-  · rw [section5SingletonNatAP_carrier]
-    simp [section5SingletonNatAP]
-
-private lemma section5SingletonNatAP_partition (r : Nat) :
-    IsNatAPPartition (fun i : Fin r => section5SingletonNatAP i)
-      (Finset.range r) := by
-  constructor
-  · intro x
-    simp only [Finset.mem_range, section5SingletonNatAP_carrier,
-      Finset.mem_singleton]
-    constructor
-    · intro hx
-      exact ⟨⟨x, hx⟩, rfl⟩
-    · rintro ⟨i, rfl⟩
-      exact i.isLt
-  · intro i j hij
-    change Disjoint (section5SingletonNatAP (i : Nat)).carrier
-      (section5SingletonNatAP (j : Nat)).carrier
-    rw [section5SingletonNatAP_carrier, section5SingletonNatAP_carrier]
-    exact Finset.disjoint_singleton.mpr fun h =>
-      bne_iff_ne.mp hij (Fin.ext h)
-
 /-- A concrete constant sufficient for the local form of Lemma 5.14. -/
 def section5LocalRefinementConstant (k : Nat) (eta : Real) : Real :=
   max
@@ -679,16 +644,16 @@ theorem section5_efficient_diameter_refinement_of_corollary_5_6
         simpa only [K] using mul_le_mul_of_nonneg_right hconstant (by positivity)
   · have hsmall : (P.length : Real) ≤ cutoff := le_of_not_gt hlarge
     let S : Fin P.length → NatAP :=
-      fun i => section5SingletonNatAP i
+      fun i => singletonNatAP i
     let R : Fin P.length → ModAP N :=
       fun i => section5Transport P (S i)
     have hpartition : IsNatAPPartition S (Finset.range P.length) :=
-      section5SingletonNatAP_partition P.length
+      singletonNatAP_partition P.length
     have hrefine : IsPartition (fun j => (R j).carrier) P.carrier :=
       section5Transport_partition P S hP hpartition
     have hproper (j : Fin P.length) : (R j).IsProper := by
       exact section5Transport_isProper P (S j) hP
-        (section5SingletonNatAP_isProper j)
+        (singletonNatAP_isProper j)
         (IsPartition.cell_subset hpartition j)
     have hrootPos : 0 < (P.length : Real) ^
         (1 - (K : Real)⁻¹) := Real.rpow_pos_of_pos (by exact_mod_cast hr) _
