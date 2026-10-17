@@ -372,3 +372,12 @@ explicit avoidance of both equal-length bound stacks. The represented-prefix
 proof uses Σ1 induction in IΣ1 and passed three probes and seven callers with
 standard axioms and zero warnings. Both cross-body vacuity resources remain
 explicit; the formula alpha induction and source-proof compiler remain open.
+
+[Internal alpha transport](validator_environment_alpha254.md) now constructs
+both implication proofs between configurable encodings of every internal source
+formula, under the same represented bound-stack equality context. It uses Π2
+induction in IΣ2 and explicit disjoint future streams avoiding the free labels,
+fallback1 and both old stacks. The first check passed 18 probes and 22 callers
+with standard axioms; three source linter warnings remain. Concrete stream
+selection, source-proof compilation and the reverse consistency endpoint
+remain open; that compiler can use the configurable encoder directly.
