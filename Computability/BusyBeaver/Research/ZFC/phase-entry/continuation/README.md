@@ -107,6 +107,13 @@ covering actual startup, derive root-command behavior in that format, and
 prove its refutation search equivalent to a ZFC-strength theory. The freedom
 to choose an artificial theory remains useful, but these obligations remain.
 
+The [controlled startup follow-up](conditional-transport.md) sharpens this
+target: the actual second root's logical registers already satisfy the existing
+theorem invariant, so a binary transport to the original register program would
+suffice. The original and mutated tables have identical next-million-move
+prefixes from that frame, with no further changed-row encounter. The required
+unbounded short-gap binary comparison is still open.
+
 ## Reproduction and provenance
 
 The [full-run record](../../results/phase-entry-continuation-verification.json)
