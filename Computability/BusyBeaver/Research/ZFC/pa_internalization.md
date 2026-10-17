@@ -49,9 +49,13 @@ The current arithmetic checkpoints are:
   proves exact internal term, vector and formula SHIFT laws through nested
   quantifiers. [Binder opening](../../../../Logic/Interpretability/ZFCinPA/validator_environment_opening254.md)
   now gives exact term/vector/formula substitution identities and opened
-  ALL/EXS matrix equations for arbitrary internal depths. Alpha equivalence
-  and source-proof translation remain open; arbitrary accepted proofs are
-  not assumed closed under variable renaming.
+  ALL/EXS matrix equations for arbitrary internal depths. The
+  [vacuity proof](../../../../Logic/Interpretability/ZFCinPA/validator_environment_vacuity254.md)
+  supplies generalization witnesses for every internal encoded formula when
+  its free, bound and future binder labels avoid the generalized variable;
+  its uniform environment invariant uses Π₂ induction in IΣ₂. Alpha
+  equivalence and source-proof translation remain open; arbitrary accepted
+  proofs are not assumed closed under variable renaming.
 * [Both actual reads](arithmetic_control_read_template254.md) are checked on
   every internal register file with its scratch fields zero. They reach the
   actual dispatch control 38, retain the whole register file in their
@@ -68,8 +72,12 @@ The current arithmetic checkpoints are:
   its AC1 dispatcher composition is also checked. The
   [MP comparison](arithmetic_control_compare254.md) clears scratch1 and cache,
   reaches success exactly when their original values agree, and has the
-  exact internal logical clock `3*a+2*distance(a,b)+2`. MP and AX still need
-  their complete actual-control contracts.
+  exact internal logical clock `3*a+2*distance(a,b)+2`. Both
+  [MP parameter pushes and the comparison-to-fetch tail](arithmetic_control_param_push254.md)
+  are now checked. Each push preserves param1 while setting TW to param1
+  and WS to the pair of the original TW and WS. The short unpair and
+  constructor sequence still need contracts and composition into full MP;
+  AX also remains open.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
 translation, the internal L-specific Separation/Replacement proofs, and the complete
@@ -634,3 +642,10 @@ a new local compiler run of the upstream modules. The represented compiler
 clients, the internal induction producing `Θ`, and the final schema/glue
 arguments remain open. The atomic clients must also discharge their
 `numOK` premises in ZF. These templates do not yet discharge `hSchema`.
+
+The subsequent `f1fe42d63c` adds `LIterate.orbit_closure`: the union of an
+ordinal orbit is a nonzero limit closure point above its starting ordinal.
+Its source-level contract keeps the class-function image set, the two
+Separation resources and the orbit set explicit. The next template must
+construct those resources in the enlarged language before this supplies the
+unbounded closure points required by the final schema arguments.
