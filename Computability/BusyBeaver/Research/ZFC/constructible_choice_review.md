@@ -1,4 +1,13 @@
-An independent read-only review of all1661 current lines in `TransRec`,
+**Current status:** the [constructible order](constructible_order.md) and
+[final Choice calibration](choice_calibration254.md) have now closed the
+external theorem that the literal 252-state machine never halts iff ZFC is
+consistent. The [165-unit integration](results/choice-calibration254-integration-verification.json)
+and independent source reviews record the checks. The PA proof-code and
+finite-trace comparison remains open. The text below preserves the sequence
+of earlier reviews; their open interfaces have since been discharged by the
+later constructibility modules.
+
+An independent read-only review of all1661 then-current lines in `TransRec`,
 `ConstructibleDef`, `Constructible` and `ConstructibleReflect` found no
 concrete mathematical defect. The reviewed snapshot is commit
 `337dd3cb25c1bb4ef47e7cb2e9b7bdfa7eeb6837`, including the newer695-line

@@ -1,0 +1,1694 @@
+{
+  "status": "CLEAN/ACCEPT: closed external actual252 blank nonhalting iff syntactic Con(ZFC), with maintained165-unit integration",
+  "source": {
+    "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ChoiceCalibration254.lean",
+    "sha256": "c161c1b12599a6f60929fdc66f47dcfc77d78a12adf5ca8e2ca46c9e144787ae",
+    "lines": 83,
+    "identical_to_checked_scratch_source": true
+  },
+  "closed_endpoint": "(\u00ac \u2203 t, (machinePerm252.run t).state = none) \u2194 \u00ac BProv LeanProofs.BoundedZFCConsistency.ZFCax_s [] Form.fBot",
+  "independent_review": {
+    "status": "CLEAN/ACCEPT: closed external actual252\u2194ConZFC proof, no hidden model/Choice/VL/coverage premise or empty-domain shortcut",
+    "reviewer": "/root/review_fibers",
+    "source": {
+      "path": "/tmp/zfc-choice-adapter/ChoiceCalibration254.lean",
+      "sha256": "c161c1b12599a6f60929fdc66f47dcfc77d78a12adf5ca8e2ca46c9e144787ae",
+      "lines": 83,
+      "matches_checked_importable_copy": true,
+      "matches_child_source_verification": true
+    },
+    "read_scope": [
+      "Entire ChoiceCalibration254.lean",
+      "Entire Audit.lean and choice_calibration254.md",
+      "Exact sealed ChoiceSem/Choice_form/ZFCax_s bridges",
+      "Existing actual BinaryPerm252 BlankHalts and ZF-refutation endpoint",
+      "Full preceding ConstructibleOrder review and relevant ConstructibleAbs/L-model APIs",
+      "Child exact source/audit verification metadata and logs"
+    ],
+    "findings": [],
+    "checks": {
+      "inside_L_Choice": "Uses L own H/Reg/Power, plus vEqL in that exact subtype; no ambient VL or Choice assumption.",
+      "actual_ZFC_scope": "ZFCax_s is literal ZFax_s OR sealF Choice_form. Both branches discharged under arbitrary L valuation with existing exact bridges.",
+      "nonempty": "Explicit constructible empty ordinal supplied. Its witness is used for a constant valuation in soundness_BProv; no forall-env vacuity shortcut.",
+      "refutation_transfer": "completeness_inf_context on actual ZFax_s [] fBot, under every model with explicit valuation; extract H/P/Reg and contradict hf in inhabited L. Changes carrier intentionally, no same-domain model inclusion.",
+      "polarity": "ZFref\u2192ZFCref by theory monotonicity, ZFCref\u2192ZFref by L. not_congr yields ConZF iff ConZFC, then actual binary halting/refutation and nonhalting/consistency iff in correct directions.",
+      "closed_final_endpoint": "Final two declarations retain no H, model, Choice, VL, Nonempty, Covered or runtime hypothesis. machinePerm252 is actual literal Machine252 with default Core.blank run.",
+      "universes": "Conditional models lemmas generic Typeu; subtypeL same universe. Completeness uses its actual inhabited Type0 models. No large-cardinal/transitive/standard-model assumption.",
+      "exact_binary": "Existing BinaryPerm252.BlankHalts is \u2203t,(M.run t).state=none. Direct audit callers unfold to this actual blank-run statement; no freely selected start state/frame.",
+      "axioms": "Child nine reports contain only propext/Classical.choice/Quot.sound; no custom/admitted axiom reported. Independent source contains no axiom/sorry.",
+      "scope": "Refutation/consistency comparison only, not all-sentence same-domain conservativity or an effective coded proof transformation."
+    },
+    "child_verification_reviewed": {
+      "file": "/tmp/zfc-choice-adapter/verification.json",
+      "sha256": "b4e17fce35103714a6a9279b8163f92f8b833cfb62d85974ea4278b050807af2",
+      "compiler": {
+        "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "actual_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)"
+      },
+      "source_seconds": 0.4976618504151702,
+      "audit_seconds": 0.4812137559056282,
+      "axiom_report_count": 9,
+      "caller_count": 15,
+      "only_standard_axioms": true,
+      "dependency_source_count": 164
+    },
+    "remaining_obligations": [
+      "Integrate source and scope/documentation in maintained runner/umbrella (root-owned).",
+      "The external consistency comparison is closed by this source once integration verifies; historical Choice gap is no longer current.",
+      "Effective finite proof-code translation and arithmetic representation/PA-provable correctness/totality remain separate.",
+      "No corresponding internally serialized ZFC machine statement follows just from Lean completeness; no unconditional nonhalting or consistency claim."
+    ],
+    "reviewer_reran_Lean_or_tests": false,
+    "no_tracked_edits": true
+  },
+  "independent_review_markdown": "# Independent review of ChoiceCalibration254\n\n**Clean/accept.** I read the complete source, its15-caller/nine-axiom audit, note and exact existing APIs. The reviewed source has SHA256 `c161c1b12599a6f60929fdc66f47dcfc77d78a12adf5ca8e2ca46c9e144787ae`; it is byte-identical to the importable copy and recorded successful source check. No source was edited and no build/test was repeated by this reviewer. Exact snapshots and metadata are in `independent-review.json`.\n\n`constructible_choice` instantiates Choice under V=L using the constructible subtype's own six-field ZF bundle, Power and Regularity. The supplied V=L theorem is `ConstructibleAbs.vEqL` in that exact subtype. Ambient V=L or object-level Choice is never assumed. `constructible_models_ZFC` covers exactly both branches of the actual sealed ZFC sentence theory, using the existing ZF model theorem and the exact sealed Zermelo-selector Choice bridge.\n\n`constructible_nonempty` explicitly exhibits the internal empty ordinal as a constructible object. `zfc_consistent_of_zf_model` uses that witness as the constant valuation for soundness of a finite ZFC refutation. Thus there is no empty-carrier/forall-valuation vacuity shortcut. The arbitrary starting model is not assumed externally well-founded, transitive, standard or to satisfy Choice.\n\n`zf_refutation_of_zfc` correctly uses finite-context completeness on `ZFax_s`, for every actual model with an explicit valuation. It extracts H/Power/Regularity, passes to the inhabited L subtype and contradicts the supplied refutation. This is a refutation argument through a different carrier; it does not misapply same-domain theory transfer. ZF-refutation to ZFC-refutation is ordinary theory monotonicity, so both the consistency iff and the subsequent halting/nonhalting iff have the correct polarity.\n\nThe final declarations are closed. They have no model, H, Choice, V=L, Nonempty, Covered, bootstrap or runtime premise. They reuse the actual already closed `BinaryPerm252.blank_halts_iff_zf_refutation`; `BlankHalts` means exactly `exists t,(machinePerm252.run t).state=none`. The audit includes direct callers of this unfolded blank-run statement and a `Machine252` type check. Generic model lemmas range over Typeu and their constructible subtype stays in that universe; completeness consumes its actual Type0 model interface. No inaccessible or standard-model premise is hidden.\n\nThe child evidence reports pinned Lean4.32 sourcePASS0.498s and nine axiom reports/fifteen callersPASS0.481s, with only propext, Classical.choice and Quot.sound. I checked that evidence against the exact reviewed source and read all callers; this review itself does not claim a fresh kernel run. The two earlier harness nonpasses are preserved and distinguished from final successful checks.\n\nThis discharges the concrete external adapter gap identified in the preceding ConstructibleOrder review. Once root integrates this checked source, the actual252-state blank machine has an external Lean nonhalting iff Con(ZFC) theorem. The remaining requested internal proof-code/arithmetic/trace comparison is a separate task: semantic completeness has not supplied a primitive recursive proof translator, its PA representation or a PA-provable totality/correctness theorem. No internally serialized ZFC machine statement, all-sentence conservativity, unconditional nonhalting or consistency theorem is inferred.\n",
+  "scratch_source_and_audit_verification": {
+    "status": "PASS: closed external actual252 blank nonhalting iff standardZFC consistency",
+    "module": "BusyBeaver.ZFC.ChoiceCalibration254",
+    "namespace": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254",
+    "source": {
+      "path": "/tmp/zfc-choice-adapter/sources/BusyBeaver/ZFC/ChoiceCalibration254.lean",
+      "sha256": "c161c1b12599a6f60929fdc66f47dcfc77d78a12adf5ca8e2ca46c9e144787ae"
+    },
+    "draft_identical": true,
+    "object": {
+      "path": "/tmp/zfc-choice-adapter/cache/BusyBeaver/ZFC/ChoiceCalibration254.olean",
+      "sha256": "0f99043402deaa762a255e19f8cc3f8f9db0c2b535237a8aade72d65cf6a5c1d"
+    },
+    "source_check": {
+      "status": "PASS",
+      "compiler": {
+        "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "actual_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)"
+      },
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "--root=/tmp/zfc-choice-adapter/sources",
+        "-o",
+        "/tmp/zfc-choice-adapter/cache/BusyBeaver/ZFC/ChoiceCalibration254.olean",
+        "/tmp/zfc-choice-adapter/sources/BusyBeaver/ZFC/ChoiceCalibration254.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "LEAN_PATH": "/tmp/zfc-choice-adapter/cache:/tmp/zfc-choice164-aqxx2lu2/cache",
+      "returncode": 0,
+      "seconds": 0.4976618504151702,
+      "output": "",
+      "source": {
+        "path": "/tmp/zfc-choice-adapter/sources/BusyBeaver/ZFC/ChoiceCalibration254.lean",
+        "sha256": "c161c1b12599a6f60929fdc66f47dcfc77d78a12adf5ca8e2ca46c9e144787ae"
+      },
+      "draft_byte_identical": true,
+      "dependency_evidence": "/tmp/zfc-choice164-aqxx2lu2/verification.json",
+      "dependency_record_sha256": "2c6e6d8df2a8e919f94beb0644583b4b861d80029ad52e28784dfb9af0c11913",
+      "parent_source_closure_matched": [
+        {
+          "path": "Logic/FirstOrder/Lean/FirstOrder/Fol.lean",
+          "sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd"
+        },
+        {
+          "path": "Logic/FirstOrder/Lean/FirstOrder/Calculus.lean",
+          "sha256": "6d61edd50c7062213be2e34a3b6a1efdb67d0f8072e75d4ff5dea20b41f549be"
+        },
+        {
+          "path": "Logic/FirstOrder/Lean/FirstOrder/Completeness.lean",
+          "sha256": "e847ae3b260974b09c726a31e2c01ad5e5f84e04b2db12eef4321a4b1ab77299"
+        },
+        {
+          "path": "SetTheory/ZF/Lean/ZF/Zf.lean",
+          "sha256": "c97cb84214a61095fc0ac70f06460654d9abfde34531d3447907cb28d7c72daa"
+        },
+        {
+          "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Basic.lean",
+          "sha256": "c427fac669f8c00304e9542fcde868656f5c473d22ebfb081f20e327e7ebf028"
+        },
+        {
+          "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/OmegaRecursion.lean",
+          "sha256": "dbbe6fbddaaaf3766e0adabba91392a57f2e202c8491a57a919aa75a0d92738e"
+        },
+        {
+          "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Choice.lean",
+          "sha256": "659cfe68441b2ebd9ed3dceb2e62e7690110424769e6e7ba1f81f63c9c1f6928"
+        },
+        {
+          "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Coding.lean",
+          "sha256": "783451cf18ecca8270b6b49e012e25321bc799a909b59436dd73920ba90db7c8"
+        },
+        {
+          "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/CodePredicate.lean",
+          "sha256": "e27513981a6a5d0fb5c830e71a1a952b4508606f2e3e1c5a4433fec12780c9df"
+        },
+        {
+          "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/FormulaClosedSet.lean",
+          "sha256": "4e25a31e0fcd428bc6a960a1c5b7e6b84e3c26d5186ac1baaff3ade7b79c40a8"
+        },
+        {
+          "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSat.lean",
+          "sha256": "78b8ad51a10296d1873864ed81b993919488bf96b7567a712e7ce494d95ad8a7"
+        },
+        {
+          "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSatTotality.lean",
+          "sha256": "6261ea9968d46d60af1ff4440422f2b5140fa1cca0acdd0a17a351c0333b12b9"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/Core.lean",
+          "sha256": "436336133fa107c62eb00322333ec9451a0705964bd2b62fce3f44ce848672a6"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCongruence.lean",
+          "sha256": "e368b337567c8d316624f53ca13cc7700bf74de0257d9acc31783e355c95a86b"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PositiveClosure.lean",
+          "sha256": "5cfa7e72c82fcb7d9f98d03e1c489d490ead15c5353ebebba68af5dab0a49676"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Bootstrap.lean",
+          "sha256": "a2a3599021fd4a933440366ed87f195df4155d9b7330d2cd2dc76efe7c622e97"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DeepPositiveClosure.lean",
+          "sha256": "4174b82c10665bf1f7385b70c0e2cfc9bb61dbdd887d3bc19a57de42076bdccb"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DefinableClosure.lean",
+          "sha256": "2e05a77cf35a8cd1d2a3cd10b110a4b23d3f7fa8e04dabade77602d25e9ca36a"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfilePairs.lean",
+          "sha256": "cca62fc34f5c431ed48dd49a6349da7b6038380d79698d107ceb9e18a8102add"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCollection.lean",
+          "sha256": "c65afa1b9fe0da24c9574afe7c2167bd2a9aba033d63c7e337ec41fe12db2abb"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileSyntax.lean",
+          "sha256": "89ad80658825506770ba458f4d8df8296b8d6352936f156a299f14317160d8a9"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileModel.lean",
+          "sha256": "d31215ed6642ff1482640767a84f194ad898f7b1752dc5523948f6dfdd971aa3"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileComposition.lean",
+          "sha256": "cd75522ef4222f008fefe23b3c664ffd6dee25b13c4a3b23e2e4c77ec0e21727"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CompositionModel.lean",
+          "sha256": "d4d391f5b23891a1d39c0ba706b58152e7853c154c6039f2e09f9bbdbdb07cf0"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientModel.lean",
+          "sha256": "8bbc62e568c9bd53a5e20cb1f890a93b3ea5e2ea105f3ed70c0bf04ff91dd85f"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileAxioms.lean",
+          "sha256": "e052a69b89da6eb36f480ed87633236b2b811868ad01b45a7ddb0a5ed072481c"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PowerSyntax.lean",
+          "sha256": "afffc621f5abd0a53138a5637c7d2866f89d33d4116db7a18461e9d90f94d503"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PSCSaturation.lean",
+          "sha256": "b32b4163c1ede7f311dad159dfeb5107493335b954fd953e98d78d77b46ad529"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RawPSCProfile.lean",
+          "sha256": "c528992a55e9d42acbd795c9260f55c5b8acd3fc9796db0eebc70ad55afcea1d"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RawPSCModel.lean",
+          "sha256": "586d56048d8fd47dd938a89a7e80ed05c3b5e717268b9758a4af849d90c6b14d"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/StateReduction.lean",
+          "sha256": "da50ce9ed9e65b3f0b72fc935298cd562702d90b5f13fbe209bf1ea344972790"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Table254.lean",
+          "sha256": "a3576a65d3e97e3da87d3da077c60a1a6a7d706aa395830ea454800b93e91723"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Table252.lean",
+          "sha256": "42a04f759262494f7724a02b652831de9b89d34aea855bb839ca442c24da130e"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Table253.lean",
+          "sha256": "c92520ae03c56dded064aa6a9d348a78e9f7f11973cd002a72e0bfd4a5503c08"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Table248.lean",
+          "sha256": "21da968a9d0ab78663208a7dd2b5074151296e8546528afdcc14148247ec4d7c"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteZipper.lean",
+          "sha256": "f7b41631975f0c243bcb6e48a6c566adde0866fb93f7105571e310c18db45066"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Boot253.lean",
+          "sha256": "a09eba1ebe2eed271cd90c3b91e4225724d13e78f7509d62a3e63e88ff22cd39"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterBisimulation.lean",
+          "sha256": "750b9436c110425b7c6886fc4b681bace8e9c83166e8a983a56b461c1e13b783"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FormulaRPN.lean",
+          "sha256": "29fab57408381af9a6742608b323154ce0a72c257439264897760b415774f297"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Base3Encoding.lean",
+          "sha256": "3349c8bf899aa5e2f3ed08d6ee5bfac20de515665aac4b9218f291607233f298"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Base3Syntax.lean",
+          "sha256": "0eb0c1a4106c80ef53ab870a4c7141b9b8f9fe08fa627e22ce0808aeda75df69"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Bottom3Syntax.lean",
+          "sha256": "3a1bdcd2eb6a17d900a5f923ff9a2f47787b145d023c6680df787b3ad02526f0"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PartialTotalization.lean",
+          "sha256": "71f13bbe3985ecc05eabc2209cdc72e9c3c2b99f65de75fd578a4a5cf15b3fcd"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WadeMachine.lean",
+          "sha256": "5bbe40eadec6b333a2f285e2af0786a9bd1add22ffb48ba6b6588e5cd555ab5f"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PSCCalibration.lean",
+          "sha256": "38140a3dbcb8ca6332169dc94fa8b9e2c5c8ad6484700e29e3a115a69072e8f0"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Kalmar.lean",
+          "sha256": "7e1bd77e6e26943476e941e68caaae06a556b29f1c508d7a63f5aaa9d8397143"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiCalculus.lean",
+          "sha256": "5c7079151e9deb06014deec4f03c3990cff96556d347b501d15106d895447e06"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean",
+          "sha256": "2a7edf1180e4553cb1990d45c1fe755aa74c3e86f5e9862181118470c1727178"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean",
+          "sha256": "45d8bbf29fbd7ee51ee08b4017f549a6e54120dc62728584ed8d8c11153a5df8"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean",
+          "sha256": "6d06107dfc84bea7e8c42b484fecf718b41b964d95a26293767a6fc5db83cd36"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiComplete.lean",
+          "sha256": "be7b860d750bd176bb332e4d331c4bb67550ef41e98b330df7a5ebb298dbb7ae"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+          "sha256": "5bae5186d702414adc6f1f7006d241a48ef9f24e53de48c90f84394ce3c500d3"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean",
+          "sha256": "a1457f32034eb4da50c8755610a366805260aac711424bba8b516ccab4e5b879"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prog254.lean",
+          "sha256": "6e564bd1ba179b2d39fccc3b8c86a681ec0dd6529df9cfa2522500eef140cfde"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prefix330.lean",
+          "sha256": "a1a66b4933250f354f14f01c9d747dd7318cf5fa9f4caee62cbd6fe88590f290"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiFalsity.lean",
+          "sha256": "22e29d3aabb45646110fa3d7c29c789a221cdb571c5078786a4f19a0ae797215"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Numeric254.lean",
+          "sha256": "2671949ba3720083bf9909b935e3d7258402d614451c2cbc08d40bea7d7ca15b"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedNumeric254.lean",
+          "sha256": "097e814e92fde59144f7dc3fdefa2988954de31645b1295caa2f71073c8c60be"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BootstrapFrame253.lean",
+          "sha256": "2033c42557fc8f6e70aee0c9b5021cd07bef04cbf010ec8973a33af540cde5a5"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean",
+          "sha256": "18311d4a28cba6778a0ba1a1ddee34f5c2dd5044a23958b63f46d0640be4e01e"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Proof.lean",
+          "sha256": "7bb8daf0f1c0965d22f2f16bbb1898d60cfb79f9a6feabe8ab38b3f69b3bc6d1"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OutgoingProfile.lean",
+          "sha256": "483b6675009e2578401b974b8bc0474a580c4323cb28bc48d6012db3830558ce"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Containers.lean",
+          "sha256": "a8b512cc35e3adbf9ca7cc5733cd19ac2aa4da653175690fec627f3477533cdb"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZipperRuns.lean",
+          "sha256": "fc8f39330f6551fb2b29db22127efbb361dd421290b47ca95d1088d7104a3d48"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterBoxes253.lean",
+          "sha256": "d59106c98b5cf089989df16b0d98068965c00f651e3bfc822a9d2d6ef39fbe21"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254GIC.lean",
+          "sha256": "73532a1e8d516606453b7f29c66466b87e35d09c587e68b879c50faae1d81dab"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Models.lean",
+          "sha256": "c07eacc95775e7c5a5b2291008dbb4517718a6c187a5659dd9a35056196eb9ef"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NumericCode254.lean",
+          "sha256": "5f52a7f000d985843cb8f71c23b92993cd567e9d5af02bf9f9a9172b6faf4885"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterMark253.lean",
+          "sha256": "f5cd066af3127608a2ca08e146a6a82967f1a431b8408f328a554d50a31c0f41"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterIncrement253.lean",
+          "sha256": "b67184c1ed66c2d7f08502695f8f35cc6f04137fea695c231a7316035dfc52d3"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Enum254.lean",
+          "sha256": "e44edf445c97907c1adec57ebb41afb072a2fb1c67b1b2b4dc7911b3caaa79da"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254ProofCompiler.lean",
+          "sha256": "5aee29785eb0ccb9dd742b4718d2b5c34a9ec50bc7adb9adb3bad08b4d1f9538"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254History.lean",
+          "sha256": "bb999a951167938e7da670e856c8634b964abe2eccf556d23ad4f8f677d732fb"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientSeparation.lean",
+          "sha256": "64ab6b82c643534de6e7d082717f0d798812ca78b7145d82c5e1c9ca5e857e65"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientPower.lean",
+          "sha256": "d911fcca763a0e8a1e2b6e85e2222ac62c2ae92d8c7177991d8f2a1e2563235e"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientReplacement.lean",
+          "sha256": "456a06ccda2fc6193b2f0173f1715a70d73e0d81a4a36a2ebd6577bb3755a14d"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterDecrement253.lean",
+          "sha256": "29920971f0835fc7392df9c5e59d0561945acc74f972aed7a8c8c72b939f7a77"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientBasic.lean",
+          "sha256": "966c269abe7552895d97cc943582db7f53cc5a487a59d695a0a84922fb8cc412"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinity.lean",
+          "sha256": "aa6b90970f9a63eb5b4d7b878522f02f8531a82c44e398902df8892f2b042974"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BreakSite253.lean",
+          "sha256": "71f0750de0a7d55b005e68359ef9fb7aab0a6e513dfc24f361c9068b685c6687"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteSets.lean",
+          "sha256": "a7598510348f597412e269d1df9ac8da5110f96e699d58aaa0eec081a2960702"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean",
+          "sha256": "b84f21e85367cecc74a7c3b52a83930099f5bb07a95f1dd10089c08d36a7f74f"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientZF0.lean",
+          "sha256": "8819382e2f33d307754e1899d82a9834cb140b89780c5e6693a50d0660ba0ee4"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMDag.lean",
+          "sha256": "1acc3a55d22db81eb03748a7b58d2492d449999516bddae75cd39d886d7099c7"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Dag254.lean",
+          "sha256": "e42a8658265b114a99f3550f979b95f1afc02a2f7d6483e1765d911891c05f52"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Lib254.lean",
+          "sha256": "e8aba56e66886da97e34d2c41dc80afc1421e8bbf87a9b94b3a5b1b858696ba9"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Macros254.lean",
+          "sha256": "dbc1c8c75d6f3d1f019d65f5bd62210638c1bcc2f8994a5f4413e42aa63334e7"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Control254.lean",
+          "sha256": "156bdb48b54f818084538bcfc3bc2f02d912732006513688f05256b297be679e"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Axioms254.lean",
+          "sha256": "360c8b92dc43d552455ccd2a76e9c1c2aa89020b74931e31762b3599822a5662"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsEval254.lean",
+          "sha256": "78bf07b472bd43526029fbeb9ebf159633e50349d9c5a58fc799e2e3bb936f4e"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root254.lean",
+          "sha256": "20b2ef7733a0d85c5248ee598b5386f42ad46319a003488fb63bfacb7f737e9f"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMEquiv.lean",
+          "sha256": "cc696ec1d000e9201506f652987d94ba17661114ba785b8dcb09b4f958a32a57"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMEquiv254.lean",
+          "sha256": "390a2a12cb10e56c57750b9c451ea5dcbcdb290d66af94f707ec79c663a52bd5"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProgramZF0.lean",
+          "sha256": "548050235ea817eb9abe4dcd2bb6ab9469fad95de6da885c8e405dc5fab3bb93"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DecodeFresh254.lean",
+          "sha256": "10baa5fc8f2c440ee8a7ff5953c11ae83266a5390afd3121f891e356199e7b52"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedForm254.lean",
+          "sha256": "41b2bbb7766df2b8eab0b6217b5ce7abd587183c2d1302c957a047f3c4a956fb"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DuplicateProfiles.lean",
+          "sha256": "60c6c81fde6455efafe33a85cb880591d0851c0d2472041f48328416fb917a70"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WritingRuns.lean",
+          "sha256": "9b9c616b66902f3ad88323a750dd8e077dedc514c78b885a2a49a47279214838"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZeroSite253.lean",
+          "sha256": "16cbedaa2287ad471a9785b0454d08aa2ddcff060420b2c783773701853213bb"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EqualityGIC.lean",
+          "sha256": "1f76cfe514dda0b1e4abac5c8a5bc67f624a50ed5e34555a55b3049c3443fa65"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientCPGIC.lean",
+          "sha256": "dc580ae54d8c2f05657dfa34e187adcf206bf1f72b5479690ac347f79da6d146"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NativeDecoded254.lean",
+          "sha256": "1de8f92797fe31fc19a602bf799522bfbc65f91232946ff2cb0befe2206be9b1"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NativeTheory254.lean",
+          "sha256": "69297da8a6ee8445ac36110a10b26ab190d57ffc5ef88801bf7288c9bacf7284"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumSafeStart254.lean",
+          "sha256": "22cab829c0f37919dd9bb7f28efdc658eeaeee687c84a817f0b082c9d5080dfe"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumStackBarrier254.lean",
+          "sha256": "67d03331fada8aafb77c052324c3101e68a6c56f473da6520e1e5c20c4b12ab9"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumStackCount254.lean",
+          "sha256": "4c07007a5daa682afecc2f716648c3855bbcb6c496eb95623a03ef4a29635db6"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DirtyReset254.lean",
+          "sha256": "063650250500601b619fdb87629dfcc05253c9e67d3f80329b5c60e5ded9586e"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DirtyRoot254.lean",
+          "sha256": "d6d9a500a5428e375ba987116e8fd103e9a0f41e92dffb70d5377dc93e374b30"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DirtyProgram254.lean",
+          "sha256": "17ad4165bb08cd54e5824a8b59ab3564df43ff189ee9972a547a50edbc2719e4"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPart.lean",
+          "sha256": "5318ce188d0753181fba355ab45ca08cb9823160f00691be63d4ce4e1655e08b"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SeedInvariant254.lean",
+          "sha256": "148c5603a2843b14383ceeceb39f9c7b75c41431ba1ebe03235d4d574f7d938e"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMBisim.lean",
+          "sha256": "68c28a182eed06c0f8d266f0d79d8f884f086228a4794da00da51cf02dbbb13b"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ActualTree254.lean",
+          "sha256": "7f4a3782f4ce061478a233d15272c15f2b2aedab688f728f7e7511f186216e71"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Bisim254.lean",
+          "sha256": "3f1495b78da8adaed4a12c0938c1e7d26fb4498731f5568eacd153df43eb07fc"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedZF.lean",
+          "sha256": "b477039b6308048559a03b3db363513ec20ae84b724f1788939fc8b162a5d249"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean",
+          "sha256": "e6ca852afcd59f47e18b68edae14765d605fed9ecb96819af1f5d7dea1357616"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean",
+          "sha256": "45991036b6f9ea43eda5abb353d4568ae670c59e97b7b22de4cdd743554a1097"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFRank.lean",
+          "sha256": "cb48b517067a57d99bf528c9694b14168fb88db5b5d5a710f0855d333be7a858"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFNative.lean",
+          "sha256": "78eb9a09da0d3b04b494b479fda1b5a352637bc6442e468fbcb022508e1c8385"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+          "sha256": "fccff4d33c0fa673c92e8f7a1c852d4d639d6ddf155421301ae78a9877963a1d"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModel.lean",
+          "sha256": "b0b7bfae8e6c4069c9a20e2a7459e2d9be827f888456bd41ec5e818e72bfff69"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFTheory.lean",
+          "sha256": "72969cd2d53f616816a83a36ae625b79adbcbecc2fd2fb1c0951a7801f747164"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Endpoint254.lean",
+          "sha256": "89e1b1594c99f2d6639eef47a4a8ed0e418cfa9180cbf8a33801c9c770034190"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TransRec.lean",
+          "sha256": "c7e9caf6f59e1a6c9ef3a9cb7ac4c44f39ffb6fa882fbda7936b95fa718c784d"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleDef.lean",
+          "sha256": "e487e6ff18b456c631ee377bafd7ddce998873686bea886723655f52ae07a699"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Constructible.lean",
+          "sha256": "c2d5ff0435d0e1f7bd5450c6f332999bbe887abfbc71a93deed46a7abc7bfa71"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleReflect.lean",
+          "sha256": "07ad377189fdb57c73b0b9058c04820d2d03dfe3863406d1933ae03179cc7a15"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleZF.lean",
+          "sha256": "8d6802f21c12b9e31b8a7ba2738200cabbc5b8ce73cb9cd4bfe40663ef40b76c"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SatSupport.lean",
+          "sha256": "173760b2b8569856cbcca87365e551b9c6586f9be9addf45aa3e6d63f9ae2226"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean",
+          "sha256": "9899be5219d6dd729e4fbd575fc4ab1e5e385aa83b76b0ecd6f03d5ab5494d24"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean",
+          "sha256": "7152e907d8fafbdc84a16d72e752c5ad05a6462e5840047dcb5c4c20c5f96858"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean",
+          "sha256": "397cc37c3fcbd84392aceca9289c9e4d8623db917b95b56b1a921620933f8038"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CodeOrder.lean",
+          "sha256": "7c7f7dcacae596b04f560fc6f950e253ba98328c1b2d4e78c2f94d68d1047d03"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TupleOrder.lean",
+          "sha256": "fecc0ac2b23a6b6f9c127c98ea4c9e61efa60fde52792da6e803150cbe38400a"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleOrder.lean",
+          "sha256": "399fabe52b0998e9ec41e7f9f21d819ef9ba11cb6ecc5f944ac59a81ac11dd74"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TablePerm252.lean",
+          "sha256": "d216d7292acf690095048024e2cae2575195ded015acf8e235261b8152e74bd0"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BootPerm252.lean",
+          "sha256": "7ab50986e89f5f6bd71e0fdbe40cb2e5c0b2dda58b71c420cbfc45185a3b21c6"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterBoxesPerm252.lean",
+          "sha256": "da0a5c460aba89b9d46dc794fad70a98ac441238ed26c5f7287fa4797a0bd5e7"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterMarkPerm252.lean",
+          "sha256": "c646007b54f2d32242f593a60eb770834f3e085a03ee60beb1275aebb796ce41"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterIncrementPerm252.lean",
+          "sha256": "506d5b45904adf4e8c5f352d48c457c497e277ed3da61c441a8784b9adc6ec6a"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterDecrementPerm252.lean",
+          "sha256": "cfa706be69ebc15d2ad64dfa22ffe3d1a061c0859584d046d3810932dea1964e"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Permutation252Frame.lean",
+          "sha256": "63a3c9d9358a3a24edfef7889ffcc96d00f2aab3f2dd752c944c4f0e84236ae7"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BootstrapFramePerm252.lean",
+          "sha256": "fd1994f64a97df216d61050d7e41229a7a87d48d7b148806433311ee3adaf532"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SymbolicPerm252.lean",
+          "sha256": "d38b28fad549afee75309830be964149b2b72729c759500b86aea25e0a2d8648"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitePerm252.lean",
+          "sha256": "fb1fd3e9788d0b0c7d76f5aff8b0572fc18dca7c16da0027160b71f0acbf269a"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPathClean.lean",
+          "sha256": "5169528914a46b43bc8215967e921744c4594384da72991405ed75ac0ad7eb69"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Permutation252Simulation.lean",
+          "sha256": "5590a1e70606a35d54173533460d0fef3a855162487ace0999fcea60e0c56b7f"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InstructionPerm252.lean",
+          "sha256": "f2cde238b50a6de751b628e5d0abfbf68789b04d8ff424f9390a0f47f984b34e"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SiteCoverage.lean",
+          "sha256": "643aa151328a65ba292214df01a933adc46408a468faabf273bf736457393cf4"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RuntimePerm252.lean",
+          "sha256": "c8baf01d6af1a8ee740bb4627c6f69bf910e2be36c679d0329fcd87192800efd"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RuntimeInstancePerm252.lean",
+          "sha256": "f538bd5f9883c2459dc0f480dd551acea258e77d928f88046681e6771a509b3d"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Permutation252Program.lean",
+          "sha256": "41f137e245505b4ea4cdbd689e9c13e451901b8c76b034142493edd20ad384ac"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks0.lean",
+          "sha256": "4781bf31db37f138b33a2afee7f49922fbcaaf1abdfce5c0178fa8f2d4646764"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks1.lean",
+          "sha256": "a27368ba02184c3e89da4a52a3c635e09925f2a953a47f97aa146b37f2c22ab1"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks2.lean",
+          "sha256": "8fb87a5a56b697a0ac69475d333f864fd629bf607280b1157622726c74dd1dc3"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks3.lean",
+          "sha256": "b36a21b52eb9d9f63c2cc524eee5ab283079776d9e0b4f0f788e40ffbcf0d09d"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks4.lean",
+          "sha256": "a8d6403abe841679bc01c858d19e34fa33340a61c485950fcc5783723981f6b6"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks5.lean",
+          "sha256": "86c0438220cc5e395ea3d92be84d1f97233764e1326cac0d49dc1ec52fd7bd55"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks6.lean",
+          "sha256": "d0a249efeed3be52003f1de5472b9b7cd74ba690275c4b4f931026d666fa248f"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks7.lean",
+          "sha256": "4f3dd837b011648092e4f2a2051e159b1e88acbd0f0c385c68698e18c5acbed0"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252.lean",
+          "sha256": "91a545753b3e262168ddb4e61e5ce9316e7928a94c66b80a44729344e51e1094"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BinaryPerm252.lean",
+          "sha256": "91be5f28bb2d5f43fbec9f34ef7a0a800e31f51ff256ef8a1e068b1293e8e062"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFCBoundPerm252.lean",
+          "sha256": "129d8727f66ad151d2f5e2f229e9adedc039dcb3a8931e39c8dfe9ce427bd6c7"
+        },
+        {
+          "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean",
+          "sha256": "0fa9603a31708fea98187564d3f2bfa05b7b7f1f74b138c3ef708ee154312239"
+        }
+      ],
+      "parent_unit_count": 164,
+      "object": {
+        "path": "/tmp/zfc-choice-adapter/cache/BusyBeaver/ZFC/ChoiceCalibration254.olean",
+        "sha256": "0f99043402deaa762a255e19f8cc3f8f9db0c2b535237a8aade72d65cf6a5c1d"
+      }
+    },
+    "audit_check": {
+      "status": "PASS",
+      "command": [
+        "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+        "/tmp/zfc-choice-adapter/Audit.lean"
+      ],
+      "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+      "LEAN_PATH": "/tmp/zfc-choice-adapter/cache",
+      "returncode": 0,
+      "seconds": 0.4812137559056282,
+      "output": "'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.constructible_choice' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.constructible_models_ZFC' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.constructible_nonempty' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zfc_consistent_of_zf_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zf_refutation_of_zfc' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zf_refutation_iff_zfc' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zf_consistency_iff_zfc' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.blank_halts_iff_zfc_refutation' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.nonhalting_iff_zfc_consistency' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n",
+      "source_sha256": "71d46b8d1740929f1005987c562fa8fed4f5bae27a14e379dad041312ddc06dd",
+      "axiom_reports": [
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.constructible_choice",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.constructible_models_ZFC",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.constructible_nonempty",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zfc_consistent_of_zf_model",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zf_refutation_of_zfc",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zf_refutation_iff_zfc",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zf_consistency_iff_zfc",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.blank_halts_iff_zfc_refutation",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        },
+        {
+          "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.nonhalting_iff_zfc_consistency",
+          "axioms": [
+            "propext",
+            "Classical.choice",
+            "Quot.sound"
+          ]
+        }
+      ],
+      "axiom_report_count": 9,
+      "caller_count": 15,
+      "only_standard_axioms": true
+    },
+    "declarations": [
+      "constructible_choice",
+      "constructible_models_ZFC",
+      "constructible_nonempty",
+      "zfc_consistent_of_zf_model",
+      "zf_refutation_of_zfc",
+      "zf_refutation_iff_zfc",
+      "zf_consistency_iff_zfc",
+      "blank_halts_iff_zfc_refutation",
+      "nonhalting_iff_zfc_consistency"
+    ],
+    "closed_endpoint": "(\u00ac\u2203t,(machinePerm252.run t).state=none) \u2194 \u00acBProv LeanProofs.BoundedZFCConsistency.ZFCax_s [] Form.fBot",
+    "scope": "External Lean metatheorem for literal252-state start0blankCoremachine; fixedwholebootstrap/runtime/allsitecertificates reused. BothFoundation andPower inL discharged, objectChoice derived fromitsinternalV=L. No Covered/model/Choice/VL hypothesis remains in final endpoints.",
+    "not_claimed": [
+      "unconditional nonhalting",
+      "internalPA or internalZFC proof/trace formalizability",
+      "a new machine/table/state reduction",
+      "all-sentence same-domain theory conservativity"
+    ],
+    "historical_nonpasses": [
+      {
+        "path": "/tmp/zfc-choice-adapter/initial-cache-overlay-failure.json",
+        "reason": "Incomplete firstnamespaceoverlay prevented import; no sourceproof elaboration yet."
+      },
+      {
+        "path": "/tmp/zfc-choice-adapter/initial-audit-caller-namespace-failure.json",
+        "reason": "One optional auditcaller used nonexistentMachine namespace; all9axiomreports succeeded; caller corrected and entireaudit passed."
+      }
+    ],
+    "source_plan": "/tmp/zfc-choice-adapter-plan.md",
+    "tracked_edits": false,
+    "build_slot_released": true
+  },
+  "historical_harness_nonpasses_embedded": [
+    {
+      "reason": "Incomplete firstnamespaceoverlay prevented import; no sourceproof elaboration yet.",
+      "original_path": "/tmp/zfc-choice-adapter/initial-cache-overlay-failure.json",
+      "evidence": {
+        "status": "FAIL",
+        "compiler": {
+          "path": "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+          "actual_version": "Lean (version 4.32.0, x86_64-unknown-linux-gnu, commit 8c9756b28d64dab099da31a4c09229a9e6a2ef35, Release)"
+        },
+        "command": [
+          "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+          "--root=/tmp/zfc-choice-adapter/sources",
+          "-o",
+          "/tmp/zfc-choice-adapter/cache/BusyBeaver/ZFC/ChoiceCalibration254.olean",
+          "/tmp/zfc-choice-adapter/sources/BusyBeaver/ZFC/ChoiceCalibration254.lean"
+        ],
+        "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+        "LEAN_PATH": "/tmp/zfc-choice-adapter/cache:/tmp/zfc-choice164-aqxx2lu2/cache",
+        "returncode": 1,
+        "seconds": 0.11829491145908833,
+        "output": "/tmp/zfc-choice-adapter/sources/BusyBeaver/ZFC/ChoiceCalibration254.lean:1:0: error: object file '/tmp/zfc-choice-adapter/cache/BusyBeaver/ZFC/ConstructibleAbs.olean' of module BusyBeaver.ZFC.ConstructibleAbs does not exist\n",
+        "source": {
+          "path": "/tmp/zfc-choice-adapter/sources/BusyBeaver/ZFC/ChoiceCalibration254.lean",
+          "sha256": "8aed78ccf0a4d7718f161bf496db98555f0b50a62bfb484dc5e936282ec494f6"
+        },
+        "draft_byte_identical": true,
+        "dependency_evidence": "/tmp/zfc-choice164-aqxx2lu2/verification.json",
+        "dependency_record_sha256": "2c6e6d8df2a8e919f94beb0644583b4b861d80029ad52e28784dfb9af0c11913",
+        "parent_source_closure_matched": [
+          {
+            "path": "Logic/FirstOrder/Lean/FirstOrder/Fol.lean",
+            "sha256": "84add1e8222f9f655e1dc252a826914623238b8e3e8169d18ed39f740b2bbacd"
+          },
+          {
+            "path": "Logic/FirstOrder/Lean/FirstOrder/Calculus.lean",
+            "sha256": "6d61edd50c7062213be2e34a3b6a1efdb67d0f8072e75d4ff5dea20b41f549be"
+          },
+          {
+            "path": "Logic/FirstOrder/Lean/FirstOrder/Completeness.lean",
+            "sha256": "e847ae3b260974b09c726a31e2c01ad5e5f84e04b2db12eef4321a4b1ab77299"
+          },
+          {
+            "path": "SetTheory/ZF/Lean/ZF/Zf.lean",
+            "sha256": "c97cb84214a61095fc0ac70f06460654d9abfde34531d3447907cb28d7c72daa"
+          },
+          {
+            "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Basic.lean",
+            "sha256": "c427fac669f8c00304e9542fcde868656f5c473d22ebfb081f20e327e7ebf028"
+          },
+          {
+            "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/OmegaRecursion.lean",
+            "sha256": "dbbe6fbddaaaf3766e0adabba91392a57f2e202c8491a57a919aa75a0d92738e"
+          },
+          {
+            "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Choice.lean",
+            "sha256": "659cfe68441b2ebd9ed3dceb2e62e7690110424769e6e7ba1f81f63c9c1f6928"
+          },
+          {
+            "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Coding.lean",
+            "sha256": "783451cf18ecca8270b6b49e012e25321bc799a909b59436dd73920ba90db7c8"
+          },
+          {
+            "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/CodePredicate.lean",
+            "sha256": "e27513981a6a5d0fb5c830e71a1a952b4508606f2e3e1c5a4433fec12780c9df"
+          },
+          {
+            "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/FormulaClosedSet.lean",
+            "sha256": "4e25a31e0fcd428bc6a960a1c5b7e6b84e3c26d5186ac1baaff3ade7b79c40a8"
+          },
+          {
+            "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSat.lean",
+            "sha256": "78b8ad51a10296d1873864ed81b993919488bf96b7567a712e7ce494d95ad8a7"
+          },
+          {
+            "path": "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/InternalSatTotality.lean",
+            "sha256": "6261ea9968d46d60af1ff4440422f2b5140fa1cca0acdd0a17a351c0333b12b9"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/Core.lean",
+            "sha256": "436336133fa107c62eb00322333ec9451a0705964bd2b62fce3f44ce848672a6"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCongruence.lean",
+            "sha256": "e368b337567c8d316624f53ca13cc7700bf74de0257d9acc31783e355c95a86b"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PositiveClosure.lean",
+            "sha256": "5cfa7e72c82fcb7d9f98d03e1c489d490ead15c5353ebebba68af5dab0a49676"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Bootstrap.lean",
+            "sha256": "a2a3599021fd4a933440366ed87f195df4155d9b7330d2cd2dc76efe7c622e97"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DeepPositiveClosure.lean",
+            "sha256": "4174b82c10665bf1f7385b70c0e2cfc9bb61dbdd887d3bc19a57de42076bdccb"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DefinableClosure.lean",
+            "sha256": "2e05a77cf35a8cd1d2a3cd10b110a4b23d3f7fa8e04dabade77602d25e9ca36a"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfilePairs.lean",
+            "sha256": "cca62fc34f5c431ed48dd49a6349da7b6038380d79698d107ceb9e18a8102add"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileCollection.lean",
+            "sha256": "c65afa1b9fe0da24c9574afe7c2167bd2a9aba033d63c7e337ec41fe12db2abb"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileSyntax.lean",
+            "sha256": "89ad80658825506770ba458f4d8df8296b8d6352936f156a299f14317160d8a9"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileModel.lean",
+            "sha256": "d31215ed6642ff1482640767a84f194ad898f7b1752dc5523948f6dfdd971aa3"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileComposition.lean",
+            "sha256": "cd75522ef4222f008fefe23b3c664ffd6dee25b13c4a3b23e2e4c77ec0e21727"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CompositionModel.lean",
+            "sha256": "d4d391f5b23891a1d39c0ba706b58152e7853c154c6039f2e09f9bbdbdb07cf0"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientModel.lean",
+            "sha256": "8bbc62e568c9bd53a5e20cb1f890a93b3ea5e2ea105f3ed70c0bf04ff91dd85f"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProfileAxioms.lean",
+            "sha256": "e052a69b89da6eb36f480ed87633236b2b811868ad01b45a7ddb0a5ed072481c"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PowerSyntax.lean",
+            "sha256": "afffc621f5abd0a53138a5637c7d2866f89d33d4116db7a18461e9d90f94d503"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PSCSaturation.lean",
+            "sha256": "b32b4163c1ede7f311dad159dfeb5107493335b954fd953e98d78d77b46ad529"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RawPSCProfile.lean",
+            "sha256": "c528992a55e9d42acbd795c9260f55c5b8acd3fc9796db0eebc70ad55afcea1d"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RawPSCModel.lean",
+            "sha256": "586d56048d8fd47dd938a89a7e80ed05c3b5e717268b9758a4af849d90c6b14d"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/StateReduction.lean",
+            "sha256": "da50ce9ed9e65b3f0b72fc935298cd562702d90b5f13fbe209bf1ea344972790"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Table254.lean",
+            "sha256": "a3576a65d3e97e3da87d3da077c60a1a6a7d706aa395830ea454800b93e91723"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Table252.lean",
+            "sha256": "42a04f759262494f7724a02b652831de9b89d34aea855bb839ca442c24da130e"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Table253.lean",
+            "sha256": "c92520ae03c56dded064aa6a9d348a78e9f7f11973cd002a72e0bfd4a5503c08"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Table248.lean",
+            "sha256": "21da968a9d0ab78663208a7dd2b5074151296e8546528afdcc14148247ec4d7c"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteZipper.lean",
+            "sha256": "f7b41631975f0c243bcb6e48a6c566adde0866fb93f7105571e310c18db45066"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Boot253.lean",
+            "sha256": "a09eba1ebe2eed271cd90c3b91e4225724d13e78f7509d62a3e63e88ff22cd39"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterBisimulation.lean",
+            "sha256": "750b9436c110425b7c6886fc4b681bace8e9c83166e8a983a56b461c1e13b783"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FormulaRPN.lean",
+            "sha256": "29fab57408381af9a6742608b323154ce0a72c257439264897760b415774f297"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Base3Encoding.lean",
+            "sha256": "3349c8bf899aa5e2f3ed08d6ee5bfac20de515665aac4b9218f291607233f298"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Base3Syntax.lean",
+            "sha256": "0eb0c1a4106c80ef53ab870a4c7141b9b8f9fe08fa627e22ce0808aeda75df69"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Bottom3Syntax.lean",
+            "sha256": "3a1bdcd2eb6a17d900a5f923ff9a2f47787b145d023c6680df787b3ad02526f0"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PartialTotalization.lean",
+            "sha256": "71f13bbe3985ecc05eabc2209cdc72e9c3c2b99f65de75fd578a4a5cf15b3fcd"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WadeMachine.lean",
+            "sha256": "5bbe40eadec6b333a2f285e2af0786a9bd1add22ffb48ba6b6588e5cd555ab5f"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/PSCCalibration.lean",
+            "sha256": "38140a3dbcb8ca6332169dc94fa8b9e2c5c8ad6484700e29e3a115a69072e8f0"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Kalmar.lean",
+            "sha256": "7e1bd77e6e26943476e941e68caaae06a556b29f1c508d7a63f5aaa9d8397143"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiCalculus.lean",
+            "sha256": "5c7079151e9deb06014deec4f03c3990cff96556d347b501d15106d895447e06"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiDerived.lean",
+            "sha256": "2a7edf1180e4553cb1990d45c1fe755aa74c3e86f5e9862181118470c1727178"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiLeibniz.lean",
+            "sha256": "45d8bbf29fbd7ee51ee08b4017f549a6e54120dc62728584ed8d8c11153a5df8"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiClean.lean",
+            "sha256": "6d06107dfc84bea7e8c42b484fecf718b41b964d95a26293767a6fc5db83cd36"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiComplete.lean",
+            "sha256": "be7b860d750bd176bb332e4d331c4bb67550ef41e98b330df7a5ebb298dbb7ae"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Lukasiewicz.lean",
+            "sha256": "5bae5186d702414adc6f1f7006d241a48ef9f24e53de48c90f84394ce3c500d3"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPath.lean",
+            "sha256": "a1457f32034eb4da50c8755610a366805260aac711424bba8b516ccab4e5b879"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prog254.lean",
+            "sha256": "6e564bd1ba179b2d39fccc3b8c86a681ec0dd6529df9cfa2522500eef140cfde"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Prefix330.lean",
+            "sha256": "a1a66b4933250f354f14f01c9d747dd7318cf5fa9f4caee62cbd6fe88590f290"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TarskiFalsity.lean",
+            "sha256": "22e29d3aabb45646110fa3d7c29c789a221cdb571c5078786a4f19a0ae797215"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Numeric254.lean",
+            "sha256": "2671949ba3720083bf9909b935e3d7258402d614451c2cbc08d40bea7d7ca15b"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedNumeric254.lean",
+            "sha256": "097e814e92fde59144f7dc3fdefa2988954de31645b1295caa2f71073c8c60be"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BootstrapFrame253.lean",
+            "sha256": "2033c42557fc8f6e70aee0c9b5021cd07bef04cbf010ec8973a33af540cde5a5"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254.lean",
+            "sha256": "18311d4a28cba6778a0ba1a1ddee34f5c2dd5044a23958b63f46d0640be4e01e"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Proof.lean",
+            "sha256": "7bb8daf0f1c0965d22f2f16bbb1898d60cfb79f9a6feabe8ab38b3f69b3bc6d1"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OutgoingProfile.lean",
+            "sha256": "483b6675009e2578401b974b8bc0474a580c4323cb28bc48d6012db3830558ce"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Containers.lean",
+            "sha256": "a8b512cc35e3adbf9ca7cc5733cd19ac2aa4da653175690fec627f3477533cdb"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZipperRuns.lean",
+            "sha256": "fc8f39330f6551fb2b29db22127efbb361dd421290b47ca95d1088d7104a3d48"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterBoxes253.lean",
+            "sha256": "d59106c98b5cf089989df16b0d98068965c00f651e3bfc822a9d2d6ef39fbe21"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254GIC.lean",
+            "sha256": "73532a1e8d516606453b7f29c66466b87e35d09c587e68b879c50faae1d81dab"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254Models.lean",
+            "sha256": "c07eacc95775e7c5a5b2291008dbb4517718a6c187a5659dd9a35056196eb9ef"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NumericCode254.lean",
+            "sha256": "5f52a7f000d985843cb8f71c23b92993cd567e9d5af02bf9f9a9172b6faf4885"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterMark253.lean",
+            "sha256": "f5cd066af3127608a2ca08e146a6a82967f1a431b8408f328a554d50a31c0f41"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterIncrement253.lean",
+            "sha256": "b67184c1ed66c2d7f08502695f8f35cc6f04137fea695c231a7316035dfc52d3"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Enum254.lean",
+            "sha256": "e44edf445c97907c1adec57ebb41afb072a2fb1c67b1b2b4dc7911b3caaa79da"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254ProofCompiler.lean",
+            "sha256": "5aee29785eb0ccb9dd742b4718d2b5c34a9ec50bc7adb9adb3bad08b4d1f9538"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Code254History.lean",
+            "sha256": "bb999a951167938e7da670e856c8634b964abe2eccf556d23ad4f8f677d732fb"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientSeparation.lean",
+            "sha256": "64ab6b82c643534de6e7d082717f0d798812ca78b7145d82c5e1c9ca5e857e65"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientPower.lean",
+            "sha256": "d911fcca763a0e8a1e2b6e85e2222ac62c2ae92d8c7177991d8f2a1e2563235e"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientReplacement.lean",
+            "sha256": "456a06ccda2fc6193b2f0173f1715a70d73e0d81a4a36a2ebd6577bb3755a14d"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterDecrement253.lean",
+            "sha256": "29920971f0835fc7392df9c5e59d0561945acc74f972aed7a8c8c72b939f7a77"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientBasic.lean",
+            "sha256": "966c269abe7552895d97cc943582db7f53cc5a487a59d695a0a84922fb8cc412"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SingletonInfinity.lean",
+            "sha256": "aa6b90970f9a63eb5b4d7b878522f02f8531a82c44e398902df8892f2b042974"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BreakSite253.lean",
+            "sha256": "71f0750de0a7d55b005e68359ef9fb7aab0a6e513dfc24f361c9068b685c6687"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/FiniteSets.lean",
+            "sha256": "a7598510348f597412e269d1df9ac8da5110f96e699d58aaa0eec081a2960702"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InductiveAttempts.lean",
+            "sha256": "b84f21e85367cecc74a7c3b52a83930099f5bb07a95f1dd10089c08d36a7f74f"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientZF0.lean",
+            "sha256": "8819382e2f33d307754e1899d82a9834cb140b89780c5e6693a50d0660ba0ee4"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMDag.lean",
+            "sha256": "1acc3a55d22db81eb03748a7b58d2492d449999516bddae75cd39d886d7099c7"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Dag254.lean",
+            "sha256": "e42a8658265b114a99f3550f979b95f1afc02a2f7d6483e1765d911891c05f52"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Lib254.lean",
+            "sha256": "e8aba56e66886da97e34d2c41dc80afc1421e8bbf87a9b94b3a5b1b858696ba9"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Macros254.lean",
+            "sha256": "dbc1c8c75d6f3d1f019d65f5bd62210638c1bcc2f8994a5f4413e42aa63334e7"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Control254.lean",
+            "sha256": "156bdb48b54f818084538bcfc3bc2f02d912732006513688f05256b297be679e"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Axioms254.lean",
+            "sha256": "360c8b92dc43d552455ccd2a76e9c1c2aa89020b74931e31762b3599822a5662"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2AxiomsEval254.lean",
+            "sha256": "78bf07b472bd43526029fbeb9ebf159633e50349d9c5a58fc799e2e3bb936f4e"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/L2Root254.lean",
+            "sha256": "20b2ef7733a0d85c5248ee598b5386f42ad46319a003488fb63bfacb7f737e9f"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMEquiv.lean",
+            "sha256": "cc696ec1d000e9201506f652987d94ba17661114ba785b8dcb09b4f958a32a57"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMEquiv254.lean",
+            "sha256": "390a2a12cb10e56c57750b9c451ea5dcbcdb290d66af94f707ec79c663a52bd5"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ProgramZF0.lean",
+            "sha256": "548050235ea817eb9abe4dcd2bb6ab9469fad95de6da885c8e405dc5fab3bb93"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DecodeFresh254.lean",
+            "sha256": "10baa5fc8f2c440ee8a7ff5953c11ae83266a5390afd3121f891e356199e7b52"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedForm254.lean",
+            "sha256": "41b2bbb7766df2b8eab0b6217b5ce7abd587183c2d1302c957a047f3c4a956fb"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DuplicateProfiles.lean",
+            "sha256": "60c6c81fde6455efafe33a85cb880591d0851c0d2472041f48328416fb917a70"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WritingRuns.lean",
+            "sha256": "9b9c616b66902f3ad88323a750dd8e077dedc514c78b885a2a49a47279214838"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZeroSite253.lean",
+            "sha256": "16cbedaa2287ad471a9785b0454d08aa2ddcff060420b2c783773701853213bb"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EqualityGIC.lean",
+            "sha256": "1f76cfe514dda0b1e4abac5c8a5bc67f624a50ed5e34555a55b3049c3443fa65"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/QuotientCPGIC.lean",
+            "sha256": "dc580ae54d8c2f05657dfa34e187adcf206bf1f72b5479690ac347f79da6d146"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NativeDecoded254.lean",
+            "sha256": "1de8f92797fe31fc19a602bf799522bfbc65f91232946ff2cb0befe2206be9b1"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NativeTheory254.lean",
+            "sha256": "69297da8a6ee8445ac36110a10b26ab190d57ffc5ef88801bf7288c9bacf7284"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumSafeStart254.lean",
+            "sha256": "22cab829c0f37919dd9bb7f28efdc658eeaeee687c84a817f0b082c9d5080dfe"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumStackBarrier254.lean",
+            "sha256": "67d03331fada8aafb77c052324c3101e68a6c56f473da6520e1e5c20c4b12ab9"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/EnumStackCount254.lean",
+            "sha256": "4c07007a5daa682afecc2f716648c3855bbcb6c496eb95623a03ef4a29635db6"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DirtyReset254.lean",
+            "sha256": "063650250500601b619fdb87629dfcc05253c9e67d3f80329b5c60e5ded9586e"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DirtyRoot254.lean",
+            "sha256": "d6d9a500a5428e375ba987116e8fd103e9a0f41e92dffb70d5377dc93e374b30"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/DirtyProgram254.lean",
+            "sha256": "17ad4165bb08cd54e5824a8b59ab3564df43ff189ee9972a547a50edbc2719e4"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WellFoundedPart.lean",
+            "sha256": "5318ce188d0753181fba355ab45ca08cb9823160f00691be63d4ce4e1655e08b"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SeedInvariant254.lean",
+            "sha256": "148c5603a2843b14383ceeceb39f9c7b75c41431ba1ebe03235d4d574f7d938e"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RMBisim.lean",
+            "sha256": "68c28a182eed06c0f8d266f0d79d8f884f086228a4794da00da51cf02dbbb13b"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ActualTree254.lean",
+            "sha256": "7f4a3782f4ce061478a233d15272c15f2b2aedab688f728f7e7511f186216e71"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Bisim254.lean",
+            "sha256": "3f1495b78da8adaed4a12c0938c1e7d26fb4498731f5568eacd153df43eb07fc"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/NamedZF.lean",
+            "sha256": "b477039b6308048559a03b3db363513ec20ae84b724f1788939fc8b162a5d249"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalOrd.lean",
+            "sha256": "e6ca852afcd59f47e18b68edae14765d605fed9ecb96819af1f5d7dea1357616"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalRank.lean",
+            "sha256": "45991036b6f9ea43eda5abb353d4568ae670c59e97b7b22de4cdd743554a1097"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFRank.lean",
+            "sha256": "cb48b517067a57d99bf528c9694b14168fb88db5b5d5a710f0855d333be7a858"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFNative.lean",
+            "sha256": "78eb9a09da0d3b04b494b479fda1b5a352637bc6442e468fbcb022508e1c8385"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFRelativization.lean",
+            "sha256": "fccff4d33c0fa673c92e8f7a1c852d4d639d6ddf155421301ae78a9877963a1d"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFModel.lean",
+            "sha256": "b0b7bfae8e6c4069c9a20e2a7459e2d9be827f888456bd41ec5e818e72bfff69"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFTheory.lean",
+            "sha256": "72969cd2d53f616816a83a36ae625b79adbcbecc2fd2fb1c0951a7801f747164"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Endpoint254.lean",
+            "sha256": "89e1b1594c99f2d6639eef47a4a8ed0e418cfa9180cbf8a33801c9c770034190"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TransRec.lean",
+            "sha256": "c7e9caf6f59e1a6c9ef3a9cb7ac4c44f39ffb6fa882fbda7936b95fa718c784d"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleDef.lean",
+            "sha256": "e487e6ff18b456c631ee377bafd7ddce998873686bea886723655f52ae07a699"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Constructible.lean",
+            "sha256": "c2d5ff0435d0e1f7bd5450c6f332999bbe887abfbc71a93deed46a7abc7bfa71"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleReflect.lean",
+            "sha256": "07ad377189fdb57c73b0b9058c04820d2d03dfe3863406d1933ae03179cc7a15"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleZF.lean",
+            "sha256": "8d6802f21c12b9e31b8a7ba2738200cabbc5b8ce73cb9cd4bfe40663ef40b76c"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SatSupport.lean",
+            "sha256": "173760b2b8569856cbcca87365e551b9c6586f9be9addf45aa3e6d63f9ae2226"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean",
+            "sha256": "9899be5219d6dd729e4fbd575fc4ab1e5e385aa83b76b0ecd6f03d5ab5494d24"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean",
+            "sha256": "7152e907d8fafbdc84a16d72e752c5ad05a6462e5840047dcb5c4c20c5f96858"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean",
+            "sha256": "397cc37c3fcbd84392aceca9289c9e4d8623db917b95b56b1a921620933f8038"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CodeOrder.lean",
+            "sha256": "7c7f7dcacae596b04f560fc6f950e253ba98328c1b2d4e78c2f94d68d1047d03"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TupleOrder.lean",
+            "sha256": "fecc0ac2b23a6b6f9c127c98ea4c9e61efa60fde52792da6e803150cbe38400a"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleOrder.lean",
+            "sha256": "399fabe52b0998e9ec41e7f9f21d819ef9ba11cb6ecc5f944ac59a81ac11dd74"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TablePerm252.lean",
+            "sha256": "d216d7292acf690095048024e2cae2575195ded015acf8e235261b8152e74bd0"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BootPerm252.lean",
+            "sha256": "7ab50986e89f5f6bd71e0fdbe40cb2e5c0b2dda58b71c420cbfc45185a3b21c6"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterBoxesPerm252.lean",
+            "sha256": "da0a5c460aba89b9d46dc794fad70a98ac441238ed26c5f7287fa4797a0bd5e7"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterMarkPerm252.lean",
+            "sha256": "c646007b54f2d32242f593a60eb770834f3e085a03ee60beb1275aebb796ce41"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterIncrementPerm252.lean",
+            "sha256": "506d5b45904adf4e8c5f352d48c457c497e277ed3da61c441a8784b9adc6ec6a"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterDecrementPerm252.lean",
+            "sha256": "cfa706be69ebc15d2ad64dfa22ffe3d1a061c0859584d046d3810932dea1964e"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Permutation252Frame.lean",
+            "sha256": "63a3c9d9358a3a24edfef7889ffcc96d00f2aab3f2dd752c944c4f0e84236ae7"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BootstrapFramePerm252.lean",
+            "sha256": "fd1994f64a97df216d61050d7e41229a7a87d48d7b148806433311ee3adaf532"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SymbolicPerm252.lean",
+            "sha256": "d38b28fad549afee75309830be964149b2b72729c759500b86aea25e0a2d8648"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitePerm252.lean",
+            "sha256": "fb1fd3e9788d0b0c7d76f5aff8b0572fc18dca7c16da0027160b71f0acbf269a"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RegisterPathClean.lean",
+            "sha256": "5169528914a46b43bc8215967e921744c4594384da72991405ed75ac0ad7eb69"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Permutation252Simulation.lean",
+            "sha256": "5590a1e70606a35d54173533460d0fef3a855162487ace0999fcea60e0c56b7f"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InstructionPerm252.lean",
+            "sha256": "f2cde238b50a6de751b628e5d0abfbf68789b04d8ff424f9390a0f47f984b34e"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SiteCoverage.lean",
+            "sha256": "643aa151328a65ba292214df01a933adc46408a468faabf273bf736457393cf4"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RuntimePerm252.lean",
+            "sha256": "c8baf01d6af1a8ee740bb4627c6f69bf910e2be36c679d0329fcd87192800efd"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/RuntimeInstancePerm252.lean",
+            "sha256": "f538bd5f9883c2459dc0f480dd551acea258e77d928f88046681e6771a509b3d"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Permutation252Program.lean",
+            "sha256": "41f137e245505b4ea4cdbd689e9c13e451901b8c76b034142493edd20ad384ac"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks0.lean",
+            "sha256": "4781bf31db37f138b33a2afee7f49922fbcaaf1abdfce5c0178fa8f2d4646764"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks1.lean",
+            "sha256": "a27368ba02184c3e89da4a52a3c635e09925f2a953a47f97aa146b37f2c22ab1"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks2.lean",
+            "sha256": "8fb87a5a56b697a0ac69475d333f864fd629bf607280b1157622726c74dd1dc3"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks3.lean",
+            "sha256": "b36a21b52eb9d9f63c2cc524eee5ab283079776d9e0b4f0f788e40ffbcf0d09d"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks4.lean",
+            "sha256": "a8d6403abe841679bc01c858d19e34fa33340a61c485950fcc5783723981f6b6"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks5.lean",
+            "sha256": "86c0438220cc5e395ea3d92be84d1f97233764e1326cac0d49dc1ec52fd7bd55"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks6.lean",
+            "sha256": "d0a249efeed3be52003f1de5472b9b7cd74ba690275c4b4f931026d666fa248f"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252Checks7.lean",
+            "sha256": "4f3dd837b011648092e4f2a2051e159b1e88acbd0f0c385c68698e18c5acbed0"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SitesPerm252.lean",
+            "sha256": "91a545753b3e262168ddb4e61e5ce9316e7928a94c66b80a44729344e51e1094"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/BinaryPerm252.lean",
+            "sha256": "91be5f28bb2d5f43fbec9f34ef7a0a800e31f51ff256ef8a1e068b1293e8e062"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFCBoundPerm252.lean",
+            "sha256": "129d8727f66ad151d2f5e2f229e9adedc039dcb3a8931e39c8dfe9ce427bd6c7"
+          },
+          {
+            "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC.lean",
+            "sha256": "0fa9603a31708fea98187564d3f2bfa05b7b7f1f74b138c3ef708ee154312239"
+          }
+        ],
+        "parent_unit_count": 164
+      }
+    },
+    {
+      "reason": "One optional auditcaller used nonexistentMachine namespace; all9axiomreports succeeded; caller corrected and entireaudit passed.",
+      "original_path": "/tmp/zfc-choice-adapter/initial-audit-caller-namespace-failure.json",
+      "evidence": {
+        "status": "FAIL",
+        "command": [
+          "/home/codex/.elan/toolchains/leanprover--lean4---v4.32.0/bin/lean",
+          "/tmp/zfc-choice-adapter/Audit.lean"
+        ],
+        "cwd": "/home/codex/.codex/worktrees/ec20/Proofs",
+        "LEAN_PATH": "/tmp/zfc-choice-adapter/cache",
+        "returncode": 1,
+        "seconds": 0.5866605136543512,
+        "output": "'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.constructible_choice' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.constructible_models_ZFC' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.constructible_nonempty' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zfc_consistent_of_zf_model' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zf_refutation_of_zfc' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zf_refutation_iff_zfc' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zf_consistency_iff_zfc' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.blank_halts_iff_zfc_refutation' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.nonhalting_iff_zfc_consistency' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n/tmp/zfc-choice-adapter/Audit.lean:46:10: error(lean.unknownIdentifier): Unknown identifier `SetTheory.BusyBeaver.ZFC.Machine`\n",
+        "source_sha256": "1935796d5e1424a062e914a48d10806a5dbacb394d36badec368c5d6adca5b55",
+        "axiom_reports": [
+          {
+            "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.constructible_choice",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          },
+          {
+            "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.constructible_models_ZFC",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          },
+          {
+            "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.constructible_nonempty",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          },
+          {
+            "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zfc_consistent_of_zf_model",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          },
+          {
+            "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zf_refutation_of_zfc",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          },
+          {
+            "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zf_refutation_iff_zfc",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          },
+          {
+            "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.zf_consistency_iff_zfc",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          },
+          {
+            "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.blank_halts_iff_zfc_refutation",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          },
+          {
+            "theorem": "SetTheory.BusyBeaver.ZFC.ChoiceCalibration254.nonhalting_iff_zfc_consistency",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ]
+          }
+        ],
+        "axiom_report_count": 9,
+        "caller_count": 15,
+        "only_standard_axioms": true
+      }
+    }
+  ],
+  "maintained_integration": {
+    "path": "results/choice-calibration254-integration-verification.json",
+    "sha256": "8f102a8c990c0c8540aaa2abeaaf117f90de3777553f364a80abbdf9ad0f2efb",
+    "fresh_modules": [
+      "BusyBeaver.ZFC.ChoiceCalibration254",
+      "BusyBeaver.ZFC"
+    ],
+    "reused_imports": 163,
+    "named_axiom_probes": 12,
+    "callers": 8,
+    "only_standard_axioms": true
+  },
+  "not_claimed": [
+    "An unconditional consistency or nonhalting theorem",
+    "A new smaller machine or any table change",
+    "An arithmetic proof-code/finite-trace representation or internal PA/ZFC metatheorem",
+    "All-sentence conservativity or same-carrier model inclusion"
+  ],
+  "source_review_did_not_rerun_Lean": true
+}

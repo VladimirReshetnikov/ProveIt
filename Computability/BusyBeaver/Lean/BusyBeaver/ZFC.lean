@@ -135,7 +135,9 @@ import BusyBeaver.ZFC.Permutation252Program
 import BusyBeaver.ZFC.SitesPerm252
 import BusyBeaver.ZFC.BinaryPerm252
 import BusyBeaver.ZFC.ZFCBoundPerm252
+import BusyBeaver.ZFC.ChoiceCalibration254
 
 /-! Opt-in foundations for ZFC machine minimization. The exact 252-state
-blank machine is equivalent to Con(ZF). Choice transport and the requested
-formalization of the comparison inside PA remain separate obligations. -/
+blank machine has a closed external nonhalting iff Con(ZFC) theorem.
+Internal arithmetic proof-code and finite-trace transport, including the
+requested comparison inside PA, remain separate obligations. -/

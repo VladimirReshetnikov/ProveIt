@@ -3127,14 +3127,17 @@ source50 offers a different representation. The separate checked
 projections in arbitrary IOpen models, with the actual Nat adapter. This closes
 that elementary component of the report's proposed arithmetic work. It does not
 yet represent the canonical checker, its normalization, the whole proof compiler
-or the trace translation. Current `CodeOrder.lean` and `TupleOrder.lean` similarly
-close particular internal-order steps without completing Choice removal.
+or the trace translation. At intake time, `CodeOrder.lean` and `TupleOrder.lean`
+closed particular internal-order steps. The later
+[constructible-order and Choice calibration](../../../../../../Computability/BusyBeaver/Research/ZFC/choice_calibration254.md)
+now complete the external ZFC comparison.
 
 The original user request asks for an equivalence **proved in PA**. The report's
 section9 follows the later goal record in calling ZFC the target and PA stronger;
-that wording does not relax the original request here. The current closed Lean
-endpoint is external nonhalting iff Con(ZF), with Con(ZFC) implying nonhalting.
-The complete coded Choice and PA/ZFC machine bridges remain open. No new state
+that wording does not relax the original request here. After this intake, the
+closed Lean endpoint was extended to external nonhalting iff Con(ZFC) for the
+same literal 252-state machine. The internal proof-code and PA/ZFC machine
+bridges remain open. No new state
 record, unconditional nonhalting, internally verified endpoint or new Lean
 theorem follows merely from this intake.
 

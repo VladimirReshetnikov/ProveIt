@@ -1,13 +1,13 @@
-# A 252-state machine with a checked ZF consistency endpoint
+# A 252-state machine with a checked ZFC consistency endpoint
 
 The frozen binary table reaches a clean root frame after **82,552 actual
 blank-tape steps**. It has **252 working states, 504 transitions and one
 halting transition**. All 8,391 instruction guard cases pass Lean for the
 complete original register program under a new assignment of physical
-registers. The [closed binary endpoint](../binary_perm252.md) proves that this
-exact machine never halts from the blank tape iff ordinary ZF is consistent,
-including Foundation and Power. Con(ZFC) implies nonhalting. The reverse ZFC
-comparison requires Choice removal; formalization inside PA remains open.
+registers. The [closed ZFC endpoint](../choice_calibration254.md) proves in Lean
+that this exact machine never halts from the blank tape iff ZFC is consistent.
+This is an external metatheorem. **Formalization of the equivalence inside PA
+remains open**, so the original PA requirement is not yet claimed.
 
 The idea is to change where the existing runtime stores its registers. This
 preserves the intended program while changing what the same states do during
@@ -133,11 +133,24 @@ handled by `DirtyProgram254`. The literal program's equivalence with the
 structured proof search has passed a fresh 3,010-entry certificate check.
 `BinaryPerm252.nonhalting_iff_zf_consistency` composes those results with the
 checked native/ZF calibration, with no coverage or startup assumption.
-`ZFCBoundPerm252.blank_nonhalting_of_zfc_consistent` gives the ZFC consistency
-direction. The [153-unit integration](../results/binary-perm252-integration-verification.json)
-checks these exact callers and all reused source identities. The full arithmetic
-consistency endpoint remains open. No claim that PA proves the final equivalence
-is made yet.
+`ChoiceCalibration254.nonhalting_iff_zfc_consistency` now closes the ZFC
+comparison in both directions. It constructs a model of ZFC inside the
+constructible class of any ZF model, then uses external first-order completeness
+to transfer refutations. Its statement is
+
+```text
+(¬ ∃ t, (machinePerm252.run t).state = none)
+  ↔ ¬ BProv LeanProofs.BoundedZFCConsistency.ZFCax_s [] Form.fBot.
+```
+
+The [165-unit integration](../results/choice-calibration254-integration-verification.json)
+freshly checks this final module, the umbrella, twelve axiom reports and eight
+callers, using 163 source-matched previously checked dependencies. The
+[independent review](../results/choice-calibration254-review.json) confirms that
+the endpoint retains no model, Choice, coverage or startup assumption. Only
+the standard Lean axioms `propext`, `Classical.choice` and `Quot.sound` occur.
+This external proof does not yet supply the arithmetic proof-code and finite
+trace translations needed for a PA proof.
 
 Reproduce the finite candidate audit and the exact generated artifacts with:
 

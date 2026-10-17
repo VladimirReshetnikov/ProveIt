@@ -5,6 +5,8 @@ refutation. Equivalently, it halts exactly when `Code254Proof.check` accepts
 some natural-number proof of falsity, when the exact native theory has a
 refutation, or when the repository's full ZF theory `ZFax_s` has a refutation.
 The negated statements give the corresponding nonhalting equivalences.
+The subsequent [Choice calibration](choice_calibration254.md) extends this
+closed endpoint to **nonhalting iff Con(ZFC)** for the same literal table.
 
 These final statements have no coverage, register-operation or chosen-start
 premise. They compose the closed certificate for all 233 literal decoder
@@ -42,8 +44,14 @@ source identities match their successful scoped checks. The complete9Sites
 objects and the Binary object also match the recorded checked artifacts.
 This integration does not rebuild all153 modules.
 
-This is an external Lean proof of the literal machine's equivalence with
-ZF consistency. It does not assert unconditional nonhalting, minimality,
-the remaining standard-ZFC consistency comparison, or that comparison's
-formalization in PA. The accepted natural-number proof witness exposes a
-precise interface for the arithmetic work without claiming it is completed.
+`ChoiceCalibration254.nonhalting_iff_zfc_consistency` now supplies the full
+external Lean equivalence with standard ZFC consistency. It combines this
+binary/ZF endpoint with Choice in the constructible subtype and a refutation
+comparison through external completeness. The
+[165-unit integration](results/choice-calibration254-integration-verification.json)
+checks the final composition; its final statement has no additional premise.
+
+The PA formalization remains open: the accepted natural-number proof witness
+exposes an interface for arithmetic work, while represented proof and finite
+trace translations still need completion. The result establishes neither
+unconditional nonhalting nor minimality.

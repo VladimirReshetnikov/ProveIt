@@ -1,0 +1,217 @@
+{
+  "status": "CLEAN/ACCEPT, with fresh164-unit source-verified integration",
+  "source": {
+    "path": "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleOrder.lean",
+    "sha256": "399fabe52b0998e9ec41e7f9f21d819ef9ba11cb6ecc5f944ac59a81ac11dd74",
+    "lines": 587
+  },
+  "scope": "Canonical internal constructible orders and conditional ChoiceSem under ZF plus V=L. All internal formula codes and internal finite tuple lengths, no standardness or external well-foundedness.",
+  "independent_review": {
+    "status": "CLEAN/ACCEPT: independent mathematical/API source review; no defect or hidden object Choice found",
+    "reviewer": "/root/review_fibers",
+    "reviewed_HEAD": "28b0f7e26f08961d612afd17b029b67a46b05636",
+    "arrival_commit": "6c75f70e41",
+    "ConstructibleOrder_matches_arrival": true,
+    "read_scope": [
+      "Every line1\u2013587 ConstructibleOrder.lean",
+      "Relevant full key-set/least-key and internal order APIs in InternalWO/CodeOrder/TupleOrder/OrderRec",
+      "SatSupport full source: literal formula-indexed internal induction and shifted environments",
+      "ConstructibleAbs code_up/down, finite-support environment extension, Def absoluteness, hierarchy descent and vEqL",
+      "ConstructibleDef exact Gdef/DefinableIn and environment/shift formulas",
+      "Constructible.stage_bound and ConstructibleZF L bundle/Power/Foundation/model adapters",
+      "Exact official ChoiceSem/Choice_form/sealed bridge and soundness/completeness interfaces"
+    ],
+    "findings": [],
+    "mathematical_checks": {
+      "assumptions": "H=actual six-field ZFAxioms(Ext,FormSep,Pair,Union,Inf,FormRepl), explicit Regular and Power; hVL all objects internally constructible. No Choice or external well-foundedness premise.",
+      "key_set_bound": "CF \u00d7 (omega \u00d7 Power(omega \u00d7 F)). Tuple graphs have no nonpair junk, domain n\u2286omega and all values in F; bound covers all internal/nonstandard n. Actual isKeyF Separation on this bound gives allkeys for arbitrary represented Z; no class collection/witnessChoice.",
+      "Defines": "Universal over represented membership relations/environments extending tuple. Actual named formula and nsat bridge handle econs through functional-environment equality; no arbitrary semantic Separation.",
+      "key_exists": "Internal sat_support covers all valid codes, including nonstandard ones. Restriction to internally finite n yields actual no-junk tuple, all completions share the shifted satisfaction value. Empty subset uses bottom and emptytuple.",
+      "key_uniqueness": "Nonempty F supplies one default point and an environment extending any tuple; identical key gives identical code/length/tuple, then Ext identifies defined sets.",
+      "empty_case": "new_wo separately handles empty F: every member of GdefF is empty by subsethood, so Ext gives uniqueness even though Defines can be vacuous. No invalid unconditional key_unique theorem.",
+      "wellorder": "IsWO least elements only for represented nonempty sets; wo_pull explicit hset resource is discharged by key_set. No external WellFounded assumption.",
+      "stage": "Actual definable append operation, literal isStageF ordinal induction, oldfield preserved by transitivity of Lc and mem_gdef_of_mem. Stage fields equal La with correct zero/successor/limit indexing.",
+      "choices": "Classical.choose merely selects existing extensional sets/unique code order in metatheory. It is not an object-level axiom of choice; all resources come from finite Form schemas and explicit H/Reg/Power.",
+      "ChoiceSem": "Exact Zermelo selector for pairwise disjoint nonempty families. Common stage bounds unionfamily; explicit Separation takes least members; pairwise disjointness forces any competing selected point to come from the same member; antisymmetry gives uniqueness.",
+      "nonstandardness": "Internal code induction, internal n\u2208omega, represented graph/powerset bounds and actual-form ordinal induction throughout. No conversion of internal n/codes to external Nat.",
+      "universe_nonempty": "Generic Typeu with inherited mem; subtypeL same universe. H.inf entails inhabitance; next adapter can use explicit constructible empty object rather than an unspoken valuation."
+    },
+    "precise_remaining_adapter": [
+      {
+        "name": "L_choice",
+        "dependencies": [
+          "ConstructibleOrder.choice_of_VL:563",
+          "ConstructibleZF.L_zfAxioms:313",
+          "ConstructibleZF.L_regular:374",
+          "ConstructibleZF.L_power:365",
+          "ConstructibleAbs.vEqL:987"
+        ],
+        "claim": "ChoiceSem(memL H hP) by specializing the theorem to the actual constructible subtype."
+      },
+      {
+        "name": "L_models_ZFC",
+        "dependencies": [
+          "ConstructibleZF.L_models_ZF:399",
+          "Choice.bridge_Choice_sealed:168",
+          "Choice.ZFCax_s:188",
+          "L_choice"
+        ],
+        "claim": "Every sealed ZFC axiom is satisfied under every explicit L valuation; split ZF vs sealed Choice branches."
+      },
+      {
+        "name": "zf_refutation_of_zfc",
+        "dependencies": [
+          "ZFNative.models_ZF:34",
+          "FirstOrder.completeness_inf:1094",
+          "FirstOrder.soundness_BProv:454",
+          "L_models_ZFC",
+          "ConstructibleAbs.inL_natV:573 (explicit natV0 inhabitant)"
+        ],
+        "claim": "From a ZFCrefutation derive ZFrefutation by contradiction in an inhabited L model of an arbitrary ZF model. Same-domain theory_transfer is not directly applicable because L has a different carrier."
+      },
+      {
+        "name": "final_external_composition",
+        "dependencies": [
+          "BinaryPerm252.nonhalting_iff_zf_consistency:110",
+          "new refutation-removal adapter",
+          "ZFCBoundPerm252 existing converse"
+        ],
+        "claim": "External Lean nonhalting iff syntactic ConZFC once new corollaries are proved/checked; not an automatically PA/ZFC-internal statement."
+      }
+    ],
+    "boundary": "This source review ran no Lean/Python suite and claims no fresh kernel verification. The new file supplies conditional Choice under V=L, not yet L_models_ZFC/refutation-removal/final machine equivalence. Actual finite effective proof-code translation and PA arithmetic representation/totality remain separate after those external corollaries.",
+    "source_snapshots": {
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleOrder.lean": {
+        "sha256": "399fabe52b0998e9ec41e7f9f21d819ef9ba11cb6ecc5f944ac59a81ac11dd74",
+        "lines": 587,
+        "bytes": 28426,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/ConstructibleOrder.lean"
+      },
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleAbs.lean": {
+        "sha256": "9899be5219d6dd729e4fbd575fc4ab1e5e385aa83b76b0ecd6f03d5ab5494d24",
+        "lines": 997,
+        "bytes": 52100,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/ConstructibleAbs.lean"
+      },
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/CodeOrder.lean": {
+        "sha256": "7c7f7dcacae596b04f560fc6f950e253ba98328c1b2d4e78c2f94d68d1047d03",
+        "lines": 427,
+        "bytes": 19348,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/CodeOrder.lean"
+      },
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/TupleOrder.lean": {
+        "sha256": "fecc0ac2b23a6b6f9c127c98ea4c9e61efa60fde52792da6e803150cbe38400a",
+        "lines": 327,
+        "bytes": 15760,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/TupleOrder.lean"
+      },
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/SatSupport.lean": {
+        "sha256": "173760b2b8569856cbcca87365e551b9c6586f9be9addf45aa3e6d63f9ae2226",
+        "lines": 193,
+        "bytes": 9418,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/SatSupport.lean"
+      },
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/InternalWO.lean": {
+        "sha256": "7152e907d8fafbdc84a16d72e752c5ad05a6462e5840047dcb5c4c20c5f96858",
+        "lines": 311,
+        "bytes": 15765,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/InternalWO.lean"
+      },
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/OrderRec.lean": {
+        "sha256": "397cc37c3fcbd84392aceca9289c9e4d8623db917b95b56b1a921620933f8038",
+        "lines": 309,
+        "bytes": 15025,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/OrderRec.lean"
+      },
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/Constructible.lean": {
+        "sha256": "c2d5ff0435d0e1f7bd5450c6f332999bbe887abfbc71a93deed46a7abc7bfa71",
+        "lines": 431,
+        "bytes": 19296,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/Constructible.lean"
+      },
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleDef.lean": {
+        "sha256": "e487e6ff18b456c631ee377bafd7ddce998873686bea886723655f52ae07a699",
+        "lines": 198,
+        "bytes": 9490,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/ConstructibleDef.lean"
+      },
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleZF.lean": {
+        "sha256": "8d6802f21c12b9e31b8a7ba2738200cabbc5b8ce73cb9cd4bfe40663ef40b76c",
+        "lines": 404,
+        "bytes": 18455,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/ConstructibleZF.lean"
+      },
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ZFNative.lean": {
+        "sha256": "78eb9a09da0d3b04b494b479fda1b5a352637bc6442e468fbcb022508e1c8385",
+        "lines": 89,
+        "bytes": 4503,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/ZFNative.lean"
+      },
+      "Computability/BusyBeaver/Lean/BusyBeaver/ZFC/WFTheory.lean": {
+        "sha256": "72969cd2d53f616816a83a36ae625b79adbcbecc2fd2fb1c0951a7801f747164",
+        "lines": 57,
+        "bytes": 2316,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/WFTheory.lean"
+      },
+      "SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Choice.lean": {
+        "sha256": "659cfe68441b2ebd9ed3dceb2e62e7690110424769e6e7ba1f81f63c9c1f6928",
+        "lines": 223,
+        "bytes": 8648,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/Choice.lean"
+      },
+      "Logic/FirstOrder/Lean/FirstOrder/Completeness.lean": {
+        "sha256": "e847ae3b260974b09c726a31e2c01ad5e5f84e04b2db12eef4321a4b1ab77299",
+        "lines": 1127,
+        "bytes": 45611,
+        "snapshot": "/tmp/zfc-constructible-order-review-sources/Completeness.lean"
+      }
+    },
+    "no_Lean_builds_or_tracked_edits": true,
+    "post_review_update": {
+      "adapter": "/tmp/zfc-choice-adapter/ChoiceCalibration254.lean",
+      "status": "All external composition steps implemented and scoped kernelPASS per child evidence; independent source audit CLEAN. Earlier remaining-adapter list is historical-at-reviewed-HEAD.",
+      "independent_review": "/tmp/zfc-choice-adapter/independent-review.json",
+      "current_remaining": "Maintained integration (root); effective internal arithmetic/proof-code/trace comparison remains separate."
+    }
+  },
+  "independent_review_markdown": "# Independent review of ConstructibleOrder\n\n**Clean/accept.** I read all 587 lines of `Computability/BusyBeaver/Lean/BusyBeaver/ZFC/ConstructibleOrder.lean` and the relevant preceding APIs in ConstructibleAbs, CodeOrder, TupleOrder, SatSupport, InternalWO, OrderRec, Constructible, ConstructibleDef and ConstructibleZF. I found no mathematical defect, improper class-size assumption, hidden object-level Choice, standard-code restriction or empty-field shortcut. This was a read-only source review: no Lean build or executable suite was run. The JSON identifies the exact sources and copied snapshots.\n\nReviewed HEAD is `28b0f7e26f08961d612afd17b029b67a46b05636`. The new source is byte-identical to commit `6c75f70e41`, SHA256 `399fabe52b0998e9ec41e7f9f21d819ef9ba11cb6ecc5f944ac59a81ac11dd74`, 587 lines/28,426 bytes. Snapshots are under `/tmp/zfc-constructible-order-review-sources`.\n\n## Exact assumptions and internal meaning\n\nThe final statement is `choice_of_VL` at line 563, under H, hR, hP and hVL. H is the actual six-field `ZFAxioms` bundle (`SetTheory/ZF/Lean/ZF/Zf.lean:334`): Extensionality, formula-indexed Separation, Pairing, Union, Infinity and formula-indexed partial Replacement. Power and Regularity are separate explicit hypotheses. `hVL : \u2200 x, InL H hP x` says every ambient object is internally constructible. There is no Choice, global choice function, externally well-founded membership relation, transitive standard model or standardness-of-omega hypothesis.\n\n`InternalWO.IsWO` at lines 28\u201333 requires a least element only for each represented nonempty set contained in its field. It is not an assertion of external well-foundedness on all metatheoretic subsets. The same internal reading applies to `IsWOS` and every stage theorem. A countable externally ill-founded model is not silently replaced by a standard model.\n\n## Keys really are bounded by one set\n\nThis is the critical size argument. `key_set` at lines 259\u2013279 does not collect arbitrary chosen witnesses. Let CF represent the field of CW. It constructs\n\n`T1 = omega \u00d7 F`, `PT = Power(T1)`, `B1 = omega \u00d7 PT`, `B = CF \u00d7 B1`.\n\nAn IsKey unpacks as `k=pair(c,pair(n,t))`, with c in CF, n in internal omega and t an actual function graph on n whose values lie in F. `IsFunctionOn` has a no-junk clause: every member of t is a pair(i,y) with i in n. Since n is an internal natural, n is a subset of internal omega. Every such pair therefore belongs to T1, including when n is nonstandard externally. Thus t belongs to PT, and k belongs to B. The bound is independent of the represented set Z whose elements' keys are being selected.\n\nThe last operation is actual Separation on B using `exists y in Z, IsKey(...)`, represented by `isKeyF` and checked by `nsat_isKeyF`. Universal quantification over environments in Defines is part of a finite named formula, not an arbitrary external predicate supplied to Separation. All keys of the members of Z really form a represented set. This discharges the explicit `hset` hypothesis of `InternalWO.wo_pull:199\u2013204`, which would otherwise be a genuine proper-class gap.\n\n## Existence, uniqueness and the empty field\n\n`Defines` at lines 34\u201336 requires that every represented membership relation/environment completing the tuple define the same subset. Its named formula at lines 56\u201379 uses fresh finite variable names and the actual environment-cons graph formula; functionality of the environment proves that the existential graph is exactly econs. The other key/order predicates have corresponding satisfaction lemmas, so later Separation/ordinal induction uses actual schema instances.\n\n`key_exists:222` handles an empty subset by bottom plus the empty tuple. For a definable subset it starts from an actual membership relation, code and environment. That environment itself supplies a point of F. `SatSupport.sat_support` applies to every internally valid code, not only external quotations, through its literal named induction property. Restricting the environment to its internal finite support n gives an actual tuple. Every completion agrees on that tuple; `agreeP_econs` preserves this agreement after inserting the tested element, and support gives the same satisfaction value. Encoded membership relations are unique by Extensionality.\n\n`key_unique:204` correctly assumes F nonempty. One default point extends any tuple to an environment on all internal omega, using a product/Separation construction. The common key has the same code, length and tuple by pair injectivity; applying both Defines witnesses to this common environment then gives equal subsets by Extensionality.\n\nAn unconditional version would be false because Defines may be vacuous on an empty carrier. The proof does **not** use one: `new_wo:287\u2013291` explicitly branches on F's nonemptiness. If F is empty, every element of Gdef(F) is a subset of F and hence empty. Thus all new elements are equal by Extensionality, providing the needed restricted uniqueness without pretending that arbitrary empty-carrier keys determine arbitrary sets.\n\n`key_wo:155` orders codes, internal lengths and same-length tuples lexicographically. CodeOrder's field may include additional pair-closed objects; IsKey retains the valid-code condition. Additional field objects do not harm well-ordering or completeness of keys. TupleOrder's least-element theorem is proved by an actual formula instance of internal omega induction, for all n in omega, with actual set bounds for prefixes and last values. No external finite enumeration of a nonstandard tuple is used.\n\n## The step, recursion and stage fields\n\n`setNew_exists:323`, `setOrd_exists:330` and `setGL_exists:359` use actual finite formulas and represented product/union bounds. The step retains the old order, adds all old-to-new pairs and orders the new set by least keys. `appendOpL:390` discharges the generic end-extension theorem's four resources, including new/old disjointness and the complete field restriction on the new relation.\n\nThe noncomputable choices select sets whose exact memberships are already proved, and the uniquely characterized code order. These are metatheoretic names for existing extensional objects, not an assumed object-level family choice principle. `inGLF` eliminates them from the recursion's graph formula: field objects are specified extensionally, and `codeOrder_unique` identifies any witness satisfying the literal code-order formula. Thus `stepLOp:503` really is a definable operation usable by TransRec.\n\n`lord_wos:521` applies the previously proved internal end-extension recursion theorem. `lord_fld:525` supplies the actual named property for ordinal induction and compares both recursions at every internal ordinal. The stage convention is consistent on both sides: each stage is the union of the next-step images of its predecessors. An old field element remains in Def(Lc) because Lc is transitive and `mem_gdef_of_mem` applies; new elements are precisely the Def(Lc) elements outside Lc. Zero/successor/limit cases are not shifted by one. No external class recursion function is assumed.\n\nNonpair junk in the generic order-set representation is ignored by its Le/Fld interface. The final consumer only uses this checked interface; it does not assert a stronger literal-purity property of arbitrary order sets.\n\n## Exact Choice conclusion\n\n`ChoiceSem` is the official Zermelo selector formulation at `SetTheory/BoundedConsistency/Lean/BoundedZFCConsistency/Choice.lean:119`: every pairwise disjoint family of nonempty sets has a set meeting each member in exactly one point. Its exact sealed-form bridge already exists at line 168. The new theorem does not silently substitute a stronger global choice function.\n\nFor a family x, `choice_of_VL:563` bounds **all members of union(x)** in one L stage using the existing actual-form stage_bound theorem. The canonical order of that stage orders every candidate point. Actual Separation on union(x), with the finite formula at lines571\u2013576, takes all least points of family members. Every nonempty member y has a least point by the internal well-order interface. If w is another point in y and the selector, its selector witness is some y' in x; the common point w and pairwise disjointness force y=y'. Both leastness inequalities and antisymmetry give w=m. The empty-family case needs no exception or arbitrary selected point.\n\n## Concrete remaining adapter at this review's HEAD\n\nThe new file proves conditional Choice under V=L. At the reviewed HEAD it does not yet define the final constructible-ZFC model or finite-refutation comparison. Those are now small composition steps:\n\n1. Apply `choice_of_VL` inside the actual subtype `{x // InL H hP x}`, using `ConstructibleZF.L_zfAxioms:313`, `L_regular:374`, `L_power:365` and `ConstructibleAbs.vEqL:987`. This gives `ChoiceSem (memL H hP)` with no remaining V=L premise.\n2. Combine `ConstructibleZF.L_models_ZF:399` with `bridge_Choice_sealed.mpr` and split the two branches of `ZFCax_s:188`. This gives every sealed ZFC axiom under any explicit L valuation. An explicit inhabited valuation can use `natV H 0` with `ConstructibleAbs.inL_natV H hR hP 0`.\n3. Given a ZFC refutation, apply `completeness_inf` to ZFax_s. From any ZF model obtain H, hP and hR via `ZFNative.models_ZF:34`, build its inhabited L model, and contradict the ZFC refutation using `soundness_BProv`. This yields a ZF refutation. `theory_transfer` is not directly the correct interface: it demands the same underlying carrier, whereas L is a subtype.\n4. Compose with `BinaryPerm252.nonhalting_iff_zf_consistency:110` and the already checked opposite standard-theory implication to obtain the external Lean Con(ZFC) endpoint.\n\nThe existing ConstructibleAbs bridge is adequate: code_up/down cover internal codes by actual formula induction/least-rank arguments; arbitrary ambient environments can be replaced on their internal finite support by constructible ones; Gdef is absolute; the hierarchy comparison gives V=L in L. There is no new mathematical missing-Choice obstacle in that composition.\n\nThese are external model/provability metatheorems. Even after their Lean proofs are checked, they do not themselves construct an effective finite proof-code translation or prove its correctness/totality in PA. A direct internal PA or ZFC statement about the serialized machine still requires the separate arithmetic/trace comparison work. Nothing in this source review changes that boundary.\n\nPost-review update: the separate `ChoiceCalibration254.lean` glue now implements all four external adapter steps above and has a successful scoped source/audit record. Its independent source review is `/tmp/zfc-choice-adapter/independent-review.md/json`. Thus the \u201cremaining adapter at this review's HEAD\u201d section is a historical frontier, not a current mathematical gap; only maintained integration and the separately identified internal arithmetic/proof-code work remain.\n",
+  "integration_source_scope_review": {
+    "status": "PASS",
+    "reviewed_source_lines": 587,
+    "source_sha256": "399fabe52b0998e9ec41e7f9f21d819ef9ba11cb6ecc5f944ac59a81ac11dd74",
+    "theory_assumptions": [
+      "ZFAxioms mem (six fields, no Power or Regularity inside bundle)",
+      "Regular mem",
+      "full native Power for every set",
+      "V=L only for final choice theorem"
+    ],
+    "code_scope": "All IsFormCodeSem H c with c : V, and all internal natural support bounds/tuple lengths; no standardness or external well-foundedness.",
+    "exact_choice": "ChoiceSem mem; bridge_Choice caller proves forall valuations satisfaction of actual Choice_form.",
+    "excluded_claims": [
+      "No internal PA arithmetic proof/trace transport",
+      "No final refutation-equivalence or machine/ZFC adapter yet in this module",
+      "No fresh rebuild of162 reused imports",
+      "Arithmetic dependency lane is not part of164 Std-only closure"
+    ],
+    "verification": "/tmp/zfc-choice164-aqxx2lu2/verification.json",
+    "doc_patch": "/tmp/zfc-choice164-aqxx2lu2/doc-patch-draft.md",
+    "audit_probes": 19,
+    "callers": 9,
+    "warning_count": 0,
+    "tracked_edits": false
+  },
+  "fresh_integration": {
+    "path": "results/constructible-order-integration-verification.json",
+    "sha256": "2c6e6d8df2a8e919f94beb0644583b4b861d80029ad52e28784dfb9af0c11913",
+    "fresh_modules": [
+      "BusyBeaver.ZFC.ConstructibleOrder",
+      "BusyBeaver.ZFC"
+    ],
+    "reused_imports": 162,
+    "named_axiom_probes": 19,
+    "callers": 9,
+    "only_standard_axioms": true
+  },
+  "current_status_update": "The earlier remaining-adapter list in the embedded review is historical. ChoiceCalibration254 now discharges that external model/refutation/machine comparison and passes maintained165-unit integration. Effective arithmetic proof-code and PA transport remain separate.",
+  "source_review_did_not_rerun_Lean": true
+}

@@ -4,13 +4,19 @@ Read-only research inventory, 16 October 2026, against `7b1e56dbc59f746695a7fb37
 and the explicitly identified work in progress below. No Lean or Coq build was
 run for this note. This is a proposed proof-code interface, not a PA theorem.
 
-The initial request mentioned an equivalence provable in PA; the later goal
-record asks for an equivalence provable in **ZFC**. These are different
-deliverables. A Lean theorem comparing halting and `BProv` is an ordinary
-metatheorem until the intended arithmetic sentence and an object-theory proof
-are connected to it. Completing the PA version would also serve the weaker
-metatheory requirement, after checking the chosen arithmetic interpretation in
-ZFC; that extra work is not required merely by the revised target.
+The original request requires an equivalence provable in **PA**. The stored
+goal record instead says ZFC; the original PA requirement remains our target.
+A Lean theorem comparing halting and `BProv` is an ordinary metatheorem until
+the intended arithmetic sentence and an object-theory proof are connected to
+it. Completing the PA version would also serve the ZFC requirement, after
+checking the chosen arithmetic interpretation in ZFC.
+
+The [Choice calibration](choice_calibration254.md) now closes the external
+Lean theorem for the literal 252-state machine: blank nonhalting iff Con(ZFC).
+It uses Choice in L and external first-order completeness. This discharges the
+external consistency comparison; it does not implement the represented proof
+translations or prove their correctness for every internal code in every PA
+model. Those obligations below remain.
 
 ## What is already available
 
@@ -26,7 +32,8 @@ proof-code transformations.
 | `NumericCode254.numThm_iff_c254` (`NumericCode254.lean:133`) | The two local exact numerical calculi agree; this is useful for avoiding a third arithmetic coding. It is not an internal PA proof of that agreement. |
 | `Code254.c254_of_thmG` (`Code254.lean:425`) and `NamedNumeric254.transport` (`NamedNumeric254.lean:37`) | Existing constructor-by-constructor named/numerical transports provide templates for data-level compilers. Their current premises and results remain proposition-valued. |
 | `WFModel`, `WFTheory` | The freshly checked internally-WF interpretation supplies the reverse comparison with ordinary ZF, including Foundation and Power, using actual Form instances. `WFTheory.c254_refutation_iff_zf`/`native_refutation_iff_zf` close the ordinary two-way comparison. The scoped audit checked all three WF modules, 23 axiom reports and six callers; see `results/wf-model-theory-verification.json`. Choice and internal PA formalization remain separate. |
-| `BinaryPerm252` | The proposed closed blank-machine endpoint additionally depends on the full actual-sites certificate and the literal/structured program correspondence. Its source explicitly requires the closed certificate to pass. A bootstrap or individual certificate batch is insufficient. |
+| `BinaryPerm252` | The closed blank-machine endpoint includes the completed actual-sites certificate and literal/structured program correspondence. It proves the actual machine's nonhalting iff ordinary ZF consistency, with no coverage or startup premise. |
+| `ChoiceCalibration254` | The constructible subtype satisfies all sealed ZFC axioms. External completeness transfers ZFC refutations to ZF refutations, closing the actual machine's nonhalting iff Con(ZFC). This does not expose a represented proof-code compiler. |
 
 `Logic/FirstOrder/Lean/FirstOrder/Calculus.lean:33` defines the seventeen-rule
 natural-deduction relation in `Prop`. `Completeness.lean:1105` defines
@@ -159,7 +166,8 @@ PA ⊢ ∀p (PrfZFC(p) → ∃t HaltTrace252(t))
 Negating gives the desired PA-provable nonhalting/consistency equivalence.
 An adequate modular interface is the analogous pair of proof-translation
 sentences for C254/Native, Native/ZF, and ZFC/ZF, plus C254/actual-machine
-traces. The reverse ZFC/ZF direction is the genuine Choice comparison;
+traces. The reverse ZFC/ZF direction must represent the now externally checked
+Choice comparison;
 Foundation is addressed by the internally-WF route rather than a false claim
 that raw IR descends to the bisimulation quotient.
 
