@@ -26,6 +26,9 @@ def main() -> None:
         ("Logic/FirstOrder/Lean", "FirstOrder/Calculus.lean"),
         ("Logic/FirstOrder/Lean", "FirstOrder/Completeness.lean"),
         ("SetTheory/ZF/Lean", "ZF/Zf.lean"),
+        ("SetTheory/BoundedConsistency/Lean", "BoundedZFCConsistency/Basic.lean"),
+        ("SetTheory/BoundedConsistency/Lean", "BoundedZFCConsistency/OmegaRecursion.lean"),
+        ("SetTheory/BoundedConsistency/Lean", "BoundedZFCConsistency/Choice.lean"),
         ("Computability/BusyBeaver/Lean", "BusyBeaver/Core.lean"),
         *( ("Computability/BusyBeaver/Lean", f"BusyBeaver/ZFC/{name}.lean")
            for name in ("ProfileCongruence", "PositiveClosure", "Bootstrap", "DeepPositiveClosure",
@@ -46,7 +49,7 @@ def main() -> None:
                         "RegisterDecrement253", "QuotientBasic", "SingletonInfinity", "BreakSite253", "FiniteSets", "InductiveAttempts", "QuotientZF0",
                         "RMDag", "Dag254", "L2Lib254", "L2Macros254", "L2Control254", "L2Axioms254", "L2AxiomsEval254", "L2Root254", "RMEquiv", "RMEquiv254", "ProgramZF0", "DecodeFresh254", "NamedForm254",
                         "DuplicateProfiles", "WritingRuns", "ZeroSite253", "EqualityGIC", "QuotientCPGIC", "NativeDecoded254", "NativeTheory254",
-                        "EnumSafeStart254", "DirtyRoot254", "DirtyProgram254", "WellFoundedPart", "SeedInvariant254", "RMBisim", "ActualTree254", "Bisim254",
+                        "EnumSafeStart254", "DirtyRoot254", "DirtyProgram254", "WellFoundedPart", "SeedInvariant254", "RMBisim", "ActualTree254", "Bisim254", "NamedZF", "InternalOrd", "InternalRank", "ZFRank", "ZFNative", "Endpoint254",
                         "TablePerm252", "BootPerm252", "RegisterBoxesPerm252", "RegisterMarkPerm252",
                         "RegisterIncrementPerm252", "RegisterDecrementPerm252",
                         "Permutation252Frame", "BootstrapFramePerm252", "SymbolicPerm252", "SitePerm252",
