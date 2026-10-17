@@ -339,6 +339,13 @@ source and final umbrella check, joint axiom audits and endpoint callers are
 recorded in `results/native91-integration-verification.json`, reusing the
 verified dependencies. This equivalence does not yet calibrate the theory
 to ZFC or connect the structured DAG to binary-tape execution.
+The merged `RMEquiv` and `RMEquiv254` extend the runner to 93 units.
+`results/rmequiv93-integration-verification.json` records their scoped
+source checks, regenerated height/escape tables, the final umbrella, nine
+axiom audits and three callers. The 219-node DAG's path semantics is now
+equivalent to its structured semantics for every register vector. This
+still leaves the separate 6,459-node literal `Prog254` correspondence and
+binary runtime proof; the public 3,010-pair certificate is the next bridge.
 The separate [target-permutation obstruction](quotient_ir_obstruction.md)
 shows at the ordinary mathematical level why raw IR cannot simply be passed
 through this bisimulation quotient, even when native equality and Pairing are
