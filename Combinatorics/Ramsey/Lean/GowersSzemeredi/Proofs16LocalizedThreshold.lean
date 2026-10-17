@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16LocalizationBudget
+import GowersSzemeredi.Proofs16RecurrenceThreshold
 
 /-! # Threshold slack after preliminary localization
 

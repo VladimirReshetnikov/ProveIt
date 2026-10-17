@@ -1,6 +1,12 @@
-import GowersSzemeredi.Proofs13IntegerBudgets
 import GowersSzemeredi.Proofs08AffineFrequencyProgression
 import GowersSzemeredi.Proofs13OddSquareBounds
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib.GroupTheory.SpecificGroups.Cyclic
+import Mathlib.MeasureTheory.Integral.Average
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+import Mathlib.Probability.ConditionalProbability
 
 /-! Short odd progressions retain half the affine-frequency density. -/
 set_option autoImplicit false

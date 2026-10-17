@@ -3,7 +3,10 @@ import GowersSzemeredi.Proofs17LocalizedPhaseRemoval
 import GowersSzemeredi.Proofs17PartitionEnergy
 import GowersSzemeredi.Proofs13FejerOddSquare
 
-/-! Cubic polynomial localization at an explicit starting modulus. -/
+/-! Cubic polynomial localization at an explicit starting modulus.
+
+`fejer_cubic_nonuniformity_localized_phase_removal` is in
+`Proofs17FejerCubicLocalizationSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -56,23 +59,5 @@ theorem FejerOddSquareAt.localized {alpha e T : Real} (h : FejerOddSquareAt alph
   · intro i
     exact (by exact_mod_cast hupper i : ((Q i).length : Real) ≤ m).trans hmsqrt
   · simpa only [Nat.cast_ofNat, hconstant] using hnonuniform
-
-theorem fejer_cubic_nonuniformity_localized_phase_removal :
-    ∀ alpha : Real, 0 < alpha → alpha ≤ 1 →
-      ∀ (N : Nat) [NeZero N] [Fact N.Prime], section13FejerOddSquareThreshold alpha ≤ N →
-        ∀ f : ZMod N → Complex, DiscValued f → ¬ UniformOfDegree f alpha 3 →
-        ∃ phi : ZMod N → ZMod N, ∃ M l : Nat, ∃ Q : Fin M → ModAP N,
-          PolynomialOn 3 Finset.univ phi ∧
-          IsPartition (fun i => (Q i).carrier) Finset.univ ∧
-          (∀ i, (Q i).IsProper ∧ ((Q i).length = l ∨ (Q i).length = l + 1)) ∧
-          (N : Real) ^ ((1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53))) / 12 ≤ l ∧
-          (∀ i, ((Q i).length : Real) ≤ Real.sqrt N) ∧
-          ¬ UniformOnPartition (phaseTwist f phi) 2
-            ((2 : Real) ^ (-(58 : Int)) * alpha ^ 2 * (alpha / 2) ^ ((2 : Nat) ^ 42)) Q (l + 1) := by
-  intro alpha hα hαone
-  exact FejerOddSquareAt.localized (theorem_13_12_fejer_odd_square_explicit alpha hα hαone :
-    FejerOddSquareAt alpha ((1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53)))
-      (section13FejerOddSquareThreshold alpha)) hα
-
 
 end LeanProofs.GowersSzemeredi

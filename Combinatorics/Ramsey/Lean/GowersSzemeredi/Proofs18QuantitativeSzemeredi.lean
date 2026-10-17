@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs05_10
 import GowersSzemeredi.Sections17_18
+import Mathlib.Analysis.Convex.Jensen
+import Mathlib.Analysis.Convex.SpecificFunctions.Pow
 
 /-!
 # Auditing the quantitative deduction in Section 18

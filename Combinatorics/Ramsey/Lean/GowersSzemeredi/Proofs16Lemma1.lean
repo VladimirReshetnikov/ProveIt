@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16Slicing
+import Mathlib.Algebra.BigOperators.Ring.Finset
 
 /-! # Small common-difference products via a multilinear lift and slice
 

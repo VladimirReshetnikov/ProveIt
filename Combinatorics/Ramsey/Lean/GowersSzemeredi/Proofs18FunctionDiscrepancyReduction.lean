@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs18IntervalDiscrepancyIncrement
 import GowersSzemeredi.Proofs18NaturalIntervalIncrement
+import GowersSzemeredi.Proofs18QuadraticDichotomy
 
 /-! An explicit function discrepancy hypothesis suffices for the nonuniform
 branch on integer intervals. Its threshold is retained, not hidden in an

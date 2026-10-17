@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16PolyCoverTwo
+import GowersSzemeredi.Proofs16PolyCoverTwoSide
 
 /-! **Uniform family covers in dimension two** (Notes L.3, step (C)).
 

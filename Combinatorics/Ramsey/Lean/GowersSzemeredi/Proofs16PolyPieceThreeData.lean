@@ -1,4 +1,40 @@
 import GowersSzemeredi.Proofs16BaseCaseCubicExtraction
+import Mathlib.Algebra.BigOperators.Expect
+import Mathlib.Algebra.BigOperators.Group.Finset.Powerset
+import Mathlib.Algebra.MvPolynomial.Degrees
+import Mathlib.Algebra.MvPolynomial.Eval
+import Mathlib.Algebra.MvPolynomial.SchwartzZippel
+import Mathlib.Algebra.Order.BigOperators.Ring.Finset
+import Mathlib.Algebra.Order.Floor.Ring
+import Mathlib.Algebra.Order.Ring.Abs
+import Mathlib.Algebra.Polynomial.Degree.Monomial
+import Mathlib.Algebra.Polynomial.HasseDeriv
+import Mathlib.Algebra.Polynomial.Taylor
+import Mathlib.Analysis.Complex.Basic
+import Mathlib.Analysis.Convex.Jensen
+import Mathlib.Analysis.Convex.SpecificFunctions.Pow
+import Mathlib.Analysis.MeanInequalitiesPow
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Combinatorics.SetFamily.Shatter
+import Mathlib.Data.Fin.Tuple.Finset
+import Mathlib.Data.Finset.DenselyOrdered
+import Mathlib.Data.Int.Interval
+import Mathlib.Data.Nat.Factorial.NatCast
+import Mathlib.GroupTheory.CosetCover
+import Mathlib.GroupTheory.SpecificGroups.Cyclic
+import Mathlib.LinearAlgebra.Basis.VectorSpace
+import Mathlib.LinearAlgebra.Dimension.Constructions
+import Mathlib.LinearAlgebra.Dimension.Finite
+import Mathlib.LinearAlgebra.StdBasis
+import Mathlib.Logic.Equiv.Fintype
+import Mathlib.MeasureTheory.Integral.Average
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+import Mathlib.Order.Interval.Set.Infinite
+import Mathlib.Probability.ConditionalProbability
+import Mathlib.Tactic
 
 /-! **One three-dimensional piece with its data** (Notes L.5, D3).
 

@@ -183,6 +183,9 @@ facade is [`Lean/ZFCinPA.lean`](Lean/ZFCinPA.lean).
 | `LStepAtom` | the atomic steps: if the numeral placeholders each define one natural number, the membership (equality) atom read at those environment slots, built literally from `EnvTransform`'s pieces, is reflected by the code `⟨0, ⟨a, b⟩⟩` (`⟨1, ⟨a, b⟩⟩`) with the successor as reflection function (`atom_step`, `atomTemplate_provable`) |
 | `LStepEx` | the mathematical core of the quantifier steps: the witness-bounding function (`Wit`, `WB`, `wb_exists`), earlier-stage bookkeeping at limits, and `ex_step`/`all_step` (codes `⟨7, c'⟩`, `⟨6, c'⟩` by `satIn_ex`/`satIn_all`) |
 | `LStepExT` | the quantifier templates: witness formulas (`hasWitS`, `anyWitS`, `witS`, `wbS`, `rkS`), `wb_tot` (in every template model the witness-bounding formula is a total function bounding witnesses, from Replacement for `rkS` over a power set of environments and Separation for `witS`), and `exTemplate_provable`/`allTemplate_provable` |
+| `LIterate` | ω-iteration of a class function on ordinals inside any ZF model: the successor-closure step `HStep`, finite chains (`Chain`, `chain_exists` by restricted ω-induction, `chain_agree`), and `orbit_closure` (the union of the orbit is a nonzero limit closed under the function), with every Separation/Replacement use an explicit hypothesis |
+| `LClosure` | `LIterate` inside template models: L6 formulas for steps, chains, images and orbits with their readings, and `closure_point` (if `F₅` is total on ordinals, limits closed under `F₅` are unbounded), discharging the resources by `sep_iff`/`repl_iff` |
+| `LFinalSep` | the final Separation template: `sep_final` (a reflected predicate cuts a definable subset of a closed stage `L_β`, hence a constructible set, by `inL_of_definable` and `inL_sep`) and `sepTemplate_provable`: `totS F₅ ⋏ reflS P₄ F₅ → ` `L`-separation for `P₄` at extended environments |
 
 ## Building
 

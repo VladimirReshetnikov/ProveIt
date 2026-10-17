@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs13ExplicitFourierExponent
 import GowersSzemeredi.Proofs13OddSquareBounds
+import GowersSzemeredi.Proofs13IntegerBudgets
 
 /-! Odd, square-root-sized Fourier squares for localized phase removal. -/
 

@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16BaseCaseCubicExtraction
 import GowersSzemeredi.Proofs16SpectrumInduction
+import GowersSzemeredi.Proofs16Lemma6Parameters
 
 /-! The spectrum in dimension two has loss-independent graph controls.
 Apply the strengthened one-dimensional extraction directly to the proved

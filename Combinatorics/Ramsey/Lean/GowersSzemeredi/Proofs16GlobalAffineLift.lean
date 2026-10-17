@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16FiniteCoverPadding
+import GowersSzemeredi.Proofs16LiftAllScalesSide
 
 /-! # Global assembly of the verified affine lift
 

@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16ProductAssembly
+import GowersSzemeredi.Proofs16RadiusComparison
 
 /-! # The actual parameter range and width identity of Lemma 16.6 -/
 set_option autoImplicit false

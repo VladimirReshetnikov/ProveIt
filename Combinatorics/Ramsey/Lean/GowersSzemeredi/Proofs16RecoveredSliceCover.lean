@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16ShortColumns
+import GowersSzemeredi.Proofs16CommonSliceCover
 
 /-! # Slice lifting with both short- and long-column recovery
 

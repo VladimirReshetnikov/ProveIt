@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs17QuadraticLocalization
 import GowersSzemeredi.Proofs18PrimeCubeModel
+import GowersSzemeredi.Proofs17QuadraticLocalizationSide
 
 /-! A constructed smaller-prime linear obstruction from quadratic
 nonuniformity, retaining the polynomial twist and interval pullback. -/

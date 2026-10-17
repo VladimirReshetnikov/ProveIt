@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16LocalizedThreshold
+import GowersSzemeredi.Proofs16RetiledRecurrenceSide
 
 /-! # Assembling the localized Section 16 product partition
 

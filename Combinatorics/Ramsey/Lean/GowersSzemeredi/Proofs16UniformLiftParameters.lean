@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs16PackagedExplicitCover
 import GowersSzemeredi.Proofs16CoverParameterMonotonicity
 import GowersSzemeredi.Proofs16RoundedPowerWidth
+import GowersSzemeredi.Proofs16Lemma6Parameters
 
 /-! Uniform quantitative controls for the affine lift. The constants depend
 only on the input parameters, rather than on locally selected graph counts,

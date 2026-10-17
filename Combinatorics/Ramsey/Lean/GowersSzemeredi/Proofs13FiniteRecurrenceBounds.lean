@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs13PhaseSelection
 import GowersSzemeredi.Proofs13SingletonRecurrence
 import GowersSzemeredi.Proofs05QuadraticFamilyScale
+import GowersSzemeredi.Proofs13QuadraticPartition
 
 /-! Quadratic recurrence in the printed large case, with improved length
 and density. Finite localization avoids an asymptotic Weyl threshold. -/

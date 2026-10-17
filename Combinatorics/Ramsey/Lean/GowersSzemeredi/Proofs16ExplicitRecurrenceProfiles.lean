@@ -7,6 +7,8 @@ import GowersSzemeredi.Proofs13LargeScaleExtraction
 import GowersSzemeredi.Proofs13UniformEdgeModels
 import GowersSzemeredi.Proofs16FaceInduction
 import GowersSzemeredi.Proofs16RoundedPowerWidth
+import GowersSzemeredi.Proofs13ExponentMargins
+import GowersSzemeredi.Proofs16RadiusBounds
 
 /-! The explicit recurrence data used by the final quantitative theorem.
 

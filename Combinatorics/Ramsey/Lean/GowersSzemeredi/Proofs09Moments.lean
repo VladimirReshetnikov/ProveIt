@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs05_10
+import GowersSzemeredi.Sections08_09
 
 /-!
 # Higher Fourier moments of a function graph

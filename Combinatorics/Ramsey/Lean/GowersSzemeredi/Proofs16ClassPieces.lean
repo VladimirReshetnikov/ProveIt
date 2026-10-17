@@ -25,7 +25,9 @@ with `θ′ = θ₂/2^(k+2)` (`classBudget`). So the piece keeps mass `θ′`.
 parameters (Notes L.16d); at the printed values the budgets are the printed
 ones by `rfl`, and `class_piece_data` is the instance.
 
-`classBudget_pos_le` is in `Proofs16ClassPiecesSide`, outside the final route. -/
+`classBudget_pos_le` is in `Proofs16ClassPiecesSide`, outside the final route.
+
+`class_piece_data` is in `Proofs16ClassPiecesSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 open scoped BigOperators
@@ -575,25 +577,5 @@ theorem class_piece_data_with {k : Nat} {Thr : Real → Real → Real}
     rw [shiftPt_last, section16Last_appendCoordinate] at hl
     rw [← hi, ← hl]
     exact hz5
-
-/-- **One `(k+1)`-dimensional piece over a uniform class**, from Lemma 15.6's
-arrangements and the product property. -/
-theorem class_piece_data {k : Nat} {Thr : Real → Real → Real}
-    {Cnt Exp : Real → Real → Nat → Real → Real} (C : UniformClassWith k Thr Cnt Exp)
-    {theta gamma : Real} (ht : 0 < theta) (ht1 : theta ≤ 1) (hg : 0 < gamma) (hg1 : gamma ≤ 1)
-    {N : Nat} [NeZero N] [Fact N.Prime] (hN : classPieceThr Thr theta gamma k ≤ N)
-    (Gamma : Finset (Point N (k + 1) × ZMod N))
-    (B : Finset (Point N (k + 1))) (phi : Point N (k + 1) → ZMod N)
-    (hBG : partialGraph B phi ⊆ Gamma)
-    (hBarr : section16ThetaOne theta gamma k * (N : Real) ^ (17 * k + 15) ≤
-        generalArrangementCount 8 B ∧
-      (1 - (2 : Real) ^ (-(44 : Real))) * generalArrangementCount 8 B ≤
-        respectedGeneralArrangementCount 8 B phi)
-    (hprodB : HasProductProperty B phi gamma) :
-    Nonempty (ClassPiece C Gamma (section16Zeta theta gamma k) (classBudget theta gamma k)
-      (classBudget theta gamma k) (classDelta theta gamma k) (classBudget theta gamma k) gamma) :=
-  have hp := lemma_16_5_with_printed_hyps k ht ht1 hg hg1
-  class_piece_data_with C hp.1 hp.2.1 hp.2.2 (by unfold section16Zeta; positivity) hg hg1
-    hN Gamma B phi hBG hBarr hprodB
 
 end LeanProofs.GowersSzemeredi

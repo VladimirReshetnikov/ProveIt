@@ -1,4 +1,37 @@
-import GowersSzemeredi.Proofs13LargeScaleBudgets
+import Mathlib.Algebra.Group.ForwardDiff
+import Mathlib.Algebra.Order.Chebyshev
+import Mathlib.Algebra.Order.Floor.Semifield
+import Mathlib.Algebra.Polynomial.OfFn
+import Mathlib.Analysis.Fourier.ZMod
+import Mathlib.Analysis.MeanInequalities
+import Mathlib.Analysis.MeanInequalitiesPow
+import Mathlib.Analysis.Normed.Group.AddCircle
+import Mathlib.Analysis.PSeries
+import Mathlib.Analysis.Real.Pi.Bounds
+import Mathlib.Analysis.SpecialFunctions.Complex.Circle
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds
+import Mathlib.Combinatorics.Additive.Energy
+import Mathlib.Combinatorics.Additive.FreimanHom
+import Mathlib.Combinatorics.Additive.PluenneckeRuzsa
+import Mathlib.Combinatorics.Pigeonhole
+import Mathlib.Data.Finset.Pi
+import Mathlib.Data.Int.Lemmas
+import Mathlib.Data.Nat.Dist
+import Mathlib.Data.ZMod.ValMinAbs
+import Mathlib.GroupTheory.OrderOfElement
+import Mathlib.GroupTheory.SpecificGroups.Cyclic
+import Mathlib.MeasureTheory.Integral.Average
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+import Mathlib.NumberTheory.ArithmeticFunction.Misc
+import Mathlib.NumberTheory.Bertrand
+import Mathlib.NumberTheory.DiophantineApproximation.Basic
+import Mathlib.NumberTheory.Divisors
+import Mathlib.NumberTheory.Harmonic.Bounds
+import Mathlib.Probability.ConditionalProbability
+import Mathlib.RingTheory.Coprime.Lemmas
 
 /-! Explicit thresholds for the positive-power growth conditions used in
 Section 13. The definitions contain no chosen eventual-growth witnesses. -/

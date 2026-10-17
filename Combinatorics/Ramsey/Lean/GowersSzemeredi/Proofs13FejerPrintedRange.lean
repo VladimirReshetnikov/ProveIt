@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs13FejerExplicitExponent
 import Mathlib.Algebra.Order.Ring.Pow
 import GowersSzemeredi.Proofs05Corollary58
+import GowersSzemeredi.Proofs13FejerExplicitExponentSide
 
 /-! The improved explicit bound reaches the printed length throughout
 0 < alpha <= 1023/1024. A Bernoulli estimate gives the comparison without

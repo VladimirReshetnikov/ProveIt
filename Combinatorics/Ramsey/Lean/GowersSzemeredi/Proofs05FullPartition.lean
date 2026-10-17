@@ -1,5 +1,4 @@
 import GowersSzemeredi.Proofs05DegreeBudgets
-import GowersSzemeredi.Proofs05Lemma9Scale
 import GowersSzemeredi.Proofs05PhaseRemoval
 import GowersSzemeredi.Proofs05Lemma14
 
@@ -9,7 +8,8 @@ import GowersSzemeredi.Proofs05Lemma14
 The degree induction uses residue classes of the recurrence step, removes the
 top coefficient after affine substitution, and reserves enough diameter for
 both summands. The integer budgets justify every rounding and threshold use.
--/
+
+`lemma_5_9_holds` is in `Proofs05FullPartitionSide`, outside the final route. -/
 
 set_option autoImplicit false
 
@@ -87,11 +87,6 @@ theorem corollary_5_6_holds : corollary_5_6 :=
 /-- Corollary 5.7: remove a polynomial phase on each target-length cell. -/
 theorem corollary_5_7_holds : corollary_5_7 :=
   corollary_5_7_holds_of_corollary_5_6 corollary_5_6_holds
-
-/-- Lemma 5.9: simultaneous target-length polynomial partitioning. -/
-theorem lemma_5_9_holds : lemma_5_9 :=
-  lemma_5_9_holds_of_strong_diameter_and_scale_schedule
-    corollary_5_6_strong_diameter_holds lemma_5_9_scale_schedule_holds
 
 /-- Lemma 5.14: global phase removal over an input progression partition. -/
 theorem lemma_5_14_holds : lemma_5_14 :=

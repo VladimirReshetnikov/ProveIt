@@ -1,6 +1,7 @@
 import GowersSzemeredi.Proofs13ExplicitGeometricThreshold
 import GowersSzemeredi.Proofs13ExplicitFrequencyGraph
 import GowersSzemeredi.Proofs13FejerExplicitExponent
+import GowersSzemeredi.Proofs13FejerExplicitExponentSide
 
 /-! A fully explicit modulus threshold for the bilinear Fourier square.
 The improved Fejer density and length exponents are retained. -/

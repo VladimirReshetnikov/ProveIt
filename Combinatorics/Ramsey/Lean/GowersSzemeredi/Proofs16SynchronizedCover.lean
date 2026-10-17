@@ -1,4 +1,7 @@
 import GowersSzemeredi.Proofs16FibreGeometry
+import Mathlib.Combinatorics.Additive.PluenneckeRuzsa
+import Mathlib.Combinatorics.Pigeonhole
+import Mathlib.NumberTheory.Bertrand
 
 /-! # Synchronizing product covers without changing their candidates
 

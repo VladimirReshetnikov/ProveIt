@@ -10044,8 +10044,8 @@ declaration, structure field or namespace that no module it still sees declares
 - The seven largest remaining regions then left together: 63 modules and 6,290
   lines. The largest contains `Proofs16GlobalAffineLift`, so the
   `Proofs16LocalAffineLift` region is no longer blocked. 154 declarations of 36
-  route modules needed the seven regions and moved to 36 side modules. The planner (`detach_side2.py`) needed
-  three extensions. A moved declaration that uses one moved from another module
+  route modules needed the seven regions and moved to 36 side modules. The
+  planner (`detach_side2.py`) needed three extensions. A moved declaration that uses one moved from another module
   V imports `VSide`; V precedes U in import order, so the side modules stay
   acyclic. An existing side module receives the new declarations ahead of its
   own body: they come from U, which does not import it. And a moved block keeps
@@ -10058,11 +10058,41 @@ declaration, structure field or namespace that no module it still sees declares
   `Proofs16CoordinateDirections` for its two simp lemmas. Both are about
   `CoordinateFace.direction`, which that module defines, so they can fire only
   in modules that use its names, and the name compensation reaches those; the
-  module was allowed by hand. The real route went to 499 modules and 105,589
+  module was allowed by hand. The real route went to 499 modules and 105,600
   lines.
   `Proofs16Basic`'s region shows the limit of text-based compensation:
   its moved declarations are named `….mono`, and `mono` occurs in many modules
   through dot notation, so the check cannot tell which modules use them.
+- *Bridge text resolves bare names only.* The bridges cannot be loaded locally,
+  so the usage dump takes their uses from their text, and resolved each name
+  only as written. The bridge `Proofs16SimultaneousRecurrence` uses
+  `IsMultilinear.mul_new_coordinate` through dot notation,
+  `(hmu i).mul_new_coordinate`, which names it by `mul_new_coordinate` alone;
+  its module looked dead and the detach above cut it. The build caught it at
+  that bridge, which has a local olean (two bridges have none). The lemma moved
+  to `Proofs16Lemma1`. Since then the dump also takes `T.foo` as a root when a
+  bridge mentions `foo` and `foo` is rare (at most 3 declarations) or `T` is
+  mentioned too; the planners refuse a move whose name a bridge mentions; and
+  `bridge_check.py --strict` (every module that declared a name a bridge
+  mentions must stay in the bridge's closure) runs after every apply, with
+  `cite_check.py` for the audit files' double-backtick names.
+- *A cut import also cuts Mathlib.* The usage dump records GowersSzemeredi
+  dependencies only, so compensation restores the GowersSzemeredi modules a
+  cut importer needs and nothing else. A module whose only path to some Mathlib
+  module ran through the region loses it; the local trust-mode builds notice
+  only at rebuilt cut points (`Proofs13ExplicitPowerThreshold`, whose one import
+  was a region module, lost `Real`), never downstream. Measured over each
+  module's Mathlib closure (`mathlib_exposure.py`: GowersSzemeredi imports
+  followed, then Mathlib's own import graph), the detaches 0026300, c85f33a,
+  4996e96 and 93e156b had stripped Mathlib modules from 124, 57, 171 and 680
+  module closures. `restore_mathlib.py` adds the lost Mathlib roots at the cut
+  points (downstream modules regain them through those): 29 modules and 243
+  import lines restore every closure to at least its state before 0026300.
+  The detached regions' own members had also lost names (moved declarations
+  they use, paths to other region modules through cut edges): the planners
+  skipped them in compensation. `restore_names.py` repaired 25 modules; it
+  skips route modules, whose needs the dump records exactly.
+  Both checks are now gates of every commit.
 - Mostly-unused live modules are the other side of the same picture.
   `Proofs16BaseCaseUnion` has 805 lines, of which the 10 of
   `isMultilinear_const` are used; `Proofs16PolyPieceTwo` has 322, of which 4.
@@ -10070,32 +10100,49 @@ declaration, structure field or namespace that no module it still sees declares
   usually needs moves elsewhere: `Proofs16PolyPieceTwo` defines `polyPieceBudget`,
   which the printed dimension-two chain still uses (`evacuate_rank.py`, and
   `remap.txt` to simulate an evacuation).
-- *Section 13 stays, with both of its square chains.* Section 13 holds 13.5% of
-  the cone (9,500 lines in 89 modules). Its square extraction (`FejerSquareAt`,
-  `FejerOddSquareAt`) feeds the cubic localization of Section 17 and the degree-3
-  bases of both final envelope inductions. The bases come from two chains:
-  `envBound_three` (`EnvBound 3 62`, the explicit chain through the cubic
-  discrepancy partition) and `polyEnvBound_three_of_phase_partition`
-  (`PolyEnvBound 3 74`, the poly chain through `fejerSquareAt_poly`). In the
-  dominator tree of the cone (`dominators.py`), 2,990 cone lines lie under
-  `envBound_three` alone, in 20 modules nothing else needs, and 2,166 under the
-  poly base. Neither base replaces the other as they stand:
-  - `PolyEnvBound` carries no bound on the threshold `T`, and `EnvBound` needs
-    `T ≤ exp(exp((2/α)^(2^μ)))`. No lemma bounds the poly chain's thresholds yet.
-    Their shape (`positivePowerThreshold C 1 e` with `1/e ≈ p⁴·poly(1/α)`)
-    suggests the bound holds, with `p ≤ 2^(2^64)` entering only polynomially.
-  - The Theorem 18.2 envelope has little room for a larger base constant. The
-    tightest fit, `L + 0` at `j = 9`, is `genMuXK3 9 + 2·9 + 22 = 8,188 ≤
-    2^4·2^9 = 8,192`, and each unit of the base constant adds one to
-    `genMuXK3 j`. That fit leaves room for base constants up to 66 (the other
-    offsets and the closed form beyond `j = 14` are not yet checked at a larger
-    base); the poly base's 74 fails it (8,200).
-  - The explicit chain's `σ` is exponentially small, so it cannot give the
-    polynomial `σ⁻¹ ≤ (2/α)^(2^μ)` of `PolyEnvBound`.
-  So the poly chain could serve both inductions if its threshold is bounded
-  doubly exponentially at a small enough exponent. Its `β` is the explicit
-  chain's, and its `σ⁻¹ ≤ (2/α)^(2^74) ≤ exp((2/α)^(2^62))` already fits
-  `EnvBound 3 62`.
+- *One square chain for both degree-three bases.* Section 13 holds about 13% of
+  the cone. Its square extraction (`FejerSquareAt`, `FejerOddSquareAt`) feeds
+  the cubic localization of Section 17 and the degree-3 bases of both final
+  envelope inductions. The bases came from two chains: `envBound_three`
+  (`EnvBound 3 62`, the explicit chain through the cubic discrepancy partition,
+  with its own Lemma 13.5 route through `lemma_13_5_with_scale` and Lemma 5.9)
+  and `polyEnvBound_three_of_phase_partition` (`PolyEnvBound 3 74`, the poly
+  chain through `fejerSquareAt_poly`). As they stood neither replaced the other:
+  `PolyEnvBound` carries no threshold bound and no lemma bounded the poly
+  chain's threshold; the explicit chain's `σ` is exponentially small, so it
+  cannot give `PolyEnvBound`'s polynomial `σ`. (The Theorem 18.2 envelope has
+  little room for a larger base constant either: its tightest fit, `L + 0` at
+  `j = 9`, is `genMuXK3 9 + 2·9 + 22 = 8,188 ≤ 2^4·2^9 = 8,192`.)
+  The poly chain now gives both (46d28a3). Every threshold of the cubic chain
+  is a positive-power threshold `max 1 (max 1 (C/D))^(1/e)`, antitone in `e`,
+  and the poly row exponent is at least the catalogue's `2^(−13Q)`
+  (`catalogue_length_exponent_le_polyRowExponent`). So each threshold of the
+  poly chain is at most its explicit counterpart, and the whole threshold is at
+  most `fejerCubicInverseThreshold α ≤ exp(exp((2/α)^(2^62)))`
+  (`fejerCubicInverseThresholdAt_poly_le`). With the explicit chain's `β` and
+  `σ⁻¹ ≤ (2/α)^(2^74) ≤ exp((2/α)^(2^62))`, the poly chain fits `EnvBound 3 62`,
+  the explicit base's own constant, so `genMuXK3` and all its fits are
+  unchanged (`envBound_three_of_phase_partition`, `FinalInputs.envBound3`).
+  The first attempt changed only the envelope induction and left the cone 105
+  lines larger: `theorem_18_2_L3_le_five` (Theorem 18.2 at `L + 3` for
+  `L ≤ 5`) used `envBound_three` too, at `L = 5`, and a dominator subtree is
+  freed only when every path into its root is gone. That theorem now takes the
+  base as a hypothesis (`theorem_18_2_L3_le_five_of`). The cone went from
+  70,501 to 68,875 lines.
+- The fifth detach then took the explicit chain's own modules off the route,
+  with ten smaller regions: 21 modules and 2,131 lines (Lemma 5.9 at scale, the
+  quarter-diameter budget, the untrimmed Stage 13.5 recurrence, the integer
+  budgets of Section 13, the local affine lift, the interval increments of
+  Section 18, and the statement module `Sections08_09`, unchanged). 65
+  declarations of 33 route modules moved to 33 side modules. 12 of them are
+  private helpers that only moved declarations use: the planner now moves such
+  helpers along, where they stay private, instead of making them public. Five
+  dead regions stay (317 lines): `Proofs05IntegerRepresentatives` is imported
+  by the statement module `Section05`; the Section 15 selection regions need
+  private helpers of `Proofs15Restriction` that stay, among them an instance;
+  `Proofs16BaseCaseCore`'s moves need a private structure; `Proofs16Basic`'s
+  moves are named `….mono`, which the final module also mentions. The real
+  route went to 478 modules and 102,403 lines.
 
 `Proofs16PolynomialMultilinearCover.exists_all_scale_polynomial_multilinear_cover`
 composes the improved all-scale Lemma 16.9 with the rounded affine lift.

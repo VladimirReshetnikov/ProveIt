@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs18JointInverseParameters
+import GowersSzemeredi.Proofs18FejerCubicDiscrepancySide
 
 /-! Complete inverse induction using the actual joint-cover controls.
 Degree n+2 requires only exact structural dimensions 2 through n. -/

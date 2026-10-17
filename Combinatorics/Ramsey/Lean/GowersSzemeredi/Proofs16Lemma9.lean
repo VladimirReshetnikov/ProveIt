@@ -1,4 +1,6 @@
 import GowersSzemeredi.Proofs16FibreCovers
+import GowersSzemeredi.Proofs16LocalizedCover
+import GowersSzemeredi.Proofs16WidthMonotonicity
 
 /-! # Lemma 16.9: two-stage partition and fibrewise affine covers -/
 set_option autoImplicit false

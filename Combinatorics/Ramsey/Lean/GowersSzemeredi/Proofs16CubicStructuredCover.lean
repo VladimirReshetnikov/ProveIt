@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs16CubicAllScaleCover
-import GowersSzemeredi.Proofs16GoodGraphGeometry
+import Mathlib.Algebra.Order.Ring.Abs
+import Mathlib.Data.Fin.Tuple.Finset
+import Mathlib.Logic.Equiv.Fintype
 
 /-! A genuine dimension-two graph piece with explicit all-box controls.
 Both the spectrum and slice inputs are constructed from the preceding

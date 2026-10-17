@@ -1,5 +1,8 @@
 import GowersSzemeredi.Proofs05BoxTransport
 import GowersSzemeredi.Proofs16LocalizedCover
+import Mathlib.Combinatorics.Additive.PluenneckeRuzsa
+import Mathlib.Combinatorics.Pigeonhole
+import Mathlib.NumberTheory.Bertrand
 
 /-! Finite unions of relations with arbitrary multiple-multilinearity controls.
 

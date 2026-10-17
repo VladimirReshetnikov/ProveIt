@@ -2,7 +2,10 @@ import GowersSzemeredi.Proofs13GeometricThresholdEnvelope
 import GowersSzemeredi.Proofs13FejerOddSquare
 
 /-! The complete cubic Fourier inverse theorem at a conventional explicit
-double-exponential modulus threshold. -/
+double-exponential modulus threshold.
+
+`theorem_13_12_fejer_double_exponential` is in
+`Proofs13FourierThresholdEnvelopeSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -21,23 +24,6 @@ theorem section13FourierThreshold_le_double_exp {alpha : Real}
       ((pow_le_pow_right₀ ht (by norm_num : (2 : Nat) ^ 37 ≤ (2 : Nat) ^ 54)).trans
         (real_le_double_exp _))
   · exact section13_fejer_geometric_threshold_le_double_exp hα hαone
-
-/-- The proper common-step bilinear Fourier square with improved size and
-density exists whenever N exceeds the displayed double exponential. -/
-theorem theorem_13_12_fejer_double_exponential (alpha : Real)
-    (hα : 0 < alpha) (hαone : alpha ≤ 1)
-    (N : Nat) [NeZero N] [Fact N.Prime]
-    (hN : Real.exp (Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 54))) ≤ N)
-    (f : ZMod N → Complex) (hf : DiscValued f) (hnot : ¬ UniformOfDegree f alpha 3) :
-    ∃ P Q : ModAP N, ∃ B : Finset (Pair N), ∃ phi : Pair N → ZMod N,
-      P.step != 0 ∧ P.step = Q.step ∧ P.IsProper ∧ Q.IsProper ∧ P.length = Q.length ∧
-      (N : Real) ^ ((1 / 2 : Real) ^ ((2 / alpha) ^ ((2 : Nat) ^ 53))) ≤ P.length ∧
-      B ⊆ P.carrier.product Q.carrier ∧
-      (alpha / 2) ^ ((2 : Nat) ^ 42) * P.length * Q.length ≤ B.card ∧
-      BilinearOn (P.carrier.product Q.carrier) phi ∧
-      ∀ z, z ∈ B → alpha * N / 2 ≤ ‖secondDifferenceFourier f z.1 z.2 (phi z)‖ :=
-  theorem_13_12_fejer_explicit_threshold alpha hα hαone N
-    ((section13FourierThreshold_le_double_exp hα hαone).trans hN) f hf hnot
 
 /-- The same modulus bound suffices for the odd-square localization input. -/
 theorem section13FejerOddSquareThreshold_le_double_exp {alpha : Real}

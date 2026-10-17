@@ -2,6 +2,7 @@ import GowersSzemeredi.Proofs18RefinementThresholdBounds
 import GowersSzemeredi.Proofs18CoverBudget
 import GowersSzemeredi.Proofs18ThresholdAt
 import GowersSzemeredi.Proofs18EnvelopeInduction
+import GowersSzemeredi.Proofs18EnvelopeBoundsSide
 
 /-! The uniform `L+5` threshold for lengths at least six.
 

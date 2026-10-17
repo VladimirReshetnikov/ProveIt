@@ -3,6 +3,7 @@ import GowersSzemeredi.Proofs16BaseCaseEndpoint
 import GowersSzemeredi.Proofs16BaseCaseZero
 import GowersSzemeredi.Proofs16ClassStepDegreesSide
 import GowersSzemeredi.Proofs16PowerUniformClassSide
+import GowersSzemeredi.Proofs16CorollaryFromInduction
 
 /-! Declarations of `Proofs16AllDimensions` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

@@ -1,4 +1,5 @@
 import GowersSzemeredi.Proofs16EmbeddedLift
+import Mathlib.Analysis.MeanInequalitiesPow
 
 /-! Coordinate masks as proper-face retractions. These expose the ambient
 cover in the concrete form used by translated cube vertices.

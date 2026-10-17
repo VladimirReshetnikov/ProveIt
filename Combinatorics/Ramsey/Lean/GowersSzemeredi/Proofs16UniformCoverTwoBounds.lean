@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs16UniformCoverTwo
 import GowersSzemeredi.Proofs18LengthSixExponents
+import GowersSzemeredi.Proofs18LengthSixCountsSide
+import GowersSzemeredi.Proofs18LengthSixExponentsSide
 
 /-! Envelope controls for the uniform cover in dimension two (Notes L.5, D1).
 

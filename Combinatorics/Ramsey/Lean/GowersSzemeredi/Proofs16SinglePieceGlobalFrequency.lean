@@ -1,5 +1,7 @@
 import GowersSzemeredi.Proofs16SinglePieceGlobal
 import GowersSzemeredi.Proofs16SinglePieceFrequency
+import GowersSzemeredi.Proofs15ExplicitThresholds
+import GowersSzemeredi.Proofs16SinglePieceGlobalSide
 
 /-! A dense multilinear frequency box from global-to-local covers (Notes L.1
 repair).

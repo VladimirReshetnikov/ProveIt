@@ -3,7 +3,10 @@ import GowersSzemeredi.Proofs18FejerSharperPrimeThreshold
 import GowersSzemeredi.Proofs18FejerCubicDiscrepancy
 
 /-! A conventional double-exponential threshold for the full improved
-cubic inverse theorem, including untwisting and all fixed constants. -/
+cubic inverse theorem, including untwisting and all fixed constants.
+
+`fejer_cubic_function_discrepancy_bound_double_exp` is in
+`Proofs18FejerInverseThresholdEnvelopeSide`, outside the final route. -/
 set_option autoImplicit false
 noncomputable section
 namespace LeanProofs.GowersSzemeredi
@@ -123,16 +126,5 @@ theorem fejerCubicInverseThreshold_le_double_exp {alpha : Real}
   exact (fejerCubicTwistedThreshold_le_double_exp_sharp hα hαone).trans
     (Real.exp_le_exp.mpr (Real.exp_le_exp.mpr
       (pow_le_pow_right₀ hx1 (by norm_num : (2 : Nat) ^ 55 ≤ (2 : Nat) ^ 62))))
-
-/-- The complete improved cubic inverse interface at its conventional
-numerical threshold, ready for the density-increment iteration. -/
-theorem fejer_cubic_function_discrepancy_bound_double_exp {alpha : Real}
-    (hα : 0 < alpha) (hαone : alpha ≤ 1) :
-    FunctionDiscrepancyBound 3 alpha (fejerCubicDiscrepancyParameter alpha)
-      (fejerCubicDiscrepancyExponent alpha)
-      (Real.exp (Real.exp ((2 / alpha) ^ ((2 : Nat) ^ 62)))) := by
-  intro N _ _ hN f hf hnot
-  exact fejer_cubic_function_discrepancy_bound hα hαone N
-    ((fejerCubicInverseThreshold_le_double_exp hα hαone).trans hN) f hf hnot
 
 end LeanProofs.GowersSzemeredi

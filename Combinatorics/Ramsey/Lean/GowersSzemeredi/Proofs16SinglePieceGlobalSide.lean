@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16SinglePieceGlobal
 import GowersSzemeredi.Proofs16Lemma6Parameters
+import GowersSzemeredi.Proofs16DenseSelectionSide
 
 /-! Declarations of `Proofs16SinglePieceGlobal` that the final route does not use and that
 need modules outside it (moved here so that those modules can leave the route). -/

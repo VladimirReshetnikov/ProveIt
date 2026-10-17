@@ -1,5 +1,6 @@
 import GowersSzemeredi.Proofs16VertexCovers
 import GowersSzemeredi.Proofs16WeightedSumCovers
+import GowersSzemeredi.Proofs16VertexCoversSide
 
 /-! The actual structured pair supplies the remainder-cover premise of
 Lemma 16.9 with exactly its stated parameter. -/

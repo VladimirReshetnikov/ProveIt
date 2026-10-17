@@ -1,4 +1,11 @@
 import GowersSzemeredi.Proofs16AllScaleCoverTransfer
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
+import Mathlib.GroupTheory.SpecificGroups.Cyclic
+import Mathlib.MeasureTheory.Integral.Average
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Measure.ProbabilityMeasure
+import Mathlib.Probability.ConditionalProbability
 
 /-! All-box multiple multilinearity from cubic slice controls.
 Package the uniform large-box affine lift and cap its exponent to cover

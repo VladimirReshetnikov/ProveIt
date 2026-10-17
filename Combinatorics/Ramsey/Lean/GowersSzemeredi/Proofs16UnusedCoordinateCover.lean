@@ -1,5 +1,6 @@
-import GowersSzemeredi.Proofs16SynchronizedSliceCover
 import GowersSzemeredi.Proofs16LiftWidth
+import GowersSzemeredi.Proofs16Interpolation
+import GowersSzemeredi.Proofs16SynchronizedCover
 
 /-! Extend a multiply-linear partial function across one unused coordinate.
 Compatible box tiling retains the number of graphs and the exceptional mass;
