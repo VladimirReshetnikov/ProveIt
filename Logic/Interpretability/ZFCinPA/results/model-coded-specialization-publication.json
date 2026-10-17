@@ -1,0 +1,163 @@
+{
+  "status": "PASS",
+  "scope": "Exact all-internal proof-code specialization; no consistency comparison.",
+  "files": [
+    {
+      "source": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedSpecialization.lean",
+      "target": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSpecialization.lean",
+      "sha256": "ae18d5c05167e4fbbf9e5bfadd6d807439140ec07031af22dc5198e4fc26ac38"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-closure/SpecializationAudit.lean",
+      "target": "Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/ModelCodedSpecializationAudit.lean",
+      "sha256": "e012d98176c6b720b4b2c0e4c83f354ef3b9f3a3dd2fb22c4e6a0eea3acb0cd8"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-closure/publication/check_model_coded_specialization.py",
+      "target": "Logic/Interpretability/ZFCinPA/check_model_coded_specialization.py",
+      "sha256": "9486cdb563030e2a2b5fef45045c83c9fbe1df31b89b2a347848bd4ac6edb91b"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-closure/publication/model_coded_specialization.md",
+      "target": "Logic/Interpretability/ZFCinPA/model_coded_specialization.md",
+      "sha256": "51650f51bf7a6cf79de0f1221ef503a6dc9105f68af8258e80ceb92b917ce017"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-closure/specialization-run3/verification.json",
+      "target": "Logic/Interpretability/ZFCinPA/results/model-coded-specialization-verification.json",
+      "sha256": "386ad991c3c99640b86e059767460d1f8318bfbe67427bb88cd0abc940b564c6"
+    },
+    {
+      "source": "/tmp/zfc-model-coded-closure/publication/specialization-guard-validation.json",
+      "target": "Logic/Interpretability/ZFCinPA/results/model-coded-specialization-guard-validation.json",
+      "sha256": "c123c2325654080a83dc60405dc2bea5b347130b7660276480502f9bc729f678"
+    }
+  ],
+  "history": [
+    {
+      "attempt": "specialization-run1",
+      "status": "FAIL",
+      "record": {
+        "path": "/tmp/zfc-model-coded-closure/specialization-run1/verification.json",
+        "sha256": "50780380169c520e27ef9660e2793e5426933ecf9e6356a13b9caaa5a8a93283"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedSpecialization.lean",
+        "sha256": "17a558a959b05320b8a787a1562e9c5b44f45d2f135c7b69ccf781360a17b51d",
+        "snapshot": "/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-closure/SpecializationAudit.lean",
+        "sha256": "e012d98176c6b720b4b2c0e4c83f354ef3b9f3a3dd2fb22c4e6a0eea3acb0cd8",
+        "snapshot": "/tmp/zfc-model-coded-closure/specialization-run1/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 36.60543802101165,
+          "exit_code": 1,
+          "output": "/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:52:12: error: unsolved goals\nV : Type u_1\ninst\u271d\u00b3 : ORingStructure V\ninst\u271d\u00b2 : V\u2193[\u2112\u2092\u1d63] \u22a7* \ud835\udddc\ud835\udeba\u2081\nL : Language\ninst\u271d\u00b9 : L.Encodable\ninst\u271d : L.LORDefinable\nvector\u271d vector : V\n\u22a2 qVecIter L 1 vector = qVec L vector\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:53:20: error: unsolved goals\nV : Type u_1\ninst\u271d\u00b3 : ORingStructure V\ninst\u271d\u00b2 : V\u2193[\u2112\u2092\u1d63] \u22a7* \ud835\udddc\ud835\udeba\u2081\nL : Language\ninst\u271d\u00b9 : L.Encodable\ninst\u271d : L.LORDefinable\nvector\u271d time : V\nih : \u2200 (vector : V), qVecIter L (time + 1) vector = qVecIter L time (qVec L vector)\nvector : V\n\u22a2 qVec L (qVec L (qVecIter L time vector)) = qVecIter L time (qVec L (qVec L vector))\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:90:35: error(lean.synthInstanceFailed): failed to synthesize instance of type class\n  Adjoin V \u2115\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:90:53: error: Application type mismatch: The argument\n  time\nhas type\n  V\nof sort `Type u_1` but is expected to have type\n  \u2115\nof sort `Type` in the application\n  qVecIter_isSemitermVec\n    (have this := ?m.131;\n    this)\n    time\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:90:47: error: `simp` made no progress\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:111:33: error(lean.synthInstanceFailed): failed to synthesize instance of type class\n  Adjoin V \u2115\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:111:54: error: Application type mismatch: The argument\n  time\nhas type\n  V\nof sort `Type u_1` but is expected to have type\n  \u2115\nof sort `Type` in the application\n  qVecIter_isSemitermVec\n    (have this := ?m.101;\n    this)\n    time\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:111:48: error: `simp` made no progress\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:119:30: error(lean.unknownIdentifier): Unknown identifier `time`\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:119:35: error(lean.unknownIdentifier): Unknown identifier `time`\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:160:10: error: unsolved goals\nV : Type u_1\ninst\u271d\u2074 : ORingStructure V\ninst\u271d\u00b3 : V\u2193[\u2112\u2092\u1d63] \u22a7* \ud835\udddc\ud835\udeba\u2081\nL : Language\ninst\u271d\u00b2 : L.Encodable\ninst\u271d\u00b9 : L.LORDefinable\nT : Theory L\ninst\u271d : T.\u0394\u2081\nproof body term : V\nhb : IsSemiformula L 1 body\nht : IsTerm L term\nhd : Proof T proof (^\u2200 body)\nhi : IsFormula L (substs1 L term body)\nhn : substs1 L term (neg L body) = neg L (substs1 L term body)\n\u22a2 (substs1 L term body \u2afd 0) = {substs1 L term body}\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:162:4: error: unsolved goals\ncase refine_1.refine_1\nV : Type u_1\ninst\u271d\u2074 : ORingStructure V\ninst\u271d\u00b3 : V\u2193[\u2112\u2092\u1d63] \u22a7* \ud835\udddc\ud835\udeba\u2081\nL : Language\ninst\u271d\u00b2 : L.Encodable\ninst\u271d\u00b9 : L.LORDefinable\nT : Theory L\ninst\u271d : T.\u0394\u2081\nproof body term : V\nhb : IsSemiformula L 1 body\nht : IsTerm L term\nhd : Proof T proof (^\u2200 body)\nhi : IsFormula L (substs1 L term body)\nhn : substs1 L term (neg L body) = neg L (substs1 L term body)\n\u22a2 IsFormulaSet L 0\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:167:6: error: unsolved goals\ncase refine_2.refine_2.refine_1\nV : Type u_1\ninst\u271d\u2074 : ORingStructure V\ninst\u271d\u00b3 : V\u2193[\u2112\u2092\u1d63] \u22a7* \ud835\udddc\ud835\udeba\u2081\nL : Language\ninst\u271d\u00b2 : L.Encodable\ninst\u271d\u00b9 : L.LORDefinable\nT : Theory L\ninst\u271d : T.\u0394\u2081\nproof body term : V\nhb : IsSemiformula L 1 body\nht : IsTerm L term\nhd : Proof T proof (^\u2200 body)\nhi : IsFormula L (substs1 L term body)\nhn : substs1 L term (neg L body) = neg L (substs1 L term body)\n\u22a2 IsFormulaSet L 0\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:195:27: error: unexpected token ';'; expected '{' or tactic\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:195:15: error: unsolved goals\nV : Type u_1\ninst\u271d\u2074 : ORingStructure V\ninst\u271d\u00b3 : V\u2193[\u2112\u2092\u1d63] \u22a7* \ud835\udddc\ud835\udeba\u2081\nL : Language\ninst\u271d\u00b2 : L.Encodable\ninst\u271d\u00b9 : L.LORDefinable\nT : Theory L\ninst\u271d : T.\u0394\u2081\ne : Fin (1 + 1) \u2192 V\n\u22a2 (Semiformula.Evalb e) \u2191(advanceDef L) \u2194 e 0 = (fun v => advance L (v 0)) fun x => e x.succ\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:227:4: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:229:2: error: (deterministic) timeout at `\u00abtactic execution\u00bb`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:258:4: error: Type mismatch: After simplification, term\n  hd\n has type\n  Proof T proof body\nbut is expected to have type\n  Proof T proof (subst L 0 body)\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:266:35: error(lean.synthInstanceFailed): failed to synthesize instance of type class\n  Adjoin V \u2115\n\nHint: Type class instance resolution failures can be inspected with the `set_option trace.Meta.synthInstance true` command.\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:266:59: error: Application type mismatch: The argument\n  binders\nhas type\n  V\nof sort `Type u_1` but is expected to have type\n  \u2115\nof sort `Type` in the application\n  qVecIter_isSemitermVec\n    (have this := ?m.202;\n    this)\n    binders\n/tmp/zfc-model-coded-closure/specialization-run1/sources/ZFCinPA/ModelCodedSpecialization.lean:266:53: error: `simp` made no progress\n"
+        }
+      ]
+    },
+    {
+      "attempt": "specialization-run2",
+      "status": "FAIL",
+      "record": {
+        "path": "/tmp/zfc-model-coded-closure/specialization-run2/verification.json",
+        "sha256": "322cce0f08aced0f7abe967bf56a7df313779d7f910161488f17be124c1cf1c0"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedSpecialization.lean",
+        "sha256": "5b613d531c801db82369c5ea400e6132cbc533033e96db1adfe3bee853cd2412",
+        "snapshot": "/tmp/zfc-model-coded-closure/specialization-run2/sources/ZFCinPA/ModelCodedSpecialization.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-closure/SpecializationAudit.lean",
+        "sha256": "e012d98176c6b720b4b2c0e4c83f354ef3b9f3a3dd2fb22c4e6a0eea3acb0cd8",
+        "snapshot": "/tmp/zfc-model-coded-closure/specialization-run2/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 38.62867519352585,
+          "exit_code": 1,
+          "output": "/tmp/zfc-model-coded-closure/specialization-run2/sources/ZFCinPA/ModelCodedSpecialization.lean:96:6: error: Type mismatch: After simplification, term\n  qVecIter_isSemitermVec\n    (have this := of_eq_true (Eq.trans IsSemitermVec.singleton._simp_1 (IsSemiterm.fvar._simp_1 0 x));\n    this)\n    time\n has type\n  IsSemitermVec L (1 + time) time (qVecIter L time (^&x \u2237 0))\nbut is expected to have type\n  IsSemitermVec L (time + 1) time (qVecIter L time (^&x \u2237 0))\n/tmp/zfc-model-coded-closure/specialization-run2/sources/ZFCinPA/ModelCodedSpecialization.lean:117:4: error: Type mismatch: After simplification, term\n  qVecIter_isSemitermVec\n    (have this := of_eq_true (Eq.trans IsSemitermVec.singleton._simp_1 (IsSemiterm.fvar._simp_1 0 time));\n    this)\n    time\n has type\n  IsSemitermVec L (1 + time) time (qVecIter L time (^&time \u2237 0))\nbut is expected to have type\n  IsSemitermVec L (time + 1) time (qVecIter L time (^&time \u2237 0))\n/tmp/zfc-model-coded-closure/specialization-run2/sources/ZFCinPA/ModelCodedSpecialization.lean:241:4: error: (deterministic) timeout at `whnf`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.\n/tmp/zfc-model-coded-closure/specialization-run2/sources/ZFCinPA/ModelCodedSpecialization.lean:245:2: error: (deterministic) timeout at `\u00abtactic execution\u00bb`, maximum number of heartbeats (200000) has been reached\n\nNote: Use `set_option maxHeartbeats <num>` to set the limit.\n\nHint: Additional diagnostic information may be available using the `set_option diagnostics true` command.\n/tmp/zfc-model-coded-closure/specialization-run2/sources/ZFCinPA/ModelCodedSpecialization.lean:287:6: error: Type mismatch: After simplification, term\n  qVecIter_isSemitermVec\n    (have this := of_eq_true (Eq.trans IsSemitermVec.singleton._simp_1 (IsSemiterm.fvar._simp_1 0 binders));\n    this)\n    binders\n has type\n  IsSemitermVec L (1 + binders) binders (qVecIter L binders (^&binders \u2237 0))\nbut is expected to have type\n  IsSemitermVec L (binders + 1) binders (qVecIter L binders (^&binders \u2237 0))\n"
+        }
+      ]
+    },
+    {
+      "attempt": "specialization-run3",
+      "status": "PASS",
+      "record": {
+        "path": "/tmp/zfc-model-coded-closure/specialization-run3/verification.json",
+        "sha256": "386ad991c3c99640b86e059767460d1f8318bfbe67427bb88cd0abc940b564c6"
+      },
+      "source": {
+        "path": "/tmp/zfc-model-coded-closure/sources/ZFCinPA/ModelCodedSpecialization.lean",
+        "sha256": "ae18d5c05167e4fbbf9e5bfadd6d807439140ec07031af22dc5198e4fc26ac38",
+        "snapshot": "/tmp/zfc-model-coded-closure/specialization-run3/sources/ZFCinPA/ModelCodedSpecialization.lean"
+      },
+      "audit": {
+        "path": "/tmp/zfc-model-coded-closure/SpecializationAudit.lean",
+        "sha256": "e012d98176c6b720b4b2c0e4c83f354ef3b9f3a3dd2fb22c4e6a0eea3acb0cd8",
+        "snapshot": "/tmp/zfc-model-coded-closure/specialization-run3/sources/Audit.lean"
+      },
+      "commands": [
+        {
+          "label": "source",
+          "seconds": 14.04696557763964,
+          "exit_code": 0,
+          "output": ""
+        },
+        {
+          "label": "audit",
+          "seconds": 2.391668079420924,
+          "exit_code": 0,
+          "output": "'LeanProofs.ZFCinPA.ModelCodedSpecialization.qVecIter_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedSpecialization.qVecIter_succ_left' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedSpecialization.qVecIter_isSemitermVec' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedSpecialization.subst_qqAlls' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedSpecialization.qVecIter_free_spec' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedSpecialization.fvarVec_subst_qVecIter' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedSpecialization.specializeCode_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedSpecialization.specializeCode_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedSpecialization.advance_defined' depends on axioms: [propext, Classical.choice, Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedSpecialization.runState_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedSpecialization.runState_succ_left' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedSpecialization.specializedProofCode_defined' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedSpecialization.specializedProofCode_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n'LeanProofs.ZFCinPA.ModelCodedSpecialization.openClosedCode_isProof' depends on axioms: [propext,\n Classical.choice,\n Quot.sound]\n"
+        }
+      ]
+    }
+  ],
+  "first_draft_to_final": {
+    "path": "/tmp/zfc-model-coded-closure/publication/specialization-first-draft-to-final.diff",
+    "sha256": "69e08229c5606f582b33a138e477342ef64768816f0074ab4f5724d78d431c40"
+  },
+  "portable_preflight": {
+    "path": "/tmp/zfc-model-coded-closure/specialization-portable-prepared/verification.json",
+    "sha256": "3bd2604913389ffcc5ec78e1e1d7a6b34fa2f890327b5c2ceee572760c85bc3e",
+    "status": "PREPARED_NOT_BUILT",
+    "proof_commands": 0
+  },
+  "guard_controls": {
+    "path": "/tmp/zfc-model-coded-closure/publication/specialization-guard-validation.json",
+    "sha256": "c123c2325654080a83dc60405dc2bea5b347130b7660276480502f9bc729f678"
+  },
+  "next_tasks": [
+    "Named direct open Separation/Replacement proof-code wrappers.",
+    "Concrete instantiation of internal axiom proof transport with actual translated axiom families.",
+    "No further proof build until explicit slot grant."
+  ],
+  "independent_reviews": [
+    {
+      "reviewer": "bic",
+      "path": "Logic/Interpretability/ZFCinPA/results/model-coded-specialization-bic-review.json",
+      "sha256": "f84fb69ae778ade96bc463df4de357960785db12d13aa0d0691cf02aefd3eecb"
+    },
+    {
+      "reviewer": "child",
+      "path": "Logic/Interpretability/ZFCinPA/results/model-coded-specialization-child-review.json",
+      "sha256": "0d55b20ff207b2d7ba417d49018071b62fb72a1596766a440886db1fc784b68c"
+    }
+  ],
+  "maintained_preflight": {
+    "path": "Logic/Interpretability/ZFCinPA/results/model-coded-specialization-maintained-preflight.json",
+    "sha256": "55403bf47b7ab320fcdad5d4fcf1cb7a08101822bc16e2d0ffdbcd3ce7adb279",
+    "input_hashes_checked": 38,
+    "status": "PREPARED_NOT_BUILT"
+  },
+  "root_review": {
+    "path": "Logic/Interpretability/ZFCinPA/results/model-coded-specialization-root-review.json",
+    "sha256": "d359e56487fb63fbeb1bbadb568cc6b06a85a8d5e772e49a875de743e9d1a453"
+  }
+}

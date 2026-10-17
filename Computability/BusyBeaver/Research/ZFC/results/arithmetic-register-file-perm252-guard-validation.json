@@ -1,0 +1,87 @@
+{
+  "status": "PASS_THREE_GUARD_REJECTIONS",
+  "script_sha256": "b98a5f68c7aabec189f9018b8b10f477867c42c78add886cef775598315f3e3f",
+  "controls": [
+    {
+      "name": "nonempty-output",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_register_file_perm252.py",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--dependency-root",
+        "/home/codex/src/Proofs",
+        "--increment-evidence",
+        "/tmp/zfc-register-increment/run3/verification.json",
+        "--prepare-only",
+        "--output",
+        "/tmp/zfc-register-file-maintained-prepared"
+      ],
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_register_file_perm252.py\", line 13, in <module>\n    R=a.repo.resolve();D=a.dependency_root.resolve();W=a.output.resolve();assert not W.is_relative_to(R)and not W.is_relative_to(D)and(not W.exists()or not any(W.iterdir()));W.mkdir(parents=True,exist_ok=True)\n                                                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "no_lean_commands": true
+    },
+    {
+      "name": "Python-O",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-O",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_register_file_perm252.py",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--dependency-root",
+        "/home/codex/src/Proofs",
+        "--increment-evidence",
+        "/tmp/zfc-register-increment/run3/verification.json",
+        "--prepare-only",
+        "--output",
+        "/tmp/zfc-register-file/reject-o"
+      ],
+      "exit_code": 2,
+      "stderr": "usage: check_arithmetic_register_file_perm252.py [-h] --repo REPO\n                                                 --dependency-root DEPENDENCY_ROOT\n                                                 --increment-evidence INCREMENT_EVIDENCE\n                                                 --output OUTPUT\n                                                 [--source SOURCE]\n                                                 [--audit AUDIT]\n                                                 [--cache CACHE] [--lean LEAN]\n                                                 [--library-path LIBRARY_PATH]\n                                                 [--prepare-only]\ncheck_arithmetic_register_file_perm252.py: error: Assertions must remain enabled; do not use -O.\n",
+      "no_lean_commands": true
+    },
+    {
+      "name": "fake-first-Omega",
+      "command": [
+        "/home/codex/.local/bin/python",
+        "-B",
+        "/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_register_file_perm252.py",
+        "--repo",
+        "/home/codex/.codex/worktrees/ec20/Proofs",
+        "--dependency-root",
+        "/home/codex/src/Proofs",
+        "--increment-evidence",
+        "/tmp/zfc-register-increment/run3/verification.json",
+        "--prepare-only",
+        "--output",
+        "/tmp/zfc-register-file/reject-omega",
+        "--library-path",
+        "/tmp/zfc-register-file/fake-provider",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/mathlib/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/plausible/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/LeanSearchClient/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/importGraph/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/proofwidgets/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/aesop/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/Qq/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/packages/batteries/.lake/build/lib/lean",
+        "--library-path",
+        "/home/codex/src/Proofs/.lake/build/lib/lean"
+      ],
+      "exit_code": 1,
+      "stderr": "Traceback (most recent call last):\n  File \"/home/codex/.codex/worktrees/ec20/Proofs/Computability/BusyBeaver/Research/ZFC/check_arithmetic_register_file_perm252.py\", line 65, in <module>\n    rel=Path(m.replace('.','/')).with_suffix('.olean');ref=toolroot/rel;o=next(p/rel for p in[cache,*libs,toolroot]if(p/rel).is_file());assert sha(o)==sha(ref)\n                                                                                                                                               ^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "no_lean_commands": true
+    }
+  ],
+  "maintained_prepare_unchanged": true
+}

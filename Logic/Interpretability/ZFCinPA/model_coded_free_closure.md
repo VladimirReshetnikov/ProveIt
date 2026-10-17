@@ -14,7 +14,7 @@ The inverse theorem uses arbitrary internal depths, substitution-vector lengths 
 
 The closure code is `qqAlls b m`, using the **actual** `bv b`. A larger supplied bound could add vacuous binders and fail the existing exact schema recognizer. The new module gives a fixed Σ1 graph for the total `closeFormulaCode`, proves its well-formedness, and supplies the literal recognizer witnesses `m,b,K`. For Separation and Replacement, the checked raw identity substitutions give the required bound `K ≤ bodyVal K`. This yields the actual `SepR`/`RepR`, then the existing Δ1 classes of ZF and ZFC. The proof code is explicitly `axm (insert p ∅) p`; it is not selected from an assumed existential derivability statement.
 
-The conclusion is a proof of the **universally closed** schema axiom. Specializing an arbitrary internal number `m` of binders back to the open body remains a separate obligation. So do internal interpretation/proof transport, syntax-sensitive Choice proof families and the PA consistency comparison. The external 252-state ConZFC endpoint is unchanged by this checkpoint.
+The conclusion here is a proof of the **universally closed** schema axiom. The subsequent [internal specialization construction](model_coded_specialization.md) now opens an arbitrary internal number of binders and produces a proof of the open body. Internal interpretation/proof transport, syntax-sensitive Choice proof families and the PA consistency comparison remain separate obligations. The external 252-state ConZFC endpoint is unchanged by this checkpoint.
 
 ## Verification and dependencies
 
@@ -48,6 +48,6 @@ python -B Logic/Interpretability/ZFCinPA/check_model_coded_closed_schema_axioms.
 
 Sources and audits default to maintained files. `--source`, `--audit` and the second guard's `--bind-source` allow relocated copies of the same frozen bytes. `--prepare-only` validates inputs and providers without proof compilation. `--library-path` is repeatable and ordered; no checker initializes or builds dependencies. A schema cache produced by the maintained `check_model_coded_schema_axioms.py` supplies the required complete Foundation namespace overlay.
 
-## Next concrete proof obligation
+## Subsequent specialization proof
 
-A naive induction on `Provable(closed) → Provable(open)` is not an eligible Σ1/Π1 invariant. A suitable next construction is a **total proof-code iterator** applying a literal one-step universal-specialization constructor. Its invariant carries actual proof-code validity (Δ1) and the remaining-binder formula, with all proof-state values supplied by the total graph. At elapsed `i ≤ m`, the remaining `m-i` binders keep their bound slots while already opened slots map to their original free labels. At `i=m`, the formula is exactly the checked `fvarVec` inverse. This is a proposal, not part of the present checked theorem.
+A naive induction on `Provable(closed) → Provable(open)` is not an eligible Σ1/Π1 invariant. The subsequent checked module uses a **total proof-code iterator** with literal universal elimination. Its Π1 induction quantifies over explicit body and proof codes and applies the induction hypothesis to a changed body after the first elimination. A represented substitution-vector iterator and substitution composition identify the final formula with the checked `fvarVec` inverse. See [the specialization proof and its verification](model_coded_specialization.md).

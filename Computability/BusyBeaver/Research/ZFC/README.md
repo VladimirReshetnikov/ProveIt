@@ -1033,9 +1033,12 @@ arbitrary internal free labels. A binder-aware traversal proves shift-fixedness
 and exact reopening with the actual internal `bv` bound. The new closed-schema
 constructors yield literal ZF/ZFC Separation and Replacement axiom proof codes
 without a shift-fixedness premise on the matrix. Their separate fresh checks
-pass 15/15 and 13/13 reports/callers, with zero warnings. Specializing an internal
-number of closing binders back to the open body and the full PA consistency
-comparison remain open.
+pass 15/15 and 13/13 reports/callers, with zero warnings. The later
+[internal specialization proof](../../../../Logic/Interpretability/ZFCinPA/model_coded_specialization.md)
+opens an arbitrary internal number of closing binders using explicit proof
+codes. Its 14 reports and 16 callers pass with zero warnings, including open
+Separation in ZF and Replacement in ZFC. The full PA consistency comparison
+remains open.
 
 
 The [internal zero-spare suffix shift](arithmetic_zero_spare_shift_perm252.md)
@@ -1050,3 +1053,20 @@ connects the source edit to one actual 252-table row. All 8,366 changed-program
 guards pass conditional checks, and the 2,998-pair program certificate passes
 independent validation. The state count remains 252 and its blank bootstrap
 is unresolved; the complete frozen baseline is unchanged.
+
+The [fixed register-file increment proof](arithmetic_register_file_perm252.md)
+extends the internal spare-tail result to arbitrary internal values in every
+preceding and following register of a fixed finite file. It includes the
+complete seek, shift and return, with an exact positive running time. Its
+first Lean run passes seven axiom reports and fourteen callers with zero
+warnings. The list lengths are external; the values and growing spare count
+are internal. This covers the fixed nine-register shape while leaving the
+remaining instruction families and full arithmetic dispatcher refinement open.
+
+
+The [internal marked-register increment](arithmetic_register_increment_perm252.md)
+composes actual mark restoration, suffix shifting and return for a target
+followed only by an arbitrary internal zero-spare tail. Its exact
+2*value+4*count+7-step endpoint passes five axiom reports and eight callers
+with zero warnings. A nonzero following register and the whole runtime
+comparison require the separate register-file layer.
