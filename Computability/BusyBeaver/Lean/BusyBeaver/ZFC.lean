@@ -61,6 +61,7 @@ import BusyBeaver.ZFC.SatSupport
 import BusyBeaver.ZFC.ConstructibleAbs
 import BusyBeaver.ZFC.InternalWO
 import BusyBeaver.ZFC.OrderRec
+import BusyBeaver.ZFC.CodeOrder
 import BusyBeaver.ZFC.WFRelativization
 import BusyBeaver.ZFC.WFModel
 import BusyBeaver.ZFC.WFTheory

@@ -117,7 +117,7 @@ variable (H : ZFAxioms mem)
 
 /-- The shape of an appending step operation. -/
 structure AppendOp (G N O : V → V) : Prop where
-  le_iff : ∀ W x y, Le H (G W) x y ↔ Le H W x y ∨ (Fld H W x ∧ mem y (N W)) ∨ Le H (O W) x y
+  le_iff : ∀ W, IsWOS H W → ∀ x y, Le H (G W) x y ↔ Le H W x y ∨ (Fld H W x ∧ mem y (N W)) ∨ Le H (O W) x y
   new : ∀ W, IsWOS H W → ∀ y, mem y (N W) → ¬ Fld H W y
   wo : ∀ W, IsWOS H W → IsWO mem (Le H (O W)) (fun y => mem y (N W))
   ofld : ∀ W, IsWOS H W → ∀ x y, Le H (O W) x y → mem x (N W) ∧ mem y (N W)
@@ -127,7 +127,7 @@ include hG
 
 theorem fld_step {W : V} (hW : IsWOS H W) (x : V) : Fld H (G W) x ↔ Fld H W x ∨ mem x (N W) := by
   unfold Fld
-  rw [hG.le_iff]
+  rw [hG.le_iff W hW]
   constructor
   · rintro (h | ⟨_, h⟩ | h)
     · exact Or.inl h
@@ -151,7 +151,7 @@ theorem step_wos {W : V} (hW : IsWOS H W) : IsWOS H (G W) ∧ EndExt H W (G W) :
       (((Fld H W x ∧ Fld H W y ∧ Le H W x y) ∨ (Fld H W x ∧ mem y (N W)) ∨
         (mem x (N W) ∧ mem y (N W) ∧ Le H (O W) x y)) ↔ Le H (G W) x y) := by
     intro x y _ _
-    rw [hG.le_iff]
+    rw [hG.le_iff W hW]
     constructor
     · rintro (⟨-, -, h⟩ | h | ⟨-, -, h⟩)
       · exact Or.inl h
@@ -166,21 +166,21 @@ theorem step_wos {W : V} (hW : IsWOS H W) : IsWOS H (G W) ∧ EndExt H W (G W) :
   have hf : ∀ x y, Le H (G W) x y → Fld H (G W) x ∧ Fld H (G W) y := by
     intro x y h
     rw [fld_step H hG hW, fld_step H hG hW]
-    rcases (hG.le_iff W x y).1 h with h | ⟨hx, hy⟩ | h
+    rcases (hG.le_iff W hW x y).1 h with h | ⟨hx, hy⟩ | h
     · exact ⟨Or.inl (hW.fld x y h).1, Or.inl (hW.fld x y h).2⟩
     · exact ⟨Or.inl hx, Or.inr hy⟩
     · exact ⟨Or.inr (hG.ofld W hW x y h).1, Or.inr (hG.ofld W hW x y h).2⟩
   refine ⟨isWOS_of_wo H hwo' hf, fun x y => ?_, fun x y hx hy hny => ?_⟩
   · constructor
     · intro h
-      exact ⟨(hG.le_iff W x y).2 (Or.inl h), (hW.fld x y h).1, (hW.fld x y h).2⟩
+      exact ⟨(hG.le_iff W hW x y).2 (Or.inl h), (hW.fld x y h).1, (hW.fld x y h).2⟩
     · rintro ⟨h, hx, hy⟩
-      rcases (hG.le_iff W x y).1 h with h | ⟨_, h⟩ | h
+      rcases (hG.le_iff W hW x y).1 h with h | ⟨_, h⟩ | h
       · exact h
       · exact absurd hy (hG.new W hW y h)
       · exact absurd hx (hG.new W hW x (hG.ofld W hW x y h).1)
   · have hyN := ((fld_step H hG hW y).1 hy).resolve_left hny
-    exact (hG.le_iff W x y).2 (Or.inr (Or.inl ⟨hx, hyN⟩))
+    exact (hG.le_iff W hW x y).2 (Or.inr (Or.inl ⟨hx, hyN⟩))
 
 end Step
 
