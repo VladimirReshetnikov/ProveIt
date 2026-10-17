@@ -356,3 +356,12 @@ universal environment invariant uses Π2 induction in IΣ2. The check passed
 10 probes and 16 callers with standard axioms, retaining two unused-section
 warnings. This supplies body-vacuity resources for the later alpha proof;
 alpha equivalence and source-proof translation remain open.
+
+[Internal equality contexts](validator_equality_context254.md) now represent
+pointwise stack equalities by a fixed total internal conjunction. All coordinate
+projections, both cons implications and the body-assumption discharge needed by
+the quantifier bridge are checked using IΣ1 induction and finite classical
+proofs. The check passed 21 probes and 24 callers with standard axioms and zero
+warnings. Stack lengths and all four quantifier vacuity witnesses remain
+explicit obligations for the later alpha proof; source-proof translation and
+the reverse consistency implication remain open.
