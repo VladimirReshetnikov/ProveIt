@@ -164,6 +164,14 @@ IΣ1 model, passing four reports and six callers. The
 endpoint for a literal table row at arbitrary internal lengths and entire
 tape halves. Their audits pass ten/ten and eight/eleven reports/callers.
 The complete internal register and dispatcher simulation remains open.
+The [uniform scan module](arithmetic_machine_uniform_scans_perm252.md)
+now handles zeros and ones in both directions, passing 21 reports and 18
+callers, including four concrete table rows. The theorems retain the full
+numeric tape at arbitrary internal scan lengths.
+The [zero-register block iterator](arithmetic_zero_register_blocks254.md)
+represents an internally long spare suffix and proves exact concatenation,
+two-bit read and ordinary-Nat tape-code laws, passing fourteen reports and
+fifteen callers. Internal preservation of the spare shape remains open.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof
@@ -176,6 +184,10 @@ now handles arbitrary internally coded derivations when both theories use
 the same language and the target proves every well-formed source axiom.
 Three reports and seven callers pass. The actual C254/ZFC formula and axiom
 translations remain to be supplied.
+The [represented set-schema constructors](../../../../Logic/Interpretability/ZFCinPA/model_coded_schema_axioms.md)
+now provide actual internal ZF/ZFC Separation and Replacement axiom proofs
+for every shift-fixed internal matrix of arity one or two. Eleven reports
+and ten callers pass. Closure for arbitrary free parameters remains open.
 The subsequent lifted-PA client supplies the finite axiom witnesses itself.
 Its fresh five-module check passes nine reports and twenty callers, including
 specialization at matrices with internal free parameters.
