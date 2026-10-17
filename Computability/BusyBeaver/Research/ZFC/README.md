@@ -112,6 +112,14 @@ The [represented refutation word](arithmetic_refutation_word254.md) then halts
 from every working state for each internal accepted falsity proof, passing
 eleven reports and twelve callers. Scheduler, binary-trace and internal
 proof-system transport remain open for the PA endpoint.
+The [arithmetic scheduler step](arithmetic_enumerator_step254.md) now models
+the actual six-register fetch/execute operation at every internal input and
+agrees with `Enum254.enumStep` on every ordinary state, passing fourteen
+reports and twelve callers. Its [internal iterator and fairness theorem](arithmetic_enumerator_run254.md)
+prove that every candidate is reached unless the scheduler halts earlier.
+A positive word halting from every working state therefore forces scheduler
+halting. Sixteen reports and thirteen callers pass. The proof records the
+first completed-word witness before the scheduler resumes enumeration.
 
 The [finite proof-template compiler](model_coded_core_compiler.md) now handles
 arbitrary internal free parameters by compiling the existing logical proof

@@ -288,6 +288,16 @@ falsity. This closes the compiler-to-word direction in every IΣ1 model;
 scheduler transport, command-halting soundness, binary traces and internal
 C254/ZFC proof transformations remain to be connected.
 
+The [arithmetic scheduler step](arithmetic_enumerator_step254.md) now covers
+every internal six-register configuration and has an exact ordinary-Nat
+`Enum254.enumStep` adapter. Its [internal iterator](arithmetic_enumerator_run254.md)
+uses a Σ1 invariant retaining an earlier stopped-word witness, since a
+completed word and a scheduler boundary have different next steps. It proves
+internal fairness and schedules every positive word halting from all working
+states. The raw candidate for shifted word `w` is `w-1`. This supplies the
+forward scheduling argument; converse command soundness, complete binary
+transport and the internal ZFC proof comparison remain separate.
+
 The [numeric history-checker construction](code254_arithmetic_checker.md)
 specifies a concrete next adapter: represent the exact Cantor pairing and its
 bounded projections, then use the existing arithmetic history iterator to
