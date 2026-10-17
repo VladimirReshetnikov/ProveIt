@@ -307,6 +307,17 @@ The module `BoundedPAConsistency.Basic`, in namespace
       ¬ RestrictedBProv n PA.Formula.Ax_s [] PA.Formula.bot
   ```
 
+Two reusable helper modules also support proof-template specialization:
+[`ModelCodedPredicateHygiene`](Lean/BoundedPAConsistency/ModelCodedPredicateHygiene.lean)
+and [`ModelCodedCoreCompiler`](Lean/BoundedPAConsistency/ModelCodedCoreCompiler.lean).
+They compile a standard finite proof at an arbitrary internal matrix with free
+parameters, given target proofs for its finite translated axiom list. The
+result satisfies Foundation's represented `Proof` predicate without requiring
+`S.shift = S`. This separate scoped extension does not translate arbitrary
+internal source proofs; its
+[interface and verification](../../../Computability/BusyBeaver/Research/ZFC/model_coded_core_compiler.md)
+document that boundary. The existing final-theorem facade is unchanged.
+
 ### Rocq/Coq theorem surface
 
 The module `BoundedPAConsistency.BoundedConsistency`, inside

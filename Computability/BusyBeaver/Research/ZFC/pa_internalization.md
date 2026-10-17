@@ -154,6 +154,16 @@ must be represented and proved correct for arbitrary internal formulas. A
 chosen proof for each *standard* matrix is not enough. Predicate congruence,
 domain guards, freshness and nonemptiness have to appear in this adapter.
 
+The new [finite core compiler](model_coded_core_compiler.md) specializes a
+standard proof at an arbitrary internal arithmetic matrix, including its free
+parameters, without requiring `S.shift = S`. It compiles Foundation's existing
+proof core and discharges the finite translated axiom list with supplied
+target proof witnesses. The result satisfies the represented `Proof` predicate.
+This removes the free-parameter restriction for fixed templates; represented
+translation of arbitrary internal source proofs remains open. The L schema
+step still needs syntax-sensitive relativization of the actual set-language
+matrix, rather than a generic uninterpreted-predicate substitution.
+
 ## Exact eventual endpoint
 
 Fix Boolean checkers for closed proofs and finite machine traces. Let

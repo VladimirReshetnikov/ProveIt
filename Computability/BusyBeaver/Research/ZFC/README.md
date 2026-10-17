@@ -66,6 +66,13 @@ also pass a narrow fresh check with Cantor:38 reports and42 callers, reusing14
 matched core imports. Representing concatenation, the complete proof-to-command
 compiler and its execution contract remains the next arithmetic bridge.
 
+The [finite proof-template compiler](model_coded_core_compiler.md) now handles
+arbitrary internal free parameters by compiling the existing logical proof
+core and cutting supplied translated-axiom proofs at the root. Four local
+modules and two audits pass, with six axiom reports and fourteen callers.
+Its source proof remains standard finite syntax; translating arbitrary
+internal source proofs remains part of the PA bridge.
+
 The complete binary endpoint passed a
 [153-unit source-verified integration](results/binary-perm252-integration-verification.json):
 all151 reused source identities match successful scoped builds, with fresh
