@@ -1161,6 +1161,29 @@ reports and six callers pass with zero warnings. The remaining axiom rows,
 set-theoretic bundle and accepted-history translation remain open.
 
 
+The [named-binder laws and universal-distribution template](../../../../Logic/Interpretability/ZFCinPA/model_coded_named_quantifiers254.md)
+prove negation/implication compatibility at arbitrary internal binder depths
+and supply a finite typed universal-distribution proof. Together they pass
+three axiom reports and eight callers with zero warnings.
+
+The [decoded numerical universal-distribution row](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_rho2_254.md)
+now has an internal proof in actual ZF and ZFC for arbitrary internal labels
+and formula codes. Named-universal congruence transports the implication zero
+alias under the binder; the final endpoints discharge the generalization
+resource. Eight axiom reports and eight callers pass with zero warnings.
+The other logical rows, gated set-theoretic bundle and full PA endpoint remain
+separate obligations.
+
+
+The [three decoded equality rows](../../../../Logic/Interpretability/ZFCinPA/model_coded_decoder_equality254.md)
+now have internal proofs for arbitrary labels in actual ZF and ZFC. Fixed
+ordinary equality/congruence theorems are internalized before their bound slots
+are specialized at model elements; decoder implication equivalence identifies
+the actual `rho7`, `rho5` and `rho3` codes. Eleven axiom reports and twelve
+callers pass with zero warnings. The two remaining quantifier rows and the
+set-theoretic bundle remain open.
+
+
 The [arithmetic symbolic-tape interpretation](arithmetic_symbolic_tape_perm252.md)
 reuses actual finite segment/configuration syntax and normalization with an
 arbitrary internal gap and parameterized box prefixes. Accepted comparisons
@@ -1200,3 +1223,10 @@ including positive execution clocks, physical decrement guards and the
 complete final halt step. Twelve axiom reports and fourteen callers pass with
 zero warnings. The accepted-site premises remain explicit; internal dispatch
 and global runtime remain separate.
+
+The [arithmetic blank-to-Site entry](arithmetic_site_boot_perm252.md) connects
+the existing 82,552-step bootstrap to `Site.start []` with nine zero primary
+registers, zero gap and 56 variable zero spares in every IΣ1 model. Finite
+bit/register/Box compatibility preserves the exact final padding cell. Fifteen
+axiom reports and seventeen callers pass without warnings; this uses the
+checked bootstrap without replaying it. Global runtime remains open.
