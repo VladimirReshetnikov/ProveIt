@@ -1,0 +1,138 @@
+{
+  "status": "CLEAN_CHECKED_CHECKPOINT",
+  "source_first_review": {
+    "status": "CLEAN_SOURCE_FIRST_UNBUILT",
+    "source": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/PeanoArithmetic/BoundedConsistency/Lean/BoundedPAConsistency/InternalRelativization.lean",
+      "sha256": "a58598ec24e05343b779d7e79c2c8e99aa5610b6d77667089f33585e1b44a810",
+      "lines": 819
+    },
+    "set_adapter": {
+      "path": "/home/codex/.codex/worktrees/ec20/Proofs/Logic/Interpretability/ZFCinPA/Lean/ZFCinPA/SetRelativization.lean",
+      "sha256": "b2d4cec4106aa5ff68a66b1b624415b4ec91f8bcb542340716b83d1f3eadfdae",
+      "lines": 50
+    },
+    "delta": {
+      "path": "/tmp/zfc-internal-relativization-refresh/701-to-819.diff",
+      "sha256": "ae95528a8969a92f471eca90801f4d45592d39780554ee0ff8626073d1bf000f"
+    },
+    "historical_701_record": {
+      "path": "/tmp/zfc-internal-relativization-review/run1/verification.json",
+      "sha256": "368b0ba94cdfbb82eaa40eab4301dd846bc86dd41c4fd7050f998c8dc779ae21"
+    },
+    "prepared": {
+      "path": "/tmp/zfc-internal-relativization-refresh/prepared/verification.json",
+      "sha256": "0babe16f9a9b13e222dd6c8ce846bf8246c75d6f056155c5573deb6ed307de01"
+    },
+    "guard": {
+      "path": "/tmp/zfc-internal-relativization-refresh/check_internal_relativization_refresh.py",
+      "sha256": "58e007f5f759be3bfe874636011bb11491134431537977507a6db7c85fac58a9"
+    },
+    "audits": [
+      {
+        "path": "/tmp/zfc-internal-relativization-refresh/InternalRelativizationFullAudit.lean",
+        "sha256": "ad6e038b6fc26291f3acc8827139db122fd300511d00cc0ae98f2a6278d9b4aa",
+        "probes": 16,
+        "callers": 18
+      },
+      {
+        "path": "/tmp/zfc-internal-relativization-refresh/SetRelativizationRefreshAudit.lean",
+        "sha256": "ab4d0a8fffc411aa742ec48d37cfd92a7a622e01a6e54d9b9acaa6edc5951710",
+        "probes": 3,
+        "callers": 6
+      }
+    ],
+    "current_inputs": 28,
+    "findings": [
+      "Consolidated new117-line addition and Set50 read in full; prior701 proof review/PASS retained. New root header is accurate and its only change to upstream proof source is commentary.",
+      "domSet_succ separates domain side0 from the shifted lower side set; reverse inclusion reuses the earlier checked setShift_domSet_subset. The shift-fixed domain is required explicitly.",
+      "One-step discharge uses actual internal ALL on negated unary domain, retaining the shift-fixed conclusion, then CUT against an internal proof of domain nonemptiness. Explicit ofSetEq reorders the finite sequent; no unproved singleton-union normalization is assumed.",
+      "Full discharge fixes r,m,hd,hds,hne and the original derivation. Its induction predicate is k<=m implies exists j,j+k=m and Derivable(insert r,D_j), Sigma1 by fixed total side-set graph and internal Derivable. The j=0 successor impossibility uses k+1<=m. At k=m cancellation gives j=0. No unbounded proof-uniform or domain-uniform quantifiers occur inside the induction predicate.",
+      "Final conditional provable_relativize composes the earlier ten-rule internal derivation transport, explicit empty relSet and pointwise sequent equality, shift commutation and the new side discharge. Its conclusion remains shift-fixed, and translated axioms/nonemptiness plus variable-only terms are explicit resources.",
+      "SetRelativization uses the exact model-coded false function-symbol recognizer, then internal Sigma1 term induction at arityzero to rule out bound variables and function nodes. This discharges the term resource for arbitrary internal term codes, rather than projecting a standard syntax theorem.",
+      "The Set falsum adapter has arbitrary internal Δ1 theories T,U and unary shift-fixed d. It leaves hAx over all internal accepted T axioms and an internal U proof of nonemptiness as premises. It supplies no actual L domain or ZF/ZFC axiom transport.",
+      "Focused new audit retains all original eleven probes/twelve callers, adds five discharge/interpretation probes and six arbitrary-model callers. Separate Set audit has three probes/six callers, including explicit refutation implication, consistency polarity, arbitrary shift-fixed theorem transport and arbitrary internal existential proof witness in the base audit.",
+      "One sequential guard freshly checks819+16/18 then50+3/6. Only exact checked Instances30965/505321 is reused as a project prerequisite; its two external boundaries and baseBasic/discovery anchors are frozen from existing exact PASS records. Supplied Foundation namespace is reused with explicitly limited transitive attestation.",
+      "Preparation passed with commands/fresh objects empty and no compiler/version invocation. Explicit -O/fresh-output/prepost/actualfirst/toolchain/resource/timeout guards are retained. Source819/Set50 are unbuilt by this packet until separately authorized."
+    ],
+    "reviewer_proof_builds": 0,
+    "compiler_invocations_for_preparation": 0,
+    "author_guard_prepare_only_executions": 1,
+    "maintained_edits": 0
+  },
+  "header827_addendum": {
+    "status": "CLEAN_HEADER_ONLY_ADDENDUM_UNBUILT",
+    "source_sha256": "a64c5e65dd235068fb1d62d8e82be55a6f325375d081663fa8dc2a946e2ad11a",
+    "source_lines": 827,
+    "proof_body_equal_after_comment_removal": true,
+    "artifacts": [
+      {
+        "path": "/tmp/zfc-internal-relativization-refresh/819-to-827-header-only.diff",
+        "sha256": "af0c70104e06c10eac6ecefa894db5e2f048862fe22da428ace2c48b698e9e21"
+      },
+      {
+        "path": "/tmp/zfc-internal-relativization-refresh/819-to-827-guard-pin-scope-only.diff",
+        "sha256": "ba6fd6b2d045f738c4914a9ad326ee540d02e4e63ba21e1d0687774604b28cdf"
+      },
+      {
+        "path": "/tmp/zfc-internal-relativization-refresh/check_internal_relativization_refresh.py",
+        "sha256": "125a0b2b1d8cb22dbe4f6b9589b4d11221332808754770e556b1370b2e6e1d05"
+      },
+      {
+        "path": "/tmp/zfc-internal-relativization-refresh/prepared827/verification.json",
+        "sha256": "d8a19f6322b4d38e7ef6de5a784f0fc2f10e962db0d2add07f62c91488571dd2"
+      },
+      {
+        "path": "/tmp/zfc-internal-relativization-refresh/child-source-first-review.json",
+        "sha256": "184b2b4c8818aab45fb96c97dfbff8f19c05cdd263c88f42712d58a0af8abe40"
+      },
+      {
+        "path": "/tmp/zfc-internal-relativization-refresh/history/819-prepared/check_internal_relativization_refresh.py",
+        "sha256": "58e007f5f759be3bfe874636011bb11491134431537977507a6db7c85fac58a9"
+      },
+      {
+        "path": "/tmp/zfc-internal-relativization-refresh/history/819-prepared/verification.json",
+        "sha256": "0babe16f9a9b13e222dd6c8ce846bf8246c75d6f056155c5573deb6ed307de01"
+      }
+    ],
+    "original_819_preserved": true,
+    "current_inputs": 28,
+    "compiler_invocations": 0,
+    "proof_pass_claim": false
+  },
+  "final_postcheck": {
+    "status": "FINAL_CURRENT_IDENTITIES_CLEAN",
+    "original_record_sha256": "83534a1aeeeaa97881e4632156cad75120be730bd7d77761d3e460e87a4fca55",
+    "input_count": 28,
+    "all_current_inputs_match": true,
+    "all_current_fresh_objects_match": true,
+    "all_original_logs_match": true,
+    "proof_build_replays": 0,
+    "compiler_invocations_for_this_postcheck": 0
+  },
+  "successful_record": {
+    "path": "/tmp/zfc-internal-relativization-refresh/run1/verification.json",
+    "sha256": "83534a1aeeeaa97881e4632156cad75120be730bd7d77761d3e460e87a4fca55"
+  },
+  "source_object_pairs": [
+    {
+      "module": "BoundedPAConsistency.InternalRelativization",
+      "path": "/tmp/zfc-internal-relativization-refresh/run1/cache/BoundedPAConsistency/InternalRelativization.olean",
+      "sha256": "ca827a7024bba271f03c8f3a53215e51d212c9ecbdbd172b704a703599801d6f",
+      "source_sha256": "a64c5e65dd235068fb1d62d8e82be55a6f325375d081663fa8dc2a946e2ad11a"
+    },
+    {
+      "module": "ZFCinPA.SetRelativization",
+      "path": "/tmp/zfc-internal-relativization-refresh/run1/cache/ZFCinPA/SetRelativization.olean",
+      "sha256": "b99c0744a5ac1a58e967d20ec8fd093d29be40ff70bf67020b06ead5b7daf6d2",
+      "source_sha256": "b2d4cec4106aa5ff68a66b1b624415b4ec91f8bcb542340716b83d1f3eadfdae"
+    }
+  ],
+  "root_prebuild_review": "Root explicitly reported full consolidated source, guard, both audits and28 inputs reviewed clean before granting one sequence.",
+  "review_scope": "Upstream mathematical/source review, author guarded execution and current identity postcheck. Does not claim a second independent compiler replay or whole transitive dependency-cache rebuild.",
+  "historical_701_record": {
+    "path": "/tmp/zfc-internal-relativization-review/run1/verification.json",
+    "sha256": "368b0ba94cdfbb82eaa40eab4301dd846bc86dd41c4fd7050f998c8dc779ae21"
+  },
+  "exploratory_discharge": "Separate scratch Discharge failures remain exploratory and were not published as a PASS; consolidated upstream source supersedes that duplicate implementation."
+}
