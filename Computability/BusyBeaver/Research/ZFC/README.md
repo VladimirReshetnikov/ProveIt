@@ -1008,9 +1008,9 @@ warnings; portable maintained preparation is recorded separately.
 
 The [MP dummy-push experiment](mp_dummy_push_partial_cost.md) removes one successful-MP
 helper occurrence while retaining the complete source calculus. Both tested
-raw compilers keep their original 281/341 state counts. The altered source
-has not yet been compiled through the optimized 252-state decoder; no new
-bound or lower bound follows from these partial cost controls.
+raw compilers keep their original 281/341 state counts. The direct optimized-decoder patch also retains 252 states, with its changed
+blank entry unresolved within one million steps. No new bound or lower bound
+follows from these controls.
 
 
 The [internal zero-spare scan](arithmetic_zero_spare_scan_perm252.md) crosses any
@@ -1043,3 +1043,10 @@ retains the changing tape while increment shifts across an arbitrary internal
 zero-spare count. Its exact value+2*count+2-step endpoint and blank-tail turn
 pass three axiom reports and six callers with zero warnings. Complete
 increment/file framing and the internal runtime comparison remain separate.
+
+
+The [MP continuation mapping](mp_dummy_push_partial_cost.md#exact-mapping-into-the-optimized-decoder)
+connects the source edit to one actual 252-table row. All 8,366 changed-program
+guards pass conditional checks, and the 2,998-pair program certificate passes
+independent validation. The state count remains 252 and its blank bootstrap
+is unresolved; the complete frozen baseline is unchanged.

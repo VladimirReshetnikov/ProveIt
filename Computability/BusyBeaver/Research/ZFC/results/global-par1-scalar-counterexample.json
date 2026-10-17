@@ -1,0 +1,76 @@
+{
+  "status": "PASS_SCALAR_SOURCE_INTERFACE_COUNTEREXAMPLE",
+  "scope": "Exact changed MP effect from an explicitly good working state; no claim that a modified blank execution reaches it or halts.",
+  "initial_working": [
+    2,
+    0,
+    0,
+    36
+  ],
+  "goal": 1,
+  "old_comparison": 28,
+  "new_comparison": 36,
+  "original_output": [
+    0,
+    0,
+    1,
+    0
+  ],
+  "modified_output": [
+    1,
+    0,
+    1,
+    0
+  ],
+  "modified_cleanup_trace": [
+    [
+      1,
+      0,
+      1,
+      0
+    ],
+    [
+      0,
+      1,
+      1,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      1
+    ],
+    null
+  ],
+  "cleanup_word": [
+    "DROP0",
+    "NIP0",
+    "NIP0"
+  ],
+  "initial_theorem_certificates": {
+    "top": "SeedInvariant254.Formula.sound (.all 0 .truth), code2",
+    "stack": "Enum254.good_zero, code0",
+    "cache": "SeedInvariant254.Formula.sound (.weaken 0 (.eqRefl 0)), code36"
+  },
+  "source_derivation": [
+    "L2Lib254.loop198/loop205: clean node167 adds p1 toTW and restoresp1; leavesWS unchanged.",
+    "Dag254 node161 invokespar1 beforecons; global166\u2192167 changes this call in addition to success130.",
+    "L2Macros254.cons popsWShead and pairs it as antecedent, so compare=Imp(headWS,TW+p1).",
+    "loop216 clearsTW beforecomparison; success130 executes167 onTW0 and thereforeacceptsgoal1.",
+    "DROP/NIP macros have no globalpar1 call and retain original cleanup behavior."
+  ],
+  "interpretation": "The oldGood/Inv preservation theorem cannot survive this rule in a nonrefutingC254 model; semantic local truth preservation already fails in an inhabited irreflexive structure. No unconditional ConZFC or modifiedblankhalting assertion.",
+  "source_hashes": {
+    "Dag254.lean": "e42a8658265b114a99f3550f979b95f1afc02a2f7d6483e1765d911891c05f52",
+    "L2Macros254.lean": "dbc1c8c75d6f3d1f019d65f5bd62210638c1bcc2f8994a5f4413e42aa63334e7",
+    "L2Lib254.lean": "e8aba56e66886da97e34d2c41dc80afc1421e8bbf87a9b94b3a5b1b858696ba9",
+    "L2Control254.lean": "156bdb48b54f818084538bcfc3bc2f02d912732006513688f05256b297be679e",
+    "Enum254.lean": "e44edf445c97907c1adec57ebb41afb072a2fb1c67b1b2b4dc7911b3caaa79da",
+    "SeedInvariant254.lean": "148c5603a2843b14383ceeceb39f9c7b75c41431ba1ebe03235d4d574f7d938e",
+    "Code254.lean": "18311d4a28cba6778a0ba1a1ddee34f5c2dd5044a23958b63f46d0640be4e01e"
+  },
+  "driver_sha256": "f6bb814bbb091c48d6bf3e592110e261ca895b1265335605f21f87b0b4370715",
+  "lean_build": false,
+  "table_mutation": false
+}
