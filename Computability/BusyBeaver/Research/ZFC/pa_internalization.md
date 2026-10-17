@@ -58,9 +58,15 @@ The current arithmetic checkpoints are:
   supplies coordinate projection and the binder-cons interface. Its
   [vacuity theorem](../../../../Logic/Interpretability/ZFCinPA/validator_equality_context_vacuity254.md)
   derives both context-vacuity resources from avoidance of equal-length
-  stacks, using Σ₁ induction in IΣ₁. Alpha equivalence and source-proof
-  translation remain open; arbitrary accepted
-  proofs are not assumed closed under variable renaming.
+  stacks, using Σ₁ induction in IΣ₁. The
+  [alpha transport](../../../../Logic/Interpretability/ZFCinPA/validator_environment_alpha254.md)
+  now proves both implications between encodings of every internal formula
+  under the same equality context, using Π₂ induction in IΣ₂ and explicit
+  disjoint fresh streams. Concrete stream selection and source-proof
+  translation remain open. The latter can use the configurable encoder
+  directly, since its falsity code is already `1`; comparison with the earlier
+  fixed encoder is optional. Arbitrary accepted proofs are not assumed closed
+  under variable renaming.
 * [Both actual reads](arithmetic_control_read_template254.md) are checked on
   every internal register file with its scratch fields zero. They reach the
   actual dispatch control 38, retain the whole register file in their
@@ -80,9 +86,11 @@ The current arithmetic checkpoints are:
   exact internal logical clock `3*a+2*distance(a,b)+2`. Both
   [MP parameter pushes and the comparison-to-fetch tail](arithmetic_control_param_push254.md)
   are now checked. Each push preserves param1 while setting TW to param1
-  and WS to the pair of the original TW and WS. The short unpair and
-  constructor sequence still need contracts and composition into full MP;
-  AX also remains open.
+  and WS to the pair of the original TW and WS. The
+  [short MP unpair](arithmetic_control_unpair_core254.md) and its composition
+  with the initial push now restore the original WS, put old TW in scratch1,
+  and put param1 in TW. The constructor sequence and composition into full MP
+  remain open; AX also remains open.
 
 The remaining major steps are the reverse internal ZF-to-validator proof
 translation, the internal L-specific Separation/Replacement proofs, and the complete
