@@ -271,3 +271,12 @@ per-formula spine walk, and it reuses the `FvFree` fact needed anyway to close a
 - [`Logic/PeanoArithmetic/BoundedConsistency`](../../PeanoArithmetic/BoundedConsistency/README.md)
   — the arithmetic analogue `PA ⊢ ∀ n, Prov_PA(⌜Conₙ(PA)⌝)`, proved, and the
   template this project mirrors.
+
+[Open template closure](open-template-closure.md) supplies
+`OpenTemplateClosure.generalizeAll` and `closeTemplate`: ordinary finite source
+parameters are universally closed while arbitrary extra free parameters of
+internal predicate interpretations stay free. The proof callback at every
+finite buffer remains explicit. The focused run6 check passed four probes and
+four callers with zero warnings, reusing 16 matched project providers; all five
+nonpasses and the maintained-default unbuilt preflight remain archived. This
+module supplies no schema callback or arbitrary internal source-proof transport.
