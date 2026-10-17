@@ -13,9 +13,9 @@ and the propositional connectives unchanged and guards every quantifier:
 It is one `UformulaRec1` construction with `d` as the recursion parameter,
 hence a total Σ₁-definable function in every model of IΣ₁, defined at every
 internal code (nonstandard ones included). This module proves its constructor
-equations and that it preserves well-formed (semi)formulas; the commutation
-with negation, shift and substitution and the transport of internal
-derivations follow in later sections.
+equations. Preservation of well-formed (semi)formulas, commutation with
+negation, shift and substitution, and transport of internal derivations
+are further obligations.
 
 This is the represented counterpart of a relative interpretation's formula
 translation (`LO.FirstOrder.DirectTranslation` is the external one). It is the
